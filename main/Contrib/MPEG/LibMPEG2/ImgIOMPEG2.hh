@@ -93,11 +93,11 @@ namespace RavlImageN
     bool DecodeGOP(UIntT firstFrameNo);
     //: Decode a whole GOP and put it in the image cache.
     
-    bool Decode(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
-    //: Decode a block of data
-    
     bool DemultiplexGOP(UIntT firstFrameNo);
     //: Decode a whole GOP and put it in the image cache.
+    
+    bool Decode(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
+    //: Decode a block of data
     
     bool Demultiplex(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
     //: Demultiplex and decode mpeg stream
@@ -128,11 +128,12 @@ namespace RavlImageN
     bool sequenceInit;
     IntT lastFrameType;
     
-    bool m_initialSeek;
     IntT m_demuxTrack;
     IntT m_demuxState;
     IntT m_demuxStateBytes;
     ByteT m_headBuf[264];
+
+    UIntT m_gopCount;
   };
 
   class ImgILibMPEG2C :

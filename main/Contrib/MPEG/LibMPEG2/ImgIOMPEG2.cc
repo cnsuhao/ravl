@@ -65,7 +65,6 @@ namespace RavlImageN
     imageCache(40),
     sequenceInit(false),
     lastFrameType(0),
-    m_initialSeek(false),
     m_demuxTrack(demuxTrack),
     m_demuxState(DEMUX_SKIP),
     m_demuxStateBytes(0)
@@ -92,8 +91,8 @@ namespace RavlImageN
   
   bool ImgILibMPEG2BodyC::InitialSeek()
   {
-    RavlAssertMsg(!m_initialSeek, "ImgILibMPEG2BodyC::InitialSeek called again");
-    
+    RavlAssertMsg(offsets.IsEmpty(), "ImgILibMPEG2BodyC::InitialSeek called with non-empty offsets");
+    cerr << "ImgILibMPEG2BodyC::InitialSeek" << endl;
     if (input.IsValid())
     {
       DPSeekCtrlC seek(input);
@@ -101,7 +100,6 @@ namespace RavlImageN
       {
         offsets.Insert(0, seek.Tell64());
         
-        m_initialSeek = true;
         return true;
       }
     }
@@ -158,7 +156,7 @@ namespace RavlImageN
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP called last state= " << m_state << "\n");
     
     // If not set, get the initial seek position
-    if (!m_initialSeek && !InitialSeek())
+    if (offsets.IsEmpty() && !InitialSeek())
     {
       cerr << "ImgILibMPEG2BodyC::DecodeGOP unable to find initial seek position" << "\n";
       return false;
@@ -240,6 +238,82 @@ namespace RavlImageN
     return true;
   }
   
+  bool ImgILibMPEG2BodyC::DemultiplexGOP(UIntT firstFrameNo)
+  {
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP called last state= " << m_state << "\n");
+    
+    // If not set, get the initial seek position
+    if (offsets.IsEmpty() && !InitialSeek())
+    {
+      cerr << "ImgILibMPEG2BodyC::DecodeGOP unable to find initial seek position" << "\n";
+      return false;
+    }
+    
+    // Find the GOP before the required frame...
+    // Bit of a hack but will do for now.
+    StreamPosT at;
+    while(!offsets.Find(firstFrameNo,at))
+    {
+      if(firstFrameNo ==0)
+        return false;
+      firstFrameNo--;
+    } 
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP seeking to " << at << " for frame " << firstFrameNo  <<"\n");
+    
+    DPSeekCtrlC seek(input);
+    if (!seek.IsValid())
+      return false;
+    seek.Seek64(at);
+    
+    // Reset the decoder if the first frame of the GOP is zero.
+    // TODO: This doesn't actually work properly!
+    if (firstFrameNo == 0)
+    {
+      // Close the decoder
+      mpeg2_close(decoder);
+      
+      // Restart the decoder
+      decoder = mpeg2_init();
+      m_state = -2;
+      sequenceInit = false;
+      m_demuxState = DEMUX_SKIP;
+      m_demuxStateBytes = 0;
+    }
+
+    UIntT localFrameNo = firstFrameNo;
+    bool gotFrames = false;
+    m_gopCount = 0;
+    // TODO: This initial read seems to cover over the problems with back seeking :o)
+    if(!ReadData())
+    {
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
+      return false;
+    }
+    const mpeg2_info_t *info = mpeg2_info(decoder);
+
+    do
+    {
+      if(m_gopCount > 1 && gotFrames) {
+        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP ******** Recording " << localFrameNo << " at " << lastRead << " \n");
+        offsets.Insert(localFrameNo, lastRead, false);
+        if(localFrameNo > maxFrameIndex)
+          maxFrameIndex = localFrameNo;
+        break;
+      }
+    
+      if(!ReadData()) {
+        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
+        m_state = -2;
+        return false;
+      }
+      
+      Demultiplex(localFrameNo, info, gotFrames);
+      
+    } while(true);
+
+    return true;
+  }
+  
   bool ImgILibMPEG2BodyC::Decode(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames)
   {
 //    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode state=" << m_state << "\n");
@@ -269,6 +343,7 @@ namespace RavlImageN
       
     case STATE_GOP:
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP.\n");
+      m_gopCount++;
       break;
 	
     case STATE_PICTURE: {
@@ -363,68 +438,6 @@ namespace RavlImageN
     return true;
   }
 
-  bool ImgILibMPEG2BodyC::DemultiplexGOP(UIntT firstFrameNo)
-  {
-    ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP called last state= " << m_state << "\n");
-    
-    // If not set, get the initial seek position
-    if (!m_initialSeek && !InitialSeek())
-    {
-      cerr << "ImgILibMPEG2BodyC::DecodeGOP unable to find initial seek position" << "\n";
-      return false;
-    }
-    
-    // Find the GOP before the required frame...
-    // Bit of a hack but will do for now.
-    StreamPosT at;
-    while(!offsets.Find(firstFrameNo,at))
-    {
-      if(firstFrameNo ==0)
-        return false;
-      firstFrameNo--;
-    } 
-    ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP seeking to " << at << " for frame " << firstFrameNo  <<"\n");
-    
-    DPSeekCtrlC seek(input);
-    if (!seek.IsValid())
-      return false;
-    seek.Seek64(at);
-    
-    UIntT localFrameNo = firstFrameNo;
-    bool gotFrames = false;
-    if(!ReadData())
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
-      return false;
-    }
-    const mpeg2_info_t *info = mpeg2_info(decoder);
-    UIntT preParsePos = 0;
-
-    do
-    {
-      preParsePos = lastRead;
-
-      if(gotFrames) {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP ******** Recording " << localFrameNo << " at " << preParsePos << " \n");
-        offsets.Insert(localFrameNo, preParsePos, false);
-        if(localFrameNo > maxFrameIndex)
-          maxFrameIndex = localFrameNo;
-        return true;
-      }
-    
-      if(!ReadData()) {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
-        m_state = -2;
-        return false;
-      }
-      
-      Demultiplex(localFrameNo, info, gotFrames);
-      
-    } while(true);
-
-    return true;
-  }
-  
   bool ImgILibMPEG2BodyC::Demultiplex(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames)
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Demultiplex called track=" << m_demuxTrack << "\n");
