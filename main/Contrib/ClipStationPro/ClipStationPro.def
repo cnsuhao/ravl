@@ -7,8 +7,9 @@
 ifndef CLIPSTATION_DEF
 CLIPSTATION_DEF = 1
 
-#CSPHOME = /usr/src/sdk2.4p82
+ifndef CSPHOME 
 CSPHOME = /usr/src/sdk2.5p20
+endif 
 
 INCLUDES += -I$(CSPHOME)/development/header
 EXELIB := -L$(CSPHOME)/linux/lib -ldvsoem $(EXELIB)
