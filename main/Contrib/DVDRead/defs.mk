@@ -1,4 +1,4 @@
-REQUIRES = libmpeg2
+REQUIRES = dvdread
 
 PACKAGE = Ravl
 
