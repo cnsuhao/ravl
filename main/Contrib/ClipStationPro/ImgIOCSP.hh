@@ -99,7 +99,10 @@ namespace RavlImageN {
   //: ClipStationPro frame grabber.
    // This class provides a convenient user interface for access to the ClipStationPro capture cards. 
   // This interface provides attributes such as "timecode" and "FrameBufferSize" which can be accessed/modified through the 
-  // GetAttr / SetAttr methods. 
+  // GetAttr SetAttr methods. 
+  // See the data processing <a href="../Tree/Ravl.Core.Data_Processing.Attributes.html"> attribute handling mechanism. </a>  For more details. 
+  // Also see the <a href="../Tree/Ravl.Images.Video.html"> video section </a> for a list of common attributes. 
+  // 
 
   template<class PixelT>
   class DPIImageClipStationProC
