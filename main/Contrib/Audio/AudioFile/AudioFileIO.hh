@@ -18,6 +18,9 @@
 
 namespace RavlAudioN {
   
+  //! userlevel=Advanced
+  //: AudioFile library driver class.
+  
   class AudioFileBaseC 
     : public AudioIOBaseC
   {
