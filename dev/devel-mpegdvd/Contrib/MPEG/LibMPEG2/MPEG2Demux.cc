@@ -81,16 +81,14 @@ namespace RavlImageN
         UIntT dataLeft = dataChunk.Size() - dataSize;
         
         // Copy the data across
-        for (UIntT i = 0; i < dataSize; i++)
-          m_dataCurrent[i + m_dataCount] = dataChunk[i];
+        memcpy(m_dataCurrent.DataStart() + m_dataCount, dataChunk.DataStart(), dataSize);
         m_dataCount += dataSize;
         
         if (dataLeft > 0)
         {
           // Copy the remaining data back to the list
           SArray1dC<ByteT> newChunk(dataLeft);
-          for (UIntT i = 0; i < dataLeft; i++)
-            newChunk[i] = dataChunk[i + dataSize];
+          memcpy(newChunk.DataStart(), dataChunk.DataStart() + dataSize, dataLeft);
           m_dataOut.InsFirst(newChunk);
         }
       }
@@ -174,8 +172,7 @@ namespace RavlImageN
     UIntT dataUsed = dataSize > (m_dataCurrent.Size() - m_dataCount) ? m_dataCurrent.Size() - m_dataCount : dataSize;
     if (m_dataCount < m_dataCurrent.Size())
     {
-      for (UIntT i = 0; i < dataUsed; i++)
-        m_dataCurrent[i + m_dataCount] = *(start + i);
+      memcpy(m_dataCurrent.DataStart() + m_dataCount, start, dataUsed);
       m_dataCount += dataUsed;
     }
     
@@ -183,8 +180,7 @@ namespace RavlImageN
     {
       // Create the new data chunk
       SArray1dC<ByteT> newChunk(dataSize - dataUsed);
-      for (UIntT i = 0; i < (dataSize - dataUsed); i++)
-        newChunk[i] = *(start + dataUsed + i);
+      memcpy(newChunk.DataStart(), start + dataUsed, dataSize - dataUsed);
       
       // Append it to the data output list
       m_dataOut.InsLast(newChunk);

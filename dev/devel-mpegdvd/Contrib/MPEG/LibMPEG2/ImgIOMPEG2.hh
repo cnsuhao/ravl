@@ -142,7 +142,7 @@ namespace RavlImageN
     //: Default constructor.
     // Creates an invalid handle.
 
-    ImgILibMPEG2C(bool seekable = true) :
+    ImgILibMPEG2C(bool seekable) :
       DPEntityC(*new ImgILibMPEG2BodyC(seekable))
     {}
     //: Constructor.

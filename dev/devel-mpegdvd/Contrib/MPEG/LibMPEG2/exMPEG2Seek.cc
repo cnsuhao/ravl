@@ -36,10 +36,16 @@ int main(int nargs, char **argv)
 
   // Select the correct opening method
   FileFormatLibMPEG2C format;
-  DPISPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
+  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
   if (!in.IsValid())
   {
     cerr << "Unable to open file (" << filename << ")\n";
+    return 1;
+  }
+  DPISPortC< ImageC<ByteRGBValueC> >  seek(in);
+  if (!seek.IsValid())
+  {
+    cerr << "Unable to create seekable stream (" << filename << ")\n";
     return 1;
   }
 
@@ -82,11 +88,11 @@ int main(int nargs, char **argv)
    
     count++;
     
-    in.Seek(frame);
+    seek.Seek(frame);
       
     cerr << "==== Seeking to " << frame << endl;
 
-    if(!in.Get(rgb))
+    if(!seek.Get(rgb))
       break;
     
     RavlN::Save("@X", rgb);

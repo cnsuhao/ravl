@@ -46,7 +46,7 @@ namespace RavlImageN
   ImgILibMPEG2BodyC::ImgILibMPEG2BodyC(bool seekable) :
     m_decoder(0),
     m_state(-2),
-    m_buffer(32768),
+    m_buffer(4096),
     m_bufStart(0),
     m_bufEnd(0),
     m_frameNo(0),
@@ -125,8 +125,11 @@ namespace RavlImageN
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek (" << off << ")" << endl;)
     if (m_seekable)
+    {
       m_frameNo = off;
-    return true;
+      return true;
+    }
+    return false;
   }
 
   //: Get the size of the file in frames (-1 if not known)
@@ -142,8 +145,11 @@ namespace RavlImageN
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek (" << off << ")" << endl;)
     if (m_seekable)
+    {
       m_frameNo = off;
-    return true;
+      return true;
+    }
+    return false;
   }
   
   //: Get the size of the file in frames (-1 if not known)
