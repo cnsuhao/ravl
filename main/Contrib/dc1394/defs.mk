@@ -8,7 +8,7 @@
 
 PACKAGE=Ravl/Image
 
-#REQUIRES=Libdc1394
+REQUIRES=libdc1394
 
 MAINS= test1394dc.cc
 
