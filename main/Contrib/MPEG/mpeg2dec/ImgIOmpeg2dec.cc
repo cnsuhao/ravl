@@ -12,7 +12,7 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/OS/Date.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -45,7 +45,8 @@ namespace RavlImageN {
     // Check everything's looking ok.
     if(decodeProg.IsRunning()) {
       ok = true;
-    }
+    } else 
+      cerr << "Failed to run mpeg2dec on file '" << filename << "'.  Command:'" << cmd << "'\n";
     ONDEBUG(cerr << "ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(), Done. Ok=" << (IntT) ok << " \n");
   }
   
