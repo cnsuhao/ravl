@@ -130,7 +130,7 @@ namespace RavlImageN {
       channel = fn.after(pn).IntValue();
       fn = fn.before(pn);
     }
-    bool half = false;
+    //bool half = false;
     //if(dev == "IIDC")
     //  half = true; // Attempt to get images halfed along each dimention.
     if(fn == "")

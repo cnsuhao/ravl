@@ -11,6 +11,7 @@
 #include "Ravl/Image/ImgIO1394dc.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/MTLocks.hh"
+#include "Ravl/StrStream.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -49,7 +50,7 @@ namespace RavlImageN {
       { FEATURE_CAPTURE_QUALITY,"capture_quality","??" },
       { FEATURE_CAPTURE_QUALITY,0            ,0 }
     };
-
+  
   struct FrameRate1394dcC {
     RealT speed;
     unsigned int value;
@@ -70,7 +71,12 @@ namespace RavlImageN {
   //: Default constructor.
   
   ImgIO1394dcBaseC::ImgIO1394dcBaseC()
-    : raw1394handle(0)
+    : raw1394handle(0),
+      cam_channel(0),
+      cam_format(FORMAT_VGA_NONCOMPRESSED),
+      cam_mode(MODE_640x480_MONO),
+      cam_speed(SPEED_400),
+      cam_framerate(FRAMERATE_15)
   {}
   
   //: Destructor.
@@ -127,12 +133,52 @@ namespace RavlImageN {
       return false;
     }
     
+    // Get some information about the camera....
+    
+    dc1394_camerainfo camerainfo;
+    if(dc1394_get_camera_info(raw1394handle,cameraNode,&camerainfo) < 0) {
+      cerr << "Failed to get camera info. \n";
+      return false;
+    }
+    
+    camera_vendor = StringC(camerainfo.vendor);
+    camera_model = StringC(camerainfo.model);
+    {
+      StrOStreamC strm;
+      strm.os() << hex << camerainfo.euid_64;
+      camera_euid = strm.String();
+    }
+
+    // Query framerates.
+    
+    if(dc1394_query_supported_framerates(raw1394handle,cameraNode,cam_format,cam_mode,&available_framerates) != DC1394_SUCCESS) {
+      cerr << "Failed to query rates. \n";
+    }
+    cerr << "Rate=" << hex << available_framerates << "\n" << dec;
+
+    // Find fastest supported framerate.
+    
+    if (available_framerates & (1U << (31-5)))
+      cam_framerate = FRAMERATE_60;
+    else if (available_framerates & (1U << (31-4)))
+      cam_framerate = FRAMERATE_30;
+    else if (available_framerates & (1U << (31-3)))
+      cam_framerate = FRAMERATE_15;
+    else if (available_framerates & (1U << (31-2)))
+      cam_framerate = FRAMERATE_7_5;
+    else if (available_framerates & (1U << (31-1)))
+      cam_framerate = FRAMERATE_3_75;
+    else if (available_framerates & (1U << (31-0)))
+      cam_framerate = FRAMERATE_1_875;
+    
+    // Setup capture.
+    
     if (dc1394_setup_capture(raw1394handle,cameraNode,
-			     0, /* channel */ 
-			     FORMAT_VGA_NONCOMPRESSED,
-			     MODE_640x480_MONO,
-			     SPEED_400,
-			     FRAMERATE_15,
+			     cam_channel,
+			     cam_format,
+			     cam_mode,
+			     cam_speed,
+			     cam_framerate,
 			     &camera)!=DC1394_SUCCESS) {
       cerr << "unable to setup camera-\n"
 	"check line %d of %s to make sure\n"
@@ -168,7 +214,35 @@ namespace RavlImageN {
     }
     return 0;
   }
-
+  
+  //: Get a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool ImgIO1394dcBaseC::HandleGetAttr(const StringC &attrName,StringC &attrValue) {
+    if(attrName == "vendor") {
+      attrValue = camera_vendor;
+      return true;
+    }
+    if(attrName == "model") {
+      attrValue = camera_model;
+      return true;
+    }
+    if(attrName == "euid") {
+      attrValue = camera_euid;
+      return true;
+    }
+    return false;
+  }
+  
+  //: Set a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool ImgIO1394dcBaseC::HandleSetAttr(const StringC &attrName,const StringC &attrValue) {
+    return false;
+  }
+  
   //: Get a stream attribute.
   // Returns false if the attribute name is unknown.
   // This is for handling stream attributes such as frame rate, and compression ratios.
@@ -331,14 +405,24 @@ namespace RavlImageN {
   
   void ImgIO1394dcBaseC::BuildAttrList(AttributeCtrlBodyC &attrCtrl) {
     MTWriteLockC hold(2);
+    
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("vendor","Supplier of device",true,false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("model","model of device",true,false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("euid","Unique id for device",true,false));
+    
+    // libdc1394 BUG FIX, clear available flags before calling get_feature_set.
+    
     dc1394_feature_set featureSet;
+    for(int i = 0;i < NUM_FEATURES;i++)
+      featureSet.feature[i].available = DC1394_FALSE;
+    
     dc1394_get_camera_feature_set(raw1394handle,camera.node,&featureSet);
     
     // Go through feature list.
     
     for(int i = 0;i < NUM_FEATURES;i++) {
       const dc1394_feature_info &feature = featureSet.feature[i];
-      if(feature.available <= 0)
+      if(feature.available != DC1394_TRUE)
 	continue; // Feature is not avalable on this camera.
       const Feature1394dcC *featureInfo = FindFeature(feature.feature_id);
       const char *cfeatName = featureInfo->name;
@@ -373,13 +457,25 @@ namespace RavlImageN {
 	AttributeTypeBoolC attr(name,featureInfo->desc,true,true,feature.auto_active);
 	attrCtrl.RegisterAttribute(attr);
 	name2featureid[name] = Tuple2C<IntT,ControlTypeT>(feature.feature_id,CT_Auto);
+	
+	//AttributeTypeNumC<IntT> attr(name,featureInfo->desc,true,true,feature.auto_active);
       }
-      
     }
     
     // Setup framerate attribute.
+    RealT minspeed = 1e8;
+    RealT maxspeed = 0;
+    for(int i = 0;frameRates[i].speed > 0;i++) {
+      //cerr << "Rate=" << frameRates[i].speed << " " << !(available_framerates & (1U << (31-(frameRates[i].value - FRAMERATE_MIN)))) << "\n";
+      if ((available_framerates & (1U << (31-(frameRates[i].value - FRAMERATE_MIN)))) == 0)
+	continue; // framerate not supported.
+      if(frameRates[i].value < minspeed)
+	minspeed = frameRates[i].value;
+      if(frameRates[i].value > maxspeed)
+	maxspeed = frameRates[i].value;
+    }
     
-    AttributeTypeNumC<RealT> frameRateAttr("framerate","Number of images a second to capture",true,true,1.875,60,1,15);
+    AttributeTypeNumC<RealT> frameRateAttr("framerate","Number of images a second to capture",true,true,minspeed,maxspeed,1,(maxspeed + minspeed)/2);
     attrCtrl.RegisterAttribute(frameRateAttr);
   }
 
@@ -388,14 +484,21 @@ namespace RavlImageN {
   
   RealT ImgIO1394dcBaseC::SetFrameRate(RealT speed) {
     // Find closest setting.
-    RealT err = Abs(frameRates[0].speed - speed);
-    int setting = 0;
-    for(int i = 1;frameRates[i].speed > 0;i++) {
+    RealT err = 1000000;
+    int setting = -1;
+    for(int i = 0;frameRates[i].speed > 0;i++) {
+      //cerr << "Rate=" << frameRates[i].speed << " " << !(available_framerates & (1U << (31-(frameRates[i].value - FRAMERATE_MIN)))) << "\n";
+      if ((available_framerates & (1U << (31-(frameRates[i].value - FRAMERATE_MIN)))) == 0)
+	continue; // framerate not supported.
       RealT nerr = Abs(frameRates[i].speed - speed);
       if(nerr < err) {
 	setting = i;
 	err = nerr;
       }
+    }
+    if(setting < 0) {
+      cerr << "ERROR: failed to find appropriate framerate. \n";
+      return -1;
     }
     unsigned int current = 0;
     unsigned int newsetting = (unsigned int) frameRates[setting].value;
@@ -407,15 +510,16 @@ namespace RavlImageN {
       //dc1394_set_video_framerate(raw1394handle,camera.node,);
       dc1394_release_camera(raw1394handle,&camera);
       if (dc1394_setup_capture(raw1394handle,cameraNode,
-			       0, /* channel */ 
-			       FORMAT_VGA_NONCOMPRESSED,
-			       MODE_640x480_MONO,
-			       SPEED_400,
+			       cam_channel, 
+			       cam_format,
+			       cam_mode,
+			       cam_speed,
 			       newsetting,
 			       &camera)!=DC1394_SUCCESS) {
 	cerr << "Failed to setup camera for new framerate. \n";
 	return 0;
       }
+      cam_framerate = newsetting;
       if (dc1394_start_iso_transmission(raw1394handle,camera.node) != DC1394_SUCCESS)  {
 	cerr << "ERROR: unable to restart camera iso transmission\n";
 	return 0;

@@ -36,6 +36,16 @@ namespace RavlImageN {
     
     bool CaptureImage(ImageC<ByteT> &img);
     //: Capture an image.
+
+    bool HandleGetAttr(const StringC &attrName,StringC &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleSetAttr(const StringC &attrName,const StringC &attrValue);
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
     
     bool HandleGetAttr(const StringC &attrName,IntT &attrValue);
     //: Get a stream attribute.
@@ -82,6 +92,17 @@ namespace RavlImageN {
     raw1394handle_t raw1394handle;
     dc1394_cameracapture camera;
     nodeid_t cameraNode;
+    
+    StringC camera_vendor;
+    StringC camera_model;
+    StringC camera_euid;
+    
+    int cam_channel;
+    int cam_format;
+    int cam_mode;
+    int cam_speed;
+    int cam_framerate;
+    quadlet_t available_framerates;
   };
   
   template<typename PixelT>
@@ -120,6 +141,25 @@ namespace RavlImageN {
       return buff;
     }
     //: Get next image.
+
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue){ 
+      if(HandleGetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const StringC &attrValue) { 
+      if(HandleSetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
     
     virtual bool GetAttr(const StringC &attrName,IntT &attrValue){ 
       if(HandleGetAttr(attrName,attrValue))
