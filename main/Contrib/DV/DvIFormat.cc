@@ -15,7 +15,7 @@
 #include "Ravl/TypeName.hh"
 #define USE_DvWRITE 0
 
-#define DPDEBUG 1
+#define DPDEBUG 0 
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
