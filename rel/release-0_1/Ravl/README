@@ -1,0 +1,50 @@
+
+                ------------------------------------
+                RAVL, Recognition And Vision Library
+                ------------------------------------
+
+
+LICENSE
+-------
+
+The RAVL libraries are distributed under the GNU LESSER GENERAL PUBLIC 
+LICENSE (LGPL), however some of the tools built with the library have
+been issued under the more restrictive GNU GENERAL PUBLIC LICENSE, the
+headers attached to each of the files in the project indicate which of 
+these apply.
+
+
+INSTALLATION
+------------
+
+- The CxxDoc tools currently requires a daft amount of memory to compile,
+  approximately 512MB.  If you don't have this much on your machine you 
+  can stop the installation by going to the Ravl/SourceTools/defs.mk file
+  and removing the `.r' after CxxDoc.   If you still want to use this
+  tool you can create a debug version with `qm debug' which will be slow,
+  but takes much less memory to compile.
+
+- At the moment you have to manualy configure where to look
+  for the compiler. This is done by setting CC and CXX to the locations of
+  the C and C++ compilers respectively in the system configuration
+  file. The configuration file can be found in Ravl/QMake/config.$(ARC)
+  where arc is one of linux,sgi or sol2, depending on your machine.
+
+- The `Math' module requires the ccmath package to be installed. The code
+  has been tested with version 2.2.0, but I would expect it to work with   
+  older versions as well.  The location of the ccmath package is set
+  in Ravl/Math/CCMath/CCMath.def, set the 'CCMATH' variable to appropriate
+  directory uncomment two lines following it, and comment out any other
+  'EXELIB' lines later in the file. 
+
+- The appropriate version of perl must be in your default path.
+
+
+To install go the root RAVL directory and type:
+
+./install [location]
+
+
+
+
+
