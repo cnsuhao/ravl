@@ -86,9 +86,13 @@ namespace RavlAudioN {
     if(!(ext == "wav" || ext == "aiff" || ext == "aiffc" ||
        ext == "bicsf" || ext == "nextsnd" || ext == "au")) 
       return typeid(void);
-    if(obj_type == typeid(SampleElemC<2,Int16T>))
-      return typeid(SampleElemC<2,Int16T>);
-    return typeid(Int16T); 
+
+      // mono formats
+    if ( (obj_type == typeid ( SampleElemC<1,Int16T> )) || (obj_type == typeid(SampleElemC<1,RealT>)) ||
+         (obj_type == typeid ( SampleElemC<1,UByteT>)) || (obj_type == typeid(SampleElemC<1,IntT>) ) )
+	 return typeid ( SampleElemC<1,Int16T> ) ; // default for mono formats
+      
+      return typeid ( SampleElemC<2,Int16T> ) ; // stereo is the default for all others
   }
   
   //: Create a input port for loading.
@@ -135,19 +139,21 @@ namespace RavlAudioN {
   DPOPortBaseC FileFormatAudioFileBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const
   { 
     ONDEBUG(cerr << "FileFormatAudioFileBodyC::CreateOutput(const StringC &,const type_info &), Called. \n");
-    if(obj_type == typeid(Int16T))
-      return DPOAudioC<Int16T,AudioFileBaseC>(filename,0);
+    //if(obj_type == typeid(Int16T))
+    //return DPOAudioC<Int16T,AudioFileBaseC>(filename,0);
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
-    if(obj_type == typeid(SByteT))
-      return DPOAudioC<SByteT,AudioFileBaseC>(filename,0);
+    if(obj_type == typeid(SampleElemC<1,Int16T>))
+	return DPOAudioC<SampleElemC<1,Int16T>, AudioFileBaseC> (filename,0) ; 
+   // if(obj_type == typeid(SByteT))
+     // return DPOAudioC<SByteT,AudioFileBaseC>(filename,0);
     return DPOPortBaseC();
   }
   
   //: Get prefered IO type.
   
   const type_info &FileFormatAudioFileBodyC::DefaultType() const 
-  { return typeid(Int16T); }
+  { return typeid ( SampleElemC<2,Int16T>) ; }
   
   // Some common cif formats.
   
