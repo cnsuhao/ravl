@@ -14,7 +14,7 @@
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include "Ravl/DP/SPortAttach.hh"
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
