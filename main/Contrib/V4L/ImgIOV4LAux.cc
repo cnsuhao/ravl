@@ -42,6 +42,21 @@ struct led_ctrl {
   int off;
 };
 
+struct wb_ctrl {
+  // Mode
+  int mode;
+  // Write
+  int red;
+  int blue;
+  // Read
+  int ored;
+  int oblue;
+};
+
+// Factory Reset
+#define PHILIPS_FACTORY_RESET _IO('v', 194)
+
+// LED control
 #define PHILIPS_SET_LED   _IOW('v', 205, struct led_ctrl)
 #define PHILIPS_GET_LED   _IOR('v', 205, struct led_ctrl)
 
@@ -57,6 +72,11 @@ struct led_ctrl {
 #define PHILIPS_SET_NOISEREDUCTION	_IOW('v', 209, int)
 #define PHILIPS_GET_NOISEREDUCTION	_IOR('v', 209, int)
 
+// White Balance
+#define PHILIPS_SET_WHITEBALANCE  _IOW('v', 202, struct wb_ctrl)
+#define PHILIPS_GET_WHITEBALANCE  _IOR('v', 202, struct wb_ctrl)
+
+// Image size
 #define PHILIPS_GET_REALSIZE _IOR('v', 210, struct led_ctrl)
 
 
@@ -229,7 +249,7 @@ namespace RavlImageN {
     }    
     return false;
   }
-  
+
   //: Get agc 0..65536 -1=off.
   
   bool DPIImageBaseV4LBodyC::GetAGC(int &agc) {
@@ -257,6 +277,55 @@ namespace RavlImageN {
 	cerr<< "WARNING: Failed to set LED. \n";
 	return false;
       }
+    } return true; 
+    default: break;
+    }    
+    return true;
+  }
+
+  //: Factory reset
+  
+  bool DPIImageBaseV4LBodyC::SetReset() {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      if(ioctl(fd,PHILIPS_FACTORY_RESET) < 0) {
+	cerr<< "WARNING: Reset failed. \n";
+	return false;
+      }
+    } return true; 
+    default: break;
+    }    
+    return false;
+  }
+  
+  //: Set white balance
+  
+  bool DPIImageBaseV4LBodyC::SetWhiteBalance(int mode) {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      wb_ctrl val;
+      val.mode = mode;
+      if(ioctl(fd,PHILIPS_SET_WHITEBALANCE,&val) < 0) {
+	cerr<< "WARNING: Failed to set white balance mode. \n";
+	return false;
+      }
+    } return true; 
+    default: break;
+    }    
+    return true;
+  }
+
+  //: Get white balance
+  
+  bool DPIImageBaseV4LBodyC::GetWhiteBalance(int& mode) {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      wb_ctrl val;
+      if(ioctl(fd,PHILIPS_GET_WHITEBALANCE,&val) < 0) {
+	cerr<< "WARNING: Failed to get white balance mode. \n";
+	return false;
+      }
+      mode = val.mode;
     } return true; 
     default: break;
     }    

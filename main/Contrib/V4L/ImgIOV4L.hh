@@ -22,6 +22,17 @@
 
 namespace RavlImageN {
 
+  //! userlevel=Basic
+  //: White balance modes
+  
+  enum V4LWhiteBalanceMode {
+    wbIndoor = 0,
+    wbOutdoor = 1,
+    wbFluorescent = 2,
+    wbManual = 3,
+    wbAuto = 4
+  };
+
   //! userlevel=Develop
   //: Base class for Meteor1 frame grabbers.
   
@@ -88,6 +99,15 @@ namespace RavlImageN {
     
     bool SetLED(int on);
     //: Set LED, bits 0..15 on , 16..31 off time
+    
+    bool SetReset();
+    //: Perform factory reset
+    
+    bool SetWhiteBalance(int mode);
+    //: Set white balance mode
+    
+    bool GetWhiteBalance(int& mode);
+    //: Get white balance mode
     
     bool GetShutterSpeed(int &speed);
     //: Get shutter speed 0..65536 -1=Auto.

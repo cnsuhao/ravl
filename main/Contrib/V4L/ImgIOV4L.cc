@@ -573,6 +573,12 @@ namespace RavlImageN {
       attrValue = StringC(tmp);
       return true;      
     }
+    if(attrName == "whitebalance") {
+      if(!GetWhiteBalance(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleGetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -594,6 +600,10 @@ namespace RavlImageN {
       return SetGamma(attrValue.IntValue());
     if(attrName == "compression")
       return SetCompression(attrValue.IntValue());
+    if(attrName == "whitebalance")
+      return SetWhiteBalance(attrValue.IntValue());
+    if(attrName == "reset")
+      return SetReset();
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -618,6 +628,8 @@ namespace RavlImageN {
       return GetGamma(attrValue);
     if(attrName == "padded")
       return GetPad(attrValue);
+    if(attrName == "whitebalance")
+      return GetWhiteBalance(attrValue);
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleGetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -641,6 +653,10 @@ namespace RavlImageN {
       return SetLED(attrValue);
     if(attrName == "gamma")
       return SetGamma(attrValue);
+    if(attrName == "whitebalance")
+      return SetWhiteBalance(attrValue);
+    if(attrName == "reset")
+      return SetReset();
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -657,6 +673,8 @@ namespace RavlImageN {
     list.InsLast("indicator");
     list.InsLast("padded");
     list.InsLast("compression");
+    list.InsLast("whitebalance");
+    list.InsLast("reset");
     return true;
   }
   
