@@ -13,7 +13,7 @@
 
 //: Grabs video sequences + audio from a Sony DV VCR
 //
-// <p>This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used).</p>
+// <p>This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used).  Type "doDvGrab -help" for more help.</p>
 // <p><font color=red>Warning</font>: the tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.</p>
 
 #include "Ravl/Option.hh"
@@ -28,7 +28,7 @@ int doDvGrab(int argc, char **argv)
 {  
   OptionC   opt(argc,argv);
   opt.Comment("This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used)");
-  opt.Comment("\n**Warning**: the tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.\n");
+  opt.Comment("\n**Warnings**:\n (1) The tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.\n(2) To avoid dropped frames, it is highly recommended that the output is written to a file system on the local machine\n\n");
   FilenameC     OutFile = opt.String("o", "", "output file");
   StringC       PpmImage = opt.String("ppm", "00:00:10:00", "Grab a single frame at given timecode");
   StringC       tcStart = opt.String("start", "00:00:10:00", "start timecode");
