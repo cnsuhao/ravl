@@ -95,7 +95,7 @@ namespace RavlN
     }
     
     // Get the program chain info
-    m_dvdPgc = m_dvdVtsFile->vts_pgcit->pgci_srp[0].pgc;
+    m_dvdPgc = m_dvdVtsFile->vts_pgcit->pgci_srp[ttnnum-1].pgc;
     UIntT numCells = m_dvdPgc->nr_of_cells;
     if (numCells == 0)
     {
