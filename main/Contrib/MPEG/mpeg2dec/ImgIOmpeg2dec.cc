@@ -97,11 +97,13 @@ namespace RavlImageN {
     if(yuvImg.Rows() != (UIntT) realY || yuvImg.Cols() != (UIntT) x)
        yuvImg = ImageC<ByteYUVValueC>(realY,x);
     
-    IntT row = 0;
+    UIntT row = 0;
     for(Array2dIterC<ByteYUVValueC> it(yuvImg);it;row++) {
       ByteT *yd = &(rawBuffer[row][0]);
-      ByteT *ud = &(rawBuffer[(row/2)+realY][0]);
-      ByteT *vd = &(rawBuffer[(row/2)+realY][x/2]);
+      IntT crow = ((row >> 1) & ~((UIntT)1)) + realY + row % 2;
+      
+      ByteT *ud = &(rawBuffer[crow][0]);
+      ByteT *vd = &(rawBuffer[crow][x/2]);
       do {
 	*it = ByteYUVValueC(*yd,*ud + 128,*vd + 128);
 	yd++;
