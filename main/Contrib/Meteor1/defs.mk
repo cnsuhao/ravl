@@ -26,7 +26,7 @@ MUSTLINK = InitMeteor1.cc
 
 EXAMPLES = exMeteor.cc
 
-PLIB = GrabMeteor
+PLIB = RavlImgIOMeteor1
 
 EHT= Ravl.Contrib.Image_IO.Meteor1.html
 

@@ -21,7 +21,11 @@
     </ul>
     
     <p>
-      This can be used for grabbing a single image (See <a href="Ravl.Core.IO.html">Ravl.Core.IO</a>):
+      <b>NOTE:</b> To use the Video4Linux driver you must include the library <b>RavlImgIOV4L</b> in your <code>USESLIBS</code>
+      line of the <code>defs.mk</code>
+    <p>
+
+      The following code will grab a single image (See <a href="Ravl.Core.IO.html">Ravl.Core.IO</a>):
     <pre>
       ImageC&lt;ByteYUVValueC&gt; x;
       Load("@V4L:/dev/video0#0", x);
