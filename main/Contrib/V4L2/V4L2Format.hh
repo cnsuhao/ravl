@@ -71,7 +71,8 @@ namespace RavlImageN
   
   /////////////////////////////
   //! userlevel = Advanced
-  //: Create an instance of a V4L2 File Format.
+  //: Create an instance of a V4L2 file format.
+  // BIG OBJECT
   
   class FileFormatV4L2C :
     public FileFormatC<ImageC<ByteRGBValueC> > 

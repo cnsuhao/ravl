@@ -28,19 +28,21 @@ namespace RavlImageN
     public BufferBodyC<PixelT> 
   {
   public:
-    V4L2BufferBodyC(IOV4L2C<PixelT> v4l2, const IntT index, ByteT *start, UIntT length) :
+    V4L2BufferBodyC(IOV4L2C<PixelT> v4l2, const UIntT id, const IntT index, ByteT *start, UIntT length) :
       BufferBodyC<PixelT>(length, start),
       m_v4l2(v4l2),
+      m_id(id),
       m_index(index)
     {}
     //: Constructor
     
     ~V4L2BufferBodyC()
-    { m_v4l2.ReleaseBuffer(m_index); }
+    { m_v4l2.ReleaseBuffer(m_id, m_index); }
     //: Destructor
 
   protected:
     IOV4L2C<PixelT> m_v4l2;         // Handle to parent V4L2 object
+    UIntT m_id;                     // Unique id
     IntT m_index;                   // V4L2 buffer index
   };
   
@@ -61,8 +63,8 @@ namespace RavlImageN
     //: Default constructor.
     // Creates an invalid handle.
 
-    V4L2BufferC(IOV4L2C<PixelT> v4l2, const IntT index, ByteT *start, UIntT length) :
-      BufferC<PixelT>(*new V4L2BufferBodyC<PixelT>(v4l2, index, start, length))
+    V4L2BufferC(IOV4L2C<PixelT> v4l2, const UIntT id, const IntT index, ByteT *start, UIntT length) :
+      BufferC<PixelT>(*new V4L2BufferBodyC<PixelT>(v4l2, id, index, start, length))
     {}
     
     explicit V4L2BufferC(const BufferC<PixelT> &base) :

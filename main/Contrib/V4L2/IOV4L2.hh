@@ -15,6 +15,10 @@
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/Threads/Mutex.hh"
+#include "Ravl/HSet.hh"
+
+#include <linux/videodev.h>
 
 namespace RavlImageN
 {
@@ -42,8 +46,8 @@ namespace RavlImageN
     bool GetFrame(ImageC<ByteT> &img, IOV4L2C<ByteT> parent);
     //: Get next image.
 
-    void ReleaseBuffer(const UIntT index);
-    //: Release a fast buffer.
+    void ReleaseBuffer(const UIntT id, const UIntT index);
+    //: Requeue a capture buffer.
     // Should not be called directly
     
     UIntT LastFrameNum() const
@@ -93,15 +97,22 @@ namespace RavlImageN
     bool CheckFormat(const type_info &pixelType);
     //: Check if the pixel type is supported
     
+    bool CheckSize();
+    //: Test the capture size limits
+    
     bool ConfigureCapture();
     //: Configure the capture device, allocating capture buffers
     
     void ReleaseCapture();
     //: Release the capture device, deallocating capture buffers
     
+    bool CaptureBuffer(v4l2_buffer &buffer);
+    //: Request a queued capture buffer
+    
   protected:
     typedef struct
     {
+      UIntT m_id;
       void *m_start;
       size_t m_length;
     } TBuf;
@@ -113,17 +124,22 @@ namespace RavlImageN
     StringC m_device;                   // Device name
     UIntT m_channel;                    // Channel number
     int m_fd;                           // File descriptor
+    MutexC m_lockCapture;               // Capture device lock
 
   /* Capture parameters */
     UIntT m_width, m_height;            // Captured size
+    UIntT m_widthMax, m_heightMax;      // Max capture size
+    UIntT m_widthMin, m_heightMin;      // Min capture size
     UIntT m_pixelFormat;                // Stored pixel format
     UIntT m_fieldFormat;                // Captured field selection
+    bool m_fastBufferUsed;              // Are fast buffers in use?
 
   /* Buffer parameters */
     UIntT m_bufferMax;                  // Number of capture buffers
     UIntT m_bufferCount;                // Number of capture buffers
-    UIntT m_bufferOut;                  // Unqueued buffer count
     TBuf *m_buffers;                    // Array of mmap'd buffers
+    UIntT m_bufferIdCount;              // Buffer id counter
+    HSetC<UIntT> m_bufferOut;           // Set of valid dequeued buffers
     
   /* Frame attributes */
     StreamPosT m_seqNum;                // Last sequence number
@@ -144,6 +160,7 @@ namespace RavlImageN
     IOV4L2BodyC(const StringC &device, const UIntT channel) :
       IOV4L2BaseC(device, channel, typeid(ImageC<PixelT>))
     {
+      BuildAttributes(*this);
     }
     //: Constructor.
     
@@ -167,14 +184,6 @@ namespace RavlImageN
       if (!IsOpen())
         return false;
       
-      // Configure the device, if not
-      if (!IsConfigured())
-        if (!ConfigureCapture())
-        {
-          Close();
-          return false;
-        }
-        
       return GetFrame(img, IOV4L2C<PixelT>(*this));
     }
     //: Get next image.
@@ -263,9 +272,9 @@ namespace RavlImageN
     {}
     //: Body constructor.
 
-    void ReleaseBuffer(const UIntT index)
-    { Body().ReleaseBuffer(index); }
-    //: Release a fast buffer.
+    void ReleaseBuffer(const UIntT id, const UIntT index)
+    { Body().ReleaseBuffer(id, index); }
+    //: Requeue a capture buffer.
     // Should not be called directly
     
   protected:

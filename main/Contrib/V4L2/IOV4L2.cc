@@ -14,7 +14,6 @@
 #include "Ravl/Image/V4L2Buffer.hh"
 #include "Ravl/Array2dIter.hh"
 
-#include <linux/videodev.h>
 #include <linux/types.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -43,7 +42,7 @@ namespace RavlImageN
   typedef struct SupportedFormatT
   {
     const type_info &m_objectType;          //: Ref to type id
-    UIntT m_pixelFormat;                    //: 4CC of required capture mode
+    const UIntT m_pixelFormat;              //: 4CC of required capture mode
 
     SupportedFormatT(const type_info &objectType, const UIntT pixelFormat) :
       m_objectType(objectType),
@@ -89,12 +88,16 @@ namespace RavlImageN
     m_width(g_defaultWidth),
     m_height(g_defaultHeight),
     m_fieldFormat(g_defaultField),
+    m_fastBufferUsed(false),
     m_bufferMax(g_defaultBuffers),
     m_bufferCount(0),
-    m_bufferOut(0),
     m_buffers(NULL),
+    m_bufferIdCount(0),
     m_seqNum(-1)
   {
+    // Lock the capture device
+    MutexLockC lockCapture(m_lockCapture);
+
     // Open the device
     Open(device, channel);
     
@@ -119,6 +122,9 @@ namespace RavlImageN
   
   IOV4L2BaseC::~IOV4L2BaseC()
   {
+    // Lock the capture device
+    MutexLockC lockCapture(m_lockCapture);
+
     // Release, if configured
     if (IsConfigured())
       ReleaseCapture();
@@ -132,25 +138,13 @@ namespace RavlImageN
   
   bool IOV4L2BaseC::GetFrame(ImageC<ByteRGBValueC> &img, IOV4L2C<ByteRGBValueC> parent)
   {
-    RavlAssertMsg(IsOpen() && IsConfigured(), "IOV4L2BaseC::GetFrame<ByteRGBValueC> device not ready");
-    RavlAssertMsg(m_bufferOut <= m_bufferCount, "IOV4L2BaseC::GetFrame<ByteRGBValueC> dequeued buffers exceed allocated count");
-    
-    // Dequeue a buffer
-    v4l2_buffer buffer;
-    buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if (ioctl(m_fd, VIDIOC_DQBUF, &buffer) == -1)
-    {
-      cerr << "IOV4L2BaseC::GetFrame<ByteRGBValueC> ioctl(VIDIOC_DQBUF) failed" << endl;
-      return false;
-    }
-    m_bufferOut++;
+    // Lock the capture device
+    MutexLockC lockCapture(m_lockCapture);
 
-    ONDEBUG( \
-      cerr << "IOV4L2BaseC::GetFrame<ByteRGBValueC> ioctl(VIDIOC_DQBUF)" << endl; \
-      cerr << "  index(" << buffer.index << ")" << endl; \
-      cerr << "  field(" << buffer.field << ")" << endl; \
-      cerr << "  seq(" << buffer.sequence << ")" << endl; \
-    )
+    // Get a capture buffer
+    v4l2_buffer buffer;
+    if (!CaptureBuffer(buffer))
+      return false;
     
     // Create the image
     img = ImageC<ByteRGBValueC>(m_height, m_width);
@@ -160,9 +154,12 @@ namespace RavlImageN
       it.Data() = ByteRGBValueC(iData[0], iData[1], iData[2]);
       iData += 4;
     }
+    
+    // Unlock
+    lockCapture.Unlock();
 
     // Manually release the buffer
-    parent.ReleaseBuffer(buffer.index);
+    parent.ReleaseBuffer(m_buffers[buffer.index].m_id, buffer.index);
     
     return true;
   }
@@ -171,66 +168,73 @@ namespace RavlImageN
 
   bool IOV4L2BaseC::GetFrame(ImageC<ByteT> &img, IOV4L2C<ByteT> parent)
   {
-    RavlAssertMsg(IsOpen() && IsConfigured(), "IOV4L2BaseC::GetFrame<ByteT> device not ready");
-    RavlAssertMsg(m_bufferOut <= m_bufferCount, "IOV4L2BaseC::GetFrame<ByteT> dequeued buffers exceed allocated count");
-    
-    // Dequeue a buffer
-    v4l2_buffer buffer;
-    buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if (ioctl(m_fd, VIDIOC_DQBUF, &buffer) == -1)
-    {
-      cerr << "IOV4L2BaseC::GetFrame<ByteT> ioctl(VIDIOC_DQBUF) failed" << endl;
-      return false;
-    }
-    m_bufferOut++;
+    // Lock the capture device
+    MutexLockC lockCapture(m_lockCapture);
 
-    ONDEBUG( \
-      cerr << "IOV4L2BaseC::GetFrame<ByteT> ioctl(VIDIOC_DQBUF)" << endl; \
-      cerr << "  index(" << buffer.index << ")" << endl; \
-      cerr << "  field(" << buffer.field << ")" << endl; \
-      cerr << "  seq(" << buffer.sequence << ")" << endl; \
-    )
+    // Get a capture buffer
+    v4l2_buffer buffer;
+    if (!CaptureBuffer(buffer))
+      return false;
     
     // Create the fast buffer image
-    {
-      RavlAssertMsg(buffer.memory == V4L2_MEMORY_MMAP, "IOV4L2BaseC::GetFrame<ByteT> buffer not mmap-ed");
-      ImageC<ByteT> wrappedImg(m_height, m_width, V4L2BufferC<ByteT>(parent, buffer.index, (ByteT*)m_buffers[buffer.index].m_start, (UIntT)m_buffers[buffer.index].m_length));
-      
-      // Select the final image
-      img = ImageC<ByteT>(wrappedImg.Copy());
-    }
+    RavlAssertMsg(buffer.memory == V4L2_MEMORY_MMAP, "IOV4L2BaseC::GetFrame<ByteT> buffer not mmap-ed");
+    img = ImageC<ByteT>(m_height, m_width, V4L2BufferC<ByteT>(parent, m_buffers[buffer.index].m_id, buffer.index, (ByteT*)m_buffers[buffer.index].m_start, (UIntT)m_buffers[buffer.index].m_length));
 
+    // Copy the image if fast buffers are created yet not used
+    if (!m_fastBufferUsed)
+    {
+      img = ImageC<ByteT>(img.Copy());
+    }
+    
     return true;
   }
 
 
 
-  void IOV4L2BaseC::ReleaseBuffer(const UIntT index)
+  void IOV4L2BaseC::ReleaseBuffer(const UIntT id, const UIntT index)
   {
-    RavlAssertMsg(IsOpen() && IsConfigured(), "IOV4L2BaseC::ReleaseFrame device not ready");
-    RavlAssertMsg(m_bufferOut > 0, "IOV4L2BaseC::ReleaseFrame no dequeued buffers");
-    
-    // Query the buffer
-    v4l2_buffer buffer;
-    buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    buffer.index = index;
-    if (ioctl(m_fd, VIDIOC_QUERYBUF, &buffer) == -1)
+    // If not open and configured, then don't bother doing anything
+    if (IsOpen() && IsConfigured())
     {
-      cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QUERYBUF) failed(" << index << ")" << endl;
-      return;
-    }
+      // Lock the capture device
+      MutexLockC lockCapture(m_lockCapture);
   
-    // Re-queue the buffer
-    if (ioctl(m_fd, VIDIOC_QBUF, &buffer) == -1)
-    {
-      cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QBUF) failed(" << index << ")" << endl;
-    }
-    else
-    {
-      ONDEBUG(cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QBUF) requeued(" << index << ")" << endl;)
-      m_bufferOut--;
+      // Check the buffer is in the active buffer out set
+      if (m_bufferOut.Contains(id))
+      {
+        RavlAssertMsg(m_buffers[index].m_id == id, "IOV4L2BaseC::ReleaseBuffer released and stored id mismatch");
+        
+        // Query the buffer
+        v4l2_buffer buffer;
+        buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buffer.index = index;
+        if (ioctl(m_fd, VIDIOC_QUERYBUF, &buffer) == -1)
+        {
+          cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QUERYBUF) failed id(" << id << ") index(" << index << ")" << endl;
+          return;
+        }
+      
+        // Re-queue the buffer
+        if (ioctl(m_fd, VIDIOC_QBUF, &buffer) == -1)
+        {
+          cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QBUF) failed id(" << id << ") index(" << index << ")" << endl;
+        }
+        else
+        {
+          ONDEBUG(cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QBUF) requeued id(" << id << ") index(" << index << ")" << endl;)
+          
+          // Remove the id from the buffer out set
+          m_bufferOut.Remove(id);
+        }
+      }
+      else
+      {
+        ONDEBUG(cerr << "IOV4L2BaseC::ReleaseBuffer ignoring id(" << id << ")" << endl;)
+      }
     }
   }
+  
+  
   
   bool IOV4L2BaseC::Open(const StringC &device, const UIntT channel)
   {
@@ -376,7 +380,111 @@ namespace RavlImageN
       }
     }
     
+    CheckSize();
+    
     return supported;
+  }
+  
+  
+  
+  bool IOV4L2BaseC::CheckSize()
+  {
+    RavlAssertMsg(IsOpen(), "IOV4L2BaseC::CheckSize device not open");
+    RavlAssertMsg(!IsConfigured(), "IOV4L2BaseC::CheckSize device already configured");
+
+    // Format params
+    v4l2_format fmt;
+    fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    v4l2_pix_format *pfmt = (v4l2_pix_format*)&(fmt.fmt);
+
+    // Get the maximum width
+    m_widthMax = m_width;
+    while (true)
+    {
+      pfmt->width = m_widthMax + 1;
+      pfmt->height = m_height;
+      pfmt->pixelformat = m_pixelFormat;
+      pfmt->field = (v4l2_field)m_fieldFormat;
+      if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
+      {
+        if (pfmt->width == m_widthMax + 1)
+          m_widthMax = pfmt->width;
+        else
+          break;
+      }
+      else
+        break;
+    }
+    ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat width max(" << m_widthMax << ")" << endl;)
+    
+    // Get the minimum width
+    m_widthMin = m_width;
+    while (true)
+    {
+      pfmt->width = m_widthMin - 1;
+      pfmt->height = m_height;
+      pfmt->pixelformat = m_pixelFormat;
+      pfmt->field = (v4l2_field)m_fieldFormat;
+      if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
+      {
+        if (pfmt->width == m_widthMin - 1)
+          m_widthMin = pfmt->width;
+        else
+          break;
+      }
+      else
+        break;
+    } 
+    ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat width min(" << m_widthMin << ")" << endl;)
+    
+    // Get the maximum height
+    m_heightMax = m_height;
+    while (true)
+    {
+      pfmt->width = m_width;
+      pfmt->height = m_heightMax + 1;
+      pfmt->pixelformat = m_pixelFormat;
+      pfmt->field = (v4l2_field)m_fieldFormat;
+      if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
+      {
+        if (pfmt->height == m_heightMax + 1)
+          m_heightMax = pfmt->height;
+        else
+          break;
+      }
+      else
+        break;
+    }
+    ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat height max(" << m_heightMax << ")" << endl;)
+    
+    // Get the minimum height
+    m_heightMin = m_height;
+    while (true)
+    {
+      pfmt->width = m_width;
+      pfmt->height = m_heightMin - 1;
+      pfmt->pixelformat = m_pixelFormat;
+      pfmt->field = (v4l2_field)m_fieldFormat;
+      if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
+      {
+        if (pfmt->height == m_heightMin - 1)
+          m_heightMin = pfmt->height;
+        else
+          break;
+      }
+      else
+        break;
+    } 
+    ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat height min(" << m_heightMin << ")" << endl;)
+    
+    // Reset the initial size
+    pfmt->width = m_width;
+    pfmt->height = m_height;
+    pfmt->pixelformat = m_pixelFormat;
+    pfmt->field = (v4l2_field)m_fieldFormat;
+    ioctl(m_fd, VIDIOC_S_FMT, &fmt);
+    
+    return true;
   }
   
   
@@ -393,17 +501,10 @@ namespace RavlImageN
       return false;
     }
 
-    // Get the current format
+    // Set the capture mode 
     v4l2_format fmt;
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     v4l2_pix_format *pfmt = (v4l2_pix_format*)&(fmt.fmt);
-    if (ioctl(m_fd, VIDIOC_G_FMT, &fmt) == -1)
-    {
-      ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture unable to obtain current capture format" << endl;)
-      return false;
-    }
-    
-    // Set the capture mode 
     pfmt->width = m_width;
     pfmt->height = m_height;
     pfmt->pixelformat = m_pixelFormat;
@@ -411,6 +512,13 @@ namespace RavlImageN
     if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) == -1)
     {
       ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture unable to set capture format" << endl;)
+      return false;
+    }
+    
+    // Check we got what we asked for
+    if (pfmt->width != m_width || pfmt->height != m_height)
+    {
+      cerr << "IOV4L2BaseC::ConfigureCapture failed to get requested size(" << m_height << " x " << m_width << ")" << endl;
       return false;
     }
     
@@ -454,6 +562,7 @@ namespace RavlImageN
         }
       
         // Map the buffer
+        m_buffers[m_bufferCount].m_id = m_bufferIdCount++;
         m_buffers[m_bufferCount].m_length = buffer.length;
         m_buffers[m_bufferCount].m_start = mmap(NULL,
                                                 buffer.length,
@@ -503,7 +612,6 @@ namespace RavlImageN
   
   void IOV4L2BaseC::ReleaseCapture()
   {
-    RavlAssertMsg(m_bufferOut == 0, "IOV4L2BaseC::ReleaseCapture called with fast-buffers still actives");
     RavlAssertMsg(IsConfigured(), "IOV4L2BaseC::ReleaseCapture called on unconfigured device");
     RavlAssertMsg(IsOpen(), "IOV4L2BaseC::ReleaseCapture called on closed device");
     
@@ -518,15 +626,68 @@ namespace RavlImageN
     RavlAssertMsg(m_buffers != NULL, "IOV4L2BaseC::ReleaseCapture null buffer pointer");
     for (UIntT i = 0; i < m_bufferCount; i++)
       munmap(m_buffers[i].m_start, m_buffers[i].m_length);
-    m_bufferCount = 0;
     free(m_buffers);
     m_buffers = NULL;
+    
+    // Reset the buffer variables
+    m_bufferCount = 0;
+    m_bufferOut.Empty();
   }
 
 
 
+  bool IOV4L2BaseC::CaptureBuffer(v4l2_buffer &buffer)
+  {
+    RavlAssertMsg(IsOpen(), "IOV4L2BaseC::CaptureBuffer device not open");
+    
+    // Configure the device, if not
+    if (!IsConfigured())
+    {
+      if (!ConfigureCapture())
+      {
+        Close();
+        return false;
+      }
+    }
+      
+    // Dequeue a buffer
+    buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    if (ioctl(m_fd, VIDIOC_DQBUF, &buffer) == -1)
+    {
+      cerr << "IOV4L2BaseC::CaptureBuffer ioctl(VIDIOC_DQBUF) failed" << endl;
+      return false;
+    }
+    ONDEBUG( \
+      cerr << "IOV4L2BaseC::CaptureBuffer ioctl(VIDIOC_DQBUF)" << endl; \
+      cerr << "  index(" << buffer.index << ")" << endl; \
+      cerr << "  field(" << buffer.field << ")" << endl; \
+      cerr << "  seq(" << buffer.sequence << ")" << endl; \
+    )
+    
+    // Store the capture info
+    m_seqNum = buffer.sequence;
+    
+    // Store the buffer as out
+    ONDEBUG(cerr << "IOV4L2BaseC::CaptureBuffer id(" << m_buffers[buffer.index].m_id << ") index(" << buffer.index << ")" << endl;)
+    m_bufferOut.Insert(m_buffers[buffer.index].m_id);
+    
+    return true;
+  }
+  
+  
+  
   bool IOV4L2BaseC::HandleGetAttr(const StringC &attrName, StringC &attrValue)
   {
+    // Process the int attributes
+    if (attrName == "width" ||
+        attrName == "height")
+    {
+      IntT val;
+      bool ret = HandleGetAttr(attrName, val);
+      attrValue = StringC(val);
+      return ret;
+    }
+
     return false;
   }
   
@@ -534,6 +695,13 @@ namespace RavlImageN
   
   bool IOV4L2BaseC::HandleSetAttr(const StringC &attrName, const StringC &attrValue)
   {
+    // Process the int attributes
+    if (attrName == "width" ||
+        attrName == "height")
+    {
+      return HandleSetAttr(attrName, attrValue.IntValue());
+    }
+
     return false;
   }
   
@@ -541,6 +709,20 @@ namespace RavlImageN
   
   bool IOV4L2BaseC::HandleGetAttr(const StringC &attrName, IntT &attrValue)
   {
+    // Width
+    if (attrName == "width")
+    {
+      attrValue = m_width;
+      return true;
+    }
+    
+    // Height
+    if (attrName == "height")
+    {
+      attrValue = m_height;
+      return true;
+    }
+    
     return false;
   }
   
@@ -548,6 +730,68 @@ namespace RavlImageN
   
   bool IOV4L2BaseC::HandleSetAttr(const StringC &attrName, const IntT &attrValue)
   {
+    // Width
+    if (attrName == "width")
+    {
+      // Set the width
+      if (attrValue > 0)
+      {
+        // Lock the capture device
+        MutexLockC lockCapture(m_lockCapture);
+    
+        // Set the width
+        UIntT tempWidth = m_width;
+        m_width = attrValue;
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr width(" << m_width << ")" << endl;)
+
+        // If configure, test reconfiguring
+        if (IsConfigured())
+        {
+          // Release the current capture config
+          ReleaseCapture();
+          
+          // Try the new config, and restore the old if failed
+          if (!ConfigureCapture())
+          {
+            m_width = tempWidth;
+          }
+        }
+      }
+
+      return true;
+    }
+    
+    // Height
+    if (attrName == "height")
+    {
+      // Set the height
+      if (attrValue > 0)
+      {
+        // Lock the capture device
+        MutexLockC lockCapture(m_lockCapture);
+    
+        // Set the height
+        UIntT tempWidth = m_height;
+        m_height = attrValue;
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr height(" << m_height << ")" << endl;)
+
+        // If configure, test reconfiguring
+        if (IsConfigured())
+        {
+          // Release the current capture config
+          ReleaseCapture();
+          
+          // Try the new config, and restore the old if failed
+          if (!ConfigureCapture())
+          {
+            m_height = tempWidth;
+          }
+        }
+      }
+
+      return true;
+    }
+    
     return false;
   }
   
@@ -555,7 +799,8 @@ namespace RavlImageN
 
   bool IOV4L2BaseC::BuildAttributes(AttributeCtrlBodyC &attrCtrl)
   {
-//    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("width",         "Width",       true, true,    -1, 65000, 1, -1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("width",         "Width",       true, true,  m_widthMin,  m_widthMax, 1,  m_width));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("height",        "Height",      true, true, m_heightMin, m_heightMax, 1, m_height));
 
     return true;
   }
