@@ -14,6 +14,11 @@
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/BitStream.hh"
+#include "Ravl/Array2dIter.hh"
+#include "Ravl/Image/RealYUVValue.hh"
+#include "Ravl/Image/ByteYUVValue.hh"
+#include "Ravl/Image/RealRGBValue.hh"
+#include "Ravl/Image/RGBcYUV.hh"
 #include <fstream>
 
 extern "C" {
@@ -28,6 +33,8 @@ extern "C" {
 #else
 #define ONDEBUG(x)
 #endif
+
+#define USE_OWN_RGBCONV 1
 
 #define DEMUX_HEADER 0
 #define DEMUX_DATA 1
@@ -239,70 +246,118 @@ namespace RavlImageN
 
     switch(m_state)
     {
-      case -1:   // Got to end of buffer ?
-//        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode need input\n";)
-        break;
+    case -1:   // Got to end of buffer ?
+      //        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode need input\n";)
+      break;
         
-      case STATE_SEQUENCE_REPEATED:
-      case STATE_SEQUENCE:{ 
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got SEQUENCE.\n");
-        if(!sequenceInit) {
-          sequenceInit = true;
-          imgSize = Index2dC(info->sequence->height,info->sequence->width);
-          mpeg2_convert(decoder, convert_rgb24, NULL);
-          mpeg2_custom_fbuf(decoder, 1);
-          info = mpeg2_info(decoder);
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode imageSize=" << imgSize << "\n";)
-        }
-      } break;
+    case STATE_SEQUENCE_REPEATED:
+    case STATE_SEQUENCE:{ 
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got SEQUENCE.\n");
+      if(!sequenceInit) {
+	sequenceInit = true;
+	imgSize = Index2dC(info->sequence->height,info->sequence->width);
+#if USE_OWN_RGBCONV
+	//mpeg2_convert(decoder, my_convert_rgb , NULL);
+#else
+	//mpeg2_convert(decoder, convert_rgb24, NULL);
+#endif
+	//mpeg2_custom_fbuf(decoder, 1);
+	info = mpeg2_info(decoder);
+	ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode imageSize=" << imgSize << "\n";)
+	  }
+    } break;
       
-      case STATE_GOP:
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP.\n");
-        break;
+    case STATE_GOP:
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP.\n");
+      break;
+	
+    case STATE_PICTURE: {
+#if 0	
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got PICTURE.\n");
+      ONDEBUG(UIntT ptype = info->current_picture->flags & PIC_MASK_CODING_TYPE);
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameNo=" << allocFrameId <<  " frameType=" << frameTypes[ptype] << "\n");
+      uint8_t * buf[3];
+      UIntT frameid = allocFrameId++;
+      void *id = (void*)frameid;
+      //ImageC<ByteRGBValueC> nimg(imgSize[0].V(),imgSize[1].V());
+      UIntT imagePixels = imgSize[0].V() * imgSize[1].V();
+      SArray1dC<ByteT> buffer(imagePixels * 3);
+      images[frameid] = buffer;
+      //buf[0] = (uint8_t*) &(nimg[0][0]);
+      buf[0] = &(buffer[0]);
+      buf[1] = &(buffer[imagePixels]);
+      buf[2] = &(buffer[imagePixels + imagePixels/2]);
+      mpeg2_set_buf(decoder, buf, id);
+#endif
+    } break;
       
-      case STATE_PICTURE: {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got PICTURE.\n");
-        ONDEBUG(UIntT ptype = info->current_picture->flags & PIC_MASK_CODING_TYPE;)
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameNo=" << allocFrameId <<  " frameType=" << frameTypes[ptype] << "\n");
-        uint8_t * buf[3];
-        UIntT frameid = allocFrameId++;
-        void *id = (void*)frameid;
-        ImageC<ByteRGBValueC> nimg(imgSize[0].V(),imgSize[1].V());
-        images[frameid] = nimg;
-        buf[0] = (uint8_t*) &(nimg[0][0]);
-        buf[1] = 0;
-        buf[2] = 0;
-        mpeg2_set_buf(decoder, buf, id);
-      } break;
+    case STATE_PICTURE_2ND:
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got PICTURE_2ND.\n");
+      break;
       
-      case STATE_PICTURE_2ND:
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got PICTURE_2ND.\n");
-        break;
+    case STATE_END:
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got END.\n");
+      break; 
         
-      case STATE_END: 
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got END.\n");
-        break; 
-        
-      case STATE_SLICE: {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got SLICE.\n");
-        if(info->display_fbuf != 0) {
-          UIntT frameid = (UIntT) info->display_fbuf->id;
-          IntT frameType = info->display_picture->flags & PIC_MASK_CODING_TYPE;
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameid=" << frameid << " " << info->display_picture->temporal_reference << " Type=" << frameTypes[lastFrameType] <<"\n");
-          imageCache.Insert(frameNo, Tuple2C<ImageC<ByteRGBValueC>,IntT>(images[frameid], frameType));
-          images.Del(frameid);
-          frameNo++;
-          gotFrames = true;
-        }
-      } break;
+    case STATE_SLICE:    {
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got SLICE.\n");
+      if(info->display_fbuf != 0) {
+	UIntT frameid = (UIntT) info->display_fbuf->id;
+	IntT frameType = info->display_picture->flags & PIC_MASK_CODING_TYPE;
+	ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameid=" << frameid << " " << info->display_picture->temporal_reference << " Type=" << frameTypes[lastFrameType] <<"\n");
+	ImageC<ByteRGBValueC> nimg(imgSize[0].V(),imgSize[1].V());
+#if 1
+	UIntT stride = imgSize[1].V();
+	if (info->display_fbuf) {
+	  //save_pgm (info->sequence->width, info->sequence->height,
+	  //info->display_fbuf->buf, framenum++);
+	  ByteT ** xbuf = (ByteT **) info->display_fbuf->buf;
+	  UIntT row = 0;
+	  for(Array2dIterC<ByteRGBValueC> it(nimg);it;row++) {
+	    ByteT *yd = &(xbuf[0][stride * row]); 
+	    IntT crow = ((row >> 1) & ~((UIntT)1)) + row % 2;
+	      
+	    ByteT *ud = &(xbuf[1][(stride/2) * crow]);
+	    ByteT *vd = &(xbuf[2][(stride/2) * crow]);
+	    do {
+	      {
+		//RealYUVValueC ryuv((RealT)*yd,(RealT) ((ByteT)*ud + 128),(RealT) ((ByteT)*vd + 128));
+		ByteYUVValueC byuv(*yd,((ByteT)*ud + 128),((ByteT)*vd + 128));
+		RealYUVValueC ryuv(byuv);
+		RealRGBValueC p(ryuv);
+		p.Limit(0,255);
+		it->Set((ByteT) p.Red(),(ByteT) p.Green(),(ByteT) p.Blue());
+	      }
+	      yd++;
+	      it++;
+	      {
+		ByteYUVValueC byuv(*yd,((ByteT)*ud + 128),((ByteT)*vd + 128));
+		RealYUVValueC ryuv(byuv);
+		RealRGBValueC p(ryuv);
+		p.Limit(0,255);
+		it->Set((ByteT) p.Red(),(ByteT) p.Green(),(ByteT) p.Blue());
+	      }
+	      yd++;
+	      ud++;
+	      vd++;
+	    } while(it.Next()) ;
+	  }
+	}
+#endif
+	imageCache.Insert(frameNo, Tuple2C<ImageC<ByteRGBValueC>,IntT>(nimg, frameType));
+	images.Del(frameid);
+	frameNo++;
+	gotFrames = true;
+      }
+    } break;
       
-      case STATE_INVALID:
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got INVALID.\n");
-        break;
+    case STATE_INVALID:
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got INVALID.\n");
+      break;
         
-      default:
-        cerr << "ImgILibMPEG2BodyC::Decode unknown state=" << m_state << "\n";
-        return false;
+    default:
+      cerr << "ImgILibMPEG2BodyC::Decode unknown state=" << m_state << "\n";
+      return false;
     }
 
     return true;

@@ -20,6 +20,7 @@
 #include "Ravl/Tuple2.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/Cache.hh"
+#include "Ravl/Tuple2.hh"
 #include "Ravl/DP/SPort.hh"
 
 extern "C"
@@ -121,7 +122,7 @@ namespace RavlImageN
     StreamPosT frameNo;
     StreamPosT maxFrameIndex;
     StreamPosT lastRead;
-    HashC<StreamPosT,ImageC<ByteRGBValueC> > images;
+    HashC<StreamPosT,SArray1dC<ByteT> > images;
     AVLTreeC<StreamPosT, StreamPosT> offsets;
     CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
     bool sequenceInit;
