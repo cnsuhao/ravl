@@ -7,6 +7,8 @@
 #! rcsid="$Id$"
 
 
+REQUIRES=libmpeg2
+
 PACKAGE=Ravl/Image
 
 HEADERS= ImgIOMPEG2.hh LibMPEG2Format.hh
