@@ -21,7 +21,7 @@
 #include <sys/mman.h>
 #include <sys/time.h>
 
-#define DODEBUG 0
+#define DODEBUG 1
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -44,9 +44,10 @@ namespace RavlImageN
   {
     const type_info &m_objectType;          //: Ref to type id
     const UIntT m_pixelFormat;              //: 4CC of required capture mode
+    const bool m_fastBuffer;                //: Fast buffers available
 
-    SupportedFormatT(const type_info &objectType, const UIntT pixelFormat) :
-      m_objectType(objectType), m_pixelFormat(pixelFormat) {}
+    SupportedFormatT(const type_info &objectType, const UIntT pixelFormat, const bool fastBuffer) :
+      m_objectType(objectType), m_pixelFormat(pixelFormat), m_fastBuffer(fastBuffer) {}
   };
   //: Structure used to store supported pixel formats
 
@@ -54,8 +55,8 @@ namespace RavlImageN
 
   const static SupportedFormatT g_supportedFormat[] =
   {
-    SupportedFormatT(typeid(ImageC<ByteRGBValueC>), v4l2_fourcc('B', 'G', 'R', '4')),
-    SupportedFormatT(typeid(ImageC<ByteT        >), v4l2_fourcc('G', 'R', 'E', 'Y')),
+    SupportedFormatT(typeid(ImageC<ByteRGBValueC>), v4l2_fourcc('B', 'G', 'R', '4'), false),
+    SupportedFormatT(typeid(ImageC<ByteT        >), v4l2_fourcc('G', 'R', 'E', 'Y'),  true),
   };
   const static UIntT g_supportedFormats = sizeof(g_supportedFormat) / sizeof(SupportedFormatT);
   //: Mapping from image type id required V4L2 capture mode.
@@ -372,6 +373,7 @@ namespace RavlImageN
           cerr << "IOV4L2BaseC::CheckFormat requires format(" << CHAR_STREAM_FROM_4CC(g_supportedFormat[pixelIndex].m_pixelFormat) << ")" << endl; \
         )
         m_pixelFormat = g_supportedFormat[pixelIndex].m_pixelFormat;
+        m_fastBufferAvailable = g_supportedFormat[pixelIndex].m_fastBuffer;
         break;
       }
       
@@ -1028,14 +1030,52 @@ namespace RavlImageN
     
     return false;
   }
+
+
+
+  bool IOV4L2BaseC::HandleGetAttr(const StringC &attrName, bool &attrValue)
+  {
+    // Fast buffers available
+    if (attrName == "fast_buffers_available")
+    {
+      attrValue = m_fastBufferAvailable;
+      return true;
+    }
+
+    // Fast buffers used
+    if (attrName == "fast_buffers_used")
+    {
+      attrValue = m_fastBufferUsed;
+      return true;
+    }
+
+    return false;
+  }
+
+
+
+  bool IOV4L2BaseC::HandleSetAttr(const StringC &attrName, const bool &attrValue)
+  {
+    // Fast buffers used
+    if (attrName == "fast_buffers_used")
+    {
+      if (m_fastBufferAvailable)
+        m_fastBufferUsed = attrValue;
+      else
+        cerr << "IOV4L2BaseC::HandleSetAttr failed to set fast buffers" << endl;
+      return true;
+    }
+    
+    return false;
+  }
   
   
 
   bool IOV4L2BaseC::BuildAttributes(AttributeCtrlBodyC &attrCtrl)
   {
-    attrCtrl.RegisterAttribute(AttributeTypeStringC("driver", "Driver", true, false));
-    attrCtrl.RegisterAttribute(AttributeTypeStringC("card",   "Card",   true, false));
-    attrCtrl.RegisterAttribute(AttributeTypeStringC("bus",    "Bus",    true, false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("driver", "V4L2 device driver", true, false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("card",   "Capture device",     true, false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("bus",    "Device bus",         true, false));
 
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("input",         "Input",  true, true,           0,  m_inputMax - 1, 1,        0));
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("width",         "Width",  true, true,  m_widthMin,      m_widthMax, 1,  m_width));
@@ -1050,6 +1090,9 @@ namespace RavlImageN
     for (UIntT i = 0; i < g_supportedFields; i++)
       fieldList.InsLast(g_supportedField[i].m_name);
     attrCtrl.RegisterAttribute(AttributeTypeEnumC("field", "Field", true, true, fieldList, fieldList.First()));
+
+    attrCtrl.RegisterAttribute(AttributeTypeBoolC("fast_buffers_available", "Fast buffers available", true,                 false, m_fastBufferAvailable));
+    attrCtrl.RegisterAttribute(AttributeTypeBoolC("fast_buffers_used",      "Fast buffers used",      true, m_fastBufferAvailable,      m_fastBufferUsed));
 
     return true;
   }

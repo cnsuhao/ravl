@@ -82,6 +82,14 @@ namespace RavlImageN
     //: Handle set attribute (int)
     // Returns false if the attribute name is unknown.
     
+    bool HandleGetAttr(const StringC &attrName, bool &attrValue);
+    //: Handle get attribute (bool)
+    // Returns false if the attribute name is unknown.
+    
+    bool HandleSetAttr(const StringC &attrName, const bool &attrValue);
+    //: Handle set attribute (bool)
+    // Returns false if the attribute name is unknown.
+    
     bool BuildAttributes(AttributeCtrlBodyC &attrCtrl);
     //: Build list of attributes.
     
@@ -140,6 +148,7 @@ namespace RavlImageN
     UIntT m_pixelFormat;                // Stored pixel format
     UIntT m_fieldFormat;                // Captured field selection
     UIntT m_standard;                   // Standard in use
+    bool m_fastBufferAvailable;         // Are fast buffers available?
     bool m_fastBufferUsed;              // Are fast buffers in use?
 
   /* Buffer parameters */
@@ -249,6 +258,24 @@ namespace RavlImageN
       return DPPortBodyC::SetAttr(attrName, attrValue);
     }
     //: Handle set attribute (int)
+    // Returns false if the attribute name is unknown.
+
+    virtual bool GetAttr(const StringC &attrName, bool &attrValue)
+    {
+      if (HandleGetAttr(attrName, attrValue))
+        return true;
+      return AttributeCtrlBodyC::GetAttr(attrName, attrValue);
+    }
+    //: Handle get attribute (bool)
+    // Returns false if the attribute name is unknown.
+    
+    virtual bool SetAttr(const StringC &attrName, const bool &attrValue)
+    {
+      if (HandleSetAttr(attrName, attrValue))
+        return true;
+      return AttributeCtrlBodyC::SetAttr(attrName, attrValue);
+    }
+    //: Handle set attribute (bool)
     // Returns false if the attribute name is unknown.
   };
 
