@@ -31,7 +31,7 @@ typedef unsigned long ulong;
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Image/RGBcYUV.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
