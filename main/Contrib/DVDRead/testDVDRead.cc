@@ -14,6 +14,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Date.hh"
 #include <fstream>
+#include "Ravl/DList.hh"
 
 using namespace std;
 using namespace RavlN;
@@ -28,6 +29,20 @@ int main(int nargs,char **argv)
   // Create the dvd 
   DVDReadC dvd(title, device);
 
+  // Display the stream attributes
+  DListC<StringC> attrs;
+  if (dvd.GetAttrList(attrs))
+  {
+    DLIterC<StringC> it(attrs);
+    while (it)
+    {
+      StringC value;
+      if (dvd.GetAttr(*it, value))
+        cerr << *it << " : " << value << endl;
+      it++;
+    }
+  }
+  
   // Create the output file
   StringC filename = StringC(title) + ".vob";
   ofstream file(filename, ios::out|ios::binary);

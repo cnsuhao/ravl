@@ -492,8 +492,33 @@ namespace RavlN
             height = 0;
         }
         if (height != 0)
+        {
           attrValue = width + StringC(height);
-        return true;
+          return true;
+        }
+      }
+      
+      if (attrName == "duration")
+      {
+        dvd_time_t time = m_dvdCurPgc->playback_time;
+        if (time.hour != 0 &&  time.minute != 0 && time.second != 0)
+        {
+          attrValue.form("%02x:%02x:%02x", time.hour, time.minute, time.second);
+          return true;
+        }
+      }
+
+      if (attrName == "framerate")
+      {
+        dvd_time_t time = m_dvdCurPgc->playback_time;
+        if (time.hour != 0 &&  time.minute != 0 && time.second != 0)
+        {
+          if ((time.frame_u & 0xc0) >> 6 == 1)
+            attrValue = "25.00";
+          if ((time.frame_u & 0xc0) >> 6 == 3)
+            attrValue = "29.97";
+          return true;
+        }
       }
     }
 
@@ -506,6 +531,8 @@ namespace RavlN
     list.InsLast(StringC("videoformat"));
     list.InsLast(StringC("aspectratio"));
     list.InsLast(StringC("framesize"));
+    list.InsLast(StringC("duration"));
+    list.InsLast(StringC("framerate"));
     return DPPortBodyC::GetAttrList(list);
   }
 
