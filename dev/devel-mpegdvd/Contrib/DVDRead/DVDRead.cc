@@ -35,7 +35,10 @@ namespace RavlN
     m_dvdVmgFile(NULL),
     m_dvdVtsFile(NULL),
     m_dvdPgc(NULL),
-    m_dvdFile(NULL)
+    m_dvdFile(NULL),
+    m_curSector(0),
+    m_curBlock(0),
+    m_curByte(0)
   {
     // Try to open the DVD device
     m_dvdReader = DVDOpen(m_device);
@@ -109,9 +112,9 @@ namespace RavlN
     }
     ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC fps(" << m_numFps << ")" << endl;)
 
-    // Create the cell data table, if no tmap data found
+    // Create the cell data table
     RealT playTime = 0.0;
-    m_cellTable = SArray1dC< Tuple3C< Int64T, StreamPosT, bool> >(numCells);
+    m_cellTable = SArray1dC< Tuple3C< Int64T, UIntT, bool> >(numCells);
     for (UIntT i = 0; i < numCells; i++)
     {
       m_cellTable[i].Data1() = (Int64T)Floor(playTime * m_numFps);
@@ -122,52 +125,6 @@ namespace RavlN
       // Get the cell payback info
       dvd_time_t cellTime = m_dvdPgc->cell_playback[i].playback_time;
       playTime += GetTime(cellTime);
-    }
-
-    // If found, create the tmap data table
-    if (m_dvdVtsFile->vts_tmapt)
-    {
-      // Get the number of TMAPs (should be one per title, even if empty)
-      vts_tmapt_t *tmapt = m_dvdVtsFile->vts_tmapt;
-      UIntT numTmaps = tmapt->nr_of_tmaps;
-      ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC tmaps(" << numTmaps << ")" << endl;)
-      
-      // Select the correct TMAP for the title
-      if (numTmaps > 0 && ttnnum <= numTmaps)
-      {
-        // Get the number of entries for the title's TMAP (may be zero)
-        UIntT timeUnit = tmapt->tmap[ttnnum - 1].tmu;
-        UIntT numTmapEntries = tmapt->tmap[ttnnum - 1].nr_of_entries;
-        ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC time unit(" << timeUnit << ") tmap entries(" << numTmapEntries << ")" << endl;)
-        
-        // If we have entries, fill the sector table with them
-        Int64T cellOffset = 0;
-        if (numTmapEntries > 0)
-        {
-          playTime = 0.0;
-          m_tmapTable = SArray1dC< Tuple3C< Int64T, StreamPosT, bool> >(numTmapEntries);
-          for (UIntT i = 0; i < numTmapEntries; i++)
-          {
-            playTime += timeUnit;
-            m_tmapTable[i].Data1() = (Int64T)Floor(playTime * m_numFps) + cellOffset;
-            m_tmapTable[i].Data2() = tmapt->tmap[ttnnum - 1].map_ent[i] & 0x7fffffff;
-            m_tmapTable[i].Data3() = (tmapt->tmap[ttnnum - 1].map_ent[i] >> 31) != 0;
-            ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC tmap entry(" << i << ")\tframe(" << m_tmapTable[i].Data1() << ")\tsector(" << hex <<  m_tmapTable[i].Data2() << dec << ")\tdiscontinuity(" << (m_tmapTable[i].Data3() ? "y" : "n") << ")" << endl;)
-            
-            // If a discontinuity is detected, reset the playtime and find the offset
-            if (m_tmapTable[i].Data3())
-            {
-              playTime = 0;
-              UIntT cellCount = 1;
-              while (cellCount < (m_cellTable.Size() - 1) && m_tmapTable[i].Data2() > m_cellTable[cellCount].Data2())
-              {
-                cellCount++;
-              }
-              cellOffset = m_cellTable[cellCount].Data1();
-            }
-          }
-        }
-      }
     }
 
     // Open the title
@@ -230,22 +187,118 @@ namespace RavlN
     return data[0];
   }
 
-  bool DVDReadBodyC::Get(ByteT &buff)
+  bool DVDReadBodyC::Get(ByteT &data)
   {
     // Check we're not at the end of the stream
     if (IsGetEOS())
       return false;
     
-    SArray1dC<ByteT> data(1);
-    bool read = GetArray(data) > 0;
+    SArray1dC<ByteT> dataChar(1);
+    bool read = GetArray(dataChar) > 0;
     if (read)
-      buff = data[0];
+      data = dataChar[0];
     return read;
   }
 
   IntT DVDReadBodyC::GetArray(SArray1dC<ByteT> &data)
   {
-    return 0;
+    // Parse the current DSI packet
+    dsi_t dsiPack;
+    navRead_DSI(&dsiPack, &(m_curNav[DSI_START_BYTE]));
+    RavlAssertMsg(m_curSector == dsiPack.dsi_gi.nv_pck_lbn, "DVDReadBodyC::GetArray DSI sector does not match cell sector");
+
+    // Get the data size
+    UIntT dataSize = dsiPack.dsi_gi.vobu_ea;
+    RavlAssertMsg(m_curBlock < dataSize, "DVDReadBodyC::GetArray current block out of DSI range");
+    
+    UIntT dataRead = 0;
+    ByteT dataBuf[g_blockSize];
+    while (dataRead < data.Size())
+    {
+      // Write out the part of the current pack
+      if (m_curByte != 0 || (data.Size() - dataRead < g_blockSize))
+      {
+        // Calculate how many bytes to read
+        UIntT byteCount = g_blockSize - m_curByte;
+        if (byteCount > (data.Size() - dataRead))
+          byteCount = data.Size() - dataRead;
+        
+        // Read the block into the buffer
+        UIntT len = DVDReadBlocks(m_dvdFile, m_curSector + m_curBlock + 1, 1, dataBuf);
+        if (len != 1)
+          cerr << "DVDReadBodyC::GetArray unable to block (" << hex << m_curSector << ":" << m_curBlock << dec << ")" << endl;
+        
+        // Copy the data from the buffer to the buffer
+        memcpy(data.DataStart() + dataRead, dataBuf + m_curByte, byteCount);
+        
+        // Update the counters
+        dataRead += byteCount;
+        m_curByte += byteCount;
+        
+        // Have we stepped over the end of the block?
+        RavlAssertMsg(m_curByte <= g_blockSize, "DVDReadBodyC::GetArray byte count exceeded maximum");
+        if (m_curByte == g_blockSize)
+        {
+          m_curByte = 0;
+          m_curBlock++;
+        }
+      }
+      else
+      {
+        // Write out as many 2k blocks as we can
+        UIntT blockCount = (data.Size() - dataRead) / g_blockSize;
+        if (blockCount > 0)
+        {
+          if (m_curBlock < dataSize)
+          {
+            // Limit the block size
+            if (blockCount > (dataSize - m_curBlock))
+              blockCount = (dataSize - m_curBlock);
+            
+            // Read the blocks
+            UIntT len = DVDReadBlocks(m_dvdFile, m_curSector + m_curBlock + 1, blockCount, data.DataStart() + dataRead);
+            if (len != blockCount)
+              cerr << "DVDReadBodyC::GetArray unable to read (" << blockCount << ") blocks from (" << hex << m_curSector << ":" << m_curBlock << dec << ")" << endl;
+            
+            // Update the counters
+            dataRead += blockCount * g_blockSize;
+            m_curBlock += blockCount;
+          }
+        }
+      }
+      
+      // Do we need to go to the next VOBU?
+      if (m_curBlock == dataSize)
+      {
+        if (dsiPack.vobu_sri.next_vobu != SRI_END_OF_CELL)
+        {
+          // Get the next VOBU sector
+          m_curSector += (dsiPack.vobu_sri.next_vobu & 0x7fffffff);
+
+          // Read NAV packet
+          UIntT len = DVDReadBlocks(m_dvdFile, m_curSector, 1, m_curNav);
+          RavlAssertMsg(len == 1,  "DVDReadBodyC::GetArray unable to read NAV block");
+      
+          // Read the 
+          navRead_DSI(&dsiPack, &(m_curNav[DSI_START_BYTE]));
+          RavlAssertMsg(m_curSector == dsiPack.dsi_gi.nv_pck_lbn, "DVDReadBodyC::GetArray DSI sector does not match cell sector");
+          dataSize = dsiPack.dsi_gi.vobu_ea;
+          
+          // Reset the counters
+          m_curBlock = 0;
+          m_curByte = 0;
+          m_endFound = false;
+        }
+        else
+        {
+          cerr << "DVDReadBodyC::GetArray reached end of VOBU" << endl;
+          m_endFound = true;
+          break;
+        }
+      }
+    }
+
+    return dataRead;
   }
 
   bool DVDReadBodyC::Seek(UIntT off)
@@ -280,7 +333,11 @@ namespace RavlN
 
   bool DVDReadBodyC::IsGetEOS() const
   {
-    return true;
+    // EOS if no file open
+    if (!m_dvdFile)
+      return true;
+    
+    return m_endFound;
   }
 
   bool DVDReadBodyC::Discard()
@@ -288,31 +345,43 @@ namespace RavlN
     return false;
   }
 
-  StreamPosT DVDReadBodyC::SeekFrame(const StreamPosT frame)
+  UIntT DVDReadBodyC::SeekFrame(const UIntT frame)
   {
     cerr << "DVDReadBodyC::SeekFrame frame(" << frame << ")" << endl;
+
     // Find the closest sector
-    UIntT sectorCount = 0;
-    while (sectorCount < m_cellTable.Size() && frame > m_cellTable[sectorCount].Data1())
+    UIntT cellCount = 0;
+    while (cellCount < m_cellTable.Size() && frame > m_cellTable[cellCount].Data1())
     {
-      sectorCount++;
+      cellCount++;
     }
     
     // Check we have a valid sector table entry
-    if (sectorCount >= m_cellTable.Size())
+    if (cellCount >= m_cellTable.Size())
     {
       cerr << "DVDReadBodyC::SeekFrame overflow" << endl;
-      m_curSector = sectorCount = 0;
+      cellCount = 0;
     }
     
     // Store the sector position
-    m_curSector = m_cellTable[sectorCount].Data2();
-    cerr << "DVDReadBodyC::SeekFrame sector(" << m_curSector << ") frame(" << m_cellTable[sectorCount].Data1() << ")" << endl;
+    m_curSector = m_cellTable[cellCount].Data2();
+    cerr << "DVDReadBodyC::SeekFrame sector(" << m_curSector << ") frame(" << m_cellTable[cellCount].Data1() << ")" << endl;
     
-    // Reset the byte pointer
-    m_curByte = 0;
+    // Read NAV packet
+    UIntT len = DVDReadBlocks(m_dvdFile, m_curSector, 1, m_curNav);
+    RavlAssertMsg(len == 1,  "DVDReadBodyC::SeekFrame unable to read NAV block");
 
-    return m_cellTable[sectorCount].Data1();
+    // Parse the contained DSI packet
+    dsi_t dsiPack;
+    navRead_DSI(&dsiPack, &(m_curNav[DSI_START_BYTE]));
+    RavlAssertMsg(m_curSector == dsiPack.dsi_gi.nv_pck_lbn, "DVDReadBodyC::SeekFrame DSI sector does not match cell sector");
+    
+    // Reset the counters
+    m_curBlock = 0;
+    m_curByte = 0;
+    m_endFound = false;
+    
+    return m_cellTable[cellCount].Data1();
   }
   
   Int64T DVDReadBodyC::GetTime(dvd_time_t time)

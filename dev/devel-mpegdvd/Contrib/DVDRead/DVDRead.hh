@@ -19,6 +19,7 @@
 
 namespace RavlN
 {
+  const static UIntT g_blockSize = 2048;
   
   class DVDReadBodyC :
     public DPISPortBodyC<ByteT>
@@ -33,7 +34,7 @@ namespace RavlN
     ByteT Get();
     //: Get a byte from the VOB data
 
-    bool Get(ByteT &buff);
+    bool Get(ByteT &data);
     //: Get a byte from the VOB data
 
     IntT GetArray(SArray1dC<ByteT> &data);
@@ -67,7 +68,7 @@ namespace RavlN
     bool GetAttr(const StringC &attrName, StringC &attrValue);
     //: Get an attribute
     
-    StreamPosT SeekFrame(const StreamPosT frame);
+    UIntT SeekFrame(const UIntT frame);
     //: Move to the correct cell for the specified frame.
     //!return: Next frame actually that will be read
 
@@ -89,17 +90,19 @@ namespace RavlN
 
     dvd_reader_t *m_dvdReader;                                            // DVD read object
     ifo_handle_t *m_dvdVmgFile;                                           // Video management info
-    ifo_handle_t *m_dvdVtsFile;                                           // Video stream info
-    pgc_t *m_dvdPgc;                                                      // Current PGC object
+    ifo_handle_t *m_dvdVtsFile;                                           // Video title set info
+    pgc_t *m_dvdPgc;                                                      // Current program chain object
     dvd_file_t *m_dvdFile;                                                // DVD file object
     
-    SArray1dC< Tuple3C< Int64T, StreamPosT, bool > > m_cellTable;
+    SArray1dC< Tuple3C< Int64T, UIntT, bool > > m_cellTable;
     // Table mapping playback times (in seconds) to sector positions with STC discontinuity indicator
-    SArray1dC< Tuple3C< Int64T, StreamPosT, bool > > m_tmapTable;
-    // Table mapping playback times (in seconds) to sector positions with STC discontinuity indicator
+
+    UIntT m_curSector;                                                    // Current VOBU start sector
+    ByteT m_curNav[g_blockSize];                                          // Current nav block data
+    UIntT m_curBlock;                                                     // Current block in payload
+    UIntT m_curByte;                                                      // Current byte in block
     
-    StreamPosT m_curSector;                                               // Current sector number
-    UIntT m_curByte;                                                      // Byte pointer in sector
+    bool m_endFound;                                                      // EOS indicator
   };
 
   class DVDReadC :

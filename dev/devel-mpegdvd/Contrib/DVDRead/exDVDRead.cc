@@ -43,23 +43,21 @@ int main(int nargs,char **argv)
     }
   }
   
-  /*
   // Create the output file
   if (outfile == "")
     outfile = StringC(title) + ".vob";
-  OStreamC file(filename);
+  OStreamC file(outfile);
 
   // Load the stream
-  SArray1dC<ByteT> data(1024 * 1024);
+  SArray1dC<ByteT> data(2048);
   while(!dvd.IsGetEOS())
   {
-    dvd.GetArray(data);
-    cerr << "tell(" << dvd.Tell64() << ")" << endl;
-    file.write(reinterpret_cast<const char*>(&(data[0])), data.Size());
+    UIntT len = dvd.GetArray(data);
+    cerr << "Got " << len << endl;
+    file.write(reinterpret_cast<const char*>(&(data[0])), len);
   }
 
   file.Close();
-  */
   
   return 0;
 }
