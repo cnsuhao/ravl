@@ -74,16 +74,15 @@ namespace RavlImageN
     virtual bool Seek64(StreamPosT off);
     //: Seek to location in stream.
     
-    virtual bool GetAttr(const StringC &attrName,IntT &attrValue);
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue);
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
-    virtual bool GetAttrList(DListC<StringC> &list) const;
-    //: Get list of attributes available.
-    // This method will ADD all available attribute names to 'list'.
-
   protected:
+    void BuildAttributes();
+    //: Register stream attributes
+
     bool InitialSeek();
     //: Store the initial stream position
     

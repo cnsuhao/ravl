@@ -20,6 +20,7 @@
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/Image/RGBcYUV.hh"
 #include <fstream>
+#include "Ravl/DP/AttributeValueTypes.hh"
 
 extern "C" {
 #include <mpeg2dec/convert.h>
@@ -43,9 +44,7 @@ extern "C" {
 namespace RavlImageN
 {
   
-#if DODEBUG
   static char frameTypes[5] = { 'X', 'I', 'P', 'B', 'D' };
-#endif
   
   static int mpeg1_skip_table[16] = { 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -81,6 +80,8 @@ namespace RavlImageN
       cerr << "ImgILibMPEG2BodyC::ImgILibMPEG2BodyC invalid demultiplex track." << endl;
       m_demuxTrack = -1;
     }
+
+    BuildAttributes();
   }
   
   //: Destructor.
@@ -130,27 +131,25 @@ namespace RavlImageN
     return true;
   }
 
-  //: Get a stream attribute.
+  //: Register stream attributes.
+
+  void ImgILibMPEG2BodyC::BuildAttributes() {
+    RegisterAttribute(AttributeTypeStringC("frametype","MPEG frame type",true,false));
+  }
+
+
   // Returns false if the attribute name is unknown.
   // This is for handling stream attributes such as frame rate, and compression ratios.
   
-  bool ImgILibMPEG2BodyC::GetAttr(const StringC &attrName,IntT &attrValue)
+  bool ImgILibMPEG2BodyC::GetAttr(const StringC &attrName,StringC &attrValue)
   {
     if(attrName == "frametype") {
-      attrValue = m_lastFrameType;
+      attrValue = StringC(frameTypes[m_lastFrameType]);
       return true; 
     }
     return DPPortBodyC::GetAttr(attrName,attrValue);
   }
   
-  //: Get list of attributes available.
-  // This method will ADD all available attribute names to 'list'.
-  
-  bool ImgILibMPEG2BodyC::GetAttrList(DListC<StringC> &list) const
-  {
-    list.InsLast(StringC("frametype"));
-    return DPPortBodyC::GetAttrList(list);
-  }
 
   //: Decode a whole GOP and put it in the image cache.
   
