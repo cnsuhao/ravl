@@ -16,6 +16,7 @@
 #include "Ravl/Plot/GuppiTypes.hh"
 #include "Ravl/Array1d.hh"
 #include "Ravl/SArray1d.hh"
+#include "Ravl/Point2d.hh"
 
 namespace RavlPlotN {
   using namespace RavlN;
@@ -47,6 +48,10 @@ namespace RavlPlotN {
     
     bool Set(const Array1dC<RealT> &data);
     //: Set sequence to contents of 'data'.
+    // Note: This is NOT thread safe.
+    
+    bool Set(const Array1dC<Point2dC> &data,int index);
+    //: Set sequence to either the first or second element of an array of points2d's.
     // Note: This is NOT thread safe.
     
     bool Append(RealT value);
@@ -110,6 +115,11 @@ namespace RavlPlotN {
     bool Set(const Array1dC<RealT> &data)
     { return Body().Set(data); }
     //: Set sequence to contents of 'data'.
+    // Note: This is NOT thread safe.
+    
+    bool Set(const Array1dC<Point2dC> &data,int index)
+    { return Body().Set(data,index); }
+    //: Set sequence to either the first or second element of an array of points2d's.
     // Note: This is NOT thread safe.
     
   };

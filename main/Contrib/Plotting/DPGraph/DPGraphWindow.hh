@@ -51,6 +51,14 @@ namespace RavlPlotN {
     //: Update data.
     // Call on the GUI thread only.
     
+    void Update(const StringC &name,const Array1dC<Point2dC> &data);
+    //: Update data.
+    // Thread safe update.
+    
+    bool GUIUpdatePoint2d(const StringC &name,const Array1dC<Point2dC> &data);
+    //: Update data.
+    // Call on the GUI thread only.
+    
     bool Clear();
     //: Clear the display list.
     
@@ -114,6 +122,16 @@ namespace RavlPlotN {
     
     bool GUIUpdate(const StringC &name,const Array1dC<RealT> &data)
     { return Body().GUIUpdate(name,data); }
+    //: Update data.
+    // GUI thread only update.
+    
+    void Update(const StringC &name,const Array1dC<Point2dC> &data)
+    { Body().Update(name,data); }
+    //: Update data.
+    // Thread safe update.
+    
+    bool GUIUpdatePoint2d(const StringC &name,const Array1dC<Point2dC> &data)
+    { return Body().GUIUpdatePoint2d(name,data); }
     //: Update data.
     // GUI thread only update.
     

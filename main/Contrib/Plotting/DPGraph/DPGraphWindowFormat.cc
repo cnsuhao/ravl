@@ -31,7 +31,7 @@ namespace RavlPlotN {
   
   static HashC<StringC,DPGraphWindowC> windows; // List of windows open.
   static RWLockC windowsLock;
-
+  
   
   //: Default constructor.
   
@@ -44,13 +44,15 @@ namespace RavlPlotN {
   const type_info &DPGraphWindowFormatBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const {
     ONDEBUG(cerr << "DPGraphWindowFormatBodyC::ProbeSave(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " ForceFormat=" << forceFormat << "\n");
     if(forceFormat)
-      return typeid(Array1dC<RealT>);
+      return typeid(Array1dC<Point2dC>);
     if(filename.IsEmpty() || filename[0] != '@')
       return typeid(void);
     StringC device = ExtractDevice(filename);
     if(device != "GRAPH" && device != "GRAPHA")
       return typeid(void);
-    return typeid(Array1dC<RealT>);
+    if(obj_type == typeid(Array1dC<RealT>))
+      return typeid(Array1dC<RealT>);
+    return typeid(Array1dC<Point2dC>);
   }
   
   //: Create a output port for saving.
@@ -58,7 +60,7 @@ namespace RavlPlotN {
   
   DPOPortBaseC DPGraphWindowFormatBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
     ONDEBUG(cerr << "DPGraphWindowFormatBodyC::CreateOutput(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " \n");
-    if(obj_type != typeid(Array1dC<RealT>))
+    if(obj_type != typeid(Array1dC<RealT>) && obj_type != typeid(Array1dC<Point2dC>))
       return DPOPortBaseC();
     
     StringC winName = ExtractParams(filename);
@@ -77,7 +79,9 @@ namespace RavlPlotN {
     bool accum = false;
     if(device == "GRAPHA") 
       accum = true;
-    return DPGraphWindowOPortC<Array1dC<RealT> >(win,device,accum);
+    if(obj_type == typeid(Array1dC<RealT>))
+      return DPGraphWindowOPortC<Array1dC<RealT> >(win,device,accum);
+    return DPGraphWindowOPortC<Array1dC<Point2dC> >(win,device,accum);
   }
   
   DPGraphWindowFormatC initDPGraphWindowFormat;

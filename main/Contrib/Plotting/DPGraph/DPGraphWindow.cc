@@ -89,6 +89,29 @@ namespace RavlPlotN {
     ONDEBUG(cerr << "DPGraphWindowBodyC::Update(), Done.  \n");
     return true;
   }
+
+  //: Update data.
+  // Call on the GUI thread only.
+  
+  bool DPGraphWindowBodyC::GUIUpdatePoint2d(const StringC &name,const Array1dC<Point2dC> &data) {
+    ONDEBUG(cerr << "DPGraphWindowBodyC::GUIUpdatePoint2d(), Called.  \n");
+    MutexLockC hold(accessMutex);
+    GuppiLineGraphC &plot = plots[name];
+    if(plot.IsValid())
+      plot.Update(data);
+    else {
+      WaitForGUIExit(); 
+      InitGuppi();
+      plot = GuppiLineGraphC(data);
+      if(!win.IsValid()) {
+	GuppiGraphC xgraph(plot);
+	Init(xgraph);
+      } else
+	graph.AddPlot(plot);
+    }
+    ONDEBUG(cerr << "DPGraphWindowBodyC::GUIUpdatePoint2d(), Done.  \n");
+    return true;
+  }
   
   void DPGraphWindowBodyC::Update(const StringC &name,const Array1dC<RealT> &data) {
     if(!Manager.IsManagerStarted())
@@ -100,6 +123,19 @@ namespace RavlPlotN {
     // numbers of updates.
     ReadBackLockC rbl;
     GUIUpdate(name,data);
+#endif
+  }
+
+  void DPGraphWindowBodyC::Update(const StringC &name,const Array1dC<Point2dC> &data) {
+    if(!Manager.IsManagerStarted())
+      WaitForGUIExit(); 
+#if 0
+    RavlGUIN::Manager.Queue(Trigger(DPGraphWindowC(*this),&DPGraphWindowC::GUIUpdatePoint2d,name,data));
+#else
+    // This makes updates blocking and stops the front end from being overwhelmed by large
+    // numbers of updates.
+    ReadBackLockC rbl;
+    GUIUpdatePoint2d(name,data);
 #endif
   }
   

@@ -90,6 +90,33 @@ namespace RavlPlotN {
     return true;
   }
 
+  //: Set sequence to either the first or second element of an array of points2d's.
+  // Note: This is NOT thread safe.
+  
+  bool GuppiScalarSequenceBodyC::Set(const Array1dC<Point2dC> &data,int index) {
+    ONDEBUG(cerr <<"GuppiScalarSequenceBodyC::Set(const Array1dC<RealT> &), Called. \n");
+    Array1dC<Point2dC> tmp(data);
+    RavlAssert(seq != 0);
+    gint min,max;
+    guppi_seq_indices (GUPPI_SEQ(seq),&min, &max);
+    UIntT size = (max - min)+1;
+    if(size < 1) {
+      for(Array1dIterC<Point2dC> it(data);it;it++)
+	guppi_seq_scalar_append(seq,(*it)[index]);
+    } else {
+      ONDEBUG(cerr <<"GuppiScalarSequenceBodyC::Set(), Updating. Min=" << min << " Size=" << size << " data.Size()=" << data.Size() << ". \n");
+      if(size == data.Size())
+	guppi_seq_scalar_set_many (seq,min,&(tmp[data.Range().Min()][index]),
+				   sizeof(RealT) * (index+1),data.Range().Size());
+      else {
+	cerr << "GuppiScalarSequenceBodyC::Set(), Eeek! I'm confused. \n";
+	RavlAlwaysAssert(0);
+      }
+    }
+    ONDEBUG(cerr <<"GuppiScalarSequenceBodyC::Set(const Array1dC<RealT> &), Done. \n");
+    return true;
+  }
+  
   //: Append a value to the sequence.
   
   bool GuppiScalarSequenceBodyC::Append(RealT value) {

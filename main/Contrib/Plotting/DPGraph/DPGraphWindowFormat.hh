@@ -15,6 +15,7 @@
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Array1d.hh"
+#include "Ravl/Point2d.hh"
 
 namespace RavlPlotN {
   using namespace RavlN;
@@ -34,7 +35,7 @@ namespace RavlPlotN {
     // Will create an Invalid port if not supported.
     
     virtual const type_info &DefaultType() const
-    { return typeid(Array1dC<RealT>); }
+    { return typeid(Array1dC<Point2dC>); }
     //: Get prefered IO type.
     
     virtual bool IsStream() const { return true; }

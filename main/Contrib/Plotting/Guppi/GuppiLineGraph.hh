@@ -48,6 +48,9 @@ namespace RavlPlotN {
     bool Update(const Array1dC<RealT> &data);
     //: Update data in plot.
     
+    bool Update(const Array1dC<Point2dC> &data);
+    //: Update data in plot.
+    
   protected:
     GuppiScalarSequenceC dataY;
     GuppiScalarSequenceC dataX;
@@ -94,6 +97,10 @@ namespace RavlPlotN {
     //: Access x data
     
     bool Update(const Array1dC<RealT> &data)
+    { return Body().Update(data); }
+    //: Update data in plot.
+    
+    bool Update(const Array1dC<Point2dC> &data)
     { return Body().Update(data); }
     //: Update data in plot.
     
