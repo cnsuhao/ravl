@@ -45,7 +45,13 @@ namespace RavlImageN {
     ONDEBUG(cerr << "ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(), Done. Ok=" << (IntT) ok << " \n");
   }
   
+  //: Destructor.
 
+  ImgIOmpeg2decBaseC::~ImgIOmpeg2decBaseC() {
+    decodeProg.Terminate(0.2);
+  }
+  
+  
   //: Get next frame of video.
   
   bool ImgIOmpeg2decBaseC::NextFrame(ImageC<ByteYUVValueC> &yuvImg) {
