@@ -45,7 +45,7 @@ namespace RavlImageN {
     //: Convert image to RGB colour space.
     // Note the original image is free's in the process, even on error.
     
-    bool Jas2Ravl(jas_image_t *img,ImageC<ByteRGBValueC> &img);
+    bool Jas2Ravl(jas_image_t *img,ImageC<ByteRGBValueC> &img2);
     //: Convert an image into RAVL form.
     // img is free'd by operation.
     // Returns false if failes.
