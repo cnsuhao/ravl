@@ -38,6 +38,11 @@ namespace RavlImageN {
   {
     dev = sv_open((char *) devName.chars());
     ONDEBUG(cerr << "CSP Device open:" << ((void *) dev) << " (" << devName << ")\n");
+    if(dev == 0) {
+      cerr << "Failed to open ClipStation device '" << devName << "'. \n";
+      cerr << "Either someone else is using the device, or the hard is not installed. \n";
+      throw ExceptionOperationFailedC("Failed to open a ClipStation device. ");
+    }
     Init();
   }
   
