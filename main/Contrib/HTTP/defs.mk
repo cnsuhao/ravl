@@ -25,3 +25,4 @@ AUXFILES= libcurl.def
 
 AUXDIR=lib/RAVL/libdep
 
+EHT=Ravl.Contrib.URL_Handling.html
