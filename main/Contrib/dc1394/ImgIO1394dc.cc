@@ -105,7 +105,7 @@ namespace RavlImageN {
     IntT numCameras;
     nodeid_t * camera_nodes = dc1394_get_camera_nodes(raw1394handle,&numCameras,1);
     if (numCameras<1) {
-      cerr << "ERROR: No camera's found. \n";
+      cerr << "ERROR: No cameras found. \n";
       return false;
     }
     cameraNode = camera_nodes[0];

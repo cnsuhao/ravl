@@ -19,6 +19,8 @@ using namespace RavlImageN;
 int main(int nargs,char **argv) {
   OptionC opt(nargs,argv);
   StringC dev = opt.String("d","/dev/raw1394","Firewire device. ");
+  StringC out = opt.String("o","@X","Output sequence");
+  IntT n = opt.Int("n",-1,"Number of frames (default: unlimited)");
   opt.Check();
   
   ImgIO1394dcBaseC imgio;
@@ -27,11 +29,11 @@ int main(int nargs,char **argv) {
     return 1;
   }
   DPOPortC<ImageC<ByteT> > imgOut;
-  if(!OpenOSequence(imgOut,"@X")) {
+  if(!OpenOSequence(imgOut,out)) {
     cerr << "Failed to open output. \n";
     return 0;
   }
-  for(;;) {
+  for(IntT i(0); i!=n; ++i) {
     ImageC<ByteT> img;
     imgio.CaptureImage(img);
     imgOut.Put(img);
