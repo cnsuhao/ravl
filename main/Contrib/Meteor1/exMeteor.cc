@@ -8,6 +8,8 @@
 //! lib=GrabMeteor
 //! file="Contrib/Meteor1/exMeteor.cc"
 //! author="Charles Galambos"
+//! docentry="Ravl.Contrib.Video IO.Meteor1"
+//! userlevel=Normal
 
 #include "Ravl/Image/ImgIOMeteor1.hh"
 #include "Ravl/Option.hh"
