@@ -102,13 +102,25 @@ namespace RavlImageN {
       return typeid(void);
     
     enum { IMG_RGB, IMG_YUV, IMG_GREY } imgtype = IMG_YUV;
+
+    // Some huristics to select the best format to capture date from the
+    // card in.   If in doubt get YUV as thats what most video is in anyway.
+    
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       imgtype = IMG_RGB;
+    if(obj_type == typeid(ImageC<RealRGBValueC>))
+      imgtype = IMG_RGB;
     else if(obj_type == typeid(ImageC<ByteYUVValueC>))
+      imgtype = IMG_YUV;
+    else if(obj_type == typeid(ImageC<RealYUVValueC>))
       imgtype = IMG_YUV;
     else if(obj_type == typeid(ImageC<ByteT>))
       imgtype = IMG_GREY;
     else if(obj_type == typeid(ImageC<RealT>))
+      imgtype = IMG_GREY;
+    else if(obj_type == typeid(ImageC<IntT>))
+      imgtype = IMG_GREY;
+    else if(obj_type == typeid(ImageC<UIntT>))
       imgtype = IMG_GREY;
     
     int fd = open(file,O_RDWR);
@@ -132,6 +144,10 @@ namespace RavlImageN {
       cerr << "ERROR: Unexpected failure to get picture paramiters. \n";
       return typeid(void); // Somethings not working.
     }
+    
+    // Try and match the best supported capture format with what the 
+    // card can actually do.
+    
     ONDEBUG(cerr << "Probing supported formats. \n");
     switch(imgtype) {
     case IMG_RGB:
