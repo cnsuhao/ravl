@@ -28,12 +28,29 @@ namespace RavlImageN
     virtual ~ImgILibMPEG2DVDBodyC() {}
     //: Destructor.
     
+    virtual bool Get(ImageC<ByteRGBValueC> &img);
+    //: Get next frame.
+    
+    virtual bool Seek(UIntT off);
+    //: Seek to location in stream.
+    
+    virtual UIntT Size() const;
+    //: Get the size of the file in frames (-1 if not known)
+    
+    virtual bool Seek64(StreamPosT off);
+    //: Seek to location in stream.
+    
+    virtual StreamPosT Size64() const;
+    //: Get the size of the file in frames (-1 if not known)
+    
     bool Reset();
     //: Reset the decoder
     
   protected:
-    MPEG2DemuxC m_demux;
-    DVDReadC m_dvd;
+    MPEG2DemuxC m_demux;                          // Demultiplexer object
+    DVDReadC m_dvd;                               // DVD reader
+    StreamPosT m_frames;                          // Frame total
+    StreamPosT m_seekBoundary;                    // DVD seek boundary
   };
   
   class ImgILibMPEG2DVDC :

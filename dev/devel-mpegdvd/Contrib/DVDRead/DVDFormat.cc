@@ -13,6 +13,7 @@
 #include "Ravl/DVDRead.hh"
 #include "Ravl/ImgIOMPEG2DVD.hh"
 #include "Ravl/Image/MPEG2Demux.hh"
+#include "Ravl/DP/SPortAttach.hh"
 
 #define DPDEBUG 0
 #if DPDEBUG
@@ -129,7 +130,7 @@ namespace RavlN
     ImgILibMPEG2DVDC mpeg(demux, dvd);
     dvd >> demux >> mpeg;
     
-    return mpeg;
+    return SPort(mpeg);
   }
   
   //: Create a output port for saving to file 'filename'..

@@ -13,6 +13,7 @@
 
 #include "Ravl/DP/SPort.hh"
 #include "dvdread/dvd_reader.h"
+#include "dvdread/nav_types.h"
 #include "dvdread/ifo_types.h"
 #include "Ravl/DArray1d.hh"
 #include "Ravl/Tuple3.hh"
@@ -69,7 +70,7 @@ namespace RavlN
     bool GetAttr(const StringC &attrName, StringC &attrValue);
     //: Get an attribute
     
-    UIntT SeekFrame(const UIntT frame);
+    bool SeekFrame(const StreamPosT frame, StreamPosT &lastFrame);
     //: Move to the correct cell for the specified frame.
     //!return: Next frame actually that will be read
 
@@ -102,12 +103,13 @@ namespace RavlN
     pgc_t *m_dvdPgc;                                                      // Current program chain object
     dvd_file_t *m_dvdFile;                                                // DVD file object
     
-    SArray1dC< Tuple3C< Int64T, UIntT, bool > > m_cellTable;
-    // Table mapping playback times (in seconds) to sector positions with STC discontinuity indicator
+    SArray1dC< Tuple3C< StreamPosT, UIntT, bool > > m_cellTable;
+    // Table mapping playback times (in frames) to sector positions with STC discontinuity indicator
 
     UIntT m_curCell;                                                      // Current cell number
     UIntT m_curSector;                                                    // Current VOBU start sector
     ByteT m_curNav[g_blockSize];                                          // Current nav block data
+    dsi_t m_dsiPack;                                                      // Current nav block DSI pack
     UIntT m_curBlock;                                                     // Current block in payload
     UIntT m_curByte;                                                      // Current byte in block
     
@@ -133,8 +135,8 @@ namespace RavlN
     //!param: title The title track to read (default = 1)
     //!param: device A string naming the DVD device (default = /dev/dvd)
     
-    UIntT SeekFrame(const UIntT frame)
-    { return Body().SeekFrame(frame); }
+    bool SeekFrame(const StreamPosT frame, StreamPosT &lastFrame)
+    { return Body().SeekFrame(frame, lastFrame); }
     //: Move to the correct cell for the specified frame.
     //!return: Next frame actually that will be read
 
