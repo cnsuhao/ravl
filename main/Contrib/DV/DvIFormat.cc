@@ -12,10 +12,10 @@
 #include "Ravl/Image/DvIFormat.hh"
 #include "Ravl/Image/ImgIODv.hh"
 #include <ctype.h>
-
+#include "Ravl/TypeName.hh"
 #define USE_DvWRITE 0
 
-#define DPDEBUG 0
+#define DPDEBUG 1
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -38,7 +38,7 @@ namespace RavlImageN {
   //: Try and choose best format for IO.
   
   const type_info &FileFormatDvBodyC::ChooseFormat(const type_info &obj_type) const  {
-    return typeid(ImageC<ByteRGBValueC>);   
+    return typeid(AVFrameC);   
   }
   
   //: Is stream in std stream format ?
@@ -50,7 +50,7 @@ namespace RavlImageN {
 
     //: Need to do a check to see whether the Dv is valid
     
-    return typeid(ImageC<ByteRGBValueC>);  
+    return typeid(AVFrameC);  
     
     //ONDEBUG(cerr << "FileFormatDvBodyC::ProbeLoad(), Not a Dv. \n");
     //return typeid(void); 
@@ -60,6 +60,8 @@ namespace RavlImageN {
   FileFormatDvBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
     const type_info &pref = ProbeLoad(in,obj_type);
     ONDEBUG(cerr << "FileFormatDvBodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
+    ONDEBUG(cerr << "FileFormatDvBodyC::ProbeLoad(), Req:" <<TypeName(obj_type.name()) << "  Ret:" << TypeName(pref.name()) << " \n");
+
     if(Extension(nfilename) != StringC("dv") && nfilename != "-")
       return typeid(void);
     //: Need to do a check to see whether the Dv is valid
@@ -84,6 +86,7 @@ namespace RavlImageN {
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
   DPIPortBaseC FileFormatDvBodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
+    ONDEBUG ( cerr << " FileFormatDvBodyC::CreateInput" ) ; 
     return DPIImageDvC(fn);
   }
   
@@ -119,8 +122,9 @@ namespace RavlImageN {
   //: Get prefered IO type.
   
   const type_info &FileFormatDvBodyC::DefaultType() const  { 
-    return typeid(ImageC<ByteRGBValueC>); 
-  }
+    //return typeid(ImageC<ByteRGBValueC>); 
+      return typeid (AVFrameC) ;  
+      }
 
 #if USE_DvWRITE
   FileFormatDvC RegisterFileFormatDv("dv","Dv file input. ");

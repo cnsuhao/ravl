@@ -18,10 +18,12 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Array1d.hh"
+#include "Ravl/AVFrame.hh"
 #include "libdv/dv.h"
 
-namespace RavlImageN {
 
+namespace RavlImageN {
+  
   using namespace RavlN;
   
   // --------------------------------------------------------------------------
@@ -46,9 +48,14 @@ namespace RavlImageN {
     ~DvDecodeBodyC();
     //: Destructor.
     
-    ImageC<ByteRGBValueC> Apply (ByteT * arr);
-    //: Converts PAL DV frame to byte RGB image
-    
+    void Initialize (ByteT * arr) ; 
+    //: Initialze the attributes (samplerate, samplebits) from the header of  a given frame. 
+    // In this implementation, this is only done once, and not once per frame
+
+    AVFrameC Apply (ByteT * arr) ; 
+    //: Converts PAL DV frame to AVFrameC
+    // Calls Initialize if not already done 
+
     virtual bool IsStateless() const 
     { return false; }
     //: Is operation stateless ?
@@ -61,12 +68,46 @@ namespace RavlImageN {
     { return deinterlace = val; }
     //: Set deinterlace flag.
     
+    const RealT & SampleRate (void) const 
+      { return samplerate ; } 
+    //: Query the sample rate 
+    
+    const  IntT & SampleBits (void) const 
+      { return samplebits ; } 
+    //: Query the sampe bits 
+
   private:
     dv_decoder_t *decoder;
+    //: The decoder 
+
     uint8_t *decoded;
- 
+    //: Decoded image data 
+
     bool init;
+    //: Initialization flag 
+
     bool deinterlace;
+    //: DeInterlace flag
+
+    static const IntT maxAudioChannels = 4 ; 
+    //: Maximum number of Audio channels 
+
+    static const IntT maxAudioSamples = 1944 ; 
+    //: Maximum number of Audio samples per frame (per channel) 
+
+    int16_t * audio_buffers[maxAudioChannels] ; 
+    //: Tempory audio buffers 
+
+    IntT samplebits ; 
+    //: The number of sample bits 
+
+    RealT samplerate ; 
+    //: The sample rate
+
+    IntT samplesThisFrame ; 
+    //: The number of samples in this frame
+
+
   };
   
   ///////////////////////////////////////////////////
@@ -88,6 +129,11 @@ namespace RavlImageN {
     {}
     //: Constructs DvDecodeC 
 
+    inline void Initialize ( ByteT * data ) 
+      { return Body().Initialize (data) ; } 
+    //: Initialze the attributes (samplerate, samplebits) from the header of  a given frame
+
+
   protected:
     DvDecodeBodyC &Body() 
     { return dynamic_cast<DvDecodeBodyC &>(DPEntityC::Body()); }
@@ -98,9 +144,9 @@ namespace RavlImageN {
     //: Body access.
 
   public:
-    ImageC<ByteRGBValueC> Apply (ByteT * arr)
+    AVFrameC Apply (ByteT * arr)
     { return Body().Apply(arr); }
-    //: Converts PAL DV frame to byte RGB image
+    //: Converts PAL DV frame to AVFrameC 
     
     bool Deinterlace() const
     { return Body().Deinterlace(); }
@@ -109,7 +155,15 @@ namespace RavlImageN {
     bool Deinterlace(bool val)
     { return Body().Deinterlace(val); }
     //: Set deinterlace flag.
+  
+    const RealT & SampleRate (void) const 
+      { return Body().SampleRate()  ; } 
+    //: Query the sample rate 
     
+    const  IntT & SampleBits (void) const 
+      { return Body().SampleBits()  ; } 
+    //: Query the sample bits 
+
   };
   
 } // end namespace RavlImageN

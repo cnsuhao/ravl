@@ -10,10 +10,12 @@
 
 #include "Ravl/Image/ImgIODv.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/DP/AttributeValueTypes.hh"
 
 namespace RavlImageN {
 
   //: Constructor from stream 
+  //: ------------------------------------------------------------------------------------------------------------------------
   DPIImageDvBodyC::DPIImageDvBodyC(const IStreamC &nStrm,const StringC &suffix)
     : DPImageDvBaseBodyC(suffix),
       strm(nStrm), 
@@ -32,7 +34,18 @@ namespace RavlImageN {
 	if(tmp.Exists())
 	  SetSequenceSize (tmp.FileSize() / frameSize);
       }
+   
+      // read a frame and initilaze the decoder for the fist time, so attributes are available
+      if(strm.good()) {
+	//: read the data
+	char data[144000];
+	strm.read(data, 144000);
+	UIntT bytesRead = strm.gcount() ; 
+	dv.Initialize( (ByteT*) &data[0] ) ; 
+	strm.Unget( data, bytesRead ) ; 
+      }
     }
+    BuildAttributes(*this) ;
   }
 
 
@@ -42,7 +55,7 @@ namespace RavlImageN {
   // not implemented.)
   // if an error occurered (Seek returned False) then stream
   // position will not be changed.
-  
+  //: -----------------------------------------------------------------------------------------------------
   bool DPIImageDvBodyC::Seek(UIntT off) {
     if(off == ((UIntT) -1))
       return false; // File to big.
@@ -52,8 +65,10 @@ namespace RavlImageN {
     return true;
   }
 
-  //: Delta Seek, goto location relative to the current one.
 
+
+  //: Delta Seek, goto location relative to the current one.
+  //: ------------------------------------------------------------------------------------------------------------------------
   bool DPIImageDvBodyC::DSeek(IntT off) {
     if(off < 0) {
       if((-off) > (IntT) frameNo)
@@ -76,8 +91,8 @@ namespace RavlImageN {
   /////////////////////////
   //: Get next image.
   
-  ImageC<ByteRGBValueC> DPIImageDvBodyC::Get() {
-    ImageC<ByteRGBValueC> head;
+  AVFrameC DPIImageDvBodyC::Get() {
+    AVFrameC head;
     Get(head);
     return head;
   }
@@ -85,7 +100,7 @@ namespace RavlImageN {
   //////////////////////////
   //: Get next image.
 
-  bool DPIImageDvBodyC::Get(ImageC<ByteRGBValueC> &head)
+  bool DPIImageDvBodyC::Get(AVFrameC  &head)
   { 
     //: check the stream
     if(!strm.good())
@@ -105,18 +120,51 @@ namespace RavlImageN {
     frameNo++;
     return true; 
   }
-  
+
+
+  bool DPIImageDvBodyC::BuildAttributes ( AttributeCtrlBodyC & attr ) 
+{
+  //DPISPortBodyC::BuildAttributes (attributes ) ; 
+  attr.RegisterAttribute ( AttributeTypeNumC<RealT> ("samplerate", "The samplerate of the audio data" , true , false , 0 ) ) ; 
+  attr.RegisterAttribute ( AttributeTypeNumC<IntT>    ("samplebits", "The number fo bits per sample " , true , false , 0 ) ) ; 
+  return true ; 
+}
+
+    bool DPIImageDvBodyC::GetAttr(const StringC &attrName,RealT &attrValue) {
+      if  ( attrName == "samplerate" ) {
+	attrValue = dv.SampleRate() ;
+	return true ; }
+      return DPISPortBodyC<AVFrameC >::GetAttr(attrName,attrValue);
+    }
+
   //: Get a stream attribute.
   // Returns false if the attribute name is unknown.
   // This is for handling stream attributes such as frame rate, and compression ratios.
   bool DPIImageDvBodyC::GetAttr(const StringC &attrName,StringC &attrValue) {
     if(attrName == "deinterlace") {
       attrValue = dv.Deinterlace() ? "1" : "0";
-      return true;
-    }
-    return DPISPortBodyC<ImageC<ByteRGBValueC> >::GetAttr(attrName,attrValue);
+      return true; }
+
+    return DPISPortBodyC<AVFrameC >::GetAttr(attrName,attrValue);
   }
   
+
+//: Get a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  bool DPIImageDvBodyC::GetAttr(const StringC &attrName,IntT &attrValue) {
+    if ( attrName == "samplebits") { 
+      attrValue = dv.SampleBits()  ; 
+      return true ; }
+
+    return DPISPortBodyC<AVFrameC >::GetAttr(attrName,attrValue);
+  }
+  
+
+
+
+
+
   //: Set a stream attribute.
   // Returns false if the attribute name is unknown.
   // This is for handling stream attributes such as frame rate, and compression ratios.
@@ -129,7 +177,7 @@ namespace RavlImageN {
 	dv.Deinterlace(false);
       return true;
     }
-    return DPISPortBodyC<ImageC<ByteRGBValueC> >::SetAttr(attrName,attrValue);
+    return DPISPortBodyC<AVFrameC>::SetAttr(attrName,attrValue);
   }
 
 

@@ -70,7 +70,7 @@ namespace RavlImageN {
   //: Load a YUV image in Dv format.
   
   class DPIImageDvBodyC 
-    : public DPISPortBodyC<ImageC<ByteRGBValueC> >,
+    : public DPISPortBodyC<AVFrameC >,
       public DPImageDvBaseBodyC
   {
   public:
@@ -93,10 +93,10 @@ namespace RavlImageN {
     virtual UIntT Size() const; 
     //: Find the total size of the stream (in frames)
     
-    virtual ImageC<ByteRGBValueC> Get();
+    virtual AVFrameC Get();
     //: Get next image.
     
-    virtual bool Get(ImageC<ByteRGBValueC> &buff);
+    virtual bool Get(AVFrameC &buff);
     //: Get next image.
     
     virtual bool IsGetReady() const 
@@ -110,16 +110,29 @@ namespace RavlImageN {
     //: Has the End Of Stream been reached ?
     // true = yes.
     
-    virtual bool GetAttr(const StringC &attrName,StringC &attrValue);
+    virtual bool BuildAttributes ( AttributeCtrlBodyC & attributes ) ; 
+    //: Builds the list of attributes 
+
+  virtual bool GetAttr(const StringC &attrName,StringC &attrValue);
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
-    
+  
+  virtual bool GetAttr(const StringC & attrName, IntT & attrValue ) ; 
+  //: Get a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+
+  virtual bool GetAttr(const StringC & attrName, RealT & attrValue ) ; 
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
     virtual bool SetAttr(const StringC &attrName,const StringC &attrValue);
     //: Set a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
-    
+
     
     // TimeCodeC getTimeCode() const
     //  { return tcGrab; }
@@ -136,7 +149,7 @@ namespace RavlImageN {
   
   
   class DPIImageDvC 
-    : public DPISPortC<ImageC<ByteRGBValueC> >
+    : public DPISPortC<AVFrameC >
   {
   public:
     DPIImageDvC(const StringC &fn);

@@ -13,17 +13,21 @@
 #include "Ravl/Image/Deinterlace.hh"
 #include "Ravl/DP/Converter.hh"
 #include "Ravl/Image/DVFrame.hh"
+#include "Ravl/AVFrame.hh"
 
 namespace RavlImageN {
   
   void InitDvFrameConvert()
   {}
   
-  ImageC<ByteRGBValueC> ConvertDvFrame2RGBImage(const DVFrameC &dvf) {
+  AVFrameC ConvertDvFrame2AVFrame(const DVFrameC &dvf) {
     DvDecodeC decoder(true);
     return decoder.Apply((ByteT *) &(const_cast<DVFrameC &>(dvf)[0]));
   }
+
+  ImageC<ByteRGBValueC> ConvertAVFrame2RGBByteImage ( const AVFrameC & av ) 
+{ return av.Image() ; } 
   
-  DP_REGISTER_CONVERSION_FT_NAMED(DVFrameC,ImageC<ByteRGBValueC>,ConvertDvFrame2RGBImage,1,"ImageC<ByteRGBValueC> RavlImageN::Convert(const DvFrameC &)");
-  
+  DP_REGISTER_CONVERSION_FT_NAMED(DVFrameC, AVFrameC,ConvertDvFrame2AVFrame,1,"AVFrameC RavlImageN::Convert(const DvFrameC &)");
+  DP_REGISTER_CONVERSION_FT_NAMED(AVFrameC, ImageC<ByteRGBValueC>, ConvertAVFrame2RGBByteImage, 1, "ImageC<ByteRGBValueC> RavlImageN::Convert(const AVFrameC &)") ;
 }
