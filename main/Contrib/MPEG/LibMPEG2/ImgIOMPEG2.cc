@@ -44,10 +44,12 @@ extern "C" {
 namespace RavlImageN
 {
   
-  static char frameTypes[5] = { 'X', 'I', 'P', 'B', 'D' };
+  static const char frameTypes[5] = { 'X', 'I', 'P', 'B', 'D' };
   
-  static int mpeg1_skip_table[16] = { 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  static const int mpeg1_skip_table[16] = { 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+  static const IntT g_cacheStep = 20;
+  
   //: Default constructor.
   
   ImgILibMPEG2BodyC::ImgILibMPEG2BodyC(IntT demuxTrack) :
@@ -61,7 +63,7 @@ namespace RavlImageN
     m_maxFrameIndex(0),
     m_lastRead(0),
     m_offsets(true),
-    m_imageCache(40),
+    m_imageCache(g_cacheStep * 2),
     m_sequenceInit(false),
     m_lastFrameType(0),
     m_demuxTrack(demuxTrack),
@@ -128,7 +130,7 @@ namespace RavlImageN
     UIntT len = input.GetArray(m_buffer);
     
     m_bufEnd = m_bufStart + len;
-    return true;
+    return (len > 0);
   }
 
   //: Register stream attributes.
@@ -247,7 +249,7 @@ namespace RavlImageN
           mpeg2_buffer(m_decoder, m_bufStart, m_bufEnd);
         else
         {
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP failed to read data.." << endl;)
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP failed to read data." << endl;)
           m_state = -2;
           return false;
         }
@@ -294,7 +296,7 @@ namespace RavlImageN
     
     // Find the GOP before the required frame...
     StreamPosT at;
-    while(!m_offsets.Find(firstFrameNo, at))
+    while(!m_offsets.Find(firstFrameNo, at) || at == -1)
     {
       if(firstFrameNo == 0)
         return false;
@@ -312,7 +314,7 @@ namespace RavlImageN
     {
       previousFrameNo = firstFrameNo - 1;
       StreamPosT prevAt;
-      while(!m_offsets.Find(previousFrameNo, prevAt))
+      while(!m_offsets.Find(previousFrameNo, prevAt) || prevAt == -1)
       {
         if(previousFrameNo == 0)
           return false;
@@ -390,13 +392,16 @@ namespace RavlImageN
       // Decode the buffer
       Demultiplex(localFrameNo, info, firstFrameNo);
 
-      // Check we've decoded all required GOPs
-      if (m_gopCount >= m_gopLimit)
-        break;
-      
       // Stop at the end
       if (m_endFound)
         return false;
+
+      // Check we've decoded all required GOPs
+      if (m_gopCount >= m_gopLimit)
+      {
+        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP read (" << m_gopCount << ") GOPs" << endl;)
+        break;
+      }
     } while(true);
 
     return true;
@@ -430,8 +435,18 @@ namespace RavlImageN
     } break;
       
     case STATE_GOP:
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP." << endl;)
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP (" << m_gopCount << ") frame (" << frameNo << ")" << endl;)
       m_gopCount++;
+      
+      // Check it's not a skipped GOP
+      {
+        StreamPosT at;
+        if (m_offsets.Find(frameNo, at) && at == -1)
+        {
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode skipped GOP encountered" << endl;)
+          m_gopLimit++;
+        }
+      }
       break;
 	
     case STATE_PICTURE: {
@@ -466,7 +481,8 @@ namespace RavlImageN
     case STATE_SLICE: {
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got SLICE." << endl;)
       // Ignore the slice if it's well before what we need, or no image is ready
-      if((m_gopLimit - m_gopCount < 3) && info->display_fbuf != 0) {
+      if ((m_gopLimit - m_gopCount < 3) && info->display_fbuf != 0)
+      {
         UIntT frameid = (UIntT) info->display_fbuf->id;
         
         // Only store the image if it's fresh
@@ -477,12 +493,14 @@ namespace RavlImageN
           ImageC<ByteRGBValueC> nimg(m_imgSize[0].V(), m_imgSize[1].V());
 #if 1
           UIntT stride = m_imgSize[1].V();
-          if (info->display_fbuf) {
+          if (info->display_fbuf)
+          {
             //save_pgm (info->sequence->width, info->sequence->height,
             //info->display_fbuf->buf, framenum++);
             ByteT ** xbuf = (ByteT **) info->display_fbuf->buf;
             UIntT row = 0;
-            for(Array2dIterC<ByteRGBValueC> it(nimg);it;row++) {
+            for(Array2dIterC<ByteRGBValueC> it(nimg);it;row++)
+            {
               ByteT *yd = &(xbuf[0][stride * row]); 
               IntT crow = ((row >> 1) & ~((UIntT)1)) + row % 2;
           
@@ -510,12 +528,25 @@ namespace RavlImageN
           ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode skipping frame (" << frameNo << ")" << endl;)
         }
         
+        // Can cause problems if a slice is found after a GOP, so skip this one
+        if (m_gopLimit - m_gopCount < 1)
+        {
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode **** replacing GOP as frame (" << frameNo << ") found after" << endl;)
+          m_offsets.Insert(frameNo, -1, true);
+          m_gopLimit++;
+          m_gopDone = false;
+        }
+
         // Update the frame count
         frameNo++;
         
-        // Can cause problems if a slice is found after a GOP, so skip this one
-        if (m_gopLimit - m_gopCount < 1)
-          m_gopCount--;
+        // Check the cache size
+        UIntT cacheSize = (m_gopLimit - 1) * g_cacheStep;
+        if (cacheSize > m_imageCache.MaxSize())
+        {
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode resized image cache to (" << cacheSize << ")" << endl;)
+          m_imageCache.MaxSize(cacheSize);
+        }
       }
     } break;
       
@@ -808,7 +839,7 @@ namespace RavlImageN
         // Store the read pos
         if (parsePos >= 0 && !m_endFound)
         {
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeBlock **** Recording GOP (" << frameNo << ") at (" << parsePos << ")" << endl;)
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeBlock **** Recording GOP (" << m_gopCount << ") frame (" << frameNo << ") at (" << parsePos << ")" << endl;)
           m_offsets.Insert(frameNo, parsePos, false);
         }
 
@@ -837,7 +868,7 @@ namespace RavlImageN
       // If the last read failed, don't bother again
       if (!ok)
       {
-        cerr << "ImgILibMPEG2BodyC::Get failed to find image GOP." << endl;
+        cerr << "ImgILibMPEG2BodyC::Get failed to find frame (" << m_frameNo << ")" << endl;
         return false;
       }
       
