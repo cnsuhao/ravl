@@ -587,7 +587,7 @@ DvDeviceC::grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, 
 
 
   TimeCodeC tcNext(tcStart);
-  TimeCodeC tcStep(nFrames);
+  TimeCodeC tcStep(nFrames, 25.0);
 
   while(!done) {    
     raw1394_loop_iterate(handle);

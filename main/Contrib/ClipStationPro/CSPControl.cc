@@ -83,7 +83,7 @@ ClipStationProDeviceBodyC::ClipStationProDeviceBodyC(const StringC &devName)
     captureAudio(true), // Capture audio ?
     captureVideo(true), // Capture video ?
     frameBufferSize(0), // 0 = use as much mem as available 
-    timecode_from_getframe((int)0), 
+    timecode_from_getframe((int)0, 25.0), 
     alignDMA (8) // 8 Byte alignment for SDStation Card 
 {
   // register device in global hash
