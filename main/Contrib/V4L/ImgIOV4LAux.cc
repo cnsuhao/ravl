@@ -45,6 +45,13 @@ struct wb_ctrl {
   int oblue;
 };
 
+struct pt_ctrl
+{
+	int absolute;		/* write-only */
+	int pan;		/* degrees * 100 */
+	int tilt;		/* degress * 100 */
+};
+
 // Restore user settings 
 #define PHILIPS_LOAD_SETTINGS		_IO('v', 192)
 
@@ -92,6 +99,9 @@ struct wb_ctrl {
 // Image size
 #define PHILIPS_GET_REALSIZE _IOR('v', 210, struct led_ctrl)
 
+// Pan/Tilt
+#define PHILIPS_SET_ANGLE	_IOW('v', 212, struct pt_ctrl)
+#define PHILIPS_GET_ANGLE	_IOR('v', 212, struct pt_ctrl)
 
 namespace RavlImageN {
   
@@ -377,6 +387,87 @@ namespace RavlImageN {
 	return false;
       }
       mode = val.mode;
+    } return true; 
+    default: break;
+    }    
+    return true;
+  }
+
+  //: Set camera pan
+  
+  bool DPIImageBaseV4LBodyC::SetPan(int pan) {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      pt_ctrl val;
+      val.absolute = 1;
+      if(ioctl(fd,PHILIPS_GET_ANGLE,&val) < 0) {
+	cerr << "WARNING: Failed to get pan. \n";
+	return false;
+      }
+      val.pan = pan;
+      if(ioctl(fd,PHILIPS_SET_ANGLE,&val) < 0) {
+	cerr << "WARNING: Failed to set pan. \n";
+	return false;
+      }
+    } return true; 
+    default: break;
+    }    
+    return false;
+  }
+
+  //: Get camera pan
+  
+  bool DPIImageBaseV4LBodyC::GetPan(int &pan) {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      pt_ctrl val;
+      val.absolute = 1;
+      if(ioctl(fd,PHILIPS_GET_ANGLE,&val) < 0) {
+	cerr << "WARNING: Failed to get pan. \n";
+	return false;
+      }
+      pan = val.pan;
+    } return true; 
+    default: break;
+    }    
+    return false;
+  }
+
+
+  //: Set camera tilt
+  
+  bool DPIImageBaseV4LBodyC::SetTilt(int tilt) {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      pt_ctrl val;
+      val.absolute = 1;
+      if(ioctl(fd,PHILIPS_GET_ANGLE,&val) < 0) {
+	cerr << "WARNING: Failed to get tilt. \n";
+	return false;
+      }
+      val.tilt = tilt;
+      if(ioctl(fd,PHILIPS_SET_ANGLE,&val) < 0) {
+	cerr << "WARNING: Failed to set tilt. \n";
+	return false;
+      }
+    } return true; 
+    default: break;
+    }    
+    return true;
+  }
+
+  //: Set camera pan
+  
+  bool DPIImageBaseV4LBodyC::GetTilt(int &tilt) {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      pt_ctrl val;
+      val.absolute = 1;
+      if(ioctl(fd,PHILIPS_GET_ANGLE,&val) < 0) {
+	cerr << "WARNING: Failed to get tilt. \n";
+	return false;
+      }
+      tilt = val.tilt;
     } return true; 
     default: break;
     }    

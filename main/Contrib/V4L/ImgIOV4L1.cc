@@ -59,7 +59,8 @@ namespace RavlImageN {
     sourceType = SOURCE_UNKNOWN;
     //int camtype;
     ONDEBUG(cerr << " Source name = '" << vidcap.name << "'. \n");
-    if(strncmp(vidcap.name,"Philips ",8) == 0) {
+    if(strncmp(vidcap.name,"Philips ",8) == 0 ||
+       strncmp(vidcap.name,"Logitech QuickCam Orbit",23) == 0) {
       ONDEBUG(cerr << "Got philips webcam. \n");
       sourceType = SOURCE_USBWEBCAM_PHILIPS;
     }

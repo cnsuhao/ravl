@@ -115,6 +115,12 @@ namespace RavlImageN {
     bool SetWhiteBalance(int mode);
     //: Set white balance mode
     
+    bool SetPan(int pan);
+    //: Set camera pan.
+    
+    bool SetTilt(int tilt);
+    //: Set camera tilt.
+    
     bool GetWhiteBalance(int& mode);
     //: Get white balance mode
     
@@ -138,6 +144,12 @@ namespace RavlImageN {
     
     bool GetPad(int &pad);
     //: Get padding flag.
+    
+    bool GetPan(int &pan);
+    //: Get camera pan.
+    
+    bool GetTilt(int &tilt);
+    //: Get camera tilt.
     
     bool HandleGetAttr(const StringC &attrName,StringC &attrValue);
     //: Handle get attrib.

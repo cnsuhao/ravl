@@ -635,6 +635,10 @@ namespace RavlImageN {
       return GetPad(attrValue);
     if(attrName == "whitebalance")
       return GetWhiteBalance(attrValue);
+    if(attrName == "pan")
+      return GetPan(attrValue);
+    if(attrName == "tilt")
+      return GetTilt(attrValue);
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleGetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -666,6 +670,10 @@ namespace RavlImageN {
       return SaveUserSettings();
     if(attrName == "loadusersettings")
       return LoadUserSettings();
+    if(attrName == "pan")
+      return SetPan(attrValue);
+    if(attrName == "tilt")
+      return SetTilt(attrValue);
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -682,6 +690,8 @@ namespace RavlImageN {
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("indicator","Turn on off indicator LED.",true,true,0,65000,1,0));
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("compression","Set amount of compression to use on images.",true,true,0,65000,1,0));
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("whitebalance","Image whitebalance.",true,true,0,65000,1,0));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("pan","Pan.",true,true,-7000,7000,1,0));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("tilt","Tilt.",true,true,-2500,2500,1,0));
     return true;
   }
   
@@ -700,6 +710,8 @@ namespace RavlImageN {
     list.InsLast("compression");
     list.InsLast("whitebalance");
     list.InsLast("reset");
+    list.InsLast("pan");
+    list.InsLast("tilt");
     return true;
   }
 #endif
