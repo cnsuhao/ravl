@@ -61,6 +61,7 @@ namespace RavlN {
          // Clean up
          curl_easy_cleanup(handle);
       }
+      close(fd[1]); // Mark the end of file..
       return true;
    }
 
