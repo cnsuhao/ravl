@@ -8,6 +8,8 @@
 
 ORGANISATION=OmniPerception Ltd.
 
+SUPPORT_ONLY = linux  
+
 PACKAGE= Ravl/Audio
 
 HEADERS= DevAudioIO.hh DevAudioFormat.hh
