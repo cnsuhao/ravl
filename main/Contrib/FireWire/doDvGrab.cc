@@ -8,8 +8,13 @@
 //! rcsid="$Id$"
 //! lib=RavlFireWire
 //! file="Ravl/Contrib/FireWire/doDvGrab.cc"
-//! docentry="Ravl.Images.Video.Video IO.Drivers.VideoLinux1394"
+//! docentry="Ravl.Images.Video.Video IO.DV;Ravl.Applications.Video"
 //! userlevel=Normal
+
+//: Grabs video sequences + audio from a Sony DV VCR
+//
+// <p>This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used).</p>
+// <p><font color=red>Warning</font>: the tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.</p>
 
 #include "Ravl/Option.hh"
 #include "Ravl/OS/Filename.hh"
