@@ -14,6 +14,8 @@
 #include "Ravl/CallMethods.hh"
 #include "Ravl/GUI/WaitForExit.hh"
 #include "Ravl/Threads/Signal1.hh"
+#include "Ravl/GUI/ReadBack.hh"
+
 #include <stdlib.h>
 
 #define DODEBUG 1
@@ -49,15 +51,17 @@ namespace RavlPlotN {
     InitGuppi();
     
     // Create a window and display it.
-    win = WindowC(winSize.LCol().V()+10,winSize.BRow().V()+10,name);
-    canvas = GuppiCanvasC(72*11, 72*8.5);
+    //win = WindowC(winSize.LCol().V()+10,winSize.BRow().V()+10,name);
+    //canvas = GuppiCanvasC(72*11, 72*8.5);
+    win = WindowC(400,400,name);
+    canvas = GuppiCanvasC(72*22, 72*20);
     graph = initGraph;
     canvas.Group().AddFull(graph);  
     win.Add(canvas);
     
     //ConnectRef(win.Signal("delete_event"),*this,&DPGraphWindowBodyC::WindowClosed);
     win.Show();
-    
+    win.SetUSize(400,400);
     // Don't setup view until we're ready to start processing data.
     //view = nview;
     ONDEBUG(cerr << "DPGraphWindowBodyC::Init(), Done.  \n");
@@ -89,7 +93,14 @@ namespace RavlPlotN {
   void DPGraphWindowBodyC::Update(const StringC &name,const Array1dC<RealT> &data) {
     if(!Manager.IsManagerStarted())
       WaitForGUIExit(); 
+#if 0
     RavlGUIN::Manager.Queue(Trigger(DPGraphWindowC(*this),&DPGraphWindowC::GUIUpdate,name,data));
+#else
+    // This makes updates blocking and stops the front end from being overwhelmed by large
+    // numbers of updates.
+    ReadBackLockC rbl;
+    GUIUpdate(name,data);
+#endif
   }
   
   //: Clear the display list.

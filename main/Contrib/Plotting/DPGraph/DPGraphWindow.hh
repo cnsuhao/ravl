@@ -33,7 +33,7 @@ namespace RavlPlotN {
     : public RCBodyVC
   {
   public:
-    DPGraphWindowBodyC(const StringC &nname,const IndexRange2dC &nWinSize = IndexRange2dC(IndexC(100),IndexC(100)));
+    DPGraphWindowBodyC(const StringC &nname,const IndexRange2dC &nWinSize = IndexRange2dC(IndexC(300),IndexC(300)));
     //: Default constructor.
     
     const StringC &Name() const
