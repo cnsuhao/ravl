@@ -39,6 +39,11 @@ namespace RavlN {
       bool Get(StringC& url);
       //: Initialises the download of the URL
 
+   public:
+
+      IntT Push(void *ptr, size_t size, size_t nmemb);
+      //: Pushes data onto the stream from curl
+
    };
   
 }
