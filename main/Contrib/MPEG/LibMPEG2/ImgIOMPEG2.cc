@@ -384,16 +384,19 @@ namespace RavlImageN
       m_demuxState = DEMUX_SKIP;
       m_demuxStateBytes = 0;
     }
+    else
+    {
+      // TODO: This initial read seems to cover over the problems with back seeking :o)
+      if(!ReadData())
+      {
+        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
+        return false;
+      }
+    }
 
     UIntT localFrameNo = firstFrameNo;
     bool gotFrames = false;
     m_gopCount = 0;
-    // TODO: This initial read seems to cover over the problems with back seeking :o)
-    if(!ReadData())
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
-      return false;
-    }
     const mpeg2_info_t *info = mpeg2_info(decoder);
 
     do
