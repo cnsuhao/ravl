@@ -35,11 +35,12 @@
 <B>CONTENTS</B></font></td></tr><tr>
 <td><font face="arial,helvetica" size="+1">
 <a href="#WHAT">What is RAVL ? </a><br>
-<a href="#FEATURES">FEATURES</a><br>
-<a href="#STRUCTURE">STRUCTURE AND STATUS</a><br>
-<a href="#PLATFORMS">SUPPORTED PLATFORMS</a><br>
-<a href="#ACKNOWLEDGE">ACKNOWLEDGEMENTS</a><br>
-<a href="#LINKS">LINKS</a><br>
+<a href="#FEATURES">Features</a><br>
+<a href="#USERS">Users</a><br>
+<a href="#SUPPORT">Supported Platforms</a><br>
+<a href="#LIBS">External Libraries</a><br>
+<a href="#ACKNOWLEDGE">Acknowledgements</a><br>
+<a href="#LINKS">Links</a><br>
 </font></td></tr>
 </table>
 
@@ -58,12 +59,12 @@
     <p>RAVL is a public version of a library used internally within CVSSP
     called AMMA, which contains over 700,000 lines of C++ code.  Much of RAVL's
     design, is based on this work.  It is our intention to port as much of the
-    AMMA code as possible into RAVL, removing code not compatible with the
-    Lesser GNU Public License in the process. </p>
+    AMMA code as possible into RAVL, removing code incompatible with the
+    <A HREF="http://www.gnu.org/copyleft/lesser.html">Lesser GNU Public License</A> in the process. </p>
 
 
 
-    <h3><a name="FEATURES">FEATURES</a></h3>
+    <h3><a name="FEATURES">Features</a></h3>
 
     <p>Some of the features that set RAVL apart from other C++ libraries are:
     </p>
@@ -80,99 +81,68 @@
       
       <li>Easy-to-use and powerful make system suitable for building both large
       and small projects.  </li>
+
+      <li>Open source, licensed under the <A HREF="http://www.gnu.org/copyleft/lesser.html">LGPL</A>.</li>
+
     </ul>
+	
+    <h3><a name="USERS">Users</a></h3>
+    <P>RAVL is being used by a (small) number of organisations...</P>
+    <UL>	
+       <LI><A HREF="http://www.ee.surrey.ac.uk/Research/CVSSP/">Centre for Vision, Speech, and Signal Processing</A> (University of Surrey, UK)</LI>
+       <LI><A HREF="http://www.omniperception.com/">Omniperception Ltd.</A></LI>
+    </UL>
+    <P>If you're using RAVL, please tell us and we'll add you to the list!</P>
 
-
-    <h3><a name="STRUCTURE">STRUCTURE AND STATUS</a></h3>
-
-    <p>RAVL has been split into modules to make porting the code more
-    manageable.  For more information on these modules see the top level of the
-    <a href="http://ravl.sourceforge.net/share/doc/RAVL/Auto/Basic/Tree/Ravl.html"><B>RAVL Manual</B></a>.</p>
-
-    <center>
-      <table BORDER >
-	<tr><th><b>Module</b><th><b>Description</b><th><b>State</b></td></tr>
-	<tr><td>Core<td>Basic types, containers and memory management.<td>Beta</tr>
-	<tr><td>OS<td>Operating System abstraction. <td>Beta</tr>
-	<tr><td>Math<td>Matrix algebra, Statistics and Geometry <td>Alpha (30% done)</tr>
-	<tr><td>Image<td>Image representation and manipulation <td>Alpha (20% done)</tr>
-	<tr><td>PatternRec<td>Pattern recognition tools<td>(5% done)</tr>
-	<tr><td>Surf3D<td>3D Modelling  <td>ToDo</tr>
-	<tr><td>GUI<td>User interface system based on GTK<td>(80% done)</tr>
-      </table>
-    </center>
+    <h3><a name="SUPPORT">Supported Platforms</a></h3>
     
-    <p> There are a number of tools which RAVL requires, the following table
-      lists these and their current state.</p>
+    <p> RAVL is intended to work on a wide range of platforms and compilers. This is especially true of the <B>Core</B> module.</p>
     
-    <center>
-      <table BORDER >
-	<tr><th><b>Tool</b><th><b>Description</b><th><b>State</b></td></tr>
-	<tr><td>QMake<td>Quick make system. <td>Beta</tr>
-	<tr><td>CxxDoc<td>C++ documentation tools <td>Beta</tr>
-      </table>
-    </center>
-    
-    
-    <h3><a name="PLATFORMS">SUPPORTED PLATFORMS</a></h3>
-    
-    <p> RAVL is intended to work on a wide range of platforms and compilers.
-    This is especially true of the `Core' module.  The `OS' module, by
-    definition, contains operating system specific code. The current
-    implementation is oriented towards working on UN*X based platforms.  The
-    MSVC++ port of this code does compile but many of the interfaces are not
-    yet implemented.  It is intended that the MSVC++ port should be fully
-    functional before too long.  </p>
-    
-    <center>
-      <table BORDER >
+      <table BORDER="1" CELLPADDING="5" CELLSPACING="0">
 	<tr><th>Operating System<th>Processor<th>Compiler</tr>
-	<tr><td>Linux<td> i386<td> GNU, g++ (2.95.3 recommended)</tr>
-	<tr><td>Solaris<td> Sparc<td> GNU, g++ (2.95.x  recommended)</tr>
+	<tr><td>Linux<td> i386<td> GNU gcc (3.2.1 recommended)</tr>
+	<tr><td>Solaris<td> Sparc<td> GNU gcc (3.2.1 recommended)</tr>
 	<tr><td>IRIX<td> Mips<td> MIPS Pro </tr>
-	<tr><td>Windows NT<td> i386<td> MSVC++, with latest service pack and <a href="http://www.vapourtech.com/dev/software.php">CCFix</a> </tr>
+	<tr><td>Windows<td> i386<td>Microsoft Visual C++ (6.0 or greater) *</tr>
       </table>
-    </center>
-
-    To compile RAVL Windows users will need the latest service pack
-    for Visual C++, and a patch to the registry that allows it to
-    understand '.cc' and '.hh' files.  There's a utility which will do
-    this fix automatically called <a href="http://www.vapourtech.com/dev/software.php">CCFix</a> .
+	<P>
+	For an overview of the current status of RAVL across various systems and compilers, please see the <A HREF="status.html">status</A> page.
+	<P>
+    * To compile RAVL, VC++ 6.0 users will need the latest service pack, and a patch to the registry that allows it to understand '.cc' and '.hh' files.  There's a utility called <a href="http://www.vapourtech.com/dev/software.php">CCFix</a> which will do this fix automatically.
     
-    <h3> EXTERNAL LIBRARIES </h3>
+    <h3><a name="LIBS">External Libraries</A></h3>
     
     <p>Ravl uses some external libraries, particularly for image IO. If your system doesn't already
       have these libraries you can look for an appropriate version at the following addresses: <p>
     
-    <center>
-      <table BORDER >
-	<tr><td>ZLIB   <td><a href="ftp://ftp.uu.net/graphics/png/src">ftp://ftp.uu.net/graphics/png/src</a> </tr>
-	<tr><td>PNG    <td><a href="ftp://ftp.uu.net/graphics/png/src">ftp://ftp.uu.net/graphics/png/src </a></tr>
-	<tr><td>JPEG   <td><a href="http://www.ijg.org">http://www.ijg.org </a><br>
-	                   <a href="ftp://ftp.uu.net/graphics/jpeg">ftp://ftp.uu.net/graphics/jpeg</a></tr>
-	<tr><td>TIFF   <td><a href="http://www.libtiff.org">http://www.libtiff.org</a></tr>
-	<tr><td>CCMATH <td><a href="http://freshmeat.net/projects/ccmath">http://freshmeat.net/projects/ccmath</a></tr>
+      <table BORDER="1" CELLPADDING="5" CELLSPACING="0">
+	<tr><td>libPNG     <td>Image IO<td><a href="http://www.libpng.org/pub/png/">http://www.libpng.org/pub/png/</a></tr>
+	<tr><td>zlib       <td>Image IO<td><a href="http://www.gzip.org/zlib/">http://www.gzip.org/zlib/</a></tr>
+	<tr><td>libJPEG    <td>Image IO<td><a href="http://www.ijg.org">http://www.ijg.org </a><br>
+	                                   <a href="ftp://ftp.uu.net/graphics/jpeg">ftp://ftp.uu.net/graphics/jpeg</a></tr>
+	<tr><td>libTIFF    <td>Image IO<td><a href="http://www.libtiff.org">http://www.libtiff.org</a></tr>
+	<tr><td>GTK        <td>GUI     <td><a href="http://www.gtk.org/">http://www.gtk.org/</a></tr>
+	<tr><td>cURL       <td>URL IO  <td><a href="http://curl.haxx.se/">http://curl.haxx.se/</a></tr>
       </table>
-    </center>
 	
 
 
-    <h3><a name="ACKNOWLEDGE">ACKNOWLEDGEMENTS</a></h3>
+    <h3><a name="ACKNOWLEDGE">Acknowledgements</a></h3>
     
     <p>The core of AMMA was originally written by Radek Marik, with help from
     many other members of CVSSP.  The work of porting AMMA to RAVL is largely
     being undertaken by Charles Galambos, again with help from other members of
-    CVSSP.</p>
+    CVSSP. The RavlMath library includes <A HREF="http://freshmeat.net/projects/ccmath">ccmath</A>, written by  Daniel A. Atkinson.</p>
 
-    <h3><a name="LINKS">LINKS</a></h3>
+    <h3><a name="LINKS">Links</a></h3>
     
     <li><a href="http://ravl.sourceforge.net/share/doc/RAVL/Auto/Basic/Tree/Ravl.html"><B>MANUAL</B></a></font></td> The RAVL documentation. </li>
     
-    <li> <a href="http://ravl.sourceforge.net/download.html"><B>DOWNLOAD</B></a></font></td> The latest releases. </li>
+    <li><a href="http://ravl.sourceforge.net/download.html"><B>DOWNLOAD</B></a></font></td> The latest releases. </li>
     
     <li><a href="http://sourceforge.net/tracker/?func=add&group_id=24497&atid=381539"><B>BUG REPORTS</B></a> Because no one's perfect. </li>
     
-    <li><A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=24497"
+    <li><A href="http://sourceforge.net"><IMG src="http://sourceforge.net/sflogo.php?group_id=24497" align="MIDDLE"
 	  width="88" height="31" border="0" alt="SourceForge Logo"></A> Who are kindly hosting RAVL. </li>
     
     <hr>
