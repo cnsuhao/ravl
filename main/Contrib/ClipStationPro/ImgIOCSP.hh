@@ -16,6 +16,7 @@
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Image/YUV422Value.hh"
+#include "Ravl/Image/Deinterlace.hh"
 
 namespace RavlImageN {
   
@@ -37,7 +38,8 @@ namespace RavlImageN {
       BufferC<PixelT> buf = GetFrame();
       if(!buf.IsValid())
 	return ImageC<PixelT>();
-      return ImageC<PixelT>((UIntT) rect.Rows(),(UIntT) rect.Cols(),buf);
+      ImageC<PixelT> img((UIntT) rect.Rows(),(UIntT) rect.Cols(),buf);
+      return Deinterlace(img);
     }
     //: Get next image.
     
@@ -45,7 +47,8 @@ namespace RavlImageN {
       BufferC<PixelT> buf = GetFrame();
       if(!buf.IsValid())
 	return false;
-      buff = ImageC<PixelT>((UIntT) rect.Rows(),(UIntT) rect.Cols(),buf);
+      ImageC<PixelT> img((UIntT) rect.Rows(),(UIntT) rect.Cols(),buf);
+      buff = Deinterlace(img);
       return true;
     }
     //: Get next image.

@@ -28,7 +28,9 @@ namespace RavlImageN {
       rect(nrect),
       useDMA(true),
       doInput(true),
-    fifoMode(true)
+      fifoMode(true),
+      captureAudio(true), // Capture audio ?
+      captureVideo(true) // Capture video ?
   {
     dev = sv_open((char *) devName.chars());
     ONDEBUG(cerr << "CSP Device open:" << ((void *) dev) << " (" << devName << ")\n");
@@ -55,7 +57,7 @@ namespace RavlImageN {
     //  sv_status(dev,&svinfo);
     
     int ret;
-    if((ret = sv_videomode(dev,SV_MODE_PAL )) != SV_OK) {
+    if((ret = sv_videomode(dev,SV_MODE_PAL)) != SV_OK) {
       cerr << "Failed to set mode to PAL. Error:" << ret <<"\n";
       return false;
     }
@@ -68,7 +70,9 @@ namespace RavlImageN {
       cerr << "Failed to set sync to external:" << ret << "\n";
       return false;
     }
-    
+    if((ret = sv_option(dev,SV_OPTION_VITCLINE,21)) != SV_OK) {
+      cerr << "Failed to set vitc line:" << ret << "\n";
+    }
 #if 0
     if((ret = sv_option(dev,SV_OPTION_INPUTPORT,SV_INPORT_SDI)) != SV_OK) {
       cerr << "Failed to set input to SDI 1:" << ret << "\n";
@@ -79,6 +83,27 @@ namespace RavlImageN {
       return false;
     }    
 #endif 
+#if 0
+    // Audio...
+    int audioChannels,audioBits,audioSize;
+    if((ret = sv_option(dev, SV_OPTION_AUDIOINPUT,SV_AUDIOINPUT_AIV )) != SV_OK) {
+      cerr << "Failed to set audio input." << ret << "\n";
+    }
+    if((ret = sv_option(dev, SV_OPTION_AUDIOCHANNELS,1 )) != SV_OK) {
+      cerr << "Failed to set audio channels." << ret << "\n";
+    }
+    if((ret = sv_query(dev, SV_QUERY_AUDIOCHANNELS, 0, &audioChannels)) != SV_OK) {
+      cerr << "Failed to query audio channels." << ret << "\n";
+    }
+    if((ret = sv_query(dev, SV_QUERY_AUDIOBITS, 0, &audioBits)) != SV_OK) {
+      cerr << "Failed to query audio bits." << ret << "\n";
+    }
+    if((ret = sv_query(dev, SV_QUERY_AUDIOSIZE, 0, &audioSize)) != SV_OK) {
+      cerr << "Failed to query audio soize." << ret << "\n";
+    }
+    cerr << "Audio Channels=" << audioChannels << " Bits=" << audioBits << " Size=" << audioSize << "\n";
+#endif
+    
     ONDEBUG(cerr << "videomode returned:" << ret << "\n");
     if(fifoMode) {
       //ret = sv_fifo_init(dev,&fifo,1,1,0,0,0);
@@ -87,7 +112,17 @@ namespace RavlImageN {
       ONDEBUG(cerr << "Fifo_init:" << ret << "\n" << sv_geterrortext(ret) << "\n");
       ret = sv_fifo_start(dev,fifo); // Start it going...
       ONDEBUG(cerr << "Fifo_start:" << ret << "\n" << sv_geterrortext(ret) << "\n");
+      
+      if((ret = sv_fifo_configstatus(dev,fifo,&fifo_config)) != SV_OK) {
+	cerr << "Failed to get fifo status. Error:" << ret << "\n";
+	return false;
+      }
+      cerr << "Field offset=" << fifo_config.field1offset << " " << fifo_config.field2offset << "\n";
+    } else {
+      // Setup some paramiters that might be needed anyway.
+      fifo_config.dmaalignment = 1;
     }
+    
     return true;
   }
   
@@ -135,26 +170,45 @@ namespace RavlImageN {
       return BufferC<ByteYUV422ValueC>();
     }
     int ret;
-    if((ret = sv_fifo_getbuffer(dev,fifo,&svbuf,0,SV_FIFO_FLAG_VIDEOONLY)) != SV_OK) {
+    if((ret = sv_fifo_getbuffer(dev,fifo,&svbuf,0,0)) != SV_OK) { //SV_FIFO_FLAG_VIDEOONLY
       cerr << "Failed to get frame :" << ret << "\n";
       return BufferC<ByteYUV422ValueC>();
     }
     
-    DMABufferC<ByteYUV422ValueC> buf((svbuf->video[0].size + svbuf->video[1].size) / sizeof(ByteYUV422ValueC) );
+    //int audioBufferSize = fifo_config.abuffersize;
+    int dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize;
+    cerr << "Audio buffer=" << fifo_config.abuffersize << "\n";
+    //cerr << "VideoBuffer :" << fifo_config.vbuffersize << "  Actual:" << (svbuf->video[0].size + svbuf->video[1].size) << "\n";
+    DMABufferC<ByteYUV422ValueC> buf(dmaBufferSize / sizeof(ByteYUV422ValueC),fifo_config.dmaalignment);
     //cerr << "field size: " << svbuf->video[0].size << "\n";
     
     if(useDMA) {
       svbuf->dma.addr = (char *)  buf.ReferenceElm();
-      svbuf->dma.size = svbuf->video[0].size + svbuf->video[1].size;
+      svbuf->dma.size = dmaBufferSize;
       //cerr << "Doing DMA\n";
     } else {
       //cerr << "Doing memcpy.\n";
-      memcpy(buf.ReferenceElm(),svbuf->video[0].addr,svbuf->video[0].size + svbuf->video[1].size);
+      memcpy(buf.ReferenceElm(),svbuf->video[0].addr,(svbuf->video[0].size + svbuf->video[1].size));
     }
+    
+    cerr <<"TimeCode1 ltc:" << svbuf->timecode.ltc_tc << " vitc:" << svbuf->timecode.vitc_tc << " vitc2:" << svbuf->timecode.vitc_tc2 <<  " tick:"<< svbuf->timecode.vtr_tick << " vtr:" << svbuf->timecode.vtr_tc << " Lock:" << svbuf->timecode.vtr_lockcount << " \n";
     if((ret = sv_fifo_putbuffer(dev,fifo,svbuf,0)) != SV_OK) {
       cerr << "ERROR ClipStationProDeviceC: Failed to put frame " << ret << "\n";
       return DMABufferC<ByteYUV422ValueC>();
     }
+    cerr <<"TimeCode1 ltc:" << svbuf->timecode.ltc_tc << " vitc:" << svbuf->timecode.vitc_tc << " vitc2:" << svbuf->timecode.vitc_tc2 <<  " tick:"<< svbuf->timecode.vtr_tick << " vtr:" << svbuf->timecode.vtr_tc << " Lock:" << svbuf->timecode.vtr_lockcount << " \n";
+    
+#if 0
+    int timecode;
+    //if((ret = sv_query(dev,SV_QUERY_VITCTIMECODE,0,&timecode)) != SV_OK) {
+    //      cerr << "Failed to query vitc:" << ret << "\n";
+    //    }
+    if((ret = sv_query(dev,SV_QUERY_LTCTIMECODE,0,&timecode)) != SV_OK) {
+      cerr << "Failed to query vitc:" << ret << "\n";
+    }
+    cerr << "Inital time code = " << timecode << "\n";
+#endif
+    
 #if DODEBUG
     sv_fifo_info info;
     sv_fifo_status(dev,fifo,&info);

@@ -18,9 +18,9 @@ extern ImageC<ByteT> ByteYUV422ImageCT2ByteImageCT(const ImageC<ByteYUV422ValueC
 
 int main(int nargs,char **argv) {
   OptionC opts(nargs,argv);
-  StringC dev = opts.String("d","PCI,card:0","Device to use.");
+  StringC dev = opts.String("d","PCI,card:1","Device to use.");
   bool seq = opts.Boolean("s",false,"Sequence. ");
-  StringC out = opts.String("","test.ppm","Output");
+  StringC out = opts.String("","@X","Output");
   opts.Check();
   cerr << "Opening device.\n";
   

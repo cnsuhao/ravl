@@ -49,10 +49,14 @@ namespace RavlImageN {
   protected:
     sv_handle *dev;
     sv_fifo *fifo;
+    sv_fifo_configinfo fifo_config;
+    
     ImageRectangleC rect;
     bool useDMA;  // Use DMA transfer's.
     bool doInput;
     bool fifoMode; // Use fifo ?
+    bool captureAudio; // Capture audio ?
+    bool captureVideo; // Capture video ?
   };
 
 }
