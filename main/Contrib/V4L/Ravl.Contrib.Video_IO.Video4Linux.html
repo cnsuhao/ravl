@@ -45,6 +45,23 @@
     }
 
     </pre>
-
+    
+    <h3>V4L stream attributes:</h3>
+    <ul>
+      <li><b>framerate</b> Number of frames per second. </li>
+      <li><b>brightness</b> Brightness.Integer 0-65535  </li>
+      <li><b>contrast</b>  Contrast. Integer 0-65535  </li>
+      <li><b>gamma</b> Gamma correction. Integer 0-65535 </li>
+      <li><b>agc</b> Philips webcam. AGC control. Integer 0-65535  </li>
+      <li><b>indicator</b> Philips webcam. Control of the indicator. Lower 16 bits, time on, upper 16bits time off in milliseconds. </li>
+      <li><b>padded</b> Philips webcam. size of image padding. </li>
+      <li><b>compression</b> Philips webcam. Prefered compression 0-None 100-Maximum.  </li>
+      <li><b>shutter_speed</b> Philips webcam. Integer. Time in 1/65536 seconds ?  </li>
+      <li><b>whitebalance</b> Philips webcam. White balance mode.   </li>
+      <li><b>reset</b> Philips webcam. When set, resets the camera to its factory defaults.  </li>
+    </ul>
+    
+    <p> For more information on control's relating to the philips web cam driver see <a href="http://www.smcc.demon.nl/webcam/api.html">Philips USB webcam API<a>.
+    </p>
   </body>
 </html>
