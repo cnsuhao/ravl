@@ -7,6 +7,9 @@
 //! rcsid="$Id$"
 //! lib=RavlImgIO1394dc
 //! docentry="Ravl.Images.Video.Video IO.IIDC"
+//! userlevel=Develop
+
+//: Tests IIDC camera interface
 
 
 #include "Ravl/Option.hh"

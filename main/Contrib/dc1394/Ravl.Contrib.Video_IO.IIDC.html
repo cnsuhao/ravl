@@ -6,14 +6,21 @@
   </head>
 
   <body>
-  Very preliminary support for firewire cameras using the IIDC protocol. Currently only supports the capture of grey scale images.  Support for a wider range of cameras will be provided on request, or when I get my hands on some other cameras.
+    <p>Very preliminary support for firewire cameras using the IIDC
+    protocol. Currently only supports the capture of grey scale
+    images. </p>
 
-<p>
-For a list of cameras supporting this protocol see:
-<a href="http://www.tele.ucl.ac.be/PEOPLE/DOUXCHAMPS/ieee1394/cameras/">http://www.tele.ucl.ac.be/PEOPLE/DOUXCHAMPS/ieee1394/cameras</a>
-<br>
-This driver requires the libdc1394 library which can be found at:
-<a href="http://sourceforge.net/projects/libdc1394">http://sourceforge.net/projects/libdc1394</a>
+    <p>To use the virtual files mechanism, use <code>@IIDC</code> as
+    the i/p file name.  For multiple cameras, use
+    <code>@IIDC:#0</code>, <code>@IIDC:#1</code> etc.</p>
+
+    <p> For a list of cameras supporting this protocol see: <a
+    href="http://www.tele.ucl.ac.be/PEOPLE/DOUXCHAMPS/ieee1394/cameras/">
+    http://www.tele.ucl.ac.be/PEOPLE/DOUXCHAMPS/ieee1394/cameras</a>
+    <br>
+    This driver requires the libdc1394 library which can be found at:
+    <a href="http://sourceforge.net/projects/libdc1394">
+    http://sourceforge.net/projects/libdc1394</a> </p>
 
   </body>
 </html>
