@@ -75,23 +75,24 @@ namespace RavlImageN {
     }
 
     // Set channel.
-    if(vidcap.channels > 1) {
-      struct video_channel vidchannel;
-      vidchannel.channel=1;
-      vidchannel.norm = 0;
-      if(ioctl(fd,VIDIOCGCHAN,&vidchannel) < 0) {
-	cerr << "Failed to get video channel paramiters. \n";
-	return false;
-      }
-      ONDEBUG(cerr << "Channel " << vidchannel.channel << " Name=" << vidchannel.name << " Norm=" << vidchannel.norm << " Type=" << vidchannel.type << " Flags=" << vidchannel.flags << "\n");
-      // Should check the channel properties.
-      vidchannel.channel=1;
-      if(ioctl(fd,VIDIOCSCHAN,&vidchannel) < 0) {
-	cerr << "Failed to set video channel paramiters. \n";
-	return false;
-      }
+    if(channel >= 0) {
+      if(vidcap.channels > channel) {
+	struct video_channel vidchannel;
+	vidchannel.channel=channel;
+	if(ioctl(fd,VIDIOCGCHAN,&vidchannel) < 0) {
+	  cerr << "Failed to get video channel paramiters. \n";
+	  return false;
+	}
+	ONDEBUG(cerr << "Channel " << vidchannel.channel << " Name=" << vidchannel.name << " Norm=" << vidchannel.norm << " Type=" << vidchannel.type << " Flags=" << vidchannel.flags << "\n");
+	// Should check the channel properties.
+	vidchannel.channel=channel;
+	if(ioctl(fd,VIDIOCSCHAN,&vidchannel) < 0) {
+	  cerr << "Failed to set video channel paramiters. \n";
+	  return false;
+	}
+      } else
+	cerr << "Video device has no channel number " << channel << "\n";
     }
-    
     if(npixType == typeid(ByteYUVValueC)) {
       vidpic.palette = VIDEO_PALETTE_YUYV;
       if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
@@ -113,6 +114,18 @@ namespace RavlImageN {
 	  return false;	
 	}
       }
+    } else if(npixType == typeid(ByteT)) {
+      vidpic.palette = VIDEO_PALETTE_GREY;
+      if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
+	vidpic.palette = VIDEO_PALETTE_YUV420P;
+	if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
+	  cerr << "Failed to set video picture paramiters. \n";
+	  return false;	
+	}
+      }
+    } else {
+      cerr << "Unsupported pixel type " << npixType.name() << "\n";
+      return false;
     }
     if(ioctl(fd,VIDIOCGPICT,&vidpic)) {
       cerr << "Failed to get video mode. \n";

@@ -73,7 +73,12 @@ namespace RavlImageN {
   }
   
   bool FileFormatV4LBodyC::CheckGREY(int fd,struct video_picture &vidpic) const {
-    // Not supported in ImgIOV4L yet.
+    vidpic.palette = VIDEO_PALETTE_GREY;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // Grey level is supported.
+    vidpic.palette = VIDEO_PALETTE_YUV420P;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
     return false;
   }
   
@@ -86,6 +91,12 @@ namespace RavlImageN {
       return typeid(void);
     StringC device = ExtractDevice(filename);
     StringC file = ExtractParams(filename);
+    int channel = 0;
+    int pn = file.index('#');
+    if(pn >= 0) { // Got a channel number ?
+      channel = file.after(pn).IntValue();
+      file = file.before(pn);
+    }
     ONDEBUG(cerr << "FileFormatV4LBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " Device=" << device <<"\n");
     if(device != "V4L" && device != "V4LH")
       return typeid(void);
@@ -202,15 +213,23 @@ namespace RavlImageN {
     return DPIPortBaseC();
     StringC fn = ExtractParams(filename);
     StringC dev = ExtractDevice(filename);
+    int channel = 0;
+    int pn = fn.index('#');
+    if(pn >= 0) { // Got a channel number ?
+      channel = fn.after(pn).IntValue();
+      fn = fn.before(pn);
+    }
     bool half = false;
     if(dev == "V4LH")
       half = true; // Attempt to get images halfed along each dimention.
     if(fn == "")
       fn = "/dev/video0";
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
-      return DPIImageV4LC<ByteYUVValueC>(fn,half);
+      return DPIImageV4LC<ByteYUVValueC>(fn,half,channel);
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
-      return DPIImageV4LC<ByteRGBValueC>(fn,half);
+      return DPIImageV4LC<ByteRGBValueC>(fn,half,channel);
+    if(obj_type == typeid(ImageC<ByteT>))
+      return DPIImageV4LC<ByteT>(fn,half,channel);
     return DPIPortBaseC();
   }
   

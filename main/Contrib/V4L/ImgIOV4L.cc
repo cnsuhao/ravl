@@ -43,14 +43,15 @@ namespace RavlImageN {
   
   //: Constructor.
   
-  DPIImageBaseV4LBodyC::DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,const ImageRectangleC &nrect)
+  DPIImageBaseV4LBodyC::DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,const ImageRectangleC &nrect,int nchannel)
     : rect(nrect),
       fd(-1),
       buf_grey(0),
       buf_u(0),
       buf_v(0),
       half(false),
-      memmap(false)
+      memmap(false),
+      channel(nchannel)
   {
     sourceType = SOURCE_UNKNOWN;
     if(!Open(dev,npixType,nrect))
@@ -58,14 +59,15 @@ namespace RavlImageN {
     //DumpParam(cerr);
   }
 
-  DPIImageBaseV4LBodyC::DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,bool nhalf)
+  DPIImageBaseV4LBodyC::DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,bool nhalf,int nchannel)
     : rect(0,-1,0,-1),
       fd(-1),
       buf_grey(0),
       buf_u(0),
       buf_v(0),
       half(nhalf),
-      memmap(false)
+      memmap(false),
+      channel(nchannel)
   {
     sourceType = SOURCE_UNKNOWN;
     if(!Open(dev,npixType,rect))
@@ -110,38 +112,63 @@ namespace RavlImageN {
     return true;
   }
   
-  bool DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC> &ret) {
-    //ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC>&) Called \n");
+  //: Pre next frame capture.
+  
+  bool DPIImageBaseV4LBodyC::NextPre() {
     if(fd < 0) {
       cerr << "ERROR: No filehandle \n";
-      ret =  ImageC<ByteYUVValueC>();
       return false;
     }
-    int rsize,rret;
-    
+    int rret;
     if(memmap) {
-      switch(palette) {
-      case VIDEO_PALETTE_YUV420P: {
-	int area2 = rect.Area()/4;
-	buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
-	buf_u = &buf_grey[rect.Area()];
-	buf_v = &buf_u[area2];
-      } break;
-      case VIDEO_PALETTE_UYVY:
-      case VIDEO_PALETTE_YUYV:
-      default:
-	buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
-	break;
-      }
-      
+      buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
       if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) < 0)
 	cerr << "Failed to sync buffer. err=" << rret << " " << errno << " bufNo=" << bufNo << "\n";
       //cerr << "Buf=" << bufNo << "\n";
     }
+    return true;
+  }
+  
+  //: Post next frame capture.
+  
+  bool DPIImageBaseV4LBodyC::NextPost() {
+    if(!NextPre())
+      return false;
+    int rret;
+    if(memmap) {
+      struct video_mmap vmmap;
+      vmmap.frame = bufNo;
+      vmmap.height = rect.Rows();
+      vmmap.width = rect.Cols();
+      vmmap.format = palette;
+      if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) < 0) {
+	cerr << "Failed to start memory mapped capture. " << rret << " Errno=" << errno << " buf=" << bufNo << "\n";
+	return false;
+      }
+      
+      // Increment buffer no.
+      
+      bufNo++;
+      if((UIntT) bufNo >= frameOffsets.Size())
+	bufNo = 0;
+    }
+    return true;
+  }
+  
+  bool DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC> &ret) {
+    if(!NextPre()) {
+      ret =  ImageC<ByteYUVValueC>();
+      return false;
+    }
+    int rsize,rret;
+    //ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC>&) Called \n");
     switch(palette) 
       {
       case VIDEO_PALETTE_YUV420P: 
 	{
+	  int area2 = rect.Area()/4;
+	  buf_u = &buf_grey[rect.Area()];
+	  buf_v = &buf_u[area2];
 	  if(!memmap) {
 	    rsize = rect.Area() + rect.Area()/2;
 	    if((rret = read(fd,buf_grey,rsize)) != rsize) {
@@ -231,55 +258,19 @@ namespace RavlImageN {
 	break;
       default:
 	cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC>), Don't know how to handle palette mode: " << palette << "\n";
+	NextPost();
 	return false;
       }
-    
-    if(memmap) {
-      struct video_mmap vmmap;
-      vmmap.frame = bufNo;
-      vmmap.height = rect.Rows();
-      vmmap.width = rect.Cols();
-      vmmap.format = palette;
-      if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) < 0) {
-	cerr << "Failed to start memory mapped capture. " << rret << " Errno=" << errno << " buf=" << bufNo << "\n";
-	return false;
-      }
-      
-      // Increment buffer no.
-      
-      bufNo++;
-      if((UIntT) bufNo >= frameOffsets.Size())
-	bufNo = 0;
-    }
-    return true;
+    return NextPost();
   }
   
-
+  
   //: Get next RGB frame from grabber.
   
   bool DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteRGBValueC> &ret) {
-    int rret;
-    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteRGBValueC>&) Called \n");
-    if(fd < 0) {
-      cerr << "ERROR: No filehandle \n";
+    if(!NextPre()) {
       ret =  ImageC<ByteRGBValueC>();
       return false;
-    }
-    if(memmap) {
-      buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
-      switch(palette) {
-      case VIDEO_PALETTE_YUV420P: {
-	int area2 = rect.Area()/4;
-	buf_u = &buf_grey[rect.Area()];
-	buf_v = &buf_u[area2];
-      } break;
-      default:
-	break;
-      }
-      
-      if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) < 0)
-	cerr << "Failed to sync buffer. err=" << rret << " " << errno << " bufNo=" << bufNo << "\n";
-      //cerr << "Buf=" << bufNo << "\n";
     }
     switch(palette) 
       {
@@ -305,26 +296,59 @@ namespace RavlImageN {
 	break;
       default:
 	cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteRGBValueC>), Don't know how to handle palette mode: " << palette << "\n";
+	NextPost();
 	return false;
       }
-    if(memmap) {
-      struct video_mmap vmmap;
-      vmmap.frame = bufNo;
-      vmmap.height = rect.Rows();
-      vmmap.width = rect.Cols();
-      vmmap.format = palette;
-      if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) < 0) {
-	cerr << "Failed to start memory mapped capture. " << rret << " Errno=" << errno << " buf=" << bufNo << "\n";
-	return false;
-      }
-      
-      // Increment buffer no.
-      
-      bufNo++;
-      if((UIntT) bufNo >= frameOffsets.Size())
-	bufNo = 0;
+    return NextPost();
+  }
+
+  //: Get next grey level frame from grabber.
+  
+  bool DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteT> &ret) {
+    if(!NextPre()) {
+      ret =  ImageC<ByteT>();
+      return false;
     }
-    return true;
+    int rsize,rret;
+    switch(palette) 
+      {
+      case VIDEO_PALETTE_GREY: 
+	ret = ImageC<ByteT>(rect);
+	if(!memmap) {
+	  // Read in grey level info.
+	  rsize = rect.Area();
+	  if((rret = read(fd,&(ret[rect.Origin()]),rsize)) != rsize) {
+	    cerr << "Read failed. Bytes read = " << rret << " \n";
+	    return false;
+	  }
+	} else
+	  memcpy(&(ret[rect.Origin()]),buf_grey,rect.Area());	
+	break;
+      case VIDEO_PALETTE_YUV420P: 
+	ret = ImageC<ByteT>(rect);
+	if(!memmap) {
+	  // Read in grey level info.
+	  rsize = rect.Area();
+	  if((rret = read(fd,&(ret[rect.Origin()]),rsize)) != rsize) {
+	    cerr << "Read failed. Bytes read = " << rret << " \n";
+	    return false;
+	  }
+	  // Discard colour information.
+	  rsize = rect.Area()/2;
+	  if((rret = read(fd,buf_grey,rsize)) != rsize) {
+	    cerr << "Read failed. Bytes read = " << rret << " \n";
+	    return false;
+	  }
+	} else
+	  memcpy(&(ret[rect.Origin()]),buf_grey,rect.Area());
+	break;
+      default:
+	cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteT>), Don't know how to handle palette mode: " << palette << "\n";
+	NextPost();
+	return false;
+      }
+    
+    return NextPost();
   }
   
 }

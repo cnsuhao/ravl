@@ -27,10 +27,10 @@ namespace RavlImageN {
   class DPIImageBaseV4LBodyC
   {
   public:
-    DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,const ImageRectangleC &nrect);
+    DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,const ImageRectangleC &nrect,int channel = -1);
     //: Constructor.
     
-    DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,bool half);
+    DPIImageBaseV4LBodyC(const StringC &dev,const type_info &npixType,bool half,int channel = -1);
     //: Constructor.
     
     ~DPIImageBaseV4LBodyC();
@@ -46,11 +46,20 @@ namespace RavlImageN {
     bool Close();
     //: Close connection to meteor.
     
+    bool NextPre();
+    //: Pre next frame capture.
+    
+    bool NextPost();
+    //: Post next frame capture.
+    
     bool NextFrame(ImageC<ByteYUVValueC> &ret);
     //: Get next YUV frame from grabber.
     
     bool NextFrame(ImageC<ByteRGBValueC> &ret);
     //: Get next RGB frame from grabber.
+
+    bool NextFrame(ImageC<ByteT> &ret);
+    //: Get next grey level frame from grabber.
     
     bool SetupPhilips();
     //: Setup a philips webcam.
@@ -72,6 +81,7 @@ namespace RavlImageN {
     bool memmap; // Use memory mapping.
     SArray1dC<int> frameOffsets;
     int bufNo;
+    int channel;
   };
   
   //! userlevel=Develop
@@ -83,13 +93,13 @@ namespace RavlImageN {
       public DPIImageBaseV4LBodyC
   {
   public:
-    DPIImageV4LBodyC(const StringC &dev,const ImageRectangleC &nrect = ImageRectangleC(0,-1,0,-1))
-      : DPIImageBaseV4LBodyC(dev,typeid(PixelT),nrect)
+    DPIImageV4LBodyC(const StringC &dev,const ImageRectangleC &nrect = ImageRectangleC(0,-1,0,-1),int channel = -1)
+      : DPIImageBaseV4LBodyC(dev,typeid(PixelT),nrect,channel)
     {}
     //: Constructor.
     
-    DPIImageV4LBodyC(const StringC &dev,bool half)
-      : DPIImageBaseV4LBodyC(dev,typeid(PixelT),half)
+    DPIImageV4LBodyC(const StringC &dev,bool half,int channel = -1)
+      : DPIImageBaseV4LBodyC(dev,typeid(PixelT),half,channel)
     {}
     //: Constructor.
     
@@ -131,13 +141,13 @@ namespace RavlImageN {
     //: Default constructor.
     // creates an invalid handle.
     
-    DPIImageV4LC(const StringC &dev,const ImageRectangleC &nrect = ImageRectangleC(0,-1,0,-1))
-      : DPEntityC(*new DPIImageV4LBodyC<PixelT>(dev,nrect))
+    DPIImageV4LC(const StringC &dev,const ImageRectangleC &nrect = ImageRectangleC(0,-1,0,-1),int channel = -1)
+      : DPEntityC(*new DPIImageV4LBodyC<PixelT>(dev,nrect,channel))
     {}
     //: Constructor.
     
-    DPIImageV4LC(const StringC &dev,bool half)
-      : DPEntityC(*new DPIImageV4LBodyC<PixelT>(dev,half))
+    DPIImageV4LC(const StringC &dev,bool half,int channel = -1)
+      : DPEntityC(*new DPIImageV4LBodyC<PixelT>(dev,half,channel))
     {}
     //: Constructor.
     
