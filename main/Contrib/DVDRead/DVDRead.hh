@@ -67,10 +67,10 @@ namespace RavlN
     bool GetAttr(const StringC &attrName, StringC &attrValue);
     //: Get an attribute
   
-    bool GetAttrList(DListC<StringC> &list) const;
-    //: Get a list of attributes
-
   protected:
+    void BuildAttributes();
+    //: Register stream attributes
+    
     void Close();
     //: Close the DVD read objects
     

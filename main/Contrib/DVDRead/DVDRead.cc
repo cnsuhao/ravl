@@ -14,6 +14,7 @@
 #include "dvdread/ifo_print.h"
 #include "dvdread/nav_read.h"
 #include "Ravl/DList.hh"
+#include "Ravl/DP/AttributeValueTypes.hh"
 
 #define DODEBUG 0
 
@@ -47,6 +48,8 @@ namespace RavlN
     m_curBlock(-1),
     m_curBlockBuf(DVD_VIDEO_LB_LEN)
   {
+    BuildAttributes();
+
     // Try to open the DVD device
     m_dvdReader = DVDOpen(m_device);
     if (!m_dvdReader)
@@ -524,16 +527,16 @@ namespace RavlN
 
     return DPPortBodyC::GetAttr(attrName, attrValue);
   }
-  
-  bool DVDReadBodyC::GetAttrList(DListC<StringC> &list) const
-  {
-    list.InsLast(StringC("mpegversion"));
-    list.InsLast(StringC("videoformat"));
-    list.InsLast(StringC("aspectratio"));
-    list.InsLast(StringC("framesize"));
-    list.InsLast(StringC("duration"));
-    list.InsLast(StringC("framerate"));
-    return DPPortBodyC::GetAttrList(list);
+
+  //: Register stream attributes.
+
+  void DVDReadBodyC::BuildAttributes() {
+    RegisterAttribute(AttributeTypeStringC("mpegversion","MPEG version",true,false));
+    RegisterAttribute(AttributeTypeStringC("videoformat","Video format",true,false));
+    RegisterAttribute(AttributeTypeStringC("aspectratio","Aspect ratio",true,false));
+    RegisterAttribute(AttributeTypeStringC("framesize","Frame size",true,false));
+    RegisterAttribute(AttributeTypeStringC("duration","Duration",true,false));
+    RegisterAttribute(AttributeTypeStringC("framerate","Frame rate",true,false));
   }
 
 }
