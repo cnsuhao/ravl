@@ -127,16 +127,15 @@ namespace RavlN {
     StringC encoded;
     for (unsigned int i=0; i<string.Size(); i++) {
       if (!isalpha(string[i]) && !isdigit(string[i])) {
-	encoded += "%";
-	char hex[3];
-	snprintf(hex,3,"%X",string[i]);
-	encoded += hex[0];
-	encoded += hex[1];
+	StringC str;
+	str.form("%%%X",string[i]);
+	encoded += str;
       }
       else {
 	encoded += string[i];
       }
     }
+    cerr << encoded;
     return encoded;
   }
 
