@@ -21,7 +21,7 @@ MUSTLINK=ClipStationPro.cc
 
 PLIB= CSPDriver
 
-USESLIBS=ClipStation RavlCore RavlImage RavlImageIO
+USESLIBS=ClipStationPro RavlCore RavlImage RavlImageIO
 # Mtext Mopt Mimage DataProc DPImageIO DPDisplayIO
 
 PROGLIBS= RavlDPDisplay RavlOSIO
