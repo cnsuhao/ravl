@@ -21,6 +21,7 @@ int doDvGrab(int argc, char **argv)
   StringC       PpmImage = opt.String("ppm", "00:00:00:00", "Grab a single frame at given timecode");
   StringC       tcStart = opt.String("start", "00:00:00:00", "start timecode");
   StringC       tcEnd   = opt.String("end", "00:00:00:00", "end timecode");
+  UIntT         Step    = opt.Int("step", 0, "if set then we grab every step frames to ppm stream");
   bool          Audio   = opt.Boolean("audio", false, "just grab the audio to a wav file");
   opt.Compulsory("o");
   opt.Check();
@@ -37,16 +38,19 @@ int doDvGrab(int argc, char **argv)
     if(!dev.isPlaying()) {
       dev.Pause();
     }
-    
+    //: grab streaming data
     if(Audio) {
       dev.grabWav(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
-    } else {
-      dev.grabSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
+    } 
+    else {
+      if(opt.IsOnCommandLine("step")) {
+	dev.grabImageSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd, Step);
+      } else {
+	dev.grabSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
+      } 
+      dev.Pause();
     }
-    
-    dev.Pause();
   }
-
   return 0;
 }
 

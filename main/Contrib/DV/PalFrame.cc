@@ -214,13 +214,9 @@ PalFrameC::Image()
     cout << decoder->audio->num_channels << " channels" << endl;
   }
   
-
-  cout << "data: " << (int)data[10] << endl << flush;
-
   dv_decode_full_frame(decoder, (uint8_t*)data, e_dv_color_rgb, pixels, pitches);
   ImageC<ByteRGBValueC>im(576, 720, (ByteRGBValueC*)&pixels[0][0], false);
-  cout << "first pixel: " << im[0][0] << endl << flush;
-   
+ 
   frameno++;
   return im;
 }

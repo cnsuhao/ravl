@@ -12,6 +12,9 @@
 
 #include "Ravl/Image/DvDevice.hh"
 #include "Ravl/Matrix.hh"
+#include "Ravl/Image/ImgIO.hh"
+#include "Ravl/DP/FileFormatIO.hh"
+#include "Ravl/Image/Deinterlace.hh"
 
 #include <unistd.h>
 #include "Ravl/Assert.hh"
@@ -547,6 +550,62 @@ DvDeviceC::grabWav(const char * filename, const TimeCodeC & tcStart, const TimeC
   return dropped;
   
 }
+
+
+bool
+DvDeviceC::grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames) 
+{
+  //: goto the first timecode
+  TimeCodeC zero(0,0,0,0);
+  TimeCodeC offset(0,0,3,0); // three seconds
+  TimeCodeC realStart = tcStart-offset;
+  if(realStart<zero)realStart=zero;
+  bool dropped = false;
+  //: first goto timecode
+  gotoTimeCode(realStart);
+  //: open the file for the video data
+  int channel = 63;
+
+  
+  //: start ISO receive
+  if (raw1394_start_iso_rcv(handle, channel) < 0) {
+    cerr << "raw1394 - couldn't start iso receive" << endl;
+    exit( -1);
+  }
+  
+  bool done=false;
+  //: OK lets go for it
+  Play(); // lets start play
+
+
+  TimeCodeC tcNext(tcStart);
+  TimeCodeC tcStep(nFrames);
+
+  while(!done) {    
+    raw1394_loop_iterate(handle);
+    
+    if(frame.isValid()) {
+      TimeCodeC tcFrame = frame.extractTimeCode();
+      
+      if(tcFrame==tcNext) {
+	StringC filename = prefix + tcFrame.ToText() + ".ppm";
+	cout << "saved: " << filename << endl << flush;
+	ImageC<ByteRGBValueC>im = frame.Image().Copy();
+	im = DeinterlaceSubsample(im);
+	Save(filename, im);
+	tcNext += tcStep;
+	if(tcNext>tcEnd) done = true;
+      }
+    }
+    
+  }
+  
+  raw1394_stop_iso_rcv(handle, channel);
+  
+  return dropped;  
+}
+
+
 
 } // end namespace
  

@@ -113,7 +113,9 @@ namespace RavlImageN {
     
     bool grabWav(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd);
     //: grabs a wave file directly from the vcr
-    
+
+    bool grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames);
+    //: grab a set of images between the two timecodes and nFrame intervals and saves them according to prefix
     
   protected:
     //: Put all your class members here
