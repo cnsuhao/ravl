@@ -8,9 +8,9 @@ ifndef IntelMKL_Def
 IntelMKL_Def = 1
 
 
-INTELMKL_HOME = /opt/intel/mkl61
+INTELMKL_HOME = /opt/intel/mkl70
 
 INCLUDES += -I$(INTELMKL_HOME)/include
-EXELIB :=  -L$(INTELMKL_HOME)/lib/32 -lmkl -lm -lguide $(EXELIB)
+EXELIB :=  -L$(INTELMKL_HOME)/lib/32 -lmkl_ia32 -lguide -lpthread -lm $(EXELIB)
 
 endif

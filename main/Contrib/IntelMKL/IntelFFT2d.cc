@@ -16,6 +16,7 @@
 #include "Ravl/Slice1d.hh"
 #include "Ravl/Assert.hh"
 
+#include "mkl_blas.h"
 #include "mkl_dfti.h"
 
 #define DODEBUG 0
@@ -23,6 +24,13 @@
 #define ONDEBUG(x) x
 #else
 #define ONDEBUG(x)
+#endif
+
+#define DFTI_ERROR_HANDLING 1
+#if DFTI_ERROR_HANDLING
+#define DFTI_ERRORCHECK(x) {long status = x; if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));}
+#else
+#define DFTI_ERRORCHECK(x) x
 #endif
 
 #define DFTI_HANDLE(x) ((DFTI_DESCRIPTOR_HANDLE &)(x))
@@ -41,21 +49,19 @@ namespace RavlN {
       inv(iinv),
       dftiComplex(0),
       dftiReal(0)
-  { Init(nn,iinv); }
+  { 
+    Init(nn,iinv);
+  }
   
   //: Destructor
   
   IntelFFT2dBodyC::~IntelFFT2dBodyC()  
   {
-    long status;
-
     if(dftiComplex != 0) {
-      status = DftiFreeDescriptor(&DFTI_HANDLE(dftiComplex));
-      if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+      DFTI_ERRORCHECK(DftiFreeDescriptor(&DFTI_HANDLE(dftiComplex)));
     }
     if(dftiReal != 0) {
-      status = DftiFreeDescriptor(&DFTI_HANDLE(dftiReal));
-      if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+      DFTI_ERRORCHECK(DftiFreeDescriptor(&DFTI_HANDLE(dftiReal)));
     }
   }
   
@@ -68,31 +74,26 @@ namespace RavlN {
     long l[2];
     l[0] = nsize[0].V();
     l[1] = nsize[1].V();
-    long status;
 
     //cerr << "Setup complex fft. \n";
     // Create complex descriptor.
-    status = DftiCreateDescriptor(&DFTI_HANDLE(dftiComplex),DFTI_DOUBLE,DFTI_COMPLEX,2,l);
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
-    status = DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_PLACEMENT,DFTI_NOT_INPLACE);
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
-    status = DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_FORWARD_SCALE,1/((RealT) l[0]*l[1]));
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
-    status = DftiCommitDescriptor(DFTI_HANDLE(dftiComplex));
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+    DFTI_ERRORCHECK(DftiCreateDescriptor(&DFTI_HANDLE(dftiComplex),DFTI_DOUBLE,DFTI_COMPLEX,2,l));
+    DFTI_ERRORCHECK(DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_PLACEMENT,DFTI_NOT_INPLACE));
+    DFTI_ERRORCHECK(DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_FORWARD_SCALE,1/((RealT) l[0]*l[1])));
+    DFTI_ERRORCHECK(DftiCommitDescriptor(DFTI_HANDLE(dftiComplex)));
 
 #if 1
     //cerr << "Setup real fft. \n";
     // Create real descriptor.
-    status = DftiCreateDescriptor(&DFTI_HANDLE(dftiReal),DFTI_DOUBLE,DFTI_COMPLEX,2,l);
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
-    status = DftiSetValue(DFTI_HANDLE(dftiReal),DFTI_FORWARD_SCALE,1/((RealT) l[0]*l[1]));
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
-    status = DftiCommitDescriptor(DFTI_HANDLE(dftiReal));
-    if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+    DFTI_ERRORCHECK(DftiCreateDescriptor(&DFTI_HANDLE(dftiReal),DFTI_DOUBLE,DFTI_COMPLEX,2,l));
+    DFTI_ERRORCHECK(DftiSetValue(DFTI_HANDLE(dftiReal),DFTI_FORWARD_SCALE,1/((RealT) l[0]*l[1])));
+    DFTI_ERRORCHECK(DftiCommitDescriptor(DFTI_HANDLE(dftiReal)));
 #endif    
     //cerr << "Done.\n";
-    
+
+    // Clean up
+    //MKL_FreeBuffers();
+
     return true;
   }
   
@@ -101,14 +102,12 @@ namespace RavlN {
   SArray2dC<ComplexC> IntelFFT2dBodyC::Apply(const SArray2dC<ComplexC> &dat) {
     SArray2dC<ComplexC> ret(dat.Size1(),dat.Size2());
     // Check stride ?!?
-    long status;
+
     if(inv) {
-      status = DftiComputeBackward(DFTI_HANDLE(const_cast<void *&>(dftiComplex)),const_cast<ComplexC *>(&(dat[0][0])),&(ret[0][0]));
-      if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+      DFTI_ERRORCHECK(DftiComputeBackward(DFTI_HANDLE(const_cast<void *&>(dftiComplex)),const_cast<ComplexC *>(&(dat[0][0])),&(ret[0][0])));
     }
     else {
-      status = DftiComputeForward(DFTI_HANDLE(const_cast<void *&>(dftiComplex)),const_cast<ComplexC *>(&(dat[0][0])),&(ret[0][0]));
-      if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+      DFTI_ERRORCHECK(DftiComputeForward(DFTI_HANDLE(const_cast<void *&>(dftiComplex)),const_cast<ComplexC *>(&(dat[0][0])),&(ret[0][0])));
     }
     return ret;
   }
@@ -120,14 +119,12 @@ namespace RavlN {
     SArray2dC<ComplexC> ret(dat.Size1(),dat.Size2());
     for(SArray2dIter2C<ComplexC,RealT> it(ret,dat);it;it++)
       it.Data1() = it.Data2();
-    long status;
+
     if(inv) {
-      status = DftiComputeBackward(DFTI_HANDLE(const_cast<void *&>(dftiReal)),const_cast<ComplexC *>(&(ret[0][0])));
-      if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+      DFTI_ERRORCHECK(DftiComputeBackward(DFTI_HANDLE(const_cast<void *&>(dftiReal)),const_cast<ComplexC *>(&(ret[0][0]))));
     }
     else {
-      status = DftiComputeForward(DFTI_HANDLE(const_cast<void *&>(dftiReal)),const_cast<ComplexC *>(&(ret[0][0])));
-      if(status != DFTI_NO_ERROR) RavlIssueError(DftiErrorMessage(status));
+      DFTI_ERRORCHECK(DftiComputeForward(DFTI_HANDLE(const_cast<void *&>(dftiReal)),const_cast<ComplexC *>(&(ret[0][0]))));
     }
     return ret;    
   }
