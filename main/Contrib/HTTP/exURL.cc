@@ -10,6 +10,7 @@
 //! file="Ravl/Contrib/HTTP/exURL.cc"
 //! author="James Smith"
 //! docentry="Ravl.Contrib.URL Handling"
+//! userlevel=Normal
 
 #include "Ravl/IO/URLStream.hh"
 #include "Ravl/OS/Date.hh"

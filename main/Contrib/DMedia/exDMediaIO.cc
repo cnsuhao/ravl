@@ -7,6 +7,9 @@
 //////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=sgiDMedia
+//! userlevel=Normal
+//! docentry="Ravl.Contrib.Video IO.SGI DMedia"
+//! author="Charles Galambos"
 
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/Image/Image.hh"
