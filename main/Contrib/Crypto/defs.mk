@@ -9,7 +9,7 @@
 
 PACKAGE=Ravl/Crypto
 
-USESLIBS=LibMCrypt
+USESLIBS=LibMCrypt RavlCore
 
 REQUIRES=libmcrypt
 
