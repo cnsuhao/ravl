@@ -10,7 +10,7 @@
 //! author="Kieron J Messer"
 //! date="24/9/2000"
 //! lib=RavlFireWire
-//! docentry="Ravl.Images.Video.Video IO.Drivers.Linux133194"
+//! docentry="Ravl.Audio.Audio IO.Drivers.Linux133194"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/FireWire/WavFile.hh"
 
