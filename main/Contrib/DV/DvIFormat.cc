@@ -47,9 +47,9 @@ namespace RavlImageN {
   FileFormatDvBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
     ONDEBUG(cerr << "FileFormatDvBodyC::ProbeLoad(IStreamC &,...), called. \n");
     if(!in.good()) return typeid(void);
-    
-    //: Need to do a check to see whether the Dv is valid
 
+    //: Need to do a check to see whether the Dv is valid
+    
     return typeid(ImageC<ByteRGBValueC>);  
     
     //ONDEBUG(cerr << "FileFormatDvBodyC::ProbeLoad(), Not a Dv. \n");
@@ -60,6 +60,9 @@ namespace RavlImageN {
   FileFormatDvBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
     const type_info &pref = ProbeLoad(in,obj_type);
     ONDEBUG(cerr << "FileFormatDvBodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
+    if(Extension(nfilename) != StringC("dv") && filename != "-")
+      return typeid(void);
+    //: Need to do a check to see whether the Dv is valid
     return  pref;
   }
   
