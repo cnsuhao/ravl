@@ -9,7 +9,6 @@
 
 typedef unsigned long ulong;
 
-#include <linux/videodev.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -28,6 +27,8 @@ typedef unsigned long ulong;
 #include "pwc-ioctl.h"
 #endif
 #include <sys/mman.h>
+
+#include <linux/videodev.h>
 
 #define USE_MMAP 1
 

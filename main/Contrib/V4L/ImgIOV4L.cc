@@ -9,12 +9,18 @@
 //! lib=RavlImgIOV4L
 //! file="Contrib/V4L/ImgIOV4L.cc"
 
+#include "Ravl/Image/Image.hh"
+#include "Ravl/DP/FileFormatIO.hh"
+#include "Ravl/Image/SubSample.hh"
+#include "Ravl/Image/ImgIOV4L.hh"
+#include "Ravl/Array2dIter.hh"
+#include "Ravl/Image/RGBcYUV.hh"
+
 typedef unsigned long ulong;
 
-#include <sys/select.h>
-#include <linux/videodev.h>
 
-#include <sys/types.h>
+#include <sys/select.h>
+//#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -24,12 +30,7 @@ typedef unsigned long ulong;
 
 #include <sys/mman.h>
 
-#include "Ravl/Image/Image.hh"
-#include "Ravl/DP/FileFormatIO.hh"
-#include "Ravl/Image/SubSample.hh"
-#include "Ravl/Image/ImgIOV4L.hh"
-#include "Ravl/Array2dIter.hh"
-#include "Ravl/Image/RGBcYUV.hh"
+#include <linux/videodev.h>
 
 #define DODEBUG 0
 #if DODEBUG
