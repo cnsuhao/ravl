@@ -246,6 +246,13 @@ namespace RavlImageN {
     decoder->action = mpeg2_seek_header;
     mpeg2_pts (decoder,0);
 #endif
+    decoder->shift = 0xffffff00;
+    //decoder->action = mpeg2_seek_sequence;
+    //decoder->code = 0xb4;
+    decoder->first_decode_slice = 1;
+    decoder->nb_decode_slices = 0xb0 - 1;
+    //mpeg2dec->convert_id = NULL;
+
     
     do {
       if(state >= 0) {
