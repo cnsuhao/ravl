@@ -175,6 +175,26 @@ namespace RavlN {
     
    } Inst_StreamType_HTTPStream;
 
+   static class StreamType_HTTPSIStreamC 
+      : public StreamTypeC
+   {
+   public:
+      StreamType_HTTPSIStreamC()
+      {}
+      //: Default constructor.
+    
+      virtual const char *TypeName()
+      { return "https"; }
+      //: Get type of stream.
+    
+      virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
+	StringC rurl("https:" + url);
+	return URLIStreamC(rurl,buffered); 
+      }
+      //: Open input stream.
+    
+   } Inst_StreamType_HTTPSStream;
+
    static class StreamType_FTPIStreamC 
       : public StreamTypeC
    {
