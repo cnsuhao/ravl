@@ -7,6 +7,7 @@
 //! rcsid="$Id$"
 //! lib=RavlDevAudio
 //! author="Charles Galambos"
+//! docentry="Ravl.Contrib.Audio IO"
 
 #include "Ravl/IO.hh"
 #include "Ravl/Option.hh"

@@ -8,6 +8,8 @@
 //! rcsid="$Id$"
 //! lib=RavlURLIO
 //! file="Ravl/Contrib/HTTP/exURL.cc"
+//! author="James Smith"
+//! docentry="Ravl.Contrib.URL Handling"
 
 #include "Ravl/IO/URLStream.hh"
 #include "Ravl/OS/Date.hh"
