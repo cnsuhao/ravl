@@ -36,10 +36,15 @@ template <class PixelT> int process(const bool grey, IntT frames, const StringC 
   }
 
   bool seq = (frames > 0);
-  while (true)
+  ImageC<PixelT> img;
+  while (!ip.IsGetEOS())
   {
+    // Get the image
+    if (!ip.Get(img))
+      break;
+    
     // Output the image
-    op.Put(ip.Get());
+    op.Put(img);
     
     // Stop grabbing yet?
     if (seq)

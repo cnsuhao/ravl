@@ -47,6 +47,29 @@ namespace RavlImageN
     { return (m_fd != -1); }
     //: Is the device open?
     
+    bool IsConfigured() const
+    { return (m_bufferMax > 0); }
+    //: Is the device configured and ready for capture?
+    
+    bool HandleGetAttr(const StringC &attrName, StringC &attrValue);
+    //: Handle get attribute (string)
+    // Returns false if the attribute name is unknown.
+    
+    bool HandleSetAttr(const StringC &attrName, const StringC &attrValue);
+    //: Handle set attribute (string)
+    // Returns false if the attribute name is unknown.
+    
+    bool HandleGetAttr(const StringC &attrName, IntT &attrValue);
+    //: Handle get attribute (int)
+    // Returns false if the attribute name is unknown.
+    
+    bool HandleSetAttr(const StringC &attrName, const IntT &attrValue);
+    //: Handle set attribute (int)
+    // Returns false if the attribute name is unknown.
+    
+    bool BuildAttributes(AttributeCtrlBodyC &attrCtrl);
+    //: Build list of attributes.
+    
   protected:
     bool Open(const StringC &device, const UIntT channel);
     //: Open the device
@@ -57,12 +80,40 @@ namespace RavlImageN
     bool CheckFormat(const type_info &pixelType);
     //: Check if the pixel type is supported
     
+    bool ConfigureCapture();
+    //: Configure the capture device, prior to the first image get
+    
   protected:
+  /* Device identification */
+    const type_info &m_pixelType;       // Desired image type
     StringC m_device;                   // Device name
     UIntT m_channel;                    // Channel number
     int m_fd;                           // File descriptor
+
+  /* Capture parameters */
+    UIntT m_width, m_height;            // Captured size
+    UIntT m_pixelFormat;                // Stored pixel format
+    UIntT m_fieldFormat;                // Captured field selection
+    UIntT m_bufferMax;                  // Number of capture buffers
+
+  /* Frame attributes */
     StreamPosT m_seqNum;                // Last sequence number
+
+  private:    
+    typedef struct
+    {
+      void *m_start;
+      size_t m_length;
+    } TBuf;
+    //: Buffer mmap data
+    
+  private:
+    UIntT m_bufferCount;                // Number of capture buffers
+    UIntT m_bufferOut;                  // Unqueued buffer count
+    TBuf *m_buffers;                    // Array of mmap'd buffers
   };
+  
+  
   
   template <class PixelT>
   class IOV4L2BodyC :
@@ -71,7 +122,7 @@ namespace RavlImageN
   {
   public:
     IOV4L2BodyC(const StringC &device, const UIntT channel) :
-      IOV4L2BaseC(device, channel, typeid(PixelT))
+      IOV4L2BaseC(device, channel, typeid(ImageC<PixelT>))
     {
     }
     //: Constructor.
@@ -84,14 +135,28 @@ namespace RavlImageN
     virtual ImageC<PixelT> Get()
     {
       ImageC<PixelT> img;
-      if(!Get(img))
+      if (!Get(img))
         throw DataNotReadyC("Failed to get next frame.");
       return img;
     }
     //: Get next frame.
     
     virtual bool Get(ImageC<PixelT> &img)
-    { return GetFrame(img); }
+    { 
+      // Check the device is open
+      if (!IsOpen())
+        return false;
+      
+      // Configure the device, if not
+      if (!IsConfigured())
+        if (!ConfigureCapture())
+        {
+          Close();
+          return false;
+        }
+        
+      return GetFrame(img);
+    }
     //: Get next image.
     
     virtual UIntT Tell() const
@@ -102,26 +167,56 @@ namespace RavlImageN
     { return LastFrameSeq(); }
     //: Find current location in stream.
     
+    virtual bool IsGetReady() const
+    {
+      return IsOpen();
+    }
+    
     virtual bool IsGetEOS() const
     {
-      return false;
+      return !IsOpen();
     }
     //: Is it the EOS
 
     virtual bool GetAttr(const StringC &attrName, StringC &attrValue)
     {
-      return false;
+      if (HandleGetAttr(attrName, attrValue))
+        return true;
+      return DPPortBodyC::GetAttr(attrName, attrValue);
     }
-    //: Get a stream attribute.
+    //: Handle get attribute (string)
     // Returns false if the attribute name is unknown.
-
-  protected:
-    void BuildAttributes()
+    
+    virtual bool SetAttr(const StringC &attrName, const StringC &attrValue)
     {
+      if (HandleSetAttr(attrName, attrValue))
+        return true;
+      return DPPortBodyC::SetAttr(attrName, attrValue);
     }
-    //: Register stream attributes
+    //: Handle set attribute (string)
+    // Returns false if the attribute name is unknown.
+    
+    virtual bool GetAttr(const StringC &attrName, IntT &attrValue)
+    {
+      if (HandleGetAttr(attrName, attrValue))
+        return true;
+      return DPPortBodyC::GetAttr(attrName, attrValue);
+    }
+    //: Handle get attribute (int)
+    // Returns false if the attribute name is unknown.
+    
+    virtual bool SetAttr(const StringC &attrName, const IntT &attrValue)
+    {
+      if (HandleSetAttr(attrName, attrValue))
+        return true;
+      return DPPortBodyC::SetAttr(attrName, attrValue);
+    }
+    //: Handle set attribute (int)
+    // Returns false if the attribute name is unknown.
   };
 
+  
+  
   template <class PixelT>
   class IOV4L2C :
     public DPIPortC< ImageC<PixelT> >

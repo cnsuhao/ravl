@@ -67,6 +67,8 @@ namespace RavlImageN
     //: Determine the parameters from the filename
   };
   
+  
+  
   /////////////////////////////
   //! userlevel = Advanced
   //: Create an instance of a V4L2 File Format.

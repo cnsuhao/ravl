@@ -33,9 +33,13 @@ namespace RavlImageN
   void InitV4L2Format()
   {}
   
+  
+  
   FileFormatV4L2BodyC::FileFormatV4L2BodyC() :
-    FileFormatBodyC("v4l2", "V4L2 file input.")
+    FileFormatBodyC("v4l2", "V4L2 input (@V4L2)")
   {}
+  
+  
   
   const type_info &FileFormatV4L2BodyC::ProbeLoad(IStreamC &in, const type_info &obj_type) const
   {
@@ -43,8 +47,12 @@ namespace RavlImageN
     return typeid(void); 
   }
   
+  
+  
   const type_info &FileFormatV4L2BodyC::ProbeLoad(const StringC &filename, IStreamC &in, const type_info &obj_type) const
   {
+    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad filename(" << filename << ") type(" << obj_type.name() << ")" << endl;)
+
     // Get the parameters
     StringC device;
     IntT channel;
@@ -54,8 +62,12 @@ namespace RavlImageN
 
     // Create the V4L2 object (will not be open after construction if not supported)
     IOV4L2BaseC v4l2(device, channel, obj_type);
-    return (v4l2.IsOpen() ? typeid(obj_type) : typeid(void));
+    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad format supported(" << (v4l2.IsOpen() ? "Y" : "N") << ")" << endl;)
+    
+    return (v4l2.IsOpen() ? obj_type : typeid(void));
   }
+  
+  
   
   const type_info &FileFormatV4L2BodyC::ProbeSave(const StringC &filename, const type_info &obj_type, bool forceFormat ) const
   {
@@ -63,11 +75,15 @@ namespace RavlImageN
     return typeid(void);   
   }
   
+  
+  
   DPIPortBaseC FileFormatV4L2BodyC::CreateInput(IStreamC &in, const type_info &obj_type) const
   { 
     ONDEBUG(cerr << "FileFormatV4L2BodyC::CreateInput(OStreamC) unsupported" << endl;)
     return DPIPortBaseC();
   }
+  
+  
   
   DPOPortBaseC FileFormatV4L2BodyC::CreateOutput(OStreamC &out, const type_info &obj_type) const
   {
@@ -75,14 +91,18 @@ namespace RavlImageN
     return DPOPortBaseC();  
   }
   
+  
+  
   DPIPortBaseC FileFormatV4L2BodyC::CreateInput(const StringC &filename, const type_info &obj_type) const
   {
+    ONDEBUG(cerr << "FileFormatV4L2BodyC::CreateInput filename(" << filename << ") type(" << obj_type.name() << ")" << endl;)
+
     // Get the parameters
     StringC device;
     IntT channel;
     if (!FindParams(filename, device, channel))
       return DPIPortBaseC();
-    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad device(" << device << ") channel(" << channel << ")" << endl;)
+    ONDEBUG(cerr << "FileFormatV4L2BodyC::CreateInput device(" << device << ") channel(" << channel << ")" << endl;)
 
     // Create the relevant port
     if (obj_type == typeid(ImageC<ByteRGBValueC>))
@@ -93,16 +113,22 @@ namespace RavlImageN
     return DPIPortBaseC();
   }
   
+  
+  
   DPOPortBaseC FileFormatV4L2BodyC::CreateOutput(const StringC &filename, const type_info &obj_type) const
   {
     ONDEBUG(cerr << "FileFormatV4L2BodyC::CreateOutput(const StringC) unsupported" << endl;)
     return DPOPortBaseC();  
   }
   
+  
+  
   const type_info &FileFormatV4L2BodyC::DefaultType() const
   { 
     return typeid(ImageC<ByteRGBValueC>); 
   }
+  
+  
   
   bool FileFormatV4L2BodyC::FindParams(const StringC &filename, StringC &device, IntT &channel) const
   {
@@ -114,25 +140,33 @@ namespace RavlImageN
     
     // Check it's a V4L2 device
     StringC deviceId = ExtractDevice(filename);
-    if(deviceId != "V4L2")
+    if (deviceId != "V4L2")
       return false;
+    
+    // Set the defaults
+    device = g_defaultDevice;
+    channel = g_defaultChannel;
 
     // Get the device and optional channel
     StringC params = ExtractParams(filename);
-    IntT delim = params.index('#');
-    device = g_defaultDevice;
-    channel = g_defaultChannel;
-    if(delim >= 0)
+    if (params.Size() > 0)
     {
-      device = params.before(delim);
-      channel = params.after(delim).IntValue();
+      cerr << "params(" << params << "'" << endl;
+      IntT delim = params.index('#');
+      if(delim >= 0)
+      {
+        device = params.before(delim);
+        channel = params.after(delim).IntValue();
+      }
+      else
+        if (params.length() > 0)
+          device = params;
     }
-    else
-      if (params.length() > 0)
-        device = params;
     
     return true;
   }
+  
+  
   
   static FileFormatV4L2C Init;  
 }

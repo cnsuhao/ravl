@@ -10,6 +10,7 @@
 //! author = "Warren Moore"
 
 #include "Ravl/Image/IOV4L2.hh"
+#include "Ravl/DP/AttributeValueTypes.hh"
 
 #include <linux/videodev.h>
 #include <linux/types.h>
@@ -50,7 +51,9 @@ namespace RavlImageN
     //: Mmmm, structure constructor
   };
   //: Structure used to store supported pixel formats
-  
+
+
+
   const static UIntT g_supportedFormats = 2;
   const static SupportedFormatT g_supportedFormat[g_supportedFormats] =
   {
@@ -59,11 +62,32 @@ namespace RavlImageN
   };
   //: Mapping from image type id required V4L2 capture mode.
   // Note: Only supports a 1:1 mapping at the moment, this should be changed to support more hardware
+
+
+
+  const static UIntT g_defaultWidth = 320;
+  //: Default capture width (usually overridden by getting with initial format)
+
+  const static UIntT g_defaultHeight = 240;
+  //: Default capture height (usually overridden by getting with initial format)
+
+  const static UIntT g_defaultBuffers = 3;
+  //: Default number of capture buffers
+  
+  const static UIntT g_defaultField = V4L2_FIELD_ANY; 
+  //: Default captured field ordering
+  
+  
   
   IOV4L2BaseC::IOV4L2BaseC(const StringC &device, const UIntT channel, const type_info &pixelType) :
+    m_pixelType(pixelType),
     m_device(device),
     m_channel(channel),
     m_fd(-1),
+    m_width(g_defaultWidth),
+    m_height(g_defaultHeight),
+    m_fieldFormat(g_defaultField),
+    m_bufferMax(0),
     m_seqNum(-1)
   {
     // Open the device
@@ -71,12 +95,22 @@ namespace RavlImageN
     
     // Check the format
     if (IsOpen())
-      if (!CheckFormat(pixelType))
+    {
+      // Check for a supported format
+      if (CheckFormat(pixelType))
       {
+        // Do final initialisation...
+      }
+      else
+      {
+        // Failed to find supported format
         ONDEBUG(cerr << "IOV4L2BaseC::IOV4L2BaseC unsupported image format" << endl;)
         Close();
       }
+    }
   }
+  
+  
   
   IOV4L2BaseC::~IOV4L2BaseC()
   {
@@ -85,40 +119,53 @@ namespace RavlImageN
       Close();
   }
   
+  
+  
   bool IOV4L2BaseC::GetFrame(ImageC<ByteRGBValueC> &img)
   {
     return false;
   }
 
+
+
   bool IOV4L2BaseC::GetFrame(ImageC<ByteT> &img)
   {
     return false;
   }
-    
+
+
+
   bool IOV4L2BaseC::Open(const StringC &device, const UIntT channel)
   {
-    RavlAssertMsg(m_fd == -1, "IOV4L2BaseC::Open called on open device");
+    RavlAssertMsg(!IsOpen(), "IOV4L2BaseC::Open called on open device");
     
     // Open the device
     m_fd = open(device, O_RDWR);
     
     // Reset the params
+    m_width = g_defaultWidth;
+    m_height = g_defaultHeight;
     m_seqNum = -1;
     
     return (m_fd != -1);
   }
-    
+  
+  
+  
   void IOV4L2BaseC::Close()
   {
-    if (m_fd != -1)
-    {
-      // All done, close the device
-      close(m_fd);
-    }
+    RavlAssertMsg(IsOpen(), "IOV4L2BaseC::Close called on closed device");
+    
+    // All done, close the device
+    close(m_fd);
   }
+  
+  
   
   bool IOV4L2BaseC::CheckFormat(const type_info &pixelType)
   {
+    RavlAssertMsg(IsOpen(), "IOV4L2BaseC::Open called without open device");
+    
     // Is capture supported?
     v4l2_capability cap;
     if (ioctl(m_fd, VIDIOC_QUERYCAP, &cap) != -1)
@@ -175,22 +222,26 @@ namespace RavlImageN
         cerr << "  4cc(" << CHAR_STREAM_FROM_4CC(pfmt->pixelformat) << ")" << endl; \
         cerr << "  field(" << pfmt->field << ")" << endl; \
       )
+      
+      // Store the default width and height
+      m_width = pfmt->width;
+      m_height = pfmt->height;
     }
     
     // Which format do I need to support this pixel format?
     UIntT pixelIndex = 0;
-    UIntT pixelFormat = 0;
+    ONDEBUG( \
+      cerr << "IOV4L2BaseC::CheckFormat typeid(" << pixelType.name() << ")" << endl; \
+    )
     while (pixelIndex < g_supportedFormats)
     {
       // Search the table
       if (pixelType == g_supportedFormat[pixelIndex].m_objectType)
       {
         ONDEBUG( \
-          cerr << "IOV4L2BaseC::CheckFormat typeid(" << g_supportedFormat[pixelIndex].m_objectType.name() << ")" << endl; \
-          cerr << "  requires format(" << CHAR_STREAM_FROM_4CC(g_supportedFormat[pixelIndex].m_pixelFormat); \
-          cerr << ")" << endl; \
+          cerr << "IOV4L2BaseC::CheckFormat requires format(" << CHAR_STREAM_FROM_4CC(g_supportedFormat[pixelIndex].m_pixelFormat) << ")" << endl; \
         )
-        pixelFormat = g_supportedFormat[pixelIndex].m_pixelFormat;
+        m_pixelFormat = g_supportedFormat[pixelIndex].m_pixelFormat;
         break;
       }
       
@@ -219,7 +270,7 @@ namespace RavlImageN
       desc.index++;
       
       // Check the pixel format is supported
-      if (desc.pixelformat == pixelFormat)
+      if (desc.pixelformat == m_pixelFormat)
       {
         ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat pixel format supported by device" << endl;)
         supported = true;
@@ -228,6 +279,148 @@ namespace RavlImageN
     }
     
     return supported;
+  }
+  
+  
+  
+  bool IOV4L2BaseC::ConfigureCapture()
+  {
+    RavlAssertMsg(IsOpen(), "IOV4L2BaseC::ConfigureCapture device not open");
+    RavlAssertMsg(!IsConfigured(), "IOV4L2BaseC::ConfigureCapture device already configured");
+
+    // Get the current format
+    v4l2_format fmt;
+    fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    v4l2_pix_format *pfmt = (v4l2_pix_format*)&(fmt.fmt);
+    if (ioctl(m_fd, VIDIOC_G_FMT, &fmt) == -1)
+    {
+      ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture unable to obtain current capture format" << endl;)
+      return false;
+    }
+    
+    // Set the capture mode 
+    pfmt->width = m_width;
+    pfmt->height = m_height;
+    pfmt->pixelformat = m_pixelFormat;
+    pfmt->field = (v4l2_field)m_fieldFormat;
+    if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) == -1)
+    {
+      ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture unable to set capture format" << endl;)
+      return false;
+    }
+    
+    // Request the required amount of memory-mapped buffers
+    v4l2_requestbuffers reqbuf;
+    reqbuf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    reqbuf.memory = V4L2_MEMORY_MMAP;
+    reqbuf.count = m_bufferMax;
+    if (ioctl(m_fd, VIDIOC_REQBUFS, &reqbuf) != -1)
+    {
+      if (m_bufferMax != reqbuf.count)
+      {
+        cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_REQBUFS) wanted(" << m_bufferMax << ") buffers, allocated(" << reqbuf.count << ")" << endl;
+      }
+      else
+      {
+        ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_REQBUFS) wanted(" << m_bufferMax << ") buffers, allocated(" << reqbuf.count << ")" << endl;)
+      }
+      
+      if (reqbuf.count <= 0)
+      {
+        ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_REQBUFS) unable to allocate any mmap-ed buffers" << endl;)
+        return false;
+      }
+
+      // Allocate the buffer table
+      m_buffers = (TBuf*)calloc(reqbuf.count, sizeof(*m_buffers));
+      RavlAssertMsg(m_buffers != NULL, "IOV4L2BaseC::ConfigureCapture failed to allocate buffers");
+
+      // Configure each buffers mmap entry
+      for (m_bufferCount = 0; m_bufferCount < reqbuf.count; m_bufferCount++)
+      {
+        // Query the buffer
+        v4l2_buffer buffer;
+        buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buffer.index = m_bufferCount;
+        if (ioctl(m_fd, VIDIOC_QUERYBUF, &buffer) == -1)
+        {
+          ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_QUERYBUF) failed buffer(" << m_bufferCount << ")" << endl;)
+          break;
+        }
+      
+        // Map the buffer
+        m_buffers[m_bufferCount].m_length = buffer.length;
+        m_buffers[m_bufferCount].m_start = mmap(NULL,
+                                                buffer.length,
+                                                PROT_READ | PROT_WRITE, // required
+                                                MAP_SHARED,             // recommended
+                                                m_fd,
+                                                buffer.m.offset);
+      
+        // Verify
+        if (m_buffers[m_bufferCount].m_start == MAP_FAILED)
+        {
+          ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture mmap failed buffer(" << m_bufferCount << ")" << endl;)
+          break;
+        }
+        m_bufferCount++;
+        
+        // Queue the buffer
+        if (ioctl(m_fd, VIDIOC_QBUF, &buffer) == -1)
+        {
+          ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_QBUF) failed buffer(" << m_bufferCount << ")" << endl;)
+          break;
+        }
+      }
+
+      if (reqbuf.count != m_bufferCount)
+      {
+        cerr << "IOV4L2BaseC::ConfigureCapture allocate(" << reqbuf.count << ") buffers, mmap-ed(" << m_bufferCount << ")" << endl;
+      }
+    }
+
+    return true;
+  }
+  
+  
+  
+  bool IOV4L2BaseC::HandleGetAttr(const StringC &attrName, StringC &attrValue)
+  {
+    return false;
+  }
+  
+  
+  
+  bool IOV4L2BaseC::HandleSetAttr(const StringC &attrName, const StringC &attrValue)
+  {
+    return false;
+  }
+  
+  
+  
+  bool IOV4L2BaseC::HandleGetAttr(const StringC &attrName, IntT &attrValue)
+  {
+    return false;
+  }
+  
+  
+  
+  bool IOV4L2BaseC::HandleSetAttr(const StringC &attrName, const IntT &attrValue)
+  {
+    return false;
+  }
+  
+  
+
+  bool IOV4L2BaseC::BuildAttributes(AttributeCtrlBodyC &attrCtrl)
+  {
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("brightness",    "Brightness",  true, true,    -1, 65000, 1, -1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("contrast",      "Contrast",    true, true,    -1, 65000, 1, -1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("saturation",    "Saturation",  true, true,    -1, 65000, 1, -1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("hue",           "Hue",         true, true,    -1, 65000, 1, -1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("blacklevel",    "Black level", true, true,    -1, 65000, 1, -1));
+
+    return true;
   }
 }
 
