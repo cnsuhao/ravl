@@ -22,15 +22,14 @@ int exURL(int nargs,char *args[]) {
    // Get command-line options
    OptionC opt(nargs,args);
    StringC url = opt.String("","http://ravl.sourceforge.net/","URL to load");
+   StringC out = opt.String("","-","Where to write data. ");
    opt.Check();
    
+   OStreamC os(out);
    URLIStreamC strm(url);
-   while (strm) {
-     ByteT c;
-     strm >> c;
-     cout << c;
-   }
-
+   
+   strm.CopyTo(os);
+   
    return 0;
 
 }
