@@ -26,7 +26,9 @@ namespace RavlImageN {
   //! userlevel=Develop
   //: V4L File format information.
   
-  class FileFormatV4LBodyC : public FileFormatBodyC {
+  class FileFormatV4LBodyC 
+    : public FileFormatBodyC 
+  {
   public:
     FileFormatV4LBodyC(const StringC &vName);
     //: Constructor.
@@ -72,6 +74,7 @@ namespace RavlImageN {
   protected:
     bool CheckRGB(int fd,struct video_picture &pic) const;
     bool CheckYUV(int fd,struct video_picture &pic) const;
+    bool CheckYUV422(int fd,struct video_picture &pic) const;
     bool CheckGREY(int fd,struct video_picture &pic) const;
     
     StringC vName;  // Variant name.
@@ -81,7 +84,9 @@ namespace RavlImageN {
   //! userlevel=Advanced
   //: Create an instance of a V4L File Format.
   
-  class FileFormatV4LC : public FileFormatC<ImageC<ByteYUVValueC> > {
+  class FileFormatV4LC 
+    : public FileFormatC<ImageC<ByteYUVValueC> > 
+  {
   public:
     FileFormatV4LC(const StringC &vName)
       : FileFormatC<ImageC<ByteYUVValueC> >(*new FileFormatV4LBodyC(vName))

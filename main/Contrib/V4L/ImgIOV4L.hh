@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_VIDIOV4L_HEADER
-#define RAVL_VIDIOV4L_HEADER 1
+#ifndef RAVLIMAGE_VIDIOV4L_HEADER
+#define RAVLIMAGE_VIDIOV4L_HEADER 1
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! docentry="Ravl.Contrib.Image IO.Video4Linux"
@@ -15,6 +15,7 @@
 
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
+#include "Ravl/Image/ByteYUV422Value.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Stream.hh"
@@ -51,6 +52,9 @@ namespace RavlImageN {
     
     bool NextPost();
     //: Post next frame capture.
+    
+    bool NextFrame(ImageC<ByteYUV422ValueC> &ret);
+    //: Get next YUV frame from grabber.
     
     bool NextFrame(ImageC<ByteYUVValueC> &ret);
     //: Get next YUV frame from grabber.

@@ -58,6 +58,9 @@ namespace RavlImageN {
     vidpic.palette = VIDEO_PALETTE_RGB24 | 0x80;
     if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
       return true; // RGB seems to be supported!
+    vidpic.palette = VIDEO_PALETTE_YUV420P;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // We can convert directly from this format.
     return false;
   }
   
@@ -66,6 +69,19 @@ namespace RavlImageN {
     if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
       return true; // YUV seems to be supported.
     vidpic.palette = VIDEO_PALETTE_UYVY;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
+    vidpic.palette = VIDEO_PALETTE_YUV420P;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
+    return false;
+  }
+
+  bool FileFormatV4LBodyC::CheckYUV422(int fd,struct video_picture &vidpic) const {
+    vidpic.palette = VIDEO_PALETTE_UYVY;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
+    vidpic.palette = VIDEO_PALETTE_YUYV;
     if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
       return true; // YUV seems to be supported.
     vidpic.palette = VIDEO_PALETTE_YUV420P;
@@ -103,8 +119,8 @@ namespace RavlImageN {
     if(device != "V4L" && device != "V4LH")
       return typeid(void);
     
-    enum { IMG_RGB, IMG_YUV, IMG_GREY } imgtype = IMG_YUV;
-
+    enum { IMG_RGB, IMG_YUV, IMG_YUV422, IMG_GREY } imgtype = IMG_YUV;
+    
     // Some huristics to select the best format to capture date from the
     // card in.   If in doubt get YUV as thats what most video is in anyway.
     
@@ -116,6 +132,8 @@ namespace RavlImageN {
       imgtype = IMG_YUV;
     else if(obj_type == typeid(ImageC<RealYUVValueC>))
       imgtype = IMG_YUV;
+    else if(obj_type == typeid(ImageC<ByteYUV422ValueC>))
+      imgtype = IMG_YUV422;
     else if(obj_type == typeid(ImageC<ByteT>))
       imgtype = IMG_GREY;
     else if(obj_type == typeid(ImageC<RealT>))
@@ -150,11 +168,15 @@ namespace RavlImageN {
     // Try and match the best supported capture format with what the 
     // card can actually do.
     
-    ONDEBUG(cerr << "Probing supported formats. \n");
+    ONDEBUG(cerr << "Probing supported formats. Preferred=" << imgtype << "\n");
     switch(imgtype) {
     case IMG_RGB:
       if(CheckRGB(fd,vidpic)) {
 	imgtype = IMG_RGB;
+	break;
+      }
+      if(CheckYUV422(fd,vidpic)) {
+	imgtype = IMG_YUV422;
 	break;
       }
       if(CheckYUV(fd,vidpic)) {
@@ -166,9 +188,31 @@ namespace RavlImageN {
 	break;
       }
       break;
+    case IMG_YUV422:
+      if(CheckYUV422(fd,vidpic)) {
+	imgtype = IMG_YUV422;
+	break;
+      }
+      if(CheckYUV(fd,vidpic)) {
+	imgtype = IMG_YUV;
+	break;
+      }
+      if(CheckRGB(fd,vidpic)) {
+	imgtype = IMG_RGB;
+	break;
+      }
+      if(CheckGREY(fd,vidpic)) {
+	imgtype = IMG_GREY;
+	break;
+      }
+      break;
     case IMG_YUV:
       if(CheckYUV(fd,vidpic)) {
 	imgtype = IMG_YUV;
+	break;
+      }
+      if(CheckYUV422(fd,vidpic)) {
+	imgtype = IMG_YUV422;
 	break;
       }
       if(CheckRGB(fd,vidpic)) {
@@ -183,6 +227,10 @@ namespace RavlImageN {
     case IMG_GREY:
       if(CheckGREY(fd,vidpic)) {
 	imgtype = IMG_GREY;
+	break;
+      }
+      if(CheckYUV422(fd,vidpic)) {
+	imgtype = IMG_YUV422;
 	break;
       }
       if(CheckYUV(fd,vidpic)) {
@@ -201,6 +249,7 @@ namespace RavlImageN {
     case IMG_RGB: return typeid(ImageC<ByteRGBValueC>);
     case IMG_YUV: return typeid(ImageC<ByteYUVValueC>);
     case IMG_GREY: return typeid(ImageC<ByteT>);
+    case IMG_YUV422: return typeid(ImageC<ByteYUV422ValueC>);
     }
     return typeid(ImageC<ByteYUVValueC>);
   }
@@ -244,6 +293,8 @@ namespace RavlImageN {
       fn = "/dev/video0";
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
       return DPIImageV4LC<ByteYUVValueC>(fn,half,channel);
+    if(obj_type == typeid(ImageC<ByteYUV422ValueC>))
+      return DPIImageV4LC<ByteYUV422ValueC>(fn,half,channel);
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return DPIImageV4LC<ByteRGBValueC>(fn,half,channel);
     if(obj_type == typeid(ImageC<ByteT>))

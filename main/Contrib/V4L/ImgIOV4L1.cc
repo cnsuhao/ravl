@@ -93,10 +93,22 @@ namespace RavlImageN {
       } else
 	cerr << "Video device has no channel number " << channel << "\n";
     }
-    if(npixType == typeid(ByteYUVValueC)) {
-      vidpic.palette = VIDEO_PALETTE_YUYV;
+    if(npixType == typeid(ByteYUV422ValueC)) {
+      vidpic.palette = VIDEO_PALETTE_UYVY;
       if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
-	vidpic.palette = VIDEO_PALETTE_UYVY;
+	vidpic.palette = VIDEO_PALETTE_YUYV;
+	if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
+	  vidpic.palette = VIDEO_PALETTE_YUV420P;
+	  if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
+	    cerr << "Failed to set video picture paramiters. \n";
+	    return false;
+	  }
+	}
+      }
+    } else if(npixType == typeid(ByteYUVValueC)) {
+      vidpic.palette = VIDEO_PALETTE_UYVY;
+      if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
+	vidpic.palette = VIDEO_PALETTE_YUYV;
 	if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
 	  vidpic.palette = VIDEO_PALETTE_YUV420P;
 	  if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
@@ -110,8 +122,11 @@ namespace RavlImageN {
       if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
 	vidpic.palette = VIDEO_PALETTE_RGB24;
 	if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
-	  cerr << "Failed to set video picture paramiters. \n";
-	  return false;	
+	  vidpic.palette = VIDEO_PALETTE_YUV420P;
+	  if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
+	    cerr << "Failed to set video picture paramiters. \n";
+	    return false;	
+	  }
 	}
       }
     } else if(npixType == typeid(ByteT)) {
