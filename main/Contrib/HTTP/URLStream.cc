@@ -65,62 +65,92 @@ namespace RavlN {
   StringC URLIStreamC::ErrorString() const {
     static const char* strerror[] = {
       "OK",
-      "UNSUPPORTED_PROTOCOL",
-      "FAILED_INIT",
-      "URL_MALFORMAT",
-      "URL_MALFORMAT_USER",
-      "COULDNT_RESOLVE_PROXY",
-      "COULDNT_RESOLVE_HOST",
-      "COULDNT_CONNECT",
-      "FTP_WEIRD_SERVER_REPLY",
-      "FTP_ACCESS_DENIED",
-      "FTP_USER_PASSWORD_INCORRECT",
-      "FTP_WEIRD_PASS_REPLY",
-      "FTP_WEIRD_USER_REPLY",
-      "FTP_WEIRD_PASV_REPLY",
-      "FTP_WEIRD_227_FORMAT",
-      "FTP_CANT_GET_HOST",
-      "FTP_CANT_RECONNECT",
-      "FTP_COULDNT_SET_BINARY",
-      "PARTIAL_FILE",
-      "FTP_COULDNT_RETR_FILE",
-      "FTP_WRITE_ERROR",
-      "FTP_QUOTE_ERROR",
-      "HTTP_NOT_FOUND",
-      "WRITE_ERROR",
-      "MALFORMAT_USER",          /* 24 - user name is illegally specified */
-      "FTP_COULDNT_STOR_FILE",   /* 25 - failed FTP upload */
-      "READ_ERROR",              /* 26 - could open/read from file */
-      "OUT_OF_MEMORY",
-      "OPERATION_TIMEOUTED",     /* 28 - the timeout time was reached */
-      "FTP_COULDNT_SET_ASCII",   /* 29 - TYPE A failed */
-      "FTP_PORT_FAILED",         /* 30 - FTP PORT operation failed */
-      "FTP_COULDNT_USE_REST",    /* 31 - the REST command failed */
-      "FTP_COULDNT_GET_SIZE",    /* 32 - the SIZE command failed */
-      "HTTP_RANGE_ERROR",        /* 33 - RANGE "command" didn't work */
-      "HTTP_POST_ERROR",
-      "SSL_CONNECT_ERROR",       /* 35 - wrong when connecting with SSL */
-      "FTP_BAD_DOWNLOAD_RESUME", /* 36 - couldn't resume download */
-      "FILE_COULDNT_READ_FILE",
-      "LDAP_CANNOT_BIND",
-      "LDAP_SEARCH_FAILED",
-      "LIBRARY_NOT_FOUND",
-      "FUNCTION_NOT_FOUND",
-      "ABORTED_BY_CALLBACK",
-      "BAD_FUNCTION_ARGUMENT",
-      "BAD_CALLING_ORDER",
-      "HTTP_PORT_FAILED",        /* 45 - HTTP Interface operation failed */
-      "BAD_PASSWORD_ENTERED",    /* 46 - my_getpass() returns fail */
-      "TOO_MANY_REDIRECTS ",     /* 47 - catch endless re-direct loops */
-      "UNKNOWN_TELNET_OPTION",   /* 48 - User specified an unknown option */
-      "TELNET_OPTION_SYNTAX ",   /* 49 - Malformed telnet option */
+      "UNSUPPORTED PROTOCOL",
+      "FAILED INIT",
+      "URL MALFORMAT",
+      "URL MALFORMAT USER",
+      "COULDNT RESOLVE PROXY",
+      "COULDNT RESOLVE HOST",
+      "COULDNT CONNECT",
+      "FTP WEIRD SERVER REPLY",
+      "FTP ACCESS DENIED",
+      "FTP USER PASSWORD INCORRECT",
+      "FTP WEIRD PASS REPLY",
+      "FTP WEIRD USER REPLY",
+      "FTP WEIRD PASV REPLY",
+      "FTP WEIRD 227 FORMAT",
+      "FTP CANT GET HOST",
+      "FTP CANT RECONNECT",
+      "FTP COULDNT SET BINARY",
+      "PARTIAL FILE",
+      "FTP COULDNT RETR FILE",
+      "FTP WRITE ERROR",
+      "FTP QUOTE ERROR",
+      "HTTP NOT FOUND",
+      "WRITE ERROR",
+      "MALFORMAT USER",          /* 24 - user name is illegally specified */
+      "FTP COULDNT STOR FILE",   /* 25 - failed FTP upload */
+      "READ ERROR",              /* 26 - could open/read from file */
+      "OUT OF MEMORY",
+      "OPERATION TIMEOUTED",     /* 28 - the timeout time was reached */
+      "FTP COULDNT SET ASCII",   /* 29 - TYPE A failed */
+      "FTP PORT FAILED",         /* 30 - FTP PORT operation failed */
+      "FTP COULDNT USE REST",    /* 31 - the REST command failed */
+      "FTP COULDNT GET SIZE",    /* 32 - the SIZE command failed */
+      "HTTP RANGE ERROR",        /* 33 - RANGE "command" didn't work */
+      "HTTP POST ERROR",
+      "SSL CONNECT ERROR",       /* 35 - wrong when connecting with SSL */
+      "FTP BAD DOWNLOAD RESUME", /* 36 - couldn't resume download */
+      "FILE COULDNT READ FILE",
+      "LDAP CANNOT BIND",
+      "LDAP SEARCH FAILED",
+      "LIBRARY NOT FOUND",
+      "FUNCTION NOT FOUND",
+      "ABORTED BY CALLBACK",
+      "BAD FUNCTION ARGUMENT",
+      "BAD CALLING ORDER",
+      "HTTP PORT FAILED",        /* 45 - HTTP Interface operation failed */
+      "BAD PASSWORD ENTERED",    /* 46 - my_getpass() returns fail */
+      "TOO MANY REDIRECTS ",     /* 47 - catch endless re-direct loops */
+      "UNKNOWN TELNET OPTION",   /* 48 - User specified an unknown option */
+      "TELNET OPTION SYNTAX ",   /* 49 - Malformed telnet option */
       "OBSOLETE",                /* 50 - removed after 7.7.3 */
-      "SSL_PEER_CERTIFICATE",    /* 51 - peer's certificate wasn't ok */
-      "GOT_NOTHING",             /* 52 - when this is a specific error */
-      "SSL_ENGINE_NOTFOUND",
-      "SSL_ENGINE_SETFAILED"
+      "SSL PEER CERTIFICATE",    /* 51 - peer's certificate wasn't ok */
+      "GOT NOTHING",             /* 52 - when this is a specific error */
+      "SSL ENGINE NOTFOUND",
+      "SSL ENGINE SETFAILED"
     };
     return StringC(strerror[m_iError]);
+  }
+
+  StringC URLIStreamC::URLEncode(const StringC& string) {
+    StringC encoded;
+    for (unsigned int i=0; i<string.Size(); i++) {
+      if (!isalpha(string[i]) && !isdigit(string[i])) {
+	encoded += "%";
+	char hex[3];
+	snprintf(hex,3,"%X",string[i]);
+	encoded += hex[0];
+	encoded += hex[1];
+      }
+      else {
+	encoded += string[i];
+      }
+    }
+    return encoded;
+  }
+
+  StringC URLIStreamC::AddUserPass(const StringC& url,const StringC& user,const StringC& pass) {
+    // URL-encode the username
+    StringC euser = URLIStreamC::URLEncode(user);
+    // URL-encode the password
+    StringC epass = URLIStreamC::URLEncode(pass);
+    // Split URL
+    StringC address = url;
+    StringC protocol = address.before(":");
+    address = address.after("//");
+    // Insert username and password after URL
+    return protocol + StringC("://") + euser + StringC(":") + epass + StringC("@") + address;
   }
 
    /////////////////// STREAM TYPES /////////////////////

@@ -21,9 +21,16 @@ int exURL(int nargs,char *args[]) {
    
    // Get command-line options
    OptionC opt(nargs,args);
-   StringC url = opt.String("","http://ravl.sourceforge.net","URL to load");
-   StringC out = opt.String("","-","Where to write data. ");
+   StringC url = opt.String("i","http://ravl.sourceforge.net","URL to load");
+   StringC out = opt.String("o","-","Where to write data. ");
+   StringC username = opt.String("u","","The username to use for the connection");
+   StringC password = opt.String("p","","The password to use for the connection");
    opt.Check();
+
+   // Construct URL with user/pass if required
+   if (!username.IsEmpty() && !password.IsEmpty()) {
+     url = URLIStreamC::AddUserPass(url,username,password);
+   }
    
    OStreamC os(out);
    URLIStreamC strm(url);

@@ -44,6 +44,17 @@ namespace RavlN {
     StringC ErrorString() const;
     //: Get a string describing the error
 
+    static StringC URLEncode(const StringC& string);
+    //: URL-encode a string
+    // All non-alphnumeric characters will be converted to %XX format,
+    // i.e. "hello world" becomes "hello%20world".
+    // Do not use this on complete URLs, as special URL characters will be coded as well.
+    // This is really useful for encoding passwords and things to be sent as part of a URL.
+
+    static StringC AddUserPass(const StringC& url, const StringC& user, const StringC& pass);
+    //: Inserts username and password into the appropriate place in the URL. 
+    // Also encodes them as required.
+
   protected:
 
     FilenameC m_strTemp;
