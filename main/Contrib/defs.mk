@@ -7,6 +7,6 @@
 #! rcsid="$Id$"
 #! file="Contrib/defs.mk"
 
-NESTED=V4L.r Meteor1.r HTTP ClipStationPro DMedia MPEG DV
+NESTED=V4L.r Meteor1.r HTTP ClipStationPro DMedia MPEG DV.r
 
 EHT = Ravl.Contrib.html Ravl.Contrib.Image_IO.html
