@@ -26,7 +26,7 @@ endif
 
 # Set things up.
 
-EXELIB := -L$(LIBMPEG2_LIBS) -lmpeg2 -lvo $(EXELIB)
+EXELIB := -L$(LIBMPEG2_LIBS) -lmpeg2 $(EXELIB)
 INCLUDES += -I$(LIBMPEG2_INCLUDE)
 
 endif
