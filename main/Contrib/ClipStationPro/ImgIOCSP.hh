@@ -63,6 +63,21 @@ namespace RavlImageN {
     { return dev == 0; }
     //: Has the End Of Stream been reached ?
     // true = yes.
+    
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue) {
+      return CSPGetAttr(attrName,attrValue);
+    }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const StringC &attrValue) {
+      return CSPSetAttr(attrName,attrValue);
+    }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
   };
   
   //! userlevel=Normal

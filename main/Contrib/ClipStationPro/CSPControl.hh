@@ -46,6 +46,16 @@ namespace RavlImageN {
     bool PutFrame(void *buff,int x,int y);
     //: Get one frame of video.
     
+    bool CSPGetAttr(const StringC &attrName,StringC &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool CSPSetAttr(const StringC &attrName,const StringC &attrValue);
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
   protected:
     sv_handle *dev;
     sv_fifo *fifo;
@@ -57,6 +67,8 @@ namespace RavlImageN {
     bool fifoMode; // Use fifo ?
     bool captureAudio; // Capture audio ?
     bool captureVideo; // Capture video ?
+
+    int frameBufferSize;
   };
 
 }

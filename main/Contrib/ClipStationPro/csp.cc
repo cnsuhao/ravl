@@ -27,7 +27,8 @@ int main(int nargs,char **argv) {
   DPIImageClipStationProBodyC<ByteYUV422ValueC> cspio(dev,ImageRectangleC(576,720));
   
   DPOPortC<ImageC<ByteYUV422ValueC> > outp;
-
+  
+  cspio.SetAttr("FrameBufferSize","2");
   if(!OpenOSequence(outp,out)) {
     cerr << "Failed to open output. \n";
     return 1;
@@ -36,8 +37,8 @@ int main(int nargs,char **argv) {
   do {
     ImageC<ByteYUV422ValueC> img = cspio.Get();
     //cerr << "Save image.\n";
-    ImageC<ByteYUV422ValueC> ni1 = img.Copy();
-#if 0
+    //ImageC<ByteYUV422ValueC> ni1 = img.Copy();
+#if 1
     if(!outp.Put(img)) {
       cerr << "Failed to save image. \n";
       return 1;

@@ -30,7 +30,8 @@ namespace RavlImageN {
       doInput(true),
       fifoMode(true),
       captureAudio(true), // Capture audio ?
-      captureVideo(true) // Capture video ?
+      captureVideo(true), // Capture video ?
+      frameBufferSize(0)
   {
     dev = sv_open((char *) devName.chars());
     ONDEBUG(cerr << "CSP Device open:" << ((void *) dev) << " (" << devName << ")\n");
@@ -49,6 +50,47 @@ namespace RavlImageN {
     }
     dev = 0;
   }
+
+  //: Get a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool ClipStationProDeviceC::CSPGetAttr(const StringC &attrName,StringC &attrValue) {
+    if(attrName == "FrameBufferSize") {
+      attrValue = StringC(frameBufferSize);
+      return true;
+    }
+    return false;
+  }
+  
+  //: Set a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool ClipStationProDeviceC::CSPSetAttr(const StringC &attrName,const StringC &attrValue) {
+    if(attrName == "FrameBufferSize") {
+      int nsize = attrValue.IntValue();
+      if(nsize == frameBufferSize)
+	return true;
+      if(!useDMA)
+	return true; // Only works in DMA mode.
+      cerr << "Setting frame buffer size=" << nsize << "\n";
+      sv_fifo_free(dev,fifo);
+      int ret = sv_fifo_init(dev,&fifo,1,1,useDMA,0,nsize);
+      //fifo.
+      ONDEBUG(cerr << "Fifo_init:" << ret << "\n" << sv_geterrortext(ret) << "\n");
+      ret = sv_fifo_start(dev,fifo); // Start it going...
+      ONDEBUG(cerr << "Fifo_start:" << ret << "\n" << sv_geterrortext(ret) << "\n");
+      if((ret = sv_fifo_configstatus(dev,fifo,&fifo_config)) != SV_OK) {
+	cerr << "Failed to get fifo status. Error:" << ret << "\n";
+	return false;
+      }
+      frameBufferSize = nsize;
+      return true;
+    }
+    return false;    
+  }
+  
   
   //: Setup video modes to a suitable default.
   
@@ -77,7 +119,7 @@ namespace RavlImageN {
       cerr << "Failed to set vitc line:" << ret << "\n";
     }
 #endif
-#if 0
+#if 1
     if((ret = sv_option(dev,SV_OPTION_INPUTPORT,SV_INPORT_SDI)) != SV_OK) {
       cerr << "Failed to set input to SDI 1:" << ret << "\n";
       return false;
@@ -110,7 +152,7 @@ namespace RavlImageN {
     
     if(fifoMode) {
       //ret = sv_fifo_init(dev,&fifo,1,1,0,0,0);
-      ret = sv_fifo_init(dev,&fifo,1,1,useDMA,0,0);
+      ret = sv_fifo_init(dev,&fifo,1,1,useDMA,0,frameBufferSize);
       //fifo.
       ONDEBUG(cerr << "Fifo_init:" << ret << "\n" << sv_geterrortext(ret) << "\n");
       ret = sv_fifo_start(dev,fifo); // Start it going...
