@@ -32,3 +32,5 @@ USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO RavlDPDisplay glib GTK
 PROGLIBS= RavlDPDisplay.opt
 
 MUSTLINK = RAVLVidIDV.cc
+
+EHT = DV.html
