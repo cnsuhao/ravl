@@ -20,9 +20,9 @@ PLIB = RavlIOV4L2
 
 MUSTLINK = MustLinkV4L2.cc
 
-USESLIBS = RavlImage 
+USESLIBS = RavlImage RavlIO RavlThreads
 
-PROGLIBS = RavlOSIO RavlIO RavlDPDisplay
+PROGLIBS = RavlOSIO RavlDPDisplay
 
 ANSIFLAG =
 

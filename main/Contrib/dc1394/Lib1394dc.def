@@ -8,17 +8,22 @@ ifndef RAVLLIBDC1394_DEF
 RAVLLIBDC1394_DEF=1
 
 
-ifndef LIB1394DC_HOME
-LIB1394DC_HOME=/opt/PDsoft/libdc1394-0.9.1
-endif
+  ifdef LIB1394DC_HOME
+    ifeq ($(LIB1394DC_HOME),/usr)
+      EXELIB :=  -ldc1394_control -lraw1394  $(EXELIB)
+    else
+      LIB1394DC_INCLUDE=$(LIB1394DC_HOME)/include
+      LIB1394DC_LIBS=$(LIB1394DC_HOME)/lib
 
-LIB1394DC_INCLUDE=$(LIB1394DC_HOME)/include
-LIB1394DC_LIBS=$(LIB1394DC_HOME)/lib
+      # set up includes and libs
+      INCLUDES += -I$(LIB1394DC_INCLUDE)
+      EXELIB :=  -L$(LIB1394DC_LIBS) -ldc1394_control -lraw1394  $(EXELIB)
+    endif
 
-# set up includes and libs
+  else
 
-INCLUDES += -I$(LIB1394DC_INCLUDE)
-EXELIB :=  -L$(LIB1394DC_LIBS) -ldc1394_control -lraw1394  $(EXELIB)
+    EXELIB := -ldc1394_control -lraw1394  $(EXELIB)
 
+  endif
 
 endif

@@ -7,31 +7,26 @@
 ifndef LIBFIREWIRE_DEF
 LIBFIREWIRE_DEF=1
 
-# libraw1394 amd libdv ##################################################
+  ifdef LIBRAW1394_HOME
+    ifeq ($(LIBRAW1394_HOME),/usr)
+      EXELIB :=  -lraw1394 $(EXELIB)
+    else
+      EXELIB := -L$(LIBRAW1394_HOME)/lib -lraw1394 $(EXELIB)
+      INCLUDES += -I$(LIBRAW1394_HOME)/include
+    endif
+  else
+    EXELIB :=  -lraw1394 $(EXELIB)
+  endif
 
-#LIBDV_HOME=/vol/vssp/dera/src/digitalvideo
-#LIBDV_INCLUDE=$(LIBDV_HOME)/include
-#LIBDV_LIBS=$(LIBDV_HOME)/lib
-#INCLUDES += -I$(LIBDV_INCLUDE)
-#EXELIB := $(LIBDV_LIBS) -ldv -lraw1394 $(EXELIB)
-
-# These libs can be obtained as rpm's for most linux systems.
-
-EXELIB :=  -lraw1394 $(EXELIB)
-
-# libavc1394 ##################################################
-
-ifndef LIBAVC1394_HOME
-LIBAVC1394_HOME=/opt/PDsoft/libavc1394-0.4.1
-endif
-LIBAVC1394_INCLUDE=$(LIBAVC1394_HOME)/include
-LIBAVC1394_LIBS=$(LIBAVC1394_HOME)/lib
-
-# set up includes and libs
-
-INCLUDES += -I$(LIBAVC1394_INCLUDE)
-EXELIB :=  -L$(LIBAVC1394_LIBS) -lrom1394 -lavc1394 $(EXELIB)
-
-
+  ifdef LIBAVC1394_HOME
+    ifeq ($(LIBAVC1394_HOME),/usr)
+      EXELIB := -lrom1394 -lavc1394 $(EXELIB)
+    else
+      EXELIB := -L$(LIBAVC1394_HOME)/lib -lrom1394 -lavc1394 $(EXELIB)
+      INCLUDES += -I$(LIBAVC1394_HOME)/include
+    endif
+  else
+    EXELIB := -lrom1394 -lavc1394 $(EXELIB)
+  endif
 
 endif

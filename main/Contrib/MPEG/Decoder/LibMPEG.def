@@ -3,19 +3,6 @@ LIBMPEG_DEF=1
 
 include Math.def
 
-LIBMPEG_HOME=/usr
-
-# Directory to look for include files.
-
-LIBMPEG_INCLUDE=$(LIBMPEG_HOME)/include
-
-# Directory to look for libraries.
-
-LIBMPEG_LIBS=$(LIBMPEG_HOME)/lib
-
-# Set things up.
-
-EXELIB := -L$(LIBMPEG_LIBS) -lmpeg $(EXELIB)
-INCLUDES += -I$(LIBMPEG_INCLUDE)
+EXELIB := -lmpeg $(EXELIB)
 
 endif

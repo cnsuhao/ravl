@@ -5,28 +5,36 @@
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
 ifndef LIBMPEG2_DEF
-LIBMPEG2_DEF=1
+  LIBMPEG2_DEF=1
 
-include Math.def
+  include Math.def
 
-ifndef LIBMPEG2_HOME
-LIBMPEG2_HOME=/opt/PDsoft/mpeg2dec
-endif
+  ifdef LIBMPEG2_HOME
+    ifeq ($(LIBMPEG2_HOME),/usr)
 
-# Directory to look for include files.
-ifndef LIBMPEG2_INCLUDE
-LIBMPEG2_INCLUDE=$(LIBMPEG2_HOME)/include
-endif
+      EXELIB := -lmpeg2 $(EXELIB)
 
-# Directory to look for libraries.
+    else
 
-ifndef LIBMPEG2_LIBS
-LIBMPEG2_LIBS=$(LIBMPEG2_HOME)/lib
-endif
+      # Directory to look for include files.
+      ifndef LIBMPEG2_INCLUDE
+        LIBMPEG2_INCLUDE=$(LIBMPEG2_HOME)/include
+      endif
 
-# Set things up.
+      # Directory to look for libraries.
+      ifndef LIBMPEG2_LIBS
+        LIBMPEG2_LIBS=$(LIBMPEG2_HOME)/lib
+      endif
 
-EXELIB := -L$(LIBMPEG2_LIBS) -lmpeg2 $(EXELIB)
-INCLUDES += -I$(LIBMPEG2_INCLUDE)
+      # Set things up.
+      EXELIB := -L$(LIBMPEG2_LIBS) -lmpeg2 $(EXELIB)
+      INCLUDES += -I$(LIBMPEG2_INCLUDE)
 
+    endif
+
+  else
+
+    EXELIB := -lmpeg2 $(EXELIB)
+
+  endif
 endif

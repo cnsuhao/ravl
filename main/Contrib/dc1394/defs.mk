@@ -24,7 +24,9 @@ AUXFILES= Lib1394dc.def
 
 MUSTLINK=InitLib1394dc.cc
 
-USESLIBS=Auto Lib1394dc RavlDPDisplay
+USESLIBS=RavlCore RavlIO RavlImage Lib1394dc RavlDPDisplay
+
+PROGLIBS=  RavlOSIO
 
 EHT=Ravl.Contrib.Video_IO.IIDC.html
 

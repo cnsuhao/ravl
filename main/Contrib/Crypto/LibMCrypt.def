@@ -9,24 +9,29 @@ LIBMCRYPT_DEF=1
 
 include Math.def
 
-ifndef LIBMCRYPT_HOME
-  LIBMCRYPT_HOME=/usr
+ifdef LIBCRYPT_HOME
+  ifeq ($(LIBCRYPT_HOME),/usr)
+    EXELIB := -lmcrypt $(EXELIB)
+  else
+    # Directory to look for include files.
+    ifndef LIBMCRYPT_INCLUDE
+      LIBMCRYPT_INCLUDE=$(LIBMCRYPT_HOME)/include
+    endif
+
+    # Directory to look for libraries.
+    ifndef LIBMCRYPT_LIBS
+      LIBMCRYPT_LIBS=$(LIBMCRYPT_HOME)/lib
+    endif
+
+    # Set things up.
+    EXELIB := -L$(LIBMCRYPT_LIBS) -lmcrypt $(EXELIB)
+    INCLUDES += -I$(LIBMCRYPT_INCLUDE)
+  endif
+
+else
+
+    EXELIB := -lmcrypt $(EXELIB)
+
 endif
-
-# Directory to look for include files.
-ifndef LIBMCRYPT_INCLUDE
-  LIBMCRYPT_INCLUDE=$(LIBMCRYPT_HOME)/include
-endif
-
-# Directory to look for libraries.
-
-ifndef LIBMCRYPT_LIBS
-  LIBMCRYPT_LIBS=$(LIBMCRYPT_HOME)/lib
-endif
-
-# Set things up.
-
-EXELIB := -L$(LIBMCRYPT_LIBS) -lmcrypt $(EXELIB)
-INCLUDES += -I$(LIBMCRYPT_INCLUDE)
 
 endif
