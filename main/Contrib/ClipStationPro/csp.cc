@@ -18,7 +18,7 @@ extern ImageC<ByteT> ByteYUV422ImageCT2ByteImageCT(const ImageC<ByteYUV422ValueC
 
 int main(int nargs,char **argv) {
   OptionC opts(nargs,argv);
-  StringC dev = opts.String("d","PCI,card:1","Device to use.");
+  StringC dev = opts.String("d","PCI,card:0","Device to use.");
   bool seq = opts.Boolean("s",false,"Sequence. ");
   StringC out = opts.String("","@X","Output");
   opts.Check();
@@ -32,11 +32,12 @@ int main(int nargs,char **argv) {
     cerr << "Failed to open output. \n";
     return 1;
   }
-  
+  ByteYUV422ValueC pv;
   do {
     ImageC<ByteYUV422ValueC> img = cspio.Get();
-    cerr << "Save image 1\n";
-#if 1
+    //cerr << "Save image.\n";
+    ImageC<ByteYUV422ValueC> ni1 = img.Copy();
+#if 0
     if(!outp.Put(img)) {
       cerr << "Failed to save image. \n";
       return 1;

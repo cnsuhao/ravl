@@ -61,18 +61,22 @@ namespace RavlImageN {
       cerr << "Failed to set mode to PAL. Error:" << ret <<"\n";
       return false;
     }
+#if 0
+    ONDEBUG(cerr << "videomode returned:" << ret << "\n");
     if((ret = sv_option(dev,SV_OPTION_LOOPMODE,SV_LOOPMODE_INFINITE)) != SV_OK) {
       cerr << "Failed to set loopmode to inifite:" << ret << "\n";
       return false;
     }
-    
-    if((ret = sv_sync(dev,SV_SYNC_EXTERNAL)) != SV_OK) {
-      cerr << "Failed to set sync to external:" << ret << "\n";
+#endif    
+    if((ret = sv_sync(dev,SV_SYNC_INTERNAL)) != SV_OK) {
+      cerr << "Failed to set sync:" << ret << "\n";
       return false;
     }
+#if 0
     if((ret = sv_option(dev,SV_OPTION_VITCLINE,21)) != SV_OK) {
       cerr << "Failed to set vitc line:" << ret << "\n";
     }
+#endif
 #if 0
     if((ret = sv_option(dev,SV_OPTION_INPUTPORT,SV_INPORT_SDI)) != SV_OK) {
       cerr << "Failed to set input to SDI 1:" << ret << "\n";
@@ -104,7 +108,6 @@ namespace RavlImageN {
     cerr << "Audio Channels=" << audioChannels << " Bits=" << audioBits << " Size=" << audioSize << "\n";
 #endif
     
-    ONDEBUG(cerr << "videomode returned:" << ret << "\n");
     if(fifoMode) {
       //ret = sv_fifo_init(dev,&fifo,1,1,0,0,0);
       ret = sv_fifo_init(dev,&fifo,1,1,useDMA,0,0);
@@ -177,8 +180,8 @@ namespace RavlImageN {
     
     //int audioBufferSize = fifo_config.abuffersize;
     int dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize;
-    cerr << "Audio buffer=" << fifo_config.abuffersize << "\n";
-    //cerr << "VideoBuffer :" << fifo_config.vbuffersize << "  Actual:" << (svbuf->video[0].size + svbuf->video[1].size) << "\n";
+    // cerr << "Audio buffer=" << fifo_config.abuffersize << "\n";
+    // cerr << "VideoBuffer :" << fifo_config.vbuffersize << "  Actual:" << (svbuf->video[0].size + svbuf->video[1].size) << "\n";
     DMABufferC<ByteYUV422ValueC> buf(dmaBufferSize / sizeof(ByteYUV422ValueC),fifo_config.dmaalignment);
     //cerr << "field size: " << svbuf->video[0].size << "\n";
     
@@ -191,12 +194,10 @@ namespace RavlImageN {
       memcpy(buf.ReferenceElm(),svbuf->video[0].addr,(svbuf->video[0].size + svbuf->video[1].size));
     }
     
-    cerr <<"TimeCode1 ltc:" << svbuf->timecode.ltc_tc << " vitc:" << svbuf->timecode.vitc_tc << " vitc2:" << svbuf->timecode.vitc_tc2 <<  " tick:"<< svbuf->timecode.vtr_tick << " vtr:" << svbuf->timecode.vtr_tc << " Lock:" << svbuf->timecode.vtr_lockcount << " \n";
     if((ret = sv_fifo_putbuffer(dev,fifo,svbuf,0)) != SV_OK) {
       cerr << "ERROR ClipStationProDeviceC: Failed to put frame " << ret << "\n";
       return DMABufferC<ByteYUV422ValueC>();
     }
-    cerr <<"TimeCode1 ltc:" << svbuf->timecode.ltc_tc << " vitc:" << svbuf->timecode.vitc_tc << " vitc2:" << svbuf->timecode.vitc_tc2 <<  " tick:"<< svbuf->timecode.vtr_tick << " vtr:" << svbuf->timecode.vtr_tc << " Lock:" << svbuf->timecode.vtr_lockcount << " \n";
     
 #if 0
     int timecode;
@@ -212,8 +213,9 @@ namespace RavlImageN {
 #if DODEBUG
     sv_fifo_info info;
     sv_fifo_status(dev,fifo,&info);
-    cerr << "Got frame. Dopped:" << info.dropped << " \n";
+    //cerr << "Got frame. Dopped:" << info.dropped << " \n";
 #endif
+    cerr <<"Dropped: " << info.dropped << " TimeCode1 ltc:" << svbuf->timecode.ltc_tc << " vitc:" << svbuf->timecode.vitc_tc << " vitc2:" << svbuf->timecode.vitc_tc2 <<  " tick:"<< svbuf->timecode.vtr_tick << " vtr:" << svbuf->timecode.vtr_tc << " Lock:" << svbuf->timecode.vtr_lockcount << " \n";
     return buf;
   }
   

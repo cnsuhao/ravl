@@ -1,7 +1,8 @@
 ifndef CLIPSTATION_DEF
 CLIPSTATION_DEF = 1
 
-CSPHOME = /usr/src/sdk2.4p82
+#CSPHOME = /usr/src/sdk2.4p82
+CSPHOME = /usr/src/sdk2.5p20
 
 INCLUDES += -I$(CSPHOME)/development/header
 EXELIB := -L$(CSPHOME)/linux/lib -ldvsoem $(EXELIB)
