@@ -9,15 +9,15 @@
 
 PACKAGE=Ravl/IO
 
-EXAMPLES = exHTTP.cc
+EXAMPLES = exURL.cc
 
-HEADERS= HTTPStream.hh
+HEADERS= URLStream.hh
 
-SOURCES= HTTPStream.cc
+SOURCES= URLStream.cc
 
-MUSTLINK= HTTPIO.cc
+MUSTLINK= URLIO.cc
 
-PLIB= RavlHTTPIO
+PLIB= RavlURLIO
 
 USESLIBS=RavlCore RavlIO RavlOS RavlThreads libcurl
 

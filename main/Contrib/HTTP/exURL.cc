@@ -6,10 +6,10 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=RavlHTTPIO
-//! file="Ravl/Contrib/HTTP/exHTTP.cc"
+//! lib=RavlURLIO
+//! file="Ravl/Contrib/HTTP/exURL.cc"
 
-#include "Ravl/IO/HTTPStream.hh"
+#include "Ravl/IO/URLStream.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/DP/FileFormatIO.hh"
 #include "Ravl/Option.hh"
@@ -17,19 +17,19 @@
 
 using namespace RavlN;
 
-int exHTTP(int nargs,char *args[]) {
+int exURL(int nargs,char *args[]) {
    
    // Get command-line options
    OptionC opt(nargs,args);
    StringC url = opt.String("","http://ravl.sourceforge.net/","URL to load");
    opt.Check();
 
-   HTTPIStreamC strm(url);
+   URLIStreamC strm(url);
 
-   Sleep(5);
+   Sleep(20);
    
    return 0;
 
 }
 
-RAVL_ENTRY_POINT(exHTTP);
+RAVL_ENTRY_POINT(exURL);

@@ -6,15 +6,15 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=RavlHTTPIO
-//! file="Ravl/Contrib/HTTP/HTTPIO.cc"
+//! lib=RavlURLIO
+//! file="Ravl/Contrib/HTTP/URLIO.cc"
 
 namespace RavlN {
   
-  extern void InitHTTPStreamIO();
+  extern void InitURLStreamIO();
   
-  void InitHTTP() {
-     InitHTTPStreamIO();
+  void InitURL() {
+     InitURLStreamIO();
   }
 
 }

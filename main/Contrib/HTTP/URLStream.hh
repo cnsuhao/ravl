@@ -4,14 +4,14 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_HTTPISTREAM_HEADER
-#define RAVL_HTTPISTREAM_HEADER 1
+#ifndef RAVL_URLISTREAM_HEADER
+#define RAVL_URLISTREAM_HEADER 1
 /////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=RavlHTTPIO
+//! lib=RavlURLIO
 //! author="James Smith"
-//! docentry="Ravl.IO.HTTP"
-//! file="Ravl/Contrib/HTTP/HTTPIStream.hh"
+//! docentry="Ravl.IO.URLs"
+//! file="Ravl/Contrib/HTTP/URLIStream.hh"
 //! date="30/10/2002"
 
 #include "Ravl/Stream.hh"
@@ -20,18 +20,18 @@ namespace RavlN {
 
    ////////////////////////////
    //! userlevel=Normal
-   //: Get an HTTP URL
+   //: Get a URL
   
-   class HTTPIStreamC 
+   class URLIStreamC 
       : public IStreamC
    {
    public:
 
-      HTTPIStreamC()
+      URLIStreamC()
       {}
       //: Default constructor
     
-      HTTPIStreamC(const StringC &url);
+      URLIStreamC(const StringC &url);
       //: Open net connection for input
     
    protected:
