@@ -7,9 +7,18 @@
 ifndef EHS_Def 
 EHS_Def = 1
 
-EHS_HOME = /usr/local
+EHS_EXELIB = 
 
-INCLUDES += -I$(EHS_HOME)/include
-EXELIB :=  -L$(EHS_HOME)/lib -lehs -lpme $(EXELIB)
+ifdef PME_HOME
+  INCLUDES += -I$(PME_HOME)/include
+  EHS_EXELIB += -L$(PME_HOME)/lib
+endif
+
+ifdef EHS_HOME
+  INCLUDES += -I$(EHS_HOME)/include
+  EHS_EXELIB += -L$(EHS_HOME)/lib
+endif
+
+EXELIB := $(EHS_EXELIB) -lehs -lpme $(EXELIB)
 
 endif
