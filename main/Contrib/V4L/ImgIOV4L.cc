@@ -115,15 +115,19 @@ namespace RavlImageN {
   //: Pre next frame capture.
   
   bool DPIImageBaseV4LBodyC::NextPre() {
+    //ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextPre(), Called. (BufNo=" << bufNo << ")\n");
     if(fd < 0) {
       cerr << "ERROR: No filehandle \n";
       return false;
     }
     int rret;
-    if(memmap) {
+    if(memmap) {            
       buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
-      if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) < 0)
+      errno = 0;
+      if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) < 0) {
 	cerr << "Failed to sync buffer. err=" << rret << " " << errno << " bufNo=" << bufNo << "\n";
+	
+      }
       //cerr << "Buf=" << bufNo << "\n";
     }
     return true;
@@ -132,8 +136,6 @@ namespace RavlImageN {
   //: Post next frame capture.
   
   bool DPIImageBaseV4LBodyC::NextPost() {
-    if(!NextPre())
-      return false;
     int rret;
     if(memmap) {
       struct video_mmap vmmap;
@@ -161,7 +163,7 @@ namespace RavlImageN {
       return false;
     }
     int rsize,rret;
-    //ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC>&) Called \n");
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteYUVValueC>&) Called \n");
     switch(palette) 
       {
       case VIDEO_PALETTE_YUV420P: 
@@ -272,6 +274,7 @@ namespace RavlImageN {
       ret =  ImageC<ByteRGBValueC>();
       return false;
     }
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteValueC>&) Called \n");
     switch(palette) 
       {
       case VIDEO_PALETTE_RGB24:
@@ -309,6 +312,7 @@ namespace RavlImageN {
       ret =  ImageC<ByteT>();
       return false;
     }
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteT>&) Called \n");
     int rsize,rret;
     switch(palette) 
       {
