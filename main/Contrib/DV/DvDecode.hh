@@ -90,11 +90,11 @@ namespace RavlImageN {
 
   protected:
     DvDecodeBodyC &Body() 
-    { return static_cast<DvDecodeBodyC &>(DPEntityC::Body()); }
+    { return dynamic_cast<DvDecodeBodyC &>(DPEntityC::Body()); }
     //: Body access.
     
     const DvDecodeBodyC &Body() const
-    { return static_cast<const DvDecodeBodyC &>(DPEntityC::Body()); }
+    { return dynamic_cast<const DvDecodeBodyC &>(DPEntityC::Body()); }
     //: Body access.
 
   public:
