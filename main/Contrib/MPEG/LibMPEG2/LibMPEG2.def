@@ -10,7 +10,7 @@ LIBMPEG2_DEF=1
 include Math.def
 
 ifndef LIBMPEG2_HOME
-LIBMPEG2_HOME=/opt
+LIBMPEG2_HOME=/opt/PDsoft/mpeg2dec
 endif
 
 # Directory to look for include files.

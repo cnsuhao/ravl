@@ -8,6 +8,7 @@
 #define RAVL_IMGIOMPEG2_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlLibMPEG2
+//! author="Charles Galambos"
 
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
@@ -23,6 +24,9 @@ extern "C" {
   typedef struct mpeg2dec_s mpeg2dec_t;  
 }
 
+namespace RavlN {
+  class BitIStreamC;
+}
 namespace RavlImageN {
   
   
@@ -42,6 +46,12 @@ namespace RavlImageN {
     bool DecodeGOP(UIntT firstFrameNo);
     //: Decode a whole GOP and put it in the image cache.
     
+    bool BuildIndex(UIntT targetFrame);
+    //: Build GOP index to frame.
+    
+    bool SkipToStartCode(BitIStreamC &is); 
+    //: Skip to next start code.
+    
     virtual ImageC<ByteRGBValueC> Get() {
       ImageC<ByteRGBValueC> img;
       if(!Get(img))
@@ -60,6 +70,15 @@ namespace RavlImageN {
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     
+    virtual bool GetAttr(const StringC &attrName,IntT &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttrList(DListC<StringC> &list) const;
+    //: Get list of attributes available.
+    // This method will ADD all available attribute names to 'list'.
+
   protected:
     bool ReadData();
     //: Read data from stream into buffer.
@@ -73,11 +92,13 @@ namespace RavlImageN {
     Index2dC imgSize;
     UIntT allocFrameId;
     UIntT frameNo;
+    UIntT maxFrameIndex;
     streampos lastRead;
     HashC<UIntT,ImageC<ByteRGBValueC> > images;
     AVLTreeC<UIntT,std::streampos> offsets;
     CacheC<UIntT,ImageC<ByteRGBValueC> > imageCache;
     bool sequenceInit;
+    IntT lastFrameType;
   };
 
   class ImgILibMPEG2C
