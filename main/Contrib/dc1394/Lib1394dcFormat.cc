@@ -18,6 +18,7 @@
 #include "Ravl/Image/RealRGBValue.hh"
 
 #define DPDEBUG 1
+#include "Ravl/TypeName.hh"
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -56,7 +57,7 @@ namespace RavlImageN {
       channel = file.after(pn).IntValue();
       file = file.before(pn);
     }
-    ONDEBUG(cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " Device='" << device <<"'\n");
+    ONDEBUG(cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << TypeName(obj_type.name()) << " Device='" << device <<"'\n");
     if(device != "IIDC")
       return typeid(void);
     

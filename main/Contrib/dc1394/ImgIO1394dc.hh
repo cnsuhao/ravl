@@ -13,7 +13,9 @@
 
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
-
+#include "Ravl/DP/AttributeType.hh"
+#include "Ravl/Hash.hh"
+#include "Ravl/Tuple2.hh"
 #include <libdc1394/dc1394_control.h>
 
 namespace RavlImageN {
@@ -35,7 +37,44 @@ namespace RavlImageN {
     bool CaptureImage(ImageC<ByteT> &img);
     //: Capture an image.
     
+    bool HandleGetAttr(const StringC &attrName,IntT &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleSetAttr(const StringC &attrName,const IntT &attrValue);
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleGetAttr(const StringC &attrName,RealT &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleSetAttr(const StringC &attrName,const RealT &attrValue);
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleGetAttr(const StringC &attrName,bool &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleSetAttr(const StringC &attrName,const bool &attrValue);
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
   protected:
+    void BuildAttrList(AttributeCtrlBodyC &attrCtrl);
+    //: Build attribute list.
+    
+    enum ControlTypeT { CT_IntValue,CT_FloatValue,CT_OnOff,CT_Auto };
+    
+    HashC<StringC,Tuple2C<IntT,ControlTypeT> > name2featureid;
+    
     raw1394handle_t raw1394handle;
     dc1394_cameracapture camera;
   };
@@ -48,7 +87,11 @@ namespace RavlImageN {
   public:
     DPIImage1394dcBodyC(const StringC &dev)
       : ImgIO1394dcBaseC()
-    { Open(dev,typeid(PixelT)); }
+    { 
+      Open(dev,typeid(PixelT)); 
+      BuildAttrList(*this);
+    }
+    //: Constructor.
     
     virtual bool IsGetReady() const
     { return raw1394handle != 0; }
@@ -73,6 +116,61 @@ namespace RavlImageN {
     }
     //: Get next image.
     
+    virtual bool GetAttr(const StringC &attrName,IntT &attrValue){ 
+      if(HandleGetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const IntT &attrValue) { 
+      if(HandleSetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+
+    virtual bool GetAttr(const StringC &attrName,RealT &attrValue){ 
+      if(HandleGetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const RealT &attrValue) { 
+      if(HandleSetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttr(const StringC &attrName,bool &attrValue){ 
+      if(HandleGetAttr(attrName,attrValue))
+	return true;
+      return AttributeCtrlBodyC::GetAttr(attrName,attrValue);
+    }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const bool &attrValue) { 
+      if(HandleSetAttr(attrName,attrValue))
+	return true;
+      return AttributeCtrlBodyC::SetAttr(attrName,attrValue);
+    }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+  protected:
   };
 
   template<class PixelT>
