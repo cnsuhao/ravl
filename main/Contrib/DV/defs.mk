@@ -7,8 +7,8 @@
 #! rcsid="$Id$"
 
 PACKAGE = Ravl/Image
-
 DESCRIPTION = Digital Video Classes
+SUPPORT_ONLY = linux  
 
 MAINS=doDvDisplay.cc doDvGrab.cc
 HEADERS=PalFrame.hh ImgIODv.hh DvDecode.hh DvIFormat.hh DvDevice.hh WavFile.hh 
