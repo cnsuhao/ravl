@@ -15,36 +15,42 @@
 //! date="30/10/2002"
 
 #include "Ravl/Stream.hh"
+#include "Ravl/OS/Filename.hh"
 
 namespace RavlN {
 
-   ////////////////////////////
-   //! userlevel=Normal
-   //: Get a URL
+  ////////////////////////////
+  //! userlevel=Normal
+  //: Get a URL
   
-   class URLIStreamC 
-      : public IStreamC
-   {
-   public:
+  class URLIStreamC 
+    : public IStreamC
+  {
+  public:
 
-      URLIStreamC()
-      {}
-      //: Default constructor
+    URLIStreamC()
+    {}
+    //: Default constructor
     
-      URLIStreamC(const StringC &url,bool buffered=true);
-      //: Open net connection for input
+    URLIStreamC(const StringC &url,bool buffered=true);
+    //: Open net connection for input
     
-      IntT Push(void *ptr, size_t size, size_t nmemb);
-      //: Pushes data onto the stream from curl
+    ~URLIStreamC();
+    //: Destructor
 
-   protected:
+    IntT Error() const {return m_iError;}
+    //: Get CURL error code
 
-      bool Get(StringC& url);
-      //: Initialises the download of the URL
+    StringC ErrorString() const;
+    //: Get a string describing the error
 
-      int fd[2];
+  protected:
 
-   };
+    FilenameC m_strTemp;
+    
+    IntT m_iError;
+
+  };
   
 }
 
