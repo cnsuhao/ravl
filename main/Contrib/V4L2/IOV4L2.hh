@@ -304,7 +304,7 @@ namespace RavlImageN
 
     explicit IOV4L2C(const DPIPortC< ImageC<PixelT> > &port) :
       DPEntityC(port)
-    { if (dynamic_cast<IOV4L2BodyC<PixelT>*>(&DPIPortC< ImageC<PixelT> >::Body()) == 0) Invalidate(); }
+    { if (dynamic_cast<IOV4L2BodyC<PixelT>*>(&DPIPortC< ImageC<PixelT> >::Body()) == 0) this->Invalidate(); }
     //: Construct by upcasting from a pre-created port
     
     explicit IOV4L2C(IOV4L2BodyC<PixelT> &body) :
