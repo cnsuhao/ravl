@@ -4,24 +4,15 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef PALFRAME_HH
-#define PALFRAME_HH
+#ifndef RAVLIMAGE_PALFRAME_HH
+#define RAVLIMAGE_PALFRAME_HH
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
-//! date="24/9/100"
+//! date="24/9/2000"
 //! lib=RavlDV
-//! docentry="Drivers.Linux133194"
+//! docentry="Ravl.Drivers.Linux133194"
 //! rcsid="$Id$"
   
-class istream;
-class ostream;
-
-///// PalFrameC ////////////////////////////////////////////////////////
-//! userlevel=Normal
-//: Put a brief description of your class
-// Put a more detailed description of your class here.  You use embedded html
-// to make it clearer in the html documentation
-
 #include"Ravl/Array1d.hh"
 #include"Ravl/Image/Image.hh"
 #include"Ravl/Image/ByteRGBValue.hh"
@@ -47,108 +38,112 @@ namespace RavlImageN {
   } AudioInfo;
   
 
-
+  //! userlevel=Normal
+  //: Pal frame.
+  
   class PalFrameC 
-    {
-    public:
-      PalFrameC();
-      //: Default constructor
+  {
+  public:
+    PalFrameC();
+    //: Default constructor
       
-      PalFrameC(istream &in);
-      //: Stream constructor
+    ~PalFrameC();
+    //: Destructor.
+    
+    PalFrameC(istream &in);
+    //: Stream constructor
       
-      const ByteT * getData() const { return data; }
-      //: access to data
+    const ByteT * getData() const { return data; }
+    //: access to data
       
-      dv_decoder_t * Decoder() const { return decoder;}
-      // access to the decoder
+    dv_decoder_t * Decoder() const { return decoder;}
+    // access to the decoder
       
-      void setData(ByteT *dta);
-      //: set the data
+    void setData(ByteT *dta);
+    //: set the data
       
-      int getBytes() const {return bw;}
-      //: the number of valid bytes written
+    int getBytes() const {return bw;}
+    //: the number of valid bytes written
       
-      void setBytes(const int bts=0){ bw=bts;}
-      //: reset number of bytes written
+    void setBytes(const int bts=0){ bw=bts;}
+    //: reset number of bytes written
       
-      bool isValid();
-      //: checks whether frame contains all valid bytes
+    bool isValid();
+    //: checks whether frame contains all valid bytes
       
-      void writeDifBlock(int section_type, int dif_sequence, int dif_block, int length, ByteT * data);
-      //: write a dif block to buffer
+    void writeDifBlock(int section_type, int dif_sequence, int dif_block, int length, ByteT * data);
+    //: write a dif block to buffer
       
-      ImageC<ByteRGBValueC>Image();
-      //: decodes frame and returns image
+    ImageC<ByteRGBValueC>Image();
+    //: decodes frame and returns image
       
-      bool GetAudioInfo(AudioInfo &info) const;
-      // gets audio properties of the frame
+    bool GetAudioInfo(AudioInfo &info) const;
+    // gets audio properties of the frame
       
-      Array1dC<char> Sound();
-      // gets the sound for a frame
+    Array1dC<char> Sound();
+    // gets the sound for a frame
       
-      TimeCodeC extractTimeCode() const;
-      //: extract a timecode from a frame of data
+    TimeCodeC extractTimeCode() const;
+    //: extract a timecode from a frame of data
       
-      bool IsPAL() const;
-      //: is it a pal
+    bool IsPAL() const;
+    //: is it a pal
       
-      friend ostream &operator<<(ostream &s, const PalFrameC &out);
-      //: Output stream operator
+    friend ostream &operator<<(ostream &s, const PalFrameC &out);
+    //: Output stream operator
       
-      friend istream &operator>>(istream &s, PalFrameC &in);
-      //: Input stream operator
+    friend istream &operator>>(istream &s, PalFrameC &in);
+    //: Input stream operator
       
-    protected:
-      //: Put all your class members here
+  protected:
+    //: Put all your class members here
       
-      ByteT * data; 
-      //: the DV encoded PAL frame
+    ByteT * data; 
+    //: the DV encoded PAL frame
       
-      int bw;
-      //: the number of bytes written
+    int bw;
+    //: the number of bytes written
       
-      dv_decoder_t *decoder;
-      //: the libdv decoder
+    dv_decoder_t *decoder;
+    //: the libdv decoder
       
-      Array1dC<ByteRGBValueC>decoded;
-      // a buffer to store the decoded video stream
+    Array1dC<ByteRGBValueC>decoded;
+    // a buffer to store the decoded video stream
       
-      Array1dC<char>sound;
-      // a buffer to store the sound in
+    Array1dC<char>sound;
+    // a buffer to store the sound in
       
-      int frameno;
-      bool init;
-      bool maps_initialized;
+    int frameno;
+    bool init;
+    bool maps_initialized;
       
-      // lookup tables for collecting the shuffled audio data
-      Array1dC<IntT> palmap_ch1;
-      Array1dC<IntT> palmap_ch2;
-      Array1dC<IntT> palmap_2ch1;
-      Array1dC<IntT> palmap_2ch2;
-      Array1dC<IntT> ntscmap_ch1;
-      Array1dC<IntT> ntscmap_ch2;
-      Array1dC<IntT> ntscmap_2ch1;
-      Array1dC<IntT> ntscmap_2ch2;
-      short compmap[4096];
+    // lookup tables for collecting the shuffled audio data
+    Array1dC<IntT> palmap_ch1;
+    Array1dC<IntT> palmap_ch2;
+    Array1dC<IntT> palmap_2ch1;
+    Array1dC<IntT> palmap_2ch2;
+    Array1dC<IntT> ntscmap_ch1;
+    Array1dC<IntT> ntscmap_ch2;
+    Array1dC<IntT> ntscmap_2ch1;
+    Array1dC<IntT> ntscmap_2ch2;
+    short compmap[4096];
       
-      bool GetSSYBPack(int packNum, Pack &pack) const;
-      bool GetVAUXPack(int packNum, Pack &pack) const;
-      bool GetAAUXPack(int packNum, Pack &pack) const;
+    bool GetSSYBPack(int packNum, Pack &pack) const;
+    bool GetVAUXPack(int packNum, Pack &pack) const;
+    bool GetAAUXPack(int packNum, Pack &pack) const;
       
       
-    };
+  };
   
    
   ostream &operator<<(ostream &s, const PalFrameC &out);
   //: output stream operator
   
   inline
-    istream &operator>>(istream &s, PalFrameC &in)
-    {
-      in = PalFrameC(s);
-      return s;
-    }
+  istream &operator>>(istream &s, PalFrameC &in) {
+    in = PalFrameC(s);
+    return s;
+  }
   //: input stream operator
   
 } // end namespace RavlImageN

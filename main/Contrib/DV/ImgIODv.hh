@@ -4,9 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef DPIMGIODV_HEADER
-#define DPIMGIODV_HEADER 1
-
+#ifndef RAVLIMAGE_IMGIODV_HEADER
+#define RAVLIMAGE_IMGIODV_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/DV/ImgIODv.hh"
@@ -34,25 +33,23 @@ namespace RavlImageN {
   public:
     DPImageDvBaseBodyC(const StringC &suffix = "dv")
       : rect(0, 575, 0, 719),
-      frameSize(144000),
-      frameNo(0),
-      seqSize((UIntT) -1)
-      {  }
+	frameSize(144000),
+	frameNo(0),
+	seqSize((UIntT) -1)
+    {  }
     //: Constructor.
     // This constructs with the basic cif format.
     
-    inline UIntT CalcOffset(UIntT frameNo) const 
-      {
-	RavlAssert(frameSize > 0);
-	return frameSize * frameNo; 
-      }
+    inline UIntT CalcOffset(UIntT frameNo) const {
+      RavlAssert(frameSize > 0);
+      return frameSize * frameNo; 
+    }
     //: Calculate the offset of a frame.
     
-    inline IntT CalcOffset(IntT frameNo) const 
-      {
-	RavlAssert(frameSize > 0);
-	return frameSize * frameNo; 
-      }
+    inline IntT CalcOffset(IntT frameNo) const {
+      RavlAssert(frameSize > 0);
+      return frameSize * frameNo; 
+    }
     //: Calculate the offset of a frame.
     
     void SetSequenceSize(UIntT val) { seqSize = val; }
@@ -103,13 +100,13 @@ namespace RavlImageN {
     //: Get next image.
     
     virtual bool IsGetReady() const 
-      { return strm.good(); }
+    { return strm.good(); }
     //: Is some data ready ?
     // true = yes.
     // Defaults to !IsGetEOS().
     
     virtual bool IsGetEOS() const
-      { return strm.good(); }
+    { return strm.good(); }
     //: Has the End Of Stream been reached ?
     // true = yes.
     
@@ -136,21 +133,21 @@ namespace RavlImageN {
     
     DPIImageDvC(const IStreamC &strm,const StringC &suffix = "dv")
       : DPEntityC(*new DPIImageDvBodyC(strm,suffix))
-      {}
+    {}
     //: Constructor from stream 
     
   protected:
     
     inline
-      DPIImageDvBodyC & Body() 
-      { return dynamic_cast<DPIImageDvBodyC &>(DPEntityC::Body()); }
+    DPIImageDvBodyC & Body() 
+    { return dynamic_cast<DPIImageDvBodyC &>(DPEntityC::Body()); }
     //: Access body.
     // This isn't really needed, they're just to ensure
     // all derived classes work properly.
     
     inline
-      const DPIImageDvBodyC &Body() const
-      { return dynamic_cast<const DPIImageDvBodyC &>(DPEntityC::Body()); }
+    const DPIImageDvBodyC &Body() const
+    { return dynamic_cast<const DPIImageDvBodyC &>(DPEntityC::Body()); }
     //: Constant access body.
     // This isn't really needed, they're just to ensure
     // all derived classes work properly.

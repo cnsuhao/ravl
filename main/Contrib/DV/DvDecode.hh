@@ -4,10 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-
-#ifndef DvDecode_HEADER
-#define DvDecode_HEADER 1
-
+#ifndef RAVLIMAGE_DVDECODE_HEADER
+#define RAVLIMAGE_DVDECODE_HEADER 1
 ////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/DV/DvDecode.hh"
@@ -44,15 +42,16 @@ namespace RavlImageN {
     DvDecodeBodyC (bool deinterlace);
     //: Constructor
     // (See handle class DvDecode)
-
-        
+    
+    ~DvDecodeBodyC();
+    //: Destructor.
+    
     ImageC<ByteRGBValueC> Apply (ByteT * arr);
     //: Converts PAL DV frame to byte RGB image
     
     virtual bool IsStateless() const 
-      { return true; }
+    { return false; }
     //: Is operation stateless ?
-    
     
   private:
     dv_decoder_t *decoder;
@@ -77,23 +76,22 @@ namespace RavlImageN {
   {
   public:  
     DvDecodeC (bool deinterlace=true)
-      : DPProcessC<ByteT *, ImageC<ByteRGBValueC> >
-      (*new DvDecodeBodyC(deinterlace))
-      {}
+      : DPProcessC<ByteT *, ImageC<ByteRGBValueC> >(*new DvDecodeBodyC(deinterlace))
+    {}
     //: Constructs DvDecodeC 
 
   protected:
     DvDecodeBodyC &Body() 
-      { return static_cast<DvDecodeBodyC &>(DPEntityC::Body()); }
+    { return static_cast<DvDecodeBodyC &>(DPEntityC::Body()); }
     //: Body access.
     
     const DvDecodeBodyC &Body() const
-      { return static_cast<const DvDecodeBodyC &>(DPEntityC::Body()); }
+    { return static_cast<const DvDecodeBodyC &>(DPEntityC::Body()); }
     //: Body access.
 
   public:
     ImageC<ByteRGBValueC> Apply (ByteT * arr)
-      { return Body().Apply(arr); }
+    { return Body().Apply(arr); }
     //: Converts PAL DV frame to byte RGB image
     
 

@@ -4,23 +4,14 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef DVDEVICE_HH
-#define DVDEVICE_HH
+#ifndef RAVLIMAGE_DVDEVICE_HH
+#define RAVLIMAGE_DVDEVICE_HH
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
-//! date="23/9/100"
+//! date="23/9/2000"
 //! lib=RavlDV
-//! docentry="Drivers.Linux1394"
+//! docentry="Ravl.Drivers.Linux1394"
 //! rcsid="$Id$"
-  
-class istream;
-class ostream;
-
-///// DvDeviceC ////////////////////////////////////////////////////////
-//! userlevel=Normal
-//: Put a brief description of your class
-// Put a more detailed description of your class here.  You use embedded html
-// to make it clearer in the html documentation
 
 #include <libavc1394/rom1394.h>
 #include <libavc1394/avc1394.h>
@@ -41,7 +32,10 @@ class ostream;
 namespace RavlImageN {
   
   using namespace RavlN;
-    
+
+  //! userlevel=Normal
+  //: DV Device controller.
+  
   class DvDeviceC 
   {
   public:
@@ -129,8 +123,7 @@ namespace RavlImageN {
   //: output stream operator
   
   inline
-  istream &operator>>(istream &s, DvDeviceC &in)
-  {
+  istream &operator>>(istream &s, DvDeviceC &in) {
     in = DvDeviceC(s);
     return s;
   }

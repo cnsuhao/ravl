@@ -4,23 +4,15 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef WavFile_HH
-#define WavFile_HH
+#ifndef RAVLIMAGE_WAVFILE_HH
+#define RAVLIMAGE_WAVFILE_HH
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
-//! date="24/9/100"
+//! date="24/9/2000"
 //! lib=RavlDV
-//! docentry="Drivers.Linux133194"
+//! docentry="Ravl.Drivers.Linux133194"
 //! rcsid="$Id$"
-  
-class istream;
-class ostream;
 
-///// PalFrameC ////////////////////////////////////////////////////////
-//! userlevel=Normal
-//: Put a brief description of your class
-// Put a more detailed description of your class here.  You use embedded html
-// to make it clearer in the html documentation
 #include"Ravl/Stream.hh"
 #include"Ravl/Array1d.hh"
 #include"Ravl/OS/Filename.hh"
@@ -33,7 +25,10 @@ namespace RavlImageN {
   typedef unsigned long ULongT;
   
   using namespace RavlN;
-
+  
+  //! userlevel=Normal
+  //: Class for writing wav files.
+  
   class WavFileC 
   {
   public:

@@ -1,15 +1,29 @@
 ifndef LIBDV_DEF
 LIBDV_DEF=1
 
-# Directory where to look for libdv, libraw1394 and libavc
+# libraw1394 amd libdv ##################################################
 
-LIBDV_HOME=/vol/vssp/dera/src/digitalvideo
-LIBDV_INCLUDE=$(LIBDV_HOME)/include
-LIBDV_LIBS=$(LIBDV_HOME)/lib
+#LIBDV_HOME=/vol/vssp/dera/src/digitalvideo
+#LIBDV_INCLUDE=$(LIBDV_HOME)/include
+#LIBDV_LIBS=$(LIBDV_HOME)/lib
+#INCLUDES += -I$(LIBDV_INCLUDE)
+#EXELIB := $(LIBDV_LIBS) -ldv -lraw1394 $(EXELIB)
+
+# These libs can be obtained as rpm's for most linux systems.
+
+EXELIB := -ldv -lraw1394 $(EXELIB)
+
+# libavc1394 ##################################################
+
+LIBAVC1394_HOME=/opt/PDsoft/libavc1394-0.4.1
+LIBAVC1394_INCLUDE=$(LIBAVC1394_HOME)/include
+LIBAVC1394_LIBS=$(LIBAVC1394_HOME)/lib
 
 # set up includes and libs
 
-INCLUDES += -I$(LIBDV_INCLUDE)
-EXELIB :=  -L$(LIBDV_LIBS) -lraw1394 -lrom1394 -lavc1394 -ldv -lraw1394 $(EXELIB)
+INCLUDES += -I$(LIBAVC1394_INCLUDE)
+EXELIB :=  -L$(LIBAVC1394_LIBS) -lrom1394 -lavc1394 $(EXELIB)
+
+
 
 endif

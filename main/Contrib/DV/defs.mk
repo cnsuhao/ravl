@@ -10,10 +10,6 @@ PACKAGE = Ravl/Image
 
 DESCRIPTION = Digital Video Classes
 
-#MAINS=doDvControl.cc doDvDecode.cc doDv2Wav.cc doDvGrab.cc doDv2Mpeg.cc doDvDisplay.cc 
-#HEADERS=DvDevice.hh ImgIORawDv.hh WavFile.hh ImgIODvDevice.hh
-#SOURCES=DvDevice.cc IPDVConvert.cc  ImgIORawDv.cc WavFile.cc ImgIODvDevice.cc
-
 MAINS=doDvDisplay.cc doDvGrab.cc
 HEADERS=PalFrame.hh ImgIODv.hh DvDecode.hh DvIFormat.hh DvDevice.hh WavFile.hh 
 SOURCES=PalFrame.cc ImgIODv.cc DvDecode.cc DvIFormat.cc DvDevice.cc WavFile.cc
