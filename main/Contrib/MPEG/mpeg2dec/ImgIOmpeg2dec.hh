@@ -27,6 +27,9 @@ namespace RavlImageN {
   public:
     ImgIOmpeg2decBaseC(const StringC &filename);
     //: Constructor.
+
+    ~ImgIOmpeg2decBaseC();
+    //: Destructor.
     
     bool NextFrame(ImageC<ByteYUVValueC> &img);
     //: Get next frame of video.
@@ -51,7 +54,8 @@ namespace RavlImageN {
       : ImgIOmpeg2decBaseC(filename)
     {}
     //: Constructor.
-
+    
+    
     virtual bool GetAttr(const StringC &attrName,StringC &attrValue){
       if(attrName == "framerate") {
 	attrValue = StringC("25");
