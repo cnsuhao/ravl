@@ -11,152 +11,134 @@
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/FireWire/DvDevice.cc"
 
-#define _LARGEFILE_SOURCE
-#define _FILE_OFFSET_BITS 64
+//#define _LARGEFILE_SOURCE
+//#define _FILE_OFFSET_BITS 64
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else 
+#define ONDEBUG(x) 
+#endif 
 
 #include "Ravl/Image/DvDevice.hh"
-#include "Ravl/Matrix.hh"
 #include "Ravl/Image/ImgIO.hh"
 #include "Ravl/DP/FileFormatIO.hh"
 #include "Ravl/Image/Deinterlace.hh"
-
-#include <unistd.h>
 #include "Ravl/Assert.hh"
-#include <netinet/in.h> 
-#include <string.h> 
-#include <time.h> 
-#include <stdlib.h>
+#include "Ravl/OS/Date.hh"
+//#include <netinet/in.h> 
+
 
 namespace RavlImageN {
 
-int raw_iso_handler(raw1394handle_t handle, int channel, size_t length, quadlet_t *data)
-{
-  PalFrameC *frame = (PalFrameC*)raw1394_get_userdata(handle); //: get user data
-  
-  if (length > 16) {
-    
-    unsigned char *p = (unsigned char*) & data[3];
-    int section_type = p[0] >> 5;   /* section type is in bits 5 - 7 */
-    int dif_sequence = p[1] >> 4;   /* dif sequence number is in bits 4 - 7 */
-    int dif_block = p[2];
-    
-    frame->writeDifBlock(section_type, dif_sequence, dif_block, length, p);
+  int raw_iso_handler(raw1394handle_t handle, int channel, size_t length, quadlet_t *data)
+  {
+    PalFrameC *frame = (PalFrameC*)raw1394_get_userdata(handle); //: get user data
+    if (length > 16) {
+      unsigned char *p = (unsigned char*) & data[3];
+      int section_type = p[0] >> 5;   /* section type is in bits 5 - 7 */
+      int dif_sequence = p[1] >> 4;   /* dif sequence number is in bits 4 - 7 */
+      int dif_block = p[2];
+      frame->writeDifBlock(section_type, dif_sequence, dif_block, length, p);
+    }
+    return 0;
   }
   
-  return 0;
-}
-
-
-
-void mysleep(int microseconds) {
-
-  usleep((unsigned long)microseconds);
-
-  //timespec delay; 
-  //delay.tv_sec=(long int)floor(microseconds/1000);
-  //delay.tv_nsec = (long int) (microseconds % 1000)*1e6;
-  //nanosleep(&delay, NULL);   
-}
-
-
-
-DvDeviceC::DvDeviceC()
+  
+  DvDeviceC::DvDeviceC()
 {
-  
+  ONDEBUG (cerr << "\nDvDeviceC::DvDeviceC()" ) ; 
   device = -1;
-  int i;
-  
-  // Declare some default values.
   
 #ifdef RAW1394_V_0_8
   handle = raw1394_get_handle();
 #else
   handle = raw1394_new_handle();
 #endif
+  
+  //: Check the status 
   if (!handle)
-    {
-      if (!errno)
-        {
-	  fprintf(stderr, "Not Compatable!\n");
-        } else {
-	  perror("Couldn't get 1394 handle");
-	  fprintf(stderr, "Is ieee1394, driver, and raw1394 loaded?\n");
-        }
-      exit(1);
-    } 
+    if (!errno)
+      RavlAlwaysAssertMsg(0,"\nNot Compatible! \n")
+    else 
+      RavlAlwaysAssertMsg(0,"\nCouldn't get 1394 handle, Is ieee1394, driver, and raw1394 loaded?\n") ; 
   
   if (raw1394_set_port(handle, 0) < 0) {
-    perror("couldn't set port");
     raw1394_destroy_handle(handle);
+    RavlAlwaysAssertMsg(0, "Couldn't set port" ) ; 
     exit(1);
   }
   
-  
-  for (i=0; i < raw1394_get_nodecount(handle); ++i)
-    {
-      if (rom1394_get_directory(handle, i, &rom_dir) < 0)
-    	{
-	  fprintf(stderr,"error reading config rom directory for node %d\n", i);
-	  raw1394_destroy_handle(handle);
-	  exit(1);
-        }
-      
-      if ( (rom1394_get_node_type(&rom_dir) == ROM1394_NODE_TYPE_AVC) &&
-	   avc1394_check_subunit_type(handle, i, AVC1394_SUBUNIT_TYPE_VCR))
-        {
-	  device = i;
-	  break;
-        }
+  for (IntT i=0; i < raw1394_get_nodecount(handle); ++i) {
+    if (rom1394_get_directory(handle, i, &rom_dir) < 0) {
+      RavlIssueWarning("Error reading config rom directory for node " + i);
+      raw1394_destroy_handle(handle);
+      exit(1); 
     }
+    
+    if ( (rom1394_get_node_type(&rom_dir) == ROM1394_NODE_TYPE_AVC) &&
+	 avc1394_check_subunit_type(handle, i, AVC1394_SUBUNIT_TYPE_VCR)) {
+      device = i;
+      break;
+    }}
+  
   
   if (device == -1)
     {
-      fprintf(stderr, "Could not find any AV/C devices on the 1394 bus.\n");
+      RavlIssueError("Could not find any AV/C devices on the 1394 bus.\n");
       raw1394_destroy_handle(handle);
       exit(1);
     }
-
+  
   // lets set the ISO receiver
   raw1394_set_iso_handler(handle, 63, raw_iso_handler);
   raw1394_set_userdata(handle, (PalFrameC*)&frame);
 }
 
 
+
+
 //: OK a few check state routines
-bool
-DvDeviceC::isPlaying() const
+bool DvDeviceC::IsPlaying() const
 {
+  ONDEBUG (cerr << "\nDvDeviceC::IsPlaying() const" ); 
   if(avc1394_vcr_is_playing(handle, device)) return true;
   return false;
 }
 
-bool
-DvDeviceC::isRecording() const
+
+//: Is the device recording. 
+bool DvDeviceC::IsRecording() const
 {
+  ONDEBUG (cerr << "\nDvDeviceC::IsRecording() const" ); 
   if(avc1394_vcr_is_recording(handle, device)) return true;
   return false;
 }
 
 
-void
-DvDeviceC::Play() const
+//: Is the device playing.
+void DvDeviceC::Play() const
 {
+  ONDEBUG (cerr << "\nDvDeviceC::Play() const" ); 
   avc1394_vcr_play(handle, device);
   return;
 }
 
-void
-DvDeviceC::NextFrame() const
+//: Go to next frame ; 
+void DvDeviceC::NextFrame() const
 {
+  ONDEBUG (cerr << "\nDvDeviceC::NextFrame() const" ); 
   avc1394_vcr_next(handle, device);
   return;
 }
 
 
-void
-DvDeviceC::TrickPlay(const int speed) const
+//: Trick play 
+//: seek at given speed ; 
+void DvDeviceC::TrickPlay(const int speed) const
 {
-  //cout << "setting speed: " << speed << endl;
+  ONDEBUG (cerr << "\nDvDeviceC::TrickPlay(const int speed) const :: speed = " << speed ); 
   avc1394_vcr_trick_play(handle, device, speed);
   return;
 }
@@ -165,7 +147,8 @@ DvDeviceC::TrickPlay(const int speed) const
 void
 DvDeviceC::Pause() const
 {
-  avc1394_vcr_pause(handle, device);
+ ONDEBUG (cerr << "\nDvDeviceC::Pause() const" ); 
+ avc1394_vcr_pause(handle, device);
   return;
 }
 
@@ -174,13 +157,15 @@ DvDeviceC::Pause() const
 void
 DvDeviceC::Stop() const
 {
-  avc1394_vcr_stop(handle, device);
+ ONDEBUG (cerr << "\nDvDeviceC::Stop() const" ); 
+ avc1394_vcr_stop(handle, device);
   return;
 }
 
 void
 DvDeviceC::Rewind() const
 {
+  ONDEBUG (cerr << "\nDvDeviceC::Rewind() const" ); 
   avc1394_vcr_rewind(handle, device);
   return;
 }
@@ -188,160 +173,153 @@ DvDeviceC::Rewind() const
 void
 DvDeviceC::ForwardWind() const
 {
+  ONDEBUG (cerr << "\nDvDeviceC::ForwardWind() const" ); 
   avc1394_vcr_forward(handle, device);
   return;
 }
 
        
-TimeCodeC
-DvDeviceC::getTimeCode() const
+TimeCodeC DvDeviceC::GetTimeCode() const
 {
   char *tc =  avc1394_vcr_get_timecode(handle, device);
   TimeCodeC myTc(tc);
+  ONDEBUG (cerr << "\nDvDeviceC::GetTimeCode() const \t Timecode:" << myTc.ToText()  ); 
   return myTc;
 }
 
 
-void sleeping(int n) {
-  for(IntT i=1;i<n;i++) {
-    // this is daft
-    MatrixC mat(100,100);
-    mat.Fill(10);
-    mat = mat * mat;
-  }
-}
 
 
-void
-DvDeviceC::gotoTimeCode(const TimeCodeC &tcTarget) const
-{
-  
- bool bForward = false;
- bool done = false;
+
+
  
+ bool DvDeviceC::GotoTimeCodeFwd (const TimeCodeC & tcTarget) const 
+{
+  ONDEBUG (cerr << "\nDvDeviceC::GotoTimeCode(const TimeCodeC &tcTarget) const" ); 
+  bool forward = true ;            // seek direction 
+  IntT framesToGo = 0 ;            // number of frames to target. 
+  IntT speed = 0 ;                 // current speed, 15 is forward and rewind. 
+  Pause() ; 
+  RealT sleepTime = 0.1 ; 
+  Sleep(sleepTime) ; 
+  
+  // find number of frames to target, and direction. 
+  framesToGo = (tcTarget.getFrameCount() - GetTimeCode().getFrameCount()) ; 
 
-  StringC status = Status();
-  StringC want("Playing Paused");
-  if(status!=want) {
-    Pause();
-    sleeping(200); // lets sleep
-  }
+  cout << "\n\n Status " << Status() ; 
+  if ( framesToGo >= 0 ) forward = true ; else forward = false ; 
+  framesToGo = Abs(framesToGo) ;
+  ONDEBUG ( cerr << "\nFrames to target = " << framesToGo << "\t direction:" << forward ) ;   
+  ONDEBUG ( cerr << "\nCurrent Timecode is " << GetTimeCode().ToText())  ;
+  if ( ! forward ) cerr << "\n Timecode seems to have passed ...." ; 
+
   
+  // now seek to timecode 
+  while (true) {
+    ONDEBUG ( cerr << "\n\nFrames to go is " << framesToGo << "\t direction:" << forward << "\t timecode: " << GetTimeCode().ToText()  ) ;  
+    
+    // get offset data again. 
+    framesToGo = (tcTarget.getFrameCount() - GetTimeCode().getFrameCount()) ; 
+    if ( framesToGo >= 0 ) forward = true ; else forward = false ; 
+    framesToGo = Abs(framesToGo) ; 
   
 
-  // Get the current timecode
-  TimeCodeC tcCurrent = getTimeCode();
-  cout << tcCurrent << endl;
-
-  // Calculate how many frames to go
-  int iTotNumOfFrames = tcCurrent.NumberOfFramesTo(tcTarget);
-  if(tcCurrent < tcTarget) bForward = true;
-  
-  //: we could be there
-  if(iTotNumOfFrames==0) {
-    goto TCEND;
-  }
-    
-  if(iTotNumOfFrames<125) goto FEW_FRAMES;
-  else if(iTotNumOfFrames<150) goto VERY_NEAR;
-  else if(iTotNumOfFrames<500) goto NEAR;
-  // MORE THAN 20s AWAY
-  
-  // Do normal fast foward etc if more than 2 minutes away
-  if(iTotNumOfFrames>=500) {
-    
-    if(bForward) TrickPlay(12);
-    else TrickPlay(-12);
-    
-    while(!done) {
-      TimeCodeC tcNow = getTimeCode();
-      int iNumFrames = tcNow.NumberOfFramesTo(tcTarget);
-      if(iNumFrames < 500) done = true;
-      else mysleep(50);
+    // We are there ! 
+    if ( framesToGo == 0 ) {
+      ONDEBUG ( cerr << "\n\n\n\nNo more frames to go !" ) ; 
+      Pause() ;
+      return true ; // we are where we need to be. 
     }
-    iTotNumOfFrames=499;
-  }
 
-  
- NEAR:
-  // LESS THAN 20s AWAY WE CAN SLOW DONE A LITTLE
-  if((iTotNumOfFrames < 500) && (iTotNumOfFrames>=150)) {
-    if(bForward) TrickPlay(10);
-    else TrickPlay(-10);
-    
-    done = false;
-    
-    while(!done) {
-      TimeCodeC tcNow = getTimeCode();
-      int iNumFrames = tcNow.NumberOfFramesTo(tcTarget);
-      //cout << iNumFrames << endl;
-      if(iNumFrames < 150) done = true;
-      else mysleep(50);
-    }
-    
-    iTotNumOfFrames = 149;
-  }
+    // if we hit end of tape without finding it, return false 
+    if ( Status() =="Winding stopped" ) {
+      cerr << "\nEnd of tape encountered, timecode not found" << Status() ; 
+      return false ; }
 
- VERY_NEAR:  
-  // NOW LESS THAN 6s
-  if((iTotNumOfFrames < 150) && (iTotNumOfFrames >= 50)) {
-    if(bForward) TrickPlay(8);
-    else TrickPlay(-8);
-    
-    done = false;
-    
-    while(!done) {
-      TimeCodeC tcNow = getTimeCode();
-      int iNumFrames = tcNow.NumberOfFramesTo(tcTarget);
-      //cout << iNumFrames << endl;
-      if(iNumFrames < 25) done = true;
-      else mysleep(50);
+    // We are >1000  frames away still 
+    if ( framesToGo >= 1000 ) {
+      const IntT thisSpeed = 14 ;
+      ONDEBUG ( cerr << "\n Target is >1000 frames away" ) ; 
+      if ( speed != thisSpeed ) {
+	speed = thisSpeed ; 
+	TrickPlay(thisSpeed) ;
+      }
+      Sleep(sleepTime) ; 
+      continue ; 
     }
+    // between 250 and 1000 frames 
+    else if (( framesToGo >= 250 ) && framesToGo < 1000 ) {
+      const IntT thisSpeed = 12 ; 
+      ONDEBUG ( cerr << "\n Target is 250-1000 frames away" ) ; 
+      if ( speed != thisSpeed ) {
+	speed = thisSpeed ; 
+	TrickPlay(thisSpeed) ; 
+      }
+      Sleep(sleepTime) ; 
+      continue ; 
+    }
+    // between 50 and 250 frames ; 
+    else if (( framesToGo >=50 ) && framesToGo < 250 ) {
+      const IntT thisSpeed = 8 ; 
+      ONDEBUG ( cerr << "\n Target is 5-250 frames away" ) ; 
+      if ( speed != thisSpeed ) {
+	speed = thisSpeed ; 
+	TrickPlay(thisSpeed) ; 
+      }
+      Sleep(sleepTime) ; 
+      continue ; 
+    }
+  // between 10 and 50 frames ; 
+    else if (( framesToGo >=10 ) && framesToGo < 50 ) {
+      const IntT thisSpeed = 6 ; 
+      ONDEBUG ( cerr << "\n Target is 10-50 frames away" ) ; 
+      if ( speed != thisSpeed ) {
+	speed = thisSpeed ; 
+	TrickPlay(thisSpeed) ; 
+      }
+      Sleep(sleepTime) ; 
+      continue ; 
+    }
+    // less that 10 frames
+    else {
+      const IntT thisSpeed = 1 ; 
+      ONDEBUG ( cerr << "\n Target is <10 frames away" ) ; 
+      if ( speed != thisSpeed ) {
+	speed = thisSpeed ; 
+	TrickPlay(thisSpeed) ;
+      }
+      Sleep(sleepTime) ;
+      continue ; 
+    }
+    
   }
- FEW_FRAMES:  
-  // NOW IN FINAL SECOND
-  if(bForward) TrickPlay(4);
-  else TrickPlay(-4);
-  
-  done = false;
-  
-  while(!done) {
-    TimeCodeC tcNow = getTimeCode();
-    int iNumFrames = tcNow.NumberOfFramesTo(tcTarget);
-    if(iNumFrames==0) {
-      Pause();
-      done = true;
-    }
-    else mysleep(50);
-  }	
-  
- TCEND:
-  mysleep(50);
-  
-    
+  ONDEBUG ( cerr << "\n End of timecode seek, current tc is " << GetTimeCode().ToText() ) ; 
+  ONDEBUG ( cerr << "\n\ncurrent timecode is " << GetTimeCode().ToText() ) ; 
+  return false ; 
 }
 
 
-StringC
-DvDeviceC::Status() const 
+
+
+
+
+StringC DvDeviceC::Status() const 
 {
   quadlet_t  quad =avc1394_vcr_status(handle, device);
   StringC status(avc1394_vcr_decode_status(quad)); 
+  ONDEBUG (cerr << "\nDvDeviceC::Status() const \t status=\"" << status << "\""  );
   return status;
 }
 
 
-TimeCodeC
-DvDeviceC::grabFrame() 
+TimeCodeC DvDeviceC::GrabFrame() 
 {
+  ONDEBUG (cerr << "\nDvDeviceC::grabFrame() " ); 
   int channel=63;
-
   //: start ISO receive
-  if (raw1394_start_iso_rcv(handle, channel) < 0) {
-    cerr << "raw1394 - couldn't start iso receive" << endl;
-    exit( -1);
-  }
-
+  if (raw1394_start_iso_rcv(handle, channel) < 0)
+    RavlIssueError("raw1394 - couldn't start iso receive") ; 
+  
   bool done=false;
   TimeCodeC ret;
   while(!done) {    
@@ -359,8 +337,9 @@ DvDeviceC::grabFrame()
 
 
 ImageC<ByteRGBValueC>
-DvDeviceC::grabImage() 
+DvDeviceC::GrabImage() 
 {
+  ONDEBUG (cerr << "\nDvDeviceC::grabImage() " ); 
   int channel=63;
 
   //: start ISO receive
@@ -384,10 +363,21 @@ DvDeviceC::grabImage()
 }
 
 ImageC<ByteRGBValueC>
-DvDeviceC::grabFrame(const TimeCodeC & tcGrab) 
+DvDeviceC::GrabFrame(const TimeCodeC & tcGrab) 
 {
+  ONDEBUG (cerr << "\nDvDeviceC::grabFrame(const TimeCodeC & tcGrab) " ); 
   int channel=63;
-  gotoTimeCode(tcGrab);
+  
+
+  // rewind tape
+  Stop() ; 
+  Rewind() ; 
+  Sleep(0.5) ;   
+  while ( Status() != "Winding stopped" )
+    Sleep(0.5) ; 
+  
+  // Search fwd for timecode 
+  GotoTimeCodeFwd(tcGrab);
 
   //: start ISO receive
   if (raw1394_start_iso_rcv(handle, channel) < 0) {
@@ -411,8 +401,9 @@ DvDeviceC::grabFrame(const TimeCodeC & tcGrab)
 
 
 bool
-DvDeviceC::grabSequence(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd) 
+DvDeviceC::GrabSequence(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd) 
 {
+  ONDEBUG (cerr << "\nDvDeviceC::grabSequence(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd) " ); 
   //: goto the first timecode
   TimeCodeC zero(0,0,0,0);
   TimeCodeC offset(0,0,3,0); // three seconds
@@ -420,7 +411,12 @@ DvDeviceC::grabSequence(const char * filename, const TimeCodeC & tcStart, const 
   if(realStart<zero)realStart=zero;
   bool dropped = false;
   //: first goto timecode
-  gotoTimeCode(realStart);
+  Stop() ; 
+  Rewind() ; 
+  Sleep(0.5) ;   
+  while ( Status() != "Winding stopped" )
+    Sleep(0.5) ; 
+  GotoTimeCodeFwd(realStart);
   //: open the file for the video data
   
   //int fd = open (filename, O_LARGEFILE, "wb") ; 
@@ -479,9 +475,9 @@ DvDeviceC::grabSequence(const char * filename, const TimeCodeC & tcStart, const 
   
 }
 
-bool
-DvDeviceC::grabWav(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd) 
+bool DvDeviceC::GrabWav(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd) 
 {
+  ONDEBUG (cerr << "\nDvDeviceC::grabWav(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd) " ); 
   //: goto the first timecode
   TimeCodeC zero(0,0,0,0);
   TimeCodeC offset(0,0,3,0); // three seconds
@@ -489,8 +485,15 @@ DvDeviceC::grabWav(const char * filename, const TimeCodeC & tcStart, const TimeC
   if(realStart<zero)realStart=zero;
   bool dropped = false;
   //: first goto timecode
-  gotoTimeCode(realStart);
-  //: open the file for the video data
+  // rewind tape
+  Stop() ; 
+  Rewind() ; 
+  Sleep(0.5) ;   
+  while ( Status() != "Winding stopped" )
+    Sleep(0.5) ; 
+  GotoTimeCodeFwd(realStart);
+  
+//: open the file for the video data
   int channel = 63;
   WavFileC audio;
 
@@ -561,8 +564,9 @@ DvDeviceC::grabWav(const char * filename, const TimeCodeC & tcStart, const TimeC
 
 
 bool
-DvDeviceC::grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames) 
+DvDeviceC::GrabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames) 
 {
+  ONDEBUG (cerr << "\nDvDeviceC::grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames) " ); 
   //: goto the first timecode
   TimeCodeC zero(0,0,0,0);
   TimeCodeC offset(0,0,3,0); // three seconds
@@ -570,7 +574,13 @@ DvDeviceC::grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, 
   if(realStart<zero)realStart=zero;
   bool dropped = false;
   //: first goto timecode
-  gotoTimeCode(realStart);
+  // rewind tape
+  Stop() ; 
+  Rewind() ; 
+  Sleep(0.5) ;   
+  while ( Status() != "Winding stopped" )
+    Sleep(0.5) ; 
+  GotoTimeCodeFwd(realStart);
   //: open the file for the video data
   int channel = 63;
 

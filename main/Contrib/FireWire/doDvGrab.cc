@@ -22,48 +22,55 @@
 #include "Ravl/Image/DvDevice.hh"
 #include "Ravl/DP/FileFormatIO.hh"
 
+
+#include "Ravl/OS/Date.hh"
 using namespace RavlImageN;
+
+
 
 int doDvGrab(int argc, char **argv)
 {  
   OptionC   opt(argc,argv);
-  opt.Comment("This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used)");
-  opt.Comment("\n**Warnings**:\n (1) The tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.\n(2) To avoid dropped frames, it is highly recommended that the output is written to a file system on the local machine\n\n");
-  FilenameC     OutFile = opt.String("o", "", "output file");
-  StringC       PpmImage = opt.String("ppm", "00:00:10:00", "Grab a single frame at given timecode");
-  StringC       tcStart = opt.String("start", "00:00:10:00", "start timecode");
-  StringC       tcEnd   = opt.String("end", "00:00:00:00", "end timecode");
-  UIntT         Step    = opt.Int("step", 0, "if set then we grab every step frames to ppm stream");
-  bool          Audio   = opt.Boolean("audio", false, "just grab the audio to a wav file");
-  opt.Compulsory("o");
-  opt.Check();
-  
-  DvDeviceC dev;
-  
+   opt.Comment("This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used)");
+   opt.Comment("\n**Warnings**:\n (1) The tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.\n(2) To avoid dropped frames, it is highly recommended that the output is written to a file system on the local machine\n\n");
+   FilenameC     OutFile = opt.String("o", "grab.dv", "output file");
+   StringC       PpmImage = opt.String("ppm", "00:00:10:00", "Grab a single frame at given timecode");
+   StringC       tcStart = opt.String("start", "00:00:10:00", "start timecode");
+   StringC       tcEnd   = opt.String("end", "00:00:00:00", "end timecode");
+   UIntT         Step    = opt.Int("step", 0, "if set then we grab every step frames to ppm stream");
+   bool          Audio   = opt.Boolean("audio", false, "just grab the audio to a wav file");
+   //opt.Compulsory("o");
+   opt.Check();
+   
+
+
+   DvDeviceC dev;
+   
   //: Just grab a single image
-  if(opt.IsOnCommandLine("ppm")) {
-    ImageC<ByteRGBValueC>im = dev.grabFrame((TimeCodeC)PpmImage);
-    Save(PpmImage, im, "", true);
-  }
-  //: Lets grab a whole sequence
-  else {
-    if(!dev.isPlaying()) {
+   if(opt.IsOnCommandLine("ppm")) {
+     ImageC<ByteRGBValueC>im = dev.GrabFrame((TimeCodeC)PpmImage);
+     Save(PpmImage, im, "", true);
+   }
+   //: Lets grab a whole sequence
+   else {
+     if(!dev.IsPlaying()) {
+       dev.Pause();
+     }
+     //: grab streaming data
+     if(Audio) {
+       dev.GrabWav(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
+     } 
+     else {
+       if(opt.IsOnCommandLine("step")) {
+	 dev.GrabImageSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd, Step);
+       } else {
+	 dev.GrabSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
+       } 
       dev.Pause();
-    }
-    //: grab streaming data
-    if(Audio) {
-      dev.grabWav(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
-    } 
-    else {
-      if(opt.IsOnCommandLine("step")) {
-	dev.grabImageSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd, Step);
-      } else {
-	dev.grabSequence(OutFile, (TimeCodeC)tcStart, (TimeCodeC)tcEnd);
-      } 
-      dev.Pause();
-    }
-  }
-  return 0;
+     }
+   }
+   dev.Stop() ; 
+   return 0;
 }
 
 //: This puts a wrapper around the main program that catches

@@ -55,10 +55,10 @@ namespace RavlImageN {
     friend istream &operator>>(istream &s, DvDeviceC &in);
     //: Input stream operator
     
-    bool isPlaying() const;
+    bool IsPlaying() const;
     //: Is the VCR in play mode
     
-    bool isRecording() const;
+    bool IsRecording() const;
     //: Is the VCR in record mode
     
     void Play() const;
@@ -82,42 +82,57 @@ namespace RavlImageN {
     void ForwardWind() const;
     //: Forward wind player
     
-    TimeCodeC getTimeCode() const;
+    TimeCodeC GetTimeCode() const;
     //: get the current timecode
+
+    //void UpdateTC() const ; 
+    //: update the current timecode ; 
     
-    void gotoTimeCode(const TimeCodeC &tc) const;
+    //void GotoTimeCode(const TimeCodeC &tc) const {}
     //: goto user specified timecode
-    
+
+    bool GotoTimeCodeFwd (const TimeCodeC & tc) const ;
+    //: Go forward to timecode. returns true on susccess. 
+    // This function only searches forward, and does no other seeking. 
+
+
     StringC Status() const;
     //: get the status of the VCR
     
-    TimeCodeC grabFrame();
+    TimeCodeC GrabFrame();
     //: this fills the PalFrame buffer
     
-    ImageC<ByteRGBValueC> grabFrame(const TimeCodeC & tcGrab);
+    ImageC<ByteRGBValueC> GrabFrame(const TimeCodeC & tcGrab);
     //: get an image from the vcr
     
-    ImageC<ByteRGBValueC> grabImage();
+    ImageC<ByteRGBValueC> GrabImage();
     //: get an image from the vcr
     
     PalFrameC Frame() const { return frame; }
     //: access to currently held frame
     
-    bool grabSequence(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd);
+    bool GrabSequence(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd);
     //: grabs a number of frames from DV player into file, in DV format
     
-    bool grabWav(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd);
+    bool GrabWav(const char * filename, const TimeCodeC & tcStart, const TimeCodeC & tcEnd);
     //: grabs a wave file directly from the vcr
 
-    bool grabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames);
+    bool GrabImageSequence(const StringC & prefix, const TimeCodeC & tcStart, const TimeCodeC & tcEnd, UIntT nFrames);
     //: grab a set of images between the two timecodes and nFrame intervals and saves them according to prefix
     
+  protected:
+
+    //inline IntT FramesToTarget( const TimeCodeC & target) const { return (target.getFrameCount() - GetTimeCode().getFrameCount()) ; } 
+    //:  the number of frames to the target timecode. 
+    // Negative values means we need to seek backwards. 
+
   protected:
     //: Put all your class members here
     rom1394_directory rom_dir;
     raw1394handle_t handle;
     int device;
     PalFrameC frame; // a frame of DV PAL data
+    // TimeCodeC currentTC ; // a timecode object, used by various card methods. 
   };
   
   ostream &operator<<(ostream &s, const DvDeviceC &out);
