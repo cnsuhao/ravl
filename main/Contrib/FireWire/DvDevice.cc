@@ -11,6 +11,9 @@
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/FireWire/DvDevice.cc"
 
+#define _LARGEFILE_SOURCE
+#define _FILE_OFFSET_BITS 64
+
 #include "Ravl/Image/DvDevice.hh"
 #include "Ravl/Matrix.hh"
 #include "Ravl/Image/ImgIO.hh"
@@ -23,6 +26,10 @@
 #include <string.h> 
 #include <time.h> 
 #include <stdlib.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 namespace RavlImageN {
 
@@ -419,6 +426,10 @@ DvDeviceC::grabSequence(const char * filename, const TimeCodeC & tcStart, const 
   //: first goto timecode
   gotoTimeCode(realStart);
   //: open the file for the video data
+  
+  //int fd = open (filename, O_LARGEFILE, "wb") ; 
+  //FILE *fp = fdopen(fd,"w");
+
   FILE *fp = fopen(filename, "wb");
   int channel = 63;
 
