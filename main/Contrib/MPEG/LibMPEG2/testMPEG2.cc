@@ -10,37 +10,48 @@
 #include "Ravl/Option.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include "Ravl/IO.hh"
+#include "Ravl/OS/Date.hh"
+#include "Ravl/OS/Filename.hh"
 
 using namespace RavlN;
 using namespace RavlImageN;
 
-
 int main(int nargs,char **argv) {
   OptionC opts(nargs,argv);
-  StringC inFile = opts.String("","in.mpeg","Input mpeg file. ");
+  StringC inFile = opts.String("","in.mpeg","Input mpeg file.");
   opts.Check();
   
-  IStreamC strm(inFile);
-  if(!strm) {
+  // Check the file exists
+  FilenameC fn(inFile);
+  if (!fn.Exists())
+  {
     cerr << "Error opening file " << inFile << "\n";
     return 1;
   }
+
+  // Select the correct opening method
+  IStreamC strm(inFile);
   ImgILibMPEG2C mi(strm);
+  if (fn.Extension() == "vob")
+    mi = ImgILibMPEG2C(strm, 0xe0);
+  else
+    mi = ImgILibMPEG2C(strm);
+
+  // Load the stream
   ImageC<ByteRGBValueC> rgb;
   UIntT i = 0;
   while(1) {
-    //cerr << "Reading image... \n";
     if(!mi.Get(rgb))
       break;
     i++;
 #if 0
-    if(i > 40) {
+    if(i > 30) {
       mi.Seek(0);
       i = 0;
     }
 #endif
     RavlN::Save("@X",rgb);
-
+    Sleep(0.1);
   }
   return 0;
 }

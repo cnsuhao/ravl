@@ -14,7 +14,7 @@
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include <ctype.h>
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -73,7 +73,7 @@ namespace RavlImageN {
     }
     
     StringC ext = Extension(nfilename);
-    if(ext == "mpeg" || ext == "mpg")
+    if(ext == "mpeg" || ext == "mpg" || ext == "vob")
       return typeid(ImageC<ByteRGBValueC>);
     //ONDEBUG(cerr << "FileFormatLibMPEG2BodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
     return typeid(void);
@@ -89,6 +89,9 @@ namespace RavlImageN {
   
   DPIPortBaseC FileFormatLibMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
     IStreamC strm(fn);
+    StringC ext = Extension(fn);
+    if(ext == "vob")
+      return ImgILibMPEG2C(strm, 0xe0);
     return ImgILibMPEG2C(strm);
   }
   

@@ -22,19 +22,22 @@
 
 extern "C" {
   typedef struct mpeg2dec_s mpeg2dec_t;  
+  typedef unsigned int uint32_t;
+  typedef unsigned char uint8_t;
+#include <mpeg2dec/mpeg2.h>
 }
 
 namespace RavlN {
   class BitIStreamC;
 }
+
 namespace RavlImageN {
-  
   
   class ImgILibMPEG2BodyC
     : public DPISPortBodyC<ImageC<ByteRGBValueC> >
   {
   public:
-    ImgILibMPEG2BodyC(IStreamC &strm);
+    ImgILibMPEG2BodyC(IStreamC &strm, IntT demuxTrack);
     //: Constructor.
     
     ~ImgILibMPEG2BodyC();
@@ -43,19 +46,10 @@ namespace RavlImageN {
     bool GetFrame(ImageC<ByteRGBValueC> &img);
     //: Get a single frame from the stream.
     
-    bool DecodeGOP(UIntT firstFrameNo);
-    //: Decode a whole GOP and put it in the image cache.
-    
-    bool BuildIndex(UIntT targetFrame);
-    //: Build GOP index to frame.
-    
-    bool SkipToStartCode(BitIStreamC &is); 
-    //: Skip to next start code.
-    
     virtual ImageC<ByteRGBValueC> Get() {
       ImageC<ByteRGBValueC> img;
       if(!Get(img))
-	throw DataNotReadyC("Failed to get next frame. ");
+        throw DataNotReadyC("Failed to get next frame. ");
       return img;
     }
     //: Get next frame.
@@ -83,9 +77,31 @@ namespace RavlImageN {
     bool ReadData();
     //: Read data from stream into buffer.
     
+    bool DecodeGOP(UIntT firstFrameNo);
+    //: Decode a whole GOP and put it in the image cache.
+    
+    bool Decode(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
+    //: Decode a block of data
+    
+    bool DemultiplexGOP(UIntT firstFrameNo);
+    //: Decode a whole GOP and put it in the image cache.
+    
+    bool Demultiplex(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
+    //: Demultiplex and decode mpeg stream
+    
+    bool DecodeBlock(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames, ByteT *start, ByteT *end);
+    //: Decode a block of demultiplexed data
+    
+    bool BuildIndex(UIntT targetFrame);
+    //: Build GOP index to frame.
+    
+    bool SkipToStartCode(BitIStreamC &is); 
+    //: Skip to next start code.
+    
+  protected:
     IStreamC ins;
     mpeg2dec_t *decoder;
-    IntT state;
+    IntT m_state;
     SArray1dC<ByteT> buffer;
     
     ByteT *bufStart, *bufEnd;
@@ -99,6 +115,8 @@ namespace RavlImageN {
     CacheC<UIntT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
     bool sequenceInit;
     IntT lastFrameType;
+    
+    IntT m_demuxTrack;
   };
 
   class ImgILibMPEG2C
@@ -111,8 +129,8 @@ namespace RavlImageN {
     //: Default constructor.
     // Creates an invalid handle.
 
-    ImgILibMPEG2C(IStreamC &strm)
-      : DPEntityC(*new ImgILibMPEG2BodyC(strm))
+    ImgILibMPEG2C(IStreamC &strm, IntT demuxTrack = -1)
+      : DPEntityC(*new ImgILibMPEG2BodyC(strm, demuxTrack))
     {}
     //: Constructor.
     

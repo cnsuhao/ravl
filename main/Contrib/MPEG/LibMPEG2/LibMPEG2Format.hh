@@ -17,7 +17,7 @@
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"
-#include "Ravl/Image/ByteYUVValue.hh"
+#include "Ravl/Image/ByteRGBValue.hh"
 
 namespace RavlImageN {
 
@@ -77,11 +77,11 @@ namespace RavlImageN {
   //: Create an instance of a V4L File Format.
   
   class FileFormatLibMPEG2C 
-    : public FileFormatC<ImageC<ByteYUVValueC> > 
+    : public FileFormatC<ImageC<ByteRGBValueC> > 
   {
   public:
     FileFormatLibMPEG2C()
-      : FileFormatC<ImageC<ByteYUVValueC> >(*new FileFormatLibMPEG2BodyC())
+      : FileFormatC<ImageC<ByteRGBValueC> >(*new FileFormatLibMPEG2BodyC())
     {}
   };
   
