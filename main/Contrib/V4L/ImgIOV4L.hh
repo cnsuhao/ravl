@@ -65,8 +65,70 @@ namespace RavlImageN {
     bool NextFrame(ImageC<ByteT> &ret);
     //: Get next grey level frame from grabber.
     
-    bool SetupPhilips();
-    //: Setup a philips webcam.
+    bool SetupCamera();
+    //: Setup camera specific stuff.
+    
+    bool SetShutterSpeed(int speed);
+    //: Set shutter speed 0..65536 -1=Auto.
+    
+    bool SetBrightness(int brightness);
+    //: Set brightness speed 0..65536 -1=Auto.
+    
+    bool SetContrast(int contrast);
+    //: Set contrast speed 0..65536 -1=Auto.
+    
+    bool SetGamma(int gamma);
+    //: Set gama 0..65536 -1=Auto.
+    
+    bool SetCompression(int compression);
+    //: Set compression speed 0..100 
+    
+    bool SetAGC(int agcGain);
+    //: Set agc 0..65536 -1=off.
+    
+    bool SetLED(int on);
+    //: Set LED, bits 0..15 on , 16..31 off time
+    
+    bool GetShutterSpeed(int &speed);
+    //: Get shutter speed 0..65536 -1=Auto.
+    
+    bool GetBrightness(int &brightness);
+    //: Get brightness speed 0..65536 -1=Auto.
+    
+    bool GetContrast(int &contrast);
+    //: Get contrast speed 0..65536 -1=Auto.
+
+    bool GetCompression(int &compression);
+    //: Set compression speed 0..100 -1=default.
+    
+    bool GetGamma(int &gamma);
+    //: Set gama 0..65536 -1=Auto.
+    
+    bool GetAGC(int &agcGain);
+    //: Set agc 0..65536 -1=off.
+    
+    bool GetPad(int &pad);
+    //: Get padding flag.
+    
+    bool HandleGetAttr(const StringC &attrName,StringC &attrValue);
+    //: Handle get attrib.
+    
+    bool HandleSetAttr(const StringC &attrName,const StringC &attrValue);
+    //: Handle Set attrib.
+    
+    bool HandleGetAttr(const StringC &attrName,IntT &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleSetAttr(const StringC &attrName,const IntT &attrValue);
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    bool HandleGetAttrList(DListC<StringC> &list) const;
+    //: Get list of attributes available.
+    // This method will ADD all available attribute names to 'list'.
     
     enum SourceTypeT { SOURCE_UNKNOWN , SOURCE_USBWEBCAM_PHILIPS };
     
@@ -86,6 +148,7 @@ namespace RavlImageN {
     SArray1dC<int> frameOffsets;
     int bufNo;
     int channel;
+    int shutterSpeed;
   };
   
   //! userlevel=Develop
@@ -128,6 +191,35 @@ namespace RavlImageN {
     { return fd < 0; }
     //: Has the End Of Stream been reached ?
     // true = yes.
+    
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue)
+    { return HandleGetAttr(attrName,attrValue); }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const StringC &attrValue)
+    { return HandleSetAttr(attrName,attrValue); }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttr(const StringC &attrName,IntT &attrValue) 
+    { return HandleGetAttr(attrName,attrValue); }
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const IntT &attrValue)
+    { return HandleSetAttr(attrName,attrValue); }
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttrList(DListC<StringC> &list) const
+    { return HandleGetAttrList(list); }
+    //: Get list of attributes available.
+    // This method will ADD all available attribute names to 'list'.
     
   };
   

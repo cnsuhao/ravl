@@ -15,6 +15,7 @@
 #include "Ravl/Image/ImgIOV4L.hh"
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Image/RGBcYUV.hh"
+#include "Ravl/DList.hh"
 
 typedef unsigned long ulong;
 
@@ -53,7 +54,8 @@ namespace RavlImageN {
       buf_v(0),
       half(false),
       memmap(false),
-      channel(nchannel)
+      channel(nchannel),
+      shutterSpeed(-1)
   {
     sourceType = SOURCE_UNKNOWN;
     if(!Open(dev,npixType,nrect))
@@ -524,6 +526,140 @@ namespace RavlImageN {
     
     return NextPost();
   }
+
+  //: Handle get attrib.
+  
+  bool DPIImageBaseV4LBodyC::HandleGetAttr(const StringC &attrName,StringC &attrValue) {
+    IntT tmp;
+    if(attrName == "shutter_speed") {
+      if(!GetShutterSpeed(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;
+    }
+    if(attrName == "brightness") {
+      if(!GetBrightness(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
+    if(attrName == "contrast") {
+      if(!GetContrast(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
+    if(attrName == "agc") {
+      if(!GetAGC(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
+    if(attrName == "gamma") {
+      if(!GetGamma(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
+    if(attrName == "padded") {
+      if(!GetPad(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
+    if(attrName == "compression") {
+      if(!GetCompression(tmp))
+	return false;
+      attrValue = StringC(tmp);
+      return true;      
+    }
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleGetAttr(),  '" << attrName << "'  not found\n");
+    return false;
+  }
+  
+  //: Handle Set attrib.
+  
+  bool DPIImageBaseV4LBodyC::HandleSetAttr(const StringC &attrName,const StringC &attrValue) {
+    if(attrName == "shutter_speed")
+      return SetShutterSpeed(attrValue.IntValue());
+    if(attrName == "brightness")
+      return SetBrightness(attrValue.IntValue());
+    if(attrName == "contrast")
+      return SetContrast(attrValue.IntValue());
+    if(attrName == "agc")
+      return SetAGC(attrValue.IntValue());
+    if(attrName == "indicator")
+      return SetLED(attrValue.IntValue());
+    if(attrName == "gamma")
+      return SetGamma(attrValue.IntValue());
+    if(attrName == "compression")
+      return SetCompression(attrValue.IntValue());
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
+    return false;
+  }
+  
+  //: Get a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool DPIImageBaseV4LBodyC::HandleGetAttr(const StringC &attrName,IntT &attrValue) {
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleGetAttr(), Called '" << attrName << "'\n");
+    if(attrName == "shutter_speed")
+      return GetShutterSpeed(attrValue);
+    if(attrName == "brightness")
+      return GetBrightness(attrValue);
+    if(attrName == "contrast")
+      return GetContrast(attrValue);
+    if(attrName == "agc")
+      return GetAGC(attrValue);
+    if(attrName == "compression")
+      return GetCompression(attrValue);
+    if(attrName == "gamma")
+      return GetGamma(attrValue);
+    if(attrName == "padded")
+      return GetPad(attrValue);
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleGetAttr(),  '" << attrName << "'  not found\n");
+    return false;
+  }
+  
+  //: Set a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool DPIImageBaseV4LBodyC::HandleSetAttr(const StringC &attrName,const IntT &attrValue) {
+    if(attrName == "shutter_speed")
+      return SetShutterSpeed(attrValue);
+    if(attrName == "brightness")
+      return SetBrightness(attrValue);
+    if(attrName == "contrast")
+      return SetContrast(attrValue);
+    if(attrName == "agc")
+      return SetAGC(attrValue);
+    if(attrName == "compression")
+      return SetCompression(attrValue);
+    if(attrName == "indicator")
+      return SetLED(attrValue);
+    if(attrName == "gamma")
+      return SetGamma(attrValue);
+    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
+    return false;
+  }
+
+  //: Get list of attributes available.
+  // This method will ADD all available attribute names to 'list'.
+  
+  bool DPIImageBaseV4LBodyC::HandleGetAttrList(DListC<StringC> &list) const {
+    list.InsLast("shutter_speed");
+    list.InsLast("brightness");
+    list.InsLast("contrast");
+    list.InsLast("gamma");
+    list.InsLast("agc");
+    list.InsLast("indicator");
+    list.InsLast("padded");
+    list.InsLast("compression");
+    return true;
+  }
+  
   
 }
 

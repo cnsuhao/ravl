@@ -11,11 +11,12 @@
 PACKAGE=Ravl/Image
 
 SUPPORT_ONLY=linux
+
 MAINS=testV4LIO.cc
 
 HEADERS=ImgIOV4L.hh V4LFormat.hh
 
-SOURCES=ImgIOV4L.cc ImgIOV4L1.cc V4LFormat.cc
+SOURCES=ImgIOV4L.cc ImgIOV4L1.cc V4LFormat.cc ImgIOV4LAux.cc
 
 LOCALHEADERS=
 

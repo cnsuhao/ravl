@@ -20,12 +20,6 @@ typedef unsigned long ulong;
 
 #include "Ravl/Image/ImgIOV4L.hh"
 
-#define USE_PHILIPS_WEBCAM 0
-
-
-#if USE_PHILIPS_WEBCAM
-#include "pwc-ioctl.h"
-#endif
 #include <sys/mman.h>
 
 #include <linux/videodev.h>
@@ -63,6 +57,7 @@ namespace RavlImageN {
     
     sourceType = SOURCE_UNKNOWN;
     //int camtype;
+    ONDEBUG(cerr << " Source name = '" << vidcap.name << "'. \n");
     if(strncmp(vidcap.name,"Philips ",8) == 0) {
       ONDEBUG(cerr << "Got philips webcam. \n");
       sourceType = SOURCE_USBWEBCAM_PHILIPS;
@@ -186,12 +181,7 @@ namespace RavlImageN {
       vidwin.height = vidcap.maxheight/2;
     }
     vidwin.chromakey = 0;
-#if USE_PHILIPS_WEBCAM 
-    if(sourceType == SOURCE_USBWEBCAM_PHILIPS)
-      vidwin.flags = (5 << PWC_FPS_SHIFT);// | PWC_FPS_SNAPSHOT;
-    else
-#endif
-      vidwin.flags = 0;
+    vidwin.flags = 0;
     vidwin.clips = 0;
     vidwin.clipcount = 0;
     
@@ -204,18 +194,12 @@ namespace RavlImageN {
     ONDEBUG(cerr << "Capture:\n");
     ONDEBUG(cerr << "X=" << vidwin.x << " Y=" << vidwin.y << "\n");
     ONDEBUG(cerr << "Width=" << vidwin.width << " Height=" << vidwin.height << "\n");
-#if USE_PHILIPS_WEBCAM 
-    ONDEBUG(cerr << "Rate=" << ((vidwin.flags & PWC_FPS_FRMASK) >> PWC_FPS_SHIFT)  << "\n");
-#endif
     rect = ImageRectangleC(0,vidwin.height-1,
 			   0,vidwin.width -1
 			   );
-    
-    switch(sourceType) {
-    case SOURCE_USBWEBCAM_PHILIPS: SetupPhilips(); break;
-    case SOURCE_UNKNOWN: break;
-    }
 
+    SetupCamera();
+    
 #if USE_MMAP
     // Attempt to use memory map.
     buffer = 0;
@@ -275,22 +259,4 @@ namespace RavlImageN {
     return true;
   }
   
-  //: Setup a philips webcam.
-  
-  bool DPIImageBaseV4LBodyC::SetupPhilips() {
-#if USE_PHILIPS_WEBCAM
-    ONDEBUG(cerr << "DPIImageBaseV4LBodyC::SetupPhilips(), Called \n");
-    // Setup colour balance.
-    pwc_whitebalance wb;
-    if(ioctl(fd,VIDIOCPWCGAWB,&wb) < 0) {
-      cerr<< "WARNING: Failed to get while balance. \n";
-    }
-    wb.mode = PWC_WB_FL; //PWC_WB_OUTDOOR; //
-    if(ioctl(fd,VIDIOCPWCSAWB,&wb) < 0) {
-      cerr<< "WARNING: Failed to set while balance. \n";
-    }
-#endif
-    return true;
-  }
-
 }
