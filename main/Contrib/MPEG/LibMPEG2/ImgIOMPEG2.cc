@@ -693,8 +693,13 @@ namespace RavlImageN
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Get called. \n");
     Tuple2C<ImageC<ByteRGBValueC>,IntT> dat;
-    if (!imageCache.LookupR(frameNo, dat))
+    while (!imageCache.LookupR(frameNo, dat))
     {
+      // Check we haven't hit the end
+      if(input.IsGetEOS())
+        return false;
+      
+      // Keep on truckin' til we find the frame
       if (m_demuxTrack >= 0)
       {
         if (!DemultiplexGOP(frameNo))
@@ -709,11 +714,6 @@ namespace RavlImageN
           cerr << "ImgILibMPEG2BodyC::Get failed to decode GOP.\n";
           return false;
         }
-    }
-    if (!imageCache.LookupR(frameNo, dat))
-    {
-      // Probably a seek forward in the file to a GOP we haven't seen yet...
-      return false;
     }
     
     img = dat.Data1();

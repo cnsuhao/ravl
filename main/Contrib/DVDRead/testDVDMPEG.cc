@@ -42,7 +42,8 @@ int main(int nargs,char **argv)
     if(!in.Get(rgb))
       break;
     
-    i++;
+    i += 25;
+    in.Seek(i);
 #if 0
     if(i > 30)
     {
