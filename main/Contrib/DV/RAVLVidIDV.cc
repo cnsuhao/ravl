@@ -11,10 +11,12 @@
 
 namespace RavlImageN {
 
+  extern void InitDvFrameConvert();
   extern void InitDvIFormat();
 
   void ExtVidIO_Init() {
     InitDvIFormat();
+    InitDvFrameConvert();
   }
 }
 

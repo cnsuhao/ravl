@@ -12,14 +12,14 @@ SUPPORT_ONLY = linux
 
 MAINS=doDvDisplay.cc doDvGrab.cc
 HEADERS=PalFrame.hh ImgIODv.hh DvDecode.hh DvIFormat.hh DvDevice.hh WavFile.hh 
-SOURCES=PalFrame.cc ImgIODv.cc DvDecode.cc DvIFormat.cc DvDevice.cc WavFile.cc
+SOURCES=PalFrame.cc ImgIODv.cc DvDecode.cc DvIFormat.cc DvDevice.cc WavFile.cc DvFrameConvert.cc
 
 PLIB=RavlDV
 
 AUXDIR=lib/RAVL/libdep
 AUXFILES= LibDV.def
 
-USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO RavlDPDisplay glib GTK LibDV 
+USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO RavlDPDisplay glib GTK LibDV  RavlVideoIO
 PROGLIBS= 
 
 MUSTLINK = RAVLVidIDV.cc
