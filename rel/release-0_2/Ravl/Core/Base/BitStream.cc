@@ -1,0 +1,24 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2001, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+///////////////////////////////////////////////////////////////
+//! rcsid="$Id$"
+//! lib=RavlCore
+//! file="Ravl/Core/Base/BitStream.cc"
+
+#include "Ravl/BitStream.hh"
+
+namespace RavlN {
+#ifndef NEW_ANSI_DRAFT
+  const UIntT BitStreamBaseC::buffSize = 8;
+#endif
+  
+  OBitStreamC::~OBitStreamC() { 
+    // Flush stream.
+    if(at > 0)
+      strm.write((const char *) &buff,sizeof(buff));
+  }
+}

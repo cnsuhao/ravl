@@ -1,0 +1,63 @@
+
+                ------------------------------------
+                RAVL, Recognition And Vision Library
+                ------------------------------------
+
+
+LICENSE
+-------
+
+The RAVL libraries are distributed under the GNU LESSER GENERAL PUBLIC 
+LICENSE (LGPL), however some of the tools built with the library have
+been issued under the more restrictive GNU GENERAL PUBLIC LICENSE, the
+headers attached to each of the files in the project indicate which of 
+these apply.
+
+
+INSTALLATION
+------------
+
+- The CxxDoc tools currently requires a daft amount of memory to compile,
+  approximately 512MB.  If you don't have this much on your machine you 
+  can stop the installation by going to the Ravl/SourceTools/defs.mk file
+  and removing the `.r' after CxxDoc.   If you still want to use this
+  tool you can create a debug version with `qm debug' which will be slow,
+  but takes much less memory to build.
+
+- At the moment you have to manualy configure where to look
+  for the compiler. This is done by setting CC and CXX to the locations of
+  the C and C++ compilers respectively in the system configuration
+  file. The configuration file can be found in Ravl/QMake/config.$(ARC)
+  where arc is one of linux,sgi or sol2, depending on your machine.
+
+- The `Math' module requires the ccmath package to be installed. The code
+  has been tested with version 2.2.0, but I would expect it to work with   
+  older versions as well.  The location of the ccmath package is set
+  in Ravl/Math/CCMath/CCMath.def, set the 'CCMATH' variable to appropriate
+  directory uncomment two lines following it, and comment out any other
+  'EXELIB' lines later in the file.  
+
+  - A version of the ccmath source code which will compile under QMake is
+  included the RAVL releases and as a separate file available for download.
+  Using this is NOT guaranteed to give the best code as the QMake release
+  does not currently make use of assembler provided with the official package.
+  It does make it much easier to install. If you don't wish to use this
+  code remove the 'CCMath.r' from the NESTED line in the Ravl/defs.mk file.
+
+- The appropriate version of perl (Tested with 5.005_03) must be in your 
+  default path.
+
+- Currently there are problems with using ccmath on IRIX, these are
+  being looked at.  If your not interested in the matrix stuff you can
+  turn it off by editing ./Ravl/defs.mk and removing the '.r' after the
+  'math' in the NESTED line.
+
+To install go the root RAVL directory and type:
+
+./install [location]
+
+NOTE: Most of the development of RAVL is being done on a Redhat 6.2
+box with gcc-2.95.2, at this stage in development things are most
+likely to work on a similar box.  The installation system should be 
+changed to use a 'configure' script, its on my todo list, somewhere.
+
