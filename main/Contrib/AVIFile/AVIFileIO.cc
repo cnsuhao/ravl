@@ -47,14 +47,19 @@ namespace RavlImageN {
   //: Destructor.
   // Closes stream.
   
-  DPOAVIFileBodyC::~DPOAVIFileBodyC() {
+  void DPOAVIFileBodyC::TidyUp() {
+    ONDEBUG(cerr << "DPOAVIFileBodyC::TidyUp()" << endl);
     // Close AVI stream
     if (m_pStream) {
+      ONDEBUG(cerr << "DPOAVIFileBodyC::TidyUp(), Stopping stream" << endl);
       m_pStream->Stop();
+      m_pStream = NULL;
     }
     // Close AVI file
     if (m_pFile) {
+      ONDEBUG(cerr << "DPOAVIFileBodyC::TidyUp(), Closing file" << endl);
       delete m_pFile;
+      m_pFile = NULL;
     }
   }
 
@@ -151,7 +156,7 @@ namespace RavlImageN {
       int fourcc = mmioFOURCC(m_str4CC[0], m_str4CC[1], m_str4CC[2], m_str4CC[3]);
 
       // Add video stream to output file
-      m_pStream = m_pFile->AddVideoStream(fourcc, &m_oBitmapInfo, m_iFrameRate);
+      m_pStream = m_pFile->AddVideoStream(fourcc, &m_oBitmapInfo, 1000000/m_iFrameRate);
 
       // Add frames    
       m_pStream->Start();

@@ -34,13 +34,18 @@ namespace RavlImageN {
     DPOAVIFileBodyC(const StringC& filename);
     //: Constructor from filename
     
-    virtual ~DPOAVIFileBodyC();
+    virtual ~DPOAVIFileBodyC()
+    { TidyUp(); }
     //: Destructor
     // Closes stream.
     
     bool Put(const ImageC<ByteRGBValueC> &img);
     //: Put image to a stream.
     
+    void PutEOS()
+    { TidyUp(); }
+    //: Put end of stream marker
+
     bool IsPutReady() const;
     //: Ready to write some data ?
     // TRUE = yes.
@@ -62,6 +67,9 @@ namespace RavlImageN {
     // Returns false if the attribute name is unknown.
 
   protected:
+
+    void TidyUp();
+    //: Tidy up the streams up.
 
     void RegisterAttributes();
     //: Register attributes
