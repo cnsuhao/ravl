@@ -10,6 +10,14 @@
 
 #include "Ravl/Image/ImgIOmpeg2dec.hh"
 #include "Ravl/Array2dIter.hh"
+#include "Ravl/OS/Date.hh"
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlImageN {
   //: Constructor.
@@ -17,19 +25,34 @@ namespace RavlImageN {
   ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(const StringC &filename) 
     : ok(false)
   {
+    ONDEBUG(cerr << "ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(), Called for '" << filename << "'. \n");
     StringC cmd = StringC("mpeg2dec -o pgmpipe ") + filename;
     decodeProg = ChildOSProcessC(cmd,true,false,false);
-    if(decodeProg.IsRunning())
+    
+    IStreamC &ins = decodeProg.StdOut();
+    // Wait for a charactor to appear on the output...
+#if 1
+    if(ins) {
+      char let;
+      ins.read(&let,1);
+      ins.Unget(&let,1);
+    }
+#endif
+    // Check everything's looking ok.
+    if(decodeProg.IsRunning()) {
       ok = true;
+    }
+    ONDEBUG(cerr << "ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(), Done. Ok=" << (IntT) ok << " \n");
   }
   
+
   //: Get next frame of video.
   
   bool ImgIOmpeg2decBaseC::NextFrame(ImageC<ByteYUVValueC> &yuvImg) {
     if(!ok)
       return false;
     IStreamC &ins = decodeProg.StdOut();
-    if(!decodeProg.IsRunning()) {
+    if(!ins) {
       ok = false;
       return false;
     }
@@ -83,7 +106,6 @@ namespace RavlImageN {
 	ud++;
 	vd++;
       } while(it.Next()) ;
-     
     }
     return true;
   }

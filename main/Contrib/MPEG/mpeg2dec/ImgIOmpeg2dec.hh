@@ -30,6 +30,7 @@ namespace RavlImageN {
     
     bool NextFrame(ImageC<ByteYUVValueC> &img);
     //: Get next frame of video.
+
     
   protected:
     ChildOSProcessC decodeProg;
@@ -50,6 +51,31 @@ namespace RavlImageN {
       : ImgIOmpeg2decBaseC(filename)
     {}
     //: Constructor.
+
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue){
+      if(attrName == "framerate") {
+	attrValue = StringC("25");
+	return true;
+      }
+      // Just pass request back.
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
+    
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    
+    virtual bool SetAttr(const StringC &attrName,const StringC &attrValue) {
+      if(attrName == "framerate") {
+	return (attrValue == StringC("25"));
+      }     
+      // Just pass request back.
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
+									  
+    //: Set a stream attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
     
     virtual ImageC<PixelT> Get() {
       ImageC<PixelT> ret;
