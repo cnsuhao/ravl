@@ -10,11 +10,21 @@
 //! lib=RavlImgIOV4L
 //! file="Contrib/V4L/V4LFormat.cc"
 
+typedef unsigned long ulong;
+
+#include <linux/videodev.h>
+
 #include "Ravl/Image/V4LFormat.hh"
 #include "Ravl/Image/ImgIOV4L.hh"
 #include "Ravl/TypeName.hh"
 
-#define DPDEBUG 0
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+#define DPDEBUG 1
 
 #if DPDEBUG
 #define ONDEBUG(x) x
@@ -36,9 +46,37 @@ namespace RavlImageN {
   {}
   
   
-  const type_info &
-  FileFormatV4LBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
+  const type_info &FileFormatV4LBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
   { return typeid(void); }
+  
+  bool FileFormatV4LBodyC::CheckRGB(int fd,struct video_picture &vidpic) const {
+    vidpic.palette = VIDEO_PALETTE_RGB24;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // RGB seems to be supported.
+    vidpic.palette = VIDEO_PALETTE_RGB24 | 0x80;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // RGB seems to be supported!
+    return false;
+  }
+  
+  bool FileFormatV4LBodyC::CheckYUV(int fd,struct video_picture &vidpic) const {
+    vidpic.palette = VIDEO_PALETTE_YUYV;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
+    vidpic.palette = VIDEO_PALETTE_UYVY;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
+    vidpic.palette = VIDEO_PALETTE_YUV420P;
+    if(ioctl(fd,VIDIOCSPICT,&vidpic) >= 0)
+      return true; // YUV seems to be supported.
+    return false;
+  }
+  
+  bool FileFormatV4LBodyC::CheckGREY(int fd,struct video_picture &vidpic) const {
+    // Not supported in ImgIOV4L yet.
+    return false;
+  }
+  
   
   const type_info &
   FileFormatV4LBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const { 
@@ -47,12 +85,94 @@ namespace RavlImageN {
     if(filename[0] != '@')
       return typeid(void);
     StringC device = ExtractDevice(filename);
+    StringC file = ExtractParams(filename);
+    ONDEBUG(cerr << "FileFormatV4LBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " Device=" << device <<"\n");
     if(device != "V4L" && device != "V4LH")
       return typeid(void);
-#if 0
+    
+    enum { IMG_RGB, IMG_YUV, IMG_GREY } imgtype = IMG_YUV;
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
-      return typeid(ImageC<ByteRGBValueC>); 
-#endif
+      imgtype = IMG_RGB;
+    else if(obj_type == typeid(ImageC<ByteYUVValueC>))
+      imgtype = IMG_YUV;
+    else if(obj_type == typeid(ImageC<ByteT>))
+      imgtype = IMG_GREY;
+    else if(obj_type == typeid(ImageC<RealT>))
+      imgtype = IMG_GREY;
+    
+    int fd = open(file,O_RDWR);
+    if(fd < 0) { // Failed to open device.
+      ONDEBUG(cerr << "FileFormatV4LBodyC::ProbeLoad(), Failed to open file. \n");
+      return typeid(void);
+    }
+    struct video_capability vidcap;
+    if(ioctl(fd,VIDIOCGCAP,&vidcap) < 0) { // Supports Video4Linux 1 ?
+      close(fd);
+      return typeid(void);
+    }
+    if(!(vidcap.type | VID_TYPE_CAPTURE)) { // Can capture video ?
+      close(fd);
+      return typeid(void);
+    }
+    // Look at picture paramiters.
+    struct video_picture vidpic;
+    if(ioctl(fd,VIDIOCGPICT,&vidpic) < 0) {
+      close(fd);
+      cerr << "ERROR: Unexpected failure to get picture paramiters. \n";
+      return typeid(void); // Somethings not working.
+    }
+    ONDEBUG(cerr << "Probing supported formats. \n");
+    switch(imgtype) {
+    case IMG_RGB:
+      if(CheckRGB(fd,vidpic)) {
+	imgtype = IMG_RGB;
+	break;
+      }
+      if(CheckYUV(fd,vidpic)) {
+	imgtype = IMG_YUV;
+	break;
+      }
+      if(CheckGREY(fd,vidpic)) {
+	imgtype = IMG_GREY;
+	break;
+      }
+      break;
+    case IMG_YUV:
+      if(CheckYUV(fd,vidpic)) {
+	imgtype = IMG_YUV;
+	break;
+      }
+      if(CheckRGB(fd,vidpic)) {
+	imgtype = IMG_RGB;
+	break;
+      }
+      if(CheckGREY(fd,vidpic)) {
+	imgtype = IMG_GREY;
+	break;
+      }
+      break;
+    case IMG_GREY:
+      if(CheckGREY(fd,vidpic)) {
+	imgtype = IMG_GREY;
+	break;
+      }
+      if(CheckYUV(fd,vidpic)) {
+	imgtype = IMG_YUV;
+	break;
+      }
+      if(CheckRGB(fd,vidpic)) {
+	imgtype = IMG_RGB;
+	break;
+      }
+      break;
+    }
+    ONDEBUG(cerr << "Probe format = " << ((int) imgtype) << "\n");
+    close(fd);
+    switch(imgtype) {
+    case IMG_RGB: return typeid(ImageC<ByteRGBValueC>);
+    case IMG_YUV: return typeid(ImageC<ByteYUVValueC>);
+    case IMG_GREY: return typeid(ImageC<ByteT>);
+    }
     return typeid(ImageC<ByteYUVValueC>);
   }
   
@@ -89,10 +209,8 @@ namespace RavlImageN {
       fn = "/dev/video0";
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
       return DPIImageV4LC<ByteYUVValueC>(fn,half);
-#if 0
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return DPIImageV4LC<ByteRGBValueC>(fn,half);
-#endif
     return DPIPortBaseC();
   }
   

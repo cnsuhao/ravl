@@ -87,18 +87,14 @@ namespace RavlImageN {
       cerr << "Failed to open video device. '" << dev << "' \n";
       return false;
     }
-    if(!Open2(nfd,npixType,nrect)) {
-      // Failed to open a video for linux 2.
-      // Try 1.
 #if USE_V4L1
-      if(!Open1(nfd,npixType,nrect)) {
-	cerr << "Not a video device. '" << dev << "' \n";
-	return false;
-      }
-#else
+    if(!Open1(nfd,npixType,nrect)) {
       cerr << "Not a video device. '" << dev << "' \n";
-#endif
+      return false;
     }
+#else
+    cerr << "Not a video device. '" << dev << "' \n";
+#endif
     return true;
   }
     
@@ -270,17 +266,14 @@ namespace RavlImageN {
       return false;
     }
     if(memmap) {
+      buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
       switch(palette) {
       case VIDEO_PALETTE_YUV420P: {
 	int area2 = rect.Area()/4;
-	buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
 	buf_u = &buf_grey[rect.Area()];
 	buf_v = &buf_u[area2];
       } break;
-      case VIDEO_PALETTE_RGB24:
-      case VIDEO_PALETTE_RGB24 | 0x80:
       default:
-	buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
 	break;
       }
       
@@ -296,6 +289,12 @@ namespace RavlImageN {
 	  read(fd,&(ret[rect.Origin()]),rect.Area() * 3);
 	else
 	  memcpy(&(ret[rect.Origin()]),buf_grey,rect.Area() * 3);
+	// Swap blue and red.
+	for(Array2dIterC<ByteRGBValueC> it(ret);it;it++) {
+	  ByteT x = it.Data().Blue();
+	  it.Data().Blue() = it.Data().Red();
+	  it.Data().Red() = x;
+	}
 	break;
       case VIDEO_PALETTE_RGB24 | 0x80:
 	ret = ImageC<ByteRGBValueC>(rect);
@@ -303,12 +302,6 @@ namespace RavlImageN {
 	  read(fd,&(ret[rect.Origin()]),rect.Area() * 3);
 	else
 	  memcpy(&(ret[rect.Origin()]),buf_grey,rect.Area() * 3);
-	// Swap blue and red.
-	for(Array2dIterC<ByteRGBValueC> it(ret);it;it++) {
-	  ByteT x = it.Data().Blue();
-	  it.Data().Blue() = it.Data().Red();
-	  it.Data().Red() = x;
-	}
 	break;
       default:
 	cerr << "DPIImageBaseV4LBodyC::NextFrame(ImageC<ByteRGBValueC>), Don't know how to handle palette mode: " << palette << "\n";

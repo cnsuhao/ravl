@@ -33,7 +33,7 @@ int main(int nargs,char **argv) {
       return 1;
     }
     if(!OpenOSequence(imgsOut,outName,"",true)) {
-      cerr << "Failed to open input sequence '" << outName << "'\n";
+      cerr << "Failed to open output sequence '" << outName << "'\n";
       return 1;
     }
     do {
@@ -42,13 +42,12 @@ int main(int nargs,char **argv) {
   } else {
     DPIPortC<ImageC<ByteRGBValueC> > imgsIn;
     DPOPortC<ImageC<ByteRGBValueC> > imgsOut;
-    StringC fn("@V4L:/dev/video0");
     if(!OpenISequence(imgsIn,inName,"",true)) {
       cerr << "Failed to open input sequence '" << inName << "'\n";
       return 1;
     }
     if(!OpenOSequence(imgsOut,outName,"",true)) {
-      cerr << "Failed to open input sequence '" << outName << "'\n";
+      cerr << "Failed to open output sequence '" << outName << "'\n";
       return 1;
     }
     do {

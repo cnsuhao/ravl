@@ -48,7 +48,7 @@ namespace RavlImageN {
     struct video_capability vidcap;
     if((reterr = ioctl(fd,VIDIOCGCAP,&vidcap)) < 0) {
       cerr << "Failed to get video capabilities. \n";
-      return 1;
+      return false;
     }
     ONDEBUG(cerr << "Video type '" << vidcap.name << "' Type=" << vidcap.type << "\n");
     ONDEBUG(cerr << "Channels=" << vidcap.channels << " Audios=" << vidcap.audios << "\n");
@@ -71,50 +71,52 @@ namespace RavlImageN {
     struct video_picture vidpic;
     if(ioctl(fd,VIDIOCGPICT,&vidpic) < 0) {
       cerr << "Failed to get video picture paramiters. \n";
-      return 1;
+      return false;
     }
 
     // Set channel.
     if(vidcap.channels > 1) {
       struct video_channel vidchannel;
       vidchannel.channel=1;
+      vidchannel.norm = 0;
       if(ioctl(fd,VIDIOCGCHAN,&vidchannel) < 0) {
 	cerr << "Failed to get video channel paramiters. \n";
-	return 1;
+	return false;
       }
+      ONDEBUG(cerr << "Channel " << vidchannel.channel << " Name=" << vidchannel.name << " Norm=" << vidchannel.norm << " Type=" << vidchannel.type << " Flags=" << vidchannel.flags << "\n");
       // Should check the channel properties.
       vidchannel.channel=1;
       if(ioctl(fd,VIDIOCSCHAN,&vidchannel) < 0) {
 	cerr << "Failed to set video channel paramiters. \n";
-	return 1;
+	return false;
       }
     }
     
     if(npixType == typeid(ByteYUVValueC)) {
-      vidpic.palette = VIDEO_PALETTE_UYVY;
+      vidpic.palette = VIDEO_PALETTE_YUYV;
       if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
-	vidpic.palette = VIDEO_PALETTE_YUYV;
+	vidpic.palette = VIDEO_PALETTE_UYVY;
 	if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
 	  vidpic.palette = VIDEO_PALETTE_YUV420P;
 	  if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
 	    cerr << "Failed to set video picture paramiters. \n";
-	    return 1;
+	    return false;
 	  }
 	}
       }
     } else if(npixType == typeid(ByteRGBValueC)) {
-      vidpic.palette = VIDEO_PALETTE_RGB24;
+      vidpic.palette = VIDEO_PALETTE_RGB24 | 0x80;
       if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
-	vidpic.palette = VIDEO_PALETTE_RGB24 | 0x80;
+	vidpic.palette = VIDEO_PALETTE_RGB24;
 	if(ioctl(fd,VIDIOCSPICT,&vidpic) < 0) {
 	  cerr << "Failed to set video picture paramiters. \n";
-	  return 1;	
+	  return false;	
 	}
       }
     }
     if(ioctl(fd,VIDIOCGPICT,&vidpic)) {
       cerr << "Failed to get video mode. \n";
-      return 1;
+      return false;
     }
     palette = vidpic.palette;
 #if DODEBUG
@@ -143,14 +145,13 @@ namespace RavlImageN {
     vidwin.x = 0;
     vidwin.y = 0;
     if(!half) {
-      if(vidcap.maxwidth < 800) {
-	vidwin.width = vidcap.maxwidth;
-	vidwin.height = vidcap.maxheight;
-      } else {
-	// Ask for something reasonable.
-	vidwin.width = 640;
-	vidwin.height = 575;	
-      }
+#if 1
+      vidwin.width = vidcap.maxwidth;
+      vidwin.height = vidcap.maxheight;
+#else
+      vidwin.width = 768;
+      vidwin.height = 576;
+#endif
     } else {
       vidwin.width = vidcap.maxwidth /2;
       vidwin.height = vidcap.maxheight/2;
@@ -212,6 +213,7 @@ namespace RavlImageN {
 	vmmap.height = rect.Rows();
 	vmmap.width = rect.Cols();
 	vmmap.format = palette;
+	cerr << "mmap Width=" << vmmap.width << " Height=" << vmmap.height << " Palette=" << palette << "\n";
 	int rret;
 	if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) < 0) {
 	  cerr << "Failed to start memory mapped capture. " << rret << " Errno=" << errno << "\n";

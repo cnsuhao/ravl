@@ -19,6 +19,8 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 
+struct video_picture;
+
 namespace RavlImageN {
 
   //! userlevel=Develop
@@ -68,6 +70,10 @@ namespace RavlImageN {
     // i.e. check if you can read/write more than object object.
     
   protected:
+    bool CheckRGB(int fd,struct video_picture &pic) const;
+    bool CheckYUV(int fd,struct video_picture &pic) const;
+    bool CheckGREY(int fd,struct video_picture &pic) const;
+    
     StringC vName;  // Variant name.
   };
   
