@@ -13,7 +13,7 @@
 #include "Ravl/Audio/AudioFileIO.hh"
 #include "Ravl/TypeName.hh"
 
-#define DPDEBUG 0
+#define DPDEBUG 1
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -41,21 +41,34 @@ namespace RavlAudioN {
   FileFormatAudioFileBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const { 
     if(filename.length() == 0)
       return typeid(void);
-    ONDEBUG(cerr << "FileFormatAudioFileBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " \n");
-    AFfilehandle setup = afOpenFile(filename.chars(),"r",0);
-    if(setup == 0)
+    ONDEBUG(cerr << "FileFormatAudioFileBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " for '" << filename << "'\n");
+    AFfilehandle setup = afOpenFile(filename.chars(),"r", AF_NULL_FILESETUP);
+    if(setup == 0) {
+      ONDEBUG(cerr << "Failed to open file '" << filename << "' for reading, probe failed. \n");
       return typeid(void);
+    }
+    int channels = afGetChannels (setup,AF_DEFAULT_TRACK);
+    ONDEBUG(cerr << "Open of file '" << filename << "' ok. Probe passed. Channels=" << channels << " \n");
     afCloseFile(setup);
-    return typeid(Int16T);
+    if(channels == 1)
+      return typeid(Int16T);
+    if(channels == 2)
+      return typeid(SampleElemC<2,Int16T>);
+    cerr << "Unexpected number of audio channels in '" << filename << "' Channels=" << channels << "\n";
+    return typeid(void);
   }
-  
+
+
   const type_info &
   FileFormatAudioFileBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const { 
     StringC ext = Extension(nfilename);
-    if(ext == "wav" || ext == "aiff" || ext == "aiffc" ||
-       ext == "bicsf" || ext == "nextsnd" || ext == "au") 
-      return typeid(UInt16T); 
-    return typeid(void);
+    ONDEBUG(cerr <<"FileFormatAudioFileBodyC::ProbeSave(), Extension='" << ext << "'\n");
+    if(!(ext == "wav" || ext == "aiff" || ext == "aiffc" ||
+       ext == "bicsf" || ext == "nextsnd" || ext == "au")) 
+      return typeid(void);
+    if(obj_type == typeid(SampleElemC<2,Int16T>))
+      return typeid(SampleElemC<2,Int16T>);
+    return typeid(Int16T); 
   }
   
   //: Create a input port for loading.
@@ -78,6 +91,8 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "FileFormatAudioFileBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
     if(obj_type == typeid(Int16T))
       return DPIAudioC<Int16T,AudioFileBaseC>(filename,0);
+    if(obj_type == typeid(SampleElemC<2,Int16T>))
+      return DPIAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
     return DPIPortBaseC();
   }
   
@@ -89,6 +104,8 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "FileFormatAudioFileBodyC::CreateOutput(const StringC &,const type_info &), Called. \n");
     if(obj_type == typeid(Int16T))
       return DPOAudioC<Int16T,AudioFileBaseC>(filename,0);
+    if(obj_type == typeid(SampleElemC<2,Int16T>))
+      return DPOAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
     return DPOPortBaseC();
   }
   

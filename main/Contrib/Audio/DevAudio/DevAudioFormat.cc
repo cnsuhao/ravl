@@ -14,7 +14,6 @@
 #include "Ravl/TypeName.hh"
 
 #define DPDEBUG 0
-
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -55,7 +54,8 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "FileFormatDevAudioBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " Device=" << device <<"\n");
     if(device != "DEVAUDIO")
       return typeid(void);
-    
+    if(obj_type == typeid(SampleElemC<2,Int16T>))
+      return obj_type;
     return typeid(Int16T);
   }
   
@@ -77,6 +77,8 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "FileFormatDevAudioBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " Device=" << device <<"\n");
     if(device != "DEVAUDIO")
       return typeid(void);
+    if(obj_type == typeid(SampleElemC<2,Int16T>))
+      return obj_type;
     return typeid(Int16T);
   }
   
@@ -110,8 +112,16 @@ namespace RavlAudioN {
     }
     if(fn == "")
       fn = "/dev/audio";
-    if(obj_type == typeid(Int16T))
-      return DPIAudioC<Int16T,DevAudioBaseC>(fn,channel);
+    if(obj_type == typeid(Int16T)) {
+      DPIAudioC<Int16T,DevAudioBaseC> ret(fn,channel);
+      if(!ret.IsGetEOS()) // Did open succeed ?
+	return ret;
+    }
+    if(obj_type == typeid(SampleElemC<2,Int16T>)) {
+      DPIAudioC<SampleElemC<2,Int16T>,DevAudioBaseC> ret(fn,channel);
+      if(!ret.IsGetEOS()) // Did open succeed ?
+	return ret;
+    }
     return DPIPortBaseC();
   }
   
@@ -133,8 +143,18 @@ namespace RavlAudioN {
     }
     if(fn == "")
       fn = "/dev/audio";
-    if(obj_type == typeid(Int16T))
-      return DPOAudioC<Int16T,DevAudioBaseC>(fn,channel);
+    if(obj_type == typeid(Int16T)) {
+      DPOAudioC<Int16T,DevAudioBaseC> ret(fn,channel);
+      if(ret.IsPutReady()) // Did open succeed ?
+	return ret;
+      cerr << "Failed to open device '" << fn << "'\n"; 
+    }
+    if(obj_type == typeid(SampleElemC<2,Int16T>)) {
+      DPOAudioC<SampleElemC<2,Int16T>,DevAudioBaseC> ret(fn,channel);
+      if(ret.IsPutReady()) // Did open succeed ?
+	return ret;
+      cerr << "Failed to open device '" << fn << "'\n"; 
+    }
     return DPOPortBaseC();    
   }
   

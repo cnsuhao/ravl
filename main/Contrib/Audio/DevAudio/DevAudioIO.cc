@@ -64,8 +64,8 @@ namespace RavlAudioN {
   
   //: Set sample rate in hertz.
   
-  bool DevAudioBaseC::SetSampleRate(IntT hertz) {
-    long sample_rate = hertz;
+  bool DevAudioBaseC::SetSampleRate(RealT hertz) {
+    long sample_rate = Round(hertz);
     ioctl(audiofd, SOUND_PCM_WRITE_RATE, &sample_rate); 
     ONDEBUG(cout <<  "Actual sound rate: " << sample_rate << endl);
     return true;
@@ -84,10 +84,10 @@ namespace RavlAudioN {
   //: Get frequency of samples
   // Returns actual frequency.
   
-  bool DevAudioBaseC::GetSampleRate(IntT &rate) {
+  bool DevAudioBaseC::GetSampleRate(RealT &rate) {
     long sample_rate;
     ioctl(audiofd, SOUND_PCM_READ_RATE, &sample_rate);
-    rate = sample_rate;
+    rate = (RealT) sample_rate;
     return true;
   }
 
@@ -112,6 +112,28 @@ namespace RavlAudioN {
     cout << endl;
     //printf("%x \n",caps);    
   }
+
+  //: Setup number of channels
+  
+  bool DevAudioBaseC::SetupChannels(const type_info &dtype) {
+    int channels = 0;
+    if(dtype == typeid(Int16T)) {
+      channels = 1;
+    } else  if(dtype == typeid(SampleElemC<2,Int16T>)) {
+      channels = 2;
+    } else {
+      cerr << "DevAudioBaseC::IOpen(), ERROR: Unrecognised sample type:" << dtype.name() << "\n";
+      return false;
+    }
+    int setChan = channels;
+    ioctl(audiofd, SOUND_PCM_WRITE_CHANNELS, &channels); 
+    if(channels != setChan) {
+      cerr << "Unable to set channels to " << channels << " current setting " << setChan << "\n";
+      return false;
+    }
+    ONDEBUG(cerr << "DevAudioBaseC::SetupChannels(), Channels set to " << setChan << "\n");
+    return true;
+  }
   
   //: Open audio device.
   
@@ -126,13 +148,16 @@ namespace RavlAudioN {
     mixerfd = -1;
 #endif
     SetSampleBits(16);
+    if(!SetupChannels(dtype))
+      return false;
 #endif
     return true;
   }
-
+  
   //: Open audio device.
   
   bool DevAudioBaseC::OOpen(const StringC &fn,int channel,const type_info &dtype) {
+    ONDEBUG(cerr << "DevAudioBaseC::OOpen(), Called. \n");
 #if defined(__linux__)
     if((audiofd = open(fn.chars(),O_WRONLY)) < 0)
       perror("Failed to open audio device ");
@@ -143,7 +168,10 @@ namespace RavlAudioN {
     mixerfd = -1;
 #endif
     SetSampleBits(16);
+    if(!SetupChannels(dtype))
+      return false;
 #endif
+    ONDEBUG(cerr << "DevAudioBaseC::OOpen(), Done. \n");
     return true;
   }
   
@@ -152,8 +180,10 @@ namespace RavlAudioN {
   // Returns false if error occured.
   
   bool DevAudioBaseC::Read(void *buf,IntT &len) {
-    if(!IsOpen())
+    if(!IsOpen()) {
+      cerr << "DevAudioBaseC::Read(), WARNING: Called on invalid stream. \n";
       return false;
+    }
     int ret,tot = 0;
     do {
       ret = read(audiofd,buf,len);
@@ -162,7 +192,7 @@ namespace RavlAudioN {
 	  continue;
 	if(errno == EINTR)
 	  continue;
-	cerr << "DevAudioBaseC::Write(), Error while writting:" << errno << "\n"; 
+	cerr << "DevAudioBaseC::Read(), Error while writting:" << errno << "\n"; 
 	return false;
       }
       tot += ret;
@@ -174,8 +204,10 @@ namespace RavlAudioN {
   // Returns false if error occured.
   
   bool DevAudioBaseC::Write(const void *buf,IntT len) {
-    if(!IsOpen())
+    if(!IsOpen()) {
+      cerr << "DevAudioBaseC::Write(), WARNING: Called on invalid stream. \n";
       return false;
+    }
     int ret,tot = 0;
     do {
       ret = write(audiofd,buf,len);

@@ -45,7 +45,7 @@ namespace RavlAudioN {
     //: Set number of bits to use in samples.
     // returns actual number of bits.
  
-    virtual bool SetSampleRate(IntT rate);
+    virtual bool SetSampleRate(RealT rate);
     //: Set frequency of samples
     // Returns actual frequency.
     
@@ -53,9 +53,12 @@ namespace RavlAudioN {
     //: Get number of bits to use in samples.
     // returns actual number of bits.
     
-    virtual bool GetSampleRate(IntT &rate);
+    virtual bool GetSampleRate(RealT &rate);
     //: Get frequency of samples
     // Returns actual frequency.
+    
+    bool SetupChannels(const type_info &dtype);
+    //: Setup number of channels
     
     bool Read(void *buf,IntT &len);
     //: Read bytes from audio stream.
@@ -66,7 +69,7 @@ namespace RavlAudioN {
     // Returns false if error occured.
     
     bool IsOpen() const
-    { return audiofd != 0; }
+    { return audiofd >= 0; }
     //: Is stream open ?
     
   protected:

@@ -17,14 +17,15 @@ using namespace RavlN;
 
 int main(int nargs,char **argv) {
   OptionC opt(nargs,argv);
-  StringC dev = opt.String("i","@DEVAUDIO:/dev/audio","Sound device.");
+  StringC idev = opt.String("i","@DEVAUDIO:/dev/audio","Input  device.");
+  StringC odev = opt.String("o","@DEVAUDIO:/dev/audio","Output device.");
   opt.Check();
   
   SArray1dC<Int16T> buff(16000);
   {
     DPIPortC<Int16T> in;
-    if(!OpenISequence(in,dev)) {
-      cerr << "Failed to open input : " << dev << "\n";
+    if(!OpenISequence(in,idev)) {
+      cerr << "Failed to open input : " << idev << "\n";
       return 1;
     }
     if(!in.GetArray(buff)) {
@@ -34,8 +35,8 @@ int main(int nargs,char **argv) {
   
   {
     DPOPortC<Int16T> out;
-    if(!OpenOSequence(out,dev)) {
-      cerr << "Failed to open output : " << dev << "\n";
+    if(!OpenOSequence(out,odev)) {
+      cerr << "Failed to open output : " << odev << "\n";
       return 1;
     }
     if(!out.PutArray(buff)) {

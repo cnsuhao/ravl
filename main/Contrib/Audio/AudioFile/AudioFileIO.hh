@@ -44,7 +44,7 @@ namespace RavlAudioN {
     //: Set number of bits to use in samples.
     // returns actual number of bits.
  
-    virtual bool SetSampleRate(IntT rate);
+    virtual bool SetSampleRate(RealT rate);
     //: Set frequency of samples
     // Returns actual frequency.
     
@@ -52,7 +52,7 @@ namespace RavlAudioN {
     //: Get number of bits to use in samples.
     // returns actual number of bits.
     
-    virtual bool GetSampleRate(IntT &rate);
+    virtual bool GetSampleRate(RealT &rate);
     //: Get frequency of samples
     // Returns actual frequency.
     
@@ -75,6 +75,8 @@ namespace RavlAudioN {
     IntT channel;
     const type_info *dtype;
     StringC fileName;
+    RealT sampleRate;
+    bool forInput;
   };
   
 
