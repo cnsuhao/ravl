@@ -11,7 +11,7 @@
 //! docentry="Ravl.Images.Video.Video IO.IIDC"
 //! date="20/8/2003"
 //! rcsid="$Id$"
-//! file="Ravl/Contrib/1394dc/1394dcFormat.hh"
+//! file="Ravl/Contrib/dc1394/Lib1394dcFormat.hh"
 //! lib=RavlImgIO1394dc
 //! author="Charles Galambos"
 

@@ -7,8 +7,9 @@
 #ifndef RAVL_DVDREADFORMAT_HEADER
 #define RAVL_DVDREADFORMAT_HEADER 1
 //! rcsid = "$Id$"
-//! lib = RavlDVDRead
+//! lib=RavlDVDRead
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/DVDRead/DVDFormat.hh"
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"

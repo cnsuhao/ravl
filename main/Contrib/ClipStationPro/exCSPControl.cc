@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=CSPDriver
-//! file="Ravl/Contrib/ClipStationPro/exCSPGrab.cc"
+//! file="Ravl/Contrib/ClipStationPro/exCSPControl.cc"
 //! userlevel=Normal
 //! author="Lee Gregory"
 //! docentry="Ravl.Images.Video.Video IO.ClipStationPro"

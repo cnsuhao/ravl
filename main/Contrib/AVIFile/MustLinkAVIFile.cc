@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlAVIFile
+//! file="Ravl/Contrib/AVIFile/MustLinkAVIFile.cc"
 
 
 namespace RavlImageN {

@@ -8,8 +8,9 @@
 #define RAVL_IMGIOMPEG2DVD_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlDVDRead
+//! lib=RavlDVDRead
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/DVDRead/ImgIOMPEG2DVD.hh"
 
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include "Ravl/Image/MPEG2Demux.hh"

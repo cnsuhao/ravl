@@ -8,9 +8,10 @@
 #define RAVL_V4L2BUFFER_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlIOV4L2
+//! lib=RavlIOV4L2
 //! author = "Warren Moore"
 //! userlevel = Develop
+//! file="Ravl/Contrib/V4L2/V4L2Buffer.hh"
 
 #include "Ravl/Buffer.hh"
 #include "Ravl/Image/IOV4L2.hh"

@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlImgIO1394dc
-//! file="Ravl/Contrib/V4L/InitV4L.cc"
+//! file="Ravl/Contrib/dc1394/InitLib1394dc.cc"
 
 
 namespace RavlImageN {

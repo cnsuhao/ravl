@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlAVIFile
+//! lib=RavlAVIFile
 //! author = "James Smith"
+//! file="Ravl/Contrib/AVIFile/testAVIFile.cc"
 
 #include "Ravl/Option.hh"
 #include "Ravl/EntryPnt.hh"

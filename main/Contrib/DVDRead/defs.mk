@@ -4,6 +4,7 @@
 # General Public License (GPL). See the gpl.licence file for details
 # file-header-ends-here
 #! rcsid="$Id$"
+#! file="Ravl/Contrib/DVDRead/defs.mk"
 
 REQUIRES = dvdread libmpeg2
 

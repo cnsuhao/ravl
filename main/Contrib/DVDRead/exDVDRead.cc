@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlDVDRead
+//! lib=RavlDVDRead
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/DVDRead/exDVDRead.cc"
 
 #include "Ravl/Option.hh"
 #include "Ravl/DVDRead.hh"

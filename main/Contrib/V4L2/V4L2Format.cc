@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlIOV4L2
+//! lib=RavlIOV4L2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/V4L2/V4L2Format.cc"
 
 #include "Ravl/Image/V4L2Format.hh"
 #include "Ravl/Image/IOV4L2.hh"

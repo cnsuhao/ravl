@@ -10,8 +10,9 @@
 #define RAVL_MPEG2DEMUX_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibMPEG2
+//! lib=RavlLibMPEG2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/MPEG/LibMPEG2/MPEG2Demux.hh"
 
 #include "Ravl/DP/StreamOp.hh"
 #include "Ravl/SArray1d.hh"

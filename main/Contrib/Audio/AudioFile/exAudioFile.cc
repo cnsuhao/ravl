@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=RavlDevAudio
+//! lib=RavlAudioFile
 //! author="Lee Gregory"
 //! docentry="Ravl.Audio.Audio IO"
 //! file="Ravl/Contrib/Audio/AudioFile/exAudioFile.cc"

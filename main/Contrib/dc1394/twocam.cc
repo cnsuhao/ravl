@@ -10,6 +10,7 @@
 //! userlevel=Normal
 //: Grabs from pair of IIDC cameras
 // Grabs images sequences from a pair of IIDC cameras and stores or displays them.
+//! file="Ravl/Contrib/dc1394/twocam.cc"
 
 #include "Ravl/Option.hh"
 #include "Ravl/Pair.hh"

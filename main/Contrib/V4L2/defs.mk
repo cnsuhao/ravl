@@ -5,6 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! rcsid="$Id$"
+#! file="Ravl/Contrib/V4L2/defs.mk"
 
 REQUIRES = devVideo4Linux2
 

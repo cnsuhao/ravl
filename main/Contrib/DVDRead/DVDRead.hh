@@ -8,8 +8,9 @@
 #define RAVL_DVDREAD_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlDVDRead
+//! lib=RavlDVDRead
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/DVDRead/DVDRead.hh"
 
 #include "Ravl/DP/SPort.hh"
 #include "dvdread/dvd_reader.h"

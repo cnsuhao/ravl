@@ -5,8 +5,8 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=RavlMath
-//! file="Ravl/Math/Signals/2D/testFFT2d.cc"
+//! lib=RavlIntelMKL
+//! file="Ravl/Contrib/IntelMKL/testIntelFFT2d.cc"
 
 #include "Ravl/IntelFFT2d.hh"
 #include "Ravl/SArray2dIter.hh"

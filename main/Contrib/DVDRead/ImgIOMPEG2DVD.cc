@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlDVDRead
+//! lib=RavlDVDRead
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/DVDRead/ImgIOMPEG2DVD.cc"
 
 #include "Ravl/ImgIOMPEG2DVD.hh"
 #include "Ravl/Image/MPEG2Demux.hh"

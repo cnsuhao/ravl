@@ -5,6 +5,7 @@
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
 #! rcsid="$Id$"
+#! file="Ravl/Contrib/MPEG/LibMPEG2/defs.mk"
 
 REQUIRES = libmpeg2
 

@@ -7,7 +7,7 @@
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlIntelMKL
-//! file="Ravl/Math/Signals/2D/FFT2d.cc"
+//! file="Ravl/Contrib/IntelMKL/IntelFFT2d.cc"
 
 #include "Ravl/IntelFFT2d.hh"
 #include "Ravl/Exception.hh"

@@ -5,6 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! rcsid="$Id$"
+#! file="Ravl/Contrib/dc1394/defs.mk"
 
 PACKAGE=Ravl/Image
 

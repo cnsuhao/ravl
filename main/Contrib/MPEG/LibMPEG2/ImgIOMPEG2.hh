@@ -8,8 +8,9 @@
 #define RAVL_IMGIOMPEG2_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibMPEG2
+//! lib=RavlLibMPEG2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/MPEG/LibMPEG2/ImgIOMPEG2.hh"
 
 #include "Ravl/DP/StreamOp.hh"
 #include "Ravl/Image/Image.hh"

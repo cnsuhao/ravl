@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlIOV4L2
+//! lib=RavlIOV4L2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/V4L2/MustLinkV4L2.cc"
 
 namespace RavlImageN
 {

@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlLibMPEG2
+//! file="Ravl/Contrib/MPEG/LibMPEG2/MustLinkLibMPEG2.cc"
 
 namespace RavlImageN
 {

@@ -8,8 +8,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibMPEG2
+//! lib=RavlLibMPEG2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/MPEG/LibMPEG2/MPEG2Demux.cc"
 
 #include "Ravl/Image/MPEG2Demux.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"

@@ -1,8 +1,16 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2004, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 #ifndef _RAVL_PARPORT_HH_ 
 #define _RAVL_PARPORT_HH_
 #include "Ravl/RefCounter.hh"
 #include <linux/parport.h> 
 #include "Ravl/OS/Filename.hh"
+//! rcsid="$Id$"
+//! file="Ravl/Contrib/ParallelPortPPDev/Parport.hh"
 
 /////////////////////////////////////////////////////
 //! docentry="Ravl.OS.Hardware"

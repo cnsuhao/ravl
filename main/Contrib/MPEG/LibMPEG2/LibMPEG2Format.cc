@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibMPEG2
+//! lib=RavlLibMPEG2
 //! author = "Charles Galambos"
+//! file="Ravl/Contrib/MPEG/LibMPEG2/LibMPEG2Format.cc"
 
 #include "Ravl/Image/LibMPEG2Format.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"

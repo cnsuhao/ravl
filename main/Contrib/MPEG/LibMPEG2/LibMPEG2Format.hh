@@ -13,7 +13,7 @@
 //! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlLibMPEG2
-//! file="Ravl/Contrib/LibMPEG/mpeg2dec/LibMPEG2Format.hh"
+//! file="Ravl/Contrib/MPEG/LibMPEG2/LibMPEG2Format.hh"
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"

@@ -6,8 +6,9 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibMPEG2
+//! lib=RavlLibMPEG2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/MPEG/LibMPEG2/exMPEG2.cc"
 
 #include "Ravl/Option.hh"
 #include "Ravl/Image/LibMPEG2Format.hh"

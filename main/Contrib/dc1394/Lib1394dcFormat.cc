@@ -8,7 +8,7 @@
 //! rcsid="$Id$"
 //! docentry="Ravl.Contrib.Video IO"
 //! lib=RavlImgIO1394dc
-//! file="Ravl/Contrib/1394dc/1394dcFormat.cc"
+//! file="Ravl/Contrib/dc1394/Lib1394dcFormat.cc"
 //! author="Charles Galambos"
 
 #include "Ravl/Image/Lib1394dcFormat.hh"

@@ -8,8 +8,9 @@
 #define RAVL_IOV4L2_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlIOV4L2
+//! lib=RavlIOV4L2
 //! author = "Warren Moore"
+//! file="Ravl/Contrib/V4L2/IOV4L2.hh"
 
 #include "Ravl/DP/Port.hh"
 #include "Ravl/DP/SPort.hh"
