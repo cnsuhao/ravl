@@ -19,7 +19,6 @@
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/Image/RGBcYUV.hh"
-#include "Ravl/CompilerHints.hh"
 #include <fstream>
 
 extern "C" {
@@ -238,110 +237,7 @@ namespace RavlImageN
 
     return true;
   }
-
-
-  //     y       u       v
-  // r   1.000,  0.000,  1.140,
-  // g   1.000, -0.395, -0.581,
-  // b   1.000,  2.032,  0.000};
-
-  IntT *UBLookup() {
-    static IntT values[256];
-    IntT *off = &(values[128]);
-    for(int i = -128;i < 128;i++)
-      off[i] = Round((RealT) i * 2.032);
-    return off;
-  }
-
-  IntT *VRLookup() {
-    static IntT values[256];
-    IntT *off = &(values[128]);
-    for(int i = -128;i < 128;i++)
-      off[i] = Round((RealT) i * 1.140);
-    return off;
-  }
-
-  IntT *UVGLookup() {
-    static IntT values[256 * 256];
-    for(int u = 0;u < 256;u++)
-      for(int v = 0;v < 256;v++)
-	values[u + 256 * v] = Round((RealT) (u-128) * -0.395 + (RealT) (v-128) * -0.581);
-    return &(values[128 + 256 * 128]);
-  }
   
-  static const IntT *ubLookup = UBLookup();
-  static const IntT *vrLookup = VRLookup();
-  static const IntT *uvgLookup = UVGLookup();
-  
-  inline void ByteYUV2RGB(ByteT y,SByteT u,SByteT v,ByteRGBValueC &pix) {
-    IntT iy = (IntT) y;
-    IntT iu = (IntT) u;
-    IntT rv = (IntT) v;
-    
-    IntT rr = iy + vrLookup[v];
-    if(rr < 0)
-      rr = 0;
-    if(rr > 255)
-      rr = 255;
-    pix[0] = (ByteT) rr;
-    
-    IntT rg = iy + uvgLookup[iu + 256 * rv];
-    if(rg < 0)
-      rg = 0;
-    if(rg > 255)
-      rg = 255;
-    pix[1] = (ByteT) rg;
-    
-    IntT rb = iy + ubLookup[u];
-    if(rb < 0)
-      rb = 0;
-    if(rb > 255)
-      rb = 255;
-    pix[2] = (ByteT) rb;
-  }
-
-  inline void ByteYUV2RGB2(ByteT y1,ByteT y2,SByteT u,SByteT v,ByteRGBValueC &pix1,ByteRGBValueC &pix2) {
-    register IntT iy1 = (IntT) y1;
-    register IntT iy2 = (IntT) y2;
-    register IntT iu = (IntT) u;
-    register IntT iv = (IntT) v;
-    
-    register IntT tmp;
-    register IntT vr = vrLookup[iv];
-    tmp = iy1 + vr;
-    if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
-    if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
-    pix1[0] = (ByteT) tmp;
-    
-    tmp = iy2 + vr;
-    if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
-    if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
-    pix2[0] = (ByteT) tmp;
-    
-    register IntT uvg = uvgLookup[iu + 256 * iv];
-    
-    tmp = iy1 + uvg;
-    if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
-    if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
-    pix1[1] = (ByteT) tmp;
-    
-    tmp = iy2 + uvg;
-    if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
-    if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
-    pix2[1] = (ByteT) tmp;
-    
-    register IntT ub = ubLookup[iu];
-    
-    tmp = iy1 + ub;
-    if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
-    if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
-    pix1[2] = (ByteT) tmp;
-    
-    tmp = iy2 + ub;
-    if(RAVL_EXPECT(tmp < 0,0)) tmp = 0;
-    if(RAVL_EXPECT(tmp > 255,0)) tmp = 255;
-    pix2[2] = (ByteT) tmp;
-  }
   
   bool ImgILibMPEG2BodyC::DemultiplexGOP(UIntT firstFrameNo)
   {
