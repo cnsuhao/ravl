@@ -34,7 +34,7 @@ namespace RavlImageN
   class IOV4L2BaseC
   {
   public:
-    IOV4L2BaseC(const StringC &device, const UIntT channel, const type_info &pixelType);
+    IOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType);
     //: Constructor
     
     ~IOV4L2BaseC();
@@ -86,7 +86,7 @@ namespace RavlImageN
     //: Build list of attributes.
     
   protected:
-    bool Open(const StringC &device, const UIntT channel);
+    bool Open(const StringC &device, const UIntT input);
     //: Open the device.
     // Does not configure the capture buffers
     
@@ -96,6 +96,9 @@ namespace RavlImageN
     
     bool CheckFormat(const type_info &pixelType);
     //: Check if the pixel type is supported
+    
+    bool CheckInput();
+    //: Check the input
     
     bool CheckSize();
     //: Test the capture size limits
@@ -122,7 +125,11 @@ namespace RavlImageN
   /* Device identification */
     const type_info &m_pixelType;       // Desired image type
     StringC m_device;                   // Device name
-    UIntT m_channel;                    // Channel number
+    StringC m_deviceDriver;             // Device driver name
+    StringC m_deviceCard;               // Device card name
+    StringC m_deviceBus;                // Device bus name
+    UIntT m_input;                      // Input number
+    UIntT m_inputMax;                   // Input max
     int m_fd;                           // File descriptor
     MutexC m_lockCapture;               // Capture device lock
 
@@ -158,8 +165,8 @@ namespace RavlImageN
     public IOV4L2BaseC
   {
   public:
-    IOV4L2BodyC(const StringC &device, const UIntT channel) :
-      IOV4L2BaseC(device, channel, typeid(ImageC<PixelT>))
+    IOV4L2BodyC(const StringC &device, const UIntT input) :
+      IOV4L2BaseC(device, input, typeid(ImageC<PixelT>))
     {
       BuildAttributes(*this);
     }
@@ -263,8 +270,8 @@ namespace RavlImageN
     //: Default constructor.
     // Creates an invalid handle.
 
-    IOV4L2C(const StringC &device, const UIntT channel) :
-      DPEntityC(*new IOV4L2BodyC<PixelT>(device, channel))
+    IOV4L2C(const StringC &device, const UIntT input) :
+      DPEntityC(*new IOV4L2BodyC<PixelT>(device, input))
     {}
     //: Constructor.
 

@@ -46,11 +46,7 @@ namespace RavlImageN
     const UIntT m_pixelFormat;              //: 4CC of required capture mode
 
     SupportedFormatT(const type_info &objectType, const UIntT pixelFormat) :
-      m_objectType(objectType),
-      m_pixelFormat(pixelFormat)
-    {
-    }
-    //: Mmmm, structure constructor
+      m_objectType(objectType), m_pixelFormat(pixelFormat) {}
   };
   //: Structure used to store supported pixel formats
 
@@ -73,11 +69,7 @@ namespace RavlImageN
     const v4l2_std_id m_id;                 //: V4L2 id
 
     SupportedStandardT(const StringC &name, const v4l2_std_id id) :
-      m_name(name),
-      m_id(id)
-    {
-    }
-    //: Mmmm, structure constructor
+      m_name(name), m_id(id) {}
   };
   //: Structure used to store supported standards
 
@@ -94,6 +86,31 @@ namespace RavlImageN
 
 
 
+  typedef struct SupportedFieldT
+  {
+    const StringC m_name;                   //: Name
+    const v4l2_field m_field;               //: V4L2 field id
+
+    SupportedFieldT(const StringC &name, const v4l2_field field) :
+      m_name(name), m_field(field) {}
+  };
+  //: Structure used to store supported standards
+
+
+
+  const static SupportedFieldT g_supportedField[] =
+  {
+    SupportedFieldT("ANY",        V4L2_FIELD_ANY),
+    SupportedFieldT("NONE",       V4L2_FIELD_NONE),
+    SupportedFieldT("INTERLACED", V4L2_FIELD_INTERLACED),
+    SupportedFieldT("TOP",        V4L2_FIELD_TOP),
+    SupportedFieldT("BOTTOM",     V4L2_FIELD_BOTTOM)
+  };
+  const static UIntT g_supportedFields = sizeof(g_supportedField) / sizeof(SupportedFieldT);
+  //: Mapping from name to V4L2 format id.
+
+
+
   const static UIntT g_defaultWidth = 320;
   //: Default capture width (usually overridden by getting with initial format)
 
@@ -103,19 +120,17 @@ namespace RavlImageN
   const static UIntT g_defaultBuffers = 3;
   //: Default number of capture buffers
   
-  const static UIntT g_defaultField = V4L2_FIELD_ANY; 
-  //: Default captured field ordering
-  
 
 
-  IOV4L2BaseC::IOV4L2BaseC(const StringC &device, const UIntT channel, const type_info &pixelType) :
+  IOV4L2BaseC::IOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType) :
     m_pixelType(pixelType),
     m_device(device),
-    m_channel(channel),
+    m_input(input),
+    m_inputMax(0),
     m_fd(-1),
     m_width(g_defaultWidth),
     m_height(g_defaultHeight),
-    m_fieldFormat(g_defaultField),
+    m_fieldFormat(0),
     m_standard(0),
     m_fastBufferUsed(false),
     m_bufferMax(g_defaultBuffers),
@@ -128,7 +143,7 @@ namespace RavlImageN
     MutexLockC lockCapture(m_lockCapture);
 
     // Open the device
-    Open(device, channel);
+    Open(device, input);
     
     // Check the format
     if (IsOpen())
@@ -250,7 +265,7 @@ namespace RavlImageN
         }
         else
         {
-          ONDEBUG(cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QBUF) requeued id(" << id << ") index(" << index << ")" << endl;)
+//          ONDEBUG(cerr << "IOV4L2BaseC::ReleaseBuffer ioctl(VIDIOC_QBUF) requeued id(" << id << ") index(" << index << ")" << endl;)
           
           // Remove the id from the buffer out set
           m_bufferOut.Remove(id);
@@ -265,7 +280,7 @@ namespace RavlImageN
   
   
   
-  bool IOV4L2BaseC::Open(const StringC &device, const UIntT channel)
+  bool IOV4L2BaseC::Open(const StringC &device, const UIntT input)
   {
     RavlAssertMsg(!IsOpen(), "IOV4L2BaseC::Open called on open device");
     
@@ -307,6 +322,9 @@ namespace RavlImageN
         cerr << "  ioctl(VIDIOC_QUERYCAP) card (" << cap.card << ")" << endl; \
         cerr << "  ioctl(VIDIOC_QUERYCAP) bus (" << cap.bus_info << ")" << endl; \
       )
+      m_deviceDriver = reinterpret_cast<const char*>(cap.driver);
+      m_deviceCard   = reinterpret_cast<const char*>(cap.card);
+      m_deviceBus    = reinterpret_cast<const char*>(cap.bus_info);
     }
     else
     {
@@ -314,32 +332,13 @@ namespace RavlImageN
       return false;
     }
     
-    // Enumerate the inputs
-    UIntT inputCount = 0;
-    v4l2_input input;
-    input.index = 0;
-    ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat ioctl(VIDIOC_ENUMINPUT)" << endl;)
-    while (ioctl(m_fd, VIDIOC_ENUMINPUT, &input) != -1)
-    {
-      ONDEBUG(cerr << "  [" << inputCount << "] name(" << input.name << ")" << endl;)
-      inputCount++;
-
-      if (input.index == m_channel)
-      {
-        ONDEBUG(cerr << "IOV4L2BaseC::CheckFormat channel supported by device" << endl;)
-        break;
-      }
-
-      input.index = inputCount;
-    }
-
     // Check for a valid input
-    if (m_channel >= inputCount)
+    if (!CheckInput())
     {
-      cerr << "IOV4L2BaseC::CheckFormat channel(" << m_channel << ") not supported" << endl;
+      cerr << "IOV4L2BaseC::CheckFormat input(" << m_input << ") not supported" << endl;
       return false;
     }
-    
+
     // Get the current settings format
     v4l2_format fmt;
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
@@ -417,6 +416,34 @@ namespace RavlImageN
   
   
   
+  bool IOV4L2BaseC::CheckInput()
+  {
+    RavlAssertMsg(IsOpen(), "IOV4L2BaseC::CheckInput device not open");
+    RavlAssertMsg(!IsConfigured(), "IOV4L2BaseC::CheckInput device already configured");
+
+    // Enumerate the inputs
+    m_inputMax = 0;
+    v4l2_input input;
+    input.index = 0;
+    ONDEBUG(cerr << "IOV4L2BaseC::CheckInput ioctl(VIDIOC_ENUMINPUT)" << endl;)
+    while (ioctl(m_fd, VIDIOC_ENUMINPUT, &input) != -1)
+    {
+      ONDEBUG(cerr << "  [" << m_inputMax << "] name(" << input.name << ")" << endl;)
+      m_inputMax++;
+      input.index = m_inputMax;
+    }
+
+    // Set the input
+    if (ioctl(m_fd, VIDIOC_S_INPUT, &m_input) == -1)
+    {
+      return false;
+    }
+
+    return (m_input >= 0 && m_input < m_inputMax);
+  }
+
+  
+  
   bool IOV4L2BaseC::CheckSize()
   {
     RavlAssertMsg(IsOpen(), "IOV4L2BaseC::CheckSize device not open");
@@ -434,7 +461,7 @@ namespace RavlImageN
       pfmt->width = m_widthMax + 1;
       pfmt->height = m_height;
       pfmt->pixelformat = m_pixelFormat;
-      pfmt->field = (v4l2_field)m_fieldFormat;
+      pfmt->field = g_supportedField[m_fieldFormat].m_field;
       if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
       {
         if (pfmt->width == m_widthMax + 1)
@@ -454,7 +481,7 @@ namespace RavlImageN
       pfmt->width = m_widthMin - 1;
       pfmt->height = m_height;
       pfmt->pixelformat = m_pixelFormat;
-      pfmt->field = (v4l2_field)m_fieldFormat;
+      pfmt->field = g_supportedField[m_fieldFormat].m_field;
       if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
       {
         if (pfmt->width == m_widthMin - 1)
@@ -474,7 +501,7 @@ namespace RavlImageN
       pfmt->width = m_width;
       pfmt->height = m_heightMax + 1;
       pfmt->pixelformat = m_pixelFormat;
-      pfmt->field = (v4l2_field)m_fieldFormat;
+      pfmt->field = g_supportedField[m_fieldFormat].m_field;
       if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
       {
         if (pfmt->height == m_heightMax + 1)
@@ -494,7 +521,7 @@ namespace RavlImageN
       pfmt->width = m_width;
       pfmt->height = m_heightMin - 1;
       pfmt->pixelformat = m_pixelFormat;
-      pfmt->field = (v4l2_field)m_fieldFormat;
+      pfmt->field = g_supportedField[m_fieldFormat].m_field;
       if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) != -1)
       {
         if (pfmt->height == m_heightMin - 1)
@@ -511,7 +538,7 @@ namespace RavlImageN
     pfmt->width = m_width;
     pfmt->height = m_height;
     pfmt->pixelformat = m_pixelFormat;
-    pfmt->field = (v4l2_field)m_fieldFormat;
+    pfmt->field = g_supportedField[m_fieldFormat].m_field;
     ioctl(m_fd, VIDIOC_S_FMT, &fmt);
     
     return true;
@@ -532,10 +559,10 @@ namespace RavlImageN
       return false;
     }
     
-    // Set the input channel
-    if (ioctl(m_fd, VIDIOC_S_INPUT, &m_channel) == -1)
+    // Set the input
+    if (!CheckInput())
     {
-      cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_S_INPUT) failed to set channel(" << m_channel << ")" << endl;
+      cerr << "IOV4L2BaseC::ConfigureCapture failed to set input(" << m_input << ")" << endl;
       return false;
     }
 
@@ -546,7 +573,7 @@ namespace RavlImageN
     pfmt->width = m_width;
     pfmt->height = m_height;
     pfmt->pixelformat = m_pixelFormat;
-    pfmt->field = (v4l2_field)m_fieldFormat;
+    pfmt->field = g_supportedField[m_fieldFormat].m_field;
     if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) == -1)
     {
       ONDEBUG(cerr << "IOV4L2BaseC::ConfigureCapture unable to set capture format" << endl;)
@@ -695,18 +722,20 @@ namespace RavlImageN
       cerr << "IOV4L2BaseC::CaptureBuffer ioctl(VIDIOC_DQBUF) failed" << endl;
       return false;
     }
+    /*
     ONDEBUG( \
       cerr << "IOV4L2BaseC::CaptureBuffer ioctl(VIDIOC_DQBUF)" << endl; \
       cerr << "  index(" << buffer.index << ")" << endl; \
       cerr << "  field(" << buffer.field << ")" << endl; \
       cerr << "  seq(" << buffer.sequence << ")" << endl; \
     )
+    */
     
     // Store the capture info
     m_seqNum = buffer.sequence;
     
     // Store the buffer as out
-    ONDEBUG(cerr << "IOV4L2BaseC::CaptureBuffer id(" << m_buffers[buffer.index].m_id << ") index(" << buffer.index << ")" << endl;)
+//    ONDEBUG(cerr << "IOV4L2BaseC::CaptureBuffer id(" << m_buffers[buffer.index].m_id << ") index(" << buffer.index << ")" << endl;)
     m_bufferOut.Insert(m_buffers[buffer.index].m_id);
     
     return true;
@@ -718,12 +747,34 @@ namespace RavlImageN
   {
     // Process the int attributes
     if (attrName == "width" ||
-        attrName == "height")
+        attrName == "height" || 
+        attrName == "input")
     {
       IntT val;
       bool ret = HandleGetAttr(attrName, val);
       attrValue = StringC(val);
       return ret;
+    }
+    
+    // Driver
+    if (attrName == "driver")
+    {
+      attrValue = m_deviceDriver;
+      return true;
+    }
+    
+    // Card
+    if (attrName == "card")
+    {
+      attrValue = m_deviceCard;
+      return true;
+    }
+    
+    // Bus
+    if (attrName == "bus")
+    {
+      attrValue = m_deviceBus;
+      return true;
     }
     
     // Standard
@@ -743,7 +794,8 @@ namespace RavlImageN
   {
     // Process the int attributes
     if (attrName == "width" ||
-        attrName == "height")
+        attrName == "height" ||
+        attrName == "input")
     {
       return HandleSetAttr(attrName, attrValue.IntValue());
     }
@@ -778,13 +830,57 @@ namespace RavlImageN
           // Try the new config, and restore the old if failed
           if (!ConfigureCapture())
           {
+            cerr << "IOV4L2BaseC::HandleSetAttr failed to set standard(" << attrValue << ")" << endl;
             m_standard = tempStd;
           }
         }
       }
       else
       {
-        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr failed to set standard(" << attrValue << ")" << endl;)
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr failed to find standard(" << attrValue << ")" << endl;)
+      }
+
+      return true;
+    }
+    
+    // Field
+    if (attrName == "field")
+    {
+      UIntT fieldCount = 0;
+      while (fieldCount < g_supportedFields)
+      {
+        if (g_supportedField[fieldCount].m_name == attrValue)
+          break;
+        fieldCount++;
+      }
+      
+      if (fieldCount < g_supportedFields)
+      {
+        // Lock the capture device
+        MutexLockC lockCapture(m_lockCapture);
+    
+        // Set the width
+        UIntT tempField = m_fieldFormat;
+        m_fieldFormat = fieldCount;
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr field(" << g_supportedField[fieldCount].m_name << ")" << endl;)
+  
+        // If configure, test reconfiguring
+        if (IsConfigured())
+        {
+          // Release the current capture config
+          ReleaseCapture();
+          
+          // Try the new config, and restore the old if failed
+          if (!ConfigureCapture())
+          {
+            cerr << "IOV4L2BaseC::HandleSetAttr failed to set field(" << attrValue << ")" << endl;
+            m_fieldFormat = tempField;
+          }
+        }
+      }
+      else
+      {
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr failed to find field(" << attrValue << ")" << endl;)
       }
 
       return true;
@@ -808,6 +904,13 @@ namespace RavlImageN
     if (attrName == "height")
     {
       attrValue = m_height;
+      return true;
+    }
+    
+    // Input
+    if (attrName == "input")
+    {
+      attrValue = m_input;
       return true;
     }
     
@@ -845,6 +948,10 @@ namespace RavlImageN
           }
         }
       }
+      else
+      {
+        cerr << "IOV4L2BaseC::HandleSetAttr failed to set width less than zero" << endl;
+      }
 
       return true;
     }
@@ -876,6 +983,45 @@ namespace RavlImageN
           }
         }
       }
+      else
+      {
+        cerr << "IOV4L2BaseC::HandleSetAttr failed to set height less than zero" << endl;
+      }
+      
+      return true;
+    }
+
+    // Input
+    if (attrName == "input")
+    {
+      // Set the height
+      if (attrValue >= 0 && attrValue < (IntT)m_inputMax)
+      {
+        // Lock the capture device
+        MutexLockC lockCapture(m_lockCapture);
+    
+        // Set the input
+        UIntT tempInput = m_input;
+        m_input = attrValue;
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr input(" << m_input << ")" << endl;)
+
+        // If configure, test reconfiguring
+        if (IsConfigured())
+        {
+          // Release the current capture config
+          ReleaseCapture();
+          
+          // Try the new config, and restore the old if failed
+          if (!ConfigureCapture())
+          {
+            m_input = tempInput;
+          }
+        }
+      }
+      else
+      {
+        cerr << "IOV4L2BaseC::HandleSetAttr failed to set input" << endl;
+      }
 
       return true;
     }
@@ -887,13 +1033,23 @@ namespace RavlImageN
 
   bool IOV4L2BaseC::BuildAttributes(AttributeCtrlBodyC &attrCtrl)
   {
-    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("width",         "Width",       true, true,  m_widthMin,  m_widthMax, 1,  m_width));
-    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("height",        "Height",      true, true, m_heightMin, m_heightMax, 1, m_height));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("driver", "Driver", true, false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("card",   "Card",   true, false));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("bus",    "Bus",    true, false));
+
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("input",         "Input",  true, true,           0,  m_inputMax - 1, 1,        0));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("width",         "Width",  true, true,  m_widthMin,      m_widthMax, 1,  m_width));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("height",        "Height", true, true, m_heightMin,     m_heightMax, 1, m_height));
 
     DListC<StringC> stdList;
     for (UIntT i = 0; i < g_supportedStandards; i++)
       stdList.InsLast(g_supportedStandard[i].m_name);
-    attrCtrl.RegisterAttribute(AttributeTypeEnumC("standard", "Standard", true, true,stdList, stdList.First()));
+    attrCtrl.RegisterAttribute(AttributeTypeEnumC("standard", "Standard", true, true, stdList, stdList.First()));
+
+    DListC<StringC> fieldList;
+    for (UIntT i = 0; i < g_supportedFields; i++)
+      fieldList.InsLast(g_supportedField[i].m_name);
+    attrCtrl.RegisterAttribute(AttributeTypeEnumC("field", "Field", true, true, fieldList, fieldList.First()));
 
     return true;
   }
