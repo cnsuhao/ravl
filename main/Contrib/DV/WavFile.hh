@@ -10,7 +10,7 @@
 //! author="Kieron J Messer"
 //! date="24/9/2000"
 //! lib=RavlDV
-//! docentry="Ravl.Contrib.VideoIO.Drivers.Linux133194"
+//! docentry="Ravl.Contrib.Video IO.Drivers.Linux133194"
 //! rcsid="$Id$"
 
 #include"Ravl/Stream.hh"

@@ -8,7 +8,7 @@
 #define RAVL_V4LFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.VideoIO.Video4Linux"
+//! docentry="Ravl.Contrib.Video IO.Video4Linux"
 //! date="29/10/1998"
 //! rcsid="$Id$"
 //! file="Contrib/V4L/V4LFormat.hh"

@@ -8,7 +8,7 @@
 #define RAVLIMAGE_CSPFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Image IO.ClipStationPro"
+//! docentry="Ravl.Contrib.Video IO.ClipStationPro"
 //! date="29/10/98"
 //! rcsid="$Id$"
 //! file="Contrib/ClipStationPro/CSPFormat.hh"

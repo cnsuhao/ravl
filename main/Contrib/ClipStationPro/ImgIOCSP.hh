@@ -8,7 +8,7 @@
 #define RAVLIMAGE_IMGIOCSP_HEADER 1
 //! rcsid="$Id$"
 //! lib=CSPDriver
-//! docentry="Ravl.Contrib.Image IO.ClipStationPro"
+//! docentry="Ravl.Contrib.Video IO.ClipStationPro"
 //! author="Charles Galambos"
 //! file="Contrib/ClipStationPro/ImgIOCSP.hh"
 

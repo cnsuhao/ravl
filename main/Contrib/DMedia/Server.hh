@@ -11,7 +11,7 @@
 //! file="Ravl/Drivers/Video/DMedia/Server.hh"
 //! lib=sgiDMedia
 //! userlevel=Develop
-//! docentry="Ravl.Contrib.Image IO.SGI DMedia"
+//! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"
 //! date="22/11/1999"
 

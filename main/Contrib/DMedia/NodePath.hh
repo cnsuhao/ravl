@@ -11,7 +11,7 @@
 //! file="Ravl/Drivers/Video/DMedia/NodePath.hh"
 //! lib=sgiDMedia
 //! userlevel=Default
-//! docentry="Ravl.Contrib.Image IO.SGI DMedia"
+//! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"
 //! date="22/11/1999"
 

@@ -12,7 +12,7 @@
 //! file="Ravl/Image/ExternalVideoIO/ImgIMpeg.hh"
 //! lib=RavlMPEG
 //! author="Ramesh Krishna"
-//! docentry="Ravl.Images.IO.Formats"
+//! docentry="Ravl.Contrib.Video IO.MPEG2"
 //! example=exImgIO.cc
 //! date="29/10/2001"
 
