@@ -60,6 +60,10 @@ namespace RavlImageN
     bool IsGetEOS() const;
     //: Is it the EOS
 
+    virtual bool GetAttr(const StringC &attrName, StringC &attrValue);
+    //: Get a stream attribute.
+    // Returns false if the attribute name is unknown.
+
     virtual bool GetAttr(const StringC &attrName, IntT &attrValue);
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
@@ -86,6 +90,9 @@ namespace RavlImageN
     SArray1dC< ByteT > m_dataIn;                                            // Input data buffer
     DListC< SArray1dC< ByteT > > m_dataOut;                                 // Output data buffer
     ByteT *m_bufStart, *m_bufEnd;                                           // Input data buffer pointers
+    
+    SArray1dC< ByteT > m_dataCurrent;                                       // Current GetArray output buffer
+    UIntT m_dataCount;                                                      // Output data count
   };
 
   class MPEG2DemuxC :

@@ -6,25 +6,24 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
+REQUIRES = libmpeg2
 
-REQUIRES=libmpeg2
+PACKAGE = Ravl/Image
 
-PACKAGE=Ravl/Image
+HEADERS = ImgIOMPEG2.hh LibMPEG2Format.hh MPEG2Demux.hh
 
-HEADERS= ImgIOMPEG2.hh LibMPEG2Format.hh MPEG2Demux.hh
+SOURCES = ImgIOMPEG2.cc LibMPEG2Format.cc MPEG2Demux.cc
 
-SOURCES= ImgIOMPEG2.cc LibMPEG2Format.cc MPEG2Demux.cc
+PLIB = RavlLibMPEG2
 
-PLIB=RavlLibMPEG2
+MUSTLINK = MustLinkLibMPEG2.cc
 
-MUSTLINK= MustLinkLibMPEG2.cc
+USESLIBS = RavlImage RavlIO LibMPEG2 RavlDPDisplay
 
-USESLIBS= RavlImage RavlIO LibMPEG2 RavlDPDisplay
+PROGLIBS = RavlGUI
 
-PROGLIBS= RavlGUI
+EXAMPLES = exMPEG2.cc exMPEG2Seek.cc
 
-EXAMPLES= exMPEG2.cc exMPEG2Seek.cc
+AUXDIR = lib/RAVL/libdep
 
-AUXDIR=lib/RAVL/libdep
-
-AUXFILES=LibMPEG2.def
+AUXFILES = LibMPEG2.def

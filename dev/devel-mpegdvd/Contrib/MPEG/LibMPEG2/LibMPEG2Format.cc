@@ -90,7 +90,7 @@ namespace RavlImageN {
   DPIPortBaseC FileFormatLibMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
     // Check for a multiplexed stream
     bool system = false;
-    IStreamC in(fn, true, false);
+    IStreamC in(fn, true);
     if (in.good())
     {
       ByteT buf[4];

@@ -63,14 +63,61 @@ namespace RavlImageN
   
   IntT MPEG2DemuxBodyC::GetArray(SArray1dC<ByteT> &data)
   {
-    cerr << "MPEG2DemuxBodyC::GetArray" << endl;
+    RavlAssertMsg(m_dataCurrent.Size() == 0, "MPEG2DemuxBodyC::GetArray called while previous data remains");
     
-    if (m_bufStart == m_bufEnd)
-      ReadInput();
+    // Copy any data in the output list
+    m_dataCurrent = data;
+    m_dataCount = 0;
+    if (m_dataOut.Size() > 0)
+    {
+      // Loop through all available output data chunks
+      while (m_dataCount < m_dataCurrent.Size() && m_dataOut.Size() > 0)
+      {
+        // Get the next data chunk
+        SArray1dC<ByteT> dataChunk = m_dataOut.PopFirst();
+        
+        // How much to copy
+        UIntT dataSize = dataChunk.Size() > (m_dataCurrent.Size() - m_dataCount) ? m_dataCurrent.Size() - m_dataCount : dataChunk.Size();
+        UIntT dataLeft = dataChunk.Size() - dataSize;
+        
+        // Copy the data across
+        for (UIntT i = 0; i < dataSize; i++)
+          m_dataCurrent[i + m_dataCount] = dataChunk[i];
+        m_dataCount += dataSize;
+        
+        if (dataLeft > 0)
+        {
+          // Copy the remaining data back to the list
+          SArray1dC<ByteT> newChunk(dataLeft);
+          for (UIntT i = 0; i < dataLeft; i++)
+            newChunk[i] = dataChunk[i + dataSize];
+          m_dataOut.InsFirst(newChunk);
+        }
+      }
+    }
     
-    Demultiplex();
+    // Keep demultiplexing until the data buffer is full, or we've reached EOS
+    while (m_dataCount < m_dataCurrent.Size() && !IsGetEOS())
+    {
+      // Need input
+      if (!ReadInput())
+      {
+        ONDEBUG(cerr << "MPEG2DemuxBodyC::GetArray program end of stream reached" << endl;)
+        break;
+      }
+      
+      // Keep demultiplexing til we hit a program end code
+      if (Demultiplex())
+      {
+        ONDEBUG(cerr << "MPEG2DemuxBodyC::GetArray program end code reached" << endl;)
+        break;
+      }
+    }
     
-    return 0;
+    // Remove our handle to the current data set
+    m_dataCurrent = SArray1dC<ByteT>();
+    
+    return m_dataCount;
   }
   
   bool MPEG2DemuxBodyC::IsGetEOS() const
@@ -82,6 +129,16 @@ namespace RavlImageN
     }
     
     return false;
+  }
+
+  bool MPEG2DemuxBodyC::GetAttr(const StringC &attrName, StringC &attrValue)
+  {
+    if (attrName == "track")
+    {
+      attrValue = StringC(m_track);
+      return true; 
+    }
+    return DPPortBodyC::GetAttr(attrName, attrValue);
   }
 
   bool MPEG2DemuxBodyC::GetAttr(const StringC &attrName, IntT &attrValue)
@@ -100,7 +157,6 @@ namespace RavlImageN
       return false;
     
     // Read the next amount of data
-    RavlAssertMsg(m_bufStart == m_bufEnd, "MPEG2DemuxBodyC::ReadInput unread data still in buffer");
     UIntT len = input.GetArray(m_dataIn);
     
     // Set the buffer pointers
@@ -112,6 +168,27 @@ namespace RavlImageN
   
   void MPEG2DemuxBodyC::AppendOutput(ByteT *start, ByteT *end)
   {
+    RavlAssertMsg(m_dataCurrent.Size() > 0, "MPEG2DemuxBodyC::AppendOutput without a current output data block");
+    
+    UIntT dataSize = end - start;
+    UIntT dataUsed = dataSize > (m_dataCurrent.Size() - m_dataCount) ? m_dataCurrent.Size() - m_dataCount : dataSize;
+    if (m_dataCount < m_dataCurrent.Size())
+    {
+      for (UIntT i = 0; i < dataUsed; i++)
+        m_dataCurrent[i + m_dataCount] = *(start + i);
+      m_dataCount += dataUsed;
+    }
+    
+    if (dataUsed < dataSize)
+    {
+      // Create the new data chunk
+      SArray1dC<ByteT> newChunk(dataSize - dataUsed);
+      for (UIntT i = 0; i < (dataSize - dataUsed); i++)
+        newChunk[i] = *(start + dataUsed + i);
+      
+      // Append it to the data output list
+      m_dataOut.InsLast(newChunk);
+    }
   }
   
   bool MPEG2DemuxBodyC::Demultiplex()
