@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlLibMPEG2
+//! author="Warren Moore"
 
 #include "Ravl/Option.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"
@@ -31,17 +32,17 @@ int main(int nargs,char **argv) {
 
   // Select the correct opening method
   IStreamC strm(inFile);
+
   ImgILibMPEG2C mi(strm);
   if (fn.Extension() == "vob")
     mi = ImgILibMPEG2C(strm, 0xe0);
-  else
-    mi = ImgILibMPEG2C(strm);
 
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
   UIntT i = 0;
   while(1) {
     if(!mi.Get(rgb))
+
       break;
     i++;
 #if 0
