@@ -604,6 +604,10 @@ namespace RavlImageN {
       return SetWhiteBalance(attrValue.IntValue());
     if(attrName == "reset")
       return SetReset();
+    if(attrName == "saveusersettings")
+      return SaveUserSettings();
+    if(attrName == "loadusersettings")
+      return LoadUserSettings();
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }
@@ -657,6 +661,10 @@ namespace RavlImageN {
       return SetWhiteBalance(attrValue);
     if(attrName == "reset")
       return SetReset();
+    if(attrName == "saveusersettings")
+      return SaveUserSettings();
+    if(attrName == "loadusersettings")
+      return LoadUserSettings();
     ONDEBUG(cerr << "DPIImageBaseV4LBodyC::HandleSetAttr(),  '" << attrName << "'  not found\n");
     return false;
   }

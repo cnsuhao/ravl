@@ -103,6 +103,14 @@ namespace RavlImageN {
     bool SetReset();
     //: Perform factory reset
     
+    bool SaveUserSettings();
+    //: Save camera settings.
+    // (Philips webcams.)
+    
+    bool LoadUserSettings();
+    //: Save camera settings.
+    // (Philips webcams.)
+    
     bool SetWhiteBalance(int mode);
     //: Set white balance mode
     

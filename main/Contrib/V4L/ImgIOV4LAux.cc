@@ -28,15 +28,6 @@ typedef unsigned long ulong;
 #define ONDEBUG(x)
 #endif
 
-#define PHILIPS_SET_SHUTTER	_IOW('v', 201, int)
-#define PHILIPS_GET_COMPRESSION _IOW('v', 195, int)
-#define PHILIPS_SET_COMPRESSION _IOR('v', 195, int)
-#define PHILIPS_GET_AGC _IOW('v', 200, int)
-#define PHILIPS_SET_AGC _IOR('v', 200, int)
-
-#define PHILIPS_SET_SHARPNESS	_IOW('v', 206, int)
-#define PHILIPS_GET_SHARPNESS	_IOR('v', 206, int)
-
 struct led_ctrl {
   int on;
   int off;
@@ -53,12 +44,37 @@ struct wb_ctrl {
   int oblue;
 };
 
+// Restore user settings 
+#define PHILIPS_LOAD_SETTINGS		_IO('v', 192)
+
+// Save user settings
+#define PHILIPS_SAVE_SETTINGS		_IO('v', 193)
+
 // Factory Reset
 #define PHILIPS_FACTORY_RESET _IO('v', 194)
+
+// Desired Compression 
+#define PHILIPS_GET_COMPRESSION _IOW('v', 195, int)
+#define PHILIPS_SET_COMPRESSION _IOR('v', 195, int)
+
+// AGC setting.
+#define PHILIPS_GET_AGC         _IOW('v', 200, int)
+#define PHILIPS_SET_AGC         _IOR('v', 200, int)
+
+// Shutter 
+#define PHILIPS_SET_SHUTTER	_IOW('v', 201, int)
+
+// White Balance
+#define PHILIPS_SET_WHITEBALANCE  _IOW('v', 202, struct wb_ctrl)
+#define PHILIPS_GET_WHITEBALANCE  _IOR('v', 202, struct wb_ctrl)
 
 // LED control
 #define PHILIPS_SET_LED   _IOW('v', 205, struct led_ctrl)
 #define PHILIPS_GET_LED   _IOR('v', 205, struct led_ctrl)
+
+// Sharpness setting
+#define PHILIPS_SET_SHARPNESS	_IOW('v', 206, int)
+#define PHILIPS_GET_SHARPNESS	_IOR('v', 206, int)
 
 // Backlight 0=Off 1=On
 #define PHILIPS_SET_BACKLIGHT	_IOW('v', 207, int)
@@ -71,10 +87,6 @@ struct wb_ctrl {
 //  0=Off 3=Full
 #define PHILIPS_SET_NOISEREDUCTION	_IOW('v', 209, int)
 #define PHILIPS_GET_NOISEREDUCTION	_IOR('v', 209, int)
-
-// White Balance
-#define PHILIPS_SET_WHITEBALANCE  _IOW('v', 202, struct wb_ctrl)
-#define PHILIPS_GET_WHITEBALANCE  _IOR('v', 202, struct wb_ctrl)
 
 // Image size
 #define PHILIPS_GET_REALSIZE _IOR('v', 210, struct led_ctrl)
@@ -283,6 +295,40 @@ namespace RavlImageN {
     return true;
   }
 
+
+  //: Save camera settings.
+  // (Philips webcams.)
+  
+  bool DPIImageBaseV4LBodyC::SaveUserSettings() {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      if(ioctl(fd,PHILIPS_LOAD_SETTINGS) < 0) {
+	cerr<< "WARNING: Save user settings failed. \n";
+	return false;
+      }
+    } return true; 
+    default: break;
+    }    
+    return false;    
+  }
+  
+  //: Save camera settings.
+  // (Philips webcams.)
+  
+  bool DPIImageBaseV4LBodyC::LoadUserSettings() {
+    switch(sourceType) {
+    case SOURCE_USBWEBCAM_PHILIPS: {
+      if(ioctl(fd,PHILIPS_LOAD_SETTINGS) < 0) {
+	cerr<< "WARNING: Load user settings failed. \n";
+	return false;
+      }
+    } return true; 
+    default: break;
+    }    
+    return false;
+  }
+  
+  
   //: Factory reset
   
   bool DPIImageBaseV4LBodyC::SetReset() {
@@ -304,9 +350,13 @@ namespace RavlImageN {
     switch(sourceType) {
     case SOURCE_USBWEBCAM_PHILIPS: {
       wb_ctrl val;
+      if(ioctl(fd,PHILIPS_GET_WHITEBALANCE,&val) < 0) {
+	cerr << "WARNING: Failed to get white balance mode. \n";
+	return false;
+      }
       val.mode = mode;
       if(ioctl(fd,PHILIPS_SET_WHITEBALANCE,&val) < 0) {
-	cerr<< "WARNING: Failed to set white balance mode. \n";
+	cerr << "WARNING: Failed to set white balance mode. \n";
 	return false;
       }
     } return true; 
