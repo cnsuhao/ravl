@@ -61,14 +61,14 @@ namespace RavlImageN
     //: Get next frame.
     
     virtual UIntT Tell() const
-    { return frameNo; }
+    { return m_frameNo; }
     //: Find current location in stream.
     
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     
     virtual StreamPosT Tell64() const
-    { return frameNo; }
+    { return m_frameNo; }
     //: Find current location in stream.
     
     virtual bool Seek64(StreamPosT off);
@@ -96,37 +96,31 @@ namespace RavlImageN
     bool DemultiplexGOP(UIntT firstFrameNo);
     //: Decode a whole GOP and put it in the image cache.
     
-    bool Decode(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
+    bool Decode(UIntT &frameNo, const mpeg2_info_t *info);
     //: Decode a block of data
     
-    bool Demultiplex(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames);
+    bool Demultiplex(UIntT &frameNo, const mpeg2_info_t *info, const UIntT firstFrameNo);
     //: Demultiplex and decode mpeg stream
     
-    bool DecodeBlock(UIntT &frameNo, const mpeg2_info_t *info, bool &gotFrames, ByteT *start, ByteT *end);
+    bool DecodeBlock(UIntT &frameNo, const mpeg2_info_t *info, const UIntT firstFrameNo, ByteT *start, ByteT *end, const StreamPosT parsePos);
     //: Decode a block of demultiplexed data
     
-    bool BuildIndex(UIntT targetFrame);
-    //: Build GOP index to frame.
-    
-//    bool SkipToStartCode(BitIStreamC &is); 
-    //: Skip to next start code.
-    
   protected:
-    mpeg2dec_t *decoder;
+    mpeg2dec_t *m_decoder;
     IntT m_state;
-    SArray1dC<ByteT> buffer;
+    SArray1dC<ByteT> m_buffer;
     
-    ByteT *bufStart, *bufEnd;
-    Index2dC imgSize;
-    StreamPosT allocFrameId;
-    StreamPosT frameNo;
-    StreamPosT maxFrameIndex;
-    StreamPosT lastRead;
-    HashC<StreamPosT,SArray1dC<ByteT> > images;
-    AVLTreeC<StreamPosT, StreamPosT> offsets;
-    CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
-    bool sequenceInit;
-    IntT lastFrameType;
+    ByteT *m_bufStart, *m_bufEnd;
+    Index2dC m_imgSize;
+    StreamPosT m_allocFrameId;
+    StreamPosT m_frameNo;
+    StreamPosT m_maxFrameIndex;
+    StreamPosT m_lastRead;
+    HashC<StreamPosT,SArray1dC<ByteT> > m_images;
+    AVLTreeC<StreamPosT, StreamPosT> m_offsets;
+    CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > m_imageCache;
+    bool m_sequenceInit;
+    IntT m_lastFrameType;
     
     IntT m_demuxTrack;
     IntT m_demuxState;
@@ -134,6 +128,9 @@ namespace RavlImageN
     ByteT m_headBuf[264];
 
     UIntT m_gopCount;
+    UIntT m_gopLimit;
+    UIntT m_previousGop;
+    StreamPosT m_blockRead;
   };
 
   class ImgILibMPEG2C :

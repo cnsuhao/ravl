@@ -15,6 +15,7 @@
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/Random.hh"
 
 using namespace RavlN;
 using namespace RavlImageN;
@@ -42,23 +43,37 @@ int main(int nargs, char **argv)
     return 1;
   }
 
+  // Number of frames to play with
+  const IntT size = 50;
+  
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
-  UIntT i = 0;
-  while(1)
+  IntT count = 0;
+  
+  // Play forward, then back, then random for a bit
+  while (true)
   {
+    if (count > size * 3)
+      count = 0;
+
+    IntT frame = count;
+    if (count >= size && count < size * 2)
+      frame = size - (count - size);
+    
+    if (count >= size * 2)
+      frame = Random1() * size;
+   
+    count++;
+    
+    in.Seek(frame);
+      
+    cerr << "==== Seeking to " << frame << endl;
+
     if(!in.Get(rgb))
       break;
     
-    i++;
-#if 0
-    if(i > 30)
-    {
-      in.Seek(0);
-      i = 0;
-    }
-#endif
     RavlN::Save("@X", rgb);
+
     Sleep(0.1);
   }
 
