@@ -13,7 +13,6 @@
 #include "Ravl/DVDRead.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Date.hh"
-#include <fstream>
 #include "Ravl/DList.hh"
 
 using namespace std;
@@ -45,17 +44,18 @@ int main(int nargs,char **argv)
   
   // Create the output file
   StringC filename = StringC(title) + ".vob";
-  ofstream file(filename, ios::out|ios::binary);
+  OStreamC file(filename);
 
   // Load the stream
   SArray1dC<ByteT> data(1024 * 1024);
   UIntT size = 0;
   while((size = dvd.GetArray(data)) > 0)
   {
+    cerr << "tell(" << dvd.Tell64() << ")" << endl;
     file.write(reinterpret_cast<const char*>(&(data[0])), size);
   }
 
-  file.close();
+  file.Close();
   
   return 0;
 }
