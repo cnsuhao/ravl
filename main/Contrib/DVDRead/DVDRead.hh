@@ -64,6 +64,12 @@ namespace RavlN
     bool Discard();
     //: Discard the next data item
     
+    bool GetAttr(const StringC &attrName, StringC &attrValue);
+    //: Get an attribute
+  
+    bool GetAttrList(DListC<StringC> &list) const;
+    //: Get a list of attributes
+
   protected:
     void Close();
     //: Close the DVD read objects

@@ -13,6 +13,7 @@
 #include "dvdread/ifo_read.h"
 #include "dvdread/ifo_print.h"
 #include "dvdread/nav_read.h"
+#include "Ravl/DList.hh"
 
 #define DODEBUG 0
 
@@ -266,7 +267,10 @@ namespace RavlN
         
         // Stop permanently if we've gone past the end
         if (i + 1 == m_navTable.Size())
+        {
+          cerr << "DVDReadBodyC::GetArray attempting to seek past end of cell" << endl;
           break;
+        }
         
         // Store the required NAV block offset
         curNavSize = m_navTable[i].Data2();
@@ -431,6 +435,74 @@ namespace RavlN
     m_byteCurrent++;
     
     return false;
+  }
+
+  bool DVDReadBodyC::GetAttr(const StringC &attrName, StringC &attrValue)
+  {
+    if (m_dvdVtsFile != NULL)
+    {
+      vtsi_mat_t *vtsi_mat = m_dvdVtsFile->vtsi_mat;
+      video_attr_t &video_attr = vtsi_mat->vts_video_attr;
+      
+      if (attrName == "mpegversion")
+      {
+        attrValue = (video_attr.mpeg_version == 1 ? "MPEG2" : "MPEG1");
+        return true;
+      }
+
+      if (attrName == "videoformat")
+      {
+        attrValue = (video_attr.video_format == 1 ? "PAL" : "NTSC");
+        return true;
+      }
+
+      if (attrName == "aspectratio")
+      {
+        attrValue = (video_attr.display_aspect_ratio == 3 ? "16:9" : "4:3");
+        return true;
+      }
+
+      if (attrName == "framesize")
+      {
+        UIntT height = 480;
+        if(video_attr.video_format != 0) 
+          height = 576;
+        
+        StringC width;
+        switch(video_attr.picture_size)
+        {
+          case 0:
+            width = "720x";
+            break;
+            
+          case 1:
+            width = "704x";
+            break;
+
+          case 2:
+            width = "352x";
+            break;
+
+          case 3:
+            width = "352x";
+            height /= 2;
+            break;
+        }
+        attrValue = width + height;
+        return true;
+      }
+    }
+
+    return DPPortBodyC::GetAttr(attrName, attrValue);
+  }
+  
+  bool DVDReadBodyC::GetAttrList(DListC<StringC> &list) const
+  {
+    list.InsLast(StringC("mpegversion"));
+    list.InsLast(StringC("videoformat"));
+    list.InsLast(StringC("aspectratio"));
+    list.InsLast(StringC("framesize"));
+    return DPPortBodyC::GetAttrList(list);
   }
 
 }
