@@ -10,6 +10,7 @@
 
 PACKAGE=Ravl/Image
 
+SUPPORT_ONLY=linux
 MAINS=testV4LIO.cc
 
 HEADERS=ImgIOV4L.hh V4LFormat.hh
