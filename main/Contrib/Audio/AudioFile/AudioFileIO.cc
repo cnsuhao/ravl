@@ -50,10 +50,10 @@ namespace RavlAudioN {
   //: Setup IO.
   
   bool AudioFileBaseC::SetupChannel(int channel,const type_info &ndtype) {
-    if(ndtype == typeid(SByteT)) {
+    if(ndtype == typeid(SampleElemC<1,UByteT>)) {
       afSetVirtualChannels(handle,AF_DEFAULT_TRACK,1);
       afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_TWOSCOMP, 8);
-    } else if(ndtype == typeid(Int16T)) {
+    } else if(ndtype == typeid(SampleElemC<1,Int16T>)) {
       afSetVirtualChannels(handle,AF_DEFAULT_TRACK,1);
       afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_TWOSCOMP, 16);
     } else if(ndtype == typeid(SampleElemC<2,Int16T>)) {
@@ -70,10 +70,12 @@ namespace RavlAudioN {
   
   bool AudioFileBaseC::IOpen(const StringC &fn,int nchannel,const type_info &ndtype) {
     ONDEBUG(cerr << "AudioFileBaseC::IOpen(), Called. \n");
-    if(ndtype == typeid(SByteT)) {
-      frameSize = sizeof(SByteT);
-    } else if(ndtype == typeid(Int16T)) {
-      frameSize = sizeof(Int16T);
+    if(ndtype == typeid(SampleElemC<1,UByteT> )) {
+      frameSize = sizeof(SampleElemC<1,UByteT> );
+    } else if  (ndtype == typeid(SampleElemC<2,UByteT> ) ) {
+      frameSize = sizeof (SampleElemC<2,UByteT> ) ;  
+    } else if(ndtype == typeid(SampleElemC<1,Int16T>)) {
+      frameSize = sizeof(SampleElemC<1,Int16T>);
     } else if(ndtype == typeid(SampleElemC<2,Int16T>)) {
       frameSize = sizeof(SampleElemC<2,Int16T>);
     } else {

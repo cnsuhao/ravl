@@ -8,14 +8,15 @@
 //! lib=RavlDevAudio
 //! author="Lee Gregory"
 //! docentry="Ravl.Audio.Audio IO"
-//! file="Ravl/Contrib/Audio/DevAudio/exAudioIO.cc"
+//! file="Ravl/Contrib/Audio/AudioFile/exAudioFile.cc"
 
 #include "Ravl/IO.hh"
 #include "Ravl/Option.hh"
 #include "Ravl/DP/SequenceIO.hh"
+#include "Ravl/Audio/Types.hh"
 
 using namespace RavlN;
-
+using namespace RavlAudioN ; 
 
 // This example reads from a wav file and outputs to a sound device.
 // This example needs to be linked against RavlDevAudio.
@@ -31,7 +32,7 @@ int main(int nargs,char **argv) {
 
   
   // open the input port 
-  DPIPortC<Int16T> in;
+  DPIPortC<SampleElemC<1,Int16T> > in;
   if(!OpenISequence(in,idev)) {
     cerr << "Failed to open input : " << idev << "\n";
     return 1;
@@ -39,7 +40,7 @@ int main(int nargs,char **argv) {
   
   
   // now lets setup an output port 
-  DPOPortC<Int16T> out;
+  DPOPortC<SampleElemC<1,Int16T> > out;
   if(!OpenOSequence(out,odev)) {
     cerr << "Failed to open output : " << odev << "\n";
     return 1;
@@ -50,28 +51,19 @@ int main(int nargs,char **argv) {
   DListC<StringC> attrList ; 
   in.GetAttrList(attrList) ; 
   cout << "\nAvailable Attributes are :\n" << attrList ; 
+  
+  // lets get some attributes 
   RealT sampleRate ; 
   IntT  sampleBits ; 
   in.GetAttr("samplerate", sampleRate) ; 
   in.GetAttr("samplebits", sampleBits) ; 
   cout << "\nSample rate is " << sampleRate << " and sample bits is " << sampleBits << "\n\n" ; 
-  
-
-  
+    
   // now lets read data from file and play to device
   out.SetAttr("samplerate",sampleRate) ; 
-    while ( true ) 
+  while ( true ) 
     {
-      Int16T sample = in.Get() ;  // get sample 
-
-      // scale 8 bit samples up and make them unsigned 
-      if (sampleBits == 8) {
-	Int16T scaled = (unsigned char) sample ; 
-	scaled *= 256 ; 
-	scaled -= 32767 ;
-	sample = scaled ; 
-      }
-
+      SampleElemC<1,Int16T>  sample = in.Get() ; 
       out.Put(sample) ; // play sample
     }
 

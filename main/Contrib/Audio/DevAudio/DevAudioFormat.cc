@@ -80,7 +80,7 @@ namespace RavlAudioN {
       return typeid(void);
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return obj_type;
-    return typeid(Int16T);
+    return typeid( SampleElemC<1,Int16T> );
   }
   
   //: Create a input port for loading.
@@ -113,8 +113,8 @@ namespace RavlAudioN {
     }
     if(fn == "")
       fn = "/dev/audio";
-    if(obj_type == typeid(Int16T)) {
-      DPIAudioC<Int16T,DevAudioBaseC> ret(fn,channel);
+    if(obj_type == typeid(SampleElemC<1,Int16T>)) {
+      DPIAudioC<SampleElemC<1,Int16T>,DevAudioBaseC> ret(fn,channel);
       if(!ret.IsGetEOS()) // Did open succeed ?
 	return ret;
     }
@@ -144,8 +144,8 @@ namespace RavlAudioN {
     }
     if(fn == "")
       fn = "/dev/audio";
-    if(obj_type == typeid(Int16T)) {
-      DPOAudioC<Int16T,DevAudioBaseC> ret(fn,channel);
+    if(obj_type == typeid(SampleElemC<1,Int16T>)) {
+      DPOAudioC<SampleElemC<1,Int16T> ,DevAudioBaseC> ret(fn,channel);
       if(ret.IsPutReady()) // Did open succeed ?
 	return ret;
       cerr << "Failed to open device '" << fn << "'\n"; 
@@ -162,7 +162,7 @@ namespace RavlAudioN {
   //: Get prefered IO type.
   
   const type_info &FileFormatDevAudioBodyC::DefaultType() const 
-  { return typeid(Int16T); }
+  { return typeid( SampleElemC<1,Int16T> ); }
   
   // Some common cif formats.
   

@@ -20,7 +20,7 @@
 
 #include "Ravl/Audio/DevAudioIO.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG 
 #define ONDEBUG(x) x
 #else
@@ -119,7 +119,7 @@ namespace RavlAudioN {
   
   bool DevAudioBaseC::SetupChannels(const type_info &dtype) {
     int channels = 0;
-    if(dtype == typeid(Int16T)) {
+    if(dtype == typeid(SampleElemC<1,Int16T>)) {
       channels = 1;
     } else  if(dtype == typeid(SampleElemC<2,Int16T>)) {
       channels = 2;
