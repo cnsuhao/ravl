@@ -17,13 +17,16 @@
 #include <curl/types.h>
 #include <curl/easy.h>
 
+#ifndef CURLOPT_WRITEDATA
+#define CURLOPT_WRITEDATA CURLOPT_FILE
+#endif
+
 namespace RavlN {
 
    void InitHTTPStreamIO() {}
 
-
    size_t dataReady(void *ptr, size_t size, size_t nmemb, void *stream) {      
-      return static_cast<HTTPIStreamC*>(stream)->Push(ptr,size,nmemb);
+     return static_cast<HTTPIStreamC*>(stream)->Push(ptr,size,nmemb);
    }
 
    HTTPIStreamC::HTTPIStreamC(const StringC& url) {
@@ -32,11 +35,12 @@ namespace RavlN {
    }
 
    bool HTTPIStreamC::Get(StringC& url) {
-
-      cerr << url << endl;
-
       // Restore full URL
-      StringC fullurl("http:" + url);
+      StringC fullurl;
+      if (url.contains("http:")) 
+	fullurl = url;
+      else 
+	fullurl = "http:" + url;
       // Data
       CURL *handle = NULL;
       // Initialise CURL
@@ -44,10 +48,10 @@ namespace RavlN {
       if(handle) {
          // Set options
          curl_easy_setopt(handle, CURLOPT_URL, fullurl.chars());
-         //curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, dataReady);
-         //curl_easy_setopt(handle, CURLOPT_WRITEDATA, this);
-         //curl_easy_setopt(handle, CURLOPT_MUTE, 1);
-         //curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 1);
+         curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, dataReady);
+         curl_easy_setopt(handle, CURLOPT_WRITEDATA, this);
+         curl_easy_setopt(handle, CURLOPT_MUTE, 1);
+         curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 1);
          // Get the URL
          curl_easy_perform(handle);
          // Clean up
