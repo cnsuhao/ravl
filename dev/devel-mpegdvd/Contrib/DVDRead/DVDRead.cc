@@ -106,12 +106,12 @@ namespace RavlN
     ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC cells(" << numCells << ")" << endl;)
 
     // Get the FPS
-    m_numFps = 0.0;
+    m_numFps = 25.0;
     dvd_time_t titleTime = m_dvdPgc->playback_time;
     if (titleTime.hour != 0 &&  titleTime.minute != 0 && titleTime.second != 0)
     {
-      if ((titleTime.frame_u & 0xc0) >> 6 == 1)
-        m_numFps = 25.0;
+//      if ((titleTime.frame_u & 0xc0) >> 6 == 1)
+//        m_numFps = 25.0;
       if ((titleTime.frame_u & 0xc0) >> 6 == 3)
         m_numFps = 29.97;
     }
