@@ -58,7 +58,9 @@ namespace RavlImageN
     m_buffer(16384 * 2),
     m_bufStart(0),
     m_bufEnd(0),
+    m_allocFrameId(0),
     m_frameNo(0),
+    m_maxFrameIndex(0),
     m_lastRead(0),
     m_offsets(true),
     m_imageCache(g_cacheStep * 2),
@@ -70,10 +72,7 @@ namespace RavlImageN
     m_gopCount(0),
     m_gopLimit(0),
     m_previousGop(0),
-    m_blockRead(0),
-    m_endFound(false),
-    m_framesTotal(-1),
-    m_framesOffset(0)
+    m_blockRead(0)
   {
     m_decoder = mpeg2_init();
     
@@ -83,7 +82,7 @@ namespace RavlImageN
       cerr << "ImgILibMPEG2BodyC::ImgILibMPEG2BodyC invalid demultiplex track." << endl;
       m_demuxTrack = -1;
     }
-    
+
     BuildAttributes();
   }
   
@@ -95,171 +94,19 @@ namespace RavlImageN
       mpeg2_close(m_decoder);
   }
   
-  //: Get next frame.
-  
-  bool ImgILibMPEG2BodyC::Get(ImageC<ByteRGBValueC> &img)
-  {
-    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Get (" << m_frameNo << ")" << endl;)
-    
-    // If not set, get the initial seek position
-    if (m_offsets.IsEmpty() && !InitialSeek())
-    {
-      cerr << "ImgILibMPEG2BodyC::Get unable to find initial seek position" << endl;
-      return false;
-    }
-    
-    bool ok = true;
-    Tuple2C<ImageC<ByteRGBValueC>,IntT> dat;
-    while (!m_imageCache.LookupR(m_frameNo, dat))
-    {
-      // If  at EOS, stop
-      if (IsGetEOS())
-      {
-        cerr << "ImgILibMPEG2BodyC::Get at end of stream before frame (" << m_frameNo << ")" << endl;
-        return false;
-      }
-      
-      // If the last read failed, don't bother again
-      if (!ok)
-      {
-        cerr << "ImgILibMPEG2BodyC::Get decoder failed for frame (" << m_frameNo << ")" << endl;
-        return false;
-      }
-
-      //  If we have a DVD reader, check we're in the right cell
-      if (m_dvd.IsValid())
-      {
-        StreamPosT offset = m_dvd.SeekFrame(m_frameNo);
-        
-        // Check if the cell's changed
-        if (offset != m_framesOffset)
-        {
-          // Store the offset, clear the GOP cache and add the start position
-          m_framesOffset = offset;
-          m_offsets.Empty();
-          m_offsets.Insert(m_framesOffset, 0);
-          m_blockRead = 0;
-          m_endFound = false;
-        }
-      }
-      
-      // Keep on truckin' til we find the frame
-      if (m_demuxTrack >= 0)
-        ok = DemultiplexGOP(m_frameNo);
-      else
-        ok = DecodeGOP(m_frameNo);
-    }
-    
-    img = dat.Data1();
-    m_lastFrameType = dat.Data2();
-    m_frameNo++;   
-    return true;
-  }
-  
-  //: Seek to location in stream.
-  
-  bool ImgILibMPEG2BodyC::Seek(UIntT off)
-  {
-    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek (" << off << ")" << endl;)
-    m_frameNo = off;
-    m_endFound = false;
-    return true;
-  }
-
-  //: Get the size of the file in frames (-1 if not known)
-
-  UIntT ImgILibMPEG2BodyC::Size() const
-  {
-    return ((UIntT)(m_framesTotal));
-  }
-  
-  //: Seek to location in stream.
-  
-  bool ImgILibMPEG2BodyC::Seek64(StreamPosT off)
-  {
-    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek (" << off << ")" << endl;)
-    m_frameNo = off;
-    return true;
-  }
-  
-  //: Get the size of the file in frames (-1 if not known)
-
-  StreamPosT ImgILibMPEG2BodyC::Size64() const
-  {
-    return m_framesTotal;
-  }
-  
-  bool ImgILibMPEG2BodyC::IsGetEOS() const
-  {
-    if ((m_framesTotal > -1) && (m_frameNo >= m_framesTotal))
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::IsGetEOS exceeded frames" << endl;)
-      return true;
-    }
-    
-    if (m_endFound)
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::IsGetEOS end found" << endl;)
-      return true;
-    }
-    
-    if (input.IsGetEOS())
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::IsGetEOS input at EOS" << endl;)
-      return true;
-    }
-    
-    return false;
-  }
-
-  // Returns false if the attribute name is unknown.
-  // This is for handling stream attributes such as frame rate, and compression ratios.
-  
-  bool ImgILibMPEG2BodyC::GetAttr(const StringC &attrName,StringC &attrValue)
-  {
-    if(attrName == "frametype") {
-      attrValue = StringC(frameTypes[m_lastFrameType]);
-      return true; 
-    }
-    return DPPortBodyC::GetAttr(attrName,attrValue);
-  }
-  
   bool ImgILibMPEG2BodyC::InitialSeek()
   {
-    ONDEBUG(cerr << "ImgILibMPEG2BodyC::InitialSeek" << endl;)
     RavlAssertMsg(m_offsets.IsEmpty(), "ImgILibMPEG2BodyC::InitialSeek called with non-empty offsets");
 
     if (input.IsValid())
     {
-      // If we're reading from a DVD, get the total frames
-      m_dvd = DVDReadC(input);
-      if (m_dvd.IsValid())
+      DPSeekCtrlC seek(input);
+      if (seek.IsValid())
       {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::InitialSeek DVD input found" << endl;)
-        // Get the total frames available
-        StringC value;
-        if (m_dvd.GetAttr("frames", value))
-        {
-          m_framesTotal = value.Int64Value();
-        }
-
-        // Store the offset, clear the GOP cache and add the start position
-        m_framesOffset = m_dvd.SeekFrame(m_frameNo);
-        m_offsets.Empty();
-        m_offsets.Insert(m_framesOffset, 0);
-        m_blockRead = 0;
+        m_offsets.Insert(0, seek.Tell64());
+        
+        return true;
       }
-      else
-      {
-        // Get the initial seek position
-        DPSeekCtrlC seek(input);
-        if (seek.IsValid())
-        {
-          m_offsets.Insert(0, seek.Tell64(), false);
-        }
-      }
-      
-      return true;
     }
     
     return false;
@@ -273,55 +120,52 @@ namespace RavlImageN
     
     DPSeekCtrlC seek(input);
     if (!seek.IsValid())
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::ReadData unable to seek" << endl;)
       return false;
-    }
     
-    // If the input is at EOS, check for a DVD object and check for the next cell
     if (input.IsGetEOS())
-    {
-      if (m_dvd.IsValid())
-      {
-        StreamPosT nextOffset = -1;
-        if ((nextOffset = m_dvd.NextCell()) != -1)
-        {
-          // Store the offset, clear the GOP cache and add the start position
-          m_framesOffset = nextOffset;
-          m_offsets.Empty();
-          m_offsets.Insert(m_framesOffset, 0);
-          m_blockRead = 0;
-        }
-        else
-        {
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::ReadData at end of cells" << endl;)
-          return false;
-        }
-      }
-      else
-      {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::ReadData at EOS" << endl;)
-        return false;
-      }
-    }
+      return false;
 
     m_bufStart = &(m_buffer[0]);
     m_lastRead = seek.Tell64();
     UIntT len = input.GetArray(m_buffer);
-    if (len == 0)
-    {
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::ReadData returned no data" << endl;)
-      m_endFound = true;
-    }
     
     m_bufEnd = m_bufStart + len;
     return (len > 0);
   }
 
+  //: Register stream attributes.
+
+  void ImgILibMPEG2BodyC::BuildAttributes() {
+    RegisterAttribute(AttributeTypeStringC("frametype","MPEG frame type",true,false));
+  }
+
+
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool ImgILibMPEG2BodyC::GetAttr(const StringC &attrName,StringC &attrValue)
+  {
+    if(attrName == "frametype") {
+      attrValue = StringC(frameTypes[m_lastFrameType]);
+      return true; 
+    }
+    return DPPortBodyC::GetAttr(attrName,attrValue);
+  }
+  
+
   //: Decode a whole GOP and put it in the image cache.
   
   bool ImgILibMPEG2BodyC::DecodeGOP(UIntT firstFrameNo)
   {
+//    ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP called last state (" << m_state << ")" << endl;)
+    
+    // If not set, get the initial seek position
+    if (m_offsets.IsEmpty() && !InitialSeek())
+    {
+      cerr << "ImgILibMPEG2BodyC::DecodeGOP unable to find initial seek position" << endl;
+      return false;
+    }
+    
     // Find the GOP before the required frame...
     StreamPosT at;
     while(!m_offsets.Find(firstFrameNo, at))
@@ -393,6 +237,7 @@ namespace RavlImageN
     // Set the state vars
     m_state = -1;
     m_gopCount = 0;
+    m_endFound = false;
     
     // Decoder loop
     do
@@ -406,9 +251,7 @@ namespace RavlImageN
         {
           ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP failed to read data." << endl;)
           m_state = -2;
-          m_previousGop = firstFrameNo;
-          m_blockRead = 0;
-          break;
+          return false;
         }
       }
 
@@ -430,6 +273,10 @@ namespace RavlImageN
           m_offsets.Insert(localFrameNo, parsePos, false);
         }
 
+        // Update the max frame
+        if(localFrameNo > m_maxFrameIndex)
+          m_maxFrameIndex = localFrameNo;
+        
         break;
       }
     } while(true);
@@ -437,13 +284,21 @@ namespace RavlImageN
     return true;
   }
   
+  
   bool ImgILibMPEG2BodyC::DemultiplexGOP(UIntT firstFrameNo)
   {
+    // If not set, get the initial seek position
+    if (m_offsets.IsEmpty() && !InitialSeek())
+    {
+      cerr << "ImgILibMPEG2BodyC::DemultiplexGOP unable to find initial seek position" << endl;
+      return false;
+    }
+    
     // Find the GOP before the required frame...
     StreamPosT at;
     while(!m_offsets.Find(firstFrameNo, at) || at == -1)
     {
-      if(firstFrameNo == m_framesOffset)
+      if(firstFrameNo == 0)
         return false;
       firstFrameNo--;
     }
@@ -455,13 +310,13 @@ namespace RavlImageN
 
     // Find the gop before the required one
     UIntT previousFrameNo = firstFrameNo;
-    if (firstFrameNo != m_framesOffset)
+    if (firstFrameNo > 0)
     {
       previousFrameNo = firstFrameNo - 1;
       StreamPosT prevAt;
       while(!m_offsets.Find(previousFrameNo, prevAt) || prevAt == -1)
       {
-        if(previousFrameNo == m_framesOffset)
+        if(previousFrameNo == 0)
           return false;
         previousFrameNo--;
       }
@@ -497,7 +352,7 @@ namespace RavlImageN
     seek.Seek64(at);
     
     // Reset the decoder if the first frame of the GOP is zero.
-    if (localFrameNo == m_framesOffset)
+    if (localFrameNo == 0)
     {
       // Close the decoder
       mpeg2_close(m_decoder);
@@ -521,18 +376,17 @@ namespace RavlImageN
     m_state = -1;
     m_gopCount = 0;
     m_gopDone = false;
+    m_endFound = false;
 
     // Decoder loop
     do
     {
       // Read some data into the decoder if necessary
-      if (!ReadData())
+      if(!ReadData())
       {
         ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data." << endl;)
         m_state = -2;
-        m_previousGop = firstFrameNo;
-        m_blockRead = 0;
-        break;
+        return false;
       }
 
       // Decode the buffer
@@ -540,7 +394,7 @@ namespace RavlImageN
 
       // Stop at the end
       if (m_endFound)
-        break;
+        return false;
 
       // Check we've decoded all required GOPs
       if (m_gopCount >= m_gopLimit)
@@ -565,7 +419,7 @@ namespace RavlImageN
         
     case STATE_SEQUENCE_REPEATED:
     case STATE_SEQUENCE:{ 
-      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got " << (m_state == STATE_SEQUENCE ? "SEQUENCE" : "SEQUENCE_REPEATED" ) << "." << endl;)
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got SEQUENCE." << endl;)
       if(!m_sequenceInit) {
         m_sequenceInit = true;
         m_imgSize = Index2dC(info->sequence->height,info->sequence->width);
@@ -595,9 +449,25 @@ namespace RavlImageN
       }
       break;
 	
-    case STATE_PICTURE:
+    case STATE_PICTURE: {
+#if 0	
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got PICTURE." << endl;)
-      break;
+      ONDEBUG(UIntT ptype = info->current_picture->flags & PIC_MASK_CODING_TYPE;)
+      ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameNo(" << m_allocFrameId << ") frameType(" << frameTypes[ptype] << ")" << endl;)
+      uint8_t * buf[3];
+      UIntT frameid = m_allocFrameId++;
+      void *id = (void*)frameid;
+      //ImageC<ByteRGBValueC> nimg(m_imgSize[0].V(), m_imgSize[1].V());
+      UIntT imagePixels = m_imgSize[0].V() * m_imgSize[1].V();
+      SArray1dC<ByteT> buffer(imagePixels * 3);
+      m_images[frameid] = buffer;
+      //buf[0] = (uint8_t*) &(nimg[0][0]);
+      buf[0] = &(buffer[0]);
+      buf[1] = &(buffer[imagePixels]);
+      buf[2] = &(buffer[imagePixels + imagePixels/2]);
+      mpeg2_set_buf(m_decoder, buf, id);
+#endif
+    } break;
       
     case STATE_PICTURE_2ND:
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got PICTURE_2ND." << endl;)
@@ -606,11 +476,6 @@ namespace RavlImageN
     case STATE_END:
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got END." << endl;)
       m_endFound = true;
-      if (m_dvd.IsValid())
-      {
-        if (!m_dvd.LastCell())
-          m_endFound = false;
-      }
       break; 
         
     case STATE_SLICE: {
@@ -655,6 +520,7 @@ namespace RavlImageN
           // Cache the image
           ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode caching frame (" << frameNo << ")" << endl;)
           m_imageCache.Insert(frameNo, Tuple2C<ImageC<ByteRGBValueC>,IntT>(nimg, frameType));
+          m_images.Del(frameid);
         }
         else
         {
@@ -689,7 +555,7 @@ namespace RavlImageN
       break;
         
     default:
-      cerr << "ImgILibMPEG2BodyC::Decode unknown state (" << m_state << ")" << endl;
+      cerr << "ImgILibMPEG2BodyC::Decode unknown state=" << m_state << endl;
       return false;
     }
 
@@ -967,39 +833,74 @@ namespace RavlImageN
       // Check we've decoded a complete GOP
       if (!m_gopDone && m_gopCount == m_gopLimit)
       {
-        // Store the GOP info unless we've just crossed a DVD cell boundary
-        if (frameNo > m_framesOffset)
+        // Store the gop frame number
+        m_previousGop = firstFrameNo;
+
+        // Store the read pos
+        if (parsePos >= 0 && !m_endFound)
         {
-          // Store the GOP frame number
-          m_previousGop = firstFrameNo;
-  
-          // Store the read pos
-          if (parsePos >= 0 && !m_endFound)
-          {
-            ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeBlock **** Recording GOP (" << m_gopCount << ") frame (" << frameNo << ") at (" << parsePos << ")" << endl;)
-            m_offsets.Insert(frameNo, parsePos, false);
-          }
-  
-          // Don't keep caching the info for the rest of the blocks in this demux'd packet
-          m_gopDone = true;
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeBlock **** Recording GOP (" << m_gopCount << ") frame (" << frameNo << ") at (" << parsePos << ")" << endl;)
+          m_offsets.Insert(frameNo, parsePos, false);
         }
-        else
-        {
-          // Crossed DVD cell boundary so ignore the first GOP received
-          m_previousGop = m_framesOffset;
-          m_gopLimit++;
-        }
+
+        // Update the max frame
+        if(frameNo > m_maxFrameIndex)
+          m_maxFrameIndex = frameNo;
+        
+        // Don't keep caching the info for the rest of the blocks in this demux'd packet
+        m_gopDone = true;
       }
     }
     
     return true;
   }
   
-  //: Register stream attributes.
-
-  void ImgILibMPEG2BodyC::BuildAttributes() {
-    RegisterAttribute(AttributeTypeStringC("frametype","MPEG frame type",true,false));
+  //: Get next frame.
+  
+  bool ImgILibMPEG2BodyC::Get(ImageC<ByteRGBValueC> &img)
+  {
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Get (" << m_frameNo << ")" << endl;)
+    
+    bool ok = true;
+    Tuple2C<ImageC<ByteRGBValueC>,IntT> dat;
+    while (!m_imageCache.LookupR(m_frameNo, dat))
+    {
+      // If the last read failed, don't bother again
+      if (!ok)
+      {
+        cerr << "ImgILibMPEG2BodyC::Get failed to find frame (" << m_frameNo << ")" << endl;
+        return false;
+      }
+      
+      // Keep on truckin' til we find the frame
+      if (m_demuxTrack >= 0)
+        ok = DemultiplexGOP(m_frameNo);
+      else
+        ok = DecodeGOP(m_frameNo);
+    }
+    
+    img = dat.Data1();
+    m_lastFrameType = dat.Data2();
+    m_frameNo++;   
+    return true;
+  }
+  
+  //: Seek to location in stream.
+  
+  bool ImgILibMPEG2BodyC::Seek(UIntT off) {
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek (" << off << ")" << endl;)
+    // Move the decoder to the next gop before changing the buffer.
+    m_frameNo = off;
+    return true;
   }
 
+  //: Seek to location in stream.
+  
+  bool ImgILibMPEG2BodyC::Seek64(StreamPosT off) {
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek (" << off << ")" << endl;)
+    m_frameNo = off;
+    return true;
+  }
+  
 }
 
