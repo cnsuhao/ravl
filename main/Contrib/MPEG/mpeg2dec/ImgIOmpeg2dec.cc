@@ -12,7 +12,7 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/OS/Date.hh"
 
-#define DODEBUG 0
+#define DODEBUG 1
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -22,13 +22,17 @@
 namespace RavlImageN {
   //: Constructor.
   
-  ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(const StringC &filename) 
+  ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(const StringC &filename,bool transportStream)
     : ok(false)
   {
     ONDEBUG(cerr << "ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(), Called for '" << filename << "'. \n");
-    StringC cmd = StringC("mpeg2dec -o pgmpipe ") + filename;
+    StringC cmd;
+    if(transportStream)
+      cmd = StringC("mpeg2dec -s -o pgmpipe ") + filename;
+    else
+      cmd = StringC("mpeg2dec -o pgmpipe ") + filename;
+    ONDEBUG(cerr << "ImgIOmpeg2decBaseC::ImgIOmpeg2decBaseC(), Command='" << cmd << "'. \n");
     decodeProg = ChildOSProcessC(cmd,true,false,false);
-    
     IStreamC &ins = decodeProg.StdOut();
     // Wait for a charactor to appear on the output...
 #if 1

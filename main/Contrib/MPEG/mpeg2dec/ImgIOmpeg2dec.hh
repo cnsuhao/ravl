@@ -25,9 +25,9 @@ namespace RavlImageN {
     : public DPImageIOPNMBaseC
   {
   public:
-    ImgIOmpeg2decBaseC(const StringC &filename);
+    ImgIOmpeg2decBaseC(const StringC &filename,bool transportStream = false);
     //: Constructor.
-
+    
     ~ImgIOmpeg2decBaseC();
     //: Destructor.
     
@@ -50,8 +50,8 @@ namespace RavlImageN {
       public ImgIOmpeg2decBaseC
   {
   public:
-    DPIImagempeg2decBodyC(const StringC &filename)
-      : ImgIOmpeg2decBaseC(filename)
+    DPIImagempeg2decBodyC(const StringC &filename,bool transportStream = false)
+      : ImgIOmpeg2decBaseC(filename,transportStream)
     {}
     //: Constructor.
     
@@ -114,8 +114,8 @@ namespace RavlImageN {
     : public DPIPortC<ImageC<PixelT> >
   {
   public:
-    DPIImagempeg2decC(const StringC &filename)
-      : DPEntityC(*new DPIImagempeg2decBodyC<PixelT>(filename))
+    DPIImagempeg2decC(const StringC &filename,bool transportStream = false)
+      : DPEntityC(*new DPIImagempeg2decBodyC<PixelT>(filename,transportStream))
     {}
     //: Constructor.
     

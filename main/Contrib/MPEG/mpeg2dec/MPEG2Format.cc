@@ -59,7 +59,10 @@ namespace RavlImageN {
   const type_info &
   FileFormatMPEG2BodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
     //const type_info &pref = ProbeLoad(in,obj_type);
-    if(Extension(nfilename) == "mpeg")
+    StringC ext = Extension(nfilename);
+    if(ext == "mpeg")
+      return typeid(ImageC<ByteYUVValueC>);
+    if(ext == "vob")
       return typeid(ImageC<ByteYUVValueC>);
     //ONDEBUG(cerr << "FileFormatMPEG2BodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
     return typeid(void);
@@ -72,7 +75,11 @@ namespace RavlImageN {
   
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
+  
   DPIPortBaseC FileFormatMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
+    StringC ext = Extension(fn);
+    if(ext == "vob")
+      return DPIImagempeg2decC<ByteYUVValueC>(fn,true);
     return DPIImagempeg2decC<ByteYUVValueC>(fn);
   }
   
