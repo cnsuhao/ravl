@@ -9,8 +9,7 @@
 //! rcsid="$Id$"
 //! lib=RavlImgIO1394dc
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Video_IO.IIDC"
-
+//! docentry="Ravl.Video.Video IO.IIDC"
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/DP/AttributeType.hh"
