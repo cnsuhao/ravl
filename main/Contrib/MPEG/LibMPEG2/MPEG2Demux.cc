@@ -430,7 +430,7 @@ namespace RavlImageN
   
   void MPEG2DemuxBodyC::BuildAttributes()
   {
-    RegisterAttribute(AttributeTypeNumC<ByteT>("track", "MPEG demultiplexed track", true, false));
+    RegisterAttribute(AttributeTypeStringC("track", "MPEG demultiplexed track", true, false));
   }
 
 }
