@@ -73,7 +73,7 @@ namespace RavlImageN {
     }
     
     StringC ext = Extension(nfilename);
-    if(ext == "mpeg")
+    if(ext == "mpeg" || ext == "mpg")
       return typeid(ImageC<ByteRGBValueC>);
     //ONDEBUG(cerr << "FileFormatLibMPEG2BodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
     return typeid(void);
