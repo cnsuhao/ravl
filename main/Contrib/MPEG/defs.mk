@@ -7,4 +7,4 @@
 #! rcsid="$Id$"
 #! file="Ravl/Contrib/MPEG/defs.mk"
 
-NESTED=Decoder mpeg2dec.r LibMPEG2 Encoder 
+NESTED=Decoder mpeg2dec.r LibMPEG2.r Encoder 
