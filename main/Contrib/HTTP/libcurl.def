@@ -1,0 +1,11 @@
+ifndef CURL_DEF
+CURL_DEF = 1
+
+INCLUDES += 
+EXELIB := -lcurl $(EXELIB)
+
+endif
+
+
+
+
