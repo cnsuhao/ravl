@@ -1,0 +1,1 @@
+<select name="path" onchange="this.form.submit();">{OPTIONS}</select>
