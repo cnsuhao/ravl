@@ -464,7 +464,7 @@ namespace RavlN
 
       if (attrName == "framesize")
       {
-        UIntT height = 480;
+        IntT height = 480;
         if(video_attr.video_format != 0) 
           height = 576;
         
@@ -487,8 +487,12 @@ namespace RavlN
             width = "352x";
             height /= 2;
             break;
+          
+          default:
+            height = 0;
         }
-        attrValue = width + height;
+        if (height != 0)
+          attrValue = width + StringC(height);
         return true;
       }
     }
