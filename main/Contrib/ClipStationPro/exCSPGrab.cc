@@ -9,7 +9,7 @@
 //! file="Ravl/Contrib/ClipStationPro/exCSPGrab.cc"
 //! userlevel=Normal
 //! author="Lee Gregory"
-//! docentry="Ravl.Contrib.Video IO.ClipStationPro"
+//! docentry="Ravl.Images.Video.Video IO.ClipStationPro"
 
 #include "Ravl/Image/ImgIOCSP.hh"
 #include "Ravl/TimeCode.hh"

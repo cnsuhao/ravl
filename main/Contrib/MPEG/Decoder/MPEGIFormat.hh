@@ -11,7 +11,7 @@
 //! file="Ravl/Image/ExternalImageIO/TiffFormat.hh"
 //! lib=RavlMPEG
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Video IO.MPEG2"
+//! docentry="Ravl.Images.Video.Video IO.MPEG2"
 //! date="29/10/2001"
 
 #include "Ravl/DP/FileFormat.hh"

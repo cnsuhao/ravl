@@ -8,6 +8,8 @@
 //! rcsid="$Id$"
 //! lib=RavlDV
 //! file="Ravl/Contrib/DV/doDvDisplay.cc"
+//! docentry="Ravl.Images.Video.Video IO.DV"
+//! userlevel=Normal
 
 #include "Ravl/Option.hh"
 #include "Ravl/Image/ByteRGBValue.hh"

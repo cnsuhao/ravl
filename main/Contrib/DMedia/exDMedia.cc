@@ -8,7 +8,7 @@
 //! rcsid="$Id$"
 //! lib=RavlDMedia
 //! userlevel=Normal
-//! docentry="Ravl.Contrib.Video IO.SGI DMedia"
+//! docentry="Ravl.Images.Video.Video IO.SGI DMedia"
 //! author="Charles Galambos"
 //! file="Ravl/Contrib/DMedia/exDMedia.cc"
 

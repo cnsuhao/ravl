@@ -11,7 +11,7 @@
 //! file="Ravl/Contrib/DMedia/RingData.hh"
 //! lib=RavlDMedia
 //! userlevel=Default
-//! docentry="Ravl.Contrib.Video IO.SGI DMedia"
+//! docentry="Ravl.Images.Video.Video IO.SGI DMedia"
 //! author="Charles Galambos"
 //! date="22/11/1999"
 

@@ -8,7 +8,7 @@
 #define RAVLIMAGE_VIDIOV4L_HEADER 1
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! docentry="Ravl.Contrib.Video IO.Video4Linux"
+//! docentry="Ravl.Images.Video.Video IO.Video4Linux"
 //! author="Charles Galambos"
 //! lib=RavlImgIOV4L
 //! file="Ravl/Contrib/V4L/ImgIOV4L.hh"

@@ -21,4 +21,4 @@ USESLIBS=RavlIO RavlGUI RavlPlot RavlGuppi
 
 EXAMPLES= exDPGraphWindow.cc
 
-EHT=Ravl.Contrib.Plotting.DPGraph.html
+EHT=Ravl.GUI.Data_Plotting.html

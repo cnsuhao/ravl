@@ -8,7 +8,7 @@
 #define RAVLGRAPH_GUPPITYPES_HEADER 1
 //! author="Charles Galambos"
 //! userlevel=Advanced
-//! docentry="Ravl.Contrib.Plotting.Guppi"
+//! docentry="Ravl.GUI.Data_Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
 //! file="Ravl/Contrib/Plotting/Guppi/GuppiTypes.hh"

@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! docentry="Ravl.Contrib.Video IO"
+//! docentry="Ravl.Images.Video.Video IO"
 //! lib=RavlImgIOV4L
 //! file="Ravl/Contrib/V4L/V4LFormat.cc"
 

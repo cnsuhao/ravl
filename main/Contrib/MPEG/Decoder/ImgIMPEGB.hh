@@ -11,7 +11,7 @@
 //! rcsid="$Id$"
 //! file="Ravl/Image/ExternalImageIO/ImgIOMpegB.hh"
 //! lib=ExtImgIO
-//! docentry="Ravl.Contrib.Video IO.MPEG2"
+//! docentry="Ravl.Images.Video.Video IO.MPEG2"
 //! author="Charles Galambos"
 //! date="29/10/98"
 

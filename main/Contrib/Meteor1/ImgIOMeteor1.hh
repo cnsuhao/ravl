@@ -8,7 +8,7 @@
 #define RAVL_VIDMETEOR1IO_HEADER 1
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! docentry="Ravl.Contrib.Video IO.Meteor1"
+//! docentry="Ravl.Images.Video.Video IO.Meteor1"
 //! lib=RavlImgIOMeteor1
 //! author="Charles Galambos"
 //! file="Ravl/Contrib/Meteor1/ImgIOMeteor1.hh"

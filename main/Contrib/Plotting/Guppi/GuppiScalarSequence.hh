@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVLPLOT_GUPPISCALARSEQEUNCE_HEADER
 #define RAVLPLOT_GUPPISCALARSEQEUNCE_HEADER 1
-//! docentry="Ravl.Contrib.Plotting.Guppi"
+//! docentry="Ravl.GUI.Data_Plotting.Guppi"
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlGuppi

@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! docentry="Ravl.Contrib.Audio IO.Unix"
+//! docentry="Ravl.Audio.Audio IO.Unix"
 //! lib=RavlDevAudio
 //! file="Ravl/Contrib/Audio/DevAudio/DevAudioFormat.cc"
 

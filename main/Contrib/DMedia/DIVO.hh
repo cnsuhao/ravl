@@ -10,7 +10,7 @@
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/DMedia/DIVO.hh"
 //! lib=RavlDMedia
-//! docentry="Ravl.Contrib.Video IO.SGI DMedia"
+//! docentry="Ravl.Images.Video.Video IO.SGI DMedia"
 //! userlevel=Default
 //! author="Charles Galambos"
 //! date="22/11/1999"

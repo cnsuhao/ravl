@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Video IO.ClipStationPro"
+//! docentry="Ravl.Images.Video.Video IO.ClipStationPro"
 //! lib=CSPDriver
 //! file="Ravl/Contrib/ClipStationPro/CSPControl.hh"
 

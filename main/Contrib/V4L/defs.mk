@@ -28,7 +28,7 @@ PLIB=RavlImgIOV4L
 
 USESLIBS=RavlImageIO RavlVideoIO
 
-EHT=Ravl.Contrib.Video_IO.Video4Linux.html
+EHT=Ravl.Images.Video.Video_IO.Video4Linux.html
 
 PROGLIBS=RavlOSIO RavlDPDisplay.opt RavlExtImgIO.opt
 

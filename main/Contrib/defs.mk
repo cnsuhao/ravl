@@ -10,4 +10,4 @@
 NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DV.r \
  FireWire.r dc1394.r Audio.r Plotting.r
 
-EHT = Ravl.Contrib.html Ravl.Contrib.Video_IO.html
+#EHT = Ravl.Contrib.html Ravl.Images.Video.Video_IO.html

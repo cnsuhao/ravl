@@ -9,7 +9,7 @@
 //! lib=RavlImgIOMeteor1
 //! file="Ravl/Contrib/Meteor1/tuneMeteor.cc"
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Video IO.Meteor1"
+//! docentry="Ravl.Images.Video.Video IO.Meteor1"
 //! userlevel=Normal
 
 #include "Ravl/Image/ImgIOMeteor1.hh"
