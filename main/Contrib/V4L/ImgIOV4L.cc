@@ -126,9 +126,19 @@ namespace RavlImageN {
     if(memmap) {            
       buf_grey = (ByteT *) &buffer[frameOffsets[bufNo]];
       errno = 0;
-      if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) < 0) {
-	cerr << "Failed to sync buffer. err=" << rret << " " << errno << " bufNo=" << bufNo << "\n";
-	
+      int errors = 0;
+      for(;;) {
+	if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) >= 0)
+	  break; // Succeded.
+	cerr << "WARNING: V4L driver failed to sync buffer. err=" << rret << " " << errno << " bufNo=" << bufNo << "\n";
+	errors++;
+	if(errors <= 3 && 
+	   !(errno == EFAULT || errno == EINVAL)) { // Don't bother with retry if we don't think we can recover.
+	  
+	  cerr << " Retrying... (" << errors << ")\n";
+	  continue;
+	}
+	throw DataNotReadyC("V4L:Error syncing buffer. ");
       }
       //cerr << "Buf=" << bufNo << "\n";
     }
@@ -145,13 +155,26 @@ namespace RavlImageN {
       vmmap.height = rect.Rows();
       vmmap.width = rect.Cols();
       vmmap.format = palette;
-      if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) < 0) {
-	cerr << "Failed to start memory mapped capture. " << rret << " Errno=" << errno << " buf=" << bufNo << "\n";
-	return false;
+      
+      int errors = 0;
+      
+      
+      for(;;) {
+	// This can occasionaly fail, try again a few times if it does.
+	if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) >= 0) 
+	  break; // Is succeeded...
+	
+	cerr << "WARNING: V4L failed to start memory mapped capture. " << rret << " Errno=" << errno << " buf=" << bufNo << "\n";
+	errors++;
+	if(errors <= 3 &&
+	   !(errno == EFAULT || errno == EINVAL)) { // Don't bother with retry if we don't think we can recover.
+	  cerr << " Retrying... (" << errors << ")\n";
+	  continue;
+	}
+	throw DataNotReadyC("V4L:Error starting capture. ");
       }
       
       // Increment buffer no.
-      
       bufNo++;
       if((UIntT) bufNo >= frameOffsets.Size())
 	bufNo = 0;
