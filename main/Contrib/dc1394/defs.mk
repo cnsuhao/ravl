@@ -10,7 +10,7 @@ PACKAGE=Ravl/Image
 
 REQUIRES=libdc1394
 
-MAINS= test1394dc.cc twocam.cc
+MAINS= twocam.cc
 
 HEADERS= ImgIO1394dc.hh Lib1394dcFormat.hh
 
@@ -27,3 +27,5 @@ MUSTLINK=InitLib1394dc.cc
 USESLIBS=Auto Lib1394dc RavlDPDisplay
 
 EHT=Ravl.Contrib.Video_IO.IIDC.html
+
+EXAMPLE=test1394dc.cc 

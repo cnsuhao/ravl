@@ -11,14 +11,12 @@
 //! file="Ravl/Contrib/1394dc/1394dcFormat.cc"
 //! author="Charles Galambos"
 
-#include "Lib1394dcFormat.hh"
-#include "ImgIO1394dc.hh"
-
-//#include "Ravl/Image/Lib1394dcFormat.hh"
-//#include "Ravl/Image/ImgIO1394dc.hh"
+#include "Ravl/Image/Lib1394dcFormat.hh"
+#include "Ravl/Image/ImgIO1394dc.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Image/RealYUVValue.hh"
 #include "Ravl/Image/RealRGBValue.hh"
+#include "Ravl/Image/ByteYUVValue.hh"
 
 #define DPDEBUG 1
 #include "Ravl/TypeName.hh"
@@ -58,17 +56,21 @@ namespace RavlImageN {
     int pn = file.index('#');
     if(pn >= 0) { // Got a channel number ?
       channel = file.after(pn).IntValue();
+      if(channel > 100) // Requested DMA mode ?
+	channel -= 100;
       file = file.before(pn);
     }
     ONDEBUG(cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << TypeName(obj_type.name()) << " Device='" << device <<"'\n");
     if(device != "IIDC")
       return typeid(void);
-
+    
+#if 0
+    // Need to find out what conversions the camera will do before this is useful.
+    
     enum { IMG_RGB, IMG_YUV, IMG_YUV422, IMG_GREY } imgtype = IMG_GREY;
 
     // Some huristics to select the best format to capture date from the
     // card in.   If in doubt get YUV as thats what most video is in anyway.
-#if 0
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       imgtype = IMG_RGB;
     if(obj_type == typeid(ImageC<RealRGBValueC>))
@@ -86,19 +88,75 @@ namespace RavlImageN {
     else if(obj_type == typeid(ImageC<UIntT>))
       imgtype = IMG_GREY;
     //else
-#endif
     if(obj_type == typeid(ImageC<ByteT>))
       imgtype = IMG_GREY;
-
-    switch(imgtype) {
-    case IMG_GREY: return typeid(ImageC<ByteT>);
-    case IMG_RGB: //return typeid(ImageC<ByteRGBValueC>);
-    case IMG_YUV: //return typeid(ImageC<ByteYUVValueC>);
-    case IMG_YUV422: //return typeid(ImageC<ByteYUV422ValueC>);
-      cerr << "Unsupported pixel type. \n";
+    
+#endif
+    
+    // Go find out about the camera.
+    
+    raw1394handle_t raw1394handle = dc1394_create_handle(0); //assume only one port=0
+    if(raw1394handle == 0)
+      return typeid(void); // No camera found.
+    IntT numCameras;
+    nodeid_t * camera_nodes = dc1394_get_camera_nodes(raw1394handle,&numCameras,1);
+    if(numCameras == 0) { // No camera's found.
+      raw1394_destroy_handle(raw1394handle);
       return typeid(void);
     }
-    return typeid(ImageC<ByteT>);
+    nodeid_t cameraNode = camera_nodes[channel];
+    //dc1394_query_supported_modes(raw1394handle_t handle, nodeid_t node,unsigned int format, quadlet_t *value);
+    
+    int ret = dc1394_init_camera(raw1394handle,cameraNode);
+    //cerr << "CameraInit=" << ret << "\n";
+    
+    // Assume the camera is reset to format with most information.
+    dc1394_miscinfo miscInfo;
+    ret = dc1394_get_camera_misc_info(raw1394handle,cameraNode,&miscInfo);
+    //cerr << "Misc=" << miscInfo.format << " " << miscInfo.mode << "\n";
+    
+    const type_info *pixelType = &typeid(ImageC<ByteT>);
+    
+#if 0    
+    quadlet_t tmp = MODE_640x480_RGB;
+    quadlet_t formats = FORMAT_VGA_NONCOMPRESSED;
+    ret = dc1394_query_supported_formats(raw1394handle,cameraNode,&formats);
+    cerr << "Formats=" << hex << formats << " ret=" << ret << "\n";
+    ret = dc1394_query_supported_modes(raw1394handle,cameraNode,FORMAT_VGA_NONCOMPRESSED,&tmp);
+    cerr << "MONO Ret=" << ret << " tmp=" << hex << tmp << "\n";
+    
+    switch(imgtype) {
+    case IMG_GREY: 
+      pixelType = &typeid(ImageC<ByteT>);
+      break;
+    case IMG_RGB: 
+      pixelType = &typeid(ImageC<ByteRGBValueC>);
+      break;
+    case IMG_YUV422: 
+      pixelType = &typeid(ImageC<ByteYUV422ValueC>);
+      break;
+    case IMG_YUV: //return typeid(ImageC<ByteYUVValueC>);
+      cerr << "Unsupported pixel type. \n";
+      pixelType = &typeid(void);
+    }
+#endif
+    
+    switch(miscInfo.mode) {
+    case MODE_160x120_YUV444: pixelType = &typeid(ImageC<ByteYUVValueC>);    break;
+    case MODE_640x480_YUV422:
+    case MODE_320x240_YUV422: 
+    case MODE_640x480_YUV411: pixelType = &typeid(ImageC<ByteYUV422ValueC>); break;
+    case MODE_640x480_RGB:    pixelType = &typeid(ImageC<ByteRGBValueC>);    break;
+    case MODE_640x480_MONO:   pixelType = &typeid(ImageC<ByteT>);            break;
+    case MODE_640x480_MONO16: pixelType = &typeid(ImageC<UInt16T>);          break;
+    default:
+      cerr << "Unhandled camera mode " << miscInfo.mode << "\n";
+    }
+    // Clean up.
+    
+    raw1394_destroy_handle(raw1394handle);
+
+    return *pixelType;
   }
 
   const type_info &
@@ -143,16 +201,16 @@ namespace RavlImageN {
       else              // normal acceess
         fn = "/dev/raw1394";
     }
-#if 0
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
-      return DPIImage1394dcC<ByteYUVValueC>(fn,half,channel);
+      return DPIImage1394dcC<ByteYUVValueC>(fn,channel);
     if(obj_type == typeid(ImageC<ByteYUV422ValueC>))
-      return DPIImage1394dcC<ByteYUV422ValueC>(fn,half,channel);
+      return DPIImage1394dcC<ByteYUV422ValueC>(fn,channel);
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
-      return DPIImage1394dcC<ByteRGBValueC>(fn,half,channel);
-#endif
+      return DPIImage1394dcC<ByteRGBValueC>(fn,channel);
     if(obj_type == typeid(ImageC<ByteT>))
-      return DPIImage1394dcC<ByteT>(fn,channel); //,half,channel
+      return DPIImage1394dcC<ByteT>(fn,channel);
+    if(obj_type == typeid(ImageC<UInt16T>))
+      return DPIImage1394dcC<UInt16T>(fn,channel);
     return DPIPortBaseC();
   }
 

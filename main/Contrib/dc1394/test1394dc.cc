@@ -23,8 +23,8 @@
 using namespace RavlN;
 using namespace RavlImageN;
 
-#define PixelType ByteRGBValueC
-//#define PixelType ByteT
+//##define PixelType ByteRGBValueC
+#define PixelType ByteT
 //#define PixelType ByteYUV422ValueC
 
 int main(int nargs,char **argv) {
@@ -33,11 +33,21 @@ int main(int nargs,char **argv) {
   StringC out = opt.String("o","@X","Output sequence");
   IntT n = opt.Int("n",-1,"Number of frames (default: unlimited)");
   UIntT camera = opt.Int("c",0,"Select camera");
+  bool direct = opt.Boolean("b",false,"Direct open. ");
   opt.Check();
-
-  ImgIO1394dcBaseC<PixelType> imgio(camera);
-  if(!imgio.Open(dev))
-  {
+  
+  DPIPortC<ImageC<PixelType> > imgIn;
+  if(direct) {
+    imgIn = DPIImage1394dcC<PixelType > (dev,camera);
+  } else {
+    StringC fn = StringC("@IIDC:") + dev + "#" + StringC(camera);
+    if(!OpenISequence(imgIn,fn)) {
+      cerr << "Failed to setup camera. \n";
+      return 1;
+    }
+  }
+  
+  if(!imgIn.IsGetReady()) {
     cerr << "Failed to setup camera. \n";
     return 1;
   }
@@ -48,13 +58,10 @@ int main(int nargs,char **argv) {
     return 0;
   }
   RealT fr;
-  imgio.HandleGetAttr("framerate", fr);
+  imgIn.GetAttr("framerate", fr);
   cerr << "Frame rate:" << fr << '\n';
-  for(IntT i(0); i!=n; ++i) {
-    ImageC<PixelType> img;
-    imgio.CaptureImage(img);
-    imgOut.Put(img);
-  }
+  for(IntT i(0); i!=n; ++i)
+    imgOut.Put(imgIn.Get());
   
   return 0;
 }
