@@ -132,6 +132,7 @@ namespace RavlImageN
     UIntT m_widthMin, m_heightMin;      // Min capture size
     UIntT m_pixelFormat;                // Stored pixel format
     UIntT m_fieldFormat;                // Captured field selection
+    UIntT m_standard;                   // Standard in use
     bool m_fastBufferUsed;              // Are fast buffers in use?
 
   /* Buffer parameters */

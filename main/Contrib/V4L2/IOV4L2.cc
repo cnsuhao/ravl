@@ -13,6 +13,7 @@
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/Image/V4L2Buffer.hh"
 #include "Ravl/Array2dIter.hh"
+#include "Ravl/DList.hh"
 
 #include <linux/types.h>
 #include <fcntl.h>
@@ -55,14 +56,41 @@ namespace RavlImageN
 
 
 
-  const static UIntT g_supportedFormats = 2;
-  const static SupportedFormatT g_supportedFormat[g_supportedFormats] =
+  const static SupportedFormatT g_supportedFormat[] =
   {
     SupportedFormatT(typeid(ImageC<ByteRGBValueC>), v4l2_fourcc('B', 'G', 'R', '4')),
     SupportedFormatT(typeid(ImageC<ByteT        >), v4l2_fourcc('G', 'R', 'E', 'Y')),
   };
+  const static UIntT g_supportedFormats = sizeof(g_supportedFormat) / sizeof(SupportedFormatT);
   //: Mapping from image type id required V4L2 capture mode.
   // Note: Only supports a 1:1 mapping at the moment, this should be changed to support more hardware
+
+
+
+  typedef struct SupportedStandardT
+  {
+    const StringC m_name;                   //: Name
+    const v4l2_std_id m_id;                 //: V4L2 id
+
+    SupportedStandardT(const StringC &name, const v4l2_std_id id) :
+      m_name(name),
+      m_id(id)
+    {
+    }
+    //: Mmmm, structure constructor
+  };
+  //: Structure used to store supported standards
+
+
+
+  const static SupportedStandardT g_supportedStandard[] =
+  {
+    SupportedStandardT("PAL",   V4L2_STD_PAL),
+    SupportedStandardT("NTSC",  V4L2_STD_NTSC),
+    SupportedStandardT("SECAM", V4L2_STD_SECAM)
+  };
+  const static UIntT g_supportedStandards = sizeof(g_supportedStandard) / sizeof(SupportedStandardT);
+  //: Mapping from name to V4L2 format id.
 
 
 
@@ -78,8 +106,8 @@ namespace RavlImageN
   const static UIntT g_defaultField = V4L2_FIELD_ANY; 
   //: Default captured field ordering
   
-  
-  
+
+
   IOV4L2BaseC::IOV4L2BaseC(const StringC &device, const UIntT channel, const type_info &pixelType) :
     m_pixelType(pixelType),
     m_device(device),
@@ -88,6 +116,7 @@ namespace RavlImageN
     m_width(g_defaultWidth),
     m_height(g_defaultHeight),
     m_fieldFormat(g_defaultField),
+    m_standard(0),
     m_fastBufferUsed(false),
     m_bufferMax(g_defaultBuffers),
     m_bufferCount(0),
@@ -151,7 +180,7 @@ namespace RavlImageN
     ByteT *iData = (ByteT*)m_buffers[buffer.index].m_start;
     for(Array2dIterC<ByteRGBValueC> it(img); it; it++)
     {
-      it.Data() = ByteRGBValueC(iData[0], iData[1], iData[2]);
+      it.Data() = ByteRGBValueC(iData[2], iData[1], iData[0]);
       iData += 4;
     }
     
@@ -380,6 +409,7 @@ namespace RavlImageN
       }
     }
     
+    // Check the size limits
     CheckSize();
     
     return supported;
@@ -494,10 +524,18 @@ namespace RavlImageN
     RavlAssertMsg(IsOpen(), "IOV4L2BaseC::ConfigureCapture device not open");
     RavlAssertMsg(!IsConfigured(), "IOV4L2BaseC::ConfigureCapture device already configured");
 
+    // Set the desired standard
+    v4l2_std_id stdId = g_supportedStandard[m_standard].m_id;
+    if (ioctl(m_fd, VIDIOC_S_STD, &stdId) == -1)
+    {
+      cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_S_STD) failed to set standard(" << g_supportedStandard[m_standard].m_name << ")" << endl;
+      return false;
+    }
+    
     // Set the input channel
     if (ioctl(m_fd, VIDIOC_S_INPUT, &m_channel) == -1)
     {
-      cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_S_INPUT) invalid input channel(" << m_channel << ")" << endl;
+      cerr << "IOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_S_INPUT) failed to set channel(" << m_channel << ")" << endl;
       return false;
     }
 
@@ -687,6 +725,14 @@ namespace RavlImageN
       attrValue = StringC(val);
       return ret;
     }
+    
+    // Standard
+    if (attrName == "standard")
+    {
+      attrValue = g_supportedStandard[m_standard].m_name;
+      return true;
+    }
+    
 
     return false;
   }
@@ -702,6 +748,48 @@ namespace RavlImageN
       return HandleSetAttr(attrName, attrValue.IntValue());
     }
 
+    // Standard
+    if (attrName == "standard")
+    {
+      UIntT stdCount = 0;
+      while (stdCount < g_supportedStandards)
+      {
+        if (g_supportedStandard[stdCount].m_name == attrValue)
+          break;
+        stdCount++;
+      }
+      
+      if (stdCount < g_supportedStandards)
+      {
+        // Lock the capture device
+        MutexLockC lockCapture(m_lockCapture);
+    
+        // Set the width
+        UIntT tempStd = m_standard;
+        m_standard = stdCount;
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr standard(" << g_supportedStandard[stdCount].m_name << ")" << endl;)
+  
+        // If configure, test reconfiguring
+        if (IsConfigured())
+        {
+          // Release the current capture config
+          ReleaseCapture();
+          
+          // Try the new config, and restore the old if failed
+          if (!ConfigureCapture())
+          {
+            m_standard = tempStd;
+          }
+        }
+      }
+      else
+      {
+        ONDEBUG(cerr << "IOV4L2BaseC::HandleSetAttr failed to set standard(" << attrValue << ")" << endl;)
+      }
+
+      return true;
+    }
+    
     return false;
   }
   
@@ -801,6 +889,11 @@ namespace RavlImageN
   {
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("width",         "Width",       true, true,  m_widthMin,  m_widthMax, 1,  m_width));
     attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("height",        "Height",      true, true, m_heightMin, m_heightMax, 1, m_height));
+
+    DListC<StringC> stdList;
+    for (UIntT i = 0; i < g_supportedStandards; i++)
+      stdList.InsLast(g_supportedStandard[i].m_name);
+    attrCtrl.RegisterAttribute(AttributeTypeEnumC("standard", "Standard", true, true,stdList, stdList.First()));
 
     return true;
   }
