@@ -68,11 +68,8 @@ namespace RavlImageN
     {}
     
     explicit V4L2BufferC(const BufferC<PixelT> &base) :
-      BufferC<PixelT>(base)
-    {
-      if(IsValid() && dynamic_cast<V4L2BufferBodyC<PixelT> *>(&BufferC<PixelT>::Body()) == 0)
-        Invalidate();
-    }
+      BufferC<PixelT>(dynamic_cast<const V4L2BufferBodyC<PixelT> *>(RCHandleC<BufferC<PixelT> >::BodyPtr(base)))
+    {}
     //: Construct from handle to base class.
 
   protected:

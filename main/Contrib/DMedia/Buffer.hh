@@ -56,13 +56,10 @@ namespace RavlImageN
       : BufferC<DataT>(*new DMBufferBodyC<DataT>(dat))
     {}
     //: Constructor.
-
+    
     DMBufferC(const BufferC<DataT> &buff)
-      : BufferC<DataT>(buff)
-    {
-      if(dynamic_cast<const DMBufferBodyC<DataT> *>(&Body()) == 0)
-	Invalidate();
-    }
+      : BufferC<DataT>(dynamic_cast<const DMBufferBodyC<DataT> *>(RCHandleC<BufferBodyC<DataT> >::BodyPtr(buff)))
+    {}
     //: Constructor.
     
   protected:
