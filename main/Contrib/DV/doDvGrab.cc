@@ -17,6 +17,7 @@ using namespace RavlImageN;
 int doDvGrab(int argc, char **argv)
 {  
   OptionC   opt(argc,argv);
+  opt.Comment("This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used)");
   FilenameC     OutFile = opt.String("o", NULL, "output file");
   StringC       PpmImage = opt.String("ppm", "00:00:00:00", "Grab a single frame at given timecode");
   StringC       tcStart = opt.String("start", "00:00:00:00", "start timecode");
