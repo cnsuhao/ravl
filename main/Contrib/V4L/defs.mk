@@ -32,3 +32,5 @@ EHT=Ravl.Images.Video.Video_IO.Video4Linux.html
 
 PROGLIBS=RavlOSIO RavlDPDisplay.opt RavlExtImgIO.opt
 
+ANSIFLAG =
+
