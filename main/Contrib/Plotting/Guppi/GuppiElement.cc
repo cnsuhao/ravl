@@ -8,8 +8,8 @@
 //! lib=RavlGuppi
 
 #include "Ravl/Plot/GuppiElement.hh"
-#include "Ravl/Plot/GuppiHeaders.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/Plot/GuppiHeaders.hh"
 
 namespace RavlPlotN {
   //: Default constructor.
