@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
 //! lib = RavlLibMPEG2
-//! author = "Charles Galambos"
+//! author = "Warren Moore"
 
 #include "Ravl/DP/StreamOp.hh"
 #include "Ravl/Image/Image.hh"
@@ -28,7 +28,8 @@ extern "C"
   typedef struct mpeg2dec_s mpeg2dec_t;  
   typedef unsigned int uint32_t;
   typedef unsigned char uint8_t;
-#include <mpeg2dec/mpeg2.h>
+  
+  #include <mpeg2dec/mpeg2.h>
 }
 
 namespace RavlImageN
@@ -39,14 +40,11 @@ namespace RavlImageN
     public DPSeekCtrlBodyC
   {
   public:
-    ImgILibMPEG2BodyC(IntT demuxTrack = -1);
+    ImgILibMPEG2BodyC();
     //: Constructor.
     
     ~ImgILibMPEG2BodyC();
     //: Destructor.
-    
-    bool GetFrame(ImageC<ByteRGBValueC> &img);
-    //: Get a single frame from the stream.
     
     virtual ImageC<ByteRGBValueC> Get()
     {
@@ -67,6 +65,9 @@ namespace RavlImageN
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     
+    virtual UIntT Size() const;
+    //: Get the size of the file in frames (-1 if not known)
+    
     virtual StreamPosT Tell64() const
     { return m_frameNo; }
     //: Find current location in stream.
@@ -74,64 +75,55 @@ namespace RavlImageN
     virtual bool Seek64(StreamPosT off);
     //: Seek to location in stream.
     
+    virtual StreamPosT Size64() const;
+    //: Get the size of the file in frames (-1 if not known)
+    
+    virtual bool IsGetEOS() const;
+    //: Is it the EOS
+
     virtual bool GetAttr(const StringC &attrName,StringC &attrValue);
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
   protected:
-    void BuildAttributes();
-    //: Register stream attributes
-
-    bool InitialSeek();
+    virtual bool InitialSeek();
     //: Store the initial stream position
     
-    bool ReadData();
+    virtual bool ReadData();
     //: Read data from stream into buffer.
     
-    bool DecodeGOP(UIntT firstFrameNo);
+    virtual bool DecodeGOP(UIntT firstFrameNo);
     //: Decode a whole GOP and put it in the image cache.
     
-    bool DemultiplexGOP(UIntT firstFrameNo);
-    //: Decode a whole GOP and put it in the image cache.
-    
-    bool Decode(UIntT &frameNo, const mpeg2_info_t *info);
+    virtual bool Decode(UIntT &frameNo, const mpeg2_info_t *info);
     //: Decode a block of data
     
-    bool Demultiplex(UIntT &frameNo, const mpeg2_info_t *info, const UIntT firstFrameNo);
-    //: Demultiplex and decode mpeg stream
+    virtual void OnEnd();
+    //: Called when a sequence end tag found
     
-    bool DecodeBlock(UIntT &frameNo, const mpeg2_info_t *info, const UIntT firstFrameNo, ByteT *start, ByteT *end, const StreamPosT parsePos);
-    //: Decode a block of demultiplexed data
-    
-  protected:
-    mpeg2dec_t *m_decoder;
-    IntT m_state;
-    SArray1dC<ByteT> m_buffer;
-    
-    ByteT *m_bufStart, *m_bufEnd;
-    Index2dC m_imgSize;
-    StreamPosT m_allocFrameId;
-    StreamPosT m_frameNo;
-    StreamPosT m_maxFrameIndex;
-    StreamPosT m_lastRead;
-    HashC<StreamPosT,SArray1dC<ByteT> > m_images;
-    AVLTreeC<StreamPosT, StreamPosT> m_offsets;
-    CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > m_imageCache;
-    bool m_sequenceInit;
-    IntT m_lastFrameType;
-    
-    IntT m_demuxTrack;
-    IntT m_demuxState;
-    IntT m_demuxStateBytes;
-    ByteT m_headBuf[264];
+    virtual void BuildAttributes();
+    //: Register stream attributes
 
-    UIntT m_gopCount;
-    UIntT m_gopLimit;
-    UIntT m_previousGop;
-    StreamPosT m_blockRead;
-    bool m_gopDone;
-    bool m_endFound;
+  protected:
+    mpeg2dec_t *m_decoder;                                                  // Decoder object
+    IntT m_state;                                                           // Current decoder state
+    SArray1dC<ByteT> m_buffer;                                              // Data buffer for decoder
+    
+    ByteT *m_bufStart, *m_bufEnd;                                           // Data buffer pointers
+    Index2dC m_imgSize;                                                     // Frame size
+    StreamPosT m_frameNo;                                                   // Desired seek frame
+    StreamPosT m_lastRead;                                                  // Stream position at end of last read
+    AVLTreeC<StreamPosT, StreamPosT> m_offsets;                             // Offsets of GOP in streams
+    CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > m_imageCache;   // Frame cache
+    bool m_sequenceInit;                                                    // Sequence initialised indicator
+    IntT m_lastFrameType;                                                   // Last decoded frame tpye indicator
+    
+    UIntT m_gopCount;                                                       // Cache GOP counter
+    UIntT m_gopLimit;                                                       // Cache GOP max
+    UIntT m_previousGop;                                                    // Frame number at previous GOP
+    bool m_gopDone;                                                         // GOP read indicator
+    bool m_endFound;                                                        // END found indicator
   };
 
   class ImgILibMPEG2C :
@@ -150,14 +142,7 @@ namespace RavlImageN
     {}
     //: Constructor.
     
-    ImgILibMPEG2C(IntT demuxTrack) :
-      DPEntityC(*new ImgILibMPEG2BodyC(demuxTrack))
-    {}
-    //: Constructor.
-    
   };
-  
 }
-
 
 #endif

@@ -46,6 +46,9 @@ int main(int nargs, char **argv)
   // Number of frames to play with
   const IntT size = 50;
   
+  // Delay in seconds
+  const RealT delay = 0.1;
+  
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
   IntT count = 0;
@@ -61,7 +64,7 @@ int main(int nargs, char **argv)
       frame = size - (count - size);
     
     if (count >= size * 2)
-      frame = Random1() * size;
+      frame = (IntT)(Random1() * (RealT)size);
    
     count++;
     
@@ -74,7 +77,7 @@ int main(int nargs, char **argv)
     
     RavlN::Save("@X", rgb);
 
-    Sleep(0.1);
+    Sleep(delay);
   }
 
   return 0;

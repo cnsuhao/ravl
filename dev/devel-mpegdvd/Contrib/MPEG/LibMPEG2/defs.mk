@@ -21,7 +21,9 @@ MUSTLINK= MustLinkLibMPEG2.cc
 
 USESLIBS= RavlImage RavlIO LibMPEG2 RavlDPDisplay
 
-EXAMPLES=testMPEG2.cc
+PROGLIBS= RavlGUI
+
+EXAMPLES= exMPEG2.cc
 
 AUXDIR=lib/RAVL/libdep
 

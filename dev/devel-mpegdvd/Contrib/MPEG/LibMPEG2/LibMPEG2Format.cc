@@ -72,7 +72,7 @@ namespace RavlImageN {
     }
     
     StringC ext = Extension(nfilename);
-    if(ext == "mpeg" || ext == "mpg" || ext == "vob")
+    if(ext == "mpeg" || ext == "mpg")
       return typeid(ImageC<ByteRGBValueC>);
     //ONDEBUG(cerr << "FileFormatLibMPEG2BodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
     return typeid(void);
@@ -88,10 +88,6 @@ namespace RavlImageN {
   
   DPIPortBaseC FileFormatLibMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
     StringC ext = Extension(fn);
-    if(ext == "vob")
-    {
-      return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(0xe0));
-    }
     return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(true));
   }
   

@@ -7,10 +7,12 @@
 //! rcsid="$Id$"
 //! lib=RavlLibMPEG2
 
-
-namespace RavlImageN {
+namespace RavlImageN
+{
   extern void InitLibMPEG2Format();
-  void MustLinkLibMPEG2() { 
+  
+  void MustLinkLibMPEG2()
+  { 
     InitLibMPEG2Format();
   }
 }
