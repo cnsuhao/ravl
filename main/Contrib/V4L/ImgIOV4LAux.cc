@@ -290,6 +290,7 @@ namespace RavlImageN {
   bool DPIImageBaseV4LBodyC::SetupCamera() {
     switch(sourceType) {
     case SOURCE_USBWEBCAM_PHILIPS:{
+#if 0
       ONDEBUG(cerr << "DPIImageBaseV4LBodyC::SetupCamera(), Called \n");
       int zero = 0;
       int neg = -1;
@@ -297,6 +298,7 @@ namespace RavlImageN {
       ioctl(fd,PHILIPS_SET_BACKLIGHT,zero);
       ioctl(fd,PHILIPS_SET_FLICKER,zero);
       ioctl(fd,PHILIPS_SET_NOISEREDUCTION,zero);
+#endif
     } break;
     case SOURCE_UNKNOWN: 
       break;
