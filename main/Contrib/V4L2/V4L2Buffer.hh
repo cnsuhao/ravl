@@ -1,0 +1,88 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2001, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+#ifndef RAVL_V4L2BUFFER_HEADER
+#define RAVL_V4L2BUFFER_HEADER 1
+//////////////////////////////////////////////////////////////////
+//! rcsid = "$Id$"
+//! lib = RavlIOV4L2
+//! author = "Warren Moore"
+//! userlevel = Develop
+
+#include "Ravl/Buffer.hh"
+#include "Ravl/Image/IOV4L2.hh"
+
+namespace RavlImageN
+{
+  using namespace RavlN;
+ 
+  /////////////////////////////
+  //! userlevel = Develop
+  //: V4L2 fast buffer
+  
+  template <class PixelT>
+  class V4L2BufferBodyC :
+    public BufferBodyC<PixelT> 
+  {
+  public:
+    V4L2BufferBodyC(IOV4L2C<PixelT> v4l2, const IntT index, ByteT *start, UIntT length) :
+      BufferBodyC<PixelT>(length, start),
+      m_v4l2(v4l2),
+      m_index(index)
+    {}
+    //: Constructor
+    
+    ~V4L2BufferBodyC()
+    { m_v4l2.ReleaseBuffer(m_index); }
+    //: Destructor
+
+  protected:
+    IOV4L2C<PixelT> m_v4l2;         // Handle to parent V4L2 object
+    IntT m_index;                   // V4L2 buffer index
+  };
+  
+  
+  
+  /////////////////////////////
+  //! userlevel = Advanced
+  //: V4L2 fast buffer.
+  // BIG OBJECT
+  
+  template <class PixelT>
+  class V4L2BufferC :
+    public BufferC<PixelT>
+  {
+  public:
+    V4L2BufferC()
+    {}
+    //: Default constructor.
+    // Creates an invalid handle.
+
+    V4L2BufferC(IOV4L2C<PixelT> v4l2, const IntT index, ByteT *start, UIntT length) :
+      BufferC<PixelT>(*new V4L2BufferBodyC<PixelT>(v4l2, index, start, length))
+    {}
+    
+    explicit V4L2BufferC(const BufferC<PixelT> &base) :
+      BufferC<PixelT>(base)
+    {
+      if(IsValid() && dynamic_cast<V4L2BufferBodyC<PixelT> *>(&BufferC<PixelT>::Body()) == 0)
+        Invalidate();
+    }
+    //: Construct from handle to base class.
+
+  protected:
+    V4L2BufferBodyC<PixelT> &Body()
+    { return static_cast<V4L2BufferBodyC<PixelT> &>(BufferC<PixelT>::Body()); }
+    //: Access body.
+
+    const V4L2BufferBodyC<PixelT> &Body() const
+    { return static_cast<const V4L2BufferBodyC<PixelT> &>(BufferC<PixelT>::Body()); }
+    //: Access body.
+  };
+}
+
+#endif
+

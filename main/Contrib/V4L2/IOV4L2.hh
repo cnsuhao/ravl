@@ -20,6 +20,13 @@ namespace RavlImageN
 {
   using namespace RavlN;
   
+  template <class PixelT> class IOV4L2C;
+  //: Predeclare class handle
+  
+  /////////////////////////////
+  //! userlevel = Develop
+  //: V4L2 un-templated body
+  
   class IOV4L2BaseC
   {
   public:
@@ -29,12 +36,16 @@ namespace RavlImageN
     ~IOV4L2BaseC();
     //: Destructor
     
-    bool GetFrame(ImageC<ByteRGBValueC> &img);
+    bool GetFrame(ImageC<ByteRGBValueC> &img, IOV4L2C<ByteRGBValueC> parent);
     //: Get next image.
 
-    bool GetFrame(ImageC<ByteT> &img);
+    bool GetFrame(ImageC<ByteT> &img, IOV4L2C<ByteT> parent);
     //: Get next image.
 
+    void ReleaseBuffer(const UIntT index);
+    //: Release a fast buffer.
+    // Should not be called directly
+    
     UIntT LastFrameNum() const
     { return m_seqNum; }
     //: Get the last frame sequence number
@@ -48,7 +59,7 @@ namespace RavlImageN
     //: Is the device open?
     
     bool IsConfigured() const
-    { return (m_bufferMax > 0); }
+    { return (m_bufferCount > 0); }
     //: Is the device configured and ready for capture?
     
     bool HandleGetAttr(const StringC &attrName, StringC &attrValue);
@@ -72,16 +83,29 @@ namespace RavlImageN
     
   protected:
     bool Open(const StringC &device, const UIntT channel);
-    //: Open the device
+    //: Open the device.
+    // Does not configure the capture buffers
     
     void Close();
-    //: Close the device
+    //: Close the device.
+    // Does not release the capture buffers
     
     bool CheckFormat(const type_info &pixelType);
     //: Check if the pixel type is supported
     
     bool ConfigureCapture();
-    //: Configure the capture device, prior to the first image get
+    //: Configure the capture device, allocating capture buffers
+    
+    void ReleaseCapture();
+    //: Release the capture device, deallocating capture buffers
+    
+  protected:
+    typedef struct
+    {
+      void *m_start;
+      size_t m_length;
+    } TBuf;
+    //: Buffer mmap data
     
   protected:
   /* Device identification */
@@ -94,26 +118,22 @@ namespace RavlImageN
     UIntT m_width, m_height;            // Captured size
     UIntT m_pixelFormat;                // Stored pixel format
     UIntT m_fieldFormat;                // Captured field selection
+
+  /* Buffer parameters */
     UIntT m_bufferMax;                  // Number of capture buffers
-
-  /* Frame attributes */
-    StreamPosT m_seqNum;                // Last sequence number
-
-  private:    
-    typedef struct
-    {
-      void *m_start;
-      size_t m_length;
-    } TBuf;
-    //: Buffer mmap data
-    
-  private:
     UIntT m_bufferCount;                // Number of capture buffers
     UIntT m_bufferOut;                  // Unqueued buffer count
     TBuf *m_buffers;                    // Array of mmap'd buffers
+    
+  /* Frame attributes */
+    StreamPosT m_seqNum;                // Last sequence number
   };
   
   
+  
+  /////////////////////////////
+  //! userlevel = Develop
+  //: V4L2 templated body
   
   template <class PixelT>
   class IOV4L2BodyC :
@@ -155,7 +175,7 @@ namespace RavlImageN
           return false;
         }
         
-      return GetFrame(img);
+      return GetFrame(img, IOV4L2C<PixelT>(*this));
     }
     //: Get next image.
     
@@ -217,6 +237,11 @@ namespace RavlImageN
 
   
   
+  /////////////////////////////
+  //! userlevel = Advanced
+  //: V4L2 format
+  // BIG OBJECT
+  
   template <class PixelT>
   class IOV4L2C :
     public DPIPortC< ImageC<PixelT> >
@@ -233,6 +258,16 @@ namespace RavlImageN
     {}
     //: Constructor.
 
+    explicit IOV4L2C(IOV4L2BodyC<PixelT> &body) :
+      DPEntityC(body)
+    {}
+    //: Body constructor.
+
+    void ReleaseBuffer(const UIntT index)
+    { Body().ReleaseBuffer(index); }
+    //: Release a fast buffer.
+    // Should not be called directly
+    
   protected:
     IOV4L2BodyC<PixelT> &Body()
     { return static_cast<IOV4L2BodyC<PixelT> &>(DPIPortC< ImageC<PixelT> >::Body()); }

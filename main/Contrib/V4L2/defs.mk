@@ -12,7 +12,7 @@ SUPPORT_ONLY = linux
 
 PACKAGE = Ravl/Image
 
-HEADERS = V4L2Format.hh IOV4L2.hh
+HEADERS = V4L2Format.hh IOV4L2.hh V4L2Buffer.hh
 
 SOURCES = V4L2Format.cc IOV4L2.cc
 
