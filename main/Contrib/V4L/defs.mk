@@ -23,9 +23,9 @@ MUSTLINK=InitV4L.cc
 
 PLIB=RavlImgIOV4L
 
-USESLIBS=RavlImageIO RavlExtImgIO RavlVideoIO
+USESLIBS=RavlImageIO RavlVideoIO
 
 EHT=Ravl.Contrib.Image_IO.Video4Linux.html
 
-PROGLIBS=RavlOSIO RavlDPDisplay
+PROGLIBS=RavlOSIO RavlDPDisplay.opt RavlExtImgIO.opt
 
