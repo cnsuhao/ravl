@@ -13,6 +13,9 @@
 
 #include "Ravl/DP/SPort.hh"
 #include "dvdread/dvd_reader.h"
+#include "dvdread/ifo_types.h"
+#include "Ravl/DArray1d.hh"
+#include "Ravl/Tuple2.hh"
 
 namespace RavlN
 {
@@ -44,6 +47,7 @@ namespace RavlN
 
     UIntT Size() const;
     //: Get the complete size
+    // Note: Currently this changes as more of the DVD is read
 
     bool Seek64(StreamPosT off);
     //: Set the seek position
@@ -59,23 +63,39 @@ namespace RavlN
 
     bool Discard();
     //: Discard the next data item
-
+    
   protected:
     void Close();
     //: Close the DVD read objects
     
-    bool ReadBlock(const UIntT block);
-    //: Read a block into the cache
+    bool ReadCell(const UIntT cell);
+    //: Read the info for a cell
     
   protected:
-    StringC m_device;                 // DVD device name
-    UIntT m_title;                    // DVD title index
-    dvd_reader_t *m_dvd;              // DVD read object
-    dvd_file_t *m_file;               // DVD file object
-    StreamPosT m_sizeBlocks;          // File size in blocks
-    StreamPosT m_currentBlock;        // Current cached block
-    StreamPosT m_currentByte;         // Current byte pos
-    SArray1dC<ByteT> m_bufBlock;      // VOB block buffer
+    StringC m_device;                             // DVD device name
+    UIntT m_title;                                // DVD title index
+    
+    UIntT m_numChapters;                          // DVD chapter count for this title
+    UIntT m_numAngles;                            // DVD angles for this title
+
+    dvd_reader_t *m_dvdReader;                    // DVD read object
+    ifo_handle_t *m_dvdVmgFile;                   // Video management info
+    ifo_handle_t *m_dvdVtsFile;                   // Video stream info
+    pgc_t *m_dvdCurPgc;                           // Current PGC object
+    dvd_file_t *m_dvdFile;                        // DVD file object
+    
+    StreamPosT m_numCells;                        // Number of cells in title
+    StreamPosT m_sizeCell;                        // Size (in blocks) of actual data in cell
+    StreamPosT m_sizeData;                        // Size (in blocks) of actual data in title
+    SArray1dC<StreamPosT> m_cellTable;            // Table mapping cell numbers to data sizes (in blocks)
+
+    StreamPosT m_byteCurrent;                     // Byte currently sought to
+    
+    StreamPosT m_curCell;                         // Current cell info cached
+    DArray1dC< Tuple2C<StreamPosT, StreamPosT> > m_navTable;
+    // Table listing nav block locations (in absolute block offsets) and data sizes (in blocks) for the current cell
+    StreamPosT m_curBlock;                        // Current block in cell cached
+    SArray1dC<ByteT> m_curBlockBuf;               // Current block cache
   };
 
   class DVDReadC :
