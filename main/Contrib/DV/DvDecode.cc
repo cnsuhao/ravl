@@ -43,13 +43,15 @@ namespace RavlImageN {
     if(!init) {
       dv_parse_header(decoder, (uint8_t*)data);
       init=true;
+#if 0
       cout << "Audio is: " <<  decoder->audio->frequency / 1000.0 << "kHz" << endl;
       cout << decoder->audio->quantization << " bits quantization" << endl;
       cout << decoder->audio->num_channels << " channels" << endl;
+#endif
     }
   
     dv_decode_full_frame(decoder, data, e_dv_color_rgb, pixels, pitches);
-    ImageC<ByteRGBValueC>im(576, 720, (ByteRGBValueC*)&pixels[0][0], false);
+    ImageC<ByteRGBValueC> im(576, 720, (ByteRGBValueC*)&pixels[0][0], false);
 
     if(deinterlace) im = DeinterlaceSubsample(im);
 

@@ -53,6 +53,14 @@ namespace RavlImageN {
     { return false; }
     //: Is operation stateless ?
     
+    bool Deinterlace() const
+    { return deinterlace; }
+    //: Are we deinterlaceing ?
+    
+    bool Deinterlace(bool val)
+    { return deinterlace = val; }
+    //: Set deinterlace flag.
+    
   private:
     dv_decoder_t *decoder;
     uint8_t *decoded;
@@ -75,7 +83,7 @@ namespace RavlImageN {
     : public DPProcessC<ByteT *, ImageC<ByteRGBValueC> >
   {
   public:  
-    DvDecodeC (bool deinterlace=true)
+    DvDecodeC (bool deinterlace=false)
       : DPProcessC<ByteT *, ImageC<ByteRGBValueC> >(*new DvDecodeBodyC(deinterlace))
     {}
     //: Constructs DvDecodeC 
@@ -94,7 +102,14 @@ namespace RavlImageN {
     { return Body().Apply(arr); }
     //: Converts PAL DV frame to byte RGB image
     
-
+    bool Deinterlace() const
+    { return Body().Deinterlace(); }
+    //: Are we deinterlaceing ?
+    
+    bool Deinterlace(bool val)
+    { return Body().Deinterlace(val); }
+    //: Set deinterlace flag.
+    
   };
   
 } // end namespace RavlImageN

@@ -21,7 +21,8 @@ int main(int argc,char **argv)
   OptionC option(argc,argv,true);
   StringC  ifmt = option.String("if","","Input format. ");
   StringC  ofmt = option.String("of","","Output format. ");
-  bool verbose = option.Boolean("v",false,"Verbose mode. \n");
+  DListC<StringC> attribs = option.List("a","List of attributes to set. e.g. deinterlace=0");
+  bool verbose = option.Boolean("v",false,"Verbose mode. ");
   StringC ifilename = option.String("","test.mpg","Input stream.");
   StringC ofilename = option.String("","@X","Output stream.");
   option.Check();
@@ -37,6 +38,13 @@ int main(int argc,char **argv)
   if(!OpenOSequence(outputStream,ofilename,ofmt,verbose)) {
     cerr << "Failed to open output sequence '" << ofilename << "' \n";
     return 1;
+  }
+  
+  for(DLIterC<StringC> it(attribs);it;it++) {
+    StringC attrName = it->before('=').TopAndTail();
+    StringC attrValue = it->after('=').TopAndTail();
+    if(!inputStream.SetAttr(attrName,attrValue))
+      cerr << "WARNING: Failed to set attribute '" << attrName << "' to '" << attrValue <<  "'\n";
   }
   
   // Copy stream of images from input to output.

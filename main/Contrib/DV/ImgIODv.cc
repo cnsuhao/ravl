@@ -15,7 +15,8 @@ namespace RavlImageN {
   //: Constructor from stream 
   DPIImageDvBodyC::DPIImageDvBodyC(const IStreamC &nStrm,const StringC &suffix)
     : DPImageDvBaseBodyC(suffix),
-      strm(nStrm), dv(true)
+      strm(nStrm), 
+      dv(true)
   {
  
     //  tcGrab = TimeCodeC((long int)0);
@@ -102,6 +103,32 @@ namespace RavlImageN {
     //cout << head[10][10] << " : " << tcGrab << endl;
     frameNo++;
     return true; 
+  }
+  
+  //: Get a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  bool DPIImageDvBodyC::GetAttr(const StringC &attrName,StringC &attrValue) {
+    if(attrName == "deinterlace") {
+      attrValue = dv.Deinterlace() ? "1" : "0";
+      return true;
+    }
+    return DPISPortBodyC<ImageC<ByteRGBValueC> >::GetAttr(attrName,attrValue);
+  }
+  
+  //: Set a stream attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling stream attributes such as frame rate, and compression ratios.
+  
+  bool DPIImageDvBodyC::SetAttr(const StringC &attrName,const StringC &attrValue) {
+    if(attrName == "deinterlace") {
+      if(attrValue == "1")
+	dv.Deinterlace(true);
+      else
+	dv.Deinterlace(false);
+      return true;
+    }
+    return DPISPortBodyC<ImageC<ByteRGBValueC> >::SetAttr(attrName,attrValue);
   }
 
 
