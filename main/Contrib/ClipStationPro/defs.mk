@@ -32,3 +32,4 @@ AUXFILES= ClipStationPro.def
 
 AUXDIR=lib/RAVL/libdep
 
+EHT=Ravl.Images.Video.Video_IO.ClipStationPro.html
