@@ -17,6 +17,8 @@
 #include <curl/types.h>
 #include <curl/easy.h>
 
+#include <unistd.h>
+
 #ifndef CURLOPT_WRITEDATA
 #define CURLOPT_WRITEDATA CURLOPT_FILE
 #endif
@@ -29,9 +31,14 @@ namespace RavlN {
      return static_cast<URLIStreamC*>(stream)->Push(ptr,size,nmemb);
    }
 
-   URLIStreamC::URLIStreamC(const StringC& url) {
-      // Get URL
-      LaunchThreadR(*this,&URLIStreamC::Get,url);
+   URLIStreamC::URLIStreamC(const StringC& url,bool buffered) {
+     // Setup pipe
+     if(pipe(fd) == 0) {
+       // Recreate IStream from the read pipe
+       (*this).IStreamC::operator=(IStreamC(fd[0],true,buffered));       
+       // Get URL
+       LaunchThreadR(*this,&URLIStreamC::Get,url);
+     }
    }
 
    bool URLIStreamC::Get(StringC& url) {
@@ -58,10 +65,8 @@ namespace RavlN {
    }
 
    IntT URLIStreamC::Push(void *ptr, size_t size, size_t nmemb) {
-      for (size_t i=0; i<size*nmemb; i++) {
-         cerr << static_cast<unsigned char*>(ptr)[i];
-      }
-      return size*nmemb;
+     // Push data onto pipe
+     return write(fd[1],ptr,size*nmemb);
    }
 
    /////////////////// STREAM TYPES /////////////////////
@@ -80,7 +85,7 @@ namespace RavlN {
     
       virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
 	StringC rurl("http:" + url);
-	return URLIStreamC(rurl); 
+	return URLIStreamC(rurl,buffered); 
       }
       //: Open input stream.
     
@@ -100,7 +105,7 @@ namespace RavlN {
     
       virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
 	StringC rurl("ftp:" + url);
-	return URLIStreamC(rurl); 
+	return URLIStreamC(rurl,buffered); 
       }
       //: Open input stream.
     
@@ -120,7 +125,7 @@ namespace RavlN {
     
       virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
 	StringC rurl("ldap:" + url);
-	return URLIStreamC(rurl); 
+	return URLIStreamC(rurl,buffered); 
       }
       //: Open input stream.
     

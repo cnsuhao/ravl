@@ -23,11 +23,14 @@ int exURL(int nargs,char *args[]) {
    OptionC opt(nargs,args);
    StringC url = opt.String("","http://ravl.sourceforge.net/","URL to load");
    opt.Check();
-
-   URLIStreamC strm(url);
-
-   Sleep(20);
    
+   URLIStreamC strm(url);
+   while (strm) {
+     ByteT c;
+     strm >> c;
+     cout << c;
+   }
+
    return 0;
 
 }
