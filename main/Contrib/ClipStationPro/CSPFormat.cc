@@ -50,7 +50,7 @@ namespace RavlImageN {
     if(ExtractDevice(filename) != "CSP")
       return typeid(void);
     ONDEBUG(cerr << "FileFormatCSPBodyC::Probe(), Found. \n");
-  return typeid(ImageC<ByteYUV422ValueC>); 
+    return typeid(ImageC<ByteYUV422ValueC>); 
   }
   
   const type_info &
