@@ -34,7 +34,7 @@ namespace RavlImageN {
       captureAudio(true), // Capture audio ?
       captureVideo(true), // Capture video ?
       frameBufferSize(0),
-      timecode_from_getframe((long int)0)
+      timecode_from_getframe((int)0)
   {
     dev = sv_open((char *) devName.chars());
     ONDEBUG(cerr << "CSP Device open:" << ((void *) dev) << " (" << devName << ")\n");
