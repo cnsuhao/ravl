@@ -11,7 +11,7 @@ PACKAGE=Ravl/Image
 
 REQUIRES = libClipStationPro
 
-MAINS =  
+EXAMPLES = exCSPGrab.cc 
 #csp.cc
 
 #test.cc 

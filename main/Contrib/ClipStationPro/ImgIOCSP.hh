@@ -11,7 +11,7 @@
 //! docentry="Ravl.Contrib.Video IO.ClipStationPro"
 //! author="Charles Galambos"
 //! file="Ravl/Contrib/ClipStationPro/ImgIOCSP.hh"
-
+//! example=exCSPGrab.cc
 #include "Ravl/Image/CSPControl.hh"
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
@@ -22,7 +22,7 @@ namespace RavlImageN {
   
   //! userlevel=Develop
   //: ClipStationPro frame grabber.
-  
+ 
   template<class PixelT>
   class DPIImageClipStationProBodyC
     : public DPIPortBodyC<ImageC<PixelT> >,
@@ -33,7 +33,10 @@ namespace RavlImageN {
       : ClipStationProDeviceC(dev,nrect) //,typeid(PixelT),nrect)
     {}
     //: Constructor.
-    
+    //!param: dev   - The name of the hardware device eg. "PCI,card:0", "PCI,card:1"
+    //!param: nrect - The rectangle to capture, by default a zero size image is grabbed. This must be an even number !. Maximum usable area = 576*720  
+
+
     virtual ImageC<PixelT> Get() {
       BufferC<PixelT> buf = GetFrame();
       if(!buf.IsValid())
@@ -42,6 +45,7 @@ namespace RavlImageN {
       return Deinterlace(img);
     }
     //: Get next image.
+
     
     virtual bool Get(ImageC<PixelT> &buff) {
       BufferC<PixelT> buf = GetFrame();
@@ -86,9 +90,17 @@ namespace RavlImageN {
 
   };
   
+
+
+
+
+
   //! userlevel=Normal
   //: ClipStationPro frame grabber.
-  
+   // This class provides a convenient user interface for access to the ClipStationPro capture cards. 
+  // This interface provides attributes such as "timecode" and "FrameBufferSize" which can be accessed/modified through the 
+  // GetAttr / SetAttr methods. 
+
   template<class PixelT>
   class DPIImageClipStationProC
     : public DPIPortC<ImageC<PixelT> >
@@ -104,7 +116,9 @@ namespace RavlImageN {
       : DPEntityC(*new DPIImageClipStationProBodyC<PixelT>(dev,nrect))
     {}
     //: Constructor.
-    
+    //!param: dev   - The name of the hardware device eg. "PCI,card:0", "PCI,card:1"
+    //!param: nrect - The rectangle to capture, by default a zero size image is grabbed. This must be an even number !. Maximum usable area = 576*720  
+
   protected:
     DPIImageClipStationProBodyC<PixelT> &Body()
     { return dynamic_cast<DPIImageClipStationProBodyC<PixelT> &>(DPEntityC::Body()); }
@@ -116,12 +130,24 @@ namespace RavlImageN {
   public:  
     
   };
+
+
+
+
+
+
+
+
+
+
+
+
   
 #if 0
   
   //! userlevel=Normal
   //: ClipStationPro frame grabber.
-  
+
   template<class PixelT>
   class DPIImageClipStationProC
     : public DPIPortC<ImageC<PixelT> >

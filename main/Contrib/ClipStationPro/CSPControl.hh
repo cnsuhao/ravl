@@ -35,7 +35,9 @@ namespace RavlImageN {
   public:
     ClipStationProDeviceC(const StringC &devName,const ImageRectangleC &nrect);
     //: Constructor.
-    
+    //:!param devName - The name of the device, typical form is "PCI,card:0", "PCI,card:1"
+    //:!param nrect   - This parameter is unused
+
     ~ClipStationProDeviceC();
     //: Destructor.
     
@@ -49,20 +51,25 @@ namespace RavlImageN {
     //: Get one field of video.
     
     bool PutFrame(void *buff,int x,int y);
-    //: Get one frame of video.
+    //: Put one frame of video to the output of the card .
     
     bool CSPGetAttr(const StringC &attrName,StringC &attrValue);
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
+    //!param: attrName="timecode" - returns the timecode for the last grabbed frame 
+    //!param: attrName="FrameBufferSize" - returns the current size of the frame buffer 
+
     
     bool CSPSetAttr(const StringC &attrName,const StringC &attrValue);
     //: Set a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
+    //!param: attrName="FrameBufferSize" - returns the current size of the frame buffer 
 
     bool CSPGetAttrList(DListC<StringC>  & attrList ) const ; 
-    //: Get a list of available attributes 
+    //: Get a list of available attributes
+    // The list will inherit attributes from parent classes too
 
 
   protected:
