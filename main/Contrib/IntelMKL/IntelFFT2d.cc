@@ -68,14 +68,14 @@ namespace RavlN {
     // Create complex descriptor.
     DftiCreateDescriptor(&DFTI_HANDLE(dftiComplex),DFTI_DOUBLE,DFTI_COMPLEX,2,l);
     DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_PLACEMENT,DFTI_NOT_INPLACE);
-    DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_BACKWARD_SCALE,1/((RealT) l[0]*l[1]));
+    DftiSetValue(DFTI_HANDLE(dftiComplex),DFTI_FORWARD_SCALE,1/((RealT) l[0]*l[1]));
     DftiCommitDescriptor(DFTI_HANDLE(dftiComplex));
 
 #if 1
     //cerr << "Setup real fft. \n";
     // Create real descriptor.
     DftiCreateDescriptor(&DFTI_HANDLE(dftiReal),DFTI_DOUBLE,DFTI_COMPLEX,2,l);
-    DftiSetValue(DFTI_HANDLE(dftiReal),DFTI_BACKWARD_SCALE,1/((RealT) l[0]*l[1]));
+    DftiSetValue(DFTI_HANDLE(dftiReal),DFTI_FORWARD_SCALE,1/((RealT) l[0]*l[1]));
     DftiCommitDescriptor(DFTI_HANDLE(dftiReal));
 #endif    
     //cerr << "Done.\n";
