@@ -66,6 +66,13 @@ namespace RavlImageN
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     
+    virtual StreamPosT Tell64() const
+    { return frameNo; }
+    //: Find current location in stream.
+    
+    virtual bool Seek64(StreamPosT off);
+    //: Seek to location in stream.
+    
     virtual bool GetAttr(const StringC &attrName,IntT &attrValue);
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
@@ -110,13 +117,13 @@ namespace RavlImageN
     
     ByteT *bufStart, *bufEnd;
     Index2dC imgSize;
-    UIntT allocFrameId;
-    UIntT frameNo;
-    UIntT maxFrameIndex;
-    UIntT lastRead;
-    HashC<UIntT,ImageC<ByteRGBValueC> > images;
-    AVLTreeC<UIntT, UIntT> offsets;
-    CacheC<UIntT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
+    StreamPosT allocFrameId;
+    StreamPosT frameNo;
+    StreamPosT maxFrameIndex;
+    StreamPosT lastRead;
+    HashC<StreamPosT,ImageC<ByteRGBValueC> > images;
+    AVLTreeC<StreamPosT, StreamPosT> offsets;
+    CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
     bool sequenceInit;
     IntT lastFrameType;
     

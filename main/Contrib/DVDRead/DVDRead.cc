@@ -184,6 +184,30 @@ namespace RavlN
     return m_sizeBlocks * DVD_VIDEO_LB_LEN;
   }
 
+  //: Set the seek position
+  
+  bool DVDReadBodyC::Seek64(StreamPosT off) {
+    if (m_file)
+    {
+      m_currentByte = off;
+      return true;
+    }
+    return false;
+  }
+  
+  //: Get the seek position
+  
+  StreamPosT DVDReadBodyC::Tell64() const {
+    return m_currentByte;
+  }
+  
+  //: Get the complete size
+  
+  StreamPosT DVDReadBodyC::Size64() const {
+    return m_sizeBlocks * DVD_VIDEO_LB_LEN;    
+  }
+  
+  
   bool DVDReadBodyC::ReadBlock(const UIntT block)
   {
     RavlAssertMsg(m_file, "DVDReadBodyC::ReadBlock requires open file");

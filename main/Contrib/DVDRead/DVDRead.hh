@@ -45,6 +45,15 @@ namespace RavlN
     UIntT Size() const;
     //: Get the complete size
 
+    bool Seek64(StreamPosT off);
+    //: Set the seek position
+
+    StreamPosT Tell64() const;
+    //: Get the seek position
+
+    StreamPosT Size64() const;
+    //: Get the complete size
+    
     bool IsGetEOS() const;
     //: Is it the EOS
 
@@ -63,9 +72,9 @@ namespace RavlN
     UIntT m_title;                    // DVD title index
     dvd_reader_t *m_dvd;              // DVD read object
     dvd_file_t *m_file;               // DVD file object
-    UIntT m_sizeBlocks;               // File size in blocks
-    UIntT m_currentBlock;             // Current cached block
-    UIntT m_currentByte;              // Current byte pos
+    StreamPosT m_sizeBlocks;          // File size in blocks
+    StreamPosT m_currentBlock;        // Current cached block
+    StreamPosT m_currentByte;         // Current byte pos
     SArray1dC<ByteT> m_bufBlock;      // VOB block buffer
   };
 

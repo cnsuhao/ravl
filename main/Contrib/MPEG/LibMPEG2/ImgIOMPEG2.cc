@@ -92,7 +92,7 @@ namespace RavlImageN
       DPSeekCtrlC seek(input);
       if (seek.IsValid())
       {
-        offsets.Insert(0, seek.Tell());
+        offsets.Insert(0, seek.Tell64());
         
         m_initialSeek = true;
         return true;
@@ -116,7 +116,7 @@ namespace RavlImageN
       return false;
     
     bufStart = &(buffer[0]);
-    lastRead = seek.Tell();
+    lastRead = seek.Tell64();
     UIntT len = input.GetArray(buffer);
     bufEnd = bufStart + len;
     return true;
@@ -159,7 +159,7 @@ namespace RavlImageN
     
     // Find the GOP before the required frame...
     // Bit of a hack but will do for now.
-    UIntT at;
+    StreamPosT at;
     while(!offsets.Find(firstFrameNo, at))
     {
       if(firstFrameNo == 0)
@@ -171,7 +171,7 @@ namespace RavlImageN
     DPSeekCtrlC seek(input);
     if (!seek.IsValid())
       return false;
-    seek.Seek(at);
+    seek.Seek64(at);
     
     UIntT localFrameNo = firstFrameNo;
     bool gotFrames = false;
@@ -321,7 +321,7 @@ namespace RavlImageN
     
     // Find the GOP before the required frame...
     // Bit of a hack but will do for now.
-    UIntT at;
+    StreamPosT at;
     while(!offsets.Find(firstFrameNo,at))
     {
       if(firstFrameNo ==0)
@@ -333,7 +333,7 @@ namespace RavlImageN
     DPSeekCtrlC seek(input);
     if (!seek.IsValid())
       return false;
-    seek.Seek(at);
+    seek.Seek64(at);
     
     UIntT localFrameNo = firstFrameNo;
     bool gotFrames = false;
@@ -666,15 +666,21 @@ namespace RavlImageN
   
   //: Seek to location in stream.
   
-  bool ImgILibMPEG2BodyC::Seek(UIntT off)
-  {
+  bool ImgILibMPEG2BodyC::Seek(UIntT off) {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek called dest=" << off << "\n");
-    
     // Move the decoder to the next gop before changing the buffer.
     frameNo = off;
     return true;
   }
 
+  //: Seek to location in stream.
+  
+  bool ImgILibMPEG2BodyC::Seek64(StreamPosT off) {
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Seek called dest=" << off << "\n");
+    frameNo = off;
+    return true;
+  }
+  
   //: Build GOP index to frame.
   
   bool ImgILibMPEG2BodyC::BuildIndex(UIntT targetFrame)
