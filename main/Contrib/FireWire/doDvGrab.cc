@@ -20,7 +20,7 @@ int doDvGrab(int argc, char **argv)
   OptionC   opt(argc,argv);
   opt.Comment("This program reads video + audio from a DV tape and dumps it to a .dv file (unless the -ppm option is used)");
   opt.Comment("\n**Warning**: the tape player needs to pre-roll the tape by a few (~3) seconds, so do not try to grab right from the beginning of the tape.\n");
-  FilenameC     OutFile = opt.String("o", NULL, "output file");
+  FilenameC     OutFile = opt.String("o", "", "output file");
   StringC       PpmImage = opt.String("ppm", "00:00:10:00", "Grab a single frame at given timecode");
   StringC       tcStart = opt.String("start", "00:00:10:00", "start timecode");
   StringC       tcEnd   = opt.String("end", "00:00:00:00", "end timecode");
