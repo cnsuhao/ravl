@@ -19,6 +19,7 @@
 #include "Ravl/Threads/Mutex.hh"
 #include "Ravl/HSet.hh"
 
+#include <unistd.h>
 #include <linux/videodev.h>
 
 namespace RavlImageN
