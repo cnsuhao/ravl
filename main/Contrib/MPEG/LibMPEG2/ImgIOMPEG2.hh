@@ -117,6 +117,9 @@ namespace RavlImageN {
     IntT lastFrameType;
     
     IntT m_demuxTrack;
+    IntT m_demuxState;
+    IntT m_demuxStateBytes;
+    ByteT m_headBuf[264];
   };
 
   class ImgILibMPEG2C

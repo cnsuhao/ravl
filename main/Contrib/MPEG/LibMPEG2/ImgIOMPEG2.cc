@@ -29,12 +29,18 @@ extern "C" {
 #define ONDEBUG(x)
 #endif
 
+#define DEMUX_HEADER 0
+#define DEMUX_DATA 1
+#define DEMUX_SKIP 2
+
 namespace RavlImageN {
   
 #if DODEBUG
   static char frameTypes[5] = { 'X','I', 'P','B','D' };
 #endif
   
+  static int mpeg1_skip_table[16] = { 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
   //: Default constructor.
   
   ImgILibMPEG2BodyC::ImgILibMPEG2BodyC(IStreamC &strm, IntT demuxTrack) :
@@ -52,7 +58,9 @@ namespace RavlImageN {
     imageCache(40),
     sequenceInit(false),
     lastFrameType(0),
-    m_demuxTrack(demuxTrack)
+    m_demuxTrack(demuxTrack),
+    m_demuxState(DEMUX_SKIP),
+    m_demuxStateBytes(0)
   {
     decoder = mpeg2_init();
     offsets.Insert(0, strm.Tell()); // Store initial offset.
@@ -311,34 +319,6 @@ namespace RavlImageN {
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Demultiplex called track=" << m_demuxTrack << "\n");
     
-    static int mpeg1_skip_table[16] =
-    {
-      0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    };
-
-    /*
-     * the demuxer keeps some state between calls:
-     * if "state" = DEMUX_HEADER, then "head_buf" contains the first
-     *     "bytes" bytes from some header.
-     * if "state" == DEMUX_DATA, then we need to copy "bytes" bytes
-     *     of ES data before the next header.
-     * if "state" == DEMUX_SKIP, then we need to skip "bytes" bytes
-     *     of data before the next header.
-     *
-     * NEEDBYTES makes sure we have the requested number of bytes for a
-     * header. If we dont, it copies what we have into head_buf and returns,
-     * so that when we come back with more data we finish decoding this header.
-     *
-     * DONEBYTES updates "buf" to point after the header we just parsed.
-     */
-  
-#define DEMUX_HEADER 0
-#define DEMUX_DATA 1
-#define DEMUX_SKIP 2
-    static int state = DEMUX_SKIP;
-    static int state_bytes = 0;
-    static uint8_t head_buf[264];
-  
     uint8_t * header;
     int bytes;
     int len;
@@ -349,20 +329,20 @@ namespace RavlImageN {
                                                                     \
       missing = (x) - bytes;                                        \
       if (missing > 0) {					                                  \
-        if (header == head_buf) {				                            \
+        if (header == m_headBuf) {				                            \
           if (missing <= bufEnd - bufStart) {			                  \
             memcpy (header + bytes, bufStart, missing);	            \
             bufStart += missing;				                            \
             bytes = (x);				                                    \
           } else {					                                        \
             memcpy (header + bytes, bufStart, bufEnd - bufStart);	  \
-            state_bytes = bytes + bufEnd - bufStart;		            \
+            m_demuxStateBytes = bytes + bufEnd - bufStart;		            \
             return 0;					                                      \
           }						                                              \
         } else {						                                        \
-          memcpy (head_buf, header, bytes);		                      \
-          state = DEMUX_HEADER;				                              \
-          state_bytes = bytes;				                              \
+          memcpy (m_headBuf, header, bytes);		                      \
+          m_demuxState = DEMUX_HEADER;				                              \
+          m_demuxStateBytes = bytes;				                              \
           return 0;					                                        \
         }							                                              \
       }							                                                \
@@ -370,47 +350,47 @@ namespace RavlImageN {
   
 #define DONEBYTES(x)		                                            \
     do {			                                                      \
-      if (header != head_buf)	                                      \
+      if (header != m_headBuf)	                                      \
       bufStart = header + (x);	                                    \
     } while (0)
   
-    switch (state)
+    switch (m_demuxState)
     {
       case DEMUX_HEADER:
-        if (state_bytes > 0)
+        if (m_demuxStateBytes > 0)
         {
-          header = head_buf;
-          bytes = state_bytes;
+          header = m_headBuf;
+          bytes = m_demuxStateBytes;
           goto continue_header;
         }
         break;
         
       case DEMUX_DATA:
-        if (state_bytes > bufEnd - bufStart)
+        if (m_demuxStateBytes > bufEnd - bufStart)
         {
 //          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Demultiplex (0) start=" << (UIntT)bufStart << ", left=" << (UIntT)(bufEnd - bufStart) << endl;)
 
           DecodeBlock(frameNo, info, gotFrames, bufStart, bufEnd);
 
-          state_bytes -= bufEnd - bufStart;
+          m_demuxStateBytes -= bufEnd - bufStart;
           return 0;
         }
 
-//        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Demultiplex (1) start=" << (UIntT)bufStart << ", chunk=" << (UIntT)(state_bytes) << ", left=" << (UIntT)(bufEnd - bufStart) << endl;)
+//        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Demultiplex (1) start=" << (UIntT)bufStart << ", chunk=" << (UIntT)(m_demuxStateBytes) << ", left=" << (UIntT)(bufEnd - bufStart) << endl;)
 
-        DecodeBlock(frameNo, info, gotFrames, bufStart, bufStart + state_bytes);
+        DecodeBlock(frameNo, info, gotFrames, bufStart, bufStart + m_demuxStateBytes);
 
-        bufStart += state_bytes;
+        bufStart += m_demuxStateBytes;
         break;
         
       case DEMUX_SKIP:
-        if (state_bytes > bufEnd - bufStart)
+        if (m_demuxStateBytes > bufEnd - bufStart)
         {
-          state_bytes -= bufEnd - bufStart;
+          m_demuxStateBytes -= bufEnd - bufStart;
 
           return 0;
         }
-        bufStart += state_bytes;
+        bufStart += m_demuxStateBytes;
         break;
     }
     
@@ -424,7 +404,7 @@ namespace RavlImageN {
       NEEDBYTES (4);
       if (header[0] || header[1] || (header[2] != 1))
       {
-        if (header != head_buf)
+        if (header != m_headBuf)
         {
           bufStart++;
           goto payload_start;
@@ -535,8 +515,8 @@ namespace RavlImageN {
 
               DecodeBlock(frameNo, info, gotFrames, bufStart, bufEnd);
               
-              state = DEMUX_DATA;
-              state_bytes = bytes - (bufEnd - bufStart);
+              m_demuxState = DEMUX_DATA;
+              m_demuxStateBytes = bytes - (bufEnd - bufStart);
               return 0;
             }
             else
@@ -563,8 +543,8 @@ namespace RavlImageN {
                 bytes = (header[4] << 8) + header[5];
                 if (bytes > bufEnd - bufStart)
                 {
-                  state = DEMUX_SKIP;
-                  state_bytes = bytes - (bufEnd - bufStart);
+                  m_demuxState = DEMUX_SKIP;
+                  m_demuxStateBytes = bytes - (bufEnd - bufStart);
 
                   return 0;
                 }
