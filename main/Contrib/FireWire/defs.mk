@@ -9,26 +9,25 @@
 
 PACKAGE = Ravl/Image
 
-DESCRIPTION = Digital Video Classes
+DESCRIPTION = FireWire DV Device handling.
 
 SUPPORT_ONLY = linux  
 
-REQUIRES = libDV
+REQUIRES = libDV libavc1394
 
-MAINS=doDvDisplay.cc 
+MAINS=doDvGrab.cc
 
-HEADERS=ImgIODv.hh DvDecode.hh DvIFormat.hh 
+HEADERS= DvDevice.hh WavFile.hh PalFrame.hh
 
-SOURCES=ImgIODv.cc DvDecode.cc DvIFormat.cc DvFrameConvert.cc
+SOURCES= DvDevice.cc WavFile.cc PalFrame.cc
 
-PLIB=RavlDV
+PLIB=RavlFireWire
+
+USESLIBS=RavlDV LibFireWire
 
 AUXDIR=lib/RAVL/libdep
 
-AUXFILES= LibDV.def
-
-USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO RavlDPDisplay glib GTK LibDV  RavlVideoIO
+AUXFILES= LibFireWire.def
 
 PROGLIBS= RavlDPDisplay.opt
 
-MUSTLINK = RAVLVidIDV.cc
