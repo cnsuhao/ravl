@@ -9,6 +9,9 @@ LIBJASPER_DEF = 1
 
   include Math.def
 
+  CPPFLAGS += -DRAVL_HAVE_LIBJASPER
+  CCPPFLAGS += -DRAVL_HAVE_LIBJASPER
+
   ifndef LIBJASPER_HOME
     EXELIB := -ljasper $(EXELIB) 
   else 
