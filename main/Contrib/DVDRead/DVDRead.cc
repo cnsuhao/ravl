@@ -192,10 +192,6 @@ namespace RavlN
 
   IntT DVDReadBodyC::GetArray(SArray1dC<ByteT> &data)
   {
-    // Check we're not at the end of the stream
-    if (IsGetEOS())
-      return 0;
-    
     // Which cell is the seek byte in
     StreamPosT dataRead = 0;
     StreamPosT curCell = 0;
@@ -205,6 +201,9 @@ namespace RavlN
     StreamPosT curNavTotal = 0;
     while (dataRead < data.Size())
     {
+      if (IsGetEOS())
+        return dataRead;
+      
       while (curCell < m_numCells)
       {
         // Reset the search, if necessary
@@ -288,7 +287,7 @@ namespace RavlN
       if (curNavBlock == m_navTable.Size())
       {
           cerr << "DVDReadBodyC::GetArray attempting to seek past end of cell" << endl;
-          return 0;
+          return dataRead;
       }
       
       // Identify the data block within the NAV block
@@ -303,7 +302,7 @@ namespace RavlN
         if (len != 1)
         {
           cerr << "DVDReadBodyC::GetArray unable to read block data" << endl;
-          return 0;
+          return dataRead;
         }
         m_curBlock = curBlock;
       }
