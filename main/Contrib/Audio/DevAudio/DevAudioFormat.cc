@@ -30,7 +30,7 @@ namespace RavlAudioN {
   
   //: Constructor.
   FileFormatDevAudioBodyC::FileFormatDevAudioBodyC(const StringC &nvName)
-    : FileFormatBodyC(nvName,StringC("DevAudio driver.")),
+    : FileFormatBodyC(nvName,StringC("DevAudio driver. (@DEVAUDIO)")),
       vName(nvName)
   {}
   

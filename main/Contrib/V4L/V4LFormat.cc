@@ -44,7 +44,7 @@ namespace RavlImageN {
   
   //: Constructor.
   FileFormatV4LBodyC::FileFormatV4LBodyC(const StringC &nvName)
-    : FileFormatBodyC(nvName,StringC("V4L driver.")),
+    : FileFormatBodyC(nvName,StringC("V4L driver. (@V4L)")),
       vName(nvName)
   {}
   

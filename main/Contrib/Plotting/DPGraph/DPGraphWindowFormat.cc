@@ -36,7 +36,7 @@ namespace RavlPlotN {
   //: Default constructor.
   
   DPGraphWindowFormatBodyC::DPGraphWindowFormatBodyC()
-    : FileFormatBodyC("gui","Display data in a window. ")
+    : FileFormatBodyC("gui","Plot data in a window. (@GRAPH) ")
   {}
     
   //: Probe for Save.
