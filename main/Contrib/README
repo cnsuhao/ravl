@@ -1,0 +1,28 @@
+
+
+                ------------------------------------
+                RAVL, Recognition And Vision Library
+                ------------------------------------
+
+LICENSE
+-------
+
+The RAVL libraries are distributed under the GNU LESSER GENERAL PUBLIC 
+LICENSE (LGPL), however some of the tools built with the library have
+been issued under the more restrictive GNU GENERAL PUBLIC LICENSE, the
+headers attached to each of the files in the project indicate which of 
+these apply.
+
+It should be noted that this library is still in development so interfaces 
+may change in future releases. RAVL is split up into modules some of which
+are more stable than others, following is summary of the current status.
+
+
+INSTALLATION
+------------
+
+To use the Contrib code, before building the RAVL libraries unpack the contrib.tar
+file in the same directory as your RAVL source tree.  A new 'Contrib' directory should
+appear in the root of the source tree.  Then add "Contrib.r" to the
+end of the 'NESTED=' line in Ravl/defs.mk.  You can then build RAVL as normal. 
+
