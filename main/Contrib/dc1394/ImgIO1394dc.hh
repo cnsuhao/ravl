@@ -67,6 +67,10 @@ namespace RavlImageN {
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
+    RealT SetFrameRate(RealT speed);
+    //: Set capture framerate.
+    // Returns the actual frame rate.
+    
   protected:
     void BuildAttrList(AttributeCtrlBodyC &attrCtrl);
     //: Build attribute list.
@@ -77,6 +81,7 @@ namespace RavlImageN {
     
     raw1394handle_t raw1394handle;
     dc1394_cameracapture camera;
+    nodeid_t cameraNode;
   };
   
   template<typename PixelT>

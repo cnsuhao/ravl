@@ -12,7 +12,7 @@
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/MTLocks.hh"
 
-#define DODEBUG 0
+#define DODEBUG 1
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -49,7 +49,21 @@ namespace RavlImageN {
       { FEATURE_CAPTURE_QUALITY,"capture_quality","??" },
       { FEATURE_CAPTURE_QUALITY,0            ,0 }
     };
+
+  struct FrameRate1394dcC {
+    RealT speed;
+    unsigned int value;
+  };
   
+  static const FrameRate1394dcC frameRates[] = {
+    { 1.875  ,FRAMERATE_1_875 },
+    { 3.75   ,FRAMERATE_3_75  },
+    { 7.5    ,FRAMERATE_7_5   },
+    { 15     ,FRAMERATE_15    },
+    { 30     ,FRAMERATE_30    },
+    { 60     ,FRAMERATE_60    },
+    { -1     ,FRAMERATE_60    }
+  };
   
   //ImgIO1394dcBaseC
   
@@ -88,8 +102,8 @@ namespace RavlImageN {
       cerr << "ERROR: No camera's found. \n";
       return false;
     }
-    
-    if( camera_nodes[0] == numNodes-1) {
+    cameraNode = camera_nodes[0];
+    if(cameraNode == numNodes-1) {
       cerr << "\n"
 	"Sorry, your camera is the highest numbered node\n"
 	"of the bus, and has therefore become the root node.\n"
@@ -113,7 +127,7 @@ namespace RavlImageN {
       return false;
     }
     
-    if (dc1394_setup_capture(raw1394handle,camera_nodes[0],
+    if (dc1394_setup_capture(raw1394handle,cameraNode,
 			     0, /* channel */ 
 			     FORMAT_VGA_NONCOMPRESSED,
 			     MODE_640x480_MONO,
@@ -206,6 +220,20 @@ namespace RavlImageN {
   
   bool ImgIO1394dcBaseC::HandleGetAttr(const StringC &attrName,RealT &attrValue) {
     MTWriteLockC hold(2);
+    if(attrName == "framerate") {
+      unsigned int setting = 0;
+      dc1394_get_video_framerate(raw1394handle,camera.node,&setting);
+      for(int i = 0;frameRates[i].speed > 0;i++) {
+	//cerr << "Checking " << frameRates[i].value << "  " << setting << "\n";
+	if(frameRates[i].value == setting) {
+	  attrValue = frameRates[i].speed;
+	  return true;
+	}
+      }
+      cerr << "ImgIO1394dcBaseC::HandleGetAttr(), Unrecognised speed attribute " << setting << "\n";
+      attrValue = 15;
+      return true;
+    }
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
@@ -230,6 +258,10 @@ namespace RavlImageN {
   
   bool ImgIO1394dcBaseC::HandleSetAttr(const StringC &attrName,const RealT &attrValue) {
     MTWriteLockC hold(2);
+    if(attrName == "framerate") {
+      SetFrameRate(attrValue);      
+      return true;
+    }
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
@@ -268,7 +300,7 @@ namespace RavlImageN {
       dc1394_is_feature_auto(raw1394handle,camera.node,featureInfo.Data1(),&tmp);
       break;
     }
-    attrValue = tmp;
+    attrValue = (tmp != DC1394_FALSE);
     return true;
   }
   
@@ -286,10 +318,10 @@ namespace RavlImageN {
     case CT_IntValue:
       return false;
     case CT_OnOff:
-      dc1394_feature_on_off(raw1394handle,camera.node,featureInfo.Data1(),attrValue);
+      dc1394_feature_on_off(raw1394handle,camera.node,featureInfo.Data1(),(attrValue == DC1394_FALSE) ? false : true);
       break;
     case CT_Auto:
-      dc1394_auto_on_off(raw1394handle,camera.node,featureInfo.Data1(),attrValue);
+      dc1394_auto_on_off(raw1394handle,camera.node,featureInfo.Data1(),(attrValue == DC1394_FALSE) ? false : true);
       break;
     }
     return true;
@@ -306,7 +338,7 @@ namespace RavlImageN {
     
     for(int i = 0;i < NUM_FEATURES;i++) {
       const dc1394_feature_info &feature = featureSet.feature[i];
-      if(!feature.available)
+      if(feature.available <= 0)
 	continue; // Feature is not avalable on this camera.
       const Feature1394dcC *featureInfo = FindFeature(feature.feature_id);
       const char *cfeatName = featureInfo->name;
@@ -316,7 +348,7 @@ namespace RavlImageN {
       }
       StringC featName(cfeatName);
       
-      if(feature.abs_control && (feature.absolute_capable > 0)) {
+      if((feature.abs_control > 0) && (feature.absolute_capable > 0)) {
 	ONDEBUG(cerr << "Setting up " << featName << " Absolute. Min=" << feature.abs_min << " Max=" << feature.abs_max << " Value=" << feature.abs_value << "\n");
 	RealT diff = feature.abs_max - feature.abs_min;
 	AttributeTypeNumC<RealT> attr(featName,featureInfo->desc,feature.readout_capable,feature.manual_capable,
@@ -344,6 +376,52 @@ namespace RavlImageN {
       }
       
     }
+    
+    // Setup framerate attribute.
+    
+    AttributeTypeNumC<RealT> frameRateAttr("framerate","Number of images a second to capture",true,true,1.875,60,1,15);
+    attrCtrl.RegisterAttribute(frameRateAttr);
+  }
+
+  //: Set capture framerate.
+  // Returns the actual frame rate.
+  
+  RealT ImgIO1394dcBaseC::SetFrameRate(RealT speed) {
+    // Find closest setting.
+    RealT err = Abs(frameRates[0].speed - speed);
+    int setting = 0;
+    for(int i = 1;frameRates[i].speed > 0;i++) {
+      RealT nerr = Abs(frameRates[i].speed - speed);
+      if(nerr < err) {
+	setting = i;
+	err = nerr;
+      }
+    }
+    unsigned int current = 0;
+    unsigned int newsetting = (unsigned int) frameRates[setting].value;
+    dc1394_get_video_framerate(raw1394handle,camera.node,&current);
+    
+    if(current != newsetting) { // Need to change 
+      if (dc1394_stop_iso_transmission(raw1394handle,camera.node)!=DC1394_SUCCESS) 
+	cerr << "ERROR: couldn't stop the camera?\n";
+      //dc1394_set_video_framerate(raw1394handle,camera.node,);
+      dc1394_release_camera(raw1394handle,&camera);
+      if (dc1394_setup_capture(raw1394handle,cameraNode,
+			       0, /* channel */ 
+			       FORMAT_VGA_NONCOMPRESSED,
+			       MODE_640x480_MONO,
+			       SPEED_400,
+			       newsetting,
+			       &camera)!=DC1394_SUCCESS) {
+	cerr << "Failed to setup camera for new framerate. \n";
+	return 0;
+      }
+      if (dc1394_start_iso_transmission(raw1394handle,camera.node) != DC1394_SUCCESS)  {
+	cerr << "ERROR: unable to restart camera iso transmission\n";
+	return 0;
+      }
+    }
+    return frameRates[setting].speed; // Return actual speed.
   }
 
 }
