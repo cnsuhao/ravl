@@ -4,13 +4,13 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_IOV4L2_HEADER
-#define RAVL_IOV4L2_HEADER 1
+#ifndef RAVL_IMGIOV4L2_HEADER
+#define RAVL_IMGIOV4L2_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib=RavlIOV4L2
+//! lib=RavlImgIOV4L2
 //! author = "Warren Moore"
-//! file="Ravl/Contrib/V4L2/IOV4L2.hh"
+//! file="Ravl/Contrib/V4L2/ImgIOV4L2.hh"
 
 #include "Ravl/DP/Port.hh"
 #include "Ravl/DP/SPort.hh"
@@ -26,26 +26,26 @@ namespace RavlImageN
 {
   using namespace RavlN;
   
-  template <class PixelT> class IOV4L2C;
+  template <class PixelT> class ImgIOV4L2C;
   //: Predeclare class handle
   
   /////////////////////////////
   //! userlevel = Develop
   //: V4L2 un-templated body
   
-  class IOV4L2BaseC
+  class ImgIOV4L2BaseC
   {
   public:
-    IOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType);
+    ImgIOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType);
     //: Constructor
     
-    ~IOV4L2BaseC();
+    ~ImgIOV4L2BaseC();
     //: Destructor
     
-    bool GetFrame(ImageC<ByteRGBValueC> &img, IOV4L2C<ByteRGBValueC> parent);
+    bool GetFrame(ImageC<ByteRGBValueC> &img, ImgIOV4L2C<ByteRGBValueC> parent);
     //: Get next image.
 
-    bool GetFrame(ImageC<ByteT> &img, IOV4L2C<ByteT> parent);
+    bool GetFrame(ImageC<ByteT> &img, ImgIOV4L2C<ByteT> parent);
     //: Get next image.
 
     void ReleaseBuffer(const UIntT id, const UIntT index);
@@ -171,19 +171,19 @@ namespace RavlImageN
   //: V4L2 templated body
   
   template <class PixelT>
-  class IOV4L2BodyC :
+  class ImgIOV4L2BodyC :
     public DPIPortBodyC< ImageC<PixelT> >,
-    public IOV4L2BaseC
+    public ImgIOV4L2BaseC
   {
   public:
-    IOV4L2BodyC(const StringC &device, const UIntT input) :
-      IOV4L2BaseC(device, input, typeid(ImageC<PixelT>))
+    ImgIOV4L2BodyC(const StringC &device, const UIntT input) :
+      ImgIOV4L2BaseC(device, input, typeid(ImageC<PixelT>))
     {
       BuildAttributes(*this);
     }
     //: Constructor.
     
-    virtual ~IOV4L2BodyC()
+    virtual ~ImgIOV4L2BodyC()
     {
     }
     //: Destructor.
@@ -203,7 +203,7 @@ namespace RavlImageN
       if (!IsOpen())
         return false;
       
-      return GetFrame(img, IOV4L2C<PixelT>(*this));
+      return GetFrame(img, ImgIOV4L2C<PixelT>(*this));
     }
     //: Get next image.
     
@@ -289,27 +289,27 @@ namespace RavlImageN
   // BIG OBJECT
   
   template <class PixelT>
-  class IOV4L2C :
+  class ImgIOV4L2C :
     public DPIPortC< ImageC<PixelT> >
   {
   public:
-    IOV4L2C() :
+    ImgIOV4L2C() :
       DPEntityC(true)
     {}
     //: Default constructor.
     // Creates an invalid handle.
 
-    IOV4L2C(const StringC &device, const UIntT input) :
-      DPEntityC(*new IOV4L2BodyC<PixelT>(device, input))
+    ImgIOV4L2C(const StringC &device, const UIntT input) :
+      DPEntityC(*new ImgIOV4L2BodyC<PixelT>(device, input))
     {}
     //: Constructor.
 
-    explicit IOV4L2C(const DPIPortC< ImageC<PixelT> > &port) :
+    explicit ImgIOV4L2C(const DPIPortC< ImageC<PixelT> > &port) :
       DPEntityC(port)
-    { if (dynamic_cast<IOV4L2BodyC<PixelT>*>(&DPIPortC< ImageC<PixelT> >::Body()) == 0) this->Invalidate(); }
+    { if (dynamic_cast<ImgIOV4L2BodyC<PixelT>*>(&DPIPortC< ImageC<PixelT> >::Body()) == 0) this->Invalidate(); }
     //: Construct by upcasting from a pre-created port
     
-    explicit IOV4L2C(IOV4L2BodyC<PixelT> &body) :
+    explicit ImgIOV4L2C(ImgIOV4L2BodyC<PixelT> &body) :
       DPEntityC(body)
     {}
     //: Body constructor.
@@ -320,12 +320,12 @@ namespace RavlImageN
     // Should not be called directly
     
   protected:
-    IOV4L2BodyC<PixelT> &Body()
-    { return static_cast<IOV4L2BodyC<PixelT> &>(DPIPortC< ImageC<PixelT> >::Body()); }
+    ImgIOV4L2BodyC<PixelT> &Body()
+    { return static_cast<ImgIOV4L2BodyC<PixelT> &>(DPIPortC< ImageC<PixelT> >::Body()); }
     //: Access body.
 
-    const IOV4L2BodyC<PixelT> &Body() const
-    { return static_cast<const IOV4L2BodyC<PixelT> &>(DPIPortC< ImageC<PixelT> >::Body()); }
+    const ImgIOV4L2BodyC<PixelT> &Body() const
+    { return static_cast<const ImgIOV4L2BodyC<PixelT> &>(DPIPortC< ImageC<PixelT> >::Body()); }
     //: Access body.
   };
 }

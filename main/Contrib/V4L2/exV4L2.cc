@@ -70,7 +70,7 @@ int main(int argc, char **argv)
   OptionC opt(argc, argv);
   bool grey     = opt.Boolean("g",  false,                 "Greyscale capture.");
   IntT frames   = opt.Int(    "f",  0,                     "Number of frames to capture (0 = infinite).");
-  StringC iname = opt.String( "",   "@V4L2:/dev/video1#1", "Input name.");
+  StringC iname = opt.String( "",   "@V4L2:/dev/video0#1", "Input name.");
   StringC oname = opt.String( "",   "@X",                  "Output name.");
   opt.Check();
   

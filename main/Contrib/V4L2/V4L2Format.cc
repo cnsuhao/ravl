@@ -6,12 +6,12 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib=RavlIOV4L2
+//! lib=RavlImgIOV4L2
 //! author = "Warren Moore"
 //! file="Ravl/Contrib/V4L2/V4L2Format.cc"
 
 #include "Ravl/Image/V4L2Format.hh"
-#include "Ravl/Image/IOV4L2.hh"
+#include "Ravl/Image/ImgIOV4L2.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Image/RealRGBValue.hh"
 
@@ -62,7 +62,7 @@ namespace RavlImageN
     ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad device(" << device << ") channel(" << channel << ")" << endl;)
 
     // Create the V4L2 object (will not be open after construction if not supported)
-    IOV4L2BaseC v4l2(device, channel, obj_type);
+    ImgIOV4L2BaseC v4l2(device, channel, obj_type);
     ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad format supported(" << (v4l2.IsOpen() ? "Y" : "N") << ")" << endl;)
     
     return (v4l2.IsOpen() ? obj_type : typeid(void));
@@ -107,9 +107,9 @@ namespace RavlImageN
 
     // Create the relevant port
     if (obj_type == typeid(ImageC<ByteRGBValueC>))
-      return IOV4L2C<ByteRGBValueC>(device, channel);
+      return ImgIOV4L2C<ByteRGBValueC>(device, channel);
     if (obj_type == typeid(ImageC<ByteT>))
-      return IOV4L2C<ByteT>(device, channel);
+      return ImgIOV4L2C<ByteT>(device, channel);
 
     return DPIPortBaseC();
   }
