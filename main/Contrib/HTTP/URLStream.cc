@@ -47,7 +47,7 @@ namespace RavlN {
        curl_easy_setopt(curl, CURLOPT_URL, url.chars());
        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
-       curl_easy_setopt(curl, CURLOPT_MUTE, 1);
+       curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
        // Get the URL
        m_iError = curl_easy_perform(curl);
