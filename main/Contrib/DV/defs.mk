@@ -9,6 +9,7 @@
 PACKAGE = Ravl/Image
 DESCRIPTION = Digital Video Classes
 SUPPORT_ONLY = linux  
+REQUIRES = libDV libavc1394
 
 MAINS=doDvDisplay.cc doDvGrab.cc
 HEADERS=PalFrame.hh ImgIODv.hh DvDecode.hh DvIFormat.hh DvDevice.hh WavFile.hh 
@@ -20,6 +21,6 @@ AUXDIR=lib/RAVL/libdep
 AUXFILES= LibDV.def
 
 USESLIBS=system RavlCore RavlImage RavlIO RavlOS RavlOSIO RavlDPDisplay glib GTK LibDV  RavlVideoIO
-PROGLIBS= 
+PROGLIBS= RavlDPDisplay.opt
 
 MUSTLINK = RAVLVidIDV.cc

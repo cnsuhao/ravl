@@ -6,4 +6,4 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
-NESTED=DevAudio.r AudioFile
+NESTED=DevAudio.r AudioFile.r

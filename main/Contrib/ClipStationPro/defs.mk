@@ -9,6 +9,8 @@
 
 PACKAGE=Ravl/Image
 
+REQUIRES = libClipStationPro
+
 MAINS =  
 #csp.cc
 

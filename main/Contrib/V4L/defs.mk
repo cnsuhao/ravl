@@ -12,6 +12,8 @@ PACKAGE=Ravl/Image
 
 SUPPORT_ONLY=linux
 
+REQUIRES=devVideo4Linux
+
 MAINS=testV4LIO.cc
 
 HEADERS=ImgIOV4L.hh V4LFormat.hh

@@ -15,7 +15,9 @@ EXELIB := -ldv -lraw1394 $(EXELIB)
 
 # libavc1394 ##################################################
 
+ifndef LIBAVC1394_HOME
 LIBAVC1394_HOME=/opt/PDsoft/libavc1394-0.4.1
+endif
 LIBAVC1394_INCLUDE=$(LIBAVC1394_HOME)/include
 LIBAVC1394_LIBS=$(LIBAVC1394_HOME)/lib
 

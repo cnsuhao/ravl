@@ -8,6 +8,8 @@
 
 SUPPORT_ONLY=sgi
 
+REQUIRES = libDMedia
+
 PACKAGE = Ravl/DMedia
 
 HEADERS = Server.hh NodePath.hh RingMemory.hh Video.hh RingData.hh Memory.hh \

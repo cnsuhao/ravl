@@ -7,6 +7,8 @@
 #! rcsid="$Id$"
 #! file="Contrib/HTTP/defs.mk"
 
+REQUIRES= libCurl
+
 PACKAGE=Ravl/IO
 
 EXAMPLES = exURL.cc

@@ -6,6 +6,8 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
+REQUIRES = libAudioFile
+
 PACKAGE= Ravl/Audio
 
 HEADERS= AudioFileIO.hh AudioFileFormat.hh
