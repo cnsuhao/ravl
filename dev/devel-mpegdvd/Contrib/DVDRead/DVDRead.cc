@@ -354,8 +354,12 @@ namespace RavlN
   {
     // EOS if no file open
     if (!m_dvdFile)
+    {
+//      ONDEBUG(cerr << "DVDReadBodyC::IsGetEOS no DVD file open" << endl;)
       return true;
+    }
     
+//    ONDEBUG(cerr << "DVDReadBodyC::IsGetEOS (" << (m_endFound ? "Y" : "N") << ")" << endl;)
     return m_endFound;
   }
 
@@ -424,7 +428,7 @@ namespace RavlN
         lastFrame = vobuFrame;
 
       // Set the seek table
-      UIntT *seekTable = (frameOffset > 0) ? m_dsiPack.vobu_sri.fwda : m_dsiPack.vobu_sri.bwda;
+      UIntT *seekTable = m_dsiPack.vobu_sri.fwda;
       
       // Positive offset (seeking forward)
       bool checkAgain = false;

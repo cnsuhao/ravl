@@ -34,7 +34,7 @@ int main(int nargs, char **argv)
   
   // Select the correct opening method
   FileFormatDVDC format;
-  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(dvdString);
+  DPISPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(dvdString);
   if (!in.IsValid())
   {
     cerr << "Unable to open DVD device (" << dvdString << ")\n";
@@ -55,22 +55,28 @@ int main(int nargs, char **argv)
     }
   }
   
-  // Delay in seconds
-  const RealT delay = 0.010;
-  
-  // Load the stream
-  ImageC<ByteRGBValueC> rgb;
+  // Get the framerate
+  StringC framerate;
+  in.GetAttr("framerate", framerate);
+  UIntT framestep = Ceil(framerate.RealValue());
+  cerr << "Frame step(" << framestep << ")" << endl;
   
   // Keep playing til the end
+  ImageC<ByteRGBValueC> rgb;
+  UIntT count = 0;
   while (!in.IsGetEOS())
   {
+    in.Seek(count);
+    
     if(!in.Get(rgb))
       break;
+
+    cerr << "Get(" << count << ")" << endl;
     
     RavlN::Save("@X", rgb);
 
-    Sleep(delay);
+    count += framestep;
   }
-
+  
   return 0;
 }

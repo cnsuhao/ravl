@@ -99,6 +99,9 @@ namespace RavlImageN
     // Store the seek frame
     m_frameNo = off;
     
+    // Recheck for end
+    m_endFound = false;
+    
     return true;
   }
     
@@ -117,6 +120,9 @@ namespace RavlImageN
     
     // Store the seek frame
     m_frameNo = off;
+    
+    // Recheck for end
+    m_endFound = false;
     
     return true;
   }
