@@ -17,6 +17,8 @@ typedef unsigned long ulong;
 #include "Ravl/Image/V4LFormat.hh"
 #include "Ravl/Image/ImgIOV4L.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/Image/RealYUVValue.hh"
+#include "Ravl/Image/RealRGBValue.hh"
 
 #include <sys/types.h>
 #include <sys/stat.h>
