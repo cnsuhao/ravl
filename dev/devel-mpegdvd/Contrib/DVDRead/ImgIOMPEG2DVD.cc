@@ -4,17 +4,23 @@
 // General Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
 //! lib = RavlDVDRead
 //! author = "Warren Moore"
 
-namespace RavlN
+#include "Ravl/ImgIOMPEG2DVD.hh"
+
+#define DODEBUG 0
+
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
+namespace RavlImageN
 {
-  extern void InitDVDFormat();
+  
 }
 
-void InitDVDFormat()
-{
-  RavlN::InitDVDFormat();
-}
