@@ -64,10 +64,6 @@ namespace RavlImageN
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
 
-    virtual bool GetAttr(const StringC &attrName, IntT &attrValue);
-    //: Get a stream attribute.
-    // Returns false if the attribute name is unknown.
-
     virtual bool Reset();
     //: Reset the demultiplexer
     

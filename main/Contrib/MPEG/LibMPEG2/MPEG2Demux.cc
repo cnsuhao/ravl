@@ -139,16 +139,6 @@ namespace RavlImageN
     return DPPortBodyC::GetAttr(attrName, attrValue);
   }
 
-  bool MPEG2DemuxBodyC::GetAttr(const StringC &attrName, IntT &attrValue)
-  {
-    if (attrName == "track")
-    {
-      attrValue = m_track;
-      return true; 
-    }
-    return DPPortBodyC::GetAttr(attrName, attrValue);
-  }
-
   bool MPEG2DemuxBodyC::ReadInput()
   {
     if (!input.IsValid() || input.IsGetEOS())
