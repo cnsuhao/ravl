@@ -1,3 +1,4 @@
+PACKAGE = Ravl/OS
 SOURCES = Parport.cc
 HEADERS = Parport.hh
 PLIB = PPDev
