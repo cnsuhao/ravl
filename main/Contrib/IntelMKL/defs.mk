@@ -6,7 +6,7 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
-REQUIRES=libmkl
+# REQUIRES=libmkl
 
 PACKAGE=Ravl
 
@@ -14,7 +14,7 @@ HEADERS=IntelFFT2d.hh
 
 SOURCES=IntelFFT2d.cc
 
-TESTEXE= testIntelFFT2d.cc
+TESTEXES= testIntelFFT2d.cc
 
 PLIB=RavlIntelMKL
 
