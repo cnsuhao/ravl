@@ -426,6 +426,18 @@ namespace RavlImageN
     }
   }
   
+  bool MPEG2DemuxBodyC::Reset()
+  {
+    cerr << "MPEG2DemuxBodyC::Reset" << endl;
+    
+    m_state = DEMUX_SKIP;
+    m_stateBytes = 0;
+    m_bufStart = m_headBuf;
+    m_bufEnd = m_headBuf;
+    
+    return true;
+  }
+  
   void MPEG2DemuxBodyC::BuildAttributes()
   {
     RegisterAttribute(AttributeTypeNumC<ByteT>("track", "MPEG demultiplexed track", true, false));

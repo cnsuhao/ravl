@@ -43,7 +43,7 @@ namespace RavlImageN
     ImgILibMPEG2BodyC(bool seekable);
     //: Constructor.
     
-    ~ImgILibMPEG2BodyC();
+    virtual ~ImgILibMPEG2BodyC();
     //: Destructor.
     
     virtual ImageC<ByteRGBValueC> Get()
@@ -86,6 +86,9 @@ namespace RavlImageN
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
+    virtual bool Reset();
+    //: Reset the decoder
+
   protected:
     virtual bool InitialSeek();
     //: Store the initial stream position
@@ -147,6 +150,18 @@ namespace RavlImageN
     {}
     //: Constructor.
     
+    bool Reset()
+    { return Body().Reset(); }
+    //: Reset the decoder
+    
+  protected:
+    ImgILibMPEG2BodyC &Body()
+    { return static_cast<ImgILibMPEG2BodyC &>(DPIStreamOpC< ByteT, ImageC<ByteRGBValueC> >::Body()); }
+    //: Access body.
+
+    const ImgILibMPEG2BodyC &Body() const
+    { return static_cast<const ImgILibMPEG2BodyC &>(DPIStreamOpC< ByteT, ImageC<ByteRGBValueC> >::Body()); }
+    //: Access body.
   };
 }
 

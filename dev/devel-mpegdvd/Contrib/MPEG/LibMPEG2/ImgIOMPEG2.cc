@@ -217,6 +217,31 @@ namespace RavlImageN
     return false;
   }
 
+  bool ImgILibMPEG2BodyC::Reset()
+  {
+    RavlAssertMsg(!m_seekable, "ImgILibMPEG2BodyC::Reset should not be called on a seekable stream");
+
+    cerr << "ImgILibMPEG2BodyC::Reset" << endl;
+    
+    // Close the decoder
+    mpeg2_close(m_decoder);
+    
+    // Restart the decoder
+    m_decoder = mpeg2_init();
+    m_sequenceInit = false;
+    
+    // Flush the cache and offsets
+    m_imageCache.Empty();
+    
+    // Clear the read info
+    m_endFound = false;
+    
+    // Reset the data buffer
+    m_bufStart = m_bufEnd = m_buffer.DataStart();
+      
+    return true;
+  }
+  
   //: Read data from stream into buffer.
   
   bool ImgILibMPEG2BodyC::ReadInput()
@@ -506,6 +531,7 @@ namespace RavlImageN
         m_gopCount++;
         
         // Check it's not a skipped GOP
+        if (m_seekable)
         {
           StreamPosT at;
           if (m_offsets.Find(frameNo, at) && at == -1)

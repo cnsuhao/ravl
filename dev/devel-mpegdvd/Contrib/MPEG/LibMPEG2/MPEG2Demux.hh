@@ -38,10 +38,10 @@ namespace RavlImageN
     MPEG2DemuxBodyC(ByteT track);
     //: Constructor.
     
-    ~MPEG2DemuxBodyC();
+    virtual ~MPEG2DemuxBodyC();
     //: Destructor.
     
-    ByteT Get()
+    virtual ByteT Get()
     {
       ByteT data;
       if(!Get(data))
@@ -50,14 +50,14 @@ namespace RavlImageN
     }
     //: Get next byte.
     
-    bool Get(ByteT &data);
+    virtual bool Get(ByteT &data);
     //: Get next byte.
     
-    IntT GetArray(SArray1dC<ByteT> &data);
+    virtual IntT GetArray(SArray1dC<ByteT> &data);
     //: Get an array of bytes from stream.
     // returns the number of elements processed
 
-    bool IsGetEOS() const;
+    virtual bool IsGetEOS() const;
     //: Is it the EOS
 
     virtual bool GetAttr(const StringC &attrName, StringC &attrValue);
@@ -68,6 +68,9 @@ namespace RavlImageN
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
 
+    virtual bool Reset();
+    //: Reset the demultiplexer
+    
   private:
     bool ReadInput();
     //: Read data from the input stream
@@ -109,6 +112,19 @@ namespace RavlImageN
       DPEntityC(*new MPEG2DemuxBodyC(track))
     {}
     //: Constructor.
+
+    bool Reset()
+    { return Body().Reset(); }
+    //: Reset the demultiplexer
+
+  protected:
+    MPEG2DemuxBodyC &Body()
+    { return static_cast<MPEG2DemuxBodyC &>(DPIStreamOpC< ByteT, ByteT >::Body()); }
+    //: Access body.
+
+    const MPEG2DemuxBodyC &Body() const
+    { return static_cast<const MPEG2DemuxBodyC &>(DPIStreamOpC< ByteT, ByteT >::Body()); }
+    //: Access body.
   };
 
 }
