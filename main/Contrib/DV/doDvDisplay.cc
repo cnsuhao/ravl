@@ -5,6 +5,8 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////
+//! rcsid="$Id$"
+//! lib=RavlDV
 
 #include "Ravl/Option.hh"
 #include "Ravl/Image/ByteRGBValue.hh"

@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=RavlDv
+//! lib=RavlDV
 //! file="Ravl/Image/ExternalImageIO/MpegFormat.cc"
 
 #include "Ravl/Image/DvIFormat.hh"
