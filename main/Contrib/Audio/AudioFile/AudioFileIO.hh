@@ -11,7 +11,7 @@
 //! rcsid="$Id$"
 //! lib=RavlAudioFile
 //! file="Ravl/Contrib/Audio/AudioFile/AudioFileIO.hh"
-
+//! example =exAudioFile.cc
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Audio/AudioIO.hh"
 

@@ -154,7 +154,9 @@ namespace RavlAudioN {
   // returns actual number of bits.
   
   bool AudioFileBaseC::GetSampleBits(IntT &bits) {
-    return false;
+    IntT rate ; 
+    afGetSampleFormat ( handle, AF_DEFAULT_TRACK, &rate, &bits) ;
+      return true;
   }
   
   //: Get frequency of samples

@@ -15,6 +15,8 @@ HEADERS= AudioFileIO.hh AudioFileFormat.hh
 
 SOURCES= AudioFileIO.cc AudioFileFormat.cc
 
+EXAMPLES= exAudioFile.cc 
+
 PLIB=RavlAudioFile
 
 MUSTLINK=RavlAudioFile.cc
