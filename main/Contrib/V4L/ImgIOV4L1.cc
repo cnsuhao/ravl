@@ -32,7 +32,7 @@ typedef unsigned long ulong;
 
 #define USE_MMAP 1
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -242,7 +242,7 @@ namespace RavlImageN {
 	vmmap.height = rect.Rows();
 	vmmap.width = rect.Cols();
 	vmmap.format = palette;
-	cerr << "mmap Width=" << vmmap.width << " Height=" << vmmap.height << " Palette=" << palette << "\n";
+	ONDEBUG(cerr << "mmap Width=" << vmmap.width << " Height=" << vmmap.height << " Palette=" << palette << "\n");
 	int rret;
 	if((rret = ioctl(fd,VIDIOCMCAPTURE,&vmmap)) < 0) {
 	  cerr << "Failed to start memory mapped capture. " << rret << " Errno=" << errno << "\n";
