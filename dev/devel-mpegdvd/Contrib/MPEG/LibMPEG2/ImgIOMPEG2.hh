@@ -88,6 +88,7 @@ namespace RavlImageN
     
     virtual bool Reset();
     //: Reset the decoder
+    // Only valid in non-seekable mode
 
   protected:
     virtual bool InitialSeek();
@@ -119,8 +120,10 @@ namespace RavlImageN
     
     Index2dC m_imgSize;                                                     // Frame size
     StreamPosT m_frameNo;                                                   // Desired seek frame
+    StreamPosT m_frameLast;                                                 // Last frame read
     CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > m_imageCache;   // Frame cache
     IntT m_lastFrameType;                                                   // Last decoded frame tpye indicator
+    bool m_firstIFrame;                                                     // Initial I frame found
     
     bool m_seekable;                                                        // Seekable sequence indicator
     bool m_sequenceInit;                                                    // Sequence initialised indicator
@@ -153,6 +156,7 @@ namespace RavlImageN
     bool Reset()
     { return Body().Reset(); }
     //: Reset the decoder
+    // Only valid in non-seekable mode
     
   protected:
     ImgILibMPEG2BodyC &Body()

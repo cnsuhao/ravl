@@ -428,7 +428,7 @@ namespace RavlImageN
   
   bool MPEG2DemuxBodyC::Reset()
   {
-    cerr << "MPEG2DemuxBodyC::Reset" << endl;
+    ONDEBUG(cerr << "MPEG2DemuxBodyC::Reset" << endl;)
     
     m_state = DEMUX_SKIP;
     m_stateBytes = 0;

@@ -50,8 +50,10 @@ namespace RavlImageN
     m_bufStart(0),
     m_bufEnd(0),
     m_frameNo(0),
+    m_frameLast(0),
     m_imageCache(g_cacheStep * 2),
     m_lastFrameType(0),
+    m_firstIFrame(false),
     m_seekable(seekable),
     m_sequenceInit(false),
     m_lastRead(0),
@@ -221,7 +223,7 @@ namespace RavlImageN
   {
     RavlAssertMsg(!m_seekable, "ImgILibMPEG2BodyC::Reset should not be called on a seekable stream");
 
-    cerr << "ImgILibMPEG2BodyC::Reset" << endl;
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Reset" << endl;)
     
     // Close the decoder
     mpeg2_close(m_decoder);
@@ -230,11 +232,15 @@ namespace RavlImageN
     m_decoder = mpeg2_init();
     m_sequenceInit = false;
     
-    // Flush the cache and offsets
-    m_imageCache.Empty();
+    // Clear the counters
+    m_gopCount = 0;
+    m_gopLimit = 2;
     
     // Clear the read info
     m_endFound = false;
+    
+    // Make sure the first frame is an I frame
+    m_firstIFrame = false;
     
     // Reset the data buffer
     m_bufStart = m_bufEnd = m_buffer.DataStart();
@@ -429,20 +435,22 @@ namespace RavlImageN
   
   bool ImgILibMPEG2BodyC::DecodeGOP(StreamPosT firstFrameNo)
   {
+    ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP first frame(" << firstFrameNo << ")" << endl;)
+    
     // Decoder vars
-    StreamPosT localFrameNo = firstFrameNo;
+    m_frameLast = firstFrameNo;
     m_gopLimit = 1;
 
     if (m_seekable)
     {
       // Seek to the relevant GOP position
-      if (!SeekGOP(firstFrameNo, localFrameNo))
+      if (!SeekGOP(firstFrameNo, m_frameLast))
         return false;
     }
     else
     {
       // Skip the GOP at the beginning
-      if (localFrameNo == 0)
+      if (m_frameLast == 0)
         m_gopLimit = 2;
     }
 
@@ -472,7 +480,7 @@ namespace RavlImageN
     
       // Decode the buffer
       m_state = mpeg2_parse(m_decoder);
-      Decode(localFrameNo, info);
+      Decode(m_frameLast, info);
 
       // Check we've decoded a complete GOP
       if (m_gopCount >= m_gopLimit)
@@ -486,8 +494,8 @@ namespace RavlImageN
           if (!m_endFound)
           {
             StreamPosT parsePos = m_lastRead + (StreamPosT)(m_decoder->buf_start - &(m_buffer[0]));
-            ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP **** Recording frame (" << localFrameNo << ") at (" << parsePos << ")" << endl;)
-            m_offsets.Insert(localFrameNo, parsePos, false);
+            ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP **** Recording frame (" << m_frameLast << ") at (" << parsePos << ")" << endl;)
+            m_offsets.Insert(m_frameLast, parsePos, false);
           }
   
           break;
@@ -522,12 +530,12 @@ namespace RavlImageN
           m_sequenceInit = true;
           m_imgSize = Index2dC(info->sequence->height,info->sequence->width);
           info = mpeg2_info(m_decoder);
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode imageSize (" << m_imgSize << ")" << endl;)
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode imageSize(" << m_imgSize << ")" << endl;)
         }
         break;
       
       case STATE_GOP:
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP (" << m_gopCount << ") frame (" << frameNo << ")" << endl;)
+        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got STATE_GOP count(" << m_gopCount << ") limit(" << m_gopLimit << ") frame(" << frameNo << ")" << endl;)
         m_gopCount++;
         
         // Check it's not a skipped GOP
@@ -563,45 +571,54 @@ namespace RavlImageN
           // Only store the image if it's fresh
           if (m_gopLimit - m_gopCount <= 1)
           {
+            // Get the frame type
             IntT frameType = info->display_picture->flags & PIC_MASK_CODING_TYPE;
             ONDEBUG( \
               UIntT frameid = (UIntT)info->display_fbuf->id;
               cerr << "ImgILibMPEG2BodyC::Decode frameid(" << frameid << ") temporal ref(" << info->display_picture->temporal_reference << ") type(" << frameTypes[frameType] << ")" << endl; \
             )
-            ImageC<ByteRGBValueC> nimg(m_imgSize[0].V(), m_imgSize[1].V());
-
-            // Convert YUV to RGB
-            UIntT stride = m_imgSize[1].V();
-            if (info->display_fbuf)
-            {
-              ByteT ** xbuf = (ByteT **) info->display_fbuf->buf;
-              UIntT row = 0;
-              for(Array2dIterC<ByteRGBValueC> it(nimg);it;row++)
-              {
-                ByteT *yd = &(xbuf[0][stride * row]); 
-                IntT crow = ((row >> 1) & ~((UIntT)1)) + row % 2;
             
-                ByteT *ud = &(xbuf[1][(stride/2) * crow]);
-                ByteT *vd = &(xbuf[2][(stride/2) * crow]);
-                do {
-                  ByteRGBValueC &p1 = *it;
-                  it++;
-                  ByteYUV2RGB2(yd[0],yd[1],(*ud + 128),(*vd + 128),p1,*it);
-                  yd += 2;
-                  ud++;
-                  vd++;	      
-                } while(it.Next()) ;
-              }
-            }
-
             // Cache the image
-            ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode caching frame (" << frameNo << ")" << endl;)
-            m_imageCache.Insert(frameNo, Tuple2C<ImageC<ByteRGBValueC>,IntT>(nimg, frameType));
+            if (m_firstIFrame || frameType == 1)
+            {
+              // Convert YUV to RGB
+              ImageC<ByteRGBValueC> nimg(m_imgSize[0].V(), m_imgSize[1].V());
+              UIntT stride = m_imgSize[1].V();
+              if (info->display_fbuf)
+              {
+                ByteT ** xbuf = (ByteT **) info->display_fbuf->buf;
+                UIntT row = 0;
+                for(Array2dIterC<ByteRGBValueC> it(nimg);it;row++)
+                {
+                  ByteT *yd = &(xbuf[0][stride * row]); 
+                  IntT crow = ((row >> 1) & ~((UIntT)1)) + row % 2;
+              
+                  ByteT *ud = &(xbuf[1][(stride/2) * crow]);
+                  ByteT *vd = &(xbuf[2][(stride/2) * crow]);
+                  do {
+                    ByteRGBValueC &p1 = *it;
+                    it++;
+                    ByteYUV2RGB2(yd[0],yd[1],(*ud + 128),(*vd + 128),p1,*it);
+                    yd += 2;
+                    ud++;
+                    vd++;	      
+                  } while(it.Next()) ;
+                }
+              }
+  
+              ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode caching frame(" << frameNo << ")" << endl;)
+              m_imageCache.Insert(frameNo, Tuple2C<ImageC<ByteRGBValueC>,IntT>(nimg, frameType));
+              m_firstIFrame = true;
+            }
+            else
+            {
+              ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode skipping partial frame(" << frameNo << ")" << endl;)
+            }
           }
           else
           {
             // Flush the image through the decoder
-            ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode skipping frame (" << frameNo << ")" << endl;)
+            ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode skipping frame(" << frameNo << ")" << endl;)
           }
           
           if (m_seekable)
@@ -625,7 +642,8 @@ namespace RavlImageN
           }
 
           // Update the frame count
-          frameNo++;
+          if (m_firstIFrame)
+            frameNo++;
         }
         break;
         
@@ -634,7 +652,7 @@ namespace RavlImageN
         break;
           
       default:
-        cerr << "ImgILibMPEG2BodyC::Decode unknown state (" << m_state << ")" << endl;
+        cerr << "ImgILibMPEG2BodyC::Decode unknown state(" << m_state << ")" << endl;
         return false;
     }
 
@@ -653,7 +671,7 @@ namespace RavlImageN
 
   void ImgILibMPEG2BodyC::BuildAttributes() 
   {
-    RegisterAttribute(AttributeTypeStringC("frametype","MPEG frame type",true,false));
+    RegisterAttribute(AttributeTypeStringC("frametype", "MPEG frame type", true, false));
   }
 }
 
