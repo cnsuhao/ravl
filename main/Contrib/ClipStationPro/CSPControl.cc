@@ -70,6 +70,7 @@ namespace RavlImageN {
     }
     else if (attrName == "timecode") {
       attrValue = timecode_from_getframe.ToText();
+      return true ; 
     }
     return false;
   }
@@ -207,7 +208,7 @@ namespace RavlImageN {
       //RavlAssert(svbuf->video[0].addr != 0);
       memcpy(buff,svbuf->video[0].addr,svbuf->video[0].size);
     } else
-      cerr << "ERROR ClipStationProDeviceC: Buffer to big. \n";
+      cerr << "ERROR ClipStationProDeviceC: Buffer too big. \n";
     if((ret = sv_fifo_putbuffer(dev,fifo,svbuf,0)) != SV_OK) {
       cerr << "ERROR ClipStationProDeviceC: Failed to put frame :" << ret << "\n";
       return false;
