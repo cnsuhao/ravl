@@ -8,8 +8,8 @@
 #define RAVL_LIB1394DCFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Video IO.Video4Linux"
-//! date="29/10/1998"
+//! docentry="Ravl.Contrib.Video_IO.IIDC"
+//! date="20/8/2003"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/1394dc/1394dcFormat.hh"
 //! lib=RavlImgIO1394dc
