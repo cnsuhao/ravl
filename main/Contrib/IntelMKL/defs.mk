@@ -6,7 +6,7 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
-# REQUIRES=libmkl
+REQUIRES=libmkl
 
 PACKAGE=Ravl
 
