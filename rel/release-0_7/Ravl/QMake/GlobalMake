@@ -1,0 +1,8 @@
+# RAVL Compatibility file.
+ifndef MAKEHOME
+  MAKEHOME=/buf/ees1cg/install/share/RAVL/QMake
+endif
+BASE_VAR := $(RAVL_VAR)
+export MAKEHOME
+export BASE_VAR
+include $(MAKEHOME)/QMake.mk
