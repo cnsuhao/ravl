@@ -1,8 +1,10 @@
 // This file is part of RAVL, Recognition And Vision Library 
 // Copyright (C) 2003, University of Surrey
-// This code may be redistributed under the terms of the GNU Lesser
-// General Public License (LGPL). See the lgpl.licence file for details or
-// see http://www.gnu.org/copyleft/lesser.html
+// This code may be redistributed under the terms of the GNU
+// General Public License (GPL). See the gpl.licence file for details or
+// see http://www.gnu.org/copyleft/gpl.html
+// Demultiplexer based upon parts of mpeg2dec, which can be found at
+// http://libmpeg2.sourceforge.net/
 // file-header-ends-here
 #ifndef RAVL_MPEG2DEMUX_HEADER
 #define RAVL_MPEG2DEMUX_HEADER 1
@@ -14,6 +16,15 @@
 #include "Ravl/DP/StreamOp.hh"
 #include "Ravl/SArray1d.hh"
 #include "Ravl/DList.hh"
+#include "Ravl/DP/SPort.hh"
+
+extern "C"
+{
+  typedef unsigned int uint32_t;
+  typedef unsigned char uint8_t;
+  
+  #include <mpeg2dec/mpeg2.h>
+}
 
 namespace RavlImageN
 {
@@ -54,6 +65,15 @@ namespace RavlImageN
     // Returns false if the attribute name is unknown.
 
   private:
+    bool ReadInput();
+    //: Read data from the input stream
+  
+    void AppendOutput(ByteT *start, ByteT *end);
+    //: Append demultiplexed data to the output buffer
+    
+    bool Demultiplex();
+    //: Demultiplex the input buffer
+    
     void BuildAttributes();
     //: Register stream attributes
 

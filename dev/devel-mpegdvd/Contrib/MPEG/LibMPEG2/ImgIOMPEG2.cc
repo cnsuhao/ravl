@@ -3,8 +3,6 @@
 // This code may be redistributed under the terms of the GNU
 // General Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
-// Demultiplexer based upon parts of mpeg2dec, which can be found at
-// http://libmpeg2.sourceforge.net/
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
