@@ -87,6 +87,7 @@ namespace RavlAudioN {
   bool DevAudioBaseC::GetSampleRate(RealT &rate) {
     long sample_rate;
     ioctl(audiofd, SOUND_PCM_READ_RATE, &sample_rate);
+    ONDEBUG(cout <<  "DevAudioBaseC::GetSampleRate(), sound rate: " << sample_rate << endl);
     rate = (RealT) sample_rate;
     return true;
   }
@@ -184,9 +185,11 @@ namespace RavlAudioN {
       cerr << "DevAudioBaseC::Read(), WARNING: Called on invalid stream. \n";
       return false;
     }
-    int ret,tot = 0;
+    int ret;
+    int wlen = len;;
+    char *bufPtr = (char *) buf;
     do {
-      ret = read(audiofd,buf,len);
+      ret = read(audiofd,bufPtr,wlen);
       if(ret < 0) {
 	if(errno == EAGAIN)
 	  continue;
@@ -195,8 +198,9 @@ namespace RavlAudioN {
 	cerr << "DevAudioBaseC::Read(), Error while writting:" << errno << "\n"; 
 	return false;
       }
-      tot += ret;
-    } while(tot < len) ;
+      bufPtr += ret;
+      wlen -= ret;
+    } while(wlen > 0) ;
     return true;
   }
   
@@ -208,9 +212,10 @@ namespace RavlAudioN {
       cerr << "DevAudioBaseC::Write(), WARNING: Called on invalid stream. \n";
       return false;
     }
-    int ret,tot = 0;
+    int ret;
+    char *bufPtr = (char *) buf;
     do {
-      ret = write(audiofd,buf,len);
+      ret = write(audiofd,bufPtr,len);
       if(ret < 0) {
 	if(errno == EAGAIN)
 	  continue;
@@ -219,8 +224,9 @@ namespace RavlAudioN {
 	cerr << "DevAudioBaseC::Write(), Error while writting:" << errno << "\n"; 
 	return false;
       }
-      tot += ret;
-    } while(tot < len) ;
+      bufPtr += ret;
+      len -= ret;
+    } while(len > 0) ;
     return true;
   }
   

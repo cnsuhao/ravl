@@ -17,7 +17,7 @@ PLIB=RavlDPGraph
 
 MUSTLINK=RavlDPGraphWindow.cc
 
-USESLIBS=RavlIO RavlGUI RavlGraph RavlGuppi
+USESLIBS=RavlIO RavlGUI RavlPlot RavlGuppi
 
 EXAMPLES= exDPGraphWindow.cc
 

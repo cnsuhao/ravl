@@ -49,10 +49,13 @@ namespace RavlAudioN {
   //: Setup IO.
   
   bool AudioFileBaseC::SetupChannel(int channel,const type_info &ndtype) {
-    if(ndtype == typeid(Int16T)) {
+    if(ndtype == typeid(SByteT)) {
+      afSetVirtualChannels(handle,AF_DEFAULT_TRACK,1);
+      afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_TWOSCOMP, 8);
+    } else if(ndtype == typeid(Int16T)) {
       afSetVirtualChannels(handle,AF_DEFAULT_TRACK,1);
       afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_TWOSCOMP, 16);
-    } if(ndtype == typeid(SampleElemC<2,Int16T>)) {
+    } else if(ndtype == typeid(SampleElemC<2,Int16T>)) {
       afSetVirtualChannels(handle,AF_DEFAULT_TRACK,2);
       afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_TWOSCOMP, 16);
     } else {
@@ -66,9 +69,11 @@ namespace RavlAudioN {
   
   bool AudioFileBaseC::IOpen(const StringC &fn,int nchannel,const type_info &ndtype) {
     ONDEBUG(cerr << "AudioFileBaseC::IOpen(), Called. \n");
-    if(ndtype == typeid(Int16T)) {
+    if(ndtype == typeid(SByteT)) {
+      frameSize = sizeof(SByteT);
+    } else if(ndtype == typeid(Int16T)) {
       frameSize = sizeof(Int16T);
-    } else  if(ndtype == typeid(SampleElemC<2,Int16T>)) {
+    } else if(ndtype == typeid(SampleElemC<2,Int16T>)) {
       frameSize = sizeof(SampleElemC<2,Int16T>);
     } else {
       cerr << "AudioFileBaseC::IOpen(), ERROR: Unrecognised sample type:" << ndtype.name() << "\n";
@@ -87,7 +92,9 @@ namespace RavlAudioN {
   
   bool AudioFileBaseC::OOpen(const StringC &fn,int nchannel,const type_info &ndtype) {
     ONDEBUG(cerr << "AudioFileBaseC::OOpen(), Called. \n");
-    if(ndtype == typeid(Int16T)) {
+    if(ndtype == typeid(SByteT)) {
+      frameSize = sizeof(SByteT);
+    } else if(ndtype == typeid(Int16T)) {
       frameSize = sizeof(Int16T);
     } else  if(ndtype == typeid(SampleElemC<2,Int16T>)) {
       frameSize = sizeof(SampleElemC<2,Int16T>);
@@ -201,6 +208,28 @@ namespace RavlAudioN {
     }
     //ONDEBUG(cerr << "AudioFileBaseC::Write(), Done. \n");
     return true;
+  }
+
+
+  //: Seek to location in stream.
+  
+  bool AudioFileBaseC::Seek(UIntT off) {
+    IntT ret = afSeekFrame (handle,AF_DEFAULT_TRACK,off);
+    return ret > 0;
+  }
+  
+  //: Find current location in stream.
+  // May return ((UIntT) (-1)) if not implemented.
+  
+  UIntT AudioFileBaseC::Tell() const {
+    return afTellFrame (handle,AF_DEFAULT_TRACK);
+  }
+  
+  //: Find the total size of the stream.  (assuming it starts from 0)
+  // May return ((UIntT) (-1)) if not implemented.
+  
+  UIntT AudioFileBaseC::Size() const {
+    return afGetFrameCount (handle,AF_DEFAULT_TRACK);
   }
   
 }

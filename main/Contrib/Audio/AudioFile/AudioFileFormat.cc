@@ -48,12 +48,20 @@ namespace RavlAudioN {
       return typeid(void);
     }
     int channels = afGetChannels (setup,AF_DEFAULT_TRACK);
-    ONDEBUG(cerr << "Open of file '" << filename << "' ok. Probe passed. Channels=" << channels << " \n");
+    int sampfmt,sampwidth;
+    afGetSampleFormat (setup, AF_DEFAULT_TRACK, &sampfmt,&sampwidth);
+    
+    ONDEBUG(cerr << "Open of file '" << filename << "' ok. Probe passed. Channels=" << channels << " Format=" <<sampfmt << " Width=" << sampwidth << " \n");
     afCloseFile(setup);
-    if(channels == 1)
-      return typeid(Int16T);
-    if(channels == 2)
-      return typeid(SampleElemC<2,Int16T>);
+    if(sampwidth == 16) {
+      if(channels == 1)
+	return typeid(Int16T);
+      if(channels == 2)
+	return typeid(SampleElemC<2,Int16T>);
+    } else {
+      if(channels == 1)
+	return typeid(SByteT);
+    }
     cerr << "Unexpected number of audio channels in '" << filename << "' Channels=" << channels << "\n";
     return typeid(void);
   }
@@ -93,6 +101,8 @@ namespace RavlAudioN {
       return DPIAudioC<Int16T,AudioFileBaseC>(filename,0);
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPIAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
+    if(obj_type == typeid(SByteT))
+      return DPIAudioC<SByteT,AudioFileBaseC>(filename,0);
     return DPIPortBaseC();
   }
   
@@ -106,6 +116,8 @@ namespace RavlAudioN {
       return DPOAudioC<Int16T,AudioFileBaseC>(filename,0);
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
+    if(obj_type == typeid(SByteT))
+      return DPOAudioC<SByteT,AudioFileBaseC>(filename,0);
     return DPOPortBaseC();
   }
   

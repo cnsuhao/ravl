@@ -68,6 +68,17 @@ namespace RavlAudioN {
     { return handle != 0; }
     //: Is stream open ?
     
+    bool Seek(UIntT off);
+    //: Seek to location in stream.
+    
+    UIntT Tell() const;
+    //: Find current location in stream.
+    // May return ((UIntT) (-1)) if not implemented.
+    
+    UIntT Size() const;
+    //: Find the total size of the stream.  (assuming it starts from 0)
+    // May return ((UIntT) (-1)) if not implemented.
+    
   protected:
     AFfilehandle handle;  
     AFfilesetup setup;
