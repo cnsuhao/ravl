@@ -24,7 +24,7 @@ PLIB= CSPDriver
 USESLIBS=ClipStationPro RavlCore RavlImage RavlImageIO
 # Mtext Mopt Mimage DataProc DPImageIO DPDisplayIO
 
-PROGLIBS= RavlDPDisplay RavlOSIO
+PROGLIBS= RavlDPDisplay.opt RavlOSIO
 
 AUXFILES= ClipStationPro.def
 

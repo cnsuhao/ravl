@@ -26,7 +26,7 @@ PLIB = RavlDMedia
 
 USESLIBS= RavlCore RavlOSIO  RavlOS RavlThreads SGIVL
 
-PROGLIBS=RavlVideoIO RavlImageIO RavlDPDisplay
+PROGLIBS=RavlVideoIO RavlImageIO RavlDPDisplay.opt
 
 AUXDIR=libdep
 

@@ -24,7 +24,9 @@ PLIB = RavlMPEG
 
 EXAMPLES = exMPEGI.cc
 
-USESLIBS = RavlImageIO RavlImage RavlOSIO LibMPEG RavlDPDisplay
+USESLIBS = RavlImageIO RavlImage RavlOSIO LibMPEG 
+
+PROGLIBS = RavlDPDisplay.opt
 
 AUXDIR=lib/RAVL/libdep
 
