@@ -31,18 +31,12 @@ int main(int nargs,char **argv) {
   ofstream file(filename, ios::out|ios::binary);
 
   // Load the stream
-  SArray1dC<ByteT> data;
-  while(dvd.GetArray(data))
+  SArray1dC<ByteT> data(1024 * 1024);
+  UIntT size = 0;
+  while((size = dvd.GetArray(data)) > 0)
   {
-    file.write(reinterpret_cast<const char*>(&(data[0])), data.Size());
+    file.write(reinterpret_cast<const char*>(&(data[0])), size);
   }
-  /*
-  ByteT data;
-  while (dvd.Get(data))
-  {
-    file.put(data);
-  }
-  */
 
   file.close();
   

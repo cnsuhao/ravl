@@ -33,7 +33,8 @@ extern "C" {
 #define DEMUX_DATA 1
 #define DEMUX_SKIP 2
 
-namespace RavlImageN {
+namespace RavlImageN
+{
   
 #if DODEBUG
   static char frameTypes[5] = { 'X','I', 'P','B','D' };
@@ -43,8 +44,7 @@ namespace RavlImageN {
 
   //: Default constructor.
   
-  ImgILibMPEG2BodyC::ImgILibMPEG2BodyC(IStreamC &strm, IntT demuxTrack) :
-    ins(strm),
+  ImgILibMPEG2BodyC::ImgILibMPEG2BodyC(IntT demuxTrack) :
     decoder(0),
     m_state(-2),
     buffer(16384*2),
@@ -58,14 +58,12 @@ namespace RavlImageN {
     imageCache(40),
     sequenceInit(false),
     lastFrameType(0),
+    m_initialSeek(false),
     m_demuxTrack(demuxTrack),
     m_demuxState(DEMUX_SKIP),
     m_demuxStateBytes(0)
   {
     decoder = mpeg2_init();
-    offsets.Insert(0, strm.Tell()); // Store initial offset.
-
-//    BuildIndex(1);
     
     // Check the demux track
     if (m_demuxTrack > 0 && (m_demuxTrack < 0xe0 || m_demuxTrack > 0xef))
@@ -73,6 +71,8 @@ namespace RavlImageN {
       cerr << "ImgILibMPEG2BodyC::ImgILibMPEG2BodyC invalid demultiplex track.\n";
       m_demuxTrack = -1;
     }
+
+//    BuildIndex(1);
   }
   
   //: Destructor.
@@ -83,15 +83,41 @@ namespace RavlImageN {
       mpeg2_close(decoder);
   }
   
+  bool ImgILibMPEG2BodyC::InitialSeek()
+  {
+    RavlAssertMsg(!m_initialSeek, "ImgILibMPEG2BodyC::InitialSeek called again");
+    
+    if (input.IsValid())
+    {
+      DPSeekCtrlC seek(input);
+      if (seek.IsValid())
+      {
+        offsets.Insert(0, seek.Tell());
+        
+        m_initialSeek = true;
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
   //: Read data from stream into buffer.
   
-  bool ImgILibMPEG2BodyC::ReadData() {
-    if(!ins)
+  bool ImgILibMPEG2BodyC::ReadData()
+  {
+    RavlAssertMsg(input.IsValid(), "ImgILibMPEG2BodyC::ReadData called with invalid input");
+    
+    if(input.IsGetEOS())
       return false;
+    
+    DPSeekCtrlC seek(input);
+    if (!seek.IsValid())
+      return false;
+    
     bufStart = &(buffer[0]);
-    lastRead = ins.Tell();
-    ins.read((char*)bufStart, buffer.Size());
-    UIntT len = ins.gcount();
+    lastRead = seek.Tell();
+    UIntT len = input.GetArray(buffer);
     bufEnd = bufStart + len;
     return true;
   }
@@ -100,7 +126,8 @@ namespace RavlImageN {
   // Returns false if the attribute name is unknown.
   // This is for handling stream attributes such as frame rate, and compression ratios.
   
-  bool ImgILibMPEG2BodyC::GetAttr(const StringC &attrName,IntT &attrValue) {
+  bool ImgILibMPEG2BodyC::GetAttr(const StringC &attrName,IntT &attrValue)
+  {
     if(attrName == "frametype") {
       attrValue = lastFrameType;
       return true; 
@@ -111,33 +138,49 @@ namespace RavlImageN {
   //: Get list of attributes available.
   // This method will ADD all available attribute names to 'list'.
   
-  bool ImgILibMPEG2BodyC::GetAttrList(DListC<StringC> &list) const {
+  bool ImgILibMPEG2BodyC::GetAttrList(DListC<StringC> &list) const
+  {
     list.InsLast(StringC("frametype"));
     return DPPortBodyC::GetAttrList(list);
   }
 
   //: Decode a whole GOP and put it in the image cache.
   
-  bool ImgILibMPEG2BodyC::DecodeGOP(UIntT firstFrameNo) {
+  bool ImgILibMPEG2BodyC::DecodeGOP(UIntT firstFrameNo)
+  {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP called last state= " << m_state << "\n");
+    
+    // If not set, get the initial seek position
+    if (!m_initialSeek && !InitialSeek())
+    {
+      cerr << "ImgILibMPEG2BodyC::DecodeGOP unable to find initial seek position" << "\n";
+      return false;
+    }
     
     // Find the GOP before the required frame...
     // Bit of a hack but will do for now.
-    streampos at;
-    while(!offsets.Find(firstFrameNo,at)) {
+    UIntT at;
+    while(!offsets.Find(firstFrameNo, at))
+    {
       if(firstFrameNo == 0)
         return false;
       firstFrameNo--;
-    } 
+    }
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP seeking to " << at << " for frame " << firstFrameNo  <<"\n");
-    ins.Seek(at);
-    UIntT localFrameNo = firstFrameNo;
     
+    DPSeekCtrlC seek(input);
+    if (!seek.IsValid())
+      return false;
+    seek.Seek(at);
+    
+    UIntT localFrameNo = firstFrameNo;
     bool gotFrames = false;
-    streampos preParsePos = 0;
+    UIntT preParsePos = 0;
 
     if(ReadData())
       mpeg2_buffer(decoder, bufStart, bufEnd);
+    else
+      return false;
     const mpeg2_info_t *info = mpeg2_info(decoder);
 
     /*
@@ -155,11 +198,12 @@ namespace RavlImageN {
     decoder->nb_decode_slices = 0xb0 - 1;
     //mpeg2dec->convert_id = NULL;
 
-    do {
+    do
+    {
       m_state = mpeg2_parse(decoder);
       if (m_state >= 0)
       {
-        preParsePos = lastRead + (streampos) (decoder->buf_start - &(buffer[0]));
+        preParsePos = lastRead + (UIntT) (decoder->buf_start - &(buffer[0]));
         if(decoder->code == 0xB3) {
           ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP ******** Recording " << localFrameNo << " at " << preParsePos << " \n");
           offsets.Insert(localFrameNo, preParsePos, false);
@@ -193,7 +237,8 @@ namespace RavlImageN {
   {
 //    ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode state=" << m_state << "\n");
 
-    switch(m_state) {
+    switch(m_state)
+    {
       case -1:   // Got to end of buffer ?
 //        ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode need input\n";)
         break;
@@ -267,31 +312,45 @@ namespace RavlImageN {
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP called last state= " << m_state << "\n");
     
+    // If not set, get the initial seek position
+    if (!m_initialSeek && !InitialSeek())
+    {
+      cerr << "ImgILibMPEG2BodyC::DecodeGOP unable to find initial seek position" << "\n";
+      return false;
+    }
+    
     // Find the GOP before the required frame...
     // Bit of a hack but will do for now.
-    streampos at;
-    while(!offsets.Find(firstFrameNo,at)) {
+    UIntT at;
+    while(!offsets.Find(firstFrameNo,at))
+    {
       if(firstFrameNo ==0)
         return false;
       firstFrameNo--;
     } 
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP seeking to " << at << " for frame " << firstFrameNo  <<"\n");
-    ins.Seek(at);
-    UIntT localFrameNo = firstFrameNo;
     
+    DPSeekCtrlC seek(input);
+    if (!seek.IsValid())
+      return false;
+    seek.Seek(at);
+    
+    UIntT localFrameNo = firstFrameNo;
     bool gotFrames = false;
-    if(!ReadData()) {
+    if(!ReadData())
+    {
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
       return false;
     }
     const mpeg2_info_t *info = mpeg2_info(decoder);
-    streampos preParsePos = 0;
+    UIntT preParsePos = 0;
 
     decoder->shift = 0xffffff00;
     decoder->first_decode_slice = 1;
     decoder->nb_decode_slices = 0xb0 - 1;
 
-    do {
+    do
+    {
       preParsePos = lastRead;
 
       if(gotFrames) {
@@ -329,20 +388,20 @@ namespace RavlImageN {
                                                                     \
       missing = (x) - bytes;                                        \
       if (missing > 0) {					                                  \
-        if (header == m_headBuf) {				                            \
+        if (header == m_headBuf) {				                          \
           if (missing <= bufEnd - bufStart) {			                  \
             memcpy (header + bytes, bufStart, missing);	            \
             bufStart += missing;				                            \
             bytes = (x);				                                    \
           } else {					                                        \
             memcpy (header + bytes, bufStart, bufEnd - bufStart);	  \
-            m_demuxStateBytes = bytes + bufEnd - bufStart;		            \
+            m_demuxStateBytes = bytes + bufEnd - bufStart;		      \
             return 0;					                                      \
           }						                                              \
         } else {						                                        \
-          memcpy (m_headBuf, header, bytes);		                      \
-          m_demuxState = DEMUX_HEADER;				                              \
-          m_demuxStateBytes = bytes;				                              \
+          memcpy (m_headBuf, header, bytes);		                    \
+          m_demuxState = DEMUX_HEADER;				                      \
+          m_demuxStateBytes = bytes;				                        \
           return 0;					                                        \
         }							                                              \
       }							                                                \
@@ -350,7 +409,7 @@ namespace RavlImageN {
   
 #define DONEBYTES(x)		                                            \
     do {			                                                      \
-      if (header != m_headBuf)	                                      \
+      if (header != m_headBuf)	                                    \
       bufStart = header + (x);	                                    \
     } while (0)
   
@@ -622,7 +681,8 @@ namespace RavlImageN {
 
   //: Build GOP index to frame.
   
-  bool ImgILibMPEG2BodyC::BuildIndex(UIntT targetFrame) {
+  bool ImgILibMPEG2BodyC::BuildIndex(UIntT targetFrame)
+  {
     /*
     cerr << "ImgILibMPEG2BodyC::BuildIndex(), Called. \n";
     BitIStreamC strm(ins);
@@ -709,8 +769,8 @@ namespace RavlImageN {
   
   //: Skip to next start code.
   
+  /*
   bool ImgILibMPEG2BodyC::SkipToStartCode(BitIStreamC &strm) {
-    /*
     IntT state = 0;
     ByteT dat;
     while(strm.good()) {
@@ -733,10 +793,10 @@ namespace RavlImageN {
       }
       // Back to looking for zeros.
     }
-    */
     
     return true;
   }
+  */
 
 }
 

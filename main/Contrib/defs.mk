@@ -7,7 +7,7 @@
 #! rcsid="$Id$"
 #! file="Ravl/Contrib/defs.mk"
 
-NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DV.r \
+NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DVDRead DV.r \
  FireWire.r dc1394.r Audio.r Plotting.r
 
 #EHT = Ravl.Contrib.html Ravl.Images.Video.Video_IO.html

@@ -10,7 +10,7 @@
 //! lib=RavlLibMPEG2
 //! author="Charles Galambos"
 
-#include "Ravl/DP/SPort.hh"
+#include "Ravl/DP/StreamOp.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Stream.hh"
@@ -19,25 +19,25 @@
 #include "Ravl/Tuple2.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/Cache.hh"
+#include "Ravl/DP/SPort.hh"
 
-extern "C" {
+extern "C"
+{
   typedef struct mpeg2dec_s mpeg2dec_t;  
   typedef unsigned int uint32_t;
   typedef unsigned char uint8_t;
 #include <mpeg2dec/mpeg2.h>
 }
 
-namespace RavlN {
-  class BitIStreamC;
-}
-
-namespace RavlImageN {
+namespace RavlImageN
+{
   
-  class ImgILibMPEG2BodyC
-    : public DPISPortBodyC<ImageC<ByteRGBValueC> >
+  class ImgILibMPEG2BodyC :
+    public DPIStreamOpBodyC< ByteT, ImageC<ByteRGBValueC> >,
+    public DPSeekCtrlBodyC
   {
   public:
-    ImgILibMPEG2BodyC(IStreamC &strm, IntT demuxTrack);
+    ImgILibMPEG2BodyC(IntT demuxTrack = -1);
     //: Constructor.
     
     ~ImgILibMPEG2BodyC();
@@ -46,7 +46,8 @@ namespace RavlImageN {
     bool GetFrame(ImageC<ByteRGBValueC> &img);
     //: Get a single frame from the stream.
     
-    virtual ImageC<ByteRGBValueC> Get() {
+    virtual ImageC<ByteRGBValueC> Get()
+    {
       ImageC<ByteRGBValueC> img;
       if(!Get(img))
         throw DataNotReadyC("Failed to get next frame. ");
@@ -74,6 +75,9 @@ namespace RavlImageN {
     // This method will ADD all available attribute names to 'list'.
 
   protected:
+    bool InitialSeek();
+    //: Store the initial stream position
+    
     bool ReadData();
     //: Read data from stream into buffer.
     
@@ -95,11 +99,10 @@ namespace RavlImageN {
     bool BuildIndex(UIntT targetFrame);
     //: Build GOP index to frame.
     
-    bool SkipToStartCode(BitIStreamC &is); 
+//    bool SkipToStartCode(BitIStreamC &is); 
     //: Skip to next start code.
     
   protected:
-    IStreamC ins;
     mpeg2dec_t *decoder;
     IntT m_state;
     SArray1dC<ByteT> buffer;
@@ -109,31 +112,38 @@ namespace RavlImageN {
     UIntT allocFrameId;
     UIntT frameNo;
     UIntT maxFrameIndex;
-    streampos lastRead;
+    UIntT lastRead;
     HashC<UIntT,ImageC<ByteRGBValueC> > images;
-    AVLTreeC<UIntT,std::streampos> offsets;
+    AVLTreeC<UIntT, UIntT> offsets;
     CacheC<UIntT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
     bool sequenceInit;
     IntT lastFrameType;
     
+    bool m_initialSeek;
     IntT m_demuxTrack;
     IntT m_demuxState;
     IntT m_demuxStateBytes;
     ByteT m_headBuf[264];
   };
 
-  class ImgILibMPEG2C
-    : public DPISPortC<ImageC<ByteRGBValueC> >
+  class ImgILibMPEG2C :
+    public DPIStreamOpC< ByteT, ImageC<ByteRGBValueC> >,
+    public DPSeekCtrlC
   {
   public:
-    ImgILibMPEG2C()
-      : DPEntityC(true)
+    ImgILibMPEG2C() :
+      DPEntityC(true)
     {}
     //: Default constructor.
     // Creates an invalid handle.
 
-    ImgILibMPEG2C(IStreamC &strm, IntT demuxTrack = -1)
-      : DPEntityC(*new ImgILibMPEG2BodyC(strm, demuxTrack))
+    ImgILibMPEG2C(bool) :
+      DPEntityC(*new ImgILibMPEG2BodyC())
+    {}
+    //: Constructor.
+    
+    ImgILibMPEG2C(IntT demuxTrack) :
+      DPEntityC(*new ImgILibMPEG2BodyC(demuxTrack))
     {}
     //: Constructor.
     

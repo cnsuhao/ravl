@@ -44,6 +44,12 @@ namespace RavlN
     UIntT Size() const;
     //: Get the complete size
 
+    bool IsGetEOS() const;
+    //: Is it the EOS
+
+    bool Discard();
+    //: Discard the next data item
+
   protected:
     void Close();
     //: Close the DVD read objects

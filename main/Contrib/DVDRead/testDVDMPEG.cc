@@ -4,41 +4,33 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
-//! lib=RavlLibMPEG2
-//! author="Warren Moore"
+//! rcsid = "$Id$"
+//! lib = RavlDVDRead
+//! author = "Warren Moore"
 
 #include "Ravl/Option.hh"
-#include "Ravl/Image/LibMPEG2Format.hh"
+#include "Ravl/Image/ImgIOMPEG2.hh"
+#include "Ravl/DVDRead.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/DP/SPort.hh"
+#include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/OS/Date.hh"
-#include "Ravl/OS/Filename.hh"
+#include <fstream>
 
 using namespace RavlN;
 using namespace RavlImageN;
 
 int main(int nargs,char **argv) {
   OptionC opts(nargs,argv);
-  StringC filename = opts.String("","in.mpeg","Input mpeg file.");
+  StringC device = opts.String("d", "/dev/dvd", "DVD device.");
+  IntT title = opts.Int("t", 1, "DVD title.");
   opts.Check();
   
-  // Check the file exists
-  FilenameC fn(filename);
-  if (!fn.Exists())
-  {
-    cerr << "Error opening file (" << filename << ")\n";
-    return 1;
-  }
+  // Create the dvd 
+  DVDReadC dvd(title, device);
 
-  // Select the correct opening method
-  FileFormatLibMPEG2C format;
-  DPISPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
-  if (!in.IsValid())
-  {
-    cerr << "Unable to open file (" << filename << ")\n";
-    return 1;
-  }
+  // Create the DP path
+  DPISPortC< ImageC<ByteRGBValueC> > in(SPort(dvd >> ImgILibMPEG2C(0xe0)));
 
   // Load the stream
   ImageC<ByteRGBValueC> rgb;

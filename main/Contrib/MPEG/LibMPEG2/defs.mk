@@ -19,7 +19,7 @@ PLIB=RavlLibMPEG2
 
 MUSTLINK= MustLinkLibMPEG2.cc
 
-USESLIBS=RavlImage RavlIO LibMPEG2 RavlDPDisplay
+USESLIBS= RavlImage RavlIO LibMPEG2 RavlDPDisplay
 
 EXAMPLES=testMPEG2.cc
 

@@ -13,6 +13,8 @@
 #include "Ravl/Image/LibMPEG2Format.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include <ctype.h>
+#include "Ravl/DP/ByteFileIO.hh"
+#include "Ravl/DP/SPortAttach.hh"
 
 #define DPDEBUG 0
 #if DPDEBUG
@@ -49,7 +51,7 @@ namespace RavlImageN {
     
     if((((UIntT) buff[0]) == 0) && (((UIntT) buff[1]) == 0)) {
       if(((UIntT) buff[2]) == 0x01 && ((UIntT) buff[3]) == 0xb3 )
-	return typeid(ImageC<ByteRGBValueC>);
+        return typeid(ImageC<ByteRGBValueC>);
     }
     
     ONDEBUG(cerr << "FileFormatLibMPEG2BodyC::ProbeLoad(), Not a LibMPEG. \n");
@@ -69,7 +71,7 @@ namespace RavlImageN {
     
     if((((UIntT) buff[0]) == 0) && (((UIntT) buff[1]) == 0)) {
       if(((UIntT) buff[2]) == 0x01 && ((UIntT) buff[3]) == 0xb3 )
-	return typeid(ImageC<ByteRGBValueC>);
+        return typeid(ImageC<ByteRGBValueC>);
     }
     
     StringC ext = Extension(nfilename);
@@ -88,11 +90,12 @@ namespace RavlImageN {
   // Will create an Invalid port if not supported. <p>
   
   DPIPortBaseC FileFormatLibMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
-    IStreamC strm(fn);
     StringC ext = Extension(fn);
     if(ext == "vob")
-      return ImgILibMPEG2C(strm, 0xe0);
-    return ImgILibMPEG2C(strm);
+    {
+      return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(0xe0));
+    }
+    return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(true));
   }
   
   //: Create a output port for saving to file 'filename'..

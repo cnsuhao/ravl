@@ -111,7 +111,7 @@ namespace RavlN
   bool DVDReadBodyC::Get(ByteT &buff)
   {
     // Check we're not at the end of the stream
-    if (m_currentByte >= (m_sizeBlocks * DVD_VIDEO_LB_LEN))
+    if (IsGetEOS())
       return false;
     
     // Step to the block
@@ -127,19 +127,40 @@ namespace RavlN
 
   IntT DVDReadBodyC::GetArray(SArray1dC<ByteT> &data)
   {
-    // Step to the block
-    if (!ReadBlock(m_currentByte / DVD_VIDEO_LB_LEN))
+    // Check we're not at the end of the stream
+    if (IsGetEOS())
       return 0;
     
-    // Copy out the end of the array
-    UIntT offset = m_currentByte % DVD_VIDEO_LB_LEN;
-    UIntT size = DVD_VIDEO_LB_LEN - offset;
-    data = m_bufBlock.From(offset, size);
+    // Make sure we have a buffer to read into
+    if (!data.IsValid() || data.Size() == 0)
+      return 0;
     
-    // Update the read position
-    m_currentByte += data.Size();
+    // Step to the block
+    UIntT dataRead = 0;
+    while (dataRead < data.Size())
+    {
+      // Read the block
+      if (!ReadBlock(m_currentByte / DVD_VIDEO_LB_LEN))
+        break;
+      
+      // How much data do we need to copy from the block?
+      UIntT size = DVD_VIDEO_LB_LEN - (m_currentByte % DVD_VIDEO_LB_LEN);
+      if (data.Size() < size)
+        size = data.Size();
 
-    return data.Size();
+      // Create the subarrays
+      SizeBufferAccessC<ByteT> subDst = data.From(dataRead, size);
+      SizeBufferAccessC<ByteT> subSrc = m_bufBlock.From(m_currentByte % DVD_VIDEO_LB_LEN, size);
+      
+      // Copy the data
+      subDst.CopyFrom(subSrc);
+      
+      // Update the read positions
+      m_currentByte += size;
+      dataRead += size;
+    }
+    
+    return dataRead;
   }
 
   bool DVDReadBodyC::Seek(UIntT off)
@@ -186,6 +207,30 @@ namespace RavlN
       DVDReadBlocks(m_file, block, 1, &(m_bufBlock[0]));
       m_currentBlock = block;
     }
+    
+    return true;
+  }
+  
+  bool DVDReadBodyC::IsGetEOS() const
+  {
+    // EOS if no file open
+    if (!m_file)
+      return true;
+    
+    // EOS if at last block
+    if (m_currentByte > (m_sizeBlocks * DVD_VIDEO_LB_LEN))
+      return true;
+    
+    return false;
+  }
+
+  bool DVDReadBodyC::Discard()
+  {
+    // Check we're not at the end of the stream
+    if (IsGetEOS())
+      return false;
+    
+    m_currentByte++;
     
     return true;
   }
