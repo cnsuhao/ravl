@@ -45,7 +45,7 @@ namespace RavlPlotN {
     ONDEBUG(cerr << "DPGraphWindowFormatBodyC::ProbeSave(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " ForceFormat=" << forceFormat << "\n");
     if(forceFormat)
       return typeid(Array1dC<RealT>);
-    if(filename[0] != '@')
+    if(filename.IsEmpty() || filename[0] != '@')
       return typeid(void);
     StringC device = ExtractDevice(filename);
     if(device != "GRAPH" && device != "GRAPHA")
