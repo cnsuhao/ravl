@@ -1,0 +1,77 @@
+$(silent:
+$(ifset:!titleStart:$(set:titleStart=<FONT SIZE="+2" color="#23238E" FACE="arial,Helvetica">))
+$(ifset:!titleEnd:$(set:titleEnd=</FONT>))
+$(set:docentry_=$(subst: :_:$(docentry)))
+)
+<html><head><title>$(title) $(ifset:brief:- $(brief))</title><BASE TARGET="_parent" ></head>
+<body BGCOLOR=#FFFFFF>
+
+$(include:../Class/topbar.stmpl)
+
+$(ifset:docentry:
+<table width=100% bgcolor="#C0C0C0"><tr>
+<td>
+$(set:parent=)
+$(for:.:$docentry:$(silent:
+		    $(ifset:parent:$(set:parent=$(parent).$(subst: :_:%arg%)))
+	            $(else:$(set:parent=$(subst: :_:%arg%)))
+)$(if:$docentry_!=$parent:<A HREF="$(parent).html">%arg%</A> - )$(else:<b>%arg%</b>)
+)</table>)
+
+<table width=100% align="middle">
+<tr><td align=left valign=top bgcolor="#D7EFFF">
+<BLOCKQUOTE>
+<BR><BR>
+
+$(ifany:docnode:
+<table align="right" width=45% cellspacing=5><tr>
+<td bgcolor="$(hdrcolour)">
+  &nbsp;
+  <font size=+1 face="arial,helvetica" color="white">
+  <B>SUBTOPICS</B>
+  </font>
+</td>
+</tr><tr>
+<td>
+  <font face="arial,helvetica" size=+1>
+  <ul>
+$(forall:docnode:<li><A HREF="$(mkhref:)">$(subst:_: :$(ObjectName))</A>$(ifset:brief: - $(brief))
+)
+  </ul>
+  </font>
+</td>
+</tr>
+<tr><td><p></tr>
+</table>
+)
+
+$(ifset:brief:<font color="#23238E" size=7 face="arial,helvetica">
+$(brief)</font><p>)
+$(ifset:detail:$(detail))
+
+$(set:subType=class)$(set:subTitle=classes)$(set:objLevel=Basic)$(include:objects.stmpl)
+$(set:subType=method)$(set:subTitle=functions)$(set:objLevel=Basic)$(include:objects.stmpl)
+$(set:subType=class)$(set:subTitle=classes)$(set:objLevel=Normal)$(include:objects.stmpl)
+$(set:subType=method)$(set:subTitle=functions)$(set:objLevel=Normal)$(include:objects.stmpl)
+$(set:subType=class)$(set:subTitle=classes)$(set:objLevel=Advanced)$(include:objects.stmpl)
+$(set:subType=method)$(set:subTitle=functions)$(set:objLevel=Advanced)$(include:objects.stmpl)
+
+$(if:$pagemode=develop:
+$(set:subType=class)$(set:subTitle=classes)$(set:objLevel=Develop)$(include:objects.stmpl)
+$(set:subType=method)$(set:subTitle=functions)$(set:subType=method)$(set:subTitle=functions)$(set:objLevel=Develop)$(include:objects.stmpl)
+$(set:subType=class)$(set:subTitle=classes)$(set:objLevel=Default)$(include:objects.stmpl)
+$(set:subType=method)$(set:subTitle=functions)$(set:objLevel=Default)$(include:objects.stmpl)
+)
+
+</BLOCKQUOTE>
+</td>
+</tr></table>
+
+$(//: **************** Footer ************************ )
+<table width=100% align="middle"><tr>
+<td align="center" bgcolor="black"><FONT face="helvetica,arial" color="white"><b>
+$(ifset:author:Maintainer:$(author),) $(ifset:date:Created: $(date),) Documentation by <a href="http://ravl.sourceforge.net/doc/Auto/Basic/Tree/Ravl.Source_Tools.CxxDoc.html">CxxDoc</a>: $(buildtime)
+</b></FONT></td>
+</tr></table>
+</body>
+</html>
