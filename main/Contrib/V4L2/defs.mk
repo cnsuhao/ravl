@@ -12,17 +12,17 @@ SUPPORT_ONLY = linux
 
 PACKAGE = Ravl/Image
 
-HEADERS = V4L2Format.hh
+HEADERS = V4L2Format.hh IOV4L2.hh
 
-SOURCES = V4L2Format.cc
+SOURCES = V4L2Format.cc IOV4L2.cc
 
 PLIB = RavlIOV4L2
 
 MUSTLINK = MustLinkV4L2.cc
 
-USESLIBS = RavlImage RavlIO RavlDPDisplay
+USESLIBS = RavlImage 
 
-PROGLIBS = RavlGUI
+PROGLIBS = RavlOSIO RavlIO RavlDPDisplay
 
 ANSIFLAG =
 

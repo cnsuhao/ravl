@@ -1,8 +1,8 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2003, University of Surrey
-// This code may be redistributed under the terms of the GNU
-// General Public License (GPL). See the gpl.licence file for details or
-// see http://www.gnu.org/copyleft/gpl.html
+// Copyright (C) 2001, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 #ifndef RAVL_MPEG2DEMUX_HEADER
 #define RAVL_MPEG2DEMUX_HEADER 1
@@ -28,13 +28,13 @@ namespace RavlImageN
     FileFormatV4L2BodyC();
     //: Constructor.
     
-    virtual const type_info& ProbeLoad(IStreamC &in, const type_info &obj_type) const;
+    virtual const type_info &ProbeLoad(IStreamC &in, const type_info &obj_type) const;
     //: Is stream in std stream format?
     
-    virtual const type_info& ProbeLoad(const StringC &filename, IStreamC &in, const type_info &obj_type) const;
+    virtual const type_info &ProbeLoad(const StringC &filename, IStreamC &in, const type_info &obj_type) const;
     //: Probe for load.
     
-    virtual const type_info& ProbeSave(const StringC &filename, const type_info &obj_type, bool forceFormat) const;
+    virtual const type_info &ProbeSave(const StringC &filename, const type_info &obj_type, bool forceFormat) const;
     //: Probe for save.
     
     virtual DPIPortBaseC CreateInput(IStreamC &in, const type_info &obj_type) const;
@@ -61,6 +61,10 @@ namespace RavlImageN
     
     virtual bool IsStream() const { return true; }
     //: Test if format is a fully streamable.
+    
+  protected:
+    bool FindParams(const StringC &filename, StringC &device, IntT &channel) const;
+    //: Determine the parameters from the filename
   };
   
   /////////////////////////////
