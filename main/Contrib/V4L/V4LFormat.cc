@@ -8,7 +8,7 @@
 //! rcsid="$Id$"
 //! docentry="Ravl.Contrib.Video IO"
 //! lib=RavlImgIOV4L
-//! file="Contrib/V4L/V4LFormat.cc"
+//! file="Ravl/Contrib/V4L/V4LFormat.cc"
 
 typedef unsigned long ulong;
 

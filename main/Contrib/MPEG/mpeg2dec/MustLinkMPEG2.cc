@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlMPEG2
+//! file="Ravl/Contrib/MPEG/mpeg2dec/MustLinkMPEG2.cc"
 
 namespace RavlImageN {
   extern void InitMPEG2Format();

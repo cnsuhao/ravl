@@ -6,7 +6,8 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
+//! file="Ravl/Contrib/DMedia/Memory.cc"
 
 #include <unistd.h>
 #include "Ravl/DMedia/Memory.hh"

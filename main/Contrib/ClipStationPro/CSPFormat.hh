@@ -11,7 +11,7 @@
 //! docentry="Ravl.Contrib.Video IO.ClipStationPro"
 //! date="29/10/98"
 //! rcsid="$Id$"
-//! file="Contrib/ClipStationPro/CSPFormat.hh"
+//! file="Ravl/Contrib/ClipStationPro/CSPFormat.hh"
 //! lib=CSPDriver
 
 #include "Ravl/DP/FileFormat.hh"

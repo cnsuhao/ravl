@@ -6,7 +6,8 @@
 // file-header-ends-here
 ///////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
+//! file="Ravl/Contrib/DMedia/Video.cc"
 
 #include "Ravl/DMedia/Video.hh"
 

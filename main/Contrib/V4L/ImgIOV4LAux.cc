@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlImgIOV4L
+//! file="Ravl/Contrib/V4L/ImgIOV4LAux.cc"
 
 typedef unsigned long ulong;
 

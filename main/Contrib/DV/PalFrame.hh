@@ -12,6 +12,7 @@
 //! lib=RavlDV
 //! docentry="Ravl.Contrib.Video IO.Drivers.Linux133194"
 //! rcsid="$Id$"
+//! file="Ravl/Contrib/DV/PalFrame.hh"
   
 #include"Ravl/Array1d.hh"
 #include"Ravl/Image/Image.hh"

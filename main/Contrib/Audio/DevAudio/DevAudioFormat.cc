@@ -8,6 +8,7 @@
 //! rcsid="$Id$"
 //! docentry="Ravl.Contrib.Audio IO.Unix"
 //! lib=RavlDevAudio
+//! file="Ravl/Contrib/Audio/DevAudio/DevAudioFormat.cc"
 
 #include "Ravl/Audio/DevAudioFormat.hh"
 #include "Ravl/Audio/DevAudioIO.hh"

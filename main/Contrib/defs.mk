@@ -5,7 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! rcsid="$Id$"
-#! file="Contrib/defs.mk"
+#! file="Ravl/Contrib/defs.mk"
 
 NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DV.r \
  Audio.r Plotting.r

@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlDV
-//! file="Ravl/Image/ExternalImageIO/MpegFormat.cc"
+//! file="Ravl/Contrib/DV/DvIFormat.cc"
 
 #include "Ravl/Image/DvIFormat.hh"
 #include "Ravl/Image/ImgIODv.hh"

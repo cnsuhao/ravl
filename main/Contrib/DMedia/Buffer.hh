@@ -8,8 +8,8 @@
 #define RAVLIMAGE_DMEDIABUFFER_HEADER 1
 /////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! file="Ravl/Drivers/Video/DMedia/Image.hh"
-//! lib=sgiDMedia
+//! file="Ravl/Contrib/DMedia/Buffer.hh"
+//! lib=RavlDMedia
 //! userlevel=Default
 //! author="Charles Galambos"
 //! date="22/11/1999"

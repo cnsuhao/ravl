@@ -10,6 +10,7 @@
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlAudioFile
+//! file="Ravl/Contrib/Audio/AudioFile/AudioFileIO.hh"
 
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Audio/AudioIO.hh"

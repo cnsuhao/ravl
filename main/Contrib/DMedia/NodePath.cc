@@ -6,7 +6,8 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
+//! file="Ravl/Contrib/DMedia/NodePath.cc"
 
 #include "Ravl/DMedia/NodePath.hh"
 

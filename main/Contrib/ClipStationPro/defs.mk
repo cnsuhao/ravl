@@ -5,7 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! rcsid="$Id$"
-#! file="Contrib/ClipStationPro/defs.mk"
+#! file="Ravl/Contrib/ClipStationPro/defs.mk"
 
 PACKAGE=Ravl/Image
 

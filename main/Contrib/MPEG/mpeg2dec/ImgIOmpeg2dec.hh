@@ -10,6 +10,7 @@
 //! lib=RavlMPEG2
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Video IO.MPEG2"
+//! file="Ravl/Contrib/MPEG/mpeg2dec/ImgIOmpeg2dec.hh"
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUVValue.hh"

@@ -7,6 +7,7 @@
 //! rcsid="$Id$"
 //! lib=RavlDevAudio
 //! author="Charles Galambos"
+//! file="Ravl/Contrib/Audio/DevAudio/DevAudioIO.cc"
 
 #if defined(__linux__)
 #include <sys/types.h>

@@ -11,6 +11,7 @@
 #include "Ravl/DP/FileFormatIO.hh"
 //! rcsid="$Id$"
 //! lib=RavlDV
+//! file="Ravl/Contrib/DV/doDvGrab.cc"
 
 using namespace RavlImageN;
 

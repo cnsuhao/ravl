@@ -9,6 +9,7 @@
 //! lib=RavlDV
 //! date="24/9/2000"
 //! rcsid="$Id$"
+//! file="Ravl/Contrib/DV/PalFrame.cc"
 
 #include "Ravl/Image/PalFrame.hh"
 #include "Ravl/Assert.hh"

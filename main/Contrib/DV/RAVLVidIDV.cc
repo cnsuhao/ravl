@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlDV
-//! file="Ravl/Image/ExternalImageIO/ExtImgIO.cc"
+//! file="Ravl/Contrib/DV/RAVLVidIDV.cc"
 
 namespace RavlImageN {
 

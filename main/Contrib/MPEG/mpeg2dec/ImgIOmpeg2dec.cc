@@ -7,6 +7,7 @@
 //! rcsid="$Id$"
 //! lib=RavlMPEG2
 //! author="Charles Galambos"
+//! file="Ravl/Contrib/MPEG/mpeg2dec/ImgIOmpeg2dec.cc"
 
 #include "Ravl/Image/ImgIOmpeg2dec.hh"
 #include "Ravl/Array2dIter.hh"

@@ -10,7 +10,7 @@
 //! lib=CSPDriver
 //! docentry="Ravl.Contrib.Video IO.ClipStationPro"
 //! author="Charles Galambos"
-//! file="Contrib/ClipStationPro/ImgIOCSP.hh"
+//! file="Ravl/Contrib/ClipStationPro/ImgIOCSP.hh"
 
 #include "Ravl/Image/CSPControl.hh"
 #include "Ravl/DP/Port.hh"

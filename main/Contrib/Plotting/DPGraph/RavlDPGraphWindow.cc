@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlDPGraph
+//! file="Ravl/Contrib/Plotting/DPGraph/RavlDPGraphWindow.cc"
 
 namespace RavlPlotN {
   extern void InitDPGraphWindowFormat();

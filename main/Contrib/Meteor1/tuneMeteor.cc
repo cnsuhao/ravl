@@ -6,8 +6,8 @@
 // file-header-ends-here
 ///////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=GrabMeteor
-//! file="Contrib/Meteor1/tuneMeteor.cc"
+//! lib=RavlImgIOMeteor1
+//! file="Ravl/Contrib/Meteor1/tuneMeteor.cc"
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Video IO.Meteor1"
 //! userlevel=Normal

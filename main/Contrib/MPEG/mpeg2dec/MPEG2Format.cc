@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlMPEG2
-//! file="Ravl/Image/ExternalImageIO/MpegFormat.cc"
+//! file="Ravl/Contrib/MPEG/mpeg2dec/MPEG2Format.cc"
 //! author="Charles Galambos"
 
 #include "Ravl/Image/MPEG2Format.hh"

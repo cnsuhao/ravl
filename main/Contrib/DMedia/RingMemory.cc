@@ -6,7 +6,8 @@
 // file-header-ends-here
 ////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
+//! file="Ravl/Contrib/DMedia/RingMemory.cc"
 
 #include "Ravl/DMedia/RingMemory.hh"
 #include "Ravl/DMedia/RingData.hh"

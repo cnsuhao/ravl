@@ -12,6 +12,7 @@
 //! lib=RavlDV
 //! docentry="Ravl.Contrib.Video IO.Drivers.VideoLinux1394"
 //! rcsid="$Id$"
+//! file="Ravl/Contrib/DV/DvDevice.hh"
 
 #include <libavc1394/rom1394.h>
 #include <libavc1394/avc1394.h>

@@ -8,6 +8,7 @@
 //! rcsid="$Id$"
 //! docentry="Ravl.Contrib.Audio IO.Audio File"
 //! lib=RavlAudioFile
+//! file="Ravl/Contrib/Audio/AudioFile/AudioFileFormat.cc"
 
 #include "Ravl/Audio/AudioFileFormat.hh"
 #include "Ravl/Audio/AudioFileIO.hh"

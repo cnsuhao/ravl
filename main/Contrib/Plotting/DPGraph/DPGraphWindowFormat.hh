@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlDPGraph
-//! file="Ravl/GUI/DPDisplay/DPGraphWindowFormat.hh"
+//! file="Ravl/Contrib/Plotting/DPGraph/DPGraphWindowFormat.hh"
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Plotting.DPGraph"
 

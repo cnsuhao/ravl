@@ -10,6 +10,7 @@
 //! docentry="Ravl.Contrib.Plotting"
 //! rcsid="$Id$"
 //! lib=RavlPlot
+//! file="Ravl/Contrib/Plotting/Base/GraphData2d.hh"
 
 #include "Ravl/Array1d.hh"
 #include "Ravl/SArray1d.hh"

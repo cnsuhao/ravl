@@ -9,6 +9,7 @@
 //! docentry="Ravl.Contrib.Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/exGuppi.cc"
 
 #include "Ravl/Option.hh"
 #include "Ravl/Plot/GuppiCanvas.hh"

@@ -5,7 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! rcsid="$Id$"
-#! file="Contrib/Meteor1/defs.mk"
+#! file="Ravl/Contrib/Meteor1/defs.mk"
 #! author="Charles Galambos"
 
 DESCRIPTION = Meteor driver

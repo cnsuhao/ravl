@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlURLIO
-//! file="Ravl/Contrib/HTTP/URLIStream.cc"
+//! file="Ravl/Contrib/HTTP/URLStream.cc"
 
 #include "Ravl/IO/URLStream.hh"
 #include "Ravl/StreamType.hh"

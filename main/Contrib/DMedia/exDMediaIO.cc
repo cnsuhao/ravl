@@ -6,10 +6,11 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
 //! userlevel=Normal
 //! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"
+//! file="Ravl/Contrib/DMedia/exDMediaIO.cc"
 
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/Image/Image.hh"

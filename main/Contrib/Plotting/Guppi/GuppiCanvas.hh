@@ -10,6 +10,7 @@
 //! docentry="Ravl.Contrib.Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/GuppiCanvas.hh"
 
 #include "Ravl/Plot/GuppiGroup.hh"
 #include "Ravl/GUI/Widget.hh"

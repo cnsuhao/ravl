@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlDPGraph
-//! file="Ravl/GUI/DPDisplay/DPWindow.hh"
+//! file="Ravl/Contrib/Plotting/DPGraph/DPGraphWindow.hh"
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Plotting.DPGraph"
 

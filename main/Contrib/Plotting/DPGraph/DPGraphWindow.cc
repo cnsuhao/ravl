@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlDPGraph
-//! file="Ravl/GUI/DPDisplay/DPWindow.cc"
+//! file="Ravl/Contrib/Plotting/DPGraph/DPGraphWindow.cc"
 
 #include "Ravl/Plot/DPGraphWindow.hh"
 #include "Ravl/GUI/Manager.hh"

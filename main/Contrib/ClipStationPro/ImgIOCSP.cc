@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=CSPDriver
-//! file="Contrib/ClipStationPro/ImgIOCSP.cc"
+//! file="Ravl/Contrib/ClipStationPro/ImgIOCSP.cc"
 
 #include "Ravl/Image/ImgIOCSP.hh"
 

@@ -5,7 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! rcsid="$Id$"
-#! file="Contrib/V4L/defs.mk"
+#! file="Ravl/Contrib/V4L/defs.mk"
 #! author="Charles Galambos"
 
 PACKAGE=Ravl/Image

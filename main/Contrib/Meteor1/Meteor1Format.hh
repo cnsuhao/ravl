@@ -11,8 +11,8 @@
 //! docentry="Ravl.Contrib.Video IO.Meteor1"
 //! date="29/10/98"
 //! rcsid="$Id$"
-//! file="Contrib/Meteor1/Meteor1Format.hh"
-//! lib=GrabMeteor
+//! file="Ravl/Contrib/Meteor1/Meteor1Format.hh"
+//! lib=RavlImgIOMeteor1
 //! author="Charles Galambos"
 
 #include "Ravl/DP/FileFormat.hh"

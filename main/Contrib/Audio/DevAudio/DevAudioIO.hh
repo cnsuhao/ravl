@@ -10,6 +10,7 @@
 //! lib=RavlDevAudio
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Audio IO.Unix"
+//! file="Ravl/Contrib/Audio/DevAudio/DevAudioIO.hh"
 
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Audio/AudioIO.hh"

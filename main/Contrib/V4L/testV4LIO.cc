@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlImgIOV4L
-//! file="Contrib/V4L/testV4LIO.cc"
+//! file="Ravl/Contrib/V4L/testV4LIO.cc"
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Video IO.Video4Linux"
 //! userlevel=Develop

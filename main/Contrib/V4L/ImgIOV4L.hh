@@ -11,7 +11,7 @@
 //! docentry="Ravl.Contrib.Video IO.Video4Linux"
 //! author="Charles Galambos"
 //! lib=RavlImgIOV4L
-//! file="Contrib/V4L/ImgIOV4L.hh"
+//! file="Ravl/Contrib/V4L/ImgIOV4L.hh"
 
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"

@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/GuppiInit.cc"
 
 
 #include "Ravl/Stream.hh"

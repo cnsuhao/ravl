@@ -10,6 +10,7 @@
 //! docentry="Ravl.Contrib.Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/GuppiLineGraph.hh"
 
 #include "Ravl/Plot/GuppiElement.hh"
 #include "Ravl/Plot/GuppiScalarSequence.hh"

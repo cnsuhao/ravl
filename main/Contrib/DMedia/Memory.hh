@@ -8,8 +8,8 @@
 #define RAVLIMAGE_DMEDIADMMEMORY_HEADER 1
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! file="Ravl/Drivers/Video/DMedia/Memory.hh"
-//! lib=sgiDMedia
+//! file="Ravl/Contrib/DMedia/Memory.hh"
+//! lib=RavlDMedia
 //! userlevel=Default
 //! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"

@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlDV
+//! file="Ravl/Contrib/DV/DvDecode.cc"
 
 #include"Ravl/Image/DvDecode.hh"
 #include"Ravl/Image/Deinterlace.hh"

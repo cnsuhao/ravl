@@ -8,8 +8,8 @@
 #define RAVLIMAGE_DMEDIANODEPATH_HEADER 1
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! file="Ravl/Drivers/Video/DMedia/NodePath.hh"
-//! lib=sgiDMedia
+//! file="Ravl/Contrib/DMedia/NodePath.hh"
+//! lib=RavlDMedia
 //! userlevel=Default
 //! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"

@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=CSPDriver
-//! file="Contrib/ClipStationPro/ClipStationPro.cc"
+//! file="Ravl/Contrib/ClipStationPro/ClipStationPro.cc"
 
 namespace RavlImageN {
 

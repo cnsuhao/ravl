@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlDPGraph
-//! file="Ravl/GUI/DPDisplay/exDPWindow.cc"
+//! file="Ravl/Contrib/Plotting/DPGraph/exDPGraphWindow.cc"
 //! author="Charles Galambos"
 //! docentry="Ravl.GUI.Data Display"
 //! userlevel=Normal

@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlPlot
+//! file="Ravl/Contrib/Plotting/Base/GraphData2d.cc"
 
 #include "Ravl/Plot/GraphData2d.hh"
 #include "Ravl/Array1dIter2.hh"

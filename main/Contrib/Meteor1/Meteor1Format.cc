@@ -6,8 +6,8 @@
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=GrabMeteor
-//! file="Contrib/Meteor1/Meteor1Format.cc"
+//! lib=RavlImgIOMeteor1
+//! file="Ravl/Contrib/Meteor1/Meteor1Format.cc"
 
 #include "Ravl/Image/Meteor1Format.hh"
 #include "Ravl/Image/ImgIOMeteor1.hh"

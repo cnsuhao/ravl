@@ -11,6 +11,7 @@
 //! docentry="Ravl.Contrib.Plotting.Guppi"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/GuppiTypes.hh"
 
 extern "C" {
   typedef struct _GuppiElementState GuppiElementState;

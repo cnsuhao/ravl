@@ -10,6 +10,7 @@
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/GuppiScalarSequence.hh"
 
 #include "Ravl/RefCounter.hh"
 #include "Ravl/Plot/GuppiTypes.hh"

@@ -9,6 +9,7 @@
 //! lib=RavlDV
 //! date="23/9/100"
 //! rcsid="$Id$"
+//! file="Ravl/Contrib/DV/DvDevice.cc"
 
 #include "Ravl/Image/DvDevice.hh"
 #include "Ravl/Matrix.hh"

@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=CSPDriver
-//! file="Contrib/ClipStationPro/CSPFormat.cc"
+//! file="Ravl/Contrib/ClipStationPro/CSPFormat.cc"
 
 #include "Ravl/Image/CSPFormat.hh"
 #include "Ravl/Image/ImgIOCSP.hh"

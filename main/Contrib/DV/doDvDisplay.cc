@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlDV
+//! file="Ravl/Contrib/DV/doDvDisplay.cc"
 
 #include "Ravl/Option.hh"
 #include "Ravl/Image/ByteRGBValue.hh"

@@ -5,8 +5,8 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=GrabMeteor
-//! file="Contrib/Meteor1/exMeteor.cc"
+//! lib=RavlImgIOMeteor1
+//! file="Ravl/Contrib/Meteor1/exMeteor.cc"
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Video IO.Meteor1"
 //! userlevel=Normal

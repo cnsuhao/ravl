@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlAudioFile
+//! file="Ravl/Contrib/Audio/AudioFile/RavlAudioFile.cc"
 
 
 namespace RavlAudioN {

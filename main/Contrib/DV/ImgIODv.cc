@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlDV
+//! file="Ravl/Contrib/DV/ImgIODv.cc"
 
 #include "Ravl/Image/ImgIODv.hh"
 #include "Ravl/OS/Filename.hh"

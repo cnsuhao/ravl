@@ -5,7 +5,8 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
+//! file="Ravl/Contrib/DMedia/RavlInitDMediaIO.cc"
 
 #include "Ravl/DMedia/DIVOFormat.hh"
 

@@ -5,8 +5,8 @@
  *
  */
 /*! rcsid="$Id$" */
-/*! lib=GrabMeteor */
-/*! file="Contrib/Meteor1/ioctl_himemfb.h" */
+/*! lib=RavlImgIOMeteor1 */
+/*! file="Ravl/Contrib/Meteor1/ioctl_himemfb.h" */
 /*! license=own */
 
 #define HM_GETADDR  _IOR('x', 1, u_long)       /* get physical address */

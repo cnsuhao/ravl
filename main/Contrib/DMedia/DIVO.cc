@@ -6,7 +6,8 @@
 // file-header-ends-here
 ///////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
+//! file="Ravl/Contrib/DMedia/DIVO.cc"
 
 #include "Ravl/DMedia/DIVO.hh"
 #include "Ravl/TypeName.hh"

@@ -7,6 +7,7 @@
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlGuppi
+//! file="Ravl/Contrib/Plotting/Guppi/GuppiGroup.cc"
 
 #include "Ravl/Plot/GuppiGroup.hh"
 #include "Ravl/Plot/GuppiHeaders.hh"

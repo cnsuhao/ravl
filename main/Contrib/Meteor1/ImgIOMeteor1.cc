@@ -6,9 +6,9 @@
 // file-header-ends-here
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=GrabMeteor
+//! lib=RavlImgIOMeteor1
 //! author="Charles Galambos"
-//! file="Contrib/Meteor1/ImgIOMeteor1.cc"
+//! file="Ravl/Contrib/Meteor1/ImgIOMeteor1.cc"
 
 #include "Ravl/Image/ImgIOMeteor1.hh"
 #include "Ravl/Image/ByteBGRAValue.hh"

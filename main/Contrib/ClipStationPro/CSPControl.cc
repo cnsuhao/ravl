@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=CSPDriver
-//! file="Contrib/ClipStationPro/CSPControl.cc"
+//! file="Ravl/Contrib/ClipStationPro/CSPControl.cc"
 
 #include "Ravl/Image/CSPControl.hh"
 #include "Ravl/OS/DMABuffer.hh"

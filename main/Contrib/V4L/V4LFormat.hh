@@ -11,7 +11,7 @@
 //! docentry="Ravl.Contrib.Video IO.Video4Linux"
 //! date="29/10/1998"
 //! rcsid="$Id$"
-//! file="Contrib/V4L/V4LFormat.hh"
+//! file="Ravl/Contrib/V4L/V4LFormat.hh"
 //! example=exImgSeq.cc
 //! lib=RavlImgIOV4L
 

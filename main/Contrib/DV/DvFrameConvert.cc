@@ -7,6 +7,7 @@
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlDV
+//! file="Ravl/Contrib/DV/DvFrameConvert.cc"
 
 #include "Ravl/Image/DvDecode.hh"
 #include "Ravl/Image/Deinterlace.hh"

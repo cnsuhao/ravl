@@ -8,8 +8,8 @@
 #define RAVLIMAGE_DMEDIAVLDATA_HEADER 1
 //////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! file="Ravl/Drivers/Video/DMedia/RingData.hh"
-//! lib=sgiDMedia
+//! file="Ravl/Contrib/DMedia/RingData.hh"
+//! lib=RavlDMedia
 //! userlevel=Default
 //! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"

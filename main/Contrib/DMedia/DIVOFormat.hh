@@ -8,8 +8,8 @@
 #define RAVLIMAGE_DIVOFORMAT_HEADER 1
 ////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! file="Ravl/Drivers/Video/DMedia/DIVOFormat.hh"
-//! lib=sgiDMedia
+//! file="Ravl/Contrib/DMedia/DIVOFormat.hh"
+//! lib=RavlDMedia
 //! userlevel=Develop
 //! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"

@@ -11,7 +11,7 @@
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Video IO.ClipStationPro"
 //! lib=CSPDriver
-//! file="Contrib/ClipStationPro/CSPControl.hh"
+//! file="Ravl/Contrib/ClipStationPro/CSPControl.hh"
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUV422Value.hh"

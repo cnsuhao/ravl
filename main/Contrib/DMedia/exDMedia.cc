@@ -6,10 +6,11 @@
 // file-header-ends-here
 ////////////////////////////////////////
 //! rcsid="$Id$"
-//! lib=sgiDMedia
+//! lib=RavlDMedia
 //! userlevel=Normal
 //! docentry="Ravl.Contrib.Video IO.SGI DMedia"
 //! author="Charles Galambos"
+//! file="Ravl/Contrib/DMedia/exDMedia.cc"
 
 #include "Ravl/DMedia/NodePath.hh"
 #include "Ravl/DMedia/Video.hh"

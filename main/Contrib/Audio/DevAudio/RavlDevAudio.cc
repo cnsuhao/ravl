@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlDevAudio
+//! file="Ravl/Contrib/Audio/DevAudio/RavlDevAudio.cc"
 
 namespace RavlAudioN {
   extern void InitDevAudioFormat();

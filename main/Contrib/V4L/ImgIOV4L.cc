@@ -7,7 +7,7 @@
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlImgIOV4L
-//! file="Contrib/V4L/ImgIOV4L.cc"
+//! file="Ravl/Contrib/V4L/ImgIOV4L.cc"
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/DP/FileFormatIO.hh"

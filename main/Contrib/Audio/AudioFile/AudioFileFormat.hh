@@ -12,6 +12,7 @@
 //! example=exAudioIO.cc
 //! lib=RavlAudioFile
 //! rcsid="$Id$"
+//! file="Ravl/Contrib/Audio/AudioFile/AudioFileFormat.hh"
 
 #include "Ravl/DP/FileFormat.hh"
 

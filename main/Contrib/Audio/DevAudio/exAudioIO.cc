@@ -8,6 +8,7 @@
 //! lib=RavlDevAudio
 //! author="Charles Galambos"
 //! docentry="Ravl.Contrib.Audio IO"
+//! file="Ravl/Contrib/Audio/DevAudio/exAudioIO.cc"
 
 #include "Ravl/IO.hh"
 #include "Ravl/Option.hh"

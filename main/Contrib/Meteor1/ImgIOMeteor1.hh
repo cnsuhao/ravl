@@ -9,9 +9,9 @@
 ///////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! docentry="Ravl.Contrib.Video IO.Meteor1"
-//! lib=GrabMeteor
+//! lib=RavlImgIOMeteor1
 //! author="Charles Galambos"
-//! file="Contrib/Meteor1/ImgIOMeteor1.hh"
+//! file="Ravl/Contrib/Meteor1/ImgIOMeteor1.hh"
 
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
