@@ -6,7 +6,7 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
-REQUIRE=avifile
+REQUIRES=avifile
 
 PACKAGE=Ravl/Image
 
