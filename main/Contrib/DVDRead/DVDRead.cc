@@ -42,7 +42,6 @@ namespace RavlN
     m_dvdFile(NULL),
     m_numCells(0),
     m_sizeCell(0),
-    m_sizeData(0),
     m_byteCurrent(0),
     m_curCell(-1),
     m_curBlock(-1),
@@ -83,8 +82,8 @@ namespace RavlN
     UIntT vtsnum = tt_srpt->title[m_title].title_set_nr;
     UIntT ttnnum = tt_srpt->title[m_title].vts_ttn;
 
-    ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC title(" << ttnnum << ") VTS(" << vtsnum << ") " << endl;)
-    ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC chapters(" << m_numChapters << ") angles(" << m_numAngles << ")" << endl;)
+    ONDEBUG(cout << "DVDReadBodyC::DVDReadBodyC title(" << ttnnum << ") VTS(" << vtsnum << ") " << endl;)
+    ONDEBUG(cout << "DVDReadBodyC::DVDReadBodyC chapters(" << m_numChapters << ") angles(" << m_numAngles << ")" << endl;)
 
     // Check the angles
     if (m_numAngles == 0 || m_numAngles > 1)
@@ -107,7 +106,7 @@ namespace RavlN
     UIntT pgc_id = vts_ptt_srpt->title[ttnnum - 1].ptt[g_startChapter - 1].pgcn;
     m_dvdCurPgc = m_dvdVtsFile->vts_pgcit->pgci_srp[pgc_id - 1].pgc;
     m_numCells = m_dvdCurPgc->nr_of_cells;
-    ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC PGC(" << pgc_id << ") cells(" << m_numCells << ")" << endl;)
+    ONDEBUG(cout << "DVDReadBodyC::DVDReadBodyC PGC(" << pgc_id << ") cells(" << m_numCells << ")" << endl;)
                 
     // Open the title
     m_dvdFile = DVDOpenFile(m_dvdReader, vtsnum, DVD_READ_TITLE_VOBS);
@@ -125,24 +124,6 @@ namespace RavlN
     // Read in the first cell
     ReadCell(0);
     m_cellTable[0] = m_sizeCell;
-    m_sizeData = m_sizeCell;
-    
-    /*
-    // Read each cell info (but don't read/cache the data)
-    for (UIntT i = 0; i < m_numCells; i++)
-    {
-      if (!ReadCell(i))
-      {
-        cerr << "DVDReadBodyC::DVDReadBodyC unable to read cell(" << i << ")" << endl;
-        Close();
-        return;
-      }
-      
-      m_sizeData += m_sizeCell;
-      m_cellTable[i] = m_sizeData;
-    }
-    ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC total data(" << m_sizeData << ")" << endl;)
-    */
   }
   
   DVDReadBodyC::~DVDReadBodyC()
@@ -159,7 +140,6 @@ namespace RavlN
     m_numAngles = 0;
     m_numCells = 0;
     m_sizeCell = 0;
-    m_sizeData = 0;
     m_byteCurrent = 0;
     m_curCell = -1;
     m_curBlock = -1;
@@ -218,80 +198,111 @@ namespace RavlN
     
     // Which cell is the seek byte in
     StreamPosT dataRead = 0;
+    StreamPosT curCell = 0;
+    StreamPosT curDataTotal = 0;
+    UIntT curNavBlock = 0;
+    StreamPosT curNavOffset = 0;
+    StreamPosT curNavTotal = 0;
     while (dataRead < data.Size())
     {
-      StreamPosT curCell = 0;
-      StreamPosT curDataSize = 0;
-      for (UIntT i = 0; i < m_numCells; i++)
+      while (curCell < m_numCells)
       {
-        // Check if the current cell has been read
-        if (m_cellTable[i] == -1)
+        // Reset the search, if necessary
+        if (m_byteCurrent < curDataTotal)
         {
-          if (!ReadCell(i))
+          curCell = 0;
+          curDataTotal = 0;
+          curNavBlock = 0;
+          curNavOffset = 0;
+          curNavTotal = 0;
+        }
+        
+        // Check if the current cell has been read
+        if (m_cellTable[curCell] == -1)
+        {
+          if (!ReadCell(curCell))
           {
-            cerr << "DVDReadBodyC::GetArray unable to read cell(" << i << ")" << endl;
+            cerr << "DVDReadBodyC::GetArray unable to read cell(" << curCell << ")" << endl;
             return 0;
           }
-          m_sizeData += m_sizeCell;
-          m_cellTable[i] = m_sizeData;
         }
         
         // Stop if we've gone past the seek byte
-        if (m_cellTable[i] * DVD_VIDEO_LB_LEN > m_byteCurrent)
+        if ((curDataTotal + m_cellTable[curCell]) * DVD_VIDEO_LB_LEN > m_byteCurrent)
+        {
+          // Set the nav block vars
+          curNavBlock = 0;
+          curNavOffset = 0;
+          curNavTotal = curDataTotal;
+          
+          // Get the cell nav info
+          if (!ReadCell(curCell))
+          {
+            cerr << "DVDReadBodyC::GetArray unable to read nav info for cell(" << curCell << ")" << endl;
+            return 0;
+          }
+          
+          ONDEBUG(cout << "DVDReadBodyC::GetArray cell(" << m_curCell << ") navs(" << m_navTable.Size() << ")" << endl;)
+          
           break;
-        
-        // Stop permanently if we've gone past the end
-        if (i + 1 == m_numCells)
-          break;
+        }
         
         // Store the required cell
+        curDataTotal += m_cellTable[curCell];
         curCell++;
-        curDataSize = m_cellTable[i];
-      }
-  
-      // Read the current cell info
-      if (curCell != m_curCell)
-      {
-        if (!ReadCell(curCell))
-          return 0;
       }
       
+      // If we've gone over all the cell's we're at the end
+      if (curCell == m_numCells)
+        return dataRead;
+  
+      RavlAssertMsg(curCell == m_curCell, "DVDReadBodyC::GetArray current cell mismatch");
+      
       // Which block is the current byte in
-      StreamPosT curNavBlock = 0;
-      StreamPosT curNavSize = 0;
-      for (UIntT i = 0; i < m_navTable.Size(); i++)
+      while (curNavBlock < m_navTable.Size())
       {
+        // Reset if we're looking before we've cached
+        if (m_byteCurrent < curNavTotal)
+        {
+          curNavBlock = 0;
+          curNavOffset = 0;
+          curNavTotal = 0;
+        }
+        
         // Get the current offset
-        curNavBlock = m_navTable[i].Data1();
+        curNavOffset = m_navTable[curNavBlock].Data1();
         
         // Stop if we've gone past the seek byte
-        if ((curDataSize + m_navTable[i].Data2()) * DVD_VIDEO_LB_LEN > m_byteCurrent)
-          break;
-        
-        // Stop permanently if we've gone past the end
-        if (i + 1 == m_navTable.Size())
+        if ((curNavTotal + m_navTable[curNavBlock].Data2()) * DVD_VIDEO_LB_LEN > m_byteCurrent)
         {
-          cerr << "DVDReadBodyC::GetArray attempting to seek past end of cell" << endl;
+          ONDEBUG(cout << "DVDReadBodyC::GetArray cell(" << m_curCell << ") nav(" << curNavBlock << ") offset(" << curNavOffset << ") blocks(" << m_navTable[curNavBlock].Data2() << ")" << endl;)
           break;
         }
         
         // Store the required NAV block offset
-        curNavSize = m_navTable[i].Data2();
-        curDataSize += m_navTable[i].Data2();
+        curNavTotal += m_navTable[curNavBlock].Data2();
+        curNavBlock++;
+      }
+
+      // Something wrong if we've gone over the end of the cell
+      if (curNavBlock == m_navTable.Size())
+      {
+          cerr << "DVDReadBodyC::GetArray attempting to seek past end of cell" << endl;
+          return 0;
       }
       
       // Identify the data block within the NAV block
-      StreamPosT curBlock = (m_byteCurrent / DVD_VIDEO_LB_LEN) - curDataSize;
-      ONDEBUG(cerr << "DVDReadBodyC::GetArray cell(" << m_curCell << ") nav block(" << curNavBlock << ") block(" << curBlock << ")" << endl;)
-      
+      StreamPosT curBlock = (m_byteCurrent / DVD_VIDEO_LB_LEN) - curNavTotal;
+
       // Cache the block
       if (m_curBlock != curBlock)
       {
-        StreamPosT len = DVDReadBlocks(m_dvdFile, curNavBlock + curBlock + 1, 1, &(m_curBlockBuf[0]));
+//        ONDEBUG(cout << "DVDReadBodyC::GetArray cell(" << m_curCell << ") nav(" << curNavBlock << ") block(" << curBlock << ")" << endl;)
+        
+        StreamPosT len = DVDReadBlocks(m_dvdFile, curNavOffset + curBlock, 1, &(m_curBlockBuf[0]));
         if (len != 1)
         {
           cerr << "DVDReadBodyC::GetArray unable to read block data" << endl;
-          Close();
           return 0;
         }
         m_curBlock = curBlock;
@@ -319,13 +330,9 @@ namespace RavlN
 
   bool DVDReadBodyC::Seek(UIntT off)
   {
-    if (off < m_sizeData * DVD_VIDEO_LB_LEN)
-    {
-      m_byteCurrent = off;
-      return true;
-    }
-    
-    return false;
+    m_byteCurrent = off;
+    return true;
+
   }
 
   UIntT DVDReadBodyC::Tell() const
@@ -335,18 +342,13 @@ namespace RavlN
 
   UIntT DVDReadBodyC::Size() const
   {
-    return m_sizeData * DVD_VIDEO_LB_LEN;
+    return ((UIntT) (-1));
   }
 
   bool DVDReadBodyC::Seek64(StreamPosT off)
   {
-    if (off < m_sizeData * DVD_VIDEO_LB_LEN)
-    {
-      m_byteCurrent = off;
-      return true;
-    }
-    
-    return false;
+    m_byteCurrent = off;
+    return true;
   }
   
   StreamPosT DVDReadBodyC::Tell64() const
@@ -356,7 +358,7 @@ namespace RavlN
   
   StreamPosT DVDReadBodyC::Size64() const
   {
-    return m_sizeData * DVD_VIDEO_LB_LEN;
+    return -1;
   }
 
   bool DVDReadBodyC::ReadCell(const UIntT cell)
@@ -364,6 +366,10 @@ namespace RavlN
     RavlAssertMsg(m_dvdFile, "DVDReadBodyC::ReadCell requires open file");
     RavlAssertMsg(m_dvdCurPgc != NULL, "DVDReadBodyC::ReadCell requires valid current PGC");
 
+    // Check the cache
+    if (m_curCell == cell)
+      return true;
+    
     // Create the cell data store
     m_navTable = DArray1dC< Tuple2C<StreamPosT, StreamPosT> >(0);
     
@@ -394,7 +400,7 @@ namespace RavlN
       m_sizeCell += dataSize;
 
       // Store the positions
-      Tuple2C<StreamPosT, StreamPosT> info(pos, dataSize);
+      Tuple2C<StreamPosT, StreamPosT> info(pos + 1, dataSize);
       m_navTable.Append(info);
       
       // Either step to the next data block or step past the end of the cell
@@ -407,10 +413,11 @@ namespace RavlN
       pos = nextVobu;
     }
     
-    // Store the current cached cell number
+    // Store the current cached cell number and size
     m_curCell = cell;
+    m_cellTable[cell] = m_sizeCell;
     
-    ONDEBUG(cerr << "DVDReadBodyC::ReadCell cell(" << cell << ") start(" << m_dvdCurPgc->cell_playback[cell].first_sector << ") end(" << m_dvdCurPgc->cell_playback[cell].last_sector << ") data(" << m_sizeCell << ")" << endl;)
+    ONDEBUG(cout << "DVDReadBodyC::ReadCell cell(" << cell << ") start(" << m_dvdCurPgc->cell_playback[cell].first_sector << ") end(" << m_dvdCurPgc->cell_playback[cell].last_sector << ") data(" << m_sizeCell << ")" << endl;)
 
     return true;
   }
@@ -421,8 +428,18 @@ namespace RavlN
     if (!m_dvdFile)
       return true;
     
-    // EOS if at last block
-    if (m_byteCurrent >= (m_sizeData * DVD_VIDEO_LB_LEN))
+    // Definitely not the end of we're not in the last cell
+    if (m_curCell < m_numCells - 1)
+      return false;
+    
+    // We are in the last cell, so get the size
+    StreamPosT sizeTotal = 0;
+    for (UIntT i = 0; i < m_numCells; i++)
+    {
+      sizeTotal += m_cellTable[i];
+    }
+    
+    if (m_byteCurrent >= (sizeTotal * DVD_VIDEO_LB_LEN))
       return true;
     
     return false;

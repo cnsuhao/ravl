@@ -92,7 +92,6 @@ namespace RavlN
     
     StreamPosT m_numCells;                        // Number of cells in title
     StreamPosT m_sizeCell;                        // Size (in blocks) of actual data in cell
-    StreamPosT m_sizeData;                        // Size (in blocks) of actual data in title
     SArray1dC<StreamPosT> m_cellTable;            // Table mapping cell numbers to data sizes (in blocks)
 
     StreamPosT m_byteCurrent;                     // Byte currently sought to

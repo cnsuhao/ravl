@@ -44,6 +44,9 @@ int main(int nargs,char **argv)
     
     i += 25;
     in.Seek(i);
+
+    cerr << "==== Seeking to " << i << endl;
+
 #if 0
     if(i > 30)
     {
