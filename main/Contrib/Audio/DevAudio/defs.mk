@@ -20,7 +20,7 @@ MUSTLINK = RavlDevAudio.cc
 
 PLIB = RavlDevAudio
 
-USESLIBS=RavlIO RavlAudioUtil RavlOSIO
+USESLIBS=RavlIO RavlAudioUtil RavlOSIO RavlAudioIO
 
 EXAMPLES= exAudioIO.cc
 

@@ -18,5 +18,5 @@ PLIB=RavlAudioFile
 
 MUSTLINK=RavlAudioFile.cc
 
-USESLIBS=RavlIO AudioFile RavlAudioUtil
+USESLIBS=RavlIO AudioFile RavlAudioUtil RavlAudioIO
 
