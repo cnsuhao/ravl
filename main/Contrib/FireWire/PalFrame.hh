@@ -9,10 +9,10 @@
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
 //! date="24/9/2000"
-//! lib=RavlDV
+//! lib=RavlFireWire
 //! docentry="Ravl.Contrib.Video IO.Drivers.Linux133194"
 //! rcsid="$Id$"
-//! file="Ravl/Contrib/DV/PalFrame.hh"
+//! file="Ravl/Contrib/FireWire/PalFrame.hh"
   
 #include"Ravl/Array1d.hh"
 #include"Ravl/Image/Image.hh"

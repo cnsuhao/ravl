@@ -9,10 +9,10 @@
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
 //! date="23/9/2000"
-//! lib=RavlDV
+//! lib=RavlFireWire
 //! docentry="Ravl.Contrib.Video IO.Drivers.VideoLinux1394"
 //! rcsid="$Id$"
-//! file="Ravl/Contrib/DV/DvDevice.hh"
+//! file="Ravl/Contrib/FireWire/DvDevice.hh"
 
 #include <libavc1394/rom1394.h>
 #include <libavc1394/avc1394.h>

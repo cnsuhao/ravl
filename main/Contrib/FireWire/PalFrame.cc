@@ -6,10 +6,10 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
-//! lib=RavlDV
+//! lib=RavlFireWire
 //! date="24/9/2000"
 //! rcsid="$Id$"
-//! file="Ravl/Contrib/DV/PalFrame.cc"
+//! file="Ravl/Contrib/FireWire/PalFrame.cc"
 
 #include "Ravl/Image/PalFrame.hh"
 #include "Ravl/Assert.hh"

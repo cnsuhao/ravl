@@ -6,10 +6,10 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
-//! lib=RavlDV
+//! lib=RavlFireWire
 //! date="23/9/100"
 //! rcsid="$Id$"
-//! file="Ravl/Contrib/DV/DvDevice.cc"
+//! file="Ravl/Contrib/FireWire/DvDevice.cc"
 
 #include "Ravl/Image/DvDevice.hh"
 #include "Ravl/Matrix.hh"

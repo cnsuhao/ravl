@@ -5,8 +5,8 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=RavlDV
-//! file="Ravl/Contrib/DV/WavFile.cc"
+//! lib=RavlFireWire
+//! file="Ravl/Contrib/FireWire/WavFile.cc"
 
 #include"Ravl/Image/WavFile.hh"
 
