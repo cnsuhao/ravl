@@ -27,10 +27,6 @@
 #include <time.h> 
 #include <stdlib.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
 namespace RavlImageN {
 
 int raw_iso_handler(raw1394handle_t handle, int channel, size_t length, quadlet_t *data)
