@@ -19,6 +19,7 @@
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/DP/AttributeType.hh"
 
 namespace RavlImageN {
 
@@ -154,9 +155,8 @@ namespace RavlImageN {
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
-    bool HandleGetAttrList(DListC<StringC> &list) const;
-    //: Get list of attributes available.
-    // This method will ADD all available attribute names to 'list'.
+    bool BuildAttributes(AttributeCtrlBodyC &attrCtrl);
+    //: Build list of attributes.
     
     enum SourceTypeT { SOURCE_UNKNOWN , SOURCE_USBWEBCAM_PHILIPS };
     
@@ -190,12 +190,12 @@ namespace RavlImageN {
   public:
     DPIImageV4LBodyC(const StringC &dev,const ImageRectangleC &nrect = ImageRectangleC(0,-1,0,-1),int channel = -1)
       : DPIImageBaseV4LBodyC(dev,typeid(PixelT),nrect,channel)
-    {}
+    { BuildAttributes(*this); }
     //: Constructor.
     
     DPIImageV4LBodyC(const StringC &dev,bool half,int channel = -1)
       : DPIImageBaseV4LBodyC(dev,typeid(PixelT),half,channel)
-    {}
+    { BuildAttributes(*this); }
     //: Constructor.
     
     virtual ImageC<PixelT> Get() {
@@ -220,35 +220,41 @@ namespace RavlImageN {
     //: Has the End Of Stream been reached ?
     // true = yes.
     
-    virtual bool GetAttr(const StringC &attrName,StringC &attrValue)
-    { return HandleGetAttr(attrName,attrValue); }
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue) { 
+      if(HandleGetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
-    virtual bool SetAttr(const StringC &attrName,const StringC &attrValue)
-    { return HandleSetAttr(attrName,attrValue); }
+    virtual bool SetAttr(const StringC &attrName,const StringC &attrValue){ 
+      if(HandleSetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
     //: Set a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
-    virtual bool GetAttr(const StringC &attrName,IntT &attrValue) 
-    { return HandleGetAttr(attrName,attrValue); }
+    virtual bool GetAttr(const StringC &attrName,IntT &attrValue){ 
+      if(HandleGetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::GetAttr(attrName,attrValue);
+    }
     //: Get a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
     
-    virtual bool SetAttr(const StringC &attrName,const IntT &attrValue)
-    { return HandleSetAttr(attrName,attrValue); }
+    virtual bool SetAttr(const StringC &attrName,const IntT &attrValue) { 
+      if(HandleSetAttr(attrName,attrValue))
+	return true;
+      return DPPortBodyC::SetAttr(attrName,attrValue);
+    }
     //: Set a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
-    
-    virtual bool GetAttrList(DListC<StringC> &list) const
-    { return HandleGetAttrList(list); }
-    //: Get list of attributes available.
-    // This method will ADD all available attribute names to 'list'.
-    
   };
   
   //! userlevel=Normal

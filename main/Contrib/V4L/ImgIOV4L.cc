@@ -16,6 +16,7 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Image/RGBcYUV.hh"
 #include "Ravl/DList.hh"
+#include "Ravl/DP/AttributeValueTypes.hh"
 
 typedef unsigned long ulong;
 
@@ -669,6 +670,22 @@ namespace RavlImageN {
     return false;
   }
 
+
+  //: Build list of attributes.
+  
+  bool DPIImageBaseV4LBodyC::BuildAttributes(AttributeCtrlBodyC &attrCtrl) {
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("shutter_speed","Camera shutter speed",true,true,-1,65000,1,-1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("brightness","Brightness",true,true,-1,65000,1,-1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("contrast","Contrast",true,true,-1,65000,1,-1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("gamma","Gamma correction",true,true,0,65000,1,-1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("agc","Gamma correction",true,true,-1,65000,1,-1));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("indicator","Turn on off indicator LED.",true,true,0,65000,1,0));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("compression","Set amount of compression to use on images.",true,true,0,65000,1,0));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<IntT>("whitebalance","Image whitebalance.",true,true,0,65000,1,0));
+    return true;
+  }
+  
+#if 0
   //: Get list of attributes available.
   // This method will ADD all available attribute names to 'list'.
   
@@ -685,7 +702,7 @@ namespace RavlImageN {
     list.InsLast("reset");
     return true;
   }
-  
+#endif
   
 }
 
