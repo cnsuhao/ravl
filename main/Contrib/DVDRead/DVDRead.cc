@@ -101,10 +101,9 @@ namespace RavlN
     
     vts_ptt_srpt_t *vts_ptt_srpt = m_dvdVtsFile->vts_ptt_srpt;
     UIntT pgc_id = vts_ptt_srpt->title[ttnnum - 1].ptt[g_startChapter - 1].pgcn;
-    UIntT pgn = vts_ptt_srpt->title[ttnnum - 1].ptt[g_startChapter - 1].pgn;
     m_dvdCurPgc = m_dvdVtsFile->vts_pgcit->pgci_srp[pgc_id - 1].pgc;
     m_numCells = m_dvdCurPgc->nr_of_cells;
-    ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC PGC(" << pgc_id << ") PG(" << pgn << ") cells(" << m_numCells << ")" << endl;)
+    ONDEBUG(cerr << "DVDReadBodyC::DVDReadBodyC PGC(" << pgc_id << ") cells(" << m_numCells << ")" << endl;)
                 
     // Open the title
     m_dvdFile = DVDOpenFile(m_dvdReader, vtsnum, DVD_READ_TITLE_VOBS);
