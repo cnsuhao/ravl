@@ -1,0 +1,10 @@
+body { background: white; color: #006}
+A:link { color: blue }
+A:visited { color: #808 }
+A:active { color: magenta }
+H1 { color: #5a6 }
+H2 { color: #68c }
+H3 { color: #a00 }
+#cppclass { color: red }
+#briefdesc { font-size: 150%; color: green }
+p { font: larger }

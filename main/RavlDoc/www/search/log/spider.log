@@ -1,0 +1,135 @@
+[01.11.2002 11:22:05] [notice] dataBase connect ok
+[01.11.2002 11:22:05] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[01.11.2002 12:07:47] [notice] dataBase connect ok
+[01.11.2002 12:07:47] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[01.11.2002 12:08:01] [notice] dataBase connect ok
+[01.11.2002 12:08:01] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[01.11.2002 18:06:43] [notice] dataBase connect ok
+[01.11.2002 18:06:43] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 05:42:43] [notice] dataBase connect ok
+[02.11.2002 05:42:43] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 05:42:56] [notice] dataBase connect ok
+[02.11.2002 05:42:56] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 05:45:01] [notice] dataBase connect ok
+[02.11.2002 05:45:01] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 05:46:02] [notice] dataBase connect ok
+[02.11.2002 05:46:02] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 06:08:37] [notice] dataBase connect ok
+[02.11.2002 06:08:37] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 08:50:37] [notice] dataBase connect ok
+[02.11.2002 08:50:38] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 08:50:50] [notice] dataBase connect ok
+[02.11.2002 08:50:50] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 08:55:39] [notice] dataBase connect ok
+[02.11.2002 08:55:39] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 08:55:47] [notice] dataBase connect ok
+[02.11.2002 08:55:47] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 08:55:54] [notice] dataBase connect ok
+[02.11.2002 08:55:54] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 08:55:57] [notice] dataBase connect ok
+[02.11.2002 08:55:57] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 09:51:36] [notice] dataBase connect ok
+[02.11.2002 09:51:36] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[02.11.2002 09:51:47] [notice] dataBase connect ok
+[02.11.2002 09:51:47] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 03:06:13] [notice] dataBase connect ok
+[03.11.2002 03:06:13] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 06:40:41] [notice] dataBase connect ok
+[03.11.2002 06:40:41] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 07:04:17] [notice] dataBase connect ok
+[03.11.2002 07:04:18] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 07:04:36] [notice] dataBase connect ok
+[03.11.2002 07:04:36] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 07:16:31] [notice] dataBase connect ok
+[03.11.2002 07:16:31] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:26:44] [notice] dataBase connect ok
+[03.11.2002 08:26:44] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:27:28] [notice] dataBase connect ok
+[03.11.2002 08:27:28] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:27:34] [notice] dataBase connect ok
+[03.11.2002 08:27:34] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:27:37] [notice] dataBase connect ok
+[03.11.2002 08:27:37] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:27:41] [notice] dataBase connect ok
+[03.11.2002 08:27:41] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:27:47] [notice] dataBase connect ok
+[03.11.2002 08:27:47] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:27:58] [notice] dataBase connect ok
+[03.11.2002 08:27:58] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:28:05] [notice] dataBase connect ok
+[03.11.2002 08:28:05] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:28:14] [notice] dataBase connect ok
+[03.11.2002 08:28:14] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:28:44] [notice] dataBase connect ok
+[03.11.2002 08:28:44] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[03.11.2002 08:28:47] [notice] dataBase connect ok
+[03.11.2002 08:28:47] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 02:01:27] [notice] dataBase connect ok
+[04.11.2002 02:01:27] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 04:05:28] [notice] dataBase connect ok
+[04.11.2002 04:05:28] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 04:31:52] [notice] dataBase connect ok
+[04.11.2002 04:31:52] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 04:32:20] [notice] dataBase connect ok
+[04.11.2002 04:32:20] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 05:47:00] [notice] dataBase connect ok
+[04.11.2002 05:47:00] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 05:47:34] [notice] dataBase connect ok
+[04.11.2002 05:47:34] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 05:50:31] [notice] dataBase connect ok
+[04.11.2002 05:50:31] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 05:58:24] [notice] dataBase connect ok
+[04.11.2002 05:58:24] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 05:58:36] [notice] dataBase connect ok
+[04.11.2002 05:58:36] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 07:55:01] [notice] dataBase connect ok
+[04.11.2002 07:55:01] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 07:57:50] [notice] dataBase connect ok
+[04.11.2002 07:57:50] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
+[04.11.2002 08:08:25] [notice] dataBase connect ok
+[04.11.2002 08:08:25] [error] Bad query:          SELECT count(dateTime) from phpMySearch_spider
+                   WHERE DATE_ADD(dateTime,INTERVAL  DAY) + INTERVAL TIME_TO_SEC("") SECOND < NOW() => (You have an error in your SQL syntax near ') + INTERVAL TIME_TO_SEC("") SECOND < NOW()' at line 2)
