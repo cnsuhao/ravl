@@ -212,10 +212,10 @@ namespace RavlImageN
     // Get the current settings format
     v4l2_format fmt;
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    v4l2_pix_format *pfmt = (v4l2_pix_format*)&(fmt.fmt);
     if (ioctl(m_fd, VIDIOC_G_FMT, &fmt) != -1)
     {
       ONDEBUG( \
-        v4l2_pix_format *pfmt = (v4l2_pix_format*)&(fmt.fmt); \
         cerr << "IOV4L2BaseC::CheckFormat ioctl(VIDIOC_G_FMT)" << endl; \
         cerr << "  width(" << pfmt->width << ")" << endl; \
         cerr << "  height(" << pfmt->height << ")" << endl; \
