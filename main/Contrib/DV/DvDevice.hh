@@ -10,7 +10,7 @@
 //! author="Kieron J Messer"
 //! date="23/9/2000"
 //! lib=RavlDV
-//! docentry="Ravl.Drivers.Linux1394"
+//! docentry="Ravl.Contrib.VideoIO.Drivers.VideoLinux1394"
 //! rcsid="$Id$"
 
 #include <libavc1394/rom1394.h>
