@@ -16,6 +16,8 @@
 
 extern void InitDPImageIO(void);
 
+using namespace RavlImageN;
+
 int main()
 {
   InitDPImageIO();
