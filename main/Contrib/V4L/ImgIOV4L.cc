@@ -231,13 +231,12 @@ namespace RavlImageN {
 	urow += rect.Cols()/2;
 	vrow += rect.Cols()/2;
       }
-    }
-      break;
-    case VIDEO_PALETTE_YUYV: {
+    } break;
+    case VIDEO_PALETTE_UYVY: {
       RavlAssert(buf_grey != 0);
       ret = ImageC<ByteYUV422ValueC>(rect);
+      rsize = rect.Area() * 2;
       if(!memmap) {
-	rsize = rect.Area() * 2;
 	if((rret = read(fd,buf_grey,rsize)) != rsize) {
 	  cerr << "Read failed. Bytes read = " << rret << "\n";
 	  return false;
@@ -246,11 +245,11 @@ namespace RavlImageN {
 	memcpy(&(ret[rect.Origin()]),buf_grey,rsize);
       }
     } break;
-    case VIDEO_PALETTE_UYVY: {
+    case VIDEO_PALETTE_YUYV: {
       RavlAssert(buf_grey != 0);
       ret = ImageC<ByteYUV422ValueC>(rect);
-      rsize = rect.Area() * 2;
       if(!memmap) {
+	rsize = rect.Area() * 2;
 	if((rret = read(fd,&(ret[rect.Origin()]),rsize)) != rsize) {
 	  cerr << "Read failed. Bytes read = " << rret << "\n";
 	  return false;

@@ -23,7 +23,7 @@ MUSTLINK=InitV4L.cc
 
 PLIB=RavlImgIOV4L
 
-USESLIBS=RavlImageIO
+USESLIBS=RavlImageIO RavlExtImgIO RavlVideoIO
 
 EHT=Ravl.Contrib.Image_IO.Video4Linux.html
 
