@@ -225,6 +225,9 @@ namespace RavlImageN
     RavlAssertMsg(buffer.memory == V4L2_MEMORY_MMAP, "IOV4L2BaseC::GetFrame<ByteT> buffer not mmap-ed");
     img = ImageC<ByteT>(m_height, m_width, V4L2BufferC<ByteT>(parent, m_buffers[buffer.index].m_id, buffer.index, (ByteT*)m_buffers[buffer.index].m_start, (UIntT)m_buffers[buffer.index].m_length));
 
+    // Unlock
+    lockCapture.Unlock();
+
     // Copy the image if fast buffers are created yet not used
     if (!m_fastBufferUsed)
     {

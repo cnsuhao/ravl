@@ -16,12 +16,14 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/DP/SequenceIO.hh"
+#include "Ravl/Image/IOV4L2.hh"
 
 using namespace RavlN;
 using namespace RavlImageN;
 
 template <class PixelT> int process(const bool grey, IntT frames, const StringC &iname, const StringC &oname)
 {
+  // Open the IO streams
   DPIPortC< ImageC<PixelT> > ip;
   DPOPortC< ImageC<PixelT> > op;
   if (!OpenISequence(ip, iname, "", true))
@@ -35,6 +37,12 @@ template <class PixelT> int process(const bool grey, IntT frames, const StringC 
     return 1;
   }
 
+  // Set some V4L2 specific attributes
+  IOV4L2C<PixelT> v4l2(ip);
+  v4l2.SetAttr("width",  320);
+  v4l2.SetAttr("height", 240);
+  
+  // Frame capture loop
   bool seq = (frames > 0);
   ImageC<PixelT> img;
   while (!ip.IsGetEOS())
@@ -60,6 +68,7 @@ template <class PixelT> int process(const bool grey, IntT frames, const StringC 
 
 int main(int argc, char **argv)
 {
+  // Process the options
   OptionC opt(argc, argv);
   bool grey     = opt.Boolean("g",  false,                 "Greyscale capture.");
   IntT frames   = opt.Int(    "f",  0,                     "Number of frames to capture (0 = infinite).");
@@ -69,9 +78,7 @@ int main(int argc, char **argv)
   
   // Greyscale capture
   if (grey)
-  {
     return process<ByteT>(grey, frames, iname, oname);
-  }
   
   // RGB capture
   return process<ByteRGBValueC>(grey, frames, iname, oname);
