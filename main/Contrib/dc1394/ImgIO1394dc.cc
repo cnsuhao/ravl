@@ -91,7 +91,7 @@ namespace RavlImageN {
     } else if(pixelType == typeid(ByteYUV422ValueC)) {
       ONDEBUG(cerr << "Open in YUV422 mode\n");
       cam_mode = MODE_640x480_YUV422;
-    } else if(pixelType == typeid(ByteYUVValueC)) {
+    } else if(pixelType == typeid(ByteYUVValueC)) { 
       ONDEBUG(cerr << "Open in YUV444 mode\n");
       cam_mode = MODE_160x120_YUV444;
     } else if(pixelType == typeid(ImageC<UInt16T>)) {
@@ -368,11 +368,11 @@ namespace RavlImageN {
   // This is for handling stream attributes such as frame rate, and compression ratios.
   bool ImgIO1394dcBaseC::HandleGetAttr(const StringC &attrName,IntT &attrValue)
   {
-    MTWriteLockC hold(2);
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
-
+    
+    MTWriteLockC hold(2);
     switch(featureInfo.Data2())
     {
     case CT_IntValue:
@@ -393,10 +393,10 @@ namespace RavlImageN {
   
   bool ImgIO1394dcBaseC::HandleSetAttr(const StringC &attrName,const IntT &attrValue)
   {
-    MTWriteLockC hold(2);
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
+    MTWriteLockC hold(2);
     switch(featureInfo.Data2())
     {
     case CT_FloatValue:
@@ -460,7 +460,6 @@ namespace RavlImageN {
   
   bool ImgIO1394dcBaseC::HandleSetAttr(const StringC &attrName,const RealT &attrValue)
   {
-    MTWriteLockC hold(2);
     if(attrName == "framerate")
     {
       SetFrameRate(attrValue);
@@ -469,6 +468,7 @@ namespace RavlImageN {
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
+    MTWriteLockC hold(2);
     switch(featureInfo.Data2())
     {
     case CT_FloatValue:
@@ -488,10 +488,10 @@ namespace RavlImageN {
   // This is for handling stream attributes such as frame rate, and compression ratios.
   bool ImgIO1394dcBaseC::HandleGetAttr(const StringC &attrName,bool &attrValue)
   {
-    MTWriteLockC hold(2);
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
+    MTWriteLockC hold(2);
     dc1394bool_t tmp;
     switch(featureInfo.Data2())
     {
@@ -515,10 +515,10 @@ namespace RavlImageN {
   
   bool ImgIO1394dcBaseC::HandleSetAttr(const StringC &attrName,const bool &attrValue)
   {
-    MTWriteLockC hold(2);
     Tuple2C<IntT,ControlTypeT> featureInfo;
     if(!name2featureid.Lookup(attrName,featureInfo))
       return false;
+    MTWriteLockC hold(2);
     switch(featureInfo.Data2())
     {
     case CT_FloatValue:
