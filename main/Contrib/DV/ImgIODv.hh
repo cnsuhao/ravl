@@ -40,15 +40,15 @@ namespace RavlImageN {
     //: Constructor.
     // This constructs with the basic cif format.
     
-    inline UIntT CalcOffset(UIntT frameNo) const {
+    inline streampos CalcOffset(UIntT frameNo) const {
       RavlAssert(frameSize > 0);
-      return frameSize * frameNo; 
+      return (streampos) frameSize * (streampos) frameNo; 
     }
     //: Calculate the offset of a frame.
     
-    inline IntT CalcOffset(IntT frameNo) const {
+    inline streampos CalcOffset(streampos frameNo) const {
       RavlAssert(frameSize > 0);
-      return frameSize * frameNo; 
+      return (streampos) frameSize * (streampos) frameNo; 
     }
     //: Calculate the offset of a frame.
     
