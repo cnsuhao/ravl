@@ -11,10 +11,8 @@ PACKAGE=Ravl/Image
 
 REQUIRES = libClipStationPro
 
-EXAMPLES = exCSPGrab.cc 
-#csp.cc
+EXAMPLES = exCSPControl.cc exImgIOCSP.cc
 
-#test.cc 
 HEADERS= CSPControl.hh ImgIOCSP.hh CSPFormat.hh
 
 SOURCES= CSPControl.cc ImgIOCSP.cc CSPFormat.cc 
@@ -23,10 +21,9 @@ MUSTLINK=ClipStationPro.cc
 
 PLIB= CSPDriver
 
-USESLIBS=ClipStationPro RavlCore RavlImage RavlImageIO
-# Mtext Mopt Mimage DataProc DPImageIO DPDisplayIO
+USESLIBS=ClipStationPro RavlCore RavlImage RavlImageIO RavlThreads  
 
-PROGLIBS= RavlDPDisplay.opt RavlOSIO
+PROGLIBS= RavlOSIO RavlImage RavlMath
 
 AUXFILES= ClipStationPro.def
 

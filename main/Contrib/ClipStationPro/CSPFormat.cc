@@ -35,43 +35,62 @@ namespace RavlImageN {
   {}
   
   
+
   const type_info &
   FileFormatCSPBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
   { return typeid(void); }
+
+
   
   const type_info &
   FileFormatCSPBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const
   { 
-    ONDEBUG(cerr << "FileFormatCSPBodyC::Probe(const StringC &,IStreamC &,const type_info &), Called. " << filename << " \n");
+    ONDEBUG(cerr << "FileFormatCSPBodyC::ProbeLoad(const StringC &,IStreamC &,const type_info &), Called. " << filename << " \n");
     if(filename.length() == 0)
       return typeid(void);
     if(filename[0] != '@')
       return typeid(void);
     if(ExtractDevice(filename) != "CSP")
       return typeid(void);
-    ONDEBUG(cerr << "FileFormatCSPBodyC::Probe(), Found. \n");
+    ONDEBUG(cerr << "FileFormatCSPBodyC::ProbeLoad(), Found. \n");
     return typeid(ImageC<ByteYUV422ValueC>); 
   }
+
+
   
   const type_info &
-  FileFormatCSPBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const
-  { return typeid(void); }
-  
+  FileFormatCSPBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const
+{ 
+  ONDEBUG(cerr << "FileFormatCSPBodyC::ProbeSave(const StringC& filename, const type_info& ), called " << filename << "\n" ) ; 
+  if (filename.length() == 0)
+    return typeid(void) ; 
+  if (filename[0] != '@') 
+    return typeid(void) ;  
+  if (ExtractDevice(filename) != "CSP") 
+    return typeid(void) ; 
+  ONDEBUG(cerr << "FileFormatCSPBodyC::ProbeSave(), Found. \n"); 
+  return typeid(ImageC<ByteYUV422ValueC> ) ; 
+}  
+
+
+
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
-  
   DPIPortBaseC FileFormatCSPBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const
-  { return DPIPortBaseC(); }
+{ return DPIPortBaseC(); }  
   
-  //: Create a output port for saving.
-  // Will create an Invalid port if not supported.
-  
-  DPOPortBaseC FileFormatCSPBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const 
-  { return DPOPortBaseC(); }
-  
+
+
+//: Create a output port for saving.
+// Will create an Invalid port if not supported.
+DPOPortBaseC FileFormatCSPBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const 
+{ return DPOPortBaseC(); }
+
+
+
+
   //: Create a input port for loading from file 'filename'.
-  // Will create an Invalid port if not supported. <p>
-  
+  // Will create an Invalid port if not supported. <p>  
   DPIPortBaseC FileFormatCSPBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const {
     ONDEBUG(cerr << "FileFormatCSPBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
     if(filename.length() == 0)
@@ -82,16 +101,30 @@ namespace RavlImageN {
     if(fn == "")
       fn = "PCI,card=0";
     if(obj_type == typeid(ImageC<ByteYUV422ValueC>)) {
-      return DPIImageClipStationProC<ByteYUV422ValueC>(fn,ImageRectangleC(576,720));
+      return DPIImageClipStationProC<ByteYUV422ValueC>(fn);
     }
     return DPIPortBaseC();
   }
   
+
+
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
   
   DPOPortBaseC FileFormatCSPBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const
-  { return DPOPortBaseC(); }
+  { 
+    ONDEBUG (cerr << "FielFormatCSPBodyC::CreateOutput(const StringC&, const type_info&) const, Called \n"); 
+    if (filename.length() ==0) 
+      return DPOPortBaseC() ; 
+    if (filename[0] != '@') 
+      return DPOPortBaseC() ;
+    StringC fn = ExtractParams(filename); 
+    if (fn == "")  
+      fn = "PCI,card=0"; 
+    if (obj_type == typeid(ImageC<ByteYUV422ValueC> )) 
+      return DPOImageClipStationProC<ByteYUV422ValueC> (fn) ; 
+    return DPOPortBaseC(); 
+  }
   
   //: Get prefered IO type.
   

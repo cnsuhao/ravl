@@ -12,82 +12,236 @@
 //! docentry="Ravl.Images.Video.Video IO.ClipStationPro"
 //! lib=CSPDriver
 //! file="Ravl/Contrib/ClipStationPro/CSPControl.hh"
+//! example=exCSPControl.cc
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUV422Value.hh"
 #include "Ravl/TimeCode.hh"
+#include "Ravl/Threads/RWLock.hh"
+#include "Ravl/String.hh"
+#include "Ravl/OS/DMABuffer.hh"
 
 extern "C" {
 #include <dvs_clib.h>
 #include <dvs_fifo.h>
 }
 
+
 namespace RavlN {
-  template<class DataT> class DListC; }
+  template<class DataT> class DListC; 
+  class AttributeCtrlBodyC ;
+}
+// forward delclarations 
+
 
 namespace RavlImageN {
+  
+
+
+ enum CSPModeT { BLACK, COLOURBAR, LIVE, DELAY }  ; 
+    //: some diagnostic modes 
+    //:!param BLACK - Sets video raster to black 
+    //:!param COLOURBAR - Sets video raster to generate colourbars 
+    //:!param LIVE - Sets video raster to live mode (ouput mirros input) 
+    //:!param DELAY - Sets video raster output to mirror video input but with a 1 frame delay 
+
 
 
   //! userlevel=Develop
-  //: Clip station control class.
-  
-  class ClipStationProDeviceC {
+  //: Clip station pro control class body.
+  //: This class is ThreadSafe
+  class ClipStationProDeviceBodyC : public RCBodyC {
+    
   public:
-    ClipStationProDeviceC(const StringC &devName,const ImageRectangleC &nrect);
+
+  
+    ClipStationProDeviceBodyC(const StringC &devName);
     //: Constructor.
     //:!param devName - The name of the device, typical form is "PCI,card:0", "PCI,card:1"
-    //:!param nrect   - This parameter is unused
-
-    ~ClipStationProDeviceC();
+    
+    ~ClipStationProDeviceBodyC();
     //: Destructor.
     
-    bool Init();
-    //: Setup video modes to a suitable default.
-    
-    bool GetFrame(void *buff,int x,int y);
-    //: Get one frame of video.
-    
-    BufferC<ByteYUV422ValueC> GetFrame();
+    DMABufferC<ByteYUV422ValueC> GetFrame() const;
     //: Get one field of video.
+        
+    bool  PutFrame (const DMABufferC<ByteYUV422ValueC> & buffer ) const ; 
+    //: Put one frame of video to the output of the card. 
     
-    bool PutFrame(void *buff,int x,int y);
-    //: Put one frame of video to the output of the card .
+    bool BuildAttributesIn (AttributeCtrlBodyC & attrCtrl) ; 
+    //: Builds the list of available attributes for an input 
+
+    bool GetAttrIn (const StringC & attrName,  StringC & attrValue ) const ; 
+    //: Gets the value for a given output attribute 
+
+    bool SetAttrIn (const StringC & attrName, const StringC & attrValue ) ; 
+    //: Sets the value for a given input attribute 
+
+    bool BuildAttributesOut (AttributeCtrlBodyC & attrCtrl) ; 
+    //: Builds the list of available attributes for output 
+
+    bool GetAttrOut (const StringC & attrName,  StringC & attrValue) const; 
+    //: Gets the value for a given output attribute 
+
+    bool SetAttrOut (const StringC & attrName, const StringC & attrValue) ; 
+    //: Sets the value for a given output attribute 
     
-    bool CSPGetAttr(const StringC &attrName,StringC &attrValue);
-    //: Get a stream attribute.
-    // Returns false if the attribute name is unknown.
-    // This is for handling stream attributes such as frame rate, and compression ratios.
-    //!param: attrName="timecode" - returns the timecode for the last grabbed frame 
-    //!param: attrName="FrameBufferSize" - returns the current size of the frame buffer 
+    bool SetMode (CSPModeT) ; 
+    //: Sets the mode of card
+    // Usefull for test signals. 
+    
+  
+    DMABufferC<ByteYUV422ValueC> GetDMABuffer(void) const 
+      { 
+	IntT dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize;
+	return DMABufferC<ByteYUV422ValueC> (dmaBufferSize / sizeof(ByteYUV422ValueC), alignDMA) ; }
+    //: A usefull method which returns a buffer suitable for DMA transfers 
+    // The returned buffer has the correct size and dma alignment for the underlying hardware
 
     
-    bool CSPSetAttr(const StringC &attrName,const StringC &attrValue);
-    //: Set a stream attribute.
-    // Returns false if the attribute name is unknown.
-    // This is for handling stream attributes such as frame rate, and compression ratios.
-    //!param: attrName="FrameBufferSize" - returns the current size of the frame buffer 
+    const ImageRectangleC & Rectangle(void) const 
+      { return rect ; }
+    //: Access the iamge Rectangle const 
 
-    bool CSPGetAttrList(DListC<StringC>  & attrList ) const ; 
-    //: Get a list of available attributes
-    // The list will inherit attributes from parent classes too
+    
+    //ImageRectangleC & Rectangle(void) 
+    // { return rect ; } 
+    //: Access the image Rectangle 
+
+    sv_handle * Device(void) 
+      { return dev ; } 
+    //: Access the low level device handle 
+    //!bug Use with care ! 
+
+    //ClipStationProDeviceBodyC & operator = (const ClipStationProDeviceC & other ) ; 
+    //: assignment operator
+   
+  protected :
+    
+
+    bool Init(void);
+    //: Setup video modes to a suitable default.
+    // does not lock class
+
+
+    bool CheckError( int retVal, const char * errorMessage, ostream & output = cerr ) const ; 
+    //: Checks the return value retVal, of sv device functions
+    //: in event of an error, errorMessage is printed to output and false is returned  
 
 
   protected:
-    sv_handle *dev;
-    sv_fifo *fifo;
-    sv_fifo_configinfo fifo_config;
     
-    ImageRectangleC rect;
-    bool useDMA;  // Use DMA transfer's.
-    bool doInput;
-    bool fifoMode; // Use fifo ?
-    bool captureAudio; // Capture audio ?
-    bool captureVideo; // Capture video ?
+    StringC deviceName ;               // The device name
 
-    int frameBufferSize;
+    sv_handle *dev;                   // the sv_device 
+    sv_fifo * inputFifo;                    // the fifo 
+    sv_fifo * outputFifo ; 
+    sv_fifo_configinfo fifo_config;   // info about the fifo 
+    
+    ImageRectangleC rect;             // The capture rectangle 
 
-    TimeCodeC timecode_from_getframe;
-  };
+    const bool useDMA;                // Use DMA transfer's ?
+    const bool doInput;               // do Input 
+    const bool fifoMode;              // Use fifo ?
+    const bool sharedFifo ;           // are the input and output fifos shared ? 
+    const bool captureAudio;          // Capture audio ?
+    const bool captureVideo;          // Capture video ?
+
+    int frameBufferSize;              // size of framebuffer 
+
+    mutable TimeCodeC timecode_from_getframe; // Timecode of last grabbed frame
+    
+    mutable RWLockC rwLock ;                   // a resource lock 
+
+    const UIntT alignDMA ; 
+
+};
+  
+  
+  
+  
+  
+  
+  //! userlevel=Develop
+  //: Clip station pro control class handle.
+  class ClipStationProDeviceC : public RCHandleC<ClipStationProDeviceBodyC> 
+  {    
+    
+  public: 
+    
+    ClipStationProDeviceC ( const StringC &devName) ; 
+    // : RCHandleC<ClipStationProDeviceBodyC> ( new ClipStationProDeviceBodyC(devName) ) {}
+    //: Constructor.
+    //:!param devName - The name of the device, typical form is "PCI,card:0", "PCI,card:1"
+   
+    
+    //inline bool GetFrame(void *buff,int x,int y)
+    // { return Body().GetFrame( buff,x,y) ; } 
+    //: Get one frame of video.
+    
+    inline DMABufferC<ByteYUV422ValueC> GetFrame(void)
+      { return Body().GetFrame() ; } 
+    //: Get one frame of video.
+    
+    inline bool PutFrame(const DMABufferC<ByteYUV422ValueC> & buff) 
+      { return Body().PutFrame(buff) ; } 
+//: Put one frame of video onto the output of the card
+//: This uses dma and is fast. 
+
+//inline bool PutFrame(void *buff,int x,int y) 
+//{ return Body().PutFrame( buff,x,y) ; } 
+//: Put one frame of video to the output of the card .
+
+inline bool BuildAttributesIn (AttributeCtrlBodyC & attrCtrl) 
+{ return Body().BuildAttributesIn (attrCtrl) ; } 
+//: Builds the list of available attributes for an input 
+
+inline bool GetAttrIn (const StringC & attrName, StringC & attrValue ) const
+{ return Body().GetAttrIn(attrName, attrValue) ; }  
+//: Gets the value for a given output attribute 
+
+inline bool SetAttrIn (const StringC & attrName, const StringC & attrValue )
+{ return Body().SetAttrIn (attrName, attrValue) ; }  
+    //: Sets the value for a given input attribute 
+
+inline bool BuildAttributesOut (AttributeCtrlBodyC & attrCtrl) 
+{ return Body().BuildAttributesOut ( attrCtrl ) ; }  
+//: Builds the list of available attributes for output 
+
+inline bool GetAttrOut (const StringC & attrName, StringC & attrValue) const
+{ return Body().GetAttrOut ( attrName, attrValue) ; } 
+    //: Gets the value for a given output attribute 
+
+inline bool SetAttrOut (const StringC & attrName, const StringC & attrValue) 
+{ return Body().SetAttrOut (attrName, attrValue) ; } 
+//: Sets the value for a given output attribute 
+    
+
+inline bool SetMode (CSPModeT mode) 
+{ return Body().SetMode(mode) ; } 
+//: Sets the mode of card
+// Usefull for test signals. 
+
+//template<PixelTypeT> 
+inline DMABufferC<ByteYUV422ValueC> GetDMABuffer(void) const 
+{ return Body().GetDMABuffer() ; } 
+//: A usefull method which returns a buffer suitable for DMA transfers 
+// The returned buffer has the correct size and dma alignment for the underlying hardware
+
+
+inline const ImageRectangleC & Rectangle(void) const 
+{ return Body().Rectangle() ; } 
+//: Access Capture Rectangle
+
+
+inline sv_handle * Device(void) 
+{ return Body().Device() ; } 
+//: Access the low level device handle 
+// Use with care !
+
+protected : 
+
+}; 
 
 }
 
