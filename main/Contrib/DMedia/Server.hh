@@ -90,7 +90,7 @@ namespace RavlImageN
     friend class VLServerC;
   };
   
-  //! userlevel=Normal.
+  //! userlevel=Normal
   //: Server handle.
   
   class VLServerC 
