@@ -11,6 +11,7 @@
 
 #include "Ravl/Image/LibMPEG2Format.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"
+#include "Ravl/Image/MPEG2Demux.hh"
 #include <ctype.h>
 #include "Ravl/DP/ByteFileIO.hh"
 #include "Ravl/DP/SPortAttach.hh"
@@ -72,7 +73,7 @@ namespace RavlImageN {
     }
     
     StringC ext = Extension(nfilename);
-    if(ext == "mpeg" || ext == "mpg")
+    if(ext == "mpeg" || ext == "mpg" || ext == "vob")
       return typeid(ImageC<ByteRGBValueC>);
     //ONDEBUG(cerr << "FileFormatLibMPEG2BodyC::ProbeLoad(), Req:" <<obj_type.name() << "  Ret:" << pref.name() << " \n");
     return typeid(void);
@@ -88,6 +89,8 @@ namespace RavlImageN {
   
   DPIPortBaseC FileFormatLibMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
     StringC ext = Extension(fn);
+    if (ext == "vob")
+      return DPIByteFileC(fn) >> MPEG2DemuxC(0xe0) >> ImgILibMPEG2C(false);
     return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(true));
   }
   

@@ -40,7 +40,7 @@ namespace RavlImageN
     public DPSeekCtrlBodyC
   {
   public:
-    ImgILibMPEG2BodyC();
+    ImgILibMPEG2BodyC(bool seekable);
     //: Constructor.
     
     ~ImgILibMPEG2BodyC();
@@ -90,17 +90,20 @@ namespace RavlImageN
     virtual bool InitialSeek();
     //: Store the initial stream position
     
-    virtual bool ReadData();
+    virtual bool ReadInput();
     //: Read data from stream into buffer.
     
-    virtual bool DecodeGOP(UIntT firstFrameNo);
+    virtual bool SeekGOP(StreamPosT &firstFrameNo, StreamPosT &localFrameNo);
+    //: Seek to the relevant GOP offset
+    
+    virtual bool DecodeGOP(StreamPosT firstFrameNo);
     //: Decode a whole GOP and put it in the image cache.
     
-    virtual bool Decode(UIntT &frameNo, const mpeg2_info_t *info);
+    virtual bool Decode(StreamPosT &frameNo, const mpeg2_info_t *info);
     //: Decode a block of data
     
     virtual void OnEnd();
-    //: Called when a sequence end tag found
+    //: Called when a sequence end tag is encountered
     
     virtual void BuildAttributes();
     //: Register stream attributes
@@ -109,16 +112,18 @@ namespace RavlImageN
     mpeg2dec_t *m_decoder;                                                  // Decoder object
     IntT m_state;                                                           // Current decoder state
     SArray1dC<ByteT> m_buffer;                                              // Data buffer for decoder
-    
     ByteT *m_bufStart, *m_bufEnd;                                           // Data buffer pointers
+    
     Index2dC m_imgSize;                                                     // Frame size
     StreamPosT m_frameNo;                                                   // Desired seek frame
-    StreamPosT m_lastRead;                                                  // Stream position at end of last read
-    AVLTreeC<StreamPosT, StreamPosT> m_offsets;                             // Offsets of GOP in streams
     CacheC<StreamPosT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > m_imageCache;   // Frame cache
-    bool m_sequenceInit;                                                    // Sequence initialised indicator
     IntT m_lastFrameType;                                                   // Last decoded frame tpye indicator
     
+    bool m_seekable;                                                        // Seekable sequence indicator
+    bool m_sequenceInit;                                                    // Sequence initialised indicator
+    StreamPosT m_lastRead;                                                  // Stream position at end of last read
+    AVLTreeC<StreamPosT, StreamPosT> m_offsets;                             // Offsets of GOP in streams
+
     UIntT m_gopCount;                                                       // Cache GOP counter
     UIntT m_gopLimit;                                                       // Cache GOP max
     UIntT m_previousGop;                                                    // Frame number at previous GOP
@@ -137,8 +142,8 @@ namespace RavlImageN
     //: Default constructor.
     // Creates an invalid handle.
 
-    ImgILibMPEG2C(bool) :
-      DPEntityC(*new ImgILibMPEG2BodyC())
+    ImgILibMPEG2C(bool seekable = true) :
+      DPEntityC(*new ImgILibMPEG2BodyC(seekable))
     {}
     //: Constructor.
     

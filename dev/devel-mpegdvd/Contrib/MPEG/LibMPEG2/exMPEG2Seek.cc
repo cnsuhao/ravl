@@ -36,7 +36,7 @@ int main(int nargs, char **argv)
 
   // Select the correct opening method
   FileFormatLibMPEG2C format;
-  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
+  DPISPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
   if (!in.IsValid())
   {
     cerr << "Unable to open file (" << filename << ")\n";
@@ -57,15 +57,35 @@ int main(int nargs, char **argv)
     }
   }
   
+  // Number of frames to play with
+  const IntT size = 50;
+  
   // Delay in seconds
   const RealT delay = 0.1;
   
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
+  IntT count = 0;
   
-  // Keep playing til the end
-  while (!in.IsGetEOS())
+  // Play forward, then back, then random for a bit
+  while (true)
   {
+    if (count > size * 3)
+      count = 0;
+
+    IntT frame = count;
+    if (count >= size && count < size * 2)
+      frame = size - (count - size);
+    
+    if (count >= size * 2)
+      frame = (IntT)(Random1() * (RealT)size);
+   
+    count++;
+    
+    in.Seek(frame);
+      
+    cerr << "==== Seeking to " << frame << endl;
+
     if(!in.Get(rgb))
       break;
     

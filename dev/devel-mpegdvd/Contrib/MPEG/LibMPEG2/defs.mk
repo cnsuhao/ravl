@@ -11,9 +11,9 @@ REQUIRES=libmpeg2
 
 PACKAGE=Ravl/Image
 
-HEADERS= ImgIOMPEG2.hh LibMPEG2Format.hh
+HEADERS= ImgIOMPEG2.hh LibMPEG2Format.hh MPEG2Demux.hh
 
-SOURCES= ImgIOMPEG2.cc LibMPEG2Format.cc
+SOURCES= ImgIOMPEG2.cc LibMPEG2Format.cc MPEG2Demux.cc
 
 PLIB=RavlLibMPEG2
 
@@ -23,7 +23,7 @@ USESLIBS= RavlImage RavlIO LibMPEG2 RavlDPDisplay
 
 PROGLIBS= RavlGUI
 
-EXAMPLES= exMPEG2.cc
+EXAMPLES= exMPEG2.cc exMPEG2Seek.cc
 
 AUXDIR=lib/RAVL/libdep
 
