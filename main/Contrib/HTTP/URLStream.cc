@@ -135,7 +135,6 @@ namespace RavlN {
 	encoded += string[i];
       }
     }
-    cerr << encoded;
     return encoded;
   }
 
