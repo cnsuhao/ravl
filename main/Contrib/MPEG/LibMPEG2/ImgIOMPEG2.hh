@@ -96,7 +96,7 @@ namespace RavlImageN {
     streampos lastRead;
     HashC<UIntT,ImageC<ByteRGBValueC> > images;
     AVLTreeC<UIntT,std::streampos> offsets;
-    CacheC<UIntT,ImageC<ByteRGBValueC> > imageCache;
+    CacheC<UIntT,Tuple2C<ImageC<ByteRGBValueC>,IntT> > imageCache;
     bool sequenceInit;
     IntT lastFrameType;
   };

@@ -324,9 +324,9 @@ namespace RavlImageN {
 	ONDEBUG(cerr << "Got SLICE. \n");
 	if(info->display_fbuf != 0) {
 	  UIntT frameid = (UIntT) info->display_fbuf->id;
-	  lastFrameType = info->display_picture->flags & PIC_MASK_CODING_TYPE;
+	  IntT frameType = info->display_picture->flags & PIC_MASK_CODING_TYPE;
 	  ONDEBUG(cerr << "frameid=" << frameid << " " << info->display_picture->temporal_reference << " Type=" << frameTypes[lastFrameType] <<"\n");
-	  imageCache.Insert(localFrameNo,images[frameid]);
+	  imageCache.Insert(localFrameNo,Tuple2C<ImageC<ByteRGBValueC>,IntT>(images[frameid],frameType));
 	  images.Del(frameid);
 	  localFrameNo++;
 	  gotFrames = true;
@@ -347,16 +347,19 @@ namespace RavlImageN {
   
   bool ImgILibMPEG2BodyC::Get(ImageC<ByteRGBValueC> &img) {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Get(). Called. \n");
-    if(!imageCache.LookupR(frameNo,img)) {
+    Tuple2C<ImageC<ByteRGBValueC>,IntT> dat;
+    if(!imageCache.LookupR(frameNo,dat)) {
       if(!DecodeGOP(frameNo)) {
 	cerr << "ImgILibMPEG2BodyC::Get(), Failed to decode GOP. \n";
 	return false;
       }
     }
-    if(!imageCache.LookupR(frameNo,img)) {
+    if(!imageCache.LookupR(frameNo,dat)) {
       // Probably a seek forward in the file to a GOP we haven't seen yet...
       return false;
     }
+    img = dat.Data1();
+    lastFrameType = dat.Data2();
     frameNo++;   
     return true;
   }
