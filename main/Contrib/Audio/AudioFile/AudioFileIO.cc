@@ -12,7 +12,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/DP/AttributeType.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -155,34 +155,38 @@ namespace RavlAudioN {
   // returns actual number of bits.
   
   bool AudioFileBaseC::SetSampleBits(IntT bits) {
+    ONDEBUG(cerr << "\nAudioFileBaseC::SetSampleBits(IntT bits)") ;
     return false;
   }
   
   //: Set frequency of samples
   // Returns actual frequency.
   
-  bool AudioFileBaseC::SetSampleRate(RealT rate) {
+bool AudioFileBaseC::SetSampleRate(RealT rate) {
+    ONDEBUG(cerr << "\nAudioFileBaseC::SetSampleRate(RealT rate)") ; 
     if(forInput) {
       cerr << "AudioFileBaseC::SetSampleRate(), WARNING: Can't set sample rate for input. \n";
       return false;
     }
-    sampleRate = rate;
+    sampleRate = rate ;
     return true;
   }
   
   //: Get number of bits to use in samples.
   // returns actual number of bits.
   
-  bool AudioFileBaseC::GetSampleBits(IntT &bits) {
-    IntT rate ; 
-    afGetSampleFormat ( handle, AF_DEFAULT_TRACK, &rate, &bits) ;
-      return true;
-  }
-  
+bool AudioFileBaseC::GetSampleBits(IntT &bits) {
+  ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleBits(IntT &bits)"); 
+  IntT rate ; 
+  afGetSampleFormat ( handle, AF_DEFAULT_TRACK, &rate, &bits) ;
+  return true;
+}
+
   //: Get frequency of samples
   // Returns actual frequency.
   
   bool AudioFileBaseC::GetSampleRate(RealT &rate) {
+ ONDEBUG(cerr << "\nAudioFileBaseC::GetSampleRate(RealT &rate)" ) ;
     if(!forInput) {
       rate = sampleRate;
       return true;
@@ -215,6 +219,7 @@ namespace RavlAudioN {
   bool AudioFileBaseC::Write(const void *buf,IntT len) {
     //ONDEBUG(cerr << "AudioFileBaseC::Write(), Called. \n");
     if(handle == 0) {
+      cerr << "\n handle is null, doing some setup samplerate is  " << sampleRate  ;
       RavlAssert(setup != 0);
       afInitRate(setup, AF_DEFAULT_TRACK, sampleRate);
       handle = afOpenFile(fileName.chars(),"w",setup);
