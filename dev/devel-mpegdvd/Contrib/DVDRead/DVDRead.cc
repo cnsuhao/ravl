@@ -36,9 +36,12 @@ namespace RavlN
     m_dvdVtsFile(NULL),
     m_dvdPgc(NULL),
     m_dvdFile(NULL),
+    m_curCell(0),
     m_curSector(0),
     m_curBlock(0),
-    m_curByte(0)
+    m_curByte(0),
+    m_signalFlush(true),
+    m_needFlush(true)
   {
     // Try to open the DVD device
     m_dvdReader = DVDOpen(m_device);
@@ -215,6 +218,13 @@ namespace RavlN
     ByteT dataBuf[g_blockSize];
     while (dataRead < data.Size())
     {
+      // If required, flush the data pipeline
+      if (m_needFlush)
+      {
+        m_signalFlush();
+        m_needFlush = false;
+      }
+      
       // Write out the part of the current pack
       if (m_curByte != 0 || (data.Size() - dataRead < g_blockSize))
       {
@@ -279,7 +289,7 @@ namespace RavlN
           UIntT len = DVDReadBlocks(m_dvdFile, m_curSector, 1, m_curNav);
           RavlAssertMsg(len == 1,  "DVDReadBodyC::GetArray unable to read NAV block");
       
-          // Read the 
+          // Read the DSI packet
           navRead_DSI(&dsiPack, &(m_curNav[DSI_START_BYTE]));
           RavlAssertMsg(m_curSector == dsiPack.dsi_gi.nv_pck_lbn, "DVDReadBodyC::GetArray DSI sector does not match cell sector");
           dataSize = dsiPack.dsi_gi.vobu_ea;
@@ -291,9 +301,19 @@ namespace RavlN
         }
         else
         {
-          cerr << "DVDReadBodyC::GetArray reached end of VOBU" << endl;
-          m_endFound = true;
-          break;
+          // Check if we have another VOBU to move on to
+          if (OnEnd())
+          {
+            // Have we read any data?
+            if (dataRead > 0)
+              // If so, stop here so the data can be processed before the pipeline is flushed
+              break;
+          }
+
+          // Parse the contained DSI packet
+          navRead_DSI(&dsiPack, &(m_curNav[DSI_START_BYTE]));
+          RavlAssertMsg(m_curSector == dsiPack.dsi_gi.nv_pck_lbn, "DVDReadBodyC::GetArray DSI sector does not match cell sector");
+          dataSize = dsiPack.dsi_gi.vobu_ea;
         }
       }
     }
@@ -364,6 +384,7 @@ namespace RavlN
     }
     
     // Store the sector position
+    m_curCell = cellCount;
     m_curSector = m_cellTable[cellCount].Data2();
     cerr << "DVDReadBodyC::SeekFrame sector(" << m_curSector << ") frame(" << m_cellTable[cellCount].Data1() << ")" << endl;
     
@@ -394,6 +415,43 @@ namespace RavlN
     s += ((time.second >> 4) & 0x0f) *    10;
     s += ((time.second     ) & 0x0f)        ;
     return s;
+  }
+  
+  bool DVDReadBodyC::OnEnd()
+  {
+    cerr << "DVDReadBodyC::OnEnd reached end of VOBU" << endl;
+    
+    // Have we reached the last cell?
+    if (m_curCell < m_cellTable.Size())
+    {
+      // Move to the next cell
+      m_curCell++;
+      m_curSector = m_cellTable[m_curCell].Data2();
+      cerr << "DVDReadBodyC::OnEnd cell(" << m_curCell << ") sector(" << m_curSector << ")" << endl;
+      
+      // Read NAV packet
+      UIntT len = DVDReadBlocks(m_dvdFile, m_curSector, 1, m_curNav);
+      RavlAssertMsg(len == 1,  "DVDReadBodyC::OnEnd unable to read NAV block");
+  
+      // Parse the contained DSI packet
+      dsi_t dsiPack;
+      navRead_DSI(&dsiPack, &(m_curNav[DSI_START_BYTE]));
+      RavlAssertMsg(m_curSector == dsiPack.dsi_gi.nv_pck_lbn, "DVDReadBodyC::OnEnd DSI sector does not match cell sector");
+      
+      // Reset the counters
+      m_curBlock = 0;
+      m_curByte = 0;
+      
+      // Signal a pipeline flush
+      m_needFlush = true;
+      
+      return false;
+    }
+    
+    // Mark the end
+    m_endFound = true;
+    
+    return true;
   }
   
   bool DVDReadBodyC::GetAttr(const StringC &attrName, StringC &attrValue)

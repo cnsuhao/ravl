@@ -11,7 +11,7 @@
 
 #include "Ravl/DVDFormat.hh"
 #include "Ravl/DVDRead.hh"
-#include "Ravl/Image/ImgIOMPEG2.hh"
+#include "Ravl/ImgIOMPEG2DVD.hh"
 #include "Ravl/Image/MPEG2Demux.hh"
 
 #define DPDEBUG 0
@@ -122,8 +122,14 @@ namespace RavlN
     if (title < 1 || title > 99)
       return DPIPortBaseC();
     
+    // Create the pipeline
     ONDEBUG(cerr << "FileFormatDVDBodyC::CreateInput(), Checking file type. params=" << params << ", title=" << title << "\n");
-    return (DVDReadC(title, params) >> MPEG2DemuxC(0xe0) >> ImgILibMPEG2C(false));
+    DVDReadC dvd(title, params);
+    MPEG2DemuxC demux(0xe0);
+    ImgILibMPEG2DVDC mpeg(demux, dvd);
+    dvd >> demux >> mpeg;
+    
+    return mpeg;
   }
   
   //: Create a output port for saving to file 'filename'..

@@ -12,6 +12,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/Image/ImgIOMPEG2.hh"
+#include "Ravl/Image/MPEG2Demux.hh"
+#include "Ravl/DVDRead.hh"
 
 namespace RavlImageN
 {
@@ -20,12 +22,20 @@ namespace RavlImageN
     public ImgILibMPEG2BodyC
   {
   public:
-    ImgILibMPEG2DVDBodyC();
+    ImgILibMPEG2DVDBodyC(MPEG2DemuxC &demux, DVDReadC &dvd);
     //: Constructor.
     
-    ~ImgILibMPEG2DVDBodyC();
+    virtual ~ImgILibMPEG2DVDBodyC() {}
     //: Destructor.
+    
+    bool Reset();
+    //: Reset the decoder
+    
+  protected:
+    MPEG2DemuxC m_demux;
+    DVDReadC m_dvd;
   };
+  
   class ImgILibMPEG2DVDC :
     public ImgILibMPEG2C
   {
@@ -36,10 +46,23 @@ namespace RavlImageN
     //: Default constructor.
     // Creates an invalid handle.
 
-    ImgILibMPEG2DVDC(bool) :
-      DPEntityC(*new ImgILibMPEG2DVDBodyC())
+    ImgILibMPEG2DVDC(MPEG2DemuxC &demux, DVDReadC &dvd) :
+      DPEntityC(*new ImgILibMPEG2DVDBodyC(demux, dvd))
     {}
     //: Constructor.
+    
+    bool Reset()
+    { return Body().Reset(); }
+    //: Reset the decoder
+    
+  protected:
+    ImgILibMPEG2DVDBodyC &Body()
+    { return static_cast<ImgILibMPEG2DVDBodyC &>(ImgILibMPEG2C::Body()); }
+    //: Access body.
+
+    const ImgILibMPEG2DVDBodyC &Body() const
+    { return static_cast<const ImgILibMPEG2DVDBodyC &>(ImgILibMPEG2C::Body()); }
+    //: Access body.
   };
 }
 

@@ -16,6 +16,7 @@
 #include "dvdread/ifo_types.h"
 #include "Ravl/DArray1d.hh"
 #include "Ravl/Tuple3.hh"
+#include "Ravl/Threads/Signal.hh"
 
 namespace RavlN
 {
@@ -72,12 +73,19 @@ namespace RavlN
     //: Move to the correct cell for the specified frame.
     //!return: Next frame actually that will be read
 
+    Signal0C &SignalFlush()
+    { return m_signalFlush; }
+    //: Access flush signal.
+    
   protected:
     void Close();
     //: Close the DVD read objects
     
     Int64T GetTime(dvd_time_t time);
     //: Return the BCD coded time in seconds
+    
+    bool OnEnd();
+    //: Called when the end of VOBU is reached
     
     void BuildAttributes();
     //: Register stream attributes
@@ -97,12 +105,15 @@ namespace RavlN
     SArray1dC< Tuple3C< Int64T, UIntT, bool > > m_cellTable;
     // Table mapping playback times (in seconds) to sector positions with STC discontinuity indicator
 
+    UIntT m_curCell;                                                      // Current cell number
     UIntT m_curSector;                                                    // Current VOBU start sector
     ByteT m_curNav[g_blockSize];                                          // Current nav block data
     UIntT m_curBlock;                                                     // Current block in payload
     UIntT m_curByte;                                                      // Current byte in block
     
     bool m_endFound;                                                      // EOS indicator
+    Signal0C m_signalFlush;                                               // Flush signal
+    bool m_needFlush;                                                     // Flush required indicator
   };
 
   class DVDReadC :
@@ -122,10 +133,14 @@ namespace RavlN
     //!param: title The title track to read (default = 1)
     //!param: device A string naming the DVD device (default = /dev/dvd)
     
-    explicit DVDReadC(const DPISPortC<ByteT> &input) :
-      DPEntityC(input)
-    { if (dynamic_cast<DVDReadBodyC*>(&DPSeekCtrlC::Body()) == 0) Invalidate(); }
-    //: Construct by upcasting from a pre-created DPISPort
+    UIntT SeekFrame(const UIntT frame)
+    { return Body().SeekFrame(frame); }
+    //: Move to the correct cell for the specified frame.
+    //!return: Next frame actually that will be read
+
+    Signal0C &SignalFlush()
+    { return Body().SignalFlush(); }
+    //: Access flush signal.
     
   protected:
     DVDReadBodyC &Body()

@@ -10,6 +10,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/ImgIOMPEG2DVD.hh"
+#include "Ravl/Image/MPEG2Demux.hh"
+#include "Ravl/Threads/Signal.hh"
 
 #define DODEBUG 0
 
@@ -21,6 +23,26 @@
 
 namespace RavlImageN
 {
+  using namespace RavlN;
+  
+  ImgILibMPEG2DVDBodyC::ImgILibMPEG2DVDBodyC(MPEG2DemuxC &demux, DVDReadC &dvd) :
+    ImgILibMPEG2BodyC(false),
+    m_demux(demux),
+    m_dvd(dvd)
+  {
+    RavlAssertMsg(m_demux.IsValid(), "ImgILibMPEG2DVDBodyC::ImgILibMPEG2DVDBodyC invalid MPEG2 demultiplexer");
+    RavlAssertMsg(m_dvd.IsValid(), "ImgILibMPEG2DVDBodyC::ImgILibMPEG2DVDBodyC invalid DVD reader");
+
+    // Attach the signals
+    Signal0C signalFlush = m_dvd.SignalFlush();
+    Connect(signalFlush, m_demux, &MPEG2DemuxC::Reset);
+    ConnectRef(signalFlush, *this, &ImgILibMPEG2DVDBodyC::Reset);
+  }
+  
+  bool ImgILibMPEG2DVDBodyC::Reset()
+  {
+    return ImgILibMPEG2BodyC::Reset();
+  }
   
 }
 
