@@ -1,0 +1,6 @@
+ifndef SGIVLDEFS
+SGIVLDEFS=1
+
+EXELIB := -lvl -ldmedia $(EXELIB)
+
+endif

@@ -1,0 +1,309 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2001, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+#ifndef RAVL_REALRANGE2D_HH
+#define RAVL_REALRANGE2D_HH
+///////////////////////////////////////////////////////////
+//! file="Ravl/Core/Base/IndexRange2d.hh"
+//! lib=RavlCore
+//! author="Radek Marik"
+//! docentry="Ravl.Core.Indexing"
+//! rcsid="$Id$"
+//! date="06/08/1995"
+//! userlevel=Normal
+
+#include "Ravl/RealRange1d.hh"
+#include "Ravl/TFVector.hh"
+
+namespace RavlN {
+  
+  class IndexRange2dC;
+  
+  class BinIStreamC;
+  class BinOStreamC;
+  
+  //! userlevel=Normal
+  //: An index range of a 2D array
+  
+  class RealRange2dC {
+  public:
+    RealRange2dC()
+    {}
+    //: Default constructor.
+    
+    RealRange2dC(RealT rowNumber, RealT colNumber)
+      : rows(0, rowNumber-1), 
+	cols(0, colNumber-1)
+    {}
+    //: Constructor.
+    
+    RealRange2dC(const RealRangeC & rowRange,
+		 const RealRangeC & colRange);
+    //: Constructor.
+    
+    RealRange2dC(const RealRange2dC & range);
+    //: Constructor.
+
+    RealRange2dC(const TFVectorC<RealT,2> &org,const TFVectorC<RealT,2> &end)
+      : rows(org[0],end[0]), 
+	cols(org[1],end[1])
+    {}
+    //: Create an 2d range from corner points.
+    
+    RealRange2dC(const TFVectorC<RealT,2> &center,RealT size)
+      : rows(center[0]-size,center[0]+size), 
+	cols(center[1]-size,center[1]+size)
+    {}
+    //: Create an 2d range from a center point and a size.
+    // Size is the distance from the center to the edge, so
+    // a size of 0 gives a single pixel, and a size of 1 generates
+    // a 3x3 square.
+    
+    RealRange2dC(const TFVectorC<RealT,2> &center,RealT nrows,RealT ncols);
+    //: Create an 2d range from a center point and a size for rows and cols.
+    // The sizes passed to this function are the absolute size of the
+    // rectangle, unlike RealRangeC(Real2dC &center,RealT size).
+    // Note: if the rows or cols there will be a half pixel offset in the
+    // center of the rectangle. 
+    
+    RealRange2dC(RealT minRow, RealT maxRow,
+		 RealT minCol, RealT maxCol)
+      : rows(minRow,maxRow), 
+	cols(minCol,maxCol)
+    {}
+    //: Create rectangle from indvidual values.
+    
+    const RealRange2dC &SetOrigin(const TFVectorC<RealT,2> &newOrigin) {
+      rows.SetOrigin(newOrigin[0]);
+      cols.SetOrigin(newOrigin[1]);
+      return *this;
+    }
+    //: Set the origin of the range to 'newOrigin'
+    // Returns a refrence to this rectangle.
+    
+    inline TFVectorC<RealT,2> Origin() const
+    { return TFVector2(rows.Min(),cols.Min()); }
+    //: Returns the top-left index of the rectangle.
+    
+    inline TFVectorC<RealT,2>  End() const
+    { return TFVector2(rows.Max(),cols.Max()); }
+    //: Returns the bottom-right index of the rectangle.
+    
+    inline TFVectorC<RealT,2> TopRight() const
+    { return TFVector2(rows.Min(),cols.Max()); }
+    //: Returns the top-right index of the rectangle.
+    
+    inline TFVectorC<RealT,2> TopLeft() const
+    { return TFVector2(rows.Min(),cols.Min()); }
+    //: Returns the top-left index of the rectangle.
+    
+    inline TFVectorC<RealT,2>  BottomLeft() const
+    { return TFVector2(rows.Max(),cols.Min()); }
+    //: Returns the bottom-left index of the rectangle.
+    
+    inline TFVectorC<RealT,2>  BottomRight() const
+    { return TFVector2(rows.Max(),cols.Max()); }
+    //: Returns the bottom-right index of the rectangle.
+    
+    inline TFVectorC<RealT,2> Center() const
+    { return TFVector2(rows.Center(),cols.Center()); }
+    //: Returns the index which is in the middle of the rectangle
+    
+    inline RealT TRow() const
+    { return rows.Min(); }
+    //: Returns the top row index.
+    
+    inline RealT LCol() const
+    { return cols.Min(); }
+    //: Returns the left side column index.
+    
+    inline RealT BRow() const
+    { return rows.Max(); }
+    //: Returns the bottom row index.
+    
+    inline RealT RCol() const
+    { return cols.Max(); }
+    //: Returns the right side column index.
+    
+    inline RealT &TRow()
+    { return rows.Min(); }
+    //: Returns the top row index.
+    
+    inline RealT &LCol()
+    { return cols.Min(); }
+    //: Returns the left side column index.
+    
+    inline RealT &BRow()
+    { return rows.Max(); }
+    //: Returns the bottom row index.
+    
+    inline RealT &RCol()
+    { return cols.Max(); }
+    //: Returns the right side column index.
+    
+    inline RealT Rows() const
+    { return rows.Size(); }
+    //: The number of rows in the rectangle.
+    
+    inline RealT Cols() const
+    { return cols.Size(); }
+    //: The number of rows in the rectangle.
+    
+    inline RealT Area() const
+    { return (RealT) Rows() * Cols(); }
+    //: Returns the area of the image rectangle expressed in number of indexs.
+    
+    inline RealRange2dC Dilate() const 
+    { return RealRange2dC(rows.Expand(1),cols.Expand(1)); }
+    //: Returns a new rectangle one index larger on each side.
+    
+    inline RealRange2dC Erode() const
+    { return RealRange2dC(rows.Shrink(1),cols.Shrink(1)); }
+    //: Returns an rectangle with each side 1 index closer to the center.
+    
+    inline RealRange2dC Expand(RealT n) const
+    { return RealRange2dC(rows.Expand(n),cols.Expand(n)); }
+    //: Returns an rectangle expanded by 'n' indexs on each side.
+    
+    inline RealRange2dC Shrink(RealT n) const
+    { return RealRange2dC(rows.Shrink(n),cols.Shrink(n)); }
+    //: Returns a new rectangle which has layer of the width of 'n' indexs
+    //: removed.
+    
+    inline RealRange2dC & ClipBy(const RealRange2dC & r) {
+      Range1().ClipBy(r.Range1());
+      Range2().ClipBy(r.Range2());
+      return *this;
+    }
+    //: This index range is clipped to contain at most the index range 'r'.
+    
+    inline bool Contains(const RealRange2dC & oth) const
+    { return Range1().Contains(oth.Range1()) && Range2().Contains(oth.Range2()); }
+    //: Returns true if this range contains the subrange 'oth'.
+    
+    inline bool Contains(const TFVectorC<RealT,2> & oth) const
+    { return Range1().Contains(oth[0]) && Range2().Contains(oth[1]); }
+    //: Returns true if this range contains the subrange 'oth'.
+    
+    inline const RealRange2dC & operator+=(const TFVectorC<RealT,2> & offset);
+    //: Shifts the rectangle to the new position.
+    
+    inline const RealRange2dC & operator-=(const TFVectorC<RealT,2> & offset);
+    //: Shifts the rectangle to the new position.
+    
+    inline RealRange2dC operator+(const TFVectorC<RealT,2> & offset) const
+    { return RealRange2dC(Rows() + offset[0],Cols() + offset[1]); }
+    //: Shifts the rectangle to the new position.
+    
+    inline RealRange2dC operator-(const TFVectorC<RealT,2> & offset) const
+    { return RealRange2dC(Rows() - offset[0],Cols() - offset[1]); }
+    //: Shifts the rectangle to the new position.
+    
+    inline const RealRangeC & RowRange() const
+    { return rows; }
+    //: Access row range.
+    
+    inline const RealRangeC & ColRange() const
+    { return cols; }
+    //: Access col range.
+    
+    inline RealRangeC & RowRange()
+    { return rows; }
+    //: Access row range.
+    
+    inline RealRangeC & ColRange()
+    { return cols; }
+    //: Access col range.
+    
+    inline const RealRangeC & Range1() const
+    { return rows; }
+    //: Access row range.
+    
+    inline const RealRangeC & Range2() const
+    { return cols; }
+    //: Access col range.
+    
+    inline RealRangeC & Range1()
+    { return rows; }
+    //: Access row range.
+    
+    inline RealRangeC & Range2()
+    { return cols; }
+    //: Access col range.
+    
+    inline void Involve(const TFVectorC<RealT,2> & index);
+    //: Ensures this rectangle contains given index.
+    // This method checks and changes, if necessary, the 2 dimensional range
+    // to contain the 'index'.
+    
+    inline void Involve(const RealRange2dC &subrectangle) { 
+      Range1().Involve(subrectangle.Range1()); 
+      Range2().Involve(subrectangle.Range2()); 
+    }
+    //: Ensures this rectangle contains given sub rectangle.
+    // This method checks and changes, if necessary, the 2 dimensional range
+    // to contain the 'subrectangle'.
+    
+    inline bool IsValid() const 
+    { return rows.IsValid() && cols.IsValid(); }
+    //: Returns TRUE if this rectangle contains at least one index.
+
+    bool operator==(const RealRange2dC &oth) const
+    { return oth.Range1() == Range1() && oth.Range2() == Range2(); }
+    //: Are two ranges equal ?
+    
+    bool operator!=(const RealRange2dC &oth) const
+    { return oth.Range1() != Range1() || oth.Range2() != Range2(); }
+    //: Are two ranges unequal ?
+    
+    RealRange2dC Rotate180(TFVectorC<RealT,2> centre);
+    //: Rotate rectangle 180 degree's around the given center.
+    
+  protected:
+    inline const RealRange2dC & Range() const
+    { return(*this); }
+    
+  private:
+    RealRangeC rows;
+    RealRangeC cols;
+  };
+  
+  IndexRange2dC operator*(const RealRange2dC &realRange,const IndexRange2dC &indexRange);
+  //: Multiply a 2d index range by a real 2d range.
+  // Multiplying by a real range of 0-1,0-1 is a unit transform.
+  
+  ostream &operator<<(ostream &s,const RealRange2dC &ir);
+  istream &operator>>(istream &s,RealRange2dC &ir);
+  
+  BinOStreamC &operator<<(BinOStreamC &s,const RealRange2dC &ir);  
+  BinIStreamC &operator>>(BinIStreamC &s,RealRange2dC &ir);
+  
+  ///////////////////////////////////////////////////////
+  
+  inline 
+  const RealRange2dC &RealRange2dC::operator+=(const TFVectorC<RealT,2> & offset) {
+    rows += offset[0];
+    cols += offset[1];
+    return *this;
+  }
+  
+  inline 
+  const RealRange2dC & RealRange2dC::operator-=(const TFVectorC<RealT,2> & offset) {
+    rows -= offset[0];
+    cols -= offset[1];
+    return *this;
+  }
+  
+  inline 
+  void RealRange2dC::Involve(const TFVectorC<RealT,2> & index) {
+    if (rows.Min() > index[0]) rows.Min() = index[0];
+    if (rows.Max() < index[0]) rows.Max() = index[0];
+    if (cols.Min() > index[1]) cols.Min() = index[1];
+    if (cols.Max() < index[1]) cols.Max() = index[1];
+  }
+  
+}
+#endif
