@@ -151,7 +151,6 @@ namespace RavlImageN
     StringC params = ExtractParams(filename);
     if (params.Size() > 0)
     {
-      cerr << "params(" << params << "'" << endl;
       IntT delim = params.index('#');
       if(delim >= 0)
       {
