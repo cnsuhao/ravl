@@ -1,5 +1,8 @@
-// This file is part of OmniSoft, Pattern recognition software 
+// This file is part of RAVL, Recognition And Vision Library 
 // Copyright (C) 2004, Omniperception Ltd.
+// This code may be redistributed under the terms of the GNU General 
+// Public License (GPL). See the gpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 #ifndef OMNI_MCRYPT_HEADER
 #define OMNI_MCRYPT_HEADER 1
