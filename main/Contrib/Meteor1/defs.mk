@@ -28,6 +28,8 @@ EXAMPLES = exMeteor.cc
 
 PLIB = GrabMeteor
 
+EHT= Ravl.Contrib.Image_IO.Meteor1.html
+
 USESLIBS = RavlImageIO
 
 PROGLIBS = RavlGUI RavlGUI2D
