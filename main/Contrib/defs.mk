@@ -8,6 +8,6 @@
 #! file="Ravl/Contrib/defs.mk"
 
 NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DV.r \
- FireWire.r Audio.r Plotting.r
+ FireWire.r dc1394.r Audio.r Plotting.r
 
 EHT = Ravl.Contrib.html Ravl.Contrib.Video_IO.html
