@@ -136,7 +136,7 @@ namespace RavlImageN {
     }
     Index2dC size = imageRec.Size();
     
-    cerr << "ImageSize=" << size << " Origin=" << topLeft  << " End=" << bottomRight << "\n";
+    ONDEBUG(cerr << "ImageSize=" << size << " Origin=" << topLeft  << " End=" << bottomRight << "\n");
     
     //: Create an image.
     ImageC<ByteRGBValueC> anImg(imageRec);
@@ -174,7 +174,7 @@ namespace RavlImageN {
         cerr << "DPImageIOJasperBaseC::Jas2Ravl, Component depth mis-match. \n";
         return false;
       }
-      cerr << "DPImageIOJasperBaseC::Jas2Ravl, Component=" << comp << "\n";
+      ONDEBUG(cerr << "DPImageIOJasperBaseC::Jas2Ravl, Component=" << comp << "\n");
       
       matrix[comp] = jas_matrix_create(size.Row().V(),size.Col().V());
       jas_image_readcmpt(img,i,0,0,size.Col().V(),size.Row().V(),matrix[comp]);
