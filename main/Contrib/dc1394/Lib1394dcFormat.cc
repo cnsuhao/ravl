@@ -11,8 +11,11 @@
 //! file="Ravl/Contrib/1394dc/1394dcFormat.cc"
 //! author="Charles Galambos"
 
-#include "Ravl/Image/Lib1394dcFormat.hh"
-#include "Ravl/Image/ImgIO1394dc.hh"
+#include "Lib1394dcFormat.hh"
+#include "ImgIO1394dc.hh"
+
+//#include "Ravl/Image/Lib1394dcFormat.hh"
+//#include "Ravl/Image/ImgIO1394dc.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Image/RealYUVValue.hh"
 #include "Ravl/Image/RealRGBValue.hh"
@@ -37,14 +40,14 @@ namespace RavlImageN {
     : FileFormatBodyC(nvName,StringC("Lib1394dc firewire camera driver. (@IIDC)")),
       vName(nvName)
   {}
-  
-  
+
+
   const type_info &FileFormat1394dcBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
   { return typeid(void); }
-  
-  
+
+
   const type_info &
-  FileFormat1394dcBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const { 
+  FileFormat1394dcBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
     if(filename.length() == 0)
       return typeid(void);
     if(filename[0] != '@')
@@ -60,12 +63,12 @@ namespace RavlImageN {
     ONDEBUG(cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << TypeName(obj_type.name()) << " Device='" << device <<"'\n");
     if(device != "IIDC")
       return typeid(void);
-    
+
     enum { IMG_RGB, IMG_YUV, IMG_YUV422, IMG_GREY } imgtype = IMG_GREY;
-    
+
     // Some huristics to select the best format to capture date from the
     // card in.   If in doubt get YUV as thats what most video is in anyway.
-#if 0    
+#if 0
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       imgtype = IMG_RGB;
     if(obj_type == typeid(ImageC<RealRGBValueC>))
@@ -83,10 +86,10 @@ namespace RavlImageN {
     else if(obj_type == typeid(ImageC<UIntT>))
       imgtype = IMG_GREY;
     //else
-#endif 
+#endif
     if(obj_type == typeid(ImageC<ByteT>))
       imgtype = IMG_GREY;
-    
+
     switch(imgtype) {
     case IMG_GREY: return typeid(ImageC<ByteT>);
     case IMG_RGB: //return typeid(ImageC<ByteRGBValueC>);
@@ -97,26 +100,26 @@ namespace RavlImageN {
     }
     return typeid(ImageC<ByteT>);
   }
-  
+
   const type_info &
   FileFormat1394dcBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const
   { return typeid(void); }
-  
+
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
-  
+
   DPIPortBaseC FileFormat1394dcBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const
   { return DPIPortBaseC(); }
-  
+
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
-  
-  DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const 
+
+  DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const
   { return DPOPortBaseC(); }
 
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
-  
+
   DPIPortBaseC FileFormat1394dcBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const
   {
     ONDEBUG(cerr << "FileFormat1394dcBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
@@ -134,7 +137,12 @@ namespace RavlImageN {
     //if(dev == "IIDC")
     //  half = true; // Attempt to get images halfed along each dimention.
     if(fn == "")
-      fn = "/dev/raw1394";
+    {
+      if(channel >= 100) // DMA acceess
+        fn = "/dev/video1394";
+      else              // normal acceess
+        fn = "/dev/raw1394";
+    }
 #if 0
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
       return DPIImage1394dcC<ByteYUVValueC>(fn,half,channel);
@@ -147,16 +155,16 @@ namespace RavlImageN {
       return DPIImage1394dcC<ByteT>(fn,channel); //,half,channel
     return DPIPortBaseC();
   }
-  
+
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
-  
+
   DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const
   { return DPOPortBaseC(); }
-  
+
   //: Get prefered IO type.
-  
-  const type_info &FileFormat1394dcBodyC::DefaultType() const 
+
+  const type_info &FileFormat1394dcBodyC::DefaultType() const
   { return typeid(ImageC<ByteT>); }
   
   // Some common cif formats.

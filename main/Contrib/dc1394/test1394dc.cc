@@ -11,14 +11,21 @@
 
 //: Tests IIDC camera interface
 
+#include "ImgIO1394dc.hh"
 
 #include "Ravl/Option.hh"
-#include "Ravl/Image/ImgIO1394dc.hh"
+//#include "Ravl/Image/ImgIO1394dc.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/DP/SequenceIO.hh"
+#include "Ravl/Image/ByteYUV422Value.hh"
+#include "Ravl/Image/ByteRGBValue.hh"
 
 using namespace RavlN;
 using namespace RavlImageN;
+
+#define PixelType ByteRGBValueC
+//#define PixelType ByteT
+//#define PixelType ByteYUV422ValueC
 
 int main(int nargs,char **argv) {
   OptionC opt(nargs,argv);
@@ -27,19 +34,24 @@ int main(int nargs,char **argv) {
   IntT n = opt.Int("n",-1,"Number of frames (default: unlimited)");
   UIntT camera = opt.Int("c",0,"Select camera");
   opt.Check();
-  
-  ImgIO1394dcBaseC imgio(camera);
-  if(!imgio.Open(dev,typeid(ByteT))) {
+
+  ImgIO1394dcBaseC<PixelType> imgio(camera);
+  if(!imgio.Open(dev))
+  {
     cerr << "Failed to setup camera. \n";
     return 1;
   }
-  DPOPortC<ImageC<ByteT> > imgOut;
-  if(!OpenOSequence(imgOut,out)) {
+  DPOPortC<ImageC<PixelType> > imgOut;
+  if(!OpenOSequence(imgOut,out))
+  {
     cerr << "Failed to open output. \n";
     return 0;
   }
+  RealT fr;
+  imgio.HandleGetAttr("framerate", fr);
+  cerr << "Frame rate:" << fr << '\n';
   for(IntT i(0); i!=n; ++i) {
-    ImageC<ByteT> img;
+    ImageC<PixelType> img;
     imgio.CaptureImage(img);
     imgOut.Put(img);
   }
