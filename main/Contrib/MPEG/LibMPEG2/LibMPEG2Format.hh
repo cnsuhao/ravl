@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_LIBMPEG2FORMAT_HEADER
 #define RAVL_LIBMPEG2FORMAT_HEADER 1
-////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
 //! docentry="Ravl.Images.Video.Video IO.LibMPEG2"
 //! date="29/10/2003"

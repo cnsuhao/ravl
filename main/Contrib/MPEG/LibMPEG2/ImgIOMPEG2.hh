@@ -6,9 +6,10 @@
 // file-header-ends-here
 #ifndef RAVL_IMGIOMPEG2_HEADER
 #define RAVL_IMGIOMPEG2_HEADER 1
-//! rcsid="$Id$"
-//! lib=RavlLibMPEG2
-//! author="Charles Galambos"
+//////////////////////////////////////////////////////////////////
+//! rcsid = "$Id$"
+//! lib = RavlLibMPEG2
+//! author = "Charles Galambos"
 
 #include "Ravl/DP/StreamOp.hh"
 #include "Ravl/Image/Image.hh"

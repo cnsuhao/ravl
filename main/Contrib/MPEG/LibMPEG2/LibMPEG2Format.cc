@@ -4,11 +4,10 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//////////////////////////////////////////////////
-//! rcsid="$Id$"
-//! lib=RavlLibMPEG2
-//! file="Ravl/Contrib/LibMPEG/mpeg2dec/LibMPEG2Format.cc"
-//! author="Charles Galambos"
+//////////////////////////////////////////////////////////////////
+//! rcsid = "$Id$"
+//! lib = RavlLibMPEG2
+//! author = "Charles Galambos"
 
 #include "Ravl/Image/LibMPEG2Format.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"
@@ -27,8 +26,6 @@ namespace RavlImageN {
   
   void InitLibMPEG2Format()
   {}
-  
-  // LibMPEG ////////////////////////////////////////////////////////////////
   
   //: Constructor.
   

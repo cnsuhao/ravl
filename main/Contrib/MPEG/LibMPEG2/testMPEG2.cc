@@ -4,9 +4,10 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
-//! lib=RavlLibMPEG2
-//! author="Warren Moore"
+//////////////////////////////////////////////////////////////////
+//! rcsid = "$Id$"
+//! lib = RavlLibMPEG2
+//! author = "Warren Moore"
 
 #include "Ravl/Option.hh"
 #include "Ravl/Image/LibMPEG2Format.hh"
@@ -18,9 +19,10 @@
 using namespace RavlN;
 using namespace RavlImageN;
 
-int main(int nargs,char **argv) {
+int main(int nargs, char **argv)
+{
   OptionC opts(nargs,argv);
-  StringC filename = opts.String("","in.mpeg","Input mpeg file.");
+  StringC filename = opts.String("", "in.mpeg", "Input mpeg file.");
   opts.Check();
   
   // Check the file exists
@@ -43,18 +45,20 @@ int main(int nargs,char **argv) {
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
   UIntT i = 0;
-  while(1) {
+  while(1)
+  {
     if(!in.Get(rgb))
-
       break;
+    
     i++;
 #if 0
-    if(i > 30) {
+    if(i > 30)
+    {
       in.Seek(0);
       i = 0;
     }
 #endif
-    RavlN::Save("@X",rgb);
+    RavlN::Save("@X", rgb);
     Sleep(0.1);
   }
 

@@ -5,11 +5,11 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // Demultiplexer based upon parts of mpeg2dec, which can be found at
 // http://libmpeg2.sourceforge.net/
-//
 // file-header-ends-here
-//! rcsid="$Id$"
-//! lib=RavlLibMPEG2
-//! author="Charles Galambos"
+//////////////////////////////////////////////////////////////////
+//! rcsid = "$Id$"
+//! lib = RavlLibMPEG2
+//! author = "Charles Galambos"
 
 #include "Ravl/Image/ImgIOMPEG2.hh"
 #include "Ravl/IO.hh"
@@ -345,10 +345,6 @@ namespace RavlImageN
     const mpeg2_info_t *info = mpeg2_info(decoder);
     UIntT preParsePos = 0;
 
-    decoder->shift = 0xffffff00;
-    decoder->first_decode_slice = 1;
-    decoder->nb_decode_slices = 0xb0 - 1;
-
     do
     {
       preParsePos = lastRead;
@@ -362,7 +358,7 @@ namespace RavlImageN
       }
     
       if(!ReadData()) {
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data..\n");
+        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DemultiplexGOP failed to read data.\n");
         m_state = -2;
         return false;
       }
