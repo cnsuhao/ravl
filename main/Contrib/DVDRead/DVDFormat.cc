@@ -1,8 +1,8 @@
 // This file is part of RAVL, Recognition And Vision Library 
 // Copyright (C) 2003, University of Surrey
-// This code may be redistributed under the terms of the GNU Lesser
-// General Public License (LGPL). See the lgpl.licence file for details or
-// see http://www.gnu.org/copyleft/lesser.html
+// This code may be redistributed under the terms of the GNU
+// General Public License (GPL). See the gpl.licence file for details or
+// see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! rcsid = "$Id$"
@@ -11,7 +11,8 @@
 
 #include "Ravl/DVDFormat.hh"
 #include "Ravl/DVDRead.hh"
-#include "Ravl/Image/ImgIOMPEG2.hh"
+#include "Ravl/ImgIOMPEG2DVD.hh"
+#include "Ravl/Image/MPEG2Demux.hh"
 #include "Ravl/DP/SPortAttach.hh"
 
 #define DPDEBUG 0
@@ -122,8 +123,14 @@ namespace RavlN
     if (title < 1 || title > 99)
       return DPIPortBaseC();
     
+    // Create the pipeline
     ONDEBUG(cerr << "FileFormatDVDBodyC::CreateInput(), Checking file type. params=" << params << ", title=" << title << "\n");
-    return SPort(DVDReadC(title, params) >> ImgILibMPEG2C(0xe0));
+    DVDReadC dvd(title, params);
+    MPEG2DemuxC demux(0xe0);
+    ImgILibMPEG2DVDC mpeg(demux, dvd);
+    dvd >> demux >> mpeg;
+    
+    return SPort(mpeg);
   }
   
   //: Create a output port for saving to file 'filename'..

@@ -13,12 +13,15 @@
 
 #include "Ravl/DP/SPort.hh"
 #include "dvdread/dvd_reader.h"
+#include "dvdread/nav_types.h"
 #include "dvdread/ifo_types.h"
 #include "Ravl/DArray1d.hh"
-#include "Ravl/Tuple2.hh"
+#include "Ravl/Tuple3.hh"
+#include "Ravl/Threads/Signal.hh"
 
 namespace RavlN
 {
+  const static UIntT g_blockSize = 2048;
   
   class DVDReadBodyC :
     public DPISPortBodyC<ByteT>
@@ -33,7 +36,7 @@ namespace RavlN
     ByteT Get();
     //: Get a byte from the VOB data
 
-    bool Get(ByteT &buff);
+    bool Get(ByteT &data);
     //: Get a byte from the VOB data
 
     IntT GetArray(SArray1dC<ByteT> &data);
@@ -66,41 +69,53 @@ namespace RavlN
     
     bool GetAttr(const StringC &attrName, StringC &attrValue);
     //: Get an attribute
-  
-  protected:
-    void BuildAttributes();
-    //: Register stream attributes
     
+    bool SeekFrame(const StreamPosT frame, StreamPosT &lastFrame);
+    //: Move to the correct cell for the specified frame.
+    //!return: Next frame actually that will be read
+
+    Signal0C &SignalFlush()
+    { return m_signalFlush; }
+    //: Access flush signal.
+    
+  protected:
     void Close();
     //: Close the DVD read objects
     
-    bool ReadCell(const UIntT cell);
-    //: Read the info for a cell
+    Int64T GetTime(dvd_time_t time);
+    //: Return the BCD coded time in seconds
+    
+    bool OnEnd();
+    //: Called when the end of VOBU is reached
+    
+    void BuildAttributes();
+    //: Register stream attributes
     
   protected:
-    StringC m_device;                             // DVD device name
-    UIntT m_title;                                // DVD title index
+    StringC m_device;                                                     // DVD device name
+    UIntT m_title;                                                        // DVD title index
     
-    UIntT m_numChapters;                          // DVD chapter count for this title
-    UIntT m_numAngles;                            // DVD angles for this title
+    RealT m_numFps;                                                       // Title frames per second
 
-    dvd_reader_t *m_dvdReader;                    // DVD read object
-    ifo_handle_t *m_dvdVmgFile;                   // Video management info
-    ifo_handle_t *m_dvdVtsFile;                   // Video stream info
-    pgc_t *m_dvdCurPgc;                           // Current PGC object
-    dvd_file_t *m_dvdFile;                        // DVD file object
+    dvd_reader_t *m_dvdReader;                                            // DVD read object
+    ifo_handle_t *m_dvdVmgFile;                                           // Video management info
+    ifo_handle_t *m_dvdVtsFile;                                           // Video title set info
+    pgc_t *m_dvdPgc;                                                      // Current program chain object
+    dvd_file_t *m_dvdFile;                                                // DVD file object
     
-    StreamPosT m_numCells;                        // Number of cells in title
-    StreamPosT m_sizeCell;                        // Size (in blocks) of actual data in cell
-    SArray1dC<StreamPosT> m_cellTable;            // Table mapping cell numbers to data sizes (in blocks)
+    SArray1dC< Tuple3C< StreamPosT, UIntT, bool > > m_cellTable;
+    // Table mapping playback times (in frames) to sector positions with STC discontinuity indicator
 
-    StreamPosT m_byteCurrent;                     // Byte currently sought to
+    UIntT m_curCell;                                                      // Current cell number
+    UIntT m_curSector;                                                    // Current VOBU start sector
+    ByteT m_curNav[g_blockSize];                                          // Current nav block data
+    dsi_t m_dsiPack;                                                      // Current nav block DSI pack
+    UIntT m_curBlock;                                                     // Current block in payload
+    UIntT m_curByte;                                                      // Current byte in block
     
-    StreamPosT m_curCell;                         // Current cell info cached
-    DArray1dC< Tuple2C<StreamPosT, StreamPosT> > m_navTable;
-    // Table listing nav block locations (in absolute block offsets) and data sizes (in blocks) for the current cell
-    StreamPosT m_curBlock;                        // Current block in cell cached
-    SArray1dC<ByteT> m_curBlockBuf;               // Current block cache
+    bool m_endFound;                                                      // EOS indicator
+    Signal0C m_signalFlush;                                               // Flush signal
+    bool m_needFlush;                                                     // Flush required indicator
   };
 
   class DVDReadC :
@@ -113,13 +128,30 @@ namespace RavlN
     //: Default constructor.
     // Creates an invalid handle.
 
-    DVDReadC(const UIntT title = 1, const StringC device = "/dev/dvd") :
+    DVDReadC(const UIntT title, const StringC device = "/dev/dvd") :
       DPEntityC(*new DVDReadBodyC(title, device))
     {}
     //: Constructor.
     //!param: title The title track to read (default = 1)
     //!param: device A string naming the DVD device (default = /dev/dvd)
     
+    bool SeekFrame(const StreamPosT frame, StreamPosT &lastFrame)
+    { return Body().SeekFrame(frame, lastFrame); }
+    //: Move to the correct cell for the specified frame.
+    //!return: Next frame actually that will be read
+
+    Signal0C &SignalFlush()
+    { return Body().SignalFlush(); }
+    //: Access flush signal.
+    
+  protected:
+    DVDReadBodyC &Body()
+    { return static_cast<DVDReadBodyC &>(DPIPortC<ByteT>::Body()); }
+    //: Access body.
+
+    const DVDReadBodyC &Body() const
+    { return static_cast<const DVDReadBodyC &>(DPIPortC<ByteT>::Body()); }
+    //: Access body.
   };
   
 }

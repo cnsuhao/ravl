@@ -1,14 +1,21 @@
-REQUIRES = dvdread
+# This file is part of RAVL, Recognition And Vision Library 
+# Copyright (C) 2003, University of Surrey
+# This code may be redistributed under the terms of the GNU
+# General Public License (GPL). See the gpl.licence file for details
+# file-header-ends-here
+#! rcsid="$Id$"
+
+REQUIRES = dvdread libmpeg2
 
 PACKAGE = Ravl
 
-HEADERS = DVDRead.hh DVDFormat.hh
+HEADERS = DVDRead.hh DVDFormat.hh ImgIOMPEG2DVD.hh
 
-SOURCES = DVDRead.cc DVDFormat.cc
+SOURCES = DVDRead.cc DVDFormat.cc ImgIOMPEG2DVD.cc
 
 PLIB = RavlDVDRead
 
-EXAMPLES = testDVDRead.cc testDVDMPEG.cc
+EXAMPLES = exDVDRead.cc
 
 USESLIBS = RavlLibMPEG2 DVDRead RavlIO RavlCore
 

@@ -1,8 +1,8 @@
 // This file is part of RAVL, Recognition And Vision Library 
 // Copyright (C) 2003, University of Surrey
-// This code may be redistributed under the terms of the GNU Lesser
-// General Public License (LGPL). See the lgpl.licence file for details or
-// see http://www.gnu.org/copyleft/lesser.html
+// This code may be redistributed under the terms of the GNU
+// General Public License (GPL). See the gpl.licence file for details or
+// see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
@@ -36,45 +36,42 @@ int main(int nargs, char **argv)
 
   // Select the correct opening method
   FileFormatLibMPEG2C format;
-  DPISPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
+  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
   if (!in.IsValid())
   {
     cerr << "Unable to open file (" << filename << ")\n";
     return 1;
   }
 
-  // Number of frames to play with
-  const IntT size = 50;
+  // Display the stream attributes
+  DListC<StringC> attrs;
+  if (in.GetAttrList(attrs))
+  {
+    DLIterC<StringC> it(attrs);
+    while (it)
+    {
+      StringC value;
+      if (in.GetAttr(*it, value))
+        cerr << *it << " : " << value << endl;
+      it++;
+    }
+  }
+  
+  // Delay in seconds
+  const RealT delay = 0.1;
   
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
-  IntT count = 0;
   
-  // Play forward, then back, then random for a bit
-  while (true)
+  // Keep playing til the end
+  while (!in.IsGetEOS())
   {
-    if (count > size * 3)
-      count = 0;
-
-    IntT frame = count;
-    if (count >= size && count < size * 2)
-      frame = size - (count - size);
-    
-    if (count >= size * 2)
-      frame = Random1() * size;
-   
-    count++;
-    
-    in.Seek(frame);
-      
-    cerr << "==== Seeking to " << frame << endl;
-
     if(!in.Get(rgb))
       break;
     
     RavlN::Save("@X", rgb);
 
-    Sleep(0.1);
+    Sleep(delay);
   }
 
   return 0;

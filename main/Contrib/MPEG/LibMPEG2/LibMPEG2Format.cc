@@ -1,8 +1,8 @@
 // This file is part of RAVL, Recognition And Vision Library 
 // Copyright (C) 2003, University of Surrey
-// This code may be redistributed under the terms of the GNU Lesser
-// General Public License (LGPL). See the lgpl.licence file for details or
-// see http://www.gnu.org/copyleft/lesser.html
+// This code may be redistributed under the terms of the GNU
+// General Public License (GPL). See the gpl.licence file for details or
+// see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
@@ -11,6 +11,7 @@
 
 #include "Ravl/Image/LibMPEG2Format.hh"
 #include "Ravl/Image/ImgIOMPEG2.hh"
+#include "Ravl/Image/MPEG2Demux.hh"
 #include <ctype.h>
 #include "Ravl/DP/ByteFileIO.hh"
 #include "Ravl/DP/SPortAttach.hh"
@@ -67,7 +68,7 @@ namespace RavlImageN {
     ONDEBUG(cerr << "FileFormatLibMPEG2BodyC::ProbeLoad(), 0= " << hex << ((UIntT) buff[0])  << " " << ((UIntT) buff[1]) << " " << ((UIntT) buff[2])  << " " << ((UIntT) buff[3]) << dec << " \n");
     
     if((((UIntT) buff[0]) == 0) && (((UIntT) buff[1]) == 0)) {
-      if(((UIntT) buff[2]) == 0x01 && ((UIntT) buff[3]) == 0xb3 )
+      if(((UIntT) buff[2]) == 0x01 && (((UIntT) buff[3]) == 0xb3 || ((UIntT) buff[3]) == 0xba) )
         return typeid(ImageC<ByteRGBValueC>);
     }
     
@@ -87,11 +88,23 @@ namespace RavlImageN {
   // Will create an Invalid port if not supported. <p>
   
   DPIPortBaseC FileFormatLibMPEG2BodyC::CreateInput(const StringC &fn,const type_info &obj_type) const {
-    StringC ext = Extension(fn);
-    if(ext == "vob")
+    // Check for a multiplexed stream
+    bool system = false;
+    IStreamC in(fn, true);
+    if (in.good())
     {
-      return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(0xe0));
+      ByteT buf[4];
+      in.read((char*)buf, 4);
+      if (((UIntT)buf[3]) == 0xba)
+        system = true;
     }
+    else
+      return DPIPortBaseC();
+    in.Close();
+    
+    // Open the stream
+    if (system)
+      return DPIByteFileC(fn) >> MPEG2DemuxC(0xe0) >> ImgILibMPEG2C(false);
     return SPort(DPIByteFileC(fn) >> ImgILibMPEG2C(true));
   }
   
