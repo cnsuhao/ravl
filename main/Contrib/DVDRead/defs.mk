@@ -2,14 +2,20 @@ REQUIRES = libmpeg2
 
 PACKAGE = Ravl
 
-HEADERS = DVDRead.hh
+HEADERS = DVDRead.hh DVDFormat.hh
 
-SOURCES = DVDRead.cc
+SOURCES = DVDRead.cc DVDFormat.cc
 
 PLIB = RavlDVDRead
 
-USESLIBS = DVDRead RavlDPDisplay RavlImage RavlLibMPEG2 RavlIO RavlCore
-
 EXAMPLES = testDVDRead.cc testDVDMPEG.cc
 
+USESLIBS = RavlLibMPEG2 DVDRead RavlIO RavlCore
+
+PROGLIBS = RavlDPDisplay RavlImage  
+
+MUSTLINK = InitDVDFormat.cc
+
 AUXFILES = DVDRead.def
+
+AUXDIR = lib/RAVL/libdep

@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
 //! lib = RavlDVDRead
 //! author = "Warren Moore"
@@ -17,7 +18,8 @@
 using namespace std;
 using namespace RavlN;
 
-int main(int nargs,char **argv) {
+int main(int nargs,char **argv)
+{
   OptionC opts(nargs,argv);
   StringC device = opts.String("d", "/dev/dvd", "DVD device.");
   IntT title = opts.Int("t", 1, "DVD title.");

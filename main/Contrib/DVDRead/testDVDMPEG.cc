@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
 //! lib = RavlDVDRead
 //! author = "Warren Moore"
@@ -20,7 +21,8 @@
 using namespace RavlN;
 using namespace RavlImageN;
 
-int main(int nargs,char **argv) {
+int main(int nargs,char **argv)
+{
   OptionC opts(nargs,argv);
   StringC device = opts.String("d", "/dev/dvd", "DVD device.");
   IntT title = opts.Int("t", 1, "DVD title.");
@@ -35,13 +37,15 @@ int main(int nargs,char **argv) {
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
   UIntT i = 0;
-  while(1) {
+  while(1)
+  {
     if(!in.Get(rgb))
-
       break;
+    
     i++;
 #if 0
-    if(i > 30) {
+    if(i > 30)
+    {
       in.Seek(0);
       i = 0;
     }
