@@ -24,7 +24,7 @@ PROGLIBS=RavlDPDisplay
 
 MUSTLINK = JasperImgIO.cc
 
-AUXDIR=libdep
+AUXDIR=lib/RAVL/libdep
 
 AUXFILES=LibJasper.def
 
