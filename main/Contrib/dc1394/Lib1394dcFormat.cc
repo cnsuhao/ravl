@@ -144,7 +144,7 @@ namespace RavlImageN {
       return DPIImage1394dcC<ByteRGBValueC>(fn,half,channel);
 #endif
     if(obj_type == typeid(ImageC<ByteT>))
-      return DPIImage1394dcC<ByteT>(fn); //,half,channel
+      return DPIImage1394dcC<ByteT>(fn,channel); //,half,channel
     return DPIPortBaseC();
   }
   

@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlImgIO1394dc
+//! docentry="Ravl.Images.Video.Video IO.IIDC"
 
 
 #include "Ravl/Option.hh"
@@ -21,9 +22,10 @@ int main(int nargs,char **argv) {
   StringC dev = opt.String("d","/dev/raw1394","Firewire device. ");
   StringC out = opt.String("o","@X","Output sequence");
   IntT n = opt.Int("n",-1,"Number of frames (default: unlimited)");
+  UIntT camera = opt.Int("c",0,"Select camera");
   opt.Check();
   
-  ImgIO1394dcBaseC imgio;
+  ImgIO1394dcBaseC imgio(camera);
   if(!imgio.Open(dev,typeid(ByteT))) {
     cerr << "Failed to setup camera. \n";
     return 1;

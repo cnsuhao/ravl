@@ -8,7 +8,7 @@
 #define RAVL_LIB1394DCFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Video.Video IO.IIDC"
+//! docentry="Ravl.Images.Video.Video IO.IIDC"
 //! date="20/8/2003"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/1394dc/1394dcFormat.hh"
@@ -24,7 +24,7 @@ struct video_picture;
 namespace RavlImageN {
 
   //! userlevel=Develop
-  //: 1394dc File format information.
+  //: 1394dc File format information body
   
   class FileFormat1394dcBodyC 
     : public FileFormatBodyC 

@@ -70,9 +70,9 @@ namespace RavlImageN {
   
   //: Default constructor.
   
-  ImgIO1394dcBaseC::ImgIO1394dcBaseC()
+  ImgIO1394dcBaseC::ImgIO1394dcBaseC(UIntT channel)
     : raw1394handle(0),
-      cam_channel(0),
+      cam_channel(channel),
       cam_format(FORMAT_VGA_NONCOMPRESSED),
       cam_mode(MODE_640x480_MONO),
       cam_speed(SPEED_400),
@@ -108,7 +108,9 @@ namespace RavlImageN {
       cerr << "ERROR: No cameras found. \n";
       return false;
     }
-    cameraNode = camera_nodes[0];
+    cerr << numCameras << " camera(s) found\n";
+    cerr << numNodes << " camera node(s) found\n";
+    cameraNode = camera_nodes[cam_channel];
     if(cameraNode == numNodes-1) {
       cerr << "\n"
 	"Sorry, your camera is the highest numbered node\n"

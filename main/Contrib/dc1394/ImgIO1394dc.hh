@@ -9,7 +9,7 @@
 //! rcsid="$Id$"
 //! lib=RavlImgIO1394dc
 //! author="Charles Galambos"
-//! docentry="Ravl.Video.Video IO.IIDC"
+//! docentry="Ravl.Images.Video.Video IO.IIDC"
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/DP/AttributeType.hh"
@@ -20,11 +20,11 @@
 namespace RavlImageN {
   
   //! userlevel=Develop
-  //: Firewire dc
+  //: Firewire dc camera control base class
   
   class ImgIO1394dcBaseC {
   public:
-    ImgIO1394dcBaseC();
+    ImgIO1394dcBaseC(UIntT channel=0);
     //: Constructor.
     
     ~ImgIO1394dcBaseC();
@@ -104,14 +104,16 @@ namespace RavlImageN {
     quadlet_t available_framerates;
   };
   
+  //! userlevel=Develop
+  //: Firewire dc camera grabbing body
   template<typename PixelT>
   class DPIImage1394dcBodyC
     : public DPIPortBodyC<ImageC<PixelT> >,
       public ImgIO1394dcBaseC
   {
   public:
-    DPIImage1394dcBodyC(const StringC &dev)
-      : ImgIO1394dcBaseC()
+    DPIImage1394dcBodyC(const StringC &dev, UIntT channel=0)
+      : ImgIO1394dcBaseC(channel)
     { 
       Open(dev,typeid(PixelT)); 
       BuildAttrList(*this);
@@ -217,6 +219,9 @@ namespace RavlImageN {
   protected:
   };
 
+  //! userlevel=Develop
+  //: Firewire dc camera grabbing
+
   template<class PixelT>
   class DPIImage1394dcC
     : public DPIPortC<ImageC<PixelT> >
@@ -227,8 +232,8 @@ namespace RavlImageN {
     {}
     //: Default constructor.
     
-    DPIImage1394dcC(const StringC &str)
-      : DPEntityC(*new DPIImage1394dcBodyC<PixelT>(str))
+    DPIImage1394dcC(const StringC &str, UIntT channel=0)
+      : DPEntityC(*new DPIImage1394dcBodyC<PixelT>(str, channel))
     {}
   };
 }
