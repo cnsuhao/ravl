@@ -33,7 +33,7 @@ namespace RavlImageN {
   
   //: Constructor.
   FileFormat1394dcBodyC::FileFormat1394dcBodyC(const StringC &nvName)
-    : FileFormatBodyC(nvName,StringC("Lib1394dc firewire camera driver. (@DC)")),
+    : FileFormatBodyC(nvName,StringC("Lib1394dc firewire camera driver. (@IIDC)")),
       vName(nvName)
   {}
   
@@ -57,7 +57,7 @@ namespace RavlImageN {
       file = file.before(pn);
     }
     ONDEBUG(cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " Device='" << device <<"'\n");
-    if(device != "DC")
+    if(device != "IIDC")
       return typeid(void);
     
     enum { IMG_RGB, IMG_YUV, IMG_YUV422, IMG_GREY } imgtype = IMG_GREY;
@@ -130,10 +130,10 @@ namespace RavlImageN {
       fn = fn.before(pn);
     }
     bool half = false;
-    if(dev == "DC")
-      half = true; // Attempt to get images halfed along each dimention.
+    //if(dev == "IIDC")
+    //  half = true; // Attempt to get images halfed along each dimention.
     if(fn == "")
-      fn = "/dev/video0";
+      fn = "/dev/raw1394";
 #if 0
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
       return DPIImage1394dcC<ByteYUVValueC>(fn,half,channel);
