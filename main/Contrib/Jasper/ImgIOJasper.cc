@@ -53,19 +53,21 @@ namespace RavlImageN {
   bool DPImageIOJasperBaseC::OpenRead(const StringC &filename) {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenRead, Opening " << filename << " \n");
     iostream = jas_stream_fopen(filename,"rb");
-    return true;
+    return iostream != 0;
   }
   
   //: Open stream for write
   
   bool DPImageIOJasperBaseC::OpenWrite(const StringC &filename) {
     iostream = jas_stream_fopen(filename,"wb");    
-    return true;    
+    return iostream != 0;    
   }
 
   //: Test if the current stream can be read.
   
   bool DPImageIOJasperBaseC::CanReadImage() { 
+    if(iostream == 0)
+      return false;
     int fmt = jas_image_getfmt(iostream);
     ONDEBUG(cerr << "DPImageIOJasperBaseC::CanReadImage, Fmt=" << fmt << "\n");
     if(fmt < 0) return false;
@@ -80,6 +82,7 @@ namespace RavlImageN {
   
   jas_image_t *DPImageIOJasperBaseC::LoadImage() {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::LoadImage(), Called. \n");
+    RavlAssert(iostream != 0);
     jas_image_t *img = jas_image_decode(iostream, -1, 0);
     if(img == 0) {
       cerr << "DPImageIOJasperBaseC::LoadImage(), Failed. \n";

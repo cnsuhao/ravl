@@ -55,8 +55,7 @@ namespace RavlImageN {
   FileFormatJasperBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
     DPImageIOJasperBaseC jsp;
     ONDEBUG(cerr << "FileFormatJasperBodyC::ProbeLoad(), Req:" <<obj_type.name() << "  \n");
-    jsp.OpenRead(nfilename);
-    if(jsp.CanReadImage())
+    if(jsp.OpenRead(nfilename) && jsp.CanReadImage())
       return typeid(ImageC<ByteRGBValueC>);   
     return typeid(void);
   }
