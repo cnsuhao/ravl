@@ -32,6 +32,11 @@ namespace RavlAudioN {
     ~AudioFileBaseC();
     //: Destructor.
     
+    virtual bool BuildAttributes ( AttributeCtrlBodyC & attributes ) ; 
+    //: Build the list of attributes 
+
+    
+
     bool IOpen(const StringC &fn,int channel,const type_info &dtype);
     //: Open audio device.
     

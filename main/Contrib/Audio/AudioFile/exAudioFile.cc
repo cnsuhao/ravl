@@ -14,7 +14,7 @@
 #include "Ravl/Option.hh"
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/Audio/Types.hh"
-
+#include "Ravl/DP/AttributeType.hh"
 using namespace RavlN;
 using namespace RavlAudioN ; 
 
@@ -48,8 +48,8 @@ int main(int nargs,char **argv) {
  
   
   // lets look at the attributes available 
-  DListC<StringC> attrList ; 
-  in.GetAttrList(attrList) ; 
+  DListC<AttributeTypeC> attrList ; 
+  in.GetAttrTypes(attrList) ; 
   cout << "\nAvailable Attributes are :\n" << attrList ; 
   
   // lets get some attributes 

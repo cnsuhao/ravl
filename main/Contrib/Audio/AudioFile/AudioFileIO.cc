@@ -10,6 +10,7 @@
 
 #include "Ravl/Audio/AudioFileIO.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/DP/AttributeType.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -47,8 +48,25 @@ namespace RavlAudioN {
       afFreeFileSetup(setup);
   }
   
-  //: Setup IO.
+  //: Build Attributes 
+  bool AudioFileBaseC::BuildAttributes ( AttributeCtrlBodyC & attributes ) 
+{
+  // build parent attributes 
+  AudioIOBaseC::BuildAttributes( attributes ) ; 
   
+  // cant set attributes when reading from a file 
+  if ( forInput) {  
+    AttributeTypeC 
+      sampleRate = attributes.GetAttrType("samplerate") , 
+      sampleBits  = attributes.GetAttrType("samplebits") ; 
+    if ( sampleRate.IsValid() ) sampleRate.CanWrite(false) ; 
+    if ( sampleBits.IsValid() ) sampleBits.CanWrite(false) ;
+  }
+  return true ; 
+}
+
+
+  //: Setup IO
   bool AudioFileBaseC::SetupChannel(int channel,const type_info &ndtype) {
     if(ndtype == typeid(SampleElemC<1,UByteT>)) {
       afSetVirtualChannels(handle,AF_DEFAULT_TRACK,1);
