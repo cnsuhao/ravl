@@ -28,5 +28,5 @@ PROGLIBS= RavlDPDisplay RavlOSIO
 
 AUXFILES= ClipStationPro.def
 
-AUXDIR=libdep
+AUXDIR=lib/RAVL/libdep
 
