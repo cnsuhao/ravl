@@ -38,7 +38,10 @@ namespace RavlImageN {
     
   protected:
     bool Open(const StringC &dev,const type_info &npixType,const ImageRectangleC &nrect);
-    //: Open a meteor device.
+    //: Open a video for linux device.
+    
+    bool Open1(int nfd,const type_info &npixType,const ImageRectangleC &nrect);
+    //: Open a video for linux 1 device.
     
     bool Close();
     //: Close connection to meteor.
@@ -48,9 +51,6 @@ namespace RavlImageN {
     
     bool NextFrame(ImageC<ByteRGBValueC> &ret);
     //: Get next RGB frame from grabber.
-
-    bool CheckChannels(int nchanels);
-    //: Check what video channels are available.
     
     bool SetupPhilips();
     //: Setup a philips webcam.
@@ -63,10 +63,15 @@ namespace RavlImageN {
     
     int palette; // Current palette mode.    
     int fd;
+    ByteT *buffer;
     ByteT *buf_grey;
     ByteT *buf_u;
     ByteT *buf_v;
+    int bufLen;
     bool half; // Attempt to get half size images?
+    bool memmap; // Use memory mapping.
+    SArray1dC<int> frameOffsets;
+    int bufNo;
   };
   
   //! userlevel=Develop
