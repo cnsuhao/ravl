@@ -120,7 +120,7 @@ namespace RavlImageN
   
   bool MPEG2DemuxBodyC::IsGetEOS() const
   {
-    if (m_dataIn.IsEmpty() && m_dataOut.IsEmpty() && input.IsGetEOS())
+    if (m_bufStart == m_bufEnd && m_dataOut.IsEmpty() && input.IsGetEOS())
     {
       ONDEBUG(cerr << "MPEG2DemuxBodyC::IsGetEOS at EOS" << endl;)
       return true;
