@@ -11,9 +11,11 @@
 
 #include "Ravl/Image/CSPControl.hh"
 #include "Ravl/OS/DMABuffer.hh"
-#include <string.h>
 
-#define DODEBUG 1
+#include <string.h>
+#include <stdlib.h>
+
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -31,7 +33,8 @@ namespace RavlImageN {
       fifoMode(true),
       captureAudio(true), // Capture audio ?
       captureVideo(true), // Capture video ?
-      frameBufferSize(0)
+      frameBufferSize(0),
+      timecode_from_getframe((long int)0)
   {
     dev = sv_open((char *) devName.chars());
     ONDEBUG(cerr << "CSP Device open:" << ((void *) dev) << " (" << devName << ")\n");
@@ -59,6 +62,9 @@ namespace RavlImageN {
     if(attrName == "FrameBufferSize") {
       attrValue = StringC(frameBufferSize);
       return true;
+    }
+    else if (attrName == "timecode") {
+      attrValue = timecode_from_getframe.ToText();
     }
     return false;
   }
@@ -114,8 +120,8 @@ namespace RavlImageN {
       cerr << "Failed to set sync:" << ret << "\n";
       return false;
     }
-#if 0
-    if((ret = sv_option(dev,SV_OPTION_VITCLINE,21)) != SV_OK) {
+#if 1
+    if((ret = sv_option(dev,SV_OPTION_VITCLINE,19)) != SV_OK) {
       cerr << "Failed to set vitc line:" << ret << "\n";
     }
 #endif
@@ -162,7 +168,7 @@ namespace RavlImageN {
 	cerr << "Failed to get fifo status. Error:" << ret << "\n";
 	return false;
       }
-      cerr << "Field offset=" << fifo_config.field1offset << " " << fifo_config.field2offset << "\n";
+      ONDEBUG(cerr << "Field offset=" << fifo_config.field1offset << " " << fifo_config.field2offset << "\n");
     } else {
       // Setup some paramiters that might be needed anyway.
       fifo_config.dmaalignment = 1;
@@ -241,23 +247,27 @@ namespace RavlImageN {
       return DMABufferC<ByteYUV422ValueC>();
     }
     
-#if 0
-    int timecode;
-    //if((ret = sv_query(dev,SV_QUERY_VITCTIMECODE,0,&timecode)) != SV_OK) {
-    //      cerr << "Failed to query vitc:" << ret << "\n";
-    //    }
-    if((ret = sv_query(dev,SV_QUERY_LTCTIMECODE,0,&timecode)) != SV_OK) {
-      cerr << "Failed to query vitc:" << ret << "\n";
-    }
-    cerr << "Inital time code = " << timecode << "\n";
-#endif
-    
+    // store timecode in case it's requested by CSPGetAttr(...)
+
+    // this returns it backwards!: "ff:ss:mm:hh"
+    char str_backwards[16];
+    sv_tc2asc(dev, svbuf->timecode.vitc_tc, str_backwards, 16);
+
+    // convert to Ravl timecode object
+    timecode_from_getframe = TimeCodeC(atoi(&str_backwards[9]),
+				       atoi(&str_backwards[6]),
+				       atoi(&str_backwards[3]),
+				       atoi(&str_backwards[0]));
+
+
 #if DODEBUG
     sv_fifo_info info;
     sv_fifo_status(dev,fifo,&info);
-    //cerr << "Got frame. Dopped:" << info.dropped << " \n";
-#endif
+
     cerr <<"Dropped: " << info.dropped << " TimeCode1 ltc:" << svbuf->timecode.ltc_tc << " vitc:" << svbuf->timecode.vitc_tc << " vitc2:" << svbuf->timecode.vitc_tc2 <<  " tick:"<< svbuf->timecode.vtr_tick << " vtr:" << svbuf->timecode.vtr_tc << " Lock:" << svbuf->timecode.vtr_lockcount << " \n";
+#endif
+
+
     return buf;
   }
   

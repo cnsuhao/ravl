@@ -15,6 +15,7 @@
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUV422Value.hh"
+#include "Ravl/TimeCode.hh"
 
 extern "C" {
 #include <dvs_clib.h>
@@ -69,6 +70,8 @@ namespace RavlImageN {
     bool captureVideo; // Capture video ?
 
     int frameBufferSize;
+
+    TimeCodeC timecode_from_getframe;
   };
 
 }
