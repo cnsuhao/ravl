@@ -54,12 +54,12 @@ struct wb_ctrl {
 #define PHILIPS_FACTORY_RESET _IO('v', 194)
 
 // Desired Compression 
-#define PHILIPS_GET_COMPRESSION _IOW('v', 195, int)
-#define PHILIPS_SET_COMPRESSION _IOR('v', 195, int)
+#define PHILIPS_GET_COMPRESSION _IOR('v', 195, int)
+#define PHILIPS_SET_COMPRESSION _IOW('v', 195, int)
 
 // AGC setting.
-#define PHILIPS_GET_AGC         _IOW('v', 200, int)
-#define PHILIPS_SET_AGC         _IOR('v', 200, int)
+#define PHILIPS_GET_AGC         _IOR('v', 200, int)
+#define PHILIPS_SET_AGC         _IOW('v', 200, int)
 
 // Shutter 
 #define PHILIPS_SET_SHUTTER	_IOW('v', 201, int)
