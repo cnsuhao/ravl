@@ -264,7 +264,7 @@ namespace RavlImageN
     {
       if (HandleGetAttr(attrName, attrValue))
         return true;
-      return AttributeCtrlBodyC::GetAttr(attrName, attrValue);
+      return DPPortBodyC::GetAttr(attrName, attrValue);
     }
     //: Handle get attribute (bool)
     // Returns false if the attribute name is unknown.
@@ -273,7 +273,7 @@ namespace RavlImageN
     {
       if (HandleSetAttr(attrName, attrValue))
         return true;
-      return AttributeCtrlBodyC::SetAttr(attrName, attrValue);
+      return DPPortBodyC::SetAttr(attrName, attrValue);
     }
     //: Handle set attribute (bool)
     // Returns false if the attribute name is unknown.

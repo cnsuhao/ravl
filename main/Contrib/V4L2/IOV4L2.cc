@@ -930,7 +930,7 @@ namespace RavlImageN
     if (attrName == "width")
     {
       // Set the width
-      if (attrValue > 0)
+      if (attrValue > m_widthMin && attrValue < m_widthMax)
       {
         // Lock the capture device
         MutexLockC lockCapture(m_lockCapture);
@@ -965,7 +965,7 @@ namespace RavlImageN
     if (attrName == "height")
     {
       // Set the height
-      if (attrValue > 0)
+      if (attrValue > m_heightMin && attrValue < m_heightMax)
       {
         // Lock the capture device
         MutexLockC lockCapture(m_lockCapture);
