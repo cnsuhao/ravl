@@ -10,7 +10,7 @@ PACKAGE=Ravl/Image
 
 REQUIRES=libdc1394
 
-MAINS= test1394dc.cc
+MAINS= test1394dc.cc twocam.cc
 
 HEADERS= ImgIO1394dc.hh Lib1394dcFormat.hh
 
