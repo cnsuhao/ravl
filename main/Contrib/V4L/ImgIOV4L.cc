@@ -130,12 +130,14 @@ namespace RavlImageN {
       for(;;) {
 	if((rret = ioctl(fd,VIDIOCSYNC,&bufNo)) >= 0)
 	  break; // Succeded.
-	cerr << "WARNING: V4L driver failed to sync buffer. err=" << rret << " " << errno << " bufNo=" << bufNo << "\n";
+	if(errno != EINTR) // This is relatively frequent, so silently ignore.
+	  cerr << "WARNING: V4L driver failed to sync buffer. return:" << rret << " errno:" << errno << " buffer:" << bufNo << "\n";
 	errors++;
 	if(errors <= 3 && 
 	   !(errno == EFAULT || errno == EINVAL)) { // Don't bother with retry if we don't think we can recover.
 	  
-	  cerr << " Retrying... (" << errors << ")\n";
+	  if(errno != EINTR) // This is relatively frequent, so silently ignore.
+	    cerr << " Retrying... (" << errors << ")\n";
 	  continue;
 	}
 	throw DataNotReadyC("V4L:Error syncing buffer. ");
