@@ -14,6 +14,7 @@
 #include "Ravl/Array1dIter.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/StdConst.hh"
+#include "Ravl/OS/Date.hh"
 
 using namespace RavlN;
 
@@ -24,6 +25,14 @@ int main() {
   for(Array1dIterC<RealT> it(data);it;it++,val += (RavlConstN::pi/40))
     *it = Sin(val);
   
+  if(!Save("@GRAPH:exDPGraphWindow",data,"",true)) {
+    cerr << "Failed to save image. \n";
+    return 1;
+  }
+  Sleep(3);
+  //for(Array1dIterC<RealT> it(data);it;it++,val += (RavlConstN::pi/40))
+  // *it = Sin(val);
+  data[50] = 1;
   if(!Save("@GRAPH:exDPGraphWindow",data,"",true)) {
     cerr << "Failed to save image. \n";
     return 1;

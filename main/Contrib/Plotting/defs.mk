@@ -6,4 +6,6 @@
 # file-header-ends-here
 #! rcsid="$Id$"
 
+REQUIRES=libGuppi
+
 NESTED=Base.r Guppi.r DPGraph.r

@@ -7,7 +7,7 @@
 #ifndef RAVLGRAPH_GRAPHDATA2D_HEADER
 #define RAVLGRAPH_GRAPHDATA2D_HEADER 1
 //! author="Charles Galambos"
-//! docentry="Ravl.Contrib.Graphing"
+//! docentry="Ravl.Contrib.Plotting"
 //! rcsid="$Id$"
 //! lib=RavlPlot
 

@@ -12,6 +12,13 @@
 #include "Ravl/Assert.hh"
 #include "Ravl/Array1dIter.hh"
 
+#define DODEBUG 1
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlPlotN {
 
   //: Constructor.  
@@ -60,6 +67,7 @@ namespace RavlPlotN {
   // This could be handled better....
   
   bool GuppiScalarSequenceBodyC::Set(const Array1dC<RealT> &data) {
+    ONDEBUG(cerr <<"GuppiScalarSequenceBodyC::Set(const Array1dC<RealT> &), Called. \n");
     Array1dC<RealT> tmp(data);
     RavlAssert(seq != 0);
     gint min,max;
@@ -69,13 +77,15 @@ namespace RavlPlotN {
       for(Array1dIterC<RealT> it(data);it;it++)
 	guppi_seq_scalar_append(seq,*it);
     } else {
+      ONDEBUG(cerr <<"GuppiScalarSequenceBodyC::Set(), Updating. Min=" << min << " Size=" << size << " data.Size()=" << data.Size() << ". \n");
       if(size == data.Size())
-	guppi_seq_scalar_set_many (seq,min,&(tmp[data.Range().Min()]),1,data.Range().Size());
+	guppi_seq_scalar_set_many (seq,min,&(tmp[data.Range().Min()]),sizeof(RealT),data.Range().Size());
       else {
 	cerr << "GuppiScalarSequenceBodyC::Set(), Eeek! I'm confused. \n";
 	RavlAlwaysAssert(0);
       }
     }
+    ONDEBUG(cerr <<"GuppiScalarSequenceBodyC::Set(const Array1dC<RealT> &), Done. \n");
     return true;
   }
 

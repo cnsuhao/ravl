@@ -106,6 +106,11 @@ namespace RavlPlotN {
     //: Append a value to the sequence.
     // Note: This is NOT thread safe.
     
+    bool Set(const Array1dC<RealT> &data)
+    { return Body().Set(data); }
+    //: Set sequence to contents of 'data'.
+    // Note: This is NOT thread safe.
+    
   };
   
 }

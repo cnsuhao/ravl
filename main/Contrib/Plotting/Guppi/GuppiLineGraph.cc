@@ -71,6 +71,8 @@ namespace RavlPlotN {
   
   bool GuppiLineGraphBodyC::Update(const Array1dC<RealT> &data) {
     ONDEBUG(cerr << "GuppiLineGraphBodyC::Update(), Called. \n");
+    dataY.Set(data);
+    
     return true;
   }
 

@@ -11,6 +11,7 @@
 
 #include "Ravl/Plot/DPGraphWindow.hh"
 #include "Ravl/GUI/Manager.hh"
+#include "Ravl/CallMethods.hh"
 #include "Ravl/GUI/WaitForExit.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include <stdlib.h>
@@ -63,8 +64,9 @@ namespace RavlPlotN {
   }
   
   //: Update data.
+  // Call on the GUI thread only.
   
-  void DPGraphWindowBodyC::Update(const StringC &name,const Array1dC<RealT> &data) {
+  bool DPGraphWindowBodyC::GUIUpdate(const StringC &name,const Array1dC<RealT> &data) {
     ONDEBUG(cerr << "DPGraphWindowBodyC::Update(), Called.  \n");
     MutexLockC hold(accessMutex);
     GuppiLineGraphC &plot = plots[name];
@@ -81,6 +83,13 @@ namespace RavlPlotN {
 	graph.AddPlot(plot);
     }
     ONDEBUG(cerr << "DPGraphWindowBodyC::Update(), Done.  \n");
+    return true;
+  }
+  
+  void DPGraphWindowBodyC::Update(const StringC &name,const Array1dC<RealT> &data) {
+    if(!Manager.IsManagerStarted())
+      WaitForGUIExit(); 
+    RavlGUIN::Manager.Queue(Trigger(DPGraphWindowC(*this),&DPGraphWindowC::GUIUpdate,name,data));
   }
   
   //: Clear the display list.
