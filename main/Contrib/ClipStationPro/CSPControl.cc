@@ -11,6 +11,7 @@
 
 #include "Ravl/Image/CSPControl.hh"
 #include "Ravl/OS/DMABuffer.hh"
+#include "Ravl/DList.hh"
 
 #include <string.h>
 #include <stdlib.h>
@@ -103,6 +104,16 @@ namespace RavlImageN {
     return false;    
   }
   
+
+  
+  bool ClipStationProDeviceC::CSPGetAttrList ( DListC<StringC> & attrList ) const
+  {
+    attrList.InsLast("FrameBufferSize") ;
+    attrList.InsLast("timecode") ;
+    return true ; 
+  }
+  //: Gets the list of available attributes 
+
   
   //: Setup video modes to a suitable default.
   

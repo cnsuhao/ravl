@@ -78,6 +78,12 @@ namespace RavlImageN {
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
 
+    virtual bool GetAttrList(DListC<StringC> & list) const
+    { return CSPGetAttrList (list) ; } 
+    //: Append the list of available attributes 
+    // Available attributes for this class are appended to the list
+
+
   };
   
   //! userlevel=Normal

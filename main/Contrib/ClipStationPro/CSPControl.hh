@@ -22,8 +22,12 @@ extern "C" {
 #include <dvs_fifo.h>
 }
 
+namespace RavlN {
+  template<class DataT> class DListC; }
+
 namespace RavlImageN {
-  
+
+
   //! userlevel=Develop
   //: Clip station control class.
   
@@ -56,6 +60,10 @@ namespace RavlImageN {
     //: Set a stream attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling stream attributes such as frame rate, and compression ratios.
+
+    bool CSPGetAttrList(DListC<StringC>  & attrList ) const ; 
+    //: Get a list of available attributes 
+
 
   protected:
     sv_handle *dev;
