@@ -21,9 +21,13 @@ int main(int nargs,char **argv) {
   OptionC opt(nargs,argv);
   bool seq = opt.Boolean("s",false,"Display a sequence.");
   bool rgb = opt.Boolean("rgb",false,"Convert via RGB. ");
+  IntT frames = opt.Int("f",-1,"Number of frames to capture, -1 = infinite");
   StringC inName = opt.String("","@V4LH:/dev/video0","Input name. ");
   StringC outName = opt.String("","@X","Output name. ");
   opt.Check();
+  
+  if(frames > 0)
+    seq = true;
   
   if(!rgb) {
     DPIPortC<ImageC<ByteYUVValueC> > imgsIn;
@@ -38,7 +42,7 @@ int main(int nargs,char **argv) {
     }
     do {
       imgsOut.Put(imgsIn.Get());
-    } while(seq);
+    } while(seq && ((--frames) != -1));
   } else {
     DPIPortC<ImageC<ByteRGBValueC> > imgsIn;
     DPOPortC<ImageC<ByteRGBValueC> > imgsOut;
@@ -51,8 +55,8 @@ int main(int nargs,char **argv) {
       return 1;
     }
     do {
-      imgsOut.Put(imgsIn.Get());
-    } while(seq);
+      imgsOut.Put(imgsIn.Get());      
+    } while(seq && ((--frames) != -1));
   }
   return 0;
 }
