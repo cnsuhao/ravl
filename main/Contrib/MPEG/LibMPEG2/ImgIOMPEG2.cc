@@ -236,6 +236,7 @@ namespace RavlImageN
     // Set the state vars
     m_state = -1;
     m_gopCount = 0;
+    m_endFound = false;
     
     // Decoder loop
     do
@@ -264,9 +265,12 @@ namespace RavlImageN
         m_previousGop = firstFrameNo;
 
         // Store the read pos
-        UIntT parsePos = m_lastRead + (UIntT) (m_decoder->buf_start - &(m_buffer[0]));
-        ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP **** Recording frame (" << localFrameNo << ") at (" << parsePos << ")" << endl;)
-        m_offsets.Insert(localFrameNo, parsePos, false);
+        if (!m_endFound)
+        {
+          UIntT parsePos = m_lastRead + (UIntT) (m_decoder->buf_start - &(m_buffer[0]));
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeGOP **** Recording frame (" << localFrameNo << ") at (" << parsePos << ")" << endl;)
+          m_offsets.Insert(localFrameNo, parsePos, false);
+        }
 
         // Update the max frame
         if(localFrameNo > m_maxFrameIndex)
@@ -370,7 +374,9 @@ namespace RavlImageN
     // Set the state vars
     m_state = -1;
     m_gopCount = 0;
-    
+    m_gopDone = false;
+    m_endFound = false;
+
     // Decoder loop
     do
     {
@@ -389,6 +395,9 @@ namespace RavlImageN
       if (m_gopCount >= m_gopLimit)
         break;
       
+      // Stop at the end
+      if (m_endFound)
+        return false;
     } while(true);
 
     return true;
@@ -452,6 +461,7 @@ namespace RavlImageN
       
     case STATE_END:
       ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode got END." << endl;)
+      m_endFound = true;
       break; 
         
     case STATE_SLICE: {
@@ -460,11 +470,11 @@ namespace RavlImageN
       if((m_gopLimit - m_gopCount < 3) && info->display_fbuf != 0) {
         UIntT frameid = (UIntT) info->display_fbuf->id;
         
-        // Only store the gop if it's fresh
-        if (m_gopLimit - m_gopCount == 1)
+        // Only store the image if it's fresh
+        if (m_gopLimit - m_gopCount <= 1)
         {
           IntT frameType = info->display_picture->flags & PIC_MASK_CODING_TYPE;
-          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameid(" << frameid << ") temporal ref(" << info->display_picture->temporal_reference << ") type(" << frameTypes[m_lastFrameType] << ")" << endl;)
+          ONDEBUG(cerr << "ImgILibMPEG2BodyC::Decode frameid(" << frameid << ") temporal ref(" << info->display_picture->temporal_reference << ") type(" << frameTypes[frameType] << ")" << endl;)
           ImageC<ByteRGBValueC> nimg(m_imgSize[0].V(), m_imgSize[1].V());
 #if 1
           UIntT stride = m_imgSize[1].V();
@@ -503,6 +513,10 @@ namespace RavlImageN
         
         // Update the frame count
         frameNo++;
+        
+        // Can cause problems if a slice is found after a GOP, so skip this one
+        if (m_gopLimit - m_gopCount < 1)
+          m_gopCount--;
       }
     } break;
       
@@ -782,19 +796,18 @@ namespace RavlImageN
     m_blockRead = blockPos + (end - start);
 
     // Keep decoding until we've emptied the decoder
-    bool gopDone = false;
     while ((m_state = mpeg2_parse(m_decoder)) != -1)
     {
       Decode(frameNo, info);
       
       // Check we've decoded a complete GOP
-      if (!gopDone && m_gopCount == m_gopLimit)
+      if (!m_gopDone && m_gopCount == m_gopLimit)
       {
         // Store the gop frame number
         m_previousGop = firstFrameNo;
 
         // Store the read pos
-        if (parsePos >= 0)
+        if (parsePos >= 0 && !m_endFound)
         {
           ONDEBUG(cerr << "ImgILibMPEG2BodyC::DecodeBlock **** Recording GOP (" << frameNo << ") at (" << parsePos << ")" << endl;)
           m_offsets.Insert(frameNo, parsePos, false);
@@ -805,7 +818,7 @@ namespace RavlImageN
           m_maxFrameIndex = frameNo;
         
         // Don't keep caching the info for the rest of the blocks in this demux'd packet
-        gopDone = true;
+        m_gopDone = true;
       }
     }
     
@@ -818,25 +831,22 @@ namespace RavlImageN
   {
     ONDEBUG(cerr << "ImgILibMPEG2BodyC::Get (" << m_frameNo << ")" << endl;)
     
+    bool ok = true;
     Tuple2C<ImageC<ByteRGBValueC>,IntT> dat;
     while (!m_imageCache.LookupR(m_frameNo, dat))
     {
+      // If the last read failed, don't bother again
+      if (!ok)
+      {
+        cerr << "ImgILibMPEG2BodyC::Get failed to find image GOP." << endl;
+        return false;
+      }
       
       // Keep on truckin' til we find the frame
       if (m_demuxTrack >= 0)
-      {
-        if (!DemultiplexGOP(m_frameNo))
-        {
-          cerr << "ImgILibMPEG2BodyC::Get failed to demultiplex GOP." << endl;
-          return false;
-        }
-      }
+        ok = DemultiplexGOP(m_frameNo);
       else
-        if (!DecodeGOP(m_frameNo))
-        {
-          cerr << "ImgILibMPEG2BodyC::Get failed to decode GOP." << endl;
-          return false;
-        }
+        ok = DecodeGOP(m_frameNo);
     }
     
     img = dat.Data1();

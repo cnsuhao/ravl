@@ -131,6 +131,8 @@ namespace RavlImageN
     UIntT m_gopLimit;
     UIntT m_previousGop;
     StreamPosT m_blockRead;
+    bool m_gopDone;
+    bool m_endFound;
   };
 
   class ImgILibMPEG2C :
