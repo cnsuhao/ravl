@@ -24,7 +24,6 @@ INSTALLATION
 
 To use the Contrib code, before building the RAVL libraries unpack the
 contrib.tar file in the root of your RAVL source tree, a new directory 
-'Contrib' should appear. Then edit the defs.mk in the same directory and 
-add "Contrib.r" to the end of the 'NESTED=' line. You can the install
-RAVL as usual and it will include the Contrib code.
+'Contrib' should appear.  You can then install RAVL as usual and it 
+will include the Contrib code.
 
