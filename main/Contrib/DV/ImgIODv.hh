@@ -42,13 +42,13 @@ namespace RavlImageN {
     
     inline streampos CalcOffset(UIntT frameNo) const {
       RavlAssert(frameSize > 0);
-      return (streampos) frameSize * (streampos) frameNo; 
+      return ((streampos) frameSize) * ((streampos) frameNo); 
     }
     //: Calculate the offset of a frame.
     
     inline streampos CalcOffset(streampos frameNo) const {
       RavlAssert(frameSize > 0);
-      return (streampos) frameSize * (streampos) frameNo; 
+      return ((streampos) frameSize) * frameNo; 
     }
     //: Calculate the offset of a frame.
     
@@ -56,7 +56,7 @@ namespace RavlImageN {
     //: Set the sequence size.
     
     UIntT SeqSize() const { return seqSize; }
-    //: Get the sequence size.
+    //: Get the sequence size in frames.
     
   protected:
     ImageRectangleC rect; // Size of Dv variant. Origin 0,0
@@ -91,7 +91,7 @@ namespace RavlImageN {
     //: Find current location in stream.
     
     virtual UIntT Size() const; 
-    //: Find the total size of the stream.
+    //: Find the total size of the stream (in frames)
     
     virtual ImageC<ByteRGBValueC> Get();
     //: Get next image.
