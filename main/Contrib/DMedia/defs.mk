@@ -31,6 +31,8 @@ USESLIBS= RavlCore RavlOSIO  RavlOS RavlThreads SGIVL
 
 PROGLIBS=RavlVideoIO RavlImageIO RavlDPDisplay.opt
 
+EHT = SGI_DMedia.html
+
 AUXDIR=libdep
 
 AUXFILES=SGIVL.def

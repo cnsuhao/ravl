@@ -23,6 +23,8 @@ PLIB = RavlDevAudio
 
 USESLIBS=RavlIO RavlAudioUtil RavlOSIO RavlAudioIO
 
+EHT = Audio_IO.html
+
 EXAMPLES= exAudioIO.cc
 
 PROGLIBS=RavlCore

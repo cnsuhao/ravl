@@ -5,6 +5,8 @@
   </head>
 
   <body>
+    <p>Requires library <code>CSPDriver</code></p>
+    <hr>
     <p> This adds a new <a href="Ravl.Core.IO.Virtual_Files.html">virtual files</a> '@CSP' which can be used to access the grabber cards. </p>
     
     <p> The devices can be specified as follows :- </p> 
@@ -12,10 +14,6 @@
       <li> <b> "@CSP" </b> - Uses the default device (card 0) </li> 
       <li> <b> "@CSP:PCI,card:[card_no]"  </b> - Uses the device with id given by [card_no] </li> 
     </ul> 
-
-    <p> 
-      <b> NOTE: </b> To use this device, you must include the <b> CSPDriver </b> library 
-    </p> 
 
     <h4> The following code will grab an image and display it </h4> 
     
