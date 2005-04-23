@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibFFmpeg
+//! lib=RavlLibFFmpeg
 //! author = "Warren Moore"
 //! file="Ravl/Contrib/LibFFmpeg/LibFFmpegFormat.cc"
 
@@ -15,11 +15,13 @@
 #include <ctype.h>
 #include "Ravl/DP/ByteFileIO.hh"
 #include "Ravl/DP/SPortAttach.hh"
+#include "Ravl/Image/FFmpegPacketStream.hh"
+#include "Ravl/Image/FFmpegVideoDecoder.hh"
 
 #include <ffmpeg/avcodec.h>
 #include <ffmpeg/avformat.h>
 
-#define DODEBUG 1
+#define DODEBUG 0
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -29,9 +31,7 @@
 
 namespace RavlImageN
 {
-
-
-
+  
   void InitLibFFmpegFormat()
   {}
 
@@ -40,12 +40,10 @@ namespace RavlImageN
   FileFormatLibFFmpegBodyC::FileFormatLibFFmpegBodyC() :
     FileFormatBodyC("ffmpeg", "FFmpeg file input.")
   {
-    // Register all formats and codecs
     av_register_all();
   }
-
-
-
+  
+  
   const type_info &FileFormatLibFFmpegBodyC::ProbeLoad(IStreamC &in, const type_info &obj_type) const
   {
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeLoad(IStreamC &,...) called" << endl);
@@ -80,15 +78,15 @@ namespace RavlImageN
 
 
   const type_info &FileFormatLibFFmpegBodyC::ProbeSave(const StringC &filename,
-                                                      const type_info &obj_type,
-                                                      bool forceFormat ) const
+                                                       const type_info &obj_type,
+                                                       bool forceFormat ) const
   {
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeSave(const StringC&,...) not supported" << endl);
+    //ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeSave(const StringC&,...) not supported" << endl);
     return typeid(void);   
   }
 
 
-
+  
   DPIPortBaseC FileFormatLibFFmpegBodyC::CreateInput(const StringC &filename, const type_info &obj_type) const
   {
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateInput(const StringC&,...) called (" << filename << ")" << endl);
@@ -96,7 +94,12 @@ namespace RavlImageN
     if (IsSupported(filename.chars()))
     {
       //return SPort(DPIByteFileC(fn) >> ImgILibFFmpegC(true));
-      return DPIPortBaseC();
+      FFmpegPacketStreamC packetStream(filename);
+      IntT codecId = -1;
+      IntT videoStreamId = -1;
+      if(!packetStream.FirstVideoStream(videoStreamId,codecId))
+        return DPIPortBaseC();
+      return ImgIOFFmpegC<ImageC<ByteRGBValueC> >(packetStream,videoStreamId,codecId);
     }
     
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateInput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
@@ -136,62 +139,10 @@ namespace RavlImageN
   bool FileFormatLibFFmpegBodyC::IsSupported(const char *filename) const
   {
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::IsSupported(const char *) called (" << filename << ")" << endl);
-    
-    // Open video file
+    FFmpegPacketStreamC stream(true);
     bool ret = false;
-    AVFormatContext *pFormatCtx;
-    if (av_open_input_file(&pFormatCtx, filename, NULL, 0, NULL) == 0)
-    {
-      // Retrieve stream information
-      if (av_find_stream_info(pFormatCtx) >= 0)
-      {
-        ONDEBUG(dump_format(pFormatCtx, 0, filename, false));
-        
-        // Find the first video stream
-        IntT videoStream = -1;
-        for (IntT i = 0; i < pFormatCtx->nb_streams; i++)
-        {
-          if (pFormatCtx->streams[i]->codec.codec_type == CODEC_TYPE_VIDEO)
-          {
-            videoStream = i;
-            break;
-          }
-        }
-        
-        if (videoStream != -1)
-        {
-          ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::IsSupported stream(" << videoStream << ")" << endl);
-          
-          // Get a pointer to the codec context for the video stream
-          AVCodecContext *pCodecCtx = &pFormatCtx->streams[videoStream]->codec;
-      
-          // Find the decoder for the video stream
-          AVCodec *pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
-          if (pCodec != NULL)
-          {
-            ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::IsSupported codec found(" << (pCodec->name != NULL ? pCodec->name : "NULL") << ")" << endl);
-            
-            // Inform the codec that we can handle truncated bitstreams
-            // i.e. bitstreams where frame boundaries can fall in the middle of packets
-            if (pCodec->capabilities & CODEC_CAP_TRUNCATED)
-                pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
-        
-            // Open codec
-            if (avcodec_open(pCodecCtx, pCodec) >= 0)
-            {
-              ret = true;
-            }
-            
-            // Clean up codec
-            avcodec_close(pCodecCtx);
-          }
-        }
-      }
-      
-      // Close the video file
-      av_close_input_file(pFormatCtx);    
-    }
-
+    if(stream.Open(filename)) 
+      ret = stream.CheckForVideo();
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::IsSupported(const char *) " << (ret ? "succeeded" : "failed") << endl);
     return ret;
   }

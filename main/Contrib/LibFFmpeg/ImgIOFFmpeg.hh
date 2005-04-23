@@ -8,7 +8,7 @@
 #define RAVL_IMGIOFFMPEG_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibFFmpeg
+//! lib=RavlLibFFmpeg
 //! author = "Warren Moore"
 //! file = "Ravl/Contrib/LibFFmpeg/ImgIOFFmpeg.hh"
 
@@ -31,9 +31,9 @@ namespace RavlImageN
   
   
   
-  class ImgILibFFmpegBodyC :
-    public DPIStreamOpBodyC< ByteT, ImageC<ByteRGBValueC> >,
-    public DPSeekCtrlBodyC
+  class ImgILibFFmpegBodyC 
+    : public DPIStreamOpBodyC< ByteT, ImageC<ByteRGBValueC> >,
+      public DPSeekCtrlBodyC
   {
   public:
     ImgILibFFmpegBodyC();
@@ -102,6 +102,58 @@ namespace RavlImageN
     {}
     //: Default constructor.
     // Creates an invalid handle.
+    
+    ImageC<ByteRGBValueC> Get() 
+    { return Body().Get(); }
+    //: Get next frame. 
+    //!cwiz:author
+    
+    bool Get(ImageC<ByteRGBValueC> & img) 
+    { return Body().Get(img); }
+    //: Get next frame. 
+    //!cwiz:author
+    
+    UIntT Tell() const
+    { return Body().Tell(); }
+    //: Find current location in stream. 
+    //!cwiz:author
+    
+    bool Seek(UIntT off) 
+    { return Body().Seek(off); }
+    //: Seek to location in stream. 
+    //!cwiz:author
+    
+    UIntT Size() const
+    { return Body().Size(); }
+    //: Get the size of the file in frames (-1 if not known) 
+    //!cwiz:author
+    
+    StreamPosT Tell64() const
+    { return Body().Tell64(); }
+    //: Find current location in stream. 
+    //!cwiz:author
+    
+    bool Seek64(StreamPosT off) 
+    { return Body().Seek64(off); }
+    //: Seek to location in stream. 
+    //!cwiz:author
+    
+    StreamPosT Size64() const
+    { return Body().Size64(); }
+    //: Get the size of the file in frames (-1 if not known) 
+    //!cwiz:author
+    
+    bool IsGetEOS() const
+    { return Body().IsGetEOS(); }
+    //: Is it the EOS 
+    //!cwiz:author
+    
+    bool GetAttr(const StringC & attrName,StringC & attrValue) 
+    { return Body().GetAttr(attrName,attrValue); }
+    //: Get a stream attribute. 
+    // Returns false if the attribute name is unknown.
+    // This is for handling stream attributes such as frame rate, and compression ratios.
+    //!cwiz:author
 
     ImgILibFFmpegC(bool) :
       DPEntityC(*new ImgILibFFmpegBodyC())

@@ -9,19 +9,23 @@
 
 #REQUIRES = libffmpeg
 
+ORGANISATION=Omniperception Ltd.
+
 PACKAGE = Ravl/Image
 
-HEADERS = ImgIOFFmpeg.hh LibFFmpegFormat.hh
+HEADERS = ImgIOFFmpeg.hh LibFFmpegFormat.hh FFmpegPacket.hh FFmpegPacketStream.hh \
+ FFmpegVideoDecoder.hh
 
-SOURCES = ImgIOFFmpeg.cc LibFFmpegFormat.cc
+SOURCES = ImgIOFFmpeg.cc LibFFmpegFormat.cc FFmpegPacket.cc FFmpegPacketStream.cc \
+ FFmpegVideoDecoder.cc
 
 PLIB = RavlLibFFmpeg
 
 MUSTLINK = MustLinkLibFFmpeg.cc
 
-USESLIBS = RavlImage RavlIO LibFFmpeg RavlDPDisplay
+USESLIBS = RavlImage RavlIO LibFFmpeg 
 
-PROGLIBS = RavlGUI
+PROGLIBS = RavlGUI RavlDPDisplay
 
 EXAMPLES = exFFmpeg.cc exFFmpegSeek.cc
 

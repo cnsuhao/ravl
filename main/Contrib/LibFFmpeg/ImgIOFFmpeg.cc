@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! rcsid = "$Id$"
-//! lib = RavlLibFFmpeg
+//! lib=RavlLibFFmpeg
 //! author = "Warren Moore"
 //! file = "Ravl/LibFFmpeg/ImgIOFFmpeg.cc"
 

@@ -37,7 +37,7 @@ int main(int nargs, char **argv)
 
   // Select the correct opening method
   FileFormatLibFFmpegC format;
-  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename);
+  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename,typeid(ImageC<ByteRGBValueC>));
   if (!in.IsValid())
   {
     cerr << "Unable to open file (" << filename << ")\n";
@@ -72,7 +72,7 @@ int main(int nargs, char **argv)
     
     RavlN::Save("@X", rgb);
 
-    Sleep(delay);
+    //Sleep(delay);
   }
 
   return 0;
