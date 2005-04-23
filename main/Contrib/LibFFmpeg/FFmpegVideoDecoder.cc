@@ -9,8 +9,9 @@
 
 #include "Ravl/Image/FFmpegVideoDecoder.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/DP/AttributeValueTypes.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -26,7 +27,8 @@ namespace RavlN {
       pCodecCtx(0),
       pFrame(0),
       bytesRemaining(0),
-      rawData(0)
+      rawData(0),
+      streamInfo(0)
   {
     if(!Open(_packetStream,_videoStreamId,_codecId))
       throw ExceptionOperationFailedC("Failed to open video stream. ");
@@ -39,7 +41,8 @@ namespace RavlN {
       pCodecCtx(0),
       pFrame(0),
       bytesRemaining(0),
-      rawData(0)
+      rawData(0),
+      streamInfo(0)
   {}
 
   //: Destructor.
@@ -70,7 +73,8 @@ namespace RavlN {
       cerr << "FFmpegVideoDecoderBaseC::Open, Unsupported packet stream type. \n";
       return false;      
     }
-    pCodecCtx = &(ps.FormatCtx()->streams[videoStreamId]->codec);
+    streamInfo = ps.FormatCtx()->streams[videoStreamId];
+    pCodecCtx = &(streamInfo->codec);
     
     // Find the decoder for the video stream
     AVCodec *pCodec = avcodec_find_decoder(static_cast<CodecID>(codecId));
@@ -79,7 +83,7 @@ namespace RavlN {
       return false;
     }
     
-    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForVideo codec found(" << (pCodec->name != NULL ? pCodec->name : "NULL") << ")" << endl);
+    ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Open codec found(" << (pCodec->name != NULL ? pCodec->name : "NULL") << ")" << endl);
     
     // Inform the codec that we can handle truncated bitstreams
     // i.e. bitstreams where frame boundaries can fall in the middle of packets
@@ -89,7 +93,7 @@ namespace RavlN {
     
     // Open codec
     if (avcodec_open(pCodecCtx, pCodec) >= 0) {
-      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForVideo codec constructed ok. " << endl);
+      ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Open codec constructed ok. " << endl);
       ret = true;
     }
     
@@ -163,6 +167,138 @@ namespace RavlN {
     av_free(pFrameRGB);
     
     return true;
+  }
+
+  //: Get a attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling attributes such as frame rate, and compression ratios.
+  
+  bool FFmpegVideoDecoderBaseC::GetAttr(const StringC &attrName,StringC &attrValue) {
+    if(attrName == "filename" || attrName == "title" || attrName == "author" || 
+       attrName == "copyright"|| attrName == "comment"|| attrName == "album") {
+      if(!input.IsValid() || !input.GetAttr(attrName,attrValue))
+        attrValue = StringC("");
+      return true;
+    }
+    
+    return false;
+  }
+    
+  //: Get a attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling attributes such as frame rate, and compression ratios.
+  
+  bool FFmpegVideoDecoderBaseC::GetAttr(const StringC &attrName,IntT &attrValue) {
+    return false;
+  }
+  
+  //: Get a attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling attributes such as frame rate, and compression ratios.
+  
+  bool FFmpegVideoDecoderBaseC::GetAttr(const StringC &attrName,RealT &attrValue) {
+    if(attrName == "framerate") {
+      if(!input.IsValid() || !input.GetAttr(attrName,attrValue))
+        attrValue = 0.0;
+      return true;
+    }
+    return false;
+  }
+  
+  //: Get a attribute.
+  // Returns false if the attribute name is unknown.
+  // This is for handling attributes such as frame rate, and compression ratios.
+  
+  bool FFmpegVideoDecoderBaseC::GetAttr(const StringC &attrName,bool &attrValue) {
+    return false;
+  }
+  
+  //: Initalise attributes.
+  
+  void FFmpegVideoDecoderBaseC::InitAttr(AttributeCtrlBodyC &attrCtrl) {
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<RealT>("framerate","Frame rate of video",true,false,0.0,1000.0,0.01,25));
+    
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("filename","Original filename of stream",true,false,""));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("title","Title of stream",true,false,""));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("author","Author",true,false,""));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("copyright","Copyright for material",true,false,""));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("comment","Comment",true,false,""));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("album","album",true,false,""));
+    
+  }
+  
+  //: Seek to location in stream.
+  // Returns FALSE, if seek failed. (Maybe because its
+  // not implemented.)
+  // if an error occurered (Seek returned False) then stream
+  // position will not be changed.
+  
+  bool FFmpegVideoDecoderBaseC::Seek(UIntT off) {
+    return FFmpegVideoDecoderBaseC::Seek64(off);
+  }
+  
+  //: Find current location in stream.
+  
+  UIntT FFmpegVideoDecoderBaseC::Tell() const {
+    return FFmpegVideoDecoderBaseC::Tell64();
+  }
+  
+  //: Find the total size of the stream.
+  
+  UIntT FFmpegVideoDecoderBaseC::Size() const {
+    return FFmpegVideoDecoderBaseC::Size64();
+  }
+  
+  //: Find the total size of the stream.
+  
+  UIntT FFmpegVideoDecoderBaseC::Start() const {
+    return FFmpegVideoDecoderBaseC::Start64();
+  }
+  
+  //: Find current location in stream.
+  
+  Int64T FFmpegVideoDecoderBaseC::Tell64() const {
+    if(!input.IsValid()) return 0;
+    return input.Tell64();
+  }
+  
+  //: Seek to location in stream.
+  // Returns FALSE, if seek failed. (Maybe because its
+  // not implemented.)
+  // if an error occurered (Seek returned False) then stream
+  // position will not be changed.
+  
+  bool FFmpegVideoDecoderBaseC::Seek64(Int64T off) {
+    if(!input.IsValid()) return false;
+    return input.Seek64(off);
+  }
+  
+  //: Find the total size of the stream.
+  
+  Int64T FFmpegVideoDecoderBaseC::Size64() const {
+    if(!input.IsValid()) return 0;
+    return input.Size64();   
+  }
+  
+  //: Find the total size of the stream.
+  
+  Int64T FFmpegVideoDecoderBaseC::Start64() const {
+    if(!input.IsValid()) return 0;
+    return input.Start64();
+  }
+
+  //: Change position relative to the current one.
+  
+  bool FFmpegVideoDecoderBaseC::DSeek64(Int64T off) {
+    if(!input.IsValid()) return false;
+    return input.DSeek64(off);
+  }
+  
+  //: Change position relative to the current one.
+  
+  bool FFmpegVideoDecoderBaseC::DSeek(Int64T off) {
+    if(!input.IsValid()) return false;
+    return input.DSeek(off);
   }
   
 }

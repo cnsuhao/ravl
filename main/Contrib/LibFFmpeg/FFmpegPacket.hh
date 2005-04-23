@@ -44,6 +44,14 @@ namespace RavlN {
     { return packet.size; }
     //: Access size of packet.
     
+    Int64T TimeStamp()
+    { return packet.pts; }
+    //: Presentation time stamp.
+    
+    Int64T DecodeTimeStamp()
+    { return packet.dts; }
+    //: Decode time stamp.
+    
   protected:
     AVPacket packet;
   };
@@ -83,6 +91,14 @@ namespace RavlN {
     UIntT Size() const
     { return Body().Size(); }
     //: Access size of packet.
+    
+    Int64T TimeStamp()
+    { return Body().TimeStamp(); }
+    //: Presentation time stamp.
+    
+    Int64T DecodeTimeStamp()
+    { return Body().DecodeTimeStamp(); }
+    //: Decode time stamp.
     
   protected:
     FFmpegPacketC(FFmpegPacketBodyC &bod)

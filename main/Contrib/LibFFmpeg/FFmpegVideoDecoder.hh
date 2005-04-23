@@ -40,7 +40,68 @@ namespace RavlN {
     bool GetFrame(ImageC<ByteRGBValueC> &frame);
     //: Get a frame of video from stream.
     
+    bool GetAttr(const StringC &attrName,StringC &attrValue);
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+    
+    bool GetAttr(const StringC &attrName,IntT &attrValue);
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+    
+    bool GetAttr(const StringC &attrName,RealT &attrValue);
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+    
+    bool GetAttr(const StringC &attrName,bool &attrValue);
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+
+    bool Seek(UIntT off);
+    //: Seek to location in stream.
+    // Returns FALSE, if seek failed. (Maybe because its
+    // not implemented.)
+    // if an error occurered (Seek returned False) then stream
+    // position will not be changed.
+    
+    UIntT Tell() const; 
+    //: Find current location in stream.
+    
+    UIntT Size() const; 
+    //: Find the total size of the stream.
+    
+    UIntT Start() const; 
+    //: Find the total size of the stream.
+    
+    Int64T Tell64() const; 
+    //: Find current location in stream.
+    
+    bool Seek64(Int64T off);
+    //: Seek to location in stream.
+    // Returns FALSE, if seek failed. (Maybe because its
+    // not implemented.)
+    // if an error occurered (Seek returned False) then stream
+    // position will not be changed.
+    
+    Int64T Size64() const; 
+    //: Find the total size of the stream.
+
+    Int64T Start64() const; 
+    //: Find the total size of the stream.
+
+    bool DSeek64(Int64T off);
+    //: Change position relative to the current one.
+    
+    bool DSeek(Int64T off);
+    //: Change position relative to the current one.
+    
   protected:
+    void InitAttr(AttributeCtrlBodyC &attrCtrl);
+    //: Initalise attributes.
+    
     IntT videoStreamId;             // Id of video stream we're currently decoding.
     AVCodecContext *pCodecCtx;      // Video codec.
     DPISPortC<FFmpegPacketC> input; // Input stream.
@@ -48,6 +109,7 @@ namespace RavlN {
     FFmpegPacketC packet;           // Current packet.
     int      bytesRemaining;
     uint8_t  *rawData;
+    AVStream *streamInfo;
   };
   
 
@@ -59,12 +121,12 @@ namespace RavlN {
   {
   public:
     ImgIOFFmpegBodyC() 
-    {}
+    { InitAttr(*this); }
     //: Constructor.
     
     ImgIOFFmpegBodyC(DPISPortC<FFmpegPacketC> &packetStream,IntT videoStreamId,IntT codecId) 
       : FFmpegVideoDecoderBaseC(packetStream,videoStreamId,codecId)
-    {}
+    { InitAttr(*this); }
     //: Constructor.
     
     virtual bool Get(ImageC<ByteRGBValueC> &buff)
@@ -90,23 +152,89 @@ namespace RavlN {
     //: Has the End Of Stream been reached ?
     // TRUE = yes.
     
-#if 0
-    virtual bool Seek(UIntT off);
+    bool Seek(UIntT off)
+    { return FFmpegVideoDecoderBaseC::Seek(off); }
     //: Seek to location in stream.
     // Returns FALSE, if seek failed. (Maybe because its
     // not implemented.)
     // if an error occurered (Seek returned False) then stream
     // position will not be changed.
     
-    virtual bool DSeek(IntT off);
-    //: Delta Seek, goto location relative to the current one.
+    bool DSeek64(Int64T off) 
+    { return FFmpegVideoDecoderBaseC::DSeek64(off); }
+    //: Change position relative to the current one.
     
-    virtual UIntT Tell() const; 
+    bool DSeek(Int64T off) 
+    { return FFmpegVideoDecoderBaseC::DSeek(off); }
+    //: Change position relative to the current one.
+    
+    UIntT Tell() const
+    { return FFmpegVideoDecoderBaseC::Tell(); }
     //: Find current location in stream.
     
-    virtual UIntT Size() const; 
+    UIntT Size() const
+    { return FFmpegVideoDecoderBaseC::Size(); }
     //: Find the total size of the stream.
-#endif
+    
+    UIntT Start() const
+    { return FFmpegVideoDecoderBaseC::Start(); }
+    //: Find the total size of the stream.
+    
+    Int64T Tell64() const
+    { return FFmpegVideoDecoderBaseC::Tell64(); }
+    //: Find current location in stream.
+    
+    bool Seek64(Int64T off)
+    { return FFmpegVideoDecoderBaseC::Seek64(off); }
+    //: Seek to location in stream.
+    // Returns FALSE, if seek failed. (Maybe because its
+    // not implemented.)
+    // if an error occurered (Seek returned False) then stream
+    // position will not be changed.
+    
+    Int64T Size64() const
+    { return FFmpegVideoDecoderBaseC::Size64(); }
+    //: Find the total size of the stream.
+
+    Int64T Start64() const
+    { return FFmpegVideoDecoderBaseC::Start64(); }
+    //: Find the total size of the stream.
+    
+    virtual bool GetAttr(const StringC &attrName,StringC &attrValue) {
+      if(FFmpegVideoDecoderBaseC::GetAttr(attrName,attrValue))
+        return true;
+      return DPISPortBodyC<ImageT>::GetAttr(attrName,attrValue);
+    }
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttr(const StringC &attrName,IntT &attrValue) {
+      if(FFmpegVideoDecoderBaseC::GetAttr(attrName,attrValue))
+        return true;
+      return DPISPortBodyC<ImageT>::GetAttr(attrName,attrValue);
+    }
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttr(const StringC &attrName,RealT &attrValue) {
+      if(FFmpegVideoDecoderBaseC::GetAttr(attrName,attrValue))
+        return true;
+      return DPISPortBodyC<ImageT>::GetAttr(attrName,attrValue);
+    }
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+    
+    virtual bool GetAttr(const StringC &attrName,bool &attrValue) {
+      if(FFmpegVideoDecoderBaseC::GetAttr(attrName,attrValue))
+        return true;
+      return DPISPortBodyC<ImageT>::GetAttr(attrName,attrValue);
+    }
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
     
   protected:
     

@@ -29,8 +29,6 @@
 namespace RavlImageN
 {
   
-  
-  
   class ImgILibFFmpegBodyC 
     : public DPIStreamOpBodyC< ByteT, ImageC<ByteRGBValueC> >,
       public DPSeekCtrlBodyC
