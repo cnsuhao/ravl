@@ -64,6 +64,7 @@ namespace RavlN {
     }
     input = packetStream;
     videoStreamId = _videoStreamId;
+    cerr << "FFmpegVideoDecoderBaseC::Open, CodecId = " << codecId << "\n";
     
     // Get a pointer to the codec context for the video stream
     
@@ -156,6 +157,7 @@ namespace RavlN {
   bool FFmpegVideoDecoderBaseC::GetFrame(ImageC<ByteRGBValueC> &frame) {
     if(!DecodeFrame())
       return false;
+    //cerr << "FFmpegVideoDecoderBaseC::GetFrame, Got frame. \n";
     AVFrame *pFrameRGB = avcodec_alloc_frame();
     // Determine required buffer size and allocate buffer
     IntT numBytes=avpicture_get_size(PIX_FMT_RGB24, pCodecCtx->width,pCodecCtx->height);
@@ -180,7 +182,13 @@ namespace RavlN {
         attrValue = StringC("");
       return true;
     }
-    
+    if(attrName == "aspectratio") {
+      if(pCodecCtx == 0)
+        attrValue = "?";
+      else
+        attrValue = StringC(pCodecCtx->sample_aspect_ratio.num) + ":" + StringC(pCodecCtx->sample_aspect_ratio.den);
+      return true;
+    }
     return false;
   }
     
@@ -217,6 +225,7 @@ namespace RavlN {
   
   void FFmpegVideoDecoderBaseC::InitAttr(AttributeCtrlBodyC &attrCtrl) {
     attrCtrl.RegisterAttribute(AttributeTypeNumC<RealT>("framerate","Frame rate of video",true,false,0.0,1000.0,0.01,25));
+    attrCtrl.RegisterAttribute(AttributeTypeStringC("aspectratio","Aspect ratio",true,false,"4:3"));
     
     attrCtrl.RegisterAttribute(AttributeTypeStringC("filename","Original filename of stream",true,false,""));
     attrCtrl.RegisterAttribute(AttributeTypeStringC("title","Title of stream",true,false,""));
@@ -270,6 +279,16 @@ namespace RavlN {
   
   bool FFmpegVideoDecoderBaseC::Seek64(Int64T off) {
     if(!input.IsValid()) return false;
+    ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Seek64 to." << off << " \n");
+    // Be carefull seeking forward with some codec's
+#if 1
+    if(pCodecCtx->codec_id == CODEC_ID_MPEG2VIDEO) {
+      ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Seek64, Using seek hack. " << off << " @ " << Tell64() << "\n");
+      Int64T delta = off - Tell64();
+      if(delta >= 0 && delta < 128)
+        return DSeek64(delta);
+    }
+#endif
     return input.Seek64(off);
   }
   
@@ -291,14 +310,25 @@ namespace RavlN {
   
   bool FFmpegVideoDecoderBaseC::DSeek64(Int64T off) {
     if(!input.IsValid()) return false;
+#if 1
+    // Be carefull seeking forward with some codec's
+    if(pCodecCtx->codec_id == CODEC_ID_MPEG2VIDEO) {
+      ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::DSeek64, Using seek hack." << off << " \n");
+      if(off >= 0) {
+        // Seek forward by decoding frames.
+        for(Int64T i = 0;i < off;i++)
+          DecodeFrame();
+        return true;
+      }
+    }
+#endif
     return input.DSeek64(off);
   }
   
   //: Change position relative to the current one.
   
   bool FFmpegVideoDecoderBaseC::DSeek(Int64T off) {
-    if(!input.IsValid()) return false;
-    return input.DSeek(off);
+    return DSeek64(off);
   }
   
 }

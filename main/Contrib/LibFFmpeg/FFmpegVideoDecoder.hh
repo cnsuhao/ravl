@@ -236,6 +236,10 @@ namespace RavlN {
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
     
+    virtual bool Discard()
+    { return DecodeFrame(); }
+    //: Discard the next input datum.
+
   protected:
     
   };

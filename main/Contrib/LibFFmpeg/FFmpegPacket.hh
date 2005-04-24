@@ -52,6 +52,10 @@ namespace RavlN {
     { return packet.dts; }
     //: Decode time stamp.
     
+    IntT Flags() const 
+    { return packet.flags; }
+    //: Access packet flags
+    
   protected:
     AVPacket packet;
   };
@@ -99,6 +103,10 @@ namespace RavlN {
     Int64T DecodeTimeStamp()
     { return Body().DecodeTimeStamp(); }
     //: Decode time stamp.
+    
+    IntT Flags() const 
+    { return Body().Flags(); }
+    //: Access packet flags
     
   protected:
     FFmpegPacketC(FFmpegPacketBodyC &bod)
