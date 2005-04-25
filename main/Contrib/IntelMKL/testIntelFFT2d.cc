@@ -88,8 +88,11 @@ int testIntelFFT2d() {
   //==============================================
   SArray2dC<ComplexC> a(2,3);
   RealT increment = 0;
-  for(SArray2dIterC<ComplexC> it(a); it; it++)
-    *it = ComplexC(increment+=0.5, increment+=0.5);
+  for(SArray2dIterC<ComplexC> it(a); it; it++) {
+    RealT i1 = increment+=0.5;
+    RealT i2 = increment+=0.5;
+    *it = ComplexC(i1,i2);
+  }
 
   //cout << "a: " << a << endl;
 
@@ -234,8 +237,11 @@ int testFFTShift() {
   // Check even size using: evenSize = fftshift(fftshift(evenSize))
   SArray2dC<ComplexC> evenSize(2,4);
   int i=0;
-  for( SArray2dIterC<ComplexC> it(evenSize); it; it++ )
-    *it = ComplexC(i++, i++);
+  for( SArray2dIterC<ComplexC> it(evenSize); it; it++ ) {
+    IntT i1 = i++;
+    IntT i2 = i++;
+    *it = ComplexC(i1, i2);
+  }
 
   SArray2dC<ComplexC>  sEvenSize = IntelFFT2dC::FFTShift( evenSize);
   SArray2dC<ComplexC> ssEvenSize = IntelFFT2dC::FFTShift(sEvenSize);
