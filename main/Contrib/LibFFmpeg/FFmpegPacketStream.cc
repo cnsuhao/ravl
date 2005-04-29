@@ -11,7 +11,7 @@
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/Exception.hh"
 
-#define DODEBUG 0
+#define DODEBUG 1
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -28,7 +28,11 @@ namespace RavlN {
   FFmpegPacketStreamBodyC::FFmpegPacketStreamBodyC(const StringC &filename) 
     : pFormatCtx(0),
       positionRefStream(0),
-      currentTimeStamp(0)
+      currentTimeStamp(0),
+      frameRate(0),
+      frameRateBase(0),
+      startFrame(0),
+      haveSeek(true)
   { 
     Init();
     if(!Open(filename))
@@ -40,7 +44,11 @@ namespace RavlN {
   FFmpegPacketStreamBodyC::FFmpegPacketStreamBodyC()
     : pFormatCtx(0),
       positionRefStream(0),
-      currentTimeStamp(0)
+      currentTimeStamp(0),
+      frameRate(0),
+      frameRateBase(0),
+      startFrame(0),
+      haveSeek(true)
   { Init(); }
   
   //: Initalise attributes.
@@ -84,11 +92,23 @@ namespace RavlN {
       videoStreamId = i;
       codecId = pCodecCtx->codec_id;
       
+      // !!!!!!!!! Format Specific Hacks !!!!!!!!!!!!!!!
+      
+      StringC inputFormatName = pFormatCtx->iformat->name;
+      ONDEBUG(cerr << "iformat=" << inputFormatName << "\n");
+      
+      if(inputFormatName == "asf") {
+        haveSeek = false;
+      }
+      
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      
       positionRefStream = videoStreamId;
       AVStream *avstream = pFormatCtx->streams[positionRefStream];
       
       frameRate     = avstream->r_frame_rate;
       frameRateBase = avstream->r_frame_rate_base;
+      startFrame = Time2Frame(pFormatCtx->start_time);      
       
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::FirstVideoStream Index=" << av_find_default_stream_index(pFormatCtx) << " " << positionRefStream << " \n");
       
@@ -367,6 +387,16 @@ namespace RavlN {
   
   bool FFmpegPacketStreamBodyC::DSeek64(Int64T off) {
     ONDEBUG(cerr << "FFmpegPacketStreamBodyC::DSeek64 Delta=" << off << " \n");
+    if(!haveSeek) {
+      // Can we just dump frames ?
+      if(off > 0 && off < 100) {
+        for(Int64T i = 0;i < off;i++)
+          Get();
+        return true;
+      }
+      // Nope we can't seek.
+      return false;
+    }
     return Seek64(off + currentTimeStamp);
   }
   
@@ -379,7 +409,11 @@ namespace RavlN {
   bool FFmpegPacketStreamBodyC::Seek64(Int64T off) {
     if(pFormatCtx == 0)
       return false;
-    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Seek64 to " << off << " \n");
+    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Seek64 to " << off << " (Time:" << Frame2Time(off) << ")\n");
+    if(!haveSeek) {
+      cerr << "FFmpegPacketStreamBodyC::Seek64, Format doesn't support seeking. \n";
+      return false;
+    }
     if(av_seek_frame(pFormatCtx, positionRefStream, Frame2Time(off)) < 0) {
       cerr << "FFmpegPacketStreamBodyC::Seek, Seek failed. " << off << " \n";
       return false;

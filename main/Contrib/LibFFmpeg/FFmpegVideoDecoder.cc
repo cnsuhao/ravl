@@ -11,7 +11,7 @@
 #include "Ravl/Exception.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"
 
-#define DODEBUG 0
+#define DODEBUG 1
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -279,7 +279,7 @@ namespace RavlN {
   
   bool FFmpegVideoDecoderBaseC::Seek64(Int64T off) {
     if(!input.IsValid()) return false;
-    ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Seek64 to." << off << " \n");
+    ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Seek64 to " << off << " \n");
     // Be carefull seeking forward with some codec's
 #if 1
     if(pCodecCtx->codec_id == CODEC_ID_MPEG2VIDEO) {

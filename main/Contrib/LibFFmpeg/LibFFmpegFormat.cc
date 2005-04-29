@@ -21,7 +21,7 @@
 #include <ffmpeg/avcodec.h>
 #include <ffmpeg/avformat.h>
 
-#define DODEBUG 0
+#define DODEBUG 1
 
 #if DODEBUG
 #define ONDEBUG(x) x

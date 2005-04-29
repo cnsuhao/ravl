@@ -25,6 +25,7 @@ int main(int nargs, char **argv)
 {
   OptionC opts(nargs,argv);
   StringC filename = opts.String("", "in.avi", "Input AVI file.");
+  bool seekStart = opts.Boolean("ss",false,"Seek to Start. ");
   opts.Check();
   
   // Check the file exists
@@ -37,7 +38,7 @@ int main(int nargs, char **argv)
 
   // Select the correct opening method
   FileFormatLibFFmpegC format;
-  DPIPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename,typeid(ImageC<ByteRGBValueC>));
+  DPISPortC< ImageC<ByteRGBValueC> > in = format.CreateInput(filename,typeid(ImageC<ByteRGBValueC>));
   if (!in.IsValid())
   {
     cerr << "Unable to open file (" << filename << ")\n";
@@ -57,6 +58,9 @@ int main(int nargs, char **argv)
       it++;
     }
   }
+  
+  if(seekStart)
+    in.Seek(in.Start()+1);
   
   // Delay in seconds
   const RealT delay = 0.1;

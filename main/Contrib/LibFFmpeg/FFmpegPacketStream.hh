@@ -135,6 +135,9 @@ namespace RavlN {
     Int64T frameRate;
     Int64T frameRateBase;
     
+    Int64T startFrame; // Frame number of start of sequence.
+    bool haveSeek; // Do we have seeking ?
+    
     Int64T Frame2Time(Int64T frame) const;
     //: Convert a frame no into a time
     
