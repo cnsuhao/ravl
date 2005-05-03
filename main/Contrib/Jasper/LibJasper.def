@@ -13,23 +13,23 @@ LIBJASPER_DEF = 1
   CCPPFLAGS += -DRAVL_HAVE_LIBJASPER
 
   ifndef LIBJASPER_HOME
-    EXELIB := -ljasper $(EXELIB) 
+    EXELIB := -ljpeg -ljasper $(EXELIB) 
   else 
     INCLUDES += -I$(LIBJASPER_HOME)/include 
 
     ifeq ($(ARC),linux)
-      EXELIB := -Wl,-rpath,$(LIBJASPER_HOME)/lib -L$(LIBJASPER_HOME)/lib -ljasper $(EXELIB)
+      EXELIB := -ljpeg -Wl,-rpath,$(LIBJASPER_HOME)/lib -L$(LIBJASPER_HOME)/lib -ljasper $(EXELIB)
     else
 
       ifeq ($(ARC),sgi)
-        EXELIB := -R $(LIBJASPER_HOME)/lib32 -L$(LIBJASPER_HOME)/lib32 -ljasper $(EXELIB)
+        EXELIB := -ljpeg -R $(LIBJASPER_HOME)/lib32 -L$(LIBJASPER_HOME)/lib32 -ljasper $(EXELIB)
       else
 
         ifneq ($(filter $(ARC), sol2_7 sol2_9),)
-          EXELIB := -R $(LIBJASPER_HOME)/lib -L$(LIBJASPER_HOME)/lib -ljasper $(EXELIB)
+          EXELIB := -ljpeg -R $(LIBJASPER_HOME)/lib -L$(LIBJASPER_HOME)/lib -ljasper $(EXELIB)
         else 
 
-          EXELIB := -L$(LIBJASPER_HOME)/lib -ljasper $(EXELIB)
+          EXELIB := -ljpeg -L$(LIBJASPER_HOME)/lib -ljasper $(EXELIB)
         endif 
       endif 
     endif 
