@@ -9,14 +9,14 @@
 //! file="Ravl/Contrib/ClipStationPro/exCSPControl.cc"
 //! userlevel=Normal
 //! author="Lee Gregory"
-//! docentry="Ravl.Images.Video.Video IO.ClipStationPro"
-#include "Ravl/Image/CSPControl.hh"
+//! docentry="RavlImage/CSPControl.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/EntryPnt.hh"
 
 using namespace RavlN ; 
 using namespace RavlImageN ; 
 
-int main (void) 
+int mainFunc (void) 
 {
 
 	// setup the device 
@@ -67,3 +67,6 @@ sleep(5) ;
 
 return 0 ; 
 }
+
+
+RAVL_ENTRY_POINT(mainFunc) ;  

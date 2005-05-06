@@ -53,7 +53,11 @@ namespace RavlImageN {
     if(ExtractDevice(filename) != "CSP")
       return typeid(void);
     ONDEBUG(cerr << "FileFormatCSPBodyC::ProbeLoad(), Found. \n");
-    return typeid(ImageC<ByteYUV422ValueC>); 
+    if ( obj_type == typeid(ImageC<ByteYUV422ValueC>) )  // yuv images
+    	return typeid(ImageC<ByteYUV422ValueC>); 
+    else if ( obj_type == typeid(ImageC<ByteRGBValueC>) ) // rgb requested 
+    	return typeid(ImageC<ByteRGBValueC> ) ; 
+    else return typeid ( ImageC<ByteRGBValueC>) ; // default type 
   }
 
 
@@ -69,7 +73,11 @@ namespace RavlImageN {
   if (ExtractDevice(filename) != "CSP") 
     return typeid(void) ; 
   ONDEBUG(cerr << "FileFormatCSPBodyC::ProbeSave(), Found. \n"); 
-  return typeid(ImageC<ByteYUV422ValueC> ) ; 
+  if ( obj_type == typeid(ImageC<ByteYUV422ValueC>) )  // yuv images
+    	return typeid(ImageC<ByteYUV422ValueC>); 
+    else if ( obj_type == typeid(ImageC<ByteRGBValueC>) ) // rgb requested 
+    	return typeid(ImageC<ByteRGBValueC> ) ; 
+    else return typeid ( ImageC<ByteRGBValueC>) ; // default type
 }  
 
 
@@ -100,9 +108,10 @@ DPOPortBaseC FileFormatCSPBodyC::CreateOutput(OStreamC &out,const type_info &obj
     StringC fn = ExtractParams(filename);
     if(fn == "")
       fn = "PCI,card=0";
-    if(obj_type == typeid(ImageC<ByteYUV422ValueC>)) {
+    if(obj_type == typeid(ImageC<ByteYUV422ValueC>)) 
       return DPIImageClipStationProC<ByteYUV422ValueC>(fn);
-    }
+    else if ( obj_type == typeid(ImageC<ByteRGBValueC> )) 
+    	return DPIImageClipStationProC<ByteRGBValueC> (fn) ;  
     return DPIPortBaseC();
   }
   
@@ -122,7 +131,9 @@ DPOPortBaseC FileFormatCSPBodyC::CreateOutput(OStreamC &out,const type_info &obj
     if (fn == "")  
       fn = "PCI,card=0"; 
     if (obj_type == typeid(ImageC<ByteYUV422ValueC> )) 
-      return DPOImageClipStationProC<ByteYUV422ValueC> (fn) ; 
+      return DPOImageClipStationProC<ByteYUV422ValueC> (fn) ;
+    else if ( obj_type == typeid(ImageC<ByteRGBValueC> )) 
+      return DPOImageClipStationProC<ByteRGBValueC>  (fn) ; 
     return DPOPortBaseC(); 
   }
   

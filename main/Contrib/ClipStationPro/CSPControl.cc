@@ -13,7 +13,8 @@
 #include "Ravl/DList.hh"
 #include "Ravl/Hash.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"
-
+   #include "Ravl/Assert.hh"
+#include "Ravl/Assert.hh"
 #include <string.h>
 #include <stdlib.h>
 
@@ -36,20 +37,20 @@ namespace RavlImageN {
   //: A helper function to get a pointer to a body either by checking the hash table 
   //: or by creating a new instance
   //: ----------------------------------------------------------------------------------------------
-  ClipStationProDeviceBodyC * getCSPBody (const StringC & devName)
+  ClipStationProDeviceBodyC * getCSPBody (const StringC & devName, ColourModeT mode)
 {
   if (devices.IsElm( devName ) ) 
     return devices[devName] ; 
   else 
-    return new ClipStationProDeviceBodyC(devName) ; 
+    return new ClipStationProDeviceBodyC(devName, mode) ; 
 }
   
 
   
   // Handle Constructor
   //: ----------------------------------------------------------------------------------------------
-  ClipStationProDeviceC::ClipStationProDeviceC (const StringC & devName ) 
-    : RCHandleC<ClipStationProDeviceBodyC> ( getCSPBody(devName) )  
+  ClipStationProDeviceC::ClipStationProDeviceC (const StringC & devName, ColourModeT mode ) 
+    : RCHandleC<ClipStationProDeviceBodyC> ( getCSPBody(devName, mode) )  
 {}
   
   
@@ -70,7 +71,7 @@ namespace RavlImageN {
 
 //: Constructor 
 //: ----------------------------------------------------------------------------------------------
-ClipStationProDeviceBodyC::ClipStationProDeviceBodyC(const StringC &devName)
+ClipStationProDeviceBodyC::ClipStationProDeviceBodyC(const StringC &devName, ColourModeT mode)
   : deviceName(devName),
     dev(0),
     inputFifo(0),
@@ -84,7 +85,8 @@ ClipStationProDeviceBodyC::ClipStationProDeviceBodyC(const StringC &devName)
     captureVideo(true), // Capture video ?
     frameBufferSize(0), // 0 = use as much mem as available 
     timecode_from_getframe((int)0, 25.0), 
-    alignDMA (8) // 8 Byte alignment for SDStation Card 
+    alignDMA (8), // 8 Byte alignment for SDStation Card 
+    colourMode(mode) 
 {
   // register device in global hash
   if (devices.Insert(deviceName,this) ) {
@@ -257,69 +259,55 @@ bool ClipStationProDeviceBodyC::SetAttrOut(const StringC &attrName,const StringC
 
 
 
+//: Get a generic frame ( buffer of chars ) 
+//---------------------------------------------------------------------------------------------------------------------------------------
+DMABufferC<char> ClipStationProDeviceBodyC::GetFrameGeneric() const { 
 
-
-
-
-
-// this appears to be broken ! 
-/*
+ RWLockHoldC hold (rwLock,RWLOCK_WRITE) ; 
   
-  //: Get one frame of video.  
-  //: ----------------------------------------------------------------------------------------------
-  bool ClipStationProDeviceBodyC::GetFrame(void *buff,int x,int y) const{
-  RWLockHoldC hold (rwLock, RWLOCK_WRITE) ; 
-  int ret;
-  if(dev == 0)
-    return false;
+  // get the hardware buffer 
+  sv_fifo_buffer *svbuf ;
+  if (! CheckError (sv_fifo_getbuffer(dev,inputFifo,&svbuf,0,0), "Failed to get frame buffer :") )
+    return DMABufferC<char>();
+  
+  // make a ravl buffer 
+  int dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize;
+  cout << "\n dmaBufferSize = " << dmaBufferSize ; 
+  DMABufferC<char> buf = GetDMABufferGeneric() ; // this buffer gets deleted when finished with. 
+
+  // arrange transfer using dma
+  if(useDMA) {
+    svbuf->dma.addr = (char *)  buf.ReferenceElm();
+    svbuf->dma.size = dmaBufferSize; } 
+  // otherwise do it with memcpy
+  else {
+    memcpy(buf.ReferenceElm(),svbuf->video[0].addr,(svbuf->video[0].size + svbuf->video[1].size)); }
     
-  // not using fifo mode ! 
-  if(!fifoMode) {
-    ret = sv_sv2host(dev,(char *) buff,x*y * 2+ 1000,x,y,0,1,SV_TYPE_YUV422| SV_DATASIZE_8BIT); //
-    //ret = sv_record(dev,(char *) buff,x*y * 2,&x,&y,0,1,0);
-    ONDEBUG(cerr << "sv2host return:" << ret << "\n");
-    int mid = x*y;
-      for(int i = mid ;i < (mid + 100) ;i++)
-	cerr << (int) ((char *) buff)[i] << ' ';
-      return true;
-    }
+  // give buffer back to card 
+  if (! CheckError ( sv_fifo_putbuffer(dev,inputFifo,svbuf,0), "ERROR ClipStationProDeviceBodyC: Failed to put frame " ) )
+    return DMABufferC<char>();
 
-  // Fifo mode 
-  // ---------
-  sv_fifo_buffer svbuffer ; 
-  sv_fifo_buffer *svbuf = &svbuffer;
-    //sv_fifo_bufferinfo bufinfo;
-    if((ret = sv_fifo_getbuffer(dev,inputFifo,&svbuf,0,SV_FIFO_FLAG_VIDEOONLY)) != SV_OK) {
-      ONDEBUG(cerr << "Failed to get frame :" << ret << "\n");
-      return false;
-    }
-    cerr << "\nbuffer size is " << svbuf->video[0].size ; 
-    cerr << "\nbuffer address is " << (void*) svbuf->video[0].addr << endl ; 
-    cerr << "\n hmmmm "; 
-    while(1){}
 
-    if(svbuf->video[0].size <= (x * y * 2)) {
-      //RavlAssert(svbuf->video[0].addr != 0);
-      memcpy(buff,svbuf->video[0].addr,svbuf->video[0].size);
-    } else
-      cerr << "ERROR ClipStationProDeviceBodyC: Buffer too big. \n";
-    if((ret = sv_fifo_putbuffer(dev,inputFifo,svbuf,0)) != SV_OK) {
-      cerr << "ERROR ClipStationProDeviceBodyC: Failed to put frame :" << ret << "\n";
-      return false;
-    }
-    ONDEBUG(cerr << "GotFrame.\n");
-    return true;
-  }
-  #endif 
-*/
+  // store timecode in case it's requested by CSPGetAttr(...)
+  // this returns it backwards!: "ff:ss:mm:hh"
+  char str_backwards[16];
+  sv_tc2asc(dev, svbuf->timecode.vitc_tc, str_backwards, 16);
+
+  // convert to Ravl timecode object
+  timecode_from_getframe = TimeCodeC(atoi(&str_backwards[9]),
+				     atoi(&str_backwards[6]),
+				     atoi(&str_backwards[3]),
+				     atoi(&str_backwards[0]));
+    
+  return buf;
+}
 
 
 
-
-
-  //: Get one Frame of video.
+  //: Get one Frame of video. - old depricated, only works when card is in yuv modes
   //: ----------------------------------------------------------------------------------------------
 DMABufferC<ByteYUV422ValueC> ClipStationProDeviceBodyC::GetFrame() const {
+  RavlAlwaysAssertMsg ( colourMode == YUV, "Error GetFrame called for YUV, but card not in YUV mode") ;
   RWLockHoldC hold (rwLock,RWLOCK_WRITE) ; 
   
   // get the hardware buffer 
@@ -370,15 +358,35 @@ DMABufferC<ByteYUV422ValueC> ClipStationProDeviceBodyC::GetFrame() const {
 }
 
 
+bool ClipStationProDeviceBodyC::PutFrame( const DMABufferC<char> & buffer) const { 
+RWLockHoldC hold (rwLock, RWLOCK_WRITE) ;
+  if (useDMA) 
+    {
+      sv_fifo_buffer * bufferOutput = NULL ; 
+      //IntT dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize ; // how much data should we transfer  
+      CheckError( sv_fifo_getbuffer(dev, outputFifo, & bufferOutput, NULL, 0 ), "\n Error getting buffer "  ) ; 
+      bufferOutput->dma.addr = (char*) buffer.ReferenceElm() ; // arrange transfer 
+      bufferOutput->dma.size = buffer.Size() * sizeof(char)  ; 
+      CheckError( sv_fifo_putbuffer(dev, outputFifo, bufferOutput, 0 ), "\n Error: Failed to release buffer" ) ; // return buffer and do transfer 
+      return true;
+    }
+  else // NO DMA 
+    {
+      cerr << "non dma not supported " ; 
+      return true ; 
+    }
+}
+
 
 
 
   
-//: Put one frame of video onto the device output.  
+//: Put one frame of video onto the device output.   - old method uses yuv 
 //: ----------------------------------------------------------------------------------------------
 bool ClipStationProDeviceBodyC::PutFrame(const DMABufferC<ByteYUV422ValueC> & buffer) const{ 
   RWLockHoldC hold (rwLock, RWLOCK_WRITE) ;
   
+  RavlAlwaysAssertMsg ( colourMode == YUV, "Error PutFrame called for YUV, but card not in YUV mode") ;
   if (useDMA) 
     {
       sv_fifo_buffer * bufferOutput = NULL ; 
@@ -393,7 +401,7 @@ bool ClipStationProDeviceBodyC::PutFrame(const DMABufferC<ByteYUV422ValueC> & bu
     {
       cerr << "non dma not supported " ; 
       return true ; 
-    }
+    }	
 }
 
 
@@ -454,9 +462,16 @@ bool ClipStationProDeviceBodyC::Init() {
   RWLockHoldC hold (rwLock,RWLOCK_WRITE) ;
 
   //: Set PAL 
-  if( !CheckError( sv_videomode(dev,SV_MODE_PAL), " Failed to set mode to PAL. Error" ) )
-    return false;
-  
+  if ( colourMode == YUV ) {
+	  cerr << "\nYUV mode" ; 
+	  if( !CheckError( sv_videomode(dev,SV_MODE_PAL | SV_MODE_COLOR_YUV422 ), " Failed to set mode to PAL. Error" ) )
+    		return false; }
+  else if ( colourMode == RGB ) {
+  	cerr << "\nRGB mode" ; 
+   	  if( !CheckError( sv_videomode(dev,SV_MODE_PAL | SV_MODE_COLOR_RGB_RGB ), " Failed to set mode to PAL. Error" ) )
+    		return false; }
+  else CheckError(false, "Unknown video mode") ; 
+		
   //: Set SYNC - Should this be internal or external  ? 
   //if( !CheckError( sv_sync(dev,SV_SYNC_INTERNAL), "Failed to set sync" ) ) 
   //  return false;
@@ -476,6 +491,10 @@ bool ClipStationProDeviceBodyC::Init() {
   //: Preset Video 
   if( !CheckError( sv_preset(dev,SV_PRESET_VIDEO), "Failed to preset video. Error." )) 
     return false;
+    
+    //: Set the cards into ccir601 
+    if ( !CheckError( sv_matrix(dev,SV_MATRIX_CCIR601,0), "Failed to set rgb conversion matrixt to ccir601") ) 
+    return false ; 
     
 
   /*

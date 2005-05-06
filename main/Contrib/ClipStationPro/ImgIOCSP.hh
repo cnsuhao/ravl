@@ -20,6 +20,7 @@
 #include "Ravl/Image/ImageConv.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/IO.hh"
+#include "Ravl/CompositeBuffer.hh"
 namespace RavlImageN {
   
   //! userlevel=Develop
@@ -30,20 +31,17 @@ namespace RavlImageN {
   {
     
   public:
-    DPIImageClipStationProBodyC(const StringC &dev) 
-      : cspDevice ( dev) { cspDevice.BuildAttributesIn (*this) ; } 
+  
+  DPIImageClipStationProBodyC(const StringC &dev) ; 
     //: Constructor.
     //!param: dev   - The name of the hardware device eg. "PCI,card:0", "PCI,card:1" 
     // Multiple handles to the same device are allowed 
     
-
     ImageC<PixelT> Get(void) ; 
     //: Get next image.
-    
-    
+  
     bool Get(ImageC<PixelT> &buff) ; 
-    //: Get next image.
-    
+    //: Get next image.  
     
     inline bool IsGetReady(void) const
     { return true; }
@@ -126,12 +124,7 @@ namespace RavlImageN {
   };
   
 
-
-
-
-
-
-
+  
 
 
   //! userlevel=Develop
@@ -146,8 +139,7 @@ namespace RavlImageN {
     //: Constructor.
     //!param: dev   - The name of the hardware device eg. "PCI,card:0", "PCI,card:1"
 
-
-
+    
     bool Put( const ImageC<PixelT> & img) ; 
     //: Put an image on the card output 
     
@@ -224,13 +216,8 @@ namespace RavlImageN {
       if (cspDevice.SetAttrOut( attrName, val)) 
 	return true ; 
       return AttributeCtrlBodyC::SetAttr(attrName,attrValue) ; } 
-    //: Set an attribute Value 
-
-    
- 
-   
-   
-    
+    //: Set an attribute Value
+  
   protected: 
 
     ClipStationProDeviceC cspDevice ; // a handle to the csp device 
@@ -407,102 +394,60 @@ inline bool GetAttr(const StringC &attrName,StringC &attrValue)
     inline bool SetAttr(const StringC & attrName,const bool & attrValue)
       { return Body().SetAttr(attrName, attrValue) ; } 
     //: Set an attribute Value 
-
-    
- 
-   
-   
-
   };
 
 
   
+    
   //: Get next image.
+  //---------------------------------------------------------------------------------------------------------------------------------------
   template <class PixelT> 
   ImageC<PixelT> DPIImageClipStationProBodyC<PixelT>::DPIImageClipStationProBodyC::Get(void) {
-    BufferC<PixelT> buf = cspDevice.GetFrame();
-    if(!buf.IsValid())
-      return ImageC<PixelT>();
-    const ImageRectangleC & rect = cspDevice.Rectangle() ;   
-    ImageC<PixelT> img( (UIntT) rect.Rows(), rect.Cols(),buf);
-    return Deinterlace(img);
+  DMABufferC<char> buf = cspDevice.GetFrameGeneric();
+  if(!buf.IsValid())
+   	return ImageC<PixelT>();
+  const ImageRectangleC & rect = cspDevice.Rectangle() ;   
+  CompositeBufferC<PixelT> comp ( 1,rect.Rows() * rect.Cols(), (PixelT*) & buf.BufferAccess()[0]  ) ; 
+  comp.SetElement(0, buf.Abstract() ) ; 
+  ImageC<PixelT> img ( rect.Rows(), rect.Cols(), comp ) ; 
+  return Deinterlace(img);
   }
   
-
-  //: Get next image. 
+  //: Get next image - now uses char buffers 
+   //---------------------------------------------------------------------------------------------------------------------------------------
   template <class PixelT> 
   bool DPIImageClipStationProBodyC<PixelT>::DPIImageClipStationProBodyC::Get(ImageC<PixelT> &buff) {
-    BufferC<PixelT> buf = cspDevice.GetFrame();
-    if(!buf.IsValid())
-      return false;
-    const ImageRectangleC & rect = cspDevice.Rectangle() ; 
-    ImageC<PixelT> img((UIntT) rect.Rows(),(UIntT) rect.Cols(),buf);
-    buff = Deinterlace(img);
-    return true;
+  buff = Get() ; 
+  return true ; 
   }
   
-
   
+  //: Put next image 
+  //---------------------------------------------------------------------------------------------------------------------------------------
   template <class PixelT> 
   bool DPOImageClipStationProBodyC<PixelT>::DPOImageClipStationProBodyC::Put( const ImageC<PixelT> & image) 
-{
+  {
+  cerr << "\n in put() " << endl << "buffersize " << cspDevice.BufferSize() << "\t" << cspDevice.AlignDMA()  ; 
+  DMABufferC<char> buffer ( cspDevice.BufferSize() , cspDevice.AlignDMA()) ;
+  UIntT offset = 0 ;                                                   // offset into buffer 
+  UIntT field2 = (image.Rows() / 2) * image.Cols() * sizeof(PixelT) ; // offset in samples of the second field 
+  UIntT fieldCount = 1 ;
 
-/* 
-  // break const ! 
-  ImageC<PixelT> & image = const_cast<ImageC<PixelT> &> (imgz) ;
-  if (!image.IsValid() ) 
-    return false ;
- 
-  // this seems to struggle 
-  BufferC<PixelT>  buffer (image.Buffer2d().Size() , image.Buffer2d().ReferenceElm()->ReferenceElm() , false, false )  ; 
-  ImageC<PixelT> bufImg = ImageC<PixelT> ( image.Rows(), image.Cols(), buffer.ReferenceElm() , false ) ; 
   
-  
-  // lets do a test to compare the data in these two structures 
-  PixelT * pbuf = buffer.ReferenceElm() ; 
-  for ( Array2dIterC<PixelT> iter (bufImg) ; iter.IsElm() ; iter.Next() ) 
-    {
-      PixelT bufPix = * pbuf ;
-      PixelT imgPix = iter.Data() ; 
-     
-      cerr << "\n buf ptr:" << (void*) pbuf ;
-      cerr << "\t img ptr:" << (void*) & iter.Data() ; 
-      //cerr << "\nbuffPix " << bufPix << "\t imgPIx" << imgPix ; 
-      if ( bufPix != imgPix ) { cerr << "\n Buffer does not match " ; } 
-      ++pbuf ; 
-    }
-  exit(1) ;
-
-  //RavlN::Save ( "@X", RavlImageN::ByteYUV422ImageCT2ByteRGBImageCT(bufImg) ) ; 
-  cspDevice.PutFrame(buffer) ; 
-
-
-  */ 
-
-
-
-
-  // This works with proper dma alignment ! - but does a memcopy yuk  
-  DMABufferC<PixelT> buffer = cspDevice.GetDMABuffer() ; 
-  UIntT offset = 0 ; 
-  UIntT field2 = (image.Rows() / 2) * image.Cols() ; 
-   UIntT fieldCount = 1 ;
-   // now de-interlace and copy at the same time ! 
-   BufferAccess2dIterC<PixelT> iter2d (image, image.Range2() ) ; 
-   for (  ; iter2d.NextRow() ; ++fieldCount ) //iter2d.NextRow() ) 
-     {
-       RangeBufferAccessC<PixelT> rowAccess = iter2d.Row() ; 
-       memcpy ( buffer.ReferenceElm() + offset , rowAccess.DataStart(), rowAccess.Size()*sizeof(PixelT) ) ; 
-       if (!iter2d.NextRow() ) break ;
-       rowAccess = iter2d.Row() ; 
+  // an iterator over rows 
+  BufferAccess2dIterC<PixelT> iter2d ( image, image.Range2() ) ; 
+     for (  ; iter2d.NextRow() ; ++fieldCount ) //iter2d.NextRow() ) 
+  {
+         RangeBufferAccessC<PixelT> rowAccess = iter2d.Row() ; // access the first row of the image 
+         memcpy ( buffer.ReferenceElm() + offset , rowAccess.DataStart(), rowAccess.Size()*sizeof(PixelT) ) ; 
+	 if (!iter2d.NextRow() ) break ;
+	 rowAccess = iter2d.Row() ; 
        memcpy ( buffer.ReferenceElm() + offset + field2 , rowAccess.DataStart(), rowAccess.Size()*sizeof(PixelT) ) ; 
-       offset += rowAccess.Size() ; 
-     }
-  
-   ImageC<PixelT> bufImg = ImageC<PixelT> ( image.Rows(), image.Cols(), buffer.ReferenceElm() , false ) ;   
+       offset += rowAccess.Size() * sizeof(PixelT) ; 
+    } 
    cspDevice.PutFrame(buffer) ; 
-   return true ;
-}; 
+   return true ;	 
+  }
   
 
 };

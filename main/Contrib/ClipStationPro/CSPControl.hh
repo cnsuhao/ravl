@@ -39,13 +39,15 @@ namespace RavlImageN {
 
 
  enum CSPModeT { BLACK, COLOURBAR, LIVE, DELAY }  ; 
+
+ 
     //: some diagnostic modes 
     //:!param BLACK - Sets video raster to black 
     //:!param COLOURBAR - Sets video raster to generate colourbars 
     //:!param LIVE - Sets video raster to live mode (ouput mirros input) 
     //:!param DELAY - Sets video raster output to mirror video input but with a 1 frame delay 
 
-
+ enum ColourModeT { YUV, RGB } ; 
 
   //! userlevel=Develop
   //: Clip station pro control class body.
@@ -55,7 +57,7 @@ namespace RavlImageN {
   public:
 
   
-    ClipStationProDeviceBodyC(const StringC &devName);
+    ClipStationProDeviceBodyC(const StringC &devName, ColourModeT mode);
     //: Constructor.
     //:!param devName - The name of the device, typical form is "PCI,card:0", "PCI,card:1"
     
@@ -64,8 +66,18 @@ namespace RavlImageN {
     
     DMABufferC<ByteYUV422ValueC> GetFrame() const;
     //: Get one field of video.
+    
+    DMABufferC<char> GetFrameGeneric() const ; 
+    //: Get one frame of video . 
         
+    ColourModeT ColourMode ( void ) const { return colourMode ; }  
+    //: Queries to see what mode the card is in
+    
     bool  PutFrame (const DMABufferC<ByteYUV422ValueC> & buffer ) const ; 
+    //: Put one frame of video to the output of the card. 
+    //!depricated: 
+   
+    bool PutFrame (const DMABufferC<char> & buffer ) const ; 
     //: Put one frame of video to the output of the card. 
     
     bool BuildAttributesIn (AttributeCtrlBodyC & attrCtrl) ; 
@@ -90,14 +102,28 @@ namespace RavlImageN {
     //: Sets the mode of card
     // Usefull for test signals. 
     
-  
+    UIntT AlignDMA (void) const { return alignDMA ; } 
+    //: Access teh dma alignment  
+    
+    UIntT BufferSize(void) const { return fifo_config.vbuffersize + fifo_config.abuffersize; }
+    //: Access the buffer size for the current setup 
+    
     DMABufferC<ByteYUV422ValueC> GetDMABuffer(void) const 
       { 
 	IntT dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize;
 	return DMABufferC<ByteYUV422ValueC> (dmaBufferSize / sizeof(ByteYUV422ValueC), alignDMA) ; }
+    //!depricated: 
     //: A usefull method which returns a buffer suitable for DMA transfers 
     // The returned buffer has the correct size and dma alignment for the underlying hardware
 
+    DMABufferC<char> GetDMABufferGeneric(void) const 
+    {
+    IntT dmaBufferSize = fifo_config.vbuffersize + fifo_config.abuffersize ; 
+    return DMABufferC<char> (dmaBufferSize, alignDMA ) ; 
+    }
+      //: A usefull method which returns a buffer suitable for DMA transfers 
+    // The returned buffer has the correct size and dma alignment for the underlying hardware
+    // The space allocated by this buffer will 
     
     const ImageRectangleC & Rectangle(void) const 
       { return rect ; }
@@ -129,6 +155,7 @@ namespace RavlImageN {
     //: in event of an error, errorMessage is printed to output and false is returned  
 
 
+    
   protected:
     
     StringC deviceName ;               // The device name
@@ -154,6 +181,8 @@ namespace RavlImageN {
     mutable RWLockC rwLock ;                   // a resource lock 
 
     const UIntT alignDMA ; 
+    
+    ColourModeT colourMode ; 
 
 };
   
@@ -169,11 +198,13 @@ namespace RavlImageN {
     
   public: 
     
-    ClipStationProDeviceC ( const StringC &devName) ; 
+    ClipStationProDeviceC ( const StringC &devName, ColourModeT mode = YUV ) ; 
     // : RCHandleC<ClipStationProDeviceBodyC> ( new ClipStationProDeviceBodyC(devName) ) {}
     //: Constructor.
     //:!param devName - The name of the device, typical form is "PCI,card:0", "PCI,card:1"
    
+    ColourModeT ColourMode (void) const { return Body().ColourMode() ; } 
+    //: Access the colour mode 
     
     //inline bool GetFrame(void *buff,int x,int y)
     // { return Body().GetFrame( buff,x,y) ; } 
@@ -181,12 +212,24 @@ namespace RavlImageN {
     
     inline DMABufferC<ByteYUV422ValueC> GetFrame(void)
       { return Body().GetFrame() ; } 
+    //!depricated: 
     //: Get one frame of video.
+    
+    inline DMABufferC<char> GetFrameGeneric(void) 
+    { return Body().GetFrameGeneric() ; }
+    //: Get one frame of video from card
+   
     
     inline bool PutFrame(const DMABufferC<ByteYUV422ValueC> & buff) 
       { return Body().PutFrame(buff) ; } 
+      //!depricated: 
 //: Put one frame of video onto the output of the card
 //: This uses dma and is fast. 
+
+inline bool PutFrame( const DMABufferC<char> & buff )
+{ return Body().PutFrame(buff) ; } 
+//: Put one frame of video onto the output of the card. 
+
 
 //inline bool PutFrame(void *buff,int x,int y) 
 //{ return Body().PutFrame( buff,x,y) ; } 
@@ -217,14 +260,22 @@ inline bool SetAttrOut (const StringC & attrName, const StringC & attrValue)
 //: Sets the value for a given output attribute 
     
 
-inline bool SetMode (CSPModeT mode) 
-{ return Body().SetMode(mode) ; } 
-//: Sets the mode of card
-// Usefull for test signals. 
+UIntT AlignDMA (void) const { return Body().AlignDMA() ; } 
+//: Access teh DMA alignment 
+
+UIntT BufferSize(void) const { return Body().BufferSize() ; } 
+//: Access the buffer size 
 
 //template<PixelTypeT> 
 inline DMABufferC<ByteYUV422ValueC> GetDMABuffer(void) const 
 { return Body().GetDMABuffer() ; } 
+//!depricated: 
+//: A usefull method which returns a buffer suitable for DMA transfers 
+// The returned buffer has the correct size and dma alignment for the underlying hardware
+
+
+inline DMABufferC<char> GetDMABufferGeneric(void) const 
+{ return Body().GetDMABufferGeneric() ; } 
 //: A usefull method which returns a buffer suitable for DMA transfers 
 // The returned buffer has the correct size and dma alignment for the underlying hardware
 

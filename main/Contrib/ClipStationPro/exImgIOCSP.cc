@@ -34,21 +34,23 @@ int main (int argc, char ** argv )
 
   // open the device as a port for output - Save function can be used instead for single images  
   DPOPortC< ImageC<ByteYUV422ValueC> > output ; 
-  if ( ! OpenOSequence( output, device ) ) 
+  if ( ! OpenOSequence( output, device, "", true ) ) 
     { cerr << "failed to open device " << device << " for output" ; exit(1) ; } 
 
 
   // open the device as a port for input - Load function can be used instead for single images
   DPIPortC< ImageC<ByteYUV422ValueC> > input ; 
-  if ( !OpenISequence( input, device) )
+  if ( !OpenISequence( input, device, "", true) )
     { cerr << "failed to open device: " << device << " for input "  ; exit(1) ; }
 
-
+    
+/*
   cout << "\n\n Attributes are " ; 	
   DListC<AttributeTypeC> attrOut, attrIn ; 
   output.GetAttrTypes(attrOut) ; 
   input.GetAttrTypes(attrIn) ; 
   cout << "\n\n" << attrOut << "\n\n" << attrIn ; 
+*/
 
   //DListC<StringC> strOut, strIn ; 
   //output.GetAttrList(strOut) ; 
@@ -58,7 +60,8 @@ int main (int argc, char ** argv )
 	
   // This is how we set various diagnostic modes on the output 
   // ----------------------------------------------
-	 	
+  
+/*	 	
 	// colourbars 
   cout << "\n\n\n colourbars mode " ;	
   output.SetAttr("COLOURBAR","1") ;  
@@ -73,7 +76,7 @@ int main (int argc, char ** argv )
   cout << "\n\n\n Set raster to live mode " ; 
   output.SetAttr("LIVE", "1") ; 
   Sleep(5) ; 
-  
+  */
   
   // This is a small example of how to grab images, with timecodes if available,
   // Edit them and output them to the grabber card.
@@ -87,7 +90,9 @@ int main (int argc, char ** argv )
 	  TimeCodeC tc = input.GetAttr("timecode") ;    // grab the timecode 
 	  cout << "\n" << tc.ToText() ;                 // output the timecode 
 	  
-	  
+	  Save(
+	   "test.ppm", img) ; 
+	  /*
 	  // randomly perturb the position of the rectangle
 	  pos += Index2dC( Random1() * 10 - 5.0 , Random1()*10 - 5.0 ) ;
 	  if ( ! pos.IsInside( img.Rectangle() ) ) // move it back to center if it falls off the edge
@@ -97,6 +102,7 @@ int main (int argc, char ** argv )
 	  IndexRange2dC rect ( pos, 30 ) ; 
 	  DrawFrame ( img, colour, rect, true ) ; 
 	  output.Put(img) ; 				
+	*/
 	}
 
 // Notes 
