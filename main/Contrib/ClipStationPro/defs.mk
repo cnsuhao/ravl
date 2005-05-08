@@ -11,7 +11,7 @@ PACKAGE=Ravl/Image
 
 REQUIRES = libClipStationPro
 
-MAINS = testCSP.cc  testCSP2.cc
+#MAINS = testCSP.cc  testCSP2.cc
 
 EXAMPLES = exCSPControl.cc exImgIOCSP.cc
 
