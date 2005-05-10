@@ -21,7 +21,7 @@ namespace RavlImageN {
   {}
   
   AVFrameC ConvertDvFrame2AVFrame(const DVFrameC &dvf) {
-    DvDecodeC decoder(true);
+    DvDecodeC decoder;
     return decoder.Apply((ByteT *) &(const_cast<DVFrameC &>(dvf)[0]));
   }
 

@@ -19,7 +19,7 @@ namespace RavlImageN {
   DPIImageDvBodyC::DPIImageDvBodyC(const IStreamC &nStrm,const StringC &suffix)
     : DPImageDvBaseBodyC(suffix),
       strm(nStrm), 
-      dv(true)
+      dv(false)
   {
  
     //  tcGrab = TimeCodeC((long int)0);
