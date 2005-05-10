@@ -230,6 +230,11 @@ inline bool PutFrame( const DMABufferC<char> & buff )
 { return Body().PutFrame(buff) ; } 
 //: Put one frame of video onto the output of the card. 
 
+    
+inline bool SetMode (CSPModeT mode) 
+{ return Body().SetMode(mode) ; }  
+    //: Sets the mode of card
+    // Usefull for test signals. 
 
 //inline bool PutFrame(void *buff,int x,int y) 
 //{ return Body().PutFrame( buff,x,y) ; } 

@@ -12,11 +12,13 @@
 //! docentry="RavlImage/CSPControl.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/EntryPnt.hh"
+#include "Ravl/Image/CSPControl.hh"
+
 
 using namespace RavlN ; 
 using namespace RavlImageN ; 
 
-int mainFunc (void) 
+int mainFunc (int argc, char** argv) 
 {
 
 	// setup the device 
