@@ -9,6 +9,6 @@
 
 NESTED=V4L.r Meteor1.r HTTP.r ClipStationPro.r DMedia.r MPEG.r DVDRead.r DV.r \
  FireWire.r dc1394.r Audio.r Plotting AVIFile.r ParallelPortPPDev.r \
- V4L2.r Crypto.r IntelMKL.r Jasper.r Gnome.r
+ V4L2.r Crypto.r IntelMKL.r Jasper.r Gnome.r LibFFmpeg.r
 
 #EHT = Ravl.Contrib.html Ravl.Images.Video.Video_IO.html
