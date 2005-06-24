@@ -7,7 +7,7 @@
 #! rcsid="$Id$"
 #! file="Ravl/Contrib/LibFFmpeg/defs.mk"
 
-#REQUIRES = libffmpeg
+REQUIRES = libffmpeg
 
 ORGANISATION=Omniperception Ltd.
 
