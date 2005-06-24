@@ -93,17 +93,18 @@ namespace RavlImageN {
   //: Convert image to RGB colour space.
   
   jas_image_t *DPImageIOJasperBaseC::ConvertToRGB(jas_image_t *image) {   
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::ConvertToRGB, Called. \n");
     jas_image_t *newimage;
     jas_cmprof_t *outprof;
     if (!(outprof = jas_cmprof_createfromclrspc(JAS_CLRSPC_SRGB))) {
       jas_image_destroy(image);
-      cerr << "DPImageIOJasperBaseC::ConvertToRGB, Failed to create colour space conversion. \n";
+      cerr << "DPImageIOJasperBaseC::ConvertToRGB, Failed to create colour space conversion." << endl;
       return 0;
     }
     if (!(newimage = jas_image_chclrspc(image, outprof, JAS_CMXFORM_INTENT_PER))) {
       jas_image_destroy(image);
       jas_cmprof_destroy(outprof);
-      cerr << "DPImageIOJasperBaseC::ConvertToRGB, Colour space conversion failed. \n";
+      cerr << "DPImageIOJasperBaseC::ConvertToRGB, Colour space conversion failed." << endl;
       return 0;
     }
     jas_image_destroy(image);
@@ -123,7 +124,7 @@ namespace RavlImageN {
   // Returns false if failes.
   
   bool DPImageIOJasperBaseC::Jas2Ravl(jas_image_t *img,ImageC<ByteRGBValueC> &rimg) {
-    ONDEBUG(cerr << "DPImageIOJasperBaseC::Jas2Ravl, Called. \n");
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::Jas2Ravl, Called." << endl);
     // Check the colour space is correct.
     if(jas_image_clrspc(img) != JAS_CLRSPC_SRGB)
       img = ConvertToRGB(img);
@@ -216,6 +217,7 @@ namespace RavlImageN {
       jas_matrix_destroy(matrix[i]);
     
     rimg = anImg;
+    FreeImage(img);
     
     ONDEBUG(cerr << "DPImageIOJasperBaseC::Jas2Ravl, Done. \n");
     return true;
