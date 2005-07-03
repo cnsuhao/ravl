@@ -45,10 +45,21 @@ namespace RavlImageN {
   
   const type_info &
   FileFormatJasperBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
+#if 0
     ONDEBUG(cerr << "FileFormatJasperBodyC::ProbeLoad(), called. \n");
     // Can't probe from a stream at the moment.
     ONDEBUG(cerr << "FileFormatJasperBodyC::ProbeLoad(), Not readable by Jasper. \n");
-    return typeid(void); 
+    return typeid(void);
+#else
+    DPImageIOJasperBaseC jsp;
+    streampos pos = in.Tell(); 
+    // Check format
+    bool ok = jsp.OpenIStream(in) && jsp.CanReadImage();
+    // Reset stream position.
+    in.Seek(pos);
+    if(ok) return typeid(ImageC<ByteRGBValueC>);    
+    return typeid(void);
+#endif
   }
   
   const type_info &
@@ -96,15 +107,15 @@ namespace RavlImageN {
   // Will create an Invalid port if not supported.
   
   DPIPortBaseC FileFormatJasperBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const { 
-    //return DPIImageJasperByteRGBC(in);  // This doesn't work at the moment
-    return DPIPortBaseC();
+    //return ;  // This doesn't work at the moment
+    return DPIImageJasperByteRGBC(in);
   }
   
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
   DPOPortBaseC FileFormatJasperBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
-    return DPOPortBaseC();  
+    return DPOImageJasperByteRGBC(out,"jp2");
   }
   
   //: Get prefered IO type.

@@ -32,8 +32,24 @@ namespace RavlImageN {
     bool OpenRead(const StringC &filename);
     //: Open stream for reading
     
+    bool OpenReadMem(const SArray1dC<char> &data);
+    //: Open a memory buffer for reading.
+
+    bool OpenIStream(IStreamC &is);
+    //: Open a memory buffer for reading.
+    
     bool OpenWrite(const StringC &filename);
     //: Open stream for write
+
+    bool OpenWriteMem(void);
+    //: Open a memory buffer for reading.
+
+    bool OpenOStream(OStreamC &os);
+    //: Open a memory buffer for reading.
+    
+    bool WriteBuffer(SArray1dC<char> &data);
+    //: Access current write buffer.
+    // Returns false if one is not found.
     
     bool CanReadImage();
     //: Test if the current stream can be read.
@@ -71,12 +87,27 @@ namespace RavlImageN {
     { defaultFmt = fmt; }
     //: Setup default format.
     
+    void SetDefaultFmt(const StringC &fmtName);
+    //: Set format by name
+    
     void Close();
     //: Close the stream.
+
+    static int  str_read(jas_stream_obj_t *obj, char *buf, int cnt);
+    static int str_write(jas_stream_obj_t *obj, char *buf, int cnt);
+    static long str_seek(jas_stream_obj_t *obj, long offset, int origin);
+    static int str_close(jas_stream_obj_t *obj);
     
   protected:
     jas_stream_t *iostream;
     IntT defaultFmt;
+    SArray1dC<char> buff;
+    
+    
+    IStreamC istrm;
+    OStreamC ostrm;
+    bool useStrmI;
+    bool useStrmO;
   };
   
   
@@ -91,6 +122,14 @@ namespace RavlImageN {
     DPIImageJasperBodyC(const StringC &fn) 
     { OpenRead(fn); }
     //: Constructor from filename.
+
+    DPIImageJasperBodyC(const SArray1dC<char> &buffData)
+    { OpenReadMem(buffData); }
+    //: Constructor from buffer.
+    
+    DPIImageJasperBodyC(IStreamC &is) 
+    { OpenIStream(is); }
+    //: Constructor from IStream.
     
     virtual bool IsGetEOS() const
     { return IsOpen(); }
@@ -132,6 +171,12 @@ namespace RavlImageN {
     }
     //: Constructor from filename.
     
+    DPOImageJasperBodyC(OStreamC &os,const StringC &fmtName) { 
+      OpenOStream(os);
+      SetDefaultFmt(fmtName);
+    }
+    //: Constructor an output stream.
+    
     virtual bool Put(const ImageC<PixelT> &dat) {
       jas_image_t *img = Ravl2Jas(dat);
       if(img == 0) return false;
@@ -164,6 +209,11 @@ namespace RavlImageN {
     {}
     //: Constructor from filename.  
     
+    DPIImageJasperByteRGBC(IStreamC &is)
+      : DPEntityC(*new DPIImageJasperBodyC<ByteRGBValueC>(is))
+    {}
+    //: Constructor from filename.  
+    
   };
   
   //: Save an RGB image in JPEG format.
@@ -174,6 +224,11 @@ namespace RavlImageN {
   public:
     DPOImageJasperByteRGBC(const StringC &fn)
       : DPEntityC(*new DPOImageJasperBodyC<ByteRGBValueC>(fn))
+    {}
+    //: Constructor from filename. 
+    
+    DPOImageJasperByteRGBC(OStreamC &os,const StringC &fmtName)
+      : DPEntityC(*new DPOImageJasperBodyC<ByteRGBValueC>(os,fmtName))
     {}
     //: Constructor from filename. 
     

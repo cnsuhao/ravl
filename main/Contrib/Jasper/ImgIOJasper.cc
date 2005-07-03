@@ -24,7 +24,9 @@ namespace RavlImageN {
   
   DPImageIOJasperBaseC::DPImageIOJasperBaseC()
     : iostream(0),
-      defaultFmt(-1)
+      defaultFmt(-1),
+      useStrmI(false),
+      useStrmO(false)
   {
     if(!jasInitDone) {
       if(jas_init()) {
@@ -42,6 +44,7 @@ namespace RavlImageN {
   //: Close the stream.
   
   void DPImageIOJasperBaseC::Close() {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::Close, Called. \n");
     if(iostream != 0 && jas_stream_close(iostream)) {
       cerr << "DPImageIOJasperBaseC::~DPImageIOJasperBaseC, Warning: Failed to close stream. ";
     }
@@ -56,13 +59,50 @@ namespace RavlImageN {
     return iostream != 0;
   }
   
+  //: Open a memory buffer for reading.
+  
+  bool DPImageIOJasperBaseC::OpenReadMem(const SArray1dC<char> &data) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenRead, Opening memory buffer " << data.Size() << " \n");
+    if(data.Size() < 1)
+      return false;
+    iostream = jas_stream_memopen(const_cast<char *>(&(data[0])),data.Size());
+    return iostream != 0;    
+  }
+  
   //: Open stream for write
   
   bool DPImageIOJasperBaseC::OpenWrite(const StringC &filename) {
     iostream = jas_stream_fopen(filename,"wb");    
     return iostream != 0;    
   }
-
+  
+  //: Open a memory buffer for reading.
+  
+  bool DPImageIOJasperBaseC::OpenWriteMem(void) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenWriteMem, Opening memory buffer \n");
+    iostream = jas_stream_memopen(0,0);
+    return iostream != 0;
+  }
+  
+  //: Access current write buffer.
+  // Returns false if one is not found.
+  
+  bool DPImageIOJasperBaseC::WriteBuffer(SArray1dC<char> &data) {
+    if(iostream == 0)
+      return false;
+    // How much data is there ?
+    long len = jas_stream_length(iostream);
+    if(len < 1) return false; // Nothing to read!
+    data = SArray1dC<char>(len);
+    // Go to start of stream
+    if(jas_stream_seek(iostream,0,SEEK_SET) != 0)
+      return false;
+    // Read out data into user array.
+    if(jas_stream_read(iostream,&(data[0]),len) != len)
+      return false;
+    return true;
+  }
+  
   //: Test if the current stream can be read.
   
   bool DPImageIOJasperBaseC::CanReadImage() { 
@@ -233,6 +273,7 @@ namespace RavlImageN {
       return false;
     }
     jas_stream_flush(iostream);
+    
     return true;
   }
   
@@ -249,7 +290,7 @@ namespace RavlImageN {
     jas_image_coord_t width = img.Frame().Cols();
     jas_image_coord_t height = img.Frame().Rows();
     
-    cerr << " x=" << x << " y=" << y << " width=" << width << " height=" << height << "\n";
+    ONDEBUG(cerr << " x=" << x << " y=" << y << " width=" << width << " height=" << height << "\n");
     
     for(int i = 0;i < 3;i++) {
       cmptparms[i].tlx = x;
@@ -311,5 +352,177 @@ namespace RavlImageN {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::FindFormatByFilename, File='" <<filename << "' Fmt=" << fmt << "\n");
     return fmt;
   }
+  
+  //: Set format by name
+  
+  void DPImageIOJasperBaseC::SetDefaultFmt(const StringC &fmtName) {
+    jas_image_fmtinfo_t *fmtInfo = jas_image_lookupfmtbyname(const_cast<char *>(fmtName.chars()));
+    if(fmtInfo == 0) {
+      cerr << "DPImageIOJasperBaseC::SetDefaultFmt, Fmt " << fmtName << " unknown \n";
+      return ;
+    }
+    defaultFmt = fmtInfo->id;
+  }
+
+  static jas_stream_ops_t jas_stream_strmops = {
+    DPImageIOJasperBaseC::str_read,
+    DPImageIOJasperBaseC::str_write,
+    DPImageIOJasperBaseC::str_seek,
+    DPImageIOJasperBaseC::str_close
+  };
+  
+  static void jas_stream_initbuf(jas_stream_t *stream, int bufmode, char *buf,
+				 int bufsize)
+  {
+    /* If this function is being called, the buffer should not have been
+       initialized yet. */
+    assert(!stream->bufbase_);
+    
+    if (bufmode != JAS_STREAM_UNBUF) {
+      /* The full- or line-buffered mode is being employed. */
+      if (!buf) {
+	/* The caller has not specified a buffer to employ, so allocate
+	   one. */
+	if ((stream->bufbase_ = (unsigned char *) jas_malloc(JAS_STREAM_BUFSIZE +
+							     JAS_STREAM_MAXPUTBACK))) {
+	  stream->bufmode_ |= JAS_STREAM_FREEBUF;
+	  stream->bufsize_ = JAS_STREAM_BUFSIZE;
+	} else {
+	  /* The buffer allocation has failed.  Resort to unbuffered
+	     operation. */
+	  stream->bufbase_ = stream->tinybuf_;
+	  stream->bufsize_ = 1;
+	}
+      } else {
+	/* The caller has specified a buffer to employ. */
+	/* The buffer must be large enough to accommodate maximum
+	   putback. */
+	assert(bufsize > JAS_STREAM_MAXPUTBACK);
+	stream->bufbase_ = JAS_CAST(uchar *, buf);
+	stream->bufsize_ = bufsize - JAS_STREAM_MAXPUTBACK;
+      }
+    } else {
+      /* The unbuffered mode is being employed. */
+      /* A buffer should not have been supplied by the caller. */
+      assert(!buf);
+      /* Use a trivial one-character buffer. */
+      stream->bufbase_ = stream->tinybuf_;
+      stream->bufsize_ = 1;
+    }
+    stream->bufstart_ = &stream->bufbase_[JAS_STREAM_MAXPUTBACK];
+    stream->ptr_ = stream->bufstart_;
+    stream->cnt_ = 0;
+    stream->bufmode_ |= bufmode & JAS_STREAM_BUFMODEMASK;
+  }
+
+  
+  //: Open a memory buffer for reading.
+  
+  bool DPImageIOJasperBaseC::OpenOStream(OStreamC &os) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenOStream, Called\n");        
+    if (!(iostream = (jas_stream_t *) jas_malloc(sizeof(jas_stream_t)))) {
+      return false;
+    }
+    iostream->openmode_ = JAS_STREAM_READ | JAS_STREAM_WRITE | JAS_STREAM_BINARY;
+    iostream->bufmode_ = 0;
+    iostream->flags_ = 0;
+    iostream->bufbase_ = 0;
+    iostream->bufstart_ = 0;
+    iostream->bufsize_ = 0;
+    iostream->ptr_ = 0;
+    iostream->cnt_ = 0;
+    iostream->ops_ = &jas_stream_strmops;
+    iostream->obj_ = reinterpret_cast<jas_stream_obj_t *>(this);
+    iostream->rwcnt_ = 0;
+    iostream->rwlimit_ = -1;
+    
+    jas_stream_initbuf(iostream,JAS_STREAM_FULLBUF, 0, 0);
+    
+    ostrm = os;
+    useStrmO = true;
+    return true;
+  }
+  
+  //: Open a memory buffer for reading.
+  
+  bool DPImageIOJasperBaseC::OpenIStream(IStreamC &is) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenIStream, Called\n");    
+    if (!(iostream = (jas_stream_t *) jas_malloc(sizeof(jas_stream_t)))) {
+      return false;
+    }
+    iostream->openmode_ = JAS_STREAM_READ | JAS_STREAM_WRITE | JAS_STREAM_BINARY;
+    iostream->bufmode_ = 0;
+    iostream->flags_ = 0;
+    iostream->bufbase_ = 0;
+    iostream->bufstart_ = 0;
+    iostream->bufsize_ = 0;
+    iostream->ptr_ = 0;
+    iostream->cnt_ = 0;
+    iostream->ops_ = &jas_stream_strmops;
+    iostream->obj_ = reinterpret_cast<jas_stream_obj_t *>(this);
+    iostream->rwcnt_ = 0;
+    iostream->rwlimit_ = -1;
+    
+    jas_stream_initbuf(iostream,JAS_STREAM_FULLBUF, 0, 0);
+    
+    istrm = is;
+    useStrmI = true;
+    return true;
+  }
+  
+  int  DPImageIOJasperBaseC::str_read(jas_stream_obj_t *obj, char *buf, int cnt) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::str_read, Size=" << cnt << "\n");
+    DPImageIOJasperBaseC *jb = reinterpret_cast<DPImageIOJasperBaseC *>(obj);
+    jb->istrm.read(buf,cnt);
+    return jb->istrm.gcount();
+  }
+  
+  int DPImageIOJasperBaseC::str_write(jas_stream_obj_t *obj, char *buf, int cnt) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::str_write, Size=" << cnt << "\n");
+    DPImageIOJasperBaseC *jb = reinterpret_cast<DPImageIOJasperBaseC *>(obj);
+    jb->ostrm.write(buf,cnt);
+    if(!jb->ostrm)
+      return 0;
+    return cnt;
+  }
+  
+  long DPImageIOJasperBaseC::str_seek(jas_stream_obj_t *obj, long offset, int origin) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::str_seek, Called. Offset=" << offset << " Origin=" << origin << "\n");
+    DPImageIOJasperBaseC *jb = reinterpret_cast<DPImageIOJasperBaseC *>(obj);
+    if(!jb->useStrmO && !jb->useStrmI)
+      return 0;
+    long off = 0;
+    RavlAssert(origin != SEEK_END);
+    if(jb->useStrmO) {
+      if(origin == SEEK_CUR)
+	jb->ostrm.Seek(offset + jb->ostrm.Tell());
+      else if(origin == SEEK_SET)
+	jb->ostrm.Seek(offset);      
+      off = jb->ostrm.Tell();
+    }
+    if(jb->useStrmI) {
+      if(origin == SEEK_CUR)
+	jb->istrm.Seek(offset + jb->istrm.Tell());
+      else if(origin == SEEK_SET)
+	jb->istrm.Seek(offset);      
+      off = jb->istrm.Tell();
+    }
+    return off;
+  }
+  
+  int DPImageIOJasperBaseC::str_close(jas_stream_obj_t *obj) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::str_close, Called\n");
+    DPImageIOJasperBaseC *jb = reinterpret_cast<DPImageIOJasperBaseC *>(obj);
+    if(jb->useStrmO) {
+      jb->ostrm.Invalidate();
+      jb->useStrmO = false;
+    }
+    if(jb->useStrmI) {
+      jb->istrm.Invalidate();
+      jb->useStrmI = false;
+    }
+    return 0;
+  }
+  
   
 }
