@@ -389,9 +389,9 @@ namespace RavlN {
     ONDEBUG(cerr << "FFmpegPacketStreamBodyC::DSeek64 Delta=" << off << " \n");
     if(!haveSeek) {
       // Can we just dump frames ?
-      if(off > 0 && off < 100) {
+      if(off >= 0 && off < 100) {
         for(Int64T i = 0;i < off;i++)
-          Get();
+          Discard();
         return true;
       }
       // Nope we can't seek.
