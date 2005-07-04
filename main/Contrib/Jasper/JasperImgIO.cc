@@ -10,6 +10,7 @@
 
 namespace RavlImageN {
   extern void InitJasperFormat();
+  extern void InitJasperCompressConv();
   
   void JasperImgIO_Init() {
     InitJasperFormat();

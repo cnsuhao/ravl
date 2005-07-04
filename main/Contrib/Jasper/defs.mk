@@ -12,9 +12,9 @@ REQUIRES= LibJasper
 
 PACKAGE= Ravl/Image
 
-HEADERS= ImgIOJasper.hh JasperFormat.hh
+HEADERS= ImgIOJasper.hh JasperFormat.hh CompressedImageJ2k.hh
 
-SOURCES= ImgIOJasper.cc JasperFormat.cc
+SOURCES= ImgIOJasper.cc JasperFormat.cc CompressedImageJ2k.cc
 
 PLIB= RavlImgIOJasper
 
