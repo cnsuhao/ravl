@@ -14,5 +14,6 @@ namespace RavlImageN {
   
   void JasperImgIO_Init() {
     InitJasperFormat();
+    InitJasperCompressConv();
   }
 }

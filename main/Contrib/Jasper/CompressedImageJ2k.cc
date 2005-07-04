@@ -26,7 +26,7 @@ namespace RavlImageN {
   //: Read from standard stream
   
   istream &operator>>(istream &strm,CompressedImageJ2kC &data) {
-    UIntT size;
+    UIntT size = 0;
     strm >> size;
     SArray1dC<char> bdata(size);
     for(SArray1dIterC<char> it(data);it;it++) {
@@ -50,7 +50,7 @@ namespace RavlImageN {
   //: Read from standard stream
   
   BinIStreamC &operator>>(BinIStreamC &strm,CompressedImageJ2kC &data) {
-    UIntT size;
+    UIntT size = 0;
     strm >> size;
     SArray1dC<char> buff(size);
     if(size > 0)
@@ -99,6 +99,12 @@ namespace RavlImageN {
 
   static TypeNameC type1(typeid(CompressedImageJ2kC),"RavlImageN::CompressedImageJ2kC");
   
+  DP_REGISTER_CONVERSION_NAMED(RGBImage2CompressedImageJ2K ,0.9,
+			       "CompressedImageJ2kC RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
+  
+  DP_REGISTER_CONVERSION_NAMED(CompressedImageJ2K2RGBImage ,1,
+			       "ImageC<ByteRGBValueC> RavlImageN::Convert(const CompressedImageJ2kC &)");
+
   FileFormatStreamC<CompressedImageJ2kC> FileFormatStream_CompressedImageJ2kC;
   FileFormatBinStreamC<CompressedImageJ2kC> FileFormatBinStream_CompressedImageJ2kC;
 
