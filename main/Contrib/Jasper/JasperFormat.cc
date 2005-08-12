@@ -31,8 +31,9 @@ namespace RavlImageN {
   
   //: Constructor.
   
-  FileFormatJasperBodyC::FileFormatJasperBodyC(const StringC &id,const StringC &desc)
-    : FileFormatBodyC(id,desc)
+  FileFormatJasperBodyC::FileFormatJasperBodyC(const RealT i_compressionRate,const StringC &id,const StringC &desc)
+    : FileFormatBodyC(id,desc),
+      compressionRate(i_compressionRate)
   {}
   
   //: Try and choose best format for IO.
@@ -97,7 +98,7 @@ namespace RavlImageN {
   
   DPOPortBaseC FileFormatJasperBodyC::CreateOutput(const StringC &fn,const type_info &obj_type) const {
 #if USE_JASPERWRITE
-    return DPOImageJasperByteRGBC(fn);
+    return DPOImageJasperByteRGBC(fn,compressionRate);
 #else
     return DPOPortBaseC();  
 #endif
@@ -115,7 +116,7 @@ namespace RavlImageN {
   // Will create an Invalid port if not supported.
   
   DPOPortBaseC FileFormatJasperBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
-    return DPOImageJasperByteRGBC(out,"jp2");
+    return DPOImageJasperByteRGBC(out,"jp2",compressionRate);
   }
   
   //: Get prefered IO type.
@@ -125,9 +126,13 @@ namespace RavlImageN {
   }
 
 #if USE_JASPERWRITE
-  FileFormatJasperC RegisterFileFormatJasper("Jasper","Jasper file IO. ");
+  FileFormatJasperC RegisterFileFormatJasper(1.0,"Jasper","Jasper file IO. ");
+  FileFormatJasperC RegisterFileFormatJasperLossy1(1.0/7.0,"JasperLossy1","Jasper file IO. (Compression rate = 1:7)");
+  FileFormatJasperC RegisterFileFormatJasperLossy2(0.08,"JasperLossy2","Jasper file IO. (Compression rate = 2:25)");
 #else
-  FileFormatJasperC RegisterFileFormatJasper("Jasper","Jasper file IO. (only reading supported)");
+  FileFormatJasperC RegisterFileFormatJasper(1.0,"Jasper","Jasper file IO. (only reading supported)");
+  FileFormatJasperC RegisterFileFormatJasperLossy1(1.0/7.0,"JasperLossy1","Jasper file IO. (only reading supported).");
+  FileFormatJasperC RegisterFileFormatJasperLossy2(0.08,"JasperLossy2","Jasper file IO. (only reading supported).");
 #endif
   
 }

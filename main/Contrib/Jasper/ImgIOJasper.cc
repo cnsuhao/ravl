@@ -22,11 +22,13 @@ namespace RavlImageN {
   static bool jasInitDone = false;
   //: Jasper IO base class.
   
-  DPImageIOJasperBaseC::DPImageIOJasperBaseC()
+  DPImageIOJasperBaseC::DPImageIOJasperBaseC(const RealT i_compressionRate)
     : iostream(0),
       defaultFmt(-1),
       useStrmI(false),
-      useStrmO(false)
+      useStrmO(false),
+      compressionRate(i_compressionRate),
+      useCompressionRate(true)
   {
     if(!jasInitDone) {
       if(jas_init()) {
@@ -267,8 +269,12 @@ namespace RavlImageN {
   //: save an image to the current stream.
   
   bool DPImageIOJasperBaseC::SaveImage(jas_image_t *img) {
-    ONDEBUG(cerr << "DPImageIOJasperBaseC::SaveImage, Writting image. \n");
-    if(jas_image_encode(img,iostream, defaultFmt, 0)) {
+    ONDEBUG(cerr << "DPImageIOJasperBaseC::SaveImage, Writing image. \n");
+    StringC opts("");
+    if (useCompressionRate && compressionRate < 1.0) {
+      opts = StringC("rate=") + StringC(compressionRate);
+    }
+    if (jas_image_encode(img,iostream, defaultFmt, const_cast<char *>(opts.chars()))) {
       cerr << "DPImageIOJasperBaseC::SaveImage, Failed to encode image. \n";
       return false;
     }
@@ -362,6 +368,12 @@ namespace RavlImageN {
       return ;
     }
     defaultFmt = fmtInfo->id;
+    if (fmtName != "jp2" && fmtName != "jp2") {
+      // "Rate" only supported by jp2 and jpc
+      useCompressionRate = false;
+    } else {
+      useCompressionRate = true;
+    }
   }
 
   static jas_stream_ops_t jas_stream_strmops = {

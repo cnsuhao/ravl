@@ -26,7 +26,7 @@ namespace RavlImageN {
     : public FileFormatBodyC 
   {
   public:
-    FileFormatJasperBodyC(const StringC &id,const StringC &desc);
+    FileFormatJasperBodyC(const RealT compressionRate,const StringC &id,const StringC &desc);
     //: Constructor.
     
     const type_info &ChooseFormat(const type_info &obj_type) const;
@@ -69,7 +69,8 @@ namespace RavlImageN {
     // i.e. check if you can read/write more than object object.
     // png supports sequences.. but not with this software for now...
     
-  protected:
+  private:
+    const RealT compressionRate;
   };
   
   /////////////////////////////
@@ -78,8 +79,8 @@ namespace RavlImageN {
   
   class FileFormatJasperC : public FileFormatC<ImageC<ByteT> > {
   public:
-    FileFormatJasperC(const StringC &id,const StringC &desc)
-      : FileFormatC<ImageC<ByteT> >(*new FileFormatJasperBodyC(id,desc))
+    FileFormatJasperC(const RealT compressionRate,const StringC &id,const StringC &desc)
+      : FileFormatC<ImageC<ByteT> >(*new FileFormatJasperBodyC(compressionRate,id,desc))
       {}
   };
 }

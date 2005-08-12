@@ -25,7 +25,7 @@ int main(int nargs,char **argv) {
     return 1;
   }
   
-  if(!RavlN::Save(outfile,img)) {
+  if(!RavlN::Save(outfile,img,"JasperLossy1",false)) {
     cerr <<  "Failed to save image '" << outfile << "' \n";
     return 1;
   }

@@ -23,7 +23,7 @@ namespace RavlImageN {
   
   class DPImageIOJasperBaseC {
   public:
-    DPImageIOJasperBaseC();
+    DPImageIOJasperBaseC(const RealT compressionRate = 1.0);
     //: Default constructor.
     
     ~DPImageIOJasperBaseC();
@@ -108,6 +108,8 @@ namespace RavlImageN {
     OStreamC ostrm;
     bool useStrmI;
     bool useStrmO;
+    const RealT compressionRate;
+    bool useCompressionRate;
   };
   
   
@@ -165,13 +167,17 @@ namespace RavlImageN {
     public DPImageIOJasperBaseC
   {
   public:
-    DPOImageJasperBodyC(const StringC &fn) { 
+    DPOImageJasperBodyC(const StringC &fn,const RealT compressionRate = 1.0) :
+      DPImageIOJasperBaseC(compressionRate)
+    { 
       OpenWrite(fn); 
       SetDefaultFmt(DPImageIOJasperBaseC::FindFormatByFilename(fn));
     }
     //: Constructor from filename.
     
-    DPOImageJasperBodyC(OStreamC &os,const StringC &fmtName) { 
+    DPOImageJasperBodyC(OStreamC &os,const StringC &fmtName,const RealT compressionRate = 1.0) : 
+      DPImageIOJasperBaseC(compressionRate)
+    {
       OpenOStream(os);
       SetDefaultFmt(fmtName);
     }
@@ -222,13 +228,13 @@ namespace RavlImageN {
     : public DPOPortC<ImageC<ByteRGBValueC> >
   {
   public:
-    DPOImageJasperByteRGBC(const StringC &fn)
-      : DPEntityC(*new DPOImageJasperBodyC<ByteRGBValueC>(fn))
+    DPOImageJasperByteRGBC(const StringC &fn,const RealT compressionRate = 1.0)
+      : DPEntityC(*new DPOImageJasperBodyC<ByteRGBValueC>(fn,compressionRate))
     {}
     //: Constructor from filename. 
     
-    DPOImageJasperByteRGBC(OStreamC &os,const StringC &fmtName)
-      : DPEntityC(*new DPOImageJasperBodyC<ByteRGBValueC>(os,fmtName))
+    DPOImageJasperByteRGBC(OStreamC &os,const StringC &fmtName,const RealT compressionRate = 1.0)
+      : DPEntityC(*new DPOImageJasperBodyC<ByteRGBValueC>(os,fmtName,compressionRate))
     {}
     //: Constructor from filename. 
     
