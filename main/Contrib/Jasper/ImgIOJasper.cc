@@ -314,9 +314,9 @@ namespace RavlImageN {
     jas_image_t *jimg = jas_image_create(3,cmptparms,clrspc);
     
     Array2dIterC<ByteRGBValueC> it(img);
-    int r = 0;
+    int r = img.Frame().LCol().V();
     for(;it;) {
-      int c = 0;
+      int c = img.Frame().TRow().V();
       do {
         jas_matrix_set(matrix[0],r,c,it->Red());
         jas_matrix_set(matrix[1],r,c,it->Green());
