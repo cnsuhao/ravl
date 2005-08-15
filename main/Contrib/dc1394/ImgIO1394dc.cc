@@ -141,7 +141,6 @@ namespace RavlImageN {
       cerr << "unsupported format\n";
       return false;
     }
-
     MTWriteLockC hold(2);
     raw1394handle = dc1394_create_handle(0); //assume only one port=0
     if(raw1394handle == 0)
@@ -162,37 +161,12 @@ namespace RavlImageN {
     }
     cerr << numCameras << " camera(s) found\n";
     cerr << numNodes << " camera node(s) found\n";
-
+    
     if(cam_channel >= 100) // DMA
       camera.node = camera_nodes[cam_channel - 100];
     else
       camera.node = camera_nodes[cam_channel];
-
-    if(camera.node == numNodes-1)
-    {
-      cerr << "\n"
-              "Sorry, your camera is the highest numbered node\n"
-              "of the bus, and has therefore become the root node.\n"
-              "The root node is responsible for maintaining \n"
-              "the timing of isochronous transactions on the IEEE \n"
-              "1394 bus.  However, if the root node is not cycle master \n"
-              "capable (it doesn't have to be), then isochronous \n"
-              "transactions will not work.  The host controller card is \n"
-              "cycle master capable, however, most cameras are not.\n"
-              "\n"
-              "The quick solution is to add the parameter \n"
-              "attempt_root=1 when loading the OHCI driver as a \n"
-              "module.  So please do (as root):\n"
-              "\n"
-              "   rmmod ohci1394\n"
-              "   insmod ohci1394 attempt_root=1\n"
-              "\n"
-              "for more information see the FAQ at \n"
-              "http://linux1394.sourceforge.net/faq.html#DCbusmgmt\n"
-              "\n";
-      return false;
-    }
-
+    
     // Get some information about the camera....
     dc1394_camerainfo camerainfo;
     if(dc1394_get_camera_info(raw1394handle,camera.node,&camerainfo) < 0)
