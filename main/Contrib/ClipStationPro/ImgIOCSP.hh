@@ -413,7 +413,7 @@ inline bool GetAttr(const StringC &attrName,StringC &attrValue)
   CompositeBufferC<PixelT> comp ( 1,rect.Rows() * rect.Cols(), (PixelT*) & buf.BufferAccess()[0]  ) ; 
   comp.SetElement(0, buf.Abstract() ) ; 
   ImageC<PixelT> img ( rect.Rows(), rect.Cols(), comp ) ; 
-  return Deinterlace(img).Copy();
+  return Interlace(img).Copy();
   }
   
   //: Get next image - now uses char buffers 
