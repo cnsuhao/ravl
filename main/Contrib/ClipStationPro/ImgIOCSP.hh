@@ -403,14 +403,17 @@ inline bool GetAttr(const StringC &attrName,StringC &attrValue)
   //---------------------------------------------------------------------------------------------------------------------------------------
   template <class PixelT> 
   ImageC<PixelT> DPIImageClipStationProBodyC<PixelT>::DPIImageClipStationProBodyC::Get(void) {
+  //cerr << "\n in Get(void) " ; 
   DMABufferC<char> buf = cspDevice.GetFrameGeneric();
+
+  
   if(!buf.IsValid())
    	return ImageC<PixelT>();
   const ImageRectangleC & rect = cspDevice.Rectangle() ;   
   CompositeBufferC<PixelT> comp ( 1,rect.Rows() * rect.Cols(), (PixelT*) & buf.BufferAccess()[0]  ) ; 
   comp.SetElement(0, buf.Abstract() ) ; 
   ImageC<PixelT> img ( rect.Rows(), rect.Cols(), comp ) ; 
-  return Deinterlace(img);
+  return Deinterlace(img).Copy();
   }
   
   //: Get next image - now uses char buffers 
