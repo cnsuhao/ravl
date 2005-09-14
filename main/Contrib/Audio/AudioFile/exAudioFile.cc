@@ -7,7 +7,7 @@
 //! rcsid="$Id$"
 //! lib=RavlAudioFile
 //! author="Lee Gregory"
-//! docentry="Ravl.Audio.Audio IO"
+//! docentry="Ravl.Audio.IO"
 //! file="Ravl/Contrib/Audio/AudioFile/exAudioFile.cc"
 
 #include "Ravl/IO.hh"
