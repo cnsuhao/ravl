@@ -9,7 +9,7 @@
 //! file="Ravl/Contrib/ClipStationPro/exCSPControl.cc"
 //! userlevel=Normal
 //! author="Lee Gregory"
-//! docentry="RavlImage/CSPControl.hh"
+//! docentry="Ravl.Images.Video.Video IO.ClipStationPro"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/EntryPnt.hh"
 #include "Ravl/Image/CSPControl.hh"
