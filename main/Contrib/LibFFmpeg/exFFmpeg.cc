@@ -63,7 +63,7 @@ int main(int nargs, char **argv)
     in.Seek(in.Start()+1);
   
   // Delay in seconds
-  const RealT delay = 0.1;
+  // const RealT delay = 0.1;
   
   // Load the stream
   ImageC<ByteRGBValueC> rgb;
