@@ -12,12 +12,27 @@
 #include "Ravl/IO/URLStream.hh"
 #include "Ravl/StreamType.hh"
 #include "Ravl/Threads/LaunchThread.hh"
+#include "Ravl/BufStream.hh"
 
 #include <curl/curl.h>
 #include <curl/types.h>
 #include <curl/easy.h>
 
 #include <unistd.h>
+
+// If set to 1 a file buffer will be used for download, this can
+// cause problems with the current implementation as the URLStreamC
+// destructor may be called before the stream is finished with.
+
+#define URLISTREAM_USEFILEBUFFER 0
+
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 #ifndef CURLOPT_WRITEDATA
 #define CURLOPT_WRITEDATA CURLOPT_FILE
@@ -32,9 +47,10 @@ namespace RavlN {
      return size*nmemb;
    }
 
-  URLIStreamC::URLIStreamC(const StringC& url,bool buffered) :
-    m_strTemp("/tmp/ravldl")
+  URLIStreamC::URLIStreamC(const StringC& url,bool buffered) 
+    : m_strTemp("/tmp/ravldl")
   {
+#if URLISTREAM_USEFILEBUFFER
      // Create temporary file
      m_strTemp.MkTemp();
      OStreamC tmpstrm(m_strTemp);
@@ -56,10 +72,36 @@ namespace RavlN {
      }
      // Recreate IStream from the read pipe
      (*this).IStreamC::operator=(IStreamC(m_strTemp,true,buffered));
+#else
+     // Create temporary file
+     BufOStreamC tmpstrm;
+     // Fetch URL
+     CURL *curl = NULL;
+     ONDEBUG(cerr << "Retrieving URL: " << url);
+     // Initialise CURL
+     curl = curl_easy_init();
+     if(curl) {
+       // Set options
+       curl_easy_setopt(curl, CURLOPT_URL, url.chars());
+       curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
+       curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
+       curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+       curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+       // Get the URL
+       m_iError = curl_easy_perform(curl);
+       // Clean up
+       curl_easy_cleanup(curl);
+     }
+     ONDEBUG(cerr << "Building output stream. ");
+     // Recreate IStream from the read pipe
+     (*this).IStreamC::operator=(BufIStreamC(tmpstrm.Data()));
+#endif
    }
 
   URLIStreamC::~URLIStreamC() {
+#if URLISTREAM_USEFILEBUFFER
     m_strTemp.Remove();
+#endif
   }
 
   StringC URLIStreamC::ErrorString() const {
