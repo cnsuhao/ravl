@@ -11,7 +11,7 @@
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/Exception.hh"
 
-#define DODEBUG 0
+#define DODEBUG 1
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -93,14 +93,19 @@ namespace RavlN {
       codecId = pCodecCtx->codec_id;
       
       // !!!!!!!!! Format Specific Hacks !!!!!!!!!!!!!!!
-      
+
       StringC inputFormatName = pFormatCtx->iformat->name;
       ONDEBUG(cerr << "iformat=" << inputFormatName << "\n");
       
-      if(inputFormatName == "asf") {
+      StringC codecName;
+      if(pCodec->name != 0)
+        codecName = pCodec->name;
+      
+      ONDEBUG(cerr << "iformat=" << inputFormatName << " Codec=" << codecName << "\n");
+      if(inputFormatName == "asf" || inputFormatName == "mpeg" || codecName == "mpeg4") {
         haveSeek = false;
       }
-      
+
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       
       positionRefStream = videoStreamId;
