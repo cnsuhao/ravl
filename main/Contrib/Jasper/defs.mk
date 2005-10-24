@@ -28,4 +28,4 @@ AUXDIR=lib/RAVL/libdep
 
 AUXFILES=LibJasper.def
 
-TESTEXE=testImgIOJasper.cc
+TESTEXES=testImgIOJasper.cc

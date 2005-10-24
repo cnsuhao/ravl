@@ -31,4 +31,4 @@ PROGLIBS=  RavlOSIO
 
 EHT=Ravl.Contrib.Video_IO.IIDC.html
 
-EXAMPLE=test1394dc.cc 
+EXAMPLES=test1394dc.cc 
