@@ -42,11 +42,11 @@ namespace RavlN {
 
    void InitURLStreamIO() {}
 
-   size_t dataReady(void *ptr, size_t size, size_t nmemb, void *stream) {      
-     static_cast<OStreamC*>(stream)->write(static_cast<char*>(ptr),size*nmemb);
-     return size*nmemb;
-   }
-
+  static size_t dataReady(void *ptr, size_t size, size_t nmemb, void *stream) {      
+    static_cast<OStreamC*>(stream)->write(static_cast<char*>(ptr),size*nmemb);
+    return size*nmemb;
+  }
+  
   URLIStreamC::URLIStreamC(const StringC& url,bool buffered) 
     : m_strTemp("/tmp/ravldl")
   {
