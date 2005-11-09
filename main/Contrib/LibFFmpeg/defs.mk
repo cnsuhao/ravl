@@ -32,3 +32,6 @@ EXAMPLES = exFFmpeg.cc exFFmpegSeek.cc
 AUXDIR = lib/RAVL/libdep
 
 AUXFILES = LibFFmpeg.def
+
+EHT = LibFFmpeg.html
+
