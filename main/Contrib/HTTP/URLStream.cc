@@ -47,6 +47,39 @@ namespace RavlN {
     return size*nmemb;
   }
   
+
+  //: Retrieve file into a byte array.
+  
+  IntT URLRetrieve(const StringC &url,SArray1dC<char> &buf) {
+    // Create temporary memory buffer
+    BufOStreamC tmpstrm;
+    // Fetch URL
+    CURL *curl = NULL;
+    ONDEBUG(cerr << "Retrieving URL: " << url);
+    // Initialise CURL
+    curl = curl_easy_init();
+    if(curl == 0)
+      return 1;
+    
+    IntT errVal = 0;
+    // Set options
+    curl_easy_setopt(curl, CURLOPT_URL, url.chars());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+    // Get the URL
+    errVal = curl_easy_perform(curl);
+    // Clean up
+    curl_easy_cleanup(curl);
+    ONDEBUG(cerr << "Building output stream. ");
+    // Recreate IStream from the read pipe
+    buf = tmpstrm.Data();
+    
+    return errVal;
+  }
+  
+  
   URLIStreamC::URLIStreamC(const StringC& url,bool buffered) 
     : m_strTemp("/tmp/ravldl")
   {
@@ -73,28 +106,9 @@ namespace RavlN {
      // Recreate IStream from the read pipe
      (*this).IStreamC::operator=(IStreamC(m_strTemp,true,buffered));
 #else
-     // Create temporary file
-     BufOStreamC tmpstrm;
-     // Fetch URL
-     CURL *curl = NULL;
-     ONDEBUG(cerr << "Retrieving URL: " << url);
-     // Initialise CURL
-     curl = curl_easy_init();
-     if(curl) {
-       // Set options
-       curl_easy_setopt(curl, CURLOPT_URL, url.chars());
-       curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
-       curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
-       curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
-       curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
-       // Get the URL
-       m_iError = curl_easy_perform(curl);
-       // Clean up
-       curl_easy_cleanup(curl);
-     }
-     ONDEBUG(cerr << "Building output stream. ");
-     // Recreate IStream from the read pipe
-     (*this).IStreamC::operator=(BufIStreamC(tmpstrm.Data()));
+     SArray1dC<char> buf;
+     m_iError = URLRetrieve(url,buf);
+     (*this).IStreamC::operator=(BufIStreamC(buf));
 #endif
    }
 

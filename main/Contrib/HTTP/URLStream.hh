@@ -15,10 +15,19 @@
 //! date="30/10/2002"
 
 #include "Ravl/Stream.hh"
+#include "Ravl/SArray1d.hh"
 #include "Ravl/OS/Filename.hh"
 
 namespace RavlN {
-
+  
+  IntT URLRetrieve(const StringC &url,SArray1dC<char> &buf);
+  //: Retrieve file into a byte array.
+  //!param:url - URL to retrieve
+  //!param:buf - buffer to store data into.
+  //!return: Error code, 0 if all's well.
+  
+  //:-
+  
   ////////////////////////////
   //! userlevel=Normal
   //: Get a URL
