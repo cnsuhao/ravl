@@ -11,7 +11,8 @@
 #include "Ravl/Exception.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
+
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -64,7 +65,7 @@ namespace RavlN {
     }
     input = packetStream;
     videoStreamId = _videoStreamId;
-    cerr << "FFmpegVideoDecoderBaseC::Open, CodecId = " << codecId << "\n";
+    ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Open, CodecId = " << codecId << "\n");
     
     // Get a pointer to the codec context for the video stream
     
@@ -85,11 +86,13 @@ namespace RavlN {
     }
     
     ONDEBUG(cerr << "FFmpegVideoDecoderBaseC::Open codec found(" << (pCodec->name != NULL ? pCodec->name : "NULL") << ")" << endl);
-    
+
+/*
     // Inform the codec that we can handle truncated bitstreams
     // i.e. bitstreams where frame boundaries can fall in the middle of packets
     if (pCodec->capabilities & CODEC_CAP_TRUNCATED)
       pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
+*/
     bool ret = false;
     
     // Open codec

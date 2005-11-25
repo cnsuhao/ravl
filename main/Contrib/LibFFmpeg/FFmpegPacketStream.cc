@@ -11,7 +11,7 @@
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/Exception.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -151,11 +151,13 @@ namespace RavlN {
         continue;
       
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForVideo codec found(" << (pCodec->name != NULL ? pCodec->name : "NULL") << ")" << endl);
-      
+
+/*
       // Inform the codec that we can handle truncated bitstreams
       // i.e. bitstreams where frame boundaries can fall in the middle of packets
       if (pCodec->capabilities & CODEC_CAP_TRUNCATED)
         pCodecCtx->flags |= CODEC_FLAG_TRUNCATED;
+*/
       bool ret = false;
       
       // Open codec
