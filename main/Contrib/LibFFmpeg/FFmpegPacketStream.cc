@@ -401,6 +401,14 @@ namespace RavlN {
           Discard();
         return true;
       }
+      else
+      {
+        // are we just seeking to the beginning?
+        if (off + currentTimeStamp == Time2Frame(pFormatCtx->start_time))
+        {
+          return Seek64(off + currentTimeStamp);
+        }
+      }
       // Nope we can't seek.
       return false;
     }
@@ -417,7 +425,8 @@ namespace RavlN {
     if(pFormatCtx == 0)
       return false;
     ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Seek64 to " << off << " (Time:" << Frame2Time(off) << ")\n");
-    if(!haveSeek) {
+    // Stop if we don't have a stream index and this isn't a trivial seek
+    if(!(haveSeek || Time2Frame(pFormatCtx->start_time) == off)) {
       cerr << "FFmpegPacketStreamBodyC::Seek64, Format doesn't support seeking. \n";
       return false;
     }
