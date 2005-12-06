@@ -8,7 +8,7 @@
 #define RAVL_INTELFFT2d_HEADER 1
 ////////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
-//! docentry="Ravl.Math.Signals.2D"
+//! docentry="Ravl.API.Math.Signals.2D"
 //! lib=RavlIntelMKL
 //! file="Ravl/Contrib/IntelMKL/IntelFFT2d.hh"
 

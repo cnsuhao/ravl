@@ -10,7 +10,7 @@
 //! author="Kieron J Messer"
 //! date="24/9/2000"
 //! lib=RavlFireWire
-//! docentry="Ravl.Audio.IO"
+//! docentry="Ravl.API.Audio.IO"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/FireWire/WavFile.hh"
 

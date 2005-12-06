@@ -8,7 +8,7 @@
 //! rcsid="$Id$"
 //! lib=RavlDV
 //! file="Ravl/Contrib/DV/doDvDisplay.cc"
-//! docentry="Ravl.Images.Video.Video IO.DV"
+//! docentry="Ravl.API.Images.Video.Video IO.DV"
 //! userlevel=Normal
 
 #include "Ravl/Option.hh"

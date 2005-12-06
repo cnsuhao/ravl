@@ -9,7 +9,7 @@
 //! lib=RavlURLIO
 //! file="Ravl/Contrib/HTTP/exURL.cc"
 //! author="James Smith"
-//! docentry="Ravl.Core.IO.URL Handling"
+//! docentry="Ravl.API.Core.IO.URL Handling"
 //! userlevel=Normal
 
 #include "Ravl/IO/URLStream.hh"

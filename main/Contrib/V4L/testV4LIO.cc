@@ -8,7 +8,7 @@
 //! lib=RavlImgIOV4L
 //! file="Ravl/Contrib/V4L/testV4LIO.cc"
 //! author="Charles Galambos"
-//! docentry="Ravl.Images.Video.Video IO.Video4Linux"
+//! docentry="Ravl.API.Images.Video.Video IO.Video4Linux"
 //! userlevel=Develop
 
 #include "Ravl/DP/FileFormatIO.hh"

@@ -8,7 +8,7 @@
 #define RAVLIMAGE_AVIFILEFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="James Smith"
-//! docentry="Ravl.Images.Video.Video IO"
+//! docentry="Ravl.API.Images.Video.Video IO"
 //! date="19/01/2004"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/AVIFile/AVIFileFormat.hh"

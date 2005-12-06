@@ -9,7 +9,7 @@
 //! file="Ravl/Contrib/ClipStationPro/exImgIOCSP.cc"
 //! userlevel=Normal
 //! author="Lee Gregory"
-//! docentry="Ravl.Images.Video.Video IO.ClipStationPro"
+//! docentry="Ravl.API.Images.Video.Video IO.ClipStationPro"
 
 #include "Ravl/Image/ImgIOCSP.hh" 
 #include "Ravl/DP/SequenceIO.hh"

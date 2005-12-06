@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_AUDIOFILEIO_HEADER
 #define RAVL_AUDIOFILEIO_HEADER 1
-//! docentry="Ravl.Audio.IO.Audio File"
+//! docentry="Ravl.API.Audio.IO.Audio File"
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlAudioFile

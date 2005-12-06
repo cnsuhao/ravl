@@ -9,7 +9,7 @@
 //! rcsid="$Id$"
 //! lib=RavlDevAudio
 //! author="Charles Galambos"
-//! docentry="Ravl.Audio.IO.Unix"
+//! docentry="Ravl.API.Audio.IO.Unix"
 //! file="Ravl/Contrib/Audio/DevAudio/DevAudioIO.hh"
 
 #include "Ravl/DP/Port.hh"

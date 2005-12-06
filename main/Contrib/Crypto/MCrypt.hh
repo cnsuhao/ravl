@@ -11,7 +11,7 @@
 //! lib=RavlCrypto
 //! date="15/07/2004"
 //! file="Ravl/Contrib/Crypto/MCrypt.hh"
-//! docentry="Ravl.Core.Cryptography"
+//! docentry="Ravl.API.Core.Cryptography"
 //! userlevel=Normal
 
 #include <mcrypt.h>

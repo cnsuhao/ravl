@@ -8,7 +8,7 @@
 #define RAVL_MPEG2FORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Images.Video.Video IO.MPEG2"
+//! docentry="Ravl.API.Images.Video.Video IO.MPEG2"
 //! date="29/10/2003"
 //! rcsid="$Id$"
 //! author="Charles Galambos"

@@ -28,7 +28,7 @@ EXAMPLES = exMeteor.cc
 
 PLIB = RavlImgIOMeteor1
 
-EHT= Ravl.Images.Video.Video_IO.Meteor1.html
+EHT= Ravl.API.Images.Video.Video_IO.Meteor1.html
 
 USESLIBS = RavlImageIO
 

@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlImgIO1394dc
-//! docentry="Ravl.Images.Video.Video IO.IIDC"
+//! docentry="Ravl.API.Images.Video.Video IO.IIDC"
 //! userlevel=Normal
 //: Grabs from pair of IIDC cameras
 // Grabs images sequences from a pair of IIDC cameras and stores or displays them.

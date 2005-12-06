@@ -9,7 +9,7 @@
 //! rcsid="$Id$"
 //! lib=RavlMPEG2
 //! author="Charles Galambos"
-//! docentry="Ravl.Images.Video.Video IO.MPEG2"
+//! docentry="Ravl.API.Images.Video.Video IO.MPEG2"
 //! file="Ravl/Contrib/MPEG/mpeg2dec/ImgIOmpeg2dec.hh"
 
 #include "Ravl/Image/Image.hh"

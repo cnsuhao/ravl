@@ -8,7 +8,7 @@
 #define RAVL_METEOR1FORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Images.Video.Video IO.Meteor1"
+//! docentry="Ravl.API.Images.Video.Video IO.Meteor1"
 //! date="29/10/98"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/Meteor1/Meteor1Format.hh"

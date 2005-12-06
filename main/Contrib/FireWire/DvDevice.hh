@@ -10,7 +10,7 @@
 //! author="Kieron J Messer"
 //! date="23/9/2000"
 //! lib=RavlFireWire
-//! docentry="Ravl.Images.Video.Video IO.DV;Ravl.Applications.Video"
+//! docentry="Ravl.API.Images.Video.Video IO.DV;Ravl.Applications.Video"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/FireWire/DvDevice.hh"
 

@@ -13,7 +13,7 @@
 //! userlevel=Default
 //! author="Charles Galambos"
 //! date="22/11/1999"
-//! docentry="Ravl.Images.Video.Video IO.SGI DMedia"
+//! docentry="Ravl.API.Images.Video.Video IO.SGI DMedia"
 
 #include "Ravl/Buffer.hh"
 #include "Ravl/DMedia/Memory.hh"

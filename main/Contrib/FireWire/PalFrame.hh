@@ -10,7 +10,7 @@
 //! author="Kieron J Messer"
 //! date="24/9/2000"
 //! lib=RavlFireWire
-//! docentry="Ravl.Images.Video.Video IO.DV;Ravl.Audio.IO.Drivers.Linux1394"
+//! docentry="Ravl.API.Images.Video.Video IO.DV;Ravl.API.Audio.IO.Drivers.Linux1394"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/FireWire/PalFrame.hh"
   

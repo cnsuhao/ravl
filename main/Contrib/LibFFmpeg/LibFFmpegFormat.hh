@@ -8,7 +8,7 @@
 #define RAVL_LIBFFMPEGFORMAT_HEADER 1
 //////////////////////////////////////////////////////////////////
 //! author = "Warren Moore"
-//! docentry = "Ravl.Images.Video.Video IO.LibFFmpeg"
+//! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 //! date = "31/03/2005"
 //! rcsid = "$Id$"
 //! lib=RavlLibFFmpeg

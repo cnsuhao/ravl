@@ -8,7 +8,7 @@
 #define RAVL_LIB1394DCFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! docentry="Ravl.Images.Video.Video IO.IIDC"
+//! docentry="Ravl.API.Images.Video.Video IO.IIDC"
 //! date="20/8/2003"
 //! rcsid="$Id$"
 //! file="Ravl/Contrib/dc1394/Lib1394dcFormat.hh"

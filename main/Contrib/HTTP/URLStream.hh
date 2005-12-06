@@ -10,7 +10,7 @@
 //! rcsid="$Id$"
 //! lib=RavlURLIO
 //! author="James Smith"
-//! docentry="Ravl.Core.IO.URL Handling"
+//! docentry="Ravl.API.Core.IO.URL Handling"
 //! file="Ravl/Contrib/HTTP/URLStream.hh"
 //! date="30/10/2002"
 

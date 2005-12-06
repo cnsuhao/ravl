@@ -11,7 +11,7 @@
 //! file="Ravl/Image/ExternalImageIO/JasperFormat.hh"
 //! lib=RavlImgIOJasper
 //! author="Charles Galambos"
-//! docentry="Ravl.Images.IO.Formats"
+//! docentry="Ravl.API.Images.IO.Formats"
 //! date="29/10/2005"
 
 #include "Ravl/DP/FileFormat.hh"

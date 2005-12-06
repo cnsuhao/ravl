@@ -11,7 +11,7 @@
 //! file="Ravl/Contrib/AVIFile/AVIFileIO.hh"
 //! lib=RavlAVIFile
 //! example=testAVIFile.cc
-//! docentry="Ravl.Images.Video.Video IO"
+//! docentry="Ravl.API.Images.Video.Video IO"
 //! author="James Smith"
 //! date="19/01/2004"
 

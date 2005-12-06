@@ -13,7 +13,7 @@
 //! file="Ravl/Contrib/ParallelPortPPDev/Parport.hh"
 
 /////////////////////////////////////////////////////
-//! docentry="Ravl.OS.Hardware"
+//! docentry="Ravl.API.OS.Hardware"
 //! lib=PPDev
 //! userlevel=Normal
 //! author="Lee Gregory"

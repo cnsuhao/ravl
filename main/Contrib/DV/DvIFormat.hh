@@ -11,7 +11,7 @@
 //! file="Ravl/Contrib/DV/DvIFormat.hh"
 //! lib=RavlDV
 //! author="Kieron Messer"
-//! docentry="Ravl.Images.Video.Video IO.DV"
+//! docentry="Ravl.API.Images.Video.Video IO.DV"
 //! date="15/05/2002"
 
 #include "Ravl/DP/FileFormat.hh"

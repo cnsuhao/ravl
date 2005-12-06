@@ -8,7 +8,7 @@
 //! rcsid="$Id$"
 //! lib=RavlFireWire
 //! file="Ravl/Contrib/FireWire/doDvGrab.cc"
-//! docentry="Ravl.Images.Video.Video IO.DV;Ravl.Applications.Video"
+//! docentry="Ravl.API.Images.Video.Video IO.DV;Ravl.Applications.Video"
 //! userlevel=Normal
 
 //: Grabs video sequences + audio from a Sony DV VCR
