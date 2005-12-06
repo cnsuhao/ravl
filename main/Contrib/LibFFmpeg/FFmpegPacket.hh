@@ -8,6 +8,7 @@
 #define RAVL_FFMPEGPACKET_HEADEER 1
 //! rcsid="$Id$"
 //! lib=RavlLibFFmpeg
+//! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 
 #include "Ravl/RefCounter.hh"
 #include <ffmpeg/avformat.h>

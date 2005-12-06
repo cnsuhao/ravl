@@ -8,6 +8,7 @@
 #define RAVL_FFMPEG_AVFORMAT_HEADER 
 //! rcsid="$Id$"
 //! lib=RavlLibFFmpeg
+//! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/FFmpegPacket.hh"
