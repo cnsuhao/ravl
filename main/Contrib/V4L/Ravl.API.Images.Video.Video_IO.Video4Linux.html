@@ -6,7 +6,7 @@
   <body>
     <p>Requires library <code>RavlImgIOV4L</code></p>
     <hr>
-    <p> This adds two new <a href="Ravl.Core.IO.Virtual_Files.html">virtual files</a> '@V4L' and '@V4LH' which can be used
+    <p> This adds two new <a href="Ravl.API.Core.IO.Virtual_Files.html">virtual files</a> '@V4L' and '@V4LH' which can be used
       to access video for linux drivers.
     <p>
     <ul>
@@ -24,13 +24,13 @@
     
     <p>
 
-      The following code will grab a single image (See <a href="Ravl.Core.IO.html">Ravl.Core.IO</a>):
+      The following code will grab a single image (See <a href="Ravl.API.Core.IO.html">Ravl.API.Core.IO</a>):
     <pre>
       ImageC&lt;ByteYUVValueC&gt; x;
       Load("@V4L:/dev/video0#0", x);
     </pre>
 
-    or a seqence of images (See <a href="Ravl.OS.Sequence.html">Ravl.OS.Sequence</a>) :
+    or a seqence of images (See <a href="Ravl.API.OS.Sequence.html">Ravl.API.OS.Sequence</a>) :
 
     <pre>
     DPIPortC&lt;ImageC&lt;ByteYUVValueC&gt; &gt; in;
