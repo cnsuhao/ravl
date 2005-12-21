@@ -237,8 +237,8 @@ namespace RavlImageN {
   // This class provides a convenient user interface for access to the ClipStationPro capture cards. 
   // This interface provides attributes such as "timecode" and "FrameBufferSize" which can be accessed/modified through the 
   // GetAttr SetAttr methods. 
-  // See the data processing <a href="../Tree/Ravl.Core.Data_Processing.Attributes.html"> attribute handling mechanism. </a>  For more details. 
-  // Also see the <a href="../Tree/Ravl.Images.Video.html"> video section </a> for a list of common attributes. 
+  // See the data processing <a href="../Tree/Ravl.API.Core.Data_Processing.Attributes.html"> attribute handling mechanism. </a>  For more details. 
+  // Also see the <a href="../Tree/Ravl.API.Images.Video.html"> video section </a> for a list of common attributes. 
   // 
   
   template<class PixelT>
@@ -322,8 +322,8 @@ inline bool GetAttr(const StringC &attrName,StringC &attrValue)
   // This class provides a convenient user interface for access to the ClipStationPro capture cards. 
   // This interface provides attributes such as "timecode" and "FrameBufferSize" which can be accessed/modified through the 
   // GetAttr SetAttr methods. 
-  // See the data processing <a href="../Tree/Ravl.Core.Data_Processing.Attributes.html"> attribute handling mechanism. </a>  For more details. 
-  // Also see the <a href="../Tree/Ravl.Images.Video.html"> video section </a> for a list of common attributes. 
+  // See the data processing <a href="../Tree/Ravl.API.Core.Data_Processing.Attributes.html"> attribute handling mechanism. </a>  For more details. 
+  // Also see the <a href="../Tree/Ravl.API.Images.Video.html"> video section </a> for a list of common attributes. 
   // The card can be switched into different modes through the attribute mechanism 
   // LIVE 1 - sets card into live mode 
   // COLOURBARS 1 sets card into colour bar mode 

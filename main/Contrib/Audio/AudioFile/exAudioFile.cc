@@ -19,7 +19,7 @@ using namespace RavlN;
 using namespace RavlAudioN ; 
 
 // This example reads from a wav file and outputs to a sound device.
-// This example needs to be linked against RavlDevAudio.
+// This example needs to be linked against RavlDevAudio as well as RavlAudioFile.
 
 
 int main(int nargs,char **argv) {
