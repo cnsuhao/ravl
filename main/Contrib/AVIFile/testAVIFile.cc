@@ -9,6 +9,7 @@
 //! lib=RavlAVIFile
 //! author = "James Smith"
 //! file="Ravl/Contrib/AVIFile/testAVIFile.cc"
+//! docentry="Ravl.API.Images.Video.Video IO"
 
 #include "Ravl/Option.hh"
 #include "Ravl/EntryPnt.hh"
