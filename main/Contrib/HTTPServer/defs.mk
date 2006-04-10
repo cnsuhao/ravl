@@ -16,9 +16,9 @@ SOURCES = HTTPRequest.cc HTTPResponse.cc HTTPServer.cc EHS.cc
 
 PLIB = RavlEHS
 
-USESLIBS = 
+USESLIBS = EHS RavlThreads RavlOS RavlCore
 
-PROGLIBS = EHS RavlThreads RavlOS RavlCore
+PROGLIBS =
 
 TESTEXE = 
 
