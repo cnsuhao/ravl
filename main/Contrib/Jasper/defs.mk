@@ -8,21 +8,22 @@
 
 ORGANISATION=OmniPerception Ltd.
 
-REQUIRES= LibJasper
+REQUIRES=
 
-PACKAGE= Ravl/Image
+PACKAGE=Ravl/Image
 
-HEADERS= ImgIOJasper.hh JasperFormat.hh CompressedImageJ2k.hh
+HEADERS=ImgIOJasper.hh JasperFormat.hh CompressedImageJ2k.hh
 
-SOURCES= ImgIOJasper.cc JasperFormat.cc CompressedImageJ2k.cc
+SOURCES=ImgIOJasper.cc JasperFormat.cc CompressedImageJ2k.cc
 
-PLIB= RavlImgIOJasper
+MUSTLINK=JasperImgIO.cc
+
+
+PLIB=RavlImgIOJasper
 
 USESLIBS=RavlImage LibJasper RavlIO
 
 PROGLIBS=RavlDPDisplay
-
-MUSTLINK = JasperImgIO.cc
 
 AUXDIR=lib/RAVL/libdep
 
