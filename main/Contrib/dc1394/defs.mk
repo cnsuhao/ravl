@@ -11,6 +11,8 @@ PACKAGE=Ravl/Image
 
 REQUIRES=libdc1394
 
+DONOT_SUPPORT=VCPP
+
 MAINS= twocam.cc
 
 HEADERS= ImgIO1394dc.hh Lib1394dcFormat.hh

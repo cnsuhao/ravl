@@ -9,6 +9,8 @@
 
 REQUIRES = libmpeg2
 
+DONOT_SUPPORT=VCPP
+
 PACKAGE = Ravl/Image
 
 HEADERS = ImgIOMPEG2.hh LibMPEG2Format.hh MPEG2Demux.hh

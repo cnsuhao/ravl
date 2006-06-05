@@ -9,6 +9,8 @@
 
 PACKAGE=Ravl/Image
 
+DONOT_SUPPORT=VCPP
+
 REQUIRES = libClipStationPro
 
 #MAINS = testCSP.cc  testCSP2.cc

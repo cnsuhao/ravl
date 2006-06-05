@@ -20,7 +20,7 @@ USESLIBS = EHS RavlThreads RavlOS RavlCore
 
 PROGLIBS =
 
-TESTEXE = 
+TESTEXES = 
 
 AUXDIR = lib/RAVL/libdep
  

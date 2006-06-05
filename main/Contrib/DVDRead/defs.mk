@@ -8,6 +8,8 @@
 
 REQUIRES = dvdread libmpeg2
 
+DONOT_SUPPORT=VCPP
+
 PACKAGE = Ravl
 
 HEADERS = DVDRead.hh DVDFormat.hh ImgIOMPEG2DVD.hh

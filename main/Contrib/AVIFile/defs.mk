@@ -9,6 +9,8 @@
 
 REQUIRES=avifile
 
+DONOT_SUPPORT=VCPP
+
 PACKAGE=Ravl/Image
 
 HEADERS= AVIFileIO.hh AVIFileFormat.hh

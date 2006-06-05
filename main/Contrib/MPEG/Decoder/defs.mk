@@ -9,6 +9,8 @@
 
 PACKAGE = Ravl/Image
 
+DONOTSUPPORT=VCPP
+
 DESCRIPTION = MPEG video IO classes.
 
 HEADERS = ImgIMPEG.hh MPEGIFormat.hh

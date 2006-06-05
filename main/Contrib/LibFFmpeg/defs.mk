@@ -11,6 +11,8 @@ REQUIRES = libffmpeg
 
 ORGANISATION=Omniperception Ltd.
 
+DONOT_SUPPORT=VCPP
+
 PACKAGE = Ravl/Image
 
 HEADERS = ImgIOFFmpeg.hh LibFFmpegFormat.hh FFmpegPacket.hh FFmpegPacketStream.hh \
