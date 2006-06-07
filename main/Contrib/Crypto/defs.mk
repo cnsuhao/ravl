@@ -7,6 +7,8 @@
 #! rcsid="$Id"
 #! file="Ravl/Contrib/Crypto/defs.mk"
 
+DONOT_SUPPORT=VCPP
+
 PACKAGE=Ravl/Crypto
 
 USESLIBS=LibMCrypt RavlCore
