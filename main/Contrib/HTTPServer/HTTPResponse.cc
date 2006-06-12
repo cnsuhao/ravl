@@ -52,5 +52,14 @@ namespace RavlN
   
   
   
+  bool HTTPResponseC::AddHeader(const StringC &header, const StringC &value)
+  {
+    m_response->oResponseHeaders[header.chars()] = value.chars();
+    
+    return true;
+  }
+  
+  
+  
 }
 

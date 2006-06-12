@@ -43,6 +43,9 @@ namespace RavlN
     bool SetText(StringC &text);
     //: Set the response text
     
+    bool AddHeader(const StringC &header, const StringC &value);
+    //: Add an HTTP response header
+    
   protected:
     HttpResponse *m_response;
     //: EHS pimpl
