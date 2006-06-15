@@ -28,18 +28,38 @@ namespace RavlImageN
     GdImageC(const IntT x, const IntT y);
     //: Constructor
     
+    GdImageC(const GdImageC &copy);
+    //: Copy constructor
+    
+    GdImageC(ImageC<ByteRGBValueC> &image);
+    //: Construct and copy an image
+    // This creates the a Gd image of the same size as the supplied image, and copies the image
+    
     ~GdImageC();
     //: Destructor
     
     void Copy(ImageC<ByteRGBValueC> &image);
-    //: Copy and RGB iage into the current image
+    //: Paste an RGB image into the Gd image
     
     ImageC<ByteRGBValueC> GetImage();
     //: Get a copy of the image
+    // Creates a new iamge containing the contents of the Gd image
     
-    gdImagePtr Ptr()
+    gdImagePtr Ptr() const
     { return m_gdImagePtr; }
     //: Get the data pointer
+    // This returns the Gd image ptr to be used with native Gd functions
+    
+    IntT Rows() const
+    { return gdImageSY(m_gdImagePtr); }
+    //: Get the row size
+    
+    IntT Cols() const
+    { return gdImageSX(m_gdImagePtr); }
+    //: Get the col size
+    
+    GdImageC &operator=(const GdImageC &param);
+    //: Assignment operator
     
   private:
     gdImagePtr m_gdImagePtr;

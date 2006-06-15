@@ -25,10 +25,27 @@ namespace RavlImageN
     m_gdImagePtr = gdImageCreateTrueColor(x, y);
   }
   
+  GdImageC::GdImageC(const GdImageC &copy)
+  {
+    m_gdImagePtr = gdImageCreateTrueColor(copy.Cols(), copy.Rows());
+    gdImageCopy(m_gdImagePtr, copy.Ptr(), 0, 0, 0, 0, copy.Cols(), copy.Rows());
+  }
+  
+  GdImageC::GdImageC(ImageC<ByteRGBValueC> &image)
+  {
+    m_gdImagePtr = gdImageCreateTrueColor(image.Cols(), image.Rows());
+    Copy(image);
+  }
+  
+  GdImageC::~GdImageC()
+  {
+    gdImageDestroy(m_gdImagePtr);
+  }
+  
   void GdImageC::Copy(ImageC<ByteRGBValueC> &image)
   {
-    IntT xmax = (static_cast<IntT>(image.Cols()) < m_gdImagePtr->sx ? static_cast<IntT>(image.Cols()) : m_gdImagePtr->sx);
-    IntT ymax = (static_cast<IntT>(image.Rows()) < m_gdImagePtr->sy ? static_cast<IntT>(image.Rows()) : m_gdImagePtr->sy);
+    IntT xmax = (static_cast<IntT>(image.Cols()) < gdImageSX(m_gdImagePtr) ? static_cast<IntT>(image.Cols()) : gdImageSX(m_gdImagePtr));
+    IntT ymax = (static_cast<IntT>(image.Rows()) < gdImageSY(m_gdImagePtr) ? static_cast<IntT>(image.Rows()) : gdImageSY(m_gdImagePtr));
     
     // Transform from RGB to BGRA
     for (IntT row = 0; row < ymax; row++)
@@ -47,14 +64,14 @@ namespace RavlImageN
   
   ImageC<ByteRGBValueC> GdImageC::GetImage()
   {
-    ImageC<ByteRGBValueC> image(m_gdImagePtr->sy, m_gdImagePtr->sx);
+    ImageC<ByteRGBValueC> image(gdImageSY(m_gdImagePtr), gdImageSX(m_gdImagePtr));
 
     // Transform from BGRA to RGB
-    for (IntT row = 0; row < m_gdImagePtr->sy; row++)
+    for (IntT row = 0; row < gdImageSY(m_gdImagePtr); row++)
     {
       char *srcPtr = reinterpret_cast<char*>(m_gdImagePtr->tpixels[row]);
       ByteRGBValueC *dstPtr = image.Row(row);
-      for (IntT col = 0; col < m_gdImagePtr->sx; col++)
+      for (IntT col = 0; col < gdImageSX(m_gdImagePtr); col++)
       {
         *dstPtr = ByteRGBValueC(srcPtr[2], srcPtr[1], srcPtr[0]);
         srcPtr += 4;
@@ -65,9 +82,13 @@ namespace RavlImageN
     return image;
   }
   
-  GdImageC::~GdImageC()
+  GdImageC &GdImageC::operator=(const GdImageC &param)
   {
     gdImageDestroy(m_gdImagePtr);
+    m_gdImagePtr = gdImageCreateTrueColor(param.Cols(), param.Rows());
+    gdImageCopy(m_gdImagePtr, param.Ptr(), 0, 0, 0, 0, param.Cols(), param.Rows());
+    
+    return *this;
   }
   
 }

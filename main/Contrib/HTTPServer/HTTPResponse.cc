@@ -51,12 +51,49 @@ namespace RavlN
   }
   
   
-  
-  bool HTTPResponseC::AddHeader(const StringC &header, const StringC &value)
+  bool HTTPResponseC::SetData(SArray1dC<char> &data)
   {
+    RavlAssertMsg(m_response, "HTTPResponseC::SetData no valid response");
+    
+    m_response->SetBody(data.DataStart(), data.Size());
+    
+    return true;
+  }
+  
+  
+  
+  StringC HTTPResponseC::GetText()
+  {
+    RavlAssertMsg(m_response, "HTTPResponseC::GetText no valid response");
+    
+    return StringC(m_response->GetBody());
+  }
+  
+  
+  
+  bool HTTPResponseC::SetHeader(const StringC &header, const StringC &value)
+  {
+    RavlAssertMsg(m_response, "HTTPResponseC::SetHeader no valid response");
+    
     m_response->oResponseHeaders[header.chars()] = value.chars();
     
     return true;
+  }
+  
+  
+  
+  bool HTTPResponseC::LookupHeader(const StringC &header,  StringC &value)
+  {
+    RavlAssertMsg(m_response, "HTTPResponseC::LookupHeader no valid response");
+    
+    std::map<std::string, std::string>::const_iterator it = m_response->oResponseHeaders.find(header.chars());
+    if (it != m_response->oResponseHeaders.end())
+    {
+      value = StringC(it->second.c_str());
+      return true;
+    }
+    
+    return false;
   }
   
   

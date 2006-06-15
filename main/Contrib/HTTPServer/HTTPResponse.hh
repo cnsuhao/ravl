@@ -13,6 +13,7 @@
 //! file = "Ravl/Contrib/EHS/HTTPResponse.hh"
 
 #include "Ravl/String.hh"
+#include "Ravl/SArray1d.hh"
 
 
 
@@ -43,8 +44,17 @@ namespace RavlN
     bool SetText(StringC &text);
     //: Set the response text
     
-    bool AddHeader(const StringC &header, const StringC &value);
-    //: Add an HTTP response header
+    bool SetData(SArray1dC<char> &data);
+    //: Set the response data
+    
+    StringC GetText();
+    //: Get the response text
+    
+    bool SetHeader(const StringC &header, const StringC &value);
+    //: Set an HTTP response header, such as 'content-type'
+    
+    bool LookupHeader(const StringC &header,  StringC &value);
+    //: Lookup an HTTP response header, such as 'content-type'
     
   protected:
     HttpResponse *m_response;
