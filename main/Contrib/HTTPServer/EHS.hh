@@ -24,7 +24,9 @@
 namespace RavlN
 {
   
-  
+  //! userlevel=Develop
+  //: Dervied class to overrite HandleRequest method in EHS.
+  // This class is not intended for direct use.
   
   class RavlEHSC :
     public EHS

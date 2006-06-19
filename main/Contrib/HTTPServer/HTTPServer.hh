@@ -15,8 +15,10 @@
 #include "Ravl/RefCounter.hh"
 #include "Ravl/String.hh"
 #include "Ravl/Threads/Signal3.hh"
+#include "Ravl/Threads/Mutex.hh"
 #include "Ravl/HTTPRequest.hh"
 #include "Ravl/HTTPResponse.hh"
+#include "Ravl/Hash.hh"
 
 namespace RavlN
 {
@@ -50,7 +52,7 @@ namespace RavlN
     public RCBodyC
   {
   public:
-    HTTPServerBodyC(UIntT port);
+    HTTPServerBodyC(UIntT port,UIntT threadPoolSize = 2);
     //: Constructor
     
     ~HTTPServerBodyC();
@@ -64,11 +66,23 @@ namespace RavlN
     
     Signal3C< HTTPRequestC, HTTPResponseC, HTTPResponseCodeT > &SigHandle()
     { return m_sigHandle; }
-    //: Get the signal handle
+    //: Get the default signal handle
+    
+    Signal3C< HTTPRequestC, HTTPResponseC, HTTPResponseCodeT > &SigHandlePath(const StringC &serverPath);
+    //: Get the signal handle for the given path.
+    // If the path doesn't exist a server will be created for that path.
+    
+    bool RemovePath(const StringC &serverPath);
+    //: Remove path from sever.
+    // Returns true if server found and removed
     
   protected:
     UIntT m_port;
+    UIntT m_threadPoolSize;
     RavlEHSC *m_ehs;
+    HashC<StringC,RavlEHSC *> m_ehsChildren; // Table of child servers.
+    MutexC m_accessMutex;
+    
     Signal3C< HTTPRequestC, HTTPResponseC, HTTPResponseCodeT > m_sigHandle;
   };
 
@@ -87,14 +101,9 @@ namespace RavlN
     {}
     //: Default constructor.
     // Creates an invalid handle.
-
-    HTTPServerC(bool) :
-       RCHandleC<HTTPServerBodyC>(*new HTTPServerBodyC(8080))
-    {}
-    //: Constructor.
-
-    HTTPServerC(UIntT port, bool threaded) :
-       RCHandleC<HTTPServerBodyC>(*new HTTPServerBodyC(port))
+    
+    HTTPServerC(UIntT port, UIntT threadPoolSize = 2) :
+      RCHandleC<HTTPServerBodyC>(*new HTTPServerBodyC(port,threadPoolSize))
     {}
     //: Constructor.
 
@@ -108,6 +117,17 @@ namespace RavlN
     Signal3C< HTTPRequestC, HTTPResponseC, HTTPResponseCodeT > &SigHandle()
     { return Body().SigHandle(); }
     //: Get the signal handle
+    
+    Signal3C< HTTPRequestC, HTTPResponseC, HTTPResponseCodeT > &SigHandlePath(const StringC &serverPath)
+    { return Body().SigHandlePath(serverPath); }
+    //: Get the signal handle for the given path.
+    // If the path doesn't exist a server will be created for that path.
+    
+    bool RemovePath(const StringC &serverPath)
+    { return Body().RemovePath(serverPath); }
+    //: Remove path from sever.
+    // Returns true if server found and removed
+
   };
   
   

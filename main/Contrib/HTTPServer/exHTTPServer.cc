@@ -32,6 +32,24 @@ bool OnHandle(HTTPRequestC &request, HTTPResponseC &response, HTTPResponseCodeT 
   return true;
 }
 
+bool OnHandleChild(HTTPRequestC &request, HTTPResponseC &response, HTTPResponseCodeT &retcode)
+{
+  // Create the response
+  StringC text("<html>\n<head>\n<title>\nRavl Child HTTPServer\n</title>\n</head>\n<body>\n<h1>\nRavl Child HTTPServer\n</h2>\n");
+  text += StringC("<table border='1'>\n<tr><td>\nRequest URI\n</td><td>\n");
+  text += request.URI();
+  text += StringC("</td></tr>\n</table></body>\n</html>");
+  
+  // Set the response
+  response.SetText(text);
+  
+  // Set the return code
+  retcode = EHTTPResponseCode_200_Ok;
+  
+  return true;
+}
+
+
 int main(int argc, char **argv)
 {
   // Process the options
@@ -43,6 +61,7 @@ int main(int argc, char **argv)
   cerr << "Starting server on port " << port << "." << endl;
   HTTPServerC server(port);
   Connect(server.SigHandle(), &OnHandle);
+  Connect(server.SigHandlePath("child"), &OnHandleChild);
   
   // Start the server
   bool ret = server.Start();

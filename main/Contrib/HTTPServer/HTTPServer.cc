@@ -12,6 +12,8 @@
 
 #include "Ravl/HTTPServer.hh"
 #include "Ravl/EHS.hh"
+#include "Ravl/HashIter.hh"
+#include "Ravl/Exception.hh"
 
 #define DODEBUG 0
 
@@ -25,22 +27,25 @@ namespace RavlN
 {
   
   
-  
-  static UIntT g_defThreadCount = 2;
-  
-  
-  
-  HTTPServerBodyC::HTTPServerBodyC(UIntT port) :
+  HTTPServerBodyC::HTTPServerBodyC(UIntT port,UIntT threadPoolSize) :
     m_port(port),
+    m_threadPoolSize(threadPoolSize),
     m_ehs(NULL),
     m_sigHandle(HTTPRequestC(), HTTPResponseC(), EHTTPResponseCode_Invalid)
   {
+    // Create the server
+    m_ehs = new RavlEHSC;
   }
   
   
   
   HTTPServerBodyC::~HTTPServerBodyC()
   {
+    // Delete child servers.
+    for(HashIterC<StringC,RavlEHSC *> it(m_ehsChildren);it;it++)
+      delete it.Data();
+    
+    // Delete master server.
     if (m_ehs)
       delete m_ehs;
   }
@@ -49,16 +54,14 @@ namespace RavlN
   
   bool HTTPServerBodyC::Start()
   {
-    RavlAssertMsg(m_ehs == NULL, "HTTPServerBodyC::Start existing server");
+    MutexLockC lock(m_accessMutex);
     
     // Build the parameters
     EHSServerParameters params;
     params["port"] = (IntT)m_port;
     params["mode"] = "threadpool";
-    params["threadcount"] = (IntT)g_defThreadCount;
+    params["threadcount"] = (IntT)m_threadPoolSize;
     
-    // Create the server
-    m_ehs = new RavlEHSC;
     Connect(m_ehs->SigHandle(), m_sigHandle);
 
     // Start the server
@@ -72,13 +75,47 @@ namespace RavlN
   bool HTTPServerBodyC::Stop()
   {
     RavlAssertMsg(m_ehs != NULL, "HTTPServerBodyC::Stop no server");
+    MutexLockC lock(m_accessMutex);
     
     m_ehs->StopServer();
     
     return true;
   }
   
+
+  Signal3C< HTTPRequestC, HTTPResponseC, HTTPResponseCodeT > &HTTPServerBodyC::SigHandlePath(const StringC &serverPath) {
+    MutexLockC lock(m_accessMutex);
+    RavlEHSC *childServer;
+    if(m_ehsChildren.Lookup(serverPath,childServer))
+      return childServer->SigHandle();
+    
+    childServer = new RavlEHSC;
+    
+    if(childServer == 0) {
+      // Out of memory, should
+      throw ExceptionOperationFailedC("Out of memory.");
+    }
+    
+    m_ehsChildren[serverPath] = childServer;
+    m_ehs->RegisterEHS(childServer,serverPath.chars());
+    childServer->SetParent (m_ehs,serverPath.chars());
+    
+    return childServer->SigHandle();
+  }
   
+  //: Remove path from sever.
+  // Returns true if server found and removed
+  
+  bool  HTTPServerBodyC::RemovePath(const StringC &serverPath) {
+    MutexLockC lock(m_accessMutex);
+    RavlEHSC *childServer;
+    if(!m_ehsChildren.Lookup(serverPath,childServer))
+      return false;
+    m_ehsChildren.Del(serverPath);
+    delete childServer;
+    return true;
+  }
+
   
 }
 
