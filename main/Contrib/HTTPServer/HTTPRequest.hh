@@ -13,6 +13,7 @@
 //! file = "Ravl/Contrib/EHS/HTTPRequest.hh"
 
 #include "Ravl/String.hh"
+#include "Ravl/Hash.hh"
 
 
 
@@ -61,6 +62,15 @@ namespace RavlN
     StringC OriginalURI();
     //: Get the original request URI
     
+    static void ParseURI(const StringC &uri, StringC &pageName, HashC<StringC, StringC> &args);
+    //: Parse the URI
+    // Sets the page name and arg hash e.g. /index.html?id=256&test
+    // pageName = index.html
+    // args {
+    //   "id" => "256"
+    //   "test" => ""
+    // }
+  
   protected:
     HttpRequest *m_request;
     //: EHS pimpl

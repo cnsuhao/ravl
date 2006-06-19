@@ -20,18 +20,21 @@
 namespace RavlImageN
 {
 
-  GdImageC::GdImageC(const IntT x, const IntT y)
+  GdImageC::GdImageC(const IntT x, const IntT y) :
+    m_gdImagePtr(NULL)
   {
     m_gdImagePtr = gdImageCreateTrueColor(x, y);
   }
   
-  GdImageC::GdImageC(const GdImageC &copy)
+  GdImageC::GdImageC(const GdImageC &copy) :
+    m_gdImagePtr(NULL)
   {
     m_gdImagePtr = gdImageCreateTrueColor(copy.Cols(), copy.Rows());
     gdImageCopy(m_gdImagePtr, copy.Ptr(), 0, 0, 0, 0, copy.Cols(), copy.Rows());
   }
   
-  GdImageC::GdImageC(ImageC<ByteRGBValueC> &image)
+  GdImageC::GdImageC(ImageC<ByteRGBValueC> &image) :
+    m_gdImagePtr(NULL)
   {
     m_gdImagePtr = gdImageCreateTrueColor(image.Cols(), image.Rows());
     Copy(image);
@@ -39,11 +42,15 @@ namespace RavlImageN
   
   GdImageC::~GdImageC()
   {
-    gdImageDestroy(m_gdImagePtr);
+    if (m_gdImagePtr)
+      gdImageDestroy(m_gdImagePtr);
   }
   
   void GdImageC::Copy(ImageC<ByteRGBValueC> &image)
   {
+    if (!m_gdImagePtr)
+      return;
+    
     IntT xmax = (static_cast<IntT>(image.Cols()) < gdImageSX(m_gdImagePtr) ? static_cast<IntT>(image.Cols()) : gdImageSX(m_gdImagePtr));
     IntT ymax = (static_cast<IntT>(image.Rows()) < gdImageSY(m_gdImagePtr) ? static_cast<IntT>(image.Rows()) : gdImageSY(m_gdImagePtr));
     
@@ -64,6 +71,9 @@ namespace RavlImageN
   
   ImageC<ByteRGBValueC> GdImageC::GetImage()
   {
+    if (!m_gdImagePtr)
+      return ImageC<ByteRGBValueC>();
+    
     ImageC<ByteRGBValueC> image(gdImageSY(m_gdImagePtr), gdImageSX(m_gdImagePtr));
 
     // Transform from BGRA to RGB
@@ -84,7 +94,8 @@ namespace RavlImageN
   
   GdImageC &GdImageC::operator=(const GdImageC &param)
   {
-    gdImageDestroy(m_gdImagePtr);
+    if (m_gdImagePtr)
+      gdImageDestroy(m_gdImagePtr);
     m_gdImagePtr = gdImageCreateTrueColor(param.Cols(), param.Rows());
     gdImageCopy(m_gdImagePtr, param.Ptr(), 0, 0, 0, 0, param.Cols(), param.Rows());
     

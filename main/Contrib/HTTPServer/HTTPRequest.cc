@@ -12,6 +12,7 @@
 
 #include "Ravl/HTTPRequest.hh"
 #include "Ravl/Assert.hh"
+#include "Ravl/StringList.hh"
 
 #include <iostream>
 #include <string>
@@ -84,5 +85,39 @@ namespace RavlN
   
   
   
+  void HTTPRequestC::ParseURI(const StringC &uri, StringC &pageName, HashC<StringC, StringC> &args)
+  {
+    // Process the request - separate into page and args
+    pageName = uri;
+    while (pageName.contains('/'))
+    {
+      pageName = pageName.after('/');
+    }
+    StringC argStr;
+    if (pageName.contains('?'))
+    {
+      StringC tempPage = pageName;
+      pageName = tempPage.before('?');
+      argStr = tempPage.after('?'); 
+    }
+    StringListC argList(argStr, "&");
+    for (DLIterC<StringC> it(argList); it; it++)
+    {
+      StringC arg, val;
+      if (it->contains('='))
+      {
+        arg = it->before('=');
+        val = it->after('=');
+      }
+      else
+      {
+        arg = *it;
+      }
+      args.Update(arg, val);
+    }
+  }
+
+
+
 }
 
