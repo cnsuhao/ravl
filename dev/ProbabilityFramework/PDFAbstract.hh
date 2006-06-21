@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/ProbabilityDistribution.hh"
+#include "Ravl/Prob/ProbabilityDistribution.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

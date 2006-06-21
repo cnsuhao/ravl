@@ -8,7 +8,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/Domain.hh"
+#include "Ravl/Prob/Domain.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 

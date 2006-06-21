@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Omni/Prob/PDFContinuousDesigner.hh"
+#include "Ravl/Prob/PDFContinuousDesigner.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

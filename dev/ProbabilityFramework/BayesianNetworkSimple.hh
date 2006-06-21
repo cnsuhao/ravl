@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/BayesianNetworkAbstract.hh"
+#include "Ravl/Prob/BayesianNetworkAbstract.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

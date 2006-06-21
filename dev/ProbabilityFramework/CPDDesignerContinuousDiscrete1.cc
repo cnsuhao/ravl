@@ -8,9 +8,9 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/CPDDesignerContinuousDiscrete1.hh"
-#include "Omni/Prob/CPDContinuousDiscrete1.hh"
-#include "Omni/Prob/PDFDesignerFactory.hh"
+#include "Ravl/Prob/CPDDesignerContinuousDiscrete1.hh"
+#include "Ravl/Prob/CPDContinuousDiscrete1.hh"
+#include "Ravl/Prob/PDFDesignerFactory.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

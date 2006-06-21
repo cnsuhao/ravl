@@ -8,7 +8,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/RandomVariableContinuous.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 

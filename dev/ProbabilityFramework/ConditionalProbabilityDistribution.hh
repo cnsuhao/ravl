@@ -11,8 +11,8 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Omni/Prob/Proposition.hh"
-#include "Omni/Prob/ProbabilityDistribution.hh"
+#include "Ravl/Prob/Proposition.hh"
+#include "Ravl/Prob/ProbabilityDistribution.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Omni/Prob/PDFContinuousAbstract.hh"
+#include "Ravl/Prob/PDFContinuousAbstract.hh"
 #include "Ravl/DList.hh"
 
 namespace RavlProbN {

@@ -12,7 +12,7 @@
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/HSet.hh"
-#include "Omni/Prob/RandomVariable.hh"
+#include "Ravl/Prob/RandomVariable.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

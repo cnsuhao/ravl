@@ -8,7 +8,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/CPDDiscreteDiscrete.hh"
+#include "Ravl/Prob/CPDDiscreteDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

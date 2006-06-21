@@ -8,8 +8,8 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/BayesianNetworkSimple.hh"
-#include "Omni/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/BayesianNetworkSimple.hh"
+#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

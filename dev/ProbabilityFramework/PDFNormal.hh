@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFContinuousAbstract.hh"
+#include "Ravl/Prob/PDFContinuousAbstract.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

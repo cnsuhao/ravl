@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Omni/Prob/RandomVariable.hh"
+#include "Ravl/Prob/RandomVariable.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

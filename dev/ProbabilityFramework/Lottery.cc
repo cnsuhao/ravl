@@ -8,7 +8,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/Lottery.hh"
+#include "Ravl/Prob/Lottery.hh"
 #include "Ravl/HashIter.hh"
 
 namespace RavlProbN {

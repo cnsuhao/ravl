@@ -10,9 +10,9 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFAbstract.hh"
-#include "Omni/Prob/RandomVariableContinuous.hh"
-#include "Omni/Prob/RandomVariableValueContinuous.hh"
+#include "Ravl/Prob/PDFAbstract.hh"
+#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/RandomVariableValueContinuous.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

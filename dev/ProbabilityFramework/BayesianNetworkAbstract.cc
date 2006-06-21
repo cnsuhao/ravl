@@ -8,10 +8,10 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/BayesianNetworkAbstract.hh"
+#include "Ravl/Prob/BayesianNetworkAbstract.hh"
 #include "Ravl/OS/SysLog.hh"
-#include "Omni/Prob/RandomVariableValueDiscrete.hh"
-#include "Omni/Prob/PDFDiscrete.hh"
+#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/PDFDiscrete.hh"
 
 #define DODEBUG 1
 #if DODEBUG

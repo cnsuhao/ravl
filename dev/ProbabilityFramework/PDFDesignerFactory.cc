@@ -8,10 +8,10 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFDesignerFactory.hh"
+#include "Ravl/Prob/PDFDesignerFactory.hh"
 #include "Ravl/OS/SysLog.hh"
-#include "Omni/Prob/PDFContinuousDesignerNormal.hh"
-#include "Omni/Prob/PDFContinuousDesignerUniform.hh"
+#include "Ravl/Prob/PDFContinuousDesignerNormal.hh"
+#include "Ravl/Prob/PDFContinuousDesignerUniform.hh"
 
 #define DODEBUG 0
 #if DODEBUG

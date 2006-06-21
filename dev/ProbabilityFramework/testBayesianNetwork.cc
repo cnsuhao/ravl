@@ -4,12 +4,12 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#include "Omni/Prob/BayesianNetworkSimple.hh"
-#include "Omni/Prob/RandomVariableValueBoolean.hh"
-#include "Omni/Prob/PDFDiscrete.hh"
-#include "Omni/Prob/PDFBoolean.hh"
-#include "Omni/Prob/CPDPriorPDF.hh"
-#include "Omni/Prob/CPDDiscreteDiscrete.hh"
+#include "Ravl/Prob/BayesianNetworkSimple.hh"
+#include "Ravl/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/PDFDiscrete.hh"
+#include "Ravl/Prob/PDFBoolean.hh"
+#include "Ravl/Prob/CPDPriorPDF.hh"
+#include "Ravl/Prob/CPDDiscreteDiscrete.hh"
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"

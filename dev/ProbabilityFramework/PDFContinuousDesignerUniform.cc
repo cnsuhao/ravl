@@ -8,8 +8,8 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFContinuousDesignerUniform.hh"
-#include "Omni/Prob/PDFUniform.hh"
+#include "Ravl/Prob/PDFContinuousDesignerUniform.hh"
+#include "Ravl/Prob/PDFUniform.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

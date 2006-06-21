@@ -15,7 +15,7 @@ DESCRIPTION=Pattern recognition software
 
 DONOT_SUPPORT=arm mingw VCPP
 
-PACKAGE=Omni/Prob
+PACKAGE=Ravl/Prob
 
 HEADERS= BayesianNetwork.hh \
          BayesianNetworkAbstract.hh \

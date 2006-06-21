@@ -8,10 +8,10 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/CPDDesignerFactory.hh"
-#include "Omni/Prob/RandomVariableDiscrete.hh"
-#include "Omni/Prob/RandomVariableContinuous.hh"
-#include "Omni/Prob/CPDDesignerContinuousDiscrete1.hh"
+#include "Ravl/Prob/CPDDesignerFactory.hh"
+#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/CPDDesignerContinuousDiscrete1.hh"
 #include "Ravl/OS/SysLog.hh"
 
 #define DODEBUG 0

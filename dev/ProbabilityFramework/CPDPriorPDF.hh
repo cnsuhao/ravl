@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/CPDAbstract.hh"
+#include "Ravl/Prob/CPDAbstract.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

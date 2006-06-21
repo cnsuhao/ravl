@@ -10,9 +10,9 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/BayesianNetwork.hh"
+#include "Ravl/Prob/BayesianNetwork.hh"
 #include "Ravl/DList.hh"
-#include "Omni/Prob/ConditionalProbabilityDistribution.hh"
+#include "Ravl/Prob/ConditionalProbabilityDistribution.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Omni/Prob/ConditionalProbabilityDistribution.hh"
+#include "Ravl/Prob/ConditionalProbabilityDistribution.hh"
 #include "Ravl/DList.hh"
 
 namespace RavlProbN {

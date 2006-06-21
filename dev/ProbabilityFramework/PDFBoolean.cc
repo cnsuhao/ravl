@@ -8,8 +8,8 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFBoolean.hh"
-#include "Omni/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/PDFBoolean.hh"
+#include "Ravl/Prob/RandomVariableValueBoolean.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

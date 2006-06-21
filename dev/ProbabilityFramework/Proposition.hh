@@ -11,8 +11,8 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Omni/Prob/Domain.hh"
-#include "Omni/Prob/RandomVariableValue.hh"
+#include "Ravl/Prob/Domain.hh"
+#include "Ravl/Prob/RandomVariableValue.hh"
 #include "Ravl/HSet.hh"
 
 namespace RavlProbN {

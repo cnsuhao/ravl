@@ -4,14 +4,14 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#include "Omni/Prob/RandomVariableBoolean.hh"
-#include "Omni/Prob/RandomVariableContinuous.hh"
-#include "Omni/Prob/Domain.hh"
-#include "Omni/Prob/RandomVariableValueBoolean.hh"
-#include "Omni/Prob/RandomVariableValueContinuous.hh"
-#include "Omni/Prob/Proposition.hh"
-#include "Omni/Prob/Lottery.hh"
-#include "Omni/Prob/CPDDesignerFactory.hh"
+#include "Ravl/Prob/RandomVariableBoolean.hh"
+#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/Domain.hh"
+#include "Ravl/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/RandomVariableValueContinuous.hh"
+#include "Ravl/Prob/Proposition.hh"
+#include "Ravl/Prob/Lottery.hh"
+#include "Ravl/Prob/CPDDesignerFactory.hh"
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"

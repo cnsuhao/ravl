@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFContinuousDesigner.hh"
+#include "Ravl/Prob/PDFContinuousDesigner.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

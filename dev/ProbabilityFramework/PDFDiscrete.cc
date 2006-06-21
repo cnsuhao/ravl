@@ -8,7 +8,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/PDFDiscrete.hh"
+#include "Ravl/Prob/PDFDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;

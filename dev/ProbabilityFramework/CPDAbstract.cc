@@ -8,8 +8,8 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Omni/Prob/CPDAbstract.hh"
-#include "Omni/Prob/ProbabilityDistribution.hh"
+#include "Ravl/Prob/CPDAbstract.hh"
+#include "Ravl/Prob/ProbabilityDistribution.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
