@@ -13,8 +13,6 @@ ORGANISATION=SKA/KAT
 
 DESCRIPTION=Pattern recognition software
 
-DONOT_SUPPORT=arm mingw VCPP
-
 PACKAGE=Ravl/Prob
 
 HEADERS= BayesianNetwork.hh \

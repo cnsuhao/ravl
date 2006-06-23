@@ -13,8 +13,6 @@ ORGANISATION=SKA/KAT.
 
 DESCRIPTION=Pattern recognition software
 
-DONOT_SUPPORT=arm mingw VCPP
-
 PACKAGE=Ravl/Prob
 
 HEADERS= RandomVariable.hh \
@@ -34,7 +32,7 @@ SOURCES= RandomVariable.cc \
          RandomVariableValueBoolean.cc \
          RandomVariableValueContinuous.cc \
          RandomVariableValueDiscrete.cc
-         
+
 MAINS=
 
 USESLIBS=RavlCore RavlOS

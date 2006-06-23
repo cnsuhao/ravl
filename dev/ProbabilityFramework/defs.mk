@@ -13,8 +13,6 @@ ORGANISATION=OmniPerception Ltd.
 
 DESCRIPTION=Pattern recognition software
 
-DONOT_SUPPORT=arm mingw VCPP
-
 PACKAGE=Ravl/Prob
 
 NESTED=Variables.r Domains.r Distributions.r Networks.r UnitTest.r
