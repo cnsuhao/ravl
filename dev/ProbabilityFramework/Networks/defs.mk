@@ -9,7 +9,7 @@
 
 LICENSE=LGPL
 
-ORGANISATION=OmniPerception Ltd.
+ORGANISATION=SKA/KAT
 
 DESCRIPTION=Pattern recognition software
 
@@ -17,18 +17,20 @@ DONOT_SUPPORT=arm mingw VCPP
 
 PACKAGE=Ravl/Prob
 
-NESTED=Variables.r Domains.r Distributions.r Networks.r
+HEADERS= BayesianNetwork.hh \
+         BayesianNetworkAbstract.hh \
+         BayesianNetworkSimple.hh
 
-HEADERS= 
+SOURCES= BayesianNetwork.cc \
+         BayesianNetworkAbstract.cc \
+         BayesianNetworkSimple.cc
 
-SOURCES= 
-
-MAINS=
+MAINS= 
 
 USESLIBS=RavlCore RavlOS
 
-TESTEXES=
+TESTEXES= testBayesianNetwork.cc
 
-PROGLIBS=RavlExtImgIO.opt RavlDPDisplay CPPUnit
+PROGLIBS=CPPUnit
 
 PLIB=RavlProb

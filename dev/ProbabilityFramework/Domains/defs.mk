@@ -9,7 +9,7 @@
 
 LICENSE=LGPL
 
-ORGANISATION=OmniPerception Ltd.
+ORGANISATION=SKA/KAT.
 
 DESCRIPTION=Pattern recognition software
 
@@ -17,11 +17,13 @@ DONOT_SUPPORT=arm mingw VCPP
 
 PACKAGE=Ravl/Prob
 
-NESTED=Variables.r Domains.r Distributions.r Networks.r
+HEADERS= Domain.hh \
+         Lottery.hh \
+         Proposition.hh
 
-HEADERS= 
-
-SOURCES= 
+SOURCES= Domain.cc \
+         Lottery.cc \
+         Proposition.cc
 
 MAINS=
 
