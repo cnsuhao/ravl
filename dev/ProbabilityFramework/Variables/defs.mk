@@ -34,13 +34,13 @@ SOURCES= RandomVariable.cc \
          RandomVariableValueBoolean.cc \
          RandomVariableValueContinuous.cc \
          RandomVariableValueDiscrete.cc
-
+         
 MAINS=
 
 USESLIBS=RavlCore RavlOS
 
-TESTEXES= testRandomVariable.cc testRandomVariableValue.cc
+TESTEXES=
 
-PROGLIBS=RavlExtImgIO.opt RavlDPDisplay CPPUnit
+PROGLIBS=RavlExtImgIO.opt RavlDPDisplay
 
 PLIB=RavlProb

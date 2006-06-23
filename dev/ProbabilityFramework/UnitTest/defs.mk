@@ -9,7 +9,7 @@
 
 LICENSE=LGPL
 
-ORGANISATION=OmniPerception Ltd.
+ORGANISATION=SKA/KAT.
 
 DESCRIPTION=Pattern recognition software
 
@@ -17,18 +17,21 @@ DONOT_SUPPORT=arm mingw VCPP
 
 PACKAGE=Ravl/Prob
 
-NESTED=Variables.r Domains.r Distributions.r Networks.r UnitTest.r
+REQUIRES= CPPUnit
 
 HEADERS= 
 
-SOURCES= 
-
+SOURCES=
+         
 MAINS=
 
-USESLIBS=RavlCore RavlOS
+MUSTLINK= testRandomVariableValueBoolean.cc \
+		testRandomVariableValueDiscrete.cc
 
-TESTEXES=
+USESLIBS= RavlCore RavlOS RavlProb
 
-PROGLIBS=RavlExtImgIO.opt RavlDPDisplay CPPUnit
+TESTEXES= testRunner.cc
 
-PLIB=RavlProb
+PROGLIBS= CPPUnit
+
+PLIB= RavlProbUnitTest

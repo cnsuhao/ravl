@@ -73,6 +73,10 @@ namespace RavlProbN {
     : public RandomVariableValueDiscreteC
   {
   public:
+  	RandomVariableValueBooleanC()
+  	{}
+  	//: Default constructors make invalid object
+  	
     RandomVariableValueBooleanC(const RandomVariableBooleanC& variable, bool value)
       : RandomVariableValueDiscreteC(new RandomVariableValueBooleanBodyC(variable, value))
     {}
