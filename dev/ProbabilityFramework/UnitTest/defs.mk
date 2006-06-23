@@ -13,7 +13,7 @@ ORGANISATION=SKA/KAT.
 
 DESCRIPTION=Pattern recognition software
 
-DONOT_SUPPORT=arm mingw VCPP
+DONOT_SUPPORT=arm mingw 
 
 PACKAGE=Ravl/Prob
 
@@ -22,7 +22,7 @@ REQUIRES= CPPUnit
 HEADERS= 
 
 SOURCES=
-         
+
 MAINS=
 
 MUSTLINK= testRandomVariableValueBoolean.cc \
