@@ -79,6 +79,10 @@ namespace RavlProbN {
     : public RandomVariableValueC
   {
   public:
+  	RandomVariableValueContinuousC()
+  	{}
+  	//: Default constructor makes invalid handle
+  	
     RandomVariableValueContinuousC(const RandomVariableContinuousC& variable, RealT value)
       : RandomVariableValueC(new RandomVariableValueContinuousBodyC(variable, value))
     {}

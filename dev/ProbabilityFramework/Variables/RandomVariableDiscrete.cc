@@ -90,8 +90,8 @@ namespace RavlProbN {
   }
 
   const StringC& RandomVariableDiscreteBodyC::Value(IndexC index) const {
-    if (index > Values().Size())
-      throw ExceptionC("RandomVariableDiscreteBodyC::Value(), index too big");
+    if (index < 0 || index >= Values().Size())
+      throw ExceptionC("RandomVariableDiscreteBodyC::Value(), index out of bounds");
     HSetIterC<StringC> it(Values());
     while(index--)
       it++;

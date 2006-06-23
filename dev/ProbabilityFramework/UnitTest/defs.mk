@@ -25,7 +25,11 @@ SOURCES=
 
 MAINS=
 
-MUSTLINK= testRandomVariableValueBoolean.cc \
+MUSTLINK= testRandomVariableBoolean.cc \
+		testRandomVariableContinuous.cc \
+		testRandomVariableDiscrete.cc \
+		testRandomVariableValueBoolean.cc \
+		testRandomVariableValueContinuous.cc \
 		testRandomVariableValueDiscrete.cc
 
 USESLIBS= RavlCore RavlOS RavlProb
