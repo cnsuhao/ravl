@@ -25,10 +25,6 @@ SOURCES=
 
 MAINS=
 
-USESLIBS=RavlCore RavlOS
 
 TESTEXES=
 
-PROGLIBS=RavlExtImgIO.opt RavlDPDisplay CPPUnit
-
-PLIB=RavlProb
