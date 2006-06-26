@@ -26,9 +26,9 @@ namespace RavlProbN {
 
   ProbabilityDistributionC CPDContinuousDiscrete1BodyC::ConditionalDistribution(const PropositionC& parentValues) const {
     PDFContinuousAbstractC pdf;
-    HSetC<RandomVariableValueC> values = parentValues.Values();
+    HSetC<VariablePropositionC> values = parentValues.Values();
     if (values.Size() == 1) {
-      HSetIterC<RandomVariableValueC> it(values);
+      HSetIterC<VariablePropositionC> it(values);
       if (!m_probabilityDistributionTable.Lookup(*it, pdf))
         throw ExceptionC("CPDContinuousDiscrete1BodyC::ConditionalDistribution(), couldn't find distribution");
     }

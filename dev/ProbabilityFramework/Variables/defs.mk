@@ -19,7 +19,7 @@ HEADERS= Variable.hh \
          VariableBoolean.hh \
          VariableContinuous.hh \
          VariableDiscrete.hh \
-         RandomVariableValue.hh \
+         VariableProposition.hh \
          RandomVariableValueBoolean.hh \
          RandomVariableValueContinuous.hh \
          RandomVariableValueDiscrete.hh
@@ -28,7 +28,7 @@ SOURCES= Variable.cc \
          VariableBoolean.cc \
          VariableContinuous.cc \
          VariableDiscrete.cc \
-         RandomVariableValue.cc \
+         VariableProposition.cc \
          RandomVariableValueBoolean.cc \
          RandomVariableValueContinuous.cc \
          RandomVariableValueDiscrete.cc

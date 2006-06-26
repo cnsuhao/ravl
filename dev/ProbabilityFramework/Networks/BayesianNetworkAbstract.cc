@@ -67,7 +67,7 @@ namespace RavlProbN {
       throw ExceptionC("BayesianNetworkSimpleBodyC::CalculateDistribution(), only works for discrete variables");
     // check if evidence contains variable
     RandomVariableValueDiscreteC prior;
-    for (HSetIterC<RandomVariableValueC> ht(evidence.Values()); ht; ht++) {
+    for (HSetIterC<VariablePropositionC> ht(evidence.Values()); ht; ht++) {
       if (ht->Variable() == discrete)
         prior = *ht;
     }

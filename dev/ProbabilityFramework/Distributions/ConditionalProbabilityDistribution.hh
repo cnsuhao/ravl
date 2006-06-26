@@ -28,7 +28,7 @@ namespace RavlProbN {
     virtual ~ConditionalProbabilityDistributionBodyC();
     //: Destructor
     
-    virtual RealT ConditionalProbability(const RandomVariableValueC& value, const PropositionC& parentValues) const=0;
+    virtual RealT ConditionalProbability(const VariablePropositionC& value, const PropositionC& parentValues) const=0;
     //: Calculate the conditional probability P(value|parentValues)
     //!param: value - a value for the random variable
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables
@@ -59,7 +59,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    RealT ConditionalProbability(const RandomVariableValueC& value, const PropositionC& parentValues) const
+    RealT ConditionalProbability(const VariablePropositionC& value, const PropositionC& parentValues) const
     { return Body().ConditionalProbability(value, parentValues); }
     //: Calculate the conditional probability P(value|parentValues)
     //!param: value - a value for the random variable

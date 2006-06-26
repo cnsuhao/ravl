@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Ravl/Prob/RandomVariableValue.hh"
+#include "Ravl/Prob/VariableProposition.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -27,7 +27,7 @@ namespace RavlProbN {
     virtual ~ProbabilityDistributionBodyC();
     //: Destructor
     
-    virtual RealT MeasureProbability(const RandomVariableValueC& value) const=0;
+    virtual RealT MeasureProbability(const VariablePropositionC& value) const=0;
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
@@ -51,7 +51,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    RealT MeasureProbability(const RandomVariableValueC& value) const
+    RealT MeasureProbability(const VariablePropositionC& value) const
     { return Body().MeasureProbability(value); }
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable

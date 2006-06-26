@@ -21,7 +21,7 @@ namespace RavlProbN {
   PDFContinuousAbstractBodyC::~PDFContinuousAbstractBodyC() {
   }
 
-  RealT PDFContinuousAbstractBodyC::MeasureProbability(const RandomVariableValueC& value) const {
+  RealT PDFContinuousAbstractBodyC::MeasureProbability(const VariablePropositionC& value) const {
     if (value.Variable() != Variable())
       throw ExceptionC("ProbabilityDistributionContinuousBodyC::MeasureProbability(), value doesn't match variable of this distribution");
     return MeasureProbability(RandomVariableValueContinuousC(value));

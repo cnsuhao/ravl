@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableValue.hh"
+#include "Ravl/Prob/VariableProposition.hh"
 #include "Ravl/Prob/VariableContinuous.hh"
 
 namespace RavlProbN {
@@ -19,7 +19,7 @@ namespace RavlProbN {
   //! userlevel=Develop
   //: Implementation of a continuous random variable value
   class RandomVariableValueContinuousBodyC
-    : public RandomVariableValueBodyC {
+    : public VariablePropositionBodyC {
   public:
     RandomVariableValueContinuousBodyC(const VariableContinuousC& variable, RealT value);
     //: Constructor
@@ -53,7 +53,7 @@ namespace RavlProbN {
     virtual RealT Value() const;
     //: Get access to the value
 
-    virtual bool operator==(const RandomVariableValueC& other) const;
+    virtual bool operator==(const VariablePropositionC& other) const;
     //: Equality operator
 
     virtual UIntT Hash() const;
@@ -76,7 +76,7 @@ namespace RavlProbN {
   //!cwiz:author
   
   class RandomVariableValueContinuousC
-    : public RandomVariableValueC
+    : public VariablePropositionC
   {
   public:
   	RandomVariableValueContinuousC()
@@ -84,7 +84,7 @@ namespace RavlProbN {
   	//: Default constructor makes invalid handle
   	
     RandomVariableValueContinuousC(const VariableContinuousC& variable, RealT value)
-      : RandomVariableValueC(new RandomVariableValueContinuousBodyC(variable, value))
+      : VariablePropositionC(new RandomVariableValueContinuousBodyC(variable, value))
     {}
     //: Constructor
     //!param: variable - the variable that this is an instance of
@@ -98,8 +98,8 @@ namespace RavlProbN {
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableValueContinuousC(const RandomVariableValueC& value)
-      : RandomVariableValueC(dynamic_cast<const RandomVariableValueContinuousBodyC *>(BodyPtr(value)))
+    RandomVariableValueContinuousC(const VariablePropositionC& value)
+      : VariablePropositionC(dynamic_cast<const RandomVariableValueContinuousBodyC *>(BodyPtr(value)))
     {}
     //: Upcast constructor
     // Creates an invalid handle if types don't match
@@ -110,21 +110,21 @@ namespace RavlProbN {
 
   protected:
     RandomVariableValueContinuousC(RandomVariableValueContinuousBodyC &bod)
-     : RandomVariableValueC(bod)
+     : VariablePropositionC(bod)
     {}
     //: Body constructor. 
     
     RandomVariableValueContinuousC(const RandomVariableValueContinuousBodyC *bod)
-     : RandomVariableValueC(bod)
+     : VariablePropositionC(bod)
     {}
     //: Body constructor. 
     
     RandomVariableValueContinuousBodyC& Body()
-    { return static_cast<RandomVariableValueContinuousBodyC &>(RandomVariableValueC::Body()); }
+    { return static_cast<RandomVariableValueContinuousBodyC &>(VariablePropositionC::Body()); }
     //: Body Access. 
     
     const RandomVariableValueContinuousBodyC& Body() const
-    { return static_cast<const RandomVariableValueContinuousBodyC &>(RandomVariableValueC::Body()); }
+    { return static_cast<const RandomVariableValueContinuousBodyC &>(VariablePropositionC::Body()); }
     //: Body Access. 
     
   };

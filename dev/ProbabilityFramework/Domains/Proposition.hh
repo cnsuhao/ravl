@@ -12,7 +12,7 @@
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/Prob/Domain.hh"
-#include "Ravl/Prob/RandomVariableValue.hh"
+#include "Ravl/Prob/VariableProposition.hh"
 #include "Ravl/HSet.hh"
 
 namespace RavlProbN {
@@ -29,12 +29,12 @@ namespace RavlProbN {
   class PropositionBodyC
     : public RCBodyVC {
   public:
-    PropositionBodyC(const DomainC& domain, const HSetC<RandomVariableValueC>& values);
+    PropositionBodyC(const DomainC& domain, const HSetC<VariablePropositionC>& values);
     //: Constructor
     //!param: domain - the domain for the proposition
     //!param: values - list of random variables values contained in this proposition
 
-    PropositionBodyC(const PropositionBodyC& other, const RandomVariableValueC& value);
+    PropositionBodyC(const PropositionBodyC& other, const VariablePropositionC& value);
     //: Extended constructor
     //!param: other = another proposition
     //!param: value - a value to extend the proposition with
@@ -72,10 +72,10 @@ namespace RavlProbN {
     SizeT NumValues() const;
     //: Get the number of values in the proposition
 
-    const HSetC<RandomVariableValueC>& Values() const;
+    const HSetC<VariablePropositionC>& Values() const;
     //: Get the random variable values in the domain
 
-    const RandomVariableValueC& Value(IndexC index) const;
+    const VariablePropositionC& Value(IndexC index) const;
     //: Get a random variable value by index
 
     PropositionC SubProposition(const DomainC& subDomain) const;
@@ -91,14 +91,14 @@ namespace RavlProbN {
     void SetDomain(const DomainC& domain);
     //: Set the domain
 
-    void SetValues(const HSetC<RandomVariableValueC>& values);
+    void SetValues(const HSetC<VariablePropositionC>& values);
     //: Set the random variable values in the domain
 
   private:
     DomainC m_domain;
     //: The domain of the proposition
 
-    HSetC<RandomVariableValueC> m_values;
+    HSetC<VariablePropositionC> m_values;
     //: The set of variables
   };
 
@@ -114,11 +114,11 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    PropositionC(const DomainC& domain, const HSetC<RandomVariableValueC>& values)
+    PropositionC(const DomainC& domain, const HSetC<VariablePropositionC>& values)
       : RCHandleVC<PropositionBodyC>(new PropositionBodyC(domain, values))
     {}
 
-    PropositionC(const PropositionC& other, const RandomVariableValueC& value)
+    PropositionC(const PropositionC& other, const VariablePropositionC& value)
       : RCHandleVC<PropositionBodyC>(new PropositionBodyC(other.Body(), value))
     {}
     //: Extended constructor
@@ -165,12 +165,12 @@ namespace RavlProbN {
     { return Body().NumValues(); }
     //: Get the number of values in the proposition
 
-    const HSetC<RandomVariableValueC>& Values() const
+    const HSetC<VariablePropositionC>& Values() const
     { return Body().Values(); }
     //: Get the random variable values in the domain
     //!cwiz:author
 
-    const RandomVariableValueC& Value(IndexC index) const
+    const VariablePropositionC& Value(IndexC index) const
     { return Body().Value(index); }
     //: Get a random variable value by index
     //!cwiz:author

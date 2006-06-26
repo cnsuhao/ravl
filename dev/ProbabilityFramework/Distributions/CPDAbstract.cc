@@ -27,7 +27,7 @@ namespace RavlProbN {
   CPDAbstractBodyC::~CPDAbstractBodyC() {
   }
 
-  RealT CPDAbstractBodyC::ConditionalProbability(const RandomVariableValueC& value, const PropositionC& parentValues) const {
+  RealT CPDAbstractBodyC::ConditionalProbability(const VariablePropositionC& value, const PropositionC& parentValues) const {
     if (value.Variable() != Variable())
       throw ExceptionC("CPDAbstractBodyC::ConditionalProbability(), value isn't of correct variable");
     ProbabilityDistributionC pdf(ConditionalDistribution(parentValues));

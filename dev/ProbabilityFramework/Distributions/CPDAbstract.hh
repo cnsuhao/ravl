@@ -33,7 +33,7 @@ namespace RavlProbN {
     virtual ~CPDAbstractBodyC();
     //: Destructor
     
-    virtual RealT ConditionalProbability(const RandomVariableValueC& value, const PropositionC& parentValues) const;
+    virtual RealT ConditionalProbability(const VariablePropositionC& value, const PropositionC& parentValues) const;
     //: Calculate the conditional probability P(value|parentValues)
     //!param: value - a value for the random variable
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables

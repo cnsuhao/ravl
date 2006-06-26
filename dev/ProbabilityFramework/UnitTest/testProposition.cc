@@ -25,7 +25,7 @@ private:
 	DomainC m_domain;
 	PropositionC m_proposition;
 	HSetC<VariableC> m_variables;
-	HSetC<RandomVariableValueC> m_values;
+	HSetC<VariablePropositionC> m_values;
 public:
 	void setUp() {
 		VariableBooleanC booleanVariable("boolean");
@@ -64,7 +64,7 @@ public:
 	
 	void testValues() {
 		CPPUNIT_ASSERT( m_proposition.Values().Size() == 2 );
-		for (HSetIterC<RandomVariableValueC> it(m_values); it; it++)
+		for (HSetIterC<VariablePropositionC> it(m_values); it; it++)
 			CPPUNIT_ASSERT( m_proposition.Values().Contains(*it) == true );
 	}
 	

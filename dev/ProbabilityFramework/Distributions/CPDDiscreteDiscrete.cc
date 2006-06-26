@@ -25,7 +25,7 @@ namespace RavlProbN {
 
   ProbabilityDistributionC CPDDiscreteDiscreteBodyC::ConditionalDistribution(const PropositionC& parentValues) const {
     PDFDiscreteC pdf;
-    HSetC<RandomVariableValueC> values = parentValues.Values();
+    HSetC<VariablePropositionC> values = parentValues.Values();
     if (values.Size() != ParentDomain().NumVariables())
       throw ExceptionC("CPDDiscreteDiscreteBodyC::ConditionalDistribution(), called with incorrect proposition!");
     if (!m_probabilityDistributionTable.Lookup(parentValues, pdf))

@@ -28,7 +28,7 @@ namespace RavlProbN {
     virtual ~CPDDesignerContinuousDiscrete1BodyC();
     //: Destructor
     
-    virtual ConditionalProbabilityDistributionC CreateCPD(const DListC<Tuple2C<RandomVariableValueC,PropositionC> >& propositionPairs) const;
+    virtual ConditionalProbabilityDistributionC CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionC> >& propositionPairs) const;
     //: Create a conditional probability distribution according to the sample of propositions
     //!param: propositionPairs - a sample of propositions pairs, ie dependent value and parent proposition
     //!return: the conditional probability distribution

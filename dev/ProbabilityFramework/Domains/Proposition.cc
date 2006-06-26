@@ -15,14 +15,14 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PropositionBodyC::PropositionBodyC(const DomainC& domain, const HSetC<RandomVariableValueC>& values) {
+  PropositionBodyC::PropositionBodyC(const DomainC& domain, const HSetC<VariablePropositionC>& values) {
     SetDomain(domain);
     SetValues(values);
   }
 
-  PropositionBodyC::PropositionBodyC(const PropositionBodyC& other, const RandomVariableValueC& value) {
+  PropositionBodyC::PropositionBodyC(const PropositionBodyC& other, const VariablePropositionC& value) {
     SetDomain(other.Domain());
-    HSetC<RandomVariableValueC> values = other.Values().Copy();
+    HSetC<VariablePropositionC> values = other.Values().Copy();
     values.Insert(value);
     SetValues(values);
   }
@@ -36,7 +36,7 @@ namespace RavlProbN {
       throw ExceptionOutOfRangeC("PropositionBodyC(istream &), Unrecognised version number in stream.");
     DomainC domain(in);
     SetDomain(domain);
-    HSetC<RandomVariableValueC> values;
+    HSetC<VariablePropositionC> values;
     in >> values;
     SetValues(values);
   }
@@ -50,7 +50,7 @@ namespace RavlProbN {
       throw ExceptionOutOfRangeC("PropositionBodyC(BinIStream &), Unrecognised version number in stream.");
     DomainC domain(in);
     SetDomain(domain);
-    HSetC<RandomVariableValueC> values;
+    HSetC<VariablePropositionC> values;
     in >> values;
     SetValues(values);
   }
@@ -82,21 +82,21 @@ namespace RavlProbN {
     return Values().Size();
   }
 
-  const HSetC<RandomVariableValueC>& PropositionBodyC::Values() const {
+  const HSetC<VariablePropositionC>& PropositionBodyC::Values() const {
     return m_values;
   }
 
-  const RandomVariableValueC& PropositionBodyC::Value(IndexC index) const {
+  const VariablePropositionC& PropositionBodyC::Value(IndexC index) const {
     if (index < 0 || index >= NumValues())
       throw ExceptionC("PropositionBodyC::Value(), index out of range");
-    HSetIterC<RandomVariableValueC> it(Values());
+    HSetIterC<VariablePropositionC> it(Values());
     while(index--)
       it++;
     return *it;
   }
 
   StringC PropositionBodyC::ToString() const {
-    HSetIterC<RandomVariableValueC> it(Values());
+    HSetIterC<VariablePropositionC> it(Values());
     StringC string = it->Variable().Name() + "=" + it->ToString();
     for (it++; it; it++) {
       string += ",";
@@ -108,7 +108,7 @@ namespace RavlProbN {
   StringC PropositionBodyC::LotteryName() const {
     StringC name = Domain().ToString(); // show all variables
     HSetC<VariableC> domainSet = Domain().Variables().Copy();
-    for (HSetIterC<RandomVariableValueC> it(Values()); it; it++) {
+    for (HSetIterC<VariablePropositionC> it(Values()); it; it++) {
       domainSet.Remove(it->Variable());
     }
     name += "->(";
@@ -129,8 +129,8 @@ namespace RavlProbN {
   	for (HSetIterC<VariableC> dt(subDomain.Variables()); dt; dt++)
   		if (!Domain().Contains(*dt))
   			throw ExceptionC("PropositionBodyC::SubProposition(), invalid new domain variable");
-    HSetC<RandomVariableValueC> values;
-    for (HSetIterC<RandomVariableValueC> ht(Values()); ht; ht++) {
+    HSetC<VariablePropositionC> values;
+    for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++) {
       if (subDomain.Variables().Contains(ht->Variable()))
         values.Insert(*ht);
     }
@@ -141,9 +141,9 @@ namespace RavlProbN {
     m_domain = domain;
   }
 
-  void PropositionBodyC::SetValues(const HSetC<RandomVariableValueC>& values) {
+  void PropositionBodyC::SetValues(const HSetC<VariablePropositionC>& values) {
     //:FIXME- what collection for efficiency?
-    for (HSetIterC<RandomVariableValueC> it(values); it; it++)
+    for (HSetIterC<VariablePropositionC> it(values); it; it++)
       if (!Domain().Contains(it->Variable()))
         throw ExceptionC("PropositionBodyC::SetValues(), value not in domain");
     m_values = values.Copy();
@@ -156,7 +156,7 @@ namespace RavlProbN {
       return false;
     if (NumValues() != other.NumValues())
       return false;
-    for (HSetIterC<RandomVariableValueC> ht(Values()); ht; ht++)
+    for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++)
       if (!other.Values().Contains(*ht))
         return false;
     return true;
@@ -165,7 +165,7 @@ namespace RavlProbN {
 
   UIntT PropositionBodyC::Hash() const {
     UIntT hash = 0;
-    for (HSetIterC<RandomVariableValueC> it(Values()); it; it++)
+    for (HSetIterC<VariablePropositionC> it(Values()); it; it++)
       hash += it->Hash();
     return Domain().Hash() + hash;
   }

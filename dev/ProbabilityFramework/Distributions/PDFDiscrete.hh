@@ -30,7 +30,7 @@ namespace RavlProbN {
     virtual ~PDFDiscreteBodyC();
     //: Destructor
     
-    virtual RealT MeasureProbability(const RandomVariableValueC& value) const;
+    virtual RealT MeasureProbability(const VariablePropositionC& value) const;
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value

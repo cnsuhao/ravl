@@ -17,13 +17,13 @@ namespace RavlProbN {
   using namespace RavlN;
   
   RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(const VariableContinuousC& variable, RealT value)
-    : RandomVariableValueBodyC(variable)
+    : VariablePropositionBodyC(variable)
   {
     SetValue(value);
   }
 
   RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(istream &in)
-    : RandomVariableValueBodyC(in)
+    : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
@@ -35,7 +35,7 @@ namespace RavlProbN {
   }
 
   RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(BinIStreamC &in)
-    : RandomVariableValueBodyC(in)
+    : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
@@ -47,7 +47,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableValueContinuousBodyC::Save (ostream &out) const {
-    if(!RandomVariableValueBodyC::Save(out))
+    if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
     out << ' ' << version << ' ' << Value();
@@ -55,7 +55,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableValueContinuousBodyC::Save (BinOStreamC &out) const {
-    if(!RandomVariableValueBodyC::Save(out))
+    if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
     out << version << Value();
@@ -79,8 +79,8 @@ namespace RavlProbN {
     m_value = value;
   }
 
-  bool RandomVariableValueContinuousBodyC::operator==(const RandomVariableValueC& other) const {
-    if (!RandomVariableValueBodyC::operator==(other))
+  bool RandomVariableValueContinuousBodyC::operator==(const VariablePropositionC& other) const {
+    if (!VariablePropositionBodyC::operator==(other))
       return false;
     RandomVariableValueContinuousC otherContinuous(other);
     if (!otherContinuous.IsValid())
@@ -91,7 +91,7 @@ namespace RavlProbN {
   UIntT RandomVariableValueContinuousBodyC::Hash() const {
     RealT value = Value();
     Int64T bitwiseInt = *((Int64T*)&value);
-    return RandomVariableValueBodyC::Hash() + StdHash(bitwiseInt);
+    return VariablePropositionBodyC::Hash() + StdHash(bitwiseInt);
   }
 
   VariableContinuousC RandomVariableValueContinuousBodyC::VariableContinuous() const {
@@ -100,6 +100,6 @@ namespace RavlProbN {
 
   static TypeNameC type1(typeid(RandomVariableValueContinuousC),"RavlProbN::RandomVariableValueContinuousC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueContinuousBodyC,RandomVariableValueContinuousC,RandomVariableValueC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueContinuousBodyC,RandomVariableValueContinuousC,VariablePropositionC);
   
 }

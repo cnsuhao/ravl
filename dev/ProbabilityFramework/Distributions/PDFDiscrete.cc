@@ -28,7 +28,7 @@ namespace RavlProbN {
   PDFDiscreteBodyC::~PDFDiscreteBodyC() {
   }
 
-  RealT PDFDiscreteBodyC::MeasureProbability(const RandomVariableValueC& value) const {
+  RealT PDFDiscreteBodyC::MeasureProbability(const VariablePropositionC& value) const {
     if (value.Variable() != Variable())
       throw ExceptionC("ProbabilityDistributionDiscreteBodyC::MeasureProbability(), value doesn't match variable of this distribution");
     RealT probability = 0.0;

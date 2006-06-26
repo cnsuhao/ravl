@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_RANDOMVARIABLEVALUE_HEADER
-#define RAVLPROB_RANDOMVARIABLEVALUE_HEADER 1
+#ifndef RAVLPROB_VARIABLEPROPOSITION_HEADER
+#define RAVLPROB_VARIABLEPROPOSITION_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -16,7 +16,7 @@
 namespace RavlProbN {
   using namespace RavlN;
 
-  class RandomVariableValueC;
+  class VariablePropositionC;
 
   //! userlevel=Develop
   //: Base class for all random variable values
@@ -25,18 +25,18 @@ namespace RavlProbN {
   // asserts that a variable takes on a particular value from its domain. For
   // instance, Cavity=false, or alternatively Cavity=¬cavity. Also X=4.02,
   // Weather=snow.
-  class RandomVariableValueBodyC
+  class VariablePropositionBodyC
     : public RCBodyVC {
   public:
-    RandomVariableValueBodyC(const VariableC& variable);
+    VariablePropositionBodyC(const VariableC& variable);
     //: Constructor
     //!param: variable - the variable that this is an instance of
 
-    RandomVariableValueBodyC(istream &in);
+    VariablePropositionBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    RandomVariableValueBodyC(BinIStreamC &in);
+    VariablePropositionBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -50,7 +50,7 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~RandomVariableValueBodyC();
+    virtual ~VariablePropositionBodyC();
     //: Destructor
 
     const VariableC& Variable() const;
@@ -59,7 +59,7 @@ namespace RavlProbN {
     virtual StringC ToString() const =0;
     //: Get a string representation of the values that the variable can take
 
-    virtual bool operator==(const RandomVariableValueC& other) const=0;
+    virtual bool operator==(const VariablePropositionC& other) const=0;
     //: Equality operator
 
     virtual UIntT Hash() const=0;
@@ -79,19 +79,19 @@ namespace RavlProbN {
   //: Base class for all random variable values
   //!cwiz:author
   
-  class RandomVariableValueC
-    : public RCHandleVC<RandomVariableValueBodyC>
+  class VariablePropositionC
+    : public RCHandleVC<VariablePropositionBodyC>
   {
   public:
-    RandomVariableValueC()
+    VariablePropositionC()
     {}
     //: Default constructor makes invalid handle
 
-    RandomVariableValueC(istream &in);
+    VariablePropositionC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    RandomVariableValueC(BinIStreamC &in);
+    VariablePropositionC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -119,12 +119,12 @@ namespace RavlProbN {
     //: Get a string representation of the value
     //!cwiz:author
 
-    bool operator==(const RandomVariableValueC& other) const
+    bool operator==(const VariablePropositionC& other) const
     { return Body().operator==(other); }
     //: Equality operator
     //!cwiz:author
 
-    bool operator!=(const RandomVariableValueC& other) const
+    bool operator!=(const VariablePropositionC& other) const
     { return !Body().operator==(other); }
     //: Inequality operator
     //!cwiz:author
@@ -134,33 +134,33 @@ namespace RavlProbN {
     //: Hash function based on variable
 
   protected:
-    RandomVariableValueC(RandomVariableValueBodyC &bod)
-     : RCHandleVC<RandomVariableValueBodyC>(bod)
+    VariablePropositionC(VariablePropositionBodyC &bod)
+     : RCHandleVC<VariablePropositionBodyC>(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueC(const RandomVariableValueBodyC *bod)
-     : RCHandleVC<RandomVariableValueBodyC>(bod)
+    VariablePropositionC(const VariablePropositionBodyC *bod)
+     : RCHandleVC<VariablePropositionBodyC>(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueBodyC& Body()
-    { return static_cast<RandomVariableValueBodyC &>(RCHandleVC<RandomVariableValueBodyC>::Body()); }
+    VariablePropositionBodyC& Body()
+    { return static_cast<VariablePropositionBodyC &>(RCHandleVC<VariablePropositionBodyC>::Body()); }
     //: Body Access. 
     
-    const RandomVariableValueBodyC& Body() const
-    { return static_cast<const RandomVariableValueBodyC &>(RCHandleVC<RandomVariableValueBodyC>::Body()); }
+    const VariablePropositionBodyC& Body() const
+    { return static_cast<const VariablePropositionBodyC &>(RCHandleVC<VariablePropositionBodyC>::Body()); }
     //: Body Access. 
     
   };
 
-  ostream &operator<<(ostream &s, const RandomVariableValueC &obj);
+  ostream &operator<<(ostream &s, const VariablePropositionC &obj);
   
-  istream &operator>>(istream &s, RandomVariableValueC &obj);
+  istream &operator>>(istream &s, VariablePropositionC &obj);
 
-  BinOStreamC &operator<<(BinOStreamC &s, const RandomVariableValueC &obj);
+  BinOStreamC &operator<<(BinOStreamC &s, const VariablePropositionC &obj);
     
-  BinIStreamC &operator>>(BinIStreamC &s, RandomVariableValueC &obj);
+  BinIStreamC &operator>>(BinIStreamC &s, VariablePropositionC &obj);
   
 }
 

@@ -45,12 +45,12 @@ int main() {
     RandomVariableValueBooleanC maryCalls(MaryCalls, true);
     RandomVariableValueBooleanC _maryCalls(MaryCalls, false);
     // create distribution tables
-    HSetC<RandomVariableValueC> be; be.Insert(burglary); be.Insert(earthquake);
-    HSetC<RandomVariableValueC> b_e; b_e.Insert(burglary); b_e.Insert(_earthquake);
-    HSetC<RandomVariableValueC> _be; _be.Insert(_burglary); _be.Insert(earthquake);
-    HSetC<RandomVariableValueC> _b_e; _b_e.Insert(_burglary); _b_e.Insert(_earthquake);
-    HSetC<RandomVariableValueC> a; a.Insert(alarm);
-    HSetC<RandomVariableValueC> _a; _a.Insert(_alarm);
+    HSetC<VariablePropositionC> be; be.Insert(burglary); be.Insert(earthquake);
+    HSetC<VariablePropositionC> b_e; b_e.Insert(burglary); b_e.Insert(_earthquake);
+    HSetC<VariablePropositionC> _be; _be.Insert(_burglary); _be.Insert(earthquake);
+    HSetC<VariablePropositionC> _b_e; _b_e.Insert(_burglary); _b_e.Insert(_earthquake);
+    HSetC<VariablePropositionC> a; a.Insert(alarm);
+    HSetC<VariablePropositionC> _a; _a.Insert(_alarm);
     RCHashC<PropositionC,PDFDiscreteC> alarmPDFs;
     alarmPDFs.Insert(PropositionC(alarmParentDomain, be), PDFBooleanC(Alarm, 0.95));
     alarmPDFs.Insert(PropositionC(alarmParentDomain, b_e), PDFBooleanC(Alarm, 0.94));
@@ -78,7 +78,7 @@ int main() {
     BayesianNetworkSimpleC bayesianNetwork(nodeCPDs);
 
     // evaluate P(B|johnCalls,maryCalls)
-    HSetC<RandomVariableValueC> propSet;
+    HSetC<VariablePropositionC> propSet;
     propSet.Insert(johnCalls);
     propSet.Insert(maryCalls);
     PropositionC prop(bayesianNetwork.Domain(), propSet);

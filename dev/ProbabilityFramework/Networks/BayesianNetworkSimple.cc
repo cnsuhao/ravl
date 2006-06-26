@@ -48,8 +48,8 @@ namespace RavlProbN {
     DListC<VariableC> restVars = vars.Copy();
     VariableC Y = restVars.PopFirst();
     // if Y has value y in prop
-    RandomVariableValueC y;
-    for (HSetIterC<RandomVariableValueC> ht(evidence.Values()); ht; ht++) {
+    VariablePropositionC y;
+    for (HSetIterC<VariablePropositionC> ht(evidence.Values()); ht; ht++) {
       if (ht->Variable() == Y) {
         y = *ht;
         break;

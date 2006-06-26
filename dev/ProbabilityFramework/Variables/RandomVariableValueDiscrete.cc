@@ -16,19 +16,19 @@ namespace RavlProbN {
   using namespace RavlN;
   
   RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value)
-    : RandomVariableValueBodyC(variable)
+    : VariablePropositionBodyC(variable)
   {
     SetValue(value);
   }
 
   RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable)
-    : RandomVariableValueBodyC(variable)
+    : VariablePropositionBodyC(variable)
   {
     //: NOTE that the value hasn't been initialized, you better know what you are doing!
   }
 
   RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(istream &in)
-    : RandomVariableValueBodyC(in)
+    : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
@@ -40,7 +40,7 @@ namespace RavlProbN {
   }
 
   RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(BinIStreamC &in)
-    : RandomVariableValueBodyC(in)
+    : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
@@ -52,7 +52,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableValueDiscreteBodyC::Save (ostream &out) const {
-    if(!RandomVariableValueBodyC::Save(out))
+    if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
     out << ' ' << version << ' ' << Value();
@@ -60,7 +60,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableValueDiscreteBodyC::Save (BinOStreamC &out) const {
-    if(!RandomVariableValueBodyC::Save(out))
+    if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
     out << version << Value();
@@ -88,8 +88,8 @@ namespace RavlProbN {
     return VariableDiscrete().Index(Value());
   }
 
-  bool RandomVariableValueDiscreteBodyC::operator==(const RandomVariableValueC& other) const {
-    if (!RandomVariableValueBodyC::operator==(other))
+  bool RandomVariableValueDiscreteBodyC::operator==(const VariablePropositionC& other) const {
+    if (!VariablePropositionBodyC::operator==(other))
       return false;
     RandomVariableValueDiscreteC otherDiscrete(other);
     if (!otherDiscrete.IsValid())
@@ -98,7 +98,7 @@ namespace RavlProbN {
   }
 
   UIntT RandomVariableValueDiscreteBodyC::Hash() const {
-    return RandomVariableValueBodyC::Hash() + Value().Hash();
+    return VariablePropositionBodyC::Hash() + Value().Hash();
   }
 
   VariableDiscreteC RandomVariableValueDiscreteBodyC::VariableDiscrete() const {
@@ -107,6 +107,6 @@ namespace RavlProbN {
 
   static TypeNameC type1(typeid(RandomVariableValueDiscreteC),"RavlProbN::RandomVariableValueDiscreteC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueDiscreteBodyC,RandomVariableValueDiscreteC,RandomVariableValueC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueDiscreteBodyC,RandomVariableValueDiscreteC,VariablePropositionC);
   
 }
