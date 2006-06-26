@@ -20,21 +20,21 @@ namespace RavlProbN {
   class PDFAbstractBodyC
     : public ProbabilityDistributionBodyC {
   public:
-    PDFAbstractBodyC(const RandomVariableC& randomVariable);
+    PDFAbstractBodyC(const VariableC& variable);
     //: Constructor
 
     virtual ~PDFAbstractBodyC();
     //: Destructor
     
-    virtual RandomVariableC RandomVariable() const;
+    virtual VariableC Variable() const;
     //: Get the variable for the probability distribution
 
   private:
-    void SetRandomVariable(const RandomVariableC& randomVariable);
+    void SetVariable(const VariableC& variable);
     //: Set the variable for the probability distribution
 
   private:
-    RandomVariableC m_randomVariable;
+    VariableC m_variable;
     //: The variable for the probability distribution
   };
 

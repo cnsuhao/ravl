@@ -14,7 +14,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  BayesianNetworkSimpleBodyC::BayesianNetworkSimpleBodyC(const RCHashC<RandomVariableC,ConditionalProbabilityDistributionC>& nodeCPDs)
+  BayesianNetworkSimpleBodyC::BayesianNetworkSimpleBodyC(const RCHashC<VariableC,ConditionalProbabilityDistributionC>& nodeCPDs)
     : BayesianNetworkAbstractBodyC(nodeCPDs)
   {
   }
@@ -35,22 +35,22 @@ namespace RavlProbN {
   // The advantage of this approach is that it can potentially be applied to
   // continuous variables as well as discrete.
 
-  ProbabilityDistributionC BayesianNetworkSimpleBodyC::CalculateDistribution(const RandomVariableC& variable, const PropositionC& evidence) const {
+  ProbabilityDistributionC BayesianNetworkSimpleBodyC::CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const {
     return BayesianNetworkAbstractBodyC::CalculateDistribution(variable, evidence);
   }
 
   //: This function's implementation is based on ENUMERATE-ALL(vars,e) from
   //: Figure 14.9 in Artificial Intelligence: A Modern Approach, 2nd edition
 
-  RealT BayesianNetworkSimpleBodyC::EnumerateAll(const DListC<RandomVariableC>& vars, const PropositionC& evidence) const {
+  RealT BayesianNetworkSimpleBodyC::EnumerateAll(const DListC<VariableC>& vars, const PropositionC& evidence) const {
     if (vars.Size() == 0)
       return 1.0;
-    DListC<RandomVariableC> restVars = vars.Copy();
-    RandomVariableC Y = restVars.PopFirst();
+    DListC<VariableC> restVars = vars.Copy();
+    VariableC Y = restVars.PopFirst();
     // if Y has value y in prop
     RandomVariableValueC y;
     for (HSetIterC<RandomVariableValueC> ht(evidence.Values()); ht; ht++) {
-      if (ht->RandomVariable() == Y) {
+      if (ht->Variable() == Y) {
         y = *ht;
         break;
       }

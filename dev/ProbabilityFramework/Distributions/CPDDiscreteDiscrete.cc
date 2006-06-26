@@ -36,7 +36,7 @@ namespace RavlProbN {
   void CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable) {
     // ensure all parents are discrete and calculate combinations
     UIntT numCombinations = 1;
-    for (HSetIterC<RandomVariableC> ht(ParentDomain().Variables()); ht; ht++) {
+    for (HSetIterC<VariableC> ht(ParentDomain().Variables()); ht; ht++) {
       RandomVariableDiscreteC discrete(*ht);
       if (!discrete.IsValid())
         throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), all parents must be discrete");

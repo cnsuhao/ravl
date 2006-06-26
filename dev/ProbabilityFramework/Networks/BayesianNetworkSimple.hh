@@ -20,13 +20,13 @@ namespace RavlProbN {
   class BayesianNetworkSimpleBodyC
     : public BayesianNetworkAbstractBodyC {
   public:
-    BayesianNetworkSimpleBodyC(const RCHashC<RandomVariableC,ConditionalProbabilityDistributionC>& nodeCPDs);
+    BayesianNetworkSimpleBodyC(const RCHashC<VariableC,ConditionalProbabilityDistributionC>& nodeCPDs);
     //: Constructor
 
     virtual ~BayesianNetworkSimpleBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC CalculateDistribution(const RandomVariableC& variable, const PropositionC& evidence) const;
+    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const;
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
@@ -38,7 +38,7 @@ namespace RavlProbN {
     //!return: the probability of the random variables taking the given values
 
   private:
-    RealT EnumerateAll(const DListC<RandomVariableC>& vars, const PropositionC& evidence) const;
+    RealT EnumerateAll(const DListC<VariableC>& vars, const PropositionC& evidence) const;
 
   };
 
@@ -54,7 +54,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    BayesianNetworkSimpleC(const RCHashC<RandomVariableC,ConditionalProbabilityDistributionC>& nodeCPDs)
+    BayesianNetworkSimpleC(const RCHashC<VariableC,ConditionalProbabilityDistributionC>& nodeCPDs)
       : BayesianNetworkAbstractC(new BayesianNetworkSimpleBodyC(nodeCPDs))
     {}
     //: Constructor

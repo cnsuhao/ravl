@@ -13,19 +13,19 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PDFAbstractBodyC::PDFAbstractBodyC(const RandomVariableC& randomVariable) {
-    SetRandomVariable(randomVariable);
+  PDFAbstractBodyC::PDFAbstractBodyC(const VariableC& variable) {
+    SetVariable(variable);
   }
 
   PDFAbstractBodyC::~PDFAbstractBodyC() {
   }
 
-  RandomVariableC PDFAbstractBodyC::RandomVariable() const {
-    return m_randomVariable;
+  VariableC PDFAbstractBodyC::Variable() const {
+    return m_variable;
   }
 
-  void PDFAbstractBodyC::SetRandomVariable(const RandomVariableC& randomVariable) {
-    m_randomVariable = randomVariable;
+  void PDFAbstractBodyC::SetVariable(const VariableC& variable) {
+    m_variable = variable;
   }
 
 }

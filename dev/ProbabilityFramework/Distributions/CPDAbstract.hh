@@ -20,14 +20,14 @@ namespace RavlProbN {
   class CPDAbstractBodyC
     : public ConditionalProbabilityDistributionBodyC {
   public:
-    CPDAbstractBodyC(const RandomVariableC& randomVariable, const DomainC& parentDomain);
+    CPDAbstractBodyC(const VariableC& variable, const DomainC& parentDomain);
     //: Constructor
-    //!param: randomVariable - the conditioned random variable
+    //!param: variable - the conditioned random variable
     //!param: parentDomain - the conditioning parent variables
 
-    CPDAbstractBodyC(const RandomVariableC& randomVariable, const RandomVariableC& parentVariable);
+    CPDAbstractBodyC(const VariableC& variable, const VariableC& parentVariable);
     //: Constructor
-    //!param: randomVariable - the conditioned random variable
+    //!param: variable - the conditioned random variable
     //!param: parentVariable - single conditioning parent variable
 
     virtual ~CPDAbstractBodyC();
@@ -40,24 +40,24 @@ namespace RavlProbN {
     //!return: the conditional probability of the proposition
     // This is the sum of probabilities for the subset of variable values
 
-    virtual RandomVariableC RandomVariable() const;
+    virtual VariableC Variable() const;
     //: Get the random variable that is the subject of the distribution
 
     virtual DomainC ParentDomain() const;
     //: Get the domain for the parent variables
 
   private:
-    void SetRandomVariable(const RandomVariableC& randomVariable);
+    void SetVariable(const VariableC& variable);
     //: Set the random variable
 
     void SetParentDomain(const DomainC& parentDomain);
     //: Set the domain
 
-    void SetSingleParentVariable(const RandomVariableC& parentVariable);
+    void SetSingleParentVariable(const VariableC& parentVariable);
     //: Sets up a domain with a single parent variable
 
   private:
-    RandomVariableC m_randomVariable;
+    VariableC m_variable;
     //: The random variable
 
     DomainC m_parentDomain;

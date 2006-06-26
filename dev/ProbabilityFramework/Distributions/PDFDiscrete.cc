@@ -29,16 +29,16 @@ namespace RavlProbN {
   }
 
   RealT PDFDiscreteBodyC::MeasureProbability(const RandomVariableValueC& value) const {
-    if (value.RandomVariable() != RandomVariable())
+    if (value.Variable() != Variable())
       throw ExceptionC("ProbabilityDistributionDiscreteBodyC::MeasureProbability(), value doesn't match variable of this distribution");
-    RealT probability;
+    RealT probability = 0.0;
     if (!m_probabilityLookupTable.Lookup(value, probability))
       throw ExceptionC("ProbabilityDistributionDiscreteBodyC::MeasureProbability(), couldn't find value in table");
     return probability;
   }
 
   RandomVariableDiscreteC PDFDiscreteBodyC::RandomVariableDiscrete() const {
-    return RandomVariableDiscreteC(RandomVariable());
+    return RandomVariableDiscreteC(Variable());
   }
 
   void PDFDiscreteBodyC::SetProbabilityLookupTable(const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable) {
@@ -49,7 +49,7 @@ namespace RavlProbN {
     for (HashIterC<RandomVariableValueDiscreteC,RealT> it(probabilityLookupTable); it; it++) {
       if (*it < 0.0)
         throw ExceptionC("ProbabilityDistributionDiscreteBodyC::SetProbabilityLookupTable(), table can't have negative entries");
-      if (it.Key().RandomVariable() != RandomVariable())
+      if (it.Key().Variable() != Variable())
         throw ExceptionC("ProbabilityDistributionDiscreteBodyC::SetProbabilityLookupTable(), lookup table entry doesn't match random variable!");
       sum += *it;
     }

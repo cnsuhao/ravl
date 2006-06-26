@@ -14,7 +14,7 @@ namespace RavlProbN {
   using namespace RavlN;
   
   CPDPriorPDFBodyC::CPDPriorPDFBodyC(const ProbabilityDistributionC& probabilityDistribution)
-    : CPDAbstractBodyC(probabilityDistribution.RandomVariable(), DomainC(HSetC<RandomVariableC>())) {
+    : CPDAbstractBodyC(probabilityDistribution.Variable(), DomainC(HSetC<VariableC>())) {
     SetProbabilityDistribution(probabilityDistribution);
   }
 

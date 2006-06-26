@@ -15,7 +15,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  DomainBodyC::DomainBodyC(const HSetC<RandomVariableC>& variables) {
+  DomainBodyC::DomainBodyC(const HSetC<VariableC>& variables) {
     SetVariables(variables);
   }
 
@@ -26,7 +26,7 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("DomainBodyC(istream &), Unrecognised version number in stream.");
-    HSetC<RandomVariableC> variables;
+    HSetC<VariableC> variables;
     in >> variables;
     SetVariables(variables);
   }
@@ -38,7 +38,7 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("DomainBodyC(BinIStream &), Unrecognised version number in stream.");
-    HSetC<RandomVariableC> variables;
+    HSetC<VariableC> variables;
     in >> variables;
     SetVariables(variables);
   }
@@ -67,13 +67,13 @@ namespace RavlProbN {
       return true;
     if (NumVariables() != other.NumVariables())
       return false;
-    for (HSetIterC<RandomVariableC> ht(Variables()); ht; ht++)
+    for (HSetIterC<VariableC> ht(Variables()); ht; ht++)
       if (!other.Variables().Contains(*ht))
         return false;
     return true;
   }
 
-  bool DomainBodyC::Contains(const RandomVariableC& variable) const {
+  bool DomainBodyC::Contains(const VariableC& variable) const {
     //:FIXME- depends on choice of collection
     if (!variable.IsValid())
     	return false;
@@ -84,37 +84,37 @@ namespace RavlProbN {
     return Variables().Size();
   }
 
-  const HSetC<RandomVariableC>& DomainBodyC::Variables() const {
+  const HSetC<VariableC>& DomainBodyC::Variables() const {
     return m_variables;
   }
 
-  const RandomVariableC& DomainBodyC::Variable(IndexC index) const {
+  const VariableC& DomainBodyC::Variable(IndexC index) const {
     if (index < 0 || index >= NumVariables())
       throw ExceptionC("DomainBodyC::Variable(), index too big");
-    HSetIterC<RandomVariableC> it(Variables());
+    HSetIterC<VariableC> it(Variables());
     while(index--)
       it++;
     return *it;
   }
 
-  void DomainBodyC::SetVariables(const HSetC<RandomVariableC>& variables) {
+  void DomainBodyC::SetVariables(const HSetC<VariableC>& variables) {
     //:FIXME- what collection for efficiency?
     m_variables = variables.Copy();
   }
 
-  IndexC DomainBodyC::Index(const RandomVariableC& variable) const {
+  IndexC DomainBodyC::Index(const VariableC& variable) const {
   	if (!variable.IsValid())
   		throw ExceptionC("DomainBodyC::Index(), invalid variable");
     //:FIXME- this should probably be implemented using hash table
     IndexC index(0);
-    for (HSetIterC<RandomVariableC> it(Variables()); it; it++, index++)
+    for (HSetIterC<VariableC> it(Variables()); it; it++, index++)
       if (*it == variable)
         return index;
     throw ExceptionC("DomainBodyC::Index(), couldn't find variable");
   }
 
   StringC DomainBodyC::ToString() const {
-    HSetIterC<RandomVariableC> it(Variables());
+    HSetIterC<VariableC> it(Variables());
     StringC string = it->Name();
     for (it++; it; it++) {
       string += ",";
@@ -125,7 +125,7 @@ namespace RavlProbN {
 
   UIntT DomainBodyC::Hash() const {
     UIntT hash = 0;
-    for (HSetIterC<RandomVariableC> it(Variables()); it; it++)
+    for (HSetIterC<VariableC> it(Variables()); it; it++)
       hash += it->Hash();
     return hash;
   }

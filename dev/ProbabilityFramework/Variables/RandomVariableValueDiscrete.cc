@@ -102,7 +102,7 @@ namespace RavlProbN {
   }
 
   RandomVariableDiscreteC RandomVariableValueDiscreteBodyC::RandomVariableDiscrete() const {
-    return RandomVariableDiscreteC(RandomVariable());
+    return RandomVariableDiscreteC(Variable());
   }
 
   static TypeNameC type1(typeid(RandomVariableValueDiscreteC),"RavlProbN::RandomVariableValueDiscreteC");

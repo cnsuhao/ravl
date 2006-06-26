@@ -24,7 +24,7 @@ class PropositionTest: public CppUnit::TestCase {
 private:
 	DomainC m_domain;
 	PropositionC m_proposition;
-	HSetC<RandomVariableC> m_variables;
+	HSetC<VariableC> m_variables;
 	HSetC<RandomVariableValueC> m_values;
 public:
 	void setUp() {
@@ -80,20 +80,20 @@ public:
 		m_proposition.Value(-1);
 	}
 	void testSubProposition() {
-		HSetC<RandomVariableC> variables;
+		HSetC<VariableC> variables;
 		variables.Insert(RandomVariableBooleanC("boolean"));
 		CPPUNIT_ASSERT( m_proposition.SubProposition(DomainC(variables)).NumValues() == 1 );
 	}
 	
 	void testSubPropositionThrows() {
-		HSetC<RandomVariableC> variables;
+		HSetC<VariableC> variables;
 		variables.Insert(RandomVariableBooleanC("invalid"));
 		m_proposition.SubProposition(DomainC(variables));
 	}
 	
 	void testEquality() {
 		PropositionC secondProposition(m_domain, m_values);
-		HSetC<RandomVariableC> variables;
+		HSetC<VariableC> variables;
 		variables.Insert(RandomVariableBooleanC("boolean"));
 		PropositionC subProposition = m_proposition.SubProposition(DomainC(variables));
 		CPPUNIT_ASSERT( m_proposition == m_proposition );

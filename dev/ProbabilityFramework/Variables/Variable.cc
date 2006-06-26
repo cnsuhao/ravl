@@ -8,41 +8,41 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariable.hh"
+#include "Ravl/Prob/Variable.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableBodyC::RandomVariableBodyC(const StringC& name) {
+  VariableBodyC::VariableBodyC(const StringC& name) {
     SetName(name);
   }
 
-  RandomVariableBodyC::RandomVariableBodyC(istream &in)
+  VariableBodyC::VariableBodyC(istream &in)
     : RCBodyVC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableBodyC(istream &), Unrecognised version number in stream.");
     StringC name(in);
     SetName(name);
   }
 
-  RandomVariableBodyC::RandomVariableBodyC(BinIStreamC &in)
+  VariableBodyC::VariableBodyC(BinIStreamC &in)
     : RCBodyVC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableBodyC(BinIStream &), Unrecognised version number in stream.");
     StringC name;
     in >> name;
     SetName(name);
   }
   
-  bool RandomVariableBodyC::Save (ostream &out) const {
+  bool VariableBodyC::Save (ostream &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
@@ -50,7 +50,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableBodyC::Save (BinOStreamC &out) const {
+  bool VariableBodyC::Save (BinOStreamC &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
@@ -58,48 +58,48 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableBodyC::~RandomVariableBodyC() {
+  VariableBodyC::~VariableBodyC() {
   }
 
-  const StringC& RandomVariableBodyC::Name() const {
+  const StringC& VariableBodyC::Name() const {
     return m_name;
   }
 
-  void RandomVariableBodyC::SetName(const StringC& name) {
+  void VariableBodyC::SetName(const StringC& name) {
     m_name = downcase(name);
     m_name[0] = toupper(m_name[0]);
   }
 
-  bool RandomVariableBodyC::operator==(const RandomVariableC& other) const {
+  bool VariableBodyC::operator==(const VariableC& other) const {
     return Name() == other.Name();
   }
 
-  UIntT RandomVariableBodyC::Hash() const {
+  UIntT VariableBodyC::Hash() const {
     return Name().Hash();
   }
 
-  ostream &operator<<(ostream &s,const RandomVariableC &obj) {
+  ostream &operator<<(ostream &s,const VariableC &obj) {
     obj.Save(s);
     return s;
   }
   
-  istream &operator>>(istream &s,RandomVariableC &obj) {
-    obj = RandomVariableC(s);
+  istream &operator>>(istream &s,VariableC &obj) {
+    obj = VariableC(s);
     return s;
   }
 
-  BinOStreamC &operator<<(BinOStreamC &s,const RandomVariableC &obj) {
+  BinOStreamC &operator<<(BinOStreamC &s,const VariableC &obj) {
     obj.Save(s);
     return s;
   }
     
-  BinIStreamC &operator>>(BinIStreamC &s,RandomVariableC &obj) {
-    obj = RandomVariableC(s);
+  BinIStreamC &operator>>(BinIStreamC &s,VariableC &obj) {
+    obj = VariableC(s);
     return s;
   }
  
-  static TypeNameC type1(typeid(RandomVariableC),"RavlProbN::RandomVariableC");
+  static TypeNameC type1(typeid(VariableC),"RavlProbN::VariableC");
 
-  RAVL_VIRTUALCONSTRUCTOR_HANDLE(RandomVariableBodyC,RandomVariableC,RCHandleVC<RandomVariableBodyC>);
+  RAVL_VIRTUALCONSTRUCTOR_HANDLE(VariableBodyC,VariableC,RCHandleVC<VariableBodyC>);
   
 }

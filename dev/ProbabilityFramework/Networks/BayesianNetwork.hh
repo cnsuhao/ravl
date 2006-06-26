@@ -28,7 +28,7 @@ namespace RavlProbN {
     virtual ~BayesianNetworkBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC CalculateDistribution(const RandomVariableC& variable, const PropositionC& evidence) const=0;
+    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const=0;
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
@@ -55,7 +55,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    ProbabilityDistributionC CalculateDistribution(const RandomVariableC& variable, const PropositionC& evidence) const
+    ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const
     { return Body().CalculateDistribution(variable, evidence); }
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for

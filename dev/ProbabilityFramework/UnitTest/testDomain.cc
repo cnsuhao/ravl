@@ -22,7 +22,7 @@ class DomainTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE_END();
 private:
 	DomainC m_domain;
-	HSetC<RandomVariableC> m_variables;
+	HSetC<VariableC> m_variables;
 public:
 	void setUp() {
 		m_variables.Insert(RandomVariableBooleanC("boolean"));
@@ -40,7 +40,7 @@ public:
 	
 	void testEquality() {
 		DomainC secondDomain(m_variables);
-		HSetC<RandomVariableC> emptySet;
+		HSetC<VariableC> emptySet;
 		DomainC thirdDomain(emptySet);
 		CPPUNIT_ASSERT( m_domain == m_domain );
 		CPPUNIT_ASSERT( m_domain == secondDomain );
@@ -50,9 +50,9 @@ public:
 	}
 	
 	void testContains() {
-		for (HSetIterC<RandomVariableC> it(m_variables); it; it++)
+		for (HSetIterC<VariableC> it(m_variables); it; it++)
 			CPPUNIT_ASSERT( m_domain.Contains(*it) == true );
-		CPPUNIT_ASSERT( m_domain.Contains(RandomVariableC()) == false);
+		CPPUNIT_ASSERT( m_domain.Contains(VariableC()) == false);
 		CPPUNIT_ASSERT( m_domain.Contains(RandomVariableBooleanC("bool2")) == false );
 	}
 	
@@ -62,7 +62,7 @@ public:
 	
 	void testVariables() {
 		CPPUNIT_ASSERT( m_domain.Variables().Size() == 3 );
-		for (HSetIterC<RandomVariableC> it(m_variables); it; it++)
+		for (HSetIterC<VariableC> it(m_variables); it; it++)
 			CPPUNIT_ASSERT( m_domain.Variables().Contains(*it) == true );
 	}
 	
@@ -80,12 +80,12 @@ public:
 	}
 	
 	void testIndex() {
-		for (HSetIterC<RandomVariableC> it(m_variables); it; it++)
+		for (HSetIterC<VariableC> it(m_variables); it; it++)
 			CPPUNIT_ASSERT( m_domain.Variable(m_domain.Index(*it)) == *it );
 	}
 	
 	void testIndexThrows() {
-		m_domain.Index(RandomVariableC());
+		m_domain.Index(VariableC());
 		m_domain.Index(RandomVariableBooleanC("bool3"));
 	}
 	

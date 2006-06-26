@@ -40,7 +40,7 @@ namespace RavlProbN {
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables
     //!return: the probability distribution of the random variable
 
-    virtual RandomVariableC RandomVariable() const=0;
+    virtual VariableC Variable() const=0;
     //: Get the random variable that is the subject of the distribution
 
     virtual DomainC ParentDomain() const=0;
@@ -73,8 +73,8 @@ namespace RavlProbN {
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables
     //!return: the probability distribution of the random variable
 
-    RandomVariableC RandomVariable() const
-    { return Body().RandomVariable(); }
+    VariableC Variable() const
+    { return Body().Variable(); }
     //: Get the random variable that is the subject of the distribution
 
     DomainC ParentDomain() const

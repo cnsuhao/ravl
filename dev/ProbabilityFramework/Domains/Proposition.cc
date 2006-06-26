@@ -97,23 +97,23 @@ namespace RavlProbN {
 
   StringC PropositionBodyC::ToString() const {
     HSetIterC<RandomVariableValueC> it(Values());
-    StringC string = it->RandomVariable().Name() + "=" + it->ToString();
+    StringC string = it->Variable().Name() + "=" + it->ToString();
     for (it++; it; it++) {
       string += ",";
-      string += it->RandomVariable().Name() + "=" + it->ToString();
+      string += it->Variable().Name() + "=" + it->ToString();
     }
     return string;
   }
 
   StringC PropositionBodyC::LotteryName() const {
     StringC name = Domain().ToString(); // show all variables
-    HSetC<RandomVariableC> domainSet = Domain().Variables().Copy();
+    HSetC<VariableC> domainSet = Domain().Variables().Copy();
     for (HSetIterC<RandomVariableValueC> it(Values()); it; it++) {
-      domainSet.Remove(it->RandomVariable());
+      domainSet.Remove(it->Variable());
     }
     name += "->(";
     if (domainSet.Size() > 0) {
-      HSetIterC<RandomVariableC> it(domainSet);
+      HSetIterC<VariableC> it(domainSet);
       name += it->Name();
       for (it++; it; it++) {
         name += ",";
@@ -126,12 +126,12 @@ namespace RavlProbN {
 
   PropositionC PropositionBodyC::SubProposition(const DomainC& subDomain) const {
   	// Check that all variables are in current domain!
-  	for (HSetIterC<RandomVariableC> dt(subDomain.Variables()); dt; dt++)
+  	for (HSetIterC<VariableC> dt(subDomain.Variables()); dt; dt++)
   		if (!Domain().Contains(*dt))
   			throw ExceptionC("PropositionBodyC::SubProposition(), invalid new domain variable");
     HSetC<RandomVariableValueC> values;
     for (HSetIterC<RandomVariableValueC> ht(Values()); ht; ht++) {
-      if (subDomain.Variables().Contains(ht->RandomVariable()))
+      if (subDomain.Variables().Contains(ht->Variable()))
         values.Insert(*ht);
     }
     return PropositionC(subDomain, values);
@@ -144,7 +144,7 @@ namespace RavlProbN {
   void PropositionBodyC::SetValues(const HSetC<RandomVariableValueC>& values) {
     //:FIXME- what collection for efficiency?
     for (HSetIterC<RandomVariableValueC> it(values); it; it++)
-      if (!Domain().Contains(it->RandomVariable()))
+      if (!Domain().Contains(it->Variable()))
         throw ExceptionC("PropositionBodyC::SetValues(), value not in domain");
     m_values = values.Copy();
   }

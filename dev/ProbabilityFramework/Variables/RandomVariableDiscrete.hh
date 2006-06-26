@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariable.hh"
+#include "Ravl/Prob/Variable.hh"
 #include "Ravl/HSet.hh"
 
 namespace RavlProbN {
@@ -19,7 +19,7 @@ namespace RavlProbN {
   //! userlevel=Develop
   //: Implementation of a discrete random variable
   class RandomVariableDiscreteBodyC
-    : public RandomVariableBodyC {
+    : public VariableBodyC {
   public:
     RandomVariableDiscreteBodyC(const StringC& name, const HSetC<StringC>& values);
     //: Constructor
@@ -84,7 +84,7 @@ namespace RavlProbN {
   //!cwiz:author
   
   class RandomVariableDiscreteC
-    : public RandomVariableC
+    : public VariableC
   {
   public:
     RandomVariableDiscreteC()
@@ -92,7 +92,7 @@ namespace RavlProbN {
     //: Default constructor makes invalid handle
 
     RandomVariableDiscreteC(const StringC& name, const HSetC<StringC>& values)
-      : RandomVariableC(new RandomVariableDiscreteBodyC(name, values))
+      : VariableC(new RandomVariableDiscreteBodyC(name, values))
     {}
     //: Constructor
     //!param: name - convention is that it starts with a Capital letter, eg Face
@@ -106,8 +106,8 @@ namespace RavlProbN {
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableDiscreteC(const RandomVariableC& variable)
-      : RandomVariableC(dynamic_cast<const RandomVariableDiscreteBodyC *>(BodyPtr(variable)))
+    RandomVariableDiscreteC(const VariableC& variable)
+      : VariableC(dynamic_cast<const RandomVariableDiscreteBodyC *>(BodyPtr(variable)))
     {}
     //: Upcast constructor
     // Creates an invalid handle if types don't match
@@ -130,21 +130,21 @@ namespace RavlProbN {
 
   protected:
     RandomVariableDiscreteC(RandomVariableDiscreteBodyC &bod)
-     : RandomVariableC(bod)
+     : VariableC(bod)
     {}
     //: Body constructor. 
     
     RandomVariableDiscreteC(const RandomVariableDiscreteBodyC *bod)
-     : RandomVariableC(bod)
+     : VariableC(bod)
     {}
     //: Body constructor. 
     
     RandomVariableDiscreteBodyC& Body()
-    { return static_cast<RandomVariableDiscreteBodyC &>(RandomVariableC::Body()); }
+    { return static_cast<RandomVariableDiscreteBodyC &>(VariableC::Body()); }
     //: Body Access. 
     
     const RandomVariableDiscreteBodyC& Body() const
-    { return static_cast<const RandomVariableDiscreteBodyC &>(RandomVariableC::Body()); }
+    { return static_cast<const RandomVariableDiscreteBodyC &>(VariableC::Body()); }
     //: Body Access. 
     
   };

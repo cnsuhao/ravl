@@ -32,7 +32,7 @@ namespace RavlProbN {
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
 
-    virtual RandomVariableC RandomVariable() const=0;
+    virtual VariableC Variable() const=0;
     //: Get the variable for the probability distribution
     
     virtual StringC ToString() const=0;
@@ -57,8 +57,8 @@ namespace RavlProbN {
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
 
-    RandomVariableC RandomVariable() const
-    { return Body().RandomVariable(); }
+    VariableC Variable() const
+    { return Body().Variable(); }
     //: Get the variable for the probability distribution
 
     StringC ToString() const

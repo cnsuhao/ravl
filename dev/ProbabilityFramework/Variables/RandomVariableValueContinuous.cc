@@ -95,7 +95,7 @@ namespace RavlProbN {
   }
 
   RandomVariableContinuousC RandomVariableValueContinuousBodyC::RandomVariableContinuous() const {
-    return RandomVariableContinuousC(RandomVariable());
+    return RandomVariableContinuousC(Variable());
   }
 
   static TypeNameC type1(typeid(RandomVariableValueContinuousC),"RavlProbN::RandomVariableValueContinuousC");

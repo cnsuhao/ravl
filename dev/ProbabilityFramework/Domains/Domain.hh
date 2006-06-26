@@ -12,7 +12,7 @@
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/HSet.hh"
-#include "Ravl/Prob/RandomVariable.hh"
+#include "Ravl/Prob/Variable.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -28,7 +28,7 @@ namespace RavlProbN {
   class DomainBodyC
     : public RCBodyVC {
   public:
-    DomainBodyC(const HSetC<RandomVariableC>& variables);
+    DomainBodyC(const HSetC<VariableC>& variables);
     //: Constructor
     //!param: variables - set of random variables contained in this domain
 
@@ -56,19 +56,19 @@ namespace RavlProbN {
     bool operator==(const DomainBodyC& other) const;
     //: Check if the two domains are equal
 
-    bool Contains(const RandomVariableC& variable) const;
+    bool Contains(const VariableC& variable) const;
     //: Check if the domain contains the specified random variable
 
     SizeT NumVariables() const;
     //: Get the number of variables in the domain
 
-    const HSetC<RandomVariableC>& Variables() const;
+    const HSetC<VariableC>& Variables() const;
     //: Get the random variables in the domain
 
-    const RandomVariableC& Variable(IndexC index) const;
+    const VariableC& Variable(IndexC index) const;
     //: Get a random variable by index
 
-    IndexC Index(const RandomVariableC& variable) const;
+    IndexC Index(const VariableC& variable) const;
     //: Find the index of a specified variable
 
     StringC ToString() const;
@@ -81,11 +81,11 @@ namespace RavlProbN {
     //: Hash function based set of values
 
   private:
-    void SetVariables(const HSetC<RandomVariableC>& variables);
+    void SetVariables(const HSetC<VariableC>& variables);
     //: Set the random variables in the domain
 
   private:
-    HSetC<RandomVariableC> m_variables;
+    HSetC<VariableC> m_variables;
     //: The set of variables
   };
 
@@ -101,7 +101,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    DomainC(const HSetC<RandomVariableC>& variables)
+    DomainC(const HSetC<VariableC>& variables)
       : RCHandleVC<DomainBodyC>(new DomainBodyC(variables))
     {}
 
@@ -137,7 +137,7 @@ namespace RavlProbN {
     //: Check if the two domains are different
     //!cwiz:author
 
-    bool Contains(const RandomVariableC& variable) const
+    bool Contains(const VariableC& variable) const
     { return Body().Contains(variable); }
     //: Check if the domain contains the specified random variable
     //!cwiz:author
@@ -146,15 +146,15 @@ namespace RavlProbN {
     { return Body().NumVariables(); }
     //: Get the number of variables in the domain
 
-    const HSetC<RandomVariableC>& Variables() const
+    const HSetC<VariableC>& Variables() const
     { return Body().Variables(); }
     //: Get the random variables in the domain
 
-    const RandomVariableC& Variable(IndexC index) const
+    const VariableC& Variable(IndexC index) const
     { return Body().Variable(index); }
     //: Get a random variable by index
 
-    IndexC Index(const RandomVariableC& variable) const
+    IndexC Index(const VariableC& variable) const
     { return Body().Index(variable); }
     //: Find the index of a specified variable
 

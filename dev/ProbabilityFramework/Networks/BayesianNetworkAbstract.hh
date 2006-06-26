@@ -23,13 +23,13 @@ namespace RavlProbN {
   class BayesianNetworkAbstractBodyC
     : public BayesianNetworkBodyC {
   public:
-    BayesianNetworkAbstractBodyC(const RCHashC<RandomVariableC,ConditionalProbabilityDistributionC>& nodeCPDs);
+    BayesianNetworkAbstractBodyC(const RCHashC<VariableC,ConditionalProbabilityDistributionC>& nodeCPDs);
     //: Constructor
 
     virtual ~BayesianNetworkAbstractBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC CalculateDistribution(const RandomVariableC& variable, const PropositionC& evidence) const;
+    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const;
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
@@ -39,17 +39,17 @@ namespace RavlProbN {
     //: Get the domain for the network
 
   protected:
-    DListC<RandomVariableC> Variables(const PropositionC& evidence) const;
-    ConditionalProbabilityDistributionC NodeCPD(const RandomVariableC& variable) const;
+    DListC<VariableC> Variables(const PropositionC& evidence) const;
+    ConditionalProbabilityDistributionC NodeCPD(const VariableC& variable) const;
 
   private:
     DomainC m_domain;
     //: The domain for the network
 
-    DListC<RandomVariableC> m_orderedNodes;
+    DListC<VariableC> m_orderedNodes;
     //: Ordered list of random variables in the network domain
 
-    RCHashC<RandomVariableC,ConditionalProbabilityDistributionC> m_nodeCPDs;
+    RCHashC<VariableC,ConditionalProbabilityDistributionC> m_nodeCPDs;
     //: Map of variables to their conditional probability distributions
   };
 

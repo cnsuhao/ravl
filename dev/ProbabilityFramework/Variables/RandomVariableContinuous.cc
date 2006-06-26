@@ -16,13 +16,13 @@ namespace RavlProbN {
   using namespace RavlN;
   
   RandomVariableContinuousBodyC::RandomVariableContinuousBodyC(const StringC& name, const RealRangeC& interval)
-    : RandomVariableBodyC(name)
+    : VariableBodyC(name)
   {
     SetInterval(interval);
   }
 
   RandomVariableContinuousBodyC::RandomVariableContinuousBodyC(istream &in)
-    : RandomVariableBodyC(in)
+    : VariableBodyC(in)
   {
     IntT version;
     in >> version;
@@ -34,7 +34,7 @@ namespace RavlProbN {
   }
 
   RandomVariableContinuousBodyC::RandomVariableContinuousBodyC(BinIStreamC &in)
-    : RandomVariableBodyC(in)
+    : VariableBodyC(in)
   {
     IntT version;
     in >> version;
@@ -46,7 +46,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableContinuousBodyC::Save (ostream &out) const {
-    if(!RandomVariableBodyC::Save(out))
+    if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
     out << ' ' << version << ' ' << Interval();
@@ -54,7 +54,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableContinuousBodyC::Save (BinOStreamC &out) const {
-    if(!RandomVariableBodyC::Save(out))
+    if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
     out << version << Interval();
@@ -83,6 +83,6 @@ namespace RavlProbN {
 
   static TypeNameC type1(typeid(RandomVariableContinuousC),"RavlProbN::RandomVariableContinuousC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableContinuousBodyC,RandomVariableContinuousC,RandomVariableC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableContinuousBodyC,RandomVariableContinuousC,VariableC);
   
 }

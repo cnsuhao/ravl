@@ -16,18 +16,18 @@ namespace RavlProbN {
   using namespace RavlN;
   
   RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(const StringC& name, const HSetC<StringC>& values)
-    : RandomVariableBodyC(name)
+    : VariableBodyC(name)
   {
     SetValues(values);
   }
 
   RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(const StringC& name)
-    : RandomVariableBodyC(name)
+    : VariableBodyC(name)
   {
   }
 
   RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(istream &in)
-    : RandomVariableBodyC(in)
+    : VariableBodyC(in)
   {
     IntT version;
     in >> version;
@@ -39,7 +39,7 @@ namespace RavlProbN {
   }
 
   RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(BinIStreamC &in)
-    : RandomVariableBodyC(in)
+    : VariableBodyC(in)
   {
     IntT version;
     in >> version;
@@ -51,7 +51,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableDiscreteBodyC::Save (ostream &out) const {
-    if(!RandomVariableBodyC::Save(out))
+    if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
     out << ' ' << version << ' ' << Values();
@@ -59,7 +59,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableDiscreteBodyC::Save (BinOStreamC &out) const {
-    if(!RandomVariableBodyC::Save(out))
+    if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
     out << version << Values();
@@ -117,6 +117,6 @@ namespace RavlProbN {
 
   static TypeNameC type1(typeid(RandomVariableDiscreteC),"RavlProbN::RandomVariableDiscreteC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableDiscreteBodyC,RandomVariableDiscreteC,RandomVariableC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableDiscreteBodyC,RandomVariableDiscreteC,VariableC);
   
 }

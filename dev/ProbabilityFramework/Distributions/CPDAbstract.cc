@@ -14,13 +14,13 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  CPDAbstractBodyC::CPDAbstractBodyC(const RandomVariableC& randomVariable, const DomainC& parentDomain) {
-    SetRandomVariable(randomVariable);
+  CPDAbstractBodyC::CPDAbstractBodyC(const VariableC& variable, const DomainC& parentDomain) {
+    SetVariable(variable);
     SetParentDomain(parentDomain);
   }
 
-  CPDAbstractBodyC::CPDAbstractBodyC(const RandomVariableC& randomVariable, const RandomVariableC& parentVariable) {
-    SetRandomVariable(randomVariable);
+  CPDAbstractBodyC::CPDAbstractBodyC(const VariableC& variable, const VariableC& parentVariable) {
+    SetVariable(variable);
     SetSingleParentVariable(parentVariable);
   }
 
@@ -28,30 +28,30 @@ namespace RavlProbN {
   }
 
   RealT CPDAbstractBodyC::ConditionalProbability(const RandomVariableValueC& value, const PropositionC& parentValues) const {
-    if (value.RandomVariable() != RandomVariable())
+    if (value.Variable() != Variable())
       throw ExceptionC("CPDAbstractBodyC::ConditionalProbability(), value isn't of correct variable");
     ProbabilityDistributionC pdf(ConditionalDistribution(parentValues));
     return pdf.MeasureProbability(value);
   }
 
-  RandomVariableC CPDAbstractBodyC::RandomVariable() const {
-    return m_randomVariable;
+  VariableC CPDAbstractBodyC::Variable() const {
+    return m_variable;
   }
 
   DomainC CPDAbstractBodyC::ParentDomain() const {
     return m_parentDomain;
   }
 
-  void CPDAbstractBodyC::SetRandomVariable(const RandomVariableC& randomVariable) {
-    m_randomVariable = randomVariable;
+  void CPDAbstractBodyC::SetVariable(const VariableC& variable) {
+    m_variable = variable;
   }
 
   void CPDAbstractBodyC::SetParentDomain(const DomainC& parentDomain) {
     m_parentDomain = parentDomain;
   }
 
-  void CPDAbstractBodyC::SetSingleParentVariable(const RandomVariableC& parentVariable) {
-    HSetC<RandomVariableC> parents;
+  void CPDAbstractBodyC::SetSingleParentVariable(const VariableC& parentVariable) {
+    HSetC<VariableC> parents;
     parents.Insert(parentVariable);
     m_parentDomain = DomainC(parents);
   }

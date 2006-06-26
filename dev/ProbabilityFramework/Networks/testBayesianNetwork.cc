@@ -25,11 +25,11 @@ int main() {
     RandomVariableBooleanC JohnCalls("JohnCalls");
     RandomVariableBooleanC MaryCalls("MaryCalls");
     // create parent domains
-    HSetC<RandomVariableC> alarmParents;
+    HSetC<VariableC> alarmParents;
     alarmParents.Insert(Burglary);
     alarmParents.Insert(Earthquake);
     DomainC alarmParentDomain(alarmParents);
-    HSetC<RandomVariableC> johnCallsParents;
+    HSetC<VariableC> johnCallsParents;
     johnCallsParents.Insert(Alarm);
     DomainC johnCallsParentDomain(johnCallsParents);
     DomainC maryCallsParentDomain(johnCallsParents);
@@ -69,7 +69,7 @@ int main() {
     CPDDiscreteDiscreteC johnCallsCPT(JohnCalls, johnCallsParentDomain, johnCallsPDFs);
     CPDDiscreteDiscreteC maryCallsCPT(MaryCalls, maryCallsParentDomain, maryCallsPDFs);
     // create the bayesian network
-    RCHashC<RandomVariableC,ConditionalProbabilityDistributionC> nodeCPDs;
+    RCHashC<VariableC,ConditionalProbabilityDistributionC> nodeCPDs;
     nodeCPDs.Insert(Burglary, burglaryCPT);
     nodeCPDs.Insert(Earthquake, earthquakeCPT);
     nodeCPDs.Insert(Alarm, alarmCPT);

@@ -23,16 +23,16 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  BayesianNetworkAbstractBodyC::BayesianNetworkAbstractBodyC(const RCHashC<RandomVariableC,ConditionalProbabilityDistributionC>& nodeCPDs) {
-    RCHashC<RandomVariableC,ConditionalProbabilityDistributionC> nodeCPDsCopy = nodeCPDs.Copy();
+  BayesianNetworkAbstractBodyC::BayesianNetworkAbstractBodyC(const RCHashC<VariableC,ConditionalProbabilityDistributionC>& nodeCPDs) {
+    RCHashC<VariableC,ConditionalProbabilityDistributionC> nodeCPDsCopy = nodeCPDs.Copy();
     m_nodeCPDs = nodeCPDs.Copy();
-    HSetC<RandomVariableC> variables;
+    HSetC<VariableC> variables;
     while (nodeCPDsCopy.Size() > 0) {
       UIntT sizeCPDs = nodeCPDsCopy.Size();
-      for (HashIterC<RandomVariableC,ConditionalProbabilityDistributionC> ht(nodeCPDsCopy); ht; ht++) {
+      for (HashIterC<VariableC,ConditionalProbabilityDistributionC> ht(nodeCPDsCopy); ht; ht++) {
         // check if all parents of current node are already in variables
         bool parentsAlreadyPresent = true;
-        for (HSetIterC<RandomVariableC> st(ht.Data().ParentDomain().Variables()); st; st++) {
+        for (HSetIterC<VariableC> st(ht.Data().ParentDomain().Variables()); st; st++) {
           if (!variables.Contains(*st)) {
             parentsAlreadyPresent = false;
             break;
@@ -49,7 +49,7 @@ namespace RavlProbN {
         throw ExceptionC("BayesianNetworkAbstractBodyC::BayesianNetworkAbstractBodyC(), graph must be acyclic");
     }
 #if DODEBUG
-    for (DLIterC<RandomVariableC> it(m_orderedNodes); it; it++)
+    for (DLIterC<VariableC> it(m_orderedNodes); it; it++)
       SysLog(SYSLOG_DEBUG) << "BayesianNetworkAbstractBodyC::BayesianNetworkAbstractBodyC(), " << it->ToString();
 #endif
     m_domain = DomainC(variables);
@@ -61,14 +61,14 @@ namespace RavlProbN {
   //: This function's implementation is based on ENUMERATION-ASK(X,e,bn) from
   //: Figure 14.9 in Artificial Intelligence: A Modern Approach, 2nd edition
 
-  ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const RandomVariableC& variable, const PropositionC& evidence) const {
+  ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const {
     RandomVariableDiscreteC discrete(variable);
     if (!discrete.IsValid())
       throw ExceptionC("BayesianNetworkSimpleBodyC::CalculateDistribution(), only works for discrete variables");
     // check if evidence contains variable
     RandomVariableValueDiscreteC prior;
     for (HSetIterC<RandomVariableValueC> ht(evidence.Values()); ht; ht++) {
-      if (ht->RandomVariable() == discrete)
+      if (ht->Variable() == discrete)
         prior = *ht;
     }
     // calculate probability of each value independently
@@ -99,12 +99,12 @@ namespace RavlProbN {
     return m_domain; 
   }
 
-  DListC<RandomVariableC> BayesianNetworkAbstractBodyC::Variables(const PropositionC& evidence) const {
+  DListC<VariableC> BayesianNetworkAbstractBodyC::Variables(const PropositionC& evidence) const {
     //:FIXME- this ought to consider the markov blanket of the evidence
     return m_orderedNodes;
   }
 
-  ConditionalProbabilityDistributionC BayesianNetworkAbstractBodyC::NodeCPD(const RandomVariableC& variable) const {
+  ConditionalProbabilityDistributionC BayesianNetworkAbstractBodyC::NodeCPD(const VariableC& variable) const {
     return m_nodeCPDs[variable];
   }
 

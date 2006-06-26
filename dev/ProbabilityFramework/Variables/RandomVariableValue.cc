@@ -15,8 +15,8 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueBodyC::RandomVariableValueBodyC(const RandomVariableC& variable) {
-    SetRandomVariable(variable);
+  RandomVariableValueBodyC::RandomVariableValueBodyC(const VariableC& variable) {
+    SetVariable(variable);
   }
 
   RandomVariableValueBodyC::RandomVariableValueBodyC(istream &in)
@@ -26,8 +26,8 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("RandomVariableValueBodyC(istream &), Unrecognised version number in stream.");
-    RandomVariableC variable(in);
-    SetRandomVariable(variable);
+    VariableC variable(in);
+    SetVariable(variable);
   }
 
   RandomVariableValueBodyC::RandomVariableValueBodyC(BinIStreamC &in)
@@ -37,15 +37,15 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("RandomVariableValueBodyC(BinIStream &), Unrecognised version number in stream.");
-    RandomVariableC variable(in);
-    SetRandomVariable(variable);
+    VariableC variable(in);
+    SetVariable(variable);
   }
   
   bool RandomVariableValueBodyC::Save (ostream &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
-    out << ' ' << version << ' ' << RandomVariable();
+    out << ' ' << version << ' ' << Variable();
     return true;
   }
   
@@ -53,29 +53,29 @@ namespace RavlProbN {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
-    out << version << RandomVariable();
+    out << version << Variable();
     return true;
   }
 
   RandomVariableValueBodyC::~RandomVariableValueBodyC() {
   }
 
-  const RandomVariableC& RandomVariableValueBodyC::RandomVariable() const {
+  const VariableC& RandomVariableValueBodyC::Variable() const {
     return m_variable;
   }
 
-  void RandomVariableValueBodyC::SetRandomVariable(const RandomVariableC& variable) {
+  void RandomVariableValueBodyC::SetVariable(const VariableC& variable) {
     if (!variable.IsValid())
-      throw ExceptionC("RandomVariableValueBodyC::SetRandomVariable() with invalid variable");
+      throw ExceptionC("RandomVariableValueBodyC::SetVariable() with invalid variable");
     m_variable = variable;
   }
 
   bool RandomVariableValueBodyC::operator==(const RandomVariableValueC& other) const {
-    return RandomVariable() == other.RandomVariable();
+    return Variable() == other.Variable();
   }
 
   UIntT RandomVariableValueBodyC::Hash() const {
-    return RandomVariable().Hash();
+    return Variable().Hash();
   }
 
   ostream &operator<<(ostream &s,const RandomVariableValueC &obj) {

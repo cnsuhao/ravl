@@ -10,7 +10,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariable.hh"
+#include "Ravl/Prob/Variable.hh"
 #include "Ravl/RealRange1d.hh"
 
 namespace RavlProbN {
@@ -19,7 +19,7 @@ namespace RavlProbN {
   //! userlevel=Develop
   //: Implementation of a continuous random variable
   class RandomVariableContinuousBodyC
-    : public RandomVariableBodyC {
+    : public VariableBodyC {
   public:
     RandomVariableContinuousBodyC(const StringC& name, const RealRangeC& interval);
     //: Constructor
@@ -67,7 +67,7 @@ namespace RavlProbN {
   //!cwiz:author
   
   class RandomVariableContinuousC
-    : public RandomVariableC
+    : public VariableC
   {
   public:
     RandomVariableContinuousC()
@@ -75,7 +75,7 @@ namespace RavlProbN {
     //: Default constructor makes invalid handle
 
     RandomVariableContinuousC(const StringC& name, const RealRangeC& interval)
-      : RandomVariableC(new RandomVariableContinuousBodyC(name, interval))
+      : VariableC(new RandomVariableContinuousBodyC(name, interval))
     {}
     //: Constructor
     //!param: name - convention is that it starts with a Capital letter, eg Face
@@ -89,8 +89,8 @@ namespace RavlProbN {
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableContinuousC(const RandomVariableC& variable)
-      : RandomVariableC(dynamic_cast<const RandomVariableContinuousBodyC *>(BodyPtr(variable)))
+    RandomVariableContinuousC(const VariableC& variable)
+      : VariableC(dynamic_cast<const RandomVariableContinuousBodyC *>(BodyPtr(variable)))
     {}
     //: Upcast constructor
     // Creates an invalid handle if types don't match
@@ -101,21 +101,21 @@ namespace RavlProbN {
 
   protected:
     RandomVariableContinuousC(RandomVariableContinuousBodyC &bod)
-     : RandomVariableC(bod)
+     : VariableC(bod)
     {}
     //: Body constructor. 
     
     RandomVariableContinuousC(const RandomVariableContinuousBodyC *bod)
-     : RandomVariableC(bod)
+     : VariableC(bod)
     {}
     //: Body constructor. 
     
     RandomVariableContinuousBodyC& Body()
-    { return static_cast<RandomVariableContinuousBodyC &>(RandomVariableC::Body()); }
+    { return static_cast<RandomVariableContinuousBodyC &>(VariableC::Body()); }
     //: Body Access. 
     
     const RandomVariableContinuousBodyC& Body() const
-    { return static_cast<const RandomVariableContinuousBodyC &>(RandomVariableC::Body()); }
+    { return static_cast<const RandomVariableContinuousBodyC &>(VariableC::Body()); }
     //: Body Access. 
     
   };

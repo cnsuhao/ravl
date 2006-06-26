@@ -86,7 +86,7 @@ namespace RavlProbN {
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableBooleanC(const RandomVariableC& variable)
+    RandomVariableBooleanC(const VariableC& variable)
       : RandomVariableDiscreteC(dynamic_cast<const RandomVariableBooleanBodyC *>(BodyPtr(variable)))
     {}
     //: Upcast constructor

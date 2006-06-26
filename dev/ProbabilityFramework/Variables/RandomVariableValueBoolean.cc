@@ -78,7 +78,7 @@ namespace RavlProbN {
   }
 
   RandomVariableBooleanC RandomVariableValueBooleanBodyC::RandomVariableBoolean() const {
-    return RandomVariableBooleanC(RandomVariable());
+    return RandomVariableBooleanC(Variable());
   }
 
   static TypeNameC type1(typeid(RandomVariableValueBooleanC),"RavlProbN::RandomVariableValueBooleanC");

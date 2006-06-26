@@ -25,7 +25,7 @@ namespace RavlProbN {
     // check that there is at least one sample!
     if (propositionPairs.Size() == 0)
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), propositionPairs must contain at least one sample!");
-    RandomVariableContinuousC dependentVariable = CheckDependentVariable(propositionPairs.First().Data1().RandomVariable());
+    RandomVariableContinuousC dependentVariable = CheckDependentVariable(propositionPairs.First().Data1().Variable());
     // check that the domain is suitable
     DomainC parentDomain = propositionPairs.First().Data2().Domain();
     if (parentDomain.NumVariables() != 1)
@@ -35,7 +35,7 @@ namespace RavlProbN {
     RCHashC<RandomVariableValueDiscreteC,DListC<RealT> > valuesByParent;
     // put each entry into the correct list
     for (DLIterC<Tuple2C<RandomVariableValueC,PropositionC> > it(propositionPairs); it; it++) {
-      if (it->Data1().RandomVariable() != dependentVariable)
+      if (it->Data1().Variable() != dependentVariable)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), incorrect dependent value in sample");
       if (it->Data2().Domain() != parentDomain)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), all propositions must belong to correct domain");

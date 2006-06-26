@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Ravl/Prob/RandomVariable.hh"
+#include "Ravl/Prob/Variable.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -28,7 +28,7 @@ namespace RavlProbN {
   class RandomVariableValueBodyC
     : public RCBodyVC {
   public:
-    RandomVariableValueBodyC(const RandomVariableC& variable);
+    RandomVariableValueBodyC(const VariableC& variable);
     //: Constructor
     //!param: variable - the variable that this is an instance of
 
@@ -53,7 +53,7 @@ namespace RavlProbN {
     virtual ~RandomVariableValueBodyC();
     //: Destructor
 
-    const RandomVariableC& RandomVariable() const;
+    const VariableC& Variable() const;
     //: Get access to the random variable that this is an instance of
 
     virtual StringC ToString() const =0;
@@ -66,12 +66,12 @@ namespace RavlProbN {
     //: Hash function based on variable
 
   private:
-    void SetRandomVariable(const RandomVariableC& variable);
+    void SetVariable(const VariableC& variable);
     //: Set the random variable
     //!param: variable - the variable that this is an instance of
 
   private:
-    RandomVariableC m_variable;
+    VariableC m_variable;
     //: The random variable
   };
 
@@ -109,8 +109,8 @@ namespace RavlProbN {
     //!return: true if the object was successfully saved
     //!cwiz:author
     
-    const RandomVariableC& RandomVariable() const
-    { return Body().RandomVariable(); }
+    const VariableC& Variable() const
+    { return Body().Variable(); }
     //: Get access to the random variable that this is an instance of
     //!cwiz:author
 

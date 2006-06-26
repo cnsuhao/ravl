@@ -44,7 +44,7 @@ namespace RavlProbN {
       throw ExceptionC("CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(), need table for each value");
     // check that all tables are for the correct variable
     for (HashIterC<RandomVariableValueDiscreteC,PDFContinuousAbstractC> ht(probabilityDistributionTable); ht; ht++) {
-      if (ht.Key().RandomVariable() != ParentVariable())
+      if (ht.Key().Variable() != ParentVariable())
         throw ExceptionC("CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(), each table must be for a value of the parent variable");
     }
     m_probabilityDistributionTable = probabilityDistributionTable.Copy();
