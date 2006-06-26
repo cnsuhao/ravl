@@ -87,8 +87,8 @@ namespace RavlProbN {
   }
 
   const RandomVariableValueC& PropositionBodyC::Value(IndexC index) const {
-    if (index > NumValues())
-      throw ExceptionC("PropositionBodyC::Value(), index too big");
+    if (index < 0 || index >= NumValues())
+      throw ExceptionC("PropositionBodyC::Value(), index out of range");
     HSetIterC<RandomVariableValueC> it(Values());
     while(index--)
       it++;
@@ -125,6 +125,10 @@ namespace RavlProbN {
   }
 
   PropositionC PropositionBodyC::SubProposition(const DomainC& subDomain) const {
+  	// Check that all variables are in current domain!
+  	for (HSetIterC<RandomVariableC> dt(subDomain.Variables()); dt; dt++)
+  		if (!Domain().Contains(*dt))
+  			throw ExceptionC("PropositionBodyC::SubProposition(), invalid new domain variable");
     HSetC<RandomVariableValueC> values;
     for (HSetIterC<RandomVariableValueC> ht(Values()); ht; ht++) {
       if (subDomain.Variables().Contains(ht->RandomVariable()))

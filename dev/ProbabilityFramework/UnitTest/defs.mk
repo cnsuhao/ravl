@@ -23,11 +23,12 @@ HEADERS=
 
 SOURCES=
 
-MAINS=
+MAINS= testRunner.cc
 
 EXAMPLES= testRunnerQt.cc
 
 MUSTLINK= testDomain.cc \
+		testProposition.cc \
 		testRandomVariableBoolean.cc \
 		testRandomVariableContinuous.cc \
 		testRandomVariableDiscrete.cc \
