@@ -20,7 +20,7 @@ namespace RavlProbN {
   PDFContinuousDesignerNormalBodyC::~PDFContinuousDesignerNormalBodyC() {
   }
 
-  PDFContinuousAbstractC PDFContinuousDesignerNormalBodyC::CreatePDF(const RandomVariableContinuousC& variable, const DListC<RealT>& realSamples) const {
+  PDFContinuousAbstractC PDFContinuousDesignerNormalBodyC::CreatePDF(const VariableContinuousC& variable, const DListC<RealT>& realSamples) const {
     RealT n = realSamples.Size();
     RealT sum = 0;
     RealT sum2 = 0;

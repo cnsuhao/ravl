@@ -13,11 +13,11 @@ class RandomVariableValueContinuousTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testEquality );
 	CPPUNIT_TEST_SUITE_END();
 private:
-	RandomVariableContinuousC m_variable;
+	VariableContinuousC m_variable;
 	RandomVariableValueContinuousC m_value0, m_value0_5, m_value1;
 public:
 	void setUp() {
-		m_variable = RandomVariableContinuousC("variable", RealRangeC(0.0, 1.0));
+		m_variable = VariableContinuousC("variable", RealRangeC(0.0, 1.0));
 		m_value0 = RandomVariableValueContinuousC(m_variable, 0.0);
 		m_value0_5 = RandomVariableValueContinuousC(m_variable, 0.5);
 		m_value1 = RandomVariableValueContinuousC(m_variable, 1.0);

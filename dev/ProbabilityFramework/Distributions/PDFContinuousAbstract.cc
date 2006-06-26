@@ -13,7 +13,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PDFContinuousAbstractBodyC::PDFContinuousAbstractBodyC(const RandomVariableContinuousC& variable)
+  PDFContinuousAbstractBodyC::PDFContinuousAbstractBodyC(const VariableContinuousC& variable)
     : PDFAbstractBodyC(variable)
   {
   }
@@ -33,8 +33,8 @@ namespace RavlProbN {
     return MeasureProbability(value.Value());
   }
 
-  RandomVariableContinuousC PDFContinuousAbstractBodyC::RandomVariableContinuous() const {
-    return (RandomVariableContinuousC)Variable();
+  VariableContinuousC PDFContinuousAbstractBodyC::VariableContinuous() const {
+    return (VariableContinuousC)Variable();
   }
 
   StringC PDFContinuousAbstractBodyC::ToString() const {

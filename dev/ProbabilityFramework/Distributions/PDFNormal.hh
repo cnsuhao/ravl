@@ -20,7 +20,7 @@ namespace RavlProbN {
   class PDFNormalBodyC
     : public PDFContinuousAbstractBodyC {
   public:
-    PDFNormalBodyC(const RandomVariableContinuousC& variable, RealT mean, RealT variance);
+    PDFNormalBodyC(const VariableContinuousC& variable, RealT mean, RealT variance);
     //: Constructor
     //!param: variable - the random variable for the distribution
     //!param: mean - the mean of the distribution
@@ -57,7 +57,7 @@ namespace RavlProbN {
     : public PDFContinuousAbstractC
   {
   public:
-    PDFNormalC(const RandomVariableContinuousC& variable, RealT mean, RealT variance)
+    PDFNormalC(const VariableContinuousC& variable, RealT mean, RealT variance)
       : PDFContinuousAbstractC(new PDFNormalBodyC(variable, mean, variance))
     {}
     //: Constructor

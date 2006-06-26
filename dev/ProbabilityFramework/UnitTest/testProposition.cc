@@ -30,7 +30,7 @@ public:
 	void setUp() {
 		VariableBooleanC booleanVariable("boolean");
 		m_variables.Insert(booleanVariable);
-		RandomVariableContinuousC continuousVariable("continuous", RealRangeC(0.0, 1.0));
+		VariableContinuousC continuousVariable("continuous", RealRangeC(0.0, 1.0));
 		m_variables.Insert(continuousVariable);
 		HSetC<StringC> names;
 		names.Insert("a");

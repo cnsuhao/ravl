@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFAbstract.hh"
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 #include "Ravl/Prob/RandomVariableValueContinuous.hh"
 
 namespace RavlProbN {
@@ -22,7 +22,7 @@ namespace RavlProbN {
   class PDFContinuousAbstractBodyC
     : public PDFAbstractBodyC {
   public:
-    PDFContinuousAbstractBodyC(const RandomVariableContinuousC& variable);
+    PDFContinuousAbstractBodyC(const VariableContinuousC& variable);
     //: Constructor
     //!param: variable - the continuous random variable for the distribution
 
@@ -51,7 +51,7 @@ namespace RavlProbN {
     //: Get a string representation of the distribution
 
   protected:
-    RandomVariableContinuousC RandomVariableContinuous() const;
+    VariableContinuousC VariableContinuous() const;
     //: Get access to the continuous random variable that this is a distribution of
 
   };

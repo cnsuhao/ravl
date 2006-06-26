@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/RandomVariableValue.hh"
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -21,7 +21,7 @@ namespace RavlProbN {
   class RandomVariableValueContinuousBodyC
     : public RandomVariableValueBodyC {
   public:
-    RandomVariableValueContinuousBodyC(const RandomVariableContinuousC& variable, RealT value);
+    RandomVariableValueContinuousBodyC(const VariableContinuousC& variable, RealT value);
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
@@ -63,7 +63,7 @@ namespace RavlProbN {
     virtual void SetValue(RealT value);
     //: Set the value of the random variable
 
-    RandomVariableContinuousC RandomVariableContinuous() const;
+    VariableContinuousC VariableContinuous() const;
     //: Get access to the continuous random variable that this is an instance of
 
   private:
@@ -83,7 +83,7 @@ namespace RavlProbN {
   	{}
   	//: Default constructor makes invalid handle
   	
-    RandomVariableValueContinuousC(const RandomVariableContinuousC& variable, RealT value)
+    RandomVariableValueContinuousC(const VariableContinuousC& variable, RealT value)
       : RandomVariableValueC(new RandomVariableValueContinuousBodyC(variable, value))
     {}
     //: Constructor

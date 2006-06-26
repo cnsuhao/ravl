@@ -20,7 +20,7 @@ namespace RavlProbN {
   class PDFUniformBodyC
     : public PDFContinuousAbstractBodyC {
   public:
-    PDFUniformBodyC(const RandomVariableContinuousC& variable, const RealRangeC& interval);
+    PDFUniformBodyC(const VariableContinuousC& variable, const RealRangeC& interval);
     //: Constructor
     //!param: variable - the random variable for the distribution
     //!param: interval - the interval over which the distribution != 0
@@ -53,7 +53,7 @@ namespace RavlProbN {
     : public PDFContinuousAbstractC
   {
   public:
-    PDFUniformC(const RandomVariableContinuousC& variable, const RealRangeC& interval)
+    PDFUniformC(const VariableContinuousC& variable, const RealRangeC& interval)
       : PDFContinuousAbstractC(new PDFUniformBodyC(variable, interval))
     {}
     //: Constructor

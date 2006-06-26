@@ -27,7 +27,7 @@ namespace RavlProbN {
     virtual ~PDFDesignerFactoryBodyC();
     //: Destructor
     
-    PDFContinuousAbstractC DesignPDFContinuous(const RandomVariableContinuousC& variable, const DListC<RealT>& realSamples) const;
+    PDFContinuousAbstractC DesignPDFContinuous(const VariableContinuousC& variable, const DListC<RealT>& realSamples) const;
     //: Fit the best distribution to the given sample
     //!param: variable - the type of continuous random variable
     //!param: realSamples - real sample values
@@ -57,7 +57,7 @@ namespace RavlProbN {
     static PDFDesignerFactoryC GetInstance();
     //: Get an instance of the factory
 
-    PDFContinuousAbstractC DesignPDFContinuous(const RandomVariableContinuousC& variable, const DListC<RealT>& realSamples) const
+    PDFContinuousAbstractC DesignPDFContinuous(const VariableContinuousC& variable, const DListC<RealT>& realSamples) const
     { return Body().DesignPDFContinuous(variable, realSamples); }
     //: Fit the best distribution to the given sample
     //!param: variable - the type of continuous random variable

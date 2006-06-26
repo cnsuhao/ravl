@@ -10,7 +10,7 @@
 
 #include "Ravl/Prob/CPDDesignerFactory.hh"
 #include "Ravl/Prob/VariableDiscrete.hh"
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 #include "Ravl/Prob/CPDDesignerContinuousDiscrete1.hh"
 #include "Ravl/OS/SysLog.hh"
 
@@ -31,7 +31,7 @@ namespace RavlProbN {
   }
 
   CPDDesignerC CPDDesignerFactoryBodyC::GetCPDDesigner(const VariableC& variable, const DomainC& parentDomain) const {
-    if (((RandomVariableContinuousC)variable).IsValid()) {
+    if (((VariableContinuousC)variable).IsValid()) {
       // the variable is continuous
       ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), variable is continuous");
       if (parentDomain.NumVariables() == 1) {

@@ -26,7 +26,7 @@ namespace RavlProbN {
     virtual ~PDFContinuousDesignerNormalBodyC();
     //: Destructor
     
-    virtual PDFContinuousAbstractC CreatePDF(const RandomVariableContinuousC& variable, const DListC<RealT>& realSamples) const;
+    virtual PDFContinuousAbstractC CreatePDF(const VariableContinuousC& variable, const DListC<RealT>& realSamples) const;
     //: Create a probability distribution according to the real samples
     //!param: variable - the random variable
     //!param: realSamples - a sample of real values

@@ -8,44 +8,44 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableContinuousBodyC::RandomVariableContinuousBodyC(const StringC& name, const RealRangeC& interval)
+  VariableContinuousBodyC::VariableContinuousBodyC(const StringC& name, const RealRangeC& interval)
     : VariableBodyC(name)
   {
     SetInterval(interval);
   }
 
-  RandomVariableContinuousBodyC::RandomVariableContinuousBodyC(istream &in)
+  VariableContinuousBodyC::VariableContinuousBodyC(istream &in)
     : VariableBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableContinuousBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableContinuousBodyC(istream &), Unrecognised version number in stream.");
     RealRangeC interval;
     in >> interval;
     SetInterval(interval);
   }
 
-  RandomVariableContinuousBodyC::RandomVariableContinuousBodyC(BinIStreamC &in)
+  VariableContinuousBodyC::VariableContinuousBodyC(BinIStreamC &in)
     : VariableBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableContinuousBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableContinuousBodyC(BinIStream &), Unrecognised version number in stream.");
     RealRangeC interval;
     in >> interval;
     SetInterval(interval);
   }
   
-  bool RandomVariableContinuousBodyC::Save (ostream &out) const {
+  bool VariableContinuousBodyC::Save (ostream &out) const {
     if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -53,7 +53,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableContinuousBodyC::Save (BinOStreamC &out) const {
+  bool VariableContinuousBodyC::Save (BinOStreamC &out) const {
     if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -61,10 +61,10 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableContinuousBodyC::~RandomVariableContinuousBodyC() {
+  VariableContinuousBodyC::~VariableContinuousBodyC() {
   }
   
-  StringC RandomVariableContinuousBodyC::ToString() const {
+  StringC VariableContinuousBodyC::ToString() const {
     StringC values = Name() + "=[";
     values += StringC(m_interval.Min());
     values += ",";
@@ -73,16 +73,16 @@ namespace RavlProbN {
     return values;
   }
 
-  const RealRangeC& RandomVariableContinuousBodyC::Interval() const {
+  const RealRangeC& VariableContinuousBodyC::Interval() const {
     return m_interval;
   }
 
-  void RandomVariableContinuousBodyC::SetInterval(const RealRangeC& interval) {
+  void VariableContinuousBodyC::SetInterval(const RealRangeC& interval) {
     m_interval = interval;
   }
 
-  static TypeNameC type1(typeid(RandomVariableContinuousC),"RavlProbN::RandomVariableContinuousC");
+  static TypeNameC type1(typeid(VariableContinuousC),"RavlProbN::VariableContinuousC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableContinuousBodyC,RandomVariableContinuousC,VariableC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariableContinuousBodyC,VariableContinuousC,VariableC);
   
 }

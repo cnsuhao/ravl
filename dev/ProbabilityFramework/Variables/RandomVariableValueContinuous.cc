@@ -16,7 +16,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(const RandomVariableContinuousC& variable, RealT value)
+  RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(const VariableContinuousC& variable, RealT value)
     : RandomVariableValueBodyC(variable)
   {
     SetValue(value);
@@ -28,7 +28,7 @@ namespace RavlProbN {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableContinuousBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("RandomVariableValueContinuousBodyC(istream &), Unrecognised version number in stream.");
     RealT value;
     in >> value;
     SetValue(value);
@@ -74,7 +74,7 @@ namespace RavlProbN {
   }
 
   void RandomVariableValueContinuousBodyC::SetValue(RealT value) {
-    if (!RandomVariableContinuous().Interval().Contains(value))
+    if (!VariableContinuous().Interval().Contains(value))
       throw ExceptionC("RandomVariableValueContinuousBodyC::SetValue(), illegal value");
     m_value = value;
   }
@@ -94,8 +94,8 @@ namespace RavlProbN {
     return RandomVariableValueBodyC::Hash() + StdHash(bitwiseInt);
   }
 
-  RandomVariableContinuousC RandomVariableValueContinuousBodyC::RandomVariableContinuous() const {
-    return RandomVariableContinuousC(Variable());
+  VariableContinuousC RandomVariableValueContinuousBodyC::VariableContinuous() const {
+    return VariableContinuousC(Variable());
   }
 
   static TypeNameC type1(typeid(RandomVariableValueContinuousC),"RavlProbN::RandomVariableValueContinuousC");

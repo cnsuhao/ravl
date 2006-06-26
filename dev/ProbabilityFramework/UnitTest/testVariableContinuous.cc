@@ -1,19 +1,19 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 
 using namespace RavlProbN;
 	
-class RandomVariableContinuousTest: public CppUnit::TestCase {
-	CPPUNIT_TEST_SUITE( RandomVariableContinuousTest );
+class VariableContinuousTest: public CppUnit::TestCase {
+	CPPUNIT_TEST_SUITE( VariableContinuousTest );
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST( testInterval );
 	CPPUNIT_TEST_SUITE_END();
 private:
-	RandomVariableContinuousC m_variable;
+	VariableContinuousC m_variable;
 public:
 	void setUp() {
-		m_variable = RandomVariableContinuousC("variable", RealRangeC(0.0, 1.0));
+		m_variable = VariableContinuousC("variable", RealRangeC(0.0, 1.0));
 	}
 	
 	void tearDown() {
@@ -29,4 +29,4 @@ public:
 	
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( RandomVariableContinuousTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( VariableContinuousTest );

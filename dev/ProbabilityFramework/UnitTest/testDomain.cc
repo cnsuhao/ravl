@@ -2,7 +2,7 @@
 
 #include "Ravl/Prob/Domain.hh"
 #include "Ravl/Prob/VariableBoolean.hh"
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 #include "Ravl/Prob/VariableDiscrete.hh"
 
 using namespace RavlProbN;
@@ -26,7 +26,7 @@ private:
 public:
 	void setUp() {
 		m_variables.Insert(VariableBooleanC("boolean"));
-		m_variables.Insert(RandomVariableContinuousC("continuous", RealRangeC(0.0, 1.0)));
+		m_variables.Insert(VariableContinuousC("continuous", RealRangeC(0.0, 1.0)));
 		HSetC<StringC> names;
 		names.Insert("a");
 		names.Insert("b");

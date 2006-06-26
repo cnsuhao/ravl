@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/CPDDesigner.hh"
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 #include "Ravl/Prob/VariableDiscrete.hh"
 
 namespace RavlProbN {
@@ -34,7 +34,7 @@ namespace RavlProbN {
     //!return: the conditional probability distribution
 
   private:
-    static RandomVariableContinuousC CheckDependentVariable(const RandomVariableContinuousC& dependentVariable);
+    static VariableContinuousC CheckDependentVariable(const VariableContinuousC& dependentVariable);
     //: Check the dependent variable
 
     static VariableDiscreteC CheckParentVariable(const VariableDiscreteC& parentVariable);

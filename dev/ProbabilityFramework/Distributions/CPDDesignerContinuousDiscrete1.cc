@@ -25,7 +25,7 @@ namespace RavlProbN {
     // check that there is at least one sample!
     if (propositionPairs.Size() == 0)
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), propositionPairs must contain at least one sample!");
-    RandomVariableContinuousC dependentVariable = CheckDependentVariable(propositionPairs.First().Data1().Variable());
+    VariableContinuousC dependentVariable = CheckDependentVariable(propositionPairs.First().Data1().Variable());
     // check that the domain is suitable
     DomainC parentDomain = propositionPairs.First().Data2().Domain();
     if (parentDomain.NumVariables() != 1)
@@ -58,7 +58,7 @@ namespace RavlProbN {
     return CPDContinuousDiscrete1C(dependentVariable, parentVariable, probabilityDistributionTable);
   }
 
-  RandomVariableContinuousC CPDDesignerContinuousDiscrete1BodyC::CheckDependentVariable(const RandomVariableContinuousC& dependentVariable) {
+  VariableContinuousC CPDDesignerContinuousDiscrete1BodyC::CheckDependentVariable(const VariableContinuousC& dependentVariable) {
     if (!dependentVariable.IsValid())
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::SetDependentVariable(), dependent variable must be valid continuous");
     return dependentVariable;

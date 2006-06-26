@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/CPDAbstract.hh"
-#include "Ravl/Prob/RandomVariableContinuous.hh"
+#include "Ravl/Prob/VariableContinuous.hh"
 #include "Ravl/Prob/RandomVariableValueDiscrete.hh"
 #include "Ravl/Prob/PDFContinuousAbstract.hh"
 #include "Ravl/RCHash.hh"
@@ -24,7 +24,7 @@ namespace RavlProbN {
   class CPDContinuousDiscrete1BodyC
     : public CPDAbstractBodyC {
   public:
-    CPDContinuousDiscrete1BodyC(const RandomVariableContinuousC& randomVariable,
+    CPDContinuousDiscrete1BodyC(const VariableContinuousC& randomVariable,
                                 const VariableDiscreteC& parentVariable,
                                 const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable);
     //: Constructor
@@ -63,7 +63,7 @@ namespace RavlProbN {
     : public CPDAbstractC
   {
   public:
-    CPDContinuousDiscrete1C(const RandomVariableContinuousC& randomVariable,
+    CPDContinuousDiscrete1C(const VariableContinuousC& randomVariable,
                             const VariableDiscreteC& parentVariable,
                             const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
       : CPDAbstractC(new CPDContinuousDiscrete1BodyC(randomVariable, parentVariable, probabilityDistributionTable))

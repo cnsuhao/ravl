@@ -31,7 +31,7 @@ namespace RavlProbN {
   PDFDesignerFactoryBodyC::~PDFDesignerFactoryBodyC() {
   }
 
-  PDFContinuousAbstractC PDFDesignerFactoryBodyC::DesignPDFContinuous(const RandomVariableContinuousC& variable, const DListC<RealT>& realSamples) const {
+  PDFContinuousAbstractC PDFDesignerFactoryBodyC::DesignPDFContinuous(const VariableContinuousC& variable, const DListC<RealT>& realSamples) const {
     PDFContinuousAbstractC pdf,bestPdf;
     RealT error,bestError = RavlConstN::maxReal;
     for (DLIterC<PDFContinuousDesignerC> it(m_continuousDesigners); it; it++) {

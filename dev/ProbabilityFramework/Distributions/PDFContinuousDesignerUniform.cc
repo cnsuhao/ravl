@@ -20,7 +20,7 @@ namespace RavlProbN {
   PDFContinuousDesignerUniformBodyC::~PDFContinuousDesignerUniformBodyC() {
   }
 
-  PDFContinuousAbstractC PDFContinuousDesignerUniformBodyC::CreatePDF(const RandomVariableContinuousC& variable, const DListC<RealT>& realSamples) const {
+  PDFContinuousAbstractC PDFContinuousDesignerUniformBodyC::CreatePDF(const VariableContinuousC& variable, const DListC<RealT>& realSamples) const {
     RealT min = RavlConstN::maxReal;
     RealT max = RavlConstN::minReal;
     for (DLIterC<RealT> it(realSamples); it; it++) {

@@ -13,7 +13,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PDFNormalBodyC::PDFNormalBodyC(const RandomVariableContinuousC& variable, RealT mean, RealT variance)
+  PDFNormalBodyC::PDFNormalBodyC(const VariableContinuousC& variable, RealT mean, RealT variance)
     : PDFContinuousAbstractBodyC(variable)
   {
     SetMeanAndVariance(mean, variance);

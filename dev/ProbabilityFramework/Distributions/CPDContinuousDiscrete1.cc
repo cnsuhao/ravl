@@ -13,7 +13,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  CPDContinuousDiscrete1BodyC::CPDContinuousDiscrete1BodyC(const RandomVariableContinuousC& randomVariable,
+  CPDContinuousDiscrete1BodyC::CPDContinuousDiscrete1BodyC(const VariableContinuousC& randomVariable,
                                                            const VariableDiscreteC& parentVariable,
                                                            const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
     : CPDAbstractBodyC(randomVariable, parentVariable) {

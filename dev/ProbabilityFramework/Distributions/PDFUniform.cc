@@ -13,10 +13,10 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PDFUniformBodyC::PDFUniformBodyC(const RandomVariableContinuousC& variable, const RealRangeC& interval)
+  PDFUniformBodyC::PDFUniformBodyC(const VariableContinuousC& variable, const RealRangeC& interval)
     : PDFContinuousAbstractBodyC(variable)
   {
-    SetInterval(RandomVariableContinuous().Interval());
+    SetInterval(VariableContinuous().Interval());
   }
 
   PDFUniformBodyC::~PDFUniformBodyC() {
