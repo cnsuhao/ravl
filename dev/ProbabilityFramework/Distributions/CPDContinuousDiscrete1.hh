@@ -12,7 +12,7 @@
 
 #include "Ravl/Prob/CPDAbstract.hh"
 #include "Ravl/Prob/VariableContinuous.hh"
-#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/VariablePropositionDiscrete.hh"
 #include "Ravl/Prob/PDFContinuousAbstract.hh"
 #include "Ravl/RCHash.hh"
 
@@ -26,7 +26,7 @@ namespace RavlProbN {
   public:
     CPDContinuousDiscrete1BodyC(const VariableContinuousC& randomVariable,
                                 const VariableDiscreteC& parentVariable,
-                                const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable);
+                                const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable);
     //: Constructor
 
     virtual ~CPDContinuousDiscrete1BodyC();
@@ -38,7 +38,7 @@ namespace RavlProbN {
     //!return: the probability distribution of the random variable
 
   private:
-    void SetProbabilityDistributionTable(const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilitDistributionTable);
+    void SetProbabilityDistributionTable(const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilitDistributionTable);
     //: Set the table of distributions
 
     VariableDiscreteC ParentVariable() const;
@@ -48,7 +48,7 @@ namespace RavlProbN {
     //: Cache the parent variable for direct access
 
   private:
-    RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC> m_probabilityDistributionTable;
+    RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC> m_probabilityDistributionTable;
     //: Table of distributions for each value of the discrete parent
 
     VariableDiscreteC m_parentVariable;
@@ -65,7 +65,7 @@ namespace RavlProbN {
   public:
     CPDContinuousDiscrete1C(const VariableContinuousC& randomVariable,
                             const VariableDiscreteC& parentVariable,
-                            const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
+                            const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
       : CPDAbstractC(new CPDContinuousDiscrete1BodyC(randomVariable, parentVariable, probabilityDistributionTable))
     {}
     //: Constructor

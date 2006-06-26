@@ -17,7 +17,7 @@ namespace RavlProbN {
   PDFBooleanBodyC::PDFBooleanBodyC(const VariableBooleanC& variable, RealT probabilityTrue)
     : PDFDiscreteBodyC(variable)
   {
-    RCHashC<RandomVariableValueDiscreteC,RealT> probabilityLookupTable;
+    RCHashC<VariablePropositionDiscreteC,RealT> probabilityLookupTable;
     probabilityLookupTable.Insert(RandomVariableValueBooleanC(variable, true), probabilityTrue);
     probabilityLookupTable.Insert(RandomVariableValueBooleanC(variable, false), 1.0-probabilityTrue);
     SetProbabilityLookupTable(probabilityLookupTable);

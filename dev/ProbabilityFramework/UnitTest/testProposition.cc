@@ -3,7 +3,7 @@
 #include "Ravl/Prob/Proposition.hh"
 #include "Ravl/Prob/RandomVariableValueBoolean.hh"
 #include "Ravl/Prob/RandomVariableValueContinuous.hh"
-#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/VariablePropositionDiscrete.hh"
 
 using namespace RavlProbN;
 	

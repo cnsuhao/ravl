@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_RANDOMVARIABLEVALUEDISCRETE_HEADER
-#define RAVLPROB_RANDOMVARIABLEVALUEDISCRETE_HEADER 1
+#ifndef RAVLPROB_VARIABLEPROPOSITIONDISCRETE_HEADER
+#define RAVLPROB_VARIABLEPROPOSITIONDISCRETE_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -18,19 +18,19 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Implementation of a discrete random variable value
-  class RandomVariableValueDiscreteBodyC
+  class VariablePropositionDiscreteBodyC
     : public VariablePropositionBodyC {
   public:
-    RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value);
+    VariablePropositionDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value);
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
 
-    RandomVariableValueDiscreteBodyC(istream &in);
+    VariablePropositionDiscreteBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    RandomVariableValueDiscreteBodyC(BinIStreamC &in);
+    VariablePropositionDiscreteBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -44,7 +44,7 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~RandomVariableValueDiscreteBodyC();
+    virtual ~VariablePropositionDiscreteBodyC();
     //: Destructor
     
     virtual StringC ToString() const;
@@ -70,7 +70,7 @@ namespace RavlProbN {
     virtual void SetValue(const StringC& value);
     //: Set the value of the random variable
 
-    RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable);
+    VariablePropositionDiscreteBodyC(const VariableDiscreteC& variable);
     //: Constructor
     //!param: variable - the variable that this is an instance of
 
@@ -83,31 +83,31 @@ namespace RavlProbN {
   //: Implementation of a discrete random variable value
   //!cwiz:author
   
-  class RandomVariableValueDiscreteC
+  class VariablePropositionDiscreteC
     : public VariablePropositionC
   {
   public:
-    RandomVariableValueDiscreteC()
+    VariablePropositionDiscreteC()
     {}
     //: Default constructor makes invalid handle
 
-    RandomVariableValueDiscreteC(const VariableDiscreteC& variable, const StringC& value)
-      : VariablePropositionC(new RandomVariableValueDiscreteBodyC(variable, value))
+    VariablePropositionDiscreteC(const VariableDiscreteC& variable, const StringC& value)
+      : VariablePropositionC(new VariablePropositionDiscreteBodyC(variable, value))
     {}
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
 
-    RandomVariableValueDiscreteC(istream &in);
+    VariablePropositionDiscreteC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    RandomVariableValueDiscreteC(BinIStreamC &in);
+    VariablePropositionDiscreteC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableValueDiscreteC(const VariablePropositionC& value)
-      : VariablePropositionC(dynamic_cast<const RandomVariableValueDiscreteBodyC *>(BodyPtr(value)))
+    VariablePropositionDiscreteC(const VariablePropositionC& value)
+      : VariablePropositionC(dynamic_cast<const VariablePropositionDiscreteBodyC *>(BodyPtr(value)))
     {}
     //: Upcast constructor
     // Creates an invalid handle if types don't match
@@ -121,22 +121,22 @@ namespace RavlProbN {
     //: Determine the index of this value
 
   protected:
-    RandomVariableValueDiscreteC(RandomVariableValueDiscreteBodyC &bod)
+    VariablePropositionDiscreteC(VariablePropositionDiscreteBodyC &bod)
      : VariablePropositionC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueDiscreteC(const RandomVariableValueDiscreteBodyC *bod)
+    VariablePropositionDiscreteC(const VariablePropositionDiscreteBodyC *bod)
      : VariablePropositionC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueDiscreteBodyC& Body()
-    { return static_cast<RandomVariableValueDiscreteBodyC &>(VariablePropositionC::Body()); }
+    VariablePropositionDiscreteBodyC& Body()
+    { return static_cast<VariablePropositionDiscreteBodyC &>(VariablePropositionC::Body()); }
     //: Body Access. 
     
-    const RandomVariableValueDiscreteBodyC& Body() const
-    { return static_cast<const RandomVariableValueDiscreteBodyC &>(VariablePropositionC::Body()); }
+    const VariablePropositionDiscreteBodyC& Body() const
+    { return static_cast<const VariablePropositionDiscreteBodyC &>(VariablePropositionC::Body()); }
     //: Body Access. 
     
   };

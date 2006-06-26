@@ -15,7 +15,7 @@ namespace RavlProbN {
   
   CPDContinuousDiscrete1BodyC::CPDContinuousDiscrete1BodyC(const VariableContinuousC& randomVariable,
                                                            const VariableDiscreteC& parentVariable,
-                                                           const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
+                                                           const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
     : CPDAbstractBodyC(randomVariable, parentVariable) {
     SetParentVariable(parentVariable);
     SetProbabilityDistributionTable(probabilityDistributionTable);
@@ -38,12 +38,12 @@ namespace RavlProbN {
     return pdf;
   }
   
-  void CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable) {
+  void CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable) {
     // check that there is a table for each value
     if (ParentVariable().NumValues() != probabilityDistributionTable.Size())
       throw ExceptionC("CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(), need table for each value");
     // check that all tables are for the correct variable
-    for (HashIterC<RandomVariableValueDiscreteC,PDFContinuousAbstractC> ht(probabilityDistributionTable); ht; ht++) {
+    for (HashIterC<VariablePropositionDiscreteC,PDFContinuousAbstractC> ht(probabilityDistributionTable); ht; ht++) {
       if (ht.Key().Variable() != ParentVariable())
         throw ExceptionC("CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(), each table must be for a value of the parent variable");
     }

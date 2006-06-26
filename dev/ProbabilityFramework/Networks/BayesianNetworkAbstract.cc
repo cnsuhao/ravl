@@ -10,7 +10,7 @@
 
 #include "Ravl/Prob/BayesianNetworkAbstract.hh"
 #include "Ravl/OS/SysLog.hh"
-#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/VariablePropositionDiscrete.hh"
 #include "Ravl/Prob/PDFDiscrete.hh"
 
 #define DODEBUG 1
@@ -66,16 +66,16 @@ namespace RavlProbN {
     if (!discrete.IsValid())
       throw ExceptionC("BayesianNetworkSimpleBodyC::CalculateDistribution(), only works for discrete variables");
     // check if evidence contains variable
-    RandomVariableValueDiscreteC prior;
+    VariablePropositionDiscreteC prior;
     for (HSetIterC<VariablePropositionC> ht(evidence.Values()); ht; ht++) {
       if (ht->Variable() == discrete)
         prior = *ht;
     }
     // calculate probability of each value independently
     RealT sum = 0;
-    RCHashC<RandomVariableValueDiscreteC,RealT> probabilityLookupTable;
+    RCHashC<VariablePropositionDiscreteC,RealT> probabilityLookupTable;
     for (HSetIterC<StringC> ht(discrete.Values()); ht; ht++) {
-      RandomVariableValueDiscreteC value(discrete, *ht);    
+      VariablePropositionDiscreteC value(discrete, *ht);    
       RealT probability;
       if (!prior.IsValid()) {
         PropositionC allEvidence(evidence, value);
@@ -89,7 +89,7 @@ namespace RavlProbN {
     }
     // normalise the values to sum to 1.0
     RealT alpha = 1.0 / sum;
-    for (HashIterC<RandomVariableValueDiscreteC,RealT> ht(probabilityLookupTable); ht; ht++) {
+    for (HashIterC<VariablePropositionDiscreteC,RealT> ht(probabilityLookupTable); ht; ht++) {
       ht.Data() *= alpha;
     }
     return PDFDiscreteC(discrete, probabilityLookupTable);

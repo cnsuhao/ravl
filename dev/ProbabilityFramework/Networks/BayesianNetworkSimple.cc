@@ -9,7 +9,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/BayesianNetworkSimple.hh"
-#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/VariablePropositionDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -66,7 +66,7 @@ namespace RavlProbN {
       if (!discrete.IsValid())
         throw ExceptionC("BayesianNetworkSimpleBodyC::EnumerateAll(), can only sum over discrete variables");
       for (HSetIterC<StringC> ht(discrete.Values()); ht; ht++) {
-        y = RandomVariableValueDiscreteC(discrete, *ht);
+        y = VariablePropositionDiscreteC(discrete, *ht);
         PropositionC evidenceY(evidence, y);
         sumProbability += cpd.ConditionalProbability(y, parentsY) * EnumerateAll(restVars, evidenceY);
       }

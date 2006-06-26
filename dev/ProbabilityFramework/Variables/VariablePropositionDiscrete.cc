@@ -8,50 +8,50 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/VariablePropositionDiscrete.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value)
+  VariablePropositionDiscreteBodyC::VariablePropositionDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value)
     : VariablePropositionBodyC(variable)
   {
     SetValue(value);
   }
 
-  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable)
+  VariablePropositionDiscreteBodyC::VariablePropositionDiscreteBodyC(const VariableDiscreteC& variable)
     : VariablePropositionBodyC(variable)
   {
     //: NOTE that the value hasn't been initialized, you better know what you are doing!
   }
 
-  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(istream &in)
+  VariablePropositionDiscreteBodyC::VariablePropositionDiscreteBodyC(istream &in)
     : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableValueDiscreteBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariablePropositionDiscreteBodyC(istream &), Unrecognised version number in stream.");
     StringC value;
     in >> value;
     SetValue(value);
   }
 
-  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(BinIStreamC &in)
+  VariablePropositionDiscreteBodyC::VariablePropositionDiscreteBodyC(BinIStreamC &in)
     : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableValueDiscreteBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariablePropositionDiscreteBodyC(BinIStream &), Unrecognised version number in stream.");
     StringC value;
     in >> value;
     SetValue(value);
   }
   
-  bool RandomVariableValueDiscreteBodyC::Save (ostream &out) const {
+  bool VariablePropositionDiscreteBodyC::Save (ostream &out) const {
     if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -59,7 +59,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableValueDiscreteBodyC::Save (BinOStreamC &out) const {
+  bool VariablePropositionDiscreteBodyC::Save (BinOStreamC &out) const {
     if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -67,46 +67,46 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableValueDiscreteBodyC::~RandomVariableValueDiscreteBodyC() {
+  VariablePropositionDiscreteBodyC::~VariablePropositionDiscreteBodyC() {
   }
   
-  StringC RandomVariableValueDiscreteBodyC::ToString() const {
+  StringC VariablePropositionDiscreteBodyC::ToString() const {
     return Value();
   }
 
-  const StringC& RandomVariableValueDiscreteBodyC::Value() const {
+  const StringC& VariablePropositionDiscreteBodyC::Value() const {
     return m_value;
   }
 
-  void RandomVariableValueDiscreteBodyC::SetValue(const StringC& value) {
+  void VariablePropositionDiscreteBodyC::SetValue(const StringC& value) {
     if (!VariableDiscrete().Values().Contains(value))
-      throw ExceptionC("RandomVariableValueDiscreteBodyC::SetValue(), illegal value");
+      throw ExceptionC("VariablePropositionDiscreteBodyC::SetValue(), illegal value");
     m_value = value;
   }
 
-  IndexC RandomVariableValueDiscreteBodyC::Index() const {
+  IndexC VariablePropositionDiscreteBodyC::Index() const {
     return VariableDiscrete().Index(Value());
   }
 
-  bool RandomVariableValueDiscreteBodyC::operator==(const VariablePropositionC& other) const {
+  bool VariablePropositionDiscreteBodyC::operator==(const VariablePropositionC& other) const {
     if (!VariablePropositionBodyC::operator==(other))
       return false;
-    RandomVariableValueDiscreteC otherDiscrete(other);
+    VariablePropositionDiscreteC otherDiscrete(other);
     if (!otherDiscrete.IsValid())
       return false;
     return Value() == otherDiscrete.Value();
   }
 
-  UIntT RandomVariableValueDiscreteBodyC::Hash() const {
+  UIntT VariablePropositionDiscreteBodyC::Hash() const {
     return VariablePropositionBodyC::Hash() + Value().Hash();
   }
 
-  VariableDiscreteC RandomVariableValueDiscreteBodyC::VariableDiscrete() const {
+  VariableDiscreteC VariablePropositionDiscreteBodyC::VariableDiscrete() const {
     return VariableDiscreteC(Variable());
   }
 
-  static TypeNameC type1(typeid(RandomVariableValueDiscreteC),"RavlProbN::RandomVariableValueDiscreteC");
+  static TypeNameC type1(typeid(VariablePropositionDiscreteC),"RavlProbN::VariablePropositionDiscreteC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueDiscreteBodyC,RandomVariableValueDiscreteC,VariablePropositionC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariablePropositionDiscreteBodyC,VariablePropositionDiscreteC,VariablePropositionC);
   
 }

@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFAbstract.hh"
-#include "Ravl/Prob/RandomVariableValueDiscrete.hh"
+#include "Ravl/Prob/VariablePropositionDiscrete.hh"
 #include "Ravl/RCHash.hh"
 
 namespace RavlProbN {
@@ -22,7 +22,7 @@ namespace RavlProbN {
   class PDFDiscreteBodyC
     : public PDFAbstractBodyC {
   public:
-    PDFDiscreteBodyC(const VariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable);
+    PDFDiscreteBodyC(const VariableDiscreteC& variable, const RCHashC<VariablePropositionDiscreteC,RealT>& probabilityLookupTable);
     //: Constructor
     //!param: variable - the random variable for the distribution
     //!param: probabilityLookupTable - a lookup table for the probabilities of the values of the variable
@@ -43,7 +43,7 @@ namespace RavlProbN {
     //: Constructor
     //!param: variable - the random variable for the distribution
 
-    void SetProbabilityLookupTable(const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable);
+    void SetProbabilityLookupTable(const RCHashC<VariablePropositionDiscreteC,RealT>& probabilityLookupTable);
     //: Set the table after checking that it is valid
     // This involves ensuring that there each possible value of the variable is
     // represented in the table and that the values sum to 1.0
@@ -53,7 +53,7 @@ namespace RavlProbN {
     //: Get access to the discrete random variable that this is a distribution of
 
   private:
-    RCHashC<RandomVariableValueDiscreteC,RealT> m_probabilityLookupTable;
+    RCHashC<VariablePropositionDiscreteC,RealT> m_probabilityLookupTable;
   };
 
   //! userlevel=Normal
@@ -68,7 +68,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    PDFDiscreteC(const VariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable)
+    PDFDiscreteC(const VariableDiscreteC& variable, const RCHashC<VariablePropositionDiscreteC,RealT>& probabilityLookupTable)
       : PDFAbstractC(new PDFDiscreteBodyC(variable, probabilityLookupTable))
     {}
     //: Constructor

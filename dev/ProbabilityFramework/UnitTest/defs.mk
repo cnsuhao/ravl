@@ -34,7 +34,7 @@ MUSTLINK= testDomain.cc \
 		testVariableDiscrete.cc \
 		testRandomVariableValueBoolean.cc \
 		testRandomVariableValueContinuous.cc \
-		testRandomVariableValueDiscrete.cc
+		testVariablePropositionDiscrete.cc
 
 USESLIBS= RavlCore RavlOS RavlProb
 

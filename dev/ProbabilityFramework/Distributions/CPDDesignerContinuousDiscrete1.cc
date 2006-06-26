@@ -32,7 +32,7 @@ namespace RavlProbN {
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), parent domain must have 1 variable");
     VariableDiscreteC parentVariable = CheckParentVariable(parentDomain.Variable(0));
     // create a list for each value of the parent variable
-    RCHashC<RandomVariableValueDiscreteC,DListC<RealT> > valuesByParent;
+    RCHashC<VariablePropositionDiscreteC,DListC<RealT> > valuesByParent;
     // put each entry into the correct list
     for (DLIterC<Tuple2C<VariablePropositionC,PropositionC> > it(propositionPairs); it; it++) {
       if (it->Data1().Variable() != dependentVariable)
@@ -41,7 +41,7 @@ namespace RavlProbN {
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), all propositions must belong to correct domain");
       if (it->Data2().NumValues() != 1)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), all propositions must have 1 fixed value");
-      RandomVariableValueDiscreteC parent(it->Data2().Value(0));
+      VariablePropositionDiscreteC parent(it->Data2().Value(0));
       RealT value = ((RandomVariableValueContinuousC)it->Data1()).Value();
       valuesByParent[parent].InsLast(value);
     }
@@ -49,8 +49,8 @@ namespace RavlProbN {
     if (valuesByParent.Size() != parentVariable.NumValues())
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), there must be examples for each parent value");
     // create all the probability distributions
-    RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC> probabilityDistributionTable;
-    for (HashIterC<RandomVariableValueDiscreteC,DListC<RealT> > ht(valuesByParent); ht; ht++) {
+    RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC> probabilityDistributionTable;
+    for (HashIterC<VariablePropositionDiscreteC,DListC<RealT> > ht(valuesByParent); ht; ht++) {
       PDFContinuousAbstractC pdf = PDFDesignerFactoryC::GetInstance().DesignPDFContinuous(dependentVariable, ht.Data());
       probabilityDistributionTable.Insert(ht.Key(), pdf);
     }

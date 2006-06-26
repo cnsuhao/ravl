@@ -16,13 +16,13 @@ namespace RavlProbN {
   using namespace RavlN;
   
   RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(const VariableBooleanC& variable, bool value)
-    : RandomVariableValueDiscreteBodyC(variable)
+    : VariablePropositionDiscreteBodyC(variable)
   {
     SetBooleanValue(value);
   }
 
   RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(istream &in)
-    : RandomVariableValueDiscreteBodyC(in)
+    : VariablePropositionDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
@@ -34,7 +34,7 @@ namespace RavlProbN {
   }
 
   RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(BinIStreamC &in)
-    : RandomVariableValueDiscreteBodyC(in)
+    : VariablePropositionDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
@@ -46,7 +46,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableValueBooleanBodyC::Save (ostream &out) const {
-    if(!RandomVariableValueDiscreteBodyC::Save(out))
+    if(!VariablePropositionDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
     out << ' ' << version << ' ' << BooleanValue();
@@ -54,7 +54,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableValueBooleanBodyC::Save (BinOStreamC &out) const {
-    if(!RandomVariableValueDiscreteBodyC::Save(out))
+    if(!VariablePropositionDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
     out << version << BooleanValue();
@@ -70,7 +70,7 @@ namespace RavlProbN {
 
   void RandomVariableValueBooleanBodyC::SetBooleanValue(bool value) {
     m_booleanValue = value;
-    RandomVariableValueDiscreteBodyC::SetValue(VariableBoolean().Value(value));
+    VariablePropositionDiscreteBodyC::SetValue(VariableBoolean().Value(value));
   }
 
   void RandomVariableValueBooleanBodyC::SetValue(const StringC& value) {
@@ -83,6 +83,6 @@ namespace RavlProbN {
 
   static TypeNameC type1(typeid(RandomVariableValueBooleanC),"RavlProbN::RandomVariableValueBooleanC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueBooleanBodyC,RandomVariableValueBooleanC,RandomVariableValueDiscreteC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueBooleanBodyC,RandomVariableValueBooleanC,VariablePropositionDiscreteC);
   
 }

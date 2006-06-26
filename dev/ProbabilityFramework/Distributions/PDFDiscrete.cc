@@ -13,7 +13,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PDFDiscreteBodyC::PDFDiscreteBodyC(const VariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable)
+  PDFDiscreteBodyC::PDFDiscreteBodyC(const VariableDiscreteC& variable, const RCHashC<VariablePropositionDiscreteC,RealT>& probabilityLookupTable)
     : PDFAbstractBodyC(variable)
   {
     SetProbabilityLookupTable(probabilityLookupTable);
@@ -41,12 +41,12 @@ namespace RavlProbN {
     return VariableDiscreteC(Variable());
   }
 
-  void PDFDiscreteBodyC::SetProbabilityLookupTable(const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable) {
+  void PDFDiscreteBodyC::SetProbabilityLookupTable(const RCHashC<VariablePropositionDiscreteC,RealT>& probabilityLookupTable) {
     if (probabilityLookupTable.Size() != VariableDiscrete().NumValues())
       throw ExceptionC("ProbabilityDistributionDiscreteBodyC::SetProbabilityLookupTable(), table must have entry for each value of variable");
     // check that the table has been initialized properly and that all values sum to 1.0
     RealT sum = 0.0;
-    for (HashIterC<RandomVariableValueDiscreteC,RealT> it(probabilityLookupTable); it; it++) {
+    for (HashIterC<VariablePropositionDiscreteC,RealT> it(probabilityLookupTable); it; it++) {
       if (*it < 0.0)
         throw ExceptionC("ProbabilityDistributionDiscreteBodyC::SetProbabilityLookupTable(), table can't have negative entries");
       if (it.Key().Variable() != Variable())
@@ -62,11 +62,11 @@ namespace RavlProbN {
   StringC PDFDiscreteBodyC::ToString() const {
     StringC string = VariableDiscrete().ToString() + "=<";
     HSetIterC<StringC> ht(VariableDiscrete().Values());
-    RandomVariableValueDiscreteC discreteValue(VariableDiscrete(), *ht);
+    VariablePropositionDiscreteC discreteValue(VariableDiscrete(), *ht);
     string += StringC(MeasureProbability(discreteValue));
     for (ht++ ; ht; ht++) {
       string += ",";
-      RandomVariableValueDiscreteC discreteValue(VariableDiscrete(), *ht);
+      VariablePropositionDiscreteC discreteValue(VariableDiscrete(), *ht);
       string += StringC(MeasureProbability(discreteValue));
     }
     string += ">";
