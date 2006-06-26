@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "Ravl/Prob/Domain.hh"
-#include "Ravl/Prob/RandomVariableBoolean.hh"
+#include "Ravl/Prob/VariableBoolean.hh"
 #include "Ravl/Prob/RandomVariableContinuous.hh"
 #include "Ravl/Prob/VariableDiscrete.hh"
 
@@ -25,7 +25,7 @@ private:
 	HSetC<VariableC> m_variables;
 public:
 	void setUp() {
-		m_variables.Insert(RandomVariableBooleanC("boolean"));
+		m_variables.Insert(VariableBooleanC("boolean"));
 		m_variables.Insert(RandomVariableContinuousC("continuous", RealRangeC(0.0, 1.0)));
 		HSetC<StringC> names;
 		names.Insert("a");
@@ -53,7 +53,7 @@ public:
 		for (HSetIterC<VariableC> it(m_variables); it; it++)
 			CPPUNIT_ASSERT( m_domain.Contains(*it) == true );
 		CPPUNIT_ASSERT( m_domain.Contains(VariableC()) == false);
-		CPPUNIT_ASSERT( m_domain.Contains(RandomVariableBooleanC("bool2")) == false );
+		CPPUNIT_ASSERT( m_domain.Contains(VariableBooleanC("bool2")) == false );
 	}
 	
 	void testNumVariables() {
@@ -86,7 +86,7 @@ public:
 	
 	void testIndexThrows() {
 		m_domain.Index(VariableC());
-		m_domain.Index(RandomVariableBooleanC("bool3"));
+		m_domain.Index(VariableBooleanC("bool3"));
 	}
 	
 	void testToString() {

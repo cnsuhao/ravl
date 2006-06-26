@@ -29,7 +29,7 @@ EXAMPLES= testRunnerQt.cc
 
 MUSTLINK= testDomain.cc \
 		testProposition.cc \
-		testRandomVariableBoolean.cc \
+		testVariableBoolean.cc \
 		testRandomVariableContinuous.cc \
 		testVariableDiscrete.cc \
 		testRandomVariableValueBoolean.cc \

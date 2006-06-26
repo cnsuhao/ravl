@@ -19,11 +19,11 @@ using namespace RavlProbN;
 int main() {
   try {
     // create nodes
-    RandomVariableBooleanC Burglary("Burglary");
-    RandomVariableBooleanC Earthquake("Earthquake");
-    RandomVariableBooleanC Alarm("Alarm");
-    RandomVariableBooleanC JohnCalls("JohnCalls");
-    RandomVariableBooleanC MaryCalls("MaryCalls");
+    VariableBooleanC Burglary("Burglary");
+    VariableBooleanC Earthquake("Earthquake");
+    VariableBooleanC Alarm("Alarm");
+    VariableBooleanC JohnCalls("JohnCalls");
+    VariableBooleanC MaryCalls("MaryCalls");
     // create parent domains
     HSetC<VariableC> alarmParents;
     alarmParents.Insert(Burglary);

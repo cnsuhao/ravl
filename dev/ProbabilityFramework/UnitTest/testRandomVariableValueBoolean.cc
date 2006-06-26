@@ -10,12 +10,12 @@ class RandomVariableValueBooleanTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST_SUITE_END();
 private:
-	RandomVariableBooleanC m_variable;
+	VariableBooleanC m_variable;
 	RandomVariableValueBooleanC m_valueTrue;
 	RandomVariableValueBooleanC m_valueFalse;
 public:
 	void setUp() {
-		m_variable = RandomVariableBooleanC("variable");
+		m_variable = VariableBooleanC("variable");
 		m_valueTrue = RandomVariableValueBooleanC(m_variable, true);
 		m_valueFalse = RandomVariableValueBooleanC(m_variable, false);
 	}

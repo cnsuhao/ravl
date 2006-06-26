@@ -1,6 +1,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Ravl/Prob/RandomVariableBoolean.hh"
+#include "Ravl/Prob/VariableBoolean.hh"
 
 using namespace RavlProbN;
 	
@@ -9,10 +9,10 @@ class RandomVariableBooleanTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST_SUITE_END();
 private:
-	RandomVariableBooleanC m_variable;
+	VariableBooleanC m_variable;
 public:
 	void setUp() {
-		m_variable = RandomVariableBooleanC("variable");
+		m_variable = VariableBooleanC("variable");
 	}
 	
 	void tearDown() {

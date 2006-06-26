@@ -14,7 +14,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PDFBooleanBodyC::PDFBooleanBodyC(const RandomVariableBooleanC& variable, RealT probabilityTrue)
+  PDFBooleanBodyC::PDFBooleanBodyC(const VariableBooleanC& variable, RealT probabilityTrue)
     : PDFDiscreteBodyC(variable)
   {
     RCHashC<RandomVariableValueDiscreteC,RealT> probabilityLookupTable;

@@ -15,7 +15,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(const RandomVariableBooleanC& variable, bool value)
+  RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(const VariableBooleanC& variable, bool value)
     : RandomVariableValueDiscreteBodyC(variable)
   {
     SetBooleanValue(value);
@@ -70,15 +70,15 @@ namespace RavlProbN {
 
   void RandomVariableValueBooleanBodyC::SetBooleanValue(bool value) {
     m_booleanValue = value;
-    RandomVariableValueDiscreteBodyC::SetValue(RandomVariableBoolean().Value(value));
+    RandomVariableValueDiscreteBodyC::SetValue(VariableBoolean().Value(value));
   }
 
   void RandomVariableValueBooleanBodyC::SetValue(const StringC& value) {
-    SetBooleanValue(RandomVariableBoolean().Value(true) == value);
+    SetBooleanValue(VariableBoolean().Value(true) == value);
   }
 
-  RandomVariableBooleanC RandomVariableValueBooleanBodyC::RandomVariableBoolean() const {
-    return RandomVariableBooleanC(Variable());
+  VariableBooleanC RandomVariableValueBooleanBodyC::VariableBoolean() const {
+    return VariableBooleanC(Variable());
   }
 
   static TypeNameC type1(typeid(RandomVariableValueBooleanC),"RavlProbN::RandomVariableValueBooleanC");

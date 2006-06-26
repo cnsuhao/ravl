@@ -8,14 +8,14 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableBoolean.hh"
+#include "Ravl/Prob/VariableBoolean.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableBooleanBodyC::RandomVariableBooleanBodyC(const StringC& name)
+  VariableBooleanBodyC::VariableBooleanBodyC(const StringC& name)
     : VariableDiscreteBodyC(name)
   {
     SetValueNames();
@@ -25,27 +25,27 @@ namespace RavlProbN {
     SetValues(values);
   }
 
-  RandomVariableBooleanBodyC::RandomVariableBooleanBodyC(istream &in)
+  VariableBooleanBodyC::VariableBooleanBodyC(istream &in)
     : VariableDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableBooleanBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableBooleanBodyC(istream &), Unrecognised version number in stream.");
     SetValueNames();
   }
 
-  RandomVariableBooleanBodyC::RandomVariableBooleanBodyC(BinIStreamC &in)
+  VariableBooleanBodyC::VariableBooleanBodyC(BinIStreamC &in)
     : VariableDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableBooleanBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableBooleanBodyC(BinIStream &), Unrecognised version number in stream.");
     SetValueNames();
   }
   
-  bool RandomVariableBooleanBodyC::Save (ostream &out) const {
+  bool VariableBooleanBodyC::Save (ostream &out) const {
     if(!VariableDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -53,7 +53,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableBooleanBodyC::Save (BinOStreamC &out) const {
+  bool VariableBooleanBodyC::Save (BinOStreamC &out) const {
     if(!VariableDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -61,20 +61,20 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableBooleanBodyC::~RandomVariableBooleanBodyC() {
+  VariableBooleanBodyC::~VariableBooleanBodyC() {
   }
 
-  const StringC& RandomVariableBooleanBodyC::Value(bool value) const {
+  const StringC& VariableBooleanBodyC::Value(bool value) const {
     return value? m_trueValue: m_falseValue;
   }
   
-  void RandomVariableBooleanBodyC::SetValueNames() {
+  void VariableBooleanBodyC::SetValueNames() {
     m_trueValue = downcase(Name());
     m_falseValue = StringC("¬")+downcase(Name());
   }
 
-  static TypeNameC type1(typeid(RandomVariableBooleanC),"RavlProbN::RandomVariableBooleanC");
+  static TypeNameC type1(typeid(VariableBooleanC),"RavlProbN::VariableBooleanC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableBooleanBodyC,RandomVariableBooleanC,VariableDiscreteC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariableBooleanBodyC,VariableBooleanC,VariableDiscreteC);
   
 }

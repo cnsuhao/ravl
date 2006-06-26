@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/RandomVariableValueDiscrete.hh"
-#include "Ravl/Prob/RandomVariableBoolean.hh"
+#include "Ravl/Prob/VariableBoolean.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -21,7 +21,7 @@ namespace RavlProbN {
   class RandomVariableValueBooleanBodyC
     : public RandomVariableValueDiscreteBodyC {
   public:
-    RandomVariableValueBooleanBodyC(const RandomVariableBooleanC& variable, bool value);
+    RandomVariableValueBooleanBodyC(const VariableBooleanC& variable, bool value);
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
@@ -57,7 +57,7 @@ namespace RavlProbN {
     virtual void SetValue(const StringC& value);
     //: Set the value of the random variable
 
-    RandomVariableBooleanC RandomVariableBoolean() const;
+    VariableBooleanC VariableBoolean() const;
     //: Get access to the boolean random variable that this is an instance of
 
   private:
@@ -77,7 +77,7 @@ namespace RavlProbN {
   	{}
   	//: Default constructors make invalid object
   	
-    RandomVariableValueBooleanC(const RandomVariableBooleanC& variable, bool value)
+    RandomVariableValueBooleanC(const VariableBooleanC& variable, bool value)
       : RandomVariableValueDiscreteC(new RandomVariableValueBooleanBodyC(variable, value))
     {}
     //: Constructor

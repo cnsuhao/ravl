@@ -28,7 +28,7 @@ private:
 	HSetC<RandomVariableValueC> m_values;
 public:
 	void setUp() {
-		RandomVariableBooleanC booleanVariable("boolean");
+		VariableBooleanC booleanVariable("boolean");
 		m_variables.Insert(booleanVariable);
 		RandomVariableContinuousC continuousVariable("continuous", RealRangeC(0.0, 1.0));
 		m_variables.Insert(continuousVariable);
@@ -81,20 +81,20 @@ public:
 	}
 	void testSubProposition() {
 		HSetC<VariableC> variables;
-		variables.Insert(RandomVariableBooleanC("boolean"));
+		variables.Insert(VariableBooleanC("boolean"));
 		CPPUNIT_ASSERT( m_proposition.SubProposition(DomainC(variables)).NumValues() == 1 );
 	}
 	
 	void testSubPropositionThrows() {
 		HSetC<VariableC> variables;
-		variables.Insert(RandomVariableBooleanC("invalid"));
+		variables.Insert(VariableBooleanC("invalid"));
 		m_proposition.SubProposition(DomainC(variables));
 	}
 	
 	void testEquality() {
 		PropositionC secondProposition(m_domain, m_values);
 		HSetC<VariableC> variables;
-		variables.Insert(RandomVariableBooleanC("boolean"));
+		variables.Insert(VariableBooleanC("boolean"));
 		PropositionC subProposition = m_proposition.SubProposition(DomainC(variables));
 		CPPUNIT_ASSERT( m_proposition == m_proposition );
 		CPPUNIT_ASSERT( m_proposition == secondProposition );

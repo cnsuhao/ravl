@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_RANDOMVARIABLEBOOLEAN_HEADER
-#define RAVLPROB_RANDOMVARIABLEBOOLEAN_HEADER 1
+#ifndef RAVLPROB_VARIABLEBOOLEAN_HEADER
+#define RAVLPROB_VARIABLEBOOLEAN_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -17,18 +17,18 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Implementation of a boolean random variable
-  class RandomVariableBooleanBodyC
+  class VariableBooleanBodyC
     : public VariableDiscreteBodyC {
   public:
-    RandomVariableBooleanBodyC(const StringC& name);
+    VariableBooleanBodyC(const StringC& name);
     //: Constructor
     //!param: name - convention is that it starts with a Capital letter, eg Face
 
-    RandomVariableBooleanBodyC(istream &in);
+    VariableBooleanBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    RandomVariableBooleanBodyC(BinIStreamC &in);
+    VariableBooleanBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -42,7 +42,7 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~RandomVariableBooleanBodyC();
+    virtual ~VariableBooleanBodyC();
     //: Destructor
 
     const StringC& Value(bool value) const;
@@ -64,30 +64,30 @@ namespace RavlProbN {
   //: Implementation of a boolean random variable
   //!cwiz:author
   
-  class RandomVariableBooleanC
+  class VariableBooleanC
     : public VariableDiscreteC
   {
   public:
-  	RandomVariableBooleanC()
+  	VariableBooleanC()
   	{}
   	//: Default constructors makes invalid object
   	
-    RandomVariableBooleanC(const StringC& name)
-      : VariableDiscreteC(new RandomVariableBooleanBodyC(name))
+    VariableBooleanC(const StringC& name)
+      : VariableDiscreteC(new VariableBooleanBodyC(name))
     {}
     //: Constructor
     //!param: name - convention is that it starts with a Capital letter, eg Face
 
-    RandomVariableBooleanC(istream &in);
+    VariableBooleanC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    RandomVariableBooleanC(BinIStreamC &in);
+    VariableBooleanC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableBooleanC(const VariableC& variable)
-      : VariableDiscreteC(dynamic_cast<const RandomVariableBooleanBodyC *>(BodyPtr(variable)))
+    VariableBooleanC(const VariableC& variable)
+      : VariableDiscreteC(dynamic_cast<const VariableBooleanBodyC *>(BodyPtr(variable)))
     {}
     //: Upcast constructor
     // Creates an invalid handle if types don't match
@@ -97,22 +97,22 @@ namespace RavlProbN {
     //: Get the name used for bool value
 
   protected:
-    RandomVariableBooleanC(RandomVariableBooleanBodyC &bod)
+    VariableBooleanC(VariableBooleanBodyC &bod)
      : VariableDiscreteC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableBooleanC(const RandomVariableBooleanBodyC *bod)
+    VariableBooleanC(const VariableBooleanBodyC *bod)
      : VariableDiscreteC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableBooleanBodyC& Body()
-    { return static_cast<RandomVariableBooleanBodyC &>(VariableDiscreteC::Body()); }
+    VariableBooleanBodyC& Body()
+    { return static_cast<VariableBooleanBodyC &>(VariableDiscreteC::Body()); }
     //: Body Access. 
     
-    const RandomVariableBooleanBodyC& Body() const
-    { return static_cast<const RandomVariableBooleanBodyC &>(VariableDiscreteC::Body()); }
+    const VariableBooleanBodyC& Body() const
+    { return static_cast<const VariableBooleanBodyC &>(VariableDiscreteC::Body()); }
     //: Body Access. 
     
   };

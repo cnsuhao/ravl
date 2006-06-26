@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFDiscrete.hh"
-#include "Ravl/Prob/RandomVariableBoolean.hh"
+#include "Ravl/Prob/VariableBoolean.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -21,7 +21,7 @@ namespace RavlProbN {
   class PDFBooleanBodyC
     : public PDFDiscreteBodyC {
   public:
-    PDFBooleanBodyC(const RandomVariableBooleanC& variable, RealT probabilityTrue);
+    PDFBooleanBodyC(const VariableBooleanC& variable, RealT probabilityTrue);
     //: Constructor
     //!param: variable - the random variable for the distribution
     //!param: probabilityTrue - the probability that the variable is true
@@ -40,7 +40,7 @@ namespace RavlProbN {
     : public PDFDiscreteC
   {
   public:
-    PDFBooleanC(const RandomVariableBooleanC& variable, RealT probabilityTrue)
+    PDFBooleanC(const VariableBooleanC& variable, RealT probabilityTrue)
       : PDFDiscreteC(new PDFBooleanBodyC(variable, probabilityTrue))
     {}
     //: Constructor
