@@ -13,7 +13,7 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  CPDDiscreteDiscreteBodyC::CPDDiscreteDiscreteBodyC(const RandomVariableDiscreteC& randomVariable,
+  CPDDiscreteDiscreteBodyC::CPDDiscreteDiscreteBodyC(const VariableDiscreteC& randomVariable,
                                                      const DomainC& parentDomain,
                                                      const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable)
     : CPDAbstractBodyC(randomVariable, parentDomain) {
@@ -37,7 +37,7 @@ namespace RavlProbN {
     // ensure all parents are discrete and calculate combinations
     UIntT numCombinations = 1;
     for (HSetIterC<VariableC> ht(ParentDomain().Variables()); ht; ht++) {
-      RandomVariableDiscreteC discrete(*ht);
+      VariableDiscreteC discrete(*ht);
       if (!discrete.IsValid())
         throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), all parents must be discrete");
       numCombinations *= discrete.NumValues();

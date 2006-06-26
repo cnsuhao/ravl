@@ -62,7 +62,7 @@ namespace RavlProbN {
     }
     else {
       RealT sumProbability = 0.0;
-      RandomVariableDiscreteC discrete(Y);
+      VariableDiscreteC discrete(Y);
       if (!discrete.IsValid())
         throw ExceptionC("BayesianNetworkSimpleBodyC::EnumerateAll(), can only sum over discrete variables");
       for (HSetIterC<StringC> ht(discrete.Values()); ht; ht++) {

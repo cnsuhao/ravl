@@ -9,7 +9,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/CPDDesignerFactory.hh"
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 #include "Ravl/Prob/RandomVariableContinuous.hh"
 #include "Ravl/Prob/CPDDesignerContinuousDiscrete1.hh"
 #include "Ravl/OS/SysLog.hh"
@@ -38,7 +38,7 @@ namespace RavlProbN {
         // single parent variable
         ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), single parent variable");
         VariableC parentVariable = parentDomain.Variable(0);
-        if (((RandomVariableDiscreteC)parentVariable).IsValid()) {
+        if (((VariableDiscreteC)parentVariable).IsValid()) {
           ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), single parent variable is discrete");
           return CPDDesignerContinuousDiscrete1C::GetInstance();
         }

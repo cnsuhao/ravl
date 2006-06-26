@@ -18,7 +18,7 @@ PACKAGE=Ravl/Prob
 HEADERS= Variable.hh \
          RandomVariableBoolean.hh \
          RandomVariableContinuous.hh \
-         RandomVariableDiscrete.hh \
+         VariableDiscrete.hh \
          RandomVariableValue.hh \
          RandomVariableValueBoolean.hh \
          RandomVariableValueContinuous.hh \
@@ -27,7 +27,7 @@ HEADERS= Variable.hh \
 SOURCES= Variable.cc \
          RandomVariableBoolean.cc \
          RandomVariableContinuous.cc \
-         RandomVariableDiscrete.cc \
+         VariableDiscrete.cc \
          RandomVariableValue.cc \
          RandomVariableValueBoolean.cc \
          RandomVariableValueContinuous.cc \

@@ -3,7 +3,7 @@
 #include "Ravl/Prob/Domain.hh"
 #include "Ravl/Prob/RandomVariableBoolean.hh"
 #include "Ravl/Prob/RandomVariableContinuous.hh"
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 
 using namespace RavlProbN;
 	
@@ -31,7 +31,7 @@ public:
 		names.Insert("a");
 		names.Insert("b");
 		names.Insert("c");
-		m_variables.Insert(RandomVariableDiscreteC("discrete", names));
+		m_variables.Insert(VariableDiscreteC("discrete", names));
 		m_domain = DomainC(m_variables);
 	}
 	

@@ -13,7 +13,7 @@ class RandomVariableValueDiscreteTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testEquality );
 	CPPUNIT_TEST_SUITE_END();
 private:
-	RandomVariableDiscreteC m_variable;
+	VariableDiscreteC m_variable;
 	RandomVariableValueDiscreteC m_valueA;
 	RandomVariableValueDiscreteC m_valueB;
 public:
@@ -22,7 +22,7 @@ public:
 		names.Insert("a");
 		names.Insert("b");
 		names.Insert("c");
-		m_variable = RandomVariableDiscreteC("variable", names);
+		m_variable = VariableDiscreteC("variable", names);
 		m_valueA = RandomVariableValueDiscreteC(m_variable, "a");
 		m_valueB = RandomVariableValueDiscreteC(m_variable, "b");
 	}

@@ -15,13 +15,13 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const RandomVariableDiscreteC& variable, const StringC& value)
+  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value)
     : RandomVariableValueBodyC(variable)
   {
     SetValue(value);
   }
 
-  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const RandomVariableDiscreteC& variable)
+  RandomVariableValueDiscreteBodyC::RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable)
     : RandomVariableValueBodyC(variable)
   {
     //: NOTE that the value hasn't been initialized, you better know what you are doing!
@@ -79,13 +79,13 @@ namespace RavlProbN {
   }
 
   void RandomVariableValueDiscreteBodyC::SetValue(const StringC& value) {
-    if (!RandomVariableDiscrete().Values().Contains(value))
+    if (!VariableDiscrete().Values().Contains(value))
       throw ExceptionC("RandomVariableValueDiscreteBodyC::SetValue(), illegal value");
     m_value = value;
   }
 
   IndexC RandomVariableValueDiscreteBodyC::Index() const {
-    return RandomVariableDiscrete().Index(Value());
+    return VariableDiscrete().Index(Value());
   }
 
   bool RandomVariableValueDiscreteBodyC::operator==(const RandomVariableValueC& other) const {
@@ -101,8 +101,8 @@ namespace RavlProbN {
     return RandomVariableValueBodyC::Hash() + Value().Hash();
   }
 
-  RandomVariableDiscreteC RandomVariableValueDiscreteBodyC::RandomVariableDiscrete() const {
-    return RandomVariableDiscreteC(Variable());
+  VariableDiscreteC RandomVariableValueDiscreteBodyC::VariableDiscrete() const {
+    return VariableDiscreteC(Variable());
   }
 
   static TypeNameC type1(typeid(RandomVariableValueDiscreteC),"RavlProbN::RandomVariableValueDiscreteC");

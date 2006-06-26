@@ -36,7 +36,7 @@ public:
 		names.Insert("a");
 		names.Insert("b");
 		names.Insert("c");
-		m_variables.Insert(RandomVariableDiscreteC("discrete", names));
+		m_variables.Insert(VariableDiscreteC("discrete", names));
 		m_domain = DomainC(m_variables);
 		m_values.Insert(RandomVariableValueBooleanC(booleanVariable, true));
 		m_values.Insert(RandomVariableValueContinuousC(continuousVariable, 0.5));

@@ -11,7 +11,6 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFAbstract.hh"
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
 #include "Ravl/Prob/RandomVariableValueDiscrete.hh"
 #include "Ravl/RCHash.hh"
 
@@ -23,7 +22,7 @@ namespace RavlProbN {
   class PDFDiscreteBodyC
     : public PDFAbstractBodyC {
   public:
-    PDFDiscreteBodyC(const RandomVariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable);
+    PDFDiscreteBodyC(const VariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable);
     //: Constructor
     //!param: variable - the random variable for the distribution
     //!param: probabilityLookupTable - a lookup table for the probabilities of the values of the variable
@@ -40,7 +39,7 @@ namespace RavlProbN {
     //: Get a string representation of the distribution
 
   protected:
-    PDFDiscreteBodyC(const RandomVariableDiscreteC& variable);
+    PDFDiscreteBodyC(const VariableDiscreteC& variable);
     //: Constructor
     //!param: variable - the random variable for the distribution
 
@@ -50,7 +49,7 @@ namespace RavlProbN {
     // represented in the table and that the values sum to 1.0
 
   private:
-    RandomVariableDiscreteC RandomVariableDiscrete() const;
+    VariableDiscreteC VariableDiscrete() const;
     //: Get access to the discrete random variable that this is a distribution of
 
   private:
@@ -69,7 +68,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    PDFDiscreteC(const RandomVariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable)
+    PDFDiscreteC(const VariableDiscreteC& variable, const RCHashC<RandomVariableValueDiscreteC,RealT>& probabilityLookupTable)
       : PDFAbstractC(new PDFDiscreteBodyC(variable, probabilityLookupTable))
     {}
     //: Constructor

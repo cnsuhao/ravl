@@ -1,6 +1,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 
 using namespace RavlProbN;
 	
@@ -16,14 +16,14 @@ class RandomVariableDiscreteTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_EXCEPTION( testIndexThrows, ExceptionC );
 	CPPUNIT_TEST_SUITE_END();
 private:
-	RandomVariableDiscreteC m_variable;
+	VariableDiscreteC m_variable;
 public:
 	void setUp() {
 		HSetC<StringC> names;
 		names.Insert("a");
 		names.Insert("b");
 		names.Insert("c");
-		m_variable = RandomVariableDiscreteC("variable", names);
+		m_variable = VariableDiscreteC("variable", names);
 	}
 	
 	void tearDown() {

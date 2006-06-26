@@ -8,49 +8,49 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(const StringC& name, const HSetC<StringC>& values)
+  VariableDiscreteBodyC::VariableDiscreteBodyC(const StringC& name, const HSetC<StringC>& values)
     : VariableBodyC(name)
   {
     SetValues(values);
   }
 
-  RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(const StringC& name)
+  VariableDiscreteBodyC::VariableDiscreteBodyC(const StringC& name)
     : VariableBodyC(name)
   {
   }
 
-  RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(istream &in)
+  VariableDiscreteBodyC::VariableDiscreteBodyC(istream &in)
     : VariableBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableDiscreteBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableDiscreteBodyC(istream &), Unrecognised version number in stream.");
     HSetC<StringC> values;
     in >> values;
     SetValues(values);
   }
 
-  RandomVariableDiscreteBodyC::RandomVariableDiscreteBodyC(BinIStreamC &in)
+  VariableDiscreteBodyC::VariableDiscreteBodyC(BinIStreamC &in)
     : VariableBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableDiscreteBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableDiscreteBodyC(BinIStream &), Unrecognised version number in stream.");
     HSetC<StringC> values;
     in >> values;
     SetValues(values);
   }
   
-  bool RandomVariableDiscreteBodyC::Save (ostream &out) const {
+  bool VariableDiscreteBodyC::Save (ostream &out) const {
     if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -58,7 +58,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableDiscreteBodyC::Save (BinOStreamC &out) const {
+  bool VariableDiscreteBodyC::Save (BinOStreamC &out) const {
     if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -66,10 +66,10 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableDiscreteBodyC::~RandomVariableDiscreteBodyC() {
+  VariableDiscreteBodyC::~VariableDiscreteBodyC() {
   }
   
-  StringC RandomVariableDiscreteBodyC::ToString() const {
+  StringC VariableDiscreteBodyC::ToString() const {
     StringC values = Name() + "=<";
     HSetIterC<StringC> it(Values());
     values += *it;
@@ -81,33 +81,33 @@ namespace RavlProbN {
     return values;
   }
 
-  SizeT RandomVariableDiscreteBodyC::NumValues() const {
+  SizeT VariableDiscreteBodyC::NumValues() const {
     return m_numValues;
   }
 
-  const HSetC<StringC>& RandomVariableDiscreteBodyC::Values() const {
+  const HSetC<StringC>& VariableDiscreteBodyC::Values() const {
     return m_values;
   }
 
-  const StringC& RandomVariableDiscreteBodyC::Value(IndexC index) const {
+  const StringC& VariableDiscreteBodyC::Value(IndexC index) const {
     if (index < 0 || index >= Values().Size())
-      throw ExceptionC("RandomVariableDiscreteBodyC::Value(), index out of bounds");
+      throw ExceptionC("VariableDiscreteBodyC::Value(), index out of bounds");
     HSetIterC<StringC> it(Values());
     while(index--)
       it++;
     return *it;
   }
 
-  IndexC RandomVariableDiscreteBodyC::Index(const StringC& value) const {
+  IndexC VariableDiscreteBodyC::Index(const StringC& value) const {
     //:FIXME- this should probably be implemented using hash table
     IndexC index(0);
     for (HSetIterC<StringC> it(Values()); it; it++, index++)
       if (*it == value)
         return index;
-    throw ExceptionC("RandomVariableDiscreteBodyC::Index(), couldn't find value");
+    throw ExceptionC("VariableDiscreteBodyC::Index(), couldn't find value");
   }
 
-  void RandomVariableDiscreteBodyC::SetValues(const HSetC<StringC>& values) {
+  void VariableDiscreteBodyC::SetValues(const HSetC<StringC>& values) {
     HSetC<StringC> downcaseValues;
     for (HSetIterC<StringC> it(values); it; it++)
       downcaseValues.Insert(downcase(*it));
@@ -115,8 +115,8 @@ namespace RavlProbN {
     m_values = downcaseValues;
   }
 
-  static TypeNameC type1(typeid(RandomVariableDiscreteC),"RavlProbN::RandomVariableDiscreteC");
+  static TypeNameC type1(typeid(VariableDiscreteC),"RavlProbN::VariableDiscreteC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableDiscreteBodyC,RandomVariableDiscreteC,VariableC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariableDiscreteBodyC,VariableDiscreteC,VariableC);
   
 }

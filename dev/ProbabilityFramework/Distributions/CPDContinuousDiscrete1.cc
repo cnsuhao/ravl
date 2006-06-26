@@ -14,7 +14,7 @@ namespace RavlProbN {
   using namespace RavlN;
   
   CPDContinuousDiscrete1BodyC::CPDContinuousDiscrete1BodyC(const RandomVariableContinuousC& randomVariable,
-                                                           const RandomVariableDiscreteC& parentVariable,
+                                                           const VariableDiscreteC& parentVariable,
                                                            const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
     : CPDAbstractBodyC(randomVariable, parentVariable) {
     SetParentVariable(parentVariable);
@@ -50,11 +50,11 @@ namespace RavlProbN {
     m_probabilityDistributionTable = probabilityDistributionTable.Copy();
   }
 
-  RandomVariableDiscreteC CPDContinuousDiscrete1BodyC::ParentVariable() const {
+  VariableDiscreteC CPDContinuousDiscrete1BodyC::ParentVariable() const {
     return m_parentVariable;
   }
 
-  void CPDContinuousDiscrete1BodyC::SetParentVariable(const RandomVariableDiscreteC& parentVariable) {
+  void CPDContinuousDiscrete1BodyC::SetParentVariable(const VariableDiscreteC& parentVariable) {
     if (!parentVariable.IsValid())
       throw ExceptionC("CPDContinuousDiscrete1BodyC::SetParentVariable(), parent variable is invalid");
     m_parentVariable = parentVariable;

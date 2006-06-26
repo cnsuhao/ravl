@@ -30,7 +30,7 @@ namespace RavlProbN {
     DomainC parentDomain = propositionPairs.First().Data2().Domain();
     if (parentDomain.NumVariables() != 1)
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), parent domain must have 1 variable");
-    RandomVariableDiscreteC parentVariable = CheckParentVariable(parentDomain.Variable(0));
+    VariableDiscreteC parentVariable = CheckParentVariable(parentDomain.Variable(0));
     // create a list for each value of the parent variable
     RCHashC<RandomVariableValueDiscreteC,DListC<RealT> > valuesByParent;
     // put each entry into the correct list
@@ -64,7 +64,7 @@ namespace RavlProbN {
     return dependentVariable;
   }
 
-  RandomVariableDiscreteC CPDDesignerContinuousDiscrete1BodyC::CheckParentVariable(const RandomVariableDiscreteC& parentVariable) {
+  VariableDiscreteC CPDDesignerContinuousDiscrete1BodyC::CheckParentVariable(const VariableDiscreteC& parentVariable) {
     if (!parentVariable.IsValid())
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::SetParentVariable(), parent variable must be valid discrete");
     return parentVariable;

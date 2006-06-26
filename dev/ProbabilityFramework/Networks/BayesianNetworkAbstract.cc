@@ -62,7 +62,7 @@ namespace RavlProbN {
   //: Figure 14.9 in Artificial Intelligence: A Modern Approach, 2nd edition
 
   ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const {
-    RandomVariableDiscreteC discrete(variable);
+    VariableDiscreteC discrete(variable);
     if (!discrete.IsValid())
       throw ExceptionC("BayesianNetworkSimpleBodyC::CalculateDistribution(), only works for discrete variables");
     // check if evidence contains variable

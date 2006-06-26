@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/RandomVariableValue.hh"
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -21,7 +21,7 @@ namespace RavlProbN {
   class RandomVariableValueDiscreteBodyC
     : public RandomVariableValueBodyC {
   public:
-    RandomVariableValueDiscreteBodyC(const RandomVariableDiscreteC& variable, const StringC& value);
+    RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable, const StringC& value);
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
@@ -63,14 +63,14 @@ namespace RavlProbN {
     //: Hash function based on variable and value
 
   private:
-    RandomVariableDiscreteC RandomVariableDiscrete() const;
+    VariableDiscreteC VariableDiscrete() const;
     //: Get access to the discrete random variable that this is an instance of
 
   protected:
     virtual void SetValue(const StringC& value);
     //: Set the value of the random variable
 
-    RandomVariableValueDiscreteBodyC(const RandomVariableDiscreteC& variable);
+    RandomVariableValueDiscreteBodyC(const VariableDiscreteC& variable);
     //: Constructor
     //!param: variable - the variable that this is an instance of
 
@@ -91,7 +91,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    RandomVariableValueDiscreteC(const RandomVariableDiscreteC& variable, const StringC& value)
+    RandomVariableValueDiscreteC(const VariableDiscreteC& variable, const StringC& value)
       : RandomVariableValueC(new RandomVariableValueDiscreteBodyC(variable, value))
     {}
     //: Constructor

@@ -16,7 +16,7 @@ namespace RavlProbN {
   using namespace RavlN;
   
   RandomVariableBooleanBodyC::RandomVariableBooleanBodyC(const StringC& name)
-    : RandomVariableDiscreteBodyC(name)
+    : VariableDiscreteBodyC(name)
   {
     SetValueNames();
     HSetC<StringC> values;
@@ -26,7 +26,7 @@ namespace RavlProbN {
   }
 
   RandomVariableBooleanBodyC::RandomVariableBooleanBodyC(istream &in)
-    : RandomVariableDiscreteBodyC(in)
+    : VariableDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
@@ -36,7 +36,7 @@ namespace RavlProbN {
   }
 
   RandomVariableBooleanBodyC::RandomVariableBooleanBodyC(BinIStreamC &in)
-    : RandomVariableDiscreteBodyC(in)
+    : VariableDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
@@ -46,7 +46,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableBooleanBodyC::Save (ostream &out) const {
-    if(!RandomVariableDiscreteBodyC::Save(out))
+    if(!VariableDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
     out << ' ' << version;
@@ -54,7 +54,7 @@ namespace RavlProbN {
   }
   
   bool RandomVariableBooleanBodyC::Save (BinOStreamC &out) const {
-    if(!RandomVariableDiscreteBodyC::Save(out))
+    if(!VariableDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
     out << version;
@@ -75,6 +75,6 @@ namespace RavlProbN {
 
   static TypeNameC type1(typeid(RandomVariableBooleanC),"RavlProbN::RandomVariableBooleanC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableBooleanBodyC,RandomVariableBooleanC,RandomVariableDiscreteC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableBooleanBodyC,RandomVariableBooleanC,VariableDiscreteC);
   
 }

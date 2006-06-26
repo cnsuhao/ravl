@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/CPDAbstract.hh"
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 #include "Ravl/Prob/PDFDiscrete.hh"
 
 namespace RavlProbN {
@@ -22,7 +22,7 @@ namespace RavlProbN {
   class CPDDiscreteDiscreteBodyC
     : public CPDAbstractBodyC {
   public:
-    CPDDiscreteDiscreteBodyC(const RandomVariableDiscreteC& randomVariable,
+    CPDDiscreteDiscreteBodyC(const VariableDiscreteC& randomVariable,
                              const DomainC& parentDomain,
                              const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable);
     //: Constructor
@@ -52,7 +52,7 @@ namespace RavlProbN {
     : public CPDAbstractC
   {
   public:
-    CPDDiscreteDiscreteC(const RandomVariableDiscreteC& randomVariable,
+    CPDDiscreteDiscreteC(const VariableDiscreteC& randomVariable,
                          const DomainC& parentDomain,
                          const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable)
       : CPDAbstractC(new CPDDiscreteDiscreteBodyC(randomVariable, parentDomain, probabilityDistributionTable))

@@ -12,7 +12,7 @@
 
 #include "Ravl/Prob/CPDDesigner.hh"
 #include "Ravl/Prob/RandomVariableContinuous.hh"
-#include "Ravl/Prob/RandomVariableDiscrete.hh"
+#include "Ravl/Prob/VariableDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -37,7 +37,7 @@ namespace RavlProbN {
     static RandomVariableContinuousC CheckDependentVariable(const RandomVariableContinuousC& dependentVariable);
     //: Check the dependent variable
 
-    static RandomVariableDiscreteC CheckParentVariable(const RandomVariableDiscreteC& parentVariable);
+    static VariableDiscreteC CheckParentVariable(const VariableDiscreteC& parentVariable);
     //: Check the parent variable
 
   };

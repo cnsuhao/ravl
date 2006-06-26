@@ -25,7 +25,7 @@ namespace RavlProbN {
     : public CPDAbstractBodyC {
   public:
     CPDContinuousDiscrete1BodyC(const RandomVariableContinuousC& randomVariable,
-                                const RandomVariableDiscreteC& parentVariable,
+                                const VariableDiscreteC& parentVariable,
                                 const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable);
     //: Constructor
 
@@ -41,17 +41,17 @@ namespace RavlProbN {
     void SetProbabilityDistributionTable(const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilitDistributionTable);
     //: Set the table of distributions
 
-    RandomVariableDiscreteC ParentVariable() const;
+    VariableDiscreteC ParentVariable() const;
     //: Get access to the parent variable directly
 
-    void SetParentVariable(const RandomVariableDiscreteC& parentVariable);
+    void SetParentVariable(const VariableDiscreteC& parentVariable);
     //: Cache the parent variable for direct access
 
   private:
     RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC> m_probabilityDistributionTable;
     //: Table of distributions for each value of the discrete parent
 
-    RandomVariableDiscreteC m_parentVariable;
+    VariableDiscreteC m_parentVariable;
     //: Cached copy of parent variable for direct access
   };
 
@@ -64,7 +64,7 @@ namespace RavlProbN {
   {
   public:
     CPDContinuousDiscrete1C(const RandomVariableContinuousC& randomVariable,
-                            const RandomVariableDiscreteC& parentVariable,
+                            const VariableDiscreteC& parentVariable,
                             const RCHashC<RandomVariableValueDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
       : CPDAbstractC(new CPDContinuousDiscrete1BodyC(randomVariable, parentVariable, probabilityDistributionTable))
     {}
