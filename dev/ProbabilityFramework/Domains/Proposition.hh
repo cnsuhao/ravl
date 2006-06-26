@@ -22,6 +22,10 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Class used to represent a proposition in a domain of random variables
+  //
+  // A proposition indicates a set of values or propositions about a subset of
+  // variables in a domain. Eg given a Domain with Weather, Cavity and X,
+  // represent the proposition that Weather=snow, Cavity=true and X is unknown.
   class PropositionBodyC
     : public RCBodyVC {
   public:

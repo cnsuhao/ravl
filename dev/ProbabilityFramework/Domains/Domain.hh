@@ -21,6 +21,10 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Class used to represent a domain set of random variable
+  //
+  // Note that this is not to be confused with the domain of a particular random
+  // variable, eg Weather=<sunny,rainy,cloudy,snow>. In this case we are referring
+  // to a set of random variables, eg Weather, Cavity and X
   class DomainBodyC
     : public RCBodyVC {
   public:

@@ -21,6 +21,24 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Base class for all random variable types
+  //
+  // A random variable is the base element of the probability notation. It can
+  // be thought of as referring to a 'part' of the world whole 'status' is initially
+  // unknown. For example, "Cavity" might refer to whether my lower left wisdom
+  // tooth has a cavity. We always capitalize the names of random variables.
+  // Each random variable has a domain of values that it can take on. We will
+  // use lowercase for the names of values.
+  //
+  // There are three types of random variable:
+  // 1: Boolean random variables, such as Cavity, have the domain <true,false>.
+  // 2: Discrete random variables, which include Boolean random variables as a
+  // special case, take on values from a countable domain. For example, the domain
+  // of Weather might be <sunny,rainy,cloudy,snow>. The values in the domain must
+  // be mutually exclusive and exhaustive.
+  // 3: Continuous random variables take on values from the real numbers. The domain
+  // can be either the entire real line or some subset such as the interval [0,1].
+  // For example, the proposition X=4.02 asserts that the random variable X has the
+  // exact value 4.02.
   class RandomVariableBodyC
     : public RCBodyVC {
   public:

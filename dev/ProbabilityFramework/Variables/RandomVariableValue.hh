@@ -20,6 +20,11 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Base class for all random variable values
+  //
+  // A random variable value is a proposition about a random variable. It
+  // asserts that a variable takes on a particular value from its domain. For
+  // instance, Cavity=false, or alternatively Cavity=¬cavity. Also X=4.02,
+  // Weather=snow.
   class RandomVariableValueBodyC
     : public RCBodyVC {
   public:
