@@ -10,7 +10,8 @@ class RandomVariableDiscreteTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testNumValues );
 	CPPUNIT_TEST( testValues );
 	CPPUNIT_TEST( testValue );
-	CPPUNIT_TEST_EXCEPTION( testValueThrows, ExceptionC );
+	CPPUNIT_TEST_EXCEPTION( testValueThrows1, ExceptionC );
+	CPPUNIT_TEST_EXCEPTION( testValueThrows2, ExceptionC );
 	CPPUNIT_TEST( testIndex );
 	CPPUNIT_TEST_EXCEPTION( testIndexThrows, ExceptionC );
 	CPPUNIT_TEST_SUITE_END();
@@ -38,9 +39,10 @@ public:
 	
 	void testValues() {
 		CPPUNIT_ASSERT( m_variable.Values().Size() == 3 );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("a") );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("b") );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("c") );
+		CPPUNIT_ASSERT( m_variable.Values().Contains("a") == true );
+		CPPUNIT_ASSERT( m_variable.Values().Contains("b") == true );
+		CPPUNIT_ASSERT( m_variable.Values().Contains("c") == true );
+		CPPUNIT_ASSERT( m_variable.Values().Contains("d") == false );
 	}
 	
 	void testValue() {
@@ -48,8 +50,11 @@ public:
 		CPPUNIT_ASSERT( m_variable.Value(1) != m_variable.Value(2) );
 	}
 	
-	void testValueThrows() {
+	void testValueThrows1() {
 		m_variable.Value(3);
+	}
+	
+	void testValueThrows2() {
 		m_variable.Value(-1);
 	}
 	

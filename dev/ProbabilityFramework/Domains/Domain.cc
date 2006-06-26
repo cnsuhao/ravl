@@ -75,6 +75,8 @@ namespace RavlProbN {
 
   bool DomainBodyC::Contains(const RandomVariableC& variable) const {
     //:FIXME- depends on choice of collection
+    if (!variable.IsValid())
+    	return false;
     return Variables().Contains(variable);
   }
 
@@ -87,7 +89,7 @@ namespace RavlProbN {
   }
 
   const RandomVariableC& DomainBodyC::Variable(IndexC index) const {
-    if (index > NumVariables())
+    if (index < 0 || index >= NumVariables())
       throw ExceptionC("DomainBodyC::Variable(), index too big");
     HSetIterC<RandomVariableC> it(Variables());
     while(index--)
@@ -101,6 +103,8 @@ namespace RavlProbN {
   }
 
   IndexC DomainBodyC::Index(const RandomVariableC& variable) const {
+  	if (!variable.IsValid())
+  		throw ExceptionC("DomainBodyC::Index(), invalid variable");
     //:FIXME- this should probably be implemented using hash table
     IndexC index(0);
     for (HSetIterC<RandomVariableC> it(Variables()); it; it++, index++)

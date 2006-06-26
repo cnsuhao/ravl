@@ -25,7 +25,10 @@ SOURCES=
 
 MAINS=
 
-MUSTLINK= testRandomVariableBoolean.cc \
+EXAMPLES= testRunnerQt.cc
+
+MUSTLINK= testDomain.cc \
+		testRandomVariableBoolean.cc \
 		testRandomVariableContinuous.cc \
 		testRandomVariableDiscrete.cc \
 		testRandomVariableValueBoolean.cc \
@@ -36,6 +39,6 @@ USESLIBS= RavlCore RavlOS RavlProb
 
 TESTEXES= testRunner.cc
 
-PROGLIBS= CPPUnit
+PROGLIBS= CPPUnit #QtTestRunner
 
 PLIB= RavlProbUnitTest

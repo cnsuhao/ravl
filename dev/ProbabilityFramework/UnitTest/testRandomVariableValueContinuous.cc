@@ -6,7 +6,8 @@ using namespace RavlProbN;
 	
 class RandomVariableValueContinuousTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( RandomVariableValueContinuousTest );
-	CPPUNIT_TEST_EXCEPTION( testCreateThrows, ExceptionC );
+	CPPUNIT_TEST_EXCEPTION( testCreateThrows1, ExceptionC );
+	CPPUNIT_TEST_EXCEPTION( testCreateThrows2, ExceptionC );
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST( testEquality );
@@ -25,8 +26,11 @@ public:
 	void tearDown() {
 	}
 	
-	void testCreateThrows() {
+	void testCreateThrows1() {
 		RandomVariableValueContinuousC v1(m_variable, -0.1);
+	}
+	
+	void testCreateThrows2() {
 		RandomVariableValueContinuousC v2(m_variable, 1.1);
 	}
 	
