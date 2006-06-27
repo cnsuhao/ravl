@@ -1,23 +1,23 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Ravl/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/VariablePropositionBoolean.hh"
 
 using namespace RavlProbN;
 	
-class RandomVariableValueBooleanTest: public CppUnit::TestCase {
-	CPPUNIT_TEST_SUITE( RandomVariableValueBooleanTest );
+class VariablePropositionBooleanTest: public CppUnit::TestCase {
+	CPPUNIT_TEST_SUITE( VariablePropositionBooleanTest );
 	CPPUNIT_TEST( testBooleanValue );
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST_SUITE_END();
 private:
 	VariableBooleanC m_variable;
-	RandomVariableValueBooleanC m_valueTrue;
-	RandomVariableValueBooleanC m_valueFalse;
+	VariablePropositionBooleanC m_valueTrue;
+	VariablePropositionBooleanC m_valueFalse;
 public:
 	void setUp() {
 		m_variable = VariableBooleanC("variable");
-		m_valueTrue = RandomVariableValueBooleanC(m_variable, true);
-		m_valueFalse = RandomVariableValueBooleanC(m_variable, false);
+		m_valueTrue = VariablePropositionBooleanC(m_variable, true);
+		m_valueFalse = VariablePropositionBooleanC(m_variable, false);
 	}
 	
 	void tearDown() {
@@ -34,4 +34,4 @@ public:
 	}
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( RandomVariableValueBooleanTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( VariablePropositionBooleanTest );

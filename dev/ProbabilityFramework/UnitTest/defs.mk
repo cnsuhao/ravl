@@ -32,7 +32,7 @@ MUSTLINK= testDomain.cc \
 		testVariableBoolean.cc \
 		testVariableContinuous.cc \
 		testVariableDiscrete.cc \
-		testRandomVariableValueBoolean.cc \
+		testVariablePropositionBoolean.cc \
 		testRandomVariableValueContinuous.cc \
 		testVariablePropositionDiscrete.cc
 

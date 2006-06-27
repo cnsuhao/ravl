@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 #include "Ravl/Prob/BayesianNetworkSimple.hh"
-#include "Ravl/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/VariablePropositionBoolean.hh"
 #include "Ravl/Prob/PDFDiscrete.hh"
 #include "Ravl/Prob/PDFBoolean.hh"
 #include "Ravl/Prob/CPDPriorPDF.hh"
@@ -34,16 +34,16 @@ int main() {
     DomainC johnCallsParentDomain(johnCallsParents);
     DomainC maryCallsParentDomain(johnCallsParents);
     // create variable values
-    RandomVariableValueBooleanC burglary(Burglary, true);
-    RandomVariableValueBooleanC _burglary(Burglary, false);
-    RandomVariableValueBooleanC earthquake(Earthquake, true);
-    RandomVariableValueBooleanC _earthquake(Earthquake, false);
-    RandomVariableValueBooleanC alarm(Alarm, true);
-    RandomVariableValueBooleanC _alarm(Alarm, false);
-    RandomVariableValueBooleanC johnCalls(JohnCalls, true);
-    RandomVariableValueBooleanC _johnCalls(JohnCalls, false);
-    RandomVariableValueBooleanC maryCalls(MaryCalls, true);
-    RandomVariableValueBooleanC _maryCalls(MaryCalls, false);
+    VariablePropositionBooleanC burglary(Burglary, true);
+    VariablePropositionBooleanC _burglary(Burglary, false);
+    VariablePropositionBooleanC earthquake(Earthquake, true);
+    VariablePropositionBooleanC _earthquake(Earthquake, false);
+    VariablePropositionBooleanC alarm(Alarm, true);
+    VariablePropositionBooleanC _alarm(Alarm, false);
+    VariablePropositionBooleanC johnCalls(JohnCalls, true);
+    VariablePropositionBooleanC _johnCalls(JohnCalls, false);
+    VariablePropositionBooleanC maryCalls(MaryCalls, true);
+    VariablePropositionBooleanC _maryCalls(MaryCalls, false);
     // create distribution tables
     HSetC<VariablePropositionC> be; be.Insert(burglary); be.Insert(earthquake);
     HSetC<VariablePropositionC> b_e; b_e.Insert(burglary); b_e.Insert(_earthquake);

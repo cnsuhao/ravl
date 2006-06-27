@@ -8,44 +8,44 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/VariablePropositionBoolean.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(const VariableBooleanC& variable, bool value)
+  VariablePropositionBooleanBodyC::VariablePropositionBooleanBodyC(const VariableBooleanC& variable, bool value)
     : VariablePropositionDiscreteBodyC(variable)
   {
     SetBooleanValue(value);
   }
 
-  RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(istream &in)
+  VariablePropositionBooleanBodyC::VariablePropositionBooleanBodyC(istream &in)
     : VariablePropositionDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableValueBooleanBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariablePropositionBooleanBodyC(istream &), Unrecognised version number in stream.");
     bool value;
     in >> value;
     SetBooleanValue(value);
   }
 
-  RandomVariableValueBooleanBodyC::RandomVariableValueBooleanBodyC(BinIStreamC &in)
+  VariablePropositionBooleanBodyC::VariablePropositionBooleanBodyC(BinIStreamC &in)
     : VariablePropositionDiscreteBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableValueBooleanBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariablePropositionBooleanBodyC(BinIStream &), Unrecognised version number in stream.");
     bool value;
     in >> value;
     SetBooleanValue(value);
   }
   
-  bool RandomVariableValueBooleanBodyC::Save (ostream &out) const {
+  bool VariablePropositionBooleanBodyC::Save (ostream &out) const {
     if(!VariablePropositionDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -53,7 +53,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableValueBooleanBodyC::Save (BinOStreamC &out) const {
+  bool VariablePropositionBooleanBodyC::Save (BinOStreamC &out) const {
     if(!VariablePropositionDiscreteBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -61,28 +61,28 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableValueBooleanBodyC::~RandomVariableValueBooleanBodyC() {
+  VariablePropositionBooleanBodyC::~VariablePropositionBooleanBodyC() {
   }
   
-  bool RandomVariableValueBooleanBodyC::BooleanValue() const {
+  bool VariablePropositionBooleanBodyC::BooleanValue() const {
     return m_booleanValue;
   }
 
-  void RandomVariableValueBooleanBodyC::SetBooleanValue(bool value) {
+  void VariablePropositionBooleanBodyC::SetBooleanValue(bool value) {
     m_booleanValue = value;
     VariablePropositionDiscreteBodyC::SetValue(VariableBoolean().Value(value));
   }
 
-  void RandomVariableValueBooleanBodyC::SetValue(const StringC& value) {
+  void VariablePropositionBooleanBodyC::SetValue(const StringC& value) {
     SetBooleanValue(VariableBoolean().Value(true) == value);
   }
 
-  VariableBooleanC RandomVariableValueBooleanBodyC::VariableBoolean() const {
+  VariableBooleanC VariablePropositionBooleanBodyC::VariableBoolean() const {
     return VariableBooleanC(Variable());
   }
 
-  static TypeNameC type1(typeid(RandomVariableValueBooleanC),"RavlProbN::RandomVariableValueBooleanC");
+  static TypeNameC type1(typeid(VariablePropositionBooleanC),"RavlProbN::VariablePropositionBooleanC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueBooleanBodyC,RandomVariableValueBooleanC,VariablePropositionDiscreteC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariablePropositionBooleanBodyC,VariablePropositionBooleanC,VariablePropositionDiscreteC);
   
 }

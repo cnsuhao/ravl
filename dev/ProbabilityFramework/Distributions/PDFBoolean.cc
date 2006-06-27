@@ -9,7 +9,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFBoolean.hh"
-#include "Ravl/Prob/RandomVariableValueBoolean.hh"
+#include "Ravl/Prob/VariablePropositionBoolean.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -18,8 +18,8 @@ namespace RavlProbN {
     : PDFDiscreteBodyC(variable)
   {
     RCHashC<VariablePropositionDiscreteC,RealT> probabilityLookupTable;
-    probabilityLookupTable.Insert(RandomVariableValueBooleanC(variable, true), probabilityTrue);
-    probabilityLookupTable.Insert(RandomVariableValueBooleanC(variable, false), 1.0-probabilityTrue);
+    probabilityLookupTable.Insert(VariablePropositionBooleanC(variable, true), probabilityTrue);
+    probabilityLookupTable.Insert(VariablePropositionBooleanC(variable, false), 1.0-probabilityTrue);
     SetProbabilityLookupTable(probabilityLookupTable);
   }
 

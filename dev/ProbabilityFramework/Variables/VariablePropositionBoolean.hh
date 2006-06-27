@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_RANDOMVARIABLEVALUEBOOLEAN_HEADER
-#define RAVLPROB_RANDOMVARIABLEVALUEBOOLEAN_HEADER 1
+#ifndef RAVLPROB_VARIABLEPROPOSITIONBOOLEAN_HEADER
+#define RAVLPROB_VARIABLEPROPOSITIONBOOLEAN_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -18,19 +18,19 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Implementation of a boolean random variable value
-  class RandomVariableValueBooleanBodyC
+  class VariablePropositionBooleanBodyC
     : public VariablePropositionDiscreteBodyC {
   public:
-    RandomVariableValueBooleanBodyC(const VariableBooleanC& variable, bool value);
+    VariablePropositionBooleanBodyC(const VariableBooleanC& variable, bool value);
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
 
-    RandomVariableValueBooleanBodyC(istream &in);
+    VariablePropositionBooleanBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    RandomVariableValueBooleanBodyC(BinIStreamC &in);
+    VariablePropositionBooleanBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -44,7 +44,7 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~RandomVariableValueBooleanBodyC();
+    virtual ~VariablePropositionBooleanBodyC();
     //: Destructor
     
     bool BooleanValue() const;
@@ -69,26 +69,26 @@ namespace RavlProbN {
   //: Implementation of a boolean random variable value
   //!cwiz:author
   
-  class RandomVariableValueBooleanC
+  class VariablePropositionBooleanC
     : public VariablePropositionDiscreteC
   {
   public:
-  	RandomVariableValueBooleanC()
+  	VariablePropositionBooleanC()
   	{}
   	//: Default constructors make invalid object
   	
-    RandomVariableValueBooleanC(const VariableBooleanC& variable, bool value)
-      : VariablePropositionDiscreteC(new RandomVariableValueBooleanBodyC(variable, value))
+    VariablePropositionBooleanC(const VariableBooleanC& variable, bool value)
+      : VariablePropositionDiscreteC(new VariablePropositionBooleanBodyC(variable, value))
     {}
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
 
-    RandomVariableValueBooleanC(istream &in);
+    VariablePropositionBooleanC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    RandomVariableValueBooleanC(BinIStreamC &in);
+    VariablePropositionBooleanC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -97,22 +97,22 @@ namespace RavlProbN {
     //: Get access to the value
 
   protected:
-    RandomVariableValueBooleanC(RandomVariableValueBooleanBodyC &bod)
+    VariablePropositionBooleanC(VariablePropositionBooleanBodyC &bod)
      : VariablePropositionDiscreteC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueBooleanC(const RandomVariableValueBooleanBodyC *bod)
+    VariablePropositionBooleanC(const VariablePropositionBooleanBodyC *bod)
      : VariablePropositionDiscreteC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueBooleanBodyC& Body()
-    { return static_cast<RandomVariableValueBooleanBodyC &>(VariablePropositionDiscreteC::Body()); }
+    VariablePropositionBooleanBodyC& Body()
+    { return static_cast<VariablePropositionBooleanBodyC &>(VariablePropositionDiscreteC::Body()); }
     //: Body Access. 
     
-    const RandomVariableValueBooleanBodyC& Body() const
-    { return static_cast<const RandomVariableValueBooleanBodyC &>(VariablePropositionDiscreteC::Body()); }
+    const VariablePropositionBooleanBodyC& Body() const
+    { return static_cast<const VariablePropositionBooleanBodyC &>(VariablePropositionDiscreteC::Body()); }
     //: Body Access. 
     
   };
