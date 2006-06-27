@@ -74,7 +74,7 @@ namespace RavlProbN {
     // calculate probability of each value independently
     RealT sum = 0;
     RCHashC<VariablePropositionDiscreteC,RealT> probabilityLookupTable;
-    for (HSetIterC<StringC> ht(discrete.Values()); ht; ht++) {
+    for (SArray1dIterC<StringC> ht(discrete.Domain().Iterator()); ht; ht++) {
       VariablePropositionDiscreteC value(discrete, *ht);    
       RealT probability;
       if (!prior.IsValid()) {

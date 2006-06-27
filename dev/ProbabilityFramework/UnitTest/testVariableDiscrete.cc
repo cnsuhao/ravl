@@ -4,11 +4,11 @@
 
 using namespace RavlProbN;
 	
-class RandomVariableDiscreteTest: public CppUnit::TestCase {
-	CPPUNIT_TEST_SUITE( RandomVariableDiscreteTest );
+class VariableDiscreteTest: public CppUnit::TestCase {
+	CPPUNIT_TEST_SUITE( VariableDiscreteTest );
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST( testNumValues );
-	CPPUNIT_TEST( testValues );
+	CPPUNIT_TEST( testDomain );
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST_EXCEPTION( testValueThrows1, ExceptionC );
 	CPPUNIT_TEST_EXCEPTION( testValueThrows2, ExceptionC );
@@ -19,30 +19,30 @@ private:
 	VariableDiscreteC m_variable;
 public:
 	void setUp() {
-		HSetC<StringC> names;
-		names.Insert("a");
-		names.Insert("b");
-		names.Insert("c");
-		m_variable = VariableDiscreteC("variable", names);
+		DomainDiscreteC domain;
+		domain.Insert("a");
+		domain.Insert("b");
+		domain.Insert("c");
+		m_variable = VariableDiscreteC("variable", domain);
 	}
 	
 	void tearDown() {
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT( m_variable.ToString() == "Variable=<b,a,c>" );
+		CPPUNIT_ASSERT_EQUAL( StringC("Variable=<a,b,c>"), m_variable.ToString() );
 	}
 	
 	void testNumValues() {
 		CPPUNIT_ASSERT( m_variable.NumValues() == 3 );
 	}
 	
-	void testValues() {
-		CPPUNIT_ASSERT( m_variable.Values().Size() == 3 );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("a") == true );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("b") == true );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("c") == true );
-		CPPUNIT_ASSERT( m_variable.Values().Contains("d") == false );
+	void testDomain() {
+		CPPUNIT_ASSERT( m_variable.Domain().Size() == 3 );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("a") == true );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("b") == true );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("c") == true );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("d") == false );
 	}
 	
 	void testValue() {
@@ -70,4 +70,4 @@ public:
 	
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( RandomVariableDiscreteTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( VariableDiscreteTest );

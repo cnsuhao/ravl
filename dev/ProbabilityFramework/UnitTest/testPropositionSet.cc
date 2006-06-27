@@ -32,11 +32,11 @@ public:
 		m_variables.Insert(booleanVariable);
 		VariableContinuousC continuousVariable("continuous", RealRangeC(0.0, 1.0));
 		m_variables.Insert(continuousVariable);
-		HSetC<StringC> names;
-		names.Insert("a");
-		names.Insert("b");
-		names.Insert("c");
-		m_variables.Insert(VariableDiscreteC("discrete", names));
+		DomainDiscreteC domain;
+		domain.Insert("a");
+		domain.Insert("b");
+		domain.Insert("c");
+		m_variables.Insert(VariableDiscreteC("discrete", domain));
 		m_variableSet = VariableSetC(m_variables);
 		m_values.Insert(VariablePropositionBooleanC(booleanVariable, true));
 		m_values.Insert(VariablePropositionContinuousC(continuousVariable, 0.5));

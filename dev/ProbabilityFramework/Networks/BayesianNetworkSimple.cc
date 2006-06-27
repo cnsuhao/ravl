@@ -65,7 +65,7 @@ namespace RavlProbN {
       VariableDiscreteC discrete(Y);
       if (!discrete.IsValid())
         throw ExceptionC("BayesianNetworkSimpleBodyC::EnumerateAll(), can only sum over discrete variables");
-      for (HSetIterC<StringC> ht(discrete.Values()); ht; ht++) {
+      for (SArray1dIterC<StringC> ht(discrete.Domain().Iterator()); ht; ht++) {
         y = VariablePropositionDiscreteC(discrete, *ht);
         PropositionSetC evidenceY(evidence, y);
         sumProbability += cpd.ConditionalProbability(y, parentsY) * EnumerateAll(restVars, evidenceY);

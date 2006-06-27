@@ -15,10 +15,10 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  VariableDiscreteBodyC::VariableDiscreteBodyC(const StringC& name, const HSetC<StringC>& values)
+  VariableDiscreteBodyC::VariableDiscreteBodyC(const StringC& name, const DomainDiscreteC& domain)
     : VariableBodyC(name)
   {
-    SetValues(values);
+    SetDomain(domain);
   }
 
   VariableDiscreteBodyC::VariableDiscreteBodyC(const StringC& name)
@@ -33,9 +33,8 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("VariableDiscreteBodyC(istream &), Unrecognised version number in stream.");
-    HSetC<StringC> values;
-    in >> values;
-    SetValues(values);
+    DomainDiscreteC domain(in);
+    SetDomain(domain);
   }
 
   VariableDiscreteBodyC::VariableDiscreteBodyC(BinIStreamC &in)
@@ -45,16 +44,15 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("VariableDiscreteBodyC(BinIStream &), Unrecognised version number in stream.");
-    HSetC<StringC> values;
-    in >> values;
-    SetValues(values);
+    DomainDiscreteC domain(in);
+    SetDomain(domain);
   }
   
   bool VariableDiscreteBodyC::Save (ostream &out) const {
     if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
-    out << ' ' << version << ' ' << Values();
+    out << ' ' << version << ' ' << Domain();
     return true;
   }
   
@@ -62,7 +60,7 @@ namespace RavlProbN {
     if(!VariableBodyC::Save(out))
       return false;
     IntT version = 0;
-    out << version << Values();
+    out << version << Domain();
     return true;
   }
 
@@ -70,49 +68,28 @@ namespace RavlProbN {
   }
   
   StringC VariableDiscreteBodyC::ToString() const {
-    StringC values = Name() + "=<";
-    HSetIterC<StringC> it(Values());
-    values += *it;
-    for (it++ ; it; it++) {
-      values += ",";
-      values += *it;
-    }
-    values += ">";
-    return values;
+    return Name() + "=" + Domain().ToString();
   }
 
   SizeT VariableDiscreteBodyC::NumValues() const {
-    return m_numValues;
+    return Domain().Size();
   }
 
-  const HSetC<StringC>& VariableDiscreteBodyC::Values() const {
-    return m_values;
+  const DomainDiscreteC& VariableDiscreteBodyC::Domain() const {
+    return m_domain;
   }
 
   const StringC& VariableDiscreteBodyC::Value(IndexC index) const {
-    if (index < 0 || index >= Values().Size())
-      throw ExceptionC("VariableDiscreteBodyC::Value(), index out of bounds");
-    HSetIterC<StringC> it(Values());
-    while(index--)
-      it++;
-    return *it;
+  	return Domain().Value(index);
   }
 
   IndexC VariableDiscreteBodyC::Index(const StringC& value) const {
-    //:FIXME- this should probably be implemented using hash table
-    IndexC index(0);
-    for (HSetIterC<StringC> it(Values()); it; it++, index++)
-      if (*it == value)
-        return index;
-    throw ExceptionC("VariableDiscreteBodyC::Index(), couldn't find value");
+  	return Domain().Index(value);
   }
 
-  void VariableDiscreteBodyC::SetValues(const HSetC<StringC>& values) {
-    HSetC<StringC> downcaseValues;
-    for (HSetIterC<StringC> it(values); it; it++)
-      downcaseValues.Insert(downcase(*it));
-    m_numValues = downcaseValues.Size();
-    m_values = downcaseValues;
+  void VariableDiscreteBodyC::SetDomain(const DomainDiscreteC& domain) {
+	//!FIXME:- Need to use domain.Copy()!
+  	m_domain = domain;
   }
 
   static TypeNameC type1(typeid(VariableDiscreteC),"RavlProbN::VariableDiscreteC");

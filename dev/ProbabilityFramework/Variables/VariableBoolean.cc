@@ -19,10 +19,10 @@ namespace RavlProbN {
     : VariableDiscreteBodyC(name)
   {
     SetValueNames();
-    HSetC<StringC> values;
-    values.Insert(m_trueValue);
-    values.Insert(m_falseValue);
-    SetValues(values);
+    DomainDiscreteC domain;
+    domain.Insert(m_trueValue);
+    domain.Insert(m_falseValue);
+    SetDomain(domain);
   }
 
   VariableBooleanBodyC::VariableBooleanBodyC(istream &in)

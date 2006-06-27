@@ -9,6 +9,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFDiscrete.hh"
+#include "Ravl/HashIter.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -61,7 +62,7 @@ namespace RavlProbN {
 
   StringC PDFDiscreteBodyC::ToString() const {
     StringC string = VariableDiscrete().ToString() + "=<";
-    HSetIterC<StringC> ht(VariableDiscrete().Values());
+    SArray1dIterC<StringC> ht(VariableDiscrete().Domain().Iterator());
     VariablePropositionDiscreteC discreteValue(VariableDiscrete(), *ht);
     string += StringC(MeasureProbability(discreteValue));
     for (ht++ ; ht; ht++) {

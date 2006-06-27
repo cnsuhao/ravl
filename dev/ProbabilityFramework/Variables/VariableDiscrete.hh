@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/Variable.hh"
-#include "Ravl/HSet.hh"
+#include "Ravl/Prob/DomainDiscrete.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -21,10 +21,10 @@ namespace RavlProbN {
   class VariableDiscreteBodyC
     : public VariableBodyC {
   public:
-    VariableDiscreteBodyC(const StringC& name, const HSetC<StringC>& values);
+    VariableDiscreteBodyC(const StringC& name, const DomainDiscreteC& domain);
     //: Constructor
     //!param: name - convention is that it starts with a Capital letter, eg Face
-    //!param: values - countable set of mutually exclusive values that the variable can take
+    //!param: domain - countable set of mutually exclusive values that the variable can take
 
     VariableDiscreteBodyC(istream &in);
     //: Construct from stream
@@ -53,7 +53,7 @@ namespace RavlProbN {
     SizeT NumValues() const;
     //: Get access to the number of legal values
 
-    const HSetC<StringC>& Values() const;
+    const DomainDiscreteC& Domain() const;
     //: Get access to the set of legal values
 
     const StringC& Value(IndexC index) const;
@@ -68,14 +68,11 @@ namespace RavlProbN {
     //!param: name - convention is that it starts with a Capital letter, eg Face
     //!param: values - countable set of mutually exclusive values that the variable can take
 
-    void SetValues(const HSetC<StringC>& values);
+    void SetDomain(const DomainDiscreteC& domain);
     //: Set the countable set of mutually exclusive value that this variable can take
 
   private:
-    SizeT m_numValues;
-    //: Cached count of the number of values in the set
-
-    HSetC<StringC> m_values;
+    DomainDiscreteC m_domain;
     //: Countable set of mutually exclusive values that the variable can take
   };
 
@@ -91,8 +88,8 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    VariableDiscreteC(const StringC& name, const HSetC<StringC>& values)
-      : VariableC(new VariableDiscreteBodyC(name, values))
+    VariableDiscreteC(const StringC& name, const DomainDiscreteC& domain)
+      : VariableC(new VariableDiscreteBodyC(name, domain))
     {}
     //: Constructor
     //!param: name - convention is that it starts with a Capital letter, eg Face
@@ -116,8 +113,8 @@ namespace RavlProbN {
     { return Body().NumValues(); }
     //: Get access to the number of legal values
 
-    const HSetC<StringC>& Values() const
-    { return Body().Values(); }
+    const DomainDiscreteC& Domain() const
+    { return Body().Domain(); }
     //: Get access to the set of legal values
 
     const StringC& Value(IndexC index) const

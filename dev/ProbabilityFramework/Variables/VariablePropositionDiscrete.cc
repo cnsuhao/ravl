@@ -79,7 +79,7 @@ namespace RavlProbN {
   }
 
   void VariablePropositionDiscreteBodyC::SetValue(const StringC& value) {
-    if (!VariableDiscrete().Values().Contains(value))
+    if (!VariableDiscrete().Domain().Contains(value))
       throw ExceptionC("VariablePropositionDiscreteBodyC::SetValue(), illegal value");
     m_value = value;
   }

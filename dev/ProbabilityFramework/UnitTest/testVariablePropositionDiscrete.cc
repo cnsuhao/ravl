@@ -18,11 +18,11 @@ private:
 	VariablePropositionDiscreteC m_valueB;
 public:
 	void setUp() {
-		HSetC<StringC> names;
-		names.Insert("a");
-		names.Insert("b");
-		names.Insert("c");
-		m_variable = VariableDiscreteC("variable", names);
+		DomainDiscreteC domain;
+		domain.Insert("a");
+		domain.Insert("b");
+		domain.Insert("c");
+		m_variable = VariableDiscreteC("variable", domain);
 		m_valueA = VariablePropositionDiscreteC(m_variable, "a");
 		m_valueB = VariablePropositionDiscreteC(m_variable, "b");
 	}

@@ -15,7 +15,8 @@ DESCRIPTION=Pattern recognition software
 
 PACKAGE=Ravl/Prob
 
-HEADERS= Variable.hh \
+HEADERS= DomainDiscrete.hh \
+		 Variable.hh \
          VariableBoolean.hh \
          VariableContinuous.hh \
          VariableDiscrete.hh \
@@ -24,7 +25,8 @@ HEADERS= Variable.hh \
          VariablePropositionContinuous.hh \
          VariablePropositionDiscrete.hh
 
-SOURCES= Variable.cc \
+SOURCES= DomainDiscrete.cc \
+		 Variable.cc \
          VariableBoolean.cc \
          VariableContinuous.cc \
          VariableDiscrete.cc \
