@@ -21,7 +21,7 @@ namespace RavlProbN {
   CPDDesignerContinuousDiscrete1BodyC::~CPDDesignerContinuousDiscrete1BodyC() {
   }
 
-  ConditionalProbabilityDistributionC CPDDesignerContinuousDiscrete1BodyC::CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionC> >& propositionPairs) const {
+  ConditionalProbabilityDistributionC CPDDesignerContinuousDiscrete1BodyC::CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionSetC> >& propositionPairs) const {
     // check that there is at least one sample!
     if (propositionPairs.Size() == 0)
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), propositionPairs must contain at least one sample!");
@@ -34,7 +34,7 @@ namespace RavlProbN {
     // create a list for each value of the parent variable
     RCHashC<VariablePropositionDiscreteC,DListC<RealT> > valuesByParent;
     // put each entry into the correct list
-    for (DLIterC<Tuple2C<VariablePropositionC,PropositionC> > it(propositionPairs); it; it++) {
+    for (DLIterC<Tuple2C<VariablePropositionC,PropositionSetC> > it(propositionPairs); it; it++) {
       if (it->Data1().Variable() != dependentVariable)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), incorrect dependent value in sample");
       if (it->Data2().VariableSet() != parentVariableSet)

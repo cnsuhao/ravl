@@ -28,7 +28,7 @@ MAINS= testRunner.cc
 EXAMPLES= testRunnerQt.cc
 
 MUSTLINK= testVariableSet.cc \
-		testProposition.cc \
+		testPropositionSet.cc \
 		testVariableBoolean.cc \
 		testVariableContinuous.cc \
 		testVariableDiscrete.cc \

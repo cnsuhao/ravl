@@ -15,7 +15,7 @@ namespace RavlProbN {
   
   CPDDiscreteDiscreteBodyC::CPDDiscreteDiscreteBodyC(const VariableDiscreteC& randomVariable,
                                                      const VariableSetC& parentVariableSet,
-                                                     const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable)
+                                                     const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable)
     : CPDAbstractBodyC(randomVariable, parentVariableSet) {
     SetProbabilityDistributionTable(probabilityDistributionTable);
   }
@@ -23,7 +23,7 @@ namespace RavlProbN {
   CPDDiscreteDiscreteBodyC::~CPDDiscreteDiscreteBodyC() {
   }
 
-  ProbabilityDistributionC CPDDiscreteDiscreteBodyC::ConditionalDistribution(const PropositionC& parentValues) const {
+  ProbabilityDistributionC CPDDiscreteDiscreteBodyC::ConditionalDistribution(const PropositionSetC& parentValues) const {
     PDFDiscreteC pdf;
     HSetC<VariablePropositionC> values = parentValues.Values();
     if (values.Size() != ParentVariableSet().NumVariables())
@@ -33,7 +33,7 @@ namespace RavlProbN {
     return pdf;
   }
   
-  void CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable) {
+  void CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable) {
     // ensure all parents are discrete and calculate combinations
     UIntT numCombinations = 1;
     for (HSetIterC<VariableC> ht(ParentVariableSet().Variables()); ht; ht++) {
@@ -46,7 +46,7 @@ namespace RavlProbN {
     if (numCombinations != probabilityDistributionTable.Size())
       throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), need table for each combination of parents");
     // check that all tables are for the correct parents
-    for (HashIterC<PropositionC,PDFDiscreteC> ht(probabilityDistributionTable); ht; ht++) {
+    for (HashIterC<PropositionSetC,PDFDiscreteC> ht(probabilityDistributionTable); ht; ht++) {
       if (ht.Key().VariableSet() != ParentVariableSet())
         throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), each table must be for parent domain");
       if (ht.Key().NumValues() != ParentVariableSet().NumVariables())

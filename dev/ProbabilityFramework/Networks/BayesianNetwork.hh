@@ -12,7 +12,7 @@
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/Prob/ProbabilityDistribution.hh"
-#include "Ravl/Prob/Proposition.hh"
+#include "Ravl/Prob/PropositionSet.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -28,13 +28,13 @@ namespace RavlProbN {
     virtual ~BayesianNetworkBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const=0;
+    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const=0;
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability distribution of Variable given the evidence
 
-    virtual RealT CalculateProbability(const PropositionC& evidence) const=0;
+    virtual RealT CalculateProbability(const PropositionSetC& evidence) const=0;
     //: Calculate the probability that the particular combination of evidence occurred
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability of the random variables taking the given values
@@ -55,14 +55,14 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const
+    ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const
     { return Body().CalculateDistribution(variable, evidence); }
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability distribution of Variable given the evidence
 
-    RealT CalculateProbability(const PropositionC& evidence) const
+    RealT CalculateProbability(const PropositionSetC& evidence) const
     { return Body().CalculateProbability(evidence); }
     //: Calculate the probability that the particular combination of evidence occurred
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network

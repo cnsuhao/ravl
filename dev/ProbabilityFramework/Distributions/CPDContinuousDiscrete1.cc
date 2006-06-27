@@ -24,7 +24,7 @@ namespace RavlProbN {
   CPDContinuousDiscrete1BodyC::~CPDContinuousDiscrete1BodyC() {
   }
 
-  ProbabilityDistributionC CPDContinuousDiscrete1BodyC::ConditionalDistribution(const PropositionC& parentValues) const {
+  ProbabilityDistributionC CPDContinuousDiscrete1BodyC::ConditionalDistribution(const PropositionSetC& parentValues) const {
     PDFContinuousAbstractC pdf;
     HSetC<VariablePropositionC> values = parentValues.Values();
     if (values.Size() == 1) {

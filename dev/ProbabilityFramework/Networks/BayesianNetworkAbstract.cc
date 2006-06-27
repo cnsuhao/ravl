@@ -61,7 +61,7 @@ namespace RavlProbN {
   //: This function's implementation is based on ENUMERATION-ASK(X,e,bn) from
   //: Figure 14.9 in Artificial Intelligence: A Modern Approach, 2nd edition
 
-  ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const {
+  ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const {
     VariableDiscreteC discrete(variable);
     if (!discrete.IsValid())
       throw ExceptionC("BayesianNetworkSimpleBodyC::CalculateDistribution(), only works for discrete variables");
@@ -78,7 +78,7 @@ namespace RavlProbN {
       VariablePropositionDiscreteC value(discrete, *ht);    
       RealT probability;
       if (!prior.IsValid()) {
-        PropositionC allEvidence(evidence, value);
+        PropositionSetC allEvidence(evidence, value);
         probability = CalculateProbability(allEvidence);
       }
       else {
@@ -99,7 +99,7 @@ namespace RavlProbN {
     return m_variableSet; 
   }
 
-  DListC<VariableC> BayesianNetworkAbstractBodyC::Variables(const PropositionC& evidence) const {
+  DListC<VariableC> BayesianNetworkAbstractBodyC::Variables(const PropositionSetC& evidence) const {
     //:FIXME- this ought to consider the markov blanket of the evidence
     return m_orderedNodes;
   }

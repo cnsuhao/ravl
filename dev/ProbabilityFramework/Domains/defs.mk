@@ -17,11 +17,11 @@ PACKAGE=Ravl/Prob
 
 HEADERS= VariableSet.hh \
          Lottery.hh \
-         Proposition.hh
+         PropositionSet.hh
 
 SOURCES= VariableSet.cc \
          Lottery.cc \
-         Proposition.cc
+         PropositionSet.cc
 
 MAINS=
 

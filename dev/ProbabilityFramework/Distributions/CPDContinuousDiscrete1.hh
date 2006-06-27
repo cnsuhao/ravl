@@ -32,7 +32,7 @@ namespace RavlProbN {
     virtual ~CPDContinuousDiscrete1BodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC ConditionalDistribution(const PropositionC& parentValues) const;
+    virtual ProbabilityDistributionC ConditionalDistribution(const PropositionSetC& parentValues) const;
     //: Calculate the probability distribution for P(V|parentValues)
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables
     //!return: the probability distribution of the random variable

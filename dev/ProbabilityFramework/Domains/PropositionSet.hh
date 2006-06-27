@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_PROPOSITION_HEADER
-#define RAVLPROB_PROPOSITION_HEADER 1
+#ifndef RAVLPROB_PROPOSITIONSET_HEADER
+#define RAVLPROB_PROPOSITIONSET_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -18,7 +18,7 @@
 namespace RavlProbN {
   using namespace RavlN;
 
-  class PropositionC;
+  class PropositionSetC;
 
   //! userlevel=Develop
   //: Class used to represent a proposition in a domain of random variables
@@ -26,24 +26,24 @@ namespace RavlProbN {
   // A proposition indicates a set of values or propositions about a subset of
   // variables in a domain. Eg given a VariableSet with Weather, Cavity and X,
   // represent the proposition that Weather=snow, Cavity=true and X is unknown.
-  class PropositionBodyC
+  class PropositionSetBodyC
     : public RCBodyVC {
   public:
-    PropositionBodyC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values);
+    PropositionSetBodyC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values);
     //: Constructor
     //!param: variableSet - the variableSet for the proposition
     //!param: values - list of random variables values contained in this proposition
 
-    PropositionBodyC(const PropositionBodyC& other, const VariablePropositionC& value);
+    PropositionSetBodyC(const PropositionSetBodyC& other, const VariablePropositionC& value);
     //: Extended constructor
     //!param: other = another proposition
     //!param: value - a value to extend the proposition with
 
-    PropositionBodyC(istream &in);
+    PropositionSetBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    PropositionBodyC(BinIStreamC &in);
+    PropositionSetBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -57,7 +57,7 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~PropositionBodyC();
+    virtual ~PropositionSetBodyC();
     //: Destructor
 
     StringC ToString() const;
@@ -78,10 +78,10 @@ namespace RavlProbN {
     const VariablePropositionC& Value(IndexC index) const;
     //: Get a random variable value by index
 
-    PropositionC SubProposition(const VariableSetC& subVariableSet) const;
+    PropositionSetC SubPropositionSet(const VariableSetC& subVariableSet) const;
     //: Create a proposition for a subvariableSet
 
-    bool operator==(const PropositionBodyC& other) const;
+    bool operator==(const PropositionSetBodyC& other) const;
     //: Equality operator
 
     UIntT Hash() const;
@@ -106,30 +106,30 @@ namespace RavlProbN {
   //: Class used to represent a proposition in a variableSet of random variables
   //!cwiz:author
   
-  class PropositionC
-    : public RCHandleVC<PropositionBodyC>
+  class PropositionSetC
+    : public RCHandleVC<PropositionSetBodyC>
   {
   public:
-    PropositionC()
+    PropositionSetC()
     {}
     //: Default constructor makes invalid handle
 
-    PropositionC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values)
-      : RCHandleVC<PropositionBodyC>(new PropositionBodyC(variableSet, values))
+    PropositionSetC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values)
+      : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(variableSet, values))
     {}
 
-    PropositionC(const PropositionC& other, const VariablePropositionC& value)
-      : RCHandleVC<PropositionBodyC>(new PropositionBodyC(other.Body(), value))
+    PropositionSetC(const PropositionSetC& other, const VariablePropositionC& value)
+      : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(other.Body(), value))
     {}
     //: Extended constructor
     //!param: other = another proposition
     //!param: value - a value to extend the proposition with
 
-    PropositionC(istream &in);
+    PropositionSetC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    PropositionC(BinIStreamC &in);
+    PropositionSetC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -175,17 +175,17 @@ namespace RavlProbN {
     //: Get a random variable value by index
     //!cwiz:author
 
-    PropositionC SubProposition(const VariableSetC& subVariableSet) const
-    { return Body().SubProposition(subVariableSet); }
+    PropositionSetC SubPropositionSet(const VariableSetC& subVariableSet) const
+    { return Body().SubPropositionSet(subVariableSet); }
     //: Create a proposition for a subvariableSet
     //!cwiz:author
 
-    bool operator==(const PropositionC& other) const
+    bool operator==(const PropositionSetC& other) const
     { return Body().operator==(other.Body()); }
     //: Equality operator
     //!cwiz:author
 
-    bool operator!=(const PropositionC& other) const
+    bool operator!=(const PropositionSetC& other) const
     { return !Body().operator==(other.Body()); }
     //: Inequality operator
     //!cwiz:author
@@ -195,33 +195,33 @@ namespace RavlProbN {
     //: Hash function based on name
 
   protected:
-    PropositionC(PropositionBodyC &bod)
-     : RCHandleVC<PropositionBodyC>(bod)
+    PropositionSetC(PropositionSetBodyC &bod)
+     : RCHandleVC<PropositionSetBodyC>(bod)
     {}
     //: Body constructor. 
     
-    PropositionC(const PropositionBodyC *bod)
-     : RCHandleVC<PropositionBodyC>(bod)
+    PropositionSetC(const PropositionSetBodyC *bod)
+     : RCHandleVC<PropositionSetBodyC>(bod)
     {}
     //: Body constructor. 
     
-    PropositionBodyC& Body()
-    { return static_cast<PropositionBodyC &>(RCHandleVC<PropositionBodyC>::Body()); }
+    PropositionSetBodyC& Body()
+    { return static_cast<PropositionSetBodyC &>(RCHandleVC<PropositionSetBodyC>::Body()); }
     //: Body Access. 
     
-    const PropositionBodyC& Body() const
-    { return static_cast<const PropositionBodyC &>(RCHandleVC<PropositionBodyC>::Body()); }
+    const PropositionSetBodyC& Body() const
+    { return static_cast<const PropositionSetBodyC &>(RCHandleVC<PropositionSetBodyC>::Body()); }
     //: Body Access. 
     
   };
 
-  ostream &operator<<(ostream &s, const PropositionC &obj);
+  ostream &operator<<(ostream &s, const PropositionSetC &obj);
   
-  istream &operator>>(istream &s, PropositionC &obj);
+  istream &operator>>(istream &s, PropositionSetC &obj);
 
-  BinOStreamC &operator<<(BinOStreamC &s, const PropositionC &obj);
+  BinOStreamC &operator<<(BinOStreamC &s, const PropositionSetC &obj);
     
-  BinIStreamC &operator>>(BinIStreamC &s, PropositionC &obj);
+  BinIStreamC &operator>>(BinIStreamC &s, PropositionSetC &obj);
   
 }
 

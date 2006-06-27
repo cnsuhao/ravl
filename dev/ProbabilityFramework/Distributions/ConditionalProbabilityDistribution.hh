@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Ravl/Prob/Proposition.hh"
+#include "Ravl/Prob/PropositionSet.hh"
 #include "Ravl/Prob/ProbabilityDistribution.hh"
 
 namespace RavlProbN {
@@ -28,14 +28,14 @@ namespace RavlProbN {
     virtual ~ConditionalProbabilityDistributionBodyC();
     //: Destructor
     
-    virtual RealT ConditionalProbability(const VariablePropositionC& value, const PropositionC& parentValues) const=0;
+    virtual RealT ConditionalProbability(const VariablePropositionC& value, const PropositionSetC& parentValues) const=0;
     //: Calculate the conditional probability P(value|parentValues)
     //!param: value - a value for the random variable
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables
     //!return: the conditional probability of the proposition
     // This is the sum of probabilities for the subset of variable values
 
-    virtual ProbabilityDistributionC ConditionalDistribution(const PropositionC& parentValues) const=0;
+    virtual ProbabilityDistributionC ConditionalDistribution(const PropositionSetC& parentValues) const=0;
     //: Calculate the probability distribution for P(V|parentValues)
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables
     //!return: the probability distribution of the random variable
@@ -59,7 +59,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    RealT ConditionalProbability(const VariablePropositionC& value, const PropositionC& parentValues) const
+    RealT ConditionalProbability(const VariablePropositionC& value, const PropositionSetC& parentValues) const
     { return Body().ConditionalProbability(value, parentValues); }
     //: Calculate the conditional probability P(value|parentValues)
     //!param: value - a value for the random variable
@@ -67,7 +67,7 @@ namespace RavlProbN {
     //!return: the conditional probability of the proposition
     // This is the sum of probabilities for the subset of variable values
 
-    ProbabilityDistributionC ConditionalDistribution(const PropositionC& parentValues) const
+    ProbabilityDistributionC ConditionalDistribution(const PropositionSetC& parentValues) const
     { return Body().ConditionalDistribution(parentValues); }
     //: Calculate the probability distribution for P(V|parentValues)
     //!param: parentValues - a proposition with fixed values for some (or all) parent variables

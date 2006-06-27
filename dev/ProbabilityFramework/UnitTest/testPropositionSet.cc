@@ -1,14 +1,14 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Ravl/Prob/Proposition.hh"
+#include "Ravl/Prob/PropositionSet.hh"
 #include "Ravl/Prob/VariablePropositionBoolean.hh"
 #include "Ravl/Prob/VariablePropositionContinuous.hh"
 #include "Ravl/Prob/VariablePropositionDiscrete.hh"
 
 using namespace RavlProbN;
 	
-class PropositionTest: public CppUnit::TestCase {
-	CPPUNIT_TEST_SUITE( PropositionTest );
+class PropositionSetTest: public CppUnit::TestCase {
+	CPPUNIT_TEST_SUITE( PropositionSetTest );
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST( testLotteryName );
 	CPPUNIT_TEST( testVariableSet );
@@ -17,13 +17,13 @@ class PropositionTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST_EXCEPTION( testValueThrows1, ExceptionC );
 	CPPUNIT_TEST_EXCEPTION( testValueThrows2, ExceptionC );
-	CPPUNIT_TEST( testSubProposition );
-	CPPUNIT_TEST_EXCEPTION( testSubPropositionThrows, ExceptionC );
+	CPPUNIT_TEST( testSubPropositionSet );
+	CPPUNIT_TEST_EXCEPTION( testSubPropositionSetThrows, ExceptionC );
 	CPPUNIT_TEST( testEquality );
 	CPPUNIT_TEST_SUITE_END();
 private:
 	VariableSetC m_variableSet;
-	PropositionC m_proposition;
+	PropositionSetC m_proposition;
 	HSetC<VariableC> m_variables;
 	HSetC<VariablePropositionC> m_values;
 public:
@@ -40,7 +40,7 @@ public:
 		m_variableSet = VariableSetC(m_variables);
 		m_values.Insert(VariablePropositionBooleanC(booleanVariable, true));
 		m_values.Insert(VariablePropositionContinuousC(continuousVariable, 0.5));
-		m_proposition = PropositionC(m_variableSet, m_values);
+		m_proposition = PropositionSetC(m_variableSet, m_values);
 	}
 	
 	void tearDown() {
@@ -79,30 +79,30 @@ public:
 	void testValueThrows2() {
 		m_proposition.Value(-1);
 	}
-	void testSubProposition() {
+	void testSubPropositionSet() {
 		HSetC<VariableC> variables;
 		variables.Insert(VariableBooleanC("boolean"));
-		CPPUNIT_ASSERT( m_proposition.SubProposition(VariableSetC(variables)).NumValues() == 1 );
+		CPPUNIT_ASSERT( m_proposition.SubPropositionSet(VariableSetC(variables)).NumValues() == 1 );
 	}
 	
-	void testSubPropositionThrows() {
+	void testSubPropositionSetThrows() {
 		HSetC<VariableC> variables;
 		variables.Insert(VariableBooleanC("invalid"));
-		m_proposition.SubProposition(VariableSetC(variables));
+		m_proposition.SubPropositionSet(VariableSetC(variables));
 	}
 	
 	void testEquality() {
-		PropositionC secondProposition(m_variableSet, m_values);
+		PropositionSetC secondPropositionSet(m_variableSet, m_values);
 		HSetC<VariableC> variables;
 		variables.Insert(VariableBooleanC("boolean"));
-		PropositionC subProposition = m_proposition.SubProposition(VariableSetC(variables));
+		PropositionSetC subPropositionSet = m_proposition.SubPropositionSet(VariableSetC(variables));
 		CPPUNIT_ASSERT( m_proposition == m_proposition );
-		CPPUNIT_ASSERT( m_proposition == secondProposition );
-		CPPUNIT_ASSERT( !(m_proposition == subProposition) );
-		CPPUNIT_ASSERT( m_proposition != subProposition );
-		CPPUNIT_ASSERT( !(m_proposition != secondProposition) );
+		CPPUNIT_ASSERT( m_proposition == secondPropositionSet );
+		CPPUNIT_ASSERT( !(m_proposition == subPropositionSet) );
+		CPPUNIT_ASSERT( m_proposition != subPropositionSet );
+		CPPUNIT_ASSERT( !(m_proposition != secondPropositionSet) );
 	}
 		
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( PropositionTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( PropositionSetTest );

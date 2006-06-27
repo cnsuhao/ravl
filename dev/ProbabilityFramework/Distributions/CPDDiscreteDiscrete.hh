@@ -24,23 +24,23 @@ namespace RavlProbN {
   public:
     CPDDiscreteDiscreteBodyC(const VariableDiscreteC& randomVariable,
                              const VariableSetC& parentVariableSet,
-                             const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable);
+                             const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable);
     //: Constructor
 
     virtual ~CPDDiscreteDiscreteBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC ConditionalDistribution(const PropositionC& parentValues) const;
+    virtual ProbabilityDistributionC ConditionalDistribution(const PropositionSetC& parentValues) const;
     //: Calculate the probability distribution for P(V|parentValues)
     //!param: parentValues - a proposition with fixed values for all parent variables
     //!return: the probability distribution of the random variable
 
   private:
-    void SetProbabilityDistributionTable(const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable);
+    void SetProbabilityDistributionTable(const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable);
     //: Set the table of distributions
 
   private:
-    RCHashC<PropositionC,PDFDiscreteC> m_probabilityDistributionTable;
+    RCHashC<PropositionSetC,PDFDiscreteC> m_probabilityDistributionTable;
     //: Table of distributions for each value of the discrete parent
   };
 
@@ -54,7 +54,7 @@ namespace RavlProbN {
   public:
     CPDDiscreteDiscreteC(const VariableDiscreteC& randomVariable,
                          const VariableSetC& parentVariableSet,
-                         const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable)
+                         const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable)
       : CPDAbstractC(new CPDDiscreteDiscreteBodyC(randomVariable, parentVariableSet, probabilityDistributionTable))
     {}
     //: Constructor

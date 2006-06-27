@@ -26,19 +26,19 @@ namespace RavlProbN {
     virtual ~BayesianNetworkSimpleBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const;
+    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const;
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability distribution of Variable given the evidence
 
-    virtual RealT CalculateProbability(const PropositionC& evidence) const;
+    virtual RealT CalculateProbability(const PropositionSetC& evidence) const;
     //: Calculate the probability that the particular combination of evidence occurred
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability of the random variables taking the given values
 
   private:
-    RealT EnumerateAll(const DListC<VariableC>& vars, const PropositionC& evidence) const;
+    RealT EnumerateAll(const DListC<VariableC>& vars, const PropositionSetC& evidence) const;
 
   };
 

@@ -22,7 +22,7 @@ namespace RavlProbN {
   BayesianNetworkSimpleBodyC::~BayesianNetworkSimpleBodyC() {
   }
 
-  RealT BayesianNetworkSimpleBodyC::CalculateProbability(const PropositionC& evidence) const {
+  RealT BayesianNetworkSimpleBodyC::CalculateProbability(const PropositionSetC& evidence) const {
     return EnumerateAll(Variables(evidence), evidence);
   }
 
@@ -35,14 +35,14 @@ namespace RavlProbN {
   // The advantage of this approach is that it can potentially be applied to
   // continuous variables as well as discrete.
 
-  ProbabilityDistributionC BayesianNetworkSimpleBodyC::CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const {
+  ProbabilityDistributionC BayesianNetworkSimpleBodyC::CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const {
     return BayesianNetworkAbstractBodyC::CalculateDistribution(variable, evidence);
   }
 
   //: This function's implementation is based on ENUMERATE-ALL(vars,e) from
   //: Figure 14.9 in Artificial Intelligence: A Modern Approach, 2nd edition
 
-  RealT BayesianNetworkSimpleBodyC::EnumerateAll(const DListC<VariableC>& vars, const PropositionC& evidence) const {
+  RealT BayesianNetworkSimpleBodyC::EnumerateAll(const DListC<VariableC>& vars, const PropositionSetC& evidence) const {
     if (vars.Size() == 0)
       return 1.0;
     DListC<VariableC> restVars = vars.Copy();
@@ -56,7 +56,7 @@ namespace RavlProbN {
       }
     }
     ConditionalProbabilityDistributionC cpd = NodeCPD(Y);
-    PropositionC parentsY = evidence.SubProposition(cpd.ParentVariableSet());
+    PropositionSetC parentsY = evidence.SubPropositionSet(cpd.ParentVariableSet());
     if (y.IsValid()) {
       return cpd.ConditionalProbability(y, parentsY) * EnumerateAll(restVars, evidence);
     }
@@ -67,7 +67,7 @@ namespace RavlProbN {
         throw ExceptionC("BayesianNetworkSimpleBodyC::EnumerateAll(), can only sum over discrete variables");
       for (HSetIterC<StringC> ht(discrete.Values()); ht; ht++) {
         y = VariablePropositionDiscreteC(discrete, *ht);
-        PropositionC evidenceY(evidence, y);
+        PropositionSetC evidenceY(evidence, y);
         sumProbability += cpd.ConditionalProbability(y, parentsY) * EnumerateAll(restVars, evidenceY);
       }
       return sumProbability;

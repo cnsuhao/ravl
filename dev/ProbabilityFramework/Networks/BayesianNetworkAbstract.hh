@@ -29,7 +29,7 @@ namespace RavlProbN {
     virtual ~BayesianNetworkAbstractBodyC();
     //: Destructor
     
-    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionC& evidence) const;
+    virtual ProbabilityDistributionC CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const;
     //: Calculate the a pdf to represent P(Variable|evidence)
     //!param: variable - a random variable that we want the distribution for
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
@@ -39,7 +39,7 @@ namespace RavlProbN {
     //: Get the variableSet for the network
 
   protected:
-    DListC<VariableC> Variables(const PropositionC& evidence) const;
+    DListC<VariableC> Variables(const PropositionSetC& evidence) const;
     ConditionalProbabilityDistributionC NodeCPD(const VariableC& variable) const;
 
   private:

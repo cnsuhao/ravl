@@ -28,7 +28,7 @@ namespace RavlProbN {
     virtual ~CPDDesignerBodyC();
     //: Destructor
     
-    virtual ConditionalProbabilityDistributionC CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionC> >& propositionPairs) const=0;
+    virtual ConditionalProbabilityDistributionC CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionSetC> >& propositionPairs) const=0;
     //: Create a conditional probability distribution according to the sample of propositions
     //!param: propositionPairs - a sample of propositions pairs, ie dependent value and parent proposition
     //!return: the conditional probability distribution
@@ -47,7 +47,7 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    ConditionalProbabilityDistributionC CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionC> >& propositionPairs) const
+    ConditionalProbabilityDistributionC CreateCPD(const DListC<Tuple2C<VariablePropositionC,PropositionSetC> >& propositionPairs) const
     { return Body().CreateCPD(propositionPairs); }
     //: Create a conditional probability distribution according to the sample of propositions
     //!param: propositionPairs - a sample of propositions pairs, ie dependent value and parent proposition

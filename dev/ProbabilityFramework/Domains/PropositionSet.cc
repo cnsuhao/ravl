@@ -8,32 +8,32 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/Proposition.hh"
+#include "Ravl/Prob/PropositionSet.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  PropositionBodyC::PropositionBodyC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values) {
+  PropositionSetBodyC::PropositionSetBodyC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values) {
     SetVariableSet(variableSet);
     SetValues(values);
   }
 
-  PropositionBodyC::PropositionBodyC(const PropositionBodyC& other, const VariablePropositionC& value) {
+  PropositionSetBodyC::PropositionSetBodyC(const PropositionSetBodyC& other, const VariablePropositionC& value) {
     SetVariableSet(other.VariableSet());
     HSetC<VariablePropositionC> values = other.Values().Copy();
     values.Insert(value);
     SetValues(values);
   }
 
-  PropositionBodyC::PropositionBodyC(istream &in)
+  PropositionSetBodyC::PropositionSetBodyC(istream &in)
     : RCBodyVC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("PropositionBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("PropositionSetBodyC(istream &), Unrecognised version number in stream.");
     VariableSetC variableSet(in);
     SetVariableSet(variableSet);
     HSetC<VariablePropositionC> values;
@@ -41,13 +41,13 @@ namespace RavlProbN {
     SetValues(values);
   }
 
-  PropositionBodyC::PropositionBodyC(BinIStreamC &in)
+  PropositionSetBodyC::PropositionSetBodyC(BinIStreamC &in)
     : RCBodyVC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("PropositionBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("PropositionSetBodyC(BinIStream &), Unrecognised version number in stream.");
     VariableSetC variableSet(in);
     SetVariableSet(variableSet);
     HSetC<VariablePropositionC> values;
@@ -55,7 +55,7 @@ namespace RavlProbN {
     SetValues(values);
   }
   
-  bool PropositionBodyC::Save (ostream &out) const {
+  bool PropositionSetBodyC::Save (ostream &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
@@ -63,7 +63,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool PropositionBodyC::Save (BinOStreamC &out) const {
+  bool PropositionSetBodyC::Save (BinOStreamC &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
@@ -71,31 +71,31 @@ namespace RavlProbN {
     return true;
   }
 
-  PropositionBodyC::~PropositionBodyC() {
+  PropositionSetBodyC::~PropositionSetBodyC() {
   }
 
-  const VariableSetC& PropositionBodyC::VariableSet() const {
+  const VariableSetC& PropositionSetBodyC::VariableSet() const {
     return m_variableSet;
   }
 
-  SizeT PropositionBodyC::NumValues() const {
+  SizeT PropositionSetBodyC::NumValues() const {
     return Values().Size();
   }
 
-  const HSetC<VariablePropositionC>& PropositionBodyC::Values() const {
+  const HSetC<VariablePropositionC>& PropositionSetBodyC::Values() const {
     return m_values;
   }
 
-  const VariablePropositionC& PropositionBodyC::Value(IndexC index) const {
+  const VariablePropositionC& PropositionSetBodyC::Value(IndexC index) const {
     if (index < 0 || index >= NumValues())
-      throw ExceptionC("PropositionBodyC::Value(), index out of range");
+      throw ExceptionC("PropositionSetBodyC::Value(), index out of range");
     HSetIterC<VariablePropositionC> it(Values());
     while(index--)
       it++;
     return *it;
   }
 
-  StringC PropositionBodyC::ToString() const {
+  StringC PropositionSetBodyC::ToString() const {
     HSetIterC<VariablePropositionC> it(Values());
     StringC string = it->Variable().Name() + "=" + it->ToString();
     for (it++; it; it++) {
@@ -105,7 +105,7 @@ namespace RavlProbN {
     return string;
   }
 
-  StringC PropositionBodyC::LotteryName() const {
+  StringC PropositionSetBodyC::LotteryName() const {
     StringC name = VariableSet().ToString(); // show all variables
     HSetC<VariableC> variableSetSet = VariableSet().Variables().Copy();
     for (HSetIterC<VariablePropositionC> it(Values()); it; it++) {
@@ -124,32 +124,32 @@ namespace RavlProbN {
     return name;
   }
 
-  PropositionC PropositionBodyC::SubProposition(const VariableSetC& subVariableSet) const {
+  PropositionSetC PropositionSetBodyC::SubPropositionSet(const VariableSetC& subVariableSet) const {
   	// Check that all variables are in current variableSet!
   	for (HSetIterC<VariableC> dt(subVariableSet.Variables()); dt; dt++)
   		if (!VariableSet().Contains(*dt))
-  			throw ExceptionC("PropositionBodyC::SubProposition(), invalid new variableSet variable");
+  			throw ExceptionC("PropositionSetBodyC::SubPropositionSet(), invalid new variableSet variable");
     HSetC<VariablePropositionC> values;
     for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++) {
       if (subVariableSet.Variables().Contains(ht->Variable()))
         values.Insert(*ht);
     }
-    return PropositionC(subVariableSet, values);
+    return PropositionSetC(subVariableSet, values);
   }
 
-  void PropositionBodyC::SetVariableSet(const VariableSetC& variableSet) {
+  void PropositionSetBodyC::SetVariableSet(const VariableSetC& variableSet) {
     m_variableSet = variableSet;
   }
 
-  void PropositionBodyC::SetValues(const HSetC<VariablePropositionC>& values) {
+  void PropositionSetBodyC::SetValues(const HSetC<VariablePropositionC>& values) {
     //:FIXME- what collection for efficiency?
     for (HSetIterC<VariablePropositionC> it(values); it; it++)
       if (!VariableSet().Contains(it->Variable()))
-        throw ExceptionC("PropositionBodyC::SetValues(), value not in variableSet");
+        throw ExceptionC("PropositionSetBodyC::SetValues(), value not in variableSet");
     m_values = values.Copy();
   }
 
-  bool PropositionBodyC::operator==(const PropositionBodyC& other) const {
+  bool PropositionSetBodyC::operator==(const PropositionSetBodyC& other) const {
     if (this == &other)
       return true;
     if (VariableSet() != other.VariableSet())
@@ -163,35 +163,35 @@ namespace RavlProbN {
     
   }
 
-  UIntT PropositionBodyC::Hash() const {
+  UIntT PropositionSetBodyC::Hash() const {
     UIntT hash = 0;
     for (HSetIterC<VariablePropositionC> it(Values()); it; it++)
       hash += it->Hash();
     return VariableSet().Hash() + hash;
   }
 
-  ostream &operator<<(ostream &s,const PropositionC &obj) {
+  ostream &operator<<(ostream &s,const PropositionSetC &obj) {
     obj.Save(s);
     return s;
   }
   
-  istream &operator>>(istream &s,PropositionC &obj) {
-    obj = PropositionC(s);
+  istream &operator>>(istream &s,PropositionSetC &obj) {
+    obj = PropositionSetC(s);
     return s;
   }
 
-  BinOStreamC &operator<<(BinOStreamC &s,const PropositionC &obj) {
+  BinOStreamC &operator<<(BinOStreamC &s,const PropositionSetC &obj) {
     obj.Save(s);
     return s;
   }
     
-  BinIStreamC &operator>>(BinIStreamC &s,PropositionC &obj) {
-    obj = PropositionC(s);
+  BinIStreamC &operator>>(BinIStreamC &s,PropositionSetC &obj) {
+    obj = PropositionSetC(s);
     return s;
   }
  
-  static TypeNameC type1(typeid(PropositionC),"RavlProbN::PropositionC");
+  static TypeNameC type1(typeid(PropositionSetC),"RavlProbN::PropositionSetC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(PropositionBodyC,PropositionC,RCHandleVC<PropositionBodyC>);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(PropositionSetBodyC,PropositionSetC,RCHandleVC<PropositionSetBodyC>);
   
 }
