@@ -12,7 +12,7 @@
 
 #include "Ravl/Prob/PDFAbstract.hh"
 #include "Ravl/Prob/VariableContinuous.hh"
-#include "Ravl/Prob/RandomVariableValueContinuous.hh"
+#include "Ravl/Prob/VariablePropositionContinuous.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -35,7 +35,7 @@ namespace RavlProbN {
     //!return: the probability that the variable takes the specified value
     // Note that this much check that the value is continuous
 
-    virtual RealT MeasureProbability(const RandomVariableValueContinuousC& value) const;
+    virtual RealT MeasureProbability(const VariablePropositionContinuousC& value) const;
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
@@ -74,7 +74,7 @@ namespace RavlProbN {
     //: Upcast constructor
     // Creates an invalid handle if types don't match
     
-    RealT MeasureProbability(const RandomVariableValueContinuousC& value) const
+    RealT MeasureProbability(const VariablePropositionContinuousC& value) const
     { return Body().MeasureProbability(value); }
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable

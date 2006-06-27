@@ -8,7 +8,7 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/RandomVariableValueContinuous.hh"
+#include "Ravl/Prob/VariablePropositionContinuous.hh"
 #include "Ravl/StdHash.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
@@ -16,37 +16,37 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(const VariableContinuousC& variable, RealT value)
+  VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(const VariableContinuousC& variable, RealT value)
     : VariablePropositionBodyC(variable)
   {
     SetValue(value);
   }
 
-  RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(istream &in)
+  VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(istream &in)
     : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableValueContinuousBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariablePropositionContinuousBodyC(istream &), Unrecognised version number in stream.");
     RealT value;
     in >> value;
     SetValue(value);
   }
 
-  RandomVariableValueContinuousBodyC::RandomVariableValueContinuousBodyC(BinIStreamC &in)
+  VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(BinIStreamC &in)
     : VariablePropositionBodyC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("RandomVariableValueContinuousBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariablePropositionContinuousBodyC(BinIStream &), Unrecognised version number in stream.");
     RealT value;
     in >> value;
     SetValue(value);
   }
   
-  bool RandomVariableValueContinuousBodyC::Save (ostream &out) const {
+  bool VariablePropositionContinuousBodyC::Save (ostream &out) const {
     if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -54,7 +54,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool RandomVariableValueContinuousBodyC::Save (BinOStreamC &out) const {
+  bool VariablePropositionContinuousBodyC::Save (BinOStreamC &out) const {
     if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -62,44 +62,44 @@ namespace RavlProbN {
     return true;
   }
 
-  RandomVariableValueContinuousBodyC::~RandomVariableValueContinuousBodyC() {
+  VariablePropositionContinuousBodyC::~VariablePropositionContinuousBodyC() {
   }
   
-  StringC RandomVariableValueContinuousBodyC::ToString() const {
+  StringC VariablePropositionContinuousBodyC::ToString() const {
     return StringC(Value());
   }
 
-  RealT RandomVariableValueContinuousBodyC::Value() const {
+  RealT VariablePropositionContinuousBodyC::Value() const {
     return m_value;
   }
 
-  void RandomVariableValueContinuousBodyC::SetValue(RealT value) {
+  void VariablePropositionContinuousBodyC::SetValue(RealT value) {
     if (!VariableContinuous().Interval().Contains(value))
-      throw ExceptionC("RandomVariableValueContinuousBodyC::SetValue(), illegal value");
+      throw ExceptionC("VariablePropositionContinuousBodyC::SetValue(), illegal value");
     m_value = value;
   }
 
-  bool RandomVariableValueContinuousBodyC::operator==(const VariablePropositionC& other) const {
+  bool VariablePropositionContinuousBodyC::operator==(const VariablePropositionC& other) const {
     if (!VariablePropositionBodyC::operator==(other))
       return false;
-    RandomVariableValueContinuousC otherContinuous(other);
+    VariablePropositionContinuousC otherContinuous(other);
     if (!otherContinuous.IsValid())
       return false;
     return Value() == otherContinuous.Value();
   }
 
-  UIntT RandomVariableValueContinuousBodyC::Hash() const {
+  UIntT VariablePropositionContinuousBodyC::Hash() const {
     RealT value = Value();
     Int64T bitwiseInt = *((Int64T*)&value);
     return VariablePropositionBodyC::Hash() + StdHash(bitwiseInt);
   }
 
-  VariableContinuousC RandomVariableValueContinuousBodyC::VariableContinuous() const {
+  VariableContinuousC VariablePropositionContinuousBodyC::VariableContinuous() const {
     return VariableContinuousC(Variable());
   }
 
-  static TypeNameC type1(typeid(RandomVariableValueContinuousC),"RavlProbN::RandomVariableValueContinuousC");
+  static TypeNameC type1(typeid(VariablePropositionContinuousC),"RavlProbN::VariablePropositionContinuousC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(RandomVariableValueContinuousBodyC,RandomVariableValueContinuousC,VariablePropositionC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariablePropositionContinuousBodyC,VariablePropositionContinuousC,VariablePropositionC);
   
 }

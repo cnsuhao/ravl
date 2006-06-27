@@ -24,10 +24,10 @@ namespace RavlProbN {
   RealT PDFContinuousAbstractBodyC::MeasureProbability(const VariablePropositionC& value) const {
     if (value.Variable() != Variable())
       throw ExceptionC("ProbabilityDistributionContinuousBodyC::MeasureProbability(), value doesn't match variable of this distribution");
-    return MeasureProbability(RandomVariableValueContinuousC(value));
+    return MeasureProbability(VariablePropositionContinuousC(value));
   }
 
-  RealT PDFContinuousAbstractBodyC::MeasureProbability(const RandomVariableValueContinuousC& value) const {
+  RealT PDFContinuousAbstractBodyC::MeasureProbability(const VariablePropositionContinuousC& value) const {
     if (!value.IsValid())
       throw ExceptionC("ProbabilityDistributionContinuousBodyC::MeasureProbability(), value object is not valid");
     return MeasureProbability(value.Value());

@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_RANDOMVARIABLEVALUECONTINUOUS_HEADER
-#define RAVLPROB_RANDOMVARIABLEVALUECONTINUOUS_HEADER 1
+#ifndef RAVLPROB_VARIABLEPROPOSITIONCONTINUOUS_HEADER
+#define RAVLPROB_VARIABLEPROPOSITIONCONTINUOUS_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -18,19 +18,19 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Implementation of a continuous random variable value
-  class RandomVariableValueContinuousBodyC
+  class VariablePropositionContinuousBodyC
     : public VariablePropositionBodyC {
   public:
-    RandomVariableValueContinuousBodyC(const VariableContinuousC& variable, RealT value);
+    VariablePropositionContinuousBodyC(const VariableContinuousC& variable, RealT value);
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
 
-    RandomVariableValueContinuousBodyC(istream &in);
+    VariablePropositionContinuousBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    RandomVariableValueContinuousBodyC(BinIStreamC &in);
+    VariablePropositionContinuousBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -44,7 +44,7 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~RandomVariableValueContinuousBodyC();
+    virtual ~VariablePropositionContinuousBodyC();
     //: Destructor
     
     virtual StringC ToString() const;
@@ -75,31 +75,31 @@ namespace RavlProbN {
   //: Implementation of a continuous random variable value
   //!cwiz:author
   
-  class RandomVariableValueContinuousC
+  class VariablePropositionContinuousC
     : public VariablePropositionC
   {
   public:
-  	RandomVariableValueContinuousC()
+  	VariablePropositionContinuousC()
   	{}
   	//: Default constructor makes invalid handle
   	
-    RandomVariableValueContinuousC(const VariableContinuousC& variable, RealT value)
-      : VariablePropositionC(new RandomVariableValueContinuousBodyC(variable, value))
+    VariablePropositionContinuousC(const VariableContinuousC& variable, RealT value)
+      : VariablePropositionC(new VariablePropositionContinuousBodyC(variable, value))
     {}
     //: Constructor
     //!param: variable - the variable that this is an instance of
     //!param: value - the value of the random variable
 
-    RandomVariableValueContinuousC(istream &in);
+    VariablePropositionContinuousC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    RandomVariableValueContinuousC(BinIStreamC &in);
+    VariablePropositionContinuousC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
-    RandomVariableValueContinuousC(const VariablePropositionC& value)
-      : VariablePropositionC(dynamic_cast<const RandomVariableValueContinuousBodyC *>(BodyPtr(value)))
+    VariablePropositionContinuousC(const VariablePropositionC& value)
+      : VariablePropositionC(dynamic_cast<const VariablePropositionContinuousBodyC *>(BodyPtr(value)))
     {}
     //: Upcast constructor
     // Creates an invalid handle if types don't match
@@ -109,22 +109,22 @@ namespace RavlProbN {
     //: Get access to the value
 
   protected:
-    RandomVariableValueContinuousC(RandomVariableValueContinuousBodyC &bod)
+    VariablePropositionContinuousC(VariablePropositionContinuousBodyC &bod)
      : VariablePropositionC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueContinuousC(const RandomVariableValueContinuousBodyC *bod)
+    VariablePropositionContinuousC(const VariablePropositionContinuousBodyC *bod)
      : VariablePropositionC(bod)
     {}
     //: Body constructor. 
     
-    RandomVariableValueContinuousBodyC& Body()
-    { return static_cast<RandomVariableValueContinuousBodyC &>(VariablePropositionC::Body()); }
+    VariablePropositionContinuousBodyC& Body()
+    { return static_cast<VariablePropositionContinuousBodyC &>(VariablePropositionC::Body()); }
     //: Body Access. 
     
-    const RandomVariableValueContinuousBodyC& Body() const
-    { return static_cast<const RandomVariableValueContinuousBodyC &>(VariablePropositionC::Body()); }
+    const VariablePropositionContinuousBodyC& Body() const
+    { return static_cast<const VariablePropositionContinuousBodyC &>(VariablePropositionC::Body()); }
     //: Body Access. 
     
   };

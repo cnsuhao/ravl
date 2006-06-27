@@ -1,11 +1,11 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Ravl/Prob/RandomVariableValueContinuous.hh"
+#include "Ravl/Prob/VariablePropositionContinuous.hh"
 
 using namespace RavlProbN;
 	
-class RandomVariableValueContinuousTest: public CppUnit::TestCase {
-	CPPUNIT_TEST_SUITE( RandomVariableValueContinuousTest );
+class VariablePropositionContinuousTest: public CppUnit::TestCase {
+	CPPUNIT_TEST_SUITE( VariablePropositionContinuousTest );
 	CPPUNIT_TEST_EXCEPTION( testCreateThrows1, ExceptionC );
 	CPPUNIT_TEST_EXCEPTION( testCreateThrows2, ExceptionC );
 	CPPUNIT_TEST( testToString );
@@ -14,24 +14,24 @@ class RandomVariableValueContinuousTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE_END();
 private:
 	VariableContinuousC m_variable;
-	RandomVariableValueContinuousC m_value0, m_value0_5, m_value1;
+	VariablePropositionContinuousC m_value0, m_value0_5, m_value1;
 public:
 	void setUp() {
 		m_variable = VariableContinuousC("variable", RealRangeC(0.0, 1.0));
-		m_value0 = RandomVariableValueContinuousC(m_variable, 0.0);
-		m_value0_5 = RandomVariableValueContinuousC(m_variable, 0.5);
-		m_value1 = RandomVariableValueContinuousC(m_variable, 1.0);
+		m_value0 = VariablePropositionContinuousC(m_variable, 0.0);
+		m_value0_5 = VariablePropositionContinuousC(m_variable, 0.5);
+		m_value1 = VariablePropositionContinuousC(m_variable, 1.0);
 	}
 	
 	void tearDown() {
 	}
 	
 	void testCreateThrows1() {
-		RandomVariableValueContinuousC v1(m_variable, -0.1);
+		VariablePropositionContinuousC v1(m_variable, -0.1);
 	}
 	
 	void testCreateThrows2() {
-		RandomVariableValueContinuousC v2(m_variable, 1.1);
+		VariablePropositionContinuousC v2(m_variable, 1.1);
 	}
 	
 	void testToString() {
@@ -47,7 +47,7 @@ public:
 	}
 	
 	void testEquality() {
-		RandomVariableValueContinuousC secondValue0_5(m_variable, 0.5);
+		VariablePropositionContinuousC secondValue0_5(m_variable, 0.5);
 		CPPUNIT_ASSERT( m_value0 == m_value0 );
 		CPPUNIT_ASSERT( m_value0_5 == m_value0_5 );
 		CPPUNIT_ASSERT( m_value0_5 == secondValue0_5 );
@@ -58,4 +58,4 @@ public:
 	}
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( RandomVariableValueContinuousTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( VariablePropositionContinuousTest );

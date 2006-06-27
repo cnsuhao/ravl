@@ -2,7 +2,7 @@
 
 #include "Ravl/Prob/Proposition.hh"
 #include "Ravl/Prob/VariablePropositionBoolean.hh"
-#include "Ravl/Prob/RandomVariableValueContinuous.hh"
+#include "Ravl/Prob/VariablePropositionContinuous.hh"
 #include "Ravl/Prob/VariablePropositionDiscrete.hh"
 
 using namespace RavlProbN;
@@ -39,7 +39,7 @@ public:
 		m_variables.Insert(VariableDiscreteC("discrete", names));
 		m_domain = DomainC(m_variables);
 		m_values.Insert(VariablePropositionBooleanC(booleanVariable, true));
-		m_values.Insert(RandomVariableValueContinuousC(continuousVariable, 0.5));
+		m_values.Insert(VariablePropositionContinuousC(continuousVariable, 0.5));
 		m_proposition = PropositionC(m_domain, m_values);
 	}
 	
