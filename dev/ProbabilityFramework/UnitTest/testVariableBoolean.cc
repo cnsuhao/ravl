@@ -4,8 +4,8 @@
 
 using namespace RavlProbN;
 	
-class RandomVariableBooleanTest: public CppUnit::TestCase {
-	CPPUNIT_TEST_SUITE( RandomVariableBooleanTest );
+class VariableBooleanTest: public CppUnit::TestCase {
+	CPPUNIT_TEST_SUITE( VariableBooleanTest );
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST_SUITE_END();
 private:
@@ -19,9 +19,9 @@ public:
 	}
 	
 	void testValue() {
-		CPPUNIT_ASSERT( m_variable.Value(true) == "variable" );
-		CPPUNIT_ASSERT( m_variable.Value(false) == "¬variable" );
+		CPPUNIT_ASSERT_EQUAL( StringC("variable"), m_variable.Value(true) );
+		CPPUNIT_ASSERT_EQUAL( StringC("¬variable"), m_variable.Value(false) );
 	}
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( RandomVariableBooleanTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( VariableBooleanTest );

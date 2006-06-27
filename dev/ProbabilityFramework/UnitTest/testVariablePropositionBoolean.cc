@@ -24,13 +24,13 @@ public:
 	}
 	
 	void testBooleanValue() {
-		CPPUNIT_ASSERT( m_valueTrue.BooleanValue() == true );
+		CPPUNIT_ASSERT( m_valueTrue.BooleanValue() );
 		CPPUNIT_ASSERT( m_valueFalse.BooleanValue() == false );
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT( m_valueTrue.ToString() == "variable" );
-		CPPUNIT_ASSERT( m_valueFalse.ToString() == "¬variable" );
+		CPPUNIT_ASSERT_EQUAL( StringC("variable"), m_valueTrue.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("¬variable"), m_valueFalse.ToString() );
 	}
 };
 

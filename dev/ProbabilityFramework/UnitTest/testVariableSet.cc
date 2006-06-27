@@ -14,11 +14,8 @@ class VariableSetTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testNumVariables );
 	CPPUNIT_TEST( testVariables );
 	CPPUNIT_TEST( testVariable );
-	CPPUNIT_TEST_EXCEPTION( testVariableThrows1, ExceptionC );
-	CPPUNIT_TEST_EXCEPTION( testVariableThrows2, ExceptionC );
 	CPPUNIT_TEST( testIndex );
 	CPPUNIT_TEST( testToString );
-	CPPUNIT_TEST_EXCEPTION( testIndexThrows, ExceptionC );
 	CPPUNIT_TEST_SUITE_END();
 private:
 	VariableSetC m_variableSet;
@@ -51,46 +48,37 @@ public:
 	
 	void testContains() {
 		for (HSetIterC<VariableC> it(m_variables); it; it++)
-			CPPUNIT_ASSERT( m_variableSet.Contains(*it) == true );
+			CPPUNIT_ASSERT( m_variableSet.Contains(*it) );
 		CPPUNIT_ASSERT( m_variableSet.Contains(VariableC()) == false);
 		CPPUNIT_ASSERT( m_variableSet.Contains(VariableBooleanC("bool2")) == false );
 	}
 	
 	void testNumVariables() {
-		CPPUNIT_ASSERT( m_variableSet.NumVariables() == 3 );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variableSet.NumVariables() );
 	}
 	
 	void testVariables() {
-		CPPUNIT_ASSERT( m_variableSet.Variables().Size() == 3 );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variableSet.Variables().Size() );
 		for (HSetIterC<VariableC> it(m_variables); it; it++)
-			CPPUNIT_ASSERT( m_variableSet.Variables().Contains(*it) == true );
+			CPPUNIT_ASSERT( m_variableSet.Variables().Contains(*it) );
 	}
 	
 	void testVariable() {
 		CPPUNIT_ASSERT( m_variableSet.Variable(0) != m_variableSet.Variable(1) );
 		CPPUNIT_ASSERT( m_variableSet.Variable(1) != m_variableSet.Variable(2) );
-	}
-	
-	void testVariableThrows1() {
-		m_variableSet.Variable(3);
-	}
-	
-	void testVariableThrows2() {
-		m_variableSet.Variable(-1);
+		CPPUNIT_ASSERT_THROW( m_variableSet.Variable(3), ExceptionC );
+		CPPUNIT_ASSERT_THROW( m_variableSet.Variable(-1), ExceptionC );
 	}
 	
 	void testIndex() {
 		for (HSetIterC<VariableC> it(m_variables); it; it++)
-			CPPUNIT_ASSERT( m_variableSet.Variable(m_variableSet.Index(*it)) == *it );
-	}
-	
-	void testIndexThrows() {
-		m_variableSet.Index(VariableC());
-		m_variableSet.Index(VariableBooleanC("bool3"));
+			CPPUNIT_ASSERT_EQUAL( *it, m_variableSet.Variable(m_variableSet.Index(*it)) );
+		CPPUNIT_ASSERT_THROW( m_variableSet.Index(VariableC()), ExceptionC );
+		CPPUNIT_ASSERT_THROW( m_variableSet.Index(VariableBooleanC("bool3")), ExceptionC );
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT( m_variableSet.ToString() == "Boolean,Discrete,Continuous" );
+		CPPUNIT_ASSERT_EQUAL( StringC("Boolean,Discrete,Continuous"), m_variableSet.ToString() );
 	}
 	
 };

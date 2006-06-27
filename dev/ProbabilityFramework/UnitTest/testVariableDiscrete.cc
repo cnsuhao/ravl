@@ -10,10 +10,7 @@ class VariableDiscreteTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testNumValues );
 	CPPUNIT_TEST( testDomain );
 	CPPUNIT_TEST( testValue );
-	CPPUNIT_TEST_EXCEPTION( testValueThrows1, ExceptionC );
-	CPPUNIT_TEST_EXCEPTION( testValueThrows2, ExceptionC );
 	CPPUNIT_TEST( testIndex );
-	CPPUNIT_TEST_EXCEPTION( testIndexThrows, ExceptionC );
 	CPPUNIT_TEST_SUITE_END();
 private:
 	VariableDiscreteC m_variable;
@@ -34,38 +31,29 @@ public:
 	}
 	
 	void testNumValues() {
-		CPPUNIT_ASSERT( m_variable.NumValues() == 3 );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variable.NumValues() );
 	}
 	
 	void testDomain() {
-		CPPUNIT_ASSERT( m_variable.Domain().Size() == 3 );
-		CPPUNIT_ASSERT( m_variable.Domain().Contains("a") == true );
-		CPPUNIT_ASSERT( m_variable.Domain().Contains("b") == true );
-		CPPUNIT_ASSERT( m_variable.Domain().Contains("c") == true );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variable.Domain().Size() );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("a") );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("b") );
+		CPPUNIT_ASSERT( m_variable.Domain().Contains("c") );
 		CPPUNIT_ASSERT( m_variable.Domain().Contains("d") == false );
 	}
 	
 	void testValue() {
 		CPPUNIT_ASSERT( m_variable.Value(0) != m_variable.Value(1) );
 		CPPUNIT_ASSERT( m_variable.Value(1) != m_variable.Value(2) );
-	}
-	
-	void testValueThrows1() {
-		m_variable.Value(3);
-	}
-	
-	void testValueThrows2() {
-		m_variable.Value(-1);
+		CPPUNIT_ASSERT_THROW( m_variable.Value(3), ExceptionC );
+		CPPUNIT_ASSERT_THROW( m_variable.Value(-1), ExceptionC );
 	}
 	
 	void testIndex() {
-		CPPUNIT_ASSERT( m_variable.Value(m_variable.Index("a")) == "a" );
-		CPPUNIT_ASSERT( m_variable.Value(m_variable.Index("b")) == "b" );
-		CPPUNIT_ASSERT( m_variable.Value(m_variable.Index("c")) == "c" );
-	}
-	
-	void testIndexThrows() {
-		m_variable.Index("d");
+		CPPUNIT_ASSERT_EQUAL( StringC("a"), m_variable.Value(m_variable.Index("a")) );
+		CPPUNIT_ASSERT_EQUAL( StringC("b"), m_variable.Value(m_variable.Index("b")) );
+		CPPUNIT_ASSERT_EQUAL( StringC("c"), m_variable.Value(m_variable.Index("c")) );
+		CPPUNIT_ASSERT_THROW( m_variable.Index("d"), ExceptionC );
 	}
 	
 };

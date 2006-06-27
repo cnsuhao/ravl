@@ -20,11 +20,11 @@ public:
 	}
 	
 	void testToString() {
-	    CPPUNIT_ASSERT( m_variable.ToString() == "Variable=[0.000000,1.000000]" );
+	    CPPUNIT_ASSERT_EQUAL( StringC("Variable=[0.000000,1.000000]"), m_variable.ToString() );
 	}
 	
 	void testInterval() {
-		CPPUNIT_ASSERT( m_variable.Interval() == RealRangeC(0.0,1.0) );
+		CPPUNIT_ASSERT_EQUAL( RealRangeC(0.0,1.0), m_variable.Interval() );
 	}
 	
 };

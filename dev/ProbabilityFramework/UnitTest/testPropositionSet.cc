@@ -15,10 +15,7 @@ class PropositionSetTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testNumValues );
 	CPPUNIT_TEST( testValues );
 	CPPUNIT_TEST( testValue );
-	CPPUNIT_TEST_EXCEPTION( testValueThrows1, ExceptionC );
-	CPPUNIT_TEST_EXCEPTION( testValueThrows2, ExceptionC );
 	CPPUNIT_TEST( testSubPropositionSet );
-	CPPUNIT_TEST_EXCEPTION( testSubPropositionSetThrows, ExceptionC );
 	CPPUNIT_TEST( testEquality );
 	CPPUNIT_TEST_SUITE_END();
 private:
@@ -47,48 +44,40 @@ public:
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT( m_proposition.ToString() == "Continuous=0.500000,Boolean=boolean" );
+		CPPUNIT_ASSERT_EQUAL( StringC("Continuous=0.500000,Boolean=boolean"), m_proposition.ToString() );
 	}
 	
 	void testLotteryName() {
-		CPPUNIT_ASSERT( m_proposition.LotteryName() == "Boolean,Discrete,Continuous->(Discrete)" );
+		CPPUNIT_ASSERT_EQUAL( StringC("Boolean,Discrete,Continuous->(Discrete)"), m_proposition.LotteryName() );
 	}
 	
 	void testVariableSet() {
-		CPPUNIT_ASSERT( m_proposition.VariableSet() == m_variableSet );
+		CPPUNIT_ASSERT_EQUAL( m_variableSet, m_proposition.VariableSet() );
 	}
 	
 	void testNumValues() {
-		CPPUNIT_ASSERT( m_proposition.NumValues() == 2 );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)2, m_proposition.NumValues() );
 	}
 	
 	void testValues() {
-		CPPUNIT_ASSERT( m_proposition.Values().Size() == 2 );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)2, m_proposition.Values().Size() );
 		for (HSetIterC<VariablePropositionC> it(m_values); it; it++)
-			CPPUNIT_ASSERT( m_proposition.Values().Contains(*it) == true );
+			CPPUNIT_ASSERT( m_proposition.Values().Contains(*it) );
 	}
 	
 	void testValue() {
 		CPPUNIT_ASSERT( m_proposition.Value(0) != m_proposition.Value(1) );
+		CPPUNIT_ASSERT_THROW( m_proposition.Value(2), ExceptionC );
+		CPPUNIT_ASSERT_THROW( m_proposition.Value(-1), ExceptionC );
 	}
 	
-	void testValueThrows1() {
-		m_proposition.Value(2);
-	}
-	
-	void testValueThrows2() {
-		m_proposition.Value(-1);
-	}
 	void testSubPropositionSet() {
 		HSetC<VariableC> variables;
 		variables.Insert(VariableBooleanC("boolean"));
-		CPPUNIT_ASSERT( m_proposition.SubPropositionSet(VariableSetC(variables)).NumValues() == 1 );
-	}
-	
-	void testSubPropositionSetThrows() {
-		HSetC<VariableC> variables;
-		variables.Insert(VariableBooleanC("invalid"));
-		m_proposition.SubPropositionSet(VariableSetC(variables));
+		CPPUNIT_ASSERT_EQUAL( (SizeT)1, m_proposition.SubPropositionSet(VariableSetC(variables)).NumValues() );
+		HSetC<VariableC> variables2;
+		variables2.Insert(VariableBooleanC("invalid"));
+		CPPUNIT_ASSERT_THROW( m_proposition.SubPropositionSet(VariableSetC(variables2)), ExceptionC );
 	}
 	
 	void testEquality() {

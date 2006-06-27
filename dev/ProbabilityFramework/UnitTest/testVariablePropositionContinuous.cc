@@ -6,8 +6,7 @@ using namespace RavlProbN;
 	
 class VariablePropositionContinuousTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( VariablePropositionContinuousTest );
-	CPPUNIT_TEST_EXCEPTION( testCreateThrows1, ExceptionC );
-	CPPUNIT_TEST_EXCEPTION( testCreateThrows2, ExceptionC );
+	CPPUNIT_TEST( testCreate );
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST( testEquality );
@@ -26,24 +25,21 @@ public:
 	void tearDown() {
 	}
 	
-	void testCreateThrows1() {
-		VariablePropositionContinuousC v1(m_variable, -0.1);
-	}
-	
-	void testCreateThrows2() {
-		VariablePropositionContinuousC v2(m_variable, 1.1);
+	void testCreate() {
+		CPPUNIT_ASSERT_THROW( VariablePropositionContinuousC v1(m_variable, -0.1), ExceptionC );
+		CPPUNIT_ASSERT_THROW( VariablePropositionContinuousC v2(m_variable, 1.1), ExceptionC );
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT( m_value0.ToString() == "0.000000" );
-		CPPUNIT_ASSERT( m_value0_5.ToString() == "0.500000" );
-		CPPUNIT_ASSERT( m_value1.ToString() == "1.000000" );
+		CPPUNIT_ASSERT_EQUAL( StringC("0.000000"), m_value0.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("0.500000"), m_value0_5.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("1.000000"), m_value1.ToString() );
 	}
 	
 	void testValue() {
-		CPPUNIT_ASSERT( m_value0.Value() == 0.0 );
-		CPPUNIT_ASSERT( m_value0_5.Value() == 0.5 );
-		CPPUNIT_ASSERT( m_value1.Value() == 1.0 );
+		CPPUNIT_ASSERT_EQUAL( 0.0, m_value0.Value() );
+		CPPUNIT_ASSERT_EQUAL( 0.5, m_value0_5.Value() );
+		CPPUNIT_ASSERT_EQUAL( 1.0, m_value1.Value() );
 	}
 	
 	void testEquality() {
