@@ -15,11 +15,11 @@ DESCRIPTION=Pattern recognition software
 
 PACKAGE=Ravl/Prob
 
-HEADERS= Domain.hh \
+HEADERS= VariableSet.hh \
          Lottery.hh \
          Proposition.hh
 
-SOURCES= Domain.cc \
+SOURCES= VariableSet.cc \
          Lottery.cc \
          Proposition.cc
 

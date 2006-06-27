@@ -30,14 +30,14 @@ namespace RavlProbN {
   CPDDesignerFactoryBodyC::~CPDDesignerFactoryBodyC() {
   }
 
-  CPDDesignerC CPDDesignerFactoryBodyC::GetCPDDesigner(const VariableC& variable, const DomainC& parentDomain) const {
+  CPDDesignerC CPDDesignerFactoryBodyC::GetCPDDesigner(const VariableC& variable, const VariableSetC& parentVariableSet) const {
     if (((VariableContinuousC)variable).IsValid()) {
       // the variable is continuous
       ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), variable is continuous");
-      if (parentDomain.NumVariables() == 1) {
+      if (parentVariableSet.NumVariables() == 1) {
         // single parent variable
         ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), single parent variable");
-        VariableC parentVariable = parentDomain.Variable(0);
+        VariableC parentVariable = parentVariableSet.Variable(0);
         if (((VariableDiscreteC)parentVariable).IsValid()) {
           ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), single parent variable is discrete");
           return CPDDesignerContinuousDiscrete1C::GetInstance();

@@ -35,19 +35,19 @@ namespace RavlProbN {
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability distribution of Variable given the evidence
 
-    virtual DomainC Domain() const;
-    //: Get the domain for the network
+    virtual VariableSetC VariableSet() const;
+    //: Get the variableSet for the network
 
   protected:
     DListC<VariableC> Variables(const PropositionC& evidence) const;
     ConditionalProbabilityDistributionC NodeCPD(const VariableC& variable) const;
 
   private:
-    DomainC m_domain;
-    //: The domain for the network
+    VariableSetC m_variableSet;
+    //: The variableSet for the network
 
     DListC<VariableC> m_orderedNodes;
-    //: Ordered list of random variables in the network domain
+    //: Ordered list of random variables in the network variableSet
 
     RCHashC<VariableC,ConditionalProbabilityDistributionC> m_nodeCPDs;
     //: Map of variables to their conditional probability distributions

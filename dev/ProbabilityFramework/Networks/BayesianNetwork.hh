@@ -39,7 +39,7 @@ namespace RavlProbN {
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability of the random variables taking the given values
 
-    virtual DomainC Domain() const=0;
+    virtual VariableSetC VariableSet() const=0;
     //: Get the domain for the network
   };
 
@@ -68,9 +68,9 @@ namespace RavlProbN {
     //!param: evidence - a proposition with fixed values for some (or all) evidence variables from the network
     //!return: the probability of the random variables taking the given values
 
-    DomainC Domain() const
-    { return Body().Domain(); }
-    //: Get the domain for the network
+    VariableSetC VariableSet() const
+    { return Body().VariableSet(); }
+    //: Get the variable set for the network
 
   protected:
     BayesianNetworkC(BayesianNetworkBodyC &bod)

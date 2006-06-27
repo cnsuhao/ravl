@@ -32,7 +32,7 @@ namespace RavlProbN {
       for (HashIterC<VariableC,ConditionalProbabilityDistributionC> ht(nodeCPDsCopy); ht; ht++) {
         // check if all parents of current node are already in variables
         bool parentsAlreadyPresent = true;
-        for (HSetIterC<VariableC> st(ht.Data().ParentDomain().Variables()); st; st++) {
+        for (HSetIterC<VariableC> st(ht.Data().ParentVariableSet().Variables()); st; st++) {
           if (!variables.Contains(*st)) {
             parentsAlreadyPresent = false;
             break;
@@ -52,7 +52,7 @@ namespace RavlProbN {
     for (DLIterC<VariableC> it(m_orderedNodes); it; it++)
       SysLog(SYSLOG_DEBUG) << "BayesianNetworkAbstractBodyC::BayesianNetworkAbstractBodyC(), " << it->ToString();
 #endif
-    m_domain = DomainC(variables);
+    m_variableSet = VariableSetC(variables);
   }
 
   BayesianNetworkAbstractBodyC::~BayesianNetworkAbstractBodyC() {
@@ -95,8 +95,8 @@ namespace RavlProbN {
     return PDFDiscreteC(discrete, probabilityLookupTable);
   }
 
-  DomainC BayesianNetworkAbstractBodyC::Domain() const {
-    return m_domain; 
+  VariableSetC BayesianNetworkAbstractBodyC::VariableSet() const {
+    return m_variableSet; 
   }
 
   DListC<VariableC> BayesianNetworkAbstractBodyC::Variables(const PropositionC& evidence) const {

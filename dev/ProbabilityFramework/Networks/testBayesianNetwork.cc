@@ -28,11 +28,11 @@ int main() {
     HSetC<VariableC> alarmParents;
     alarmParents.Insert(Burglary);
     alarmParents.Insert(Earthquake);
-    DomainC alarmParentDomain(alarmParents);
+    VariableSetC alarmParentVariableSet(alarmParents);
     HSetC<VariableC> johnCallsParents;
     johnCallsParents.Insert(Alarm);
-    DomainC johnCallsParentDomain(johnCallsParents);
-    DomainC maryCallsParentDomain(johnCallsParents);
+    VariableSetC johnCallsParentVariableSet(johnCallsParents);
+    VariableSetC maryCallsParentVariableSet(johnCallsParents);
     // create variable values
     VariablePropositionBooleanC burglary(Burglary, true);
     VariablePropositionBooleanC _burglary(Burglary, false);
@@ -52,22 +52,22 @@ int main() {
     HSetC<VariablePropositionC> a; a.Insert(alarm);
     HSetC<VariablePropositionC> _a; _a.Insert(_alarm);
     RCHashC<PropositionC,PDFDiscreteC> alarmPDFs;
-    alarmPDFs.Insert(PropositionC(alarmParentDomain, be), PDFBooleanC(Alarm, 0.95));
-    alarmPDFs.Insert(PropositionC(alarmParentDomain, b_e), PDFBooleanC(Alarm, 0.94));
-    alarmPDFs.Insert(PropositionC(alarmParentDomain, _be), PDFBooleanC(Alarm, 0.29));
-    alarmPDFs.Insert(PropositionC(alarmParentDomain, _b_e), PDFBooleanC(Alarm, 0.001));
+    alarmPDFs.Insert(PropositionC(alarmParentVariableSet, be), PDFBooleanC(Alarm, 0.95));
+    alarmPDFs.Insert(PropositionC(alarmParentVariableSet, b_e), PDFBooleanC(Alarm, 0.94));
+    alarmPDFs.Insert(PropositionC(alarmParentVariableSet, _be), PDFBooleanC(Alarm, 0.29));
+    alarmPDFs.Insert(PropositionC(alarmParentVariableSet, _b_e), PDFBooleanC(Alarm, 0.001));
     RCHashC<PropositionC,PDFDiscreteC> johnCallsPDFs;
-    johnCallsPDFs.Insert(PropositionC(johnCallsParentDomain, a), PDFBooleanC(JohnCalls, 0.90));
-    johnCallsPDFs.Insert(PropositionC(johnCallsParentDomain, _a), PDFBooleanC(JohnCalls, 0.05));
+    johnCallsPDFs.Insert(PropositionC(johnCallsParentVariableSet, a), PDFBooleanC(JohnCalls, 0.90));
+    johnCallsPDFs.Insert(PropositionC(johnCallsParentVariableSet, _a), PDFBooleanC(JohnCalls, 0.05));
     RCHashC<PropositionC,PDFDiscreteC> maryCallsPDFs;
-    maryCallsPDFs.Insert(PropositionC(maryCallsParentDomain, a), PDFBooleanC(MaryCalls, 0.70));
-    maryCallsPDFs.Insert(PropositionC(maryCallsParentDomain, _a), PDFBooleanC(MaryCalls, 0.01));
+    maryCallsPDFs.Insert(PropositionC(maryCallsParentVariableSet, a), PDFBooleanC(MaryCalls, 0.70));
+    maryCallsPDFs.Insert(PropositionC(maryCallsParentVariableSet, _a), PDFBooleanC(MaryCalls, 0.01));
     // create CPDs
     CPDPriorPDFC burglaryCPT(PDFBooleanC(Burglary, 0.001));
     CPDPriorPDFC earthquakeCPT(PDFBooleanC(Earthquake, 0.002));
-    CPDDiscreteDiscreteC alarmCPT(Alarm, alarmParentDomain, alarmPDFs);
-    CPDDiscreteDiscreteC johnCallsCPT(JohnCalls, johnCallsParentDomain, johnCallsPDFs);
-    CPDDiscreteDiscreteC maryCallsCPT(MaryCalls, maryCallsParentDomain, maryCallsPDFs);
+    CPDDiscreteDiscreteC alarmCPT(Alarm, alarmParentVariableSet, alarmPDFs);
+    CPDDiscreteDiscreteC johnCallsCPT(JohnCalls, johnCallsParentVariableSet, johnCallsPDFs);
+    CPDDiscreteDiscreteC maryCallsCPT(MaryCalls, maryCallsParentVariableSet, maryCallsPDFs);
     // create the bayesian network
     RCHashC<VariableC,ConditionalProbabilityDistributionC> nodeCPDs;
     nodeCPDs.Insert(Burglary, burglaryCPT);
@@ -81,8 +81,8 @@ int main() {
     HSetC<VariablePropositionC> propSet;
     propSet.Insert(johnCalls);
     propSet.Insert(maryCalls);
-    PropositionC prop(bayesianNetwork.Domain(), propSet);
-    ProbabilityDistributionC pdf = bayesianNetwork.CalculateDistribution(Burglary, PropositionC(bayesianNetwork.Domain(), propSet));
+    PropositionC prop(bayesianNetwork.VariableSet(), propSet);
+    ProbabilityDistributionC pdf = bayesianNetwork.CalculateDistribution(Burglary, PropositionC(bayesianNetwork.VariableSet(), propSet));
 
     cerr << pdf.ToString() << endl;
   }

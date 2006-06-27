@@ -11,7 +11,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/RCHandleV.hh"
-#include "Ravl/Prob/Domain.hh"
+#include "Ravl/Prob/VariableSet.hh"
 #include "Ravl/Prob/VariableProposition.hh"
 #include "Ravl/HSet.hh"
 
@@ -24,14 +24,14 @@ namespace RavlProbN {
   //: Class used to represent a proposition in a domain of random variables
   //
   // A proposition indicates a set of values or propositions about a subset of
-  // variables in a domain. Eg given a Domain with Weather, Cavity and X,
+  // variables in a domain. Eg given a VariableSet with Weather, Cavity and X,
   // represent the proposition that Weather=snow, Cavity=true and X is unknown.
   class PropositionBodyC
     : public RCBodyVC {
   public:
-    PropositionBodyC(const DomainC& domain, const HSetC<VariablePropositionC>& values);
+    PropositionBodyC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values);
     //: Constructor
-    //!param: domain - the domain for the proposition
+    //!param: variableSet - the variableSet for the proposition
     //!param: values - list of random variables values contained in this proposition
 
     PropositionBodyC(const PropositionBodyC& other, const VariablePropositionC& value);
@@ -61,25 +61,25 @@ namespace RavlProbN {
     //: Destructor
 
     StringC ToString() const;
-    //: Create a string representation of the domain
+    //: Create a string representation of the variableSet
 
     StringC LotteryName() const;
     //: Create a lottery name for this proposition
 
-    const DomainC& Domain() const;
-    //: Get the domain
+    const VariableSetC& VariableSet() const;
+    //: Get the variableSet
 
     SizeT NumValues() const;
     //: Get the number of values in the proposition
 
     const HSetC<VariablePropositionC>& Values() const;
-    //: Get the random variable values in the domain
+    //: Get the random variable values in the variableSet
 
     const VariablePropositionC& Value(IndexC index) const;
     //: Get a random variable value by index
 
-    PropositionC SubProposition(const DomainC& subDomain) const;
-    //: Create a proposition for a subdomain
+    PropositionC SubProposition(const VariableSetC& subVariableSet) const;
+    //: Create a proposition for a subvariableSet
 
     bool operator==(const PropositionBodyC& other) const;
     //: Equality operator
@@ -88,22 +88,22 @@ namespace RavlProbN {
     //: Hash function based set of values
 
   private:
-    void SetDomain(const DomainC& domain);
-    //: Set the domain
+    void SetVariableSet(const VariableSetC& variableSet);
+    //: Set the variableSet
 
     void SetValues(const HSetC<VariablePropositionC>& values);
-    //: Set the random variable values in the domain
+    //: Set the random variable values in the variableSet
 
   private:
-    DomainC m_domain;
-    //: The domain of the proposition
+    VariableSetC m_variableSet;
+    //: The variableSet of the proposition
 
     HSetC<VariablePropositionC> m_values;
     //: The set of variables
   };
 
   //! userlevel=Normal
-  //: Class used to represent a proposition in a domain of random variables
+  //: Class used to represent a proposition in a variableSet of random variables
   //!cwiz:author
   
   class PropositionC
@@ -114,8 +114,8 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
-    PropositionC(const DomainC& domain, const HSetC<VariablePropositionC>& values)
-      : RCHandleVC<PropositionBodyC>(new PropositionBodyC(domain, values))
+    PropositionC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values)
+      : RCHandleVC<PropositionBodyC>(new PropositionBodyC(variableSet, values))
     {}
 
     PropositionC(const PropositionC& other, const VariablePropositionC& value)
@@ -149,7 +149,7 @@ namespace RavlProbN {
     
     StringC ToString() const
     { return Body().ToString(); }
-    //: Create a string representation of the domain
+    //: Create a string representation of the variableSet
     //!cwiz:author
 
     StringC LotteryName() const
@@ -157,9 +157,9 @@ namespace RavlProbN {
     //: Create a lottery name for this proposition
     //!cwiz:author
 
-    const DomainC& Domain() const
-    { return Body().Domain(); }
-    //: Get the domain
+    const VariableSetC& VariableSet() const
+    { return Body().VariableSet(); }
+    //: Get the variableSet
 
     SizeT NumValues() const
     { return Body().NumValues(); }
@@ -167,7 +167,7 @@ namespace RavlProbN {
 
     const HSetC<VariablePropositionC>& Values() const
     { return Body().Values(); }
-    //: Get the random variable values in the domain
+    //: Get the random variable values in the variableSet
     //!cwiz:author
 
     const VariablePropositionC& Value(IndexC index) const
@@ -175,9 +175,9 @@ namespace RavlProbN {
     //: Get a random variable value by index
     //!cwiz:author
 
-    PropositionC SubProposition(const DomainC& subDomain) const
-    { return Body().SubProposition(subDomain); }
-    //: Create a proposition for a subdomain
+    PropositionC SubProposition(const VariableSetC& subVariableSet) const
+    { return Body().SubProposition(subVariableSet); }
+    //: Create a proposition for a subvariableSet
     //!cwiz:author
 
     bool operator==(const PropositionC& other) const

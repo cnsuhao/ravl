@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROB_DOMAIN_HEADER
-#define RAVLPROB_DOMAIN_HEADER 1
+#ifndef RAVLPROB_VARIABLESET_HEADER
+#define RAVLPROB_VARIABLESET_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
@@ -17,7 +17,7 @@
 namespace RavlProbN {
   using namespace RavlN;
 
-  class DomainC;
+  class VariableSetC;
 
   //! userlevel=Develop
   //: Class used to represent a domain set of random variable
@@ -25,18 +25,18 @@ namespace RavlProbN {
   // Note that this is not to be confused with the domain of a particular random
   // variable, eg Weather=<sunny,rainy,cloudy,snow>. In this case we are referring
   // to a set of random variables, eg Weather, Cavity and X
-  class DomainBodyC
+  class VariableSetBodyC
     : public RCBodyVC {
   public:
-    DomainBodyC(const HSetC<VariableC>& variables);
+    VariableSetBodyC(const HSetC<VariableC>& variables);
     //: Constructor
     //!param: variables - set of random variables contained in this domain
 
-    DomainBodyC(istream &in);
+    VariableSetBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
 
-    DomainBodyC(BinIStreamC &in);
+    VariableSetBodyC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -50,10 +50,10 @@ namespace RavlProbN {
     //!param: out - binary output stream
     //!return: true if the object was successfully saved
     
-    virtual ~DomainBodyC();
+    virtual ~VariableSetBodyC();
     //: Destructor
 
-    bool operator==(const DomainBodyC& other) const;
+    bool operator==(const VariableSetBodyC& other) const;
     //: Check if the two domains are equal
 
     bool Contains(const VariableC& variable) const;
@@ -74,7 +74,7 @@ namespace RavlProbN {
     StringC ToString() const;
     //: Create a string representation of the domain
 
-    bool operator==(const DomainC& other) const;
+    bool operator==(const VariableSetC& other) const;
     //: Equality operator
 
     UIntT Hash() const;
@@ -93,23 +93,23 @@ namespace RavlProbN {
   //: Class used to represent a domain set of random variable
   //!cwiz:author
   
-  class DomainC
-    : public RCHandleVC<DomainBodyC>
+  class VariableSetC
+    : public RCHandleVC<VariableSetBodyC>
   {
   public:
-    DomainC()
+    VariableSetC()
     {}
     //: Default constructor makes invalid handle
 
-    DomainC(const HSetC<VariableC>& variables)
-      : RCHandleVC<DomainBodyC>(new DomainBodyC(variables))
+    VariableSetC(const HSetC<VariableC>& variables)
+      : RCHandleVC<VariableSetBodyC>(new VariableSetBodyC(variables))
     {}
 
-    DomainC(istream &in);
+    VariableSetC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
     
-    DomainC(BinIStreamC &in);
+    VariableSetC(BinIStreamC &in);
     //: Construct from binary stream
     //!param: in - binary input stream
     
@@ -127,12 +127,12 @@ namespace RavlProbN {
     //!return: true if the object was successfully saved
     //!cwiz:author
     
-    bool operator==(const DomainC& other) const
+    bool operator==(const VariableSetC& other) const
     { return Body().operator==(other.Body()); }
     //: Check if the two domains are equal
     //!cwiz:author
 
-    bool operator!=(const DomainC& other) const
+    bool operator!=(const VariableSetC& other) const
     { return !Body().operator==(other.Body()); }
     //: Check if the two domains are different
     //!cwiz:author
@@ -168,33 +168,33 @@ namespace RavlProbN {
     //: Hash function based on name
 
   protected:
-    DomainC(DomainBodyC &bod)
-     : RCHandleVC<DomainBodyC>(bod)
+    VariableSetC(VariableSetBodyC &bod)
+     : RCHandleVC<VariableSetBodyC>(bod)
     {}
     //: Body constructor. 
     
-    DomainC(const DomainBodyC *bod)
-     : RCHandleVC<DomainBodyC>(bod)
+    VariableSetC(const VariableSetBodyC *bod)
+     : RCHandleVC<VariableSetBodyC>(bod)
     {}
     //: Body constructor. 
     
-    DomainBodyC& Body()
-    { return static_cast<DomainBodyC &>(RCHandleVC<DomainBodyC>::Body()); }
+    VariableSetBodyC& Body()
+    { return static_cast<VariableSetBodyC &>(RCHandleVC<VariableSetBodyC>::Body()); }
     //: Body Access. 
     
-    const DomainBodyC& Body() const
-    { return static_cast<const DomainBodyC &>(RCHandleVC<DomainBodyC>::Body()); }
+    const VariableSetBodyC& Body() const
+    { return static_cast<const VariableSetBodyC &>(RCHandleVC<VariableSetBodyC>::Body()); }
     //: Body Access. 
     
   };
 
-  ostream &operator<<(ostream &s, const DomainC &obj);
+  ostream &operator<<(ostream &s, const VariableSetC &obj);
   
-  istream &operator>>(istream &s, DomainC &obj);
+  istream &operator>>(istream &s, VariableSetC &obj);
 
-  BinOStreamC &operator<<(BinOStreamC &s, const DomainC &obj);
+  BinOStreamC &operator<<(BinOStreamC &s, const VariableSetC &obj);
     
-  BinIStreamC &operator>>(BinIStreamC &s, DomainC &obj);
+  BinIStreamC &operator>>(BinIStreamC &s, VariableSetC &obj);
   
 }
 

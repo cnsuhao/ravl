@@ -23,7 +23,7 @@ namespace RavlProbN {
     : public CPDAbstractBodyC {
   public:
     CPDDiscreteDiscreteBodyC(const VariableDiscreteC& randomVariable,
-                             const DomainC& parentDomain,
+                             const VariableSetC& parentVariableSet,
                              const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable);
     //: Constructor
 
@@ -53,9 +53,9 @@ namespace RavlProbN {
   {
   public:
     CPDDiscreteDiscreteC(const VariableDiscreteC& randomVariable,
-                         const DomainC& parentDomain,
+                         const VariableSetC& parentVariableSet,
                          const RCHashC<PropositionC,PDFDiscreteC>& probabilityDistributionTable)
-      : CPDAbstractC(new CPDDiscreteDiscreteBodyC(randomVariable, parentDomain, probabilityDistributionTable))
+      : CPDAbstractC(new CPDDiscreteDiscreteBodyC(randomVariable, parentVariableSet, probabilityDistributionTable))
     {}
     //: Constructor
 

@@ -8,42 +8,42 @@
 //! lib=RavlProb
 //! author="Robert Crida"
 
-#include "Ravl/Prob/Domain.hh"
+#include "Ravl/Prob/VariableSet.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/VirtualConstructor.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
   
-  DomainBodyC::DomainBodyC(const HSetC<VariableC>& variables) {
+  VariableSetBodyC::VariableSetBodyC(const HSetC<VariableC>& variables) {
     SetVariables(variables);
   }
 
-  DomainBodyC::DomainBodyC(istream &in)
+  VariableSetBodyC::VariableSetBodyC(istream &in)
     : RCBodyVC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("DomainBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableSetBodyC(istream &), Unrecognised version number in stream.");
     HSetC<VariableC> variables;
     in >> variables;
     SetVariables(variables);
   }
 
-  DomainBodyC::DomainBodyC(BinIStreamC &in)
+  VariableSetBodyC::VariableSetBodyC(BinIStreamC &in)
     : RCBodyVC(in)
   {
     IntT version;
     in >> version;
     if (version < 0 || version > 0)
-      throw ExceptionOutOfRangeC("DomainBodyC(BinIStream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("VariableSetBodyC(BinIStream &), Unrecognised version number in stream.");
     HSetC<VariableC> variables;
     in >> variables;
     SetVariables(variables);
   }
   
-  bool DomainBodyC::Save (ostream &out) const {
+  bool VariableSetBodyC::Save (ostream &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
@@ -51,7 +51,7 @@ namespace RavlProbN {
     return true;
   }
   
-  bool DomainBodyC::Save (BinOStreamC &out) const {
+  bool VariableSetBodyC::Save (BinOStreamC &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
@@ -59,10 +59,10 @@ namespace RavlProbN {
     return true;
   }
 
-  DomainBodyC::~DomainBodyC() {
+  VariableSetBodyC::~VariableSetBodyC() {
   }
 
-  bool DomainBodyC::operator==(const DomainBodyC& other) const {
+  bool VariableSetBodyC::operator==(const VariableSetBodyC& other) const {
     if (this == &other)
       return true;
     if (NumVariables() != other.NumVariables())
@@ -73,47 +73,47 @@ namespace RavlProbN {
     return true;
   }
 
-  bool DomainBodyC::Contains(const VariableC& variable) const {
+  bool VariableSetBodyC::Contains(const VariableC& variable) const {
     //:FIXME- depends on choice of collection
     if (!variable.IsValid())
     	return false;
     return Variables().Contains(variable);
   }
 
-  SizeT DomainBodyC::NumVariables() const {
+  SizeT VariableSetBodyC::NumVariables() const {
     return Variables().Size();
   }
 
-  const HSetC<VariableC>& DomainBodyC::Variables() const {
+  const HSetC<VariableC>& VariableSetBodyC::Variables() const {
     return m_variables;
   }
 
-  const VariableC& DomainBodyC::Variable(IndexC index) const {
+  const VariableC& VariableSetBodyC::Variable(IndexC index) const {
     if (index < 0 || index >= NumVariables())
-      throw ExceptionC("DomainBodyC::Variable(), index too big");
+      throw ExceptionC("VariableSetBodyC::Variable(), index too big");
     HSetIterC<VariableC> it(Variables());
     while(index--)
       it++;
     return *it;
   }
 
-  void DomainBodyC::SetVariables(const HSetC<VariableC>& variables) {
+  void VariableSetBodyC::SetVariables(const HSetC<VariableC>& variables) {
     //:FIXME- what collection for efficiency?
     m_variables = variables.Copy();
   }
 
-  IndexC DomainBodyC::Index(const VariableC& variable) const {
+  IndexC VariableSetBodyC::Index(const VariableC& variable) const {
   	if (!variable.IsValid())
-  		throw ExceptionC("DomainBodyC::Index(), invalid variable");
+  		throw ExceptionC("VariableSetBodyC::Index(), invalid variable");
     //:FIXME- this should probably be implemented using hash table
     IndexC index(0);
     for (HSetIterC<VariableC> it(Variables()); it; it++, index++)
       if (*it == variable)
         return index;
-    throw ExceptionC("DomainBodyC::Index(), couldn't find variable");
+    throw ExceptionC("VariableSetBodyC::Index(), couldn't find variable");
   }
 
-  StringC DomainBodyC::ToString() const {
+  StringC VariableSetBodyC::ToString() const {
     HSetIterC<VariableC> it(Variables());
     StringC string = it->Name();
     for (it++; it; it++) {
@@ -123,35 +123,35 @@ namespace RavlProbN {
     return string;
   }
 
-  UIntT DomainBodyC::Hash() const {
+  UIntT VariableSetBodyC::Hash() const {
     UIntT hash = 0;
     for (HSetIterC<VariableC> it(Variables()); it; it++)
       hash += it->Hash();
     return hash;
   }
 
-  ostream &operator<<(ostream &s,const DomainC &obj) {
+  ostream &operator<<(ostream &s,const VariableSetC &obj) {
     obj.Save(s);
     return s;
   }
   
-  istream &operator>>(istream &s,DomainC &obj) {
-    obj = DomainC(s);
+  istream &operator>>(istream &s,VariableSetC &obj) {
+    obj = VariableSetC(s);
     return s;
   }
 
-  BinOStreamC &operator<<(BinOStreamC &s,const DomainC &obj) {
+  BinOStreamC &operator<<(BinOStreamC &s,const VariableSetC &obj) {
     obj.Save(s);
     return s;
   }
     
-  BinIStreamC &operator>>(BinIStreamC &s,DomainC &obj) {
-    obj = DomainC(s);
+  BinIStreamC &operator>>(BinIStreamC &s,VariableSetC &obj) {
+    obj = VariableSetC(s);
     return s;
   }
  
-  static TypeNameC type1(typeid(DomainC),"RavlProbN::DomainC");
+  static TypeNameC type1(typeid(VariableSetC),"RavlProbN::VariableSetC");
     
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(DomainBodyC,DomainC,RCHandleVC<DomainBodyC>);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(VariableSetBodyC,VariableSetC,RCHandleVC<VariableSetBodyC>);
   
 }

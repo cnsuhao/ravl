@@ -43,7 +43,7 @@ namespace RavlProbN {
     virtual VariableC Variable() const=0;
     //: Get the random variable that is the subject of the distribution
 
-    virtual DomainC ParentDomain() const=0;
+    virtual VariableSetC ParentVariableSet() const=0;
     //: Get the domain for the parent variables
   };
 
@@ -77,8 +77,8 @@ namespace RavlProbN {
     { return Body().Variable(); }
     //: Get the random variable that is the subject of the distribution
 
-    DomainC ParentDomain() const
-    { return Body().ParentDomain(); }
+    VariableSetC ParentVariableSet() const
+    { return Body().ParentVariableSet(); }
     //: Get the domain for the parent variables
 
   protected:

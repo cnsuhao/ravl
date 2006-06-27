@@ -15,13 +15,13 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  PropositionBodyC::PropositionBodyC(const DomainC& domain, const HSetC<VariablePropositionC>& values) {
-    SetDomain(domain);
+  PropositionBodyC::PropositionBodyC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values) {
+    SetVariableSet(variableSet);
     SetValues(values);
   }
 
   PropositionBodyC::PropositionBodyC(const PropositionBodyC& other, const VariablePropositionC& value) {
-    SetDomain(other.Domain());
+    SetVariableSet(other.VariableSet());
     HSetC<VariablePropositionC> values = other.Values().Copy();
     values.Insert(value);
     SetValues(values);
@@ -34,8 +34,8 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("PropositionBodyC(istream &), Unrecognised version number in stream.");
-    DomainC domain(in);
-    SetDomain(domain);
+    VariableSetC variableSet(in);
+    SetVariableSet(variableSet);
     HSetC<VariablePropositionC> values;
     in >> values;
     SetValues(values);
@@ -48,8 +48,8 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("PropositionBodyC(BinIStream &), Unrecognised version number in stream.");
-    DomainC domain(in);
-    SetDomain(domain);
+    VariableSetC variableSet(in);
+    SetVariableSet(variableSet);
     HSetC<VariablePropositionC> values;
     in >> values;
     SetValues(values);
@@ -59,7 +59,7 @@ namespace RavlProbN {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
-    out << ' ' << version << ' ' << Domain() << ' ' << Values();
+    out << ' ' << version << ' ' << VariableSet() << ' ' << Values();
     return true;
   }
   
@@ -67,15 +67,15 @@ namespace RavlProbN {
     if(!RCBodyVC::Save(out))
       return false;
     IntT version = 0;
-    out << version << Domain() << Values();
+    out << version << VariableSet() << Values();
     return true;
   }
 
   PropositionBodyC::~PropositionBodyC() {
   }
 
-  const DomainC& PropositionBodyC::Domain() const {
-    return m_domain;
+  const VariableSetC& PropositionBodyC::VariableSet() const {
+    return m_variableSet;
   }
 
   SizeT PropositionBodyC::NumValues() const {
@@ -106,14 +106,14 @@ namespace RavlProbN {
   }
 
   StringC PropositionBodyC::LotteryName() const {
-    StringC name = Domain().ToString(); // show all variables
-    HSetC<VariableC> domainSet = Domain().Variables().Copy();
+    StringC name = VariableSet().ToString(); // show all variables
+    HSetC<VariableC> variableSetSet = VariableSet().Variables().Copy();
     for (HSetIterC<VariablePropositionC> it(Values()); it; it++) {
-      domainSet.Remove(it->Variable());
+      variableSetSet.Remove(it->Variable());
     }
     name += "->(";
-    if (domainSet.Size() > 0) {
-      HSetIterC<VariableC> it(domainSet);
+    if (variableSetSet.Size() > 0) {
+      HSetIterC<VariableC> it(variableSetSet);
       name += it->Name();
       for (it++; it; it++) {
         name += ",";
@@ -124,35 +124,35 @@ namespace RavlProbN {
     return name;
   }
 
-  PropositionC PropositionBodyC::SubProposition(const DomainC& subDomain) const {
-  	// Check that all variables are in current domain!
-  	for (HSetIterC<VariableC> dt(subDomain.Variables()); dt; dt++)
-  		if (!Domain().Contains(*dt))
-  			throw ExceptionC("PropositionBodyC::SubProposition(), invalid new domain variable");
+  PropositionC PropositionBodyC::SubProposition(const VariableSetC& subVariableSet) const {
+  	// Check that all variables are in current variableSet!
+  	for (HSetIterC<VariableC> dt(subVariableSet.Variables()); dt; dt++)
+  		if (!VariableSet().Contains(*dt))
+  			throw ExceptionC("PropositionBodyC::SubProposition(), invalid new variableSet variable");
     HSetC<VariablePropositionC> values;
     for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++) {
-      if (subDomain.Variables().Contains(ht->Variable()))
+      if (subVariableSet.Variables().Contains(ht->Variable()))
         values.Insert(*ht);
     }
-    return PropositionC(subDomain, values);
+    return PropositionC(subVariableSet, values);
   }
 
-  void PropositionBodyC::SetDomain(const DomainC& domain) {
-    m_domain = domain;
+  void PropositionBodyC::SetVariableSet(const VariableSetC& variableSet) {
+    m_variableSet = variableSet;
   }
 
   void PropositionBodyC::SetValues(const HSetC<VariablePropositionC>& values) {
     //:FIXME- what collection for efficiency?
     for (HSetIterC<VariablePropositionC> it(values); it; it++)
-      if (!Domain().Contains(it->Variable()))
-        throw ExceptionC("PropositionBodyC::SetValues(), value not in domain");
+      if (!VariableSet().Contains(it->Variable()))
+        throw ExceptionC("PropositionBodyC::SetValues(), value not in variableSet");
     m_values = values.Copy();
   }
 
   bool PropositionBodyC::operator==(const PropositionBodyC& other) const {
     if (this == &other)
       return true;
-    if (Domain() != other.Domain())
+    if (VariableSet() != other.VariableSet())
       return false;
     if (NumValues() != other.NumValues())
       return false;
@@ -167,7 +167,7 @@ namespace RavlProbN {
     UIntT hash = 0;
     for (HSetIterC<VariablePropositionC> it(Values()); it; it++)
       hash += it->Hash();
-    return Domain().Hash() + hash;
+    return VariableSet().Hash() + hash;
   }
 
   ostream &operator<<(ostream &s,const PropositionC &obj) {

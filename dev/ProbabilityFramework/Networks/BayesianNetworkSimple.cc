@@ -56,7 +56,7 @@ namespace RavlProbN {
       }
     }
     ConditionalProbabilityDistributionC cpd = NodeCPD(Y);
-    PropositionC parentsY = evidence.SubProposition(cpd.ParentDomain());
+    PropositionC parentsY = evidence.SubProposition(cpd.ParentVariableSet());
     if (y.IsValid()) {
       return cpd.ConditionalProbability(y, parentsY) * EnumerateAll(restVars, evidence);
     }

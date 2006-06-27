@@ -14,9 +14,9 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  CPDAbstractBodyC::CPDAbstractBodyC(const VariableC& variable, const DomainC& parentDomain) {
+  CPDAbstractBodyC::CPDAbstractBodyC(const VariableC& variable, const VariableSetC& parentVariableSet) {
     SetVariable(variable);
-    SetParentDomain(parentDomain);
+    SetParentVariableSet(parentVariableSet);
   }
 
   CPDAbstractBodyC::CPDAbstractBodyC(const VariableC& variable, const VariableC& parentVariable) {
@@ -38,22 +38,22 @@ namespace RavlProbN {
     return m_variable;
   }
 
-  DomainC CPDAbstractBodyC::ParentDomain() const {
-    return m_parentDomain;
+  VariableSetC CPDAbstractBodyC::ParentVariableSet() const {
+    return m_parentVariableSet;
   }
 
   void CPDAbstractBodyC::SetVariable(const VariableC& variable) {
     m_variable = variable;
   }
 
-  void CPDAbstractBodyC::SetParentDomain(const DomainC& parentDomain) {
-    m_parentDomain = parentDomain;
+  void CPDAbstractBodyC::SetParentVariableSet(const VariableSetC& parentVariableSet) {
+    m_parentVariableSet = parentVariableSet;
   }
 
   void CPDAbstractBodyC::SetSingleParentVariable(const VariableC& parentVariable) {
     HSetC<VariableC> parents;
     parents.Insert(parentVariable);
-    m_parentDomain = DomainC(parents);
+    m_parentVariableSet = VariableSetC(parents);
   }
 
 }

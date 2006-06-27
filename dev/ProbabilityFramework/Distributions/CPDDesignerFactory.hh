@@ -27,10 +27,10 @@ namespace RavlProbN {
     virtual ~CPDDesignerFactoryBodyC();
     //: Destructor
     
-    CPDDesignerC GetCPDDesigner(const VariableC& variable, const DomainC& parentDomain) const;
+    CPDDesignerC GetCPDDesigner(const VariableC& variable, const VariableSetC& parentVariableSet) const;
     //: Find a distribution designer for the specified domain
     //!param: variable - the type of dependent random variable
-    //!param: parentDomain - domain of parent variables
+    //!param: parentVariableSet - set of parent variables
     //!return: the conditional probability distribution designer
   };
 
@@ -49,11 +49,11 @@ namespace RavlProbN {
     static CPDDesignerFactoryC GetInstance();
     //: Get an instance of the factory
 
-    CPDDesignerC GetCPDDesigner(const VariableC& variable, const DomainC& parentDomain) const
-    { return Body().GetCPDDesigner(variable, parentDomain); }
+    CPDDesignerC GetCPDDesigner(const VariableC& variable, const VariableSetC& parentVariableSet) const
+    { return Body().GetCPDDesigner(variable, parentVariableSet); }
     //: Find a distribution designer for the specified domain
     //!param: variable - the type of dependent random variable
-    //!param: parentDomain - domain of parent variables
+    //!param: parentVariableSet - set of parent variables
     //!return: the conditional probability distribution designer
 
   private:
