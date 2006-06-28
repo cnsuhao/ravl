@@ -41,7 +41,7 @@ namespace RavlProbN {
     //!return: the probability that the variable takes the specified value
     // Note that this much check that the value is of the correct variable
 
-    virtual RealT MeasureProbability(RealT value) const=0;
+    virtual RealT MeasureProbability(RealRangeC valueRange) const=0;
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
@@ -81,8 +81,8 @@ namespace RavlProbN {
     //!return: the probability that the variable takes the specified value
     // Note that this much check that the value is of the correct variable
 
-    RealT MeasureProbability(RealT value) const
-    { return Body().MeasureProbability(value); }
+    RealT MeasureProbability(RealRangeC valueRange) const
+    { return Body().MeasureProbability(valueRange); }
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value

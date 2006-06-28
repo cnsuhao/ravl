@@ -9,6 +9,7 @@
 //! author="Robert Crida"
 
 #include "Ravl/Prob/PDFNormal.hh"
+#include "Ravl/StdMath.hh"
 
 namespace RavlProbN {
   using namespace RavlN;
@@ -22,14 +23,15 @@ namespace RavlProbN {
   PDFNormalBodyC::~PDFNormalBodyC() {
   }
 
-  RealT PDFNormalBodyC::MeasureProbability(RealT value) const {
-    return m_constant1 * Exp(Sqr(value - m_mean) * m_constant2);
+  RealT PDFNormalBodyC::MeasureProbability(RealRangeC valueRange) const {
+  	RealT max = (valueRange.Max() - m_mean) * m_oneOverSigma;
+  	RealT min = (valueRange.Min() - m_mean) * m_oneOverSigma;
+  	return (Erf(max) - Erf(min)) * 0.5;
   }
 
   void PDFNormalBodyC::SetMeanAndVariance(RealT mean, RealT variance) {
     m_mean = mean;
-    m_constant1 = 1.0 / (Sqrt (variance * 2.0 * RavlConstN::pi));
-    m_constant2 = -1.0 / (2.0 * variance);
+    m_oneOverSigma = 1.0 / (Sqrt (variance));
   }
 
 }

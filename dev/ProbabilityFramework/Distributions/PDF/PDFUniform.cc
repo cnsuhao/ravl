@@ -22,8 +22,8 @@ namespace RavlProbN {
   PDFUniformBodyC::~PDFUniformBodyC() {
   }
 
-  RealT PDFUniformBodyC::MeasureProbability(RealT value) const {
-    return m_interval.Contains(value)? m_probability: 0.0;
+  RealT PDFUniformBodyC::MeasureProbability(RealRangeC valueRange) const {
+  	return valueRange.ClipBy(m_interval).Size() * m_probability;
   }
 
   void PDFUniformBodyC::SetInterval(const RealRangeC& interval) {

@@ -16,10 +16,10 @@
 namespace RavlProbN {
   using namespace RavlN;
   
-  VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(const VariableContinuousC& variable, RealT value)
+  VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(const VariableContinuousC& variable, RealRangeC valueRange)
     : VariablePropositionBodyC(variable)
   {
-    SetValue(value);
+    SetValueRange(valueRange);
   }
 
   VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(istream &in)
@@ -29,9 +29,9 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("VariablePropositionContinuousBodyC(istream &), Unrecognised version number in stream.");
-    RealT value;
-    in >> value;
-    SetValue(value);
+    RealRangeC valueRange;
+    in >> valueRange;
+    SetValueRange(valueRange);
   }
 
   VariablePropositionContinuousBodyC::VariablePropositionContinuousBodyC(BinIStreamC &in)
@@ -41,16 +41,16 @@ namespace RavlProbN {
     in >> version;
     if (version < 0 || version > 0)
       throw ExceptionOutOfRangeC("VariablePropositionContinuousBodyC(BinIStream &), Unrecognised version number in stream.");
-    RealT value;
-    in >> value;
-    SetValue(value);
+    RealRangeC valueRange;
+    in >> valueRange;
+    SetValueRange(valueRange);
   }
   
   bool VariablePropositionContinuousBodyC::Save (ostream &out) const {
     if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
-    out << ' ' << version << ' ' << Value();
+    out << ' ' << version << ' ' << ValueRange();
     return true;
   }
   
@@ -58,7 +58,7 @@ namespace RavlProbN {
     if(!VariablePropositionBodyC::Save(out))
       return false;
     IntT version = 0;
-    out << version << Value();
+    out << version << ValueRange();
     return true;
   }
 
@@ -66,17 +66,17 @@ namespace RavlProbN {
   }
   
   StringC VariablePropositionContinuousBodyC::ToString() const {
-    return StringC(Value());
+    return StringC("[")+ValueRange().Min()+","+ValueRange().Max()+"]";
   }
 
-  RealT VariablePropositionContinuousBodyC::Value() const {
-    return m_value;
+  RealRangeC VariablePropositionContinuousBodyC::ValueRange() const {
+    return m_valueRange;
   }
 
-  void VariablePropositionContinuousBodyC::SetValue(RealT value) {
-    if (!VariableContinuous().Interval().Contains(value))
-      throw ExceptionC("VariablePropositionContinuousBodyC::SetValue(), illegal value");
-    m_value = value;
+  void VariablePropositionContinuousBodyC::SetValueRange(RealRangeC valueRange) {
+    if (!VariableContinuous().Interval().Contains(valueRange))
+      throw ExceptionC("VariablePropositionContinuousBodyC::SetValueRange(), illegal value range (must be contained by variable interval)");
+    m_valueRange = valueRange;
   }
 
   bool VariablePropositionContinuousBodyC::operator==(const VariablePropositionC& other) const {
@@ -85,13 +85,13 @@ namespace RavlProbN {
     VariablePropositionContinuousC otherContinuous(other);
     if (!otherContinuous.IsValid())
       return false;
-    return Value() == otherContinuous.Value();
+    return ValueRange() == otherContinuous.ValueRange();
   }
 
   UIntT VariablePropositionContinuousBodyC::Hash() const {
-    RealT value = Value();
-    Int64T bitwiseInt = *((Int64T*)&value);
-    return VariablePropositionBodyC::Hash() + StdHash(bitwiseInt);
+	Int64T bitwiseIntMin = *((Int64T*)&ValueRange().Min());
+    Int64T bitwiseIntMax = *((Int64T*)&ValueRange().Max());
+    return VariablePropositionBodyC::Hash() + StdHash(bitwiseIntMin) + StdHash(bitwiseIntMax);
   }
 
   VariableContinuousC VariablePropositionContinuousBodyC::VariableContinuous() const {

@@ -28,9 +28,9 @@ namespace RavlProbN {
     virtual ~PDFUniformBodyC();
     //: Destructor
     
-    virtual RealT MeasureProbability(RealT value) const;
+    virtual RealT MeasureProbability(RealRangeC valueRange) const;
     //: Calculate the probability that the variable takes the specified value
-    //!param: value - a value for the variable
+    //!param: valueRange - a value for the variable
     //!return: the probability that the variable takes the specified value
 
   private:

@@ -17,9 +17,9 @@ private:
 public:
 	void setUp() {
 		m_variable = VariableContinuousC("variable", RealRangeC(0.0, 1.0));
-		m_value0 = VariablePropositionContinuousC(m_variable, 0.0);
-		m_value0_5 = VariablePropositionContinuousC(m_variable, 0.5);
-		m_value1 = VariablePropositionContinuousC(m_variable, 1.0);
+		m_value0 = VariablePropositionContinuousC(m_variable, RealRangeC(0.0, 0.1));
+		m_value0_5 = VariablePropositionContinuousC(m_variable, RealRangeC(0.4, 0.6));
+		m_value1 = VariablePropositionContinuousC(m_variable, RealRangeC(0.9, 1.0));
 	}
 	
 	void tearDown() {
@@ -31,19 +31,19 @@ public:
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT_EQUAL( StringC("0.000000"), m_value0.ToString() );
-		CPPUNIT_ASSERT_EQUAL( StringC("0.500000"), m_value0_5.ToString() );
-		CPPUNIT_ASSERT_EQUAL( StringC("1.000000"), m_value1.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("[0.000000,0.100000]"), m_value0.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("[0.400000,0.600000]"), m_value0_5.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("[0.900000,1.000000]"), m_value1.ToString() );
 	}
 	
 	void testValue() {
-		CPPUNIT_ASSERT_EQUAL( 0.0, m_value0.Value() );
-		CPPUNIT_ASSERT_EQUAL( 0.5, m_value0_5.Value() );
-		CPPUNIT_ASSERT_EQUAL( 1.0, m_value1.Value() );
+		CPPUNIT_ASSERT_EQUAL( RealRangeC(0.0, 0.1), m_value0.ValueRange() );
+		CPPUNIT_ASSERT_EQUAL( RealRangeC(0.4, 0.6), m_value0_5.ValueRange() );
+		CPPUNIT_ASSERT_EQUAL( RealRangeC(0.9, 1.0), m_value1.ValueRange() );
 	}
 	
 	void testEquality() {
-		VariablePropositionContinuousC secondValue0_5(m_variable, 0.5);
+		VariablePropositionContinuousC secondValue0_5(m_variable, RealRangeC(0.4, 0.6));
 		CPPUNIT_ASSERT( m_value0 == m_value0 );
 		CPPUNIT_ASSERT( m_value0_5 == m_value0_5 );
 		CPPUNIT_ASSERT( m_value0_5 == secondValue0_5 );

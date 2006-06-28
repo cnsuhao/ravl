@@ -36,7 +36,7 @@ public:
 		m_variables.Insert(VariableDiscreteC("discrete", domain));
 		m_variableSet = VariableSetC(m_variables);
 		m_values.Insert(VariablePropositionBooleanC(booleanVariable, true));
-		m_values.Insert(VariablePropositionContinuousC(continuousVariable, 0.5));
+		m_values.Insert(VariablePropositionContinuousC(continuousVariable, RealRangeC(0.0, 0.5)));
 		m_proposition = PropositionSetC(m_variableSet, m_values);
 	}
 	
@@ -44,7 +44,7 @@ public:
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT_EQUAL( StringC("Continuous=0.500000,Boolean=boolean"), m_proposition.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("Continuous=[0.000000,0.500000],Boolean=boolean"), m_proposition.ToString() );
 	}
 	
 	void testLotteryName() {

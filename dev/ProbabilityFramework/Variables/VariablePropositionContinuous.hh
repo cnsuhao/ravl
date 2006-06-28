@@ -21,10 +21,10 @@ namespace RavlProbN {
   class VariablePropositionContinuousBodyC
     : public VariablePropositionBodyC {
   public:
-    VariablePropositionContinuousBodyC(const VariableContinuousC& variable, RealT value);
+    VariablePropositionContinuousBodyC(const VariableContinuousC& variable, RealRangeC valueRange);
     //: Constructor
     //!param: variable - the variable that this is an instance of
-    //!param: value - the value of the random variable
+    //!param: valueRange - the value of the random variable
 
     VariablePropositionContinuousBodyC(istream &in);
     //: Construct from stream
@@ -50,8 +50,8 @@ namespace RavlProbN {
     virtual StringC ToString() const;
     //: Get a string representation of the value
 
-    virtual RealT Value() const;
-    //: Get access to the value
+    virtual RealRangeC ValueRange() const;
+    //: Get access to the value range
 
     virtual bool operator==(const VariablePropositionC& other) const;
     //: Equality operator
@@ -60,15 +60,15 @@ namespace RavlProbN {
     //: Hash function based on variable and value
 
   private:
-    virtual void SetValue(RealT value);
-    //: Set the value of the random variable
+    virtual void SetValueRange(RealRangeC valueRange);
+    //: Set the value range of the random variable
 
     VariableContinuousC VariableContinuous() const;
     //: Get access to the continuous random variable that this is an instance of
 
   private:
-    RealT m_value;
-    //: The value of the random variable
+    RealRangeC m_valueRange;
+    //: The value range of the random variable
   };
 
   //! userlevel=Normal
@@ -83,12 +83,12 @@ namespace RavlProbN {
   	{}
   	//: Default constructor makes invalid handle
   	
-    VariablePropositionContinuousC(const VariableContinuousC& variable, RealT value)
-      : VariablePropositionC(new VariablePropositionContinuousBodyC(variable, value))
+    VariablePropositionContinuousC(const VariableContinuousC& variable, RealRangeC valueRange)
+      : VariablePropositionC(new VariablePropositionContinuousBodyC(variable, valueRange))
     {}
     //: Constructor
     //!param: variable - the variable that this is an instance of
-    //!param: value - the value of the random variable
+    //!param: valueRange - the value range of the random variable
 
     VariablePropositionContinuousC(istream &in);
     //: Construct from stream
@@ -104,9 +104,9 @@ namespace RavlProbN {
     //: Upcast constructor
     // Creates an invalid handle if types don't match
     
-    RealT Value() const
-    { return Body().Value(); }
-    //: Get access to the value
+    RealRangeC ValueRange() const
+    { return Body().ValueRange(); }
+    //: Get access to the value range
 
   protected:
     VariablePropositionContinuousC(VariablePropositionContinuousBodyC &bod)

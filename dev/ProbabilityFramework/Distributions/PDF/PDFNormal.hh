@@ -29,7 +29,7 @@ namespace RavlProbN {
     virtual ~PDFNormalBodyC();
     //: Destructor
     
-    virtual RealT MeasureProbability(RealT value) const;
+    virtual RealT MeasureProbability(RealRangeC valueRange) const;
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
@@ -41,12 +41,9 @@ namespace RavlProbN {
   private:
     RealT m_mean;
     //: The mean of the distribution
-
-    RealT m_constant1;
-    //: Cached constant from equation = 1.0 / (Sqrt (variance * 2pi));
-
-    RealT m_constant2;
-    //: Cached constant from equation = -1.0 / (2.0 * variance);
+    
+    RealT m_oneOverSigma;
+    //: Cached 1/Sqrt(variance)
   };
 
   //! userlevel=Normal

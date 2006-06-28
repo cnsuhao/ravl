@@ -30,7 +30,7 @@ namespace RavlProbN {
   RealT PDFContinuousAbstractBodyC::MeasureProbability(const VariablePropositionContinuousC& value) const {
     if (!value.IsValid())
       throw ExceptionC("ProbabilityDistributionContinuousBodyC::MeasureProbability(), value object is not valid");
-    return MeasureProbability(value.Value());
+    return MeasureProbability(value.ValueRange());
   }
 
   VariableContinuousC PDFContinuousAbstractBodyC::VariableContinuous() const {

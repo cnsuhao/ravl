@@ -42,7 +42,7 @@ namespace RavlProbN {
       if (it->Data2().NumValues() != 1)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), all propositions must have 1 fixed value");
       VariablePropositionDiscreteC parent(it->Data2().Value(0));
-      RealT value = ((VariablePropositionContinuousC)it->Data1()).Value();
+      RealT value = ((VariablePropositionContinuousC)it->Data1()).ValueRange().Center();
       valuesByParent[parent].InsLast(value);
     }
     // check that there are samples for each parent value
