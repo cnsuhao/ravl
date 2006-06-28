@@ -30,11 +30,13 @@ namespace RavlProbN {
   }
 
   RealT PDFDiscreteBodyC::MeasureProbability(const VariablePropositionC& value) const {
+  	if (!value.IsValid())
+  	  throw ExceptionC("PDFDiscreteBodyC::MeasureProbability(), value is invalid");
     if (value.Variable() != Variable())
-      throw ExceptionC("ProbabilityDistributionDiscreteBodyC::MeasureProbability(), value doesn't match variable of this distribution");
+      throw ExceptionC("PDFDiscreteBodyC::MeasureProbability(), value doesn't match variable of this distribution");
     RealT probability = 0.0;
     if (!m_probabilityLookupTable.Lookup(value, probability))
-      throw ExceptionC("ProbabilityDistributionDiscreteBodyC::MeasureProbability(), couldn't find value in table");
+      throw ExceptionC("PDFDiscreteBodyC::MeasureProbability(), couldn't find value in table");
     return probability;
   }
 

@@ -40,6 +40,10 @@ namespace RavlProbN {
     : public PDFDiscreteC
   {
   public:
+    PDFBooleanC()
+    {}
+    //: Default constructor makes invalid handle
+    
     PDFBooleanC(const VariableBooleanC& variable, RealT probabilityTrue)
       : PDFDiscreteC(new PDFBooleanBodyC(variable, probabilityTrue))
     {}
