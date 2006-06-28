@@ -29,6 +29,6 @@ USESLIBS=RavlCore RavlOS
 
 TESTEXES= testBayesianNetwork.cc
 
-PROGLIBS=CPPUnit
+PROGLIBS=
 
 PLIB=RavlProb

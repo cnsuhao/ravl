@@ -29,6 +29,6 @@ USESLIBS=RavlCore RavlOS
 
 TESTEXES=
 
-PROGLIBS=RavlExtImgIO.opt RavlDPDisplay CPPUnit
+PROGLIBS=
 
 PLIB=RavlProb
