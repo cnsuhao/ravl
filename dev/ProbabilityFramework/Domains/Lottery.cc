@@ -26,6 +26,16 @@ namespace RavlProbN {
     return m_type;
   }
 
+  LotteryBodyC& LotteryBodyC::operator*=(const LotteryBodyC& other) {
+  	if (Type() != other.Type())
+  		throw ExceptionC("LotteryBodyC::operator*=(), other must be same type");
+  	for (HashIterC<StringC,RealT> ht(m_outcomes); ht; ht++) {
+  		ht.Data() *= other.m_outcomes[ht.Key()];
+  	}
+  	Normalize();
+  	return *this;
+  }
+  
   void LotteryBodyC::SetType(const StringC& type) {
     m_type = type;
   }
@@ -43,14 +53,17 @@ namespace RavlProbN {
     StringC string = Type() + "=[";
     if (Outcomes().Size() > 0) {
       HashIterC<StringC,RealT> it(Outcomes());
+      string += "(";
       string += StringC(it.Data());
       string += ",";
       string += it.Key();
+      string += ")";
       for (it++; it; it++) {
-        string += ";";
+        string += ",(";
         string += StringC(it.Data());
         string += ",";
         string += it.Key();
+        string += ")";
       }
     }
     string += "]";

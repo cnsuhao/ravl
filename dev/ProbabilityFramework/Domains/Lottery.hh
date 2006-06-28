@@ -84,8 +84,8 @@ namespace RavlProbN {
     { return Body().Type(); }
     //: Get the type name of the lottery
 
-//    LotteryC& operator*=(const LotteryC& other)
-//    { return Body().operator*=(other.Body()); }
+    LotteryC operator*=(const LotteryC& other)
+    { return Body().operator*=(other.Body()); }
     //: Compute the in place product of two lotteries
     //!param: other - the second lottery
     // Note that both lotteries must be of the same type
