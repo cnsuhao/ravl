@@ -16,13 +16,3 @@ DESCRIPTION=Pattern recognition software
 PACKAGE=Ravl/Prob
 
 NESTED=Variables.r Domains.r Distributions.r Networks.r UnitTest.r
-
-HEADERS= 
-
-SOURCES= 
-
-MAINS=
-
-
-TESTEXES=
-
