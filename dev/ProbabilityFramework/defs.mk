@@ -16,3 +16,6 @@ DESCRIPTION=Pattern recognition software
 PACKAGE=Ravl/Prob
 
 NESTED=Variables.r Domains.r Distributions.r Networks.r UnitTest.r
+
+EHT= Ravl.ProbabilityFramework.html
+

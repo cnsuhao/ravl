@@ -13,6 +13,8 @@
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
+//! docentry="Ravl.API.Math.Statistics.Probability Framework"
+
 
 using namespace RavlProbN;
 
