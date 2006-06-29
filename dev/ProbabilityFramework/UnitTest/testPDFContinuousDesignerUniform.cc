@@ -15,7 +15,7 @@ private:
 	PDFContinuousDesignerUniformC m_designer;
 public:
 	void setUp() {
-		m_variable = VariableContinuousC("Normal", RealRangeC(-10.0, 10.0));
+		m_variable = VariableContinuousC("Uniform", RealRangeC(-10.0, 10.0));
 		m_designer = PDFContinuousDesignerUniformC::GetInstance();
 	}
 	

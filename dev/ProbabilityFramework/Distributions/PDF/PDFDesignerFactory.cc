@@ -46,7 +46,18 @@ namespace RavlProbN {
   }
 
   RealT PDFDesignerFactoryBodyC::MeasureError(const PDFContinuousAbstractC& pdf, const DListC<RealT>& realSamples) const {
-    return 0.0;
+    RealT min = RavlConstN::maxReal;
+    RealT max = RavlConstN::minReal;
+    for (DLIterC<RealT> it(realSamples); it; it++) {
+      min = Min(*it,min);
+      max = Max(*it,max);
+    }
+    RealT size = (max - min) / realSamples.Size();
+    RealRangeC interval(-size/2,size/2);
+  	RealT sumProb = 0.0;
+  	for (DLIterC<RealT> it(realSamples); it; it++)
+  		sumProb += pdf.MeasureProbability(interval + *it);
+  	return 1.0 / sumProb;
   }
 
   PDFDesignerFactoryC PDFDesignerFactoryC::m_instance;
