@@ -27,7 +27,7 @@ namespace RavlProbN {
   }
   
   StringC PDFUniformBodyC::ToString() const {
-  	StringC values("[");
+  	StringC values = Variable().ToString() + ("=[");
     values += StringC(m_interval.Min());
     values += ",";
     values += StringC(m_interval.Max());
