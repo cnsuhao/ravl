@@ -36,6 +36,7 @@ namespace RavlProbN {
   // continuous variables as well as discrete.
 
   ProbabilityDistributionC BayesianNetworkSimpleBodyC::CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const {
+  	//:FIXME- Not actually implemented, uses base class method...
     return BayesianNetworkAbstractBodyC::CalculateDistribution(variable, evidence);
   }
 

@@ -42,7 +42,7 @@ namespace RavlProbN {
     //!return: the probability of the random variables taking the given values
 
     virtual VariableSetC VariableSet() const=0;
-    //: Get the domain for the network
+    //: Get the variable set for the network
   };
 
   //! userlevel=Normal

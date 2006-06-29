@@ -31,11 +31,11 @@
       href="../Class/RavlProbN.VariableSetC.html">VariableSetC</a> which is
       pretty much just what it sounds like: it might be used for instance to
       describe the set of evidence variables. There is a corresponding <a
-      href="../Class/RavlProbN.PropositionC.html">
-      PropositionC</a> (????) class.  Although this is related to a
+      href="../Class/RavlProbN.PropositionSetC.html">
+      PropositionSetC</a> class.  Although this is related to a
       VariableSetC, it is not necessary for there to be a proposition for each
       variable in the set.  However, you can't have a proposition for a
-      variable not in the set, that is used to describe things like observed
+      variable not in the set. This is used to describe things like observed
       events.  So for instance you could have a
       <code>VariableSetC=(MaryCalls,JohnCalls,Alarm)</code>, and you could
       have a corresponding PropositionSetC=(MaryCalls=true,JohnCalls=false).
@@ -43,7 +43,7 @@
 
     <p>
       So typically we want to evaluate something like
-      <code>P(Burglary|MaryCalls,JohnCalls,Alarm</code>).  That query would
+      <code>P(Burglary|MaryCalls,JohnCalls,Alarm)</code>.  That query would
       have to return a full joint distribution.  But to evaluate it you would
       need some numbers somewhere.  You could alternatively request
       <code>P(Burglary|MaryCalls=true,JohnCalls=false)</code> which might
@@ -68,7 +68,7 @@
       uniform and normal continuous distributions, but more can be added.</p>
 
     <p>
-      We also need conditional probability distributions (CPDs)
+      Then we also need conditional probability densities (CPDs).
       Essentially they are used to encode the table of values for e.g.  <code>
       P(Burglary|MaryCalls,JohnCalls,Alarm)</code>. A CPD has an output
       variable <code>Burglary</code> and a VariableSetC of parent variables
@@ -80,26 +80,38 @@
     <h2>Bayesian Networks</h2>
 
     <p>
-      Given this framework of PDFs and CPDs and variables and propositions we
-      are in a position to define a Bayesian Network.  More details are
-      needed, but a network is defined in terms of a set of PDFs and CPDs, then
-      you can ask it to evaluate different probabilities etc and it will
-      internally do all the marginalisation etc.  There is a <a
+      Given this framework of PDFs and CPDs and variables and propositions
+      we are in a position to define Bayesian Networks. A BN is defined by
+      specifying an acyclic graph of nodes. Each node of the network is a
+      VariableC and needs a CPD. The parent variable set defines the links of
+      the graph. Note that special CPDs can define prior PDFs where the CPD
+      parent variable set is empty.</p>
+      
+    <p>
+      Once you have defined a BN then you can ask it to evaluate different
+      probabilities etc and it will internally do all the marginalisation
+      etc.  I have created a <a
       href="../Class/RavlProbN.BayesianNetworkC.html">BayesianNetworkC</a>
-      interface as well as a "simple" grid implementation <a href=
-      "../Class/RavlProbN.BayesianNetworkSimpleC.html">
+      interface that will serve as the base class for all future 
+      implementations. Currently there is a "simple" discrete implementation
+      <a href="../Class/RavlProbN.BayesianNetworkSimpleC.html">
       BayesianNetworkSimpleC</a> that exhaustively computes the probabilities
-      rather than finding a statistical estimation. This doesn't scale well
-      with variables so we would need to add a new concrete implementation
-      based on a Markov Chain Monte Carlo (MCMC) method. However, the
-      framework is pretty much all in place.</p>
-
+      rather than finding a statistical estimation. Note that it currently
+      only works for discrete PDF queries. This needs to be fixed for
+      continuous distributions.</p>
+      
+    <p>
+      This simple solution doesn't scale well with increasing network 
+      complexity and size so we would need to add a new concrete
+      implementation based on a Markov Chain Monte Carlo (MCMC) method.
+      However, the framework is pretty much all in place.</p>
 
     <hr>
-    <address>Robert Crida, <a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
+    <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a> or
+    <a href="mailto:robert.crida@ska.ac.za">Robert Crida</a></address>
 <!-- Created: Wed Jun 28 15:08:55 BST 2006 -->
 <!-- hhmts start -->
-Last modified: Thu Jun 29 10:34:09 BST 2006
+Last modified: Wed Jun 28 18:23:12 BST 2006
 <!-- hhmts end -->
   </body>
 </html>
