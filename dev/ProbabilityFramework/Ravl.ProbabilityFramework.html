@@ -89,16 +89,18 @@
       
     <p>
       Once you have defined a BN then you can ask it to evaluate different
-      probabilities etc and it will internally do all the marginalisation
-      etc.  I have created a <a
+      probabilities etc and it will internally do all the marginalisation etc.
+      I have created a <a
       href="../Class/RavlProbN.BayesianNetworkC.html">BayesianNetworkC</a>
-      interface that will serve as the base class for all future 
-      implementations. Currently there is a "simple" discrete implementation
+      interface that will serve as the base class for all future
+      implementations. Currently there is also a "simple" discrete
+      implementation
       <a href="../Class/RavlProbN.BayesianNetworkSimpleC.html">
       BayesianNetworkSimpleC</a> that exhaustively computes the probabilities
-      rather than finding a statistical estimation. Note that it currently
-      only works for discrete PDF queries. This needs to be fixed for
-      continuous distributions.</p>
+      rather than finding a statistical estimation. See <a
+      href="../../Examples/testBayesianNetwork.cc.html">testBayesianNetwork.cc</a>
+      for a complete example. Note that it currently only works for discrete
+      PDF queries. This needs to be fixed for continuous distributions.</p>
       
     <p>
       This simple solution doesn't scale well with increasing network 
@@ -111,7 +113,7 @@
     <a href="mailto:robert.crida@ska.ac.za">Robert Crida</a></address>
 <!-- Created: Wed Jun 28 15:08:55 BST 2006 -->
 <!-- hhmts start -->
-Last modified: Wed Jun 28 18:23:12 BST 2006
+Last modified: Thu Jun 29 16:00:31 BST 2006
 <!-- hhmts end -->
   </body>
 </html>

@@ -28,6 +28,7 @@ MAINS=
 USESLIBS=RavlCore RavlOS
 
 TESTEXES= testBayesianNetwork.cc
+EXAMPLES= testBayesianNetwork.cc
 
 PROGLIBS=
 
