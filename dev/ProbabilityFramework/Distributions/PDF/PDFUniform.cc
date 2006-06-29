@@ -16,7 +16,7 @@ namespace RavlProbN {
   PDFUniformBodyC::PDFUniformBodyC(const VariableContinuousC& variable, const RealRangeC& interval)
     : PDFContinuousAbstractBodyC(variable)
   {
-    SetInterval(VariableContinuous().Interval());
+    SetInterval(interval);
   }
 
   PDFUniformBodyC::~PDFUniformBodyC() {
@@ -24,6 +24,19 @@ namespace RavlProbN {
 
   RealT PDFUniformBodyC::MeasureProbability(RealRangeC valueRange) const {
   	return valueRange.ClipBy(m_interval).Size() * m_probability;
+  }
+  
+  StringC PDFUniformBodyC::ToString() const {
+  	StringC values("[");
+    values += StringC(m_interval.Min());
+    values += ",";
+    values += StringC(m_interval.Max());
+    values += "]";
+    return values;
+  }
+  
+  RealRangeC PDFUniformBodyC::Interval() const {
+  	return m_interval;
   }
 
   void PDFUniformBodyC::SetInterval(const RealRangeC& interval) {

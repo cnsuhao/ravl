@@ -32,6 +32,8 @@ MUSTLINK= testDomainDiscrete.cc \
 		testVariableSet.cc \
 		testPDFBoolean.cc \
 		testPDFDiscrete.cc \
+		testPDFContinuousDesignerNormal.cc \
+		testPDFContinuousDesignerUniform.cc \
 		testPropositionSet.cc \
 		testVariableBoolean.cc \
 		testVariableContinuous.cc \

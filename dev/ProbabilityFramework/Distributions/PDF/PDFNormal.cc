@@ -28,9 +28,22 @@ namespace RavlProbN {
   	RealT min = (valueRange.Min() - m_mean) * m_oneOverSigma;
   	return (Erf(max) - Erf(min)) * 0.5;
   }
+  
+  StringC PDFNormalBodyC::ToString() const {
+  	return StringC(Mean()) + "+-" + Sqrt(Variance());
+  }
+  
+  RealT PDFNormalBodyC::Mean() const {
+  	return m_mean;
+  }
+  
+  RealT PDFNormalBodyC::Variance() const {
+  	return m_variance;
+  }
 
   void PDFNormalBodyC::SetMeanAndVariance(RealT mean, RealT variance) {
     m_mean = mean;
+    m_variance = variance;
     m_oneOverSigma = 1.0 / (Sqrt (variance));
   }
 

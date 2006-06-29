@@ -33,6 +33,15 @@ namespace RavlProbN {
     //: Calculate the probability that the variable takes the specified value
     //!param: value - a value for the variable
     //!return: the probability that the variable takes the specified value
+    
+    virtual StringC ToString() const;
+    //: Get a string representation of the distribution
+    
+    RealT Mean() const;
+    //: Get the mean of the distribution
+    
+    RealT Variance() const;
+    //: Get the variance of the distribution
 
   private:
     void SetMeanAndVariance(RealT mean, RealT variance);
@@ -41,6 +50,9 @@ namespace RavlProbN {
   private:
     RealT m_mean;
     //: The mean of the distribution
+    
+    RealT m_variance;
+    //: The variance of the distribution
     
     RealT m_oneOverSigma;
     //: Cached 1/Sqrt(variance)
@@ -61,6 +73,40 @@ namespace RavlProbN {
     //!param: variable - the random variable for the distribution
     //!param: mean - the mean of the distribution
     //!param: variance - the variance of the distribution
+
+    PDFNormalC(const ProbabilityDistributionC& pdf)
+      : PDFContinuousAbstractC(dynamic_cast<const PDFNormalBodyC *>(BodyPtr(pdf)))
+    {}
+    //: Upcast constructor
+    // Creates an invalid handle if types don't match
+    
+    RealT Mean() const
+    { return Body().Mean(); }
+    //: Get the mean of the distribution
+    
+    RealT Variance() const
+    { return Body().Variance(); }
+    //: Get the variance of the distribution
+
+  protected:
+    PDFNormalC(PDFNormalBodyC &bod)
+     : PDFContinuousAbstractC(bod)
+    {}
+    //: Body constructor. 
+    
+    PDFNormalC(const PDFNormalBodyC *bod)
+     : PDFContinuousAbstractC(bod)
+    {}
+    //: Body constructor. 
+    
+    PDFNormalBodyC& Body()
+    { return static_cast<PDFNormalBodyC &>(PDFContinuousAbstractC::Body()); }
+    //: Body Access. 
+    
+    const PDFNormalBodyC& Body() const
+    { return static_cast<const PDFNormalBodyC &>(PDFContinuousAbstractC::Body()); }
+    //: Body Access. 
+    
   };
 
 }

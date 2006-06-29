@@ -33,6 +33,12 @@ namespace RavlProbN {
     //!param: valueRange - a value for the variable
     //!return: the probability that the variable takes the specified value
 
+    virtual StringC ToString() const;
+    //: Get a string representation of the distribution
+    
+    RealRangeC Interval() const;
+    //: Get the interval of the distribution
+    
   private:
     void SetInterval(const RealRangeC& interval);
     //: Set the interval
@@ -58,6 +64,36 @@ namespace RavlProbN {
     {}
     //: Constructor
     //!param: variable - the random variable for the distribution
+
+    PDFUniformC(const ProbabilityDistributionC& pdf)
+      : PDFContinuousAbstractC(dynamic_cast<const PDFUniformBodyC *>(BodyPtr(pdf)))
+    {}
+    //: Upcast constructor
+    // Creates an invalid handle if types don't match
+    
+    RealRangeC Interval() const
+    { return Body().Interval(); }
+    //: Get the interval of the distribution
+    
+  protected:
+    PDFUniformC(PDFUniformBodyC &bod)
+     : PDFContinuousAbstractC(bod)
+    {}
+    //: Body constructor. 
+    
+    PDFUniformC(const PDFUniformBodyC *bod)
+     : PDFContinuousAbstractC(bod)
+    {}
+    //: Body constructor. 
+    
+    PDFUniformBodyC& Body()
+    { return static_cast<PDFUniformBodyC &>(PDFContinuousAbstractC::Body()); }
+    //: Body Access. 
+    
+    const PDFUniformBodyC& Body() const
+    { return static_cast<const PDFUniformBodyC &>(PDFContinuousAbstractC::Body()); }
+    //: Body Access. 
+    
   };
 
 }
