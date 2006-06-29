@@ -9,6 +9,7 @@
 //! rcsid="$Id$"
 //! lib=RavlProb
 //! author="Robert Crida"
+//! docentry="Ravl.API.Math.Statistics.Probability Framework"
 
 #include "Ravl/Prob/PDFContinuousDesigner.hh"
 
