@@ -31,8 +31,8 @@
       href="../Class/RavlProbN.VariableSetC.html">VariableSetC</a> which is
       pretty much just what it sounds like: it might be used for instance to
       describe the set of evidence variables. There is a corresponding <a
-      href="../Class/RavlProbN.VariablePropositionSetC.html">
-      VariablePropositionSetC</a> (????) class.  Although this is related to a
+      href="../Class/RavlProbN.PropositionC.html">
+      PropositionC</a> (????) class.  Although this is related to a
       VariableSetC, it is not necessary for there to be a proposition for each
       variable in the set.  However, you can't have a proposition for a
       variable not in the set, that is used to describe things like observed
@@ -68,7 +68,7 @@
       uniform and normal continuous distributions, but more can be added.</p>
 
     <p>
-      Then we also need conditional probability distributions (CPDs)
+      We also need conditional probability distributions (CPDs)
       Essentially they are used to encode the table of values for e.g.  <code>
       P(Burglary|MaryCalls,JohnCalls,Alarm)</code>. A CPD has an output
       variable <code>Burglary</code> and a VariableSetC of parent variables
@@ -80,12 +80,11 @@
     <h2>Bayesian Networks</h2>
 
     <p>
-      So, given this framework of PDFs and CPDs and variables and propositions
-      we are in a position to define Bayesian Networks I can't remember
-      exactly how that all works but the network is defined in terms of a set
-      of PDFs and CPDs then you can ask it to evaluate different probabilities
-      etc and it will internally do all the marginalisation etc.  I have
-      created a <a
+      Given this framework of PDFs and CPDs and variables and propositions we
+      are in a position to define a Bayesian Network.  More details are
+      needed, but a network is defined in terms of a set of PDFs and CPDs, then
+      you can ask it to evaluate different probabilities etc and it will
+      internally do all the marginalisation etc.  There is a <a
       href="../Class/RavlProbN.BayesianNetworkC.html">BayesianNetworkC</a>
       interface as well as a "simple" grid implementation <a href=
       "../Class/RavlProbN.BayesianNetworkSimpleC.html">
@@ -96,14 +95,11 @@
       framework is pretty much all in place.</p>
 
 
-
-
-
     <hr>
-    <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
+    <address>Robert Crida, <a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Wed Jun 28 15:08:55 BST 2006 -->
 <!-- hhmts start -->
-Last modified: Wed Jun 28 18:23:12 BST 2006
+Last modified: Thu Jun 29 10:34:09 BST 2006
 <!-- hhmts end -->
   </body>
 </html>
