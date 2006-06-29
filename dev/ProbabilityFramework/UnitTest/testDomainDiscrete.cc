@@ -7,8 +7,11 @@ using namespace RavlProbN;
 class DomainDiscreteTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( DomainDiscreteTest );
     CPPUNIT_TEST( testInsert );
+    CPPUNIT_TEST( testInsert_AlreadyIn );
     CPPUNIT_TEST( testRemove );
-    CPPUNIT_TEST( testContains );
+    CPPUNIT_TEST( testRemove_NotContained );
+    CPPUNIT_TEST( testContains_true );
+    CPPUNIT_TEST( testContains_false );
     CPPUNIT_TEST( testIndex );
     CPPUNIT_TEST( testValue );
     CPPUNIT_TEST( testSize );
@@ -33,20 +36,29 @@ public:
     void testInsert() {
     	m_domain.Insert("hail");
     	CPPUNIT_ASSERT_EQUAL( (SizeT)5, m_domain.Size() );
+    }
+    
+    void testInsert_AlreadyIn() {
     	CPPUNIT_ASSERT_THROW( m_domain.Insert("snow"), ExceptionC );
     }
     
 	void testRemove() {
 		m_domain.Remove("snow");
     	CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_domain.Size() );
+	}
+	
+    void testRemove_NotContained() {
     	CPPUNIT_ASSERT_THROW( m_domain.Remove("hail"), ExceptionC );
     }
     
-	void testContains() {
+	void testContains_true() {
 		CPPUNIT_ASSERT( m_domain.Contains("rain") );
 		CPPUNIT_ASSERT( m_domain.Contains("cloudy") );
 		CPPUNIT_ASSERT( m_domain.Contains("sunny") );
 		CPPUNIT_ASSERT( m_domain.Contains("snow") );
+	}
+	
+	void testContains_false() {
 		CPPUNIT_ASSERT_EQUAL( m_domain.Contains("hail"), false );
     }
     
