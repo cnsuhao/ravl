@@ -31,10 +31,11 @@ MUSTLINK= testDomainDiscrete.cc \
 		testLottery.cc \
 		testVariableSet.cc \
 		testPDFBoolean.cc \
-		testPDFDiscrete.cc \
 		testPDFContinuousDesignerNormal.cc \
 		testPDFContinuousDesignerUniform.cc \
 		testPDFDesignerFactory.cc \
+		testPDFDiscrete.cc \
+		testPDFNormal.cc \
 		testPropositionSet.cc \
 		testVariableBoolean.cc \
 		testVariableContinuous.cc \

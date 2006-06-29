@@ -30,7 +30,7 @@ namespace RavlProbN {
   }
   
   StringC PDFNormalBodyC::ToString() const {
-  	return StringC(Mean()) + "+-" + Sqrt(Variance());
+  	return Variable().ToString() + "=" + StringC(Mean()) + "+-" + Sqrt(Variance());
   }
   
   RealT PDFNormalBodyC::Mean() const {
