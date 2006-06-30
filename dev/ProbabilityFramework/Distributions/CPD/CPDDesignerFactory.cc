@@ -34,7 +34,7 @@ namespace RavlProbN {
     if (((VariableContinuousC)variable).IsValid()) {
       // the variable is continuous
       ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), variable is continuous");
-      if (parentVariableSet.NumVariables() == 1) {
+      if (parentVariableSet.Size() == 1) {
         // single parent variable
         ONDEBUG(SysLog(SYSLOG_DEBUG) << "CPDDesignerFactoryBodyC::GetCPDDesigner(), single parent variable");
         VariableC parentVariable = parentVariableSet.Variable(0);

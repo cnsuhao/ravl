@@ -12,7 +12,7 @@ class PropositionSetTest: public CppUnit::TestCase {
 	CPPUNIT_TEST( testToString );
 	CPPUNIT_TEST( testLotteryName );
 	CPPUNIT_TEST( testVariableSet );
-	CPPUNIT_TEST( testNumValues );
+	CPPUNIT_TEST( testSize );
 	CPPUNIT_TEST( testValues );
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST( testSubPropositionSet );
@@ -55,8 +55,8 @@ public:
 		CPPUNIT_ASSERT_EQUAL( m_variableSet, m_proposition.VariableSet() );
 	}
 	
-	void testNumValues() {
-		CPPUNIT_ASSERT_EQUAL( (SizeT)2, m_proposition.NumValues() );
+	void testSize() {
+		CPPUNIT_ASSERT_EQUAL( (SizeT)2, m_proposition.Size() );
 	}
 	
 	void testValues() {
@@ -74,7 +74,7 @@ public:
 	void testSubPropositionSet() {
 		HSetC<VariableC> variables;
 		variables.Insert(VariableBooleanC("boolean"));
-		CPPUNIT_ASSERT_EQUAL( (SizeT)1, m_proposition.SubPropositionSet(VariableSetC(variables)).NumValues() );
+		CPPUNIT_ASSERT_EQUAL( (SizeT)1, m_proposition.SubPropositionSet(VariableSetC(variables)).Size() );
 		HSetC<VariableC> variables2;
 		variables2.Insert(VariableBooleanC("invalid"));
 		CPPUNIT_ASSERT_THROW( m_proposition.SubPropositionSet(VariableSetC(variables2)), ExceptionC );

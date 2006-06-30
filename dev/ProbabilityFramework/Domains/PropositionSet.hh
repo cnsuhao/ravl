@@ -71,7 +71,7 @@ namespace RavlProbN {
     const VariableSetC& VariableSet() const;
     //: Get the variableSet
 
-    SizeT NumValues() const;
+    SizeT Size() const;
     //: Get the number of values in the proposition
 
     const HSetC<VariablePropositionC>& Values() const;
@@ -163,8 +163,8 @@ namespace RavlProbN {
     { return Body().VariableSet(); }
     //: Get the variableSet
 
-    SizeT NumValues() const
-    { return Body().NumValues(); }
+    SizeT Size() const
+    { return Body().Size(); }
     //: Get the number of values in the proposition
 
     const HSetC<VariablePropositionC>& Values() const

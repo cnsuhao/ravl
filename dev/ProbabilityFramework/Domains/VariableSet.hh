@@ -61,7 +61,7 @@ namespace RavlProbN {
     bool Contains(const VariableC& variable) const;
     //: Check if the domain contains the specified random variable
 
-    SizeT NumVariables() const;
+    SizeT Size() const;
     //: Get the number of variables in the domain
 
     const HSetC<VariableC>& Variables() const;
@@ -144,8 +144,8 @@ namespace RavlProbN {
     //: Check if the domain contains the specified random variable
     //!cwiz:author
 
-    SizeT NumVariables() const
-    { return Body().NumVariables(); }
+    SizeT Size() const
+    { return Body().Size(); }
     //: Get the number of variables in the domain
 
     const HSetC<VariableC>& Variables() const

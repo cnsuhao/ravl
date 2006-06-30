@@ -26,7 +26,7 @@ namespace RavlProbN {
   ProbabilityDistributionC CPDDiscreteDiscreteBodyC::ConditionalDistribution(const PropositionSetC& parentValues) const {
     PDFDiscreteC pdf;
     HSetC<VariablePropositionC> values = parentValues.Values();
-    if (values.Size() != ParentVariableSet().NumVariables())
+    if (values.Size() != ParentVariableSet().Size())
       throw ExceptionC("CPDDiscreteDiscreteBodyC::ConditionalDistribution(), called with incorrect proposition!");
     if (!m_probabilityDistributionTable.Lookup(parentValues, pdf))
       throw ExceptionC(StringC("CPDDiscreteDiscreteBodyC::ConditionalDistribution(), couldn't find distribution") + parentValues.ToString());
@@ -49,7 +49,7 @@ namespace RavlProbN {
     for (HashIterC<PropositionSetC,PDFDiscreteC> ht(probabilityDistributionTable); ht; ht++) {
       if (ht.Key().VariableSet() != ParentVariableSet())
         throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), each table must be for parent domain");
-      if (ht.Key().NumValues() != ParentVariableSet().NumVariables())
+      if (ht.Key().Size() != ParentVariableSet().Size())
         throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), each table must be for a complete combination of parent variables");
     }
     m_probabilityDistributionTable = probabilityDistributionTable.Copy();

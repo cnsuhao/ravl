@@ -11,7 +11,7 @@ class VariableSetTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( VariableSetTest );
 	CPPUNIT_TEST( testEquality );
 	CPPUNIT_TEST( testContains );
-	CPPUNIT_TEST( testNumVariables );
+	CPPUNIT_TEST( testSize );
 	CPPUNIT_TEST( testVariables );
 	CPPUNIT_TEST( testVariable );
 	CPPUNIT_TEST( testIndex );
@@ -53,8 +53,8 @@ public:
 		CPPUNIT_ASSERT( m_variableSet.Contains(VariableBooleanC("bool2")) == false );
 	}
 	
-	void testNumVariables() {
-		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variableSet.NumVariables() );
+	void testSize() {
+		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variableSet.Size() );
 	}
 	
 	void testVariables() {

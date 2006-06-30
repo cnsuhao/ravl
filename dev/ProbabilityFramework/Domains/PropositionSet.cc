@@ -78,7 +78,7 @@ namespace RavlProbN {
     return m_variableSet;
   }
 
-  SizeT PropositionSetBodyC::NumValues() const {
+  SizeT PropositionSetBodyC::Size() const {
     return Values().Size();
   }
 
@@ -87,7 +87,7 @@ namespace RavlProbN {
   }
 
   const VariablePropositionC& PropositionSetBodyC::Value(IndexC index) const {
-    if (index < 0 || index >= NumValues())
+    if (index < 0 || index >= Size())
       throw ExceptionC("PropositionSetBodyC::Value(), index out of range");
     HSetIterC<VariablePropositionC> it(Values());
     while(index--)
@@ -154,7 +154,7 @@ namespace RavlProbN {
       return true;
     if (VariableSet() != other.VariableSet())
       return false;
-    if (NumValues() != other.NumValues())
+    if (Size() != other.Size())
       return false;
     for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++)
       if (!other.Values().Contains(*ht))

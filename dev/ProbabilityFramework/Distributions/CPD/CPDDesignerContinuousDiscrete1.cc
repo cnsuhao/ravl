@@ -28,7 +28,7 @@ namespace RavlProbN {
     VariableContinuousC dependentVariable = CheckDependentVariable(propositionPairs.First().Data1().Variable());
     // check that the domain is suitable
     VariableSetC parentVariableSet = propositionPairs.First().Data2().VariableSet();
-    if (parentVariableSet.NumVariables() != 1)
+    if (parentVariableSet.Size() != 1)
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), parent domain must have 1 variable");
     VariableDiscreteC parentVariable = CheckParentVariable(parentVariableSet.Variable(0));
     // create a list for each value of the parent variable
@@ -39,7 +39,7 @@ namespace RavlProbN {
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), incorrect dependent value in sample");
       if (it->Data2().VariableSet() != parentVariableSet)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), all propositions must belong to correct domain");
-      if (it->Data2().NumValues() != 1)
+      if (it->Data2().Size() != 1)
         throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), all propositions must have 1 fixed value");
       VariablePropositionDiscreteC parent(it->Data2().Value(0));
       RealT value = ((VariablePropositionContinuousC)it->Data1()).ValueRange().Center();

@@ -30,6 +30,7 @@ EXAMPLES= testRunnerQt.cc
 MUSTLINK= testDomainDiscrete.cc \
 		testLottery.cc \
 		testVariableSet.cc \
+		testCPDContinuousDiscrete1.cc \
 		testPDFBoolean.cc \
 		testPDFContinuousDesignerNormal.cc \
 		testPDFContinuousDesignerUniform.cc \

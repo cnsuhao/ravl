@@ -28,6 +28,8 @@ namespace RavlProbN {
   }
 
   RealT CPDAbstractBodyC::ConditionalProbability(const VariablePropositionC& value, const PropositionSetC& parentValues) const {
+    if (!value.IsValid())
+      throw ExceptionC("CPDAbstractBodyC::ConditionalProbability(), value is invalid");
     if (value.Variable() != Variable())
       throw ExceptionC("CPDAbstractBodyC::ConditionalProbability(), value isn't of correct variable");
     ProbabilityDistributionC pdf(ConditionalDistribution(parentValues));
@@ -43,6 +45,8 @@ namespace RavlProbN {
   }
 
   void CPDAbstractBodyC::SetVariable(const VariableC& variable) {
+    if (!variable.IsValid())
+      throw ExceptionC("CPDAbstractBodyC::SetVariable(), variable is invalid");
     m_variable = variable;
   }
 
@@ -51,6 +55,8 @@ namespace RavlProbN {
   }
 
   void CPDAbstractBodyC::SetSingleParentVariable(const VariableC& parentVariable) {
+    if (!parentVariable.IsValid())
+      throw ExceptionC("CPDAbstractBodyC::SetSingleParentVariable(), parent variable is invalid");
     HSetC<VariableC> parents;
     parents.Insert(parentVariable);
     m_parentVariableSet = VariableSetC(parents);

@@ -65,7 +65,7 @@ namespace RavlProbN {
   bool VariableSetBodyC::operator==(const VariableSetBodyC& other) const {
     if (this == &other)
       return true;
-    if (NumVariables() != other.NumVariables())
+    if (Size() != other.Size())
       return false;
     for (HSetIterC<VariableC> ht(Variables()); ht; ht++)
       if (!other.Variables().Contains(*ht))
@@ -80,7 +80,7 @@ namespace RavlProbN {
     return Variables().Contains(variable);
   }
 
-  SizeT VariableSetBodyC::NumVariables() const {
+  SizeT VariableSetBodyC::Size() const {
     return Variables().Size();
   }
 
@@ -89,7 +89,7 @@ namespace RavlProbN {
   }
 
   const VariableC& VariableSetBodyC::Variable(IndexC index) const {
-    if (index < 0 || index >= NumVariables())
+    if (index < 0 || index >= Size())
       throw ExceptionC("VariableSetBodyC::Variable(), index too big");
     HSetIterC<VariableC> it(Variables());
     while(index--)
