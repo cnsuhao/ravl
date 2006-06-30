@@ -49,6 +49,10 @@ namespace RavlProbN {
     : public CPDAbstractC
   {
   public:
+  	CPDPriorPDFC()
+  	{}
+  	//: Default constructor makes invalid handle
+  	
     CPDPriorPDFC(const ProbabilityDistributionC& probabilityDistribution)
       : CPDAbstractC(new CPDPriorPDFBodyC(probabilityDistribution))
     {}

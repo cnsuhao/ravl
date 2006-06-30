@@ -22,9 +22,8 @@ namespace RavlProbN {
   }
 
   ProbabilityDistributionC CPDPriorPDFBodyC::ConditionalDistribution(const PropositionSetC& parentValues) const {
-    HSetC<VariablePropositionC> values = parentValues.Values();
-    if (values.Size() != 0)
-      throw ExceptionC("CPDPriorPDFBodyC::ConditionalDistribution(), must have empty proposition");
+    if (parentValues.IsValid() && parentValues.Size() != 0)
+      throw ExceptionC("CPDPriorPDFBodyC::ConditionalDistribution(), must have invalid or empty proposition");
     return m_pdf;
   }
   
