@@ -55,6 +55,12 @@ namespace RavlProbN {
     {}
     //: Default constructor makes invalid handle
 
+    CPDDesignerContinuousDiscrete1C(const CPDDesignerC& pdf)
+      : CPDDesignerC(dynamic_cast<const CPDDesignerContinuousDiscrete1BodyC *>(BodyPtr(pdf)))
+    {}
+    //: Upcast constructor
+    // Creates an invalid handle if types don't match
+    
     static CPDDesignerContinuousDiscrete1C GetInstance();
     //: Get an instance of the designer
 
