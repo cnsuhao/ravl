@@ -7,7 +7,7 @@ using namespace RavlProbN;
 class VariableDiscreteTest: public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( VariableDiscreteTest );
 	CPPUNIT_TEST( testToString );
-	CPPUNIT_TEST( testNumValues );
+	CPPUNIT_TEST( testDomainSize );
 	CPPUNIT_TEST( testDomain );
 	CPPUNIT_TEST( testValue );
 	CPPUNIT_TEST( testIndex );
@@ -30,8 +30,8 @@ public:
 		CPPUNIT_ASSERT_EQUAL( StringC("Variable=<a,b,c>"), m_variable.ToString() );
 	}
 	
-	void testNumValues() {
-		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variable.NumValues() );
+	void testDomainSize() {
+		CPPUNIT_ASSERT_EQUAL( (SizeT)3, m_variable.DomainSize() );
 	}
 	
 	void testDomain() {

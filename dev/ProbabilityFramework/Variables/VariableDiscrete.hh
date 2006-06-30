@@ -51,7 +51,7 @@ namespace RavlProbN {
     virtual StringC ToString() const;
     //: Get a string representation of the values that the variable can take
 
-    SizeT NumValues() const;
+    SizeT DomainSize() const;
     //: Get access to the number of legal values
 
     const DomainDiscreteC& Domain() const;
@@ -110,8 +110,8 @@ namespace RavlProbN {
     //: Upcast constructor
     // Creates an invalid handle if types don't match
     
-    SizeT NumValues() const
-    { return Body().NumValues(); }
+    SizeT DomainSize() const
+    { return Body().DomainSize(); }
     //: Get access to the number of legal values
 
     const DomainDiscreteC& Domain() const

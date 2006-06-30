@@ -51,6 +51,8 @@ namespace RavlProbN {
   }
 
   void CPDAbstractBodyC::SetParentVariableSet(const VariableSetC& parentVariableSet) {
+  	if (!parentVariableSet.IsValid())
+      throw ExceptionC("CPDAbstractBodyC::SetParentVariableSet(), parentVariableSet is invalid");
     m_parentVariableSet = parentVariableSet;
   }
 

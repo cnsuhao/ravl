@@ -40,7 +40,7 @@ namespace RavlProbN {
   
   void CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable) {
     // check that there is a table for each value
-    if (ParentVariable().NumValues() != probabilityDistributionTable.Size())
+    if (ParentVariable().DomainSize() != probabilityDistributionTable.Size())
       throw ExceptionC("CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(), need table for each value");
     // check that all tables are for the correct variable
     for (HashIterC<VariablePropositionDiscreteC,PDFContinuousAbstractC> ht(probabilityDistributionTable); ht; ht++) {

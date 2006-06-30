@@ -47,7 +47,7 @@ namespace RavlProbN {
       valuesByParent[parent].InsLast(value);
     }
     // check that there are samples for each parent value
-    if (valuesByParent.Size() != parentVariable.NumValues())
+    if (valuesByParent.Size() != parentVariable.DomainSize())
       throw ExceptionC("CPDDesignerContinuousDiscrete1BodyC::CreateCPD(), there must be examples for each parent value");
     // create all the probability distributions
     RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC> probabilityDistributionTable;

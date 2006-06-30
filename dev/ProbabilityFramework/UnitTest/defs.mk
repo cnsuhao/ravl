@@ -33,6 +33,7 @@ MUSTLINK= testDomainDiscrete.cc \
 		testCPDContinuousDiscrete1.cc \
 		testCPDDesignerContinuousDiscrete1.cc \
 		testCPDDesignerFactory.cc \
+		testCPDDiscreteDiscrete.cc \
 		testPDFBoolean.cc \
 		testPDFContinuousDesignerNormal.cc \
 		testPDFContinuousDesignerUniform.cc \

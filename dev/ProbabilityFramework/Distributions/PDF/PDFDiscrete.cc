@@ -45,7 +45,7 @@ namespace RavlProbN {
   }
 
   void PDFDiscreteBodyC::SetProbabilityLookupTable(const RCHashC<VariablePropositionDiscreteC,RealT>& probabilityLookupTable) {
-    if (probabilityLookupTable.Size() != VariableDiscrete().NumValues())
+    if (probabilityLookupTable.Size() != VariableDiscrete().DomainSize())
       throw ExceptionC("ProbabilityDistributionDiscreteBodyC::SetProbabilityLookupTable(), table must have entry for each value of variable");
     // check that the table has been initialized properly and that all values sum to 1.0
     RealT sum = 0.0;

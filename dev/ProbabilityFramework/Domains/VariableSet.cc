@@ -19,6 +19,10 @@ namespace RavlProbN {
     SetVariables(variables);
   }
 
+  VariableSetBodyC::VariableSetBodyC(const VariableC& variable) {
+    SetSingleVariable(variable);
+  }
+
   VariableSetBodyC::VariableSetBodyC(istream &in)
     : RCBodyVC(in)
   {
@@ -100,6 +104,12 @@ namespace RavlProbN {
   void VariableSetBodyC::SetVariables(const HSetC<VariableC>& variables) {
     //:FIXME- what collection for efficiency?
     m_variables = variables.Copy();
+  }
+  
+  void VariableSetBodyC::SetSingleVariable(const VariableC& variable) {
+  	HSetC<VariableC> variables;
+  	variables.Insert(variable);
+  	SetVariables(variables);
   }
 
   IndexC VariableSetBodyC::Index(const VariableC& variable) const {

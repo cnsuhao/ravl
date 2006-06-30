@@ -40,7 +40,7 @@ namespace RavlProbN {
       VariableDiscreteC discrete(*ht);
       if (!discrete.IsValid())
         throw ExceptionC("CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(), all parents must be discrete");
-      numCombinations *= discrete.NumValues();
+      numCombinations *= discrete.DomainSize();
     }
     // check that there is a table for each value
     if (numCombinations != probabilityDistributionTable.Size())

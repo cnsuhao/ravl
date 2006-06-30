@@ -35,6 +35,15 @@ namespace RavlProbN {
     //: Constructor
     //!param: variableSet - the variableSet for the proposition
     //!param: values - list of random variables values contained in this proposition
+    
+    PropositionSetBodyC(const VariableSetC& variableSet, const VariablePropositionC& value);
+    //: Constructor for a single value
+    //!param: variableSet - the variableSet for the proposition
+    //!param: value - single random variable value contained in this proposition
+
+    PropositionSetBodyC(const VariablePropositionC& value);
+    //: Constructor for a single value with single variable
+    //!param: value - single random variable value contained in this proposition
 
     PropositionSetBodyC(const PropositionSetBodyC& other, const VariablePropositionC& value);
     //: Extended constructor
@@ -95,6 +104,9 @@ namespace RavlProbN {
 
     void SetValues(const HSetC<VariablePropositionC>& values);
     //: Set the random variable values in the variableSet
+    
+    void SetSingleValue(const VariablePropositionC& value);
+    //: Set a single random variable value in the variableSet
 
   private:
     VariableSetC m_variableSet;
@@ -119,6 +131,19 @@ namespace RavlProbN {
     PropositionSetC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values)
       : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(variableSet, values))
     {}
+
+    PropositionSetC(const VariableSetC& variableSet, const VariablePropositionC& value)
+      : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(variableSet, value))
+    {}
+    //: Constructor for a single value
+    //!param: variableSet - the variableSet for the proposition
+    //!param: value - single random variable value contained in this proposition
+
+    PropositionSetC(const VariablePropositionC& value)
+      : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(value))
+    {}
+    //: Constructor for a single value with single variable
+    //!param: value - single random variable value contained in this proposition
 
     PropositionSetC(const PropositionSetC& other, const VariablePropositionC& value)
       : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(other.Body(), value))

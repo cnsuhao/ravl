@@ -20,6 +20,16 @@ namespace RavlProbN {
     SetValues(values);
   }
 
+  PropositionSetBodyC::PropositionSetBodyC(const VariableSetC& variableSet, const VariablePropositionC& value) {
+    SetVariableSet(variableSet);
+    SetSingleValue(value);
+  }
+
+  PropositionSetBodyC::PropositionSetBodyC(const VariablePropositionC& value) {
+    SetVariableSet(VariableSetC(value.Variable()));
+    SetSingleValue(value);
+  }
+
   PropositionSetBodyC::PropositionSetBodyC(const PropositionSetBodyC& other, const VariablePropositionC& value) {
     SetVariableSet(other.VariableSet());
     HSetC<VariablePropositionC> values = other.Values().Copy();
@@ -151,6 +161,12 @@ namespace RavlProbN {
     m_values = values.Copy();
   }
 
+  void PropositionSetBodyC::SetSingleValue(const VariablePropositionC& value) {
+  	HSetC<VariablePropositionC> values;
+  	values.Insert(value);
+  	SetValues(values);
+  }
+  
   bool PropositionSetBodyC::operator==(const PropositionSetBodyC& other) const {
     if (this == &other)
       return true;

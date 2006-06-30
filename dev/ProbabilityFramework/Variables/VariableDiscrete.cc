@@ -71,7 +71,7 @@ namespace RavlProbN {
     return Name() + "=" + Domain().ToString();
   }
 
-  SizeT VariableDiscreteBodyC::NumValues() const {
+  SizeT VariableDiscreteBodyC::DomainSize() const {
     return Domain().Size();
   }
 

@@ -34,6 +34,10 @@ namespace RavlProbN {
     //: Constructor
     //!param: variables - set of random variables contained in this domain
 
+    VariableSetBodyC(const VariableC& variable);
+    //: Constructor for a single variable
+    //!param: variable - single random variables contained in this domain
+
     VariableSetBodyC(istream &in);
     //: Construct from stream
     //!param: in - standard input stream
@@ -85,6 +89,9 @@ namespace RavlProbN {
   private:
     void SetVariables(const HSetC<VariableC>& variables);
     //: Set the random variables in the domain
+    
+    void SetSingleVariable(const VariableC& variable);
+    //: Set a single random variable in the domain
 
   private:
     HSetC<VariableC> m_variables;
@@ -105,6 +112,10 @@ namespace RavlProbN {
 
     VariableSetC(const HSetC<VariableC>& variables)
       : RCHandleVC<VariableSetBodyC>(new VariableSetBodyC(variables))
+    {}
+
+    VariableSetC(const VariableC& variable)
+      : RCHandleVC<VariableSetBodyC>(new VariableSetBodyC(variable))
     {}
 
     VariableSetC(istream &in);

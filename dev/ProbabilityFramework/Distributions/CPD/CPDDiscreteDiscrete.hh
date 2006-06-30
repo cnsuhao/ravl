@@ -53,6 +53,10 @@ namespace RavlProbN {
     : public CPDAbstractC
   {
   public:
+  	CPDDiscreteDiscreteC()
+  	{}
+  	//: Default constructor makes invalid handle
+  	
     CPDDiscreteDiscreteC(const VariableDiscreteC& randomVariable,
                          const VariableSetC& parentVariableSet,
                          const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable)
