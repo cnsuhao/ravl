@@ -116,7 +116,7 @@ namespace RavlProbN {
     //!cwiz:author
 
     StringC ToString() const
-    { return Body().ToString(); }
+    { if (IsValid()) return Body().ToString(); else return "VariablePropositionC::<<NULL>>"; }
     //: Get a string representation of the value
     //!cwiz:author
 

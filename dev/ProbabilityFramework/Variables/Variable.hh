@@ -129,8 +129,8 @@ namespace RavlProbN {
     //: Get access to the name of the random variable
     //!cwiz:author
 
-    StringC ToString()
-    { return Body().ToString(); }
+    StringC ToString() const
+    { if (IsValid()) return Body().ToString(); else return "VariableC::<<NULL>>"; }
     //: Get a string representation of the values that the variable can take
     //!cwiz:author
 

@@ -29,13 +29,13 @@ public:
 		}
 		PDFNormalC pdf = PDFDesignerFactoryC::GetInstance().DesignPDFContinuous(m_variable, realSamples);
 		CPPUNIT_ASSERT( pdf.IsValid() );
-		CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.0, pdf.Mean(), 0.01 );
-		CPPUNIT_ASSERT_DOUBLES_EQUAL( 1.0, Sqrt(pdf.Variance()), 0.05 );
+		CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.0, pdf.Mean(), 0.1 );
+		CPPUNIT_ASSERT_DOUBLES_EQUAL( 1.0, Sqrt(pdf.Variance()), 0.1 );
 	}
 	
 	void testDesignPDFContinuousUniform() {
 		DListC<RealT> realSamples;
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			realSamples.InsLast(Random1());
 		}
 		PDFUniformC pdf = PDFDesignerFactoryC::GetInstance().DesignPDFContinuous(m_variable, realSamples);

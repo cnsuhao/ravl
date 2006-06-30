@@ -96,6 +96,8 @@ namespace RavlProbN {
   }
 
   StringC PropositionSetBodyC::ToString() const {
+  	if (Size() == 0)
+  	  return "";
     HSetIterC<VariablePropositionC> it(Values());
     StringC string = it->Variable().Name() + "=" + it->ToString();
     for (it++; it; it++) {

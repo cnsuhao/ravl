@@ -28,8 +28,9 @@ public:
 			realSamples.InsLast(RandomGauss());
 		}
 		PDFNormalC pdf = m_designer.CreatePDF(m_variable, realSamples);
-		CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.0, pdf.Mean(), 0.01 );
-		CPPUNIT_ASSERT_DOUBLES_EQUAL( 1.0, pdf.Variance(), 0.03 );
+		CPPUNIT_ASSERT( pdf.IsValid() );
+		CPPUNIT_ASSERT_DOUBLES_EQUAL( 0.0, pdf.Mean(), 0.1 );
+		CPPUNIT_ASSERT_DOUBLES_EQUAL( 1.0, Sqrt(pdf.Variance()), 0.1 );
 	}
 	
 };
