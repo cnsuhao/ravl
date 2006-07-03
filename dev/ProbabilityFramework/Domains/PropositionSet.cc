@@ -107,13 +107,14 @@ namespace RavlProbN {
 
   StringC PropositionSetBodyC::ToString() const {
   	if (Size() == 0)
-  	  return "";
+  	  return "{}";
     HSetIterC<VariablePropositionC> it(Values());
-    StringC string = it->Variable().Name() + "=" + it->ToString();
+    StringC string = StringC("{") + it->Variable().Name() + "=" + it->ToString();
     for (it++; it; it++) {
       string += ",";
       string += it->Variable().Name() + "=" + it->ToString();
     }
+    string += "}";
     return string;
   }
 

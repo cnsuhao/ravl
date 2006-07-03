@@ -38,16 +38,16 @@ public:
 	}
 	
     void testType() {
-    	CPPUNIT_ASSERT_EQUAL( StringC("Boolean->()"), m_lottery.Type() );
+    	CPPUNIT_ASSERT_EQUAL( StringC("{Boolean}->()"), m_lottery.Type() );
     }
     
 	void testMultiply() {
 		m_lottery *= m_lottery;
-		CPPUNIT_ASSERT_EQUAL( StringC("Boolean->()=[(0.900000,Boolean=¬boolean),(0.100000,Boolean=boolean)]"), m_lottery.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("{Boolean}->()=[(0.100000,{Boolean=boolean}),(0.900000,{Boolean=¬boolean})]"), m_lottery.ToString() );
     }
     
 	void testToString() {
-		CPPUNIT_ASSERT_EQUAL( StringC("Boolean->()=[(0.750000,Boolean=¬boolean),(0.250000,Boolean=boolean)]"), m_lottery.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("{Boolean}->()=[(0.250000,{Boolean=boolean}),(0.750000,{Boolean=¬boolean})]"), m_lottery.ToString() );
     }
     
 };

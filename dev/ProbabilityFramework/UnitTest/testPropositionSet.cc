@@ -44,11 +44,11 @@ public:
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT_EQUAL( StringC("Continuous=[0.000000,0.500000],Boolean=boolean"), m_proposition.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("{Continuous=[0.000000,0.500000],Boolean=boolean}"), m_proposition.ToString() );
 	}
 	
 	void testLotteryName() {
-		CPPUNIT_ASSERT_EQUAL( StringC("Boolean,Discrete,Continuous->(Discrete)"), m_proposition.LotteryName() );
+		CPPUNIT_ASSERT_EQUAL( StringC("{Boolean,Discrete,Continuous}->(Discrete)"), m_proposition.LotteryName() );
 	}
 	
 	void testVariableSet() {

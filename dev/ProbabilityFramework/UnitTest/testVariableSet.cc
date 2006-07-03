@@ -78,7 +78,7 @@ public:
 	}
 	
 	void testToString() {
-		CPPUNIT_ASSERT_EQUAL( StringC("Boolean,Discrete,Continuous"), m_variableSet.ToString() );
+		CPPUNIT_ASSERT_EQUAL( StringC("{Boolean,Discrete,Continuous}"), m_variableSet.ToString() );
 	}
 	
 };

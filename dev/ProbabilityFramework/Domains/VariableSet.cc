@@ -124,12 +124,15 @@ namespace RavlProbN {
   }
 
   StringC VariableSetBodyC::ToString() const {
+  	if (Size() == 0)
+  		return "{}";
     HSetIterC<VariableC> it(Variables());
-    StringC string = it->Name();
+    StringC string = StringC("{") + it->Name();
     for (it++; it; it++) {
       string += ",";
       string += it->Name();
     }
+    string += "}";
     return string;
   }
 
