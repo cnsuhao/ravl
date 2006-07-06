@@ -24,6 +24,7 @@ HEADERS= PDFContinuousDesigner.hh \
          PDFContinuousAbstract.hh \
          PDFDiscrete.hh \
          PDFNormal.hh \
+         PDFProbit.hh \
          PDFUniform.hh \
          ProbabilityDistribution.hh
 
@@ -36,6 +37,7 @@ SOURCES= PDFContinuousDesigner.cc \
          PDFContinuousAbstract.cc \
          PDFDiscrete.cc \
          PDFNormal.cc \
+         PDFProbit.cc \
          PDFUniform.cc \
          ProbabilityDistribution.cc
 
