@@ -143,9 +143,9 @@ namespace RavlN {
     // Determine required buffer size and allocate buffer
     frame = SArray1dC<SampleElemC<2,Int16T> >(buffSize/2/channels);
     
-    for(int i = 0;i < channels;i++){
+    for(int i = 0;i < 2;i++){
       for(int j  = 0;j < buffSize/2/channels; j++){
-        frame[j].channel[i] = audio_buf[2*j+i];
+        frame[j].channel[i] = audio_buf[channels*j+i];
       }
     }
     return true;

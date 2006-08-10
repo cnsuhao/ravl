@@ -25,7 +25,7 @@ MUSTLINK = MustLinkLibFFmpegAudio.cc
 
 USESLIBS = RavlImage RavlIO LibFFmpeg AudioFile RavlAudioUtil RavlAudioIO RavlDevAudio RavlAudioFile RavlGUI RavlDPDisplay
 
-PROGLIBS = RavlGUI RavlDPDisplay
+PROGLIBS = RavlGUI RavlDPDisplay LibMPEG2
 
 MAINS = exFFmpegAudio.cc exFFmpegSeekAudio.cc
 

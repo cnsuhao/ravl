@@ -97,7 +97,7 @@ int main(int nargs, char **argv)
    
     count++;
     
-    seek.Seek(frame*10000);
+    seek.Seek(frame);
       
     cerr << "==== Seeking to " << frame << endl;
 

@@ -25,8 +25,8 @@ RealT frameRate = 25.0;
 DPISPortC< SArray1dC<SampleElemC<2,Int16T> > > in;
 
 bool AudioSeek(RealT &frameNum){
-  cerr << Round(frameNum) << "\n";
-  in.Seek(Round(frameNum));
+  cerr << Round(in.Start()+frameNum) << "\n";
+  in.Seek(Round(in.Start()+frameNum));
     return true;
 }
 
@@ -76,8 +76,9 @@ int main(int nargs, char **argv)
     }
   }
   
-  RealT sampleRate = 48000;
+  RealT sampleRate = 10000;
   in.GetAttr("samplerate", sampleRate);
+  cerr << sampleRate;
   
   if(seekStart)
     in.Seek(in.Start()+1);
@@ -97,7 +98,7 @@ int main(int nargs, char **argv)
     out.Put(*it);
   }
   
-  //scale.UpdateValue(in.Tell());
+  scale.UpdateValue(in.Tell()-in.Start());
   }
   Manager.Shutdown();
  

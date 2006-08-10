@@ -81,7 +81,6 @@ namespace RavlN {
       if (pCodec == NULL) 
         continue;
       
-      cerr << i;
       videoStreamId = i;
       codecId = pCodecCtx->codec_id;
       sampleRate = pCodecCtx->sample_rate;
@@ -96,11 +95,7 @@ namespace RavlN {
       if(pCodec->name != 0)
         codecName = pCodec->name;
       
-      //cerr << "codecName "<< codecName;
       ONDEBUG(cerr << "iformat=" << inputFormatName << " Codec=" << codecName << "\n");
-      if(inputFormatName == "asf" || inputFormatName == "mpeg" || codecName == "mpeg4") {
-        haveSeek = false;
-      }
 
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       
@@ -430,15 +425,15 @@ namespace RavlN {
       return false;
   }*/ 
     
-    if(av_seek_frame(pFormatCtx, positionRefStream, Frame2Time(off), 0) < 0){
+    if(av_seek_frame(pFormatCtx, positionRefStream, Frame2Time(off), 0) > 0){
       if(av_seek_frame(pFormatCtx, -1, Frame2Time(off), 0) < 0){
 	cerr << "FFmpegAudioPacketStreamBodyC::Seek, Seek failed. " << off << " \n";
 	return false;
       }
+      //av_update_cur_dts (pFormatCtx, pFormatCtx->streams[positionRefStream], Frame2Time(off));
     }
     //av_seek_frame(pFormatCtx, positionRefStream, Frame2Time(off),-1);
     currentTimeStamp = off;
-    cerr << currentTimeStamp;
     return true;
   }
   
@@ -449,13 +444,13 @@ namespace RavlN {
     RealT temp = st->time_base.num;
     if(pFormatCtx == 0)
       return 0;
-    cerr << "FFmpegAudioPacketStreamBodyC::Size64, Duration=" << pFormatCtx->duration << " Start=" << pFormatCtx->start_time << " FrameRateBase=" << frameRateBase << "  " << temp << "\n";
+    ONDEBUG(cerr << "FFmpegAudioPacketStreamBodyC::Size64, Duration=" << pFormatCtx->duration << " Start=" << pFormatCtx->start_time << " FrameRateBase=" << frameRateBase << "  " << temp << "\n";)
     if(pFormatCtx->duration <= 0)
       return -1;
     if(temp == 1)
-      return Time2Frame((pFormatCtx->duration -   pFormatCtx->start_time)*st->time_base.den/st->time_base.num/1000000);
+      return Time2Frame((pFormatCtx->duration)*st->time_base.den/AV_TIME_BASE);
     else
-      return Time2Frame(pFormatCtx->duration - pFormatCtx->start_time);
+      return Time2Frame((pFormatCtx->duration + pFormatCtx->start_time)*st->time_base.den/st->time_base.num/AV_TIME_BASE);
   }
   
   //: Find the total size of the stream.
@@ -463,8 +458,9 @@ namespace RavlN {
   Int64T FFmpegAudioPacketStreamBodyC::Start64() const {
     if(pFormatCtx == 0)
       return 0;
+    const AVStream *st = pFormatCtx->streams[positionRefStream];
     ONDEBUG(cerr << "FFmpegAudioPacketStreamBodyC::Start64, " << pFormatCtx->start_time << " Frame=" << Time2Frame(pFormatCtx->start_time) << "\n");
-    return Time2Frame(pFormatCtx->start_time);
+    return Time2Frame(pFormatCtx->start_time*st->time_base.den/st->time_base.num/AV_TIME_BASE);
   }
   
   //: Find the total size of the stream.
@@ -475,14 +471,14 @@ namespace RavlN {
   
   Int64T FFmpegAudioPacketStreamBodyC::Frame2Time(Int64T arg) const {
     RealT frac = (RealT) frameRate / (RealT) frameRateBase;
-    return llround(((RealT) arg/2 / frac));
+    return llround(((RealT) arg / frac));
   }
   
   //: Convert a  time into a frame no
   
   Int64T FFmpegAudioPacketStreamBodyC::Time2Frame(Int64T arg) const {
     RealT frac = (RealT) frameRate / (RealT) frameRateBase;
-    return llround(((RealT) arg*2) * frac);
+    return llround(((RealT) arg) * frac);
   }
   
 }
