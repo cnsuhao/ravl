@@ -1,5 +1,5 @@
 #include "Ravl/Option.hh"
-#include "Ravl/Image/LibFFmpegAudioFormat.hh"
+#include "Ravl/Audio/LibFFmpegAudioFormat.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/OS/Date.hh"
