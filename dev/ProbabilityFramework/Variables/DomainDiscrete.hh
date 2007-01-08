@@ -83,9 +83,9 @@ namespace RavlProbN {
     //: Hash function based on name
 
   private:
-  	void CreateValueHash();
-  	//: Generate the value hash table from the array
-
+    void CreateValueHash();
+    //: Generate the value hash table from the array
+    
   private:
     HashC<StringC,IndexC> m_valueHash;
     //: Hash table of values and their index number

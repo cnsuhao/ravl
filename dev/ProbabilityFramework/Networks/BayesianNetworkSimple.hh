@@ -19,6 +19,7 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Simple (inefficient) implementation of a bayesian network
+  
   class BayesianNetworkSimpleBodyC
     : public BayesianNetworkAbstractBodyC {
   public:

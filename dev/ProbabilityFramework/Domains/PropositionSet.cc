@@ -163,9 +163,9 @@ namespace RavlProbN {
   }
 
   void PropositionSetBodyC::SetSingleValue(const VariablePropositionC& value) {
-  	HSetC<VariablePropositionC> values;
-  	values.Insert(value);
-  	SetValues(values);
+    HSetC<VariablePropositionC> values;
+    values.Insert(value);
+    SetValues(values);
   }
   
   bool PropositionSetBodyC::operator==(const PropositionSetBodyC& other) const {
