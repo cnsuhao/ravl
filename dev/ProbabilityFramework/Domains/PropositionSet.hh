@@ -36,6 +36,11 @@ namespace RavlProbN {
     //!param: variableSet - the variableSet for the proposition
     //!param: values - list of random variables values contained in this proposition
     
+    PropositionSetBodyC(const VariableSetC& variableSet, const RCHashC<VariableC,VariablePropositionC>& values);
+    //: Constructor
+    //!param: variableSet - the variableSet for the proposition
+    //!param: values - list of random variables values contained in this proposition
+    
     PropositionSetBodyC(const VariableSetC& variableSet, const VariablePropositionC& value);
     //: Constructor for a single value
     //!param: variableSet - the variableSet for the proposition
@@ -76,25 +81,33 @@ namespace RavlProbN {
 
     StringC LotteryName() const;
     //: Create a lottery name for this proposition
-
-    const VariableSetC& VariableSet() const;
+    
+    const VariableSetC& VariableSet() const
+    { return m_variableSet; }
     //: Get the variableSet
 
-    SizeT Size() const;
+    SizeT Size() const
+    { return Values().Size(); }
     //: Get the number of values in the proposition
-
-    const HSetC<VariablePropositionC>& Values() const;
+    
+    bool FindProposition(const VariableC &varName,VariablePropositionC &proposition) const
+    { return m_values.Lookup(varName,proposition); }
+    //: Find propersition for variable if set.
+    // Returns false if variable is free
+    
+    const RCHashC<VariableC,VariablePropositionC>& Values() const
+    { return m_values; }
     //: Get the random variable values in the variableSet
-
+    
     const VariablePropositionC& Value(IndexC index) const;
     //: Get a random variable value by index
 
     PropositionSetC SubPropositionSet(const VariableSetC& subVariableSet) const;
-    //: Create a proposition for a subvariableSet
-
+    //: Create a proposition for a subset of current variables, subvariableSet
+    
     bool operator==(const PropositionSetBodyC& other) const;
     //: Equality operator
-
+    
     UIntT Hash() const;
     //: Hash function based set of values
 
@@ -107,13 +120,13 @@ namespace RavlProbN {
     
     void SetSingleValue(const VariablePropositionC& value);
     //: Set a single random variable value in the variableSet
-
+    
   private:
     VariableSetC m_variableSet;
     //: The variableSet of the proposition
-
-    HSetC<VariablePropositionC> m_values;
-    //: The set of variables
+    
+    RCHashC<VariableC,VariablePropositionC> m_values;
+    //: Mapping between variable and proposed value 
   };
 
   //! userlevel=Normal
@@ -127,6 +140,13 @@ namespace RavlProbN {
     PropositionSetC()
     {}
     //: Default constructor makes invalid handle
+
+    PropositionSetC(const VariableSetC& variableSet, const RCHashC<VariableC,VariablePropositionC>& values)
+      : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(variableSet, values))
+    {}
+    //: Constructor
+    //!param: variableSet - the variableSet for the proposition
+    //!param: values - list of random variables values contained in this proposition
 
     PropositionSetC(const VariableSetC& variableSet, const HSetC<VariablePropositionC>& values)
       : RCHandleVC<PropositionSetBodyC>(new PropositionSetBodyC(variableSet, values))
@@ -191,12 +211,17 @@ namespace RavlProbN {
     SizeT Size() const
     { return Body().Size(); }
     //: Get the number of values in the proposition
-
-    const HSetC<VariablePropositionC>& Values() const
+    
+    const RCHashC<VariableC,VariablePropositionC>& Values() const
     { return Body().Values(); }
     //: Get the random variable values in the variableSet
     //!cwiz:author
-
+    
+    bool FindProposition(const VariableC &varName,VariablePropositionC &prop) const
+    { return Body().FindProposition(varName,prop); }
+    //: Find propersition for variable if set.
+    // Returns false if variable is free
+    
     const VariablePropositionC& Value(IndexC index) const
     { return Body().Value(index); }
     //: Get a random variable value by index

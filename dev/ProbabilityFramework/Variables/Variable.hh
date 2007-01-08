@@ -40,6 +40,7 @@ namespace RavlProbN {
   // can be either the entire real line or some subset such as the interval [0,1].
   // For example, the proposition X=4.02 asserts that the random variable X has the
   // exact value 4.02.
+  
   class VariableBodyC
     : public RCBodyVC {
   public:

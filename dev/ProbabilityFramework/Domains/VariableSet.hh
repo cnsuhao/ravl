@@ -109,11 +109,11 @@ namespace RavlProbN {
     VariableSetC()
     {}
     //: Default constructor makes invalid handle
-
+    
     VariableSetC(const HSetC<VariableC>& variables)
       : RCHandleVC<VariableSetBodyC>(new VariableSetBodyC(variables))
     {}
-
+    
     VariableSetC(const VariableC& variable)
       : RCHandleVC<VariableSetBodyC>(new VariableSetBodyC(variable))
     {}

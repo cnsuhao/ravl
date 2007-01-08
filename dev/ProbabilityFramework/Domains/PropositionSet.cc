@@ -20,23 +20,30 @@ namespace RavlProbN {
     SetValues(values);
   }
 
+  PropositionSetBodyC::PropositionSetBodyC(const VariableSetC& variableSet, const RCHashC<VariableC,VariablePropositionC>& values)
+    : m_variableSet(variableSet),
+      m_values(values)
+  {}
+  
   PropositionSetBodyC::PropositionSetBodyC(const VariableSetC& variableSet, const VariablePropositionC& value) {
     SetVariableSet(variableSet);
     SetSingleValue(value);
   }
 
   PropositionSetBodyC::PropositionSetBodyC(const VariablePropositionC& value) {
-    SetVariableSet(VariableSetC(value.Variable()));
+    HSetC<VariableC> var;
+    var += value.Variable();
+    SetVariableSet(var);
     SetSingleValue(value);
   }
-
-  PropositionSetBodyC::PropositionSetBodyC(const PropositionSetBodyC& other, const VariablePropositionC& value) {
-    SetVariableSet(other.VariableSet());
-    HSetC<VariablePropositionC> values = other.Values().Copy();
-    values.Insert(value);
-    SetValues(values);
+  
+  PropositionSetBodyC::PropositionSetBodyC(const PropositionSetBodyC& other, const VariablePropositionC& value) 
+    : m_variableSet(other.VariableSet().Variables().Copy()),
+      m_values(other.Values().Copy())
+  {
+    m_values[value.Variable()] = value;
   }
-
+  
   PropositionSetBodyC::PropositionSetBodyC(istream &in)
     : RCBodyVC(in)
   {
@@ -81,73 +88,60 @@ namespace RavlProbN {
     return true;
   }
 
-  PropositionSetBodyC::~PropositionSetBodyC() {
-  }
-
-  const VariableSetC& PropositionSetBodyC::VariableSet() const {
-    return m_variableSet;
-  }
-
-  SizeT PropositionSetBodyC::Size() const {
-    return Values().Size();
-  }
-
-  const HSetC<VariablePropositionC>& PropositionSetBodyC::Values() const {
-    return m_values;
-  }
+  PropositionSetBodyC::~PropositionSetBodyC() 
+  {}
+  
 
   const VariablePropositionC& PropositionSetBodyC::Value(IndexC index) const {
     if (index < 0 || index >= Size())
       throw ExceptionC("PropositionSetBodyC::Value(), index out of range");
-    HSetIterC<VariablePropositionC> it(Values());
+    HashIterC<VariableC,VariablePropositionC> it(Values());
     while(index--)
       it++;
     return *it;
   }
 
   StringC PropositionSetBodyC::ToString() const {
-  	if (Size() == 0)
-  	  return "{}";
-    HSetIterC<VariablePropositionC> it(Values());
-    StringC string = StringC("{") + it->Variable().Name() + "=" + it->ToString();
+    if (Size() == 0)
+      return "{}";
+    HashIterC<VariableC,VariablePropositionC> it(Values());
+    StringC string = StringC("{") + it.Key().Name() + "=" + it.Data().ToString();
     for (it++; it; it++) {
       string += ",";
-      string += it->Variable().Name() + "=" + it->ToString();
+      string += it.Key().Name() + "=" + it.Data().ToString();
     }
     string += "}";
     return string;
   }
-
+  
   StringC PropositionSetBodyC::LotteryName() const {
     StringC name = VariableSet().ToString(); // show all variables
-    HSetC<VariableC> variableSetSet = VariableSet().Variables().Copy();
-    for (HSetIterC<VariablePropositionC> it(Values()); it; it++) {
-      variableSetSet.Remove(it->Variable());
-    }
     name += "->(";
-    if (variableSetSet.Size() > 0) {
-      HSetIterC<VariableC> it(variableSetSet);
-      name += it->Name();
-      for (it++; it; it++) {
+    bool first = true;
+    for (HSetIterC<VariableC> it(VariableSet().Variables()); it; it++) {
+      if(m_values.IsElm(*it))
+        continue;
+      if(!first)
         name += ",";
-        name += it->Name();
-      }
+      else
+        first = false;
+      name += it->Name();
     }
     name += ")";
     return name;
   }
-
+  
   PropositionSetC PropositionSetBodyC::SubPropositionSet(const VariableSetC& subVariableSet) const {
-  	// Check that all variables are in current variableSet!
-  	for (HSetIterC<VariableC> dt(subVariableSet.Variables()); dt; dt++)
-  		if (!VariableSet().Contains(*dt))
-  			throw ExceptionC("PropositionSetBodyC::SubPropositionSet(), invalid new variableSet variable");
-    HSetC<VariablePropositionC> values;
-    for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++) {
-      if (subVariableSet.Variables().Contains(ht->Variable()))
-        values.Insert(*ht);
+    // Check that all variables are in current variableSet!
+    RCHashC<VariableC,VariablePropositionC> newValues;
+    for (HSetIterC<VariableC> dt(subVariableSet.Variables()); dt; dt++) {
+      if (!VariableSet().Contains(*dt))
+        throw ExceptionC("PropositionSetBodyC::SubPropositionSet(), invalid new variableSet variable");
+      const VariablePropositionC *prop;
+      if((prop = m_values.Lookup(*dt)) != 0)
+        newValues[*dt] = *prop;
     }
-    return PropositionSetC(subVariableSet, values);
+    return PropositionSetC(subVariableSet, newValues);
   }
 
   void PropositionSetBodyC::SetVariableSet(const VariableSetC& variableSet) {
@@ -156,10 +150,12 @@ namespace RavlProbN {
 
   void PropositionSetBodyC::SetValues(const HSetC<VariablePropositionC>& values) {
     //:FIXME- what collection for efficiency?
-    for (HSetIterC<VariablePropositionC> it(values); it; it++)
+    m_values.Empty();
+    for (HSetIterC<VariablePropositionC> it(values); it; it++) {
       if (!VariableSet().Contains(it->Variable()))
         throw ExceptionC("PropositionSetBodyC::SetValues(), value not in variableSet");
-    m_values = values.Copy();
+      m_values[it->Variable()] = *it;
+    }
   }
 
   void PropositionSetBodyC::SetSingleValue(const VariablePropositionC& value) {
@@ -173,20 +169,12 @@ namespace RavlProbN {
       return true;
     if (VariableSet() != other.VariableSet())
       return false;
-    if (Size() != other.Size())
-      return false;
-    for (HSetIterC<VariablePropositionC> ht(Values()); ht; ht++)
-      if (!other.Values().Contains(*ht))
-        return false;
-    return true;
-    
+    //cerr << "m_values=" << ToString() << " " << "other.Values()=" << other.ToString() << " Equality=" << (m_values == other.Values()) << "\n";
+    return (m_values == other.Values());
   }
 
   UIntT PropositionSetBodyC::Hash() const {
-    UIntT hash = 0;
-    for (HSetIterC<VariablePropositionC> it(Values()); it; it++)
-      hash += it->Hash();
-    return VariableSet().Hash() + hash;
+    return VariableSet().Hash() + m_values.Hash();
   }
 
   ostream &operator<<(ostream &s,const PropositionSetC &obj) {

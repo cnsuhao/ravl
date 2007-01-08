@@ -16,7 +16,8 @@ namespace RavlProbN {
   CPDContinuousDiscrete1BodyC::CPDContinuousDiscrete1BodyC(const VariableContinuousC& randomVariable,
                                                            const VariableDiscreteC& parentVariable,
                                                            const RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC>& probabilityDistributionTable)
-    : CPDAbstractBodyC(randomVariable, parentVariable) {
+    : CPDAbstractBodyC(randomVariable, parentVariable) 
+  {
     SetParentVariable(parentVariable);
     SetProbabilityDistributionTable(probabilityDistributionTable);
   }
@@ -26,15 +27,12 @@ namespace RavlProbN {
 
   ProbabilityDistributionC CPDContinuousDiscrete1BodyC::ConditionalDistribution(const PropositionSetC& parentValues) const {
     PDFContinuousAbstractC pdf;
-    HSetC<VariablePropositionC> values = parentValues.Values();
-    if (values.Size() == 1) {
-      HSetIterC<VariablePropositionC> it(values);
-      if (!m_probabilityDistributionTable.Lookup(*it, pdf))
-        throw ExceptionC("CPDContinuousDiscrete1BodyC::ConditionalDistribution(), couldn't find distribution");
+    VariablePropositionC proposition;
+    if(!parentValues.FindProposition(m_parentVariable,proposition) || !proposition.IsValid()) {
+      throw ExceptionC("CPDContinuousDiscrete1BodyC::ConditionalDistribution(), no value proposition!");
     }
-    else {
-      throw ExceptionC("CPDContinuousDiscrete1BodyC::ConditionalDistribution(), called with empty proposition!");
-    }
+    if (!m_probabilityDistributionTable.Lookup(proposition, pdf))
+      throw ExceptionC("CPDContinuousDiscrete1BodyC::ConditionalDistribution(), couldn't find distribution");    
     return pdf;
   }
   
@@ -42,6 +40,7 @@ namespace RavlProbN {
     // check that there is a table for each value
     if (ParentVariable().DomainSize() != probabilityDistributionTable.Size())
       throw ExceptionC("CPDContinuousDiscrete1BodyC::SetProbabilityDistributionTable(), need table for each value");
+    
     // check that all tables are for the correct variable
     for (HashIterC<VariablePropositionDiscreteC,PDFContinuousAbstractC> ht(probabilityDistributionTable); ht; ht++) {
       if (ht.Key().Variable() != ParentVariable())

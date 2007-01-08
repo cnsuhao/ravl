@@ -16,7 +16,7 @@ DESCRIPTION=Pattern recognition software
 PACKAGE=Ravl/Prob
 
 HEADERS= CPDAbstract.hh \
-		 CPDBooleanContinuous1.hh \
+	 CPDBooleanContinuous1.hh \
          CPDContinuousDiscrete1.hh \
          CPDDiscreteDiscrete.hh \
          CPDDesigner.hh \
@@ -26,7 +26,7 @@ HEADERS= CPDAbstract.hh \
          ConditionalProbabilityDistribution.hh
 
 SOURCES= CPDAbstract.cc \
-		 CPDBooleanContinuous1.cc \
+         CPDBooleanContinuous1.cc \
          CPDContinuousDiscrete1.cc \
          CPDDiscreteDiscrete.cc \
          CPDDesigner.cc \

@@ -16,24 +16,28 @@ namespace RavlProbN {
   CPDDiscreteDiscreteBodyC::CPDDiscreteDiscreteBodyC(const VariableDiscreteC& randomVariable,
                                                      const VariableSetC& parentVariableSet,
                                                      const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable)
-    : CPDAbstractBodyC(randomVariable, parentVariableSet) {
+    : CPDAbstractBodyC(randomVariable, parentVariableSet) 
+  {
     SetProbabilityDistributionTable(probabilityDistributionTable);
   }
 
   CPDDiscreteDiscreteBodyC::~CPDDiscreteDiscreteBodyC() {
   }
 
-  ProbabilityDistributionC CPDDiscreteDiscreteBodyC::ConditionalDistribution(const PropositionSetC& parentValues) const {
+  ProbabilityDistributionC CPDDiscreteDiscreteBodyC::ConditionalDistribution(const PropositionSetC& parentValues) const 
+  {
     PDFDiscreteC pdf;
-    HSetC<VariablePropositionC> values = parentValues.Values();
-    if (values.Size() != ParentVariableSet().Size())
+    if (parentValues.Values().Size() != ParentVariableSet().Size())
       throw ExceptionC("CPDDiscreteDiscreteBodyC::ConditionalDistribution(), called with incorrect proposition!");
-    if (!m_probabilityDistributionTable.Lookup(parentValues, pdf))
-      throw ExceptionC(StringC("CPDDiscreteDiscreteBodyC::ConditionalDistribution(), couldn't find distribution") + parentValues.ToString());
+    
+    if (!m_probabilityDistributionTable.Lookup(parentValues, pdf)) {
+      throw ExceptionC(StringC("CPDDiscreteDiscreteBodyC::ConditionalDistribution(), couldn't find distribution ") + parentValues.ToString());
+    }
     return pdf;
   }
   
-  void CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable) {
+  void CPDDiscreteDiscreteBodyC::SetProbabilityDistributionTable(const RCHashC<PropositionSetC,PDFDiscreteC>& probabilityDistributionTable) 
+  {
     // ensure all parents are discrete and calculate combinations
     UIntT numCombinations = 1;
     for (HSetIterC<VariableC> ht(ParentVariableSet().Variables()); ht; ht++) {

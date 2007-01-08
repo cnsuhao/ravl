@@ -61,16 +61,17 @@ namespace RavlProbN {
   //: This function's implementation is based on ENUMERATION-ASK(X,e,bn) from
   //: Figure 14.9 in Artificial Intelligence: A Modern Approach, 2nd edition
 
-  ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const VariableC& variable, const PropositionSetC& evidence) const {
+  ProbabilityDistributionC BayesianNetworkAbstractBodyC::CalculateDistribution(const VariableC& variable, 
+                                                                               const PropositionSetC& evidence) const {
     VariableDiscreteC discrete(variable);
     if (!discrete.IsValid())
       throw ExceptionC("BayesianNetworkSimpleBodyC::CalculateDistribution(), only works for discrete variables");
     // check if evidence contains variable
+    VariablePropositionC varProposition;
     VariablePropositionDiscreteC prior;
-    for (HSetIterC<VariablePropositionC> ht(evidence.Values()); ht; ht++) {
-      if (ht->Variable() == discrete)
-        prior = *ht;
-    }
+    if(evidence.FindProposition(variable,varProposition)) 
+      prior = varProposition;
+    
     // calculate probability of each value independently
     RealT sum = 0;
     RCHashC<VariablePropositionDiscreteC,RealT> probabilityLookupTable;

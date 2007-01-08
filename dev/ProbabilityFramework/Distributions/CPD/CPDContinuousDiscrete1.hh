@@ -22,6 +22,7 @@ namespace RavlProbN {
 
   //! userlevel=Develop
   //: Conditional probability distribution of a continuous variable with only a single discrete parent
+  
   class CPDContinuousDiscrete1BodyC
     : public CPDAbstractBodyC {
   public:
@@ -51,11 +52,11 @@ namespace RavlProbN {
   private:
     RCHashC<VariablePropositionDiscreteC,PDFContinuousAbstractC> m_probabilityDistributionTable;
     //: Table of distributions for each value of the discrete parent
-
+    
     VariableDiscreteC m_parentVariable;
     //: Cached copy of parent variable for direct access
   };
-
+  
   //! userlevel=Normal
   //: Conditional probability distribution of a continuous variable with only a single discrete parent
   //!cwiz:author
