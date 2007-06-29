@@ -13,7 +13,8 @@ namespace RavlImageN{
     for (IndexC r(src.TRow()); r<=src.BRow(); ++r) {
       const ByteT *sc = src.Row(r);
       char *dc = dr;
-      for (IndexC c(src.LCol()); c<=src.RCol(); ++c)  *dc++ = *sc++;
+      for (IndexC c(src.LCol()); c<=src.RCol(); ++c)
+        *dc++ = *sc++;
       dr += dest->widthStep;
     }
     return true;
@@ -47,7 +48,8 @@ namespace RavlImageN{
     for (IndexC r(src.TRow()); r<=src.BRow(); ++r) {
       const RealT *sc = src.Row(r);
       double *dc = dr;
-      for (IndexC c(src.LCol()); c<=src.RCol(); ++c)  *dc++ = *sc++;
+      for (IndexC c(src.LCol()); c<=src.RCol(); ++c) 
+        *dc++ = *sc++;
       dr += dest->widthStep;
     }
     return true;
