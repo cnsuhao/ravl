@@ -10,10 +10,10 @@ namespace RavlImageN{
     CvSize size; size.width = src.Cols(); size.height = src.Rows();
     dest = cvCreateImage(size, IPL_DEPTH_8U, 1);
     char *dr = dest->imageData;
-    for (IntT r=0; r<size.height; ++r) {
+    for (IndexC r(src.TRow()); r<=src.BRow(); ++r) {
       const ByteT *sc = src.Row(r);
       char *dc = dr;
-      for (IntT c=0; c<size.width; ++c)  *dc++ = *sc++;
+      for (IndexC c(src.LCol()); c<=src.RCol(); ++c)  *dc++ = *sc++;
       dr += dest->widthStep;
     }
     return true;
@@ -25,11 +25,11 @@ namespace RavlImageN{
     CvSize size; size.width = src.Cols(); size.height = src.Rows();
     dest = cvCreateImage(size, IPL_DEPTH_8U, 3);
     char *dr = dest->imageData;
-    for (IntT r=0; r<size.height; ++r) {
+    for (IndexC r(src.TRow()); r<=src.BRow(); ++r) {
       const ByteT *sc = (ByteT*)src.Row(r);
       char *dc = dr;
-      for (IntT c=0; c<size.width; ++c) {
-        *(dc++ +2) = *sc++; // dodgy code to do RGB->BGR I think
+      for (IndexC c(src.LCol()); c<=src.RCol(); ++c) {
+        *(dc++ +2) = *sc++; // dodgy code to do RGB->BGR
         *dc++      = *sc++;
         *(dc++ -2) = *sc++;
       }
@@ -44,10 +44,10 @@ namespace RavlImageN{
     CvSize size; size.width = src.Cols(); size.height = src.Rows();
     dest = cvCreateImage(size, IPL_DEPTH_64F, 1);
     double *dr = (double *)dest->imageData;
-    for (IntT r=0; r<size.height; ++r) {
+    for (IndexC r(src.TRow()); r<=src.BRow(); ++r) {
       const RealT *sc = src.Row(r);
       double *dc = dr;
-      for (IntT c=0; c<size.width; ++c)  *dc++ = *sc++;
+      for (IndexC c(src.LCol()); c<=src.RCol(); ++c)  *dc++ = *sc++;
       dr += dest->widthStep;
     }
     return true;
@@ -59,13 +59,13 @@ namespace RavlImageN{
     CvSize size; size.width = src.Cols(); size.height = src.Rows();
     dest = cvCreateImage(size, IPL_DEPTH_64F, 3);
     double *dr = (double *)dest->imageData;
-    for (IntT r=0; r<size.height; ++r) {
+    for (IndexC r(src.TRow()); r<=src.BRow(); ++r) {
       const RealT *sc = (RealT*)src.Row(r);
       double *dc = dr;
-      for (IntT c=0; c<size.width; ++c) {
-      *(dc++ +2) = *sc++;
-      *dc++      = *sc++;
-      *(dc++ -2) = *sc++;
+      for (IndexC c(src.LCol()); c<=src.RCol(); ++c) {
+        *(dc++ +2) = *sc++;
+        *dc++      = *sc++;
+        *(dc++ -2) = *sc++;
       }
     dr += dest->widthStep;
     }
