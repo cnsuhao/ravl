@@ -11,7 +11,7 @@ ORGANISATION=Omniperception Ltd.
 
 USESLIBS =  LibFFmpeg RavlImage RavlIO RavlGUI
 
-PROGLIBS = RavlDPDisplay RavlLibFFmpeg RavlVideoIO  RavlVPlay RavlGUI JackGUI2D RavlAV RavlImageProc JackGui RavlPatternRec JackLabels JackHMM RavlLibFFmpegAudio
+PROGLIBS = RavlDPDisplay RavlLibFFmpeg RavlVideoIO  RavlVPlay RavlGUI RavlAV RavlImageProc RavlPatternRec RavlLibFFmpegAudio
 
 MAINS = AVPlay.cc
 
