@@ -6,8 +6,8 @@
 
 //link ffmpeg as a purely c library since all c++ wrapper functions were removed
 extern "C" {
-   #include <ffmpeg/avformat.h>
-   #include <ffmpeg/avcodec.h>
+   #include <avformat.h>
+   #include <avcodec.h>
 }
 
 //fix complaint about INT64_C

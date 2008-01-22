@@ -5,7 +5,7 @@
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Audio/FFmpegAudioPacket.hh"
 
-#include <ffmpeg/avformat.h>
+#include <avformat.h>
 
 namespace RavlN {
   

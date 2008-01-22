@@ -13,7 +13,7 @@
 #include "Ravl/DP/SPort.hh"
 #include "Ravl/Image/FFmpegPacket.hh"
 
-#include <ffmpeg/avformat.h>
+#include <avformat.h>
 
 namespace RavlN {
   

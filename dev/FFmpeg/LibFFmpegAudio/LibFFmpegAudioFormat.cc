@@ -17,8 +17,8 @@
 #include "Ravl/Audio/FFmpegAudioPacketStream.hh"
 #include "Ravl/Audio/FFmpegAudioDecoder.hh"
 
-#include <ffmpeg/avcodec.h>
-#include <ffmpeg/avformat.h>
+#include <avcodec.h>
+#include <avformat.h>
 
 #define DODEBUG 0
 
