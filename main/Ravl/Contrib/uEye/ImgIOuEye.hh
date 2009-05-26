@@ -115,7 +115,7 @@ namespace RavlImageN {
   //! userlevel=Develop
   //: Body for uEye
   
-  template <class PixelT>
+  template <typename PixelT>
   class ImgIOuEyeBodyC 
     : public RavlN::DPIPortBodyC< ImageC<PixelT> >,
       public ImgIOuEyeBaseC
