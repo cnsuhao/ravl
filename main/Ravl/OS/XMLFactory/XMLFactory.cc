@@ -145,12 +145,16 @@ namespace RavlN {
   {
     XMLFactoryNodeC::RefT child;
     if(!FollowPath(name,child) || !child.IsValid()) {
-      SysLog(SYSLOG_DEBUG,"Failed to follow path '%s' ",name.chars());
+      SysLog(SYSLOG_DEBUG,"Failed to follow path '%s' from '%s' children:",name.chars(),Path().chars());
+      for(HashIterC<StringC,RefT> it(m_children);it;it++) {
+        SysLog(SYSLOG_DEBUG," Child '%s'",it.Key().chars());
+      }
+      
       return false;
     }
     
     if(!child->Component().IsValid()) {
-      SysLog(SYSLOG_DEBUG,"No component at the leaf of path '%s' ",name.chars());
+      SysLog(SYSLOG_DEBUG,"No component at the leaf of path '%s' from '%s'",name.chars(),Path().chars());
       return false;
     }
     
