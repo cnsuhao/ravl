@@ -17,4 +17,4 @@ SOURCES = GnuPlot.cc
 
 PLIB = RavlPlot
 
-USESLIBS=  RavlCore RavlMath RavlOS
+USESLIBS=  RavlCore RavlMath RavlOS RavlIO
