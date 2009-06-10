@@ -597,7 +597,7 @@ namespace RavlN {
   template<class DataT>
   bool XMLFactoryContextC::CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages) const
   { return Factory().CreateComponent(*this,name,data,suppressErrorMessages); }
-  //: Create named component, or create it if not found.
+  //: Create named component.
 
   template<class DataT>
   bool XMLFactoryContextC::SetComponent(const StringC &name,const DataT &data) 
@@ -607,7 +607,7 @@ namespace RavlN {
   template<class DataT>
   bool XMLFactoryContextC::GetComponent(const StringC &name,DataT &data,bool suppressErrorMessages) const
   { return Factory().GetComponent(Path() + ':' + name,data); }
-  //: Get instance of the named component.
+  //: Get instance of the named component. Fail if its not found.
   
 }
 
