@@ -355,6 +355,7 @@ namespace RavlN {
     SArray1dC<DataT> Array()
     { return Body().Array(); }
     //: Access data as array.
+    // Obsolete, use SArray1d() instread. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -363,11 +364,28 @@ namespace RavlN {
     const SArray1dC<DataT> Array() const
     { return Body().Array(); }
     //: Access data as array.
+    // Obsolete, use SArray1d() instread. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
     // while its in use. 
     
+    SArray1dC<DataT> SArray1d()
+    { return Body().SArray1dC(); }
+    //: Access data as array.
+    // Note: The returned array is a direct access
+    // to the internal data structure, no operations
+    // that modify the collection should be performed
+    // while its in use.
+
+    const SArray1dC<DataT> SArray1d() const
+    { return Body().SArray1dC(); }
+    //: Access data as array.
+    // Note: The returned array is a direct access
+    // to the internal data structure, no operations
+    // that modify the collection should be performed
+    // while its in use.
+
     CollectionC<DataT> Split(SizeT ne)
     { return Body().Split(ne); }
     //: Split the collection in two
