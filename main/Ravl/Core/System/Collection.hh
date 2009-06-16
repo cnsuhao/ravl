@@ -371,7 +371,7 @@ namespace RavlN {
     // while its in use. 
     
     SArray1dC<DataT> SArray1d()
-    { return Body().SArray1dC(); }
+    { return Body().SArray1d(); }
     //: Access data as array.
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
@@ -379,7 +379,7 @@ namespace RavlN {
     // while its in use.
 
     const SArray1dC<DataT> SArray1d() const
-    { return Body().SArray1dC(); }
+    { return Body().SArray1d(); }
     //: Access data as array.
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
