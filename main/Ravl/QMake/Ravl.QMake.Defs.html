@@ -545,7 +545,11 @@ as well.
       <LI><DT><A NAME="CCPPFLAGS"></A><B>CCPPFLAGS</B></DT>
         <DD>
           Flags that need to be passed to the C++ compiler.  Should be used
-          with the '+=' operator, to avoid cancelling other options.
+          with the '+=' operator, to avoid cancelling other options.  <p>For
+          example, to pass in a flag MYFLAG that your code can test with a
+          preprocessor directive such as <code>#if</code> or
+          <code>#ifdef</code>, you can use: </p>
+          <pre>    CCPPFLAGS += -DMYFLAG=3</pre>
           </DD><P></LI>
       <LI><DT><A NAME="CFLAGS"></A><B>CFLAGS</B></DT>
         <DD>
