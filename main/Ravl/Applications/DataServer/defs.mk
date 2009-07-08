@@ -18,4 +18,4 @@ MAINS= dsd.cc
 
 USESLIBS= RavlNet RavlOSIO 
 
-PROGLIBS= RavlImageIO RavlVideoIO RavlExtImgIO RavlImage
+PROGLIBS= RavlImageIO RavlVideoIO RavlExtImgIO RavlImage RavlImgIOV4L2.opt

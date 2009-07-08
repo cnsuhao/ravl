@@ -65,11 +65,11 @@ namespace RavlN {
   //!cwiz:author
   
   class DataServerVFSNodeC
-    : public RCHandleC<DataServerVFSNodeBodyC>
+    : public RCHandleVC<DataServerVFSNodeBodyC>
   {
   public:
     DataServerVFSNodeC(const StringC & nname,bool ncanWrite,bool isDir) 
-      : RCHandleC<DataServerVFSNodeBodyC>(*new DataServerVFSNodeBodyC(nname,ncanWrite,isDir))
+      : RCHandleVC<DataServerVFSNodeBodyC>(*new DataServerVFSNodeBodyC(nname,ncanWrite,isDir))
     {}
     //: Constructor. 
     //!cwiz:author
@@ -113,7 +113,7 @@ namespace RavlN {
     
   protected:
     DataServerVFSNodeC(DataServerVFSNodeBodyC &bod)
-     : RCHandleC<DataServerVFSNodeBodyC>(bod)
+     : RCHandleVC<DataServerVFSNodeBodyC>(bod)
     {}
     //: Body constructor. 
     
