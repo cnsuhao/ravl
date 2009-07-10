@@ -14,6 +14,8 @@ HEADERS=DataServer.hh DataServerVFSNode.hh DataServerVFSRealFile.hh DataServerVF
 
 SOURCES=DataServer.cc DataServerVFSNode.cc DataServerVFSRealFile.cc DataServerVFSRealDir.cc
 
+PLIB=RavlDataServer
+
 MAINS= dsd.cc
 
 USESLIBS= RavlNet RavlOSIO 
