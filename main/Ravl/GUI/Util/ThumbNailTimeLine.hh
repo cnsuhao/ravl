@@ -100,7 +100,7 @@ namespace RavlGUIN {
     //: Modify the image for thumbnail, scale it, label it....
     
   protected:
-    bool CommonCreate(GtkWidget *_widget);
+    virtual bool CommonCreate(GtkWidget *_widget);
     //: Create widget.
     
     virtual bool GUIUpdateDisplayRange();
