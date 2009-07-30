@@ -16,6 +16,7 @@ ifndef LIBFFMPEG_DEF
 
   LIBFFMPEG_INCLUDES := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config libavformat libavcodec --cflags-only-I)
   LIBFFMPEG_INCLUDES += $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config libswscale --silence-errors --cflags-only-I)
+  LIBFFMPEG_INCLUDES += -I/usr/include/libavformat -I/usr/include/libavcodec
   LIBFFMPEG_LIBS := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config libavformat libavcodec --libs)
   LIBFFMPEG_LIBS += $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config libswscale --silence-errors --libs)
 
