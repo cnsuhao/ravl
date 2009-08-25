@@ -27,6 +27,7 @@ namespace RavlImageN {
   
   ImgIOuEyeBaseC::ImgIOuEyeBaseC(const std::type_info &pixelType,UIntT cameraId)
     : m_triggerMode(TRIG_OFF),
+      m_rotation(ROT_0),
       m_state(UE_NotReady),
       m_snapshot(false),
       m_timeOutDelay(0.75)
@@ -108,7 +109,6 @@ namespace RavlImageN {
   // Should be called with camera lock aquired
   
   bool ImgIOuEyeBaseC::AllocateImages() {
-    
     // Allocate images.
     for(int i = 0;i < m_NumBuffers;i++) {
       // Free buffer is it exists.
@@ -184,8 +184,6 @@ namespace RavlImageN {
       }
     }
     
-    
-    
     // Find the last full frame to arrive.
     int dummy = 0;
     char *pMem,*pLast;
@@ -207,7 +205,90 @@ namespace RavlImageN {
       SysLog(SYSLOG_ERR) << "Failed to lock sequence buffer. ";
       return false;
     }
-    memcpy(buffer,pLast,ImageBufferSize());
+    // copy & rotate the image
+    switch(m_rotation) {
+      case ROT_0: {
+        memcpy(buffer, pLast, ImageBufferSize());
+        break;
+      }
+      case ROT_90: {
+        int width = m_captureSize.Cols();
+        int height = m_captureSize.Rows();
+        int imageLength = ImageBufferSize();
+        int pixelLen = m_bitsPerPixel / 8;
+
+        const char *srcPtr = pLast + (width - 1) * pixelLen;
+        char *resPtr = reinterpret_cast<char *>(buffer);
+        if(pixelLen == 1) {
+          for(int x = width; x > 0; x--) {
+            for(int y = height; y > 0; y--) {
+              *resPtr++ = *srcPtr;
+              srcPtr += width;
+            }
+            srcPtr -= imageLength + 1;
+          }
+        } else {
+          for(int x = width; x > 0; x--) {
+            for(int y = height; y > 0; y--) {
+              for(int z = 0; z < pixelLen; z++) {
+                *resPtr++ = *srcPtr++;
+              }
+              srcPtr += (width - 1) * pixelLen;
+            }
+            srcPtr -= imageLength + 1;
+          }
+        }
+        break;
+      }
+      case ROT_180: {
+        int imageLength = ImageBufferSize();
+        const char *srcPtr = pLast + imageLength - 1;
+        char *resPtr = reinterpret_cast<char *>(buffer);
+        int pixelLen = m_bitsPerPixel / 8;
+        if(pixelLen == 1) {
+          while(srcPtr >= pLast) {
+            *resPtr++ = *srcPtr--;
+          }
+        } else {
+          while(srcPtr >= pLast) {
+            for(int z = 0; z < pixelLen; z++) {
+              *resPtr++ = *srcPtr++;
+            }
+            srcPtr -= 2 * pixelLen;
+          }
+        }
+        break;
+      }
+      case ROT_270: {
+        int width = m_captureSize.Cols();
+        int height = m_captureSize.Rows();
+        int imageLength = ImageBufferSize();
+        int pixelLen = m_bitsPerPixel / 8;
+        const char *srcPtr = pLast + width * (height - 1) * pixelLen;
+        char *resPtr = reinterpret_cast<char *>(buffer);
+        if(pixelLen == 1) {
+          for(int x = width; x > 0; x--) {
+            for(int y = height; y > 0; y--) {
+              *resPtr++ = *srcPtr;
+              srcPtr -= width;
+            }
+            srcPtr += 1 + imageLength;
+          }
+        } else {
+          for(int x = width; x > 0; x--) {
+            for(int y = height; y > 0; y--) {
+              for(int z = 0; z < pixelLen; z++) {
+                *resPtr++ = *srcPtr++;
+              }
+              srcPtr -= (width - 1) * pixelLen;
+            }
+            srcPtr += 1 + imageLength;
+          }
+        }
+        break;
+      }
+    }
+
     RavlAssert(buffer != 0);
     if(is_UnlockSeqBuf(m_phf,imgId,pLast) != IS_SUCCESS) {
       SysLog(SYSLOG_ERR) << "Failed to unlock sequence buffer. ";
@@ -244,6 +325,10 @@ namespace RavlImageN {
       attrValue = g_triggerModeNames[m_triggerMode];
       return true;
     }
+    if(attrName == "rotation") {
+      attrValue = StringC((int)(m_rotation) * 90);
+      return true;
+    }
     if(attrName == "driver") {
       attrValue = "ueye";
       return true;
@@ -255,7 +340,6 @@ namespace RavlImageN {
     
     return false;
   }
-  
   
   
   bool ImgIOuEyeBaseC::HandleSetAttr(const StringC &attrName, const StringC &attrValue)
@@ -276,6 +360,16 @@ namespace RavlImageN {
       SysLog(SYSLOG_ERR) << "Failed to set unrecognised trigger mode '" << attrValue << "'. ";
       return true;
     }
+    if(attrName == "rotation") {
+      for(IntT i = 0; i < 360; i += 90) {
+        if(attrValue == StringC(i)) {
+          HandleSetAttr(attrName, i);
+          return true;
+        }
+      }
+      SysLog(SYSLOG_ERR) << "Failed to set unrecognised rotation '" << attrValue << "'. ";
+      return true;
+    }
     return false;
   }
   
@@ -285,18 +379,26 @@ namespace RavlImageN {
   {
     // Width
     if (attrName == "width") {
-      attrValue = m_captureSize.Cols();
+      attrValue = (m_rotation == ROT_0 || ROT_180) ? m_captureSize.Cols() : m_captureSize.Rows();
       return true;
     }
     
     // Height
     if (attrName == "height") {
-      attrValue = m_captureSize.Rows();
+      attrValue = (m_rotation == ROT_0 || ROT_180) ? m_captureSize.Rows() : m_captureSize.Cols();
       return true;
     }
     if(attrName == "trigger") {
       attrValue = static_cast<IntT>(m_triggerMode);
-      SignalAttrChange("trigger");
+      return true;
+    }
+    if(attrName == "rotation") {
+      switch(m_rotation) {
+        case ROT_0:   attrValue = 0;   break;
+        case ROT_90:  attrValue = 90;  break;
+        case ROT_180: attrValue = 180; break;
+        case ROT_270: attrValue = 270; break;
+      }
       return true;
     }
     if(attrName == "binning_vertical") {
@@ -347,15 +449,13 @@ namespace RavlImageN {
     ONDEBUG(SysLog(SYSLOG_DEBUG) << "ImgIOuEyeBaseC::SetAttr (int) " << attrName << " Value=" << attrValue << "\n");
     
     // Width
-    if (attrName == "width")
-    {
+    if (attrName == "width") {
       SysLog(SYSLOG_DEBUG) << "Setting width not implemented. ";
       return false;
     }
     
     // Height
-    if (attrName == "height")
-    {
+    if (attrName == "height") {
       SysLog(SYSLOG_DEBUG) << "Setting height not implemented. ";
       return false;
     }
@@ -372,7 +472,6 @@ namespace RavlImageN {
       }
       int ret;
       if(newTrig == TRIG_OFF && m_state == UE_TriggerWait && m_snapshot) {
-        
         // Switch out of trigger mode.
         m_state = UE_Running;
       }
@@ -403,6 +502,21 @@ namespace RavlImageN {
 
       return true;
     }
+
+    if(attrName == "rotation") {
+      RavlN::MutexLockC accessLock(m_accessMutex);
+      switch(attrValue) {
+      case 90:  m_rotation = ROT_90;  break;
+      case 180: m_rotation = ROT_180; break;
+      case 270: m_rotation = ROT_270; break;
+      default:  m_rotation = ROT_0;   break;
+      }
+      accessLock.Unlock();
+      SignalAttrChange("rotation");
+
+      return true;
+    }
+
     if(attrName == "binning_vertical") {
       std::cerr << "Binning modes=" << is_SetBinning(m_phf,IS_GET_SUPPORTED_BINNING) << "\n";
       RavlN::MutexLockC accessLock(m_accessMutex);
@@ -933,6 +1047,13 @@ namespace RavlImageN {
     // Timeout delay
     attrCtrl.RegisterAttribute(AttributeTypeNumC<RealT>("timeout", "Timeout period for image capture", true, true, 0.01,100,0.01,m_timeOutDelay));
     
+    // Setup rotation modes.
+    DListC<StringC> rotationList;
+    for(int i = 0; i < 360; i += 90)
+      rotationList.InsLast(StringC(i));
+    attrCtrl.RegisterAttribute(AttributeTypeEnumC("rotation", "Image rotation.", true, true, rotationList, rotationList.First()));
+
+    attrCtrl.RegisterAttribute(AttributeTypeBoolC("trigger_soft", "Set off a software trigger", false, true,false));
     
     
     return true;
