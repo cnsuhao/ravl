@@ -525,10 +525,17 @@ static void open_video(AVFormatContext *oc, AVStream *st)
         av_freep(&pFormatCtx->streams[i]);
     }
 
+#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
     if (!(fmt->flags & AVFMT_NOFILE)) {
         /* close the output file */
         url_fclose(pFormatCtx->pb);
     }
+#else
+    if (!(fmt->flags & AVFMT_NOFILE)) {
+        /* close the output file */
+        url_fclose(&pFormatCtx->pb);
+    }
+#endif
 
     /* free the stream */
     av_free(pFormatCtx);
