@@ -17,13 +17,13 @@
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/String.hh"
-
+/*
 extern "C" {
     #include <libavformat/avformat.h>
     #include <libswscale/swscale.h>
     #include <libavcodec/avcodec.h>
 }
-
+*/
 #define DODEBUG 0
 
 #if DODEBUG

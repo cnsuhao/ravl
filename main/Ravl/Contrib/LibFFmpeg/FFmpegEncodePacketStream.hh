@@ -21,12 +21,12 @@
 #include "Ravl/Image/ByteRGBValue.hh"
 
 extern "C" {
-//#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
+#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
-//#else 
-//#include <avformat.h>
-//#endif
+#else 
+#include <avformat.h>
+#endif
 }
 
 namespace RavlN {
