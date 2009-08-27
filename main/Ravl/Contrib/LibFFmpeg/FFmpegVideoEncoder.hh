@@ -18,9 +18,16 @@
 
 extern "C" {
 struct SwsContext;
+}
+
+extern "C" {
+#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
 #include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
 #include <libavcodec/avcodec.h>
+#else 
+#include <avformat.h>
+#include <avcodec.h>
+#endif
 }
 
 namespace RavlN {
