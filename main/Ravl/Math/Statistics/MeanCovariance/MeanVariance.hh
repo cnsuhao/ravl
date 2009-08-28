@@ -51,12 +51,16 @@ namespace RavlN {
     RealT Variance() const
     { return (var<0.0) ? 0.0 : var; }
     //: Access the variance.
-    
-    SizeT Number() const
+
+    const RealT &RawVariance() const
+    { return var; }
+    //: Access the variance, this isn't limited to values zero or above.
+
+    const SizeT &Number() const
     { return n; }
     //: Access the number of samples.
     
-    RealT Mean() const
+    const RealT &Mean() const
     { return mean; }
     //: Access the mean.
     
