@@ -190,11 +190,12 @@ namespace RavlN {
                                              SWS_BICUBIC, NULL, NULL, NULL);
             //#else
             //    img_convert((AVPicture *)pFrameRGB, PIX_FMT_RGB24, (AVPicture*)pFrame, pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height);
-            #endif
+            //#endif
             if (img_convert_ctx == NULL) {
                 fprintf(stderr, "Cannot initialize the conversion context\n");
                 exit(1);
             }
+            #endif
         }
         
     AVFrame *picture;
