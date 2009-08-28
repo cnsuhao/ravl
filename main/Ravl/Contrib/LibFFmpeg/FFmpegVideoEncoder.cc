@@ -22,7 +22,7 @@
 #include "Ravl/PointerManager.hh"
 #include "Ravl/StrStream.hh"
 #include "Ravl/BinStream.hh"
-#include "Ravl/DP/MemIO.hh"
+
 
 #if LIBAVFORMAT_VERSION_INT >= ((51<<16)+(12<<8)+1)
 #define LIBAVFORMAT_USE_SWSCALER
@@ -182,11 +182,15 @@ namespace RavlN {
            passing the same picture again */
     } else {
         if (img_convert_ctx == NULL) {
+            #ifdef LIBAVFORMAT_USE_SWSCALER
             img_convert_ctx = sws_getContext(img.Cols(), img.Rows(),
                                              PIX_FMT_RGB24,
                                              img.Cols(), img.Rows(),
                                              PIX_FMT_YUV420P,
                                              SWS_BICUBIC, NULL, NULL, NULL);
+            //#else
+            //    img_convert((AVPicture *)pFrameRGB, PIX_FMT_RGB24, (AVPicture*)pFrame, pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height);
+            #endif
             if (img_convert_ctx == NULL) {
                 fprintf(stderr, "Cannot initialize the conversion context\n");
                 exit(1);
@@ -226,8 +230,12 @@ namespace RavlN {
            *r = img_it.Data().Blue();
            r++;
         }
+        #ifdef LIBAVFORMAT_USE_SWSCALER
         sws_scale(img_convert_ctx, tmp_picture->data, tmp_picture->linesize,
                   0, c->height, out_picture->data, out_picture->linesize);
+        #else
+        img_convert((AVPicture *)tmp_picture, PIX_FMT_RGB24, (AVPicture*)out_picture, PIX_FMT_YUV420P, img.Cols(), img.Rows());
+        #endif
     }
    if (pFormatCtx->oformat->flags & AVFMT_RAWPICTURE) {
         AVPacket pkt;
@@ -286,7 +294,9 @@ namespace RavlN {
     }
     frame_count++;
     delete video_outbuf;
+    #ifdef LIBAVFORMAT_USE_SWSCALER
     sws_freeContext(pSWSCtx);
+    #endif
     av_free(out_picture_buf);
     av_free(picture_buf2);
     return true;
