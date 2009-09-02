@@ -13,9 +13,9 @@
 #include "Ravl/BlkQueue.hh"
 #include "Ravl/Tuple2.hh"
 
+#include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/DataServer/DataServerVFSRealFile.hh"
 #include "Ravl/DataServer/DataServerVFSRealDir.hh"
-#include "DataServerVFSNode.hh"
 
 #define DODEBUG 0
 #if DODEBUG
