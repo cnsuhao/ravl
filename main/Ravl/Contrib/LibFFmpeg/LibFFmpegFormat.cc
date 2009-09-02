@@ -17,14 +17,11 @@
 
 #include "Ravl/Image/LibFFmpegFormat.hh"
 #include "Ravl/Image/ImgIOFFmpeg.hh"
-#include "Ravl/Image/ImgDPOFFmpeg.hh"
 #include <ctype.h>
 #include "Ravl/DP/ByteFileIO.hh"
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/Image/FFmpegPacketStream.hh"
-#include "Ravl/Image/FFmpegEncodePacketStream.hh"
 #include "Ravl/Image/FFmpegVideoDecoder.hh"
-#include "Ravl/Image/FFmpegVideoEncoder.hh"
 
 extern "C" {
 #if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
@@ -95,17 +92,9 @@ namespace RavlImageN
   const type_info &FileFormatLibFFmpegBodyC::ProbeSave(const StringC &filename,
                                                        const type_info &obj_type,
                                                        bool forceFormat ) const
-  { 
-    if (IsOutPutSupported(filename.chars()))
-    {
-      ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeSave(const StringC&,OStreamC&,...) supported ffmpeg file  (" << filename << ")" << endl);
-      return typeid(ImageC<ByteRGBValueC>);
-    }
-    
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeSave(const StringC&,OStreamC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
-    return typeid(void);
+  {
     //ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeSave(const StringC&,...) not supported" << endl);
-    //return typeid(void);   
+    return typeid(void);   
   }
 
 
@@ -133,36 +122,6 @@ namespace RavlImageN
 
   DPOPortBaseC FileFormatLibFFmpegBodyC::CreateOutput(const StringC &filename, const type_info &obj_type) const
   {
-   /////////////////////////////////////////////////////////////////////////////////////
-/////Think i need to write this method to enable writing codecs in Ravl with ffmpeg.
-
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) called (" << filename << ")" << endl);
-    
-    if (IsOutPutSupported(filename.chars()))
-    {
-      //return SPort(DPIByteFileC(fn) >> ImgILibFFmpegC(true));
-      FFmpegEncodePacketStreamC packetStream(filename);
-      IntT codecId = -1;
-      IntT videoStreamId = -1;
-        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) if(!packetStream. " << endl);
-      if(!packetStream.FirstVideoStream(videoStreamId,codecId)) {
-        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) error. " << endl);
-        return DPOPortBaseC();
-      }
-        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) return ImgDPOFFmpeg. " << endl);
-        ImgDPOFFmpegC<ImageC<ByteRGBValueC> > temp(packetStream,videoStreamId,codecId);
-        ONDEBUG(cerr << "after ImgDPOFFmpegC " << endl);
-        ImageC<ByteRGBValueC> brgb;
-        IntT result;
-        ONDEBUG(cerr << "call put " << result << " temp.Put(brbg).typeid() is " << typeid(temp).name() <<  endl);
-        result = temp.IsPutReady();  //Put(brgb);
-        ONDEBUG(cerr << "result is " << result << endl);
-        return temp;
-    }
-    
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
-
-///////////////////////////////////////////
     return DPOPortBaseC();  
   }
 
@@ -200,19 +159,7 @@ namespace RavlImageN
     return ret;
   }
   
-  bool FileFormatLibFFmpegBodyC::IsOutPutSupported(const char *filename) const
-  {
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::IsOutPutSupported(const char *) called (" << filename << ")" << endl);
-    FFmpegEncodePacketStreamC stream(true);
-    bool ret = false;
-    if(stream.Open(filename)) {
-      //ret = stream.CheckForVideo();
-      ret = true;
-    }
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::IsOutPutSupported(const char *) " << (ret ? "succeeded" : "failed") << endl);
-    return ret;
-  }  
-
+  
   
   static FileFormatLibFFmpegC Init;  
 

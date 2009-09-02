@@ -71,9 +71,6 @@ namespace RavlImageN
   private:
     bool IsSupported(const char *filename) const;
     //: Is this file supported by FFmpeg?
-
-    bool IsOutPutSupported(const char *filename) const;
-    //: Is this output format supported by FFmpeg?
   };
   
   

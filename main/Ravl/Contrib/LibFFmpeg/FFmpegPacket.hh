@@ -16,7 +16,7 @@
 #endif
 
 #include "Ravl/RefCounter.hh"
-#include <iostream>
+
 //link ffmpeg as a purely c library since all c++ wrapper functions were removed
 extern "C" {
 #if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
@@ -36,7 +36,7 @@ extern "C" {
 #define   AV_NOPTS_VALUE1  0x8000000000000000LL
 
 namespace RavlN {
-using namespace std;
+
   //! userlevel=Develop
   //: FFmpeg data packet.
   
@@ -52,30 +52,13 @@ using namespace std;
     //: Destructor.
     
     AVPacket &Packet()
-    { 
-      return packet; }
+    { return packet; }
     //: Access packet.
     
     IntT StreamIndex() const
     { return packet.stream_index; }
     //: Access stream index of packet.
     
-    void setPacket(AVPacket &pak) {
-       packet = pak;}
-
-    void setWidthHeight(SizeT wid,SizeT hgt) {
-       width = wid;
-       height = hgt;
-    }
-
-    IntT getWidth() {
-       return width;
-    }
- 
-    IntT getHeight() {
-       return height;
-    }
-
     ByteT *Data()
     { return packet.data; }
     //: Access data.
@@ -97,8 +80,7 @@ using namespace std;
     //: Access packet flags
     
   protected:
-    mutable AVPacket packet;
-    mutable IntT width,height;
+    AVPacket packet;
   };
   
   //! userlevel=Normal
@@ -111,8 +93,7 @@ using namespace std;
   public:
     FFmpegPacketC(bool) 
       : RCHandleC<FFmpegPacketBodyC>(*new FFmpegPacketBodyC())
-    { 
-      }
+    {}
     //: Constructor. 
     //!cwiz:author
     
@@ -122,26 +103,10 @@ using namespace std;
     // Creates an invalid constructor.
     
     AVPacket & Packet() 
-    { 
-      return Body().Packet(); }
+    { return Body().Packet(); }
     //: Access packet. 
     //!cwiz:author
     
-    void setPacket(AVPacket &pak) {
-    return Body().setPacket(pak);}
- 
-    void setWH(SizeT wid,SizeT hgt) {
-       return Body().setWidthHeight(wid,hgt);
-    }
-
-    IntT getWidth() {
-       return Body().getWidth();
-    }
-
-    IntT getHeight() {
-       return Body().getHeight();
-    }
-
     IntT StreamIndex() const
     { return Body().StreamIndex(); }
     //: Access stream index of packet.
