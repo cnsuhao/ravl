@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERVFSREALFILE_HEADER
 #define RAVL_DATASERVERVFSREALFILE_HEADER 1
-//! rcsid="$Id$"
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/OS/Filename.hh"
@@ -56,6 +55,10 @@ namespace RavlN {
     virtual bool OpenOPort(DListC<StringC> &remainingPath,const StringC &dataType,NetOSPortServerBaseC &port);
     //: Open output port.
     
+    virtual bool Delete();
+    //: Delete the physical media associated with the node.
+    //!return: True if successfully deleted.
+
   protected:
     bool OpenFileRead(const StringC &typePref);
     //: Open file and setup cache for reading.
@@ -74,6 +77,10 @@ namespace RavlN {
     
     bool DisconnectOPortClient();
     //: Called if when output file client disconnect it.
+
+    bool DeleteOnClose();
+    //: Call to check there are no open ports, then delete the file.
+    //!return: True if successfully deleted.
     
     MutexC access; // Access control for object.
     
@@ -90,7 +97,8 @@ namespace RavlN {
     
     bool canSeek;
     bool multiWrite; // Can multiple clients write to the same file ?
-    
+    bool deleteOnClose;
+
     friend class DataServerVFSRealFileC;
   };
   

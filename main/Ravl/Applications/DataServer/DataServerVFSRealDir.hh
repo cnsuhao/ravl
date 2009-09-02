@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERVFSREALDIR_HEADER
 #define RAVL_DATASERVERVFSREALDIR_HEADER 1
-//! rcsid="$Id$"
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/DataServer/DataServerVFSRealFile.hh"
@@ -24,7 +23,7 @@ namespace RavlN {
     : public DataServerVFSNodeBodyC
   {
   public:
-    DataServerVFSRealDirBodyC(const StringC &vname,const StringC &nRealDirname,bool canWrite);
+    DataServerVFSRealDirBodyC(const StringC &vname,const StringC &nRealDirname,bool canWrite,bool canCreate_);
     //: Constructor.
     
     ~DataServerVFSRealDirBodyC();
@@ -43,6 +42,19 @@ namespace RavlN {
     virtual bool OpenOPort(DListC<StringC> &remainingPath,const StringC &dataType,NetOSPortServerBaseC &port);
     //: Open output port.
     
+    virtual bool Delete(DListC<StringC>& remainingPath);
+    //: Delete the physical media of the target path within the node.
+    //!param: remainingPath - List of strings containing the path elements to the target within the node.
+    //!return: True if successfully deleted.
+
+    virtual bool QueryNodeSpace(const StringC& remainingPath, Int64T& total, Int64T& used, Int64T& available);
+    //: Query physical media details for the target path within the node.
+    //!param: remainingPath - List of strings containing the path elements to the target within the node.
+    //!param: total - Returns the space allocated for the partition containing the target path in bytes (both free and used). -1 if not applicable.
+    //!param: used - Returns the space used on the partition containing the target path in bytes. -1 if not applicable.
+    //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
+    //!return: True if the query executed successfully.
+
   protected:
     bool OpenVFSFile(DListC<StringC> &remainingPath,DataServerVFSRealFileC &rfile,bool forWrite = false);
     //: Open VFS file.
@@ -51,6 +63,8 @@ namespace RavlN {
     HashC<StringC,DataServerVFSRealFileC> name2file;
     
     FilenameC realDirname;
+
+    bool canCreate;
   };
   
   //! userlevel=Normal
@@ -61,8 +75,8 @@ namespace RavlN {
     : public DataServerVFSNodeC
   {
   public:
-    DataServerVFSRealDirC(const StringC & vname,const StringC & nRealDirname,bool canWrite = false) 
-      : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(vname,nRealDirname,canWrite))
+    DataServerVFSRealDirC(const StringC & vname,const StringC & nRealDirname,bool canWrite = false, bool canCreate = false)
+      : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(vname,nRealDirname,canWrite,canCreate))
     {}
     //: Constructor. 
     //!cwiz:author

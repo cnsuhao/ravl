@@ -66,6 +66,10 @@ namespace RavlN {
     
     bool Close();
     //: Close down manager.
+
+    bool IsOpen() const
+    { return managerOpen; }
+    //: Is the manager open?
     
     bool WaitForTerminate();
     //: Wait until the server has exited.

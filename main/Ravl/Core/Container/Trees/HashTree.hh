@@ -7,7 +7,6 @@
 #ifndef RAVL_HASHTREE_HEADER
 #define RAVL_HASHTREE_HEADER 1
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Core.Trees"
 //! lib=RavlCore
@@ -208,6 +207,10 @@ namespace RavlN {
     //: Add a sub tree
     // If overWrite is true the node is replaced if it already exists.
     // returns false if node is not added because it exists.
+
+    bool Remove(const KeyT& key);
+    //: Remove a child.
+    //!return: True if node successfully removed.
     
     HashC<KeyT,HashTreeNodeC<KeyT,DataT> > &Children()
     { return children; }
@@ -303,6 +306,11 @@ namespace RavlN {
     // If overWrite is true the node is replaced if it already exists.
     // returns false if node is not added because it exists.
     
+    bool Remove(const KeyT& key)
+    { return Body().Remove(key); }
+    //: Remove a child.
+    //!return: True if node successfully removed.
+
     HashC<KeyT,HashTreeNodeC<KeyT,DataT> > &Children()
     { return Body().Children(); }
     //: Access table of children.
@@ -413,6 +421,17 @@ namespace RavlN {
     return true;
   }
   
+  //: Remove a child.
+  //!return: True if node successfully removed.
+
+  template<class KeyT,class DataT>
+  bool HashTreeBodyC<KeyT,DataT>::Remove(const KeyT& key)
+  {
+    if (children.Lookup(key))
+      return children.Del(key);
+    return false;
+  }
+
   //: Follow list of keys to a node.
   // If node is not found then an invalid handle is returned.
   

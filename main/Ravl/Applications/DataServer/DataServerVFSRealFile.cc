@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 
 #include "Ravl/DataServer/DataServerVFSRealFile.hh"
 #include "Ravl/OS/NetPortManager.hh"
@@ -14,7 +13,7 @@
 #include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/DP/FileFormatDesc.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -31,7 +30,8 @@ namespace RavlN {
       cacheSize(0),
       realFilename(nRealFilename),
       canSeek(true),
-      multiWrite(false)
+      multiWrite(false),
+      deleteOnClose(false)
   {
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC, Called VName=" << vname << " \n");
   }
@@ -39,8 +39,10 @@ namespace RavlN {
   //: Destructor.
   
   DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC() {
+    MutexLockC lock(access);
     CloseIFile();
     CloseOFile();
+    DeleteOnClose();
   }
   
   //: Configure node with given setup.
@@ -181,6 +183,21 @@ namespace RavlN {
     
     return true;
   }
+
+
+
+  bool DataServerVFSRealFileBodyC::Delete()
+  {
+    if (!CanWrite())
+    {
+      cerr << "DataServerVFSRealFileBodyC::Delete trying to delete read-only file '" << name << "'" << endl;
+      return false;
+    }
+
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::Delete marking for delete" << endl);
+    deleteOnClose = true;
+    return true;
+  }
   
   //: Open file and setup cache.
   
@@ -275,7 +292,6 @@ namespace RavlN {
   //: Close file and discard cache.
   
   bool DataServerVFSRealFileBodyC::CloseIFile() {
-    MutexLockC lock(access);
     ispShare.Invalidate();
     return true;
   }
@@ -283,7 +299,6 @@ namespace RavlN {
   //: Close output file 
   
   bool DataServerVFSRealFileBodyC::CloseOFile() {
-    MutexLockC lock(access);
     oport.Invalidate();
     return true;
   }
@@ -291,11 +306,11 @@ namespace RavlN {
   //: Called if when output file client disconnect it.
   
   bool DataServerVFSRealFileBodyC::DisconnectOPortClient() {
-    cerr << "DataServerVFSRealFileBodyC::DisconnectOPortClient(), Called. Ref=" << oport.References() << "\n";
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectOPortClient(), Called. Ref=" << oport.References() << "\n");
     MutexLockC lock(access);
-    if(oport.References() == 1) { // Are all clients gone ?
-      cerr << "DataServerVFSRealFileBodyC::DisconnectOPortClient(), Dropping output port. \n";
-      oport.Invalidate();
+    if(oport.IsValid() && oport.References() <= 2) { // Are all client references gone? Last two are member variable and disconnect signal.
+      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectOPortClient(), Dropping output port. \n");
+      CloseOFile();
     }
     return true;
   }
@@ -304,8 +319,30 @@ namespace RavlN {
   
   bool DataServerVFSRealFileBodyC::ZeroIPortClients() {
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClients, Called \n");
+    MutexLockC lock(access);
     CloseIFile();
     return true;
   }
 
+
+
+  bool DataServerVFSRealFileBodyC::DeleteOnClose()
+  {
+    if (deleteOnClose)
+    {
+      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DeleteOnClose" << \
+              " oport=" << (oport.IsValid() ? oport.References() : 0) << \
+              " ispShare=" << (ispShare.IsValid() ? ispShare.References() : 0) << endl);
+      
+      const int references = (oport.IsValid() ? oport.References() : 0) + (ispShare.IsValid() ? ispShare.References() : 0);
+      if (references == 0)
+      {
+        ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DeleteOnClose deleting '" << realFilename << "'" << endl);
+        return realFilename.Exists() && realFilename.Remove();
+      }
+    }
+
+    return false;
+  }
+  
 }
