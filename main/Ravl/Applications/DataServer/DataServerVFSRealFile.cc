@@ -22,18 +22,17 @@
 
 namespace RavlN {
   
-  
   //: Constructor.
   
-  DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC(const StringC &vname,const StringC &nRealFilename,bool canWrite)
-    : DataServerVFSNodeBodyC(vname,canWrite,false),
+  DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC(const StringC &vname,const StringC& npath,const StringC &nRealFilename,bool canWrite)
+    : DataServerVFSNodeBodyC(vname,npath,canWrite,false),
       cacheSize(0),
       realFilename(nRealFilename),
       canSeek(true),
       multiWrite(false),
       deleteOnClose(false)
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC, Called VName=" << vname << " \n");
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC, Called name=" << name << " path=" << path << "\n");
   }
   
   //: Destructor.
@@ -338,7 +337,12 @@ namespace RavlN {
       if (references == 0)
       {
         ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DeleteOnClose deleting '" << realFilename << "'" << endl);
-        return realFilename.Exists() && realFilename.Remove();
+        bool deleted = realFilename.Exists() && realFilename.Remove();
+
+        if (deleted and sigOnDelete.IsValid())
+          sigOnDelete(AbsoluteName());
+        
+        return deleted;
       }
     }
 

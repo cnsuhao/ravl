@@ -11,6 +11,7 @@
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/Text/ConfigFile.hh"
+#include "Ravl/Threads/Signal1.hh"
 
 namespace RavlN {
   
@@ -24,7 +25,7 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
-    DataServerVFSNodeBodyC(const StringC &nname,bool ncanWrite,bool isDir);
+    DataServerVFSNodeBodyC(const StringC &nname,const StringC& npath,bool ncanWrite,bool isDir);
     //: Constructor.
     
     virtual bool Configure(const ConfigFileC &config);
@@ -33,6 +34,13 @@ namespace RavlN {
     const StringC &Name() const
     { return name; }
     //: Get name of node.
+
+    const StringC Path() const
+    { return path; }
+    //: Get the node path.
+
+    const StringC AbsoluteName();
+    //: Get the absolute name of the node.
     
     virtual bool CanWrite() const
     { return canWrite; }
@@ -56,7 +64,7 @@ namespace RavlN {
     //: Delete the physical media associated with the node.
     //!return: True if successfully deleted.
 
-    virtual bool Delete(DListC<StringC>& remainingPath);
+    virtual bool Delete(const DListC<StringC>& remainingPath);
     //: Delete the physical media of the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
     //!return: True if successfully deleted.
@@ -70,11 +78,17 @@ namespace RavlN {
     //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
 
+    void SetDeleteSignal(Signal1C<StringC>& sigOnDelete_)
+    { sigOnDelete = sigOnDelete_; }
+    //: Set the signal to be called when the node is deleted.
+
   protected:
     StringC name;
+    StringC path;
     bool isDirectory; // Is this a directory.
     bool canWrite;    // Write permission enabled ?
     bool verbose;
+    Signal1C<StringC> sigOnDelete;
   };
   
   //! userlevel=Normal
@@ -85,8 +99,8 @@ namespace RavlN {
     : public RCHandleVC<DataServerVFSNodeBodyC>
   {
   public:
-    DataServerVFSNodeC(const StringC & nname,bool ncanWrite,bool isDir) 
-      : RCHandleVC<DataServerVFSNodeBodyC>(*new DataServerVFSNodeBodyC(nname,ncanWrite,isDir))
+    DataServerVFSNodeC(const StringC & nname,const StringC& npath,bool ncanWrite,bool isDir)
+      : RCHandleVC<DataServerVFSNodeBodyC>(*new DataServerVFSNodeBodyC(nname,npath,ncanWrite,isDir))
     {}
     //: Constructor. 
     //!cwiz:author
@@ -104,7 +118,15 @@ namespace RavlN {
     { return Body().Name(); }
     //: Get name of node. 
     //!cwiz:author
-    
+
+    const StringC Path() const
+    { return Body().Path(); }
+    //: Get the node path.
+
+    const StringC AbsoluteName()
+    { return Body().AbsoluteName(); }
+    //: Get the absolute name of the node.
+
     bool CanWrite() const
     { return Body().CanWrite(); }
     //: Can write. 
@@ -133,7 +155,7 @@ namespace RavlN {
     //: Delete the physical media associated with the node.
     //!return: True if successfully deleted.
 
-    bool Delete(DListC<StringC> &remainingPath)
+    bool Delete(const DListC<StringC> &remainingPath)
     { return Body().Delete(remainingPath); }
     //: Delete the physical media of the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
@@ -148,6 +170,10 @@ namespace RavlN {
     //!param: used - Returns the space used on the partition containing the target path in bytes. -1 if not applicable.
     //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
+    
+    void SetDeleteSignal(Signal1C<StringC>& sigOnDelete_)
+    { Body().SetDeleteSignal(sigOnDelete_); }
+    //: Set the signal to be called when the node is deleted.
     
   protected:
     DataServerVFSNodeC(DataServerVFSNodeBodyC &bod)

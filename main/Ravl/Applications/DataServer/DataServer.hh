@@ -66,7 +66,7 @@ namespace RavlN {
     //!param: used - Returns the space used for stored footage in bytes. -1 if not applicable.
     //!param: available - Returns the space available for uploading footage in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
-    
+
   protected:
     bool HandleRequestIPort(StringC name,StringC dataType,NetISPortServerBaseC &port);
     //: Handle a request for an input port.
@@ -83,6 +83,9 @@ namespace RavlN {
     //!param:remainingPath - Remainder of path after last node has been found.
     // Returns true if node found successfully, false if the path corresponds to no known entry in the filesystem.
 
+    virtual void ZeroOwners();
+    //: Owning handles has dropped to zero.
+    
     MutexC m_access;
     HashTreeC<StringC,DataServerVFSNodeC> m_vfs; // Virtual file system.
 
@@ -97,7 +100,7 @@ namespace RavlN {
   //!cwiz:author
   
   class DataServerC
-    : public NetPortManagerC
+  : public NetPortManagerC
   {
   public:
     DataServerC(const StringC & name) 
@@ -152,8 +155,8 @@ namespace RavlN {
     //!return: True if the query executed successfully.
 
   protected:
-    DataServerC(DataServerBodyC &bod)
-     : NetPortManagerC(bod)
+    DataServerC(DataServerBodyC& body, RCLayerHandleT handleType = RCLH_OWNER)
+    : NetPortManagerC(body, handleType)
     {}
     //: Body constructor. 
     

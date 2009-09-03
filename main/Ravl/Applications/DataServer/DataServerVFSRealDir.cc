@@ -31,8 +31,8 @@ namespace RavlN {
   
   //: Constructor.
   
-  DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const StringC &vname,const StringC &nRealDirname,bool canWrite,bool canCreate_)
-    : DataServerVFSNodeBodyC(vname,canWrite,true),
+  DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const StringC &vname,const StringC& npath,const StringC &nRealDirname,bool canWrite,bool canCreate_)
+    : DataServerVFSNodeBodyC(vname,npath,canWrite,true),
       realDirname(nRealDirname),
       canCreate(canCreate_)
   {
@@ -95,7 +95,8 @@ namespace RavlN {
         cerr << "DataServerVFSRealDirBodyC::OpenIPort, Failed to open file '" << absFile << "' \n";
         return false;
       }
-      rfile = DataServerVFSRealFileC(vfile,absFile,canWrite);
+      rfile = DataServerVFSRealFileC(vfile,AbsoluteName(),absFile,canWrite);
+      rfile.SetDeleteSignal(sigOnDelete);
       name2file[vfile] = rfile;
     }
     lock.Unlock();
@@ -129,7 +130,7 @@ namespace RavlN {
   
 
 
-  bool DataServerVFSRealDirBodyC::Delete(DListC<StringC>& remainingPath)
+  bool DataServerVFSRealDirBodyC::Delete(const DListC<StringC>& remainingPath)
   {
     ONDEBUG(cerr << "DataServerVFSRealDirBodyC::Delete '" << name << "' for '" << StringListC(remainingPath).Cat("/") << "'" << endl);
     if (!canWrite)
@@ -159,8 +160,9 @@ namespace RavlN {
         cerr << "DataServerVFSRealDirBodyC::Delete failed to find file '" << targetFilename << "' for '" << name << "'" << endl;
         return false;
       }
-      
-      targetFileNode = DataServerVFSRealFileC(targetFilename, targetFile, canWrite);
+
+      targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
+      targetFileNode.SetDeleteSignal(sigOnDelete);
     }
 
     RavlAssert(targetFileNode.IsValid());

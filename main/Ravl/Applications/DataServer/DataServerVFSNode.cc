@@ -18,13 +18,14 @@ namespace RavlN {
 
   //: Constructor.
   
-  DataServerVFSNodeBodyC::DataServerVFSNodeBodyC(const StringC &nname,bool ncanWrite,bool isDir)
+  DataServerVFSNodeBodyC::DataServerVFSNodeBodyC(const StringC &nname,const StringC& npath,bool ncanWrite,bool isDir)
     : name(nname),
+      path(npath),
       isDirectory(isDir),
       canWrite(ncanWrite),
       verbose(false)
   {
-    ONDEBUG(cerr << "DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called VName=" << nname << " Dir=" << isDir <<"\n");
+    ONDEBUG(cerr << "DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called name=" << name << " path=" << path << " isDir=" << isDir <<"\n");
   }
   
   //: Configure node with given setup.
@@ -42,6 +43,17 @@ namespace RavlN {
     else verbose = false;
     
     return true;
+  }
+
+
+
+  const StringC DataServerVFSNodeBodyC::AbsoluteName()
+  {
+    StringC absoluteName = path;
+    if (!absoluteName.IsEmpty())
+      absoluteName += "/";
+    absoluteName += name;
+    return absoluteName;
   }
 
   //: Open input port.
@@ -68,7 +80,7 @@ namespace RavlN {
 
 
 
-  bool DataServerVFSNodeBodyC::Delete(DListC<StringC>& remainingPath)
+  bool DataServerVFSNodeBodyC::Delete(const DListC<StringC>& remainingPath)
   {
     cerr << "DataServerVFSNodeBodyC::Delete not supported on '" << name << "' for '" << StringListC(remainingPath).Cat("/") << "'" << endl;
     return false;

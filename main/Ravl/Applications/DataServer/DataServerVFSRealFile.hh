@@ -24,7 +24,7 @@ namespace RavlN {
     : public DataServerVFSNodeBodyC
   {
   public:
-    DataServerVFSRealFileBodyC(const StringC &vname,const StringC &nRealFilename,bool canWrite);
+    DataServerVFSRealFileBodyC(const StringC &vname,const StringC& npath,const StringC &nRealFilename,bool canWrite);
     //: Constructor.
     
     ~DataServerVFSRealFileBodyC();
@@ -110,8 +110,8 @@ namespace RavlN {
     : public DataServerVFSNodeC
   {
   public:
-    DataServerVFSRealFileC(const StringC & vname,const StringC & nRealFilename,bool canWrite = false) 
-      : DataServerVFSNodeC(*new DataServerVFSRealFileBodyC(vname,nRealFilename,canWrite))
+    DataServerVFSRealFileC(const StringC & vname,const StringC& npath,const StringC & nRealFilename,bool canWrite = false)
+      : DataServerVFSNodeC(*new DataServerVFSRealFileBodyC(vname,npath,nRealFilename,canWrite))
     {}
     //: Constructor. 
     //!cwiz:author
@@ -151,6 +151,5 @@ namespace RavlN {
     friend class DataServerVFSRealFileBodyC;
   };
 }
-
 
 #endif

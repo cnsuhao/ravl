@@ -23,7 +23,7 @@ namespace RavlN {
     : public DataServerVFSNodeBodyC
   {
   public:
-    DataServerVFSRealDirBodyC(const StringC &vname,const StringC &nRealDirname,bool canWrite,bool canCreate_);
+    DataServerVFSRealDirBodyC(const StringC &vname,const StringC& npath,const StringC &nRealDirname,bool canWrite,bool canCreate_);
     //: Constructor.
     
     ~DataServerVFSRealDirBodyC();
@@ -42,7 +42,7 @@ namespace RavlN {
     virtual bool OpenOPort(DListC<StringC> &remainingPath,const StringC &dataType,NetOSPortServerBaseC &port);
     //: Open output port.
     
-    virtual bool Delete(DListC<StringC>& remainingPath);
+    virtual bool Delete(const DListC<StringC>& remainingPath);
     //: Delete the physical media of the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
     //!return: True if successfully deleted.
@@ -75,8 +75,8 @@ namespace RavlN {
     : public DataServerVFSNodeC
   {
   public:
-    DataServerVFSRealDirC(const StringC & vname,const StringC & nRealDirname,bool canWrite = false, bool canCreate = false)
-      : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(vname,nRealDirname,canWrite,canCreate))
+    DataServerVFSRealDirC(const StringC & vname,const StringC& npath,const StringC & nRealDirname,bool canWrite = false, bool canCreate = false)
+      : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(vname,npath,nRealDirname,canWrite,canCreate))
     {}
     //: Constructor. 
     //!cwiz:author

@@ -35,7 +35,7 @@ namespace RavlN {
     m_signalNodeError(StringC(), StringC())
   {
     // Setup root VFS node.
-    m_vfs.Data() = DataServerVFSNodeC("root",false,true);
+    m_vfs.Data() = DataServerVFSNodeC("","",false,true);
   }
   
   //: Open server connection.
@@ -89,20 +89,23 @@ namespace RavlN {
         
         // What kind of node is wanted ?
         StringC nodeType = subSection["NodeType"];
+        StringC nodePath = at.Data2().Data().AbsoluteName();
         DataServerVFSNodeC node;
         if(nodeType == "" || nodeType == "VDir") { // Virtual directory ?
-          node = DataServerVFSNodeC(subSection.Name(),false,true);
+          node = DataServerVFSNodeC(subSection.Name(),nodePath,false,true);
         } else if(nodeType == "RealFile") {        // Real file ?
-          node = DataServerVFSRealFileC(*it,subSection.Name());
+          node = DataServerVFSRealFileC(*it,nodePath,subSection.Name());
         } else if(nodeType == "RealDir") {
-          node = DataServerVFSRealDirC(*it,subSection.Name());
+          node = DataServerVFSRealDirC(*it,nodePath,subSection.Name());
         } else { // Something strange.
           cerr << "DataServerBodyC::ReadConfigFile, WARNING: Unknown node type '" << nodeType << "' in file '" << filename << "'\n";
           continue;
         }
         
-        // Add new node into tree.
         RavlAssert(node.IsValid());
+        node.SetDeleteSignal(m_signalNodeRemoved);
+        
+        // Add new node into tree.
         if(!at.Data2().Add(*it,node)) {
           cerr << "DataServerBodyC::ReadConfigFile, WARNING: Duplicate node entry '" << *it << "' in file '" << filename << "'\n";
           continue;
@@ -163,6 +166,17 @@ namespace RavlN {
     return true;
   }
 
+
+
+  void DataServerBodyC::ZeroOwners()
+  {
+    NetPortManagerBodyC::ZeroOwners();
+
+    m_vfs.Invalidate();
+  }
+
+
+
   bool DataServerBodyC::AddNode(const StringC& path, const StringC& nodeType, const HashC<StringC, StringC>& options)
   {
     MutexLockC lock(m_access);
@@ -183,12 +197,13 @@ namespace RavlN {
       }
 
       StringC virtualName = remainingPath.PopFirst();
-      ONDEBUG(cerr << "DataServerBodyC::AddNode virtualName '" << virtualName.chars() << "'" << endl);
+      StringC virtualPath = foundNode.Data().AbsoluteName();
+      ONDEBUG(cerr << "DataServerBodyC::AddNode path='" << path << "' virtualName='" << virtualName.chars() << "' virtualPath='" << virtualPath << "'" << endl);
       DataServerVFSNodeC newNode;
       if (nodeType == "" || nodeType == "VDir")
       {
         // Virtual directory
-        newNode = DataServerVFSNodeC(virtualName, false, true);
+        newNode = DataServerVFSNodeC(virtualName, virtualPath, false, true);
       }
       else
       {
@@ -204,7 +219,7 @@ namespace RavlN {
           if(nodeType == "RealFile")
           {
             // File
-            newNode = DataServerVFSRealFileC(virtualName, realName, canWrite);
+            newNode = DataServerVFSRealFileC(virtualName, virtualPath, realName, canWrite);
           }
           else
           {
@@ -215,7 +230,7 @@ namespace RavlN {
               options.Lookup("CanCreate", canCreateStr);
               bool canCreate = (canCreateStr == "1");
 
-              newNode = DataServerVFSRealDirC(virtualName, realName, canWrite, canCreate);
+              newNode = DataServerVFSRealDirC(virtualName, virtualPath, realName, canWrite, canCreate);
             }
             else
             {
@@ -232,6 +247,8 @@ namespace RavlN {
       }
 
       RavlAssert(newNode.IsValid());
+      newNode.SetDeleteSignal(m_signalNodeRemoved);
+      
       HashTreeC<StringC, DataServerVFSNodeC> vfsTree(foundNode);
       return vfsTree.Add(virtualName, newNode);
     }
@@ -332,7 +349,7 @@ namespace RavlN {
 
     return false;
   }
-  
+
   //: Handle a request for an input port.
   
   bool DataServerBodyC::HandleRequestIPort(StringC name,StringC dataType,NetISPortServerBaseC &port) {
