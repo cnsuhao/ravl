@@ -126,7 +126,10 @@ using namespace RavlImageN;
 
     if(useMarkUp) {      // do not fit AAM but use manual markup
       StringListC xmlStrlist(xmlFileName,"/");
-      AAMAppearanceC bestAM = AAMAppearanceC(LoadFeatureFile(xmlStrlist.Last(),markupDir,false,true));
+      HashC<IntT,IntT> typeMap;
+      HashC<StringC,IntT> namedTypeMap;
+      bool useTypeId;
+      AAMAppearanceC bestAM = AAMAppearanceC(LoadFeatureFile(xmlStrlist.Last(),markupDir,typeMap,namedTypeMap,useTypeId,false,true));
       AAMAppearanceC bestAMs = AAMAppearanceC(bestAM);
       if(useAM) {
         resAppear = bestAM;

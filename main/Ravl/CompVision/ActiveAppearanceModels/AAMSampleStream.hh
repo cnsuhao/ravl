@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2005, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -42,7 +42,7 @@ namespace RavlImageN {
                          const GaussConvolve2dC<RealT> &smooth,
                          const DListC<StringC> &fileList,
                          const StringC &dir,
-                         const StringC &mirrorFile, 
+                         const StringC &mirrorFile,
                          const UIntT incrSize,
                          bool ignoreSuspect = true
                          );
@@ -51,7 +51,7 @@ namespace RavlImageN {
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
 
-    virtual UIntT Size() const; 
+    virtual UIntT Size() const;
     //: Find the total size of the stream. (assuming it starts from 0)
 
     virtual Tuple2C<VectorC,VectorC> Get();
@@ -79,6 +79,9 @@ namespace RavlImageN {
     UIntT incrSize;  // Half number of displacements for each parameter when perturbing the model.
     bool done;  // Have all files been processed?
     bool m_ignoreSuspect;
+    HashC<IntT,IntT> m_typeMap;
+    HashC<StringC,IntT> m_namedTypeMap;
+    bool m_useTypeId;
   };
 
   //! userlevel=Advanced

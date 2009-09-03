@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2005, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -51,7 +51,7 @@
 #define OMNIAAM_USE_THINPLATEWARP 0
 // Allows to select whether piece-wise affine warping or thin-plate spline warping should be used.
 
-#if OMNIAAM_USE_THINPLATEWARP 
+#if OMNIAAM_USE_THINPLATEWARP
 #include "Ravl/Image/WarpThinPlateSpline.hh"
 #else
 #include "Ravl/Image/WarpMesh2d.hh"
@@ -72,13 +72,13 @@ namespace RavlImageN {
   {}
 
   //: Load from binary stream.
-  AAMAppearanceModelBodyC::AAMAppearanceModelBodyC(BinIStreamC &is) 
+  AAMAppearanceModelBodyC::AAMAppearanceModelBodyC(BinIStreamC &is)
     : RCBodyVC(is)
   {
     int version;
     ImageC<IntT> newMask;
     is >> version;
-    if(version != 1) 
+    if(version != 1)
       throw ExceptionOutOfRangeC("AAMAppearanceModelC::AAMAppearanceModelC(BinIStreamC &s), Bad version number in stream. ");
     is >> warpSigma;
     is >> shape;
@@ -94,13 +94,13 @@ namespace RavlImageN {
   }
 
   //: Load from binary stream.
-  AAMAppearanceModelBodyC::AAMAppearanceModelBodyC(istream &is) 
+  AAMAppearanceModelBodyC::AAMAppearanceModelBodyC(istream &is)
     : RCBodyVC(is)
   {
     int version;
     ImageC<IntT> newMask;
     is >> version;
-    if(version != 1) 
+    if(version != 1)
       throw ExceptionOutOfRangeC("AAMAppearanceModelC::AAMAppearanceModelC(istream &s), Bad version number in stream. ");
     is >> warpSigma >> shape >> newMask >> maskPoints >> appearanceModel >> invAppearanceModel >> warp >> eigenValues >> fixedMean >> pixelSize;
 ;
@@ -112,7 +112,7 @@ namespace RavlImageN {
     if(!RCBodyVC::Save(out))
       return false;
     int version = 1;
-    out << version << warpSigma << shape << mask << maskPoints << 
+    out << version << warpSigma << shape << mask << maskPoints <<
       appearanceModel << invAppearanceModel << warp << eigenValues << fixedMean << pixelSize;
     return true;
   }
@@ -122,8 +122,8 @@ namespace RavlImageN {
     if(!RCBodyVC::Save(out))
       return false;
     int version = 1;
-    out << ' ' << version << ' ' << warpSigma << ' ' << shape << ' ' << mask << ' ' 
-	<< maskPoints << ' ' << appearanceModel << ' ' << invAppearanceModel << ' ' 
+    out << ' ' << version << ' ' << warpSigma << ' ' << shape << ' ' << mask << ' '
+	<< maskPoints << ' ' << appearanceModel << ' ' << invAppearanceModel << ' '
 	<< warp << ' ' << eigenValues << ' ' << fixedMean << ' ' << pixelSize;
     return true;
   }
@@ -207,7 +207,7 @@ namespace RavlImageN {
   //: Warp appearance to the mean shape
   //  The input appearance 'inst' is warped such that its control points are located at the mean positions in the returned image.
   ImageC<ByteT> AAMAppearanceModelBodyC::WarpToMaskShape(const AAMAppearanceC &inst) const {
-#if OMNIAAM_USE_THINPLATEWARP 
+#if OMNIAAM_USE_THINPLATEWARP
     ImageC<ByteT> ret(maskSize);
     WarpThinPlateSplineC<ByteT> warp(warpSigma);
     warp.Apply(inst.Image(),Array1dC<Point2dC>(inst.Points()),maskPoints,ret);
@@ -234,10 +234,10 @@ namespace RavlImageN {
   bool AAMAppearanceModelBodyC::Design(const DListC<StringC> &fileList,
                                        const StringC &dir,
                                        const StringC &mirrorFile,
-                                       const Index2dC &newMaskSize, 
-                                       RealT varS, RealT varT, RealT varC, 
+                                       const Index2dC &newMaskSize,
+                                       RealT varS, RealT varT, RealT varC,
                                        UIntT maxS, UIntT maxT, UIntT maxC,
-                                       bool ignoreSuspect) 
+                                       bool ignoreSuspect)
   {
     // This implementation of the function Design avoids loading all the
     // data into memory, which keeps the memory requirement at a minimum
@@ -248,8 +248,11 @@ namespace RavlImageN {
 
     // Design the shape model.
     SampleC<AAMAppearanceC> appearanceSet;
-    appearanceSet = LoadFeatureSet(fileList,dir,ignoreSuspect,false);
-    
+    HashC<IntT,IntT> typeMap;
+    HashC<StringC,IntT> namedTypeMap;
+    bool useTypeId;
+    appearanceSet = LoadFeatureSet(fileList,dir,typeMap,namedTypeMap,useTypeId,ignoreSuspect,false);
+
     if(!mirrorFile.IsEmpty()) {
       cout << "Reflecting data. \n";
       AAMAppearanceMirrorC mirror(mirrorFile);
@@ -334,12 +337,12 @@ namespace RavlImageN {
     SampleVectorC textureValues(NbSamples);
     for(DLIterC<StringC> it(fileList);it;it++) {
       for (IntT k=1;k<=NoPerFile;k++) {
-        
-        AAMAppearanceC appear = LoadFeatureFile(*it,dir,ignoreSuspect);
+
+        AAMAppearanceC appear = LoadFeatureFile(*it,dir,typeMap,namedTypeMap,useTypeId,ignoreSuspect);
         // filter image
         appear.Image() = smooth.Apply(appear.Image());
        if (k == 2) {
-          appear = mirror.Reflect(appear);      
+          appear = mirror.Reflect(appear);
         }
 
         VectorC vec = RawParameters(appear);
@@ -389,11 +392,11 @@ namespace RavlImageN {
     SampleVectorC combinedValues(NbSamples);
     for(DLIterC<StringC> it(fileList);it;it++) {
       for (IntT k=1;k<=NoPerFile;k++) {
-        AAMAppearanceC appear = LoadFeatureFile(*it,dir,ignoreSuspect,true);
+        AAMAppearanceC appear = LoadFeatureFile(*it,dir,typeMap,namedTypeMap,useTypeId,ignoreSuspect,true);
         // filter image
         appear.Image() = smooth.Apply(appear.Image());
         if (k == 2) {
-          appear = mirror.Reflect(appear);      
+          appear = mirror.Reflect(appear);
         }
 
 	VectorC vec = RawParameters(appear);
@@ -495,7 +498,7 @@ namespace RavlImageN {
     // Warp it.
 
     ImageC<RealT> nimg(rng.IndexRange());
-#if OMNIAAM_USE_THINPLATEWARP 
+#if OMNIAAM_USE_THINPLATEWARP
     WarpThinPlateSplineC<RealT,RealT> warp(warpSigma);
     warp.Apply(image,Array1dC<Point2dC>(maskPoints),Array1dC<Point2dC>(pnts),nimg);
 #else
@@ -635,7 +638,7 @@ namespace RavlImageN {
 
     ImageC<RealT> nimg(maskSize);
     ONDEBUG(nimg.Fill(0));
-#if OMNIAAM_USE_THINPLATEWARP 
+#if OMNIAAM_USE_THINPLATEWARP
     WarpThinPlateSplineC<RealT,RealT> warp(warpSigma,true);
     warp.Apply(img,Array1dC<Point2dC>(pnts),Array1dC<Point2dC>(maskPoints),nimg);
 #else

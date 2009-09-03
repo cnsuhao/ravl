@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2005, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -24,6 +24,36 @@
 
 namespace RavlImageN {
 
+  bool LoadTypeMap(const StringC &filename, HashC<IntT,IntT> &typeMap, HashC<StringC,IntT> &namedTypeMap) {
+    IStreamC is(filename);
+    if(!is) {
+      cerr << "Failed to open map file '" << filename << "' \n";
+      return false;
+    }
+    IntT index = 0;
+    while(is) {
+      StringC line;
+      readline(is,line);
+      SubStringC ss = line.TopAndTail();
+      if(ss.Size() <= 0)
+        continue; // Skip empty lines.
+      if(ss.firstchar() == '#')
+        continue; // Skip comments.
+      IntT id;
+      StringC description;
+      int sep = ss.index(' ');
+      SubStringC s1 = ss.before(sep);
+      SubStringC s2 = ss.after(sep);
+      id = s1.IntValue();
+      description = s2;
+
+      namedTypeMap.Insert(description, index);
+      typeMap.Insert(id, index);
+      index++;
+    }
+    return true;
+  }
+
   static bool GenerateTypeMap(HashIterC<IntT, ImagePointFeatureC> fit,bool &useTypeId,HashC<IntT,IntT> &typeMap,HashC<StringC,IntT> &namedTypeMap) {
     // Check if we have feature type id's.
     if(fit.Data().TypeID() >= 0)
@@ -39,7 +69,7 @@ namespace RavlImageN {
       namedTypeMap[fit->Description()] = allocId;
       allocId++;
     }
-    //cout << "typeMap: " << typeMap << endl << "namedTypeMap: " << namedTypeMap << endl;
+    cout << "typeMap: " << typeMap << endl << "namedTypeMap: " << namedTypeMap << endl;
     return true;
   }
 
@@ -126,13 +156,14 @@ namespace RavlImageN {
   //!param: ignoreSuspect - Ignore XML files marked as "Suspect"? True = yes.
   //!param: loadImages - Load image in memory? True = yes.
   // Note that if 'loadImages' is set to false, only the shape of the model instance will be loaded.
-  AAMAppearanceC LoadFeatureFile(const StringC &file,const StringC & dir,bool ignoreSuspect,bool loadImages) {
+  AAMAppearanceC LoadFeatureFile(const StringC &file,
+                                   const StringC & dir,
+                                   HashC<IntT,IntT> &typeMap,
+                                   HashC<StringC,IntT> &namedTypeMap,
+                                   bool &useTypeId,
+                                   bool ignoreSuspect,
+                                   bool loadImages) {
     AAMAppearanceC appear;
-
-    HashC<IntT,IntT> typeMap;
-    HashC<StringC,IntT> namedTypeMap;
-
-    bool useTypeId = false;
 
     ImagePointFeatureSetC fs;
     StringC featureSetFile = dir + '/' + file;
@@ -148,17 +179,22 @@ namespace RavlImageN {
     if(typeMap.IsEmpty()) { // Do we need to build a type map ?
       GenerateTypeMap(fs.FeatureIterator(),useTypeId,typeMap,namedTypeMap);
     }
+    if (fs.Size() != (IntT)typeMap.Size()) {
+      cerr << "ERROR: File has wrong number of features '" << featureSetFile << "' \n";
+      cerr << fs.Size() << " " << typeMap.Size() << endl;
+      return appear;
+    }
     for(HashIterC<IntT, ImagePointFeatureC> fit(fs.FeatureIterator());fit;fit++) {
       if(useTypeId) {
         IntT id = fit->TypeID();
         if(id < 0) {
-          pnts[namedTypeMap[fit->Description()]] = fit.Data(); 
+          pnts[namedTypeMap[fit->Description()]] = fit.Data();
         } else {
           pnts[typeMap[id]] = fit.Data();
         }
       } else {
         // Use description, its more reliable.;
-        pnts[namedTypeMap[fit->Description()]] = fit.Data(); 
+        pnts[namedTypeMap[fit->Description()]] = fit.Data();
       }
     }
     ImageC<ByteT> img;
@@ -184,12 +220,15 @@ namespace RavlImageN {
   // Note that if 'loadImages' is set to false, only the shape of the model instance will be loaded.
   SampleC<AAMAppearanceC> LoadFeatureSet(const DListC<StringC> &files,
                                          const StringC & dir,
+                                         HashC<IntT,IntT> &typeMap,
+                                         HashC<StringC,IntT> &namedTypeMap,
+                                         bool &useTypeId,
                                          bool ignoreSuspect,
                                          bool loadImages
-                                         ) 
+                                         )
   {
     SampleC<AAMAppearanceC> appearanceSet;
-    
+
     DirectoryC md(dir);
     if(!md.IsValid()) {
       cerr << "Can't find directory '" << dir << "'\n";
@@ -199,9 +238,9 @@ namespace RavlImageN {
     appearanceSet = SampleC<AAMAppearanceC>(files.Size());
     cout << "Loading " << flush;
 
-    for(DLIterC<StringC> it(files);it;it++) {
+    for(DLIterC<StringC> it(files); it; it++) {
       AAMAppearanceC appear;
-      appear = LoadFeatureFile(*it,dir,ignoreSuspect,loadImages);
+      appear = LoadFeatureFile(*it, dir, typeMap, namedTypeMap, useTypeId, ignoreSuspect, loadImages);
       if (appear.IsValid()) {
         appearanceSet.Append(appear);
         //cout << "." << std::flush;
@@ -209,6 +248,7 @@ namespace RavlImageN {
         //cout << "x" << std::flush;
       }
     }
+    cout << "Number valid samples: " << appearanceSet.Size() << endl;
     cout  << "\n";
 
     return appearanceSet;
@@ -223,9 +263,12 @@ namespace RavlImageN {
   // Note that if 'loadImages' is set to false, only the shape of the model instance will be loaded.
   SampleC<AAMAppearanceC> LoadFeatureSet(const StringC &dir,
                                          const StringC &ext,
+                                         HashC<IntT,IntT> &typeMap,
+                                         HashC<StringC,IntT> &namedTypeMap,
+                                         bool &useTypeId,
                                          bool ignoreSuspect,
                                          bool loadImages
-                                         ) 
+                                         )
   {
     SampleC<AAMAppearanceC> appearanceSet;
     DirectoryC md(dir);
@@ -235,7 +278,7 @@ namespace RavlImageN {
     }
 
     DListC<StringC> files = md.List("",StringC(".") + ext);
-    appearanceSet = LoadFeatureSet(files,dir,ignoreSuspect,loadImages);
+    appearanceSet = LoadFeatureSet(files,dir,typeMap,namedTypeMap,useTypeId,ignoreSuspect,loadImages);
 
     return appearanceSet;
   }
