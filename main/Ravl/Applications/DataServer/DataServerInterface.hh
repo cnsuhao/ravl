@@ -8,6 +8,7 @@
 #define	_DATASERVERINTERFACE_H
 
 #include "Ravl/String.hh"
+#include "Ravl/Hash.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/Threads/Signal2.hh"
 
