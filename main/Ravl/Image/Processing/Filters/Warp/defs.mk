@@ -12,7 +12,7 @@ PACKAGE=Ravl/Image
 MAINS= doThinPlateWarp.cc 
 
 HEADERS=  WarpScale.hh WarpAffine.hh WarpProjective.hh \
-  WarpThinPlateSpline.hh WarpMesh2d.hh
+  WarpThinPlateSpline.hh WarpMesh2d.hh WarpScale2d.hh
 
 SOURCES=  WarpThinPlateSpline.cc WarpMesh2d.cc
 
