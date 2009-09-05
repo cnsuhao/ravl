@@ -284,6 +284,14 @@ namespace RavlN {
     { return IndexRange2dC(rows.IndexRange(),cols.IndexRange());  }
     //: Get the smallest integer range containing the real range.
 
+    RealRange2dC operator*(const TFVectorC<RealT,2> &scale) const
+    { return RealRange2dC(Range1() * scale[0],Range2() * scale[1]); }
+    //: Scale range
+
+    RealRange2dC operator*(RealT scale) const
+    { return RealRange2dC(Range1() * scale,Range2() * scale); }
+    //: Scale range
+
   protected:
     inline const RealRange2dC & Range() const
     { return(*this); }
