@@ -219,7 +219,13 @@ namespace RavlN {
           if(nodeType == "RealFile")
           {
             // File
-            newNode = DataServerVFSRealFileC(virtualName, virtualPath, realName, canWrite);
+            DataServerVFSRealFileC newFileNode(virtualName, virtualPath, realName, canWrite);
+
+            StringC fileFormatStr;
+            if (options.Lookup("FileFormat", fileFormatStr))
+              newFileNode.SetFileFormat(fileFormatStr);
+
+            newNode = newFileNode;
           }
           else
           {
@@ -230,7 +236,13 @@ namespace RavlN {
               options.Lookup("CanCreate", canCreateStr);
               bool canCreate = (canCreateStr == "1");
 
-              newNode = DataServerVFSRealDirC(virtualName, virtualPath, realName, canWrite, canCreate);
+              DataServerVFSRealDirC newDirectoryNode(virtualName, virtualPath, realName, canWrite, canCreate);
+
+              StringC fileFormatStr;
+              if (options.Lookup("FileFormat", fileFormatStr))
+                newDirectoryNode.SetFileFormat(fileFormatStr);
+
+              newNode = newDirectoryNode;
             }
             else
             {

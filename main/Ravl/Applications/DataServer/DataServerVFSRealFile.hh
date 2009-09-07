@@ -40,7 +40,11 @@ namespace RavlN {
     void SetDefaultType(const StringC &typeName)
     { defaultDataType = typeName; }
     //: Set default type name.
-    
+
+    void SetFileFormat(const StringC &fileFormat)
+    { defaultFileFormat = fileFormat; }
+    //: Set default file format.
+
     void SetCacheSize(UIntT size)
     { cacheSize = size; }
     //: Set cache size in number of items to cache.
@@ -85,6 +89,7 @@ namespace RavlN {
     MutexC access; // Access control for object.
     
     StringC defaultDataType;
+    StringC defaultFileFormat;
     DPTypeInfoC iTypeInfo; // Type info for input stream.
     
     DPISPortShareC<RCWrapAbstractC> ispShare; // Share for input port.
@@ -130,6 +135,10 @@ namespace RavlN {
     { return Body().SetDefaultType(typeName); }
     //: Set default type to be used on node.
     
+    void SetFileFormat(const StringC &fileFormat)
+    { Body().SetFileFormat(fileFormat); }
+    //: Set file format.
+
   protected:
     DataServerVFSRealFileC(DataServerVFSRealFileBodyC &bod)
      : DataServerVFSNodeC(bod)

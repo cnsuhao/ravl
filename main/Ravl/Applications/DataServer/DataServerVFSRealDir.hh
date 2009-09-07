@@ -35,7 +35,11 @@ namespace RavlN {
     const FilenameC &RealDirname() const
     { return realDirname; }
     //: Real filename.
-    
+
+    void SetFileFormat(const StringC& fileFormat)
+    { defaultFileFormat = fileFormat; }
+    //: Set the file format for all directory files.
+
     virtual bool OpenIPort(DListC<StringC> &remainingPath,const StringC &dataType,NetISPortServerBaseC &port);
     //: Open input port.
     
@@ -63,6 +67,7 @@ namespace RavlN {
     HashC<StringC,DataServerVFSRealFileC> name2file;
     
     FilenameC realDirname;
+    StringC defaultFileFormat;
 
     bool canCreate;
   };
@@ -86,6 +91,10 @@ namespace RavlN {
     //: Real filename. 
     //!cwiz:author
     
+    void SetFileFormat(const StringC& fileFormat)
+    { Body().SetFileFormat(fileFormat); }
+    //: Set the file format for all directory files.
+
   protected:
     DataServerVFSRealDirC(DataServerVFSRealDirBodyC &bod)
      : DataServerVFSNodeC(bod)

@@ -76,6 +76,9 @@ namespace RavlN {
     
     // Setup filename 
     realDirname = config["Filename"];
+
+    // File format
+    defaultFileFormat = config["FileFormat"];
     
     return true;
   }
@@ -96,6 +99,7 @@ namespace RavlN {
         return false;
       }
       rfile = DataServerVFSRealFileC(vfile,AbsoluteName(),absFile,canWrite);
+      rfile.SetFileFormat(defaultFileFormat);
       rfile.SetDeleteSignal(sigOnDelete);
       name2file[vfile] = rfile;
     }

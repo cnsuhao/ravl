@@ -57,6 +57,9 @@ namespace RavlN {
     
     // Setup filename 
     realFilename = config["Filename"];
+
+    // File format
+    defaultFileFormat = config["FileFormat"];
     
     // Setup cache.
     StringC cacheSizeStr = config["CacheSize"];
@@ -221,11 +224,11 @@ namespace RavlN {
         return false; 
       }
     }
-    
+
     // Open native sequence.
     DPIPortBaseC ip;
     DPSeekCtrlC sc;
-    if(!OpenISequenceBase(ip,sc,realFilename,"",iTypeInfo.TypeInfo(),verbose)) {
+    if(!OpenISequenceBase(ip,sc,realFilename,defaultFileFormat,iTypeInfo.TypeInfo(),verbose)) {
       cerr << "DataServerBodyC::HandleRequestIPort, Failed to open stream '" << name << "' of type '" << iTypeInfo.Name() << "' \n";
       return false;
     }
@@ -274,7 +277,7 @@ namespace RavlN {
     
     DPOPortBaseC op;
     DPSeekCtrlC sc;
-    if(!OpenOSequenceBase(op,sc,realFilename,"",oTypeInfo.TypeInfo(),verbose)) {
+    if(!OpenOSequenceBase(op,sc,realFilename,defaultFileFormat,oTypeInfo.TypeInfo(),verbose)) {
       cerr << "DataServerVFSRealFileBodyC::OpenFileWrite, Failed to open stream '" << realFilename << "' of type '" << typePref << "' \n";
       return false;
     }
