@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! file="Ravl/Core/IO/ByteFileIO.cc"
 
@@ -47,7 +46,6 @@ namespace RavlN {
   //:------------------------------------------------------------------
   // DPIByteFileC
   
-  
   //: Is valid data ?
   
   bool DPIByteFileBodyC::IsGetEOS() const 
@@ -68,7 +66,7 @@ namespace RavlN {
   
   //: Get next piece of data.
   
-  bool DPIByteFileBodyC::Get(ByteT &buff) { 
+  bool DPIByteFileBodyC::Get(ByteT &buff) {
     if(in.IsEndOfStream())
       return false;
     in.read((char *)&buff,1);
@@ -80,8 +78,8 @@ namespace RavlN {
   // returns the number of elements processed.
   
   IntT DPIByteFileBodyC::GetArray(SArray1dC<ByteT> &data) {
-    if(!in.good() || data.Size() == 0) 
-	return 0;
+    if(!in.good() || data.Size() == 0)
+      return 0;
     in.read((char *) &data[0],data.Size());
     off += data.Size();
     return data.Size();
@@ -107,13 +105,16 @@ namespace RavlN {
   //: Get offset in stream.
   
   UIntT DPIByteFileBodyC::Tell() const
-  { return static_cast<UIntT>(off); }
+  {
+    return static_cast<UIntT>(off);
+  }
   
   //: Get size of stream. 
   
   UIntT DPIByteFileBodyC::Size() const
-  { return (UIntT) (-1); }
-  
+  {
+    return static_cast<UIntT>(Size64());
+  }
   
   //: Seek to position in stream.
   // Currently will only seek to begining of stream.
@@ -125,15 +126,29 @@ namespace RavlN {
     return true;
   }
   
-  
   //: Get offset in stream.
   
   StreamPosT DPIByteFileBodyC::Tell64() const 
-  { return off; }
+  {
+    return off;
+  }
   
   //: Get size of stream. 
   
   StreamPosT DPIByteFileBodyC::Size64() const 
-  { return streamPosUnknown; }
-  
+  {
+    return size;
+  }
+
+  void DPIByteFileBodyC::Init()
+  {
+    if (in.IsOpen())
+    {
+      dataStart = in.tellg();
+      in.seekg(0, ios::end);
+      size = in.tellg();
+      in.seekg(dataStart, ios::beg);
+    }
+  }
+
 }

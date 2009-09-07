@@ -13,7 +13,6 @@
 //! lib=RavlIO
 //! author="Charles Galambos"
 //! date="04/07/1998"
-//! rcsid="$Id$"
 //! userlevel=Default
 
 #include "Ravl/DP/SPort.hh"
@@ -84,33 +83,36 @@ namespace RavlN {
   public:
     DPIByteFileBodyC() 
       : dataStart(0),
-	off(0)
+        off(0),
+        size(0)
     {}
     //: Default constructor.
     
     DPIByteFileBodyC(const StringC &nfname)
       : in(nfname),
-	dataStart(0),
-	off(0)
+        dataStart(0),
+        off(0),
+        size(0)
     {
 #if RAVL_CHECK
       if(!in.good()) 
 	cerr << "DPOByteFileBodyC<ByteT>::DPOByteFileBodyC<ByteT>(StringC,bool), WARNING: Failed to open file '" << nfname << "'.\n";
 #endif
-      dataStart = in.Tell();
+      Init();
     }
     //: Construct from a filename.
     
     inline DPIByteFileBodyC(IStreamC &strmin)
       : in(strmin),
-	dataStart(0),
-	off(0)
+        dataStart(0),
+        off(0),
+        size(0)
     {
 #if RAVL_CHECK
       if(!in.good()) 
 	cerr << "DPIByteFileBodyC<ByteT>::DPIByteFileBodyC<ByteT>(OStreamC,bool), WARNING: Passed bad input stream. \n";
 #endif
-      dataStart = in.Tell();
+      Init();
     }
     //: Stream constructor.
     
@@ -151,9 +153,12 @@ namespace RavlN {
     //: Get size of stream. 
     
   private:
+    void Init();
+    
     IStreamC in;
     StreamPosT dataStart;
     StreamPosT off;
+    StreamPosT size;
   };
   
   ///////////////////////////////
@@ -208,4 +213,5 @@ namespace RavlN {
     //: filename constructor.  
   }; 
 }
+
 #endif
