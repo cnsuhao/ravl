@@ -208,7 +208,23 @@ namespace RavlImageN {
     // copy & rotate the image
     switch(m_rotation) {
       case ROT_0: {
-        memcpy(buffer, pLast, ImageBufferSize());
+        int pixelLen = m_bitsPerPixel / 8;
+        if(pixelLen == 1) {
+          memcpy(buffer, pLast, ImageBufferSize());
+        } else {
+          int width = m_captureSize.Cols();
+          int height = m_captureSize.Rows();
+          const char *srcPtr = pLast;
+          char *resPtr = reinterpret_cast<char *>(buffer);
+          for(int y = height; y > 0; y--) {
+            for(int x = width; x > 0; x--) {
+              *resPtr++ = srcPtr[2];
+              *resPtr++ = srcPtr[1];
+              *resPtr++ = srcPtr[0];
+              srcPtr += 3;
+            }
+          }
+        }
         break;
       }
       case ROT_90: {
@@ -217,9 +233,9 @@ namespace RavlImageN {
         int imageLength = ImageBufferSize();
         int pixelLen = m_bitsPerPixel / 8;
 
-        const char *srcPtr = pLast + (width - 1) * pixelLen;
-        char *resPtr = reinterpret_cast<char *>(buffer);
         if(pixelLen == 1) {
+          const char *srcPtr = pLast + width - 1;
+          char *resPtr = reinterpret_cast<char *>(buffer);
           for(int x = width; x > 0; x--) {
             for(int y = height; y > 0; y--) {
               *resPtr++ = *srcPtr;
@@ -228,33 +244,34 @@ namespace RavlImageN {
             srcPtr -= imageLength + 1;
           }
         } else {
+          const char *srcPtr = pLast + (width - 1) * 3;
+          char *resPtr = reinterpret_cast<char *>(buffer);
           for(int x = width; x > 0; x--) {
             for(int y = height; y > 0; y--) {
-              for(int z = 0; z < pixelLen; z++) {
-                *resPtr++ = *srcPtr++;
-              }
-              srcPtr += (width - 1) * pixelLen;
+              *resPtr++ = srcPtr[2];
+              *resPtr++ = srcPtr[1];
+              *resPtr++ = srcPtr[0];
+              srcPtr += width * 3;
             }
-            srcPtr -= imageLength + 1;
+            srcPtr -= imageLength + 1 * 3;
           }
         }
         break;
       }
       case ROT_180: {
         int imageLength = ImageBufferSize();
-        const char *srcPtr = pLast + imageLength - 1;
-        char *resPtr = reinterpret_cast<char *>(buffer);
         int pixelLen = m_bitsPerPixel / 8;
         if(pixelLen == 1) {
+          const char *srcPtr = pLast + imageLength - 1;
+          char *resPtr = reinterpret_cast<char *>(buffer);
           while(srcPtr >= pLast) {
             *resPtr++ = *srcPtr--;
           }
         } else {
+          const char *srcPtr = pLast + imageLength - 1;
+          char *resPtr = reinterpret_cast<char *>(buffer);
           while(srcPtr >= pLast) {
-            for(int z = 0; z < pixelLen; z++) {
-              *resPtr++ = *srcPtr++;
-            }
-            srcPtr -= 2 * pixelLen;
+            *resPtr++ = *srcPtr--;
           }
         }
         break;
@@ -264,9 +281,9 @@ namespace RavlImageN {
         int height = m_captureSize.Rows();
         int imageLength = ImageBufferSize();
         int pixelLen = m_bitsPerPixel / 8;
-        const char *srcPtr = pLast + width * (height - 1) * pixelLen;
-        char *resPtr = reinterpret_cast<char *>(buffer);
         if(pixelLen == 1) {
+          const char *srcPtr = pLast + width * (height - 1);
+          char *resPtr = reinterpret_cast<char *>(buffer);
           for(int x = width; x > 0; x--) {
             for(int y = height; y > 0; y--) {
               *resPtr++ = *srcPtr;
@@ -275,14 +292,16 @@ namespace RavlImageN {
             srcPtr += 1 + imageLength;
           }
         } else {
+          const char *srcPtr = pLast + width * (height - 1) * 3;
+          char *resPtr = reinterpret_cast<char *>(buffer);
           for(int x = width; x > 0; x--) {
             for(int y = height; y > 0; y--) {
-              for(int z = 0; z < pixelLen; z++) {
-                *resPtr++ = *srcPtr++;
-              }
-              srcPtr -= (width - 1) * pixelLen;
+              *resPtr++ = srcPtr[2];
+              *resPtr++ = srcPtr[1];
+              *resPtr++ = srcPtr[0];
+              srcPtr -= width * 3;
             }
-            srcPtr += 1 + imageLength;
+            srcPtr += 1 * 3 + imageLength;
           }
         }
         break;
