@@ -40,31 +40,54 @@ namespace RavlN
 
     virtual const type_info& ProbeLoad(IStreamC& inputStream, const type_info& objType) const
     {
+      // Byte only
+      if (objType != typeid(ByteT))
+        return typeid(void);
+
+      // Input stream must be good
       if (!inputStream.good())
-        return typeid (void);
+        return typeid(void);
+
       return typeid(ByteT);
     }
 
     virtual const type_info& ProbeLoad(const StringC& filename, IStreamC& inputStream, const type_info& objType) const
     {
-      if (filename == "")
+      // Byte only
+      if (objType != typeid(ByteT))
+        return typeid(void);
+
+      // Can load if a filename provided
+      if (!filename.IsEmpty())
         return typeid(ByteT);
+
+      // No filename, so test input stream
       return ProbeLoad(inputStream, objType);
     }
 
     virtual const type_info& ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const
     {
+      // Byte only
+      if (objType != typeid(ByteT))
+        return typeid(void);
+
+      // Need a filename
       if (filename.IsEmpty())
-        return typeid (void);
+        return typeid(void);
+
+      // Need a real filename
       if (filename[0] == '@')
-        return typeid (void);
+        return typeid(void);
+      
       return typeid(ByteT);
     }
 
     virtual DPIPortBaseC CreateInput(IStreamC& inputStream, const type_info& objType) const
     {
+      // Byte only
       if (objType != typeid(ByteT))
         return DPIPortBaseC();
+      
       return DPIByteFileC(inputStream);
     }
     //: Create an input port for loading.
@@ -72,8 +95,10 @@ namespace RavlN
 
     virtual DPOPortBaseC CreateOutput(OStreamC& outputStream, const type_info& objType) const
     {
+      // Byte only
       if (objType != typeid(ByteT))
         return DPOPortBaseC();
+      
       return DPOByteFileC(outputStream);
     }
     //: Create an output port for saving.
@@ -81,8 +106,10 @@ namespace RavlN
 
     DPIPortBaseC CreateInput(const StringC& filename, const type_info& objType) const
     {
+      // Byte only
       if (objType != typeid(ByteT))
         return DPIPortBaseC();
+
       return DPIByteFileC(filename);
     }
     //: Create an input port for loading.
@@ -90,8 +117,10 @@ namespace RavlN
 
     DPOPortBaseC CreateOutput(const StringC& filename, const type_info& objType) const
     {
+      // Byte only
       if (objType != typeid(ByteT))
         return DPOPortBaseC();
+      
       return DPOByteFileC(filename);
     }
     //: Create an output port for saving.

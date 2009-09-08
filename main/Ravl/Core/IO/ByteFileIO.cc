@@ -81,8 +81,9 @@ namespace RavlN {
     if(!in.good() || data.Size() == 0)
       return 0;
     in.read((char *) &data[0],data.Size());
-    off += data.Size();
-    return data.Size();
+    IntT dataRead = in.gcount();
+    off += dataRead;
+    return dataRead;
   }
     
   //: Save to ostream.
