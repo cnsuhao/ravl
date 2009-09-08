@@ -57,12 +57,15 @@ namespace RavlN
       if (objType != typeid(ByteT))
         return typeid(void);
 
-      // Can load if a filename provided
-      if (!filename.IsEmpty())
-        return typeid(ByteT);
-
       // No filename, so test input stream
-      return ProbeLoad(inputStream, objType);
+      if (filename.IsEmpty())
+        return ProbeLoad(inputStream, objType);
+
+      // Need a real filename
+      if (filename[0] == '@')
+        return typeid(void);
+
+      return typeid(ByteT);
     }
 
     virtual const type_info& ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const
