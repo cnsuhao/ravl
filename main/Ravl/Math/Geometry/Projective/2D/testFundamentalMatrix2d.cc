@@ -160,7 +160,7 @@ int testCorrectCorrespondence() {
                          -3, 2, 3,
                          -4, 3, 4);
   F2.CorrectCorrespondence(ipnt1, ipnt2, opnt1, opnt2);
-  if (opnt1.EuclidDistance(PPoint2dC(0.76047, -0.616981, 1)) > 1e-6 || opnt2.EuclidDistance(PPoint2dC(-0.00424836, -0.00839995, 1)) > 1e-6)
+  if (opnt1.EuclidDistance(PPoint2dC(1.77184, -1.33111, 2.77184)) > 1e-5 || opnt2.EuclidDistance(PPoint2dC(4.4658e-5, -0.00225733, 0.114146)) > 1e-5)
     return __LINE__;
   return 0;
 }

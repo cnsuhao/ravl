@@ -138,8 +138,8 @@ namespace RavlN {
     PPoint2dC Intersection(const PLine2dC & l) const;
     // Returns the projective point that is the intersection of both lines.
 
-    inline PPointLine2dC ClosestToOrigin() const {
-      return PPointLine2dC(-P1()*P3(), -P2()*P3(), Sqr(P1()) + Sqr(P2()));
+    inline PPoint2dC ClosestPointToOrigin() const {
+      return PPoint2dC(-P1()*P3(), -P2()*P3(), Sqr(P1()) + Sqr(P2()));
     }
     //: Compute closest point on line to origin
 

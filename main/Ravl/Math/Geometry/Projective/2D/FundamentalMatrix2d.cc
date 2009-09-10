@@ -217,9 +217,7 @@ namespace RavlN {
 
   static Vector3dC NormalizedEpipole(const Matrix3dC &F) {
     SVDC<RealT> svd(F, false, true);
-    // NOTE: the last column of the V matrix is actually the last row in RAVL.
-    // For some reason V is transposed
-    SArray1dC<RealT> col = svd.GetV().SliceRow(2);
+    Slice1dC<RealT> col = svd.GetV().SliceColumn(2);
     Vector3dC v(col[0], col[1], col[2]);
     RealT sum = Sqrt(Sqr(v[0]) + Sqr(v[1]));
     return v / sum;
@@ -355,8 +353,8 @@ namespace RavlN {
     PLine2dC l(tMin*f, 1, -tMin);
     PLine2dC lp(-fp*(c*tMin + d), a*tMin + b, c*tMin + d);
 
-    PPoint2dC xCap = l.ClosestToOrigin();
-    PPoint2dC xpCap = lp.ClosestToOrigin();
+    PPoint2dC xCap = l.ClosestPointToOrigin();
+    PPoint2dC xpCap = lp.ClosestPointToOrigin();
 
     // Step (xi)
     opnt1 = T.I() * R.T() * xCap;
