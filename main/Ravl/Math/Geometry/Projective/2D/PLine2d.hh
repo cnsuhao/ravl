@@ -16,6 +16,7 @@
 //! rcsid="$Id$"
 
 #include "Ravl/PPointLine2d.hh"
+#include "Ravl/PPoint2d.hh"
 #include "Ravl/Vector2d.hh"
 
 namespace RavlN {
@@ -23,7 +24,6 @@ namespace RavlN {
   class Point2dC;
   class Vector2dC;
   class LinePP2dC;
-  class PPoint2dC;
 
   //! userlevel=Normal
   //: Line in 2D projective space
