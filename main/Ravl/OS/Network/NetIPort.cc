@@ -97,7 +97,7 @@ namespace RavlN {
   //: Handle incoming state info.
   
   bool NetISPortBaseC::RecvState(Int64T &nat,Int64T &nstart,Int64T &nsize) {
-    ONDEBUG(cerr << "NetISPortBaseC::RecvState(), At=" << at << " Start=" << nstart << " Size=" << nsize << "\n");
+    ONDEBUG(cerr << "NetISPortBaseC::RecvState(), At=" << nat << " Start=" << nstart << " Size=" << nsize << "\n");
     RWLockHoldC hold(rwlock,RWLOCK_WRITE);
     at = nat;
     start = nstart;
@@ -109,7 +109,7 @@ namespace RavlN {
   //: Handle request failed.
   
   bool NetISPortBaseC::ReqFailed(IntT &nflag) {
-    ONDEBUG(cerr << "NetISPortBaseC::ReqFailed(), Flag=" << flag << "\n");
+    ONDEBUG(cerr << "NetISPortBaseC::ReqFailed(), Flag=" << nflag << "\n");
     if(nflag == 1) gotEOS = true;
     flag = nflag;
     recieved.Post();

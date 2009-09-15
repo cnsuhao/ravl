@@ -24,16 +24,6 @@ namespace RavlN {
   
   //: Constructor.
   
-  NetOSPortServerBaseBodyC::NetOSPortServerBaseBodyC(const AttributeCtrlC &attrCtrl,const DPSeekCtrlC &nSeekCtrl,const StringC &nPortName)
-    : NetAttributeCtrlServerBodyC(attrCtrl),
-      portName(nPortName),
-      seekCtrl(nSeekCtrl),
-      at(0),
-      sigConnectionClosed(true)
-  { ONDEBUG(cerr << "NetOSPortServerBaseBodyC::NetOSPortServerBaseBodyC(), Called. Name=" << portName << " \n"); }
-  
-  //: Constructor.
-  
   NetOSPortServerBaseBodyC::NetOSPortServerBaseBodyC(const AttributeCtrlC &attrCtrl,
                                                      const DPOPortBaseC &noportBase,
                                                      const DPSeekCtrlC &nSeekCtrl,

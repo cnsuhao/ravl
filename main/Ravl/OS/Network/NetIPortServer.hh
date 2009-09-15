@@ -32,9 +32,6 @@ namespace RavlN {
     : public NetAttributeCtrlServerBodyC
   {
   public:
-    NetISPortServerBaseBodyC(const AttributeCtrlC &attrCtrl,const DPSeekCtrlC &seekCtrl,const StringC &portName);
-    //: Constructor.
-    
     NetISPortServerBaseBodyC(const AttributeCtrlC &attrCtrl,  // Attributes
                              const DPIPortBaseC &nIPortBase,  // Port for IO.
                              const DPSeekCtrlC &seekCtrl,     // Seek control
@@ -103,7 +100,7 @@ namespace RavlN {
   {
   public:
     NetISPortServerBodyC(const DPISPortC<DataT> &niport,const StringC &portName)
-      : NetISPortServerBaseBodyC(niport,niport,portName),
+      : NetISPortServerBaseBodyC(niport,niport,niport,portName),
 	iport(niport)
     {}
     //: Constructor.

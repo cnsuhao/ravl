@@ -31,9 +31,6 @@ namespace RavlN {
     : public NetAttributeCtrlServerBodyC
   {
   public:
-    NetOSPortServerBaseBodyC(const AttributeCtrlC &attrCtrl,const DPSeekCtrlC &seekCtrl,const StringC &portName);
-    //: Constructor.
-    
     NetOSPortServerBaseBodyC(const AttributeCtrlC &attrCtrl,const DPOPortBaseC &oportBase,const DPSeekCtrlC &seekCtrl,const StringC &portName);
     //: Constructor.
     
@@ -90,7 +87,7 @@ namespace RavlN {
   {
   public:
     NetOSPortServerBodyC(const DPOSPortC<DataT> &noport,const StringC &portName)
-      : NetOSPortServerBaseBodyC(noport,noport,portName),
+      : NetOSPortServerBaseBodyC(noport,noport,noport,portName),
 	oport(noport)
     {}
     //: Constructor.
