@@ -67,6 +67,10 @@ namespace RavlN {
     //!param: available - Returns the space available for uploading footage in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
 
+    bool OnDelete(StringC& pathDeleted);
+    //: Called when a node is physically deleted.
+    // Used to inform directory nodes that a file marked for deletion has actually been deleted.
+
   protected:
     bool HandleRequestIPort(StringC name,StringC dataType,NetISPortServerBaseC &port);
     //: Handle a request for an input port.
@@ -153,6 +157,11 @@ namespace RavlN {
     //!param: used - Returns the space used for stored footage in bytes. -1 if not applicable.
     //!param: available - Returns the space available for uploading footage in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
+
+    bool OnDelete(StringC& pathDeleted)
+    { return Body().OnDelete(pathDeleted); }
+    //: Called when a node is physically deleted.
+    // Used to inform directory nodes that a file marked for deletion has actually been deleted.
 
   protected:
     DataServerC(DataServerBodyC& body, RCLayerHandleT handleType = RCLH_OWNER)

@@ -92,18 +92,27 @@ namespace RavlN {
       return false;
     }
     FilenameC absFile = realDirname + "/" + vfile;
+
     MutexLockC lock(access);
+
     if(!name2file.Lookup(vfile,rfile)) {
+      if (nameDeletePending.IsMember(vfile))
+      {
+        cerr << "DataServerVFSRealDirBodyC::OpenIPort, Refusing to open soon to be deleted file '" << absFile << "' \n";
+        return false;
+      }
+
       if(!absFile.Exists() && !forWrite) {
         cerr << "DataServerVFSRealDirBodyC::OpenIPort, Failed to open file '" << absFile << "' \n";
         return false;
       }
+      
       rfile = DataServerVFSRealFileC(vfile,AbsoluteName(),absFile,canWrite);
       rfile.SetFileFormat(defaultFileFormat);
       rfile.SetDeleteSignal(sigOnDelete);
       name2file[vfile] = rfile;
     }
-    lock.Unlock();
+
     return true;
   }
 
@@ -151,8 +160,10 @@ namespace RavlN {
     }
 
     FilenameC targetFile = realDirname + "/" + targetFilename;
-    MutexLockC lock(access);
     DataServerVFSRealFileC targetFileNode;
+
+    MutexLockC lock(access);
+    
     if (name2file.Lookup(targetFilename, targetFileNode))
     {
       name2file.Del(targetFilename);
@@ -168,6 +179,8 @@ namespace RavlN {
       targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
       targetFileNode.SetDeleteSignal(sigOnDelete);
     }
+
+    nameDeletePending.Insert(targetFilename);
 
     RavlAssert(targetFileNode.IsValid());
     return targetFileNode.Delete();
@@ -233,6 +246,20 @@ namespace RavlN {
         // TODO(WM) Add a kill -9 here?
       }
     }
+
+    return true;
+  }
+
+  
+  
+  bool DataServerVFSRealDirBodyC::OnDelete(DListC<StringC>& remainingPath)
+  {
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::OnDelete path=" << StringListC(remainingPath).Cat("/") << endl);
+
+    MutexLockC lock(access);
+    
+    StringC targetFilename = StringListC(remainingPath).Cat("/");
+    nameDeletePending.Remove(targetFilename);
 
     return true;
   }

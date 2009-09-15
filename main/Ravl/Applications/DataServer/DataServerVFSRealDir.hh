@@ -13,6 +13,7 @@
 #include "Ravl/DP/TypeInfo.hh"
 #include "Ravl/DP/SPortShare.hh"
 #include "Ravl/RCWrap.hh"
+#include "Ravl/HSet.hh"
 
 namespace RavlN {
   
@@ -59,12 +60,17 @@ namespace RavlN {
     //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
 
+    virtual bool OnDelete(DListC<StringC>& remainingPath);
+    //: Called when a child node is deleted.
+    //!param: remainingPath - The deleted target path within the node.
+
   protected:
     bool OpenVFSFile(DListC<StringC> &remainingPath,DataServerVFSRealFileC &rfile,bool forWrite = false);
     //: Open VFS file.
     
     MutexC access; // Access control for object.
     HashC<StringC,DataServerVFSRealFileC> name2file;
+    HSetC<StringC> nameDeletePending;
     
     FilenameC realDirname;
     StringC defaultFileFormat;

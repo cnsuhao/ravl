@@ -64,21 +64,32 @@ namespace RavlN {
     //!return: True if successfully deleted.
 
   protected:
-    bool OpenFileRead(const StringC &typePref);
+    bool OpenFileReadAbstract(const StringC &dataType, NetISPortServerBaseC& netPort);
     //: Open file and setup cache for reading.
-    
+
+    bool OpenFileReadByte(const StringC &dataType, NetISPortServerBaseC& netPort);
+    //: Open file and setup cache for reading.
+
     bool OpenFileWrite(const StringC &typePref);
     //: Open file and setup cache for writing.
     
-    bool CloseIFile();
+    bool CloseIFileAbstract();
     //: Close input file and discard cache.
-    
+
+    bool CloseIFileByte();
+    //: Close input file and discard cache.
+
     bool CloseOFile();
     //: Close output file 
+
+    bool AddTypeConversion(const StringC &dataType, DPIPortBaseC& inputPort);
     
-    bool ZeroIPortClients();
+    bool ZeroIPortClientsAbstract();
     //: Called if when input file stop's being used.
-    
+
+    bool ZeroIPortClientsByte();
+    //: Called if when input file stop's being used.
+
     bool DisconnectOPortClient();
     //: Called if when output file client disconnect it.
 
@@ -90,11 +101,13 @@ namespace RavlN {
     
     StringC defaultDataType;
     StringC defaultFileFormat;
+
     DPTypeInfoC iTypeInfo; // Type info for input stream.
     
-    DPISPortShareC<RCWrapAbstractC> ispShare; // Share for input port.
+    DPISPortShareC<RCWrapAbstractC> iSPortShareAbstract; // Share for abstract input port.
+    DPISPortShareC<ByteT> iSPortShareByte; // Share for byte input port.
     UIntT cacheSize; // Size of cache to use.
-    
+
     DPTypeInfoC oTypeInfo; // Type info for input stream.
     DPOPortC<RCWrapAbstractC> oport; // Output port.
     

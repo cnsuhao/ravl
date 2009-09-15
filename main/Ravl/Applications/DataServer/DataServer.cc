@@ -36,6 +36,10 @@ namespace RavlN {
   {
     // Setup root VFS node.
     m_vfs.Data() = DataServerVFSNodeC("","",false,true);
+
+    // Set up delete signal
+    DataServerC ref(*this);
+    Connect(m_signalNodeRemoved, ref, &DataServerC::OnDelete);
   }
   
   //: Open server connection.
@@ -394,4 +398,21 @@ namespace RavlN {
     return foundNode.Data().OpenOPort(remainingPath,dataType,port);
   }
   
+
+
+  bool DataServerBodyC::OnDelete(StringC& pathDeleted)
+  {
+    ONDEBUG(cerr << "DataServerBodyC::OnDelete path=" << pathDeleted << endl);
+
+    MutexLockC lock(m_access);
+
+    HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode;
+    DListC<StringC> remainingPath;
+    if (!FindVFSNode(pathDeleted, foundNode, remainingPath))
+      return false;
+
+    RavlAssert(foundNode.IsValid());
+    return foundNode.Data().OnDelete(remainingPath);
+  }
+
 }

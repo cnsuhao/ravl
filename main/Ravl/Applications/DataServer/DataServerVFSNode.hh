@@ -82,6 +82,11 @@ namespace RavlN {
     { sigOnDelete = sigOnDelete_; }
     //: Set the signal to be called when the node is deleted.
 
+    virtual bool OnDelete(DListC<StringC>& remainingPath)
+    { return true; }
+    //: Called when a child node is deleted.
+    //!param: remainingPath - The deleted target path within the node.
+
   protected:
     StringC name;
     StringC path;
@@ -175,6 +180,11 @@ namespace RavlN {
     { Body().SetDeleteSignal(sigOnDelete_); }
     //: Set the signal to be called when the node is deleted.
     
+    bool OnDelete(DListC<StringC>& remainingPath)
+    { return Body().OnDelete(remainingPath); }
+    //: Called when a child node is deleted.
+    //!param: remainingPath - The deleted target path within the node.
+
   protected:
     DataServerVFSNodeC(DataServerVFSNodeBodyC &bod)
      : RCHandleVC<DataServerVFSNodeBodyC>(bod)
@@ -191,7 +201,6 @@ namespace RavlN {
     
   };
   
-
 }
 
 #endif
