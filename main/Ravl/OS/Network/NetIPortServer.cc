@@ -29,7 +29,11 @@ namespace RavlN {
       seekCtrl(nSeekCtrl),
       at(0),
       sigConnectionClosed(true)
-  { ONDEBUG(cerr << "NetISPortServerBaseBodyC::NetISPortServerBaseBodyC(), Called. Name=" << portName << " \n"); }
+  {
+    ONDEBUG(cerr << "NetISPortServerBaseBodyC::NetISPortServerBaseBodyC(), Called. Name=" << portName << " \n");
+    RavlAssert(seekCtrl.IsValid());
+    at = seekCtrl.Tell64();
+  }
 
   //: Constructor.
   
@@ -47,6 +51,8 @@ namespace RavlN {
       sigConnectionClosed(true)
   {
     RavlAssert(typeInfo.IsValid());
+    RavlAssert(seekCtrl.IsValid());
+    at = seekCtrl.Tell64();
   }
   
   //: Destructor.
@@ -94,9 +100,10 @@ namespace RavlN {
   bool NetISPortServerBaseBodyC::Init() {
     ONDEBUG(cerr << "NetISPortServerBaseBodyC::Init(), Called. \n");
     ep.LocalInfo().ProtocolName("IPortServer");
-    ep.LocalInfo().ProtocolVersion("1.0");
+    ep.LocalInfo().ProtocolVersion("1.1");
     ep.RegisterR(NPMsg_ReqInfo,"ReqState",*this,&NetISPortServerBaseBodyC::ReqStats);
     ep.RegisterR(NPMsg_ReqData,"ReqData",*this,&NetISPortServerBaseBodyC::ReqData);
+    ep.RegisterR(NPMsg_ReqDataArray,"ReqDataArray",*this,&NetISPortServerBaseBodyC::ReqDataArray);
     return true;
   }
 
@@ -129,6 +136,49 @@ namespace RavlN {
       else
 	ep.Send(NPMsg_ReqFailed,2); // Just get failed.
     }
+    return true;
+  }
+
+
+
+  bool NetISPortServerBaseBodyC::ReqDataArray(Int64T& pos, Int64T& size)
+  {
+    ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqDataArray() pos=" << pos << " at=" << at << " size=" << size << endl);
+    if (!iportBase.IsValid() || !typeInfo.IsValid())
+    {
+      ep.Send(NPMsg_ReqFailed, 1); // Report end of stream.
+      return true;
+    }
+
+    if (seekCtrl.IsValid())
+    {
+      if (at != pos && pos != (UIntT)(-1))
+      {
+        seekCtrl.Seek64(pos);
+        at = pos;
+      }
+    }
+
+    BufOStreamC os;
+    BinOStreamC bos(os);
+    bos.UseBigEndian(ep.UseBigEndianBinStream());
+    bos << NPMsg_DataArrayGet;
+    Int64T dataRead = typeInfo.GetAndWriteArray(iportBase, size, bos);
+    if (dataRead > 0)
+    {
+      at += dataRead;
+      bos << static_cast<Int64T>(at);
+      ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqDataArray() read=" << dataRead << " pos=" << at << endl);
+      ep.Transmit(NetPacketC(os.Data()));
+    }
+    else
+    { // Failed to get data.
+      if (iportBase.IsGetEOS())
+        ep.Send(NPMsg_ReqFailed, 1); // End of stream.
+      else
+        ep.Send(NPMsg_ReqFailed, 2); // Just get failed.
+    }
+    
     return true;
   }
   

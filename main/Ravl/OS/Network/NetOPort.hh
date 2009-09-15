@@ -217,16 +217,32 @@ namespace RavlN {
     
     virtual bool Put(const DataT &data) { 
       if(gotEOS || !ep.IsValid())
-	return false;
+      	return false;
       ep.Send(NPMsg_Data,at,data);
       at++;
       if(at > size)
-	size = at;
+      	size = at;
       return true; 
     }
     //: Put data.
     // This function MUST be provided by client class.
     
+    virtual IntT PutArray(const SArray1dC<DataT>& data)
+    {
+      if (gotEOS || !data.IsValid() || !ep.IsValid())
+      	return false;
+      Int64T size = data.Size();
+      ep.Send(NPMsg_DataArrayPut,at,size,data);
+      at += data.Size();
+      if (at > size)
+      	size = at;
+      return true;
+    }
+    //: Put an array of data to stream.
+    // returns number of elements processed.
+    // NB. This need NOT be overridden in client classes
+    // unless fast handling of arrays of data elements is required.
+
     virtual AttributeCtrlC ParentCtrl() const
     { return netAttr; }
     //: Get Parent attribute control.

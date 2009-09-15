@@ -42,7 +42,7 @@ namespace RavlN {
   bool NetPortClientBodyC::Init() {
     ONDEBUG(cerr << "NetPortClientBodyC::Init(), Called. \n");
     LocalInfo().ProtocolName("PortServer");
-    LocalInfo().ProtocolVersion("1.0");        
+    LocalInfo().ProtocolVersion("1.1");
     RegisterR(NPMsg_ReqConnection,"ConnectTo",*this,&NetPortClientBodyC::MsgConnectTo);
     RegisterR(NPMsg_Close,"Close",*this,&NetPortClientBodyC::MsgClose);
     Ready();
@@ -59,7 +59,7 @@ namespace RavlN {
       return false;
     }
     
-    if(PeerInfo().ProtocolVersion() != "1.0") {
+    if(PeerInfo().ProtocolVersion() != "1.1") {
       SysLog(SYSLOG_ERR) << "Unexpected protocol version '" << PeerInfo().ProtocolVersion() << "'  (Local version "  << LocalInfo().ProtocolVersion() << ") ";
       Close();
       return false;

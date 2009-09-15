@@ -54,7 +54,7 @@ namespace RavlN {
       return false;
     
     ep.LocalInfo().ProtocolName("IPortClient");
-    ep.LocalInfo().ProtocolVersion("1.0");    
+    ep.LocalInfo().ProtocolVersion("1.1");
     ep.RegisterR(NPMsg_StreamInfo,"StreamInfo",*this,&NetISPortBaseC::RecvState);
     ep.RegisterR(NPMsg_ReqFailed,"ReqFailed",*this,&NetISPortBaseC::ReqFailed);
     ep.Ready();

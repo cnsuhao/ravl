@@ -52,7 +52,7 @@ namespace RavlN {
     if(!NetPortBaseC::Connect(ep))
       return false;
     ep.LocalInfo().ProtocolName("OPortClient");
-    ep.LocalInfo().ProtocolVersion("1.0");
+    ep.LocalInfo().ProtocolVersion("1.1");
     ep.RegisterR(NPMsg_StreamInfo,"StreamInfo",*this,&NetOSPortBaseC::RecvState);
     ep.RegisterR(NPMsg_ReqFailed,"ReqFailed",*this,&NetOSPortBaseC::ReqFailed);
     ep.Ready();

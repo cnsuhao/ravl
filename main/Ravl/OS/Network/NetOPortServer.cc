@@ -95,8 +95,11 @@ namespace RavlN {
   bool NetOSPortServerBaseBodyC::Init() {
     ONDEBUG(cerr << "NetOSPortServerBaseBodyC::Init(), Called. \n");
     ep.RegisterR(NPMsg_ReqInfo,"ReqInfo",*this,&NetOSPortServerBaseBodyC::ReqStats);
-    if(oportBase.IsValid()) 
+    if(oportBase.IsValid())
+    {
       ep.Register(NetMsgOPortDataC(NPMsg_Data,"Data",oportBase,seekCtrl));
+      ep.Register(NetMsgOPortDataC(NPMsg_DataArrayPut,"DataArray",oportBase,seekCtrl,true));
+    }
     return true;
   }
   
