@@ -276,8 +276,8 @@ namespace RavlN {
   {
     MutexLockC lock(m_access);
 
-    StringListC pathList(path, "/");
     HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode = m_vfs;
+    StringListC pathList(path, "/");
     DLIterC<StringC> pathListIter(pathList);
     for (; pathListIter; pathListIter++)
     {
@@ -292,6 +292,8 @@ namespace RavlN {
 
         if (vfsTree.Remove(*pathListIter))
         {
+          lock.Unlock();
+
           if (foundNode.IsValid())
           {
             if (removeFromDisk)
@@ -317,6 +319,8 @@ namespace RavlN {
       {
         if (foundNode.IsValid() && foundNode.Data().IsDirectory())
         {
+          lock.Unlock();
+          
           DListC<StringC> remainingPath = pathListIter.InclusiveTail();
           return foundNode.Data().Delete(remainingPath);
         }
@@ -333,8 +337,8 @@ namespace RavlN {
   {
     MutexLockC lock(m_access);
 
-    StringListC pathList(path, "/");
     HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode = m_vfs;
+    StringListC pathList(path, "/");
     DLIterC<StringC> pathListIter(pathList);
     for (; pathListIter; pathListIter++)
     {
@@ -354,6 +358,8 @@ namespace RavlN {
       {
         if (foundNode.IsValid() && foundNode.Data().IsDirectory())
         {
+          lock.Unlock();
+
           StringListC remainingPath = pathListIter.InclusiveTail();
           return foundNode.Data().QueryNodeSpace(remainingPath.Cat("/"), total, used, available);
         }
@@ -371,12 +377,17 @@ namespace RavlN {
   bool DataServerBodyC::HandleRequestIPort(StringC name,StringC dataType,NetISPortServerBaseC &port) {
     ONDEBUG(cerr << "DataServerBodyC::HandleRequestIPort, Name=" << name << " Type=" << dataType << "\n");
     
+    MutexLockC lock(m_access);
+
     HashTreeNodeC<StringC,DataServerVFSNodeC> foundNode;
     DListC<StringC> remainingPath;
     if(!FindVFSNode(name,foundNode,remainingPath)) {
       cerr << "DataServerBodyC::HandleRequestIPort, Failed to find VFSNode for '" << name << "'\n";
       return false;
     }
+
+    lock.Unlock();
+
     RavlAssert(foundNode.IsValid());
     if(!foundNode.Data().OpenIPort(remainingPath,dataType,port)) {
       cerr << "DataServerBodyC::HandleRequestIPort, Failed to open file '" << name << "'\n";
@@ -390,10 +401,17 @@ namespace RavlN {
   bool DataServerBodyC::HandleRequestOPort(StringC name,StringC dataType,NetOSPortServerBaseC &port) {
     ONDEBUG(cerr << "DataServerBodyC::HandleRequestOPort, Name=" << name << " Type=" << dataType << "\n");
     
+    MutexLockC lock(m_access);
+
     HashTreeNodeC<StringC,DataServerVFSNodeC> foundNode;
     DListC<StringC> remainingPath;
-    if(!FindVFSNode(name,foundNode,remainingPath))
+    if(!FindVFSNode(name,foundNode,remainingPath)) {
+      cerr << "DataServerBodyC::HandleRequestIPort, Failed to find VFSNode for '" << name << "'\n";
       return false;
+    }
+
+    lock.Unlock();
+
     RavlAssert(foundNode.IsValid());
     return foundNode.Data().OpenOPort(remainingPath,dataType,port);
   }
@@ -410,6 +428,8 @@ namespace RavlN {
     DListC<StringC> remainingPath;
     if (!FindVFSNode(pathDeleted, foundNode, remainingPath))
       return false;
+
+    lock.Unlock();
 
     RavlAssert(foundNode.IsValid());
     return foundNode.Data().OnDelete(remainingPath);
