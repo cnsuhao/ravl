@@ -50,10 +50,15 @@ namespace RavlN {
     //!param: removeFromDisk - If a corresponding real file exists, remove it from the disk once all ports have closed.
     //!return: True on success.
 
+    virtual Signal1C<StringC>& SignalNodeClosed()
+    { return m_signalNodeClosed; }
+    //: Connect to this signal to be informed when all ports to a target path have closed.
+    //!return: Signal to a string containing the target path.
+
     virtual Signal1C<StringC>& SignalNodeRemoved()
     { return m_signalNodeRemoved; }
-    //: Connect to this signal to be informed when all ports to a removed node have closed.
-    //!return: Signal to a string containing the node path.
+    //: Connect to this signal to be informed when all ports to a removed target path have closed and it has been removed.
+    //!return: Signal to a string containing the target path.
 
     virtual Signal2C<StringC, StringC>& SignalNodeError()
     { return m_signalNodeError; }
@@ -68,7 +73,7 @@ namespace RavlN {
     //!return: True if the query executed successfully.
 
     bool OnDelete(StringC& pathDeleted);
-    //: Called when a node is physically deleted.
+    //: Called when a target path is deleted.
     // Used to inform directory nodes that a file marked for deletion has actually been deleted.
 
   protected:
@@ -93,6 +98,7 @@ namespace RavlN {
     MutexC m_access;
     HashTreeC<StringC,DataServerVFSNodeC> m_vfs; // Virtual file system.
 
+    Signal1C<StringC> m_signalNodeClosed;
     Signal1C<StringC> m_signalNodeRemoved;
     Signal2C<StringC, StringC> m_signalNodeError;
     
@@ -107,6 +113,11 @@ namespace RavlN {
   : public NetPortManagerC
   {
   public:
+    DataServerC()
+    {}
+    //: Constructor.
+    // Creates an invalid handle.
+
     DataServerC(const StringC & name) 
       : NetPortManagerC(*new DataServerBodyC(name))
     {}
@@ -140,10 +151,15 @@ namespace RavlN {
     //!param: removeFromDisk - If a corresponding real file exists, remove it from the disk once all ports have closed.
     //!return: True on success.
 
+    Signal1C<StringC>& SignalNodeClosed()
+    { return Body().SignalNodeClosed(); }
+    //: Connect to this signal to be informed when all ports to a target path have closed.
+    //!return: Signal to a string containing the target path.
+
     Signal1C<StringC>& SignalNodeRemoved()
     { return Body().SignalNodeRemoved(); }
-    //: Connect to this signal to be informed when all ports to a removed node have closed.
-    //!return: Signal to a string containing the node path.
+    //: Connect to this signal to be informed when all ports to a removed target path have closed and it has been removed.
+    //!return: Signal to a string containing the target path.
 
     Signal2C<StringC, StringC>& SignalNodeError()
     { return Body().SignalNodeError(); }

@@ -78,13 +78,17 @@ namespace RavlN {
     //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
 
+    void SetCloseSignal(Signal1C<StringC>& sigOnClose_)
+    { sigOnClose = sigOnClose_; }
+    //: Set the signal to be called when the target path is closed.
+
     void SetDeleteSignal(Signal1C<StringC>& sigOnDelete_)
     { sigOnDelete = sigOnDelete_; }
-    //: Set the signal to be called when the node is deleted.
+    //: Set the signal to be called when the target path is deleted.
 
     virtual bool OnDelete(DListC<StringC>& remainingPath)
     { return true; }
-    //: Called when a child node is deleted.
+    //: Called when a target path is deleted.
     //!param: remainingPath - The deleted target path within the node.
 
   protected:
@@ -93,6 +97,7 @@ namespace RavlN {
     bool isDirectory; // Is this a directory.
     bool canWrite;    // Write permission enabled ?
     bool verbose;
+    Signal1C<StringC> sigOnClose;
     Signal1C<StringC> sigOnDelete;
   };
   
@@ -176,13 +181,17 @@ namespace RavlN {
     //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
     
+    void SetCloseSignal(Signal1C<StringC>& sigOnClose_)
+    { Body().SetCloseSignal(sigOnClose_); }
+    //: Set the signal to be called when the target path is closed.
+
     void SetDeleteSignal(Signal1C<StringC>& sigOnDelete_)
     { Body().SetDeleteSignal(sigOnDelete_); }
-    //: Set the signal to be called when the node is deleted.
-    
+    //: Set the signal to be called when the target path is deleted.
+
     bool OnDelete(DListC<StringC>& remainingPath)
     { return Body().OnDelete(remainingPath); }
-    //: Called when a child node is deleted.
+    //: Called when a target path is deleted.
     //!param: remainingPath - The deleted target path within the node.
 
   protected:

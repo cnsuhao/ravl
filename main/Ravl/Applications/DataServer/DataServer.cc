@@ -31,6 +31,7 @@ namespace RavlN {
   DataServerBodyC::DataServerBodyC(const StringC &name)
   : NetPortManagerBodyC(name,true),
     m_vfs(true),
+    m_signalNodeClosed(StringC()),
     m_signalNodeRemoved(StringC()),
     m_signalNodeError(StringC(), StringC())
   {
@@ -107,6 +108,7 @@ namespace RavlN {
         }
         
         RavlAssert(node.IsValid());
+        node.SetCloseSignal(m_signalNodeClosed);
         node.SetDeleteSignal(m_signalNodeRemoved);
         
         // Add new node into tree.
@@ -263,6 +265,7 @@ namespace RavlN {
       }
 
       RavlAssert(newNode.IsValid());
+      newNode.SetCloseSignal(m_signalNodeClosed);
       newNode.SetDeleteSignal(m_signalNodeRemoved);
       
       HashTreeC<StringC, DataServerVFSNodeC> vfsTree(foundNode);

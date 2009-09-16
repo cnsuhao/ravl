@@ -109,7 +109,9 @@ namespace RavlN {
       
       rfile = DataServerVFSRealFileC(vfile,AbsoluteName(),absFile,canWrite);
       rfile.SetFileFormat(defaultFileFormat);
+      rfile.SetCloseSignal(sigOnClose);
       rfile.SetDeleteSignal(sigOnDelete);
+
       name2file[vfile] = rfile;
     }
 
@@ -177,6 +179,7 @@ namespace RavlN {
       }
 
       targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
+      targetFileNode.SetCloseSignal(sigOnClose);
       targetFileNode.SetDeleteSignal(sigOnDelete);
     }
 

@@ -34,9 +34,13 @@ public:
   //!param: removeFromDisk - If a corresponding real file exists, remove it from the disk once all ports have closed.
   //!return: True on success.
 
+  virtual Signal1C<StringC>& SignalNodeClosed() = 0;
+  //: Connect to this signal to be informed when all ports to a target path have closed.
+  //!return: Signal to a string containing the target path.
+
   virtual Signal1C<StringC>& SignalNodeRemoved() = 0;
-  //: Connect to this signal to be informed when all ports to a removed node have closed.
-  //!return: Signal to a string containing the node path.
+  //: Connect to this signal to be informed when all ports to a removed target path have closed and it has been removed.
+  //!return: Signal to a string containing the target path.
 
   virtual Signal2C<StringC, StringC>& SignalNodeError() = 0;
   //: Connect to this signal to be informed when a port encounters an error.
