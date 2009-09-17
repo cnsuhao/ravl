@@ -171,8 +171,6 @@ namespace RavlN {
 
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenOPort opening abstract file for '" << name << "'" << endl);
     return OpenFileWriteAbstract(dataType, port);
-
-    return true;
   }
 
 
@@ -225,15 +223,15 @@ namespace RavlN {
     }
     RavlAssert(iSPortShareAbstract.IsValid());
 
-    DPISPortC<RCWrapAbstractC> iSPortAbstract = iSPortShareAbstract.Port();
+    DPISPortC<RCWrapAbstractC> iSPortAbstract = iSPortShareAbstract;
     DPIPortBaseC iPortBase = iTypeInfo.CreateConvFromAbstract(iSPortAbstract);
 
     if (!AddIPortTypeConversion(dataType, iPortBase))
       return false;
 
-    netPort = NetISPortServerBaseC(AttributeCtrlC(iPortBase),
+    netPort = NetISPortServerBaseC(iPortBase,
                                    iPortBase,
-                                   iSPortAbstract,
+                                   iPortBase,
                                    name);
 
     return true;
@@ -243,10 +241,10 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::OpenFileReadByte(const StringC& dataType, NetISPortServerBaseC& netPort)
   {
-    DPIPortBaseC iPortBase;
-    DPISPortC<ByteT> iSPortByte;
     if (!iSPortShareByte.IsValid())
     {
+      DPIPortBaseC iPortBase;
+      DPISPortC<ByteT> iSPortByte;
       DPSeekCtrlC seekControl;
       if (!OpenISequenceBase(iPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
       {
@@ -270,20 +268,15 @@ namespace RavlN {
       // Set trigger to let us know when people stop using this file.
       iSPortShareByte.TriggerCountZero() = TriggerR(*this, &DataServerVFSRealFileBodyC::ZeroIPortClientsByte);
     }
-    else
-    {
-      iSPortByte = iSPortShareByte.Port();
-      iPortBase = DPIPortBaseC(iSPortByte);
-    }
     RavlAssert(iSPortShareByte.IsValid());
-    RavlAssert(iPortBase.IsValid());
-    RavlAssert(iSPortByte.IsValid());
 
-    if (!AddIPortTypeConversion(dataType, iPortBase))
+    DPISPortC<ByteT> iSPortByte = iSPortShareByte;
+
+    if (!AddIPortTypeConversion(dataType, iSPortByte))
       return false;
 
-    netPort = NetISPortServerBaseC(AttributeCtrlC(iPortBase),
-                                   iPortBase,
+    netPort = NetISPortServerBaseC(iSPortByte,
+                                   iSPortByte,
                                    iSPortByte,
                                    name);
 
@@ -335,9 +328,9 @@ namespace RavlN {
     if (!AddOPortTypeConversion(dataType, oPortBase))
       return false;
 
-    netPort = NetOSPortServerBaseC(AttributeCtrlC(oPortBase),
+    netPort = NetOSPortServerBaseC(oPortBase,
                                    oPortBase,
-                                   DPSeekCtrlC(oPortBase),
+                                   oPortBase,
                                    name);
 
     DataServerVFSRealFileC ref(*this);
@@ -356,9 +349,9 @@ namespace RavlN {
       return false;
     }
 
-    DPOPortBaseC oPortBase;
     if (!oPortByte.IsValid())
     {
+      DPOPortBaseC oPortBase;
       DPSeekCtrlC seekControl;
       if (!OpenOSequenceBase(oPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
       {
@@ -376,7 +369,6 @@ namespace RavlN {
       }
     }
     RavlAssert(oPortByte.IsValid());
-    RavlAssert(oPortBase.IsValid());
 
     if (oPortByte.References() > 1 && !multiWrite)
     {
@@ -384,12 +376,14 @@ namespace RavlN {
       return false;
     }
 
+    DPOPortBaseC oPortBase = oPortByte;
+
     if (!AddOPortTypeConversion(dataType, oPortBase))
       return false;
 
-    netPort = NetOSPortServerBaseC(AttributeCtrlC(oPortBase),
+    netPort = NetOSPortServerBaseC(oPortBase,
                                    oPortBase,
-                                   DPSeekCtrlC(oPortBase),
+                                   oPortBase,
                                    name);
 
     DataServerVFSRealFileC ref(*this);

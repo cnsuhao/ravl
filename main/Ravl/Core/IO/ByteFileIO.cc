@@ -9,6 +9,13 @@
 
 #include "Ravl/DP/ByteFileIO.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   
   //:------------------------------------------------------------------
@@ -97,6 +104,7 @@ namespace RavlN {
   // Currently will only seek to begining of stream.
   
   bool DPIByteFileBodyC::Seek(UIntT newOff) {
+    ONDEBUG(cerr << "DPIByteFileBodyC::Seek newOff=" << newOff << endl);
     in.is().clear(); // Clear any end of stream errors.
     in.Seek(static_cast<UIntT>(dataStart + static_cast<streampos>(newOff)));
     off = newOff;
@@ -107,6 +115,7 @@ namespace RavlN {
   
   UIntT DPIByteFileBodyC::Tell() const
   {
+    ONDEBUG(cerr << "DPIByteFileBodyC::Tell off=" << off << endl);
     return static_cast<UIntT>(off);
   }
   
@@ -114,6 +123,7 @@ namespace RavlN {
   
   UIntT DPIByteFileBodyC::Size() const
   {
+    ONDEBUG(cerr << "DPIByteFileBodyC::Size..." << endl);
     return static_cast<UIntT>(Size64());
   }
   
@@ -121,6 +131,7 @@ namespace RavlN {
   // Currently will only seek to begining of stream.
   
   bool DPIByteFileBodyC::Seek64(StreamPosT newOff) {
+    ONDEBUG(cerr << "DPIByteFileBodyC::Seek64 newOff=" << newOff << endl);
     in.is().clear(); // Clear any end of stream errors.
     in.Seek(static_cast<streamoff>(dataStart +  newOff));
     off = newOff;
@@ -131,6 +142,7 @@ namespace RavlN {
   
   StreamPosT DPIByteFileBodyC::Tell64() const 
   {
+    ONDEBUG(cerr << "DPIByteFileBodyC::Tell64 off=" << off << endl);
     return off;
   }
   
@@ -138,6 +150,7 @@ namespace RavlN {
   
   StreamPosT DPIByteFileBodyC::Size64() const 
   {
+    ONDEBUG(cerr << "DPIByteFileBodyC::Size64 size=" << size << endl);
     return size;
   }
 

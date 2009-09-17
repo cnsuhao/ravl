@@ -47,7 +47,7 @@ namespace RavlN {
     explicit DPISPortShareBodyC(const DPISPortC<DataT> &ip)
       : inputUpdateCount(1),
         input(ip),
-	clients(0)
+        clients(0)
     {
       this->MapBackChangedSignal("start");
       this->MapBackChangedSignal("size");
@@ -96,8 +96,8 @@ namespace RavlN {
       MutexLockC lock(access);
       int n;
       if(!input.Seek(frameNo)) {
-	cerr << "DPISPortShareBodyC(), Failed to seek to frame " << frameNo << ".\n";
-	return 0;
+        cerr << "DPISPortShareBodyC(), Failed to seek to frame " << frameNo << ".\n";
+        return 0;
       }
       n = input.GetArray(buf);
       return n;
@@ -106,28 +106,28 @@ namespace RavlN {
 
     bool IsGetReady(UIntT frameNo) const {
       MutexLockC lock(access);
-      return input.IsGetReady(); 
+      return (frameNo == input.Tell()) && input.IsGetReady();
     }
     //: Is some data ready ?
     // true = yes.
     
     bool IsGetEOS(UIntT frameNo) const {
-      MutexLockC lock(access);      
-      return input.IsGetEOS();
+      MutexLockC lock(access);
+      return (frameNo == input.Tell()) && input.IsGetEOS();
     }
     //: Has the End Of Stream been reached ?
     // true = yes.
 
-    UIntT Size() const { 
-      MutexLockC lock(access);      
-      return input.Size(); 
+    UIntT Size() const {
+      MutexLockC lock(access);
+      return input.Size();
     }
     //: Find the total size of the stream. (assuming it starts from 0)
     // May return ((UIntT) (-1)) if not implemented.
-    
+
     UIntT Start() const {
-      MutexLockC lock(access);      
-      return input.Start(); 
+      MutexLockC lock(access);
+      return input.Start();
     }
     //: Find the offset where the stream begins, normally zero.
     // Defaults to 0
@@ -261,8 +261,8 @@ namespace RavlN {
       MutexLockC lock(access);
       clients--;
       if(clients == 0 && triggerCountZero.IsValid()) {
-	lock.Unlock();
-	triggerCountZero.Invoke();
+        lock.Unlock();
+        triggerCountZero.Invoke();
       }
     }
     //: Unregiser a client
@@ -415,8 +415,8 @@ namespace RavlN {
   public:
     DPISPortShareClientBodyC()
       : offset(0),
-	start(0),
-	size((UIntT) -1),
+        start(0),
+        size((UIntT) -1),
         lastUpdateCount(0)
     {
       this->MapBackChangedSignal("start");
@@ -426,7 +426,7 @@ namespace RavlN {
     
     DPISPortShareClientBodyC(const DPISPortShareC<DataT> &sharedPort)
       : offset(0),
-	input(sharedPort),
+        input(sharedPort),
         lastUpdateCount(0)
     {
       input.RegisterClient();
@@ -448,7 +448,7 @@ namespace RavlN {
     
     ~DPISPortShareClientBodyC() {
       if(input.IsValid())
-	input.DeregisterClient();
+      input.DeregisterClient();
     }
     //: Destructor
 
@@ -461,7 +461,7 @@ namespace RavlN {
     bool Seek(UIntT off) {
       //cerr << "DPISPortShareClientBodyC()::Seek() Off=" << off << " Start=" << start << " Size=" << size << "\n";
       if(off < start || off >= size)
-	return false;
+        return false;
       offset = off;
       return true;
     }
@@ -475,11 +475,11 @@ namespace RavlN {
       //cerr << "DPISPortShareClientBodyC()::DSeek() At=" << offset << " Off=" << off << " Start=" << start << " Size=" << size << "\n";
       Int64T newOff = (Int64T) offset + off;
       if(off < 0) {
-	if(newOff < start)
-	  return false;
+        if(newOff < start)
+          return false;
       } else {
-	if(newOff >= size)
-	  return false;
+        if(newOff >= size)
+          return false;
       }
       offset += off;
       return true;
@@ -536,7 +536,7 @@ namespace RavlN {
       DataT ret;
       //cerr << "DPISPortShareClientBodyC()::Get() Offset=" << offset << "\n";
       if(!input.Get(offset,ret))
-	throw DataNotReadyC("Get failed");
+        throw DataNotReadyC("Get failed");
       offset++;
       return ret;
     }
@@ -546,7 +546,7 @@ namespace RavlN {
       //cerr << "DPISPortShareClientBodyC()::Get(DataT&) Offset=" << offset << "\n";
       if(input.Get(offset,buff)) {
 	offset++;
-	return true;
+        return true;
       }
       return false;
     }
@@ -554,8 +554,8 @@ namespace RavlN {
     
     virtual bool GetAt(StreamPosT off,DataT &buffer) {
       if(input.Get(off,buffer)) {
-	offset = off + 1;
-	return true;
+        offset = off + 1;
+        return true;
       }
       return false;
     }
@@ -572,7 +572,7 @@ namespace RavlN {
     }
     //: Get an array of data from stream.
     
-    virtual bool Discard() { 
+    virtual bool Discard() {
       offset++;
       return true;
     }
