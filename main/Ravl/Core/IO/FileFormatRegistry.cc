@@ -276,7 +276,7 @@ namespace RavlN {
       if(filename != "-")
 	ti = &it.Data().ProbeLoad(filename,in,obj_type); // Use file probe.
       else ti = &it.Data().ProbeLoad(in,obj_type); // Use stream probe...
-      ONDEBUG(cerr << "IProbe '" << it.Data().Name() << "' '" << TypeName(it.Data().DefaultType()) << "'  = " << TypeName(*ti) << "\n");
+      ONDEBUG(cerr << "IProbe '" << it.Data().Name() << "' '" << TypeName(it.Data().DefaultType()) << "'  = " << TypeName(*ti) << " (" << it.Data().Priority() << ")\n");
 #if RAVL_CHECK
       if(!in.good() && filename[0] != '@') {
 	cerr << "FindInputFormat(), IProbe left bad stream '" << it.Data().Name() << "' '" << TypeName(it.Data().DefaultType()) << "'  = " << TypeName(*ti) << "\n";
@@ -287,11 +287,14 @@ namespace RavlN {
       if(*ti == typeid(void))
 	continue; // Nope.
       if(*ti == obj_type || obj_type == typeid(void)) {
-	// Found direct load, use it !
-	conv = DListC<DPConverterBaseC>();
-	form = it.Data();
-	intype = ti;
-	break;
+        // Found direct load, store it if it's the highest priority!
+        if (!form.IsValid() || (it.Data().Priority() > form.Priority()))
+        {
+          ONDEBUG(cerr << "IProbe  storing '" << it.Data().Name() << "' '" << TypeName(it.Data().DefaultType()) << "'  = " << TypeName(*ti) << " (" << it.Data().Priority() << ")\n");
+          conv = DListC<DPConverterBaseC>();
+          form = it.Data();
+          intype = ti;
+        }
       }
       // Can we convert to requested type ?
       if(!conv.IsEmpty())
