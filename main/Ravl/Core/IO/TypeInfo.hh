@@ -380,7 +380,7 @@ namespace RavlN {
         return false;
 
       // Copy data.
-      SArray1dC<DataT> data(size);
+      SArray1dC<DataT> data;
       strm >> data;
       return oport.PutArray(data);
     }

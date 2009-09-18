@@ -123,7 +123,7 @@ namespace RavlN {
     inline bool IsOpen() const { 
       if(s == 0)
 	return false;
-      return (s->good() != 0);
+      return (s->fail() != 0);
     }
     //: Test if this stream is open.
     
