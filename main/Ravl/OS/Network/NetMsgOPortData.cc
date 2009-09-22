@@ -52,7 +52,10 @@ namespace RavlN {
     pkt >> pos;
     
     ONDEBUG(cerr << "NetMsgOPortDataBodyC::Decode Pos=" << pos << endl);
-    if (at != pos && pos != (UIntT)(-1) && seekCtrl.IsValid())
+    if (at != pos && \
+        pos != static_cast<UIntT>(-1) && \
+        pos != streamPosUnknown && \
+        seekCtrl.IsValid())
     {
       seekCtrl.Seek64(pos);
       at = pos;
