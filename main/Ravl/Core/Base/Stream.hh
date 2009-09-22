@@ -100,7 +100,7 @@ namespace RavlN {
     
     StreamBaseC(const StringC &nname)
       : name(nname),
-	s(0)
+      	s(0)
     {}
     //: Constructor.
     
@@ -121,43 +121,45 @@ namespace RavlN {
     //: Returns the name of the stream.
     
     inline bool IsOpen() const { 
-      if(s == 0)
-	return false;
-      return (s->fail() != 0);
+      return !fail();
     }
     //: Test if this stream is open.
     
     bool good() const { 
       if(s == 0)
-	return false;
+        return false;
       return (s->good() != 0);
     }
     //: Is stream good ?
     
     bool bad() const {
       if(s == 0)
-	return true;
+        return true;
       return (s->bad() != 0);
     }
     //: Is stream corrupted ?
     
-    inline bool eof() const { return (s->eof() != 0); }
+    inline bool eof() const {
+      if (s == 0)
+        return true;
+      return (s->eof() != 0);
+    }
     //: End of file ?
     
-    inline bool fail() const { return (s->fail() != 0); }
+    inline bool fail() const {
+      if (s == 0)
+        return true;
+      return (s->fail() != 0);
+    }
     //: Operation failed ?
     
-    bool operator!() const { 
-      if(s == 0)
-	return true;
-      return (s->fail()!=0); 
+    bool operator!() const {
+      return fail();
     }
     //: Not failed ?
     
     operator void*() const  { 
-      if(s == 0)
-	return 0;
-      return s->fail() ? (void*)0 : (void*)(-1); 
+      return fail() ? (void*)0 : (void*)(-1); 
     }
     //: Ok ?
     
