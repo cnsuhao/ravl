@@ -20,19 +20,27 @@ namespace RavlN {
   
   //:------------------------------------------------------------------
   // DPOByteFileC
-  
+
+
+
+  DPOByteFileBodyC::~DPOByteFileBodyC()
+  {
+    ONDEBUG(cerr << "DPOByteFileBodyC::~DPOByteFileBodyC" << endl);
+    out.Close();
+  }
+
   //: Put data.
   
   bool DPOByteFileBodyC::Put(const ByteT &dat) { 
     out.write((char *) &dat,1); 
-    return out.good(); 
+    return out.good();
   }
   
   //: Put an array of data to stream.
   // returns the number of elements processed.
   
   IntT DPOByteFileBodyC::PutArray(const SArray1dC<ByteT> &data) {
-    if(!out.good() || data.Size() == 0) 
+    if(!out.good() || data.Size() == 0)
       return 0;
     out.write((char *) &(data[0]),data.Size());
     return data.Size();
@@ -42,6 +50,13 @@ namespace RavlN {
   
   bool DPOByteFileBodyC::IsPutReady() const 
   { return out.good(); }
+
+
+
+  void DPOByteFileBodyC::PutEOS()
+  {
+    out.Close();
+  }
   
   //: Save to ostream.
   

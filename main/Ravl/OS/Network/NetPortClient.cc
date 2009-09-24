@@ -134,7 +134,7 @@ namespace RavlN {
   // Close down an established connection.
   
   bool NetPortClientBodyC::MsgClose() {
-    ONDEBUG(cerr << "NetPortClientBodyC::MsgClose(), Called. \n");
+    ONDEBUG(cerr << "NetPortClientBodyC::MsgClose(), Called. connectionName='" << connectionName << "'\n");
     Close();
     if(connectionName.IsEmpty())
       return true;
@@ -142,15 +142,17 @@ namespace RavlN {
     if(isIPort) {
       NetISPortServerBaseC isport;
       if(!manager.Lookup(connectionName,empty,isport,false))
-	return true;
+        return true;
+      ONDEBUG(cerr << "NetPortClientBodyC::MsgClose(), disconnecting ISPort\n");
       if(isport.IsValid())
-	isport.Disconnect();
+        isport.Disconnect();
     } else {
       NetOSPortServerBaseC osport;
       if(!manager.Lookup(connectionName,empty,osport,false))
-	return true;
+        return true;
+      ONDEBUG(cerr << "NetPortClientBodyC::MsgClose(), disconnecting OSPort\n");
       if(osport.IsValid())
-	osport.Disconnect();
+        osport.Disconnect();
     }
     return true;
   }

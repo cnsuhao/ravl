@@ -326,6 +326,7 @@ namespace RavlN {
   IStreamC::IStreamC(const StringC &sfilename,bool binary,bool buffered) 
     : StreamBaseC(sfilename)
   {
+    ONDEBUG(cerr << "IStreamC::IStreamC filename='" << sfilename << "' binary=" << (binary ? "Y" : "N") << " buffered=" << (buffered ? "Y" : "N") << endl);
     if(sfilename == "-") {
       Init(in = &cin,sfilename,false);
       if(!buffered) 

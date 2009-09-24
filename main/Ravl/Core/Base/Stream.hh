@@ -120,8 +120,8 @@ namespace RavlN {
     { return name; }
     //: Returns the name of the stream.
     
-    inline bool IsOpen() const { 
-      return !fail();
+    inline bool IsOpen() const {
+      return !bad();
     }
     //: Test if this stream is open.
     
@@ -149,6 +149,15 @@ namespace RavlN {
     inline bool fail() const {
       if (s == 0)
         return true;
+#if 0
+      ios_base::iostate sState = s->rdstate();
+      cerr << "fail()=" << (s->fail() ? "Y" : "N") << \
+           " eofbit=" << ((sState & ios_base::eofbit) != 0 ? "Y" : "N") << \
+           " failbit=" << ((sState & ios_base::failbit) != 0 ? "Y" : "N") << \
+           " badbit=" << ((sState & ios_base::badbit) != 0 ? "Y" : "N") << \
+           " goodbit=" << ((sState & ios_base::goodbit) != 0 ? "Y" : "N") << \
+           endl;
+#endif
       return (s->fail() != 0);
     }
     //: Operation failed ?
@@ -417,7 +426,7 @@ namespace RavlN {
     streampos Tell() const { return in->tellg(); }
     //: Where are we in the stream.
     
-    void Seek(streampos to) { is().seekg(to); }
+    void Seek(streampos to) { is().clear(); is().seekg(to); }
     //: Goto a position in the stream.
     
     streampos tellg() const { return in->tellg(); }
@@ -428,18 +437,18 @@ namespace RavlN {
     //: Goto a position in the stream.
     // istream compatable function.
     
-    istream &seekg(streampos to,SeekDirT dir) { return is().seekg(to,dir); }
+    istream &seekg(streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
     //: Goto a position in the stream.
     // istream compatable.
     
     inline bool IsEndOfStream() {
       // Check there's more to read...
       if(!in->good())
-	return true;
+      	return true;
       char cbuff;
       read(&cbuff,1);
       if(!in->good())
-	return true;
+        return true;
       Unget(&cbuff,1);
       return false;
     }

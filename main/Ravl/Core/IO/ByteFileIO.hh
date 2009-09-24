@@ -54,6 +54,9 @@ namespace RavlN {
     }
     //: Stream constructor.
     
+    virtual ~DPOByteFileBodyC();
+    //: Dtor.
+
     virtual bool Put(const ByteT &dat);
     //: Put data.
     
@@ -63,7 +66,10 @@ namespace RavlN {
     
     virtual bool IsPutReady() const;
     //: Is port ready for data ?
-    
+
+    virtual void PutEOS();
+    //: Indicate end of stream.
+
     virtual bool Save(ostream &sout) const;
     //: Save to ostream.
     

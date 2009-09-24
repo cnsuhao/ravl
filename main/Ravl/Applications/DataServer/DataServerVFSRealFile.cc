@@ -115,8 +115,10 @@ namespace RavlN {
         return false;
       }
     }
+    RavlAssert(iTypeInfo.IsValid());
 
     // Choose the correct input port
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenIPort dataType='" << dataType << "' iTypeInfo='" << iTypeInfo.Name() << "' defaultFileFormat='" << defaultFileFormat << "'" << endl);
     if (iTypeInfo.TypeInfo() == typeid(ByteT) && defaultFileFormat == "bytefile")
     {
       ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenIPort opening byte file for '" << name << "'" << endl);
@@ -161,8 +163,10 @@ namespace RavlN {
         return false;
       }
     }
+    RavlAssert(oTypeInfo.IsValid());
 
     // Choose the correct output port
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenOPort dataType='" << dataType << "' oTypeInfo='" << oTypeInfo.Name() << "' defaultFileFormat='" << defaultFileFormat << "'" << endl);
     if (oTypeInfo.TypeInfo() == typeid(ByteT) && defaultFileFormat == "bytefile")
     {
       ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenOPort opening byte file for '" << name << "'" << endl);
@@ -231,7 +235,7 @@ namespace RavlN {
 
     netPort = NetISPortServerBaseC(iPortBase,
                                    iPortBase,
-                                   iPortBase,
+                                   iSPortAbstract,
                                    name);
 
     return true;
@@ -492,6 +496,7 @@ namespace RavlN {
 
     if (oPortAbstract.IsValid())
     {
+      oPortAbstract.PutEOS();
       oPortAbstract.Invalidate();
 
       if (sigOnClose.IsValid())
@@ -513,6 +518,7 @@ namespace RavlN {
 
     if (oPortByte.IsValid())
     {
+      oPortByte.PutEOS();
       oPortByte.Invalidate();
 
       if (sigOnClose.IsValid())

@@ -34,16 +34,18 @@ namespace RavlN {
       seekCtrl(nSeekCtrl),
       at(0),
       sigConnectionClosed(true)
-  {}
+  {
+    ONDEBUG(cerr << "NetOSPortServerBaseBodyC::NetOSPortServerBaseBodyC(), Called. Name=" << portName << " \n");
+  }
   
   //: Destructor.
   
-  NetOSPortServerBaseBodyC::~NetOSPortServerBaseBodyC() { 
+  NetOSPortServerBaseBodyC::~NetOSPortServerBaseBodyC() {
     oportBase.Invalidate(); // Let handle to port go.
     seekCtrl.Invalidate();  // Let handle to seek ctrl go.
     NetAttributeCtrlServerBodyC::Close();
     sigConnectionClosed(); // Signal close.
-    ONDEBUG(cerr << "NetOSPortServerBaseBodyC::~NetOSPortServerBaseBodyC(), Called. Name=" << portName << " \n");  
+    ONDEBUG(cerr << "NetOSPortServerBaseBodyC::~NetOSPortServerBaseBodyC(), Called. Name=" << portName << " \n");
   }
   
   //: Get the port type.
@@ -102,11 +104,12 @@ namespace RavlN {
     Int64T size = ((UIntT) -1);
     if(seekCtrl.IsValid()) {
       lat = seekCtrl.Tell64();
+      if (lat != static_cast<UIntT>(-1) != streamPosUnknown)
+        at = lat;
       start = seekCtrl.Start64();
       size = seekCtrl.Size64();
-      at = lat;
     }
-    ep.Send(NPMsg_StreamInfo,lat,start,size);
+    ep.Send(NPMsg_StreamInfo,at,start,size);
     ONDEBUG(cerr << "NetOSPortServerBaseBodyC::ReqStats(), Sent: At=" << at << " Start=" << start << " Size=" << size << "\n");
     return true;
   }

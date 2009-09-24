@@ -109,8 +109,7 @@ namespace RavlN {
   //: Search for port in table.
   
   bool NetPortManagerBodyC::Lookup(const StringC &name,const StringC &dataType,NetISPortServerBaseC &isport,bool attemptCreate) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(),  Called. Port='" << name << "' \n");
-    NetISPortServerBaseC ret; 
+    ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetISPortServerBaseC),  Called. Port='" << name << "' \n");
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(iports.Lookup(name,isport))
       return true;
@@ -138,8 +137,7 @@ namespace RavlN {
   }
   
   bool NetPortManagerBodyC::Lookup(const StringC &name,const StringC &dataType,NetOSPortServerBaseC &osport,bool attemptCreate) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(),  Called. Port='" << name << "' \n");
-    NetISPortServerBaseC ret; 
+    ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetOSPortServerBaseC),  Called. Port='" << name << "' \n");
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(oports.Lookup(name,osport))
       return true;
@@ -195,7 +193,11 @@ namespace RavlN {
     ONDEBUG(cerr << "NetPortManagerBodyC::Unregister(), Called. Name='" << name << "'\n");
     RWLockHoldC hold(access,RWLOCK_WRITE);
     if(isInput)
+    {
+      RavlAssert(iports.IsElm(name));
       return iports.Del(name);
+    }
+    RavlAssert(oports.IsElm(name));
     return oports.Del(name);
   }
   
