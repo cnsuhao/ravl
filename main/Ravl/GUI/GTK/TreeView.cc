@@ -24,8 +24,8 @@
 #include  <gtk/gtk.h>
 
 #include "WidgetDNDInfo.hh"
-
-#define DODEBUG 1
+ 
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -330,7 +330,6 @@ namespace RavlGUIN {
         return SetAttribute(i, colNum,key,value,proxy);
       }
 
-    cerr << "TreeViewBodyC::SetAttribute(), Unknown column '" << colName << "' \n";
     return false;
   }
   
