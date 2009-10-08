@@ -760,7 +760,7 @@ namespace RavlN {
   UIntT SArray1dC<DataT>::Hash() const {
     UIntT ret = Size();
     for(BufferAccessIterC<DataT> it(*this);it;it++)
-      ret += StdHash(it.Data()) ^ (ret >> 1) ;
+      ret += StdHash(it.Data()) ^ (ret << 5) ;
     return ret;
   }
 
