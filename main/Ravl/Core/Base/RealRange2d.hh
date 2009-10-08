@@ -292,6 +292,15 @@ namespace RavlN {
     { return RealRange2dC(Range1() * scale,Range2() * scale); }
     //: Scale range
 
+    UIntT Hash() const {
+      UIntT ret = StdHash(rows);
+      ret += ret << 11;
+      ret += StdHash(cols);
+      return ret;
+    }
+    //: Generate a hash value for the range.
+    //: For template compatibility
+
   protected:
     inline const RealRange2dC & Range() const
     { return(*this); }

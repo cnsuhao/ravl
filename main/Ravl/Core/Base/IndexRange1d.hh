@@ -352,6 +352,13 @@ inline const IndexRangeC & operator+=(Int64T i)
     }
     //: Return a range within this range that has start and end points which are integer multples of 'alignment' 
     
+    SizeT Hash() const {
+      SizeT ret = minI.Hash();
+      ret += ret << 11;
+      ret += maxI.Hash();
+      return ret;
+    }
+    //: Generate a hash value for the range.
   private:    
     IndexC minI; // Minimum index.
     IndexC maxI; // Maximum index.

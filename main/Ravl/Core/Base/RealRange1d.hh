@@ -17,6 +17,7 @@
 #include "Ravl/Types.hh"
 #include "Ravl/IndexRange1d.hh"
 #include "Ravl/Math.hh"
+#include "Ravl/StdHash.hh"
 
 namespace RavlN {
 #if RAVL_VISUALCPP_NAMESPACE_BUG && RAVL_HAVE_STDNAMESPACE
@@ -229,6 +230,15 @@ namespace RavlN {
     { return IndexRangeC(Floor(minV),Ceil(maxV));  }
     //: Get the smallest integer range containing the real range.
     
+    UIntT Hash() const {
+      UIntT ret = StdHash(minV);
+      ret += ret << 11;
+      ret += StdHash(maxV);
+      return ret;
+    }
+    //: Generate a hash value for the range.
+    //: For template compatibility.
+
   private:
     RealT minV; // Minimum index.
     RealT maxV; // Maximum index.

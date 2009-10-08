@@ -453,7 +453,7 @@ namespace RavlN {
     // unget doesn't seem to work for all characters under
     // Visual C++. this works around the problem though its
     // not clear it will work for all types of streams.
-    // FIXME:- Be a little more clever and try and use unget when it will work.
+    // TODO:- Be a little more clever and try and use unget when it will work.
     is().seekg(is().tellg() - static_cast<streampos>(len));
 #endif
   }
