@@ -117,6 +117,10 @@ namespace RavlN {
     { return (VectorC &) *this; }
     //: Access the mean vector.
     
+    UIntT Hash() const
+    { return StdHash(number) + StdHash(static_cast<const VectorC &>(*this)); }
+    //: Provided for compatibility with templates.
+
   protected:
     
     // Object representation

@@ -86,6 +86,9 @@ namespace RavlN {
     // This assumes the estimates of the distributions are accurate. (The number
     // of samples is ignored) 
     
+    UIntT Hash() const
+    { return n + StdHash(mean) + StdHash(var); }
+    //: Provided for compatibility with templates.
   protected:
     SizeT n;
     RealT mean;
