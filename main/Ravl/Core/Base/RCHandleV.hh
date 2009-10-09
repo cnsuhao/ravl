@@ -28,7 +28,16 @@ namespace RavlN {
   class RCAbstractC;
   class BinIStreamC;
   class BinOStreamC;
-  template<class BodyT> class RCHandleVC;  
+  template<class BodyT> class RCHandleVC;
+
+  //! Convert a smart pointer to a RCAbstract handle
+  template<typename ValueT>
+  RCAbstractC ToRCAbstract(const RavlN::RCHandleVC<ValueT> &value);
+
+  //! Convert a smart pointer to from a RCAbstract handle
+  template<typename ValueT>
+  void FromRCAbstract(const RavlN::RCAbstractC &val,RavlN::RCHandleVC<ValueT> &value);
+
   
   RCBodyVC *VCLoad(std::istream &s);
   //: Load object from a stream via a virtual constructor
@@ -103,7 +112,12 @@ namespace RavlN {
     RCHandleVC<BodyT> DeepCopy(UIntT levels = ((UIntT) -1)) const
     { return RCHandleVC<BodyT>(Body().DeepCopy(levels)); }
     //: Make a deep copy of body.
-    
+
+    //! Convert a smart pointer to a RCAbstract handle
+    friend RCAbstractC ToRCAbstract<>(const RavlN::RCHandleVC<BodyT> &value);
+
+    //! Convert a smart pointer to from a RCAbstract handle
+    friend void FromRCAbstract<>(const RavlN::RCAbstractC &val,RavlN::RCHandleVC<BodyT> &value);
   };
   
   typedef RCHandleC<RCBodyVC> AbstractC;

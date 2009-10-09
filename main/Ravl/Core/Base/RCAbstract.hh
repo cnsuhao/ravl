@@ -103,5 +103,22 @@ namespace RavlN {
   { return RCAbstractC(Body()); }
   //: Create an abstract handle.
 
+  //! Convert a smart pointer to a RCAbstract handle
+  template<typename ValueT>
+  inline RCAbstractC ToRCAbstract(const RavlN::RCHandleVC<ValueT> &value) {
+    return RCAbstractC(value.Body());
+  }
+
+  //! Convert a smart pointer to from a RCAbstract handle
+  template<typename ValueT>
+  inline void FromRCAbstract(const RavlN::RCAbstractC &val,RavlN::RCHandleVC<ValueT> &value) {
+    if(!val.IsValid()) {
+      value.Invalidate();
+      return ;
+    }
+    value = RavlN::RCHandleVC<ValueT>(dynamic_cast<const ValueT &>(val.Body()));
+  }
+
+
 }
 #endif

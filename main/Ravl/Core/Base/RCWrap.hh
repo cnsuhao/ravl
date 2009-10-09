@@ -305,7 +305,23 @@ namespace RavlN {
   { return RCWrapC<DataT>(val); }
   //: Helper function to Wrap a value.
   
-  
+
+  //! Convert to a RCAbstract handle
+  template<typename DataT>
+  inline RCAbstractC ToRCAbstract(const DataT &value) {
+    RavlN::RCWrapC<DataT> wrap(value);
+    return wrap.Abstract();
+  }
+
+  //! Convert from a RCAbstract handle
+  template<typename DataT>
+  inline bool FromRCAbstract(const RavlN::RCAbstractC &val,DataT &value) {
+    RavlN::RCWrapC<DataT> wrap(val);
+    RavlAssert(wrap.IsValid());
+    value = wrap.Data();
+    return true;
+  }
+
 }
 
 
