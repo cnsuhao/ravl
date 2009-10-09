@@ -40,8 +40,8 @@ namespace RavlN {
     {}
     //: Copy constructor.
     
-    RCAbstractC(RCBodyVC &oth)
-      : RCHandleC<RCBodyVC>(oth)
+    RCAbstractC(const RCBodyVC &oth)
+      : RCHandleC<RCBodyVC>(&oth)
     {}
     //: Constructor.
     
