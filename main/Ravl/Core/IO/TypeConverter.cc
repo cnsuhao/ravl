@@ -141,7 +141,7 @@ namespace RavlN {
   //: Remove conversion from system.
     
   bool TypeConverterBodyC::Remove(DPConverterBaseC &tc)  {
-    // FIXME :- Slow !! 
+    // TODO :- This is slow !!
     ONDEBUG(cerr << "Unegistering converter : "<< tc.ArgType(0).name() << " to " << tc.Output().name() << endl);
     bool ok = false;
     IntT size = 0;
