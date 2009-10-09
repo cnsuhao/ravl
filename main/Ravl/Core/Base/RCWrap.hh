@@ -235,7 +235,7 @@ namespace RavlN {
     // if the object types do not match, an invalid handle
     // is created.
     
-    RCWrapC(const RCAbstractC &val)
+    RCWrapC(const RCAbstractC &val,bool v)
       : RCWrapAbstractC(dynamic_cast<const RCWrapBodyC<DataT> *>(val.BodyPtr()))
     {}
     //: Construct from an abstract handle.

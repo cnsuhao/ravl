@@ -353,7 +353,7 @@ namespace RavlGUIN {
     if(state == -2)
       return false;
     if(state == -1) { // Move whole polygon ?
-      RCWrapC<Polygon2dC> oldPoly(mv.MouseInfo());
+      RCWrapC<Polygon2dC> oldPoly(mv.MouseInfo(),true);
       RavlAssert(oldPoly.IsValid());
       poly = oldPoly.Data().Copy();
       Point2dC offset = (at - mv.MousePressAt());
