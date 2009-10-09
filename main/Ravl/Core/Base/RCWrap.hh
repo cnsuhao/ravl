@@ -315,11 +315,10 @@ namespace RavlN {
 
   //! Convert from a RCAbstract handle
   template<typename DataT>
-  inline bool FromRCAbstract(const RavlN::RCAbstractC &val,DataT &value) {
-    RavlN::RCWrapC<DataT> wrap(val);
+  inline void FromRCAbstract(const RavlN::RCAbstractC &val,DataT &value) {
+    RavlN::RCWrapC<DataT> wrap(val,true);
     RavlAssert(wrap.IsValid());
     value = wrap.Data();
-    return true;
   }
 
 }
