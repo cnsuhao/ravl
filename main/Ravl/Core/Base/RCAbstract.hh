@@ -90,6 +90,15 @@ namespace RavlN {
     return RCAbstractC(Body().Copy()); 
   }
 
+  //! Convert a smart pointer to a RCAbstract handle
+  inline RCAbstractC ToRCAbstract(const RavlN::RCAbstractC &value)
+  { return value; }
+
+  //! Convert a smart pointer to from a RCAbstract handle
+  inline void FromRCAbstract(const RavlN::RCAbstractC &val,RavlN::RCAbstractC &value)
+  { value = val; }
+
+  //////////////////////////////////////
 
   template<class BodyT>
   RCHandleVC<BodyT>::RCHandleVC(const RCAbstractC &oth)
