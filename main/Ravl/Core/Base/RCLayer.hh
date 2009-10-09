@@ -219,10 +219,6 @@ namespace RavlN {
     { return Body().Save(out); }
     //: Save to binary stream 'out'.
     
-    RCAbstractC Abstract()
-    { return RCAbstractC(Body()); }
-    //: Create an abstract handle.    
-    
     IntT References() const
     { return RCHandleVC<BodyT>::References(); }
     //: Get the number of referee
