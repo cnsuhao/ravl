@@ -174,7 +174,8 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
 	 ++m_frame_number;
          BufferC<char> audio(m_audio_buffer_size);
          m_infile.read(audio.BufferAccess().DataStart(),m_audio_buffer_size);
-         return BufferC<char> (video.Size(),video.BufferAccess().DataStart(),true,false);
+         return BufferC<char> (video.Size(),video.BufferAccess().DataStart(),true,true);
+         //return BufferC<char> (video.Size(),video.BufferAccess().DataStart(),true,false);
 	 
          
       }
@@ -206,7 +207,8 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
         delete obuf;
         audio = 0;
         video = 0;
-        return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, false);  
+        return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, true);
+        //return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, false);  
       }
   }
   
