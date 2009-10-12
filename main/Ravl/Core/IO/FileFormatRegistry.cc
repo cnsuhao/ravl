@@ -306,7 +306,7 @@ namespace RavlN {
         continue;
 
       RealT conversionCost = -1;
-      DListC<DPConverterBaseC> converterList(typeConverter.FindConversion(obj_type, *ti, conversionCost));
+      DListC<DPConverterBaseC> converterList(typeConverter.FindConversion(*ti,obj_type,  conversionCost));
       if (converterList.Size() == 0)
         continue;
 
