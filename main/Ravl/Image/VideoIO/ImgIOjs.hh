@@ -15,7 +15,6 @@
 //! file="Ravl/Image/VideoIO/ImgIOjs.hh"
 
 #include "Ravl/DP/SPort.hh"
-#include "Ravl/OS/FileStream.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUV422Value.hh"
 #include "Ravl/Stream.hh"
@@ -35,7 +34,13 @@ namespace RavlImageN {
     
     DPImageJSBaseBodyC(const StringC &filename,bool read);
     //: Constructor.
-    
+
+    DPImageJSBaseBodyC(DPISPortC<ByteT> inputPort);
+    //: Constructor.
+
+    DPImageJSBaseBodyC(DPOPortC<ByteT> outputPort);
+    //: Constructor.
+
     bool ReadHeader();
     //: Read header from stream.
     
@@ -63,12 +68,14 @@ namespace RavlImageN {
   protected:     
     ImageRectangleC rect; // Size of YUV variant. Origin 0,0
     StreamOffsetT frameSize; // Size of one frame in bytes.
+    StreamOffsetT framePadding;
     UIntT frameNo; // Current frameno.
     UIntT seqSize;  // Number of frames in sequence, ((UIntT) -1) if unknown
     UIntT blockSize;  
     StreamOffsetT offset;  // Offset of start.
     
-    FileStreamC strm;
+    DPISPortC<ByteT> m_inputStream;
+    DPOPortC<ByteT> m_outputStream;
   };
   
   ///////////////////////////////////
@@ -86,6 +93,9 @@ namespace RavlImageN {
     DPIImageJSBodyC(const StringC &fileName);
     //: Constructor from a filename 
     
+    DPIImageJSBodyC(DPISPortC<ByteT> inputPort);
+    //: Constructor.
+
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     // Returns FALSE, if seek failed. (Maybe because its
@@ -109,18 +119,17 @@ namespace RavlImageN {
     //: Get next image.
     
     virtual bool IsGetReady() const 
-    { return strm.Good(); }
+    { return m_inputStream.IsValid() && m_inputStream.IsGetReady(); }
     //: Is some data ready ?
     // TRUE = yes.
     // Defaults to !IsGetEOS().
     
     virtual bool IsGetEOS() const
-    { return strm.Good(); }
+    { return m_inputStream.IsValid() && m_inputStream.IsGetEOS(); }
     //: Has the End Of Stream been reached ?
   // TRUE = yes.
     
   protected:
-    
     //IStreamC strm; // Can't use stdc++ streams, the don't support 64 bit offsets.
   };
   
@@ -139,6 +148,9 @@ namespace RavlImageN {
     DPOImageJSBodyC(const StringC &nStrm);
     //: Constructor from stream 
     
+    DPOImageJSBodyC(DPOPortC<ByteT> outputPort);
+    //: Constructor.
+
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
     // Returns FALSE, if seek failed. (Maybe because its
@@ -159,7 +171,7 @@ namespace RavlImageN {
     //: Put image to a stream.
     
     virtual bool IsPutReady() const 
-      { return strm.Good(); }
+    { return m_outputStream.IsValid() && m_outputStream.IsPutReady(); }
     //: Read to write some data ?
     // TRUE = yes.
     
@@ -184,10 +196,14 @@ namespace RavlImageN {
     //: Constructor from filename.  
     
     DPIImageJSC(const IStreamC &nStrm)
-      : DPEntityC(*new DPIImageJSBodyC(nStrm))
-      {}
+    : DPEntityC(*new DPIImageJSBodyC(nStrm))
+    {}
     //: Constructor from stream 
     
+    DPIImageJSC(DPISPortC<ByteT> inputPort)
+    : DPEntityC(*new DPIImageJSBodyC(inputPort))
+    {}
+    //: Constructor.
   };
   
   //! userlevel=Normal
@@ -201,10 +217,14 @@ namespace RavlImageN {
     //: Constructor from filename.  
     
     DPOImageJSC(const OStreamC &nStrm)
-      : DPEntityC(*new DPOImageJSBodyC(nStrm))
-      {}
+    : DPEntityC(*new DPOImageJSBodyC(nStrm))
+    {}
     //: Constructor from stream 
     
+    DPOImageJSC(DPOPortC<ByteT> outputPort)
+    : DPEntityC(*new DPOImageJSBodyC(outputPort))
+    {}
+    //: Constructor.
   };
 
 }

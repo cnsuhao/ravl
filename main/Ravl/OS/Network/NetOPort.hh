@@ -230,13 +230,13 @@ namespace RavlN {
     virtual IntT PutArray(const SArray1dC<DataT>& data)
     {
       if (gotEOS || !data.IsValid() || !ep.IsValid())
-      	return false;
-      Int64T size = data.Size();
-      ep.Send(NPMsg_DataArrayPut,at,size,data);
-      at += data.Size();
+      	return 0;
+      Int64T dataSize = data.Size();
+      ep.Send(NPMsg_DataArrayPut,at,dataSize,data);
+      at += dataSize;
       if (at > size)
       	size = at;
-      return true;
+      return dataSize;
     }
     //: Put an array of data to stream.
     // returns number of elements processed.
