@@ -705,7 +705,7 @@ endif
 
 $(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
 	$(SHOWIT)if [ -e $(INST_HEADERSYM)/$(@F) -o -L $(INST_HEADERSYM)/$(@F) ] ; then \
-		if [ "`readlink -e $(INST_HEADERSYM)/$(@F)`"  != "$(QCWD)/$(@F)" ] ; then \
+		if [ "`readlink $(INST_HEADERSYM)/$(@F)`"  != "$(QCWD)/$(@F)" ] ; then \
 			ln -sf $(QCWD)/$(@F) $(INST_HEADERSYM)/$(@F) ; \
 		fi ; \
 	else \
@@ -1068,6 +1068,9 @@ endif
 
 $(TARG_TESTEXE) : $(INST_TESTBIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(TARG_LIBS) $(EXTRAOBJS) $(TARG_HDRCERTS) $(INST_TESTBIN)/.dir
 	$(SHOWIT)echo "--- Linking test program $(@F)  ( $(INST_TESTBIN)/$(@F) ) " ; \
+	if [ -f $(INST_TESTBIN)/$(@F) ] ; then \
+	  $(CHMOD) +w $(INST_TESTBIN)/$(@F)$(EXEEXT) ; \
+	fi ; \
 	if $(CXX) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT)  $(EXTRAOBJS) $(TESTBINLIBS) -o $(INST_TESTBIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_TESTBIN)/$(@F) ; \
