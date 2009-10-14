@@ -228,7 +228,7 @@ namespace RavlN {
     { return IndexRangeC(Min() - i,Max() - i); }
     //: Create a new IndexRangeC with minimum and maximum limits shifted by subtracting the offset 'i'.
     
-#if RAVL_OS_LINUX64
+#if RAVL_CPUTYPE_64
 inline IndexRangeC  operator+(UInt64T i) const 
 { return IndexRangeC(Min() + i,Max() + i); }
     //: Create a new IndexRangeC with minimum and maximum limits shifted by adding the offset 'i'.

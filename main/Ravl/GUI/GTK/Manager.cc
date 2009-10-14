@@ -445,7 +445,7 @@ namespace RavlGUIN {
   
   //: Enter GUI thread region.
   
-  bool ManagerC::ThreadEnterGUI(IntT &oldId) {
+  bool ManagerC::ThreadEnterGUI(SizeT &oldId) {
     gdk_threads_enter();
 #if RAVL_USE_GTKTHREADS
     // Mark this thread as being GUI.
@@ -457,7 +457,7 @@ namespace RavlGUIN {
   
   //: Leave GUI thread region.
   
-  bool ManagerC::ThreadLeaveGUI(IntT &var) {
+  bool ManagerC::ThreadLeaveGUI(SizeT &var) {
     // Unmark the current thread.
 #if RAVL_USE_GTKTHREADS
     guiThreadID = var;

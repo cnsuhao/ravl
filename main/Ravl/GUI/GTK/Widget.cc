@@ -228,7 +228,7 @@ namespace RavlGUIN {
                                   Signal0C *data) {
     Signal1C<CListEventC> sig(*data);
     RavlAssert(sig.IsValid());
-#if RAVL_OS_LINUX64
+#if RAVL_CPUTYPE_64
     IntT rowId = (Int64T) gtk_clist_get_row_data(GTK_CLIST(widget),row);
 #else
     IntT rowId = (IntT) gtk_clist_get_row_data(GTK_CLIST(widget),row);
@@ -433,7 +433,7 @@ namespace RavlGUIN {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     const char *nm = gtk_widget_get_name(widget);
     if(nm == 0) {
-#if RAVL_OS_LINUX64
+#if RAVL_CPUTYPE_64
       StringC((Int64T) widget); // Use address as dummy.
 #else
       StringC((int) widget); // Use address as dummy.
