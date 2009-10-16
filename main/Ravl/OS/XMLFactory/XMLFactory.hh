@@ -131,6 +131,10 @@ namespace RavlN {
     { return m_parent.IsValid(); }
     //: Has node got a parent ?
     
+    bool HasChild(const StringC &name) const
+    { return m_xmlNode.IsElm(name); }
+    //: Test if a child exists.
+
     bool Dump(std::ostream &strm,int level = 0);
     //: Dump node tree in human readable form.
   protected:
@@ -293,6 +297,10 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
+    bool HasChild(const StringC &childName) const
+    { return m_iNode->HasChild(childName); }
+    //: Test if a child context exist
+
     StringC Path() const
     { return m_iNode->Path(); }
     //: Get path to this node.

@@ -198,6 +198,10 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates 'child' if child is found.
     
+    bool IsElm(const KeyT &key) const
+    { return children.IsElm(key); }
+    //! Test if a child exists.
+
     bool Add(const KeyT &key,const DataT &data,bool overWrite = false);
     //: Add a child with given key and data.
     // If overWrite is true the node is replaced if it already exists.
@@ -299,7 +303,11 @@ namespace RavlN {
     //: Add a child with given key and data.
     // If overWrite is true the node is replaced if it already exists.
     // returns false if node is not added because it exists.
-    
+
+    bool IsElm(const KeyT &key) const
+    { return Body().IsElm(key); }
+    //! Test if a child exists.
+
     bool Add(const KeyT &key,const HashTreeC<KeyT,DataT> &subtree,bool overWrite = false)
     { return Body().Add(key,subtree,overWrite); }
     //: Add a sub tree

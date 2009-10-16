@@ -36,7 +36,7 @@ namespace RavlN {
   //! Follow path to child node.
   
   bool XMLFactoryNodeC::FollowPath(const StringC &path,XMLFactoryNodeC::RefT &node,bool verbose) const {
-    RavlN::StringListC pathElements(path,":/");
+    RavlN::StringListC pathElements(path,":/.");
     return FollowPath(pathElements,node,verbose);
   }
   
@@ -65,7 +65,7 @@ namespace RavlN {
   //! Follow path to child node, create nodes where needed
   
   bool XMLFactoryNodeC::UsePath(const StringC &path,RefT &node,bool restrictToXMLTree,bool verbose) {
-    RavlN::StringListC pathElements(path,":/");
+    RavlN::StringListC pathElements(path,":/.");
     return UsePath(pathElements,node,restrictToXMLTree,verbose);
   }
   
