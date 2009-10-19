@@ -566,7 +566,7 @@ namespace RavlGUIN {
   //: Test if we're in the GUI thread.
   
   bool ManagerC::IsGUIThread() const { 
-    UIntT cid = ThisThreadID();
+    SizeT cid = ThisThreadID();
     // Only one of either the native gtk thread or event handling
     // thread will be in GUI code at a time. So if we're on either 
     // we've got an exclusive lock on gtk functions.

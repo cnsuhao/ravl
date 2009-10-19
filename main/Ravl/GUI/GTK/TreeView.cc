@@ -88,7 +88,9 @@ namespace RavlGUIN {
   
   //: Constructor.
   
-  TreeViewBodyC::TreeViewBodyC(const TreeModelC &tm,const DListC<StringC> &ndisplayColumns, GtkSelectionMode nselMode,
+  TreeViewBodyC::TreeViewBodyC(const TreeModelC &tm,
+                               const DListC<StringC> &ndisplayColumns,
+                               GtkSelectionMode nselMode,
                                bool ignoreInitialSelectionSignals) 
     : treeModel(tm),
       selection(0),
