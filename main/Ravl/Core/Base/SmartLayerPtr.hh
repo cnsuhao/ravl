@@ -39,11 +39,6 @@ namespace RavlN {
       : SmartPtrC<DataT>(data)
     {}
     //: Construct from data.
-
-    SmartCallbackPtrC(DataT *data)
-      : SmartPtrC<DataT>(data)
-    {}
-    //: Construct from data.
     
     SmartCallbackPtrC(const DataT *data)
       : SmartPtrC<DataT>(data)
@@ -83,12 +78,6 @@ namespace RavlN {
     //: Construct from data.
     // Constructs an owner handle by default.
     
-    SmartOwnerPtrC(DataT *data,RCLayerHandleT handleType = RCLH_OWNER)
-      : RCLayerC<DataT>(data,handleType)
-    {}
-    //: Construct from data.
-    // Constructs an owner handle by default.
-
     SmartOwnerPtrC(const DataT *data,RCLayerHandleT handleType = RCLH_OWNER)
       : RCLayerC<DataT>(data,handleType)
     {}
