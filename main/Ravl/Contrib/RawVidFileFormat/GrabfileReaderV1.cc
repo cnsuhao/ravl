@@ -114,6 +114,16 @@ bool GrabfileReaderV1C::HaveMoreFrames()
 
 //--------------------------------------------------------------------------//
 
+//--------------------------------------------------------------------------//
+
+bool GrabfileReaderV1C::Seek(UIntT off)
+{
+  m_infile.seekg(off,ios::beg);
+  return m_infile.eof();
+}
+
+//--------------------------------------------------------------------------//
+
 // Read the next frame to a buffer.
 bool GrabfileReaderV1C::GetNextFrame(BufferC<char> &bu, UIntT &vsize, UIntT &asize)   //(DVSBufferC &buffer)
 {

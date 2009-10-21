@@ -80,7 +80,7 @@ namespace RavlImageN {
   protected:
     static inline bool is_odd (IndexC x) {return bool (x%2 != 0);}
     // Is an index odd ?
-    
+
     ImageRectangleC rect; // Size of YUV variant. Origin 0,0
     UIntT frameSize; // Size of one frame in bytes.
     UIntT frameNo; // Current frameno.

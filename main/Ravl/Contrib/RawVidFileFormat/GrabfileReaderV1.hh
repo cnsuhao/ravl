@@ -57,6 +57,8 @@ public:
 
   virtual bool HaveMoreFrames();
 
+  virtual bool Seek(UIntT off);
+
   virtual bool GetNextFrame(BufferC<char> &bu,UIntT &vsize,UIntT &asize);
   //: Read the next frame to a buffer.
 
