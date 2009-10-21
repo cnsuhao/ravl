@@ -127,7 +127,25 @@ namespace RavlN {
     { return Body().Apply(in); }
     //: Create function from the given data, and sample weights.
     // Note: Construction from a sample stream may not be implemented by all designers.
+
+    FunctionC Apply(const SampleC<TVectorC<float> > &in)
+    { return Body().Apply(in); }
+    //: Create function from the given data.
+
+    FunctionC Apply(const SampleC<TVectorC<float> > &in,const SampleC<float> &weight)
+    { return Body().Apply(in,weight); }
+    //: Create function from the given data, and sample weights.
+
+    FunctionC Apply(SampleStreamC<TVectorC<float> > &in)
+    { return Body().Apply(in); }
+    //: Create function from the given data.
+    // Note: Construction from a sample stream may not be implemented by all designers.
     
+    FunctionC Apply(SampleStream2C<TVectorC<float>,float> &in)
+    { return Body().Apply(in); }
+    //: Create function from the given data, and sample weights.
+    // Note: Construction from a sample stream may not be implemented by all designers.
+
   };
   
   inline istream &operator>>(istream &strm,DesignFunctionUnsupervisedC &obj) {

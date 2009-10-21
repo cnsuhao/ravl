@@ -53,12 +53,18 @@ namespace RavlN {
     virtual FunctionC Apply(const DataSetVectorLabelC &in);
     //: Create function from the given labelled data sets.
 
-    FunctionC Apply(SampleStreamC<VectorC>  &inPca,  SampleStream2C<VectorC, StringC> &inLda);
+    FunctionC Apply(SampleStreamC<VectorC>  &inPca, SampleStream2C<VectorC, StringC> &inLda);
     //: Create function from the 2 streams.
     // This method uses streams so that you don't have to store all the data in memory.<br>
     //!param: inPca - uses this stream to do some initial PCA dimension reduction (could be same stream as inLda)
     //!param: inLda - uses this labelled stream of vectors to do dimension reduction using LDA
-    
+
+    FunctionC Apply(SampleStreamC<TVectorC<float> > &inPca, SampleStream2C<TVectorC<float>, StringC> &inLda);
+    //: Create function from the 2 streams.
+    // This method uses streams so that you don't have to store all the data in memory.<br>
+    //!param: inPca - uses this stream to do some initial PCA dimension reduction (could be same stream as inLda)
+    //!param: inLda - uses this labelled stream of vectors to do dimension reduction using LDA
+
     MatrixC &Lda()
     { return lda; }
     //: Access eigen vectors and values.
@@ -170,6 +176,13 @@ namespace RavlN {
     // This method uses streams so that you don't have to store all the data in memory.<br>
     //!param: inPca - uses this unlabelled stream to do some initial PCA dimension reduction (could be same stream as <code>inLda</code>)
     //!param: inLda - uses this labelled stream of vectors to do dimension reduction using LDA. Note, it is assumed that the labels are grouped together.
+
+    FunctionC Apply(SampleStreamC<TVectorC<float> > &inPca, SampleStream2C<TVectorC<float>, StringC> &inLda)
+    { return Body().Apply(inPca,inLda); }
+    //: Create function from the 2 streams.
+    // This method uses streams so that you don't have to store all the data in memory.<br>
+    //!param: inPca - uses this stream to do some initial PCA dimension reduction (could be same stream as inLda)
+    //!param: inLda - uses this labelled stream of vectors to do dimension reduction using LDA
 
   };
 
