@@ -65,7 +65,6 @@ namespace RavlGUIN
   
   GUIMarkupCanvasBodyC::~GUIMarkupCanvasBodyC() {
     connections.DisconnectAll();
-    // FIXME :- The following is not thread safe.
     if(gcDrawContext != 0) {
       if(Manager.IsGUIThread())
         gdk_gc_unref(gcDrawContext);
