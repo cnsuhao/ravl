@@ -11,7 +11,6 @@
 #include "Ravl/Threads/Mutex.hh"
 #include "Ravl/HashTree.hh"
 #include "Ravl/DataServer/DataServerVFSNode.hh"
-#include "Ravl/DataServer/DataServerInterface.hh"
 
 namespace RavlN {
 
@@ -21,8 +20,7 @@ namespace RavlN {
   //: Data server body class.
   
   class DataServerBodyC
-  : public NetPortManagerBodyC,
-    public DataServerInterfaceC
+  : public NetPortManagerBodyC
   {
   public:
     DataServerBodyC(const StringC &name);
@@ -37,35 +35,30 @@ namespace RavlN {
     //!param: useAddress - Open the server connection with a config provided address.
     // Build Virtual File System appropriately.
 
-    virtual bool AddNode(const StringC& path, const StringC& nodeType, const HashC<StringC, StringC>& options);
+    bool AddNode(const StringC& path, const StringC& nodeType, const HashC<StringC, StringC>& options);
     //: Add a node to the live data server.
     //!param: path - The virtual path to add to the tree.
     //!param: nodeType - The node type name (matching the 'NodeType' config entry).
     //!param: options - Addition options (matching the format used for node config entries).
     //!return: True on success.
 
-    virtual bool RemoveNode(const StringC& path, bool removeFromDisk = false);
+    bool RemoveNode(const StringC& path, bool removeFromDisk = false);
     //: Remove a node from the live data server.
     //!param: path - The virtual path to remove from the tree.
     //!param: removeFromDisk - If a corresponding real file exists, remove it from the disk once all ports have closed.
     //!return: True on success.
 
-    virtual Signal1C<StringC>& SignalNodeClosed()
+    Signal1C<StringC>& SignalNodeClosed()
     { return m_signalNodeClosed; }
     //: Connect to this signal to be informed when all ports to a target path have closed.
     //!return: Signal to a string containing the target path.
 
-    virtual Signal1C<StringC>& SignalNodeRemoved()
+    Signal1C<StringC>& SignalNodeRemoved()
     { return m_signalNodeRemoved; }
     //: Connect to this signal to be informed when all ports to a removed target path have closed and it has been removed.
     //!return: Signal to a string containing the target path.
 
-    virtual Signal2C<StringC, StringC>& SignalNodeError()
-    { return m_signalNodeError; }
-    //: Connect to this signal to be informed when a port encounters an error.
-    //!return: Signal to a pair of strings containg the node path and the descriptive error.
-
-    virtual bool QueryNodeSpace(const StringC& path, Int64T& total, Int64T& used, Int64T& available);
+    bool QueryNodeSpace(const StringC& path, Int64T& total, Int64T& used, Int64T& available);
     //: Query the space info for a node, if applicable.
     //!param: total - Returns the space allocated for footage in bytes (both free and used). -1 if not applicable.
     //!param: used - Returns the space used for stored footage in bytes. -1 if not applicable.
@@ -100,8 +93,7 @@ namespace RavlN {
 
     Signal1C<StringC> m_signalNodeClosed;
     Signal1C<StringC> m_signalNodeRemoved;
-    Signal2C<StringC, StringC> m_signalNodeError;
-    
+
     friend class DataServerC;
   };
   
@@ -119,7 +111,7 @@ namespace RavlN {
     // Creates an invalid handle.
 
     DataServerC(const StringC & name) 
-      : NetPortManagerC(*new DataServerBodyC(name))
+    : NetPortManagerC(*new DataServerBodyC(name))
     {}
     //: Constructor. 
     //!cwiz:author
@@ -160,11 +152,6 @@ namespace RavlN {
     { return Body().SignalNodeRemoved(); }
     //: Connect to this signal to be informed when all ports to a removed target path have closed and it has been removed.
     //!return: Signal to a string containing the target path.
-
-    Signal2C<StringC, StringC>& SignalNodeError()
-    { return Body().SignalNodeError(); }
-    //: Connect to this signal to be informed when a port encounters an error.
-    //!return: Signal to a pair of strings containg the node path and the descriptive error.
 
     bool QueryNodeSpace(const StringC& path, Int64T& total, Int64T& used, Int64T& available)
     { return Body().QueryNodeSpace(path, total, used, available); }

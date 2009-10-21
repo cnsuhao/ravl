@@ -32,8 +32,7 @@ namespace RavlN {
   : NetPortManagerBodyC(name,true),
     m_vfs(true),
     m_signalNodeClosed(StringC()),
-    m_signalNodeRemoved(StringC()),
-    m_signalNodeError(StringC(), StringC())
+    m_signalNodeRemoved(StringC())
   {
     // Setup root VFS node.
     m_vfs.Data() = DataServerVFSNodeC("","",false,true);
