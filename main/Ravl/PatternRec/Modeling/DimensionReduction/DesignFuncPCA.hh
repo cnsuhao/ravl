@@ -44,7 +44,7 @@ namespace RavlN {
     virtual FunctionC Apply(const SampleC<VectorC> &in);
     //: Create function from the given data.
     // The actual class returned is <a href="RavlN.FuncMeanProjectionC.html">FuncMeanProjectionC</a>
-    
+
     virtual FunctionC Apply(SampleStreamC<VectorC> &in);
     //: Create function from the given data.
     // The actual class returned is <a href="RavlN.FuncMeanProjectionC.html">FuncMeanProjectionC</a>

@@ -4,11 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
+//! rcsid="$Id: SampleVector.cc 5410 2006-03-12 21:37:43Z craftit $"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/SampleVector.cc"
 
-#include "Ravl/PatternRec/SampleVector.hh"
+#include "Ravl/PatternRec/SampleVectorFloat.hh"
 #include "Ravl/DArray1dIter.hh"
 #include "Ravl/DArray1dIter2.hh"
 #include "Ravl/DArray1dIter3.hh"
@@ -21,24 +21,15 @@
 
 namespace RavlN {
 
-  //: Construct from a sample of floats.
-
-  SampleVectorC::SampleVectorC(const SampleC<TVectorC<float> > &svec)
-    : SampleC<VectorC>(svec.Size())
-  {
-    for(DArray1dIterC<TVectorC<float> > it(svec.DArray());it;it++)
-      Append(VectorC(*it));
-  }
-
   //: Construct a new sample set with a reduced set of features
   
-  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet)
-    : SampleC<VectorC>(svec.Size())
+  SampleVectorFloatC::SampleVectorFloatC(const SampleC<TVectorC<float> > &svec, const SArray1dC<IndexC> &featureSet)
+    : SampleC<TVectorC<float> >(svec.Size())
   {
     UIntT numFeatures = featureSet.Size();
-    for(DataSet2IterC<SampleC<VectorC>,SampleC<VectorC> > it(svec,*this); it; it++) {
-      VectorC out(numFeatures);
-      for(SArray1dIter2C<IndexC,RealT> itf(featureSet,out); itf; itf++)
+    for(DataSet2IterC<SampleC<TVectorC<float> >,SampleC<TVectorC<float> > > it(svec,*this); it; it++) {
+      TVectorC<float>  out(numFeatures);
+      for(SArray1dIter2C<IndexC,float> itf(featureSet,out); itf; itf++)
 	itf.Data2() = it.Data1()[itf.Data1()];
       it.Data2() = out;
     }
@@ -46,7 +37,7 @@ namespace RavlN {
   
   //: Get the size of vectors in this sample.
   
-  UIntT SampleVectorC::VectorSize() const {
+  UIntT SampleVectorFloatC::VectorSize() const {
     if(IsEmpty())
       return 0;
     return First().Size();
@@ -54,10 +45,10 @@ namespace RavlN {
 
   //: Find the mean vector.
   
-  VectorC SampleVectorC::Mean() const {
-    DArray1dIterC<VectorC> it(*this);
-    if(!it) return VectorC();
-    VectorC total = it->Copy();
+  VectorC SampleVectorFloatC::Mean() const {
+    DArray1dIterC<TVectorC<float> > it(*this);
+    if(!it) return TVectorC<float> ();
+    VectorC total(*it);
     for(it++;it;it++)
       total += *it;
     return total/ ((RealT) Size());
@@ -65,10 +56,10 @@ namespace RavlN {
   
   //: Find the weighted mean vector of the sample.
   
-  VectorC SampleVectorC::Mean(const SampleC<RealT> &weights) const {
-    DArray1dIter2C<VectorC,RealT> it(*this,weights.DArray());
-    if(!it) return VectorC();
-    VectorC total = it.Data1() * it.Data2();
+  VectorC SampleVectorFloatC::Mean(const SampleC<float> &weights) const {
+    DArray1dIter2C<TVectorC<float> ,float> it(*this,weights.DArray());
+    if(!it) return TVectorC<float> ();
+    VectorC total(it.Data1() * it.Data2());
     RealT n = 0;
     for(it++;it;it++) {
       total.MulAdd(it.Data1(),it.Data2());
@@ -79,8 +70,8 @@ namespace RavlN {
   
   //: Find the mean and covariance of the sample
   
-  MeanCovarianceC SampleVectorC::MeanCovariance(bool sampleStatistics) const {
-    DArray1dIterC<VectorC> it(*this);
+  MeanCovarianceC SampleVectorFloatC::MeanCovariance(bool sampleStatistics) const {
+    DArray1dIterC<TVectorC<float> > it(*this);
     if(!it) return MeanCovarianceC();
     SumsNd2C sums(1.0,it->Copy(),OuterProductRUT(*it));
     for(it++;it;it++)
@@ -90,9 +81,9 @@ namespace RavlN {
   
   //: Find the mean and covariance of a weighted sample
   
-  MeanCovarianceC SampleVectorC::MeanCovariance(const SampleC<RealT> &weights,bool sampleStatistics) const {
+  MeanCovarianceC SampleVectorFloatC::MeanCovariance(const SampleC<float> &weights,bool sampleStatistics) const {
     RavlAssert(Size() == weights.Size());
-    DArray1dIter2C<VectorC,RealT> it(*this,weights.DArray());
+    DArray1dIter2C<TVectorC<float> ,float> it(*this,weights.DArray());
     if(!it) return MeanCovarianceC();
     SumsNd2C sums(it.Data2(),it.Data1() * it.Data2(),OuterProductRUT(it.Data1(),it.Data2()));
     for(it++;it;it++) 
@@ -102,9 +93,9 @@ namespace RavlN {
   
   //: Compute the sum of the outerproducts.
   
-  MatrixRUTC SampleVectorC::SumOuterProducts() const {
+  MatrixRUTC SampleVectorFloatC::SumOuterProducts() const {
     MatrixRUTC ret;
-    DArray1dIterC<VectorC> it(*this);
+    DArray1dIterC<TVectorC<float> > it(*this);
     if(!it) return ret; // No samples.
     ret = OuterProductRUT(*it);
     for(it++;it;it++)
@@ -115,10 +106,10 @@ namespace RavlN {
   //: Compute the sum of the outerproducts.
   // sam2 must have the same size as this sample vector.
   
-  MatrixC SampleVectorC::TMul(const SampleC<VectorC> &sam2) const {
+  MatrixC SampleVectorFloatC::TMul(const SampleC<TVectorC<float> > &sam2) const {
     RavlAssert(Size() == sam2.Size());
     MatrixC ret;
-    DArray1dIter2C<VectorC,VectorC> it(*this,sam2.DArray());
+    DArray1dIter2C<TVectorC<float> ,TVectorC<float> > it(*this,sam2.DArray());
     if(!it) return ret; // No samples.    
     ret = it.Data1().OuterProduct(it.Data2());
     for(it++;it;it++)
@@ -128,10 +119,10 @@ namespace RavlN {
 
   //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
   
-  MatrixRUTC SampleVectorC::SumOuterProducts(const SampleC<RealT> &w) const {
+  MatrixRUTC SampleVectorFloatC::SumOuterProducts(const SampleC<float> &w) const {
     RavlAssert(Size() == w.Size());
     MatrixRUTC ret;
-    DArray1dIter2C<VectorC,RealT> it(*this,w.DArray());
+    DArray1dIter2C<TVectorC<float> ,float> it(*this,w.DArray());
     if(!it) return ret; // No samples.
     ret = OuterProductRUT(it.Data1(),it.Data2());
     for(it++;it;it++)
@@ -142,11 +133,11 @@ namespace RavlN {
   //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
   // sam2 must have the same size as this sample vector.
   
-  MatrixC SampleVectorC::TMul(const SampleC<VectorC> &sam2,const SampleC<RealT> &w) const {
+  MatrixC SampleVectorFloatC::TMul(const SampleC<TVectorC<float> > &sam2,const SampleC<float> &w) const {
     RavlAssert(sam2.Size() == w.Size());
     RavlAssert(Size() == sam2.Size());
     MatrixC ret;
-    DArray1dIter3C<VectorC,VectorC,RealT> it(*this,sam2.DArray(),w.DArray());
+    DArray1dIter3C<TVectorC<float> ,TVectorC<float> ,float> it(*this,sam2.DArray(),w.DArray());
     if(!it) return ret; // No samples.    
     ret = it.Data1().OuterProduct(it.Data2(),it.Data3());
     for(it++;it;it++)
@@ -154,11 +145,11 @@ namespace RavlN {
     return ret;    
   }
 
-  void SampleVectorC::Normalise(const MeanCovarianceC & stats)  {
+  void SampleVectorFloatC::Normalise(const MeanCovarianceC & stats)  {
     if(Size() < 2)
       return ; // Can't normalise only 1 sample!
     UIntT d = VectorSize();
-    VectorC stdDev(d);
+    TVectorC<float>  stdDev(d);
     for(UIntT i=0;i<d;i++) {
       if(stats.Covariance()[i][i] > 0) 
 	stdDev[i] = stats.Covariance()[i][i];
@@ -169,17 +160,17 @@ namespace RavlN {
       stdDev[i] = Sqrt(stdDev[i]);
     stdDev.Reciprocal ();
     
-    for(SampleIterC<VectorC>it(*this);it;it++)
+    for(SampleIterC<TVectorC<float> >it(*this);it;it++)
       *it =  (*it - stats.Mean()) * stdDev;
   }
   
   //: Undo the normalisation done by 'Normalise()'.
   
-  void SampleVectorC::UndoNormalisation(const MeanCovarianceC & stats) {
+  void SampleVectorFloatC::UndoNormalisation(const MeanCovarianceC & stats) {
     if(Size() < 2)
       return ; // Can't normalise only 1 sample!
     UIntT d = VectorSize();
-    VectorC stdDev(d);
+    TVectorC<float>  stdDev(d);
     for(UIntT i=0;i<d;i++) {
       if(stats.Covariance()[i][i] > 0) 
 	stdDev[i] = stats.Covariance()[i][i];
@@ -189,7 +180,7 @@ namespace RavlN {
     for(UIntT i=0;i<d;i++)
       stdDev[i] = Sqrt(stdDev[i]);
     
-    for(SampleIterC<VectorC> it(*this);it;it++)
+    for(SampleIterC<TVectorC<float> > it(*this);it;it++)
       *it =  (*it  * stdDev) + stats.Mean();
   }
 

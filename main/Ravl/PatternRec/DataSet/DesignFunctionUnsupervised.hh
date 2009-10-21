@@ -55,7 +55,21 @@ namespace RavlN {
     virtual FunctionC Apply(SampleStream2C<VectorC,RealT> &in);
     //: Create function from the given data, and sample weights.
     // Note: Construction from a sample stream may not be implemented by all designers.
+
+    virtual FunctionC Apply(const SampleC<TVectorC<float> > &in);
+    //: Create function from the given data.
+
+    virtual FunctionC Apply(const SampleC<TVectorC<float> > &in,const SampleC<float> &weight);
+    //: Create function from the given data, and sample weights.
+
+    virtual FunctionC Apply(SampleStreamC<TVectorC<float> > &in);
+    //: Create function from the given data.
+    // Note: Construction from a sample stream may not be implemented by all designers.
     
+    virtual FunctionC Apply(SampleStream2C<TVectorC<float>,float> &in);
+    //: Create function from the given data, and sample weights.
+    // Note: Construction from a sample stream may not be implemented by all designers.
+
   };
   
   //! userlevel=Normal

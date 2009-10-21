@@ -4,9 +4,9 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_SAMPLEVECTOR_HEADER
-#define RAVL_SAMPLEVECTOR_HEADER 1
-//! rcsid="$Id$"
+#ifndef RAVL_SAMPLEVECTORFLOAT_HEADER
+#define RAVL_SAMPLEVECTORFLOAT_HEADER 1
+//! rcsid="$Id: SampleVector.hh 5410 2006-03-12 21:37:43Z craftit $"
 //! author="Kieron Messer"
 //! docentry="Ravl.API.Pattern Recognition.Data Set"
 //! lib=RavlPatternRec
@@ -26,30 +26,27 @@ namespace RavlN {
   // This class expects all the vectors in the sample to be of the same
   // size.
   
-  class SampleVectorC
-    : public SampleC<VectorC>
+  class SampleVectorFloatC
+    : public SampleC<TVectorC<float> >
   {
     
   public:
-    SampleVectorC(SizeT maxSize=10)
-      : SampleC<VectorC>(maxSize)
+    SampleVectorFloatC(SizeT maxSize=10)
+      : SampleC<TVectorC<float> >(maxSize)
     {}
     //: Create a sample of data with a maximum size
     
-    SampleVectorC(const SArray1dC<VectorC> & dat)
-      : SampleC<VectorC>(dat)
+    SampleVectorFloatC(const SArray1dC<TVectorC<float> > & dat)
+      : SampleC<TVectorC<float> >(dat)
     {}
     //: Create a sample of data from an array
     
-    SampleVectorC(const SampleC<VectorC> &svec)
-      : SampleC<VectorC>(svec)
+    SampleVectorFloatC(const SampleC<TVectorC<float> > &svec)
+      : SampleC<TVectorC<float> >(svec)
     {}
     //: Construct from base class.
 
-    SampleVectorC(const SampleC<TVectorC<float> > &svec);
-    //: Construct from a sample of floats.
-
-    SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet);
+    SampleVectorFloatC(const SampleC<TVectorC<float> > &svec, const SArray1dC<IndexC> &featureSet);
     //: Construct a sample set with a reduced set of features
     //!param: svec       - a sample of vectors
     //!param: featureSet - the indexes of features to keep
@@ -60,26 +57,26 @@ namespace RavlN {
     VectorC Mean() const;
     //: Find the mean vector of the sample.
     
-    VectorC Mean(const SampleC<RealT> &weights) const;
+    VectorC Mean(const SampleC<float> &weights) const;
     //: Find the weighted mean vector of the sample.
     
     MeanCovarianceC MeanCovariance(bool sampleStatistics = true) const;
     //: Find the mean and covariance of the sample
     
-    MeanCovarianceC MeanCovariance(const SampleC<RealT> &weights,bool sampleStatistics = true) const;
+    MeanCovarianceC MeanCovariance(const SampleC<float> &weights,bool sampleStatistics = true) const;
     //: Find the mean and covariance of a weighted sample
     
     MatrixRUTC SumOuterProducts() const;
     //: Compute the sum of the outerproducts.
     
-    MatrixC TMul(const SampleC<VectorC> &sam2) const;
+    MatrixC TMul(const SampleC<TVectorC<float> > &sam2) const;
     //: Compute the sum of the outerproducts.
     // sam2 must have the same size as this sample vector.
     
-    MatrixRUTC SumOuterProducts(const SampleC<RealT> &w) const;
+    MatrixRUTC SumOuterProducts(const SampleC<float> &w) const;
     //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
     
-    MatrixC TMul(const SampleC<VectorC> &sam2,const SampleC<RealT> &w) const;
+    MatrixC TMul(const SampleC<TVectorC<float> > &sam2,const SampleC<float> &w) const;
     //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
     // sam2 must have the same size as this sample vector.
     

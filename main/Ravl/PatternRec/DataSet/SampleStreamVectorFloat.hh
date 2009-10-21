@@ -4,11 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_SAMPLESTREAMVECTOR_HEADER
-#define RAVL_SAMPLESTREAMVECTOR_HEADER 1
+#ifndef RAVL_SAMPLESTREAMVECTORFLOAT_HEADER
+#define RAVL_SAMPLESTREAMVECTORFLOAT_HEADER 1
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Data Set"
-//! rcsid="$Id$"
+//! rcsid="$Id: SampleStreamVector.hh 5240 2005-12-06 17:16:50Z plugger $"
 //! lib=RavlPatternRec
 //! examples=exSampleStream.cc
 //! file="Ravl/PatternRec/DataSet/SampleStreamVector.hh"
@@ -23,37 +23,33 @@ namespace RavlN {
   //! userlevel=Normal
   //: Stream of sample vectors
   
-  class SampleStreamVectorC 
-    : public SampleStreamC<VectorC>
+  class SampleStreamVectorFloatC
+    : public SampleStreamC<TVectorC<float> >
   {
   public:
-    SampleStreamVectorC()
+    SampleStreamVectorFloatC()
       : DPEntityC(true)
     {}
     //: Default constructor.
     // Creates an invalid handle
     
-    SampleStreamVectorC(const SampleStreamC<VectorC> &stream)
+    SampleStreamVectorFloatC(const SampleStreamC<TVectorC<float> > &stream)
       : DPEntityC(stream)
     {}
     //: Base constructor.
     
-    SampleStreamVectorC(const DPISPortC<VectorC> &port)
+    SampleStreamVectorFloatC(const DPISPortC<TVectorC<float> > &port)
       : DPEntityC(port)
     {}
     //: Base constructor.
-
-    SampleStreamVectorC(const SampleStreamC<TVectorC<float> > &port);
-    //: Convert from a stream of float vectors.
 
     MeanCovarianceC MeanCovariance();
     //: Find the mean and covariance of the sample
     
     MatrixC SumOuterProducts();
-    //: Compute the sum of the outerproducts.
-    
-    
+    //: Compute the sum of the outer products.
   };
+
 }
 
 
