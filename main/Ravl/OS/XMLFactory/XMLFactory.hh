@@ -431,7 +431,12 @@ namespace RavlN {
     
     static void RegisterTypeFactory(const std::type_info &typeInfo,TypeFactoryT typeFactoryFunc);
     //: Register a factory function.
-    
+    //: Note: This is NOT thread safe.
+
+    static bool RegisterTypeAlias(const char *originalName,const char *newName);
+    //: Register an alias for a type. This must be done after the type is registered.
+    //: Note: This is NOT thread safe.
+
     template<class DataT> 
     static RCWrapAbstractC DefaultFactoryFunc(const XMLFactoryContextC &node)
     { return RCWrapC<typename DataT::RefT>(typename DataT::RefT(*new DataT(node))); }

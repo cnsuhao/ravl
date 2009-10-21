@@ -633,6 +633,23 @@ namespace RavlN {
     Type2Factory()[RavlN::TypeName(typeInfo)] = typeFactoryFunc;
   }
   
+  //: Register an alias for a type. This must be done after the type is registered.
+  //: Note: This is NOT thread safe.
+
+  bool XMLFactoryC::RegisterTypeAlias(const char *originalName,const char *newName) {
+    XMLFactoryC::TypeFactoryT factoryFunc;
+    if(!Type2Factory().Lookup(originalName,factoryFunc)) {
+      SysLog(SYSLOG_ERR,"Can't alias unknown type '%s' ",originalName);
+      return false;
+    }
+    if(Type2Factory().Lookup(newName) != 0) {
+      SysLog(SYSLOG_WARNING,"Can't set alias '%s' as its already defined ",newName);
+      return false;
+    }
+    Type2Factory()[originalName] = factoryFunc;
+    return true;
+  }
+
   //! Follow path to node.
   
   bool XMLFactoryC::FollowPath(const StringC &path,XMLFactoryNodeC::RefT &node) {
