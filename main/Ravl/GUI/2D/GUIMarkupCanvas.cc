@@ -524,6 +524,7 @@ namespace RavlGUIN
   //: Fit current display to screen.
   
   bool GUIMarkupCanvasBodyC::GUIFitImageToScreen(RealT aspectRatio) {
+    ONDEBUG(cerr << "GUIMarkupCanvasBodyC::GUIFitImageToScreen\n");
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     m_aspectRatio = aspectRatio;
     lastTimeOfFitToFrame = DateC::NowUTC();
@@ -577,6 +578,7 @@ namespace RavlGUIN
   //: Set the current aspect ratio of the displayed image.
   
   bool GUIMarkupCanvasBodyC::GUISetAspectRatio(RealT aspectRatio) {
+    ONDEBUG(cerr << "GUIMarkupCanvasBodyC::GUISetAspectRatio\n");
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     m_aspectRatio = aspectRatio;
     
@@ -607,6 +609,7 @@ namespace RavlGUIN
   //: Set the current aspect ratio
   
   bool GUIMarkupCanvasBodyC::GUIFixAspectRatio(RealT aspectRatio) {
+    ONDEBUG(cerr << "UIMarkupCanvasBodyC::GUIFixAspectRatio\n");
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     // Modify the displayed ratio.
     Vector2dC tmpScale = Scale();
@@ -742,6 +745,7 @@ namespace RavlGUIN
   //: Update the screen.
   
   bool GUIMarkupCanvasBodyC::GUIRefresh() {
+    ONDEBUG(cerr << "GUIMarkupCanvasBodyC::GUIRefresh()\n");
     if(widget == 0) // Are we ready to go ?
       return true; 
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
