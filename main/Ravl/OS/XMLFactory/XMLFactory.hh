@@ -146,7 +146,8 @@ namespace RavlN {
                               const StringC &name,
                               const std::type_info &to,
                               RCWrapAbstractC &handle,
-                              bool silentError = false
+                              bool silentError = false,
+                              const std::type_info &defaultType = typeid(void)
                               );
     //: Get named component.
     
@@ -266,7 +267,7 @@ namespace RavlN {
     //: Invalidate context.
     
     template<class DataT>
-    bool UseComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false) const;
+    bool UseComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false,const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
     
     template<class DataT>
@@ -368,12 +369,14 @@ namespace RavlN {
       return true;
     }
     //: Get named component, returns false if the component doesn't exist.
+    //: This does NOT create the object if its not found.
     
     template<class DataT>
     bool UseComponent(const XMLFactoryContextC& currentContext,
                       const StringC &name,
                       DataT &data,
-                      bool suppressErrorMessages = false
+                      bool suppressErrorMessages = false,
+                      const type_info &defaultType = typeid(void)
                       ) const
     {
       RCWrapC<DataT> handle;
@@ -381,7 +384,8 @@ namespace RavlN {
                                                                                      name,
                                                                                      typeid(DataT),
                                                                                      handle,
-                                                                                     suppressErrorMessages
+                                                                                     suppressErrorMessages,
+                                                                                     defaultType
                                                                                      ))
         return false;
       RavlAssert(handle.IsValid());
@@ -574,11 +578,12 @@ namespace RavlN {
     template<class DataT>
     bool UseComponent(const StringC &name,
                       DataT &data,
-                      bool suppressErrorMessages = false
+                      bool suppressErrorMessages = false,
+                      const std::type_info &defaultType=typeid(void)
                       ) const
     { 
       XMLFactoryContextC context(Body());
-      return Body().UseComponent(context,name,data,suppressErrorMessages);  
+      return Body().UseComponent(context,name,data,suppressErrorMessages,defaultType);
     }
     //: Get named component, or create it if not found.
     
@@ -603,8 +608,8 @@ namespace RavlN {
   
   
   template<class DataT>
-  bool XMLFactoryContextC::UseComponent(const StringC &name,DataT &data,bool suppressErrorMessages) const
-  { return Factory().UseComponent(*this,name,data,suppressErrorMessages); }
+  bool XMLFactoryContextC::UseComponent(const StringC &name,DataT &data,bool suppressErrorMessages,const std::type_info &defaultType) const
+  { return Factory().UseComponent(*this,name,data,suppressErrorMessages,defaultType); }
   //: Get named component, or create it if not found.
   
   template<class DataT>

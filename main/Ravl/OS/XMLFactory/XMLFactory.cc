@@ -27,6 +27,11 @@
 namespace RavlN {
   using RavlN::StringC;
 
+  RavlN::HashC<StringC,XMLFactoryC::TypeFactoryT> &XMLFactoryC::Type2Factory() {
+    static RavlN::HashC<StringC,TypeFactoryT> type2factory;
+    return type2factory;
+  }
+
   //! Destructor.
   XMLFactoryNodeC::~XMLFactoryNodeC()
   {
@@ -179,7 +184,8 @@ namespace RavlN {
                                              const RavlN::StringC &rawname,
                                              const std::type_info &to,
                                              RavlN::RCWrapAbstractC &handle,
-                                             bool silentError
+                                             bool silentError,
+                                             const std::type_info &defaultType
                                              ) 
   {
     XMLFactoryNodeC::RefT child;
@@ -198,6 +204,14 @@ namespace RavlN {
       return false;
     }
     
+    // FIXME:- Do we want to use the default type ?
+    if(!child->XMLNode().Data().IsElm("typename")) {
+      // Do we know how to build the type?
+      StringC reqType = RavlN::TypeName(defaultType);
+      std::cerr << "Setting default type for node=" <<reqType << "\n";
+      if(XMLFactoryC::Type2Factory().IsElm(reqType))
+        child->XMLNode().Data()["typename"] = reqType;
+    }
     if(!child->Component().IsValid()) {
       if(!child->CreateComponent(factory)) {
         if(!silentError)
@@ -658,12 +672,7 @@ namespace RavlN {
     return m_iRoot->FollowPath(path,node);
   }
   
-  
-  RavlN::HashC<StringC,XMLFactoryC::TypeFactoryT> &XMLFactoryC::Type2Factory() {
-    static RavlN::HashC<StringC,TypeFactoryT> type2factory;
-    return type2factory;
-  }
-  
+
   //static RavlN::TypeNameC type1(typeid(XMLFactoryC),"RavlN::XMLFactoryC");  
   static RavlN::TypeNameC type2(typeid(RavlN::SmartPtrC<XMLFactoryC>),"RavlN::SmartPtrC<RavlN::XMLFactoryC>");  
   
