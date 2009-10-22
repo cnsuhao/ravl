@@ -285,16 +285,7 @@ namespace RavlN {
     bool SetComponent(const StringC &name,const DataT &data);
     //: Set component for name.
     
-    bool ChildContext(const StringC &key,XMLFactoryContextC &child) const { 
-      if(!m_iNode.IsValid())
-        return false;
-      XMLTreeC childTree;
-      if(!m_iNode->XMLNode().Child(key,childTree))
-        return false;
-      XMLFactoryNodeC::RefT childNode = new XMLFactoryNodeC(childTree);
-      child = XMLFactoryContextC(Factory(),*childNode);
-      return true;
-    }
+    bool ChildContext(const StringC &key,XMLFactoryContextC &child) const;
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
