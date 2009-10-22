@@ -253,6 +253,8 @@ namespace RavlN {
       return false;
     }
     FileFormatBaseC bestFormat;
+    FileFormatBaseC aUsableFormat; // Remember a usable format even if conversion fails for error reporting.
+    const std::type_info *usableType = 0;
     DListC<DPConverterBaseC> bestConverterList;
     RealT bestConversionCost = 100000;
     const type_info *bestFormatType = 0;
@@ -288,6 +290,8 @@ namespace RavlN {
       //ONDEBUG(cerr << "Tell:" << in.Tell() << ") \n");
       if(*ti == typeid(void))
         continue; // Nope.
+      aUsableFormat = *it; // Remember a workable format in case we need it for error reporting later.
+      usableType = ti;
       if(*ti == obj_type || obj_type == typeid(void)) {
         // Found direct load, store it if it's the highest priority!
         if (bestConversionCost > 0 || (it.Data().Priority() > bestFormat.Priority()))
@@ -322,8 +326,12 @@ namespace RavlN {
 
     if(!bestFormat.IsValid()) {
       ONDEBUG(cerr << "FindInputFormat(StringC), Can't identify stream. \n");
-      if(verbose)
-        cerr << "Can't find format for '" << filename <<"'\n";
+      if(verbose) {
+        if(aUsableFormat.IsValid()) {
+          std::cerr << "Identified file format as " << aUsableFormat.Name() << " but could not convert result from " << RavlN::TypeName(*usableType) << " to requested type " << RavlN::TypeName(obj_type) << "\n";
+        } else
+          cerr << "Can't find format for '" << filename <<"'\n";
+      }
       return false;
     }
     if(verbose ONDEBUG(|| 1))
