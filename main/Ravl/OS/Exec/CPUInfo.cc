@@ -5,7 +5,8 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! lib=
-
+#include "Ravl/config.h"
+#include "Ravl/Assert.hh"
 #include "Ravl/OS/CPUInfo.hh"
 
 #define DODEBUG 0
@@ -19,15 +20,17 @@ namespace RavlN {
 
 
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
 
-#if !defined(_SC_NPROCESSORS_ONLN) && !defined(_SC_NPROC_ONLN)
+#if !defined(_SC_NPROCESSORS_ONLN) && !defined(_SC_NPROC_ONLN) && !RAVL_OS_WIN32
 // MACOSX
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #endif
 
+#if !RAVL_OS_WIN32
+#include <unistd.h>
+#endif
 
   //: Get the number of cores
   long int GetNumCores(void)
@@ -39,7 +42,7 @@ namespace RavlN {
 #endif
 
 #if !RAVL_OS_WIN32
-    long int val;
+long int val;
 #ifdef _SC_NPROCESSORS_ONLN
     val = sysconf(_SC_NPROCESSORS_ONLN);
 #elif defined(_SC_NPROC_ONLN)
