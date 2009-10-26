@@ -101,8 +101,14 @@ namespace RavlImageN {
   // position will not be changed.
   
   bool DPIImageDVSRGBBodyC::Seek(UIntT off) {
-    if(off == ((UIntT) -1)) {
+    /*if(off == ((UIntT) -1)) {
       return false; // File to big.
+    }*/
+    if((-off) > (IntT) frameNo) {
+      return false; // File to big.
+    }
+    if( off == 0 & frameNo == 0 ) {
+       return false;
     }
     //strm.is().clear(); // Clear any errors.
     file_read.Seek(CalcOffset(off));
@@ -114,8 +120,12 @@ namespace RavlImageN {
   
   bool DPIImageDVSRGBBodyC::DSeek(IntT off) {
     if(off < 0) {
-      if((-off) > (IntT) frameNo)
+      if((off == -1) & (frameNo == 1) ) {
+         return true;
+      }
+      if((-off) > (IntT) frameNo) {
 	return false; // Seek off begining of data.
+      }
     }
     UIntT nfrmno = frameNo + off;
     //strm.is().clear(); // Clear any errors.

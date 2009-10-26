@@ -141,6 +141,9 @@ protected:
 private:
   static const int m_version_number = 1;
   //: The version number.
+
+  static const IntT header_size = 31;
+  //: Size of the header in bytes.
 };
 
 }

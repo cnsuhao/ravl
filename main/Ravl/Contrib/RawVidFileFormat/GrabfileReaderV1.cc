@@ -118,7 +118,7 @@ bool GrabfileReaderV1C::HaveMoreFrames()
 
 bool GrabfileReaderV1C::Seek(UIntT off)
 {
-  m_infile.seekg(off,ios::beg);
+  m_infile.seekg(off+header_size,ios::beg);
   return m_infile.eof();
 }
 
