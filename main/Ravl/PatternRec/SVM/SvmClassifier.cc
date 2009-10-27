@@ -5,6 +5,8 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 
+//! author="Alexey Kostin"
+
 #include "Ravl/PatternRec/SvmClassifier.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
 
@@ -15,7 +17,7 @@ namespace RavlN
 using namespace RavlN;
 
 //---------------------------------------------------------------------------
-// Creates empty classifier, which returns 0 as the value ofdiscriminant function
+// Creates empty classifier, which returns 0 as the value of discriminant function
 SvmClassifierBodyC::SvmClassifierBodyC()
 {
   lambdas = NULL;
