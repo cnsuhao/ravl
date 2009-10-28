@@ -58,23 +58,24 @@ UIntT Classifier2BodyC::Classify(const VectorC &Data) const
 }
 //---------------------------------------------------------------------------
 // Classifier vector 'data' return the most likely label.
-UIntT Classifier2BodyC::Classify(const RealT* Data) const
+/*UIntT Classifier2BodyC::Classify(const RealT* Data) const
 {
   return Classify2(Data) > 0;
-}
+}*/
 //---------------------------------------------------------------------------
 // Classifier vector 'Data' return value of descriminant function
 RealT Classifier2BodyC::Classify2(const VectorC &Data) const
 {
-  return Classify2(Data.DataStart());
-}
-//---------------------------------------------------------------------------
-// Classifier vector 'Data' return value of descriminant function
-RealT Classifier2BodyC::Classify2(const RealT* Data) const
-{
   throw ExceptionOperationFailedC("Classifier2BodyC::Classify2:"
                                   "This is an abstract method");
 }
+//---------------------------------------------------------------------------
+// Classifier vector 'Data' return value of descriminant function
+/*RealT Classifier2BodyC::Classify2(const RealT* Data) const
+{
+  throw ExceptionOperationFailedC("Classifier2BodyC::Classify2:"
+                                  "This is an abstract method");
+}*/
 //---------------------------------------------------------------------------
 // Get vector length of classifier
 IntT Classifier2BodyC::GetDataSize() const

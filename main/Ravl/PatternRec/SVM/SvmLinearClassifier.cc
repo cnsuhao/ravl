@@ -192,7 +192,7 @@ void SvmLinearClassifierBodyC::Create(const SampleC<VectorC>& Sv,
 //! Create classifier
 /**
 @param Sv support vectors
-@param Lambdas lagrangian multipliers
+@param Lambdas Lagrangian multipliers
 @param Weights weights for features
 @param Scale global scale from kernel function
 @param Threshold threshold

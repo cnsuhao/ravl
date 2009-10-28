@@ -45,6 +45,9 @@ public:
   //! Classify vector 'data' and return value of descriminant function
   RealT Classify2(const VectorC &data) const;
 
+  //! Classify vector 'data' and return value of descriminant function
+  RealT Classify2(const RealT &data) const;
+
   //! Get vector length of classifier
   IntT GetDataSize() const;
 

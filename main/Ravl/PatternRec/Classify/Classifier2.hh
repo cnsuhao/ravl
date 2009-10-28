@@ -57,14 +57,14 @@ public:
   virtual UIntT Classify(const VectorC &Data) const;
   //: Classify vector 'data' and return class ID (0 or 1)
 
-  virtual UIntT Classify(const RealT* Data) const;
+  //virtual UIntT Classify(const RealT* Data) const;
   //: Classify vector 'data' and return class ID (0 or 1)
   // classifier supposed to know length of 'Data' array
 
   virtual RealT Classify2(const VectorC &Data) const;
   //: Classify vector 'data' and return value of descriminant function
 
-  virtual RealT Classify2(const RealT* Data) const;
+  //virtual RealT Classify2(const RealT* Data) const;
   //: Classify vector 'data' and return value of descriminant function
 
   virtual IntT GetDataSize() const;
@@ -95,16 +95,16 @@ public:
   { return Body().Classify(Data); }
   //: Classify vector 'data' and return clas ID (0 or 1)
 
-  UIntT Classify(const RealT* Data) const
-  { return Body().Classify(Data); }
+  //UIntT Classify(const RealT* Data) const
+  //{ return Body().Classify(Data); }
   //: Classify vector 'data' and return class (0 or 1)
   
   RealT Classify2(const VectorC &Data) const
   { return Body().Classify2(Data); }
   //: Classify vector 'data' and return value of descriminant function
 
-  RealT Classify2(const RealT* Data) const
-  { return Body().Classify2(Data); }
+  //RealT Classify2(const RealT* Data) const
+  //{ return Body().Classify2(Data); }
   //: Classify vector 'data' and return value of descriminant function
   // classifier supposed to know length of 'Data' array
 

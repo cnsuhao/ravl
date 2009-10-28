@@ -66,7 +66,7 @@ public:
   virtual RealT Classify2(const VectorC &Data) const;
 
   //! Classify vector 'data' and return value of descriminant function
-  virtual RealT Classify2(const RealT* Data) const;
+  //virtual RealT Classify2(const RealT* Data) const;
 
   //! Get vector length for classifier
   virtual IntT GetDataSize() const;
@@ -150,16 +150,16 @@ public:
     { return Body().Classify(Data); }
 
   //! Classify vector 'data' and return class (0 - outliers or 1 - inliers)
-  UIntT Classify(const RealT* Data) const
-    { return Body().Classify(Data); }
+  //UIntT Classify(const RealT* Data) const
+  //  { return Body().Classify(Data); }
 
   //! Classify vector 'data' and return value of descriminant function
   RealT Classify2(const VectorC &Data) const
   { return Body().Classify2(Data); }
 
   //! Classify vector 'data' and return value of descriminant function
-  RealT Classify2(const RealT* Data) const
-    { return Body().Classify2(Data); }
+  //RealT Classify2(const RealT* Data) const
+  //  { return Body().Classify2(Data); }
 
   const KernelFunctionC& KernelFunction() const
     { return Body().KernelFunction(); }
