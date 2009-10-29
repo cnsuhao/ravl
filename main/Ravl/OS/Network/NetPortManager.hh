@@ -37,7 +37,15 @@ namespace RavlN {
   public:
     NetPortManagerBodyC(const StringC &name,bool nUnregisterOnDisconnect = false);
     //: Constructor.
-    
+
+    StringC Name() const
+    { return name; }
+    //: Get the name.
+
+    StringC Address() const
+    { return address; }
+    //: Get the address.
+
     bool Lookup(const StringC &name,const StringC &dataType,NetISPortServerBaseC &isp,bool attemptCreate = true);
     //: Search for port in table.
     //!param: name - Name of connection
@@ -103,6 +111,7 @@ namespace RavlN {
     //: Owning handles has dropped to zero.
 
     StringC name;
+    StringC address;
     
     CallFunc3C<StringC,StringC,NetISPortServerBaseC &,bool> requestIPort; // Args: PortName,DataType,Place to open port to
     CallFunc3C<StringC,StringC,NetOSPortServerBaseC &,bool> requestOPort; // Args: PortName,DataType,Place to open port to
@@ -142,6 +151,14 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
+
+    StringC Name() const
+    { return Body().Name(); }
+    //: Get the name.
+
+    StringC Address() const
+    { return Body().Address(); }
+    //: Get the address.
 
   protected:
     NetPortManagerC(NetPortManagerBodyC& body, RCLayerHandleT handleType = RCLH_OWNER)

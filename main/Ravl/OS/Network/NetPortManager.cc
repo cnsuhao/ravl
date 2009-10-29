@@ -52,7 +52,8 @@ namespace RavlN {
       cerr << "NetPortManagerBodyC::Run(), Failed to open server socket. '" << addr << "' \n";
       return false;
     }
-    
+
+    address = addr;
     managerOpen = true;
     NetPortManagerC manager(*this);
     LaunchThread(manager,&NetPortManagerC::Run);
