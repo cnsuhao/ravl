@@ -168,7 +168,7 @@ namespace RavlImageN {
     ImagePointFeatureSetC fs;
     StringC featureSetFile = dir + '/' + file;
     if(!Load(featureSetFile,fs)) {
-      cerr << "WARNING: Failed to load file '" << featureSetFile << "' \n";
+      cerr << "WARNING: Failed to load feature file '" << featureSetFile << "' \n";
       return appear;
     }
     if(ignoreSuspect && fs.IsSuspect()) {

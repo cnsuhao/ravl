@@ -180,36 +180,41 @@ namespace RavlImageN {
       }
       lastParm = newParam;
 #if 0
-      for(int i = 0;i < lastParm.Size();i++) {
-        RealT change = 0.0001;
-        for(int j = 0;j < 2;j++) {
-          VectorC testParam = newParam.Copy();
-          if(j == 0)
-            change = 0.000001;
-          else
+      // This code does some extra optimisation which avoids problems
+      // with the standard AAM optimisation, it does take longer however
+      // This should be made optional via a member in the class.
+      if(diff >= oldDiff ) {
+        for(int i = 0;i < lastParm.Size();i++) {
+          RealT change = 0.0001;
+          for(int j = 0;j < 2;j++) {
+            VectorC testParam = newParam.Copy();
+            if(j == 0)
+              change = 0.000001;
+            else
             change = -0.000001;
-          do {
-            testParam[i] += change ;
-            
-            // Compute residual error.
-            if (appearanceModel.ErrorVector(testParam,rimg,errVec)==false) {
-              // parameter choice leads to shape exceeding image size -> maximum error
-              nErr = RavlConstN::maxReal;
-              break;
-            } else {
-              nErr = errVec.SumOfSqr()/errVec.Size();
-            }
-            // Did we manage to do better?
-            if(nErr < diff) {
-              change *= 2;
+            do {
+              testParam[i] += change ;
+              
+              // Compute residual error.
+              if (appearanceModel.ErrorVector(testParam,rimg,errVec)==false) {
+                // parameter choice leads to shape exceeding image size -> maximum error
+                nErr = RavlConstN::maxReal;
+                break;
+              } else {
+                nErr = errVec.SumOfSqr()/errVec.Size();
+              }
+              // Did we manage to do better?
+              if(nErr < diff) {
+                change *= 2;
               newParam = newEst;
               diff = nErr;
               continue; 
             }
-          } while(0);
+            } while(0);
+          }
         }
+        lastParm = newParam;
       }
-      lastParm = newParam;
 #endif
     }
     while(diff < oldDiff);
