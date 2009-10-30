@@ -89,7 +89,11 @@ namespace RavlGUIN {
     Polygon2dC &Polygon()
     { return poly; }
     //: Access polygon.
-    
+
+    const Polygon2dC &Polygon() const
+    { return poly; }
+    //: Access polygon.
+
   protected:
     bool FindClosestPoint(const Point2dC &pnt,RealT &score,IntT &pntNo);
     //: Find a point on the polygon
@@ -200,7 +204,11 @@ namespace RavlGUIN {
     Polygon2dC &Polygon()
     { return Body().Polygon(); }
     //: Access polygon.
-    
+
+    const Polygon2dC &Polygon() const
+    { return Body().Polygon(); }
+    //: Access polygon.
+
   protected:
     MarkupPolygon2dC(MarkupPolygon2dBodyC &bod)
      : MarkupInfoC(bod)
