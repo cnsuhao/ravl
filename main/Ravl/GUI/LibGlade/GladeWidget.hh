@@ -60,7 +60,7 @@ namespace RavlGUIN {
 
     template<class DataT>
     bool AddObject(const StringC &name, const RavlN::SmartPtrC<DataT> &newWidget, bool optional = false)
-    { return AddObject(name,SmartPtrC<WidgetBodyC>(static_cast<WidgetBodyC *>(newWidget.BodyPtr())),optional); }
+    { return AddObject(name,SmartPtrC<WidgetBodyC>(static_cast<const WidgetBodyC *>(newWidget.BodyPtr())),optional); }
     //: Add named widget.
     //!param: name - Name of the widget to search for in the Glade file
     //!param: newWidget - Widget object to connect to the named object
