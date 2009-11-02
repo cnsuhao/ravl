@@ -78,92 +78,96 @@ namespace RavlImageN {
 
   //: Try and get next piece of data.
   bool AAMSampleStreamBodyC::Get(Tuple2C<VectorC,VectorC> &buff) {
-    if(done)
-      return false;
-    UIntT subNo = sampleNo % samplesPerFrame;
-    if(subNo == 0) { // First from frame ?
-      UIntT frameNo = sampleNo/samplesPerFrame;
+    while(!done) {
+      UIntT subNo = sampleNo % samplesPerFrame;
+      if(subNo == 0) { // First from frame ?
+        UIntT frameNo = sampleNo/samplesPerFrame;
 
-      if(sampleNo != 0) {
-        if (!mirror.IsValid() || (mirror.IsValid() && frameNo%2==0)) {
-          flit++;
+        if(sampleNo != 0) {
+          if (!mirror.IsValid() || (mirror.IsValid() && frameNo%2==0)) {
+            flit++;
+          }
+          if(!flit) {
+            done = true;
+            break;
+          }
         }
-        if(!flit) {
-          done = true;
-          return false;
+
+        AAMAppearanceC appear = LoadFeatureFile(*flit,dir,m_typeMap,m_namedTypeMap,m_useTypeId,m_ignoreSuspect);
+        if(mirror.IsValid() && frameNo%2==1) {
+          appear = mirror.Reflect(appear);
         }
+
+        ONDEBUG(cerr << "AAMSampleStreamBodyC::Get(), Frame=" << (sampleNo / samplesPerFrame) << " " << appear.SourceFile()  << "\n");
+
+        // Sort out a real image.
+        if(image.Frame() != appear.Image().Frame())
+          image = ImageC<RealT>(appear.Image().Frame());
+        for(Array2dIter2C<RealT,ByteT> it(image,appear.Image());it;it++)
+          it.Data1() = it.Data2();
+
+        // smooth the image
+        image = smooth.Apply(image);
+
+        // Compute true parameters.
+
+        trueVec = am.Parameters(appear);
+        deltaVec = trueVec.Copy();
+
+        // Generate entry with no errors.
+
+        buff.Data2() = VectorC(trueVec.Size());
+        buff.Data2().Fill(0);
+        // Compute residual error
+        if(am.ErrorVector(trueVec,image,buff.Data1())==false) {
+          cerr << "Marked up points out of image range in file '" << *flit << "' in '" << dir << "' " << endl;
+          // Ignore it and continue.
+          continue;
+        }
+
+        sampleNo++;
+        return true;
+      }
+      subNo--;
+      UIntT paramNo = subNo / (2*incrSize);
+      UIntT incrNo = subNo % (2*incrSize);
+
+      RealT trueVal = trueVec[paramNo];
+
+      RealT maxVar;
+      switch (paramNo)
+      {
+        case 0: // tx
+          maxVar = 3*am.PixelSize()[0];
+          break;
+        case 1: // ty
+          maxVar = 3*am.PixelSize()[1];
+          break;
+        case 2: // sx
+        case 3: // sy
+        case 4: // u1
+        case 5: // u2
+          maxVar = 0.1 * trueVal;
+          break;
+        default:
+          maxVar = 0.5 * Sqrt(am.EigenValues()[paramNo]);
       }
 
-      AAMAppearanceC appear = LoadFeatureFile(*flit,dir,m_typeMap,m_namedTypeMap,m_useTypeId,m_ignoreSuspect);
-      if(mirror.IsValid() && frameNo%2==1) {
-        appear = mirror.Reflect(appear);
-      }
+      bool isInRange;
+      // Change parameters.
+      do {
+        deltaVec[paramNo] = trueVal + (-1.0 + incrNo*2.0/(2*incrSize - 1)) * maxVar;
+        // Compute residual error.
+        isInRange = am.ErrorVector(deltaVec,image,buff.Data1());
+        maxVar /= 2;
+      } while(isInRange==false);
 
-      ONDEBUG(cerr << "AAMSampleStreamBodyC::Get(), Frame=" << (sampleNo / samplesPerFrame) << " " << appear.SourceFile()  << "\n");
-
-      // Sort out a real image.
-      if(image.Frame() != appear.Image().Frame())
-        image = ImageC<RealT>(appear.Image().Frame());
-      for(Array2dIter2C<RealT,ByteT> it(image,appear.Image());it;it++)
-        it.Data1() = it.Data2();
-
-      // smooth the image
-      image = smooth.Apply(image);
-
-      // Compute true parameters.
-
-      trueVec = am.Parameters(appear);
-      deltaVec = trueVec.Copy();
-
-      // Generate entry with no errors.
-
-      buff.Data2() = VectorC(trueVec.Size());
-      buff.Data2().Fill(0);
-      // Compute residual error
-      if(am.ErrorVector(trueVec,image,buff.Data1())==false)
-        cerr << "Marked up points out of image range" << endl;
-
+      buff.Data2() = deltaVec - trueVec;
+      deltaVec[paramNo] = trueVal;
       sampleNo++;
       return true;
     }
-    subNo--;
-    UIntT paramNo = subNo / (2*incrSize);
-    UIntT incrNo = subNo % (2*incrSize);
-
-    RealT trueVal = trueVec[paramNo];
-
-    RealT maxVar;
-    switch (paramNo)
-    {
-      case 0: // tx
-        maxVar = 3*am.PixelSize()[0];
-        break;
-      case 1: // ty
-        maxVar = 3*am.PixelSize()[1];
-        break;
-      case 2: // sx
-      case 3: // sy
-      case 4: // u1
-      case 5: // u2
-        maxVar = 0.1 * trueVal;
-        break;
-      default:
-        maxVar = 0.5 * Sqrt(am.EigenValues()[paramNo]);
-    }
-
-    bool isInRange;
-    // Change parameters.
-    do {
-      deltaVec[paramNo] = trueVal + (-1.0 + incrNo*2.0/(2*incrSize - 1)) * maxVar;
-      // Compute residual error.
-      isInRange = am.ErrorVector(deltaVec,image,buff.Data1());
-      maxVar /= 2;
-    } while(isInRange==false);
-
-    buff.Data2() = deltaVec - trueVec;
-    deltaVec[paramNo] = trueVal;
-    sampleNo++;
-    return true;
+    return false;
   }
 
   //: Has the End Of Stream been reached ?
