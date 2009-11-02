@@ -106,7 +106,8 @@ endif
 
 # Include system config and Directories 
 
--include $(MAKEHOME)/*.qpr $(MAKEHOME)/lib/RAVL/libdep/*.qpr
+-include $(MAKEHOME)/*.qpr $(MAKEHOME)/lib/RAVL/libdep/*.qpr 
+-include $(PROJECT_OUT)/lib/RAVL/libdep/*.qpr
 
 include $(MAKEHOME)/config.$(ARC)
 NOVAR=1
@@ -643,6 +644,9 @@ $(MAKEHOME)/MainDep.mk :
 	@true
 
 $(MAKEHOME)/lib/RAVL/libdep/*.qpr : $(MAKEHOME)/Dirs.mk
+	@true;
+
+$(PROJECT_OUT)/lib/RAVL/libdep/*.qpr: $(MAKEHOME)/Dirs.mk
 	@true;
 
 ###############################################
