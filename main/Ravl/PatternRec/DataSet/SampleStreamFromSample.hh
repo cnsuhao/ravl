@@ -23,6 +23,7 @@ namespace RavlN {
   class SampleStreamFromSampleBodyC
     : public DPISPortBodyC<DataT>
   {
+  public:
     SampleStreamFromSampleBodyC(const SampleC<DataT> &sample) :
       m_sample(sample),
       m_sampleIter(sample)
