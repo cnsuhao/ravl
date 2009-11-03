@@ -14,6 +14,7 @@
 #include "Ravl/PatternRec/DesignFuncPCA.hh"
 #include "Ravl/PatternRec/DesignFuncLSQ.hh"
 #include "Ravl/PatternRec/FuncLinear.hh"
+#include "Ravl/PatternRec/SampleStreamFromSample.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/DP/FileFormatBinStream.hh"
 #include "Ravl/DP/FileFormatStream.hh"
@@ -24,6 +25,7 @@
 #include "Ravl/SArray1dIter3.hh"
 #include "Ravl/PatternRec/FuncMeanProjection.hh"
 #include "Ravl/Array1dIter2.hh"
+#include "Ravl/OS/SysLog.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -163,33 +165,39 @@ namespace RavlImageN {
 
   //: Design a shape model given some data.
   bool AAMShapeModelBodyC::Design(const SampleC<AAMAppearanceC> &sample,RealT variation, UIntT maxP) {
+    SampleStreamFromSampleC<AAMAppearanceC> stream(sample);
+    return Design(stream, variation, maxP);
+  }
+
+  //: Design a shape model given some data.
+  bool AAMShapeModelBodyC::Design(SampleStreamC<AAMAppearanceC> &sample,RealT variation, UIntT maxP) {
     SampleVectorC vectors(sample.Size());
 
     //: Do some initial processing, needed for some models.
 
     if(!ComputeMean(sample)) {
       if(m_verbose)
-        std::cerr << "ERROR: Failed to compute sample mean. \n";
+        SysLog(SYSLOG_ERR) << "Failed to compute sample mean.";
       return false;
     }
 
     //: Generate sample of raw vectors.
 
-    SampleIterC<AAMAppearanceC> it(sample);
-    if(!it) {
-      if(m_verbose)
-        std::cerr << "ERROR: Sample set empty. \n";
-      return false; // No data points!
-    }
-    nPoints = it->Points().Size();
+    sample.Seek(0);
+    AAMAppearanceC appearance;
+    // ASSERT: there is at least one sample because ComputeMean succeeded.
+    sample.Get(appearance);
+//    SampleIterC<AAMAppearanceC> it(sample);
+    nPoints = appearance.Points().Size();
 
     SArray1dC<Sums1d2C> stats(NoFixedParameters());
     for(SArray1dIterC<Sums1d2C> yit(stats);yit;yit++)
       yit->Reset();
 
-    for(;it;it++) {
+    sample.Seek(0);
+    while (sample.Get(appearance)) {
       VectorC vec,nfixed;
-      RawParameters(*it,nfixed,vec);
+      RawParameters(appearance,nfixed,vec);
       vectors.Append(vec);
       for(SArray1dIter2C<Sums1d2C,RealT> zit(stats,nfixed);zit;zit++)
         zit.Data1() += zit.Data2();
@@ -202,8 +210,8 @@ namespace RavlImageN {
       xit.Data3() = xit.Data1().Variance();
     }
 
-    ONDEBUG(cerr << "FixedMean=" << fixedMean << "\n");
-    ONDEBUG(cerr << "FixedVar=" << fixedVar << "\n");
+    SysLog(SYSLOG_DEBUG) << "FixedMean=" << fixedMean;
+    SysLog(SYSLOG_DEBUG) << "FixedVar=" << fixedVar;
 
     // Do pca.
 
