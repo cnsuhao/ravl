@@ -21,6 +21,7 @@
 #include "Ravl/Image/AAMAppearanceUtil.hh"
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
+#include "Ravl/OS/SysLog.hh"
 
 namespace RavlImageN {
 
@@ -148,31 +149,23 @@ namespace RavlImageN {
 
   }
 
-
-
-  //: Load ImagePointFeatureSetC object from XML file and store as an appearance.
-  //!param: file - names of XML file.
-  //!param: dir - Name of directory containing appearance files.
+  //: Convert an ImagePointFeatureSetC object to an appearance.
+  //!param: fs - the feature object
   //!param: ignoreSuspect - Ignore XML files marked as "Suspect"? True = yes.
   //!param: loadImages - Load image in memory? True = yes.
   // Note that if 'loadImages' is set to false, only the shape of the model instance will be loaded.
-  AAMAppearanceC LoadFeatureFile(const StringC &file,
-                                   const StringC & dir,
-                                   HashC<IntT,IntT> &typeMap,
-                                   HashC<StringC,IntT> &namedTypeMap,
-                                   bool &useTypeId,
-                                   bool ignoreSuspect,
-                                   bool loadImages) {
+  AAMAppearanceC LoadFeature(const ImagePointFeatureSetC &fs,
+                             const StringC &filename,
+                             HashC<IntT, IntT> &typeMap,
+                             HashC<StringC, IntT> &namedTypeMap,
+                             bool &useTypeId,
+                             bool ignoreSuspect,
+                             bool loadImages)
+  {
     AAMAppearanceC appear;
 
-    ImagePointFeatureSetC fs;
-    StringC featureSetFile = dir + '/' + file;
-    if(!Load(featureSetFile,fs)) {
-      cerr << "WARNING: Failed to load feature file '" << featureSetFile << "' \n";
-      return appear;
-    }
     if(ignoreSuspect && fs.IsSuspect()) {
-      cerr << "Skipping suspect markup '" << featureSetFile << "' \n";
+      SysLog(SYSLOG_DEBUG) << "Skipping suspect markup '" << fs.ImageFile() << "'";
       return appear;
     }
     SArray1dC<Point2dC> pnts(fs.Size());
@@ -180,8 +173,7 @@ namespace RavlImageN {
       GenerateTypeMap(fs.FeatureIterator(),useTypeId,typeMap,namedTypeMap);
     }
     if (fs.Size() != (IntT)typeMap.Size()) {
-      cerr << "ERROR: File has wrong number of features '" << featureSetFile << "' \n";
-      cerr << fs.Size() << " " << typeMap.Size() << endl;
+      SysLog(SYSLOG_ERR) << "Feature set has wrong number of features '" << fs.ImageFile() << "' " << fs.Size() << " " << typeMap.Size();
       return appear;
     }
     for(HashIterC<IntT, ImagePointFeatureC> fit(fs.FeatureIterator());fit;fit++) {
@@ -200,15 +192,36 @@ namespace RavlImageN {
     ImageC<ByteT> img;
     if(loadImages) {
       if(!Load(fs.ImageFile(),img)) {
-        cerr << "Failed to load image '" << fs.ImageFile() << "' \n";
+        SysLog(SYSLOG_WARNING) << "Failed to load image '" << fs.ImageFile() << "'";
         return appear;
       }
     }
     appear = AAMAppearanceC(pnts,img);
-    appear.SourceFile() = file;
-    cout  << file << " " << flush;
+    appear.SourceFile() = filename;
 
     return appear;
+  }
+
+  //: Load ImagePointFeatureSetC object from XML file and store as an appearance.
+  //!param: file - names of XML file.
+  //!param: dir - Name of directory containing appearance files.
+  //!param: ignoreSuspect - Ignore XML files marked as "Suspect"? True = yes.
+  //!param: loadImages - Load image in memory? True = yes.
+  // Note that if 'loadImages' is set to false, only the shape of the model instance will be loaded.
+  AAMAppearanceC LoadFeatureFile(const StringC &file,
+                                   const StringC & dir,
+                                   HashC<IntT,IntT> &typeMap,
+                                   HashC<StringC,IntT> &namedTypeMap,
+                                   bool &useTypeId,
+                                   bool ignoreSuspect,
+                                   bool loadImages) {
+    ImagePointFeatureSetC fs;
+    StringC featureSetFile = dir + '/' + file;
+    if(!Load(featureSetFile,fs)) {
+      SysLog(SYSLOG_WARNING) << "Failed to load feature file '" << featureSetFile << "'";
+      return AAMAppearanceC();
+    }
+    return LoadFeature(fs, file, typeMap, namedTypeMap, useTypeId, ignoreSuspect, loadImages);
   }
 
 
