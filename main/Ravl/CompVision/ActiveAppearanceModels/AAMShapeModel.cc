@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2005, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -65,7 +65,7 @@ namespace RavlImageN {
     s >> version;
     if(version != 1)
       throw ExceptionOutOfRangeC("AAMShapeModelC::AAMShapeModelC(istream &s), Bad version number in stream. ");
-    s >> shapeModel >> invShapeModel >> meanPoints >> eigenValues >> fixedMean; 
+    s >> shapeModel >> invShapeModel >> meanPoints >> eigenValues >> fixedMean;
 #if 0
     if(fixedMean.Size() != (UIntT) NoFixedParameters())
       throw ExceptionOutOfRangeC("AAMShapeModelC::AAMShapeModelC(BinIStreamC &s), Bad parameter in stream. ");
@@ -84,7 +84,7 @@ namespace RavlImageN {
   //: Save to binary stream 'out'.
   bool AAMShapeModelBodyC::Save(ostream &s) const {
     if(!RCBodyVC::Save(s))
-      return false;    
+      return false;
     int version = 1;
     s << ' ' << version << ' ' << shapeModel << ' ' << invShapeModel << ' ' << meanPoints << ' ' << eigenValues << ' ' << fixedMean;
     return true;
@@ -155,6 +155,12 @@ namespace RavlImageN {
     return true;
   }
 
+  //: Compute mean control points for the list of appearance provided.
+  bool AAMShapeModelBodyC::ComputeMean(SampleStreamC<AAMAppearanceC> &sample) {
+    // Don't need to do anything by default.
+    return true;
+  }
+
   //: Design a shape model given some data.
   bool AAMShapeModelBodyC::Design(const SampleC<AAMAppearanceC> &sample,RealT variation, UIntT maxP) {
     SampleVectorC vectors(sample.Size());
@@ -180,7 +186,7 @@ namespace RavlImageN {
     SArray1dC<Sums1d2C> stats(NoFixedParameters());
     for(SArray1dIterC<Sums1d2C> yit(stats);yit;yit++)
       yit->Reset();
-    
+
     for(;it;it++) {
       VectorC vec,nfixed;
       RawParameters(*it,nfixed,vec);
@@ -198,26 +204,26 @@ namespace RavlImageN {
 
     ONDEBUG(cerr << "FixedMean=" << fixedMean << "\n");
     ONDEBUG(cerr << "FixedVar=" << fixedVar << "\n");
-    
+
     // Do pca.
-    
+
     DesignFuncPCAC designPCA(variation);
     designPCA.Apply(vectors); // Design parameter to shape function.
-    
+
     // Apply limit on number of parameters
     if(designPCA.Pca().Vector().Size()>maxP) {
       designPCA.Pca().Vector() = designPCA.Pca().Vector().From(0,maxP);
       designPCA.Pca().Matrix() = designPCA.Pca().Matrix().SubMatrix(maxP,designPCA.Pca().Matrix().Cols());
     }
-    
+
     // Create model
     shapeModel = FuncMeanProjectionC(designPCA.Mean(),designPCA.Pca().Matrix());
-    
+
     eigenValues = fixedVar.Join(designPCA.Pca().Vector());
-    
+
     // compute inverse model
     invShapeModel = FuncLinearC(designPCA.Pca().Matrix().T(),designPCA.Mean());
-    
+
     RawProject(fixedMean,designPCA.Mean(),meanPoints);
     return true;
   }
@@ -270,7 +276,7 @@ namespace RavlImageN {
   //: Return number of parameters describing the pose
   //  These parameters include e.g. the position, scale and orientation of the model instance
   IntT AAMShapeModelBodyC::NoFixedParameters() const {
-    return 3; 
+    return 3;
   }
 
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(AAMShapeModelBodyC,AAMShapeModelC,RCHandleVC<AAMShapeModelBodyC>);
