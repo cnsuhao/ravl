@@ -17,7 +17,7 @@ HEADERS = Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh SampleDiscrete.
  DataSet3.hh DataSet3Iter.hh DataSet4.hh DataSet4Iter.hh SampleIO.hh \
  Function.hh Function1.hh Designer.hh DesignFunctionUnsupervised.hh DesignFunctionSupervised.hh \
  VectorLabelIO.hh DataSetVectorLabel.hh DataSetVectorLabelWeight.hh SampleStream.hh SampleStreamVector.hh \
- SampleVectorFloat.hh SampleStreamVectorFloat.hh SampleReal.hh
+ SampleVectorFloat.hh SampleStreamVectorFloat.hh SampleReal.hh SampleStreamFromSample.hh
 
 SOURCES = SampleVector.cc SampleLabel.cc DataSetBase.cc \
  Function.cc Function1.cc Designer.cc DesignFunctionUnsupervised.cc DesignFunctionSupervised.cc \
