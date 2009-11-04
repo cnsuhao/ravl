@@ -196,6 +196,13 @@ namespace RavlImageN {
     //!param: variation - percentage of variation preserved during PCA.
     //!param: maxP      - limit on number of parameters contained in the shape model.
 
+    bool Design(SampleStreamC<AAMAppearanceC> &sample,RealT variation = 0.95,UIntT maxP=25)
+    { return Body().Design(sample,variation,maxP); }
+    //: Design a shape model given some data.
+    //!param: sample    - list of appearances for training the model.
+    //!param: variation - percentage of variation preserved during PCA.
+    //!param: maxP      - limit on number of parameters contained in the shape model.
+
     UIntT Dimensions() const
     { return Body().Dimensions(); }
     //: Size of the parameter vector.
