@@ -59,12 +59,6 @@ namespace RavlImageN {
   }
 
   //: Compute mean control points for the list of appearance provided.
-  bool AAMScaleRotationShapeModelBodyC::ComputeMean(const SampleC<AAMAppearanceC> &sample) {
-    SampleStreamFromSampleC<AAMAppearanceC> stream(sample);
-    return ComputeMean(stream);
-  }
-
-  //: Compute mean control points for the list of appearance provided.
   bool AAMScaleRotationShapeModelBodyC::ComputeMean(SampleStreamC<AAMAppearanceC> &sample) {
     if (sample.Size() == 0)
       return false; // No data points!;

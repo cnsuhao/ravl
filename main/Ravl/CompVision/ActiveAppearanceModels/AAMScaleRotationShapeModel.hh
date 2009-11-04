@@ -39,9 +39,6 @@ namespace RavlImageN {
     virtual bool Save(ostream &out) const;
     //: Save to stream 'out'.
 
-    virtual bool ComputeMean(const SampleC<AAMAppearanceC> &sample);
-    //: Compute mean control points for the list of appearance provided.
-
     virtual bool ComputeMean(SampleStreamC<AAMAppearanceC> &sample);
     //: Compute mean control points for the list of appearance provided.
 

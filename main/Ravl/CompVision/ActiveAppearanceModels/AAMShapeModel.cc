@@ -153,8 +153,8 @@ namespace RavlImageN {
 
   //: Compute mean control points for the list of appearance provided.
   bool AAMShapeModelBodyC::ComputeMean(const SampleC<AAMAppearanceC> &sample) {
-    // Don't need to do anything by default.
-    return true;
+    SampleStreamFromSampleC<AAMAppearanceC> stream(sample);
+    return ComputeMean(stream);
   }
 
   //: Compute mean control points for the list of appearance provided.
