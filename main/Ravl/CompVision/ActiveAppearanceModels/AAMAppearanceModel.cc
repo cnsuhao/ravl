@@ -250,24 +250,11 @@ namespace RavlImageN {
     SysLog(SYSLOG_DEBUG) << "AAMAppearanceModelBodyC::Design(), Designing shape model.";
 
     // Design the shape model.
-    SampleC<AAMAppearanceC> appearanceSet;
     HashC<IntT,IntT> typeMap;
     HashC<StringC,IntT> namedTypeMap;
     bool useTypeId;
-    appearanceSet = LoadFeatureSet(fileList,dir,typeMap,namedTypeMap,useTypeId,ignoreSuspect,false);
-
-    if(!mirrorFile.IsEmpty()) {
-      cout << "Reflecting data. \n";
-      AAMAppearanceMirrorC mirror(mirrorFile);
-      if(!mirror.IsValid()) {
-        SysLog(SYSLOG_ERR) << "Failed to read mirror file.";
-        return 1;
-      }
-      mirror.Reflect(appearanceSet);
-    }
-
-    SampleStreamFromSampleC<AAMAppearanceC> streamFromSample(appearanceSet);
-    if (!shape.Design(streamFromSample, varS, maxS)) {
+    AAMSampleStreamFileListC streamNoImage(fileList, dir, mirrorFile, typeMap, namedTypeMap, useTypeId, ignoreSuspect, false);
+    if (!shape.Design(streamNoImage, varS, maxS)) {
       SysLog(SYSLOG_ERR) << "AAMAppearanceModelBodyC::Design(), Failed to design shape model.";
       return false;
     }
