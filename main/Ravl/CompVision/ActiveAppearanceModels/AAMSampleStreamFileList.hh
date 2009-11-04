@@ -28,6 +28,9 @@ namespace RavlImageN {
     AAMSampleStreamFileListBodyC(const DListC<StringC> &fileList,
                                  const StringC &dir,
                                  const StringC &mirrorFile,
+                                 HashC<IntT, IntT> &typeMap,
+                                 HashC<StringC, IntT> &namedTypeMap,
+                                 bool &useTypeId,
                                  bool ignoreSuspect = true,
                                  bool loadImages = true);
     //: Constructor
@@ -62,6 +65,7 @@ namespace RavlImageN {
     UIntT m_index;
     HashC<IntT,IntT> m_typeMap;
     HashC<StringC,IntT> m_namedTypeMap;
+    bool m_useTypeId;
   };
 
   //! userlevel=Normal
@@ -79,9 +83,12 @@ namespace RavlImageN {
     AAMSampleStreamFileListC(const DListC<StringC> &fileList,
                              const StringC &dir,
                              const StringC &mirrorFile,
+                             HashC<IntT, IntT> &typeMap,
+                             HashC<StringC, IntT> &namedTypeMap,
+                             bool &useTypeId,
                              bool ignoreSuspect = true,
                              bool loadImages = true) :
-      DPEntityC(new AAMSampleStreamFileListBodyC(fileList, dir, mirrorFile, ignoreSuspect, loadImages))
+      DPEntityC(new AAMSampleStreamFileListBodyC(fileList, dir, mirrorFile, typeMap, namedTypeMap, useTypeId, ignoreSuspect, loadImages))
     {}
     //: Base constructor.
 

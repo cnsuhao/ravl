@@ -16,6 +16,9 @@ namespace RavlImageN {
   AAMSampleStreamFileListBodyC::AAMSampleStreamFileListBodyC(const DListC<StringC> &fileList,
                                                              const StringC &dir,
                                                              const StringC &mirrorFile,
+                                                             HashC<IntT, IntT> &typeMap,
+                                                             HashC<StringC, IntT> &namedTypeMap,
+                                                             bool &useTypeId,
                                                              bool ignoreSuspect,
                                                              bool loadImages) :
     m_dir(dir),
@@ -23,7 +26,10 @@ namespace RavlImageN {
     m_loadImages(loadImages),
     m_fileList(fileList),
     m_fileListIter(fileList),
-    m_index(0)
+    m_index(0),
+    m_typeMap(typeMap),
+    m_namedTypeMap(namedTypeMap),
+    m_useTypeId(useTypeId)
   {
     if (!mirrorFile.IsEmpty()) {
       m_mirror = AAMAppearanceMirrorC(mirrorFile);
@@ -48,8 +54,7 @@ namespace RavlImageN {
     if (!m_fileListIter.IsElm()) {
       throw DataNotReadyC();
     }
-    bool useTypeId;
-    AAMAppearanceC data = LoadFeatureFile(*m_fileListIter, m_dir, m_typeMap, m_namedTypeMap, useTypeId, m_ignoreSuspect, m_loadImages);
+    AAMAppearanceC data = LoadFeatureFile(*m_fileListIter, m_dir, m_typeMap, m_namedTypeMap, m_useTypeId, m_ignoreSuspect, m_loadImages);
     if (m_mirror.IsValid()) {
       if (m_index % 2) {
         data = m_mirror.Reflect(data);
