@@ -7,14 +7,13 @@
 #ifndef RAVL_CONTAINERIO_HEADER
 #define RAVL_CONTAINERIO_HEADER 1
 ///////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! author="Charles Galambos"
 //! date="07/07/1998"
 //! docentry="Ravl.API.Core.Data Processing.IO"
 //! file="Ravl/Core/IO/ContainerIO.hh"
 
-#include "Ravl/DP/Port.hh"
+#include "Ravl/DP/SPort.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/DLIter.hh"
 
@@ -25,34 +24,64 @@ namespace RavlN {
   
   template<class ContainerT>
   class DPIContainerBodyC 
-    : public DPIPortBodyC<typename ContainerT::ElementT> 
+    : public DPISPortBodyC<typename ContainerT::ElementT>
   {
   public:
-    DPIContainerBodyC(const ContainerT &dat);
+    DPIContainerBodyC(const ContainerT &dat)
+      : m_container(dat),
+        m_iter(const_cast<ContainerT &>(dat))
+    {}
     //: Constructor.
     
+    virtual bool Seek(UIntT offset) {
+      if(0 == offset) {
+        m_iter = m_container;
+        return true;
+      }
+      return false;
+    }
+    //: Support at least going back to the first element.
+
     virtual bool IsGetReady() const
-    { return iter; }
+    { return m_iter; }
     //: Is some data ready ?
     
     virtual bool IsGetEOS() const
-    { return iter; }
+    { return m_iter; }
     //: Has the End Of Stream been reached ?
     // true = yes.
     
-    virtual typename ContainerT::ElementT Get();
+    virtual typename ContainerT::ElementT Get() {
+      const typename ContainerT::ElementT &dat = m_iter.Data();
+      m_iter++;
+      return dat;
+    }
     //: Get next piece of data.
     
-    virtual IntT GetArray(SArray1dC<typename ContainerT::ElementT> &data);
+    virtual IntT GetArray(SArray1dC<typename ContainerT::ElementT> &data) {
+      for(SArray1dIterC<typename ContainerT::ElementT> it(data);it;it++) {
+        if(!m_iter)
+          return it.Index().V();
+        *it = *m_iter;
+        m_iter++;
+      }
+      return data.Size();
+    }
     //: Get an array of data from stream.
     // returns the number of elements processed.
     
-    virtual bool Get(typename ContainerT::ElementT &buff);
+    virtual bool Get(typename ContainerT::ElementT &buff) {
+      if(!m_iter)
+        return false;
+      buff = *m_iter;
+      m_iter++;
+      return true;
+    }
     //: Try and get next piece of data.
     
   protected:
-    ContainerT container;
-    typename ContainerT::IteratorT iter;
+    ContainerT m_container;
+    typename ContainerT::IteratorT m_iter;
   };
   
   ///////////////////////////////////////////////////////////////////////////////
@@ -65,51 +94,87 @@ namespace RavlN {
     : public DPOPortBodyC<typename ContainerT::ElementT> 
   {
   public:
-    DPOContainerBodyC(ContainerT &dat);
+    DPOContainerBodyC(ContainerT &dat)
+      : m_container(dat)
+    {}
     //: Default constructor.
     
-    virtual bool Put(const typename ContainerT::ElementT &);
+    virtual bool Put(const typename ContainerT::ElementT &dat) {
+      m_container += dat;
+      return true;
+    }
     //: Put data.
     
-    virtual IntT PutArray(const SArray1dC<typename ContainerT::ElementT> &data);
+    virtual IntT PutArray(const SArray1dC<typename ContainerT::ElementT> &data) {
+      for(SArray1dIterC<typename ContainerT::ElementT> it(data);it;it++)
+        m_container += *it;
+      return data.Size();
+    }
     //: Put data into container.
     
-    ContainerT &Container() { return container; }
+    ContainerT &Container()
+    { return m_container; }
     //: Access list.
     
   protected:
-    ContainerT container;
+    ContainerT m_container;
   };
   
   ///////////////////////////////////////////////////////////////////////////////
   //! userlevel=Develop
   //: Output list body.
-  // Append useing the '+=' operator.
+  // Append using the '+=' operator.
   
   template<class ContainerT>
   class DPOContainerOverwriteBodyC 
-    : public DPOPortBodyC<typename ContainerT::ElementT> 
+    : public DPOSPortBodyC<typename ContainerT::ElementT>
   {
   public:
-    DPOContainerOverwriteBodyC(ContainerT &dat);
+    DPOContainerOverwriteBodyC(ContainerT &dat)
+     : m_container(dat),
+       m_iter(dat)
+    {}
     //: Default constructor.
+
+    virtual bool Seek(UIntT offset) {
+      if(0 == offset) {
+        m_iter = m_container;
+        return true;
+      }
+      return false;
+    }
+    //: Support going back to the first element
     
-    virtual bool Put(const typename ContainerT::ElementT &);
+    virtual bool Put(const typename ContainerT::ElementT &dat) {
+      if(!m_iter)
+        return false;
+      *m_iter = dat;
+      m_iter++;
+      return true;
+    }
     //: Put data.
     
-    virtual IntT PutArray(const SArray1dC<typename ContainerT::ElementT> &data);
+    virtual IntT PutArray(const SArray1dC<typename ContainerT::ElementT> &data) {
+      for(SArray1dIterC<typename ContainerT::ElementT> it(data);it;it++) {
+        if(!m_iter)
+          return it.Index().V();
+        *m_iter = *it;
+        m_iter++;
+      }
+      return data.Size();
+    }
     //: Put data into container.
     
-    ContainerT &Container() { return container; }
+    ContainerT &Container() { return m_container; }
     //: Access list.
     
     virtual bool IsPutReady() const
-    { return iter; }
+    { return m_iter; }
     //: Is port ready for data ?
     
   protected:
-    ContainerT container;
-    typename ContainerT::IteratorT iter;
+    ContainerT m_container;
+    typename ContainerT::IteratorT m_iter;
   };
   
   /////////////////////////////////
@@ -118,7 +183,7 @@ namespace RavlN {
   
   template<class ContainerT>
   class DPIContainerC 
-    : public DPIPortC<typename ContainerT::ElementT> 
+    : public DPISPortC<typename ContainerT::ElementT>
   {
   public:
     DPIContainerC(const ContainerT &dat)
@@ -144,7 +209,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-  inline ContainerT &Container() 
+    inline ContainerT &Container()
     { return dynamic_cast<DPOContainerBodyC<ContainerT> &>(DPEntityC::Body()).Container(); }
     //: Access list.
   };
@@ -157,7 +222,9 @@ namespace RavlN {
   // The container must define 'ElementT'
   
   template<class ContainerT>
-  class DPOContainerOverwriteC : public DPOPortC<typename ContainerT::ElementT> {
+  class DPOContainerOverwriteC
+    : public DPOSPortC<typename ContainerT::ElementT>
+  {
   public:
     DPOContainerOverwriteC(ContainerT &dat)
       : DPEntityC(*new DPOContainerOverwriteBodyC<ContainerT>(dat))
@@ -179,13 +246,13 @@ namespace RavlN {
   //: Write out stream to container, appending to contents.
   
   template<class ContainerT>
-  DPOPortC<typename ContainerT::ElementT> DPOContainerOverwrite(ContainerT &dat)
+  DPOSPortC<typename ContainerT::ElementT> DPOContainerOverwrite(ContainerT &dat)
   { return DPOContainerOverwriteC<ContainerT>(dat); }
   
   //: Write out stream to container, overwriting existing contents.
   
   template<class ContainerT>
-  DPIPortC<typename ContainerT::ElementT> DPIContainer(const ContainerT &dat)
+  DPISPortC<typename ContainerT::ElementT> DPIContainer(const ContainerT &dat)
   { return DPIContainerC<ContainerT>(dat); }
   
   //: Use container as source for stream.
@@ -197,89 +264,7 @@ namespace RavlN {
   template<class DataT>
   DPIContainerC<DListC<DataT> > DPIList(const DListC<DataT> &dat)
   { return DPIContainerC<DListC<DataT> >(dat); }
-  
-  ////////////////////////////////////////////////////////
-  
-  template<class ContainerT>
-  DPIContainerBodyC<ContainerT>::DPIContainerBodyC(const ContainerT &dat)
-    : container(dat),
-      iter(const_cast<ContainerT &>(dat))
-  {}
 
-  template<class ContainerT>
-  typename ContainerT::ElementT DPIContainerBodyC<ContainerT>::Get() {
-    const typename ContainerT::ElementT &dat = iter.Data();
-    iter++;
-    return dat;
-  }
-  
-  template<class ContainerT>
-  bool DPIContainerBodyC<ContainerT>::Get(typename ContainerT::ElementT &buff) {
-    if(!iter)
-      return false;
-    buff = *iter;
-    iter++;
-    return true;
-  }
-  
-  template<class ContainerT>
-  IntT DPIContainerBodyC<ContainerT>::GetArray(SArray1dC<typename ContainerT::ElementT> &data) {
-    for(SArray1dIterC<typename ContainerT::ElementT> it(data);it;it++) {
-      if(!iter)
-	return it.Index().V();
-      *it = *iter;
-      iter++;
-    }
-    return data.Size();
-  }
-
-  /////////////////////////////////////////
-  
-  template<class ContainerT>
-  DPOContainerBodyC<ContainerT>::DPOContainerBodyC(ContainerT &dat) 
-    : container(dat)
-  {}
-  
-  template<class ContainerT>
-  bool DPOContainerBodyC<ContainerT>::Put(const typename ContainerT::ElementT &dat) {
-    container += dat; 
-    return true;
-  }
-  
-  template<class ContainerT>
-  IntT DPOContainerBodyC<ContainerT>::PutArray(const SArray1dC<typename ContainerT::ElementT> &data) {
-    for(SArray1dIterC<typename ContainerT::ElementT> it(data);it;it++)
-      container += *it;
-    return data.Size();
-  }
-  
-  /////////////////////////////////////////
-  
-  template<class ContainerT>
-  DPOContainerOverwriteBodyC<ContainerT>::DPOContainerOverwriteBodyC(ContainerT &dat) 
-    : container(dat),
-      iter(dat)
-  {}
-  
-  template<class ContainerT>
-  bool DPOContainerOverwriteBodyC<ContainerT>::Put(const typename ContainerT::ElementT &dat) {
-    if(!iter)
-      return false;
-    *iter = dat; 
-    iter++;
-    return true;
-  }
-  
-  template<class ContainerT>
-  IntT DPOContainerOverwriteBodyC<ContainerT>::PutArray(const SArray1dC<typename ContainerT::ElementT> &data) {
-    for(SArray1dIterC<typename ContainerT::ElementT> it(data);it;it++) {
-      if(!iter)
-	return it.Index().V();
-      *iter = *it; 
-      iter++;
-    }
-    return data.Size();
-  }
 }
 
 #endif
