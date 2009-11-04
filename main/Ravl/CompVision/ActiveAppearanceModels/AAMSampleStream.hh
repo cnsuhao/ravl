@@ -48,6 +48,12 @@ namespace RavlImageN {
                          );
     //: Constructor.
 
+    AAMSampleStreamBodyC(const AAMAppearanceModelC &am,
+                         const GaussConvolve2dC<RealT> &smooth,
+                         SampleStreamC<AAMAppearanceC> &sample,
+                         const UIntT incrSize);
+    //: Constructor from sample stream
+
     virtual bool Seek(UIntT off);
     //: Seek to location in stream.
 
@@ -65,20 +71,16 @@ namespace RavlImageN {
     // true = yes.
 
   protected:
-    AAMAppearanceModelC am;  // Statistical model of appearance.
-    GaussConvolve2dC<RealT> smooth;  // Gaussian convolver for smoothing.
-    AAMAppearanceMirrorC mirror;  // Mirror for creating mirror appearances.
-    DLIterC<StringC> flit;  // File iterator.
-    StringC dir;  // Name of directory containing appearance files.
-    ImageC<RealT> image;  // Current image frame.
-    VectorC trueVec;  // True parameter vector.
-    VectorC deltaVec;  // Displacement on parameter vector.
-    UIntT frames;  // Number of image frames to process.
-    UIntT samplesPerFrame;  // Number of displacements per appearance.
-    UIntT sampleNo;  // Index of displacement for the current appearance.
-    UIntT incrSize;  // Half number of displacements for each parameter when perturbing the model.
-    bool done;  // Have all files been processed?
-    bool m_ignoreSuspect;
+    AAMAppearanceModelC m_am;  // Statistical model of appearance.
+    GaussConvolve2dC<RealT> m_smooth;  // Gaussian convolver for smoothing.
+    SampleStreamC<AAMAppearanceC> m_sample;  // Stream of appearance samples
+    ImageC<RealT> m_image;  // Current image frame.
+    VectorC m_trueVec;  // True parameter vector.
+    VectorC m_deltaVec;  // Displacement on parameter vector.
+    UIntT m_samplesPerFrame;  // Number of displacements per appearance.
+    UIntT m_sampleNo;  // Index of displacement for the current appearance.
+    UIntT m_incrSize;  // Half number of displacements for each parameter when perturbing the model.
+    bool m_done;  // Have all files been processed?
     HashC<IntT,IntT> m_typeMap;
     HashC<StringC,IntT> m_namedTypeMap;
     bool m_useTypeId;
@@ -103,6 +105,14 @@ namespace RavlImageN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
+
+    AAMSampleStreamC(const AAMAppearanceModelC &am,
+                     const GaussConvolve2dC<RealT> &smooth,
+                     SampleStreamC<AAMAppearanceC> &sample,
+                     const UIntT incrSize)
+      : DPEntityC(*new AAMSampleStreamBodyC(am, smooth, sample, incrSize))
+    {}
+    //: Constructor from sample stream
 
   };
 
