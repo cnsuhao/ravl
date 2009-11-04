@@ -31,8 +31,8 @@ namespace RavlImageN {
                                  HashC<IntT, IntT> &typeMap,
                                  HashC<StringC, IntT> &namedTypeMap,
                                  bool &useTypeId,
-                                 bool ignoreSuspect = true,
-                                 bool loadImages = true);
+                                 bool ignoreSuspect,
+                                 bool loadImages);
     //: Constructor
 
     virtual bool Seek(UIntT off);
@@ -86,8 +86,8 @@ namespace RavlImageN {
                              HashC<IntT, IntT> &typeMap,
                              HashC<StringC, IntT> &namedTypeMap,
                              bool &useTypeId,
-                             bool ignoreSuspect = true,
-                             bool loadImages = true) :
+                             bool ignoreSuspect,
+                             bool loadImages) :
       DPEntityC(new AAMSampleStreamFileListBodyC(fileList, dir, mirrorFile, typeMap, namedTypeMap, useTypeId, ignoreSuspect, loadImages))
     {}
     //: Base constructor.
