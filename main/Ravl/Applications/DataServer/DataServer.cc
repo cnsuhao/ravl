@@ -353,7 +353,7 @@ namespace RavlN {
           continue;
         }
 
-        StringListC remainingPath = pathListIter.InclusiveTail();
+        StringListC remainingPath = pathListIter.Tail();
         return foundNode.Data().QueryNodeSpace(remainingPath.Cat("/"), total, used, available);
       }
       else
