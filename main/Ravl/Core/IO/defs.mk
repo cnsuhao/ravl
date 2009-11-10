@@ -26,7 +26,7 @@ HEADERS=Entity.hh Process.hh Port.hh SPort.hh SPortAttach.hh \
  AttributeCtrl.hh AttributeValueTypes.hh AttributeSet.hh  AttributeCtrlInternal.hh \
  ByteFileIO.hh SampleStream.hh CacheIStream.hh ByteStream.hh SByteStream.hh \
  MemIO.hh AttributeCtrlUpdateSignal.hh PrintIOInfo.hh MethodPtrIO.hh \
- FileFormatByteFile.hh
+ FileFormatByteFile.hh MethodPtr2Proc.hh
 
 SOURCES=Entity.cc Process.cc Port.cc SPort.cc SPortAttach.cc ProcInfo.cc \
  Converter.cc TypeInfo.cc Pipes.cc FileFormat.cc FileFormatDesc.cc \
