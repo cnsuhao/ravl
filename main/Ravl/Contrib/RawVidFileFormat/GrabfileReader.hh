@@ -58,7 +58,7 @@ public:
   virtual bool HaveMoreFrames() {return false;}
   //: Are there more frames to read?
 
-  virtual bool Seek(UIntT off) {return false;}
+  virtual bool Seek(UInt64T off) {return false;}
   //: Seek to position in file.
 
   virtual bool GetNextFrame(BufferC<char> &bu,UIntT &vsize,UIntT &asize) {return false;}

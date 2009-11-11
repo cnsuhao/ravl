@@ -100,7 +100,7 @@ void GrabfileReaderV1C::Close()
 
 // Are there any problems with the IO?
 bool GrabfileReaderV1C::Ok() const
-{
+{  
   return m_infile.good();
 }
 
@@ -116,18 +116,33 @@ bool GrabfileReaderV1C::HaveMoreFrames()
 
 //--------------------------------------------------------------------------//
 
-bool GrabfileReaderV1C::Seek(UIntT off)
+bool GrabfileReaderV1C::Seek(UInt64T off)
 {
+  m_infile.clear();
   m_infile.seekg(off+header_size,ios::beg);
+  m_frame_number = (off/(m_video_buffer_size + m_audio_buffer_size)); 
   return m_infile.eof();
 }
 
 //--------------------------------------------------------------------------//
 
+//--------------------------------------------------------------------------//
+
+bool GrabfileReaderV1C::DSeek(UInt64T off)
+{
+  m_infile.seekg(off,ios::cur);
+  IntT numframes = (off/(m_video_buffer_size + m_audio_buffer_size));
+  m_frame_number = m_frame_number + numframes;
+  return m_infile.eof();
+}
+
+//--------------------------------------------------------------------------//
+
+
 // Read the next frame to a buffer.
 bool GrabfileReaderV1C::GetNextFrame(BufferC<char> &bu, UIntT &vsize, UIntT &asize)   //(DVSBufferC &buffer)
 {
- 
+
   // Set the card mode.
   bool ok = HaveMoreFrames();
   if(!ok) {
@@ -174,8 +189,10 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
   // Audio buffer size
   m_infile.read(reinterpret_cast<char*>(&dummy_int), 4);
  
- 
   bool ok = m_infile.good();
+  if(!ok) {
+      exit(1);
+  }
   if(ok) {
       if(IdToByteFormat(byteformat) == BITS_8) {
          BufferC<char> video(m_video_buffer_size);
@@ -221,7 +238,6 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
         //return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, false);  
       }
   }
-  
      return BufferC<char>();
   
 }
