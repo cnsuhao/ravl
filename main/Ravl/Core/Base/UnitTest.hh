@@ -20,7 +20,7 @@
 namespace RavlN {
 
   //! Test binary IO.
-  // Its up to the implemneter to check the reloaded
+  // Its up to the implementer to check the reloaded
   // value is equal to the original input.
   // Returns true if stream is synchronised on output.
 
