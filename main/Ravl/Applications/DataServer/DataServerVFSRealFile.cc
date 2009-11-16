@@ -191,6 +191,31 @@ namespace RavlN {
     deleteOnClose = true;
     return true;
   }
+
+
+
+  bool DataServerVFSRealFileBodyC::QueryNodeSpace(const StringC& remainingPath, Int64T& total, Int64T& used, Int64T& available)
+  {
+    if (!remainingPath.IsEmpty())
+    {
+      cerr << "DataServerVFSRealFileBodyC::QueryNodeSpace failed to open as path remaining after a valid filename." << endl;
+      return false;
+    }
+
+    MutexLockC lock(access);
+
+    if (!realFilename.Exists() || realFilename.IsDirectory() || !realFilename.IsRegular() || !realFilename.IsReadable())
+    {
+      cerr << "DataServerVFSRealFileBodyC::QueryNodeSpace cannot query file size for '" << realFilename << "'." << endl;
+      return false;
+    }
+
+    total = -1;
+    available = -1;
+    used = realFilename.FileSize();
+    
+    return true;
+  }
   
   //: Open file and setup cache.
   

@@ -196,9 +196,24 @@ namespace RavlN {
     StringC targetFilename =  StringListC(remainingPath).Cat("/");
     FilenameC targetFile = realDirname + "/" + targetFilename;
 
-    if (!targetFile.Exists())
+    if (!targetFile.Exists() || !targetFile.IsReadable())
     {
-      cerr << "DataServerVFSRealDirBodyC::QueryNodeSpace target does not exist '" << targetFile << "'" << endl;
+      cerr << "DataServerVFSRealDirBodyC::QueryNodeSpace target does not exist or is unreadable '" << targetFile << "'" << endl;
+      return false;
+    }
+
+    if (!targetFile.IsDirectory())
+    {
+      if (targetFile.IsRegular())
+      {
+        total = -1;
+        available = -1;
+        used = targetFile.FileSize();
+
+        return true;
+      }
+
+      cerr << "DataServerVFSRealDirBodyC::QueryNodeSpace cannot query size of irregular file '" << targetFile << "'" << endl;
       return false;
     }
 

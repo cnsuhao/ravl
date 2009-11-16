@@ -55,9 +55,9 @@ namespace RavlN {
     virtual bool QueryNodeSpace(const StringC& remainingPath, Int64T& total, Int64T& used, Int64T& available);
     //: Query physical media details for the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
-    //!param: total - Returns the space allocated for the partition containing the target path in bytes (both free and used). -1 if not applicable.
-    //!param: used - Returns the space used on the partition containing the target path in bytes. -1 if not applicable.
-    //!param: available - Returns the space available on the partition containing the target node in bytes. -1 if not applicable.
+    //!param: total - If the target path is a directory, return the space allocated for the partition containing the target path in bytes (both free and used). -1 if the target path is a file.
+    //!param: used - If the target path is a directory, the space used on the partition containing the target path is returned. If the target path is a file, the size of the file is returned. Value in bytes.
+    //!param: available - If the target path is a directory, return the space available on the partition containing the target node in bytes. -1 if the target path is a file.
     //!return: True if the query executed successfully.
 
     virtual bool OnDelete(DListC<StringC>& remainingPath);

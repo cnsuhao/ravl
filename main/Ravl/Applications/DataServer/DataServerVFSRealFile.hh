@@ -63,6 +63,14 @@ namespace RavlN {
     //: Delete the physical media associated with the node.
     //!return: True if successfully deleted.
 
+    virtual bool QueryNodeSpace(const StringC& remainingPath, Int64T& total, Int64T& used, Int64T& available);
+    //: Query physical media details for the target path within the node.
+    //!param: remainingPath - List of strings containing the path elements to the target within the node. Should be empty for a file node.
+    //!param: total - Set to -1 as the node is a file and total is not applicable.
+    //!param: used - The size of the physical media associated is returned, in bytes.
+    //!param: available - Set to -1 as the node is a file and available is not applicable.
+    //!return: True if the query executed successfully.
+
   protected:
     bool OpenFileReadAbstract(const StringC &dataType, NetISPortServerBaseC& netPort);
     //: Open file and setup cache for reading.

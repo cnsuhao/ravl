@@ -87,7 +87,7 @@ namespace RavlN {
 
     virtual void ZeroOwners();
     //: Owning handles has dropped to zero.
-    
+
     MutexC m_access;
     HashTreeC<StringC,DataServerVFSNodeC> m_vfs; // Virtual file system.
 
