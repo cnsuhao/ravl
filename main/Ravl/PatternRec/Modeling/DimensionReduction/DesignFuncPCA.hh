@@ -27,7 +27,7 @@ namespace RavlN {
     DesignFuncPCABodyC(RealT variationPreserved = 0.98);
     //: Default constructor.
     // "variationPreserved" is amount of variation to attempt to preserve in reduced set.
-    // 0-None 1-All.
+    // 0 -> None; 1 -> All; >1 (truncated to int) -> Size of set preserved.
     
     DesignFuncPCABodyC(istream &strm);
     //: Load from stream.
@@ -104,8 +104,8 @@ namespace RavlN {
       : DesignFuncReduceC(*new DesignFuncPCABodyC(variationPreserved))
     {}
     //: Constructor 
-    // "variationPreserved" is amount of variation to attempt to preserve in reduced set.
-    // 0-None 1-All.
+    // "variationPreserved" is amount of variation to attempt to preserve in reduced set:<br>
+    // 0 -> None; 1 -> All; >1 (truncated to int) -> Size of set preserved.
     
   protected:
     DesignFuncPCAC(DesignFuncPCABodyC &bod)
