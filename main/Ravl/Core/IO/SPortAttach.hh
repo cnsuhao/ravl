@@ -214,10 +214,15 @@ namespace RavlN {
     { return port.Get(); }
     //: Get next piece of data.
     
-    virtual bool Get(DataT &buff) 
+    virtual bool Get(DataT &buff)
     {  return port.Get(buff); }
     //: Try and get next piece of data.
-    
+
+    virtual IntT GetArray(SArray1dC<DataT>& data)
+    {  return port.GetArray(data); }
+    //: Get multiple pieces of input data.
+    // returns the number of elements processed.
+
     virtual DPPortC ConnectedTo() const
     { return port; }
     //: What does this connect to ?
