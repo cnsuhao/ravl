@@ -266,8 +266,10 @@ namespace RavlImageN {
     
     if(head.Rectangle() != rect) {
       head = ImageC<ByteYUV422ValueC>(rect);
-      SArray1dC<ByteT> imageArray(reinterpret_cast<ByteT*>(&(head[rect.Origin()])), rect.Area() * sizeof(ByteYUV422ValueC), false);
-      if(m_inputStream.GetArray(imageArray) <= 0) // Zero indicates end of file.
+
+      IntT frameSize = rect.Area() * sizeof(ByteYUV422ValueC);
+      SArray1dC<ByteT> imageArray(reinterpret_cast<ByteT*>(&(head[rect.Origin()])), frameSize, false);
+      if(m_inputStream.GetArray(imageArray) != frameSize) // Zero indicates end of file.
         return false;
     } else {
       IntT width = head.Cols() * sizeof(ByteYUV422ValueC);
