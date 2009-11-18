@@ -22,7 +22,7 @@ namespace RavlN {
 
   static int InitStringFactory() {
     RavlN::AddTypeName(typeid(std::string),"std::string");
-    RavlN::AddTypeName(typeid(StringC),"RavlN::StringC");
+    //RavlN::AddTypeName(typeid(StringC),"RavlN::StringC");
     XMLFactoryC::RegisterTypeFactory(typeid(std::string),&StdStringFactoryFunc);
     XMLFactoryC::RegisterTypeFactory(typeid(StringC),&StringFactoryFunc);
     return 0;
