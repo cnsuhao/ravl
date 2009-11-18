@@ -26,7 +26,8 @@
 #define ONDEBUG(x)
 #endif
 
-namespace RavlImageN {
+namespace RavlImageN
+{
 
   //: Constructor.
   // This constructs with the basic yuv format.
@@ -35,7 +36,7 @@ namespace RavlImageN {
     : frameSize(0),
       framePadding(0),
       frameNo(0),
-      seqSize((UIntT) -1),
+      seqSize(streamPosUnknown),
       blockSize(16384),
       offset(0)
   { }
@@ -46,7 +47,7 @@ namespace RavlImageN {
     : frameSize(0),
       framePadding(0),
       frameNo(0),
-      seqSize((UIntT) -1),
+      seqSize(streamPosUnknown),
       blockSize(16384),
       offset(0)
   {
@@ -67,7 +68,7 @@ namespace RavlImageN {
     : frameSize(0),
       framePadding(0),
       frameNo(0),
-      seqSize((UIntT) -1),
+      seqSize(streamPosUnknown),
       blockSize(16384),
       offset(0)
   {
@@ -80,7 +81,7 @@ namespace RavlImageN {
     : frameSize(0),
       framePadding(0),
       frameNo(0),
-      seqSize((UIntT) -1),
+      seqSize(streamPosUnknown),
       blockSize(16384),
       offset(0)
   {
@@ -156,15 +157,15 @@ namespace RavlImageN {
     SetupIO();
     ONDEBUG(cerr << " BlockSize=" << blockSize << " Width=" << width << " Height=" << height << " \n");
     
-    StreamSizeT imageData = m_inputStream.Size() - offset;
-    seqSize = (StreamSizeT) (imageData / (StreamSizeT) frameSize);
+    StreamPosT imageData = m_inputStream.Size64() - offset;
+    seqSize = (imageData / frameSize);
     
     // There maybe unwritten padding for the last block.
-    UIntT imgSize = (rect.Area() * 2);
+    StreamPosT imgSize = (rect.Area() * 2);
     if((imageData % frameSize) >= imgSize)
       seqSize++; 
     
-    ONDEBUG(cerr << "DPIImageJSBodyC::ReadHeader(), Sequence size=" << seqSize << " Filesize=" << m_inputStream.Size() << "\n");
+    ONDEBUG(cerr << "DPIImageJSBodyC::ReadHeader(), Sequence size=" << seqSize << " Filesize=" << m_inputStream.Size64() << "\n");
     
     return true;
   }
@@ -172,7 +173,7 @@ namespace RavlImageN {
   //: Setup paramiters needed for io.
   
   void DPImageJSBaseBodyC::SetupIO() {
-    UIntT imgSize = (rect.Area() * 2);
+    StreamPosT imgSize = (rect.Area() * 2);
     
     // Fixme: The image size may be slightly larger, as it might contain out of frame info.
     
@@ -208,39 +209,76 @@ namespace RavlImageN {
   : DPImageJSBaseBodyC(inputPort)
   { ReadHeader(); }
 
-  ///////////////////////////
-  //: Seek to location in stream.
-  // Returns false, if seek failed. (Maybe because its
-  // not implemented.)
-  // if an error occurered (Seek returned False) then stream
-  // position will not be changed.
+
+
+  bool DPIImageJSBodyC::Seek(UIntT off)
+  {
+    if (off == static_cast<UIntT>(-1))
+      return false;
+    return Seek64(off);
+  }
+
+
+
+  bool DPIImageJSBodyC::DSeek(IntT off)
+  {
+    return DSeek64(off);
+  }
+
+
   
-  bool DPIImageJSBodyC::Seek(UIntT off) {
-    if(off == ((UIntT) -1))
-      return false; // File to big.
-    frameNo = off;// Wait to after seek in case of exception.
+  UIntT DPIImageJSBodyC::Tell() const
+  {
+    if (frameNo > static_cast<UIntT>(-1) || frameNo == streamPosUnknown)
+      return static_cast<UIntT>(-1);
+    return static_cast<UIntT>(frameNo);
+  }
+
+
+
+  UIntT DPIImageJSBodyC::Size() const
+  {
+    StreamPosT size = SeqSize();
+    if (size == streamPosUnknown || size > static_cast<UIntT>(-1))
+      return static_cast<UIntT>(-1);
+    return static_cast<UIntT>(size);
+  }
+
+
+  
+  bool DPIImageJSBodyC::Seek64(StreamPosT off)
+  {
+    if (off < 0 || off == streamPosUnknown)
+      return false;
+    frameNo = off;
     return true;
   }
-  
-  //: Delta Seek, goto location relative to the current one.
-  
-  bool DPIImageJSBodyC::DSeek(IntT off) {
-    if(off < 0) {
-      if((-off) > (IntT) frameNo)
-	return false; // Seek off begining of data.
+
+
+
+  bool DPIImageJSBodyC::DSeek64(StreamPosT off)
+  {
+    if (off < 0)
+    {
+      if (-off > frameNo)
+      	return false;
     }
-    frameNo = frameNo + off; // Wait till after seek in case of exception.
+    frameNo += off;
     return true;
   }
-  
-  //: Find current location in stream.
-  UIntT DPIImageJSBodyC::Tell() const { 
-    return frameNo; 
+
+
+
+  StreamPosT DPIImageJSBodyC::Tell64() const
+  {
+    return frameNo;
   }
-  
-  //: Find the total size of the stream.
-  UIntT DPIImageJSBodyC::Size() const { 
-    return SeqSize(); 
+
+
+
+  StreamPosT DPIImageJSBodyC::Size64() const
+  {
+    return SeqSize();
   }
 
   /////////////////////////
@@ -260,19 +298,19 @@ namespace RavlImageN {
     if (!m_inputStream.IsValid())
       return false;
 
-    m_inputStream.Seek(CalcOffset(frameNo));
+    m_inputStream.Seek64(CalcOffset(frameNo));
     
     // Check input image.
     
     if(head.Rectangle() != rect) {
       head = ImageC<ByteYUV422ValueC>(rect);
 
-      IntT frameSize = rect.Area() * sizeof(ByteYUV422ValueC);
+      StreamPosT frameSize = rect.Area() * sizeof(ByteYUV422ValueC);
       SArray1dC<ByteT> imageArray(reinterpret_cast<ByteT*>(&(head[rect.Origin()])), frameSize, false);
       if(m_inputStream.GetArray(imageArray) != frameSize) // Zero indicates end of file.
         return false;
     } else {
-      IntT width = head.Cols() * sizeof(ByteYUV422ValueC);
+      StreamPosT width = head.Cols() * sizeof(ByteYUV422ValueC);
       IndexC atrow = head.TRow();
       IndexC offset = head.LCol();
       IndexC brow = head.BRow();
@@ -292,7 +330,8 @@ namespace RavlImageN {
   //: Constructor from stream.  
   
   DPOImageJSBodyC::DPOImageJSBodyC(const OStreamC &nStrm)
-    :  doneHeader(false)
+  : m_doneHeader(false),
+    m_doFramePadding(false)
   {
     RavlAssertMsg(0,"Not supported. ");
     //if(!strm.Good())
@@ -302,22 +341,24 @@ namespace RavlImageN {
   //: Constructor from stream 
   
   DPOImageJSBodyC::DPOImageJSBodyC(const StringC &fileName) 
-    : DPImageJSBaseBodyC(fileName,false),
-      doneHeader(false)
+  : DPImageJSBaseBodyC(fileName,false),
+    m_doneHeader(false),
+    m_doFramePadding(false)
   {}
 
 
 
   DPOImageJSBodyC::DPOImageJSBodyC(DPOPortC<ByteT> outputPort)
   : DPImageJSBaseBodyC(outputPort),
-    doneHeader(false)
+    m_doneHeader(false),
+    m_doFramePadding(false)
   {}
 
   //: Write js header.
   
   bool DPOImageJSBodyC::WriteHeader(const ImageRectangleC &wrect) {
     RavlAssert(m_outputStream.IsValid());
-    if(doneHeader)
+    if(m_doneHeader)
       return true;
     rect = wrect;
     
@@ -358,47 +399,80 @@ namespace RavlImageN {
     if(m_outputStream.PutArray(paddingArray) <= 0)
       return false;
     
-    doneHeader = true;
+    m_doneHeader = true;
     return true;
   }
   
-  //: Seek to location in stream.
-  // Returns false, if seek failed. (Maybe because its
-  // not implemented.)
-  // if an error occurered (Seek returned False) then stream
-  // position will not be changed.
+
   
-  bool DPOImageJSBodyC::Seek(UIntT off) {
-    if(off == ((UIntT)-1))
-      return false; 
-    frameNo = off;// Wait to after seek in case of exception.
-    return true;
-  }
-  
-  //: Delta Seek, goto location relative to the current one.
-  
-  bool DPOImageJSBodyC::DSeek(IntT off) {
-    if(off < 0) {
-      if((-off) > ((IntT) frameNo))
-	return false; // Seek off begining of data.
-    }
-    UIntT nfrmno = frameNo + off;
-    frameNo = nfrmno; // Wait to after seek in case of exception.
-    if(frameNo > seqSize)
-      seqSize = frameNo;
-    return true;
-  }
-  
-  //: Find current location in stream.
-  
-  UIntT DPOImageJSBodyC::Tell() const { 
-    return frameNo; 
+  bool DPOImageJSBodyC::Seek(UIntT off)
+  {
+    if (off == static_cast<UIntT>(-1))
+      return false;
+    return Seek64(off);
   }
 
-  //: Find the total size of the stream.
+
+
+  bool DPOImageJSBodyC::DSeek(IntT off)
+  {
+    return DSeek64(off);
+  }
+
+
+
+  UIntT DPOImageJSBodyC::Tell() const
+  {
+    if (frameNo > static_cast<UIntT>(-1) || frameNo == streamPosUnknown)
+      return static_cast<UIntT>(-1);
+    return static_cast<UIntT>(frameNo);
+  }
+
+
+
+  UIntT DPOImageJSBodyC::Size() const
+  {
+    StreamPosT size = SeqSize();
+    if (size > static_cast<UIntT>(-1) || size == streamPosUnknown)
+      return static_cast<UIntT>(-1);
+    return static_cast<UIntT>(size);
+  }
+
+
   
-  UIntT DPOImageJSBodyC::Size() const { 
-    return SeqSize(); 
+  bool DPOImageJSBodyC::Seek64(StreamPosT off)
+  {
+    if (off < 0 || off == static_cast<UIntT>(-1))
+      return false;
+    frameNo = off;
+    return true;
+  }
+
+
+
+  bool DPOImageJSBodyC::DSeek64(StreamPosT off)
+  {
+    if (off < 0)
+    {
+      if (-off > frameNo)
+      	return false;
+    }
+    frameNo += off;
+    return true;
+  }
+
+
+
+  StreamPosT DPOImageJSBodyC::Tell64() const
+  {
+    return frameNo;
+  }
+
+
+
+  StreamPosT DPOImageJSBodyC::Size64() const
+  {
+    return SeqSize();
   }
 
   /////////////////////////////////
@@ -409,20 +483,31 @@ namespace RavlImageN {
     if (!m_outputStream.IsValid())
       return false;
     
-    if(!doneHeader) {
+    if(!m_doneHeader) {
       if(!WriteHeader(img.Rectangle())) {
         cerr << "DPOImageJSBodyC::Put(), ERROR: Failed to write file header. \n";
         return false;
       }
     }
+
+    //TODO(WM) Do seeky stuff here
+
+    if (m_doFramePadding && framePadding != 0)
+    {
+      SArray1dC<ByteT> paddingArray(framePadding);
+      if(m_outputStream.PutArray(paddingArray) <= 0)
+        return false;
+    }
+
     RavlAssert(img.Rectangle() == rect); // Expected image size ?
     if(&(img[rect.TRow()][rect.RCol()]) == (&(img[rect.TRow()+1][rect.LCol()]))+1) {
       const ByteT* imagePtr = reinterpret_cast<const ByteT*>(&(img[rect.Origin()]));
-      SArray1dC<ByteT> imageArray(const_cast<ByteT*>(imagePtr), rect.Area() * sizeof(ByteYUV422ValueC), false);
-      if(m_outputStream.PutArray(imageArray) <= 0)
+      StreamPosT frameSize = rect.Area() * sizeof(ByteYUV422ValueC);
+      SArray1dC<ByteT> imageArray(const_cast<ByteT*>(imagePtr), frameSize, false);
+      if(m_outputStream.PutArray(imageArray) != frameSize)
         return false;
     } else {
-      IntT width = img.Cols() * sizeof(ByteYUV422ValueC);
+      StreamPosT width = img.Cols() * sizeof(ByteYUV422ValueC);
       IndexC atrow = img.TRow();
       IndexC offset = img.LCol();
       IndexC brow = img.BRow();
@@ -439,13 +524,8 @@ namespace RavlImageN {
     if(frameNo > seqSize)
       seqSize = frameNo;
 
-    if (framePadding != 0)
-    {
-      SArray1dC<ByteT> paddingArray(framePadding);
-      if(m_outputStream.PutArray(paddingArray) <= 0)
-        return false;
-    }
-
+    m_doFramePadding = true;
+    
     return true;
   }
   
