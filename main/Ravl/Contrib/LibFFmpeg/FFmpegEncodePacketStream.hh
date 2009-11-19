@@ -60,7 +60,24 @@ namespace RavlN {
     AVFormatContext *FormatCtx()
     { return pFormatCtx; }
     //: Access format context.
+
+    AVCodecContext *VideoCodecCtx()
+    { return video_codec_context; }
+    //: Access format context.
     
+
+    AVCodecContext *AudioCodecCtx()
+    { return audio_codec_context; }
+    //: Access format context.
+
+    IntT getVideoStreamId() {
+       return videoStreamId;
+    }
+
+    IntT getAudioStreamId() {
+       return audioStreamId;
+    }
+
     bool FirstVideoStream(IntT &videoStreamId,IntT &codecId);
     //: Find info about first video stream.
     
@@ -98,7 +115,27 @@ namespace RavlN {
     //: Get a attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
-    
+
+    bool finishOpen(IntT &width,IntT &height);
+
+  private:
+     //static 
+     void open_video(AVFormatContext *oc, AVStream *st);
+     //static 
+     void open_audio(AVFormatContext *oc, AVStream *st);
+     //static 
+     AVStream *add_audio_stream(AVFormatContext *oc, IntT codec_id);
+     //static 
+     AVStream *add_video_stream(AVFormatContext *oc, IntT codec_id, IntT width,IntT height, Int64T qmax_val);
+     //static 
+     AVFrame *alloc_picture(IntT pix_fmt, IntT width, IntT height);
+     //static 
+     void close_audio(AVFormatContext *oc, AVStream *st);
+     //static 
+     void close_video(AVFormatContext *oc, AVStream *st);
+     //static FloatT t,tincr,tincr2;
+     //bool finishOpen(IntT &width,IntT &height);
+
   protected:
     void Init();
     //: Initalise attributes.
@@ -110,26 +147,46 @@ namespace RavlN {
     double audio_pts, video_pts;
     AVCodec *video_codec,*audio_codec;
     AVCodecContext *video_codec_context,*audio_codec_context;
+    //static 
     IntT video_outbuffer_sz,audio_outbuffer_sz,audio_input_frame_size;
+    //static 
     Int16T *samples;
+    //static 
     UInt8T *video_outbuf,*audio_outbuf,*picture_buf;
+    //static 
     AVFrame *picture, *tmp_picture;
+    //static 
     FloatT t,tincr,tincr2;
 
-    IntT positionRefStream,width,height,done_header,write_nbr; // Stream to use as a position reference.
+    IntT positionRefStream,width,height,done_header,write_nbr,videoStreamId,audioStreamId; // Stream to use as a position reference.
     Int64T currentTimeStamp;
     Int64T frameRate;
     Int64T frameRateBase;
     Int64T compression;
     
     Int64T startFrame; // Frame number of start of sequence.
-    bool haveSeek,header_done; // Do we have seeking ?
+    bool haveSeek,header_done,header_not_done_yet; // Do we have seeking ?
     
     Int64T Frame2Time(Int64T frame) const;
     //: Convert a frame no into a time
     
     Int64T Time2Frame(Int64T time) const;
     //: Convert a  time into a frame no
+    
+    CodecID codecid;
+
+//////////////////////////////////////////////////////////////
+//float t, tincr, tincr2;
+//int16_t *samples;
+//uint8_t *audio_outbuf;
+   //static 
+   IntT audio_outbuf_size;
+//int audio_input_frame_size;
+//AVFrame *picture, *tmp_picture;
+//uint8_t *video_outbuf;
+   //static 
+   IntT frame_count, video_outbuf_size;
+///////////////////////////////////////////
     
   };
 
@@ -181,7 +238,23 @@ namespace RavlN {
     AVFormatContext *FormatCtx()
     { return Body().FormatCtx(); }
     //: Access format context.
+
+    AVCodecContext *VideoCodecCtx()
+    { return Body().VideoCodecCtx(); }
+    //: Access video codec context.
+
+    AVCodecContext *AudioCodecCtx()
+    { return Body().AudioCodecCtx(); }
+    //: Access audio codec context.
     
+    IntT getVideoStreamId() {
+       return Body().getVideoStreamId();
+    }
+
+    IntT getAudioStreamId() {
+       return Body().getAudioStreamId();
+    }
+
     bool FirstVideoStream(IntT &videoStreamId,IntT &codecId)
     { return Body().FirstVideoStream(videoStreamId,codecId); }
     //: Find info about first video stream.
@@ -240,6 +313,10 @@ namespace RavlN {
     // This is for handling attributes such as frame rate, and compression ratios.
     //!cwiz:author
     
+    bool finishOpen(IntT &width,IntT &height) {
+       return Body().finishOpen(width,height);
+    }
+
   protected:
     FFmpegEncodePacketStreamC(FFmpegEncodePacketStreamBodyC &bod)
       : DPEntityC(bod)

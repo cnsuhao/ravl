@@ -58,7 +58,8 @@ namespace RavlN {
       rawData(0),
       streamInfo(0),
       pSWSCtx(0),
-      m_haveFullSeek(true)
+      m_haveFullSeek(true),
+      open_done(false)
   {
     if(!Open(_packetStream,_videoStreamId,_codecId)) {
       throw ExceptionOperationFailedC("Failed to open video stream. ");
@@ -75,7 +76,8 @@ namespace RavlN {
       rawData(0),
       streamInfo(0),
       pSWSCtx(0),
-      m_haveFullSeek(true)
+      m_haveFullSeek(true),
+      open_done(false)
   {}
   
   //: Destructor.
@@ -100,24 +102,30 @@ namespace RavlN {
   
   bool FFmpegVideoEncoderBaseC::Open(DPOPortC<FFmpegPacketC> &packetStream,IntT _videoStreamId,IntT codecId) {
     output = packetStream;
-    videoStreamId = _videoStreamId;
-    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Called \n");
+    //videoStreamId = _videoStreamId;
+    ONDEBUG(cerr << "FFmpegVideoEncoderBaseC::Open(DPOPortC<FFmpegPacketC> &packetStream,IntT _videoStreamId,IntT codecId), Called " << _videoStreamId << "\n");
 
-    FFmpegEncodePacketStreamC ps(packetStream);    
+    //FFmpegEncodePacketStreamC ps(packetStream);
+   psc = FFmpegEncodePacketStreamC(packetStream);
+    ONDEBUG(cerr << "FFmpegVideoEncoderBaseC::Open(DPOPortC<FFmpegPacketC> &packetStream,IntT _videoStreamId,IntT codecId), psc allocated \n");    
    //Alloctae the output media context.
-   pFormatCtx = ps.FormatCtx();   //av_alloc_format_context();  //avformat_alloc_context();
+ /*  pFormatCtx = psc.FormatCtx();   //av_alloc_format_context();  //avformat_alloc_context();
    if(!pFormatCtx) {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed allocate output media context. \n");
       return false;
-    }
+    }  */
     out_filename = filename;
-    streamInfo = pFormatCtx->streams[videoStreamId];   //video_st;   //pFormatCtx->streams[videoStreamId];
-
+    //streamInfo = pFormatCtx->streams[videoStreamId];   //video_st;   //pFormatCtx->streams[videoStreamId];
+    ONDEBUG(cerr << "FFmpegVideoEncoderBaseC::Open(DPOPortC<FFmpegPacketC> &packetStream,IntT _videoStreamId,IntT codecId), streamInfo allocated \n");
+    //pCodecCtx = streamInfo->codec;
+    //ONDEBUG(cerr << "FFmpegVideoEncoderBaseC::Open(DPOPortC<FFmpegPacketC> &packetStream,IntT _videoStreamId,IntT codecId), pCodecCtx allocated \n");
+    videoStreamId = _videoStreamId;
     //alloc tmp_picture.
     tmp_picture=avcodec_alloc_frame();
     if (!tmp_picture) {
         return NULL;
     }
+    /*
     size = avpicture_get_size(PIX_FMT_RGB24, 1280, 544);
     picture_buf = (uint8_t *)av_malloc(size);
     if (!picture_buf) {
@@ -127,11 +135,40 @@ namespace RavlN {
     avpicture_fill((AVPicture *)tmp_picture, picture_buf,
                    PIX_FMT_RGB24, 1280, 544);
 
-
-
+    */
+        ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::Open codecID is " << codecId << " \n");
+    codec_id = (CodecID)codecId;
     return true;
 
 
+  }
+
+  bool FFmpegVideoEncoderBaseC::finishOpen() {
+
+   pFormatCtx = psc.FormatCtx();   //av_alloc_format_context();  //avformat_alloc_context();
+   if(!pFormatCtx) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed allocate output media context. \n");
+      return false;
+    }
+    videoStreamId = psc.getVideoStreamId();
+    streamInfo = pFormatCtx->streams[videoStreamId];
+    //pCodecCtx = streamInfo->codec;
+    vCodecCtx = psc.VideoCodecCtx();
+    if(!vCodecCtx) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed allocate output media context. \n");
+      return false;
+    }
+    size = avpicture_get_size(PIX_FMT_RGB24, width, height);
+    picture_buf = (uint8_t *)av_malloc(size);
+    if (!picture_buf) {
+        av_free(picture);
+        ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::finishOpen() picture_buf error" << " \n");
+        return NULL;
+    }
+    avpicture_fill((AVPicture *)tmp_picture, picture_buf,
+                   PIX_FMT_RGB24, width, height);
+    open_done = true;
+    return true;
   }
 
   //: Encode the next frame.
@@ -169,13 +206,20 @@ namespace RavlN {
   //: Get a frame of video from stream.
   
   bool FFmpegVideoEncoderBaseC::PutFrame( const ImageC<ByteRGBValueC> &img) {
-    ONDEBUG(cerr << "FFmpegVideoDecoderDPOBaseC::PutFrame " << " \n");
+    if(!open_done) {
+       width = img.Cols();
+       height = img.Rows();
+       psc.finishOpen(width,height);
+       finishOpen();
+    }
     //Need to re write the header as the image size was unknown to the ProbeLoad/ProbeSave methods due to architecture reasons.
     AVStream *st = streamInfo;
     IntT out_size, ret;
     AVCodecContext *c;
     static struct SwsContext *img_convert_ctx;
-    c = st->codec;
+    //c = st->codec;
+    c = vCodecCtx;   //streamInfo->codec;
+    //c = avcodec_find_encoder(codec_id);
     if (0) {
         /* no more frame to compress. The codec has a latency of a few
            frames if using B frames, so we get the last frames by
@@ -192,6 +236,7 @@ namespace RavlN {
             //    img_convert((AVPicture *)pFrameRGB, PIX_FMT_RGB24, (AVPicture*)pFrame, pCodecCtx->pix_fmt, pCodecCtx->width, pCodecCtx->height);
             //#endif
             if (img_convert_ctx == NULL) {
+                ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::PutFrame Cannot initialize the conversion context" << " \n");
                 fprintf(stderr, "Cannot initialize the conversion context\n");
                 exit(1);
             }
@@ -203,17 +248,20 @@ namespace RavlN {
 
     out_picture = avcodec_alloc_frame();
     if (!out_picture) {
+        ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::PutFrame out_picture = NULL" << " \n");
         return NULL;
     }
     size = avpicture_get_size(PIX_FMT_YUV420P,img.Cols(),img.Rows());   //pix_fmt, width, height);
     picture_buf2 = (uint8_t *)av_malloc(size);   //new uint8_t[size];   // (uint8_t *)av_malloc(size);
     if (!picture_buf2) {
+        ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::PutFrame picture_buf2 = NULL" << " \n");
         av_free(picture);
         return NULL;
     }
     avpicture_fill((AVPicture *)out_picture, picture_buf2,
                    PIX_FMT_YUV420P, img.Cols(), img.Rows());
     if (!out_picture) {
+        ONDEBUG(cerr << "FFmpegVideoEncoderDPOBaseC::PutFrame out_picture = NULL" << " \n");
         return NULL;
     }
     out_size = avpicture_get_size(c->pix_fmt, img.Cols(), img.Rows());
@@ -255,10 +303,10 @@ namespace RavlN {
         /* encode the image */
         video_outbuf = (uint8_t *)av_malloc(out_size);   //new uint8_t[out_size];
         int encode_size = avcodec_encode_video(c, video_outbuf, out_size, out_picture);
-        if(frame_count > 3237) {
-           if(frame_count == 3238) {
-           }
-        }
+        //if(frame_count > 3237) {
+        //   if(frame_count == 3238) {
+        //   }
+       // }
         /* if zero size, it means the image was buffered */
         if (encode_size > 0) {
             AVPacket pkt;
@@ -298,7 +346,6 @@ namespace RavlN {
     #ifdef LIBAVFORMAT_USE_SWSCALER
     sws_freeContext(pSWSCtx);
     #endif
-    av_free(out_picture_buf);
     av_free(picture_buf2);
     return true;
   }
@@ -315,10 +362,10 @@ namespace RavlN {
       return true;
     }
     if(attrName == "aspectratio") {
-      if(pCodecCtx == 0)
+      if(vCodecCtx == 0)
         attrValue = "?";
       else
-        attrValue = StringC(pCodecCtx->sample_aspect_ratio.num) + ":" + StringC(pCodecCtx->sample_aspect_ratio.den);
+        attrValue = StringC(vCodecCtx->sample_aspect_ratio.num) + ":" + StringC(vCodecCtx->sample_aspect_ratio.den);
       return true;
     }
     return false;

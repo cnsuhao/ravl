@@ -92,12 +92,15 @@ namespace RavlN {
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
     
+  private:
+     bool finishOpen();
+
   protected:
     void InitAttr(AttributeCtrlBodyC &attrCtrl);
     //: Initalise attributes.
     
     IntT videoStreamId;             // Id of video stream we're currently decoding.
-    AVCodecContext *pCodecCtx,*pcodecctx;      // Video codec.
+    AVCodecContext *vCodecCtx,*pcodecctx;      // Video codec.
     DPOSPortC<FFmpegPacketC> output; // Output stream.
     AVFrame *pFrame,*tmp_picture,*picture,*outpFrame,*out_picture;
     mutable FFmpegPacketC packet;           // Current packet.
@@ -105,11 +108,12 @@ namespace RavlN {
     uint8_t  *rawData,*video_outbuf,*picture_buf,*out_picture_buf,*picture_buf2;
     AVStream *streamInfo;
     SwsContext *pSWSCtx,*pSWSctx;
-    bool m_haveFullSeek,header_done;
+    bool m_haveFullSeek,header_done,open_done;
     IntT frame_count,video_outbuf_size,size,width,height,numBytes;
     FFmpegEncodePacketStreamC psc;
     StringC filename,out_filename;
     AVFormatContext *pFormatCtx;
+    CodecID codec_id;
   };
   
 

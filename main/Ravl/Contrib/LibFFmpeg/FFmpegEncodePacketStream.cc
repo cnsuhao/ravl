@@ -55,7 +55,8 @@ namespace RavlN {
       height(544),
       compression(31),
       header_done(false),
-      done_header(0)
+      done_header(0),
+      header_not_done_yet(true)
   { 
     Init();
     if(!Open(filename))
@@ -81,7 +82,8 @@ namespace RavlN {
       height(544),
       compression(31),
       header_done(false),
-      done_header(0)
+      done_header(0),
+      header_not_done_yet(true)
   { Init(); }
   
   //: Initalise attributes.
@@ -102,8 +104,10 @@ namespace RavlN {
   
   FFmpegEncodePacketStreamBodyC::~FFmpegEncodePacketStreamBodyC() {
     // Close the video file
-    if(pFormatCtx != 0) {
-      av_write_trailer(pFormatCtx);
+    if(video_st != 0) {
+       if(pFormatCtx != 0) {
+          av_write_trailer(pFormatCtx);
+       }
     }
       ONDEBUG(std::cerr << "FFmpegDPOPacketStreamBodyC::~FFmpegDPOPacketStreamBodyC. \n";)
   }
@@ -113,6 +117,7 @@ namespace RavlN {
   bool FFmpegEncodePacketStreamBodyC::FirstVideoStream(IntT &videoStreamId,IntT &codecId) {
           ONDEBUG(cerr << "FFmpegDPOPacketStreamBodyC::FirstVideoStream " << " \n");
     // Find the first video stream
+/*
     for (UIntT i = 0; i < pFormatCtx->nb_streams; i++) {
       if (pFormatCtx->streams[i]->codec->codec_type != CODEC_TYPE_VIDEO) 
         continue;
@@ -156,10 +161,15 @@ namespace RavlN {
       
       
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::FirstVideoStream, FrameRate=" << frameRate << " FrameRateBase=" << frameRateBase << " Wrap=" << avstream->pts_wrap_bits << "\n");
+
+     
       return true;
     }
-    
-    return false;
+*/
+    positionRefStream = videoStreamId;
+    codecId = codecid;    
+    return true;
+    //return false;
   }
   
   
@@ -171,8 +181,6 @@ namespace RavlN {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForOutPut no stream." << endl);
       return false;
     }
-
-    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForOutPut streams= "<< pFormatCtx->nb_streams << endl);
     
     // Find the first video stream.
     for (UIntT i = 0; i < pFormatCtx->nb_streams; i++) {
@@ -190,8 +198,6 @@ namespace RavlN {
       if (pCodec == NULL) {
         continue;
       }
-
-      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::CheckForOutPut codec found(" << (pCodec->name != NULL ? pCodec->name : "NULL") << ")" << endl);
 
       // Inform the codec that we can handle truncated bitstreams.
       // i.e. bitstreams where frame boundaries can fall in the middle of packets.
@@ -218,7 +224,7 @@ namespace RavlN {
   
 
 //////////////////////////////////////////////
-float t, tincr, tincr2;
+/*float t, tincr, tincr2;
 int16_t *samples;
 uint8_t *audio_outbuf;
 int audio_outbuf_size;
@@ -226,9 +232,9 @@ int audio_input_frame_size;
 AVFrame *picture, *tmp_picture;
 uint8_t *video_outbuf;
 int frame_count, video_outbuf_size;
+*/
 
-
-static void close_video(AVFormatContext *oc, AVStream *st)
+ void FFmpegEncodePacketStreamBodyC::close_video(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(st->codec);
     av_free(picture->data[0]);
@@ -240,7 +246,7 @@ static void close_video(AVFormatContext *oc, AVStream *st)
     av_free(video_outbuf);
 }
 
-static void close_audio(AVFormatContext *oc, AVStream *st)
+ void FFmpegEncodePacketStreamBodyC::close_audio(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(st->codec);
 
@@ -252,7 +258,7 @@ static void close_audio(AVFormatContext *oc, AVStream *st)
 
 
 
-static AVFrame *alloc_picture(int pix_fmt, int width, int height)
+ AVFrame *FFmpegEncodePacketStreamBodyC::alloc_picture(int pix_fmt, int width, int height)
 {
     AVFrame *picture;
     uint8_t *picture_buf;
@@ -274,7 +280,7 @@ static AVFrame *alloc_picture(int pix_fmt, int width, int height)
 
 
 /* add a video output stream */
-static AVStream *add_video_stream(AVFormatContext *oc, int codec_id, IntT width,IntT height, int qmax_val = 1)
+ AVStream *FFmpegEncodePacketStreamBodyC::add_video_stream(AVFormatContext *oc, IntT codec_id, IntT width,IntT height, Int64T qmax_val = 1)
 {
 
 
@@ -285,7 +291,6 @@ static AVStream *add_video_stream(AVFormatContext *oc, int codec_id, IntT width,
         fprintf(stderr, "Could not alloc stream\n");
         exit(1);
     }
-
     c = st->codec;
     c->codec_id = (CodecID)codec_id;
     c->codec_type = CODEC_TYPE_VIDEO;
@@ -293,7 +298,6 @@ static AVStream *add_video_stream(AVFormatContext *oc, int codec_id, IntT width,
     /* resolution must be a multiple of two */
     c->width = width;  //img_w;
     c->height = height;   //img_h;
-    
     c->pix_fmt = PIX_FMT_YUV420P;
     
     /* time base: this is the fundamental unit of time (in seconds) in terms
@@ -302,6 +306,8 @@ static AVStream *add_video_stream(AVFormatContext *oc, int codec_id, IntT width,
        identically 1. */
     c->time_base.den = 25;  //STREAM_FRAME_RATE;
     c->time_base.num = 1;
+    //st->time_base.den = 25;
+    //st->time_base.num = 1;
     //c->qmax = 25;
     c->qmax = qmax_val;
     #if 1  
@@ -332,7 +338,7 @@ static AVStream *add_video_stream(AVFormatContext *oc, int codec_id, IntT width,
 
  /* add an audio output stream
  */
-static AVStream *add_audio_stream(AVFormatContext *oc, int codec_id)
+ AVStream *FFmpegEncodePacketStreamBodyC::add_audio_stream(AVFormatContext *oc, int codec_id)
 {
     AVCodecContext *c;
     AVStream *st;
@@ -355,7 +361,7 @@ static AVStream *add_audio_stream(AVFormatContext *oc, int codec_id)
 }
 
 
-static void open_audio(AVFormatContext *oc, AVStream *st)
+ void FFmpegEncodePacketStreamBodyC::open_audio(AVFormatContext *oc, AVStream *st)
 {
     AVCodecContext *c;
     AVCodec *codec;
@@ -404,7 +410,7 @@ static void open_audio(AVFormatContext *oc, AVStream *st)
     samples = (int16_t *)av_malloc(audio_input_frame_size * 2 * c->channels);
 }
 
-static void open_video(AVFormatContext *oc, AVStream *st)
+ void FFmpegEncodePacketStreamBodyC::open_video(AVFormatContext *oc, AVStream *st)
 {
     AVCodec *codec;
     AVCodecContext *c;
@@ -461,6 +467,7 @@ static void open_video(AVFormatContext *oc, AVStream *st)
   
   bool FFmpegEncodePacketStreamBodyC::Open(const StringC &filename) {
     ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Called \n");
+
     //Find output format.
     fmt = guess_format(NULL, filename, NULL);
     if (!fmt) {
@@ -468,7 +475,7 @@ static void open_video(AVFormatContext *oc, AVStream *st)
         return false;
     }
     
-   //Alloctae the output media context.
+   //Allocate the output media context.
    pFormatCtx = av_alloc_format_context();
    if(!pFormatCtx) {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed allocate output media context. \n");
@@ -476,6 +483,16 @@ static void open_video(AVFormatContext *oc, AVStream *st)
     }
     
     pFormatCtx->oformat = fmt;
+
+    codecid = pFormatCtx->oformat->video_codec;
+
+    //Set output parameters, must be done even if no parameters.
+    if(av_set_parameters(pFormatCtx,NULL) < 0) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to set parameters. \n");
+      return false;
+    }
+
+/*
     if(fmt->video_codec != CODEC_ID_NONE) {
        video_st = add_video_stream(pFormatCtx,pFormatCtx->oformat->video_codec,width,height,compression);
     }
@@ -510,8 +527,8 @@ static void open_video(AVFormatContext *oc, AVStream *st)
           ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed to write header. \n");
           return false;
     }
-
-    if(header_done) {
+  */
+    if(false) {   //done_header == 0 && header_not_done_yet == true ) {  //header_done == 0) {
     /* close each codec */
     if (video_st)
         close_video(pFormatCtx, video_st);
@@ -543,6 +560,81 @@ static void open_video(AVFormatContext *oc, AVStream *st)
     pFormatCtx = 0;
     }
     out_filename = filename;
+
+    return true;
+  }
+
+
+  bool FFmpegEncodePacketStreamBodyC::finishOpen(IntT &widthin, IntT &heightin) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::finishOpen(" << out_filename << "). \n");
+
+/////////////////////////////////////////////////////////////////////////////
+    /* free the stream */
+    av_free(pFormatCtx);
+    pFormatCtx = 0;
+
+    fmt = guess_format(NULL, out_filename, NULL);
+    if (!fmt) {
+        ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to find format. \n");
+        return false;
+    }
+    
+   //Allocate the output media context.
+   pFormatCtx = av_alloc_format_context();
+   if(!pFormatCtx) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed allocate output media context. \n");
+      return false;
+    }
+    
+    pFormatCtx->oformat = fmt;
+
+    codecid = pFormatCtx->oformat->video_codec;
+
+    //Set output parameters, must be done even if no parameters.
+    if(av_set_parameters(pFormatCtx,NULL) < 0) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to set parameters. \n");
+      return false;
+    }
+
+///////////////////////////////////////////////////////////////////////
+
+      if(fmt->video_codec != CODEC_ID_NONE) {
+       video_st = add_video_stream(pFormatCtx,pFormatCtx->oformat->video_codec,widthin,heightin,compression);
+       videoStreamId = pFormatCtx->nb_streams -1;
+    }
+
+    //Set output parameters, must be done even if no parameters.
+/*    if(av_set_parameters(pFormatCtx,NULL) < 0) {
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to set parameters. \n");
+      return false;
+    }       
+*/
+    //Print format to stdout. remove later
+    //dump_format(pFormatCtx,0,filename,1);
+
+    //Open audio and video codecs and encode buffers.
+    if(video_st) {
+       open_video(pFormatCtx,video_st);
+       video_codec_context = video_st->codec;
+    }
+    //Could comment out as i dont have any audio data to write any way.
+    if(audio_st) {
+       open_audio(pFormatCtx,audio_st);
+       audio_codec_context = audio_st->codec;
+    }
+
+    //Open output file.
+    if(!(fmt->flags & AVFMT_NOFILE)) {
+       if(url_fopen(&pFormatCtx->pb,out_filename,URL_WRONLY) < 0) {
+          ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to open output file. \n");
+          return false;
+       }
+    }
+    //Write header.
+    if(av_write_header(pFormatCtx) < 0 ) {
+          ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to write header. \n");
+          return false;
+    }
     return true;
   }
   
@@ -555,13 +647,16 @@ static void open_video(AVFormatContext *oc, AVStream *st)
   
   bool FFmpegEncodePacketStreamBodyC::Put(const FFmpegPacketC &packet) {
     ONDEBUG(std::cerr << "FFmpegPacketStreamBodyC::Put(FFmpegPacketC &packet). \n");
-    if(done_header == 0) {
+   /* if(done_header == 0) {
        done_header = 1;
        write_nbr = 0;
+       header_not_done_yet = false;
        width = const_cast<FFmpegPacketC&>(packet).getWidth();
        height = const_cast<FFmpegPacketC&>(packet).getHeight();
-       Open(out_filename);
-    }
+       finishOpen();
+       //Open(out_filename);
+       //header_not_done_yet = false;
+    }*/
     FFmpegPacketC &pack = const_cast<FFmpegPacketC&>(packet);
     write_nbr++;
     int res = av_write_frame(pFormatCtx,&pack.Packet());
