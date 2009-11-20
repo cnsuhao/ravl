@@ -30,7 +30,7 @@ namespace RavlGUIN {
     : public MarkupInfoBodyC
   {
   public:
-    MarkupPoint2dBodyC(Int64T id,IntT zOrder,Point2dC & position,MarkupPoint2dStyleT style = MP2DS_Eye,bool isFixed = false);
+    MarkupPoint2dBodyC(Int64T id,IntT zOrder,const Point2dC & position,MarkupPoint2dStyleT style = MP2DS_Eye,bool isFixed = false);
     //: Constructor.
         
     virtual bool Render(GUIMarkupCanvasBodyC &mv,const RealRange2dC &area,bool selected);
@@ -62,7 +62,7 @@ namespace RavlGUIN {
     bool Position(const Point2dC & newPosition);
     //: Force update of position
     
-    Signal1C<Point2dC>&SigPosition() 
+    Signal1C<Point2dC>& SigPosition()
     { return sigPosition; }
     //: Signal position change on mouse release
     
@@ -87,7 +87,7 @@ namespace RavlGUIN {
     //: Default constructor
     // Creates in invalid handle.
     
-    MarkupPoint2dC(Int64T id,IntT zOrder, Point2dC & position,MarkupPoint2dStyleT style = MP2DS_Eye,bool isFixed = false) 
+    MarkupPoint2dC(Int64T id,IntT zOrder,const Point2dC & position,MarkupPoint2dStyleT style = MP2DS_Eye,bool isFixed = false)
       : MarkupInfoC(*new MarkupPoint2dBodyC(id,zOrder,position,style,isFixed))
     {}
     //: Constructor. 

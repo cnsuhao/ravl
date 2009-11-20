@@ -24,7 +24,7 @@ namespace RavlGUIN {
   
   //: Constructor.
   
-  MarkupPoint2dBodyC::MarkupPoint2dBodyC(Int64T id, IntT zOrder, Point2dC & cn,MarkupPoint2dStyleT _style,bool isFixed)
+  MarkupPoint2dBodyC::MarkupPoint2dBodyC(Int64T id, IntT zOrder,const Point2dC & cn,MarkupPoint2dStyleT _style,bool isFixed)
     : MarkupInfoBodyC(id,zOrder),
       centre(cn),
       sigPosition(Point2dC()),
