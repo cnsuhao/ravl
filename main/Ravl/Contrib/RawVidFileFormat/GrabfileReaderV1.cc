@@ -201,9 +201,12 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
 	 ++m_frame_number;
          BufferC<char> audio(m_audio_buffer_size);
          m_infile.read(audio.BufferAccess().DataStart(),m_audio_buffer_size);
+#if (RAVL_COMPILER_GCC3)     /* gcc 3.x work around for gcc as mem dosent seem to get deleted.*/
+         return BufferC<char> (video.Size(),video.BufferAccess().DataStart(),true,false);
+#else
          return BufferC<char> (video.Size(),video.BufferAccess().DataStart(),true,true);
          //return BufferC<char> (video.Size(),video.BufferAccess().DataStart(),true,false);
-	 
+#endif	 
          
       }
       if(IdToByteFormat(byteformat) == BITS_10_DVS) {
@@ -234,8 +237,12 @@ BufferC<char> GrabfileReaderV1C::GetNextFrame()
         delete obuf;
         audio = 0;
         video = 0;
+#if (RAVL_COMPILER_GCC3)   /* gcc 3.x work around for gcc as mem dosent seem to get deleted.*/
+        return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, false);
+#else
         return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, true);
         //return BufferC<char> (osize, nextframe.BufferAccess().DataStart(), true, false);  
+#endif
       }
   }
      return BufferC<char>();
