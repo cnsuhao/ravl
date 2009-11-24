@@ -79,7 +79,7 @@ namespace RavlN {
     
     bool Contains(UIntT i) const
     { return i < N; }
-    //: Test if array contains index i�
+    //: Test if array contains index i
     
     DataT &operator[](UIntT ind) { 
 #if RAVL_CHECK
