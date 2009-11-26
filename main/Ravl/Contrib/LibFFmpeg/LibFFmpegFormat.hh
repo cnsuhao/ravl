@@ -33,6 +33,9 @@ namespace RavlImageN
   public:
     FileFormatLibFFmpegBodyC();
     //: Constructor
+
+    FileFormatLibFFmpegBodyC(const StringC &vName,const StringC &vDesc);
+    //: Constructor
     
     virtual const type_info &ProbeLoad(IStreamC &in, const type_info &obj_type) const;
     //: Probe for load
@@ -91,6 +94,10 @@ namespace RavlImageN
       FileFormatC< ImageC<ByteRGBValueC> >(*new FileFormatLibFFmpegBodyC())
     {}
     
+    FileFormatLibFFmpegC(const StringC &vName,const StringC &vDesc)
+      : FileFormatC<ImageC<ByteRGBValueC> >(*new FileFormatLibFFmpegBodyC(vName,vDesc))
+      {}
+
     const type_info & ProbeLoad(IStreamC & in,const type_info & obj_type) const
     { return Body().ProbeLoad(in,obj_type); }
     //: Probe for load 

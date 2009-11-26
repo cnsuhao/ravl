@@ -59,6 +59,9 @@ namespace RavlImageN
     av_register_all();
   }
   
+  FileFormatLibFFmpegBodyC::FileFormatLibFFmpegBodyC(const StringC &vName,const StringC &vDesc) :
+     FileFormatBodyC(vName,vDesc)
+ {}
   
   const type_info &FileFormatLibFFmpegBodyC::ProbeLoad(IStreamC &in, const type_info &obj_type) const
   {
@@ -160,8 +163,6 @@ namespace RavlImageN
 
   DPOPortBaseC FileFormatLibFFmpegBodyC::CreateOutput(const StringC &filename, const type_info &obj_type) const
   {
-   /////////////////////////////////////////////////////////////////////////////////////
-/////Think i need to write this method to enable writing codecs in Ravl with ffmpeg.
 
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) called (" << filename << ")" << endl);
     
@@ -189,7 +190,6 @@ namespace RavlImageN
     
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
 
-///////////////////////////////////////////
     return DPOPortBaseC();  
   }
 
@@ -243,6 +243,7 @@ namespace RavlImageN
   
   static FileFormatLibFFmpegC Init;  
 
-
+    FileFormatLibFFmpegC RegisterFileFormatLibFFmpegmpg  ("mpg",".mpg file output.");
+    FileFormatLibFFmpegC RegisterFileFormatLibFFmpegh264  ("h264",".h264 file output.");
 
 }

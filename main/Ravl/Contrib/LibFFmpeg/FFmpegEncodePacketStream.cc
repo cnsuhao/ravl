@@ -299,7 +299,11 @@ int frame_count, video_outbuf_size;
     c->width = width;  //img_w;
     c->height = height;   //img_h;
     c->pix_fmt = PIX_FMT_YUV420P;
-    
+    if(c->codec_id != CODEC_ID_H264) {
+       c->bit_rate = 2000000;
+    }
+    //c->max_qdiff = 1;
+
     /* time base: this is the fundamental unit of time (in seconds) in terms
        of which frame timestamps are represented. for fixed-fps content,
        timebase should be 1/framerate and timestamp increments should be
@@ -310,6 +314,28 @@ int frame_count, video_outbuf_size;
     //st->time_base.num = 1;
     //c->qmax = 25;
     c->qmax = qmax_val;
+
+
+
+    // below are for the x264 codec parameters
+    if(c->codec_id == CODEC_ID_H264) {
+       c->flags |= CODEC_FLAG_LOOP_FILTER;
+       //c->bit_rate = 400000;
+       c->me_method = ME_HEX;
+       c->me_range = 16;
+       c->me_cmp = FF_CMP_CHROMA;
+       c->scenechange_threshold = 40;
+       c->keyint_min = 25;
+       c->me_subpel_quality = 5;
+       c->gop_size = 250;
+       c->i_quant_factor = 0.71;
+    
+       c->coder_type = 1;
+    
+       c->partitions = X264_PART_I4X4 + X264_PART_P8X8 + X264_PART_B8X8;
+    }
+
+
     #if 1  
     #endif
     if (c->codec_id == CODEC_ID_MPEG2VIDEO) {
@@ -425,7 +451,7 @@ int frame_count, video_outbuf_size;
 
     /* open the codec */
     if (avcodec_open(c, codec) < 0) {
-        fprintf(stderr, "could not open codec\n");
+        fprintf(stderr, "could not open codec, if you are using .h264 please make sure you have an ffmpeg installed that is built with libx264 enabled.\n");
         exit(1);
     }
 
