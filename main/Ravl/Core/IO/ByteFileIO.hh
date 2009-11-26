@@ -28,7 +28,7 @@ namespace RavlN {
   // Object must have a stream output function.
   
   class DPOByteFileBodyC 
-    : public DPOByteStreamBodyC
+    : public DPOSByteStreamBodyC
   {
   public:
     DPOByteFileBodyC() {}
@@ -69,6 +69,46 @@ namespace RavlN {
 
     virtual void PutEOS();
     //: Indicate end of stream.
+
+    virtual bool Seek(UIntT offset);
+    //: Seek to a location in the stream.
+    //!return: True if the seek is successful.
+
+    virtual bool DSeek(IntT offset);
+    //: Delta seek: Seek an offset distance relative to the current location.
+    //!return: True if the seek is successful.
+
+    virtual UIntT Tell() const;
+    //: Find the current location in stream.
+    //!return: static_cast<UIntT>(-1) if unsuccessful.
+
+    virtual UIntT Size() const;
+    //: Find the size of the stream.
+    //!return: static_cast<UIntT>(-1) if unsuccessful.
+
+    virtual UIntT Start() const;
+    //: Find the offset where the stream begins.
+    //!return: static_cast<UIntT>(-1) if unsuccessful.
+
+    virtual bool Seek64(StreamPosT offset);
+    //: Seek to a location in the stream.
+    //!return: True if the seek is successful.
+
+    virtual bool DSeek64(StreamPosT offset);
+    //: Delta seek: Seek an offset distance relative to the current location.
+    //!return: True if the seek is successful.
+
+    virtual StreamPosT Tell64() const;
+    //: Find the current location in stream.
+    //!return: RavlN::streamPosUnknown if unsuccessful.
+
+    virtual StreamPosT Size64() const;
+    //: Find the size of the stream.
+    //!return: RavlN::streamPosUnknown if unsuccessful.
+
+    virtual StreamPosT Start64() const;
+    //: Find the offset where the stream begins.
+    //!return: RavlN::streamPosUnknown if unsuccessful.
 
     virtual bool Save(ostream &sout) const;
     //: Save to ostream.
@@ -172,8 +212,8 @@ namespace RavlN {
   //: File output stream for fixed length objects.
   // Object must have a stream output function.
   
-  class DPOByteFileC 
-    : public DPOByteStreamC
+  class DPOByteFileC
+    : public DPOSByteStreamC
   {
   public:
     inline DPOByteFileC() 

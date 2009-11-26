@@ -57,7 +57,95 @@ namespace RavlN {
   {
     out.Close();
   }
-  
+
+
+
+  bool DPOByteFileBodyC::Seek(UIntT offset)
+  {
+    return Seek64(offset);
+  }
+
+
+
+  bool DPOByteFileBodyC::DSeek(IntT offset)
+  {
+    return DSeek64(offset);
+  }
+
+
+
+  UIntT DPOByteFileBodyC::Tell() const
+  {
+    const StreamPosT tell = Tell64();
+    if (tell < 0 || tell > static_cast<UIntT>(-1))
+      return static_cast<UIntT>(-1);
+    return static_cast<UIntT>(tell);
+  }
+
+
+
+  UIntT DPOByteFileBodyC::Size() const
+  {
+    return static_cast<UIntT>(-1);
+  }
+
+
+
+  UIntT DPOByteFileBodyC::Start() const
+  {
+    return 0;
+  }
+
+
+
+  bool DPOByteFileBodyC::Seek64(StreamPosT offset)
+  {
+    if (!out.IsOpen())
+      return false;
+
+    out.os().clear();
+    out.seekp(offset);
+    return !out.fail();
+  }
+
+
+
+  bool DPOByteFileBodyC::DSeek64(StreamPosT offset)
+  {
+    if (!out.IsOpen())
+      return false;
+
+    out.os().clear();
+    out.seekp(offset, ios_base::cur);
+    return !out.fail();
+  }
+
+
+
+  StreamPosT DPOByteFileBodyC::Tell64() const
+  {
+    if (!out.IsOpen())
+      return streamPosUnknown;
+
+    //TODO(WM) Clear flags here? Unfortunately clear is not a const function.
+    StreamPosT tell = out.tellp();
+    return (out.fail() ? streamPosUnknown : tell);
+  }
+
+
+
+  StreamPosT DPOByteFileBodyC::Size64() const
+  {
+    return streamPosUnknown;
+  }
+
+
+
+  StreamPosT DPOByteFileBodyC::Start64() const
+  {
+    return 0;
+  }
+
   //: Save to ostream.
   
   bool DPOByteFileBodyC::Save(ostream &sout) const  { 
@@ -175,7 +263,7 @@ namespace RavlN {
     {
       dataStart = in.tellg();
       in.seekg(0, ios::end);
-      size = in.tellg();
+      size = in.tellg() - dataStart;
       in.seekg(dataStart, ios::beg);
     }
   }
