@@ -263,7 +263,8 @@ namespace RavlN {
     {
       dataStart = in.tellg();
       in.seekg(0, ios::end);
-      size = in.tellg() - dataStart;
+      size = in.tellg();
+      size -= dataStart;
       in.seekg(dataStart, ios::beg);
     }
   }
