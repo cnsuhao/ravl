@@ -114,9 +114,9 @@ namespace RavlN {
     // position will not be changed.
 
     virtual bool Seek64(Int64T off) { 
-      //cerr << "NetOSPortBodyC()::Seek() Off=" << off << " Start=" << start << " Size=" << size << "\n";
-      if(off >= size || off < start)
-	return false;
+//      cerr << "NetOSPortBodyC()::Seek() Off=" << off << " Start=" << start << " Size=" << size << "\n";
+      if(off < start || (size != streamPosUnknown && off >= size))
+        return false;
       gotEOS = false; // Reset end of stream flag.
       at = off; 
       return true;
@@ -145,6 +145,8 @@ namespace RavlN {
 
     virtual bool DSeek64(Int64T off) {
       //cerr << "NetOSPortBodyC()::DSeek() Off=" << off << " At=" << at <<" Start=" << start << " Size=" << size << "\n";
+      if (off == streamPosUnknown)
+        return false;
       Int64T newOff = (Int64T) at + off;
       if(newOff < start || newOff >= size)
         return false;
@@ -229,6 +231,7 @@ namespace RavlN {
     
     virtual IntT PutArray(const SArray1dC<DataT>& data)
     {
+//      cerr << "NetOSPortBodyC()::PutArray() Data Size=" << (data.IsValid() ? data.Size() : -1) << " At=" << at << " Size=" << size << "\n";
       if (gotEOS || !data.IsValid() || !ep.IsValid())
       	return 0;
       Int64T dataSize = data.Size();

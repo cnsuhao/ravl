@@ -30,7 +30,7 @@ namespace RavlN {
       portName(nPortName),
       dataType(TypeName(ndataType)),
       start(0),
-      size((UIntT) -1),
+      size(streamPosUnknown),
       at(0),
       gotEOS(false),
       flag(0)

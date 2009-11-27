@@ -28,7 +28,7 @@ namespace RavlN {
                                              bool ndecodeArray
                                              )
     : NetMsgRegisterBodyC(nid,nname),
-      at(-1),
+      at(streamPosUnknown),
       oportBase(portBase),
       seekCtrl(nSeekCtrl),
       dataType(TypeInfo(portBase.OutputType())),
@@ -51,7 +51,7 @@ namespace RavlN {
     Int64T pos;
     pkt >> pos;
     
-    ONDEBUG(cerr << "NetMsgOPortDataBodyC::Decode Pos=" << pos << endl);
+    ONDEBUG(cerr << "NetMsgOPortDataBodyC::Decode Seeking: Pos=" << pos << " At=" << at << " SeekCtrl=" << (seekCtrl.IsValid() ? "Y" : "N") << endl);
     if (at != pos && \
         pos != static_cast<UIntT>(-1) && \
         pos != streamPosUnknown && \
@@ -66,7 +66,7 @@ namespace RavlN {
     {
       Int64T size = 0;
       pkt >> size;
-      ONDEBUG(cerr << "NetMsgOPortDataBodyC::Decode Size=" << size << endl);
+      ONDEBUG(cerr << "NetMsgOPortDataBodyC::Decode Writing: Size=" << size << endl);
 
       if (dataType.ReadAndPutArray(size, pkt, oportBase))
         at += size;
