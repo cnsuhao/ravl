@@ -69,6 +69,10 @@ namespace RavlN {
     {
       fd = 2;
     }
+    else if (strcmp(filename, "stdout") == 0)
+    {
+     fd = 1;
+    }
     else 
     {
       //FIXME need mecanism of closing the log file
