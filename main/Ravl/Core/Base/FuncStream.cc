@@ -7,6 +7,7 @@
 
 #include "Ravl/FuncStream.hh"
 #include <cstring>
+#include <stdio.h>
 
 namespace RavlN {
   

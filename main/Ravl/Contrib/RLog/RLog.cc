@@ -16,6 +16,7 @@
 #include <rlog/rlog.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdio.h>
 
 #ifdef WIN32
 #include <io.h>

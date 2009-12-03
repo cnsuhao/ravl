@@ -17,6 +17,7 @@
 #include "Ravl/DP/DataConv.hh"
 #include "Ravl/DP/Converter.hh"
 #include <ctype.h>
+#include <stdio.h>
 
 #define DODEBUG 0
 #if DODEBUG

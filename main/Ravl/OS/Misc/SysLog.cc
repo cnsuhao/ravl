@@ -27,6 +27,8 @@
 #endif
 #endif
 
+#include <stdio.h>
+
 namespace RavlN {
   
   static StringC syslog_ident("NoName");

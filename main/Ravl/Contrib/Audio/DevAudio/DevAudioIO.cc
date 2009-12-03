@@ -17,6 +17,7 @@
 #include <sys/soundcard.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdio.h>
 #endif
 
 #include "Ravl/Audio/DevAudioIO.hh"
