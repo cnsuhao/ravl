@@ -11,6 +11,34 @@
 
 namespace RavlN {
   
+  FuncOStreamBufC::FuncOStreamBufC(const CallFunc2C<const char *,SizeT> &writeCall, SizeT bufferSize)
+    : m_buffer(NULL),
+      m_bufferSize(0),
+      m_write(writeCall)
+  {
+    //create buffer
+    m_buffer = new char[bufferSize];
+    if(m_buffer == NULL) {
+      throw ExceptionOperationFailedC("Cann't allocate buffer");
+    }
+    m_bufferSize = bufferSize;
+
+    // link buffer to stream
+    setp(m_buffer,&m_buffer[m_bufferSize-1]);
+  }
+
+  FuncOStreamBufC::~FuncOStreamBufC()  {
+    // Flush buffer.
+    sync();
+
+    // delete buffer
+    if(m_buffer != NULL) {
+      delete[] m_buffer;
+      m_buffer = NULL;
+      m_bufferSize = 0;
+    }
+  }
+
   void FuncOStreamBufC::Flush() {
     //std::cerr << "Overflow called. \n";
     RavlAssert(pptr() >= pbase());
@@ -45,10 +73,32 @@ namespace RavlN {
   
   //: Constructor.
   
-  FuncIStreamBufC::FuncIStreamBufC(const CallFunc2C<char *,SizeT,SizeT> &readCall) 
-    : m_read(readCall)
-  { setg(m_buffer+4,m_buffer+4,m_buffer+4); }
+  FuncIStreamBufC::FuncIStreamBufC(const CallFunc2C<char *,SizeT,SizeT> &readCall, SizeT bufferSize)
+    : m_buffer(NULL),
+      m_bufferSize(0),
+      m_read(readCall)
+  {
+    //create buffer
+    m_buffer = new char[bufferSize];
+    if(m_buffer == NULL) {
+      throw ExceptionOperationFailedC("Cann't allocate buffer");
+    }
+    m_bufferSize = bufferSize;
+
+    setg(m_buffer+4,m_buffer+4,m_buffer+4);
+  }
     
+  //: Destructor.
+  FuncIStreamBufC::~FuncIStreamBufC() {
+    // delete buffer
+    if(m_buffer != NULL) {
+      delete[] m_buffer;
+      m_buffer = NULL;
+      m_bufferSize = 0;
+    }
+  }
+
+
   //: Underflow.
   
   FuncIStreamBufC::int_type FuncIStreamBufC::underflow() {
