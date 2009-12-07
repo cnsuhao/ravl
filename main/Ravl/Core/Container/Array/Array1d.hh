@@ -114,10 +114,10 @@ namespace RavlN {
     //</pre>
     // Here, <code>removable</code> is set <b>false</b> as the data was not allocated on the heap in the first place.</p>
     
-    Array1dC(BufferC<DataT> & bf, const IndexRangeC & range);
+    Array1dC(const BufferC<DataT> & bf, const IndexRangeC & range);
     //: Creates the array with limits 'range' using the buffer 'bf'.
     
-    Array1dC(BufferC<DataT> & bf, const RangeBufferAccessC<DataT>  & rbf);
+    Array1dC(const BufferC<DataT> & bf, const RangeBufferAccessC<DataT>  & rbf);
     //: Creates the array in 'bf' using access rbf..
     
     Array1dC(const Array1dC<DataT> & vv, const IndexRangeC & range);
@@ -473,13 +473,13 @@ namespace RavlN {
   {}
   
   template <class DataT>
-  Array1dC<DataT>::Array1dC(BufferC<DataT> & bf, const IndexRangeC & range)
+  Array1dC<DataT>::Array1dC(const BufferC<DataT> & bf, const IndexRangeC & range)
     : RangeBufferAccessC<DataT>(bf.BufferAccess(), range),
       buff(bf)
   {}
   
   template <class DataT>
-  Array1dC<DataT>::Array1dC(BufferC<DataT> & bf, const RangeBufferAccessC<DataT>  & rbf) 
+  Array1dC<DataT>::Array1dC(const BufferC<DataT> & bf, const RangeBufferAccessC<DataT>  & rbf) 
     : RangeBufferAccessC<DataT>(rbf),
       buff(bf)
   {}
