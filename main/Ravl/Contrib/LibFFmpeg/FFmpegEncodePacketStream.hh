@@ -106,7 +106,7 @@ namespace RavlN {
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
 
-    virtual bool SetAttr(const StringC &attrName,RealT &attrValue);
+    virtual bool SetAttr(const StringC &attrName,const RealT &attrValue);
     //: Get a attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
@@ -133,11 +133,9 @@ namespace RavlN {
      void close_audio(AVFormatContext *oc, AVStream *st);
      //static 
      void close_video(AVFormatContext *oc, AVStream *st);
-     //static FloatT t,tincr,tincr2;
-     //bool finishOpen(IntT &width,IntT &height);
 
   protected:
-    void Init();
+    //void Init();
     //: Initalise attributes.
     
     StringC out_filename;
@@ -162,7 +160,7 @@ namespace RavlN {
     Int64T currentTimeStamp;
     Int64T frameRate;
     Int64T frameRateBase;
-    Int64T compression;
+    RealT compression;
     
     Int64T startFrame; // Frame number of start of sequence.
     bool haveSeek,header_done,header_not_done_yet; // Do we have seeking ?
@@ -176,15 +174,7 @@ namespace RavlN {
     CodecID codecid;
 
 //////////////////////////////////////////////////////////////
-//float t, tincr, tincr2;
-//int16_t *samples;
-//uint8_t *audio_outbuf;
-   //static 
    IntT audio_outbuf_size;
-//int audio_input_frame_size;
-//AVFrame *picture, *tmp_picture;
-//uint8_t *video_outbuf;
-   //static 
    IntT frame_count, video_outbuf_size;
 ///////////////////////////////////////////
     
@@ -305,7 +295,7 @@ namespace RavlN {
     // This is for handling attributes such as frame rate, and compression ratios.
     //!cwiz:author
 
-    bool SetAttr(const StringC & attrName,RealT & attrValue) 
+    bool SetAttr(const StringC & attrName,const RealT & attrValue) 
     {  
         return Body().SetAttr(attrName,attrValue); }
     //: Get a attribute. 
