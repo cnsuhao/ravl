@@ -113,6 +113,10 @@ namespace RavlN {
     // alwaysCopy is true, this can make it much more efficient than
     // a straight copy.
     
+    const Array1dC<DataT> SliceRow(IndexC i) const
+    { return Array1dC<DataT>(data.Data(),(*this)[i]); }
+    //: Access row as 1d array.
+    
     Array1dC<DataT> SliceRow(IndexC i)
     { return Array1dC<DataT>(data.Data(),(*this)[i]); }
     //: Access row as 1d array.
