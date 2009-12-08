@@ -16,7 +16,6 @@
 #include "Ravl/DP/Compose.hh"
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/DP/Func2Proc21.hh"
-#include "Ravl/PatternRec/SliceVector.hh"
 #include "Ravl/PatternRec/ProcessVectorLabelFunction.hh"
 
 #if RAVL_COMPILER_MIPSPRO 
