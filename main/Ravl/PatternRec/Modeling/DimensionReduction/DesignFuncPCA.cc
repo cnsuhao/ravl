@@ -38,7 +38,7 @@ namespace RavlN {
   DesignFuncPCABodyC::DesignFuncPCABodyC(istream &strm) 
     : DesignFuncReduceBodyC(strm)
   {
-   strm >> forceHimDim;
+    strm >> forceHimDim;
   }
   
   //: Load from binary stream.
@@ -54,7 +54,7 @@ namespace RavlN {
   bool DesignFuncPCABodyC::Save(ostream &out) const {
     if(!DesignFuncReduceBodyC::Save(out))
       return false;
-    out << ' ' << forceHimDim;
+    out << ' ' << forceHimDim << ' ';
     return true;
   }
   

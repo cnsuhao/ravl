@@ -59,7 +59,7 @@ namespace RavlN {
   //: Apply function to 'data'
   
   VectorC FunctionBodyC::Apply(const VectorC &data) const {
-    RavlAssertMsg(0,"RavlN::Apply(), Abstract method called. \n");
+    //RavlAssertMsg(0,"RavlN::Apply(), Abstract method called. \n");
     return data;
   }
   

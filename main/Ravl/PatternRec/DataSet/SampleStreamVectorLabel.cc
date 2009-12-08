@@ -4,11 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
+//! rcsid="$Id: SampleStreamVectorLabel.cc 7324 2009-10-21 16:23:20Z craftit $"
 //! lib=RavlPatternRec
-//! file="Ravl/PatternRec/DataSet/SampleStreamVector.cc"
+//! file="Ravl/PatternRec/DataSet/SampleStreamVectorLabel.cc"
 #include "Ravl/config.h" 
-#include "Ravl/PatternRec/SampleStreamVector.hh"
+#include "Ravl/PatternRec/SampleStreamVectorLabel.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/MeanCovariance.hh"
 #include "Ravl/MatrixRUT.hh"
@@ -16,7 +16,8 @@
 #include "Ravl/DP/Compose.hh"
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/DP/Func2Proc21.hh"
-#include "Ravl/PatternRec/ProcessVectorFunction.hh"
+#include "Ravl/PatternRec/SliceVector.hh"
+#include "Ravl/PatternRec/ProcessVectorLabelFunction.hh"
 
 #if RAVL_COMPILER_MIPSPRO 
 #pragma instantiate RavlN::DPIPortBodyC<RavlN::VectorC>
@@ -32,13 +33,13 @@
 
 namespace RavlN {
 
-  static VectorC float2realVec(const TVectorC<float> &vec) {
-    return VectorC(vec);
+  static Tuple2C<VectorC, UIntT> float2realVec(const Tuple2C<TVectorC<float>, UIntT> &vec) {
+    return Tuple2C<VectorC, UIntT>(VectorC(vec.Data1()), vec.Data2());
   }
   
   
   //: Convert from a stream of float vectors.
-  SampleStreamVectorC::SampleStreamVectorC(const SampleStreamC<TVectorC<float> > &port)
+  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const SampleStreamC<Tuple2C<TVectorC<float>, UIntT> > &port)
     : DPEntityC(true)
   {
     *this = SPort(port >> Process(float2realVec));
@@ -46,21 +47,22 @@ namespace RavlN {
 
 
   //: Convert from a stream of float vectors.
-  SampleStreamVectorC::SampleStreamVectorC(const DPISPortC<VectorC> & stream, const FunctionC & function)
+  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const DPISPortC<Tuple2C<VectorC, UIntT> > & stream, const FunctionC & function)
     : DPEntityC(true)
   {    
-    ProcessVectorFunctionC pFunc(function);    
+    ProcessVectorLabelFunctionC pFunc(function);    
     *this = SPort(stream >> pFunc);
   }
   
 
+#if 0
   //: Compute the sum of the outerproducts.
   // This routine increases accuracy by only summing 500 numbers at time.   Not really worth it.
   // For 1000000 numbers the difference in sums is about 10e-14
   
-  MatrixC SampleStreamVectorC::SumOuterProducts() {
+  MatrixC SampleStreamVectorLabelC::SumOuterProducts() {
     if(!First()) { // Goto first element.
-      cerr << "SampleStreamVectorC::SumOuterProducts(), WARNING: Failed to seek to first element in sample stream.\n";
+      cerr << "SampleStreamVectorLabelC::SumOuterProducts(), WARNING: Failed to seek to first element in sample stream.\n";
     }
     VectorC vec;
     UIntT sumLimit = 500;
@@ -74,7 +76,7 @@ namespace RavlN {
     // Recursively accumulate, never sum more than sumLimit numbers in one go.
     
     while(1) {
-      IntT n = GetArray(vecs);      
+      IntT n = GetArray(vecs);
       if(n == 0)
 	break; // Done ?
       for(SArray1dIterC<VectorC> sit(vecs,n);sit;sit++)
@@ -110,9 +112,9 @@ namespace RavlN {
   
   //: Find the mean and covariance of the sample
   
-  MeanCovarianceC SampleStreamVectorC::MeanCovariance()  {
+  MeanCovarianceC SampleStreamVectorLabelC::MeanCovariance()  {
     if(!First()) { // Goto first element.
-      cerr << "SampleStreamVectorC::MeanCovariance(), WARNING: Failed to seek to first element in sample stream.\n";
+      cerr << "SampleStreamVectorLabelC::MeanCovariance(), WARNING: Failed to seek to first element in sample stream.\n";
     }
     UIntT sumLimit = 500;
     SArray1dC<VectorC> vecs(sumLimit);
@@ -130,7 +132,7 @@ namespace RavlN {
     return mc;
   }
   
-
+#endif
   
 
 }

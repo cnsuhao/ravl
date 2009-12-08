@@ -4,11 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_SAMPLESTREAMVECTOR_HEADER
-#define RAVL_SAMPLESTREAMVECTOR_HEADER 1
+#ifndef RAVL_SAMPLESTREAMVECTORLABEL_HEADER
+#define RAVL_SAMPLESTREAMVECTORLABEL_HEADER 1
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Data Set"
-//! rcsid="$Id$"
+//! rcsid="$Id: SampleStreamVector.hh 7324 2009-10-21 16:23:20Z craftit $"
 //! lib=RavlPatternRec
 //! examples=exSampleStream.cc
 //! file="Ravl/PatternRec/DataSet/SampleStreamVector.hh"
@@ -18,44 +18,44 @@
 #include "Ravl/Vector.hh"
 
 namespace RavlN {
-  class MeanCovarianceC;
-  class MatrixC;
   
   //! userlevel=Normal
-  //: Stream of sample vectors
+  //: Stream of sample vectors and their corresponding labels
   
-  class SampleStreamVectorC 
-    : public SampleStreamC<VectorC>
+  class SampleStreamVectorLabelC 
+    : public SampleStreamC<Tuple2C<VectorC, UIntT> >
   {
   public:
-    SampleStreamVectorC()
+    SampleStreamVectorLabelC()
       : DPEntityC(true)
     {}
     //: Default constructor.
     // Creates an invalid handle
     
-    SampleStreamVectorC(const SampleStreamC<VectorC> &stream)
+    SampleStreamVectorLabelC(const SampleStream2C<VectorC, UIntT> & stream)
       : DPEntityC(stream)
     {}
     //: Base constructor.
     
-    SampleStreamVectorC(const DPISPortC<VectorC> &stream, const FunctionC & function);
+    SampleStreamVectorLabelC(const DPISPortC<Tuple2C<VectorC, UIntT> > & port, const FunctionC & function);
     //: Apply a function to the vectors as you get them
     
-    SampleStreamVectorC(const DPISPortC<VectorC> &port)
+    SampleStreamVectorLabelC(const DPISPortC<Tuple2C<VectorC, UIntT> > &port)
       : DPEntityC(port)
     {}
     //: Base constructor.
 
-    SampleStreamVectorC(const SampleStreamC<TVectorC<float> > &port);
+    SampleStreamVectorLabelC(const SampleStreamC<Tuple2C<TVectorC<float>, UIntT> > & port);
     //: Convert from a stream of float vectors.
 
+#if 0    
     MeanCovarianceC MeanCovariance();
     //: Find the mean and covariance of the sample
     
     MatrixC SumOuterProducts();
     //: Compute the sum of the outerproducts.
-    
+#endif    
+
   protected:
 
     

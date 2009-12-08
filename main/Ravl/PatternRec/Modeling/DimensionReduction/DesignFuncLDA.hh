@@ -23,6 +23,7 @@
 #include "Ravl/Matrix.hh"
 #include "Ravl/PatternRec/SampleStream.hh"
 #include "Ravl/PatternRec/SampleStreamVector.hh"
+#include "Ravl/PatternRec/SampleStreamVectorLabel.hh"
 
 namespace RavlN {
   
@@ -65,6 +66,12 @@ namespace RavlN {
     //!param: inPca - uses this stream to do some initial PCA dimension reduction (could be same stream as inLda)
     //!param: inLda - uses this labelled stream of vectors to do dimension reduction using LDA
 
+    FunctionC Apply(SampleStreamVectorC & inPca, SampleStreamVectorLabelC &inLda);
+    //: Create function from labelled sample stream of vectors.
+    // This method uses streams so that you don't have to store all the data in memory.<br>
+    //!param: inPca - data used to construct PCA.
+    //!param: inLda - data used to construct LDA.
+    
     MatrixC &Lda()
     { return lda; }
     //: Access eigen vectors and values.
@@ -184,6 +191,14 @@ namespace RavlN {
     //!param: inPca - uses this stream to do some initial PCA dimension reduction (could be same stream as inLda)
     //!param: inLda - uses this labelled stream of vectors to do dimension reduction using LDA
 
+    FunctionC Apply(SampleStreamVectorC & inPca, SampleStreamVectorLabelC &inLda)
+    { return Body().Apply(inPca, inLda); }
+    //: Create function from labelled sample stream of vectors.
+    // This method uses streams so that you don't have to store all the data in memory.<br>
+    //!param: inPca - data used to construct PCA.
+    //!param: inLda - data used to construct LDA.
+
+    
   };
 
 }
