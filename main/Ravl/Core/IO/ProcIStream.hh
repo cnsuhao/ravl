@@ -63,8 +63,10 @@ namespace RavlN {
     virtual IntT GetArray(SArray1dC<OutT> &dest) {
       SArray1dC<InT> src(dest.Size());
       IntT ret = this->input.GetArray(src);
-      if(ret > 0)
-	src = SArray1dC<InT>(src,ret);
+      // we did not get any data so no point continuing
+      if(ret <= 0)
+        return ret;
+      src = SArray1dC<InT>(src,ret);
 //comment ap variable if assertions are not active
 #if RAVL_CHECK
       IntT ap = 
