@@ -21,6 +21,7 @@
 #include "Ravl/SArray1d.hh"
 #include "Ravl/Traits.hh"
 #include <vector>
+#include <set>
 #include <string>
 #include <typeinfo>
 #include <map>
@@ -83,6 +84,16 @@ namespace RavlN {
 
   template<typename DataT>
   BinIStreamC &operator>>(BinIStreamC &strm,std::vector<DataT> &vec)
+  { return ReadSTLContainer(strm,vec); }
+  //: Read an STL vector from binary stream.
+
+  template<typename DataT>
+  BinOStreamC &operator<<(BinOStreamC &strm,const std::set<DataT> &vec)
+  { return WriteSTLContainer(strm,vec); }
+  //: Write an STL vector to binary stream.
+
+  template<typename DataT>
+  BinIStreamC &operator>>(BinIStreamC &strm,std::set<DataT> &vec)
   { return ReadSTLContainer(strm,vec); }
   //: Read an STL vector from binary stream.
 
