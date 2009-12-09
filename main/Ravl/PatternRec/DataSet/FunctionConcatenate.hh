@@ -30,6 +30,10 @@ namespace RavlN {
     FunctionConcatenateBodyC(const SArray1dC<FunctionC> & functions);
     //: Default constructor.
     
+    FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2);
+
+    FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
+    
     FunctionConcatenateBodyC(istream &strm);
     //: Load from stream.
     
@@ -66,10 +70,23 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+
     FunctionConcatenateC(const SArray1dC<FunctionC> & functions)
       : FunctionC(*new FunctionConcatenateBodyC(functions))
     {}
     //: Construct from a set of functions
+
+    FunctionConcatenateC(const FunctionC & function1, const FunctionC & function2)
+      : FunctionC(*new FunctionConcatenateBodyC(function1, function2))
+    {}
+    //: Construct from a set of functions
+
+    FunctionConcatenateC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3)
+      : FunctionC(*new FunctionConcatenateBodyC(function1, function2, function3))
+    {}
+    //: Construct from a set of functions
+
+    
     
     FunctionConcatenateC(istream &is);
     //: Stream constructor.

@@ -49,6 +49,26 @@ namespace RavlN {
     InputSize(inputSize);
     OutputSize(outputSize);
   }
+
+  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2)
+    : m_functions(2)
+  {
+    m_functions[0] = function1;
+    m_functions[1] = function2;
+    InputSize(m_functions[0].InputSize());
+    OutputSize(m_functions[1].OutputSize());
+  }
+
+  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC &function3)
+    : m_functions(3)
+  {
+    m_functions[0] = function1;
+    m_functions[1] = function2;
+    m_functions[2] = function3;
+    InputSize(m_functions[0].InputSize());
+    OutputSize(m_functions[2].OutputSize());
+  }
+  
   
   //: Load from stream.
   
@@ -84,18 +104,15 @@ namespace RavlN {
   
   VectorC FunctionConcatenateBodyC::Apply(const VectorC &data) const {
 
-    std::cerr << "apply: " << data.Size() << endl;
-    std::cerr << "apply: " << InputSize() << endl;
-    std::cerr << "apply: " << OutputSize() << endl;
-    
+
     // create space for level 2 vec
-    VectorC level2Vec(OutputSize());
+    VectorC vec(OutputSize());
     
     UIntT inputIndex = 0;
     UIntT outputIndex = 0;
 
     for(SArray1dIterC<FunctionC>it(m_functions);it;it++) {
-      
+
       // do first level projection
       UIntT vecSize = it.Data().InputSize();      
 
@@ -111,14 +128,13 @@ namespace RavlN {
       
       // copy to our output vector
       for(SArray1dIterC<RealT>vecIt(outputVec);vecIt;vecIt++) {
-        level2Vec[outputIndex] = *vecIt;
+        vec[outputIndex] = *vecIt;
+        outputIndex++;
       }
 
-      // increment counters
-      outputIndex++;
     }
-            
-    return level2Vec;
+        
+    return vec;
   }
   
   ///////////////////////////////////////////////////////////
