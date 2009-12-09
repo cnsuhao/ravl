@@ -29,6 +29,10 @@ namespace RavlN {
     
     FunctionCascadeBodyC(const SArray1dC<FunctionC> & functions);
     //: Default constructor.
+
+    FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2);
+    
+    FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
     
     FunctionCascadeBodyC(istream &strm);
     //: Load from stream.
@@ -68,6 +72,16 @@ namespace RavlN {
     
     FunctionCascadeC(const SArray1dC<FunctionC> & functions)
       : FunctionC(*new FunctionCascadeBodyC(functions))
+    {}
+    //: Construct from a set of functions
+
+    FunctionCascadeC(const FunctionC & function1, const FunctionC & function2)
+      : FunctionC(*new FunctionCascadeBodyC(function1, function2))
+    {}
+    //: Construct from a set of functions
+
+    FunctionCascadeC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3)
+      : FunctionC(*new FunctionCascadeBodyC(function1, function2, function3))
     {}
     //: Construct from a set of functions
     

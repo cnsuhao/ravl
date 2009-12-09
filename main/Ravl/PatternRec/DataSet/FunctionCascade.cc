@@ -45,6 +45,26 @@ namespace RavlN {
     InputSize(functions[0].InputSize());
     OutputSize(functions[numberOfFunctions-1].OutputSize());
   }
+
+  FunctionCascadeBodyC::FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2)
+    : m_functions(2)
+  {    
+    m_functions[0] = function1;
+    m_functions[1] = function2;
+    InputSize(m_functions[0].InputSize());
+    OutputSize(m_functions[1].OutputSize());
+  }
+
+  FunctionCascadeBodyC::FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC &function3)
+    : m_functions(3)
+  {
+    m_functions[0] = function1;
+    m_functions[1] = function2;
+    m_functions[2] = function3;
+    InputSize(m_functions[0].InputSize());
+    OutputSize(m_functions[2].OutputSize());
+  }
+
   
   //: Load from stream.
   
