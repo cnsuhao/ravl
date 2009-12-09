@@ -59,8 +59,9 @@ namespace RavlN {
     }
     //: Save to binary stream.  
     
-    virtual VectorC Apply(const VectorC &d1) {
-      return m_function.Apply(d1);
+    virtual Tuple2C<VectorC, UIntT> Apply(const Tuple2C<VectorC, UIntT> &d1) {
+      VectorC vec = m_function.Apply(d1.Data1());
+      return Tuple2C<VectorC, UIntT>(vec, d1.Data2());
     }
     //: Do operation.
     
