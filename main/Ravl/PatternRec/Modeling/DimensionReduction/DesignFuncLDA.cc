@@ -97,7 +97,7 @@ namespace RavlN {
       
     DesignFuncPCAC pca(varPreserved);
     FunctionC pcaFunc = pca.Apply(inVecsPca);
-    cerr << "Dimensionality  reduction using PCA from"  << pcaFunc.InputSize() << " to " <<   pcaFunc.OutputSize() << endl;
+    ONDEBUG(cerr << "Dimensionality reduction using PCA from"  << pcaFunc.InputSize() << " to " <<   pcaFunc.OutputSize() << endl);
     mean = pca.Mean();
     SampleC<VectorC> outPca = pcaFunc.Apply(inVecsPca);
 
@@ -116,13 +116,13 @@ namespace RavlN {
   FunctionC DesignFuncLDABodyC::Apply(SampleStreamVectorC & inPca, SampleStreamVectorLabelC & inLda) {
 
     //: first we need to do the pca
-    cerr << "Starting PCA" << endl;
+    ONDEBUG(cerr << "Starting PCA" << endl);
     DesignFuncPCAC pca(varPreserved);    
     FunctionC pcaFunc = pca.Apply(inPca);
         
     UIntT D = pcaFunc.InputSize();
     UIntT Dpca = pcaFunc.OutputSize();
-    cerr << "Dimensionality reduction using PCA from: "  << D  << " to " << Dpca   << endl;
+    ONDEBUG(cerr << "Dimensionality reduction using PCA from: "  << D  << " to " << Dpca   << endl);
     VectorC mean1 = pca.Mean();
 
     //: Now we need to calculate the mean of the database first.
@@ -201,7 +201,7 @@ namespace RavlN {
     
     UIntT D = pcaFunc.InputSize();
     UIntT Dpca = pcaFunc.OutputSize();
-    cerr << "Dimensionality reduction using PCA from: "  << D  << " to " << Dpca   << endl;
+    ONDEBUG(cerr << "Dimensionality reduction using PCA from: "  << D  << " to " << Dpca   << endl);
     VectorC mean1 = pca.Mean();
 
     //: Now we need to calculate the mean of the database first.
