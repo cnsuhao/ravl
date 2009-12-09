@@ -12,9 +12,22 @@
 #endif
 
 #include "Ravl/String.hh"
+#include "Ravl/StrStream.hh"
 #include <rlog/rlog.h>
 #undef RLOG_SECTION
 #define RLOG_SECTION
+
+
+#define RLOG_STREAM(RLOG_CMD, ARGS) {  \
+  RavlN::StrOStreamC strm;             \
+  strm << ARGS;                        \
+  RLOG_CMD(strm.String().data());      \
+}
+
+#define rInfoS(ARGS)  RLOG_STREAM(rInfo,  ARGS)
+#define rDebugS(ARGS) RLOG_STREAM(rDebug, ARGS)
+#define rErrorS(ARGS) RLOG_STREAM(rError, ARGS)
+
 
 namespace RavlN {
   
@@ -24,7 +37,7 @@ namespace RavlN {
   //! Initialise rlog to filename (filename can be stderr)
   bool RLogInit(const StringC &filename, const StringC &verbose, const StringC &logLevel);
 
-  //! Initalise rlog to standard out
+  //! Initialise rlog to standard out
   bool RLogInit(bool verbose = false);
   
   //! Subscribe to a model.
