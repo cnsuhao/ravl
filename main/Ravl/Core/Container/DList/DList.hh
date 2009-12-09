@@ -330,6 +330,9 @@ namespace RavlN {
     { return Body().Head(); }
     //: Get head of list.
     
+    static bool DefaultComparisonOp(const DataT &l1,const DataT &l2)
+    { return l1 < l2; }
+    // Default comparison method.
   public:
     bool IsEmpty() const
     { return Body().IsEmpty(); }
@@ -413,7 +416,7 @@ namespace RavlN {
     { Body().MoveLast(at); }
     //: Move the single item 'at' to the end of this list.
     
-    void MergeSort(typename DListBodyC<DataT>::MergeSortCmpT cmp)
+    void MergeSort(typename DListBodyC<DataT>::MergeSortCmpT cmp = &DListC<DataT>::DefaultComparisonOp)
     { Body().MergeSort(cmp); }
     //: Merge sort the list with comparison function 'cmp'.
 
