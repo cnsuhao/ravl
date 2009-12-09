@@ -31,29 +31,29 @@ namespace RavlN {
   void AssertFailed(const char *file,int lineNo);
   //: Called if assertion failed.
   // This will either cause the program to trap to the debugger
-  // or thow an 'ExceptionAssertionFailedC'
+  // or throw an 'ExceptionAssertionFailedC'
 
   void AssertFailed(const char *file,int lineNo,const char *msg);
   //: Called if assertion failed, with message.
   // This will either cause the program to trap to the debugger
-  // or thow an 'ExceptionAssertionFailedC'
+  // or throw an 'ExceptionAssertionFailedC'
   
   void IssueError(const char *file,int lineNo,const char *msg ...);
   //: Call when program encounters an error.
   // This will either cause the program to trap to the debugger
-  // or thow an 'ExceptionAssertionFailedC'
+  // or throw an 'ExceptionAssertionFailedC'
 
   void IssueWarning(const char *file,int lineNo,const char *msg ...);
-  //: Call when program encounters an a unexpected occurance.
+  //: Call when program encounters an a unexpected occurrence.
   // this prints the message and continues.
   
   void IssueError(const char *file,int lineNo,const StringC &str);
   //: Call when program encounters an error.
   // This will either cause the program to trap to the debugger
-  // or thow an 'ExceptionAssertionFailedC'
+  // or throw an 'ExceptionAssertionFailedC'
   
   void IssueWarning(const char *file,int lineNo,const StringC &str);
-  //: Call when program encounters an a unexpected occurance.
+  //: Call when program encounters an a unexpected occurrence.
   // this prints the message and continues.
   
 }
