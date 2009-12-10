@@ -16,6 +16,7 @@
 
 #include "Ravl/DP/Process.hh"
 #include "Ravl/PatternRec/Function.hh"
+#include "Ravl/Tuple2.hh"
 
 namespace RavlN {
   
