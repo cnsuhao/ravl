@@ -31,6 +31,6 @@ USESLIBS = RavlImage RavlIO LibFFmpeg
 
 PROGLIBS = RavlGUI RavlDPDisplay
 
-EXAMPLES = exFFmpeg.cc exFFmpegSeek.cc
+EXAMPLES = exFFmpeg.cc exFFmpegSeek.cc exFFmpegOutPut.cc
 
 EHT = LibFFmpeg.html
