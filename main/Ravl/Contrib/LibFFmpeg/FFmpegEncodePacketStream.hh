@@ -6,7 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_ENCODEFFMPEG_AVFORMAT_HEADER 
 #define RAVL_ENCODEFFMPEG_AVFORMAT_HEADER 
-//! rcsid="$Id: FFmpegDPOPacketStream.hh 7052 2008-12-04 14:43:12Z ees1wc $"
+//! rcsid="$Id: FFmpegEncodePacketStream.hh 7052 2008-12-04 14:43:12Z ees1wc $"
 //! lib=RavlLibFFmpeg
 //! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 
@@ -33,7 +33,7 @@ extern "C" {
 namespace RavlN {
     using namespace RavlImageN;
   
-  //: FFmpeg packet stream.
+  //: FFmpeg encode packet stream.
   
   class FFmpegEncodePacketStreamBodyC 
     : public DPOSPortBodyC<FFmpegPacketC>
@@ -182,7 +182,7 @@ namespace RavlN {
 
   
   //! userlevel=Normal
-  //: FFmpeg packet stream. 
+  //: FFmpeg encode packet stream. 
   //!cwiz:author
   
   class FFmpegEncodePacketStreamC

@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id: FFmpegPacketStream.cc 6742 2008-04-21 16:37:43Z robowaz $"
+//! rcsid="$Id: FFmpegEncodePacketStream.cc 6742 2008-04-21 16:37:43Z robowaz $"
 //! lib=RavlLibFFmpeg
 #ifndef __STDC_CONSTANT_MACROS
 #define __STDC_CONSTANT_MACROS 1
