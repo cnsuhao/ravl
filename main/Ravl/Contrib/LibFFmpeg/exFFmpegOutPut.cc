@@ -1,3 +1,16 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2003, University of Surrey
+// This code may be redistributed under the terms of the GNU
+// General Public License (GPL). See the gpl.licence file for details or
+// see http://www.gnu.org/copyleft/gpl.html
+// file-header-ends-here
+//////////////////////////////////////////////////////////////////
+//! rcsid = "$Id: exFFmpegOutPut.cc 6742 2008-04-21 16:37:43Z robowaz $"
+//! lib=RavlLibFFmpeg
+//! author = "Simon"
+//! file="Ravl/Contrib/LibFFmpeg/exFFmpegOutPut.cc"
+//! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
+
 #include "Ravl/Option.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/DP/SequenceIO.hh"
