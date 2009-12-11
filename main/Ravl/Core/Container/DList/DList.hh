@@ -419,7 +419,7 @@ namespace RavlN {
     void MergeSort(typename DListBodyC<DataT>::MergeSortCmpT cmp = &DListC<DataT>::DefaultComparisonOp)
     { Body().MergeSort(cmp); }
     //: Merge sort the list with comparison function 'cmp'.
-    // The default is to use the ">" operator; this creates a list sorted in
+    // The default is to use the "<" operator; this creates a list sorted in
     // <i>ascending</i> order.
 
     bool operator==(const DListC<DataT> &oth) const;
