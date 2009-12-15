@@ -495,6 +495,11 @@ int testLineProjective2d() {
   LineABC2dC outLine(proj*inLine);
   if (   (outLine.Distance(proj*p1) > 0.001)
       || (outLine.Distance(proj*p2) > 0.001)) return __LINE__;  
+  LinePP2dC inPPLine(p1, p2);
+  // See if projected line still passes through projected points
+  LinePP2dC outPPLine(proj*inPPLine);
+  if (   (outPPLine.Distance(proj*p1) > 0.001)
+      || (outPPLine.Distance(proj*p2) > 0.001)) return __LINE__;  
   return 0;
 }
 

@@ -97,6 +97,10 @@ namespace RavlN {
       return ATan2(dir[1],dir[0]);
     }
     //: Return the direction of the line.
+
+    RealT Distance(const Point2dC pt) 
+    { return Vector2dC(this->Vector()).Cross(Vector2dC(pt-this->P1())); }
+    //: Return signed distance of pt from this line
     
   };
   
