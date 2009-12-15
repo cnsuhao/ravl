@@ -72,8 +72,8 @@ int main(int nargs,char **argv) {
   types[1] = AttributeTypeStringC("AString","...");
   types[2] = AttributeTypeMiscC("AImage","...",AVT_ByteRGBImage);
   types[3] = AttributeTypeBoolC("ABool","...");   
-  types[4] = AttributeTypeStringC("Colour","..."); // This is used for controling the colour of column 1 
-  types[5] = AttributeTypeBoolC("BoolState","..."); // This is used for controling the inconsistent state of column 3 
+  types[4] = AttributeTypeStringC("Colour","..."); // This is used for controlling the colour of column 1
+  types[5] = AttributeTypeBoolC("BoolState","..."); // This is used for controlling the inconsistent state of column 3
   treeStore = TreeStoreC(types);
   
   //: Put some data into the tree store.
