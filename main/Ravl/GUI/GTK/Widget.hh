@@ -33,6 +33,10 @@
 #endif
 #endif
 
+namespace RavlN {
+  class XMLFactoryContextC;
+}
+
 namespace RavlImageN {
   class ByteRGBValueC;
 }
@@ -65,6 +69,9 @@ namespace RavlGUIN {
     WidgetBodyC(const char *ntooltip);
     //: Default constructor.
     // reg == true then register widget for service events.
+
+    WidgetBodyC(const XMLFactoryContextC &factory);
+    //: Factory construtor
 
     virtual ~WidgetBodyC();
     //: Destructor.
@@ -324,16 +331,16 @@ namespace RavlGUIN {
     {}
     //: Create an abstract widget handle.
 
+    WidgetC(const WidgetBodyC *bod)
+      : RCHandleC<WidgetBodyC>(bod)
+    {}
+    //: Body Constructor.
   protected:
     WidgetC(WidgetBodyC &bod)
       : RCHandleC<WidgetBodyC>(bod)
     {}
     //: Body Constructor.
 
-    WidgetC(const WidgetBodyC *bod)
-      : RCHandleC<WidgetBodyC>(bod)
-    {}
-    //: Body Constructor.
 
     WidgetBodyC &Body()
     { return RCHandleC<WidgetBodyC>::Body(); }
@@ -557,6 +564,18 @@ namespace RavlGUIN {
     // GUI thread only.
 
   };
+
+  std::ostream &operator<<(std::ostream &strm,const WidgetC &out);
+  //: Dummy function to keep templates happy.
+
+  std::istream &operator>>(std::istream &strm,WidgetC &out);
+  //: Dummy function to keep templates happy.
+
+  BinOStreamC &operator<<(BinOStreamC &strm,const WidgetC &out);
+  //: Dummy function to keep templates happy.
+
+  BinIStreamC &operator>>(BinIStreamC &strm,WidgetC &out);
+  //: Dummy function to keep templates happy.
 
   inline
   DListC<WidgetC> operator+ (DListC<WidgetC> lst,const WidgetC &widge) {

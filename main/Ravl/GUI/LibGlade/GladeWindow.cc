@@ -11,6 +11,7 @@
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/GUI/Pixbuf.hh"
 #include "Ravl/GUI/Window.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #include <gtk/gtk.h>
 
@@ -38,6 +39,14 @@ namespace RavlGUIN {
     : GladeWidgetBodyC(widgetName,aCustomWidget)
   {}
   
+  //: Factory constructor
+
+  GladeWindowBodyC::GladeWindowBodyC(const XMLFactoryContextC &factory)
+   : GladeWidgetBodyC(factory)
+  {
+
+  }
+
   //: Raise window to top
   
   bool GladeWindowBodyC::Raise() {
@@ -142,5 +151,10 @@ namespace RavlGUIN {
   WindowC GladeWindowBodyC::Window() {
     return GladeWindowWrapperC(this);
   }
-  
+
+  void LinkGladeWindow()
+  {}
+
+  static XMLFactoryRegisterHandleConvertC<GladeWindowC,GladeWidgetC> g_registerXMLFactoryGladeWindow("RavlGUIN::GladeWindowC");
+
 }

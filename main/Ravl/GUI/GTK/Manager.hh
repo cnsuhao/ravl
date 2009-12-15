@@ -47,10 +47,10 @@ namespace RavlGUIN {
     //: Destructor.
     
     void Init(int &nargs,char *args[]);
-    //: Initalise system.
+    //: Initialise system.
     
     void Execute();
-    //: Start manager on seperate thread.
+    //: Start manager on separate thread.
     // Call only ONCE.
     
     void Start();
@@ -65,7 +65,7 @@ namespace RavlGUIN {
     //: Handle notify request.
     
     bool Shutdown();
-    //: Finishup and exit.
+    //: Finish up and exit.
     // This will not returns until the shutdown is complete.
     // It should NOT be used from within the GUI interface.
     

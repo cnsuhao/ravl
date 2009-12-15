@@ -36,6 +36,9 @@ namespace RavlGUIN {
     // The inital content of the entry is set to ntext.
     // If MaxLen is set to a negative number, the length is unlimited.
     
+    TextEntryBodyC(const XMLFactoryContextC &factory);
+    //: XML factory constructor
+
     virtual bool Create();
     //: Create the widget.
     
@@ -135,7 +138,12 @@ namespace RavlGUIN {
       : WidgetC(dynamic_cast<const TextEntryBodyC *>(BodyPtr(base)))
     {}
     //: Base class contructor.
-    
+
+    TextEntryC(const XMLFactoryContextC &factory)
+      : WidgetC(new TextEntryBodyC(factory))
+    {}
+    //: XML factory constructor
+
   protected:
     TextEntryC(TextEntryBodyC &bod)
       : WidgetC(bod)

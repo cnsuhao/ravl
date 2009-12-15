@@ -17,10 +17,12 @@ SOURCES= GladeWidget.cc GladeXML.cc GladeWindow.cc
 
 PLIB= RavlLibGlade
 
-USESLIBS= RavlGUI libglade system
+USESLIBS= RavlGUI libglade system RavlXMLFactory
 
 AUXFILES= exlibgladecustommain.glade  exlibgladecustomwidget.glade  exlibglade.glade
 
 AUXDIR=share/RAVL/Glade
 
 EXAMPLES= exLibGlade.cc exLibGladeCustom.cc
+
+MUSTLINK=linkRavlLibGlade.cc

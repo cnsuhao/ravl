@@ -25,6 +25,7 @@
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/GUI/TreeModel.hh"
 #include "Ravl/GUI/ReadBack.hh"
+#include "Ravl/XMLFactory.hh"
 #include "WidgetDNDInfo.hh"
 #include <gtk/gtk.h>
 #include <gdk/gdktypes.h>
@@ -409,6 +410,16 @@ namespace RavlGUIN {
       m_style(false)
   {}
 
+  //: Factory constructor
+  WidgetBodyC::WidgetBodyC(const XMLFactoryContextC &factory)
+      : widget(0),
+        widgetId(0),
+        eventMask(GDK_EXPOSURE_MASK),
+        tooltip(factory.AttributeString("tooltip","")),
+        gotRef(false),
+        dndInfo(0),
+        m_style(false)
+  {}
 
   //: Destructor.
 
@@ -1095,6 +1106,30 @@ namespace RavlGUIN {
     gdk_beep();
   }
   //: Emit a short beep
+
+  std::ostream &operator<<(std::ostream &strm,const WidgetC &out) {
+    RavlAssertMsg(0,"not implemented");
+    return strm;
+  }
+  //: Dummy function to keep templates happy.
+
+  std::istream &operator>>(std::istream &strm,WidgetC &out) {
+    RavlAssertMsg(0,"not implemented");
+    return strm;
+  }
+  //: Dummy function to keep templates happy
+
+  BinOStreamC &operator<<(BinOStreamC &strm,const WidgetC &out) {
+    RavlAssertMsg(0,"not implemented");
+    return strm;
+  }
+  //: Dummy function to keep templates happy.
+
+  BinIStreamC &operator>>(BinIStreamC &strm,WidgetC &out) {
+    RavlAssertMsg(0,"not implemented");
+    return strm;
+  }
+  //: Dummy function to keep templates happy.
 
 
 }

@@ -10,6 +10,7 @@
 
 #include "Ravl/GUI/GladeXML.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #include <gtk/gtk.h>
 #include <glade/glade.h>
@@ -56,6 +57,14 @@ namespace RavlGUIN {
       rootWidgetName(nwidgetName)
   {}
   
+  //: Factory constructor.
+
+  GladeXMLBodyC::GladeXMLBodyC(const XMLFactoryContextC &factory)
+    : xml(0),
+      filename(factory.AttributeString("gladefile","")),
+      rootWidgetName(factory.AttributeString("root",""))
+  {}
+
   //: Create interface.
   
   bool GladeXMLBodyC::Create() {
@@ -87,4 +96,8 @@ namespace RavlGUIN {
   }
   
   static TypeNameC type0(typeid(GladeXMLC),"RavlGUIN::GladeXMLC");
+  static XMLFactoryRegisterHandleC<GladeXMLC> g_registerXMLFactoryGladeXML;
+
+  void LinkGladeXML()
+  {}
 }

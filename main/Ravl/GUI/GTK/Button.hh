@@ -38,6 +38,9 @@ namespace RavlGUIN {
     ButtonBodyC(const char *nlabel,const PixmapC &pixm,const char *tooltip = 0);
     //: Constructor.
     
+    ButtonBodyC(const XMLFactoryContextC &factory);
+    //: XMLFactory constructor.
+
     virtual bool Create();
     //: Create the widget.
     
@@ -98,7 +101,12 @@ namespace RavlGUIN {
     {}
     //: Construct from base class
     // Creates an invalid handle.
-    
+
+    ButtonC(const XMLFactoryContextC &factory)
+      : WidgetC(*new ButtonBodyC(factory))
+    {}
+    //: XMLFactory constructor.
+
   protected:
     explicit ButtonC(const ButtonBodyC *bod)
       : WidgetC(bod)

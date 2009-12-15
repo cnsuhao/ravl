@@ -19,6 +19,10 @@ extern "C" {
   typedef struct _GladeXML GladeXML;
 }
 
+namespace RavlN {
+  class XMLFactoryContextC;
+}
+
 namespace RavlGUIN {
   using namespace RavlN;
   
@@ -38,6 +42,9 @@ namespace RavlGUIN {
     GladeXMLBodyC(const StringC &filename,const StringC &rootWidgetName);
     //: Create part of interface from a file.
     
+    GladeXMLBodyC(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+
     GladeXML *XML();
     //: Access xml info for whole interface.
     
@@ -82,7 +89,12 @@ namespace RavlGUIN {
       : RCHandleC<GladeXMLBodyC>(*new GladeXMLBodyC(filename,rootWidgetName))
     {}
     //: Create part of interface from a file.
-    
+
+    GladeXMLC(const XMLFactoryContextC &factory)
+     : RCHandleC<GladeXMLBodyC>(*new GladeXMLBodyC(factory))
+    {}
+    //: Factory constructor.
+
   protected:
     GladeXMLBodyC &Body()
     { return RCHandleC<GladeXMLBodyC>::Body(); }

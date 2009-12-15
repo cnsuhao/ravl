@@ -35,6 +35,9 @@ namespace RavlGUIN {
     //: Constructor
     // NOTE: If using this constructor a Glade XML object must be set with SetXML()
     
+    GladeWindowBodyC(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+
     bool Raise();
     //: Raise window to top
     
@@ -87,7 +90,12 @@ namespace RavlGUIN {
     {}
     //: Constructor
     // NOTE: If using this constructor a Glade XML object must be set with SetXML()
-    
+
+    GladeWindowC(const XMLFactoryContextC &factory)
+     : GladeWidgetC(*new GladeWindowBodyC(factory))
+    {}
+    //: Factory constructor.
+
   protected:
     GladeWindowC(GladeWindowBodyC &body)
       : GladeWidgetC(body)

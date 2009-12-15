@@ -34,6 +34,9 @@ namespace RavlGUIN {
     //: Constructor
     // NOTE: If using this constructor a Glade XML object must be set with SetXML()
     
+    GladeWidgetBodyC(const XMLFactoryContextC &factory);
+    //: Construct from an XMLFactory.
+
     bool SetXML(const GladeXMLC &gladeXml);
     //: Set a Glade XML object to use
     // NOTE: Will be ignored if one has already been set
@@ -107,7 +110,17 @@ namespace RavlGUIN {
     {}
     //: Constructor
     // NOTE: If using this constructor a Glade XML object must be set with SetXML()
-    
+
+    GladeWidgetC(const XMLFactoryContextC &factory)
+      : WidgetC(*new GladeWidgetBodyC(factory))
+    {}
+    //: Construct from an XMLFactory.
+
+    GladeWidgetC(const GladeWidgetBodyC *body)
+      : WidgetC(body)
+    {}
+    //: Body ptr constructor
+
   protected:
     GladeWidgetC(GladeWidgetBodyC &body)
       : WidgetC(body)

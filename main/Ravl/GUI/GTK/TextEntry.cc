@@ -13,6 +13,7 @@
 #include "Ravl/GUI/TextEntry.hh"
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/GUI/ReadBack.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include <gtk/gtk.h>
 
 #define DODEBUG 0
@@ -39,6 +40,21 @@ namespace RavlGUIN {
       isEditable(editable)
   {}
   
+  //: XML factory constructor
+
+  TextEntryBodyC::TextEntryBodyC(const XMLFactoryContextC &factory)
+  : text(factory.AttributeString("value","")),
+    maxLen(factory.AttributeInt("maxLen",-1)),
+    sigAllChanges(factory.AttributeBool("signalAllChanges",false)),
+    bPasswdMode(factory.AttributeBool("passwordMode",false)),
+    activate(text),
+    xsize(factory.AttributeInt("xDim",-1)),
+    ysize(factory.AttributeInt("yDim",-1)),
+    isEditable(factory.AttributeBool("editable",true))
+  {
+    factory.UseComponent("sigActivate",activate,true,typeid(Signal1C<StringC>));
+  }
+
   //: Got a changed signal.
   
   bool TextEntryBodyC::SigChanged() {
@@ -203,6 +219,7 @@ namespace RavlGUIN {
     return true ; 
   }
 
+  static XMLFactoryRegisterHandleConvertC<TextEntryC,WidgetC> g_registerXMLFactoryTextEntry("RavlGUIN::TextEntryC");
 
 
 }
