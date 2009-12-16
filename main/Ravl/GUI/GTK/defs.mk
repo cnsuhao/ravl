@@ -62,7 +62,7 @@ EXAMPLES = exButton.cc exMenu.cc exCList.cc exList.cc \
 
 PLIB = RavlGUI
 
-USESLIBS = RavlCore RavlIO RavlOS GTK RavlThreads system
+USESLIBS = RavlCore RavlIO RavlOS GTK RavlThreads system RavlXMLFactory
 
 PROGLIBS = RavlImageIO RavlExtImgIO 
 
