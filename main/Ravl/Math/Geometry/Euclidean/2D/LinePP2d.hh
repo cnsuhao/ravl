@@ -98,10 +98,29 @@ namespace RavlN {
     }
     //: Return the direction of the line.
 
-    RealT Distance(const Point2dC pt) 
-    { return Vector2dC(this->Vector()).Cross(Vector2dC(pt-this->P1())); }
+    Vector2dC Normal() const
+    { return Vector2dC(point[1][1]-point[0][1],point[1][0]-point[0][0]); }
+    //: Returns the normal of the line.
+    
+    Vector2dC UnitNormal() const
+    { 
+      Vector2dC normal = Normal();
+      return normal / normal.Magnitude();
+    }
+    //: Returns the normal of the line normalized to have unit size.
+    
+    RealT SignedDistance(const Point2dC pt) const
+    { return Vector2dC(Vector()).Cross(Vector2dC(pt-P1()))/Length(); }
     //: Return signed distance of pt from this line
     
+    RealT Distance(const Point2dC pt) const
+    { return Abs(SignedDistance(pt)); }
+    //: Return signed distance of pt from this line
+    
+    Point2dC Projection(const Point2dC & Pt) const
+    { 
+      return Point(ParClosest(Pt));
+    }
   };
   
 }

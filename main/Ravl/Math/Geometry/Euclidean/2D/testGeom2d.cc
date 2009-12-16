@@ -48,6 +48,7 @@ int testAffine();
 int testHEMesh2d();
 int testProjective2d();
 int testLineProjective2d();
+int testLines2d();
 int testConic2d();
 int testEllipse2dA();
 int testEllipse2dB();
@@ -79,6 +80,7 @@ int main() {
   TEST(testHEMesh2d);
   TEST(testProjective2d);
   TEST(testLineProjective2d);
+  TEST(testLines2d);
   TEST(testConic2d);
   TEST(testEllipse2dA);
   TEST(testEllipse2dB);
@@ -502,6 +504,39 @@ int testLineProjective2d() {
       || (outPPLine.Distance(proj*p2) > 0.001)) return __LINE__;  
   return 0;
 }
+
+int testLines2d() {
+  cerr << "testLinePP2d Called. \n";
+  Point2dC p1(0,0);
+  Point2dC p2(2,0);
+  Point2dC p3(6,3);
+  {
+    LineABC2dC l[4];
+    l[0] = LineABC2dC(p2,p1);  // Note incorrect arg ordering
+    l[1] = LineABC2dC(Vector2dC(0,1),p2);
+    l[2] = LineABC2dC(p1, Vector2dC(1,0));
+    l[3] = LineABC2dC(0,1,0);
+    for (int i=0; i<4; ++i) {
+      cout << "Line " << i << endl;
+      if (Vector2dC(l[i].UnitNormal()-Vector2dC(0,1)).Modulus() > 0.001) return __LINE__;  
+      if (Abs(l[i].SignedDistance(p3)-3) > 0.001) return __LINE__; 
+      if (Vector2dC(l[i].Projection(p3)-Point2dC(6,0)).Modulus() > 0.001) return __LINE__;  
+    }
+  }
+  {
+    LinePP2dC l[2];
+    l[0] =  LinePP2dC(p1,p2);
+    l[1] =  LinePP2dC(p1, Vector2dC(1,0));
+    for (int i=0; i<2; ++i) {
+      cout << "Line " << i << endl;
+      if (Vector2dC(l[i].UnitNormal()-Vector2dC(0,1)).Modulus() > 0.001) return __LINE__;  
+      if (Abs(l[i].SignedDistance(p3)-3) > 0.001) return __LINE__; 
+      if (Vector2dC(l[i].Projection(p3)-Point2dC(6,0)).Modulus() > 0.001) return __LINE__;  
+    }
+  }
+  return 0;
+}
+
 
 int testConic2d() {
   cerr << "testConic2d() Called. \n";
