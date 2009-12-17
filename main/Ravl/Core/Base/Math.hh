@@ -81,7 +81,7 @@ namespace RavlN {
   inline IntT Floor(RealT x) { 
     int y = static_cast<IntT>(x);
     if(x >=0) return y;
-    return y + (RAVL_EXPECT((static_cast<double>(y) == x),0) ? 0 : -1);
+    return (RAVL_EXPECT((static_cast<double>(y) != x),1) ? --y : y);
   }
   //: Returns the greatest integral  value  less  than  or equal  to  'x'.
   // Note this is MUCH faster than using libm's floor()

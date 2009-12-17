@@ -250,6 +250,9 @@ int testMisc() {
   if(Floor(0.3) != 0) return __LINE__;
   if(Floor(0.7) != 0) return __LINE__;
   if(Floor(1.2) != 1) return __LINE__;
+  if(Floor(1.0) != 1) return __LINE__;
+  if(Floor(-1.2) != -2) return __LINE__;
+  if(Floor(-1.0) != -1) return __LINE__;
 
   UIntC x = 4;
   UIntC y = 5;
