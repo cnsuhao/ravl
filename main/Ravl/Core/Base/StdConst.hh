@@ -187,6 +187,17 @@ namespace RavlConstN {
   const double nanReal = (double) nanFloat;
   //: Real not a number.
   
+  //! userlevel=Develop
+  const union u_inf_t { int i ; float f; } u_inf = {0x7f800000};
+  // internal infinity.
+  
+  //! userlevel=Normal
+  const float infFloat = (float)(u_inf.f);
+  //: Floating point infinity.
+  
+  const double infReal = (double) infFloat;
+  //: Real infinity.
+  
 #else
   //:------------------------------
   // Currently valid implementation
