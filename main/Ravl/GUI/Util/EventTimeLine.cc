@@ -351,12 +351,6 @@ namespace RavlGUIN {
   bool EventTimeLineBodyC::GUIDraw() {
     ONDEBUG(cerr << "EventTimeLineBodyC::GUIDraw(). Range=" << displayRange << " Events=" << events.Size() << "\n");
 
-    cerr << "display area " << displayArea
-         << "\ndisplay range" << displayRange
-         << "\nlocal segment" << m_localSegment
-      << "\n at marker" << atMarker << endl;
-
-
     if(displayArea.Cols() < 1 || displayArea.Rows() < 1)
       return true; // No display area.
     
@@ -402,8 +396,6 @@ namespace RavlGUIN {
       }
       
       markRange.Range2().ClipBy(arrowBox.Range2());
-      cerr << "\n markerGc range = " << markRange << "******&&&&&&&&&&********** \n" ;
-
       GUIDrawRectangle(markerGc,markRange,true);
     }
 
