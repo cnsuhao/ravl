@@ -82,7 +82,7 @@ namespace RavlN {
       : rows(minRow, maxRow), 
 	cols(minCol,maxCol)
     {}
-    //: Create rectangle from indvidual values.
+    //: Create rectangle from individual values.
     
   //:-----------------
   //: Information about rectangle (including lvalue methods)

@@ -133,7 +133,7 @@ namespace RavlN {
   };
 
   //! userlevel=Develop
-  //: Stored refrence to an object.
+  //: Stored reference to an object.
   
   class StoredPointerC {
   public:
@@ -424,14 +424,14 @@ namespace RavlN {
     static IOPtrActionHandleC<DataT> action;
     return IOPtrC((void *) &ptr,action); 
   }
-  //: Handle a refrence counted object.
+  //: Handle a reference counted object.
 
   template<class DataT>
   inline IOPtrC ObjIO(const DataT &ptr) { 
     static IOPtrActionHandleC<DataT> action;
     return IOPtrC((void *) &ptr,action); 
   }
-  //: Handle a refrence counted object.
+  //: Handle a reference counted object.
   
   BinOStreamC &operator<<(BinOStreamC &strm,IOPtrC obj);
   //: Save managed pointer to a binary stream.
