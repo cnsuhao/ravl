@@ -17,7 +17,7 @@ namespace RavlN
 using namespace RavlN;
 
 //---------------------------------------------------------------------------
-// Creates empty classifier, which returns 0 as the value of discriminant function
+// Creates empty classifier, which returns 0 as the value of descriminant function
 SvmClassifierBodyC::SvmClassifierBodyC()
 {
   lambdas = NULL;
