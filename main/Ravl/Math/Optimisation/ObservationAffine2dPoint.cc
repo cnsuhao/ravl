@@ -40,7 +40,7 @@ namespace RavlN {
   //: Evaluate an observation for a single point
   
   VectorC ObservationAffine2dPointBodyC::EvaluateFunctionH(const StateVectorC &stateVec) {
-    // we know that the state vector actually represents a 2D affine homography
+    // we know that the state vector actually represents a 2D affine projection
     const StateVectorAffine2dC sv(stateVec);
     RavlAssert(sv.IsValid());
     Vector2dC p = sv.GetAffine() * z1;
@@ -50,7 +50,7 @@ namespace RavlN {
   //: Evaluate the Jacobian of an observation for a single point
   
   MatrixC ObservationAffine2dPointBodyC::EvaluateJacobianHx(const StateVectorC &stateVec) {
-    // we know that the state vector actually represents a 2D affine homography
+    // we know that the state vector actually represents a 2D affine projection
     const StateVectorAffine2dC sv(stateVec);
     RavlAssert(sv.IsValid());
     Vector2dC p = sv.GetAffine() * z1;

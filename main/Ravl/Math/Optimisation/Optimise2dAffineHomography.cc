@@ -17,7 +17,7 @@
 
 namespace RavlN {
 
-  // Shrink-wrap homography fitting function
+  // Shrink-wrap affine projection fitting function
   const StateVectorAffine2dC
   Optimise2dAffineHomography ( DListC<Point2dPairObsC> &matchList,
 			       RealT varScale,
@@ -40,7 +40,7 @@ namespace RavlN {
     FitAffine2dPointsC fitter;
     EvaluateNumInliersC evaluator(ransacChi2Thres, compatChi2Thres);
   
-    // use RANSAC to fit affine homography
+    // use RANSAC to fit affine projection
     RansacC ransac(obsManager, fitter, evaluator);
 
     // select and evaluate the given number of samples

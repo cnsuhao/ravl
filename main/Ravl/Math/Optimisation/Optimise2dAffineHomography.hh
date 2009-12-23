@@ -21,7 +21,7 @@
 
 namespace RavlN {
 
-  //: Shrink-wrap affine homography fitting function
+  //: Shrink-wrap affine projection fitting function
   // <ul>
   //  <li> matchList: A list of 2D point pair matches on two planes.
   //  <li> varScale: The ratio of outlier and inlier error standard deviations.

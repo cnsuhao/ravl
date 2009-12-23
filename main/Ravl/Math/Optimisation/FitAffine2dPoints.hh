@@ -20,21 +20,21 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Body class for fitting a 2D affine homography to a sample of 2D points
+  //: Body class for fitting a 2D affine projection to a sample of 2D points
   class FitAffine2dPointsBodyC
     : public FitToSampleBodyC
   {
   public:
     FitAffine2dPointsBodyC();
-    //: Constructor for a class to fit a 2D affine homography to (x,y) points
+    //: Constructor for a class to fit a 2D affine projection to (x,y) points
     
     virtual StateVectorC FitModel(DListC<ObservationC> sample);
-    //: Fit 2D affine homography to sample of 2D point observations
+    //: Fit 2D affine projection to sample of 2D point observations
   };
 
   //! userlevel=Normal
   //! autoLink=on
-  //: This class fits a 2D affine homography to a sample of 2D points
+  //: This class fits a 2D affine projection to a sample of 2D points
   class FitAffine2dPointsC
     : public FitToSampleC
   {
@@ -42,7 +42,7 @@ namespace RavlN {
     FitAffine2dPointsC()
       : FitToSampleC(*new FitAffine2dPointsBodyC())
     {}
-    //: Constructor for a class to fit a 2D affine homography to point pairs.
+    //: Constructor for a class to fit a 2D affine projection to point pairs.
 
     FitAffine2dPointsC(const FitToSampleC &fitter)
       : FitToSampleC(dynamic_cast<const FitAffine2dPointsBodyC *>(BodyPtr(fitter)))

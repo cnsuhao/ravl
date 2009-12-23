@@ -19,7 +19,7 @@
 
 namespace RavlN {
     //! userlevel=Develop
-  //: 2D homography fitting 2D point observation body.
+  //: 2D affine projection fitting 2D point observation body.
   
   class ObservationAffine2dPointBodyC
     : public ObservationExplicitBodyC
@@ -55,7 +55,7 @@ namespace RavlN {
 
   //! userlevel=Normal
   //! autoLink=on
-  //: 2D affine homography fitting 2D point observation class
+  //: 2D affine projection fitting 2D point observation class
   
   class ObservationAffine2dPointC
     : public ObservationExplicitC

@@ -41,7 +41,7 @@ namespace RavlN {
     FitQuadraticPointsC fitter;
     EvaluateNumInliersC evaluator(ransacChi2Thres, compatChi2Thres);
   
-    // use RANSAC to fit affine homography
+    // use RANSAC to fit affine projection
     RansacC ransac(obsManager, fitter, evaluator);
 
     // select and evaluate the given number of samples
