@@ -75,14 +75,14 @@ namespace RavlN {
     return true;
   }
   
-  //: Disonnect to an end point.
+  //: Disconnect to an end point.
   
   bool NetOSPortServerBaseBodyC::Disconnect() {
     ONDEBUG(cerr << "NetOSPortServerBaseBodyC::Disconnect(), Called. \n");
     return NetAttributeCtrlServerBodyC::Disconnect();
   }
   
-  //: Initalise stream.
+  //: Initialise stream.
   
   bool NetOSPortServerBaseBodyC::Init() {
     ONDEBUG(cerr << "NetOSPortServerBaseBodyC::Init(), Called. \n");
@@ -104,7 +104,7 @@ namespace RavlN {
     Int64T size = ((UIntT) -1);
     if(seekCtrl.IsValid()) {
       lat = seekCtrl.Tell64();
-      if (lat != static_cast<UIntT>(-1) != streamPosUnknown)
+      if (lat != streamPosUnknown)
         at = lat;
       start = seekCtrl.Start64();
       size = seekCtrl.Size64();
