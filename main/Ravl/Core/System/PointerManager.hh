@@ -352,7 +352,7 @@ namespace RavlN {
   };
 
   //! userlevel=Develop
-  //: Actions from refrence counted handles
+  //: Actions from reference counted handles
   
   template<class DataT>
   class IOPtrActionHandleC 
