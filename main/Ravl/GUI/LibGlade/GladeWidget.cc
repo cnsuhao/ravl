@@ -63,7 +63,7 @@ namespace RavlGUIN {
     }
 
     for(RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children());it;it++) {
-      if(it->Name() == "GladeXML")
+      if(it->Name() == "GladeXML" || it->AttributeString("typename","").IsEmpty())
         continue;
       WidgetC widget;
       if(!factory.UseComponent(it->Name(),widget)) {
