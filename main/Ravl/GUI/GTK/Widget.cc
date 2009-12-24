@@ -25,7 +25,7 @@
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/GUI/TreeModel.hh"
 #include "Ravl/GUI/ReadBack.hh"
-#include "Ravl/XMLFactory.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include "WidgetDNDInfo.hh"
 #include <gtk/gtk.h>
 #include <gdk/gdktypes.h>
@@ -428,7 +428,7 @@ namespace RavlGUIN {
     //RavlAssert(IsValidObject());
 
     // Disconnect signals
-    for(HashIterC<const char *,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next()) {
+    for(HashIterC<StringC,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next()) {
       if(widget != 0 && GTK_IS_WIDGET(widget) && it.Data().Data2() >= 0) // Incase it was destroyed within GTK.
         gtk_signal_disconnect (GTK_OBJECT(widget), it.Data().Data2() );
       it.Data().Data1().DisconnectAll();
@@ -679,7 +679,7 @@ namespace RavlGUIN {
       GTK_WIDGET_SET_FLAGS(widget,GTK_CAN_FOCUS);
     destroySigId = gtk_signal_connect (GTK_OBJECT (widget), "destroy",(GtkSignalFunc) gtkDestroy, this);
     if (!signals.IsEmpty()) {
-      for(HashIterC<const char *,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next())
+      for(HashIterC<StringC,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next())
         it.Data().Data2() = ConnectUp(it.Key(),it.Data().Data1());
     }
     if(tooltip != 0)
@@ -794,7 +794,7 @@ namespace RavlGUIN {
 
   void WidgetBodyC::Destroy() {
     ONDEBUG(cerr << "WidgetBodyC::Destroy()\n");
-    for(HashIterC<const char *,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next()) {
+    for(HashIterC<StringC,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next()) {
       if(widget != 0 && GTK_IS_WIDGET(widget) && it.Data().Data2() >= 0) // Incase it was destroyed within GTK.
         gtk_signal_disconnect (GTK_OBJECT(widget), it.Data().Data2() );
       it.Data().Data1().DisconnectAll();
@@ -1131,6 +1131,7 @@ namespace RavlGUIN {
   }
   //: Dummy function to keep templates happy.
 
+  static XMLFactoryRegisterHandleC<WidgetC> g_registerXMLFactoryWidget("RavlGUIN::WidgetC");
 
 }
 

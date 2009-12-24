@@ -71,7 +71,7 @@ namespace RavlGUIN {
     // reg == true then register widget for service events.
 
     WidgetBodyC(const XMLFactoryContextC &factory);
-    //: Factory construtor
+    //: Factory constructor
 
     virtual ~WidgetBodyC();
     //: Destructor.
@@ -251,7 +251,7 @@ namespace RavlGUIN {
     IntT ConnectUp(const char *nm,Signal0C &sig);
     //: Connect up a signal.
 
-    HashC<const char *,Tuple2C<Signal0C,IntT> > signals;
+    HashC<StringC,Tuple2C<Signal0C,IntT> > signals;
     //: Table of created signals.
 
     GtkWidget *widget;
@@ -260,7 +260,7 @@ namespace RavlGUIN {
     GtkStateType reqState; // requested state.
     IntT  eventMask; // Event mask for widget.
 
-    const char *tooltip;
+    StringC tooltip;
 
     bool gotRef; // Do we have a reference to the object.
 
@@ -335,6 +335,12 @@ namespace RavlGUIN {
       : RCHandleC<WidgetBodyC>(bod)
     {}
     //: Body Constructor.
+
+    WidgetC(const XMLFactoryContextC &factory)
+      : RCHandleC<WidgetBodyC>(*new WidgetBodyC(factory))
+    {}
+    //: Factory constructor
+
   protected:
     WidgetC(WidgetBodyC &bod)
       : RCHandleC<WidgetBodyC>(bod)
