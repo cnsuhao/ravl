@@ -59,7 +59,7 @@ namespace RavlImageN {
     //: Generate raw parameters.
     //  The raw parameters are the parameters representing the appearance before applying PCA. They consists of the pose parameters, which describe the pose of the model instance in the image, the grey-level scaling and offset, which define the normalisation transformation for pixel intensities, the shape parameters (coordinate of the control points in normalised frame) and the texture parameters (normalised pixel grey-levels).
 
-    ImageC<ByteT> WarpToMaskShape(const AAMAppearanceC &inst) const;
+    virtual ImageC<ByteT> WarpToMaskShape(const AAMAppearanceC &inst) const;
     //: Warp appearance to the mean shape
     //  The input appearance 'inst' is warped such that its control points are located at the mean positions in the returned image.
 
