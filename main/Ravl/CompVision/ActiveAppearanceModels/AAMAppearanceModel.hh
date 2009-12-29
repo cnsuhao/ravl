@@ -63,6 +63,13 @@ namespace RavlImageN {
     //: Warp appearance to the mean shape
     //  The input appearance 'inst' is warped such that its control points are located at the mean positions in the returned image.
 
+    virtual ImageC<RealT> WarpToMaskShape(const ImageC<RealT> &image, const SArray1dC<Point2dC> &points) const;
+
+    virtual ImageC<ByteT> WarpFromMaskShape(const RealRange2dC &range, const ImageC<RealT> &image, const SArray1dC<Point2dC> &points) const;
+
+    virtual SArray1dC<Point2dC> MeanShapePoints() const
+    { return shape.MeanPoints(); }
+
     virtual bool Design(const DListC<StringC> &fileList,const StringC &dir,const StringC &mirrorFile,
                         const Index2dC &maskSize,
                         const RealT varS = 0.95, RealT varT = 0.95, RealT varC = 0.95,

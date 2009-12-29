@@ -210,18 +210,45 @@ namespace RavlImageN {
   //: Warp appearance to the mean shape
   //  The input appearance 'inst' is warped such that its control points are located at the mean positions in the returned image.
   ImageC<ByteT> AAMAppearanceModelBodyC::WarpToMaskShape(const AAMAppearanceC &inst) const {
-#if OMNIAAM_USE_THINPLATEWARP
     ImageC<ByteT> ret(maskSize);
+#if OMNIAAM_USE_THINPLATEWARP
     WarpThinPlateSplineC<ByteT> warp(warpSigma);
     warp.Apply(inst.Image(),Array1dC<Point2dC>(inst.Points()),maskPoints,ret);
 #else
-    ImageC<ByteT> ret(maskSize);
     WarpMesh2dC<ByteT> warp2(warp);
     warp2.Apply(inst.Image(),inst.Points(),ret);
 #endif
     return ret;
   }
 
+  ImageC<RealT> AAMAppearanceModelBodyC::WarpToMaskShape(const ImageC<RealT> &image, const SArray1dC<Point2dC> &points) const {
+    ImageC<RealT> nimg(maskSize);
+    ONDEBUG(nimg.Fill(0));
+#if OMNIAAM_USE_THINPLATEWARP
+    WarpThinPlateSplineC<RealT,RealT> warp(warpSigma,true);
+    warp.Apply(image,Array1dC<Point2dC>(points),Array1dC<Point2dC>(maskPoints),nimg);
+#else
+    WarpMesh2dC<RealT,RealT> rwarp(warp);
+    rwarp.Apply(image,points,nimg);
+#endif
+    return nimg;
+  }
+
+  ImageC<ByteT> AAMAppearanceModelBodyC::WarpFromMaskShape(const RealRange2dC &range, const ImageC<RealT> &image, const SArray1dC<Point2dC> &points) const {
+    ImageC<RealT> nimg(range.IndexRange());
+#if OMNIAAM_USE_THINPLATEWARP
+    WarpThinPlateSplineC<RealT,RealT> warp(warpSigma);
+    warp.Apply(image,Array1dC<Point2dC>(maskPoints),Array1dC<Point2dC>(points),nimg);
+#else
+    nimg.Fill(0);
+    WarpMesh2dC<RealT,RealT> rwarp(warp);
+    rwarp.InvApply(image,points,nimg);
+#endif
+    ImageC<ByteT> nimgB(range.IndexRange());
+    for(Array2dIter2C<RealT,ByteT> it(nimg,nimgB);it;it++)
+      it.Data2() = (ByteT) Min(it.Data1(),255.0);
+    return nimgB;
+  }
 
   //: Design an appearance model given some data.
   //!param: filelist    - list of appearance file names.
@@ -287,7 +314,7 @@ namespace RavlImageN {
     SysLog(SYSLOG_DEBUG) << "AAMAppearanceModelBodyC::Design(), Generating mask.";
 
     // Use mean positions for mask.
-    maskPoints = shape.MeanPoints();
+    maskPoints = MeanShapePoints();
     if(maskPoints.Size() == 0)
       return false;
 
@@ -487,18 +514,7 @@ namespace RavlImageN {
 
     // Warp it.
 
-    ImageC<RealT> nimg(rng.IndexRange());
-#if OMNIAAM_USE_THINPLATEWARP
-    WarpThinPlateSplineC<RealT,RealT> warp(warpSigma);
-    warp.Apply(image,Array1dC<Point2dC>(maskPoints),Array1dC<Point2dC>(pnts),nimg);
-#else
-    nimg.Fill(0);
-    WarpMesh2dC<RealT,RealT> rwarp(warp);
-    rwarp.InvApply(image,pnts,nimg);
-#endif
-    ImageC<ByteT> nimgB(rng.IndexRange());
-    for(Array2dIter2C<RealT,ByteT> it(nimg,nimgB);it;it++)
-      it.Data2() = (ByteT) Min(it.Data1(),255.0);
+    ImageC<ByteT> nimgB = WarpFromMaskShape(rng, image, pnts);
 
     return  AAMAppearanceC(pnts,nimgB);
   }
@@ -626,15 +642,7 @@ namespace RavlImageN {
 
     // Warp original image into original mask position.
 
-    ImageC<RealT> nimg(maskSize);
-    ONDEBUG(nimg.Fill(0));
-#if OMNIAAM_USE_THINPLATEWARP
-    WarpThinPlateSplineC<RealT,RealT> warp(warpSigma,true);
-    warp.Apply(img,Array1dC<Point2dC>(pnts),Array1dC<Point2dC>(maskPoints),nimg);
-#else
-    WarpMesh2dC<RealT,RealT> rwarp(warp);
-    rwarp.Apply(img,pnts,nimg);
-#endif
+    ImageC<RealT> nimg = WarpToMaskShape(img, pnts);
 
     // Generate difference vector.
 
