@@ -329,6 +329,7 @@ namespace RavlImageN {
 
     for(Array1dIterC<Point2dC> it(maskPoints);it;it++)
       *it = (*it - offset) * scale;
+    shape.TransformMeanPoints(offset, scale);
 
     // Find bounding rectangle of control points
     pixelSize = Vector2dC(rng.Rows()/newMaskSize.Row(),rng.Cols()/newMaskSize.Col());

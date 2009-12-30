@@ -236,6 +236,11 @@ namespace RavlImageN {
     return true;
   }
 
+  void AAMShapeModelBodyC::TransformMeanPoints(const Point2dC &offset, const Vector2dC &scale) {
+    for(SArray1dIterC<Point2dC> it(meanPoints); it ;it++)
+      *it = (*it - offset) * scale;
+  }
+
   //: Synthesis a control point set from a parameter vector.
   SArray1dC<Point2dC> AAMShapeModelBodyC::Synthesize(const VectorC &parm) const {
     SArray1dC<Point2dC> ret;
