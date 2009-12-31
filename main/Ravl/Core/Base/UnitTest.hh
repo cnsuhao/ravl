@@ -49,6 +49,62 @@ namespace RavlN {
 
     return true;
   }
+
+  template<typename DataT>
+  bool TestEquals(const DataT &expected, const DataT &actual, const char* file, int line) {
+    if (!(expected == actual)) {
+      std::cerr << file << ":" << line << " Expected value (" << expected << ") but instead got (" << actual << ")\n";
+      return false;
+    }
+    return true;
+  }
+
+  template<typename DataT>
+  bool TestNotEquals(const DataT &expected, const DataT &actual, const char* file, int line) {
+    if (expected == actual) {
+      std::cerr << file << ":" << line << " Value should not equal (" << expected << ")\n";
+      return false;
+    }
+    return true;
+  }
+
+  template<typename DataT>
+  bool TestTrue(const DataT &value, const char* file, int line) {
+    if (!value) {
+      std::cerr << file << ":" << line << " Expression should be true\n";
+      return false;
+    }
+    return true;
+  }
+
+  template<typename DataT>
+  bool TestFalse(const DataT &value, const char* file, int line) {
+    if (value) {
+      std::cerr << file << ":" << line << " Expression should be false\n";
+      return false;
+    }
+    return true;
+  }
 }
+
+#define RAVL_TEST_EQUALS(x,y) { \
+  if (!RavlN::TestEquals((x), (y), __FILE__, __LINE__)) \
+    return __LINE__; \
+  }
+
+#define RAVL_TEST_NOT_EQUALS(x,y) { \
+  if (!RavlN::TestNotEquals((x), (y), __FILE__, __LINE__)) \
+    return __LINE__; \
+  }
+
+#define RAVL_TEST_TRUE(x) { \
+  if (!RavlN::TestTrue((x), __FILE__, __LINE__)) \
+    return __LINE__; \
+  }
+
+#define RAVL_TEST_FALSE(x) { \
+  if (!RavlN::TestTrue((x), __FILE__, __LINE__)) \
+    return __LINE__; \
+  }
 
 #endif
