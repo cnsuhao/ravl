@@ -103,7 +103,7 @@ namespace RavlN {
   }
 
 #define RAVL_TEST_FALSE(x) { \
-  if (!RavlN::TestTrue((x), __FILE__, __LINE__)) \
+  if (!RavlN::TestFalse((x), __FILE__, __LINE__)) \
     return __LINE__; \
   }
 
