@@ -85,6 +85,16 @@ namespace RavlN {
     }
     return true;
   }
+
+  template<typename DataT>
+  bool TestAlmostEquals(const DataT &expected, const DataT &actual, const DataT &tolerance, const char* file, int line) {
+    if (RavlN::Abs(expected - actual) > tolerance) {
+      std::cerr << file << ":" << line << " Actual value (" << actual << ") not within range (" << expected << " +- " << tolerance << ")\n";
+      return false;
+    }
+    return true;
+  }
+
 }
 
 #define RAVL_TEST_EQUALS(x,y) { \
@@ -104,6 +114,11 @@ namespace RavlN {
 
 #define RAVL_TEST_FALSE(x) { \
   if (!RavlN::TestFalse((x), __FILE__, __LINE__)) \
+    return __LINE__; \
+  }
+
+#define RAVL_TEST_ALMOST_EQUALS(x,y,t) { \
+  if (!RavlN::TestAlmostEquals((x), (y), (t), __FILE__, __LINE__)) \
     return __LINE__; \
   }
 
