@@ -393,7 +393,6 @@ namespace RavlGUIN {
     : widget(0),
       widgetId(0),
       eventMask(GDK_EXPOSURE_MASK),
-      tooltip(0),
       gotRef(false),
       dndInfo(0),
       destroySigId(-1),
@@ -682,7 +681,7 @@ namespace RavlGUIN {
       for(HashIterC<StringC,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next())
         it.Data().Data2() = ConnectUp(it.Key(),it.Data().Data1());
     }
-    if(tooltip != 0)
+    if(!tooltip.IsEmpty())
     {
       WidgetC me(*this);
       guiGlobalToolTips.GUIAddToolTip(me,tooltip);
