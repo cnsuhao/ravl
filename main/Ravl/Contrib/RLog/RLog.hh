@@ -38,6 +38,14 @@
   } \
 }
 
+#define rThrowBadConfigOnFailS(FUNC, ARGS) { \
+  if (!(FUNC)) { \
+    RavlN::StrOStreamC strm; \
+    strm << ARGS; \
+    rError("%s", strm.String().data()); \
+    throw RavlN::ExceptionBadConfigC(strm.String().data(), true); \
+  } \
+}
 
 namespace RavlN {
 
