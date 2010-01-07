@@ -174,6 +174,9 @@ namespace RavlN {
     return __LINE__; \
   } catch (const exc &ex) { \
     RAVL_TEST_EQUALS(expected, ex.Text()); \
+  } catch (...) { \
+    std::cerr << __FILE__ << ":" << __LINE__ << " Expression " << #expr << " threw unexpected exception " << std::endl; \
+    throw; \
   } \
 }
 
