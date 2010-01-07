@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2008, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -29,24 +29,33 @@
 #define rWarningS(ARGS) RLOG_STREAM(rWarning, ARGS)
 #define rErrorS(ARGS)   RLOG_STREAM(rError,   ARGS)
 
+#define rThrowOnFailS(FUNC, ARGS) { \
+  if (!(FUNC)) { \
+    RavlN::StrOStreamC strm; \
+    strm << ARGS; \
+    rError("%s", strm.String().data()); \
+    throw RavlN::ExceptionOperationFailedC(strm.String().data(), true); \
+  } \
+}
+
 
 namespace RavlN {
-  
+
   //! Initialise rlog to filename (filename can be stderr)
   bool RLogInit(int argc, char **argv, const char *filename, bool verbose);
-  
+
   //! Initialise rlog to filename (filename can be stderr)
   bool RLogInit(const StringC &filename, const StringC &verbose, const StringC &logLevel);
 
   //! Initialise rlog to standard out
   bool RLogInit(bool verbose = false);
-  
+
   //! Subscribe to a model.
   bool RLogSubscribe(const char *moduleName,const char *path = "",rlog::LogLevel level = rlog::Log_Undef);
-  
+
   //! Subscribe to a channel (_RLDebugChannel, _RLInfoChannel, _RLWarningChannel, _RLErrorChannel)
   bool RLogSubscribe(rlog::RLogChannel *Channel);
-  
+
   //! Subscribe according to log level
   bool RLogSubscribeL(const char *LogLevel);
 }
