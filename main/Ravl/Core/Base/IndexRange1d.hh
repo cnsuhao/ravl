@@ -33,23 +33,23 @@ namespace RavlN {
   class IndexRangeC {
   public:
     //:----------------------------------------------
-    // Constructors, copy, assigment, and destructor.
+    // Constructors, copy, assignment, and destructor.
     
     inline IndexRangeC(SizeT dim = 0)
       : minI(0),
-	maxI(dim-1)
+        maxI(dim-1)
     {}
     //: Creates the index range <0, dim-1>.
     
     inline IndexRangeC(IndexC dim)
       : minI(0),
-	maxI(dim-1)
+        maxI(dim-1)
     {}
     //: Creates the index range <0, dim-1>.
     
     inline IndexRangeC(IndexC minIndex, IndexC maxIndex)
       : minI(minIndex),
-	maxI(maxIndex)
+        maxI(maxIndex)
     {}
     //: Creates the index range <minIndex, maxIndex>.
     
@@ -172,7 +172,7 @@ namespace RavlN {
     // Returns a reference to this range. 
 
     inline const IndexRangeC & operator *= (IndexC i) ; 
-    //: Both minimum and maximum linits are divided by i 
+    //: Both minimum and maximum limits are multiplied by i
     // returns a reference to this range 
 
     inline const IndexRangeC & operator+=(IntT i)
@@ -309,9 +309,11 @@ inline const IndexRangeC & operator+=(Int64T i)
     }
     //: Modify this range to ensure index i is contained within it.
 
-    const IndexRangeC &Involve(const IndexRangeC &subRange) { 
-      Involve(subRange.Min());
-      Involve(subRange.Max());
+    const IndexRangeC &Involve(const IndexRangeC &subRange) {
+      if(subRange.Min() < minI)
+        minI = subRange.Min();
+      if(subRange.Max() > maxI)
+        maxI = subRange.Max();
       return *this;
     }
     //: Modify this range to ensure subRange is contained within it.
@@ -323,7 +325,7 @@ inline const IndexRangeC & operator+=(Int64T i)
     }
     //: Add subRange to this one.
     // minI += subRange.minI; minI += subRange.minI <br>
-    // returns a refrence to this range.
+    // returns a reference to this range.
     
     const IndexRangeC operator-=(const IndexRangeC &subRange) {
       minI -= subRange.minI;
@@ -332,7 +334,7 @@ inline const IndexRangeC & operator+=(Int64T i)
     }
     //: Subtract subRange from this one.
     // minI -= subRange.minI;  minI -= subRange.minI <br>
-    // returns a refrence to this range.
+    // returns a reference to this range.
     
     IndexRangeC operator+(const IndexRangeC &subRange) const 
     { return IndexRangeC(minI + subRange.minI,maxI + subRange.maxI); }
@@ -371,7 +373,7 @@ inline const IndexRangeC & operator+=(Int64T i)
   //: Returns true if the index 'i' is inside the index range 'r'.
   
   istream & operator>>(istream & s, IndexRangeC & r);
-  // Read information from the intput stream 's' and sets the index range
+  // Read information from the input stream 's' and sets the index range
   // according obtained data.
   
   ostream & operator<<(ostream & s, const IndexRangeC & r);
@@ -415,12 +417,12 @@ inline const IndexRangeC & operator+=(Int64T i)
     if (Min() < r.Min()) {
       Min() = r.Min();
       if(Max() < r.Min()) // Make sure there is some overlap.
-	Max() = r.Min()-1; // Make range zero size.
+        Max() = r.Min()-1; // Make range zero size.
     }
     if (Max() > r.Max()) {
       Max() = r.Max();
       if(Min() > r.Max()) // Make sure there is some overlap.
-	Min() = r.Max()+1; // To make range zero size.
+        Min() = r.Max()+1; // To make range zero size.
     }
     return *this;
   }
