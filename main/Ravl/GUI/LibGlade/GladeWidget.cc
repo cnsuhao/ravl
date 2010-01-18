@@ -157,7 +157,7 @@ namespace RavlGUIN {
     
     ConnectSignals();    
     
-    ONDEBUG(cerr << "GladeWidgetBodyC::Create(GtkWidget *), Done. Name=" << name << "\n");
+    ONDEBUG(cerr << "GladeWidgetBodyC::CommonCreate(GtkWidget *), Done. Name=" << name << "\n");
     return true;
   }
 

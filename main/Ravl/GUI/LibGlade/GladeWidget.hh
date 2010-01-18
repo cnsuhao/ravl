@@ -100,8 +100,8 @@ namespace RavlGUIN {
     //: Default constructor
     // Creates an invalid handle.
     
-    GladeWidgetC(const GladeXMLC &gladeXml,const StringC &widgetName,bool customWidget = true)
-      : WidgetC(*new GladeWidgetBodyC(gladeXml,widgetName,customWidget))
+    GladeWidgetC(const GladeXMLC &gladeXml,const StringC &widgetName,bool customWidget = true, const StringC &prefix = "")
+      : WidgetC(*new GladeWidgetBodyC(gladeXml,widgetName,customWidget, prefix))
     {}
     //: Constructor
     
