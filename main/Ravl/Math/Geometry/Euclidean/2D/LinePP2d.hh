@@ -49,7 +49,9 @@ namespace RavlN {
     
     bool ClipBy(const RealRange2dC &rng);
     //: Clip line by given rectangle.
-    // Returns false if no part of the line is in the rectangle.
+    // If no part of the line is in the rectangle:<ul>
+    // <li>line is <i>not</i> clipped</li>
+    // <li>method returns <code>false</code></li></ul>
     
     bool IsPointToRight(const Point2dC& pnt) const
     { return pnt.Area2(P1(),P2()) < 0; }
