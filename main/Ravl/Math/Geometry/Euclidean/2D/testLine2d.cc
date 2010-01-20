@@ -132,6 +132,8 @@ int testClip2d() {
   Point2dC pnt2(10,20);
   Point2dC pnt3(35,30);
   Point2dC pnt4(40,45);
+  Point2dC pnt5(5,30);
+  Point2dC pnt6(7.5,25);
 
   // This line shouldn't be clipped.
   LinePP2dC l1(pnt1,pnt2);
@@ -164,6 +166,13 @@ int testClip2d() {
   //cerr << " CP1=" << l5.P1() << " CP2=" << l5.P2() << "\n";
   if(!rng2.Contains(l5.P1())) return __LINE__;
   if(!rng2.Contains(l5.P2())) return __LINE__;
+
+  // Test for bug now corrected - should clip point 2
+  LinePP2dC l6(pnt2,pnt5);
+  if(!l6.ClipBy(rng)) return __LINE__;
+  //cerr << pnt6 << " " << l6.P2() << endl;
+  if((pnt6 - l6.P2()).SumOfSqr() > 0.00001) return __LINE__;
+
   return 0;
 }
 
