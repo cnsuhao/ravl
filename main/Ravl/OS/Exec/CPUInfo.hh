@@ -13,6 +13,7 @@
 //! userlevel=Normal
 //! date="16 September 2009"
 
+
 namespace RavlN {
 
   long int GetNumCores(void);

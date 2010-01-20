@@ -7,6 +7,7 @@
 //! lib=
 
 #include "Ravl/OS/CPUInfo.hh"
+#include "Ravl/Assert.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -14,8 +15,6 @@
 #else
   #define ONDEBUG(x)
 #endif
-
-namespace RavlN {
 
 #include <stdio.h>
 #if !RAVL_OS_WIN32
@@ -28,6 +27,8 @@ namespace RavlN {
 #include <sys/sysctl.h>
 #endif
 
+
+namespace RavlN {
 
   //: Get the number of cores
   long int GetNumCores(void)
