@@ -58,15 +58,15 @@ namespace RavlN {
       int oc = oc0 ? oc0 : oc1;
       if(oc & CTOP) {
 	np[0] = rng.TRow();
-	np[1] = P1()[1] + (P2()[1] - P1()[1]) * (rng.RCol() - P1()[0]) / (P2()[0] - P1()[0]);
+	np[1] = P1()[1] + (P2()[1] - P1()[1]) * (rng.TRow() - P1()[0]) / (P2()[0] - P1()[0]);
       } else if(oc & CBOTTOM) {
 	np[0] = rng.BRow();
-	np[1] = P1()[1] + (P2()[1] - P1()[1]) * (rng.LCol() - P1()[0]) / (P2()[0] - P1()[0]);
+	np[1] = P1()[1] + (P2()[1] - P1()[1]) * (rng.BRow() - P1()[0]) / (P2()[0] - P1()[0]);
       } else if(oc & CRIGHT) {
-	np[0] = P1()[0] + (P2()[0] - P1()[0]) * (rng.BRow() - P1()[1]) / (P2()[1] - P1()[1]);
+	np[0] = P1()[0] + (P2()[0] - P1()[0]) * (rng.RCol() - P1()[1]) / (P2()[1] - P1()[1]);
 	np[1] = rng.RCol();
       } else { // CLEFT
-	np[0] = P1()[0] + (P2()[0] - P1()[0]) * (rng.TRow() - P1()[1]) / (P2()[1] - P1()[1]);
+	np[0] = P1()[0] + (P2()[0] - P1()[0]) * (rng.LCol() - P1()[1]) / (P2()[1] - P1()[1]);
 	np[1] = rng.LCol();
       }
       if(oc == oc0) {
