@@ -24,9 +24,9 @@ namespace RavlImageN {
   template<class DataT>
   void DrawLine(Array2dC<DataT> &Dat,const DataT &Value,const LinePP2dC &Line) {
     LinePP2dC line = Line;
-    line.ClipBy(Dat.Frame());
-    for(Line2dIterC it(line.P1(),line.P2());it;it++)
-      Dat[*it] = Value;
+    if (line.ClipBy(Dat.Frame()))
+      for(Line2dIterC it(line.P1(),line.P2());it;it++)
+        Dat[*it] = Value;
     return ;
   }
   //: Draw a line in an image.
@@ -40,12 +40,13 @@ namespace RavlImageN {
   template<class DataT>
   void DrawLine(Array2dC<DataT> &Dat,const DataT &ValueFrom,const DataT &ValueTo,const LinePP2dC Line) {
     LinePP2dC line = Line;
-    line.ClipBy(Dat.Frame());
-    RealT length = line.Length();
-    // If both start and end are inside the image, all pixels in between are.
-    for(Line2dIterC it(line.P1(),line.P2());it;it++) {
-      RealT alpha = sqrt(static_cast<double>((it.Data() - Index2dC(line.P1())).SumOfSqr().V())) / length;
-      Dat[*it] = DataT((ValueFrom*(1-alpha)) + (ValueTo*alpha));
+    if (line.ClipBy(Dat.Frame())) {
+      RealT length = line.Length();
+      // If both start and end are inside the image, all pixels in between are.
+      for(Line2dIterC it(line.P1(),line.P2());it;it++) {
+        RealT alpha = sqrt(static_cast<double>((it.Data() - Index2dC(line.P1())).SumOfSqr().V())) / length;
+        Dat[*it] = DataT((ValueFrom*(1-alpha)) + (ValueTo*alpha));
+      }
     }
     return ;
   }

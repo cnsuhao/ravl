@@ -310,6 +310,10 @@ int TestDraw() {
   img.Fill(0);
   Index2dC from(10,10);
   Index2dC to(90,90);
+  Index2dC out1(200,20);
+  Index2dC out2(200,40);
+  DrawLine(img,(ByteT) 255,out1,out2);
+  for (Array2dIterC<ByteT>i(img); i; ++i) if (*i != 0) return __LINE__;
   DrawLine(img,(ByteT) 255,from,to);
   if(img[50][50] != 255) return __LINE__;
   if(img[from] != 255) return __LINE__;
