@@ -24,7 +24,8 @@ namespace RavlImageN {
   template<class DataT>
   void DrawLine(Array2dC<DataT> &Dat,const DataT &Value,const LinePP2dC &Line) {
     LinePP2dC line = Line;
-    if (line.ClipBy(Dat.Frame()))
+    RealRange2dC frame(Dat.Frame().TRow(),Dat.Frame().BRow(),Dat.Frame().LCol(),Dat.Frame().RCol());
+    if (line.ClipBy(frame))
       for(Line2dIterC it(line.P1(),line.P2());it;it++)
         Dat[*it] = Value;
     return ;
@@ -40,7 +41,8 @@ namespace RavlImageN {
   template<class DataT>
   void DrawLine(Array2dC<DataT> &Dat,const DataT &ValueFrom,const DataT &ValueTo,const LinePP2dC Line) {
     LinePP2dC line = Line;
-    if (line.ClipBy(Dat.Frame())) {
+    RealRange2dC frame(Dat.Frame().TRow(),Dat.Frame().BRow(),Dat.Frame().LCol(),Dat.Frame().RCol());
+    if (line.ClipBy(frame)) {
       RealT length = line.Length();
       // If both start and end are inside the image, all pixels in between are.
       for(Line2dIterC it(line.P1(),line.P2());it;it++) {
