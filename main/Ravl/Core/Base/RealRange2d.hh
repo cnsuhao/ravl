@@ -41,11 +41,13 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    RealRange2dC(const IndexRange2dC &rng)
+    explicit RealRange2dC(const IndexRange2dC &rng)
       : rows(rng.Range1()),
 	cols(rng.Range2())
     {}
     //: Construct from an IndexRange2dC.
+    // Note that the upper limits of the RealRange2dC object are incremented by 1
+    // to make the range consistent.
     
     RealRange2dC(const RealRangeC & rowRange,
 		 const RealRangeC & colRange);

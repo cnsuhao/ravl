@@ -42,11 +42,13 @@ namespace RavlN {
     {}
     //: Creates the index range <0, dim-1>.
     
-    inline RealRangeC(const IndexRangeC &rng)
+    explicit inline RealRangeC(const IndexRangeC &rng)
       : minV(rng.Min()),
 	maxV(rng.Max()+1)
     {}
     //: Create real range from an IndexRangeC.
+    // Note that the upper limit of the RealRangeC object is incremented by 1
+    // to make the range consistent.
     
     inline RealRangeC(RealT minReal, RealT maxReal)
       : minV(minReal),
