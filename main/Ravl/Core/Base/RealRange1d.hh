@@ -44,7 +44,7 @@ namespace RavlN {
     
     inline RealRangeC(const IndexRangeC &rng)
       : minV(rng.Min()),
-	maxV(rng.Max())
+	maxV(rng.Max()+1)
     {}
     //: Create real range from an IndexRangeC.
     
