@@ -11,6 +11,7 @@
 
 #include "Ravl/GUI/EventTimeLine.hh"
 #include "Ravl/GUI/Manager.hh"
+#include "EventTimeLine.hh"
 #include  <gdk/gdk.h>
 
 #define DODEBUG 0
@@ -371,13 +372,21 @@ namespace RavlGUIN {
     // How much time do the arrow obscure?
     RealT arrowTime = m_arrowWidth * displayRange.Size();
     IndexRange2dC arrowBox(vertRange, displayArea.Range2().Shrink(arrowWidth));
+    const RealT minLimit = displayRange.Min() + arrowTime;
+    const RealT maxLimit = displayRange.Max() - arrowTime;
 
 
     // draw active segments
     for (DLIterC<RealRangeC> iter(m_activeSegments) ; iter.IsElm() ; iter.Next())
     {
-      IndexRangeC rng2((iter->Min() - displayRange.Min()) * scale,
-                       (iter->Max() - displayRange.Min()) * scale);
+      // skip any out of range.
+      if ((iter->Max()<minLimit) || (iter->Min()>maxLimit))
+        continue;
+
+      RealRangeC clipped(iter.Data());
+      clipped.ClipBy(displayRange);
+      IndexRangeC rng2((clipped.Min() - displayRange.Min()) * scale,
+                       (clipped.Max() - displayRange.Min()) * scale);
       IndexRangeC rng1 = displayArea.Range1();
       IndexRange2dC box(rng1, rng2);
       box.Range2().ClipBy(arrowBox.Range2());
@@ -387,24 +396,26 @@ namespace RavlGUIN {
 
 
     if(markerGc != 0) {
+      IndexRangeC horizRange ((atMarker - displayRange.Min()) * scale,
+                                          ((atMarker+1) - displayRange.Min()) * scale);
       IndexRange2dC markRange(displayArea.Range1(),
-                              IndexRangeC((atMarker - displayRange.Min()) * scale,
-                                          ((atMarker+1) - displayRange.Min()) * scale));
-      
+                              horizRange);
       if(markRange.Range2().Size() < 3) {// Make tiny bars are big enough to see.
         markRange.Range2().Expand((3 - markRange.Range2().Size())/2);
       }
-      
-      markRange.Range2().ClipBy(arrowBox.Range2());
+      //markRange.Range2().ClipBy(arrowBox.Range2());
       GUIDrawRectangle(markerGc,markRange,true);
     }
 
 
 
     // Draw segment.
-    if(segmentGc != 0 && m_localSegment.Size() > 0 && m_localSegment.IsOverlapping(displayRange)) {
-      RealRangeC dispSegment((m_localSegment.Min() - displayRange.Min()) * scale,
-                             (m_localSegment.Max() - displayRange.Min()) * scale);
+//    if(segmentGc != 0 && m_localSegment.Size() > 0 && m_localSegment.IsOverlapping(displayRange)) {
+    RealRangeC clippedLocalSegment(m_localSegment);
+    clippedLocalSegment.ClipBy(displayRange);
+    if(segmentGc != 0 && clippedLocalSegment.Size() > 0 && clippedLocalSegment.IsOverlapping(displayRange)) {
+      RealRangeC dispSegment((clippedLocalSegment.Min() - displayRange.Min()) * scale,
+                             (clippedLocalSegment.Max() - displayRange.Min()) * scale);
       
       if(dispSegment.Size() == 0) // Make tiny bars at least 1 pixel wide.
         dispSegment.Max()++;
@@ -428,18 +439,22 @@ namespace RavlGUIN {
     GUIDrawLine(GUIDrawGCBlack(), Index2dC(midV, displayArea.Range2().Max() - arrowBorder), Index2dC(vertRange.Max(), maxCol + arrowBorder));
     GUIDrawLine(GUIDrawGCBlack(), Index2dC(vertRange.Min(), maxCol + arrowBorder),          Index2dC(vertRange.Max(), maxCol + arrowBorder));
     
+ 
     
-    // Skip though stuff before.
-    // FIXME: Could cache?
-    DLIterC< Tuple2C<IntT, RealRangeC> > it(events);
-    const RealT maxLimit = displayRange.Min() + arrowTime;
-    for(;it && it->Data2().Max() < maxLimit;it++) ;
-    
-    // Draw until end of displayed time
-    const RealT minLimit = displayRange.Max() - arrowTime;
-    for( ; it && it->Data2().Min() <= minLimit; it++) {
-      IndexRangeC rng2((it->Data2().Min() - displayRange.Min()) * scale,
-                       (it->Data2().Max() - displayRange.Min()) * scale);
+    // Draw segment withing the displayed time
+    for( DLIterC< Tuple2C<IntT, RealRangeC> > it(events); it ; it++)
+    {
+      // skip segments that start after our max, or end before our min.
+      if ((it->Data2().Max() < minLimit) || (it->Data2().Min() > maxLimit))
+        continue;
+
+      // Truncate the clip to the display range.
+      RealRangeC clipped(it->Data2());
+      clipped.ClipBy(displayRange);
+
+
+      IndexRangeC rng2((clipped.Min() - displayRange.Min()) * scale,
+                       (clipped.Max() - displayRange.Min()) * scale);
       //      ONDEBUG(cerr << "Elm=" << rng2 << "\n");
       IndexRange2dC box(vertRange, rng2);
       if(box.Range2().Size() == 0) // Make tiny bars at least 1 pixel wide.
