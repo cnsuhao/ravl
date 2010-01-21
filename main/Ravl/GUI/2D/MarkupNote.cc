@@ -46,7 +46,7 @@ namespace RavlGUIN {
     Point2dC txtPosition;
     ComputeRectangle(mv,rect,txtPosition);
     
-    return rect.Expand(1);
+    return RealRange2dC(rect.Expand(1));
   }
   
   //: Compute text rectangle and position
