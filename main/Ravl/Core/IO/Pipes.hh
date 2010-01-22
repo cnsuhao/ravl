@@ -36,7 +36,8 @@ namespace RavlN {
     DPIPipeBaseBodyC(const DPEntityC &nhold = DPEntityC(true),FuncT nAuxOp = 0)
       : forceReady(false),
 	forceNotEOS(false),
-	hold(nhold)
+	hold(nhold),
+	auxOp(nAuxOp)
     {}
     //: Default constructor.
     
@@ -73,7 +74,9 @@ namespace RavlN {
     //: Function ptr.
   
     DPOPipeBaseBodyC(const DPEntityC &nhold = DPEntityC(true),FuncT nAuxOp = 0)
-      : hold(nhold),
+      : forceReady(false),
+        forceNotEOS(false),
+        hold(nhold),
 	auxOp(nAuxOp)
     {}
     //: Default constructor.
