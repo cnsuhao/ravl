@@ -22,9 +22,9 @@
 #define rThrowBadConfigContextOnFailS(CONTEXT, METHOD, ARGS) { \
   if (!CONTEXT.METHOD) { \
     RavlN::StrOStreamC strm; \
-    strm << ARGS; \
-    strm << "\nFactory filename: " << CONTEXT.Factory().MasterConfigFilename(); \
-    strm << "\nContext node name: " << CONTEXT.Name(); \
+    strm << ARGS << "\n"; \
+    strm << "Factory filename: '" << CONTEXT.Factory().MasterConfigFilename() << "'  Node: " << CONTEXT.Name() << " \n"; \
+    strm << "From: " << __FILE__ << " Line:" << __LINE__ ; \
     RavlN::SysLog(RavlN::SYSLOG_ERR) << strm.String(); \
     throw RavlN::ExceptionBadConfigC(strm.String().data(), true); \
   } \
