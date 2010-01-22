@@ -36,13 +36,7 @@ namespace RavlN {
     : public DPIOConnectBaseBodyC
   {
   public:
-    inline DPMTIOConnectBaseBodyC(bool nuseIsGetReady = true,UIntT nblockSize = 1)
-      : useIsGetReady(nuseIsGetReady),
-	terminate(false),
-	pause(false),
-	resume(0),
-	blockSize(nblockSize)
-    {}
+    DPMTIOConnectBaseBodyC(bool nuseIsGetReady = true,UIntT nblockSize = 1);
     //: Default Constructor.
     
     bool Disconnect();

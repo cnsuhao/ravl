@@ -49,7 +49,18 @@ namespace RavlN {
   private:
     DPMTIOConnectBaseC connection;
   };
-  
+
+
+  //: Default Constructor.
+
+  DPMTIOConnectBaseBodyC::DPMTIOConnectBaseBodyC(bool nuseIsGetReady,UIntT nblockSize)
+    : useIsGetReady(nuseIsGetReady),
+      terminate(false),
+      pause(false),
+      resume(0),
+      blockSize(nblockSize)
+  {}
+
   //: Generate an event handle 
   // It indicates the completion of processing.
   
