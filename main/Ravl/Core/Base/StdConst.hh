@@ -144,6 +144,13 @@ namespace RavlConstN {
   const int minInt = INT_MIN;
   //: Minimum integer used by GNU C++ compiler.
 #endif
+
+
+#if defined(LONG_LONG_MAX) && defined(LONG_LONG_MIN)
+  const long long int maxInt64 = LONG_LONG_MAX;
+  const long long int minInt64 = LONG_LONG_MIN;
+#endif
+  
   
 #if defined(MAXFLOAT) && defined(MINFLOAT)
   const float maxFloat = MAXFLOAT;
