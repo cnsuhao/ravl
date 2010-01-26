@@ -42,60 +42,63 @@ namespace RavlN {
     inline PLine2dC()
       : PPointLine2dC(0,0,0)
     {}
-    // Constructs the line whose coordinates are zeros, eg. non-existing
-    // projective line.
-
-    inline PLine2dC(const Vector2dC & n, RealT d)
-      : PPointLine2dC(n.Row(), n.Col(), d)
-    {}
-    // Constructs the projective line equivalent to the Euiclidian
-    // line determined by the equation n.Row()*x + n.Col()*y + d = 0.
+    //: Constructs the line whose coordinates are zeros, eg. non-existing
+    //: projective line.
 
     inline PLine2dC(const Point2dC & p1, const Point2dC & p2)
       : PPointLine2dC(p1, p2)
     {}
-    // Constructs the projective line passing through two Euclidian
-    // points p1, p2.
+    //: Constructs the projective line passing through two Euclidian
+    //: points p1, p2.
 
     inline PLine2dC(const Point2dC  & p,const Vector2dC & v)
       : PPointLine2dC(p, v)
     {}
-    // Constructs the projective line passing through the Euclidian
-    // point 'p' and the Euclidian line direction vector 'v'.
+    //: Constructs the projective line passing through the Euclidian
+    //: point 'p' and the Euclidian line direction vector 'v'.
 
     PLine2dC(const LinePP2dC & l);
-    // Constructs the projective line from the Euclidian line 'l'.
+    //: Constructs the projective line from the Euclidian line 'l'.
 
     inline PLine2dC(RealT p1, RealT p2, RealT p3)
       : PPointLine2dC(p1, p2, p3)
     {}
-    // Constructs the line (p1, p2, p3).
+    //: Constructs the line (p1, p2, p3).
+    // Example: if the normal to the line from the origin has length <code>r</code> and
+    // orientation <code>&theta;</code>, the line can be constructed as:
+    // <code>PLine2dC(cos(&theta;), sin(&theta;), -r)</code>
+
+    inline PLine2dC(const Vector2dC & n, RealT d)
+      : PPointLine2dC(n.Row(), n.Col(), d)
+    {}
+    //: Constructs the projective line from Euclidean parameters
+    // Constructs the projective line equivalent to the Euiclidian
+    // line determined by the equation n.Row()*x + n.Col()*y + d = 0.
 
     inline PLine2dC(const PPointLine2dC & p0, const PPointLine2dC & p1)
       : PPointLine2dC(p0, p1)
     {}
-    // Constructs the line passing through two projective points 'p0' and
-    // 'p1'.
+    //: Constructs the line passing through two projective points 'p0' and 'p1'.
 
     inline PLine2dC(const PPointLine2dC & p)
       : PPointLine2dC(p)
     {}
-    // Constructs the line from the point/line object 'p'.
+    //: Constructs the line from the point/line object 'p'.
 
     //:---------------------
     // Access to the object.
 
     Vector2dC Normal() const;
-    // Returns the normal of a corresponding Euclidian line. If this
-    // projective line is ideal the function returns the zero vector.
+    //: Returns the normal of a corresponding Euclidian line.
+    // If this projective line is ideal the function returns the zero vector.
 
     inline const PLine2dC & PLine2d() const
     { return *this; }
-    // Access to this constant object.
+    //: Access to this constant object.
 
     inline PLine2dC & PLine2d()
     { return *this; }
-    // Access to the point.
+    //: Access to the point.
 
     //:-------------------
     // Logical conditions.
@@ -136,7 +139,7 @@ namespace RavlN {
     // Geometrical constructions.
 
     PPoint2dC Intersection(const PLine2dC & l) const;
-    // Returns the projective point that is the intersection of both lines.
+    //: Returns the projective point that is the intersection of both lines.
 
     inline PPoint2dC ClosestPointToOrigin() const {
       return PPoint2dC(-P1()*P3(), -P2()*P3(), Sqr(P1()) + Sqr(P2()));
