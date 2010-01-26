@@ -103,9 +103,7 @@ namespace RavlN {
   // Assume it starts from 0.
   
   UIntT DPFileSequenceBaseBodyC::Size() const {
-    if (start == (UIntT)-1 || end == (UIntT)-1)
-      return (UIntT)-1;
-    return (end - start) + 1;
+    return end + 1;
   }
   
   
