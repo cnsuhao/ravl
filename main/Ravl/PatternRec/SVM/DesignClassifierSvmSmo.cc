@@ -318,7 +318,7 @@ void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     trSetVectorPtrs[i] = itVec->ReferenceElm();
   }
   if(i != trainSetSize)
-    throw ExceptionC("Can't copy data to internal svm beffers");
+    throw ExceptionC("Can't copy data to internal svm buffers");
 
   //create kernel cache
   SizeT newKernelCacheSize = ((trainSetSize + 1) * trainSetSize) / 2;
@@ -361,7 +361,7 @@ SvmClassifierC DesignSvmSmoBodyC::GetClassifier() const
   char *svl = new char[numSV];
   RealT *lmbd = new RealT[numSV];
   if(svl == NULL || lmbd == NULL)
-    throw ExceptionC("Can't allocate memory for internal svm beffers");
+    throw ExceptionC("Can't allocate memory for internal svm buffers");
 
   int j = 0;
   for(int i = 0; i < numTrainObjects; i++)
@@ -406,6 +406,10 @@ RealT DesignSvmSmoBodyC::GetKernelValue(int I1, int I2)
     cacheVal = (float)kernelFunction.Apply(numFeatures, trSetVectorPtrs[I1], trSetVectorPtrs[I2]);
     *elAdr = cacheVal;
 //    cout << "new kernel (" << I1 << ", " << I2 << ") = " << cacheVal << endl;
+  }
+  if(cacheVal > 1e25)
+  {
+    printf("Warning: Possible overflow kernelfunc: %lg", cacheVal);
   }
   return cacheVal;
 }
@@ -457,6 +461,7 @@ void DesignSvmSmoBodyC::CalcLambdas()
     else if(!numChanged)
       examineAll = 1;
   }
+
 }
 //---------------------------------------------------------------------------
 void DesignSvmSmoBodyC::UpdateErrorCache()

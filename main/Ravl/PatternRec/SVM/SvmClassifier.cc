@@ -70,6 +70,9 @@ SvmClassifierBodyC::SvmClassifierBodyC(const KernelFunctionC &KernelFunction,
   lambdas = NULL;
   trSetVectorPtrs = NULL;
   numSv = SupportVectors.Size();
+  if(numSv < 1)
+    throw ExceptionOperationFailedC("Number of support vectors is zero. "
+                                    "Can't create SVM classifier without support vectors");
 
   lambdas = new RealT[numSv];
   trSetVectorPtrs = new DoublePtrT[numSv];
