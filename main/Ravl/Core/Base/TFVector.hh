@@ -145,10 +145,10 @@ namespace RavlN {
     //: Divides this index by number 'alpha'.
     
     inline TFVectorC<DataT,N> operator*(const DataT &alpha) const;
-    //: Returns this object mutliplied by alpha.
+    //: Returns this object multiplied by alpha.
     
     inline TFVectorC<DataT,N> operator/(const DataT &alpha) const;
-    //: Returns this object devided by alpha.
+    //: Returns this object divided by alpha.
 
     inline DataT Dot(const TFVectorC<DataT,N> &oth) const {
       DataT ret = data[0] * oth.data[0];
@@ -166,7 +166,7 @@ namespace RavlN {
     // included to use this function.
     
     TFMatrixC<DataT,N,N> &OuterProduct(TFMatrixC<DataT,N,N> &result) const;
-    //: Calculate the outer product of this vector with itsself.
+    //: Calculate the outer product of this vector with itself.
     // The output is assigned to 'result'. A reference to 'result' is
     // returned. <p>
     // The implementation is in "Ravl/FMatrix.hh", it must be
