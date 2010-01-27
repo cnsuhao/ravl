@@ -98,7 +98,7 @@ namespace RavlN {
                                      rlog::StdioNode::OutputChannel);
     
     if(verbose)
-      rInfo("RLog initalised. ");
+      rInfo("RLog initialised. ");
     return true;
   }
   
@@ -121,7 +121,7 @@ namespace RavlN {
     //g_rlogNode->subscribeTo(rlog::GetComponentChannel("Ravl","",rlog::Log_Undef));
     g_rlogNode->subscribeTo(rlog::GetGlobalChannel(""));
     if(verbose)
-      rInfo("RLog initalised. ");
+      rInfo("RLog initialised. ");
     return true;
   }
   
