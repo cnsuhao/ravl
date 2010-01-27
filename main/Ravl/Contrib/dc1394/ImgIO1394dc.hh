@@ -44,7 +44,7 @@ namespace RavlImageN {
   public:
     ImgIO1394dcBaseC(UIntT channel=0,const type_info &pixelType = typeid(void));
     //: Constructor.
-    // channel > 100 means DMA acceess to channel = channel-100
+    // channel > 100 means DMA access to channel = channel-100
 
     ~ImgIO1394dcBaseC();
     //: Destructor.
