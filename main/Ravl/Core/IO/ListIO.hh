@@ -49,7 +49,7 @@ namespace RavlN {
     //: Is some data ready ?
     
     virtual bool IsGetEOS() const
-    { return iter; }
+    { return !iter; }
     //: Has the End Of Stream been reached ?
     // true = yes.
     
