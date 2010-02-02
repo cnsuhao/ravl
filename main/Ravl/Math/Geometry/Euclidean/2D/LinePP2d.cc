@@ -20,9 +20,9 @@ namespace RavlN {
   static inline int ContainsCode(const Point2dC &pnt,const RealRange2dC &rng) {
     int ret = 0;
     if(pnt[0] > rng.BRow())
-      ret |= CTOP;
-    else if(pnt[0] < rng.TRow())
       ret |= CBOTTOM;
+    else if(pnt[0] < rng.TRow())
+      ret |= CTOP;
     if(pnt[1] > rng.RCol())
       ret |= CRIGHT;
     else if(pnt[1] < rng.LCol())
