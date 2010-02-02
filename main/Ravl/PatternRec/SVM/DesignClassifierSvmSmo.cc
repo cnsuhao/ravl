@@ -10,6 +10,7 @@
 #include "Ravl/PatternRec/DesignClassifierSvmSmo.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
 #include <string.h>
+#include <stdio.h>
 
 namespace RavlN
 {
