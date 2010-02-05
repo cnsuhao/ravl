@@ -32,7 +32,7 @@ namespace RavlImageN {
     : public RCBodyVC
   {
   public:
-    AAMAppearanceModelBodyC(RealT nWarpSigma = 2);
+    AAMAppearanceModelBodyC(RealT nWarpSigma = 2,bool fixTextureMeanStdDev = true);
     //: Constructor.
     //!param: nWarpSigma - stiffness to use in warping process.
     // Note: this parameter is relevant only in the case where thin-plate splines are used for warping.
@@ -168,7 +168,7 @@ namespace RavlImageN {
     //: Access inverse appearance model.
 
     IntT NoFixedParameters() const
-    { return shape.NoFixedParameters() + 2; }
+    { return shape.NoFixedParameters() + (m_fixTextureMeanStdDev ? 0 : 2); }
     //: Find the number of parameters representing the pose and intensity statistics
     //  e.g. position, orientation, scale, grey-level scaling and offset.
 
@@ -210,6 +210,9 @@ namespace RavlImageN {
     bool MeanTextureAppearanceParameters(const SArray1dC<Point2dC> &sPoints, VectorC &aParam) const;
     //: Compute appearance parameters 'aParam' corresponding to feature points 'sPoints' and mean texture values.
 
+    bool FixTextureMeanStdDev() const
+    { return m_fixTextureMeanStdDev; }
+    //: Are we using fixed values for mean and std dev of the texture image.?
   protected:
     RealT warpSigma; // Stiffness used for warping (only relevant if thin-plate splines are enabled).
     AAMShapeModelC shape; // Statistical shape model.
@@ -221,9 +224,10 @@ namespace RavlImageN {
     FunctionC invAppearanceModel; // Inverse appearance model, map appearance parameters to raw parameters.
     WarpMesh2dC<ByteT> warp; // Warping to the shape free image.
     VectorC eigenValues; // Eigen values.
-    VectorC fixedMean; // Pose and grey level offset and mean patameters.
+    VectorC fixedMean; // Pose and grey level offset and mean parameters.
     VectorC pixelSize; // Pixel size in the shape free image.
     GaussConvolve2dC<ByteT> smooth; // Gauss convolver for smoothing images.
+    bool m_fixTextureMeanStdDev; // Normalise the input's image mean and std deviation, and don't add them as parameters.
   };
 
   //! userlevel=Normal
@@ -238,8 +242,8 @@ namespace RavlImageN {
     //: Default constructor
     // Creates an invalid handle.
 
-    AAMAppearanceModelC(RealT nWarpSigma)
-      : RCHandleVC<AAMAppearanceModelBodyC>(*new AAMAppearanceModelBodyC(nWarpSigma))
+    AAMAppearanceModelC(RealT nWarpSigma,bool useFixedTextureStats = true)
+      : RCHandleVC<AAMAppearanceModelBodyC>(*new AAMAppearanceModelBodyC(nWarpSigma,useFixedTextureStats))
     {}
     //: Constructor.
     //!param: nWarpSigma - stiffness to use in warping process.
@@ -356,7 +360,7 @@ namespace RavlImageN {
 
     bool ErrorVector(const VectorC &parm,const ImageC<RealT> &img,VectorC &errImg) const
     { return Body().ErrorVector(parm,img,errImg); }
-    //: Conpute error vector.
+    //: Compute error vector.
     //!param: parm   - parameter vector representing appearance.
     //!param: img    - target image for comparison.
     //!param: errImg - vector of intensity differences.
@@ -424,6 +428,10 @@ namespace RavlImageN {
     bool MeanTextureAppearanceParameters(const SArray1dC<Point2dC> &sPoints, VectorC &aParam) const
     { return Body().MeanTextureAppearanceParameters(sPoints, aParam);}
     //: Compute appearance parameters 'aParam' corresponding to feature points 'sPoints' and mean texture values.
+
+    bool FixTextureMeanStdDev() const
+    { return Body().FixTextureMeanStdDev(); }
+    //: Are we using fixed values for mean and std dev of the texture image.?
 
   };
 

@@ -143,12 +143,16 @@ namespace RavlImageN {
           break;
         case 2: // sx
         case 3: // sy
+          maxVar = 0.3 * trueVal;
+          break;
         case 4: // u1
         case 5: // u2
-          maxVar = 0.1 * trueVal;
-          break;
+          if(!m_am.FixTextureMeanStdDev()) {
+            maxVar = 0.3 * trueVal;
+            break;
+          }
         default:
-          maxVar = 0.5 * Sqrt(m_am.EigenValues()[paramNo]);
+          maxVar = 4.0 * Sqrt(m_am.EigenValues()[paramNo]);
       }
 
       bool isInRange;

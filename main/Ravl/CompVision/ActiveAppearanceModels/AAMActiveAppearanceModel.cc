@@ -52,7 +52,7 @@ namespace RavlImageN {
 
   //: Constructor.
   AAMActiveAppearanceModelBodyC::AAMActiveAppearanceModelBodyC()
-    : smooth(5)
+    : smooth(3)
   {}
 
   //: Load from bin stream.
@@ -163,7 +163,7 @@ namespace RavlImageN {
       UIntT scanLimit = 6;
       // Go through successively smaller steps until we find one thats better.
       VectorC newParam = lastParm;
-      for(UIntT i = 0;i < scanLimit;i++,mul /= 2.0) {
+      for(UIntT i = 0;i < scanLimit;i++,mul /= 1.7) {
         VectorC newEst = lastParm - newDelta * mul;
         RealT nErr;
         // Compute residual error.
