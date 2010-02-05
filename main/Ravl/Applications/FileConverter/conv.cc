@@ -59,10 +59,12 @@ int FileConv(int argc,char **argv)
   bool  listConv = option.Boolean("lc",false,"List all known conversions.");
   bool  listTypes = option.Boolean("lt",false,"List all known classes.");
   bool  ident    = option.Boolean("i",false,"Identify file. ");
+  bool usecompression = option.Boolean("usecomp",false,"Use compression with -comp arg.");
   IntT      noFrames = option.Int("len",-1,"Length of sequence. ");
   IntT      NoFrames = option.Int("nf",-1,"No. of frames in sequence.  -1 -> do all frames");
   IntT      startFrame = option.Int("sf",-1,"Where to start in sequence.-1=Default. ");
   IntT      everyNth = option.Int("nth",1,"Frequence of frames to copy. 1=Every frame. ");
+  IntT  compression = option.Int("comp",31,"Level of compression 1 - 31 with 1(high) 31(low).");
   FilenameC inFile  = option.String("","in.pgm","Input filename");
   FilenameC outFile = option.String("","out.pgm","Output filename");
   
@@ -160,7 +162,13 @@ int FileConv(int argc,char **argv)
       cerr << "ERROR: Failed to open output sequence '" << outFile << "' \n";
       return 1;
     }
-    
+    if(compression < 1 || compression > 31 ) {
+        cerr << "Error compression has to be in the range 1 to 31." << "\n";
+        return 1;
+    }
+    if(usecompression == true) {
+       op.SetAttr("compression",compression);
+    }
     // Get type to use in copy.
     
     DPTypeInfoC typeInfo(TypeInfo(ip.InputType()));
