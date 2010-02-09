@@ -362,10 +362,10 @@ namespace RavlGUIN {
       gtk_tree_view_column_add_attribute(column,renderer,attrName,sourceCol);
       return true;
     }
-    
+    gboolean val = (attrValue == "1") ? 1 : 0;
+
     //cerr << "Setting attribute '" << ait.Key() << "' to '" << at.Data1() << "'\n";
     if(attrName == "editable" || attrName == "activatable") {
-      gboolean val = (attrValue == "1") ? 1 : 0;
       RavlAssert(renderer != 0);
       g_object_set(G_OBJECT(renderer), attrName,val,NULL);
     }
@@ -389,8 +389,11 @@ namespace RavlGUIN {
     else if (attrName == "resizable") {
       gtk_tree_view_column_set_resizable(GTK_TREE_VIEW_COLUMN(column), true);
     }
+    else if (attrName == "visible") {
+      gtk_tree_view_column_set_visible(GTK_TREE_VIEW_COLUMN(column), val);
+    }
     else if (attrName == "renderer") 
-    {}
+    {} 
     else  { // Don't know!!
       cerr << "TreeViewBodyC::SetAttribute, WARNING: Unknown attribute '" << attrName << "' \n";
     }

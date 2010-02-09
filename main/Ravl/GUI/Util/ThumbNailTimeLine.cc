@@ -471,7 +471,7 @@ namespace RavlGUIN {
   
   //: Goto a particular frame.
   
-  bool ThumbNailTimeLineBodyC::GUIGoto(UIntT &newFrameNo) 
+  bool ThumbNailTimeLineBodyC::GUIGoto(UIntT newFrameNo) 
   {
     if(!Goto(newFrameNo))
       return false;
@@ -489,8 +489,8 @@ namespace RavlGUIN {
     midFrame = Floor((RealT) requestedMidFrame / frameSkip) * frameSkip;
     
     hold.Unlock();
-    semaUpdate.Post(); // Flag update.
     UpdateDisplayRange();
+    semaUpdate.Post(); // Flag update.
     return true;
   }
   

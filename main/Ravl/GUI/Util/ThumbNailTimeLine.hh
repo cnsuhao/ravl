@@ -61,7 +61,7 @@ namespace RavlGUIN {
     bool Goto(UIntT frameNo);
     //: Goto a particular frame.
     
-    bool GUIGoto(UIntT &frameNo);
+    bool GUIGoto(UIntT frameNo);
     //: Goto a particular frame.
     
     bool SetSkip(UIntT skip);
@@ -70,7 +70,7 @@ namespace RavlGUIN {
     bool GUISetSkip(UIntT &skip);
     //: Set frame skip factor.
     
-    Signal1C<UIntT> &FrameSelected()
+    Signal1C<UIntT> &SigFrameSelected()
     { return frameSelected; }
     //: Access frame selected signal.
     
@@ -101,6 +101,10 @@ namespace RavlGUIN {
     //: Modify the image for thumbnail, scale it, label it....
     
   protected:
+
+
+    
+
     virtual bool CommonCreate(GtkWidget *_widget);
     //: Create widget.
     
@@ -236,7 +240,7 @@ namespace RavlGUIN {
     
   public:
     
-    bool GUIGoto(UIntT &frameNo)
+    bool GUIGoto(UIntT frameNo)
     { return Body().GUIGoto(frameNo); }
     //: Goto a particular frame.
     
@@ -277,8 +281,8 @@ namespace RavlGUIN {
     //: Event mouse press. 
     //!cwiz:author
     
-    Signal1C<UIntT> &FrameSelected()
-    { return Body().FrameSelected(); }
+    Signal1C<UIntT> &SigFrameSelected()
+    { return Body().SigFrameSelected(); }
     //: Access frame selected signal.
     
     Signal1C<RealRangeC> &SigFrameRange()
