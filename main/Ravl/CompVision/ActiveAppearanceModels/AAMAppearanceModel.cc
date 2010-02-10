@@ -72,7 +72,7 @@ namespace RavlImageN {
   AAMAppearanceModelBodyC::AAMAppearanceModelBodyC(RealT nWarpSigma,
                                                          bool fixTextureMeanStdDev)
     : warpSigma(nWarpSigma),
-      smooth(5),
+      smooth(3),
       m_fixTextureMeanStdDev(fixTextureMeanStdDev)
   {}
 
@@ -497,7 +497,7 @@ namespace RavlImageN {
     // Get fixed texture parameters.
 
     RealT texMean = 128;
-    RealT texStdDev = 64;
+    RealT texStdDev = 48;
     if(!m_fixTextureMeanStdDev) {
       texMean = dat[shape.NoFixedParameters() + 0];
       texStdDev = dat[shape.NoFixedParameters() + 1] + 1;

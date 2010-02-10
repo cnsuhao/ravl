@@ -128,7 +128,7 @@ namespace RavlImageN {
     //!param: parm   - parameter vector representing appearance.
     //!param: img    - target image for comparison.
     //!param: errImg - vector of intensity differences.
-    // The error values consists of the intensity difference between target image and the texture image synthesized from the parameters parm.
+    // The error values consists of the intensity difference between target image and the texture image synthesised from the parameters parm.
     // Note that the error is measured in the shape free images for each pixel in the mask area.
 
     virtual bool ErrorVector(const VectorC &parm,const ImageC<RealT> &img,VectorC &errImg) const;
@@ -136,7 +136,7 @@ namespace RavlImageN {
     //!param: parm   - parameter vector representing appearance.
     //!param: img    - target image for comparison.
     //!param: errImg - vector of intensity differences.
-    // The error values consists of the intensity difference between target image and the texture image synthesized from the parameters parm.
+    // The error values consists of the intensity difference between target image and the texture image synthesised from the parameters parm.
     // Note that the error is measured in the shape free images for each pixel in the mask area.
 
     void MakePlausible(VectorC &parm, RealT NbSigma = 3) const;

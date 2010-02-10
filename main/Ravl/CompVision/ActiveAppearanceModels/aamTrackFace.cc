@@ -20,8 +20,9 @@ int main (int argc, char** argv)
 {
   OptionC opts(argc,argv);
   StringC vidIn = opts.String("i","@V4L2:/dev/video0#1", "Video source.");
-  StringC aamFile = opts.String("aam","aam.abs","Active appearence model. ");
+  StringC aamFile = opts.String("aam","aam.abs","Active appearance model. ");
   bool displayFace = opts.Boolean("df",true,"Display fitted face ");
+  float resetThreshold = opts.Real("t",1.0,"Reset model threshold ");
   opts.Check();
   
   DPIPortC<ImageC<ByteT> > imgStream;
@@ -30,11 +31,18 @@ int main (int argc, char** argv)
     std::cerr << "Failed to open video stream. '" << vidIn.chars() << "' \n";
     return 1;
   }
-  
+
+  // Get first image so we know the size.
+  ImageC<ByteT> img;
+  if(!imgStream.Get(img)) {
+    std::cerr << "Failed to read image from source \n";
+    return 1;
+  }
+
   AAMActiveAppearanceModelC aam;
   
   if(!RavlN::Load(aamFile,aam)) {
-    std::cerr << "Failed to load active appearence model '" << aamFile << "' ";
+    std::cerr << "Failed to load active appearance model '" << aamFile << "' ";
     return 1;
   }
   
@@ -45,18 +53,21 @@ int main (int argc, char** argv)
   for(UIntT i = 0;i < am.FixedMean().Size();i++)
     faceParam[i] = am.FixedMean()[i];
 
+  faceParam[0] = img.Rows()/2;
+  faceParam[1] = img.Cols()/2;
+  faceParam[2] = 40;
   VectorC defaultParam = faceParam.Copy();
 
-  ImageC<ByteT> img;
-  
+  std::cerr << " default:" << defaultParam << "\n";
+
   while(1) {
     if(!imgStream.Get(img))
       break;
     RealT residual;
-    am.MakePlausible(faceParam);
+    am.MakePlausible(faceParam,2.5);
     faceParam = aam.RefinePose(img,faceParam,residual);
     std::cerr << "Residual=" << residual << "\n";
-    if(residual > 0.5)
+    if(residual > resetThreshold)
       faceParam = defaultParam.Copy();
     
     if(displayFace) {

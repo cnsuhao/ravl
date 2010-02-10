@@ -152,7 +152,7 @@ namespace RavlImageN {
             break;
           }
         default:
-          maxVar = 4.0 * Sqrt(m_am.EigenValues()[paramNo]);
+          maxVar = 3.0 * Sqrt(m_am.EigenValues()[paramNo]);
       }
 
       bool isInRange;
