@@ -263,14 +263,14 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Double linked List 
-  // This is a reference counted, doubly linked list. <p>
+  // This is a reference counted, doubly-linked list. <p>
   // Implementation:<p>
   // The list contains a head element and a chain of
-  // elements. Empty list contains just its head element.
-  // Because of efficiency references to elements of a list are not
-  // checked if they are proper elements of a list or its head.
+  // elements. the empty list contains just its head element.
+  // For efficiency, references to elements of a list are not
+  // checked to see if they are proper elements of a list or its head.
   //
-  // <p> To iterate through a list efficiently, you need to use on of the list
+  // <p> To iterate through a list efficiently, use the list
   // iterator class <a href="Ravl.DLIterC.html">DLIterC</a>
   
   template<class DataT>
