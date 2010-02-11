@@ -133,7 +133,7 @@ namespace RavlN {
     //: Returns this object multiplied by index 'ind' item by item.
 
     inline TFVectorC<DataT,N> operator/(const TFVectorC<DataT,N> & ind) const;
-    //: Returns this object devided by index 'ind' item by item.
+    //: Returns this object divided by index 'ind' item by item.
     
     inline  TFVectorC<DataT,N> operator-() const;
     //: Returns opposite elements (unary minus operator).
@@ -153,7 +153,7 @@ namespace RavlN {
     inline DataT Dot(const TFVectorC<DataT,N> &oth) const {
       DataT ret = data[0] * oth.data[0];
       for(UIntT i = 1;i <N;i++)
-	ret += data[i] * oth.data[i];
+        ret += data[i] * oth.data[i];
       return ret;
     }
     //: Calculate the dot product of this and 'oth' vector.
