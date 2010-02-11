@@ -23,12 +23,10 @@ namespace RavlImageN {
   TrackingHomogBodyC::TrackingHomogBodyC(bool nVerbose)
     : tracker(30,7,20,17,8,25,1),
       zhomog(100), fitHomog2d(zhomog,zhomog), // 100 is default projective scale
-      epos(2), evalInliers(1.0,2.0),
+      epos(MatrixRSC::Identity(2)), // set corner error covariance matrix to 2x2 identity
+      evalInliers(1.0,2.0),
       verbose(nVerbose)
-  {
-    // set corner error covariance matrix to 2x2 identity
-    epos[0][0] = 1; epos[1][1] = 1; epos[1][0] = 0; epos[0][1] = 0;
-  }
+  {}
 
 
   bool TrackingHomogBodyC::SetMask(const StringC& fileName) {

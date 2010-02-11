@@ -18,7 +18,6 @@
 #include "Ravl/FitHomog2dPoints.hh"
 #include "Ravl/MatrixRS.hh"
 #include "Ravl/Observation.hh"
-#include "Ravl/FitHomog2dPoints.hh"
 #include "Ravl/EvaluateNumInliers.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Projection2d.hh"
