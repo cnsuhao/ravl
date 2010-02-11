@@ -15,7 +15,7 @@ DONOT_SUPPORT = arm
 
 MAINS = aamBuildShapeModel.cc aamViewShapeModel.cc  aamBuildAppearanceModel.cc \
  aamBuildActiveAppearanceModel.cc  aamCombineActiveAppearanceModel.cc \
- aamLocaliseFace.cc aamBuildPoseEstimator.cc aamSynthesizeFrontal.cc
+ aamLocaliseFace.cc aamBuildPoseEstimator.cc aamSynthesizeFrontal.cc aamTrackFace.cc
 
 EXAMPLES = aamBuildShapeModel.cc aamViewShapeModel.cc aamBuildAppearanceModel.cc \
  aamBuildActiveAppearanceModel.cc aamCombineActiveAppearanceModel.cc aamLocaliseFace.cc \

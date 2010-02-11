@@ -32,7 +32,7 @@ namespace RavlImageN {
     : public RCBodyVC
   {
   public:
-    AAMAppearanceModelBodyC(RealT nWarpSigma = 2,bool fixTextureMeanStdDev = true);
+    AAMAppearanceModelBodyC(RealT nWarpSigma = 2,bool fixTextureMeanStdDev = true,bool equaliseTextureResolution = false);
     //: Constructor.
     //!param: nWarpSigma - stiffness to use in warping process.
     // Note: this parameter is relevant only in the case where thin-plate splines are used for warping.
@@ -214,10 +214,14 @@ namespace RavlImageN {
     { return m_fixTextureMeanStdDev; }
     //: Are we using fixed values for mean and std dev of the texture image.?
   protected:
+
+    virtual bool DesignMesh(SampleStreamC<AAMAppearanceC> &sample);
+    //: Design mesh to be used for the model
+
     RealT warpSigma; // Stiffness used for warping (only relevant if thin-plate splines are enabled).
     AAMShapeModelC shape; // Statistical shape model.
     ImageC<IntT> mask; // Mask defining which pixels are used to define the statistical model of appearance.
-    Array1dC<Point2dC> maskPoints; // Position of control points in shape free image.
+    SArray1dC<Point2dC> maskPoints; // Position of control points in shape free image.
     IndexRange2dC maskSize; // Dimensions of the mask (also the dimension of the shape free image).
     IntT maskArea;     // Number of pixels in the mask.
     FunctionC appearanceModel; // Appearance model, map raw parameters to appearance parameters.
@@ -228,6 +232,7 @@ namespace RavlImageN {
     VectorC pixelSize; // Pixel size in the shape free image.
     GaussConvolve2dC<ByteT> smooth; // Gauss convolver for smoothing images.
     bool m_fixTextureMeanStdDev; // Normalise the input's image mean and std deviation, and don't add them as parameters.
+    bool m_equaliseTextureResoluition;
   };
 
   //! userlevel=Normal

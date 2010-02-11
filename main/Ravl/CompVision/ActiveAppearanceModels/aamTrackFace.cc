@@ -64,7 +64,7 @@ int main (int argc, char** argv)
     if(!imgStream.Get(img))
       break;
     RealT residual;
-    am.MakePlausible(faceParam,2.5);
+    am.MakePlausible(faceParam,2.6);
     faceParam = aam.RefinePose(img,faceParam,residual);
     std::cerr << "Residual=" << residual << "\n";
     if(residual > resetThreshold)

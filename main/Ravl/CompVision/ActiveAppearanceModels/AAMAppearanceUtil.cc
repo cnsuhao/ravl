@@ -23,6 +23,13 @@
 #include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/OS/SysLog.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlImageN {
 
   bool LoadTypeMap(const StringC &filename, HashC<IntT,IntT> &typeMap, HashC<StringC,IntT> &namedTypeMap) {
@@ -70,7 +77,7 @@ namespace RavlImageN {
       namedTypeMap[fit->Description()] = allocId;
       allocId++;
     }
-    cout << "typeMap: " << typeMap << endl << "namedTypeMap: " << namedTypeMap << endl;
+    ONDEBUG(cout << "typeMap: " << typeMap << endl << "namedTypeMap: " << namedTypeMap << endl);
     return true;
   }
 
