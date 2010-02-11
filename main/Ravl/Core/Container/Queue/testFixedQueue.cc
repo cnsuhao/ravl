@@ -45,7 +45,7 @@ int TestQueue()
 {
   cerr << "Starting TestQueue() \n";
   FixedQueueC<int> q(5);
-  for(int z = 0;z < 6;z++) {
+  for(int z = 0;z < 12;z++) {
     if(!q.IsEmpty()) {
       cerr << "IsEmpty test 1 failed. \n";
       return __LINE__;
@@ -111,6 +111,26 @@ int TestQueue()
       }
     }
   }
+
+  for(int j = 2;j < 20;j++) {
+    FixedQueueC<int> fq(j);
+    int k = 0;
+    while(fq.IsSpace()) {
+      fq.InsLast(k);
+      k++;
+    }
+    int z = 0;
+    while(!fq.IsEmpty()) {
+      if(fq.GetFirst() != z) {
+        return __LINE__;
+      }
+      z++;
+    }
+    if(z != k)
+      return __LINE__;
+  }
+
+
   return 0;
 }
 
