@@ -7,6 +7,7 @@
 template<class DataT> int TestDot();
 template<class DataT> int TestQuad();
 template<class DataT> int TestMatMulVec();
+int testConvolveKernel();
 
 int main() {
   int ln;
@@ -31,6 +32,10 @@ int main() {
     return ln;
   }
   if((ln = TestMatMulVec<double>()) != 0) {
+    std::cerr << "Test failed on line " << ln << "\n";
+    return ln;
+  }
+  if((ln = testConvolveKernel()) != 0) {
     std::cerr << "Test failed on line " << ln << "\n";
     return ln;
   }
@@ -164,3 +169,61 @@ int TestMatMulVec() {
   
   return 0;
 }
+
+int testConvolveKernel() {
+  for(size_t matrRows = 128-2*13; matrRows <= 200; matrRows += 13) {
+    //cerr << "matrRows:" << matrRows << endl;
+    for(size_t matrCols = 128-2*13; matrCols <= 200; matrCols += 13) {
+      //cerr << "matrCols:" << matrCols << endl;
+      for(size_t kernRows = 32-2*5; kernRows <= 64; kernRows += 5) {
+        //cerr << "kernRows:" << kernRows << endl;
+        for(size_t kernCols = 32-2*5; kernCols <= 64; kernCols += 5) {
+          //cerr << "kernCols:" << kernCols << endl;
+          float matrix[matrRows][matrCols];
+          float kernel[kernRows][kernCols];
+
+          //create kernel
+          for(size_t r = 0; r < kernRows; r++)
+            for(size_t c = 0; c < kernCols; c++) {
+              kernel[r][c] = (r-c) * (r-c);
+            }
+
+          //create matrix
+          for(size_t r = 0; r < matrRows; r++)
+            for(size_t c = 0; c < matrCols; c++) {
+              matrix[r][c] = (r + c) / 2.;
+            }
+
+
+          for(size_t posRow = 20-2; posRow <= 25; posRow += 1) {
+            //cerr << "posRow:" << posRow << endl;
+            for(size_t posCol = 10-2; posCol <= 15; posCol += 1) {
+              //cerr << "posCol:" << posCol << endl;
+
+              //compute old way
+              float resOld = 0.f;
+              for(size_t r = 0; r < kernRows; r++) {
+                //std::cerr << "r:" << r << "  kernRows:" << kernRows << std::endl;
+                for(size_t c = 0; c < kernCols; c++) {
+                  //std::cerr << "c:" << c << "  kernCols:" << kernCols << std::endl;
+                  //std::cerr << resOld << "   " << matrix[r+posRow][c+posCol] << "   " << kernel[r][c] << std::endl;
+                  resOld += matrix[r+posRow][c+posCol] * kernel[r][c];
+                }
+              }
+
+              float resNew = 111;
+              RavlBaseVectorN::ConvolveKernel(&(matrix[posRow][posCol]), &(kernel[0][0]), kernRows, kernCols, matrCols*sizeof(float), &resNew);
+
+              if(RavlN::Abs(resNew - resOld) > (resNew + resOld) * 1e-5) {
+                std::cerr << "ress: " << resOld << "    " << resNew << "    " << resOld - resNew << std::endl;
+                return __LINE__;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}
+
