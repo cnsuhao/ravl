@@ -214,6 +214,87 @@ int TestTransform4() {
   return 0;
 }
 
+int Test0() {
+  printf("Preparing array\n");
+  //create image
+  const int imgSize = 1000;
+  ImageC<float> img1(imgSize, imgSize);
+  for(int r = 0; r < imgSize; r++)
+    for(int c = 0; c < imgSize; c++) {
+      img1[r][c] = c;
+    }
+
+  ImageC<float> img2(imgSize, imgSize);
+  for(int r = 0; r < imgSize; r++)
+    for(int c = 0; c < imgSize; c++) {
+      img2[r][c] = imgSize - c;
+    }
+
+  Vector2dC scale(1.1, 2.12);
+  ImageC<float> res1;
+  WarpSubsample(img1, scale, res1);
+
+  ImageC<float> res2;
+  WarpSubsample(img2, scale, res2);
+
+  cout << "Fr1:" << res1.Frame() << endl;
+  cout << "Fr2:" << res2.Frame() << endl;
+  float sum = res1[0][0] + res2[0][0];
+  cout << "sum:" << res1[0][0] + res2[0][0] << endl;
+
+  for(Array2dIter2C<float, float> it(res1, res2);it;it++) {
+    float s1 = it.Data1() + it.Data2();
+    float dif = s1 - sum;
+    if(RavlN::Abs(dif) > (s1 + sum) * 1e-6) {
+      cerr << "err:" << dif << "   " << s1 << "   " << it.Index() << endl;
+      return __LINE__;
+    }
+  }
+
+  return 0;
+}
+
+int Test1() {
+  printf("Preparing array\n");
+  //create image
+  const int imgSize = 1000;
+  ImageC<float> img1(imgSize, imgSize);
+  for(int r = 0; r < imgSize; r++)
+    for(int c = 0; c < imgSize; c++) {
+      img1[r][c] = r;
+    }
+
+  ImageC<float> img2(imgSize, imgSize);
+  for(int r = 0; r < imgSize; r++)
+    for(int c = 0; c < imgSize; c++) {
+      img2[r][c] = imgSize - r;
+    }
+
+  Vector2dC scale(1.1, 2.12);
+  ImageC<float> res1;
+  WarpSubsample(img1, scale, res1);
+
+  ImageC<float> res2;
+  WarpSubsample(img2, scale, res2);
+
+  cout << "Fr1:" << res1.Frame() << endl;
+  cout << "Fr2:" << res2.Frame() << endl;
+  float sum = res1[0][0] + res2[0][0];
+  cout << "sum:" << res1[0][0] + res2[0][0] << endl;
+
+  for(Array2dIter2C<float, float> it(res1, res2);it;it++) {
+    float s1 = it.Data1() + it.Data2();
+    float dif = s1 - sum;
+    if(RavlN::Abs(dif) > (s1 + sum) * 1e-6) {
+      cerr << "err:" << dif << "   " << s1 << "   " << it.Index() << endl;
+      return __LINE__;
+    }
+  }
+
+  return 0;
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -241,6 +322,18 @@ int main(int argc, char **argv)
     cerr << "Error in WarpAffineC test 3\n";
     return 1;
   }
+
+  if(Test0() > 0) {
+    cerr << "Error in test 0\n";
+    return 1;
+  }
+
+  if(Test1() > 0) {
+    cerr << "Error in test 1\n";
+    return 1;
+  }
+
+  cerr << "All ok\n";
 
   return 0;
 }
