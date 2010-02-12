@@ -355,4 +355,14 @@ namespace RavlN {
     return Affine2dC(rotationMat * scalingMat,translation);
   }
 
+
+  //: Apply a affine transform to a point set
+
+  SArray1dC<Point2dC> operator*(const FAffineC<2> &trans,const SArray1dC<Point2dC> &points) {
+    SArray1dC<Point2dC> ret(points.Size());
+    for(SArray1dIter2C<Point2dC,Point2dC> it(ret,points);it;it++)
+      it.Data1() = trans * it.Data2();
+    return ret;
+  }
+
 }

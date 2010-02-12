@@ -34,7 +34,7 @@ namespace RavlN {
   {  
   public:
     //:----------------------------------------------
-    // Constructors, assigment, copy, and destructor.
+    // Constructors, assignment, copy, and destructor.
     
     inline PPointLine2dC()
     { Fill(0); }

@@ -181,7 +181,10 @@ namespace RavlN {
   
   Polygon2dC operator*(const FAffineC<2> &trans,const Polygon2dC &points);
   //: Apply a affine transform to a polygon
-  
+
+  SArray1dC<Point2dC> operator*(const FAffineC<2> &trans,const SArray1dC<Point2dC> &points);
+  //: Apply a affine transform to an array of points.
+
   /////////////////////////////////
   
   inline 
