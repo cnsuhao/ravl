@@ -18,7 +18,7 @@
 #include "Ravl/Matrix2d.hh"
 #include "Ravl/Vector2d.hh"
 #include "Ravl/FAffine.hh"
-
+#include "Ravl/Point2d.hh"
 namespace RavlN {
   template<class DataT> class SArray1dC;
   template<class DataT> class DListC;
