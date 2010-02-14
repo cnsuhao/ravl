@@ -39,7 +39,7 @@ namespace RavlImageN {
     // to the same be as the output before histogram equalisation is
     // done.
     
-    ImageC<DataT> Apply (const ImageC<DataT> &in);
+    ImageC<DataT> Apply (const ImageC<DataT> &in) const;
     //: Performs histogram equalisation on image 'in'.
     // Returns a new equalised image.
     
@@ -124,7 +124,7 @@ namespace RavlImageN {
   //:-
   
   template<class DataT>
-  ImageC<DataT> HistogramEqualiseC<DataT>::Apply (const ImageC<DataT> &in) {
+  ImageC<DataT> HistogramEqualiseC<DataT>::Apply (const ImageC<DataT> &in) const {
     // Build the histogram.
     if(in.IsEmpty())
       return ImageC<DataT>();
