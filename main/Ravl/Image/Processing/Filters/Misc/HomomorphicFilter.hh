@@ -15,6 +15,9 @@
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/FFT2d.hh"
+#include "Ravl/Cache.hh"
+#include "Ravl/Tuple3.hh"
+#include "Ravl/Threads/RWLock.hh"
 
 namespace RavlImageN {
   
@@ -48,9 +51,10 @@ namespace RavlImageN {
     
     RealT sigma;
     RealT depth;
-    FFT2dC fwd; // Forward FFT.
-    ImageC<RealT> filter;
-    FFT2dC bkw; // Backward FFT.
+    
+    CacheC<Index2dC, Tuple3C<FFT2dC,FFT2dC, ImageC<RealT> > > cache;
+    RWLockC m_lock; //!< A lock
+    
   };
   
   //! userlevel=Normal
