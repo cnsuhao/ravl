@@ -233,7 +233,7 @@ namespace RavlGUIN
       mouseState = 0;
     
     RealRange2dC updateArea;
-    bool doRefresh = false; // Initalised update area ?
+    bool doRefresh = false; // Initialised update area ?
     bool gotHit = false;
     
     if(!m_mouseObj.IsValid()) 

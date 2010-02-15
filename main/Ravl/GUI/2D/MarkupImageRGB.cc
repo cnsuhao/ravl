@@ -10,6 +10,7 @@
 #include "Ravl/GUI/MarkupImageRGB.hh"
 #include "Ravl/GUI/GUIMarkupCanvas.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/Image/RealRGBValue.hh"
 
 #define DODEBUG 0
 #if DODEBUG

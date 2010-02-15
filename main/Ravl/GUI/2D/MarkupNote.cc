@@ -9,6 +9,7 @@
 
 #include "Ravl/GUI/MarkupNote.hh"
 #include "Ravl/GUI/GUIMarkupCanvas.hh"
+#include "Ravl/Image/RealRGBValue.hh"
 #include <gtk/gtk.h>
 
 namespace RavlGUIN {
