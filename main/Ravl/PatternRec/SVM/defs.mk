@@ -45,7 +45,7 @@ HEADERS  = DesignSvm.hh \
 PLIB     = RavlSVM
 
 USESLIBS = RavlCore \
-           RavlPatternRec \
+           RavlPatternRec 
 
 PROGLIBS = ArffIO
 

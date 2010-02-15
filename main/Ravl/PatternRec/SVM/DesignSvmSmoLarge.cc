@@ -92,7 +92,7 @@ Classifier2C DesignSvmSmoLargeBodyC::Apply(const SampleC<VectorC> &TrainingSetVe
     delete[] objectsToUseLarge;
     objectsToUseLarge = new int[trainSetSize];
     if(objectsToUseLarge == NULL)
-      throw ExceptionOperationFailedC("Can't allocate memory for internal svm beffers");
+      throw ExceptionOperationFailedC("Can't allocate memory for internal svm buffers");
     objectsToUseLargeSize = trainSetSize;
   }
 
@@ -118,7 +118,7 @@ ClassifierC DesignSvmSmoLargeBodyC::Apply(const SampleC<VectorC> &TrainingSetVec
     delete[] objectsToUseLarge;
     objectsToUseLarge = new int[trainSetSize];
     if(objectsToUseLarge == NULL)
-      throw ExceptionOperationFailedC("Can't allocate memory for internal svm beffers");
+      throw ExceptionOperationFailedC("Can't allocate memory for internal svm buffers");
     objectsToUseLargeSize = trainSetSize;
   }
 
@@ -164,7 +164,7 @@ void DesignSvmSmoLargeBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     if(errorCache == NULL || lambdas == NULL || trainingSetLabels == NULL
        || trSetVectorPtrs == NULL
        || kernelCacheIndices == NULL || objectsToUse == NULL)
-      throw ExceptionC("DesignSvmSmoLargeBodyC::Prepare:Can't allocate memory for internal svm beffers");
+      throw ExceptionC("DesignSvmSmoLargeBodyC::Prepare:Can't allocate memory for internal svm buffers");
     errorCacheSize = trainSetSize;
   }
   for(int i = 0; i < trainSetSize; i++)
@@ -194,7 +194,7 @@ void DesignSvmSmoLargeBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     trSetVectorPtrs[i] = itVec->ReferenceElm();
   }
   if(i != trainSetSize)
-    throw ExceptionC("Can't copy data to internal svm beffers");
+    throw ExceptionC("Can't copy data to internal svm buffers");
 
   //create kernel cache
   SizeT newKernelCacheSize = (SizeT(maxNumSv + 1) * (SizeT)maxNumSv) / 2;
@@ -238,7 +238,7 @@ void DesignSvmSmoLargeBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     objectsToUse = new int[maxNumSv];
     if(errorCache == NULL || lambdas == NULL || trainingSetLabels == NULL
        || trSetVectorPtrs == NULL || kernelCacheIndices == NULL || objectsToUse == NULL)
-      throw ExceptionC("Can't allocate memory for internal svm beffers");
+      throw ExceptionC("Can't allocate memory for internal svm buffers");
     errorCacheSize = trainSetSize;
   }
   for(int i = 0; i < trainSetSize; i++)
@@ -268,7 +268,7 @@ void DesignSvmSmoLargeBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     trSetVectorPtrs[i] = itVec->ReferenceElm();
   }
   if(i != trainSetSize)
-    throw ExceptionC("Can't copy data to internal svm beffers");
+    throw ExceptionC("Can't copy data to internal svm buffers");
 
   //create kernel cache
   SizeT newKernelCacheSize = (SizeT(maxNumSv + 1) * (SizeT)maxNumSv) / 2;

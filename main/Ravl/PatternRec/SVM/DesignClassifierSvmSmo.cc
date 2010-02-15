@@ -253,6 +253,17 @@ void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
   memset(lambdas, 0, sizeof(double) * trainSetSize);
   b = 0;
 
+  //set initial values for lambdas
+  //if known initial values for lambdas copy them
+  if(initialLambdas.Size() == UIntT(trainSetSize))
+  {
+    double *lambdasPtr = lambdas;
+    for(SampleIterC<RealT> it(initialLambdas); it; it++, lambdasPtr++)
+    {
+      *lambdasPtr = *it;
+    }
+  }
+
   //copy trainingSetLabels and vectors
   SampleIterC<SByteT> itLab(TrainingSetLabels);
   SampleIterC<VectorC> itVec(TrainingSetVectors);
@@ -263,7 +274,7 @@ void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     trSetVectorPtrs[i] = itVec->ReferenceElm();
   }
   if(i != trainSetSize)
-    throw ExceptionC("Can't copy data to internal svm beffers");
+    throw ExceptionC("Can't copy data to internal svm buffers");
 
   //create kernel cache
   SizeT newKernelCacheSize = (SizeT(trainSetSize + 1) * SizeT(trainSetSize)) / 2;
@@ -308,6 +319,16 @@ void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
   //clear lambdas array
   memset(lambdas, 0, sizeof(double) * trainSetSize);
   b = 0;
+
+  //if known initial values for lambdas copy them
+  if(initialLambdas.Size() == UIntT(trainSetSize))
+  {
+    double *lambdasPtr = lambdas;
+    for(SampleIterC<RealT> it(initialLambdas); it; it++, lambdasPtr++)
+    {
+      *lambdasPtr = *it;
+    }
+  }
 
   //copy trainingSetLabels and vectors
   SampleIterC<UIntT> itLab(TrainingSetLabels);
