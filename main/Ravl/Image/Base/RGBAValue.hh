@@ -55,6 +55,11 @@ namespace RavlImageN {
     }
     //: Construct from another component type.
     
+    RGBAValueC(const TFVectorC<CompT,4> &v)
+      : TFVectorC<CompT,4>(v)
+      {}
+    //: Constructor from base class.
+
     template<class OCompT>
     RGBAValueC(RGBValueC<OCompT> &oth,const CompT &alpha = CompT()) {
       this->data[0] = oth.Red();
