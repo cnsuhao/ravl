@@ -46,13 +46,16 @@ namespace RavlImageN {
     //: Access current depth.
     
   protected:
-    bool Init(const  Index2dC &size);
-    //: Setup the filter.
+    bool InitFilter(const Index2dC &size,Tuple3C<FFT2dC,FFT2dC, ImageC<RealT> > &filter);
+    //: Setup the filter. This does no locking.
     
+    bool UseFilter(const Index2dC &size,Tuple3C<FFT2dC,FFT2dC, ImageC<RealT> > &filter);
+    //: Initialise a filter.
+
     RealT sigma;
     RealT depth;
     
-    CacheC<Index2dC, Tuple3C<FFT2dC,FFT2dC, ImageC<RealT> > > cache;
+    CacheC<Index2dC, Tuple3C<FFT2dC,FFT2dC, ImageC<RealT> > > m_cache;
     RWLockC m_lock; //!< A lock
     
   };
