@@ -30,7 +30,7 @@ namespace RavlN {
   // starts from 0.
   
   class PPointLine2dC
-    : public TFVectorC<double, 3u>
+    : public TFVectorC<double,3>
   {  
   public:
     //:----------------------------------------------
