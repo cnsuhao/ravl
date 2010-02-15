@@ -20,6 +20,7 @@
 #include "Ravl/Vector2d.hh"
 #include "Ravl/Point2d.hh"
 #include "Ravl/RealRange2d.hh"
+#include "Ravl/Traits.hh"
 
 #define CLEVER_BILINEAR
 namespace RavlImageN {
@@ -30,7 +31,11 @@ namespace RavlImageN {
                            ImageC<OutT> &result    // Output of scaling. The image must be of the appropriate size
                            )
   {
-    //cout << "src frame:" << img.Frame() << std::endl;
+    //call subsampling function
+    if(scale[0] >= 1. && scale[1] >= 1.)
+      return WarpSubsample(img, scale, result);
+
+                      //cout << "src frame:" << img.Frame() << std::endl;
     if(result.Frame().IsEmpty()) {
       const IndexRange2dC &imgFrame = img.Frame();
       IndexRange2dC rng;
@@ -165,22 +170,23 @@ namespace RavlImageN {
       //cerr << "i:" << i << endl;
       //first partial pixel in the row
       const double onemt = 1. - t;
-      OutT resPixel = pixVal * onemt;
+      OutT resPixel = (OutT)(pixVal) * onemt;
 
       //all full pixels
       const double srcLastColR = srcColR + scaleColR;
       const int srcLastColI = Floor(srcLastColR);
       for(srcColI++; srcColI < srcLastColI; srcColI++) {
-        resPixel += *srcPtr;
+        resPixel += (OutT)(*srcPtr);
         srcPtr++;
       }
 
       //last partial pixel
       t = srcLastColR - srcLastColI;
+      pixVal = *srcPtr;
+      srcPtr++;
       //cerr << "t:" << t << endl;
       if(t > 1e-5) {
-        pixVal = *srcPtr;
-        resPixel += pixVal * t;
+        resPixel += (OutT)(pixVal) * t;
       }
 
       *resPtr = resPixel;
@@ -205,21 +211,22 @@ namespace RavlImageN {
     for(int i = 0; i < resCols; i++) {
       //first partial pixel in the row
       const double onemt = 1. - t;
-      OutT resPixel = pixVal * onemt;
+      OutT resPixel = (OutT)(pixVal) * onemt;
 
       //all full pixels
       const double srcLastColR = srcColR + scaleColR;
       const int srcLastColI = Floor(srcLastColR);
       for(srcColI++; srcColI < srcLastColI; srcColI++) {
-        resPixel += *srcPtr;
+        resPixel += (OutT)(*srcPtr);
         srcPtr++;
       }
 
       //last partial pixel
       t = srcLastColR - srcLastColI;
       pixVal = *srcPtr; //this could read outside the row, but the value will not be used
+      srcPtr++;
       if(t > 1e-5) {
-        resPixel += pixVal * t;
+        resPixel += (OutT)(pixVal) * t;
       }
 
       *resPtr += resPixel;
@@ -246,6 +253,7 @@ namespace RavlImageN {
                     ImageC<OutT> &result    // Output of scaling. The image must be of the appropriate size
                     )
   {
+    //cout << "WarpSubsample scale:" << scale << endl;
     //we can't do supersampling
     if(scale[0] < 1 || scale[1] < 1)
       return false;
@@ -259,6 +267,17 @@ namespace RavlImageN {
       rng.BRow() = Floor((imgFrame.BRow() + 1) / scale[0]) - 1;
       rng.RCol() = Floor((imgFrame.RCol() + 1) / scale[1]) - 1;
       result = ImageC<OutT>(rng);
+    } else {
+      const IndexRange2dC &imgFrame = img.Frame();
+      IndexRange2dC rng;
+      rng.TRow() = Ceil(imgFrame.TRow() / scale[0]);
+      rng.LCol() = Ceil(imgFrame.LCol() / scale[1]);
+      rng.BRow() = Floor((imgFrame.BRow() + 1) / scale[0]) - 1;
+      rng.RCol() = Floor((imgFrame.RCol() + 1) / scale[1]) - 1;
+      if(!rng.Contains(result.Frame())) {
+        cerr << "Resulting image is too large\n";
+        return false;
+      }
     }
 
     //cout << "res frame:" << result.Frame() << std::endl;
@@ -268,7 +287,11 @@ namespace RavlImageN {
     const int resRows = (int)(result.Rows());
     const int resCols = (int)(result.Cols());
 
-    OutT buffer[resCols];
+    const double norm = 1. / (scale[0] * scale[1]);
+
+    typedef typename RavlN::NumericalTraitsC<OutT>::RealAccumT RealAccumT;
+    RealAccumT bufferRow[resCols];
+    RealAccumT bufferRes[resCols];
 
     Point2dC srcPos = origin;
     Index2dC resPos = result.Frame().TopLeft();
@@ -278,17 +301,15 @@ namespace RavlImageN {
     int srcRowI = Floor(srcRowR);
     double u = srcRowR - srcRowI;
 
-    WS_prepareRow(img, srcRowI, origin.Col(), scale[1], buffer, resCols);
+    WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow, resCols);
     //if(!CheckRow(buffer, resCols, scale[1])) return false;
 
     for(int j = 0; j < resRows; j++) {
       //cerr << "j:" << j << endl;
-      OutT *resRowPtr = &(result[j][0]);
-
       //first partial row
       double onemu = 1. - u;
       for(int i = 0; i < resCols; i++) {
-        resRowPtr[i] = buffer[i] * onemu;
+        bufferRes[i] = bufferRow[i] * onemu;
       }
 
       //all full rows
@@ -298,37 +319,36 @@ namespace RavlImageN {
       //cerr << "srcLastRowI:" << srcLastRowI << endl;
       for(srcRowI++; srcRowI < srcLastRowI; srcRowI++) {
         //cerr << "srcRowI:" << srcRowI << endl;
-        WS_prepareRowAdd(img, srcRowI, origin.Col(), scale[1], resRowPtr, resCols);
+        WS_prepareRowAdd(img, srcRowI, origin.Col(), scale[1], bufferRes, resCols);
       }
 
       //last partial pixel
       u = srcLastRowR - srcLastRowI;
       //cerr << "u:" << u << endl;
       if(u > 1e-5) {
-        WS_prepareRow(img, srcRowI, origin.Col(), scale[1], buffer, resCols);
+        WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow, resCols);
         //if(!CheckRow(buffer, resCols, scale[1])) return false;
         for(int i = 0; i < resCols; i++) {
-          resRowPtr[i] += buffer[i] * u;
+          bufferRes[i] += bufferRow[i] * u;
         }
       } else {
         //check if we need buffer for next iteration
         if(j + 1 < resRows) {
-          WS_prepareRow(img, srcRowI, origin.Col(), scale[1], buffer, resCols);
+          //cerr << "u srcRowI:" << srcRowI << endl;
+          WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow, resCols);
           //if(!CheckRow(buffer, resCols, scale[1])) return false;
         }
       }
       //if(!CheckRow(resRowPtr, resCols, scale[1]*scale[0])) return false;
 
+      //copy and scale result
+      OutT *resRowPtr = &(result[j+result.TRow()][result.LCol()]);
+      for(int i = 0; i < resCols; i++) {
+        resRowPtr[i] = (OutT)(bufferRes[i] * norm);
+      }
+
       srcRowR = srcLastRowR;
       srcRowI = srcLastRowI;
-    }
-
-    //normalise result
-    double norm = 1. / (scale[0] * scale[1]);
-    //cerr << "norm:" << norm << endl;
-    for(Array2dIterC<OutT> it(result);it;it++) {
-      *it *= norm;
-      //cerr << it.Index() << "  " << *it << endl;
     }
 
     return true;
