@@ -43,7 +43,7 @@ MUSTLINK=atexit.cc
 
 USESLIBS=Math 
 
-TESTEXES= testRavlBase.cc testCalls.cc testString.cc testStream.cc testTFVector.cc testRCLayer.cc #testVectorUtils.cc
+TESTEXES= testRavlBase.cc testCalls.cc testString.cc testStream.cc testTFVector.cc testRCLayer.cc testVectorUtils.cc
 
 EXAMPLES = exIndex.cc exRefCounter.cc exRefCounterInherit.cc exRefCounterAbstractInherit.cc exQInt.cc exTrigger.cc testRCLayer.cc exCPUID.cc
 
