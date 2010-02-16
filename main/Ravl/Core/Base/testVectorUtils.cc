@@ -17,57 +17,76 @@
 
 using namespace RavlN;
 
+int testSimple() {
+  const float buf1[4] = { 1,2,3,4 };
+  const float buf2[4] = { 1,3,5,7 };
+
+  float value = RavlBaseVectorN::DotProduct(buf1, buf2, 2);
+  if(Abs(value - 7.0) > 1e-9) return __LINE__;
+
+
+  return 0;
+}
+
 template<class DataT>
 int testDotProduct() {
-  const size_t bufferLen = 10240;
+  const size_t bufferLen = 32;
   DataT buf1[bufferLen];
   DataT buf2[bufferLen];
   for(size_t i = 0; i < bufferLen; i++) {
-    buf1[i] = i;
-    buf2[i] = i*i / 2.;
+    buf1[i] = (i % 253)/255.0;
+    buf2[i] = (i*i % 253) / 255.0;
   }
 
-  //calculate sums old slow way
-  DataT sum00_00 = 0.;
-  for(size_t i = 0; i < bufferLen; i++) {
-    sum00_00 += buf1[i] * buf2[i];
+  for(size_t testSize = 1;testSize < bufferLen;testSize++) {
+    //calculate sums old slow way
+    DataT sum00_00 = 0.;
+    for(size_t i = 0; i < testSize; i++) {
+      sum00_00 += buf1[i] * buf2[i];
+    }
+
+    DataT sum01_10 = 0.;
+    for(size_t i = 0; i < testSize-1; i++) {
+      sum01_10 += buf1[i+1] * buf2[i];
+    }
+
+    DataT sum10_01 = 0.;
+    for(size_t i = 0; i < testSize-1; i++) {
+      sum10_01 += buf1[i] * buf2[i+1];
+    }
+
+    DataT sum00_11 = 0.;
+    for(size_t i = 0; i < testSize-1; i++) {
+      sum00_11 += buf1[i] * buf2[i];
+    }
+
+    DataT sum11_00 = 0.;
+    for(size_t i = 0; i < testSize-1; i++) {
+      sum11_00 += buf1[i+1] * buf2[i+1];
+    }
+    //test fast way
+
+    DataT fast00_00 = RavlBaseVectorN::DotProduct(buf1, buf2, testSize);
+    if(!IsSmall(RavlN::Abs(fast00_00 - sum00_00),1.0f,1e-7)) {
+      std::cerr << "Diff=" << RavlN::Abs(fast00_00 - sum00_00) << "\n";
+      return __LINE__;
+    }
+
+    DataT fast01_10 = RavlBaseVectorN::DotProduct(buf1+1, buf2, testSize-1);
+    if(!IsSmall(RavlN::Abs(fast01_10 - sum01_10),1.0f,1e-7)) {
+      std::cerr << "Diff=" << RavlN::Abs(fast01_10 - sum01_10) << "\n";
+      return __LINE__;
+    }
+
+    double fast10_01 = RavlBaseVectorN::DotProduct(buf1, buf2+1, testSize-1);
+    if(!IsSmall(RavlN::Abs(fast10_01 - sum10_01),1.0f,1e-7)) return __LINE__;
+
+    double fast00_11 = RavlBaseVectorN::DotProduct(buf1, buf2, testSize-1);
+    if(!IsSmall(RavlN::Abs(fast00_11 - sum00_11),1.0f,1e-7)) return __LINE__;
+
+    double fast11_00 = RavlBaseVectorN::DotProduct(buf1+1, buf2+1, testSize-1);
+    if(!IsSmall(RavlN::Abs(fast11_00 - sum11_00),1.0f,1e-7)) return __LINE__;
   }
-
-  DataT sum01_10 = 0.;
-  for(size_t i = 0; i < bufferLen-1; i++) {
-    sum01_10 += buf1[i+1] * buf2[i];
-  }
-
-  DataT sum10_01 = 0.;
-  for(size_t i = 0; i < bufferLen-1; i++) {
-    sum10_01 += buf1[i] * buf2[i+1];
-  }
-
-  DataT sum00_11 = 0.;
-  for(size_t i = 0; i < bufferLen-1; i++) {
-    sum00_11 += buf1[i] * buf2[i];
-  }
-
-  DataT sum11_00 = 0.;
-  for(size_t i = 0; i < bufferLen-1; i++) {
-    sum11_00 += buf1[i+1] * buf2[i+1];
-  }
-  //test fast way
-  DataT fast00_00 = RavlBaseVectorN::DotProduct(buf1, buf2, bufferLen);
-  if(RavlN::Abs(fast00_00 - sum00_00) > 1e-9) return __LINE__;
-
-  DataT fast01_10 = RavlBaseVectorN::DotProduct(buf1+1, buf2, bufferLen-1);
-  if(RavlN::Abs(fast01_10 - sum01_10) > 1e-9) return __LINE__;
-
-  double fast10_01 = RavlBaseVectorN::DotProduct(buf1, buf2+1, bufferLen-1);
-  if(RavlN::Abs(fast10_01 - sum10_01) > 1e-9) return __LINE__;
-
-  double fast00_11 = RavlBaseVectorN::DotProduct(buf1, buf2, bufferLen-1);
-  if(RavlN::Abs(fast00_11 - sum00_11) > 1e-9) return __LINE__;
-
-  double fast11_00 = RavlBaseVectorN::DotProduct(buf1+1, buf2+1, bufferLen-1);
-  if(RavlN::Abs(fast11_00 - sum11_00) > 1e-9) return __LINE__;
-
   return 0;
 }
 
@@ -86,13 +105,13 @@ int testConvolveKernel() {
           //create kernel
           for(size_t r = 0; r < kernRows; r++)
             for(size_t c = 0; c < kernCols; c++) {
-              kernel[r][c] = (r-c) * (r-c);
+              kernel[r][c] = (((r-c) * (r-c)) % 253)/255.0;
             }
 
           //create matrix
           for(size_t r = 0; r < matrRows; r++)
             for(size_t c = 0; c < matrCols; c++) {
-              matrix[r][c] = (r + c) / 2.;
+              matrix[r][c] = ((r + c)%253) / 255.0;
             }
 
 
@@ -111,7 +130,10 @@ int testConvolveKernel() {
               float resNew = 111;
               RavlBaseVectorN::ConvolveKernel(&(matrix[posRow][posCol]), &(kernel[0][0])  , kernRows, kernCols, matrCols*sizeof(float), &resNew);
 
-              if(RavlN::Abs(resNew - resOld) > 1e-9) return __LINE__;
+              if(!IsSmall(RavlN::Abs(resNew - resOld),resNew,1e-5)) {
+                std::cerr << "Diff=" << RavlN::Abs(resNew - resOld) << " New=" << resNew << " " << resOld << "\n";
+                return __LINE__;
+              }
             }
           }
         }
@@ -123,6 +145,10 @@ int testConvolveKernel() {
 
 int main(int nargs,char **argv) {
   int ln;
+  if((ln = testSimple()) != 0) {
+    cerr << "Error line :" << ln << "\n";
+    return 1;
+  }
   if((ln = testDotProduct<float>()) != 0) {
     cerr << "Error 'float' line :" << ln << "\n";
     return 1;
