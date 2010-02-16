@@ -59,7 +59,6 @@ int FileConv(int argc,char **argv)
   bool  listConv = option.Boolean("lc",false,"List all known conversions.");
   bool  listTypes = option.Boolean("lt",false,"List all known classes.");
   bool  ident    = option.Boolean("i",false,"Identify file. ");
-  bool usecompression = option.Boolean("usecomp",false,"Use compression with -comp arg.");
   IntT      noFrames = option.Int("len",-1,"Length of sequence. ");
   IntT      NoFrames = option.Int("nf",-1,"No. of frames in sequence.  -1 -> do all frames");
   IntT      startFrame = option.Int("sf",-1,"Where to start in sequence.-1=Default. ");
@@ -166,7 +165,7 @@ int FileConv(int argc,char **argv)
         cerr << "Error compression has to be in the range 1 to 31." << "\n";
         return 1;
     }
-    if(usecompression == true) {
+    if(option.IsOnCommandLine("comp")) {
        op.SetAttr("compression",compression);
     }
     // Get type to use in copy.
