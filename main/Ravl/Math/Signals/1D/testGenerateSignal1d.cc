@@ -53,7 +53,7 @@ int testBinomial() {
     if(res[3] != 4) return __LINE__;
     if(res[4] != 1) return __LINE__;
     
-    res = GenerateBinomial<RealT>(5,false,true);
+    res = GenerateBinomial<RealT>((SizeT)5,false,true);
     if(res[0] != 6) return __LINE__;
     //cerr << res;
   }

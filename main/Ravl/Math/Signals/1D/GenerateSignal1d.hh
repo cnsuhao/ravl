@@ -81,7 +81,7 @@ namespace RavlN {
 
   template<class DataT>
   Array1dC<DataT> GenerateBinomial(DataT seed,SizeT size, bool doNorm = false,bool centre = false)
-{ return GenerateBinomial<DataT>(size, doNorm, centre); }
+  { return GenerateBinomial<DataT>(size, doNorm, centre); }
   //! userlevel=Obsolete
   //Use this function instead:<br>
   //<code>  template<class DataT>  Array1dC<DataT> GenerateBinomial(SizeT size, bool doNorm = false,bool center = false, UIntT derivative = 0)</code>
