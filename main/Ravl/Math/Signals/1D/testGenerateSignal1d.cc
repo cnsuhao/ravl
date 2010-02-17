@@ -35,7 +35,7 @@ int main() {
 }
 
 int testGauss() {
-  Array1dC<RealT> res = GenerateGauss1d(1,0);
+  Array1dC<RealT> res = GenerateGauss1d((size_t)1,0);
   if(res.Size() != 5) return __LINE__;
   if(Abs(res[0] - 0.398942) > 0.00001) return __LINE__;
   return 0;
