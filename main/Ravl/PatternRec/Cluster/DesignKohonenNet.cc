@@ -152,13 +152,13 @@ namespace RavlN {
 	
 	// Use smoothing kernel. i.e. update nearest neighbours as well
 	else {
-	  for(UIntT i=0;i<_labels.Size();i++) {
+	  for(SizeT i=0;i<_labels.Size();i++) {
 	    r = _labels[i].Row().V();
 	    c = _labels[i].Col().V();
           
 	    if((r>=_rangeY[label][0]) && (r<=_rangeY[label][1]))
 	      if((c>=_rangeX[label][0]) && (c<=_rangeX[label][1]))
-		_weights[r][c] += ((it.Data() - _weights[r][c]) * _alpha);
+	        _weights[r][c] += ((it.Data() - _weights[r][c]) * _alpha);
 	  }     
 	} 
     
