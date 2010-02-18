@@ -5,34 +5,30 @@ namespace RavlBaseVectorN {
 
   using namespace RavlN;
   
-  static double BaseDotProductD(const double* v1, const double* v2, size_t Size) {
-    double sum = 0.0;
-    const double* ptr1 = v1;
-    const double* ptr2 = v2;
-    for(unsigned int i=Size; i>0; --i)
-      sum += *ptr1++ * *ptr2++;
+  static double BaseDotProductD(const double* v1, const double* v2, size_t size) {
+    register double sum = 0.0;
+    for(size_t i=0;i < size;i++)
+      sum += v1[i] * v2[i];
     return sum;  
   }
 
-  static float BaseDotProductF(const float* v1, const float* v2, size_t Size) {
-    float sum = 0.0;
-    const float* ptr1 = v1;
-    const float* ptr2 = v2;
-    for(unsigned int i=Size; i>0; --i)
-      sum += *ptr1++ * *ptr2++;
-    return sum;  
+  static float BaseDotProductF(const float* v1, const float* v2, size_t size) {
+    register float sum = 0.0;
+    for(size_t i=0;i < size;i++)
+      sum += v1[i] * v2[i];
+    return sum;
   }
   
   static double BaseQuadProductD(const double *Data, const double *Weights1,
                                const double *Weights2, size_t Size) {
-    double retVal = 0.;
+    register double retVal = 0.;
     const double* wPtr = Weights1;
     const double* w2Ptr = Weights2;
     const double* const ewPtr = wPtr + Size;
     const double* dPtr = Data;
     while(wPtr != ewPtr)
       {
-        const double val = *dPtr++;
+        register const double val = *dPtr++;
         retVal += val * (*wPtr++ + *w2Ptr++ * val);
       }
     return retVal;
@@ -46,7 +42,7 @@ namespace RavlBaseVectorN {
     const float* const ewPtr = wPtr + Size;
     const float* dPtr = Data;
     while(wPtr != ewPtr) {
-      const float val = *dPtr++;
+      register const float val = *dPtr++;
       retVal += val * (*wPtr++ + *w2Ptr++ * val);
     }
     return retVal;
@@ -149,7 +145,10 @@ namespace RavlBaseVectorN {
   }
 
 
-  static void ConvolveKernelF(const float *matrix,const float *kernel,unsigned int rows,unsigned int cols,unsigned int matrixByteStride,float *result) {
+  static void ConvolveKernelF(const float *matrix,
+                              const float *kernel,size_t rows,size_t cols,
+                              int matrixByteStride,float *result)
+  {
     register float ret = 0;
     const float *vi = matrix;
     const float *vk = kernel;
@@ -175,6 +174,6 @@ namespace RavlBaseVectorN {
   void (*g_MatrixTMulVectorD)(const double *,const double *,unsigned int ,unsigned int ,int ,double *) = &MatrixTMulVectorD;
   void (*g_MatrixTMulVectorF)(const float *,const float *,unsigned int ,unsigned int ,int ,float *) = &MatrixTMulVectorF;
   
-  void (*g_ConvolveKernelF)(const float *matrix,const float *kernel,unsigned int rows,unsigned int cols,unsigned int matrixByteStride,float *result) = &ConvolveKernelF;
+  void (*g_ConvolveKernelF)(const float *matrix,const float *kernel,size_t rows,size_t cols,int matrixByteStride,float *result) = &ConvolveKernelF;
 
 }

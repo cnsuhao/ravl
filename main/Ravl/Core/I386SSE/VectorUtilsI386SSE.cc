@@ -480,9 +480,9 @@ namespace RavlBaseVectorN {
 
   void SSEConvolveKernelF(const float *vi, // Scanned image, probably not aligned.
                           const float *vk, // Kernel, expected to be aligned.
-                          unsigned int rows,
-                          unsigned int cols,
-                          unsigned int byteStride,
+                          size_t rows,
+                          size_t cols,
+                          int byteStride,
                           float *result
                          )
   {
