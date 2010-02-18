@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2001, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -43,10 +43,10 @@ using namespace RavlN;
 
 int DoIdent(FilenameC fn); // Identify file.
 
-int FileConv(int argc,char **argv) 
-{  
+int FileConv(int argc,char **argv)
+{
   // Parse options.
-  
+
   OptionC   option(argc,argv);
   StringC   inType  = option.String("it","","Input file type. ");
   StringC   outType = option.String("ot","","Output file type. ");
@@ -59,50 +59,65 @@ int FileConv(int argc,char **argv)
   bool  listConv = option.Boolean("lc",false,"List all known conversions.");
   bool  listTypes = option.Boolean("lt",false,"List all known classes.");
   bool  ident    = option.Boolean("i",false,"Identify file. ");
+  bool use32BitMode = option.Boolean("32",false,"Force the use 32 bit mode. ");
+  bool use64BitMode = option.Boolean("64",false,"Force the use 64 bit mode. ");
+  bool usecompression = option.Boolean("usecomp",false,"Use compression with -comp arg.");
   IntT      noFrames = option.Int("len",-1,"Length of sequence. ");
   IntT      NoFrames = option.Int("nf",-1,"No. of frames in sequence.  -1 -> do all frames");
   IntT      startFrame = option.Int("sf",-1,"Where to start in sequence.-1=Default. ");
-  IntT      everyNth = option.Int("nth",1,"Frequence of frames to copy. 1=Every frame. ");
+  IntT      everyNth = option.Int("nth",1,"Frequency of frames to copy. 1=Every frame. ");
   IntT  compression = option.Int("comp",31,"Level of compression 1 - 31 with 1(high) 31(low).");
   FilenameC inFile  = option.String("","in.pgm","Input filename");
   FilenameC outFile = option.String("","out.pgm","Output filename");
-  
+
   option.If(seq,"len","a sequence is being processed. (-s) ");
   option.If(seq,"st","a sequence is being processed. (-s) ");
   option.If(seq,"nth","a sequence is being processed. (-s) ");
   option.DependXor("len nf");
-  option.Comment("NOTE: The automatic conversion path in this program isn't as clever as it could be, you may need to specifiy an intermidate type with the -ct for the program to work. ");
+  option.DependXor("32 64");
+  option.Comment("NOTE: The automatic conversion path in this program isn't as clever as it could be, you may need to specify an intermediate type with the -ct for the program to work. ");
   option.Check();
   if (option.IsOnCommandLine("nf")) noFrames = NoFrames;
-  
+
   // Do stuff for info options.
-  
+
   if(listForm)
     PrintIOFormats(cout);
   if(listConv)
     PrintIOConversions(cout);
   if(listTypes)
     PrintIOClassTypes(cout);
-  if(listConv || listForm || listTypes) 
+  if(listConv || listForm || listTypes)
     return 0; // If asked for format info, leave now.
-  
+
+  if(use32BitMode)
+    SetCompatibilityMode32Bit(true);
+  if(use64BitMode)
+    SetCompatibilityMode32Bit(false);
+  if(verb) {
+    if(DefaultToCompatibilityMode32Bit()) {
+      std::cout << "In 32 bit binary file mode. \n";
+    } else {
+      std::cout << "In 64 bit binary file mode. \n";
+    }
+  }
   // Identify what type a file is.
-  
-  if(ident) 
+
+  if(ident)
     return DoIdent(inFile);
-  
+
   // Do Copy.
-  
+
   RCWrapAbstractC dataHandle;
-  
+
   // Find intermidiate type.  typeid(void) == Any.
-  
+
   const type_info &iotype = RTypeInfo(classType);
   if(iotype == typeid(void) && classType != "void") {
     cerr << "ERROR: Class '" << classType << "' not known. \n";
     return 1;
   }
-  
+
   if(!seq) {
     // ---------------- Convert single file. ------------------
 
@@ -132,15 +147,15 @@ int FileConv(int argc,char **argv)
     if(!dataHandle.IsValid()) {
       cerr << "ERROR: Read failed. \n";
       return 1;
-    }  
+    }
     if(!typeInfo.Put(op,dataHandle)) {
       cerr << "ERROR: Write failed. \n";
       return 1;
-    }    
+    }
   } else {
     // ------------------ Convert sequence. ---------------------
     // Setup IO.
-    
+
     DPIPortBaseC ip;
     DPSeekCtrlC isc; // Input seek control.
     if(!OpenISequenceBase(ip,isc,inFile,inType,iotype,verb)) {
@@ -151,7 +166,7 @@ int FileConv(int argc,char **argv)
       if(!isc.IsValid())
 	cerr << "WARNING: Input stream not seekable. \n";
       else {
-	if(!isc.Seek(startFrame)) 
+	if(!isc.Seek(startFrame))
 	  cerr << "WARNING: Input stream seek failed. \n";
       }
     }
@@ -165,11 +180,11 @@ int FileConv(int argc,char **argv)
         cerr << "Error compression has to be in the range 1 to 31." << "\n";
         return 1;
     }
-    if(option.IsOnCommandLine("comp")) {
+    if(usecompression == true) {
        op.SetAttr("compression",compression);
     }
     // Get type to use in copy.
-    
+
     DPTypeInfoC typeInfo(TypeInfo(ip.InputType()));
     if(!typeInfo.IsValid()) {
       cerr << "ERROR: Don't know how to copy type '" << TypeName(iotype) << "' \n";
@@ -186,8 +201,8 @@ int FileConv(int argc,char **argv)
 	cerr << "Sequence length : ";
 	if(size == ((UIntT) -1))
 	  cerr << "Unknown";
-	else 
-	  cerr << size; 
+	else
+	  cerr << size;
 	cerr << "\n";
       }
       cerr << "Starting conversion:" << flush;
@@ -218,7 +233,7 @@ int FileConv(int argc,char **argv)
     } catch(DataNotReadyC &dnr) {
       if(verb)
 	cerr << "\n";
-      if(noFrames >= 0) 
+      if(noFrames >= 0)
 	cerr << "WARNING: Premature end of input. \n";
     }
   }
