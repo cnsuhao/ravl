@@ -403,7 +403,7 @@ int testBitStream() {
   return 0;
 }
 
-UIntT writeCount = 0;
+SizeT writeCount = 0;
 bool WriteMethod(const char *data,SizeT len) {
   std::cerr << "Write:" << len << "\n";
   writeCount += len;
