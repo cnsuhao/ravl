@@ -28,7 +28,7 @@ namespace RavlN {
   
   RealT MatrixC::Det() const {
     RavlAssertMsg(Rows() == Cols(),"Can only find the determinant of square matrices.\n");
-    switch(Rows()) {
+    switch(static_cast<size_t>(Rows())) {
     case 0: return 0;
     case 1: return (*this)[0][0];
     case 2: return (*this)[0][0] * (*this)[1][1] - (*this)[1][0] * (*this)[0][1];

@@ -28,7 +28,7 @@ namespace RavlN {
       return MatrixC();
     }
     // Take care of special cases.
-    switch(Cols()) 
+    switch(static_cast<size_t>(Cols()))
       {
       case 2: {
 	det = (*this)[0][0]*(*this)[1][1]-(*this)[0][1]*(*this)[1][0];

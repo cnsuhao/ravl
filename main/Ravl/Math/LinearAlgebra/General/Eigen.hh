@@ -361,7 +361,11 @@ namespace RavlN
 	    f = f + h;
    
 	    // Implicit QL transformation.
-   
+
+	    // This can happen if there are nan's in the matrix.
+	    if((unsigned) m >= d.Size())
+	      throw ExceptionOperationFailedC("Failed to compute eigen values. ");
+
 	    p = d[m];
 	    NumT c = 1.0;
 	    NumT c2 = c;
