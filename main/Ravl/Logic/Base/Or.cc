@@ -183,7 +183,7 @@ namespace RavlLogicN {
     ONDEBUG(cerr << "Size=" << size << "\n");
     SArray1dC<LiteralC> arr(size+1);
     arr[0] = literalOr;
-    UIntT at = 1;
+    SizeT at = 1;
     if(a1.IsValid()) {
       for(SArray1dIter2C<LiteralC,LiteralC> it(a1.Terms().After(0),arr.From(at));it;it++)
 	it.Data2() = it.Data1();
