@@ -15,6 +15,7 @@
 #include "Ravl/PatternRec/DataSet2.hh"
 #include "Ravl/PatternRec/SampleVector.hh"
 #include "Ravl/PatternRec/SampleLabel.hh"
+#include "Ravl/PatternRec/SampleStreamVectorLabel.hh"
 #include "Ravl/MeanCovariance.hh"
 
 namespace RavlN {
@@ -33,6 +34,10 @@ namespace RavlN {
       : DataSet2BodyC<SampleVectorC,SampleLabelC>(vec,lab)
     {}
     //: Constructor
+
+    DataSetVectorLabelBodyC(SampleStreamVectorLabelC & sampleStream);
+    //: Construct from a sample stream. Note if dataset is large it will copy it all into memory
+
     
     SArray1dC<SampleVectorC> SeperateLabels() const;
     //: Create a seperate sample for each label.

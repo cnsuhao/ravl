@@ -14,6 +14,8 @@
 
 #include "Ravl/PatternRec/DataSet1.hh"
 #include "Ravl/PatternRec/Sample.hh"
+#include "Ravl/PatternRec/SampleIter.hh"
+#include "Ravl/PatternRec/SampleStream.hh"
 #include "Ravl/Vector.hh"
 #include "Ravl/DArray1dIter2.hh"
 
@@ -50,6 +52,15 @@ namespace RavlN {
     void Append(const DataSet2C<Sample1T,Sample2T> &data);
     //: Append a data set.
     // Note that the entries are not copied
+
+    void Append(const SampleC<Element1T> & sample1, const Element2T & sample2);
+    //: Append a sample of inputs and assign the output as the same for all inputs
+    
+    void Append(SampleStream2C<Element1T, Element2T> & data);
+    //: Append a sample stream
+
+    void Append(SampleStreamC<Element1T> & sample1, const Element2T & sample2);
+    //: Append a sample stream of inputs and assign the output as the same for all inputs
     
     DataSet2C<Sample1T,Sample2T> ExtractSample(RealT proportion);
     //: Extract a sample.
@@ -135,6 +146,18 @@ namespace RavlN {
     { Body().Append(data); }
     //: Append a data set to this one
     // Note that the elements are not copied
+
+    void Append(const SampleC<Element1T> & sample1, const Element2T & element2)
+    { Body().Append(sample1, element2); }
+    //: Append a sample of inputs and assign the output as the same for all inputs
+    
+    void Append(SampleStream2C<Element1T, Element2T> & data)
+    { Body().Append(data); }
+    //: Append a sample stream
+
+    void Append(SampleStreamC<Element1T> & sample1, const Element2T & sample2)
+    { Body().Append(sample1, sample2); }
+    //: Append a sample stream of inputs and assign the output as the same for all inputs
     
     DataSet2C<Sample1T,Sample2T> ExtractSample(RealT proportion)
     { return Body().ExtractSample(proportion); }
@@ -204,6 +227,26 @@ namespace RavlN {
     samp2.Append(data.Sample2());
   }
 
+  template<class Sample1T,class Sample2T>
+  void DataSet2BodyC<Sample1T,Sample2T>::Append(const SampleC<Element1T> & sample, const Element2T & output) {
+    for(SampleIterC<Element1T>it(sample);it;it++)
+      Append(*it, output);
+  }
+  
+  template<class Sample1T,class Sample2T>
+  void DataSet2BodyC<Sample1T,Sample2T>::Append(SampleStream2C<Element1T, Element2T> & strm) {
+    Tuple2C<Element1T, Element2T>data;
+    while(strm.Get(data))
+      this->Append(data.Data1(), data.Data2());
+  }
+  
+  template<class Sample1T,class Sample2T>
+  void DataSet2BodyC<Sample1T,Sample2T>::Append(SampleStreamC<Element1T> & strm, const Element2T & output) {
+    Element1T data;    
+    while(strm.Get(data))
+      this->Append(data, output);
+  }
+  
   template<class Sample1T,class Sample2T>
   DataSet2C<Sample1T,Sample2T> DataSet2BodyC<Sample1T,Sample2T>::ExtractSample(RealT proportion) {
     RavlAssert(proportion >= 0 && proportion <= 1);

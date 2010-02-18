@@ -17,6 +17,18 @@
 
 namespace RavlN {
 
+
+
+  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(SampleStreamVectorLabelC & sampleStream)
+    : DataSet2BodyC<SampleVectorC,SampleLabelC>(1000)    
+  {    
+    Tuple2C<VectorC, UIntT>data;
+    while(sampleStream.Get(data)) {
+      Append(data.Data1(), data.Data2());
+    }    
+  }
+
+  
   //: Create a seperate sample for each label.
   
   SArray1dC<SampleVectorC> DataSetVectorLabelBodyC::SeperateLabels() const {
