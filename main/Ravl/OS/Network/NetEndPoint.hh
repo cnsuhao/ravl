@@ -214,6 +214,7 @@ namespace RavlN {
       BufOStreamC os;
       BinOStreamC bos(os);
       bos.UseBigEndian(useBigEndianBinStream);
+      bos.SetCompatibilityMode32Bit(use32mode);
       bos << id << dat1;
       return Transmit(NetPacketC(os.Data()));
     }
@@ -224,6 +225,7 @@ namespace RavlN {
       BufOStreamC os;
       BinOStreamC bos(os);
       bos.UseBigEndian(useBigEndianBinStream);
+      bos.SetCompatibilityMode32Bit(use32mode);
       bos << id << dat1 << dat2;
       return Transmit(NetPacketC(os.Data()));
     }
@@ -234,6 +236,7 @@ namespace RavlN {
       BufOStreamC os;
       BinOStreamC bos(os);
       bos.UseBigEndian(useBigEndianBinStream);
+      bos.SetCompatibilityMode32Bit(use32mode);
       bos << id << dat1 << dat2  << dat3;
       return Transmit(NetPacketC(os.Data()));
     }
@@ -244,6 +247,7 @@ namespace RavlN {
       BufOStreamC os;
       BinOStreamC bos(os);
       bos.UseBigEndian(useBigEndianBinStream);
+      bos.SetCompatibilityMode32Bit(use32mode);
       bos << id << dat1 << dat2  << dat3 << dat4;
       return Transmit(NetPacketC(os.Data()));
     }
@@ -471,6 +475,7 @@ namespace RavlN {
     NetClientInfoC localInfo; // Info for this application.
     NetClientInfoC peerInfo;  // Info for remote application.
     bool useBigEndianBinStream;
+    bool use32mode;
     IntT pingSeqNo;          // Sequence number used for pings.
     bool optimiseThroughput; // Optimise through put at the expense of latency.
     bool threadsStarted;

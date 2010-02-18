@@ -46,6 +46,7 @@ namespace RavlN {
       sigConnectionBroken(true),
       peerInfo("Unknown","-"),
       useBigEndianBinStream(RAVL_BINSTREAM_ENDIAN_BIG),
+      use32mode(true),
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput),
       threadsStarted(false),
@@ -69,6 +70,7 @@ namespace RavlN {
       sigConnectionBroken(true),
       peerInfo("Unknown","-"),
       useBigEndianBinStream(RAVL_BINSTREAM_ENDIAN_BIG),
+      use32mode(true),
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput),
       threadsStarted(false),
@@ -92,6 +94,7 @@ namespace RavlN {
       localInfo(protocolName,protocolVersion),
       peerInfo("Unknown","-"),
       useBigEndianBinStream(RAVL_BINSTREAM_ENDIAN_BIG),
+      use32mode(true),
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput ),
       threadsStarted(false),
@@ -137,6 +140,7 @@ namespace RavlN {
       sigConnectionBroken(true),
       peerInfo("Unknown","-"),
       useBigEndianBinStream(RAVL_BINSTREAM_ENDIAN_BIG),
+      use32mode(true),
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput),
       threadsStarted(false),
@@ -313,12 +317,13 @@ namespace RavlN {
     return true;
   }
 
-  //: Send a 0 paramiter message.
+  //: Send a 0 parameter message.
   
   bool NetEndPointBodyC::Send(UIntT id) {
     BufOStreamC os;
     BinOStreamC bos(os);
     bos.UseBigEndian(useBigEndianBinStream);
+    bos.SetCompatibilityMode32Bit(use32mode);
     bos << id ;
     Transmit(NetPacketC(os.Data()));
     return true;
@@ -583,6 +588,7 @@ namespace RavlN {
     BinIStreamC is(pkt.DecodeStream());
     is.SetArraySizeLimit(pkt.Size()); // Limit loaded array size to number of bytes in packet.
     is.UseBigEndian(useBigEndianBinStream);
+    is.SetCompatibilityMode32Bit(use32mode);
     UIntT msgTypeID = 0;
     is >> msgTypeID;
     ONDEBUG(SysLog(SYSLOG_DEBUG) << "Incoming packet type id:" << msgTypeID );
