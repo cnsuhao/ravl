@@ -171,7 +171,7 @@ namespace RavlN {
       // Align memory
       char *buf = reinterpret_cast<char *>(&(this[1]));
       SizeT alignm1 = align-1;
-      this->buff = reinterpret_cast<DataT *>(buf + ((align - (((SizeT) buf) & alignm1)) & alignm1));
+      this->buff = reinterpret_cast<DataT *>(buf + ((align - (((size_t) buf) & alignm1)) & alignm1));
       
       // Construct array
 #if RAVL_COMPILER_GCC43

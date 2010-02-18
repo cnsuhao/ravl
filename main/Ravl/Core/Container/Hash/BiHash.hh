@@ -135,7 +135,7 @@ namespace RavlN {
     }
     //: Delete a mapping from the table, using d2 as the key.
     
-    UIntT Size() const
+    SizeT Size() const
     { return hmap1.Size(); }
     //: Get number of mappings.
 

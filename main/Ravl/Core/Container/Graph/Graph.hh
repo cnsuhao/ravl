@@ -93,12 +93,12 @@ namespace RavlN {
     //: Inserts one egde to the graph. 
     // Returns an edge iterator pointing to the new element.
     
-    UIntT NoNodes() const
+    SizeT NoNodes() const
     { return Nodes().Size(); }
     //: Count the number of nodes in the graph.
     // This actuall iterates through the list and so is slow.
     
-    UIntT NoEdges() const
+    SizeT NoEdges() const
     { return Edges().Size(); }
     //: Count the number of edges in the graph.
     // This actuall iterates through the list and so is slow.

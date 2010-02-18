@@ -75,7 +75,17 @@ namespace RavlN {
 	       const BufferAccessC<Data3T> &buff3,const IndexRangeC &rng3);
     //: Goto first element.
     // returns true if there is a first element.
-    
+
+    bool First(const BufferAccessC<Data1T> &buff1,const SizeT &rng1,
+               const BufferAccessC<Data2T> &buff2,const SizeT &rng2,
+               const BufferAccessC<Data3T> &buff3,const SizeT &rng3)
+    { return First(buff1,IndexRangeC(rng1),
+                    buff2,IndexRangeC(rng2),
+                    buff3,IndexRangeC(rng3));
+    }
+    //: Goto first element.
+    // returns true if there is a first element.
+
     bool First(const BufferAccessC<Data1T> &buff,
 	       const BufferAccessC<Data2T> &buff2,
 	       const BufferAccessC<Data3T> &buff3,

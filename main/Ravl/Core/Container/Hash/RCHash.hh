@@ -105,7 +105,7 @@ namespace RavlN {
     //: Insert Data with Key.
     // Returns: True=Member existed already. False=New one was added.
     
-    inline UIntT Size() const 
+    inline SizeT Size() const
     { return this->Data().Size(); }
     //: Get number of elements in table.
     
@@ -162,7 +162,7 @@ namespace RavlN {
     // of equivlent keys (think strings.) to save memory.
     // Returns true if key exists in the table, false otherwise.
     
-    UIntT Hash() const
+    SizeT Hash() const
     { return this->Data().Hash(); }
     //: Compute hash value for table.
     

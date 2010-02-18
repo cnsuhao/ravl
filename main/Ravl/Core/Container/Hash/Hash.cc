@@ -39,9 +39,9 @@ namespace RavlN {
   
   // Hash function based on one found in the GNU gcc compiler.
   
-  UIntT StdHash(const char *str)  {
-    register unsigned int hash = 0;
-    register unsigned int c;
+  size_t StdHash(const char *str)  {
+    register size_t hash = 0;
+    register size_t c;
     const char *s = str;
     while (*s != 0) {
       c = *s++;

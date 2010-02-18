@@ -75,10 +75,10 @@ namespace RavlN {
       rng2b = IndexRangeC(0,size2b-1);
       rng3b = IndexRangeC(0,size3b-1);
       rit.First(pbufa,size1a,
-		pbufb,size1b);
+                pbufb,size1b);
       if(rit.IsElm())
 	return sit.First(rit.Data1(),size2a,size3a,
-			 rit.Data2(),size2b,size3b);
+	                  rit.Data2(),size2b,size3b);
       sit.Invalidate();
       return false;
     }

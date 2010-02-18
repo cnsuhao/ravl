@@ -234,7 +234,7 @@ namespace RavlN {
 						const type_info &obj_type,
 						bool verbose
 						) {
-    ONDEBUG(cerr << "FindInputFormat(), Fn:'" << filename << "' Format:'" << format << "'  Type : " << TypeName(obj_type) << "  Verb:" << verbose << "\n");
+    ONDEBUG(cerr << "FindInputFormat(), Fn:'" << filename << "' Format:'" << format << "'  Loading into type : " << TypeName(obj_type) << "  Verb:" << verbose << "\n");
 
     if(filename.length() == 0) {
       cerr<< "FileFormatRegistryBodyC::FindInputFormat(), Filename too short. \n";

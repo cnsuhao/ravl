@@ -128,7 +128,7 @@ namespace RavlN {
     // false is returned and the paramiters are unchanged.
     
     bool Insert(const KeyT &key,const DataT &data,bool bump = true) {
-      UIntT hashVal;
+      SizeT hashVal;
       HashElemC<KeyT,CacheEntryC<DataT> > *elem = LookupHV(key,hashVal);
       if(elem != 0) {
 	elem->Data().Data() = data;

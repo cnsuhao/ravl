@@ -102,6 +102,8 @@ int BasicTest() {
   }
   
   Array1dC<IntT> a2(0);
+  if(a2.Size() != 0) return __LINE__;
+
   Array1dC<IntT> ax2(a2);
   a2.Append(a1);
   a2.Append(arr1);

@@ -35,7 +35,7 @@ namespace RavlN {
     : public DLinkC // Link in list of all faces.
   {
   public:
-    HEMeshBaseFaceBodyC(UIntT nid = 0)
+    HEMeshBaseFaceBodyC(size_t nid = 0)
       : edge(0),
 	id(nid)
     {}
@@ -175,7 +175,7 @@ namespace RavlN {
     { Body().SetEdge(nedge); }
     //: Set first edge.
     
-    UIntT Hash() const
+    SizeT Hash() const
     { return StdHash(static_cast<const void *>(body)); }
     //: Hash value for handle.
     

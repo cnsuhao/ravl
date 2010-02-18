@@ -312,7 +312,7 @@ namespace RavlN {
     { return Prev().SourceVertex(); }
     //: Access vertex this edge comes from.
     
-    UIntT Hash() const
+    SizeT Hash() const
     { return StdHash(static_cast<const void *>(body)); }
     //: Hash value for handle.
     

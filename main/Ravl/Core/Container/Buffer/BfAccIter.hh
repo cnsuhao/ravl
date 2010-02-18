@@ -39,10 +39,10 @@ namespace RavlN {
     { First(buff,rng); }
     //: Constructor.
     
-    inline BufferAccessIterC(const BufferAccessC<DataT> &buff,UIntT size)
+    inline BufferAccessIterC(const BufferAccessC<DataT> &buff,SizeT size)
     { First(buff,size); }
     //: Constructor.
-    
+
     inline BufferAccessIterC(const RangeBufferAccessC<DataT> &buff)
     { First(buff); }
     //: Construct iterator at 'element' of buffer 'buff'.

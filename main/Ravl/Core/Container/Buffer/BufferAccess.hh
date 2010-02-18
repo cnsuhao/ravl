@@ -67,14 +67,22 @@ namespace RavlN {
     { return buff[i]; }
     // Read-write access  to the 'i'-th element of the buffer. 
 
-    inline const DataT  & operator[](IndexC i) const
+    inline const DataT  & operator[](const IndexC &i) const
     { return buff[i.V()]; }
     // Read-only access to the 'i'-th element of the buffer.     
     
-    inline DataT & operator[](IndexC i)
+    inline DataT & operator[](const IndexC &i)
     { return buff[i.V()]; }
     // Read-write access  to the 'i'-th element of the buffer. 
+
+    inline const DataT  & operator[](const SizeC &i) const
+    { return buff[i.V()]; }
+    // Read-only access to the 'i'-th element of the buffer.
     
+    inline DataT & operator[](const SizeC &i)
+    { return buff[i.V()]; }
+    // Read-write access  to the 'i'-th element of the buffer.
+
     const BufferAccessC<DataT> &operator+=(IndexC ind) { 
       buff += ind.V();
       return *this;

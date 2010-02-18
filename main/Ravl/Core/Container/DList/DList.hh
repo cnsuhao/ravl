@@ -168,7 +168,7 @@ namespace RavlN {
     bool Contains(const DataT &x) const;
     //: Test if this list contains an element == to 'x'.
     
-    UIntT Hash() const;
+    SizeT Hash() const;
     //: Generate a hash number for the list.
     
   protected:    
@@ -338,7 +338,7 @@ namespace RavlN {
     { return Body().IsEmpty(); }
     //: Test is the list is empty.
     
-    UIntT Size() const
+    SizeT Size() const
     { return Body().Size(); }
     //: Count the number of elements in the list.
     // This is slow! It goes through the list counting the elements.
@@ -473,7 +473,7 @@ namespace RavlN {
     // 0 is the first element, 1 the second etc.
     // -1 is the last, -2 second from last.
     
-    UIntT Hash() const
+    SizeT Hash() const
     { return Body().Hash(); }
     //: Generate a hash number for the list.
     
@@ -491,7 +491,7 @@ namespace RavlN {
   
   template<class DataT> 
   DListBodyC<DataT>::DListBodyC(istream &strm) {
-    UIntT i;
+    SizeT i;
     Empty();
     strm >> i;
     for(;i > 0;i--) {
@@ -505,7 +505,7 @@ namespace RavlN {
   
   template<class DataT> 
   DListBodyC<DataT>::DListBodyC(BinIStreamC &strm) {
-    UIntT i;
+    UInt32T i; // FIXME:-Should be SizeT. UInt32T Used for backward compatibility.
     Empty();
     strm >> i;
     for(;i > 0;i--) {
@@ -528,7 +528,8 @@ namespace RavlN {
   
   template<class DataT> 
   void DListBodyC<DataT>::Save(BinOStreamC &strm) const {
-    strm << Size();
+    UInt32T elements = Size(); // FIXME:- SHould be saved as a SizeT. Used for backward compatibility.
+    strm << elements;
     for(DLIterC<DataT> it(*this);it;it++)
       strm << *it;
   }
@@ -578,8 +579,8 @@ namespace RavlN {
   //: Generate a hash number for the list.
   
   template<class DataT>
-  UIntT DListBodyC<DataT>::Hash() const {
-    UIntT ret = Size();
+  SizeT DListBodyC<DataT>::Hash() const {
+    SizeT ret = Size();
     for(DLIterC<DataT> it(*this);it;it++)
       ret += StdHash(it.Data()) ^ (ret >> 1) ;
     return ret;

@@ -70,7 +70,16 @@ namespace RavlN {
     }
     //: Goto first element.
     // returns true if there is one.
-    
+
+    bool First(const BufferAccessC<BufferAccessC<Data1T> > &pbufa,const SizeT &nrng1a,const SizeT &nrng2a,
+               const BufferAccessC<BufferAccessC<Data2T> > &pbufb,const SizeT &nrng1b,const SizeT &nrng2b,
+               const BufferAccessC<BufferAccessC<Data3T> > &pbufc,const SizeT &nrng1c,const SizeT &nrng2c)
+    {
+      return First(pbufa,IndexRangeC(nrng1a),IndexRangeC(nrng2a),
+                    pbufb,IndexRangeC(nrng1b),IndexRangeC(nrng2b),
+                    pbufc,IndexRangeC(nrng1c),IndexRangeC(nrng2c));
+    }
+
     bool First(const RangeBufferAccessC<BufferAccessC<Data1T> > &pbuf1,const IndexRangeC &nrng1,
 	       const RangeBufferAccessC<BufferAccessC<Data2T> > &pbuf2,const IndexRangeC &nrng2,
 	       const RangeBufferAccessC<BufferAccessC<Data3T> > &pbuf3,const IndexRangeC &nrng3) {
@@ -85,6 +94,7 @@ namespace RavlN {
     }
     //: Goto first element.
     // returns true if there is one.
+
     
     bool First(const SizeBufferAccessC<BufferAccessC<Data1T> > &pbuf1,SizeT size1,
 	       const SizeBufferAccessC<BufferAccessC<Data2T> > &pbuf2,SizeT size2,

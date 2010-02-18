@@ -161,7 +161,7 @@ namespace RavlN {
     { return head.IsSelfPointing(); }
     //: Is list empty ?
     
-    UIntT Size() const;
+    SizeT Size() const;
     //: Count the number of elements in the list.
     // This is of order N, where N is the number of elements in
     // the list.
@@ -213,7 +213,7 @@ namespace RavlN {
     { at.Unlink(); head.LinkBef(at);  }
     //: Move the item 'at' to the back of this list
     
-    DLinkC** MergeSortInternal(DLinkC** chead,UIntT n,MergeSortInterCmpT ms,void *pass);
+    DLinkC** MergeSortInternal(DLinkC** chead,SizeT n,MergeSortInterCmpT ms,void *pass);
     //: Merge sort the list using given comparison function.
     
     DLinkC head; // Head of list.
