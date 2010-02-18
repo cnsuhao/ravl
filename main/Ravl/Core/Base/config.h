@@ -1,4 +1,4 @@
-/* This file is part of RAVL, Recognition And Vision Library 
+/* This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2001, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -21,7 +21,7 @@
 #endif
 /****************************************/
 /******** RAVL Paranoid checking. ********
- * These checks may significantly slow code, but are helpful when looking for more 
+ * These checks may significantly slow code, but are helpful when looking for more
  * obscure bugs.
  */
 #ifdef QMAKE_PARANOID
@@ -65,15 +65,15 @@
 #define RAVL_OS_WIN32   defined(WIN32)      /* Windows platform. */
 #define RAVL_OS_IRIX    defined(__sgi__)    /* IRIX.      */
 #define RAVL_OS_SOLARIS defined(__sun)      /* Solaris.   */
-#define RAVL_OS_SOLARIS7 defined(__sol2_7__)/* Solaris. 2.5.7 */  
-#define RAVL_OS_SOLARIS9 defined(__sol2_9__)/* Solaris. 2.5.9 */   
+#define RAVL_OS_SOLARIS7 defined(__sol2_7__)/* Solaris. 2.5.7 */
+#define RAVL_OS_SOLARIS9 defined(__sol2_9__)/* Solaris. 2.5.9 */
 #define RAVL_OS_MACOSX  defined(__APPLE__)  /* Mac OS-X */
 #define RAVL_OS_FREEBSD defined(__FreeBSD__) /* FreeBSD */
 
 #define RAVL_OS_OSF     defined(__osf__)   /* OSF.       */
 #define RAVL_OS_CYGWIN  defined(__CYGWIN__) /* Cygwin is a windows/unix hybrid */
 #else
-/* Unfortunately the Visual C++ preprocessor doesn't accept defined() as anything but part 
+/* Unfortunately the Visual C++ preprocessor doesn't accept defined() as anything but part
    of an #if or #elif so the compiler selection breaks. Here are the settings for a windows box.
 */
 #define RAVL_COMPILER_GCC       0
@@ -140,7 +140,7 @@
 /* Setting the following define to 1 will switch various routines to
  * use multi-thread implementations. Unfortunately this may mean changing
  * the USESLIBS to include the RavlThreads library for the directories
- * concerned. This is off by default as it generates slower code for single 
+ * concerned. This is off by default as it generates slower code for single
  * processor systems.
  */
 #define RAVL_USE_PARALLEL 0
@@ -269,8 +269,8 @@
 #endif
 
 /********************************************************************************/
-/* Sort out some flags to ensure we get the right functions from the system 
- * headers. 
+/* Sort out some flags to ensure we get the right functions from the system
+ * headers.
  */
 
 #if (!RAVL_OS_IRIX && !RAVL_OS_FREEBSD)
