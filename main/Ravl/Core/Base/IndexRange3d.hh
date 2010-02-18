@@ -163,7 +163,7 @@ namespace RavlN {
     //: Get size of range as an Index3dC.
     
     inline SizeT Volume() const
-    { return (SizeT) Is() * Js() * Ks(); }
+    { return static_cast<SizeT>(Is() * Js() * Ks()); }
     //: Returns the volume of the prism expressed in number of indexs.
     
     inline IndexRange3dC Dilate() const 
@@ -303,8 +303,8 @@ namespace RavlN {
                            Range3().AlignWithin(alignment)); }
     //: Return a range within this range that has start and end points which are integer multples of 'alignment' 
     
-    UIntT Hash() const {
-      UIntT ret = is.Hash();
+    SizeT Hash() const {
+      SizeT ret = is.Hash();
       ret += ret << 11;
       ret += js.Hash();
       ret += ret << 11;
