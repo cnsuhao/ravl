@@ -11,7 +11,8 @@
 
 namespace RavlN {
   
-  FuncOStreamBufC::FuncOStreamBufC(const CallFunc2C<const char *,SizeT> &writeCall, SizeT bufferSize)
+  FuncOStreamBufC::FuncOStreamBufC(const CallFunc2C<const char *,SizeT> &writeCall,
+                                     const SizeT bufferSize)
     : m_buffer(NULL),
       m_bufferSize(0),
       m_write(writeCall)
@@ -111,7 +112,7 @@ namespace RavlN {
     memmove(m_buffer+(4-nPutback),gptr() - nPutback,nPutback); // removed std:: for gcc 4.3
     char *buf = m_buffer+4;
     SizeT rnum = m_bufferSize-4;
-    SizeT num = m_read.Call(buf,rnum);
+    size_t num = m_read.Call(buf,rnum);
     RavlAssert(num <= rnum);
     if(num == 0)
       return EOF;
