@@ -36,7 +36,7 @@ namespace RavlN {
   public:
     RankedScoreArrayC(SizeT n = 1, const KeyT &Threshold = KeyT(-INFINITY))
       : N(n),
-        m_results(n >= 1 ? n : 1),
+        m_results(n >= 1 ? n : SizeT(1)),
         m_worseAcceptableScore(Threshold)
     {
       RavlAssert(n > 0);
