@@ -13,6 +13,7 @@
 #include "Ravl/ObsVectorBiGaussian.hh"
 #include "Ravl/Vector3d.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/Point2d.hh"
 
 namespace RavlN {
 
