@@ -582,7 +582,7 @@ namespace RavlN {
   StringC AutoPortGeneratorBodyC::MakeFilename(const StringC &obj) {
     StringC ret;
     if(!outputDir.IsEmpty()) {
-      if(outputDir[outputDir.Size()-1] != filenameSeperator)
+      if(outputDir.lastchar() != filenameSeperator)
         ret = outputDir + filenameSeperator + filePattern;
     }
     else
