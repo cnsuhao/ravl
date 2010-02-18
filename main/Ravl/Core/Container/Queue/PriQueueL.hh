@@ -93,7 +93,7 @@ namespace RavlN {
     //!bug: NOT IMPLEMENTED
     // Returns True if found.
     
-    int Size() const ;
+    SizeT Size() const ;
     //: Get number of items in queue. Slow !!!
     
 #if RAVL_PRIQUEUEL_DEBUG  
@@ -365,7 +365,7 @@ namespace RavlN {
   // Get number of items in queue, slow !
   
   template <class KeyT,class DataT>
-  int PriQueueLBodyC<KeyT,DataT>::Size() const {
+  SizeT PriQueueLBodyC<KeyT,DataT>::Size() const {
     if(root == 0)
       return 0;
     return root->Size();

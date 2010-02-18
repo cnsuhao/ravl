@@ -107,7 +107,7 @@ namespace RavlN {
     //!bug: NOT IMPLEMENTED
     // Returns True if found.
     
-    UIntT Size(void) const 
+    SizeT Size(void) const
     { return Array().Size(); }
     //: Get number of items in queue.
     
@@ -133,14 +133,14 @@ namespace RavlN {
   template <class KeyT,class DataT>
   void PriQueueC<KeyT,DataT>::DelTop(void) {
     SDArray1dC<Tuple2C<KeyT,DataT> > &arr = Array();
-    UIntT child;
-    const UIntT tsize = arr.Size() - 1;
+    SizeT child;
+    const SizeT tsize = arr.Size() - 1;
     if(tsize == 0) {
       arr.Chop();
       return ;
     }
     Tuple2C<KeyT,DataT> lastelem = arr[tsize];
-    UIntT i;
+    SizeT i;
     for(i = 1;i * 2 <= tsize;i = child+1) {
       child = (i * 2) - 1;
       if((child != tsize) && arr[child+1].Data1() < arr[child].Data1())
@@ -171,8 +171,7 @@ namespace RavlN {
   template <class KeyT,class DataT>
   void PriQueueC<KeyT,DataT>::Insert(const Tuple2C<KeyT,DataT> &dat) {
     SDArray1dC<Tuple2C<KeyT,DataT> > &arr = Array();
-    UIntT i;
-    i = arr.Size() + 1;
+    SizeT i = arr.Size() + 1;
     if(i == 1) { // First in queue ?
       arr.Add(dat);
       return ;
@@ -194,7 +193,7 @@ namespace RavlN {
   
   template <class KeyT,class DataT>
   bool PriQueueC<KeyT,DataT>::Check() {
-    for(UIntT i = 1;i < Size();i++) {
+    for(SizeT i = 1;i < Size();i++) {
       RavlAssert(Array()[((i+1)/2)-1].Data1() < Array()[i].Data1());
     }
     return true;
