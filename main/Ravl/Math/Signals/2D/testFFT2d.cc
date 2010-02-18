@@ -110,7 +110,7 @@ int testFFT2d() {
   SArray2dC<ComplexC> A = fftf2nd.Apply(a);
 
   //cout << "A: " << A << endl;
-  A *= a.Size1() * a.Size2();
+  A *= (size_t)(a.Size1() * a.Size2());
   //cout << "A after multiplying by number of elements: " << A << endl;
 
   // Values from MatLab v6
@@ -135,7 +135,7 @@ int testFFT2d() {
 
   //: Check inverse FFT is as expected for known values
   //===================================================
-  A /= a.Size1() * a.Size2();
+  A /= (size_t)(a.Size1() * a.Size2());
   //cout << "A for ifft to get return_a: " << A << endl;
 
   FFT2dC ffti2nd(A.Size1(), A.Size2(), true); // create inverse transform.
