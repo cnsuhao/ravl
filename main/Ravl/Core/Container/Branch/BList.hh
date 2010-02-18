@@ -74,7 +74,7 @@ namespace RavlN {
     { return !list.IsValid(); }
     //: Is list empty ?
     
-    UIntT Size() const;
+    SizeT Size() const;
     //: Count the number of elements in the list.
     
     void Empty()
@@ -95,8 +95,8 @@ namespace RavlN {
   //: Count the number of elements in the list.
   
   template<class DataT>
-  UIntT BListC<DataT>::Size() const {
-    UIntT ret = 0;
+  SizeT BListC<DataT>::Size() const {
+    SizeT ret = 0;
     for(const BLinkBodyC<DataT> *place = list.BodyPtr();place != 0;place = place->Next().BodyPtr())
       ret++;
     return ret;

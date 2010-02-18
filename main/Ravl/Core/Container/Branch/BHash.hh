@@ -112,7 +112,7 @@ namespace RavlN {
     bool IsElm(const KeyT &key) const;
     //: Is 'key' an key in the table ?
     
-    UIntT Size() const
+    SizeT Size() const
     { return entries; }
     //: Return the number of entries in the table.
     
@@ -127,14 +127,14 @@ namespace RavlN {
     // otherwise return 0.
     
   protected:
-    BHashC(const SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > &newTable,UIntT newEntries)
+    BHashC(const SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > &newTable,SizeT newEntries)
       : table(newTable),
 	entries(newEntries)
     {}
     //: Constructor.
     
     SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > table;
-    UIntT entries;
+    SizeT entries;
     friend class BHashIterC<KeyT,DataT>;
   };
   

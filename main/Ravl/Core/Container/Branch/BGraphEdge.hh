@@ -60,7 +60,7 @@ namespace RavlN {
     bool operator==(const BGraphEdgeC &oth) const { return &oth == this; }
     // Are they the same edge ?
     
-    UIntT Hash() const { return BGraphEdgeBaseC::Hash(); }
+    SizeT Hash() const { return BGraphEdgeBaseC::Hash(); }
     // Get a hash value of this edge
     
   private:
@@ -119,7 +119,7 @@ namespace RavlN {
     inline BGraphTypesC::NodeHandleT Target() const;
     //: Get target of link.
     
-    inline UIntT Hash() const 
+    inline SizeT Hash() const
     { return edge->Hash(); }
     //: Get hash value.
     
