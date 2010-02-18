@@ -82,9 +82,9 @@ namespace RavlN {
     const T3 &Data3() const { return d3; }
     //: Data access.
 
-    UIntT Hash() const { 
-      UIntT h2 = StdHash(d2);
-      UIntT h3 = StdHash(d3);
+    SizeT Hash() const {
+      SizeT h2 = StdHash(d2);
+      SizeT h3 = StdHash(d3);
       return (StdHash(d1) + h2 + h3) ^ (h2 << 7)  ^ (h3 << 11);
     }
     //: Get hash value for tuple.

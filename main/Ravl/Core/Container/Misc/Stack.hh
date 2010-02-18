@@ -79,7 +79,7 @@ namespace RavlN {
     //: Test if stack is empty.
     // Returns true if it is empty.
     
-    inline long   Size()    const;
+    inline SizeT   Size()    const;
     //: Get the number of elements in the stack.
     
     void DbPrint(){printf("stack -> %d, %d, %p\n",top,blkSize,this->topBlk);}
@@ -223,7 +223,7 @@ namespace RavlN {
   
   //-----------------------------
   template <class T>
-  inline long BaseStackC<T>::Size() const
+  inline SizeT BaseStackC<T>::Size() const
   { return top + (blkSize/incrBlkSize-1)*blkSize/2; }
   
   //-----------------------------
