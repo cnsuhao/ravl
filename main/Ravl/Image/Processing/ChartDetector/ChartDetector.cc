@@ -117,8 +117,8 @@ namespace RavlImageN {
   //: Test affine hypothesis.
   
   RealT ChartDetectorBodyC::TestHypothesis(const Affine2dC &transform,SArray1dC<SArray1dC<ChartDetectorRegionC> > &sceneModel) {
-    UIntT regions = 0;
-    UIntT inliers = 0;
+    SizeT regions = 0;
+    SizeT inliers = 0;
     // Go through model points looking for the closest point in the image.
     
     for(SArray1dIter2C<SArray1dC<ChartDetectorRegionC>,SArray1dC<ChartDetectorRegionC> > rit(chartModel,sceneModel);rit;rit++) {
@@ -185,8 +185,8 @@ namespace RavlImageN {
     // Build an array to even out distribution of region types we use.
     
     UIntT distArray = 100;
-    UIntT total = 0;
-    UIntT bias = 4; // This adds a slight bias towords more unusual regions.
+    SizeT total = 0;
+    UIntT bias = 4; // This adds a slight bias towards more unusual regions.
     
     for(SArray1dIterC<SArray1dC<ChartDetectorRegionC> > it(chartModel);it;it++)
       total += it->Size();
