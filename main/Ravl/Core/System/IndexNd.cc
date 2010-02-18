@@ -13,9 +13,9 @@
 
 namespace RavlN {
   
-  UIntT IndexNdC::Hash() const {
-    UIntT base = Size();
-    UIntT BM = (sizeof(UIntT) * 8) / (Size()+1);
+  SizeT IndexNdC::Hash() const {
+    size_t base = Size();
+    size_t BM = (sizeof(UIntT) * 8) / (static_cast<size_t>(Size())+1);
     if(BM < 1) BM = 1;
     IntT shift = (sizeof(UIntT) * 8)-BM;
     for(BufferAccessIterC<IndexC> it(*this);it;it++,shift -= BM)

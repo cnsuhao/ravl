@@ -60,7 +60,7 @@ namespace RavlN {
     inline IndexNdC operator/(const RealT alpha) const;
     //: Divides this index by real number 'alpha'.
     
-    UIntT Hash() const; 
+    SizeT Hash() const;
     //: Return an almost unqiue hash value for this index.
     
   };

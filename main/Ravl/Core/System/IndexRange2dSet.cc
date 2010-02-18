@@ -157,8 +157,8 @@ namespace RavlN {
 
   //: Total area of set.
 
-  UIntT IndexRange2dSetC::Area() const {
-    UIntT ret = 0;
+  SizeT IndexRange2dSetC::Area() const {
+    SizeT ret = 0;
     for(DLIterC<IndexRange2dC> it(*this);it.IsElm();it.Next()) {
       ONDEBUG(cerr << "+Area: " << it.Data().Area() << "\n");
       ret += it.Data().Area();

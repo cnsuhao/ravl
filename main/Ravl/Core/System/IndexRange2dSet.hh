@@ -63,7 +63,7 @@ namespace RavlN {
     bool Contains(const IndexRange2dC &rect) const;
     //: Does this set wholy contain 'rect' ?
  
-    UIntT Area() const;
+    SizeT Area() const;
     //: Total area of set.
   };
 
