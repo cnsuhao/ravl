@@ -37,7 +37,8 @@ namespace RavlN {
     if (diff > 0)
      {
       m_bypass.Wait(diff);
-      m_bypass.Reset();
+      if (!m_persistBypass)
+        m_bypass.Reset();
      }
      
     next.SetToNow();
@@ -49,13 +50,26 @@ namespace RavlN {
   bool DPGovernorBaseBodyC::SetDelay(RealT newDelay) { 
     if(newDelay < 0) {
       delay = 0;
-      m_bypass.Post();
+      //m_bypass.Post();
       return false;
     }
     delay = newDelay;
-    m_bypass.Post();
+    //m_bypass.Post();
     return true;
   }
+
+
+  //: Toggle bypass mode.
+  bool DPGovernorBaseBodyC::Bypass(bool bypass, bool persist)
+  {
+    m_persistBypass = persist;
+    if (bypass)
+      m_bypass.Post();
+    else
+      m_bypass.Reset();
+    return true; 
+  }
+
   
   
 }

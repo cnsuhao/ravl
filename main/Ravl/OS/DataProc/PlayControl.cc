@@ -202,8 +202,9 @@ namespace RavlN {
     // Unlock access here.
     return ret;
 #else
-    // Lock to make sure value is correct before returning value.
-    MutexLockC lock(access);
+
+    //// Lock to make sure value is correct before returning value.
+    //MutexLockC lock(access);
     return at;
 #endif
   }
@@ -220,7 +221,8 @@ namespace RavlN {
   
   //: Seek to an absolute position in stream
   
-  bool DPPlayControlBodyC::Seek(UIntT pos) { 
+  bool DPPlayControlBodyC::Seek(UIntT pos) {
+    ONDEBUG(cerr << "bool DPPlayControlBodyC::Seek(UIntT pos)"); 
     if(!ctrl.IsValid())
       return false;
     MutexLockC lock(access);
@@ -446,8 +448,8 @@ namespace RavlN {
   //: Callback on sequence size changing.
   
   bool DPPlayControlBodyC::CBSequenceSizeChanged() {
+    ONDEBUG(cerr << "DPPlayControlBodyC::CBSequenceSizeChanged, Called. \n");
     RavlAssert(ctrl.IsValid());
-    
     MutexLockC lock(access);
     // Sort out end of sequence.
     UIntT sSize = ctrl.Size();
@@ -467,6 +469,7 @@ namespace RavlN {
   //: Callback on sequence start changing.
   
   bool DPPlayControlBodyC::CBSequenceStartChanged() {
+    ONDEBUG(cerr << "bool DPPlayControlBodyC::CBSequenceStartChanged()"); 
     RavlAssert(ctrl.IsValid());
     
     MutexLockC lock(access);
