@@ -22,8 +22,6 @@
 
 using namespace RavlGUIN;
 
-TextEntryC entry;
-
 TextEntryC readonly("TextEntryC (read-only)", -1, false, false);
 ButtonC button("Toggle read-only");
 
@@ -38,17 +36,8 @@ bool ToggleReadOnly()
   StringC buttonLabel("Toggle ");
   buttonLabel += (!editable ? "editable" : "read-only");
   button.GUISetLabel(buttonLabel);
-  
-  cerr << "\n ******* entry text is " << entry.Text(); 
   return true;
 }
-
-bool Test (StringC & sigText)
-{
-  cerr << "***** Test! \n SigText is " << sigText << "\nEntry text is " << entry.Text();
-  return true;
-}
-
 
 int main(int nargs,char *args[]) 
 {
@@ -58,18 +47,14 @@ int main(int nargs,char *args[])
   
   // Create the window and text boxes
   WindowC win(100,100,"Hello");
-  entry = TextEntryC("TextEntryC (normal)", -1, true);
+  TextEntryC entry("TextEntryC (normal)");
   TextEntryC password("TextEntryC (password)");
   TextBoxC textBox("TextBoxC\n(multi-line)");
-  
-  
   
   // Configure the widgets
   bool bTrue = true;
   password.GUIHideText(bTrue);
   Connect(button.SigClicked(), &ToggleReadOnly);
-  Connect(entry.Signal("changed"), &Test);
-  
   
   // Compose and display the GUI
   win.Add(VBox(entry + HBox(readonly + button) + password + textBox));
