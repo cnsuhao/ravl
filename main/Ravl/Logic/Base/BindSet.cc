@@ -140,7 +140,7 @@ namespace RavlLogicN {
     RavlAssert(var.IsValid());
     RavlAssert(var.IsVariable());
 
-    UIntT hashVal;
+    SizeT hashVal;
     BindMarkT elem = LookupHV(var,hashVal);
     if(elem != 0)
       return false; // Already bound.
