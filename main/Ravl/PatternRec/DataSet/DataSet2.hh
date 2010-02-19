@@ -44,7 +44,7 @@ namespace RavlN {
 		  const Sample2T & samp2);
     //: Create a dataset from a sample
 
-    UIntT Append(const Element1T &data1,
+    IndexC Append(const Element1T &data1,
 		 const Element2T &data2);
     //: Append a data entry.
     // returns its index.
@@ -137,7 +137,7 @@ namespace RavlN {
     //{ return Body().Shuffle(); }
     //: Shuffle the samples in the dataset
     
-    UIntT Append(const Element1T &data1,const Element2T &data2)
+    IndexC Append(const Element1T &data1,const Element2T &data2)
     { return Body().Append(data1,data2); }
     //: Append a data entry.
     // returns its index.
@@ -210,11 +210,11 @@ namespace RavlN {
   {}
   
   template<class Sample1T,class Sample2T>
-  UIntT DataSet2BodyC<Sample1T,Sample2T>::Append(const Element1T &data1,const Element2T &data2) {
-    UIntT no1 = this->samp1.Append(data1);
+  IndexC DataSet2BodyC<Sample1T,Sample2T>::Append(const Element1T &data1,const Element2T &data2) {
+    IndexC no1 = this->samp1.Append(data1);
 #if RAVL_CHECK
     // This avoids an unused variable warning where RavlAssert() is not used.
-    UIntT no2 = 
+    IndexC no2 =
 #endif
       samp2.Append(data2);
     RavlAssert(no1==no2);

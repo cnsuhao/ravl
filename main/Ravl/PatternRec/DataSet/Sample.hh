@@ -65,7 +65,7 @@ namespace RavlN {
     DataT ExtractEntry(int ind);
     //: Extract an entry from sample.
 
-    UIntT Append(const DataT & dat)
+    IndexC Append(const DataT & dat)
     { return DArray1dC<DataT>::Append(dat).V(); }
     //: Insert a single sample into sample
     
@@ -73,14 +73,14 @@ namespace RavlN {
     { DArray1dC<DataT>::Fill(value); }
     //: Fill sample array with value.
     
-    UIntT Append(const SampleC<DataT> &newData)
+    IndexC Append(const SampleC<DataT> &newData)
     { return DArray1dC<DataT>::Append(newData); }
     //: Append data to this array.
     // Note: The data is NOT copied; any operations done
     // on the sample may effect the contents of the original array. <br>
     // The number of items appended is returned.
     
-    UIntT operator+=(const DataT & dat)
+    IndexC operator+=(const DataT & dat)
     { return Append(dat); }
     //: Indentical to Append().
     
