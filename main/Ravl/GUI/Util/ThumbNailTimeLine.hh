@@ -69,6 +69,9 @@ namespace RavlGUIN {
     
     bool GUISetSkip(UIntT &skip);
     //: Set frame skip factor.
+
+    IntT GetSkip(void) const;
+    //: Get the current skip; 
     
     Signal1C<UIntT> &SigFrameSelected()
     { return frameSelected; }
@@ -255,7 +258,11 @@ namespace RavlGUIN {
     bool GUISetSkip(UIntT &skip)
     { return Body().GUISetSkip(skip); }
     //: Set frame skip factor.
-    
+
+    bool GetSkip(void) const
+    { return Body().GetSkip(); }
+    //: Access teh currrent skip
+
     bool GUISetVideo(const DPISPortC<ImageC<ByteRGBValueC> > &nvideo)
     { return Body().GUISetVideo(nvideo); }
     //: Set the current video stream to use.

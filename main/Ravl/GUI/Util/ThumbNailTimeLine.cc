@@ -493,7 +493,18 @@ namespace RavlGUIN {
     semaUpdate.Post(); // Flag update.
     return true;
   }
-  
+
+
+
+  //: Get frame skip factor
+  IntT ThumbNailTimeLineBodyC::GetSkip() const
+  {
+    RWLockHoldC hold(access, RWLOCK_READONLY);
+    return frameSkip;
+  }
+
+
+
   //: Set frame skip factor.
   
   bool ThumbNailTimeLineBodyC::GUISetSkip(UIntT &skip) 
