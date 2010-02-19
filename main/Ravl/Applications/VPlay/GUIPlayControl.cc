@@ -154,9 +154,11 @@ namespace RavlGUIN {
     return true;
   }
   
-  bool PlayControlBodyC::Stop() { 
+  bool PlayControlBodyC::Stop() {
+    //m_sigInteractive(true);
     Speed(0);
     Pause();
+    //m_sigInteractive(false);
     return true;
   }
   
@@ -314,17 +316,12 @@ namespace RavlGUIN {
     // Do we have a valid controls?
     if (!created)
       return false;
-    
-    //cerr <<"PlayControlBodyC::SliderUpdate(). \n";
     MutexLockC hold(access,true);
     if(!hold.IsLocked()) // Did lock succeed ?
-      return true; // We'll do the update next time.
-    //  cerr << "PlayControlBodyC::SliderUpdate(),\n";
-    
+      return true; // We'll do the update next time. 
     if(!pc.IsValid())
       return true;
     UIntT loc = pc.LastFrame();
-    //cerr << "PlayControlBodyC::SliderUpdate(), Called at " << loc << "\n";
     if(loc == ((UIntT) -1)) 
       return true; // We don't have a clue!
     bool updateSlider = false;
@@ -365,12 +362,18 @@ namespace RavlGUIN {
     // Do GUI updates outside of lock, to avoid deadlocks if GUI Queue() blocks.
     if(updateRange) {
       if(updateValue)
+      {
         frameSlider.Update(loc,min,max);
+      }
       else
+       {
         frameSlider.UpdateRange(min,max);
+      }
     } else {
       if(updateValue)
+      {
         frameSlider.UpdateValue(loc);
+      }
     }
     if(updateRange || updateValue)
     {

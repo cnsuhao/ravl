@@ -54,22 +54,15 @@
 #include "Ravl/GUI/Table.hh"
 #include "Ravl/Text/TextCursor.hh"
 #include "Ravl/GUI/AttributeEditorWindow.hh"
-
 #include "Ravl/GUI/GUIPlayControl.hh"
-
 #include "Ravl/Image/ImgIOCif.hh"
-
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/DP/MethodIO.hh"
 #include "Ravl/DP/Func2Stream.hh"
 #include "Ravl/IO.hh"
-
 #include "Ravl/TimeCode.hh"
-
 #include "Ravl/OS/NetPortFormat.hh"
-
 #include "Ravl/DP/PrintIOInfo.hh"
-
 #include <stdlib.h>
 
 #define DODEBUG 0
