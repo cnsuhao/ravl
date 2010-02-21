@@ -193,25 +193,25 @@ namespace RavlN {
     ~PointerManagerBodyC();
     //: Destructor.
     
-    bool Lookup(IOPtrC &obj,UIntT &id) 
+    bool Lookup(IOPtrC &obj,SizeT &id)
     { return ptr2id.Lookup(obj.Key(),id); }
     //: Test if an object has already been saved/loaded.
     // If it has then Lookup will return true and id will
     // be set to the id of the object.
     
-    UIntT Insert(IOPtrC &obj) {
-      UIntT id = idAlloc++;
+    SizeT Insert(IOPtrC &obj) {
+      SizeT id = idAlloc++;
       ptr2id[obj.Key()] = id;
       return id;
     }
     //: Store the address of an object.
     // returns a unique id for that object.
     
-    StoredPointerC *Lookup(UIntT id) 
+    StoredPointerC *Lookup(SizeT id)
     { return id2ptr.Lookup(id); }
     //: Lookup object by id.
     
-    void Insert(UIntT id,IOPtrC &obj) { 
+    void Insert(SizeT id,IOPtrC &obj) {
       //RavlAssert(id == idAlloc); // Check sequence.
       //idAlloc++;
       obj.Actions()->Store(id2ptr[id],obj);
@@ -222,9 +222,9 @@ namespace RavlN {
     { return idAlloc; }
     //: Access current alloc id.
   protected:
-    UIntT idAlloc;
-    HashC<UIntT,StoredPointerC> id2ptr;
-    HashC<void *,UIntT> ptr2id;
+    SizeT idAlloc;
+    HashC<SizeT,StoredPointerC> id2ptr;
+    HashC<void *,SizeT> ptr2id;
   };
   
   //! userlevel=Advanced
@@ -269,26 +269,26 @@ namespace RavlN {
     //: Body access.
     
   public:
-    bool Lookup(IOPtrC &obj,UIntT &id)
+    bool Lookup(IOPtrC &obj,SizeT &id)
     { return Body().Lookup(obj,id); }
     //: Test if an object has already been saved/loaded.
     // If it has then Lookup will return true and id will
     // be set to the id of the object.
     
-    StoredPointerC *Lookup(UIntT id) 
+    StoredPointerC *Lookup(SizeT id)
     { return Body().Lookup(id); }
     //: Lookup object by id.
     
-    UIntT Insert(IOPtrC &obj)
+    SizeT Insert(IOPtrC &obj)
     { return Body().Insert(obj); }
     //: Store the address of an object.
     // returns a unique id for that object.
     
-    void Insert(UIntT id,IOPtrC &obj)
+    void Insert(SizeT id,IOPtrC &obj)
     { Body().Insert(id,obj); }
     //: Store by id.
     
-    UIntT IdAlloc() const
+    SizeT IdAlloc() const
     { return Body().IdAlloc(); }
     //: Access current alloc id.
   };

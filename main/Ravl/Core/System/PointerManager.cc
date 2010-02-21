@@ -47,7 +47,7 @@ namespace RavlN {
     if(!strm.PointerManager().IsValid())
       strm.PointerManager() = PointerManagerC(true);
     PointerManagerC mgr(strm.PointerManager());
-    UIntT id;
+    SizeT id;
     if(mgr.Lookup(obj,id)) { // Seen this object already ?
       ONDEBUG(cerr << "Storing id " << id << " from " << *((void **)obj.Pointer()) << "\n");
       strm << id;
@@ -67,7 +67,7 @@ namespace RavlN {
     if(!strm.PointerManager().IsValid())
       strm.PointerManager() = PointerManagerC(false);
     PointerManagerC mgr(strm.PointerManager());
-    UIntT id;
+    SizeT id;
     strm >> id;
     StoredPointerC *ptr = mgr.Lookup(id);
     if(ptr != 0) { // Seen this object already ?
