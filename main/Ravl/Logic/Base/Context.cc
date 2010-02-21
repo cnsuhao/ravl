@@ -44,13 +44,13 @@ namespace RavlLogicN {
       strm.PointerManager() = PointerManagerC(true);
     PointerManagerC mgr(strm.PointerManager());
     
-    IntT version = 0;
-    UIntT size = map.Size();
+    Int32T version = 0;
+    UInt32T size = map.Size();
     strm << version << name << size;
     for(HashIterC<StringC,Tuple2C<LiteralC,bool> > it(map);it;it++) {
       strm << it.Key(); // Write name.
       IOPtrC objio = ObjIO(it.Data().Data1());
-      UIntT id = mgr.Insert(objio); // Register ID.
+      UInt32T id = mgr.Insert(objio); // Register ID.
       strm << id << it.Data().Data2();
     }
     return true;
@@ -63,16 +63,16 @@ namespace RavlLogicN {
       strm.PointerManager() = PointerManagerC(true);
     PointerManagerC mgr(strm.PointerManager());
     
-    IntT version ;
-    UIntT size;
+    Int32T version ;
+    UInt32T size;
     StringC otherName;
     strm >> version >> otherName >> size;
     if(version != 0)
       throw ExceptionOutOfRangeC("ContextC::Receive(BinIStreamC &), Unrecognised version number in stream. ");
-    UIntT id;
     for(UIntT i = 0;i < size;i++) {
       StringC name;
       bool builtinLit;
+      UInt32T id;
       strm >> name >> id >> builtinLit; // Read name and id
       Tuple2C<LiteralC,bool> info;
       if(!map.Lookup(name,info)) {
