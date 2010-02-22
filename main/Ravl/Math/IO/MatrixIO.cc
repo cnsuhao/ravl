@@ -14,6 +14,7 @@
 #include "Ravl/VectorMatrix.hh"
 #include "Ravl/DP/FileFormatStream.hh"
 #include "Ravl/DP/FileFormatBinStream.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
   static TypeNameC type1(typeid(MatrixC),"RavlN::MatrixC");
@@ -23,6 +24,50 @@ namespace RavlN {
   static TypeNameC type5(typeid(SArray1dC<VectorC>),"RavlN::SArray1dC<VectorC>");
   static TypeNameC type6(typeid(SArray1dC<VectorMatrixC>),"RavlN::SArray1dC<VectorMatrixC>");
   
+
+  static RavlN::RCWrapAbstractC MatrixXMLFactory(const XMLFactoryContextC &node)
+  {
+    MatrixC values;
+    if(node.Attribute("values",values)) {
+      throw RavlN::ExceptionBadConfigC("No values specified for the matrix");
+    }
+    return RavlN::RCWrapC<MatrixC >(values);
+  }
+
+  static RavlN::RCWrapAbstractC VectorXMLFactory(const XMLFactoryContextC &node)
+  {
+    VectorC values;
+    if(node.Attribute("values",values)) {
+      throw RavlN::ExceptionBadConfigC("No values specified for the vector");
+    }
+    return RavlN::RCWrapC<VectorC >(values);
+  }
+
+  static RavlN::RCWrapAbstractC VectorMatrixXMLFactory(const XMLFactoryContextC &node)
+  {
+    VectorC vec;
+    if(node.Attribute("vector",vec)) {
+      throw RavlN::ExceptionBadConfigC("No values specified for the vector component");
+    }
+    MatrixC mat;
+    if(node.Attribute("matrix",mat)) {
+      throw RavlN::ExceptionBadConfigC("No values specified for the matrix component");
+    }
+    VectorMatrixC value(vec,mat);
+    return RavlN::RCWrapC<VectorMatrixC >(value);
+  }
+
+
+  static int InitMatrixXMLFactory() {
+    XMLFactoryC::RegisterTypeFactory(typeid(RavlN::MatrixC),&MatrixXMLFactory);
+    XMLFactoryC::RegisterTypeFactory(typeid(RavlN::VectorC),&VectorXMLFactory);
+    XMLFactoryC::RegisterTypeFactory(typeid(RavlN::VectorMatrixC),&VectorMatrixXMLFactory);
+    return 0;
+  }
+
+
+  static bool initXMLFactoryStuff = InitMatrixXMLFactory();
+
   void InitMatrixIO()
   {}
   

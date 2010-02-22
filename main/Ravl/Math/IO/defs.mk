@@ -20,5 +20,5 @@ MUSTLINK = MathIO.cc
 
 PLIB= RavlMathIO
 
-USESLIBS = RavlMath RavlIO
+USESLIBS = RavlMath RavlIO RavlXMLFactory
 
