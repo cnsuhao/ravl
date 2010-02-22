@@ -878,7 +878,7 @@ endif
 ifndef SWIG_DO_NOT_GENERATE
 ifeq ($(SUPPORT_OK),yes)
 	$(SHOWIT)echo "--- swig" $< ; \
-	$(SWIG) -c++ $(SWIGOPTS) $(INCLUDES) -o $*_wrap$(CXXEXT) $<
+	$(SWIG) -c++ $(SWIGOPTS) -D$(ARC) $(INCLUDES) -o $*_wrap$(CXXEXT) $<
 endif
 endif
 
