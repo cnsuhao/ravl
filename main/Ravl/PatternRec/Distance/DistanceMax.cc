@@ -10,10 +10,18 @@
 
 #include "Ravl/PatternRec/DistanceMax.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
 
-  //: Load from stream.
+
+  //: XMLFactoryC constructor.
+
+  DistanceMaxBodyC::DistanceMaxBodyC(const XMLFactoryContextC &factory)
+    : DistanceBodyC(factory)
+  {
+    
+  }
   
   DistanceMaxBodyC::DistanceMaxBodyC(istream &strm)
     : DistanceBodyC(strm)
@@ -59,5 +67,8 @@ namespace RavlN {
   ////////////////////////////////////////////////////////////////////////
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DistanceMaxBodyC,DistanceMaxC,DistanceC);
+
+  RavlN::XMLFactoryRegisterHandleConvertC<DistanceMaxC, DistanceC> g_registerXMLFactoryDistanceMax("RavlN::DistanceMaxC");
+
   
 }

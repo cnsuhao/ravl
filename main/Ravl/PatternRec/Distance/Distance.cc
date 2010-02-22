@@ -10,10 +10,16 @@
 
 #include "Ravl/PatternRec/Distance.hh"
 #include "Ravl/Assert.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
   
-  //: Load from stream.
+
+  //: XMLFactoryC constructor.
+  DistanceBodyC::DistanceBodyC(const XMLFactoryContextC &factory)
+    : Function1BodyC(factory)
+  {
+  }
   
   DistanceBodyC::DistanceBodyC(istream &strm)
     : Function1BodyC(strm)
@@ -70,6 +76,11 @@ namespace RavlN {
   
   DistanceC::DistanceC(BinIStreamC &strm)
     : Function1C(RAVL_VIRTUALCONSTRUCTOR(strm,DistanceBodyC))
+  {}
+
+  RavlN::XMLFactoryRegisterHandleC<DistanceC> g_registerXMLFactoryDistance("RavlN::DistanceC");
+
+  void linkDistance()
   {}
   
 }

@@ -27,6 +27,9 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+    DistanceSqrEuclideanBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     DistanceSqrEuclideanBodyC(istream &strm);
     //: Load from stream.
     
@@ -62,6 +65,11 @@ namespace RavlN {
       {}
     //: Default constructor.
     
+    DistanceSqrEuclideanC(const XMLFactoryContextC &factory)
+      : DistanceC(*new DistanceSqrEuclideanBodyC(factory))
+    {}
+    //: Construct from XML factory
+
     DistanceSqrEuclideanC(istream &strm);
     //: Load from stream.
     

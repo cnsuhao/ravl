@@ -10,8 +10,16 @@
 
 #include "Ravl/PatternRec/DistanceCityBlock.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
+
+  //: XMLFactoryC constructor.
+
+  DistanceCityBlockBodyC::DistanceCityBlockBodyC(const XMLFactoryContextC &factory)
+    : DistanceBodyC(factory)
+  {
+  }
 
   //: Load from stream.
   
@@ -23,7 +31,8 @@ namespace RavlN {
 
   DistanceCityBlockBodyC::DistanceCityBlockBodyC(BinIStreamC &strm)
     : DistanceBodyC(strm)
-  {}
+  {
+  }
   
   //: Writes object to stream, can be loaded using constructor
   
@@ -60,5 +69,8 @@ namespace RavlN {
   /////////////////////////////////////////////////////////////////////////////////
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DistanceCityBlockBodyC,DistanceCityBlockC,DistanceC);
+
+  RavlN::XMLFactoryRegisterHandleConvertC<DistanceCityBlockC, DistanceC> g_registerXMLFactoryDistanceCityBlock("RavlN::DistanceCityBlockC");
+
   
 }

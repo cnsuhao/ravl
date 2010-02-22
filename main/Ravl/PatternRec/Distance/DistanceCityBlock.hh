@@ -27,6 +27,9 @@ namespace RavlN {
     DistanceCityBlockBodyC()
     {}
     //: Default constructor.
+
+    DistanceCityBlockBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
     
     DistanceCityBlockBodyC(istream &strm);
     //: Load from stream.
@@ -63,6 +66,11 @@ namespace RavlN {
       : DistanceC(*new DistanceCityBlockBodyC())
     {}
     //: Default constructor.
+
+    DistanceCityBlockC(const XMLFactoryContextC &factory)
+      :  DistanceC(*new DistanceCityBlockBodyC(factory))
+    {}
+    //: Construct from XML factory
     
     DistanceCityBlockC(istream &strm);
     //: Load from stream.

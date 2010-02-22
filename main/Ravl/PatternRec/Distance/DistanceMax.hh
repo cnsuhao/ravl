@@ -29,6 +29,9 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+    DistanceMaxBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     DistanceMaxBodyC(istream &strm);
     //: Load from stream.
     
@@ -66,6 +69,11 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+    DistanceMaxC(const XMLFactoryContextC &factory)
+      :  DistanceC(*new DistanceMaxBodyC(factory))
+    {}
+    //: Construct from XML factory
+
     DistanceMaxC(istream &strm);
     //: Load from stream.
     

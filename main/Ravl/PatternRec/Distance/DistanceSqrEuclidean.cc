@@ -10,8 +10,17 @@
 
 #include "Ravl/PatternRec/DistanceSqrEuclidean.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
+
+  //: XMLFactoryC constructor.
+  
+  DistanceSqrEuclideanBodyC::DistanceSqrEuclideanBodyC(const XMLFactoryContextC &factory)
+    : DistanceBodyC(factory)
+  {
+    
+  }
 
   DistanceSqrEuclideanBodyC::DistanceSqrEuclideanBodyC(istream &strm)
     : DistanceBodyC(strm)
@@ -56,4 +65,7 @@ namespace RavlN {
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DistanceSqrEuclideanBodyC,DistanceSqrEuclideanC,DistanceC);
 
+  RavlN::XMLFactoryRegisterHandleConvertC<DistanceSqrEuclideanC, DistanceC> g_registerXMLFactoryDistanceSqrEuclidean("RavlN::DistanceSqrEuclideanC");
+
+  
 }

@@ -9,11 +9,13 @@
 //! file="Ravl/PatternRec/Distance/DistanceRobust.cc"
 
 #include "Ravl/PatternRec/DistanceRobust.hh"
+#include "Ravl/PatternRec/DistanceEuclidean.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/SArray1dIter3.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
   
@@ -24,6 +26,17 @@ namespace RavlN {
       metric(nmetric)
   {}
 
+
+  DistanceRobustBodyC::DistanceRobustBodyC(const XMLFactoryContextC &factory)
+    : DistanceBodyC(factory),
+      clipLimit(factory.AttributeReal("clip_limit", 1.0))
+  {
+    if(!factory.UseComponent("metric", metric))
+      RavlIssueError("No metric specified in XML factory");
+    
+  }
+
+  
   //: Load from stream.
   
   DistanceRobustBodyC::DistanceRobustBodyC(istream &strm) 
@@ -120,4 +133,7 @@ namespace RavlN {
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DistanceRobustBodyC,DistanceRobustC,DistanceC);
 
+  RavlN::XMLFactoryRegisterHandleConvertC<DistanceRobustC, DistanceC> g_registerXMLFactoryDistanceRobust("RavlN::DistanceRobustC");
+
+             
 }

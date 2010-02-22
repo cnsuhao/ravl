@@ -14,6 +14,7 @@
 
 #include "Ravl/PatternRec/Distance.hh"
 #include "Ravl/Matrix.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
   
@@ -24,8 +25,12 @@ namespace RavlN {
     : public DistanceBodyC
   {
   public:
-    DistanceMahalanobisBodyC(const MatrixC &covVar);
+
+    DistanceMahalanobisBodyC(const MatrixC & covVar);
     //: Constructor.
+    
+    DistanceMahalanobisBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
     
     DistanceMahalanobisBodyC(istream &strm);
     //: Load from stream.
@@ -63,6 +68,11 @@ namespace RavlN {
       : DistanceC(*new DistanceMahalanobisBodyC(covVar))
     {}
     //: Constructor.
+
+    DistanceMahalanobisC(const XMLFactoryContextC &factory)
+      :  DistanceC(*new DistanceMahalanobisBodyC(factory))
+    {}
+    //: Construct from XML factory
     
     DistanceMahalanobisC()
     {}
@@ -105,7 +115,7 @@ namespace RavlN {
   //: Save to a stream.
   // Uses virtual constructor.
 
-
+  
 }
 
 

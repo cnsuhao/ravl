@@ -28,6 +28,9 @@ namespace RavlN {
     DistanceBodyC()
     {}
     //: Default constructor.
+
+    DistanceBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
     
     DistanceBodyC(istream &strm);
     //: Load from stream.
@@ -62,6 +65,11 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
+
+    DistanceC(const XMLFactoryContextC &factory)
+      :  Function1C(*new DistanceBodyC(factory))
+    {}
+    //: Construct from XML factory
     
     DistanceC(istream &strm);
     //: Load from stream.

@@ -32,6 +32,9 @@ namespace RavlN {
   public:
     DistanceRobustBodyC(RealT nClipLimit,const DistanceC &metric);
     //: Constructor.
+
+    DistanceRobustBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
     
     DistanceRobustBodyC(istream &strm);
     //: Load from stream.
@@ -80,6 +83,11 @@ namespace RavlN {
     // nClipLimit is maximum difference in one dimension, metric
     // is the metric to use on the limited values.
     
+    DistanceRobustC(const XMLFactoryContextC &factory)
+      : DistanceC(*new DistanceRobustBodyC(factory))
+    {}
+    //: Construct from XML factory
+
     DistanceRobustC()
     {}
     //: Default constructor.
