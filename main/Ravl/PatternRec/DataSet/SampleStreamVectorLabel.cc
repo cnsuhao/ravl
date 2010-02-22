@@ -38,7 +38,7 @@ namespace RavlN {
   
   
   //: Convert from a stream of float vectors.
-  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const SampleStreamC<Tuple2C<TVectorC<float>, UIntT> > &port)
+  SampleStreamVectorLabelC::SampleStreamVectorLabelC(const SampleStream2C<TVectorC<float>, UIntT> &port)
     : DPEntityC(true)
   {
     *this = SPort(port >> Process(float2realVec));

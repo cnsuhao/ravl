@@ -14,6 +14,16 @@
 
 namespace RavlN {
   
+  //: XMLFactoryC constructor.
+  Function1BodyC::Function1BodyC(const XMLFactoryContextC &factory)
+    : FunctionBodyC(factory)
+  {
+    //: FIXME: Probably should just check outputSize is 1 rather
+    //: tha force it!
+    outputSize = 1;
+    
+  }
+
   //: Load from stream.
 
   Function1BodyC::Function1BodyC(istream &strm) 

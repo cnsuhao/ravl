@@ -30,6 +30,9 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+    DesignFunctionSupervisedBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+    
     DesignFunctionSupervisedBodyC(istream &strm);
     //: Load from stream.
     
@@ -83,6 +86,11 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
+
+    DesignFunctionSupervisedC(const XMLFactoryContextC &factory)
+      :  DesignerC(*new DesignFunctionSupervisedBodyC(factory))
+    {}
+    //: Construct from XML factory
     
     DesignFunctionSupervisedC(istream &strm);
     //: Load from stream.

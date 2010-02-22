@@ -17,6 +17,13 @@
 
 namespace RavlN {
   
+
+  //: Load from XML factory
+
+  DesignClassifierSupervisedBodyC::DesignClassifierSupervisedBodyC(const XMLFactoryContextC & factory)
+    : DesignFunctionSupervisedBodyC(factory)
+  {}
+
   //: Load from stream.
   
   DesignClassifierSupervisedBodyC::DesignClassifierSupervisedBodyC(istream &strm)

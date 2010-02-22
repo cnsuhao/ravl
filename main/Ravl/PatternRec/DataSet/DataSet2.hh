@@ -58,7 +58,7 @@ namespace RavlN {
     
     void Append(SampleStream2C<Element1T, Element2T> & data);
     //: Append a sample stream
-
+    
     void Append(SampleStreamC<Element1T> & sample1, const Element2T & sample2);
     //: Append a sample stream of inputs and assign the output as the same for all inputs
     

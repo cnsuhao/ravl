@@ -18,7 +18,6 @@
 namespace RavlN {
 
 
-
   DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(SampleStreamVectorLabelC & sampleStream)
     : DataSet2BodyC<SampleVectorC,SampleLabelC>(1000)    
   {    

@@ -17,6 +17,7 @@
 #include "Ravl/Matrix.hh"
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/VectorMatrix.hh"
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
   template<class DataT> class SampleC;
@@ -40,6 +41,9 @@ namespace RavlN {
     {}
     //: Create function with given number of inputs and outputs.
     
+    FunctionBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     FunctionBodyC(istream &strm);
     //: Load from stream.
     

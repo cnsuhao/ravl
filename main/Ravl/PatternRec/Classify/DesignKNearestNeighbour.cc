@@ -11,6 +11,7 @@
 #include "Ravl/PatternRec/DesignKNearestNeighbour.hh"
 #include "Ravl/PatternRec/ClassifierKNearestNeighbour.hh"
 #include "Ravl/PatternRec/ClassifierAverageNearestNeighbour.hh"
+#include "Ravl/PatternRec/DistanceEuclidean.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/BinStream.hh"
 
@@ -23,6 +24,17 @@ namespace RavlN {
       distanceMetric(distMetric),
       useAverageKNN(nuseAverageKNN)
   {}
+  
+  //: Load from XML factory
+  
+  DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(const XMLFactoryContextC & factory)
+    : DesignClassifierSupervisedBodyC(factory),
+      k(factory.AttributeUInt("k", 3)),
+      useAverageKNN(factory.AttributeBool("use_average_knn", false))
+  {
+    if(!factory.UseComponent("distance_metric", distanceMetric))
+      RavlIssueError("Unable to initialise distance metric from XML Factory");
+  }
   
   //: Load from stream.
   

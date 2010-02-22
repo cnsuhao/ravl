@@ -14,6 +14,7 @@
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
   
@@ -29,6 +30,9 @@ namespace RavlN {
     DesignerBodyC()
     {}
     //: Default constructor.
+
+    DesignerBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
 
     DesignerBodyC(istream &strm);
     //: Load from stream.
@@ -64,6 +68,11 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
+    
+    DesignerC(const XMLFactoryContextC &factory)
+      :  RCHandleVC<DesignerBodyC>(*new DesignerBodyC(factory))
+    {}
+    //: Construct from XML factory
     
     DesignerC(istream &strm);
     //: Load from stream.

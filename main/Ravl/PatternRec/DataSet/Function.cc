@@ -17,7 +17,12 @@
 
 namespace RavlN {
 
-  //: Load from stream.
+  FunctionBodyC::FunctionBodyC(const XMLFactoryContextC &factory)
+    : inputSize(factory.AttributeUInt("input_size", 0)),
+      outputSize(factory.AttributeUInt("output_size", 0))             
+  {
+  }
+  //: XMLFactoryC constructor.
   
   FunctionBodyC::FunctionBodyC(istream &strm)
     : RCBodyVC(strm)

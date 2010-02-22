@@ -13,6 +13,9 @@
 
 namespace RavlN {
 
+  DesignerBodyC::DesignerBodyC(const XMLFactoryContextC & factory)
+  {}
+
   //: Load from stream.
   
   DesignerBodyC::DesignerBodyC(istream &strm)

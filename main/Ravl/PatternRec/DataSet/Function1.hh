@@ -27,6 +27,9 @@ namespace RavlN {
     { outputSize = 1; }
     //: Default constructor.
 
+    Function1BodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     Function1BodyC(istream &strm);
     //: Load from stream.
     

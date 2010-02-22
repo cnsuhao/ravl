@@ -23,7 +23,7 @@ namespace RavlN {
   //: Stream of sample vectors and their corresponding labels
   
   class SampleStreamVectorLabelC 
-    : public SampleStreamC<Tuple2C<VectorC, UIntT> >
+    : public SampleStream2C<VectorC, UIntT>
   {
   public:
     SampleStreamVectorLabelC()
@@ -45,7 +45,7 @@ namespace RavlN {
     {}
     //: Base constructor.
 
-    SampleStreamVectorLabelC(const SampleStreamC<Tuple2C<TVectorC<float>, UIntT> > & port);
+    SampleStreamVectorLabelC(const SampleStream2C<TVectorC<float>, UIntT> & port);
     //: Convert from a stream of float vectors.
 
 #if 0    
