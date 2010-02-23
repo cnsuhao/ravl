@@ -15,6 +15,8 @@ MAINS=
 
 TESTEXES=testGaussianMixture.cc 
 
+EXAMPLES = exDesignGaussianMixture.cc
+
 HEADERS=GaussianMixture.hh DesignGaussianMixture.hh
 
 SOURCES=GaussianMixture.cc DesignGaussianMixture.cc
