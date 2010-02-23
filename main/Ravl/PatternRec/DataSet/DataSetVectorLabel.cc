@@ -14,6 +14,7 @@
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/SumsNd2.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
 
@@ -27,7 +28,31 @@ namespace RavlN {
     }    
   }
 
+  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(const SArray1dC<MeanCovarianceC> & stats)
+    : DataSet2BodyC<SampleVectorC,SampleLabelC>(1000)    
+  {    
+    UIntT classLabel=0;
+    for(SArray1dIterC<MeanCovarianceC>it(stats);it;it++) {
+      SampleVectorC sample(*it);
+      Append(sample, classLabel);
+      classLabel++;
+    }    
+  }
+
+  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(const XMLFactoryContextC & factory)
+    : DataSet2BodyC<SampleVectorC,SampleLabelC>(1000)    
+  {    
+    UIntT classLabel=0;
+    for(DLIterC<XMLTreeC>it(factory.Children());it;it++) {
+      SampleVectorC sampleVector;
+      if(factory.UseComponent(it->Name(), sampleVector)) {
+        Append(sampleVector, classLabel);
+        classLabel++;
+      }
+    }
+  }
   
+
   //: Create a seperate sample for each label.
   
   SArray1dC<SampleVectorC> DataSetVectorLabelBodyC::SeperateLabels() const {
@@ -165,7 +190,7 @@ namespace RavlN {
     return ret;
   }
 
-    
+  RavlN::XMLFactoryRegisterHandleC<DataSetVectorLabelC> g_registerXMLFactoryDataSetVectorLabel("RavlN::DataSetVectorLabelC");
 
 }
 

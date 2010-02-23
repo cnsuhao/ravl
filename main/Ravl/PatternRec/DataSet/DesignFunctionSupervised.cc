@@ -14,6 +14,8 @@
 #include "Ravl/PatternRec/SampleStreamVector.hh"
 #include "Ravl/DP/Compose.hh"
 #include "Ravl/DP/SPortAttach.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 
 namespace RavlN {
 
@@ -128,4 +130,8 @@ namespace RavlN {
     : DesignerC(RAVL_VIRTUALCONSTRUCTOR(strm,DesignFunctionSupervisedBodyC))
   {}
 
+
+  RavlN::XMLFactoryRegisterHandleC<DesignFunctionSupervisedC> g_registerXMLFactoryDesignFunctionSupervised("RavlN::DesignFunctionSupervisedC");
+
+  
 }

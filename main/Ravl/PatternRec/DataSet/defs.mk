@@ -40,9 +40,9 @@ PLIB = RavlPatternRec
 
 EXAMPLES = exSample.cc exSampleStream.cc
 
-TESTEXES=testDataSet.cc
+TESTEXES=testDataSet.cc testDataSetXMLFactory.cc
 
-USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann
+USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO
 
 PROGLIBS=RavlOS
 

@@ -15,6 +15,7 @@
 #include "Ravl/PatternRec/Sample.hh"
 #include "Ravl/Vector.hh"
 #include "Ravl/Matrix.hh"
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
 
@@ -53,6 +54,16 @@ namespace RavlN {
     //: Construct a sample set with a reduced set of features
     //!param: svec       - a sample of vectors
     //!param: featureSet - the indexes of features to keep
+
+    SampleVectorC(const MeanCovarianceC & meanCovariance);
+    //: Construct a dataset using the statistics and number of samples specified.  Note the actual mean and covariance will differ slighty
+    //!param meanCovariance The desired mean and covariance to use to generate the dataset
+    
+    SampleVectorC(const XMLFactoryContextC & factory);
+    //: Construct a dataset from a factory
+    //!param mean the mean vector
+    //!param covariance the covariance matrix of the data
+    //!param samples the number of samples to generate
 
     UIntT VectorSize() const;
     //: Get the size of vectors in this sample.

@@ -17,6 +17,7 @@
 #include "Ravl/PatternRec/SampleLabel.hh"
 #include "Ravl/PatternRec/SampleStreamVectorLabel.hh"
 #include "Ravl/MeanCovariance.hh"
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
 
@@ -38,7 +39,12 @@ namespace RavlN {
     DataSetVectorLabelBodyC(SampleStreamVectorLabelC & sampleStream);
     //: Construct from a sample stream. Note if dataset is large it will copy it all into memory
 
-    
+    DataSetVectorLabelBodyC(const SArray1dC<MeanCovarianceC> & stats);
+    //: Construct a dataset using the statistics given for each class
+
+    DataSetVectorLabelBodyC(const XMLFactoryContextC & factory);
+    //: Construct a dataset
+
     SArray1dC<SampleVectorC> SeperateLabels() const;
     //: Create a seperate sample for each label.
 
@@ -90,6 +96,18 @@ namespace RavlN {
       : DataSet2C<SampleVectorC,SampleLabelC>(*new DataSetVectorLabelBodyC(vec,lab))
     {}
     //: Constructor
+
+    DataSetVectorLabelC(const SArray1dC<MeanCovarianceC> & stats)
+      : DataSet2C<SampleVectorC,SampleLabelC>(*new DataSetVectorLabelBodyC(stats))
+    {}
+    //: Constructor
+
+    DataSetVectorLabelC(const XMLFactoryContextC & factory)
+      : DataSet2C<SampleVectorC,SampleLabelC>(*new DataSetVectorLabelBodyC(factory))
+    {}
+    //: Constructor
+
+
     
   protected:
     DataSetVectorLabelBodyC &Body()

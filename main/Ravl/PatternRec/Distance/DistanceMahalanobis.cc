@@ -28,8 +28,10 @@ namespace RavlN {
   DistanceMahalanobisBodyC::DistanceMahalanobisBodyC(const XMLFactoryContextC &factory)
     : DistanceBodyC(factory)
   {
-    // TODO: Load some matrix
-    
+    MatrixC mat;
+    if(!factory.UseComponent("covariance_matrix", mat))
+      RavlIssueError("Unable to initialise covar matrix in XML factory constructor");
+    iCovar = mat.Inverse();   
   }
 
   //: Load from stream.

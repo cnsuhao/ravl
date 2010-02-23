@@ -125,7 +125,9 @@ int testDistanceMahalanobis(void) {
        "<?xml version='1.0' encoding='UTF-8' ?>\n"
        "<?RAVL class='RavlN::XMLTreeC' ?>\n"
        "<Config >\n"
-       "<Distance typename=\"RavlN::DistanceMahalanobisC\"  />"         
+       "<Distance typename=\"RavlN::DistanceMahalanobisC\"  >"
+       "<covariance_matrix typename=\"RavlN::MatrixC\" values=\"2 2 1.0 0.0 0.0 1.0\" />"
+       "</Distance>"
        "</Config>");
   RavlN::XMLTreeC xmlTree(true);
   if (!xmlTree.Read(ss))

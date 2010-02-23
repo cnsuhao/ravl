@@ -23,7 +23,7 @@ PLIB=RavlPatternRec
 
 TESTEXES=testMeasure.cc testDistanceXMLFactory.cc
 
-USESLIBS=RavlPatternRec RavlMath RavlXMLFactory
+USESLIBS=RavlPatternRec RavlMath RavlXMLFactory RavlMathIO
 
 EHT=Ravl.API.Pattern_Recognition.Distance.html
 
