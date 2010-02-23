@@ -62,22 +62,21 @@ namespace RavlN {
   static RavlN::RCWrapAbstractC MeanCovarianceXMLFactory(const XMLFactoryContextC &node)
   {
 
-    UIntT samples;
-    if(!node.AttributeUInt("samples", samples)) {
+    RealT samples;
+    if(!node.Attribute("samples", samples)) {
       throw RavlN::ExceptionBadConfigC("No values specified for the samples component");
     }
 
-    RealT fs = (RealT)samples; // no idea why have to do this...
-    
     VectorC vec;
     if(!node.Attribute("mean",vec)) {
       throw RavlN::ExceptionBadConfigC("No values specified for the vector component");
     }
+
     MatrixC mat;
     if(!node.Attribute("covariance",mat)) {
       throw RavlN::ExceptionBadConfigC("No values specified for the matrix component");
     }
-    MeanCovarianceC value(fs,vec,mat);
+    MeanCovarianceC value(samples,vec,mat);
     return RavlN::RCWrapC<MeanCovarianceC>(value);
   }
 
