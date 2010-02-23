@@ -11,6 +11,7 @@
 //! lib=RavlEHS
 //! author = "Warren Moore"
 //! file = "Ravl/Contrib/EHS/EHS.hh"
+//! docentry = "Ravl.API.OS.HTTP.Server"
 
 #include "Ravl/Threads/Signal3.hh"
 #include "Ravl/HTTPServer.hh"

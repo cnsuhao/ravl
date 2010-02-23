@@ -11,6 +11,7 @@
 //! lib=RavlEHS
 //! author = "Warren Moore"
 //! file = "Ravl/Contrib/EHS/HTTPRequest.hh"
+//! docentry = "Ravl.API.OS.HTTP.Server"
 
 #include "Ravl/String.hh"
 #include "Ravl/Hash.hh"
