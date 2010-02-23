@@ -14,6 +14,7 @@
 #include "Ravl/PatternRec/DistanceEuclidean.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/BinStream.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
   
@@ -32,7 +33,7 @@ namespace RavlN {
       k(factory.AttributeUInt("k", 3)),
       useAverageKNN(factory.AttributeBool("use_average_knn", false))
   {
-    if(!factory.UseComponent("distance_metric", distanceMetric))
+    if(!factory.UseComponent("Distance", distanceMetric))
       RavlIssueError("Unable to initialise distance metric from XML Factory");
   }
   
@@ -100,6 +101,8 @@ namespace RavlN {
  
   //////////////////////////////////////////////////////////
   
+  RavlN::XMLFactoryRegisterHandleConvertC<DesignKNearestNeighbourC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignKNearestNeighbour("RavlN::DesignKNearestNeighbourC");
+
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignKNearestNeighbourBodyC,DesignKNearestNeighbourC,DesignClassifierSupervisedC);
 
 }

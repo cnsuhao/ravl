@@ -13,6 +13,7 @@
 #include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/config.h"
 #include "Ravl/PatternRec/SampleVector.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 
 namespace RavlN {
@@ -81,6 +82,9 @@ namespace RavlN {
   {}
 
 
+  RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierSupervisedC, DesignFunctionSupervisedC> g_registerXMLFactoryDesignClassifierSupervised("RavlN::DesignClassifierSupervisedC");
+
+  
 }
 
 #if RAVL_COMPILER_MIPSPRO

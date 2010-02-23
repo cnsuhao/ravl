@@ -39,7 +39,7 @@ SOURCES= DesignClassifierSupervised.cc \
 
 PLIB = RavlPatternRec
 
-TESTEXES=testClassifier.cc
+TESTEXES=testClassifier.cc testClassifierXMLFactory.cc
 # exNeuralNetwork.cc
 
 LIBDEPS = RavlPatternRecClassifier.def 

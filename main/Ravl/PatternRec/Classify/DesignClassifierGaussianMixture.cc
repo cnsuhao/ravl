@@ -15,6 +15,7 @@
 #include "Ravl/BinStream.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN {
   
@@ -24,6 +25,12 @@ namespace RavlN {
     : mixtures(nmixtures)
   {}
   
+  DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(const XMLFactoryContextC & factory)
+    : DesignClassifierSupervisedBodyC(factory),
+      mixtures(factory.AttributeUInt("number_of_mixtures", 1))
+  {
+  }
+
   //: Load from stream.
   
   DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(istream &strm)
@@ -94,6 +101,8 @@ namespace RavlN {
   }
  
   //////////////////////////////////////////////////////////
+  RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierGaussianMixtureC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierGaussianMixture("RavlN::DesignClassifierGaussianMixtureC");
+
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignClassifierGaussianMixtureBodyC,DesignClassifierGaussianMixtureC,DesignClassifierSupervisedC);
   
