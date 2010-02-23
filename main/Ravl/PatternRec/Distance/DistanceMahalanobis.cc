@@ -94,4 +94,8 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleConvertC<DistanceMahalanobisC, DistanceC> g_registerXMLFactoryDistanceMahalanobis("RavlN::DistanceMahalanobisC");
 
+  extern void linkDistanceMahalanobis()
+  {}
+
+  
 }

@@ -135,5 +135,7 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleConvertC<DistanceRobustC, DistanceC> g_registerXMLFactoryDistanceRobust("RavlN::DistanceRobustC");
 
+  extern void linkDistanceRobust()
+  {}
              
 }

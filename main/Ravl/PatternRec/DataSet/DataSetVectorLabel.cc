@@ -192,5 +192,9 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleC<DataSetVectorLabelC> g_registerXMLFactoryDataSetVectorLabel("RavlN::DataSetVectorLabelC");
 
+  void linkDataSetVectorLabel()
+  {}
+  
 }
+
 

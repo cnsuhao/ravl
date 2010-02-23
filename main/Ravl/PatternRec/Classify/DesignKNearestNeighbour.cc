@@ -105,4 +105,7 @@ namespace RavlN {
 
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignKNearestNeighbourBodyC,DesignKNearestNeighbourC,DesignClassifierSupervisedC);
 
+  void linkDesignKNearestNeighbour()
+  {}
+
 }

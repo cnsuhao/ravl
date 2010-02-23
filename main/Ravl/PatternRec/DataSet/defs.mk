@@ -47,3 +47,5 @@ USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO
 PROGLIBS=RavlOS
 
 EHT=Ravl.API.Pattern_Recognition.Data_Set.html
+
+MUSTLINK=linkDataSet.cc

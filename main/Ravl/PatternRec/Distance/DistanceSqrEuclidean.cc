@@ -67,5 +67,7 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleConvertC<DistanceSqrEuclideanC, DistanceC> g_registerXMLFactoryDistanceSqrEuclidean("RavlN::DistanceSqrEuclideanC");
 
+  extern void linkDistanceSqrEuclidean()
+  {}
   
 }

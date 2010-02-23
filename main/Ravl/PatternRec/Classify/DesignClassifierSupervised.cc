@@ -84,6 +84,9 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierSupervisedC, DesignFunctionSupervisedC> g_registerXMLFactoryDesignClassifierSupervised("RavlN::DesignClassifierSupervisedC");
 
+  void linkDesignClassifierSupervised()
+  {}
+
   
 }
 

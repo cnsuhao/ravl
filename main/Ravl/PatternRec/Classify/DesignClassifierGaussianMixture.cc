@@ -105,5 +105,8 @@ namespace RavlN {
 
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignClassifierGaussianMixtureBodyC,DesignClassifierGaussianMixtureC,DesignClassifierSupervisedC);
+
+  void linkDesignClassifierGaussianMixture()
+  {}
   
 }

@@ -21,7 +21,7 @@
 #include "Ravl/VectorMatrix.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/RandomGauss.hh"
-#include	"Ravl/TMatrix.hh"
+#include "Ravl/TMatrix.hh"
 
 namespace RavlN {
 
@@ -261,6 +261,9 @@ namespace RavlN {
 
 
   RavlN::XMLFactoryRegisterHandleC<SampleVectorC> g_registerXMLFactorySampleVector("RavlN::SampleVectorC");
+
+  void linkSampleVector()
+  {}
 
 }
 

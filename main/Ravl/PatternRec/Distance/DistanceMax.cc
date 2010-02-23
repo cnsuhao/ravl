@@ -70,5 +70,7 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleConvertC<DistanceMaxC, DistanceC> g_registerXMLFactoryDistanceMax("RavlN::DistanceMaxC");
 
+  extern void linkDistanceMax()
+  {}
   
 }

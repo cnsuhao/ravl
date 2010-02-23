@@ -49,3 +49,5 @@ USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann
 EHT = Ravl.API.Pattern_Recognition.Classifier.html DesignClassifier.html
 
 EXAMPLES=  exKNearestNeighbour.cc
+
+MUSTLINK=linkClassifier.cc

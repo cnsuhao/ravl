@@ -72,5 +72,8 @@ namespace RavlN {
 
   RavlN::XMLFactoryRegisterHandleConvertC<DistanceCityBlockC, DistanceC> g_registerXMLFactoryDistanceCityBlock("RavlN::DistanceCityBlockC");
 
+  extern void linkDistanceCityBlock()
+  {}
+  
   
 }
