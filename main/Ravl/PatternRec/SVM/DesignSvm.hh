@@ -31,6 +31,9 @@ public:
   DesignSvmBodyC();
   //: constructor.
 
+  DesignSvmBodyC(const XMLFactoryContextC & factory);
+  //: factory constructor
+  
   DesignSvmBodyC(istream &strm);
   //: Load from stream.
 
@@ -82,6 +85,11 @@ public:
   DesignSvmC()
   {};
   //: Default constructor.
+
+  DesignSvmC(const XMLFactoryContextC &factory)
+    :  DesignClassifierSupervisedC(*new DesignSvmBodyC(factory))
+  {}
+  //: Construct from XML factory
 
   DesignSvmC(istream &strm);
   //: Load from stream.

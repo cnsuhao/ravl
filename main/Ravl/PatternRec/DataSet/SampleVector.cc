@@ -51,7 +51,6 @@ namespace RavlN {
   SampleVectorC::SampleVectorC(const MeanCovarianceC & meanCovariance)
     : SampleC<VectorC>(Floor(meanCovariance.Number()))
   {
-
     // Random number generator
     RandomGaussC random;
     
@@ -79,6 +78,7 @@ namespace RavlN {
   SampleVectorC::SampleVectorC(const XMLFactoryContextC & factory)
     : SampleC<VectorC>(10000)
   {
+
     MeanCovarianceC meanCovariance;
     if(!factory.UseComponent("stats", meanCovariance))
       RavlIssueError("Unable to load stats from XML factory");

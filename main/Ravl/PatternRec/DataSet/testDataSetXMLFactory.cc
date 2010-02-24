@@ -52,11 +52,10 @@ int testSampleVector(void) {
   if(!context.UseComponent("Sample", sampleVector, true)) {
     return __LINE__;
   }
-
+  
   // compute mean and covariance of generated data set
   MeanCovarianceC meanCovariance = sampleVector.MeanCovariance();
   
-
   RealT tolerance = 0.5;
   
   // do some tests
@@ -65,9 +64,9 @@ int testSampleVector(void) {
   }  
 
   // do some tests
-  //if(!TestAlmostEquals(25.0, meanCovariance.Covariance().SumOfAbs(), tolerance, __FILE__, __LINE__)) {
-  //  return __LINE__;
-  //}  
+  if(!TestAlmostEquals(25.0, meanCovariance.Covariance().SumOfAbs(), tolerance, __FILE__, __LINE__)) {
+    return __LINE__;
+  }  
   
   return 0;
 }

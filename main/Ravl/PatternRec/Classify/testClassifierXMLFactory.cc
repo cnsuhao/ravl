@@ -9,8 +9,9 @@
 
 using namespace RavlN;
 
-int testKNearestNeighbour(void);
 int setup(void);
+int testKNearestNeighbour(void);
+int testClassifierGaussianMixture(void);
 
 DataSetVectorLabelC g_train;
 DataSetVectorLabelC g_testOverlap;
@@ -29,6 +30,12 @@ int main() {
     return 1;
   }
 
+  if((ln = testClassifierGaussianMixture()) != 0) {
+    std::cerr << "Test failed on line " << ln << "\n";
+    return 1;
+  }
+
+  
   std::cout << "Test passed. \n";
   return 0;
 }

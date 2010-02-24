@@ -10,6 +10,7 @@
 #include "Ravl/PatternRec/DesignSvmSmoLarge.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
 #include <string.h>
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN
 {
@@ -38,6 +39,18 @@ DesignSvmSmoLargeBodyC::DesignSvmSmoLargeBodyC(const KernelFunctionC &KernelFunc
   //cout << "lt:" << lambdaThreshold << endl;
 }
 //---------------------------------------------------------------------------
+
+DesignSvmSmoLargeBodyC::DesignSvmSmoLargeBodyC(const XMLFactoryContextC & factory)
+  : DesignSvmSmoBodyC(factory),
+    maxNumSv(factory.AttributeUInt("max_num_sv", 10000))        
+{
+  objectsToUseLarge = NULL;
+  kernelCacheIndices = NULL;
+  objectsToUseLargeSize = 0;
+}
+
+  //-------------------------------------------------------------
+
 //: Load from stream.
 DesignSvmSmoLargeBodyC::DesignSvmSmoLargeBodyC(istream& Strm)
                        :DesignSvmSmoBodyC(Strm)
@@ -140,7 +153,6 @@ void DesignSvmSmoLargeBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
   trainSetVectors = TrainingSetVectors;
   trainSetSize = TrainingSetVectors.Size();
   numFeatures = TrainingSetVectors[0].Size();
-  //cout << "training set size:" << trainSetSize << endl;
 
   //additional actions
   if(errorCacheSize != trainSetSize || errorCache == NULL || lambdas == NULL
@@ -702,5 +714,14 @@ void DesignSvmSmoLargeBodyC::CalcLambdas(bool DoFinal)
   delete[] localLambdas;
   delete[] changedIndices;
 }
-//---------------------------------------------------------------------------
+
+
+
+  RavlN::XMLFactoryRegisterHandleConvertC<DesignSvmSmoLargeC, DesignSvmSmoC> g_registerXMLFactoryDesignSvmSmoLarge("RavlN::DesignSvmSmoLargeC");
+  
+  void linkDesignSvmSmoLarge()
+{}
+
+
+  //---------------------------------------------------------------------------
 }

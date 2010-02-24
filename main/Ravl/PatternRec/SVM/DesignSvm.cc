@@ -9,12 +9,11 @@
 //! author="Alexey Kostin"
 
 #include "Ravl/PatternRec/DesignSvm.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN
 {
-using namespace RavlN;
 
-//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // Default constructor.
 DesignSvmBodyC::DesignSvmBodyC()
@@ -23,6 +22,18 @@ DesignSvmBodyC::DesignSvmBodyC()
   callbackFunc = NULL;
   callbackData = NULL;
 }
+
+  
+//---------------------------------------------------------------------------
+//: Load from XML factory  
+DesignSvmBodyC::DesignSvmBodyC(const XMLFactoryContextC & factory)
+  : DesignClassifierSupervisedBodyC(factory)
+{
+  callbackFunc = NULL;
+  callbackData = NULL;
+}
+  
+
 //---------------------------------------------------------------------------
 //: Load from stream.
 DesignSvmBodyC::DesignSvmBodyC(istream &strm)
@@ -95,5 +106,12 @@ IntT DesignSvmBodyC::NumSupportVectors() const
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
+
+
+RavlN::XMLFactoryRegisterHandleConvertC<DesignSvmC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignSvm("RavlN::DesignSvmC");
+
+void linkDesignSvm()
+{}
+
 }
 

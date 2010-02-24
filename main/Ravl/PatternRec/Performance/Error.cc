@@ -58,6 +58,24 @@ namespace RavlN {
   }
 
   
+  RealT ErrorBodyC::Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold) {
+    UIntT correct = 0;
+    UIntT wrong = 0;    
+    
+    for(DataSet2IterC<SampleVectorC, SampleLabelC>it(dset);it;it++) {
+      RealT score = classifier.Classify2(it.Data1());
+      if(it.Data2() == label && score <= threshold) 
+        correct++;
+      else if(it.Data2() != label && score > threshold)
+        correct++;
+      else wrong++;
+    }
+    RealT pmc = (RealT)wrong/(RealT)dset.Sample1().Size();
+    return pmc;
+  }
+
+  
+  
   //: Load from stream.
   
   ErrorC::ErrorC(istream &strm) 

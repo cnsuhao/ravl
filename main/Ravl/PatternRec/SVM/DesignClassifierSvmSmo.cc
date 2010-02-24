@@ -11,6 +11,7 @@
 #include "Ravl/PatternRec/SampleIter.hh"
 #include <string.h>
 #include <stdio.h>
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN
 {
@@ -62,6 +63,26 @@ DesignSvmSmoBodyC::DesignSvmSmoBodyC(const KernelFunctionC &KernelFunction,
 {
   Init(KernelFunction, Penalty1, Penalty2, Tolerance, Eps, LambdaThreshold);
 }
+
+
+DesignSvmSmoBodyC::DesignSvmSmoBodyC(const XMLFactoryContextC & factory)
+  : DesignSvmBodyC(factory),
+    c1(factory.AttributeReal("penalty1", 1e3)),
+    c2(factory.AttributeReal("penalty2", 1e3)),
+    tolerance(factory.AttributeReal("tolerance", 1e-7)),
+    eps(factory.AttributeReal("eps", 1e-9)),
+    lambdaThreshold(factory.AttributeReal("lambdaThreshold", 1e-12))
+        
+{
+  if(!factory.UseComponent("KernelFunction", kernelFunction))
+    RavlIssueError("No kernel function specified in XML factory");
+
+  // FIXME...A bit dutch
+  Init(kernelFunction, c1, c2, tolerance, eps, lambdaThreshold);
+  
+}
+
+
 //---------------------------------------------------------------------------
 //: Load from stream.
 DesignSvmSmoBodyC::DesignSvmSmoBodyC(istream &strm)
@@ -809,6 +830,15 @@ IntT DesignSvmSmoBodyC::LeaveOneOutTest()
   //cout << "numErrors:" << numErrors << endl;
   return numErrors;
 }
+
+
+RavlN::XMLFactoryRegisterHandleConvertC<DesignSvmSmoC, DesignSvmC> g_registerXMLFactoryDesignSvmSmo("RavlN::DesignSvmSmoC");
+  
+void linkDesignSvmSmo()
+{}
+
+
+
 //---------------------------------------------------------------------------
 }
 

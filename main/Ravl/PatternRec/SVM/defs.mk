@@ -55,7 +55,7 @@ AUXDIR   = share/RAVL/testData/svm
 
 MUSTLINK= linkRavlSVM.cc
 
-#TESTEXES = testVirtualConstr.cc
+TESTEXES = testSvmXMLFactory.cc
 
 EHT      = Ravl.API.Pattern_Recognition.Classifier.SVM.eht
 

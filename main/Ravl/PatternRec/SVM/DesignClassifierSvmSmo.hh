@@ -39,6 +39,9 @@ public:
                     RealT LambdaThreshold = 1e-12);
   //: constructor.
 
+  DesignSvmSmoBodyC(const XMLFactoryContextC & factory);
+  //: factory constructor  
+
   DesignSvmSmoBodyC(istream &strm);
   //: Load from stream.
 
@@ -156,6 +159,11 @@ public:
     {}
   //: constructor.
 
+  DesignSvmSmoC(const XMLFactoryContextC &factory)
+    :  DesignSvmC(*new DesignSvmSmoBodyC(factory))
+  {}
+  //: Construct from XML factory
+  
   DesignSvmSmoC(istream &strm);
   //: Load from stream.
 
