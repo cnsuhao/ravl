@@ -118,6 +118,7 @@ namespace RavlN {
       localInfo(protocolName,protocolVersion),
       peerInfo("Unknown","-"),
       useBigEndianBinStream(RAVL_BINSTREAM_ENDIAN_BIG),
+      use32mode(true),
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput),
       threadsStarted(false),

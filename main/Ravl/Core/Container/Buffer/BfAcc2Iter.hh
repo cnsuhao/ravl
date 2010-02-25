@@ -53,7 +53,7 @@ namespace RavlN {
     
     bool First(const BufferAccessC<BufferAccessC<DataT> > &pbuf,SizeT size1,SizeT size2) {
       rit.First(pbuf,size1);
-      rng = IndexRangeC(0,size2-1);
+      rng = IndexRangeC(size2);
       if(size2 > 0 && rit.IsElm()) {
 	cit.First(*rit,rng);
 	return true;
@@ -65,7 +65,7 @@ namespace RavlN {
     
     bool First(const SizeBufferAccessC<BufferAccessC<DataT> > &pbuf,SizeT size) {
       rit = pbuf;
-      rng = IndexRangeC(0,size-1);
+      rng = IndexRangeC(size);
       if(rng.Size() > 0 && rit.IsElm()) {
 	cit.First(*rit,rng);
 	return true;
