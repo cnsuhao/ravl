@@ -10,10 +10,11 @@
 //! docentry="Ravl.API.Graphics.GTK.Control"
 //! file="Ravl/GUI/2D/exRawZoomCanvas.cc"
 
-#include "Ravl/GUI/RawZoomCanvas.hh"
 #include "Ravl/Image/Image.hh"
+#include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Image/ByteRGBAValue.hh"
+#include "Ravl/GUI/RawZoomCanvas.hh"
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/GUI/Window.hh"
 #include "Ravl/Polygon2d.hh"
