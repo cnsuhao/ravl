@@ -119,7 +119,7 @@ namespace RavlN {
   template<class DataT>
   inline DataT Max(const DataT &a, const DataT &b, const DataT &c)
   { return Max(Max(a,b),c) ; }
-  //: Retruns the bigger value form 'a' and 'b' and 'c'
+  //: Returns the bigger value form 'a' and 'b' and 'c'
 
   inline RealT Log(RealT r) {
     RavlAssertMsg(r >= 0.0,"Log(RealT r): Can't take log of a negative number.");
