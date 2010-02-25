@@ -59,17 +59,17 @@ namespace RavlN {
     
     Dat &operator[] (const  Key &a) 
     { return this->Data()[a]; }
-    //: Accesss an element.
+    //: Access an element.
     //!param: a - Key to lookup in table.
-    //!return: Element coresponding to 'a' in the table.
+    //!return: Element corresponding to 'a' in the table.
     // Will create an empty element with the default constructor
     // and return a reference to it, if it doesn't already exist.
     
     const Dat &operator[] (const  Key &a) const
     { return this->Data()[a]; }
-    //: Accesss an element.
+    //: Access an element.
     //!param: a - Key to lookup in table.
-    //!return: Element coresponding to 'a' in the table.
+    //!return: Element corresponding to 'a' in the table.
     // The element must exist in the hash table otherwise
     // it will cause an assertion failure. Note: It will
     // just crash in optimised builds.
@@ -157,9 +157,9 @@ namespace RavlN {
     
     bool NormaliseKey(Key &value) const
     { return this->Data().NormaliseKey(value); }
-    //: Normalise an equivelent key to one used the the table.
+    //: Normalise an equivalent key to one used the the table.
     // This function is useful when you want to normalise the use
-    // of equivlent keys (think strings.) to save memory.
+    // of equivalent keys (think strings.) to save memory.
     // Returns true if key exists in the table, false otherwise.
     
     SizeT Hash() const
