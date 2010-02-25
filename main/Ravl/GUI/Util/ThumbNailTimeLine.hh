@@ -259,7 +259,7 @@ namespace RavlGUIN {
     { return Body().GUISetSkip(skip); }
     //: Set frame skip factor.
 
-    bool GetSkip(void) const
+    IntT GetSkip(void) const
     { return Body().GetSkip(); }
     //: Access teh currrent skip
 
