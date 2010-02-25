@@ -238,7 +238,6 @@ namespace RavlN {
     }
     
     // Do the seek.
-    
     if(!ctrl.Seek(seekto)) {
       cerr << "WARNING: Seek to " << pos <<" (" << seekto << ") failed. \n";
       return false;
@@ -433,17 +432,24 @@ namespace RavlN {
 	}
       }
     }
-    
+    return ret;
+  }
+
+
+  //: Update lastFrame and at. after read.
+  void DPPlayControlBodyC::UpdateAt(void)
+  {
     // Place will be incremented by next read.
     lastFrame = at;
     at++; // Allow for frame read.
-    
+
     // Check for last frame in sequence.
     if(lastFrame == end)
       at = end;
-    ONDEBUG(cerr << " Last frame :" << lastFrame << " Tell:" << ctrl.Tell() << " At:" << at << "\n");  
-    return ret;
+    ONDEBUG(cerr << " Last frame :" << lastFrame << " Tell:" << ctrl.Tell() << " At:" << at << "\n");
   }
+
+
 
   //: Callback on sequence size changing.
   

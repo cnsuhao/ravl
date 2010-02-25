@@ -35,12 +35,11 @@ namespace RavlN {
     }
     // now wait and setup for next.
     if (diff > 0)
-     {
-      m_bypass.Wait(diff);
-      if (!m_persistBypass)
-        m_bypass.Reset();
-     }
-     
+     { m_bypass.Wait(diff); }
+
+    if (!m_persistBypass)
+      m_bypass.Reset();
+
     next.SetToNow();
     next += delay;
     frameCnt++;
