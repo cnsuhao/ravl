@@ -122,6 +122,34 @@ namespace RavlGUIN {
     //: Get name of root widget.
     
   };
+
+  inline istream &operator>>(istream &strm,GladeXMLC &obj) {
+    RavlAssertMsg(0,"Not implemented. ");
+    return strm;
+  }
+  //: Load from a stream.
+  // Uses virtual constructor.
+
+  inline ostream &operator<<(ostream &out,const GladeXMLC &obj) {
+    RavlAssertMsg(0,"Not implemented. ");
+    return out;
+  }
+  //: Save to a stream.
+  // Uses virtual constructor.
+
+  inline BinIStreamC &operator>>(BinIStreamC &strm,GladeXMLC &obj) {
+    RavlAssertMsg(0,"Not implemented. ");
+    return strm;
+  }
+  //: Load from a binary stream.
+  // Uses virtual constructor.
+
+  inline BinOStreamC &operator<<(BinOStreamC &out,const GladeXMLC &obj) {
+    RavlAssertMsg(0,"Not implemented. ");
+    return out;
+  }
+  //: Save to a stream.
+  // Uses virtual constructor.
 }
 
 #endif
