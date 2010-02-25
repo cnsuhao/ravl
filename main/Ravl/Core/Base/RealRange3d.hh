@@ -155,7 +155,7 @@ namespace RavlN {
     //: The number of k's in the rectangle.
     
     inline RealT Volume() const
-    { return (SizeT) Is() * Js() * Ks(); }
+    { return (size_t) Is() * Js() * Ks(); }
     //: Returns the volume of the prism expressed in number of indexs.
     
     inline RealRange3dC Dilate() const 

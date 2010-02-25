@@ -148,7 +148,7 @@ namespace RavlN  {
       : in(nIn),
 	useNativeEndian(RAVL_BINSTREAM_DEFAULT),
 	m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit()),
-        m_arraySizeLimit((SizeT) -1)
+        m_arraySizeLimit((size_t) -1)
     {}
     //: Constructor.
     // From a IStreamC.
@@ -158,7 +158,7 @@ namespace RavlN  {
       : in(fd),
 	useNativeEndian(RAVL_BINSTREAM_DEFAULT),
 	m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit()),
-        m_arraySizeLimit((SizeT) -1)
+        m_arraySizeLimit((size_t) -1)
     {}
     //: Constructor.
     // From a file descriptor.
@@ -168,14 +168,14 @@ namespace RavlN  {
       : in(nIn,true,buffered),
 	useNativeEndian(RAVL_BINSTREAM_DEFAULT),
 	m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit()),
-        m_arraySizeLimit((SizeT) -1)
+        m_arraySizeLimit((size_t) -1)
     {}
     //: Constructor.
 
     BinIStreamC()
       : useNativeEndian(RAVL_BINSTREAM_DEFAULT),
         m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit()),
-        m_arraySizeLimit((SizeT) -1)
+        m_arraySizeLimit((size_t) -1)
     {}
     //: Default construtor.
 
