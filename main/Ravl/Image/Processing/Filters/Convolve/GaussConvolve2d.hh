@@ -24,7 +24,7 @@ namespace RavlImageN {
   //: Low-pass-filters an image with a finite-width approximation to a Gaussian mask
   //
   // <p>This class is just wraps <a href="RavlImageN.ConvolveSeparable2dC.html">ConvolveSeparable2dC</a> and
-  // <a href="RavlN.GenerateBinomialObSizeT_bool_bool_UIntTCb.html">GenerateBinomial()</a> calls in a convenient form.</p>
+  // <a href="RavlN.GenerateBinomialObUIntT_bool_bool_UIntTCb.html">GenerateBinomial()</a> calls in a convenient form.</p>
 
   //<p> The filter design is based on a normalised row from Pascal's triangle
   // (i.e. binomial coefficients).  E.g. a 5th order filter has mask of:</p>
