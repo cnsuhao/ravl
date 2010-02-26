@@ -413,7 +413,7 @@ namespace RavlGUIN {
 	
 	int frameNo = (i * workingFrameSkip) + workingMidFrame;
 	//ONDEBUG(cerr << "FrameNo=" << frameNo << " i=" << i << "\n");
-	Index2dC at(0,workingDisplayArea.Cols()/2 + i * width  + vertSpace/2 - thumbSize.Cols()/2);
+	Index2dC at(0,IndexC(workingDisplayArea.Cols())/2 + i * width  + vertSpace/2 - IndexC(thumbSize.Cols())/2);
 	ImageC<ByteRGBValueC> img;
 	if(frameNo >= 0) {
 	  img = GetDisplayImage(frameNo);
