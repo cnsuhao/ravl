@@ -216,7 +216,7 @@
 #define RAVL_HAVE_NAN_H    (RAVL_OS_SOLARIS || RAVL_OS_IRIX) /* have nan.h           */
 #define RAVL_HAVE_IEEEFP_H (RAVL_OS_SOLARIS || RAVL_OS_IRIX) /* have ieeefp.h        */
 #define RAVL_HAVE_HYPOT    !RAVL_OS_WIN32   /* have hypot() in libm */
-#define RAVL_HAVE_CBRT     (0 && RAVL_OS_LINUX) || RAVL_OS_FREEBSD /* have cbrt() in libm  */
+#define RAVL_HAVE_CBRT     (0 && (RAVL_OS_LINUX || RAVL_OS_LINUX64)) || RAVL_OS_FREEBSD /* have cbrt() in libm  */
 #define RAVL_HAVE_ERF      (!RAVL_OS_WIN32 && !RAVL_OS_CYGWIN)   /* have erf() and erfc() in libm  */
 
 #define RAVL_HAVE_ISINF    (RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_CYGWIN || RAVL_OS_MACOSX || RAVL_OS_FREEBSD)    /* have isinf() in libm  */
@@ -282,7 +282,7 @@
 #endif
 #endif
 
-#if RAVL_OS_LINUX || RAVL_OS_CYGWIN
+#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_CYGWIN
 #ifndef _ISOC9X_SOURCE
 #define _ISOC9X_SOURCE 1
 #endif
