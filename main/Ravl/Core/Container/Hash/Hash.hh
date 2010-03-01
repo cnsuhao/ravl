@@ -133,7 +133,7 @@ namespace RavlN {
     
     HashC(const HashC<K,T> &oth) 
       : HashBaseC(oth.elements),
-	table(oth.table.Copy())
+        table(oth.table.Copy())
     {}
     //: Copy access structure.
     //!param: oth - Table to copy to make this one.
@@ -145,7 +145,7 @@ namespace RavlN {
     
     HashC(Tuple2C<K,T> *data); 
     //: Initialise from simple array.
-    //!param: data - pointer to array of tuples to initalise the table with, terminated with an entry with a duplicate key of the first entry.
+    //!param: data - pointer to array of tuples to initialise the table with, terminated with an entry with a duplicate key of the first entry.
     // Note: Array must be terminated by a duplicate of the first key. (i.e. == must return true between them)
     
     HashC(istream &in);

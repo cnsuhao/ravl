@@ -40,14 +40,14 @@ namespace RavlN {
     
     HashIterC(const RCHashC<K,T> & nTab) 
       : bIt(nTab.Data().table),
-	hashtable(&const_cast<HashC<K,T> &> (nTab.Data() )) 
+        hashtable(&const_cast<HashC<K,T> &> (nTab.Data() ))
     { First() ; } 
     //: Constructor from RCHash
 
     HashIterC(const HashIterC<K,T> &oth) 
       : lIt(oth.lIt), 
         bIt(oth.bIt),
-	hashtable(oth.hashtable)
+        hashtable(oth.hashtable)
     {} 
     // Copy constructor.
 
