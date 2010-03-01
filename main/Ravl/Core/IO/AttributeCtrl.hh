@@ -27,7 +27,7 @@ namespace RavlN {
   class XMLOStreamC;
   
   //! userlevel=Develop
-  //: Interface for reading and writting attribute values.
+  //: Interface for reading and writing attribute values.
   
   class AttributeCtrlBodyC 
     : virtual public DPEntityBodyC 
@@ -153,7 +153,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Interface for reading and writting attribute values.
+  //: Interface for reading and writing attribute values.
   
   class AttributeCtrlC 
     : virtual public DPEntityC 
