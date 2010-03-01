@@ -100,7 +100,7 @@ namespace RavlN {
     
     void reset(const DataT *other) 
     { (*this) = other; }
-    //: Boost compatibilty. Assign to another object.
+    //: Boost compatibility. Assign to another object.
     
     DataT *get()
     { return this->body; }
