@@ -56,12 +56,12 @@ namespace RavlN {
     RCBodyC &Copy() const;
     //: Make copy of body.
     // This should be provided in derived classes.
-    // this funtion will issue an assertion failure if called.
+    // this function will issue an assertion failure if called.
     
     RCBodyC &DeepCopy(UIntT levels = ((UIntT) -1)) const;
     //: Make a deep copy of body.
     // This should be provided in derived classes.
-    // this funtion will issue an assertion failure if called.
+    // this function will issue an assertion failure if called.
     
     void IncRefCounter() const
     { ravl_atomic_inc(&counter); }
@@ -188,7 +188,7 @@ namespace RavlN {
 				  typeid(Body()),
 				  typeid(DT));
     }
-    //: Check handle type. Throw an expception if not.
+    //: Check handle type. Throw an exception if not.
     
     void *VoidPtr() const
     { return body; }
