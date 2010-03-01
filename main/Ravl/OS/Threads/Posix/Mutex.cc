@@ -53,9 +53,9 @@ namespace RavlN
     
     // ---------------------------------- POSIX ----------------------------------
 #if RAVL_HAVE_POSIX_THREADS
-#if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX
+#if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX || RAVL_OS_LINUX64
 #else
-    ONDEBUG(cerr << "MutexC::Init(), Attempting to construct debuging mutex but don't know how. \n");
+    ONDEBUG(cerr << "MutexC::Init(), Attempting to construct debugging mutex but don't know how. \n");
 #endif
     
     // Build an error checking mutex.
@@ -67,7 +67,7 @@ namespace RavlN
     ONDEBUG(cerr << "MutexC::Init(), Constructing debuging mutex. (@:" << ((void*) this) << ") \n");
     
     // Enable error checking, if available.
-#if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX
+#if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX || RAVL_OS_LINUX64
     // Set appropriate attribute.
 #if defined(PTHREAD_MUTEX_ERRORCHECK)
     pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_ERRORCHECK);
