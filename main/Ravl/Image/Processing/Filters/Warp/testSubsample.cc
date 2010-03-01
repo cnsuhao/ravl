@@ -3,6 +3,8 @@
 #include "Ravl/Image/WarpScale2d.hh"
 #include "Ravl/Array2dIter2.hh"
 
+#include <stdio.h>
+
 using namespace RavlN; 
 using namespace RavlImageN;
 
