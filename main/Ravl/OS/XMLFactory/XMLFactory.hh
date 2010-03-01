@@ -18,6 +18,7 @@
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/RCWrap.hh"
 
 #define rThrowBadConfigContextOnFailS(CONTEXT, METHOD, ARGS) { \
   if (!CONTEXT.METHOD) { \
