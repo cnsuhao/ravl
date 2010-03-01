@@ -46,7 +46,7 @@ namespace RavlImageN {
     
     RegionGrowBodyC(const ClassifierT & cl)
       : classifier(cl),
-	eightConnectivity(false)
+        eightConnectivity(false)
     {}
     //: Construct from a classifier.
     
