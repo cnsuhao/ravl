@@ -121,7 +121,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Get initalise information from template file.
+  //: Get initialise information from template file.
   
   bool TemplateComplexBodyC::Scan(StringC &fn) {
     TextFileC templ(fn);
@@ -458,7 +458,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Substution
+  //: Substitution
   
   bool TemplateComplexBodyC::DoSubst(StringC &txt) {
     
