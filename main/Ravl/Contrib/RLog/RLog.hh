@@ -18,31 +18,27 @@
 #define RLOG_SECTION
 
 
-#define RLOG_STREAM(RLOG_CMD, ARGS) {  \
-  RavlN::StrOStreamC strm;             \
-  strm << ARGS;                        \
-  RLOG_CMD(strm.String().data());      \
-}
+#define RLOG_STREAM(RLOG_CMD, ARGS)   \
+  RavlN::StrOStreamC strm;            \
+  strm << ARGS;                       \
+  RLOG_CMD(strm.String().data());     \
 
-#define rInfoS(ARGS)    RLOG_STREAM(rInfo,    ARGS)
-#define rDebugS(ARGS)   RLOG_STREAM(rDebug,   ARGS)
-#define rWarningS(ARGS) RLOG_STREAM(rWarning, ARGS)
-#define rErrorS(ARGS)   RLOG_STREAM(rError,   ARGS)
+
+#define rInfoS(ARGS)    { RLOG_STREAM(rInfo,    ARGS) }
+#define rDebugS(ARGS)   { RLOG_STREAM(rDebug,   ARGS) }
+#define rWarningS(ARGS) { RLOG_STREAM(rWarning, ARGS) }
+#define rErrorS(ARGS)   { RLOG_STREAM(rError,   ARGS) }
 
 #define rThrowOnFailS(FUNC, ARGS) { \
   if (!(FUNC)) { \
-    RavlN::StrOStreamC strm; \
-    strm << ARGS; \
-    rError("%s", strm.String().data()); \
+    RLOG_STREAM(rError, ARGS); \
     throw RavlN::ExceptionOperationFailedC(strm.String().data(), true); \
   } \
 }
 
 #define rThrowBadConfigOnFailS(FUNC, ARGS) { \
   if (!(FUNC)) { \
-    RavlN::StrOStreamC strm; \
-    strm << ARGS; \
-    rError("%s", strm.String().data()); \
+    RLOG_STREAM(rError, ARGS); \
     throw RavlN::ExceptionBadConfigC(strm.String().data(), true); \
   } \
 }
