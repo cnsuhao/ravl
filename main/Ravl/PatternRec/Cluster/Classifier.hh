@@ -105,7 +105,7 @@ namespace RavlN {
       : FunctionC(dynamic_cast<const ClassifierBodyC *>(BodyPtr(func)))
     {}
     //: Create from base class.
-    // Creates an invalid handle if 'func' is not a classifer.
+    // Creates an invalid handle if 'func' is not a classifier.
     
   protected:
     ClassifierC(ClassifierBodyC &bod)
