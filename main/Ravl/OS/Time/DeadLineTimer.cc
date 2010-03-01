@@ -162,7 +162,7 @@ namespace RavlN {
     t.it_interval.tv_usec = 0;
     t.it_value.tv_usec = (int) ((RealT) rtime * 1000000) % 1000000;
     t.it_value.tv_sec = (int) ((RealT) rtime);
-#if RAVL_OS_LINUX
+#if RAVL_OS_LINUX || RAVL_OS_LINUX64
     setitimer((__itimer_which)timerType,&t,0);
 #else
     setitimer(timerType,&t,0);
