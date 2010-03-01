@@ -22,7 +22,7 @@ namespace RavlImageN {
   
   //! userlevel=Normal
   //: Square Composition.
-  // Generates "magnitude squared" pixels from 2 pixel components
+  // Generates root of sum of squares pixels from 2 pixel components
   
   class SqrCompositionC  {
   public:
@@ -32,16 +32,16 @@ namespace RavlImageN {
     
     bool Apply(const ImageC<RealT> &inImgDx,const ImageC<RealT> &inImgDy,ImageC<RealT> &out) const;
     //: Squared composition of inImg1 and inImg2.
-    // "out" pixels are sum of squares of input pixels
+    // "out" pixels are root of sum of squares of input pixels
 
     bool Apply(const ImageC<TFVectorC<RealT,2> > &inImg,ImageC<RealT> &out) const;
     //: Calculate the maginute image.
-    // "out" pixels are sum of squares of input pixel components
+    // "out" pixels are root of sum of squares of input pixel components
 
     bool Apply(const Tuple2C<ImageC<RealT>,ImageC<RealT> > &inImg,ImageC<RealT> &out) const
     { return Apply(inImg.Data1(),inImg.Data2(),out); }
     //: Square composition of inImg1 and inImg2.
-    // "out" pixels are sum of squares of input pixels
+    // "out" pixels are root of sum of squares of input pixels
 
   protected:
     void DoSqrComp(ImageC<RealT> &res,ImageC<RealT> &img1,ImageC<RealT> &img2,IntT startRow,IntT endRow) const;
