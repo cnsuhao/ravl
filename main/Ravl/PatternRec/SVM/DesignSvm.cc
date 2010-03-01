@@ -98,6 +98,14 @@ ClassifierC DesignSvmBodyC::Apply(const SampleC<VectorC> &TrainingSetVectors,
   return ClassifierC();
 }
 //---------------------------------------------------------------------------
+
+// Reset designer to intial state
+bool DesignSvmBodyC::Reset() {
+  RavlAssertMsg(0,"DesignSvmBodyC::Reset(), Abstract method called. \n");
+  return false;
+}
+
+
 //---------------------------------------------------------------------------
 IntT DesignSvmBodyC::NumSupportVectors() const
 {

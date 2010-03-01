@@ -69,7 +69,10 @@ public:
   virtual ClassifierC Apply(const SampleC<VectorC> &TrainingSetVectors,
                             const SampleC<UIntT> &TrainingSetLabels);
   //: creates classifier
-
+  
+  virtual bool Reset();
+  //: Reset the designer to an initial state
+  
   virtual IntT NumSupportVectors() const;
   //: returns number of support vectors
 protected:

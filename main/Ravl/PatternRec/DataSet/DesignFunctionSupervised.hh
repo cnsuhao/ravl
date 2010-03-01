@@ -73,6 +73,9 @@ namespace RavlN {
     //: Create function from the given data, and sample weights.
     // Note: Construction from a sample stream may not be implemented by all designers.
 
+    virtual bool Reset();
+    //: Reset the designer to an initial state
+    
   };
   
   //! userlevel=Normal

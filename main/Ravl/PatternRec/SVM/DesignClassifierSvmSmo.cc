@@ -77,9 +77,8 @@ DesignSvmSmoBodyC::DesignSvmSmoBodyC(const XMLFactoryContextC & factory)
   if(!factory.UseComponent("KernelFunction", kernelFunction))
     RavlIssueError("No kernel function specified in XML factory");
 
-  // FIXME...A bit dutch
-  Init(kernelFunction, c1, c2, tolerance, eps, lambdaThreshold);
-  
+  // Lets get to a good intial state
+  Reset();
 }
 
 
@@ -244,6 +243,36 @@ ClassifierC DesignSvmSmoBodyC::Apply(const SampleC<VectorC> &TrainingSetVectors,
 
   return GetClassifier();
 }
+
+// Reset designer to intial state
+bool DesignSvmSmoBodyC::Reset() {
+  
+  trainSetSize = 0;
+
+  lambdas = NULL;
+  errorCache = NULL;
+  trainingSetLabels = NULL;
+  trSetVectorPtrs = NULL;
+  objectsToUse = NULL;
+  kernelCache = NULL;
+
+  numFeatures = 0;
+
+  numTrainObjects = 0;
+  errorCacheSize = 0;
+  kernelCacheSize = 0;
+
+  callbackFunc = NULL;
+  callbackData = NULL;
+
+  verbosity = 0;
+  
+
+
+  return true;
+}
+
+
 //---------------------------------------------------------------------------
 void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
                                 const SampleC<SByteT> &TrainingSetLabels)

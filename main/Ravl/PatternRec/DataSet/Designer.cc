@@ -51,7 +51,14 @@ namespace RavlN {
   //: Set the current paramiters.
   // Returns the current paramiters, which may not be exactly those
   // set in 'params', but will be the closest legal values.
-  
+
+  // Reset designer to intial state
+  bool DesignerBodyC::Reset() {
+    RavlAssertMsg(0,"DesignerBodyC::Reset(), Abstract method called. \n");
+    return false;
+  }
+
+
   ////////////////////////////////////////////////////////////////////
   
   //: Load from stream.

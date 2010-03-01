@@ -116,6 +116,13 @@ namespace RavlN {
   //: Create function from the given data, and sample weights.
   // Note: Construction from a sample stream may not be implemented by all designers.
 
+  // Reset designer to intial state
+  bool DesignFunctionSupervisedBodyC::Reset() {
+    RavlAssertMsg(0,"DesignFunctionSupervisedBodyC::Reset(), Abstract method called. \n");
+    return false;
+  }
+
+  
   ////////////////////////////////////////////////////////////////////
   
   //: Load from stream.

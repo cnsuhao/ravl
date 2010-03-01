@@ -21,7 +21,7 @@ namespace RavlN {
   //! userlevel=Develop
   //: Designer base class.
   // Abstract Function designer. This is provided to allow the tweeking 
-  // of design paramiters to be automated
+  // of design parameters to be automated
   
   class DesignerBodyC
     : public RCBodyVC
@@ -53,6 +53,10 @@ namespace RavlN {
     //: Set the current paramiters.
     // Returns the current paramiters, which may not be exactly those
     // set in 'params', but will be the closest legal values.
+    
+    virtual bool Reset();
+    //: Reset the designer to an initial state
+    
   };
 
   //! userlevel=Normal
@@ -111,6 +115,11 @@ namespace RavlN {
     //: Set the current paramiters.
     // Returns the current paramiters, which may not be exactly those
     // set in 'params', but will be the closest legal values.
+
+    bool Reset()
+    { return Body().Reset(); }
+    //: Reset the designer to an intial state
+
     
   };
   

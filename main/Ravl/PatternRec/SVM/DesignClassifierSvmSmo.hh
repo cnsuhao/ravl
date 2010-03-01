@@ -74,6 +74,9 @@ public:
                             const SampleC<UIntT> &TrainingSetLabels);
   //: creates classifier
 
+  virtual bool Reset();
+  //: Reset the designer to an initial state
+
   SArray1dC<RealT> GetLambdas() const
   //: return Lagrangian multipliers
     { return SArray1dC<RealT>(BufferC<RealT>(trainSetSize,lambdas,true,true),
