@@ -150,7 +150,7 @@ namespace RavlN {
   public:
     DPIPortBaseBodyC() 
     {}
-    //: Default constuctor.
+    //: Default constructor.
     
     DPIPortBaseBodyC(const StringC &nportId)
       : DPPortBodyC(nportId)
@@ -160,7 +160,7 @@ namespace RavlN {
     DPIPortBaseBodyC(istream &in) 
       : DPPortBodyC(in)
     {}
-    // Stream constuctor.
+    // Stream constructor.
     
     virtual bool IsGetReady() const;
     //: Is some data ready ?
@@ -267,7 +267,7 @@ namespace RavlN {
   {
   public:
     DPOPortBaseBodyC() {}
-    //: Default constuctor.
+    //: Default constructor.
 
     DPOPortBaseBodyC(const StringC &nportId)
       : DPPortBodyC(nportId)
@@ -277,7 +277,7 @@ namespace RavlN {
     DPOPortBaseBodyC(istream &in)
       : DPPortBodyC(in)
     {}
-    //: Stream constuctor.
+    //: Stream constructor.
     
     virtual void PutEOS();
     //: Put End Of Stream marker.
@@ -414,13 +414,13 @@ namespace RavlN {
     
     DPIPortBaseC(const DPIPortBaseC &oth) 
       : DPEntityC(oth),
-	DPPortC(oth)
+        DPPortC(oth)
     {}
     //: Copy constructor.
     
     DPIPortBaseC(DPIPortBaseBodyC &bod) 
       : DPEntityC(bod),
-	DPPortC(bod)
+        DPPortC(bod)
     {}
     //: Body constructor.
     
