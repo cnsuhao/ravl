@@ -310,7 +310,9 @@ void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     double *lambdasPtr = lambdas;
     for(SampleIterC<RealT> it(initialLambdas); it; it++, lambdasPtr++)
     {
-      *lambdasPtr = *it;
+      RealT l = *it;
+      if(l < 0) l = 0;
+      *lambdasPtr = l;
     }
   }
 
@@ -376,7 +378,9 @@ void DesignSvmSmoBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
     double *lambdasPtr = lambdas;
     for(SampleIterC<RealT> it(initialLambdas); it; it++, lambdasPtr++)
     {
-      *lambdasPtr = *it;
+      RealT l = *it;
+      if(l < 0) l = 0;
+      *lambdasPtr = l;
     }
   }
 
