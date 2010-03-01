@@ -589,7 +589,7 @@ cheadbuild: build_subdirs $(TARG_HDRCERTS)
 else
 chead:
 	echo "ERROR: chead must be used with FULLCHECKING!" ; \
-	false
+	exit 1;
 endif
 
 ###############################
@@ -792,7 +792,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(I
 	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
-	  false ; \
+	  exit 1 ; \
 	fi ; \
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
@@ -803,7 +803,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
-	  false ; \
+	  exit 1 ; \
 	fi
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
@@ -814,7 +814,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_D
 	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
-	  false ; \
+	  exit 1 ; \
 	fi
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
@@ -828,10 +828,10 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEN
 	  if $(NVCC) -M $(CPPFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(WORKTMP)/$*.d $< ; then \
 	    $(MKDEPUP) ; \
 	  else \
-	    false ; \
+	    exit 1 ; \
 	  fi ; \
 	else \
-	  false ; \
+	  exit 1 ; \
 	fi
 
 
