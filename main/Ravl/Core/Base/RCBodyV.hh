@@ -40,12 +40,12 @@ namespace RavlN {
     virtual RCBodyVC &Copy() const;
     //: Make copy of body.
     // This should be provided in derived classes.
-    // this funtion will issue an assertion failure if called.
+    // this function will issue an assertion failure if called.
 
     virtual RCBodyC &DeepCopy(UIntT levels = ((UIntT) -1)) const;
     //: Make a deep copy of body.
     // This should be provided in derived classes.
-    // this funtion will issue an assertion failure if called.
+    // this function will issue an assertion failure if called.
 
   protected:
     RCBodyVC()
