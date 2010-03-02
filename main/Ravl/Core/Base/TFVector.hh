@@ -54,7 +54,7 @@ namespace RavlN {
     TFVectorC()
     {}
     //: Default constructor.
-    // Note: The default constructor of 'DataT' is used to contruct
+    // Note: The default constructor of 'DataT' is used to construct
     // the elements of the vector, for builtin types this means
     // their values will be undefined.
 
@@ -441,13 +441,13 @@ namespace RavlN {
     bool ret = true;
     for(UIntT i =0;i <N;i++) {
       if(data[i] > max) {
-	data[i] = max;
-	ret = false;
-	continue;
+        data[i] = max;
+        ret = false;
+        continue;
       }
       if(data[i] < min) {
-	data[i] = min;
-	ret = false;
+        data[i] = min;
+        ret = false;
       }
     }
     return ret;
@@ -469,7 +469,7 @@ namespace RavlN {
     for(UIntT i =1;i <N;i++) {
       DataT d = RavlN::Abs(data[i] - o[i]);
       if(ret > d)
-	ret = d;
+        ret = d;
     }
     return ret;
   }
@@ -524,7 +524,7 @@ namespace RavlN {
     DataT max = data[0];
     for(UIntT i = 1;i < N;i++)
       if(data[i] > max)
-	max = data[i];
+        max = data[i];
     return max;
   }
 
@@ -534,7 +534,7 @@ namespace RavlN {
     for(UIntT i = 1;i < N;i++) {
       register DataT tmp = RavlN::Abs(data[i]);
       if(tmp > max)
-	max = tmp;
+        max = tmp;
     }
     return max;
   }
@@ -544,7 +544,7 @@ namespace RavlN {
     DataT min = data[0];
     for(UIntT i = 1;i < N;i++)
       if(data[i] < min)
-	min = data[i];
+        min = data[i];
     return min;
   }
 
@@ -554,7 +554,7 @@ namespace RavlN {
     for(UIntT i = 1;i < N;i++) {
       register DataT tmp = RavlN::Abs(data[i]);
       if(tmp < min)
-	min = tmp;
+        min = tmp;
     }
     return min;
   }
@@ -565,8 +565,8 @@ namespace RavlN {
     DataT maxVal = data[0];
     for(UIntT i = 1;i < N;i++) {
       if(data[i] > maxVal) {
-	maxVal = data[i];
-	ind = i;
+        maxVal = data[i];
+        ind = i;
       }
     }
     return ind;
@@ -579,8 +579,8 @@ namespace RavlN {
     for(UIntT i = 1;i < N;i++) {
       register DataT absVal = RavlN::Abs(data[i]);
       if(absVal > maxVal) {
-	maxVal = absVal;
-	ind = i;
+        maxVal = absVal;
+        ind = i;
       }
     }
     return ind;
@@ -592,8 +592,8 @@ namespace RavlN {
     DataT minVal = data[0];
     for(UIntT i = 1;i < N;i++) {
       if(data[i] < minVal) {
-	minVal = data[i];
-	ind = i;
+        minVal = data[i];
+        ind = i;
       }
     }
     return ind;
@@ -606,8 +606,8 @@ namespace RavlN {
     for(UIntT i = 1;i < N;i++) {
       register DataT absVal = RavlN::Abs(data[i]);
       if(absVal < minVal) {
-	minVal = absVal;
-	ind = i;
+        minVal = absVal;
+        ind = i;
       }
     }
     return ind;
