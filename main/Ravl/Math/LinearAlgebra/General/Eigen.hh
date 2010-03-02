@@ -69,45 +69,45 @@ namespace RavlN
   public:
     EigenValueC(const TMatrixC<NumT> &A) {
       n = A.Size2();
-      V = TMatrixC<NumT>(n,n);
-      d = TVectorC<NumT>(n);
-      e = TVectorC<NumT>(n);
+      V = TMatrixC<NumT> (n, n);
+      d = TVectorC<NumT> (n);
+      e = TVectorC<NumT> (n);
 
       issymmetric = 1;
       for (int j = 0; (j < n) && issymmetric; j++) {
-	for (int i = 0; (i < n) && issymmetric; i++) {
-	  issymmetric = (A[i][j] == A[j][i]);
-	}
+        for (int i = 0; (i < n) && issymmetric; i++) {
+          issymmetric = (A[i][j] == A[j][i]);
+        }
       }
 
       if (issymmetric) {
-	for (int i = 0; i < n; i++) {
-	  for (int j = 0; j < n; j++) {
-	    V[i][j] = A[i][j];
-	  }
-	}
-   
-	// Tridiagonalize.
-	tred2();
-   
-	// Diagonalize.
-	tql2();
+        for (int i = 0; i < n; i++) {
+          for (int j = 0; j < n; j++) {
+            V[i][j] = A[i][j];
+          }
+        }
+
+        // Tridiagonalize.
+        tred2();
+
+        // Diagonalize.
+        tql2();
 
       } else {
-	H = TMatrixC<NumT>(n,n);
-	ort = TVectorC<NumT>(n);
-         
-	for (int j = 0; j < n; j++) {
-	  for (int i = 0; i < n; i++) {
-	    H[i][j] = A[i][j];
-	  }
-	}
-   
-	// Reduce to Hessenberg form.
-	orthes();
-   
-	// Reduce Hessenberg to real Schur form.
-	hqr2();
+        H = TMatrixC<NumT> (n, n);
+        ort = TVectorC<NumT> (n);
+
+        for (int j = 0; j < n; j++) {
+          for (int i = 0; i < n; i++) {
+            H[i][j] = A[i][j];
+          }
+        }
+
+        // Reduce to Hessenberg form.
+        orthes();
+
+        // Reduce Hessenberg to real Schur form.
+        hqr2();
       }
     }
     //: Check for symmetry, then construct the eigenvalue decomposition
@@ -140,15 +140,15 @@ namespace RavlN
     void getD (TMatrixC<NumT> &D) {
       D = TMatrixC<NumT>(n,n);
       for (int i = 0; i < n; i++) {
-	for (int j = 0; j < n; j++) {
-	  D[i][j] = 0.0;
-	}
-	D[i][i] = d[i];
-	if (e[i] > 0) {
-	  D[i][i+1] = e[i];
-	} else if (e[i] < 0) {
-	  D[i][i-1] = e[i];
-	}
+        for (int j = 0; j < n; j++) {
+          D[i][j] = 0.0;
+        }
+        D[i][i] = d[i];
+        if (e[i] > 0) {
+          D[i][i+1] = e[i];
+        } else if (e[i] < 0) {
+          D[i][i-1] = e[i];
+        }
       }
     }
     //:Computes the block diagonal eigenvalue matrix.
@@ -195,7 +195,7 @@ namespace RavlN
       //  Fortran subroutine in EISPACK.
 
       for (int j = 0; j < n; j++) {
-	d[j] = V[n-1][j];
+        d[j] = V[n-1][j];
       }
 
       // Householder reduction to tridiagonal form.

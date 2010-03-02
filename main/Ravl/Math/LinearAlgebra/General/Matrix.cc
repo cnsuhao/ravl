@@ -10,6 +10,7 @@
 //! file="Ravl/Math/LinearAlgebra/General/Matrix.cc"
 #include "Ravl/Types.hh"
 #include "Ravl/StdMath.hh"
+#include "Ravl/Vector.hh"
 #include "Ravl/Matrix.hh"
 
 // General matrix functions.
@@ -34,7 +35,7 @@ namespace RavlN {
     cout << Rows() << ' ' << Cols() << "\n";
     for(BufferAccess2dIterC<RealT> it(*this,Size2());it;) {
       do {
-	cout << *it << ' ';
+        cout << *it << ' ';
       } while(it.Next()) ;
       cout << "\n";
     }
@@ -49,11 +50,11 @@ namespace RavlN {
       BufferAccessIterC<RealT> it(row);
       RealT sumsq = 0;
       for(;it;it++)
-	sumsq += Sqr(*it);
+        sumsq += Sqr(*it);
       sumsq = 1/Sqrt(sumsq);
       if(sumsq != 0) {
-	for(;it;it++)
-	  *it *= sumsq;
+        for(;it;it++)
+          *it *= sumsq;
       }
     }
   }
@@ -66,8 +67,8 @@ namespace RavlN {
       Slice1dC<RealT> col = SliceColumn(i);
       RealT sumsq = col.SumOfSqr();
       if(sumsq != 0) {
-	sumsq = 1/Sqrt(sumsq);
-	col *= sumsq;
+        sumsq = 1/Sqrt(sumsq);
+        col *= sumsq;
       }
     }
   }
