@@ -57,6 +57,10 @@ namespace RavlN {
     {}
     //: Stream constructor.
 
+    RCHashBodyC(SizeT nBins)
+      : m_data(nBins)
+    {}
+
     bool Save(std::ostream &strm) const {
       strm << m_data;
       //RavlAssertMsg(0,"Not implemented");
@@ -129,6 +133,10 @@ namespace RavlN {
       : RCHandleC<RCHashBodyC<Key,Dat> > (new RCHashBodyC<Key,Dat>(in))
     {}
     //: Stream constructor.
+
+    RCHashC(SizeT nBins)
+      : RCHandleC<RCHashBodyC<Key,Dat> > (new RCHashBodyC<Key,Dat>(nBins))
+    {}
 
     Dat &operator[] (const  Key &a) 
     { return this->Data()[a]; }
