@@ -40,7 +40,7 @@ namespace RavlN {
     
     VectorMatrixC(const VectorMatrixC &vm)
       : VectorC(vm.Vector()),
-	MatrixC(vm.Matrix())
+        MatrixC(vm.Matrix())
     {}
     //: Copy constructor.
     

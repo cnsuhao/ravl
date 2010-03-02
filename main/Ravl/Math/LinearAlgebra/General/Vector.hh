@@ -57,7 +57,7 @@ namespace RavlN {
       : TVectorC<RealT>(oth.Size())
     {
       for(BufferAccessIter2C<RealT,FloatT> it(*this,oth);it;it++)
-	it.Data1() = static_cast<RealT>(it.Data2());
+        it.Data1() = static_cast<RealT>(it.Data2());
     }
     //: Convert from a float vector.
 
@@ -75,13 +75,13 @@ namespace RavlN {
     
     static VectorC ConstructAligned(const SizeT dim,UIntT align)
     { return VectorC(SingleBufferC<RealT>(dim,align),dim); }
-    //: Creates an uninitialized array with the range <0, 'dim'-1> and byte alignment of the first element 'align'
+    //: Creates an uninitialised array with the range <0, 'dim'-1> and byte alignment of the first element 'align'
     // align must be a power of 2.
 
     operator TVectorC<FloatT> () const {
       TVectorC<FloatT> ret(Size());
       for(BufferAccessIter2C<RealT,FloatT> it(*this,ret);it;it++)
-	it.Data2() = static_cast<FloatT>(it.Data1());
+        it.Data2() = static_cast<FloatT>(it.Data1());
       return ret;
     }
     //: Convert to a float vector.
@@ -99,7 +99,7 @@ namespace RavlN {
       FVectorC<N> ret;
       RealT *at = &(ret[0]);
       for(BufferAccessIterC<RealT> it(*this);it;it++,at++)
-	*at = *it;
+        *at = *it;
       return ret;
     }
     //: Convert to a fixed size vector.
