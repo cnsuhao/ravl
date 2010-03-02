@@ -56,7 +56,7 @@ EXAMPLES = exButton.cc exMenu.cc exCList.cc exList.cc \
  exNotebook.cc exCursor.cc exFixed.cc exTree.cc exTextBox.cc exTextView.cc \
  exMessageBox.cc exStyle.cc exLBox.cc exFrame.cc exScrolledArea.cc \
  exLabel.cc exTreeStore.cc exFileSelector.cc exCombo.cc exGUIThread.cc \
- exKeyboard.cc exPixmap.cc
+ exKeyboard.cc exPixmap.cc exComboBoxText.cc exComboBoxEntryText.cc
 
 #  exGUI.cc exCanvas.cc   exGraph1d.cc \
 

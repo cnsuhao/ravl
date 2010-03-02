@@ -1,28 +1,33 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2001, University of Surrey
+// Copyright (C) 2010, OmniPerception Ltd.
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////
 //! lib=RavlGUI
-//! file="Ravl/GUI/GTK/exComboBoxText.cc"
+//! file="Ravl/GUI/GTK/exComboBoxEntryText.cc"
 //! userlevel=Normal
 //! docentry="Ravl.API.Graphics.GTK.Control"
-//! author="Lee Gregory"
+//! author="Warren Moore"
 
 #include "Ravl/GUI/Window.hh"
-#include "Ravl/GUI/ComboBoxText.hh"
+#include "Ravl/GUI/ComboBoxEntryText.hh"
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/Option.hh"
 
 using namespace RavlGUIN;
 
-//: A callback to handle seleced items
-bool HandleCombo(StringC& text, ComboBoxTextC& combo)
+bool HandleCombo(StringC& text, ComboBoxEntryTextC &combo)
 {
   cerr << "Combo selected: '" << text << "'\t'" << combo.TextSelected() << "'\n";
-  return true ; 
+  return true ;
+}
+
+bool HandleEntry(StringC &text, TextEntryC& entry)
+{
+  cerr << "Entry activate: '" << text << "'\t'" << entry.Text() << "'\n";
+  return true ;
 }
 
 int main(int nargs,char *args[]) 
@@ -39,12 +44,15 @@ int main(int nargs,char *args[])
   
   // Window creation
   WindowC win(100, 100, "Combo Test");
-  ComboBoxTextC combo(comboData, true);
+  ComboBoxEntryTextC combo(comboData, true);
   Connect(combo.SigTextSelected(), HandleCombo, StringC(""), combo);
   win.Add(combo);
   win.GUIShow();
+
+  TextEntryC entry = combo.TextEntry();
+  Connect(entry.Activate(), HandleEntry, StringC(""), entry);
   
   // Start the UI
   Manager.Start();
-  cerr << "Finished... \n";
+  cerr << "Finished...\n";
 }
