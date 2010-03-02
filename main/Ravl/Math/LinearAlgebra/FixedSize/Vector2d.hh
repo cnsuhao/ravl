@@ -32,7 +32,7 @@ namespace RavlN {
     Vector2dC(const TFVectorC<RealT,2> &base)
       : FVectorC<2>(base)
     {}
-    //: Base onstructor.
+    //: Base constructor.
     
     Vector2dC(RealT v1,RealT v2) { 
       data[0] = v1;
