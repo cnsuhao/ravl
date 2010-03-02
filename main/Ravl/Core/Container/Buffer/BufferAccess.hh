@@ -97,11 +97,11 @@ namespace RavlN {
     
     BufferAccessC<DataT> operator-(IndexC ind) const 
     { return BufferAccessC<DataT>(buff - ind.V()); }
-    //: Substract value from position, and return it as a new value.
+    //: Subtract value from position, and return it as a new value.
 
     BufferAccessC<DataT> operator+(IndexC ind) const 
     { return BufferAccessC<DataT>(buff + ind.V()); }
-    //: Substract value from position, and return it as a new value.
+    //: Subtract value from position, and return it as a new value.
 
     bool operator==(const BufferAccessC<DataT> &ba) const
     { return buff == ba.buff; }
