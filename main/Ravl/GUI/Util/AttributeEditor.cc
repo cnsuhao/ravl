@@ -154,10 +154,15 @@ namespace RavlGUIN {
 	case AVT_Int64: {
 	  Int64T val;
 	  attribCtrl.GetAttr(it->Name(),val);
-    StringC str(val);
-    LabelC label(str);
-    widge = label;
-    updateTrigger = TriggerR(*this,&AttributeEditorBodyC::UpdateAttribLabel,it->Name(),widge);
+	  if(it->CanWrite()) {
+	    TextEntryC te = TextEntryR(StringC(val),*this,&AttributeEditorBodyC::SetAttribString,it->Name());
+	    widge = te;
+	    updateTrigger = TriggerR(*this,&AttributeEditorBodyC::UpdateAttribString,it->Name(),widge);
+	  } else {
+	    LabelC label(val);
+	    widge = label;
+	    updateTrigger = TriggerR(*this,&AttributeEditorBodyC::UpdateAttribLabel,it->Name(),widge);
+	  }
 	} break;
 	case AVT_Real: {
 	  RealT val;
