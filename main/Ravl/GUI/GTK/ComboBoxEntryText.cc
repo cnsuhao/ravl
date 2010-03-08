@@ -19,8 +19,8 @@ namespace RavlGUIN {
   
   //: Constructor
   
-  ComboBoxEntryTextBodyC::ComboBoxEntryTextBodyC(const DListC<StringC> &options,bool editable)
-    : ComboBoxTextBodyC(options,editable),
+  ComboBoxEntryTextBodyC::ComboBoxEntryTextBodyC(const DListC<StringC> &options)
+    : ComboBoxTextBodyC(options, true),
       m_textEntry("")
   {}
   

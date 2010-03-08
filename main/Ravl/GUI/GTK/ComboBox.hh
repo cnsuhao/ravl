@@ -25,7 +25,7 @@ namespace RavlGUIN {
     ComboBoxBodyC();
     //: Constructor
     
-    ComboBoxBodyC(TreeModelC &treeModel);
+    ComboBoxBodyC(TreeModelC &treeModel, const DListC<IntT> treeColumns = DListC<IntT>());
     //: Constructor
     
     TreeModelIterC GUISelection();
@@ -41,9 +41,13 @@ namespace RavlGUIN {
     bool GUISetSelectionIndex(IntT selectionIndex);
     //: Get index of active selection.
     // A value of -1 indicates no active selection.
+
+    Signal1C<TreeModelIterC>& SigRowSelected()
+    { return m_sigRowSelected; }
+    //: Access the row selection 'changed' signal.
     
   protected:
-    void SetTreeModel(TreeModelC &treeModel);
+    void SetTreeModel(TreeModelC &treeModel, const DListC<IntT> treeColumns = DListC<IntT>());
     //: Set the tree model to use.
     // This can only be changed before the box is 'Created'.
     
@@ -55,8 +59,14 @@ namespace RavlGUIN {
     
     virtual bool CommonCreate(GtkWidget *widget);
     //: Create with a widget possibly supplied from elsewhere.
-    
+
+    bool CBRowChanged();
+    //: Callback for the combo box 'changed' signal.
+
     TreeModelC m_treeModel; //: Tree store for options.
+    DListC<IntT> m_treeColumns;
+    
+    Signal1C<TreeModelIterC> m_sigRowSelected;
   };
   
 
@@ -72,9 +82,9 @@ namespace RavlGUIN {
     ComboBoxC()
     {}
     //: Default constructor
-    
-    ComboBoxC(TreeStoreC &treeStore)
-      : WidgetC(new ComboBoxBodyC(treeStore))
+
+    ComboBoxC(TreeModelC &treeModel, const DListC<IntT> treeColumns = DListC<IntT>())
+    : WidgetC(new ComboBoxBodyC(treeModel, treeColumns))
     {}
     //: Constructor
     
@@ -116,6 +126,9 @@ namespace RavlGUIN {
     //: Get index of active selection.
     // A value of -1 indicates no active selection.
     
+    Signal1C<TreeModelIterC>& SigRowSelected()
+    { return Body().SigRowSelected(); }
+    //: Access the row selection 'changed' signal.
   };
 
 }

@@ -29,7 +29,7 @@ namespace RavlGUIN {
     ComboBoxEntryTextBodyC();
     //: Constructor
     
-    ComboBoxEntryTextBodyC(const DListC<StringC> &options,bool editable = true);
+    ComboBoxEntryTextBodyC(const DListC<StringC> &options);
     //: Constructor
     
     TextEntryC &TextEntry()
@@ -58,8 +58,8 @@ namespace RavlGUIN {
     //: Default constructor
     // Creates an invalid handle.
     
-    ComboBoxEntryTextC(const DListC<StringC> &options,bool editable = true)
-      : ComboBoxTextC(new ComboBoxEntryTextBodyC(options,editable))
+    ComboBoxEntryTextC(const DListC<StringC> &options)
+      : ComboBoxTextC(new ComboBoxEntryTextBodyC(options))
     {}
     //: Constructor
     

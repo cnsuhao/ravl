@@ -32,7 +32,7 @@ bool HandleEntry(StringC &text, TextEntryC& entry)
 
 int main(int nargs,char *args[]) 
 {
-  // Start the GUI manager - pass through any command line options
+  // Start the GUI manager: pass through any command line options.
   Manager.Init(nargs,args);
   
   // Setup a list of things to put inside the combo box. 
@@ -41,18 +41,21 @@ int main(int nargs,char *args[])
   comboData.InsLast("item B") ; 
   comboData.InsLast("item C") ; 
   comboData.InsLast("item D") ; 
-  
-  // Window creation
-  WindowC win(100, 100, "Combo Test");
-  ComboBoxEntryTextC combo(comboData, true);
+
+  // Create the combo box.
+  ComboBoxEntryTextC combo(comboData);
   Connect(combo.SigTextSelected(), HandleCombo, StringC(""), combo);
+
+  // Create the window.
+  WindowC win(100, 100, "Combo Box Entry Text");
   win.Add(combo);
   win.GUIShow();
 
+  // Get the text entry.
   TextEntryC entry = combo.TextEntry();
   Connect(entry.Activate(), HandleEntry, StringC(""), entry);
   
-  // Start the UI
+  // Start the UI.
   Manager.Start();
   cerr << "Finished...\n";
 }

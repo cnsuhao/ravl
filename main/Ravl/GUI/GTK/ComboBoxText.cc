@@ -180,6 +180,9 @@ namespace RavlGUIN {
   
   //: Remove an entry.
   bool ComboBoxTextBodyC::GUIRemoveEntry(const StringC &str) {
+    IntT index = GUIFindEntryPosition(str);
+    if (index >= 0)
+      return GUIRemoveEntry(index);
     return true;
   }
 
