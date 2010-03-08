@@ -48,9 +48,12 @@ namespace RavlGUIN {
     virtual bool Entry(const StringC &text);
     //: Some new text has been entered.
     
+    StringC GUIText();
+    //: Access text
+
     StringC Text() const;
     //: Access text
-    
+
     bool Text(const StringC &txt);
     //: Update text.
     // This is thread safe.
@@ -187,6 +190,10 @@ namespace RavlGUIN {
     { return Body().HideText(hide); }
     //: Hides text entered into this field
     // If the argument is true, text in this field will be displayed as *s
+
+    StringC GUIText()
+    { return Body().GUIText(); }
+    //: Access text
 
     StringC Text() const
     { return Body().Text(); }
