@@ -23,6 +23,7 @@ namespace RavlN {
   enum AttributeValueTypeT
     { AVT_Bool,           // Boolean
       AVT_Int,            // Signed integer
+      AVT_Int64,          // Signed 64-bit integer.
       AVT_Real,           // Double precision floating point.
       AVT_String,         // Text string
       AVT_Enum,           // Enumerated type.

@@ -141,7 +141,7 @@ namespace RavlGUIN {
 	  if(attr.CanWrite()) {
 	    SliderC sl((RealT) val,(RealT) attr.Min(),(RealT) attr.Max(),(RealT) attr.Step());
 	    ConnectRef(sl.SigChanged(),*this,&AttributeEditorBodyC::SetAttribInt,val,it->Name());
-	    widge = sl;	
+	    widge = sl;
 	    updateTrigger = TriggerR(*this,&AttributeEditorBodyC::UpdateAttribInt,it->Name(),widge);
 	    ConnectRef(sl.SigReleased(),*this,&AttributeEditorBodyC::UpdateAttribInt,it->Name(),widge);
 	  } else {
@@ -150,6 +150,14 @@ namespace RavlGUIN {
 	    widge = label;
 	    updateTrigger = TriggerR(*this,&AttributeEditorBodyC::UpdateAttribLabel,it->Name(),widge);
 	  }
+	} break;
+	case AVT_Int64: {
+	  Int64T val;
+	  attribCtrl.GetAttr(it->Name(),val);
+    StringC str(val);
+    LabelC label(str);
+    widge = label;
+    updateTrigger = TriggerR(*this,&AttributeEditorBodyC::UpdateAttribLabel,it->Name(),widge);
 	} break;
 	case AVT_Real: {
 	  RealT val;

@@ -163,9 +163,11 @@ namespace RavlN {
     
     virtual AttributeValueTypeT ValueType() const{
       if(typeid(ValueT) == typeid(int))
-	return AVT_Int;
+        return AVT_Int;
+      if(typeid(ValueT) == typeid(Int64T))
+        return AVT_Int64;
       if(typeid(ValueT) == typeid(RealT))
-	return AVT_Real;
+        return AVT_Real;
       return AVT_Invalid;
     }
     //: Get hint about type of value attribute has.

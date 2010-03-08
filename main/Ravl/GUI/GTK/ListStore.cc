@@ -94,6 +94,15 @@ namespace RavlGUIN {
   }
   //: Set bool value.
 
+  bool ListStoreBodyC::GUISetValue(TreeModelIterC &rowIter,IntT col, Int64T value) {
+    RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
+    if(!rowIter.IsElm())
+      return false;
+    gtk_list_store_set(GTK_LIST_STORE(model),rowIter.TreeIter(),col,value,-1);
+    return true;
+  }
+  //: Set bool value.
+
   bool ListStoreBodyC::GUISetValue(TreeModelIterC &rowIter,IntT col, bool value) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!rowIter.IsElm())

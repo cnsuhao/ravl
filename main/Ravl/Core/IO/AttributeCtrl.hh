@@ -68,12 +68,22 @@ namespace RavlN {
     //: Get a attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
-    
+
     virtual bool SetAttr(const StringC &attrName,const IntT &attrValue);
     //: Set a attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
-    
+
+    virtual bool GetAttr(const StringC &attrName,Int64T &attrValue);
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+
+    virtual bool SetAttr(const StringC &attrName,const Int64T &attrValue);
+    //: Set a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+
     virtual bool GetAttr(const StringC &attrName,RealT &attrValue);
     //: Get a attribute.
     // Returns false if the attribute name is unknown.
@@ -224,13 +234,25 @@ namespace RavlN {
     //: Get a attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
-    
+
     inline bool SetAttr(const StringC &attrName,const IntT &attrValue)
     { return Body().SetAttr(attrName,attrValue); }
     //: Set a attribute.
     // Returns false if the attribute name is unknown.
     // This is for handling attributes such as frame rate, and compression ratios.
-    
+
+    inline bool GetAttr(const StringC &attrName,Int64T &attrValue)
+    { return Body().GetAttr(attrName,attrValue); }
+    //: Get a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+
+    inline bool SetAttr(const StringC &attrName,const Int64T &attrValue)
+    { return Body().SetAttr(attrName,attrValue); }
+    //: Set a attribute.
+    // Returns false if the attribute name is unknown.
+    // This is for handling attributes such as frame rate, and compression ratios.
+
     inline bool GetAttr(const StringC &attrName,RealT &attrValue)
     { return Body().GetAttr(attrName,attrValue); }
     //: Get a attribute.

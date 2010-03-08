@@ -55,6 +55,9 @@ namespace RavlGUIN {
     virtual bool GUISetValue(TreeModelIterC &rowIter,IntT col, IntT value);
     //: Set int value.
 
+    virtual bool GUISetValue(TreeModelIterC &rowIter,IntT col, Int64T value);
+    //: Set int value.
+
     virtual bool GUISetValue(TreeModelIterC &rowIter,IntT col, bool value);
     //: Set bool value.
 

@@ -295,6 +295,9 @@ namespace RavlGUIN {
     bool GetValue(TreeModelIterC &rowIter,IntT col, IntT &value);
     //: Get int value.
 
+    bool GetValue(TreeModelIterC &rowIter,IntT col, Int64T &value);
+    //: Get 64-bit int value.
+
     bool GetValue(TreeModelIterC &rowIter,IntT col, bool &value);
     //: Get bool value.
 
@@ -330,6 +333,9 @@ namespace RavlGUIN {
 
     virtual bool GUISetValue(TreeModelIterC &rowIter,IntT col, IntT value);
     //: Set int value.
+
+    virtual bool GUISetValue(TreeModelIterC &rowIter,IntT col, Int64T value);
+    //: Set 64-bit int value.
 
     virtual bool GUISetValue(TreeModelIterC &rowIter,IntT col, bool value);
     //: Set bool value.
@@ -443,6 +449,10 @@ namespace RavlGUIN {
     { return Body().GetValue(rowIter,col,value); }
     //: Set int value.
 
+    bool GetValue(TreeModelIterC &rowIter,IntT col, Int64T &value)
+    { return Body().GetValue(rowIter,col,value); }
+    //: Set int value.
+
     bool GetValue(TreeModelIterC &rowIter,IntT col, bool &value)
     { return Body().GetValue(rowIter,col,value); }
     //: Set bool value.
@@ -482,6 +492,10 @@ namespace RavlGUIN {
     { return Body().GUISetValue(rowIter,col,value); }
 
     bool GUISetValue(TreeModelIterC &rowIter,IntT col, IntT value)
+    { return Body().GUISetValue(rowIter,col,value); }
+    //: Set int value.
+
+    bool GUISetValue(TreeModelIterC &rowIter,IntT col, Int64T value)
     { return Body().GUISetValue(rowIter,col,value); }
     //: Set int value.
 

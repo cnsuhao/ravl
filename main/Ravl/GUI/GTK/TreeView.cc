@@ -167,7 +167,8 @@ namespace RavlGUIN {
             break;
 #endif
           case AVT_String:  
-          case AVT_Int: 
+          case AVT_Int:
+          case AVT_Int64:
           case AVT_Real:
             renderType ="text";
             // Get value from 'text' from column '*it'
