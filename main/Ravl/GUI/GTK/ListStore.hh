@@ -29,7 +29,7 @@ namespace RavlGUIN {
     ListStoreBodyC();
     //: Constructor.
 
-    ListStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes);
+    ListStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes, const IntT sortColumn = -1, const bool sortAscending = true);
     //: List store.
     
     ListStoreBodyC(GtkTreeModel *aModel);
@@ -71,7 +71,8 @@ namespace RavlGUIN {
     //: Clear store of all values.
 
   protected:
-
+    const IntT m_sortColumn;
+    const bool m_sortAscending;
   };
 
   //! userlevel=Normal
@@ -87,8 +88,8 @@ namespace RavlGUIN {
     //: Default constructor
     // Creates an invalid handle.
 
-    ListStoreC(const SArray1dC<AttributeTypeC> &nColTypes)
-      : TreeModelC(*new ListStoreBodyC(nColTypes))
+    ListStoreC(const SArray1dC<AttributeTypeC> &nColTypes, const IntT sortColumn = -1, const bool sortAscending = true)
+      : TreeModelC(*new ListStoreBodyC(nColTypes, sortColumn, sortAscending))
     {}
     //: List store.
 

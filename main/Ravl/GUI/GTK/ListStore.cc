@@ -22,6 +22,8 @@ namespace RavlGUIN {
   //: Constructor.
 
   ListStoreBodyC::ListStoreBodyC()
+  : m_sortColumn(-1),
+    m_sortAscending(true)
   {}
 
   //: Constructor. 
@@ -29,15 +31,21 @@ namespace RavlGUIN {
   // correct type.
   
   ListStoreBodyC::ListStoreBodyC(GtkTreeModel *aModel)
+  : m_sortColumn(-1),
+    m_sortAscending(true)
   {
     model = aModel;
   }
   
   //: List store.
 
-  ListStoreBodyC::ListStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes)
-    : TreeModelBodyC(nColTypes)
-  { Create(); }
+  ListStoreBodyC::ListStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes, const IntT sortColumn, const bool sortAscending)
+  : TreeModelBodyC(nColTypes),
+    m_sortColumn(sortColumn),
+    m_sortAscending(sortAscending)
+  {
+    Create();
+  }
 
   //: Create the widget.
 
@@ -49,6 +57,11 @@ namespace RavlGUIN {
     for(SArray1dIter2C<GType,AttributeTypeC> it(types,colTypes);it;it++)
       it.Data1() = Ravl2GTKType(it.Data2().ValueType());
     model = GTK_TREE_MODEL(gtk_list_store_newv(colTypes.Size(),&(types[0])));
+
+    if (m_sortColumn >= 0 && static_cast<UIntT>(m_sortColumn) < colTypes.Size())
+    {
+      gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), m_sortColumn, m_sortAscending ? GTK_SORT_ASCENDING : GTK_SORT_DESCENDING);
+    }
 
     return TreeModelBodyC::Create();
   }
