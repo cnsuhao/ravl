@@ -24,6 +24,8 @@ namespace RavlN {
   class Point2dC;
   class Vector2dC;
   class LinePP2dC;
+  class RealRange2dC;
+  class IndexRange2dC;
 
   //! userlevel=Normal
   //: Line in 2D projective space
@@ -149,8 +151,17 @@ namespace RavlN {
     RealT Distance(const PPoint2dC &p) const;
     //: Compute the distance of p from this line.
 
+    bool ClipBy(LinePP2dC& PPLine, const RealRange2dC& Rectangle);
+    //: Creates a line segment from this line, clipped by the rectangle
+    // Returns false if line does not intersect rectangle, true otherwise
+
+    bool ClipBy(LinePP2dC& PPLine, const IndexRange2dC& Rectangle);
+    //: Creates a line segment from this line, clipped by the rectangle
+    // Returns false if line does not intersect rectangle, true otherwise
+
+    //-
 #if 0
-    friend inline PLine2dC operator*(RealT lambda, const PLine2dC & p);
+    //friend inline PLine2dC operator*(RealT lambda, const PLine2dC & p);
     //friend inline PLine2dC operator/(RealT lambda, const PLine2dC & p);
 #endif
     friend istream & operator>>(istream & inS, PLine2dC & point);

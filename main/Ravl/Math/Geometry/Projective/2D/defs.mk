@@ -36,4 +36,4 @@ LIBDEPS = RavlMathProj2d.def
 
 USESLIBS=RavlMath
 
-TESTEXES= testFundamentalMatrix2d.cc
+TESTEXES= testFundamentalMatrix2d.cc testProjective2d.cc
