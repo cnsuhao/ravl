@@ -64,6 +64,9 @@ namespace RavlN {
         else --j;
       }
     }
+
+    using namespace RavlConstN;
+    PPLine = LinePP2dC(Point2dC(nanReal,nanReal),Point2dC(nanReal,nanReal));
     return false;
   }
 
