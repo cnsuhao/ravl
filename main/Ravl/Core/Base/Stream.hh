@@ -32,6 +32,8 @@
 typedef unsigned int streamsize;
 #endif
 
+//#define RAVL_DUMP_IOSTATE 1
+
 namespace RavlN {
 #if (RAVL_COMPILER_VISUALCPP && !RAVL_HAVE_STDNAMESPACE)
   inline istream& operator>>(istream& is, bool & b) {
@@ -121,13 +123,32 @@ namespace RavlN {
     //: Returns the name of the stream.
     
     inline bool IsOpen() const {
-      return !bad();
+      return !bad() && !fail();
     }
     //: Test if this stream is open.
-    
+
+#if RAVL_DUMP_IOSTATE
+    void dumpState(const char *caller) const
+    {
+      if (s != 0)
+      {
+        ios_base::iostate sState = s->rdstate();
+        cerr << "iostate(" << caller << ")" \
+             << " eofbit=" << ((sState & ios_base::eofbit) != 0 ? "Y" : "N") \
+             << " failbit=" << ((sState & ios_base::failbit) != 0 ? "Y" : "N") \
+             << " badbit=" << ((sState & ios_base::badbit) != 0 ? "Y" : "N") \
+             << " goodbit=" << ((sState & ios_base::goodbit) != 0 ? "Y" : "N") \
+             << endl;
+      }
+    }
+#endif
+
     bool good() const { 
       if(s == 0)
         return false;
+#if RAVL_DUMP_IOSTATE
+      dumpState("good");
+#endif
       return (s->good() != 0);
     }
     //: Is stream good ?
@@ -135,6 +156,9 @@ namespace RavlN {
     bool bad() const {
       if(s == 0)
         return true;
+#if RAVL_DUMP_IOSTATE
+      dumpState("bad");
+#endif
       return (s->bad() != 0);
     }
     //: Is stream corrupted ?
@@ -142,6 +166,9 @@ namespace RavlN {
     inline bool eof() const {
       if (s == 0)
         return true;
+#if RAVL_DUMP_IOSTATE
+      dumpState("eof");
+#endif
       return (s->eof() != 0);
     }
     //: End of file ?
@@ -149,14 +176,8 @@ namespace RavlN {
     inline bool fail() const {
       if (s == 0)
         return true;
-#if 0
-      ios_base::iostate sState = s->rdstate();
-      cerr << "fail()=" << (s->fail() ? "Y" : "N") << \
-           " eofbit=" << ((sState & ios_base::eofbit) != 0 ? "Y" : "N") << \
-           " failbit=" << ((sState & ios_base::failbit) != 0 ? "Y" : "N") << \
-           " badbit=" << ((sState & ios_base::badbit) != 0 ? "Y" : "N") << \
-           " goodbit=" << ((sState & ios_base::goodbit) != 0 ? "Y" : "N") << \
-           endl;
+#if RAVL_DUMP_IOSTATE
+      dumpState("fail");
 #endif
       return (s->fail() != 0);
     }
