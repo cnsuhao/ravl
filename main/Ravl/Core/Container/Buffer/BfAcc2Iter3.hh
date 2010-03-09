@@ -100,9 +100,9 @@ namespace RavlN {
 	       const SizeBufferAccessC<BufferAccessC<Data2T> > &pbuf2,SizeT size2,
 	       const SizeBufferAccessC<BufferAccessC<Data3T> > &pbuf3,SizeT size3) {
       rit.First(pbuf1,pbuf2,pbuf3);
-      rng1 = IndexRangeC(0,size1-1);
-      rng2 = IndexRangeC(0,size2-1);
-      rng3 = IndexRangeC(0,size3-1);
+      rng1 = IndexRangeC(size1);
+      rng2 = IndexRangeC(size2);
+      rng3 = IndexRangeC(size3);
       if(rng1.Size() > 0 && rit.IsElm())
 	return cit.First(rit.Data1(),rng1,rit.Data2(),rng2,rit.Data3(),rng3); 
       cit.Invalidate();

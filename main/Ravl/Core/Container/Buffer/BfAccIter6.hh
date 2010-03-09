@@ -158,13 +158,13 @@ namespace RavlN {
     inline BufferAccessIter6C<Data1T,Data2T,Data3T,Data4T,Data5T,Data6T> & operator+=(int skip)
     { Next(skip); return *this; }
     //: Advance 'skip' elements.
-    // WARNING: When using negative values, positions before the begining of the array will
+    // WARNING: When using negative values, positions before the beginning of the array will
     // not be detected correctly by IsElm().
     
     inline BufferAccessIter6C<Data1T,Data2T,Data3T,Data4T,Data5T,Data6T> & operator-=(int skip)
     { Next(-skip); return *this; }
     //: Go back 'skip' elements.
-    // WARNING: When using positive values, positions before the begining of the array will
+    // WARNING: When using positive values, positions before the beginning of the array will
     // not be detected correctly by IsElm().
     
     inline void operator++(int)
