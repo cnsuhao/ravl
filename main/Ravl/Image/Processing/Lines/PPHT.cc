@@ -661,7 +661,7 @@ namespace RavlImageN {
       sortIt.MergeSort(LessOrEqualGradInfo);
     
     // Need to resize images ?
-    if(!rect.Contains(pixMap.Rectangle())) {
+    if(!pixMap.Rectangle().Contains(rect)) {
       rect.Involve(pixMap.Rectangle());
       if(useSobol)
 	sobelImg = SobolImage(rect);
