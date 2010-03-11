@@ -47,7 +47,7 @@ int main(int nargs,char *args[])
   colTypes[1] = AttributeTypeBoolC("bool value", "");
   colTypes[2] = AttributeTypeNumC<Int64T>("64-bit int value", "");
   colTypes[3] = AttributeTypeMiscC("image value", "...", AVT_ByteRGBImage);
-  ListStoreC listStore(colTypes);
+  ListStoreC listStore(colTypes, 2);
 
   // Fill the model with data.
   PixbufC map(xpmData_OpenFile);
@@ -60,7 +60,7 @@ int main(int nargs,char *args[])
       stringVal.form("'Index %d'", index);
       listStore.GUISetValue(modelIter, 0, stringVal);
       listStore.GUISetValue(modelIter, 1, true);
-      listStore.GUISetValue(modelIter, 2, index + UINT_MAX);
+      listStore.GUISetValue(modelIter, 2, (UINT_MAX * 2) - index);
       listStore.GUISetValue(modelIter, 3, map);
     }
   }
