@@ -58,6 +58,10 @@ namespace RavlGUIN {
     { return &treeIter; }
     //: Access tree store.
 
+    const GtkTreeIter *TreeIter() const
+    { return &treeIter; }
+    //: Access tree store.
+
     GtkTreeModel *Model()
     { return model; }
     //: Access tree model.
@@ -132,6 +136,10 @@ namespace RavlGUIN {
     { return Body().TreeIter(); }
     //: Access tree store.
 
+    const GtkTreeIter *TreeIter() const
+    { return Body().TreeIter(); }
+    //: Access tree store.
+
     GtkTreeModel *Model()
     { return Body().Model(); }
     //: Access tree model.
@@ -167,6 +175,15 @@ namespace RavlGUIN {
     { if(!IsValid()) return false; return Body().IsElm(); }
     //: Check if its a valid entry.
   };
+
+  inline bool operator<(const TreeModelIterC& lhs, const TreeModelIterC& rhs)
+  {
+    if (!lhs.IsValid())
+      return true;
+    if (!rhs.IsValid())
+      return false;
+    return lhs.TreeIter()->stamp < rhs.TreeIter()->stamp;
+  }
 
   //:-------------------------------------------------------------------------------------
 
