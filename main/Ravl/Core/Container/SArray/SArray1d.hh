@@ -224,11 +224,11 @@ namespace RavlN {
     // Access to the object and its parts.
 
     inline const SArray1dC<DataT> & SArray1d() const
-      { return *this; }
+    { return *this; }
     //: Access to the whole constant array.
 
     inline SArray1dC<DataT> & SArray1d()
-      { return *this; }
+    { return *this; }
     //: Access to the whole array.
 
     SizeT Size() const
@@ -246,14 +246,26 @@ namespace RavlN {
     //:-----------------------------------
     // Modifications of the representation
 
-    inline SArray1dC<DataT> & Append(const SArray1dC<DataT> & a);
-    // This array is extended by the length of the array 'a' and the contents
-    // of both arrays are copied to it. Empty arrays are handled correctly.
-
     SArray1dC<DataT> Join(const SArray1dC<DataT> &Oth) const;
     // Join this Array and another into a new Array which
     // is returned. This does not change either of its arguments.
     // This is placed in the array first, followed by 'Oth'.
+
+    SArray1dC<DataT> Join(const DataT &Oth) const;
+    // Join this Array and an element into a new Array which
+    // is returned. This does not change either of its arguments.
+    // This is placed in the array first, followed by 'Oth'.
+
+    inline SArray1dC<DataT> & Append(const SArray1dC<DataT> & a)
+    { (*this) = Join(a); return *this;  }
+    // This array is extended by the length of the array 'a' and the contents
+    // of both arrays are copied to it. Empty arrays are handled correctly.
+
+    inline SArray1dC<DataT> & Append(const DataT & a)
+    { (*this) = Join(a); return *this;  }
+    // This array is extended by 1 and the contents of this array are
+    // copied to this array followed by the new element.
+    // Empty arrays are handled correctly.
 
     SArray1dC<DataT> From(UIntT offset) {
       if(offset >= Size())
@@ -362,15 +374,6 @@ namespace RavlN {
     return *this;
   }
 
-
-  template <class DataT>
-  inline
-  SArray1dC<DataT> &
-  SArray1dC<DataT>::Append(const SArray1dC<DataT> & a)  {
-    (*this) = Join(a);
-    return *this;
-  }
-
   template <class DataT>
   SArray1dC<DataT>::SArray1dC(const PairC<DataT> & pr)
     : SizeBufferAccessC<DataT>(),
@@ -444,7 +447,6 @@ namespace RavlN {
   template <class DataT>
   SArray1dC<DataT>
   SArray1dC<DataT>::Join(const SArray1dC<DataT> &Oth) const  {
-    // FIXME :- Do this more efficently, with ptrs.
     const SizeT len1 = Size();
     const SizeT len2 = Oth.Size();
     SArray1dC<DataT> newarr(len1 + len2);
@@ -452,6 +454,17 @@ namespace RavlN {
       it.Data2() = it.Data1();
     for(BufferAccessIter2C<DataT,DataT> it2(Oth,newarr,0,len1);it2;it2++)
       it2.Data2() = it2.Data1();
+    return newarr;
+  }
+
+  template <class DataT>
+  SArray1dC<DataT>
+  SArray1dC<DataT>::Join(const DataT &a) const  {
+    const SizeT len1 = Size();
+    SArray1dC<DataT> newarr(len1 + 1);
+    for(BufferAccessIter2C<DataT,DataT> it(*this,newarr);it;it++)
+      it.Data2() = it.Data1();
+    newarr[len1] = a;
     return newarr;
   }
 
