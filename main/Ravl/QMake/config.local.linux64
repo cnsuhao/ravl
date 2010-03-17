@@ -200,4 +200,4 @@ RESOURCES += LibGnome
 
 #### RLog ################
 
-RLOG_HOME =/opt/Omni/rlog-1.4
+#RLOG_HOME =/opt/Omni/rlog-1.4
