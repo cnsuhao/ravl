@@ -96,21 +96,25 @@ namespace RavlN {
 #endif
     
     StreamBaseC()
-      : s(0)
+      : s(0),
+        m_openFailed(false)
     {}
     //: Default constructor.
     
     StreamBaseC(const StringC &nname)
       : name(nname),
-      	s(0)
+      	s(0),
+        m_openFailed(false)
     {}
     //: Constructor.
     
     StreamBaseC(const StreamBaseC &oth) 
       : HandleRefCounterC(oth),
-	name(oth.name),
+        name(oth.name),
         s(oth.s),
-	ptrManager(oth.ptrManager)
+        ptrManager(oth.ptrManager),
+        m_openFailed(oth.m_openFailed)
+
     {}
     //: Copy Constructor.
     
@@ -123,7 +127,7 @@ namespace RavlN {
     //: Returns the name of the stream.
     
     inline bool IsOpen() const {
-      return !bad() && !fail();
+      return !m_openFailed && !bad();
     }
     //: Test if this stream is open.
 
@@ -134,6 +138,7 @@ namespace RavlN {
       {
         ios_base::iostate sState = s->rdstate();
         cerr << "iostate(" << caller << ")" \
+             << " s=" << (void*)s \
              << " eofbit=" << ((sState & ios_base::eofbit) != 0 ? "Y" : "N") \
              << " failbit=" << ((sState & ios_base::failbit) != 0 ? "Y" : "N") \
              << " badbit=" << ((sState & ios_base::badbit) != 0 ? "Y" : "N") \
@@ -237,6 +242,7 @@ namespace RavlN {
     StringC name; // Name of stream.
     ios *s;
     RCHandleC<RCBodyVC> ptrManager;
+    bool m_openFailed;
   };
   
   //! userlevel=Normal
