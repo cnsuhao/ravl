@@ -286,7 +286,11 @@ namespace RavlN {
   // Subject to epipolar constraint x^TFx = 0. Implemented from Multiple View Geometry, 2nd ed,
   // Richard Hartley and Andrew Zisserman, Cambridge University Press, 2003, p318
 
-  void FundamentalMatrix2dC::CorrectCorrespondence(const PPoint2dC &ipnt1, const PPoint2dC &ipnt2, PPoint2dC &opnt1, PPoint2dC &opnt2) {
+  void FundamentalMatrix2dC::CorrectCorrespondence(const PPoint2dC &ipnt1,
+                                                         const PPoint2dC &ipnt2,
+                                                         PPoint2dC &opnt1,
+                                                         PPoint2dC &opnt2)
+  {
     // Step (i)
     Matrix3dC T = CreateTransformToOrigin(ipnt1);
     Matrix3dC Tp = CreateTransformToOrigin(ipnt2);
