@@ -61,7 +61,26 @@ namespace RavlGUIN {
       gdk_window_raise(widget->window);
     return true;
   }
+
   
+  //: Show window and raise it to top.
+  bool GladeWindowBodyC::ShowAndRaise() {
+    Manager.Queue(Trigger(GladeWindowC(*this), &GladeWindowC::GUIShowAndRaise));
+    return true;
+  }
+
+
+  bool GladeWindowBodyC::GUIShowAndRaise()
+  {
+    if (widget != 0)
+    {
+      GUIShow();
+      GUIRaise();
+    }
+    return true;
+  }
+    //: Show window and raise it to top -GUI thread.
+
   bool GladeWindowBodyC::SetTitle(const StringC &title)
   {
     Manager.Queue(Trigger(GladeWindowC(*this), &GladeWindowC::GUISetTitle, title));

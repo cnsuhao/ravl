@@ -43,7 +43,13 @@ namespace RavlGUIN {
     
     bool GUIRaise();
     //: Raise window to top
-    
+
+    bool ShowAndRaise();
+    //: Show window and raise it to top.
+
+    bool GUIShowAndRaise();
+    //: Show window and raise it to top -GUI thread.
+
     bool SetTitle(const StringC &title);
     //: Set the window title
     
@@ -119,6 +125,15 @@ namespace RavlGUIN {
     { return Body().GUIRaise(); }
     //: Raise window to top
     
+    bool ShowAndRaise()
+    { return Body().ShowAndRaise(); } 
+    //: Show window and raise it to top. 
+    
+    bool GUIShowAndRaise()
+    { return Body().GUIShowAndRaise(); }
+    //: Show window and raise it to top -GUI thread.
+
+
     bool SetTitle(const StringC &title)
     { return Body().SetTitle(title); }
     //: Set the window title
