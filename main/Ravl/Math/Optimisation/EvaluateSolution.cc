@@ -29,4 +29,14 @@ namespace RavlN {
     RavlAssertMsg(0,"EvaluateSolutionBodyC::CompatibleObservations(const StateVectorC &, DListC<ObservationC> &) const, Abstract method called ");
     return emptyObsList;
   }
+
+  //: Returns the observations compatible with the given state parameters
+  DListC<bool> EvaluateSolutionBodyC::ObservationCompatibility(
+					const StateVectorC &stateVec,
+					DListC<ObservationC> &obsList) const
+  {
+    DListC<bool> emptyObsList;
+    RavlAssertMsg(0,"EvaluateSolutionBodyC::ObservationCompatibility(const StateVectorC &, DListC<ObservationC> &) const, Abstract method called ");
+    return emptyObsList;
+  }
 }

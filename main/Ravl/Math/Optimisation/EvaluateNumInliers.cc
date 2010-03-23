@@ -60,4 +60,23 @@ namespace RavlN {
 
     return compatibleList;
   }
+
+  //: Returns  list of booleans indicating which observations are compatible with the given state parameters
+  DListC<bool> EvaluateNumInliersBodyC::ObservationCompatibility(
+					const StateVectorC &stateVec,
+					DListC<ObservationC> &obsList) const
+  {
+    RavlAssert(stateVec.IsValid());
+    DListC<bool> compatibleList;
+
+    for(DLIterC<ObservationC> it(obsList);it;it++) {
+      // compute the residual
+      RealT residual = it.Data().NonRobustResidual(stateVec);
+
+      // add to list if residual is within threshold
+      compatibleList.InsLast( residual < compatChi2Thres );
+    }
+
+    return compatibleList;
+  }
 }
