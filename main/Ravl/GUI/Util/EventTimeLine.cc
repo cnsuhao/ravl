@@ -191,7 +191,6 @@ namespace RavlGUIN {
 
 
   bool EventTimeLineBodyC::GUISetMarkerSpan(RealT span, bool redraw){
-    cerr << "\n  bool EventTimeLineBodyC::GUISetMarkerSpan(RealT span)";
     RavlAssertMsg(Manager.IsGUIThread(), "GUI Thread only");
     m_atSpan = span;
     if (redraw)
@@ -226,7 +225,6 @@ namespace RavlGUIN {
   //: Set the length of time to display.
   
   bool EventTimeLineBodyC::GUISetDisplaySpan(RealT &size, bool redraw) {
-    cerr << "\nEventTimeLineBodyC::GUISetDisplaySpan(RealT &size)" ; 
     ONDEBUG(cerr << "bool EventTimeLineBodyC::GUISetDisplaySpan(RealT &size=" << size << ")\n");
     RealT time = displayRange.Center();
     RealT val = size / 2;
@@ -349,8 +347,9 @@ namespace RavlGUIN {
       // Right arrow clicked
       DLIterC< Tuple2C<IntT, RealRangeC> > it(events);
       for(; it; it++) {
-        if (it->Data2().Max() - 1 > atMarker)
+        if (it->Data2().Min() > atMarker)
           break;
+        
       }
       
       if (it) {
