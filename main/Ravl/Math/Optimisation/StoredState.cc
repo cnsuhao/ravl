@@ -19,7 +19,7 @@ namespace RavlN {
   }
 
   //: Constructor for optimisation base class
-  StoredStateC::StoredStateC(StateVectorC &stateVecInit)
+  StoredStateC::StoredStateC(const StateVectorC &stateVecInit)
   {
     stateVec = stateVecInit.Copy();
   }

@@ -28,7 +28,7 @@ namespace RavlN {
     StoredStateC();
     //: Default constructor for optimisation base class
 
-    StoredStateC(StateVectorC &stateVecInit);
+    StoredStateC(const StateVectorC &stateVecInit);
     //: Constructor for optimisation base class
 
   protected:
