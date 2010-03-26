@@ -384,7 +384,6 @@ namespace RavlGUIN {
   //: Draw widget on screen.
   
   bool EventTimeLineBodyC::GUIDraw() {
-    cerr << "\nbool EventTimeLineBodyC::GUIDraw() ";
     ONDEBUG(cerr << "EventTimeLineBodyC::GUIDraw(). Range=" << displayRange << " Events=" << events.Size() << "\n");
 
     if(displayArea.Cols() < 1 || displayArea.Rows() < 1)
