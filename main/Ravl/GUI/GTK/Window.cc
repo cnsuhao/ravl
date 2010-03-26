@@ -384,6 +384,19 @@ namespace RavlGUIN {
     return isFullscreen;
   }
    
+  bool WindowC::GUISetDefaultIcon(const PixbufC &pix)
+  {
+    RavlAssert(Manager.IsGUIThread());
+
+    if (!pix.IsValid())
+      return false;
+
+    PixbufC tempPix(pix);
+    gtk_window_set_default_icon(tempPix.Pixbuf());
+
+    return true;
+  }
+
   //////////////////////////////////////////////
   //: Constructor.
   
@@ -392,5 +405,3 @@ namespace RavlGUIN {
   {}
 
 }
-
-
