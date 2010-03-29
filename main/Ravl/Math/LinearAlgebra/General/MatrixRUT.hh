@@ -24,7 +24,7 @@ namespace RavlN {
   // <p>This class contains functions optimised for working with
   // Right Upper Triangular matrix's.  The lower left is assumed
   // to be zero. Most of the operations on this matrix ignore the
-  // contents of the lower left part, and it is not garanteed to contain
+  // contents of the lower left part, and it is not guaranteed to contain
   // zero's.  To ensure this use 'ZeroLowerLeft()': this MUST be
   // done before using matrix operators that are not part of this 
   // class. </p>

@@ -12,6 +12,7 @@
 #include "Ravl/StdMath.hh"
 #include "Ravl/Vector.hh"
 #include "Ravl/Matrix.hh"
+#include "Ravl/LAHooks.hh"
 
 // General matrix functions.
 
