@@ -146,7 +146,7 @@ namespace RavlN {
 #endif
   
   typedef StreamOffsetT StreamSizeT;
-  //: Size of stream.  This is seperate to allow large file support.
+  //: Size of stream.  This is separate to allow large file support.
   
   template<class DataT>
   inline void Swap(DataT &v1,DataT &v2) {
