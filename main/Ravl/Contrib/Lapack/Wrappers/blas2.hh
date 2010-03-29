@@ -14,7 +14,7 @@
 namespace BlasN
 {
   //! add outer product to Matrix
-  void AddOuterProduct(RavlN::MatrixRUTC &M, const RavlN::VectorC &V);
+  void AddOuterProduct(RavlN::MatrixRUTC &M, const RavlN::VectorC &V, double alpha);
 
 } //end of namespace
 

@@ -10,8 +10,8 @@
 
 namespace BlasN
 {
-  void AddOuterProduct(RavlN::MatrixRUTC &M, const RavlN::VectorC &V)
+  void AddOuterProduct(RavlN::MatrixRUTC &M, const RavlN::VectorC &V, double alpha)
   {
-    dsyr_c(M.Size1(), &(M[0][0]), &(V[0]), 1., 1, true, true);
+    dsyr_c(M.Size1(), &(M[0][0]), &(V[0]), alpha, 1, true, true);
   }
 } //end of namespace

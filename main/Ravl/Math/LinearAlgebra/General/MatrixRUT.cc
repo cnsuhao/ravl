@@ -13,6 +13,8 @@
 #include "Ravl/Vector.hh"
 #include "Ravl/CCMath.hh"
 #include "Ravl/StdConst.hh"
+#include "Ravl/LAHooks.hh"
+
 namespace RavlN {
   
   //: Calculate the inverse of a upper right triangular matrix.
@@ -43,7 +45,7 @@ namespace RavlN {
     for(BufferAccessIterC<RealT> it(vec);it;it++) {
       const RealT v1 = (*it); 
       for(BufferAccessIterC<RealT> it2 = it;it2;it2++,mit.NextCol())
-	*mit += v1 * (*it2);
+        *mit += v1 * (*it2);
       mit.NextRow(++off);
     }
   }
@@ -56,7 +58,7 @@ namespace RavlN {
     for(BufferAccessIterC<RealT> it(vec);it;it++) {
       const RealT v1 = *it * a;
       for(BufferAccessIterC<RealT> it2 = it;it2;it2++,mit.NextCol())
-	*mit += v1 * (*it2);
+        *mit += v1 * (*it2);
       mit.NextRow(++off);
     }
   }
@@ -69,7 +71,7 @@ namespace RavlN {
     for(BufferAccessIterC<RealT> it(vec);it;it++) {
       const RealT v1 = (*it); 
       for(BufferAccessIterC<RealT> it2 = it;it2;it2++,mit.NextCol())
-	*mit -= v1 * (*it2);
+        *mit -= v1 * (*it2);
       mit.NextRow(++off);
     }
   }
@@ -82,7 +84,7 @@ namespace RavlN {
     for(BufferAccessIterC<RealT> it(vec);it;it++) {
       const RealT v1 = *it * a;
       for(BufferAccessIterC<RealT> it2 = it;it2;it2++,mit.NextCol())
-	*mit -= v1 * (*it2);
+        *mit -= v1 * (*it2);
       mit.NextRow(++off);
     }
   }
@@ -94,7 +96,7 @@ namespace RavlN {
     for(SArray2dIter2C<RealT,RealT> mit(*this,mat);mit;) {
       mit.NextCol(off++);
       do {
-	mit.Data1() += mit.Data2();
+        mit.Data1() += mit.Data2();
       } while(mit.Next()) ;
     }
     return *this;
