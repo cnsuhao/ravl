@@ -124,7 +124,7 @@ namespace RavlImageN {
     // Defaults to !IsGetEOS().
     
     virtual bool IsGetEOS() const
-      { return strm.good(); }
+      { return strm.eof(); }
     //: Has the End Of Stream been reached ?
     // TRUE = yes.
     
