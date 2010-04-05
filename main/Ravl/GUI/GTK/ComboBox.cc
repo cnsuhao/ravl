@@ -20,11 +20,27 @@ namespace RavlGUIN {
   //: Constructor
   
   ComboBoxBodyC::ComboBoxBodyC(TreeModelC &treeModel, const DListC<IntT> treeColumns)
-  : m_treeModel(treeModel),
+   : m_treeModel(treeModel),
     m_treeColumns(treeColumns),
     m_sigRowSelected(TreeModelIterC())
   {}
   
+  ComboBoxBodyC::ComboBoxBodyC(TreeModelC &treeModel, const DListC<StringC> &treeColumns)
+   : m_treeModel(treeModel),
+     m_sigRowSelected(TreeModelIterC())
+  {
+    for(DLIterC<StringC> it(treeColumns);it;it++) {
+      UIntT colNum = treeModel.ColNumber(*it);
+      if(colNum == ((UIntT)-1)) {
+        RavlAssertMsg(0,"Unknown tree column.");
+        continue;
+      }
+      m_treeColumns.InsLast(colNum);
+    }
+
+  }
+  //: Constructor
+
   //: Set the tree model to use.
   // This can only be changed before the box is 'Created'.
   

@@ -27,7 +27,10 @@ namespace RavlGUIN {
     
     ComboBoxBodyC(TreeModelC &treeModel, const DListC<IntT> treeColumns = DListC<IntT>());
     //: Constructor
-    
+
+    ComboBoxBodyC(TreeModelC &treeModel, const DListC<StringC> &treeColumns);
+    //: Constructor
+
     TreeModelIterC GUISelection();
     //: Access model iterator for the current selection.
     
@@ -84,10 +87,15 @@ namespace RavlGUIN {
     //: Default constructor
 
     ComboBoxC(TreeModelC &treeModel, const DListC<IntT> treeColumns = DListC<IntT>())
-    : WidgetC(new ComboBoxBodyC(treeModel, treeColumns))
+     : WidgetC(new ComboBoxBodyC(treeModel, treeColumns))
     {}
     //: Constructor
-    
+
+    ComboBoxC(TreeModelC &treeModel, const DListC<StringC> &treeColumns)
+     : WidgetC(new ComboBoxBodyC(treeModel, treeColumns))
+    {}
+    //: Constructor
+
   protected:
     ComboBoxC(ComboBoxBodyC &body)
       : WidgetC(body)
