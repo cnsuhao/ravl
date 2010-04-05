@@ -11,6 +11,8 @@
 #include "Ravl/GUI/GladeXML.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/OS/Filename.hh"
+#include "Ravl/Resource.hh"
 
 #include <gtk/gtk.h>
 #include <glade/glade.h>
@@ -46,14 +48,14 @@ namespace RavlGUIN {
   GladeXMLBodyC::GladeXMLBodyC(const StringC &nfilename) 
     : xml(0),
       filename(nfilename)
-      
   {}
   
   //: Create part of interface from a file.
   
-  GladeXMLBodyC::GladeXMLBodyC(const StringC &nfilename,const StringC &nwidgetName) 
+  GladeXMLBodyC::GladeXMLBodyC(const StringC &nfilename,const StringC &nwidgetName,const StringC &moduleName)
     : xml(0),
       filename(nfilename),
+      m_moduleName(moduleName),
       rootWidgetName(nwidgetName)
   {}
   
@@ -62,6 +64,7 @@ namespace RavlGUIN {
   GladeXMLBodyC::GladeXMLBodyC(const XMLFactoryContextC &factory)
     : xml(0),
       filename(factory.AttributeString("gladefile","")),
+      m_moduleName(factory.AttributeString("module","Glade")),
       rootWidgetName(factory.AttributeString("root",""))
   {}
 
@@ -71,10 +74,13 @@ namespace RavlGUIN {
     if(xml != 0) 
       return true;
     CheckGladeInit();
+    FilenameC aFilename = Resource(m_moduleName,filename);
+    if(!aFilename.Exists())
+      aFilename = filename;
     if(rootWidgetName.IsEmpty())
-      xml = glade_xml_new(filename.chars(), NULL,0);
+      xml = glade_xml_new(aFilename.chars(), NULL,0);
     else
-      xml = glade_xml_new(filename.chars(), rootWidgetName.chars(),0);
+      xml = glade_xml_new(aFilename.chars(), rootWidgetName.chars(),0);
     if(xml == 0) return false;
     glade_xml_signal_autoconnect(xml);    
     return true;

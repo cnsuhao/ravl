@@ -39,7 +39,7 @@ namespace RavlGUIN {
     GladeXMLBodyC(const StringC &filename);
     //: Create whole interface from a file.
     
-    GladeXMLBodyC(const StringC &filename,const StringC &rootWidgetName);
+    GladeXMLBodyC(const StringC &filename,const StringC &rootWidgetName,const StringC &moduleName = StringC("Glade"));
     //: Create part of interface from a file.
     
     GladeXMLBodyC(const XMLFactoryContextC &factory);
@@ -55,6 +55,10 @@ namespace RavlGUIN {
     { return filename; }
     //: Access filename.
     
+    const StringC &ModuleName() const
+    { return m_moduleName; }
+    //: Name of module to use.
+
     const StringC &RootWidgetName() const
     { return rootWidgetName; }
     //: Get name of root widget.
@@ -65,6 +69,7 @@ namespace RavlGUIN {
     
     GladeXML *xml;
     StringC filename;
+    StringC m_moduleName;
     StringC rootWidgetName;
   };
   
@@ -85,8 +90,8 @@ namespace RavlGUIN {
     {}
     //: Create whole interface from a file.
     
-    GladeXMLC(const StringC &filename,const StringC &rootWidgetName)
-      : RCHandleC<GladeXMLBodyC>(*new GladeXMLBodyC(filename,rootWidgetName))
+    GladeXMLC(const StringC &filename,const StringC &rootWidgetName,const StringC &moduleName = StringC("Glade"))
+      : RCHandleC<GladeXMLBodyC>(*new GladeXMLBodyC(filename,rootWidgetName,moduleName))
     {}
     //: Create part of interface from a file.
 
@@ -117,6 +122,10 @@ namespace RavlGUIN {
     { return Body().Filename(); }
     //: Access filename.
     
+    const StringC &ModuleName() const
+    { return Body().ModuleName(); }
+    //: Access module name.
+
     const StringC &RootWidgetName() const
     { return Body().RootWidgetName(); }
     //: Get name of root widget.

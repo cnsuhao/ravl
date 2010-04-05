@@ -40,7 +40,7 @@ namespace RavlGUIN {
       m_widgetPrefix += ".";
     
     if(customWidget)
-      xml = GladeXMLC(gladeXml.Filename(),name);
+      xml = GladeXMLC(gladeXml.Filename(),name,gladeXml.ModuleName());
   }
   
   //: Constructor
@@ -84,7 +84,7 @@ namespace RavlGUIN {
     }
     
     if(customWidget)
-      xml = GladeXMLC(gladeXml.Filename(),name);
+      xml = GladeXMLC(gladeXml.Filename(),name,gladeXml.ModuleName());
     else
       xml = gladeXml;
     
