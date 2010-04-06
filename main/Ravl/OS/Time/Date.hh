@@ -30,6 +30,9 @@ namespace RavlN {
   
   class DateC {
   public:
+    typedef Int64T SecondT;
+    //: Type to use for seconds
+
     inline DateC()
       : sec(0),
 	usec(0)
@@ -76,7 +79,7 @@ namespace RavlN {
     DateC(istream &in);
     //: Construct from a stream
     
-    inline DateC(long xsec,long xusec)
+    inline DateC(SecondT xsec,long xusec)
       : sec(xsec),
 	usec(xusec)
     {}
@@ -167,13 +170,13 @@ namespace RavlN {
     inline const DateC &operator-=(const DateC &val);
     //: In-place subtraction.
     
-    inline const DateC &operator-=(double val);
+    const DateC &operator-=(double val);
     //: In-place subtraction (seconds).
     
     inline const DateC &operator+=(const DateC &val);
     //: In-place addition.
     
-    inline const DateC &operator+=(double val);
+    const DateC &operator+=(double val);
     //: In-place addition (seconds).
     
     StringC Text() const;
@@ -199,7 +202,7 @@ namespace RavlN {
     { return usec; }
     //: Get fractional part of the current second in micro seconds.
     
-    inline long TotalSeconds() const
+    inline SecondT TotalSeconds() const
     { return sec; }
     //: Get total whole seconds that have passed.
     
@@ -250,7 +253,7 @@ namespace RavlN {
     //: Generate a hash value.
     
   private:
-    long sec;  // Seconds since 12:00 January 1, 1970.
+    SecondT sec;  // Seconds since 12:00 January 1, 1970.
     long usec; // microseconds.
   };
   
@@ -374,23 +377,7 @@ namespace RavlN {
     NormalisePos();
     return *this;
   }
-  
-  inline 
-  const DateC &DateC::operator+=(double val) {
-    sec += (long) val;
-    usec += ((long) ((RealT) val * 1000000) % 1000000);
-    NormalisePos();  
-    return *this;
-  }
-  
-  inline 
-  const DateC &DateC::operator-=(double val) {
-    sec -= (long) val;
-    usec -= ((long) ((RealT) val * 1000000) % 1000000);
-    NormaliseNeg();
-    return *this;
-  }
-  
+
 }
 
 #endif

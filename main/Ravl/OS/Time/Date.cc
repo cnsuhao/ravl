@@ -104,7 +104,7 @@ namespace RavlN {
   //: Construct from a real in seconds.
   
   DateC::DateC(RealT val) {
-    sec = (long) val;
+    sec = (Int64T) val;
     usec = (long) ((RealT) (val - (RealT) sec) * MaxUSeconds());
   }
   
@@ -327,14 +327,27 @@ namespace RavlN {
   StringC DateC::ODBC(bool convertUTCToLocal,bool factionalSeconds) const {
     StringC str;
     if(factionalSeconds) {
-      str.form("%04d-%02d-%02d %02d:%02d:%02.10f",
-               Year(convertUTCToLocal),
-               Month(convertUTCToLocal),
-               DayInMonth(convertUTCToLocal),
-               Hour(convertUTCToLocal),
-               Minute(convertUTCToLocal),
-               (double) Seconds(convertUTCToLocal) + (usec / 1000000.0)
-               );
+      UIntT seconds = Seconds(convertUTCToLocal);
+      // Fix formating problem where leading zero is removed from floats.
+      if(seconds < 10) {
+        str.form("%04d-%02d-%02d %02d:%02d:0%1.10f",
+            Year(convertUTCToLocal),
+            Month(convertUTCToLocal),
+            DayInMonth(convertUTCToLocal),
+            Hour(convertUTCToLocal),
+            Minute(convertUTCToLocal),
+            (double) seconds + (usec / 1000000.0)
+        );
+      } else {
+        str.form("%04d-%02d-%02d %02d:%02d:%02.10f",
+            Year(convertUTCToLocal),
+            Month(convertUTCToLocal),
+            DayInMonth(convertUTCToLocal),
+            Hour(convertUTCToLocal),
+            Minute(convertUTCToLocal),
+            (double) seconds + (usec / 1000000.0)
+        );
+      }
     } else {
       str.form("%04d-%02d-%02d %02d:%02d:%02d",
                Year(convertUTCToLocal),
@@ -728,6 +741,33 @@ namespace RavlN {
 #endif
   }
 #endif
+
+  const DateC &DateC::operator+=(double val) {
+
+#if 0
+    sec += (SecondT) val;
+    usec += ((long) ((RealT) val * 1000000) % 1000000);
+#else
+    double frac;
+    usec += Round(modf(val,&frac) * 1000000);
+    sec += (SecondT) frac;
+#endif
+    NormalisePos();
+    return *this;
+  }
+
+  const DateC &DateC::operator-=(double val) {
+#if 0
+    sec -= (SecondT) val;
+    usec -= ((long) ((RealT) val * 1000000) % 1000000);
+#else
+    double frac;
+    usec -= Round(modf(val,&frac) * 1000000);
+    sec -= (SecondT) frac;
+#endif
+    NormaliseNeg();
+    return *this;
+  }
 
     
 }

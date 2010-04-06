@@ -25,12 +25,17 @@ int CheckSleep();
 int CheckLocalTime();
 int CheckODBC();
 int CheckTime();
+int CheckTimeMath();
 
 
 int main() 
 {
   int lineno;
   cerr << "Starting DateC tests... \n";
+  if((lineno = CheckTimeMath()) != 0) {
+    cerr << "CheckTime(), Failed :" << lineno << "\n";
+    return 1;
+  }
 #if 1
   if((lineno = CheckConsistant()) != 0) {
     cerr << "CheckConsistant(), Failed :" << lineno << "\n";
@@ -44,7 +49,6 @@ int main()
     cerr << "CheckSleep(), Failed :" << lineno << "\n";
     return 1;
   }
-#endif
   if((lineno = CheckLocalTime()) != 0) {
     cerr << "CheckLocalTime(), Failed :" << lineno << "\n";
     return 1;
@@ -57,7 +61,7 @@ int main()
     cerr << "CheckTime(), Failed :" << lineno << "\n";
     return 1;
   }
-  
+#endif
   cerr << "Test passed.\n";
   return 0;
 }
@@ -172,5 +176,22 @@ int CheckTime() {
   cerr << "Time UTC  =" << timeUTC.ODBC() << "\n";
   cerr << "Offset    =" << DateC::TimeZoneOffset().Double() << "\n";
   if(Abs(((timeNow - timeUTC) + DateC::TimeZoneOffset()).Double()) > 0.0001) return __LINE__;
+  return 0;
+}
+
+int CheckTimeMath() {
+  DateC a(2.0);
+  a += 2.4;
+  if(Abs(a.Double() - 4.4) > 0.000001) return __LINE__;
+  a += -0.3;
+  if(Abs(a.Double() - 4.1) > 0.000001) return __LINE__;
+  a += -0.4;
+  if(Abs(a.Double() - 3.7) > 0.000001) return __LINE__;
+  a = 4.0;
+  a -= 1.5;
+  if(Abs(a.Double() - 2.5) > 0.000001) return __LINE__;
+  a -= -0.6;
+  if(Abs(a.Double() - 3.1) > 0.000001) return __LINE__;
+
   return 0;
 }

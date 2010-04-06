@@ -17,14 +17,14 @@ namespace RavlN {
   //: Stream operator.
   
   BinOStreamC &operator <<(BinOStreamC &strm,const DateC &date) {
-    strm << ((int) date.TotalSeconds()) << ((int) date.USeconds());
+    strm << ((Int32T) date.TotalSeconds()) << ((Int32T) date.USeconds());
     return strm;
   }
   
   //: Stream operator.
   
   BinIStreamC &operator >>(BinIStreamC &strm,DateC &date) {
-    int v1,v2;
+    Int32T v1,v2;
     strm >> v1 >> v2;
     date = DateC((long int) v1,(long int)v2);
     return strm;
