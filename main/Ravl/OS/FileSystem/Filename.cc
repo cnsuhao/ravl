@@ -252,9 +252,9 @@ namespace RavlN {
       return DateC(false);
 #endif
 #if RAVL_TIMET_IS_INT
-    return DateC((long) buff.st_atime,0);
+    return DateC((DateC::SecondT) buff.st_atime,0);
 #else
-    return DateC((long) buff.st_atim.tv_sec,(long) buff.st_atim.tv_nsec / 1000);
+    return DateC((DateC::SecondT) buff.st_atim.tv_sec,(long) buff.st_atim.tv_nsec / 1000);
 #endif
   }
   
@@ -273,9 +273,9 @@ namespace RavlN {
       return DateC(false);
 #endif
 #if RAVL_TIMET_IS_INT
-    return DateC((long) buff.st_mtime,0);
+    return DateC((DateC::SecondT) buff.st_mtime,0);
 #else
-    return DateC((long) buff.st_mtim.tv_sec,(long) buff.st_mtim.tv_nsec / 1000);
+    return DateC((DateC::SecondT) buff.st_mtim.tv_sec,(long) buff.st_mtim.tv_nsec / 1000);
 #endif
   }
   
@@ -294,9 +294,9 @@ namespace RavlN {
       return DateC(false);
 #endif
 #if RAVL_TIMET_IS_INT
-    return DateC((long) buff.st_ctime,0);
+    return DateC((DateC::SecondT) buff.st_ctime,0);
 #else
-    return DateC((long) buff.st_ctim.tv_sec,(long) buff.st_ctim.tv_nsec / 1000);
+    return DateC((DateC::SecondT) buff.st_ctim.tv_sec,(long) buff.st_ctim.tv_nsec / 1000);
 #endif
   }
 
