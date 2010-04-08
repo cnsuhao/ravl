@@ -21,14 +21,13 @@ namespace RavlN {
   template<typename DataT>
   class SmartPtrC {
   public:
-	SmartPtrC();
-	DataT *operator->();
-	void Invalidate();
-	bool IsValid();
+    SmartPtrC();
+    DataT *operator->();
+    void Invalidate();
+    bool IsValid();
   };
 }
 
 %define RAVL_SMART_POINTER(name, type)
-%ignore type;
 %template(name ## H) RavlN::SmartPtrC<type >;
 %enddef
