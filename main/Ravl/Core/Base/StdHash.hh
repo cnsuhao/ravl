@@ -64,6 +64,12 @@ namespace RavlN {
   inline size_t StdHash(const unsigned long dat)
   { return (size_t) (dat >> 11) ^ dat; }
   //: Hash unsigned long.
+
+  //: for windows. ------------------------------------
+  //inline size_t Stdhash(const signed long int dat)
+  //{ return (size_t) (dat >> 11) ^ dat; }
+  //: Hash long value.
+  
   
   inline size_t StdHash(const char dat)
   { return (size_t) (dat >> 3) ^ dat; }
@@ -76,6 +82,15 @@ namespace RavlN {
   inline size_t StdHash(const SizeT size)
   { return (size_t) size.V(); }
   //: Hash unsigned char.
+
+// for windows. 
+#ifdef RAVL_COMPILER_VISUALCPP
+  inline size_t StdHash(const UInt64T dat)
+  { return (size_t) (dat >> 11) ^ dat; }
+
+  inline size_t Stdhash(const Int64T dat)
+  { return (size_t) (dat >> 11) ^ dat; } 
+#endif 
 
   inline size_t StdHash(const RealT dat)
   { 

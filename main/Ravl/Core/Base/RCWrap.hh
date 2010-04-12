@@ -19,6 +19,8 @@
 #include "Ravl/RCAbstract.hh"
 #include "Ravl/DeepCopy.hh"
 #include "Ravl/Types.hh"
+#include "Ravl/BinStream.hh"
+
 #if RAVL_HAVE_RTTI
 #if RAVL_HAVE_ANSICPPHEADERS
 #include <typeinfo>
@@ -30,6 +32,8 @@
 //: Ravl library namespace.
 
 namespace RavlN {
+
+  class RavlN::BinOStreamC; 
 
   //! userlevel=Develop
   //: RCWrapped object base class.

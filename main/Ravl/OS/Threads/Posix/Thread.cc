@@ -77,7 +77,7 @@ namespace RavlN {
     return (SizeT) pthread_self();
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    return (SizeT) GetCurrentThread();
+    return (UInt64T) GetCurrentThread();
 #endif
   }
   
@@ -393,7 +393,7 @@ namespace RavlN {
 
   SizeT ThreadBodyC::ID() const {
 #if RAVL_HAVE_WIN32_THREADS
-    return (SizeT) threadID;
+    return (UInt64T) threadID;
 #else
     return (SizeT) threadID;
 #endif
