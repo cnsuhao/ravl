@@ -84,7 +84,7 @@ namespace RavlN {
   //: Hash unsigned char.
 
 // for windows. 
-#ifdef RAVL_COMPILER_VISUALCPP
+#if RAVL_COMPILER_VISUALCPP
   inline size_t StdHash(const UInt64T dat)
   { return (size_t) (dat >> 11) ^ dat; }
 
