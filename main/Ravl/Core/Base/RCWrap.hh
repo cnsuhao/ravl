@@ -33,7 +33,7 @@
 
 namespace RavlN {
 
-  class RavlN::BinOStreamC; 
+  class BinOStreamC;
 
   //! userlevel=Develop
   //: RCWrapped object base class.
