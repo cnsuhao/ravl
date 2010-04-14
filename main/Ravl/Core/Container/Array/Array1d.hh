@@ -502,7 +502,7 @@ namespace RavlN {
 
   template <class DataT>
   Array1dC<DataT>::Array1dC(const SArray1dC<DataT> &oth)
-    : RangeBufferAccessC<DataT>(const_cast<DataT *>(&(oth[0])),IndexRangeC(0,oth.Size()-1)),
+    : RangeBufferAccessC<DataT>(const_cast<DataT *>(oth.ReferenceElm()),IndexRangeC(oth.Size())),
       buff(oth.Buffer())
   {}
 
