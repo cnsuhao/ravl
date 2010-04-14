@@ -170,11 +170,11 @@ namespace RavlGUIN {
       if(shutdownDone)
 	shutdownDone.WaitForFree();
       else {
-	cerr << "ERROR: Destroying manager before shutdown occured. \n";
+	cerr << "ERROR: Destroying manager before shutdown occurred. \n";
       }
     } else {
       if(startupDone.ThreadsWaiting() > 0)
-	cerr << "ERROR: Destroying manager before its event statered, (Threads wating) \n";
+	cerr << "ERROR: Destroying manager before its event started, (Threads waiting) \n";
     }
     
     ONDEBUG(cerr << "ManagerC::~ManagerC(), Done.. \n");

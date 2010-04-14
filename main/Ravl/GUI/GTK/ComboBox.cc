@@ -110,43 +110,6 @@ namespace RavlGUIN {
       if (m_treeModel.IsValid())
       {
         widget = gtk_combo_box_new_with_model(m_treeModel.TreeModel());
-
-        if (m_treeModel.Cols() > 0 && m_treeColumns.Size() > 0)
-        {
-          gtk_cell_layout_clear(GTK_CELL_LAYOUT(widget));
-
-          for (DLIterC<IntT> colIter(m_treeColumns); colIter; ++colIter)
-          {
-            if (*colIter >= 0 && static_cast<UIntT>(*colIter) < m_treeModel.Cols())
-            {
-              GtkCellRenderer *cell = NULL;
-              StringC typeAttribute;
-              switch (m_treeModel.ColumnValueType(*colIter))
-              {
-                case AVT_String:
-                case AVT_Int:
-                case AVT_Int64:
-                case AVT_Real:
-                case AVT_Bool:
-                  cell = gtk_cell_renderer_text_new();
-                  typeAttribute = "text";
-                  break;
-                case AVT_ByteRGBImage:
-                  cell = gtk_cell_renderer_pixbuf_new();
-                  typeAttribute = "pixbuf";
-                  break;
-                default:
-                  break;
-              }
-
-              if (cell != NULL)
-              {
-                gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(widget), cell, TRUE);
-                gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(widget), cell, typeAttribute.chars(), *colIter);
-              }
-            }
-          }
-        }
       }
       else
       {
@@ -164,6 +127,45 @@ namespace RavlGUIN {
       }
     }
     
+    // Set up requested renders.
+    if (m_treeModel.Cols() > 0 && m_treeColumns.Size() > 0)
+    {
+      gtk_cell_layout_clear(GTK_CELL_LAYOUT(widget));
+
+      for (DLIterC<IntT> colIter(m_treeColumns); colIter; ++colIter)
+      {
+        if (*colIter >= 0 && static_cast<UIntT>(*colIter) < m_treeModel.Cols())
+        {
+          GtkCellRenderer *cell = NULL;
+          StringC typeAttribute;
+          switch (m_treeModel.ColumnValueType(*colIter))
+          {
+            case AVT_String:
+            case AVT_Int:
+            case AVT_Int64:
+            case AVT_Real:
+            case AVT_Bool:
+              cell = gtk_cell_renderer_text_new();
+              typeAttribute = "text";
+              break;
+            case AVT_ByteRGBImage:
+              cell = gtk_cell_renderer_pixbuf_new();
+              typeAttribute = "pixbuf";
+              break;
+            default:
+              break;
+          }
+
+          if (cell != NULL)
+          {
+            gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(widget), cell, TRUE);
+            gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(widget), cell, typeAttribute.chars(), *colIter);
+          }
+        }
+      }
+    }
+
+
     ConnectSignals();
 
     ConnectRef(Signal("changed"), *this, &ComboBoxBodyC::CBRowChanged);

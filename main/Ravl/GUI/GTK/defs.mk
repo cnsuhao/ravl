@@ -31,7 +31,7 @@ HEADERS = Manager.hh Widget.hh GTKTypes.hh SignalInfo.hh \
  ReadBack.hh  WaitForExit.hh TreeModel.hh TreeStore.hh  TreeView.hh \
  ListStore.hh Pixbuf.hh AspectFrame.hh ButtonBox.hh  ColourSelector.hh \
  DebugAssertDialog.hh IconView.hh ComboBox.hh ComboBoxText.hh \
- ComboBoxEntry.hh ComboBoxEntryText.hh
+ ComboBoxEntry.hh ComboBoxEntryText.hh TriggerAction.hh
 
 SOURCES = Manager.cc Widget.cc MouseEvent.cc Window.cc \
  Cursor.cc ToolTips.cc CWidget.cc Button.cc Pixmap.cc \
@@ -45,7 +45,7 @@ SOURCES = Manager.cc Widget.cc MouseEvent.cc Window.cc \
  ReadBack.cc WaitForExit.cc TreeModel.cc TreeStore.cc TreeView.cc \
  ListStore.cc Pixbuf.cc AspectFrame.cc ButtonBox.cc ColourSelector.cc \
  DebugAssertDialog.cc IconView.cc ComboBox.cc ComboBoxText.cc \
- ComboBoxEntry.cc ComboBoxEntryText.cc
+ ComboBoxEntry.cc ComboBoxEntryText.cc TriggerAction.cc
 
 MAINS = rdialog.cc
 
@@ -62,6 +62,8 @@ EXAMPLES = exButton.cc exMenu.cc exCList.cc exList.cc \
 #  exGUI.cc exCanvas.cc   exGraph1d.cc \
 
 PLIB = RavlGUI
+
+MUSTLINK=LinkRavlGUI.cc
 
 USESLIBS = RavlCore RavlIO RavlOS GTK RavlThreads system RavlXMLFactory
 

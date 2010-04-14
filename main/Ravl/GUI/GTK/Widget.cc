@@ -386,7 +386,6 @@ namespace RavlGUIN {
     return 0;
   }
 
-
   //: Default constructor.
 
   WidgetBodyC::WidgetBodyC()
@@ -1131,6 +1130,7 @@ namespace RavlGUIN {
   //: Dummy function to keep templates happy.
 
   static XMLFactoryRegisterHandleC<WidgetC> g_registerXMLFactoryWidget("RavlGUIN::WidgetC");
+
 
 }
 

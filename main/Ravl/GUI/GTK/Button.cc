@@ -86,13 +86,29 @@ namespace RavlGUIN
 
   //: XMLFactory constructor.
 
+  static bool InvokeTrigger(TriggerC &trig) {
+    trig.Invoke();
+    return true;
+  }
+
   ButtonBodyC::ButtonBodyC(const XMLFactoryContextC &factory)
    : WidgetBodyC(factory),
      label(factory.AttributeString("name","<anon>"))
   {
     Signal0C sigClicked;
     if(factory.UseComponent("SigClicked",sigClicked,true,typeid(Signal0C)))
-     Connect(Signal("clicked"),sigClicked,&Signal0C::Invoke);
+      Connect(Signal("clicked"),sigClicked,&Signal0C::Invoke);
+
+    XMLFactoryContextC childContext;
+    if(factory.ChildContext("Triggers",childContext)) {
+      for(RavlN::DLIterC<RavlN::XMLTreeC> it(childContext.Children());it;it++) {
+        TriggerC trigger;
+        if(!childContext.UseComponent(it->Name(),trigger)) {
+          continue;
+        }
+        Connect(Signal("clicked"),&InvokeTrigger,trigger);
+      }
+    }
   }
 
   GtkWidget *ButtonBodyC::BuildWidget(const char *aLab) {
