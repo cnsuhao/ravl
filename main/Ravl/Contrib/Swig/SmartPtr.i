@@ -22,9 +22,13 @@ namespace RavlN {
   class SmartPtrC {
   public:
     SmartPtrC();
+    SmartPtrC(const DataT *data);
     DataT *operator->();
     void Invalidate();
     bool IsValid();
+    void reset();
+    void reset(const DataT *other);
+    DataT *get();
   };
 }
 
