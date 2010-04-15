@@ -137,7 +137,7 @@ namespace RavlN {
     tempFace[1] = ret.InsertVertex(Point2dC(box.End()[0],box.End()[1] + off[1]));
     tempFace[2] = ret.InsertVertex(Point2dC(box.End()[0] + off[0],box.End()[1]));
     
-    UIntT vertIds = ret.NumberOfVertexIds();
+    SizeC vertIds = ret.NumberOfVertexIds();
     idMap = Array1dC<IntT>(vertIds,vertIds+points.Size());
     
     HashC<Tuple2C<HEMeshBaseVertexC,HEMeshBaseVertexC> , HEMeshBaseEdgeC> edgeTab;
