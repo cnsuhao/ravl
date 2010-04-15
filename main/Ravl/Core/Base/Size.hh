@@ -279,17 +279,17 @@ namespace RavlN {
 
   // --------------------------
 
-  inline unsigned operator+(const unsigned  &v1,const SizeC &v2)
-  { return v1 + v2.V(); }
+  inline SizeC operator+(const unsigned  &v1,const SizeC &v2)
+  { return SizeC(v1 + v2.V()); }
 
-  inline unsigned operator-(const unsigned  &v1,const SizeC &v2)
-  { return v1 - v2.V(); }
+  inline SizeC operator-(const unsigned  &v1,const SizeC &v2)
+  { return SizeC(v1 - v2.V()); }
 
-  inline unsigned  operator*(const unsigned  &v1,const SizeC &v2)
-  { return v1 * v2.V(); }
+  inline SizeC  operator*(const unsigned  &v1,const SizeC &v2)
+  { return SizeC(v1 * v2.V()); }
 
-  inline unsigned  operator/(const unsigned  &v1,const SizeC &v2)
-  { return v1 / v2.V(); }
+  inline SizeC  operator/(const unsigned  &v1,const SizeC &v2)
+  { return SizeC(v1 / v2.V()); }
 
   inline bool operator<(const unsigned  &v1,const SizeC &v2)
   { return v1 < v2.V(); }
@@ -420,17 +420,17 @@ namespace RavlN {
     return (size_t) v1 <= v2.V();
   }
 
-  inline int operator*(const int &v1,const SizeC &v2)
-  { return v1 * v2.V(); }
+  inline SizeC operator*(const int &v1,const SizeC &v2)
+  { return SizeC(v1 * v2.V()); }
 
-  inline int operator/(const int &v1,const SizeC &v2)
-  { return v1 / v2.V(); }
+  inline SizeC operator/(const int &v1,const SizeC &v2)
+  { return SizeC(v1 / v2.V()); }
 
-  inline int operator+(const int &v1,const SizeC &v2)
-  { return v1 + v2.V(); }
+  inline SizeC operator+(const int &v1,const SizeC &v2)
+  { return SizeC(v1 + v2.V()); }
 
-  inline int operator-(const int &v1,const SizeC &v2)
-  { return v1 - v2.V(); }
+  inline SizeC operator-(const int &v1,const SizeC &v2)
+  { return SizeC(v1 - v2.V()); }
 
   inline int &operator+=(int &s,const SizeC &val)
   { s += val.V(); return s; }
