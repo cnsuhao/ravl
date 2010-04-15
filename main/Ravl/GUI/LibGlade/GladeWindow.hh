@@ -69,6 +69,7 @@ namespace RavlGUIN {
     //: Called when gtk widget is destroyed.
     
     PixbufC m_icon;
+    bool m_interceptDeleteEvent;
   };
   
   //! userlevel=Normal

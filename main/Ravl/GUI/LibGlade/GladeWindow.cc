@@ -30,19 +30,26 @@ namespace RavlGUIN {
                                      const StringC &widgetName,
                                      bool aCustomWidget,
                                      const StringC prefix) 
-    : GladeWidgetBodyC(gladeXml,widgetName,aCustomWidget,prefix)
-  {}
+    : GladeWidgetBodyC(gladeXml,widgetName,aCustomWidget,prefix),
+      m_interceptDeleteEvent(false)
+  {
+
+  }
   
   //: Constructor
   
   GladeWindowBodyC::GladeWindowBodyC(const StringC &widgetName,bool aCustomWidget) 
-    : GladeWidgetBodyC(widgetName,aCustomWidget)
-  {}
+    : GladeWidgetBodyC(widgetName,aCustomWidget),
+      m_interceptDeleteEvent(false)
+  {
+
+  }
   
   //: Factory constructor
 
   GladeWindowBodyC::GladeWindowBodyC(const XMLFactoryContextC &factory)
-   : GladeWidgetBodyC(factory)
+   : GladeWidgetBodyC(factory),
+     m_interceptDeleteEvent(factory.AttributeBool("interceptDeleteEvent",false))
   {
 
   }
@@ -118,6 +125,8 @@ namespace RavlGUIN {
       return false;
     if(m_icon.IsValid())
       gtk_window_set_icon(GTK_WINDOW(widget), m_icon.Pixbuf());
+    if(m_interceptDeleteEvent)
+      InterceptDeleteEvent();
     return true;
   }
   

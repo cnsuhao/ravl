@@ -12,7 +12,7 @@ PACKAGE=Ravl/GUI
 
 LICENSE=LGPL
 
-REQUIRES = libGL
+#REQUIRES = libGL
 
 #ifeq ($(ARC),sol2)
 ifneq ($(filter $(ARC), sol2_7 sol2_9),)
@@ -51,7 +51,7 @@ PLIB = RavlGUI3D
 #EXAMPLES
 MAINS = exCanvas3D.cc exView3D.cc exDTexTriMesh3d.cc
 
-USESLIBS = RavlCore RavlGeom RavlGUI OpenGL Ravl3D x11 GTK RavlImage
+USESLIBS = RavlCore RavlGeom RavlGUI OpenGL Ravl3D x11 GTK RavlImage GLUT
 
 EHT = Ravl.API.GUI.3D.html
 

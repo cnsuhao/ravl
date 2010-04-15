@@ -104,7 +104,7 @@ namespace RavlGUIN {
     OneChildBodyC::Destroy();
 #if 0
     // Pre-empt destructor...
-    // This ensures a expected behavour even
+    // This ensures a expected behaviour even
     // if there are still handles to the window
     // somewhere in the program.
     if(!rootWin) {
