@@ -30,14 +30,16 @@ namespace RavlN {
         m_vec = vec;
       if(m_vec.size() > 0)
         this->buff = &(m_vec[0]);
+      this->sz = vec.size();
     }
 
     //! Constructor
-    BufferSTLVectorBodyC(const std::vector<DataT> &vector)
+    BufferSTLVectorBodyC(const std::vector<DataT> &vec)
     {
-      m_vec = vector;
+      m_vec = vec;
       if(m_vec.size() > 0)
         this->buff = &(m_vec[0]);
+      this->sz = vec.size();
     }
 
   protected:
