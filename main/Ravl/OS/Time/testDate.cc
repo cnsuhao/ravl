@@ -193,5 +193,9 @@ int CheckTimeMath() {
   a -= -0.6;
   if(Abs(a.Double() - 3.1) > 0.000001) return __LINE__;
 
+  DateC now = DateC::NowUTC();
+  RealT dbl = now.Double();
+  if((DateC(dbl) - now).Double() > 0.1) return __LINE__;
+
   return 0;
 }
