@@ -20,6 +20,7 @@
 #include "Ravl/StdHash.hh"
 #include "Ravl/SArray1d.hh"
 #include "Ravl/Traits.hh"
+#include "Ravl/BufferSTLVector.hh"
 #include <vector>
 #include <set>
 #include <string>
@@ -130,7 +131,7 @@ namespace RavlN {
   template<typename DataT>
   SArray1dC<DataT> SArrayOf(const std::vector<DataT> &data) {
     if(data.size() < 1) return SArray1dC<DataT>();
-    return SArray1dC<DataT>(&(data[0]),data.size());
+    return SArray1dC<DataT>(BufferSTLVectorC<DataT>(data),data.size());
   }
   //: Turn an STL vector into an SArray1dC.
 }
