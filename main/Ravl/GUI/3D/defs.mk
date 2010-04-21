@@ -12,7 +12,7 @@ PACKAGE=Ravl/GUI
 
 LICENSE=LGPL
 
-#REQUIRES = libGL
+REQUIRES = libGL
 
 #ifeq ($(ARC),sol2)
 ifneq ($(filter $(ARC), sol2_7 sol2_9),)
