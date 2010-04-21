@@ -18,6 +18,8 @@ SOURCES=Ravl.i
 
 PLIB=RavlPythonSwig
 
+SINGLESO=_RavlPython
+
 USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO Python RavlNet RavlOSIO
 
 PROGLIBS=

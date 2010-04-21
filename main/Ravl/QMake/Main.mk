@@ -464,7 +464,15 @@ endif
  endif
 
  ifneq (,$(PLIB))
-  TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+  ifdef SHAREDBUILD
+   ifneq (,$(SINGLESO))
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/%$(LIBEXT),$(SINGLESO)))#
+   else
+    TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+   endif
+  else
+   TARG_LIBS=$(strip $(patsubst %,$(INST_LIB)/lib%$(LIBEXT),$(PLIB)))#
+  endif
  else
   TARG_LIBS=
  endif
@@ -955,7 +963,7 @@ DIRECTORYID=$(QCWD)#
 # DIRECTORYID is used to keep a track of where an object file has come from so if the file is removed or
 # renamed it can be taken out of the list. 
 
-$(INST_LIB)/lib$(PLIB)$(LIBEXT) :  $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
+$(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building " $(@F) ; \
 	echo "$(patsubst %$(OBJEXT),%$(OBJEXT):$(DIRECTORYID)@,$(TARG_OBJS))" | $(TR) '@' '\n' > $(INST_OBJS)/libObjs.new ; \
 	if [ -f $(INST_OBJS)/libObjs.txt ] ; then \
@@ -963,9 +971,18 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) :  $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB
 	fi ; \
 	sort -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
 	rm $(INST_OBJS)/libObjs.new ; \
-        echo "---- Building library $(INST_LIB)/$(@F) " ; \
+        echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
 	awk -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
+
+$(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
+	$(SHOWIT)echo "--- Building " $(@F) ; \
+	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | xargs cat > $(INST_OBJS)/libSharedObjs.new ; \
+	sort -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | awk -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
+	rm $(INST_OBJS)/libSharedObjs.new ; \
+  echo "---- Building single shared library $(INST_LIB)/$(@F) " ; \
+	$(CXX) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
 
 endif
 
@@ -1174,6 +1191,7 @@ $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SO
    endif
   endif
  endif
+	$(SHOWIT)echo 'PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ;
  ifdef PLIB
   ifndef LIBDEPS
 	$(SHOWIT)echo 'EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
