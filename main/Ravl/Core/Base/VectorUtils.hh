@@ -21,6 +21,7 @@ namespace RavlBaseVectorN {
   extern void (*g_MatrixTMulVectorF)(const float *matrix,const float *vector,unsigned int rows,unsigned int cols,int stride,float *result);
   
   extern void (*g_ConvolveKernelF)(const float *matrix,const float *kernel,size_t rows,size_t cols,int matrixByteStride,float *result);
+  extern void (*g_ConvolveKernelQuadF)(const float *matrix,const float *kernel1,const float *kernel2,size_t rows,size_t cols,int matrixByteStride,float *result);
 
   inline double DotProduct(const double* v1, const double* v2, size_t size) 
   { return (*g_DotProductD)(v1,v2,size); }
@@ -138,7 +139,21 @@ namespace RavlBaseVectorN {
   //! This computes the convolution for one pixel given a kernel and a matrix.
   //!param: rows - Number of rows in the matrix and kernel
   //!param: cols - Number of cols
-  //!parma: result - Where to store the result
+  //!param: result - Where to store the result
+
+  inline void ConvolveKernelQuad(const float *matrix,
+                                 const float *kernel1,const float *kernel2,
+                                 size_t rows,size_t cols,
+                                 int matrixByteStride,float *result)
+  { (*g_ConvolveKernelQuadF)(matrix,kernel1,kernel2,rows,cols,matrixByteStride,result); }
+  //! This computes quad convolution for one pixel given a kernel and a matrix.
+  //! i.e. sum of matrix * (kernel1 + kernel2 * matrix)
+  //!param: matrix - image/matrix to be convolved
+  //!param: kernel1 - kernel 1
+  //!param: kernel2 - kernel 2
+  //!param: rows - Number of rows in the matrix and kernel
+  //!param: cols - Number of cols
+  //!param: result - Where to store the result
 
 }
 
