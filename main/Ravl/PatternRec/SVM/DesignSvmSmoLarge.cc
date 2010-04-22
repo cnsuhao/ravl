@@ -115,7 +115,7 @@ Classifier2C DesignSvmSmoLargeBodyC::Apply(const SampleC<VectorC> &TrainingSetVe
     objectsToUseLarge[i] = i;
   }
 
-  //find lagrangian multipliers
+  //find Lagrangian multipliers
   CalcLambdas(false);
 
   return GetClassifier();
@@ -141,7 +141,7 @@ ClassifierC DesignSvmSmoLargeBodyC::Apply(const SampleC<VectorC> &TrainingSetVec
     objectsToUseLarge[i] = i;
   }
 
-  //find lagrangian multipliers
+  //find Lagrangian multipliers
   CalcLambdas(false);
 
   return GetClassifier();
@@ -425,10 +425,10 @@ void DesignSvmSmoLargeBodyC::CalcLambdas(bool DoFinal)
   RealT toleranceBU = tolerance;
   RealT epsBU = eps;
   bool firstRun = false;
-  if(!DoFinal && tolerance < 1e-2 && eps <= 1e-4)
+  if(!DoFinal && tolerance < 1e-2 && eps <= 1e-6)
   {
-    tolerance = 0.1;
-    eps = 0.01;
+    tolerance = 0.3;
+    eps = 1e-6;
     firstRun = true;
   }
 
