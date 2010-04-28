@@ -187,6 +187,7 @@ namespace RavlN {
     if(table.Size() == 0) // Need to initalise the table ?
       table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the inital size ?
     table[StdHash(key) % table.Size()].InsFirst(BHashEntryC<KeyT,DataT>(key,data) );
+    entries++;
     return true;
   }
   
@@ -196,6 +197,7 @@ namespace RavlN {
       table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the inital size ?
     BListC<BHashEntryC<KeyT,DataT> > &list = table[StdHash(key) % table.Size()];
     list.InsFirst(BHashEntryC<KeyT,DataT>(key,data) );    
+    entries++;
     return list.First().Data();
   }
   
