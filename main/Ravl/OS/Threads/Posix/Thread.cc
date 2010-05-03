@@ -74,7 +74,7 @@ namespace RavlN {
 
   SizeT CurrentThreadID() {
 #if RAVL_HAVE_POSIX_THREADS
-    return (SizeT) pthread_self();
+    return (size_t) pthread_self();
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     return (UInt64T) GetCurrentThread();
@@ -395,7 +395,7 @@ namespace RavlN {
 #if RAVL_HAVE_WIN32_THREADS
     return (UInt64T) threadID;
 #else
-    return (SizeT) threadID;
+    return (size_t) threadID;
 #endif
   }
    
@@ -404,7 +404,7 @@ namespace RavlN {
   
   SizeT ThisThreadID() {
 #if RAVL_HAVE_POSIX_THREADS
-    return (SizeT) pthread_self();
+    return (size_t) pthread_self();
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     return (SizeT) GetCurrentThreadId();
