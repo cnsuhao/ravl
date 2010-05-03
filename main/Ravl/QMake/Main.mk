@@ -325,7 +325,7 @@ LINKTESTLIBS := $(EXELIB)
 # Restore EXELIB to be library libs
 EXELIB := $(LIBLIBS)
 
-.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_wrap.cc
+.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_wrap.cc %.m %.mm
 
 ############################
 # Misc setup
@@ -396,10 +396,12 @@ ifeq ($(SUPPORT_OK),yes)
  TARG_BASEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT), \
     $(patsubst %.S,$(INST_OBJS)/%$(OBJEXT), \
     $(patsubst %.cu,$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.m,$(INST_OBJS)/%$(OBJEXT), \
+    $(patsubst %.mm,$(INST_OBJS)/%$(OBJEXT), \
     $(patsubst %.y,$(INST_OBJS)/%.tab$(OBJEXT), \
     $(patsubst %.l,$(INST_OBJS)/%.yy$(OBJEXT), \
     $(patsubst %.i,$(INST_OBJS)/%_wrap$(OBJEXT), \
-    $(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(SOURCES))))))))
+    $(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(SOURCES))))))))))
  TARG_OBJS=$(patsubst %$(CXXAUXEXT),$(INST_OBJS)/%$(OBJEXT),$(TARG_BASEOBJS))
  TARG_HDRS:=$(patsubst %,$(INST_HEADER)/%,$(HEADERS))
 ifdef USE_INCLUDE_SYMINC
@@ -415,43 +417,51 @@ endif
  endif
 #$(INST_DEPEND)/%.java.d
  TARG_DEFS=$(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS))
- TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS))))
- TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS))))
+ TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
+ TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
  TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
  TARG_TESTEXE := $(patsubst %$(CEXT),$(INST_TESTBIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_TESTBIN)/%$(EXEEXT),$(TESTEXES)))
  TARG_TESTEXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(TESTEXES)))
 ifndef NOEXEBUILD
  TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %.m,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.mm,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.cu,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.S,$(INST_DEPEND)/%.S.d, \
 	       $(patsubst %.y,$(INST_DEPEND)/%.tab.d, \
 	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
 	       $(patsubst %.i,$(INST_DEPEND)/%_wrap.d, \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
-	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))) \
+	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) \
                $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
-	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))) \
+               $(patsubst %.m,$(INST_DEPEND)/%.d, \
+               $(patsubst %.mm,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))))) \
                $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR).bin.d,  \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR).bin.d, \
-               $(filter-out %.java,$(MAINS)))) $(INST_DEPEND)/.dir
+               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR).bin.d,  \
+               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR).bin.d, \
+               $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
 else
  TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
+	       $(patsubst %.mm,$(INST_DEPEND)/%.d, \
+	       $(patsubst %.m,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.cu,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.S,$(INST_DEPEND)/%.S.d, \
 	       $(patsubst %.y,$(INST_DEPEND)/%.tab.d, \
 	       $(patsubst %.i,$(INST_DEPEND)/%_wrap.d, \
 	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
-	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))) $(INST_DEPEND)/.dir
+	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) $(INST_DEPEND)/.dir
 endif
  TARG_JAVA    =$(patsubst %.java,$(INST_JAVA)/%.class,$(JAVA_SRC))
  TARG_JAVAEXE =$(patsubst %.java,$(INST_JAVAEXE)/%,$(filter %.java,$(MAINS)))
  TARG_NESTED =$(patsubst %.r,%,$(filter %.r,$(NESTED)))
  TARG_SCRIPT =$(patsubst %,$(INST_GENBIN)/%,$(SCRIPTS))
- OBJS_DEPEND = $(patsubst %$(CEXT),$$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$$(INST_OBJS)/%$(OBJEXT) ,$(SOURCES) $(MUSTLINK)))
+ OBJS_DEPEND = $(patsubst %$(CEXT),$$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$$(INST_OBJS)/%$(OBJEXT) ,$(patsubst %.mm,$$(INST_OBJS)/%$(OBJEXT) ,$(SOURCES) $(MUSTLINK))))
  TARG_AUXFILES = $(patsubst %,$(INST_AUX)/%,$(AUXFILES))
  TARG_EXTERNALLIBS= $(patsubst %,$(INST_LIBDEF)/%,$(EXTERNALLIBS))
 
@@ -815,6 +825,28 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 	fi
 
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  rm $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
+	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
+	if [ -f $(WORKTMP)/$*.d ] ; then \
+	  rm $(WORKTMP)/$*.d ; \
+	fi ; \
+	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	  $(MKDEPUP) ; \
+	else \
+	  exit 1 ; \
+	fi
+
+$(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  rm $(WORKTMP)/$*.d ; \
