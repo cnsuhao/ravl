@@ -5,6 +5,8 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/Threads/LaunchThread.hh"
+#include "Ravl/MacOSX/InitAutoReleasepool.hh"
+
 
 #define DPDEBUG 0
 #if DPDEBUG
@@ -108,6 +110,7 @@ namespace RavlImageN {
       m_captureThread(0),
       m_pixelType(pixelType)
   {
+    AutoReleasepoolInit();
     m_captureThread = [[RavlQTCaptureThread alloc] init];
     [m_captureThread setFrameHandler:this];
   }
@@ -121,6 +124,7 @@ namespace RavlImageN {
   //: start capture
   bool QTCaptureThreadBodyC::Start()
   {
+    AutoReleasepoolInit();
     if(![ m_captureThread openCamera: &m_pixelType ]) 
       return false;
     [m_captureThread startCapture];

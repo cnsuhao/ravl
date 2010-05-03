@@ -54,7 +54,8 @@ namespace RavlImageN
       return typeid(void);
     }
     ONDEBUG(std::cerr << "FileFormatQTBodyC::ProbeLoad device(" << device << ") buffSize(" << buffSize << ")" << endl);
-    
+
+#if 1
     if (obj_type == typeid(ImageC<ByteYUVValueC>)) {
       //return typeid(ImageC<ByteYUVValueC>); // Doesn't seem to be supported on webcam.
       return typeid(ImageC<ByteYUV422ValueC>);
@@ -67,6 +68,7 @@ namespace RavlImageN
 
     if( obj_type == typeid(ImageC<ByteYUV422ValueC>)  )
       return typeid(ImageC<ByteYUV422ValueC>);
+#endif
 
     return typeid(ImageC<ByteRGBValueC>);
   }
