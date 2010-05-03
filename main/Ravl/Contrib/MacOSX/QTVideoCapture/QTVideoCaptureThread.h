@@ -5,6 +5,8 @@
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/Image/ByteYUVValue.hh"
+#include "Ravl/Image/ByteYUV422Value.hh"
 #import "Ravl/MacOSX/BufferCVImage.hh"
 
 namespace RavlImageN {

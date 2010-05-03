@@ -55,13 +55,19 @@ namespace RavlImageN
     }
     ONDEBUG(std::cerr << "FileFormatQTBodyC::ProbeLoad device(" << device << ") buffSize(" << buffSize << ")" << endl);
     
-    if (obj_type == typeid(ImageC<ByteYUVValueC>))
-      return typeid(ImageC<ByteRGBValueC>);
-    if(obj_type == typeid(ImageC<FloatT>) || obj_type == typeid(ImageC<RealT>) || obj_type==typeid(UInt16T))
-      return typeid(ImageC<UInt16T>);
-    if (obj_type == typeid(ImageC<ByteT>) ||obj_type == typeid(ImageC<ByteYUV422ValueC>))
+    if (obj_type == typeid(ImageC<ByteYUVValueC>)) {
+      //return typeid(ImageC<ByteYUVValueC>); // Doesn't seem to be supported on webcam.
       return typeid(ImageC<ByteYUV422ValueC>);
-    
+    }
+
+    if(obj_type == typeid(ImageC<FloatT>) || obj_type == typeid(ImageC<RealT>) || obj_type==typeid(UInt16T) || obj_type == typeid(ImageC<ByteT>)) {
+      //return typeid(ImageC<UInt16T>); // This doesn't seem to be supported when using a webcam.
+      return typeid(ImageC<ByteYUV422ValueC>);
+    }
+
+    if( obj_type == typeid(ImageC<ByteYUV422ValueC>)  )
+      return typeid(ImageC<ByteYUV422ValueC>);
+
     return typeid(ImageC<ByteRGBValueC>);
   }
   
@@ -102,7 +108,10 @@ namespace RavlImageN
     
     if (obj_type == typeid(ImageC<ByteYUV422ValueC>))
       return DPIPortQTImageC<ByteYUV422ValueC>(device,bufferSize);
-    
+
+    if (obj_type == typeid(ImageC<ByteYUVValueC>))
+      return DPIPortQTImageC<ByteYUVValueC>(device,bufferSize);
+
     return DPIPortBaseC();
   }
   

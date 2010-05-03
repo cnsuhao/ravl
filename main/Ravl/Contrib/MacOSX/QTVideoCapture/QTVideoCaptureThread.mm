@@ -42,8 +42,10 @@
     usePixelType = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_16Gray];
   } else if (*pixelType == typeid(RavlImageN::ByteYUV422ValueC)) {
     usePixelType = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_422YpCbCr8];
+  } else if (*pixelType == typeid(RavlImageN::ByteYUVValueC)) {
+    usePixelType = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_444YpCbCr8];
   } else  {
-    RavlAssertMsg(0,"Pixel format no recognised. ");
+    RavlAssertMsg(0,"Pixel format not recognised. ");
     return false;
   }
   

@@ -16,6 +16,7 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/Image/ByteYUV422Value.hh"
+#include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/DP/SequenceIO.hh"
 
 using namespace RavlN;
@@ -71,7 +72,8 @@ int TheStart(int argc, char **argv)
   // Process the options
   OptionC opt(argc, argv);
   bool grey     = opt.Boolean("g",  false,                 "Greyscale capture.");
-  bool yuv422   = opt.Boolean("y",  false,                 "YUV 422 capture.");
+  bool yuv422   = opt.Boolean("y422",  false,                 "YUV 422 capture.");
+  bool yuv444   = opt.Boolean("y444",  false,                 "YUV 422 capture.");
   IntT frames   = opt.Int(    "f",  0,                     "Number of frames to capture (0 = infinite).");
   StringC iname = opt.String( "",   "@QT", "Input name.");
   StringC oname = opt.String( "",   "@X",                  "Output name.");
@@ -80,9 +82,14 @@ int TheStart(int argc, char **argv)
   // Greyscale capture
   if (grey)
     return process<ByteT>(frames, iname, oname);
-  else
+  else {
     if (yuv422)
       return process<ByteYUV422ValueC>(frames, iname, oname);
+    else {
+      if (yuv444)
+        return process<ByteYUVValueC>(frames, iname, oname);
+    }
+  }
   
   // RGB capture
   return process<ByteRGBValueC>(frames, iname, oname);

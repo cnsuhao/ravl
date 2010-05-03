@@ -1,6 +1,7 @@
 
 #include "Ravl/MacOSX/QTImageIPort.hh"
 #include "Ravl/MacOSX/QTVideoCaptureThread.h"
+#include "Ravl/TypeName.hh"
 
 namespace RavlImageN {
 
@@ -75,10 +76,19 @@ namespace RavlImageN {
       handle = new DPPortQTImageImplFinalC<ByteRGBValueC>(name,buffSize);
       return true;
     }
-    if(pixelType == typeid(ByteT)) {
-      handle = new DPPortQTImageImplFinalC<ByteT>(name,buffSize);
+    if(pixelType == typeid(ByteYUV422ValueC)) {
+      handle = new DPPortQTImageImplFinalC<ByteYUV422ValueC>(name,buffSize);
       return true;
     }
+    if(pixelType == typeid(ByteYUVValueC)) {
+      handle = new DPPortQTImageImplFinalC<ByteYUVValueC>(name,buffSize);
+      return true;
+    }
+    if(pixelType == typeid(UInt16T)) {
+      handle = new DPPortQTImageImplFinalC<UInt16T>(name,buffSize);
+      return true;
+    }
+    std::cerr << "Pixel format '" << RavlN::TypeName(pixelType) << "' not handled by QTVideoCapture. \n";
     return false;
   }
 
