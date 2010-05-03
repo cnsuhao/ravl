@@ -98,8 +98,7 @@ namespace RavlN {
 
   typedef unsigned long int UInt64T;
   //: 64 bit unsigned integer.
-#else
-#ifdef __GNUC__
+#elif defined(__GNUC__)
   __extension__ typedef signed long long int Int64T;
   //: 64 bit signed integer.
   
@@ -118,7 +117,6 @@ namespace RavlN {
   
   typedef unsigned long long int UInt64T;
   //: 64 bit unsigned integer.
-#endif
 #endif
 
   typedef SizeC SizeT;
