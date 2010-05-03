@@ -46,8 +46,10 @@ FULLBUILD_TARGETS += doc
 
 # Use SSE2 instructions where possible
 RESOURCES += USE_SSE2
+RESOURCES += MacOSX
 
 ################################ LIBRARIES ################################
+
 
 #### GTK 2.x ################
 
