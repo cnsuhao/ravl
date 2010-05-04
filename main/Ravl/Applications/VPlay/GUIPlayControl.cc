@@ -105,6 +105,7 @@ namespace RavlGUIN {
   
   
   bool PlayControlBodyC::Rewind() {
+    m_sigInteractive(true, PCB_Rewind);
     Speed(0);
     MutexLockC hold(access);
     if(!pc.IsValid())
@@ -118,10 +119,13 @@ namespace RavlGUIN {
       for(DLIterC<DPPlayControlC> it(pcs);it.IsElm();it.Next())
 	it.Data().ToBeginning();
     }
+    hold.Unlock();
+    m_sigInteractive(false, PCB_Rewind);
     return true;
   }
   
   bool PlayControlBodyC::TheEnd() { 
+    m_sigInteractive(true, PCB_End);
     MutexLockC hold(access);
     if(!pc.IsValid())
       return true;
@@ -130,54 +134,64 @@ namespace RavlGUIN {
     UIntT seekTo = pc.FixedEnd();
     hold.Unlock();
     Pause();  
-    Seek(seekTo); 
+    Seek(seekTo);
+    hold.Unlock();
+    m_sigInteractive(false, PCB_End);
     return true;
   }
   
   bool PlayControlBodyC::Backx2() { 
+    m_sigInteractive(true, PCB_Backx2);
     Speed(-4); 
     Continue();
+    m_sigInteractive(false, PCB_Backx2);
     return true;
   }
   
   bool PlayControlBodyC::Back() { 
+    m_sigInteractive(true, PCB_Back);
     Speed(-1); 
     Continue();
+    m_sigInteractive(false, PCB_Back);
     return true;
   }
   
   bool PlayControlBodyC::JBkw() { 
-    m_sigInteractive(true);
+    m_sigInteractive(true, PCB_JumpBack);
     Jog(-skip);
-    m_sigInteractive(false);
+    m_sigInteractive(false, PCB_JumpBack);
 
     return true;
   }
   
   bool PlayControlBodyC::Stop() {
-    //m_sigInteractive(true);
+    m_sigInteractive(true, PCB_Stop);
     Speed(0);
     Pause();
-    //m_sigInteractive(false);
+    m_sigInteractive(false, PCB_Stop);
     return true;
   }
   
   bool PlayControlBodyC::JFwd() {
-    m_sigInteractive(true);
+    m_sigInteractive(true, PCB_JumpForward);
     Jog(skip);
-    m_sigInteractive(false);
+    m_sigInteractive(false, PCB_JumpForward);
     return true;
   }
   
   bool PlayControlBodyC::Play() { 
+    m_sigInteractive(true, PCB_Play);
     Speed(1);  
     Continue();
+    m_sigInteractive(false, PCB_Play);
     return true;
   }
   
   bool PlayControlBodyC::Playx2() {
+    m_sigInteractive(true, PCB_Playx2);
     Speed(4); 
     Continue();
+    m_sigInteractive(false, PCB_Playx2);
     return true;
   }
   
@@ -276,7 +290,7 @@ namespace RavlGUIN {
 
   bool PlayControlBodyC::CBInteractiveMode(bool & state)
   {
-    m_sigInteractive(state); 
+    m_sigInteractive(state, PCB_Slider);
     return true;
   }
 
@@ -392,7 +406,7 @@ namespace RavlGUIN {
       baseSpeed(1),
       skip(1),
       sigUpdateFrameNo((IntT) 1),
-      m_sigInteractive(false),
+      m_sigInteractive(false, PCB_Stop),
       simpleControls(nsimpleControls),
       extendedControls(nExtendedControls),
       lastUpdateFrameNo((UIntT) -1)
@@ -406,7 +420,7 @@ namespace RavlGUIN {
       baseSpeed(1),
       skip(1),
       sigUpdateFrameNo((IntT) 1),
-      m_sigInteractive(false),
+      m_sigInteractive(false, PCB_Stop),
       simpleControls(nsimpleControls),
       extendedControls(nExtendedControls),
       lastUpdateFrameNo((UIntT) -1)
