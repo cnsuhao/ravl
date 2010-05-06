@@ -139,9 +139,9 @@ namespace RavlN {
   }
   
   //: Convert year to days since 1970
-  int DateC::YearToDaysSince1970(int year)  {
-    int yearx =  year - 1970;
-    int yearl = year - 1;
+  DateC::SecondT DateC::YearToDaysSince1970(int year)  {
+    SecondT yearx =  year - 1970;
+    SecondT yearl = year - 1;
     return (yearx * 365) + (yearl / 4) - (yearl / 100) + (yearl / 400) - 477;
   }
   
@@ -153,10 +153,10 @@ namespace RavlN {
   {
     if(!useLocalTimeZone) {
       //                                    Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov,Dec,x
-      static int daysin[14]           = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
-      static int daysintoyear[14]     = { 0,  0, 31, 59, 90,120,151,181,212,243,273,304,334, 365};
-      static int daysleapin[14]       = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
-      static int daysintoleapyear[14] = { 0,  0, 31, 60, 91,121,152,182,213,244,274,305,335, 366};  
+      static SecondT daysin[14]           = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
+      static SecondT daysintoyear[14]     = { 0,  0, 31, 59, 90,120,151,181,212,243,273,304,334, 365};
+      static SecondT daysleapin[14]       = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
+      static SecondT daysintoleapyear[14] = { 0,  0, 31, 60, 91,121,152,182,213,244,274,305,335, 366};
       sec =  YearToDaysSince1970(year) * 24 * 60 * 60;
       if(month < 1 || month > 12) {
 	cerr << "DateC::DateC(), Illegal month " << month << "\n";

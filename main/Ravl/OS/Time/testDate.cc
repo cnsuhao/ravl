@@ -197,5 +197,10 @@ int CheckTimeMath() {
   RealT dbl = now.Double();
   if((DateC(dbl) - now).Double() > 0.1) return __LINE__;
 
+  DateC tv1,tv2;
+  tv1.SetODBC("2010-04-15 09:09:10.1450190000");
+  tv2.SetODBC("2010-04-15 09:09:10.4650180000");
+  if((const DateC &)tv1 > (const DateC &)tv2) return __LINE__;
+
   return 0;
 }

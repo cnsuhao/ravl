@@ -107,7 +107,7 @@ namespace RavlN {
     static bool IsLeapYear(int year);
     //: Is give year a leap year ?
     
-    static int YearToDaysSince1970(int year);
+    static SecondT YearToDaysSince1970(int year);
     //: Convert year to days since 1970
     
     inline bool IsValid() const
@@ -248,7 +248,7 @@ namespace RavlN {
     void Save(ostream &out) const;
     //: Write to a stream.
     
-    UIntT Hash() const
+    SizeT Hash() const
     { return (sec + usec); }
     //: Generate a hash value.
     
