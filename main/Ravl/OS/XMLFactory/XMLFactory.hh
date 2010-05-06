@@ -45,17 +45,20 @@ namespace RavlN {
   {
   public:
     XMLFactoryNodeC()
-      : m_xmlNode(true)
+      : m_xmlNode(true),
+        m_createComponentCalled(false)
     {}
     //: Default constructor.
 
     explicit XMLFactoryNodeC(const XMLTreeC &xmlNode)
-      : m_xmlNode(xmlNode)
+      : m_xmlNode(xmlNode),
+        m_createComponentCalled(false)
     {}
     //: Constructor.
 
     XMLFactoryNodeC(const XMLTreeC &xmlNode,const XMLFactoryNodeC &parent)
       : m_xmlNode(xmlNode),
+        m_createComponentCalled(false),
         m_parent(&parent)
     {}
     //: Constructor.
@@ -63,6 +66,7 @@ namespace RavlN {
     XMLFactoryNodeC(const XMLTreeC &xmlNode,const XMLFactoryNodeC &parent,const RCWrapAbstractC &component)
       : m_xmlNode(xmlNode),
         m_component(component),
+        m_createComponentCalled(false),
         m_parent(&parent)
     {}
     //: Constructor.
@@ -146,14 +150,18 @@ namespace RavlN {
     //: Has node got a parent ?
 
     bool HasChild(const StringC &name) const
-    { return m_xmlNode.IsElm(name); }
+    { return m_xmlNode.IsElm(name) || m_xmlNode.Data().IsElm(name); }
     //: Test if a child exists.
 
     bool Dump(std::ostream &strm,int level = 0);
     //: Dump node tree in human readable form.
   protected:
 
-    bool GetComponentInternal(const StringC &name,const std::type_info &to,RCWrapAbstractC &handle,bool silentError=false) const;
+    bool GetComponentInternal(const StringC &name,
+                              const std::type_info &to,
+                              RCWrapAbstractC &handle,
+                              bool silentError=false
+                              ) const;
     //: Get named component.
 
     bool UseComponentInternal(XMLFactoryC &factory,
@@ -174,6 +182,7 @@ namespace RavlN {
     RWLockC m_access;
     XMLTreeC m_xmlNode;
     RCWrapAbstractC m_component;
+    bool m_createComponentCalled;
     HashC<StringC,RefT> m_children;
 
     CBRefT m_parent; // Parent node.
@@ -324,7 +333,7 @@ namespace RavlN {
     //: Access node
 
   protected:
-    XMLFactoryNodeC::RefT m_iNode;
+    mutable XMLFactoryNodeC::RefT m_iNode;
     RCAbstractC m_factory;
   };
 
