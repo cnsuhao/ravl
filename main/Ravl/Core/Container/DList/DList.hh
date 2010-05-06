@@ -422,12 +422,8 @@ namespace RavlN {
     // The default is to use the "<" operator; this creates a list sorted in
     // <i>ascending</i> order.<br>
     // Where a comparison operator for DataT dosn not exist, you must provide
-    // your own in place of the default argument. <br>
-    // Example: a user-supplied function to sort a list of RealT values in
-    // <i>descending</i> order would look like this:
-    // <pre>  static bool RealGrEq(RealT &f1, RealT &f2)
-    //  { return f1.Data2() >= f2.Data2(); }</pre> which is called as:
-    // <pre>  list.MergeSort(RealGrEq) </pre>
+    // your own in place of the default argument.
+    // See <a href="../../Examples/exDList.cc.html">example</a> for how to write your own.
 
     bool operator==(const DListC<DataT> &oth) const;
     //: Are lists identical ?
