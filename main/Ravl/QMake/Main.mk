@@ -325,7 +325,7 @@ LINKTESTLIBS := $(EXELIB)
 # Restore EXELIB to be library libs
 EXELIB := $(LIBLIBS)
 
-.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_wrap.cc %.m %.mm
+.PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm
 
 ############################
 # Misc setup
@@ -400,7 +400,7 @@ ifeq ($(SUPPORT_OK),yes)
     $(patsubst %.mm,$(INST_OBJS)/%$(OBJEXT), \
     $(patsubst %.y,$(INST_OBJS)/%.tab$(OBJEXT), \
     $(patsubst %.l,$(INST_OBJS)/%.yy$(OBJEXT), \
-    $(patsubst %.i,$(INST_OBJS)/%_wrap$(OBJEXT), \
+    $(patsubst %.i,$(INST_OBJS)/%_$(ARC)_wrap$(OBJEXT), \
     $(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(SOURCES))))))))))
  TARG_OBJS=$(patsubst %$(CXXAUXEXT),$(INST_OBJS)/%$(OBJEXT),$(TARG_BASEOBJS))
  TARG_HDRS:=$(patsubst %,$(INST_HEADER)/%,$(HEADERS))
@@ -431,7 +431,7 @@ ifndef NOEXEBUILD
 	       $(patsubst %.S,$(INST_DEPEND)/%.S.d, \
 	       $(patsubst %.y,$(INST_DEPEND)/%.tab.d, \
 	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
-	       $(patsubst %.i,$(INST_DEPEND)/%_wrap.d, \
+	       $(patsubst %.i,$(INST_DEPEND)/%_$(ARC)_wrap.d, \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) \
                $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
@@ -452,7 +452,7 @@ else
 	       $(patsubst %.cu,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.S,$(INST_DEPEND)/%.S.d, \
 	       $(patsubst %.y,$(INST_DEPEND)/%.tab.d, \
-	       $(patsubst %.i,$(INST_DEPEND)/%_wrap.d, \
+	       $(patsubst %.i,$(INST_DEPEND)/%_$(ARC)_wrap.d, \
 	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) $(INST_DEPEND)/.dir
@@ -914,11 +914,11 @@ ifeq ($(SUPPORT_OK),yes)
 endif
 endif
 
-%_wrap$(CXXEXT) %.py : %.i *.i
+%_$(ARC)_wrap$(CXXEXT) %.py : %.i *.i
 ifndef SWIG_DO_NOT_GENERATE
 ifeq ($(SUPPORT_OK),yes)
 	$(SHOWIT)echo "--- swig" $< ; \
-	$(SWIG) -c++ $(SWIGOPTS) -D$(ARC) $(INCLUDES) -o $*_wrap$(CXXEXT) $<
+	$(SWIG) -c++ $(SWIGOPTS) -D$(ARC) $(INCLUDES) -o $*_$(ARC)_wrap$(CXXEXT) $<
 endif
 endif
 
