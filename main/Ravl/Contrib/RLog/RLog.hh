@@ -46,13 +46,15 @@
 namespace RavlN {
 
   //! Initialise rlog to filename (filename can be stderr)
-  bool RLogInit(int argc, char **argv, const char *filename, bool verbose);
+  bool RLogInit(int argc, char **argv, const char *filename, bool verbose,
+                bool showDate = false, bool showThreadId = false);
 
   //! Initialise rlog to filename (filename can be stderr)
-  bool RLogInit(const StringC &filename, const StringC &verbose, const StringC &logLevel);
+  bool RLogInit(const StringC &filename, const StringC &verbose, const StringC &logLevel,
+                bool showDate = false, bool showThreadId = false);
 
   //! Initialise rlog to standard out
-  bool RLogInit(bool verbose = false);
+  bool RLogInit(bool verbose = false, bool showDate = false, bool showThreadId = false);
 
   //! Subscribe to a model.
   bool RLogSubscribe(const char *moduleName,const char *path = "",rlog::LogLevel level = rlog::Log_Undef);

@@ -10,6 +10,7 @@
 #include "Ravl/RLog.hh"
 #include "Ravl/Hash.hh"
 #include "Ravl/OS/SysLog.hh"
+#include <Ravl/StdioDateNode.hh>
 
 #include <rlog/RLogChannel.h>
 #include <rlog/StdioNode.h>
@@ -50,13 +51,15 @@ namespace RavlN {
   static rlog::StdioNode *g_rlogNode = 0;
   
   //! Initialise rlog to filename (filename can be stderr)
-  bool RLogInit(const StringC &filename, const StringC &verbose, const StringC &logLevel)
+  bool RLogInit(const StringC &filename, const StringC &verbose, const StringC &logLevel,
+                bool showDate, bool showThreadId)
   {    
-    return RLogInit(0, NULL, filename.chars(), verbose == "true") &&
+    return RLogInit(0, NULL, filename.chars(), verbose == "true", showDate, showThreadId) &&
            RLogSubscribeL(logLevel.chars());    
   }      
   
-  bool RLogInit(int argc, char **argv, const char *filename, bool verbose) 
+  bool RLogInit(int argc, char **argv, const char *filename, bool verbose,
+                bool showDate, bool showThreadId)
   {
     //std::cerr << "InitRLog(), Called. \n";
     if(g_RLogInitDone)
@@ -76,7 +79,7 @@ namespace RavlN {
     }
     else 
     {
-      //FIXME need mecanism of closing the log file
+      //FIXME need mechanism of closing the log file
 #ifdef WIN32	
 	  fd = _open(filename, _O_WRONLY | _O_CREAT | _O_APPEND, _S_IREAD | _S_IWRITE);
 #else
@@ -86,35 +89,43 @@ namespace RavlN {
       if(fd == -1) 
       {
         fprintf(stderr, "[Error] Failed to open log-file %s\n", filename);
-	return false;
+        return false;
       }
     }
     int args = argc;
     rlog::RLogInit(args, argv);
-															  
-    g_rlogNode = new rlog::StdioNode(fd,
-                                     rlog::StdioNode::OutputColor | 
-                                     (verbose ? rlog::StdioNode::OutputContext : 0) | 
-                                     rlog::StdioNode::OutputChannel);
-    
+
+    int flags = rlog::StdioNode::OutputColor |
+                (verbose ? rlog::StdioNode::OutputContext : 0) |
+                rlog::StdioNode::OutputChannel |
+                (showThreadId ? rlog::StdioNode::OutputThreadId : 0);
+
+    if(showDate) {
+      g_rlogNode = new rlog::StdioDateNode(fd, flags);
+    } else {
+      g_rlogNode = new rlog::StdioNode(fd, flags);
+    }
     if(verbose)
       rInfo("RLog initialised. ");
     return true;
   }
   
-  bool RLogInit(bool verbose) {
+  bool RLogInit(bool verbose, bool showDate, bool showThreadId) {
     //std::cerr << "InitRLog(), Called. \n";
     if(g_RLogInitDone)
       return true;
     g_RLogInitDone = true;
     
     SysLogRedirect(&SysLog2RLog);
-    g_rlogNode = new rlog::StdioNode(2,
-                                     rlog::StdioNode::OutputColor | 
-                                     (verbose ? rlog::StdioNode::OutputContext : 0) | 
-                                     rlog::StdioNode::OutputChannel
-                                     );
-    
+    int flags = rlog::StdioNode::OutputColor |
+                (verbose ? rlog::StdioNode::OutputContext : 0) |
+                rlog::StdioNode::OutputChannel |
+                (showThreadId ? rlog::StdioNode::OutputThreadId : 0);
+    if(showDate) {
+      g_rlogNode = new rlog::StdioDateNode(2, flags);
+    } else {
+      g_rlogNode = new rlog::StdioNode(2, flags);
+    }
     
     //rlogStdio->subscribeTo(RLOG_CHANNEL(""));
     //rlogStdio->subscribeTo(RLOG_CHANNEL_IMPL(Ravl,"",rlog::Log_Undef));    
