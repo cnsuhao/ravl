@@ -33,6 +33,9 @@ namespace RavlGUIN {
     MenuItemBodyC(const StringC &lab);
     //: Constructor.
     
+    MenuItemBodyC(const XMLFactoryContextC &factory);
+    //: Constructor.
+
     virtual bool Create();
     //: Create the widget.
     
@@ -72,7 +75,12 @@ namespace RavlGUIN {
       : WidgetC(bod)
     {}
     //: Body constructor
-    
+
+    MenuItemC(const XMLFactoryContextC &factory)
+      : WidgetC(*new MenuItemBodyC(factory))
+    {}
+    //: Body constructor
+
   protected:
     MenuItemBodyC &Body() 
     { return static_cast<MenuItemBodyC &>(WidgetC::Body()); }

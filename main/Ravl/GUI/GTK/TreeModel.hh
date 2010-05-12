@@ -88,8 +88,7 @@ namespace RavlGUIN {
     TreeModelIterC Copy();
     //: Create a copy of the iterator.
 
-    bool IsElm() const
-    { return isElm; }
+    bool IsElm() const;
     //: Test if we think we're on a valid element.
 
   protected:
@@ -174,6 +173,7 @@ namespace RavlGUIN {
     bool IsElm() const
     { if(!IsValid()) return false; return Body().IsElm(); }
     //: Check if its a valid entry.
+
   };
 
   inline bool operator<(const TreeModelIterC& lhs, const TreeModelIterC& rhs)

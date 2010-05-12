@@ -155,6 +155,9 @@ namespace RavlGUIN {
     return TreeModelIterC(model,&treeIter);
   }
 
+  bool TreeModelIterBodyC::IsElm() const
+  { return isElm; }
+  //: Test if we think we're on a valid element.
 
   //:----------------------------------------------------------------------------
 
