@@ -39,7 +39,10 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Sets time to 0.
-    
+
+    static DateC InvalidTime();
+    //: Get an invalid time.
+
     static DateC NowUTC();
     //: Get the current time in Coordinated Universal Time  (UTC)
     

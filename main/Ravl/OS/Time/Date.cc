@@ -237,6 +237,14 @@ namespace RavlN {
 #endif
   }
   
+  //: Get an invalid time.
+
+  DateC DateC::InvalidTime() {
+    DateC ret;
+    ret.SetInvalid();
+    return ret;
+  }
+
   //: Get the current time in Coordinated Universal Time  (UTC)
   
   DateC DateC::NowUTC() {
