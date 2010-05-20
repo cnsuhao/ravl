@@ -23,91 +23,51 @@
 namespace RavlGUIN
 {
 
-  static void CBFileChooserResponse(GtkWidget *widget, gint response, FileChooserBodyC *fileChooserBodyPtr)
-  {
-    ONDEBUG(cerr << "CBFileChooserResponse response(" << response << ")" << endl);
-    RavlAssert(fileChooserBodyPtr);
-
-    if (fileChooserBodyPtr->HideOnResponse())
-      fileChooserBodyPtr->GUIHide();
-
-    bool fileSelected = false;
-    StringC filename;
-    switch (response)
-    {
-      case GTK_RESPONSE_OK:
-      case GTK_RESPONSE_ACCEPT:
-      {
-        char *filenamePtr = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
-        if (filenamePtr)
-        {
-          fileSelected = true;
-          filename = filenamePtr;
-        }
-        break;
-      }
-      case GTK_RESPONSE_CANCEL:
-      case GTK_RESPONSE_DELETE_EVENT:
-      default:
-        break;
-    }
-
-    if (fileSelected || fileChooserBodyPtr->SendEmptyStringOnCancel())
-      fileChooserBodyPtr->SigSelected()(filename);
-  }
-
   FileChooserBodyC::FileChooserBodyC(const FileChooserActionT action,
                                      const StringC &title,
-                                     const StringC &filename,
-                                     const bool confirmOverwrite,
-                                     const bool hideOnResponse,
-                                     const bool sendEmptyStringOnCancel)
+                                     const StringC &defaultFilename,
+                                     const bool confirmOverwrite)
   : m_title(title),
     m_action(action),
-    m_filename(filename),
+    m_defaultFilename(defaultFilename),
+    m_filename(defaultFilename),
     m_confirmOverwrite(confirmOverwrite),
-    m_hideOnResponse(hideOnResponse),
-    m_sendEmptyStringOnCancel(sendEmptyStringOnCancel),
     m_sigSelected(StringC(""))
   {}
   
   bool FileChooserBodyC::Create()
   {
-    ONDEBUG(cerr << "FileChooserBodyC::Create" << endl);
-    
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    StringC actionButton = GTK_STOCK_OPEN;
+    return CommonCreate();
+  }
 
-    switch (m_action)
+  bool FileChooserBodyC::Create(GtkWidget *newWidget)
+  {
+    return CommonCreate(newWidget);
+  }
+
+  bool FileChooserBodyC::CommonCreate(GtkWidget *newWidget)
+  {
+    ONDEBUG(cerr << "FileChooserBodyC::CommonCreate" << endl);
+
+    if (newWidget)
     {
-      case FCA_Save:
-        action = GTK_FILE_CHOOSER_ACTION_SAVE;
-        actionButton = GTK_STOCK_SAVE;
-        break;
-      case FCA_SelectFolder:
-        action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
-        break;
-      case FCA_CreateFolder:
-        action = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER;
-        actionButton = GTK_STOCK_SAVE;
-        break;
-      case FCA_Open:
-      default:
-        break;
+      widget = newWidget;
+
+      GtkFileChooserAction action = gtk_file_chooser_get_action(GTK_FILE_CHOOSER(widget));
+      switch (action)
+      {
+        case GTK_FILE_CHOOSER_ACTION_OPEN: m_action = FCA_Open; break;
+        case GTK_FILE_CHOOSER_ACTION_SAVE: m_action = FCA_Save; break;
+        case GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER: m_action = FCA_SelectFolder; break;
+        case GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER: m_action = FCA_CreateFolder; break;
+        default:
+          RavlAssertMsg(false, "Unknown file chooser action.");
+      }
+
+      m_confirmOverwrite = gtk_file_chooser_get_do_overwrite_confirmation(GTK_FILE_CHOOSER(widget));
     }
 
-    widget = gtk_file_chooser_dialog_new(m_title,
-                                         NULL,
-                                         action,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         actionButton.chars(), GTK_RESPONSE_ACCEPT,
-                                         NULL);
-
-    gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(widget), true);
-
-    GUISetConfirmOverwrite(m_confirmOverwrite);
-
-    if (m_filename != "")
+    if (m_defaultFilename != "")
       DoSetFilename();
 
     if (m_filterList.Size() > 0)
@@ -116,40 +76,15 @@ namespace RavlGUIN
 
     if (m_filterSetPatterns.Size() > 0)
       DoSetFilter();
-
-    ConnectSignals(); 
     
-    gtk_signal_connect(GTK_OBJECT(GTK_DIALOG(widget)),
-                       "response",
-                       (GtkSignalFunc)CBFileChooserResponse,
-                       this);
+    ConnectSignals();
 
     return true;
   }
 
-  bool FileChooserBodyC::GUISetTitle(const StringC &title)
+  bool FileChooserBodyC::GUISetFilename(const StringC &defaultFilename)
   {
-    m_title = title;
-    
-    if (widget)
-    {
-      RavlAssertMsg(Manager.IsGUIThread(), "Incorrect thread. This method may only be called on the GUI thread.");
-
-      gtk_window_set_title(GTK_WINDOW(widget), m_title);
-    }
-    
-    return true;
-  }
-
-  bool FileChooserBodyC::SetTitle(const StringC &title)
-  {
-    Manager.Queue(Trigger(FileChooserC(*this), &FileChooserC::GUISetTitle, title));
-    return true;
-  }
-
-  bool FileChooserBodyC::GUISetFilename(const StringC &filename)
-  {
-    m_filename = filename;
+    m_defaultFilename = defaultFilename;
 
     if (widget)
     {
@@ -159,9 +94,9 @@ namespace RavlGUIN
     return true;
   }
 
-  bool FileChooserBodyC::SetFilename(const StringC &filename)
+  bool FileChooserBodyC::SetFilename(const StringC &defaultFilename)
   {
-    Manager.Queue(Trigger(FileChooserC(*this), &FileChooserC::GUISetFilename, filename));
+    Manager.Queue(Trigger(FileChooserC(*this), &FileChooserC::GUISetFilename, defaultFilename));
     return true;
   }
 
@@ -209,6 +144,10 @@ namespace RavlGUIN
     if (patterns.Size() == 0)
       return true;
 
+    for (DLIterC<Tuple2C<StringC, DListC<StringC> > > filterListIter(m_filterList); filterListIter; filterListIter++)
+      if (name == filterListIter->Data1())
+        return true;
+
     m_filterList.InsLast(Tuple2C<StringC, DListC<StringC> >(name, patterns));
 
     if (widget)
@@ -236,12 +175,23 @@ namespace RavlGUIN
     return true;
   }
 
+  bool FileChooserBodyC::CBUpdateFilename()
+  {
+    RavlAssertMsg(Manager.IsGUIThread(), "Incorrect thread. This method may only be called on the GUI thread.");
+    RavlAssert(widget);
+
+    m_filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
+    ONDEBUG(cerr << "FileChooserBodyC::CBUpdateFilename filename(" << m_filename << ")" << endl);
+
+    return true;
+  }
+
   bool FileChooserBodyC::DoSetFilename()
   {
     RavlAssertMsg(Manager.IsGUIThread(), "Incorrect thread. This method may only be called on the GUI thread.");
     RavlAssert(widget);
 
-    FilenameC filenameObject(m_filename);
+    FilenameC filenameObject(m_defaultFilename);
     if (filenameObject.Exists())
     {
       gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(widget), filenameObject);
@@ -252,6 +202,8 @@ namespace RavlGUIN
       if (m_action == FCA_Save || m_action == FCA_CreateFolder)
         gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(widget), filenameObject.NameComponent());
     }
+
+    CBUpdateFilename();
     
     return true;
   }
@@ -306,15 +258,41 @@ namespace RavlGUIN
     RavlAssertMsg(Manager.IsGUIThread(), "Incorrect thread. This method may only be called on the GUI thread.");
     RavlAssert(widget);
 
-    GtkFileFilter *filter = gtk_file_filter_new();
-    gtk_file_filter_set_name(filter, name);
-    for (DLIterC<StringC> patternIter(patterns); patternIter; patternIter++)
+    bool filterFound = false;
+    GSList *listedFilters = gtk_file_chooser_list_filters(GTK_FILE_CHOOSER(widget));
+    if (listedFilters)
     {
-      ONDEBUG(cerr << "FileChooserBodyC::GUIAddFilter name(" << name << ") adding pattern(" << *patternIter << ")" << endl);
-      gtk_file_filter_add_pattern(filter, *patternIter);
+      GSList *listedFilterIter = listedFilters;
+      while (listedFilterIter)
+      {
+        GtkFileFilter *filter = GTK_FILE_FILTER(listedFilterIter->data);
+        const char *filterName = gtk_file_filter_get_name(filter);
+        ONDEBUG(cerr << "FileChooserBodyC::DoAddFilter name(" << m_filterSetName << ") checking name(" << filterName << ")" << endl);
+        if (filterName && name == filterName)
+        {
+          ONDEBUG(cerr << "FileChooserBodyC::DoAddFilter name(" << m_filterSetName << ") found name(" << filterName << ")" << endl);
+          filterFound = true;
+          break;
+        }
+
+        listedFilterIter = listedFilterIter->next;
+      }
+
+      g_slist_free(listedFilters);
     }
 
-    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(widget), filter);
+    if (!filterFound)
+    {
+      GtkFileFilter *filter = gtk_file_filter_new();
+      gtk_file_filter_set_name(filter, name);
+      for (DLIterC<StringC> patternIter(patterns); patternIter; patternIter++)
+      {
+        ONDEBUG(cerr << "FileChooserBodyC::GUIAddFilter name(" << name << ") adding pattern(" << *patternIter << ")" << endl);
+        gtk_file_filter_add_pattern(filter, *patternIter);
+      }
+
+      gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(widget), filter);
+    }
 
     return true;
   }

@@ -31,8 +31,6 @@ namespace RavlGUIN
     FCA_CreateFolder // Select or create a folder.
   };
 
-  class FileChooserC;
-
   //! userlevel=Develop
   //: File chooser.
   
@@ -42,55 +40,41 @@ namespace RavlGUIN
   public:
     FileChooserBodyC(const FileChooserActionT action,
                      const StringC &title,
-                     const StringC &filename,
-                     const bool confirmOverwrite,
-                     const bool hideOnResponse,
-                     const bool sendEmptyStringOnCancel);
+                     const StringC &defaultFilename,
+                     const bool confirmOverwrite);
     //: Ctor.
     //!param: action - The dialog mode: open file, save file, open folder or save to folder.
     //!param: title - The dialog title.
-    //!param: filename - When opening, select the specified file or folder. When saving, suggest the specified file or folder.
+    //!param: defaultFilename - When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     //!param: confirmOverwrite - Enable or disable the default overwrite confirmation dialog.
-    //!param: hideOnResponse - If enabled, the dialog will disappear when one of the dialog buttons is clicked.
-    //!param: sendEmptyStringOnCancel - If enabled, a signal containing an empty string is emitted if cancel is clicked or the dialog is closed.
 
     virtual bool Create();
 
-    bool GUISetTitle(const StringC &title);
+    virtual bool Create(GtkWidget *newWidget);
+
+    virtual bool GUISetTitle(const StringC &title) = 0;
     //: Set the dialog title.
 
     bool SetTitle(const StringC &title);
     //: Set the dialog title.
 
-    bool GUISetFilename(const StringC &filename);
+    bool GUISetFilename(const StringC &defaultFilename);
     //: When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     // NOTE: This will reset any added or set file filters (as of GTK 2.18.6).
 
-    bool SetFilename(const StringC &filename);
+    bool SetFilename(const StringC &defaultFilename);
     //: When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     // NOTE: This will reset any added or set file filters (as of GTK 2.18.6).
+
+    StringC Filename() const
+    { return m_filename; }
+    //: Get the selected filename.
 
     bool GUISetConfirmOverwrite(const bool confirmOverwrite);
     //: Enable or disable the default overwrite confirmation dialog.
 
     bool SetConfirmOverwrite(const bool confirmOverwrite);
     //: Enable or disable the default overwrite confirmation dialog.
-
-    void SetHideOnResponse(const bool hideOnResponse)
-    { m_hideOnResponse = hideOnResponse; }
-    //: If enabled, the dialog will disappear when one of the dialog buttons is clicked.
-
-    bool HideOnResponse() const
-    { return m_hideOnResponse; }
-    //: Will the dialog will disappear when one of the dialog buttons is clicked?
-
-    void SetSendEmptyStringOnCancel(const bool sendEmptyStringOnCancel)
-    { m_sendEmptyStringOnCancel = sendEmptyStringOnCancel; }
-    //: If enabled, a signal containing an empty string is emitted if cancel is clicked or the dialog is closed.
-
-    bool SendEmptyStringOnCancel() const
-    { return m_sendEmptyStringOnCancel; }
-    //: Will a signal containing an empty string be emitted if cancel is clicked or the dialog is closed?
 
     bool GUISetFilter(const StringC &name, const DListC<StringC> patterns);
     //: Set the currently selected filter.
@@ -118,28 +102,30 @@ namespace RavlGUIN
     { return m_sigSelected; }
     //: Signal emitted when a file or folder is selected. If SendEmptyStringOnCancel is enabled, an empty string is emitted if cancel is clicked or the dialog is closed.
 
+    bool CBUpdateFilename();
+    //: Called back to inform the wrapper the widget filename selection has been changed.
+
   protected:
+    bool CommonCreate(GtkWidget *newWidget = NULL);
+    
     bool DoSetFilename();
 
     bool DoSetFilter();
 
     bool DoAddFilter(const StringC &name, const DListC<StringC> patterns);
-    
+
     virtual void Destroy();
-    
+
     StringC m_title;
     FileChooserActionT m_action;
+    StringC m_defaultFilename;
     StringC m_filename;
     bool m_confirmOverwrite;
-    bool m_hideOnResponse;
-    bool m_sendEmptyStringOnCancel;
     StringC m_filterSetName;
     DListC<StringC> m_filterSetPatterns;
     DListC<Tuple2C<StringC, DListC<StringC> > > m_filterList;
 
     Signal1C<StringC> m_sigSelected;
-    
-    friend class FileChooserC;
   };
   
   //! userlevel=Normal
@@ -149,27 +135,10 @@ namespace RavlGUIN
   : public WidgetC
   {
   public:
-    FileChooserC(bool)
-    : WidgetC(*new FileChooserBodyC(FCA_Open, "File Chooser", "", true, true, true))
+    FileChooserC()
     {}
     //: Ctor.
 
-    FileChooserC(const FileChooserActionT action = FCA_Open,
-                 const StringC &title = "File Chooser",
-                 const StringC &filename = "",
-                 const bool confirmOverwrite = true,
-                 const bool hideOnResponse = true,
-                 const bool sendEmptyStringOnCancel = true)
-    : WidgetC(*new FileChooserBodyC(action, title, filename, confirmOverwrite, hideOnResponse, sendEmptyStringOnCancel))
-    {}
-    //: Ctor.
-    //!param: action - The dialog mode: open file, save file, open folder or save to folder.
-    //!param: title - The dialog title.
-    //!param: filename - When opening, select the specified file or folder. When saving, suggest the specified file or folder.
-    //!param: confirmOverwrite - Enable or disable the default overwrite confirmation dialog.
-    //!param: hideOnResponse - If enabled, the dialog will disappear when one of the dialog buttons is clicked.
-    //!param: sendEmptyStringOnCancel - If enabled, a signal containing an empty string is emitted if cancel is clicked or the dialog is closed.
-    
     FileChooserC(FileChooserBodyC &body)
     : WidgetC(body)
     {}
@@ -183,13 +152,17 @@ namespace RavlGUIN
     { return Body().SetTitle(title); }
     //: Set the dialog title.
 
-    bool GUISetFilename(const StringC &filename)
-    { return Body().GUISetFilename(filename); }
+    StringC Filename() const
+    { return Body().Filename(); }
+    //: Get the selected filename.
+
+    bool GUISetFilename(const StringC &defaultFilename)
+    { return Body().GUISetFilename(defaultFilename); }
     //: When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     // NOTE: This will reset any added or set file filters (as of GTK 2.18.6).
 
-    bool SetFilename(const StringC &filename)
-    { return Body().SetFilename(filename); }
+    bool SetFilename(const StringC &defaultFilename)
+    { return Body().SetFilename(defaultFilename); }
     //: When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     // NOTE: This will reset any added or set file filters (as of GTK 2.18.6).
 
@@ -200,22 +173,6 @@ namespace RavlGUIN
     bool SetConfirmOverwrite(const bool confirmOverwrite)
     { return Body().SetConfirmOverwrite(confirmOverwrite); }
     //: Enable or disable the default overwrite confirmation dialog.
-
-    void SetHideOnResponse(const bool hideOnResponse)
-    { Body().SetHideOnResponse(hideOnResponse); }
-    //: If enabled, the dialog will disappear when one of the dialog buttons is clicked.
-
-    bool HideOnResponse() const
-    { return Body().HideOnResponse(); }
-    //: Will the dialog will disappear when one of the dialog buttons is clicked?
-
-    void SetSendEmptyStringOnCancel(const bool sendEmptyStringOnCancel)
-    { Body().SetSendEmptyStringOnCancel(sendEmptyStringOnCancel); }
-    //: If enabled, a signal containing an empty string is emitted if cancel is clicked or the dialog is closed.
-
-    bool SendEmptyStringOnCancel() const
-    { return Body().SendEmptyStringOnCancel(); }
-    //: Will a signal containing an empty string be emitted if cancel is clicked or the dialog is closed?
 
     bool GUISetFilter(const StringC &name, const DListC<StringC> patterns)
     { return Body().GUISetFilter(name, patterns); }
