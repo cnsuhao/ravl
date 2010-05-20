@@ -10,7 +10,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/GUI/Menu.hh"
-#include "Ravl/GUI/FileChooser.hh"
+#include "Ravl/GUI/FileChooserDialog.hh"
+#include "Ravl/GUI/FileChooserButton.hh"
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/GUI/LBox.hh"
 #include "Ravl/GUI/Window.hh"
@@ -19,12 +20,21 @@
 using namespace RavlN;
 using namespace RavlGUIN;
 
-bool FileChooserResponse(StringC &filename, TextBoxC &textBox)
+bool FileChooserDialogResponse(StringC &filename, TextBoxC &textBox)
 {
   StringC message;
-  message.form("filename(%s)\n", filename.chars());
+  message.form("FileChooserDialogResponse filename(%s)\n", filename.chars());
   textBox.Insert(message);
-  cerr << "FileChooserResponse " << message;
+  cerr << message;
+  return true;
+}
+
+bool FileChooserButtonResponse(StringC &filename, TextBoxC &textBox)
+{
+  StringC message;
+  message.form("FileChooserButtonResponse filename(%s)\n", filename.chars());
+  textBox.Insert(message);
+  cerr << message;
   return true;
 }
 
@@ -42,36 +52,50 @@ int main(int argc, char *argv[])
   
   TextBoxC textBox("", true);
   
-  // Create the file chooser.
-  
-  FileChooserC fileChooser = FileChooserC(FCA_Open, "Test Chooser", "");
-  Connect(fileChooser.SigSelected(), &FileChooserResponse, "", textBox);
+  // Create the file chooser dialog.
+
+  FileChooserDialogC fileChooserDialog = FileChooserDialogC(FCA_Open, "File Chooser Dialog", "");
+  Connect(fileChooserDialog.SigSelected(), &FileChooserDialogResponse, "", textBox);
+
+  // Create the file chooser button.
+
+  FileChooserButtonC fileChooserButton = FileChooserButtonC(FCA_Open, "File Chooser Button", "");
+  Connect(fileChooserButton.SigSelected(), &FileChooserButtonResponse, "", textBox);
+
+  // Add the filters.
 
   DListC<StringC> allList;
   allList.InsLast("*");
-  fileChooser.GUIAddFilter("All files (*)", allList);
+  fileChooserDialog.GUIAddFilter("All files (*)", allList);
 
   DListC<StringC> headerList;
   headerList.InsLast("*.hh");
-  fileChooser.GUIAddFilter("Header files (*.hh)", headerList);
+  fileChooserDialog.GUIAddFilter("Header files (*.hh)", headerList);
 
   DListC<StringC> imageList;
   imageList.InsLast("*.jpg");
   imageList.InsLast("*.png");
   imageList.InsLast("*.bmp");
-  fileChooser.GUIAddFilter("Image files (*.jpg, *.png, *.bmp)", imageList);
-  fileChooser.GUISetFilter("Image files (*.jpg, *.png, *.bmp)", imageList);
+
+  fileChooserDialog.GUIAddFilter("All files (*)", allList);
+  fileChooserDialog.GUIAddFilter("Header files (*.hh)", headerList);
+  fileChooserDialog.GUISetFilter("Header files (*.hh)", headerList);
+
+  fileChooserButton.GUIAddFilter("All files (*)", allList);
+  fileChooserButton.GUIAddFilter("Header files (*.hh)", headerList);
+  fileChooserButton.GUIAddFilter("Image files (*.jpg, *.png, *.bmp)", imageList);
+  fileChooserButton.GUISetFilter("Image files (*.jpg, *.png, *.bmp)", imageList);
 
   // Create the menubar.
   
   MenuBarC menuBar(MenuC("File", 
-                         MenuItemShow("Open", fileChooser) +
+                         MenuItemShow("Open", fileChooserDialog) +
                          MenuItem("Quit", DoQuit)));
   
   // Create a window with a menu bar and textbox.
   
-  WindowC win(100, 100, "FileChooserC Example");
-  win.Add(VBox(menuBar + textBox));
+  WindowC win(100, 100, "FileChooser Examples");
+  win.Add(VBox(menuBar + textBox + fileChooserButton));
   win.Show();
   
   // Start the GUI.
