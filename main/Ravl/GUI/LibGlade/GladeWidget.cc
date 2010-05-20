@@ -49,7 +49,7 @@ namespace RavlGUIN {
     : name(widgetName),
       customWidget(aCustomWidget)
   {
-    ONDEBUG(cerr << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ")" << endl);
+    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ")" << endl);
   }
   
   GladeWidgetBodyC::GladeWidgetBodyC(const XMLFactoryContextC &factory)
@@ -61,7 +61,12 @@ namespace RavlGUIN {
     if(!factory.UseComponent("GladeXML",xml,false,typeid(GladeXMLC))) {
       SysLog(SYSLOG_ERR) << "Failed to find glade xml file. \n";
     }
-
+    if(!m_widgetPrefix.IsEmpty() && m_widgetPrefix.lastchar() != '.')
+      m_widgetPrefix += ".";
+    if(customWidget) {
+      xml = GladeXMLC(xml.Filename(),name,xml.ModuleName());
+    }
+    ONDEBUG(cerr << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ", prefix = " << prefix << ")" << endl);
     for(RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children());it;it++) {
       if(it->Name() == "GladeXML" || it->AttributeString("typename","").IsEmpty())
         continue;
