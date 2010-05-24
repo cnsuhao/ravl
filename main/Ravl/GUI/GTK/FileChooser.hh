@@ -19,6 +19,7 @@
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/Threads/Signal3.hh"
 #include <gtk/gtk.h>
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlGUIN
 {
@@ -47,6 +48,9 @@ namespace RavlGUIN
     //!param: title - The dialog title.
     //!param: defaultFilename - When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     //!param: confirmOverwrite - Enable or disable the default overwrite confirmation dialog.
+
+    FileChooserBodyC(const XMLFactoryContextC &factory);
+    //: Ctor.
 
     virtual bool Create();
 

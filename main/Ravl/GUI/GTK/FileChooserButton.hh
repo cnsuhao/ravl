@@ -36,6 +36,9 @@ namespace RavlGUIN
     //!param: defaultFilename - When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     //!param: confirmOverwrite - Enable or disable the default overwrite confirmation dialog.
 
+    FileChooserButtonBodyC(const XMLFactoryContextC &factory);
+    //: Ctor.
+
     virtual bool Create();
 
     virtual bool Create(GtkWidget *newWidget);
@@ -75,6 +78,11 @@ namespace RavlGUIN
     //!param: defaultFilename - When opening, select the specified file or folder. When saving, suggest the specified file or folder.
     //!param: confirmOverwrite - Enable or disable the default overwrite confirmation dialog.
     
+    FileChooserButtonC(const XMLFactoryContextC &factory)
+    : FileChooserC(*new FileChooserButtonBodyC(factory))
+    {}
+    //: Ctor.
+
     FileChooserButtonC(FileChooserButtonBodyC &body)
     : FileChooserC(body)
     {}

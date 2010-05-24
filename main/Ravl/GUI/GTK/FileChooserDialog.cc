@@ -11,6 +11,7 @@
 
 #include "Ravl/GUI/FileChooserDialog.hh"
 #include "Ravl/GUI/Manager.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -64,6 +65,12 @@ namespace RavlGUIN
     m_sendEmptyStringOnCancel(sendEmptyStringOnCancel)
   {}
 
+  FileChooserDialogBodyC::FileChooserDialogBodyC(const XMLFactoryContextC &factory)
+  : FileChooserBodyC(factory),
+    m_hideOnResponse(factory.AttributeBool("hideOnResponse", true)),
+    m_sendEmptyStringOnCancel(factory.AttributeBool("sendEmptyStringOnCancel", false))
+  {}
+
   bool FileChooserDialogBodyC::Create()
   {
     return CommonCreate();
@@ -76,7 +83,7 @@ namespace RavlGUIN
 
   bool FileChooserDialogBodyC::CommonCreate(GtkWidget *newWidget)
   {
-    ONDEBUG(cerr << "FileChooserDialogBodyC::CommonCreate" << endl);
+    ONDEBUG(cerr << "FileChooserDialogBodyC::CommonCreate widget(" << (newWidget ? "Y" : "N") << endl);
 
     if (newWidget)
     {
@@ -142,5 +149,9 @@ namespace RavlGUIN
 
     return true;
   }
+
+  static XMLFactoryRegisterHandleConvertC<FileChooserDialogC, WidgetC> g_registerXMLFactoryFileChooserDialog("RavlGUIN::FileChooserDialogC");
+
+  void LinkFileChooserDialog() {}
 
 }

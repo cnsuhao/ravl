@@ -40,6 +40,9 @@ namespace RavlGUIN
     //!param: hideOnResponse - If enabled, the dialog will disappear when one of the dialog buttons is clicked.
     //!param: sendEmptyStringOnCancel - If enabled, a signal containing an empty string is emitted if cancel is clicked or the dialog is closed.
 
+    FileChooserDialogBodyC(const XMLFactoryContextC &factory);
+    //: Ctor.
+
     virtual bool Create();
 
     virtual bool Create(GtkWidget *newWidget);
@@ -102,6 +105,11 @@ namespace RavlGUIN
     //!param: hideOnResponse - If enabled, the dialog will disappear when one of the dialog buttons is clicked.
     //!param: sendEmptyStringOnCancel - If enabled, a signal containing an empty string is emitted if cancel is clicked or the dialog is closed.
     
+    FileChooserDialogC(const XMLFactoryContextC &factory)
+    : FileChooserC(*new FileChooserDialogBodyC(factory))
+    {}
+    //: Ctor.
+
     FileChooserDialogC(FileChooserDialogBodyC &body)
     : FileChooserC(body)
     {}

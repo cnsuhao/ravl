@@ -35,6 +35,10 @@ namespace RavlGUIN
     m_sigSelected(StringC(""))
   {}
   
+  FileChooserBodyC::FileChooserBodyC(const XMLFactoryContextC &factory)
+  : WidgetBodyC(factory)
+  {}
+
   bool FileChooserBodyC::Create()
   {
     return CommonCreate();

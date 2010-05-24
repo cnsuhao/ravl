@@ -11,6 +11,7 @@
 
 #include "Ravl/GUI/FileChooserButton.hh"
 #include "Ravl/GUI/Manager.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -39,6 +40,10 @@ namespace RavlGUIN
                                                  const StringC &defaultFilename,
                                                  const bool confirmOverwrite)
   : FileChooserBodyC(action, title, defaultFilename, confirmOverwrite)
+  {}
+
+  FileChooserButtonBodyC::FileChooserButtonBodyC(const XMLFactoryContextC &factory)
+  : FileChooserBodyC(factory)
   {}
 
   bool FileChooserButtonBodyC::Create()
@@ -105,5 +110,9 @@ namespace RavlGUIN
 
     return true;
   }
+
+  static XMLFactoryRegisterHandleConvertC<FileChooserButtonC, WidgetC> g_registerXMLFactoryFileChooserButton("RavlGUIN::FileChooserButtonC");
+
+  void LinkFileChooserButton() {}
 
 }
