@@ -36,8 +36,16 @@ namespace RavlGUIN
   {}
   
   FileChooserBodyC::FileChooserBodyC(const XMLFactoryContextC &factory)
-  : WidgetBodyC(factory)
-  {}
+  : WidgetBodyC(factory),
+    m_title("File Chooser"),
+    m_action(FCA_Open),
+    m_defaultFilename(""),
+    m_filename(""),
+    m_confirmOverwrite(true),
+    m_sigSelected(StringC(""))
+  {
+    rThrowBadConfigContextOnFailS(factory, UseComponent("Selection", m_configParameterFilename), "Failed to load filename selector.");
+  }
 
   bool FileChooserBodyC::Create()
   {
@@ -186,6 +194,9 @@ namespace RavlGUIN
 
     m_filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
     ONDEBUG(cerr << "FileChooserBodyC::CBUpdateFilename filename(" << m_filename << ")" << endl);
+
+    if (m_configParameterFilename.IsValid())
+      m_configParameterFilename->SetValue(m_filename);
 
     return true;
   }

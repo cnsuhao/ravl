@@ -48,8 +48,9 @@ namespace RavlGUIN
         break;
     }
 
-    fileChooserDialogBodyPtr->CBUpdateFilename();
-
+    if (fileSelected)
+      fileChooserDialogBodyPtr->CBUpdateFilename();
+    
     if (fileSelected || fileChooserDialogBodyPtr->SendEmptyStringOnCancel())
       fileChooserDialogBodyPtr->SigSelected()(filename);
   }
@@ -83,7 +84,7 @@ namespace RavlGUIN
 
   bool FileChooserDialogBodyC::CommonCreate(GtkWidget *newWidget)
   {
-    ONDEBUG(cerr << "FileChooserDialogBodyC::CommonCreate widget(" << (newWidget ? "Y" : "N") << endl);
+    ONDEBUG(cerr << "FileChooserDialogBodyC::CommonCreate widget(" << (newWidget ? "Y" : "N") << ")" << endl);
 
     if (newWidget)
     {

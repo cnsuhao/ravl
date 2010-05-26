@@ -20,6 +20,7 @@
 #include "Ravl/Threads/Signal3.hh"
 #include <gtk/gtk.h>
 #include "Ravl/XMLFactory.hh"
+#include "Ravl/ConfigParameter.hh"
 
 namespace RavlGUIN
 {
@@ -106,6 +107,10 @@ namespace RavlGUIN
     { return m_sigSelected; }
     //: Signal emitted when a file or folder is selected. If SendEmptyStringOnCancel is enabled, an empty string is emitted if cancel is clicked or the dialog is closed.
 
+    ConfigParameterStringC &ConfigParameterFilename()
+    { return *m_configParameterFilename; }
+    //: Access the selection.
+
     bool CBUpdateFilename();
     //: Called back to inform the wrapper the widget filename selection has been changed.
 
@@ -130,6 +135,8 @@ namespace RavlGUIN
     DListC<Tuple2C<StringC, DListC<StringC> > > m_filterList;
 
     Signal1C<StringC> m_sigSelected;
+
+    ConfigParameterStringC::RefT m_configParameterFilename;
   };
   
   //! userlevel=Normal
@@ -207,6 +214,10 @@ namespace RavlGUIN
     Signal1C<StringC> &SigSelected()
     { return Body().SigSelected(); }
     //: Signal emitted when a file or folder is selected. If SendEmptyStringOnCancel is enabled, an empty string is emitted if cancel is clicked or the dialog is closed.
+
+    ConfigParameterStringC &ConfigParameterFilename()
+    { return Body().ConfigParameterFilename(); }
+    //: Access the selection.
 
   protected:
     FileChooserBodyC &Body()
