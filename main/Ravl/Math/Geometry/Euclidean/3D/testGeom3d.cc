@@ -294,7 +294,7 @@ int testAngles() {
 	e2.Matrix(R2);
       
 	// check they coincide
-	if ((R2-R1).SumOfAbs() > 1E-6)
+	if ((R2-R1).SumOfAbs() > 1E-10)
 	{
 	  cerr << "ERROR: axis angle conversion problem." << endl;
 	  cerr << "Angles: " << Vector3dC(e1) << endl;
