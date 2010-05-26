@@ -4,8 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 
-#NOSHAREDLIBDEPENDS=1
-
 DONOT_SUPPORT=VCPP
 
 REQUIRES=Swig SwigPython

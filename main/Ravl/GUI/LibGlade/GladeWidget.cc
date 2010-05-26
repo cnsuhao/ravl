@@ -66,7 +66,7 @@ namespace RavlGUIN {
     if(customWidget) {
       xml = GladeXMLC(xml.Filename(),name,xml.ModuleName());
     }
-    ONDEBUG(cerr << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ", prefix = " << prefix << ")" << endl);
+    ONDEBUG(cerr << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << name << ", customWidget=" << customWidget << ", prefix = " << m_widgetPrefix << ")" << endl);
     for(RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children());it;it++) {
       if(it->Name() == "GladeXML" || it->AttributeString("typename","").IsEmpty())
         continue;

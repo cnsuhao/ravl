@@ -88,7 +88,7 @@ namespace RavlGUIN
     widget = newWidget;
     gtk_signal_connect(GTK_OBJECT(widget), "activate",
      GTK_SIGNAL_FUNC(RavlGUIN::MenuItemC_response), this);
-    ONDEBUG(cerr << "MenuItemBodyC::Create(), Done. \n");
+    ONDEBUG(cerr << "MenuItemBodyC::Create(widget), " << name.chars() << " Done. \n");
     ConnectSignals();
     return true;
   }

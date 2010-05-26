@@ -11,7 +11,6 @@
 //! lib=RavlGUI
 //! author="Charles Galambos"
 //! date="23/03/1999"
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Graphics.GTK.Layout"
 
 #include "Ravl/GUI/OneChild.hh"
