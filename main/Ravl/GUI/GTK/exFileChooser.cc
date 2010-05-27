@@ -54,12 +54,12 @@ int main(int argc, char *argv[])
   
   // Create the file chooser dialog.
 
-  FileChooserDialogC fileChooserDialog = FileChooserDialogC(FCA_Open, "File Chooser Dialog", "");
+  FileChooserDialogC fileChooserDialog = FileChooserDialogC(FileChooserOpen, "File Chooser Dialog", "");
   Connect(fileChooserDialog.SigSelected(), &FileChooserDialogResponse, "", textBox);
 
   // Create the file chooser button.
 
-  FileChooserButtonC fileChooserButton = FileChooserButtonC(FCA_Open, "File Chooser Button", "");
+  FileChooserButtonC fileChooserButton = FileChooserButtonC(FileChooserOpen, "File Chooser Button", "");
   Connect(fileChooserButton.SigSelected(), &FileChooserButtonResponse, "", textBox);
 
   // Add the filters.

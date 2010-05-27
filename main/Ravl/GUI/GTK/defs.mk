@@ -20,7 +20,7 @@ PACKAGE = Ravl/GUI
 LOCALHEADERS=WidgetDNDInfo.hh
 
 HEADERS = Manager.hh Widget.hh GTKTypes.hh SignalInfo.hh \
- MouseEvent.hh Window.hh Cursor.hh ToolTips.hh CWidget.hh \
+ MouseEvent.hh ScrollEvent.hh Window.hh Cursor.hh ToolTips.hh CWidget.hh \
  Button.hh Pixmap.hh  OneChild.hh PackInfo.hh LBox.hh \
  Menu.hh Label.hh \
  FileSelector.hh FileChooser.hh FileChooserDialog.hh FileChooserButton.hh \
@@ -35,7 +35,7 @@ HEADERS = Manager.hh Widget.hh GTKTypes.hh SignalInfo.hh \
  DebugAssertDialog.hh IconView.hh ComboBox.hh ComboBoxText.hh \
  ComboBoxEntry.hh ComboBoxEntryText.hh TriggerAction.hh
 
-SOURCES = Manager.cc Widget.cc MouseEvent.cc Window.cc \
+SOURCES = Manager.cc Widget.cc MouseEvent.cc ScrollEvent.cc Window.cc \
  Cursor.cc ToolTips.cc CWidget.cc Button.cc Pixmap.cc \
  PackInfo.cc OneChild.cc LBox.cc Menu.cc Label.cc \
  FileSelector.cc FileChooser.cc FileChooserDialog.cc FileChooserButton.cc \

@@ -7,7 +7,6 @@
 #ifndef RAVLGUI_WIDGET_HEADER
 #define RAVLGUI_WIDGET_HEADER 1
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/GUI/GTK/Widget.hh"
 //! lib=RavlGUI
 //! author="Charles Galambos"
@@ -282,6 +281,7 @@ namespace RavlGUIN {
     static int gtkEventDelete(GtkWidget *widget,GdkEvent *event,Signal0C *data);
     static int gtkEventMouseButton(GtkWidget *widget,GdkEvent *event,Signal0C *data);
     static int gtkEventMouseMotion(GtkWidget *widget,GdkEvent *event,Signal0C *data);
+    static int gtkEventScroll(GtkWidget *widget,GdkEvent *event,Signal0C *data);
     static int gtkEventKeyboard(GtkWidget *widget,GdkEvent *event,Signal0C *data);
     static int gtkGeneric(GtkWidget *widget,Signal0C *data);
     static int gtkString(GtkWidget *widget,Signal0C *data);

@@ -32,6 +32,7 @@ namespace RavlGUIN {
     SigTypeEventDelete,
     SigTypeEventMouseButton,
     SigTypeEventMouseMotion,
+    SigTypeEventScroll,
     SigTypeEventKeyboard,
     SigTypeEventFocus,
     SigTypeString,

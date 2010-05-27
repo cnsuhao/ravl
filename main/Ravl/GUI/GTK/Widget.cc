@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ///////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlGUI
 //! file="Ravl/GUI/GTK/Widget.cc"
 
@@ -17,6 +16,7 @@
 #include "Ravl/GUI/SignalInfo.hh"
 #include "Ravl/GUI/ToolTips.hh"
 #include "Ravl/GUI/MouseEvent.hh"
+#include "Ravl/GUI/ScrollEvent.hh"
 #include "Ravl/GUI/DragAndDrop.hh"
 #include "Ravl/CallMethods.hh"
 #include "Ravl/Tuple2.hh"
@@ -71,6 +71,7 @@ namespace RavlGUIN {
 #define GTKSIG_EVENTDELETE (GtkSignalFunc) WidgetBodyC::gtkEventDelete,SigTypeEventDelete
 #define GTKSIG_EVENT_MOUSEBUTTON   (GtkSignalFunc) WidgetBodyC::gtkEventMouseButton,SigTypeEventMouseButton
 #define GTKSIG_EVENT_MOUSEMOTION   (GtkSignalFunc) WidgetBodyC::gtkEventMouseMotion,SigTypeEventMouseMotion
+#define GTKSIG_EVENT_SCROLL   (GtkSignalFunc) WidgetBodyC::gtkEventScroll,SigTypeEventScroll
 #define GTKSIG_EVENT_FOCUS (GtkSignalFunc) WidgetBodyC::gtkEventFocus,SigTypeEventFocus
 #define GTKSIG_STRING   (GtkSignalFunc) WidgetBodyC::gtkString,SigTypeString
 #define GTKSIG_CLISTSEL (GtkSignalFunc) WidgetBodyC::gtkCListSelect,SigTypeCListSel
@@ -105,7 +106,7 @@ namespace RavlGUIN {
       GTKSIG("enter_notify_event"   ,GTKSIG_EVENT   ), // gtkwidget
       GTKSIG("leave_notify_event"   ,GTKSIG_EVENT   ), // gtkwidget
       GTKSIG("configure_event"      ,GTKSIG_EVENT   ), // gtkwidget
-      GTKSIG("scroll_event"         ,GTKSIG_EVENT   ), // gtkwidget
+      GTKSIG("scroll_event"         ,GTKSIG_EVENT_SCROLL), // gtkwidget
       GTKSIG("hide"                 ,GTKSIG_GENERIC ), // gtkwidget
       GTKSIG("show"                 ,GTKSIG_GENERIC ), // gtkwidget
       GTKSIG("map"                  ,GTKSIG_GENERIC ), // gtkwidget
@@ -176,6 +177,15 @@ namespace RavlGUIN {
     Signal1C<MouseEventC> sig(*data);
     RavlAssert(sig.IsValid());
     sig(me);
+    return 0;
+  }
+
+  int WidgetBodyC::gtkEventScroll(GtkWidget *widget,GdkEvent *event,Signal0C *data) {
+    ONDEBUG(cerr << "WidgetBodyC::gtkEventScroll\n");
+    ScrollEventC scrollEvent(reinterpret_cast<GdkEventScroll&>(*event));
+    Signal1C<ScrollEventC> sig(*data);
+    RavlAssert(sig.IsValid());
+    sig(scrollEvent);
     return 0;
   }
 
@@ -575,6 +585,11 @@ namespace RavlGUIN {
                      GDK_POINTER_MOTION_HINT_MASK |
                      GDK_LEAVE_NOTIFY_MASK);
         ret = Signal1C<MouseEventC>(MouseEventC(0,0,0));  break;
+        break;
+      case SigTypeEventScroll:   // Scroll events.
+        if (sN == "scroll_event")
+          AddEventMask(GDK_BUTTON_PRESS_MASK);
+        ret = Signal1C<ScrollEventC>(ScrollEventC(0,0,0));  break;
         break;
       case SigTypeEventFocus: // Focus events
         AddEventMask(GDK_FOCUS_CHANGE_MASK);

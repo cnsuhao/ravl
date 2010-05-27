@@ -85,7 +85,7 @@ namespace RavlGUIN
     //: Ctor.
 
     FileChooserDialogC(bool)
-    : FileChooserC(*new FileChooserDialogBodyC(FCA_Open, "File Chooser", "", true, true, true))
+    : FileChooserC(*new FileChooserDialogBodyC(FileChooserOpen, "File Chooser", "", true, true, true))
     {}
     //: Ctor.
 

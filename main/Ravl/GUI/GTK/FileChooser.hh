@@ -27,10 +27,10 @@ namespace RavlGUIN
 
   enum FileChooserActionT
   {
-    FCA_Open, // Select a file to open.
-    FCA_Save, // Select a file to save.
-    FCA_SelectFolder, // Select a folder.
-    FCA_CreateFolder // Select or create a folder.
+    FileChooserOpen, // Select a file to open.
+    FileChooserSave, // Select a file to save.
+    FileChooserSelectFolder, // Select a folder.
+    FileChooserCreateFolder // Select or create a folder.
   };
 
   //! userlevel=Develop

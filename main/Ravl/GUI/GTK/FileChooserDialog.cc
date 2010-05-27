@@ -98,18 +98,18 @@ namespace RavlGUIN
 
       switch (m_action)
       {
-        case FCA_Save:
+        case FileChooserSave:
           action = GTK_FILE_CHOOSER_ACTION_SAVE;
           actionButton = GTK_STOCK_SAVE;
           break;
-        case FCA_SelectFolder:
+        case FileChooserSelectFolder:
           action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
           break;
-        case FCA_CreateFolder:
+        case FileChooserCreateFolder:
           action = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER;
           actionButton = GTK_STOCK_SAVE;
           break;
-        case FCA_Open:
+        case FileChooserOpen:
         default:
           break;
       }
