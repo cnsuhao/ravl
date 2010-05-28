@@ -413,20 +413,21 @@ namespace RavlGUIN
   
   //: Scroll event
   
-  bool GUIMarkupCanvasBodyC::EventScroll(GdkEvent *event) {
+  bool GUIMarkupCanvasBodyC::EventScroll(ScrollEventC &event) {
     ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventScroll(), Called. ");
-    GdkEventScroll &scrollEvent = (GdkEventScroll &) *event;
-    Point2dC guiOn = Point2dC(scrollEvent.y,scrollEvent.x);
+    Point2dC guiOn = Point2dC(event.Row(), event.Col());
     Point2dC worldOn = GUI2World(guiOn);
     
-    switch(scrollEvent.direction) {
-    case GDK_SCROLL_UP:
-    case GDK_SCROLL_LEFT: {
+    switch(event.Direction()) {
+    case ScrollDirectionUp:
+    case ScrollDirectionLeft: {
       GUISetScale(Scale() * 1.2);
     } break;
-    case GDK_SCROLL_DOWN:
-    case GDK_SCROLL_RIGHT:
+    case ScrollDirectionDown:
+    case ScrollDirectionRight:
       GUISetScale(Scale() * 0.8);
+      break;
+    default:
       break;
     }
     
