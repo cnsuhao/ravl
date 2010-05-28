@@ -38,7 +38,7 @@ namespace RavlGUIN
   FileChooserBodyC::FileChooserBodyC(const XMLFactoryContextC &factory)
   : WidgetBodyC(factory),
     m_title("File Chooser"),
-    m_action(FCA_Open),
+    m_action(FileChooserOpen),
     m_defaultFilename(""),
     m_filename(""),
     m_confirmOverwrite(true),
@@ -68,10 +68,10 @@ namespace RavlGUIN
       GtkFileChooserAction action = gtk_file_chooser_get_action(GTK_FILE_CHOOSER(widget));
       switch (action)
       {
-        case GTK_FILE_CHOOSER_ACTION_OPEN: m_action = FCA_Open; break;
-        case GTK_FILE_CHOOSER_ACTION_SAVE: m_action = FCA_Save; break;
-        case GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER: m_action = FCA_SelectFolder; break;
-        case GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER: m_action = FCA_CreateFolder; break;
+        case GTK_FILE_CHOOSER_ACTION_OPEN: m_action = FileChooserOpen; break;
+        case GTK_FILE_CHOOSER_ACTION_SAVE: m_action = FileChooserSave; break;
+        case GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER: m_action = FileChooserSelectFolder; break;
+        case GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER: m_action = FileChooserCreateFolder; break;
         default:
           RavlAssertMsg(false, "Unknown file chooser action.");
       }
@@ -214,7 +214,7 @@ namespace RavlGUIN
     else
     {
       gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(widget), filenameObject.PathComponent());
-      if (m_action == FCA_Save || m_action == FCA_CreateFolder)
+      if (m_action == FileChooserSave || m_action == FileChooserCreateFolder)
         gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(widget), filenameObject.NameComponent());
     }
 
