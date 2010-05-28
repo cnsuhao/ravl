@@ -12,6 +12,7 @@
 #include "Ravl/GUI/FileChooser.hh"
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/GUI/Manager.hh"
+#include <gtk/gtk.h>
 
 #define DODEBUG 0
 #if DODEBUG
