@@ -111,23 +111,23 @@ namespace RavlN {
   public:
     NetEndPointBodyC(SocketC &socket,bool autoInit = true,bool optimiseThroughput = false);
     //: Constructor.
-    //!param: socket - connext to existing socket
+    //!param: socket - connect to existing socket
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
     
     NetEndPointBodyC(const StringC &address,bool autoInit = true,bool optimiseThroughput = false);
     //: Constructor.
     //!param: address -  has the format  `host:port' where `host' may be a host name or its IP address (e.g. 122.277.96.255) and `port' is the number of the port to use.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
     
     NetEndPointBodyC(SocketC &socket,const StringC &protocolName,const StringC &protocolVersion,bool autoInit = true,bool optimiseThroughput = false);
     //: Constructor.
-    //!param: socket - connext to existing socket
+    //!param: socket - connect to existing socket
     //!param: protocolName - Name of communication protocol being used.
     //!param: protocolVersion - Version of communication protocol being used.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
     
     NetEndPointBodyC(const StringC &address,const StringC &protocolName,const StringC &protocolVersion,bool autoInit = true,bool optimiseThroughput = false);
     //: Constructor.
@@ -135,16 +135,16 @@ namespace RavlN {
     //!param: protocolName - Name of communication protocol being used.
     //!param: protocolVersion - Version of communication protocol being used.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
     
     NetEndPointBodyC(const DPIByteStreamC &istrm,const DPOByteStreamC &ostrm,const StringC &protocolName,const StringC &protocolVersion,bool autoInit = true,bool optimiseThroughput = false);
     //: Constructor.
-    //!param: istrm - Input comunications stream
-    //!param: ostrm - Output comunications stream
+    //!param: istrm - Input communications stream
+    //!param: ostrm - Output communications stream
     //!param: protocolName - Name of communication protocol being used.
     //!param: protocolVersion - Version of communication protocol being used.
     //!param: autoInit - If false, you must call the Ready() function when you are ready to start processing network messages. If true, messages will start being processed as soon as the connection is established.
-    //!param: optimiseThroughput - If true optimise for total throughput at the expense of comminication latency. If false optimise for latency
+    //!param: optimiseThroughput - If true optimise for total throughput at the expense of communication latency. If false optimise for latency
     
     NetEndPointBodyC(bool _optimiseThroughput = false);
     //: Default constructor.
@@ -162,7 +162,7 @@ namespace RavlN {
     
     bool IsOpen() const { 
       if(!istrm.IsValid() || !ostrm.IsValid())
-	return false;
+        return false;
       return !shutdown && !istrm.IsGetEOS() && ostrm.IsPutReady(); 
     }
     //: Is Connections open ?
@@ -201,7 +201,7 @@ namespace RavlN {
     //: Queue a packet for transmition.
     
     bool Ready();
-    //: Initalise link.
+    //: Initialise link.
 
     void SndInit(StringC &user);
     //: Send init message.
@@ -459,7 +459,7 @@ namespace RavlN {
     DPOByteStreamC ostrm; // Output channel
     
     MessageQueueC<NetPacketC> transmitQ; // Transmition Q.
-    MessageQueueC<NetPacketC> receiveQ; // Recieve Q.
+    MessageQueueC<NetPacketC> receiveQ; // Receive Q.
     volatile bool shutdown;   // Shutdown system ?
     ThreadEventC setupComplete;
     ThreadEventC gotStreamType;
