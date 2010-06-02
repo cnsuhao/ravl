@@ -27,11 +27,12 @@ namespace RavlImageN {
 
   template <class InT, class OutT>
   bool WarpScaleBilinear(const ImageC<InT> &img,
-                           const Vector2dC &scale, // Distance between samples in the input image.
-                           ImageC<OutT> &result    // Output of scaling. The image must be of the appropriate size
-                           )
+                         const Vector2dC &scale, // Distance between samples in the input image.
+                         ImageC<OutT> &result    // Output of scaling. The image must be of the appropriate size
+                        )
   {
     //call subsampling function
+    //cout << "WarpScaleBilinear scale:" << scale << std::endl;
     if(scale[0] >= 1. && scale[1] >= 1.)
       return WarpSubsample(img, scale, result);
 
