@@ -275,7 +275,7 @@ namespace RavlN {
     {}
     //: NoOp constructor.
     // if issueErrorOnCall a function which causes the
-    // equivelent of a assertion failure is called. Otherwise
+    // equivalent of a assertion failure is called. Otherwise
     // the call returns silently.
     
     CallFunc1C(RetT (*nfunc)(DataT),const Arg1T &dat = Arg1T())
