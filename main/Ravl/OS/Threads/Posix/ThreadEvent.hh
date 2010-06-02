@@ -55,20 +55,20 @@ namespace RavlN
     
     void Wait() {
       if(occurred) // Check before we bother with locking.
-	return ; 
+        return ;
       cond.Lock();
       waiting++;
       while(!occurred)
-	cond.Wait();
+        cond.Wait();
       waiting--;
       if(waiting == 0) {
-	cond.Unlock();
-	cond.Broadcast(); // If something is waiting for it to be free...
-	return ;
+        cond.Unlock();
+        cond.Broadcast(); // If something is waiting for it to be free...
+        return ;
       } 
       cond.Unlock();
     }
-    //: Wait indefinitly for an event.
+    //: Wait indefinitely for an event.
     
     bool WaitForFree();
     //: Wait for lock to be free of all waiters.
