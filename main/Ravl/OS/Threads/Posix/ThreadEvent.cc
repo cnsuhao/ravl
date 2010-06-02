@@ -28,7 +28,7 @@ namespace RavlN
   }
 
   //: Wait for lock to be free.
-  // NB. This is only garanteed to work for one thread.
+  // NB. This is only guaranteed to work for one thread.
   
   bool ThreadEventC::WaitForFree() {
     if(waiting == 0)
