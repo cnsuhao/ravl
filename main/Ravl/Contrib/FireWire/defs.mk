@@ -11,7 +11,7 @@ PACKAGE = Ravl/Image
 
 DESCRIPTION = FireWire DV Device handling.
 
-SUPPORT_ONLY = linux  
+SUPPORT_ONLY = linux linux64
 
 REQUIRES = libDV libavc1394
 

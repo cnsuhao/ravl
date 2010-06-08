@@ -14,6 +14,7 @@
 #include "Ravl/Image/PalFrame.hh"
 #include "Ravl/Assert.hh"
 #include <stdio.h>
+#include <cstring>
 
 //: Default constructor
 

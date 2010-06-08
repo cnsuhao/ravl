@@ -58,12 +58,13 @@ namespace RavlImageN {
 #endif
   
   //: Check the status 
-  if (!handle)
+  if (!handle) {
     if (!errno)
       RavlAlwaysAssertMsg(0,"\nNot Compatible! \n")
     else 
       RavlAlwaysAssertMsg(0,"\nCouldn't get 1394 handle, Is ieee1394, driver, and raw1394 loaded?\n") ; 
-  
+  }
+
   if (raw1394_set_port(handle, 0) < 0) {
     raw1394_destroy_handle(handle);
     RavlAlwaysAssertMsg(0, "Couldn't set port" ) ; 
