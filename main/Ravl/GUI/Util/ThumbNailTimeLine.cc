@@ -485,6 +485,9 @@ namespace RavlGUIN {
     if(frameSkip == (int) skip)
       return true;
     frameSkip = skip;
+    if (frameSkip==0)
+      frameSkip = 1; 
+    
     // Re-center as needed.
     midFrame = Floor((RealT) requestedMidFrame / frameSkip) * frameSkip;
     
