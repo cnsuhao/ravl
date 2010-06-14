@@ -32,6 +32,9 @@ namespace RavlGUIN {
   class ReadBackLockC;  
   class WindowC;
   class LockGtkThreadC;
+  
+  typedef void (*FuncGtkGlInitT)(int *argc, char **argv[]);
+
   //! userlevel=Normal
   //: GUI Manager class
   // As a user you should never need to create an instance of this
@@ -120,6 +123,9 @@ namespace RavlGUIN {
     { return physicalScreensize; }
     //: Get the current screen size in mm
     // Only meaningful after the manager has been started.
+
+    void RegisterGtkGlInit(FuncGtkGlInitT func)
+    { m_funcGtkGlInit = func; }
     
   protected:
     
@@ -167,6 +173,7 @@ namespace RavlGUIN {
     SizeT guiThreadID;
     Index2dC screensize;
     Point2dC physicalScreensize;
+    FuncGtkGlInitT m_funcGtkGlInit;
     friend class WidgetBodyC;
     friend class WindowBodyC;
     friend class ReadBackLockC;

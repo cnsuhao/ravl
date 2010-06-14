@@ -110,7 +110,8 @@ namespace RavlGUIN {
       initCalled(false),
       managerStarted(false),
       shutdownFlag(false),
-      guiThreadID(ThisThreadID()) // Start out with the GUI thread as the one that created the manager.
+      guiThreadID(ThisThreadID()), // Start out with the GUI thread as the one that created the manager.
+      m_funcGtkGlInit(NULL)
   {
     InitDone() = true;
     m_strDebugWarning = StringC("RAVL DEBUG WARNING: Manager::Queue is being called on GUI thread. This can lead to undefined behaviour.\n");
@@ -206,7 +207,12 @@ namespace RavlGUIN {
     /* this is called in all GTK applications.  arguments are parsed from
      * the command line and are returned to the application. */
     gtk_init (&nargs, &args);
-    
+
+    if (m_funcGtkGlInit)
+    {
+      (*m_funcGtkGlInit)(&nargs, &args);
+    }
+
     initCalled = true;
     
     //gdk_rgb_set_verbose (true);
