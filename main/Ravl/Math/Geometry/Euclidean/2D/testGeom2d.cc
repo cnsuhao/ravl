@@ -1,6 +1,4 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2002, University of Surrey
-// This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
@@ -34,6 +32,7 @@
 #include "Ravl/Collection.hh"
 #include "Ravl/DListExtra.hh"
 #include "Ravl/SArray1dIter2.hh"
+
 using namespace RavlN;
 
 int testMoments();
@@ -68,7 +67,7 @@ int testTriangulate2d();
 int main() {
   int ln;
   
-#if 1
+#if 0
   TEST(testMoments);
   TEST(testBinIO);
   TEST(testCircle2d);
@@ -86,12 +85,12 @@ int main() {
   TEST(testEllipse2dB);
   TEST(testEllipse2dC);
   TEST(testEllipse2dD);
-  TEST(testScanPolygon);
   TEST(testOverlap);
   TEST(testPolygonClip);
   TEST(testAffine);
-#endif
   TEST(testTriangulate2d);
+#endif
+  TEST(testScanPolygon);
   cout << "Test passed. \n";
   return 0;
 }
@@ -797,11 +796,9 @@ int testScanPolygon() {
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
        !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
       return __LINE__;
-#endif
     count++;
   }
 #if DODISPLAY
@@ -859,11 +856,9 @@ int testScanPolygon() {
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
        !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
       return __LINE__;
-#endif
     count++;
   }
 #if DODISPLAY
@@ -893,11 +888,11 @@ int testScanPolygon() {
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
-       !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
+       !poly.Contains(Point2dC(it.Row(),it.Data().Center())))  {
+      //Save("@X:7",img);
       return __LINE__;
-#endif
+    }
     count++;
   }
 #if DODISPLAY
@@ -914,7 +909,7 @@ int testScanPolygon() {
   poly.InsLast(Point2dC(10,40));
   poly.InsLast(Point2dC(20,40));
   poly.InsLast(Point2dC(20,30)); 
-  poly.InsLast(Point2dC(30,30));  
+  //poly.InsLast(Point2dC(30,30));
   poly.InsLast(Point2dC(30,30));
   poly.InsLast(Point2dC(30,40));
   poly.InsLast(Point2dC(40,40));
@@ -927,12 +922,12 @@ int testScanPolygon() {
 #if DODISPLAY
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
-    //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
-       !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
+       !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) {
+      std::cerr << " Row:" << it.Row() << " Span:" << it.Data() << "\n";
+      //  Save("@X:8",img);
       return __LINE__;
-#endif
+    }
     count++;
   }
 #if DODISPLAY
@@ -958,11 +953,9 @@ int testScanPolygon() {
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
        !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
       return __LINE__;
-#endif
     count++;
   }
 #if DODISPLAY
@@ -975,24 +968,24 @@ int testScanPolygon() {
   img.Fill(0);
 #endif
   poly.Empty();
-  poly.InsLast(Point2dC(10,10));
-  poly.InsLast(Point2dC(20,30));
-  poly.InsLast(Point2dC(30,10));
-  poly.InsLast(Point2dC(40,30)); 
-  poly.InsLast(Point2dC(50,10));  
-  poly.InsLast(Point2dC(40,40));
-  poly.InsLast(Point2dC(30,20));
+
   poly.InsLast(Point2dC(20,40));
+  poly.InsLast(Point2dC(30,20));
+  poly.InsLast(Point2dC(40,40));
+  poly.InsLast(Point2dC(50,10));
+  poly.InsLast(Point2dC(40,30));
+  poly.InsLast(Point2dC(30,10));
+  poly.InsLast(Point2dC(20,30));
+  poly.InsLast(Point2dC(10,10));
+  
   for(ScanPolygon2dC it(poly,1);it;it++) {
 #if DODISPLAY
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
        !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
       return __LINE__;
-#endif
     count++;
   }
 #if DODISPLAY
@@ -1026,18 +1019,15 @@ int testScanPolygon() {
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
     if(it.Data().Size() > 0.001 &&
        !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
       return __LINE__;
-#endif
     count++;
   }
 #if DODISPLAY
   Save("@X:11",img);
 #endif
 #endif
-#if 0
 #if DODISPLAY
   cerr << " ---------- Test 12 --------------------------- \n";
   img = ImageC<ByteT>(105,105);
@@ -1045,35 +1035,40 @@ int testScanPolygon() {
 #endif
   poly.Empty();
   int stop = 1000;
-  
-  poly.InsLast(Point2dC(10,10));
-  poly.InsLast(Point2dC(60,10));
-  poly.InsLast(Point2dC(60,50));
-  poly.InsLast(Point2dC(40,50)); 
-  poly.InsLast(Point2dC(40,40));  
-  poly.InsLast(Point2dC(50,40));
-  poly.InsLast(Point2dC(50,30));
-  poly.InsLast(Point2dC(40,30));
-  poly.InsLast(Point2dC(40,20));
-  poly.InsLast(Point2dC(30,20));
-  poly.InsLast(Point2dC(30,30));
-  poly.InsLast(Point2dC(20,30));
-  poly.InsLast(Point2dC(20,40));
-  poly.InsLast(Point2dC(30,40));
-  poly.InsLast(Point2dC(30,50));
+
+
   poly.InsLast(Point2dC(10,50));
+  poly.InsLast(Point2dC(30,50));
+  poly.InsLast(Point2dC(30,40));
+  poly.InsLast(Point2dC(20,40));
+  poly.InsLast(Point2dC(20,30));
+  poly.InsLast(Point2dC(30,30));
+  poly.InsLast(Point2dC(30,20));
+  poly.InsLast(Point2dC(40,20));
+  poly.InsLast(Point2dC(40,30));
+  poly.InsLast(Point2dC(50,30));
+  poly.InsLast(Point2dC(50,40));
+  poly.InsLast(Point2dC(40,40));
+  poly.InsLast(Point2dC(40,50));
+  poly.InsLast(Point2dC(60,50));
+  poly.InsLast(Point2dC(60,10));
+  poly.InsLast(Point2dC(10,10));
 
-
+  
 
   for(ScanPolygon2dC it(poly,1);it && (stop-- > 0);it++) {
 #if DODISPLAY
     DrawLine(img,drawVal,Index2dC(it.Row(),it.Data().Min()),Index2dC(it.Row(),it.Data().Max()));
 #endif
     //cerr << " " << it.Row() << " " << it.Data() << "\n";
-#if 0
+#if 1
     if(it.Data().Size() > 0.001 &&
-       !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) 
+       !poly.Contains(Point2dC(it.Row(),it.Data().Center()))) {
+#if DODISPLAY
+    Save("@X:12",img);
+#endif
       return __LINE__;
+    }
 #endif
     count++;
   }
@@ -1081,7 +1076,6 @@ int testScanPolygon() {
   Save("@X:12",img);
 #endif
   if(stop <= 0) return __LINE__;
-#endif
   return 0;
 }
 
