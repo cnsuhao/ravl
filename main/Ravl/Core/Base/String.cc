@@ -752,12 +752,7 @@ namespace RavlN {
     ncopy0(&(s[si]), &(x[xi]), remaining);
     nrep->len = xi + remaining;
     
-    if (nrep->len <= rep->sz) {   // fit back in if possible
-      rep->len = nrep->len;
-      ncopy0(nrep->s, rep->s, rep->len);
-    } else {
-      rep = nrep;
-    }
+    rep = nrep;
     return nmatches;
   }
   
