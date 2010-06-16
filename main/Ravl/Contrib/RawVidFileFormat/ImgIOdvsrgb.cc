@@ -107,7 +107,7 @@ namespace RavlImageN {
     //if((-off) > (IntT) frameNo) {
     //  return false; // File to big.
     //}
-    if( off == 0 & frameNo == 0 ) {
+    if( off == 0 && frameNo == 0 ) {
        return false;
     }
     //strm.is().clear(); // Clear any errors.

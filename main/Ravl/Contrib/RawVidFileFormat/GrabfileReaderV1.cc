@@ -286,7 +286,6 @@ BufferC<UInt16T> GrabfileReaderV1C::GetNextFrame16T()
       }
       if(IdToByteFormat(byteformat) == BITS_10_DVS) {
          //Convert to 8 Bits
-         unsigned int osize = m_video_buffer_size * 3 / 4 ;
          //Writing data as UInt16T so twice the size of chars
 	 
          BufferC<char> video(m_video_buffer_size);
@@ -307,7 +306,6 @@ BufferC<UInt16T> GrabfileReaderV1C::GetNextFrame16T()
         ByteT mask3 = 3;
         ByteT bitsone,bitstwo,bitsthree;
         UInt16T first_ten_bits,second_ten_bits,third_ten_bits;
-        UIntT buf = 1023;
 
         for ( IntT vcount = 0 ; vcount < (m_video_buffer_size/4)  ; ++ vcount ) {
             //Get the next 4 chars.

@@ -125,7 +125,6 @@ bool LegacyGrabfileReaderC::GetNextFrame(BufferC<char> &bu, UIntT &vsize, UIntT 
     if(m_infile.good()) {
       int csize = m_video_buffer_size + m_audio_buffer_size;
       char * obuf = new char[csize];
-      char * start = obuf;
       m_infile.read(bu.BufferAccess().DataStart(),csize);  //obuf,csize);
       delete obuf;
    }
