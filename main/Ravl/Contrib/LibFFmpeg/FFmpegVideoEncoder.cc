@@ -157,7 +157,6 @@ namespace RavlImageN {
   
   bool FFmpegVideoEncoderBaseC::EncodeFrame() {
     int             bytesEncoded;
-    int             frameFinished;
         video_outbuf = new uint8_t[numBytes];
         bytesEncoded=avcodec_encode_video(pcodecctx, video_outbuf, numBytes, tmp_picture);  //pFrame);  //,
           //                                &frameFinished, rawData, bytesRemaining);        
@@ -181,7 +180,7 @@ namespace RavlImageN {
   
   bool FFmpegVideoEncoderBaseC::Put() {
     ONDEBUG(cerr << "FFmpegVideoDecoderDPOBaseC::Put " << " \n");
-
+    return false;
   }
 
   //: Get a frame of video from stream.
@@ -250,7 +249,6 @@ namespace RavlImageN {
         uint8_t *r;
         r = tmp_picture->data[ 0 ];
         const ByteRGBValueC *all_v = img.Row(0);
-        uint8_t *src_p = (uint8_t *)&(all_v[0]);
         Array2dIterC<ByteRGBValueC> img_it(img);
         for(;img_it;img_it++) {
            *r = img_it.Data().Red();
