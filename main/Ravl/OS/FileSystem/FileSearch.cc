@@ -12,6 +12,7 @@
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/StringList.hh"
 #include "Ravl/CDLIter.hh"
+#include "Ravl/Resource.hh"
 
 namespace RavlN {
   
@@ -22,16 +23,48 @@ namespace RavlN {
     for(DLIterC<StringC> it(dirs);it.IsElm();it.Next()) {
       FilenameC tmp(it.Data() + "/" + (*this));
       if(tmp.Exists())
-	return tmp;
+        return tmp;
     }
     return (*this).Copy();  
   }
   
-  //: Search through ':' seperated list pathList of deriectories
+  //: Search through ':' separated list pathList of directories
   //: for filename.
   // Returns full path to file, or empty string if none.
   
   FilenameC FilenameC::Search(StringC pathList) const {
     return Search(StringListC(pathList,":"));
+  }
+
+  //: Searches for filename using following algorithm returns empty name if fail to find file
+  // 1. if it starts from '~' look for file in home directory
+  // 2. if absolute path (start from '/') check file presence
+  // 3. check currentDirectory
+  // 4. check resources directory
+  FilenameC FilenameC::Search(const StringC& filename,
+                              const StringC& currentDirectory,
+                              const char *resourceModule) {
+    FilenameC result;
+    if(filename.firstchar() == '~') { //home directory
+      StringC homeDir(getenv("HOME"));
+      if(!homeDir.IsEmpty()) {
+        result = homeDir + StringC(filename).after('~');
+      }
+    } else if(filename.firstchar() == '/') { //absolute path
+      result = filename;
+    } else {
+      if(!currentDirectory.IsEmpty()) { //current directory
+        result = currentDirectory + '/' + filename;
+        if(result.Exists())
+          return result;
+      }
+      //finally go into resources directory
+      result = Resource(resourceModule, filename);
+    }
+
+    if(!result.Exists())
+      result = FilenameC();
+
+    return result;
   }
 }

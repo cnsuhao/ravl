@@ -93,11 +93,11 @@ namespace RavlN {
     // Return: true = Yep.
     
     FilePermissionC Permissions() const;
-    //: Get the access permisions for this file.
-    // Returns no-permisions if file is not found.
+    //: Get the access permissions for this file.
+    // Returns no-permissions if file is not found.
     
     bool SetPermissions(const FilePermissionC &perm);
-    //: Set the access permisions for this file.
+    //: Set the access permissions for this file.
     // Returns false if failed.
     
     FilenameC PathComponent() const;
@@ -108,16 +108,16 @@ namespace RavlN {
 
     FilenameC BaseNameComponent() const;
     //: Return the base name component of a Filename, 
-    // ie. after last / and before the extention. 
+    // ie. after last / and before the extension.
     // (the last '.' in the NameComponent()).
     
     FilenameC MkTemp(IntT Digits = 4,IntT maxretry=100) const RAVL_THROW2(ExceptionOperationFailedC,ExceptionOutOfRangeC);
     //: Make this filename unique by appending a unique string
     //: and checking if it doesn't exist already. 
-    // If it does try another, if process failes more than 
+    // If it does try another, if process fails more than
     // maxretry times, then an ExceptionOperationFailedC is thrown. <br>
-    // If maxretry  is negative infinite retries are alowed. <br>
-    // Digits should be betwee 0 and 6. <br>
+    // If maxretry  is negative infinite retries are allowed. <br>
+    // Digits should be between 0 and 6. <br>
     // If the filename contains an extension the numbers will be added before it.
     
     DateC LastAccessTime() const;
@@ -154,24 +154,33 @@ namespace RavlN {
     //: Set the AMD prefix.
     
     bool HasExtension(StringC ext,bool caseSens = false) const;
-    //: Test if filename has the given extention.
+    //: Test if filename has the given extension.
     // caseSens = false means case is ignored.
     
     StringC Extension() const;
-    //: Get the extention on the file name.
+    //: Get the extension on the file name.
     // That is the text after the last '.' in the name component.
     // Returns empty string if none found.
     
     FilenameC Search(StringC pathList) const;
-    //: Search through ':' seperated list pathList of deriectories
+    //: Search through ':' separated list pathList of directories
     //: for this filename.
     // Returns this filename if is not found on path.
     
     FilenameC Search(const DListC<StringC> &pathList) const;
     //: Search through a list of paths for this file.
     // Returns this filename if is not found on path.
-    // Usefull for searching through the 'PATH' enviroment variable.
+    // Useful for searching through the 'PATH' environment variable.
     
+    static FilenameC Search(const StringC& filename,
+                            const StringC& currentDirectory= StringC(),
+                            const char *resourceModule = "");
+    //: Searches for filename using following algorithm returns empty name if fail to find file
+    // 1. if it starts from '~' look for file in home directory
+    // 2. if absolute path (start from '/') check file presence
+    // 3. check currentDirectory
+    // 4. check resources directory
+
     inline const FilenameC &operator=(const FilenameC &s);
     //: Assign from filename 
     

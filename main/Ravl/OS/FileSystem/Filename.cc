@@ -83,7 +83,7 @@ namespace RavlN {
     if(IsEmpty()) // Empty string ?
       return false; 
 #if RAVL_USE_LARGEFILESUPPORT
-    // Incase the files large, use stat64.
+    // In case the files large, use stat64.
     struct stat64 buff;
     if(stat64(chars(),&buff) < 0) {
       ONDEBUG(cerr << "FilenameC::Exists(), '" << (*this) << "' errno=" << errno << " \n");
@@ -106,7 +106,7 @@ namespace RavlN {
     return (rename(this->chars(),newname.chars()) == 0);
   }
   
-  // Get the access permisions for this file.
+  // Get the access permissions for this file.
   
   FilePermissionC FilenameC::Permissions() const {
 #if RAVL_USE_LARGEFILESUPPORT
@@ -127,7 +127,7 @@ namespace RavlN {
     return FilePermissionC(buff.st_mode,buff.st_uid,buff.st_gid);
   }
   
-  //: Set the access permisions for this file.
+  //: Set the access permissions for this file.
   // Returns false if failed.
   
   bool FilenameC::SetPermissions(const FilePermissionC &perm)
@@ -180,7 +180,7 @@ namespace RavlN {
   }
 
   //: Return the base name component of a Filename, 
-  // ie. after last / and before the extention. 
+  // ie. after last / and before the extension.
   // (the last '.' in the NameComponent()).
   
   FilenameC FilenameC::BaseNameComponent() const {
@@ -192,9 +192,9 @@ namespace RavlN {
   //////////////////////////////////////
   //: Make this filename unique by appending a unique string
   //: and checking if it doesn't exist already. 
-  // If it does try another, if process failes more than 
+  // If it does try another, if process fails more than
   // maxretry times, then return false. If maxretry is negative
-  // infinite retries are alowed.
+  // infinite retries are allowed.
   
   FilenameC FilenameC::MkTemp(IntT Digits,IntT maxretry) const RAVL_THROW2(ExceptionOperationFailedC,ExceptionOutOfRangeC) {
     if(Digits < 1)
@@ -206,7 +206,7 @@ namespace RavlN {
 #endif
       throw ExceptionOutOfRangeC("FilenameC::MkTemp(), Digits must be between 0 and 6. \n");
     }
-    StringC ext = Extension(); // Find extention.
+    StringC ext = Extension(); // Find extension.
     if(!ext.IsEmpty())
       ext = StringC('.') + ext;
     StringC base = const_cast<FilenameC &>(*this).before((int) Size() - (int) ext.Size()); // We know it won't modify the string.
@@ -377,7 +377,7 @@ namespace RavlN {
     if(FileSize() != oth.FileSize())
       return false; // That was easy.  
     if(IsEmpty() || oth.IsEmpty())
-      return false; // Can't compair non-existant files.
+      return false; // Can't compare non-existent files.
     ifstream in1(*this),in2(oth);
     if(!in1) {
       cerr << "FilenameC::BinCompare(), Failed to open file :" << (*this) << endl;
@@ -409,7 +409,7 @@ namespace RavlN {
   { AMDPrefix = prefix; }  
   
   ///////////////////////////////
-  //: Get the extention on the file name.
+  //: Get the extension on the file name.
   // That is the text after the last '.' in the name component.
   // Returns empty string if none found.
   
@@ -420,19 +420,19 @@ namespace RavlN {
       if(fn[i] == '.')
 	break;
     if(i < 0)
-      return StringC(); // No extention found.
+      return StringC(); // No extension found.
     return fn.after(i);
   }
 
   /////////////////////////////
-  //: Test if filename has the given extention.
+  //: Test if filename has the given extension.
   // caseSens = false means case is ignored.
   
   bool FilenameC::HasExtension(StringC ext,bool caseSens) const  {
     if(IsEmpty())
       return false;
     if(length() < ext.length())
-      return false; // File name can't contain the extention.
+      return false; // File name can't contain the extension.
     // This doesn't actual do anything non-const, so.
     StringC aExt = const_cast<FilenameC &>(*this).from((int) ((int) length() - (int) ext.length()));
     if(caseSens) 
