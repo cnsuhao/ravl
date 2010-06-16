@@ -241,7 +241,7 @@ namespace RavlN {
     XMLTreeC()
     {}
     //: Default constructor.
-    // Creats an invalid handle.
+    // Creates an invalid handle.
     
     explicit XMLTreeC(bool)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC())
@@ -272,7 +272,7 @@ namespace RavlN {
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(dynamic_cast<const XMLTreeBodyC *>(BodyPtr(oth)))
     {}
     //: Construct from a base class.
-    // An invalid handle is created if it failes.
+    // An invalid handle is created if it fails.
     
   protected:
     XMLTreeC(XMLTreeBodyC &bod)

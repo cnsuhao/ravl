@@ -525,7 +525,7 @@ namespace RavlN {
     // Check the XML header, if the header is not found the stream
     // routine attempts to return the stream to the state is was in before
     // the call. If the header is found the stream is left on the
-    // charactor after the xml header.
+    // character after the xml header.
     
     XMLTagOpsT PeekTag(StringC &name,RCHashC<StringC,StringC> &attr);
     //: Have a look at the next tag that will be read.
@@ -565,7 +565,7 @@ namespace RavlN {
     
     StringC ReadID();
     //: Read an ID from the stream.
-    // This will skip any intial white space, but will
+    // This will skip any initial white space, but will
     // return an empty string if an invalid characters is found.
     
     bool GetAttrib(const StringC &name,StringC &val)

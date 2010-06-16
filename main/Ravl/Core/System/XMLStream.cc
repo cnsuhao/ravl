@@ -491,7 +491,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Begin writting a tag with the given attributes.
+  //: Begin writing a tag with the given attributes.
   
   void XMLOStreamC::StartTag(const StringC &name,const RCHashC<StringC,StringC> &attribs,bool emptyTag) {
     if(IsContext() && !IsContent())
@@ -500,7 +500,7 @@ namespace RavlN {
     StartContext(name,attribs,emptyTag);
   }
   
-  //: Begin writting a tag with the given attributes.
+  //: Begin writing a tag with the given attributes.
   
   void XMLOStreamC::StartTag(const StringC &name,bool emptyTag) {
     RCHashC<StringC,StringC> none;
@@ -508,7 +508,7 @@ namespace RavlN {
     StartTag(name,none,emptyTag);
   }
   
-  //: Call before writting contents of entity to stream.
+  //: Call before writing contents of entity to stream.
   
   void XMLOStreamC::StartContents() {
     //ONDEBUG(cerr << "XMLOStreamC::StartContents(), Name:'" << Context().Name() << "' \n");
@@ -532,7 +532,7 @@ namespace RavlN {
     SetContent(true);
   }
   
-  //: End writting a tag.
+  //: End writing a tag.
   // if strict checking is enabled, name will be check against that of the open tag.
   
   void XMLOStreamC::EndTag(const StringC &name) {
@@ -556,7 +556,7 @@ namespace RavlN {
     LastOpenTag() = StringC();
   }
   
-  //: End writting current entity.
+  //: End writing current entity.
   
   void XMLOStreamC::EndTag() {
     //ONDEBUG(cerr << "XMLOStreamC::EndTag() : '" << Context().Name() << "'\n");
@@ -573,7 +573,7 @@ namespace RavlN {
     LastOpenTag() = StringC();
   }
 
-  //: Indent the following line appropriatly.
+  //: Indent the following line appropriately.
   
   void XMLOStreamC::Indent(int off) {
     Stream() << '\n';

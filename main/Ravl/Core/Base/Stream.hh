@@ -278,7 +278,7 @@ namespace RavlN {
     //: Copy constructor.
     
     ostream& form(const char *format ...);
-    //: Print to stream using good old 'C' sytle formating.
+    //: Print to stream using good old 'C' style formating.
     // This isn't the saftest function, it uses a fixed
     // buffer of 4096 bytes.  <p>
     // This is a duplication of the function  GNU iostreams
@@ -416,32 +416,32 @@ namespace RavlN {
     istream &read(char *d,streamsize n) 
     { return is().read(d,n); }
     //: read data.
-    // istream compatable function.
+    // istream compatible function.
     
     istream &get(char &ch) 
     { return is().get(ch); }
     //: Get character.
-    // istream compatable function.
+    // istream compatible function.
     
     char get() 
     { return is().get(); }
     //: Get character.
-    // istream compatable function.
+    // istream compatible function.
     
     istream &get(char *buff,int buffsize) 
     { return is().get(buff,buffsize); }
     //: Read in a line.
-    // istream compatable function.
+    // istream compatible function.
     
     istream &getline(char *buff,int buffsize) 
     { return is().getline(buff,buffsize); }
     //: Read in a line.
-    // istream compatable function.
+    // istream compatible function.
     
     streamsize gcount() 
     { return is().gcount(); }
     //: Get number of character read in last operation.
-    // istream compatable function.
+    // istream compatible function.
     
     template<class DataT>
     istream &operator>>(DataT &dat)
@@ -458,15 +458,15 @@ namespace RavlN {
     
     streampos tellg() const { return in->tellg(); }
     //: Where are we in the stream.
-    // istream compatable function.
+    // istream compatible function.
     
     istream &seekg(streampos to) { return is().seekg(to); }
     //: Goto a position in the stream.
-    // istream compatable function.
+    // istream compatible function.
     
     istream &seekg(streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
     //: Goto a position in the stream.
-    // istream compatable.
+    // istream compatible.
     
     inline bool IsEndOfStream() {
       // Check there's more to read...

@@ -38,7 +38,7 @@ namespace RavlN {
   const StringC &ResourceRoot() 
   { return resourceRoot; }
   
-  //: Find a resouce.
+  //: Find a resource.
   
   StringC Resource(const char *module,const char *name) {
     if(resouceLookup != 0)

@@ -829,7 +829,7 @@ namespace RavlN {
   //: Sub-string within a larger string.
   // This class holds the position and length of a sub string
   // within a string.  This holds a reference to the string
-  // data and so memory management is taken care of automaticly.
+  // data and so memory management is taken care of automatically.
   
   class SubStringC {
   protected:
@@ -942,28 +942,28 @@ namespace RavlN {
     
     inline int index(char c, int startpos = 0) const
     { return S.search(startpos+pos, length()+pos, c) - pos; }
-    //: Return the index of the first occurance of 'c' in this string.
+    //: Return the index of the first occurrence of 'c' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
     inline int index(const StringC& y, int startpos = 0) const
     { return S.search(startpos+pos, length()+pos, y.chars(), y.length()) - pos; }
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
     inline int index(const SubStringC& y, int startpos = 0) const
     { return S.search(startpos+pos, length()+pos, y.chars(), y.length()) - pos; }
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
     inline int index(const char* t, int startpos = 0) const
     { return S.search(startpos+pos, length()+pos, t)  - pos; }
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
 #if USEREGEX
     inline int index(const Regex& r, int startpos = 0) const
     { int unused;  return r.search(chars(), length()+pos, unused, startpos); }
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
 #endif
     
@@ -980,7 +980,7 @@ namespace RavlN {
     //: Return a hash number for substring.
     
     SubStringC TopAndTail() const;
-    //: Remove while space from begining and end of string.
+    //: Remove while space from beginning and end of string.
     
     IntT IntValue() const;
     //: Interpret string as an integer.
