@@ -71,13 +71,13 @@ namespace RavlN {
     
     RealT OrthogonalCrossProduct() const 
     { return SRMatrix()[0][0] * SRMatrix()[1][1] - SRMatrix()[0][1] * SRMatrix()[1][0]; }
-    //: This returns the cross product of the projection of two orthognal unit vectors.
-    // This is usefull if you want to test if the transform is mirrored. i.e. changes
+    //: This returns the cross product of the projection of two orthogonal unit vectors.
+    // This is useful if you want to test if the transform is mirrored. i.e. changes
     // the direction of rotations.
     
     void Decompose(Point2dC &translation,Vector2dC &scaling,RealT &skew,RealT &rotation) const;
     //: Decompose affine transform.
-    //!param: translation - Translation of used in the transfrom
+    //!param: translation - Translation of used in the transform
     //!param: scaling - Row and column components of scaling.
     //!param: skew - Skew component of scaling.
     //!param: rotation - Angle of rotation.
@@ -87,7 +87,7 @@ namespace RavlN {
     
     static Affine2dC Compose(Point2dC translation,Vector2dC scaling,RealT skew,RealT rotation);
     //: Compose an affine transform the components generated from decompose.
-    //!param: translation - Translation of used in the transfrom
+    //!param: translation - Translation of used in the transform
     //!param: scaling - Row and column components of scaling.
     //!param: skew - Skew component of scaling.
     //!param: rotation - Angle of rotation.
