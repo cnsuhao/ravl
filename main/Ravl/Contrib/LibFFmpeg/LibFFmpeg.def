@@ -27,7 +27,7 @@ ifndef LIBFFMPEG_DEF
   INCLUDES := $(LIBFFMPEG_INCLUDES) $(INCLUDES)
   EXELIB := $(LIBFFMPEG_LIBS) $(EXELIB)
 
-  FFHDRS := $(shell ls $(LIBFFMPEG_HOME)/include/ffmpeg)
+  FFHDRS := $(shell ls $(LIBFFMPEG_HOME)/include/ffmpeg 2>/dev/null)
   ifeq ($(strip $(filter %.h, $(FFHDRS))),)
     CCPPFLAGS += "-DLIBAVFORMAT_VERSION_MAJOR=52"
   endif
