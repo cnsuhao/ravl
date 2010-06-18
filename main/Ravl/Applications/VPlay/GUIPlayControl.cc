@@ -135,7 +135,7 @@ namespace RavlGUIN {
     hold.Unlock();
     Pause();  
     Seek(seekTo);
-    hold.Unlock();
+    //hold.Unlock();
     m_sigInteractive(false, PCB_End);
     return true;
   }
