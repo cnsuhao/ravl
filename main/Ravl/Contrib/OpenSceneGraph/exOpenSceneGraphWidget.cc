@@ -26,11 +26,77 @@
 #include "Ravl/OpenSceneGraph/ImageByteRGBA.hh"
 #include "Ravl/OpenSceneGraph/ModelFile.hh"
 #include "Ravl/OpenSceneGraph/Text.hh"
+#include "Ravl/OpenSceneGraph/TexTriMesh.hh"
 #include "Ravl/OpenSceneGraph/HUD.hh"
+#include "Ravl/3D/TexTriMesh.hh"
+#include "Ravl/Vector3d.hh"
+#include "Ravl/3D/Vertex.hh"
+#include "Ravl/3D/Tri.hh"
 
 using namespace RavlN;
 using namespace RavlGUIN;
 using namespace RavlOSGN;
+
+ImageByteRGBAC::RefT CreateImage()
+{
+  ImageByteRGBAC::RefT imageRef = new ImageByteRGBAC(RealRange2dC(-1, 1));
+  ImageC<ByteRGBAValueC> image;
+  if (Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", image, "", true))
+    imageRef->SetImage(image);
+
+  return imageRef;
+}
+
+TexTriMeshC::RefT CreateTexTriMesh()
+{
+  TexTriMeshC::RefT texTriMeshRef = new TexTriMeshC;
+
+  SArray1dC<Ravl3DN::VertexC> vertexArray(4);
+  vertexArray[0] = Ravl3DN::VertexC(Point3dC(0, 0, 0));
+  vertexArray[1] = Ravl3DN::VertexC(Point3dC(1, 0, 0));
+  vertexArray[2] = Ravl3DN::VertexC(Point3dC(1, -1, 0));
+  vertexArray[3] = Ravl3DN::VertexC(Point3dC(0, -1, 0));
+
+  TFVectorC<ByteT, 3> colourWhite(3);
+  colourWhite[0] = 255;
+  colourWhite[1] = 255;
+  colourWhite[2] = 255;
+
+  SArray1dC<Ravl3DN::TriC> triArray(2);
+
+  triArray[0] = Ravl3DN::TriC(vertexArray[0],
+                              vertexArray[1],
+                              vertexArray[2],
+                              Point2dC(0, 0),
+                              Point2dC(1, 0),
+                              Point2dC(1, 1),
+                              0);
+  triArray[0].SetFaceNormal(Vector3dC(0, 0, 1));
+  triArray[0].SetColour(colourWhite);
+
+  triArray[1] = Ravl3DN::TriC(vertexArray[0],
+                              vertexArray[2],
+                              vertexArray[3],
+                              Point2dC(0, 0),
+                              Point2dC(1, 1),
+                              Point2dC(0, 1),
+                              0);
+  triArray[1].SetFaceNormal(Vector3dC(0, 0, 1));
+  triArray[1].SetColour(colourWhite);
+
+  SArray1dC<ImageC<ByteRGBValueC> > imageArray(1);
+  if (!Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", imageArray[0], "", true))
+    return TexTriMeshC::RefT();
+
+  SArray1dC<StringC> filenameArray(1);
+  filenameArray[0] = PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm";
+  
+  Ravl3DN::TexTriMeshC texTriMesh(vertexArray, triArray, imageArray, filenameArray);
+
+  texTriMeshRef->SetMesh(texTriMesh);
+
+  return texTriMeshRef;
+}
 
 bool pressFunc(MouseEventC &me) {
   cerr << "Press " << me.Row() << " " << me.Col() << "\n";
@@ -59,45 +125,41 @@ int DoMain(int argc, char *argv[])
   opts.Check();
 
   WindowC win(100, 100, "OpenSceneGraph");
-  OpenSceneGraphWidgetC osgWidget(100, 100);
+  OpenSceneGraphWidgetC osgWidget(400, 400);
   Connect(osgWidget.Signal("button_press_event"), &pressFunc);
   Connect(osgWidget.Signal("button_release_event"), &releaseFunc);
 
   RavlGUIN::LBoxC vbox = VBox(osgWidget);
 
   // Root object
-  GroupC::RefT groupRef = new GroupC();
+  GroupC::RefT groupRef = new GroupC;
 
   // Add a sphere
-  TransformPositionAttitudeC::RefT transformSphereRef = new TransformPositionAttitudeC();
+  TransformPositionAttitudeC::RefT transformSphereRef = new TransformPositionAttitudeC;
   groupRef->AddChild(transformSphereRef.BodyPtr());
 
-  SphereC::RefT sphereRef = new SphereC();
+  SphereC::RefT sphereRef = new SphereC;
   sphereRef->SetColour(RavlImageN::RealRGBAValueC(0.5, 0.0, 0.0, 1.0));
 
-  GeodeC::RefT geodeRef = new GeodeC();
+  GeodeC::RefT geodeRef = new GeodeC;
   geodeRef->AddDrawable(sphereRef.BodyPtr());
 
   transformSphereRef->AddChild(geodeRef.BodyPtr());
 
   // Add an image
-  TransformPositionAttitudeC::RefT transformImageRef = new TransformPositionAttitudeC();
-  transformImageRef->SetPosition(RavlN::Vector3dC(1, 0, 0));
-  transformImageRef->SetAttitude(RavlN::Quatern3dC(RavlN::Vector3dC(1, 0, 0), RavlConstN::pi / 2.0));
+  TransformPositionAttitudeC::RefT transformImageRef = new TransformPositionAttitudeC;
+  transformImageRef->SetPosition(Vector3dC(1, 0, 0));
+  transformImageRef->SetAttitude(Quatern3dC(Vector3dC(1, 0, 0), RavlConstN::pi / 2.0));
   groupRef->AddChild(transformImageRef.BodyPtr());
 
-  ImageByteRGBAC::RefT imageRef = new ImageByteRGBAC(RealRange2dC(1, 1));
-
-  ImageC<ByteRGBAValueC> image;
-  if (Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", image, "", true))
-    imageRef->SetImage(image);
+  ImageByteRGBAC::RefT imageRef = CreateImage();
   transformImageRef->AddChild(imageRef.BodyPtr());
 
   vbox.Add(Button("Change Image", &CBSetImage, imageRef));
 
   // Add some text
-  TransformPositionAttitudeC::RefT transformTextRef = new TransformPositionAttitudeC();
-  transformTextRef->SetPosition(RavlN::Vector3dC(1.5, 0, 1));
+  TransformPositionAttitudeC::RefT transformTextRef = new TransformPositionAttitudeC;
+  transformTextRef->SetPosition(Vector3dC(1.5, 0, 0));
   groupRef->AddChild(transformTextRef.BodyPtr());
 
   TextC::RefT textRef = new TextC("Some Text");
@@ -106,12 +168,21 @@ int DoMain(int argc, char *argv[])
   textRef->SetAxisAlignment(TextAxisScreen);
   textRef->SetColour(RavlImageN::RealRGBAValueC(0.5, 0.5, 0.5, 1.0));
 
-  GeodeC::RefT textGeodeRef = new GeodeC();
+  GeodeC::RefT textGeodeRef = new GeodeC;
 //  textGeodeRef->BringToFront();
   textGeodeRef->AddDrawable(textRef.BodyPtr());
 
   transformTextRef->AddChild(textGeodeRef.BodyPtr());
 
+  // Add a TriMesh
+  TransformPositionAttitudeC::RefT transformTexTriMeshRef = new TransformPositionAttitudeC;
+  transformTexTriMeshRef->SetPosition(Vector3dC(-2, 0, 0));
+  transformTexTriMeshRef->SetAttitude(Quatern3dC(Vector3dC(1, 0, 0), RavlConstN::pi / 2.0));
+  groupRef->AddChild(transformTexTriMeshRef.BodyPtr());
+
+  TexTriMeshC::RefT texTriMeshRef = CreateTexTriMesh();
+  transformTexTriMeshRef->AddChild(texTriMeshRef.BodyPtr());
+  
   HUDC::RefT hudRef = new HUDC(RealRange2dC(0, 768, 0, 1024));
   groupRef->AddChild(hudRef.BodyPtr());
 
@@ -123,7 +194,7 @@ int DoMain(int argc, char *argv[])
   textHUDRef->SetAxisAlignment(TextAxisScreen);
   textHUDRef->SetColour(RavlImageN::RealRGBAValueC(0.0, 0.0, 0.0, 1.0));
 
-  GeodeC::RefT textHUDGeodeRef = new GeodeC();
+  GeodeC::RefT textHUDGeodeRef = new GeodeC;
   textHUDGeodeRef->AddDrawable(textHUDRef.BodyPtr());
   textHUDGeodeRef->BringToFront();
   hudRef->AddChild(textHUDGeodeRef.BodyPtr());

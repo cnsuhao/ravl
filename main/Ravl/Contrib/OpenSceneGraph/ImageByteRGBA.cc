@@ -10,11 +10,9 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/ImageByteRGBA.hh"
-#include <osg/Geometry>
 #include <osg/PrimitiveSet>
 #include <osg/Geode>
 #include <osg/Texture2D>
-#include <osgDB/ReadFile>
 
 #define DODEBUG 0
 #if DODEBUG

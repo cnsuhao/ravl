@@ -11,11 +11,11 @@ LICENSE=LGPL
 
 REQUIRES=OpenSceneGraph libGL
 
-HEADERS=Drawable.hh Sphere.hh ImageByteRGBA.hh Text.hh \
+HEADERS=Drawable.hh Sphere.hh ImageByteRGBA.hh Text.hh TriMesh.hh TexTriMesh.hh \
  Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh HUD.hh \
  OpenSceneGraphWidget.hh
 
-SOURCES=Drawable.cc Sphere.cc ImageByteRGBA.cc Text.cc \
+SOURCES=Drawable.cc Sphere.cc ImageByteRGBA.cc Text.cc TriMesh.cc TexTriMesh.cc \
  Node.cc Geode.cc Group.cc Transform.cc ModelFile.cc HUD.cc \
  OpenSceneGraphWidget.cc
 
@@ -25,11 +25,11 @@ MAINS=exOpenSceneGraphWidget.cc
 
 MUSTLINK=MustLinkGtkGlExtInit.cc
 
-USESLIBS=RavlCore RavlGeom RavlImage RavlGUI OpenGL GTK OpenSceneGraphGtk
-
-#EHT=Ravl.API.GUI.OpenSceneGraph.html
+USESLIBS=RavlCore RavlGeom RavlImage RavlGUI Ravl3D OpenGL GTK OpenSceneGraphGtk
 
 PROGLIBS=RavlOS RavlImageIO RavlExtImgIO
+
+#EHT=Ravl.API.GUI.OpenSceneGraph.html
 
 AUXFILES=OpenSceneGraphGtk.def
 
