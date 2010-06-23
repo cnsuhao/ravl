@@ -293,13 +293,18 @@ namespace RavlN {
     IndexC IMin() const {
       if(chunks.IsEmpty())
 	return 0; // Together with IMax this should indicate an empty array.
-      return chunks.Last().IMin();
+      return chunks.First().IMin();
     }
     //: Minimum offset used.
     // If range is empty the results are undefined.
     
     bool IsEmpty() const
-    { return chunks.IsEmpty(); }
+    {
+      for(IntrDLIterC<DChunkC<DataT> > it(chunks);it;it++)
+        if(it->Data().Size() > 0)
+          return false;
+      return true;
+    }
     //: Is array empty ?
     
     void Empty() { 
