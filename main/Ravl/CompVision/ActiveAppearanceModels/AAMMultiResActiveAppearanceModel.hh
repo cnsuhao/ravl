@@ -45,6 +45,18 @@ namespace RavlImageN {
     AAMMultiResActiveAppearanceModelBodyC(const SampleC<AAMActiveAppearanceModelC> &saam);
     //: Constructor from an arbitrary number of AAMs sorted in order of increasing resolution.
 
+    AAMMultiResActiveAppearanceModelBodyC(BinIStreamC &is);
+    //: Load from bin stream.
+
+    AAMMultiResActiveAppearanceModelBodyC(istream &is);
+    //: Load from stream.
+
+    virtual bool Save(BinOStreamC &out) const;
+    //: Save to binary stream 'out'.
+
+    virtual bool Save(ostream &out) const;
+    //: Save to stream 'out'.
+
     const AAMActiveAppearanceModelC &Nth(UIntT i) const
     { return maam.Nth(i); }
     //: Access nth level of resolution active appearance model (models are sorted in increasing order of resolution).
@@ -126,6 +138,12 @@ namespace RavlImageN {
     {}
     //: Constructor from an arbitrary number of AAMs sorted in order of increasing resolution.
 
+    AAMMultiResActiveAppearanceModelC(BinIStreamC &is);
+    //: Load from bin stream.
+
+    AAMMultiResActiveAppearanceModelC(istream &is);
+    //: Load from stream.
+
   protected:
     AAMMultiResActiveAppearanceModelC(AAMMultiResActiveAppearanceModelBodyC &bod)
       : RCHandleVC<AAMMultiResActiveAppearanceModelBodyC>(bod)
@@ -186,7 +204,19 @@ namespace RavlImageN {
     friend class AAMMultiResActiveAppearanceModelBodyC;
   };
 
+  inline
+  BinOStreamC &operator<<(BinOStreamC &s,const AAMMultiResActiveAppearanceModelC &aam) {
+    aam.Save(s);
+    return s;
+  }
+  //: Save active appearance model to binary stream.
 
+  inline
+  BinIStreamC &operator>>(BinIStreamC &s,AAMMultiResActiveAppearanceModelC &aam) {
+    aam = AAMMultiResActiveAppearanceModelC(s);
+    return s;
+  }
+  //: Read active appearance model from binary stream.
 }
 
 

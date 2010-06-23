@@ -39,7 +39,7 @@
 #include "Ravl/Vector.hh"
 #include "Ravl/PatternRec/Sample.hh"
 #include "Ravl/IO.hh"
-
+#include "Ravl/VirtualConstructor.hh"
 
 #include "Ravl/Image/ImagePointFeatureSet.hh"
 #include "Ravl/Image/AAMAppearance.hh"
@@ -92,6 +92,48 @@ namespace RavlImageN {
   AAMMultiResActiveAppearanceModelBodyC::AAMMultiResActiveAppearanceModelBodyC(const SampleC<AAMActiveAppearanceModelC> &saam)
     : maam(saam)
   {
+  }
+
+  //: Load from bin stream.
+  AAMMultiResActiveAppearanceModelBodyC::AAMMultiResActiveAppearanceModelBodyC(BinIStreamC &is)
+    : RCBodyVC(is)
+  {
+    int version;
+    is >> version;
+    if(version != 1)
+      throw ExceptionOutOfRangeC("AAMMultiResActiveAppearanceModelC:SAAMMultiResActiveAppearanceModelC(BinIStreamC &s), Bad version number in stream. ");
+
+    is >> maam;
+  }
+
+  //: Load from stream.
+  AAMMultiResActiveAppearanceModelBodyC::AAMMultiResActiveAppearanceModelBodyC(istream &is)
+    : RCBodyVC(is)
+  {
+    int version;
+    is >> version;
+    if(version != 1)
+      throw ExceptionOutOfRangeC("AAMMultiResActiveAppearanceModelC:SAAMMultiResActiveAppearanceModelC(istream &s), Bad version number in stream. ");
+
+    is >> maam;
+  }
+
+  //: Save to binary stream 'out'.
+  bool AAMMultiResActiveAppearanceModelBodyC::Save(BinOStreamC &out) const {
+    if(!RCBodyVC::Save(out))
+      return false;
+    int version = 1;
+    out << version << maam;
+    return true;
+  }
+
+  //: Save to stream 'out'.
+  bool AAMMultiResActiveAppearanceModelBodyC::Save(ostream &out) const {
+    if(!RCBodyVC::Save(out))
+      return false;
+    int version = 1;
+    out << ' ' << version << ' ' << ' ' << maam;
+    return true;
   }
 
   //: Returns the optimum appearance parameters for the image 'img' given an initial estimate 'paramEstimate'.
@@ -178,4 +220,5 @@ namespace RavlImageN {
     return resParam;
   }
 
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(AAMMultiResActiveAppearanceModelBodyC,AAMMultiResActiveAppearanceModelC,RCHandleVC<AAMMultiResActiveAppearanceModelBodyC>);
 }
