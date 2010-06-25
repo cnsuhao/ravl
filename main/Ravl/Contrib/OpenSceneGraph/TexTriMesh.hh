@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
-//! file = "Ravl/Contrib/OpenSceneGraph/TriMesh.hh"
+//! file = "Ravl/Contrib/OpenSceneGraph/TexTriMesh.hh"
 //! lib = RavlGUIOpenSceneGraph
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Graphics.OpenSceneGraph"

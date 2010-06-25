@@ -15,6 +15,7 @@
 #include <gtk/gtkcontainer.h>
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/EntryPnt.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -44,6 +45,14 @@ namespace RavlOSGN
   OpenSceneGraphWidgetBodyC::OpenSceneGraphWidgetBodyC(int width, int height)
   : m_width(width),
     m_height(height),
+    m_osgViewer(NULL),
+    m_osgWindow(NULL),
+    m_clearColour(0.5, 0.5, 0.5, 1.0)
+  {}
+
+  OpenSceneGraphWidgetBodyC::OpenSceneGraphWidgetBodyC(const RavlN::XMLFactoryContextC &factory)
+  : m_width(100),
+    m_height(100),
     m_osgViewer(NULL),
     m_osgWindow(NULL),
     m_clearColour(0.5, 0.5, 0.5, 1.0)
@@ -154,5 +163,17 @@ namespace RavlOSGN
 
     return true;
   }
+
+  static RavlN::XMLFactoryRegisterHandleC<OpenSceneGraphWidgetC> g_xmlFactoryRegisterOpenSceneGraphWidget("RavlOSGN::OpenSceneGraphWidgetC");
+
+  static RavlGUIN::WidgetC ConvertOpenSceneGraphWidget2Widget(const OpenSceneGraphWidgetC &widget)
+  {
+    return RavlGUIN::WidgetC(widget);
+  }
+
+  DP_REGISTER_CONVERSION(ConvertOpenSceneGraphWidget2Widget, 1);
+
+  void LinkOpenSceneGraphWidget()
+  {}
 
 }

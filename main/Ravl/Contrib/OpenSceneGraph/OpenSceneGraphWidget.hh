@@ -19,6 +19,7 @@
 #include <osgGtk/ViewerGtk.h>
 #include <osgGtk/GraphicsWindowGtk.h>
 #include "Ravl/Image/RealRGBAValue.hh"
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlOSGN
 {
@@ -34,6 +35,10 @@ namespace RavlOSGN
     //: Ctor.
     //!param: width - Initial width of the widget.
     //!param: height - Initial height of the widget.
+
+    OpenSceneGraphWidgetBodyC(const RavlN::XMLFactoryContextC &factory);
+    //: Ctor.
+    //!param: factory - Construct from a factory context.
 
     virtual ~OpenSceneGraphWidgetBodyC();
     //: Dtor.
@@ -78,6 +83,12 @@ namespace RavlOSGN
     {}
     //: Default ctor.
     // Creates an invalid handle.
+
+    OpenSceneGraphWidgetC(const RavlN::XMLFactoryContextC &factory)
+    : WidgetC(*new OpenSceneGraphWidgetBodyC(factory))
+    {}
+    //: Ctor.
+    //!param: factory - Construct from a factory context.
 
     OpenSceneGraphWidgetC(int width, int height)
     : WidgetC(*new OpenSceneGraphWidgetBodyC(width, height))
