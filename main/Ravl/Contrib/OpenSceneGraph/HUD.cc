@@ -57,4 +57,16 @@ namespace RavlOSGN
     return true;
   }
 
+  bool HUDC::RemoveChild(const NodeC::RefT &node)
+  {
+    if (!m_modelViewMatrix || !node.IsValid())
+      return false;
+
+    NodeC::RefT nodeRef = node;
+
+    m_modelViewMatrix->removeChild(nodeRef->Node());
+
+    return true;
+  }
+
 }

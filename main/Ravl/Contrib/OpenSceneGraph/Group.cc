@@ -49,4 +49,19 @@ namespace RavlOSGN
     return true;
   }
 
+  bool GroupC::RemoveChild(const NodeC::RefT &node)
+  {
+    if (!m_node || !node.IsValid())
+      return false;
+
+    NodeC::RefT nodeRef = node;
+    ref_ptr<Group> groupRef = m_node->asGroup();
+    if (!groupRef)
+      return false;
+
+    groupRef->removeChild(nodeRef->Node());
+
+    return true;
+  }
+
 }

@@ -39,6 +39,9 @@ namespace RavlOSGN
     virtual bool AddChild(const NodeC::RefT &node);
     //: Add a node object to the display.
 
+    virtual bool RemoveChild(const NodeC::RefT &node);
+    //: Remove a node object from the display.
+
     typedef RavlN::SmartPtrC<HUDC> RefT;
 
   protected:
