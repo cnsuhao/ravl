@@ -15,13 +15,15 @@ HEADERS=StringList.hh Option.hh TypeName.hh BufStream.hh \
  DArray1d.hh DArray1dIter.hh DArray1dIter2.hh DArray1dIter3.hh DArray1dIter4.hh DArray1dIter5.hh \
  VirtualConstructor.hh FunctionRegister.hh IndexNd.hh Cache.hh \
  DListExtra.hh VariableLengthCode.hh IndexRange2dSet.hh Base64.hh \
- PointerManager.hh RealRange2dSet.hh TimeCode.hh STL.hh RCWrapIO.hh MD5.hh
+ PointerManager.hh RealRange2dSet.hh TimeCode.hh STL.hh RCWrapIO.hh MD5.hh \
+ RealRange1dSet.hh
 
 SOURCES=StringList.cc Option.cc TypeName.cc BufStream.cc \
  SubStringList.cc XMLStream.cc XMLTree.cc StreamParse.cc \
  VirtualConstructor.cc FunctionRegister.cc IndexNd.cc \
  VariableLengthCode.cc IndexRange2dSet.cc Base64.cc \
- PointerManager.cc RealRange2dSet.cc TimeCode.cc STL.cc MD5.cc
+ PointerManager.cc RealRange2dSet.cc TimeCode.cc STL.cc MD5.cc \
+ RealRange1dSet.cc
 
 PLIB=RavlCore
 

@@ -43,7 +43,7 @@ namespace RavlN {
     //: Add rect2 and rect1.
   
     RealRange2dC Enclosing() const;
-    //: Get minumum enclosing rectangle for set.
+    //: Get minimum enclosing rectangle for set.
     
     RealRange2dSetC Subtract(const RealRange2dC &rect) const;
     //: Remove 'rect' rectangle from the region given by the set.
@@ -61,7 +61,7 @@ namespace RavlN {
     //: Add  rectangle set to this set.
   
     bool Contains(const RealRange2dC &rect) const;
-    //: Does this set wholy contain 'rect' ?
+    //: Does this set wholly contain 'rect' ?
     
     RealT Area() const;
     //: Total area of set.

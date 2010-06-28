@@ -23,7 +23,7 @@
 
 namespace RavlN {
 
-  //: Get minumum enclosing rectangle for set.
+  //: Get minimum enclosing rectangle for set.
 
   RealRange2dC RealRange2dSetC::Enclosing() const {
     DLIterC<RealRange2dC> it(*this);
@@ -92,7 +92,7 @@ namespace RavlN {
       ret.InsLast(rect2);
       return ret;
     }
-    // Try and keep rects approximantly the same size....
+    // Try and keep rects approximately the same size....
     if(rect1.Area() > rect2.Area()) {
       ret += Subtract(rect1,rect2);
       ret.InsLast(rect2);

@@ -34,6 +34,7 @@
 #include "Ravl/BinStream.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/IndexRange2dSet.hh"
+#include "Ravl/RealRange1dSet.hh"
 #include "Ravl/Base64.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/SArray1dIter2.hh"
@@ -70,6 +71,7 @@ int testCache();
 int testStringArrayIO();
 int testSArrayIO();
 int testIndexRange2dSet();
+int testRealRange1dSet();
 int testBase64();
 int testObjIO();
 int testVectorIO();
@@ -124,7 +126,11 @@ int testRavlCore(int argc,char **argv) {
     return 1;
   }
   if((line = testIndexRange2dSet()) != 0) {
-    cerr << "SArrayIO io test failed line :" << line << "\n";
+    cerr << "IndexRange2dSet test failed line :" << line << "\n";
+    return 1;
+  }
+  if((line = testRealRange1dSet()) != 0) {
+    cerr << "IndexRange1dSet test failed line :" << line << "\n";
     return 1;
   }
   if((line = testBase64()) != 0) {
@@ -465,6 +471,28 @@ int testIndexRange2dSet() {
     cerr << t4 << "\n";
     return __LINE__;
   }
+  return 0;
+}
+
+int testRealRange1dSet() {
+  cout << "Testing IndexRange2dSetC. \n";
+  RealRangeC range1(0,1);
+  RealRangeC range2(2,3);
+  RealRangeC range3(0,3);
+  RealRangeC range4(1,2);
+
+  //cout << "R1:" << rect1 << " Area:" << rect1.Area() << "\n";
+  //cout << "R2:" << rect2 << " Area:" << rect2.Area() << "\n";
+
+  RealRange1dSetC t1 = RealRange1dSetC::Add(range1,range2);
+  if(t1.Length() != 2) {
+    return __LINE__;
+  }
+
+  RealRange1dSetC t2 = RealRange1dSetC::Subtract(range3,range4);
+  if(t2.Length() != (range3.Size() - range4.Size()))
+    return __LINE__;
+
   return 0;
 }
 
