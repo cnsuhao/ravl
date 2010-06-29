@@ -8,7 +8,6 @@ extern "C" {
   typedef struct _GtkWidget GtkWidget;
 }
 
-#define RAVL_USE_GTKGLEXT 1
 
 namespace RavlGUIN {
   

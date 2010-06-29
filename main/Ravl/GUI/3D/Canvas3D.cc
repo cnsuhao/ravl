@@ -59,7 +59,7 @@ namespace RavlGUIN
 {
 
 
-#if RAVL_USE_GTKGLEXT
+#if !RAVL_USE_GTKGLEXT
   static GLboolean CheckExtension(const char *extName )
   {
     /*
