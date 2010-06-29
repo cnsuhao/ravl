@@ -594,7 +594,7 @@ int testImagePyramid() {
   
   ImagePyramidC<RealT> pyramid(img,3,true);
   if(pyramid.Images().Size() != 3) return __LINE__;
-  RealT fscale,pscale;
+  RealT fscale(0.0),pscale(0.0);
   ImageC<RealT> simg;
   for(RealT scale =0.1;scale < 10;scale += 0.1) {
     pyramid.Find(scale,simg,fscale,pscale);
@@ -632,7 +632,7 @@ int testImagePyramidRGB() {
   
   ImagePyramidC<ByteRGBValueC,RealRGBValueC> pyramid(img,3,true);
   if(pyramid.Images().Size() != 3) return __LINE__;
-  RealT fscale,pscale;
+  RealT fscale(0.0),pscale(0.0);
   ImageC<ByteRGBValueC> simg;
   for(RealT scale =0.1;scale < 5;scale += 1) {
     pyramid.Find(scale,simg,fscale,pscale);
