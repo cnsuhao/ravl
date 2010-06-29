@@ -12,6 +12,7 @@
 #include "Ravl/OpenSceneGraph/Node.hh"
 #include <osg/Node>
 #include <osg/StateSet>
+#include <osg/Referenced>
 
 #define DODEBUG 0
 #if DODEBUG
@@ -25,14 +26,75 @@ namespace RavlOSGN
 
   using namespace osg;
 
+  class NodeDataC
+  : public Referenced
+  {
+  public:
+    NodeDataC(const NodeC &node)
+    : m_node(&node)
+    {}
+
+    NodeC::RefT m_node;
+  };
+
+  class NodeCallbackC
+  : public NodeCallback
+  {
+  public:
+    virtual void operator()(Node *node, NodeVisitor *nv)
+    {
+      ref_ptr<NodeDataC> nodeDataRef = dynamic_cast<NodeDataC*>(node->getUserData());
+      if (nodeDataRef && nodeDataRef->m_node.IsValid())
+      {
+        nodeDataRef->m_node->SigCallback()();
+      }
+
+      traverse(node, nv);
+    }
+  };
+
   NodeC::NodeC()
+  : m_sigCallback(true)
   {
   }
 
   NodeC::~NodeC()
   {
+    if (m_node && m_callback)
+    {
+      m_node->removeUpdateCallback(m_callback.get());
+      m_callback = NULL;
+    }
   }
-  
+
+  bool NodeC::EnableCallback(const bool enable)
+  {
+    if (!m_node)
+      return false;
+
+    ref_ptr<NodeDataC> nodeDataRef = new NodeDataC(*this);
+    m_node->setUserData(nodeDataRef.get());
+
+    if (enable)
+    {
+      if (m_callback)
+        return true;
+
+      m_callback = new NodeCallbackC;
+      m_node->setUpdateCallback(m_callback.get());
+    }
+    else
+    {
+      if (!m_callback)
+        return true;
+
+      m_node->removeUpdateCallback(m_callback.get());
+      m_callback = NULL;
+    }
+
+    return true;
+  }
+
   bool NodeC::BringToFront()
   {
     if (!m_node)

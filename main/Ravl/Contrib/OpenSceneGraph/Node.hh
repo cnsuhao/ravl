@@ -17,6 +17,8 @@
 #include "Ravl/SmartPtr.hh"
 #include <osg/ref_ptr>
 #include <osg/Node>
+#include <osg/NodeCallback>
+#include "Ravl/Threads/Signal.hh"
 
 namespace RavlOSGN
 {
@@ -34,6 +36,13 @@ namespace RavlOSGN
     virtual ~NodeC();
     //: Dtor.
 
+    bool EnableCallback(const bool enable = true);
+    //: Enabled the callback function.
+
+    RavlN::Signal0C &SigCallback()
+    { return m_sigCallback; }
+    //: Access the callback signal.
+    
     bool BringToFront();
     //: Make sure the node is rendered after all other objects and disable depth testing.
 
@@ -45,6 +54,8 @@ namespace RavlOSGN
     
   protected:
     osg::ref_ptr<osg::Node> m_node;
+    osg::ref_ptr<osg::NodeCallback> m_callback;
+    RavlN::Signal0C m_sigCallback;
   };
 
 }
