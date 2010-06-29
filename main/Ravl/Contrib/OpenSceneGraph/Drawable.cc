@@ -27,6 +27,10 @@ namespace RavlOSGN
   {
   }
 
+  DrawableC::DrawableC(osg::Drawable *drawable)
+    : m_drawable(drawable)
+  {}
+
   DrawableC::~DrawableC()
   {
   }

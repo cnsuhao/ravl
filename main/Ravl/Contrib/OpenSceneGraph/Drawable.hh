@@ -28,6 +28,9 @@ namespace RavlOSGN
   : public RavlN::RCBodyVC
   {
   public:
+    DrawableC(osg::Drawable *drawable);
+    //: Ctor.
+
     DrawableC();
     //: Ctor.
 

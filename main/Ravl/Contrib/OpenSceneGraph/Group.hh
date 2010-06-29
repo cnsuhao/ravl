@@ -39,6 +39,12 @@ namespace RavlOSGN
     virtual bool RemoveChild(const NodeC::RefT &node);
     //: Remove a node object from the group.
 
+    bool AddChildNode(const NodeC &node);
+    //: Add a node object to the group.
+
+    bool RemoveChildNode(const NodeC &node);
+    //: Remove a node object from the group.
+
     typedef RavlN::SmartPtrC<GroupC> RefT;
 
   protected:

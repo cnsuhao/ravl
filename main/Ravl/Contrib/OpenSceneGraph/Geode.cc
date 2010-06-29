@@ -29,6 +29,12 @@ namespace RavlOSGN
     m_node = new osg::Geode();
   }
 
+  GeodeC::GeodeC(const DrawableC &drawable)
+  {
+    m_node = new osg::Geode();
+    AddDrawable(DrawableC::RefT(&drawable));
+  }
+
   GeodeC::~GeodeC()
   {
   }

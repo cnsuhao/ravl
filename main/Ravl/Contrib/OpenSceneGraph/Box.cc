@@ -5,11 +5,11 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
-//! file = "Ravl/Contrib/OpenSceneGraph/Sphere.cc"
+//! file = "Ravl/Contrib/OpenSceneGraph/Box.cc"
 //! lib = RavlGUIOpenSceneGraph
 //! author = "Warren Moore"
 
-#include "Ravl/OpenSceneGraph/Sphere.hh"
+#include "Ravl/OpenSceneGraph/Box.hh"
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
@@ -25,17 +25,17 @@ namespace RavlOSGN
 
   using namespace osg;
 
-  SphereC::SphereC(const RavlN::Vector3dC &position, RavlN::RealT radius)
+  BoxC::BoxC(const RavlN::Vector3dC &position, const RavlN::Vector3dC &size)
   {
-    m_sphere = new Sphere(Vec3(position.X(), position.Y(), position.Z()), radius);
-    m_drawable = new ShapeDrawable(m_sphere);
+    m_box = new osg::Box(Vec3(position.X(), position.Y(), position.Z()),size.X(), size.Y(), size.Z());
+    m_drawable = new ShapeDrawable(m_box);
   }
 
-  SphereC::~SphereC()
+  BoxC::~BoxC()
   {
   }
 
-  bool SphereC::SetColour(const RavlImageN::RealRGBAValueC &colour)
+  bool BoxC::SetColour(const RavlImageN::RealRGBAValueC &colour)
   {
     if (!m_drawable)
       return false;
@@ -49,22 +49,22 @@ namespace RavlOSGN
     return true;
   }
 
-  bool SphereC::SetPosition(const RavlN::Vector3dC &position)
+  bool BoxC::SetPosition(const RavlN::Vector3dC &position)
   {
-    if (!m_sphere)
+    if (!m_box)
       return false;
 
-    m_sphere->setCenter(Vec3(position.X(), position.Y(), position.Z()));
+    m_box->setCenter(Vec3(position.X(), position.Y(), position.Z()));
 
     return true;
   }
 
-  bool SphereC::SetSize(RavlN::RealT radius)
+  bool BoxC::SetSize(const RavlN::Vector3dC &size)
   {
-    if (!m_sphere)
+    if (!m_box)
       return false;
 
-    m_sphere->setRadius(radius);
+    m_box->setHalfLengths(Vec3(size.X(), size.Y(), size.Z()));
 
     return true;
   }

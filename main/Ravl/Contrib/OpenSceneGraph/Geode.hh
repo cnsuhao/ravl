@@ -30,6 +30,9 @@ namespace RavlOSGN
     GeodeC();
     //: Ctor.
 
+    GeodeC(const DrawableC &drawable);
+    //: Ctor.
+
     virtual ~GeodeC();
     //: Dtor.
 

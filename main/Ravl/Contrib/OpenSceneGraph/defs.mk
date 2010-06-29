@@ -9,15 +9,15 @@ PACKAGE=Ravl/OpenSceneGraph
 
 LICENSE=LGPL
 
-REQUIRES=OpenSceneGraph libGL
+#REQUIRES=OpenSceneGraph libGL
 
 HEADERS=Drawable.hh Sphere.hh Image.hh ImageByteRGBA.hh ImageByteRGB.hh Text.hh TriMesh.hh TexTriMesh.hh \
  Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh HUD.hh \
- OpenSceneGraphWidget.hh
+ OpenSceneGraphWidget.hh Box.hh
 
 SOURCES=Drawable.cc Sphere.cc Image.cc ImageByteRGBA.cc ImageByteRGB.cc Text.cc TriMesh.cc TexTriMesh.cc \
  Node.cc Geode.cc Group.cc Transform.cc ModelFile.cc HUD.cc \
- OpenSceneGraphWidget.cc
+ OpenSceneGraphWidget.cc Box.cc
 
 PLIB=RavlGUIOpenSceneGraph
 
