@@ -14,11 +14,8 @@
 #ifndef RAVLGUI_OPENSCENEGRAPHIMAGEBYTERGBA_HEADER
 #define RAVLGUI_OPENSCENEGRAPHIMAGEBYTERGBA_HEADER 1
 
-#include "Ravl/OpenSceneGraph/Node.hh"
-#include "Ravl/Image/Image.hh"
+#include "Ravl/OpenSceneGraph/Image.hh"
 #include "Ravl/Image/ByteRGBAValue.hh"
-#include "Ravl/RealRange2d.hh"
-#include <osg/Geometry>
 
 namespace RavlOSGN
 {
@@ -27,7 +24,7 @@ namespace RavlOSGN
   //: Node object containing a ByteRGBAValueC image.
 
   class ImageByteRGBAC
-  : public NodeC
+  : public ImageC
   {
   public:
     ImageByteRGBAC(const RavlN::RealRange2dC &coords = RavlN::RealRange2dC(1, 1));
@@ -40,21 +37,11 @@ namespace RavlOSGN
     bool SetImage(RavlImageN::ImageC<RavlImageN::ByteRGBAValueC> &image);
     //: Set the object image.
 
-    bool AlphaImageEnable(bool alphaImageEnable);
-    //: Enable transparency for the alpha channel in the image (off by default for performance reasons).
-
-    bool SetAlpha(float alpha);
-    //: Set an alpha value for the entire image.
-
     typedef RavlN::SmartPtrC<ImageByteRGBAC> RefT;
+    //: Reference type.
 
   protected:
-    bool UpdateAlphaRenderState(osg::ref_ptr<osg::StateSet> &stateSetRef);
-
-    osg::ref_ptr<osg::Geometry> m_geometry;
     RavlImageN::ImageC<RavlImageN::ByteRGBAValueC> m_image;
-    bool m_alphaImageEnabled;
-    float m_alpha;
   };
 
 }
