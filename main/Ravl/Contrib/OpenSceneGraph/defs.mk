@@ -11,11 +11,11 @@ LICENSE=LGPL
 
 REQUIRES=OpenSceneGraph libGL
 
-HEADERS=Drawable.hh Sphere.hh ImageByteRGBA.hh Text.hh TriMesh.hh TexTriMesh.hh \
+HEADERS=Drawable.hh Sphere.hh ImageByteRGBA.hh ImageByteRGB.hh Text.hh TriMesh.hh TexTriMesh.hh \
  Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh HUD.hh \
  OpenSceneGraphWidget.hh
 
-SOURCES=Drawable.cc Sphere.cc ImageByteRGBA.cc Text.cc TriMesh.cc TexTriMesh.cc \
+SOURCES=Drawable.cc Sphere.cc ImageByteRGBA.cc ImageByteRGB.cc Text.cc TriMesh.cc TexTriMesh.cc \
  Node.cc Geode.cc Group.cc Transform.cc ModelFile.cc HUD.cc \
  OpenSceneGraphWidget.cc
 
