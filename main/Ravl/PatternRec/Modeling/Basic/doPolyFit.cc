@@ -49,7 +49,7 @@ bool ReadData(const StringC &filename,int noOutputs,SampleC<VectorC> &inSamples,
     VectorC outVec(noOutputs);
     UIntT at = 0;
     for(DLIterC<StringC> it(strList);it;it++,at++) {
-      if(at < inSize) {
+      if(at < (UIntT) inSize) {
 	inVec[at] = it->RealValue();
       } else {
 	outVec[at - inSize] = it->RealValue();
