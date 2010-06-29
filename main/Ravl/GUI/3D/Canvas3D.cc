@@ -19,10 +19,11 @@
 #include <string.h>
 
 //#include "Ravl/StdError.hh"
-#ifndef VISUAL_CPP
+#if !RAVL_USE_GTKGLEXT
 #include "Ravl/GUI/gdkgl.h"
 #include "Ravl/GUI/gtkglarea.h"
 #endif
+
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/FMatrix.hh"
 #include "Ravl/GUI/GLContext.hh"
@@ -30,11 +31,13 @@
 #include <gtk/gtk.h>
 #include <GL/gl.h>
 
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
 #include <GL/glu.h>
 #include <gtk/gtkgl.h>
 #include <gdk/gdkgl.h>
-#else
+#endif
+
+#ifndef VISUAL_CPP
 #include <GL/glx.h>
 #endif
 
@@ -56,7 +59,7 @@ namespace RavlGUIN
 {
 
 
-#ifndef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
   static GLboolean CheckExtension(const char *extName )
   {
     /*
@@ -97,7 +100,7 @@ namespace RavlGUIN
       m_initDone(false)
   {
     ONDEBUG(cerr << "Canvas3DBodyC::Canvas3DBodyC(), Called.\n");
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     if(!gtk_gl_init_check(NULL, NULL))
       RavlIssueError("Touble initialising gtk_gl\n");
     if(!gdk_gl_init_check(NULL, NULL))
@@ -109,7 +112,7 @@ namespace RavlGUIN
   bool Canvas3DBodyC::GUIInitGL() {
     ONDEBUG(cerr << "Canvas3DBodyC::GUIInitGL(), GL Avaliable ? \n");
 	bool ret = false;
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     gint major, minor;
     gdk_gl_query_version(&major, &minor);
     ONDEBUG(cerr << "OpenGL extension version - %d.%d\n" << major << " " << minor << endl);
@@ -144,7 +147,7 @@ namespace RavlGUIN
     
     ONDEBUG(cerr << "Canvas3DBodyC::Create(GtkWidget *), Setting up canvas. \n");
 
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     
     widget = gtk_drawing_area_new();
     if(widget == 0) {
@@ -211,7 +214,7 @@ namespace RavlGUIN
       ONDEBUG(cerr << "Canvas3DBodyC::BeginGL(), ERROR: Called with invalid widget. \n");
       return false;
     }
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
     GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
     if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
@@ -233,7 +236,7 @@ namespace RavlGUIN
   //: Call after finished with GL
   bool Canvas3DBodyC::GUIEndGL()
   {
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
     gdk_gl_drawable_gl_end (gldrawable);
 #endif
@@ -245,7 +248,7 @@ namespace RavlGUIN
   //: swap buffers.
   bool Canvas3DBodyC::GUISwapBuffers()
   {
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);    
     if (gdk_gl_drawable_is_double_buffered (gldrawable))
       gdk_gl_drawable_swap_buffers (gldrawable);

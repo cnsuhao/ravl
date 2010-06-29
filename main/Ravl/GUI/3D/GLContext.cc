@@ -2,16 +2,17 @@
 #include "Ravl/GUI/GLContext.hh"
 
 //#include "Ravl/StdError.hh"
-#ifndef VISUAL_CPP
+#if !RAVL_USE_GTKGLEXT
 #include "Ravl/GUI/gdkgl.h"
 #include "Ravl/GUI/gtkglarea.h"
 #endif
+
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/FMatrix.hh"
 
 #include <gtk/gtk.h>
 
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
 #include <GL/glu.h>
 #include <gtk/gtkgl.h>
 #include <gdk/gdkgl.h>
@@ -57,7 +58,7 @@ namespace RavlGUIN {
       ONDEBUG(cerr << "GLContextBodyC::Begin(), ERROR: Called with invalid widget. \n");
       return false;
     }
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     GdkGLContext *glcontext = gtk_widget_get_gl_context (m_widget);
     GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (m_widget);
     if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
@@ -74,7 +75,7 @@ namespace RavlGUIN {
   //: Flag that we're finished with the context.
   
   void GLContextBodyC::End() {
-#ifdef VISUAL_CPP
+#if RAVL_USE_GTKGLEXT
     GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (m_widget);
     gdk_gl_drawable_gl_end (gldrawable);
 #endif
