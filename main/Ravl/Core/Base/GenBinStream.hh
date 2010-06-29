@@ -377,6 +377,24 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
     return *this; 
   }
   
+  GenBinOStreamC &GenBinOStreamC::operator<<(Int64T dat) {
+    if(toSwap) out.write((char *)&dat,8);
+    else{
+      int buf = bswap_64(dat);
+      out.write((char *) &buf,8);  
+    }
+    return *this; 
+  }
+  
+  GenBinOStreamC &GenBinOStreamC::operator<<(UInt64T dat) {
+    if(toSwap) out.write((char *)&dat,8);
+    else{
+      int buf = bswap_64(dat);
+      out.write((char *) &buf,8);
+    }
+    return *this; 
+  }
+  
   inline 
   GenBinOStreamC &GenBinOStreamC::operator<<(FloatT dat) {
     RavlAssert(sizeof(FloatT) == sizeof(IntT));
