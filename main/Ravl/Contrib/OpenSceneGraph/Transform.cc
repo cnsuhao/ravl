@@ -60,6 +60,21 @@ namespace RavlOSGN
     return true;
   }
 
+  bool TransformPositionAttitudeC::GetPosition(RavlN::Vector3dC &position)
+  {
+    if (!m_node)
+      return false;
+
+    ref_ptr<PositionAttitudeTransform> transformRef = dynamic_cast<PositionAttitudeTransform*>(m_node.get());
+    if (!transformRef)
+      return false;
+
+    Vec3 vecPosition = transformRef->getPosition();
+    position = RavlN::Vector3dC(vecPosition.x(), vecPosition.y(), vecPosition.z());
+
+    return true;
+  }
+
   bool TransformPositionAttitudeC::SetAttitude(const RavlN::Quatern3dC &attitude)
   {
     if (!m_node)

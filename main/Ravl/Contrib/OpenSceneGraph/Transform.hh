@@ -58,6 +58,9 @@ namespace RavlOSGN
     bool SetPosition(const RavlN::Vector3dC &position);
     //: Set the transform position.
 
+    bool GetPosition(RavlN::Vector3dC &position);
+    //: Get the transform position.
+
     bool SetAttitude(const RavlN::Quatern3dC &attitude);
     //: Set the transform attitude.
 
