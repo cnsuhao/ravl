@@ -45,6 +45,9 @@ namespace RavlOSGN
     bool RemoveChildNode(const NodeC &node);
     //: Remove a node object from the group.
 
+    bool RemoveChildren();
+    //: Remove all node objects from the group.
+
     typedef RavlN::SmartPtrC<GroupC> RefT;
 
   protected:

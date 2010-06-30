@@ -82,4 +82,20 @@ namespace RavlOSGN
   }
   //: Remove a node object from the group.
 
+  bool GroupC::RemoveChildren()
+  {
+    if (!m_node)
+      return false;
+
+    ref_ptr<Group> groupRef = m_node->asGroup();
+    if (!groupRef)
+      return false;
+
+    const int groupSize = groupRef->getNumChildren();
+    if (groupSize > 0)
+      groupRef->removeChildren(0, groupSize);
+
+    return true;
+  }
+
 }
