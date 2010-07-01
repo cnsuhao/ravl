@@ -26,6 +26,7 @@
 #include "Ravl/DP/MethodPtrIO.hh"
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/SmartPtr.hh"
 
 using namespace RavlN;
 
@@ -61,23 +62,28 @@ int main() {
 int AddOne(const int &value)
 { return value+1; }
 
-class CounterC {
+class CounterC 
+ : public RavlN::RCBodyC
+{
 public:
   CounterC()
    : m_counter(0)
   {}
 
   int GetValue()
-  { return m_counter++; }
+  {
+    return m_counter++;
+  }
 
+  typedef RavlN::SmartPtrC<CounterC> RefT;
   int m_counter;
 };
 
 int testThreadPipe() {
   cerr << "testThreadPipe() Called. \n";
   {
-    CounterC aCounter;
-    DPIPortC<int> source = IMethodPtr(&aCounter,&CounterC::GetValue);
+    CounterC::RefT aCounter = new CounterC();
+    DPIPortC<int> source = IMethodPtr(aCounter,&CounterC::GetValue);
     DPIPortC<int> input = source >> Process(&AddOne) >>=
               RavlN::DPFixedBufferC<int>(5);
     int total = 0;
@@ -86,13 +92,13 @@ int testThreadPipe() {
       input.Get(value);
       total += value;
     }
-    std::cerr << "Counter=" << total << "\n";
+    std::cerr << "Counter=" << total << " (Expected 210) \n";
     if(total != 210)
       return __LINE__;
   }
   {
-    CounterC aCounter;
-    DPISPortC<int> source = SPort(IMethodPtr(&aCounter,&CounterC::GetValue));
+    CounterC::RefT aCounter = new CounterC();
+    DPISPortC<int> source = SPort(IMethodPtr(aCounter,&CounterC::GetValue));
     DPIPortC<int> input = source >> Process(&AddOne) >>=
               RavlN::DPFixedBufferC<int>(5);
 
@@ -102,7 +108,7 @@ int testThreadPipe() {
       input.Get(value);
       total += value;
     }
-    std::cerr << "Counter=" << total << "\n";
+    std::cerr << "Counter=" << total << " (Expected 210) \n";
     if(total != 210)
       return __LINE__;
   }
