@@ -203,7 +203,6 @@ namespace RavlImageN {
   //  The method first computes a least-squares solution based on the pseudo-inverse and then refines the solution by non-linear minimisation.
   bool AAMPoseEstimateBodyC::EstimatePose(const VectorC &C, PairC<RealT> &angles) const {
     if(C.Size() != C0.Size()) {
-      cerr << "Warning, expected parameter size " << C0.Size() << " and got " << C.Size() << endl;
       return false;
     }
     angles = EstimatePose(C);

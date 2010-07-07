@@ -62,10 +62,6 @@ namespace RavlImageN {
     //: Estimate the pose of the appearance represented by parameter vector 'C'.
     //  The method first computes a least-squares solution based on the pseudo-inverse and then refines the solution by non-linear minimisation.
 
-    bool EstimatePose(const VectorC &C, PairC<RealT> &angles) const;
-    //: Estimate the pose of the appearance represented by parameter vector 'C'.
-    //  The method first computes a least-squares solution based on the pseudo-inverse and then refines the solution by non-linear minimisation.
-
     bool GenerateProfile(const VectorC &C, StringC fileName) const;
     //: Outputs the profile of the cost function.
     //!param: C - Parameter vector representing the appearance for which we would like to evaluate the pose.
@@ -174,11 +170,6 @@ namespace RavlImageN {
 
    PairC<RealT> EstimatePose(const VectorC &C) const
      { return Body().EstimatePose(C); }
-    //: Estimate the pose of the appearance represented by parameter vector 'C'.
-    //  The method first computes a least-squares solution based on the pseudo-inverse and then refines the solution by non-linear minimisation.
-
-    bool EstimatePose(const VectorC &C, PairC<RealT> &angles) const
-    { return Body().EstimatePose(C, angles); }
     //: Estimate the pose of the appearance represented by parameter vector 'C'.
     //  The method first computes a least-squares solution based on the pseudo-inverse and then refines the solution by non-linear minimisation.
 
