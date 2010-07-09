@@ -96,11 +96,14 @@ namespace RavlImageN
     UIntT cameraId = params.UIntValue();
     
     // Create the relevant port
-    
-    if (obj_type == typeid(ImageC<ByteT>))
-      return ImgIOuEyeC<ByteT>(cameraId);
-    if (obj_type == typeid(ImageC<ByteRGBValueC>))
-      return ImgIOuEyeC<ByteRGBValueC>(cameraId);
+    try {
+      if (obj_type == typeid(ImageC<ByteT>))
+        return ImgIOuEyeC<ByteT>(cameraId);
+      if (obj_type == typeid(ImageC<ByteRGBValueC>))
+        return ImgIOuEyeC<ByteRGBValueC>(cameraId);
+    } catch(RavlN::ExceptionOperationFailedC &ex) {
+      std::cerr << "ERROR: Requested camera not found. \n";
+    }
     
     return DPIPortBaseC();
   }

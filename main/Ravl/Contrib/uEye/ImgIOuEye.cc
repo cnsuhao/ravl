@@ -670,7 +670,7 @@ namespace RavlImageN {
     if(attrName == "gain_boost") {
       RavlN::MutexLockC accessLock(m_accessMutex);
       ret = is_SetGainBoost(m_phf, IS_GET_GAINBOOST);
-      attrValue = ret == IS_SET_GAINBOOST_ON;
+      attrValue = (ret == IS_SET_GAINBOOST_ON);
       return true;
     }
     if(attrName == "auto_framerate") {
@@ -682,6 +682,13 @@ namespace RavlImageN {
       attrValue = v1 > 0;
       return true;
     }
+    if(attrName == "global_shutter") {
+      RavlN::MutexLockC accessLock(m_accessMutex);
+      ret = is_SetGlobalShutter(m_phf, IS_GET_GLOBAL_SHUTTER);
+      attrValue = (ret == IS_SET_GLOBAL_SHUTTER_ON);
+      return true;
+    }
+
     return false;
   }
 
@@ -768,9 +775,24 @@ namespace RavlImageN {
 
         if((ret = is_FreezeVideo(m_phf,maxDelay)) != IS_SUCCESS) {
           SysLog(SYSLOG_ERR) << "Failed to freeze video for capture. ErrorCode:" << ret << " ";
-          return true;
         }
+        return true;
       }
+      return true;
+    }
+
+
+
+    if(attrName == "global_shutter") {
+      RavlN::MutexLockC accessLock(m_accessMutex);
+      int mode = attrValue ? IS_SET_GLOBAL_SHUTTER_ON : IS_SET_GLOBAL_SHUTTER_OFF;
+      if((ret = is_SetGlobalShutter(m_phf,mode)) != IS_SUCCESS) {
+        SysLog(SYSLOG_ERR) << "Failed to set global shutter. ErrorCode:" << ret << " ";
+        if(ret == IS_NOT_SUPPORTED)
+          SysLog(SYSLOG_ERR) << "  Error code indicates global shutter not supported. Trigger mode may have to be enable to use this feature.";
+        return true;
+      }
+
       return true;
     }
     return false;
@@ -859,6 +881,24 @@ namespace RavlImageN {
       attrValue = intExp / 1000.0;
       return true;
     }
+    if(attrName == "global_flash_delay") {
+      ULONG theDelay = 0,theExposure = 0;
+      if((ret = is_GetGlobalFlashDelays(m_phf, &theDelay,&theExposure)) != IS_SUCCESS) {
+        SysLog(SYSLOG_WARNING) << "Failed to get the global flash delays. ";
+      }
+      // Change things to seconds.
+      attrValue = ((double)theDelay) * 1.0e-6; // Delay is in us
+      return true;
+    }
+    if(attrName == "global_flash_duration") {
+      ULONG theDelay = 0,theExposure = 0;
+      if((ret = is_GetGlobalFlashDelays(m_phf, &theDelay,&theExposure)) != IS_SUCCESS) {
+        SysLog(SYSLOG_WARNING) << "Failed to get the global flash delays. ";
+      }
+      // Change things to seconds.
+      attrValue = ((double)theExposure) * 1.0e-6; // shutter time in us
+      return true;
+    }
 
     return false;
   }
@@ -884,11 +924,15 @@ namespace RavlImageN {
       return true;
     }
     if(attrName == "shutter_speed") {
+
       RavlN::MutexLockC accessLock(m_accessMutex);
       double tmp = 0;
       if((ret = is_SetExposureTime (m_phf, attrValue*1000.0,&tmp)) != IS_SUCCESS) {
         SysLog(SYSLOG_ERR) << "Failed to set shutter speed. ErrorCode:" << ret << "\n";
       }
+      SignalAttrChange("global_flash_delay");
+      SignalAttrChange("global_flash_duration");
+      SignalAttrChange("shutter_speed");
       return true;
     }
 
@@ -903,6 +947,8 @@ namespace RavlImageN {
       SignalAttrChange("shutter_step");
       SignalAttrChange("shutter_speed");
       SignalAttrChange("framerate");
+      SignalAttrChange("global_flash_delay");
+      SignalAttrChange("global_flash_duration");
       return true;
     }
     if(attrName == "gain") {
@@ -1101,8 +1147,22 @@ namespace RavlImageN {
     for(int i = 0; i < 360; i += 90)
       rotationList.InsLast(StringC(i));
     attrCtrl.RegisterAttribute(AttributeTypeEnumC("rotation", "Image rotation.", true, true, rotationList, rotationList.First()));
-
     attrCtrl.RegisterAttribute(AttributeTypeBoolC("trigger_soft", "Set off a software trigger", false, true,false));
+
+#ifdef IS_GET_SUPPORTED_GLOBAL_SHUTTER
+    // Global shutter
+    ret = is_SetGlobalShutter(m_phf, IS_GET_SUPPORTED_GLOBAL_SHUTTER);
+    if(ret != IS_NOT_SUPPORTED) {
+      ret = is_SetGlobalShutter(m_phf, IS_GET_GLOBAL_SHUTTER);
+      attrCtrl.RegisterAttribute(AttributeTypeBoolC("global_shutter", "Is global shutter enabled.", true, true, ret == IS_SET_GLOBAL_SHUTTER_ON));
+    } else {
+      SysLog(SYSLOG_DEBUG) << "Global shutter return code:" << (int) ret << ". \n";
+    }
+#endif
+
+    // Measure time until all rows are open with current setup.
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<RealT>("global_flash_delay", "When using a rolling shutter time until all rows are open with the current pixel clock.", true, false, 0.0,1.0,0.000001,0));
+    attrCtrl.RegisterAttribute(AttributeTypeNumC<RealT>("global_flash_duration", "When using a rolling shutter this is the length of time all rows are open with the current pixel clock.", true, false, 0.0,1.0,0.000001,0));
 
 
     return true;

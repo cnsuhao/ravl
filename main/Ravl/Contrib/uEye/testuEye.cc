@@ -2,11 +2,14 @@
 #include "Ravl/Image/ImgIOuEye.hh"
 #include <iostream>
 #include "Ravl/IO.hh"
-
+#include "Ravl/Option.hh"
 using RavlN::ByteT;
 
-int main() {
-  RavlImageN::ImgIOuEyeC<ByteT> imgStrm(0);
+int main(int nargs,char **argv) {
+  RavlN::OptionC opts(nargs,argv);
+  int camId = opts.Int("c",0,"Camera id.");
+  opts.Check();
+  RavlImageN::ImgIOuEyeC<ByteT> imgStrm(camId);
   int i = 0;
   while(1) {
     RavlImageN::ImageC<ByteT> img;
