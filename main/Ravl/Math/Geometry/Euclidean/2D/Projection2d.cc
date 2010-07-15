@@ -50,170 +50,23 @@ namespace RavlN {
   //!return: the affine approximation
   
 
-  //: Fit a projective transform given to the mapping between original and newPos.
-  
-  Projection2dC FitProjection(const DListC<Point2dC> &org,const DListC<Point2dC> &newPos) {
-    RealT residual;
-    return FitProjection(org,newPos,residual);
-  }
-  
-  //: Fit a projective transform given to the mapping between original and newPos.
-  
-  Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos) {
-    RealT residual;
-    return FitProjection(org,newPos,residual);    
-  }
-  
-  //: Fit a projective transform given to the mapping between original and newPos.
-  
-  Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,RealT &residual) {
-    RavlAssertMsg(org.Size() == newPos.Size(),"Projection2dC FitProjection(), Point arrays must have the same size.");
-    // we need at least four points to fit a 2D homography
-    if (org.Size() < 4)
-      throw ExceptionC("Sample size too small in Projection2dC. ");
-    RealT zh1 = 1.0,zh2 = 1.0;
-    if (org.Size() == 4) {
-      // TODO:- Pick better values for zh1 and zh2 !!
-      
-      // initialise homography P by fitting to four point pairs, assuming that
-      // bottom-right element P[2][2] is not zero.
 
-      // Construct 8x8 matrix of linear equations
-      MatrixC A(8,8);
-      A.Fill(0.0);
-      VectorC b(8);
-
-      // distinguish between explicit and implicit forms of point observations
-      IntT i=0;
-      SArray1dIterC<Point2dC> it1(org);
-      SArray1dIterC<Point2dC> it2(newPos);
-      for(;it1;it1++,it2++,i++) {
-        RealT x1, y1, x2, y2;
-        x1=(*it1)[0]; y1=(*it1)[1];
-        x2=(*it2)[0]; y2=(*it2)[1];
-
-        A[i*2][0] = x1*zh2; A[i*2][1] = y1*zh2; A[i*2][2] = zh1*zh2;
-        A[i*2][6] = -x1*x2; A[i*2][7] = -y1*x2;
-        b[i*2] = zh1*x2;
-        A[i*2+1][3] = x1*zh2; A[i*2+1][4] = y1*zh2; A[i*2+1][5] = zh1*zh2;
-        A[i*2+1][6] = -x1*y2; A[i*2+1][7] = -y1*y2;
-        b[i*2+1] = zh1*y2;
-      }
-      
-      // solve for solution vector
-      if(!SolveIP(A,b))
-        throw ExceptionNumericalC("Dependent linear equations in Projection2dC FitProjection(). ");
-      residual = 0.0;
-      Matrix3dC P(b[0], b[1], b[2],
-                  b[3], b[4], b[5],
-                  b[6], b[7], 1.0);
-      return Projection2dC (P,zh1,zh2);
-    }
-    
-    residual = -1.0; // Make it obvious we're not computing it!
-    Matrix3dC P(1.0,0.0,0.0,
-                0.0,1.0,0.0,
-                0.0,0.0,1.0);
-    FitProjection(org,newPos,P);
-    return Projection2dC (P,zh1,zh2);
-  }
-  
-  //: Fit a projective transform given to the mapping between original and newPos.
-  
-  Projection2dC FitProjection(const DListC<Point2dC> &org,const DListC<Point2dC> &newPos,RealT &residual) {
-    SizeT size = org.Size();
-    RavlAssertMsg(size == newPos.Size(),"Projection2dC FitProjection(), Point arrays must have the same size.");
-    // we need at least four points to do a fit 
-    if (size < 4)
-      throw ExceptionC("Sample size too small in Projection2dC. ");
-    
-    RealT zh1 = 1.0,zh2 = 1.0;
-    if (size == 4) {
-      // initialise homography P by fitting to four point pairs, assuming that
-      // bottom-right element P[2][2] is not zero.
-      
-      // FIXME:- Pick better values for zh1 and zh2 !!
-      
-      // Construct 8x8 matrix of linear equations
-      MatrixC A(8,8);
-      A.Fill(0.0);
-      VectorC b(8);
-      
-      // distinguish between explicit and implicit forms of point observations
-      IntT i=0;
-      DLIterC<Point2dC> it1(org);
-      DLIterC<Point2dC> it2(newPos);
-      for(;it1;it1++,it2++,i++) {
-        RealT x1, y1, x2, y2;
-        x1=(*it1)[0]; y1=(*it1)[1];
-        x2=(*it2)[0]; y2=(*it2)[1];
-
-        A[i*2][0] = x1*zh2; A[i*2][1] = y1*zh2; A[i*2][2] = zh1*zh2;
-        A[i*2][6] = -x1*x2; A[i*2][7] = -y1*x2;
-        b[i*2] = zh1*x2;
-        A[i*2+1][3] = x1*zh2; A[i*2+1][4] = y1*zh2; A[i*2+1][5] = zh1*zh2;
-        A[i*2+1][6] = -x1*y2; A[i*2+1][7] = -y1*y2;
-        b[i*2+1] = zh1*y2;
-      }
-
-      // solve for solution vector
-      if(!SolveIP(A,b))
-        throw ExceptionNumericalC("Dependent linear equations in Projection2dC FitProjection(). ");
-      residual = 0.0;
-      Matrix3dC P(b[0], b[1], b[2],
-                  b[3], b[4], b[5],
-                  b[6], b[7], 1.0);
-      return Projection2dC (P,zh1,zh2);
-    }
-    residual = -1.0; // Make it obvious its not being computed!
-    
-    // Do a least squares fit.
-    
-    SArray1dC<Point2dC> afrom(size);
-    SArray1dIterC<Point2dC> ait = afrom;
-    for(DLIterC<Point2dC> fit(org);fit;fit++,ait++)
-      *ait = *fit;
-    
-    SArray1dC<Point2dC> ato(size);
-    ait = ato;
-    for(DLIterC<Point2dC> fit(newPos);fit;fit++,ait++)
-      *ait = *fit;
-    
-    Matrix3dC P(1.0,0.0,0.0,
-                0.0,1.0,0.0,
-                0.0,0.0,1.0);
-    FitProjection(afrom,ato,P);
-    return Projection2dC (P,zh1,zh2);
-  }
-  
-
-  //: Fit a projective transform given to the mapping between original and newPos with weighting for points.
-  
-  Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,const SArray1dC<RealT> &weight) {
-    RealT zh1 = 1.0,zh2 = 1.0;
-    Matrix3dC P(1.0,0.0,0.0,
-                0.0,1.0,0.0,
-                0.0,0.0,1.0);
-    FitProjection(org,newPos,weight,P);
-    return Projection2dC (P,zh1,zh2); 
-  }
-  
-  //: Fit projection to a set of points.  4 or point correspondances are required
-  
-  bool FitProjection(const SArray1dC<Point2dC> &from,const SArray1dC<Point2dC> &to,Matrix3dC &proj) {
+  template <class DataContainerT> // assumed to be a container of Point2dC
+  bool FitProjectionTempl(const DataContainerT &from,const  DataContainerT &to,Matrix3dC &proj)
+  {
     RavlAssert(from.Size() == to.Size());
     UIntT neq = from.Size();
     if(neq < 4) return false;
     
     // Normalise 'from' points.
     
-    SArray1dC<Point2dC> fromN;
+    DataContainerT fromN;
     Matrix3dC fromNorm;
     Normalise(from,fromN,fromNorm);
     
     // Normalise 'to' points.
     
-    SArray1dC<Point2dC> toN;
+    DataContainerT toN;
     Matrix3dC toNorm;
     Normalise(to,toN,toNorm);
     
@@ -221,13 +74,13 @@ namespace RavlN {
     
     MatrixC A(neq * 2,9);
     IntT i = 0;
-    for(SArray1dIter2C<Point2dC,Point2dC> it(toN,fromN);it;it++) {
-      const Point2dC &x = it.Data2();
+    for(typename DataContainerT::IteratorT toIt(toN), frIt(fromN);toIt;toIt++, frIt++) {
+      const Point2dC &x = frIt.Data();
       
       SizeBufferAccessC<RealT> row1 = A[i++];
       
-      RealT r = it.Data1()[0];
-      RealT c = it.Data1()[1];
+      RealT r = toIt.Data()[0];
+      RealT c = toIt.Data()[1];
       
       row1[0] = 0;
       row1[1] = 0;
@@ -255,7 +108,6 @@ namespace RavlN {
       row2[7] = x[1] * -r;
       row2[8] = -r;
     }
-    
     // Should check the rank of A?
     
     VectorC v;
@@ -270,9 +122,140 @@ namespace RavlN {
     proj =  toNorm * mat * fromNorm;
     return true;
   }
+  //: Fit projection to a set of points.  4 or point correspondances are required
+
+  template <class DataContainerT>   // DataContainerT assumed to be a PairC<Point2dC>
+  bool FitProjectionTempl(const DataContainerT &matchPair, Matrix3dC &proj)
+  {
+    UIntT neq = matchPair.Size();
+    if(neq < 4) return false;
+    
+    
+    BufferC<Point2dC> mpBuf(matchPair.Size()*2, (Point2dC*)&(matchPair[0]));
+    Slice1dC<Point2dC> from(mpBuf, matchPair.Size(), 0, 2);
+    Slice1dC<Point2dC> to(mpBuf, matchPair.Size(), 1, 2);
+
+    return FitProjectionTempl(from, to, proj);
+
+  }
+
+
+  template <class DataContainerT> // DataContainerT must be a container of Point2dC
+  Projection2dC FitProjectionTempl(const DataContainerT &org,const DataContainerT &newPos,RealT &residual) {
+    
+    //for some contianers it is slow to find size so cache it here    
+    UIntT orgSize(org.Size());
+
+    RavlAssertMsg(orgSize == newPos.Size(),"Projection2dC FitProjection(), Point arrays must have the same size.");
+    // we need at least four points to fit a 2D homography
+    if (orgSize < 4)
+      throw ExceptionC("Sample size too small in Projection2dC. ");
+    RealT zh1 = 1.0,zh2 = 1.0;
+    if (orgSize == 4) {
+      // FIXME:- Pick better values for zh1 and zh2 !!
+      
+      // initialise homography P by fitting to four point pairs, assuming that
+      // bottom-right element P[2][2] is not zero.
+
+      // Construct 8x8 matrix of linear equations
+      MatrixC A(8,8);
+      A.Fill(0.0);
+      VectorC b(8);
+
+      // distinguish between explicit and implicit forms of point observations
+      IntT i=0;
+      typename DataContainerT::IteratorT it1(org);
+      typename DataContainerT::IteratorT it2(newPos);
+      for(;it1;it1++,it2++,i++) {
+        RealT x1, y1, x2, y2;
+        x1=(*it1)[0]; y1=(*it1)[1];
+        x2=(*it2)[0]; y2=(*it2)[1];
+
+        A[i*2][0] = x1*zh2; A[i*2][1] = y1*zh2; A[i*2][2] = zh1*zh2;
+        A[i*2][6] = -x1*x2; A[i*2][7] = -y1*x2;
+        b[i*2] = zh1*x2;
+        A[i*2+1][3] = x1*zh2; A[i*2+1][4] = y1*zh2; A[i*2+1][5] = zh1*zh2;
+        A[i*2+1][6] = -x1*y2; A[i*2+1][7] = -y1*y2;
+        b[i*2+1] = zh1*y2;
+      }
+      
+      // solve for solution vector
+      if(!SolveIP(A,b))
+        throw ExceptionNumericalC("Dependent linear equations in Projection2dC FitProjection(). ");
+      residual = 0.0;
+      Matrix3dC P(b[0], b[1], b[2],
+                  b[3], b[4], b[5],
+                  b[6], b[7], 1.0);
+      return Projection2dC (P,zh1,zh2);
+    }
+    
+    residual = -1.0; // Make it obvious we're not computing it!
+    Matrix3dC P(1.0,0.0,0.0,
+                0.0,1.0,0.0,
+                0.0,0.0,1.0);
+    FitProjectionTempl(org,newPos,P);
+    return Projection2dC (P,zh1,zh2);
+  }  
+  //: Fit a projective transform given to the mapping between original and newPos.
+  // Note: In the current version of the routine 'residual' isn't currently computed.
+
+  template <class DataContainerT> // Assumes DataContainerT is a container of PairC<Point2dC>
+  Projection2dC FitProjectionTempl(const DataContainerT &matchPairs, RealT &residual) {
+    
+    BufferC<Point2dC> mpBuf(matchPairs.Size()*2, (Point2dC*)&(matchPairs[0]));
+    Slice1dC<Point2dC> org(mpBuf, matchPairs.Size(), 0, 2);
+    Slice1dC<Point2dC> newPos(mpBuf, matchPairs.Size(), 1, 2);    
+
+    return FitProjectionTempl(org, newPos, residual);
+  }  
+  //: Fit a projective transform given to the mapping between original and newPos.
+  // Note: In the current version of the routine 'residual' isn't currently computed.
+
+  Projection2dC FitProjection(const SArray1dC<PairC<Point2dC> > &matchPairs, RealT &residual)
+  {
+    return FitProjectionTempl(matchPairs, residual);
+  }
+
+  Projection2dC FitProjection(const DListC<Point2dC> &org,const DListC<Point2dC> &newPos,RealT &residual)
+  {
+    return FitProjectionTempl(org, newPos, residual);
+  }
+
+  Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,RealT &residual)
+  {
+    return FitProjectionTempl(org, newPos, residual);
+  }
+
+  //: Fit a projective transform given to the mapping between original and newPos.
   
-  //: Fit a projective matrix with weighting for points.
+  Projection2dC FitProjection(const DListC<Point2dC> &org,const DListC<Point2dC> &newPos) {
+    RealT residual;
+    return FitProjection(org,newPos,residual);
+  }
   
+  //: Fit a projective transform given to the mapping between original and newPos.
+  
+  Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos) {
+    RealT residual;
+    return FitProjection(org,newPos,residual);    
+  }
+  
+  
+
+
+  //: Fit a projective transform given to the mapping between original and newPos with weighting for points.
+  
+  Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,const SArray1dC<RealT> &weight) {
+    RealT zh1 = 1.0,zh2 = 1.0;
+    Matrix3dC P(1.0,0.0,0.0,
+                0.0,1.0,0.0,
+                0.0,0.0,1.0);
+    FitProjection(org,newPos,weight,P);
+    return Projection2dC (P,zh1,zh2); 
+  }
+  
+  //: Fit projection to a set of points.  4 or point correspondances are required
+
   bool FitProjection(const SArray1dC<Point2dC> &from,const SArray1dC<Point2dC> &to,const SArray1dC<RealT> &weight,Matrix3dC &proj) {
     RavlAssert(from.Size() == to.Size());
     RavlAssert(from.Size() == weight.Size());

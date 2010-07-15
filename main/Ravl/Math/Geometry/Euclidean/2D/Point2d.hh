@@ -19,8 +19,10 @@
 
 namespace RavlN {
   class Matrix3dC;
+  template<class DataT> class PairC;
   template<class DataT> class SArray1dC;
-  
+  template<class DataT> class DListC;
+  template<class DataT> class Slice1dC;
   //! userlevel=Normal
   //: 2D Point
   
@@ -108,13 +110,32 @@ namespace RavlN {
   
   bool Normalise(const SArray1dC<Point2dC> &raw,SArray1dC<Point2dC> &norm,Matrix3dC &normMat);
   //: Normalise an array of points.
-  // This finds the mean and variation of euclidean point position. It corrects the mean to zero
+  // This finds the mean and variation of the Euclidean point positions. It corrects the mean to zero
   // and the average variation to 1.
   //!param: raw - Points to be normalised
   //!param: norm - Array to write normalised points into. A new array is always created as assigned to this handle. Note: If the array is of the required size it may be resused.
   //!param: normMat - Normalisation matrix. Multiplying the normalised points by this matrix will map them to the original space.
   //!return: true if normalisation found and applied.
 
+
+  bool Normalise(const DListC<Point2dC> &raw,DListC<Point2dC> &norm,Matrix3dC &normMat);
+  //: Normalise a list of points.
+  // This finds the mean and variation of the Euclidean point positions. It corrects the mean to zero
+  // and the average variation to 1.
+  //!param: raw - Points to be normalised
+  //!param: norm - List to write normalised points into. A new list is always created as assigned to this handle.
+  //!param: normMat - Normalisation matrix. Multiplying the normalised points by this matrix will map them to the original space.
+  //!return: true if normalisation found and applied.
+
+  
+  bool Normalise(const Slice1dC<Point2dC> &raw,Slice1dC<Point2dC> &norm,Matrix3dC &normMat);
+  //: Normalise a slice of points.
+  // This finds the mean and variation of the Euclidean point positions. It corrects the mean to zero
+  // and the average variation to 1.
+  //!param: raw - Points to be normalised
+  //!param: norm - Slice to write normalised points into. A new slice is always created as assigned to this handle.
+  //!param: normMat - Normalisation matrix. Multiplying the normalised points by this matrix will map them to the original space.
+  //!return: true if normalisation found and applied.
 }
 
 #endif

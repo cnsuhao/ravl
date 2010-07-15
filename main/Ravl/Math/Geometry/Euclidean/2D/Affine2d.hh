@@ -21,7 +21,9 @@
 #include "Ravl/Point2d.hh"
 namespace RavlN {
   template<class DataT> class SArray1dC;
+  template<class DataT> class DArray1dC;
   template<class DataT> class DListC;
+  template<class DataT> class PairC;
   class Point2dC;
   class PointSet2dC;
   class Polygon2dC;
@@ -143,6 +145,14 @@ namespace RavlN {
   Affine2dC FitAffine(const DListC<Point2dC> &orig,const DListC<Point2dC> &newPos);
   //: Fit an affine transform to 2 lists of corresponding points
   // A "least sum of squares" fitter is used.  The result transforms the points in "orig" to those in "newPos".
+  
+  Affine2dC FitAffine(const SArray1dC<PairC<Point2dC> > &matchPairs,RealT &residual);
+  //: Fit an affine transform to a list of corresponding points
+  // A "least sum of squares" fitter is used.  The result transforms the points in element 1 of the point pairs to those in element 2 of the point pairs. The residual from the fit is returned as "residual".
+  
+  Affine2dC FitAffine(const DArray1dC<PairC<Point2dC> > &matchPairs,RealT &residual); 
+  //: Fit an affine transform to a list of corresponding points
+  // A "least sum of squares" fitter is used.  The result transforms the points in element 1 of the point pairs to those in element 2 of the point pairs. The residual from the fit is returned as "residual".
   
   bool FitSimilarity(const SArray1dC<Point2dC> &points1,
                      const SArray1dC<Point2dC> &points2,

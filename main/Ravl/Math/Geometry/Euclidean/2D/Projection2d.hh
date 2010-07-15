@@ -22,6 +22,7 @@
 #include "Ravl/LineABC2d.hh"
 #include "Ravl/LinePP2d.hh"
 #include "Ravl/FAffine.hh"
+#include "Ravl/Pair.hh"
 
 namespace RavlN {
   template<class DataT> class DListC;
@@ -191,6 +192,9 @@ namespace RavlN {
   Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,RealT &residual);
   //: Fit a projective transform given to the mapping between original and newPos.
   // Note: In the current version of the routine 'residual' isn't currently computed.
+
+  Projection2dC FitProjection(const SArray1dC<PairC<Point2dC> > &matchPairs, RealT &residual);
+  //: Fit a projective transform given an array of matched points.
   
   Projection2dC FitProjection(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos);
   //: Fit a projective transform given to the mapping between original and newPos.

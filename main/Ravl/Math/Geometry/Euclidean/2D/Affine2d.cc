@@ -13,6 +13,7 @@
 #include "Ravl/Matrix3d.hh"
 #include "Ravl/Vector3d.hh"
 #include "Ravl/SArray1d.hh"
+#include "Ravl/DArray1d.hh"
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/LeastSquares.hh"
 #include "Ravl/Matrix.hh"
@@ -177,7 +178,8 @@ namespace RavlN {
   
   // FIXME :- This can be done more efficiently.
   
-  Affine2dC FitAffine(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,RealT &residual) {
+  template <typename ContainterOfPoint2dT> 
+  Affine2dC FitAffineTempl(const ContainterOfPoint2dT &org,const ContainterOfPoint2dT &newPos,RealT &residual) {
     RavlAssertMsg(org.Size() == newPos.Size(),"Affine2dC FitAffine(), Point arrays must have the same size.");
     
     UIntT samples = org.Size();
@@ -188,10 +190,10 @@ namespace RavlN {
     VectorC b(samples);
     VectorC c(samples);
     UIntT i = 0;
-    for(SArray1dIter2C<Point2dC,Point2dC> it(org,newPos);it;it++,i++) {
+    for(typename ContainterOfPoint2dT::IteratorT itOrg(org), itNewPos(newPos);itOrg;itOrg++,itNewPos++,i++) {
       RealT x1, y1, x2, y2;
-      x1=it.Data1()[0]; y1=it.Data1()[1];
-      x2=it.Data2()[0]; y2=it.Data2()[1];
+      x1=itOrg.Data()[0]; y1=itOrg.Data()[1];
+      x2=itNewPos.Data()[0]; y2=itNewPos.Data()[1];
       
       A[i][0] = x1; 
       A[i][1] = y1; 
@@ -218,6 +220,32 @@ namespace RavlN {
 		 c[0],c[1]);
     Vector2dC tr(b[2],c[2]);
     return Affine2dC(sr,tr);
+  }
+  Affine2dC FitAffine(const SArray1dC<Point2dC> &org,const SArray1dC<Point2dC> &newPos,RealT &residual) 
+  {
+    return FitAffineTempl(org, newPos, residual);
+  }
+  Affine2dC FitAffine(const DArray1dC<Point2dC> &org,const DArray1dC<Point2dC> &newPos,RealT &residual) 
+  {
+    return FitAffineTempl(org, newPos, residual);
+  }
+  
+  template <typename ContainterOfPairPoint2dT> 
+  Affine2dC FitAffineTempl(const ContainterOfPairPoint2dT &matchPairs,RealT &residual)
+  {
+    BufferC<Point2dC> mpBuf(matchPairs.Size()*2, (Point2dC*)&(matchPairs[0]));
+    Slice1dC<Point2dC> from(mpBuf, matchPairs.Size(), 0, 2);
+    Slice1dC<Point2dC> to(mpBuf, matchPairs.Size(), 1, 2);
+    
+    return FitAffineTempl(from,to,residual);
+  }
+  Affine2dC FitAffine(const SArray1dC<PairC<Point2dC> > &matchPairs,RealT &residual) 
+  {
+    return FitAffineTempl(matchPairs, residual);
+  }
+  Affine2dC FitAffine(const DArray1dC<PairC<Point2dC> > &matchPairs,RealT &residual) 
+  {
+    return FitAffineTempl(matchPairs, residual);
   }
   
   void Affine2dC::Rotate(RealT A) {
