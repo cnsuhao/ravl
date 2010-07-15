@@ -16,6 +16,7 @@
 #include "Ravl/Array1d.hh"
 #include "Ravl/SArray1d.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/DArray1dIter.hh"
 
 namespace RavlN {
  
@@ -366,6 +367,21 @@ namespace RavlN {
     : public RCHandleC<DArray1dBodyC<DataT> >
   {
   public:
+    //:----------------
+    // Type definitions.
+    
+    typedef DataT ElementT;
+    //: Allow function templates to find type of array.
+    
+    typedef IndexC KeyT;
+    //: Allow function templates to find type of index.
+    
+    typedef DArray1dIterC<DataT> IteratorT;
+    //: Iterator for this container.
+
+    //:---------------------------------------------
+    // Constructors, copy, assignment, and destructor
+
     DArray1dC()
       : RCHandleC<DArray1dBodyC<DataT> >(*new DArray1dBodyC<DataT>())
     {}

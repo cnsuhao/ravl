@@ -16,6 +16,11 @@
 
 namespace RavlN {
 
+  template <typename DataT>
+  class DArray1dC;
+  template<class DataT>
+  class DChunkC;
+ 
   //! userlevel=Normal
   //: Dynamic array iterator.
   

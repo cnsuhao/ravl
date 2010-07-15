@@ -38,6 +38,25 @@ namespace RavlN {
   template<class DataT>
   class Slice1dC {
   public:
+
+    //:----------------
+    // Type definitions.
+    
+    typedef DataT ElementT;
+    //: Allow function templates to find type of array.
+    
+    typedef IndexC KeyT;
+    //: Allow function templates to find type of index.
+    
+    typedef Slice1dIterC<DataT> IteratorT;
+    //: Iterator for this container.
+    
+    //typedef Array1dIterC<DataT> IteratorT;
+    //: Type of iterator.
+
+    //:---------------------------------------------
+    // Constructors, copy, assignment, and destructor
+
     Slice1dC();
     //: Creates a zero length vector.
     
