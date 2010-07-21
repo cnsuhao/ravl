@@ -20,7 +20,7 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Hidden Markov Model
-  // 1st order hidden markov model.
+  // Basic functionality for 1st-order HMM.  Does not contain training algorithm.
   
   class HiddenMarkovModelC {
   public:
