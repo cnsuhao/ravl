@@ -17,9 +17,12 @@
 #include "Ravl/Stream.hh"
 #include "Ravl/SArray1d.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/RCHash.hh"
 
 namespace RavlN {
-  
+
+
+
   IntT URLRetrieve(const StringC &url,SArray1dC<char> &buf);
   //: Retrieve file into a byte array.
   //!param:url - URL to retrieve
@@ -33,7 +36,14 @@ namespace RavlN {
   //!param:passwd - Password
   //!param:buf - buffer to store data into.
   //!return: Error code, 0 if all's well.
-  
+
+  StringC FormURL(const StringC & baseURL, const RCHashC<StringC, StringC> & args);
+  //:Form a url given the base url and key value pairs for the parameters.
+  //!param:baseURL the base url string
+  //!param:args the arguments, key value pairs.
+  //!return the combined url with whitespace substitution.
+
+
   //:-
   
   ////////////////////////////

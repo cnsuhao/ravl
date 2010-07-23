@@ -13,6 +13,7 @@
 #include "Ravl/StreamType.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/BufStream.hh"
+#include "Ravl/HashIter.hh"
 
 #include <curl/curl.h>
 #include <curl/types.h>
@@ -101,6 +102,28 @@ namespace RavlN {
     
     return errVal;    
   }
+
+
+  //:Form a url given the base url and key value pairs for the parameters.
+  StringC FormURL(const StringC & baseURL, const RCHashC<StringC, StringC> & args)
+  {
+    StringC url = baseURL;
+    bool firstArg = true;
+    for (HashIterC<StringC, StringC> iter(args); iter.IsElm(); iter.Next()) {
+
+      // prepend a &, ? for first argument.
+      url += (firstArg ? "?" : "&");
+      if (firstArg)
+        firstArg = false;
+
+      // append the argument.
+      url += iter.Key() + "=" + iter.Data();
+    }
+    // remove whitespace from URL
+    url.gsub(" ", "%20"); // subs white space.
+    return url;
+  }
+
   
   URLIStreamC::URLIStreamC(const StringC& url,bool buffered) 
     : m_strTemp("/tmp/ravldl")
