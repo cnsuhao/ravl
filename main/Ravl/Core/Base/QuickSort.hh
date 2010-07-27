@@ -9,7 +9,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //! file="Ravl/Core/Base/QuickSort.hh"
 //! lib=RavlCore
-//! userlevel=Normal
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Math"
 //! date="27/10/2010"
@@ -18,13 +17,15 @@
 
 namespace RavlN {
 
-  //! Default less than or equal to used by quick sort.
+  //! userlevel=Normal
   template<typename DataT>
   inline bool QuickSortDefaultComparison(const DataT &dat1,const DataT &dat2)
   { return dat1 < dat2; }
+  //: Default "<" operator used by quick sort.
 
-  //: Partition contents of array in two.
 
+  //:-
+  //! userlevel=Develop
   template<typename ArrayT, typename IndexT,typename DataT,typename ComparisonFuncT>
   inline IndexT QuickSortPartition(ArrayT &array,
                             const IndexT &start,
@@ -44,9 +45,11 @@ namespace RavlN {
     Swap(pivotValue, array[at]);
     return at;
   }
+  //: Partition contents of array in two.
 
-  //! Quick sort contents of array between start and end inclusive.
 
+  //:-
+  //! userlevel=Normal
   template<typename ArrayT, typename IndexT,typename ComparisonFuncT>
   void QuickSort(ArrayT &array, const IndexT &start, const IndexT &end,ComparisonFuncT &compFunc = ComparisonFuncT())
   {
@@ -64,18 +67,29 @@ namespace RavlN {
     QuickSort(array,start, pivot-1,compFunc);
     QuickSort(array,pivot + 1, end,compFunc);
   }
+  //: Quick sort contents of array between start and end inclusive, with optional comparison function argument.
+  // A user-provided comparison function should have the same form as the <code><a
+  //href="RavlN.QuickSortDefaultComparisonObconst_DataT_Amp_const_DataT_AmpCb.html">default comparison function</a></code>.
 
-  //! Helper method where no default comparison is provided.
+
+  //:-
+  //! userlevel=Develop
   template<typename ArrayT, typename IndexT, typename DataT>
   inline void QuickSortTyped(ArrayT &array, const IndexT &start,const IndexT &end,const DataT &value)
   { return QuickSort(array,start,end,QuickSortDefaultComparison<DataT>); }
+  //: Helper method when no default comparison is provided.
 
-  //! Quick sort using the default comparison operator <=
-  
+  //:-
+  //! userlevel=Normal
   template<typename ArrayT, typename IndexT>
   inline void QuickSort(ArrayT &array, const IndexT &start, const IndexT &end)
   { return QuickSortTyped(array,start,end,array[start]); }
-
+  //: Quick sort between start and end inclusive, using the default comparison operator.
+  // This creates a list sorted in <i>ascending</i> order.<br>
+  // If a comparison operator for the array data type does not exist, use the function <code><a
+  //href="RavlN.QuickSortObArrayT_Amp_const_IndexT_Amp_const_IndexT_Amp_ComparisonFuncT_AmpCb.html">QuickSort(ArrayT
+  //&array, const IndexT &start, const IndexT &end,ComparisonFuncT &compFunc =
+  //ComparisonFuncT())</a></code> instead.
 }
 
 
