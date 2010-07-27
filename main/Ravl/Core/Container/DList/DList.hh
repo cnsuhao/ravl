@@ -421,7 +421,7 @@ namespace RavlN {
     //: Merge sort the list with comparison function 'cmp'.
     // The default is to use the "<" operator; this creates a list sorted in
     // <i>ascending</i> order.<br>
-    // Where a comparison operator for DataT dosn not exist, you must provide
+    // Where a comparison operator for DataT does not exist, you must provide
     // your own in place of the default argument.
     // See <a href="../../Examples/exDList.cc.html">example</a> for how to write your own.
 
