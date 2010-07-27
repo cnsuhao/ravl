@@ -27,6 +27,8 @@
 #include "Ravl/QInt.hh"
 #include "Ravl/Index2d.hh"
 #include "Ravl/Float16.hh"
+#include "Ravl/QuickSort.hh"
+#include "Ravl/Random.hh"
 
 using namespace RavlN;
 
@@ -55,6 +57,7 @@ int testQInt();
 int testIndexRange2d();
 int testRCWrap();
 int testFloat16();
+int testQuickSort();
 
 template class RCHandleC<TestBodyC>;
 template class RCWrapC<IntT>;
@@ -65,6 +68,7 @@ int main()
   cerr << "Linux 64 enabled. \n";
 #endif
   int ln;
+#if 1
   if((ln = testTypes()) != 0) {
     cerr << "Test failed at line:" << ln << "\n";
     return 1;
@@ -126,6 +130,11 @@ int main()
     return 1;
   }
   if((ln = testFloat16()) != 0) {
+    cerr << "Test failed at line:" << ln << "\n";
+    return 1;
+  }
+#endif
+  if((ln = testQuickSort()) != 0) {
     cerr << "Test failed at line:" << ln << "\n";
     return 1;
   }
@@ -552,6 +561,39 @@ int testFloat16() {
     Float16C val16(RavlConstN::nanFloat);
     std::cerr << "Value=" << val16.Float() << "\n";
     if(!val16.IsNan()) return __LINE__;
+  }
+  return 0;
+}
+
+int testQuickSort() {
+  const int size = 22;
+  int array[size] = { 5,62,34,51,74,84,13,34,75,12,
+                     87,23, 7,23,64, 1,23,56,32,57,23,56 } ;
+
+  RavlN::QuickSort(array,0,size);
+  for(int i = 1;i < size;i++) {
+    if(array[i] < array[i-1])
+      return __LINE__;
+  }
+
+  // Do lot of random tests.
+  int rarray[2000];
+  for(int k = 0;k < 10000;k++) {
+    int size = RandomInt() % 1024 + 2;
+    // Limit the number of values to ensure some
+    // duplicates as these may form corner cases.
+    for(int i = 0;i < size;i++)
+      rarray[i] = RandomInt() % 512;
+    RavlN::QuickSort(rarray,0,size);
+    for(int i = 1;i < size;i++) {
+      if(rarray[i] < rarray[i-1]) {
+        std::cerr << "Test failed size:" << size << "\n";
+        for(int j = 0;j < size;j++)
+          std::cerr << rarray[j] << " ";
+        std::cerr << "\n";
+        return __LINE__;
+      }
+    }
   }
   return 0;
 }
