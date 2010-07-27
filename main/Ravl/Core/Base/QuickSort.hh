@@ -21,7 +21,7 @@ namespace RavlN {
   //! Default less than or equal to used by quick sort.
   template<typename DataT>
   inline bool QuickSortDefaultComparison(const DataT &dat1,const DataT &dat2)
-  { return dat1 <= dat2; }
+  { return dat1 < dat2; }
 
   //: Partition contents of array in two.
 
