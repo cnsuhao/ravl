@@ -54,5 +54,6 @@ namespace RavlImageN {
   extern void InitImgIOUInt16YCbCrBT601Value();
   extern void InitImgIOYCbCrBT601ValueFloat();
   extern void InitImgIOByteYCbCr422BT601();
+  extern void InitImgIOFloatYPbPr422BT709();
 }
 #endif
