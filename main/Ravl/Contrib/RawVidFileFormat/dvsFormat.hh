@@ -17,7 +17,7 @@
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"
-#include "Ravl/Image/ByteYUV422Value.hh"
+#include "Ravl/Image/FloatYPbPr422BT709Value.hh"
 #include "Ravl/Image/NewGrabfileReader.hh"
 #include "Ravl/Image/NewGrabfileWriter.hh"
 
@@ -28,11 +28,11 @@ namespace RavlImageN {
   //! userlevel=Develop
   //: DVSYUV422 File format information.
   
-  class FileFormatDVSYUV422BodyC 
+  class FileFormatDVSYPbPr422BodyC 
     : public FileFormatBodyC 
   {
   public:
-    FileFormatDVSYUV422BodyC(const StringC &vName,const Index2dC &vSize);
+    FileFormatDVSYPbPr422BodyC(const StringC &vName,const Index2dC &vSize);
     //: Constructor.
     
     virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
@@ -75,7 +75,7 @@ namespace RavlImageN {
     // This could easly be, but the abakas doesn't use it like that.
     // (I think.)
 
-    virtual ~FileFormatDVSYUV422BodyC();
+    virtual ~FileFormatDVSYPbPr422BodyC();
     
   protected:
     StringC vName;  // Variant name.
@@ -155,10 +155,10 @@ namespace RavlImageN {
   //! userlevel=Advanced
   //: Create an instance of a DVSYUV422 File Format.
   
-  class FileFormatDVSYUV422C : public FileFormatC<ImageC<ByteYUV422ValueC> > {
+  class FileFormatDVSYPbPr422C : public FileFormatC<ImageC<FloatYPbPr422BT709ValueC> > {
   public:
-    FileFormatDVSYUV422C(const StringC &vName,const Index2dC &vSize)
-      : FileFormatC<ImageC<ByteYUV422ValueC> >(*new FileFormatDVSYUV422BodyC(vName,vSize))
+    FileFormatDVSYPbPr422C(const StringC &vName,const Index2dC &vSize)
+      : FileFormatC<ImageC<FloatYPbPr422BT709ValueC> >(*new FileFormatDVSYPbPr422BodyC(vName,vSize))
       {}
   };
 /*

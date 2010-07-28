@@ -13,9 +13,9 @@ DONOT_SUPPORT=VCPP
 
 DESCRIPTION = Raw video IO classes.
 
-HEADERS = ImgIOdvsyuv.hh ImgIOdvsrgb.hh GrabfileCommon.hh GrabfileReader.hh GrabfileReaderV1.hh GrabfileWriter.hh GrabfileWriterV1.hh LegacyGrabfileReader.hh NewGrabfileReader.hh NewGrabfileWriter.hh dvsFormat.hh Utilities.hh
+HEADERS = ImgIOdvsypbpr.hh ImgIOdvsrgb.hh GrabfileCommon.hh GrabfileReader.hh GrabfileReaderV1.hh GrabfileWriter.hh GrabfileWriterV1.hh LegacyGrabfileReader.hh NewGrabfileReader.hh NewGrabfileWriter.hh dvsFormat.hh Utilities.hh
 
-SOURCES = ImgIOdvsyuv.cc ImgIOdvsrgb.cc dvsFormat.cc GrabfileReader.cc GrabfileReaderV1.cc GrabfileWriterV1.cc LegacyGrabfileReader.cc NewGrabfileReader.cc NewGrabfileWriter.cc Utilities.cc
+SOURCES = ImgIOdvsypbpr.cc ImgIOdvsrgb.cc dvsFormat.cc GrabfileReader.cc GrabfileReaderV1.cc GrabfileWriterV1.cc LegacyGrabfileReader.cc NewGrabfileReader.cc NewGrabfileWriter.cc Utilities.cc
 
 PLIB = RavlRawVidIO
 
@@ -23,7 +23,7 @@ PLIB = RavlRawVidIO
 
 #EXAMPLES =
 
-USESLIBS = RavlImageIO RavlOSIO RavlImage RavlExtImgIO
+USESLIBS = RavlImageIO RavlOSIO RavlImage RavlExtImgIO RavlIO
 
 MUSTLINK=RavlRawVidIO.cc
 #MAINS= readgrab.cc
