@@ -24,6 +24,7 @@
 #include "Ravl/Stream.hh"
 #include "Ravl/SingleBuffer.hh"
 #include "Ravl/DeepCopy.hh"
+#include "Ravl/QuickSort.hh"
 
 namespace RavlN {
 
@@ -305,15 +306,30 @@ namespace RavlN {
     //: Constant access base data buffer.
     // Experts only.
 
+    typedef bool (*QuickSortCmpT)(const DataT &l1,const DataT &l2);
+    //: Comparison function for merge sort.
+
+    void QuickSort(typename SArray1dC<DataT>::QuickSortCmpT cmp = &SArray1dC<DataT>::DefaultComparisonOp) {
+      if (this->Size() > 1)
+        RavlN::QuickSort(*this, (SizeT)0, (SizeT)(this->Size()-1), cmp);
+    }
+    //: Sort the list with comparison function 'cmp'.
+    // The default is to use the "<" operator; this creates a list sorted in
+    // <i>ascending</i> order.<br>
+    // Where a comparison operator for DataT does not exist, you must provide
+    // your own in place of the default argument.
+    // See <a href="../../Examples/exDList.cc.html">example</a> for how to write your own.
+
     void Sort();
     //: Sort the array in place.
     // This does a simple bubble sort.
-    // FIXME:- we could do with something better!
+    //!deprecated: use QuickSort instead (note reversed sorting order)
 
     void Sort(bool(*leq)(DataT &o1,DataT &o2));
     //: Sort the array into ascending order in place
     // Uses the provided comparison function which should be equivalent to
     // less than or equal to.
+    //!deprecated: use QuickSort instead (note reversed sorting order)
 
     bool operator==(const SArray1dC<DataT> & vv) const;
     //: Comparison operator
@@ -340,6 +356,11 @@ namespace RavlN {
 
     friend class SArray1dIterC<DataT>;
     friend class Array1dC<DataT>;
+
+    static bool DefaultComparisonOp(const DataT &l1,const DataT &l2)
+    { return l1 < l2; }
+    // Default comparison method.
+
   };
 
   template <class DataT>

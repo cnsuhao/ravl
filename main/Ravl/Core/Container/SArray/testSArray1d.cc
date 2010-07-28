@@ -26,6 +26,7 @@ using namespace RavlN;
 int testBasic();
 int testOriginal();
 int testSort();
+int testQuickSort();
 int testReverse();
 int testIO();
 
@@ -41,6 +42,10 @@ int  main()
     return 1;
   }
   if((ln = testSort()) != 0) {
+    cerr << "Test failed line " << ln << "\n";
+    return 1;
+  }
+  if((ln = testQuickSort()) != 0) {
     cerr << "Test failed line " << ln << "\n";
     return 1;
   }
@@ -207,6 +212,38 @@ int testSort() {
   for(int i = 1;i < (int) arr.Size();i++)
     if(arr[i-1] < arr[i]) return __LINE__;
   
+  return 0;
+}
+
+// Comparison operator for reverse sorting
+static bool MyComparisonOp(const int &l1,const int &l2)
+  { return l1 > l2; }
+
+int testQuickSort() {
+  SArray1dC<int> arr(5);
+  arr[0] = 1;
+  arr[1] = 5;
+  arr[2] = 2;
+  arr[3] = 4;
+  arr[4] = 3;
+  if(arr.IndexOfMax() != 1) return __LINE__;
+  arr.QuickSort(); // sort ascending
+  // cerr << "Out=" << arr << "\n";
+  for(int i = 1;i < (int) arr.Size();i++)
+    if(arr[i-1] > arr[i]) return __LINE__;
+  if(arr.IndexOfMax() != 4) return __LINE__;
+  arr.QuickSort(MyComparisonOp);  // sort descending
+  // cerr << "Out=" << arr << "\n";
+  for(int i = 1;i < (int) arr.Size();i++)
+    if(arr[i-1] < arr[i]) return __LINE__;
+  if(arr.IndexOfMax() != 0) return __LINE__;
+  arr = SArray1dC<int>(2);
+  arr[0] = 1;
+  arr[1] = 0;
+  arr.QuickSort(); // sort ascending - check 2 element array works ok
+  // cerr << "Out=" << arr << "\n";
+  if (arr[0] != 0 || arr[1] != 1) return __LINE__;
+
   return 0;
 }
 

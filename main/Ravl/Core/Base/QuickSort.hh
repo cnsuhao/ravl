@@ -64,7 +64,7 @@ namespace RavlN {
         pivot=end;
     }
     pivot = QuickSortPartition(array,start, end,array[pivot],compFunc);
-    QuickSort(array,start, pivot-1,compFunc);
+    if (pivot > start)  QuickSort(array,start, pivot-1,compFunc);
     QuickSort(array,pivot + 1, end,compFunc);
   }
   //: Quick sort contents of array between start and end inclusive, with optional comparison function argument.
