@@ -55,8 +55,8 @@ namespace RavlN {
   {
     m_functions[0] = function1;
     m_functions[1] = function2;
-    InputSize(m_functions[0].InputSize());
-    OutputSize(m_functions[1].OutputSize());
+    InputSize(m_functions[0].InputSize() + m_functions[1].InputSize());
+    OutputSize(m_functions[0].OutputSize()+ m_functions[1].OutputSize());
   }
 
   FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC &function3)
@@ -65,8 +65,8 @@ namespace RavlN {
     m_functions[0] = function1;
     m_functions[1] = function2;
     m_functions[2] = function3;
-    InputSize(m_functions[0].InputSize());
-    OutputSize(m_functions[2].OutputSize());
+    InputSize(m_functions[0].InputSize()+m_functions[1].InputSize() + m_functions[2].InputSize());
+    OutputSize(m_functions[0].OutputSize()+m_functions[1].OutputSize()+m_functions[2].OutputSize());
   }
   
   
