@@ -294,6 +294,20 @@ namespace RavlN {
     DataT Sum() const;
     //: Calculate the sum of all elements in the array
 
+    typedef bool (*QuickSortCmpT)(const DataT &l1,const DataT &l2);
+    //: Comparison function for quick sort.
+
+    void QuickSort(typename Array1dC<DataT>::QuickSortCmpT cmp = &Array1dC<DataT>::DefaultComparisonOp) {
+      if (this->Size() > 1)
+        RavlN::QuickSort(*this, this->IMin(), this->IMax(), cmp);
+    }
+    //: Sort the list with comparison function 'cmp'.
+    // The default is to use the "<" operator; this creates a list sorted in
+    // <i>ascending</i> order.<br>
+    // Where a comparison operator for DataT does not exist, you must provide
+    // your own in place of the default argument.
+    // See <a href="../../Examples/exDList.cc.html">example</a> for how to write your own.
+
     IndexC IndexOfMax() const {
       RavlAssertMsg(Size() > 0,"Array1dC::IndexOfMax() Called on an empty array");
       const DataT *valueOfMax = &(this->operator[](Range().Min()));
@@ -374,6 +388,10 @@ namespace RavlN {
     { return RangeBufferAccessC<DataT>::Range(); }
     // Returns the usable range of indices expressed by this object.
 
+    static bool DefaultComparisonOp(const DataT &l1,const DataT &l2)
+    { return l1 < l2; }
+    // Default comparison method.
+
   private:
     BufferC<DataT> buff;  //: The reference counted storage.
   };
@@ -400,7 +418,7 @@ namespace RavlN {
   Array1dC<DataT> &
   BubbleSort(Array1dC<DataT> & arr);
   // Sorts the array 'arr' using operator <.
-
+  //!deprecated: use QuickSort instead
   ///////////////////////////////////////////////
 
   template <class DataT>

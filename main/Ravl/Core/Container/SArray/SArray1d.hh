@@ -307,7 +307,7 @@ namespace RavlN {
     // Experts only.
 
     typedef bool (*QuickSortCmpT)(const DataT &l1,const DataT &l2);
-    //: Comparison function for merge sort.
+    //: Comparison function for quick sort.
 
     void QuickSort(typename SArray1dC<DataT>::QuickSortCmpT cmp = &SArray1dC<DataT>::DefaultComparisonOp) {
       if (this->Size() > 1)
