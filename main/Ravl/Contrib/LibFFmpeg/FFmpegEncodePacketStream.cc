@@ -40,16 +40,16 @@ namespace RavlN {
       audio_pts(0),
       video_pts(0),
       positionRefStream(0),
+      width(1280),
+      height(544),
+      done_header(0),
       currentTimeStamp(0),
       frameRate(0),
       frameRateBase(0),
+      compression(31),
       startFrame(0),
       haveSeek(true),
-      width(1280),
-      height(544),
-      compression(31),
       header_done(false),
-      done_header(0),
       header_not_done_yet(true)
   { 
     if(!Open(filename))
@@ -66,16 +66,16 @@ namespace RavlN {
       audio_pts(0),
       video_pts(0),
       positionRefStream(0),
+      width(1280),
+      height(544),
+      done_header(0),
       currentTimeStamp(0),
       frameRate(0),
       frameRateBase(0),
+      compression(31),
       startFrame(0),
       haveSeek(true),
-      width(1280),
-      height(544),
-      compression(31),
       header_done(false),
-      done_header(0),
       header_not_done_yet(true)
   { } 
   

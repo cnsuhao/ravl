@@ -18,6 +18,7 @@
 #include "Ravl/DP/AttributeCtrl.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"
 #include "Ravl/DP/AttributeType.hh"
+#include "Ravl/DP/SPort.hh"
 
 extern "C" {
 struct SwsContext;

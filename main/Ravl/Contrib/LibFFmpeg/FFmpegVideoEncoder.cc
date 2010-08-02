@@ -223,7 +223,7 @@ namespace RavlImageN {
             #endif
         }
         
-    AVFrame *picture;
+    //AVFrame *picture;
     int size;
 
     out_picture = avcodec_alloc_frame();
@@ -248,7 +248,7 @@ namespace RavlImageN {
 
         uint8_t *r;
         r = tmp_picture->data[ 0 ];
-        const ByteRGBValueC *all_v = img.Row(0);
+        //const ByteRGBValueC *all_v = img.Row(0);
         Array2dIterC<ByteRGBValueC> img_it(img);
         for(;img_it;img_it++) {
            *r = img_it.Data().Red();

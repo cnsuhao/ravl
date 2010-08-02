@@ -8,10 +8,12 @@
 #define RAVL_FFMPEGVIDEODECODER_HEADER 1
 //! rcsid="$Id$"
 //! lib=RavlLibFFmpeg
+//! docentry = "Ravl.API.Images.Video.Video IO.LibFFmpeg"
 
 #include "Ravl/Image/FFmpegPacketStream.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+
 
 extern "C" {
 struct SwsContext;

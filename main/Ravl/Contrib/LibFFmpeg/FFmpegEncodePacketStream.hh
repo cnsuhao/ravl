@@ -163,7 +163,9 @@ namespace RavlN {
     RealT compression;
     
     Int64T startFrame; // Frame number of start of sequence.
-    bool haveSeek,header_done,header_not_done_yet; // Do we have seeking ?
+    bool haveSeek;
+    bool header_done;
+    bool header_not_done_yet; // Do we have seeking ?
     
     Int64T Frame2Time(Int64T frame) const;
     //: Convert a frame no into a time
