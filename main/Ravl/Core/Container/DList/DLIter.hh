@@ -131,16 +131,16 @@ namespace RavlN {
       place = next;
     }
     //: Remove current element from the list.
-    // This moves the iterator to the previous element.
-    // NB. The iterator must be pointing to a valid element. <p>
-    // Because the moves the prevous element it makes it easy
-    // to delete elements from a list in a for() loop. e.g. the
-    // following will work correctly.
+    // <p>This moves the iterator to the <i>previous</i> element.
+    // NB: The iterator must be pointing to a valid element. </p>
+    // Because it moves to the prevous element it makes it easy
+    // to delete elements from a list in a for() loop. E.g. the
+    // following will work correctly:</p>
     // <pre>
     // for(DLIterC<DataT> it(x);it;it++) 
     //   if(*it == 2)
-    //     it.Del();
-    // </pre>
+    //     it.Del();</pre>
+    // 
     
     void DelMoveNext() {
       RavlAssert(IsValid() && *this);
@@ -149,7 +149,7 @@ namespace RavlN {
       place = next;
     }
     //: Remove current element from the list.
-    // This moves the iterator to the previous element.
+    // This moves the iterator to the following element.
     // NB. The iterator must be pointing to a valid element.    
     
     bool operator==(const DLIterC<DataT> &oth) const
