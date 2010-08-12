@@ -166,6 +166,7 @@ namespace RavlN {
 
     bool IsElm() const
     { return place != &lst.Head(); }
+    //!deprecated:
     //: Is iterator at a valid position ?
     // AMMA compatibility function, use cast to bool instead ie if(iter) {..}
     
@@ -179,17 +180,17 @@ namespace RavlN {
     
     void Next()
     { (*this)++; }
-    //: Goto next element.
+    //: Go to next element.
     
     void Prev()
     { (*this)--; }
-    //: Goto previous element.
+    //: Go to previous element.
 
     void NextCrc() { 
       (*this)++; 
       if(!IsElm()) (*this)++; 
     }
-    //: Goto next element, circular
+    //: Go to next element, circular
     // If the next element is the head of the list, loop
     // back to the begining of the list.
     
@@ -198,8 +199,8 @@ namespace RavlN {
       if(!IsElm()) (*this)--; 
     }
     //: Goto previous element, circular
-    // If the next element is the head of the list, go
-    // to the begining of the list.
+    // If the previous element is the tail of the list, go
+    // to the end of the list.
     
     DLIterC<DataT> &RelNth(IntT n) {
       if(n==0)
@@ -212,7 +213,7 @@ namespace RavlN {
     }
     //: Move to the n-th element from the current element. 
     // The index 'n' can be positive, zero, or negative. 
-    // Particularly, the n = 0 means no move,
+    // Thus n = 0 means no move,
     // n = 1 means the move to the next element, 
     // and n = -1 means the move to the previous element. <p>
     // Returns a reference to this iterator.
