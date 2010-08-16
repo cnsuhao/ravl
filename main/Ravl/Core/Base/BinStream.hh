@@ -241,6 +241,10 @@ namespace RavlN  {
     { return in.IsEndOfStream(); }
     //: Test if at end of the stream.
 
+    bool Close()
+    { return Stream().Close(); }
+    //: Close stream
+
     RCHandleC<RCBodyVC> &PointerManager()
     { return in.PointerManager(); }
     //: Access the pointer manager.
@@ -395,6 +399,10 @@ namespace RavlN  {
 
     const OStreamC &Stream() const { return out; }
     //: Access underlying stream.
+
+    bool Close()
+    { return Stream().Close(); }
+    //: Flush and close stream
 
     RCHandleC<RCBodyVC> &PointerManager()
     { return out.PointerManager(); }

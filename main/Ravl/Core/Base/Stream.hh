@@ -342,6 +342,11 @@ namespace RavlN {
     //: Goto a position in the stream.
     // ostream compatable.
 
+    bool Close()
+    { os().flush(); return StreamBaseC::Close(); }
+    //: Flush and close stream
+
+
   protected:
     ostream *out;
   };
@@ -531,6 +536,10 @@ namespace RavlN {
     //: Clip word until one of 'delim' characters are found.
     // Stream is left at the terminating deliminator.
     
+    bool Close()
+    { return StreamBaseC::Close(); }
+    //: Close stream
+
   protected:
     istream *in;
   };
