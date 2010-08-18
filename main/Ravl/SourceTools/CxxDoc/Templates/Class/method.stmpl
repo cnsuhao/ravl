@@ -1,4 +1,5 @@
-<A NAME="$(href)"></A><DT><FONT FACE="Courier" >$(HtmlMethodName:)</FONT></DT><DD>
+<A NAME="$(href)"></A><DT><FONT FACE="Courier" >
+$(if:$dectype=friend:<B>friend </B>)$(HtmlMethodName:)</FONT></DT><DD>
 $(include:comment.stmpl)</DD>
 <br>
 
