@@ -349,6 +349,9 @@ namespace RavlN {
     
     inline StringC& operator=(const SubStringC&  y);
     //: Assign a substring to this string.
+
+    //:-
+    //: Concatenation
     
     inline StringC& operator+=(const StringC&     y); 
     //: Copy string 'y' to the end of this one.
@@ -377,6 +380,9 @@ namespace RavlN {
     { rep = Sprepend(rep, &c, 1); }
     //: Prepend character 'c' to this string.
     
+    //:-
+    //: Indexing
+
     inline int index(char c, int startpos = 0) const
     { return search(startpos, length(), c); }
     //: Return the index of the first occurance of 'c' in this string.
@@ -403,6 +409,9 @@ namespace RavlN {
     // returns -1 on failure.  The search starts from index 'startpos'.
 #endif
     
+    //:-
+    //: Searching and matching
+
     inline int contains (char c) const
     { return search(0, length(), c) >= 0; }
     //: Returns 1 if this string contains the character 'c'.
@@ -478,6 +487,12 @@ namespace RavlN {
     // (c.f. strcasecmp (3))
     // i.e. returns 0 if =, -1 if <, +1 if >.
     
+    int form(const char *format ...);
+    //: Print to this string using good old 'C' style formating.
+    // This isn't the safest function: it uses a fixed
+    // buffer of 4096 bytes.
+
+
     int freq(char c) const; 
     //: return number of occurences of target in StringC
     
@@ -490,7 +505,8 @@ namespace RavlN {
     int freq(const char* t) const;
     //: return number of occurences of target in StringC
     
-    // SubStringC extraction
+    //:-
+    //: SubStringC extraction
     
     // Note that you can't take a substring of a const StringC, since
     // this leaves open the possiblility of indirectly modifying the
@@ -543,6 +559,9 @@ namespace RavlN {
     SubStringC after(const Regex&  r, int startpos = 0);
 #endif
     
+    //:-
+    //: Deleting and substitution
+
     void del(int pos, int len);
     //: delete len chars starting at pos
     
@@ -584,27 +603,42 @@ namespace RavlN {
     //: global substitution: substitute all occurrences of pat with repl
 #endif
     
-    // friends & utilities
+    //:-
+    //: Friends & utilities
     
-    // split string into array res at separators; return number of elements
     
     friend int        split(const StringC& x, StringC res[], int maxn, 
 			    const StringC& sep);
+    //: Split string into array res at separators; return number of elements
 #if USEREGEX
     friend int        split(const StringC& x, StringC res[], int maxn, 
 			    const Regex&  sep);
+    //: Split string into array res at separators; return number of elements
 #endif
     
     friend StringC     common_prefix(const StringC& x, const StringC& y, 
 				     int startpos = 0);
+    //: Find common prefix for x &amp; y
+
     friend StringC     common_suffix(const StringC& x, const StringC& y, 
 				     int startpos = -1);
-    friend StringC     StrCreplicate(char        c, int n);
+    //: Find common suffix for x &amp; y
+
+    friend StringC     StrCreplicate(char c, int n);
+    //: Return char c replicated n times
+
     friend StringC     StrCreplicate(const StringC&     y, int n);
+    //: Return string y replicated n times
+
     friend StringC     StrCreplicateStrC(const StringC& y, int n);
+    //: Return string y replicated n times
+    //!deprecated: For Visual C++ compatibility
+
     friend StringC     join(StringC src[], int n, const StringC& sep);
+    //: Returns string composed of concatenation of C-style array <code>src</code> of strings, interspersed with separators <code>sep</code>
     
-    // simple builtin transformations
+    //:-
+    // Simple builtin transformations
     
     friend inline StringC reverse(const StringC& x);
     friend inline StringC upcase(const StringC& x);
@@ -711,7 +745,8 @@ namespace RavlN {
 			char terminator,
 			bool discard_terminator);
     
-    // status
+    //:-
+    //: Status
     
     inline unsigned int length() const
     { return rep->len; }    
@@ -816,12 +851,7 @@ namespace RavlN {
     friend inline void     cat(const char*,const char*, const SubStringC&, StringC&);
     friend inline void     cat(const char*,const char*, const char*, StringC&);
     friend inline void     cat(const char*,const char*, char, StringC&);
-    
-    int form(const char *format ...);
-    //: Print to string using good old 'C' sytle formating.
-    // This isn't the saftest function, it uses a fixed
-    // buffer of 4096 bytes.  <p>
-    
+        
   };
   
   ////////////////////////////////
