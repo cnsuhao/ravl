@@ -462,7 +462,10 @@ will always find them.  All files listed in AUXFILES are installed in
 $PROJECT_OUT/$AUXDIR.  If AUXDIR is not used, the files are installed in $PROJECT_OUT.  Thus:<PRE>
 AUXFILES = mask.png
 AUXDIR = share/data
-</PRE> will install the file mask.png in the directory $PROJECT_OUT/share/data.  Any necessary subdirectories are automatically created.
+</PRE> will install the file mask.png in the directory $PROJECT_OUT/share/data.  Any necessary subdirectories are automatically created.  The file <code>mask.png</code> can then be accessed e.g.:
+<pre>#include &lt;cstdlib&gt;
+.....
+StringC maskName = StringC(getenv("PROJECT_OUT"))+"/share/data/mask.png";</pre>
 </DD>
 
 </UL>
