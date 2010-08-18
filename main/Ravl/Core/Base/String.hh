@@ -381,7 +381,7 @@ namespace RavlN {
     //: Prepend character 'c' to this string.
     
     //:-
-    //: Indexing
+    //: Searching and matching
 
     inline int index(char c, int startpos = 0) const
     { return search(startpos, length(), c); }
@@ -409,9 +409,6 @@ namespace RavlN {
     // returns -1 on failure.  The search starts from index 'startpos'.
 #endif
     
-    //:-
-    //: Searching and matching
-
     inline int contains (char c) const
     { return search(0, length(), c) >= 0; }
     //: Returns 1 if this string contains the character 'c'.
