@@ -85,7 +85,7 @@ namespace RavlN {
   inline void QuickSort(ArrayT &array, const IndexT &start, const IndexT &end)
   { return QuickSortTyped(array,start,end,array[start]); }
   //: Quick sort between start and end inclusive, using the default comparison operator.
-  // This creates a list sorted in <i>ascending</i> order.<br>
+  // This creates an array sorted in <i>ascending</i> order.<br>
   // If a comparison operator for the array data type does not exist, use the function <code><a
   //href="RavlN.QuickSortObArrayT_Amp_const_IndexT_Amp_const_IndexT_Amp_ComparisonFuncT_AmpCb.html">QuickSort(ArrayT
   //&array, const IndexT &start, const IndexT &end,ComparisonFuncT &compFunc =

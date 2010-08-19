@@ -313,8 +313,8 @@ namespace RavlN {
       if (this->Size() > 1)
         RavlN::QuickSort(*this, (SizeT)0, (SizeT)(this->Size()-1), cmp);
     }
-    //: Sort the list with comparison function 'cmp'.
-    // The default is to use the "<" operator; this creates a list sorted in
+    //: Sort the array with comparison function 'cmp'.
+    // The default is to use the "<" operator; this creates an array sorted in
     // <i>ascending</i> order.<br>
     // Where a comparison operator for DataT does not exist, you must provide
     // your own in place of the default argument.
