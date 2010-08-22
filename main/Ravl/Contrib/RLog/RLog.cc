@@ -37,12 +37,12 @@ namespace RavlN {
     case SYSLOG_EMERG:
     case SYSLOG_ALERT:
     case SYSLOG_CRIT:
-    case SYSLOG_ERR:     rError(message); break;
-    case SYSLOG_WARNING: rWarning(message); break;
+    case SYSLOG_ERR:     rError("%s",message); break;
+    case SYSLOG_WARNING: rWarning("%s",message); break;
     case SYSLOG_NOTICE:
-    case SYSLOG_INFO:    rInfo(message); break;
+    case SYSLOG_INFO:    rInfo("%s",message); break;
     default:
-    case SYSLOG_DEBUG:   rDebug(message); break;
+    case SYSLOG_DEBUG:   rDebug("%s",message); break;
     }
   }
   

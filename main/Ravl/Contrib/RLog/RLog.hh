@@ -21,7 +21,7 @@
 #define RLOG_STREAM(RLOG_CMD, ARGS)   \
   RavlN::StrOStreamC strm;            \
   strm << ARGS;                       \
-  RLOG_CMD(strm.String().data());     \
+  RLOG_CMD("%s",strm.String().data());     \
 
 
 #define rInfoS(ARGS)    { RLOG_STREAM(rInfo,    ARGS) }
