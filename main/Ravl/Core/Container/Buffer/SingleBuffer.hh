@@ -16,6 +16,7 @@
 //! date="10/04/2002"
 
 #include "Ravl/Buffer.hh"
+#include "Ravl/Exception.hh"
 
 namespace RavlN {
   
@@ -218,12 +219,18 @@ namespace RavlN {
     
   protected:
     static SingleBufferBodyC<DataT> *AllocBody(SizeT size) {
+
 #if RAVL_CPUTYPE_32
       // Make sure buffers are 8-byte aligned.
-      SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (malloc(sizeof(SingleBufferBodyC<DataT>) + 4 + (size * sizeof(DataT))));
+      void *mem = malloc(sizeof(SingleBufferBodyC<DataT>) + 4 + (size * sizeof(DataT)));
 #else
-      SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (malloc(sizeof(SingleBufferBodyC<DataT>) + (size * sizeof(DataT))));
+      void *mem = malloc(sizeof(SingleBufferBodyC<DataT>) + (size * sizeof(DataT)));
 #endif
+      if(mem == 0) {
+        std::cerr << "Memory allocation failed, out of memory. \n";
+        throw ExceptionOperationFailedC("Out of memory. ");
+      }
+      SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (mem);
       try {
         new(ret) SingleBufferBodyC<DataT>(size);
       } catch(...) {
@@ -236,7 +243,12 @@ namespace RavlN {
     //: Allocate a body object plus some space.
     
     static SingleBufferBodyC<DataT> *AllocBody(SizeT size,UIntT align) {
-      SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (malloc(sizeof(SingleBufferBodyC<DataT>) + (size * sizeof(DataT)) + (align-1) ));
+      void *mem = malloc(sizeof(SingleBufferBodyC<DataT>) + (size * sizeof(DataT)) + (align-1) );
+      if(mem == 0) {
+        std::cerr << "Memory allocation failed, out of memory. \n";
+        throw ExceptionOperationFailedC("Out of memory. ");
+      }
+      SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (mem);
       try {
         new(ret) SingleBufferBodyC<DataT>(size,align);
       } catch(...) {
