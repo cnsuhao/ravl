@@ -115,7 +115,9 @@ namespace RavlN {
   //: Exception: Bad Configuration
   // Exception indicating problem loading a configuration.
 
-  class ExceptionBadConfigC : public ExceptionC {
+  class ExceptionBadConfigC 
+   : public ExceptionC
+  {
   public:
     ExceptionBadConfigC(const char *ndesc)
       : ExceptionC(ndesc)
@@ -125,6 +127,25 @@ namespace RavlN {
     ExceptionBadConfigC(const char *ntext,bool copy)
       : ExceptionC(ntext,copy)
       {}
+    //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+  };
+
+    //: Exception: Bad Configuration
+  // Exception indicating problem loading a configuration.
+
+  class ExceptionOutOfMemoryC
+   : public ExceptionC
+  {
+  public:
+    ExceptionOutOfMemoryC(const char *ndesc)
+      : ExceptionC(ndesc)
+    {}
+    //: Constructor.
+
+    ExceptionOutOfMemoryC(const char *ntext,bool copy)
+      : ExceptionC(ntext,copy)
+    {}
     //: Constructor.
   // if copy is true, a copy is made of string ntext.
   };

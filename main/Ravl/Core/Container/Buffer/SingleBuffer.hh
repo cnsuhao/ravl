@@ -228,7 +228,7 @@ namespace RavlN {
 #endif
       if(mem == 0) {
         std::cerr << "Memory allocation failed, out of memory. \n";
-        throw ExceptionOperationFailedC("Out of memory. ");
+        throw ExceptionOutOfMemoryC("Out of memory. ");
       }
       SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (mem);
       try {
@@ -246,7 +246,7 @@ namespace RavlN {
       void *mem = malloc(sizeof(SingleBufferBodyC<DataT>) + (size * sizeof(DataT)) + (align-1) );
       if(mem == 0) {
         std::cerr << "Memory allocation failed, out of memory. \n";
-        throw ExceptionOperationFailedC("Out of memory. ");
+        throw ExceptionOutOfMemoryC("Out of memory. ");
       }
       SingleBufferBodyC<DataT> *ret = reinterpret_cast<SingleBufferBodyC<DataT> *> (mem);
       try {
