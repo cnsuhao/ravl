@@ -22,24 +22,24 @@ namespace RavlN {
   inline DataT Average(const DataT &a,const DataT &b)
   { return (a+b)/2; }
   //: Take average of 2 numbers.
-  // This is usefull to deal with types limited value ranges. as it can be overriden.
+  // This is useful to deal with types limited value ranges. as it can be overridden.
   
   template<class DataT>
   inline DataT Average(const DataT &a,const DataT &b,const DataT &c)
   { return (a+b+c)/3; }
   //: Take average of 3 numbers.
-  // This is usefull to deal with types limited value ranges. as it can be overriden.
+  // This is useful to deal with types limited value ranges. as it can be overridden.
   
   template<class DataT>
   inline DataT Average(const DataT &a,const DataT &b,const DataT &c,const DataT &d)
   { return (a+b+c+d)/4; }
   //: Take average of 4 numbers.
-  // This is usefull to deal with types limited value ranges. as it can be overriden.
+  // This is useful to deal with types limited value ranges. as it can be overridden.
   
   inline ByteT Average(const ByteT &a,const ByteT &b)
   { return (ByteT)((IntT)(a+b)/2); }
   //: Take average of 2 numbers.
-  // This is usefull to deal with types limited value ranges. e.g. 
+  // This is useful to deal with types limited value ranges. e.g.
   
   inline ByteT Average(const ByteT &a,const ByteT &b,const ByteT &c)
   { return (ByteT)((IntT)(a+b+c)/3); }
