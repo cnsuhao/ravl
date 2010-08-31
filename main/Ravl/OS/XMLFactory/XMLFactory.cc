@@ -16,6 +16,7 @@
 #include "Ravl/XMLFactory.hh"
 #include "Ravl/XMLFactoryAutoStart.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/OS/Filename.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -587,16 +588,24 @@ namespace RavlN {
   }
 
   //! Create a component
-  
   bool XMLFactoryC::CreateComponentInternal(const XMLFactoryNodeC &node,RavlN::RCWrapAbstractC &rawHandle) {
     StringC loadFilename = node.XMLNode().AttributeString("load","");
     if(!loadFilename.IsEmpty()) {
       // ---- Load component from file ----
-      
-      SysLog(SYSLOG_DEBUG,"Loading component, Name='%s' ",node.Name().chars());
-      if(!RavlN::LoadAbstract(loadFilename,rawHandle,"",false)) {
-	SysLog(SYSLOG_ERR," load node '%s' from '%s'",node.Name().chars(),loadFilename.chars());
-	return false;
+      StringC resourceModule = node.XMLNode().AttributeString("resourceModule","");
+      SysLog(SYSLOG_DEBUG,"Loading component, Name='%s' file='%s' ",node.Name().chars(), loadFilename.data());
+      StringC fullName = RavlN::FilenameC::Search(loadFilename,
+                                                  RavlN::FilenameC(MasterConfigFilename()).PathComponent(),
+                                                  resourceModule.data());
+      if(fullName.IsEmpty()) {
+        SysLog(SYSLOG_ERR," Failed to find file '%s'  in node '%s' resourceModule '%s'",
+               loadFilename.chars(), node.Name().chars(),resourceModule.chars());
+        return false;
+      }
+      SysLog(SYSLOG_DEBUG,"Loading file='%s' ", fullName.data());
+      if(!RavlN::LoadAbstract(fullName, rawHandle, "", node.XMLNode().AttributeBool("loadVerbose", false))) {
+        SysLog(SYSLOG_ERR," load node '%s' from '%s'",node.Name().chars(),fullName.chars());
+        return false;
       }
       
     } else {
@@ -605,13 +614,13 @@ namespace RavlN {
       StringC typeToMake = node.XMLNode().AttributeString("typename","");
       SysLog(SYSLOG_DEBUG,"Creating component, Path='%s' Type='%s' ",node.Path().chars(),typeToMake.chars());
       if(typeToMake.IsEmpty()) {
-	SysLog(SYSLOG_ERR,"No type specified for node '%s'",node.Name().chars());
-	return false;
+        SysLog(SYSLOG_ERR,"No type specified for node '%s'",node.Name().chars());
+        return false;
       }
       TypeFactoryT *tf = Type2Factory().Lookup(typeToMake);
       if(tf == 0) {
-	SysLog(SYSLOG_ERR,"Node '%s', Type '%s' unknown.",node.Name().chars(),typeToMake.chars());
-	return false;
+        SysLog(SYSLOG_ERR,"Node '%s', Type '%s' unknown.",node.Name().chars(),typeToMake.chars());
+        return false;
       }
       XMLFactoryContextC createNode(*this,node);
       rawHandle = (*tf)(createNode);
