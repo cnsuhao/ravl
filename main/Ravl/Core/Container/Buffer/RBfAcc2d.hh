@@ -45,25 +45,25 @@ namespace RavlN {
 
     RangeBufferAccess2dC(const RangeBufferAccessC<BufferAccessC<DataT> > &ab,const IndexRangeC &nrng2)
       : RangeBufferAccessC<BufferAccessC<DataT> >(ab),
-	rng2(nrng2)
+        rng2(nrng2)
     {}
     //: Constructor.
 
     RangeBufferAccess2dC(const RangeBufferAccessC<BufferAccessC<DataT> > &ab,const IndexRange2dC &rect)
       : RangeBufferAccessC<BufferAccessC<DataT> >(ab,rect.Range1()),
-	rng2(rect.Range2())
+        rng2(rect.Range2())
     {}
     //: Construct a access to a rectangle within 'ab' with indexs 'rect'.
 
     RangeBufferAccess2dC(const RangeBufferAccessC<BufferAccessC<DataT> > &ab,const IndexRangeC &r1,const IndexRangeC &r2)
       : RangeBufferAccessC<BufferAccessC<DataT> >(ab,r1),
-	rng2(r2)
+        rng2(r2)
     {}
     //: Construct a access to a rectangle within 'ab' with ranges r1 and r2.
 
     RangeBufferAccess2dC(const BufferAccessC<BufferAccessC<DataT> > &ab,const IndexRangeC &r1,const IndexRangeC &r2)
       : RangeBufferAccessC<BufferAccessC<DataT> >(r1,ab),
-	rng2(r2)
+        rng2(r2)
     {}
     //: Construct a access to a rectangle within 'ab' with ranges r1 and r2.
     // Assumes all the offsets for the buffers should already be setup.
@@ -142,7 +142,7 @@ namespace RavlN {
 
     IntT Stride() const {
       if(Range1().Size() <= 1)
-	return (IntT) rng2.Size();
+        return (IntT) rng2.Size();
       return (IntT) (RangeBufferAccessC<BufferAccessC<DataT> >::operator[](this->IMin()+1).ReferenceElm() -
 		     RangeBufferAccessC<BufferAccessC<DataT> >::operator[](this->IMin()).ReferenceElm());
     }
@@ -150,13 +150,13 @@ namespace RavlN {
 
     bool IsContinuous() const
     { return Stride() == (IntT) rng2.Size(); }
-    //: Test if the array is allocated in a continous area of memory.
+    //: Test if the array is allocated in a continuous area of memory.
     // Note: this only checks the first two rows follow each other in
-    // memory, this may miss other discontunities.
+    // memory, this may miss other discontinuities.
 
     bool IsBlock() const {
       if(Range1().Size() <= 1)
-	return true;
+        return true;
       const DataT *d1 = RangeBufferAccessC<BufferAccessC<DataT> >::operator[](this->IMin()).ReferenceElm();
       const DataT *d2 = RangeBufferAccessC<BufferAccessC<DataT> >::operator[](this->IMin()+1).ReferenceElm();
       if(Range1().Size() < 3)
@@ -174,7 +174,7 @@ namespace RavlN {
 
     BufferAccess2dIterC<DataT> Iter()
     { return BufferAccess2dIterC<DataT>(*this,rng2); }
-    //: Creat an iterator for this buffer.
+    //: Creates an iterator for this buffer.
 
     BufferAccessC<DataT> &RowPtr(IndexC i)
     { return RangeBufferAccessC<BufferAccessC<DataT> >::operator[](i); }
@@ -208,7 +208,7 @@ namespace RavlN {
     for(BufferAccess2dIterC<DataT> it(arr,arr.Range2());it;) {
       s << *it;
       for(;it.Next();)
-	s << ' ' << *it;
+        s << ' ' << *it;
       s << '\n';
     }
     return s;
