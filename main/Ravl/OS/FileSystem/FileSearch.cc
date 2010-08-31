@@ -45,6 +45,16 @@ namespace RavlN {
                               const StringC& currentDirectory,
                               const char *resourceModule) {
     FilenameC result;
+    // Is there a file set at all ?
+    if(filename.IsEmpty())
+      return result; // No filename, no result!
+    
+    // Does the file exist from the current working directory ?
+    result = filename;
+    if(result.Exists())
+      return result;
+    
+    // Check if the file just works.
     if(filename.firstchar() == '~') { //home directory
       StringC homeDir(getenv("HOME"));
       if(!homeDir.IsEmpty()) {
