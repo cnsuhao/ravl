@@ -40,7 +40,7 @@ using namespace RavlOSGN;
 ImageByteRGBAC::RefT CreateImage()
 {
   ImageByteRGBAC::RefT imageRef = new ImageByteRGBAC(RealRange2dC(-1, 1));
-  ImageC<ByteRGBAValueC> image;
+  RavlImageN::ImageC<ByteRGBAValueC> image;
   if (Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", image, "", true))
     imageRef->SetImage(image);
 
@@ -84,7 +84,7 @@ TexTriMeshC::RefT CreateTexTriMesh()
   triArray[1].SetFaceNormal(Vector3dC(0, 0, 1));
   triArray[1].SetColour(colourWhite);
 
-  SArray1dC<ImageC<ByteRGBValueC> > imageArray(1);
+  SArray1dC<RavlImageN::ImageC<ByteRGBValueC> > imageArray(1);
   if (!Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", imageArray[0], "", true))
     return TexTriMeshC::RefT();
 
@@ -109,7 +109,7 @@ bool releaseFunc(MouseEventC &me) {
 }
 bool CBSetImage(ImageByteRGBAC::RefT &imageRef)
 {
-  ImageC<ByteRGBAValueC> image;
+  RavlImageN::ImageC<ByteRGBAValueC> image;
   if (Load(PROJECT_OUT "/share/RAVL/pixmaps/CalibrationChart.png", image, "", true))
     imageRef->SetImage(image);
   imageRef->SetAlpha(0.5);
