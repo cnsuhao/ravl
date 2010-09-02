@@ -60,19 +60,19 @@ sub main {
   
   foreach (@ARGV) {
     if(/\A-L([^ ]*)/) {
-      push searchDirs, $1 ;
+      push @searchDirs, $1 ;
       next ;
     }
     if(/\A-R([^ ]*)/) {
-      push searchDirs, $1 ;
+      push @searchDirs, $1 ;
       next ;
     }
     if(/\A-n32/) {  # Irix new 32 bit mode ?
-      push searchDirs, "/usr/lib32" ;
+      push @searchDirs, "/usr/lib32" ;
       next ;
     }
     if(/\A-64/) {  # Irix 64 bit mode ?
-      push searchDirs, "/usr/lib64" ;
+      push @searchDirs, "/usr/lib64" ;
       next ;
     }
     if(/\A-v/) { # Verbose
