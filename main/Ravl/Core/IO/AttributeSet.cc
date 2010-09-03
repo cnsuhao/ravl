@@ -205,11 +205,11 @@ namespace RavlN {
     if(!attrType.IsValid()) {
 #if RAVL_GETCREATESATTRIBUTE 
       if(enforceSchema)
-	return AttributeCtrlBodyC::SetAttr(attrName,attrValue);
+	return AttributeCtrlBodyC::GetAttr(attrName,attrValue);
       attrType = AttributeTypeNumC<IntT>(attrName,"",true,true,1,0,0,0);
       RegisterAttribute(attrType); // Register new attribute.
 #else
-      return AttributeCtrlBodyC::SetAttr(attrName,attrValue);
+      return AttributeCtrlBodyC::GetAttr(attrName,attrValue);
 #endif
     }
     StringC value;

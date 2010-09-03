@@ -107,28 +107,28 @@ namespace RavlN {
       case AVT_Bool: {
 	bool val;
 	if(!GetAttr(attrName,val))
-	  break;
+          return false;
 	attrValue = StringC(val ? "1" : "0");
 	return true;
       }
       case AVT_Int: {
         IntT val;
         if(!GetAttr(attrName,val))
-          break;
+          return false;
         attrValue = StringC(val);
         return true;
       }
       case AVT_Int64: {
         Int64T val;
         if(!GetAttr(attrName,val))
-          break;
+          return false;
         attrValue = StringC(val);
         return true;
       }
       case AVT_Real: {
 	RealT val;
 	if(!GetAttr(attrName,val))
-	  break;
+          return false;
 	attrValue = StringC(val);
 	return true;
       }
@@ -227,10 +227,11 @@ namespace RavlN {
       switch(attrType.ValueType()) {
       case AVT_Bool: {
 	bool val;
-	if(GetAttr(attrName,val))
-	  return true;
-	attrValue = val ? 1 : 0;
-      } break;
+	if(!GetAttr(attrName,val))
+          return false;
+        attrValue = val ? 1 : 0;
+	return true;
+      }
       default:
 	break;
       }
@@ -287,10 +288,18 @@ namespace RavlN {
       switch(attrType.ValueType()) {
         case AVT_Bool: {
           bool val;
-          if(GetAttr(attrName,val))
-            return true;
+          if(!GetAttr(attrName,val))
+            return false;
           attrValue = val ? 1 : 0;
-        } break;
+          return true;
+        }
+        case AVT_Int: {
+          IntT val;
+          if(!GetAttr(attrName,val))
+            return false;
+          attrValue = val;
+          return true;
+        } 
         default:
           break;
       }
@@ -344,6 +353,29 @@ namespace RavlN {
     if(parent.IsValid())
       if(parent.GetAttr(attrName,attrValue))
 	return true;
+    
+    AttributeTypeC attrType = GetAttrType(attrName);
+    if(attrType.IsValid()) { // Do we know of this attribute ?
+      switch(attrType.ValueType()) {
+        case AVT_Bool: {
+          bool val;
+          if(!GetAttr(attrName,val))
+            return false;
+          attrValue = val ? 1 : 0;
+          return true;
+        }
+        case AVT_Int: {
+          IntT val;
+          if(!GetAttr(attrName,val))
+            return false;
+          attrValue = val;
+          return true;
+        }
+        default:
+          break;
+      }
+    }
+
 #if RAVL_CHECK
     cerr << "AttributeCtrlBodyC::GetAttr(const StringC &,RealT &), Unknown attribute '" << attrName << "'\n";
 #endif
