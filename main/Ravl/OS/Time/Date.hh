@@ -333,17 +333,19 @@ namespace RavlN {
   
   inline 
   void DateC::NormalisePos()  {
-    while(usec >= MaxUSeconds()) {
-      usec -= MaxUSeconds();
-      sec++;
+    if(usec >= MaxUSeconds()) {
+      int diff = usec / MaxUSeconds();
+      usec -= diff * MaxUSeconds();
+      sec += diff;
     }
   }
   
   inline 
   void DateC::NormaliseNeg()  {
-    while(usec < 0) {
-      usec += MaxUSeconds();
-      sec--;
+    if(usec < 0) {
+      int diff = (-usec / MaxUSeconds())+1;
+      usec += diff * MaxUSeconds();
+      sec -= diff;
     }
   }
   
