@@ -675,7 +675,10 @@ namespace RavlN {
   void XMLFactoryC::RegisterTypeFactory(const std::type_info &typeInfo,TypeFactoryT typeFactoryFunc) {
     StringC typeName = RavlN::TypeName(typeInfo);
     if(Type2Factory().Lookup(typeName) != 0) {
-      SysLog(SYSLOG_WARNING,"Duplicate registeration of type %s in factory.",typeName.chars());
+      // As this is called before main() is executed and the program has had a chance
+      // to redirect log messages we'll just send them to stderr.
+      //SysLog(SYSLOG_WARNING,"Duplicate registeration of type %s in factory.",);
+      std::cerr << "WARNING: Duplicate registeration of type " << typeName << " in factory. \n";
     }
     Type2Factory()[RavlN::TypeName(typeInfo)] = typeFactoryFunc;
   }
