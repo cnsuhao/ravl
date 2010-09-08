@@ -184,6 +184,12 @@ namespace RavlImageN {
     ImageC<ByteRGBValueC> tmp;
     tmp = image1.Copy();
     head = ImageC<ByteRGBValueC>(Interlace(tmp));
+    //Adjust RGB range from DVS 16 to 235 to 0 to 255 as expected by digital ppl.
+    for(Array2dIterC<ByteRGBValueC> it(head);it;it++) {
+       it.Data().Red() = ((it.Data().Red()-16)*(255/219));
+       it.Data().Green() = ((it.Data().Green()-16)*(255/219));
+       it.Data().Blue() = ((it.Data().Blue()-16)*(255/219));
+    } 
     frameNo++;
     
     return true; 
