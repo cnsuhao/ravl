@@ -381,6 +381,10 @@ namespace RavlImageN {
                                                        pixs,img.Frame().Range1(),img.Frame().Range2());
     PixelT lmin = it.Data1();
     PixelT lmax = it.Data1();
+    if(it.Data1() > limitMaxValue) {
+      lmax = limitMaxValue;
+      lmin = limitMaxValue;
+    }
     if(limitMaxValue >= 255) {
       for(;it;it++) {
         it.Data2().region = 0;
