@@ -16,125 +16,119 @@
 //! file="Ravl/OS/Misc/SerialIO.hh"
 
 #include "Ravl/Stream.hh"
-#if RAVL_OS_WIN32
-#include "Ravl/OS/WinStreamIO.hh"
-#else
-#include "Ravl/OS/UnixStreamIO.hh"
-#endif
-
-struct termios ;
+#include "Ravl/OS/SerialAbstract.hh"
 
 namespace RavlN {
   
   //! userlevel=Normal
-  //: Class to control unix serial ports.
+  //: Class to control serial ports.
 
-  class SerialCtrlC :
-#if RAVL_OS_WIN32
-    public WinStreamIOC
-#else
-    public UnixStreamIOC
-#endif
+  class SerialCtrlC : public RCHandleC<SerialAbstractC>
   {
   public:
-
-
     SerialCtrlC();
-    //: defualt constructor;
-    
-    SerialCtrlC(const char *dev, const char * perm = "RDWR",bool nonBlocking = true);
+    //: Default constructor.
+
+    SerialCtrlC(const char *dev, const char * perm = "RDWR", bool nonBlocking = true);
     //: open a device for initialize;
-    
-    bool Open(const char *dev, const char * perm = "RDWR",bool nonBlocking = true);
+
+    bool Open(const char *dev, const char * perm = "RDWR", bool nonBlocking = true);
     //: Open device.
-	
-    enum ParityT { 
-      SERIAL_PARITY_ODD = 0,
-      SERIAL_PARITY_EVEN = 1,
-      SERIAL_PARITY_SET = 2,
-      SERIAL_PARITY_NONE = 3, 
-#if !RAVL_OS_WIN32
-      // These are here for compatilibity with older code, they
-      // unfortunatly they conflict with define's under windows.
-      PARITY_ODD = 0,
-      PARITY_EVEN = 1,
-      PARITY_SET = 2,
-      PARITY_NONE = 3, 
-#endif
-    };
 
+    void Close() { Body().Close(); }
+    //: Close port.
+    // Note this will only actually close the port if
+    // m_dontClose is false.
 
-    bool Setup(IntT i_speed = 9600,
-               IntT o_speed = 9600,
-               IntT stop_bit = 1,
-               ParityT par = SERIAL_PARITY_NONE,
-               IntT char_size = 8);
+    bool Setup(IntT i_speed = 9600, IntT o_speed = 9600, IntT stop_bit = 1,
+               SerialAbstractC::ParityT par = SerialAbstractC::SERIAL_PARITY_NONE, IntT char_size = 8)
+    { return Body().Setup(i_speed, o_speed, stop_bit, par, char_size); }
     //: Setup the port.
     // with the given parameters: Input speed, Output speed,
-    // stop bit(1,2), parity(exist or not exist), parity type(odd or even) and charactoe size(5,6,7,8)
+    // stop bit(1,2), parity(exist or not exist), parity type(odd or even) and character size(5,6,7,8)
 
-    bool SetISpeed(const IntT i_speed);
+    void Reset() { Body().Reset(); }
+    //: Reset interface.
+
+    void Flush() { Body().Flush(); }
+    //: Flush buffer.
+
+    bool IsOpen() const { return IsValid() && Body().IsOpen(); }
+    //: Is stream open ?
+
+    IntT Read(char *buff,UIntT size) { return Body().Read(buff, size); }
+    //: Read some bytes from a stream.
+
+    IntT ReadV(char **buffer,IntT *len,int n) { return Body().ReadV(buffer, len, n); }
+    //: Read some bytes from a stream.
+
+    IntT Write(const char *buff,UIntT size) { return Body().Write(buff, size); }
+    //: Write some bytes to a stream.
+
+    IntT WriteV(const char **buffer,IntT *len,int n) { return Body().WriteV(buffer, len, n); }
+    //: Write multiple buffers
+
+    bool SetISpeed(const IntT i_speed) { return Body().SetISpeed(i_speed); }
     //: set the input speed of the port;
 
-    bool SetOSpeed(const IntT o_speed);
+    bool SetOSpeed(const IntT o_speed) { return Body().SetOSpeed(o_speed); }
     //: set the output speed of the port;
 
-    bool SetStopBits(const IntT stop_bit);
+    bool SetStopBits(const IntT stop_bit) { return Body().SetStopBits(stop_bit); }
     //: set the number of stop bits : 1 or 2;
 
-    bool SetCharSize(const IntT char_size);
+    bool SetCharSize(const IntT char_size) { return Body().SetCharSize(char_size); }
     //: set the character size: 5,6,7,8;
 
-    bool SetParity(ParityT par);
+    bool SetParity(SerialAbstractC::ParityT par) { return Body().SetParity(par); }
     //: parity type: Odd or Even or None or 1
+
+    IntT Fd() const { return Body().Fd(); }
+    //: Access file descriptor.
+
+    void SetReadTimeout(float timeout) { Body().SetReadTimeout(timeout); }
+    //: Set the amount of time you should attempt to read from a file descriptor.
+    // This limits the time spent attempting to write to a socket
+    // without reading a single byte. The default is 120 seconds.
+
+    void SetWriteTimeout(float timeout) { Body().SetWriteTimeout(timeout); }
+    //: Set the amount of time you should attempt to write to a file descriptor.
+    // This limits the time spent attempting to write to a socket
+    // without sending a single byte. The default is 120 seconds.
+
+    bool SetNonBlocking(bool block) { return Body().SetNonBlocking(block); }
+    //: Enable non-blocking use of read and write.
+    // true= read and write's won't do blocking waits.
+
+    void SetDontClose(bool ndontClose) { Body().SetDontClose(ndontClose); }
+    //: Setup don't close flag.
     
-    bool IsOpen() const {
-#if RAVL_OS_WIN32
-      return WinStreamIOC::IsOpen();
-#else
-      return UnixStreamIOC::IsOpen();
-#endif
-    }
-    //: Is stream open ?
+    void SetFailOnReadTimeout(bool val) { Body().SetFailOnReadTimeout(val); }
+    //: Should read's fail on timeout ?
+    // If false, the socket will be checked its
+    // open and valid, if it is the read will be retried.
+
+    void SetFailOnWriteTimeout(bool val) { Body().SetFailOnWriteTimeout(val); }
+    //: Should write's fail on timeout ?
+    // If false, the socket will be checked its
+    // open and valid, if it is the write will be retried.
     
-    void Reset();
-    //: Reset interface.
-    
-    void Flush();
-    //: Flush buffer.
-    
+    void SetFillBufferOnRead(bool value) { Body().SetFillBufferOnRead(value); }
+    //: Should read functions keep reading until the buffer is full?
+    // If not the read will return immediately once any has been read.
+
   protected:
-#if RAVL_HAVE_INTFILEDESCRIPTORS 
-    bool SerialInit(IntT fd,
-                    IntT i_speed = 9600,
-                    IntT o_speed = 9600,
-                    IntT stop_bit = 1,
-                    ParityT par = SERIAL_PARITY_NONE,
-                    IntT char_size = 8);
-    //: Initialize the port.
-    // with the given parameters: Input speed, Output speed,
-    // stop bit(1,2), parity(exist or not exist), parity type(odd or even) and charactoe size(5,6,7,8)
-#endif
+    SerialCtrlC(SerialAbstractC *bod)
+      : RCHandleC<SerialAbstractC>(bod)
+    {}
 
-    static int SpeedSetting(int bitrate);
-    //: Get setting to use for a bit rate.
-    // returns -1 for illegal values.
+    SerialAbstractC &Body()
+    { return RCHandleC<SerialAbstractC>::Body(); }
+    //: Access body.
 
-    bool SetISpeed(termios &pb,IntT bitrate);
-    //: Set input bit rate.
-
-    bool SetOSpeed(termios &pb,IntT bitrate);
-    //: Set ouput bit rate.
-
-    bool SetCharSize(termios &pb,IntT bits);
-    //: Set bit rate.
-
-    bool SetStopBits(termios &pb,IntT bits);
-    //: Set bit rate.
-
-    bool SetParity(termios &pb,ParityT par);
-    //: parity type: Odd or Even or None or 1
-
+    const SerialAbstractC &Body() const
+    { return RCHandleC<SerialAbstractC>::Body(); }
+    //: Access body.
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////
