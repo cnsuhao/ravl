@@ -550,6 +550,7 @@ namespace RavlN {
       if(!EndOfContext(name)) {
 	ONDEBUG(cerr << "XMLOStreamC::EndTag()");
 	cerr << "ERROR: Not end of named entity '" << name << "' Currently its '" << Context().Name() << "'\n";
+        throw RavlN::ExceptionInvalidStreamC("Mismatched tags. ");
       }
     } else
       EndOfContext();

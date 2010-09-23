@@ -13,6 +13,7 @@
 #include "Ravl/HSet.hh"
 #include "Ravl/StringList.hh"
 #include <stdlib.h>
+
 #define DODEBUG 0
 
 #if DODEBUG
@@ -38,6 +39,7 @@ namespace RavlN {
   
   bool XMLTreeBodyC::Read(XMLIStreamC &in) {
     HSetC<StringC> includedFiles;
+    in.SetStrict(true);
     includedFiles += in.Name();
     return Read(in,includedFiles);
   }
@@ -52,7 +54,6 @@ namespace RavlN {
     if(thisTag == XML_PI)
       isPI = true;
 #endif
-    
     while(in) {
       StringC name;
       RCHashC<StringC,StringC> attr;
@@ -74,10 +75,14 @@ namespace RavlN {
 	continue;
       }
       if(tt == XMLEndTag ) {
+        if(Name() != name) {
+          std::cerr << "Tag mismatch in XML, opened with '" << Name() << "' and closed with '" << name << "' in '" << in.Name() << "'\n";
+          throw RavlN::ExceptionBadConfigC("Mismatched tags in XML file. ");
+          return false;
+        }
 	ONDEBUG(cerr << "Found end tag '" << name << "' \n");
 	break;
       }
-      
       // Process includes using XInclude syntax.
       XMLTreeC subtree(name,attr,tt == XML_PI);
       if(tt == XMLBeginTag) {

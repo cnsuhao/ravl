@@ -280,6 +280,10 @@ namespace RavlN {
     };
     //: Start a context.
     
+    void SetStrict(bool value)
+    { strict = value; }
+    //: Set strict parsing.
+    
     bool IsStrict() const
     { return strict; }
     //: In strict mode ?
@@ -446,7 +450,11 @@ namespace RavlN {
     { return Body().IsStrict(); }
     //: In strict mode ?
     // if true issue errors if XML consitancy check fails in reading or writing.
-    
+
+    void SetStrict(bool value)
+    { Body().SetStrict(value); }
+    //: Set strict parsing.
+
     bool IsContent() const
     { return Body().IsContent(); }
     //: Got content ?
