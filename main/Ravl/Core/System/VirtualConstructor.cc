@@ -87,7 +87,8 @@ namespace RavlN {
     VirtualConstructorC vc;
     if(!Table().Lookup(name.chars(),vc)) {
       cerr << "WARNING: Failed to find virtual constructor for type '" << name.chars() << "' \n";
-      return 0; // Type not found.
+      RavlAssert(0);
+      throw ExceptionOperationFailedC("Failed to find virtual constructor to decode stream. ");
     }
     return vc.Load(s);
   }
@@ -98,7 +99,8 @@ namespace RavlN {
     VirtualConstructorC vc;
     if(!Table().Lookup(name.chars(),vc)) {
       cerr << "WARNING: Failed to find virtual constructor for type '" << name.chars() << "' \n";
-      return 0; // Type not found.
+      RavlAssert(0);
+      throw ExceptionOperationFailedC("Failed to find virtual constructor to decode stream. ");
     }
     return vc.Load(s);
   }
