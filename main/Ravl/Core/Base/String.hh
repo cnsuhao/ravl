@@ -385,21 +385,21 @@ namespace RavlN {
 
     inline int index(char c, int startpos = 0) const
     { return search(startpos, length(), c); }
-    //: Return the index of the first occurance of 'c' in this string.
+    //: Return the index of the first occurrence of 'c' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
     inline int index(const StringC& y, int startpos = 0) const
     { return search(startpos, length(), y.chars(), y.length()); }
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
     inline int index(const SubStringC& y, int startpos = 0) const;
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
     inline int index(const char* t, int startpos = 0) const
     { return search(startpos, length(), t); }
-    //: Return the index of the first occurance of  'y' in this string.
+    //: Return the index of the first occurrence of  'y' in this string.
     // returns -1 on failure.  The search starts from index 'startpos'.
     
 #if USEREGEX
@@ -491,22 +491,22 @@ namespace RavlN {
 
 
     int freq(char c) const; 
-    //: return number of occurences of target in StringC
+    //: return number of occurrences of target in StringC
     
     int freq(const StringC& y) const;
-    //: return number of occurences of target in StringC
+    //: return number of occurrences of target in StringC
 
     int freq(const SubStringC& y) const;
-    //: return number of occurences of target in StringC
+    //: return number of occurrences of target in StringC
     
     int freq(const char* t) const;
-    //: return number of occurences of target in StringC
+    //: return number of occurrences of target in StringC
     
     //:-
     //: SubStringC extraction
     
     // Note that you can't take a substring of a const StringC, since
-    // this leaves open the possiblility of indirectly modifying the
+    // this leaves open the possibility of indirectly modifying the
     // StringC through the SubStringC
     
     inline SubStringC at(int pos, int len);
@@ -781,7 +781,7 @@ namespace RavlN {
     //: Check it valid.
     
     SubStringC TopAndTail() const;
-    //: Remove while space from begining and end of string.
+    //: Remove while space from beginning and end of string.
     
     IntT IntValue() const;
     //: Interpret string as an integer.
