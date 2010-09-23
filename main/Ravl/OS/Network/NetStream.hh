@@ -75,7 +75,7 @@ namespace RavlN {
     
     bool WaitForData(RealT timeout = -1);
     //: Wait for data to arrive.
-    // Returns true if data is available, on a timeout or other interupt
+    // Returns true if data is available, on a timeout or other interrupt
     // false is returned.
     
     SocketC &Socket() 

@@ -88,7 +88,7 @@ namespace RavlN {
     
     virtual const type_info &DefaultType() const
     { return typeid(DataT); }
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     
     virtual IntT Priority() const { return 0; }
     //: Find the priority of the format. the higher the better.

@@ -79,7 +79,7 @@ namespace RavlN {
     bool Cork(bool enable);
     //: Cork stream.
     // True indicates that there are going to
-    // be several write operations immediatly following each
+    // be several write operations immediately following each
     // other and stops the transmition of fragmented packets.
     // If you're not expecting to do any more writes immediately
     // you must call 'Cork(false)' immediately. <br>
@@ -190,10 +190,10 @@ namespace RavlN {
     { return Body().Cork(enable); }
     //: Cork stream.
     // True indicates that there is going to
-    // be several write operations immediatly following each
+    // be several write operations immediately following each
     // other and stops the transmition of fragmented packets.
-    // If your not expecting to do any more writes immediatly
-    // you must call 'Cork(false)' immediatly. <br>
+    // If your not expecting to do any more writes immediately
+    // you must call 'Cork(false)' immediately. <br>
     // False indicates that all the pending data has been written
     // This sends any partial packets still pending. <br>
     // NB: This is not compatible with SetNoDelay. <br>
@@ -244,13 +244,13 @@ namespace RavlN {
     { Body().SetFailOnReadTimeout(val); }
     //: Should read's fail on timeout ?
     // If false, the socket will be checked its
-    // open and valid, if it is the read will be retryed.
+    // open and valid, if it is the read will be retried.
 
     void SetFailOnWriteTimeout(bool val)
     { Body().SetFailOnWriteTimeout(val); }
     //: Should write's fail on timeout ?
     // If false, the socket will be checked its
-    // open and valid, if it is the write will be retryed.
+    // open and valid, if it is the write will be retried.
 
     friend class SocketBodyC;
   };

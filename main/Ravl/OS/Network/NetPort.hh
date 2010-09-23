@@ -66,7 +66,7 @@ namespace RavlN {
     //: Handle incoming StreamReady message.
     
     NetEndPointC ep;
-    ThreadEventC streamReady; // Have we recieved stream info yet.
+    ThreadEventC streamReady; // Have we received stream info yet.
     NetAttributeCtrlC netAttr;
     SignalConnectionSetC sigConnections;
   };
