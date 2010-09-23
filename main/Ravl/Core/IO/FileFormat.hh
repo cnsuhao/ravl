@@ -59,34 +59,34 @@ namespace RavlN {
     virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
-    // typeid(void) == no, otherwise returns the prefered load type.
+    // typeid(void) == no, otherwise returns the preferred load type.
     
     virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
     // If used with a empty filename asks: Can load this type of object ?
-    // typeid(void) == no, otherwise returns the prefered load type.
+    // typeid(void) == no, otherwise returns the preferred load type.
     
     inline const type_info &ProbeLoad(const StringC &filename,const type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
     // If used with a empty filename asks: Can load this type of object ?
-    // typeid(void) == no, otherwise returns the prefered load type.
+    // typeid(void) == no, otherwise returns the preferred load type.
     
     inline const type_info &ProbeLoad(const type_info &obj_type) const;
     //: Is stream in this format ?
     // Alias for ProbeLoad("",IStreamC(),obj_type);
-    // typeid(void) == no, otherwise returns the prefered load type.
+    // typeid(void) == no, otherwise returns the preferred load type.
     
     virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be saved with object 'obj_type' ?
     // If used with a empty filename asks: Can save this type of object ?
-    // typeid(void) == no, otherwise returns the prefered save type.
+    // typeid(void) == no, otherwise returns the preferred save type.
     
     inline const type_info &ProbeSave(const type_info &obj_type) const;
   //: Alias for ProbeSave("",IStreamC(),obj_type);
-    // typeid(void) == no, otherwise returns the prefered save type.
+    // typeid(void) == no, otherwise returns the preferred save type.
   
     virtual DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const;
     //: Create a input port for loading from file 'filename'.
@@ -109,7 +109,7 @@ namespace RavlN {
     // Will create an Invalid port if not supported.
     
     virtual const type_info &DefaultType() const;
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     // This specifies the native class for representing the data in a file. <p>
     // typeid(void) if none, indicates an indirect driver.
     
@@ -124,7 +124,7 @@ namespace RavlN {
     
     static bool ReadString(IStreamC &is,StringC &buff,UIntT maxLen = 256);
     //: read a string form the input.
-    // returns false if the stream contains non text charators or is longer 
+    // returns false if the stream contains non text charters or is longer
     // than the given length.
     // This will also restore the file read position after the read.
     
@@ -202,7 +202,7 @@ namespace RavlN {
     inline const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be saved with object 'obj_type' ?
-    // This uses extention to check consistancy.
+    // This uses extension to check consistency.
     // If used with a empty filename asks: Can save this type of object ?
     // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
     // This will be typeid(void), if failed.
@@ -238,7 +238,7 @@ namespace RavlN {
     // Will create an Invalid port if not supported.
     
     inline const type_info &DefaultType() const;
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     // typeid(void) if none.
     
     inline IntT Priority() const;
