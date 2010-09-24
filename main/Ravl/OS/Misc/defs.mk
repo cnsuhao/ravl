@@ -23,7 +23,7 @@ PLIB=RavlOS
 
 EHT= Ravl.API.OS.Hardware.html
 
-USESLIBS=RavlCore
+USESLIBS=RavlCore RavlIO
 
 LIBDEPS=RavlOSMisc.def
 
