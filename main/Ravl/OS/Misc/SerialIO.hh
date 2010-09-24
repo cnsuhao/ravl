@@ -23,7 +23,7 @@ namespace RavlN {
   //! userlevel=Normal
   //: Class to control serial ports.
 
-  class SerialCtrlC : public RCHandleC<SerialAbstractC>
+  class SerialCtrlC : public RCHandleC<SerialAbstractC>, public SerialAbstractParityBaseC
   {
   public:
     SerialCtrlC();
@@ -41,7 +41,7 @@ namespace RavlN {
     // m_dontClose is false.
 
     bool Setup(IntT i_speed = 9600, IntT o_speed = 9600, IntT stop_bit = 1,
-               SerialAbstractC::ParityT par = SerialAbstractC::SERIAL_PARITY_NONE, IntT char_size = 8)
+               ParityT par = SERIAL_PARITY_NONE, IntT char_size = 8)
     { return Body().Setup(i_speed, o_speed, stop_bit, par, char_size); }
     //: Setup the port.
     // with the given parameters: Input speed, Output speed,
@@ -80,7 +80,7 @@ namespace RavlN {
     bool SetCharSize(const IntT char_size) { return Body().SetCharSize(char_size); }
     //: set the character size: 5,6,7,8;
 
-    bool SetParity(SerialAbstractC::ParityT par) { return Body().SetParity(par); }
+    bool SetParity(ParityT par) { return Body().SetParity(par); }
     //: parity type: Odd or Even or None or 1
 
     IntT Fd() const { return Body().Fd(); }

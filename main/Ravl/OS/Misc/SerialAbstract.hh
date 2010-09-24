@@ -19,10 +19,8 @@
 
 
 namespace RavlN {
-  
-  //! userlevel=Normal
-  //: Base class to control serial ports.
-  class SerialAbstractC : public RCBodyVC {
+
+  class SerialAbstractParityBaseC {
   public:
     enum ParityT { 
       SERIAL_PARITY_ODD = 0,
@@ -38,7 +36,12 @@ namespace RavlN {
       PARITY_NONE = 3, 
 #endif
     };
+  };
 
+  //! userlevel=Normal
+  //: Base class to control serial ports.
+  class SerialAbstractC : public RCBodyVC, public SerialAbstractParityBaseC {
+  public:
     SerialAbstractC();
     //: default constructor;
 
