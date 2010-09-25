@@ -102,7 +102,7 @@ int testBasic() {
                  "<Config verbose=\"true\" >\n"
                  "  <Test typename=\"RavlN::XMLFactoryC\" />\n"
                  "  <Test2 typename=\"RavlN::TestClassC\" >\n"
-                 "    <child typename=\"RavlN::TestClassC\" noChild=\"true\" >\n"
+                 "    <child typename=\"RavlN::TestClassC\" noChild=\"true\" />\n"
                  "  </Test2>\n"
                  "</Config>\n"
                  );
