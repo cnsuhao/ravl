@@ -55,7 +55,6 @@ namespace RavlImageN
     }
     ONDEBUG(std::cerr << "FileFormatQTBodyC::ProbeLoad device(" << device << ") buffSize(" << buffSize << ")" << endl);
 
-#if 1
     if (obj_type == typeid(ImageC<ByteYUVValueC>)) {
       //return typeid(ImageC<ByteYUVValueC>); // Doesn't seem to be supported on webcam.
       return typeid(ImageC<ByteYUV422ValueC>);
@@ -68,32 +67,31 @@ namespace RavlImageN
 
     if( obj_type == typeid(ImageC<ByteYUV422ValueC>)  )
       return typeid(ImageC<ByteYUV422ValueC>);
-#endif
 
     return typeid(ImageC<ByteRGBValueC>);
   }
   
   const type_info &FileFormatQTBodyC::ProbeSave(const StringC &filename, const type_info &obj_type, bool forceFormat ) const
   {
-    ONDEBUG(std::cerr << "FileFormatQTBodyC::ProbeSave unsupported" << endl;)
+    ONDEBUG(std::cerr << "FileFormatQTBodyC::ProbeSave unsupported" << endl);
     return typeid(void);   
   }
   
   DPIPortBaseC FileFormatQTBodyC::CreateInput(IStreamC &in, const type_info &obj_type) const
   { 
-    ONDEBUG(std::cerr << "FileFormatQTBodyC::CreateInput(OStreamC) unsupported" << endl;)
+    ONDEBUG(std::cerr << "FileFormatQTBodyC::CreateInput(OStreamC) unsupported" << endl);
     return DPIPortBaseC();
   }
   
   DPOPortBaseC FileFormatQTBodyC::CreateOutput(OStreamC &out, const type_info &obj_type) const
   {
-    ONDEBUG(std::cerr << "FileFormatQTBodyC::CreateOutput(OStreamC) unsupported" << endl;)
+    ONDEBUG(std::cerr << "FileFormatQTBodyC::CreateOutput(OStreamC) unsupported" << endl);
     return DPOPortBaseC();  
   }
   
   DPIPortBaseC FileFormatQTBodyC::CreateInput(const StringC &filename, const type_info &obj_type) const
   {
-    ONDEBUG(std::cerr << "FileFormatQTBodyC::CreateInput filename(" << filename << ") type(" << obj_type.name() << ")" << endl;)
+    ONDEBUG(std::cerr << "FileFormatQTBodyC::CreateInput filename(" << filename << ") type(" << obj_type.name() << ")" << endl);
 
     // Get the parameters
     StringC device;
