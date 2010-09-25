@@ -135,7 +135,32 @@ namespace RavlN {
       return *value;
     }
     //: Access attribute.
+
+    bool Attribute(const StringC &name,StringC &data,const StringC &defaultValue = StringC()) const {
+      const StringC *value = Data().Lookup(name);
+      if(value == 0) {
+        data = defaultValue;
+        return false;
+      }
+      data = defaultValue;
+      return true;
+    }
+    //: Access string attribute.
+    // Return true if non default value has been specified.
     
+    bool Attribute(const StringC &name,std::string &data,const std::string &defaultValue = StringC()) const {
+      const StringC *value = Data().Lookup(name);
+      if(value == 0) {
+        data = defaultValue;
+        return false;
+      }
+      data = defaultValue.data();
+      return true;
+    }
+    //: Access string attribute.
+    // Return true if non default value has been specified.
+
+
     UIntT AttributeUInt(const StringC &name,UIntT defaultValue = 0) const {
       const StringC *value = Data().Lookup(name);
       if(value == 0) return defaultValue;
@@ -171,16 +196,31 @@ namespace RavlN {
     }
     //: Access attribute.
     
-    bool AttributeBool(const StringC &name,bool defaultValue = false) const {
+    bool Attribute(const StringC &name,bool &data,const bool &defaultValue = false) const
+    {
       const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
+      if(value == 0) {
+        data = defaultValue;
+        return false;
+      }
       StringC tmp = RavlN::downcase(*value);
-      if(tmp == "1" || tmp == "t" || tmp == "true" || tmp == "yes")
+      if(tmp == "1" || tmp == "t" || tmp == "true" || tmp == "yes") {
+        data = true;
 	return true;
-      if(tmp == "0" || tmp == "f" || tmp == "false" || tmp == "no")
-	return false;
+      }
+      if(tmp == "0" || tmp == "f" || tmp == "false" || tmp == "no") {
+        data = false;
+	return true;
+      }
       RavlIssueWarning(StringC("Expected boolean value, got '") + tmp + "' for attribute " + name + " in node '" + Name() + "' ");
-      return defaultValue;
+      data = defaultValue;
+      return false;
+    }
+
+    bool AttributeBool(const StringC &name,bool defaultValue = false) const {
+      bool ret;
+      Attribute(name,ret,defaultValue);
+      return ret;
     }
     //: Access attribute.
     
@@ -197,6 +237,7 @@ namespace RavlN {
     }
     //: Access generic attribute.
     // Return true if non default value has been specified.
+
 
     StringC Content() const;
     //: Access content of tag (if any)
