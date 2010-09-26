@@ -142,19 +142,19 @@ namespace RavlN {
         data = defaultValue;
         return false;
       }
-      data = defaultValue;
+      data = *value;
       return true;
     }
     //: Access string attribute.
     // Return true if non default value has been specified.
     
-    bool Attribute(const StringC &name,std::string &data,const std::string &defaultValue = StringC()) const {
+    bool Attribute(const StringC &name,std::string &data,const std::string &defaultValue = std::string()) const {
       const StringC *value = Data().Lookup(name);
       if(value == 0) {
         data = defaultValue;
         return false;
       }
-      data = defaultValue.data();
+      data = value->data();
       return true;
     }
     //: Access string attribute.
