@@ -61,13 +61,10 @@ int main(int nargs,char **argv) {
     
   // now lets read data from file and play to device
   out.SetAttr("samplerate",sampleRate) ; 
-  while ( true ) 
-    {
-      SampleElemC<1,Int16T>  sample = in.Get() ; 
-      out.Put(sample) ; // play sample
-    }
-
-
-    
+  SampleElemC<1,Int16T>  sample;
+  while (in.Get(sample)) {
+    out.Put(sample) ; // play sample
+  }
+  
   return 0;
 }

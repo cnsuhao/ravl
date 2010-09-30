@@ -28,7 +28,7 @@ namespace RavlAudioN {
   public:
     FileFormatDevAudioBodyC(const StringC &vName);
     //: Constructor.
-    
+
     virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
     //: Is stream in std stream format ?
     
@@ -68,6 +68,7 @@ namespace RavlAudioN {
     // i.e. check if you can read/write more than object object.
     
   protected:
+    
     StringC vName;
   };
   

@@ -14,7 +14,7 @@
 #include "Ravl/Audio/DevAudioIO.hh"
 #include "Ravl/TypeName.hh"
 
-#define DPDEBUG 0
+#define DPDEBUG 1
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -57,7 +57,7 @@ namespace RavlAudioN {
       return typeid(void);
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return obj_type;
-    return typeid(Int16T);
+    return typeid(SampleElemC<1,Int16T>);
   }
   
   const type_info &
@@ -100,7 +100,7 @@ namespace RavlAudioN {
   
   DPIPortBaseC FileFormatDevAudioBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const
   {
-    ONDEBUG(cerr << "FileFormatDevAudioBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+    ONDEBUG(cerr << "FileFormatDevAudioBodyC::CreateInput(const StringC &,const type_info &), Called for type " << RavlN::TypeName(obj_type) <<" \n");
     if(filename[0] != '@')
     return DPIPortBaseC();
     StringC fn = ExtractParams(filename);
@@ -115,14 +115,13 @@ namespace RavlAudioN {
       fn = "/dev/audio";
     if(obj_type == typeid(SampleElemC<1,Int16T>)) {
       DPIAudioC<SampleElemC<1,Int16T>,DevAudioBaseC> ret(fn,channel);
-      if(!ret.IsGetEOS()) // Did open succeed ?
-	return ret;
+      return ret;
     }
     if(obj_type == typeid(SampleElemC<2,Int16T>)) {
       DPIAudioC<SampleElemC<2,Int16T>,DevAudioBaseC> ret(fn,channel);
-      if(!ret.IsGetEOS()) // Did open succeed ?
-	return ret;
+      return ret;
     }
+    ONDEBUG(cerr << "Open failed. \n");
     return DPIPortBaseC();
   }
   

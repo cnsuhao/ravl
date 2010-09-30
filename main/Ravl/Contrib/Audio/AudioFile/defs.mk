@@ -26,3 +26,6 @@ MUSTLINK=RavlAudioFile.cc
 
 USESLIBS=RavlIO AudioFile RavlAudioUtil RavlAudioIO
 
+PROGLIBS= RavlDevAudio
+
+
