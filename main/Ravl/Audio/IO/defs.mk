@@ -9,10 +9,11 @@
 
 PACKAGE=Ravl/Audio
 
-HEADERS=SphereIO.hh SphereFormat.hh TranscriptionFiles.hh TranscriptionStream.hh
+HEADERS=SphereIO.hh SphereFormat.hh TranscriptionFiles.hh TranscriptionStream.hh \
+ PlaySound.hh
 
-SOURCES=AudioSample.cc SphereIO.cc SphereFormat.cc TranscriptionFiles.cc \
- TranscriptionStream.cc
+SOURCES=SphereIO.cc SphereFormat.cc TranscriptionFiles.cc TranscriptionStream.cc \
+ PlaySound.cc AudioSample.cc
 
 PLIB=RavlAudioIO
 
@@ -22,6 +23,6 @@ MUSTLINK=RavlAudioSample.cc
 
 MAINS=audioconv.cc
 
-PROGLIBS=RavlOSIO RavlDevAudio.opt RavlAudioFile.opt 
+PROGLIBS=RavlOSIO RavlDevAudio.opt RavlAudioFile.opt
 
 EXAMPLES= exTranscriptionStream.cc
