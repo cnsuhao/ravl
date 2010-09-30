@@ -38,4 +38,4 @@ USESLIBS = RavlImage RavlIO LibJPEG LibPNG LibTIFF RavlImageIO
 
 PROGLIBS = RavlDPDisplay.opt
 
-TESTEXES=test
+TESTEXES=testExtImgIO.cc
