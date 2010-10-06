@@ -146,6 +146,85 @@ namespace RavlN {
 
   }
 
+
+
+
+
+    //: converts a string list into an escaped string
+    // "," will be converted to "\," and the string will be "," delimited.
+    StringC StringListC::Escape() const
+    {
+      StringC ret;
+      bool firstPass = true;
+      for (ConstDLIterC<StringC> iter (*this); iter.IsElm() ; iter.Next() )
+      { 
+        StringC tmp = iter.Data(); //.Copy(); // copy not needed after RAVL gsub fix.
+        tmp.gsub(",", "\\,");
+        if (!firstPass)
+          ret += ',';
+        else
+          firstPass = false;
+
+        ret += tmp;
+      }
+      return ret;
+    }
+
+
+
+    //: converts and Escaped string back into a string list
+    StringListC StringListC::UnEscape(const StringC & str)
+    {
+      StringListC ret;
+
+      // ignore empty strings.
+      if (str.length() < 1)
+       return ret ;
+
+      // end of string marker.
+      const char * eos = &str.chars()[str.length()];
+
+      StringC work;
+
+      // iterate the string
+      const char * place = str.chars();
+      for ( ; place != eos ; ++place)
+      {
+        switch (*place)
+        {
+          // found an escape character.
+          case '\\':
+            work += *place;
+            // move to next character.
+            ++place;
+            switch(*place)
+            {
+              // dont care what is after an escape.
+              default:
+                work += *place;
+                break;
+            }
+            break;
+
+          // found a non-escaped delimter - so split.
+          case ',':
+            work.gsub("\\,", ",");
+            ret.InsLast(work);
+            work = StringC();
+            break;
+
+          default:
+            work+=*place; 
+            break;
+
+        }
+      }
+      work.gsub("\\,", ",");
+      ret.InsLast(work); 
+      return ret;
+    }
+
+
 }
 
 

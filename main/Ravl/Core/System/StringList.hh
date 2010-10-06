@@ -72,6 +72,13 @@ namespace RavlN {
     StringC Cat (const StringC &sep = " ") const;
     //: concatenates string list into a single string
     
+    StringC Escape() const;
+    //: converts a string list into an escaped string
+    // "," will be converted to "\," and the string will be "," delimited.
+
+    static StringListC UnEscape(const StringC & str);
+    //: converts and Escaped string back into a string list
+
   private:
     
 
