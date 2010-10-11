@@ -295,12 +295,96 @@ namespace RavlN
   }
   //---------------------------------------------------------------------------
 
+  //-- Chi^2 kernel ----------------------------------------------------------
+  //: XMLFactoryC constructor.  
+  Chi2KernelBodyC::Chi2KernelBodyC(const XMLFactoryContextC &factory)
+    : KernelFunctionBodyC(factory),
+      gamma(factory.AttributeReal("gamma", 1.0))
+  {
+  }
+
+  //: Load from stream.
+  Chi2KernelBodyC::Chi2KernelBodyC(istream &strm)
+    :KernelFunctionBodyC(strm)
+  {
+    IntT version;
+    strm >> version;
+    if(version != 0)
+      throw ExceptionOperationFailedC("Chi2KernelBodyC::Chi2KernelBodyC(istream &strm), Unrecognised version number in stream.");
+    strm >> gamma;
+  }
+
+  //---------------------------------------------------------------------------
+  //: Load from binary stream.
+  Chi2KernelBodyC::Chi2KernelBodyC(BinIStreamC &strm)
+    :KernelFunctionBodyC(strm)
+  {
+    IntT version;
+    strm >> version;
+    if(version != 0)
+      throw ExceptionOperationFailedC("Chi2KernelBodyC::Chi2KernelBodyC(BinIStreamC &strm), Unrecognised version number in stream.");
+    strm >> gamma;
+  }
+
+  //---------------------------------------------------------------------------
+  // Writes object to stream
+  bool Chi2KernelBodyC::Save(ostream &out) const
+  {
+    if(!RCBodyVC::Save(out))
+      return false;
+
+    const IntT version = 0;
+    out << ' ' << version << ' ' << gamma;
+    return true;
+  }
+  //---------------------------------------------------------------------------
+
+  // Writes object to stream
+  bool Chi2KernelBodyC::Save(BinOStreamC &out) const
+  {
+    if(!RCBodyVC::Save(out))
+      return false;
+    const IntT version = 0;
+    out << version << gamma;
+    return true;
+  }
+
+  //---------------------------------------------------------------------------
+  // "Distance" function. Vectors are supposed to be of the same size
+  RealT Chi2KernelBodyC::Distance(int Size, const RealT *X1, const RealT *X2) const
+  {
+    long double sum = 0.;
+    const RealT* endPtr = X1 + Size;
+    while(X1 < endPtr)
+      {
+	RealT bottom = (*X1 + *X2);
+	bottom = (bottom==0.0 ? RavlConstN::minReal: bottom);
+        RealT t = pow(*X1 - *X2, 2) / bottom;
+        sum += t;
+	*X1++;
+	*X2++;
+      }
+    return 0.5*sum;
+  }
+
+  //---------------------------------------------------------------------------
+  // Apply function to 'data' vectors supposed to be of the same size
+  RealT Chi2KernelBodyC::Apply(int Size, const RealT *X1, const RealT *X2) const
+  {
+    return exp(-this->Distance(Size,X1,X2) / gamma);
+  }
+  //---------------------------------------------------------------------------
+
+
+
+  //---------------------------------------------------------------------------
+
 
   RavlN::XMLFactoryRegisterHandleConvertC<LinearKernelC, KernelFunctionC> g_registerXMLFactoryLinearKernel("RavlN::LinearKernelC");
   RavlN::XMLFactoryRegisterHandleConvertC<QuadraticKernelC, KernelFunctionC> g_registerXMLFactoryQuadraticKernel("RavlN::QuadraticKernelC");
   RavlN::XMLFactoryRegisterHandleConvertC<PolynomialKernelC, KernelFunctionC> g_registerXMLFactoryPolynomialKernel("RavlN::PolynomialKernelC");
   RavlN::XMLFactoryRegisterHandleConvertC<RBFKernelC, KernelFunctionC> g_registerXMLFactoryRBFKernel("RavlN::RBFKernelC");
-  
+  RavlN::XMLFactoryRegisterHandleConvertC<Chi2KernelC, KernelFunctionC> g_registerXMLFactoryChi2Kernel("RavlN::Chi2KernelC");  
   extern void linkCommonKernels()
   {}
 

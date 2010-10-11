@@ -283,6 +283,9 @@ public:
   virtual bool Save(BinOStreamC &out) const;
   //: Writes object to stream
 
+  virtual RealT Distance(int Size, const RealT *X1, const RealT *X2) const
+  { cout << "Called RBFKernelBodyC::Distance()! " << endl; return 0.0;}
+
   virtual RealT Apply(int Size, const RealT *X1, const RealT *X2) const;
   //: Calculates kernel functions for two vectors X1 and X2
 private:
@@ -321,6 +324,83 @@ public:
 
   const RBFKernelBodyC &Body() const
     { return static_cast<const RBFKernelBodyC &>(KernelFunctionC::Body()); }
+  //: Access body.
+protected:
+};
+
+//------------------------------------------------------------------------------
+//! userlevel = Develop
+//: Chi^2 kernel function
+class Chi2KernelBodyC : public KernelFunctionBodyC
+{
+public:
+  Chi2KernelBodyC(RealT Gamma) : KernelFunctionBodyC()
+    { gamma = Gamma; }
+  //: Constructor.
+
+  Chi2KernelBodyC(const XMLFactoryContextC &factory);
+  //: Construct from XML factory
+  //!param gamma
+
+  Chi2KernelBodyC(istream &strm);
+  //: Load from stream.
+
+  Chi2KernelBodyC(BinIStreamC &strm);
+  //: Load from binary stream.
+
+  virtual bool Save(ostream &out) const;
+  //: Writes object to stream
+
+  virtual bool Save(BinOStreamC &out) const;
+  //: Writes object to stream
+
+  virtual RealT Apply(int Size, const RealT *X1, const RealT *X2) const;
+  //: Calculates kernel functions for two vectors X1 and X2
+
+  virtual RealT Distance(int Size, const RealT *X1, const RealT *X2) const;
+  //: Calculates the Chi^2 statistics between vectors X1 and X2
+  // D(X1,X2) = 0.5 \sum_{k=1}^{K} ((x1[k] - x2[k])^2)/(x1[k] + x2[k])
+
+private:
+  RealT gamma;
+};
+
+//! userlevel = Normal
+//: Radial basis kernel function
+class Chi2KernelC : public KernelFunctionC
+{
+public:
+  Chi2KernelC(){};
+  //: Default constructor
+
+  Chi2KernelC(RealT Gamma)
+    : KernelFunctionC(*new Chi2KernelBodyC(Gamma))
+  {}
+  //: Constructor
+  // K(X1, X2) = exp( - D(X1, X2) / Gamma), 
+  // where D(X1,X2) = 0.5 \sum_{k=1}^{K} ((x1[k] - x2[k])^2)/(x1[k] + x2[k])
+  // Gamma should be estimated externally by processing the 
+  // whole training set: Gamma = (1/N^2) \sum_{i,j}^N D(Xi,Xj), 
+  // where N is the training set size
+
+  Chi2KernelC(const XMLFactoryContextC &factory)
+    :  KernelFunctionC(*new Chi2KernelBodyC(factory))
+  {}
+  //: Construct from XML factory
+  //!param gamma 
+
+  Chi2KernelC(istream &strm);
+  //: Load from stream.
+
+  Chi2KernelC(BinIStreamC &strm);
+  //: Load from binary stream.
+
+  Chi2KernelBodyC &Body()
+    { return static_cast<Chi2KernelBodyC &>(KernelFunctionC::Body()); }
+  //: Access body.
+
+  const Chi2KernelBodyC &Body() const
+    { return static_cast<const Chi2KernelBodyC &>(KernelFunctionC::Body()); }
   //: Access body.
 protected:
 };
