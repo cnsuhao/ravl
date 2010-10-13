@@ -283,9 +283,6 @@ public:
   virtual bool Save(BinOStreamC &out) const;
   //: Writes object to stream
 
-  virtual RealT Distance(int Size, const RealT *X1, const RealT *X2) const
-  { cout << "Called RBFKernelBodyC::Distance()! " << endl; return 0.0;}
-
   virtual RealT Apply(int Size, const RealT *X1, const RealT *X2) const;
   //: Calculates kernel functions for two vectors X1 and X2
 private:
@@ -357,16 +354,15 @@ public:
   virtual RealT Apply(int Size, const RealT *X1, const RealT *X2) const;
   //: Calculates kernel functions for two vectors X1 and X2
 
-  virtual RealT Distance(int Size, const RealT *X1, const RealT *X2) const;
-  //: Calculates the Chi^2 statistics between vectors X1 and X2
-  // D(X1,X2) = 0.5 \sum_{k=1}^{K} ((x1[k] - x2[k])^2)/(x1[k] + x2[k])
-
 private:
   RealT gamma;
 };
 
 //! userlevel = Normal
-//: Radial basis kernel function
+//: Chi^2 kernel function
+// This kernel is typically used in conjunction with histogram values.  Hence it does not expect vector values to be negative; if negative values are present, the kernel will return a value of 0.0.
+
+
 class Chi2KernelC : public KernelFunctionC
 {
 public:

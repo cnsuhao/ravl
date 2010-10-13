@@ -350,28 +350,20 @@ namespace RavlN
   }
 
   //---------------------------------------------------------------------------
-  // "Distance" function. Vectors are supposed to be of the same size
-  RealT Chi2KernelBodyC::Distance(int Size, const RealT *X1, const RealT *X2) const
+  // Apply function to 'data' vectors supposed to be of the same size
+  RealT Chi2KernelBodyC::Apply(int Size, const RealT *X1, const RealT *X2) const
   {
     long double sum = 0.;
     const RealT* endPtr = X1 + Size;
     while(X1 < endPtr)
       {
 	RealT bottom = (*X1 + *X2);
-	bottom = (bottom==0.0 ? RavlConstN::minReal: bottom);
-        RealT t = pow(*X1 - *X2, 2) / bottom;
-        sum += t;
+        if (bottom <= 0.0) return 0.0;
+        sum += Sqr(*X1 - *X2) / bottom;
 	*X1++;
 	*X2++;
       }
-    return 0.5*sum;
-  }
-
-  //---------------------------------------------------------------------------
-  // Apply function to 'data' vectors supposed to be of the same size
-  RealT Chi2KernelBodyC::Apply(int Size, const RealT *X1, const RealT *X2) const
-  {
-    return exp(-this->Distance(Size,X1,X2) / gamma);
+    return exp(-0.5*sum / gamma);
   }
   //---------------------------------------------------------------------------
 
