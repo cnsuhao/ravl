@@ -112,6 +112,19 @@ namespace RavlN
   FileFormatStreamC<RBFKernelC> FileFormatStream_RBFKernel;
   FileFormatBinStreamC<RBFKernelC> FileFormatBinStream_RBFKernel;
 
+  // -- Chi^2 kernel ---------------------------------------------------
+  KernelFunctionC Chi2Kernel2KernelFunction(const Chi2KernelC &func)
+  { return func; }
+
+  DP_REGISTER_CONVERSION_NAMED(Chi2Kernel2KernelFunction, 1,
+                               "RavlN::KernelFunctionC RavlN::Convert(const "
+                               "RavlN::Chi2Kernel2KernelFunction &)");
+
+  static TypeNameC TypeChi2Kernel(typeid(Chi2KernelC), "RavlN::Chi2KernelC");
+
+  FileFormatStreamC<Chi2KernelC> FileFormatStream_Chi2Kernel;
+  FileFormatBinStreamC<Chi2KernelC> FileFormatBinStream_Chi2Kernel;
+
   //---------------------------------------------------------------------------
   // Stream load operators defined in RAVL_INITVIRTUALCONSTRUCTOR_FULL macro
   // Implementation of 'load from stream' constructors defined there as well
@@ -119,6 +132,7 @@ namespace RavlN
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(QuadraticKernelBodyC,     QuadraticKernelC,     KernelFunctionC);
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(PolynomialKernelBodyC,    PolynomialKernelC,    KernelFunctionC);
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(RBFKernelBodyC,           RBFKernelC,           KernelFunctionC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(Chi2KernelBodyC,          Chi2KernelC,          KernelFunctionC);
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignSvmBodyC,           DesignSvmC,           DesignClassifierSupervisedC);
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignSvmSmoBodyC,        DesignSvmSmoC,        DesignSvmC);
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(SvmClassifierBodyC,       SvmClassifierC,       Classifier2C);
