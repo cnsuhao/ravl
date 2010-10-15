@@ -110,27 +110,27 @@ namespace RavlN {
   ////////////////////////////////////////////////////////////////
   
   inline 
-  ThreadC TickerTrigger(RealT ndelay,const TriggerC &nse)
+  TickerTriggerC TickerTrigger(RealT ndelay,const TriggerC &nse)
   { return TickerTriggerC(ndelay,nse); }
   
   inline
-  ThreadC TickerTrigger(RealT ndelay,bool (*nFunc)())
+  TickerTriggerC TickerTrigger(RealT ndelay,bool (*nFunc)())
   { return TickerTriggerC(ndelay,Trigger(nFunc)); }
 
   template<class DataT>
-  ThreadC TickerTrigger(RealT ndelay,bool (*nFunc)(DataT &dat),const DataT &dat)
+  TickerTriggerC TickerTrigger(RealT ndelay,bool (*nFunc)(DataT &dat),const DataT &dat)
   { return TickerTriggerC(ndelay,Trigger(nFunc,dat)); }
   
   template<class ObjT>
-  ThreadC TickerTrigger(RealT ndelay,const ObjT &nObj,bool (ObjT::*nFunc)())
+  TickerTriggerC TickerTrigger(RealT ndelay,const ObjT &nObj,bool (ObjT::*nFunc)())
   { return TickerTriggerC(ndelay,Trigger(nObj,nFunc)); }
   
   template<class ObjT,class DataT>
-  ThreadC TickerTrigger(RealT ndelay,const ObjT &nObj,bool (ObjT::*nFunc)(DataT &),const DataT &nDat) 
+  TickerTriggerC TickerTrigger(RealT ndelay,const ObjT &nObj,bool (ObjT::*nFunc)(DataT &),const DataT &nDat)
   { return TickerTriggerC(ndelay,Trigger(nObj,nFunc,nDat)); }
   
   template<class ObjT,class Data1T,class Data2T>
-  ThreadC TickerTrigger(RealT ndelay,const ObjT &nObj,bool (ObjT::*nFunc)(Data1T &,Data2T &),const Data1T &nDat1,const Data2T &nDat2) 
+  TickerTriggerC TickerTrigger(RealT ndelay,const ObjT &nObj,bool (ObjT::*nFunc)(Data1T &,Data2T &),const Data1T &nDat1,const Data2T &nDat2)
   { return TickerTriggerC(ndelay,Trigger(nObj,nFunc,nDat1,nDat2)); }
   
 }

@@ -1,4 +1,7 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
+
+#include "TimedTriggerQueue.hh"
+
 // Copyright (C) 2001, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -32,29 +35,77 @@ public:
     }  
 };
 
+int testTickerTrigger(); 
+int testTimedTriggerQueueTicker();
+
 int main()
 {
+  int ln;
+  if((ln = testTickerTrigger()) != 0) {
+    cerr << "Test failed on line " << ln << " \n";
+    return 1;
+  }
+  if((ln = testTimedTriggerQueueTicker()) != 0) {
+    cerr << "Test failed on line " << ln << " \n";
+    return 1;
+  }
 
+  return 0;
+}
+
+int testTickerTrigger() {
   cerr << "Starting tick test. \n";
   ravl_atomic_set(&callcount,0);
-  
+
   ExampleC ae;
-  
-  TickerTrigger(0.2,ae,&ExampleC::DoIt);
-  TickerTrigger(0.2,ae,&ExampleC::DoIt);
-  
+
+  TickerTriggerC tt1 = TickerTrigger(0.2,ae,&ExampleC::DoIt);
+  TickerTriggerC tt2 = TickerTrigger(0.2,ae,&ExampleC::DoIt);
+
   cerr << "Waiting 10 seconds. \n";
-  
+
   DeadLineTimerC dlt(10.0);
   dlt.WaitForIt();
+  tt1.Shutdown();
+  tt2.Shutdown();
   
   int result = ravl_atomic_read(&callcount);
   int targ = 100;
   cerr << "Result : " << result << "  Target:" << targ << "\n";
-  
+
   if(result < (targ - 6) || result > (targ + 6)) {
     cerr << "Result out of range. \n";
-    return 1;
+    return __LINE__;
+  }
+  cerr << "Test passed. \n";
+  return 0;
+}
+
+int testTimedTriggerQueueTicker() {
+  cerr << "Starting queued tick test. \n";
+  ravl_atomic_set(&callcount,0);
+
+  ExampleC ae;
+
+  TimedTriggerQueueC ttq = RavlN::GlobalTriggerQueue();
+  UIntT qid1 = ttq.SchedulePeriodic(Trigger(ae,&ExampleC::DoIt),0.2);
+  UIntT qid2 = ttq.SchedulePeriodic(Trigger(ae,&ExampleC::DoIt),0.2);
+
+  cerr << "Waiting 10 seconds. \n";
+
+  DeadLineTimerC dlt(10.0);
+  dlt.WaitForIt();
+
+  ttq.Cancel(qid1);
+  ttq.Cancel(qid2);
+
+  int result = ravl_atomic_read(&callcount);
+  int targ = 100;
+  cerr << "Result : " << result << "  Target:" << targ << "\n";
+
+  if(result < (targ - 6) || result > (targ + 6)) {
+    cerr << "Result out of range. \n";
+    return __LINE__;
   }
   cerr << "Test passed. \n";
   return 0;

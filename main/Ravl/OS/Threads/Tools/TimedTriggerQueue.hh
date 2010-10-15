@@ -23,7 +23,6 @@
 #include "Ravl/Threads/ThreadEvent.hh"
 #include "Ravl/Calls.hh"
 
-#define USE_NEW_TIMEDTRIGGERQUEUE 1
 // The new timed trigger code doesn't rely the un*x select system call,
 // but gives less accurate timing.  
 
@@ -47,18 +46,24 @@ namespace RavlN
     //: Destructor.
     // This will not return until shutdown is complete.
     
-    UIntT Schedule(RealT t,const TriggerC &se);
+    UIntT Schedule(RealT t,const TriggerC &se,float period = -1);
     //: Schedule event for running after time 't' (in seconds).
     // Thread safe.
     // Returns an ID for the event, which can
     // be used for canceling it. 
     
-    UIntT Schedule(DateC &at,const TriggerC &se);
+    UIntT Schedule(DateC &startAt,const TriggerC &se,float period = -1);
     //: Schedule event for running.
     // Thread safe.
     // Returns an ID for the event, which can
     // be used for canceling it.
-    
+
+    UIntT SchedulePeriodic(const TriggerC &se,float period);
+    //: Schedule event for running periodicly.
+    // Thread safe.
+    // Returns an ID for the event, which can
+    // be used for canceling it.
+
     bool Cancel(UIntT eventID);
     //: Cancel pending event.
     // Will return TRUE if event in canceled before
@@ -70,21 +75,17 @@ namespace RavlN
   protected:
     bool Process();
     //: Process event queue.
-    
+
     virtual void ZeroOwners();
     //: Called when owning handles drops to zero.
     
     MutexC access;
     UIntT eventCount;
     PriQueueC<DateC,UIntT> schedule;
-    HashC<UIntT,TriggerC> events;
+    HashC<UIntT,Tuple2C<TriggerC,float> > events;
     bool done;
     // Queue fd's
-#if USE_NEW_TIMEDTRIGGERQUEUE
     SemaphoreC semaSched;
-#else
-    int rfd,wfd;
-#endif
     
     friend class TimedTriggerQueueC;
   };
@@ -130,20 +131,27 @@ namespace RavlN
     { return Body().Process(); }
     //: Used to start internal thread.
   public:
-    UIntT Schedule(RealT t,const TriggerC &se)
-    { return Body().Schedule(t,se); }
+    UIntT Schedule(RealT t,const TriggerC &se,float period = -1)
+    { return Body().Schedule(t,se,period); }
     //: Schedule event for running after time 't' (in seconds).
     // Thread safe.
     // Returns an ID for the event, which can
     // be used for canceling it. 
     
-    UIntT Schedule(DateC &at,const TriggerC &se)
-    { return Body().Schedule(at,se); }
+    UIntT Schedule(DateC &at,const TriggerC &se,float period = -1)
+    { return Body().Schedule(at,se,period); }
     //: Schedule event for running.
     // Thread safe.
     // Returns an ID for the event, which can
     // be used for canceling it.
     
+    UIntT SchedulePeriodic(const TriggerC &se,float period)
+    { return Body().SchedulePeriodic(se,period); }
+    //: Schedule event for running periodicly.
+    // Thread safe.
+    // Returns an ID for the event, which can
+    // be used for canceling it.
+
     bool Cancel(UIntT eventID)
     { return Body().Cancel(eventID); }
     //: Cancel pending event.
@@ -157,7 +165,11 @@ namespace RavlN
     
     friend class TimedTriggerQueueBodyC;
   };
-  
+
+  //! Access a global trigger queue.
+  // As one thread is sharing all the work,
+  // long (>0.1s) tasks be spawned on a sperate thread.
+  TimedTriggerQueueC GlobalTriggerQueue();
   
 }
 
