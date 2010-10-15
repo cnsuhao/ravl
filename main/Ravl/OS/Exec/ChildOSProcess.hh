@@ -41,7 +41,7 @@ namespace RavlN {
     ChildOSProcessBodyC(StringC args,FilenameC out,bool redirectStderr = false,bool useStdIn = false);
     //: Start a child process.
   
-    ChildOSProcessBodyC(StringListC args);
+    ChildOSProcessBodyC(StringListC args, bool useStdOut,bool useStdErr,bool useStdIn);
     //: Start a child process.
     // where the first arg is the name of the program to run.
     
@@ -166,6 +166,10 @@ namespace RavlN {
     //: Start a child process.
     // Send output to file 'out', if redirectStderr is true send
     // stderr there too. 
+
+   ChildOSProcessC(StringListC args, bool useStdOut=false, bool useStdErr=false, bool useStdIn=false);
+   //: Start a child process.
+   // where the first arg is the name of the program to run.
     
   protected:
     ChildOSProcessBodyC &Body() 

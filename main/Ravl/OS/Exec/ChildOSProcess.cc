@@ -62,7 +62,14 @@ ChildOSProcessC::ChildOSProcessC(StringC cmd,bool useStdOut,bool useStdErr,bool 
   ChildOSProcessC::ChildOSProcessC(StringC cmd,FilenameC out,bool redirectStderr,bool useStdIn)
     : OSProcessC(*new ChildOSProcessBodyC(cmd,out,redirectStderr,useStdIn))
   {}
-  
+
+   //: Start a child process.
+
+  ChildOSProcessC::ChildOSProcessC(StringListC args, bool useStdOut,bool useStdErr,bool useStdIn)
+    : OSProcessC(*new ChildOSProcessBodyC(args, useStdOut, useStdErr, useStdIn))
+  {}
+
+
   ///////////////////////////////////////////////////////
   //: Default constructor.
   
@@ -97,12 +104,12 @@ ChildOSProcessC::ChildOSProcessC(StringC cmd,bool useStdOut,bool useStdErr,bool 
   //: Start a child process.
   // where the first arg is the name of the program to run.
   
-  ChildOSProcessBodyC::ChildOSProcessBodyC(StringListC args)
+  ChildOSProcessBodyC::ChildOSProcessBodyC(StringListC args,bool useStdOut,bool useStdErr,bool useStdIn)
     : OSProcessBodyC(-1),
       running(false),
       exitok(false)
   {
-    Run(args);
+    Run(args,useStdOut,useStdErr,useStdIn);
   }
   
   //: Destructor
