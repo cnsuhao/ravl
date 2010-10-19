@@ -31,7 +31,7 @@ int main(int nargs, char **argv)
   
   // Check the file exists
   FilenameC fn(filename);
-  if (!fn.Exists())
+  if (fn[0] != '@' && !fn.Exists())
   {
     cerr << "Error opening file (" << filename << ")\n";
     return 1;

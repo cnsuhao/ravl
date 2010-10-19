@@ -12,7 +12,6 @@
 #include <stdint.h>
 #endif
 
-
 #include "Ravl/Image/FFmpegVideoEncoder.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/DP/AttributeValueTypes.hh"

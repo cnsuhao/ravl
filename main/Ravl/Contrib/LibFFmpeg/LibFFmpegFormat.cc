@@ -37,7 +37,7 @@ extern "C" {
 #endif
 }
 
-#define DODEBUG 0
+#define DODEBUG 1
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -81,7 +81,16 @@ namespace RavlImageN
                                                       const type_info &obj_type) const
   {
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::ProbeLoad(const StringC&,IStreamC&,...) called (" << filename << ")" << endl);
-    
+
+    // Use @FFMPEG to force use of ffmpeg for non files.
+    if(filename.size() > 0 && filename[0] == '@') {
+      StringC device = ExtractDevice(filename);
+      if(device == "FFMPEG")
+        return typeid(ImageC<ByteRGBValueC>);
+      return typeid(void);
+    }
+
+
     if (!in.good())
       return typeid(void);
 
@@ -143,54 +152,68 @@ namespace RavlImageN
   DPIPortBaseC FileFormatLibFFmpegBodyC::CreateInput(const StringC &filename, const type_info &obj_type) const
   {
     ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateInput(const StringC&,...) called (" << filename << ")" << endl);
-    
-    if (IsSupported(filename.chars()))
-    {
-      //return SPort(DPIByteFileC(fn) >> ImgILibFFmpegC(true));
-      FFmpegPacketStreamC packetStream(filename);
-      IntT codecId = -1;
-      IntT videoStreamId = -1;
-      if(!packetStream.FirstVideoStream(videoStreamId,codecId))
+    StringC useFilename;
+    if(filename.size() > 0 && filename[0] == '@') {
+      ONDEBUG(std::cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) looking at device (" << filename << ")\n");
+      StringC device = ExtractDevice(filename);
+      if(device != "FFMPEG")
+        return DPOPortBaseC();
+      useFilename = ExtractParams(filename);
+    } else {
+      if (!IsSupported(filename.chars())) {
+        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateInput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
         return DPIPortBaseC();
-      return ImgIOFFmpegC<ImageC<ByteRGBValueC> >(packetStream,videoStreamId,codecId);
+      }
+      useFilename = filename;
     }
-    
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateInput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
-    return DPIPortBaseC();
+    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateInput(const StringC&,...) called (" << useFilename << ")" << endl);
+    FFmpegPacketStreamC packetStream(useFilename);
+    IntT codecId = -1;
+    IntT videoStreamId = -1;
+    if(!packetStream.FirstVideoStream(videoStreamId,codecId))
+      return DPIPortBaseC();
+    return ImgIOFFmpegC<ImageC<ByteRGBValueC> >(packetStream,videoStreamId,codecId);
   }
 
 
 
   DPOPortBaseC FileFormatLibFFmpegBodyC::CreateOutput(const StringC &filename, const type_info &obj_type) const
   {
-
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) called (" << filename << ")" << endl);
-    
-    if (IsOutPutSupported(filename.chars()))
-    {
-      //return SPort(DPIByteFileC(fn) >> ImgILibFFmpegC(true));
-      FFmpegEncodePacketStreamC packetStream(filename);
-      IntT codecId = -1;
-      IntT videoStreamId = -1;
-        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) if(!packetStream. " << endl);
-      if(!packetStream.FirstVideoStream(videoStreamId,codecId)) {
-        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) error. " << endl);
+    // Use @FFMPEG to force use of ffmpeg for non files.
+    StringC useFilename;
+    if(filename.size() > 0 && filename[0] == '@') {
+      ONDEBUG(std::cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) looking at device (" << filename << ")\n");
+      StringC device = ExtractDevice(filename);
+      if(device != "FFMPEG")
+        return DPOPortBaseC();
+      useFilename = ExtractParams(filename);
+    } else {
+      if (!IsOutPutSupported(filename.chars())) {
+        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
         return DPOPortBaseC();
       }
-        ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) return ImgDPOFFmpeg. " << endl);
-        ImgDPOFFmpegC<ImageC<ByteRGBValueC> > temp(packetStream,videoStreamId,codecId);
-        ONDEBUG(cerr << "after ImgDPOFFmpegC " << endl);
-        ImageC<ByteRGBValueC> brgb;
-        IntT result;
-        ONDEBUG(cerr << "call put " << result << " temp.Put(brbg).typeid() is " << typeid(temp).name() <<  endl);
-        result = temp.IsPutReady();  //Put(brgb);
-        ONDEBUG(cerr << "result is " << result << endl);
-        return temp;
+      useFilename = filename;
     }
     
-    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) not an FFmpeg supported file (" << filename << ")" << endl);
-
-    return DPOPortBaseC();  
+    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) called (" << useFilename << ")" << endl);
+    
+    FFmpegEncodePacketStreamC packetStream(useFilename);
+    IntT codecId = -1;
+    IntT videoStreamId = -1;
+      ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) if(!packetStream. " << endl);
+    if(!packetStream.FirstVideoStream(videoStreamId,codecId)) {
+      ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) error. " << endl);
+      return DPOPortBaseC();
+    }
+    ONDEBUG(cerr << "FileFormatLibFFmpegBodyC::CreateOutput(const StringC&,...) return ImgDPOFFmpeg. " << endl);
+    ImgDPOFFmpegC<ImageC<ByteRGBValueC> > temp(packetStream,videoStreamId,codecId);
+    ONDEBUG(cerr << "after ImgDPOFFmpegC " << endl);
+    ImageC<ByteRGBValueC> brgb;
+    IntT result ;
+    ONDEBUG(cerr << "call put IsPutReady() on " << typeid(temp).name() <<  endl);
+    result = temp.IsPutReady(); 
+    ONDEBUG(cerr << "result is " << result << endl);
+    return temp;
   }
 
 
