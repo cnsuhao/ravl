@@ -8,7 +8,8 @@ namespace RavlN {
   extern void linkDistanceMax();
   extern void linkDistanceRobust();
   extern void linkDistanceSqrEuclidean();
-  
+  extern void linkDistanceChi2();
+
   void LinkDistance() {
     linkDistance();
     linkDistanceCityBlock();
@@ -17,6 +18,7 @@ namespace RavlN {
     linkDistanceMax();
     linkDistanceRobust();
     linkDistanceSqrEuclidean();
+    linkDistanceChi2();
   }
   
 }

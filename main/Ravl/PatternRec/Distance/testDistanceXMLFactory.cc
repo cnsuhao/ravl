@@ -13,7 +13,7 @@ int testDistanceMahalanobis(void);
 int testDistanceMax(void);
 int testDistanceRobust(void);
 int testDistanceSqrEuclidean(void);
-
+int testDistanceChi2(void);
 
 int main() {
   int ln;
@@ -44,6 +44,11 @@ int main() {
   }
 
   if((ln = testDistanceSqrEuclidean()) != 0) {
+    std::cerr << "Test failed on line " << ln << "\n";
+    return 1;
+  }
+
+  if((ln = testDistanceChi2()) != 0) {
     std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
@@ -172,6 +177,27 @@ int testDistanceSqrEuclidean(void) {
        "<?RAVL class='RavlN::XMLTreeC' ?>\n"
        "<Config >\n"
        "<Distance typename=\"RavlN::DistanceSqrEuclideanC\" />"
+       "</Config>");
+  RavlN::XMLTreeC xmlTree(true);
+  if (!xmlTree.Read(ss))
+    return __LINE__;
+  RavlN::XMLFactoryHC mainFactory("test.xml", xmlTree);
+  RavlN::XMLFactoryContextC context(mainFactory);
+  DistanceC distance;
+  // get connection to database
+  if(!context.UseComponent("Distance", distance, true)) {
+    return __LINE__;
+  }  
+  return 0;
+}
+
+int testDistanceChi2(void) {
+  RavlN::StrIStreamC
+    ss(
+       "<?xml version='1.0' encoding='UTF-8' ?>\n"
+       "<?RAVL class='RavlN::XMLTreeC' ?>\n"
+       "<Config >\n"
+       "<Distance typename=\"RavlN::DistanceChi2C\" />"
        "</Config>");
   RavlN::XMLTreeC xmlTree(true);
   if (!xmlTree.Read(ss))

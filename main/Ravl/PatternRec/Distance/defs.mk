@@ -12,10 +12,10 @@ DESCRIPTION = Pattern Recognition Toolbox
 PACKAGE = Ravl/PatternRec
 
 HEADERS=Distance.hh DistanceEuclidean.hh DistanceMax.hh DistanceCityBlock.hh \
- DistanceMahalanobis.hh DistanceSqrEuclidean.hh DistanceRobust.hh
+ DistanceMahalanobis.hh DistanceSqrEuclidean.hh DistanceRobust.hh DistanceChi2.hh
 
 SOURCES=Distance.cc DistanceEuclidean.cc DistanceMax.cc DistanceCityBlock.cc \
- DistanceMahalanobis.cc DistanceSqrEuclidean.cc DistanceRobust.cc
+ DistanceMahalanobis.cc DistanceSqrEuclidean.cc DistanceRobust.cc DistanceChi2.cc
 
 LIBDEPS=RavlPatternRecDistance.def
 
@@ -28,3 +28,5 @@ USESLIBS=RavlPatternRec RavlMath RavlXMLFactory RavlMathIO
 EHT=Ravl.API.Pattern_Recognition.Distance.html
 
 MUSTLINK=linkDistance.cc
+
+# MAINS=testDistanceXMLFactory.cc
