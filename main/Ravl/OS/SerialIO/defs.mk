@@ -12,7 +12,7 @@ PACKAGE=Ravl/OS
 DESCRIPTION=Interfaces for serial devices
 
 HEADERS=SerialAbstract.hh SerialDirect.hh SerialDFormat.hh \
-        SerialIO.hh
+        SerialIO.hh SerialAbstractPort.hh
 
 SOURCES=SerialAbstract.cc SerialDirect.cc SerialDFormat.cc \
         SerialIO.cc

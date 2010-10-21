@@ -28,6 +28,11 @@ namespace RavlN {
   public:
     SerialCtrlC();
     //: Default constructor.
+    
+    SerialCtrlC(SerialAbstractC &bod)
+      : RCHandleC<SerialAbstractC>(bod)
+    {}
+    //: Body constructor.
 
     SerialCtrlC(const char *dev, const char * perm = "RDWR", bool nonBlocking = true);
     //: open a device for initialize;
@@ -121,6 +126,7 @@ namespace RavlN {
     SerialCtrlC(SerialAbstractC *bod)
       : RCHandleC<SerialAbstractC>(bod)
     {}
+    //: Body constructor.
 
     SerialAbstractC &Body()
     { return RCHandleC<SerialAbstractC>::Body(); }

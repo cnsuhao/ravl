@@ -137,6 +137,9 @@ namespace RavlN {
     virtual void SetFillBufferOnRead(bool value);
     //: Should read functions keep reading until the buffer is full?
     // If not the read will return immediately once any has been read.
+
+    typedef RavlN::SmartPtrC<SerialAbstractC> RefT;
+    //: Handle to SerialAbtractC
   };
 
 }

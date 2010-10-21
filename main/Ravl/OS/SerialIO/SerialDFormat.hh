@@ -3,15 +3,15 @@
 // This code may be redistributed under the terms of the MIT
 // License. See http://www.opensource.org/licenses/mit-license.html
 // file-header-ends-here
-#ifndef SERIAL_DIRECT_FORMAT_HEADER
-#define SERIAL_DIRECT_FORMAT_HEADER 1
+#ifndef RAVL_SERIAL_DIRECT_FORMAT_HEADER
+#define RAVL_SERIAL_DIRECT_FORMAT_HEADER 1
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/OS/SerialAbstract.hh"
 #include "Ravl/SmartPtr.hh"
 
-namespace RavlN
-{
+namespace RavlN {
+
   /////////////////////////////
   //! userlevel = Develop
   //: SerialDirect file format information.

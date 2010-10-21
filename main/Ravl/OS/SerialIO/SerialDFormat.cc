@@ -7,6 +7,7 @@
 //! author = "Alex Kostin"
 
 #include "Ravl/OS/SerialDFormat.hh"
+#include "Ravl/OS/SerialAbstractPort.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/StringList.hh"
 #include "Ravl/OS/SerialDirect.hh"
@@ -20,60 +21,7 @@
 
 namespace RavlN
 {
-
-class SerialDFormatAuxDPIPortBodyC
-  : public RavlN::DPIPortBodyC<SmartPtrC<SerialAbstractC> >
-{
-public:
-  //! Constructor.
-  SerialDFormatAuxDPIPortBodyC(){};
-
-  //! Set port.
-  void SetPort(SmartPtrC<SerialAbstractC> &port)
-  { m_port = port; }
-
-  //! Are we ready  ?
-  virtual bool IsGetReady() const
-  { return m_port.IsValid(); }
-
-  //! Has an end of stream occurred (a terminal error in this case.)
-  virtual bool IsGetEOS() const
-  { return !m_port.IsValid(); }
-
-  //! Get port
-  virtual SmartPtrC<SerialAbstractC> Get()
-    { return m_port; }
-
-  //! Get an image from the camera.
-  virtual bool Get(SmartPtrC<SerialAbstractC> &port)
-  { port = m_port; return m_port.IsValid(); }
-
-protected:
-  SmartPtrC<SerialAbstractC> m_port;
-};
-
-
-class SerialDFormatAuxDPIPortC
-  : public RavlN::DPIPortC<SmartPtrC<SerialAbstractC> >
-{
-public:
-  SerialDFormatAuxDPIPortC()
-    : DPEntityC(false)
-  {}
-  //! Default constructor.
-
-  SerialDFormatAuxDPIPortC(SmartPtrC<SerialAbstractC> &port)
-    : DPEntityC(new SerialDFormatAuxDPIPortBodyC())
-  { Body().SetPort(port); }
-
-protected:
-  //! Access handle.
-  SerialDFormatAuxDPIPortBodyC &Body()
-  { return dynamic_cast<SerialDFormatAuxDPIPortBodyC &>(DPEntityC::Body()); }
-};
-
-
-
+  
   FileFormatSerialDirectBodyC::FileFormatSerialDirectBodyC()
     : FileFormatBodyC("serialDirect", "direct serial port connection (@SP_DIRECT)")
   {}
@@ -184,7 +132,7 @@ protected:
       if(!portPtr->Setup(speed, speed, stop_bits, parity, data_bits))
         throw "Wrong parameters for port setup";
 
-      SerialDFormatAuxDPIPortC rv(portPtr);
+      SerialFormatAuxDPIPortC rv(portPtr);
       return rv;
       /*DListC<SmartPtrC<SerialAbstractC> > portList;
       portList.InsLast(portPtr);
