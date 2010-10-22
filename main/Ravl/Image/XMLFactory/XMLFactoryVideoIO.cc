@@ -15,6 +15,8 @@ namespace RavlN {
   
   XMLFactoryVideoIORegisterC<RavlN::ByteT> g_registerXMLFactoryVideoIOByteT("RavlN::DPIPortC<RavlImageN::ImageC<RavlN::ByteT>>",
                                                                             "RavlN::DPOPortC<RavlImageN::ImageC<RavlN::ByteT>>");
+  XMLFactoryVideoIORegisterC<RavlN::UInt16T> g_registerXMLFactoryVideoIOUInt16T("RavlN::DPIPortC<RavlImageN::ImageC<RavlN::UInt16T>>",
+                                                                            "RavlN::DPOPortC<RavlImageN::ImageC<RavlN::UInt16T>>");
   XMLFactoryVideoIORegisterC<RavlImageN::ByteRGBValueC> g_registerXMLFactoryVideoIOByteRGBValueC("RavlN::DPIPortC<RavlImageN::ImageC<RavlImageN::ByteRGBValueC>>",
                                                                                                  "RavlN::DPOPortC<RavlImageN::ImageC<RavlImageN::ByteRGBValueC>>"
                                                                                                  );
