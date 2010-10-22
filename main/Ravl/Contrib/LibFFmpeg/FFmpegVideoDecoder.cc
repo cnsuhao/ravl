@@ -230,9 +230,14 @@ namespace RavlN {
     }
     if(attrName == "aspectratio") {
       if(pCodecCtx == 0)
-        attrValue = "?";
+        attrValue = "";
       else
-        attrValue = StringC(pCodecCtx->sample_aspect_ratio.num) + ":" + StringC(pCodecCtx->sample_aspect_ratio.den);
+      {
+        if (pCodecCtx->sample_aspect_ratio.num == 0 || pCodecCtx->sample_aspect_ratio.den == 0)
+          attrValue = "";
+        else
+          attrValue = StringC(pCodecCtx->sample_aspect_ratio.num) + ":" + StringC(pCodecCtx->sample_aspect_ratio.den);
+      }
       return true;
     }
     return false;
