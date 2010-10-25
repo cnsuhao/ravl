@@ -98,14 +98,16 @@ int main() {
 
 int testSVD() {
   cerr << "tesSVD() Called \n";
-  for(int i = 0;i < 10;i++) {
+  for(int i = 0;i < 15;i++) {
     VectorC D;
     MatrixC U, V;
     MatrixC Test;
     if(i < 5) {
       Test = RandomMatrix(10,10);
-    } else {
+    } else if(i < 10) {
       Test = RandomMatrix(5,4);
+    } else {
+      Test = RandomMatrix(4,5);
     }
     D=SVD(Test,U,V);
     //cerr << "D=" << D << "\n";

@@ -16,7 +16,7 @@
 #include "Ravl/SVD.hh"
 
 #define RAVL_USE_CCMATH_SVD 0
-#define RAVL_SVDC_M_LT_N_WORKAROUND 0
+#define RAVL_SVDC_M_LT_N_WORKAROUND 1
 
 #if RAVL_USE_CCMATH_SVD
 #include "Ravl/CCMath.hh"
@@ -30,7 +30,7 @@ namespace RavlN {
   //: Singular value decomposition, eg. M = U * D * V.T(). 
   // The diagonal matrix D is returned as a vector. Values for the
   // other matrixes are not computed.
-  // If the operation failes the returned vector is invalid.
+  // If the operation fails the returned vector is invalid.
   
   VectorC SVD(const MatrixC &mat) {
     MatrixC ret = mat.Copy();
@@ -79,11 +79,7 @@ namespace RavlN {
     if(mat.Rows() < mat.Cols()) {
       // Hack to get around bug in SVD.
       MatrixC matt = mat.T();
-      MatrixC ut;
-      MatrixC vt;
-      VectorC x = SVD_IP(matt,ut,vt);
-      v = ut.T();
-      u = vt.T();
+      VectorC x = SVD_IP(matt,v,u);
       return x;
     }
 #endif
@@ -96,8 +92,8 @@ namespace RavlN {
   // This also returns the matrix u and v matrixes, the passed
   // matrixes will be used to store the results if they are
   // of the correct size.
-  // If the operation failes the returned vector is invalid.
-  // NB. This function destory's the contents of this matrix!
+  // If the operation fails the returned vector is invalid.
+  // NB. This function destroys the contents of this matrix!
 #if RAVL_USE_CCMATH_SVD
   
   VectorC SVD_IP(MatrixC &mat,MatrixC & u, MatrixC & v) {
