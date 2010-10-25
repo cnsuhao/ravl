@@ -6,6 +6,10 @@
 #ifndef RAVL_SERIALABSTRACTPORT_HH
 #define	RAVL_SERIALABSTRACTPORT_HH
 
+#include "Ravl/SmartPtr.hh"
+#include "Ravl/OS/SerialAbstract.hh"
+#include "Ravl/DP/Port.hh"
+
 namespace RavlN {
 
   //! Port containing abstract serial ports.
