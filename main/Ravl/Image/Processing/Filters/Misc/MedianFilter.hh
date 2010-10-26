@@ -13,10 +13,10 @@
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Array2dSqr31Iter2.hh"
-#include "Ravl/Image/ByteRGBMedian.hh"
 #include "Ravl/Collection.hh"
+#include "Ravl/Image/ByteRGBValue.hh"
 
-namespace RavlIN {
+namespace RavlN {
   using namespace RavlImageN;
   
   template<class PixelT>

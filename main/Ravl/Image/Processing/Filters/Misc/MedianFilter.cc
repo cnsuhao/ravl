@@ -8,7 +8,7 @@
 #include "Ravl/Image/MedianFilter.hh"
 #include "Ravl/Image/ByteRGBMedian.hh"
 
-namespace RavlIN {
+namespace RavlN {
   
   void MedianFilter33(const ImageC<ByteRGBValueC> &in,ImageC<ByteRGBValueC> &out)
   {
