@@ -16,7 +16,7 @@
 #include "Ravl/Image/ByteRGBMedian.hh"
 #include "Ravl/Collection.hh"
 
-namespace RavlN {
+namespace RavlIN {
   using namespace RavlImageN;
   
   template<class PixelT>
@@ -41,26 +41,7 @@ namespace RavlN {
   //: Median filter for single channel images.
   
   
-  
-  void MedianFilter33(const ImageC<ByteRGBValueC> &in,ImageC<ByteRGBValueC> &out) {
-    if(out.Frame().Area() == 0)
-      out = ImageC<ByteRGBValueC>(in.Frame().Expand(-1));
-    CollectionC<ByteRGBGreyValueC> pixels(9,9);
-    for(Array2dSqr31Iter2C<ByteRGBValueC,ByteRGBValueC> it(in,out);it;it++) {
-      pixels[0] = it.DataTL1();
-      pixels[1] = it.DataTM1();
-      pixels[2] = it.DataTR1();
-      pixels[3] = it.DataML1();
-      pixels[4] = it.DataMM1();
-      pixels[5] = it.DataMR1();
-      pixels[6] = it.DataBL1();
-      pixels[7] = it.DataBM1();
-      pixels[8] = it.DataBR1();
-      
-      ByteRGBGreyValueC &best = pixels.KthHighest(4);
-      it.Data2() = static_cast<ByteRGBValueC &>(best);
-    }
-  }
+  void MedianFilter33(const ImageC<ByteRGBValueC> &in,ImageC<ByteRGBValueC> &out);
   //: Median filter for byte rgb images.
   // This filter takes a median of the grey value, and
   // uses the colour of the associated pixel.
