@@ -451,7 +451,14 @@ namespace RavlN {
     inline bool Invoke(DataT &dat)
     { return Body().Invoke(dat); }
     //: Send default signal.
-    
+
+    inline bool InvokeConst(const DataT &dat)
+    {
+      DataT tmp(dat);
+      return Body().Invoke(tmp);
+    }
+    //: Send default signal.
+
     inline bool operator()(DataT &dat)
     { return Body().Invoke(dat); }
     //: Simple invokation.
