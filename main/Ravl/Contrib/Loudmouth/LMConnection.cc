@@ -120,7 +120,7 @@ namespace RavlN { namespace XMPPN {
     lm_connection_set_jid (m_conn, jid.data());
 
     if (!lm_connection_open_and_block (m_conn, &error)) {
-      g_error ("Connection failed to open: %s", error->message);
+      g_error ("Connection failed to open: %s   Account:'%s' ", error->message,jid.data());
       return false;
     }
 
@@ -168,14 +168,15 @@ namespace RavlN { namespace XMPPN {
     GError *error = NULL;
     LmMessage *m = lm_message_new (to, LM_MESSAGE_TYPE_MESSAGE);
     lm_message_node_add_child (m->node, "body", message);
-
+    bool ret = true;
     if (!lm_connection_send (m_conn, m, &error)) {
       g_print ("Error while sending message to '%s':\n%s\n",
           to, error->message);
+      ret = false;
     }
 
     lm_message_unref (m);
-    return true;
+    return ret;
   }
 
   LmHandlerResult LMConnectionC::MessageHandler(LmMessageHandler *handler,
