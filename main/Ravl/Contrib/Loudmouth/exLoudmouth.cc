@@ -31,8 +31,11 @@ int main(int nargs,char **argv) {
   }
 
   RavlN::Connect(lmc->SigTextMessage(),&PrintMessage);
-
-  RavlN::Sleep(1);
+  
+  std::cerr << "Main: Waiting for connection \n";
+  while(!lmc->IsReady()) {
+    RavlN::Sleep(4);
+  }
   std::cerr << "Main: Sending message \n";
 
   lmc->SendText("craftit@jabber.org","Hello");

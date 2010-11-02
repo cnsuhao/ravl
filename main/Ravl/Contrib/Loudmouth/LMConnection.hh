@@ -34,6 +34,10 @@ namespace RavlN { namespace XMPPN {
     //! Test if we have a connection.
     bool IsConnected() const;
 
+    //! Is connection ready for use ?
+    bool IsReady() const
+    { return m_isReady; }
+
     //! Send a text message to someone.
     bool SendText(const char *to,const char *message);
 
@@ -53,7 +57,15 @@ namespace RavlN { namespace XMPPN {
                                            LmConnection     *connection,
                                            LmMessage        *message);
 
+    //! Called when connection open complete.
+    virtual void CBConnectionOpen(LmConnection *connection,gboolean success);
+
+    //! Called when connection open complete.
+    virtual void CBConnectionAuth(LmConnection *connection,gboolean success);
   protected:
+
+
+
     virtual void ZeroOwners();
     //: Called when owner handles drop to zero.
 
@@ -74,6 +86,7 @@ namespace RavlN { namespace XMPPN {
     GMainLoop *m_mainLoop;
     LmConnection *m_conn;
     LmMessageHandler  *m_defaultHandler;
+    bool m_isReady;
   };
 }}
 
