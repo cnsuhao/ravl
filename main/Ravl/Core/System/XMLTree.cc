@@ -12,6 +12,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/HSet.hh"
 #include "Ravl/StringList.hh"
+#include "Ravl/Resource.hh"
 #include <stdlib.h>
 
 #define DODEBUG 0
@@ -197,6 +198,8 @@ namespace RavlN {
         newIStream = IStreamC(newFn);
       }
     }
+
+    // Try in the same directory as the parent
     if(!newIStream.good() && xi_href.firstchar() != '/') {
       StringC parentDir = FilePathComponent(parentFilename);
       if(!parentDir.IsEmpty()) {
@@ -206,11 +209,22 @@ namespace RavlN {
       }
     }
     
+    // Try from the resource root.
+    if(!newIStream.good()) {
+      StringC resourceDir = ResourceRoot();
+      if(!resourceDir.IsEmpty()) {
+        StringC newFn = resourceDir + '/' + xi_href;
+        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << resourceDir << "'\n");
+        newIStream = IStreamC(newFn);
+      }
+    }
+
     // Try opening from the current directory.
     if(!newIStream.good()) {
-      ONDEBUG(std::cerr << "Trying '" << xi_href << "'\n");      
+      ONDEBUG(std::cerr << "Trying '" << xi_href << "'\n");
       newIStream = IStreamC(xi_href);
     }
+
     ONDEBUG(std::cerr << "Stream state '" << newIStream.good() << " " << newIStream.bad() << " " << newIStream.fail() << "'\n");
     
     XMLIStreamC newStream(newIStream);
