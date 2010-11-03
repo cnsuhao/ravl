@@ -11,6 +11,7 @@
 #include "Ravl/XMLFactory.hh"
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/Signal2.hh"
+#include "Ravl/Threads/Semaphore.hh"
 #include <string>
 
 namespace RavlN { namespace XMPPN {
@@ -28,9 +29,24 @@ namespace RavlN { namespace XMPPN {
     //! Destructor
     ~LMConnectionC();
 
+    //! Access current server
+    const std::string &Server() const
+    { return m_server; }
+
+    //! Access current user
+    const std::string &User() const
+    { return m_user; }
+
+    //! Access current password
+    const std::string &Password() const
+    { return m_password; }
+
+    //! Access current resource
+    const std::string &Resource() const
+    { return m_resource; }
+
     //! Start opening
     bool Open();
-
     
     //! Test if we have a connection.
     bool IsConnected() const;
@@ -89,6 +105,7 @@ namespace RavlN { namespace XMPPN {
     LmConnection *m_conn;
     LmMessageHandler  *m_defaultHandler;
     bool m_isReady;
+    SemaphoreC m_mainLoopStarted;
 
   };
 }}

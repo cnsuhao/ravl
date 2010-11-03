@@ -9,6 +9,8 @@
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/CallMethodPtrs.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/OS/SysLog.hh"
+#include "Ravl/OS/Date.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -19,41 +21,6 @@
 
 namespace RavlN {
   namespace XMPPN {
-
-#if 0
-
-    static void
-    connection_auth_cb(LmConnection *connection,
-                       gboolean success,
-                       gpointer user_data)
-    {
-      if(success) {
-        GError *error = NULL;
-        LmMessage *m;
-
-        g_print("LmSendAsync: Authenticated successfully\n");
-
-        m = lm_message_new(recipient, LM_MESSAGE_TYPE_MESSAGE);
-        lm_message_node_add_child(m->node, "body", message);
-
-        if(!lm_connection_send(connection, m, &error)) {
-          g_printerr("LmSendAsync: Failed to send message:'%s'\n",
-                     lm_message_node_to_string(m->node));
-        } else {
-          g_print("LmSendAsync: Sent message:'%s'\n",
-                  lm_message_node_to_string(m->node));
-          test_success = TRUE;
-        }
-
-        lm_message_unref(m);
-      } else {
-        g_printerr("LmSendAsync: Failed to authenticate\n");
-      }
-
-      lm_connection_close(connection, NULL);
-      g_main_loop_quit(main_loop);
-    }
-#endif
 
     static void InternalHandlerConnectionAuth(LmConnection *connection,
                                               gboolean success,
@@ -87,17 +54,18 @@ namespace RavlN {
                                  const char *password,
                                  const char *resource)
     : m_server(server),
-    m_user(user),
-    m_password(password),
-    m_resource(resource),
-    m_asyncOpen(true),
-    m_dumpRaw(true),
-    m_sigTextMessage("", ""),
-    m_context(0),
-    m_mainLoop(0),
-    m_conn(0),
-    m_defaultHandler(0),
-    m_isReady(false)
+     m_user(user),
+     m_password(password),
+     m_resource(resource),
+     m_asyncOpen(false),
+     m_dumpRaw(true),
+     m_sigTextMessage("", ""),
+     m_context(0),
+     m_mainLoop(0),
+     m_conn(0),
+     m_defaultHandler(0),
+     m_isReady(false),
+     m_mainLoopStarted(0)
     {
       Init(true);
     }
@@ -109,15 +77,15 @@ namespace RavlN {
     m_user(factory.AttributeString("user", "auser").data()),
     m_password(factory.AttributeString("password", "apassword").data()),
     m_resource(factory.AttributeString("resource", "default").data()),
-    m_asyncOpen(factory.AttributeBool("async", true)),
+    m_asyncOpen(factory.AttributeBool("async", false)),
     m_dumpRaw(factory.AttributeBool("dumpRaw", false)),
     m_sigTextMessage("", ""),
     m_context(0),
     m_mainLoop(0),
     m_conn(0),
     m_defaultHandler(0),
-    m_isReady(false)
-
+    m_isReady(false),
+    m_mainLoopStarted(0)
     {
       Init(factory.AttributeBool("useOwnThread", true));
     }
@@ -155,7 +123,7 @@ namespace RavlN {
       ONDEBUG(std::cerr << "Starting main loop \n");
       g_main_context_push_thread_default(m_context);
       ONDEBUG(std::cerr << "Entering main loop\n");
-      
+      m_mainLoopStarted.Post();
       g_main_loop_run(m_mainLoop);
       ONDEBUG(std::cerr << "Done main loop. \n");
       return 0;
@@ -167,12 +135,15 @@ namespace RavlN {
     {
       // Make sure threads are enabled.
       g_thread_init(0);
-
+      RavlAssert(m_context == 0);
+      RavlAssert(m_mainLoop == 0);
+      RavlAssert(m_conn == 0);
       if(inOwnThread) {
         m_context = g_main_context_new();
         m_mainLoop = g_main_loop_new(m_context, false);
-        m_conn = lm_connection_new_with_context(m_server.data(), m_context);
         LaunchThread(TriggerPtr(CBRefT(this), &LMConnectionC::MainLoop));
+        m_mainLoopStarted.Wait();
+        m_conn = lm_connection_new_with_context(m_server.data(), m_context);
       } else {
         m_context = g_main_context_default();
         g_main_context_ref(m_context);
@@ -206,43 +177,51 @@ namespace RavlN {
       
       if(!m_asyncOpen) {
         ONDEBUG(std::cerr << "Synchronus connection started \n");
-        if (!lm_connection_open_and_block(m_conn, &error)) {
-          g_error("Connection failed to open: %s   Account:'%s' ", error->message, jid.data());
-          return false;
+        bool openOk = false;
+        for(int retry = 0;retry < 4;retry++) {
+          if (lm_connection_open_and_block(m_conn, &error)) {
+            openOk = true;
+            break;
+          }
+          SysLog(SYSLOG_ERR,"Connection failed to open: %s   Account:'%s' ", error->message, jid.data());
+          error = NULL;
+          RavlN::Sleep(2.0);
         }
+        if(!openOk)
+          return false;
+        
         ONDEBUG(std::cerr << "Synchronus connection made, authenticating \n");
 
         if (!lm_connection_authenticate_and_block(m_conn, m_user.data(), m_password.data(), m_resource.data(), &error)) {
-          g_error("Connection failed to authenticate: %s", error->message);
+          SysLog(SYSLOG_ERR,"Connection failed to authenticate: %s", error->message);
           return false;
         }
         ONDEBUG(std::cerr << "Synchronus authenication complete. \n");
       }
 
-
-#if 1
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_STREAM,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_AUTH,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_CHALLENGE,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_RESPONSE,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_FAILURE,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_PROCEED,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-      lm_connection_register_message_handler(m_conn, m_defaultHandler,
-                                             LM_MESSAGE_TYPE_STARTTLS,
-                                             LM_HANDLER_PRIORITY_NORMAL);
-#endif
+      if(m_dumpRaw) {
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_STREAM,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_AUTH,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_CHALLENGE,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_RESPONSE,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_FAILURE,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_PROCEED,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+        lm_connection_register_message_handler(m_conn, m_defaultHandler,
+                                               LM_MESSAGE_TYPE_STARTTLS,
+                                               LM_HANDLER_PRIORITY_NORMAL);
+      }
       if(!m_asyncOpen) {
         // Let server know we want messages.
         ONDEBUG(std::cerr << "Sending presents message \n");
@@ -257,7 +236,7 @@ namespace RavlN {
                              (LmResultFunction) & InternalHandlerConnectionOpen,
                              this, NULL, &error)) {
           g_printerr("LmSendAsync: Could not open a connection %s \n", error->message);
-          return EXIT_FAILURE;
+          return false;
         }
       }
 
@@ -277,6 +256,10 @@ namespace RavlN {
 
     bool LMConnectionC::SendText(const char *to, const char *message)
     {
+      if(!IsConnected()) {
+        SysLog(SYSLOG_ERR,"Attempt to send message with an invalid connection. ");
+        return false;
+      }
       GError *error = NULL;
       LmMessage *m = lm_message_new(to, LM_MESSAGE_TYPE_MESSAGE);
       lm_message_node_add_child(m->node, "body", message);
