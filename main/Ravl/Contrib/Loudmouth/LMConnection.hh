@@ -31,6 +31,7 @@ namespace RavlN { namespace XMPPN {
     //! Start opening
     bool Open();
 
+    
     //! Test if we have a connection.
     bool IsConnected() const;
 
@@ -79,6 +80,7 @@ namespace RavlN { namespace XMPPN {
     std::string m_user;
     std::string m_password;
     std::string m_resource;
+    bool m_asyncOpen;
     bool m_dumpRaw;
     Signal2C<std::string,std::string> m_sigTextMessage;
 
@@ -87,6 +89,7 @@ namespace RavlN { namespace XMPPN {
     LmConnection *m_conn;
     LmMessageHandler  *m_defaultHandler;
     bool m_isReady;
+
   };
 }}
 

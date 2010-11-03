@@ -82,11 +82,15 @@ namespace RavlN {
 
     //! Constructor
 
-    LMConnectionC::LMConnectionC(const char *server, const char *user, const char *password, const char *resource)
+    LMConnectionC::LMConnectionC(const char *server,
+                                 const char *user,
+                                 const char *password,
+                                 const char *resource)
     : m_server(server),
     m_user(user),
     m_password(password),
     m_resource(resource),
+    m_asyncOpen(true),
     m_dumpRaw(true),
     m_sigTextMessage("", ""),
     m_context(0),
@@ -105,6 +109,7 @@ namespace RavlN {
     m_user(factory.AttributeString("user", "auser").data()),
     m_password(factory.AttributeString("password", "apassword").data()),
     m_resource(factory.AttributeString("resource", "default").data()),
+    m_asyncOpen(factory.AttributeBool("async", true)),
     m_dumpRaw(factory.AttributeBool("dumpRaw", false)),
     m_sigTextMessage("", ""),
     m_context(0),
@@ -149,7 +154,8 @@ namespace RavlN {
     {
       ONDEBUG(std::cerr << "Starting main loop \n");
       g_main_context_push_thread_default(m_context);
-
+      ONDEBUG(std::cerr << "Entering main loop\n");
+      
       g_main_loop_run(m_mainLoop);
       ONDEBUG(std::cerr << "Done main loop. \n");
       return 0;
@@ -182,21 +188,12 @@ namespace RavlN {
       GError *error = NULL;
       std::string jid = m_user + "@" + m_server;
       lm_connection_set_jid(m_conn, jid.data());
+      lm_connection_set_port (m_conn, LM_CONNECTION_DEFAULT_PORT);
 
-#if 0
-      if(!lm_connection_open_and_block(m_conn, &error)) {
-        g_error("Connection failed to open: %s   Account:'%s' ", error->message, jid.data());
-        return false;
-      }
-
-      if(!lm_connection_authenticate_and_block(m_conn, m_user.data(), m_password.data(), m_resource.data(), &error)) {
-        g_error("Connection failed to authenticate: %s", error->message);
-        return false;
-      }
-#endif
       lm_connection_set_keep_alive_rate(m_conn, 20);
-
+      
       m_defaultHandler = lm_message_handler_new(&InternalMessageHandler, (gpointer)this, NULL);
+
       lm_connection_register_message_handler(m_conn, m_defaultHandler,
                                              LM_MESSAGE_TYPE_MESSAGE,
                                              LM_HANDLER_PRIORITY_NORMAL);
@@ -206,6 +203,22 @@ namespace RavlN {
       lm_connection_register_message_handler(m_conn, m_defaultHandler,
                                              LM_MESSAGE_TYPE_IQ,
                                              LM_HANDLER_PRIORITY_NORMAL);
+      
+      if(!m_asyncOpen) {
+        ONDEBUG(std::cerr << "Synchronus connection started \n");
+        if (!lm_connection_open_and_block(m_conn, &error)) {
+          g_error("Connection failed to open: %s   Account:'%s' ", error->message, jid.data());
+          return false;
+        }
+        ONDEBUG(std::cerr << "Synchronus connection made, authenticating \n");
+
+        if (!lm_connection_authenticate_and_block(m_conn, m_user.data(), m_password.data(), m_resource.data(), &error)) {
+          g_error("Connection failed to authenticate: %s", error->message);
+          return false;
+        }
+        ONDEBUG(std::cerr << "Synchronus authenication complete. \n");
+      }
+
 
 #if 1
       lm_connection_register_message_handler(m_conn, m_defaultHandler,
@@ -230,49 +243,24 @@ namespace RavlN {
                                              LM_MESSAGE_TYPE_STARTTLS,
                                              LM_HANDLER_PRIORITY_NORMAL);
 #endif
-#if 0
-      // Let server know we want messages.
-      LmMessage *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
-      if(!lm_connection_send(m_conn, m, &error)) {
-        g_error("Connection failed to send presence message: %s",
-                error->message);
-      }
-      lm_message_unref(m);
-#else
-
-#if 0
-      if(1) {
-        LmSSL *ssl;
-        char *p;
-        int i;
-
-        lm_connection_set_port(connection,LM_CONNECTION_DEFAULT_PORT_SSL);
-
-        for(i = 0, p = fingerprint; *p && *(p + 1); i++, p += 3) {
-          expected_fingerprint[i] = (unsigned char) g_ascii_strtoull(p, NULL, 16);
+      if(!m_asyncOpen) {
+        // Let server know we want messages.
+        ONDEBUG(std::cerr << "Sending presents message \n");
+        LmMessage *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
+        if(!lm_connection_send(m_conn, m, &error)) {
+          g_error("Connection failed to send presence message: %s",
+                 error->message);
         }
-
-        ssl = lm_ssl_new(expected_fingerprint,
-                         (LmSSLFunction) ssl_cb,
-                         NULL, NULL);
-
-        lm_ssl_use_starttls(ssl, TRUE, FALSE);
-
-        lm_connection_set_ssl(connection, ssl);
-        lm_ssl_unref(ssl);
-      }
-#endif
-
-
-      if(!lm_connection_open(m_conn,
+        lm_message_unref(m);
+      } else {
+        if(!lm_connection_open(m_conn,
                              (LmResultFunction) & InternalHandlerConnectionOpen,
                              this, NULL, &error)) {
-        g_printerr("LmSendAsync: Could not open a connection %s \n", error->message);
-        return EXIT_FAILURE;
+          g_printerr("LmSendAsync: Could not open a connection %s \n", error->message);
+          return EXIT_FAILURE;
+        }
       }
 
-
-#endif
       return true;
     }
 
