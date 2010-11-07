@@ -31,7 +31,7 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
-    TemplateComplexBodyC(TextFileC &templFile);
+    TemplateComplexBodyC(const TextFileC &templFile);
     //: Constructor.
     
     TemplateComplexBodyC(const StringC &templFile);
@@ -56,7 +56,7 @@ namespace RavlN {
     bool BuildToStream(OStreamC &out);
     //: Start build of document, write results to given stream.
     
-    bool BuildSub(TextFileC &templ);
+    bool BuildSub(const TextFileC &templ);
     //: Start build of document.
     
     virtual bool Lookup(const StringC &varname,StringC &buff);
@@ -193,7 +193,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    TemplateComplexC(TextFileC &templFile)
+    TemplateComplexC(const TextFileC &templFile)
       : RCHandleC<TemplateComplexBodyC>(*new TemplateComplexBodyC(templFile))
       {}
     //: Constructor.

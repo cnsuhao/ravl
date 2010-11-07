@@ -32,7 +32,7 @@ namespace RavlN {
     TextFileBodyC();
     //: Default constructor.
 
-    TextFileBodyC(TextBufferC &tb);
+    TextFileBodyC(const TextBufferC &tb);
     //: Default constructor.
     
     TextFileBodyC(const StringC &filename);
@@ -115,7 +115,7 @@ namespace RavlN {
     //: Constructor.
     // Creates an empty text file.
     
-    TextFileC(TextBufferC &tb)
+    TextFileC(const TextBufferC &tb)
       : TextBufferC(*new TextFileBodyC(tb))
       {}
     //: Construct from a text buffer.

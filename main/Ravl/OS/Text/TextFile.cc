@@ -78,7 +78,7 @@ namespace RavlN {
   /////////////////////////////
   // Construct from a buffer.
   
-  TextFileBodyC::TextFileBodyC(TextBufferC &nbuff) 
+  TextFileBodyC::TextFileBodyC(const TextBufferC &nbuff)
     : filename("-noname-"),
       renumber(false),
       loaded(false)

@@ -26,7 +26,7 @@ namespace RavlN {
   
   //: Constructor.
   
-  TemplateComplexBodyC::TemplateComplexBodyC(TextFileC &ntemplFile) 
+  TemplateComplexBodyC::TemplateComplexBodyC(const TextFileC &ntemplFile)
     : templFile(ntemplFile)
   {
     templateDir = FilenameC(ntemplFile.Filename()).PathComponent();
@@ -711,7 +711,7 @@ namespace RavlN {
   
   //: Start build of document.
   
-  bool TemplateComplexBodyC::BuildSub(TextFileC &subtempl) {
+  bool TemplateComplexBodyC::BuildSub(const TextFileC &subtempl) {
     TemplateFileC tf(subtempl ,output.Top());
     bool ret = true;
     while(tf.IsElm()) {

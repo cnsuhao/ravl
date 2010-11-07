@@ -27,12 +27,12 @@ namespace RavlN {
       at(templName)
   {}
   
-  TemplateFileC::TemplateFileC(TextFileC &templFile,const OStreamC &anOut)
+  TemplateFileC::TemplateFileC(const TextFileC &templFile,const OStreamC &anOut)
     : out(anOut),
       at(templFile)
   {}
   
-  TemplateFileC::TemplateFileC(TextFileC &templFile,const OStreamC &anOut,const RCHashC<StringC,StringC> &tab)
+  TemplateFileC::TemplateFileC(const TextFileC &templFile,const OStreamC &anOut,const RCHashC<StringC,StringC> &tab)
     : out(anOut),
       vars(tab),
       at(templFile)

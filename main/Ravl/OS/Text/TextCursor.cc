@@ -37,7 +37,7 @@ namespace RavlN {
   /////////////////////
   // Constructor.
   
-  TextCursorC::TextCursorC(TextFileC &file) 
+  TextCursorC::TextCursorC(const TextFileC &file)
     : line(file.Lines()),
       Col(0),
       textbuff(file)
@@ -46,7 +46,7 @@ namespace RavlN {
   //////////////////////
   // Constructor.
   
-  TextCursorC::TextCursorC(TextBufferC &buff)
+  TextCursorC::TextCursorC(const TextBufferC &buff)
     : line(buff.Lines()),
       Col(0),
       textbuff(buff)

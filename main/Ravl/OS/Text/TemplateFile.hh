@@ -36,10 +36,10 @@ namespace RavlN {
     TemplateFileC(const StringC &templName,const OStreamC &anOut);
     //: Constructor.
     
-    TemplateFileC(TextFileC &templFile,const OStreamC &anOut);
+    TemplateFileC(const TextFileC &templFile,const OStreamC &anOut);
     //: Constructor.
     
-    TemplateFileC(TextFileC &templFile,const OStreamC &anOut,const RCHashC<StringC,StringC> &tab);
+    TemplateFileC(const TextFileC &templFile,const OStreamC &anOut,const RCHashC<StringC,StringC> &tab);
     //: Constructor.
     
     bool Build(bool userWillHandleExceptions = false);

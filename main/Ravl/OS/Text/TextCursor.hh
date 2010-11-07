@@ -31,10 +31,10 @@ namespace RavlN {
     TextCursorC();
     //: Default constructor.
     
-    TextCursorC(TextFileC &file);
+    TextCursorC(const TextFileC &file);
     //: Constructor.
     
-    TextCursorC(TextBufferC &file);
+    TextCursorC(const TextBufferC &file);
     //: Constructor.
     
     TextCursorC(const StringC &file);

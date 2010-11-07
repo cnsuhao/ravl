@@ -92,7 +92,11 @@ namespace RavlN {
     DListC<TextFileLineC> &Lines() 
     { return lines; }
     //: Access list of lines directly.
-    
+
+    const DListC<TextFileLineC> &Lines() const
+    { return lines; }
+    //: Access list of lines directly.
+
     StringC &operator[](IntT x);
     //: Access a line in the file.
     // This function is SLOW!  Use a TextCursorC for
@@ -232,6 +236,10 @@ namespace RavlN {
     { return Body().Lines(); }
     //: Access list of lines directly.
     
+    const DListC<TextFileLineC> &Lines() const
+    { return Body().Lines(); }
+
+    //: Access list of lines directly.
     inline StringC &operator[](IntT x) 
     { return Body().operator[](x); }
     //: Access a line in the file.
