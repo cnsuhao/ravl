@@ -20,7 +20,7 @@
 //#include <stdio.h>
 #include <setjmp.h>
 
-#define DODEBUG 0
+#define DODEBUG 1
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -277,7 +277,7 @@ namespace RavlImageN {
     
 #if 1
     if(req_color_type == PNG_COLOR_TYPE_GRAY || req_color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
-      if(color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
+      if((color_type&2) == PNG_COLOR_TYPE_RGB) {
         ONDEBUG(cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_rgb_to_gray_fixed(png_ptr), Called. \n");
         png_set_rgb_to_gray_fixed(png_ptr, 1,-1,-1);
       }
