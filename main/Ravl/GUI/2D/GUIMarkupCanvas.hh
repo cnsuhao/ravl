@@ -102,7 +102,11 @@ namespace RavlGUIN {
     Signal1C<MouseEventC> &SignalBackMenu()
     { return sigBackMenu; }
     //: Signal request for back menu.
-    
+
+    Signal1C<MouseEventC> &SigDoublePress()
+    { return m_sigDoublePress; }
+    //: Signal called on mouse button double press.
+
     const HSetC<Int64T> &GUISelected() const
     { return selected; }
     //: Access list of selected objects
@@ -287,7 +291,10 @@ namespace RavlGUIN {
     
     Signal1C<MouseEventC> sigBackMenu;
     //: Signal request for back menu.
-    
+
+    Signal1C<MouseEventC> m_sigDoublePress;
+    //: Signal called on mouse button double press.
+
     DListC<MarkupLayerInfoC> m_layerInfo;
     IntT m_selectedLayerId;
     bool m_dialogshowLine;
@@ -419,6 +426,10 @@ namespace RavlGUIN {
     { return Body().SignalBackMenu(); }
     //: Signal request for back menu.
     
+    Signal1C<MouseEventC> &SigDoublePress()
+    { return Body().SigDoublePress(); }
+    //: Signal called on mouse button double press.
+
     const HSetC<Int64T> & GUISelected() const
     { return Body().GUISelected(); }
     //: Access list of selected polygons 

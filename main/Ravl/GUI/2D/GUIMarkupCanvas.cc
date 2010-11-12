@@ -55,7 +55,8 @@ namespace RavlGUIN
       sigMarkupUpdate(0,MarkupInfoC()),
       sigSelection(DListC<Int64T>()),
       sigDisplayRange(RealRange2dC()),
-      sigBackMenu(MouseEventC()), 
+      sigBackMenu(MouseEventC()),
+      m_sigDoublePress(MouseEventC()),
       m_selectedLayerId(-1),
       m_dialogshowLine(true),
       m_aspectRatio(0)
@@ -220,11 +221,17 @@ namespace RavlGUIN
     ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMousePress(), Called. \n");
     GUIGrabFocus();    
     
+    if (me.IsDoublePressed())
+    {
+      m_sigDoublePress(me);
+      return true;
+    }
+
     if(me.HasChanged(2)) {
       sigBackMenu(me);
       return true;
     }
-    
+
     mouseRawPressAt = me.At();
     mousePressAt = GUI2World(mouseRawPressAt);
     mouseLastEvent = mousePressAt;

@@ -57,7 +57,10 @@ namespace RavlGUIN {
     
     bool IsPressed(IntT buttonNo = 0) const;
     //: Test if a button is pessed.
-    
+
+    bool IsDoublePressed() const
+    { return m_doublePress; }
+
     bool HasChanged(IntT buttonNo = 0) const;
     //: Has button changed state ?
     
@@ -106,6 +109,7 @@ namespace RavlGUIN {
     IntT state;  // Current state.
     IntT change; // Change flags.
     UIntT time;  // Time of event.
+    bool m_doublePress;
   };
   
   ostream &operator<<(ostream &,const MouseEventC &me);

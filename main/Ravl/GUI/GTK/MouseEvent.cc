@@ -29,7 +29,8 @@ namespace RavlGUIN {
       y(ny),
       state(nstate),
       change(_changed),
-      time(_time)
+      time(_time),
+      m_doublePress(false)
   {}
   
   //: Constructor.
@@ -39,8 +40,8 @@ namespace RavlGUIN {
       y(ev.y),
       state(ev.state),
       change(0),
-      time(ev.time)
-    
+      time(ev.time),
+      m_doublePress(ev.type == GDK_2BUTTON_PRESS)
   {
     change = 1 << (ev.button - 1);
     ONDEBUG(cerr << "MouseEventC::MouseEventC(), Button: " << ev.button << "\n");

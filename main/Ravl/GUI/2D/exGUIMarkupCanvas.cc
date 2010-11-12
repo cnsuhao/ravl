@@ -73,6 +73,11 @@ bool BackMenuReq() {
   return true;
 }
 
+bool DoublePressEvent() {
+  cerr << "Double press event. \n";
+  return true;
+}
+
 //======== Main
 
 int main(int nargs,char **argv) {
@@ -102,7 +107,10 @@ int main(int nargs,char **argv) {
   
   // Connect back menu request.
   Connect(canvas.SignalBackMenu(),&::BackMenuReq);
-  
+
+  // Connect double press event.
+  Connect(canvas.SigDoublePress(),&::DoublePressEvent);
+
   // Create an image.
   ImageC<ByteRGBValueC> img(256,256);
   for(int i = 0;i <256;i++)
