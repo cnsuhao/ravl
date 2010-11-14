@@ -1,4 +1,6 @@
 
+REQUIRES=iksemel
+
 PACKAGE=Ravl/XMPP
 
 HEADERS=IksemelConnection.hh
