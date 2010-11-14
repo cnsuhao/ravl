@@ -16,15 +16,26 @@
 #include "Ravl/Text/TemplateFile.hh"
 #include "Ravl/Text/ConfigFile.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
+int testTextBufferIO();
 int testTextFile();
+int testTextFileIO();
 int testConfigFile();
 
 int main() {
   int ln;
+  if((ln = testTextBufferIO()) != 0) {
+    cerr << "Error line " << ln << "\n";
+    return 1;
+  }
   if((ln = testTextFile()) != 0) {
+    cerr << "Error line " << ln << "\n";
+    return 1;
+  }
+  if((ln = testTextFileIO()) != 0) {
     cerr << "Error line " << ln << "\n";
     return 1;
   }
@@ -57,6 +68,27 @@ int testTextFile() {
   return 0;
 }
 
+int testTextBufferIO() {
+  StringC tmp("Greetings");
+  StrOStreamC oss;
+  TextBufferC txtf(tmp);
+  TextBufferC txtfReloaded;
+  if(!TestBinStreamIO(txtf,txtfReloaded))
+    return __LINE__;
+  if(txtf.NoLines() != txtfReloaded.NoLines()) return __LINE__;
+  return 0;
+}
+
+int testTextFileIO() {
+  StringC tmp("Greetings");
+  StrOStreamC oss;
+  TextFileC txtf(tmp,true,true);
+  TextFileC txtfReloaded;
+  if(!TestBinStreamIO(txtf,txtfReloaded))
+    return __LINE__;
+  if(txtf.NoLines() != txtfReloaded.NoLines()) return __LINE__;
+  return 0;
+}
 
 int testConfigFile() {
   ConfigFileC conf(true);

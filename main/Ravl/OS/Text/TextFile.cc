@@ -13,6 +13,7 @@
 
 #include "Ravl/Text/TextFile.hh"
 #include "Ravl/DLIter.hh"
+#include "Ravl/VirtualConstructor.hh"
 
 #define DODEBUG 0
 
@@ -78,12 +79,46 @@ namespace RavlN {
   /////////////////////////////
   // Construct from a buffer.
   
-  TextFileBodyC::TextFileBodyC(const TextBufferC &nbuff)
-    : filename("-noname-"),
+  TextFileBodyC::TextFileBodyC(const TextBufferBodyC &nbuff)
+    : TextBufferBodyC(nbuff),
+      filename("-noname-"),
       renumber(false),
       loaded(false)
   {}
+
+
+    //: Create from binary stream
+  TextFileBodyC::TextFileBodyC(BinIStreamC &strm)
+   : TextBufferBodyC(strm)
+  {
+    ByteT version = 0;
+    strm >> version;
+    if(version != 1)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("TextBufferBodyC");
+    strm >> filename >> renumber >> loaded;
+  }
   
+  //: Make a copy
+  RCBodyVC &TextFileBodyC::Copy() const
+  { return *new TextFileBodyC(*this); }
+
+  //! Write to binary stream.
+  bool TextFileBodyC::Save(BinOStreamC &strm) const
+  {
+    if(!TextBufferBodyC::Save(strm))
+      return false;
+    ByteT version = 1;
+    strm << version << filename << renumber << loaded;
+    return true;
+  }
+
+  //! Write out to ostream.
+  bool TextFileBodyC::Save(std::ostream &strm) const
+  {
+    return TextBufferBodyC::Save(strm);
+  }
+
+
   /////////////////////////////
   // Try and load a file.
   
@@ -165,4 +200,6 @@ namespace RavlN {
     return -1;
   }
   
+  RAVL_INITVIRTUALCONSTRUCTOR_NAMED(TextFileBodyC,"RavlN::TextFileBodyC");
+
 }

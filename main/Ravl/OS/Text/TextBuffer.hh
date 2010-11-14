@@ -32,6 +32,24 @@ namespace RavlN {
   public:
     TextBufferBodyC();
     //: Create a empty text buffer.
+
+    TextBufferBodyC(const TextBufferBodyC &body);
+    //: Create a empty text buffer.
+
+    TextBufferBodyC(BinIStreamC &strm);
+    //: Create from binary stream
+
+    TextBufferBodyC(std::istream &strm);
+    //: Create from text stream
+
+    virtual RCBodyVC &Copy() const;
+    //: Make a copy
+
+    virtual bool Save(BinOStreamC &strm) const;
+    //: Write to binary stream.
+
+    virtual bool Save(std::ostream &strm) const;
+    //: Write out to ostream.
     
     bool Load(const StringC &filename);
     //: Try and load a file.
@@ -129,7 +147,7 @@ namespace RavlN {
   //: Text buffer.
   
   class TextBufferC 
-    : public RCHandleC<TextBufferBodyC>
+    : public RCHandleVC<TextBufferBodyC>
   {
   public:
     TextBufferC()
@@ -138,14 +156,20 @@ namespace RavlN {
     // creates an invalid handle to a text buffer.
     
     explicit TextBufferC(bool)
-      : RCHandleC<TextBufferBodyC>(*new TextBufferBodyC())
+      : RCHandleVC<TextBufferBodyC>(*new TextBufferBodyC())
     {}
     //: Default constructor.
     // creates an invalid handle to a text buffer.
-    
+
+    TextBufferC(BinIStreamC &strm);
+    //: Create from binary stream
+
+    TextBufferC(std::istream &strm);
+    //: Create from text stream
+
   protected:
     TextBufferC(TextBufferBodyC &bod)
-      : RCHandleC<TextBufferBodyC>(bod)
+      : RCHandleVC<TextBufferBodyC>(bod)
     {}
     //: Body constructor.
     

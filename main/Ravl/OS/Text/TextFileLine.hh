@@ -24,21 +24,17 @@ namespace RavlN {
   class TextFileLineC 
   {
   public:
-    TextFileLineC();
+    TextFileLineC()
+      : lineNo((UIntT)-1)
+    {}
     // Default constructor.
     
-    TextFileLineC(UIntT lno,StringC str) 
-      : lineNo(lno),
-      text(str)
-      {}
+    TextFileLineC(UIntT lno,const StringC &str)
+     : lineNo(lno),
+       text(str)
+    {}
     // Default constructor.
-    
-    TextFileLineC(const TextFileLineC &Oth) 
-    : lineNo(Oth.lineNo),
-      text(Oth.text)
-      {}
-    // Copy constructor.
-    
+        
     StringC &Text() { return text; }
     // Access text of line.
     
@@ -57,6 +53,12 @@ namespace RavlN {
     UIntT lineNo;   // Line number in file.
     StringC text; // Text.
   };
+
+  BinOStreamC &operator<<(BinOStreamC &strm,const TextFileLineC &line);
+  // Write to output
+
+  BinIStreamC &operator>>(BinIStreamC &strm,TextFileLineC &line);
+  // Write to output
 }
 
 

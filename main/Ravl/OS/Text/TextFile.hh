@@ -32,7 +32,7 @@ namespace RavlN {
     TextFileBodyC();
     //: Default constructor.
 
-    TextFileBodyC(const TextBufferC &tb);
+    TextFileBodyC(const TextBufferBodyC &tb);
     //: Default constructor.
     
     TextFileBodyC(const StringC &filename);
@@ -45,7 +45,19 @@ namespace RavlN {
     
     TextFileBodyC(istream &fin);
     //: Constructor from a stream.
+
+    TextFileBodyC(BinIStreamC &strm);
+    //: Create from binary stream
     
+    virtual RCBodyVC &Copy() const;
+    //: Make a copy
+
+    virtual bool Save(BinOStreamC &strm) const;
+    //: Write to binary stream.
+
+    virtual bool Save(std::ostream &strm) const;
+    //: Write out to ostream.
+
     bool Load(const StringC &filename);
     //: Try and load a file.
         
@@ -105,29 +117,29 @@ namespace RavlN {
   {
   public:
     TextFileC()
-      {}
+    {}
     //: Default constructor.
     // creates an invalid handle.
     
     explicit TextFileC(bool)
       : TextBufferC(*new TextFileBodyC())
-      {}
+    {}
     //: Constructor.
     // Creates an empty text file.
     
     TextFileC(const TextBufferC &tb)
-      : TextBufferC(*new TextFileBodyC(tb))
-      {}
+      : TextBufferC(*new TextFileBodyC(*BodyPtr(tb)))
+    {}
     //: Construct from a text buffer.
     
     TextFileC(const StringC &filename)
       : TextBufferC(*new TextFileBodyC(filename))
-      {}
+    {}
     //: Constructor from a file.
     
     TextFileC(const StringC &text,bool noFinalReturn,bool concat = false)
       : TextBufferC(*new TextFileBodyC(text,noFinalReturn,concat))
-      {}
+    {}
     //: Construct from a string. 
     // If 'noFinalReturn' is false, ensure each line ends with '\n', otherwise leave it alone. <p>
     // concat, if true don't split lines,  otherwise do.
@@ -140,15 +152,15 @@ namespace RavlN {
   protected:
     TextFileC(TextFileBodyC &bod)
       : TextBufferC(bod)
-      {}
+    {}
     //: Body constructor.
     
     TextFileBodyC &Body()
-      { return static_cast<TextFileBodyC &>(TextBufferC::Body()); }
+    { return static_cast<TextFileBodyC &>(TextBufferC::Body()); }
     //: Access body.
 
     const TextFileBodyC &Body() const
-      { return static_cast<const TextFileBodyC &>(TextBufferC::Body()); }
+    { return static_cast<const TextFileBodyC &>(TextBufferC::Body()); }
     //: Access body.
     
   public:    

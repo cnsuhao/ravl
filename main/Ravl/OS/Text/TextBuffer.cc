@@ -15,6 +15,8 @@
 #include "Ravl/CDLIter.hh"
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/VirtualConstructor.hh"
+#include "Ravl/Exception.hh"
 
 #include <ctype.h>
 
@@ -36,7 +38,57 @@ namespace RavlN {
       Modified(false),
       Readonly(false)
   {}
+
+  //: Copy constructor
+  TextBufferBodyC::TextBufferBodyC(const TextBufferBodyC &other)
+   : noLines(other.noLines),
+     lines(other.lines.Copy()),
+     Modified(other.Modified),
+     Readonly(other.Readonly)
+  {}
   
+  //: Create from binary stream
+  TextBufferBodyC::TextBufferBodyC(BinIStreamC &strm)
+   : RCBodyVC(strm)
+  {
+    ByteT version = 0;
+    strm >> version;
+    if(version != 1)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("TextBufferBodyC");
+    strm >> noLines >> Modified >> Readonly >> lines;
+  }
+
+  //: Create from text stream
+  TextBufferBodyC::TextBufferBodyC(std::istream &strm)
+  {
+    if(!Load(strm)) {
+      std::cerr << "ERROR: Failed to load template from stream. \n";
+      throw ExceptionOperationFailedC("Failed to load template from stream. ");
+    }
+  }
+  
+  //: Make a copy
+  RCBodyVC &TextBufferBodyC::Copy() const
+  { return *new TextBufferBodyC(*this); }
+
+  //! Write to binary stream.
+  bool TextBufferBodyC::Save(BinOStreamC &strm) const
+  {
+    if(!RCBodyVC::Save(strm))
+      return false;
+    ByteT version = 1;
+    strm << version << noLines << Modified << Readonly << lines;
+    return true;
+  }
+
+  //! Write out to ostream.
+  bool TextBufferBodyC::Save(std::ostream &strm) const
+  {
+    for(ConstDLIterC<TextFileLineC> it(lines);it.IsElm();it.Next())
+      strm << it->Text();
+    return true;
+  }
+
   /////////////////////////////
   // Try and load a file.
   
@@ -340,5 +392,6 @@ namespace RavlN {
     return ret;
   }
   
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL_NAMED(TextBufferBodyC,TextBufferC,RCHandleVC<TextBufferBodyC>,"RavlN::TextBufferBodyC");
 }
 

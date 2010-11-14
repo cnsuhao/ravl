@@ -10,15 +10,34 @@
 //! file="Ravl/OS/Text/TextFileLine.cc"
 
 #include "Ravl/Text/TextFileLine.hh"
+#include "Ravl/BinStream.hh"
 
 namespace RavlN {
   
-  /////////////////////////
   // Dump to stdout.
   
   void TextFileLineC::Dump(ostream &strm) const {
     strm << lineNo << ":" << text;
   }
+
+  BinOStreamC &operator<<(BinOStreamC &strm,const TextFileLineC &line) {
+    ByteT version = 1;
+    strm << version << line.LineNo() << line.Text();
+    return strm;
+  }
+  // Write to output
+
+  BinIStreamC &operator>>(BinIStreamC &strm,TextFileLineC &line) {
+    ByteT version = 0;
+    strm >> version;
+    UIntT ln;
+    StringC text;
+    strm >> ln >> text;
+    line = TextFileLineC(ln,text);
+    return strm;
+  }
+  // Write to output
+
 }
 
 

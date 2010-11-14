@@ -19,6 +19,7 @@
 #include "Ravl/CallMethodRefs.hh"
 #include "Ravl/Stack.hh"
 #include "Ravl/HSet.hh"
+#include <vector>
 
 namespace RavlN {
 
@@ -38,7 +39,7 @@ namespace RavlN {
     //: Constructor.
     
     void SetupPresets(const HSetC<StringC> &nameset)
-      { presets = nameset; }
+    { presets = nameset; }
     //: Setup preset variables.
     
     bool Scan(StringC &templ);
@@ -139,7 +140,7 @@ namespace RavlN {
     //: Make string suitable for use in plain html.
     
     void SetVar(const StringC &var,const StringC &val)
-      { vars.Top()[var] = val; }
+    { vars.Top()[var] = val; }
     //: Set value of a variable.
     
     StringC GetVar(const StringC &var) { 
@@ -157,8 +158,11 @@ namespace RavlN {
     //: Setup new command.
     // NB. Obj is used as a reference, it is assumed to be a derived instance of this class.
     
+    void SetupLookup(const CallFunc2C<const StringC &,StringC &,bool> &lookupMethod);
+    //: Setup method to lookup variable values.
+
     OStreamC &Output()
-      { return output.Top(); }
+    { return output.Top(); }
     //: Access current output stream.
     
     bool CheckCondition(const SubStringC &cond);
@@ -176,6 +180,7 @@ namespace RavlN {
     HSetC<StringC> presets;
     HashC<SubStringC,CallFunc1C<StringC &,bool> > commands;
     HashC<StringC,TextFileC> component; // Components.
+    std::vector<CallFunc2C<const StringC &,StringC &,bool> > m_lookupMethods;
     bool verbose;
     IntT incDepth; // Include depth. 
     bool lastIf; // Did the last if succeed ? Used for else.

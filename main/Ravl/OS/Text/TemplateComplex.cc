@@ -701,14 +701,28 @@ namespace RavlN {
   
   bool TemplateComplexBodyC::Lookup(const StringC &varname,StringC &buff) {
     StringC *valPtr = vars.Top().Lookup(varname);
-    if(valPtr == 0)
+    if(valPtr == 0) {
+      for(unsigned i = 0;i < m_lookupMethods.size();i++) {
+        RavlAssert(m_lookupMethods[i].IsValid());
+        StringC tmp(varname);
+        if(m_lookupMethods[i].Call(tmp,buff)) {
+          // Its up to the method to cache the value if apporiate.
+          return true;
+        }
+      }
       return false;
+    }
     buff = *valPtr;
     return true;
   }
-  
-  void InitCommands();
-  
+
+  //: Setup method to lookup variable values.
+
+  void TemplateComplexBodyC::SetupLookup(const CallFunc2C<const StringC &,StringC &,bool> &lookupMethod)
+  {
+    m_lookupMethods.push_back(lookupMethod);
+  }
+
   //: Start build of document.
   
   bool TemplateComplexBodyC::BuildSub(const TextFileC &subtempl) {
