@@ -59,18 +59,26 @@ namespace RavlN {
     RealT &X()
     { return data[0]; }
     //: First component of vector.
+    //: Note use of this method is obsolete as its causes confusion with
+    //: coordinate systems. In RAVL code its safer to use Row,Col exclusively.
     
     RealT X() const
     { return data[0]; }
     //: First component of vector.
+    //: Note use of this method is obsolete as its causes confusion with
+    //: coordinate systems.  In RAVL code its safer to use Row,Col exclusively.
 
     RealT &Y()
     { return data[1]; }
     //: Second component of vector.
+    //: Note use of this method is obsolete as its causes confusion with
+    //: coordinate systems.  In RAVL code its safer to use Row,Col exclusively.
 
     RealT Y() const
     { return data[1]; }
     //: Second component of vector.
+    //: Note use of this method is obsolete as its causes confusion with
+    //: coordinate systems.  In RAVL code its safer to use Row,Col exclusively.
 
     RealT &Row()
     { return data[0]; }
