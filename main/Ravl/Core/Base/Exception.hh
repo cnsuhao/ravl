@@ -31,23 +31,14 @@ namespace RavlN {
 
   class ExceptionC {
   public:
-    ExceptionC(const char *ntext)
-      : desc(ntext),
-      ref(false)
-      {}
+    ExceptionC(const char *ntext);
     //: Constructor
 
     ExceptionC(const char *ntext,bool copy);
     //: Constructor.
     // Copy string if 'copy' is true.
 
-    ExceptionC(const ExceptionC &oth)
-      : desc(oth.desc),
-      ref(oth.ref)
-      {
-	if(oth.ref)
-	  const_cast<ExceptionC &>(oth).ref = false;
-      }
+    ExceptionC(const ExceptionC &oth);
     //: Copy Constructor
     // This assumes the only time you use a copy constructor
     // on an exception is when passing it as an argument!
@@ -73,11 +64,7 @@ namespace RavlN {
 
   class ExceptionErrorCastC : public ExceptionC {
   public:
-    ExceptionErrorCastC(const char *ndesc,const type_info &nfrom,const type_info &nto)
-      : ExceptionC(ndesc),
-      from(nfrom),
-      to(nto)
-      {}
+    ExceptionErrorCastC(const char *ndesc,const type_info &nfrom,const type_info &nto);
     //: Constructor.
 
     const type_info &From() const { return from; }
@@ -100,16 +87,12 @@ namespace RavlN {
 
   class ExceptionOperationFailedC : public ExceptionC {
   public:
-    ExceptionOperationFailedC(const char *ndesc)
-      : ExceptionC(ndesc)
-      {}
+    ExceptionOperationFailedC(const char *ndesc);
     //: Constructor.
 
-    ExceptionOperationFailedC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-      {}
+    ExceptionOperationFailedC(const char *ntext,bool copy);
     //: Constructor.
-  // if copy is true, a copy is made of string ntext.
+    // if copy is true, a copy is made of string ntext.
   };
 
   //: Exception: Bad Configuration
@@ -119,33 +102,35 @@ namespace RavlN {
    : public ExceptionC
   {
   public:
-    ExceptionBadConfigC(const char *ndesc)
-      : ExceptionC(ndesc)
-      {}
+    ExceptionBadConfigC(const char *ndesc);
     //: Constructor.
 
-    ExceptionBadConfigC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-      {}
+    ExceptionBadConfigC(const char *ntext,bool copy);
     //: Constructor.
-  // if copy is true, a copy is made of string ntext.
+    // if copy is true, a copy is made of string ntext.
   };
 
-    //: Exception: Bad Configuration
+  //! Exception indicating an invalid version id found in a stream.
+
+  class ExceptionUnexpectedVersionInStreamC
+    : public RavlN::ExceptionC
+  {
+  public:
+    ExceptionUnexpectedVersionInStreamC(const char *text);
+    //: Constructor.
+  };
+
+  //: Exception: Bad Configuration
   // Exception indicating problem loading a configuration.
 
   class ExceptionOutOfMemoryC
    : public ExceptionC
   {
   public:
-    ExceptionOutOfMemoryC(const char *ndesc)
-      : ExceptionC(ndesc)
-    {}
+    ExceptionOutOfMemoryC(const char *ndesc);
     //: Constructor.
 
-    ExceptionOutOfMemoryC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-    {}
+    ExceptionOutOfMemoryC(const char *ntext,bool copy);
     //: Constructor.
   // if copy is true, a copy is made of string ntext.
   };
@@ -157,16 +142,12 @@ namespace RavlN {
 
   class ExceptionOutOfRangeC : public ExceptionC {
   public:
-    ExceptionOutOfRangeC(const char *ndesc)
-      : ExceptionC(ndesc)
-      {}
     //: Constructor.
+    ExceptionOutOfRangeC(const char *ndesc);
 
-    ExceptionOutOfRangeC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-      {}
     //: Constructor.
     // if copy is true, a copy is made of string ntext.
+    ExceptionOutOfRangeC(const char *ntext,bool copy);
   };
 
 
@@ -177,14 +158,10 @@ namespace RavlN {
 
   class ExceptionAssertionFailedC : public ExceptionC {
   public:
-    ExceptionAssertionFailedC(const char *ndesc)
-      : ExceptionC(ndesc)
-      {}
+    ExceptionAssertionFailedC(const char *ndesc);
     //: Constructor.
 
-    ExceptionAssertionFailedC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-      {}
+    ExceptionAssertionFailedC(const char *ntext,bool copy);
     //: Constructor.
   // if copy is true, a copy is made of string ntext.
   };
@@ -196,14 +173,10 @@ namespace RavlN {
 
   class ExceptionNumericalC : public ExceptionC {
   public:
-    ExceptionNumericalC(const char *ndesc)
-      : ExceptionC(ndesc)
-      {}
+    ExceptionNumericalC(const char *ndesc);
     //: Constructor.
 
-    ExceptionNumericalC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-      {}
+    ExceptionNumericalC(const char *ntext,bool copy);
     //: Constructor.
     // if copy is true, a copy is made of string ntext.
   };
@@ -215,14 +188,10 @@ namespace RavlN {
     : public ExceptionC
   {
   public:
-    ExceptionEndOfStreamC(const char *ntext)
-      : ExceptionC(ntext)
-      {}
+    ExceptionEndOfStreamC(const char *ntext);
     //: Constructor
 
-    ExceptionEndOfStreamC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-      {}
+    ExceptionEndOfStreamC(const char *ntext,bool copy);
     //: Constructor.
     // if copy is true, make a copy of ntext.
   };

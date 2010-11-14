@@ -20,7 +20,22 @@
 #endif
 
 namespace RavlN {
-  
+
+  //: Constructor
+  ExceptionC::ExceptionC(const char *ntext)
+   : desc(ntext),
+     ref(false)
+  {}
+
+  //: Copy Constructor
+  ExceptionC::ExceptionC(const ExceptionC &oth)
+   : desc(oth.desc),
+     ref(oth.ref)
+  {
+    if(oth.ref)
+      const_cast<ExceptionC &>(oth).ref = false;
+  }
+
   //: Constructor
   
   ExceptionC::ExceptionC(const char *ntext,bool copy)
@@ -66,5 +81,111 @@ namespace RavlN {
     cerr << "   To:" << to.name() << endl;
     cerr << " Desc:" << desc << endl << endl;
   }
+
+  // ---------------------------------------------------------
+
+  ExceptionErrorCastC::ExceptionErrorCastC(const char *ndesc,const type_info &nfrom,const type_info &nto)
+   : ExceptionC(ndesc),
+     from(nfrom),
+     to(nto)
+  {}
+
+  // ---------------------------------------------------------
+
+  ExceptionOperationFailedC::ExceptionOperationFailedC(const char *ndesc)
+    : ExceptionC(ndesc)
+  {}
+    //: Constructor.
+
+  ExceptionOperationFailedC::ExceptionOperationFailedC(const char *ntext,bool copy)
+    : ExceptionC(ntext,copy)
+  {}
+  //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+
+  // ---------------------------------------------------------
+
+  ExceptionBadConfigC::ExceptionBadConfigC(const char *ndesc)
+   : ExceptionC(ndesc)
+   {}
+  //: Constructor.
   
+  ExceptionBadConfigC::ExceptionBadConfigC(const char *ntext,bool copy)
+   : ExceptionC(ntext,copy)
+  {}
+  //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+
+  // ---------------------------------------------------------
+  //! Constructor.
+
+  ExceptionUnexpectedVersionInStreamC::ExceptionUnexpectedVersionInStreamC(const char *text)
+    : ExceptionC(text)
+  {}
+
+  // ---------------------------------------------------------
+
+  //: Constructor.
+  ExceptionOutOfMemoryC::ExceptionOutOfMemoryC(const char *ndesc)
+    : ExceptionC(ndesc)
+  {}
+
+  //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+  ExceptionOutOfMemoryC::ExceptionOutOfMemoryC(const char *ntext,bool copy)
+   : ExceptionC(ntext,copy)
+  {}
+
+  // ---------------------------------------------------------
+
+  //: Constructor.
+  ExceptionOutOfRangeC::ExceptionOutOfRangeC(const char *ndesc)
+    : ExceptionC(ndesc)
+  {}
+
+  //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+  ExceptionOutOfRangeC::ExceptionOutOfRangeC(const char *ntext,bool copy)
+    : ExceptionC(ntext,copy)
+  {}
+
+  // ---------------------------------------------------------
+
+  //: Constructor.
+  ExceptionAssertionFailedC::ExceptionAssertionFailedC(const char *ndesc)
+   : ExceptionC(ndesc)
+  {}
+
+  //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+  ExceptionAssertionFailedC::ExceptionAssertionFailedC(const char *ntext,bool copy)
+   : ExceptionC(ntext,copy)
+  {}
+
+  // ---------------------------------------------------------
+
+  //: Constructor.
+  ExceptionNumericalC::ExceptionNumericalC(const char *ndesc)
+   : ExceptionC(ndesc)
+  {}
+
+  //: Constructor.
+  // if copy is true, a copy is made of string ntext.
+  ExceptionNumericalC::ExceptionNumericalC(const char *ntext,bool copy)
+   : ExceptionC(ntext,copy)
+  {}
+
+  // ---------------------------------------------------------
+
+  //: Constructor
+  ExceptionEndOfStreamC::ExceptionEndOfStreamC(const char *ntext)
+   : ExceptionC(ntext)
+  {}
+
+  //: Constructor.
+  // if copy is true, make a copy of ntext.
+  ExceptionEndOfStreamC::ExceptionEndOfStreamC(const char *ntext,bool copy)
+   : ExceptionC(ntext,copy)
+  {}
+
 }
