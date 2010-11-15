@@ -34,6 +34,9 @@ namespace RavlGUIN {
   public:
     TreeStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes);
     //: Constructor.
+
+    TreeStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes, int sortColumn, bool sortAscending);
+    //: Constructor.
     
     virtual bool Create();
     //: Create the widget.
@@ -68,6 +71,8 @@ namespace RavlGUIN {
     //: Clear store of all values.
 
   protected:
+    const IntT m_sortColumn;
+    const bool m_sortAscending;
   };
 
   //! userlevel=Normal
@@ -85,6 +90,11 @@ namespace RavlGUIN {
 
     TreeStoreC(const SArray1dC<AttributeTypeC> &nColTypes)
       : TreeModelC(*new TreeStoreBodyC(nColTypes))
+    {}
+    //: Constructor.
+
+    TreeStoreC(const SArray1dC<AttributeTypeC> &nColTypes, int sortColumn, bool sortAscending = true)
+      : TreeModelC(*new TreeStoreBodyC(nColTypes, sortColumn, sortAscending))
     {}
     //: Constructor.
 

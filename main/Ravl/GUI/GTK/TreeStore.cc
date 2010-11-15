@@ -24,9 +24,17 @@ namespace RavlGUIN {
   //: Constructor.
   
   TreeStoreBodyC::TreeStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes) 
-    : TreeModelBodyC(nColTypes)
+    : TreeModelBodyC(nColTypes),
+      m_sortColumn(-1),
+      m_sortAscending(true)
   { Create(); }
-  
+
+  TreeStoreBodyC::TreeStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes, int sortColumn, bool sortAscending)
+    : TreeModelBodyC(nColTypes),
+      m_sortColumn(sortColumn),
+      m_sortAscending(sortAscending)
+  { Create(); }
+
   //: Delete a row.
   // After return, the iterator will point to the next row at the same level,
   // or will be invalidated if such a row does not exist.
@@ -132,6 +140,12 @@ namespace RavlGUIN {
     for(SArray1dIter2C<GType,AttributeTypeC> it(types,colTypes);it;it++)
       it.Data1() = Ravl2GTKType(it.Data2().ValueType());
     model = GTK_TREE_MODEL(gtk_tree_store_newv(colTypes.Size(),&(types[0])));
+
+    if (m_sortColumn >= 0 && static_cast<UIntT>(m_sortColumn) < colTypes.Size())
+    {
+      gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), m_sortColumn, m_sortAscending ? GTK_SORT_ASCENDING : GTK_SORT_DESCENDING);
+    }
+
     lock.Unlock();
     return TreeModelBodyC::Create();
   }
