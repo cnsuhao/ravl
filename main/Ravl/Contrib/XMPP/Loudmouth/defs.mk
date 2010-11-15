@@ -15,7 +15,7 @@ SOURCES=LMConnection.cc
 
 MAINS= exLoudmouth.cc
 
-PLIB=RavlXMPP
+PLIB=RavlXMPPLoudmouth
 
 USESLIBS=RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory
 
