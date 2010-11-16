@@ -14,9 +14,9 @@ int main(int nargs,char **argv)
   RavlN::RLogInit(true);
   using RavlN::XMPPN::IksemelConnectionC;
   
-  IksemelConnectionC::RefT con = new IksemelConnectionC("jabber.org","omnitest","wateshouse","default");
+  IksemelConnectionC::RefT con = new IksemelConnectionC("jabber.org","omnitest","","default");
 
-  con->Open("omnitest@jabber.org/cento","wateshouse");
+  con->Open("omnitest@jabber.org/cento","");
 
   while(!con->IsReady())
     RavlN::Sleep(1);
