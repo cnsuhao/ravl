@@ -33,7 +33,17 @@ namespace RavlN {
     vars.Push(RCHashC<StringC,StringC>(true) ); // Push base variables.
     InitCommands();
   }
-  
+
+  TemplateComplexBodyC::TemplateComplexBodyC(const TextFileC &ntemplFile,
+                                             const CallFunc2C<const StringC &,StringC &,bool> &lookupMethod)
+    : templFile(ntemplFile)
+  {
+    m_lookupMethods.push_back(lookupMethod);
+    templateDir = FilenameC(ntemplFile.Filename()).PathComponent();
+    vars.Push(RCHashC<StringC,StringC>(true) ); // Push base variables.
+    InitCommands();
+  }
+
   //: Constructor.
   
   TemplateComplexBodyC::TemplateComplexBodyC(const StringC &fname)
@@ -742,6 +752,7 @@ namespace RavlN {
 	  continue;
 	}
 	cerr << "Unknown variable: '" << ip <<"' in template '" << templFile.Filename() << "'\n";
+        ret = false;
 	continue;
       }
       

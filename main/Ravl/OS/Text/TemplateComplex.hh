@@ -35,9 +35,13 @@ namespace RavlN {
     TemplateComplexBodyC(const TextFileC &templFile);
     //: Constructor.
     
-    TemplateComplexBodyC(const StringC &templFile);
+    TemplateComplexBodyC(const StringC &templFilename);
     //: Constructor.
-    
+
+    TemplateComplexBodyC(const TextFileC &templFile,
+                         const CallFunc2C<const StringC &,StringC &,bool> &lookupMethod);
+    //: Constructor.
+
     void SetupPresets(const HSetC<StringC> &nameset)
     { presets = nameset; }
     //: Setup preset variables.
@@ -194,32 +198,38 @@ namespace RavlN {
   {
   public:
     TemplateComplexC()
-      {}
+    {}
     //: Default constructor.
     // Creates an invalid handle.
     
     TemplateComplexC(const TextFileC &templFile)
       : RCHandleC<TemplateComplexBodyC>(*new TemplateComplexBodyC(templFile))
-      {}
+    {}
     //: Constructor.
-    
+
+    TemplateComplexC(const TextFileC &templFile,
+                     const CallFunc2C<const StringC &,StringC &,bool> &lookupMethod)
+      : RCHandleC<TemplateComplexBodyC>(*new TemplateComplexBodyC(templFile,lookupMethod))
+    {}
+    //: Constructor.
+
     TemplateComplexC(const StringC &templFile)
       : RCHandleC<TemplateComplexBodyC>(*new TemplateComplexBodyC(templFile))
-      {}
-  //: Constructor.
+    {}
+    //: Constructor.
     
   protected:
     TemplateComplexC(TemplateComplexBodyC &bod)
       : RCHandleC<TemplateComplexBodyC>(bod)
-      {}
-  //: Body constructor.
+    {}
+    //: Body constructor.
     
     TemplateComplexBodyC &Body() 
-      { return RCHandleC<TemplateComplexBodyC>::Body(); }
-  //: Access body.
+    { return RCHandleC<TemplateComplexBodyC>::Body(); }
+    //: Access body.
     
     const TemplateComplexBodyC &Body() const
-      { return RCHandleC<TemplateComplexBodyC>::Body(); }
+    { return RCHandleC<TemplateComplexBodyC>::Body(); }
     //: Access body.
     
   public:
