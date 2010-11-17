@@ -5,6 +5,8 @@
 #include "Ravl/Threads/LaunchThread.hh"
 #include <sys/select.h>
 #include "Ravl/XMLFactoryRegister.hh"
+#include <stdio.h>
+#include <string.h>
 
 #define DODEBUG 0
 #if DODEBUG
