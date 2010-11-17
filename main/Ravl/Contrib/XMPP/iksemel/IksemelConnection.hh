@@ -43,11 +43,14 @@ namespace RavlN { namespace XMPPN {
     typedef RavlN::SmartCallbackPtrC<IksemelConnectionC> CBRefT;
 
   protected:
+    //! Start connection
+    bool Init();
+
     //! Run connection
     virtual void RunConnection();
 
+    //! Called when owner handles drop to zero.
     virtual void ZeroOwners();
-    //: Called when owner handles drop to zero.
 
     //! Translate call from C to C++
     static int TranslateOnStream(void *handle, int type, iks *node);

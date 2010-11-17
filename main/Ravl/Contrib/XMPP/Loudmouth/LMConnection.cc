@@ -53,18 +53,12 @@ namespace RavlN {
                                  const char *user,
                                  const char *password,
                                  const char *resource)
-    : m_server(server),
-     m_user(user),
-     m_password(password),
-     m_resource(resource),
+    : XMPPConnectionC(server,user,password,resource),
      m_asyncOpen(false),
-     m_dumpRaw(true),
-     m_sigTextMessage("", ""),
      m_context(0),
      m_mainLoop(0),
      m_conn(0),
      m_defaultHandler(0),
-     m_isReady(false),
      m_mainLoopStarted(0)
     {
       Init(true);
@@ -73,19 +67,13 @@ namespace RavlN {
     //! Factory constructor
 
     LMConnectionC::LMConnectionC(const XMLFactoryContextC &factory)
-    : m_server(factory.AttributeString("server", "jabber.org").data()),
-    m_user(factory.AttributeString("user", "auser").data()),
-    m_password(factory.AttributeString("password", "apassword").data()),
-    m_resource(factory.AttributeString("resource", "default").data()),
-    m_asyncOpen(factory.AttributeBool("async", false)),
-    m_dumpRaw(factory.AttributeBool("dumpRaw", false)),
-    m_sigTextMessage("", ""),
-    m_context(0),
-    m_mainLoop(0),
-    m_conn(0),
-    m_defaultHandler(0),
-    m_isReady(false),
-    m_mainLoopStarted(0)
+    : XMPPConnectionC(factory),
+      m_asyncOpen(factory.AttributeBool("async", false)),
+      m_context(0),
+      m_mainLoop(0),
+      m_conn(0),
+      m_defaultHandler(0),
+      m_mainLoopStarted(0)
     {
       Init(factory.AttributeBool("useOwnThread", true));
     }
@@ -114,6 +102,7 @@ namespace RavlN {
       if(m_mainLoop != 0) {
         g_main_loop_quit(m_mainLoop);
       }
+      XMPPConnectionC::ZeroOwners();
     }
 
     // GLib main event loop if needed.
@@ -342,7 +331,7 @@ namespace RavlN {
     }
 
 
-    XMLFactoryRegisterC<LMConnectionC> g_xmlFactoryRegister("RavlN::XMPPN::LMConnectionC");
+    XMLFactoryRegisterConvertC<LMConnectionC,XMPPConnectionC> g_xmlFactoryRegisterLMConnection("RavlN::XMPPN::LMConnectionC");
 
     void LinkRavlXMPPLMConnection()
     {

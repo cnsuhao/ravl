@@ -13,6 +13,8 @@ MAINS= testIksemel.cc
 
 USESLIBS=RavlOS iksemel RavlXMPP
 
+MUSTLINK=LinkRavlXMPPIksemel.cc
+
 EXTERNALLIBS=iksemel.def
 
 CCPPFLAGS += -DRLOG_COMPONENT=Ravl

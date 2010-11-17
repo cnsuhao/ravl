@@ -12,12 +12,14 @@
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/Signal2.hh"
 #include "Ravl/Threads/Semaphore.hh"
+#include "Ravl/XMPP/XMPPConnection.hh"
 #include <string>
+
 
 namespace RavlN { namespace XMPPN {
 
   class LMConnectionC
-    : public RavlN::RCLayerBodyC
+    : public XMPPConnectionC
   {
   public:
     //! Constructor
@@ -92,19 +94,12 @@ namespace RavlN { namespace XMPPN {
     // GLib main event loop if needed.
     int MainLoop();
 
-    std::string m_server;
-    std::string m_user;
-    std::string m_password;
-    std::string m_resource;
     bool m_asyncOpen;
-    bool m_dumpRaw;
-    Signal2C<std::string,std::string> m_sigTextMessage;
 
     GMainContext *m_context;
     GMainLoop *m_mainLoop;
     LmConnection *m_conn;
     LmMessageHandler  *m_defaultHandler;
-    bool m_isReady;
     SemaphoreC m_mainLoopStarted;
 
   };

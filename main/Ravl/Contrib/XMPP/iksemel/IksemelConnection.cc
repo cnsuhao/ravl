@@ -4,6 +4,7 @@
 #include "Ravl/CallMethodPtrs.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include <sys/select.h>
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -77,7 +78,7 @@ namespace RavlN {
       m_ikFilter(0),
       m_features(0),
       m_shutdown(false)
-    { }
+    { Init(); }
 
     //! Factory constructor
 
@@ -88,7 +89,7 @@ namespace RavlN {
       m_ikFilter(0),
       m_features(0),
       m_shutdown(false)
-    { }
+    { Init(); }
 
     //! Destructor
 
@@ -105,6 +106,13 @@ namespace RavlN {
         iks_filter_delete (m_ikFilter);
         m_ikFilter = 0;
       }
+    }
+
+    //! Start connection
+    bool IksemelConnectionC::Init()
+    {
+      std::string anid = m_user + '@' + m_server + '/' + m_resource;
+      return Open(anid,m_password);
     }
 
 
@@ -186,6 +194,10 @@ namespace RavlN {
     //! Send a text message to someone.
     bool IksemelConnectionC::SendText(const char *to,const char *message)
     {
+      if(m_ikParse == 0) {
+        rError("Attempt to send message on closed connection. ");
+        return false;
+      }
       MutexLockC lock(m_access);
       iks *msg = iks_make_msg(IKS_TYPE_CHAT,to,message);
       iks_send(m_ikParse, msg);
@@ -397,6 +409,12 @@ namespace RavlN {
       rDebug("On message called. From:'%s' Text:'%s' ",from,text);
       m_sigTextMessage(from,text);
       return IKS_FILTER_EAT;
+    }
+
+    XMLFactoryRegisterConvertC<IksemelConnectionC,XMPPConnectionC> g_xmlFactoryRegisterIksemelConnection("RavlN::XMPPN::IksemelConnectionC");
+
+    void LinkRavlXMPPIksemelConnection()
+    {
     }
 
   }
