@@ -294,15 +294,15 @@ namespace RavlN {
 
   //! userlevel=Normal
   //: Exception safe RWLockC locking class.
-  // SMALL OBJECT <p>
-  // The destructor of this object removed the lock if
-  // it is held.   This ensures whenever the lock goes
+  // SMALL OBJECT
+  // <p>The destructor of this object removes the lock if
+  // it is held.   This ensures that, whenever the lock goes
   // out of scope, either by returning from the function
-  // or if an exception is held, that the lock will be
-  // released properly. <p>  
-  // It is the users responsability to ensure that the 
+  // or if an exception is held, the lock will be
+  // released properly. </p>  
+  // <p>It is the users responsibility to ensure that the 
   // RWLockC remains valid for the lifetime of any RWLockHoldC 
-  // instance. <p>
+  // instance. </p>
   
   class RWLockHoldC {
   public:    

@@ -7,14 +7,15 @@
   </head>
 
   <body>
+    <h2>General</h2>
+
     <p>These classes provide a machine-independent interface to allow
     the creation and management of threads within an application.</p>
 
     <p>For thread-safe operation, the following are the responsibility
     of the programmer:</p>
     <ul>
-      <li>All shared resources must be locked, e.g. using
-	<code>MutexC</code> or <code>MutexLockC</code>.</li>
+      <li>All shared resources must be locked.</li>
       
       <li>Always lock shared resources in the same order.</li>
     
@@ -25,11 +26,47 @@
       possible time.</li>
     </ul>
 
+    <h2>Locking</h2>
+
+    <p>To prevent multiple accesses to a resouce, on an equitable basis, use
+    the mutex classes.  <a
+    href="../Class/RavlN.MutexC.html"><code>MutexC</code></a> provides the
+    shared object for a particular lock.  It is the programmer's
+    responsibility to ensure that this lock remains valid while it is
+    being used.</p>
+    <p>  To protect a particular section of code, use <a
+    href="../Class/RavlN.MutexLockC.html"><code>MutexLockC</code></a>,
+    constructed on the <code>MutexC</code> object.  The exclusion lasts from
+    the creation of the <code>MutexLockC</code> object until either it goes
+    out of scope, or the <a
+    href="../Class/RavlN.MutexLockC.html#UnlockObvoidCb"><code>MutexLockC::Unlock()</code></a>
+    method is called.  For example, if <code>MutexC lock</code> has been
+    instantiated (e.g. as a class member object), the call to
+      <code>AccessSomeResource</code> is protected:</p>
+    <pre>
+ {
+   MutexLockC hold(lock);
+   AccessSomeResource();
+ }</pre>
+    <p>and the lock is released when it goes out of scope at the closing brace "}".</p>
+
+    <p>If a lock is required that distinguished between read and write access,
+    use <a href="../Class/RavlN.RWLockC.html"><code>RWLockC</code></a> and <a
+    href="../Class/RavlN.RWLockHoldC.html"><code>RWLockHoldC</code></a>
+    instead of <code>MutexC</code> and <code>MutexLockC</code> respectively.
+    In this case:</p>
+    <ul>
+      <li>Only one write lock may be held at a time.</li>
+      <li>If a write lock is held, no read locks may be held.</li>
+      <li>If no write lock is held, any number of read locks may be held</li>
+      <li>If a write lock is requested, no new read locks will be granted, but the write lock will not be granted until all of the outstanding read locks have completed.</li>
+    </ul>
+
     <hr>
     <address><a href="mailto:w.christmas@ee.surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Nov 21 15:50:48 GMT 2003 -->
 <!-- hhmts start -->
-Last modified: Thu Jan  5 09:32:58 GMT 2006
+Last modified: Wed Nov 17 14:40:40 GMT 2010
 <!-- hhmts end -->
   </body>
 </html>

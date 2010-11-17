@@ -43,11 +43,11 @@ namespace RavlN
 {
   //! userlevel=Normal
   //: Mutual Exclusion lock.
-  // SMALL OBJECT
-  // Note in general it is bad practice to Lock and Unlock the mutex directly 
+  // SMALL OBJECT<br>
+  // Note in general it is bad practice to Lock and Unlock the MutexC object directly 
   // as if the code locking the mutex throws an exception the mutex maybe left
   // in an in appropriate state.
-  // The MutexLockC class allows exception safe locking of the mutex.
+  // The <a href="RavlN.MutexLockC.html">MutexLockC</a> class allows exception safe locking of the mutex.
   
   class MutexC {
   public:
@@ -137,15 +137,15 @@ namespace RavlN
   
   //! userlevel=Normal
   //: Exception safe MutexC locking class.
-  // SMALL OBJECT <p>
-  // The destructor of this object removed the lock if
-  // it is held.   This ensures whenever the lock goes
+  // SMALL OBJECT 
+  // <p>The destructor of this object removes the lock if
+  // it is held.   This ensures that, whenever the lock goes
   // out of scope, either by returning from the function
-  // or if an exception is held, that the lock will be
-  // released properly. <p>  
-  // It is the users responsability
+  // or if an exception is held, the lock will be
+  // released properly. </p>  
+  // <p>It is the user's responsibility
   // to ensure that the MutexC remains valid for the 
-  // lifetime of any MutexLockC instance. 
+  // lifetime of any MutexLockC instance.</p> 
   
   class MutexLockC {
   public:

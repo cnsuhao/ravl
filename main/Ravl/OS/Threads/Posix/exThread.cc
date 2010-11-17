@@ -6,7 +6,7 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////////////
 //! author="Lee Gregory"
-//! userlevel=Advanced
+//! userlevel=Normal
 //! docentry="Ravl.API.OS.Threads"
 //! rcsid="$Id$"
 //! lib=RavlThreads
