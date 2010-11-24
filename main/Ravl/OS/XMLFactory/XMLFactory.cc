@@ -206,7 +206,7 @@ namespace RavlN {
     
     if(!UsePath(name,child,true,factory.VerboseMode()) || !child.IsValid()) {
       if(!silentError) {
-        SysLog(SYSLOG_ERR," find path to requested type, '%s' from path '%s' ",name.chars(),Path().chars());
+        SysLog(SYSLOG_DEBUG,"Failed to find path to requested type, '%s' from path '%s' ",name.chars(),Path().chars());
         //Dump(std::cerr);
         //XMLNode().Dump(std::cerr);
       }
