@@ -150,7 +150,12 @@ namespace RavlN {
     if(g_rlogNode == 0)
       RLogInit();
     RavlAssert(g_rlogNode != 0);
-    g_rlogNode->subscribeTo(rlog::GetComponentChannel(moduleName,path,rlog::Log_Undef));
+    if(moduleName == 0 || *moduleName == 0) {
+      g_rlogNode->subscribeTo(rlog::GetGlobalChannel(path,level));
+    } else {
+      g_rlogNode->subscribeTo(rlog::GetComponentChannel(moduleName,path,level));
+    }
+
     return true;
   }
 
