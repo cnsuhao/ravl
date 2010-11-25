@@ -48,7 +48,7 @@ namespace RavlN
     {}
     //: Ctor.
 
-    void SetValue(const DataT &newValue)
+    virtual void SetValue(const DataT &newValue)
     {
       RWLockHoldC hold(m_access,RWLOCK_WRITE);
       if (m_value == newValue)
