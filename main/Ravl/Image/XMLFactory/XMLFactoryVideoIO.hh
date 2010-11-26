@@ -15,6 +15,7 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/HashIter.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/ConfigParameter.hh"
 
 namespace RavlN {
   
@@ -27,6 +28,12 @@ namespace RavlN {
     {
       RavlN::DPIPortC<RavlImageN::ImageC<PixelT> > iport;
       RavlN::StringC filename = node.AttributeString("filename","");
+
+      ConfigParameterStringC::RefT configStr;
+      if(node.UseComponent("ConfigFilename",configStr,true,typeid(ConfigParameterStringC))) {
+        filename = configStr->Value().data();
+      }
+
       if(!RavlN::OpenISequence(iport,filename)) {
         SysLog(SYSLOG_ERR,"Failed to open input '%s' ",filename.chars());
         throw RavlN::ExceptionOperationFailedC("Failed to open file. ");
@@ -45,6 +52,12 @@ namespace RavlN {
     {
       RavlN::DPOPortC<RavlImageN::ImageC<PixelT> > oport;
       RavlN::StringC filename = node.AttributeString("filename","");
+      
+      ConfigParameterStringC::RefT configStr;
+      if(node.UseComponent("ConfigFilename",configStr,true,typeid(ConfigParameterStringC))) {
+        filename = configStr->Value().data();
+      }
+
       if(!RavlN::OpenOSequence(oport,filename)) {
         SysLog(SYSLOG_ERR,"Failed to open output '%s' ",filename.chars());
         throw RavlN::ExceptionOperationFailedC("Failed to open file. ");
