@@ -439,6 +439,7 @@ int testException() {
   } catch (ExceptionC &ex) {
     if(StringC(ex.Text()) != "test")
       return __LINE__;
+    ex.Dump(std::cout);
   } catch(...) {
     return __LINE__;
   }

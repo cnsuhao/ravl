@@ -19,18 +19,30 @@
 #include <typeinfo.h>
 #endif
 
+#ifdef __GLIBC__
+#include <execinfo.h>
+#endif
+
 namespace RavlN {
 
   //: Constructor
-  ExceptionC::ExceptionC(const char *ntext)
+  ExceptionC::ExceptionC(const char *ntext,StackTraceT stackTrace)
    : desc(ntext),
-     ref(false)
-  {}
+     ref(false),
+     m_stackTraceDepth(0)
+  {
+#ifdef __GLIBC__
+    if(stackTrace == StackTraceOn) {
+      m_stackTraceDepth = backtrace(m_stackTrace, m_maxStackDepth);
+    }
+#endif
+  }
 
   //: Copy Constructor
   ExceptionC::ExceptionC(const ExceptionC &oth)
    : desc(oth.desc),
-     ref(oth.ref)
+     ref(oth.ref),
+     m_stackTraceDepth(0)
   {
     if(oth.ref)
       const_cast<ExceptionC &>(oth).ref = false;
@@ -38,13 +50,18 @@ namespace RavlN {
 
   //: Constructor
   
-  ExceptionC::ExceptionC(const char *ntext,bool copy)
+  ExceptionC::ExceptionC(const char *ntext,bool copy,StackTraceT stackTrace)
     : desc(ntext),
       ref(copy)
   {
+#ifdef __GLIBC__
+    if(stackTrace == StackTraceOn) {
+      m_stackTraceDepth = backtrace(m_stackTrace, m_maxStackDepth);
+    }
+#endif
+
     //cerr << "String: '" << ntext << "'\n";
-    if(!copy)
-      
+    if(!copy)      
       return;
     char *place = const_cast<char *>(ntext);
     // How long is the string ?
@@ -70,6 +87,18 @@ namespace RavlN {
   
   void ExceptionC::Dump(ostream &out) {
     out << "Ravl Exception:" << desc << endl;
+#ifdef __GLIBC__
+    char **trace = backtrace_symbols(m_stackTrace,m_stackTraceDepth);
+    if(trace != 0) {
+      out << "Stack:\n";
+      for(int i = 0;i < m_stackTraceDepth;i++) {
+        out << "  " << trace[i] << "\n";
+      }
+      free(trace);
+    } else {
+      out << "Stack: Failed to generate trace.";
+    }
+#endif
   }
 
 

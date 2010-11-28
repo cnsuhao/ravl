@@ -26,15 +26,19 @@ namespace RavlN {
   using namespace std;
 #endif
 
+  enum StackTraceT {
+    StackTraceOff,
+    StackTraceOn
+  };
   //: RAVL Exception.
   // Base class for Ravl's exceptions. <P>
 
   class ExceptionC {
   public:
-    ExceptionC(const char *ntext);
+    ExceptionC(const char *ntext,StackTraceT stackTrace = StackTraceOn);
     //: Constructor
 
-    ExceptionC(const char *ntext,bool copy);
+    ExceptionC(const char *ntext,bool copy,StackTraceT stackTrace = StackTraceOn);
     //: Constructor.
     // Copy string if 'copy' is true.
 
@@ -57,6 +61,11 @@ namespace RavlN {
   protected:
     const char *desc;
     bool ref; // Delete string in constructor ?
+
+    static const int m_maxStackDepth = 64;
+    int m_stackTraceDepth;
+    void *m_stackTrace[m_maxStackDepth];
+
   };
 
   //: Casting exception class.
