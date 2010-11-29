@@ -198,6 +198,8 @@ namespace RavlN {
                                              ) 
   {
     XMLFactoryNodeC::RefT child;
+
+    RavlAssert(m_xmlNode.IsValid());
     
     // Look for redirection.
     StringC name = XMLNode().AttributeString(rawname);
