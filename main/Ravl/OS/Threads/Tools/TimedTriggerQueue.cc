@@ -29,6 +29,10 @@
 #define ONDEBUG(x)
 #endif
 
+// Disabling catching of exceptions can be useful
+// if you need to establish what's throwing them
+#define CATCHEXCEPTIONS 1
+
 namespace RavlN
 {
 
@@ -105,9 +109,11 @@ namespace RavlN
     ONDEBUG(std::cerr << "TimedTriggerQueueBodyC::Process(), Called. \n");
     MutexLockC holdLock(access);
     holdLock.Unlock();
+#if CATCHEXCEPTIONS
     do {
       // Avoid try/catch in central loop to reduce overhead.
       try {
+#endif
         do {
           holdLock.Lock();
           // Are any events scheduled ??
@@ -147,8 +153,11 @@ namespace RavlN
           semaSched.Wait(toGo.Double());
           ONDEBUG(std::cerr << "Time to check things out.\n");
         } while(!done);
+#if CATCHEXCEPTIONS
       } catch(ExceptionC &ex) {
         std::cerr << "Caught exception in timed trigger event thread. Message:'" << ex.Text() << "' \n";
+        // Dump a stack.
+        ex.Dump(std::cerr);
         // If in check or debug stop.
         RavlAssertMsg(0,"Aborting due to exception in timed trigger event thread. ");
         // Otherwise ignore and struggle on.
@@ -160,6 +169,7 @@ namespace RavlN
         std::cerr << "Caught exception in timed trigger event thread. Ignoring. \n";
       }
     } while(!done) ;
+#endif
     return true;
    }
   

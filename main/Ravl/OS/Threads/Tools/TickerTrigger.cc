@@ -41,9 +41,14 @@ namespace RavlN {
 	se.Invoke();
 	next.Wait();
       }
+    } catch(ExceptionC &ex) {
+      SysLog(SYSLOG_ERR) << "Caught exception in ticker trigger thread. Message:'" << ex.Text() << "' \n";
+      // Dump a stack.
+      ex.Dump(SysLog(SYSLOG_ERR));
+      RavlAssert(0);
     } catch(...) {
-      // FIXME: Is there any valid exception that can pass through here ???
-      SysLog(SYSLOG_WARNING) << "Ticker aborted on exception. " << ((void *) this)  << "\n";
+          // FIXME: Is there any valid exception that can pass through here ???
+      SysLog(SYSLOG_ERR) << "Ticker aborted on exception. " << ((void *) this)  << "\n";
     }
     ONDEBUG(cerr << "Ticker done... " <<  ((void *) this) <<". Delay:" << delay << " \n");
     return 0;
