@@ -60,6 +60,11 @@ namespace RavlN {
       : m_liFrame(0),
 	frameRate(25.0)
     {}
+
+    static TimeCodeC MaxTimeCode(RealT FrameRate = 25.0)
+    { return TimeCodeC(RavlConstN::maxInt, FrameRate); }
+    //: Return max possible timecode
+
     //: Construct empty timecode
     
     //:-------------------
@@ -175,7 +180,6 @@ namespace RavlN {
 
   protected:
     
-    // long int m_liFrame;
     IntT m_liFrame ; 
     //: Absolute frame count of timecode
     
