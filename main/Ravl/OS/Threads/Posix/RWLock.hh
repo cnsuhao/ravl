@@ -306,6 +306,23 @@ namespace RavlN {
   
   class RWLockHoldC {
   public:    
+
+    RWLockHoldC(const RWLockC &m,RWLockModeT lockMode)
+      : rwlock(const_cast<RWLockC &>(m)),
+	rLocked(false),
+	wLocked(false)
+    { 
+      switch(lockMode) {
+      case RWLOCK_READONLY:     rLocked = rwlock.RdLock();    break;
+      case RWLOCK_WRITE:        wLocked = rwlock.WrLock();    break;
+      case RWLOCK_TRY_READONLY: rLocked = rwlock.TryRdLock(); break;
+      case RWLOCK_TRY_WRITE:    wLocked = rwlock.TryWrLock(); break;
+      case RWLOCK_NOLOCK:       break;
+      }
+    }
+    //: Create a lock on a rwlock.
+    // The type of lock is determined by <code>lockMode</code>.
+
     RWLockHoldC(const RWLockC &m,bool readOnly = true,bool tryOnly = false)
       : rwlock(const_cast<RWLockC &>(m)),
 	rLocked(false),
@@ -330,31 +347,16 @@ namespace RavlN {
       }
     }
     //: Create a lock on a rwlock.
-    // This method is obsolete and may be remove in future versions,
-    // use constructor with RWLockModeT paramiter instead. <br>
+    //!deprecated: This method is obsolete and may be remove in future versions;
+    //!deprecated: use constructor with <code>RWLockModeT</code> parameter instead. <br>
     // This may not seem like a good idea,
     // but it allows otherwise constant functions to
     // lock out other accesses to data without undue
     // faffing about.
     
-    RWLockHoldC(const RWLockC &m,RWLockModeT lockMode)
-      : rwlock(const_cast<RWLockC &>(m)),
-	rLocked(false),
-	wLocked(false)
-    { 
-      switch(lockMode) {
-      case RWLOCK_READONLY:     rLocked = rwlock.RdLock();    break;
-      case RWLOCK_WRITE:        wLocked = rwlock.WrLock();    break;
-      case RWLOCK_TRY_READONLY: rLocked = rwlock.TryRdLock(); break;
-      case RWLOCK_TRY_WRITE:    wLocked = rwlock.TryWrLock(); break;
-      case RWLOCK_NOLOCK:       break;
-      }
-    };
-    //: Create a lock on a rwlock.
-    // This may not seem like a good idea,
-    // but it allows otherwise constant functions to
-    // lock out other accesses to data without undue
-    // faffing.
+    ~RWLockHoldC()
+    { Unlock(); }
+    //: Destructor
     
     void Unlock() {
       RavlAssert(!(wLocked && rLocked)); // Not both at once!
@@ -365,12 +367,7 @@ namespace RavlN {
       rLocked = false;
       wLocked = false;
     }
-    
     //: Unlock the rwlock.
-    ~RWLockHoldC()
-    { Unlock(); }
-    
-    //: Create a lock on a rwlock.
     
     void LockRd() {
       RavlAssertMsg(!(wLocked || rLocked),"RWLockHoldC::LockRd(), ERROR: lock already exists."); // Must be no locks.
