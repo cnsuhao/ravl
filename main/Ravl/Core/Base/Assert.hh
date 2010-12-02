@@ -27,7 +27,11 @@ namespace RavlN {
   //: Throw an exception on an assertion failure.
   // Note this may failed if exceptions are not supported,
   // in which case it will return false.
-  
+
+  void SetAssertDisplayStackTrace(bool val);
+  //: Enable/Disable display of stack traces on assertions.
+  //: this is on by default.
+
   void AssertFailed(const char *file,int lineNo);
   //: Called if assertion failed.
   // This will either cause the program to trap to the debugger
@@ -55,7 +59,7 @@ namespace RavlN {
   void IssueWarning(const char *file,int lineNo,const StringC &str);
   //: Call when program encounters an a unexpected occurrence.
   // this prints the message and continues.
-  
+
 }
 
 #if RAVL_CHECK

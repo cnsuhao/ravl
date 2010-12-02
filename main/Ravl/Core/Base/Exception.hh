@@ -25,6 +25,11 @@ namespace RavlN {
 #if RAVL_HAVE_STDNAMESPACE
   using namespace std;
 #endif
+  
+  void DisplayStackTrace(std::ostream &strm,void **stack,int depth);
+  //: Display a stack trace, if supported.
+  //: 'stack' should be obtained with the 'backtrace()' provided on some
+  //: systems. If its not supported this method will do nothing.
 
   enum StackTraceT {
     StackTraceOff,

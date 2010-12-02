@@ -10,6 +10,7 @@
 //! file="Ravl/Core/Base/Exception.cc"
 
 #include "Ravl/Exception.hh"
+#include "Ravl/Assert.hh"
 
 #if RAVL_HAVE_ANSICPPHEADERS
 #include <iostream>
@@ -19,7 +20,7 @@
 #include <typeinfo.h>
 #endif
 
-#ifdef __GLIBC__
+#ifdef RAVL_HAVE_BACKTRACE
 #include <execinfo.h>
 #endif
 
@@ -31,7 +32,7 @@ namespace RavlN {
      ref(false),
      m_stackTraceDepth(0)
   {
-#ifdef __GLIBC__
+#if RAVL_HAVE_BACKTRACE
     if(stackTrace == StackTraceOn) {
       m_stackTraceDepth = backtrace(m_stackTrace, m_maxStackDepth);
     }
@@ -54,7 +55,7 @@ namespace RavlN {
     : desc(ntext),
       ref(copy)
   {
-#ifdef __GLIBC__
+#if RAVL_HAVE_BACKTRACE
     if(stackTrace == StackTraceOn) {
       m_stackTraceDepth = backtrace(m_stackTrace, m_maxStackDepth);
     }
@@ -87,17 +88,8 @@ namespace RavlN {
   
   void ExceptionC::Dump(ostream &out) {
     out << "Ravl Exception:" << desc << endl;
-#ifdef __GLIBC__
-    char **trace = backtrace_symbols(m_stackTrace,m_stackTraceDepth);
-    if(trace != 0) {
-      out << "Stack:\n";
-      for(int i = 0;i < m_stackTraceDepth;i++) {
-        out << "  " << trace[i] << "\n";
-      }
-      free(trace);
-    } else {
-      out << "Stack: Failed to generate trace.";
-    }
+#if RAVL_HAVE_BACKTRACE
+    DisplayStackTrace(out,m_stackTrace,m_stackTraceDepth);
 #endif
   }
 
@@ -216,5 +208,23 @@ namespace RavlN {
   ExceptionEndOfStreamC::ExceptionEndOfStreamC(const char *ntext,bool copy)
    : ExceptionC(ntext,copy)
   {}
+
+  
+  void DisplayStackTrace(std::ostream &out,void **stack,int depth)
+  {
+#if RAVL_HAVE_BACKTRACE
+    char **trace = backtrace_symbols(stack,depth);
+    if(trace != 0) {
+      out << "Stack:\n";
+      for(int i = 0;i < depth;i++) {
+        out << "  " << trace[i] << "\n";
+      }
+      free(trace);
+    } else {
+      out << "Stack: Failed to generate trace.";
+    }
+#endif
+  }
+
 
 }

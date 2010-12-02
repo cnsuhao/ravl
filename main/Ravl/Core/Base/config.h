@@ -173,7 +173,7 @@
 #define RAVL_HAVE_SYS_SELECT_H RAVL_OS_MACOSX || RAVL_OS_FREEBSD /* sys/select.h */
 #define RAVL_HAVE_SYS_STAT_H   RAVL_OS_FREEBSD
 #define RAVL_HAVE_ALLOCA_H     (!RAVL_OS_FREEBSD && !RAVL_COMPILER_VISUALCPP)
-
+#define RAVL_HAVE_BACKTRACE    (defined(__GLIBC__) || defined(__APPLE__))
 #define RAVL_HAVE_YIELD        (RAVL_OS_SOLARIS)   /* have yield() */
 #define RAVL_HAVE_SCHED_YIELD  (!RAVL_OS_WIN32 && !RAVL_OS_SOLARIS) /* have sched_yield() */
 #define RAVL_HAVE_SCHED_H      !RAVL_OS_WIN32     /* have <sched.h> */

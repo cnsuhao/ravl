@@ -34,8 +34,11 @@
 #include <iostream.h>
 #endif
 
-#if RAVL_HAVE_EXCEPTIONS
 #include "Ravl/Exception.hh"
+
+#if RAVL_HAVE_BACKTRACE
+#include <execinfo.h>
+const int g_maxStackDepth = 128;
 #endif
 
 #include <stdio.h>
@@ -48,13 +51,14 @@ namespace RavlN {
 #endif
 #endif
   
-  static bool assertThrowException = false;
+  static bool g_assertThrowException = false;
+  static bool g_assertDisplayBacktrace = true;
   
   //: Test if an exception on an assertion failure.
   
   bool AssertThrowException() {
 #if RAVL_HAVE_EXCEPTIONS
-    return assertThrowException;
+    return g_assertThrowException;
 #else
     return false;
 #endif
@@ -65,20 +69,35 @@ namespace RavlN {
   
   bool SetAssertThrowException(bool val) {
 #if RAVL_HAVE_EXCEPTIONS
-    assertThrowException = val;
+    g_assertThrowException = val;
     return true;
 #else
     return val == false;
 #endif
   }
 
+  //: Enable/Disable display of stack traces on assertions.
+  //: this is on by default.
+
+  void SetAssertDisplayStackTrace(bool val) {
+    g_assertDisplayBacktrace = val;
+  }
+
   //: Called if assertion failed.
   
   void AssertFailed(const char *file,int lineNo) {
-    cerr << "Ravl assertion failed " << file <<":" << dec << lineNo << "\n";
+    std::cerr << "Ravl assertion failed " << file <<":" << dec << lineNo << "\n";
 #if RAVL_HAVE_EXCEPTIONS
-    if(assertThrowException) 
+    if(g_assertThrowException)
       throw ExceptionAssertionFailedC("Ravl assertion failed. ");
+#endif
+#if RAVL_HAVE_BACKTRACE
+    if(g_assertDisplayBacktrace) {
+      // If exceptions are used they will generate a stack trace anyway
+      void *stack[g_maxStackDepth];
+      int depth = backtrace(stack,g_maxStackDepth);
+      DisplayStackTrace(std::cerr,stack,depth);
+    }
 #endif
     char *ptr = 0;
     *ptr = 1;// Cause a segfault.
@@ -87,11 +106,19 @@ namespace RavlN {
   //: Called if assertion failed, with message.
   
   void AssertFailed(const char *file,int lineNo,const char *msg) {
-    cerr << "Ravl assertion failed " << file <<":" << dec << lineNo << ".\n";
-    cerr << "Reason: " << msg << "\n";
+    std::cerr << "Ravl assertion failed " << file <<":" << dec << lineNo << ".\n";
+    std::cerr << "Reason: " << msg << "\n";
 #if RAVL_HAVE_EXCEPTIONS
-    if(assertThrowException)
+    if(g_assertThrowException)
       throw ExceptionAssertionFailedC(msg);
+#endif
+#if RAVL_HAVE_BACKTRACE
+    if(g_assertDisplayBacktrace) {
+      // If exceptions are used they will generate a stack trace anyway
+      void *stack[g_maxStackDepth];
+      int depth = backtrace(stack,g_maxStackDepth);
+      DisplayStackTrace(std::cerr,stack,depth);
+    }
 #endif
     char *ptr = 0;
     *ptr = 1;// Cause a segfault.
@@ -117,8 +144,16 @@ namespace RavlN {
     cerr << buff;
     va_end(args);
 #if RAVL_HAVE_EXCEPTIONS
-    if(assertThrowException)
+    if(g_assertThrowException)
       throw ExceptionAssertionFailedC(buff,true);
+#endif
+#if RAVL_HAVE_BACKTRACE
+    if(g_assertDisplayBacktrace) {
+      // If exceptions are used they will generate a stack trace anyway
+      void *stack[g_maxStackDepth];
+      int depth = backtrace(stack,g_maxStackDepth);
+      DisplayStackTrace(std::cerr,stack,depth);
+    }
 #endif
     char *ptr = 0;
     *ptr = 1;// Cause a segfault.
@@ -148,10 +183,18 @@ namespace RavlN {
   // or thow an 'ExceptionAssertionFailedC'
   
   void IssueError(const char *file,int lineNo,const StringC &str) {
-    cerr << "ERROR " << file << ":" << lineNo << " :" << str << "\n";
+    std::cerr << "ERROR " << file << ":" << lineNo << " :" << str << "\n";
 #if RAVL_HAVE_EXCEPTIONS
-    if(assertThrowException)
+    if(g_assertThrowException)
       throw ExceptionAssertionFailedC(str.chars(),true);
+#endif
+#if RAVL_HAVE_BACKTRACE
+    if(g_assertDisplayBacktrace) {
+      // If exceptions are used they will generate a stack trace anyway
+      void *stack[g_maxStackDepth];
+      int depth = backtrace(stack,g_maxStackDepth);
+      DisplayStackTrace(std::cerr,stack,depth);
+    }
 #endif
     char *ptr = 0;
     *ptr = 1;// Cause a segfault.    
@@ -161,7 +204,7 @@ namespace RavlN {
   // this prints the message and continues.
   
   void IssueWarning(const char *file,int lineNo,const StringC &str) {
-    cerr << "WARNING " << file << ":" << lineNo << " :" << str << "\n";
+    std::cerr << "WARNING " << file << ":" << lineNo << " :" << str << "\n";
   }
 
 
