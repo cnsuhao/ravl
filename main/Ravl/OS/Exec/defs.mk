@@ -20,6 +20,8 @@ USESLIBS=RavlOS RavlCore
 
 LIBDEPS=RavlOSExec.def
 
+MAINS=exCPUInfo.cc
+
 TESTEXES= testChildProc.cc
 
 EXAMPLES= exChild.cc
