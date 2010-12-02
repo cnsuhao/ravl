@@ -39,8 +39,11 @@ namespace RavlN
       :  wantu(want_u),
 	 wantv(want_v)
     {
-      m = arg.Size1();
-      n = arg.Size2();
+      bool shortnfat = (arg.Size1()<arg.Size2());
+      TMatrixC<NumT> mat(arg.Copy());
+      if (shortnfat) mat = mat.T();
+      m = mat.Size1();
+      n = mat.Size2();
       int nu = Min(m,n);
       
       int nss = Min(m+1,n);
@@ -48,7 +51,9 @@ namespace RavlN
       U = TMatrixC<NumT>(m, nu, NumT(0));
       V = TMatrixC<NumT>(n,n);
       
-      DoSVD(arg);
+      DoSVD(mat);
+      if (shortnfat)
+        Swap(U, V);
     }
     //: Setup SVD of 'arg'
     //!param: arg - Matrix to decompose
@@ -59,8 +64,11 @@ namespace RavlN
       :  wantu(want_u),
 	 wantv(want_v)
     {
-      m = arg.Size1();
-      n = arg.Size2();
+      bool shortnfat = (arg.Size1()<arg.Size2());
+      TMatrixC<NumT> mat(arg.Copy());
+      if (shortnfat) mat = mat.T();
+      m = mat.Size1();
+      n = mat.Size2();
       
       int nss = Min(m+1,n);
       RavlAssert(nss >= (int) ns.Size());
@@ -73,7 +81,9 @@ namespace RavlN
       RavlAssert(((int) nV.Size1() == n && (int) nV.Size2() == n) || (!wantv));
       V = nV;
       
-      DoSVD(arg);
+      DoSVD(mat);
+      if (shortnfat) 
+        Swap(U, V);
     }
     //: Setup SVD of 'arg'
     //!param: arg - Matrix to decompose
@@ -84,16 +94,16 @@ namespace RavlN
     //!param: want_v - Flag to indicate if we need to compute V matrix.
     
   protected:
-    void DoSVD(const TMatrixC<NumT> &Arg) {
+    void DoSVD(TMatrixC<NumT> &A) {
       TVectorC<NumT> e(n);
       TVectorC<NumT> work(m);
-      TMatrixC<NumT> A(Arg.Copy());
       int nu = Min(m,n);
       int i=0, j=0, k=0;
       
 #if 0
       if(m < n)
 	cerr << "SVDC, This SVD code it not reliable where m < n.\n";
+      // But this is now fixed in the constructors [Bill Xmas]
 #endif
       
       // Reduce A to bidiagonal form, storing the diagonal elements

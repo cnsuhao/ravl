@@ -16,7 +16,6 @@
 #include "Ravl/SVD.hh"
 
 #define RAVL_USE_CCMATH_SVD 0
-#define RAVL_SVDC_M_LT_N_WORKAROUND 1
 
 #if RAVL_USE_CCMATH_SVD
 #include "Ravl/CCMath.hh"
@@ -75,14 +74,6 @@ namespace RavlN {
   // If the operation failes the returned vector is invalid.
   
   VectorC SVD(const MatrixC &mat,MatrixC & u, MatrixC & v) {
-#if RAVL_SVDC_M_LT_N_WORKAROUND    
-    if(mat.Rows() < mat.Cols()) {
-      // Hack to get around bug in SVD.
-      MatrixC matt = mat.T();
-      VectorC x = SVD_IP(matt,v,u);
-      return x;
-    }
-#endif
     MatrixC ret = mat.Copy();
     return SVD_IP(ret,u,v);
   }
