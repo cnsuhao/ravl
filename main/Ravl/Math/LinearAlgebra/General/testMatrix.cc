@@ -38,6 +38,7 @@ int testInverse();
 int testATAandAAT();
 int testSolve();
 int testLSQFixedRank();
+int testLSQEq0Mag1();
 
 int main() {
   int ln;
@@ -88,6 +89,10 @@ int main() {
   }
   if((ln = testLSQFixedRank()) != 0) {
     cerr << "testLSQFixedRank() failed. Line:" << ln << "\n";
+    return 1;
+  }
+  if((ln = testLSQEq0Mag1()) != 0) {
+    cerr << "testLSQEq0Mag1() failed. Line:" << ln << "\n";
     return 1;
   }
 #endif
@@ -503,5 +508,23 @@ int testLSQFixedRank() {
   if(Abs(res[0]) > 0.000001) return __LINE__;
   if(Abs(res[1] - 5) > 0.0001) return __LINE__;
   
+  return 0;
+}
+
+int testLSQEq0Mag1() {
+  cerr << "testLSQEq0Mag1(), Called. \n";
+
+  //Consider the case for matrices with less rows than columns
+  for(int i = 0;i < 10;i++) {
+    MatrixC lsTest;
+    lsTest = RandomMatrix(8,9);
+    VectorC lsTestSol(9);
+    LeastSquaresEq0Mag1(lsTest,lsTestSol);
+    //Solution should be in the null space of lsTest
+    VectorC zeroVecTest = lsTest * lsTestSol;
+
+    if (zeroVecTest.SumOfAbs() > 1e-6) return __LINE__;
+  }
+
   return 0;
 }
