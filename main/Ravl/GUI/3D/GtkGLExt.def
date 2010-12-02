@@ -1,6 +1,9 @@
 ifndef GTKGLEXTL_DEF
 GTKGLEXT_DEF = 1
 
+include GTK.def
+include x11.def
+
 INCLUDES += `pkg-config gtkglext-1.0 --cflags`
 EXELIB := `pkg-config gtkglext-1.0 --libs` $(EXELIB)
 
