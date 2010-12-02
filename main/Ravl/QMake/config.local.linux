@@ -161,7 +161,7 @@ RESOURCES += devVideo4Linux2
 
 #### OpenCV Library ################
 
-#RESOURCES += libcv
+#RESOURCES += OpenCV
 #OPENCV_HOME = /usr
 
 #### Jasper image IO library ################
