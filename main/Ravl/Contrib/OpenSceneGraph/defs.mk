@@ -9,7 +9,9 @@ PACKAGE=Ravl/OpenSceneGraph
 
 LICENSE=LGPL
 
-REQUIRES=OpenSceneGraph libGL
+REQUIRES=OpenSceneGraph libGL GTKGLExt
+# NOTE: Do NOT comment out the GTKGLExt, if its not enabled though it may 
+# compile this library will not work.
 
 HEADERS=Drawable.hh Sphere.hh Image.hh ImageByteRGBA.hh ImageByteRGB.hh Text.hh TriMesh.hh TexTriMesh.hh \
  Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh HUD.hh \
