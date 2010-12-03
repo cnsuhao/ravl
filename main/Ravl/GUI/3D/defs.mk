@@ -54,7 +54,7 @@ MAINS = exCanvas3D.cc exView3D.cc exDTexTriMesh3d.cc
 USESLIBS = RavlCore RavlGeom RavlGUI OpenGL Ravl3D x11 GTK RavlImage GLUT
 
 RAVL_USE_GTKTLEXT=1
-ifdef RAVL_USE_GTKTLEXT
+ifeq ($(strip $(filter-out $(RESOURCES),GTKGLExt)),)
 EXTERNALLIBS= GtkGLExt.def
 USERCPPFLAGS += -DRAVL_USE_GTKGLEXT=1
 USESLIBS += GtkGLExt
