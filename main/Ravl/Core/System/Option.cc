@@ -189,8 +189,13 @@ namespace RavlN {
       return false;
     }
     //out << "# Created ";
-    out << progName << ' ';
-    for(DLIterC<StringC> it(allargs);it.IsElm();it.Next()) {
+    out << *this;
+    return true;
+  }
+  
+  ostream & operator<<(ostream & out, const OptionC opt) {
+    out << opt.progName << ' ';
+    for(DLIterC<StringC> it(opt.allargs);it.IsElm();it.Next()) {
       if(it.Data() == "-optsave") {
 	it.Next(); // Skip argument.
 	continue;
@@ -203,9 +208,9 @@ namespace RavlN {
 	out << it.Data() << ' ';
     }
     out << "\n";
-    return true;
+    return out;
   }
-  
+
   //: Save options to a file.
   
   bool OptionC::LoadOptions(StringC filename) {
