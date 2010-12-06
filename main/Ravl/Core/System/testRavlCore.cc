@@ -336,6 +336,10 @@ int testOption() {
   if(s2 != "t3 t4") return __LINE__;
   if(s3 != "t5 t6") return __LINE__;
   if(!b) return __LINE__;
+  StrOStreamC str;
+  str <<opt;
+  if (str.String() != "arg0 -d 0.3 -i 4 -k 1 2 -o1 t1\\ t2 -o2 t3\\ t4 -o3 t5\\ t6 -b ")
+    return __LINE__;
   return 0;
 }
 

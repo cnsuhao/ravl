@@ -189,7 +189,7 @@ namespace RavlN {
       return false;
     }
     //out << "# Created ";
-    out << *this;
+    out << *this << "\n";
     return true;
   }
   
@@ -207,7 +207,6 @@ namespace RavlN {
       } else
 	out << it.Data() << ' ';
     }
-    out << "\n";
     return out;
   }
 
