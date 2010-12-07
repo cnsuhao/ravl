@@ -71,33 +71,33 @@ namespace RavlN
     void Broadcast()
 #if RAVL_HAVE_PTHREAD_COND 
     { pthread_cond_broadcast(&cond); }
+    //: Broadcast a signal to all waiting threads.
+    // Always succeeds.
 #else
     ;
 #endif
-    //: Broadcast a signal to all waiting threads.
-    // Always succeeds.
     
     void Signal() 
 #if RAVL_HAVE_PTHREAD_COND 
     { pthread_cond_signal(&cond); }
+    //: Signal one waiting thread.
+    // Always succeeds.  The particular thread selected is arbitrary.
 #else
     ;
 #endif
-    //: Signal one waiting thread.
-    // Always succeeds.  The particular thread selected is arbitrary.
     
     void Wait()
 #if RAVL_HAVE_PTHREAD_COND 
     { pthread_cond_wait(&cond,&mutex); }
+    //: Wait for conditional.
+    // <p>This unlocks the mutex and then waits for a signal
+    // from either Signal or Broadcast.  When it gets the signal
+    // the mutex is re-locked and control returned to the
+    // program. </p>
+    // <p>Always succeeds.</p>
 #else
     ;
 #endif
-    //: Wait for conditional.
-    // This unlocks the mutex and then waits for a signal
-    // from either Signal or Broadcast.  When it gets the signal
-    // the mutex is re-locked and control returned to the
-    // program. <p>
-    // Always succeeds.
     
     bool Wait(RealT maxTime);
     //: Wait for conditional.
