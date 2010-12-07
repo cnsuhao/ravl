@@ -4,7 +4,7 @@
 #include "Ravl/TimeCode.hh"
 #include "Ravl/Pair.hh"
 
-//! docentry="Ravl.API.OS.Multithreading Framework"
+//! docentry="Ravl.API.Core.Misc"
 //! author="Bill Christmas"
 
 //! userlevel=Normal
