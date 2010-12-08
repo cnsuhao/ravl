@@ -3,6 +3,7 @@
 
 #include "Ravl/TimeCode.hh"
 #include "Ravl/Pair.hh"
+#include "Ravl/String.hh"
 
 //! docentry="Ravl.API.Core.Misc"
 //! author="Bill Christmas"
