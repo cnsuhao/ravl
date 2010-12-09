@@ -232,7 +232,7 @@ namespace RavlN
   bool RWLockC::RdLock()
   {
     AccM.Lock();
-    while(WrWait > 0 || RdCount < 0) {
+    while((WrWait > 0 && m_preferWriter) || RdCount < 0) {
       RdWait++; // Should only go aroung this loop once !
       AccM.Unlock();
       ReadQueue.Wait();
@@ -251,7 +251,7 @@ namespace RavlN
     DateC timeOutAt = DateC::NowUTC();
     timeOutAt += timeout;
     AccM.Lock();
-    while(WrWait > 0 || RdCount < 0) {
+    while((WrWait > 0 && m_preferWriter) || RdCount < 0) {
       RdWait++; // Should only go aroung this loop once !
       AccM.Unlock();
       float timeToWait = (DateC::NowUTC() - timeOutAt).Double();
@@ -297,7 +297,7 @@ namespace RavlN
     DateC timeOutAt = DateC::NowUTC();
     timeOutAt += timeout;
     AccM.Lock();
-    while((RdWait > 0 && !m_preferWriter) || RdCount != 0) {
+    while(RdCount != 0) {
       WrWait++; // Should only go through here once !
       AccM.Unlock();
       float timeToWait = (DateC::NowUTC() - timeOutAt).Double();
@@ -324,23 +324,48 @@ namespace RavlN
     if(RdCount < 0) {
       // Unlock a write lock.
       RdCount = 0;
-      if(WrWait > 0)
-	WriteQueue.Post(); // Wake up a waiting writer.
-      else {
-	for(int i = 0;i < RdWait;i++)
-	  ReadQueue.Post(); // Wakeup all waiting readers.
+      if(m_preferWriter) {
+        if(WrWait > 0) {
+    	  WriteQueue.Post(); // Wake up a waiting writer.
+        } else {
+	  for(int i = 0;i < RdWait;i++)
+	    ReadQueue.Post(); // Wakeup all waiting readers.
+        }
+      } else {
+        if(RdWait == 0 && WrWait > 0)
+    	  WriteQueue.Post(); // Wake up a waiting writer.
+        else {
+	  for(int i = 0;i < RdWait;i++)
+	    ReadQueue.Post(); // Wakeup all waiting readers.
+        }
       }
       AccM.Unlock();
       return true;
     }
     // Unlock a read lock.
     RdCount--;
-    if(WrWait < 1) {
-      for(int i = 0;i < RdWait;i++)
-	ReadQueue.Post(); // Wakeup all waiting readers.
+    if(m_preferWriter) {
+      if(WrWait < 1) {
+        // No writers waiting so make sure readers are awake
+        for(int i = 0;i < RdWait;i++)
+	  ReadQueue.Post(); // Wakeup all waiting readers.
+      } else {
+        // If no readers locking, start a writer.
+        if(RdCount <= 0)
+	  WriteQueue.Post(); // Wake up a waiting writer.
+      }
     } else {
-      if(RdCount <= 0)
-	WriteQueue.Post(); // Wake up a waiting writer.
+      // Reader preference.
+      if(RdWait > 0) {
+        // They shouldn't be waiting, but in case.
+        for(int i = 0;i < RdWait;i++)
+	  ReadQueue.Post(); // Wakeup all waiting readers.
+      } else {
+        // Nothing waiting, and nothing hold a lock so let
+        // writers have a go.
+        if(RdCount <= 0)
+	  WriteQueue.Post(); // Wake up a waiting writer.
+      }
     }
     AccM.Unlock();
     return true;

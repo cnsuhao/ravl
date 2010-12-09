@@ -84,29 +84,29 @@ int RWLTestBodyC::Start(void) {
   return 0;
 }
 
-static const int TestSize = 8;
+static const int TestSize = 16;
 
 int main() {
   int i;
-  cerr << "Starting RWLock test. \n";
   //AMutexC testMutex(true);
+  for(int j = 0;j < 2;j++) {
+    cerr << "Starting RWLock test. WriterPref:" << j << "\n";
+    Done = new SemaphoreC(0);
+    ARWLock = new RWLockC(j);
+
+     // Boil the RWLock for a bit.
+    for(i = 0;i < TestSize;i++)
+      RWLTestC(10000).Execute();
   
-  Done = new SemaphoreC(0);
-  ARWLock = new RWLockC();
-  
-  // Boil the RWLock for a bit.
-  for(i = 0;i < TestSize;i++)
-    RWLTestC(10000).Execute();
-  
-  for(i = 0;i < TestSize;i++) {
-    Done->Wait();
-    cerr << i << " \n";
+    for(i = 0;i < TestSize;i++) {
+      Done->Wait();
+      cerr << i << " \n";
+    }
+    if(!pass) {
+      std::cerr << "ERROR in test.. \n";
+      exit(1);
+    }
   }
-  
-  if(pass) {
-    cerr << "Test completed ok. \n";
-    exit(0);
-  }
-  cerr << "ERROR in test.. \n";
-  exit(1);
+  std::cout << "Test passed. \n";
+  exit(0);
 }
