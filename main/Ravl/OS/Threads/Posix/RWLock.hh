@@ -51,11 +51,14 @@ namespace RavlN {
 #if RAVL_HAVE_POSIX_THREADS_RWLOCK
   //! userlevel=Normal
   //: Read/Write lock.
+  // A small object.
   
   class RWLockC {
   public:
-    RWLockC();
+    RWLockC(bool preferWriters = false);
     //: Constructor.
+    // If preferWriters is true, the lock will
+    // give writers priority where this feature is supported.
 
     RWLockC(const RWLockC &);
     //: Copy constructor.
@@ -69,39 +72,25 @@ namespace RavlN {
     //: Print an error.
     
   public:
-    bool RdLock(void) { 
-      IntT ret;
-      errno = 0;
-      RavlAssert(isValid);
-      do {
-	if((ret = pthread_rwlock_rdlock(&id)) == 0) {
-          RavlAssert(isValid);
-	  return true;
-        }
-      } while(errno == EINTR || ret == EINTR) ;
-      Error("Failed to get RdLock",ret);
-      return false;
-    }
+
+    bool RdLock(float timeout);
+    //: Aquire a read lock with timeout.
+    // Returns true if lock aquired, false if timeout.
+    // Negative timeout's will cause the wait to last forever
+    
+    bool RdLock(void);
     //: Get a read lock.
     
     bool TryRdLock(void) 
     { return (pthread_rwlock_tryrdlock(&id) == 0); }
     //: Try and get a read lock.
-    
-    bool WrLock(void) { 
-      IntT ret;
-      errno = 0;
-      RavlAssert(isValid);
-      do {
-	if((ret = pthread_rwlock_wrlock(&id)) == 0) {
-          RavlAssert(isValid);
-	  return true;
-        }
-      } while(errno == EINTR || ret == EINTR) ;	
-      RavlAssert(isValid);
-      Error("Failed to get WrLock",ret);
-      return false;
-    }
+
+    bool WrLock(float timeout);
+    //: Aquire a write lock with timeout
+    // Returns true if lock aquired, false if timeout.
+    // Negative timeout's will cause the wait to last forever
+
+    bool WrLock(void);
     //: Get a write lock.
     
     bool TryWrLock(void) {
@@ -122,10 +111,15 @@ namespace RavlN {
     }
     //: Unlock read lock.
     
+    bool AreWritersPrefered() const
+    { return m_preferWriter; }
+    //: Test if the lock prefer's writers.
+    
   private:
     
     pthread_rwlock_t id;
     bool isValid; // Flag a valid lock. Used for debugging.
+    bool m_preferWriter; // Do we prefer writers over readers?
   };
 
 #else
@@ -143,26 +137,30 @@ namespace RavlN {
     //: Copy constructor.
     // This just creates another lock.    
     
-    inline bool RdLock(void);  
+    bool RdLock(void);  
     // Get a read lock.
     
-    inline bool TryRdLock(void);  
+    bool TryRdLock(void);  
     // Try and get a read lock.
     
-    inline bool WrLock(void);  
+    bool WrLock(void);  
     // Get a write lock.
     
-    inline bool TryWrLock(void);
+    bool TryWrLock(void);
     // Try and get a write lock.
     
-    inline bool UnlockRd(void);
+    inline bool UnlockRd(void) {
+      return Unlock();
+    }
     // Unlock a read lock.
     
-    inline bool UnlockWr(void);
+    inline bool UnlockWr(void) {
+      return Unlock();
+    }
     // Unlock a write lock.
     
   protected:
-    inline bool Unlock(void);
+    bool Unlock(void);
     // Unlock.
     
     void Error(const char *msg, int ret );
@@ -176,104 +174,7 @@ namespace RavlN {
     SemaphoreC WriteQueue; // Writers queue.
     SemaphoreC ReadQueue;  // Readers queue.  
   };
-
-  ///////////////////////
-  // Constructor.
   
-  
-  inline 
-  bool RWLockC::RdLock()  {
-    AccM.Lock();
-    while(WrWait > 0 || RdCount < 0) {
-      RdWait++; // Should only go aroung this loop once !
-      AccM.Unlock();
-      ReadQueue.Wait();
-      AccM.Lock();
-      RdWait--;
-    }
-    RavlAssert(RdCount >= 0);
-    RdCount++;
-    AccM.Unlock();
-    return true;
-  }
-
-  inline 
-  bool RWLockC::TryRdLock()  { 
-    AccM.Lock();
-    if(WrWait > 0 || RdCount < 0) {
-      AccM.Unlock();
-      return false;
-    }
-    RdCount++;
-    AccM.Unlock();
-    return true;
-  }
-
-  inline 
-  bool RWLockC::WrLock(void)  { 
-    AccM.Lock();
-    while(RdCount != 0) {
-      WrWait++; // Should only go through here once !
-      AccM.Unlock();
-      WriteQueue.Wait();
-      AccM.Lock();
-      WrWait--;
-    }
-    RdCount = -1; // Flag write lock.
-    AccM.Unlock();
-    return true;
-  }
-
-  inline 
-  bool RWLockC::TryWrLock(void)  { 
-    AccM.Lock();
-    if(RdCount > 0) {
-      AccM.Unlock();
-      return false; 
-    }
-    RdCount = -1; // Flag write lock.
-    AccM.Unlock();
-    return true;
-  }
-
-  inline 
-  bool RWLockC::Unlock(void)  { 
-    AccM.Lock();
-    if(RdCount < 0) { 
-      // Unlock a write lock.
-      RdCount = 0;
-      if(WrWait > 0)
-	WriteQueue.Post(); // Wake up a waiting writer.
-      else {
-	for(int i = 0;i < RdWait;i++)
-	  ReadQueue.Post(); // Wakeup all waiting readers.
-      }
-      AccM.Unlock();
-      return true;
-    }
-    // Unlock a read lock.
-    RdCount--;  
-    if(WrWait < 1) {
-      for(int i = 0;i < RdWait;i++)
-	ReadQueue.Post(); // Wakeup all waiting readers.
-    } else {
-      if(RdCount <= 0)
-	WriteQueue.Post(); // Wake up a waiting writer.
-    }
-    AccM.Unlock();
-    return true;
-  }
-  
-  inline 
-  bool RWLockC::UnlockRd(void) { 
-    return Unlock(); 
-  }
-
-  inline 
-  bool RWLockC::UnlockWr(void)  { 
-    return Unlock(); 
-  }
-
 #endif
 
   ostream &operator<<(ostream &strm,const RWLockC &vertex);
@@ -381,7 +282,27 @@ namespace RavlN {
       wLocked = true;
     }
     //: relock for write
-    
+
+    bool LockRd(float timeout) {
+      RavlAssertMsg(!(wLocked || rLocked),"RWLockHoldC::LockRd(), ERROR: lock already exists."); // Must be no locks.
+      if(!rwlock.RdLock(timeout))
+        return false;
+      rLocked = true;
+      return true;
+    }
+    //: relock for read
+    // Negative timeout's will cause the wait to last forever
+
+    bool LockWr(float timeout) {
+      RavlAssertMsg(!(wLocked || rLocked),"RWLockHoldC::LockWr(), ERROR: lock already exists."); // Must be no locks.
+      if(!rwlock.WrLock(timeout))
+        return false;
+      wLocked = true;
+      return true;
+    }
+    //: relock for write
+    // Negative timeout's will cause the wait to last forever
+
     bool IsReadLocked() const
     { return rLocked || wLocked; }
     //: Test if safe for reading.
