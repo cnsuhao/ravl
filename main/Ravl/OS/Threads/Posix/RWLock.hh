@@ -130,7 +130,7 @@ namespace RavlN {
   
   class RWLockC {
   public:
-    RWLockC();
+    RWLockC(bool preferWriters = false);
     // Constructor.
 
     RWLockC(const RWLockC &);
@@ -139,26 +139,36 @@ namespace RavlN {
     
     bool RdLock(void);  
     // Get a read lock.
-    
+
+    bool RdLock(float timeout);
+    // Get a read lock.
+
     bool TryRdLock(void);  
     // Try and get a read lock.
     
     bool WrLock(void);  
     // Get a write lock.
+
+    bool WrLock(float timeout);
+    //: Aquire a write lock with timeout
+    // Returns true if lock aquired, false if timeout.
+    // Negative timeout's will cause the wait to last forever
     
     bool TryWrLock(void);
     // Try and get a write lock.
     
-    inline bool UnlockRd(void) {
-      return Unlock();
-    }
+    inline bool UnlockRd(void) 
+    { return Unlock(); }
     // Unlock a read lock.
     
-    inline bool UnlockWr(void) {
-      return Unlock();
-    }
+    inline bool UnlockWr(void) 
+    { return Unlock(); }
     // Unlock a write lock.
-    
+
+    bool AreWritersPrefered() const
+    { return m_preferWriter; }
+    //: Test if the lock prefer's writers.
+
   protected:
     bool Unlock(void);
     // Unlock.
@@ -172,7 +182,8 @@ namespace RavlN {
     int WrWait;  // Count of writers waiting.
     int RdWait;  // Count of readers waiting.
     SemaphoreC WriteQueue; // Writers queue.
-    SemaphoreC ReadQueue;  // Readers queue.  
+    SemaphoreC ReadQueue;  // Readers queue.
+    bool m_preferWriter; // Do we prefer writers over readers?
   };
   
 #endif

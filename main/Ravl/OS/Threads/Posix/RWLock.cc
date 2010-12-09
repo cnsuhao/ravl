@@ -12,6 +12,8 @@
 #include "Ravl/Threads/Thread.hh"
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/OS/Date.hh"
+
 #if defined(VISUAL_CPP)
 #include <time.h>
 #else
@@ -19,6 +21,7 @@
 #endif
 
 #define NANOSEC 1000000000
+
 
 namespace RavlN
 {
@@ -206,24 +209,26 @@ namespace RavlN
 
 #else
   
-  RWLockC::RWLockC() 
+  RWLockC::RWLockC(bool preferWriters)
     : AccM(), 
       RdCount(0), 
       WrWait(0), 
       RdWait(0), 
       WriteQueue(0),
-      ReadQueue(0) 
+      ReadQueue(0),
+      m_preferWriter(preferWriters)
   {} 
   
-  RWLockC::RWLockC(const RWLockC &) 
+  RWLockC::RWLockC(const RWLockC &other)
     : AccM(), 
       RdCount(0), 
       WrWait(0), 
       RdWait(0), 
       WriteQueue(0),
-      ReadQueue(0) 
+      ReadQueue(0),
+      m_preferWriter(other.m_preferWriter)
   {} 
-
+  
   bool RWLockC::RdLock()
   {
     AccM.Lock();
@@ -240,6 +245,34 @@ namespace RavlN
     return true;
   }
 
+  // Get a read lock.
+
+  bool RWLockC::RdLock(float timeout) {
+    DateC timeOutAt = DateC::NowUTC();
+    timeOutAt += timeout;
+    AccM.Lock();
+    while(WrWait > 0 || RdCount < 0) {
+      RdWait++; // Should only go aroung this loop once !
+      AccM.Unlock();
+      float timeToWait = (DateC::NowUTC() - timeOutAt).Double();
+      if(timeToWait < 0)
+        timeToWait = 0;
+      if(!ReadQueue.Wait(timeToWait)) {
+        AccM.Lock();
+        RdWait--;
+        AccM.Unlock();
+        return false;
+      }
+      AccM.Lock();
+      RdWait--;
+    }
+    RavlAssert(RdCount >= 0);
+    RdCount++;
+    AccM.Unlock();
+    return true;
+  }
+
+
   bool RWLockC::WrLock(void)
   {
     AccM.Lock();
@@ -254,6 +287,36 @@ namespace RavlN
     AccM.Unlock();
     return true;
   }
+
+  //: Aquire a write lock with timeout
+  // Returns true if lock aquired, false if timeout.
+  // Negative timeout's will cause the wait to last forever
+
+  bool RWLockC::WrLock(float timeout)
+  {
+    DateC timeOutAt = DateC::NowUTC();
+    timeOutAt += timeout;
+    AccM.Lock();
+    while((RdWait > 0 && !m_preferWriter) || RdCount != 0) {
+      WrWait++; // Should only go through here once !
+      AccM.Unlock();
+      float timeToWait = (DateC::NowUTC() - timeOutAt).Double();
+      if(timeToWait < 0)
+        timeToWait = 0;
+      if(!WriteQueue.Wait(timeToWait)) {
+        AccM.Lock();
+        WrWait--;
+        AccM.Unlock();
+        return false;
+      }
+      AccM.Lock();
+      WrWait--;
+    }
+    RdCount = -1; // Flag write lock.
+    AccM.Unlock();
+    return true;
+  }
+
 
   bool RWLockC::Unlock(void)
   {
