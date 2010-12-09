@@ -23,8 +23,10 @@ namespace RavlN
 {
   //! userlevel=Normal
   //: Broadcast Event.
-  
+  // This class enables a thread to sleep until signalled from another thread. 
+
   class ThreadEventC {
+
   public:
     ThreadEventC()
       : occurred(false),
@@ -68,7 +70,7 @@ namespace RavlN
       } 
       cond.Unlock();
     }
-    //: Wait indefinitely for an event.
+    //: Wait indefinitely for an event to be posted.
     
     bool WaitForFree();
     //: Wait for lock to be free of all waiters.

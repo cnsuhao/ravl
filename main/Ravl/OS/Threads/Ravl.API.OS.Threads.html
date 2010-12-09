@@ -67,11 +67,15 @@
       <li>If a write lock is requested, no new read locks will be granted, but the write lock will not be granted until all of the outstanding read locks have completed.</li>
     </ul>
 
+    <h2>Hints</h2>
+
+    <ul>MutexC, ConditionalMutexC and RWLockC are <i>small</i> objects: if they are passed as arguments or return values, they <i><b>must</b></i> be passed by reference, to avoid copying.</ul>
+
     <hr>
     <address><a href="mailto:w.christmas@ee.surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Nov 21 15:50:48 GMT 2003 -->
 <!-- hhmts start -->
-Last modified: Wed Dec  8 14:46:42 GMT 2010
+Last modified: Thu Dec  9 18:14:05 GMT 2010
 <!-- hhmts end -->
   </body>
 </html>

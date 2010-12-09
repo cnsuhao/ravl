@@ -50,6 +50,8 @@ namespace RavlN
   // into a single object.  See man pages on e.g. pthread_cond_init for
   // a full description.  See also SemaphoreC for an example of its
   // use.</p>
+  //
+  // <p>Note: if this class is used only for its ability to wake up other sleeping threads, <a href="RavlN.ThreadEventC.html">ThreadEventC</a> may be a better choice.</p>
   
   class ConditionalMutexC 
     : public MutexC 
