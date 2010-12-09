@@ -140,7 +140,7 @@ namespace RavlN
         return true;
       }
     } while(errno == EINTR || ret == EINTR);
-    Error("Failed to get RdLock", ret);
+    RavlAssert(isValid);
     return false;
   }
 
