@@ -56,9 +56,9 @@ namespace RavlN
   
   //: Constructor.
   
-  RWLockC::RWLockC(bool preferWriter)
+  RWLockC::RWLockC(RWLockKindT kind)
     : isValid(false),
-      m_preferWriter(preferWriter)
+      m_preferWriter(kind == RWLOCK_PREFER_WRITERS)
   {
     int ret;
 #ifdef PTHREAD_RWLOCK_WRITER_NONRECURSIVE_INITIALIZER_NP
@@ -209,14 +209,14 @@ namespace RavlN
 
 #else
   
-  RWLockC::RWLockC(bool preferWriters)
+  RWLockC::RWLockC(RWLockKindT kind)
     : AccM(), 
       RdCount(0), 
       WrWait(0), 
       RdWait(0), 
       WriteQueue(0),
       ReadQueue(0),
-      m_preferWriter(preferWriters)
+      m_preferWriter(kind == RWLOCK_PREFER_WRITERS)
   {} 
   
   RWLockC::RWLockC(const RWLockC &other)

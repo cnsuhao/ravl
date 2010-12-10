@@ -39,6 +39,10 @@
 #include "Ravl/Assert.hh"
 
 namespace RavlN {
+
+  enum RWLockKindT { RWLOCK_PREFER_READERS,
+                     RWLOCK_PREFER_WRITERS };
+  //: Lock type.
   
   enum RWLockModeT { RWLOCK_READONLY, 
 		     RWLOCK_WRITE,
@@ -55,7 +59,7 @@ namespace RavlN {
   
   class RWLockC {
   public:
-    RWLockC(bool preferWriters = false);
+    RWLockC(RWLockKindT kind = RWLOCK_PREFER_READERS);
     //: Constructor.
     // If preferWriters is true, the lock will
     // give writers priority where this feature is supported.
@@ -130,7 +134,7 @@ namespace RavlN {
   
   class RWLockC {
   public:
-    RWLockC(bool preferWriters = false);
+    RWLockC(RWLockKindT kind = RWLOCK_PREFER_READERS);
     // Constructor.
 
     RWLockC(const RWLockC &);
