@@ -92,7 +92,7 @@ int main() {
   for(int j = 0;j < 2;j++) {
     cerr << "Starting RWLock test. WriterPref:" << j << "\n";
     Done = new SemaphoreC(0);
-    ARWLock = new RWLockC(j);
+    ARWLock = new RWLockC(j == 0 ? RavlN::RWLOCK_PREFER_READERS : RavlN::RWLOCK_PREFER_WRITERS);
 
      // Boil the RWLock for a bit.
     for(i = 0;i < TestSize;i++)
