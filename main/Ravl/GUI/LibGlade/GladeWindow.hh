@@ -70,6 +70,7 @@ namespace RavlGUIN {
     
     PixbufC m_icon;
     bool m_interceptDeleteEvent;
+    StringC m_theTitle;
   };
   
   //! userlevel=Normal

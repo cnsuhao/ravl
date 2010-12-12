@@ -98,6 +98,7 @@ namespace RavlGUIN {
   {
     if (widget != NULL)
       gtk_window_set_title(GTK_WINDOW(widget), title.chars());
+    m_theTitle = title;
     return true;
   }
   
@@ -125,6 +126,8 @@ namespace RavlGUIN {
       return false;
     if(m_icon.IsValid())
       gtk_window_set_icon(GTK_WINDOW(widget), m_icon.Pixbuf());
+    if(!m_theTitle.IsEmpty())
+      gtk_window_set_title(GTK_WINDOW(widget), m_theTitle.chars());
     if(m_interceptDeleteEvent)
       InterceptDeleteEvent();
     return true;
