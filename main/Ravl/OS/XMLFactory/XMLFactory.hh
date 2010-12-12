@@ -17,6 +17,7 @@
 #include "Ravl/RCAbstract.hh"
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/RWLock.hh"
+#include "Ravl/Threads/Mutex.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/RCWrap.hh"
 
@@ -45,26 +46,30 @@ namespace RavlN {
   {
   public:
     XMLFactoryNodeC()
-      : m_xmlNode(true),
+      : m_createLock(true), // Create a recursive lock.
+        m_xmlNode(true),
         m_createComponentCalled(false)
     {}
     //: Default constructor.
 
     explicit XMLFactoryNodeC(const XMLTreeC &xmlNode)
-      : m_xmlNode(xmlNode),
+      : m_createLock(true), // Create a recursive lock.
+        m_xmlNode(xmlNode),
         m_createComponentCalled(false)
     {}
     //: Constructor.
 
     XMLFactoryNodeC(const XMLTreeC &xmlNode,const XMLFactoryNodeC &parent)
-      : m_xmlNode(xmlNode),
+      : m_createLock(true), // Create a recursive lock.
+        m_xmlNode(xmlNode),
         m_createComponentCalled(false),
         m_parent(&parent)
     {}
     //: Constructor.
 
     XMLFactoryNodeC(const XMLTreeC &xmlNode,const XMLFactoryNodeC &parent,const RCWrapAbstractC &component)
-      : m_xmlNode(xmlNode),
+      : m_createLock(true), // Create a recursive lock.
+        m_xmlNode(xmlNode),
         m_component(component),
         m_createComponentCalled(false),
         m_parent(&parent)
@@ -180,6 +185,7 @@ namespace RavlN {
     //: Called when owner handles drop to zero.
 
     RWLockC m_access;
+    MutexC m_createLock;
     XMLTreeC m_xmlNode;
     RCWrapAbstractC m_component;
     bool m_createComponentCalled;

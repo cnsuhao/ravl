@@ -138,13 +138,20 @@ namespace RavlN {
   //! Create component in node.
   
   bool XMLFactoryNodeC::CreateComponent(XMLFactoryC &factory) {
-    if(m_createComponentCalled) {
-      SysLog(SYSLOG_ERR,"XMLFactory detected a recursive create loop in %s ",Path().chars());
-      return false;
+    // Only one thread can create a node at a time. The lock
+    // is recursive so we should still catch recursive create loops nicely.
+    RavlN::MutexLockC lock(m_createLock);
+    bool ret = true;
+    if(!m_component.IsValid()) {
+      if(m_createComponentCalled) {
+        SysLog(SYSLOG_ERR,"XMLFactory detected a recursive create loop in %s ",Path().chars());
+        RavlAssertMsg(0,"Recursive create loop found. ");
+        return false;
+      }
+      m_createComponentCalled = true;
+      ret = factory.CreateComponentInternal(*this,m_component);
+      m_createComponentCalled = false;
     }
-    m_createComponentCalled = true;
-    bool ret = factory.CreateComponentInternal(*this,m_component);
-    m_createComponentCalled = false;
     return ret;
   }
   
@@ -563,8 +570,9 @@ namespace RavlN {
         
         // Create the component here in the tree.
         childNode = new XMLFactoryNodeC(*it,*preLoadNode);
-        if(!CreateComponentInternal(*childNode,childNode->m_component)) 
+        if(!childNode->CreateComponent(*this)) {
           continue; // We  create the node, the reason should have already been reported.
+        }
         
         // Is this component intended for elsewhere in the tree ?
         StringC componentName = it->AttributeString("component","");
