@@ -62,7 +62,7 @@ namespace RavlN {
     {}
     //: Construct empty timecode
 
-    static TimeCodeC MaxTimeCode(RealT FrameRate = 25.0)
+    static TimeCodeC Max(RealT FrameRate = 25.0)
     { return TimeCodeC(RavlConstN::maxInt, FrameRate); }
     //: Return max possible timecode
 
