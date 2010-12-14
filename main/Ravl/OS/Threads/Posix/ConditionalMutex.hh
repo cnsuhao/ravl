@@ -51,7 +51,7 @@ namespace RavlN
   // a full description.  See also SemaphoreC for an example of its
   // use.</p>
   //
-  // <p>Note: if this class is used only for its ability to wake up other sleeping threads, <a href="RavlN.ThreadEventC.html">ThreadEventC</a> may be a better choice.</p>
+  // <p>In this class, Wait() will only wake up once after each Broadcast(), which is why it does not need resetting after a Broadcast() (in contrast to <a href="RavlN.ThreadEventC.html">ThreadEventC</a>).  If this "edge-triggered" behaviour is not what is wanted, or if this class is used only for its ability to wake up other sleeping threads, <a href="RavlN.ThreadEventC.html">ThreadEventC</a> may be a better choice.</p>
   
   class ConditionalMutexC 
     : public MutexC 
