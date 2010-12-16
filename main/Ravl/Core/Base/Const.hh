@@ -34,12 +34,18 @@ namespace RavlN {
     {}
     //: Default constructor.
     // sets the object to constant.
-    
+
+    ConstBodyC(const ConstBodyC &other)
+      : isConst(false)
+    {}
+    //: Copy constructor.
+    // makes a non-const copy.
+
     bool IsConst() const
     { return isConst; }
     //: Return const state.
     
-    void MakeConst()
+    void MakeConst() const
     { isConst = true; }
     //: Make object constant.
     
@@ -52,7 +58,7 @@ namespace RavlN {
     //: Assert that an object must not be const.
     
   protected:
-    bool isConst;
+    mutable bool isConst;
   };
 
 }
