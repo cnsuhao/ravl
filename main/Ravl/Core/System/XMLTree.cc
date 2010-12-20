@@ -296,13 +296,14 @@ namespace RavlN {
   //: Give list of nodes matching the given path.
   
   bool XMLTreeBodyC::FollowPath(const DListC<StringC> &path,DListC<XMLTreeC> &nodes) {
-    HSetC<XMLTreeC> current;
-    HSetC<XMLTreeC> newNodes;
+    DListC<XMLTreeC> current;
+    DListC<XMLTreeC> newNodes;
     newNodes += XMLTreeC(*this);
     
     for(DLIterC<StringC> sit(path);sit;sit++) {
       current = newNodes;
-      newNodes = HSetC<XMLTreeC>();
+      newNodes = DListC<XMLTreeC>();
+      HSetC<XMLTreeC> done;
       
       int axisAt = sit->index("::");
       StringC axis = "child";
@@ -317,19 +318,22 @@ namespace RavlN {
       if(axis == "child") {
 	if(spec == "*") {
 	  // Just include all children.
-	  for(HSetIterC<XMLTreeC> cit(current);cit;cit++) {
+	  for(DLIterC<XMLTreeC> cit(current);cit;cit++) {
 	    for(DLIterC<XMLTreeC> it(cit->Children());it;it++) {
-	      newNodes += *it;
+              if(done.Insert(*it))
+                newNodes += *it;
 	    }
 	  }
 	  continue;
 	}
 	
 	// Include children with matching names.
-	for(HSetIterC<XMLTreeC> cit(current);cit;cit++) {
+	for(DLIterC<XMLTreeC> cit(current);cit;cit++) {
 	  for(DLIterC<XMLTreeC> it(cit->Children());it;it++) {
-	    if(it->Name() == spec)
-	      newNodes += *it;
+	    if(it->Name() == spec) {
+              if(done.Insert(*it))
+                newNodes += *it;
+            }
 	  }
 	}
 	continue;
@@ -340,8 +344,7 @@ namespace RavlN {
       return false;
     }
     
-    for(HSetIterC<XMLTreeC> cit(newNodes);cit;cit++)
-      nodes.InsLast(*cit);
+    nodes =  newNodes;
     return true;
   }
   
