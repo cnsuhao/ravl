@@ -58,6 +58,17 @@ namespace RavlN
   //: Get ID for this thread.
   // OBSOLETE, use CurrentThreadID().
 
+  enum ThreadSchedulingPolicyT {
+    ThreadSchedulingPolicy_OTHER,
+    ThreadSchedulingPolicy_BATCH,
+    ThreadSchedulingPolicy_IDLE,
+    ThreadSchedulingPolicy_FIFO,
+    ThreadSchedulingPolicy_RR
+  };
+
+  bool SetCurrentSchedulingPolicy(ThreadSchedulingPolicyT policy,UIntT priority);
+  //: Set current threads shedulign policy and priority
+
   bool SetCurrentThreadPriority(UIntT priority);
   //: Set the priority of the process
   // THREAD SAFE.

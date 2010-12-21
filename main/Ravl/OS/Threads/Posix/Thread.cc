@@ -80,7 +80,47 @@ namespace RavlN {
     return (UInt64T) GetCurrentThread();
 #endif
   }
+
+
+  //: Set current threads shedulign policy and priority
   
+  bool SetCurrentSchedulingPolicy(ThreadSchedulingPolicyT newPolicy,UIntT priority) {
+#if RAVL_HAVE_POSIX_THREADS
+    pthread_t threadID = pthread_self();
+    int policy;
+    struct sched_param sparam;
+    pthread_getschedparam(threadID,&policy,&sparam);
+    sparam.sched_priority = priority;
+
+    switch(newPolicy)
+    {
+
+      case ThreadSchedulingPolicy_BATCH:
+#ifdef SCHED_BATCH
+        policy = SCHED_BATCH; break;
+#else
+        policy = SCHED_OTHER; break;
+#endif
+      case ThreadSchedulingPolicy_IDLE:
+#ifdef SCHED_IDLE
+        policy = SCHED_IDLE; break;
+#else
+        policy = SCHED_OTHER; break;
+#endif
+      case ThreadSchedulingPolicy_OTHER: policy = SCHED_OTHER; break;
+      case ThreadSchedulingPolicy_FIFO: policy = SCHED_FIFO; break;
+      case ThreadSchedulingPolicy_RR: policy = SCHED_RR; break;
+    }
+
+    if(pthread_setschedparam(threadID,policy,&sparam) == 0)
+      return true; 
+    cerr << "SetCurrentThreadPriority(). Error:" << errno << "\n";
+    return false;
+#else
+    return false;
+#endif
+  }
+
 
 
   // Set the priority of the process
