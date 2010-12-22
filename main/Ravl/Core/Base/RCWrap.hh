@@ -62,6 +62,14 @@ namespace RavlN {
     virtual bool Save(BinOStreamC &strm) const;
     //: Save to binary stream.
 
+    virtual void *DataVoidPtr()
+    { return 0; }
+    //: Access void pointer to data member.
+
+    virtual const void *DataVoidPtr() const
+    { return 0; }
+    //: Access void pointer to data member.
+
 #if RAVL_HAVE_RTTI
     virtual const type_info &DataType() const;
     //: Get type of wrapped object.
@@ -111,6 +119,14 @@ namespace RavlN {
     { return Body().DataType(); }
     //: Get type of wrapped object.
 #endif
+    void *DataVoidPtr()
+    { return Body().DataVoidPtr(); }
+    //: Access void pointer to data member.
+
+    const void *DataVoidPtr() const
+    { return Body().DataVoidPtr(); }
+    //: Access void pointer to data member.
+
   };
 
   //! userlevel=Develop
@@ -196,6 +212,14 @@ namespace RavlN {
     const DataT &Data() const
     { return data; }
     //: Access data.
+
+    virtual void *DataVoidPtr()
+    { return &data; }
+    //: Access void pointer to data member.
+    
+    virtual const void *DataVoidPtr() const
+    { return &data; }
+    //: Access void pointer to data member.
 
 #if RAVL_HAVE_RTTI
     virtual const type_info &DataType() const
