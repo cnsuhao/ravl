@@ -486,17 +486,9 @@ namespace RavlN {
   //! Read config file.
   
   bool XMLFactoryC::Read(const StringC &configFile,XMLTreeLoadC *loader) {
-    m_masterConfigFilename = configFile;
-    SysLog(SYSLOG_DEBUG,"Loading config '%s' ",configFile.chars());
-    RavlN::XMLIStreamC istrm(m_masterConfigFilename);
-    if(!istrm) {
-      SysLog(SYSLOG_ERR," open config file '%s' ",configFile.chars());
-      m_setupClean = false;
-      return false;
-    }
-    
+    m_masterConfigFilename = configFile;    
     m_configRoot = XMLTreeC(true);
-    if(!m_configRoot.Read(istrm,loader)) {
+    if(!m_configRoot.ReadFile(configFile,loader)) {
       SysLog(SYSLOG_ERR," parse config file. '%s' ",configFile.chars());
       m_setupClean = false;
       return false;
@@ -699,7 +691,7 @@ namespace RavlN {
   //: Note: This is NOT thread safe.
 
   bool XMLFactoryC::RegisterTypeAlias(const char *originalName,const char *newName) {
-    XMLFactoryC::TypeFactoryT factoryFunc;
+    XMLFactoryC::TypeFactoryT factoryFunc = 0;
     if(!Type2Factory().Lookup(originalName,factoryFunc)) {
       SysLog(SYSLOG_ERR,"Can't alias unknown type '%s' ",originalName);
       return false;
