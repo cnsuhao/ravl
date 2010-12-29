@@ -267,6 +267,10 @@ namespace RavlN {
     //: Access body.
     
   public:
+
+    bool ReadFile(const StringC &filename,XMLTreeLoadC *loader = 0)
+    { return Body().ReadFile(filename,loader); }
+    //: Read from a file
     
     bool Read(IStreamC &in,XMLTreeLoadC *loader = 0)
     { return Body().Read(in,loader); }
