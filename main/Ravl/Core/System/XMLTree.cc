@@ -24,32 +24,187 @@
 #endif
 
 namespace RavlN {
-  
+
+  static StringC FilePathComponent(const StringC &filename) {
+    if(filename.IsEmpty())
+      return filename;
+#ifdef VISUAL_CPP
+    // paths can contain / and \ which confuse this routine, so lets sort that out first!
+    StringC str = filename.Copy();
+    str.gsub("/", "\\");
+    str.gsub("\\\\", "\\");
+    return str.before("\\",-1);
+#else
+    return const_cast<StringC &>(filename).before("/",-1);
+#endif
+  }
+
+  //! Create a new node in the tree.
+
+  bool XMLTreeLoadC::NewNode(const StringC &name,
+                        const RCHashC<StringC,StringC> &attr,
+                        bool isPI,
+                        XMLTreeC &node)
+  {
+    node = XMLTreeC(name,attr,isPI);
+    return true;
+  }
+
+
+  //! Open file for reading.
+  bool XMLTreeLoadC::OpenFile(const StringC &theFilename,
+                              const StringC &parentFilename,
+                              IStreamC &newIStream)
+  {
+    if(theFilename.IsEmpty())
+      return false;
+    StringC filename(theFilename);
+
+    // Look in the directory of the current file first, Unless we've been given an absolute path.
+    if(filename.firstchar() == '~') {
+      StringC homeDir(getenv("HOME"));
+      if(!homeDir.IsEmpty()) {
+        StringC newFn = homeDir + filename.after('~');
+        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << homeDir << "'\n");
+        newIStream = IStreamC(newFn);
+        if(newIStream.good())
+          return true;
+      }
+    }
+
+    // Try in the same directory as the parent
+    if(filename.firstchar() != '/') {
+      StringC parentDir = FilePathComponent(parentFilename);
+      if(!parentDir.IsEmpty()) {
+        StringC newFn = parentDir + '/' + filename;
+        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << parentDir << "'\n");
+        newIStream = IStreamC(newFn);
+        if(newIStream.good())
+          return true;
+      }
+
+      // Try from the resource root.
+      
+      StringC resourceDir = ResourceRoot();
+      if(!resourceDir.IsEmpty()) {
+        StringC newFn = resourceDir + '/' + filename;
+        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << resourceDir << "'\n");
+        newIStream = IStreamC(newFn);
+        if(newIStream.good())
+          return true;
+      }
+    }
+
+    // Try opening from the current directory.
+    ONDEBUG(std::cerr << "Trying '" << filename << "'\n");
+    newIStream = IStreamC(filename);
+    
+    return newIStream.good();
+  }
+
+  // --------------------------------------------------------------------
+
+
   static StringC xmlContentKey("?content");
   static StringC xmlContentAttrib(".");
   //: Construct from an XMLStream.
-  
-  XMLTreeBodyC::XMLTreeBodyC(XMLIStreamC &in) 
-    : isPI(false)
+
+  XMLTreeBodyC::XMLTreeBodyC()
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(),
+    isPI(false)
+  { }
+  //: Default constructor.
+
+  XMLTreeBodyC::XMLTreeBodyC(const StringC &nname, const RCHashC<StringC, StringC> &attrs, bool _isPI)
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(attrs),
+    isPI(_isPI),
+    name(nname)
+  { }
+  //: Construct from a name and an attribute table.
+
+  XMLTreeBodyC::XMLTreeBodyC(const StringC &nname)
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(),
+    isPI(false),
+    name(nname)
+  { }
+  //: Construct from a name and an attribute table.
+
+  XMLTreeBodyC::XMLTreeBodyC(BinIStreamC &strm)
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(strm)
+  { strm >> isPI >> name >> children; }
+  //: Binary stream constructor.
+
+  XMLTreeBodyC::XMLTreeBodyC(std::istream &strm)
+  : HashTreeBodyC<StringC, RCHashC<StringC, StringC> >(strm)
+  { strm >> isPI >> name >> children; }
+  //: Text stream constructor.
+
+  bool XMLTreeBodyC::Save(BinOStreamC &strm) const
   {
-    Read(in);
+    if (!HashTreeBodyC<StringC, RCHashC<StringC, StringC> >::Save(strm))
+      return false;
+    strm << isPI << name << children;
+    return true;
+  }
+  //: Save to binary stream.
+
+  bool XMLTreeBodyC::Save(std::ostream &strm) const
+  {
+    if (!HashTreeBodyC<StringC, RCHashC<StringC, StringC> >::Save(strm))
+      return false;
+    strm << ' ' << isPI << ' ' << name << ' ' << children;
+    return true;
+  }
+  //: Save to text stream.
+
+  XMLTreeBodyC::XMLTreeBodyC(XMLIStreamC &in,XMLTreeLoadC *loader)
+  : isPI(false)
+  { Read(in,loader); }
+
+  //: Read from a file
+
+  bool XMLTreeBodyC::ReadFile(const StringC &filename,XMLTreeLoadC *loader)
+  {
+    if(loader == 0) {
+      static XMLTreeLoadC defaultLoader;
+      loader = &defaultLoader;
+    }
+    IStreamC strm;
+    if(!loader->OpenFile(filename,"",strm))
+      return false;
+    return Read(strm);
   }
 
-  
+
+  //: Read from a stream
+
+  bool XMLTreeBodyC::Read(IStreamC &in,XMLTreeLoadC *loader)
+  {
+    XMLIStreamC ins(in);
+    return Read(ins,loader);
+  }
+
   //: Read from an XML stream using this node as the root.
   
-  bool XMLTreeBodyC::Read(XMLIStreamC &in) {
+  bool XMLTreeBodyC::Read(XMLIStreamC &in,XMLTreeLoadC *loader) {
     HSetC<StringC> includedFiles;
     in.SetStrict(true);
     includedFiles += in.Name();
-    return Read(in,includedFiles);
+    return Read(in,includedFiles,loader);
   }
   
   //: Read from an XML stream using this node as the root.
   
-  bool XMLTreeBodyC::Read(XMLIStreamC &in,HSetC<StringC> &includedFiles) {
+  bool XMLTreeBodyC::Read(XMLIStreamC &in,
+                          HSetC<StringC> &includedFiles,
+                          XMLTreeLoadC *loader)
+  {
     if(!in)
       return false;
+    if(loader == 0) {
+      static XMLTreeLoadC defaultLoader;
+      loader = &defaultLoader;
+    }
 #if 0
     XMLTagOpsT thisTag = in.ReadTag(name);
     if(thisTag == XML_PI)
@@ -88,12 +243,12 @@ namespace RavlN {
       XMLTreeC subtree(name,attr,tt == XML_PI);
       if(tt == XMLBeginTag) {
 	ONDEBUG(cerr << "Found begin tag '" << name << "' \n");
-	if(!subtree.Read(in,includedFiles))
+	if(!subtree.Read(in,includedFiles,loader))
 	  return false;
       }
       
       if(name == "xi:include") {
-	if(!ProcessInclude(subtree,includedFiles,in.Name()))
+	if(!ProcessInclude(subtree,includedFiles,in.Name(),loader))
 	  return false;
 	continue;
       }
@@ -104,26 +259,17 @@ namespace RavlN {
     return true;
   }
 
-  static StringC FilePathComponent(const StringC &filename) {
-    if(filename.IsEmpty())
-      return filename;
-#ifdef VISUAL_CPP
-    // paths can contain / and \ which confuse this routine, so lets sort that out first!
-    StringC str = filename.Copy();
-    str.gsub("/", "\\");
-    str.gsub("\\\\", "\\");
-    return str.before("\\",-1);
-#else
-    return const_cast<StringC &>(filename).before("/",-1);
-#endif
-  }
   
   //: Process xi:xinclude directive.
   
   // TODO:
   //  Support xpointer.
   
-  bool XMLTreeBodyC::ProcessInclude(XMLTreeC &subtree,HSetC<StringC> &doneFiles,const StringC &parentFilename) {
+  bool XMLTreeBodyC::ProcessInclude(XMLTreeC &subtree,
+                                    HSetC<StringC> &doneFiles,
+                                    const StringC &parentFilename,
+                                    XMLTreeLoadC *loader)
+  {
     StringC xi_href;
     
     if(!subtree.Data().Lookup("href",xi_href) || xi_href.IsEmpty()) {
@@ -152,23 +298,8 @@ namespace RavlN {
 	// Load file as simple text.
 	StrOStreamC strOut;
 	IStreamC inFile;
-        
-        // Try an include from original directory first.
-        if(xi_href.firstchar() != '/') {
-          StringC parentDir = FilePathComponent(parentFilename);
-          StringC newFn = parentDir + '/' + xi_href;
-          ONDEBUG(std::cerr << "Trying text file '" << newFn << "' from '" << parentDir << "'\n");
-          inFile = IStreamC(newFn);
-        }
-        
-        // Try current directory.
-        if(!inFile.IsOpen()) {
-          ONDEBUG(std::cerr << "Trying text file '" << xi_href << "'\n");
-          inFile = IStreamC(xi_href);
-        }
-        
-	if(!inFile.IsOpen()) {
-	  if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename)) {
+        if(!loader->OpenFile(xi_href,parentFilename,inFile)) {
+	  if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename,loader)) {
 	    RavlIssueWarning(StringC("Failed to open file='" + xi_href +"'"));
 	    return false;
 	  }
@@ -190,54 +321,16 @@ namespace RavlN {
 
     // Look in the directory of the current file first, Unless we've been given an absolute path.
     IStreamC newIStream;
-    if(xi_href.firstchar() == '~') {
-      StringC homeDir(getenv("HOME"));
-      if(!homeDir.IsEmpty()) {
-        StringC newFn = homeDir + xi_href.after('~');
-        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << homeDir << "'\n");
-        newIStream = IStreamC(newFn);
-      }
-    }
-
-    // Try in the same directory as the parent
-    if(!newIStream.good() && xi_href.firstchar() != '/') {
-      StringC parentDir = FilePathComponent(parentFilename);
-      if(!parentDir.IsEmpty()) {
-        StringC newFn = parentDir + '/' + xi_href;
-        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << parentDir << "'\n");
-        newIStream = IStreamC(newFn);
-      }
-    }
-    
-    // Try from the resource root.
-    if(!newIStream.good()) {
-      StringC resourceDir = ResourceRoot();
-      if(!resourceDir.IsEmpty()) {
-        StringC newFn = resourceDir + '/' + xi_href;
-        ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << resourceDir << "'\n");
-        newIStream = IStreamC(newFn);
-      }
-    }
-
-    // Try opening from the current directory.
-    if(!newIStream.good()) {
-      ONDEBUG(std::cerr << "Trying '" << xi_href << "'\n");
-      newIStream = IStreamC(xi_href);
-    }
-
-    ONDEBUG(std::cerr << "Stream state '" << newIStream.good() << " " << newIStream.bad() << " " << newIStream.fail() << "'\n");
-    
-    XMLIStreamC newStream(newIStream);
-    if(!newIStream.good()) {
-      if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename)) {
+    if(!loader->OpenFile(xi_href,parentFilename,newIStream)) {
+      if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename,loader)) {
 	RavlIssueWarning(StringC("Failed to open file='" + xi_href +"' from '" + parentFilename + "' "));
 	return false;
       }
       return true;
     }
-    
+    XMLIStreamC newStream(newIStream);
     XMLTreeC newTree(true);
-    if(!newTree.Read(newStream,doneFiles)) {
+    if(!newTree.Read(newStream,doneFiles,loader)) {
       RavlIssueWarning(StringC("Failed to open file='" + newStream.Name() +"'. "));
       // Assume error has already been reported.
       return false;
@@ -271,7 +364,11 @@ namespace RavlN {
 
   //: Look for fallback
   
-  bool XMLTreeBodyC::ProcessIncludeFallback(XMLTreeC &subtree,HSetC<StringC> &doneFiles,const StringC &parentFilename) {
+  bool XMLTreeBodyC::ProcessIncludeFallback(XMLTreeC &subtree,
+                                            HSetC<StringC> &doneFiles,
+                                            const StringC &parentFilename,
+                                            XMLTreeLoadC *loader)
+  {
     if(subtree.Children().IsEmpty())
       return false;
     XMLTreeC childTree = subtree.Children().First();
@@ -279,7 +376,7 @@ namespace RavlN {
       RavlIssueWarning(StringC("Unexpected xi:include child, '" + childTree.Name() +"'"));
       return false;
     }
-    if(!ProcessInclude(childTree,doneFiles,parentFilename)) {
+    if(!ProcessInclude(childTree,doneFiles,parentFilename,loader)) {
       return false;
     }
     subtree = childTree;
@@ -437,6 +534,112 @@ namespace RavlN {
     }
     return out;
   }
+
+
+  StringC XMLTreeBodyC::AttributeString(const StringC &name,const StringC &defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) return defaultValue;
+    return *value;
+  }
+  //: Access attribute.
+
+  bool XMLTreeBodyC::Attribute(const StringC &name,StringC &data,const StringC &defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) {
+      data = defaultValue;
+      return false;
+    }
+    data = *value;
+    return true;
+  }
+  //: Access string attribute.
+  // Return true if non default value has been specified.
+
+  bool XMLTreeBodyC::Attribute(const StringC &name,std::string &data,const std::string &defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) {
+      data = defaultValue;
+      return false;
+    }
+    data = value->data();
+    return true;
+  }
+  //: Access string attribute.
+  // Return true if non default value has been specified.
+
+
+  UIntT XMLTreeBodyC::AttributeUInt(const StringC &name,UIntT defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) return defaultValue;
+    return value->UIntValue();
+  }
+  //: Access attribute.
+
+  IntT XMLTreeBodyC::AttributeInt(const StringC &name,IntT defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) return defaultValue;
+    return value->IntValue();
+  }
+  //: Access attribute.
+
+  RealT XMLTreeBodyC::AttributeReal(const StringC &name,RealT defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) return defaultValue;
+    return value->RealValue();
+  }
+  //: Access attribute.
+
+  UInt64T XMLTreeBodyC::AttributeUInt64(const StringC &name,UInt64T defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) return defaultValue;
+    return value->UInt64Value();
+  }
+  //: Access attribute.
+
+  Int64T XMLTreeBodyC::AttributeInt64(const StringC &name,Int64T defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) return defaultValue;
+    return value->Int64Value();
+  }
+  //: Access attribute.
+
+  bool XMLTreeBodyC::Attribute(const StringC &name,bool &data,const bool &defaultValue) const
+  {
+    const StringC *value = Data().Lookup(name);
+    if(value == 0) {
+      data = defaultValue;
+      return false;
+    }
+    StringC tmp = RavlN::downcase(*value);
+    if(tmp == "1" || tmp == "t" || tmp == "true" || tmp == "yes") {
+      data = true;
+      return true;
+    }
+    if(tmp == "0" || tmp == "f" || tmp == "false" || tmp == "no") {
+      data = false;
+      return true;
+    }
+    RavlIssueWarning(StringC("Expected boolean value, got '") + tmp + "' for attribute " + name + " in node '" + Name() + "' ");
+    data = defaultValue;
+    return false;
+  }
+
+  bool XMLTreeBodyC::AttributeBool(const StringC &name,bool defaultValue) const
+  {
+    bool ret;
+    Attribute(name,ret,defaultValue);
+    return ret;
+  }
+  //: Access attribute.
+
   
   static TypeNameC type0(typeid(XMLTreeC),"RavlN::XMLTreeC");
   

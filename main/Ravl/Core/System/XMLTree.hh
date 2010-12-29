@@ -24,7 +24,25 @@
 namespace RavlN {
   class XMLTreeC;
   template<typename DataT> class HSetC;
-  
+
+  //! Helper methods for loading an tree.
+  //! Used to change the default behaviour of the Read method.
+
+  class XMLTreeLoadC {
+  public:
+
+    virtual bool NewNode(const StringC &name,
+                         const RCHashC<StringC,StringC> &attr,
+                         bool isPI,
+                         XMLTreeC &node);
+    //! Create a new node in the tree.
+    
+    virtual bool OpenFile(const StringC &name,
+                          const StringC &parentFilename,
+                          IStreamC &strm);
+    //! Open file for reading.
+  };
+
   //! userlevel=Develop
   //: XML parse tree.
   
@@ -32,64 +50,40 @@ namespace RavlN {
     : public HashTreeBodyC<StringC,RCHashC<StringC,StringC> >
   {
   public:
-    XMLTreeBodyC()
-      : HashTreeBodyC<StringC,RCHashC<StringC,StringC> >(),
-	isPI(false)
-    {}
+    XMLTreeBodyC();
     //: Default constructor.
     
-    XMLTreeBodyC(const StringC &nname,RCHashC<StringC,StringC> &attrs,bool _isPI = false) 
-      : HashTreeBodyC<StringC,RCHashC<StringC,StringC> >(attrs),
-	isPI(_isPI),
-	name(nname)
-    {}
+    XMLTreeBodyC(const StringC &nname,const RCHashC<StringC,StringC> &attrs,bool _isPI = false);
     //: Construct from a name and an attribute table.
     
-    XMLTreeBodyC(const StringC &nname) 
-      : HashTreeBodyC<StringC,RCHashC<StringC,StringC> >(),
-	isPI(false),
-	name(nname)
-    {}
+    XMLTreeBodyC(const StringC &nname);
     //: Construct from a name and an attribute table.
     
-    XMLTreeBodyC(BinIStreamC &strm)
-      : HashTreeBodyC<StringC,RCHashC<StringC,StringC> >(strm)
-    { strm >> isPI >> name >> children; }
+    XMLTreeBodyC(BinIStreamC &strm);
     //: Binary stream constructor.
     
-    XMLTreeBodyC(std::istream &strm)
-      : HashTreeBodyC<StringC,RCHashC<StringC,StringC> >(strm)
-    { strm >> isPI >> name >> children;  }
+    XMLTreeBodyC(std::istream &strm);
     //: Text stream constructor.
     
-    virtual bool Save(BinOStreamC &strm) const {
-      if(!HashTreeBodyC<StringC,RCHashC<StringC,StringC> >::Save(strm))
-        return false;
-      strm << isPI << name << children;
-      return true;
-    }
+    virtual bool Save(BinOStreamC &strm) const;
     //: Save to binary stream.
     
-    virtual bool Save(std::ostream &strm) const {
-      if(!HashTreeBodyC<StringC,RCHashC<StringC,StringC> >::Save(strm))
-        return false;
-      strm << ' ' << isPI << ' ' << name << ' ' << children;
-      return true;
-    }
+    virtual bool Save(std::ostream &strm) const;
     //: Save to text stream.
-    
 
-    explicit XMLTreeBodyC(XMLIStreamC &in);
+    explicit XMLTreeBodyC(XMLIStreamC &in,XMLTreeLoadC *loader = 0);
     //: Construct from an XMLStream.
-    
-    bool Read(IStreamC &in) 
-      { XMLIStreamC ins(in); return Read(ins); }
+
+    bool ReadFile(const StringC &filename,XMLTreeLoadC *loader = 0);
+    //: Read from a file
+
+    bool Read(IStreamC &in,XMLTreeLoadC *loader = 0);
     //: Read from a stream
 
-    bool Read(XMLIStreamC &in);
+    bool Read(XMLIStreamC &in,XMLTreeLoadC *loader = 0);
     //: Read from an XML stream using this node as the root.
     
-    bool Read(XMLIStreamC &in,HSetC<StringC> &includedFiles);
+    bool Read(XMLIStreamC &in,HSetC<StringC> &includedFiles,XMLTreeLoadC *loader = 0);
     //: Read from an XML stream using this node as the root.
     
     bool Write(OStreamC &out, int level=0) const;
@@ -129,99 +123,36 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
-    StringC AttributeString(const StringC &name,const StringC &defaultValue = StringC("")) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
-      return *value;
-    }
+    StringC AttributeString(const StringC &name,const StringC &defaultValue = StringC("")) const ;
     //: Access attribute.
 
-    bool Attribute(const StringC &name,StringC &data,const StringC &defaultValue = StringC()) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) {
-        data = defaultValue;
-        return false;
-      }
-      data = *value;
-      return true;
-    }
+    bool Attribute(const StringC &name,StringC &data,const StringC &defaultValue = StringC()) const;
     //: Access string attribute.
     // Return true if non default value has been specified.
     
-    bool Attribute(const StringC &name,std::string &data,const std::string &defaultValue = std::string()) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) {
-        data = defaultValue;
-        return false;
-      }
-      data = value->data();
-      return true;
-    }
+    bool Attribute(const StringC &name,std::string &data,const std::string &defaultValue = std::string()) const;
     //: Access string attribute.
     // Return true if non default value has been specified.
 
-
-    UIntT AttributeUInt(const StringC &name,UIntT defaultValue = 0) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
-      return value->UIntValue();
-    }
+    UIntT AttributeUInt(const StringC &name,UIntT defaultValue = 0) const;
     //: Access attribute.
     
-    IntT AttributeInt(const StringC &name,IntT defaultValue = 0) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
-      return value->IntValue();
-    }
+    IntT AttributeInt(const StringC &name,IntT defaultValue = 0) const ;
     //: Access attribute.
     
-    RealT AttributeReal(const StringC &name,RealT defaultValue = 0) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
-      return value->RealValue();
-    }
+    RealT AttributeReal(const StringC &name,RealT defaultValue = 0) const;
     //: Access attribute.
 
-    UInt64T AttributeUInt64(const StringC &name,UInt64T defaultValue = 0) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
-      return value->UInt64Value();
-    }
+    UInt64T AttributeUInt64(const StringC &name,UInt64T defaultValue = 0) const;
     //: Access attribute.
 
-    Int64T AttributeInt64(const StringC &name,Int64T defaultValue = 0) const {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) return defaultValue;
-      return value->Int64Value();
-    }
+    Int64T AttributeInt64(const StringC &name,Int64T defaultValue = 0) const ;
     //: Access attribute.
     
-    bool Attribute(const StringC &name,bool &data,const bool &defaultValue = false) const
-    {
-      const StringC *value = Data().Lookup(name);
-      if(value == 0) {
-        data = defaultValue;
-        return false;
-      }
-      StringC tmp = RavlN::downcase(*value);
-      if(tmp == "1" || tmp == "t" || tmp == "true" || tmp == "yes") {
-        data = true;
-	return true;
-      }
-      if(tmp == "0" || tmp == "f" || tmp == "false" || tmp == "no") {
-        data = false;
-	return true;
-      }
-      RavlIssueWarning(StringC("Expected boolean value, got '") + tmp + "' for attribute " + name + " in node '" + Name() + "' ");
-      data = defaultValue;
-      return false;
-    }
+    bool Attribute(const StringC &name,bool &data,const bool &defaultValue = false) const;
+    //: Access boolean attribute.
 
-    bool AttributeBool(const StringC &name,bool defaultValue = false) const {
-      bool ret;
-      Attribute(name,ret,defaultValue);
-      return ret;
-    }
+    bool AttributeBool(const StringC &name,bool defaultValue = false) const ;
     //: Access attribute.
     
     template<typename DataT>
@@ -249,10 +180,16 @@ namespace RavlN {
     //: Give list of nodes matching the given path.
 
   protected:
-    bool ProcessInclude(XMLTreeC &subtree,HSetC<StringC> &doneFiles,const StringC &parentFilename);
+    bool ProcessInclude(XMLTreeC &subtree,
+                        HSetC<StringC> &doneFiles,
+                        const StringC &parentFilename,
+                        XMLTreeLoadC *loader);
     //: Process xi:include directive
     
-    bool ProcessIncludeFallback(XMLTreeC &subtree,HSetC<StringC> &doneFiles,const StringC &parentFilename);
+    bool ProcessIncludeFallback(XMLTreeC &subtree,
+                                HSetC<StringC> &doneFiles,
+                                const StringC &parentFilename,
+                                XMLTreeLoadC *loader);
     //: Look for fallback
     
     static ostream &Indent(ostream &out,int level);
@@ -294,7 +231,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    XMLTreeC(const StringC &name,RCHashC<StringC,StringC> &attrs,bool _isPI = false)
+    XMLTreeC(const StringC &name,const RCHashC<StringC,StringC> &attrs,bool _isPI = false)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(name,attrs,_isPI))
     {}
     //: Constructor.
@@ -304,8 +241,8 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    explicit XMLTreeC(XMLIStreamC &in)
-      : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(in))
+    explicit XMLTreeC(XMLIStreamC &in,XMLTreeLoadC *loader = 0)
+      : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(in,loader))
     {}
     //: Constructor.
 
@@ -331,16 +268,16 @@ namespace RavlN {
     
   public:
     
-    bool Read(IStreamC &in)
-    { return Body().Read(in); }
+    bool Read(IStreamC &in,XMLTreeLoadC *loader = 0)
+    { return Body().Read(in,loader); }
     //: Read from a stream using this node as the root.
 
-    bool Read(XMLIStreamC &in)
-    { return Body().Read(in); }
+    bool Read(XMLIStreamC &in,XMLTreeLoadC *loader = 0)
+    { return Body().Read(in,loader); }
     //: Read from an XML stream using this node as the root.
     
-    bool Read(XMLIStreamC &in,HSetC<StringC> &includedFiles)
-    { return Body().Read(in,includedFiles); }
+    bool Read(XMLIStreamC &in,HSetC<StringC> &includedFiles,XMLTreeLoadC *loader = 0)
+    { return Body().Read(in,includedFiles,loader); }
     //: Read from an XML stream using this node as the root.
     
     bool Write(OStreamC &out, int level=0) const
