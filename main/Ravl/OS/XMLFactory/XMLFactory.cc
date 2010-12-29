@@ -429,14 +429,16 @@ namespace RavlN {
   
   //! Open a config file.
   
-  XMLFactoryC::XMLFactoryC(const StringC &configFile)
+  XMLFactoryC::XMLFactoryC(const StringC &configFile,XMLTreeLoadC *loader)
     : m_configRoot(true),
       m_setupClean(true),
       m_donePostSetup(false),
       m_verbose(false)
   {
     SysLog(SYSLOG_DEBUG,"XMLFactoryC, Config file '%s' ",configFile.chars());
-    Read(configFile);
+    if(!Read(configFile,loader)) {
+      throw RavlN::ExceptionBadConfigC("Can't open config file. ");
+    }
   }
 
   //! Recursive constructor.
@@ -483,7 +485,7 @@ namespace RavlN {
   
   //! Read config file.
   
-  bool XMLFactoryC::Read(const StringC &configFile) {
+  bool XMLFactoryC::Read(const StringC &configFile,XMLTreeLoadC *loader) {
     m_masterConfigFilename = configFile;
     SysLog(SYSLOG_DEBUG,"Loading config '%s' ",configFile.chars());
     RavlN::XMLIStreamC istrm(m_masterConfigFilename);
@@ -494,7 +496,7 @@ namespace RavlN {
     }
     
     m_configRoot = XMLTreeC(true);
-    if(!m_configRoot.Read(istrm)) {
+    if(!m_configRoot.Read(istrm,loader)) {
       SysLog(SYSLOG_ERR," parse config file. '%s' ",configFile.chars());
       m_setupClean = false;
       return false;

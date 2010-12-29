@@ -358,11 +358,14 @@ namespace RavlN {
     explicit XMLFactoryC(const XMLFactoryContextC &context);
     //: Recursive constructor.
 
-    explicit XMLFactoryC(const StringC &configFile);
+    explicit XMLFactoryC(const StringC &configFile,XMLTreeLoadC *loader = 0);
     //: Open a config file.
 
     XMLFactoryC(const StringC &configFileName,const XMLTreeC &configTree);
     //: Use an existing tree.
+
+    bool Read(const StringC &filename,XMLTreeLoadC *loader = 0);
+    //: Read config file.
 
     typedef RCWrapAbstractC (*TypeFactoryT)(const XMLFactoryContextC &node);
     //: Factory function type
@@ -510,9 +513,6 @@ namespace RavlN {
     }
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
-
-    bool Read(const StringC &filename);
-    //: Read config file.
 
 
     virtual bool CreateComponentInternal(const XMLFactoryContextC &node,const std::type_info &to,RCWrapAbstractC &handle);
