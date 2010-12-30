@@ -118,17 +118,19 @@ namespace RavlN {
     {}
     //: Copy Constructor.
     
-    virtual ~StreamBaseC()
-    {}
+    virtual ~StreamBaseC();
     //: Ensure correct destructor is used.
     
     inline const StringC &Name() const
     { return name; }
     //: Returns the name of the stream.
-    
-    inline bool IsOpen() const {
-      return !m_openFailed && !bad();
-    }
+
+    void SetName(const StringC &nname)
+    { name = nname; }
+    //: Set the name to be used for the stream
+
+    inline bool IsOpen() const 
+    { return !m_openFailed && !bad(); }
     //: Test if this stream is open.
 
 #if RAVL_DUMP_IOSTATE
@@ -360,6 +362,7 @@ namespace RavlN {
   {
   public:
     IStreamC()
+     : in(0)
     {}
     //:Default constructor.
     

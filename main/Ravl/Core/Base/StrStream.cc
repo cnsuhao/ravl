@@ -121,13 +121,25 @@ namespace RavlN {
   }
   
   ////////////////////////////////////////////////////
+
+#if !RAVL_HAVE_STRINGSTREAM
+  static bool RemoveBuffer(const StringC &buff){
+    return true;
+  }
+#endif
+
+  //: Default constructor
   
+  StrIStreamC::StrIStreamC()
+    : iss(0)
+  {}
+
   //: Default constructor.
   
   StrIStreamC::StrIStreamC(const StringC &dat)
     :
 #if RAVL_HAVE_STRINGSTREAM
-  IStreamC(*(iss = new istringstream(string(dat.chars(),dat.length()),istringstream::binary)),true),
+    IStreamC(*(iss = new istringstream(string(dat.chars(),dat.length()),istringstream::binary)),true),
 #else
 #if RAVL_COMPILER_VISUALCPP
     IStreamC(*(iss = new istrstream(const_cast<char *>(dat.chars()),dat.length())),true),
@@ -136,6 +148,12 @@ namespace RavlN {
 #endif
 #endif
     buff(dat)
-  {}
+  {
+#if !RAVL_HAVE_STRINGSTREAM
+    // This will ensure a handle is held to 'dat' until we're finished with it.
+    // its not completely clear if this is needed, but to be safe.
+    AddDestructionOp(Trigger(&RemoveBuffer,dat));
+#endif
+  }
 }
 

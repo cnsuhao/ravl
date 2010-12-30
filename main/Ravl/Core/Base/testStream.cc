@@ -247,6 +247,27 @@ int StrStreamTest() {
     cerr << "'" << ret << "'\n";
     
   }  
+  {
+    IStreamC strm;
+    {
+      StringC tst("Hello\nThere");
+      StrIStreamC strStream(tst);
+      strm = strStream;
+      // Just to be sure the original stream is gone.
+      strStream = StrIStreamC();
+    }
+    StringC instr;
+    IStreamC strm2 = strm;
+    if(!strm2)
+      return __LINE__;
+    strm >> instr;
+    if(instr != "Hello") return __LINE__;
+    strm >> instr;
+    if(instr != "There") return __LINE__;
+    strm >> instr;
+    if(strm2)
+      return __LINE__;
+  }
   return 0;
 }
 

@@ -115,6 +115,10 @@ namespace RavlN {
     delete os;
     return true;
   }
+
+  //: Ensure correct destructor is used.
+  StreamBaseC::~StreamBaseC()
+  {}
   
   //: Body Constructor.
   StreamBaseC::StreamBaseC(ostream *ns,StringC afilename,bool nDelOnClose) 
@@ -123,8 +127,6 @@ namespace RavlN {
   {
     if(nDelOnClose)
       SetDestructionOp(CallFunc1C<ostream *&,bool>(&NukeOStream,ns));
-    else
-      SetDestructionOp(TriggerC());
   }
   
   //: Body Constructor.
@@ -135,8 +137,6 @@ namespace RavlN {
   {
     if(nDelOnClose)
       SetDestructionOp(CallFunc1C<istream *&,bool>(&NukeIStream,ns));
-    else
-      SetDestructionOp(TriggerC());
   }
   
   //: Setup 
@@ -149,8 +149,6 @@ namespace RavlN {
     s = ns;
     if(nDelOnClose)
       SetDestructionOp(CallFunc1C<istream *&,bool>(&NukeIStream,ns));
-    else
-      SetDestructionOp(TriggerC());
 
     // Store fail status after opening stream, so value can be used when checking IsOpen
     m_openFailed = fail();
@@ -168,8 +166,6 @@ namespace RavlN {
     s = ns;
     if(nDelOnClose)
       SetDestructionOp(CallFunc1C<ostream *&,bool>(&NukeOStream,ns));
-    else
-      SetDestructionOp(TriggerC());
     
     // Store fail status after opening stream, so value can be used when checking IsOpen
     m_openFailed = fail();

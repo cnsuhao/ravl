@@ -91,9 +91,7 @@ namespace RavlN {
     : public IStreamC
   {
   public:
-    StrIStreamC()
-      : iss(0)
-      {}
+    StrIStreamC();
     //: Default constructor
     
     StrIStreamC(const StringC &dat);
