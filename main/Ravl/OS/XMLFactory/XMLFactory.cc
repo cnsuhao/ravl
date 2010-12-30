@@ -489,7 +489,7 @@ namespace RavlN {
     m_masterConfigFilename = configFile;    
     m_configRoot = XMLTreeC(true);
     if(!m_configRoot.ReadFile(configFile,loader)) {
-      SysLog(SYSLOG_ERR," parse config file. '%s' ",configFile.chars());
+      SysLog(SYSLOG_ERR,"Failed to load config file. '%s' ",configFile.chars());
       m_setupClean = false;
       return false;
     }
