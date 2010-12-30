@@ -157,7 +157,7 @@ namespace RavlN {
 #endif
   }
   
-  // Return the name component of a Filename, ie. upto last / 
+  // Return the name component of a Filename, ie. after last /
   
   FilenameC FilenameC::NameComponent() const  {
     if(IsEmpty())
