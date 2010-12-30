@@ -522,10 +522,7 @@ namespace RavlN {
     XMLIStreamC(IStreamC &is);
     //: Construct from an ordinary stream.
     
-    XMLIStreamC(const StringC &fn)
-      : IStreamC(fn),
-        XMLBaseC(true)
-    {}
+    explicit XMLIStreamC(const StringC &fn);
     //: Construct from an ordinary stream.
     
     bool ReadHeader();

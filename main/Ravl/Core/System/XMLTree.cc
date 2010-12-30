@@ -170,9 +170,11 @@ namespace RavlN {
       loader = &defaultLoader;
     }
     IStreamC strm;
-    if(!loader->OpenFile(filename,"",strm))
+    if(!loader->OpenFile(filename,"",strm)) {
+      ONDEBUG(std::cerr << "Failed to open input file " << filename << " \n");
       return false;
-    return Read(strm);
+    }
+    return Read(strm,loader);
   }
 
 
@@ -181,6 +183,8 @@ namespace RavlN {
   bool XMLTreeBodyC::Read(IStreamC &in,XMLTreeLoadC *loader)
   {
     XMLIStreamC ins(in);
+    //ins.is().clear(std::ios_base::badbit);
+    ONDEBUG(std::cerr << "XML Bad:" << (int) (!ins) << "\n");
     return Read(ins,loader);
   }
 
@@ -199,8 +203,10 @@ namespace RavlN {
                           HSetC<StringC> &includedFiles,
                           XMLTreeLoadC *loader)
   {
-    if(!in)
+    if(!in) {
+      ONDEBUG(std::cerr << "Bad input stream. \n");
       return false;
+    }
     if(loader == 0) {
       static XMLTreeLoadC defaultLoader;
       loader = &defaultLoader;
@@ -243,13 +249,17 @@ namespace RavlN {
       XMLTreeC subtree(name,attr,tt == XML_PI);
       if(tt == XMLBeginTag) {
 	ONDEBUG(cerr << "Found begin tag '" << name << "' \n");
-	if(!subtree.Read(in,includedFiles,loader))
+	if(!subtree.Read(in,includedFiles,loader)) {
+          ONDEBUG(std::cerr << "Failed to read sub node. \n");
 	  return false;
+        }
       }
       
       if(name == "xi:include") {
-	if(!ProcessInclude(subtree,includedFiles,in.Name(),loader))
+	if(!ProcessInclude(subtree,includedFiles,in.Name(),loader)) {
+          ONDEBUG(std::cerr << "Failed to process include. \n");
 	  return false;
+        }
 	continue;
       }
       

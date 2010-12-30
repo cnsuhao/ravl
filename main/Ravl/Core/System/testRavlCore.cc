@@ -43,6 +43,8 @@
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/RCWrapIO.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/XMLStream.hh"
+#include "XMLTree.hh"
 
 #include <string.h>
 
@@ -77,6 +79,7 @@ int testObjIO();
 int testVectorIO();
 int testSmartPtr();
 int testStreamParse();
+int testXMLTree();
 
 int testRavlCore(int argc,char **argv) {
   int line = 0;
@@ -149,8 +152,12 @@ int testRavlCore(int argc,char **argv) {
     cerr << "SmartPtr io test failed line :" << line << "\n";
     return 1;
   }
-#endif
   if((line = testStreamParse()) != 0) {
+    cerr << "Stream test failed line :" << line << "\n";
+    return 1;
+  }
+#endif
+  if((line = testXMLTree()) != 0) {
     cerr << "Stream test failed line :" << line << "\n";
     return 1;
   }
@@ -764,6 +771,30 @@ int testStreamParse() {
   }
 
 
+  return 0;
+}
+
+
+void InitStream(IStreamC &istrm) {
+  StringC buff =
+    "<config> \n"
+    " <test1 value=\"Hello\" /> \n"
+    " <test2/> \n"
+    "</config> \n";
+
+  StrIStreamC strIStrm(buff.Copy());
+  istrm = strIStrm;
+}
+
+int testXMLTree() {
+
+  IStreamC strm;
+  InitStream(strm);
+  XMLTreeC theTree(true);
+  if(!theTree.Read(strm)) return __LINE__;
+  //theTree.Dump(std::cout);
+  XMLTreeC childTree;
+  if(!theTree.Child("config",childTree)) return __LINE__;
   return 0;
 }
 

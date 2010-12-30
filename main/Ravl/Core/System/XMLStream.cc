@@ -100,7 +100,12 @@ namespace RavlN {
   }
 
   //// XMLIStreamC //////////////////////////////////////////////////////////
-  
+
+  XMLIStreamC::XMLIStreamC(const StringC &fn)
+   : IStreamC(fn),
+     XMLBaseC(true)
+  {}
+
   //: Construct from an ordinary stream.
   
   XMLIStreamC::XMLIStreamC(IStreamC &is)
