@@ -10,6 +10,7 @@
 //! author="Charles Galambos"
 
 #include "Ravl/SArray1d.hh"
+#include "Ravl/String.hh"
 
 namespace RavlN {
   
@@ -23,7 +24,18 @@ namespace RavlN {
   //!param: buff - Compressed data.
   //!param: data - Uncompressed data.
   //!param: originalSize - must be the original size in bytes of the data or greater.
-  
+
+  bool CompressZLib(const StringC &data,StringC &buff,IntT level = 9);
+  //: zlib wrapper, Compress data into 'buff'
+  //!param: data - Data to be compressed.
+  //!param: buff - Compressed data.
+
+  bool DecompressZLib(const StringC &buff,StringC &data,UIntT originalSize);
+  //: zlib wrapper, Decompress buff into data.
+  //!param: buff - Compressed data.
+  //!param: data - Uncompressed data.
+  //!param: originalSize - must be the original size in bytes of the data or greater.
+
   
 }
 

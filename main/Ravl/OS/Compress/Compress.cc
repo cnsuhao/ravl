@@ -39,13 +39,53 @@ namespace RavlN {
     }
     uLongf len = originalSize;
     data = SArray1dC<char>(len);
-    if(uncompress(reinterpret_cast<Bytef *>(&(data[0])),&len,reinterpret_cast<const Bytef *>(&(buff[0])),buff.Size()) != Z_OK)
+    if(uncompress(reinterpret_cast<Bytef *>(&(data[0])),&len,
+                  reinterpret_cast<const Bytef *>(&(buff[0])),buff.Size()) != Z_OK)
       return false;
     if(len != originalSize) // Need to trim the buffer?
       data = SArray1dC<char>(data,len);
     return true;    
   }
-  
+
+    //: Compress data into 'buff'
+
+  bool CompressZLib(const StringC &data,StringC &buff,IntT level) {
+    if(data.Size() == 0) {
+      buff = StringC();
+      return true;
+    }
+    uLongf len = compressBound(data.Size());
+    buff = StringC(len+2,(char *)0);
+    int ret = 0;
+    if((ret = compress2(reinterpret_cast<Bytef *>(&(buff[0])),&len,
+                        reinterpret_cast<const Bytef *>(&(data[0])),data.Size(),level)) != Z_OK) {
+      //cerr << "Compress failed " << ret << "\n";
+      return false;
+    }
+    buff = buff.at(0,len);
+    return true;
+  }
+
+  //: Decompress buff into data.
+
+  bool DecompressZLib(const StringC &buff,StringC &data,UIntT originalSize) {
+    if(buff.Size() == 0) {
+      data = StringC();
+      return true;
+    }
+    uLongf len = originalSize;
+    data = StringC(len+2,(char *)0);
+    int errorCode;
+    if((errorCode = uncompress(reinterpret_cast<Bytef *>(&(data[0])),&len,
+                               reinterpret_cast<const Bytef *>(&(buff[0])),buff.Size())) != Z_OK)
+    {
+      std::cerr << "uncompress failed " << errorCode << "\n";
+      return false;
+    }
+    data = data.at(0,len);
+    return true;
+  }
+
   
 }
 
