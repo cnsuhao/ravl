@@ -18,9 +18,7 @@
 #endif
 
 // The following is a fix for windows.
-#ifdef DrawText
-#undef DrawText
-#endif
+#define NODRAWTEXT
 %}
 
 namespace RavlImageN {
@@ -46,8 +44,15 @@ namespace RavlImageN {
   FontC DefaultFont();
   //: Access default font.
 
-  void DrawText(const FontC &font,const ByteRGBValueC &value,const Index2dC &offset,const StringC &text,ImageC<ByteRGBValueC> &image);
-  void DrawText(const FontC &font,const ByteT &value,const Index2dC &offset,const StringC &text,ImageC<ByteT> &image);
-  void DrawTextCenter(const FontC &font,const ByteRGBValueC &value,const Index2dC &offset,const StringC &text,ImageC<ByteRGBValueC> &image);
-  void DrawTextCenter(const FontC &font,const ByteT &value,const Index2dC &offset,const StringC &text,ImageC<ByteT> &image);
+  template<class DataT>
+  void DrawText(const FontC &font,const DataT &value,const Index2dC &offset,const StringC &text,ImageC<DataT> &image);
+
+  template<class DataT>
+  void DrawTextCenter(const FontC &font,const DataT &value,const Index2dC &offset,const StringC &text,ImageC<DataT> &image);
+
 }
+
+%template(DrawTextByteRGB) RavlImageN::DrawText<RavlImageN::ByteRGBValueC>;
+%template(DrawTextByte) RavlImageN::DrawText<RavlN::ByteT>;
+%template(DrawTextCenterByteRGB) RavlImageN::DrawTextCenter<RavlImageN::ByteRGBValueC>;
+%template(DrawTextCenterByte) RavlImageN::DrawTextCenter<RavlN::ByteT>;
