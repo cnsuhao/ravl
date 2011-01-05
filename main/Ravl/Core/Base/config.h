@@ -118,6 +118,10 @@
 #define RAVL_OS_OSF     0
 #define RAVL_OS_CYGWIN  0
 #define RAVL_OS_FREEBSD 0
+
+//TODO(WM) Test these macros on 64bit Windows (_M_IX86, _M_X64, _WIN32, _WIN64)
+#define RAVL_CPUTYPE_32 1
+#define RAVL_CPUTYPE_64 0
 #endif
 
 #define RAVL_OS_UNIX !RAVL_OS_WIN32       /* a unix style system */
