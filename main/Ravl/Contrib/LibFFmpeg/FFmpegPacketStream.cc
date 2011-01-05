@@ -479,13 +479,23 @@ namespace RavlN {
   //: Convert a frame no into a time
   Int64T FFmpegPacketStreamBodyC::Frame2Time(Int64T arg) const {
     RealT frac = (RealT) frameRate / (RealT) frameRateBase;
+#if RAVL_OS_WIN32
+    RealT r = (RealT) arg / frac;
+    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+#else
     return llround((RealT) arg / frac);
+#endif
   }
   
   //: Convert a  time into a frame no
   
   Int64T FFmpegPacketStreamBodyC::Time2Frame(Int64T arg) const {
     RealT frac = (RealT) frameRate / (RealT) frameRateBase;
+#if RAVL_OS_WIN32
+    RealT r = (RealT) arg * frac;
+    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+#else
     return llround((RealT) arg * frac);
+#endif
   }
 }
