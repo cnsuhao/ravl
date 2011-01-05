@@ -197,13 +197,8 @@ namespace RavlN {
             work += *place;
             // move to next character.
             ++place;
-            switch(*place)
-            {
-              // dont care what is after an escape.
-              default:
-                work += *place;
-                break;
-            }
+            // dont care what is after an escape.
+            work += *place;
             break;
 
           // found a non-escaped delimter - so split.
