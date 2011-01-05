@@ -145,13 +145,22 @@ namespace RavlConstN {
   //: Minimum integer used by GNU C++ compiler.
 #endif
 
-
 #if defined(LONG_LONG_MAX) && defined(LONG_LONG_MIN)
   const long long int maxInt64 = LONG_LONG_MAX;
+  //: Maximum value a 64-bit integer can have.
+
   const long long int minInt64 = LONG_LONG_MIN;
+  //: Minimum value a 64-bit integer can have.
 #endif
   
-  
+#if defined(_I64_MIN) && defined(_I64_MAX)
+  const long long int maxInt64 = _I64_MAX;
+  //: Maximum value a 64-bit integer can have (Visual Studio).
+
+  const long long int minInt64 = _I64_MIN;
+  //: Minimum value a 64-bit integer can have (Visual Studio).
+#endif
+
 #if defined(MAXFLOAT) && defined(MINFLOAT)
   const float maxFloat = MAXFLOAT;
   //: Biggest value a float may have.
