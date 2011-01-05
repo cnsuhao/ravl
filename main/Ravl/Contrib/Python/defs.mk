@@ -9,8 +9,6 @@
 
 REQUIRES = LibPython
 
-DONOT_SUPPORT=VCPP
-
 PACKAGE = Ravl
 
 HEADERS = Python.hh PythonObject.hh PythonException.hh PythonLock.hh

@@ -15,4 +15,4 @@ USESLIBS=RavlCore RavlOS RLog
 
 CCPPFLAGS += -DRLOG_COMPONENT=Ravl
 
-EXAMPLE= exRLog.cc
+EXAMPLES= exRLog.cc
