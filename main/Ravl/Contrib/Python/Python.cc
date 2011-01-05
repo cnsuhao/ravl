@@ -17,8 +17,10 @@
 #include "Ravl/HashIter.hh"
 #include <iostream>
 #include "Ravl/PythonException.hh"
+#if !RAVL_OS_WIN32
 #include <python/compile.h> // Python 2.3 does not include this in Python.h
 #include <python/eval.h> // Python 2.3 does not include this in Python.h
+#endif
 
 #define DODEBUG 0
 #if DODEBUG
