@@ -3532,9 +3532,7 @@ SWIGINTERN PyObject *RavlImageN_ImageC_Sl_RavlN_ByteT_Sg__DataAsStringTriple(Rav
 #endif
 
 // The following is a fix for windows.
-#ifdef DrawText
-#undef DrawText
-#endif
+#define NODRAWTEXT
 
 
 #ifdef SWIGPERL
@@ -18995,7 +18993,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DrawText__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DrawTextByteRGB(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlImageN::FontC *arg1 = 0 ;
   RavlImageN::ByteRGBValueC *arg2 = 0 ;
@@ -19018,48 +19016,48 @@ SWIGINTERN PyObject *_wrap_DrawText__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyOb
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawText",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawTextByteRGB",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlImageN__FontC,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawText" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawTextByteRGB" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByteRGB" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   arg1 = reinterpret_cast< RavlImageN::FontC * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ByteRGBValueC,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DrawText" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DrawTextByteRGB" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByteRGB" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
   }
   arg2 = reinterpret_cast< RavlImageN::ByteRGBValueC * >(argp2);
   res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__Index2dC,  0  | 0);
   if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawText" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawTextByteRGB" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByteRGB" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   arg3 = reinterpret_cast< RavlN::Index2dC * >(argp3);
   res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_RavlN__StringC,  0  | 0);
   if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawText" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawTextByteRGB" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   if (!argp4) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByteRGB" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   arg4 = reinterpret_cast< RavlN::StringC * >(argp4);
   res5 = SWIG_ConvertPtr(obj4, &argp5, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t,  0 );
   if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawText" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawTextByteRGB" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
   }
   if (!argp5) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByteRGB" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
   }
   arg5 = reinterpret_cast< RavlImageN::ImageC< RavlImageN::ByteRGBValueC > * >(argp5);
-  RavlImageN::DrawText((RavlImageN::FontC const &)*arg1,(RavlImageN::ByteRGBValueC const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
+  RavlImageN::SWIGTEMPLATEDISAMBIGUATOR DrawText< RavlImageN::ByteRGBValueC >((RavlImageN::FontC const &)*arg1,(RavlImageN::ByteRGBValueC const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -19067,16 +19065,16 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DrawText__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DrawTextByte(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlImageN::FontC *arg1 = 0 ;
-  RavlN::ByteT *arg2 = 0 ;
+  unsigned char *arg2 = 0 ;
   RavlN::Index2dC *arg3 = 0 ;
   RavlN::StringC *arg4 = 0 ;
-  RavlImageN::ImageC< RavlN::ByteT > *arg5 = 0 ;
+  RavlImageN::ImageC< unsigned char > *arg5 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  RavlN::ByteT temp2 ;
+  unsigned char temp2 ;
   unsigned char val2 ;
   int ecode2 = 0 ;
   void *argp3 = 0 ;
@@ -19091,46 +19089,46 @@ SWIGINTERN PyObject *_wrap_DrawText__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyOb
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawText",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawTextByte",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlImageN__FontC,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawText" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawTextByte" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByte" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   arg1 = reinterpret_cast< RavlImageN::FontC * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DrawText" "', argument " "2"" of type '" "RavlN::ByteT""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DrawTextByte" "', argument " "2"" of type '" "unsigned char""'");
   } 
-  temp2 = static_cast< RavlN::ByteT >(val2);
+  temp2 = static_cast< unsigned char >(val2);
   arg2 = &temp2;
   res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__Index2dC,  0  | 0);
   if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawText" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawTextByte" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByte" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   arg3 = reinterpret_cast< RavlN::Index2dC * >(argp3);
   res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_RavlN__StringC,  0  | 0);
   if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawText" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawTextByte" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   if (!argp4) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByte" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   arg4 = reinterpret_cast< RavlN::StringC * >(argp4);
   res5 = SWIG_ConvertPtr(obj4, &argp5, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t,  0 );
   if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawText" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawTextByte" "', argument " "5"" of type '" "RavlImageN::ImageC< unsigned char > &""'"); 
   }
   if (!argp5) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawText" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextByte" "', argument " "5"" of type '" "RavlImageN::ImageC< unsigned char > &""'"); 
   }
-  arg5 = reinterpret_cast< RavlImageN::ImageC< RavlN::ByteT > * >(argp5);
-  RavlImageN::DrawText((RavlImageN::FontC const &)*arg1,(unsigned char const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
+  arg5 = reinterpret_cast< RavlImageN::ImageC< unsigned char > * >(argp5);
+  RavlImageN::SWIGTEMPLATEDISAMBIGUATOR DrawText< RavlN::ByteT >((RavlImageN::FontC const &)*arg1,(unsigned char const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -19138,79 +19136,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DrawText(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[6];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = (int)PyObject_Length(args);
-  for (ii = 0; (ii < argc) && (ii < 5); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 5) {
-    int _v;
-    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlImageN__FontC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ByteRGBValueC, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__Index2dC, 0);
-        _v = SWIG_CheckState(res);
-        if (_v) {
-          int res = SWIG_ConvertPtr(argv[3], 0, SWIGTYPE_p_RavlN__StringC, 0);
-          _v = SWIG_CheckState(res);
-          if (_v) {
-            void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t, 0);
-            _v = SWIG_CheckState(res);
-            if (_v) {
-              return _wrap_DrawText__SWIG_0(self, args);
-            }
-          }
-        }
-      }
-    }
-  }
-  if (argc == 5) {
-    int _v;
-    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlImageN__FontC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_char(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__Index2dC, 0);
-        _v = SWIG_CheckState(res);
-        if (_v) {
-          int res = SWIG_ConvertPtr(argv[3], 0, SWIGTYPE_p_RavlN__StringC, 0);
-          _v = SWIG_CheckState(res);
-          if (_v) {
-            void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t, 0);
-            _v = SWIG_CheckState(res);
-            if (_v) {
-              return _wrap_DrawText__SWIG_1(self, args);
-            }
-          }
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number of arguments for overloaded function 'DrawText'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlImageN::DrawText(RavlImageN::FontC const &,RavlImageN::ByteRGBValueC const &,RavlN::Index2dC const &,RavlN::StringC const &,RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &)\n"
-    "    RavlImageN::DrawText(RavlImageN::FontC const &,RavlN::ByteT const &,RavlN::Index2dC const &,RavlN::StringC const &,RavlImageN::ImageC< RavlN::ByteT > &)\n");
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_DrawTextCenter__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DrawTextCenterByteRGB(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlImageN::FontC *arg1 = 0 ;
   RavlImageN::ByteRGBValueC *arg2 = 0 ;
@@ -19233,48 +19159,48 @@ SWIGINTERN PyObject *_wrap_DrawTextCenter__SWIG_0(PyObject *SWIGUNUSEDPARM(self)
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawTextCenter",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawTextCenterByteRGB",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlImageN__FontC,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawTextCenter" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawTextCenterByteRGB" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByteRGB" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   arg1 = reinterpret_cast< RavlImageN::FontC * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ByteRGBValueC,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DrawTextCenter" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DrawTextCenterByteRGB" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByteRGB" "', argument " "2"" of type '" "RavlImageN::ByteRGBValueC const &""'"); 
   }
   arg2 = reinterpret_cast< RavlImageN::ByteRGBValueC * >(argp2);
   res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__Index2dC,  0  | 0);
   if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawTextCenter" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawTextCenterByteRGB" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByteRGB" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   arg3 = reinterpret_cast< RavlN::Index2dC * >(argp3);
   res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_RavlN__StringC,  0  | 0);
   if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawTextCenter" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawTextCenterByteRGB" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   if (!argp4) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByteRGB" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   arg4 = reinterpret_cast< RavlN::StringC * >(argp4);
   res5 = SWIG_ConvertPtr(obj4, &argp5, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t,  0 );
   if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawTextCenter" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawTextCenterByteRGB" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
   }
   if (!argp5) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByteRGB" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
   }
   arg5 = reinterpret_cast< RavlImageN::ImageC< RavlImageN::ByteRGBValueC > * >(argp5);
-  RavlImageN::DrawTextCenter((RavlImageN::FontC const &)*arg1,(RavlImageN::ByteRGBValueC const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
+  RavlImageN::SWIGTEMPLATEDISAMBIGUATOR DrawTextCenter< RavlImageN::ByteRGBValueC >((RavlImageN::FontC const &)*arg1,(RavlImageN::ByteRGBValueC const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -19282,16 +19208,16 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DrawTextCenter__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DrawTextCenterByte(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlImageN::FontC *arg1 = 0 ;
-  RavlN::ByteT *arg2 = 0 ;
+  unsigned char *arg2 = 0 ;
   RavlN::Index2dC *arg3 = 0 ;
   RavlN::StringC *arg4 = 0 ;
-  RavlImageN::ImageC< RavlN::ByteT > *arg5 = 0 ;
+  RavlImageN::ImageC< unsigned char > *arg5 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  RavlN::ByteT temp2 ;
+  unsigned char temp2 ;
   unsigned char val2 ;
   int ecode2 = 0 ;
   void *argp3 = 0 ;
@@ -19306,121 +19232,49 @@ SWIGINTERN PyObject *_wrap_DrawTextCenter__SWIG_1(PyObject *SWIGUNUSEDPARM(self)
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawTextCenter",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:DrawTextCenterByte",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlImageN__FontC,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawTextCenter" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DrawTextCenterByte" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByte" "', argument " "1"" of type '" "RavlImageN::FontC const &""'"); 
   }
   arg1 = reinterpret_cast< RavlImageN::FontC * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DrawTextCenter" "', argument " "2"" of type '" "RavlN::ByteT""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DrawTextCenterByte" "', argument " "2"" of type '" "unsigned char""'");
   } 
-  temp2 = static_cast< RavlN::ByteT >(val2);
+  temp2 = static_cast< unsigned char >(val2);
   arg2 = &temp2;
   res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__Index2dC,  0  | 0);
   if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawTextCenter" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DrawTextCenterByte" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByte" "', argument " "3"" of type '" "RavlN::Index2dC const &""'"); 
   }
   arg3 = reinterpret_cast< RavlN::Index2dC * >(argp3);
   res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_RavlN__StringC,  0  | 0);
   if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawTextCenter" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DrawTextCenterByte" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   if (!argp4) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByte" "', argument " "4"" of type '" "RavlN::StringC const &""'"); 
   }
   arg4 = reinterpret_cast< RavlN::StringC * >(argp4);
   res5 = SWIG_ConvertPtr(obj4, &argp5, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t,  0 );
   if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawTextCenter" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DrawTextCenterByte" "', argument " "5"" of type '" "RavlImageN::ImageC< unsigned char > &""'"); 
   }
   if (!argp5) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenter" "', argument " "5"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DrawTextCenterByte" "', argument " "5"" of type '" "RavlImageN::ImageC< unsigned char > &""'"); 
   }
-  arg5 = reinterpret_cast< RavlImageN::ImageC< RavlN::ByteT > * >(argp5);
-  RavlImageN::DrawTextCenter((RavlImageN::FontC const &)*arg1,(unsigned char const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
+  arg5 = reinterpret_cast< RavlImageN::ImageC< unsigned char > * >(argp5);
+  RavlImageN::SWIGTEMPLATEDISAMBIGUATOR DrawTextCenter< RavlN::ByteT >((RavlImageN::FontC const &)*arg1,(unsigned char const &)*arg2,(RavlN::Index2dC const &)*arg3,(RavlN::StringC const &)*arg4,*arg5);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_DrawTextCenter(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[6];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = (int)PyObject_Length(args);
-  for (ii = 0; (ii < argc) && (ii < 5); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 5) {
-    int _v;
-    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlImageN__FontC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ByteRGBValueC, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__Index2dC, 0);
-        _v = SWIG_CheckState(res);
-        if (_v) {
-          int res = SWIG_ConvertPtr(argv[3], 0, SWIGTYPE_p_RavlN__StringC, 0);
-          _v = SWIG_CheckState(res);
-          if (_v) {
-            void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t, 0);
-            _v = SWIG_CheckState(res);
-            if (_v) {
-              return _wrap_DrawTextCenter__SWIG_0(self, args);
-            }
-          }
-        }
-      }
-    }
-  }
-  if (argc == 5) {
-    int _v;
-    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlImageN__FontC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_char(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__Index2dC, 0);
-        _v = SWIG_CheckState(res);
-        if (_v) {
-          int res = SWIG_ConvertPtr(argv[3], 0, SWIGTYPE_p_RavlN__StringC, 0);
-          _v = SWIG_CheckState(res);
-          if (_v) {
-            void *vptr = 0;
-            int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t, 0);
-            _v = SWIG_CheckState(res);
-            if (_v) {
-              return _wrap_DrawTextCenter__SWIG_1(self, args);
-            }
-          }
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number of arguments for overloaded function 'DrawTextCenter'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlImageN::DrawTextCenter(RavlImageN::FontC const &,RavlImageN::ByteRGBValueC const &,RavlN::Index2dC const &,RavlN::StringC const &,RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &)\n"
-    "    RavlImageN::DrawTextCenter(RavlImageN::FontC const &,RavlN::ByteT const &,RavlN::Index2dC const &,RavlN::StringC const &,RavlImageN::ImageC< RavlN::ByteT > &)\n");
   return NULL;
 }
 
@@ -24708,14 +24562,10 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_FontC", _wrap_delete_FontC, METH_VARARGS, (char *)"delete_FontC(self)"},
 	 { (char *)"FontC_swigregister", FontC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"DefaultFont", _wrap_DefaultFont, METH_VARARGS, (char *)"DefaultFont() -> FontC"},
-	 { (char *)"DrawText", _wrap_DrawText, METH_VARARGS, (char *)"\n"
-		"DrawText(font, value, offset, text, image)\n"
-		"DrawText(font, value, offset, text, image)\n"
-		""},
-	 { (char *)"DrawTextCenter", _wrap_DrawTextCenter, METH_VARARGS, (char *)"\n"
-		"DrawTextCenter(font, value, offset, text, image)\n"
-		"DrawTextCenter(font, value, offset, text, image)\n"
-		""},
+	 { (char *)"DrawTextByteRGB", _wrap_DrawTextByteRGB, METH_VARARGS, (char *)"DrawTextByteRGB(font, value, offset, text, image)"},
+	 { (char *)"DrawTextByte", _wrap_DrawTextByte, METH_VARARGS, (char *)"DrawTextByte(font, value, offset, text, image)"},
+	 { (char *)"DrawTextCenterByteRGB", _wrap_DrawTextCenterByteRGB, METH_VARARGS, (char *)"DrawTextCenterByteRGB(font, value, offset, text, image)"},
+	 { (char *)"DrawTextCenterByte", _wrap_DrawTextCenterByte, METH_VARARGS, (char *)"DrawTextCenterByte(font, value, offset, text, image)"},
 	 { (char *)"new_Affine2dC", _wrap_new_Affine2dC, METH_VARARGS, (char *)"new_Affine2dC() -> Affine2dC"},
 	 { (char *)"delete_Affine2dC", _wrap_delete_Affine2dC, METH_VARARGS, (char *)"delete_Affine2dC(self)"},
 	 { (char *)"Affine2dC_swigregister", Affine2dC_swigregister, METH_VARARGS, NULL},
