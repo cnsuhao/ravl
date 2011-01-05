@@ -313,7 +313,7 @@ namespace RavlN {
     rcsParsed = true;
     if(rcsFile.IsEmpty())
       return false; // Failed to find rcs file.
-    ifstream inf(rcsFile);
+    ifstream inf(rcsFile.chars());
     if(!inf) {
       cerr << "RCSFileBodyC::ParseRCS(), Failed to open " << rcsFile << endl;
       return false;
@@ -394,7 +394,7 @@ namespace RavlN {
       cerr << "RCSFileBodyC::ExtractInital(), No RCS file for '" << ((const char *)(*this)) << "' found. \n";
       return false; // Failed to find rcs file.
     }
-    ifstream inf(rcsFile);
+    ifstream inf(rcsFile.chars());
     if(!inf) {
       cerr << "RCSFileBodyC::ExtractInital(), Failed to open " << rcsFile << endl;
       return false;
@@ -483,7 +483,7 @@ namespace RavlN {
       cerr << "RCSFileBodyC::ExtractInital(), No RCS file for '" << ((const char *) (*this)) << "' found. \n";
       return ret; // Failed to find rcs file.
     }
-    ifstream inf(rcsFile);
+    ifstream inf(rcsFile.chars());
     if(!inf) {
       cerr << "RCSFileBodyC::ExtractInital(), Failed to open " << rcsFile << endl;
       return ret;
@@ -798,7 +798,8 @@ namespace RavlN {
   RCSFileBodyC::VerDiff(const FilenameC &othFn)  {
     const char *rcsInfoTxt[7] = {"$Id","$Revision","$Date","$RCSfile","$Author","$Header",0};
     //cerr << "VerDiff() " << (*this) << " " << othFn << endl;
-    ifstream in1(*this),in2(othFn);
+    ifstream in1(this->chars());
+    ifstream in2(othFn.chars());
     if(!in1) {
       cerr << "RCSFileBodyC::VerDiff(), Failed to open file :" << chars() << endl;
       return true;

@@ -207,8 +207,8 @@ namespace RavlN {
       cerr << "ERROR: Failed to checkout file " << src << " for update. \n";
       return false;
     }
-    ifstream in1(vcpp);
-    ofstream in2(src);
+    ifstream in1(vcpp.chars());
+    ofstream in2(src.chars());
     if(!in1) {
       cerr << "ERROR: Failed to open file :" << vcpp << " for update." <<endl;
       return false;

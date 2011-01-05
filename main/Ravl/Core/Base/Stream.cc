@@ -402,7 +402,7 @@ namespace RavlN {
 #else
     ifstream *ifstrm = 0;
     fmode |= ios::binary;
-    Init(ifstrm = new ifstream(filename,static_cast<std::ios_base::openmode>(fmode)),filename);
+    Init(ifstrm = new ifstream(filename.chars(),static_cast<std::ios_base::openmode>(fmode)),filename);
     in = ifstrm;
 #endif //  RAVL_HAVE_INTFILEDESCRIPTORS
     

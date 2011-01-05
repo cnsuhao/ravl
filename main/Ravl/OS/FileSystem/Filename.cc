@@ -324,8 +324,8 @@ namespace RavlN {
       return false; // Can't copy a file to itself.
     if(IsEmpty() || oth.IsEmpty())
       return false;
-    ifstream in1(*this);
-    ofstream in2(oth);
+    ifstream in1(this->chars());
+    ofstream in2(oth.chars());
     if(!in1) {
       cerr << "FilenameC::CopyTo(), Failed to open file :" << (*this) << endl;
       return false;
