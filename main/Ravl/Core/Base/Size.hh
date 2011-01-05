@@ -48,9 +48,11 @@ namespace RavlN {
     { size_t val = m_v; m_v++; return val; }
     //: Increment
 
+#if !RAVL_COMPILER_VISUALCPP
     SizeC operator-() const
     { return -m_v; }
     //: Negation
+#endif
 
     template<typename DataT>
     inline bool operator<(const DataT &v2) const
