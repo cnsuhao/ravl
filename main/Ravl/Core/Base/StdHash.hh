@@ -83,15 +83,6 @@ namespace RavlN {
   { return (size_t) size.V(); }
   //: Hash unsigned char.
 
-// for windows. 
-#if RAVL_COMPILER_VISUALCPP
-  inline size_t StdHash(const UInt64T dat)
-  { return (size_t) (dat >> 11) ^ dat; }
-
-  inline size_t Stdhash(const Int64T dat)
-  { return (size_t) (dat >> 11) ^ dat; } 
-#endif 
-
   inline size_t StdHash(const RealT dat)
   { 
     union {
