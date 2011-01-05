@@ -291,8 +291,8 @@ namespace RavlImageN {
     const double norm = 1. / (scale[0] * scale[1]);
 
     typedef typename RavlN::NumericalTraitsC<OutT>::RealAccumT RealAccumT;
-    RealAccumT bufferRow[resCols];
-    RealAccumT bufferRes[resCols];
+    SArray1dC<RealAccumT> bufferRow(resCols);
+    SArray1dC<RealAccumT> bufferRes(resCols);
 
     Point2dC srcPos = origin;
     Index2dC resPos = result.Frame().TopLeft();
@@ -302,7 +302,7 @@ namespace RavlImageN {
     int srcRowI = Floor(srcRowR);
     double u = srcRowR - srcRowI;
 
-    WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow, resCols);
+    WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow.DataStart(), resCols);
     //if(!CheckRow(buffer, resCols, scale[1])) return false;
 
     for(int j = 0; j < resRows; j++) {
@@ -320,14 +320,14 @@ namespace RavlImageN {
       //cerr << "srcLastRowI:" << srcLastRowI << endl;
       for(srcRowI++; srcRowI < srcLastRowI; srcRowI++) {
         //cerr << "srcRowI:" << srcRowI << endl;
-        WS_prepareRowAdd(img, srcRowI, origin.Col(), scale[1], bufferRes, resCols);
+        WS_prepareRowAdd(img, srcRowI, origin.Col(), scale[1], bufferRes.DataStart(), resCols);
       }
 
       //last partial pixel
       u = srcLastRowR - srcLastRowI;
       //cerr << "u:" << u << endl;
       if(u > 1e-5) {
-        WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow, resCols);
+        WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow.DataStart(), resCols);
         //if(!CheckRow(buffer, resCols, scale[1])) return false;
         for(int i = 0; i < resCols; i++) {
           bufferRes[i] += bufferRow[i] * u;
@@ -336,7 +336,7 @@ namespace RavlImageN {
         //check if we need buffer for next iteration
         if(j + 1 < resRows) {
           //cerr << "u srcRowI:" << srcRowI << endl;
-          WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow, resCols);
+          WS_prepareRow(img, srcRowI, origin.Col(), scale[1], bufferRow.DataStart(), resCols);
           //if(!CheckRow(buffer, resCols, scale[1])) return false;
         }
       }
