@@ -23,14 +23,14 @@ namespace RavlN {
   const char *validtags[] = {"DESCRIPTION","MAINS","HEADERS","SOURCES","PLIB",
                        "USESLIBS","PROGLIBS","NESTED","SUPPORT_ONLY",
                        "DONOT_SUPPORT","PACKAGE","OPTLIB","OPTINCPATH",
-                       "OPTLIBPATH","LIBDEPS","EXAMPLES","TESTEXES",
+                       "OPTLIBPATH","LIBDEPS","EXAMPLES","TESTEXES", "TESTLIBS",
                        "LOCAL_FILES","HTML","MAN1","MAN3","MAN5","LOCALHEADERS","PRIVATE",
                        "AUXDIR","AUXFILES","AUXINSTALL","EHT","STATE",
                        "DOCNODE","SCRIPTS","MUSTLINK","ANSIFLAG","LICENSE","PACKAGENAME",
                        "REQUIRES","ORGANISATION","OBJEXT",
                        "CXXEXT","CXXAUXEXT","CHXXEXT","CEXT","CHEXT","EXEEXT","USERCPPFLAGS","EXTERNALLIBS",
                        "LICENCE", "SWIGOPTS", "CCFLAGS", "LDFLAGS", "CPPFLAGS", "CCPPFLAGS",
-                       "FLEX_DO_NOT_GENERATE", "BISON_DO_NOT_GENERATE",   0 };
+                       "FLEX_DO_NOT_GENERATE", "BISON_DO_NOT_GENERATE", "SINGLESO", "NOSHAREDLIBDEPENDS", 0 };
 
   /////////////////
   // Construct from a filename.
