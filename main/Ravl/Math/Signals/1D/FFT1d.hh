@@ -21,7 +21,8 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Interface class for 1d FFTW
+  //: Body class for 1d FFT
+  // Currently uses the CCMath implementation
   
   class FFT1dBodyC
     : public RCBodyC
@@ -66,7 +67,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Handle to 1d FFT.
+  //: 1D FFT.
   
   class FFT1dC
     : public RCHandleC<FFT1dBodyC>
