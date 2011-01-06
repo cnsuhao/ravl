@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -229,10 +229,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\.\OS\Misc\SerialIO.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\.\OS\Misc\SysLog.cc"
 				>
 			</File>
@@ -258,6 +254,10 @@
 			</File>
 			<File
 				RelativePath="..\.\OS\Exec\FileUser.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Exec\CPUInfo.cc"
 				>
 			</File>
 			<File
@@ -335,10 +335,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\.\OS\Misc\SerialIO.hh"
-				>
-			</File>
-			<File
 				RelativePath="..\.\OS\Misc\DMABuffer.hh"
 				>
 			</File>
@@ -352,6 +348,10 @@
 			</File>
 			<File
 				RelativePath="..\.\OS\Exec\ChildOSProcess.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Exec\CPUInfo.hh"
 				>
 			</File>
 			<File

@@ -72,7 +72,7 @@ if not exist C:\Build\share\RAVL\AutoPort2\NUL mkdir C:\Build\share\RAVL\AutoPor
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -162,7 +162,7 @@ if not exist C:\Build\share\RAVL\AutoPort2\NUL mkdir C:\Build\share\RAVL\AutoPor
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

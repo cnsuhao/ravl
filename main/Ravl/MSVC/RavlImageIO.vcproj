@@ -60,7 +60,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -138,7 +138,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -314,6 +314,14 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 			</File>
 			<File
 				RelativePath="..\.\Image\ImageIO\ImgIOUInt16YCbCr422BT709Value.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\ImageIO\ImgIOYPbPrBT709ValueFloat.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\ImageIO\ImgIOFloatYPbPr422BT709Value.cc"
 				>
 			</File>
 			<File

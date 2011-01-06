@@ -60,7 +60,7 @@ if not exist C:\Build\share\RAVL\Fonts\NUL mkdir C:\Build\share\RAVL\Fonts&#x0D;
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -138,7 +138,7 @@ if not exist C:\Build\share\RAVL\Fonts\NUL mkdir C:\Build\share\RAVL\Fonts&#x0D;
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -298,6 +298,18 @@ if not exist C:\Build\share\RAVL\Fonts\NUL mkdir C:\Build\share\RAVL\Fonts&#x0D;
 			</File>
 			<File
 				RelativePath="..\.\Image\Base\UInt16YCbCr422BT709Value.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\YPbPrBT709Value.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\FloatYPbPrBT709Value.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\FloatYPbPr422BT709Value.cc"
 				>
 			</File>
 		</Filter>
@@ -528,6 +540,22 @@ if not exist C:\Build\share\RAVL\Fonts\NUL mkdir C:\Build\share\RAVL\Fonts&#x0D;
 			</File>
 			<File
 				RelativePath="..\.\Image\Base\UInt16YCbCr422BT709Value.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\YPbPrBT709Value.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\FloatYPbPrBT709Value.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\YPbPr422BT709Value.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Base\FloatYPbPr422BT709Value.hh"
 				>
 			</File>
 		</Filter>

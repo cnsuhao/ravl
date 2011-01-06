@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -326,6 +326,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\IO\PrintIOInfo.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\IO\FileFormatByteFile.cc"
 				>
 			</File>
 			<File
@@ -624,6 +628,14 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\IO\MethodPtrIO.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\IO\FileFormatByteFile.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\IO\MethodPtr2Proc.hh"
 				>
 			</File>
 		</Filter>

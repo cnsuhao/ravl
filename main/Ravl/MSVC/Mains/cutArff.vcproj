@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\debug\bin\cutArff.exe"
-				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlPatternRec.lib RavlSVM.lib"
+				AdditionalDependencies=" RavlCore.lib ArffIO.lib Rpcrt4.lib RavlOS.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\opt\bin\cutArff.exe"
-				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlPatternRec.lib RavlSVM.lib"
+				AdditionalDependencies=" RavlCore.lib ArffIO.lib Rpcrt4.lib RavlOS.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -183,19 +183,7 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			>
 			<File
-				RelativePath="..\..\.\PatternRec\SVM\cutArff.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\.\Core\IO\CoreIO.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\.\OS\IO\RavlOSIOMustLink.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\.\PatternRec\SVM\linkRavlSVM.cc"
+				RelativePath="..\..\.\PatternRec\Arff\cutArff.cc"
 				>
 			</File>
 

@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\debug\bin\svmTest5.exe"
-				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlPatternRec.lib RavlSVM.lib"
+				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlThreads.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib RavlSVM.lib ArffIO.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\opt\bin\svmTest5.exe"
-				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlPatternRec.lib RavlSVM.lib"
+				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlThreads.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib RavlSVM.lib ArffIO.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -192,6 +192,14 @@
 			</File>
 			<File
 				RelativePath="..\..\.\OS\IO\RavlOSIOMustLink.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\..\.\OS\XMLFactory\LinkXMLFactory.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\..\.\Math\IO\MathIO.cc"
 				>
 			</File>
 			<File

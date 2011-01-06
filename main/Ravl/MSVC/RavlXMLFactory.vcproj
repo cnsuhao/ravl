@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -192,6 +192,14 @@
 				RelativePath="..\.\OS\XMLFactory\XMLFactoryAutoStart.cc"
 				>
 			</File>
+			<File
+				RelativePath="..\.\OS\XMLFactory\ConfigParameter.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\XMLFactory\LinkXMLFactory.cc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -208,6 +216,10 @@
 			</File>
 			<File
 				RelativePath="..\.\OS\XMLFactory\XMLFactoryAutoStart.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\XMLFactory\ConfigParameter.hh"
 				>
 			</File>
 		</Filter>

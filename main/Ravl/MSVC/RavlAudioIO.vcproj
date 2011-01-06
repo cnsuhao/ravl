@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -181,10 +181,6 @@
 			>
 			
 			<File
-				RelativePath="..\.\Audio\IO\AudioSample.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\.\Audio\IO\SphereIO.cc"
 				>
 			</File>
@@ -198,6 +194,14 @@
 			</File>
 			<File
 				RelativePath="..\.\Audio\IO\TranscriptionStream.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Audio\IO\PlaySound.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Audio\IO\AudioSample.cc"
 				>
 			</File>
 			<File
@@ -224,6 +228,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Audio\IO\TranscriptionStream.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Audio\IO\PlaySound.hh"
 				>
 			</File>
 		</Filter>

@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -254,6 +254,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Math\LinearAlgebra\General\FastMatrixEigen.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Math\LinearAlgebra\General\LAHooks.cc"
 				>
 			</File>
 			<File
@@ -796,6 +800,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Math\LinearAlgebra\General\TSMatrixSparseIter.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Math\LinearAlgebra\General\LAHooks.hh"
 				>
 			</File>
 			<File

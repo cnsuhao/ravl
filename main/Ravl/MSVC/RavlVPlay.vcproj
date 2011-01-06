@@ -42,8 +42,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+                        AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="include\Win32;include;&quot;C:\GTKWIN32\lib\gtk-2.0\include&quot;;&quot;C:\GTKWIN32\lib\glib-2.0\include&quot;;&quot;C:\GTKWIN32\lib\gtkglext-1.0\include&quot;;&quot;C:\GTKWIN32\include\cairo&quot;;&quot;C:\GTKWIN32\include\gtk-2.0&quot;;&quot;C:\GTKWIN32\include\glib-2.0&quot;;&quot;C:\GTKWIN32\include\pango-1.0&quot;;&quot;C:\GTKWIN32\include\atk-1.0&quot;;&quot;C:\GTKWIN32\include\gtkglext-1.0&quot;"
+				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
 				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -52,11 +53,12 @@
 				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlVPlay\RavlVPlay.pch"
 				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlVPlay\"
 				ObjectFile="C:\Build\win32\debug\obj\RavlVPlay\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\obj\RavlVPlay\"
+				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlVPlay.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -116,9 +118,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+                        AdditionalOptions="/MP"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="include\Win32;include;&quot;C:\GTKWIN32\lib\gtk-2.0\include&quot;;&quot;C:\GTKWIN32\lib\glib-2.0\include&quot;;&quot;C:\GTKWIN32\lib\gtkglext-1.0\include&quot;;&quot;C:\GTKWIN32\include\cairo&quot;;&quot;C:\GTKWIN32\include\gtk-2.0&quot;;&quot;C:\GTKWIN32\include\glib-2.0&quot;;&quot;C:\GTKWIN32\include\pango-1.0&quot;;&quot;C:\GTKWIN32\include\atk-1.0&quot;;&quot;C:\GTKWIN32\include\gtkglext-1.0&quot;"
+				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
 				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -127,10 +130,11 @@
 				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlVPlay/RavlVPlay.pch"
 				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlVPlay\"
 				ObjectFile="C:\Build\win32\opt\obj\RavlVPlay\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\obj\RavlVPlay\"
+				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlVPlay.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

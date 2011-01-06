@@ -190,6 +190,10 @@
 				RelativePath="..\..\.\Core\IO\CoreIO.cc"
 				>
 			</File>
+			<File
+				RelativePath="..\..\.\OS\XMLFactory\LinkXMLFactory.cc"
+				>
+			</File>
 
 		</Filter>
 		<Filter

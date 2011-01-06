@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -341,6 +341,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\Core\Base\Size.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\I386SSE\VectorUtilsI386SSE.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\Core\Container\Buffer\RBfAcc2d.cc"
 				>
 			</File>
@@ -522,6 +530,14 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\System\STL.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\System\MD5.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\System\RealRange1dSet.cc"
 				>
 			</File>
 		</Filter>
@@ -796,6 +812,18 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\Base\RCHandle.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\Base\UnitTest.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\Base\Size.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\Base\QuickSort.hh"
 				>
 			</File>
 			<File
@@ -1431,6 +1459,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\Core\Math\RankedScoreArray.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\Core\System\StringList.hh"
 				>
 			</File>
@@ -1468,6 +1500,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\System\IO.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\System\BufferSTLVector.hh"
 				>
 			</File>
 			<File
@@ -1539,11 +1575,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\Core\System\Duration.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\Core\System\STL.hh"
 				>
 			</File>
 			<File
 				RelativePath="..\.\Core\System\RCWrapIO.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\System\MD5.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\System\RealRange1dSet.hh"
 				>
 			</File>
 		</Filter>

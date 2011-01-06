@@ -60,7 +60,7 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -138,7 +138,7 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -233,6 +233,34 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				>
 			</File>
 			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleVectorFloat.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleStreamVectorFloat.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleReal.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FunctionSlice.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FunctionConcatenate.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FunctionCascade.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleStreamVectorLabel.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\PatternRec\Distance\Distance.cc"
 				>
 			</File>
@@ -258,6 +286,10 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\Distance\DistanceRobust.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Distance\DistanceChi2.cc"
 				>
 			</File>
 			<File
@@ -429,6 +461,18 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				>
 			</File>
 			<File
+				RelativePath="..\.\PatternRec\Classify\Classifier2.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Classify\ClassifierOneAgainstAll.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Classify\DesignOneAgainstAll.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\PatternRec\FeatureSelection\FeatureSelector.cc"
 				>
 			</File>
@@ -547,6 +591,46 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				>
 			</File>
 			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleVectorFloat.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleStreamVectorFloat.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleReal.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleStreamFromSample.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\ProcessVectorFunction.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\ProcessVectorLabelFunction.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FunctionSlice.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FunctionConcatenate.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FunctionCascade.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleStreamVectorLabel.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\PatternRec\Distance\Distance.hh"
 				>
 			</File>
@@ -572,6 +656,10 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\Distance\DistanceRobust.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Distance\DistanceChi2.hh"
 				>
 			</File>
 			<File
@@ -740,6 +828,18 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\Classify\DesignClassifierNeuralNetwork.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Classify\Classifier2.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Classify\ClassifierOneAgainstAll.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Classify\DesignOneAgainstAll.hh"
 				>
 			</File>
 			<File

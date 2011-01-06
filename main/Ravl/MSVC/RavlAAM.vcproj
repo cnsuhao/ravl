@@ -47,7 +47,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				Name="VCCLCompilerTool"
                         AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="include\Win32;include"
+				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
 				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -127,7 +127,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
                         AdditionalOptions="/MP"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="include\Win32;include"
+				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
 				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -140,7 +140,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -243,6 +243,14 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				>
 			</File>
 			<File
+				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMSampleStreamFileList.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMViewLib.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMActiveAppearanceModelMustLink.cc"
 				>
 			</File>
@@ -302,6 +310,14 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			</File>
 			<File
 				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMFaceCorrection.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMSampleStreamFileList.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMViewLib.hh"
 				>
 			</File>
 		</Filter>

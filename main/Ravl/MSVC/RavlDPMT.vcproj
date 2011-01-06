@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -200,6 +200,10 @@
 				RelativePath="..\.\OS\DataProc\TailIStream.cc"
 				>
 			</File>
+			<File
+				RelativePath="..\.\OS\DataProc\OpenPortInventory.cc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -252,6 +256,10 @@
 			</File>
 			<File
 				RelativePath="..\.\OS\DataProc\TailIStream.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\DataProc\OpenPortInventory.hh"
 				>
 			</File>
 		</Filter>

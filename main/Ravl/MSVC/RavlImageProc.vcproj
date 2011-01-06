@@ -58,7 +58,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -134,7 +134,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -210,6 +210,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Image\Processing\Filters\Misc\DeinterlaceStream.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Processing\Filters\Misc\MedianFilter.cc"
 				>
 			</File>
 			<File
@@ -540,6 +544,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Image\Processing\Filters\Warp\WarpMesh2d.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Image\Processing\Filters\Warp\WarpScale2d.hh"
 				>
 			</File>
 			<File

@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\debug\bin\convertFeatureSet.exe"
-				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlIO.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib"
+				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\opt\bin\convertFeatureSet.exe"
-				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlIO.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib"
+				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"

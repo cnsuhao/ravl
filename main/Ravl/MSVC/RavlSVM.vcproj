@@ -61,7 +61,7 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -140,7 +140,7 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
-                        DisableSpecificWarnings="4996"
+                        DisableSpecificWarnings="4996,4396"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -191,10 +191,6 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 				>
 			</File>
 			<File
-				RelativePath="..\.\PatternRec\SVM\SvmClassifier2.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\.\PatternRec\SVM\SvmClassifier.cc"
 				>
 			</File>
@@ -223,10 +219,6 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 				>
 			</File>
 			<File
-				RelativePath="..\.\PatternRec\SVM\ArffIO.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\.\PatternRec\SVM\OneClass.cc"
 				>
 			</File>
@@ -240,10 +232,6 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\SVM\DesignOneClassLarge.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\.\PatternRec\SVM\AuxVector.cc"
 				>
 			</File>
 			<File
@@ -266,10 +254,6 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
                         
 			<File
 				RelativePath="..\.\PatternRec\SVM\DesignSvm.hh"
-				>
-			</File>
-			<File
-				RelativePath="..\.\PatternRec\SVM\SvmClassifier2.hh"
 				>
 			</File>
 			<File
@@ -301,10 +285,6 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 				>
 			</File>
 			<File
-				RelativePath="..\.\PatternRec\SVM\ArffIO.hh"
-				>
-			</File>
-			<File
 				RelativePath="..\.\PatternRec\SVM\OneClass.hh"
 				>
 			</File>
@@ -318,10 +298,6 @@ if not exist C:\Build\share\RAVL\testData\svm\NUL mkdir C:\Build\share\RAVL\test
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\SVM\DesignOneClassLarge.hh"
-				>
-			</File>
-			<File
-				RelativePath="..\.\PatternRec\SVM\AuxVector.hh"
 				>
 			</File>
 		</Filter>
