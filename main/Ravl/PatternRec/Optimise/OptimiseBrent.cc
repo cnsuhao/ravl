@@ -47,7 +47,7 @@ namespace RavlN {
     //RavlAssert();
 
     const RealT cgold = 0.3819660;
-    const RealT small = 1.0e-10;
+    const RealT smallVal = 1.0e-10;
     VectorC iterX1(1);
     VectorC iterX0(1);
 
@@ -68,7 +68,7 @@ namespace RavlN {
     // Main iteration loop
     for (UIntT iter = 0; iter < _iterations; iter++) {
       xm = (a + b) * 0.5;
-      tol1 = _tolerance * fabs(x1) + small;
+      tol1 = _tolerance * fabs(x1) + smallVal;
       tol2 = 2.0 * tol1;
       // test for termination
       if (fabs(x1 - xm) <= (tol2 - 0.5 * (b - a))) {

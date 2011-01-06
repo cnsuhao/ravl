@@ -22,7 +22,7 @@ namespace RavlN {
   void BracketMinimum(CostFunction1dC &cost) {
     ParametersC parameters(1);
     const RealT gold = 1.618034;
-    const RealT small = 1.0e-20;
+    const RealT smallVal = 1.0e-20;
     const RealT glimit = 100.0;
     VectorC vax(1);
     RealT &x0 = vax[0];
@@ -62,7 +62,7 @@ namespace RavlN {
       
       RealT r = dx10 * (fx1 - fx2);
       RealT q = dx12 * (fx1 - fx0);
-      xn = x1 - (dx12 * q - dx10 * r) / (2.0 * Sign(Max(fabs(q-r),small),q-r));
+      xn = x1 - (dx12 * q - dx10 * r) / (2.0 * Sign(Max(fabs(q-r),smallVal),q-r));
       RealT xlim = x1 + glimit * (x2 - x1);
       if ((x1 - xn) * (xn - x2) > 0.0) {
         fxn = cost.Cost(vux);
