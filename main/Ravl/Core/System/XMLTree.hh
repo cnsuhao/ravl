@@ -123,6 +123,10 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
+    const RCHashC<StringC,StringC> & Attributes() const
+    { return this->Data(); }
+    //: Access table of attributes
+
     StringC AttributeString(const StringC &name,const StringC &defaultValue = StringC("")) const ;
     //: Access attribute.
 
@@ -205,7 +209,7 @@ namespace RavlN {
   // <ul>
   // <li> The top-level element is a container for the remaining XML - typically it has the name of the XML file.  The contents start at the next level down.
   // <li> The elements contained within an element (children) can be accessed either as a list, as a hash table, or individually by name.
-  // <li> Attributes of an element can be accessed as a hash table, using the attribute name as the key.  Attributes are called <code>Data()</code> in this class (for reasons of inheritance).
+  // <li> Attributes of an element can be accessed as a hash table, using the attribute name as the key.
   // </ul>
   // <p> To summarise: an XML tree node typically has a <code>Name()</code>, <code>Data()</code> (i.e. attributes) and <code>Children()</code> (i.e. contents).</p>
   
@@ -322,6 +326,11 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
     
+    const RCHashC<StringC,StringC> & Attributes() const
+    { return Body().Attributes(); }
+    //: Access table of attributes as strings
+    // Attribute names &amp; values are RCHashC keys &amp; values respectively
+
     StringC AttributeString(const StringC &name,const StringC &defaultValue = StringC("")) const 
     { return Body().AttributeString(name,defaultValue); }
     //: Access attribute.
@@ -362,6 +371,7 @@ namespace RavlN {
     bool FollowPath(const StringC &path,DListC<XMLTreeC> &nodes)
     { return Body().FollowPath(path,nodes); }
     //: Give list of nodes matching the given path.
+    // The path can span several layers of the tree: use "/" as separator.
 
     friend class XMLTreeBodyC;
   };
