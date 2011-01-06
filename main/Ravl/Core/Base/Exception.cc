@@ -20,7 +20,7 @@
 #include <typeinfo.h>
 #endif
 
-#ifdef RAVL_HAVE_BACKTRACE
+#if RAVL_HAVE_BACKTRACE
 #include <execinfo.h>
 #endif
 
