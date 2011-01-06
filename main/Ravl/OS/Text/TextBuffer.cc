@@ -17,6 +17,7 @@
 #include "Ravl/Stream.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/BinStream.hh"
 
 #include <ctype.h>
 

@@ -14,6 +14,7 @@
 #include "Ravl/Text/TextFile.hh"
 #include "Ravl/DLIter.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/BinStream.hh"
 
 #define DODEBUG 0
 
