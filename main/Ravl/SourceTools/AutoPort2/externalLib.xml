@@ -175,6 +175,11 @@
 
 <extlib name="LibFFmpeg">
 <includepath>c:\WindowsSources\ffmpeg\include</includepath>
+<includepath>c:\WindowsSources\ffmpeg\include\libavcodec</includepath>
+<includepath>c:\WindowsSources\ffmpeg\include\libavdevice</includepath>
+<includepath>c:\WindowsSources\ffmpeg\include\libavformat</includepath>
+<includepath>c:\WindowsSources\ffmpeg\include\libavutil</includepath>
+<includepath>c:\WindowsSources\ffmpeg\include\libswscale</includepath>
 <libpath>c:\WindowsSources\ffmpeg\lib</libpath>
 <lib>avcodec.lib</lib>
 <lib>avdevice.lib</lib>
