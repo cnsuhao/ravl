@@ -5,11 +5,12 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 
+#include "Ravl/Types.hh"
 #include "Ravl/OS/WinStreamIO.hh"
 
 namespace RavlN {
-  
-#if RAVL_OS_WIN32  
+
+#if RAVL_OS_WIN32 && 0
   
   //: Constructor.
   

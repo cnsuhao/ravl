@@ -15,7 +15,7 @@
 
 namespace RavlN {
 
-#if RAVL_OS_WIN32  
+#if RAVL_OS_WIN32 && 0
   class WinStreamIOC 
   {
   public:

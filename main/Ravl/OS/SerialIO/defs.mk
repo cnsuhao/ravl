@@ -9,6 +9,8 @@
 
 PACKAGE=Ravl/OS
 
+DONOT_SUPPORT=VCPP
+
 DESCRIPTION=Interfaces for serial devices
 
 HEADERS=SerialAbstract.hh SerialDirect.hh SerialDFormat.hh \
