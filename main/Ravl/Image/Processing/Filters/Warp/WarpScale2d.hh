@@ -21,6 +21,7 @@
 #include "Ravl/Point2d.hh"
 #include "Ravl/RealRange2d.hh"
 #include "Ravl/Traits.hh"
+#include "Ravl/SArray1d.hh"
 
 #define CLEVER_BILINEAR
 namespace RavlImageN {
