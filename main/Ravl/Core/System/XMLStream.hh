@@ -656,10 +656,12 @@ namespace RavlN {
 		  const RCHashC<StringC,StringC> &attribs,
 		  bool emptyTag = false);
     //: Begin writing a tag with the given attributes.
+    // If emptyTag = true, the closing tag is also added.
     
     void StartTag(const StringC &name,
 		  bool emptyTag = false);
-    //: Begin writing a tag with the given attributes.
+    //: Begin writing a tag with no attributes.
+    // If emptyTag = true, the closing tag is also added.
     
     void StartContents();
     //: Call before writing contents of entity to stream.
