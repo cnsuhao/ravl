@@ -74,6 +74,9 @@ namespace RavlN {
     
     StringC Interpret(const StringC &str);
     //: Interpret string 'str' and return the result.
+
+    bool DoInterpret(StringC &txt);
+    //: Interpret string.
     
     bool DoSet(StringC &txt);
     //: Set variable.

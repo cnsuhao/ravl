@@ -120,6 +120,7 @@ namespace RavlN {
     SetupCommand("after",&TemplateComplexBodyC::DoAfter);
     SetupCommand("truncate",&TemplateComplexBodyC::DoFirstN);
     SetupCommand("marktruncate",&TemplateComplexBodyC::DoMarkFirstN);
+    SetupCommand("interpret",&TemplateComplexBodyC::DoInterpret);
   }
   
   //: Print a message to stderr.
@@ -170,6 +171,12 @@ namespace RavlN {
     return ret;
   }
   
+  //: Interpret string.
+  bool TemplateComplexBodyC::DoInterpret(StringC &txt) {
+    StringC result = Interpret(txt);
+    TextFileC subTextBuff(result,true,true);
+    return BuildSub(subTextBuff);
+  }
   
   //: Set variable.
   
