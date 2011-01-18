@@ -60,7 +60,8 @@ namespace RavlN{
   };
 
   //! userlevel=Normal
-  //: Chi2 distance metric
+  //: Chi2 measure 
+  // Note: Chi^2 is not a true distance metric, as the triangle rule doesn't apply.
   
   class DistanceChi2C
     : public DistanceC
