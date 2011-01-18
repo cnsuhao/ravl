@@ -27,7 +27,7 @@
 namespace RavlN{
   // using namespace RavlN;
 
-  //! userlevel=Normal
+  //! userlevel=Develop
   //: Chi2 measure 
   // Note: Chi^2 is not a true metric, as the triangle rule doesn't apply
 
