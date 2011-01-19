@@ -85,6 +85,11 @@ namespace RavlN {
     
     bool Read(XMLIStreamC &in,HSetC<StringC> &includedFiles,XMLTreeLoadC *loader = 0);
     //: Read from an XML stream using this node as the root.
+
+    bool ReadNode(XMLIStreamC &in,XMLTreeLoadC *loader = 0);
+    //: Read a node from an XML stream.
+    // It assumes that the stream is positioned immediately before a "begin" tag.<br>
+    // <b>Note:</b> the node tag name <i> must </i> match the name used to construct the XMLTreeC.
     
     bool Write(OStreamC &out, int level=0) const;
     //: Write to a stream using this node as the root.
@@ -288,6 +293,17 @@ namespace RavlN {
     { return Body().Read(in,includedFiles,loader); }
     //: Read from an XML stream using this node as the root.
     
+    bool ReadNode(XMLIStreamC &in,XMLTreeLoadC *loader = 0)
+    { return Body().ReadNode(in,loader); }
+    //: Read a node from an XML stream.
+    // It assumes that the stream is positioned immediately before a "begin" tag.<br>
+    // <b>Note:</b> the node tag name <i> must </i> match the name used to construct the XMLTreeC.
+
+    static XMLTreeC ReadNode(XMLIStreamC &in,const StringC &name,XMLTreeLoadC *loader = 0);
+    //: Read a node from an XML stream.
+    // It assumes that the stream is positioned immediately before a "begin" tag.<br>
+    // <b>Note:</b> if <code>name</code> is not the empty string, it must match the tag name.
+
     bool Write(OStreamC &out, int level=0) const
     { return Body().Write(out, level); }
     //: Write to a stream using this node as the root.

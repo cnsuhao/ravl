@@ -780,6 +780,7 @@ void InitStream(IStreamC &istrm) {
     "<config> \n"
     " <test1 value=\"Hello\" /> \n"
     " <test2/> \n"
+    " <test3/> \n"
     "</config> \n";
 
   StrIStreamC strIStrm(buff.Copy());
@@ -795,6 +796,18 @@ int testXMLTree() {
   //theTree.Dump(std::cout);
   XMLTreeC childTree;
   if(!theTree.Child("config",childTree)) return __LINE__;
+
+  InitStream(strm);
+  XMLIStreamC xs(strm);
+  StringC s;
+  xs.ReadTag(s);
+  theTree = XMLTreeC("test1");
+  if(!theTree.ReadNode(xs)) return __LINE__; // read node with non-static method
+  XMLTreeC::ReadNode(xs, "test2"); // read node with static method
+  bool xcpt(false);
+  try { XMLTreeC::ReadNode(xs, "test2"); } // read node with static method: should fail
+  catch (ExceptionBadConfigC) { xcpt = true; }
+  if (!xcpt) return __LINE__;
   return 0;
 }
 

@@ -270,6 +270,29 @@ namespace RavlN {
   }
 
   
+
+  //: Read a node from an XML stream.
+  bool XMLTreeBodyC::ReadNode(XMLIStreamC &in,XMLTreeLoadC *loader)
+  {
+    StringC s;
+    in.ReadTag(s);
+    RavlAssertMsg(s == name, "XMLTreeBodyC::ReadNode(): tag name of node does not match XMLTreeBodyC name");
+    return this->Read(in, loader);
+  }
+
+
+
+  //: Read a node from an XML stream.
+  XMLTreeC XMLTreeC::ReadNode(XMLIStreamC &in,const StringC &name,XMLTreeLoadC *loader)
+  {
+    StringC s;
+    in.ReadTag(s);
+    XMLTreeC xml(name.IsEmpty() ? s : name);
+    xml.Read(in, loader);
+    return xml;
+  }
+
+
   //: Process xi:xinclude directive.
   
   // TODO:
