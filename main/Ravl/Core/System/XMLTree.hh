@@ -218,7 +218,7 @@ namespace RavlN {
   // </ul>
   // <p> To summarise: an XML tree node typically has a <code>Name()</code>, <code>Data()</code> (i.e. attributes) and <code>Children()</code> (i.e. contents).</p>
   
-  // <p> Note: You can include files into the tree with the sytax from xinclude standard, see http://www.w3.org/TR/xinclude/ for more details though this is only a partial implementation. In particular the xpointer decoding only follows a path to a child. <p>
+  // <p> Note: You can include files into the tree with the syntax from xinclude standard, see http://www.w3.org/TR/xinclude/ for more details though this is only a partial implementation. In particular the xpointer decoding only follows a path to a child. <p>
   // Include example: <code> &gt; xi:include href="other.xml" / &lt; </code>
   
   class XMLTreeC
