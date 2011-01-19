@@ -57,7 +57,7 @@ namespace RavlN {
     //: Construct from a name and an attribute table.
     
     XMLTreeBodyC(const StringC &nname);
-    //: Construct from a name and an attribute table.
+    //: Construct from a name.
     
     XMLTreeBodyC(BinIStreamC &strm);
     //: Binary stream constructor.
@@ -233,27 +233,30 @@ namespace RavlN {
     explicit XMLTreeC(bool)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC())
     {}
-    //: Constructor.
+    //: Constructs a valid but empty tree, with empty name.
+    // The bool argument value has no effect.
     
     explicit XMLTreeC(const char *name)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(StringC(name)))
     {}
-    //: Constructor.
+    //: Constructor a valid but empty tree.
+    // The name is used as the "name" attribute for the top level.
     
-    XMLTreeC(const StringC &name,const RCHashC<StringC,StringC> &attrs,bool _isPI = false)
-      : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(name,attrs,_isPI))
+    XMLTreeC(const StringC &name,const RCHashC<StringC,StringC> &attrs,bool IsPI = false)
+      : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(name,attrs,IsPI))
     {}
-    //: Constructor.
+    //: Constructor from a name and an attribute table.
+    // If IsPI is true, a processing instruction is created.
     
     explicit XMLTreeC(const StringC &name)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(name))
     {}
-    //: Constructor.
+    //: Constructor from a name.
     
     explicit XMLTreeC(XMLIStreamC &in,XMLTreeLoadC *loader = 0)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(*new XMLTreeBodyC(in,loader))
     {}
-    //: Constructor.
+    //: Constructor from an XML stream.
 
     XMLTreeC(HashTreeC<StringC,RCHashC<StringC,StringC> > &oth)
       : HashTreeC<StringC,RCHashC<StringC,StringC> >(dynamic_cast<const XMLTreeBodyC *>(BodyPtr(oth)))

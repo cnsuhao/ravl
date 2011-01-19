@@ -529,11 +529,18 @@ namespace RavlN {
     }
     else if (Name() == "?content") Indent(out,level) << Data()["."] << "\n";
     else {
-      Indent(out,level) << '<' << Name();
+      Indent(out,level) << '<';
+      if (isPI) {
+        out << '?';
+      }
+      out << Name();
       for(HashIterC<StringC,StringC> ita(Data());ita;ita++) {
         out << ' ' << ita.Key() << "=\"" << ita.Data() << "\"";
       }
-      if(me.Children().IsEmpty()) {
+      if(isPI) {
+      out << "?>\n";
+    }
+    else if(me.Children().IsEmpty()) {
         out << "/>\n";
       }
       else {
@@ -551,11 +558,18 @@ namespace RavlN {
   
   ostream &XMLTreeBodyC::Dump(ostream &out,int level) const {
     XMLTreeC me(const_cast<XMLTreeBodyC &>(*this));
-    Indent(out,level) << '<' << Name();
+    Indent(out,level) << '<';
+    if (isPI) {
+      out << '?';
+    }
+    out << Name();
     for(HashIterC<StringC,StringC> ita(Data());ita;ita++) {
       out << ' ' << ita.Key() << "=\"" << ita.Data() << "\"";
     }
-    if(me.Children().IsEmpty()) {
+    if(isPI) {
+      out << "?>\n";
+    }
+    else if(me.Children().IsEmpty()) {
       out << "/>\n";
     } 
     else {
