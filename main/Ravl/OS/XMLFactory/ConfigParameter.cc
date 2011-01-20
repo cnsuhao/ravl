@@ -18,6 +18,9 @@ namespace RavlN
   : ConfigParameterC<std::string>(factory)
   {}
 
+  void ConfigParameterStringC::ZeroOwners()
+  { ConfigParameterC<std::string>::ZeroOwners(); }
+
   static RavlN::XMLFactoryRegisterC<ConfigParameterStringC> g_FactoryRegisterString("RavlN::ConfigParameterStringC");
 
   void LinkConfigParameter() {}

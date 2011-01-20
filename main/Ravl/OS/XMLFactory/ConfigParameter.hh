@@ -13,7 +13,7 @@
 #define RAVL_CONFIGPARAMETER_HEADER 1
 
 #include "Ravl/Threads/Signal1.hh"
-#include "Ravl/SmartPtr.hh"
+#include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/XMLFactory.hh"
 #include <string>
 
@@ -25,7 +25,7 @@ namespace RavlN
 
   template<typename DataT>
   class ConfigParameterC
-  : public RCBodyVC
+  : public RCLayerBodyC
   {
   public:
     ConfigParameterC(const XMLFactoryContextC &factory)
@@ -71,13 +71,20 @@ namespace RavlN
     { return m_sigUpdate; }
     //: Access update signal.
 
-    typedef SmartPtrC<ConfigParameterC<DataT> > RefT;
+    typedef SmartOwnerPtrC<ConfigParameterC<DataT> > RefT;
+    //! Handle to this class.
+
+    typedef SmartCallbackPtrC<ConfigParameterC<DataT> > CBRefT;
     //! Handle to this class.
 
   protected:
     RWLockC m_access;
     DataT m_value;
     Signal1C<DataT> m_sigUpdate;
+
+    //! Called when owners drops to zero
+    virtual void ZeroOwners()
+    { RCLayerBodyC::ZeroOwners(); }
   };
 
   //: std::string configuration parameter.
@@ -93,9 +100,15 @@ namespace RavlN
     : ConfigParameterC<std::string>(initialValue)
     {}
     //: Construct from default value.
-
-    typedef SmartPtrC<ConfigParameterStringC> RefT;
+    
+    typedef SmartOwnerPtrC<ConfigParameterStringC> RefT;
     //: Handle to this class.
+    //! Called when owners drops to zero
+    
+    typedef SmartCallbackPtrC<ConfigParameterStringC> CBRefT;
+    //! Handle to this class.
+  protected:
+    virtual void ZeroOwners();
   };
 
 }
