@@ -5,6 +5,8 @@
 // file-header-ends-here
 #ifndef RAVL_SERIALDIRECT_HEADER
 #define RAVL_SERIALDIRECT_HEADER 1
+
+
 /////////////////////////////////////////////////////////////
 //! userlevel=Normal
 //! date="16/09/2010"
@@ -151,3 +153,4 @@ namespace RavlN {
 }
 
 #endif
+

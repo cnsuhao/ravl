@@ -9,6 +9,7 @@
 //! lib=RavlOS
 //! file="Ravl/OS/Misc/SerialIO.cc"
 
+
 #include  "Ravl/OS/SerialIO.hh"
 #include  "Ravl/SmartPtr.hh"
 #include  "Ravl/DP/FileFormatIO.hh"
@@ -50,32 +51,36 @@ namespace RavlN {
   //////// OSerialC ///////////////////////////////////////////////////////////////
 
   //: Open a output serial stream.
+#if (!RAVL_OS_WIN32)
   OSerialC::OSerialC(const char *dev, bool buffered)
     : SerialCtrlC(dev, "WRONLY")
   {
     ((OStreamC &)(*this)) = OStreamC(Fd(),true,buffered);
   }
+#endif
   
   //////// ISerialC ///////////////////////////////////////////////////////////////
 
 
   //: Open an input serial stream.
+#if (!RAVL_OS_WIN32)
   ISerialC::ISerialC (const char *dev, bool buffered)
     : SerialCtrlC(dev, "RDONLY")
   {
     ((IStreamC &)(*this)) = IStreamC(Fd(),true,buffered);
   }
-
+#endif
   //////////////////////////////////////////////////////////
 
   //: Open an input serial stream.
-
+#if (!RAVL_OS_WIN32)
   IOSerialC::IOSerialC (const char *dev, bool buffered)
   : SerialCtrlC(dev, "RDWR")
   {
     ((IStreamC &)(*this)) = IStreamC(Fd(),true,buffered);
     ((OStreamC &)(*this)) = OStreamC(Fd(),true,buffered);
   }
+#endif
 
   bool IOSerialC::Close()
   {
@@ -87,4 +92,5 @@ namespace RavlN {
 
 
 }
+
 

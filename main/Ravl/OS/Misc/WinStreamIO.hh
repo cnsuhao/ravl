@@ -7,6 +7,7 @@
 #ifndef RAVL_WINSTREAMIO_HEADER
 #define RAVL_WINSTREAMIO_HEADER 1
 
+#include "Ravl/config.h"
 #if RAVL_OS_WIN32
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 #include <windows.h> 
@@ -15,13 +16,23 @@
 
 namespace RavlN {
 
-#if RAVL_OS_WIN32 && 0
+#if RAVL_OS_WIN32
   class WinStreamIOC 
   {
   public:
-    WinStreamIOC();
+    WinStreamIOC(float writeTimeOut = 30,float readTimeOut = 30)
+      : //m_fd(fd),
+        m_writeTimeOut((int)(1000*writeTimeOut)), // MS
+        m_readTimeOut((int)(1000*readTimeOut))    // MS
+		//,
+       // m_dontClose(dontClose)
+		//,
+        //m_failOnReadTimeout(false),
+        //m_failOnWriteTimeout(true),
+        //m_fillBufferOnRead(true)
+    {}
     //: Constructor.
-    
+        
     ~WinStreamIOC();
     //: Destructor.
     
@@ -32,13 +43,13 @@ namespace RavlN {
     //: Close the file handle.
     
     void SetReadTimeout(float timeOut)
-    { m_readTimeOut = timeOut; }
+    { m_readTimeOut = (int)(1000*timeOut); }
     //: Set the amount of time you should attempt to read from a file descriptor.
     // This limits the time spent attempting to write to a socket
     // without reading a single byte. The default is 120 seconds.
     
     void SetWriteTimeout(float timeOut)
-    { m_writeTimeOut = timeOut; }
+    { m_writeTimeOut = (int)(1000*timeOut); }
     //: Set the amount of time you should attempt to write to a file descriptor.
     // This limits the time spent attempting to write to a socket
     // without sending a single byte. The default is 120 seconds.
@@ -60,8 +71,8 @@ namespace RavlN {
     //: Test of port is open.
 
   private:
-    float m_readTimeOut;
-    float m_writeTimeOut;
+    int m_readTimeOut; // time in msec
+    int m_writeTimeOut;// time in msec
     HANDLE m_portHandle;
   };
   

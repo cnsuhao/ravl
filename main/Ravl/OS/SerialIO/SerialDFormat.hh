@@ -6,6 +6,7 @@
 #ifndef RAVL_SERIAL_DIRECT_FORMAT_HEADER
 #define RAVL_SERIAL_DIRECT_FORMAT_HEADER 1
 
+#ifndef VISUAL_CPP
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/OS/SerialAbstract.hh"
 #include "Ravl/SmartPtr.hh"
@@ -76,3 +77,5 @@ namespace RavlN {
 }
 
 #endif
+#endif
+

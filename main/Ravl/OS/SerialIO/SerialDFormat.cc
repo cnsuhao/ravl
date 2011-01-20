@@ -6,6 +6,8 @@
 //////////////////////////////////////////////////////////////////
 //! author = "Alex Kostin"
 
+#ifndef VISUAL_CPP
+
 #include "Ravl/OS/SerialDFormat.hh"
 #include "Ravl/OS/SerialAbstractPort.hh"
 #include "Ravl/TypeName.hh"
@@ -163,3 +165,4 @@ namespace RavlN
   void InitSerialDirectFormat()
   {}
 }
+#endif

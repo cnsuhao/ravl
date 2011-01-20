@@ -115,18 +115,18 @@ namespace RavlN {
       bFoundNext = FindNextFile(hFindFile, &dataFind);
     }
 #else
-	wchar_t wsbuff[1025];
+	//char wsbuff[1025];
 	size_t size = 0;
-	mbstowcs_s(&size,wsbuff, 1024,strSearch.chars(), strSearch.length());
-    HANDLE hFindFile = FindFirstFile(wsbuff, &dataFind);
+	//mbstowcs_s(&size,wsbuff, 1024,strSearch.chars(), strSearch.length());
+	HANDLE hFindFile = FindFirstFile(strSearch.chars(), &dataFind);
     BOOL bFoundNext = hFindFile ? true : false;
     while (bFoundNext) {
 	  mbstate_t state;
-	  char cbuff[1025];
+	  //char cbuff[1025];
 	  size_t csize = 0;
-	  wchar_t *wname = dataFind.cFileName;
-	  wcsrtombs_s(&csize,cbuff,1024,(const wchar_t **) &wname,1024,&state);
-      ret.InsLast(StringC(cbuff));
+	  char *wname = dataFind.cFileName;
+	  //wcsrtombs_s(&csize,cbuff,1024,(const char **) &wname,1024,&state);
+      ret.InsLast(StringC(wname));
       bFoundNext = FindNextFile(hFindFile, &dataFind);
     }
 #endif

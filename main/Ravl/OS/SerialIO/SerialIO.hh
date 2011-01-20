@@ -6,6 +6,9 @@
 // file-header-ends-here
 #ifndef RAVL_SERIALIO_HEADER
 #define RAVL_SERIALIO_HEADER 1
+
+
+
 /////////////////////////////////////////////////////////////
 //! userlevel=Normal
 //! date="31/12/1999"
@@ -217,3 +220,5 @@ namespace RavlN {
 }
 
 #endif
+
+

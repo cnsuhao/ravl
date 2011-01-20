@@ -13,6 +13,7 @@
 //! lib=RavlOS
 //! file="Ravl/OS/Misc/SerialAbstract.cc"
 
+
 #include "Ravl/OS/SerialDirect.hh"
 #include "Ravl/Assert.hh"
 #include "Ravl/Exception.hh"
@@ -358,11 +359,12 @@ bool SerialDirectC::SetParity(ParityT par) {
 #endif
 }
 
+#if (!RAVL_OS_WIN32)
 //! Access file descriptor.
 IntT SerialDirectC::Fd() const {
   return m_streamIo.Fd();
 }
-
+#endif
 //! Set the amount of time you should attempt to read from a file descriptor.
 // This limits the time spent attempting to write to a socket
 // without reading a single byte. The default is 120 seconds.
@@ -379,34 +381,43 @@ void SerialDirectC::SetWriteTimeout(float timeout) {
 
 //! Enable non-blocking use of read and write.
 // true= read and write's won't do blocking waits.
+
+#ifndef VISUAL_CPP
 bool SerialDirectC::SetNonBlocking(bool block) {
   return m_streamIo.SetNonBlocking(block);
 }
+#endif
 
 //! Setup don't close flag.
+#if (!RAVL_OS_WIN32)
 void SerialDirectC::SetDontClose(bool ndontClose) {
   m_streamIo.SetDontClose(ndontClose);
 }
-
+#endif
 //! Should read's fail on timeout ?
 // If false, the socket will be checked its
 // open and valid, if it is the read will be retried.
+#ifndef VISUAL_CPP
 void SerialDirectC::SetFailOnReadTimeout(bool val) {
   m_streamIo.SetFailOnReadTimeout(val);
 }
-
+#endif
 //! Should write's fail on timeout ?
 // If false, the socket will be checked its
 // open and valid, if it is the write will be retried.
+#ifndef VISUAL_CPP
 void SerialDirectC::SetFailOnWriteTimeout(bool val) {
   m_streamIo.SetFailOnWriteTimeout(val);
 }
+#endif
 
 //! Should read functions keep reading until the buffer is full?
 // If not the read will return immediately once any has been read.
+#ifndef VISUAL_CPP
 void SerialDirectC::SetFillBufferOnRead(bool value) {
   m_streamIo.SetFillBufferOnRead(value);
 }
+#endif
 
 //: Set input bit rate.
 bool SerialDirectC::SetISpeed(termios &pb,IntT bitrate) {

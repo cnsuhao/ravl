@@ -4,21 +4,21 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-
+#include <iostream>
 #include "Ravl/Types.hh"
 #include "Ravl/OS/WinStreamIO.hh"
 
 namespace RavlN {
 
-#if RAVL_OS_WIN32 && 0
-  
+#if RAVL_OS_WIN32
+#define ThrowLastError(_message) (cerr << _message << endl) 
   //: Constructor.
-  
+/*  
   WinStreamIOC::WinStreamIOC()
     :  m_rwTimeout(30.0),
        m_portHandle(INVALID_HANDLE_VALUE)
   {}
-  
+*/  
   //: Destructor.
   
   WinStreamIOC::~WinStreamIOC()
@@ -51,6 +51,7 @@ namespace RavlN {
   
   IntT WinStreamIOC::Read(char *buffer,UIntT size) 
   {
+    int bufferSize = size; // 2011-01-17 MS
     //printf("SerialPortC::Read:%i\n", MinBytesToRead);
     DWORD dwRead;
     OVERLAPPED osReader = {0};
@@ -85,7 +86,7 @@ namespace RavlN {
             ThrowLastError("SerialPortC::Read: error reading from com port");
           
           //printf("Waiting in read...");
-          DWORD dwRes = WaitForSingleObject(osReader.hEvent, m_rwTimeout);
+          DWORD dwRes = WaitForSingleObject(osReader.hEvent, m_readTimeOut);
           switch(dwRes) {
             // Read completed.
           case WAIT_OBJECT_0:
@@ -120,7 +121,7 @@ namespace RavlN {
             
             // Wait a little while for an event to occur.
             //printf("Waiting...");
-            DWORD dwRes = WaitForSingleObject(osCommEvent.hEvent, m_rwTimeout);
+            DWORD dwRes = WaitForSingleObject(osCommEvent.hEvent, m_readTimeOut);
             switch(dwRes) {
               // Event occurred.
             case WAIT_OBJECT_0: 
@@ -147,10 +148,12 @@ namespace RavlN {
       
       //read more data if possible
       //printf("trying to read rest of the buffer\n");
+	  /* 2011-01-17
       while(ReadFile(m_portHandle, buffer, bufferSize, &dwRead, &osReader) && dwRead > 0) {
         m_data += buffer;
         //printf("dwRead %i buffer %i, m_data %s\n", int(dwRead), int(buffer[0]), m_data.c_str());
       }
+	  */
     } catch( ... ) {
       if(!CancelIo(m_portHandle))
         printf("Can't cancel i/o\n");
@@ -195,40 +198,44 @@ namespace RavlN {
       ThrowLastError("SerialPortC::Write: error creating overlapped event handle");
     
     // Issue write.
-    try {
-      while(at < size) {
-        //printf("writing to port %s\n", Data.c_str());
-        dwWritten = 0;
+    try 
+	{
+	  while(at < size) {
+		//printf("writing to port %s\n", Data.c_str());
+		dwWritten = 0;
         
-        if(!WriteFile(m_portHandle, &buff[at], size-at, &dwWritten, &osWrite)) {
-          //printf("Checking error code\n");
-          //printf("dwWritten:%i\n", int(dwWritten));
+		if(!WriteFile(m_portHandle, &buff[at], size-at, &dwWritten, &osWrite)) {
+		  //printf("Checking error code\n");
+		  //printf("dwWritten:%i\n", int(dwWritten));
           
-          if(GetLastError() != ERROR_IO_PENDING)  {
-            // WriteFile failed, but isn't delayed. Report error and abort.
-            ThrowLastError("SerialPortC::Write: error writing to com port");
-          }
+		  if(GetLastError() != ERROR_IO_PENDING)  {
+			// WriteFile failed, but isn't delayed. Report error and abort.
+			ThrowLastError("SerialPortC::Write: error writing to com port");
+		  }
           
-          // Write is pending.
-          //printf("Waiting\n");
-          dwRes = WaitForSingleObject(osWrite.hEvent, m_rwTimeout);
-          if(dwRes != WAIT_OBJECT_0) {
-            if(!CancelIo(m_portHandle))
-              printf("Can't cancel i/o\n");
-            ThrowLastError("SerialPortC::Write: writing to com port timeout");
-          }
+		  // Write is pending.
+		  //printf("Waiting\n");
+		  dwRes = WaitForSingleObject(osWrite.hEvent, m_writeTimeOut);
+		  if(dwRes != WAIT_OBJECT_0) {
+			if(!CancelIo(m_portHandle))
+			  printf("Can't cancel i/o\n");
+			ThrowLastError("SerialPortC::Write: writing to com port timeout");
+		  }
           
-          if(!GetOverlappedResult(m_portHandle, &osWrite, &dwWritten, FALSE)) {
-            ThrowLastError("SerialPortC::Write: writing to com port fail");
-          }
-          //printf("dwWritten:%i\n", int(dwWritten));
-        }
+		  if(!GetOverlappedResult(m_portHandle, &osWrite, &dwWritten, FALSE)) {
+			ThrowLastError("SerialPortC::Write: writing to com port fail");
+		  }
+		  //printf("dwWritten:%i\n", int(dwWritten));
+		}
         
-        at += dwWritten;
-      } catch( ... ) {
+		at += dwWritten;
+	  }
+	} 
+	   
+	catch( ... ) 
+	{
         CloseHandle(osWrite.hEvent);
         throw;
-      }
     }
     
     CloseHandle(osWrite.hEvent);

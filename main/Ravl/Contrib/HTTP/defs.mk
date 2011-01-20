@@ -7,9 +7,9 @@
 #! rcsid="$Id$"
 #! file="Ravl/Contrib/HTTP/defs.mk"
 
-REQUIRES= libCurl
+REQUIRES=libCurl
 
-DONOT_SUPPORT=VCPP
+#DONOT_SUPPORT=VCPP
 
 PACKAGE=Ravl/IO
 
