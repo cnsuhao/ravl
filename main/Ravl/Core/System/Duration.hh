@@ -15,41 +15,44 @@ namespace RavlN {
   //: A time interval
   // Implemented as a pair of timecodes
 
-  class DurationC : PairC<TimeCodeC> {
+  class DurationC {
+
+    PairC<TimeCodeC> tc;
+
   public:
     DurationC()
-      : PairC<TimeCodeC>(TimeCodeC(0,0), TimeCodeC(0,0))
+      : tc(TimeCodeC(0,0), TimeCodeC(0,0))
     {}
     //: Default constructor
     
     DurationC(const TimeCodeC& Start, const TimeCodeC& End)
-      : PairC<TimeCodeC>(Start, End)
+      : tc(Start, End)
     {}
     //: Constructor from start and end times
     
     DurationC(const TimeCodeC& Time)
-      : PairC<TimeCodeC>(Time, Time)
+      : tc(Time, Time)
     {}
     //: Constructor for item of zero duration
     
     TimeCodeC& Start()
-    { return A(); }
+    { return tc.A(); }
     //: Access start time
     
     const TimeCodeC& Start() const
-    { return A(); }
+    { return tc.A(); }
     //: Returns start time
     
     TimeCodeC& End() 
-    { return B(); }
+    { return tc.B(); }
     //: Access end time
     
     const TimeCodeC& End() const
-    { return B(); }
+    { return tc.B(); }
     //: Returns end time
     
     IntT NoOfFrames() const
-    { return B().getFrameCount() - A().getFrameCount() + 1; }
+    { return tc.B().getFrameCount() - tc.A().getFrameCount() + 1; }
     //: Length of interval
     
     bool operator==(const DurationC& d) const
@@ -82,7 +85,15 @@ namespace RavlN {
     bool IsValid() const
     { return (Start().IsValid() && (End() >= Start())); }
     //: Check if duration is valid  
+
   };
 
+  inline ostream &operator<<(ostream &s, const DurationC &out)
+  { s << out.Start() << ' ' << out.End(); return s; }
+  //: Write time interval out to stream.
+
+  inline istream &operator>>(istream &s, DurationC &in)
+  { s >> in.Start() >> in.End(); return s; }
+  //: Write time interval out to stream.
 }
 #endif
