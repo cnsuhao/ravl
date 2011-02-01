@@ -64,7 +64,7 @@ namespace RavlGUIN
   //: Create the widget.
   
   bool MenuItemBodyC::Create() {
-    ONDEBUG(cerr << "MenuItemBodyC::Create(), Called. \n");
+    ONDEBUG(cerr << "MenuItemBodyC::Create(), name(" << name.chars() << ")\n");
     /* Create a new menu-item with a name... */
     if(!name.IsEmpty()) {
       widget = gtk_menu_item_new_with_label(name);
@@ -88,7 +88,7 @@ namespace RavlGUIN
     widget = newWidget;
     gtk_signal_connect(GTK_OBJECT(widget), "activate",
      GTK_SIGNAL_FUNC(RavlGUIN::MenuItemC_response), this);
-    ONDEBUG(cerr << "MenuItemBodyC::Create(widget), " << name.chars() << " Done. \n");
+    ONDEBUG(cerr << "MenuItemBodyC::Create(widget), name(" << name.chars() << ")\n");
     ConnectSignals();
     return true;
   }
@@ -105,38 +105,80 @@ namespace RavlGUIN
   
   //: Create the widget.
   
-  bool MenuBodyC::Create() {
-    ONDEBUG(cerr << "MenuBodyC::Create(), Called. \n");
+  bool MenuBodyC::Create()
+  {
+    ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") called \n");
+
     widget = gtk_menu_new();
+
     for(DLIterC<WidgetC> it(children);it.IsElm();it.Next()) {
       if(!it.Data().Create()) 
-	cerr << "MenubarBodyC::Create(), Widget create failed ! \n";
-      gtk_widget_show (it.Data().Widget());
-#if 1
+        cerr << "MenuBodyC::Create(), name(" << menuName << ") widget create failed!\n";
+
+      gtk_widget_show(it.Data().Widget());
+
       MenuC sm(it.Data());
       if(sm.IsValid()) {
-	ONDEBUG(cerr << "Creating a sub menu. \n");
-	GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
-	gtk_widget_show(submenu);
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu),it.Data().Widget()); 
-	gtk_menu_append(GTK_MENU(widget),submenu);
-      } else // Assume its a menu item.
-#endif
-	gtk_menu_append(GTK_MENU (widget), it.Data().Widget());
+        ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") sub menu name(" << sm.MenuName().chars() << ")\n");
+        GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
+        gtk_widget_show(submenu);
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu),it.Data().Widget());
+        gtk_menu_append(GTK_MENU(widget),submenu);
+      }
+      else
+      {
+        ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") adding menu item\n");
+        gtk_menu_append(GTK_MENU(widget), it.Data().Widget());
+      }
     }
-    ONDEBUG(cerr << "MenuBodyC::Create(), Done. \n");  
+
     ConnectSignals();
+
+    ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") done\n");
+
     return true;
   }
   
   //: Add an item to the end of the menu
-  bool MenuBodyC::GUIAdd(WidgetC &widge) {
-    // Call base class add
-    ContainerWidgetBodyC::GUIAdd(widge);
-    if (widget == 0) {
-      // Append to menu
-      gtk_menu_append(GTK_MENU(widget),widge.Widget());
+
+  bool MenuBodyC::GUIAdd(const WidgetC &widge)
+  {
+    ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") called\n");
+    
+    children.InsLast(widge);
+
+    if (widget != 0)
+    {
+      WidgetC &addedWidget = children.Last();
+
+      ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") adding to menu\n");
+      if (addedWidget.Widget() == 0)
+      {
+        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") creating widget\n");
+        if (!addedWidget.Create())
+          cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") widget create failed!\n";
+
+      }
+
+      gtk_widget_show(addedWidget.Widget());
+
+      MenuC sm(addedWidget);
+      if (sm.IsValid()) {
+        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") sub menu name(" << sm.MenuName().chars() << ")\n");
+        GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
+        gtk_widget_show(submenu);
+        gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu), addedWidget.Widget());
+        gtk_menu_append(GTK_MENU(widget), submenu);
+      }
+      else
+      {
+        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") adding menu item\n");
+        gtk_menu_append(GTK_MENU(widget), addedWidget.Widget());
+      }
     }
+
+    ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") done\n");
+    
     return true;
   }
 
@@ -173,6 +215,31 @@ namespace RavlGUIN
 		    0, GDK_CURRENT_TIME);
     return ;
   }
+
+
+
+  void MenuBodyC::Popup(MouseEventC &me)
+  {
+    if(widget == 0)
+      Create();
+    if(widget == 0)
+    {
+      cerr << "ERROR: Failed to create menu.\n";
+      return;
+    }
+
+    int button = 0;
+    for (int testButton = 0; testButton < me.MaxButtons(); testButton++)
+    {
+      if (!me.IsPressed(testButton) && me.HasChanged(testButton))
+      {
+        button = testButton;
+        break;
+      }
+    }
+    
+    gtk_menu_popup(GTK_MENU(widget), NULL, NULL, NULL, NULL, button, me.Time());
+  }
   
   //: Create a handle from a base class.
   // This will create an invalid reference if
@@ -183,7 +250,7 @@ namespace RavlGUIN
   {
     if(IsValid()) {
       if(dynamic_cast<const MenuBodyC *>(&(WidgetC::Body())) == 0)
-	Invalidate();
+	      Invalidate();
     }
   }
 

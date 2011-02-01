@@ -20,6 +20,7 @@
 #include "Ravl/Threads/Signal3.hh"
 #include "Ravl/GUI/CWidget.hh"
 #include "Ravl/String.hh"
+#include "Ravl/GUI/MouseEvent.hh"
 
 namespace RavlGUIN {
 
@@ -121,7 +122,7 @@ namespace RavlGUIN {
     virtual bool Create();
     //: Create the widget.
     
-    virtual bool GUIAdd(WidgetC &widge);
+    virtual bool GUIAdd(const WidgetC &widge);
     //: Add an item to the end of the menu
     // GUI thread only.
 
@@ -131,7 +132,10 @@ namespace RavlGUIN {
     
     void Popup(GdkEvent *event = 0);
     //: Make menu popup in 'parent' at 'where'.
-    
+
+    void Popup(MouseEventC &me);
+    //: Popup the menu.
+
   protected:
     StringC menuName;
   };
@@ -196,6 +200,11 @@ namespace RavlGUIN {
     //: Popup a menu.
     // This is just a way of avoiding some casts.
     // See Popup(GdkEvent *) for details.
+
+    void Popup(MouseEventC &me)
+    { Body().Popup(me); }
+    //: Popup the menu.
+
   };
 
   //////////////////////////////////////////////////
