@@ -24,7 +24,41 @@
 
 using namespace RavlGUIN;
 
-bool gui_quit() 
+namespace
+{
+
+  const RealT g_statusBarDelay = 2;
+  const int g_popupMenuButton = 2;
+
+}
+
+bool addMenu(MenuC &menu)
+{
+  static int count = 1;
+  StringC menuTitle;
+
+  menuTitle.form("Sub menu %d", count);
+  MenuC newMenu = MenuC(menuTitle);
+  menu.GUIAdd(newMenu);
+
+  menuTitle.form("Add to sub menu %d", count);
+  MenuItemC newNenuItem = MenuItem(menuTitle, &addMenu, newMenu);
+  menu.GUIAdd(newNenuItem);
+
+  count++;
+
+  return true;
+}
+
+bool MousePress(MouseEventC &me, MenuC &menu)
+{
+  if(!me.IsPressed(g_popupMenuButton) && me.HasChanged(g_popupMenuButton))
+    menu.Popup(me);
+
+  return true;
+}
+
+bool onQuit()
 {
   Manager.Quit(); // Initate shutdown.
   return true;
@@ -37,30 +71,43 @@ int main(int nargs,char *args[])
   WindowC win(100,100,"Hello");
   
   FileSelectorC fs;
-  
-  MenuC test("back",
-		MenuItemC("Not Implemented") +
-		MenuItem("Quit",gui_quit) 
-		);
-  StatusBarC sb("Hello");
-  RealT d = 2;
+
+  StatusBarC statusBar("Hello");
+
+  MenuC subMenu("Sub menu 0");
+  MenuC anotherEmbeddedMenu("Another sub menu");
+  subMenu.GUIAdd(anotherEmbeddedMenu);
+
+  RealT delay = g_statusBarDelay;
   MenuBarC menuBar(MenuC("File",
-			 MenuItem("Not Implemented 1",sb,&StatusBarC::PushTimedF,d,StringC("Not Implemented.")) +
-			 MenuItem("Not Implemented 2",sb,&StatusBarC::PushF,StringC("Not Implemented.2")) +
-			 MenuItemSeparator() +
-			 MenuItemShow("Open",fs) +
-			 MenuItem("Quit",gui_quit) +
-			 MenuCheckItemC("xx")
-			 ));
+                     MenuItemShow("Open", fs) +
+                     MenuItemSeparator() +
+                     MenuItem("Not Implemented 1", statusBar, &StatusBarC::PushTimedF, delay, StringC("Not Implemented 1...")) +
+                     MenuItem("Not Implemented 2", statusBar, &StatusBarC::PushF, StringC("Not Implemented 2...")) +
+                     MenuItemSeparator() +
+                     subMenu +
+                     MenuItem("Add to sub menu 0", &addMenu, subMenu) +
+                     MenuItemSeparator() +
+                     MenuCheckItemC("Check me out") +
+                     MenuItemSeparator() +
+                     MenuItem("Quit", onQuit)));
+
+  MenuC popupMenu("Popup");
+  popupMenu.GUIAdd(MenuItem("Not Implemented 3", statusBar, &StatusBarC::PushTimedF, g_statusBarDelay, StringC("Not Implemented 3...")));
+  MenuC popupSubMenu("SubPop");
+  popupSubMenu.GUIAdd(MenuItem("Not Implemented 4", statusBar, &StatusBarC::PushTimedF, g_statusBarDelay, StringC("Not Implemented 4...")));
+  popupMenu.GUIAdd(popupSubMenu);
+
+  RawCanvasC canvas(100, 100);
+  MouseEventC dummyMouseEvent;
+  Connect(canvas.Signal("button_press_event"), &MousePress, dummyMouseEvent, popupMenu);
   
   win.Add(VBox(menuBar + 
-	       RawCanvasC(100,100) +       // Make a canvas
-	       sb
-	       ));
+            canvas +
+            statusBar));
   win.Show();
-  sb.Next("Ready.");
-  //sb.PushTimed(3,"Setup complete.");
+  statusBar.Next("Ready...");
   
   Manager.Start();
-  cerr << "Finished. \n";
+  cerr << "Finished.\n";
 }
