@@ -126,6 +126,10 @@ namespace RavlGUIN {
     //: Add an item to the end of the menu
     // GUI thread only.
 
+    virtual bool GUIRemove(WidgetC &widge);
+    //: Remove an item from the menu
+    // GUI thread only.
+
     const StringC &MenuName() const 
     { return menuName; }
     //: Menu name

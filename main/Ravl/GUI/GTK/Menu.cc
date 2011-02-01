@@ -119,7 +119,7 @@ namespace RavlGUIN
 
       MenuC sm(it.Data());
       if(sm.IsValid()) {
-        ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") sub menu name(" << sm.MenuName().chars() << ")\n");
+        ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") submenu name(" << sm.MenuName().chars() << ")\n");
         GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
         gtk_widget_show(submenu);
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu),it.Data().Widget());
@@ -143,6 +143,8 @@ namespace RavlGUIN
 
   bool MenuBodyC::GUIAdd(const WidgetC &widge)
   {
+    RavlAssert(Manager.IsGUIThread());
+
     ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") called\n");
     
     children.InsLast(widge);
@@ -164,7 +166,7 @@ namespace RavlGUIN
 
       MenuC sm(addedWidget);
       if (sm.IsValid()) {
-        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") sub menu name(" << sm.MenuName().chars() << ")\n");
+        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") submenu name(" << sm.MenuName().chars() << ")\n");
         GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
         gtk_widget_show(submenu);
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu), addedWidget.Widget());
@@ -182,6 +184,70 @@ namespace RavlGUIN
     return true;
   }
 
+
+
+  bool MenuBodyC::GUIRemove(WidgetC &widge)
+  {
+    RavlAssert(Manager.IsGUIThread());
+
+    ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") called\n");
+
+    bool widgetFound = false;
+    for (DLIterC<WidgetC> iterChildren(children); iterChildren.IsElm(); iterChildren.Next())
+    {
+      if (iterChildren.Data() == widge)
+      {
+        widgetFound = true;
+        
+        iterChildren.Del();
+        
+        break;
+      }
+    }
+
+    if (widgetFound && widget && widge.Widget())
+    {
+      MenuC subMenu(widge);
+      if (subMenu.IsValid())
+      {
+        ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") searching for submenu\n");
+
+        GList *iterContainer = gtk_container_get_children(GTK_CONTAINER(widget));
+        while (iterContainer)
+        {
+          ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") searching submenu widget\n");
+
+          GtkWidget *childWidget = reinterpret_cast<GtkWidget*>(iterContainer->data);
+          if (childWidget && GTK_IS_MENU_ITEM(childWidget))
+          {
+            GtkWidget *subMenu = gtk_menu_item_get_submenu(GTK_MENU_ITEM(childWidget));
+            if (subMenu && subMenu == widge.Widget())
+            {
+              ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") submenu widget found\n");
+
+              gtk_container_remove(GTK_CONTAINER(widget), childWidget);
+              
+              break;
+            }
+          }
+
+          iterContainer = iterContainer->next;
+        }
+
+        g_list_free(iterContainer);
+      }
+      else
+      {
+        ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") removing menu item\n");
+
+        gtk_container_remove(GTK_CONTAINER(widget), widge.Widget());
+      }
+    }
+
+    ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") done\n");
+
+    return true;
+  }
 
   //: Make menu popup in 'parent' at 'where'.
   
