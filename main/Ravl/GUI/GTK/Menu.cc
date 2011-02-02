@@ -9,6 +9,7 @@
 //! lib=RavlGUI
 //! file="Ravl/GUI/GTK/Menu.cc"
 
+#include "Ravl/GUI/Manager.hh"
 #include "Ravl/GUI/Menu.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include <gtk/gtk.h>
