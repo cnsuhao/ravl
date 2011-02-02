@@ -63,6 +63,7 @@
 #include "Ravl/TimeCode.hh"
 #include "Ravl/OS/NetPortFormat.hh"
 #include "Ravl/DP/PrintIOInfo.hh"
+#include "Ravl/CDLIter.hh"
 #include <stdlib.h>
 
 #define DODEBUG 0
@@ -328,6 +329,7 @@ int doVPlay(int nargs,char *args[])
   bool simpleOnly = option.Boolean("sc",false,"Display Simple Controls only. ");
   //bool deInterlace = option.Boolean("di",false,"De-interlace. (Subsample by 2) ");
   DListC<StringC> attribs = option.List("a","List of attributes to set. ");
+  bool listAttribs = option.Boolean("la", "List all available attributes of this video");
   StringC formatIn = option.String("if","","Input format. ");
   bool noSeek = option.Boolean("ns",false,"Suppress seeking. ");
   bool listFormats    = option.Boolean("lf",    false,                    "Print list of available data formats. ");
@@ -370,6 +372,16 @@ int doVPlay(int nargs,char *args[])
     StringC attrValue = it->after('=').TopAndTail();
     if(!vidIn.SetAttr(attrName,attrValue))
       cerr << "WARNING: Failed to set attribute '" << attrName << "' to '" << attrValue <<  "'\n";
+  }
+  if (listAttribs) {
+    vidIn.GetAttrList(attribs);
+    cout << "Available attributes are:\n";
+    StringC attr;
+    for(ConstDLIterC<StringC> it(attribs);it;it++) {
+      vidIn.GetAttr(*it, attr);
+      cout << "  " << *it << " " << attr << endl;
+    }
+    exit (0);
   }
   
   ONDEBUG(cerr << "VPlay: Sequence opened.\n");
