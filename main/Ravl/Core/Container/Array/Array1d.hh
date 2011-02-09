@@ -82,13 +82,13 @@ namespace RavlN {
     // a copy is done.
 
     explicit Array1dC(SizeT dim);
-    //: An array with the range <0, 'dim'-1>.
+    //: An array with the range <code>{0 ... dim-1}</code>.
 
     Array1dC(IndexC min,IndexC max);
-    //: An array with the range <min,max>.
+    //: An array with the range <code>{min ... max}</code>.
 
     Array1dC(IntT min,IntT max);
-    //: An array with the range <min,max>.
+    //: An array with the range <code>{min ... max}</code>.
 
     Array1dC(SizeC min,SizeC max) {
       if(min > max)
@@ -97,10 +97,10 @@ namespace RavlN {
       buff = SingleBufferC<DataT>(newRange.Size());
       Attach(buff,newRange);
     }
-    //: From a SizeC range.
+    //: Array constructed from a <code>SizeC</code> range.
 
     explicit Array1dC(const IndexRangeC & range);
-    //: An array with the range <'range'.Min(), 'range'.Max()>.
+    //: An array with the range <code>{range.Min() ... range.Max()}</code>.
 
     Array1dC(const Array1dC<DataT> & vv);
     //: Another access to the array 'vv'.
@@ -108,20 +108,22 @@ namespace RavlN {
     Array1dC(DataT *             data,
 	     const IndexRangeC & range,
 	     bool                removable);
-    //: An array is created from the data at memory location 'data' with the
-    //: range of access in <'range'.Min(), 'range'.Max()>.
-    // <font color="red">Warning:</font>  the <code>data</code>argument is a pointer, with all the attendant problems.
+    //: An array is created from the data at memory location <code>data</code> with the
+    //: range <code>{range.Min() ... range.Max()}</code>.
+    // <font color="red">Warning:</font>  the <code>data</code> argument is a pointer, with all the attendant problems.
     //!param: data  - address of the data to be used as the array contents
-    //!param: removable - if true, "data" is  de-allocated from the heap during destruction of the array
+    //!param: removable - if true, <code>data</code> is  de-allocated from the heap during destruction of the array.<br>If <code>data</code> is not allocated on the heap, this arg <b>MUST</b> set false.
 
-    // <p> It is typically used to create an <code>Array1dC</code> initialised from some constant array, like this:<pre>
-    //   static RealT values[9] = {  -0.02311234,   0.00958230,   0.10377361,
-    //                                0.22375219,   0.27955917,   0.22375219,
-    //                                0.10377361,   0.00958230,  -0.02311234
+    // <p> It can be used to create an <code>Array1dC</code> initialised from some constant array, like this:<pre>
+    //   static RealT values[9] = {
+    //        -0.02311234,   0.00958230,   0.10377361,
+    //         0.22375219,   0.27955917,   0.22375219,
+    //         0.10377361,   0.00958230,  -0.02311234
     //    };
-    //    Array1dC<RealT> coeffs(values, IndexRangeC(-4,4), false);
+    //    Array1dC&lt;RealT&gt; coeffs(values, IndexRangeC(-4,4), false);
     //</pre>
-    // Here, <code>removable</code> is set <b>false</b> as the data was not allocated on the heap in the first place.</p>
+    // Here, <code>removable</code> is set <b>false</b> as the data was not allocated on the heap in the first place.<br>
+    // Note: it is the programmer's responsibility to make the <code>range</code> argument match the data size.</p>
 
     Array1dC(const BufferC<DataT> & bf, const IndexRangeC & range);
     //: Creates the array with limits 'range' using the buffer 'bf'.

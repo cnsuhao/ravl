@@ -72,11 +72,11 @@ namespace RavlN {
       : SizeBufferAccessC<DataT>(),
         buff(SingleBufferC<DataT>(dim))
     { Attach(buff,dim); }
-    //: Creates an uninitialised array with the range <0, 'dim'-1>.
+    //: Creates an uninitialised array with the range <code>{0 ... dim-1}</code>.
 
     static SArray1dC<DataT> ConstructAligned(const SizeT dim,UIntT align)
     { return SArray1dC<DataT>(SingleBufferC<DataT>(dim,align),dim); }
-    //: Creates an uninitialised array with the range <0, 'dim'-1> and byte alignment of the first element 'align'
+    //: Creates an uninitialised array with the range <code>{0 ... dim-1}</code> and byte alignment of the first element 'align'
     // align must be a power of 2.
 
     SArray1dC(const Slice1dC<DataT> &slice,bool alwaysCopy = true);
@@ -99,10 +99,22 @@ namespace RavlN {
     //: The subarray of the 'vv' with size 'dim'.
 
     inline SArray1dC(DataT *data,const SizeT  dim,bool     removable = true);
-    //: The array is created from the memory location 'data' with the range
-    //: of access in <0, 'dim'-1>.
-    // If flag 'removable' is false, 'data' is not deallocated during
-    // destructing of the array.
+    //: The array is created from the memory location <code>data</code> with the range
+    //: <code>{0 ... dim-1}</code>.
+    // <font color="red">Warning:</font>  the <code>data</code> argument is a pointer, with all the attendant problems.
+    //!param: data  - address of the data to be used as the array contents
+    //!param: removable - if true, <code>data</code> is  de-allocated from the heap during destruction of the array.<br>If <code>data</code> is not allocated on the heap, this arg <b>MUST</b> set false.
+
+    // <p> It can be used to create an <code>SArray1dC</code> initialised from some constant array, like this:<pre>
+    //   static RealT values[9] = {
+    //        -0.02311234,   0.00958230,   0.10377361,
+    //         0.22375219,   0.27955917,   0.22375219,
+    //         0.10377361,   0.00958230,  -0.02311234
+    //    };
+    //    SArray1dC&lt;RealT&gt; coeffs(values, 9, false);
+    //</pre>
+    // Here, <code>removable</code> is set <b>false</b> as the data was not allocated on the heap in the first place.<br>
+    // Note: it is the programmer's responsibility to make the <code>range</code> argument match the data size.</p>
 
     inline SArray1dC(const BufferC<DataT> & bf,SizeT dim,SizeT offsetInBuff = 0)
       : SizeBufferAccessC<DataT>(const_cast<BufferC<DataT> &>(bf).BufferAccess() + offsetInBuff, dim),
