@@ -819,6 +819,11 @@ namespace RavlN {
     friend inline void     cat(const char*, const char*, StringC&);
     friend inline void     cat(const char*, char, StringC&);
     
+    friend inline void     cat(const char, const StringC&, StringC&);
+    friend inline void     cat(const char, const SubStringC&, StringC&);
+    friend inline void     cat(const char, const char*, StringC&);
+    friend inline void     cat(const char, char, StringC&);
+    
     // double concatenation, by request. (yes, there are too many versions, 
     // but if one is supported, then the others should be too...)
     // Concatenate first 3 args, store in last arg
@@ -1176,6 +1181,18 @@ namespace RavlN {
   inline void cat(const char* x, char y, StringC& r)
   { r.rep = Scat(r.rep, x, -1, &y, 1); }
   
+  inline void cat(const char x, const StringC& y, StringC& r)
+  { r.rep = Scat(r.rep, StringC(x), -1, y.chars(), y.length()); }
+  
+  inline void cat(const char x, const SubStringC& y, StringC& r)
+  { r.rep = Scat(r.rep, StringC(x), -1, y.chars(), y.length()); }
+  
+  inline void cat(const char x, const char* y, StringC& r)
+  { r.rep = Scat(r.rep, StringC(x), -1, y, -1); }
+  
+  inline void cat(const char x, char y, StringC& r)
+  { r.rep = Scat(r.rep, StringC(x), -1, &y, 1); }
+  
   inline void cat(const StringC& a, const StringC& x, const StringC& y, StringC& r)
   { r.rep = Scat(r.rep, a.chars(), a.length(), x.chars(), x.length(), y.chars(), y.length()); }
   
@@ -1309,6 +1326,14 @@ namespace RavlN {
   }
   
   inline StringC operator+(const char* x, const SubStringC& y) { 
+    StringC r; cat(x, y, r); return r; 
+  }
+
+  inline StringC operator+(const char x, const StringC& y) { 
+    StringC r; cat(x, y, r); return r; 
+  }
+  
+  inline StringC operator+(const char x, const SubStringC& y) { 
     StringC r; cat(x, y, r); return r; 
   }
 

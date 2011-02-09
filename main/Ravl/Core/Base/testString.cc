@@ -58,6 +58,8 @@ int testString() {
     if (!num.IntValue(ans) || (ans != 357)) return __LINE__;
     if (notnum.IntValue(ans)) return __LINE__;
   }
+  if ((StringC('a')+'b') != "ab") return __LINE__;
+  if (('a'+StringC('b')) != "ab") return __LINE__;
   for(Int64T i = 0;i < 10;i++) {
     StringC ui(i);
     //cerr<< " '" << ui << "' " << ui.Int64Value() << "\n";
