@@ -98,13 +98,13 @@ namespace RavlN {
     inline SArray1dC(const SArray1dC<DataT> & vv,SizeT dim,SizeT offsetInBuff = 0);
     //: The subarray of the 'vv' with size 'dim'.
 
-    inline SArray1dC(DataT *data,const SizeT  dim,bool     removable = true);
+    inline SArray1dC(DataT *data,const SizeT  dim,bool removable);
     //: The array is created from the memory location <code>data</code> with the range
     //: <code>{0 ... dim-1}</code>.
     // <font color="red">Warning:</font>  the <code>data</code> argument is a pointer, with all the attendant problems.
     // The data is <i>not</i> copied.
     //!param: data  - address of the data to be used as the array contents
-    //!param: removable - if true, <code>data</code> is  de-allocated from the heap during destruction of the array.<br>If <code>data</code> is not allocated on the heap, this arg <b>MUST</b> set false.
+    //!param: removable - if true, <code>data</code> is  de-allocated from the heap during destruction of the array.<br>If <code>data</code> is not allocated on the heap, this arg <b>MUST</b> set false.<br>N.B>: this arg used to have default value = true
 
     // <p> It can be used to create an <code>SArray1dC</code> initialised from some constant array, like this:<pre>
     //   static RealT values[9] = {

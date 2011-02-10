@@ -36,11 +36,15 @@ namespace RavlN {
     {}
     //: A uninitialized array with the range <0, 'dim'-1>.
   
-    IndexNdC(IndexC * data, SizeT dim) 
-      : SArray1dC<IndexC>(data, dim) 
+    IndexNdC(IndexC * data, SizeT dim, bool removable) 
+      : SArray1dC<IndexC>(data, dim, removable) 
     {}
-    //: An array is created from the memory location 'data' with the range of access in <0, 'dim'-1>.
-    // 'data' is not deallocated during destruction of the array.
+    //: An array is created from the memory location 'data' with the range
+    //: <code>{0 ... dim-1}</code>.
+    // <font color="red">Warning:</font>  the <code>data</code> argument is a pointer, with all the attendant problems.
+    // The data is <i>not</i> copied.
+    //!param: data  - address of the data to be used as the array contents
+    //!param: removable - if true, <code>data</code> is  de-allocated from the heap during destruction of the array.<br>If <code>data</code> is not allocated on the heap, this arg <b>MUST</b> set false.<br>N.B>: this arg used to have default value = true
     
     IndexNdC(const IndexNdC & nd) 
       : SArray1dC<IndexC>(nd) 
