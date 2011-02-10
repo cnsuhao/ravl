@@ -111,6 +111,7 @@ namespace RavlN {
     //: An array is created from the data at memory location <code>data</code> with the
     //: range <code>{range.Min() ... range.Max()}</code>.
     // <font color="red">Warning:</font>  the <code>data</code> argument is a pointer, with all the attendant problems.
+    // The data is <i>not</i> copied.
     //!param: data  - address of the data to be used as the array contents
     //!param: removable - if true, <code>data</code> is  de-allocated from the heap during destruction of the array.<br>If <code>data</code> is not allocated on the heap, this arg <b>MUST</b> set false.
 
