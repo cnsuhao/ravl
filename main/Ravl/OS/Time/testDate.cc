@@ -120,6 +120,32 @@ int CheckConsistant()
 	cerr << "Failed at Month=" << m << " Year=" << i << " Month()=" << tmp.Month() << " CTime()=" << tmp.CTime() << "\n";
 	return __LINE__;
       }
+      DateC previousMonth(i,m-1,1);
+      if(m == 1) {
+        if(previousMonth.Year() != i-1) {
+          cerr << "Previous month failed. \n";
+          return __LINE__;
+        }
+      } else {
+        if(previousMonth.Month() != m-1) {
+          cerr << "Previous month failed. \n";
+          return __LINE__;
+        }
+      }
+      
+      DateC nextMonth(i,m+1,1);
+      if(m == 12) {
+        if(nextMonth.Year() != i+1) {
+          cerr << "Next month failed. Next=" << nextMonth.ODBC() << " From=" << tmp.ODBC() << " \n";
+          return __LINE__;
+        }
+      } else {
+        if(nextMonth.Month() != m+1) {
+          cerr << "Next month failed. \n";
+          return __LINE__;
+        }
+      }
+      
     }
   }
   return 0;

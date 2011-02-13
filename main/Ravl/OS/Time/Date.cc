@@ -147,54 +147,51 @@ namespace RavlN {
   
   //: Constructor.
   
-  DateC::DateC(IntT year,IntT month,IntT day,IntT hour,IntT min,IntT asec,IntT nusec,bool useLocalTimeZone)
+  DateC::DateC(IntT year,IntT month,IntT day,
+               IntT hour,IntT min,IntT asec,
+               IntT nusec,bool useLocalTimeZone)
     : sec(0),
       usec(nusec)
   {
     if(!useLocalTimeZone) {
-      //                                    Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov,Dec,x
-      static SecondT daysin[14]           = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
+      //                                        Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov,Dec,x
+      //static SecondT daysin[14]         = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
       static SecondT daysintoyear[14]     = { 0,  0, 31, 59, 90,120,151,181,212,243,273,304,334, 365};
-      static SecondT daysleapin[14]       = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
+      //static SecondT daysleapin[14]     = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0 };
       static SecondT daysintoleapyear[14] = { 0,  0, 31, 60, 91,121,152,182,213,244,274,305,335, 366};
-      sec =  YearToDaysSince1970(year) * 24 * 60 * 60;
-      if(month < 1 || month > 12) {
-	cerr << "DateC::DateC(), Illegal month " << month << "\n";
-	return ;
+      // Normalise month.
+      if(month < 1) {
+        int yearOffset = ((month-1) / 12)-1;
+        year += yearOffset;
+        month -= 12 * yearOffset;
       }
+      if(month > 12) {
+        int yearOffset = ((month-1) / 12);
+        year += yearOffset;
+        month -= 12 * yearOffset;
+      }
+
+      // Convert year into an offset in seconds.
+      sec = YearToDaysSince1970(year) * 24 * 60 * 60;
+      // Convert month into an offset in seconds.
       if(IsLeapYear(year)) {
 	sec += daysintoleapyear[month] * 24 * 60 * 60;
-	if(day < 1 || day > daysleapin[month]) {
-	  cerr << "DateC::DateC(), Illegal day " <<day << " in month " << month << "\n";
-	  return ;
-	}
+        //daysInMonth = daysleapin[month];
       } else {
 	sec += daysintoyear[month] * 24 * 60 * 60;
-	if(day < 1 || day > daysin[month]) {
-	  cerr << "DateC::DateC(), Illegal day " <<day << " in month " << month << "\n";
-	  return ;
-	}
+        //daysInMonth = daysin[month];
       }
+      
+      // The rest of the parameters don't need normalising.
+      // as things work out properly anyway
       sec += (day-1) * (24 * 60 * 60);
-      if(hour < 0 || hour > 23) {
-	cerr << "DateC::DateC(), Illegal hour " << hour << "\n";
-	return ;
-      }
       sec += hour * (60 * 60);
-      if(min < 0 || min > 59) {
-	cerr << "DateC::DateC(), Illegal minite " << min << "\n";
-	return ;
-      }
       sec += min * 60;
-      if(asec < 0 || asec > 59) {
-	cerr << "DateC::DateC(), Illegal second " << min << "\n";
-	return ;
-      }
       sec += asec;
     } else {
       struct tm ttm;
       ttm.tm_year = year - 1900;
-      ttm.tm_mon = month-1;
+      ttm.tm_mon = month-1; 
       ttm.tm_mday = day;
       ttm.tm_hour = hour;
       ttm.tm_min = min;
@@ -203,8 +200,9 @@ namespace RavlN {
       ttm.tm_yday = -1;
       ttm.tm_isdst = -1;
       sec = mktime(&ttm);
-      if(sec == -1)
-	cerr << "DateC::DateC(), Illegal date. " << sec << "\n";
+      if(sec == -1) {
+	std::cerr << "DateC::DateC(), Illegal date. " << sec << "\n";
+      }
     }
   }
   
@@ -447,7 +445,7 @@ namespace RavlN {
       ret = StringC(asctime_r(gmtime_r(&s,&b),buff));
 #else
       // VC++ does not support asctime_r or gmtime_r so use the other versions
-      // in lieu of anything else
+      // in lieu of anything else.
       ret = StringC(asctime(gmtime(&s)));
 #endif
     }
@@ -469,6 +467,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -492,6 +492,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -511,6 +513,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -531,6 +535,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -550,6 +556,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -570,6 +578,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -589,6 +599,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -608,6 +620,8 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
       b = *gmtime(&s);
 #endif
     }
@@ -628,7 +642,9 @@ namespace RavlN {
 #else
       // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
       // in lieu os anythings else
-	  b = *gmtime(&s);
+      // In VC++ the result is stored in thread local storage, so this should
+      // be thread safe.
+      b = *gmtime(&s);
 #endif
     }
     return b.tm_wday;  
@@ -653,6 +669,8 @@ namespace RavlN {
 #else
     // VC++ does not support asctime_r or gmtime_r so use the non-thread-safe versions
     // in lieu os anythings else
+    // In VC++ the result is stored in thread local storage, so this should
+    // be thread safe.
     b = *gmtime(&s);
 #endif
     return b.tm_isdst > 0;

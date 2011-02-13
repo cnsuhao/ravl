@@ -71,7 +71,7 @@ namespace RavlN {
     DateC(IntT year,IntT month,IntT day,IntT hour = 0,IntT min = 0,IntT sec = 0,IntT usec = 0,bool useLocalTimeZone = false);
     //: Constructor.
     //!param: year - Year (Must be from 1901 to 2038 inclusive)
-    //!param: month - Month in year 1-12
+    //!param: month - Month in year 1-12 (Unlike mktime, which goes 0 to 11)
     //!param: day - Day in the month 1 to 31
     //!param: hour - 0 to 23
     //!param: min - 0 to 59
