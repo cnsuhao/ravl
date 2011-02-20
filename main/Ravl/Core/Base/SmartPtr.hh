@@ -153,7 +153,7 @@ namespace RavlN {
   //! Convert a smart pointer to a RCAbstract handle
   template<typename ValueT>
   inline RCAbstractC ToRCAbstract(const RavlN::SmartPtrC<ValueT> &value) {
-    return RCAbstractC(const_cast<RavlN::RCBodyVC &>(value.BodyPtr()));
+    return RCAbstractC(*const_cast<RavlN::RCBodyVC *>(static_cast<const RavlN::RCBodyVC *>(value.BodyPtr())));
   }
 
   //! Convert a smart pointer to from a RCAbstract handle
