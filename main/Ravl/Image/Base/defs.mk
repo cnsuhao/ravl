@@ -30,7 +30,9 @@ HEADERS=ImageRectangle.hh Image.hh \
  YCbCr422BT601Value.hh ByteYCbCr422BT601Value.hh UInt16YCbCr422BT601Value.hh \
  YCbCrBT709Value.hh ByteYCbCrBT709Value.hh UInt16YCbCrBT709Value.hh \
  YCbCr422BT709Value.hh ByteYCbCr422BT709Value.hh UInt16YCbCr422BT709Value.hh \
+ YPbPrBT601Value.hh FloatYPbPrBT601Value.hh \
  YPbPrBT709Value.hh FloatYPbPrBT709Value.hh \
+ YPbPr422BT601Value.hh FloatYPbPr422BT601Value.hh \
  YPbPr422BT709Value.hh FloatYPbPr422BT709Value.hh
 
 SOURCES=ImageRectangle.cc Image.cc ByteRGBValue.cc ByteYUVValue.cc RealRGBValue.cc \
@@ -41,8 +43,9 @@ SOURCES=ImageRectangle.cc Image.cc ByteRGBValue.cc ByteYUVValue.cc RealRGBValue.
  ByteYCbCr422BT601Value.cc UInt16YCbCr422BT601Value.cc \
  YCbCrBT709Value.cc ByteYCbCrBT709Value.cc UInt16YCbCrBT709Value.cc \
  ByteYCbCr422BT709Value.cc UInt16YCbCr422BT709Value.cc \
+ YPbPrBT601Value.cc FloatYPbPrBT601Value.cc \
  YPbPrBT709Value.cc FloatYPbPrBT709Value.cc \
- FloatYPbPr422BT709Value.cc
+ FloatYPbPr422BT709Value.cc FloatYPbPr422BT601Value.cc
 
 PLIB=RavlImage
 
