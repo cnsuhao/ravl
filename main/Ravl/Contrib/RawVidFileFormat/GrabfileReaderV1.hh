@@ -8,6 +8,7 @@
 #define RAVL_GRABFILEREADERV1_HEADER
 //! lib=RawVid
 //! author="Simon Tredwell"
+//! docentry="Ravl.API.Images.Video.Video IO.RawVid"
 
 #include <fstream>
 #include "Ravl/Image/Utilities.hh"

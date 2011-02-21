@@ -3,6 +3,7 @@
 //! rcsid="$Id: $"
 //! author="Simon Tredwell"
 //! lib=RawVid
+//! docentry="Ravl.API.Images.Video.Video IO.RawVid"
 
 #include "Ravl/Image/GrabfileReader.hh"
 
