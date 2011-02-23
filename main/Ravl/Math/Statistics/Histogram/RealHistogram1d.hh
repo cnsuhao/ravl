@@ -34,17 +34,18 @@ namespace RavlN {
     
     RealHistogram1dC(RealT min,RealT max,UIntT noOfBins);
     //: Create a histogram.
+    // The bin width is therefore (max-min) / noOfBins.
    
     RealHistogram1dC(RealT nscale,RealT noffset,const SArray1dC<UIntC> &array)
       : SArray1dC<UIntC>(array),
 	scale(nscale),
 	offset(noffset)
     {}
-    //: Create a histogram from an offset, scale and an existing  SArray1dC of binned values.
+    //: Create a histogram from a bin width, an offset and an existing  SArray1dC of binned values.
 
     RealT Scale() const
     { return scale; } 
-    //: Scaling.
+    //: Scaling - i.e. bin width.
     
     RealT Offset() const
     { return offset; }
