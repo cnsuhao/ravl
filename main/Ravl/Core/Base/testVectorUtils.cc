@@ -29,7 +29,7 @@ int testSimple() {
 }
 
 template<class DataT>
-int testDotProduct() {
+int testDotProduct(DataT Threshold) {
   const size_t bufferLen = 32;
   DataT buf1[bufferLen];
   DataT buf2[bufferLen];
@@ -67,25 +67,25 @@ int testDotProduct() {
     //test fast way
 
     DataT fast00_00 = RavlBaseVectorN::DotProduct(buf1, buf2, testSize);
-    if(!IsSmall(RavlN::Abs(fast00_00 - sum00_00),1.0f,1e-7)) {
+    if(!IsSmall(RavlN::Abs(fast00_00 - sum00_00),1.0f,Threshold)) {
       std::cerr << "Diff=" << RavlN::Abs(fast00_00 - sum00_00) << "\n";
       return __LINE__;
     }
 
     DataT fast01_10 = RavlBaseVectorN::DotProduct(buf1+1, buf2, testSize-1);
-    if(!IsSmall(RavlN::Abs(fast01_10 - sum01_10),1.0f,1e-7)) {
+    if(!IsSmall(RavlN::Abs(fast01_10 - sum01_10),1.0f,Threshold)) {
       std::cerr << "Diff=" << RavlN::Abs(fast01_10 - sum01_10) << "\n";
       return __LINE__;
     }
 
     double fast10_01 = RavlBaseVectorN::DotProduct(buf1, buf2+1, testSize-1);
-    if(!IsSmall(RavlN::Abs(fast10_01 - sum10_01),1.0f,1e-7)) return __LINE__;
+    if(!IsSmall(RavlN::Abs(fast10_01 - sum10_01),1.0f,Threshold)) return __LINE__;
 
     double fast00_11 = RavlBaseVectorN::DotProduct(buf1, buf2, testSize-1);
-    if(!IsSmall(RavlN::Abs(fast00_11 - sum00_11),1.0f,1e-7)) return __LINE__;
+    if(!IsSmall(RavlN::Abs(fast00_11 - sum00_11),1.0f,Threshold)) return __LINE__;
 
     double fast11_00 = RavlBaseVectorN::DotProduct(buf1+1, buf2+1, testSize-1);
-    if(!IsSmall(RavlN::Abs(fast11_00 - sum11_00),1.0f,1e-7)) return __LINE__;
+    if(!IsSmall(RavlN::Abs(fast11_00 - sum11_00),1.0f,Threshold)) return __LINE__;
   }
   return 0;
 }
@@ -149,11 +149,11 @@ int main(int nargs,char **argv) {
     cerr << "Error line :" << ln << "\n";
     return 1;
   }
-  if((ln = testDotProduct<float>()) != 0) {
+  if((ln = testDotProduct<float>(2e-7)) != 0) {
     cerr << "Error 'float' line :" << ln << "\n";
     return 1;
   }
-  if((ln = testDotProduct<double>()) != 0) {
+  if((ln = testDotProduct<double>(5e-16)) != 0) {
     cerr << "Error 'double' line :" << ln << "\n";
     return 1;
   }
