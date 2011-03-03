@@ -13,6 +13,7 @@
 
 #include "Ravl/PythonLock.hh"
 #include "Ravl/Assert.hh"
+#include <iostream>
 
 #define DODEBUG 0
 #if DODEBUG
@@ -27,12 +28,14 @@ namespace RavlN
 	PythonLockC::PythonLockC(PyThreadState *threadState)
 	{
     RavlAssert(threadState != NULL);
+    ONDEBUG(std::cerr << "PythonLockC::PythonLockC(" << threadState << ")" << std::endl);
     PyEval_AcquireLock();
     PyThreadState_Swap(threadState);
 	}
 
   PythonLockC::~PythonLockC()
   {
+    ONDEBUG(std::cerr << "PythonLockC::~PythonLockC(" << PyThreadState_Get() << ")" << std::endl);
     PyThreadState_Swap(NULL);
     PyEval_ReleaseLock();
   }

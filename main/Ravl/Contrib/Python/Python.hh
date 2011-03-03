@@ -20,6 +20,8 @@
 #include "Ravl/RefCounter.hh"
 #include "Ravl/Hash.hh"
 #include "Ravl/Threads/Mutex.hh"
+#include "Ravl/Threads/RWLock.hh"
+#include "Ravl/PythonMainState.hh"
 
 namespace RavlN
 {
@@ -31,7 +33,7 @@ namespace RavlN
   //: Class managing a Python interpreter
   
   class PythonBodyC : 
-    public RCBodyVC
+    public RCBodyC
   {
   public:
     PythonBodyC();
@@ -42,7 +44,7 @@ namespace RavlN
     //: Destructor.
     
     const bool Initialised() const
-    { return m_threadState != NULL; }
+    { return m_threadState; }
     //: Is the interpreter ready?
     //!return: False on failure
     
@@ -90,8 +92,7 @@ namespace RavlN
     //: Get a result object called 'name' from the globals.
     //!return: Invalid object on failure
     
-    PyThreadState *GetThreadState() const
-    { return m_threadState; }
+    PyThreadState *GetThreadState();
     //: Return the Python interpreter thread state.
     //!return: NULL on failure
     
@@ -106,12 +107,14 @@ namespace RavlN
     
   private:
     static MutexC m_initLock;
-    static PythonC m_mainInterpreter;
+    PythonMainStateC m_mainState;
+    PyThreadState* m_threadState;
+    SizeT m_threadId;
     bool m_subInterpreter;
-    PyThreadState *m_mainThreadState;
-    PyThreadState *m_threadState;
-    HashC<StringC, PyObject*> m_modules;
-    MutexC m_lock;
+    HashC<SizeT, PyThreadState*> m_hashThreadState;
+    HashC<StringC, PyObject*> m_hashModules;
+    PyObject* m_dictLocals;
+    RWLockC m_lock;
   };
   
   //! userlevel = Normal
@@ -183,7 +186,7 @@ namespace RavlN
     //: Get a result object called 'name' from the globals.
     //!return: Invalid object on failure
     
-    PyThreadState *GetThreadState() const
+    PyThreadState *GetThreadState()
     { return Body().GetThreadState(); }
     //: Return the Python interpreter thread state.
     //!return: NULL on failure
@@ -208,4 +211,3 @@ namespace RavlN
 }
 
 #endif
-

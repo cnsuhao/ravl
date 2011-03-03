@@ -22,13 +22,13 @@
 
 using namespace RavlN;
 
-void displayError(const IntT num, const char *errorMessage)
+void displayError(const char *errorMessage)
 {
   cerr << "#### Error" << endl;
   cerr << "## " << errorMessage << endl;
 }
 
-void displayException(const IntT num, PythonExceptionC &e)
+void displayException(PythonExceptionC &e)
 {
   cerr << "#### Error" << endl;
   cerr << "##  Type:  " << e.Type() << endl;
@@ -36,90 +36,41 @@ void displayException(const IntT num, PythonExceptionC &e)
   cerr << "##  Trace: " << endl << e.Trace() << endl;
 }
 
-bool startThread(const IntT num)
+bool queryGlobalThread(PythonC &python)
 {
   try
   {
-    PythonC python(true);
-
-    // Initialise the python module
-    if (!python.AppendSystemPath("."))
+    int val = -1;
+    while (val < 100)
     {
-      displayError(num, "Failed to append system path");
-      return false;
-    }
-
-    // Import a module
-    cerr << "(" << num << ") Importing 'ravlexample'" << endl;
-    if (!python.Import("ravlexample"))
-    {
-      displayError(num, "Failed to import 'ravlexample'");
-      return false;
-    }
-
-    // Build the arguments list
-    PythonObjectC name = python.NewObject();
-    name.BuildString(StringC(num));
-
-    DListC<PythonObjectC> argList;
-    argList.InsLast(name);
-    PythonObjectC args = python.NewObject();
-    args.BuildTuple(argList);
-
-    // Call the example function and display the results
-    cerr << "(" << num << ") Calling 'ravlexample.myprint(" << name.String() << ")'" << endl;
-    PythonObjectC res = python.Call("ravlexample", "myprint", args);
-    if (res.IsValid())
-    {
-	    if (res.IsString())
-      {
-	      cerr << "Result(string): " << res.String() << endl;
-      }
-      else
-      {
-        displayError(num, "'ravlexample.myprint' did not return a string");
-        return false;
-      }
-    }
-    else
-    {
-      displayError(num, "Failed to call 'ravlexample.myprint'");
-      return false;
-    }
-
-    // Run a script from a string
-    StringC script("print 'hello'\nx = ");
-    script += StringC(num);
-    cerr << "Calling script from string" << endl;
-    if (python.Run(script))
-    {
-      // Read the globals from the script
       PythonObjectC x = python.GetGlobal("x");
-      cerr << "Found 'x': " << (x.IsValid() ? "YES" : "NO") << endl;
+ //     cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
       if (x.IsValid())
       {
         if (x.IsInt())
         {
-          cerr << "'x'= " << x.Int() << endl;
+          val = x.Int();
+          cerr << "read(x = " << val << ")" << endl;
         }
         else
         {
-          cerr << "'x' not an int" << endl;
+          cerr << "#### Global 'x' is not an int" << endl;
+          break;
         }
       }
-    }
-    else
-    {
-      displayError(num, "Failed to run script");
-      return false;
+      else
+      {
+        cerr << "#### Failed to find global 'x'" << endl;
+        break;
+      }
     }
   }
   catch (PythonExceptionC &e)
   {
-    displayException(num, e);
-    return false;
+    displayException(e);
+  	return -1;
   }
-  
+
   return true;
 }
 
@@ -127,23 +78,54 @@ int main(int argc, char **argv)
 {
   // Cmd line options
   OptionC opts(argc, argv);
-  IntT threads = opts.Int("n", 100, "Number of threads");
+  IntT threads = opts.Int("n", 10, "Number of threads");
   opts.Check();
   
+  try 
   {
-    // Create an initial Python object to ensure it intialises the Python interpreter
-    // Create it in a local scope so we can ensure it is destroyed first
-    PythonC mainPython(true);
-    
-    // Launch several other threads
-    for (IntT i = 0; i < threads; i++)
+    // Initialise the python module
+    PythonC python(true);
+
+    cerr << "#### Initialising interpreter" << endl;
+    if (!python.Initialised())
     {
-      LaunchThread(&startThread, i);
+      displayError("Failed to initialise interpreter");
+      return -1;
     }
+
+	  // Run a script from a string
+	  cerr << "#### Initialise global 'x' (from string)" << endl;
+	  const char* scriptInitialise = "x = 0";
+    if (!python.Run(scriptInitialise))
+    {
+      cerr << "#### Failed to run script" << endl;
+      return -1;
+    }
+
+    Sleep(1);
+
+    for (int i = 0; i < threads; i++)
+      LaunchThread(&queryGlobalThread, python);
+
+    const char* scriptLoop = "\
+for i in range(0, 100):\n\
+  x += 1\n\
+  print 'write(x = %d)' % x";
+
+    cerr << "#### Calling loop script (from string)" << endl;
+    if (!python.Run(scriptLoop))
+    {
+      cerr << "#### Failed to run script" << endl;
+      return -1;
+    }
+
+    Sleep(1);
   }
-  
-  // Wait until the threads have completed
-  Sleep(1);
-  
+  catch (PythonExceptionC &e)
+  {
+    displayException(e);
+  	return -1;
+  }
+
   return 0;
 }

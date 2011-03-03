@@ -201,9 +201,9 @@ namespace RavlN
           {
             if (it->IsValid())
             {
-              PyTuple_SetItem(m_object, pos, it->m_object);
+              ONDEBUG(int ret = )Py_INCREF(it->m_object); // Reference is stolen by SetItem
               ONDEBUG(cerr << "PythonObjectC::BuildTuple adding item " << (ret == 0 ? "OK" : "FAILED") << endl);
-              Py_INCREF(it->m_object); // Reference is stolen by SetItem
+              PyTuple_SetItem(m_object, pos, it->m_object);
             }
             else
               break;

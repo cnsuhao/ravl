@@ -11,17 +11,17 @@ REQUIRES = LibPython
 
 PACKAGE = Ravl
 
-HEADERS = Python.hh PythonObject.hh PythonException.hh PythonLock.hh
+HEADERS = Python.hh PythonObject.hh PythonException.hh PythonLock.hh PythonMainState.hh
 
-SOURCES = Python.cc PythonObject.cc PythonException.cc PythonLock.cc
+SOURCES = Python.cc PythonObject.cc PythonException.cc PythonLock.cc PythonMainState.cc
 
 PLIB = RavlPython
 
 USESLIBS = RavlOS RavlCore RavlThreads Python 
 
-PROGLIBS =  
+PROGLIBS =
 
-TESTEXES = 
+TESTEXES =
 
 EXAMPLES = exPython.cc exPythonThreaded.cc
 
