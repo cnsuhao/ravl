@@ -19,11 +19,11 @@ PLIB = RavlPython
 
 USESLIBS = RavlOS RavlCore RavlThreads Python 
 
-PROGLIBS =
+PROGLIBS = RavlGUI
 
 TESTEXES =
 
-EXAMPLES = exPython.cc exPythonThreaded.cc
+EXAMPLES = exPython.cc exPythonThreaded.cc exPythonMultipleInterpreters.cc exPyGTK.cc
 
 AUXDIR = lib/RAVL/libdep
 

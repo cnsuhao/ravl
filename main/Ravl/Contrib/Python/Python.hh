@@ -64,23 +64,78 @@ namespace RavlN
     //: Create a new Python object.
     //!return: A new Python object
     
-    PythonObjectC Call(const StringC &module, const StringC &function);
+    PythonObjectC Call(const StringC &function);
+    //: Call a function.
+    //!param: function - The name of the function to call
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC Call(const StringC &function,
+                       const PythonObjectC &args);
+    //: Call a function with arguments.
+    //!param: function - The name of the function to call
+    //!param: args - Must represent a tuple containing all the required arguments
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC Call(const StringC &module,
+                       const StringC &function);
     //: Call a function.
     //!param: module - The name of the module containing the function to call
     //!param: function - The name of the function to call
     //!return: Invalid object on failure
     //!throw: PythonExceptionC - If a Python exception is set
-    
+
     PythonObjectC Call(const StringC &module,
-            const StringC &function,
-            const PythonObjectC &args);
+                       const StringC &function,
+                       const PythonObjectC &args);
     //: Call a function with arguments.
     //!param: module - The name of the module containing the function to call
     //!param: function - The name of the function to call
     //!param: args - Must represent a tuple containing all the required arguments
     //!return: Invalid object on failure
     //!throw: PythonExceptionC - If a Python exception is set
-    
+
+    PythonObjectC CallMethod(const StringC &object,
+                             const StringC &function);
+    //: Call a method on an object in the global namespace.
+    //!param: object - The name of the object
+    //!param: function - The name of the method to call
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC CallMethod(const StringC &object,
+                             const StringC &function,
+                             const PythonObjectC &args);
+    //: Call a method on an object in the global namespace function with arguments.
+    //!param: object - The name of the object
+    //!param: function - The name of the method to call
+    //!param: args - Must represent a tuple containing all the required arguments
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC CallMethod(const StringC &module,
+                             const StringC &object,
+                             const StringC &function);
+    //: Call a method on an object in a module.
+    //!param: module - The name of the module containing the object
+    //!param: object - The name of the object
+    //!param: function - The name of the method to call
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC CallMethod(const StringC &module,
+                             const StringC &object,
+                             const StringC &function,
+                             const PythonObjectC &args);
+    //: Call a method on an object in a module with arguments.
+    //!param: module - The name of the module containing the object
+    //!param: object - The name of the object
+    //!param: function - The name of the method to call
+    //!param: args - Must represent a tuple containing all the required arguments
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
     bool Run(const StringC &script, const StringC &traceName);
     //: Load a Python script into the main environment and execute immediately.
     //!param: script - Script to execute
@@ -88,10 +143,14 @@ namespace RavlN
     //!return: False on failure
     //!throw: PythonExceptionC - If a Python exception is set
     
-    PythonObjectC GetGlobal(const StringC &name);
+    PythonObjectC GetValue(const StringC &name);
     //: Get a result object called 'name' from the globals.
     //!return: Invalid object on failure
-    
+
+    PythonObjectC GetValue(const StringC &module, const StringC &name);
+    //: Get a result object called 'name' from the named module.
+    //!return: Invalid object on failure
+
     PyThreadState *GetThreadState();
     //: Return the Python interpreter thread state.
     //!return: NULL on failure
@@ -113,7 +172,6 @@ namespace RavlN
     bool m_subInterpreter;
     HashC<SizeT, PyThreadState*> m_hashThreadState;
     HashC<StringC, PyObject*> m_hashModules;
-    PyObject* m_dictLocals;
     RWLockC m_lock;
   };
   
@@ -159,33 +217,96 @@ namespace RavlN
     //: Create a new Python object.
     //!return: A new Python object
     
-    PythonObjectC Call(const StringC &module, const StringC &name);
-    //: Call a function.
+    PythonObjectC Call(const StringC &function);
+    //: Call a function in the global namespace.
+    //!param: function - The name of the function to call
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC Call(const StringC &function,
+                       const PythonObjectC &args);
+    //: Call a function in the global namespace with arguments.
+    //!param: function - The name of the function to call
+    //!param: args - Must represent a tuple containing all the required arguments
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC Call(const StringC &module,
+                       const StringC &name);
+    //: Call a function in a module.
     //!param: module - The name of the module containing the function to call
     //!param: function - The name of the function to call
     //!return: Invalid object on failure
     //!throw: PythonExceptionC - If a Python exception is set
     
-    PythonObjectC Call(const StringC &module, const StringC &name, const PythonObjectC &args);
-    //: Call a function with arguments.
+    PythonObjectC Call(const StringC &module,
+                       const StringC &name,
+                       const PythonObjectC &args);
+    //: Call a function in a module with arguments.
     //!param: module - The name of the module containing the function to call
     //!param: function - The name of the function to call
     //!param: args - Must represent a tuple containing all the required arguments
     //!return: Invalid object on failure
     //!throw: PythonExceptionC - If a Python exception is set
     
+    PythonObjectC CallMethod(const StringC &object,
+                             const StringC &function);
+    //: Call a method on an object in the global namespace.
+    //!param: module - The name of the module containing the object
+    //!param: object - The name of the object member function to call
+    //!param: function - The name of the function to call
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC CallMethod(const StringC &object,
+                             const StringC &function,
+                             const PythonObjectC &args);
+    //: Call a method on an object in the global namespace function with arguments.
+    //!param: module - The name of the module containing the object
+    //!param: object - The name of the object member function to call
+    //!param: function - The name of the function to call
+    //!param: args - Must represent a tuple containing all the required arguments
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC CallMethod(const StringC &module,
+                             const StringC &object,
+                             const StringC &function);
+    //: Call a method on an object in a module.
+    //!param: module - The name of the module containing the object
+    //!param: object - The name of the object member function to call
+    //!param: function - The name of the function to call
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
+    PythonObjectC CallMethod(const StringC &module,
+                             const StringC &object,
+                             const StringC &function,
+                             const PythonObjectC &args);
+    //: Call a method on an object in a module with arguments.
+    //!param: module - The name of the module containing the object
+    //!param: object - The name of the object member function to call
+    //!param: function - The name of the function to call
+    //!param: args - Must represent a tuple containing all the required arguments
+    //!return: Invalid object on failure
+    //!throw: PythonExceptionC - If a Python exception is set
+
     bool Run(const StringC &script, const StringC &traceName = "<string>")
-    { return Body().Run(script,traceName); }
+    { return Body().Run(script, traceName); }
     //: Load a Python script into the main environment and execute immediately.
     //!param: script - Script to execute
     //!param: traceName - Name to be used in the Python exception traceback if the script fails
     //!return: False on failure
     //!throw: PythonExceptionC - If a Python exception is set
     
-    PythonObjectC GetGlobal(const StringC &name);
+    PythonObjectC GetValue(const StringC &name);
     //: Get a result object called 'name' from the globals.
     //!return: Invalid object on failure
-    
+
+    PythonObjectC GetValue(const StringC &module, const StringC &name);
+    //: Get a result object called 'name' from the named module.
+    //!return: Invalid object on failure
+
     PyThreadState *GetThreadState()
     { return Body().GetThreadState(); }
     //: Return the Python interpreter thread state.

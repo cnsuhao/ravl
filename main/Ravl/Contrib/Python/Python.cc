@@ -30,6 +30,13 @@
 #define ONDEBUG(x)
 #endif
 
+namespace
+{
+
+  const char* g_defaultGlobalDictName = "__main__";
+
+}
+
 namespace RavlN
 {
   
@@ -37,8 +44,7 @@ namespace RavlN
   
   PythonBodyC::PythonBodyC() :
     m_threadState(NULL),
-    m_subInterpreter(false),
-    m_dictLocals(NULL)
+    m_subInterpreter(false)
   {
     RWLockHoldC lock(m_lock, RWLOCK_WRITE);
     MutexLockC initLock(m_initLock);
@@ -169,8 +175,6 @@ namespace RavlN
         Py_DECREF(it.Data());
       }
 
-      Py_XDECREF(m_dictLocals);
-      
       if (m_subInterpreter)
       {
         ONDEBUG(cerr << "  PythonBodyC::~PythonBodyC(" << this << ") sub-interpreter destroyed" << endl);
@@ -241,7 +245,7 @@ namespace RavlN
       RWLockHoldC lock(m_lock, RWLOCK_WRITE);
 
       // Get the '__main__' module pointer
-      if (m_hashModules.Lookup("__main__", mainModule))
+      if (m_hashModules.Lookup(g_defaultGlobalDictName, mainModule))
       {
         // Import the module
         // Returns NULL on failure and sets Python exception
@@ -281,32 +285,46 @@ namespace RavlN
     return PythonObjectC(PythonC(*this));
   }
   
-  PythonObjectC PythonBodyC::Call(const StringC &module, const StringC &function)
+  PythonObjectC PythonBodyC::Call(const StringC &function)
+  {
+    return Call(g_defaultGlobalDictName, function, PythonObjectC(PythonC(*this)));
+  }
+
+  PythonObjectC PythonBodyC::Call(const StringC &function,
+                                  const PythonObjectC &args)
+  {
+    return Call(g_defaultGlobalDictName, function, args);
+  }
+
+  PythonObjectC PythonBodyC::Call(const StringC &module,
+                                  const StringC &function)
   {
     return Call(module, function, PythonObjectC(PythonC(*this)));
   }
-  
-  PythonObjectC PythonBodyC::Call(const StringC &module, const StringC &function, const PythonObjectC &args)
+
+  PythonObjectC PythonBodyC::Call(const StringC &module,
+                                  const StringC &function,
+                                  const PythonObjectC &args)
   {
     ONDEBUG(cerr << "PythonBodyC::Call(" << this << ") module(" << module << ") function(" << function << ")" << endl);
     RavlAssert(Initialised());
-    
+
     if (Py_IsInitialized())
     {
       PythonLockC pythonLock(GetThreadState());
-      
+
       PyObject *ret = NULL;
       PyObject *modulePtr = NULL;
-      
+
       RWLockHoldC lock(m_lock, RWLOCK_READONLY);
 
       if (m_hashModules.Lookup(module, modulePtr))
       {
         lock.Unlock();
-        
+
         // Returns NULL on failure
         PyObject *func = PyObject_GetAttrString(modulePtr, const_cast<char*>(function.chars()));
-        
+
         // Returns 1 if callable, 0 otherwise
         if (func && PyCallable_Check(func))
         {
@@ -316,7 +334,7 @@ namespace RavlN
             {
               // Returns NULL on failure, script may set an exception
               ret = PyObject_CallObject(func, args.GetObject());
-              
+
               ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") function(" << function << ") args(" << PyTuple_Size(args.GetObject()) << ") " << (ret ? "OK" : "FAILED") << endl);
             }
             else
@@ -328,10 +346,10 @@ namespace RavlN
           {
             // Returns NULL on failure, script may set an exception
             ret = PyObject_CallObject(func, NULL);
-            
+
             ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") function(" << function << ") " << (ret ? "OK" : "FAILED") << endl);
           }
-          
+
           Py_DECREF(func);
         }
         else
@@ -339,15 +357,102 @@ namespace RavlN
           cerr << "PythonBodyC::Call(" << this << ") failed to find function("  << function << ")" << endl;
         }
       }
-      
+
       CheckPythonException();
-      
+
       return PythonObjectC(PythonC(*this), ret);
     }
-    
+
     return PythonObjectC(PythonC(*this));
   }
-  
+
+  PythonObjectC PythonBodyC::CallMethod(const StringC &object,
+                                        const StringC &function)
+  {
+    return CallMethod(g_defaultGlobalDictName, object, function, PythonObjectC(PythonC(*this)));
+  }
+
+  PythonObjectC PythonBodyC::CallMethod(const StringC &object,
+                                        const StringC &function,
+                                        const PythonObjectC &args)
+  {
+    return CallMethod(g_defaultGlobalDictName, object, function, args);
+  }
+
+  PythonObjectC PythonBodyC::CallMethod(const StringC &module,
+                                        const StringC &object,
+                                        const StringC &function)
+  {
+    return CallMethod(module, object, function, PythonObjectC(PythonC(*this)));
+  }
+
+  PythonObjectC PythonBodyC::CallMethod(const StringC &module,
+                                        const StringC &object,
+                                        const StringC &function,
+                                        const PythonObjectC &args)
+  {
+    ONDEBUG(cerr << "PythonBodyC::Call(" << this << ") module(" << module << ") object(" << object << ") function(" << function << ")" << endl);
+    RavlAssert(Initialised());
+
+    if (Py_IsInitialized())
+    {
+      PythonLockC pythonLock(GetThreadState());
+
+      PyObject *ret = NULL;
+      PyObject *modulePtr = NULL;
+
+      RWLockHoldC lock(m_lock, RWLOCK_READONLY);
+
+      if (m_hashModules.Lookup(module, modulePtr))
+      {
+        lock.Unlock();
+
+        // Returns NULL on failure
+        PyObject *objectPtr = PyObject_GetAttrString(modulePtr, const_cast<char*>(object.chars()));
+        PyObject *functionPtr = PyString_FromString(const_cast<char*>(function.chars()));
+
+        if (objectPtr && functionPtr)
+        {
+          if (args.GetObject())
+          {
+            if (PyTuple_Check(args.GetObject()))
+            {
+              // Returns NULL on failure, script may set an exception
+              ret = PyObject_CallMethodObjArgs(objectPtr, functionPtr, args.GetObject(), NULL);
+
+              ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") object(" << object << ") function(" << function << ") args(" << PyTuple_Size(args.GetObject()) << ") " << (ret ? "OK" : "FAILED") << endl);
+            }
+            else
+            {
+              cerr << "PythonBodyC::Call tuple not supplied as arguments" << endl;
+            }
+          }
+          else
+          {
+            // Returns NULL on failure, script may set an exception
+            ret = PyObject_CallMethodObjArgs(objectPtr, functionPtr, NULL);
+
+            ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") object(" << object << ") function(" << function << ") " << (ret ? "OK" : "FAILED") << endl);
+          }
+
+        }
+        else
+        {
+          cerr << "PythonBodyC::Call(" << this << ") failed to find object("  << function << ")" << endl;
+        }
+
+        Py_XDECREF(objectPtr);
+        Py_XDECREF(functionPtr);
+      }
+
+      CheckPythonException();
+
+      return PythonObjectC(PythonC(*this), ret);
+    }
+
+    return PythonObjectC(PythonC(*this));
+  }
+
   bool PythonBodyC::Run(const StringC &script, const StringC &traceName)
   {
     ONDEBUG(cerr << "PythonBodyC::Run(" << this << ")" << endl);
@@ -364,20 +469,20 @@ namespace RavlN
       if (compiledCodeObj)
       {
         // Get the scope
-        PyObject *mainDict = GetModuleDictionary("__main__");
+        PyObject *dictGlobal = GetModuleDictionary(g_defaultGlobalDictName);
         
-        if (mainDict)
+        if (dictGlobal)
         {
           // Have we got valid code?
           if (PyCode_Check(compiledCodeObj))
           {
-            resultObj = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(compiledCodeObj), mainDict, m_dictLocals);
+            resultObj = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(compiledCodeObj), dictGlobal, dictGlobal);
             Py_XDECREF(resultObj);
           }
-          
-          Py_DECREF(mainDict);
+
+          Py_DECREF(dictGlobal);
         }
-        
+
         Py_DECREF(compiledCodeObj);
       }
       
@@ -389,40 +494,41 @@ namespace RavlN
     return false;
   }
   
-  PythonObjectC PythonBodyC::GetGlobal(const StringC &name)
+  PythonObjectC PythonBodyC::GetValue(const StringC &name)
   {
-    ONDEBUG(cerr << "PythonBodyC::GetGlobal(" << this << ") name(" << name << ")" << endl);
+    return GetValue(g_defaultGlobalDictName, name);
+  }
+
+  PythonObjectC PythonBodyC::GetValue(const StringC &module, const StringC &name)
+  {
+    ONDEBUG(cerr << "PythonBodyC::GetValue(" << this << ") module(" << module << ") name(" << name << ")" << endl);
     RavlAssert(Initialised());
-    
+
     if (Py_IsInitialized())
     {
       PythonLockC pythonLock(GetThreadState());
-      
-      PyObject *resultObj = PyDict_GetItemString(m_dictLocals, name);;
-      Py_XINCREF(resultObj);
 
-      if (!resultObj)
+      PyObject *resultObj = NULL;
+
+      PyObject *dictModule = GetModuleDictionary(module);
+      if (dictModule)
       {
-        PyObject *mainDict = GetModuleDictionary("__main__");
-        if (mainDict)
-        {
-          // Return NULL on failure
-          resultObj = PyDict_GetItemString(mainDict, name);
-          Py_XINCREF(resultObj);
-          ONDEBUG(if (resultObj == NULL) cerr << "  PythonBodyC::GetGlobal(" << this << ") failed to find global(" << name << ")" << endl);
+        // Return NULL on failure
+        resultObj = PyDict_GetItemString(dictModule, name);
+        Py_XINCREF(resultObj);
+        ONDEBUG(if (resultObj == NULL) cerr << "  PythonBodyC::GetValue(" << this << ") failed to find name(" << name << ") in module(" << module << ")" << endl);
 
-          Py_DECREF(mainDict);
-        }
+        Py_DECREF(dictModule);
       }
-      
+
       CheckPythonException();
-      
+
       return PythonObjectC(PythonC(*this), resultObj);
     }
-    
+
     return PythonObjectC(PythonC(*this));
   }
-  
+
   void PythonBodyC::InitialiseEnvironment()
   {
     ONDEBUG(cerr << "PythonBodyC::InitialiseEnvironment(" << this << ")" << endl);
@@ -432,19 +538,16 @@ namespace RavlN
 
     // Get access to the main module
     // Returns NULL on failure and sets Python exception
-    PyObject *mainModule = PyImport_AddModule("__main__");
+    PyObject *mainModule = PyImport_AddModule(g_defaultGlobalDictName);
     if (mainModule)
     {
       Py_INCREF(mainModule); // AddModule returns borrowed reference
-      m_hashModules.Update("__main__", mainModule);
+      m_hashModules.Update(g_defaultGlobalDictName, mainModule);
     }
     else
     {
       cerr << "PythonBodyC::PythonBodyC(" << this << ") failed to initialise main environment" << endl;
     }
-
-    // Create the locals dictonary
-    m_dictLocals = PyDict_New();
   }
   
   PyObject *PythonBodyC::GetModuleDictionary(const StringC &name)
@@ -503,19 +606,66 @@ namespace RavlN
     return Body().NewObject();
   }
 
-  PythonObjectC PythonC::Call(const StringC &module, const StringC &name)
+  PythonObjectC PythonC::Call(const StringC &name)
+  {
+    return Body().Call(name);
+  }
+
+  PythonObjectC PythonC::Call(const StringC &name,
+                              const PythonObjectC &args)
+  {
+    return Body().Call(name, args);
+  }
+
+  PythonObjectC PythonC::Call(const StringC &module,
+                              const StringC &name)
   {
     return Body().Call(module, name);
   }
 
-  PythonObjectC PythonC::Call(const StringC &module, const StringC &name, const PythonObjectC &args)
+  PythonObjectC PythonC::Call(const StringC &module,
+                              const StringC &name,
+                              const PythonObjectC &args)
   {
     return Body().Call(module, name, args);
   }
 
-  PythonObjectC PythonC::GetGlobal(const StringC &name)
+  PythonObjectC PythonC::CallMethod(const StringC &object,
+                                    const StringC &function)
   {
-    return Body().GetGlobal(name);
+    return Body().CallMethod(object, function);
+  }
+
+  PythonObjectC PythonC::CallMethod(const StringC &object,
+                                    const StringC &function,
+                                    const PythonObjectC &args)
+  {
+    return Body().CallMethod(object, function, args);
+  }
+
+  PythonObjectC PythonC::CallMethod(const StringC &module,
+                                    const StringC &object,
+                                    const StringC &function)
+  {
+    return Body().CallMethod(module, object, function);
+  }
+
+  PythonObjectC PythonC::CallMethod(const StringC &module,
+                                    const StringC &object,
+                                    const StringC &function,
+                                    const PythonObjectC &args)
+  {
+    return Body().CallMethod(module, object, function, args);
+  }
+
+  PythonObjectC PythonC::GetValue(const StringC &name)
+  {
+    return Body().GetValue(name);
+  }
+
+  PythonObjectC PythonC::GetValue(const StringC &module, const StringC &name)
+  {
+    return Body().GetValue(module, name);
   }
 
 }

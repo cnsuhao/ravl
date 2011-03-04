@@ -43,7 +43,7 @@ bool queryGlobalThread(PythonC &python)
     int val = -1;
     while (val < 100)
     {
-      PythonObjectC x = python.GetGlobal("x");
+      PythonObjectC x = python.GetValue("x");
  //     cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
       if (x.IsValid())
       {

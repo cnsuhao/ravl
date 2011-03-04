@@ -92,12 +92,11 @@ int main(int argc, char **argv)
     }
      
 	  // Run a script from a string
-	  const char* script = "print 'hello again'\nx = 5";
 	  cerr << "#### Calling script from string" << endl;
-    if (python.Run(script))
+    if (python.Run("x = 5"))
     {
       // Read the globals from the script
-      PythonObjectC x = python.GetGlobal("x");
+      PythonObjectC x = python.GetValue("x");
       cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
       if (x.IsValid())
       {  

@@ -96,7 +96,7 @@ except:\n\
   if (python.Run(script))
   {
     // Read the globals from the script
-    PythonObjectC x = python.GetGlobal("x");
+    PythonObjectC x = python.GetValue("x");
     cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
     if (x.IsValid())
     {
