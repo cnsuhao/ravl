@@ -345,17 +345,23 @@ namespace RavlN
           else
           {
             // Returns NULL on failure, script may set an exception
-            ret = PyObject_CallObject(func, NULL);
+            PyObject *emptyArg = PyTuple_New(0);
+
+            if (emptyArg)
+              ret = PyObject_CallObject(func, emptyArg);
+            
+            Py_XDECREF(emptyArg);
 
             ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") function(" << function << ") " << (ret ? "OK" : "FAILED") << endl);
           }
 
-          Py_DECREF(func);
         }
         else
         {
           cerr << "PythonBodyC::Call(" << this << ") failed to find function("  << function << ")" << endl;
         }
+
+        Py_XDECREF(func);
       }
 
       CheckPythonException();
