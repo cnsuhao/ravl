@@ -271,7 +271,8 @@ namespace RavlN {
   // checked to see if they are proper elements of a list or its head.
   //
   // <p> To iterate through a list efficiently, use the list
-  // iterator class <a href="Ravl.DLIterC.html">DLIterC</a>
+  // iterator class <a href="RavlN.DLIterC.html">DLIterC</a> or 
+  // <a href="RavlN.ConstDLIterC.html">ConstDLIterC</a>.
   
   template<class DataT>
   class DListC 
