@@ -122,6 +122,7 @@ namespace RavlN {
     FVectorC<N> Vector() const
     { return point[1] - point[0]; } 
     //: Returns the direction of the line segment as a free vector.
+    // The magnitude of the vector is the length of the line segment.
     
     FLinePPC<N> & FixStart(const FPointC<N> & p) {
       FVectorC<N> vec = point[1] - point[0];
