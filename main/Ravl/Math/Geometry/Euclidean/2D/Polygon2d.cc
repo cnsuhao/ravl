@@ -267,7 +267,8 @@ namespace RavlN {
     int count = 0;
     for (DLIterC<Point2dC> k(*this); k; k++) {
       LinePP2dC l2(k.Data(), k.NextCrcData());
-         
+      RealT intersect = l2.ParIntersection(testLine);
+
       // If l2 and testline are collinear then either the point lies on an
       // edge (checked already) or it acts as a vertex. I really
       // should check for the case, or it could throw ParInterSection
@@ -275,8 +276,8 @@ namespace RavlN {
           && testLine.IsPointOn(l2.P2()));
          
       // Be sure to count each vertex just once
-      else if (l2.ParIntersection(testLine) > 0
-               && l2.ParIntersection(testLine) <=1
+      else if (intersect > 0
+               && intersect <=1
                && testLine.ParIntersection(l2) > 0) 
         count++;   
     
@@ -284,13 +285,14 @@ namespace RavlN {
       // iff testline passes through a vertex and yet not into polygon
       // at that vertex _and_ the vertex lies to the right of my test point
       // then we count that vertex twice
-      else if (l2.ParIntersection(testLine) == 0 && p[0] <= l2.P1()[0]
+      else if (intersect == 0 && p[0] <= l2.P1()[0]
                && leftof == testLine.IsPointToRight(l2.P2()))
         count++;
     
       // Set the flag for the case of the line passing through 
       // the endpoint vertex
-      if (l2.ParIntersection(testLine) ==1)
+      Vector2dC u2P(testLine.P1()[1] - testLine.P2()[1],testLine.P2()[0] - testLine.P1()[0]); 
+      if (!IsNan(intersect) && (intersect ==1))
         leftof = testLine.IsPointToRight(l2.P1());
     }
   

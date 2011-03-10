@@ -20,7 +20,7 @@ namespace RavlN {
   
   
   //! userlevel=Develop
-  //: Convert a polygon to a set of scan lines.
+  //: Scans a polygon in the manner of a set of raster scan lines.
   // This assumes the boundary does not cross itself, is
   // oriented clockwise (in the Ravl coordinate system) and
   // contains no repeated points.
@@ -36,6 +36,7 @@ namespace RavlN {
     ScanPolygon2dC(const Polygon2dC &poly,RealT rowStep = 1.0)
     { First(poly,rowStep); }
     //: Default constructor.
+    //!param: rowStep - spacing between scan rows
     
     bool First(const Polygon2dC &poly,RealT rowStep = 1.0);
     //: Goto first polygon in scan.
@@ -46,10 +47,11 @@ namespace RavlN {
     const RealRangeC &Data() 
     { return m_span; }
     //: Current range 
+    // The end points of the RealRangeC are the column coords where the current raster scan line cuts the polygon
     
     bool operator++(int)
     { return Next(); }
-    //: Goto next scan element.
+    //: Goto next scan row.
     
     bool IsElm() const
     { return m_spans.IsElm(); }
@@ -61,7 +63,7 @@ namespace RavlN {
     
     RealT Row() const
     { return m_row; }
-    //: Access current row.
+    //: Access current scan row coordinate.
     
     class LineSegmentC {
     public:
