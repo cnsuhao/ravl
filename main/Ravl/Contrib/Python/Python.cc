@@ -193,37 +193,48 @@ namespace RavlN
   {
     ONDEBUG(cerr << "PythonBodyC::AppendSystemPath(" << this << ") path(" << path << ")" << endl);
     RavlAssert(Initialised());
-    
+
     if (Py_IsInitialized())
     {
       PythonLockC pythonLock(GetThreadState());
       
       bool ret = false;
-      
-      // Returns NULL on failure and sets Python exception
-      PyObject *sysModule = PyImport_AddModule("sys");
-      if (sysModule)
+
+      PyObject *dictGlobal = GetModuleDictionary(g_defaultGlobalDictName);
+
+      if (dictGlobal)
       {
-        // Returns NULL on failure
-        PyObject *sysPath = PyObject_GetAttrString(sysModule, "path");
-        if (sysPath)
+        PyObject *sysModule = PyImport_ImportModuleEx(const_cast<char*>("sys"), dictGlobal, NULL, NULL);
+        if (sysModule)
         {
+          ONDEBUG(cerr << "PythonBodyC::AppendSystemPath(" << this << ") imported sys" << endl);
           // Returns NULL on failure
-          PyObject *newPath = PyString_FromString(const_cast<char*>(path.chars()));
-          if (newPath)
+          PyObject *sysPath = PyObject_GetAttrString(sysModule, "path");
+          if (sysPath)
           {
-            // Returns NULL on failure and sets Python exception
-            PyList_Append(sysPath, newPath);
-            Py_DECREF(newPath);
-            
-            ret = true;
+            ONDEBUG(cerr << "PythonBodyC::AppendSystemPath(" << this << ") found sys.path" << endl);
+            // Returns NULL on failure
+            PyObject *newPath = PyString_FromString(const_cast<char*>(path.chars()));
+            if (newPath)
+            {
+              ONDEBUG(cerr << "PythonBodyC::AppendSystemPath(" << this << ") appending to sys.path" << endl);
+
+              // Returns NULL on failure and sets Python exception
+              PyList_Append(sysPath, newPath);
+              Py_DECREF(newPath);
+
+              ret = true;
+            }
+
+            Py_DECREF(sysPath);
           }
-          Py_DECREF(sysPath);
         }
+
+        Py_DECREF(dictGlobal);
       }
-      
+
       CheckPythonException();
-      
+
       return ret;
     }
     
@@ -252,13 +263,13 @@ namespace RavlN
         PyObject *modulePtr = PyImport_ImportModule(const_cast<char*>(module.chars()));
         if (modulePtr)
         {
+          // PyModule_AddObject steals a reference, so increment ours so we can safely store it
+          Py_INCREF(modulePtr);
+
           // Returns 0 on success, -1 on error
           if (PyModule_AddObject(mainModule, const_cast<char*>(module.chars()), modulePtr) == 0)
           {
             ONDEBUG(cerr << "  PythonBodyC::Import(" << this << ") imported(" << module << ")" << endl);
-
-            // PyModule_AddObject steals a reference, so increment ours so we can safely store it
-            Py_INCREF(modulePtr);
 
             m_hashModules.Update(module, modulePtr);
             
@@ -345,12 +356,7 @@ namespace RavlN
           else
           {
             // Returns NULL on failure, script may set an exception
-            PyObject *emptyArg = PyTuple_New(0);
-
-            if (emptyArg)
-              ret = PyObject_CallObject(func, emptyArg);
-            
-            Py_XDECREF(emptyArg);
+            ret = PyObject_CallObject(func, NULL);
 
             ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") function(" << function << ") " << (ret ? "OK" : "FAILED") << endl);
           }
@@ -482,7 +488,7 @@ namespace RavlN
           // Have we got valid code?
           if (PyCode_Check(compiledCodeObj))
           {
-            resultObj = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(compiledCodeObj), dictGlobal, dictGlobal);
+            resultObj = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(compiledCodeObj), dictGlobal, NULL);
             Py_XDECREF(resultObj);
           }
 
