@@ -55,8 +55,8 @@ int main (void)
 {
   
   TriggerC 
-    trig1 = Trigger (&Func1),
-    trig2 = Trigger (&Func2, 0) ;   
+    trig1 = Trigger (&Func1),      // thread function with no args
+    trig2 = Trigger (&Func2, 0) ;  // thread function with one arg
   
   LaunchThreadC thread1 = LaunchThread ( trig1 ) ; 
   LaunchThreadC thread2 = LaunchThread ( trig2 ) ; 
