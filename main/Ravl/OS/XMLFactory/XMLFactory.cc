@@ -70,20 +70,31 @@ namespace RavlN {
   
   //! Follow path to child node, create nodes where needed
   
-  bool XMLFactoryNodeC::UsePath(const StringC &path,RefT &node,bool restrictToXMLTree,bool verbose) {
+  bool XMLFactoryNodeC::UsePath(const StringC &path,
+                                RefT &node,
+                                bool restrictToXMLTree,
+                                bool verbose,
+                                XMLFactorySearchScopeT searchScope)
+  {
     RavlN::StringListC pathElements(path,":/.");
-    return UsePath(pathElements,node,restrictToXMLTree,verbose);
+    return UsePath(pathElements,node,restrictToXMLTree,verbose,searchScope);
   }
   
   //! Follow path to child node, create nodes where needed
   
-  bool XMLFactoryNodeC::UsePath(const RavlN::DListC<StringC> &path,RefT &node,bool restrictToXMLTree,bool verbose) {
+  bool XMLFactoryNodeC::UsePath(const RavlN::DListC<StringC> &path,
+                                RefT &node,
+                                bool restrictToXMLTree,
+                                bool verbose,
+                                XMLFactorySearchScopeT searchScope)
+  {
     XMLFactoryNodeC::RefT at = this;
     for(RavlN::DLIterC<StringC> it(path);it;it++) {
       RefT child;
       if(!at->UseChild(*it,child,restrictToXMLTree,verbose)) {
         // This failed, try parent.
-        if(m_parent.IsValid()) {
+
+        if(searchScope == XMLFACTORY_SEARCH_PARENT_NODES && m_parent.IsValid()) {
           if(verbose)
             SysLog(SYSLOG_DEBUG,"Child '%s' not found in '%s', trying parent. ",it->chars(),at->Path().chars());
           return m_parent->UsePath(path,node,restrictToXMLTree,verbose);
@@ -99,7 +110,11 @@ namespace RavlN {
   
   //! Find child and create one if it doesn't exist.
   
-  bool XMLFactoryNodeC::UseChild(const StringC &name,RefT &child,bool restrictToXMLTree,bool verbose) {
+  bool XMLFactoryNodeC::UseChild(const StringC &name,
+                                 RefT &child,
+                                 bool restrictToXMLTree,
+                                 bool verbose)
+  {
     if(FindChild(name,child)) {
       RavlAssert(child.IsValid());
       return true;
@@ -201,7 +216,8 @@ namespace RavlN {
                                              const std::type_info &to,
                                              RavlN::RCWrapAbstractC &handle,
                                              bool silentError,
-                                             const std::type_info &defaultType
+                                             const std::type_info &defaultType,
+                                             XMLFactorySearchScopeT searchScope
                                              ) 
   {
     XMLFactoryNodeC::RefT child;
@@ -213,7 +229,7 @@ namespace RavlN {
     if(name.IsEmpty())
       name = rawname;
     
-    if(!UsePath(name,child,true,factory.VerboseMode()) || !child.IsValid()) {
+    if(!UsePath(name,child,true,factory.VerboseMode(),searchScope) || !child.IsValid()) {
       if(!silentError) {
         SysLog(SYSLOG_DEBUG,"Failed to find path to requested type, '%s' from path '%s' ",name.chars(),Path().chars());
         //Dump(std::cerr);

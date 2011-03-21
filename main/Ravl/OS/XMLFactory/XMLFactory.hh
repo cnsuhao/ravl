@@ -38,6 +38,11 @@ namespace RavlN {
   class XMLFactoryC;
   class XMLFactoryHC;
 
+  enum XMLFactorySearchScopeT
+  { XMLFACTORY_SEARCH_PARENT_NODES,
+    XMLFACTORY_SEARCH_LOCAL_ONLY
+  };
+
   //! uselevel=Develop
   //: Node in the build tree.
 
@@ -110,10 +115,18 @@ namespace RavlN {
     bool FollowPath(const DListC<StringC> &path,RefT &node,bool verbose = false) const;
     //: Follow path to child node.
 
-    bool UsePath(const StringC &path,RefT &node,bool restrictToXMLTree = true,bool verbose = false);
+    bool UsePath(const StringC &path,
+                 RefT &node,
+                 bool restrictToXMLTree = true,
+                 bool verbose = false,
+                 XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES);
     //: Follow path to child node, create nodes where needed
 
-    bool UsePath(const DListC<StringC> &path,RefT &node,bool restrictToXMLTree = true,bool verbose = false);
+    bool UsePath(const DListC<StringC> &path,
+                 RefT &node,
+                 bool restrictToXMLTree = true,
+                 bool verbose = false,
+                 XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES);
     //: Follow path to child node, create nodes where needed
 
     bool FindChild(const StringC &name,RefT &child) const;
@@ -174,7 +187,8 @@ namespace RavlN {
                               const std::type_info &to,
                               RCWrapAbstractC &handle,
                               bool silentError = false,
-                              const std::type_info &defaultType = typeid(void)
+                              const std::type_info &defaultType = typeid(void),
+                              XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES
                               );
     //: Get named component.
 
@@ -296,9 +310,23 @@ namespace RavlN {
     //: Invalidate context.
 
     template<class DataT>
-    bool UseComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false,const std::type_info &defaultType=typeid(void)) const;
+    bool UseComponent(const StringC &name,
+                      DataT &data,
+                      bool suppressErrorMessages = false,
+                      const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
+    // This will search parent context's succesively up the tree until a
+    // component with a matching name is found.
 
+    template<class DataT>
+    bool UseChildComponent(const StringC &name,
+                           DataT &data,
+                           bool suppressErrorMessages = false,
+                           const std::type_info &defaultType=typeid(void)) const;
+    //: Get named component, or create it if not found.
+    // This will only check the local context for the component, creating
+    // a new instance if its not found.
+    
     template<class DataT>
     bool CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false) const;
     //: Create a new instance of the named component.
@@ -399,7 +427,8 @@ namespace RavlN {
                       const StringC &name,
                       DataT &data,
                       bool suppressErrorMessages = false,
-                      const type_info &defaultType = typeid(void)
+                      const type_info &defaultType = typeid(void),
+                      XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES
                       ) const
     {
       RCWrapC<DataT> handle;
@@ -408,7 +437,8 @@ namespace RavlN {
                                                                                      typeid(DataT),
                                                                                      handle,
                                                                                      suppressErrorMessages,
-                                                                                     defaultType
+                                                                                     defaultType,
+                                                                                     searchScope
                                                                                      ))
         return false;
       RavlAssert(handle.IsValid());
@@ -416,7 +446,7 @@ namespace RavlN {
       return true;
     }
     //: Get named component, or create it if not found.
-
+    
     template<class DataT>
     bool CreateComponent(const XMLFactoryContextC &node,DataT &data) {
       RCWrapC<DataT> handle;
@@ -628,8 +658,19 @@ namespace RavlN {
 
 
   template<class DataT>
-  bool XMLFactoryContextC::UseComponent(const StringC &name,DataT &data,bool suppressErrorMessages,const std::type_info &defaultType) const
-  { return Factory().UseComponent(*this,name,data,suppressErrorMessages,defaultType); }
+  bool XMLFactoryContextC::UseComponent(const StringC &name,
+                                        DataT &data,
+                                        bool suppressErrorMessages,
+                                        const std::type_info &defaultType) const
+  { return Factory().UseComponent(*this,name,data,suppressErrorMessages,defaultType,XMLFACTORY_SEARCH_PARENT_NODES); }
+  //: Get named component, or create it if not found.
+
+  template<class DataT>
+  bool XMLFactoryContextC::UseChildComponent(const StringC &name,
+                                        DataT &data,
+                                        bool suppressErrorMessages,
+                                        const std::type_info &defaultType) const
+  { return Factory().UseComponent(*this,name,data,suppressErrorMessages,defaultType,XMLFACTORY_SEARCH_LOCAL_ONLY); }
   //: Get named component, or create it if not found.
 
   template<class DataT>
