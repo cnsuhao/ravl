@@ -10,12 +10,17 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/OpenSceneGraphWidget.hh"
-#include <osgGA/TrackballManipulator>
 #include <gtk/gtkgl.h>
 #include <gtk/gtkcontainer.h>
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/EntryPnt.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+
+#include <osgGA/TrackballManipulator>
+#include <osgGA/KeySwitchMatrixManipulator>
+#include <osgGA/FlightManipulator>
+#include <osgGA/TerrainManipulator>
+#include <osgGA/DriveManipulator>
 
 #define DODEBUG 0
 #if DODEBUG
@@ -26,8 +31,16 @@
 
 namespace RavlOSGN
 {
-
   using namespace osg;
+
+  // Constructor
+  PickEntryC::PickEntryC(const NodeC &node,const Point3dC &localIntersection,const Point3dC &worldIntersection)
+   : m_node(&node),
+     m_localIntersection(localIntersection),
+     m_worldIntersection(worldIntersection)
+  {}
+
+  // --------------------------------------------------------------
 
   void FuncGtkGlExtInit(int *argc, char **argv[])
   {
@@ -47,7 +60,9 @@ namespace RavlOSGN
     m_height(height),
     m_osgViewer(NULL),
     m_osgWindow(NULL),
-    m_clearColour(0.5, 0.5, 0.5, 1.0)
+    m_clearColour(0.5, 0.5, 0.5, 1.0),
+    m_defaultManipulator("TrackerBall"),
+    m_frameRate(60)
   {}
 
   OpenSceneGraphWidgetBodyC::OpenSceneGraphWidgetBodyC(const RavlN::XMLFactoryContextC &factory)
@@ -55,7 +70,9 @@ namespace RavlOSGN
     m_height(100),
     m_osgViewer(NULL),
     m_osgWindow(NULL),
-    m_clearColour(0.5, 0.5, 0.5, 1.0)
+    m_clearColour(0.5, 0.5, 0.5, 1.0),
+    m_defaultManipulator(factory.AttributeString("manipulator","TrackerBall").data()),
+    m_frameRate(factory.AttributeReal("frameRate",60))
   {}
 
   OpenSceneGraphWidgetBodyC::~OpenSceneGraphWidgetBodyC()
@@ -63,6 +80,12 @@ namespace RavlOSGN
     if (m_osgViewer)
       m_osgViewer->stop();
   }
+
+  bool OpenSceneGraphWidgetBodyC::Create()
+  { return CommonCreate(); }
+
+  bool OpenSceneGraphWidgetBodyC::Create(GtkWidget *newWidget)
+  { return CommonCreate(newWidget); }
 
   bool OpenSceneGraphWidgetBodyC::CommonCreate(GtkWidget *newWidget)
   {
@@ -74,8 +97,25 @@ namespace RavlOSGN
 
     m_osgViewer = new osgViewer::ViewerGtk();
 
-    m_osgViewer->setCameraManipulator(new osgGA::TrackballManipulator);
-    m_osgViewer->set_fps(60);
+    osgGA::MatrixManipulator *manipulator = 0;
+    if(m_defaultManipulator == "TrackerBall") {
+      manipulator = new osgGA::TrackballManipulator;
+    } else if(m_defaultManipulator == "Terrain") {
+      manipulator = new osgGA::TerrainManipulator;
+    } else if(m_defaultManipulator == "Drive") {
+      manipulator = new osgGA::DriveManipulator;
+    } else if(m_defaultManipulator == "Flight") {
+      manipulator = new osgGA::FlightManipulator;
+    } else if(m_defaultManipulator == "KeySwitch") {
+      manipulator = new osgGA::KeySwitchMatrixManipulator;
+    } else {
+      // Fall back to default.
+      std::cerr << "Unknown manipulator:" << m_defaultManipulator << "\n";
+      RavlAssertMsg(0,"Unknown manipulator specified.");
+      manipulator = new osgGA::TrackballManipulator;
+    }
+    m_osgViewer->setCameraManipulator(manipulator);
+    m_osgViewer->set_fps(m_frameRate);
 
     if (m_sceneNode.IsValid())
     {
@@ -104,9 +144,11 @@ namespace RavlOSGN
         std::cerr << "OpenSceneGraphWidgetBodyC::CommonCreate Glade widget is not container." << std::endl;
       }
     }
-
+    
     if (widget)
     {
+      gtk_widget_set_can_focus(widget,true);
+      
       ConnectSignals();
       ConnectR(Signal("configure_event"), *this, &OpenSceneGraphWidgetBodyC::OnConfigure);
       ConnectR(Signal("destroy"), *this, &OpenSceneGraphWidgetBodyC::OnDestroy);
@@ -138,6 +180,65 @@ namespace RavlOSGN
 
     m_osgViewer->getCamera()->setClearColor(Vec4(m_clearColour.Red(), m_clearColour.Green(), m_clearColour.Blue(), m_clearColour.Alpha()));
 
+    return true;
+  }
+
+
+  //! Pick a point from the view.
+
+  bool OpenSceneGraphWidgetBodyC::Pick(const Point2dC &position, CollectionC<PickEntryC> &nodes)
+  {
+    osgUtil::LineSegmentIntersector::Intersections intersections;
+
+    RavlN::Index2dC size = Size();
+    if(!nodes.IsValid())
+      nodes = CollectionC<PickEntryC>(32);
+    
+    // Coordinate system!?
+    float x = position.Col();
+    float y = size.Row() - position.Row();
+    
+#if 1
+    osg::ref_ptr< osgUtil::LineSegmentIntersector > picker = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::WINDOW, x, y);
+    osgUtil::IntersectionVisitor iv(picker.get());
+    m_osgViewer->getCamera()->accept(iv);
+    if (picker->containsIntersections())
+    {
+        intersections = picker->getIntersections();
+#else
+    // This doesn't seem to work correctly after the canvas has been scaled.
+    if(m_osgViewer->computeIntersections(x, y, intersections)) {
+#endif
+      for(osgUtil::LineSegmentIntersector::Intersections::iterator hitr = intersections.begin();
+              hitr != intersections.end();
+              ++hitr) {
+        NodeC::RefT ravlNode;
+        if(!hitr->nodePath.empty() && !(hitr->nodePath.back()->getName().empty())) {
+          // the geodes are identified by name.
+          NodeC::GetNode(hitr->nodePath.back(),ravlNode);
+#if 1
+          std::cout << "Object Geode \"" << hitr->nodePath.back()->getName() << "\"" << std::endl;
+#endif
+        } else if(hitr->drawable.valid()) {
+          //NodeC::GetNode(hitr->drawable.get(),ravlNode);
+#if 1
+          std::cout << "Object Drawable \"" << hitr->drawable->className() << "\"" << std::endl;
+#endif
+        }
+        Point3dC lp(hitr->getLocalIntersectPoint()[0],hitr->getLocalIntersectPoint()[1],hitr->getLocalIntersectPoint()[2]);
+        Point3dC wp(hitr->getWorldIntersectPoint()[0],hitr->getWorldIntersectPoint()[1],hitr->getWorldIntersectPoint()[2]);
+        nodes.Append(PickEntryC(*ravlNode,lp,wp));
+#if 0
+        using namespace osg;
+        os << "        local coords vertex(" << hitr->getLocalIntersectPoint() << ")" << "  normal(" << hitr->getLocalIntersectNormal() << ")" << std::endl;
+        os << "        world coords vertex(" << hitr->getWorldIntersectPoint() << ")" << "  normal(" << hitr->getWorldIntersectNormal() << ")" << std::endl;
+        const osgUtil::LineSegmentIntersector::Intersection::IndexList& vil = hitr->indexList;
+        for(unsigned int i = 0; i < vil.size(); ++i) {
+          os << "        vertex indices [" << i << "] = " << vil[i] << std::endl;
+        }
+#endif
+      }
+    }
     return true;
   }
 

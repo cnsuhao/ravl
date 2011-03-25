@@ -98,8 +98,10 @@ TexTriMeshC::RefT CreateTexTriMesh()
   return texTriMeshRef;
 }
 
-bool pressFunc(MouseEventC &me) {
+bool pressFunc(MouseEventC &me,OpenSceneGraphWidgetC &osgWidget) {
   cerr << "Press " << me.Row() << " " << me.Col() << "\n";
+  RavlN::CollectionC<RavlOSGN::PickEntryC> nodes;
+  osgWidget.Pick(Point2dC(me.Row(),me.Col()),nodes);
   return true;
 }
 
@@ -126,7 +128,7 @@ int DoMain(int argc, char *argv[])
 
   WindowC win(100, 100, "OpenSceneGraph");
   OpenSceneGraphWidgetC osgWidget(400, 400);
-  Connect(osgWidget.Signal("button_press_event"), &pressFunc);
+  Connect(osgWidget.Signal("button_press_event"), &pressFunc,MouseEventC(),osgWidget);
   Connect(osgWidget.Signal("button_release_event"), &releaseFunc);
 
   RavlGUIN::LBoxC vbox = VBox(osgWidget);

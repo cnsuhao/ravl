@@ -26,38 +26,38 @@ namespace RavlOSGN
 
   using namespace osg;
 
-  class NodeDataC
-  : public Referenced
-  {
-  public:
-    NodeDataC(const NodeC &node)
-    : m_node(&node)
-    {}
 
-    NodeC::RefT m_node;
-  };
-
+  // Call back.
+  
   class NodeCallbackC
   : public NodeCallback
   {
   public:
+    NodeCallbackC(const NodeC &node)
+     : m_node(&node)
+    {}
+    
     virtual void operator()(Node *node, NodeVisitor *nv)
     {
-      ref_ptr<NodeDataC> nodeDataRef = dynamic_cast<NodeDataC*>(node->getUserData());
-      if (nodeDataRef && nodeDataRef->m_node.IsValid())
-      {
-        nodeDataRef->m_node->SigCallback()();
-      }
-
+      if (m_node.IsValid())
+      { m_node->SigCallback()(); }
+      
       traverse(node, nv);
     }
+    
+    NodeC::RefT m_node;
   };
 
+  // Constructor.
+
   NodeC::NodeC()
-  : m_sigCallback(true)
+   : m_sigCallback(true)
   {
+    
   }
 
+  //! Destructor.
+  
   NodeC::~NodeC()
   {
     if (m_node && m_callback)
@@ -71,16 +71,15 @@ namespace RavlOSGN
   {
     if (!m_node)
       return false;
-
-    ref_ptr<NodeDataC> nodeDataRef = new NodeDataC(*this);
-    m_node->setUserData(nodeDataRef.get());
-
+    
+    m_node->setUserData(new NodeRefC(this));
+    
     if (enable)
     {
       if (m_callback)
         return true;
 
-      m_callback = new NodeCallbackC;
+      m_callback = new NodeCallbackC(*this);
       m_node->setUpdateCallback(m_callback.get());
     }
     else
@@ -107,6 +106,20 @@ namespace RavlOSGN
 
     m_node->setStateSet(stateSetRef);
 
+    return true;
+  }
+
+  //: Set the name of the node.
+  void NodeC::SetName(const std::string &name) {
+    m_node->setName(name);
+  }
+
+  //: Get node handle if it exists.
+  bool NodeC::GetNode(osg::Node *theOsgNode,NodeC::RefT &node) {
+    NodeRefC *nd = dynamic_cast<NodeRefC *>(theOsgNode->getUserData());
+    if(nd == 0)
+      return false;
+    node = nd->Node();
     return true;
   }
 

@@ -20,9 +20,43 @@
 #include <osgGtk/GraphicsWindowGtk.h>
 #include "Ravl/Image/RealRGBAValue.hh"
 #include "Ravl/XMLFactory.hh"
+#include "Ravl/Point2d.hh"
+#include "Ravl/Point3d.hh"
+#include "Ravl/Collection.hh"
 
 namespace RavlOSGN
 {
+  using RavlN::Point2dC;
+  using RavlN::Point3dC;
+  using RavlN::CollectionC;
+  
+  //! Pick entry
+  class PickEntryC {
+  public:
+    // Default constructor
+    PickEntryC()
+    {}
+    
+    // Constructor
+    PickEntryC(const NodeC &node,const Point3dC &localIntersection,const Point3dC &worldIntersection);
+    
+    //! Access node.
+    const NodeC::RefT &Node() const
+    { return m_node; }
+
+    //! Access intersection in the nodes coordinate system
+    const Point3dC &LocalIntersection() const
+    { return m_localIntersection; }
+
+    //! Access intersection in the world coordinate system
+    const Point3dC &WorldIntersection() const
+    { return m_localIntersection; }
+    
+  protected:
+    NodeC::RefT m_node;
+    Point3dC m_localIntersection;
+    Point3dC m_worldIntersection;
+  };
 
   //! userlevel=Normal
   //: GTK widget containing an OpenSceneGraph viewer.
@@ -43,18 +77,25 @@ namespace RavlOSGN
     virtual ~OpenSceneGraphWidgetBodyC();
     //: Dtor.
 
-    virtual bool Create()
-    { return CommonCreate(); }
+    virtual bool Create();
+    //: Create the widget
 
-    virtual bool Create(GtkWidget *newWidget)
-    { return CommonCreate(newWidget); }
-
+    virtual bool Create(GtkWidget *newWidget);
+    //: Create widget in place
+    
     bool SetScene(const NodeC::RefT &node);
     //: Set the scene graph root object.
 
     bool SetColour(const RavlImageN::RealRGBAValueC &colour);
     //: Set the viewer background colour.
 
+    //! Pick a point from the view.
+    bool Pick(const Point2dC &position,CollectionC<PickEntryC> &nodes);
+
+    //! Get pointer to viewer.
+    osgViewer::Viewer *Viewer()
+    { return m_osgViewer.get(); }
+    
   protected:
     bool CommonCreate(GtkWidget *newWidget = NULL);
 
@@ -70,6 +111,8 @@ namespace RavlOSGN
 
     NodeC::RefT m_sceneNode;
     RavlImageN::RealRGBAValueC m_clearColour;
+    std::string m_defaultManipulator;
+    float m_frameRate;
   };
 
   //! userlevel=Normal
@@ -110,6 +153,14 @@ namespace RavlOSGN
     { return Body().SetColour(colour); }
     //: Set the viewer background colour.
     
+    //! Pick a point from the view.
+    bool Pick(const Point2dC &position,CollectionC<PickEntryC> &nodes)
+    { return Body().Pick(position,nodes); }
+
+    //! Get pointer to viewer.
+    osgViewer::Viewer *Viewer()
+    { return Body().Viewer(); }
+
   protected:
     OpenSceneGraphWidgetBodyC &Body()
     { return static_cast<OpenSceneGraphWidgetBodyC &>(RavlGUIN::WidgetC::Body()); }

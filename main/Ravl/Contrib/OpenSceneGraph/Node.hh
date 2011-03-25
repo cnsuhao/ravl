@@ -22,7 +22,70 @@
 
 namespace RavlOSGN
 {
+  class NodeC;
+  
+  // Class for holding a reference back an arbitary object.
 
+  class NodeRefC
+    : public osg::Referenced
+  {
+  public:
+    //! Default constructor
+    NodeRefC()
+     : m_node(0)
+    {}
+    
+    //! Construct from data
+    NodeRefC(NodeC *node)
+    : m_node(node)
+    {}
+    
+    //! Access node
+    NodeC *Node()
+    { return m_node; }
+
+    //! Access node
+    const NodeC *Node() const
+    { return m_node; }
+  protected:
+    NodeC *m_node;
+  };
+  
+  template<class DataT>
+  class NodeDataC
+   : public NodeRefC
+  {
+  public:
+    //! Default constructor
+    NodeDataC()
+    {}
+    
+    //! Construct from data
+    NodeDataC(NodeC *node,const DataT &data)
+    : NodeRefC(node),
+      m_data(data)
+    {}
+    
+    //! Access data
+    DataT &Data()
+    { return m_data; }
+    
+    //! Access data
+    const DataT &Data() const
+    { return m_data; }
+
+    //! Access data
+    DataT &operator*()
+    { return m_data; }
+    
+    //! Access data
+    const DataT &operator*() const
+    { return m_data; }
+
+  protected:
+    DataT m_data;
+  };
+  
   //! userlevel=Normal
   //: Node base object.
 
@@ -46,17 +109,54 @@ namespace RavlOSGN
     bool BringToFront();
     //: Make sure the node is rendered after all other objects and disable depth testing.
 
-    osg::ref_ptr<osg::Node> Node()
+    osg::ref_ptr<osg::Node> &Node()
     { return m_node; }
     //: Access the object smart pointer.
-
+        
     typedef RavlN::SmartPtrC<NodeC> RefT;
     
+    static bool GetNode(osg::Node *,NodeC::RefT &node);
+    //: Get node handle if it exists.
+
+    void SetName(const std::string &name);
+    //: Set the name of the node.
+
+    template<class DataT>
+    void SetUserData(const DataT &data)
+    { m_node->setUserData(new NodeDataC<DataT>(this,data)); }
+    //: Store user data in node.
+    
+    template<class DataT>
+    bool GetUserData(DataT &data) {
+      NodeDataC<DataT> *nodeData = dynamic_cast<NodeDataC<DataT> *>(m_node->getUserData());
+      if(nodeData == 0)
+        return false;
+      data = nodeData->Data();
+      return true;
+    }
+    //: Retrieve data from node.
+    // Returns true if data of matching type has been found.
+
+    template<class DataT>
+    static bool GetUserData(osg::Node *node,DataT &data) {
+      NodeDataC<DataT> *nodeData = dynamic_cast<NodeDataC<DataT> *>(node->getUserData());
+      if(nodeData == 0)
+        return false;
+      data = nodeData->Data();
+      return true;
+    }
+    //: Retrieve data from node.
+    // Returns true if data of matching type has been found.
+
+    const std::string &Name() const
+    { return m_node->getName(); }
+    //: Access name of node.
   protected:
     osg::ref_ptr<osg::Node> m_node;
     osg::ref_ptr<osg::NodeCallback> m_callback;
     RavlN::Signal0C m_sigCallback;
   };
+
 
 }
 
