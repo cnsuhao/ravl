@@ -49,7 +49,7 @@ namespace RavlN
       // well for most at the moment...
     	
     	// If the object exists, create and store a string representation of it
-  		StringC exceptionType = (exType ? GetPythonObjectAsString(exType) : StringC());
+  		StringC exceptionType = (exType ? GetPythonClassNameAsString(exType) : StringC());
   		StringC exceptionValue = (exValue ? GetPythonObjectAsString(exValue) : StringC());
   		StringC exceptionTrace = (exTrace ? GetPythonTraceAsString(exTrace) : StringC());
     	
@@ -66,10 +66,38 @@ namespace RavlN
     }
   }
   
+  StringC GetPythonClassNameAsString(PyObject *object)
+  {
+  	RavlAssert(object != NULL);
+
+    StringC classNameString;
+
+  	PyObject *classObject = NULL;
+    // Return NULL on failure
+  	if ((classObject = PyObject_GetAttrString(object, "__class__")) != NULL)
+  	{
+    	PyObject *nameObject = NULL;
+      // Return NULL on failure
+      if ((nameObject = PyObject_GetAttrString(object, "__name__")) != NULL)
+      {
+        // Returns NULL on failure and sets Python exception
+        const char * const nameString = PyString_AsString(nameObject);
+
+        classNameString = StringC(nameString);
+
+        Py_DECREF(nameObject);
+      }
+
+  		Py_DECREF(classObject);
+    }
+
+  	return classNameString;
+  }
+
   StringC GetPythonObjectAsString(PyObject *object)
   {
   	RavlAssert(object != NULL);
-  	
+
   	PyObject *objectStr = NULL;
     // Return NULL on failure
   	if ((objectStr = PyObject_Str(object)) != NULL)
@@ -77,15 +105,15 @@ namespace RavlN
       // Returns NULL on failure and sets Python exception
   		const char * const chars = PyString_AsString(objectStr);
   		StringC str(chars);
-  		
+
   		Py_DECREF(objectStr);
-  		
+
   		return str;
     }
-  	
+
   	return StringC();
   }
-  
+
   StringC GetPythonTraceAsString(PyObject *object)
   {
   	RavlAssert(object != NULL);

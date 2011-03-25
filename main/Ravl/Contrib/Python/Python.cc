@@ -34,6 +34,8 @@ namespace
 {
 
   const char* g_defaultGlobalDictName = "__main__";
+  const char* g_defaultBuiltInDictName = "__builtins__";
+  const char* g_defaultBuiltInModuleName = "__builtin__";
 
 }
 
@@ -204,7 +206,7 @@ namespace RavlN
 
       if (dictGlobal)
       {
-        PyObject *sysModule = PyImport_ImportModuleEx(const_cast<char*>("sys"), dictGlobal, NULL, NULL);
+        PyObject *sysModule = PyImport_ImportModuleEx(const_cast<char*>("sys"), dictGlobal, dictGlobal, NULL);
         if (sysModule)
         {
           ONDEBUG(cerr << "PythonBodyC::AppendSystemPath(" << this << ") imported sys" << endl);
@@ -446,7 +448,6 @@ namespace RavlN
 
             ONDEBUG(cerr << "  PythonBodyC::Call(" << this << ") object(" << object << ") function(" << function << ") " << (ret ? "OK" : "FAILED") << endl);
           }
-
         }
         else
         {
@@ -488,7 +489,7 @@ namespace RavlN
           // Have we got valid code?
           if (PyCode_Check(compiledCodeObj))
           {
-            resultObj = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(compiledCodeObj), dictGlobal, NULL);
+            resultObj = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(compiledCodeObj), dictGlobal, dictGlobal);
             Py_XDECREF(resultObj);
           }
 
@@ -551,14 +552,38 @@ namespace RavlN
     // Get access to the main module
     // Returns NULL on failure and sets Python exception
     PyObject *mainModule = PyImport_AddModule(g_defaultGlobalDictName);
-    if (mainModule)
-    {
-      Py_INCREF(mainModule); // AddModule returns borrowed reference
-      m_hashModules.Update(g_defaultGlobalDictName, mainModule);
-    }
-    else
+    if (!mainModule)
     {
       cerr << "PythonBodyC::PythonBodyC(" << this << ") failed to initialise main environment" << endl;
+      return;
+    }
+
+    Py_INCREF(mainModule); // AddModule returns borrowed reference
+    m_hashModules.Update(g_defaultGlobalDictName, mainModule);
+    
+    PyObject *mainDict = PyModule_GetDict(mainModule);
+    if (!mainDict)
+    {
+      cerr << "PythonBodyC::PythonBodyC(" << this << ") failed to initialise main environment" << endl;
+      return;
+    }
+
+    Py_INCREF(mainDict);
+
+    PyDict_Clear(mainDict);
+
+#if 0
+    PyObject *builtins = PyEval_GetBuiltins();
+#else
+    PyObject *builtins = PyImport_AddModule(g_defaultBuiltInModuleName);
+#endif
+    PyDict_SetItemString(mainDict, g_defaultBuiltInDictName, builtins);
+
+    Py_DECREF(mainDict);
+
+    if (PyEval_GetRestricted())
+    {
+      cerr << "PythonBodyC::PythonBodyC(" << this << ") restricted mode" << endl;
     }
   }
   
@@ -578,7 +603,8 @@ namespace RavlN
       lock.Unlock();
       
       // Returns NULL on failure
-      mainDict = PyObject_GetAttrString(mainModule, "__dict__");
+      mainDict = PyModule_GetDict(mainModule);
+      Py_INCREF(mainDict);
     }
 
     return mainDict;

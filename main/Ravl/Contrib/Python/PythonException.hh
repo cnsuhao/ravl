@@ -63,6 +63,13 @@ namespace RavlN
   // has been created with a valid Python thread state.
   //!throw: PythonExceptionC - If a Python exception is set
 
+  StringC GetPythonClassNameAsString(PyObject *object);
+  //: Get a string representation of a class name.
+  // This function should only be called after a PythonLockC object
+  // has been created with a valid Python thread state.
+  // Will set a Python exception on failure.
+  //!return: An empty string on failure
+
   StringC GetPythonObjectAsString(PyObject *object);
   //: Get a string representation of an object.
   // This function should only be called after a PythonLockC object
