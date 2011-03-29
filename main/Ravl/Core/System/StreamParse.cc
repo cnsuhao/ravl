@@ -58,7 +58,26 @@ namespace RavlN {
     Unget(&c,1);
     return true;
   }
-  
+
+  //: Skip to after word if it matches the characters in the stream.
+  //: otherwise return false and leave stream where it is.
+
+  bool IStreamC::SkipWord(const char *word) {
+    RavlAssert(word != 0);
+    const char *at = word;
+    StringC buff;
+    while(*at != 0) {
+      char c = GetChar();
+      buff += c; // Build up buffer of whats been read.
+      if(*at != c) {
+        Unget(buff,buff.size());
+        return false;
+      }
+      at++;
+    }
+    return true;
+  }
+
   //: Skip through stream until endStr is found.
   
   bool IStreamC::SkipTo(const StringC &endStr) {

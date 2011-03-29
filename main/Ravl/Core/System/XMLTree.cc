@@ -56,6 +56,7 @@ namespace RavlN {
                               const StringC &parentFilename,
                               IStreamC &newIStream)
   {
+    ONDEBUG(std::cerr << "XMLTreeLoadC::OpenFile '" << theFilename << "' from '" << parentFilename << "'\n");
     if(theFilename.IsEmpty())
       return false;
     StringC filename(theFilename);
@@ -67,8 +68,10 @@ namespace RavlN {
         StringC newFn = homeDir + filename.after('~');
         ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << homeDir << "'\n");
         newIStream = IStreamC(newFn);
-        if(newIStream.good())
+        if(newIStream.good()) {
+          ONDEBUG(std::cerr << "Found! \n");
           return true;
+        }
       }
     }
 
@@ -79,8 +82,10 @@ namespace RavlN {
         StringC newFn = parentDir + '/' + filename;
         ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << parentDir << "'\n");
         newIStream = IStreamC(newFn);
-        if(newIStream.good())
+        if(newIStream.good()) {
+          ONDEBUG(std::cerr << "Found! \n");
           return true;
+        }
       }
 
       // Try from the resource root.
@@ -90,8 +95,10 @@ namespace RavlN {
         StringC newFn = resourceDir + '/' + filename;
         ONDEBUG(std::cerr << "Trying '" << newFn << "' from '" << resourceDir << "'\n");
         newIStream = IStreamC(newFn);
-        if(newIStream.good())
+        if(newIStream.good()) {
+          ONDEBUG(std::cerr << "Found! \n");
           return true;
+        }
       }
     }
 
@@ -99,7 +106,12 @@ namespace RavlN {
     ONDEBUG(std::cerr << "Trying '" << filename << "'\n");
     newIStream = IStreamC(filename);
     
-    return newIStream.good();
+    if(newIStream.good()) {
+      ONDEBUG(std::cerr << "Found! \n");
+      return true;
+    }
+    ONDEBUG(std::cerr << "Not found! \n");
+    return false;
   }
 
   // --------------------------------------------------------------------

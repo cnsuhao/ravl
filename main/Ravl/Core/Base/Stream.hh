@@ -512,6 +512,10 @@ namespace RavlN {
     // listed in 'delim'. If end of stream is found before
     // returns false.
     
+    bool SkipWord(const char *word);
+    //: Skip to after word if it matches the characters in the stream.
+    //: otherwise return false and leave stream where it is.
+    
     bool SkipTo(const StringC &endStr);
     //: Skip through stream until endStr is found.
     // this leaves the stream positioned at the

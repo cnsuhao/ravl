@@ -208,19 +208,22 @@ namespace RavlN {
 	    emptyTag = true;
 	    ONDEBUG(cerr << "XMLIStreamC::ReadTag(), Found processing instruction. \n");
 	    break;
-	  case '!':  // Comment or DTD
+	  case '!':  // Comment CDATA or DTD
 	    {
-	      char nc = GetChar();
-	      if(nc == '-') {
-		char anc = GetChar();
-		if(anc == '-') { // Comment...
-		  ONDEBUG(cerr << "XMLIStreamC::ReadTag(), Found comment. \n");
-		  SkipTo("-->");
-		  continue; // Start searching for a tag again.
-		}
+              std::cerr << "Found  <! \n";
+              // CDATA ?
+              if(this->SkipWord("[CDATA[")) {
+                ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found CDATA \n");
+                Content() += this->ClipTo("]]>");
+                continue;
+              }
+	      if(this->SkipWord("--")) {
+		ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found comment. \n");
+		SkipTo("-->");
+		continue; // Start searching for a tag again.
 	      }
 	      // This may have to be more clever.
-	      ONDEBUG(cerr << "XMLIStreamC::ReadTag(), Found DTD info. \n");
+	      ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found DTD info. \n");
 	      SkipTo('>');
 	      // Start searching for a tag again.
 	      continue;
