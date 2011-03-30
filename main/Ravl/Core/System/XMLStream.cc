@@ -210,7 +210,6 @@ namespace RavlN {
 	    break;
 	  case '!':  // Comment CDATA or DTD
 	    {
-              std::cerr << "Found  <! \n";
               // CDATA ?
               if(this->SkipWord("[CDATA[")) {
                 ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found CDATA \n");
