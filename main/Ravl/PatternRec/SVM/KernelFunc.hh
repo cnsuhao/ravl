@@ -15,7 +15,7 @@
 //! lib =       RavlSVM
 //! date =      "3/07/03"
 //! rcsid =     "$Id: KernelFunc.hh 7752 2006-01-31 14:46:56Z alex $"
-//! docentry =  "Ravl.API.Pattern_Recognition.Classifier.SVM"
+//! docentry =  "Ravl.API.Pattern_Recognition.Classifier.SVM.Kernel functions"
 //////////////////////////////////////////////////////////////////////////////
 
 #include "Ravl/SArray1d.hh"
