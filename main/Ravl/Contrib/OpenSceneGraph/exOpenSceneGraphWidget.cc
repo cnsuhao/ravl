@@ -100,8 +100,6 @@ TexTriMeshC::RefT CreateTexTriMesh()
 
 bool pressFunc(MouseEventC &me,OpenSceneGraphWidgetC &osgWidget) {
   cerr << "Press " << me.Row() << " " << me.Col() << "\n";
-  RavlN::CollectionC<RavlOSGN::PickEntryC> nodes;
-  osgWidget.Pick(Point2dC(me.Row(),me.Col()),nodes);
   return true;
 }
 

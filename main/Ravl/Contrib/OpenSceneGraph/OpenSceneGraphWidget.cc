@@ -10,6 +10,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/OpenSceneGraphWidget.hh"
+#include "Ravl/OpenSceneGraph/CanvasManipulator.hh"
+
 #include <gtk/gtkgl.h>
 #include <gtk/gtkcontainer.h>
 #include "Ravl/GUI/Manager.hh"
@@ -32,15 +34,6 @@
 namespace RavlOSGN
 {
   using namespace osg;
-
-  // Constructor
-  PickEntryC::PickEntryC(const NodeC &node,const Point3dC &localIntersection,const Point3dC &worldIntersection)
-   : m_node(&node),
-     m_localIntersection(localIntersection),
-     m_worldIntersection(worldIntersection)
-  {}
-
-  // --------------------------------------------------------------
 
   void FuncGtkGlExtInit(int *argc, char **argv[])
   {
@@ -108,6 +101,8 @@ namespace RavlOSGN
       manipulator = new osgGA::FlightManipulator;
     } else if(m_defaultManipulator == "KeySwitch") {
       manipulator = new osgGA::KeySwitchMatrixManipulator;
+    } else if(m_defaultManipulator == "Canvas") {
+      manipulator = new CanvasManipulatorC;
     } else {
       // Fall back to default.
       std::cerr << "Unknown manipulator:" << m_defaultManipulator << "\n";
@@ -183,64 +178,25 @@ namespace RavlOSGN
     return true;
   }
 
-
-  //! Pick a point from the view.
-
-  bool OpenSceneGraphWidgetBodyC::Pick(const Point2dC &position, CollectionC<PickEntryC> &nodes)
+  //! Pick a position in the window
+  bool OpenSceneGraphWidgetBodyC::PickPosition(float row,float col,osgUtil::LineSegmentIntersector::Intersections &intersections)
   {
-    osgUtil::LineSegmentIntersector::Intersections intersections;
-
+    if(!m_osgViewer.valid())
+      return false;
+    // Convert coordinate systems.
     RavlN::Index2dC size = Size();
-    if(!nodes.IsValid())
-      nodes = CollectionC<PickEntryC>(32);
-    
-    // Coordinate system!?
-    float x = position.Col();
-    float y = size.Row() - position.Row();
-    
-#if 1
+    float x = col;
+    float y = size.Row().V() - row;
+
     osg::ref_ptr< osgUtil::LineSegmentIntersector > picker = new osgUtil::LineSegmentIntersector(osgUtil::Intersector::WINDOW, x, y);
     osgUtil::IntersectionVisitor iv(picker.get());
     m_osgViewer->getCamera()->accept(iv);
-    if (picker->containsIntersections())
-    {
-        intersections = picker->getIntersections();
-#else
-    // This doesn't seem to work correctly after the canvas has been scaled.
-    if(m_osgViewer->computeIntersections(x, y, intersections)) {
-#endif
-      for(osgUtil::LineSegmentIntersector::Intersections::iterator hitr = intersections.begin();
-              hitr != intersections.end();
-              ++hitr) {
-        NodeC::RefT ravlNode;
-        if(!hitr->nodePath.empty() && !(hitr->nodePath.back()->getName().empty())) {
-          // the geodes are identified by name.
-          NodeC::GetNode(hitr->nodePath.back(),ravlNode);
-#if 1
-          std::cout << "Object Geode \"" << hitr->nodePath.back()->getName() << "\"" << std::endl;
-#endif
-        } else if(hitr->drawable.valid()) {
-          //NodeC::GetNode(hitr->drawable.get(),ravlNode);
-#if 1
-          std::cout << "Object Drawable \"" << hitr->drawable->className() << "\"" << std::endl;
-#endif
-        }
-        Point3dC lp(hitr->getLocalIntersectPoint()[0],hitr->getLocalIntersectPoint()[1],hitr->getLocalIntersectPoint()[2]);
-        Point3dC wp(hitr->getWorldIntersectPoint()[0],hitr->getWorldIntersectPoint()[1],hitr->getWorldIntersectPoint()[2]);
-        nodes.Append(PickEntryC(*ravlNode,lp,wp));
-#if 0
-        using namespace osg;
-        os << "        local coords vertex(" << hitr->getLocalIntersectPoint() << ")" << "  normal(" << hitr->getLocalIntersectNormal() << ")" << std::endl;
-        os << "        world coords vertex(" << hitr->getWorldIntersectPoint() << ")" << "  normal(" << hitr->getWorldIntersectNormal() << ")" << std::endl;
-        const osgUtil::LineSegmentIntersector::Intersection::IndexList& vil = hitr->indexList;
-        for(unsigned int i = 0; i < vil.size(); ++i) {
-          os << "        vertex indices [" << i << "] = " << vil[i] << std::endl;
-        }
-#endif
-      }
-    }
+    if (!picker->containsIntersections())
+      return false;
+    intersections = picker->getIntersections();
     return true;
   }
+
 
   bool OpenSceneGraphWidgetBodyC::OnConfigure()
   {

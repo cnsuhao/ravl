@@ -30,34 +30,6 @@ namespace RavlOSGN
   using RavlN::Point3dC;
   using RavlN::CollectionC;
   
-  //! Pick entry
-  class PickEntryC {
-  public:
-    // Default constructor
-    PickEntryC()
-    {}
-    
-    // Constructor
-    PickEntryC(const NodeC &node,const Point3dC &localIntersection,const Point3dC &worldIntersection);
-    
-    //! Access node.
-    const NodeC::RefT &Node() const
-    { return m_node; }
-
-    //! Access intersection in the nodes coordinate system
-    const Point3dC &LocalIntersection() const
-    { return m_localIntersection; }
-
-    //! Access intersection in the world coordinate system
-    const Point3dC &WorldIntersection() const
-    { return m_localIntersection; }
-    
-  protected:
-    NodeC::RefT m_node;
-    Point3dC m_localIntersection;
-    Point3dC m_worldIntersection;
-  };
-
   //! userlevel=Normal
   //: GTK widget containing an OpenSceneGraph viewer.
 
@@ -89,12 +61,12 @@ namespace RavlOSGN
     bool SetColour(const RavlImageN::RealRGBAValueC &colour);
     //: Set the viewer background colour.
 
-    //! Pick a point from the view.
-    bool Pick(const Point2dC &position,CollectionC<PickEntryC> &nodes);
+    bool PickPosition(float row,float col,osgUtil::LineSegmentIntersector::Intersections &intersections);
+    //: Get a list of intersections from a pick position.
 
-    //! Get pointer to viewer.
     osgViewer::Viewer *Viewer()
     { return m_osgViewer.get(); }
+    //: Get pointer to viewer.
     
   protected:
     bool CommonCreate(GtkWidget *newWidget = NULL);
@@ -152,14 +124,14 @@ namespace RavlOSGN
     bool SetColour(const RavlImageN::RealRGBAValueC &colour)
     { return Body().SetColour(colour); }
     //: Set the viewer background colour.
-    
-    //! Pick a point from the view.
-    bool Pick(const Point2dC &position,CollectionC<PickEntryC> &nodes)
-    { return Body().Pick(position,nodes); }
 
-    //! Get pointer to viewer.
+    bool PickPosition(float row,float col,osgUtil::LineSegmentIntersector::Intersections &intersections)
+    { return Body().PickPosition(row,col,intersections); }
+    //: Get a list of intersections from a pick position.
+
     osgViewer::Viewer *Viewer()
     { return Body().Viewer(); }
+    //: Get pointer to viewer.
 
   protected:
     OpenSceneGraphWidgetBodyC &Body()
