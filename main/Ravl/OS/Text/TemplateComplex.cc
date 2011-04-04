@@ -160,14 +160,21 @@ namespace RavlN {
   //: Interpret string 'str' and return the result.
   
   StringC TemplateComplexBodyC::Interpret(const StringC &str) {
-    StrOStreamC outStr;
-    output.Push(outStr);
-    TextFileC subTextBuff(str,true,true);
-    if(!BuildSub(subTextBuff))
-      cerr << "WARNING: BuildSub of '" << str << "' in template '" << templFile.Filename() << "' failed.\n";
-    StringC ret = outStr.String();
-    ONDEBUG(cerr << "TemplateComplexBodyC::Interpret(), '" << str << "' -> '" << ret << "'\n");
-    output.DelTop();
+    StringC ret;
+    try {
+      StrOStreamC outStr;
+      output.Push(outStr);
+      TextFileC subTextBuff(str,true,true);
+      if(!BuildSub(subTextBuff))
+        std::cerr << "WARNING: BuildSub of '" << str << "' in template '" << templFile.Filename() << "' failed.\n";
+      ret = outStr.String();
+      ONDEBUG(std::cerr << "TemplateComplexBodyC::Interpret(), '" << str << "' -> '" << ret << "'\n");
+      output.DelTop();
+    } catch(...) {
+      // Help a bit with debugging...
+      std::cerr << "Failed to interpret '" << str << "' \n";
+      throw ;
+    }
     return ret;
   }
   
