@@ -258,7 +258,7 @@ namespace RavlN {
     }
     
     const std::type_info &from = child->Component().DataType();
-    if(from == to) {
+    if(from == to || to == typeid(void)) {
       ONDEBUG(SysLog(SYSLOG_DEBUG,"UseComponentInternal, no conversion needed at '%s' for type '%s'",name.chars(),RavlN::TypeName(from)));
       handle = child->Component();
       RavlAssert(handle.IsValid());
