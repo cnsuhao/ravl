@@ -695,7 +695,7 @@ namespace RavlN {
 
 
   template<class DataT>
-  bool XMLFactoryContextC::UseComponent(const StringC &name,
+  inline bool XMLFactoryContextC::UseComponent(const StringC &name,
                                         DataT &data,
                                         bool suppressErrorMessages,
                                         const std::type_info &defaultType) const
@@ -703,14 +703,14 @@ namespace RavlN {
   //: Get named component, or create it if not found.
 
   template<class DataT>
-  bool XMLFactoryContextC::UseChildComponent(const StringC &name,
+  inline bool XMLFactoryContextC::UseChildComponent(const StringC &name,
                                         DataT &data,
                                         bool suppressErrorMessages,
                                         const std::type_info &defaultType) const
   { return Factory().UseComponent(*this,name,data,suppressErrorMessages,defaultType,XMLFACTORY_SEARCH_LOCAL_ONLY); }
   //: Get named component, or create it if not found.
 
-  bool XMLFactoryContextC::UseComponent(const StringC &name,
+  inline bool XMLFactoryContextC::UseComponent(const StringC &name,
                       RCWrapAbstractC &data,
                       bool suppressErrorMessages,
                       const std::type_info &defaultType) const
@@ -719,7 +719,7 @@ namespace RavlN {
   // This will search parent context's succesively up the tree until a
   // component with a matching name is found.
 
-  bool XMLFactoryContextC::UseChildComponent(const StringC &name,
+  inline bool XMLFactoryContextC::UseChildComponent(const StringC &name,
                            RCWrapAbstractC &data,
                            bool suppressErrorMessages,
                            const std::type_info &defaultType) const
