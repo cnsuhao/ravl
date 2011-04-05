@@ -215,11 +215,11 @@ namespace RavlN {
     //: Access last element in the collection.
     
     DataT &First()
-    { return data[Size()-1]; }
+    { return data[0]; }
     //: Access first element in the collection.
     
     const DataT &First() const
-    { return data[Size()-1]; }
+    { return data[0]; }
     //: Access first element in the collection.
     
   protected:
@@ -229,7 +229,7 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Collection of data
-  // A collection of data.
+  // Simple extensible container, with properties similar to std::vector 
   
   template<class DataT>
   class CollectionC 
