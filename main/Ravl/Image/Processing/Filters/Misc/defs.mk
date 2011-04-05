@@ -18,6 +18,7 @@ HEADERS=  HomomorphicFilter.hh HistogramEqualise.hh \
 SOURCES= HomomorphicFilter.cc  DCT2d.cc DeinterlaceStream.cc \
  MedianFilter.cc
 
+EXAMPLES = exImagePyramid.cc
 
 LIBDEPS=RavlImageMisc.def
 

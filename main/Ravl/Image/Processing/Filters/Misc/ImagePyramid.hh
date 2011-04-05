@@ -11,7 +11,8 @@
 //! lib=RavlImageProc
 //! rcsid="$Id$"
 //! userlevel=Normal 
-//! file="Ravl/Image/Processing/Filters/Misc/ImageExtend.hh"
+//! file="Ravl/Image/Processing/Filters/Misc/ImagePyramid.hh"
+//! example=exImagePyramid.cc"
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ImageExtend.hh"
@@ -24,9 +25,10 @@
 namespace RavlImageN {
   
   //! userlevel=Normal
-  //: Image pyramid.
-  // This class creates a set of images each filtered such that
-  // that its effective resolution is reduced by a power of 2.
+  //: Image pyramid  
+  // This class creates a set of images each filtered such that the
+  // effective resolution of each one is reduced by a constant factor from
+  // the previous one.
   
   template<typename PixelT,typename SumTypeT = PixelT>
   class ImagePyramidC {
@@ -37,15 +39,17 @@ namespace RavlImageN {
     
     ImagePyramidC(const ImageC<PixelT> &img,IntT nScales = 2,bool subSample = false,bool recursive = false)
     { ComputeImages(img,nScales,subSample,recursive); }
-    //: Constructor.
+    //: Constructor that creates a diadic pyramid
+    // The scale factor between each neighbouring image pair = 2.
     //!param: img - Image to filter.
     //!param: nScales - Number of scales to generate. -1 = Generate a complete pyramid.
     //!param: subSample - If true sub-sample the pixels as well as filtering.
+    //!param: recursive - If true when subsampling, then use the results of previous filtering operations as input for the next.
 
     ImagePyramidC(const ImageC<PixelT> &img,RealT scaleFactor,IntT nScales = 2,bool subSample = false)
     { ComputeImages(img,scaleFactor,nScales,subSample); }
     //: Constructor for non-diadic pyramid
-    //!param: img - Image to filer
+    //!param: img - Image to filter
     //!param: scaleFactor - the scale factor to apply between levels (2.0 == double size)
     //!param: nScales - Number of scales to generate. -1 = Generate a complete pyramid.
     //!param: subSample - If true sub-sample the picels as well as filtering.
@@ -59,7 +63,7 @@ namespace RavlImageN {
 
     void ComputeImages(const ImageC<PixelT> &img,RealT scaleFactor,IntT nScales,bool subSample);
     //: Compute images over given scales for non-diadic pyramids.
-    //!param: img - Image to filer
+    //!param: img - Image to filter
     //!param: scaleFactor - the scale factor to apply between levels (2.0 == double size)
     //!param: nScales - Number of scales to generate. -1 = Generate a complete pyramid.
     //!param: subSample - If true sub-sample the picels as well as filtering.
@@ -90,10 +94,18 @@ namespace RavlImageN {
     CollectionC<Tuple3C<RealT,RealT,ImageC<PixelT> > > &Images()
     { return images; }
     //: Access available images.
+    // The objects in the returned collection are tuples consiting of:<ul>
+    // <li> the filter scale - i.e. the amount of filtering applied, <i>relative to the original image</i>,</li>
+    // <li> the pixel scale relative to the original image,</li>
+    // <li> the image itself
     
     const CollectionC<Tuple3C<RealT,RealT,ImageC<PixelT> > > &Images() const
     { return images; }
     //: Access available images.
+    // The objects in the returned collection are tuples consiting of:<ul>
+    // <li> the filter scale - i.e. the amount of filtering applied, <i>relative to the original image</i>,</li>
+    // <li> the pixel scale relative to the original image,</li>
+    // <li> the image itself
     
   protected:
     CollectionC<Tuple3C<RealT,RealT,ImageC<PixelT> > > images;
@@ -161,7 +173,7 @@ namespace RavlImageN {
       return filteredImage;
     }
     // FIXME:- This isn't the most efficient way of getting a subsampled image, we could
-    // compute filered values for the points we want in the final image. 
+    // compute filtered values for the points we want in the final image. 
     //cerr << " Scale=" << scale << "\n";
     IndexRange2dC alignedFrame = filteredImage.Frame().AlignWithin(scale);
     IndexRange2dC subFrame = alignedFrame / scale;
@@ -206,7 +218,7 @@ namespace RavlImageN {
         it.Data1() = static_cast<SumTypeT>(it.Data2());
     }
     // FIXME:- This isn't the most efficient way of getting a subsampled image, we could
-    // compute filered values for the points we want in the final image. 
+    // compute filtered values for the points we want in the final image. 
     //cerr << " Scale=" << scale << "\n";
     IndexRange2dC alignedFrame;
     if (((kernelSize-1) >> 1) > 0)
