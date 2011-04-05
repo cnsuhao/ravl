@@ -23,7 +23,7 @@ int main()
            << "==================================\n";
 
   char oString[] = "Hello world    ";  // 12 characters
-  SArray1dC<char> stringA(oString,12); //create the 1. array
+  SArray1dC<char> stringA(oString, 12, false); //create the 1. array
   SArray1dC<char> stringB(stringA);    //another access to the 1. array
   stringA[3] = '3';
 
