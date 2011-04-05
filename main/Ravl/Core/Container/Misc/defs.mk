@@ -12,7 +12,8 @@ PACKAGE=Ravl
 
 HEADERS=Stack.hh StackIter.hh Tuple2.hh Tuple3.hh Tuple4.hh \
  BlkStack.hh BlkStackIter.hh \
- BinTable.hh BinIter.hh BinList.hh
+ BinTable.hh BinIter.hh BinList.hh \
+ Collection.hh CollectionIter.hh
 
 SOURCES=Stack.cc
 
