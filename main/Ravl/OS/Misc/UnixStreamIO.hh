@@ -105,14 +105,14 @@ namespace RavlN {
     // Note this will only actually close the socket if
     // m_dontClose is false.
     
-  protected:
     bool WaitForRead();
     //: Wait for read to be ready.
     // Returns false on error.
-    
+
     bool WaitForWrite();
     //: Wait for write to be ready.
     // Returns false on error.
+  protected:
     
     bool CheckErrors(const char *opName);
     //: Check for recoverable errors.

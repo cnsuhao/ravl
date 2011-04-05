@@ -252,6 +252,16 @@ namespace RavlN {
     // If false, the socket will be checked its
     // open and valid, if it is the write will be retried.
 
+    bool WaitForRead()
+    { return Body().WaitForRead(); }
+    //: Wait for read to be ready.
+    // Returns false on error.
+
+    bool WaitForWrite()
+    { return Body().WaitForWrite(); }
+    //: Wait for write to be ready.
+    // Returns false on error.
+
     friend class SocketBodyC;
   };
 
