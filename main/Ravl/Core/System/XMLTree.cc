@@ -15,7 +15,7 @@
 #include "Ravl/Resource.hh"
 #include <stdlib.h>
 
-#define DODEBUG 0
+#define DODEBUG 1
 
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -367,10 +367,14 @@ namespace RavlN {
     // Look in the directory of the current file first, Unless we've been given an absolute path.
     IStreamC newIStream;
     if(!loader->OpenFile(xi_href,parentFilename,newIStream)) {
+      ONDEBUG(std::cerr << "Load of include file failed, falling back. ");
+      
       if(!ProcessIncludeFallback(subtree,doneFiles,parentFilename,loader)) {
 	RavlIssueWarning(StringC("Failed to open file='" + xi_href +"' from '" + parentFilename + "' "));
+        doneFiles -= xi_href;
 	return false;
       }
+      doneFiles -= xi_href;
       return true;
     }
     XMLIStreamC newStream(newIStream);
