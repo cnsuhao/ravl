@@ -57,7 +57,7 @@ namespace RavlN {
 	id(-1)
     { Reset(timetoGo); }
     //:  Constructor for a relative (to now) time.
-    // Dead line will expire in 'timetoGo' seonds.
+    // Deadline will expire in 'timetoGo' seconds.
     // 
     void Stop();
     //: Stop timer.
