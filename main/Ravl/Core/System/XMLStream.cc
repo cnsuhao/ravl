@@ -72,6 +72,7 @@ namespace RavlN {
   
   StringC XMLBaseC::EncodeLitteral(const StringC &str) {
     StringC ret(str.Copy());
+    // FIXME:- Encode efficiently.
     ret.gsub("&","&amp;");    // Has to go first!!
     ret.gsub("\"","&quot;");  // Needed for quoted text
     //ret.gsub("#","&num;");   
@@ -89,6 +90,7 @@ namespace RavlN {
   
   StringC XMLBaseC::DecodeLitteral(const StringC &str) {
     StringC ret(str.Copy());
+    // FIXME:- Decode efficently
     ret.gsub("&amp;","&");    // Has to go first!!
     ret.gsub("&quot;","\"");  // Needed for quoted text
     ret.gsub("&percnt;","%"); // Needed for quoted text
@@ -96,6 +98,8 @@ namespace RavlN {
     ret.gsub("&excl;","!");
     ret.gsub("&lt;","<");     // Needed.
     ret.gsub("&gt;",">");
+    ret.gsub("&#10;","\n");
+    ret.gsub("&#13;","\r");
     return ret;
   }
 

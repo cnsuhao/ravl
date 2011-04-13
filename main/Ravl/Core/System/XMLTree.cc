@@ -234,9 +234,11 @@ namespace RavlN {
       
       StringC content;
       in >> content;
-      content = content.TopAndTail();
+      // FIXME:- Horrible hack!
+      // Only store non-whitespace content.
+      StringC actualContent = content.TopAndTail();
       
-      if(!content.IsEmpty()) {
+      if(!actualContent.IsEmpty()) {
 	XMLTreeC cn(xmlContentKey);
 	cn.Data()[xmlContentAttrib] = content;
 	Add(xmlContentKey,cn);
