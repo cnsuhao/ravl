@@ -38,13 +38,60 @@ namespace RavlImageN {
     : public RCBodyVC
   {
   public:
-    PPHoughTransformBodyC(Point2dC nRes = Point2dC(0.01,1),RealT fp = 0.999999,RealT angRange = 90,
-			RealT maxPTime = -1,bool useSobol = false,RealT nsFract = 1,
-			bool fullDir = false);
-    // Construct new do-da.
+
+    //:----
+    //: Constructors
+
+    PPHoughTransformBodyC();
+    //: Default constructor
+    // Parameters have default values as denoted in <code>Setxxx()</code> methods below
+
+    PPHoughTransformBodyC(bool Directed, RealT AngleRes, RealT AngRange,
+                          bool UseSobol, RealT MaxPTime, RealT FalsePos);
+    //: Constructor
+
+    PPHoughTransformBodyC(Point2dC nRes, RealT fp, RealT angRange,
+                          RealT maxPTime, bool useSobol, RealT dummy,
+                          bool fullDir);
+    //: Deprecated constructor
+    //!deprecated: some arguments make no sense
+
+    //:----
+    //: Resetting default parameters
+
+    void SetDirectedLines(bool Directed) 
+    { fullDir = Directed; RecomputeParams(); }
+    //: Set range of orientations for lines
+    // true: range is 360&deg; (i.e. lines have a notional head and tail)<br>
+    // false: range is 180&deg; (the default)
+
+    void SetAngleResolution(RealT AngleRes)
+    { radsPerBin = AngleRes; RecomputeParams(); }
+    //: Set angular bin size of Hough transform (in radians)
+    // Default: 0.01 rads
+
+    void SetEdgelAngleRange(RealT AngRange)
+    { edgelAngRange = AngRange; RecomputeParams(); }
+    //: Set range of orientations relative to line that edgels can have
+    // Default: &pi;/2
+
+    void UseSobol(bool Use)
+    { useSobol = Use; }
+    //: Use Sobol sampling
+    // Default: false
+
+    void SetMaxTime(RealT Secs)
+    { maxTime = Secs; }
+    //: Set maximum processing time (in seconds)
+    // -ve values denote no limit (the default)
+
+    void SetFalsePostiveTrheshold(RealT Threshold)
+    { falsep = 1.0-Threshold; }
+    //: Set threshold for false +ves
+    // Default: 10<sup>-6</sup>
     
-    PPHoughTransformBodyC(const PPHoughTransformBodyC &oth);
-    //: Copy constructor.
+
+    //:----
     
     bool PPHTStep(Index2dC pix);
     //: Do a single PPHT cycle starting from a pixel.
@@ -78,7 +125,7 @@ namespace RavlImageN {
     void SetFalseP(RealT fpth) { falsep = fpth; }
     //: Set false positive thres.
     
-    void SetAngleRange(IntT range) { AngRange = range; }
+    void SetAngleRange(IntT range) { angRange = range; }
     //: 0-255. 0-90 degrees.
     
     IntT CalcThresh(IntT votes);
@@ -117,12 +164,6 @@ namespace RavlImageN {
     virtual RCBodyVC &Copy() const;
     //: Creat a copy of this object.
         
-    void SetMaxTime(RealT atime) { maxTime = atime; }
-    //: Set maxium time to run. -1 = Infinite.
-    
-    void SetSFract(RealT fract) { sFract = fract; }
-    //: Set maxium time to run. -1 = Infinite.
-    
     void SetEarlyOut(const DPOPortC<Curve2dLineSegmentC> &to) { earlyOut = to; }
     //: Set early output of lines.
     
@@ -139,8 +180,11 @@ namespace RavlImageN {
     
   protected:  
     
+    void RecomputeParams();
+    // Recompute initial parameters
+
     CollectionC<Index2dC> SetupApply(const DListC<EdgelC > &dat);
-    //: Setup everthing ready for procesing.
+    //: Setup everthing ready for processing.
     
     IntT FilterPoints( ImageC<ByteT> &inimg,PCPixelListC &pnts);
     // Filter out points that are already used.
@@ -189,6 +233,7 @@ namespace RavlImageN {
     //: Pre compute sin and cos tables.
     //: and thresholds.
     
+  private:
     bool useMagSort;
     RealT cWidth; // Corridor width.
     IntT maxGap;
@@ -199,11 +244,11 @@ namespace RavlImageN {
     IntT gradEstNeigh; // Gradient estimation neighberhood size.
     IntT p;
     RealT falsep;
-    RealT AngRange; // Range of angles to consider.
+    RealT edgelAngRange; // Range of edgel angles to consider.
+    RealT angRange; // derived from edgelAngRange
     RealT maxTime;  // Maximum time to take in line extraction.
     bool doSHT; 
-  private:
-    Point2dC res;
+    IntT arrSize;
     Array2dC<IntT> accum;      // Accumulator.
     Array1dC<IntT> angleCount; // Number of votes in each column.
     Array1dC<RealT> tCos;      // Cos.
@@ -220,12 +265,11 @@ namespace RavlImageN {
     int total; // Total pixels in current input.
     IntT cachv;
     IntT cachr;
-    IntT accumArrSize;
     bool useSobol; // Use sobol sampling.
-    RealT sFract;
     bool fullDir;  // Use full direction, not gradient.
     DPOPortC<Curve2dLineSegmentC> earlyOut; // Anyone want line segments early ?
     RealT radsPerBin;  // Radians per bin. r/nb
+    bool firstTime; // flag for precomputing trig funcs etc. only once
     
     SArray1dC<IntT> threshTab;
   };
@@ -241,40 +285,89 @@ namespace RavlImageN {
 
   //! userlevel=Normal
   //: Progressive Probablistic Hough Transform.
-  // This algorithm extracts line segments from a set of edges.
+
+  // <p>This algorithm extracts line segments from a set of edges, using the
+  // algorithm described in <a href=
+  // "http://www.sciencedirect.com/science/journal/10773142"> "Robust Detection
+  // of Lines Using the Progressive Probabilistic Hough Transform", CVIU v.78-1, April 2000,
+  // 119-137, J. Matas, C. Galambos, J. Kittler</a>.</p>
+
+  // <p><b>N.B.:</b> In this algorithm, the accuracy of the line parameters is not limited by the resolution parameters (unlike a conventional Hough transform); instead these parameters determine how similar two lines can be and still be resolved.</p>
   
   class PPHoughTransformC
     : public RCHandleC<PPHoughTransformBodyC>
   {
   public:
+
+    //:----
+    //: Constructors
+
     PPHoughTransformC()
+      : RCHandleC<PPHoughTransformBodyC>(*new PPHoughTransformBodyC())
     {}
     //: Default constructor.
+    // Generates non-directed lines; otherwise default parameter values are as listed in the following constructor
     
-    PPHoughTransformC(Point2dC nRes,RealT fp = 0.999999,RealT angRange = 90,RealT maxPTime = -1,bool useSobol = false,RealT sFract = 1,bool fullDir = false)
-      : RCHandleC<PPHoughTransformBodyC>(*new PPHoughTransformBodyC(nRes,fp,angRange,maxPTime,useSobol,sFract,fullDir))
+    PPHoughTransformC(bool Directed, RealT AngleRes=0.01,RealT AngRange=RavlConstN::pi/2.0,
+                      bool UseSobol=false, RealT MaxPTime=-1, RealT FalsePos=1.0e-6)
+      : RCHandleC<PPHoughTransformBodyC>(*new PPHoughTransformBodyC(Directed,AngleRes,AngRange,UseSobol,MaxPTime,FalsePos))
     {}
-    //: Constructor.
+    //: Constructor
+    //!param: Directed - true: Directed lines are created (i.e. lines have a notional head and tail, and orientation can be in full is 360&deg; range).<br> false: Undirected lines are created (i.e. orientation is ambiguous modulo 180&deg;).
+    //!param: AngleRes - Hough resolution in angular direction (in radians)
+    //!param: AngRange - Range of orientations relative to line that edgels can have (in radians).
+    //!param: UseSobol - Use Sobol sampling.
+    //!param: MaxPTime - Stop processing after maxPTime seconds (-1 denotes no bound on time)
+    //!param: Fp - False +ve threshold.
+
+    //:----
+    //: Resetting default and/or constructor parameters
+
+    void SetDirectedLines(bool Directed) 
+    { Body().SetDirectedLines(Directed); }
+    //: Set range of orientations for lines
+    // true: Directed lines are created (i.e. lines have a notional head and tail, and orientation can be in full is 360&deg; range).<br>
+    // false (the default): Undirected lines are created (i.e. orientation is ambiguous modulo 180&deg;)
+
+    void SetAngleResolution(RealT AngleRes)
+    { Body().SetAngleResolution(AngleRes); }
+    //: Set Hough resolution in angular direction (in radians)
+    // Default: 0.01 rads
+
+    void SetEdgelAngleRange(RealT AngRange)
+    { Body().SetEdgelAngleRange(AngRange); }
+    //: Set range of orientations relative to line that edgels can have (in radians)
+    // Default: &pi;/2
+
+    void UseSobol(bool Use)
+    { Body().UseSobol(Use); }
+    //: Use Sobol sampling
+    // Default: false
+
+    void SetMaxTime(RealT Secs)
+    { Body().SetMaxTime(Secs); }
+    //: Set maximum processing time (in seconds)
+    // -ve values denote no limit (the default)
+
+    void SetFalsePostiveTrheshold(RealT Threshold)
+    { Body().SetFalsePostiveTrheshold(Threshold); }
+    //: Set threshold for false +ves
+    // Default: 10<sup>-6</sup>
     
-  protected:
-    
-    PPHoughTransformBodyC &Body()
-    { return RCHandleC<PPHoughTransformBodyC>::Body(); }
-    //: Access body.
-    
-    const PPHoughTransformBodyC &Body() const
-    { return RCHandleC<PPHoughTransformBodyC>::Body(); }
-    //: Access body.
-    
-  public:
+
+    //:----
+    //: Applying the transform
 
     PCPixMappingC<Curve2dLineSegmentC> Apply(const DListC<EdgelC > &dat)
     { return Body().Apply(dat); }
-    //: Do a hough transform.
+    //: Perform a probabilistic Hough transform.
     
     PCPixMappingC<Curve2dLineSegmentC> SHT(const DListC<EdgelC > &dat)
     { return Body().SHT(dat); }
-    //: Perform a Standard Hough Transform.
+    //: Perform a standard Hough Transform.
+
+    //:----
+    //: Other parameter setting
     
     void SetCorridor(RealT width)
     { Body().SetCorridor(width); }
@@ -295,6 +388,25 @@ namespace RavlImageN {
     void SetDoSHT(bool sht)
     { Body().SetDoSHT(sht); }
     //: Do sht instread
+    
+  protected:
+    
+    PPHoughTransformBodyC &Body()
+    { return RCHandleC<PPHoughTransformBodyC>::Body(); }
+    //: Access body.
+    
+    const PPHoughTransformBodyC &Body() const
+    { return RCHandleC<PPHoughTransformBodyC>::Body(); }
+    //: Access body.
+    
+  public:
+
+    PPHoughTransformC(Point2dC Res,RealT Fp = 0.999999,RealT AngRange = 90,RealT MaxPTime = -1,bool UseSobol = false,RealT dummy = 1,bool FullDir = false)
+      : RCHandleC<PPHoughTransformBodyC>(*new PPHoughTransformBodyC(Res,Fp,AngRange,MaxPTime,UseSobol,dummy,FullDir))
+    {}
+    //: Constructor.
+    //!deprecated: some arguments make no sense
+
     
   };
 

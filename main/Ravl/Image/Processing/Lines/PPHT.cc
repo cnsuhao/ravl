@@ -38,18 +38,82 @@
 
 namespace RavlImageN {
 
+  using namespace RavlN;
+  using namespace RavlConstN;
+
 #ifdef __sgi__
   // Help the compiler a bit...
   static DPOPortBodyC<Curve2dLineSegmentC> out1;
   static DPIPortBodyC<Curve2dLineSegmentC> out2;
   static DPOPortBodyC<ImageC<ByteT> > out3;
 #endif
+
+  void PPHoughTransformBodyC::RecomputeParams()
+  {
+    RealT factor = fullDir ? pi : pi/2.0; // 1/2 orientation range
+    arrSize = Round(factor/radsPerBin);
+    radsPerBin = factor / ((RealT) arrSize); // recompute allowing for rounding.
+    angleCount = Array1dC<IntT>(IndexRangeC(-arrSize,arrSize));
+    angRange = (edgelAngRange/2.0) / radsPerBin; 
+    
+    ONDEBUG(cerr << "Using " << (fullDir ? "full" : "half") << " dir.  Bins:" << arrSize << " \n");
+  }
   
   /////////////////////////////////////////////////////////////////////////////////
   
-  // Construct new do-da.
+  // Default constructor
+
+  PPHoughTransformBodyC::PPHoughTransformBodyC()
+    : useMagSort(false),
+      cWidth(3),
+      maxGap(6),
+      minLength(8),
+      dynthresh(0.001),
+      gradEstNeigh(6),
+      p(600),       // Just an estimate....
+      falsep(0.999999), 
+      edgelAngRange(pi/2.0),
+      maxTime(-1), // For ever ! 
+      doSHT(false),
+      feedBack(false),
+      cachv(-2),
+      cachr(-2),
+      useSobol(false),
+      fullDir(false),
+      radsPerBin(0.01),
+      firstTime(true)
+  { RecomputeParams(); }
+
+  // Constructor
+
+  PPHoughTransformBodyC::
+  PPHoughTransformBodyC(bool Directed, RealT AngleRes, RealT AngRange,
+                        bool UseSobol, RealT MaxPTime, RealT FalsePos)
+    : useMagSort(false),
+      cWidth(3),
+      maxGap(6),
+      minLength(8),
+      dynthresh(0.001),
+      gradEstNeigh(6),
+      p(600),       // Just an estimate....
+      falsep(1.0-FalsePos), 
+      edgelAngRange(AngRange),
+      maxTime(-1), // For ever ! 
+      doSHT(false),
+      feedBack(false),
+      cachv(-2),
+      cachr(-2),
+      useSobol(UseSobol),
+      fullDir(Directed),
+      radsPerBin(AngleRes),
+      firstTime(true)
+  { RecomputeParams(); }
+
   
-  PPHoughTransformBodyC::PPHoughTransformBodyC(Point2dC nRes,RealT fp,RealT angRange,RealT maxPTime,bool xUseSobol,RealT nsFract,bool nfullDir)
+
+  // Deprecated constructor
+  
+  PPHoughTransformBodyC::PPHoughTransformBodyC(Point2dC Res,RealT fp,RealT AngRange,RealT MaxPTime,bool UseSobol,RealT dummy,bool FullDir)
     : useMagSort(false),
       cWidth(3),
       maxGap(6),
@@ -58,78 +122,31 @@ namespace RavlImageN {
       gradEstNeigh(6),
       p(600),       // Just an estimate....
       falsep(fp),  // 0.9999999
-      maxTime(maxPTime), // For ever ! 
+      maxTime(MaxPTime), // For ever ! 
       doSHT(false),
-      res(nRes),
       feedBack(false),
       cachv(-2),
       cachr(-2),
-      useSobol(xUseSobol),
-      sFract(nsFract),
-      fullDir(nfullDir)
+      useSobol(UseSobol),
+      fullDir(FullDir),
+      firstTime(true)
   { 
-    IntT arrSize; 
-    if(!fullDir) {
-      arrSize = (IntT) ((RavlConstN::pi/2)/ res[0]); 
-      radsPerBin = (RavlConstN::pi/2) / ((RealT) arrSize); // Allow for rounding.
-      ONDEBUG(cerr << "Using half dir. Bins:" << arrSize << " \n");
-    } else {
-      arrSize = (IntT) ((RavlConstN::pi)/ res[0]);
-      radsPerBin = RavlConstN::pi / ((RealT) arrSize); // Allow for rounding.
-      ONDEBUG(cerr << "Using full dir. Bins:" << arrSize << " \n");
-    }
-    accumArrSize = arrSize;
-    accum = Array2dC<IntT>(IndexRangeC(-arrSize,arrSize),
-			   IndexRangeC(-512,512)); 
-    
+    RealT factor = fullDir ? pi : pi/2.0;
+    arrSize = (IntT) (factor / Res[0]);
+    radsPerBin = factor / ((RealT) arrSize); // Allow for rounding.
     angleCount = Array1dC<IntT>(IndexRangeC(-arrSize,arrSize));
+    angRange = ((AngRange / 360) * pi ) / radsPerBin; 
     
-    AngRange = ((angRange / 360) * RavlConstN::pi ) / radsPerBin; 
-    
-    Precompute();
+    ONDEBUG(cerr << "Using " << (fullDir ? "full" : "half") << " dir. Bins:" << arrSize << " \n");
   }
   
-  // Copy constructor.
-  
-  PPHoughTransformBodyC::PPHoughTransformBodyC(const PPHoughTransformBodyC &oth)
-    : useMagSort(oth.useMagSort),
-      cWidth(oth.cWidth),
-      maxGap(oth.maxGap),
-      minLength(oth.minLength),
-      dynthresh(oth.dynthresh),
-      gradEstNeigh(oth.gradEstNeigh),
-      p(oth.p),
-      falsep(oth.falsep),
-      AngRange(oth.AngRange),
-      maxTime(oth.maxTime),
-      doSHT(oth.doSHT),
-      res(oth.res),
-      accum(oth.accum.Rectangle()),
-      angleCount(oth.angleCount.Range()),
-      tCos(oth.tCos),
-      tSin(oth.tSin),
-      usedMap(oth.usedMap.Rectangle()),
-      pixMap(oth.pixMap.Rectangle()),
-      sobelImg(oth.sobelImg),
-      cachv(-2),
-      cachr(-2),
-      accumArrSize(oth.accumArrSize),
-      useSobol(oth.useSobol),
-      sFract(1),
-      fullDir(oth.fullDir),
-      radsPerBin(oth.radsPerBin),
-      threshTab(oth.threshTab)
-  { 
-    //cerr << "PPHoughTransformBodyC::PPHoughTransformBodyC() Copied. \n";
-    Precompute(); 
-  }
   
   //////////////////////////////
   // Vote for a pixel.
   
   inline 
   bool PPHoughTransformBodyC::Vote(Index2dC pix,Point2dC &peak,IntT &thresh)
-  { return Vote(pix,peak,gradimg[pix],AngRange,thresh); }
+  { return Vote(pix,peak,gradimg[pix],angRange,thresh); }
   
   
   ////////////////////////////////////////
@@ -137,7 +154,7 @@ namespace RavlImageN {
   
   inline 
   bool PPHoughTransformBodyC::UnVote(Index2dC pix) 
-  { return UnVote(pix,gradimg[pix],AngRange); }
+  { return UnVote(pix,gradimg[pix],angRange); }
   
   //: Calculate threshold for accumulator.
   
@@ -318,7 +335,7 @@ namespace RavlImageN {
     AngleC within(lineAngle,dim_the);
     for(It.First();It.IsElm();It.Next()) {
       if(inimg[It.Data()] == 0 ||
-	 (fabs(within.Diff(AngleC(gradimg[It.Data()],dim_the))) > AngRange)
+	 (fabs(within.Diff(AngleC(gradimg[It.Data()],dim_the))) > angRange)
 	 )  {
 	//cout << (int) gradimg[It.Data()] <<  " " << lineAngle << " Diff:" << within.Diff(AngleC(gradimg[It.Data()]-1,254)) << "  Lim:" << AngRange << endl;
 	if(pnts == It) {
@@ -550,7 +567,7 @@ namespace RavlImageN {
     RealT n = votes;
 #else
     RealT nbins = 500 * accum.Range1().Size();
-    RealT n = votes * AngRange;
+    RealT n = votes * angRange;
 #endif
     RealT prob = 1/ (RealT) nbins;
     //cerr << "Prob:" << prob << " Nbins:" << nbins << "\n";
@@ -580,10 +597,7 @@ namespace RavlImageN {
   
 #if 0
   void PPHoughTransformBodyC::SaveAccum(StringC filename) {
-    ImageRectangleC ir(accum.Range1().Min(),
-		       accum.Range1().Max(),
-		       accum.Range2().Min(),
-		       accum.Range2().Max());
+    ImageRectangleC ir(accum.Rectangle());
     ImageC<ByteT> out(ir);
     IndexC at1,at2;
     for(at1 = accum.Range1().Min();at1 < accum.Range1().Max();at1++) {
@@ -602,13 +616,11 @@ namespace RavlImageN {
   //: Pre compute sin and cos tables.
   
   void PPHoughTransformBodyC::Precompute() {
-    const IntT mina = MinAccAngle();
-    const IntT maxa = MaxAccAngle();
-    //cerr << "Min: " << mina << "  Max:" << maxa <"\n";
-    tCos = Array1dC<RealT>(IndexRangeC(mina,maxa));
-    tSin = Array1dC<RealT>(IndexRangeC(mina,maxa));
+    if (!firstTime)  return;
+    tCos = Array1dC<RealT>(accum.Range1());
+    tSin = Array1dC<RealT>(accum.Range1());
     
-    for (IntT k=mina; k < maxa; k++) {
+    for (IndexC k=tCos.IMin(); k <= tCos.IMax(); k++) {
       RealT theta = (RealT) k * radsPerBin;
       tCos[k] = cos(theta);
       tSin[k] = sin(theta);
@@ -621,6 +633,7 @@ namespace RavlImageN {
       threshTab[i] = CalcThresh((i+1) << 3);
       //cerr << ((i+1) << 3) << " " << threshTab[i] << "\n";
     }
+    firstTime = false;
   }
   
 #define ARRSOBEL 0
@@ -673,9 +686,8 @@ namespace RavlImageN {
       
       // Sort out accumulator.
       IntT maxVal = ((IntT) Sqrt(Sqr(rect.Rows()) + Sqr(rect.Cols()))) + 1;
-      accum = Array2dC<IntT>(IndexRangeC(-accumArrSize,accumArrSize),
-			     IndexRangeC(-maxVal,maxVal));
-      //    cerr << "Accumulator size: " << maxVal << "\n";
+      accum = Array2dC<IntT>(-arrSize, arrSize, -maxVal, maxVal);
+      //   cerr << "Accumulator size: " << arrSize << " " << maxVal << "\n";
     }
     
     if(useSobol) {
@@ -698,13 +710,13 @@ namespace RavlImageN {
       // Calculates gradients, shift and scale so's to be 0 to dim_the.
       RealT ev = it.Data().Direction();
       ev *= -1;
-      //ev += RavlConstN::pi_2;
+      //ev += pi_2;
       // Normalise the angle.
       if(!fullDir) {
-	while(ev > (RavlConstN::pi_2))
-	  ev -= (RavlConstN::pi);
-	while(ev < (-RavlConstN::pi_2))
-	  ev += (RavlConstN::pi);
+	while(ev > pi_2)
+	  ev -= (pi);
+	while(ev < -pi_2)
+	  ev += pi;
       }
       gradimg[at] = ev / radsPerBin;
       pixMap[at] = 1;
@@ -724,9 +736,11 @@ namespace RavlImageN {
   PCPixMappingC<Curve2dLineSegmentC> PPHoughTransformBodyC::Apply(const DListC<EdgelC > &dat) {
     //cerr << "PPHoughTransformBodyC::Apply(), called " << ((void *) this) << "\n";
     DeadLineTimerC dlt(maxTime,false); // Virtual timer.
-    
+
     CollectionC<Index2dC> bag = SetupApply(dat);
-    
+    Precompute();
+    //cout << radsPerBin<<" "<<arrSize<<" "<<angleCount<<" "<<angRange<<endl;
+
     if(doSHT)
       return SHT(dat);
     
@@ -754,7 +768,7 @@ namespace RavlImageN {
 	DListC<EdgelC > sortIt(dat);
 	//cerr << "Using sorted edgles  \n";
 	for(DLIterC<EdgelC> it(sortIt);s < stopat && it.IsElm() && !dlt.IsTimeUp();it.Next(),s++) {
-	  //cerr << "Using sorted edgles " << it.Data().Magnitude() << " \n";
+	  //cerr << "Using sorted edgels " << it.Data().Magnitude() << " \n";
 	  PPHTStep(it.Data().At());
 	}
       } else {
