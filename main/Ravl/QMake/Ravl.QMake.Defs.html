@@ -428,7 +428,7 @@ for a demonstration how to use packages or for their run-time checking.
 </P>
 
 <UL>
-<LI><DT><A NAME="EXAMPLES"></A><B>EXAMPLES</B></DT> <DD>Contains the names of
+<LI><DT><A NAME="EXAMPLES"></A><B>EXAMPLES</B></DT> <DD> Contains the names of
 source files demonstrating the use of the software in the directory.  They are
 copied into the documentation area.  The example sources must be compilable; to
 check compilation, include them temporarily in the "MAINS" list, e.g.:
@@ -438,7 +438,7 @@ qm MAINS=example.cc
 </DD><P>
 
 <LI><DT><A NAME="TESTEXES"></A><B>TESTEXES</B></DT>
-<DD>The list of executables testing runtime consistency of the software. They
+<DD> The list of executables testing runtime consistency of the software. They
  are compiled and run to test if they produce expected results.    The executables
 should return 0 on success, non-zero on failure.  If the program doesn't exit
 normally it will be treated as a failure.  Both stdout and stderr of the program are 
@@ -457,29 +457,28 @@ a specification of these files:
 
 <UL>
 <LI><DT><A NAME="AUXFILES"></A><B>AUXFILES, AUXDIR</B></DT>
-<DD>Use these for data files that need to end up somewhere where your program
+<DD> Use these for data files that need to end up somewhere where your program
 will always find them.  All files listed in AUXFILES are installed in
 $PROJECT_OUT/$AUXDIR.  If AUXDIR is not used, the files are installed in $PROJECT_OUT.  Thus:<PRE>
 AUXFILES = mask.png
-AUXDIR = share/data
+AUXDIR = share/myproject
 </PRE> will install the file mask.png in the directory $PROJECT_OUT/share/data.  Any necessary subdirectories are automatically created.  The file <code>mask.png</code> can then be accessed e.g.:
-<pre>#include &lt;cstdlib&gt;
-.....
-StringC maskName = StringC(getenv("PROJECT_OUT"))+"/share/data/mask.png";</pre>
+<pre>StringC maskName = PROJECT_OUT "/share/myproject/mask.png";</pre>
+The <code>PROJECT_OUT</code> symbol is a macro defined by QMake that is resolved into a quoted string denoting the relevant $PROJECT_OUT environment value.  If the code is subsequently built into the RAVL installation, the <code>PROJECT_OUT</code> macro is automatically redefined accordingly.
 </DD>
 
 </UL>
 
 <UL>
 <LI><DT><A NAME="PREBUILDSTEP"></A><B>PREBUILDSTEP</B></DT>
-<DD> Command to execute before compiling libraries or executables. This should in bourn shell script. Make macro's like $(PROJECT_OUT) for the output directory may be used.
+<DD> Command to execute before compiling libraries or executables. This should be in Bourne shell script. QMake macros like $(PROJECT_OUT) for the output directory may be used.
 </DD>
 
 </UL>
 
 <UL>
 <LI><DT><A NAME="POSTBUILDSTEP"></A><B>POSTBUILDSTEP</B></DT>
-<DD> Command to execute before compiling libraries and executables. This should in bourn shell script. Make macro's like $(PROJECT_OUT) for the output directory may be used.
+<DD> Command to execute before compiling libraries and executables. This should be in Bourne shell script. QMake macros like $(PROJECT_OUT) for the output directory may be used.
 </DD>
 
 </UL>
