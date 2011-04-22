@@ -10,6 +10,7 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Text.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include <osgText/Text>
 
 #define DODEBUG 0
@@ -69,6 +70,17 @@ namespace RavlOSGN
     m_drawable = textRef;
   }
 
+  //: Factory
+  
+  TextC::TextC(const XMLFactoryContextC &context)
+  {
+    ref_ptr<Text> textRef = new Text();
+    m_drawable = textRef;
+    RavlN::StringC text = context.AttributeString("text","");
+    textRef->setText(text.data());
+    DrawableC::Setup(context);
+  }
+  
   TextC::~TextC()
   {
   }
@@ -172,5 +184,16 @@ namespace RavlOSGN
 
     return true;
   }
+  
+  void LinkText()
+  {}
+  
+  //: Called when owner handles drop to zero.
+  
+  void TextC::ZeroOwners() {
+    DrawableC::ZeroOwners();
+  }
+  
+  static RavlN::XMLFactoryRegisterConvertC<TextC,DrawableC> g_registerXMLFactorySphere("RavlOSGN::TextC");
 
 }

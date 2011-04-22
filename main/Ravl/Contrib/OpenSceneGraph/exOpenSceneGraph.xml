@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?RAVL class='RavlN::XMLTreeC' ?>
+
+<Config verbose="false">
+  <OpenSceneGraphWidget typename="RavlOSGN::OpenSceneGraphWidgetC" >
+    <Scene typename="RavlOSGN::GroupC">
+      <Nodes>
+        <SphereGeode typename="RavlOSGN::GeodeC">
+          <Drawables>
+            <Sphere typename="RavlOSGN::SphereC" colour="0.0 1.0 0.0 0.0" />
+            <Text typename="RavlOSGN::TextC" text="H!" colour="1.0 0.0 0.0 1.0" />
+          </Drawables>
+        </SphereGeode>
+        <ImageTransform typename="RavlOSGN::TransformPositionAttitudeC" >
+          <AnImage typename="RavlOSGN::ImageByteRGBC">
+          </AnImage>          
+        </ImageTransform>
+      </Nodes>
+    </Scene>
+  </OpenSceneGraphWidget>
+  
+</Config>

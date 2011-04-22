@@ -10,6 +10,9 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/TriMesh.hh"
+#include "Ravl/IO.hh"
+#include "Ravl/RLog.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include <osg/Geode>
 
 #define DODEBUG 0
@@ -36,8 +39,32 @@ namespace RavlOSGN
     SetMesh(triMesh);
   }
 
+  //: XML Factory constructor
+  
+  TriMeshC::TriMeshC(const XMLFactoryContextC &factory)
+   : NodeC(factory)
+  {
+    Setup(factory);
+  }
+  
   TriMeshC::~TriMeshC()
   {
+  }
+
+  //: Do setup from factory
+  bool TriMeshC::Setup(const XMLFactoryContextC &factory)
+  {
+    NodeC::Setup(factory);
+    RavlN::StringC filename;
+    if(factory.Attribute("loadTriMesh",filename)) {
+      Ravl3DN::TriMeshC triMesh;
+      if(RavlN::Load(filename,triMesh)) {
+        SetMesh(triMesh);
+      } else {
+        rWarning("Failed to load '%s' ",filename.data());
+      }
+    }
+    return true;
   }
 
   bool TriMeshC::SetMesh(const Ravl3DN::TriMeshC &triMesh)
@@ -103,5 +130,13 @@ namespace RavlOSGN
     
     return true;
   }
+
+  //: Called when owner handles drop to zero.
+  void TriMeshC::ZeroOwners()
+  {
+    NodeC::ZeroOwners();
+  }
+
+  static RavlN::XMLFactoryRegisterConvertC<TriMeshC,NodeC> g_registerXMLFactoryTriMesh("RavlOSGN::TriMeshC");
 
 }

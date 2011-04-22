@@ -12,6 +12,11 @@
 
 namespace RavlOSGN {
   using namespace osg;
+#ifdef OSGGA_CAMERA_MANIPULATOR
+  CanvasManipulatorC::CanvasManipulatorC()
+  {
+  }
+#else
   
   CanvasManipulatorC::CanvasManipulatorC()
   {
@@ -436,5 +441,6 @@ namespace RavlOSGN {
     }
     return z;
   }
+#endif
 
 }

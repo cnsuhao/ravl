@@ -10,6 +10,10 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/TexTriMesh.hh"
+#include "Ravl/RLog.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/IO.hh"
+
 #include <osg/Geode>
 #include <osg/Geometry>
 #include <osg/Texture2D>
@@ -38,9 +42,35 @@ namespace RavlOSGN
     SetMesh(texTriMesh);
   }
 
+  //: XML Factory constructor
+  
+  TexTriMeshC::TexTriMeshC(const XMLFactoryContextC &factory)
+  {
+    m_node = new Geode;
+    Setup(factory);
+  }
+
   TexTriMeshC::~TexTriMeshC()
   {
   }
+  
+  //: Do setup from factory
+  bool TexTriMeshC::Setup(const XMLFactoryContextC &factory)
+  {
+    NodeC::Setup(factory);
+    RavlN::StringC filename;
+    if(factory.Attribute("loadTriMesh",filename)) {
+      Ravl3DN::TexTriMeshC triMesh;
+      if(RavlN::Load(filename,triMesh)) {
+        SetMesh(triMesh);
+      } else {
+        rWarning("Failed to load '%s' ",filename.data());
+      }
+    }
+    return true;
+
+  }
+
 
   bool TexTriMeshC::SetMesh(const Ravl3DN::TexTriMeshC &texTriMesh)
   {
@@ -107,5 +137,13 @@ namespace RavlOSGN
 
     return true;
   }
+  
+  //: Called when owner handles drop to zero.
+  
+  void TexTriMeshC::ZeroOwners() {
+    TriMeshC::ZeroOwners();
+  }
+
+  static RavlN::XMLFactoryRegisterConvertC<TexTriMeshC,TriMeshC> g_registerXMLFactoryTexTriMesh("RavlOSGN::TexTriMeshC");
 
 }

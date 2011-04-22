@@ -34,12 +34,22 @@ namespace RavlOSGN
     //: Ctor.
     //!param: create - If true, a new transform object will be allocated.
 
+    TransformC(const XMLFactoryContextC &context);
+    //: XML constructor.
+    
     virtual ~TransformC();
     //: Dtor.
 
-    typedef RavlN::SmartPtrC<TransformC> RefT;
+    typedef RavlN::SmartOwnerPtrC<TransformC> RefT;
+    typedef RavlN::SmartCallbackPtrC<TransformC> CBRefT;
 
   protected:
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory
+    
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
   };
 
   //! userlevel=Normal
@@ -51,6 +61,9 @@ namespace RavlOSGN
   public:
     TransformPositionAttitudeC(bool create = true);
     //!param: create - If true, a new position and attitude transform object will be allocated.
+
+    TransformPositionAttitudeC(const XMLFactoryContextC &context);
+    //: XML constructor.
 
     virtual ~TransformPositionAttitudeC();
     //: Dtor.
@@ -67,9 +80,16 @@ namespace RavlOSGN
     bool SetScale(const RavlN::Vector3dC &scale);
     //: Set the transform scale.
 
-    typedef RavlN::SmartPtrC<TransformPositionAttitudeC> RefT;
-
+    typedef RavlN::SmartOwnerPtrC<TransformPositionAttitudeC> RefT;
+    typedef RavlN::SmartCallbackPtrC<TransformPositionAttitudeC> CBRefT;
+    
   protected:
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory
+    
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
   };
 
 }

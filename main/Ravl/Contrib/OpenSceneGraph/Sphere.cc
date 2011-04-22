@@ -10,6 +10,9 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Sphere.hh"
+#include "Ravl/RLog.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
@@ -22,7 +25,7 @@
 
 namespace RavlOSGN
 {
-
+  using RavlN::RealT;
   using namespace osg;
 
   SphereC::SphereC(const RavlN::Vector3dC &position, RavlN::RealT radius)
@@ -30,23 +33,32 @@ namespace RavlOSGN
     m_sphere = new Sphere(Vec3(position.X(), position.Y(), position.Z()), radius);
     m_drawable = new ShapeDrawable(m_sphere);
   }
+  
+  //: XML Factory constructor
+  
+  
+  SphereC::SphereC(const XMLFactoryContextC &factory)
+   : DrawableC(factory)
+  {
+    RavlN::Vector3dC position;
+    factory.Attribute("position",position,RavlN::Vector3dC(0,0,0));
+    RealT radius = factory.AttributeReal("radius",1.0);
+    
+    m_sphere = new Sphere(Vec3(position.X(), position.Y(), position.Z()), radius);
+    m_drawable = new ShapeDrawable(m_sphere);     
+    
+    RavlImageN::RealRGBAValueC colour(1.0,1.0,1.0,1.0);
+    factory.Attribute("colour",colour,RavlImageN::RealRGBAValueC(1.0,1.0,1.0,1.0));
+    if(!SetColour(colour)) {
+      rWarning("Failed to set sphere colour.");
+      RavlAssert(0); // This shouldn't fail!
+    }
+    
+  }
+
 
   SphereC::~SphereC()
   {
-  }
-
-  bool SphereC::SetColour(const RavlImageN::RealRGBAValueC &colour)
-  {
-    if (!m_drawable)
-      return false;
-
-    ref_ptr<ShapeDrawable> shapeDrawableRef = dynamic_cast<ShapeDrawable*>(m_drawable.get());
-    if (!shapeDrawableRef)
-      return false;
-
-    shapeDrawableRef->setColor(Vec4(colour.Red(), colour.Green(), colour.Blue(), colour.Alpha()));
-
-    return true;
   }
 
   bool SphereC::SetPosition(const RavlN::Vector3dC &position)
@@ -68,5 +80,16 @@ namespace RavlOSGN
 
     return true;
   }
+  
+  //: Called when owner handles drop to zero.
+  void SphereC::ZeroOwners()
+  {
+    DrawableC::ZeroOwners();  
+  }
+  
+  void LinkSphere()
+  {}
+
+  static RavlN::XMLFactoryRegisterConvertC<SphereC,DrawableC> g_registerXMLFactorySphere("RavlOSGN::SphereC");
 
 }

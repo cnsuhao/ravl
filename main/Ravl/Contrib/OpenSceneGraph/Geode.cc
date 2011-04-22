@@ -10,6 +10,7 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Geode.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include <osg/Geode>
 
 #define DODEBUG 0
@@ -28,6 +29,15 @@ namespace RavlOSGN
   {
     m_node = new osg::Geode();
   }
+  
+  //: XML Factory constructor
+  GeodeC::GeodeC(const XMLFactoryContextC &factory)
+   : NodeC(factory)
+  {
+    m_node = new osg::Geode();
+    DrawableC::RefT drawable;
+    factory.UseComponentGroup("Drawables",*this,&GeodeC::AddDrawable);
+  }
 
   GeodeC::GeodeC(const DrawableC &drawable)
   {
@@ -37,6 +47,14 @@ namespace RavlOSGN
 
   GeodeC::~GeodeC()
   {
+    
+  }
+
+  //: Called when owner handles drop to zero.
+  
+  void GeodeC::ZeroOwners()
+  {
+    NodeC::ZeroOwners();
   }
 
   bool GeodeC::AddDrawable(const DrawableC::RefT &drawable)
@@ -53,5 +71,6 @@ namespace RavlOSGN
 
     return true;
   }
-
+  
+  static RavlN::XMLFactoryRegisterConvertC<GeodeC,NodeC> g_registerXMLFactoryGeode("RavlOSGN::GeodeC");
 }

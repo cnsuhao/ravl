@@ -8,17 +8,22 @@
 #ifndef RAVLOSGN_CANVASMANIPULATOR_HH
 #define	RAVLOSGN_CANVASMANIPULATOR_HH
 
-#include <osgGA/MatrixManipulator>
+#include <osgGA/TrackballManipulator>
 
 namespace RavlOSGN {
 
   class CanvasManipulatorC
+#ifndef OSGGA_CAMERA_MANIPULATOR
   : public osgGA::MatrixManipulator
+#else
+  : public osgGA::TrackballManipulator
+#endif
   {
   public:
     
     CanvasManipulatorC();
 
+#ifndef OSGGA_CAMERA_MANIPULATOR
     virtual const char* className() const
     { return "CanvasManipulator"; }
 
@@ -146,7 +151,7 @@ namespace RavlOSGN {
     osg::Quat _rotation;
     double _distance;
     float _trackballSize;
-
+#endif
   };
 }
 

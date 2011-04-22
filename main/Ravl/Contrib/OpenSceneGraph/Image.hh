@@ -29,6 +29,9 @@ namespace RavlOSGN
   : public NodeC
   {
   public:
+    ImageC(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+    
     virtual ~ImageC();
     //: Dtor.
 
@@ -42,12 +45,26 @@ namespace RavlOSGN
     bool SetAlpha(float alpha);
     //: Set an alpha value for the entire image.
 
+    typedef RavlN::SmartOwnerPtrC<ImageC> RefT;
+    //: Reference type.
+    
+    typedef RavlN::SmartCallbackPtrC<ImageC> CBRefT;
+    //: Reference type.
+
   protected:
+    
     ImageC(const RavlN::RealRange2dC &coords = RavlN::RealRange2dC(1, 1));
     //: Ctor.
     //!param: coords - The 2D position of the image in the X/Y plane.
 
+    bool BuildNode(const RavlN::RealRange2dC &coords);
+    //: Build the node
+    
     bool UpdateAlphaRenderState(osg::ref_ptr<osg::StateSet> &stateSetRef);
+    //: Set rendering state.
+    
+    virtual void ZeroOwners();
+    //: Zero owners reached.
 
     osg::ref_ptr<osg::Geometry> m_geometry;
     bool m_alphaImageEnabled;

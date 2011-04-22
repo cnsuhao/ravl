@@ -10,6 +10,7 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/ModelFile.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include <osgDB/ReadFile>
 
 #define DODEBUG 0
@@ -26,11 +27,38 @@ namespace RavlOSGN
 
   ModelFileC::ModelFileC(const std::string &filename)
   {
-    m_node = osgDB::readNodeFile(filename);
+    BuildNode(filename);
+  }
+
+  //: XML Factory constructor
+  
+  ModelFileC::ModelFileC(const XMLFactoryContextC &factory)
+  {
+    std::string filename = factory.AttributeString("filename","");
+    BuildNode(filename);
+    NodeC::Setup(factory);
   }
 
   ModelFileC::~ModelFileC()
   {
   }
+  
+  //: Build the node
+  bool ModelFileC::BuildNode(const std::string &filename)
+  {
+    if(filename.empty())
+      return false;
+    m_node = osgDB::readNodeFile(filename);
+    return m_node;
+  }
+  
+  //: Zero owners reached.
+  
+  void ModelFileC::ZeroOwners()
+  {
+    NodeC::ZeroOwners();
+  }
+
+  static RavlN::XMLFactoryRegisterConvertC<ModelFileC,NodeC> g_registerXMLFactoryGroup("RavlOSGN::ModelFileC");
   
 }

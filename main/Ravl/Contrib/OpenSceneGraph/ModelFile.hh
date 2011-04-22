@@ -30,13 +30,22 @@ namespace RavlOSGN
     ModelFileC(const std::string &filename);
     //: Ctor.
     //!param: filename - Filename of the model to load.
-
+    
+    ModelFileC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+    
     virtual ~ModelFileC();
     //: Dtor.
 
-    typedef RavlN::SmartPtrC<ModelFileC> RefT;
+    typedef RavlN::SmartOwnerPtrC<ModelFileC> RefT;
+    typedef RavlN::SmartCallbackPtrC<ModelFileC> CBRefT;
 
   protected:
+    virtual void ZeroOwners();
+    //: Zero owners reached.
+
+    bool BuildNode(const std::string &filename);
+    //: Build the node
   };
 
 }

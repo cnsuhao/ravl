@@ -31,16 +31,25 @@ namespace RavlOSGN
     //: Ctor.
     //!param: coords - The 2D position of the image in the X/Y plane.
 
+    ImageByteRGBC(const XMLFactoryContextC &context);
+    //: Factory constructor
+    
     virtual ~ImageByteRGBC();
     //: Dtor.
 
     bool SetImage(RavlImageN::ImageC<RavlImageN::ByteRGBValueC> &image);
     //: Set the object image.
 
-    typedef RavlN::SmartPtrC<ImageByteRGBC> RefT;
+    typedef RavlN::SmartOwnerPtrC<ImageByteRGBC> RefT;
+    //: Reference type.
+    
+    typedef RavlN::SmartCallbackPtrC<ImageByteRGBC> CBRefT;
     //: Reference type.
 
   protected:
+    virtual void ZeroOwners();
+    //: Zero owners reached.
+
     RavlImageN::ImageC<RavlImageN::ByteRGBValueC> m_image;
   };
 

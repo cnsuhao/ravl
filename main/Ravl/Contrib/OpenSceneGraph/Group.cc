@@ -10,6 +10,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Group.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 #include <osg/Group>
 
 #define DODEBUG 0
@@ -30,10 +32,17 @@ namespace RavlOSGN
       m_node = new Group();
   }
 
-  GroupC::~GroupC()
+  //: XML Factory constructor
+  GroupC::GroupC(const XMLFactoryContextC &factory)
+   : NodeC(factory)
   {
+    m_node = new Group();
+    Setup(factory);
   }
-
+  
+  GroupC::~GroupC()
+  {}
+  
   bool GroupC::AddChild(const NodeC::RefT &node)
   {
     if (!m_node || !node.IsValid())
@@ -97,5 +106,29 @@ namespace RavlOSGN
 
     return true;
   }
+  
+  //: Do setup from factory
+  
+  bool GroupC::Setup(const XMLFactoryContextC &factory)
+  {
+    NodeC::Setup(factory);
+    
+    std::vector<NodeC::RefT> children;
+    factory.UseComponentGroup("Nodes",*this,&GroupC::AddChild);
+
+    return true;
+  }
+
+  //: Called when owner handles drop to zero.
+  void GroupC::ZeroOwners()
+  {
+    NodeC::ZeroOwners();
+  }
+
+  void LinkGroup()
+  {}
+  
+  static RavlN::XMLFactoryRegisterConvertC<GroupC,NodeC> g_registerXMLFactoryGroup("RavlOSGN::GroupC");
+
 
 }

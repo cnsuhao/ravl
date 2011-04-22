@@ -10,6 +10,10 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/ImageByteRGB.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/IO.hh"
+#include "Ravl/RLog.hh"
+
 #include <osg/PrimitiveSet>
 #include <osg/Geode>
 #include <osg/Texture2D>
@@ -33,6 +37,22 @@ namespace RavlOSGN
 
   ImageByteRGBC::~ImageByteRGBC()
   {
+  }
+  
+  //: Factory constructor
+  
+  ImageByteRGBC::ImageByteRGBC(const XMLFactoryContextC &context)
+   : ImageC(context)
+  {
+    RavlN::StringC filename = context.AttributeString("filename","");
+    if(!filename.IsEmpty()) {
+      RavlImageN::ImageC<RavlImageN::ByteRGBValueC> image;
+      if(RavlN::Load(filename,image)) {
+        SetImage(image);
+      } else {
+        rWarning("Failed to load file '%s' ",filename.data());
+      }
+    }
   }
 
   bool ImageByteRGBC::SetImage(RavlImageN::ImageC<RavlImageN::ByteRGBValueC> &image)
@@ -72,5 +92,16 @@ namespace RavlOSGN
 
     return true;
   }
+
+  //: Zero owners reached.
+  void ImageByteRGBC::ZeroOwners() 
+  {
+    ImageC::ZeroOwners();
+  }
+
+  void LinkImageByteRGB()
+  {}
+  
+  static RavlN::XMLFactoryRegisterConvertC<ImageByteRGBC,ImageC> g_registerXMLFactoryImageRGB("RavlOSGN::ImageByteRGBC");
 
 }

@@ -62,7 +62,10 @@ namespace RavlOSGN
     TextC(const std::string &text);
     //: Ctor.
     //!param: text - Initial text value.
-
+    
+    TextC(const XMLFactoryContextC &context);
+    //: Factory
+    
     virtual ~TextC();
     //: Dtor.
 
@@ -87,9 +90,13 @@ namespace RavlOSGN
     bool SetSize(RavlN::RealT size);
     //: Set the text size in scene graph coordinates.
 
-    typedef RavlN::SmartPtrC<TextC> RefT;
+    typedef RavlN::SmartOwnerPtrC<TextC> RefT;
+    typedef RavlN::SmartCallbackPtrC<TextC> CBRefT;
     
   protected:
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
   };
 
 }

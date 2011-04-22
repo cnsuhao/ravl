@@ -14,18 +14,21 @@
 #ifndef RAVLGUI_OPENSCENEGRAPHDRAWABLE_HEADER
 #define RAVLGUI_OPENSCENEGRAPHDRAWABLE_HEADER 1
 
-#include "Ravl/SmartPtr.hh"
+#include "Ravl/SmartLayerPtr.hh"
+#include "Ravl/XMLFactory.hh"
+#include "Ravl/Image/RealRGBAValue.hh"
 #include <osg/ref_ptr>
 #include <osg/Drawable>
 
 namespace RavlOSGN
 {
+  using RavlN::XMLFactoryContextC;
 
   //! userlevel=Normal
   //: Drawable object base class.
 
   class DrawableC
-  : public RavlN::RCBodyVC
+  : public RavlN::RCLayerBodyC
   {
   public:
     DrawableC(osg::Drawable *drawable);
@@ -34,16 +37,29 @@ namespace RavlOSGN
     DrawableC();
     //: Ctor.
 
+    DrawableC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+
     virtual ~DrawableC();
     //: Dtor.
-
+    
+    virtual bool SetColour(const RavlImageN::RealRGBAValueC &colour);
+    //: Set the colour of shape drawables.
+    
     osg::ref_ptr<osg::Drawable> Drawable()
     { return m_drawable; }
     //: Access the object smart pointer.
     
-    typedef RavlN::SmartPtrC<DrawableC> RefT;
+    typedef RavlN::SmartOwnerPtrC<DrawableC> RefT;
+    typedef RavlN::SmartCallbackPtrC<DrawableC> CBRefT;
 
   protected:
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory.
+    
     osg::ref_ptr<osg::Drawable> m_drawable;
   };
 

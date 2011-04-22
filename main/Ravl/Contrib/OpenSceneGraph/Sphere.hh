@@ -16,7 +16,6 @@
 
 #include "Ravl/OpenSceneGraph/Drawable.hh"
 #include "Ravl/Vector3d.hh"
-#include "Ravl/Image/RealRGBAValue.hh"
 #include <osg/Shape>
 
 namespace RavlOSGN
@@ -32,12 +31,12 @@ namespace RavlOSGN
     SphereC(const RavlN::Vector3dC &position = RavlN::Vector3dC(0, 0, 0),
             RavlN::RealT radius = 1.0);
     //: Ctor.
+    
+    SphereC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
 
     virtual ~SphereC();
     //: Dtor.
-
-    bool SetColour(const RavlImageN::RealRGBAValueC &colour);
-    //: Set the sphere colour.
 
     bool SetPosition(const RavlN::Vector3dC &position);
     //: Set the sphere centre position.
@@ -45,9 +44,13 @@ namespace RavlOSGN
     bool SetSize(RavlN::RealT radius);
     //: Set the sphere radius.
 
-    typedef RavlN::SmartPtrC<SphereC> RefT;
+    typedef RavlN::SmartOwnerPtrC<SphereC> RefT;
+    typedef RavlN::SmartCallbackPtrC<SphereC> CBRefT;
     
   protected:
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+    
     osg::ref_ptr<osg::Sphere> m_sphere;
   };
 

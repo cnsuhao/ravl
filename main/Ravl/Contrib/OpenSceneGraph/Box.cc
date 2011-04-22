@@ -10,6 +10,7 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Box.hh"
+#include "Ravl/OpenSceneGraph/TypeConvert.hh"
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
@@ -27,25 +28,27 @@ namespace RavlOSGN
 
   BoxC::BoxC(const RavlN::Vector3dC &position, const RavlN::Vector3dC &size)
   {
-    m_box = new osg::Box(Vec3(position.X(), position.Y(), position.Z()),size.X(), size.Y(), size.Z());
-    m_drawable = new ShapeDrawable(m_box);
+    BuildNode(position,size);
+  }
+
+  //: XML Factory constructor
+  
+  BoxC::BoxC(const XMLFactoryContextC &factory)
+  {
+    Setup(factory);
   }
 
   BoxC::~BoxC()
   {
   }
-
-  bool BoxC::SetColour(const RavlImageN::RealRGBAValueC &colour)
-  {
-    if (!m_drawable)
-      return false;
-
-    ref_ptr<ShapeDrawable> shapeDrawableRef = dynamic_cast<ShapeDrawable*>(m_drawable.get());
-    if (!shapeDrawableRef)
-      return false;
-
-    shapeDrawableRef->setColor(Vec4(colour.Red(), colour.Green(), colour.Blue(), colour.Alpha()));
-
+  
+  //: Create the node.
+  
+  bool BoxC::BuildNode(const RavlN::Vector3dC &position,
+                       const RavlN::Vector3dC &size)
+  {    
+    m_box = new osg::Box(MakeVec3(position),size.X(), size.Y(), size.Z());
+    m_drawable = new ShapeDrawable(m_box);
     return true;
   }
 
@@ -66,6 +69,20 @@ namespace RavlOSGN
 
     m_box->setHalfLengths(Vec3(size.X(), size.Y(), size.Z()));
 
+    return true;
+  }
+
+  //: Setup box.
+  bool BoxC::Setup(const XMLFactoryContextC &factory)
+  {
+    RavlN::Vector3dC position(0,0,0);
+    RavlN::Vector3dC size(1,1,1);
+    factory.Attribute("position",position);
+    factory.Attribute("size",size);
+    BuildNode(position,size);
+
+    DrawableC::Setup(factory); 
+    
     return true;
   }
 

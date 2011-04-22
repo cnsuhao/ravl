@@ -10,6 +10,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Node.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 #include <osg/Node>
 #include <osg/StateSet>
 #include <osg/Referenced>
@@ -56,6 +58,13 @@ namespace RavlOSGN
     
   }
 
+  //: XML Factory constructor
+  NodeC::NodeC(const XMLFactoryContextC &factory)
+   : m_sigCallback(true)
+  {
+    
+  }
+
   //! Destructor.
   
   NodeC::~NodeC()
@@ -66,6 +75,22 @@ namespace RavlOSGN
       m_callback = NULL;
     }
   }
+
+  //: Do setup from factory
+  
+  bool NodeC::Setup(const XMLFactoryContextC &factory)
+  {
+    
+    return true;
+  }
+  
+  //: Called when owner handles drop to zero.
+  
+  void NodeC::ZeroOwners()
+  {
+    RavlN::RCLayerBodyC::ZeroOwners();
+  }
+  
 
   bool NodeC::EnableCallback(const bool enable)
   {

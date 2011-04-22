@@ -10,6 +10,9 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Transform.hh"
+#include "Ravl/OpenSceneGraph/TypeConvert.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 #include <osg/Transform>
 
 #define DODEBUG 0
@@ -31,9 +34,40 @@ namespace RavlOSGN
       m_node = new Transform();
   }
 
+  //: XML constructor.
+  TransformC::TransformC(const XMLFactoryContextC &context)
+  {
+    m_node = new Transform();
+    GroupC::Setup(context);
+  }
+
   TransformC::~TransformC()
   {
   }
+  
+  //: Do setup from factory
+  bool TransformC::Setup(const XMLFactoryContextC &factory)
+  {
+    GroupC::Setup(factory);
+    return true;
+  }
+
+  //: Called when owner handles drop to zero.
+  void TransformC::ZeroOwners()
+  {
+    GroupC::ZeroOwners();
+  }
+  
+  // ------------------------------------------------------------------------
+  
+  TransformPositionAttitudeC::TransformPositionAttitudeC(const XMLFactoryContextC &context)
+  : TransformC(false)
+  {
+    m_node = new PositionAttitudeTransform();
+    Setup(context);
+  }
+    //: XML constructor.
+
 
   TransformPositionAttitudeC::TransformPositionAttitudeC(bool create)
   : TransformC(false)
@@ -46,6 +80,25 @@ namespace RavlOSGN
   {
   }
 
+  //: Do setup from factory
+  
+  bool TransformPositionAttitudeC::Setup(const XMLFactoryContextC &factory)
+  {
+    TransformC::Setup(factory);
+    
+    RavlN::Vector3dC position(0,0,0);
+    if(factory.Attribute("position",position)) {
+      SetPosition(position);
+    }
+    
+    RavlN::Vector3dC scale(1.0,1.0,1.0);
+    if(factory.Attribute("scale",scale)) {
+      SetScale(scale);
+    }
+    
+    return true;
+  }
+  
   bool TransformPositionAttitudeC::SetPosition(const RavlN::Vector3dC &position)
   {
     if (!m_node)
@@ -55,7 +108,7 @@ namespace RavlOSGN
     if (!transformRef)
       return false;
 
-    transformRef->setPosition(Vec3(position.X(), position.Y(), position.Z()));
+    transformRef->setPosition(MakeVec3(position));
 
     return true;
   }
@@ -70,8 +123,8 @@ namespace RavlOSGN
       return false;
 
     Vec3 vecPosition = transformRef->getPosition();
-    position = RavlN::Vector3dC(vecPosition.x(), vecPosition.y(), vecPosition.z());
-
+    position = MakeVector3d(vecPosition);
+    
     return true;
   }
 
@@ -102,6 +155,17 @@ namespace RavlOSGN
 
     return true;
   }
+  
+  //: Called when owner handles drop to zero.
+  void TransformPositionAttitudeC::ZeroOwners()
+  {
+    TransformC::ZeroOwners();
+  }
 
+  void LinkTransform()
+  {}
+  
+  static RavlN::XMLFactoryRegisterConvertC<TransformPositionAttitudeC,TransformC> g_registerXMLFactoryTransformPositionAttitude("RavlOSGN::TransformPositionAttitudeC");
+  static RavlN::XMLFactoryRegisterConvertC<TransformC,GroupC> g_registerXMLFactoryTransform("RavlOSGN::TransformC");
 
 }

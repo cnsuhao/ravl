@@ -33,6 +33,10 @@ namespace RavlOSGN
 
     TriMeshC(const Ravl3DN::TriMeshC &triMesh);
     //: Ctor.
+    
+    TriMeshC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+
 
     virtual ~TriMeshC();
     //: Dtor.
@@ -40,9 +44,16 @@ namespace RavlOSGN
     bool SetMesh(const Ravl3DN::TriMeshC &triMesh);
     // Set the node to display the mesh.
 
-    typedef RavlN::SmartPtrC<TriMeshC> RefT;
-
+    typedef RavlN::SmartOwnerPtrC<TriMeshC> RefT;
+    typedef RavlN::SmartCallbackPtrC<TriMeshC> CBRefT;
+    
   protected:
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory
+    
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
     osg::ref_ptr<osg::Geometry> m_geometry;
     Ravl3DN::TriMeshC m_triMesh;
   };

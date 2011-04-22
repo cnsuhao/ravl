@@ -33,15 +33,24 @@ namespace RavlOSGN
     TexTriMeshC(const Ravl3DN::TexTriMeshC &texTriMesh);
     //: Ctor.
 
+    TexTriMeshC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+
     virtual ~TexTriMeshC();
     //: Dtor.
 
     bool SetMesh(const Ravl3DN::TexTriMeshC &texTriMesh);
     // Set the node to display the mesh.
 
-    typedef RavlN::SmartPtrC<TexTriMeshC> RefT;
-
+    typedef RavlN::SmartOwnerPtrC<TexTriMeshC> RefT;
+    typedef RavlN::SmartCallbackPtrC<TexTriMeshC> CBRefT;
+    
   protected:
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory
+    
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
   };
 
 }

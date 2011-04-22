@@ -30,6 +30,9 @@ namespace RavlOSGN
     //: Ctor.
     //!param: create - If true, a new group object will be allocated.
 
+    GroupC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+
     virtual ~GroupC();
     //: Dtor.
 
@@ -48,9 +51,16 @@ namespace RavlOSGN
     bool RemoveChildren();
     //: Remove all node objects from the group.
 
-    typedef RavlN::SmartPtrC<GroupC> RefT;
+    typedef RavlN::SmartOwnerPtrC<GroupC> RefT;
+    typedef RavlN::SmartCallbackPtrC<GroupC> CBRefT;
 
   protected:
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory
+    
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+    
   };
 
 }

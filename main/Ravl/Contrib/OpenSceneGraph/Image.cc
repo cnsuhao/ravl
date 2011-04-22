@@ -10,6 +10,7 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Image.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include <osg/PrimitiveSet>
 #include <osg/Geode>
 #include <osg/Texture2D>
@@ -26,9 +27,29 @@ namespace RavlOSGN
 
   using namespace osg;
   
+  //: Factory constructor.
+  ImageC::ImageC(const XMLFactoryContextC &factory)
+   : m_alphaImageEnabled(factory.AttributeBool("enableAlpha",false)),
+     m_alpha(factory.AttributeReal("alpha",1.0))
+  {
+    RavlN::RealRange2dC coords(1,1);
+    factory.Attribute("coords",coords);
+    BuildNode(coords);    
+  }
+  
   ImageC::ImageC(const RavlN::RealRange2dC &coords)
   : m_alphaImageEnabled(false),
     m_alpha(1.0)
+  {
+    BuildNode(coords);
+  }
+
+  ImageC::~ImageC()
+  {
+  }
+  
+  //: Build the node
+  bool ImageC::BuildNode(const RavlN::RealRange2dC &coords)
   {
     ref_ptr<Geometry> geometryRef = new Geometry();
 
@@ -72,11 +93,9 @@ namespace RavlOSGN
 
     m_node = geodeRef;
     m_geometry = geometryRef;
+    return true;
   }
 
-  ImageC::~ImageC()
-  {
-  }
 
   bool ImageC::SetSize(const RavlN::RealRange2dC &coords)
   {
@@ -161,5 +180,13 @@ namespace RavlOSGN
 
     return true;
   }
+
+  //: Zero owners reached.
+  void ImageC::ZeroOwners()
+  {
+    NodeC::ZeroOwners();
+  }
+  
+  static RavlN::XMLFactoryRegisterConvertC<ImageC,NodeC> g_registerXMLFactoryImageRGB("RavlOSGN::ImageC");
 
 }

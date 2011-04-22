@@ -10,6 +10,8 @@
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/HUD.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 #include <osg/Projection>
 #include <osg/Matrix>
 #include <osg/MatrixTransform>
@@ -29,6 +31,26 @@ namespace RavlOSGN
   HUDC::HUDC(const RavlN::RealRange2dC &coords)
   : GroupC(false)
   {
+    BuildNode(coords);
+  }
+
+  HUDC::~HUDC()
+  {
+  }
+
+  //: Factory constructor.
+  HUDC::HUDC(const XMLFactoryContextC &factory)
+   : GroupC(false)
+  {
+    RavlN::RealRange2dC coords(0, 0, 1, 1);
+    factory.Attribute("coords",coords);
+    BuildNode(coords);
+    GroupC::Setup(factory);
+  }
+  
+  //: Build node.
+  bool HUDC::BuildNode(const RavlN::RealRange2dC &coords)
+  {
     ref_ptr<Projection> projectionMatrix = new Projection;
     projectionMatrix->setMatrix(Matrix::ortho2D(coords.LCol(), coords.RCol(), coords.TRow(), coords.BRow()));
 
@@ -39,11 +61,9 @@ namespace RavlOSGN
 
     m_node = projectionMatrix;
     m_modelViewMatrix = modelViewMatrix;
+    return true;
   }
 
-  HUDC::~HUDC()
-  {
-  }
 
   bool HUDC::AddChild(const NodeC::RefT &node)
   {
@@ -68,5 +88,13 @@ namespace RavlOSGN
 
     return true;
   }
+
+  //: Zero owners reached.
+  void HUDC::ZeroOwners()
+  {
+    GroupC::ZeroOwners();
+  }
+
+  static RavlN::XMLFactoryRegisterConvertC<HUDC,GroupC> g_registerXMLFactoryGroup("RavlOSGN::HUDC");
 
 }

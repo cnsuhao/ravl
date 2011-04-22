@@ -13,26 +13,29 @@ REQUIRES=OpenSceneGraph libGL GTKGLExt
 # NOTE: Do NOT comment out the GTKGLExt, if its not enabled though it may 
 # compile this library will not work.
 
-HEADERS=Drawable.hh Sphere.hh Image.hh ImageByteRGBA.hh ImageByteRGB.hh Text.hh TriMesh.hh TexTriMesh.hh \
- Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh HUD.hh \
- OpenSceneGraphWidget.hh Box.hh CanvasManipulator.hh
+HEADERS=Drawable.hh Sphere.hh Image.hh ImageByteRGBA.hh ImageByteRGB.hh Text.hh \
+ TriMesh.hh TexTriMesh.hh Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh \
+ HUD.hh OpenSceneGraphWidget.hh Box.hh CanvasManipulator.hh TypeConvert.hh
 
-SOURCES=Drawable.cc Sphere.cc Image.cc ImageByteRGBA.cc ImageByteRGB.cc Text.cc TriMesh.cc TexTriMesh.cc \
- Node.cc Geode.cc Group.cc Transform.cc ModelFile.cc HUD.cc \
- OpenSceneGraphWidget.cc Box.cc CanvasManipulator.cc
+SOURCES=Drawable.cc Sphere.cc Image.cc ImageByteRGBA.cc ImageByteRGB.cc Text.cc \
+ TriMesh.cc TexTriMesh.cc Node.cc Geode.cc Group.cc Transform.cc ModelFile.cc \
+ HUD.cc OpenSceneGraphWidget.cc Box.cc CanvasManipulator.cc TypeConvert.cc
 
 PLIB=RavlGUIOpenSceneGraph
 
-MAINS=exOpenSceneGraphWidget.cc
+MAINS=exOpenSceneGraphWidgetXML.cc
 
 MUSTLINK=MustLinkGtkGlExtInit.cc
 
-USESLIBS=RavlCore RavlGeom RavlImage RavlGUI Ravl3D OpenGL GTK OpenSceneGraphGtk
+USESLIBS=RavlCore RavlGeom RavlImage RavlGUI Ravl3D OpenGL GTK \
+ OpenSceneGraphGtk RavlXMLFactory RavlRLog
 
 PROGLIBS=RavlOS RavlImageIO RavlExtImgIO
 
 #EHT=Ravl.API.GUI.OpenSceneGraph.html
 
-AUXFILES=OpenSceneGraphGtk.def
+EXTERNALLIBS=OpenSceneGraphGtk.def
 
-AUXDIR=lib/RAVL/libdep
+AUXFILES=exOpenSceneGraph.xml
+
+AUXDIR=share/RAVL/OpenSceneGraph

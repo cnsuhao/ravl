@@ -33,15 +33,22 @@ namespace RavlOSGN
     GeodeC(const DrawableC &drawable);
     //: Ctor.
 
+    GeodeC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+
     virtual ~GeodeC();
     //: Dtor.
 
     bool AddDrawable(const DrawableC::RefT &drawable);
     //: Add a drawble object to the geode.
 
-    typedef RavlN::SmartPtrC<GeodeC> RefT;
-
+    typedef RavlN::SmartOwnerPtrC<GeodeC> RefT;
+    typedef RavlN::SmartCallbackPtrC<GeodeC> CBRefT;
+    
   protected:
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
   };
 
 }

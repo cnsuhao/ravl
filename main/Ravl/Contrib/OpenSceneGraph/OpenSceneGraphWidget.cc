@@ -59,15 +59,20 @@ namespace RavlOSGN
   {}
 
   OpenSceneGraphWidgetBodyC::OpenSceneGraphWidgetBodyC(const RavlN::XMLFactoryContextC &factory)
-  : m_width(100),
-    m_height(100),
+  : m_width(factory.AttributeInt("width",100)),
+    m_height(factory.AttributeInt("height",100)),
     m_osgViewer(NULL),
     m_osgWindow(NULL),
     m_clearColour(0.5, 0.5, 0.5, 1.0),
     m_defaultManipulator(factory.AttributeString("manipulator","TrackerBall").data()),
     m_frameRate(factory.AttributeReal("frameRate",60))
-  {}
-
+  {
+    factory.Attribute("clearColour",m_clearColour);    
+    NodeC::RefT scene;
+    if(factory.UseComponent("Scene",scene))
+      SetScene(*scene);
+  }
+  
   OpenSceneGraphWidgetBodyC::~OpenSceneGraphWidgetBodyC()
   {
     if (m_osgViewer)
@@ -90,7 +95,14 @@ namespace RavlOSGN
 
     m_osgViewer = new osgViewer::ViewerGtk();
 
+#ifdef OSGGA_CAMERA_MANIPULATOR
+    // Used in 2.9
+    osgGA::CameraManipulator *manipulator = 0;
+#else
+    // Used in 2.8
     osgGA::MatrixManipulator *manipulator = 0;
+#endif
+
     if(m_defaultManipulator == "TrackerBall") {
       manipulator = new osgGA::TrackballManipulator;
     } else if(m_defaultManipulator == "Terrain") {

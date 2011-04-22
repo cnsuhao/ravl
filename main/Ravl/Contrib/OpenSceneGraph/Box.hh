@@ -33,11 +33,11 @@ namespace RavlOSGN
             const RavlN::Vector3dC &size = RavlN::Vector3dC(1,1,1));
     //: Ctor.
 
+    BoxC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor
+
     virtual ~BoxC();
     //: Dtor.
-
-    bool SetColour(const RavlImageN::RealRGBAValueC &colour);
-    //: Set the Box colour.
 
     bool SetPosition(const RavlN::Vector3dC &position);
     //: Set the Box centre position.
@@ -45,9 +45,20 @@ namespace RavlOSGN
     bool SetSize(const RavlN::Vector3dC &size);
     //: Set the Box radius.
 
-    typedef RavlN::SmartPtrC<BoxC> RefT;
-    
+    typedef RavlN::SmartOwnerPtrC<BoxC> RefT;
+    typedef RavlN::SmartCallbackPtrC<BoxC> CBRefT;
+                   
   protected:
+    bool BuildNode(const RavlN::Vector3dC &position = RavlN::Vector3dC(0, 0, 0),
+            const RavlN::Vector3dC &size = RavlN::Vector3dC(1,1,1));
+    //: Create the node.
+    
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Setup box.
+
+    virtual void ZeroOwners();
+    //: Called when owner handles drop to zero.
+
     osg::ref_ptr<osg::Box> m_box;
   };
 

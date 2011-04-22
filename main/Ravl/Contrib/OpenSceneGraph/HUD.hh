@@ -33,6 +33,9 @@ namespace RavlOSGN
     //: Ctor.
     //!param: coords - The 2D coordinate space of the display in the format (min row, min col, max row, max col).
 
+    HUDC(const XMLFactoryContextC &factory);
+    //: Factory constructor.
+    
     virtual ~HUDC();
     //: Dtor.
 
@@ -42,9 +45,19 @@ namespace RavlOSGN
     virtual bool RemoveChild(const NodeC::RefT &node);
     //: Remove a node object from the display.
 
-    typedef RavlN::SmartPtrC<HUDC> RefT;
-
+    typedef RavlN::SmartOwnerPtrC<HUDC> RefT;
+    typedef RavlN::SmartCallbackPtrC<HUDC> CBRefT;
+    
   protected:
+    bool Setup(const XMLFactoryContextC &factory);
+    //: Do setup from factory
+
+    bool BuildNode(const RavlN::RealRange2dC &coords);
+    //: Build node.
+
+    virtual void ZeroOwners();
+    //: Zero owners reached.
+    
     osg::ref_ptr<osg::MatrixTransform> m_modelViewMatrix;
   };
 
