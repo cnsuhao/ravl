@@ -42,9 +42,11 @@ namespace RavlN {
   {
   public:
     TestClassC()
+     : m_count(0)
     { linkXMLFactoryRegister(); }
     
     TestClassC(const XMLFactoryContextC &factory)
+     : m_count(0)
     {
       linkXMLFactoryRegister();
       SysLog(SYSLOG_DEBUG,"Factory path '%s' XMLNode:'%s' ",factory.Path().chars(),factory.Node().Name().chars());
@@ -58,8 +60,23 @@ namespace RavlN {
     }
     
     typedef RavlN::SmartPtrC<TestClassC> RefT;
+    
+    bool AddChildTest(TestClassC::RefT &theClass) {
+      m_count++;
+      return true;
+    }
+    
+    bool AddChildTestConst(TestClassC::RefT &theClass) {
+      m_count++;
+      return true;
+    }
+    
+    int Count() const
+    { return m_count; }
+    
   protected:
     TestClassC::RefT m_child;
+    int m_count;
   };
   
   //need to declare stream operators too
@@ -104,6 +121,10 @@ int testBasic() {
                  "  <Test2 typename=\"RavlN::TestClassC\" >\n"
                  "    <child typename=\"RavlN::TestClassC\" noChild=\"true\" />\n"
                  "  </Test2>\n"
+                 "  <Nodes> \n"
+                 "    <Test3 typename=\"RavlN::TestClassC\" />\n"
+                 "    <Test4 typename=\"RavlN::TestClassC\" />\n"
+                 "  </Nodes> \n"
                  "</Config>\n"
                  );
   
@@ -140,5 +161,19 @@ int testBasic() {
   if(childFactory2 != childFactory3)
     return __LINE__;
   
+  std::vector<RavlN::TestClassC::RefT> children;
+  if(!ctxt.UseComponentGroup("Nodes",children))
+    return __LINE__;
+  if(children.size()!=2) 
+    return __LINE__;
+  
+  if(!ctxt.UseComponentGroup("Nodes",*m_testChild,&TestClassC::AddChildTest))
+    return __LINE__;
+  if(m_testChild->Count() != 2)
+    return __LINE__;
+  if(!ctxt.UseComponentGroup("Nodes",*m_testChild,&TestClassC::AddChildTestConst))
+    return __LINE__;
+  if(m_testChild->Count() != 4)
+    return __LINE__;
   return 0;
 }

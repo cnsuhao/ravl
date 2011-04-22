@@ -20,6 +20,10 @@
 #include "Ravl/Threads/Mutex.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/RCWrap.hh"
+#include "Ravl/Collection.hh"
+#include "Ravl/Traits.hh"
+
+#include <vector>
 
 #define rThrowBadConfigContextOnFailS(CONTEXT, METHOD, ARGS) { \
   if (!CONTEXT.METHOD) { \
@@ -343,6 +347,7 @@ namespace RavlN {
     // This will only check the local context for the component, creating
     // a new instance if its not found.
 
+    
     template<class DataT>
     bool CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false) const;
     //: Create a new instance of the named component.
@@ -381,6 +386,60 @@ namespace RavlN {
       return *m_iNode;
     }
     //: Access node
+
+    template<class DataT>
+    bool UseComponentGroup(const StringC &group,std::vector<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        DataT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        list.push_back(value);
+      }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<class DataT>
+    bool UseComponentGroup(const StringC &group,CollectionC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        DataT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        list.Append(value);
+      }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<typename ObjT,typename DataT,typename RetT>
+    bool UseComponentGroup(const StringC &group,ObjT &obj,RetT (ObjT::*addMethod)(DataT),const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        typename TraitsC<DataT>::BaseTypeT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        (obj.*addMethod)(value);
+      }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
 
   protected:
     mutable XMLFactoryNodeC::RefT m_iNode;
