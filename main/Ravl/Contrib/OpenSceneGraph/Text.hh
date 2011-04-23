@@ -41,6 +41,9 @@ namespace RavlOSGN
     TextAlignRightBottomBaseLine
   };
 
+  std::istream &operator>>(std::istream &,TextAlignmentT &textAlignment);
+  std::ostream &operator<<(std::ostream &,TextAlignmentT textAlignment);
+  
   enum TextAxisAlignmentT
   {
     TextAxisXYPlane = 0,
@@ -51,6 +54,9 @@ namespace RavlOSGN
     TextAxisYZPlaneReversed,
     TextAxisScreen
   };
+
+  std::istream &operator>>(std::istream &,TextAxisAlignmentT &textAxisAlignment);
+  std::ostream &operator<<(std::ostream &,TextAxisAlignmentT textAxisAlignment);
 
   //! userlevel=Normal
   //: Text object.
@@ -80,8 +86,8 @@ namespace RavlOSGN
 
     bool SetAxisAlignment(TextAxisAlignmentT axis);
     //: Set the alignment to the axes (or screen of you want billboard alignment).
-
-    bool SetColour(const RavlImageN::RealRGBAValueC &colour);
+    
+    virtual bool SetColour(const RavlImageN::RealRGBAValueC &colour);
     //: Set the text colour.
 
     bool SetPosition(const RavlN::Vector3dC &position);

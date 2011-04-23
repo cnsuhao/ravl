@@ -80,7 +80,9 @@ namespace RavlOSGN
   
   bool NodeC::Setup(const XMLFactoryContextC &factory)
   {
-    
+    if(factory.AttributeBool("bringToFront",false)) {
+      BringToFront();
+    }
     return true;
   }
   

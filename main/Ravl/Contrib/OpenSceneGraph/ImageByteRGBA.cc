@@ -42,10 +42,15 @@ namespace RavlOSGN
     RavlN::StringC filename = context.AttributeString("filename","");
     if(!filename.IsEmpty()) {
       RavlImageN::ImageC<RavlImageN::ByteRGBAValueC> image;
+      rDebug("Loading image '%s' ",filename.data());
       if(RavlN::Load(filename,image)) {
-        SetImage(image);
+        if(!SetImage(image)) {
+          rError("Failed to setup image. %s ",context.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to setup image.");
+        }
       } else {
         rWarning("Failed to load file '%s' ",filename.data());
+        throw RavlN::ExceptionBadConfigC("Failed to load image.");
       }
     }
   }

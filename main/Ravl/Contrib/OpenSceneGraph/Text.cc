@@ -11,6 +11,7 @@
 
 #include "Ravl/OpenSceneGraph/Text.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/RLog.hh"
 #include <osgText/Text>
 
 #define DODEBUG 0
@@ -41,6 +42,28 @@ namespace
     osgText::TextBase::CENTER_BOTTOM_BASE_LINE,
     osgText::TextBase::RIGHT_BOTTOM_BASE_LINE
   };
+  
+  const char * g_lookupTextAlignmentStr[] = 
+  {
+    "LeftTop",
+    "LeftCentre",
+    "LeftBottom",
+    "CentreTop",
+    "CentreCentre",
+    "CentreBottom",
+    "RightTop",
+    "RightCentre",
+    "RightBottom",
+    "LeftBaseLine",
+    "CentreBaseLine",
+    "RightBaseLine",
+    "LeftBottomBaseLine",
+    "CentreBottomBaseLine",
+    "RightBottomBaseLine",
+    0
+  };
+  
+
 
   osgText::Text::AxisAlignment g_lookupTextAxisAlignment[] =
   {
@@ -53,14 +76,67 @@ namespace
     osgText::TextBase::SCREEN
   };
 
+  const char * g_lookupTextAxisAlignmentStr[] = 
+  {
+    "XYPlane",
+    "XYPlaneReversed",
+    "XZPlane",
+    "XZPlaneReversed",
+    "YZPlane",
+    "YZPlaneReversed",
+    "Screen"
+  };
 }
 
 namespace RavlOSGN
 {
-
   using namespace osg;
   using namespace osgText;
 
+  // --------------------------------------------------------------------
+  
+  std::istream &operator>>(std::istream &strm,TextAlignmentT &textAlignment) {
+    std::string name;
+    strm >> name;
+    for(unsigned i = 0;g_lookupTextAlignmentStr[i] != 0;i++) {
+      if(name == g_lookupTextAlignmentStr[i]) {
+        textAlignment = static_cast<TextAlignmentT>(i);
+        return strm;
+      }
+    }
+    rError("Unexpected alignment type '%s' ",name.data());
+    throw RavlN::ExceptionInvalidStreamC("Unexpected alignment type.");
+    return strm;
+  }
+  
+  std::ostream &operator<<(std::ostream &strm,TextAlignmentT textAlignment) {
+    strm << g_lookupTextAlignmentStr[(int) textAlignment];
+    return strm;
+  }
+
+  // --------------------------------------------------------------------
+
+  std::istream &operator>>(std::istream &strm,TextAxisAlignmentT &textAxisAlignment) {
+    std::string name;
+    strm >> name;
+    for(unsigned i = 0;g_lookupTextAxisAlignmentStr[i] != 0;i++) {
+      if(name == g_lookupTextAxisAlignmentStr[i]) {
+        textAxisAlignment = static_cast<TextAxisAlignmentT>(i);
+        return strm;
+      }
+    }
+    rError("Unexpected alignment type '%s' ",name.data());
+    throw RavlN::ExceptionInvalidStreamC("Unexpected alignment type.");
+    return strm;
+  }
+  
+  std::ostream &operator<<(std::ostream &strm,TextAxisAlignmentT textAxisAlignment) {
+    strm << g_lookupTextAxisAlignmentStr[(int) textAxisAlignment];
+    return strm;
+  }
+  
+  // --------------------------------------------------------------------
+  
   TextC::TextC(const std::string &text)
   {
     ref_ptr<Text> textRef = new Text();
@@ -78,6 +154,46 @@ namespace RavlOSGN
     m_drawable = textRef;
     RavlN::StringC text = context.AttributeString("text","");
     textRef->setText(text.data());
+    float size;
+    if(context.Attribute("size",size)) {
+      if(!SetSize(size)) {
+        rError("Failed to set size to %f ",size);
+        throw RavlN::ExceptionBadConfigC("Failed to set size.");
+      }
+    }
+    
+    std::string fontFilename;
+    if(context.Attribute("font",fontFilename)) {
+      if(!SetFont(fontFilename)) {
+        rError("Failed to set font to %s ",fontFilename.data());
+        throw RavlN::ExceptionBadConfigC("Failed to set font.");        
+      }
+    }
+    
+    TextAlignmentT alignment;
+    if(context.Attribute("alignment",alignment)) {
+      if(!SetAlignment(alignment)) {
+        rError("Failed to set alignment to %s ",RavlN::StringOf(alignment).data());
+        throw RavlN::ExceptionBadConfigC("Failed to set alignment.");                
+      }
+    }
+    
+    TextAxisAlignmentT axis;
+    if(context.Attribute("axisAlignment",axis)) {
+      if(!SetAxisAlignment(axis)) {
+        rError("Failed to set axis alignment to %s ",RavlN::StringOf(axis).data());
+        throw RavlN::ExceptionBadConfigC("Failed to set axis alignment.");                        
+      }
+    }
+    
+    RavlN::Vector3dC position;
+    if(context.Attribute("position",position,RavlN::Vector3dC(0,0,0))) {
+      if(!SetPosition(position)) {
+        rError("Failed to set position to %s ",RavlN::StringOf(position).data());
+        throw RavlN::ExceptionBadConfigC("Failed to set position.");                        
+      }      
+    }
+    
     DrawableC::Setup(context);
   }
   

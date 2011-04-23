@@ -11,6 +11,7 @@
 
 #include "Ravl/OpenSceneGraph/Image.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/RLog.hh"
 #include <osg/PrimitiveSet>
 #include <osg/Geode>
 #include <osg/Texture2D>
@@ -32,8 +33,8 @@ namespace RavlOSGN
    : m_alphaImageEnabled(factory.AttributeBool("enableAlpha",false)),
      m_alpha(factory.AttributeReal("alpha",1.0))
   {
-    RavlN::RealRange2dC coords(1,1);
-    factory.Attribute("coords",coords);
+    RavlN::RealRange2dC coords;
+    factory.Attribute("coords",coords,RavlN::RealRange2dC(-1,1));
     BuildNode(coords);    
   }
   
@@ -51,6 +52,7 @@ namespace RavlOSGN
   //: Build the node
   bool ImageC::BuildNode(const RavlN::RealRange2dC &coords)
   {
+    rDebug("Building image node. Range=%s ",RavlN::StringOf(coords).data());
     ref_ptr<Geometry> geometryRef = new Geometry();
 
     ref_ptr<Vec3Array> vertexArray = new Vec3Array();

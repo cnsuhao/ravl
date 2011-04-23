@@ -35,7 +35,13 @@ namespace RavlOSGN
    : NodeC(factory)
   {
     m_node = new osg::Geode();
+    // Short hand for a single child node.
     DrawableC::RefT drawable;
+    if(factory.UseComponent("Draw",drawable)) {
+      AddDrawable(drawable);
+    }
+    
+    // Full list of drawables.
     factory.UseComponentGroup("Drawables",*this,&GeodeC::AddDrawable);
   }
 

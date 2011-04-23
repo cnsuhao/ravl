@@ -12,7 +12,7 @@
 #include "Ravl/OpenSceneGraph/Transform.hh"
 #include "Ravl/OpenSceneGraph/TypeConvert.hh"
 #include "Ravl/XMLFactoryRegister.hh"
-
+#include "Ravl/RLog.hh"
 #include <osg/Transform>
 
 #define DODEBUG 0
@@ -60,13 +60,14 @@ namespace RavlOSGN
   
   // ------------------------------------------------------------------------
   
+  //: XML constructor.
+  
   TransformPositionAttitudeC::TransformPositionAttitudeC(const XMLFactoryContextC &context)
   : TransformC(false)
   {
     m_node = new PositionAttitudeTransform();
     Setup(context);
   }
-    //: XML constructor.
 
 
   TransformPositionAttitudeC::TransformPositionAttitudeC(bool create)
@@ -88,12 +89,28 @@ namespace RavlOSGN
     
     RavlN::Vector3dC position(0,0,0);
     if(factory.Attribute("position",position)) {
-      SetPosition(position);
+      if(!SetPosition(position)) {
+        rError("Failed to set position to %s ",RavlN::StringOf(position).data());
+        throw RavlN::ExceptionBadConfigC("Failed to set transform position.");
+      }
     }
     
     RavlN::Vector3dC scale(1.0,1.0,1.0);
     if(factory.Attribute("scale",scale)) {
-      SetScale(scale);
+      if(!SetScale(scale)) {
+        rError("Failed to set scale to %s ",RavlN::StringOf(position).data());
+        throw RavlN::ExceptionBadConfigC("Failed to set transform scale.");
+      }
+    }
+    
+    float angle = 0;
+    
+    RavlN::Vector3dC axis(1.0,0.0,0.0);
+    if(factory.Attribute("axis",axis) && factory.Attribute("angle",angle)) {
+      if(!SetAttitude(RavlN::Quatern3dC(axis,angle))) {
+        rError("Failed to set attitude to %s  %f ",RavlN::StringOf(position).data(),angle);
+        throw RavlN::ExceptionBadConfigC("Failed to set transform attitude.");        
+      }
     }
     
     return true;

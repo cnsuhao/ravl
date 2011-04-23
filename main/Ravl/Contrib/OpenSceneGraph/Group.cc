@@ -113,9 +113,15 @@ namespace RavlOSGN
   {
     NodeC::Setup(factory);
     
+    // Short hand if we just want a single child node.
+    NodeC::RefT node;
+    if(factory.UseComponent("Node",node,true)) {
+      AddChild(node);
+    }
+    
+    // Full list of child nodes.
     std::vector<NodeC::RefT> children;
     factory.UseComponentGroup("Nodes",*this,&GroupC::AddChild);
-
     return true;
   }
 

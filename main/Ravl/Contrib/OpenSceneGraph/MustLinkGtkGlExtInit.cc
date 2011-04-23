@@ -10,7 +10,8 @@ namespace RavlOSGN
   extern void LinkGroup();
   extern void LinkText();
   extern void LinkTransform();
-
+  extern void LinkHUD();
+  
   void LinkGtkGlExtInit()
   {
     RegisterGtkGlExtInit();
@@ -22,5 +23,6 @@ namespace RavlOSGN
     LinkGroup();
     LinkText();
     LinkTransform();
+    LinkHUD();
   }
 }

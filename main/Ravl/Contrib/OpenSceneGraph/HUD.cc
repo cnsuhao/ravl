@@ -11,7 +11,7 @@
 
 #include "Ravl/OpenSceneGraph/HUD.hh"
 #include "Ravl/XMLFactoryRegister.hh"
-
+#include "Ravl/RLog.hh"
 #include <osg/Projection>
 #include <osg/Matrix>
 #include <osg/MatrixTransform>
@@ -42,8 +42,8 @@ namespace RavlOSGN
   HUDC::HUDC(const XMLFactoryContextC &factory)
    : GroupC(false)
   {
-    RavlN::RealRange2dC coords(0, 0, 1, 1);
-    factory.Attribute("coords",coords);
+    RavlN::RealRange2dC coords;
+    factory.Attribute("coords",coords,RavlN::RealRange2dC(0, 1, 0, 1));
     BuildNode(coords);
     GroupC::Setup(factory);
   }
@@ -51,6 +51,7 @@ namespace RavlOSGN
   //: Build node.
   bool HUDC::BuildNode(const RavlN::RealRange2dC &coords)
   {
+    rDebug("BuildNode Coords:%s ",RavlN::StringOf(coords).data());
     ref_ptr<Projection> projectionMatrix = new Projection;
     projectionMatrix->setMatrix(Matrix::ortho2D(coords.LCol(), coords.RCol(), coords.TRow(), coords.BRow()));
 
@@ -95,6 +96,9 @@ namespace RavlOSGN
     GroupC::ZeroOwners();
   }
 
+  void LinkHUD()
+  {}
+  
   static RavlN::XMLFactoryRegisterConvertC<HUDC,GroupC> g_registerXMLFactoryGroup("RavlOSGN::HUDC");
 
 }
