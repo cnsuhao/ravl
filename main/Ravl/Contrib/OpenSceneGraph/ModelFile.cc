@@ -59,6 +59,9 @@ namespace RavlOSGN
     NodeC::ZeroOwners();
   }
 
-  static RavlN::XMLFactoryRegisterConvertC<ModelFileC,NodeC> g_registerXMLFactoryGroup("RavlOSGN::ModelFileC");
+  void LinkModelFile()
+  {}
+  
+  static RavlN::XMLFactoryRegisterConvertC<ModelFileC,NodeC> g_registerXMLFactoryModelFile("RavlOSGN::ModelFileC");
   
 }

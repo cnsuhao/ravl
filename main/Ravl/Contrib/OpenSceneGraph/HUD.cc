@@ -66,27 +66,23 @@ namespace RavlOSGN
   }
 
 
-  bool HUDC::AddChild(const NodeC::RefT &node)
+  bool HUDC::AddChildNode(const NodeC &node)
   {
-    if (!m_modelViewMatrix || !node.IsValid())
+    if (!m_modelViewMatrix)
       return false;
 
-    NodeC::RefT nodeRef = node;
-
-    m_modelViewMatrix->addChild(nodeRef->Node());
-
+    m_modelViewMatrix->addChild(const_cast<NodeC &>(node).Node());
+    
     return true;
   }
 
-  bool HUDC::RemoveChild(const NodeC::RefT &node)
+  bool HUDC::RemoveChildNode(const NodeC &node)
   {
-    if (!m_modelViewMatrix || !node.IsValid())
+    if (!m_modelViewMatrix)
       return false;
-
-    NodeC::RefT nodeRef = node;
-
-    m_modelViewMatrix->removeChild(nodeRef->Node());
-
+    
+    m_modelViewMatrix->removeChild(const_cast<NodeC &>(node).Node());
+    
     return true;
   }
 

@@ -11,6 +11,8 @@
 
 #include "Ravl/OpenSceneGraph/Box.hh"
 #include "Ravl/OpenSceneGraph/TypeConvert.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
@@ -85,5 +87,17 @@ namespace RavlOSGN
     
     return true;
   }
+  
+  //: Called when owner handles drop to zero.
+  void BoxC::ZeroOwners()
+  {
+    DrawableC::ZeroOwners();
+  }
+  
+  void LinkBox()
+  {}
+
+  static RavlN::XMLFactoryRegisterConvertC<BoxC,DrawableC> g_registerXMLFactoryBox("RavlOSGN::BoxC");
+
 
 }

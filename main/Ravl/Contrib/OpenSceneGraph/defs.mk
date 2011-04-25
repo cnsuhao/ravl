@@ -15,11 +15,13 @@ REQUIRES=OpenSceneGraph libGL GTKGLExt
 
 HEADERS=Drawable.hh Sphere.hh Image.hh ImageByteRGBA.hh ImageByteRGB.hh Text.hh \
  TriMesh.hh TexTriMesh.hh Node.hh Geode.hh Group.hh Transform.hh ModelFile.hh \
- HUD.hh OpenSceneGraphWidget.hh Box.hh CanvasManipulator.hh TypeConvert.hh
+ HUD.hh OpenSceneGraphWidget.hh Box.hh CanvasManipulator.hh TypeConvert.hh \
+ Layout.hh LayoutStack.hh
 
 SOURCES=Drawable.cc Sphere.cc Image.cc ImageByteRGBA.cc ImageByteRGB.cc Text.cc \
  TriMesh.cc TexTriMesh.cc Node.cc Geode.cc Group.cc Transform.cc ModelFile.cc \
- HUD.cc OpenSceneGraphWidget.cc Box.cc CanvasManipulator.cc TypeConvert.cc
+ HUD.cc OpenSceneGraphWidget.cc Box.cc CanvasManipulator.cc TypeConvert.cc \
+ Layout.cc LayoutStack.cc 
 
 PLIB=RavlGUIOpenSceneGraph
 

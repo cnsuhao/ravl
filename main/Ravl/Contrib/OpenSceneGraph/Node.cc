@@ -42,7 +42,7 @@ namespace RavlOSGN
     virtual void operator()(Node *node, NodeVisitor *nv)
     {
       if (m_node.IsValid())
-      { m_node->SigCallback()(); }
+      { m_node->DoCallback(); }
       
       traverse(node, nv);
     }
@@ -83,6 +83,7 @@ namespace RavlOSGN
     if(factory.AttributeBool("bringToFront",false)) {
       BringToFront();
     }
+    
     return true;
   }
   
@@ -149,5 +150,12 @@ namespace RavlOSGN
     node = nd->Node();
     return true;
   }
+  
+  //: Process a callback.
+  void NodeC::DoCallback()
+  {
+    m_sigCallback();
+  }
+
 
 }

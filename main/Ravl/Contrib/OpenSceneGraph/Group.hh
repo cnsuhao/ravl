@@ -23,7 +23,7 @@ namespace RavlOSGN
   //: Group object.
 
   class GroupC
-  : public NodeC
+   : public NodeC
   {
   public:
     GroupC(bool create = true);
@@ -36,16 +36,16 @@ namespace RavlOSGN
     virtual ~GroupC();
     //: Dtor.
 
-    virtual bool AddChild(const NodeC::RefT &node);
+    bool AddChild(const NodeC::RefT &node);
     //: Add a node object to the group.
 
-    virtual bool RemoveChild(const NodeC::RefT &node);
+    bool RemoveChild(const NodeC::RefT &node);
     //: Remove a node object from the group.
 
-    bool AddChildNode(const NodeC &node);
+    virtual bool AddChildNode(const NodeC &node);
     //: Add a node object to the group.
 
-    bool RemoveChildNode(const NodeC &node);
+    virtual bool RemoveChildNode(const NodeC &node);
     //: Remove a node object from the group.
 
     bool RemoveChildren();
@@ -55,6 +55,9 @@ namespace RavlOSGN
     typedef RavlN::SmartCallbackPtrC<GroupC> CBRefT;
 
   protected:
+    virtual void DoCallback();
+    //: Process a callback.
+
     bool Setup(const XMLFactoryContextC &factory);
     //: Do setup from factory
     

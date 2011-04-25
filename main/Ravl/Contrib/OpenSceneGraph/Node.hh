@@ -24,6 +24,7 @@
 namespace RavlOSGN
 {
   class NodeC;
+  class NodeCallbackC;
   using RavlN::XMLFactoryContextC;
   
   // Class for holding a reference back an arbitary object.
@@ -158,6 +159,9 @@ namespace RavlOSGN
     { return m_node->getName(); }
     //: Access name of node.
   protected:
+    virtual void DoCallback();
+    //: Process a callback.
+    
     bool Setup(const XMLFactoryContextC &factory);
     //: Do setup from factory
     
@@ -167,6 +171,8 @@ namespace RavlOSGN
     osg::ref_ptr<osg::Node> m_node;
     osg::ref_ptr<osg::NodeCallback> m_callback;
     RavlN::Signal0C m_sigCallback;
+    
+    friend class NodeCallbackC;
   };
 
 

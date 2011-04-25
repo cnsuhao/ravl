@@ -45,32 +45,18 @@ namespace RavlOSGN
   
   bool GroupC::AddChild(const NodeC::RefT &node)
   {
-    if (!m_node || !node.IsValid())
+    if(!node.IsValid())
       return false;
-
-    NodeC::RefT nodeRef = node;
-    ref_ptr<Group> groupRef = m_node->asGroup();
-    if (!groupRef)
-      return false;
-
-    groupRef->addChild(nodeRef->Node());
-
-    return true;
+    
+    return AddChildNode(*node);
   }
 
   bool GroupC::RemoveChild(const NodeC::RefT &node)
   {
-    if (!m_node || !node.IsValid())
+    if(!node.IsValid())
       return false;
-
-    NodeC::RefT nodeRef = node;
-    ref_ptr<Group> groupRef = m_node->asGroup();
-    if (!groupRef)
-      return false;
-
-    groupRef->removeChild(nodeRef->Node());
-
-    return true;
+    
+    return RemoveChildNode(*node);
   }
 
   bool GroupC::AddChildNode(const NodeC &node) {
@@ -105,6 +91,13 @@ namespace RavlOSGN
       groupRef->removeChildren(0, groupSize);
 
     return true;
+  }
+  
+  //: Process a callback.
+  
+  void GroupC::DoCallback()
+  {
+    NodeC::DoCallback();
   }
   
   //: Do setup from factory

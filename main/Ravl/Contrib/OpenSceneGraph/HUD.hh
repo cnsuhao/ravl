@@ -39,10 +39,10 @@ namespace RavlOSGN
     virtual ~HUDC();
     //: Dtor.
 
-    virtual bool AddChild(const NodeC::RefT &node);
+    virtual bool AddChildNode(const NodeC &node);
     //: Add a node object to the display.
 
-    virtual bool RemoveChild(const NodeC::RefT &node);
+    virtual bool RemoveChildNode(const NodeC &node);
     //: Remove a node object from the display.
 
     typedef RavlN::SmartOwnerPtrC<HUDC> RefT;
