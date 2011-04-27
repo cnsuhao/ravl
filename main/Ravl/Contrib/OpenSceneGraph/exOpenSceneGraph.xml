@@ -15,12 +15,13 @@
           <Node typename="RavlOSGN::ImageByteRGBAC" filename="/Users/charlesgalambos/Build/share/RAVL/pixmaps/monkey.ppm" alpha="0.75" />
         </ImageTransform>
         -->
-          <Stack typename="RavlOSGN::LayoutStackC" gap="0.1" >
+          <Stack typename="RavlOSGN::LayoutGridC" gap="0.1" >
             <Nodes>
               <Box1 typename="RavlOSGN::BoxC" colour="0.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
               <Box2 typename="RavlOSGN::BoxC" colour="0.0 1.0 0.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
-              <Box3 typename="RavlOSGN::BoxC" colour="1.0 0.0 0.0 1.0" size="1.0 2.0 1.0" position="0 0 0" />
+              <Box3 typename="RavlOSGN::BoxC" colour="1.0 0.0 0.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
               <Sphere typename="RavlOSGN::SphereC" colour="0.0 1.0 1.0 1.0" radius="0.5" />
+              <Box4 typename="RavlOSGN::BoxC" colour="1.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
             </Nodes>
           </Stack>
         <HUD typename="RavlOSGN::HUDC" coords="0 768 0 1024" >

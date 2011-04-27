@@ -15,6 +15,7 @@ namespace RavlOSGN
   extern void LinkModelFile();
   extern void LinkLayout();
   extern void LinkLayoutStack();
+  extern void LinkLayoutGrid();
   
   void LinkGtkGlExtInit()
   {
@@ -32,5 +33,6 @@ namespace RavlOSGN
     LinkModelFile();
     LinkLayout();
     LinkLayoutStack();
+    LinkLayoutGrid();
   }
 }
