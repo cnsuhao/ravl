@@ -70,13 +70,14 @@ namespace RavlOSGN {
   bool LayoutC::RemoveChildNode(const NodeC &node)
   {
     for(std::vector<LayoutEntryC::RefT>::iterator i= m_nodes.begin();i != m_nodes.end();i++) {
-      if((*i)->ElementRef() = &node) {
-        m_nodes.erase(i);
+      if((*i)->ElementRef().BodyPtr() == &node) {
         GroupC::RemoveChildNode(**i);
+        m_nodes.erase(i);
+        UpdateLayout();
         return true;
       }
     }
-    UpdateLayout();
+    rError("Failed to find node %p ",(void *)&node);
     return false;
   }
 

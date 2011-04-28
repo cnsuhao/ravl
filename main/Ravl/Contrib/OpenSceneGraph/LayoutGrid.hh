@@ -40,6 +40,7 @@ namespace RavlOSGN {
     int m_stackAxis1;
     int m_stackAxis2;
     float m_gap;
+    float m_minSize;
   };
 
 }

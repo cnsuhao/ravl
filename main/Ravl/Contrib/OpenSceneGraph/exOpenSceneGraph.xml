@@ -5,12 +5,12 @@
   <OpenSceneGraphWidget typename="RavlOSGN::OpenSceneGraphWidgetC" width="300" height="300" >
     <Scene typename="RavlOSGN::GroupC">
       <Nodes>
-        <!--
         <Sphere typename="RavlOSGN::SphereC" colour="0.0 1.0 0.0 1.0" />
         <Box typename="RavlOSGN::BoxC" colour="0.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="-1 0 0" />
         <TextTransform typename="RavlOSGN::TransformPositionAttitudeC" position="1 0 0" axis="1 0 0" angle="1.5707963267948966" scale="0.1 0.1 0.1" >
           <Node typename="RavlOSGN::TextC" text="Some text!" colour="1.0 0.0 0.0 1.0" alignment="CentreBaseLine" axisAlignment="Screen" size="0.5" />
         </TextTransform>
+        <!--
         <ImageTransform typename="RavlOSGN::TransformPositionAttitudeC" position="1 0 0" axis="1 0 0" angle="1.5707963267948966" coords="0 -1 0 1">
           <Node typename="RavlOSGN::ImageByteRGBAC" filename="/Users/charlesgalambos/Build/share/RAVL/pixmaps/monkey.ppm" alpha="0.75" />
         </ImageTransform>

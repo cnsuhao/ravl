@@ -11,14 +11,20 @@ namespace RavlOSGN {
   LayoutGridC::LayoutGridC(bool create)
    : LayoutC(create),
      m_stackAxis1(0),
-     m_stackAxis2(1)
+     m_stackAxis2(1),
+     m_gap(0.1),
+     m_minSize(1.0)
   {
   }
   
   //: XML factory constructor
   
   LayoutGridC::LayoutGridC(const XMLFactoryContextC &factory)
-   : LayoutC(true)
+   : LayoutC(true),
+     m_stackAxis1(0),
+     m_stackAxis2(1),
+     m_gap(0.1),
+     m_minSize(1.0)
   {
     Setup(factory);
   }
@@ -43,7 +49,7 @@ namespace RavlOSGN {
     std::vector<float> colSizes(colMax);
     
     for(unsigned c = 0;c < colMax;c++) {
-      float width = 0;
+      float width = m_minSize;
       for(unsigned r = 0;r < rowMax;r++) {
         unsigned at = r * colMax + c;
         if(at >= m_nodes.size())
@@ -57,7 +63,7 @@ namespace RavlOSGN {
     
     
     for(unsigned r = 0;r < rowMax;r++) {
-      float hight = m_gap;
+      float hight = m_minSize;
       Vector3dC vat = rowStart;
       
       // Work out the row hight.
@@ -98,6 +104,7 @@ namespace RavlOSGN {
       throw RavlN::ExceptionBadConfigC("Invalid stack axis. ");
     }
     m_gap = factory.AttributeReal("gap",0.1);
+    m_minSize = factory.AttributeReal("minSize",1.0);
     LayoutC::Setup(factory);
     return true;
   }
