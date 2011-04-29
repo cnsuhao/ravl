@@ -62,7 +62,6 @@ namespace RavlOSGN
   NodeC::NodeC(const XMLFactoryContextC &factory)
    : m_sigCallback(true)
   {
-    
   }
 
   //! Destructor.
@@ -83,7 +82,7 @@ namespace RavlOSGN
     if(factory.AttributeBool("bringToFront",false)) {
       BringToFront();
     }
-    
+    SetName(factory.Name().data());    
     return true;
   }
   
@@ -156,6 +155,17 @@ namespace RavlOSGN
   {
     m_sigCallback();
   }
+  
+    //: Access resize signal
+  
+  RavlN::Signal0C &NodeC::SigResize() const
+  {
+    // Obviously not thread safe, is this a problem?
+    if(!m_sigResize.IsValid())
+      m_sigResize = RavlN::Signal0C(true);
+    return m_sigResize;
+  }
+
 
 
 }

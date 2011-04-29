@@ -10,6 +10,7 @@
 
 #include "Ravl/OpenSceneGraph/Group.hh"
 #include "Ravl/OpenSceneGraph/Transform.hh"
+#include "Ravl/Threads/SignalConnectionSet.hh"
 #include <osg/BoundingBox>
 
 namespace RavlOSGN {
@@ -23,6 +24,9 @@ namespace RavlOSGN {
   public:
     LayoutEntryC(const NodeC &element);
     //: Constructor
+    
+    ~LayoutEntryC();
+    //: Destructor
     
     bool ComputeBounds();
     //: Compute bounds of entry.
@@ -39,6 +43,9 @@ namespace RavlOSGN {
     const osg::BoundingBox &Bounds() const
     { return m_bounds; }
     
+    RavlN::SignalConnectionSetC &ConnectionSet()
+    { return m_connections; }
+
     typedef RavlN::SmartOwnerPtrC<LayoutEntryC> RefT;
     //: Owner handle.
     
@@ -51,6 +58,9 @@ namespace RavlOSGN {
     NodeC::RefT m_element;
     
     osg::BoundingBox m_bounds;
+    
+    RavlN::SignalConnectionSetC m_connections;
+    
   };
   
   //: Base class for automatic layouts
@@ -83,6 +93,9 @@ namespace RavlOSGN {
     
     virtual void DoCallback();
     //: Process a callback.
+    
+    bool HandleChildResize();
+    //: Handle resize of child object.
     
     bool Setup(const XMLFactoryContextC &factory);
     //: Do setup from factory

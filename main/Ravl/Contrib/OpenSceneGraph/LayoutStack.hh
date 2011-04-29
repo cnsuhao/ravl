@@ -38,6 +38,7 @@ namespace RavlOSGN {
     //: Called when owner handles drop to zero.
     
     int m_stackAxis;
+    bool m_invertAxis;
     float m_gap;
   };
 

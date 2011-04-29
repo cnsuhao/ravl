@@ -15,7 +15,7 @@
           <Node typename="RavlOSGN::ImageByteRGBAC" filename="/Users/charlesgalambos/Build/share/RAVL/pixmaps/monkey.ppm" alpha="0.75" />
         </ImageTransform>
         -->
-          <Stack typename="RavlOSGN::LayoutGridC" gap="0.1" >
+          <Stack typename="RavlOSGN::LayoutStackC" gap="0.1" stackAxis="-1" >
             <Nodes>
               <Box1 typename="RavlOSGN::BoxC" colour="0.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
               <Box2 typename="RavlOSGN::BoxC" colour="0.0 1.0 0.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />

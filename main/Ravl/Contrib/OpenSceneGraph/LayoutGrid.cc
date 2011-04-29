@@ -66,17 +66,30 @@ namespace RavlOSGN {
       float hight = m_minSize;
       Vector3dC vat = rowStart;
       
-      // Work out the row hight.
+      unsigned atSave = at;
       for(unsigned c = 0;c < colMax && at < m_nodes.size();c++,at++) {
         float rsize = m_nodes[at]->Bounds()._max[m_stackAxis1] - m_nodes[at]->Bounds()._min[m_stackAxis1];
         if(rsize > hight)
           hight = rsize;
+      }
+      at = atSave;
+      
+      if(m_invertAxis2) {
+        rowStart[m_stackAxis1] -= (hight + m_gap);        
+      }
+      
+      // Work out the row hight.
+      for(unsigned c = 0;c < colMax && at < m_nodes.size();c++,at++) {
+        if(m_invertAxis2)
+          vat[m_stackAxis2] -= (colSizes[c] + m_gap);
         Vector3dC correctedPosition = vat - MakeVector3d(m_nodes[at]->Bounds()._min);
         m_nodes[at]->SetPosition(correctedPosition);
         rDebug("Start %s ",RavlN::StringOf(correctedPosition).data());
-        vat[m_stackAxis2] += colSizes[c] + m_gap;
+        if(!m_invertAxis2)
+          vat[m_stackAxis2] += (colSizes[c] + m_gap);
       }
-      rowStart[m_stackAxis1] += hight + m_gap;
+      if(!m_invertAxis2)
+        rowStart[m_stackAxis1] += (hight + m_gap);
     }
     
     return true;
@@ -93,14 +106,18 @@ namespace RavlOSGN {
   
   bool LayoutGridC::Setup(const XMLFactoryContextC &factory)
   {
-    m_stackAxis1 = factory.AttributeInt("stackAxis1",0);
+    m_stackAxis1 = factory.AttributeInt("gridAxis1",1);
+    m_invertAxis1 = m_stackAxis1 < 0;
+    m_stackAxis1 = RavlN::Abs(m_stackAxis1)-1;
     if(m_stackAxis1 < 0 || m_stackAxis1 > 2) {
-      rError("Invalid 1st stack axis %d ",m_stackAxis1);
+      rError("Invalid 1st grid axis %d ",m_stackAxis1);
       throw RavlN::ExceptionBadConfigC("Invalid stack axis. ");
     }
-    m_stackAxis2 = factory.AttributeInt("stackAxis2",1);
+    m_stackAxis2 = factory.AttributeInt("gridAxis2",2);
+    m_invertAxis2 = m_stackAxis2 < 0;
+    m_stackAxis2 = RavlN::Abs(m_stackAxis2)-1;
     if(m_stackAxis2 < 0 || m_stackAxis2 > 2) {
-      rError("Invalid 2nd stack axis  %d ",m_stackAxis2);
+      rError("Invalid 2nd grid axis  %d ",m_stackAxis2);
       throw RavlN::ExceptionBadConfigC("Invalid stack axis. ");
     }
     m_gap = factory.AttributeReal("gap",0.1);

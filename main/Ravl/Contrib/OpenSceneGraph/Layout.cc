@@ -2,6 +2,7 @@
 #include "Ravl/OpenSceneGraph/Layout.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/RLog.hh"
+#include "Node.hh"
 #include <osg/ComputeBoundsVisitor>
 
 
@@ -22,6 +23,14 @@ namespace RavlOSGN {
     ComputeBounds();
     
   }
+  
+  //: Destructor
+  
+  LayoutEntryC::~LayoutEntryC()
+  {
+    m_connections.DisconnectAll();
+  }
+
   
   bool LayoutEntryC::ComputeBounds()
   {
@@ -59,10 +68,15 @@ namespace RavlOSGN {
   //: Add a node object to the group.
   bool LayoutC::AddChildNode(const NodeC &node)
   {
+    
     LayoutEntryC::RefT le = new LayoutEntryC(node);
+    le->ConnectionSet() += RavlN::ConnectPtr(node.SigResize(),CBRefT(this),&LayoutC::HandleChildResize);
+    
     m_nodes.push_back(le);
     GroupC::AddChildNode(*le);
     UpdateLayout();
+    if(m_sigResize.IsValid())
+      m_sigResize();
     return true;
   }
 
@@ -74,6 +88,8 @@ namespace RavlOSGN {
         GroupC::RemoveChildNode(**i);
         m_nodes.erase(i);
         UpdateLayout();
+        if(m_sigResize.IsValid())
+          m_sigResize();
         return true;
       }
     }
@@ -100,6 +116,7 @@ namespace RavlOSGN {
   //: Called when owner handles drop to zero.
   void LayoutC::ZeroOwners()
   {
+    m_nodes.clear();
     GroupC::ZeroOwners();
   }
 
@@ -107,6 +124,16 @@ namespace RavlOSGN {
   void LayoutC::DoCallback() {    
     GroupC::DoCallback();
   }
+  
+  //: Handle resize of child object.
+  
+  bool LayoutC::HandleChildResize() {
+    UpdateLayout();
+    if(m_sigResize.IsValid())
+      m_sigResize();
+    return true;
+  }
+
   
   void LinkLayout()
   {}

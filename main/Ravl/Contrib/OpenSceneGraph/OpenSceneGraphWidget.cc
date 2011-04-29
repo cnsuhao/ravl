@@ -67,10 +67,12 @@ namespace RavlOSGN
     m_defaultManipulator(factory.AttributeString("manipulator","TrackerBall").data()),
     m_frameRate(factory.AttributeReal("frameRate",60))
   {
-    factory.Attribute("clearColour",m_clearColour);    
+    factory.Attribute("clearColour",m_clearColour,m_clearColour);
     NodeC::RefT scene;
-    if(factory.UseComponent("Scene",scene))
+    if(factory.HasChild("Scene")) {
+      rThrowBadConfigContextOnFailS(factory,UseComponent("Scene",scene),"Failed to load scene.");
       SetScene(*scene);
+    }
   }
   
   OpenSceneGraphWidgetBodyC::~OpenSceneGraphWidgetBodyC()

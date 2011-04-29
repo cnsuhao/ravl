@@ -30,13 +30,17 @@ namespace RavlOSGN {
     Vector3dC start(0,0,0);
     for(unsigned i = 0;i < m_nodes.size();i++) {
       float size= m_nodes[i]->Bounds()._max[m_stackAxis] - m_nodes[i]->Bounds()._min[m_stackAxis];
-      start[m_stackAxis] += size;
+      if(m_invertAxis) {
+        start[m_stackAxis] -= (size + m_gap);
+      }
       Vector3dC correctedStart = start - MakeVector3d(m_nodes[i]->Bounds()._min);
       rDebug("Start %s ",RavlN::StringOf(correctedStart).data());
       m_nodes[i]->SetPosition(correctedStart);
-      start[m_stackAxis] += m_gap;
+      if(!m_invertAxis) {
+        start[m_stackAxis] += (size + m_gap);
+      }
     }
-
+    
     return true;
   }
   
@@ -51,7 +55,9 @@ namespace RavlOSGN {
   
   bool LayoutStackC::Setup(const XMLFactoryContextC &factory)
   {
-    m_stackAxis = factory.AttributeInt("stackAxis",0);
+    m_stackAxis = factory.AttributeInt("stackAxis",1);
+    m_invertAxis = m_stackAxis < 0;
+    m_stackAxis = RavlN::Abs(m_stackAxis) - 1;
     if(m_stackAxis < 0 || m_stackAxis > 2) {
       rError("Invalid stack axis %d ",m_stackAxis);
       throw RavlN::ExceptionBadConfigC("Invalid stack axis. ");

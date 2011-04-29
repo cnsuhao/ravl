@@ -158,6 +158,10 @@ namespace RavlOSGN
     const std::string &Name() const
     { return m_node->getName(); }
     //: Access name of node.
+    
+    virtual RavlN::Signal0C &SigResize() const;
+    //: Access resize signal
+    
   protected:
     virtual void DoCallback();
     //: Process a callback.
@@ -171,6 +175,7 @@ namespace RavlOSGN
     osg::ref_ptr<osg::Node> m_node;
     osg::ref_ptr<osg::NodeCallback> m_callback;
     RavlN::Signal0C m_sigCallback;
+    mutable RavlN::Signal0C m_sigResize;
     
     friend class NodeCallbackC;
   };
