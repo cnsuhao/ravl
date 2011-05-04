@@ -35,3 +35,5 @@ PROGLIBS= RavlImageIO RavlDPMT RavlOSIO RavlVideoIO RavlIO RavlImageIO RavlDPDis
  RavlImgIOV4L.opt  RavlDV.opt RavlLibFFmpeg.opt
 
 EHT=Ravl.API.Images.Edges.html
+
+TESTEXES= testEdges.cc
