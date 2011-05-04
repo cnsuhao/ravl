@@ -16,22 +16,18 @@ int testEdgeLink();
 
 int main(int nargs,char **argv) {
   int ln;
-  /*
   if((ln = testEdgeDet()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
-  */
   if((ln = testEdgeDet2()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
-  /*
   if((ln = testEdgeLink()) != 0) {
     cerr << "test failed on line " << ln << "\n";
     return 1;
   }
-  */
   
   return 0;
 }
@@ -128,7 +124,6 @@ int testEdgeDet2() {
   return 0;
 }
 
-#include "Ravl/IO.hh"
 
 int testEdgeLink() {
   // set up edgel image
@@ -137,8 +132,7 @@ int testEdgeLink() {
   for (IntT i=5; i<=15; ++i)
     img[10][i] = (RealT)i;
 
-  EdgeLinkC linkImg = HysteresisThreshold(img, 12, 10.5);cout<<"Ping!\n";
-  Save("@X:linkImg", (ImageC<ByteT>)linkImg, "", true);
+  EdgeLinkC linkImg = HysteresisThreshold(img, 12, 10.5);
   cout << "LinkEdges:\n" << linkImg.LinkEdges() << endl;
   cout << "ListEdges:\n" << linkImg.ListEdges() << endl;
 
