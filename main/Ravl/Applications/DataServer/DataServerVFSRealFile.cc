@@ -12,6 +12,7 @@
 #include "Ravl/DP/SerialisePort.hh"
 #include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/DP/FileFormatDesc.hh"
+#include "Ravl/Calls.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -32,13 +33,15 @@ namespace RavlN {
       multiWrite(false),
       deleteOnClose(false)
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC, Called name=" << name << " path=" << path << "\n");
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC, (" << this << ") Called name=" << name << " path=" << path << "\n");
   }
   
   //: Destructor.
   
   DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC()
   {
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC (" << this << ")\n");
+
     CloseIFileAbstract();
     CloseIFileByte();
     CloseOFileAbstract();
@@ -248,7 +251,8 @@ namespace RavlN {
       iSPortShareAbstract = DPISPortShareC<RCWrapAbstractC>(iSPortAttachAbstract);
 
       // Set trigger to let us know when people stop using this file.
-      iSPortShareAbstract.TriggerCountZero() = TriggerR(*this, &DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract);
+      DataServerVFSRealFileC ref(*this);
+      iSPortShareAbstract.TriggerCountZero() = Trigger(ref, &DataServerVFSRealFileC::ZeroIPortClientsAbstract);
     }
     RavlAssert(iSPortShareAbstract.IsValid());
 
@@ -295,7 +299,8 @@ namespace RavlN {
       iSPortShareByte = DPISPortShareC<ByteT>(iSPortByte);
 
       // Set trigger to let us know when people stop using this file.
-      iSPortShareByte.TriggerCountZero() = TriggerR(*this, &DataServerVFSRealFileBodyC::ZeroIPortClientsByte);
+      DataServerVFSRealFileC ref(*this);
+      iSPortShareByte.TriggerCountZero() = Trigger(ref, &DataServerVFSRealFileC::ZeroIPortClientsByte);
     }
     RavlAssert(iSPortShareByte.IsValid());
 

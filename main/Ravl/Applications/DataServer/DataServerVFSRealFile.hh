@@ -103,16 +103,16 @@ namespace RavlN {
     //: Add any required type conversion.
 
     bool ZeroIPortClientsAbstract();
-    //: Called if when input file stop's being used.
+    //: Called when input file stops being used.
 
     bool ZeroIPortClientsByte();
-    //: Called if when input file stop's being used.
+    //: Called when input file stops being used.
 
     bool DisconnectOPortClientAbstract();
-    //: Called if when output file client disconnect it.
+    //: Called when output file client disconnects.
 
     bool DisconnectOPortClientByte();
-    //: Called if when output file client disconnect it.
+    //: Called when output file client disconnects.
 
     bool DeleteOnClose();
     //: Call to check there are no open ports, then delete the file.
@@ -188,13 +188,21 @@ namespace RavlN {
     { return static_cast<const DataServerVFSRealFileBodyC &>(DataServerVFSNodeC::Body()); }
     //: Body Access. 
     
+    bool ZeroIPortClientsAbstract()
+    { return Body().ZeroIPortClientsAbstract(); }
+    //: Called when input file stops being used.
+
+    bool ZeroIPortClientsByte()
+    { return Body().ZeroIPortClientsByte(); }
+    //: Called when input file stops being used.
+
     bool DisconnectOPortClientAbstract()
     { return Body().DisconnectOPortClientAbstract(); }
-    //: Called if when output file client disconnect it.
+    //: Called when output file client disconnects.
 
     bool DisconnectOPortClientByte()
     { return Body().DisconnectOPortClientByte(); }
-    //: Called if when output file client disconnect it.
+    //: Called when output file client disconnects.
 
     friend class DataServerVFSRealFileBodyC;
   };
