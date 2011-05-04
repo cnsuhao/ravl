@@ -119,7 +119,7 @@ int testEdgeDet2() {
   DListC<DListC<EdgelC> > edgeListList;
   if (!det.Apply(imgB, edgeListList)) return __LINE__;
   if (edgeListList.Size() != 1) return __LINE__;
-  cout << "DListC<SArray1dC<EdgelC> > size: " << edgeListList.First().Size()
+  cout << "DListC<DListC<EdgelC> > size: " << edgeListList.First().Size()
        << "\n  uses #8\n";
   return 0;
 }
@@ -132,7 +132,7 @@ int testEdgeLink() {
   for (IntT i=5; i<=15; ++i)
     img[10][i] = (RealT)i;
 
-  EdgeLinkC linkImg = HysteresisThreshold(img, 12, 10.5);
+  EdgeLinkC linkImg = HysteresisThreshold(img, 10.5, 12);
   cout << "LinkEdges:\n" << linkImg.LinkEdges() << endl;
   cout << "ListEdges:\n" << linkImg.ListEdges() << endl;
 

@@ -166,8 +166,8 @@ namespace RavlImageN {
     
     // It should be checked for 8 possibilities (octants), but 
     // the they are symmetrical.
-    // The expression (yx-ya) * ty > (yb-ya)*tx   is used instead of
-    // yx > ya + (yb-ya) * tx/ty.
+    // The expression (yx-ya) * dy > (yb-ya)*dx   is used instead of
+    // yx > ya + (yb-ya) * dx/dy.
     
     for(Array2dSqr3111Iter4C<RealT,RealT,RealT,RealT> it(grad,nonMax,drIm,dcIm);it;it++) {
       bool    isMaximum = false;

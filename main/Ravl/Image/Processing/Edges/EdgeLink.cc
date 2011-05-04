@@ -40,7 +40,7 @@ namespace RavlImageN {
 #if 0
     // Don't really need to do this.
     for(Array2dIterC<ByteT> it(ret);it;it++)
-      if(*it == EDGE_UNPROC)
+      if(*it == (UByteT)EDGE_UNPROC)
 	*it = EDGE_PROC;
 #endif
     
@@ -117,8 +117,9 @@ namespace RavlImageN {
   SArray1dC<EdgelC> EdgeLinkC::ArrayOfEdgels(const ImageC<RealT> & inDrIm, 
 					     const ImageC<RealT> & inDcIm,  
 					     const ImageC<RealT> & inGrad) {
-    ONDEBUG(cerr << "EdgeLinkC::ListEdgels(), Called. Max edges=" << edgeCount << " Area=" << inGrad.Frame().Area() << "\n");
+    ONDEBUG(cerr << "EdgeLinkC::ArrayOfEdgels() Called. Max edges=" << edgeCount << " Area=" << inGrad.Frame().Area() << "\n");
     SArray1dC<EdgelC> ret(edgeCount);
+
     SArray1dIterC<EdgelC> rit(ret);
     for(Array2dIterC<ByteT> it(*this);it;it++) {
       if(GetState(*it) == EDGE_PROC)
