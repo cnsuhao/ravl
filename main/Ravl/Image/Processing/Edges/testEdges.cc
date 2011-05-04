@@ -75,7 +75,7 @@ int testEdgeDet2() {
   // run Deriche edge detector
   EdgeDetectorC det(true, 8, 4);
 
-  cout << "Apply() methods in order, ignoring ones with edge map args (methods #1 & #2):\n";
+  cout << "Apply() methods in order, ignoring ones with edge map args (methods #1 & #8):\n";
 
   EdgeLinkC edgeMap;  
   if (!det.Apply(imgR, edgeMap)) return __LINE__;

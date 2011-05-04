@@ -101,6 +101,8 @@ namespace RavlImageN {
   SArray1dC<Index2dC> EdgeLinkC::ListEdges() {
     ONDEBUG(cerr << "EdgeLinkC::ListEdges(), Called. Max edges=" << edgeCount << "\n");
     SArray1dC<Index2dC> ret(edgeCount);
+    if (edgeCount == 0)
+      return ret;
     SArray1dIterC<Index2dC> rit(ret);
     for(Array2dIterC<ByteT> it(*this);it;it++) {
       if(GetState(*it) == EDGE_PROC) 
@@ -119,7 +121,8 @@ namespace RavlImageN {
 					     const ImageC<RealT> & inGrad) {
     ONDEBUG(cerr << "EdgeLinkC::ArrayOfEdgels() Called. Max edges=" << edgeCount << " Area=" << inGrad.Frame().Area() << "\n");
     SArray1dC<EdgelC> ret(edgeCount);
-
+    if (edgeCount == 0)
+      return ret;
     SArray1dIterC<EdgelC> rit(ret);
     for(Array2dIterC<ByteT> it(*this);it;it++) {
       if(GetState(*it) == EDGE_PROC)
