@@ -39,6 +39,28 @@ namespace RavlN {
     //SysLog(SYSLOG_DEBUG,"XMLFactoryNodeC::~XMLFactoryNodeC, Called. %p Name:'%s' ",(void *)this,m_xmlNode.Name().chars());
   }
   
+  //: Flag attribute as used.
+  
+  void XMLFactoryNodeC::UseAttribute(const StringC &name) const {
+    RavlN::RWLockHoldC hold(m_access,RavlN::RWLOCK_WRITE);
+    m_usedAttributes += name;
+  }
+  //: Check if all attributes have been used.
+  
+  bool XMLFactoryNodeC::CheckUsedAttributes() const {
+    bool passed = true;
+    RavlN::RWLockHoldC hold(m_access,RavlN::RWLOCK_READONLY);
+    for(RavlN::HashIterC<StringC,StringC> it(XMLNode().Attributes());it;it++) {
+      if(it.Key() == "typename")
+        continue;
+      if(!m_usedAttributes[it.Key()]) {
+        SysLog(SYSLOG_ERR,"Unknown attribute '%s' in '%s' ",it.Key().data(),Path().data());
+        passed = false;
+      }
+    }
+    return passed;
+  }
+
   //! Follow path to child node.
   
   bool XMLFactoryNodeC::FollowPath(const StringC &path,XMLFactoryNodeC::RefT &node,bool verbose) const {
@@ -225,7 +247,7 @@ namespace RavlN {
     RavlAssert(m_xmlNode.IsValid());
     
     // Look for redirection.
-    StringC name = XMLNode().AttributeString(rawname);
+    StringC name = AttributeString(rawname);
     if(name.IsEmpty())
       name = rawname;
     
@@ -379,7 +401,10 @@ namespace RavlN {
   XMLFactoryContextC::XMLFactoryContextC(const XMLFactoryHC &factory)
     : m_iNode(&factory.IRoot()),
       m_factory(const_cast<XMLFactoryC &>(*factory.BodyPtr()))
-  { }
+  { 
+    UseAttribute("verbose");
+    UseAttribute("checkConfig");
+  }
   
   //! Constructor.
   
@@ -405,8 +430,25 @@ namespace RavlN {
   { 
     const_cast<XMLFactoryC &>(factory).PostReadConfig(); 
     m_iNode = &factory.IRoot();
+    UseAttribute("verbose");
+    UseAttribute("checkConfig");
   }
   
+  //: Destructor
+  
+  XMLFactoryContextC::~XMLFactoryContextC()
+  {
+#if 0
+    if(m_factory.IsValid() && m_iNode.IsValid()) {
+      if(Factory().CheckConfig()) {
+        if(!m_iNode->CheckUsedAttributes()) {
+          throw RavlN::ExceptionBadConfigC("Unexpected attributes in file. ");
+        }
+      }
+    }
+#endif
+  }
+      
   //: lookup child in tree.
   // Returns true and updates parameter 'child' if child is found.
   bool XMLFactoryContextC::ChildContext(const StringC &key,XMLFactoryContextC &child) const {
@@ -437,7 +479,8 @@ namespace RavlN {
   XMLFactoryC::XMLFactoryC()
     : m_configRoot(true),
       m_setupClean(true),
-      m_verbose(false)
+      m_verbose(false),
+      m_checkConfig(false)
   {
     m_configTree = XMLTreeC(true);
     m_iRoot = new XMLFactoryNodeC(m_configTree);
@@ -449,7 +492,8 @@ namespace RavlN {
     : m_configRoot(true),
       m_setupClean(true),
       m_donePostSetup(false),
-      m_verbose(false)
+      m_verbose(false),
+      m_checkConfig(false)
   {
     SysLog(SYSLOG_DEBUG,"XMLFactoryC, Config file '%s' ",configFile.chars());
     if(!Read(configFile,loader)) {
@@ -463,7 +507,8 @@ namespace RavlN {
     : m_configRoot(true),
       m_setupClean(true),
       m_donePostSetup(false),
-      m_verbose(false)
+      m_verbose(false),
+      m_checkConfig(false)
   {
     SysLog(SYSLOG_DEBUG,"XMLFactoryC, Sub factory. ");
     
@@ -479,7 +524,8 @@ namespace RavlN {
       m_configRoot(configTree),
       m_setupClean(true),
       m_donePostSetup(false),
-      m_verbose(false)
+      m_verbose(false),
+      m_checkConfig(false)
   {
     SysLog(SYSLOG_DEBUG,"Constructing from preparsed tree %s. ",configFileName.chars());
     // Setup the root.
@@ -497,6 +543,8 @@ namespace RavlN {
       std::cerr << "XMLFactory config tree: \n";
       m_configRoot.Dump(std::cerr);
     }
+    m_checkConfig = m_configTree.AttributeBool("checkConfig",false);
+    SysLog(SYSLOG_DEBUG,"Enabled check config:%d ",(int) m_checkConfig);
   }
   
   //! Read config file.
@@ -523,6 +571,7 @@ namespace RavlN {
     
     // In verbose mode ?
     m_verbose = m_configTree.AttributeBool("verbose",false);
+    m_checkConfig = m_configTree.AttributeBool("checkConfig",false);
     
     // Do post config if we can.
     
@@ -585,7 +634,7 @@ namespace RavlN {
         }
         
         // Is this component intended for elsewhere in the tree ?
-        StringC componentName = it->AttributeString("component","");
+        StringC componentName = childNode->AttributeString("component","");
         if(!componentName.IsEmpty()) {
           // FIXME :- Do we need to do this ?
           SysLog(SYSLOG_WARNING,"Preloading components into other parts of the tree not currently supported. ");
@@ -609,10 +658,10 @@ namespace RavlN {
 
   //! Create a component
   bool XMLFactoryC::CreateComponentInternal(const XMLFactoryNodeC &node,RavlN::RCWrapAbstractC &rawHandle) {
-    StringC loadFilename = node.XMLNode().AttributeString("load","");
+    StringC loadFilename = node.AttributeString("load","");
     if(!loadFilename.IsEmpty()) {
       // ---- Load component from file ----
-      StringC resourceModule = node.XMLNode().AttributeString("resourceModule","");
+      StringC resourceModule = node.AttributeString("resourceModule","");
       SysLog(SYSLOG_DEBUG,"Loading component, Name='%s' file='%s' ",node.Name().chars(), loadFilename.data());
       StringC fullName = RavlN::FilenameC::Search(loadFilename,
                                                   RavlN::FilenameC(MasterConfigFilename()).PathComponent(),
@@ -631,7 +680,7 @@ namespace RavlN {
     } else {
       // ---- Create component using factory ----
       
-      StringC typeToMake = node.XMLNode().AttributeString("typename","");
+      StringC typeToMake = node.AttributeString("typename","");
       SysLog(SYSLOG_DEBUG,"Creating component, Path='%s' Type='%s' ",node.Path().chars(),typeToMake.chars());
       if(typeToMake.IsEmpty()) {
         SysLog(SYSLOG_ERR,"No type specified for node '%s'",node.Name().chars());
@@ -644,9 +693,13 @@ namespace RavlN {
       }
       XMLFactoryContextC createNode(*this,node);
       rawHandle = (*tf)(createNode);
-      
       if(!rawHandle.IsValid())
         SysLog(SYSLOG_WARNING,"Factory  create node of type '%s' \n",typeToMake.chars());
+      if(m_checkConfig) {
+        if(!node.CheckUsedAttributes()) {
+          throw RavlN::ExceptionBadConfigC("Unexpected attributes in file. ");
+        }
+      }
     }
     
     // Can we auto start this ?
@@ -697,8 +750,8 @@ namespace RavlN {
     if(Type2Factory().Lookup(typeName) != 0) {
       // As this is called before main() is executed and the program has had a chance
       // to redirect log messages we'll just send them to stderr.
-      //SysLog(SYSLOG_WARNING,"Duplicate registeration of type %s in factory.",);
-      std::cerr << "WARNING: Duplicate registeration of type " << typeName << " in factory. \n";
+      //SysLog(SYSLOG_WARNING,"Duplicate registration of type %s in factory.",);
+      std::cerr << "WARNING: Duplicate registration of type " << typeName << " in factory. \n";
     }
     Type2Factory()[RavlN::TypeName(typeInfo)] = typeFactoryFunc;
   }

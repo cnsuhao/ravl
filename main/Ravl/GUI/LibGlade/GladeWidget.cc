@@ -70,13 +70,23 @@ namespace RavlGUIN {
     for(RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children());it;it++) {
       if(it->Name() == "GladeXML" || it->AttributeString("typename","").IsEmpty())
         continue;
+      XMLFactoryContextC childContext;
+      if(!factory.ChildContext(it->Name(),childContext)) {
+        // This just shouldn't happen.
+        RavlAssert(0);
+      }
+      
+      // Need to read the attributes before we construct the objects,
+      // so the post construction check for used attributes is aware of them.
+      StringC widgetName = childContext.AttributeString("widgetName",it->Name());
+      bool optional = childContext.AttributeBool("optional",false);
+      
       WidgetC widget;
       if(!factory.UseComponent(it->Name(),widget)) {
         SysLog(SYSLOG_ERR) << "Failed to load component " << it->Name() << "\n";
         continue;
       }
-      StringC widgetName = it->AttributeString("widgetName",it->Name());
-      AddObject(widgetName,widget,it->AttributeBool("optional",false));
+      AddObject(widgetName,widget,optional);
     }
   }
   

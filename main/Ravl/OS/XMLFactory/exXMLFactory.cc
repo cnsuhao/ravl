@@ -101,9 +101,9 @@ int main() {
   RavlN::StrIStreamC ss(
                         "<?xml version='1.0' encoding='UTF-8' ?>\n"
                         "<?RAVL class='RavlN::XMLTreeC' ?>\n"
-                        "<Config verbose=\"false\" >\n"
+                        "<Config verbose=\"false\" checkConfig=\"true\" >\n"
                         "  <Test typename=\"RavlN::TestClassC\" value=\"5\" >\n"
-                        "    <child typename=\"RavlN::TestClassC\" noChild=\"true\" value=\"3\" >\n"
+                        "    <child typename=\"RavlN::TestClassC\" noChild=\"true\" value=\"3\" />\n"
                         "  </Test>\n"
                         "</Config>\n"
                         );

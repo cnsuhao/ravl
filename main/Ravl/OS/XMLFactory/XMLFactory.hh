@@ -22,6 +22,7 @@
 #include "Ravl/RCWrap.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/Traits.hh"
+#include "Ravl/HSet.hh"
 
 #include <vector>
 
@@ -177,6 +178,75 @@ namespace RavlN {
 
     bool Dump(std::ostream &strm,int level = 0);
     //: Dump node tree in human readable form.
+    
+    bool CheckUsedAttributes() const;
+    //: Check if all attributes have been used.
+    
+    void UseAttribute(const StringC &name) const;
+    //: Flag attribute as used.
+    
+    StringC AttributeString(const StringC &name,const StringC &defaultValue = StringC("")) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeString(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    UIntT AttributeUInt(const StringC &name,UIntT defaultValue = 0) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeUInt(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    IntT AttributeInt(const StringC &name,IntT defaultValue = 0) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeInt(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    RealT AttributeReal(const StringC &name,RealT defaultValue = 0) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeReal(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    UInt64T AttributeUInt64(const StringC &name,UInt64T defaultValue = 0) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeUInt64(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    Int64T AttributeInt64(const StringC &name,Int64T defaultValue = 0) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeInt64(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    bool AttributeBool(const StringC &name,bool defaultValue = false) const
+    { 
+      UseAttribute(name);
+      return XMLNode().AttributeBool(name,defaultValue); 
+    }
+    //: Access attribute.
+
+    template<typename DataT>
+    bool Attribute(const StringC &name,DataT &value,const DataT &defaultValue = DataT()) const
+    { 
+      UseAttribute(name);
+      return XMLNode().Attribute(name,value,defaultValue); 
+    }
+    //: Access generic attribute.
+    // Return true if non default value has been specified.
+    
+    const RavlN::HSetC<RavlN::StringC> &UseAttributes() const
+    { return m_usedAttributes; }
+    //: Access set of used attributes.
+    
   protected:
 
     bool GetComponentInternal(const StringC &name,
@@ -210,6 +280,8 @@ namespace RavlN {
     HashC<StringC,RefT> m_children;
 
     CBRefT m_parent; // Parent node.
+    
+    mutable RavlN::HSetC<RavlN::StringC> m_usedAttributes;
 
   private:
     XMLFactoryNodeC(const XMLFactoryNodeC &other)
@@ -250,6 +322,9 @@ namespace RavlN {
     XMLFactoryContextC(const XMLFactoryHC &factory);
     //: Construct from Factory.
 
+    ~XMLFactoryContextC();
+    //: Destructor
+    
     const XMLTreeC &Node() const
     { return m_iNode->XMLNode(); }
     //: Access xml node.
@@ -258,6 +333,18 @@ namespace RavlN {
     { return m_iNode->XMLNode(); }
     //: Access xml node.
 
+    const XMLFactoryNodeC &INode() const {
+      RavlAssert(m_iNode.IsValid());
+      return *m_iNode;
+    }
+    //: Access node
+
+    XMLFactoryNodeC &INode() {
+      RavlAssert(m_iNode.IsValid());
+      return *m_iNode;
+    }
+    //: Access node
+    
     DListC<XMLTreeC> &Children()
     { return Node().Children(); }
     //: Access a list of child nodes.
@@ -270,40 +357,44 @@ namespace RavlN {
     { return m_iNode->Name(); }
     //: Node name.
 
+    void UseAttribute(const StringC &name) const
+    { return INode().UseAttribute(name); }
+    //: Flag attribute as used.
+    
     StringC AttributeString(const StringC &name,const StringC &defaultValue = StringC("")) const
-    { return Node().AttributeString(name,defaultValue); }
+    { return INode().AttributeString(name,defaultValue);  }
     //: Access attribute.
 
     UIntT AttributeUInt(const StringC &name,UIntT defaultValue = 0) const
-    { return Node().AttributeUInt(name,defaultValue); }
+    { return INode().AttributeUInt(name,defaultValue); }
     //: Access attribute.
 
     IntT AttributeInt(const StringC &name,IntT defaultValue = 0) const
-    { return Node().AttributeInt(name,defaultValue); }
+    { return INode().AttributeInt(name,defaultValue); }
     //: Access attribute.
 
     RealT AttributeReal(const StringC &name,RealT defaultValue = 0) const
-    { return Node().AttributeReal(name,defaultValue); }
+    { return INode().AttributeReal(name,defaultValue); }
     //: Access attribute.
 
     UInt64T AttributeUInt64(const StringC &name,UInt64T defaultValue = 0) const
-    { return Node().AttributeUInt64(name,defaultValue); }
+    { return INode().AttributeUInt64(name,defaultValue);  }
     //: Access attribute.
 
     Int64T AttributeInt64(const StringC &name,Int64T defaultValue = 0) const
-    { return Node().AttributeInt64(name,defaultValue); }
+    { return INode().AttributeInt64(name,defaultValue); }
     //: Access attribute.
 
     bool AttributeBool(const StringC &name,bool defaultValue = false) const
-    { return Node().AttributeBool(name,defaultValue); }
+    { return INode().AttributeBool(name,defaultValue); }
     //: Access attribute.
 
     template<typename DataT>
     bool Attribute(const StringC &name,DataT &value,const DataT &defaultValue = DataT()) const
-    { return Node().Attribute(name,value,defaultValue); }
+    { return INode().Attribute(name,value,defaultValue); }
     //: Access generic attribute.
     // Return true if non default value has been specified.
-
+    
     XMLFactoryC &Factory() const;
     //: Access handle to associated factory.
 
@@ -374,18 +465,6 @@ namespace RavlN {
     StringC Path() const
     { return m_iNode->Path(); }
     //: Get path to this node.
-
-    const XMLFactoryNodeC &INode() const {
-      RavlAssert(m_iNode.IsValid());
-      return *m_iNode;
-    }
-    //: Access node
-
-    XMLFactoryNodeC &INode() {
-      RavlAssert(m_iNode.IsValid());
-      return *m_iNode;
-    }
-    //: Access node
 
     template<class DataT>
     bool UseComponentGroup(const StringC &group,std::vector<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
@@ -625,6 +704,12 @@ namespace RavlN {
     { return m_verbose; }
     //: Are we in verbose mode ?
 
+    bool CheckConfig()
+    { return m_checkConfig; }
+    //: Check xml files for consistency as they're read.
+    // At the moment this just looks for unused 
+    // attributes.
+    
     typedef SmartPtrC<XMLFactoryC> RefT;
     //: Reference
 
@@ -658,7 +743,8 @@ namespace RavlN {
     bool m_setupClean;
     bool m_donePostSetup;
     bool m_verbose;
-
+    bool m_checkConfig;
+    
     static HashC<StringC,TypeFactoryT> &Type2Factory();
     friend class XMLFactoryNodeC;
 
