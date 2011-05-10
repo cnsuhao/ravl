@@ -71,7 +71,11 @@ namespace RavlImageN {
     
     void operator()(const ImageC<InPixelT> &in,ImageC<OutPixelT> &result) const
     { Apply(in,result); }
-    //: Do convolution on image 'in', put the output in 'result' 
+    //: Do convolution on image 'in'; put the output in 'result' 
+    
+    ImageC<OutPixelT> operator()(const ImageC<InPixelT> &in) const
+    { return Apply(in); }
+    //: Do convolution on image 'in'; return result in new image
     
   protected:
     ConvolveVert2dC<InPixelT,SumTypeT,KernelPixelT,SumTypeT>  vert;

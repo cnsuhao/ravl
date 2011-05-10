@@ -57,10 +57,22 @@ namespace RavlImageN {
     // not about the 0 index as other convolution methods in RAVL.
     
     void Apply(const ImageC<InPixelT> &in,ImageC<OutPixelT> &result) const;
-    //: Do convolution on image 'in', put the output in 'result' 
-    
+    //: Do convolution on image 'in'; put the output in 'result' 
+
+    ImageC<OutPixelT> Apply(const ImageC<InPixelT> &in) const {
+      ImageC<OutPixelT> result;
+      ConvolveVert2dC::Apply(in, result);
+      return result;
+    }
+    //: Do convolution on image 'in'; return result in new image 
+
     void operator()(const ImageC<InPixelT> &in,ImageC<OutPixelT> &result) const
     { Apply(in,result); }
+    //: Do convolution on image 'in'; put the output in 'result' 
+    
+    ImageC<OutPixelT> operator()(const ImageC<InPixelT> &in) const
+    { return Apply(in); }
+    //: Do convolution on image 'in'; return result in new image 
     
   protected:
     Array1dC<KernelPixelT> colKernel;
