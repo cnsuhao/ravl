@@ -19,6 +19,8 @@
 #include "Ravl/DP/SPortAttach.hh"
 #include "Ravl/Average.hh"
 #include "Ravl/Image/Image.hh"
+#include "Ravl/Image/ConvolveVert2d.hh"
+#include "Ravl/StrStream.hh"
 #include "Ravl/Array2dSqr311Iter3.hh"
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/CallMethods.hh"
@@ -73,7 +75,7 @@ namespace RavlImageN {
   public:
     DeinterlaceStreamBodyC(DPIPortC<ImageC<PixelT> > &inPort,bool nEvenFieldDominant = true)
       : DeinterlaceStreamBaseC(DPSeekCtrlAttachC(inPort,true),nEvenFieldDominant),
-	input(inPort),rescale(true)
+	input(inPort),rescale(true),fieldAlign(false)
     { 
       deinterlace = TriggerR(*this,&DeinterlaceStreamBodyC<PixelT>::Deinterlace,ImageC<PixelT>(),ImageC<PixelT>(),ImageC<PixelT>());
       inputBase = input;
@@ -83,7 +85,7 @@ namespace RavlImageN {
     
     DeinterlaceStreamBodyC(DPISPortC<ImageC<PixelT> > &inPort,bool nEvenFieldDominant = true)
       : DeinterlaceStreamBaseC(DPSeekCtrlAttachC((const DPSeekCtrlC &) inPort),nEvenFieldDominant),
-	input(inPort),rescale(true)
+	input(inPort),rescale(true),fieldAlign(false)
     { 
       deinterlace = TriggerR(*this,&DeinterlaceStreamBodyC<PixelT>::Deinterlace,ImageC<PixelT>(),ImageC<PixelT>(),ImageC<PixelT>());
       inputBase = input;
@@ -94,6 +96,18 @@ namespace RavlImageN {
     void NoRescale()
     { rescale = false; }
     //: Don't rescale field to original frame size
+
+    void FieldAlign() {
+      fieldAlign = true;
+      Array1dC<RealT> coeffs(2);
+      coeffs[0] = 0.75; coeffs[1] = 0.25;
+      deinterlaceFilter[0].SetKernel(coeffs);
+      coeffs[0] = 0.25; coeffs[1] = 0.75;
+      deinterlaceFilter[1].SetKernel(coeffs);
+    }
+    //: Align fields to remove &frac12;-line inter-field jitter
+    // If fields are not rescaled to full image size, each field is shifted by &frac14; line up or down as appropriate so that the content is aligned.<br>
+    // If fields are rescaled, this method has no effect.
 
     virtual StringC OpName() const
     { return StringC("deinterlace"); }
@@ -292,6 +306,8 @@ namespace RavlImageN {
     ImageC<PixelT> fields[2];
     DPIPortC<ImageC<PixelT> > input; // Where to get data from.
     bool rescale; // Rescale field to frame size
+    bool fieldAlign; // If no rescaling done, align odd and even fields
+    PairC<ConvolveVert2dC<PixelT,PixelT,RealT> > deinterlaceFilter; // field alighnment filters
   };
   
   
@@ -324,6 +340,12 @@ namespace RavlImageN {
     void NoRescale()
     { Body().NoRescale(); }
     //: Don't rescale field to original frame size
+
+    void FieldAlign()
+    {  Body().FieldAlign(); }
+    //: Align fields to remove &frac12;-line inter-field jitter
+    // If fields are not rescaled to full image size, each field is shifted by &frac14; line up or down as appropriate so that the content is aligned.<br>
+    // If fields are rescaled, this method has no effect.
 
   protected:
     DeinterlaceStreamBodyC<PixelT> &Body()
@@ -394,6 +416,10 @@ namespace RavlImageN {
         } while(it.Next());
         if(!it || !it1)
           break;
+      }
+      if (fieldAlign) {
+        field0 = deinterlaceFilter[0](field0);
+        field1 = deinterlaceFilter[1](field1);
       }
     }
     return true;

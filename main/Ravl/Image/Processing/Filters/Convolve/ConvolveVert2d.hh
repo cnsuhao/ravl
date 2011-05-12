@@ -19,6 +19,7 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Array2dIter2.hh"
 #include "Ravl/Image/Rectangle2dIter.hh"
+#include "Ravl/Traits.hh"
 
 namespace RavlImageN {
   
@@ -37,7 +38,7 @@ namespace RavlImageN {
   // to filter an ImageC<ByteRGBValueC> you may use:
   // InPixelT=ByteRGBValueC, OutPixelT=ByteRGBValueC,KernelPixelT=RealT,SumType=RealRGBValueC
 
-  template<class InPixelT,class OutPixelT = InPixelT,class KernelPixelT = InPixelT,class SumTypeT = KernelPixelT>
+  template<typename InPixelT,typename OutPixelT = InPixelT,typename KernelPixelT = InPixelT,typename SumTypeT = typename NumericalTraitsC<InPixelT>::AccumT>
   class ConvolveVert2dC {
   public:
     ConvolveVert2dC()
@@ -78,7 +79,7 @@ namespace RavlImageN {
     Array1dC<KernelPixelT> colKernel;
   };
   
-  template<class InPixelT,class OutPixelT,class KernelPixelT,class SumTypeT>
+  template<typename InPixelT,typename OutPixelT,typename KernelPixelT,typename  SumTypeT>
   void ConvolveVert2dC<InPixelT,OutPixelT,KernelPixelT,SumTypeT>::Apply(const ImageC<InPixelT> &in,ImageC<OutPixelT> &result) const {
     RavlAssertMsg(colKernel.Size() > 0,"Convolution kernel too small. ");
     ImageRectangleC resRect = in.Rectangle();

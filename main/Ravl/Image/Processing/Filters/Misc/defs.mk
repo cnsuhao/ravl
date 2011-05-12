@@ -9,7 +9,7 @@
 
 PACKAGE=Ravl/Image
 
-MAINS=doHomomorphicFilter.cc unDistort.cc 
+MAINS=doHomomorphicFilter.cc unDistort.cc
 
 HEADERS=  HomomorphicFilter.hh HistogramEqualise.hh \
  PixelMixer.hh RemoveDistortion.hh DeinterlaceStream.hh \
@@ -19,6 +19,8 @@ SOURCES= HomomorphicFilter.cc  DCT2d.cc DeinterlaceStream.cc \
  MedianFilter.cc
 
 EXAMPLES = exImagePyramid.cc
+
+TESTEXES= testDeinterlace.cc
 
 LIBDEPS=RavlImageMisc.def
 
