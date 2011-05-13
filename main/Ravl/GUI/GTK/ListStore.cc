@@ -39,7 +39,9 @@ namespace RavlGUIN {
   
   //: List store.
 
-  ListStoreBodyC::ListStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes, const IntT sortColumn, const bool sortAscending)
+  ListStoreBodyC::ListStoreBodyC(const SArray1dC<AttributeTypeC> &nColTypes,
+                                     const IntT sortColumn,
+                                     const bool sortAscending)
   : TreeModelBodyC(nColTypes),
     m_sortColumn(sortColumn),
     m_sortAscending(sortAscending)
@@ -151,6 +153,43 @@ namespace RavlGUIN {
     gtk_list_store_clear(GTK_LIST_STORE(model));
   }
 
+  //: Move target row before position
+  // if position is null, it will be moved to the end of list.
+
+  bool ListStoreBodyC::GUIMoveBefore(const TreeModelIterC &target,const TreeModelIterC &position) {
+    RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
+    const GtkTreeIter *positionIter = 0;
+    if(position.IsElm())
+      positionIter = position.TreeIter();
+    gtk_list_store_move_before (GTK_LIST_STORE(model),
+                                 const_cast<GtkTreeIter *>(target.TreeIter()),
+                                 const_cast<GtkTreeIter *>(positionIter));
+    return true;
+  }
+
+  //: Move target row after position
+  // if position is null, it will be moved to the start of list.
+
+  bool ListStoreBodyC::GUIMoveAfter(const TreeModelIterC &target,const TreeModelIterC &position) {
+    RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
+    const GtkTreeIter *positionIter = 0;
+    if(position.IsElm())
+      positionIter = position.TreeIter();
+    gtk_list_store_move_after (GTK_LIST_STORE(model),
+                               const_cast<GtkTreeIter *>(target.TreeIter()),
+                               const_cast<GtkTreeIter *>(positionIter));
+    return true;
+  }
+
+  //: Reorder list.
+
+  bool ListStoreBodyC::GUIReorder(const SArray1dC<IntT> &newOrder) {
+    RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
+    if(newOrder.Size() != GUIRows())
+      return false;
+    gtk_list_store_reorder(GTK_LIST_STORE(model),(gint *)&newOrder[0]);
+    return true;
+  }
 
 }
 

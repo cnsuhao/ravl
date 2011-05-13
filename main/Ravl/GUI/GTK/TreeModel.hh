@@ -91,6 +91,9 @@ namespace RavlGUIN {
     bool IsElm() const;
     //: Test if we think we're on a valid element.
 
+    void Clear();
+    //: Flag as invalid.
+
   protected:
     GtkTreeModel *model;
     GtkTreeIter treeIter;
@@ -173,6 +176,10 @@ namespace RavlGUIN {
     bool IsElm() const
     { if(!IsValid()) return false; return Body().IsElm(); }
     //: Check if its a valid entry.
+
+    void Clear()
+    { Body().Clear(); }
+    //: Set to non element.
 
   };
 
@@ -296,6 +303,9 @@ namespace RavlGUIN {
     UIntT Cols() const
     { return colTypes.Size(); }
     //: Access the number of columns .
+
+    UIntT GUIRows() const;
+    //: Access number of top level rows in store
 
     virtual bool AppendRow(TreeModelIterC &rowHandle);
     //: Append a row.
@@ -445,6 +455,10 @@ namespace RavlGUIN {
     UIntT Cols() const
     { return Body().Cols(); }
     //: Access the number of columns .
+
+    UIntT GUIRows() const
+    { return Body().GUIRows(); }
+    //: Access number of top level rows in store
 
     bool AppendRow(TreeModelIterC &rowHandle)
     { return Body().AppendRow(rowHandle); }

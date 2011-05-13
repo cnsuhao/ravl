@@ -70,6 +70,17 @@ namespace RavlGUIN {
     virtual void GUIEmpty();
     //: Clear store of all values.
 
+    bool GUIMoveBefore(const TreeModelIterC &target,const TreeModelIterC &position);
+    //: Move target row before position
+    // if position is null, it will be moved to the end of list.
+
+    bool GUIMoveAfter(const TreeModelIterC &target,const TreeModelIterC &position);
+    //: Move target row after position
+    // if position is null, it will be moved to the start of list.
+
+    bool GUIReorder(const SArray1dC<IntT> &newOrder);
+    //: Reorder list.
+
   protected:
     const IntT m_sortColumn;
     const bool m_sortAscending;
@@ -115,7 +126,19 @@ namespace RavlGUIN {
     //: Access body.
 
   public:
+    bool GUIReorder(const SArray1dC<IntT> &newOrder)
+    { return Body().GUIReorder(newOrder); }
+    //: Reorder list.
 
+    bool GUIMoveBefore(const TreeModelIterC &target,const TreeModelIterC &position)
+    { return Body().GUIMoveBefore(target,position); }
+    //: Move target row before position
+    // if position is null, it will be moved to the end of list.
+
+    bool GUIMoveAfter(const TreeModelIterC &target,const TreeModelIterC &position)
+    { return Body().GUIMoveAfter(target,position); }
+    //: Move target row after position
+    // if position is null, it will be moved to the start of list.
   };
 
 }

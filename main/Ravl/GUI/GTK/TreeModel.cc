@@ -155,9 +155,17 @@ namespace RavlGUIN {
     return TreeModelIterC(model,&treeIter);
   }
 
+  //: Test if we think we're on a valid element.
+
   bool TreeModelIterBodyC::IsElm() const
   { return isElm; }
-  //: Test if we think we're on a valid element.
+
+  //: Flag as invalid.
+
+  void TreeModelIterBodyC::Clear() {
+    isElm = false;
+    memset(&treeIter,0,sizeof(treeIter));
+  }
 
   //:----------------------------------------------------------------------------
 
@@ -302,6 +310,20 @@ namespace RavlGUIN {
         return it.Index().V();
     return ((UIntT) -1);
   }
+
+  //: Access number of rows in store
+
+  UIntT TreeModelBodyC::GUIRows() const {
+    UIntT i = 0;
+    GtkTreeIter treeIter;
+    if(!gtk_tree_model_get_iter_first (model,&treeIter))
+      return 0;
+    i++;
+    while(gtk_tree_model_iter_next(model,&treeIter))
+      i++;
+    return i;
+  }
+
 
   //: Create the widget.
 
