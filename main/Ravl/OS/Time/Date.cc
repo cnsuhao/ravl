@@ -336,7 +336,7 @@ namespace RavlN {
       UIntT seconds = Seconds(convertUTCToLocal);
       // Fix formating problem where leading zero is removed from floats.
       if(seconds < 10) {
-        str.form("%04d-%02d-%02d %02d:%02d:0%1.10f",
+        str.form("%04d-%02d-%02d %02d:%02d:0%1f",
             Year(convertUTCToLocal),
             Month(convertUTCToLocal),
             DayInMonth(convertUTCToLocal),
@@ -345,7 +345,7 @@ namespace RavlN {
             (double) seconds + (usec / 1000000.0)
         );
       } else {
-        str.form("%04d-%02d-%02d %02d:%02d:%02.10f",
+        str.form("%04d-%02d-%02d %02d:%02d:%02f",
             Year(convertUTCToLocal),
             Month(convertUTCToLocal),
             DayInMonth(convertUTCToLocal),
