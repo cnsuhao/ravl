@@ -38,7 +38,7 @@ namespace RavlImageN {
   // to filter an ImageC<ByteRGBValueC> you may use:
   // InPixelT=ByteRGBValueC, OutPixelT=ByteRGBValueC,KernelPixelT=RealT,SumType=RealRGBValueC
 
-  template<typename InPixelT,typename OutPixelT = InPixelT,typename KernelPixelT = InPixelT,typename SumTypeT = typename NumericalTraitsC<InPixelT>::AccumT>
+  template<typename InPixelT,typename OutPixelT = InPixelT,typename KernelPixelT = InPixelT,typename SumTypeT = typename NumericalTraitsC<InPixelT>::RealAccumT>
   class ConvolveVert2dC {
   public:
     ConvolveVert2dC()
