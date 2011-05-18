@@ -21,7 +21,7 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
-#include "Ravl/Image//UInt16RGBValue.hh"
+#include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/Tuple2.hh"
 
 #include "Ravl/Image/ImageConv.hh"
