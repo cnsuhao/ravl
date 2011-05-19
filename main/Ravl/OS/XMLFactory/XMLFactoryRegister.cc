@@ -8,6 +8,7 @@
 //! author="Charles Galambos"
 //! docentry=Ravl.API.Core.IO.XMLFactory
 
+#include "Ravl/STL.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/Threads/Signal.hh"
 #include "Ravl/Threads/Signal1.hh"
@@ -31,16 +32,70 @@ namespace RavlN {
   static RavlN::RCWrapAbstractC Signal1StringFactoryFunc(const XMLFactoryContextC &node)
   { return RavlN::RCWrapC<Signal1C<StringC> >(Signal1C<StringC>(node.AttributeString("value",""))); }
 
+
+  static RavlN::RCWrapAbstractC RCHashStringCStringCFactoryFunc(const XMLFactoryContextC &node)
+  {
+    RCHashC<StringC,StringC> hashTable;
+    DListC<XMLTreeC> children = node.Children();
+    for(DLIterC<XMLTreeC> it(children);it;it++) {
+      // Lookout for invalid attributes.
+      RCHashC<StringC,StringC> attrs = it->Attributes();
+      for(HashIterC<StringC,StringC> ait(attrs);ait;ait++) {
+        if(ait.Key() == "key" || ait.Key() == "value")
+          continue;
+        SysLog(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
+        throw RavlN::ExceptionBadConfigC("Unused attribute found ");
+      }
+      StringC key = key = it->AttributeString("key",it->Name());
+      StringC value = it->AttributeString("value",it->Name());
+      if(hashTable.IsElm(key)) {
+        SysLog(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
+        throw RavlN::ExceptionBadConfigC("Duplicate entry found ");
+      }
+      hashTable[key] = value;
+    }
+    return RavlN::RCWrapC<RCHashC<StringC,StringC> >(hashTable);
+  }
+
+  static RavlN::RCWrapAbstractC RCHashStringStringFactoryFunc(const XMLFactoryContextC &node)
+  {
+    RCHashC<std::string,std::string> hashTable;
+    DListC<XMLTreeC> children = node.Children();
+    for(DLIterC<XMLTreeC> it(children);it;it++) {
+      // Lookout for invalid attributes.
+      RCHashC<StringC,StringC> attrs = it->Attributes();
+      for(HashIterC<StringC,StringC> ait(attrs);ait;ait++) {
+        if(ait.Key() == "key" || ait.Key() == "value")
+          continue;
+        SysLog(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
+        throw RavlN::ExceptionBadConfigC("Unused attribute found ");
+      }
+      std::string key = key = it->AttributeString("key",it->Name()).data();
+      std::string value = it->AttributeString("value",it->Name()).data();
+      if(hashTable.IsElm(key)) {
+        SysLog(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
+        throw RavlN::ExceptionBadConfigC("Duplicate entry found ");
+      }
+      hashTable[key] = value;
+    }
+    return RavlN::RCWrapC<RCHashC<std::string,std::string> >(hashTable);
+  }
+
+
   static int InitStringFactory() {
     RavlN::AddTypeName(typeid(std::string),"std::string");
     RavlN::AddTypeName(typeid(Signal0C),"RavlN::Signal0C");
     RavlN::AddTypeName(typeid(Signal1C<bool>),"RavlN::Signal1C<bool>");
     RavlN::AddTypeName(typeid(Signal1C<StringC>),"RavlN::Signal1C<RavlN::StringC>");
+    RavlN::AddTypeName(typeid(RCHashC<StringC,StringC>),"RavlN::RCHashC<RavlN::StringC,RavlN::StringC>");
+    RavlN::AddTypeName(typeid(RCHashC<std::string,std::string>),"RavlN::RCHashC<std::string,std::string>");
     XMLFactoryC::RegisterTypeFactory(typeid(std::string),&StdStringFactoryFunc);
     XMLFactoryC::RegisterTypeFactory(typeid(StringC),&StringFactoryFunc);
     XMLFactoryC::RegisterTypeFactory(typeid(Signal0C),&Signal0FactoryFunc);
     XMLFactoryC::RegisterTypeFactory(typeid(Signal1C<bool>),&Signal1BoolFactoryFunc);
     XMLFactoryC::RegisterTypeFactory(typeid(Signal1C<StringC>),&Signal1StringFactoryFunc);
+    XMLFactoryC::RegisterTypeFactory(typeid(RCHashC<StringC,StringC>),&RCHashStringCStringCFactoryFunc);
+    XMLFactoryC::RegisterTypeFactory(typeid(RCHashC<std::string,std::string>),&RCHashStringStringFactoryFunc);
     return 0;
   }
 
