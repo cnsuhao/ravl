@@ -27,7 +27,7 @@ namespace RavlN {
     SYSLOG_DEBUG
   };
   
-  bool SysLogOpen(const StringC &name,bool logPid = false,bool sendStdErr = true,bool stdErrOnly = false,int facility = -1);
+  bool SysLogOpen(const StringC &name,bool logPid = false,bool sendStdErr = true,bool stdErrOnly = false,int facility = -1,bool logFileLine = false);
   //: Open connection to system logger.
   // Facility is set to 'LOG_USER' by default. <br>
   // If logPid is true the processes id will be recorded in the log. <br>
@@ -37,7 +37,7 @@ namespace RavlN {
   //: Close connection to system logger.
   // The call of this function is optional.
   
-  OStreamC SysLog(SysLogPriorityT priority = SYSLOG_DEBUG);
+  OStreamC SysLog(SysLogPriorityT priority = SYSLOG_DEBUG,unsigned lineno =0,const char *filename = 0);
   //: Send a message to the log file
   // Usage: <br>
   // SysLog(SYSLOG_DEBUG) << "Send message to log";
@@ -47,6 +47,11 @@ namespace RavlN {
   // Usage: <br>
   // SysLog(SYSLOG_DEBUG,"msg",args...);
   
+  void SysLog(SysLogPriorityT priority,unsigned lineno,const char *filename,const char *format ...);
+  //: Send a message to the log file
+  // Usage: <br>
+  // RavlSysLog(SYSLOG_DEBUG,"msg",args...);
+
   bool SysLogLevel(SysLogPriorityT level);
   //: Set the level of messages to send to the system.
   // Only messages with a priority higher or equal to 'level' 
@@ -63,9 +68,12 @@ namespace RavlN {
   const StringC &SysLogApplicationName();
   //: Get the name of the current application.
   
-  bool SysLogRedirect(void (*logFunc)(SysLogPriorityT level,const char *message));
+  bool SysLogRedirect(void (*logFunc)(SysLogPriorityT level,const char *message,unsigned lineno,const char *filename));
   //: Register function to redirect log messages.
-  // Calling with a null function pointer restores the default behavour.
+  // Calling with a null function pointer restores the default behaviour.
+
+#define RavlSysLog(PRIORITY) RavlN::SysLog(PRIORITY,__LINE__,__FILE__)
+#define RavlSysLogf(PRIORITY,FORMAT ...) RavlN::SysLog(PRIORITY,__LINE__,__FILE__, FORMAT)
 }
 
 #endif

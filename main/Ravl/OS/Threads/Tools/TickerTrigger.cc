@@ -29,7 +29,7 @@ namespace RavlN {
   
   int TickerTriggerBodyC::Start() { 
     try {
-      ONDEBUG(cerr << "Ticker started... " <<  ((void *) this) <<". Delay:" << delay << " \n");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Ticker started... " <<  ((void *) this) <<". Delay:" << delay << " \n");
       if(!se.IsValid()) {
 	cerr << "ERROR: TickerTriggerBodyC::Startup(), ask to launch an invalid event.\n";
 	return 1;
@@ -42,15 +42,15 @@ namespace RavlN {
 	next.Wait();
       }
     } catch(ExceptionC &ex) {
-      SysLog(SYSLOG_ERR) << "Caught exception in ticker trigger thread. Message:'" << ex.Text() << "' \n";
+      RavlSysLog(SYSLOG_ERR) << "Caught exception in ticker trigger thread. Message:'" << ex.Text() << "' \n";
       // Dump a stack.
-      ex.Dump(SysLog(SYSLOG_ERR));
+      ex.Dump(RavlSysLog(SYSLOG_ERR));
       RavlAssert(0);
     } catch(...) {
           // FIXME: Is there any valid exception that can pass through here ???
-      SysLog(SYSLOG_ERR) << "Ticker aborted on exception. " << ((void *) this)  << "\n";
+      RavlSysLog(SYSLOG_ERR) << "Ticker aborted on exception. " << ((void *) this)  << "\n";
     }
-    ONDEBUG(cerr << "Ticker done... " <<  ((void *) this) <<". Delay:" << delay << " \n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Ticker done... " <<  ((void *) this) <<". Delay:" << delay << " \n");
     return 0;
   }
   

@@ -217,11 +217,11 @@ namespace RavlN {
     AttributeCtrlC ctrl;
     // Lookup attribute controller
     if(!attrCtrls.Lookup(ctrlId,ctrl) || !ctrl.IsValid()) {
-      SysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrString(), Invalid CtrlId. ";
+      RavlSysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrString(), Invalid CtrlId. ";
       return true;
     }
     if(!ctrl.SetAttr(name,data))
-      SysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrString(), Failed to set '"<< name << "' to '" << data << "'";
+      RavlSysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrString(), Failed to set '"<< name << "' to '" << data << "'";
     return true;
   }
   
@@ -232,11 +232,11 @@ namespace RavlN {
     AttributeCtrlC ctrl;
     // Lookup attribute controller
     if(!attrCtrls.Lookup(ctrlId,ctrl) || !ctrl.IsValid()) {
-      SysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrInt(), Invalid CtrlId. \n";
+      RavlSysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrInt(), Invalid CtrlId. \n";
       return true;
     }
     if(!ctrl.SetAttr(name,data))
-      SysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrInt(), Failed to set '"<< name << "' to '" << data << "'";
+      RavlSysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrInt(), Failed to set '"<< name << "' to '" << data << "'";
     return true;
   }
   
@@ -247,11 +247,11 @@ namespace RavlN {
     AttributeCtrlC ctrl;
     // Lookup attribute controller
     if(!attrCtrls.Lookup(ctrlId,ctrl) || !ctrl.IsValid()) {
-      SysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrReal(), Invalid CtrlId. \n";
+      RavlSysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrReal(), Invalid CtrlId. \n";
       return true;
     }
     if(!ctrl.SetAttr(name,data))
-      SysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrReal(), Failed to set '"<< name << "' to '" << data << "'";
+      RavlSysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrReal(), Failed to set '"<< name << "' to '" << data << "'";
     return true;
   }
   
@@ -262,11 +262,11 @@ namespace RavlN {
     AttributeCtrlC ctrl;
     // Lookup attribute controller
     if(!attrCtrls.Lookup(ctrlId,ctrl) || !ctrl.IsValid()) {
-      SysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrBool(), Invalid CtrlId. \n";
+      RavlSysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSetAttrBool(), Invalid CtrlId. \n";
       return true;
     }
     if(!ctrl.SetAttr(name,data))
-      SysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrBool(), Failed to set '"<< name << "' to '" << ((IntT) data) << "'";
+      RavlSysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSetAttrBool(), Failed to set '"<< name << "' to '" << ((IntT) data) << "'";
     return true;
   }
   
@@ -279,12 +279,12 @@ namespace RavlN {
     AttributeCtrlC ctrl;
     // Lookup attribute controller
     if(!attrCtrls.Lookup(ctrlId,ctrl) || !ctrl.IsValid()) {
-      SysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSigRegister(), Invalid CtrlId. \n";
+      RavlSysLog(SYSLOG_ERR) << "NetAttributeCtrlServerBodyC::HandleSigRegister(), Invalid CtrlId. \n";
       return true;
     }
     IntT id = ctrl.RegisterChangedSignal(name,TriggerR(*this,&NetAttributeCtrlServerBodyC::HandleSignal,ctrlId,name));
     if(id < 0) {
-      SysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSigRegister(), Failed to setup signal for attribute '" << name << "' CtrlId=" << ctrlId << " ";
+      RavlSysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSigRegister(), Failed to setup signal for attribute '" << name << "' CtrlId=" << ctrlId << " ";
       return true;
     }
     sigIds[sigId] = id;
@@ -294,7 +294,7 @@ namespace RavlN {
   //: Handle set boolean attribute.
   
   bool NetAttributeCtrlServerBodyC::HandleSigRemove(UIntT &ctrlId,StringC &name) {
-    SysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSigRemove(), Not implemented. ";
+    RavlSysLog(SYSLOG_WARNING) << "NetAttributeCtrlServerBodyC::HandleSigRemove(), Not implemented. ";
     return true;
   }
   

@@ -65,13 +65,13 @@ namespace RavlN {
     }
     
     if(ep.PeerInfo().ProtocolName() != "PortServer") {
-      SysLog(SYSLOG_ERR) << "Unexpected connection protocol '" << ep.PeerInfo().ProtocolName() << "'";
+      RavlSysLog(SYSLOG_ERR) << "Unexpected connection protocol '" << ep.PeerInfo().ProtocolName() << "'";
       ep.Close();
       return false;
     }
     
     if(ep.PeerInfo().ProtocolVersion() != ep.LocalInfo().ProtocolVersion()) {
-      SysLog(SYSLOG_ERR) << "Unexpected protocol version '" << ep.PeerInfo().ProtocolVersion() << "'  (Local version "  << ep.LocalInfo().ProtocolVersion() << ") ";
+      RavlSysLog(SYSLOG_ERR) << "Unexpected protocol version '" << ep.PeerInfo().ProtocolVersion() << "'  (Local version "  << ep.LocalInfo().ProtocolVersion() << ") ";
       ep.Close();
       return false;
     }

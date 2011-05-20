@@ -43,13 +43,13 @@ namespace RavlN {
       for(HashIterC<StringC,StringC> ait(attrs);ait;ait++) {
         if(ait.Key() == "key" || ait.Key() == "value")
           continue;
-        SysLog(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
+        RavlSysLogf(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
         throw RavlN::ExceptionBadConfigC("Unused attribute found ");
       }
       StringC key = key = it->AttributeString("key",it->Name());
       StringC value = it->AttributeString("value",it->Name());
       if(hashTable.IsElm(key)) {
-        SysLog(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
+        RavlSysLogf(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
         throw RavlN::ExceptionBadConfigC("Duplicate entry found ");
       }
       hashTable[key] = value;
@@ -67,13 +67,13 @@ namespace RavlN {
       for(HashIterC<StringC,StringC> ait(attrs);ait;ait++) {
         if(ait.Key() == "key" || ait.Key() == "value")
           continue;
-        SysLog(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
+        RavlSysLogf(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
         throw RavlN::ExceptionBadConfigC("Unused attribute found ");
       }
       std::string key = key = it->AttributeString("key",it->Name()).data();
       std::string value = it->AttributeString("value",it->Name()).data();
       if(hashTable.IsElm(key)) {
-        SysLog(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
+        RavlSysLogf(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
         throw RavlN::ExceptionBadConfigC("Duplicate entry found ");
       }
       hashTable[key] = value;

@@ -60,7 +60,7 @@ namespace RavlGUIN
       m_selectedLayerId(-1),
       m_dialogshowLine(true),
       m_aspectRatio(0)
-  { ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUIMarkupCanvasBodyC(), \n"); }
+  { ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUIMarkupCanvasBodyC(), \n"); }
   
   //: Destructor.
   
@@ -179,7 +179,7 @@ namespace RavlGUIN
   bool GUIMarkupCanvasBodyC::GUISelectObject(const Index2dC &at,bool enableRefresh) 
   {
     MouseEventC me(at[1].V(),at[0].V(),1,1); // Simulate a mouse press.
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUISelectObject, " << at << " me.At()=" << me.At() << " " << me.HasChanged(0) << " MPA=" << mousePressAt << " GUI2W=" << GUI2World(at));
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUISelectObject, " << at << " me.At()=" << me.At() << " " << me.HasChanged(0) << " MPA=" << mousePressAt << " GUI2W=" << GUI2World(at));
     MarkupInfoC bestHit = FindTarget(GUI2World(at),me);
     if(!bestHit.IsValid())
       return false;
@@ -187,7 +187,7 @@ namespace RavlGUIN
     if(bestHit.Id() >= 0 && selected.Insert(bestHit.Id()))
       GUIRender(bestHit.Extent(*this));
     // Restore any state modified by MouseEvent
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUISelectObject, Selection= " << selected);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUISelectObject, Selection= " << selected);
     return true;
   }
 
@@ -218,7 +218,7 @@ namespace RavlGUIN
   
   bool GUIMarkupCanvasBodyC::EventMousePress(MouseEventC &me) 
   { 
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMousePress(), Called. \n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMousePress(), Called. \n");
     GUIGrabFocus();    
     
     if (me.IsDoublePressed())
@@ -304,7 +304,7 @@ namespace RavlGUIN
       m_mouseObj.Invalidate();
       return true;
     }
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMousePress(), Done  ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMousePress(), Done  ");
     return true;
   }
 
@@ -312,7 +312,7 @@ namespace RavlGUIN
   
   bool GUIMarkupCanvasBodyC::EventMouseMove(MouseEventC &me) 
   {
-    //ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMouseMove(), Called. \n");
+    //ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMouseMove(), Called. \n");
     Point2dC at = GUI2World(me.At());
     mouseLastEvent = at;
     
@@ -381,7 +381,7 @@ namespace RavlGUIN
   //: Mouse release.
   
   bool GUIMarkupCanvasBodyC::EventMouseRelease(MouseEventC &me) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMouseRelease(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventMouseRelease(), Called. ");
  //   cerr << "Release " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << "\n";
     
     
@@ -421,7 +421,7 @@ namespace RavlGUIN
   //: Scroll event
   
   bool GUIMarkupCanvasBodyC::EventScroll(ScrollEventC &event) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventScroll(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventScroll(), Called. ");
     Point2dC guiOn = Point2dC(event.Row(), event.Col());
     Point2dC worldOn = GUI2World(guiOn);
     
@@ -452,10 +452,10 @@ namespace RavlGUIN
   //: Configure.
   
   bool GUIMarkupCanvasBodyC::EventConfigure(GdkEvent* &event) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventConfigure(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventConfigure(), Called. ");
     if(!RawZoomCanvasBodyC::EventConfigure(event))
       return false;
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventConfigure(), Size=" << widgetSize << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventConfigure(), Size=" << widgetSize << " ");
     RealRange2dC rng(GUI2World(Point2dC(0,0)),GUI2World(Size()));
     sigDisplayRange(rng);
     
@@ -471,7 +471,7 @@ namespace RavlGUIN
   //: Expose of area.
   
   bool GUIMarkupCanvasBodyC::EventExpose(GdkEvent* &event) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventExpose(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventExpose(), Called. ");
     RealRange2dC range;
     IntT toFollow;
     TranslateExposeEvent(event,range,toFollow);    
@@ -482,7 +482,7 @@ namespace RavlGUIN
   //: Handle key press events.
   
   bool GUIMarkupCanvasBodyC::EventKeyPress(GdkEventKey *&key) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventKeyPress(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventKeyPress(), Called. ");
     
     if(key->keyval == GDK_Escape) {
       RWLockHoldC hold(accessLock,RWLOCK_WRITE);
@@ -496,7 +496,7 @@ namespace RavlGUIN
   //: Handle key release events.
   
   bool GUIMarkupCanvasBodyC::EventKeyRelease(GdkEventKey *&key) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventKeyRelease(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::EventKeyRelease(), Called. ");
     return true;
   }
   
@@ -518,7 +518,7 @@ namespace RavlGUIN
   
   bool GUIMarkupCanvasBodyC::GUIUpdateMarkup(const FrameMarkupC &markup) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUIUpdateMarkup(), Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUIUpdateMarkup(), Called. ");
     RWLockHoldC hold(accessLock,RWLOCK_WRITE);
     m_frameMarkup = markup;
     hold.Unlock();
@@ -565,7 +565,7 @@ namespace RavlGUIN
       newScale = Vector2dC(minScale,minScale);
     }
     
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUIFitImageToScreen(), Scale =" << newScale << " AspectRatio=" << aspectRatio << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GUIMarkupCanvasBodyC::GUIFitImageToScreen(), Scale =" << newScale << " AspectRatio=" << aspectRatio << " ");
     Vector2dC slack = displaySize - Vector2dC(newScale[0] * imageSize[0],newScale[1] * imageSize[1]);
     
     GUISetScale(newScale);
@@ -758,7 +758,7 @@ namespace RavlGUIN
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     displayArea = DisplayArea();
     if(displayArea.Range1().Size() < 0 || displayArea.Range2().Size() < 0) {
-      //SysLog(SYSLOG_WARNING) << "GUIMarkupCanvasBodyC::GUIRefresh(), Negative display area=" << displayArea << " ";
+      //RavlSysLog(SYSLOG_WARNING) << "GUIMarkupCanvasBodyC::GUIRefresh(), Negative display area=" << displayArea << " ";
       return true;
     }
     GUIRender(displayArea);
@@ -784,7 +784,7 @@ namespace RavlGUIN
   
   bool GUIMarkupCanvasBodyC::GUISetSelection(const DListC<Int64T> &list,bool sigChanged) 
   {
-    ONDEBUG(SysLog(SYSLOG_WARNING) << "GUIMarkupCanvasBodyC::GUISetSelection(), Called.  List.Size()=" << list.Size() << " sigChanged=" << sigChanged);
+    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "GUIMarkupCanvasBodyC::GUISetSelection(), Called.  List.Size()=" << list.Size() << " sigChanged=" << sigChanged);
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     HSetC<Int64T> newSelected = DList2HSet(list);
     if(newSelected == selected) // Same as old selection ?

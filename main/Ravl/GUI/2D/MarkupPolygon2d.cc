@@ -62,7 +62,7 @@ namespace RavlGUIN {
     for(DLIterC<Point2dC> it(poly);it;it++) {
       Point2dC &dir = *it;
       if(IsNan(dir[0]) || IsNan(dir[1]) || IsInf(dir[0]) || IsInf(dir[1])) {
-        //SysLog(SYSLOG_ERR) << "MarkupPolygon2dBodyC::Extent, Illegal polygon : " << poly;
+        //RavlSysLog(SYSLOG_ERR) << "MarkupPolygon2dBodyC::Extent, Illegal polygon : " << poly;
         polyOk = false;
         continue;
       }
@@ -88,7 +88,7 @@ namespace RavlGUIN {
     // If 'isFirst' is true then we haven't found a single usefull point.
     
     if((rextent.Range1().Min() > rextent.Range1().Max()) || (rextent.Range2().Min() > rextent.Range2().Max()) || isFirst) {
-      SysLog(SYSLOG_WARNING) << "MarkupPolygon2dBodyC::Extent, Negative or invalid extent=" << rextent << " ";
+      RavlSysLog(SYSLOG_WARNING) << "MarkupPolygon2dBodyC::Extent, Negative or invalid extent=" << rextent << " ";
       return RealRange2dC(0,0);
     }
     return rextent;
@@ -146,7 +146,7 @@ namespace RavlGUIN {
     orgPoly = poly.Copy();
     if(trigUpdate.IsValid()) {
       if(!trigUpdate.Call(poly,id))
-        SysLog(SYSLOG_WARNING) << "MarkupPolygon2dBodyC::UpdateDb, Update failed.... ";
+        RavlSysLog(SYSLOG_WARNING) << "MarkupPolygon2dBodyC::UpdateDb, Update failed.... ";
     }
     for(DLIterC<MarkupPolygon2dC> it(children);it;it++)
       it->UpdateDb();
@@ -181,7 +181,7 @@ namespace RavlGUIN {
       if(n == 1) {
         Vector2dC dir = (*it) - last;
         if(IsNan(dir[0]) || IsNan(dir[1]) || IsInf(dir[0]) || IsInf(dir[1])) {
-          SysLog(SYSLOG_ERR) << "MarkupPolygon2dBodyC::Render, Illegal polygon : " << poly;
+          RavlSysLog(SYSLOG_ERR) << "MarkupPolygon2dBodyC::Render, Illegal polygon : " << poly;
           break;
         }
         
@@ -251,7 +251,7 @@ namespace RavlGUIN {
         score /= 20; // Give it a strong bias towards selected polygons
       return score;
     }
-    //SysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::SelectTest, Contains=" << poly.Contains(at) << " Area=" << poly.Area() << "\n";
+    //RavlSysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::SelectTest, Contains=" << poly.Contains(at) << " Area=" << poly.Area() << "\n";
     if(poly.Contains(at)) {
       score = Abs(poly.Area());
       return score;
@@ -268,9 +268,9 @@ namespace RavlGUIN {
   //  100 n+100 = Mark each corner.
   
   bool MarkupPolygon2dBodyC::MouseEventPress(GUIMarkupCanvasBodyC &mv,const Point2dC &at,const MouseEventC &me,IntT &state,bool &refresh) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventPress() At=" << at << " State=" << state << " " << " ");
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << " Press " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << " ");
-    ONDEBUG(SysLog(SYSLOG_DEBUG) 
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventPress() At=" << at << " State=" << state << " " << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << " Press " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG)
 	    << " Press Ctrl=" << me.IsCntrl() 
 	    << " Lock=" << me.IsLock() 
 	    << " Shift=" << me.IsShift() 
@@ -305,7 +305,7 @@ namespace RavlGUIN {
         return true;
       }
     }
-    //SysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventPress, Contains=" << poly.Contains(at) << " Area=" << poly.Area() << "\n";
+    //RavlSysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventPress, Contains=" << poly.Contains(at) << " Area=" << poly.Area() << "\n";
     if(poly.Contains(at)) { // Click inside the rect ? 
       if(me.HasChanged(1) && (me.IsShift() || me.IsCntrl())) { // Is it inside the polygon ?
         mv.SetMouseInfo(RCWrapC<Polygon2dC>(poly.Copy()).Abstract());
@@ -313,7 +313,7 @@ namespace RavlGUIN {
         return true;
       }
       if(me.HasChanged(0)) { // Attempting a select operation ?
-        ONDEBUG(SysLog(SYSLOG_DEBUG) << " Select... Id=" << Id() );
+        ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << " Select... Id=" << Id() );
         if(Id() >= 0) {
           state = -2;
           if(me.IsCntrl()) { //        *** Cntrl select. ***
@@ -346,8 +346,8 @@ namespace RavlGUIN {
   // Returns true if even has been handled.
   
   bool MarkupPolygon2dBodyC::MouseEventMove(GUIMarkupCanvasBodyC &mv,const Point2dC &at,const MouseEventC &me,IntT &state,bool &refresh) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventMove() At=" << at << " State=" << state << " " << " ");
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << " Press " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventMove() At=" << at << " State=" << state << " " << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << " Press " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << " ");
     if(m_fixed)
       return false;
     if(state == -2)
@@ -369,7 +369,7 @@ namespace RavlGUIN {
       if(state < (IntT) poly.Size())
         poly.Nth(state) = at;
       else
-        SysLog(SYSLOG_WARNING) << "MarkupPolygon2dBodyC::MouseEvent, Odd state=" << state << " Size=" << poly.Size() << " ";
+        RavlSysLog(SYSLOG_WARNING) << "MarkupPolygon2dBodyC::MouseEvent, Odd state=" << state << " Size=" << poly.Size() << " ";
       if(!me.IsCntrl())
         MovePoly();
       refresh = true;
@@ -481,8 +481,8 @@ namespace RavlGUIN {
   // Returns true if even has been handled.
   
   bool MarkupPolygon2dBodyC::MouseEventRelease(GUIMarkupCanvasBodyC &mv,const Point2dC &at,const MouseEventC &me,IntT &state,bool &refresh) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventRelease() At=" << at << " State=" << state << " " << " ");
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << " Press " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "MarkupPolygon2dBodyC::MouseEventRelease() At=" << at << " State=" << state << " " << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << " Press " << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) << " " << me.HasChanged(3) << " " << " " << me.HasChanged(4) << " ");
     if(m_fixed)
       return false;
     if(state == -2)

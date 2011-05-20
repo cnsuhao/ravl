@@ -351,7 +351,7 @@ namespace RavlGUIN {
   //: Helper for setting attributes.
   
   bool TreeViewBodyC::SetAttribute(GtkTreeViewColumn *column,GtkCellRenderer *renderer,const StringC &colName,const StringC &attrName,const StringC &attrValue,bool proxy) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::SetAttribute(colName=" << colName << ",attrName=" << attrName << ",attrValue=" << attrValue << ",proxy=" << proxy);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::SetAttribute(colName=" << colName << ",attrName=" << attrName << ",attrValue=" << attrValue << ",proxy=" << proxy);
     RavlAssert(column != 0);
     if(proxy) { // Proxy ?
       UIntT sourceCol = treeModel.ColNumber(attrValue);
@@ -406,7 +406,7 @@ namespace RavlGUIN {
   
   bool TreeViewBodyC::Create(GtkWidget *nwidget) {
     
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::Create()";)
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::Create()";)
     widget = nwidget;
     
     // Setup tree model.
@@ -763,7 +763,7 @@ namespace RavlGUIN {
   // GUI thread only
   
   bool TreeViewBodyC::GUISelectIter(TreeModelIterC iter) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUISelectIter()");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUISelectIter()");
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if (selection == 0) {
       ONDEBUG(std::cerr << "TreeViewBodyC::GUISelectedIter, No selection setup.");
@@ -1075,7 +1075,7 @@ namespace RavlGUIN {
   //: Setup widget as drag and drop source.
   
   bool TreeViewBodyC::GUIDNDSource(ModifierTypeT flags,const SArray1dC<GtkTargetEntry> &entries,DragActionT actions) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDSource() - entry";)
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDSource() - entry";)
     if(dndInfo == 0)
       dndInfo = new WidgetDndInfoC();
     dndInfo->isSource = true;
@@ -1099,7 +1099,7 @@ namespace RavlGUIN {
   //: Disable widget as a drag and drop source.
   
   bool TreeViewBodyC::GUIDNDSourceDisable() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDSourceDisable() - entry";)
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDSourceDisable() - entry";)
     if(dndInfo != 0)
       dndInfo->isSource = false;
     if(widget == 0) return true;
@@ -1110,7 +1110,7 @@ namespace RavlGUIN {
   //: Setup widget as drag and drop target.
   
   bool TreeViewBodyC::GUIDNDTarget(DestDefaultsT flags,const SArray1dC<GtkTargetEntry> &entries,DragActionT actions) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDTarget() - entry";)
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDTarget() - entry";)
     if(dndInfo == 0)
       dndInfo = new WidgetDndInfoC();
     dndInfo->TargFlags = flags;
@@ -1131,7 +1131,7 @@ namespace RavlGUIN {
   //: Disable widget as a drag and drop source.
   
   bool TreeViewBodyC::GUIDNDTargetDisable() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDTargetDisable() - entry";)
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TreeViewBodyC::GUIDNDTargetDisable() - entry";)
     if(dndInfo != 0)
       dndInfo->isSource = false;
     if(widget != 0)

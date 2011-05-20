@@ -82,12 +82,12 @@ namespace RavlN {
 #if RAVL_REUSE_THREADS    
     LaunchThreadC me;
     if(launchThreads.TryGet(me)) {
-      SysLog(SYSLOG_DEBUG) << "LaunchThreadC::LaunchThreadC(), Reusing thread.  ";
+      RavlSysLog(SYSLOG_DEBUG) << "LaunchThreadC::LaunchThreadC(), Reusing thread.  ";
       (*this) = me;
       Reset(nse);
       return ;
     }
-    SysLog(SYSLOG_DEBUG) << "LaunchThreadC::LaunchThreadC(), Creating new thread.  ";
+    RavlSysLog(SYSLOG_DEBUG) << "LaunchThreadC::LaunchThreadC(), Creating new thread.  ";
 #endif
     LaunchThreadC newun(*new LaunchThreadBodyC(nse));
     (*this) = newun;

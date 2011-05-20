@@ -79,7 +79,7 @@ namespace RavlN {
       name = "localhost";
     ent.h_addrtype = 0;
     while(1) {
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << " Looking for '" << name << "'\n");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << " Looking for '" << name << "'\n");
       opErrno = 0;
 #if RAVL_OS_LINUX || RAVL_OS_LINUX64
       if(gethostbyname_r(name,&ent,hostentData,buffSize,&result, &opErrno) == 0 && result != 0)
@@ -108,23 +108,23 @@ namespace RavlN {
         continue;
       }
       if(opErrno < 0) {
-        SysLog(SYSLOG_WARNING) << "Can't understand hostname '" << name  << "', Malformed address?";
+        RavlSysLog(SYSLOG_WARNING) << "Can't understand hostname '" << name  << "', Malformed address?";
         delete [] hostentData;
         throw ExceptionNetC("Failed to unstanderstand find host name.\n");
       }
 #if 0
       if(opErrno == TRY_AGAIN) {
-        ONDEBUG(SysLog(SYSLOG_DEBUG) << "Failed to get hostname, retrying. \n");
+        ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Failed to get hostname, retrying. \n");
         DateC::Sleep(0.5);  // Thread safe sleep.
         continue;
       }
 #endif
       if(opErrno == HOST_NOT_FOUND) {
-        SysLog(SYSLOG_WARNING) << "Can't find host '" << name << "' .";
+        RavlSysLog(SYSLOG_WARNING) << "Can't find host '" << name << "' .";
         delete [] hostentData;
         throw ExceptionNetC("Can't find host name.\n");
       }
-      SysLog(SYSLOG_WARNING) << "Can't find host '" << name  << "' for some reason. Errno:" << opErrno << " '"
+      RavlSysLog(SYSLOG_WARNING) << "Can't find host '" << name  << "' for some reason. Errno:" << opErrno << " '"
 #if RAVL_HAVE_HSTRERROR
         << hstrerror(opErrno) << "'";
 #else
@@ -140,13 +140,13 @@ namespace RavlN {
     //sin.sin_addr.s_addr = inet_addr(addr);
 
 #if DODEBUG
-    SysLog(SYSLOG_DEBUG) << "Offical hostname: '" << result->h_name << "' h_length: '" << result->h_length << "' ";
-    //SysLog(SYSLOG_DEBUG) << "h_addr_list: '" << result->h_addr_list[0] << "' ";
+    RavlSysLog(SYSLOG_DEBUG) << "Offical hostname: '" << result->h_name << "' h_length: '" << result->h_length << "' ";
+    //RavlSysLog(SYSLOG_DEBUG) << "h_addr_list: '" << result->h_addr_list[0] << "' ";
 #endif
     sin.sin_addr.s_addr = ((struct in_addr *)result->h_addr_list[0])->s_addr;
     sin.sin_family = ent.h_addrtype;
 
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Got host data..  Addr:'" << inet_ntoa(sin.sin_addr) << "' ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Got host data..  Addr:'" << inet_ntoa(sin.sin_addr) << "' ");
 
     delete [] hostentData;
     return true;
@@ -216,7 +216,7 @@ namespace RavlN {
 	hostentData = new char [buffSize];
 	continue;
       }
-      SysLog(SYSLOG_ERR) << "WARNING: Error while attempting to find hostname from ip address. errno=" << error << " ";
+      RavlSysLog(SYSLOG_ERR) << "WARNING: Error while attempting to find hostname from ip address. errno=" << error << " ";
       break; // Unknown error.
     }
     if(error == 0) { // If we got the name ok.

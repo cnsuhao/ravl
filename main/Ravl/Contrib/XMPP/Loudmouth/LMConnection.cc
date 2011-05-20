@@ -172,7 +172,7 @@ namespace RavlN {
             openOk = true;
             break;
           }
-          SysLog(SYSLOG_ERR,"Connection failed to open: %s   Account:'%s' ", error->message, jid.data());
+          RavlSysLogf(SYSLOG_ERR,"Connection failed to open: %s   Account:'%s' ", error->message, jid.data());
           error = NULL;
           RavlN::Sleep(2.0);
         }
@@ -182,7 +182,7 @@ namespace RavlN {
         ONDEBUG(std::cerr << "Synchronus connection made, authenticating \n");
 
         if (!lm_connection_authenticate_and_block(m_conn, m_user.data(), m_password.data(), m_resource.data(), &error)) {
-          SysLog(SYSLOG_ERR,"Connection failed to authenticate: %s", error->message);
+          RavlSysLogf(SYSLOG_ERR,"Connection failed to authenticate: %s", error->message);
           return false;
         }
         ONDEBUG(std::cerr << "Synchronus authenication complete. \n");
@@ -246,7 +246,7 @@ namespace RavlN {
     bool LMConnectionC::SendText(const char *to, const char *message)
     {
       if(!IsConnected()) {
-        SysLog(SYSLOG_ERR,"Attempt to send message with an invalid connection. ");
+        RavlSysLogf(SYSLOG_ERR,"Attempt to send message with an invalid connection. ");
         return false;
       }
       GError *error = NULL;

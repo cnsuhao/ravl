@@ -49,7 +49,7 @@ namespace RavlGUIN {
     : name(widgetName),
       customWidget(aCustomWidget)
   {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ")" << endl);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ")" << endl);
   }
   
   GladeWidgetBodyC::GladeWidgetBodyC(const XMLFactoryContextC &factory)
@@ -59,7 +59,7 @@ namespace RavlGUIN {
      m_widgetPrefix(factory.AttributeString("widgetPrefix",""))
   {
     if(!factory.UseComponent("GladeXML",xml,false,typeid(GladeXMLC))) {
-      SysLog(SYSLOG_ERR) << "Failed to find glade xml file. \n";
+      RavlSysLog(SYSLOG_ERR) << "Failed to find glade xml file. \n";
     }
     if(!m_widgetPrefix.IsEmpty() && m_widgetPrefix.lastchar() != '.')
       m_widgetPrefix += ".";
@@ -83,7 +83,7 @@ namespace RavlGUIN {
       
       WidgetC widget;
       if(!factory.UseComponent(it->Name(),widget)) {
-        SysLog(SYSLOG_ERR) << "Failed to load component " << it->Name() << "\n";
+        RavlSysLog(SYSLOG_ERR) << "Failed to load component " << it->Name() << "\n";
         continue;
       }
       AddObject(widgetName,widget,optional);

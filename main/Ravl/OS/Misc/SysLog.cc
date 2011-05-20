@@ -34,20 +34,21 @@ namespace RavlN {
   static StringC syslog_ident("NoName");
   static bool syslog_Open = false;
   static bool syslog_StdErrOnly = false;
-  static bool syslog_StdErr = false;
+  static bool syslog_StdErr = true;
   static bool syslog_pid = false;
+  static bool syslog_fileline = false;
   static int localLevel = 8;
   static int syslogLevel = 8;
   
-  typedef void (*SyslogFunc)(SysLogPriorityT level,const char *message);
+  typedef void (*SyslogFunc)(SysLogPriorityT level,const char *message,unsigned lineno,const char *filename);
   
   static SyslogFunc syslogRedirect = 0;
   
   //: Register function to redirect log messages.
   // Calling with a null function pointer restores the default behavour.
   
-  bool SysLogRedirect(void (*logFunc)(SysLogPriorityT level,const char *message)) {
-    MTWriteLockC lockWrite(2); // Be carefull in multithreaded programs.
+  bool SysLogRedirect(void (*logFunc)(SysLogPriorityT level,const char *message,unsigned lineno,const char *filename)) {
+    MTWriteLockC lockWrite(2); // Be careful in multi-threaded programs.
     syslogRedirect = logFunc;
     return true;
   }
@@ -62,7 +63,7 @@ namespace RavlN {
   // If logPid is true the processes id will be recorded in the log. <br>
   // If sendStdErr is set the messages will also be send the standard error channel.
   
-  bool SysLogOpen(const StringC &name,bool logPid,bool sendStdErr,bool stdErrOnly,int facility) {
+  bool SysLogOpen(const StringC &name,bool logPid,bool sendStdErr,bool stdErrOnly,int facility,bool logFileLine) {
     syslog_ident = name;
     syslog_Open = true;
     syslog_StdErrOnly = stdErrOnly;
@@ -70,6 +71,7 @@ namespace RavlN {
     if(stdErrOnly)
       syslog_StdErr = true;
     syslog_StdErr = sendStdErr;
+    syslog_fileline = logFileLine;
 #if RAVL_OS_POSIX
     if(facility == -1)
       facility = LOG_USER;
@@ -97,7 +99,7 @@ namespace RavlN {
   }
   
 #if RAVL_OS_POSIX
-  // Mapping to syslog levels, though they should be indentical.
+  // Mapping to syslog levels, though they should be identical.
   static const int messageTypes[8] = { 
     LOG_EMERG,
     LOG_ALERT,
@@ -110,40 +112,51 @@ namespace RavlN {
   };
 #endif
   
-  static bool LogMessage(const char *message,int priority) {
-    MTWriteLockC lockWrite(2); // Be carefull in multithreaded programs.
+  static bool LogMessage(const char *message,int priority,unsigned lineno =0,const char *filename = 0) {
+    MTWriteLockC lockWrite(2); // Be careful in multi-threaded programs.
     if(syslogRedirect != 0) {
       // Avoid possible deadlocks when handling redirected messages
       // (If the processes of logging causes a log message to be generated.)
       SyslogFunc syslogRedirectFunc = syslogRedirect;
       lockWrite.Unlock();
-      syslogRedirectFunc((SysLogPriorityT)priority,message);
+      syslogRedirectFunc((SysLogPriorityT)priority,message,lineno,filename);
       return true;
     }
 #if RAVL_OS_POSIX
     if(syslog_StdErrOnly) {
       if(priority <= localLevel) {
-	cerr << syslog_ident;
+	std::cerr << syslog_ident;
+	if(syslog_fileline)
+	  std::cerr << filename << ':' << lineno << ' ';
 	if(syslog_pid)
-	  cerr << "[" << getpid() << "]";
-	cerr << ":" << message << endl;
+	  std::cerr << "[" << getpid() << "]";
+	std::cerr << ":" << message << endl;
       }
     } else {
       if(priority < syslogLevel) {
-	syslog(priority,"%s",message);
+        if(syslog_fileline) {
+          syslog(priority,"%s:%u %s",filename,lineno,message);
+        } else {
+          syslog(priority,"%s",message);
+        }
       } else {
 	if(syslog_StdErr && priority <= localLevel) {
-	  cerr << syslog_ident;
+	  std::cerr << syslog_ident;
+	  if(syslog_fileline)
+	    std::cerr << filename << ':' << lineno << ' ';
 	  if(syslog_pid)
-	    cerr << "[" << getpid() << "]";
-	  cerr << ":" << message << endl;
+	    std::cerr << "[" << getpid() << "]";
+	  std::cerr << ":" << message << endl;
 	}
       }
     }
 #else
+    if(syslog_fileline)
+      std::cerr << filename << ':' << lineno << ' ';
     if(priority < localLevel)
-      cerr << syslog_ident << ":" << message << endl;
+      std::cerr << syslog_ident << ":" << message << endl;
 #endif
+    std::cerr << std::flush;
     return true;
   }
   
@@ -151,7 +164,7 @@ namespace RavlN {
   // Usage: <br>
   // SysLog(SYSLOG_DEBUG) << "Send message to log";
   
-  OStreamC SysLog(SysLogPriorityT priority) {
+  OStreamC SysLog(SysLogPriorityT priority,unsigned lineno,const char *filename) {
     if(!syslog_Open)
       SysLogOpen("NoName",true,true);
 #if RAVL_OS_POSIX
@@ -161,7 +174,7 @@ namespace RavlN {
 #else
     int pri = (int) priority;
 #endif
-    return StrOStreamC(Trigger(LogMessage,"",pri)); 
+    return StrOStreamC(Trigger(LogMessage,"",pri,lineno,filename));
   }
 
   //: Send a message to the log file
@@ -176,18 +189,41 @@ namespace RavlN {
     int x;
 #if RAVL_COMPILER_VISUALCPPNET_2005
     if((x = vsprintf_s(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: SysLog(...), String truncated!! \n";
+      std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #elif RAVL_COMPILER_VISUALCPP
     if((x = _vsnprintf(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: SysLog(...), String truncated!! \n";
+      std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #else
     if((x = vsnprintf(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: SysLog(...), String truncated!! \n";
+      std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #endif
     va_end(args);
     
     LogMessage(buff,priority);
   }
+
+  void SysLogExtended(SysLogPriorityT priority,unsigned lineno,const char *filename,const char *format ...)
+  {
+    const int formSize = 4096;
+    va_list args;
+    va_start(args,format);
+    char buff[formSize];
+    int x;
+#if RAVL_COMPILER_VISUALCPPNET_2005
+    if((x = vsprintf_s(buff,formSize,format,args)) < 0)
+      std::cerr << "WARNING: SysLog(...), String truncated!! \n";
+#elif RAVL_COMPILER_VISUALCPP
+    if((x = _vsnprintf(buff,formSize,format,args)) < 0)
+      std::cerr << "WARNING: SysLog(...), String truncated!! \n";
+#else
+    if((x = vsnprintf(buff,formSize,format,args)) < 0)
+      std::cerr << "WARNING: SysLog(...), String truncated!! \n";
+#endif
+    va_end(args);
+
+    LogMessage(buff,priority,lineno,filename);
+  }
+
 
   //: Set the level of messages to send to the system.
   // Only messages with a priority lower than 'level' we be sent.

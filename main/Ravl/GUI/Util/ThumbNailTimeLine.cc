@@ -520,7 +520,7 @@ namespace RavlGUIN {
   //: Handle stream size changed.
   
   bool ThumbNailTimeLineBodyC::CBStreamSizeChanged() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "ThumbNailTimeLineBodyC::CBStreamSizeChanged, Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "ThumbNailTimeLineBodyC::CBStreamSizeChanged, Called. ");
     semaUpdate.Post(); // Flag update.
     return true;
   }

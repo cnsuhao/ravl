@@ -66,7 +66,7 @@ namespace RavlN {
   //: Close the socket.
   
   void UnixStreamIOC::Close() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::Close, Closing fd " << m_fd << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::Close, Closing fd " << m_fd << " ");
     if(!m_dontClose) {
       if(m_fd >= 0)
         close(m_fd);
@@ -78,7 +78,7 @@ namespace RavlN {
   // Returns false on error.
 
   bool UnixStreamIOC::WaitForRead() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Waiting for read. Timeout=" << m_readTimeOut);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Waiting for read. Timeout=" << m_readTimeOut);
 #if !RAVL_OS_MACOSX
     fd_set rfds;
     struct timeval tv;
@@ -98,7 +98,7 @@ namespace RavlN {
         rn = select(checkFd+1,&rfds,0,0,0);
       }
       if(rn == 0) {
-	ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Timeout. Err=" << errno);        
+	ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Timeout. Err=" << errno);
         if(m_failOnReadTimeout)
           return false;
 	continue; // Timeout retry, check if sockets been closed.
@@ -106,7 +106,7 @@ namespace RavlN {
       if(rn > 0) return m_fd >= 0; // Some data's ready!
       if(!CheckErrors("UnixStreamIOC::WaitForRead()"))
 	break;
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Temp error, retry! " << errno);
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Temp error, retry! " << errno);
       // Temporary error, retry.
     }
 #else
@@ -116,7 +116,7 @@ namespace RavlN {
     while(m_fd >= 0) {
       ufds[0].revents = 0;
       int rn = poll(ufds,1,Round(m_readTimeOut * 1000.0));
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Poll=" << rn << " Errno= " << errno << " Events=" << ufds[0].revents);
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Poll=" << rn << " Errno= " << errno << " Events=" << ufds[0].revents);
       if(rn == 0) {
         if(m_failOnReadTimeout)
           return false;        
@@ -129,19 +129,19 @@ namespace RavlN {
       if(ufds[0].revents & POLLIN) // Data ready ?
 	return true;
       if(ufds[0].revents & POLLERR) { // Error ?
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Error on stream " << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Error on stream " << errno;
 	return false;
       }
 
       if(ufds[0].revents & POLLHUP) { // Hangup ?
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Hangup on stream " << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Hangup on stream " << errno;
 	return false;
       }
       if(ufds[0].revents & POLLNVAL) { // Invalid fd ?
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Invalid fd (" << m_fd << ") for stream." << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Invalid fd (" << m_fd << ") for stream." << errno;
 	return false;
       }
-      SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Unexpected condition " << ufds[0].revents;
+      RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForRead(), Unexpected condition " << ufds[0].revents;
     }
 #endif
     return false;
@@ -151,7 +151,7 @@ namespace RavlN {
   // Returns false on error.
 
   bool UnixStreamIOC::WaitForWrite() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Waiting for write. Timeout=" << m_writeTimeOut);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Waiting for write. Timeout=" << m_writeTimeOut);
 #if !RAVL_OS_MACOSX
     struct timeval timeout;
     fd_set wfds;
@@ -168,7 +168,7 @@ namespace RavlN {
         RealT timeToGo = (RealT) m_writeTimeOut - (DateC::NowUTC() - startTime).Double(); // Compute time remaining.
         
         if(timeToGo <= 0) {
-          SysLog(SYSLOG_WARNING) << "UnixStreamIOC::WaitForWrite(), Timeout writting to file descriptor : " << errno;
+          RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::WaitForWrite(), Timeout writting to file descriptor : " << errno;
           if(m_failOnWriteTimeout)
             break;
           // Reset timer.
@@ -193,7 +193,7 @@ namespace RavlN {
     while(m_fd >= 0) {
       ufds[0].revents = 0;
       int rn = poll(ufds,1,Round(m_writeTimeOut * 1000.0));
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Poll=" << rn << " Errno= " << errno << " Events=" << ufds[0].revents);
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Poll=" << rn << " Errno= " << errno << " Events=" << ufds[0].revents);
       if(rn == 0) continue; // Timeout.
       if(rn < 0) { // Error.
 	if(!CheckErrors("UnixStreamIOC::WaitForWrite()"))
@@ -202,18 +202,18 @@ namespace RavlN {
       if(ufds[0].revents & POLLOUT) // Data ready ?
 	return true;
       if(ufds[0].revents & POLLERR) { // Error ?
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Error on stream " << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Error on stream " << errno;
 	return false;
       }
       if(ufds[0].revents & POLLHUP) { // Hangup ?
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Hangup on stream " << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Hangup on stream " << errno;
 	return false;
       }
       if(ufds[0].revents & POLLNVAL) { // Invalid fd ?
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Invalid fd for stream " << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Invalid fd for stream " << errno;
 	return false;
       }
-      SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Unexpected condition " << ufds[0].revents;
+      RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::WaitForWrite(), Unexpected condition " << ufds[0].revents;
     }
 #endif
     return false;
@@ -225,9 +225,9 @@ namespace RavlN {
       return true; // Temporary error, try again.
 #if RAVL_OS_LINUX || RAVL_OS_LINUX64
     char buff[256];
-    SysLog(SYSLOG_WARNING) << opName << " Error :" << errno << " '" << strerror_r(errno,buff,256) << "' ";
+    RavlSysLog(SYSLOG_WARNING) << opName << " Error :" << errno << " '" << strerror_r(errno,buff,256) << "' ";
 #else
-    SysLog(SYSLOG_WARNING) << opName << " Error :" << errno;
+    RavlSysLog(SYSLOG_WARNING) << opName << " Error :" << errno;
 #endif
     return false;
   }
@@ -235,20 +235,20 @@ namespace RavlN {
   //: Read some bytes from a stream.
 
   IntT UnixStreamIOC::Read(char *buff,UIntT size) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::Read(), Buff=" << ((void *) buff) << " Size=" << size << "\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::Read(), Buff=" << ((void *) buff) << " Size=" << size << "\n");
     UIntT at = 0;
     while(at < size && m_fd >= 0) {
       if(!WaitForRead())
 	break;
       int n = read(m_fd,&(buff[at]),size - at);
       if(n == 0) { // Linux indicates a close by returning 0 bytes read.  Is this portable ??
-	ONDEBUG(SysLog(SYSLOG_INFO) << "UnixStreamIOC::Read(). Socket closed ? fd=" << m_fd);
+	ONDEBUG(RavlSysLog(SYSLOG_INFO) << "UnixStreamIOC::Read(). Socket closed ? fd=" << m_fd);
 	break;
       }
       if(n < 0) {
 	if(!CheckErrors("UnixStreamIOC::Read()"))
 	  break;
-	SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::Read(), Temp error, retry! " << errno;
+	RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::Read(), Temp error, retry! " << errno;
 	// Temporary error, retry
 	n = 0;
       }
@@ -282,7 +282,7 @@ namespace RavlN {
 	return 0;
       at = readv(m_fd,vecp,n);
       if(at == 0) {
-	SysLog(SYSLOG_INFO) << "UnixStreamIOC::ReadV(). Socket closed. fd=" << m_fd;
+	RavlSysLog(SYSLOG_INFO) << "UnixStreamIOC::ReadV(). Socket closed. fd=" << m_fd;
 	break;
       }
       if(at > 0)
@@ -296,13 +296,13 @@ namespace RavlN {
     if (!m_fillBufferOnRead)
       return at;
 
-    ONDEBUG(SysLog(SYSLOG_WARNING) << "UnixStreamIOC::ReadV(), Socket read interupted, at=" << at << " Blocks=" << n << " attempting to recover. \n");
+    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::ReadV(), Socket read interupted, at=" << at << " Blocks=" << n << " attempting to recover. \n");
 
     // Read in 1 lump failed, break it up.
     int b = 0,xat = 0;
     do {
       for(;b < n;b++) {
-	ONDEBUG(SysLog(SYSLOG_DEBUG) << "len[" << b << "]=" << len[b] << " xat=" << xat << " ");
+	ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "len[" << b << "]=" << len[b] << " xat=" << xat << " ");
 	xat += len[b];
 	if(at <= xat) //In this block ?
 	  break;
@@ -310,7 +310,7 @@ namespace RavlN {
       if(at < xat){
 	IntT toGo = xat - at;
 	IntT done = len[b] - toGo;
-	ONDEBUG(SysLog(SYSLOG_DEBUG) << "Reading " << toGo << " bytes to complete the block " << b << " xat=" << xat << " done=" << done << " toGo=" << toGo << " ");
+	ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Reading " << toGo << " bytes to complete the block " << b << " xat=" << xat << " done=" << done << " toGo=" << toGo << " ");
 	IntT x = Read(&(buffer[b][done]),toGo);
 	if(x < 0)
 	  return at;
@@ -318,7 +318,7 @@ namespace RavlN {
 	if(x < toGo)
 	  return at; // Some serious error must have occured to stop 'Read'
       }
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << "Reading vector b=" << b << " n=" << n << " ");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Reading vector b=" << b << " n=" << n << " ");
       RavlAssert(xat == at);
       b++;
       int blocksToGo = n - b;
@@ -330,7 +330,7 @@ namespace RavlN {
 
       int x = readv(m_fd,&(vecp[b]),blocksToGo);
       if(x == 0) {
-	SysLog(SYSLOG_INFO) << "UnixStreamIOC::ReadV(). Socket closed. fd=" << m_fd;
+	RavlSysLog(SYSLOG_INFO) << "UnixStreamIOC::ReadV(). Socket closed. fd=" << m_fd;
 	break;
       }
       if(x < 0) {
@@ -366,7 +366,7 @@ namespace RavlN {
       if(!WaitForWrite())
 	return at;
 
-      //SysLog(SYSLOG_DEBUG) << "writev(" << fd << "," << (void *) vecp << "," << n << "); ";
+      //RavlSysLog(SYSLOG_DEBUG) << "writev(" << fd << "," << (void *) vecp << "," << n << "); ";
       if((at = writev(m_fd,vecp,n)) > 0)
 	break;
       if(!CheckErrors("UnixStreamIOC::WriteV()"))
@@ -377,7 +377,7 @@ namespace RavlN {
     if(at == total || m_fd < 0)
       return at; // All done ?
 
-    ONDEBUG(SysLog(SYSLOG_WARNING) << "UnixStreamIOC::WriteV(), Socket write interupted, attempting to recover. (Relatively untested code.) ");
+    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::WriteV(), Socket write interupted, attempting to recover. (Relatively untested code.) ");
 
     // Write in 1 lump failed, break it up.
     int b = 0,xat = 0;
@@ -390,7 +390,7 @@ namespace RavlN {
       if(at < xat){
 	IntT toGo = xat - at;
 	IntT done = len[b] - toGo;
-	ONDEBUG(SysLog(SYSLOG_DEBUG) << "Reading " << toGo << " bytes to complete the block " << b << " xat=" << xat << " done=" << done << " toGo=" << toGo << "\n");
+	ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Reading " << toGo << " bytes to complete the block " << b << " xat=" << xat << " done=" << done << " toGo=" << toGo << "\n");
 	IntT x = Write(&(buffer[b][done]),toGo);
 	if(x <= 0) return at;
 	at += x;
@@ -437,10 +437,10 @@ namespace RavlN {
   // true= read and write's won't do blocking waits.
   
   bool UnixStreamIOC::SetNonBlocking(bool block) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "UnixStreamIOC::SetNonBlocking(), Block=" << block << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "UnixStreamIOC::SetNonBlocking(), Block=" << block << " ");
     long flags = fcntl(m_fd,F_GETFL);
     if(flags < 0) {
-      SysLog(SYSLOG_WARNING) << "UnixStreamIOC::SetNonBlocking(), WARNING: Get flags failed. errno=" << errno << " fd=" << m_fd << " ";
+      RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::SetNonBlocking(), WARNING: Get flags failed. errno=" << errno << " fd=" << m_fd << " ";
       return false;
     }
     long newFlags;
@@ -450,7 +450,7 @@ namespace RavlN {
       newFlags = flags & ~O_NONBLOCK;
     flags = fcntl(m_fd,F_SETFL,newFlags);
     if(flags < 0) {
-      SysLog(SYSLOG_WARNING) << "UnixStreamIOC::SetNonBlocking(), WARNING: Set flags failed. ";
+      RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::SetNonBlocking(), WARNING: Set flags failed. ";
       return false;
     }
     return false;

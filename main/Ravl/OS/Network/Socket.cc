@@ -81,13 +81,13 @@ namespace RavlN {
   {
     int at = name.index(':');
     if(at < 0) {
-      SysLog(SYSLOG_ERR) << "SocketBodyC::SocketBodyC(), No port no in '" << name << "' ";
+      RavlSysLog(SYSLOG_ERR) << "SocketBodyC::SocketBodyC(), No port no in '" << name << "' ";
       return ;
     }
     StringC host = name.before(at);
     StringC pn(name.after(at));
     int portno = atoi(pn);
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Opening connection '" << host << "' port " << portno << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Opening connection '" << host << "' port " << portno << " ");
     if(server)
       OpenServer(host,portno);
     else
@@ -101,7 +101,7 @@ namespace RavlN {
       server(nserver),
       addr(0)
   {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Opening connection '" << name << "' port " << portno << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Opening connection '" << name << "' port " << portno << " ");
     if(server)
       OpenServer(name,portno);
     else
@@ -116,7 +116,7 @@ namespace RavlN {
       server(nserver),
       addr(naddr)
   {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "SocketBodyC::SocketBodyC(), fd = " << m_fd );
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SocketBodyC::SocketBodyC(), fd = " << m_fd );
   }
 
   //: Open socket.
@@ -128,7 +128,7 @@ namespace RavlN {
   //: Close the socket.
 
   void SocketBodyC::Close() {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "SocketBodyC::Close() dontclose=" << m_dontClose << " fd=" << m_fd << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SocketBodyC::Close() dontclose=" << m_dontClose << " fd=" << m_fd << " ");
     UnixStreamIOC::Close();
     if(addr != 0)
       delete [] (char *) addr;
@@ -144,7 +144,7 @@ namespace RavlN {
     struct protoent entry;
     char buffer[1024];
     if(getprotobyname_r("tcp",&entry,buffer,1024) != 0) {
-      SysLog(SYSLOG_WARNING) << "WARNING: Failed to get tcp protocol number. Guessing a value of 6. \n";
+      RavlSysLog(SYSLOG_WARNING) << "WARNING: Failed to get tcp protocol number. Guessing a value of 6. \n";
       return 6;
     }
     return entry.p_proto;
@@ -170,11 +170,11 @@ namespace RavlN {
 #ifdef TCP_CORK
     // Linux specific call.
     if(setsockopt(m_fd,tcpprotocolno,TCP_CORK,&n,sizeof(int)) != 0) {
-      SysLog(SYSLOG_WARNING) << "SocketBodyC::Cork(), Failed. errno=" << errno <<"\n";
+      RavlSysLog(SYSLOG_WARNING) << "SocketBodyC::Cork(), Failed. errno=" << errno <<"\n";
     }
 #else
     if(setsockopt(m_fd,tcpprotocolno,TCP_NODELAY,&n,sizeof(int)) != 0) {
-      SysLog(SYSLOG_WARNING) << "SocketBodyC::Cork(), Failed. errno=" << errno <<"\n";
+      RavlSysLog(SYSLOG_WARNING) << "SocketBodyC::Cork(), Failed. errno=" << errno <<"\n";
     }
 #endif
     return true;
@@ -187,7 +187,7 @@ namespace RavlN {
     int n = 1;
     static int tcpprotocolno = GetTCPProtocolNumber();
     if(setsockopt(m_fd,tcpprotocolno,TCP_NODELAY,&n,sizeof(int)) != 0) {
-      SysLog(SYSLOG_WARNING) << "SocketBodyC::SetNoDelay(), Failed. errno=" << errno <<" '" << strerror(errno) << "' on fd= " << m_fd << "\n";
+      RavlSysLog(SYSLOG_WARNING) << "SocketBodyC::SetNoDelay(), Failed. errno=" << errno <<" '" << strerror(errno) << "' on fd= " << m_fd << "\n";
     }
   }
   
@@ -196,7 +196,7 @@ namespace RavlN {
   int SocketBodyC::OpenSocket(struct sockaddr_in &sin,IntT portNo)  {
     int sock = socket(PF_INET, SOCK_STREAM, 0);
     if(sock < 0) {
-      SysLog(SYSLOG_ERR) << "Failed to create socket. " << errno << " ";
+      RavlSysLog(SYSLOG_ERR) << "Failed to create socket. " << errno << " ";
       return -1;
     }
     return sock;
@@ -206,7 +206,7 @@ namespace RavlN {
   int SocketBodyC::OpenClient(const char *name,IntT portNo) {
     struct sockaddr_in sin = {PF_INET};
     if(!GetHostByName(name,sin)) {
-      SysLog(SYSLOG_ERR) << "Failed to lookup hostname '" << name << "' ";
+      RavlSysLog(SYSLOG_ERR) << "Failed to lookup hostname '" << name << "' ";
       return -1;
     }
     if((m_fd = OpenSocket(sin,portNo)) < 0)
@@ -216,26 +216,26 @@ namespace RavlN {
     while(connect(m_fd, (sockaddr*)&sin, sizeof(sin)) < 0) {
       // Sometimes its worth trying a again a few times.
       if((errno == EAGAIN || errno == EINTR || errno==ETIMEDOUT) && retryLimit-- > 0) {
-        ONDEBUG(SysLog(SYSLOG_DEBUG) << "Connect failed, EAGAIN. errno=" << errno << " ");
+        ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Connect failed, EAGAIN. errno=" << errno << " ");
         Sleep(0.1);
         continue;
       }
       Close();
 #if DODEBUG
       if(errno == EADDRINUSE) {
-        SysLog(SYSLOG_DEBUG) << "Address in use. " << m_fd ;
+        RavlSysLog(SYSLOG_DEBUG) << "Address in use. " << m_fd ;
         return -1;
       }
       if(errno == ECONNREFUSED) {
-        SysLog(SYSLOG_DEBUG) << "Connection refused. " << m_fd;
+        RavlSysLog(SYSLOG_DEBUG) << "Connection refused. " << m_fd;
         return -1;
       }
-      SysLog(SYSLOG_DEBUG) << "Connect failed. " << m_fd;
+      RavlSysLog(SYSLOG_DEBUG) << "Connect failed. " << m_fd;
 #endif
       return -1;
     }
 
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "SocketBodyC::OpenClient(), Connected to '" << name  << "' ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SocketBodyC::OpenClient(), Connected to '" << name  << "' ");
     if(addr != 0)
       delete [] (char *) addr;
     addr = (struct sockaddr *) new char [sizeof(struct sockaddr)];
@@ -259,10 +259,10 @@ namespace RavlN {
     if((m_fd = OpenSocket(sin,portNo)) < 0)
       return -1;
     sin.sin_port = htons(portNo);
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Binding name. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Binding name. ");
     if(bind(m_fd,(struct sockaddr*)&sin, sizeof(sockaddr)) < 0) {
-      SysLog(SYSLOG_DEBUG) << "Bind failed. errno=" << errno << " ";
-      SysLog(SYSLOG_DEBUG) << "Error:" << strerror(errno);
+      RavlSysLog(SYSLOG_DEBUG) << "Bind failed. errno=" << errno << " ";
+      RavlSysLog(SYSLOG_DEBUG) << "Error:" << strerror(errno);
       Close();
       return -1;
     }
@@ -277,22 +277,22 @@ namespace RavlN {
     if(m_fd < 0)
       return SocketC(); // Not open!
     do {
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << "Listening. ");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Listening. ");
       if(listen(m_fd, backLog) < 0) {
-	SysLog(SYSLOG_ERR) << "Listen failed." << errno << " ";
+	RavlSysLog(SYSLOG_ERR) << "Listen failed." << errno << " ";
 	return SocketC(); // Failed.
       }
-      ONDEBUG(SysLog(SYSLOG_DEBUG) << "Accepting. ");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Accepting. ");
       socklen_t addrBuffSize = sizeof(sockaddr);
       struct sockaddr *cn_addr = (struct sockaddr *) new char [addrBuffSize];
       do {
 	int nfd = accept(m_fd,cn_addr, &addrBuffSize);
-	ONDEBUG(SysLog(SYSLOG_DEBUG) << "Got connection. Server fd=" << m_fd << "  Client fd=" << nfd);
+	ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Got connection. Server fd=" << m_fd << "  Client fd=" << nfd);
 	if(nfd >= 0)
 	  return SocketC(cn_addr,nfd); // Socket accepted ok.
 	// Recoverable error ?
       } while(errno == EAGAIN || errno == EINTR) ;
-      SysLog(SYSLOG_ERR) << "ERROR: Failed to accept connection. errno=" << errno << " "; ;
+      RavlSysLog(SYSLOG_ERR) << "ERROR: Failed to accept connection. errno=" << errno << " "; ;
       delete [] (char *) cn_addr;
     } while(block);
     return SocketC();
@@ -309,11 +309,11 @@ namespace RavlN {
     if(getpeername(m_fd,name,&namelen) != 0)
     {
       delete [] name;
-      SysLog(SYSLOG_ERR) << "SocketBodyC::ConnectedHost(), gerpeername failed. Error=" << errno << " ";
+      RavlSysLog(SYSLOG_ERR) << "SocketBodyC::ConnectedHost(), gerpeername failed. Error=" << errno << " ";
       return StringC("unknown");
     }
     GetHostByAddr(*name,namelen,ret);
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "Hostname=" << ret << " ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Hostname=" << ret << " ");
     delete [] (char*) name;
     return ret;
   }
