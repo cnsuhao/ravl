@@ -15,6 +15,7 @@
 #include <rlog/RLogChannel.h>
 #include <rlog/StdioNode.h>
 #include <rlog/rlog.h>
+#include <rlog/RLogPublisher.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
@@ -30,21 +31,8 @@
 
 namespace RavlN {
   
-  // Routine for redirecting SysLog messages to rlog.
+  void SysLog2RLog(SysLogPriorityT level,const char *message,unsigned lineno,const char *filename);
   
-  void SysLog2RLog(SysLogPriorityT level,const char *message) {
-    switch(level) {
-    case SYSLOG_EMERG:
-    case SYSLOG_ALERT:
-    case SYSLOG_CRIT:
-    case SYSLOG_ERR:     rError("%s",message); break;
-    case SYSLOG_WARNING: rWarning("%s",message); break;
-    case SYSLOG_NOTICE:
-    case SYSLOG_INFO:    rInfo("%s",message); break;
-    default:
-    case SYSLOG_DEBUG:   rDebug("%s",message); break;
-    }
-  }
   
   
   bool g_RLogInitDone = false;
@@ -194,6 +182,54 @@ namespace RavlN {
 											       
     return true;											       
   }
+
+  // Routine for redirecting SysLog messages to rlog.
   
+  void SysLog2RLog(SysLogPriorityT level,const char *message,unsigned lineno,const char *filename) {
+    // The rlog macro's are fairly hairy, so redefine them
+
+    static bool enabled = true;
+    rlog::PublishLoc tempLoc;
+    tempLoc.enabled = &enabled;
+    tempLoc.pub = 0;
+    tempLoc.publish = &rlog::RLogPublisher::Publish;
+    tempLoc.component = "Ravl";
+    tempLoc.fileName = filename;
+    tempLoc.lineNum = lineno;
+    tempLoc.functionName = "*undefined*";
+
+    enabled = true;
+
+    rlog::RLogData theData;
+    theData.publisher = &tempLoc;
+    theData.time = time(0);
+    theData.msg = message;
+
+    switch(level) {
+    case SYSLOG_EMERG:
+    case SYSLOG_ALERT:
+    case SYSLOG_CRIT:
+    case SYSLOG_ERR:
+      //rError("%s",message);
+      tempLoc.channel = rlog::_RLErrorChannel;
+      break;
+    case SYSLOG_WARNING:
+      //rWarning("%s",message);
+      tempLoc.channel = rlog::_RLWarningChannel;
+      break;
+    case SYSLOG_NOTICE:
+    case SYSLOG_INFO:
+      tempLoc.channel = rlog::_RLInfoChannel;
+      //rInfo("%s",message);
+      break;
+    default:
+    case SYSLOG_DEBUG:
+      tempLoc.channel = rlog::_RLDebugChannel;
+      //rDebug("%s",message);
+      break;
+    }
+    tempLoc.channel->publish(theData);
+  }
+
 }//end of namespace
 

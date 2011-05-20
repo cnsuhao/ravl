@@ -7,7 +7,10 @@
 
 #include "Ravl/RLog.hh"
 #include "Ravl/Option.hh"
+#include "Ravl/OS/SysLog.hh"
 #include <rlog/rlog.h>
+
+using namespace RavlN;
 
 int main(int nargs,char **argv) {
   RavlN::OptionC opt(nargs,argv);
@@ -18,6 +21,11 @@ int main(int nargs,char **argv) {
   
   RavlN::RLogInit("file", "true", "debug");
   
+  // Ravl syslog intergration
+  RavlSysLog(SYSLOG_DEBUG) << "A Debug message 1";
+  RavlSysLog(SYSLOG_DEBUG) << "A Debug message 2";
+  RavlSysLogf(SYSLOG_ERR,"printf style formating. %d ",1);
+
   rInfo("Exiting... ");
   
   return 0;

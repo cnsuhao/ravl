@@ -14,7 +14,7 @@ int main(int nargs,char **argv) {
   opt.Check();
   
   RavlN::RLogInit("test.log","true","debug", true, true);
-  //RavlN::RLogInit(nargs, argv, "stderr", true);  
+  //RavlN::RLogInit(nargs, argv, "stderr", true);
   RavlN::RLogSubscribe(rlog::_RLDebugChannel);
   RavlN::RLogSubscribe(rlog::_RLInfoChannel);
   RavlN::RLogSubscribe(rlog::_RLWarningChannel);
