@@ -613,7 +613,7 @@ endif
 ###############################
 # Make directories
 
-.PRECIOUS : %/.dir
+.PRECIOUS: %/.dir
 
 %/.dir:
 	$(SHOWIT)if [ ! -d $* ] ; then \
@@ -626,7 +626,17 @@ endif
 	  fi ; \
 	fi; \
 
-
+$(INST_GENBIN)/.dir:
+	$(SHOWIT)if [ ! -d $(INST_GENBIN) ] ; then \
+	  echo "--- Making dir $(INST_GENBIN) "; \
+	  $(MKDIR) $(INST_GENBIN) ; \
+	  $(TOUCH) -r $(MAKEHOME)/Main.mk $(INST_GENBIN)/.dir ; \
+	else  \
+	  if [ ! -f $(INST_GENBIN)/.dir ] ; then \
+	    $(TOUCH) -r $(INST_GENBIN) $(INST_GENBIN)/.dir ; \
+	  fi ; \
+	fi; \
+	
 ###########################
 # Nested directories
 
@@ -1088,7 +1098,8 @@ $(ROOTDIR)/share/RAVL/config.arc : $(ROOTDIR)/share/RAVL/.dir $(MAKEHOME)/config
 	cp $(MAKEHOME)/config.arc $(ROOTDIR)/share/RAVL/config.arc ; \
 	$(CHMOD) 555 $(ROOTDIR)/share/RAVL/config.arc
 
-$(INST_GENBIN)/RAVLExec : $(INST_GENBIN)/.dir $(MAKEHOME)/RAVLExec $(ROOTDIR)/share/RAVL/config.arc
+
+$(INST_GENBIN)/RAVLExec : $(MAKEHOME)/RAVLExec $(INST_GENBIN)/.dir  $(ROOTDIR)/share/RAVL/config.arc
 	$(SHOWIT)if [ -f $(INST_GENBIN)/RAVLExec ] ; then \
 	  $(CHMOD) +w $(INST_GENBIN)/RAVLExec ; \
 	  $(RM) $(INST_GENBIN)/RAVLExec ; \
