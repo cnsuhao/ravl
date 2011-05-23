@@ -35,18 +35,20 @@ namespace RavlN {
 
   static RavlN::RCWrapAbstractC RCHashStringCStringCFactoryFunc(const XMLFactoryContextC &node)
   {
-    RCHashC<StringC,StringC> hashTable;
+    RCHashC<StringC,StringC> hashTable(true);
     DListC<XMLTreeC> children = node.Children();
     for(DLIterC<XMLTreeC> it(children);it;it++) {
       // Lookout for invalid attributes.
       RCHashC<StringC,StringC> attrs = it->Attributes();
-      for(HashIterC<StringC,StringC> ait(attrs);ait;ait++) {
-        if(ait.Key() == "key" || ait.Key() == "value")
-          continue;
-        RavlSysLogf(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
-        throw RavlN::ExceptionBadConfigC("Unused attribute found ");
+      if(attrs.IsValid()) {
+        for(HashIterC<StringC,StringC> ait(attrs);ait;ait++) {
+          if(ait.Key() == "key" || ait.Key() == "value")
+            continue;
+          RavlSysLogf(SYSLOG_ERR,"Unused attribute '%s' in string hash table definition in %s ",ait.Key().data(),node.Path().data());
+          throw RavlN::ExceptionBadConfigC("Unused attribute found ");
+        }
       }
-      StringC key = key = it->AttributeString("key",it->Name());
+      StringC key = it->AttributeString("key",it->Name());
       StringC value = it->AttributeString("value",it->Name());
       if(hashTable.IsElm(key)) {
         RavlSysLogf(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
