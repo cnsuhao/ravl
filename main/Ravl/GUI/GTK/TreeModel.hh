@@ -27,6 +27,7 @@ namespace RavlGUIN {
 
   class TreeModelIterC;
   class TreeModelC;
+  class TreeModelPathC;
 
   //! userlevel=Develop
   //: Handle to row in tree model.
@@ -132,6 +133,9 @@ namespace RavlGUIN {
     TreeModelIterC(GtkTreeModel *model,GtkTreePath *treePath)
       : RCHandleC<TreeModelIterBodyC>(*new TreeModelIterBodyC(model,treePath))
     {}
+    //: Constructor.
+
+    TreeModelIterC(TreeModelC &model,const TreeModelPathC &treePath);
     //: Constructor.
 
     GtkTreeIter *TreeIter()
@@ -593,6 +597,7 @@ namespace RavlGUIN {
 
     friend class TreeModelBodyC;
     friend class TreeModelIterBodyC;
+    friend class TreeModelIterC;
   };
 
 }

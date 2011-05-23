@@ -171,6 +171,14 @@ namespace RavlGUIN {
 
   //: Constructor.
 
+  TreeModelIterC::TreeModelIterC(TreeModelC &model,const TreeModelPathC &treePath)
+    : RCHandleC<TreeModelIterBodyC>(*new TreeModelIterBodyC(model.Body().TreeModel(),const_cast<TreeModelPathC &>(treePath).TreePath()))
+  {}
+
+  //:----------------------------------------------------------------------------
+
+  //: Constructor.
+
   TreeModelPathBodyC::TreeModelPathBodyC()
     : treePath(0)
   { 
