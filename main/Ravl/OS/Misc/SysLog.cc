@@ -202,7 +202,7 @@ namespace RavlN {
     LogMessage(buff,priority);
   }
 
-  void SysLogExtended(SysLogPriorityT priority,unsigned lineno,const char *filename,const char *format ...)
+  void SysLog(SysLogPriorityT priority,unsigned lineno,const char *filename,const char *format ...)
   {
     const int formSize = 4096;
     va_list args;
