@@ -16,7 +16,7 @@
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/OS/SysLog.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -69,20 +69,20 @@ namespace RavlN {
   
   bool TemplateComplexBodyC::Build(StringC &fn) {
     //if(verbose)
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Building file:'" << fn <<"'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Building file:'" << fn <<"'");
     FilenameC dirComp = FilenameC(fn).PathComponent();
     SetVar("thisFilename",FilenameC(fn).NameComponent());
     if(dirComp != "") { // Extra directory specified ?
       if(!dirComp.IsDirectory()) {
 	if(!dirComp.MakeDir()) {
-	  RavlSysLog(SYSLOG_ERR) << "Failed to make directory '" << dirComp  <<"' for file '" << fn << "'\n";
+	  RavlSysLog(SYSLOG_ERR) << "Failed to make directory '" << dirComp  <<"' for file '" << fn << "'";
 	  return false;
 	}
       }
     }
     OStreamC outs(fn);
     if(!outs.good()) {
-      RavlSysLog(SYSLOG_ERR) << "Failed to open output file '" << fn << "'\n";
+      RavlSysLog(SYSLOG_ERR) << "Failed to open output file '" << fn << "'";
       return false;
     }
     return BuildToStream(outs);
@@ -128,7 +128,7 @@ namespace RavlN {
   // Put the text on the stderr.
   
   bool TemplateComplexBodyC::DoErrPrint(StringC &txt) {
-    //cerr << "TemplateComplexBodyC::DoErrPrint(), Called '" << txt <<"'\n";
+    //RavlSysLog(SYSLOG_DEBUG) << "TemplateComplexBodyC::DoErrPrint(), Called '" << txt <<"' ";
     RavlSysLog(SYSLOG_DEBUG) << Interpret(txt);
     return true;
   }
@@ -149,7 +149,7 @@ namespace RavlN {
       if(at < 0)
 	continue;
       StringC var = ip.before(at);
-      //RavlSysLog(SYSLOG_DEBUG) << "Got data:'" << ip <<"'  Var: '" << var << "'\n";
+      //RavlSysLog(SYSLOG_DEBUG) << "Got data:'" << ip <<"'  Var: '" << var << "' ";
       if(!presets.IsMember(var))
 	continue;
       StringC value = ip.after(at);
@@ -167,13 +167,13 @@ namespace RavlN {
       output.Push(outStr);
       TextFileC subTextBuff(str,true,true);
       if(!BuildSub(subTextBuff))
-        RavlSysLog(SYSLOG_WARNING) << "WARNING: BuildSub of '" << str << "' in template '" << templFile.Filename() << "' failed.\n";
+        RavlSysLog(SYSLOG_WARNING) << "WARNING: BuildSub of '" << str << "' in template '" << templFile.Filename() << "' failed.";
       ret = outStr.String();
-      ONDEBUG(std::cerr << "TemplateComplexBodyC::Interpret(), '" << str << "' -> '" << ret << "'\n");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TemplateComplexBodyC::Interpret(), '" << str << "' -> '" << ret << "'");
       output.DelTop();
     } catch(...) {
       // Help a bit with debugging...
-      RavlSysLog(SYSLOG_ERR) << "Failed to interpret '" << str << "' \n";
+      RavlSysLog(SYSLOG_ERR) << "Failed to interpret '" << str << "' ";
       throw ;
     }
     return ret;
@@ -189,20 +189,20 @@ namespace RavlN {
   //: Set variable.
   
   bool TemplateComplexBodyC::DoSet(StringC &data) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Set '" << data << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Set '" << data << "'");
     int eqSign = data.index('=');
     if(eqSign < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed set '" << data << "'\n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed set '" << data << "'";
       return false;
     }
     StringC varName = data.before(eqSign).TopAndTail();
     if(varName == "") {
-      RavlSysLog(SYSLOG_ERR) << "ERROR: Empty variable name in '" << data << "'\n";
+      RavlSysLog(SYSLOG_ERR) << "ERROR: Empty variable name in '" << data << "'";
       return false;
     }
     
     StringC value = data.after(eqSign).TopAndTail();
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Value='" << value << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Value='" << value << "'");
     if(value != "") 
       vars.Top()[varName] = Interpret(value);
     else
@@ -215,27 +215,27 @@ namespace RavlN {
   bool TemplateComplexBodyC::DoFor(StringC &data) {
     int startList = data.index(':');
     if(startList < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'for' in template. '" << data << "' no list \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'for' in template. '" << data << "' no list ";
       return false;
     }
     int startTmpl = data.index(':',startList+1);
     if(startTmpl < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'for' in template. '" << data << "' no template \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'for' in template. '" << data << "' no template ";
       return false;
     }
     
     StringC sep = data.before(startList);
     SubStringC list = data.at(startList+1,(startTmpl - startList)-1).TopAndTail();
     
-    //cerr << "DoFor: Sep='" << sep << "' List='" << list << "'\n";
+    //RavlSysLog(SYSLOG_DEBUG) << "DoFor: Sep='" << sep << "' List='" << list << "'";
     
     if(list.length() < 1)  // Nothing in list ?
       return true;
     if(list.firstchar() == '$') {
-      //ONDEBUG(cerr << "Subst param1 '" << param1  << "' -> '" << obj.Var(param1) << "'\n");
+      //ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Subst param1 '" << param1  << "' -> '" << obj.Var(param1) << "'");
       StringC val = list.after(0);
       if(!Lookup(val,val)) {
-        RavlSysLog(SYSLOG_ERR) << "Unknown variable in for. '" << val << "'\n";
+        RavlSysLog(SYSLOG_ERR) << "Unknown variable in for. '" << val << "'";
 	return false;
       }
       list = val;
@@ -245,7 +245,7 @@ namespace RavlN {
     for(DLIterC<SubStringC> it(strList);it.IsElm();it.Next()) {
       StringC tb = subtempltxt;
       tb.gsub("%arg%",*it);
-      //cerr << "For value : '" << *it << "' Res:'" << tb <<"'\n";
+      //RavlSysLog(SYSLOG_DEBUG) << "For value : '" << *it << "' Res:'" << tb <<"'";
       TextFileC subTextBuff(tb,true,true);
       BuildSub(subTextBuff);
     }
@@ -290,7 +290,7 @@ namespace RavlN {
     } else { // Equals ?
       at = cond.index('=');
       if(at < 0) {
-	cerr << "Unrecognised condition '" << cond << "'\n";
+        RavlSysLog(SYSLOG_ERR) << "Unrecognised condition '" << cond << "' ";
 	return false;
       }    
       param1 = cond.before(at);
@@ -306,10 +306,10 @@ namespace RavlN {
     if(param1.length() > 0) {
       if(param1.firstchar() == '$') {
 	param1 = param1.after(0);
-	//ONDEBUG(cerr << "Subst param1 '" << param1  << "' -> '" << obj.Var(param1) << "'\n");
+	//ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Subst param1 '" << param1  << "' -> '" << obj.Var(param1) << "'");
 	StringC val = param1;
 	if(!Lookup(val,val)) {
-	  cerr << "Unknown variable in if. '" << param1 << "'\n";
+	  RavlSysLog(SYSLOG_ERR) << "Unknown variable in if. '" << param1 << "' ";
 	  return false;
 	}
 	param1 = val;
@@ -320,9 +320,9 @@ namespace RavlN {
       if(param2.firstchar() == '$') {
 	param2 = param2.after(0);
 	StringC val = param2;
-	//ONDEBUG(cerr << "Subst param2 '" << param2  << "' -> '" << obj.Var(param2) << "'\n");
+	//ONDEBUG(ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Subst param2 '" << param2  << "' -> '" << obj.Var(param2) << "'");
 	if(!Lookup(val,val)) {
-	  cerr << "Unknown variable in if. '" << param1 << "'\n";
+	  RavlSysLog(SYSLOG_ERR) << "Unknown variable in if. '" << param1 << "'";
 	  return false;
 	}
 	param2 = val;
@@ -339,11 +339,11 @@ namespace RavlN {
   //: If true.
   
   bool TemplateComplexBodyC::DoIf(StringC &data) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "If '" << data << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "If '" << data << "'");
     
     int templStart = data.index(':');
     if(templStart < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'if' in template. '" << data << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'if' in template. '" << data << "' ignoring ";
       return false;
     }
     SubStringC condition = data.before(templStart);
@@ -364,10 +364,10 @@ namespace RavlN {
   //: If variable set
   
   bool TemplateComplexBodyC::DoIfSet(StringC &data) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "IfSet '" << data << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "IfSet '" << data << "'");
     int templStart = data.index(':');
     if(templStart < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'ifset' in template. '" << data << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'ifset' in template. '" << data << "' ignoring ";
       return false;
     }
     SubStringC condition = data.before(templStart);
@@ -375,7 +375,7 @@ namespace RavlN {
     switch(condition.firstchar()) 
       {
       case 0:
-        RavlSysLog(SYSLOG_ERR) << "Malformed 'ifset' in template, no condition. '" << data << "' ignoring \n";
+        RavlSysLog(SYSLOG_ERR) << "Malformed 'ifset' in template, no condition. '" << data << "' ignoring ";
 	return false; 
       case '!': 
 	{
@@ -413,7 +413,7 @@ namespace RavlN {
   //: 
   
   bool TemplateComplexBodyC::DoElse(StringC &data) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Else '" << data << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Else '" << data << "'");
     if(lastIf)
       return true;
     TextFileC subTextBuff(data,true,true);
@@ -424,13 +424,13 @@ namespace RavlN {
   //: Include file.
   
   bool TemplateComplexBodyC::DoInclude(StringC &data) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Include '" << data << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Include '" << data << "'");
     if(incDepth > 100) {
-      cerr << "ERROR: Include depth to great, " << incDepth << " Ignoring.\n";
+      RavlSysLog(SYSLOG_ERR) << "ERROR: Include depth to great, " << incDepth << " Ignoring. ";
       return false;
     }
     data = Interpret(data);
-    ONDEBUG(cerr << "Include after interpret '" << data << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Include after interpret '" << data << "'");
     TextFileC subTextBuff;
     TextFileC *stb = component.Lookup(data);
     if(stb == 0) {
@@ -444,10 +444,10 @@ namespace RavlN {
 	}
       }
       if(!fn.Exists()) {
-	cerr << "Can't find include file '" << data << "' \n";
+        RavlSysLog(SYSLOG_ERR) << "Can't find include file '" << data << "' ";
 	return false;
       }
-      ONDEBUG(cerr << "Including '" << fn << "' \n");
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Including '" << fn << "' ");
       subTextBuff = TextFileC(fn);
       component[data] = subTextBuff;
     } else
@@ -461,7 +461,7 @@ namespace RavlN {
   //: Make a sub context.
   
   bool TemplateComplexBodyC::DoSub(StringC &txt) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Sub '" << txt << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Sub '" << txt << "'");
     
     vars.Push(RCHashC<StringC,StringC>(true) ); // Push base variables.
     TextFileC subTextBuff(txt,true,true);
@@ -473,7 +473,7 @@ namespace RavlN {
   //: Make a sub context, copy old context.
   
   bool TemplateComplexBodyC::DoSubCopy(StringC &txt) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SubCopy '" << txt << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "SubCopy '" << txt << "'");
     
     // Push copy of vars.
     vars.Push(RCHashC<StringC,StringC>(vars.Top().Copy()));
@@ -489,19 +489,19 @@ namespace RavlN {
     
     int arg1s = txt.index(':');
     if(arg1s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring ";
       return false;
     }
     int arg2s = txt.index(':',arg1s+1);
     if(arg2s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring ";
       return false;
     }
     SubStringC arg1 = txt.before(arg1s);
     SubStringC arg2 = txt.at(arg1s+1,(arg2s-arg1s)-1);
     StringC value = txt.after(arg2s);
     
-    ONDEBUG(RavlSysLog(SYSLOG_ERR) << "DoSubst '" << arg1 << "' '" << arg2 << "' '" << value << "' \n");
+    ONDEBUG(RavlSysLog(SYSLOG_ERR) << "DoSubst '" << arg1 << "' '" << arg2 << "' '" << value << "' ");
     
     StringC resultStr = Interpret(value);
     resultStr.gsub(arg1,arg2);
@@ -514,12 +514,12 @@ namespace RavlN {
   bool TemplateComplexBodyC::DoDefine(StringC &data) {
     int templStart = data.index(':');
     if(templStart < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'define' in template. '" << data << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'define' in template. '" << data << "' ignoring ";
       return false;
     }
     StringC macroNm = data.before(templStart); // Get name of macro.
     StringC macroVal = data.after(templStart); // Get string for macro.
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "DoDefine '" << macroNm << "' Val:'" << macroVal << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "DoDefine '" << macroNm << "' Val:'" << macroVal << "'");
     StringC empty;    
     //commands[macroNm] = CallMethod2C<TemplateComplexBodyC &,StringC &,StringC &,bool>(*this,&TemplateComplexBodyC::DoMacro,empty,macroVal);
     commands[macroNm] = TriggerR(*this,&TemplateComplexBodyC::DoMacro,empty,macroVal);
@@ -529,9 +529,9 @@ namespace RavlN {
   //: 
   
   bool TemplateComplexBodyC::DoMacro(StringC &arg,StringC &macro) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "DoMacro '" << macro << "' Arg:'" << arg << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "DoMacro '" << macro << "' Arg:'" << arg << "' ");
     if(incDepth > 100) {
-      cerr << "ERROR: Recurse depth to great, " << incDepth << " Ignoring.\n";
+      RavlSysLog(SYSLOG_ERR) << "ERROR: Recurse depth to great, " << incDepth << " Ignoring. ";
       return false;
     }
     
@@ -552,7 +552,7 @@ namespace RavlN {
     output.Push(outStr);
     TextFileC subTextBuff(txt,true,true);
     if(!BuildSub(subTextBuff))
-      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << txt << "' in template '" << templFile.Filename() << "' failed. \n";
+      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << txt << "' in template '" << templFile.Filename() << "' failed. ";
     output.DelTop();
     Output() << upcase(outStr.String());
     return true;
@@ -565,7 +565,7 @@ namespace RavlN {
     output.Push(outStr);
     TextFileC subTextBuff(txt,true,true);
     if(!BuildSub(subTextBuff))
-      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << txt << "' in template '" << templFile.Filename() << "' failed. \n";
+      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << txt << "' in template '" << templFile.Filename() << "' failed. ";
     output.DelTop();
     Output() << downcase(outStr.String());
     return true;
@@ -579,7 +579,7 @@ namespace RavlN {
     output.Push(outStr);
     TextFileC subTextBuff(txt,true,true);
     if(!BuildSub(subTextBuff))
-      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << txt << "' in template '" << templFile.Filename() << "' failed. \n";
+      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << txt << "' in template '" << templFile.Filename() << "' failed. ";
     output.DelTop();
     return true;
   }
@@ -589,7 +589,7 @@ namespace RavlN {
   bool TemplateComplexBodyC::DoFirstN(StringC &txt) {
     int arg1s = txt.index(':');
     if(arg1s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'truncate' in template. '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'truncate' in template. '" << txt << "' ignoring ";
       return false;
     }
     SubStringC arg1 = txt.before(arg1s);
@@ -600,7 +600,7 @@ namespace RavlN {
     output.Push(outStr);
     TextFileC subTextBuff(value,true,true);
     if(!BuildSub(subTextBuff))
-      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << value << "' in template '" << templFile.Filename() << "' failed. \n";
+      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << value << "' in template '" << templFile.Filename() << "' failed. ";
     output.DelTop();
     StringC outs = outStr.String(); 
     if(outs.Size() > (UIntT) n)
@@ -615,12 +615,12 @@ namespace RavlN {
   bool TemplateComplexBodyC::DoMarkFirstN(StringC &txt) {
     int arg1s = txt.index(':');
     if(arg1s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'marktruncate' in template. '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'marktruncate' in template. '" << txt << "' ignoring ";
       return false;
     }
     int arg2s = txt.index(':',arg1s+1);
     if(arg2s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'marktruncate' in template. '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'marktruncate' in template. '" << txt << "' ignoring ";
       return false;
     }
     SubStringC arg1 = txt.before(arg1s);
@@ -629,14 +629,14 @@ namespace RavlN {
     
     IntT n = arg1.IntValue();
     if(n < (IntT) arg2.Size()) {
-      RavlSysLog(SYSLOG_WARNING) << "Marker larger than truncation size, expanding to marker size. '" << txt << "'. \n";
+      RavlSysLog(SYSLOG_WARNING) << "Marker larger than truncation size, expanding to marker size. '" << txt << "'. ";
       n = arg2.Size();
     }
     StrOStreamC outStr;    
     output.Push(outStr);
     TextFileC subTextBuff(value,true,true);
     if(!BuildSub(subTextBuff))
-      RavlSysLog(SYSLOG_WARNING) << "WARNING: BuildSub of '" << value << "' in template '" << templFile.Filename() << "' failed. \n";
+      RavlSysLog(SYSLOG_WARNING) << "WARNING: BuildSub of '" << value << "' in template '" << templFile.Filename() << "' failed. ";
     output.DelTop();
     StringC outs = outStr.String(); 
     if(outs.Size() > (UIntT) n) {
@@ -649,7 +649,7 @@ namespace RavlN {
   //: Make string suitable for use in plain html.
   
   StringC TemplateComplexBodyC::MakeHtml(const SubStringC &name) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TemplateComplexBodyC::MakeHtml(SubStringC&) called, '" << name << "' \n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TemplateComplexBodyC::MakeHtml(SubStringC&) called, '" << name << "' ");
     StringC ret = StringC(name);
     ret.gsub("&","&amp;");
     ret.gsub("<","&lt;");
@@ -668,7 +668,7 @@ namespace RavlN {
   //: Make sure text will be taken literally in html.
   
   bool TemplateComplexBodyC::HtmlSafe(StringC &value) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "HtmlSafe '" << value << "'\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "HtmlSafe '" << value << "'");
     if(value == "") 
       return true;
     
@@ -677,7 +677,7 @@ namespace RavlN {
     TextFileC subTextBuff(value,true,true);
     
     if(!BuildSub(subTextBuff))
-      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << value << "' in template '" << templFile.Filename() << "' failed. \n";
+      RavlSysLog(SYSLOG_WARNING) << "BuildSub of '" << value << "' in template '" << templFile.Filename() << "' failed. ";
     output.DelTop();
     StringC tmp = outStr.String();
     output.Top() << MakeHtml(tmp);
@@ -689,7 +689,7 @@ namespace RavlN {
   bool TemplateComplexBodyC::DoBefore(StringC &txt) {
     int arg1s = txt.index(':');
     if(arg1s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'before' in template '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'before' in template '" << txt << "' ignoring ";
       return false;
     }
     SubStringC arg1 = txt.before(arg1s);
@@ -707,7 +707,7 @@ namespace RavlN {
   bool TemplateComplexBodyC::DoAfter(StringC &txt) {
     int arg1s = txt.index(':');
     if(arg1s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'after' in template '" << txt << "' ignoring \n";
+      RavlSysLog(SYSLOG_ERR) << "Malformed 'after' in template '" << txt << "' ignoring ";
       return false;
     }
     SubStringC arg1 = txt.before(arg1s);
@@ -758,15 +758,15 @@ namespace RavlN {
       if(ip.IsEmpty())
 	break;
       int at = ip.index(':');
-      //cerr << "Value:'" << ip <<"'\n";
+      //RavlSysLog(SYSLOG_DEBUG) << "Value:'" << ip <<"'";
       if(at == -1) {
 	StringC buff;
 	if(Lookup(ip,buff)) {
-	  ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TemplateComplexBodyC::BuildSub(), Adding '" << buff << "'\n");
+	  ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "TemplateComplexBodyC::BuildSub(), Adding '" << buff << "' ");
 	  output.Top() << buff;
 	  continue;
 	}
-	RavlSysLog(SYSLOG_ERR) << "Unknown variable: '" << ip <<"' in template '" << templFile.Filename() << "'\n";
+	RavlSysLog(SYSLOG_ERR) << "Unknown variable: '" << ip <<"' in template '" << templFile.Filename() << "' ";
         ret = false;
 	continue;
       }
@@ -774,14 +774,14 @@ namespace RavlN {
       // Prefixed command.
       CallFunc1C<StringC &,bool> &com = commands[ip.before(at)];
       if(!com.IsValid()) {
-        RavlSysLog(SYSLOG_ERR) << "Unknown command: '" << ip.before(at) << "' in template '" << templFile.Filename() << "' \n";
+        RavlSysLog(SYSLOG_ERR) << "Unknown command: '" << ip.before(at) << "' in template '" << templFile.Filename() << "' ";
 	continue;
       }
       StringC arg(ip.after(at));
       ret &= com.Call(arg);
     }
     
-    //ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "DocumentBodyC::BuildSub(), Completed for  '" << obj.Name() << "' \n");
+    //ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "DocumentBodyC::BuildSub(), Completed for  '" << obj.Name() << "' ");
     return ret;
   }
   
