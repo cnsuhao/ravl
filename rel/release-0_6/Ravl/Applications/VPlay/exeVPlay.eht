@@ -1,8 +1,0 @@
-! author="Charles Galambos"
-! docentry="Ravl.Applications.VPlay"
-
-: Play a Video sequence.
-
-This program uses the RAVL sequence handling to read a 
-video sequence and display it using the GTK based GUI interface.
-
