@@ -89,12 +89,8 @@ namespace RavlN {
     return 0;
   }
 
-
   static bool initXMLFactoryStuff = InitMatrixXMLFactory();
 
-  void InitMatrixIO()
-  {}
-  
   FileFormatStreamC<MatrixC> FileFormatStream_Matrix;
   FileFormatStreamC<VectorC> FileFormatStream_Vector;
   FileFormatStreamC<VectorMatrixC> FileFormatStream_VectorMatrix;
@@ -112,4 +108,8 @@ namespace RavlN {
   FileFormatBinStreamC<SArray1dC<MatrixC> > FileFormatBinStream_SArray1dC_Matrix;
   FileFormatBinStreamC<SArray1dC<VectorC> > FileFormatBinStream_SArray1dC_Vector;
   FileFormatBinStreamC<SArray1dC<VectorMatrixC> > FileFormatBinStream_SArray1dC_VectorMatrix;
+
+  void InitMatrixIO()
+  {}
+
 }
