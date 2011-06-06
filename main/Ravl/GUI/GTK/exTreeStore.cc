@@ -130,7 +130,7 @@ int main(int nargs,char **argv) {
   // Create a new tree view displaying the columns
   TreeViewC treeView(treeStore,cols);
   
-  // Use the colour from column 'Colour' from the store to set the forground of column 1
+  // Use the colour from column 'Colour' from the store to set the foreground of column 1
   treeView.SetAttribute("AString","foreground","Colour"); 
   
   // Allow bool to be inconsistent
