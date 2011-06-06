@@ -342,7 +342,7 @@ namespace RavlGUIN {
   bool TreeViewBodyC::SetAttribute(const StringC &colName,UIntT subCol,const StringC &key,const StringC &value,bool proxy) {
     IntT colNum = ColumnName2Number(colName);
     if(colNum < 0) {
-      cerr << "TreeViewBodyC::SetAttribute(), Unknown column '" << colName << "' \n";
+      RavlSysLog(SYSLOG_ERR) << "TreeViewBodyC::SetAttribute(), Unknown column '" << colName << "' ";
       return false;
     }    
     return SetAttribute(colNum,subCol,key,value,proxy);
@@ -356,7 +356,8 @@ namespace RavlGUIN {
     if(proxy) { // Proxy ?
       UIntT sourceCol = treeModel.ColNumber(attrValue);
       if(sourceCol == ((UIntT) -1)) {
-        cerr << "Failed to find column '" << colName << "' \n";
+        RavlSysLog(SYSLOG_ERR) << "Failed to find column '" << colName << "' \n";
+        RavlAssert(0);
         return false;
       }
       RavlAssert(renderer != 0);
@@ -396,7 +397,9 @@ namespace RavlGUIN {
     else if (attrName == "renderer") 
     {} 
     else  { // Don't know!!
-      cerr << "TreeViewBodyC::SetAttribute, WARNING: Unknown attribute '" << attrName << "' \n";
+      RavlSysLog(SYSLOG_ERR) << "TreeViewBodyC::SetAttribute, Unknown attribute '" << attrName << "' ";
+      RavlAssert(0);
+      return false;
     }
 
     return true;
