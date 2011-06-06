@@ -30,7 +30,7 @@ namespace RavlGUIN {
   DTexTriMesh3DBodyC::DTexTriMesh3DBodyC(const TexTriMeshC &oTexTriMesh)
     :  DTriMesh3DBodyC(oTexTriMesh),
        tmodel(oTexTriMesh),
-       texNames(NULL)
+       texNames(0)
   {}
   //: Constructor.
 
