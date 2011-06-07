@@ -1,0 +1,113 @@
+﻿Current limitations
+
++ QMake not currently modified to use Config.Local for compiler options, etc.
+  (still needs config.XXX).
+
+	- QMake '.mk' makefiles need updating to incorporate the new work. This
+	  may be a good opportunity to look at pruning any superfluous code in
+	  these files. For instance, is ROOTDIR ever set as an input to the
+	  build process, are the Java or Cuda parts of the makefiles currently
+	  exercised?
+
++ Configuration for (finding the location of) the utilities necessary for
+  documentation production is not currently undertaken by configure. 
+
+	- With the run-time requirements for deploying the documentation (web
+	  server, indexing and search services), the provision of the Ravl
+	  documentation will be considered as a separate, possible future,
+	  sub-project. Web availability of the documentation somewhat obviates
+	  this requirement.
+
++ Static version of single library currently not configured for selective
+  linking (MUSTLINK infrastructure needs incorporating) so client code must
+  include the whole library (using the -Wl,--whole-archive switch). This
+  results in unusably large binaries
+
+	- There are several ways to allow the removal of the “greedy” linking
+
+		+ Include the MUSTLINKS in the user's link in much the same way
+		  as currently 
+
+		+ Force the linker to regard the relevant functions as
+		  undefined via the -u switch. The user will have to add these
+		  switches to their link-line.
+
+		+ Replace the current mechanism with an initialisation function
+		  the client code must call to enable the requisite part of
+		  Ravl. The initialisation function will effectivly be a
+		  renamed version of the current MUSTLINK function, so will
+		  bring about the link organically.
+
+	  The benefit of the last approach is that this optimises the amount of
+	  code that will be linked into a binary. The downside is this requires
+	  more end-user knowledge. For the first approaches, we can provided a
+	  pro-forma link line/makefile for the user which addresses this
+	  somewhat.
+
++ Shared version of single library currently still attempts dynamic loads of
+  individual component libraries.
+
+	- Rectification pending decision on future of MUSTLINKS
+
++ configure script currently does not produce compiler options for Mac or BSD
+  platforms. 
+	- Current state of development, will be provided.
+
++ Configure script currently does not produce platform specific options for
+  ARFLAGS; LDFLAGS; CPPFLAGS; LDLIBFLAGS; MAKEFLAGS
+
+	- Current state of development, will be provided.
+
++ Failure of testDataProc test program when linked against a single library
+  (static or shared).
+
+	- Failure is due to a default type selection activating different code
+	  when using the single library. Test program assumes the default
+	  conversion selected (as no format type is specified) will work with
+ 	  the test data. However, with more types available in the single
+	  library (compared to the targetted subset of libraries usually
+	  linked in for the test), the default picked fails when using the
+	  single library. This is initially a failing on the test program but
+	  does highlight that:
+
+		 + Default format selection can be improved to better select
+		   the conversion based on the data format.
+
+		 + (As the failure is on a conversion back from another default
+		   conversion into a buffer) default selection would be best if
+		   the same default is selected in both directions (not use one
+		   conversion in one direction and another in the reverse)
+
+		 + Some conversions produce fatal errors if they find they
+		   cannot convert the supplied data. Certainly, in the default
+		   case, the conversion should be more robust and allow a new
+		   default to be tried if the conversion fails.
+
+	  This test failure is an indication of existing limitations in Ravl
+	  that are made more apparent by the single library, rather than being
+	  a newly introduced issue. Moving to using an initialisation function
+	  to solve the MUSTLINKS issue (see above) will mitigate this somewhat,
+	  as we will return to a situation where the available conversions are
+	  more targetted to what the user is doing, even for the single library.
+
++ No modification to the existing documentation has yet been carried out to
+  reflect the new build system.
+
+	- This will be carried out prior to committal of the first phase of
+	  development.
+
++ No analysis has been undertaken on if/how the modifications required for this
+  work influence other systems (such as any on-going use of AutoPort2) that
+  take the Ravl source code as an input.
+
+	- This will be carried out prior to committal of the first phase of
+	  development.
+
++ There is currently no support for debug or (g)prof versions of the single
+  library or executables (utils, tests or examples) built against them. 
+
+	- These can be provided, balancing against complexity of the
+	  top-level makefile which the end-users will want to understand.
+	  If any of these libraries are provided, a naming convention will
+	  need determining when we copy Ravl into the system directories.
+
