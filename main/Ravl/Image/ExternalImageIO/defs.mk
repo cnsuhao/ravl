@@ -1,11 +1,10 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 #! file="Ravl/Image/ExternalImageIO/defs.mk"
-#! rcsid="$Id$"
 #
 # This directory contains software which interfaces Ravl to external
 # image IO libraries.  Edit ExtImgIO.hh to specify which libraries
@@ -13,6 +12,11 @@
 
 DONOT_SUPPORT=cygwin arm
 DESCRIPTION = External Image IO routines... like jpeg,gif,tiff
+
+REQUIRES=JPEG LibTIFF libPNG
+# Currently need all 3 - possible dev is making these singularly optional
+# Need to popogate any changes in this REQUIRES to any other libs that rely on
+# this one (e.g. Contrib/RavlVidFileFormat)
 
 PACKAGE=Ravl/Image
 

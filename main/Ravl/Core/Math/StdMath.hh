@@ -12,7 +12,7 @@
 //! userlevel=Normal
 //! author="Radek Marik"
 //! docentry="Ravl.API.Math"
-//! rcsid="$Id$"
+//! rcsid="$Id: StdMath.hh 7009 2008-10-27 22:11:52Z kier $"
 //! date="20/11/1995"
 
 #include "Ravl/config.h"
@@ -36,7 +36,7 @@ extern "C" {
   double erfc __P((double)); // not in standard <math.h> file
 }
 #endif
-#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_IRIX || RAVL_OS_ALPHA
+#if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_IRIX || RAVL_OS_OSF
 extern "C" {
   double erf(double x); // not in standard <math.h> file
   double erfc(double x); // not in standard <math.h> file

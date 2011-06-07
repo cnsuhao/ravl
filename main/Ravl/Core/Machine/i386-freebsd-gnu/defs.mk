@@ -16,4 +16,4 @@ HEADERS=Atomic.hh mmx.hh
 
 PLIB=RavlCore
 
-USESLIBS=Math
+USESLIBS=

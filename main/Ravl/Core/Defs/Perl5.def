@@ -1,21 +1,2 @@
-# This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2001, University of Surrey.
-# This code may be redistributed under the terms of the GNU lesser
-# public license (LGPL). See the lgpl.licence file for details or
-# see http://www.gnu.org/copyleft/lesser.html
-# file-header-ends-here
-ifndef Perl5DEF
-Perl5DEF = 1
+$(error Including a dropped .def file)
 
-
-ifeq ($(ARC),linux)
-INCLUDES += `perl -MExtUtils::Embed -e perl_inc`
-EXELIB := $(shell perl -MConfig -e 'print "$$Config{ccdlflags} -L$$Config{archlibexp}/CORE"') -lperl $(EXELIB)
-endif
-
-ifeq ($(ARC),linux64)
-INCLUDES += `perl -MExtUtils::Embed -e perl_inc`
-EXELIB := $(shell perl -MConfig -e 'print "$$Config{ccdlflags} -L$$Config{archlibexp}/CORE"') -lperl $(EXELIB)
-endif
-
-endif

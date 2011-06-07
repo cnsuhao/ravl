@@ -1,5 +1,5 @@
 
-REQUIRES=iksemel
+REQUIRES=iksemel RLog
 
 PACKAGE=Ravl/XMPP
 

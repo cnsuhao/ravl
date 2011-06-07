@@ -1,29 +1,19 @@
-# This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2005, University of Surrey
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2005-11,  University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-ifndef EHS_Def 
-EHS_Def = 1
 
-EHS_EXELIB = 
+$(error EHS not currently supported)
 
-ifdef PCRE_HOME
-  INCLUDES += -I$(PCRE_HOME)/include
-  EHS_EXELIB += -L$(PCRE_HOME)/lib -Wl,-rpath,$(PCRE_HOME)/lib 
-endif
+ifndef EHS_DEF
 
-ifdef PME_HOME
-  INCLUDES += -I$(PME_HOME)/include
-  EHS_EXELIB += -L$(PME_HOME)/lib -Wl,-rpath,$(PME_HOME)/lib 
-endif
+  EHS_DEF=1
 
-ifdef EHS_HOME
-  INCLUDES += -I$(EHS_HOME)/include
-  EHS_EXELIB += -L$(EHS_HOME)/lib -Wl,-rpath,$(EHS_HOME)/lib 
-endif
+  EXELIB := $(libehs_LIBS) $(EXELIB)
 
-EXELIB := -lpme -lehs  $(EHS_EXELIB)  $(EXELIB)
+  INCLUDES += $(libehs_CFLAGS)
 
 endif
+

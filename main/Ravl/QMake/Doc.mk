@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -7,40 +7,12 @@
 ################################
 # Quick RAVL make system.
 # Documentation make file.
-# $Id$
-#! rcsid="$Id$"
 #! file="Ravl/QMake/Doc.mk"
 
-ifndef MAKEHOME
-  MAKEHOME=.
-endif
-
-ifndef INSTALLHOME
- INSTALLHOME = $(MAKEHOME)/../../..#
-endif
-
-MAKEFLAGS += --no-print-directory -r 
 CXXDOC=$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/CxxDoc
 
 AUTOTEMPL=$(MAKEHOME)/../AutoDoc
 
-#/vol/vssp/cpug/Ravl/src/doc/Auto
-
-ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-endif
-
-ifdef QMAKE_INFO
-  SHOWIT = 
-else
-  SHOWIT = @
-endif
-
-ifndef QCWD
-  QCWD := $(shell 'pwd')
-endif
-
-include $(MAKEHOME)/config.$(ARC)
 -include $(QCWD)/defs.mk
 
 ##########################
@@ -81,8 +53,6 @@ include $(MAKEHOME)/Dirs.mk
 
 .PRECIOUS : %/.dir %.html %.eht
 
-VPATH = $(QCWD)
-
 ############################
 # Some targets
 
@@ -111,13 +81,6 @@ TARG_DOCNODE=$(patsubst %,$(INST_DOCNODE)/%,$(DOCNODE))
 	  fi ; \
 	fi; \
 
-#	$(SHOWIT)if [ -d $(WORKTMP) ] ; then \
-#	  $(RM) -r $(WORKTMP) ; \
-#	fi ; 
-
-#	if [ -r ii_files ] ; then \
-#	  $(RM) ii_files ; \
-#	fi ; 
 
 #############################
 # Build Documentation.
@@ -141,7 +104,7 @@ endif
 $(INST_EHT)/% : % $(INST_EHT)/.dir
 	$(SHOWIT)echo "--- Installing EHT $(@F) to $(INST_EHT)" ; \
 	if [ -f $(INST_EHT)/$(@F) ] ; then \
-	  chmod +w $(INST_EHT)/$(@F) ; \
+	  $(CHMOD) +w $(INST_EHT)/$(@F) ; \
 	fi ; \
 	$(CP) $< $(INST_EHT)/$(@F) ; \
 	$(CHMOD) 444 $(INST_EHT)/$(@F)
@@ -190,7 +153,7 @@ $(INST_DOCEXAMPLES)/% : % $(INST_DOCEXAMPLES)/.dir
 $(INST_DOCNODE)/% : % $(INST_DOCNODE)/.dir
 	$(SHOWIT)echo "--- Installing DocNode $(@F)" ; \
 	if [ -f $(INST_DOCNODE)/$(@F) ] ; then \
-	  chmod +w $(INST_DOCNODE)/$(@F) ; \
+	  $(CHMOD) +w $(INST_DOCNODE)/$(@F) ; \
 	fi ; \
 	$(CP) $< $(INST_DOCNODE)/$(@F) ; \
 	$(CHMOD) 444 $(INST_DOCNODE)/$(@F)

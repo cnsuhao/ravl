@@ -6,43 +6,12 @@
 # file-header-ends-here
 #! file="Ravl/QMake/Main.mk"
 
-ifndef MAKEHOME
-  MAKEHOME=.
-endif
-
-ifndef INSTALLHOME
- INSTALLHOME = $(MAKEHOME)/../../..#
-endif
-
 export TARGET
-
-MAKEFLAGS += --no-print-directory -r
-
-ifndef QCWD
-ifeq ($(ARC),freebsd_x86)
- # TODO: pawd hangs for a minute on a FreeBSD system where amd isn't running
- QCWD :=$(shell sh -c "pwd")
-else
- QCWD :=$(shell sh -c "if [ -x /usr/bin/pawd ] ; then /usr/bin/pawd ; else pwd ; fi")
-endif
-endif
-
-VPATH = $(QCWD)
-
-# Setup default pager.
-ifndef PAGER
- PAGER = more
-endif
-
-# The following is needed to avoid problems with
-SYNC=sync
 
 #########################
 # Include user make info.
 
 # Setup defaults first
-
-ANSIFLAG = -ansi
 
 ifdef USERBUILD
  USESLIBS = Auto
@@ -57,15 +26,7 @@ QMAKECONFIGHOME = $(MAKEHOME)
 endif
 
 # Include a local system file
-ifdef CONFIGFILE
 include ${CONFIGFILE}
-else
-include $(QMAKECONFIGHOME)/config.local.$(ARC)
-endif
-
-# Include system stuff.
-
-include $(MAKEHOME)/config.$(ARC)
 
 # Include users stuff.
 
@@ -83,16 +44,8 @@ $(INSTALLHOME)/lib/RAVL/libdep/*.qpr : $(MAKEHOME)/config.$(ARC)
 #########################
 # Setup defaults.
 
-BINDEP := perl $(MAKEHOME)/BinDep.pl
-QLIBS := perl $(MAKEHOME)/QLibs.pl
-
-ifndef TOUCH
-  TOUCH=touch
-endif
-
-ifndef SHAREDEXT 
- SHAREDEXT:=so
-endif
+BINDEP := $(PERL) $(MAKEHOME)/BinDep.pl
+QLIBS := $(PERL) $(MAKEHOME)/QLibs.pl
 
 ifndef SHAREDBUILD
  LIBEXT:=.a
@@ -377,13 +330,6 @@ ifdef SHAREDBUILD
   NVCCFLAGS += -shared
 endif
 
-# If QMAKE_INFO is set don't prepend commands with @ so we can see what they are.
-ifdef QMAKE_INFO
-  SHOWIT=
-else
-  SHOWIT=@
-endif
-
 #####################
 # Build targets.
 
@@ -499,7 +445,7 @@ else
  TARG_EXEOBJS=
  TARG_TESTEXE =
  TARG_TESTEXEOBJS=
- TARG_DEPEND=$(MAKEHOME)/Sys.def
+ TARG_DEPEND=
  TARG_NESTED=
  TARG_SCRIPT=
  OBJS_DEPEND=
@@ -613,7 +559,7 @@ endif
 ###############################
 # Make directories
 
-.PRECIOUS: %/.dir
+.PRECIOUS : %/.dir
 
 %/.dir:
 	$(SHOWIT)if [ ! -d $* ] ; then \
@@ -626,17 +572,7 @@ endif
 	  fi ; \
 	fi; \
 
-$(INST_GENBIN)/.dir:
-	$(SHOWIT)if [ ! -d $(INST_GENBIN) ] ; then \
-	  echo "--- Making dir $(INST_GENBIN) "; \
-	  $(MKDIR) $(INST_GENBIN) ; \
-	  $(TOUCH) -r $(MAKEHOME)/Main.mk $(INST_GENBIN)/.dir ; \
-	else  \
-	  if [ ! -f $(INST_GENBIN)/.dir ] ; then \
-	    $(TOUCH) -r $(INST_GENBIN) $(INST_GENBIN)/.dir ; \
-	  fi ; \
-	fi; \
-	
+
 ###########################
 # Nested directories
 
@@ -742,7 +678,6 @@ $(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
 	fi 
 
 
-#	touch -r $< $(INST_HEADER)/$(@F) ; \
 
 build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS)
 
@@ -815,9 +750,9 @@ $(TARG_MUSTLINK_OBJS) : $(INST_FORCEOBJS)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT) $
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
-	  rm $(WORKTMP)/$*.d ; \
+	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(MKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -826,9 +761,9 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(I
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
-	  rm $(WORKTMP)/$*.d ; \
+	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(MKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -837,9 +772,9 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
-	  rm $(WORKTMP)/$*.d ; \
+	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(MKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -848,9 +783,9 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_D
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $<" ; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
-	  rm $(WORKTMP)/$*.d ; \
+	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(MKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -859,9 +794,9 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEN
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
-	  rm $(WORKTMP)/$*.d ; \
+	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(MKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -870,7 +805,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Compile $(VAR_DISPLAY_NAME) $< "; \
 	if [ -f $(WORKTMP)/$*.d ] ; then \
-	  rm $(WORKTMP)/$*.d ; \
+	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
 	echo "---- Object $< "; \
 	if $(NVCC) -c $(CPPFLAGS) $(NVCCFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
@@ -958,16 +893,6 @@ $(INST_LIB)/dummymain$(OBJEXT) :: $(MAKEHOME)/dummymain$(CEXT) $(INST_LIB)/.dir
 	$(CC) -c $(MAKEHOME)/dummymain$(CEXT) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
 
 
-# This lib update is nasty but fast, especialy if you have many objects.
-ifndef XARGS
-  XARGS = xargs
-endif
-
-ifndef TR
-  TR = tr
-endif
-
-
 ifndef SHAREDBUILD
 ifeq ($(NOLIBRARYPRELINK),1)
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
@@ -979,12 +904,12 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	if $(CXX) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
-	  rm $(WORKTMP)/a.out ; \
+	  $(RM) $(WORKTMP)/a.out ; \
 	  $(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	  $(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; \
 	else \
 	  if [ -f $(WORKTMP)/a.out ] ; then \
-	    rm $(WORKTMP)/a.out ; \
+	    $(RM) $(WORKTMP)/a.out ; \
 	  fi ; \
 	  exit 1 ; \
 	fi
@@ -1012,16 +937,16 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	  grep -v  ":$(DIRECTORYID)$$" $(INST_OBJS)/libObjs.txt | awk -F: '{ print $$1 ":" $$2 }' >> $(INST_OBJS)/libObjs.new ; \
 	fi ; \
 	sort -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
-	rm $(INST_OBJS)/libObjs.new ; \
+	$(RM) $(INST_OBJS)/libObjs.new ; \
         echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
 	awk -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
 
 $(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
 	$(SHOWIT)echo "--- Building " $(@F) ; \
-	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | xargs cat > $(INST_OBJS)/libSharedObjs.new ; \
+	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | $(XARGS) cat > $(INST_OBJS)/libSharedObjs.new ; \
 	sort -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | awk -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
-	rm $(INST_OBJS)/libSharedObjs.new ; \
+	$(RM) $(INST_OBJS)/libSharedObjs.new ; \
   echo "---- Building single shared library $(INST_LIB)/$(@F) " ; \
 	$(CXX) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
@@ -1034,7 +959,7 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT)(%$(OBJEXT)) : $(INST_OBJS)/%$(OBJEXT)
 $(INST_LIB)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT)
 	$(SHOWIT)echo "--- MustLink $(VAR_DISPLAY_NAME)" $*$(OBJEXT)  ; \
 	if [ -f $(INST_LIB)/$*$(OBJEXT) ] ; then \
-	  rm -f $(INST_LIB)/$*$(OBJEXT); \
+	  $(RM) -f $(INST_LIB)/$*$(OBJEXT); \
 	fi ; \
 	cp /$< $(INST_LIB)/$*$(OBJEXT) ; \
 	$(CHMOD) a-w $(INST_LIB)/$*$(OBJEXT)
@@ -1098,13 +1023,12 @@ $(ROOTDIR)/share/RAVL/config.arc : $(ROOTDIR)/share/RAVL/.dir $(MAKEHOME)/config
 	cp $(MAKEHOME)/config.arc $(ROOTDIR)/share/RAVL/config.arc ; \
 	$(CHMOD) 555 $(ROOTDIR)/share/RAVL/config.arc
 
-
-$(INST_GENBIN)/RAVLExec : $(MAKEHOME)/RAVLExec $(INST_GENBIN)/.dir  $(ROOTDIR)/share/RAVL/config.arc
+$(INST_GENBIN)/RAVLExec : $(INST_GENBIN)/.dir $(MAKEHOME)/RAVLExec $(ROOTDIR)/share/RAVL/config.arc
 	$(SHOWIT)if [ -f $(INST_GENBIN)/RAVLExec ] ; then \
 	  $(CHMOD) +w $(INST_GENBIN)/RAVLExec ; \
 	  $(RM) $(INST_GENBIN)/RAVLExec ; \
 	fi ; \
-	perl $(MAKEHOME)/Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT) $(MAKEHOME)/RAVLExec $(INST_GENBIN)/RAVLExec ; \
+	$(PERL) $(MAKEHOME)/Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT) $(MAKEHOME)/RAVLExec $(INST_GENBIN)/RAVLExec ; \
 	$(CHMOD) 555 $(INST_GENBIN)/RAVLExec
 
 # This rule to be a hard link to RAVLExec, but it causes problems on some systems.

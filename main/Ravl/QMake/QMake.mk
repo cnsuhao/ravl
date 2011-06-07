@@ -1,36 +1,21 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/QMake/QMake.mk"
 
 # Setup make flags.
 
-ifndef MAKEHOME
-  MAKEHOME=.
-endif
-
-ifndef INSTALLHOME
- INSTALLHOME=$(MAKEHOME)/../../..#
-endif
-
-# a slight change, now ARC is ALWAYS defined from the config.arc script
-#ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-#endif
-
-export ARC
 
 ifndef LOCALARC
-  LOCALARC=$(shell $(MAKEHOME)/config.arc)#
+  LOCALARC=$(ARC)
 endif
 
 export LOCALARC
 
-MAKEDEFS:=perl -f $(MAKEHOME)/mkdefs.pl
+MAKEDEFS:=$(PERL) -f $(MAKEHOME)/mkdefs.pl
 
 # Set default uses lib to auto?
 
@@ -38,15 +23,9 @@ ifdef USERBUILD
   export USERBUILD
 endif
 
-# Make sure PAGER is defined.
-
-ifndef PAGER 
-  PAGER=more
-endif
-
 export ARC
 export LOCALBIN := $(INSTALLHOME)/lib/RAVL/$(LOCALARC)/bin
-export DPATH:=$(shell basename $(shell 'pwd'))
+export DPATH:=$(basename $(shell $(GET_CWD)))
 export TARGET
 
 SYSCONF:=$(LOCALBIN)/SysConf
@@ -134,7 +113,7 @@ endif
 ##################################
 # Do makes.
 
-MAKEFLAGS += --no-print-directory -r $(PAR_MAKE)
+MAKEFLAGS += $(PAR_MAKE)
 
 # Where commands are prefixed by 'q' frozen dependancies are used.
 # NB. Frozen dependancies can only be used where  normal make has 
@@ -625,8 +604,8 @@ redoc:
 
 distclean:
 	@echo "--- Cleaning project out. "; \
-	rm -rf $(ROOTDIR)/* \
-	rm -rf $(LOCALTMP)/*
+	$(RM) -rf $(ROOTDIR)/* \
+	$(RM) -rf $(LOCALTMP)/*
 
 ###############################################
 # Misc

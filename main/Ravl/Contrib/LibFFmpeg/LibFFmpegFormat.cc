@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
-//! rcsid = "$Id$"
+//! rcsid = "$Id: LibFFmpegFormat.cc 7863 2010-10-21 11:10:33Z craftit $"
 //! lib=RavlLibFFmpeg
 //! author = "Warren Moore"
 //! file="Ravl/Contrib/LibFFmpeg/LibFFmpegFormat.cc"
@@ -28,12 +28,12 @@
 #include "Ravl/OS/Filename.hh"
 
 extern "C" {
-#if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#else 
+#if FFMPEG_OLD_HDR
 #include <avcodec.h>
 #include <avformat.h>
+#else 
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
 #endif
 }
 

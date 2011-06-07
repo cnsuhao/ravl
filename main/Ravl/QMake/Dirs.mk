@@ -8,18 +8,6 @@
 
 # Directories used in making.
 
-ifndef MAKEHOME
- MAKEHOME = /vol/vssp/cpug/Ravl/src/Util/QMake#
-endif
-
-ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-endif
-
-ifndef INSTALLHOME
- INSTALLHOME = $(MAKEHOME)/../../..#
-endif
-
 ifndef PACKAGE
  PACKAGE=local
 endif
@@ -41,10 +29,6 @@ else
 endif
 
 PACKAGE:=$(strip $(PACKAGE))#
-
-ifndef QCWD
- QCWD :=$(shell 'pwd')#
-endif
 
 ifndef PLIB
   BASENAME:=$(PACKAGE)/None#
@@ -103,7 +87,9 @@ endif
 
 PROJ_ID := $(subst ~,,$(PROJECT_OUT))
 
-LOCALTMP:=$(TMP)/$(LOGNAME)/qm/$(PROJ_ID)/
+ifndef LOCALTMP
+ LOCALTMP:=$(TMP)/$(LOGNAME)/qm/$(PROJ_ID)/
+endif
 
 # ROOTDIR is where the software will be installed.
 

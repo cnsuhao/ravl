@@ -10,4 +10,4 @@ SOURCES = floatfann.c
 
 PLIB = fann
 
-USESLIBS=RavlCore system
+USESLIBS=RavlCore 

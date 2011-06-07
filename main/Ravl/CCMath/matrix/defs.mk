@@ -13,4 +13,4 @@ PLIB = ccmath
 TESTEXES=testValS.cc
 #LIBDEPS=ccmath_matrix.def
 
-USESLIBS=Math RavlCore	
+USESLIBS=RavlCore	

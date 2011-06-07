@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! rcsid="$Id$"
+//! rcsid="$Id: Filename.cc 7951 2011-01-05 17:10:46Z robowaz $"
 //! lib=RavlOS
 //! file="Ravl/OS/FileSystem/Filename.cc"
 
@@ -200,7 +200,7 @@ namespace RavlN {
     if(Digits < 1)
       maxretry = 0; // If we can't change the name, no point retrying.
     if(Digits > 6 || Digits < 0) {
-#ifdef QMAKE_CHECK
+#ifdef RAVL_CHECK
       cerr << "FilenameC::MkTemp(), Value out of range Digits=" << Digits << "  should be between 0 and 6 \n";
       RavlAssert(0);
 #endif

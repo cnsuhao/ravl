@@ -18,7 +18,7 @@ SINGLESO=_RavlPython
 
 USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO Python RavlNet RavlOSIO
 
-PROGLIBS=
+PROGLIBS=DynLink
 
 SWIGOPTS=-python
 

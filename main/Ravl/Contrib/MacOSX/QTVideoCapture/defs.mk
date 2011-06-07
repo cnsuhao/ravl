@@ -13,4 +13,6 @@ MAINS=exQTCapture.cc
 
 USESLIBS=RavlCore RavlOSIO RavlImageIO RavlDPDisplay ObjC OSXFoundation OSXQTKit OSXQuartzCore RavlMacOSXRunLoop
 
+PROGLIBS=DynLink
+
 MUSTLINK=LinkQTVideoCapture.cc

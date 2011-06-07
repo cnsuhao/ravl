@@ -1,46 +1,19 @@
-# This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2006, OmniPerception Ltd
-# This code may be redistributed under the terms of the GNU
-# General Public License (GPL). See the gpl.licence file for details or
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2006-11,  OmniPerception Ltd
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
 
+$(error UUIDtheo not currently supported)
+
 ifndef UUIDTHEO_DEF
+
   UUIDTHEO_DEF=1
 
-  UUIDTHEO_LIBS=-luuid
-  
-  ifdef UUIDTHEO_HOME
-    ifeq ($(UUIDTHEO_HOME),/usr)
+  EXELIB := $(UUIdTheo_LIBS) $(EXELIB)
 
-      EXELIB := $(UUIDTHEO_LIBS) $(EXELIB)
+  INCLUDES += $(UUIdTheo_CFLAGS)
 
-    else
-
-      # Directory to look for include files.
-      ifndef UUIDTHEO_INCLUDE
-        UUIDTHEO_INCLUDE=$(UUIDTHEO_HOME)/include
-      endif
-
-      # Directory to look for libraries.
-      ifndef UUIDTHEO_LIBDIR
-        UUIDTHEO_LIBDIR=$(UUIDTHEO_HOME)/lib
-      endif
-
-      # Set things up.
-      EXELIB := -L$(UUIDTHEO_LIBDIR) $(UUIDTHEO_LIBS) $(EXELIB)
-      INCLUDES += -I$(UUIDTHEO_INCLUDE)
-
-      # Hardwire library path if we know how to.
-      ifdef LIBPATHSWITCH
-        EXELIB := $(LIBPATHSWITCH)$(UUIDTHEO_LIBDIR) $(EXELIB)
-      endif
-
-    endif
-
-  else
-        
-    EXELIB := $(UUIDTHEO_LIBS) $(EXELIB)
-
-  endif
 endif
+

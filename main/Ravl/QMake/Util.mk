@@ -1,34 +1,12 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
 ################################
 # Quick RAVL make system
-# $Id$
-#! rcsid="$Id$"
 #! file="Ravl/QMake/Util.mk"
-
-ifndef MAKEHOME
- MAKEHOME = /vol/vssp/cpug/Ravl/src/Util/QMake
-endif
-
-MAKEFLAGS += --no-print-directory -r 
-
-ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-endif
-
-ifdef RAVL_INFO
-  SHOWIT = 
-else
-  SHOWIT = @
-endif
-
-ifndef QCWD
-  QCWD := $(shell 'pwd')
-endif
 
 TARG_HDRS:=$(patsubst %,$(INST_HEADER)/%,$(HEADERS)) $(LOCALHEADERS)
 
@@ -38,11 +16,8 @@ TARG_HDRS:=$(patsubst %,$(INST_HEADER)/%,$(HEADERS)) $(LOCALHEADERS)
 CIPROG = $(LOCALBIN)/ci
 COPROG = $(LOCALBIN)/co
 
-include $(MAKEHOME)/config.$(ARC)
 -include $(QCWD)/defs.mk
 include $(MAKEHOME)/Dirs.mk
-
-VPATH = $(QCWD)
 
 PLIB:=$(strip $(PLIB))
 
@@ -51,9 +26,6 @@ NESTED_OFF = $(patsubst %.r,,$(NESTED))
 
 ifndef MIRROR
   MIRROR=$(PROJECT_OUT)/src
-endif
-ifndef CHMOD
-  CHMOD = chmod
 endif
 
 #################################
@@ -154,15 +126,15 @@ ci:
 
 mirror:
 	$(SHOWIT)echo "------ Mirror $(DPATH) to $(MIRROR)/$(DPATH)" ;\
-	mkdir -p $(MIRROR)/$(DPATH); \
+	$(MKDIR_P) $(MIRROR)/$(DPATH); \
 	if [ ! -h $(MIRROR)/$(DPATH)/RCS -a ! -d $(MIRROR)/$(DPATH)/RCS ] ; then \
-	  ln -s $(QCWD)/RCS $(MIRROR)/$(DPATH)/RCS; \
+	  $(LN_S) $(QCWD)/RCS $(MIRROR)/$(DPATH)/RCS; \
 	fi ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	   mkdir -p $(MIRROR)/$(DPATH)/$$SUBDIR; \
+	   $(MKDIR_P) $(MIRROR)/$(DPATH)/$$SUBDIR; \
 	   if [ ! -h $(MIRROR)/$(DPATH)/$$SUBDIR/RCS -a ! -d $(MIRROR)/$(DPATH)/$$SUBDIR/RCS ] ; then \
-	     ln -s $(QCWD)/$$SUBDIR/RCS $(MIRROR)/$(DPATH)/$$SUBDIR/RCS; \
+	     $(LN_S) $(QCWD)/$$SUBDIR/RCS $(MIRROR)/$(DPATH)/$$SUBDIR/RCS; \
 	   fi ; \
 	   $(MAKE) mirror -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
@@ -179,9 +151,9 @@ srcinst: $(TARG_SRCINST)
 	  fi ; \
 	  if [ -f $${FILE} ] ; then \
 	    if [ -f $(MIRROR)/$(DPATH)/$${FILE} ] ; then \
-	      chmod +w $(MIRROR)/$(DPATH)/$${FILE} ; \
+	      $(CHMOD) +w $(MIRROR)/$(DPATH)/$${FILE} ; \
 	    fi ; \
-	    cp $${FILE} $(MIRROR)/$(DPATH)/$${FILE}; \
+	    $(CP) $${FILE} $(MIRROR)/$(DPATH)/$${FILE}; \
 	    $(CHMOD) a-w $(MIRROR)/$(DPATH)/$${FILE} ; \
           fi ; \
 	done ; \
@@ -199,10 +171,10 @@ $(MIRROR)/$(DPATH)/% : %
 	  $(MKDIR) $(MIRROR)/$(DPATH) ; \
 	else  \
 	  if [ -f $(MIRROR)/$(DPATH)/$(@F) ] ; then \
-	    chmod +w $(MIRROR)/$(DPATH)/$(@F) ; \
+	    $(CHMOD) +w $(MIRROR)/$(DPATH)/$(@F) ; \
 	fi ; fi ; \
 	echo "----- Installing $<" ;\
-	cp $< $(MIRROR)/$(DPATH)/$(@F) ; \
+	$(CP) $< $(MIRROR)/$(DPATH)/$(@F) ; \
 	$(CHMOD) a-w $(MIRROR)/$(DPATH)/$(@F)
 
 #############################
@@ -220,11 +192,4 @@ udchangelog:
 	  fi  \
 	done	
 
-
-#	   mkdir $(MIRROR)/$(DPATH)/$$SUBDIR; \
-#	   ln -s $$SUBDIR/RCS $(MIRROR)/$(DPATH)/$$SUBDIR/RCS; \
-
-# Use RCS.
-
-#include $(MAKEHOME)/rcs.mk
 

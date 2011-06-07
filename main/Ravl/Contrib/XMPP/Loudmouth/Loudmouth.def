@@ -4,10 +4,14 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-ifndef LIBLOUDMOUTH_DEF
-LIBLOUDMOUTH_DEF=1
 
-INCLUDES +=  `pkg-config loudmouth-1.0 --cflags`
-EXELIB := -lgthread-2.0 `pkg-config loudmouth-1.0 --libs` $(EXELIB)
+ifndef LIBLOUDMOUTH_DEF
+
+  LIBLOUDMOUTH_DEF=1
+
+  EXELIB := $(Loudmouth_LIBS) $(EXELIB)
+
+  INCLUDES += $(Loudmouth_CFLAGS)
 
 endif
+

@@ -10,7 +10,7 @@ PLIB = RavlImageProc
 
 USESLIBS=  RavlImageProc
 
-PROGLIBS = RavlDPDisplay.opt RavlExtImgIO
+PROGLIBS = RavlDPDisplay.opt RavlExtImgIO.opt
 
 EXAMPLES = exGaborFilter.cc exGaborComplex.cc
 

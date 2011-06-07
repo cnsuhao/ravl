@@ -1,12 +1,17 @@
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2001-11,  University of Surrey.
+# This code may be redistributed under the terms of the GNU Lesser
+# General Public License (LGPL). See the lgpl.licence file for details or
+# see http://www.gnu.org/copyleft/lesser.html
+# file-header-ends-here
+
 ifndef RLOG_DEF
-RLOG_DEF=1
 
-ifdef RLOG_HOME
-#EXELIB := -L$(RLOG_HOME)/lib  -lrlog $(EXELIB)
-EXELIB := -L$(RLOG_HOME)/lib -Wl,-rpath,$(RLOG_HOME)/lib -lrlog $(EXELIB)
-INCLUDES += -I$(RLOG_HOME)/include
-else
-EXELIB := -lrlog $(EXELIB)
-endif
+  RLOG_DEF=1
+
+  EXELIB := $(RLog_LIBS) $(EXELIB)
+
+  INCLUDES += $(RLog_CFLAGS)
 
 endif
+

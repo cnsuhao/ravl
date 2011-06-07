@@ -1,6 +1,8 @@
 
 PACKAGE=Ravl/XMPP
 
+REQUIRES=RLog
+
 HEADERS=XMPPConnection.hh
 
 SOURCES=XMPPConnection.cc

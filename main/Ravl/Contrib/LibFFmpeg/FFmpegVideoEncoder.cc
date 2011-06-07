@@ -29,10 +29,10 @@
 
 #ifdef LIBAVFORMAT_USE_SWSCALER
 extern "C" {
-  #if defined(LIBAVFORMAT_VERSION_MAJOR) && LIBAVFORMAT_VERSION_MAJOR >= 52
-  #include <libswscale/swscale.h>
+  #if FFMPEG_OLD_HDR
+    #include <swscale.h>
   #else
-  #include <swscale.h>
+    #include <libswscale/swscale.h>
   #endif
 }
 #endif
