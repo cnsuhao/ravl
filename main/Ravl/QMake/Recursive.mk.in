@@ -1,8 +1,11 @@
-# Development bodges
+# Start with WIP related bodges..
 
+# Force these instead of proper implementation
 ARC=linux64
 
-# End of Development Bodges
+# End of bodges
+
+
 
 INSTALLHOME=@abs_top_builddir@
 
@@ -12,8 +15,32 @@ OBJ_HOME=@abs_top_builddir@/$(ARC)
 
 include $(INSTALLHOME)/Config.Local
 
+CCPPFLAGS+=-I$(INSTALLHOME)/include -DPROJECT_OUT=\"$(INSTALLHOME)\"
+CPPFLAGS+=-I$(INSTALLHOME)/include -DPROJECT_OUT=\"$(INSTALLHOME)\"
+
+CFLAGS=$(INCLUDES)
+CXXFLAGS=$(INCLUDES)
+
 include defs.mk
 
+ifndef VAR
+  VAR=opt
+endif
+
+ifeq ($(VAR),debug)
+  CFLAGS += -g
+  CXXFLAGS += -g
+else
+ifeq ($(VAR),opt)
+    CFLAGS += -O2
+    CXXFLAGS += -O2
+else
+ifeq ($(VAR),gprof)
+      CFLAGS += -O2 -g -pg
+      CXXFLAGS += -O2 -g -pg
+endif
+endif
+endif
 
 REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
 
@@ -181,7 +208,7 @@ define buildutils
   $1: $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR) $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1
 
   $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(RAVL_CCFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(CFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR):
@@ -195,7 +222,7 @@ define buildexamples
   $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR) $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1
 
   $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(RAVL_CCFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(CFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR):
@@ -211,7 +238,7 @@ define buildtest
                 $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin/$1
 
   $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(RAVL_CCFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(CFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin:
