@@ -111,3 +111,20 @@
 	  If any of these libraries are provided, a naming convention will
 	  need determining when we copy Ravl into the system directories.
 
++ Existing config.h files (Ravl/PatternRec/fann and Core/Base) need unifying
+	- These may also require some processing in configure to fully
+	  integrate them into the autotools process. This step need no form
+	  part of the initial project.
+
++ Top level Makefile does not provide make clean install install_check targets
+	 - make install requires work to combat the hard coding of PROJECT_OUT
+	   into binaries at compile time. Work for the other targets will be
+	   undertaken as part of the same sub-project.  There is also scope
+	   for a make strip target if we adopt the autotools pseudo standard
+	   of not stripping binaries (and of building with -g) by default. To
+	   this last point, there is a related consideration of how we provide
+	   debug and profiling versions of the Ravl libraries when everything
+	   is in /usr/lib (or wherever the user selects the target loaction).
+
++ There is no support in configure for locating the RCS commands
+	 - SourceTools/CodeManager/RCSFile.cc will effectively loose support.
