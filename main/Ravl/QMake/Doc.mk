@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001-11, University of Surrey
+# Copyright (C) 2001, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -7,12 +7,40 @@
 ################################
 # Quick RAVL make system.
 # Documentation make file.
+# $Id: Doc.mk 6058 2007-02-13 11:36:50Z ees1wc $
+#! rcsid="$Id: Doc.mk 6058 2007-02-13 11:36:50Z ees1wc $"
 #! file="Ravl/QMake/Doc.mk"
 
+ifndef MAKEHOME
+  MAKEHOME=.
+endif
+
+ifndef INSTALLHOME
+ INSTALLHOME = $(MAKEHOME)/../../..#
+endif
+
+MAKEFLAGS += --no-print-directory -r 
 CXXDOC=$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/CxxDoc
 
 AUTOTEMPL=$(MAKEHOME)/../AutoDoc
 
+#/vol/vssp/cpug/Ravl/src/doc/Auto
+
+ifndef ARC
+  ARC=$(shell $(MAKEHOME)/config.arc)#
+endif
+
+ifdef QMAKE_INFO
+  SHOWIT = 
+else
+  SHOWIT = @
+endif
+
+ifndef QCWD
+  QCWD := $(shell 'pwd')
+endif
+
+include $(MAKEHOME)/config.$(ARC)
 -include $(QCWD)/defs.mk
 
 ##########################
@@ -53,6 +81,8 @@ include $(MAKEHOME)/Dirs.mk
 
 .PRECIOUS : %/.dir %.html %.eht
 
+VPATH = $(QCWD)
+
 ############################
 # Some targets
 
@@ -81,6 +111,13 @@ TARG_DOCNODE=$(patsubst %,$(INST_DOCNODE)/%,$(DOCNODE))
 	  fi ; \
 	fi; \
 
+#	$(SHOWIT)if [ -d $(WORKTMP) ] ; then \
+#	  $(RM) -r $(WORKTMP) ; \
+#	fi ; 
+
+#	if [ -r ii_files ] ; then \
+#	  $(RM) ii_files ; \
+#	fi ; 
 
 #############################
 # Build Documentation.

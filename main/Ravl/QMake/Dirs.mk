@@ -8,6 +8,18 @@
 
 # Directories used in making.
 
+ifndef MAKEHOME
+ MAKEHOME = /vol/vssp/cpug/Ravl/src/Util/QMake#
+endif
+
+ifndef ARC
+  ARC=$(shell $(MAKEHOME)/config.arc)#
+endif
+
+ifndef INSTALLHOME
+ INSTALLHOME = $(MAKEHOME)/../../..#
+endif
+
 ifndef PACKAGE
  PACKAGE=local
 endif
@@ -29,6 +41,10 @@ else
 endif
 
 PACKAGE:=$(strip $(PACKAGE))#
+
+ifndef QCWD
+ QCWD :=$(shell 'pwd')#
+endif
 
 ifndef PLIB
   BASENAME:=$(PACKAGE)/None#
