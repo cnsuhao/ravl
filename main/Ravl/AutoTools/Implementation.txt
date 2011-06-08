@@ -37,12 +37,12 @@
   While this could be changed, it may be seen as slightly counter to what an
   experienced configure user may expect.
 
-+ Much the same as for the top level Makefile.in, two helper utilities exist in
-  the src/Ravl/AutoTools directory and should be distributed in the top level
-  directory. These two scripts, config.guess and config.sub, provide support
-  functions to the configure script. They are preserved versions of members of
-  the standard GNU AutoTools suite, put into source control to record the
-  version used at any one time.
++ Much the same as for the top level Makefile.in, three helper utilities exist
+  in the src/Ravl/AutoTools directory and should be distributed in the top
+  level directory. These three scripts, config.guess, config.sub and install.sh
+  provide support functions to the configure script. They are preserved
+  versions of members of the standard GNU AutoTools suite, put into source
+  control to record the version used at any one time.
 
 + While Config.Local has not currently been integrated into the .mk makefiles,
   this is mostly just a matter of replacing the existing inclusion of
