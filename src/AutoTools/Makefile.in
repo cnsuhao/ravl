@@ -13,7 +13,7 @@ distdir = $(tarname)-$(version)
 
 MAKEHOME=@abs_top_builddir@/share/RAVL/QMake
 
-SOURCEHOME=@abs_top_srcdir@/src/Ravl
+SOURCEHOME=@abs_top_srcdir@/src
 
 INSTALLHOME=@abs_top_builddir@
 

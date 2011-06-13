@@ -9,7 +9,7 @@ dnl#JFi:ToDo-Check for ver 5 of Perl as a requirement
 dnl#JFi:ToDo-Change --with-<lib>=path to imply $path/lib and $path/include
 dnl#JFi:ToDo-Extend --with-<lib>[-{library,include}] to allow multipe entries
 dnl#JFi:ToDo-Maybe use AC_CONFIG_SRCDIR([include/ccmath/ccmath.h])
-dnl#JFi:ToDo-Implement use of ./src/Ravl/Core/Defs/*.def for pre-reqs
+dnl#JFi:ToDo-Implement use of ./src/Core/Defs/*.def for pre-reqs
 dnl#JFi:ToDo-Delay fatal error from libs not being present until all checked
 dnl#JFi:ToDo-Investigate position of 32 v 64 bit lib paths
 dnl#JFi:ToDo-Investigate position of shared v static pkg-config results
@@ -3231,7 +3231,7 @@ AC_SUBST([ALL_EXTERNAL_LIBS])
 dnl Create Makefiles and Config.Local
 AC_CONFIG_FILES([Config.Local])
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([share/RAVL/QMake/SingleLib.mk:src/Ravl/QMake/SingleLib.mk.in])
-AC_CONFIG_FILES([share/RAVL/QMake/User.mk:src/Ravl/QMake/User.mk.in])
-AC_CONFIG_FILES([share/RAVL/QMake/Recursive.mk:src/Ravl/QMake/Recursive.mk.in])
+AC_CONFIG_FILES([share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in])
+AC_CONFIG_FILES([share/RAVL/QMake/User.mk:src/QMake/User.mk.in])
+AC_CONFIG_FILES([share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in])
 AC_OUTPUT

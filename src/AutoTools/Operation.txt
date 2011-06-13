@@ -33,6 +33,10 @@
   combined configuration file (Config.Local), QMake should behave as
   previously.
 
++ Installation from the Git repository currently requires the manually copying
+  the files: configure; config.guess; config.sub; install.sh and Makefile.in
+  from the src/AutoTools directory into the root of the Ravl source directory.
+
 + Running configure will ensure the relevant compiler settings for the current
   platform are recorded in Config.Local alongside the location of all the
   required system tools. By default, configure creates a configuration where
@@ -90,20 +94,4 @@
   be copied to the top level directory of the Ravl source tree; at the same
   level as the src directory. In addition, the src/Ravl/AutoTools/config.guess
   and config.sub files must also be copied to the same directory.
-
-+ Installation from the Git repository requires the following steps to
-  replicate the source archive installation a user would receive.
-
-	- Having downloaded the source from git, copy the ravl/main directory
-	  to a suitable location, say $RAVL. This is so that when we create the
-	  working copies of configure and its helper scripts we cannot put them
-	  back into Git by accident.
-	- Rename the copyed main directory as src.
-	- Change directory to $RAVL/src/Ravl/AutoTools.
-	- run the GNU AutoTools program; autoreconf (this will obviously
-	  require this package to already be installed on your machine).
-	- Copy the resulting, new configure script to the $RAVL directory.
-	- Copy config.guess, config.sub and install.sh to $RAVL as well.
-	- The source is now in the form an installation archive should provide.
-	  Simply continue as per the instructions at the top of this document.
 	 

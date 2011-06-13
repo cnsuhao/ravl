@@ -12940,11 +12940,11 @@ ac_config_files="$ac_config_files Config.Local"
 
 ac_config_files="$ac_config_files Makefile"
 
-ac_config_files="$ac_config_files share/RAVL/QMake/SingleLib.mk:src/Ravl/QMake/SingleLib.mk.in"
+ac_config_files="$ac_config_files share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in"
 
-ac_config_files="$ac_config_files share/RAVL/QMake/User.mk:src/Ravl/QMake/User.mk.in"
+ac_config_files="$ac_config_files share/RAVL/QMake/User.mk:src/QMake/User.mk.in"
 
-ac_config_files="$ac_config_files share/RAVL/QMake/Recursive.mk:src/Ravl/QMake/Recursive.mk.in"
+ac_config_files="$ac_config_files share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -13649,9 +13649,9 @@ do
   case $ac_config_target in
     "Config.Local") CONFIG_FILES="$CONFIG_FILES Config.Local" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "share/RAVL/QMake/SingleLib.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/SingleLib.mk:src/Ravl/QMake/SingleLib.mk.in" ;;
-    "share/RAVL/QMake/User.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/User.mk:src/Ravl/QMake/User.mk.in" ;;
-    "share/RAVL/QMake/Recursive.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/Recursive.mk:src/Ravl/QMake/Recursive.mk.in" ;;
+    "share/RAVL/QMake/SingleLib.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in" ;;
+    "share/RAVL/QMake/User.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/User.mk:src/QMake/User.mk.in" ;;
+    "share/RAVL/QMake/Recursive.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
