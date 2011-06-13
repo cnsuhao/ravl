@@ -1,2 +1,8 @@
 core
 core.*
+/Makefile.in
+/configure
+/config.guess
+/config.sub
+/install-sh
+autom4te.cache
