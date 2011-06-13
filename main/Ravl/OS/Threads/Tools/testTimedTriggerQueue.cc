@@ -19,32 +19,44 @@
 using namespace RavlN;
 
 const int noTests = 10;
+const RealT g_timePeriod = 2.0;
+const RealT maxTimerError = 0.04;
 
 DateC when[noTests];
 
 bool MarkTime(int &i) {
   when[i] = DateC(true); // Mark now.
+  RavlN:Sleep(0.05);
   //  cerr << " i:" << i << "\n";
   return true;
 }
 
-const RealT maxTimerError = 0.04;
 
 int main()
 {
   cerr << "Running test... \n";
-  TimedTriggerQueueC eventQueue(100);
+  TimedTriggerQueueC eventQueue(true);
   Sleep(0.01);  // Give event queue time to setup properly...
   DateC requestedTime[noTests];
   int i;
-  for(i = 0;i < 10;i++) {
-    requestedTime[i] = DateC(true) + Random1();    
-    eventQueue.Schedule(requestedTime[i],Trigger(MarkTime,i));
+  for(i = 0;i < noTests;i++) {
+#if 0
+    // Test handling of no delay
+    if(i % 2 == 0) {
+      requestedTime[i] = DateC::NowUTC();
+      eventQueue.Schedule(-1.0,Trigger(MarkTime,i));
+    }
+    else
+#endif
+    {
+      requestedTime[i] = DateC::NowUTC() + Random1()*g_timePeriod;
+      eventQueue.Schedule(requestedTime[i],Trigger(MarkTime,i));
+    }
   }
-  Sleep(1.1);  // Wait for all events to take place.
-  for(i = 0;i < 10;i++) {
+  Sleep(g_timePeriod + maxTimerError*10.0);  // Wait for all events to take place.
+  for(i = 0;i < noTests;i++) {
     RealT diff = (requestedTime[i] - when[i]).Double();
-    cerr << "Timing error:" << diff << "\n";
+    cerr << "Timing error:" << diff << " " << requestedTime[i].ODBC(false,true) << " " << when[i].ODBC(false,true) << " \n";
     if(fabs(diff) > maxTimerError) {
       cerr << "ERROR: Timing out of spec \n";
       return 1;
