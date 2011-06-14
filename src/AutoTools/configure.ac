@@ -813,7 +813,7 @@ then
       RAVL_DEBUG_CFLAGS=" -g "$RAVL_DEBUG_CFLAGS
    fi
    RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
-   RAVL_SHARED_CFLAGS=" -shared -fpic "
+   RAVL_SHARED_CFLAGS=" -shared -fPIC "
    RAVL_PROF_CFLAGS=" -p "
    RAVL_GPROF_CFLAGS=" -pg "
 else
@@ -903,7 +903,7 @@ then
       RAVL_DEBUG_CCFLAGS=" -g "$RAVL_DEBUG_CCFLAGS
    fi
    RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
-   RAVL_SHARED_CCFLAGS=" -shared -fpic "
+   RAVL_SHARED_CCFLAGS=" -shared -fPIC "
    RAVL_PROF_CCFLAGS=" -p "
    RAVL_GPROF_CCFLAGS=" -pg "
 else
@@ -3099,11 +3099,11 @@ then
                 # Drop -Wall from {C}CFLAGS
                 RAVL_GLOBAL_CFLAGS=`echo " $RAVL_GLOBAL_CFLAGS " | $SED 's/ -Wall / /'`
                 RAVL_GLOBAL_CCFLAGS=`echo " $RAVL_GLOBAL_CCFLAGS " | $SED 's/ -Wall / /'`
-                # Drop -fpic from {C}CFLAGS and LDFLAFS
-                RAVL_SHARED_CFLAGS=`echo " $RAVL_SHARED_CFLAGS " | $SED 's/ -fpic / /'`
-                RAVL_SHARED_CCFLAGS=`echo " $RAVL_SHARED_CCFLAGS " | $SED 's/ -fpic / /'`
+                # Drop -fPIC from {C}CFLAGS and LDFLAGS
+                RAVL_SHARED_CFLAGS=`echo " $RAVL_SHARED_CFLAGS " | $SED 's/ -fPIC / /'`
+                RAVL_SHARED_CCFLAGS=`echo " $RAVL_SHARED_CCFLAGS " | $SED 's/ -fPIC / /'`
                 # + Add -Wl,-export-dynamic to LDFLAGS
-                RAVL_SHARED_LDFLAGS=`echo " $RAVL_SHARED_LDFLAGS -Wl,-export-dynamic" | $SED 's/ -fpic / /'`
+                RAVL_SHARED_LDFLAGS=`echo " $RAVL_SHARED_LDFLAGS -Wl,-export-dynamic" | $SED 's/ -fPIC / /'`
                 # .exe suffix
                 RAVL_EXEEXT=.exe#
                 # Remember, source relies on __CYGWIN__ being set by the 
