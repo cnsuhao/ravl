@@ -74,8 +74,8 @@ PACKAGE=local
 endif
 
 ifeq ($(strip $(PLIB)),)
-NOLOCALLIB=$(addsuffix .o,$(basename $(SOURCES)))
 PLIB=$(PACKAGE)/None
+NOLOCALLIB=$(addprefix $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/,$(addsuffix .o,$(basename $(SOURCES))))
 endif
 # Some dirs build no library, only exes using SOURCES as additional objs.
 # In these dirs, derive a list of '.o's from SOURCES and add them to the link 
