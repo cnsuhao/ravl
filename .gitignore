@@ -6,3 +6,4 @@ core.*
 /config.sub
 /install-sh
 autom4te.cache
+tmp.ppm
