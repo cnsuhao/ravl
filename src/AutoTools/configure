@@ -736,21 +736,31 @@ TR
 YFLAGS
 YACC
 SORT
-RANLIB
 LEXLIB
 LEX_OUTPUT_ROOT
 LEX
 CHOWN
 CHMOD
 CHGRP
-AR
 PKG_CONFIG
 MKDIR_P
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
+RAVL_MAKEFLAGS
+MAKEFLAGS
+RAVL_ARFLAGS
+ARFLAGS
 UNDEFSYMB
 LIBPATHSWITCH
+RAVL_SHARED_LDLIBFLAGS
+RAVL_PROF_LDLIBFLAGS
+RAVL_OPT_LDLIBFLAGS
+RAVL_GPROF_LDLIBFLAGS
+RAVL_GLOBAL_LDLIBFLAGS
+RAVL_DEFAULT_LDLIBFLAGS
+RAVL_DEBUG_LDLIBFLAGS
+RAVL_CHECK_LDLIBFLAGS
 RAVL_SHARED_LDFLAGS
 RAVL_PROF_LDFLAGS
 RAVL_OPT_LDFLAGS
@@ -775,6 +785,8 @@ RAVL_GLOBAL_CFLAGS
 RAVL_DEFAULT_CFLAGS
 RAVL_DEBUG_CFLAGS
 RAVL_CHECK_CFLAGS
+RANLIB
+AR
 LD
 CXXCPP
 ac_ct_CXX
@@ -4457,7 +4469,158 @@ fi
 
 
 
-# Set relevant flags dependant on the compilers we have found
+# Look for archive tools
+
+# Extract the first word of "ar", so it can be a program name with args.
+set dummy ar; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_AR+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $AR in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_AR="$AR" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_AR="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_AR" && ac_cv_path_AR="Missing"
+  ;;
+esac
+fi
+AR=$ac_cv_path_AR
+if test -n "$AR"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AR" >&5
+$as_echo "$AR" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test $AR = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working ar required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+
+if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
+set dummy ${ac_tool_prefix}ranlib; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_RANLIB+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$RANLIB"; then
+  ac_cv_prog_RANLIB="$RANLIB" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_RANLIB="${ac_tool_prefix}ranlib"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+RANLIB=$ac_cv_prog_RANLIB
+if test -n "$RANLIB"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RANLIB" >&5
+$as_echo "$RANLIB" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_prog_RANLIB"; then
+  ac_ct_RANLIB=$RANLIB
+  # Extract the first word of "ranlib", so it can be a program name with args.
+set dummy ranlib; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_ac_ct_RANLIB+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$ac_ct_RANLIB"; then
+  ac_cv_prog_ac_ct_RANLIB="$ac_ct_RANLIB" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_ac_ct_RANLIB="ranlib"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_RANLIB=$ac_cv_prog_ac_ct_RANLIB
+if test -n "$ac_ct_RANLIB"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_RANLIB" >&5
+$as_echo "$ac_ct_RANLIB" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_ct_RANLIB" = x; then
+    RANLIB=":"
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    RANLIB=$ac_ct_RANLIB
+  fi
+else
+  RANLIB="$ac_cv_prog_RANLIB"
+fi
+
+
+# Slight weakness of this check is that if ranlib is not found, we assume it is
+# not needed (set RANLIB to ":")
+
+
+
+# Set relevant flags dependant on the software tools we have found
 #
 
 # Set CFLAGS
@@ -4641,19 +4804,32 @@ fi
 
 
 
-# Set LDFLAGS
+# Set RAVL_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
 if ( test X$GNU_LD = Xyes )
 then
   # We are using a GNU linker
-  RAVL_CHECK_LDFLAGS=
-  RAVL_DEBUG_LDFLAGS=
-  # -g does nothing on the linker so why add it
-  RAVL_GLOBAL_LDFLAGS=
-  RAVL_DEFAULT_LDFLAGS=
-  RAVL_GPROF_LDFLAGS=
-  RAVL_PROF_LDFLAGS=
-  RAVL_OPT_LDFLAGS=
-  RAVL_SHARED_LDFLAGS=-export-dynamic
+
+  # General Ravl link options
+  RAVL_CHECK_LDFLAGS=test1
+  RAVL_DEBUG_LDFLAGS=test2
+  # -g does nothing on the linker so omit it
+  RAVL_DEFAULT_LDFLAGS=test3
+  RAVL_GLOBAL_LDFLAGS=test4
+  RAVL_GPROF_LDFLAGS=test5
+  RAVL_OPT_LDFLAGS=test6
+  RAVL_PROF_LDFLAGS=test7
+  RAVL_SHARED_LDFLAGS=-rdynamic
+
+  # Ravl link options used for libraries
+  RAVL_CHECK_LDLIBFLAGS=test9
+  RAVL_DEBUG_LDLIBFLAGS=test10
+  RAVL_DEFAULT_LDLIBFLAGS=test11
+  RAVL_GLOBAL_LDLIBFLAGS=test12
+  RAVL_GPROF_LDLIBFLAGS=test13
+  RAVL_OPT_LDLIBFLAGS=test14
+  RAVL_PROF_LDLIBFLAGS=test15
+  RAVL_SHARED_LDLIBFLAGS=-shared
+
   LIBPATHSWITCH=-Wl,-rpath#
   UNDEFSYMB=-u#
 else
@@ -4667,17 +4843,40 @@ else
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-export-dynamic
-              UNDEFSYMB=
+              RAVL_SHARED_LDFLAGS=-Wl,-export-dynamic
+              # sic, this is an assumption on what compiler is in use
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-shared
+
+              LIBPATHSWITCH=-Wl,-rpath#
+              # sic, this is an assumption on what compiler is in use
+              UNDEFSYMB=-u #
               ;;
   Xirix*    ) RAVL_CHECK_LDFLAGS=
               RAVL_DEBUG_LDFLAGS=
-              RAVL_GLOBAL_LDFLAGS=-n32 -woff 84
+              RAVL_GLOBAL_LDFLAGS=-n32 -Wl,-woff 84
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-rdynamic
+              RAVL_SHARED_LDFLAGS=
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-shared
+
               LIBPATHSWITCH=-Wl,-rpath#
               UNDEFSYMB=-u#
               ;;
@@ -4688,9 +4887,19 @@ else
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-rdynamic
-              LIBPATHSWITCH=-Wl,-R#
-              UNDEFSYMB=
+              RAVL_SHARED_LDFLAGS=
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-dy -G
+
+              LIBPATHSWITCH=-R#
+              UNDEFSYMB=-u#
               ;;
   * )         RAVL_CHECK_LDFLAGS=
               RAVL_DEBUG_LDFLAGS=
@@ -4699,7 +4908,17 @@ else
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-export-dynamic
+              RAVL_SHARED_LDFLAGS=-rdynamic
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-shared
+
               LIBPATHSWITCH=-Wl,-rpath#
               UNDEFSYMB=-u#
               ;;
@@ -4718,6 +4937,34 @@ fi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Declare flags for ar
+
+RAVL_ARFLAGS=ruc
+
+
+# any user-provided ARFLAGS will be recorded in Config.Local as CONFIGURE_ARFLAGS
+
+
+# Declare flags for make
+
+RAVL_MAKEFLAGS=-r
+
+
+# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Local
 
 
 
@@ -4989,56 +5236,6 @@ fi
 # First check for those programs that GNU coding standards regard as safe to use
 # in a makefile if they are employed via make variables (and thus create the
 # necessary variables)
-# Extract the first word of "ar", so it can be a program name with args.
-set dummy ar; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_AR+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $AR in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_AR="$AR" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_AR="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_AR" && ac_cv_path_AR="Missing"
-  ;;
-esac
-fi
-AR=$ac_cv_path_AR
-if test -n "$AR"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AR" >&5
-$as_echo "$AR" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $AR = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working ar required for building Ravl
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
 # Extract the first word of "chgrp", so it can be a program name with args.
 set dummy chgrp; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -5349,102 +5546,6 @@ rm -f conftest.l $LEX_OUTPUT_ROOT.c
 fi
 
 
-
-if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
-set dummy ${ac_tool_prefix}ranlib; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_prog_RANLIB+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$RANLIB"; then
-  ac_cv_prog_RANLIB="$RANLIB" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_prog_RANLIB="${ac_tool_prefix}ranlib"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-RANLIB=$ac_cv_prog_RANLIB
-if test -n "$RANLIB"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RANLIB" >&5
-$as_echo "$RANLIB" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-fi
-if test -z "$ac_cv_prog_RANLIB"; then
-  ac_ct_RANLIB=$RANLIB
-  # Extract the first word of "ranlib", so it can be a program name with args.
-set dummy ranlib; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_prog_ac_ct_RANLIB+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$ac_ct_RANLIB"; then
-  ac_cv_prog_ac_ct_RANLIB="$ac_ct_RANLIB" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_prog_ac_ct_RANLIB="ranlib"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-ac_ct_RANLIB=$ac_cv_prog_ac_ct_RANLIB
-if test -n "$ac_ct_RANLIB"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_RANLIB" >&5
-$as_echo "$ac_ct_RANLIB" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-  if test "x$ac_ct_RANLIB" = x; then
-    RANLIB=":"
-  else
-    case $cross_compiling:$ac_tool_warned in
-yes:)
-{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
-$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
-ac_tool_warned=yes ;;
-esac
-    RANLIB=$ac_ct_RANLIB
-  fi
-else
-  RANLIB="$ac_cv_prog_RANLIB"
-fi
-
-
-# Slight weakness of this check is that if ranlib is not found, we assume it is
-# not needed (set RANLIB to ":")
 
 # Extract the first word of "sort", so it can be a program name with args.
 set dummy sort; ac_word=$2
@@ -12673,7 +12774,10 @@ echo \# Relevant Ravl build process flags >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Ravl compiler settings >> ./Config.Local.in
 echo RAVL_CHECK_CFLAGS=@RAVL_CHECK_CFLAGS@ >> ./Config.Local.in
 echo RAVL_DEBUG_CFLAGS=@RAVL_DEBUG_CFLAGS@ >> ./Config.Local.in
 echo RAVL_DEFAULT_CFLAGS=@RAVL_DEFAULT_CFLAGS@ >> ./Config.Local.in
@@ -12685,7 +12789,10 @@ echo RAVL_SHARED_CFLAGS=@RAVL_SHARED_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C++ compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Ravl compiler settings >> ./Config.Local.in
 echo RAVL_CHECK_CCFLAGS=@RAVL_CHECK_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_DEBUG_CCFLAGS=@RAVL_DEBUG_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_DEFAULT_CCFLAGS=@RAVL_DEFAULT_CCFLAGS@ >> ./Config.Local.in
@@ -12697,7 +12804,10 @@ echo RAVL_SHARED_CCFLAGS=@RAVL_SHARED_CCFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the linker >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# General Ravl linker settings >> ./Config.Local.in
 echo RAVL_CHECK_LDFLAGS=@RAVL_CHECK_LDFLAGS@ >> ./Config.Local.in
 echo RAVL_DEBUG_LDFLAGS=@RAVL_DEBUG_LDFLAGS@ >> ./Config.Local.in
 echo RAVL_DEFAULT_LDFLAGS=@RAVL_DEFAULT_LDFLAGS@ >> ./Config.Local.in
@@ -12706,8 +12816,39 @@ echo RAVL_GPROF_LDFLAGS=@RAVL_GPROF_LDFLAGS@ >> ./Config.Local.in
 echo RAVL_OPT_LDFLAGS=@RAVL_OPT_LDFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_LDFLAGS=@RAVL_PROF_LDFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_LDFLAGS=@RAVL_SHARED_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_SHARED_LDFLAGS=@RAVL_SHARED_LDFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Linker settings for Ravl libraries >> ./Config.Local.in
+echo RAVL_CHECK_LDLIBFLAGS=@RAVL_CHECK_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_DEBUG_LDLIBFLAGS=@RAVL_DEBUG_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_DEFAULT_LDLIBFLAGS=@RAVL_DEFAULT_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_GLOBAL_LDLIBFLAGS=@RAVL_GLOBAL_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_GPROF_LDLIBFLAGS=@RAVL_GPROF_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_OPT_LDLIBFLAGS=@RAVL_OPT_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_PROF_LDLIBFLAGS=@RAVL_PROF_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_SHARED_LDLIBFLAGS=@RAVL_SHARED_LDLIBFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Specific linker functionality >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Local.in
 echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Flags for the archiver >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
+echo CONFIGURE_ARFLAGS=@ARFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# General Ravl archiver settings >> ./Config.Local.in
+echo RAVL_ARFLAGS=@RAVL_ARFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Flags for make >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
+echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# General Ravl make settings >> ./Config.Local.in
+echo RAVL_MAKEFLAGS=@RAVL_MAKEFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+
 
 
 # Allow definition of RESOURCES
@@ -13014,10 +13155,9 @@ then
 fi
 
 # Process platform specific dependencies that are not directly driven by a
-# third-party library
+# third-party library nor the programming tools in use.
 
 
-# Apply platfrom specifics..
 
 
 # Test host_os != linux*
@@ -13212,11 +13352,11 @@ ac_config_files="$ac_config_files Config.Local"
 
 ac_config_files="$ac_config_files Makefile"
 
-ac_config_files="$ac_config_files share/RAVL/QMake/SingleLib.mk:src/Ravl/QMake/SingleLib.mk.in"
+ac_config_files="$ac_config_files share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in"
 
-ac_config_files="$ac_config_files share/RAVL/QMake/User.mk:src/Ravl/QMake/User.mk.in"
+ac_config_files="$ac_config_files share/RAVL/QMake/User.mk:src/QMake/User.mk.in"
 
-ac_config_files="$ac_config_files share/RAVL/QMake/Recursive.mk:src/Ravl/QMake/Recursive.mk.in"
+ac_config_files="$ac_config_files share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -13921,9 +14061,9 @@ do
   case $ac_config_target in
     "Config.Local") CONFIG_FILES="$CONFIG_FILES Config.Local" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "share/RAVL/QMake/SingleLib.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/SingleLib.mk:src/Ravl/QMake/SingleLib.mk.in" ;;
-    "share/RAVL/QMake/User.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/User.mk:src/Ravl/QMake/User.mk.in" ;;
-    "share/RAVL/QMake/Recursive.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/Recursive.mk:src/Ravl/QMake/Recursive.mk.in" ;;
+    "share/RAVL/QMake/SingleLib.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in" ;;
+    "share/RAVL/QMake/User.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/User.mk:src/QMake/User.mk.in" ;;
+    "share/RAVL/QMake/Recursive.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

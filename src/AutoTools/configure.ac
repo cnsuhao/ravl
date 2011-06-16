@@ -738,6 +738,24 @@ AC_ARG_WITH([rpath],
 # Check for required programs.
 trace 2 Checking for support programs
 
+# First check for utils required for this script itself. However, it is probably
+# too late to check for a lot of commands as the preceding code has already used
+# them (test, print, etc.) but we can check for what we're about to use...
+AC_PROG_AWK
+AC_SUBST([AWK])
+
+AC_PATH_PROG([EXPR],[expr],[Missing])
+AS_IF([test $EXPR = Missing],
+      [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
+     )
+AC_SUBST([EXPR])
+
+AC_PROG_GREP
+AC_SUBST([GREP])
+
+AC_PROG_SED
+AC_SUBST([SED])
+
 # Check for C Compiler and Pre-processor
 #
 # Record CFLAGS in case user has supplied them on the configure cmd-line;
@@ -772,17 +790,179 @@ CCFLAGS=$CONFIGURE_CCFLAGS
 AC_PROG_CXXCPP
 AC_SUBST([CXXCPP])
 
-# Set relevant flags dependant on the compilers we have found
+# Look for linker
 #
-dnl Only select flags dependant on the compiler in use here. Set all options
+# This code inspired by LT_PATH_LD from libtool
+
+if ( test X$LD = X )
+then
+  # User has not asked for a specific linker, we have to look for one
+
+  if ( test "$GCC" = yes )
+  then
+    # If we have gcc we can try: $CC -print-prog-name=ld
+    AC_MSG_CHECKING([which ld is used by $CC])
+    LD=`$CC -print-prog-name=ld`
+    # Test host_os != mingw*
+    if ( test  X`expr X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
+    then
+      # gcc leaves a trailing carriage return which upsets mingw
+      LD=`echo $LD | tr -d '\015'`
+    fi
+    
+    if ( test X`expr X$LD : '\(X[[\\/]].*\)'` = XX$LD )
+    then
+      # $LD is an absolute path
+      # Fold all \ to /
+      LD=`$echo "$LD"| $SED 's%\\\\%/%g'`
+      # $LD may be an absolute path but might still need cannonicalisation
+      while test X`expr X$LD : 'X\(.*/\.\./\.*\)'` != X
+      do
+        LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
+      done
+      AC_MSG_RESULT([$LD])
+    else
+      # $CC -print-prog-name=ld has not delivered us an absolute path
+      # We need to use the searchlist
+      LD=""
+      AC_MSG_RESULT([unhelpful])
+    fi
+  else
+    # Not using GCC so we don't know how to ask the compiler, we will have to
+    # look for ld on the searchlist
+    LD=""
+  fi
+
+  if ( test X`expr X$LD : '\(X[[\\/]].*\)'` != XX$LD )
+  then
+    # LD not set to an absolute path, must search for ld
+
+    AC_MSG_CHECKING([for ld on the search-list])
+    GNU_LD=""
+    ANO_LD=""
+    save_ifs="$IFS"
+    IFS=$PATH_SEPARATOR
+    for dir in $PATH
+    do
+      IFS="$save_ifs"
+      if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
+      then
+        # Some variants of GNU ld only accept -v, so use that not --version
+        case `"$dir/ld" -v 2>&1 </dev/null` in
+        *GNU* | *'with BFD'*)   if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                then
+                                  # We are not using AIX so favour the GNU linker
+                                  # (that we have just found)
+                                  LD=$dir/ld
+                                  break
+                                else
+                                  # We are on AIX so should use the native
+                                  # linker if possible but remember where the
+                                  # GNU version is should that be all we find
+                                  if ( test X$GNU_LD = X )
+                                  then
+                                    # This is the first GNU version of ld on the
+                                    # PATH so record it
+                                    GNU_LD=$dir/ld
+                                  fi
+                                fi
+                                ;;
+                           *)   if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                then
+                                  # We are not on AIX so should favour the GUN
+                                  # version of ld. As this is not a GNU version,
+                                  # merely remember where the first non-GNU
+                                  # version is should this be the only one we
+                                  # actually find.
+                                  if ( test X$ANO_LD = X )
+                                  then
+                                    ANO_LD=$dir/ld
+                                  fi
+                                else
+                                  # As we are on AIX and have found the non-GNU
+                                  # linker, we should favour that.
+                                  LD=$dir/ld
+                                fi
+                                ;;
+        esac
+      fi
+    done
+    IFS="$save_ifs"
+    if ( test X$LD = X )
+    then
+      # We haven't located our preferred linker, is there a fall-back?
+      if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+      then
+        # We are not using AIX but found no GNU linker, use any other we found
+        LD=$ANO_LD
+      else
+        # We are on AIX and wanted the native linker which we did not locate.
+        # No matter, try any GNU version we found
+        LD=$GNU_LD
+      fi
+    fi
+  fi # End of checking for ld on $PATH (LD not already an absolute pathname)
+
+  # Have we actually found a linker?
+  if ( test X$LD != X && test -x $LD )
+  then
+    # We have, what type is it?
+    VER_STRING=`"$LD" -v 2>&1 </dev/null`
+    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    then
+      # GNU linker
+      GNU_LD=yes
+    else
+      GNU_LD=no
+    fi
+    AC_MSG_RESULT([$LD])
+  else
+    AC_MSG_RESULT([no])
+    AC_MSG_FAILURE([Cannot find a working ld required for building Ravl])
+  fi
+else
+  # User specified LD
+  if ( test -x $LD )
+  then
+    # What type is it?
+    VER_STRING=`"$LD" -v 2>&1 </dev/null`
+    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    then
+      # GNU linker
+      GNU_LD=yes
+    else
+      GNU_LD=no
+    fi
+  else
+    AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
+  fi
+fi
+
+AC_SUBST([LD])
+
+
+
+# Look for archive tools
+
+AC_PATH_PROG([AR],[ar],[Missing])
+AS_IF([test $AR = Missing],
+      [AC_MSG_FAILURE([Cannot find a working ar required for building Ravl])]
+     )
+AC_SUBST([AR])
+
+
+AC_PROG_RANLIB
+AC_SUBST([RANLIB])
+# Slight weakness of this check is that if ranlib is not found, we assume it is
+# not needed (set RANLIB to ":")
+
+
+
+# Set relevant flags dependant on the software tools we have found
+#
+dnl Only select flags dependant on the tools in use here. Set all options
 dnl pertaining to platform specifics later in this script
 dnl
-# First check for the programs we are about to use
-AC_PROG_AWK
-AC_SUBST([AWK])
-
-AC_PROG_GREP
-AC_SUBST([GREP])
 
 # Set CFLAGS
 if (test X$GCC = Xyes)
@@ -818,6 +998,17 @@ then
    RAVL_GPROF_CFLAGS=" -pg "
 else
    # No GNU compiler, try relevant machine specific options we have used before
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU compilers), put those settings at the end of this
+dnl script.
+dnl 
    case X$host_os in
    Xsolaris* ) RAVL_GLOBAL_CFLAGS=""
                RAVL_DEFAULT_CFLAGS=" -O "
@@ -908,6 +1099,17 @@ then
    RAVL_GPROF_CCFLAGS=" -pg "
 else
    # No GNU compiler, try relevant machine specific options we have used before
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU compilers), put those settings at the end of this
+dnl script.
+dnl 
    case X$host_os in
    Xsolaris* ) RAVL_GLOBAL_CCFLAGS=""
                RAVL_DEFAULT_CCFLAGS=" -O "
@@ -923,6 +1125,8 @@ else
                RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
    Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
+               # Not sure why this originally was done this way rather than use
+               # CCFLAGS, but assume there was a reason and propogate the method
                RAVL_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
                RAVL_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
                RAVL_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
@@ -962,6 +1166,193 @@ AC_SUBST([RAVL_OPT_CCFLAGS])
 AC_SUBST([RAVL_PROF_CCFLAGS])
 AC_SUBST([RAVL_SHARED_CCFLAGS])
 
+
+# Set RAVL_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
+if ( test X$GNU_LD = Xyes )
+then
+  # We are using a GNU linker
+
+  # General Ravl link options
+  RAVL_CHECK_LDFLAGS=test1
+  RAVL_DEBUG_LDFLAGS=test2
+  # -g does nothing on the linker so omit it
+  RAVL_DEFAULT_LDFLAGS=test3
+  RAVL_GLOBAL_LDFLAGS=test4
+  RAVL_GPROF_LDFLAGS=test5
+  RAVL_OPT_LDFLAGS=test6
+  RAVL_PROF_LDFLAGS=test7
+  RAVL_SHARED_LDFLAGS=-rdynamic
+
+  # Ravl link options used for libraries
+  RAVL_CHECK_LDLIBFLAGS=test9
+  RAVL_DEBUG_LDLIBFLAGS=test10
+  RAVL_DEFAULT_LDLIBFLAGS=test11
+  RAVL_GLOBAL_LDLIBFLAGS=test12
+  RAVL_GPROF_LDLIBFLAGS=test13
+  RAVL_OPT_LDLIBFLAGS=test14
+  RAVL_PROF_LDLIBFLAGS=test15
+  RAVL_SHARED_LDLIBFLAGS=-shared
+
+  LIBPATHSWITCH=-Wl,-rpath#
+  UNDEFSYMB=-u#
+else
+  # Not using a GNU linker, try native flags we have used before or default to
+  # what works for GNU
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU linker), put those settings at the end of this
+dnl script.
+dnl 
+  case X$host_os in
+  Xcygwin )   RAVL_CHECK_LDFLAGS=
+              RAVL_DEBUG_LDFLAGS=-g
+              RAVL_GLOBAL_LDFLAGS=
+              RAVL_DEFAULT_LDFLAGS=
+              RAVL_GPROF_LDFLAGS=
+              RAVL_PROF_LDFLAGS=
+              RAVL_OPT_LDFLAGS=
+              RAVL_SHARED_LDFLAGS=-Wl,-export-dynamic
+              # sic, this is an assumption on what compiler is in use
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-shared
+
+              LIBPATHSWITCH=-Wl,-rpath#
+              # sic, this is an assumption on what compiler is in use
+              UNDEFSYMB=-u #
+              ;;
+  Xirix*    ) RAVL_CHECK_LDFLAGS=
+              RAVL_DEBUG_LDFLAGS=
+              RAVL_GLOBAL_LDFLAGS=-n32 -Wl,-woff 84
+              RAVL_DEFAULT_LDFLAGS=
+              RAVL_GPROF_LDFLAGS=
+              RAVL_PROF_LDFLAGS=
+              RAVL_OPT_LDFLAGS=
+              RAVL_SHARED_LDFLAGS=
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-shared
+
+              LIBPATHSWITCH=-Wl,-rpath#
+              UNDEFSYMB=-u#
+              ;;
+  Xsolaris* ) RAVL_CHECK_LDFLAGS=
+              RAVL_DEBUG_LDFLAGS=-g
+              RAVL_GLOBAL_LDFLAGS=
+              RAVL_DEFAULT_LDFLAGS=
+              RAVL_GPROF_LDFLAGS=
+              RAVL_PROF_LDFLAGS=
+              RAVL_OPT_LDFLAGS=
+              RAVL_SHARED_LDFLAGS=
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-dy -G
+
+              LIBPATHSWITCH=-R#
+              UNDEFSYMB=-u#
+              ;;
+  * )         RAVL_CHECK_LDFLAGS=
+              RAVL_DEBUG_LDFLAGS=
+              RAVL_GLOBAL_LDFLAGS=
+              RAVL_DEFAULT_LDFLAGS=
+              RAVL_GPROF_LDFLAGS=
+              RAVL_PROF_LDFLAGS=
+              RAVL_OPT_LDFLAGS=
+              RAVL_SHARED_LDFLAGS=-rdynamic
+
+              RAVL_CHECK_LDLIBFLAGS=
+              RAVL_DEBUG_LDLIBFLAGS=
+              RAVL_GLOBAL_LDLIBFLAGS=
+              RAVL_DEFAULT_LDLIBFLAGS=
+              RAVL_GPROF_LDLIBFLAGS=
+              RAVL_PROF_LDLIBFLAGS=
+              RAVL_OPT_LDLIBFLAGS=
+              RAVL_SHARED_LDLIBFLAGS=-shared
+
+              LIBPATHSWITCH=-Wl,-rpath#
+              UNDEFSYMB=-u#
+              ;;
+  esac
+fi
+
+# Declare variables that the linker as output for Config.Local
+AC_SUBST([LDFLAGS])
+# any user-provided LDFLAGS will be recorded in Config.Local as CONFIGURE_LDFLAGS
+
+AC_SUBST([RAVL_CHECK_LDFLAGS])
+AC_SUBST([RAVL_DEBUG_LDFLAGS])
+AC_SUBST([RAVL_DEFAULT_LDFLAGS])
+AC_SUBST([RAVL_GLOBAL_LDFLAGS])
+AC_SUBST([RAVL_GPROF_LDFLAGS])
+AC_SUBST([RAVL_OPT_LDFLAGS])
+AC_SUBST([RAVL_PROF_LDFLAGS])
+AC_SUBST([RAVL_SHARED_LDFLAGS])
+
+AC_SUBST([RAVL_CHECK_LDLIBFLAGS])
+AC_SUBST([RAVL_DEBUG_LDLIBFLAGS])
+AC_SUBST([RAVL_DEFAULT_LDLIBFLAGS])
+AC_SUBST([RAVL_GLOBAL_LDLIBFLAGS])
+AC_SUBST([RAVL_GPROF_LDLIBFLAGS])
+AC_SUBST([RAVL_OPT_LDLIBFLAGS])
+AC_SUBST([RAVL_PROF_LDLIBFLAGS])
+AC_SUBST([RAVL_SHARED_LDLIBFLAGS])
+
+AC_SUBST([LIBPATHSWITCH])
+AC_SUBST([UNDEFSYMB])
+
+
+# Declare flags for ar
+
+dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a non-standard ar
+dnl that takes completely different flags then that is ok to list here (as it
+dnl pertains to the tool itself, not the platform). If your platform uses the
+dnl GNU version of ar but, for example requires an added 's' flag, that setting
+dnl should be put in the platform specific code at the end of this script, not
+dnl here.
+RAVL_ARFLAGS=ruc
+
+AC_SUBST([ARFLAGS])
+# any user-provided ARFLAGS will be recorded in Config.Local as CONFIGURE_ARFLAGS
+AC_SUBST([RAVL_ARFLAGS])
+
+# Declare flags for make
+
+dnl Only put make flags specific to any particular version of make here. DO NOT
+dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final sexction of this
+dnl script
+RAVL_MAKEFLAGS=-r
+
+AC_SUBST([MAKEFLAGS])
+# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Local 
+AC_SUBST([RAVL_MAKEFLAGS])
+
+dnl End of software tools section
+
+
 dnl# It would be good to enable the following code, however _AC_... aren't 
 dnl# generally available macros and may dissappear/change in differing versions
 dnl# of autotools so its best not to rely on them. If only there was a supported
@@ -984,18 +1375,6 @@ AC_SUBST([MKDIR_P])
 
 # Check for remaining utils
 
-# First check for utils required for this script itself. However, it is probably
-# too late to check for a lot of commands as the preceding code has already used
-# them (test, print, etc.) but we can check for what we're about to use...
-AC_PATH_PROG([EXPR],[expr],[Missing])
-AS_IF([test $EXPR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
-     )
-AC_SUBST([EXPR])
-
-AC_PROG_SED
-AC_SUBST([SED])
-
 # Check for pkg-config
 PKG_PROG_PKG_CONFIG
 
@@ -1003,12 +1382,6 @@ PKG_PROG_PKG_CONFIG
 # First check for those programs that GNU coding standards regard as safe to use
 # in a makefile if they are employed via make variables (and thus create the
 # necessary variables)
-AC_PATH_PROG([AR],[ar],[Missing])
-AS_IF([test $AR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working ar required for building Ravl])]
-     )
-AC_SUBST([AR])
-
 AC_PATH_PROG([CHGRP],[chgrp],[Missing])
 AS_IF([test $CHGRP = Missing],
       [AC_MSG_FAILURE([Cannot find a working chgrp required for building Ravl])]
@@ -1030,11 +1403,6 @@ AC_SUBST([CHOWN])
 AC_PROG_LEX
 AC_SUBST([LEX])
 AC_SUBST([LEXLIB])
-
-AC_PROG_RANLIB
-AC_SUBST([RANLIB])
-# Slight weakness of this check is that if ranlib is not found, we assume it is
-# not needed (set RANLIB to ":")
 
 AC_PATH_PROG([SORT],[sort],[Missing])
 AS_IF([test $SORT = Missing],
@@ -1066,7 +1434,7 @@ AC_SUBST([LN_S])
 
 # Remaining utils used to build Ravl are all regarded by the GNU standards as
 # safe for direct use:
-#       cat cmp cp diff ls mv pwd rm rmdir sort tar test touch true
+#       cat cmp cp diff ls mv pwd rm rmdir tar test touch true
 
 
 trace 2 Initial checks complete, now processing cmd-line
@@ -2685,6 +3053,7 @@ echo CXX=@CXX@ >> ./Config.Local.in
 echo CXXCPP=@CXXCPP@ >> ./Config.Local.in
 echo EXPR=@EXPR@ >> ./Config.Local.in
 echo GREP=@GREP@ >> ./Config.Local.in
+echo LD=@LD@ >> ./Config.Local.in
 echo LEX=@LEX@ >> ./Config.Local.in
 echo LEXLIB=@LEXLIB@ >> ./Config.Local.in
 echo LN_S=@LN_S@ >> ./Config.Local.in
@@ -2703,7 +3072,10 @@ echo \# Relevant Ravl build process flags >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Ravl compiler settings >> ./Config.Local.in
 echo RAVL_CHECK_CFLAGS=@RAVL_CHECK_CFLAGS@ >> ./Config.Local.in
 echo RAVL_DEBUG_CFLAGS=@RAVL_DEBUG_CFLAGS@ >> ./Config.Local.in
 echo RAVL_DEFAULT_CFLAGS=@RAVL_DEFAULT_CFLAGS@ >> ./Config.Local.in
@@ -2715,7 +3087,10 @@ echo RAVL_SHARED_CFLAGS=@RAVL_SHARED_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C++ compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Ravl compiler settings >> ./Config.Local.in
 echo RAVL_CHECK_CCFLAGS=@RAVL_CHECK_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_DEBUG_CCFLAGS=@RAVL_DEBUG_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_DEFAULT_CCFLAGS=@RAVL_DEFAULT_CCFLAGS@ >> ./Config.Local.in
@@ -2724,6 +3099,54 @@ echo RAVL_GPROF_CCFLAGS=@RAVL_GPROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_OPT_CCFLAGS=@RAVL_OPT_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CCFLAGS=@RAVL_PROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CCFLAGS=@RAVL_SHARED_CCFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Flags for the linker >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
+echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# General Ravl linker settings >> ./Config.Local.in
+echo RAVL_CHECK_LDFLAGS=@RAVL_CHECK_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_DEBUG_LDFLAGS=@RAVL_DEBUG_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_DEFAULT_LDFLAGS=@RAVL_DEFAULT_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_GLOBAL_LDFLAGS=@RAVL_GLOBAL_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_GPROF_LDFLAGS=@RAVL_GPROF_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_OPT_LDFLAGS=@RAVL_OPT_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_PROF_LDFLAGS=@RAVL_PROF_LDFLAGS@ >> ./Config.Local.in
+echo RAVL_SHARED_LDFLAGS=@RAVL_SHARED_LDFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Linker settings for Ravl libraries >> ./Config.Local.in
+echo RAVL_CHECK_LDLIBFLAGS=@RAVL_CHECK_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_DEBUG_LDLIBFLAGS=@RAVL_DEBUG_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_DEFAULT_LDLIBFLAGS=@RAVL_DEFAULT_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_GLOBAL_LDLIBFLAGS=@RAVL_GLOBAL_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_GPROF_LDLIBFLAGS=@RAVL_GPROF_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_OPT_LDLIBFLAGS=@RAVL_OPT_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_PROF_LDLIBFLAGS=@RAVL_PROF_LDLIBFLAGS@ >> ./Config.Local.in
+echo RAVL_SHARED_LDLIBFLAGS=@RAVL_SHARED_LDLIBFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Specific linker functionality >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Local.in
+echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Flags for the archiver >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
+echo CONFIGURE_ARFLAGS=@ARFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# General Ravl archiver settings >> ./Config.Local.in
+echo RAVL_ARFLAGS=@RAVL_ARFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Flags for make >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# User specified at configure time >> ./Config.Local.in
+echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# General Ravl make settings >> ./Config.Local.in
+echo RAVL_MAKEFLAGS=@RAVL_MAKEFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+
 
 
 # Allow definition of RESOURCES
@@ -3031,10 +3454,17 @@ then
 fi
 
 # Process platform specific dependencies that are not directly driven by a 
-# third-party library
+# third-party library nor the programming tools in use.
 
 
-# Apply platfrom specifics..
+dnl *****         DO NOT PUT COMPILER SPECIFIC SETTINGS HERE         *****
+dnl ***** They should go in the compiler settings section earlier in *****
+dnl ***** this script. The only settings here are for those that are *****
+dnl ***** for common tools but only on a specific platform. If using *****
+dnl ***** a common development tool on a particular platform needs a *****
+dnl ***** specific setting, set it here; if you are using the native *****
+dnl ***** compiler on your platform, set its switches in the section *****
+dnl ***** earlier in this script.                                    *****
 
 
 # Test host_os != linux*
@@ -3099,11 +3529,9 @@ then
                 # Drop -Wall from {C}CFLAGS
                 RAVL_GLOBAL_CFLAGS=`echo " $RAVL_GLOBAL_CFLAGS " | $SED 's/ -Wall / /'`
                 RAVL_GLOBAL_CCFLAGS=`echo " $RAVL_GLOBAL_CCFLAGS " | $SED 's/ -Wall / /'`
-                # Drop -fPIC from {C}CFLAGS and LDFLAGS
+                # Drop -fPIC from {C}CFLAGS
                 RAVL_SHARED_CFLAGS=`echo " $RAVL_SHARED_CFLAGS " | $SED 's/ -fPIC / /'`
                 RAVL_SHARED_CCFLAGS=`echo " $RAVL_SHARED_CCFLAGS " | $SED 's/ -fPIC / /'`
-                # + Add -Wl,-export-dynamic to LDFLAGS
-                RAVL_SHARED_LDFLAGS=`echo " $RAVL_SHARED_LDFLAGS -Wl,-export-dynamic" | $SED 's/ -fPIC / /'`
                 # .exe suffix
                 RAVL_EXEEXT=.exe#
                 # Remember, source relies on __CYGWIN__ being set by the 

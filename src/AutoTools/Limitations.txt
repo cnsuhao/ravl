@@ -53,10 +53,6 @@
   platforms. 
 	- Current state of development, will be provided.
 
-+ Configure script currently does not produce platform specific options for
-  ARFLAGS; LDFLAGS; CPPFLAGS; LDLIBFLAGS; MAKEFLAGS
-
-	- Current state of development, will be provided.
 
 + Failure of testDataProc test program when linked against a single library
   (static or shared).
