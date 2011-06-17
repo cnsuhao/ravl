@@ -1173,24 +1173,24 @@ then
   # We are using a GNU linker
 
   # General Ravl link options
-  RAVL_CHECK_LDFLAGS=test1
-  RAVL_DEBUG_LDFLAGS=test2
+  RAVL_CHECK_LDFLAGS=
+  RAVL_DEBUG_LDFLAGS=
   # -g does nothing on the linker so omit it
-  RAVL_DEFAULT_LDFLAGS=test3
-  RAVL_GLOBAL_LDFLAGS=test4
-  RAVL_GPROF_LDFLAGS=test5
-  RAVL_OPT_LDFLAGS=test6
-  RAVL_PROF_LDFLAGS=test7
+  RAVL_DEFAULT_LDFLAGS=
+  RAVL_GLOBAL_LDFLAGS=
+  RAVL_GPROF_LDFLAGS=
+  RAVL_OPT_LDFLAGS=
+  RAVL_PROF_LDFLAGS=
   RAVL_SHARED_LDFLAGS=-rdynamic
 
   # Ravl link options used for libraries
-  RAVL_CHECK_LDLIBFLAGS=test9
-  RAVL_DEBUG_LDLIBFLAGS=test10
-  RAVL_DEFAULT_LDLIBFLAGS=test11
-  RAVL_GLOBAL_LDLIBFLAGS=test12
-  RAVL_GPROF_LDLIBFLAGS=test13
-  RAVL_OPT_LDLIBFLAGS=test14
-  RAVL_PROF_LDLIBFLAGS=test15
+  RAVL_CHECK_LDLIBFLAGS=
+  RAVL_DEBUG_LDLIBFLAGS=
+  RAVL_DEFAULT_LDLIBFLAGS=
+  RAVL_GLOBAL_LDLIBFLAGS=
+  RAVL_GPROF_LDLIBFLAGS=
+  RAVL_OPT_LDLIBFLAGS=
+  RAVL_PROF_LDLIBFLAGS=
   RAVL_SHARED_LDLIBFLAGS=-shared
 
   LIBPATHSWITCH=-Wl,-rpath#
@@ -3085,6 +3085,7 @@ echo RAVL_OPT_CFLAGS=@RAVL_OPT_CFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CFLAGS=@RAVL_PROF_CFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CFLAGS=@RAVL_SHARED_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo >> ./Config.Local.in
 echo \# Flags for the C++ compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# User specified at configure time >> ./Config.Local.in
@@ -3099,6 +3100,7 @@ echo RAVL_GPROF_CCFLAGS=@RAVL_GPROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_OPT_CCFLAGS=@RAVL_OPT_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CCFLAGS=@RAVL_PROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CCFLAGS=@RAVL_SHARED_CCFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the linker >> ./Config.Local.in
 echo >> ./Config.Local.in
@@ -3130,6 +3132,7 @@ echo >> ./Config.Local.in
 echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Local.in
 echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo >> ./Config.Local.in
 echo \# Flags for the archiver >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# User specified at configure time >> ./Config.Local.in
@@ -3137,6 +3140,7 @@ echo CONFIGURE_ARFLAGS=@ARFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# General Ravl archiver settings >> ./Config.Local.in
 echo RAVL_ARFLAGS=@RAVL_ARFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for make >> ./Config.Local.in
 echo >> ./Config.Local.in
