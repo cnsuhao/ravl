@@ -1,9 +1,8 @@
-ifndef LIBDEP_OPENCV
-LIBDEP_OPENCV=1
 ifdef OPENCV_HOME
  INCLUDES += -I$(OPENCV_HOME)/include
- EXELIB :=  -L$(OPENCV_HOME)/lib -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
+# EXELIB :=  -L$(OPENCV_HOME)/lib -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
+  EXELIB :=  -L$(OPENCV_HOME)/lib -lopencv_core -lopencv_imgproc -lopencv_features2d -lopencv_highgui $(EXELIB)
 else
- EXELIB :=  -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
-endif
+# EXELIB :=  -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
+  EXELIB := -lopencv_core -lopencv_imgproc -lopencv_features2d -lopencv_highgui $(EXELIB)
 endif
