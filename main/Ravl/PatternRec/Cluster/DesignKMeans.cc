@@ -140,6 +140,7 @@ namespace RavlN {
     SArray1dC<UIntT> counts(k);
     for(SArray1dIter2C<VectorC,UIntT> zit(sums,counts);zit;zit++) {
       zit.Data1() = VectorC(dim);
+      zit.Data1().Fill(0.0);
       zit.Data2() = 0;
     }
     RealT cost = 0,oldcost;
