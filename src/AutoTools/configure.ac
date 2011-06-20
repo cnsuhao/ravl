@@ -986,7 +986,7 @@ then
    else
       RAVL_OPT_CFLAGS=" -O2 -ffast-math "
    fi
-   RAVL_OPT_CFLAGS=$RAVL_OPT_CFLAGS" -march=native -mtune-native "
+   RAVL_OPT_CFLAGS=$RAVL_OPT_CFLAGS" -march=native -mtune=native "
    RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
    if test $ac_cv_prog_cc_g = yes
    then
@@ -1087,7 +1087,7 @@ then
    else
       RAVL_OPT_CCFLAGS=" -O2 -ffast-math "
    fi
-   RAVL_OPT_CCFLAGS=$RAVL_OPT_CCFLAGS" -march=native -mtune-native "
+   RAVL_OPT_CCFLAGS=$RAVL_OPT_CCFLAGS" -march=native -mtune=native "
    RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
    if test $ac_cv_prog_cc_g = yes
    then
