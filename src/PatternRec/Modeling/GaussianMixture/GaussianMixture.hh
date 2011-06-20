@@ -85,7 +85,7 @@ namespace RavlN {
     //: We pre-compute inverse of covariance matrix
 
     SArray1dC<RealT> det;
-    //: We pre-compute the determinant of cov
+    //: We pre-compute the determinant or log deteminant of cov
 
     RealT konst;
     //: The constant used in pdf. 

@@ -89,7 +89,7 @@ namespace RavlN {
     : Function1BodyC(strm) 
   { 
     strm >> params >> weights >> isDiagonal; 
-    precompute(false); //: should of already regularised before writing to file, no need to do it again
+    precompute(false); //: should have already regularised before writing to file, no need to do it again
   }
   
   
@@ -127,19 +127,29 @@ namespace RavlN {
     VectorC out(OutputSize());
     for(SArray1dIter4C<MeanCovarianceC, RealT, MatrixRSC, RealT>it(params, weights, invCov, det);it;it++) {
       VectorC D = data - it.Data1().Mean();
-      out[it.Index()]  = it.Data2() * ((1.0/(konst * Sqrt(it.Data4()))) * Exp(-0.5 * D.Dot(( it.Data3() * D))));
+      RealT exponent = D.Dot( it.Data3() * D);
+      if(isDiagonal) { // (we actually use *log* determinant)
+        out[it.Index()]  = it.Data2() * Exp(-0.5*(it.Data4() + exponent));
+      } else {
+        out[it.Index()]  = it.Data2() * ((1.0/(konst * Sqrt(it.Data4()))) * Exp(-0.5 * exponent));
+      }
     }
     return out;
   }
   
-  //: Return the denisty value at point X
+  //: Return the density value at point X
   
   RealT GaussianMixtureBodyC::DensityValue(const VectorC & data) const { 
     RealT ret = 0;
     
     for(SArray1dIter4C<MeanCovarianceC, RealT, MatrixRSC, RealT> it(params, weights, invCov, det);it;it++) {
       VectorC D = data - it.Data1().Mean();
-      ret += it.Data2() * ((1.0/(konst * Sqrt(it.Data4()))) * Exp(-0.5 * D.Dot(( it.Data3() * D))));
+      RealT exponent = D.Dot( it.Data3() * D);
+      if(isDiagonal) { // (we actually use *log* determinant)
+        ret += it.Data2() * Exp(-0.5*(it.Data4() + exponent));
+      } else {
+        ret += it.Data2() * ((1.0/(konst * Sqrt(it.Data4()))) * Exp(-0.5 * D.Dot( it.Data3() * D)));
+      }
     }
     return ret; 
   }
@@ -162,7 +172,6 @@ namespace RavlN {
   {
 
     //: For speed, lets precompute some stuff
-    konst =  Pow(2.0* RavlConstN::pi, (RealT)InputSize()/2.0);
     
     //: First we have to check for very small variances
     //: The smallest variance we allow
@@ -182,28 +191,34 @@ namespace RavlN {
     //: make room for the arrays
     invCov = SArray1dC<MatrixRSC>(OutputSize());
     det = SArray1dC<RealT>(OutputSize());
+    if(isDiagonal) {
+      konst =  (RealT)InputSize() * Log(2.0*RavlConstN::pi);
+    }
+    else {
+      konst =  Pow(2.0* RavlConstN::pi, (RealT)InputSize()/2.0);
+    }
 
     //: compute inverse and determinant of models
     for(SArray1dIterC<MeanCovarianceC>paramIt(params);paramIt;paramIt++)  {
       IndexC i = paramIt.Index();
-      if(!isDiagonal) {
-	invCov[i] = paramIt.Data().Covariance().NearSingularInverse(det[i]);             
-      } else {
-	det[i]=1.0;
+      if(isDiagonal) { // we actually compute the log determinant
+	det[i]=konst;
 	invCov [i] = MatrixRSC(inputSize);
 	invCov[i].Fill(0.0);
 	for(UIntT j=0;j<inputSize;j++) {
 	  invCov[i][j][j]=1.0/paramIt.Data().Covariance()[j][j];
-	  det[i] *= paramIt.Data().Covariance()[j][j]; 
+	  det[i] += Log(paramIt.Data().Covariance()[j][j]); 
 	}
       }
-      
-      if(det[i]<smallDeterminant) {
-	//: if this is called then we have a problem on one component
-	//: having a very small variance.  We do try and avoid this
-	//: by setting a minimum allowed variance, but it is not foolproof.
-	RavlIssueError("The deteminant is too small (or negative).  Unsuitable data, perhaps use PCA.");
-      } 
+      else {
+	invCov[i] = paramIt.Data().Covariance().NearSingularInverse(det[i]);             
+        if(det[i]<smallDeterminant) {
+          //: if this is called then we have a problem on one component
+          //: having a very small variance.  We do try and avoid this
+          //: by setting a minimum allowed variance, but it is not foolproof.
+          RavlIssueError("The deteminant is too small (or negative).  Unsuitable data, perhaps use PCA.");
+        } 
+      }      
     }
 
   }
