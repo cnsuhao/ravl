@@ -20,7 +20,7 @@ using namespace RavlN;
 
 int testGaussianMixture();
 int testDesignGaussianMixture();
-
+int testBiggerDesignGaussianMixture(UIntT nSamples);
 
 int main() {
   int ln;
@@ -30,13 +30,23 @@ int main() {
   }
   cerr << "Test passed ok. \n";
 
-
   if((ln = testDesignGaussianMixture()) != 0) {
     cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   cerr << "Test passed ok. \n";
 
+  if((ln = testBiggerDesignGaussianMixture(5000)) != 0) {
+    cerr << "Test failed line " << ln << "\n";
+    return 1;
+  }
+  cerr << "Test passed ok. \n";
+
+  if((ln = testBiggerDesignGaussianMixture(15000)) != 0) {
+    cerr << "Test failed line " << ln << "\n";
+    return 1;
+  }
+  cerr << "Test passed ok. \n";
 
   return 0;
 }
@@ -126,5 +136,44 @@ int testDesignGaussianMixture()
   if((value<0.025) || (value>0.035)) return 1;
 
   //: Everything looks OKish
+  return 0;
+}
+
+
+int testBiggerDesignGaussianMixture(UIntT nSamples) {
+  UIntT nGaussians = 10;  //Number of Gaussians
+  UIntT dimensionality = 8; //Dimensionality of the feature space
+  RealT clusterSpacing = 20.0; // Spacing of clusters within distibution in units of s.d.
+  SampleC<VectorC> Samples(nSamples);
+
+  //RandomSeedDefault(time(0));
+  UIntT nSamplesPerCluster = nSamples/nGaussians;
+  for (UIntT k=0; k<nGaussians; ++k) {
+    RealT clusterMean = (k+0.5)*clusterSpacing;
+    for (UIntT j=0; j<nSamplesPerCluster; j++) {
+      VectorC sample(dimensionality);
+      for (UIntT i=0; i< dimensionality; i++){
+        sample[i] = RandomGauss();
+        sample[i] += clusterMean;
+      }
+      Samples.Append(sample);
+    }
+  }
+  DesignGaussianMixtureC gmm(nGaussians,true);
+  GaussianMixtureC gaussian = gmm.Apply(Samples);
+
+  for (UIntT k=0; k<nGaussians; ++k) {
+    MeanCovarianceC mc = gaussian.MeanCovariances()[k];
+//     cout << "Weight: " << gaussian.Weights()[k] << endl;
+//     cout << "Means: " << mc.Mean() << endl;
+//     cout << "Covs: " << mc.Covariance() << endl;
+    // s.d.s should be ~ 1, but sometimes 2 GMM components chase the same cluster & there are not enough to go round.  In that case one component tries to cover 2 clusters, hence s.d. is about clusterSpacing/2.
+    RealT covFactor = (Round(gaussian.Weights()[k]*nGaussians)==2) ? Sqr(clusterSpacing/2.0) : 1.0;
+    for (UIntT i=0; i< dimensionality; i++){
+      if (IsNan(mc.Mean()[k])) return __LINE__;      
+      if (Abs(mc.Covariance()[i][i]/covFactor-1.0) > 0.3) return __LINE__;
+    }
+  }
+
   return 0;
 }

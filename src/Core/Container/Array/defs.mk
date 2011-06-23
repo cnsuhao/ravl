@@ -28,7 +28,7 @@ LIBDEPS = RavlArray.def
 
 USESLIBS = RavlCore
 
-EXAMPLES = exArray1.cc exArray2.cc exArray3.cc
+EXAMPLES = exArray1d.cc exArray2d.cc exArray3d.cc
 
 TESTEXES = testArray1d.cc testArray2d.cc testArray3d.cc
 
