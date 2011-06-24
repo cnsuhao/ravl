@@ -3502,7 +3502,7 @@ then
    Xcygwin )    trace 3 Dropping functionality unsupported under Cygwin
                 # 3D Support disabled under Cygwin
                    RavlCameraCal=""
-                   Ravl3D=""
+                   Ravl3d_LIBS=""
                       # absence of libRavl3D blocks the OpenGL and OpenSceneGraph support functionality
                          OpenGL_SUPPORT=""
                          OpenSceneGraph_SUPPORT=""
