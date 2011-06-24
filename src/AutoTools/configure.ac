@@ -1335,8 +1335,6 @@ dnl should be put in the platform specific code at the end of this script, not
 dnl here.
 RAVL_ARFLAGS=ruc
 
-AC_SUBST([ARFLAGS])
-# any user-provided ARFLAGS will be recorded in Config.Local as CONFIGURE_ARFLAGS
 AC_SUBST([RAVL_ARFLAGS])
 
 # Declare flags for make
@@ -3135,10 +3133,6 @@ echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the archiver >> ./Config.Local.in
 echo >> ./Config.Local.in
-echo \# User specified at configure time >> ./Config.Local.in
-echo CONFIGURE_ARFLAGS=@ARFLAGS@ >> ./Config.Local.in
-echo >> ./Config.Local.in
-echo \# General Ravl archiver settings >> ./Config.Local.in
 echo RAVL_ARFLAGS=@RAVL_ARFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in

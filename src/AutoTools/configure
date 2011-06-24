@@ -750,7 +750,6 @@ INSTALL_PROGRAM
 RAVL_MAKEFLAGS
 MAKEFLAGS
 RAVL_ARFLAGS
-ARFLAGS
 UNDEFSYMB
 LIBPATHSWITCH
 RAVL_SHARED_LDLIBFLAGS
@@ -4955,8 +4954,6 @@ fi
 
 RAVL_ARFLAGS=ruc
 
-
-# any user-provided ARFLAGS will be recorded in Config.Local as CONFIGURE_ARFLAGS
 
 
 # Declare flags for make
@@ -12837,10 +12834,6 @@ echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the archiver >> ./Config.Local.in
 echo >> ./Config.Local.in
-echo \# User specified at configure time >> ./Config.Local.in
-echo CONFIGURE_ARFLAGS=@ARFLAGS@ >> ./Config.Local.in
-echo >> ./Config.Local.in
-echo \# General Ravl archiver settings >> ./Config.Local.in
 echo RAVL_ARFLAGS=@RAVL_ARFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in
