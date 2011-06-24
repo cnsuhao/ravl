@@ -121,4 +121,4 @@ testsingleoptshared:
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: default check debug debugshared distdir doc fullbuild fullsrc opt optbin optshared qmake rpm singlecheck singlecheckbin singlecheckshared singlechecksharedbin singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
+.PHONY: default check debug debugshared distdir doc fullsrc opt optbin optshared qmake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
