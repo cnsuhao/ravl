@@ -80,7 +80,7 @@ singleoptbin:
 	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 programs recurse
 
 singleoptshared:
-	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt makedirs buildshared
+	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt SHAREDBUILD=1 makedirs buildshared
 
 singleoptsharedbin:
 	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
@@ -92,7 +92,7 @@ singledebugbin:
 	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 programs recurse
 
 singledebugshared:
-	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug makedirs buildshared
+	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug SHAREDBUILD=1 makedirs buildshared
 
 singledebugsharedbin:
 	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
