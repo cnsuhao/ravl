@@ -60,6 +60,10 @@ namespace RavlN {
     virtual bool OpenOPort(DListC<StringC> &remainingPath,const StringC &dataType,NetOSPortServerBaseC &port);
     //: Open output port.
 
+    virtual bool PortsOpen()
+    { return false; }
+    //: Does this node contain ports that are still open?
+
     virtual bool Delete();
     //: Delete the physical media associated with the node.
     //!return: True if successfully deleted.
@@ -68,6 +72,18 @@ namespace RavlN {
     //: Delete the physical media of the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
     //!return: True if successfully deleted.
+
+    virtual bool DeletePending()
+    { return deletePending; }
+    //: Has this node been marked for deletion?
+
+    virtual void SetRemovePending(const bool nremovePending)
+    { removePending = nremovePending; }
+    //: Mark the node for removal
+
+    virtual bool RemovePending()
+    { return removePending; }
+    //: Has this node been marked for removal?
 
     virtual bool QueryNodeSpace(const StringC& remainingPath, Int64T& total, Int64T& used, Int64T& available);
     //: Query physical media details for the target path within the node.
@@ -86,6 +102,11 @@ namespace RavlN {
     { sigOnDelete = sigOnDelete_; }
     //: Set the signal to be called when the target path is deleted.
 
+    virtual bool OnClose(DListC<StringC>& remainingPath)
+    { return true; }
+    //: Called when a target path is closed.
+    //!param: remainingPath - The closed target path within the node.
+
     virtual bool OnDelete(DListC<StringC>& remainingPath)
     { return true; }
     //: Called when a target path is deleted.
@@ -99,6 +120,8 @@ namespace RavlN {
     bool verbose;
     Signal1C<StringC> sigOnClose;
     Signal1C<StringC> sigOnDelete;
+    bool deletePending;
+    bool removePending;
   };
   
   //! userlevel=Normal
@@ -160,6 +183,10 @@ namespace RavlN {
     { return Body().OpenOPort(remainingPath,dataType,port); }
     //: Open output port.
     
+    bool PortsOpen()
+    { return Body().PortsOpen(); }
+    //: Does this node contain ports that are still open?
+
     bool Delete()
     { return Body().Delete(); }
     //: Delete the physical media associated with the node.
@@ -170,6 +197,18 @@ namespace RavlN {
     //: Delete the physical media of the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
     //!return: True if successfully deleted.
+
+    bool DeletePending()
+    { return Body().DeletePending(); }
+    //: Has this node been marked for deletion?
+
+    void SetRemovePending(const bool nremovePending)
+    { Body().SetRemovePending(nremovePending); }
+    //: Mark the node for removal
+
+    bool RemovePending()
+    { return Body().RemovePending(); }
+    //: Has this node been marked for removal?
 
     bool QueryNodeSpace(const StringC& remainingPath, Int64T& total, Int64T& used, Int64T& available)
     { return Body().QueryNodeSpace(remainingPath, total, used, available); }
@@ -188,6 +227,11 @@ namespace RavlN {
     void SetDeleteSignal(Signal1C<StringC>& sigOnDelete_)
     { Body().SetDeleteSignal(sigOnDelete_); }
     //: Set the signal to be called when the target path is deleted.
+
+    bool OnClose(DListC<StringC>& remainingPath)
+    { return Body().OnClose(remainingPath); }
+    //: Called when a target path is closed.
+    //!param: remainingPath - The closed target path within the node.
 
     bool OnDelete(DListC<StringC>& remainingPath)
     { return Body().OnDelete(remainingPath); }

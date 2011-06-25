@@ -65,7 +65,11 @@ namespace RavlN {
     //!param: available - Returns the space available for uploading footage in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
 
-    bool OnDelete(StringC& pathDeleted);
+    bool OnClose(StringC& path);
+    //: Called when a target path is closed.
+    // Used to inform directory nodes that a file has been closed.
+
+    bool OnDelete(StringC& path);
     //: Called when a target path is deleted.
     // Used to inform directory nodes that a file marked for deletion has actually been deleted.
 
@@ -87,6 +91,12 @@ namespace RavlN {
 
     virtual void ZeroOwners();
     //: Owning handles has dropped to zero.
+
+    bool OnCloseOrDelete(StringC &path, bool onDelete);
+    //: Process close and delete signals
+
+    bool PruneRemovedNodes(StringC &path);
+    //: Walk the path and prune nodes marked for removal that no longer have open ports.
 
     MutexC m_access;
     HashTreeC<StringC,DataServerVFSNodeC> m_vfs; // Virtual file system.
@@ -161,8 +171,13 @@ namespace RavlN {
     //!param: available - Returns the space available for uploading footage in bytes. -1 if not applicable.
     //!return: True if the query executed successfully.
 
-    bool OnDelete(StringC& pathDeleted)
-    { return Body().OnDelete(pathDeleted); }
+    bool OnClose(StringC& path)
+    { return Body().OnClose(path); }
+    //: Called when a target path is closed.
+    // Used to inform directory nodes that a file has been closed.
+
+    bool OnDelete(StringC& path)
+    { return Body().OnDelete(path); }
     //: Called when a node is physically deleted.
     // Used to inform directory nodes that a file marked for deletion has actually been deleted.
 

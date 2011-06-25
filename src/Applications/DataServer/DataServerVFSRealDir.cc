@@ -11,6 +11,7 @@
 #include "Ravl/DP/CacheIStream.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
+#include <ftw.h>
 
 #define DODEBUG 0
 #if DODEBUG
@@ -28,15 +29,25 @@ namespace
 }
 
 namespace RavlN {
+
+
+
+	int removeFTW(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
+	{
+		FilenameC filename(fpath);
+		ONDEBUG(cerr << "removeFTW deleting (" << filename << ")" << endl);
+
+		return filename.Remove() ? FTW_CONTINUE : FTW_STOP;
+	}
   
   //: Constructor.
   
-  DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const StringC &vname,const StringC& npath,const StringC &nRealDirname,bool canWrite,bool canCreate_)
-    : DataServerVFSNodeBodyC(vname,npath,canWrite,true),
-      realDirname(nRealDirname),
-      canCreate(canCreate_)
+  DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const StringC &nname,const StringC& npath,const StringC &nRealDirname,bool ncanWrite,bool ncanCreate)
+	: DataServerVFSNodeBodyC(nname,npath,ncanWrite,true),
+		realDirname(nRealDirname),
+		canCreate(ncanCreate)
   {
-    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC, Called VName=" << vname << " \n");
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC nname (" << nname << ")" << endl);
 
     // Shall we create?
     if (canCreate)
@@ -47,7 +58,7 @@ namespace RavlN {
         FilePermissionC permissions(g_directoryPermissions);
         if (!realDirname.MakeDir(permissions))
         {
-          cerr << "DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC failed to create directory '" << nRealDirname << "'" << endl;
+          cerr << "DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC failed to create directory (" << nRealDirname << ")" << endl;
           // TODO(WM) Throw exception on failure?
         }
       }
@@ -56,17 +67,17 @@ namespace RavlN {
   
   //: Destructor.
   
-  DataServerVFSRealDirBodyC::~DataServerVFSRealDirBodyC() {
-    // Empty out handles with a lock. This will give any stray threads a chance to exit,
-    // though there should be none running in the instance by the time this gets called.
-    MutexLockC lock(access);
-    name2file.Empty();
+  DataServerVFSRealDirBodyC::~DataServerVFSRealDirBodyC()
+  {
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::~DataServerVFSRealDirBodyC" << endl);
+
+    RavlAssert(name2file.IsEmpty() && nameDeletePending.IsEmpty());
   }
   
   //: Configure node with given setup.
   
-  bool DataServerVFSRealDirBodyC::Configure(const ConfigFileC &config) {
-    
+  bool DataServerVFSRealDirBodyC::Configure(const ConfigFileC &config)
+  {
     // Lock server while we're setting up.
     // No other threads should be running here, but better safe than sorry.
     MutexLockC lock(access);
@@ -85,32 +96,44 @@ namespace RavlN {
   
   //: Open VFS file.
   
-  bool DataServerVFSRealDirBodyC::OpenVFSFile(DListC<StringC> &remainingPath,DataServerVFSRealFileC &rfile,bool forWrite) {
+  bool DataServerVFSRealDirBodyC::OpenVFSFile(DListC<StringC> &remainingPath, DataServerVFSRealFileC &rfile, bool forWrite)
+  {
+    if (deletePending)
+    {
+      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile refusing to open file in soon to be deleted path (" << name << ")" << endl;
+      return false;
+    }
+
     StringC vfile = StringListC(remainingPath).Cat("/");
-    if(vfile.IsEmpty()) {
-      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile, No filename remaining. VDir=" << name << "\n";
+    if (vfile.IsEmpty())
+    {
+      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile no filename specified in path (" << name << ")" << endl;
       return false;
     }
     FilenameC absFile = realDirname + "/" + vfile;
 
     MutexLockC lock(access);
 
-    if(!name2file.Lookup(vfile,rfile)) {
-      if (nameDeletePending.IsMember(vfile))
-      {
-        cerr << "DataServerVFSRealDirBodyC::OpenIPort, Refusing to open soon to be deleted file '" << absFile << "' \n";
-        return false;
-      }
+    if (nameDeletePending.IsMember(vfile))
+    {
+      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile refusing to open soon to be deleted file (" << absFile << ")" << endl;
+      return false;
+    }
 
-      if(!absFile.Exists() && !forWrite) {
-        cerr << "DataServerVFSRealDirBodyC::OpenIPort, Failed to open file '" << absFile << "' \n";
+    if (!name2file.Lookup(vfile, rfile))
+    {
+      if (!absFile.Exists() && !forWrite)
+      {
+        cerr << "DataServerVFSRealDirBodyC::OpenVFSFile failed to open file (" << absFile << ")" << endl;
         return false;
       }
       
-      rfile = DataServerVFSRealFileC(vfile,AbsoluteName(),absFile,canWrite);
+      rfile = DataServerVFSRealFileC(vfile, AbsoluteName(), absFile, canWrite);
       rfile.SetFileFormat(defaultFileFormat);
       rfile.SetCloseSignal(sigOnClose);
       rfile.SetDeleteSignal(sigOnDelete);
+		  DataServerVFSRealDirC ref(*this);
+		  rfile.SetParent(ref);
 
       name2file[vfile] = rfile;
     }
@@ -125,7 +148,7 @@ namespace RavlN {
     if(!OpenVFSFile(remainingPath,rfile,false))
       return false;
     DListC<StringC> emptyList;
-    return rfile.OpenIPort(emptyList,dataType,port);  
+    return rfile.OpenIPort(emptyList,dataType,port);
   }
   
   //: Open output port.
@@ -145,20 +168,31 @@ namespace RavlN {
   
 
 
+  bool DataServerVFSRealDirBodyC::PortsOpen()
+  {
+    MutexLockC lock(access);
+
+  	return !name2file.IsEmpty() || !nameDeletePending.IsEmpty();
+  }
+
+
+
   bool DataServerVFSRealDirBodyC::Delete(const DListC<StringC>& remainingPath)
   {
-    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::Delete '" << name << "' for '" << StringListC(remainingPath).Cat("/") << "'" << endl);
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::Delete name (" << name << ") remainingPath (" << StringListC(remainingPath).Cat("/") << ")" << endl);
     if (!canWrite)
     {
-      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile attempting to delete on read-only directory '" << name << "'" << endl;
+      cerr << "DataServerVFSRealDirBodyC::Delete attempting to delete on read-only directory (" << name << ")" << endl;
       return false;
     }
 
     StringC targetFilename = StringListC(remainingPath).Cat("/");
     if (targetFilename.IsEmpty())
     {
-      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile delete not supported for directory '" << name << "'" << endl;
-      return false;
+      ONDEBUG(cerr << "DataServerVFSRealDirBodyC::Delete delete pending (" << name << ")" << endl);
+    	deletePending = true;
+
+      return true;
     }
 
     FilenameC targetFile = realDirname + "/" + targetFilename;
@@ -166,22 +200,22 @@ namespace RavlN {
 
     MutexLockC lock(access);
     
-    if (name2file.Lookup(targetFilename, targetFileNode))
+    if (!name2file.Lookup(targetFilename, targetFileNode))
     {
-      name2file.Del(targetFilename);
-    }
-    else
-    {
-      if(!targetFile.Exists())
-      {
-        cerr << "DataServerVFSRealDirBodyC::Delete failed to find file '" << targetFilename << "' for '" << name << "'" << endl;
-        return false;
-      }
+  		if(!targetFile.Exists())
+	  	{
+		  	cerr << "DataServerVFSRealDirBodyC::Delete failed to find file '" << targetFilename << "' for '" << name << "'" << endl;
+			  return false;
+		  }
 
-      targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
-      targetFileNode.SetCloseSignal(sigOnClose);
-      targetFileNode.SetDeleteSignal(sigOnDelete);
+		  targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
+		  targetFileNode.SetCloseSignal(sigOnClose);
+		  targetFileNode.SetDeleteSignal(sigOnDelete);
+		  DataServerVFSRealDirC ref(*this);
+		  targetFileNode.SetParent(ref);
     }
+
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::Delete delete pending of (" << targetFilename << ") on (" << name << ")" << endl);
 
     nameDeletePending.Insert(targetFilename);
 
@@ -270,16 +304,77 @@ namespace RavlN {
 
   
   
-  bool DataServerVFSRealDirBodyC::OnDelete(DListC<StringC>& remainingPath)
+  bool DataServerVFSRealDirBodyC::OnClose(DListC<StringC>& remainingPath)
   {
-    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::OnDelete path=" << StringListC(remainingPath).Cat("/") << endl);
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::OnClose path (" << StringListC(remainingPath).Cat("/") << ")" << endl);
 
     MutexLockC lock(access);
-    
-    StringC targetFilename = StringListC(remainingPath).Cat("/");
-    nameDeletePending.Remove(targetFilename);
+
+    RavlAssert(!remainingPath.IsEmpty())
+		StringC targetFilename = StringListC(remainingPath).Cat("/");
+		name2file.Del(targetFilename);
+
+		if (ReadyToDelete())
+		{
+			lock.Unlock();
+
+			DoDelete();
+		}
 
     return true;
+  }
+
+
+
+  bool DataServerVFSRealDirBodyC::OnDelete(DListC<StringC>& remainingPath)
+  {
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::OnDelete path (" << StringListC(remainingPath).Cat("/") << ")" << endl);
+
+    MutexLockC lock(access);
+
+		StringC targetFilename = StringListC(remainingPath).Cat("/");
+		if (!targetFilename.IsEmpty())
+		{
+			RavlAssert(nameDeletePending.Contains(targetFilename));
+			nameDeletePending.Remove(targetFilename);
+
+			if (ReadyToDelete())
+			{
+				lock.Unlock();
+
+				DoDelete();
+			}
+		}
+
+    return true;
+  }
+
+
+
+  bool DataServerVFSRealDirBodyC::ReadyToDelete()
+  {
+		ONDEBUG(cerr << "DataServerVFSRealDirBodyC::ReadyToDelete pending (" << (deletePending ? "Y" : "N") << ") " << \
+			              "name2file (" << name2file.Size() << ") " << \
+			              "nameDeletePending (" << nameDeletePending.Size() << ")" << endl);
+
+  	return deletePending && name2file.IsEmpty() && nameDeletePending.IsEmpty();
+  }
+
+
+
+  void DataServerVFSRealDirBodyC::DoDelete()
+  {
+		ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting (" << realDirname << ")" << endl);
+
+		if (nftw(realDirname, removeFTW, 64, FTW_DEPTH | FTW_PHYS) == 0)
+		{
+			if (sigOnDelete.IsValid())
+				sigOnDelete(AbsoluteName());
+		}
+		else
+		{
+			cerr << "DataServerVFSRealFileBodyC::DoDelete failed to delete (" << realDirname << ")" << endl;
+		}
   }
 
 }

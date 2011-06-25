@@ -23,7 +23,9 @@ namespace RavlN {
       path(npath),
       isDirectory(isDir),
       canWrite(ncanWrite),
-      verbose(false)
+      verbose(false),
+      deletePending(false),
+      removePending(false)
   {
     ONDEBUG(cerr << "DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called name=" << name << " path=" << path << " isDir=" << isDir <<"\n");
   }
