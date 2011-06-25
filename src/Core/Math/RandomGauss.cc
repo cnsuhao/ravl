@@ -24,13 +24,14 @@ namespace RavlN {
   //: Default.
   
   RandomGaussC::RandomGaussC() 
+   : iset(false)
   {}
   
   //: Generate the next value.
   
   float RandomGaussC::Generate(RandomMersenneTwisterC& generator) {
     float v1,v2,fac,r;
-    if (iset==0) {
+    if (!iset) {
       do {
 	v1=(float)(2.0 * generator.Double() - 1.0);
 	v2=(float)(2.0 * generator.Double() - 1.0);
@@ -39,10 +40,10 @@ namespace RavlN {
       fac=(float)sqrt(-2.0 * log(r)/r);
       gset=v1 * fac;
       gasdev=v2 * fac;
-      iset=1;
+      iset=true;
       return gasdev;
     }
-    iset=0;
+    iset=false;
     return gset;
   }
   
