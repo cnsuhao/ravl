@@ -30,10 +30,9 @@ namespace RavlN {
       cacheSize(0),
       realFilename(nRealFilename),
       canSeek(true),
-      multiWrite(false),
-      deleteOnClose(false)
+      multiWrite(false)
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC, (" << this << ") Called name=" << name << " path=" << path << "\n");
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC (" << this << ") Called name=" << name << " path=" << path << "\n");
   }
   
   //: Destructor.
@@ -42,12 +41,19 @@ namespace RavlN {
   {
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC (" << this << ")\n");
 
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC " << \
+                    "iSPortShareAbstract (" << (iSPortShareAbstract.IsValid() ? static_cast<Int64T>(iSPortShareAbstract.References()) : -1) << ") " << \
+                    "iSPortShareByte (" << (iSPortShareByte.IsValid() ? static_cast<Int64T>(iSPortShareByte.References()) : -1) << ") " << \
+                    "oPortAbstract (" << (oPortAbstract.IsValid() ? static_cast<Int64T>(oPortAbstract.References()) : -1) << ") " << \
+                    "oPortByte (" << (oPortByte.IsValid() ? static_cast<Int64T>(oPortByte.References()) : -1) << ") " << endl);
+
     CloseIFileAbstract();
     CloseIFileByte();
     CloseOFileAbstract();
     CloseOFileByte();
     
-    DeleteOnClose();
+    if (deletePending)
+    	DoDelete();
   }
   
   //: Configure node with given setup.
@@ -191,7 +197,7 @@ namespace RavlN {
     }
 
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::Delete marking for delete" << endl);
-    deleteOnClose = true;
+    deletePending = true;
     return true;
   }
 
@@ -267,6 +273,11 @@ namespace RavlN {
                                    iSPortAbstract,
                                    name);
 
+#if DODEBUG
+    DataServerVFSRealFileC ref(*this);
+    Connect(netPort.SigConnectionClosed(), ref, &DataServerVFSRealFileC::DisconnectIPortClientAbstract);
+#endif
+
     return true;
   }
 
@@ -313,6 +324,11 @@ namespace RavlN {
                                    iSPortByte,
                                    iSPortByte,
                                    name);
+
+#if DODEBUG
+    DataServerVFSRealFileC ref(*this);
+    Connect(netPort.SigConnectionClosed(), ref, &DataServerVFSRealFileC::DisconnectIPortClientByte);
+#endif
 
     return true;
   }
@@ -476,15 +492,15 @@ namespace RavlN {
   
   bool DataServerVFSRealFileBodyC::CloseIFileAbstract()
   {
+    RavlAssert(!iSPortShareByte.IsValid());
+
     MutexLockC lock(access);
 
     if (iSPortShareAbstract.IsValid())
     {
-      bool closed = iSPortShareAbstract.IsValid() && !iSPortShareByte.IsValid();
-
       iSPortShareAbstract.Invalidate();
 
-      if (closed && sigOnClose.IsValid())
+      if (sigOnClose.IsValid())
       {
         lock.Unlock();
 
@@ -499,15 +515,15 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::CloseIFileByte()
   {
+    RavlAssert(!iSPortShareAbstract.IsValid());
+
     MutexLockC lock(access);
 
     if (iSPortShareByte.IsValid())
     {
-      bool closed = iSPortShareByte.IsValid() && !iSPortShareAbstract.IsValid();
-
       iSPortShareByte.Invalidate();
 
-      if (closed && sigOnClose.IsValid())
+      if (sigOnClose.IsValid())
       {
         lock.Unlock();
 
@@ -562,7 +578,25 @@ namespace RavlN {
     return true;
   }
 
-  //: Called if when output file client disconnect it.
+
+
+  bool DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract()
+  {
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract refs (" << (iSPortShareAbstract.IsValid() ? iSPortShareAbstract.References() : -1) << ")" << endl);
+
+    return true;
+  }
+
+
+
+  bool DataServerVFSRealFileBodyC::DisconnectIPortClientByte()
+  {
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectIPortClientByte refs (" << (iSPortShareByte.IsValid() ? iSPortShareByte.References() : -1) << ")" << endl);
+
+    return true;
+  }
+
+
   
   bool DataServerVFSRealFileBodyC::DisconnectOPortClientAbstract()
   {
@@ -602,13 +636,13 @@ namespace RavlN {
     return true;
   }
 
-  //: Called if when file stop's being used.
+
   
   bool DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClients, Called \n");
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract (" << this << ")" << endl);
 
-    CloseIFileAbstract();
+		CloseIFileAbstract();
 
     return true;
   }
@@ -617,46 +651,26 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::ZeroIPortClientsByte()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClients, Called \n");
-    
-    CloseIFileByte();
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClientsByte (" << this << ")" << endl);
+
+		CloseIFileByte();
 
     return true;
   }
 
 
 
-  bool DataServerVFSRealFileBodyC::DeleteOnClose()
+  bool DataServerVFSRealFileBodyC::DoDelete()
   {
-    if (deleteOnClose)
-    {
-      MutexLockC lock(access);
+  	RavlAssert(deletePending);
 
-      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DeleteOnClose" << \
-              " oPortAbstract=" << (oPortAbstract.IsValid() ? oPortAbstract.References() : 0) << \
-              " oPortByte=" << (oPortByte.IsValid() ? oPortByte.References() : 0) << \
-              " iSPortShareAbstract=" << (iSPortShareAbstract.IsValid() ? iSPortShareAbstract.References() : 0) << \
-              " iSPortShareByte=" << (iSPortShareByte.IsValid() ? iSPortShareByte.References() : 0) << endl);
-      
-      const int references = (oPortAbstract.IsValid() ? oPortAbstract.References() : 0) + \
-                             (oPortByte.IsValid() ? oPortByte.References() : 0) + \
-                             (iSPortShareAbstract.IsValid() ? iSPortShareAbstract.References() : 0) + \
-                             (iSPortShareByte.IsValid() ? iSPortShareByte.References() : 0);
-      if (references == 0)
-      {
-        lock.Unlock();
+		ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting '" << realFilename << "'" << endl);
+		bool deleted = realFilename.Exists() && realFilename.Remove();
 
-        ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DeleteOnClose deleting '" << realFilename << "'" << endl);
-        bool deleted = realFilename.Exists() && realFilename.Remove();
+		if (deleted && sigOnDelete.IsValid())
+			sigOnDelete(AbsoluteName());
 
-        if (deleted && sigOnDelete.IsValid())
-          sigOnDelete(AbsoluteName());
-        
-        return deleted;
-      }
-    }
-
-    return false;
+		return deleted;
   }
   
 }
