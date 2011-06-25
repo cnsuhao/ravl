@@ -32,7 +32,7 @@ namespace RavlN {
       ret = (buff >> (at+1)) & Mask(nbits) ;
 	//cerr << "\nAll bits in buff :" << ((UIntT) ret) << " at:" << at <<" NBits:" << nbits <<" Mask:" << hex << Mask(nbits) <<"\n";
     } else {
-      // This remainder goes over a byte boundry.
+      // This remainder goes over a byte boundary.
       at -= bitsInBuff;
       ret = ((buff >> (at+1)) & Mask(bitsInBuff)) << (nbits-bitsInBuff);
       nbits -= bitsInBuff;
