@@ -10,6 +10,8 @@ ifndef LIBFFMPEG_DEF
 
   ifndef LIBFFMPEG_HOME
     LIBFFMPEG_HOME := /usr
+  else
+    EXELIB := -Wl,-rpath=$(LIBFFMPEG_HOME)/lib $(EXELIB)
   endif
   
   ifeq ($(LOCALARC),linux64)
