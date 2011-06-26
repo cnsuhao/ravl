@@ -62,7 +62,7 @@ namespace RavlN
       PyErr_Clear();
       
       // Package and throw the exception
-      throw PythonExceptionC(exceptionType.Copy(), exceptionValue.Copy(), exceptionTrace.Copy());
+      throw PythonExceptionC(exceptionType, exceptionValue, exceptionTrace);
     }
   }
   
