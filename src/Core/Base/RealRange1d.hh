@@ -172,7 +172,7 @@ namespace RavlN {
     inline RealRangeC & ClipBy(const RealRangeC & r);
     //: This index range is clipped to contain at most the index range 'r'.
 
-    inline RealT Clip(const RealT & r) {
+    inline RealT Clip(const RealT & r) const {
       RealT lower = Min() > r? Min(): r;
       return lower < Max()? lower: Max();
     }
