@@ -63,11 +63,11 @@ retestopt:
 
 retestsingleopt:
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single/bin; ls > ../TestExes
-	$(INSTALLHOME)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
+	$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
 	
 retestsingleoptshared:
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single/bin; ls > ../TestExes
-	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
+	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
 	
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
 rpm: qmake 
@@ -105,13 +105,13 @@ testsingleopt:
 	@$(RM) -f $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single/bin/*
 	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 test recurse
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single/bin; ls > ../TestExes
-	$(INSTALLHOME)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
+	$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
 	
 testsingleoptshared:
 	@$(RM) -f $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single/bin/*
 	$(MAKE) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single/bin; ls > ../TestExes
-	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
+	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
 
 .DEFAULT: qmake
 	$(MAKE) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
