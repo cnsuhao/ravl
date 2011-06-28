@@ -126,6 +126,7 @@ int testLine2d() {
   LinePP2dC line3(Point2dC(0,0),Point2dC(0,0));
   try {
     RealT d = line3.DistanceWithin(Point2dC(1,1));
+    cerr << "Failed to throw exception on zero length line\n";
     return __LINE__;
   }
   catch (...) {
