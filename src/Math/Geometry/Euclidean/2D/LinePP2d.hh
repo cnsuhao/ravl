@@ -32,63 +32,63 @@ namespace RavlN {
     //: Default constructor.
     // The contents of the line are undefined.
 
-    LinePP2dC(const FLinePPC<2> &base)
-      : FLinePPC<2>(base)
+    LinePP2dC(const FLinePPC<2> &Base)
+      : FLinePPC<2>(Base)
     {}
     //: Constructor from base class
     
-    LinePP2dC(const Point2dC &start,const Point2dC &end)
-      : FLinePPC<2>(start,end)
+    LinePP2dC(const Point2dC &Start,const Point2dC &End)
+      : FLinePPC<2>(Start,End)
     {}
     //: Construct a line from two points.
 
-    LinePP2dC(const Point2dC &start,const Vector2dC &direction)
-      : FLinePPC<2>(start,direction)
+    LinePP2dC(const Point2dC &Start,const Vector2dC &Direction)
+      : FLinePPC<2>(Start,Direction)
     {}
     //: Construct a line from a start point and a direction
     
-    bool ClipBy(const RealRange2dC &rng);
+    bool ClipBy(const RealRange2dC &Rng);
     //: Clip line by given rectangle.
     // If no part of the line is in the rectangle:<ul>
     // <li>line is <i>not</i> clipped</li>
     // <li>method returns <code>false</code></li></ul>
     
-    bool IsPointToRight(const Point2dC& pnt) const
-    { return pnt.Area2(P1(),P2()) < 0; }
+    bool IsPointToRight(const Point2dC& Pt) const
+    { return Pt.Area2(P1(),P2()) < 0; }
     //: Checks if this point is to the right of the line
     
-    bool IsPointToRightOn(const Point2dC& pnt) const 
-    { return pnt.Area2(P1(),P2()) <= 0; }
+    bool IsPointToRightOn(const Point2dC& Pt) const 
+    { return Pt.Area2(P1(),P2()) <= 0; }
     //: Checks if this point is to the right of, or exactly on the line
     
-    bool IsPointOn(const Point2dC& pnt) const
-    { return pnt.Area2(P1(),P2()) == 0; }
+    bool IsPointOn(const Point2dC& Pt) const
+    { return Pt.Area2(P1(),P2()) == 0; }
     //: Checks if this point is exactly on the line
 
-    bool IsPointIn(const Point2dC& pnt) const;
+    bool IsPointIn(const Point2dC& Pt) const;
     //: Checks if this point is exactly on the closed segment
     
-    RealT ParIntersection(const LinePP2dC & l) const;
+    RealT ParIntersection(const LinePP2dC & L) const;
     //: Returns the parameter of the intersection point of 'l' with this line.
     // If the parameter is equal to 0, the intersection is the starting
     // point of this line, if the parameter is 1, the intersection is the
     // end point. If the parameter is between 0 and 1 the intersection is
     // inside of this line segment.
 
-    bool HasInnerIntersection(const LinePP2dC & l) const;
+    bool HasInnerIntersection(const LinePP2dC & L) const;
     // Returns true if the intersection of this line segment and the 
     // line 'l' is either inside of this line segment or one of the end points.
  
-    Point2dC Intersection(const LinePP2dC & l) const;
+    Point2dC Intersection(const LinePP2dC & L) const;
     // Returns the intersection of 2 lines.
 
-    bool Intersection(const LinePP2dC & l, Point2dC& here) const;
+    bool Intersection(const LinePP2dC & L, Point2dC& Here) const;
     //: Calculate the intersection point between this line and l
     //!param: l - another line
     //!param: here - the point of intersection
     //!return: true if the lines intersect or false if they are parallel
     
-    bool IntersectRow(RealT row,RealT &col) const;
+    bool IntersectRow(RealT Row,RealT &Col) const;
     //: Find the column position which itersects the given row.
     //!param: row - Row for which we want to find the interecting column
     //!param: col - Place to store the intersecting col.
@@ -111,18 +111,23 @@ namespace RavlN {
     }
     //: Returns the normal of the line normalized to have unit size.
     
-    RealT SignedDistance(const Point2dC pt) const
-    { return Vector2dC(Vector()).Cross(Vector2dC(pt-P1()))/Length(); }
-    //: Return signed distance of pt from this line
+    RealT SignedDistance(const Point2dC Pt) const
+    { return Vector2dC(Vector()).Cross(Vector2dC(Pt-P1()))/Length(); }
+    //: Returns signed perpendicular distance of pt from this line
     
-    RealT Distance(const Point2dC pt) const
-    { return Abs(SignedDistance(pt)); }
-    //: Return signed distance of pt from this line
-    
+    RealT Distance(const Point2dC Pt) const
+    { return Abs(SignedDistance(Pt)); }
+    //: Return unsigned perpendicular distance of pt from this line
+
     Point2dC Projection(const Point2dC & Pt) const
     { 
       return Point(ParClosest(Pt));
     }
+    //: Returns intersction of line with perpendicular from Pt to line
+    
+    RealT DistanceWithin(const Point2dC & pt) const;
+    //: Returns distance of pt to nearest point on the line within the segment limits 
+
   };
   
 }

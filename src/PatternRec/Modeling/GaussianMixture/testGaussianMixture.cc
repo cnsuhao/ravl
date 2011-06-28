@@ -170,7 +170,7 @@ int testBiggerDesignGaussianMixture(UIntT nSamples) {
     // s.d.s should be ~ 1, but sometimes 2 GMM components chase the same cluster & there are not enough to go round.  In that case one component tries to cover 2 clusters, hence s.d. is about clusterSpacing/2.
     RealT covFactor = (Round(gaussian.Weights()[k]*nGaussians)==2) ? Sqr(clusterSpacing/2.0) : 1.0;
     for (UIntT i=0; i< dimensionality; i++){
-      if (IsNan(mc.Mean()[k])) return __LINE__;      
+      if (IsNan(mc.Mean()[i])) return __LINE__;      
       if (Abs(mc.Covariance()[i][i]/covFactor-1.0) > 0.3) return __LINE__;
     }
   }
