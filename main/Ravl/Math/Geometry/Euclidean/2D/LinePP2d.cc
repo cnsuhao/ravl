@@ -138,5 +138,12 @@ namespace RavlN {
     RealT t = ParIntersection(l);
     return t >= 0 && t<=1;
   }
+
+  RealT LinePP2dC::DistanceWithin(const Point2dC & pt) const {
+    RealT t = ParClosest(pt);
+    if (t < 0.0) return P1().EuclideanDistance(pt);
+    if (t > 1.0) return P2().EuclideanDistance(pt);
+    return Distance(pt);
+  }
    
 }

@@ -121,6 +121,15 @@ int testLine2d() {
   RealT val = line2.ParIntersection(line1);
   cerr << "Val=" << val << "\n";
   if(Abs(val - 0.5) > 0.0001) return __LINE__;
+
+  // check that exception gets thrown for zero-length line
+  LinePP2dC line3(Point2dC(0,0),Point2dC(0,0));
+  try {
+    RealT d = line3.DistanceWithin(Point2dC(1,1));
+    return __LINE__;
+  }
+  catch (...) {
+  }
   return 0;
 }
 
