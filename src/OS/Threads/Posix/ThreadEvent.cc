@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/ThreadEvent.cc"
 
@@ -31,10 +30,10 @@ namespace RavlN
   // NB. This is only guaranteed to work for one thread.
   
   bool ThreadEventC::WaitForFree() {
-    if(waiting == 0)
+    if(m_waiting == 0)
       return true;
     cond.Lock();
-    while(waiting != 0) 
+    while(m_waiting != 0) 
       cond.Wait();
     cond.Unlock();
     return true;

@@ -15,7 +15,9 @@
 #include "Ravl/RealHistogram1d.hh"
 #include "Ravl/RealHistogram2d.hh"
 #include "Ravl/RealHistogram3d.hh"
+#include "Ravl/RealHistogramNd.hh"
 #include "Ravl/Parzen.hh"
+#include "Ravl/Random.hh"
 
 using namespace RavlN;
 
@@ -24,6 +26,7 @@ int testCompare();
 int testRealHistogram1d();
 int testRealHistogram2d();
 int testRealHistogram3d();
+int testRealHistogramNd();
 int testParzen();
 
 int main() {
@@ -46,6 +49,10 @@ int main() {
     return 1;
   }
   if((ln = testRealHistogram3d()) != 0) {
+    cerr << "Test failed on line " << ln << "\n";
+    return 1;
+  }
+  if((ln = testRealHistogramNd()) != 0) {
     cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
@@ -135,5 +142,34 @@ int testParzen() {
   a[12] = 1.6;
   ParzenWindowC p(a, 3.2);
   if(Abs(p.PdfEstimate(1.0)-0.25446761)>10e-8) return __LINE__;
+  return 0;
+}
+
+int testRealHistogramNd() {
+  UIntT dim = 4;
+  SArray1dC<RealRangeC> ranges(dim);
+  SArray1dC<size_t> binSizes(dim);
+  for(unsigned i = 0;i < dim;i++) {
+    ranges[i] = RealRangeC(i + 0.5,i+1.5);
+    binSizes[i] = i + 3;
+  }
+  RealHistogramNdC<RealT> testHist(ranges,binSizes);
+  for(unsigned i = 0;i < 10000;i++) {
+    VectorC at(dim);
+    for(unsigned k = 0;k < dim;k++) {
+      at[k] = ranges[k].Min() + Random1() * ranges[k].Size();
+    }
+    RealT val = 1.0;
+    if(!testHist.CheckVote(at,val)) return __LINE__;
+  }
+  for(unsigned i = 0;i < 100;i++) {
+    VectorC at(dim);
+    for(unsigned k = 0;k < dim;k++) {
+      at[k] = ranges[k].Min() + Random1() * ranges[k].Size();
+    }
+    RealT value;
+    if(!testHist.Interpolate(at,value)) return __LINE__;
+    //std::cout << " At:" << at << " Votes:" << value << " InRange:" << inRange << "\n";
+  }
   return 0;
 }

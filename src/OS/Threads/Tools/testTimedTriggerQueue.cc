@@ -26,7 +26,7 @@ DateC when[noTests];
 
 bool MarkTime(int &i) {
   when[i] = DateC(true); // Mark now.
-  RavlN:Sleep(0.05);
+  RavlN::Sleep(0.05);
   //  cerr << " i:" << i << "\n";
   return true;
 }
