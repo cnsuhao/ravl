@@ -1,4 +1,4 @@
-#include "Ravl/3D/PinholeCamera0.hh"
+#include "Ravl/3D/PinholeCamera1.hh"
 
 namespace Ravl3DN
 {
@@ -7,29 +7,39 @@ namespace Ravl3DN
 
   //: Load from stream.
   bool
-  PinholeCameraBody0C::Load(istream &s)
+  PinholeCameraBody1C::Load(istream &s)
   {
-    s >> m_frame;
-    s >> m_fx >> m_fy >> m_cx >> m_cy;
-    s >> m_R;
-    s >> m_t;
+    s >> 
+      m_frame >>
+      m_fx >> 
+      m_fy >> 
+      m_cx >> 
+      m_cy >> 
+      m_k1 >> 
+      m_R  >> 
+      m_t;
     return true;
   }
     
   //: Load from binary stream.
   bool
-  PinholeCameraBody0C::Load(BinIStreamC &s)
+  PinholeCameraBody1C::Load(BinIStreamC &s)
   {
-    s >> m_frame;
-    s >> m_fx >> m_fy >> m_cx >> m_cy;
-    s >> m_R;
-    s >> m_t;
+    s >> 
+      m_frame >>
+      m_fx >> 
+      m_fy >> 
+      m_cx >> 
+      m_cy >> 
+      m_k1 >> 
+      m_R  >> 
+      m_t;
     return true;
   }
     
   //: Writes object to stream, can be loaded using constructor
   bool 
-  PinholeCameraBody0C::Save(ostream &s) const
+  PinholeCameraBody1C::Save(ostream &s) const
   {
     s << m_frame
       << endl << m_fx 
@@ -37,6 +47,7 @@ namespace Ravl3DN
       << " " << m_cx
       << " " << m_cy
       << endl;
+    s << m_k1 << endl; 
     s << m_R;
     s << m_t << endl;
     return true;
@@ -44,16 +55,17 @@ namespace Ravl3DN
     
   //: Writes object to stream, can be loaded using constructor
   bool 
-  PinholeCameraBody0C::Save(BinOStreamC &s) const
+  PinholeCameraBody1C::Save(BinOStreamC &s) const
   {
     s << m_frame
-      << m_fx
-      << m_fy
-      << m_cx
-      << m_cy
+      << m_fx 
+      << m_fy 
+      << m_cx 
+      << m_cy 
+      << m_k1 
       << m_R
       << m_t;
     return true;
   }
-
+  
 };
