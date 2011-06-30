@@ -1,3 +1,13 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2001, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+//! lib=RavlCameraCal
+//! author="Joel Mitchelson"
+//! docentry="Ravl.API.3D.Camera Calibration"
+//! file="Ravl/3D/CameraCal/PinholeCamera1.hh"
 #ifndef _PINHOLE_CAMERA_1_HH_
 #define _PINHOLE_CAMERA_1_HH_
 
