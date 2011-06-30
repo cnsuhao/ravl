@@ -21,7 +21,7 @@ namespace Ravl3DN
 {
   using namespace RavlN;
 
-  //! userlevel=Normal
+  //! userlevel=Develop
   //: Body for a simple pinhole camera model with no distortion parameters
 
   class PinholeCameraBody0C 

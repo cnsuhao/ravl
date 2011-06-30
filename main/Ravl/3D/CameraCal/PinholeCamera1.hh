@@ -18,7 +18,7 @@ namespace Ravl3DN
   using namespace RavlN;
   using namespace RavlImageN;
 
-  //! userlevel=Normal
+  //! userlevel=Develop
   //: Body for a pinhole camera model with 1st order radial lens distortion
 
   class PinholeCameraBody1C 
