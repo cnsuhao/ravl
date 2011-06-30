@@ -31,7 +31,7 @@ namespace RavlN
   public:
     ThreadEventC()
       : occurred(false),
-	waiting(0)
+	m_waiting(0)
     {}
     
     bool Post() {
@@ -51,7 +51,7 @@ namespace RavlN
     ~ThreadEventC()  { 
       if(!occurred)
 	Post(); 
-      if(waiting != 0) 
+      if(m_waiting != 0) 
 	cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
     }
     //: Destructor.
@@ -60,11 +60,11 @@ namespace RavlN
       if(occurred) // Check before we bother with locking.
         return ;
       cond.Lock();
-      waiting++;
+      m_waiting++;
       while(!occurred)
         cond.Wait();
-      waiting--;
-      if(waiting == 0) {
+      m_waiting--;
+      if(m_waiting == 0) {
         cond.Unlock();
         cond.Broadcast(); // If something is waiting for it to be free...
         return ;
@@ -77,7 +77,7 @@ namespace RavlN
     //: Wait for lock to be free of all waiters.
     
     IntT ThreadsWaiting() const 
-    { return waiting; }
+    { return m_waiting; }
     //: Get approximation of number of threads waiting.
     
     bool Wait(RealT maxTime);
@@ -99,7 +99,7 @@ namespace RavlN
   protected:
     ConditionalMutexC cond;
     volatile bool occurred;
-    volatile IntT waiting; // Count of number of threads waiting on this...
+    volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 };
 
