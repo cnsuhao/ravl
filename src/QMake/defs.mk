@@ -20,7 +20,7 @@ MAINS=SysConf.cc untouch.cc findBuildTag.cc
 AUXDIR=share/RAVL/QMake
 
 AUXFILES =  QMake.mk \
-  Dirs.mk Main.mk MainDep.mk Util.mk rcs.mk Doc.mk Clean.mk \
+  Definitions.mk Main.mk MainDep.mk Util.mk rcs.mk Doc.mk Clean.mk \
   Install.pl dummymain.c \
   Help.txt Defs.txt \
   BinDep.pl mkdefs.pl \
@@ -48,6 +48,6 @@ EHT= exeSysConf.eht Ravl.QMake.html Ravl.QMake.Defs.html  \
 
 SCRIPTS=qm QLibs
 
-SCRIPT_INSTALL=perl ./Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT)
+SCRIPT_INSTALL=$(PERL) ./Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT)
 
-AUXINSTALL=perl ./Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT)
+AUXINSTALL=$(PERL) ./Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT)

@@ -11,30 +11,12 @@
 #! file="Ravl/QMake/Clean.mk"
 
 ifndef MAKEHOME
- MAKEHOME = /vol/vssp/cpug/RAVL/src/Util/QMake
+  MAKEHOME=/path/set/by/QMake
 endif
 
-MAKEFLAGS += --no-print-directory -r 
+include $(MAKEHOME)/Definitions.mk
 
-ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-endif
-
-ifdef QMAKE_INFO
-  SHOWIT = 
-else
-  SHOWIT = @
-endif
-
-ifndef QCWD
-  QCWD := $(shell 'pwd')
-endif
-
-include $(MAKEHOME)/config.$(ARC)
--include $(QCWD)/defs.mk
-
-##########################
-# Clean up defs stuff.
+SLIB:=$(strip $(SLIB))
 
 ifndef PLIB
 ifdef SLIB
@@ -42,10 +24,6 @@ PLIB=$(SLIB)
 endif
 endif
 
-SLIB:=$(strip $(SLIB))
-PLIB:=$(strip $(PLIB))
-
-include $(MAKEHOME)/Dirs.mk
 
 .PHONY : clean cleandep cleanii
 
@@ -107,7 +85,7 @@ subdirs:
 	+ $(SHOWIT)echo "------ Cleaning $(ARC)/$(VAR)/$(BASENAME)   $(TARGET)" ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	   $(MAKE) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR -f $(MAKEHOME)/Clean.mk $(DEF_INC) ; \
+	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR -f $(MAKEHOME)/Clean.mk $(DEF_INC) ; \
 	  fi  \
 	done
 

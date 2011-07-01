@@ -7,69 +7,18 @@
 #! file="Ravl/QMake/Main.mk"
 
 ifndef MAKEHOME
-  MAKEHOME=.
+  MAKEHOME=/path/set/by/QMake
 endif
 
-ifndef INSTALLHOME
- INSTALLHOME = $(MAKEHOME)/../../..#
-endif
+include $(MAKEHOME)/Definitions.mk
 
 export TARGET
 
-MAKEFLAGS += --no-print-directory -r
-
-ifndef QCWD
-ifeq ($(ARC),freebsd_x86)
- # TODO: pawd hangs for a minute on a FreeBSD system where amd isn't running
- QCWD :=$(shell sh -c "pwd")
-else
- QCWD :=$(shell sh -c "if [ -x /usr/bin/pawd ] ; then /usr/bin/pawd ; else pwd ; fi")
-endif
-endif
-
 VPATH = $(QCWD)
-
-# Setup default pager.
-ifndef PAGER
- PAGER = more
-endif
-
-# The following is needed to avoid problems with
-SYNC=sync
-
-#########################
-# Include user make info.
-
-# Setup defaults first
-
-ANSIFLAG = -ansi
 
 ifdef USERBUILD
  USESLIBS = Auto
 endif
-
-ifndef VAR
- VAR=check
-endif
-
-ifndef QMAKECONFIGHOME
-QMAKECONFIGHOME = $(MAKEHOME)
-endif
-
-# Include a local system file
-ifdef CONFIGFILE
-include ${CONFIGFILE}
-else
-include $(QMAKECONFIGHOME)/config.local.$(ARC)
-endif
-
-# Include system stuff.
-
-include $(MAKEHOME)/config.$(ARC)
-
-# Include users stuff.
-
--include $(QCWD)/defs.mk
 
 # include external project information
 
@@ -83,70 +32,9 @@ $(INSTALLHOME)/lib/RAVL/libdep/*.qpr : $(MAKEHOME)/config.$(ARC)
 #########################
 # Setup defaults.
 
-BINDEP := perl $(MAKEHOME)/BinDep.pl
-QLIBS := perl $(MAKEHOME)/QLibs.pl
+BINDEP := $(PERL) $(MAKEHOME)/BinDep.pl
+QLIBS := $(PERL) $(MAKEHOME)/QLibs.pl
 
-ifndef TOUCH
-  TOUCH=touch
-endif
-
-ifndef SHAREDEXT 
- SHAREDEXT:=so
-endif
-
-ifndef SHAREDBUILD
- LIBEXT:=.a
-else
- LIBEXT:=.$(SHAREDEXT)
-endif
-
-# Default Object file extension
-ifndef OBJEXT
-  OBJEXT:=.o#
-endif
-
-# Default C++ source file extension.
-ifndef CXXEXT
-  CXXEXT:=.cc#
-endif
-
-# Default C++ auxilary source file extension. (used to force template instansiation.)
-ifndef CXXAUXEXT
-  CXXAUXEXT:=.cxx#
-endif
-
-# Default C++ header file extension.
-ifndef CHXXEXT
-  CHXXEXT:=.hh#
-endif
-
-# Default C source file extension.
-ifndef CEXT
-  CEXT:=.c#
-endif
-
-# Default C header file extension.
-ifndef CHEXT
-  CHEXT:=.h#
-endif
-
-# Extension expected on executables.
-ifndef EXEEXT
-  EXEEXT:=#
-endif
-
-
-##########################
-# Clean up defs stuff.
-
-ifdef PLIB
- PLIB:=$(strip $(PLIB))#
-endif
-ifdef USESLIBS
- USESLIBS:=$(strip $(USESLIBS))#
-endif
-
-AUXDIR:=$(strip $(AUXDIR))#
 
 UNTOUCH:=$(LOCALBIN)/untouch
 
@@ -188,8 +76,6 @@ ifeq ($(TARGET),testbuild)
   MAINS := $(sort $(MAINS) $(EXAMPLES))
 endif
 
-
-include $(MAKEHOME)/Dirs.mk
 
 # Don't include this stuff, unless we're building this directory.
 ifeq ($(SUPPORT_OK),yes)
@@ -330,30 +216,12 @@ EXELIB := $(LIBLIBS)
 ############################
 # Misc setup
 
-# Tell the programs where they'll live.
-# Usefull for making default paths to data files.
-
-PREPROCFLAGS = -DPROJECT_OUT=\"$(PROJECT_OUT)\" -DCPUG_ARCH=\"$(ARC)\"
-
-# Set pre processor flag if we're doing a shared build
-
-ifdef SHAREDBUILD
-PREPROCFLAGS += -DCPUG_VAR_SHARED=1
-endif
 
 # Make sure current directory is included in path if we have local headers.
 
 ifdef LOCALHEADERS
  INCLUDES+=-I.
 endif
-
-# C Flags.
-CPPFLAGS += $(USERCPPFLAGS) $(PREPROCFLAGS)
-CFLAGS += $(USERCFLAGS) $(ANSIFLAG)
-
-# C++ Flags
-CCPPFLAGS += $(USERCPPFLAGS) $(PREPROCFLAGS)
-CCFLAGS += $(USERCFLAGS) $(ANSIFLAG)
 
 # nvcc flags.
 ifndef NVCC
@@ -375,13 +243,6 @@ endif
 
 ifdef SHAREDBUILD
   NVCCFLAGS += -shared
-endif
-
-# If QMAKE_INFO is set don't prepend commands with @ so we can see what they are.
-ifdef QMAKE_INFO
-  SHOWIT=
-else
-  SHOWIT=@
 endif
 
 #####################
@@ -618,7 +479,7 @@ endif
 %/.dir:
 	$(SHOWIT)if [ ! -d $* ] ; then \
 	  echo "--- Making dir $* "; \
-	  $(MKDIR) $* ; \
+	  $(MKDIR_P) $* ; \
 	  $(TOUCH) -r $(MAKEHOME)/Main.mk $*/.dir ; \
 	else  \
 	  if [ ! -f $*/.dir ] ; then \
@@ -630,7 +491,7 @@ endif
 $(INST_GENBIN)/.dir:
 	$(SHOWIT)if [ ! -d $(INST_GENBIN) ] ; then \
 	  echo "--- Making dir $(INST_GENBIN) "; \
-	  $(MKDIR) $(INST_GENBIN) ; \
+	  $(MKDIR_P) $(INST_GENBIN) ; \
 	  $(TOUCH) -r $(MAKEHOME)/Main.mk $(INST_GENBIN)/.dir ; \
 	else  \
 	  if [ ! -f $(INST_GENBIN)/.dir ] ; then \
@@ -688,7 +549,7 @@ ifdef FULLCHECKING
 $(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
 	$(SHOWIT)echo "--- Checking header $(@F)" ; \
 	cat $< $< > $(WORKTMP)/$<$(CXXEXT) ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
+	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
 	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
 	else  \
 	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT) ; \
@@ -699,7 +560,7 @@ $(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.di
 $(INST_HEADERCERT)/%$(CHEXT) : %$(CHEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
 	$(SHOWIT)echo "--- Checking header $(@F)" ; \
 	cat $< $< > $(WORKTMP)/$<$(CEXT) ; \
-	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
+	if $(CC) -c $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
 	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
 	else \
 	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT) ; \
@@ -724,26 +585,26 @@ else
 	$(SHOWIT)if [ -e $(INST_HEADER)/$(@F) -o -L $(INST_HEADER)/$(@F) ] ; then \
 		if [ "`readlink -e $(INST_HEADER)/$(@F)`"  != "$(QCWD)/$(@F)" ] ; then \
 			echo "--- Update header link $(@F)" ; \
-			ln -sf $(QCWD)/$(@F) $(INST_HEADER)/$(@F) ; \
+			cd $(INST_HEADER); $(RM) $(@F); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
 		fi ; \
 	else \
 		echo "--- Install header link $(@F)" ; \
-		ln -s $(QCWD)/$(@F) $(INST_HEADER)/$(@F) ; \
+		cd $(INST_HEADER); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
 	fi 
 endif
 
 $(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
 	$(SHOWIT)if [ -e $(INST_HEADERSYM)/$(@F) -o -L $(INST_HEADERSYM)/$(@F) ] ; then \
 		if [ "`readlink $(INST_HEADERSYM)/$(@F)`"  != "$(QCWD)/$(@F)" ] ; then \
-			ln -sf $(QCWD)/$(@F) $(INST_HEADERSYM)/$(@F) ; \
+			cd $(INST_HEADERSYM); $(RM) $(@F); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
 		fi ; \
 	else \
 	        echo "--- Creating syminc header $(@F)" ; \
-		ln -s $(QCWD)/$(@F) $(INST_HEADERSYM)/$(@F) ; \
+		cd $(INST_HEADERSYM); $(LN_S) $(QCWD)/$(@F) $(@F) ; \
 	fi 
 
 
-#	touch -r $< $(INST_HEADER)/$(@F) ; \
+#	$(TOUCH) -r $< $(INST_HEADER)/$(@F) ; \
 
 build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS)
 
@@ -773,13 +634,13 @@ $(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
 
 # Binary depends.
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(MAKEHOME)/Dirs.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(MAKEHOME)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
-	$(BINDEP) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
+	$(BINDEP) $(RAVL_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(MAKEHOME)/Dirs.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(MAKEHOME)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
-	$(BINDEP) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
+	$(BINDEP) $(RAVL_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
 # Depend flag
 
@@ -818,7 +679,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(I
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -829,7 +690,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -840,7 +701,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_D
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CC) -c $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -851,7 +712,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEN
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -862,7 +723,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CC) -c $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -889,7 +750,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEN
 
 $(INST_OBJS)/%$(OBJEXT) : %.S $(INST_OBJS)/.dir
 	$(SHOWIT)echo "--- Assemble $(VAR_DISPLAY_NAME) $< "; \
-	$(CC) -c -D__ASSEMBLY__=1 $(CPPFLAGS) $(CFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$(@F) $<
+	$(CC) -c -D__ASSEMBLY__=1 $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$(@F) $<
 
 # $(UNTOUCH) $(INST_LIB)/lib$(PLIB)$(LIBEXT)  ; \
 
@@ -956,32 +817,24 @@ endif
 
 $(INST_LIB)/dummymain$(OBJEXT) :: $(MAKEHOME)/dummymain$(CEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Compile internal dummymain$(OBJEXT) " ; \
-	$(CC) -c $(MAKEHOME)/dummymain$(CEXT) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
+	$(CC) -c $(MAKEHOME)/dummymain$(CEXT) $(RAVL_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
 
 
 # This lib update is nasty but fast, especialy if you have many objects.
-ifndef XARGS
-  XARGS = xargs
-endif
-
-ifndef TR
-  TR = tr
-endif
-
 
 ifndef SHAREDBUILD
 ifeq ($(NOLIBRARYPRELINK),1)
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
-	$(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	$(AR) $(RAVL_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
 else
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
-	$(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
-	if $(CXX) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
+	$(AR) $(RAVL_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	if $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
 	  $(RM) $(WORKTMP)/a.out ; \
-	  $(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	  $(AR) $(RAVL_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	  $(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; \
 	else \
 	  if [ -f $(WORKTMP)/a.out ] ; then \
@@ -1010,21 +863,21 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	$(SHOWIT)echo "--- Building " $(@F) ; \
 	echo "$(patsubst %$(OBJEXT),%$(OBJEXT):$(DIRECTORYID)@,$(TARG_OBJS))" | $(TR) '@' '\n' > $(INST_OBJS)/libObjs.new ; \
 	if [ -f $(INST_OBJS)/libObjs.txt ] ; then \
-	  grep -v  ":$(DIRECTORYID)$$" $(INST_OBJS)/libObjs.txt | awk -F: '{ print $$1 ":" $$2 }' >> $(INST_OBJS)/libObjs.new ; \
+	  $(GREP) -v  ":$(DIRECTORYID)$$" $(INST_OBJS)/libObjs.txt | $(AWK) -F: '{ print $$1 ":" $$2 }' >> $(INST_OBJS)/libObjs.new ; \
 	fi ; \
-	sort -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
+	$(SORT) -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
 	$(RM) $(INST_OBJS)/libObjs.new ; \
         echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
-	awk -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	$(AWK) -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
 
 $(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
 	$(SHOWIT)echo "--- Building " $(@F) ; \
-	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | xargs cat > $(INST_OBJS)/libSharedObjs.new ; \
-	sort -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | awk -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
+	echo "$(patsubst %,$(LOCALTMP)/$(ARC)/%/$(VAR)/shared/objs/libObjs.txt,$(PLIB) $(PLIBDEPENDS))" | $(XARGS) cat > $(INST_OBJS)/libSharedObjs.new ; \
+	$(SORT) -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | $(AWK) -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
 	$(RM) $(INST_OBJS)/libSharedObjs.new ; \
   echo "---- Building single shared library $(INST_LIB)/$(@F) " ; \
-	$(CXX) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	$(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
 
 endif
@@ -1037,7 +890,7 @@ $(INST_LIB)/%$(OBJEXT) : $(INST_OBJS)/%$(OBJEXT)
 	if [ -f $(INST_LIB)/$*$(OBJEXT) ] ; then \
 	  $(RM) -f $(INST_LIB)/$*$(OBJEXT); \
 	fi ; \
-	cp /$< $(INST_LIB)/$*$(OBJEXT) ; \
+	$(CP) /$< $(INST_LIB)/$*$(OBJEXT) ; \
 	$(CHMOD) a-w $(INST_LIB)/$*$(OBJEXT)
 
 #############################
@@ -1077,14 +930,14 @@ endif
 
 $(TARG_PUREEXE) : $(INST_BIN)/pure_%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
 	$(SHOWIT)echo "--- Purify $(@F)  ( $(INST_BIN)/$(@F) ) " ; \
-	purify -g++ -best-effort $(CXX) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
+	purify -g++ -best-effort $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
 
 $(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(INST_GENBIN)/% $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
 	$(SHOWIT)echo "--- Linking $(VAR_DISPLAY_NAME) $(@F) ( $(INST_BIN)/$*$(EXEEXT) ) " ; \
 	if [ -f $(INST_BIN)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_BIN)/$(@F)$(EXEEXT) ; \
 	fi ; \
-	if $(CXX) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
+	if $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_BIN)/$(@F) ; \
 	else \
@@ -1096,7 +949,7 @@ $(ROOTDIR)/share/RAVL/config.arc : $(ROOTDIR)/share/RAVL/.dir $(MAKEHOME)/config
 	  $(CHMOD) +w $(ROOTDIR)/share/RAVL/config.arc ; \
 	  $(RM) $(ROOTDIR)/share/RAVL/config.arc ; \
 	fi ; \
-	cp $(MAKEHOME)/config.arc $(ROOTDIR)/share/RAVL/config.arc ; \
+	$(CP) $(MAKEHOME)/config.arc $(ROOTDIR)/share/RAVL/config.arc ; \
 	$(CHMOD) 555 $(ROOTDIR)/share/RAVL/config.arc
 
 $(INST_GENBIN)/RAVLExec : $(MAKEHOME)/RAVLExec $(INST_GENBIN)/.dir  $(ROOTDIR)/share/RAVL/config.arc
@@ -1131,7 +984,7 @@ $(TARG_TESTEXE) : $(INST_TESTBIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(TARG_LI
 	if [ -f $(INST_TESTBIN)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_TESTBIN)/$(@F)$(EXEEXT) ; \
 	fi ; \
-	if $(CXX) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT)  $(EXTRAOBJS) $(TESTBINLIBS) -o $(INST_TESTBIN)/$(@F) ; then \
+	if $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT)  $(EXTRAOBJS) $(TESTBINLIBS) -o $(INST_TESTBIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_TESTBIN)/$(@F) ; \
 	  echo "$(@F)" >> $(INST_TESTDB) ; \
@@ -1264,10 +1117,10 @@ lib_info:
 
 info:
 	@echo "C++ Compiler    :" $(CXX)
-	@echo "C++ Flags       :" $(CCFLAGS) $(CCPPFLAGS)
+	@echo "C++ Flags       :" $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS)
 	@echo "C Compiler      :" $(CC)
-	@echo "C Flags         :" $(CFLAGS) $(CPPFLAGS)
-	@echo "Link Flags      :" $(LDFLAGS)
+	@echo "C Flags         :" $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS)
+	@echo "Link Flags      :" $(RAVL_LDFLAGS) $(LDFLAGS)
 	@echo "Includes        :" $(INCLUDES)
 	@echo "Library libs    :" $(EXELIB)
 	@echo "Executable libs :" $(LIBS)

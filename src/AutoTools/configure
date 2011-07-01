@@ -597,6 +597,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 ALL_EXTERNAL_LIBS
 RESOURCES
+ARC
 SerialIO_SUPPORT
 RavlXMPP
 RavlVPlay
@@ -731,8 +732,15 @@ libAudioFile_CFLAGS
 libdc1394_SUPPORT
 libdc1394_LIBS
 libdc1394_CFLAGS
+XARGS
+SYNC
+RAVL_PAGER
 LN_S
+GET_CWD
 TR
+TOUCH
+RM
+CP
 YFLAGS
 YACC
 SORT
@@ -784,6 +792,9 @@ RAVL_GLOBAL_CFLAGS
 RAVL_DEFAULT_CFLAGS
 RAVL_DEBUG_CFLAGS
 RAVL_CHECK_CFLAGS
+RAVL_CCANSIFLAG
+RAVL_CANSIFLAG
+MAKE
 RANLIB
 AR
 LD
@@ -855,6 +866,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 with_rpath
+with_pawd
 with_libdc1394_pkgconf
 with_libdc1394
 with_libAudioFile_pkgconf
@@ -1559,6 +1571,9 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-rpath            Add all library include paths (-L) to the runtime
                           search path of the binary
+
+  --with-pawd             Employ pawd rather than pwd to return the current
+                          directory [default=No]
 
   --with-libdc1394-pkgconf
                           Enable the libdc1394 library package via pkg-config
@@ -4619,6 +4634,96 @@ fi
 
 
 
+# Look for the make utility
+
+if ( test X$MAKE = X )
+then
+  # User has not asked for a specific make utility, look for make
+  MAKE=make
+fi
+
+if ( test X`expr X$MAKE : '\(X[\\/].*\)'` != XX$MAKE )
+then
+  # User has not asked for a specific path for the make utility, we have to look
+  # for it on the search list
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for make utility" >&5
+$as_echo_n "checking for make utility... " >&6; }
+  GNU_MAKE=""
+  ANO_MAKE=""
+  save_ifs="$IFS"
+  IFS=$PATH_SEPARATOR
+  for dir in $PATH
+  do
+    IFS="$save_ifs"
+    if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
+    then
+      # Run $MAKE -v to check if we have GNU Make
+      case `"$dir/$MAKE" -v 2>&1 </dev/null` in
+        *GNU* | *'with BFD'*)   GNU_MAKE=$dir/$MAKE
+                                # Found GNU Make which we prefer so we need
+                                # look no further
+                                break
+                                ;;
+                           *)   if ( test X$ANO_MAKE = X )
+                                then
+                                  ANO_MAKE=$dir/$MAKE
+                                fi
+                                ;;
+        esac
+    fi
+  done
+  IFS="$save_ifs"
+  if ( test X$GNU_MAKE = X )
+  then
+    # Preferred GNU Make not found, was there an alternative
+    if ( test  X$ANO_MAKE = X)
+    then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working make required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+    else
+      MAKE=$ANO_MAKE
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
+$as_echo "$MAKE" >&6; }
+      GNU_MAKE=no
+    fi
+  else
+    MAKE=$GNU_MAKE
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
+$as_echo "$MAKE" >&6; }
+    GNU_MAKE=yes
+  fi
+else
+  # User specified a full path to make (in MAKE environment variable)
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking $$MAKE specified make utility" >&5
+$as_echo_n "checking $$MAKE specified make utility... " >&6; }
+  if ( test -x $MAKE )
+  then
+    VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
+    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    then
+      GNU_MAKE=yes
+    else
+      GNU_MAKE=no
+    fi
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
+$as_echo "$MAKE" >&6; }
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: unexecutable" >&5
+$as_echo "unexecutable" >&6; }
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "$$MAKE does not specify a usable make utility
+See \`config.log' for more details." "$LINENO" 5; }
+  fi
+fi
+
+
+
 # Set relevant flags dependant on the software tools we have found
 #
 
@@ -4627,6 +4732,7 @@ if (test X$GCC = Xyes)
 then
    # GNU C Compiler
    RAVL_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   RAVL_CANSIFLAG=" -ansi "
    RAVL_DEFAULT_CFLAGS=" -O "
    CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
    CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
@@ -4636,13 +4742,10 @@ then
    then
       # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
       # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-      # that work with the Ravl source. In addition, there were problems with
-      # incorrect code generation with strict-aliasing (even where the aliasing
-      # rules are followed), so switch off the offending optimisations and
-      # employ -O3 as compensation
+      # that work with the Ravl source and employ -O3 as compensation
       RAVL_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
    else
-      RAVL_OPT_CFLAGS=" -O2 -ffast-math "
+      RAVL_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
    RAVL_OPT_CFLAGS=$RAVL_OPT_CFLAGS" -march=native -mtune=native "
    RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4658,6 +4761,7 @@ else
    # No GNU compiler, try relevant machine specific options we have used before
    case X$host_os in
    Xsolaris* ) RAVL_GLOBAL_CFLAGS=""
+               RAVL_CANSIFLAG=" -ansi "
                RAVL_DEFAULT_CFLAGS=" -O "
                RAVL_OPT_CFLAGS=" -O2 "
                RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4674,6 +4778,7 @@ else
                # Not sure why this originally was done this way rather than use
                # CFLAGS, but assume there was a reason and propogate the method
                RAVL_GLOBAL_CFLAGS=" -mips4 -r1000 "
+               RAVL_CANSIFLAG=" -ansi "
                RAVL_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
                RAVL_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
                RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4687,6 +4792,7 @@ else
                RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
    * )         RAVL_GLOBAL_CFLAGS=""
+               RAVL_CANSIFLAG=" -ansi "
                RAVL_DEFAULT_CFLAGS=" -O "
                RAVL_OPT_CFLAGS=" -O2 "
                RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4701,6 +4807,10 @@ else
                ;;
    esac
 fi
+
+# Declare output variables for compiler ANSI switches
+
+
 
 # Declare RAVL_XXXXX_CFLAGS variables as output for Config.Local
 
@@ -4717,6 +4827,7 @@ if (test X$GXX = Xyes)
 then
    # GNU C++ Compiler
    RAVL_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   RAVL_CCANSIFLAG=" -ansi "
    RAVL_DEFAULT_CCFLAGS=" -O "
    CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
    CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
@@ -4726,13 +4837,10 @@ then
    then
       # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
       # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-      # that work with the Ravl source. In addition, there were problems with
-      # incorrect code generation with strict-aliasing (even where the aliasing
-      # rules are followed), so switch off the offending optimisations and
-      # employ -O3 as compensation
+      # that work with the Ravl source and employ -O3 as compensation
       RAVL_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
    else
-      RAVL_OPT_CCFLAGS=" -O2 -ffast-math "
+      RAVL_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
    RAVL_OPT_CCFLAGS=$RAVL_OPT_CCFLAGS" -march=native -mtune=native "
    RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4748,6 +4856,7 @@ else
    # No GNU compiler, try relevant machine specific options we have used before
    case X$host_os in
    Xsolaris* ) RAVL_GLOBAL_CCFLAGS=""
+               RAVL_CCANSIFLAG=" -ansi "
                RAVL_DEFAULT_CCFLAGS=" -O "
                RAVL_OPT_CCFLAGS=" -O2 "
                RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4764,6 +4873,7 @@ else
                # Not sure why this originally was done this way rather than use
                # CCFLAGS, but assume there was a reason and propogate the method
                RAVL_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
+               RAVL_CCANSIFLAG=" -ansi "
                RAVL_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
                RAVL_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
                RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4777,6 +4887,7 @@ else
                RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
    * )         RAVL_GLOBAL_CCFLAGS=""
+               RAVL_CCANSIFLAG=" -ansi "
                RAVL_DEFAULT_CCFLAGS=" -O "
                RAVL_OPT_CCFLAGS=""
                RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -4817,7 +4928,7 @@ then
   RAVL_GPROF_LDFLAGS=
   RAVL_OPT_LDFLAGS=
   RAVL_PROF_LDFLAGS=
-  RAVL_SHARED_LDFLAGS=-rdynamic
+  RAVL_SHARED_LDFLAGS=" -rdynamic "
 
   # Ravl link options used for libraries
   RAVL_CHECK_LDLIBFLAGS=
@@ -4827,22 +4938,22 @@ then
   RAVL_GPROF_LDLIBFLAGS=
   RAVL_OPT_LDLIBFLAGS=
   RAVL_PROF_LDLIBFLAGS=
-  RAVL_SHARED_LDLIBFLAGS=-shared
+  RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-  LIBPATHSWITCH=-Wl,-rpath#
-  UNDEFSYMB=-u#
+  LIBPATHSWITCH=" -Wl,-rpath#"
+  UNDEFSYMB=" -u#"
 else
   # Not using a GNU linker, try native flags we have used before or default to
   # what works for GNU
   case X$host_os in
   Xcygwin )   RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=-g
+              RAVL_DEBUG_LDFLAGS=" -g "
               RAVL_GLOBAL_LDFLAGS=
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-Wl,-export-dynamic
+              RAVL_SHARED_LDFLAGS=" -Wl,-export-dynamic "
               # sic, this is an assumption on what compiler is in use
 
               RAVL_CHECK_LDLIBFLAGS=
@@ -4852,15 +4963,15 @@ else
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-shared
+              RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-              LIBPATHSWITCH=-Wl,-rpath#
+              LIBPATHSWITCH=" -Wl,-rpath#"
               # sic, this is an assumption on what compiler is in use
-              UNDEFSYMB=-u #
+              UNDEFSYMB=" -u #"
               ;;
   Xirix*    ) RAVL_CHECK_LDFLAGS=
               RAVL_DEBUG_LDFLAGS=
-              RAVL_GLOBAL_LDFLAGS=-n32 -Wl,-woff 84
+              RAVL_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
@@ -4874,13 +4985,13 @@ else
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-shared
+              RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-              LIBPATHSWITCH=-Wl,-rpath#
-              UNDEFSYMB=-u#
+              LIBPATHSWITCH=" -Wl,-rpath#"
+              UNDEFSYMB=" -u#"
               ;;
   Xsolaris* ) RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=-g
+              RAVL_DEBUG_LDFLAGS=" -g "
               RAVL_GLOBAL_LDFLAGS=
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
@@ -4895,10 +5006,10 @@ else
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-dy -G
+              RAVL_SHARED_LDLIBFLAGS=" -dy -G "
 
-              LIBPATHSWITCH=-R#
-              UNDEFSYMB=-u#
+              LIBPATHSWITCH=" -R#"
+              UNDEFSYMB=" -u#"
               ;;
   * )         RAVL_CHECK_LDFLAGS=
               RAVL_DEBUG_LDFLAGS=
@@ -4907,7 +5018,7 @@ else
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-rdynamic
+              RAVL_SHARED_LDFLAGS=" -rdynamic "
 
               RAVL_CHECK_LDLIBFLAGS=
               RAVL_DEBUG_LDLIBFLAGS=
@@ -4916,10 +5027,10 @@ else
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-shared
+              RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-              LIBPATHSWITCH=-Wl,-rpath#
-              UNDEFSYMB=-u#
+              LIBPATHSWITCH=" -Wl,-rpath#"
+              UNDEFSYMB=" -u#"
               ;;
   esac
 fi
@@ -4958,7 +5069,13 @@ RAVL_ARFLAGS=ruc
 
 # Declare flags for make
 
-RAVL_MAKEFLAGS=-r
+
+if ( test X$GNU_MAKE = Xyes )
+then
+  RAVL_MAKEFLAGS=" --no-print-directory -r "
+else
+  RAVL_MAKEFLAGS=" -r "
+fi
 
 
 # User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Local
@@ -5639,8 +5756,158 @@ test -n "$YACC" || YACC="yacc"
 
 
 
-# GNU standards regard tr safe to call directly but as we already implemented
-# it via a make variable, set that here.
+# GNU standards regard the following safe to call directly but as we already
+# implemented them via a make variable, set those here...
+# Extract the first word of "cp", so it can be a program name with args.
+set dummy cp; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CP in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CP="$CP" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CP="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CP" && ac_cv_path_CP="Missing"
+  ;;
+esac
+fi
+CP=$ac_cv_path_CP
+if test -n "$CP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CP" >&5
+$as_echo "$CP" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test $CP = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working cp required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+# Extract the first word of "rm", so it can be a program name with args.
+set dummy rm; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_RM+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $RM in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_RM="$RM" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_RM="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_RM" && ac_cv_path_RM="Missing"
+  ;;
+esac
+fi
+RM=$ac_cv_path_RM
+if test -n "$RM"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RM" >&5
+$as_echo "$RM" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test $RM = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working rm required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+# Extract the first word of "touch", so it can be a program name with args.
+set dummy touch; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_TOUCH+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $TOUCH in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_TOUCH="$TOUCH" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_TOUCH="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_TOUCH" && ac_cv_path_TOUCH="Missing"
+  ;;
+esac
+fi
+TOUCH=$ac_cv_path_TOUCH
+if test -n "$TOUCH"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $TOUCH" >&5
+$as_echo "$TOUCH" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test $TOUCH = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working touch required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
 # Extract the first word of "tr", so it can be a program name with args.
 set dummy tr; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -5691,8 +5958,328 @@ See \`config.log' for more details." "$LINENO" 5; }
 fi
 
 
+# Provide switch to allow use of pawd instead of pwd
+
+# Check whether --with-pawd was given.
+if test "${with_pawd+set}" = set; then :
+  withval=$with_pawd; case $with_pawd in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                               trace 4 --with-pawd disabling use of pawd
+                               # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                               if test $GET_CWD = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pwd required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                               ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                               trace 4 --with-pawd forcing use of pawd
+                               # Extract the first word of "pawd", so it can be a program name with args.
+set dummy pawd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                               if test $GET_CWD = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to enable pawd via --with-pawd but it cannot be found
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                               ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                               trace 4 --with-pawd asking to use pawd if available
+                               # Extract the first word of "pawd", so it can be a program name with args.
+set dummy pawd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                               if test $GET_CWD = Missing; then :
+  # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                      if test $GET_CWD = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pawd or pwd required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+fi
+                               ;;
+                        * )    if test -x $with_pawd; then :
+  trace 4 --with-pawd asking to use "[$with_pawd]"
+                                      GET_CWD=$with_pawd
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-pawd set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-pawd set to an unknown option, setting ignored" >&2;}
+                                      # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                      if test $GET_CWD = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pwd required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+fi
+                               ;;
+                       esac
+
+else
+  trace 5 No --with-$1 specified
+             # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+             if test $GET_CWD = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pwd required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+fi
+
+
+
 # Now check for those utilities we use in the Ravl build that aren't recognised
-# as being reliably protable by the GNU standard. For these, we will need to
+# as being reliably portable by the GNU standard. For these, we will need to
 # consider providing an alternative implementation in cases where any are absent.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ln -s works" >&5
 $as_echo_n "checking whether ln -s works... " >&6; }
@@ -5707,6 +6294,206 @@ fi
 
 
 
+if test x$PAGER = x; then :
+  # Extract the first word of "more", so it can be a program name with args.
+set dummy more; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_RAVL_PAGER+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $RAVL_PAGER in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_RAVL_PAGER="$RAVL_PAGER" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_RAVL_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_RAVL_PAGER" && ac_cv_path_RAVL_PAGER="Missing"
+  ;;
+esac
+fi
+RAVL_PAGER=$ac_cv_path_RAVL_PAGER
+if test -n "$RAVL_PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RAVL_PAGER" >&5
+$as_echo "$RAVL_PAGER" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+       if test $RAVL_PAGER = Missing; then :
+  # Extract the first word of "pg", so it can be a program name with args.
+set dummy pg; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_RAVL_PAGER+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $RAVL_PAGER in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_RAVL_PAGER="$RAVL_PAGER" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_RAVL_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_RAVL_PAGER" && ac_cv_path_RAVL_PAGER="Missing"
+  ;;
+esac
+fi
+RAVL_PAGER=$ac_cv_path_RAVL_PAGER
+if test -n "$RAVL_PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RAVL_PAGER" >&5
+$as_echo "$RAVL_PAGER" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+              if test $RAVL_PAGER = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pager required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+fi
+
+else
+  RAVL_PAGER=$PAGER
+
+fi
+
+
+# Extract the first word of "sync", so it can be a program name with args.
+set dummy sync; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_SYNC+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $SYNC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_SYNC="$SYNC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_SYNC="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_SYNC" && ac_cv_path_SYNC="Missing"
+  ;;
+esac
+fi
+SYNC=$ac_cv_path_SYNC
+if test -n "$SYNC"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SYNC" >&5
+$as_echo "$SYNC" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test $SYNC = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working sync required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
+
+# Extract the first word of "xargs", so it can be a program name with args.
+set dummy xargs; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_XARGS+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $XARGS in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_XARGS="$XARGS" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_XARGS="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_XARGS" && ac_cv_path_XARGS="Missing"
+  ;;
+esac
+fi
+XARGS=$ac_cv_path_XARGS
+if test -n "$XARGS"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XARGS" >&5
+$as_echo "$XARGS" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test $XARGS = Missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working xargs required for building Ravl
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+
 
 # Perl is also required by the Ravl (really QMake) build process but as it is
 # also required for Ravl functionality, this is addressed by a check further on
@@ -5714,7 +6501,7 @@ fi
 
 # Remaining utils used to build Ravl are all regarded by the GNU standards as
 # safe for direct use:
-#       cat cmp cp diff ls mv pwd rm rmdir tar test touch true
+#       cat cmp diff ls mv rmdir tar test touch true
 
 
 trace 2 Initial checks complete, now processing cmd-line
@@ -12744,6 +13531,7 @@ echo >> ./Config.Local.in
 echo AR=@AR@ >> ./Config.Local.in
 echo AWK=@AWK@ >> ./Config.Local.in
 echo CC=@CC@ >> ./Config.Local.in
+echo CP=@CP@ >> ./Config.Local.in
 echo CPP=@CPP@ >> ./Config.Local.in
 echo CHGRP=@CHGRP@ >> ./Config.Local.in
 echo CHMOD=@CHMOD@ >> ./Config.Local.in
@@ -12751,16 +13539,22 @@ echo CHOWN=@CHOWN@ >> ./Config.Local.in
 echo CXX=@CXX@ >> ./Config.Local.in
 echo CXXCPP=@CXXCPP@ >> ./Config.Local.in
 echo EXPR=@EXPR@ >> ./Config.Local.in
+echo GET_CWD=@GET_CWD@ >> ./Config.Local.in
 echo GREP=@GREP@ >> ./Config.Local.in
 echo LD=@LD@ >> ./Config.Local.in
 echo LEX=@LEX@ >> ./Config.Local.in
 echo LEXLIB=@LEXLIB@ >> ./Config.Local.in
 echo LN_S=@LN_S@ >> ./Config.Local.in
+echo MAKE=@MAKE@ >> ./Config.Local.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.Local.in
 echo RANLIB=@RANLIB@ >> ./Config.Local.in
+echo RM=@RM@ >> ./Config.Local.in
 echo SED=@SED@ >> ./Config.Local.in
 echo SORT=@SORT@ >> ./Config.Local.in
+echo SYNC=@SYNC@ >> ./Config.Local.in
+echo TOUCH=@TOUCH@ >> ./Config.Local.in
 echo TR=@TR@ >> ./Config.Local.in
+echo XARGS=@XARGS@ >> ./Config.Local.in
 echo YACC=@YACC@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 
@@ -12768,6 +13562,9 @@ echo >> ./Config.Local.in
 # Compiler, etc. switches
 echo >> ./Config.Local.in
 echo \# Relevant Ravl build process flags >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Declare platform architecture >> ./Config.Local.in
+echo ARC=@ARC@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
@@ -12784,6 +13581,9 @@ echo RAVL_OPT_CFLAGS=@RAVL_OPT_CFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CFLAGS=@RAVL_PROF_CFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CFLAGS=@RAVL_SHARED_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# ANSI switch settings >> ./Config.Local.in
+echo RAVL_CANSIFLAG=@RAVL_CANSIFLAG@ >> ./Config.Local.in
+echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C++ compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
@@ -12799,6 +13599,9 @@ echo RAVL_GPROF_CCFLAGS=@RAVL_GPROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_OPT_CCFLAGS=@RAVL_OPT_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CCFLAGS=@RAVL_PROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CCFLAGS=@RAVL_SHARED_CCFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# ANSI switch settings >> ./Config.Local.in
+echo RAVL_CCANSIFLAG=@RAVL_CCANSIFLAG@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the linker >> ./Config.Local.in
@@ -13257,7 +14060,7 @@ then
                 # and __alpha. If this is not the case, you should manually set
                 # these or update the Ravl code.
                 ;;
-    Xsolaris* ) # No specific options set here (all platform specific items come
+   Xsolaris* )  # No specific options set here (all platform specific items come
                 # from the toolset so are set earlier in this script). This is
                 # really here just as a place-holder and to note  that the code
                 # relies on the compiler appropriatly setting the relevant
@@ -13305,6 +14108,16 @@ else
                  trace 3 Disallowing ParallelIO on 64-bit x86 platforms
                  ParallelIO_SUPPORT=""
                  ;;
+   Xalpha* )
+                 # DEC/Compaq/HP Alpha kit
+
+                 trace 3 Disallowing Meteor1 on non 32-bit x86 platforms
+                 Meteor1_SUPPORT=""
+
+                 # ParallelIO currently unsupported off 32-bit x86
+                 trace 3 Disallowing ParallelIO on non 32-bit x86 platforms
+                 ParallelIO_SUPPORT=""
+                 ;;
    XNone-at-the-moment )
                  # There's no real difference between these architectures and
                  # the default case. This just makes a good place to list
@@ -13340,6 +14153,67 @@ else
    trace 3 SGIVL is not supported on Linux
    SGIVL_SUPPORT=""
 fi
+
+# Map Platform/OS into Ravl ARCs
+case X$host_os in
+Xarm )      ARC=arm
+            # Unlikely to ever encounter this as an OS, most liekly to find arm
+            # as a linux cpu type (should process that as a variation of linux).
+            # This is only here as this is what we used to do
+            ;;
+Xcygwin )   ARC=cygwin
+            # Ravl support assumes an old i*86 platform. Could possibly require
+            # code changes to Ravl if we ever port to a more expansive
+            # environment (e.g. 64 bit support)
+            ;;
+Xdarwin* )  case X`uname -m` in
+               Xx86_64 )  ARC=macosx64
+                          ;;
+               Xi386 )    ARC=macosx32
+                          ;;
+               Xpowerpc ) ARC=macosxppc
+                          ;;
+            esac
+            # The above is needed as host_os currently comes back as i386 even
+            # for 64-bit installations of OSX
+            ;;
+Xirix* )    ARC=sgi
+            ;;
+Xlinux* )
+            case X$host_cpu in
+               Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
+                          ARC=linux
+                          ;;
+               Xx86_64* ) ARC=linux64
+                          ;;
+               Xalpha* )  ARC=linux_alpha
+                          # Will encompass more processors than the original
+                          # config.arc accounted for but should not be an issue
+                          ;;
+               * )        ARC=unknown
+                          ;;
+            esac
+            ;;
+Xosf* )     ARC=alpha
+            ;;
+Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\(0-9*\).*'`
+            # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
+            #  Solaris 2.6, Solaris 7, Solaris 8, etc.
+            if ( test X$VER_STRING= X )
+            then
+              # Just in case GNU change config.guess
+              ARC=sol
+            else
+              # Original Ravl support was for Solaris 7 & 9 only. Later
+              # versions may need further work on the Ravl source
+              ARC=sol2_$VER_STRING
+            fi
+            ;;
+* )         ARC=unknown
+            ;;
+esac
+
+
 
 
 

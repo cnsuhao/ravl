@@ -10,7 +10,7 @@ DESCRIPTION= Atomic operations for i386-linux
 
 PACKAGE=macosx386/Ravl
 
-SUPPORT_ONLY=macosx386
+SUPPORT_ONLY=macosx32 macosx64
 
 HEADERS=Atomic.hh mmx.hh
 

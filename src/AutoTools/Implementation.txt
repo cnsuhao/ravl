@@ -44,36 +44,44 @@
   versions of members of the standard GNU AutoTools suite, put into source
   control to record the version used at any one time.
 
-+ While Config.Local has not currently been integrated into the .mk makefiles,
-  this is mostly just a matter of replacing the existing inclusion of
-  config.xxxx and config.local.xxxx with the new file and ensuring the correct
-  make variables are used. There are a couple of more involved situations:
++ When run, configure generates Config.Local in the top level directory. This
+  file receives all of the environemnt definitions needed by the Ravl build
+  specifying the platform and machine specific configurations (including the
+  location of the external libraries that can be utilised by Ravl). 
 
-	+ CFLAGS, etc. It is common to allow a user to specify their own CFLAGS
-	  on a build, to allow this, the proposal is to set RAVL_CFLAGS to the
-	  default values needed by Ravl, along with the optimisation switches
-	  needed for the target being built. The individual recipes in the .mks
-	  will be modified to use: $(RAVL_CFLAGS) $(CFLAGS)
++ The original config.xxxx and config.local.xxxx configurations files have been
+  totally replaced with the new mechanism. Additionally Dirs.mk has been
+  extended in scope and renamed Definitions.mk and the local defs.mk file is
+  now included by QMake from within the Definitions.mk file. As configure
+  selects the appropriate platform, configure.arc is now also redundant. For a
+  transitional period, all three types of config file remain as part of the
+  distribution but serve only to warn of their redundancy. They will all be
+  removed at a future point.
 
-	+ Existing make variables: It may be an opportune moment to tidy up
-	  some of the existing variables and switches within the Qmkae system.
++ configure itself is based on a tuple of platform & operating system
+  identifiers; architecture-manufacturer-OS (in fact, this can be a 4 part
+  system to differentiate between userland tools, for example to differentiate
+  between Linux systems using the GNU libC).  While this is more flexible, it is
+  at odds with the original Ravl implementation, particularly the SUPPORT_ONLY
+  and DONOT_SUPPORT constructs. As a first pass at development, configure sets
+  $(ARC) based on a mapping from its internal tuple to the Ravl platform
+  identifiers. It may, or may not be a good future enhancement to move the QMake
+  system over to the more flexible tuple.
 
-	+ $(ARC): configure itself is based on a tuple of platform & operating
-	  system identifiers; architecture-manufacturer-OS (in fact, this can
-	  be a 4 part system to differentiate between userland tools, for
-	  example to differentiate between Linux systems using the GNU libC).
-	  While this is more flexible, it is at odds with the current Ravl
-	  implementation, particularly the SUPPORT_ONLY and DONOT_SUPPORT
-	  constructs. We have a choice of keeping the existing Ravl terminolgy
-	  and providing a mapping in the configure script or taking the more
-	  involved route of porting Ravl/QMake to use the tuple.
++ It is common to allow a user to specify their own CFLAGS on a build, to allow
+  this, QMake has been modified to use: $(RAVL_CFLAGS) $(CFLAGS) in the .mk
+  file individual recipes. $(RAVL_CFLAGS) is set in Definitions.mk to the 
+  relevant flags required for the particular build underway (shared; optimised;
+  etc.). A similar approach has been implemented for LDFLAGS. As ARFLAGS do not
+  really lend themselves to user intervention in this manner, QMake just uses
+  RAVL_ARFLAGS in the recipies.
 
-	+ Single static and shared libraries are built using the objects created
-	  by the standard Ravl build. The makefile used is located under
-	  the build directory as share/RAVL/QMake/SingleLib.mk. This is created
-	  by configure from the master file src/Ravl/QMake/SingleLib.mk.in.
++ Single static and shared libraries are built using the objects created
+  by the standard Ravl build. The makefile used is located under
+  the build directory as share/RAVL/QMake/SingleLib.mk. This is created
+  by configure from the master file src/Ravl/QMake/SingleLib.mk.in.
 
-	+ Binaries linked against the single libraries are built using the
-	  makefile created by configure: share/RAVL/QMake/Recursive.mk (master
-	  file is Recursive.mk.in under src/Ravl/QMake). Again, object files
-	  used are from the standard build which must be performed first.
++ Binaries linked against the single libraries are built using the
+  makefile created by configure: share/RAVL/QMake/Recursive.mk (master
+  file is Recursive.mk.in under src/Ravl/QMake). Again, object files
+  used are from the standard build which must be performed first.

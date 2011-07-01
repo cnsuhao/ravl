@@ -11,6 +11,12 @@
 ##########################################################
 # Prevent rcs from checking out internal makefiles.
 
+ifndef MAKEHOME
+  MAKEHOME=/path/set/by/QMake
+endif
+
+include $(MAKEHOME)/Definitions.mk
+
 ifndef NOCHECKOUT
 
 $(MAKEHOME)/% :: $(MAKEHOME)/RCS/%,v
@@ -25,7 +31,7 @@ $(MAKEHOME)/defs/% :: $(MAKEHOME)/defs/RCS/%,v
 	@echo "--- co $(@F)"
 	$(SHOWIT)if [ -w $@ ] ; then \
 	  echo "WARNING: RCS file newer than source file. "; \
-	  touch -c $@; \
+	  $(TOUCH) -c $@; \
 	else \
 	  co -q $@; \
 	  exit 0; \
@@ -35,7 +41,7 @@ $(QCWD)/% :: $(QCWD)/RCS/%,v
 	@echo "--- co $(@F)"
 	$(SHOWIT)if [ -w $@ ] ; then \
 	  echo "WARNING: RCS file newer than source file. "; \
-	  touch -c $@; \
+	  $(TOUCH) -c $@; \
 	else \
 	  co -q $@; \
 	  exit 0;\

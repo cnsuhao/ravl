@@ -17,20 +17,7 @@ ifndef INSTALLHOME
  INSTALLHOME=$(MAKEHOME)/../../..#
 endif
 
-# a slight change, now ARC is ALWAYS defined from the config.arc script
-#ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-#endif
-
-export ARC
-
-ifndef LOCALARC
-  LOCALARC=$(shell $(MAKEHOME)/config.arc)#
-endif
-
-export LOCALARC
-
-MAKEDEFS:=perl -f $(MAKEHOME)/mkdefs.pl
+MAKEDEFS:=$(PERL) -f $(MAKEHOME)/mkdefs.pl
 
 # Set default uses lib to auto?
 
@@ -38,24 +25,7 @@ ifdef USERBUILD
   export USERBUILD
 endif
 
-# Make sure PAGER is defined.
-
-ifndef PAGER 
-  PAGER=more
-endif
-
-export ARC
-export LOCALBIN := $(INSTALLHOME)/lib/RAVL/$(LOCALARC)/bin
-export DPATH:=$(shell basename $(shell 'pwd'))
 export TARGET
-
-SYSCONF:=$(LOCALBIN)/SysConf
-
-ifndef PROCS
-  PROCS=$(shell $(SYSCONF) -a )
-endif
-
-export PROCS
 
 ifndef PROJECT_OUT
   PROJECT_OUT := /tmp/$(USER)/ProjectOut
@@ -81,7 +51,7 @@ else
 ifneq ($(BUILD_TAG),$(PROJECT_OUT_BUILD_TAG))
 $(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the project. )")
 endif
-SOURCE_BUILD_TAG :=$(strip $(shell $(LOCALBIN)/findBuildTag $(shell 'pwd')))#
+SOURCE_BUILD_TAG :=$(strip $(shell $(LOCALBIN)/findBuildTag $(shell $(GET_CWD))))#
 ifneq ($(BUILD_TAG),$(SOURCE_BUILD_TAG))
 $(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the source tag. )")
 endif
@@ -93,28 +63,13 @@ endif
 # Setup default build target.
 TARGET=fullbuild
 
-ifndef QMAKECONFIGHOME
-QMAKECONFIGHOME = $(MAKEHOME)
-endif
-
-# Include a local config file 
-ifdef CONFIGFILE
-include ${CONFIGFILE}
-else
-include $(QMAKECONFIGHOME)/config.local.$(ARC)
-endif
-
 # Include system config and Directories 
 
 -include $(MAKEHOME)/*.qpr $(MAKEHOME)/lib/RAVL/libdep/*.qpr 
 -include $(PROJECT_OUT)/lib/RAVL/libdep/*.qpr
 
-include $(MAKEHOME)/config.$(ARC)
 NOVAR=1
-include $(MAKEHOME)/Dirs.mk
-
-# The following is for logging only.
--include $(QCWD)/defs.mk
+include $(MAKEHOME)/Definitions.mk
 
 VPATH=$(QCWD)
 
@@ -133,8 +88,6 @@ endif
 
 ##################################
 # Do makes.
-
-MAKEFLAGS += --no-print-directory -r $(PAR_MAKE)
 
 # Where commands are prefixed by 'q' frozen dependancies are used.
 # NB. Frozen dependancies can only be used where  normal make has 
@@ -285,12 +238,12 @@ chead:
 
 test: src
 	@if [ ! -d $(INST_TESTBIN) ] ; then \
-	  $(MKDIR) $(INST_TESTBIN); \
+	  $(MKDIR_P) $(INST_TESTBIN); \
 	fi 
 	@if [ ! -d $(INST_TESTLOG) ] ; then \
-	  $(MKDIR) $(INST_TESTLOG); \
+	  $(MKDIR_P) $(INST_TESTLOG); \
 	fi 
-	+ $(SHOWIT)touch $(INST_TESTDB); \
+	+ $(SHOWIT)$(TOUCH) $(INST_TESTDB); \
 	if $(MAKEMD) testbuild TARGET=testbuild $(TEST_TARGET_PARAMS) FULLCHECKING=1 NOEXEBUILD=1 ; then true ; \
 	else \
 	  echo "test: Failed to do initial build for test. "; \
@@ -301,13 +254,11 @@ test: src
 	  echo "test: Failed to do executable build. " ; \
 	  exit 1 ; \
 	fi ;
-ifeq ($(ARC),$(LOCALARC))
-	$(SHOWIT)sort -u -o$(INST_TESTDB) $(INST_TESTDB); \
+	$(SHOWIT)$(SORT) -u -o$(INST_TESTDB) $(INST_TESTDB); \
 	$(LOCALBIN)/Validate -v $(INST_TEST)
-endif
 
 retest:
-	$(SHOWIT)sort -u -o$(INST_TESTDB) $(INST_TESTDB) ; \
+	$(SHOWIT)$(SORT) -u -o$(INST_TESTDB) $(INST_TESTDB) ; \
 	$(LOCALBIN)/Validate -v $(INST_TEST)	
 
 # Build everything.
@@ -634,7 +585,7 @@ distclean:
 $(MAKEHOME)/config.$(ARC) :
 	@true
 
-$(MAKEHOME)/Dirs.mk :
+$(MAKEHOME)/Definitions.mk :
 	@true
 
 $(MAKEHOME)/GlobalMake :
@@ -643,10 +594,10 @@ $(MAKEHOME)/GlobalMake :
 $(MAKEHOME)/MainDep.mk :
 	@true
 
-$(MAKEHOME)/lib/RAVL/libdep/*.qpr : $(MAKEHOME)/Dirs.mk
+$(MAKEHOME)/lib/RAVL/libdep/*.qpr : $(MAKEHOME)/Definitions.mk
 	@true;
 
-$(PROJECT_OUT)/lib/RAVL/libdep/*.qpr: $(MAKEHOME)/Dirs.mk
+$(PROJECT_OUT)/lib/RAVL/libdep/*.qpr: $(MAKEHOME)/Definitions.mk
 	@true;
 
 ###############################################
@@ -666,4 +617,3 @@ help:
 .DEFAULT:
 	@echo Unknown target: $@
 	@$(PAGER) $(MAKEHOME)/Help.txt
-

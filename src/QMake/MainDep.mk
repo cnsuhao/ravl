@@ -10,9 +10,11 @@
 # Make with dependancies.
 
 .PRECIOUS : %.def 
+
 ifndef MAKEHOME
- MAKEHOME=.
+  MAKEHOME=.
 endif
+
 include $(MAKEHOME)/Main.mk
 
 -include $(TARG_DEPEND)

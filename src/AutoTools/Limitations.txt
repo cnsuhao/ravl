@@ -1,14 +1,5 @@
 ﻿Current limitations
 
-+ QMake not currently modified to use Config.Local for compiler options, etc.
-  (still needs config.XXX).
-
-	- QMake '.mk' makefiles need updating to incorporate the new work. This
-	  may be a good opportunity to look at pruning any superfluous code in
-	  these files. For instance, is ROOTDIR ever set as an input to the
-	  build process, are the Java or Cuda parts of the makefiles currently
-	  exercised?
-
 + Configuration for (finding the location of) the utilities necessary for
   documentation production is not currently undertaken by configure. 
 
@@ -86,8 +77,8 @@
 	  as we will return to a situation where the available conversions are
 	  more targetted to what the user is doing, even for the single library.
 
-+ No modification to the existing documentation has yet been carried out to
-  reflect the new build system.
++ No formal modification to the existing documentation has yet been carried out
+  to reflect the new build system.
 
 	- This will be carried out prior to committal of the first phase of
 	  development.

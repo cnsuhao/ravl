@@ -1,46 +1,11 @@
-# Start with WIP related bodges..
-
-# Force these instead of proper implementation
-ARC=linux64
-
-# End of bodges
-
-
 
 INSTALLHOME=@abs_top_builddir@
 
-#OBJ_HOME=@abs_top_builddir@/$(LOGNAME)/qm/@abs_top_builddir@/$(ARC)
-OBJ_HOME=@abs_top_builddir@/$(ARC)
+include $(INSTALLHOME)/share/RAVL/QMake/Definitions.mk
 
+#OBJ_HOME=$(INSTALLHOME)/$(LOGNAME)/qm/$(INSTALLHOME)/$(ARC)
+OBJ_HOME=$(INSTALLHOME)/$(ARC)
 
-include $(INSTALLHOME)/Config.Local
-
-CCPPFLAGS+=-I$(INSTALLHOME)/include -DPROJECT_OUT=\"$(INSTALLHOME)\"
-CPPFLAGS+=-I$(INSTALLHOME)/include -DPROJECT_OUT=\"$(INSTALLHOME)\"
-
-CFLAGS=$(INCLUDES)
-CXXFLAGS=$(INCLUDES)
-
-include defs.mk
-
-ifndef VAR
-  VAR=opt
-endif
-
-ifeq ($(VAR),debug)
-  CFLAGS += -g
-  CXXFLAGS += -g
-else
-ifeq ($(VAR),opt)
-    CFLAGS += -O2
-    CXXFLAGS += -O2
-else
-ifeq ($(VAR),gprof)
-      CFLAGS += -O2 -g -pg
-      CXXFLAGS += -O2 -g -pg
-endif
-endif
-endif
 
 REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
 
@@ -69,9 +34,6 @@ else
 $(error Standard builds not implemented yet - only SINGLELIB=1 currently supported)
 endif
 
-ifndef PACKAGE
-PACKAGE=local
-endif
 
 ifeq ($(strip $(PLIB)),)
 PLIB=$(PACKAGE)/None
@@ -169,7 +131,7 @@ library: $(BUILD_LIB)
 programs: $(BUILD_PROGS)
 
 recurse:
-	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) -I$(INSTALLHOME)/lib/RAVL/libdep/ -C $$d -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
+	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(INSTALLHOME)/lib/RAVL/libdep/ -C $$d -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
 
 test: $(BUILD_TESTS)
 # Initial set-up not yet implemented - use QMake first
@@ -190,16 +152,16 @@ cpheaders: $(HEADERS)
 	: Not implememted
 
 donotsupport:
-	@echo Platform is not supported for this directory tree
+	@if [ X$(QMAKE_INFO) != X ] ; then echo Platform is not supported for this directory tree; fi
 
 mkdoc:
 	: Not implememted
 
 noresources:
-	@echo Insufficient RESOURCES for this directory tree
+	@if [ X$(QMAKE_INFO) != X ] ; then echo Insufficient RESOURCES for this directory tree; fi
 
 notsupportonly:
-	@echo Platform not on the SUPPORT_ONLY list for this directory tree
+	@if [ X$(QMAKE_INFO) != X ] ; then echo Platform not on the SUPPORT_ONLY list for this directory tree; fi
 
 
 
@@ -208,7 +170,7 @@ define buildutils
   $1: $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR) $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1
 
   $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(CFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR):
@@ -222,7 +184,7 @@ define buildexamples
   $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR) $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1
 
   $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(CFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR):
@@ -238,7 +200,7 @@ define buildtest
                 $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin/$1
 
   $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(CFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin:

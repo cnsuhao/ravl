@@ -1,17 +1,12 @@
-# Development bodges...
 
-ARC=linux64
-LDLIBFLAGS=-fPIC -shared
+INSTALLHOME=@abs_top_builddir@
 
-# End of dev bodges.
+include $(INSTALLHOME)/share/RAVL/QMake/Definitions.mk
 
-include @abs_top_builddir@/Config.Local
+LIB_WORK=$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)
 
-
-LIB_WORK=@abs_top_builddir@/lib/RAVL/$(ARC)/$(VAR)
-
-#BUILT_ROOT=@abs_top_builddir@/$(LOGNAME)/qm/@abs_top_builddir@/$(ARC)
-BUILT_ROOT=@abs_top_builddir@/$(ARC)
+#BUILT_ROOT=$(INSTALLHOME)/$(LOGNAME)/qm/$(INSTALLHOME)/$(ARC)
+BUILT_ROOT=$(INSTALLHOME)/$(ARC)
 
 
 
@@ -20,13 +15,13 @@ buildsinglelibs: makedirs buildstatic buildshared
 makedirs: $(LIB_WORK)/single $(LIB_WORK)/shared/single
 
 $(LIB_WORK)/single:
-	@if [ ! -d $(LIB_WORK)/single ]; then mkdir $(LIB_WORK)/single; fi
+	@if [ ! -d $(LIB_WORK)/single ]; then $(MKDIR_P) $(LIB_WORK)/single; fi
 
 $(LIB_WORK)/shared:
-	@if [ ! -d $(LIB_WORK)/shared ]; then mkdir $(LIB_WORK)/shared; fi
+	@if [ ! -d $(LIB_WORK)/shared ]; then $(MKDIR_P) $(LIB_WORK)/shared; fi
 	
 $(LIB_WORK)/shared/single: $(LIB_WORK)/shared
-	@if [ ! -d $(LIB_WORK)/shared/single ]; then mkdir $(LIB_WORK)/shared/single; fi
+	@if [ ! -d $(LIB_WORK)/shared/single ]; then $(MKDIR_P) $(LIB_WORK)/shared/single; fi
 	
 
 # Ordered list of the libraries we want in libRavl.* 
@@ -93,7 +88,7 @@ SHARED_OBJS=$(subst /$(VAR)/objs/,/$(VAR)/shared/objs/,$(NEW_OBJS) $(ORDERED_OBJ
 buildshared: $(LIB_WORK)/shared/single/libRavl.so
 
 $(LIB_WORK)/shared/single/libRavl.so: $(SHARED_OBJS)
-	$(CXX) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@
+	$(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@
 
 
 clean:

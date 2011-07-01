@@ -12,39 +12,16 @@
 #! file="Ravl/QMake/Doc.mk"
 
 ifndef MAKEHOME
-  MAKEHOME=.
+  MAKEHOME=/path/set/by/QMake
 endif
 
-ifndef INSTALLHOME
- INSTALLHOME = $(MAKEHOME)/../../..#
-endif
+include $(MAKEHOME)/Definitions.mk
 
-MAKEFLAGS += --no-print-directory -r 
 CXXDOC=$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/CxxDoc
 
 AUTOTEMPL=$(MAKEHOME)/../AutoDoc
 
-#/vol/vssp/cpug/Ravl/src/doc/Auto
-
-ifndef ARC
-  ARC=$(shell $(MAKEHOME)/config.arc)#
-endif
-
-ifdef QMAKE_INFO
-  SHOWIT = 
-else
-  SHOWIT = @
-endif
-
-ifndef QCWD
-  QCWD := $(shell 'pwd')
-endif
-
-include $(MAKEHOME)/config.$(ARC)
--include $(QCWD)/defs.mk
-
-##########################
-# Clean up defs stuff.
+SLIB:=$(strip $(SLIB))
 
 ifndef PLIB
 ifdef SLIB
@@ -72,10 +49,7 @@ endif
 
 
 
-SLIB:=$(strip $(SLIB))
-PLIB:=$(strip $(PLIB))
 
-include $(MAKEHOME)/Dirs.mk
 
 .PHONY : doc do_html bigautodoc autodoc
 
@@ -103,7 +77,7 @@ TARG_DOCNODE=$(patsubst %,$(INST_DOCNODE)/%,$(DOCNODE))
 %/.dir:
 	$(SHOWIT)if [ ! -d $* ] ; then \
 	  echo "--- Making dir $* "; \
-	  $(MKDIR) $* ; \
+	  $(MKDIR_P) $* ; \
 	  $(TOUCH) -r $(MAKEHOME)/Main.mk $*/.dir ; \
 	else  \
 	  if [ ! -f $*/.dir ] ; then \
@@ -128,15 +102,13 @@ docinit: docfiles
 	+ $(SHOWIT)for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
 	   echo "------ Documenting $(DPATH)/"$$SUBDIR; \
-	   $(MAKE) docinit -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Doc.mk $(DEF_INC) ; \
+	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) docinit -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Doc.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
 doc: docinit $(INST_INCLUDE)/.dir $(TARG_DOCNODE)
-ifeq ($(ARC),$(LOCALARC))
 	$(SHOWIT)echo "--- Generating documentation" ; \
 	$(CXXDOC) $(PACKAGENAME_OPT) $(PACKAGEDESC_OPT) $(INCLUDE_OPT) -ih $(INSTALLHOME) -p $(PROJECT_OUT)
-endif
 
 $(INST_EHT)/% : % $(INST_EHT)/.dir
 	$(SHOWIT)echo "--- Installing EHT $(@F) to $(INST_EHT)" ; \

@@ -958,6 +958,83 @@ AC_SUBST([RANLIB])
 
 
 
+# Look for the make utility
+
+if ( test X$MAKE = X )
+then
+  # User has not asked for a specific make utility, look for make
+  MAKE=make
+fi
+
+if ( test X`expr X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
+then
+  # User has not asked for a specific path for the make utility, we have to look
+  # for it on the search list
+
+  AC_MSG_CHECKING([for make utility])
+  GNU_MAKE=""
+  ANO_MAKE=""
+  save_ifs="$IFS"
+  IFS=$PATH_SEPARATOR
+  for dir in $PATH
+  do
+    IFS="$save_ifs"
+    if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
+    then
+      # Run $MAKE -v to check if we have GNU Make
+      case `"$dir/$MAKE" -v 2>&1 </dev/null` in
+        *GNU* | *'with BFD'*)   GNU_MAKE=$dir/$MAKE
+                                # Found GNU Make which we prefer so we need
+                                # look no further
+                                break
+                                ;;
+                           *)   if ( test X$ANO_MAKE = X )
+                                then
+                                  ANO_MAKE=$dir/$MAKE
+                                fi
+                                ;;
+        esac
+    fi
+  done
+  IFS="$save_ifs"
+  if ( test X$GNU_MAKE = X )
+  then
+    # Preferred GNU Make not found, was there an alternative
+    if ( test  X$ANO_MAKE = X)
+    then
+      AC_MSG_RESULT([no])
+      AC_MSG_FAILURE([Cannot find a working make required for building Ravl])
+    else
+      MAKE=$ANO_MAKE
+      AC_MSG_RESULT([$MAKE])
+      GNU_MAKE=no
+    fi
+  else
+    MAKE=$GNU_MAKE
+    AC_MSG_RESULT([$MAKE])
+    GNU_MAKE=yes
+  fi
+else
+  # User specified a full path to make (in MAKE environment variable)
+  AC_MSG_CHECKING([$$MAKE specified make utility])
+  if ( test -x $MAKE )
+  then
+    VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
+    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    then
+      GNU_MAKE=yes
+    else
+      GNU_MAKE=no
+    fi
+    AC_MSG_RESULT([$MAKE])
+  else
+    AC_MSG_RESULT([unexecutable])
+    AC_MSG_FAILURE([$$MAKE does not specify a usable make utility])
+  fi
+fi
+
+AC_SUBST([MAKE])
+
 # Set relevant flags dependant on the software tools we have found
 #
 dnl Only select flags dependant on the tools in use here. Set all options
@@ -969,6 +1046,7 @@ if (test X$GCC = Xyes)
 then
    # GNU C Compiler
    RAVL_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   RAVL_CANSIFLAG=" -ansi "
    RAVL_DEFAULT_CFLAGS=" -O "
    CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
    CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
@@ -978,13 +1056,10 @@ then
    then
       # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
       # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-      # that work with the Ravl source. In addition, there were problems with 
-      # incorrect code generation with strict-aliasing (even where the aliasing
-      # rules are followed), so switch off the offending optimisations and 
-      # employ -O3 as compensation
+      # that work with the Ravl source and employ -O3 as compensation
       RAVL_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
    else
-      RAVL_OPT_CFLAGS=" -O2 -ffast-math "
+      RAVL_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
    RAVL_OPT_CFLAGS=$RAVL_OPT_CFLAGS" -march=native -mtune=native "
    RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1006,11 +1081,12 @@ dnl that relate to specific tool sets. They may or may not relate to specific
 dnl platforms but that is coincidental. Platform specific settings must go in
 dnl the section at the end of this script. If you have a specific compiler on
 dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers), put those settings at the end of this
-dnl script.
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
 dnl 
    case X$host_os in
    Xsolaris* ) RAVL_GLOBAL_CFLAGS=""
+               RAVL_CANSIFLAG=" -ansi "
                RAVL_DEFAULT_CFLAGS=" -O "
                RAVL_OPT_CFLAGS=" -O2 "
                RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1027,6 +1103,7 @@ dnl
                # Not sure why this originally was done this way rather than use
                # CFLAGS, but assume there was a reason and propogate the method
                RAVL_GLOBAL_CFLAGS=" -mips4 -r1000 "
+               RAVL_CANSIFLAG=" -ansi "
                RAVL_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
                RAVL_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
                RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1040,6 +1117,7 @@ dnl
                RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
    * )         RAVL_GLOBAL_CFLAGS=""
+               RAVL_CANSIFLAG=" -ansi "
                RAVL_DEFAULT_CFLAGS=" -O "
                RAVL_OPT_CFLAGS=" -O2 "
                RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1054,6 +1132,10 @@ dnl
                ;;
    esac
 fi
+
+# Declare output variables for compiler ANSI switches
+AC_SUBST([RAVL_CANSIFLAG])
+AC_SUBST([RAVL_CCANSIFLAG])
 
 # Declare RAVL_XXXXX_CFLAGS variables as output for Config.Local
 AC_SUBST([RAVL_CHECK_CFLAGS])
@@ -1070,6 +1152,7 @@ if (test X$GXX = Xyes)
 then
    # GNU C++ Compiler
    RAVL_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   RAVL_CCANSIFLAG=" -ansi "
    RAVL_DEFAULT_CCFLAGS=" -O "
    CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
    CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
@@ -1079,13 +1162,10 @@ then
    then
       # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
       # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-      # that work with the Ravl source. In addition, there were problems with 
-      # incorrect code generation with strict-aliasing (even where the aliasing
-      # rules are followed), so switch off the offending optimisations and 
-      # employ -O3 as compensation
+      # that work with the Ravl source and employ -O3 as compensation
       RAVL_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
    else
-      RAVL_OPT_CCFLAGS=" -O2 -ffast-math "
+      RAVL_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
    RAVL_OPT_CCFLAGS=$RAVL_OPT_CCFLAGS" -march=native -mtune=native "
    RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1107,11 +1187,12 @@ dnl that relate to specific tool sets. They may or may not relate to specific
 dnl platforms but that is coincidental. Platform specific settings must go in
 dnl the section at the end of this script. If you have a specific compiler on
 dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers), put those settings at the end of this
-dnl script.
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
 dnl 
    case X$host_os in
    Xsolaris* ) RAVL_GLOBAL_CCFLAGS=""
+               RAVL_CCANSIFLAG=" -ansi "
                RAVL_DEFAULT_CCFLAGS=" -O "
                RAVL_OPT_CCFLAGS=" -O2 "
                RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1128,6 +1209,7 @@ dnl
                # Not sure why this originally was done this way rather than use
                # CCFLAGS, but assume there was a reason and propogate the method
                RAVL_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
+               RAVL_CCANSIFLAG=" -ansi "
                RAVL_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
                RAVL_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
                RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1141,6 +1223,7 @@ dnl
                RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
    * )         RAVL_GLOBAL_CCFLAGS=""
+               RAVL_CCANSIFLAG=" -ansi "
                RAVL_DEFAULT_CCFLAGS=" -O "
                RAVL_OPT_CCFLAGS=""
                RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
@@ -1181,7 +1264,7 @@ then
   RAVL_GPROF_LDFLAGS=
   RAVL_OPT_LDFLAGS=
   RAVL_PROF_LDFLAGS=
-  RAVL_SHARED_LDFLAGS=-rdynamic
+  RAVL_SHARED_LDFLAGS=" -rdynamic "
 
   # Ravl link options used for libraries
   RAVL_CHECK_LDLIBFLAGS=
@@ -1191,10 +1274,10 @@ then
   RAVL_GPROF_LDLIBFLAGS=
   RAVL_OPT_LDLIBFLAGS=
   RAVL_PROF_LDLIBFLAGS=
-  RAVL_SHARED_LDLIBFLAGS=-shared
+  RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-  LIBPATHSWITCH=-Wl,-rpath#
-  UNDEFSYMB=-u#
+  LIBPATHSWITCH=" -Wl,-rpath#"
+  UNDEFSYMB=" -u#"
 else
   # Not using a GNU linker, try native flags we have used before or default to
   # what works for GNU
@@ -1206,18 +1289,18 @@ dnl that relate to specific tool sets. They may or may not relate to specific
 dnl platforms but that is coincidental. Platform specific settings must go in
 dnl the section at the end of this script. If you have a specific compiler on
 dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU linker), put those settings at the end of this
-dnl script.
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
 dnl 
   case X$host_os in
   Xcygwin )   RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=-g
+              RAVL_DEBUG_LDFLAGS=" -g "
               RAVL_GLOBAL_LDFLAGS=
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-Wl,-export-dynamic
+              RAVL_SHARED_LDFLAGS=" -Wl,-export-dynamic "
               # sic, this is an assumption on what compiler is in use
 
               RAVL_CHECK_LDLIBFLAGS=
@@ -1227,15 +1310,15 @@ dnl
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-shared
+              RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-              LIBPATHSWITCH=-Wl,-rpath#
+              LIBPATHSWITCH=" -Wl,-rpath#"
               # sic, this is an assumption on what compiler is in use
-              UNDEFSYMB=-u #
+              UNDEFSYMB=" -u #"
               ;;
   Xirix*    ) RAVL_CHECK_LDFLAGS=
               RAVL_DEBUG_LDFLAGS=
-              RAVL_GLOBAL_LDFLAGS=-n32 -Wl,-woff 84
+              RAVL_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
@@ -1249,13 +1332,13 @@ dnl
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-shared
+              RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-              LIBPATHSWITCH=-Wl,-rpath#
-              UNDEFSYMB=-u#
+              LIBPATHSWITCH=" -Wl,-rpath#"
+              UNDEFSYMB=" -u#"
               ;;
   Xsolaris* ) RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=-g
+              RAVL_DEBUG_LDFLAGS=" -g "
               RAVL_GLOBAL_LDFLAGS=
               RAVL_DEFAULT_LDFLAGS=
               RAVL_GPROF_LDFLAGS=
@@ -1270,10 +1353,10 @@ dnl
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-dy -G
+              RAVL_SHARED_LDLIBFLAGS=" -dy -G "
 
-              LIBPATHSWITCH=-R#
-              UNDEFSYMB=-u#
+              LIBPATHSWITCH=" -R#"
+              UNDEFSYMB=" -u#"
               ;;
   * )         RAVL_CHECK_LDFLAGS=
               RAVL_DEBUG_LDFLAGS=
@@ -1282,7 +1365,7 @@ dnl
               RAVL_GPROF_LDFLAGS=
               RAVL_PROF_LDFLAGS=
               RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=-rdynamic
+              RAVL_SHARED_LDFLAGS=" -rdynamic "
 
               RAVL_CHECK_LDLIBFLAGS=
               RAVL_DEBUG_LDLIBFLAGS=
@@ -1291,10 +1374,10 @@ dnl
               RAVL_GPROF_LDLIBFLAGS=
               RAVL_PROF_LDLIBFLAGS=
               RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=-shared
+              RAVL_SHARED_LDLIBFLAGS=" -shared "
 
-              LIBPATHSWITCH=-Wl,-rpath#
-              UNDEFSYMB=-u#
+              LIBPATHSWITCH=" -Wl,-rpath#"
+              UNDEFSYMB=" -u#"
               ;;
   esac
 fi
@@ -1340,9 +1423,15 @@ AC_SUBST([RAVL_ARFLAGS])
 # Declare flags for make
 
 dnl Only put make flags specific to any particular version of make here. DO NOT
-dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final sexction of this
+dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final section of this
 dnl script
-RAVL_MAKEFLAGS=-r
+
+if ( test X$GNU_MAKE = Xyes )
+then
+  RAVL_MAKEFLAGS=" --no-print-directory -r "
+else
+  RAVL_MAKEFLAGS=" -r "
+fi
 
 AC_SUBST([MAKEFLAGS])
 # User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Local 
@@ -1411,20 +1500,118 @@ AC_SUBST([SORT])
 AC_PROG_YACC
 AC_SUBST([YACC])
 
-# GNU standards regard tr safe to call directly but as we already implemented
-# it via a make variable, set that here.
+# GNU standards regard the following safe to call directly but as we already
+# implemented them via a make variable, set those here...
+AC_PATH_PROG([CP],[cp],[Missing])
+AS_IF([test $CP = Missing],
+      [AC_MSG_FAILURE([Cannot find a working cp required for building Ravl])]
+     )
+AC_SUBST([CP])
+
+AC_PATH_PROG([RM],[rm],[Missing])
+AS_IF([test $RM = Missing],
+      [AC_MSG_FAILURE([Cannot find a working rm required for building Ravl])]
+     )
+AC_SUBST([RM])
+
+AC_PATH_PROG([TOUCH],[touch],[Missing])
+AS_IF([test $TOUCH = Missing],
+      [AC_MSG_FAILURE([Cannot find a working touch required for building Ravl])]
+     )
+AC_SUBST([TOUCH])
+
 AC_PATH_PROG([TR],[tr],[Missing])
 AS_IF([test $TR = Missing],
       [AC_MSG_FAILURE([Cannot find a working tr required for building Ravl])]
      )
 AC_SUBST([TR])
 
+# Provide switch to allow use of pawd instead of pwd
+AC_ARG_WITH([pawd],
+            [AS_HELP_STRING([--with-pawd],
+                            [Employ pawd rather than pwd to return the current directory @<:@default=No@:>@]
+                           )
+            ],
+            [case $with_pawd in
+                        'n' | 'N' | 'no' | 'No' | 'NO' ) 
+                               trace 4 --with-pawd disabling use of pawd
+                               AC_PATH_PROG([GET_CWD],[pwd],[Missing])
+                               AS_IF([test $GET_CWD = Missing],
+                                     [AC_MSG_FAILURE([Cannot find a working pwd required for building Ravl])]
+                                    )
+                               ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
+                               trace 4 --with-pawd forcing use of pawd
+                               AC_PATH_PROG([GET_CWD],[pawd],[Missing])
+                               AS_IF([test $GET_CWD = Missing],
+                                     [AC_MSG_FAILURE([Asking to enable pawd via --with-pawd but it cannot be found])]
+                                    )
+                               ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                               trace 4 --with-pawd asking to use pawd if available
+                               AC_PATH_PROG([GET_CWD],[pawd],[Missing])
+                               AS_IF([test $GET_CWD = Missing],
+                                     [AC_PATH_PROG([GET_CWD],[pwd],[Missing])
+                                      AS_IF([test $GET_CWD = Missing],
+                                            [AC_MSG_FAILURE([Cannot find a working pawd or pwd required for building Ravl])]
+                                           )
+                                     ]
+                                    )
+                               ;;
+                        * )    AS_IF([test -x $with_pawd],
+                                     [trace 4 --with-pawd asking to use "@<:@$with_pawd@:>@"
+                                      GET_CWD=$with_pawd
+                                     ],
+                                     [AC_MSG_WARN([--with-pawd set to an unknown option, setting ignored])
+                                      AC_PATH_PROG([GET_CWD],[pwd],[Missing])
+                                      AS_IF([test $GET_CWD = Missing],
+                                            [AC_MSG_FAILURE([Cannot find a working pwd required for building Ravl])]
+                                           )
+                                     ]
+                                    )
+                               ;;
+                       esac
+            ],
+            [trace 5 No --with-$1 specified
+             AC_PATH_PROG([GET_CWD],[pwd],[Missing])
+             AS_IF([test $GET_CWD = Missing],
+                   [AC_MSG_FAILURE([Cannot find a working pwd required for building Ravl])]
+                  )
+            ]
+           )
+AC_SUBST([GET_CWD])
+
 # Now check for those utilities we use in the Ravl build that aren't recognised
-# as being reliably protable by the GNU standard. For these, we will need to
+# as being reliably portable by the GNU standard. For these, we will need to
 # consider providing an alternative implementation in cases where any are absent.
 AC_PROG_LN_S
 AC_SUBST([LN_S])
 
+AS_IF([test x$PAGER = x],
+      [AC_PATH_PROG([RAVL_PAGER],[more],[Missing])
+       AS_IF([test $RAVL_PAGER = Missing],
+             [AC_PATH_PROG([RAVL_PAGER],[pg],[Missing])
+              AS_IF([test $RAVL_PAGER = Missing],
+                    [AC_MSG_FAILURE([Cannot find a working pager required for building Ravl])]
+                   )
+             ]
+            )
+      ],
+      [RAVL_PAGER=$PAGER]
+     )
+AC_SUBST([RAVL_PAGER])
+
+AC_PATH_PROG([SYNC],[sync],[Missing])
+AS_IF([test $SYNC = Missing],
+      [AC_MSG_FAILURE([Cannot find a working sync required for building Ravl])]
+     )
+AC_SUBST([SYNC])
+
+AC_PATH_PROG([XARGS],[xargs],[Missing])
+AS_IF([test $XARGS = Missing],
+      [AC_MSG_FAILURE([Cannot find a working xargs required for building Ravl])]
+     )
+AC_SUBST([XARGS])
 
 # Perl is also required by the Ravl (really QMake) build process but as it is 
 # also required for Ravl functionality, this is addressed by a check further on
@@ -1432,7 +1619,7 @@ AC_SUBST([LN_S])
 
 # Remaining utils used to build Ravl are all regarded by the GNU standards as
 # safe for direct use:
-#       cat cmp cp diff ls mv pwd rm rmdir tar test touch true
+#       cat cmp diff ls mv rmdir tar test touch true
 
 
 trace 2 Initial checks complete, now processing cmd-line
@@ -3043,6 +3230,7 @@ echo >> ./Config.Local.in
 echo AR=@AR@ >> ./Config.Local.in
 echo AWK=@AWK@ >> ./Config.Local.in
 echo CC=@CC@ >> ./Config.Local.in
+echo CP=@CP@ >> ./Config.Local.in
 echo CPP=@CPP@ >> ./Config.Local.in
 echo CHGRP=@CHGRP@ >> ./Config.Local.in
 echo CHMOD=@CHMOD@ >> ./Config.Local.in
@@ -3050,16 +3238,22 @@ echo CHOWN=@CHOWN@ >> ./Config.Local.in
 echo CXX=@CXX@ >> ./Config.Local.in
 echo CXXCPP=@CXXCPP@ >> ./Config.Local.in
 echo EXPR=@EXPR@ >> ./Config.Local.in
+echo GET_CWD=@GET_CWD@ >> ./Config.Local.in
 echo GREP=@GREP@ >> ./Config.Local.in
 echo LD=@LD@ >> ./Config.Local.in
 echo LEX=@LEX@ >> ./Config.Local.in
 echo LEXLIB=@LEXLIB@ >> ./Config.Local.in
 echo LN_S=@LN_S@ >> ./Config.Local.in
+echo MAKE=@MAKE@ >> ./Config.Local.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.Local.in
 echo RANLIB=@RANLIB@ >> ./Config.Local.in
+echo RM=@RM@ >> ./Config.Local.in
 echo SED=@SED@ >> ./Config.Local.in
 echo SORT=@SORT@ >> ./Config.Local.in
+echo SYNC=@SYNC@ >> ./Config.Local.in
+echo TOUCH=@TOUCH@ >> ./Config.Local.in
 echo TR=@TR@ >> ./Config.Local.in
+echo XARGS=@XARGS@ >> ./Config.Local.in
 echo YACC=@YACC@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 
@@ -3067,6 +3261,9 @@ echo >> ./Config.Local.in
 # Compiler, etc. switches
 echo >> ./Config.Local.in
 echo \# Relevant Ravl build process flags >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# Declare platform architecture >> ./Config.Local.in
+echo ARC=@ARC@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
@@ -3083,6 +3280,9 @@ echo RAVL_OPT_CFLAGS=@RAVL_OPT_CFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CFLAGS=@RAVL_PROF_CFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CFLAGS=@RAVL_SHARED_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
+echo \# ANSI switch settings >> ./Config.Local.in
+echo RAVL_CANSIFLAG=@RAVL_CANSIFLAG@ >> ./Config.Local.in
+echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C++ compiler >> ./Config.Local.in
 echo >> ./Config.Local.in
@@ -3098,6 +3298,9 @@ echo RAVL_GPROF_CCFLAGS=@RAVL_GPROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_OPT_CCFLAGS=@RAVL_OPT_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_PROF_CCFLAGS=@RAVL_PROF_CCFLAGS@ >> ./Config.Local.in
 echo RAVL_SHARED_CCFLAGS=@RAVL_SHARED_CCFLAGS@ >> ./Config.Local.in
+echo >> ./Config.Local.in
+echo \# ANSI switch settings >> ./Config.Local.in
+echo RAVL_CCANSIFLAG=@RAVL_CCANSIFLAG@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the linker >> ./Config.Local.in
@@ -3565,7 +3768,7 @@ then
                 # and __alpha. If this is not the case, you should manually set
                 # these or update the Ravl code. 
                 ;;
-    Xsolaris* ) # No specific options set here (all platform specific items come
+   Xsolaris* )  # No specific options set here (all platform specific items come
                 # from the toolset so are set earlier in this script). This is
                 # really here just as a place-holder and to note  that the code
                 # relies on the compiler appropriatly setting the relevant 
@@ -3613,6 +3816,16 @@ else
                  trace 3 Disallowing ParallelIO on 64-bit x86 platforms
                  ParallelIO_SUPPORT=""
                  ;;
+   Xalpha* )
+                 # DEC/Compaq/HP Alpha kit
+                 
+                 trace 3 Disallowing Meteor1 on non 32-bit x86 platforms
+                 Meteor1_SUPPORT=""
+
+                 # ParallelIO currently unsupported off 32-bit x86
+                 trace 3 Disallowing ParallelIO on non 32-bit x86 platforms
+                 ParallelIO_SUPPORT=""
+                 ;;
    XNone-at-the-moment )
                  # There's no real difference between these architectures and
                  # the default case. This just makes a good place to list
@@ -3648,6 +3861,67 @@ else
    trace 3 SGIVL is not supported on Linux
    SGIVL_SUPPORT=""
 fi
+
+# Map Platform/OS into Ravl ARCs
+case X$host_os in
+Xarm )      ARC=arm
+            # Unlikely to ever encounter this as an OS, most liekly to find arm
+            # as a linux cpu type (should process that as a variation of linux).
+            # This is only here as this is what we used to do
+            ;;
+Xcygwin )   ARC=cygwin
+            # Ravl support assumes an old i*86 platform. Could possibly require
+            # code changes to Ravl if we ever port to a more expansive
+            # environment (e.g. 64 bit support)
+            ;;
+Xdarwin* )  case X`uname -m` in
+               Xx86_64 )  ARC=macosx64
+                          ;;
+               Xi386 )    ARC=macosx32
+                          ;;
+               Xpowerpc ) ARC=macosxppc
+                          ;;
+            esac
+            # The above is needed as host_os currently comes back as i386 even
+            # for 64-bit installations of OSX
+            ;;
+Xirix* )    ARC=sgi
+            ;;
+Xlinux* )
+            case X$host_cpu in
+               Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
+                          ARC=linux
+                          ;;
+               Xx86_64* ) ARC=linux64
+                          ;;
+               Xalpha* )  ARC=linux_alpha
+                          # Will encompass more processors than the original
+                          # config.arc accounted for but should not be an issue
+                          ;;
+               * )        ARC=unknown
+                          ;;
+            esac
+            ;;
+Xosf* )     ARC=alpha
+            ;;
+Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
+            # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
+            #  Solaris 2.6, Solaris 7, Solaris 8, etc.
+            if ( test X$VER_STRING= X )
+            then
+              # Just in case GNU change config.guess
+              ARC=sol
+            else
+              # Original Ravl support was for Solaris 7 & 9 only. Later
+              # versions may need further work on the Ravl source
+              ARC=sol2_$VER_STRING
+            fi
+            ;;
+* )         ARC=unknown
+            ;;
+esac
+AC_SUBST([ARC])
+
 
 
 dnl Declare RESOURCES and ALL_EXTERNAL_LIBS as outputs
