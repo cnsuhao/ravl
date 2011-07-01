@@ -660,5 +660,10 @@ defs.mk:
 	@echo "Use 'qm defs' for more information. ";
 
 
-.DEFAULT help:
+help:
 	@$(PAGER) $(MAKEHOME)/Help.txt
+
+.DEFAULT:
+	@echo Unknown target: $@
+	@$(PAGER) $(MAKEHOME)/Help.txt
+
