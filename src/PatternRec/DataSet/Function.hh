@@ -59,7 +59,7 @@ namespace RavlN {
     virtual VectorC Apply(const VectorC &data) const;
     //: Apply function to 'data'
 
-    TVectorC<float> Apply(const TVectorC<float> &data) const;
+    virtual TVectorC<float> Apply(const TVectorC<float> &data) const;
     //: Apply function with float vectors to 'data'
 
     virtual VectorC Apply(const VectorC & data1, const VectorC & data2) const ; 
@@ -87,7 +87,6 @@ namespace RavlN {
     
     virtual bool EvaluateValue(const VectorC &X,VectorC &value) const;
     //: Evaluate the value of the function at point X
-    // Returns true if all values are provide, false if one or more is approximated.
     
     inline UIntT InputSize() const
     { return inputSize; }

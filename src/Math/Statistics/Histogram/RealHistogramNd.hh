@@ -10,18 +10,27 @@ namespace RavlN {
 
   //! Base class for nd histograms.
 
-  class HistogramBaseNdC {
+  class RealHistogramBaseNdC {
   public:
-    //! Constructor
-    HistogramBaseNdC(const SArray1dC<RealRangeC> &ranges,const SArray1dC<size_t> &binSizes);
+    RealHistogramBaseNdC();
+    //: Default constructor
 
-    //! Input range.
+    RealHistogramBaseNdC(const SArray1dC<RealRangeC> &ranges,const SArray1dC<size_t> &binSizes);
+    //: Constructor
+
+    RealHistogramBaseNdC(BinIStreamC &strm);
+    //: Binary stream constructor
+
+    bool Save(BinOStreamC &strm) const;
+    //: Write histogram to binary stream
+
     const SArray1dC<RealRangeC> &InputRange() const
     { return m_inputLimits; }
+    //: Input range.
 
-    //! Access the grid size.
     const SArray1dC<size_t> &GridSize() const
     { return m_gridSize; }
+    //: Access the grid size.
 
     VectorC Scale() const;
     //: Scaling.
@@ -52,16 +61,42 @@ namespace RavlN {
     size_t m_dataSize;
   };
 
+
+
   template<typename AccumT>
   class RealHistogramNdC
-   : public HistogramBaseNdC
+   : public RealHistogramBaseNdC
   {
   public:
-    //! Constructor
+    RealHistogramNdC()
+    {}
+    //: Default constructor
+
     RealHistogramNdC(const SArray1dC<RealRangeC> &ranges,const SArray1dC<size_t> &binSizes)
-     : HistogramBaseNdC(ranges,binSizes),
+     : RealHistogramBaseNdC(ranges,binSizes),
        m_data(m_dataSize)
     { Reset(); }
+    //: Constructor
+
+    RealHistogramNdC(BinIStreamC &strm)
+     : RealHistogramBaseNdC(strm)
+    {
+      ByteT version = 0;
+      strm >> version;
+      if(version != 1)
+        throw ExceptionUnexpectedVersionInStreamC("RealHistogramNdC<>");
+      strm >> m_data;
+    }
+    //: Binary stream constructor
+
+    bool Save(BinOStreamC &strm) const {
+      if(!RealHistogramBaseNdC::Save(strm))
+        return false;
+      ByteT version = 1;
+      strm << version << m_data;
+      return true;
+    }
+    //: Write histogram to binary stream
 
     void Reset()
     {
@@ -106,25 +141,23 @@ namespace RavlN {
     //: Vote "votes" times for value.
     // Returns false if value is out of range.
 
-    //! Access a bin containing the specified value.
     AccumT &AccessBin(const VectorC &v)
     {
       size_t ind;
       ComputeIndex(v,ind);
       return m_data[ind];
     }
+    //: Access a bin containing the specified value.
 
-    //! Access a bin containing the specified value.
     const AccumT &AccessBin(const VectorC &v) const
     {
       size_t ind;
       ComputeIndex(v,ind);
       return m_data[ind];
     }
+    //: Access a bin containing the specified value.
 
-    //! Interpolate a value.
-    //! Returns false if is outside the input bounds.
-    bool Interpolate(const VectorC &v,AccumT &value)
+    bool Interpolate(const VectorC &v,AccumT &value) const
     {
       SArray1dC<RealT> offsets;
       size_t indexAt;
@@ -132,6 +165,16 @@ namespace RavlN {
       InternalInterpolate(static_cast<int>(m_gridSize.Size()-1),&m_data[indexAt],offsets,value);
       return ret;
     }
+    //: Interpolate a value.
+    //: Returns false if is outside the input bounds.
+
+    SArray1dC<AccumT> &RawBins()
+    { return m_data; }
+    //: Access raw bin data
+
+    const SArray1dC<AccumT> &RawBins() const
+    { return m_data; }
+    //: Access raw bin data
 
   protected:
     //! Internal accumulation routine
@@ -152,6 +195,19 @@ namespace RavlN {
     SArray1dC<AccumT> m_data;
   };
 
+  template<typename AccumT>
+  BinOStreamC &operator<<(BinOStreamC &strm,const RealHistogramNdC<AccumT> &hist)
+  {
+
+    return strm;
+  }
+
+  template<typename AccumT>
+  BinIStreamC &operator>>(BinIStreamC &strm,RealHistogramNdC<AccumT> &hist)
+  {
+
+    return strm;
+  }
 }
 
 

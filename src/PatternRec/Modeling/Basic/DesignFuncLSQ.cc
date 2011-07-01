@@ -19,6 +19,7 @@
 #include "Ravl/MatrixRS.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/Exception.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -44,7 +45,7 @@ namespace RavlN {
     int ver;
     strm >> ver;
     if(ver != 1)
-      cerr << "DesignFuncLSQBodyC::DesignFuncLSQBodyC(), Unknown format version. \n";
+      throw ExceptionUnexpectedVersionInStreamC("DesignFuncLSQBodyC::DesignFuncLSQBodyC(), Unknown format version. ");
     strm >> order >> orthogonal;
   }
   
@@ -56,7 +57,7 @@ namespace RavlN {
     char ver;
     strm >> ver;
     if(ver != 1)
-      cerr << "DesignFuncLSQBodyC::DesignFuncLSQBodyC(), Unknown format version. \n";
+      throw ExceptionUnexpectedVersionInStreamC("DesignFuncLSQBodyC::DesignFuncLSQBodyC(), Unknown format version. ");
     int val;
     strm >> order >> val;
     orthogonal = (val != 0);
@@ -101,7 +102,7 @@ namespace RavlN {
     return FuncLinearCoeffC();
   }
 
-  //: Find correlated paramiters.
+  //: Find correlated parameters.
   
   SArray1dC<IntT> DesignFuncLSQBodyC::FindCorrelatedParameters(const MatrixRUTC &mat,RealT thresh) {
     ONDEBUG(cerr << "DesignFuncLSQBodyC::FindCorelatedParameters(), Looking for corelations. \n");

@@ -165,7 +165,7 @@ int testRealHistogramNd() {
   for(unsigned i = 0;i < 100;i++) {
     VectorC at(dim);
     for(unsigned k = 0;k < dim;k++) {
-      at[k] = ranges[k].Min() + Random1() * ranges[k].Size();
+      at[k] = ranges[k].Min() + (Random1() + 0.5) * ranges[k].Size();
     }
     RealT value;
     if(!testHist.Interpolate(at,value)) return __LINE__;
