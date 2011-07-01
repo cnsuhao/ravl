@@ -53,7 +53,7 @@ namespace RavlN {
   }
   
 
-  //: Apply function with float vecors to 'data'
+  //: Apply function with float vectors to 'data'
 
   TVectorC<float> FunctionBodyC::Apply(const TVectorC<float> &data) const {
     VectorC tmp(data);
