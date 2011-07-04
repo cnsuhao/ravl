@@ -77,7 +77,7 @@ namespace RavlN
 
     bool Update(const StateT &expectedCurrentState,const StateT &newState) {
       m_cond.Lock();
-      if(newState != expectedCurrentState) {
+      if(m_state != expectedCurrentState) {
         // No change.
         m_cond.Unlock();
         return false;
@@ -130,8 +130,10 @@ namespace RavlN
                StateT &stateAchieved
                )
     {
-      if(m_state == desiredState1 || m_state == desiredState2) // Check before we bother with locking.
+      if(m_state == desiredState1 || m_state == desiredState2) { // Check before we bother with locking.
+        stateAchieved = m_state;
         return true;
+      }
       bool ret = true;
       m_cond.Lock();
       m_waiting++;
@@ -154,8 +156,10 @@ namespace RavlN
                StateT &stateAchieved
                )
     {
-      if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3) // Check before we bother with locking.
+      if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3) {// Check before we bother with locking.
+        stateAchieved = m_state;
         return true;
+      }
       bool ret = true;
       m_cond.Lock();
       m_waiting++;
