@@ -17,6 +17,7 @@
 #include "Ravl/config.h"
 #include "Ravl/Threads/ConditionalMutex.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/OS/Date.hh"
 
 namespace RavlN
 {
@@ -137,8 +138,9 @@ namespace RavlN
       bool ret = true;
       m_cond.Lock();
       m_waiting++;
+      DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState1 && m_state != desiredState2 && ret)
-        ret = m_cond.Wait(maxTime);
+        ret = m_cond.WaitUntil(deadline);
       int value = --m_waiting;
       stateAchieved = m_state;
       m_cond.Unlock();
@@ -163,8 +165,9 @@ namespace RavlN
       bool ret = true;
       m_cond.Lock();
       m_waiting++;
+      DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && ret)
-        ret = m_cond.Wait(maxTime);
+        ret = m_cond.WaitUntil(deadline);
       int value = --m_waiting;
       stateAchieved = m_state;
       m_cond.Unlock();
@@ -174,6 +177,54 @@ namespace RavlN
     }
     //: Wait for one of two states to be reached.
     // Returns false if timed out.
+
+    bool Wait(RealT maxTime,
+               const StateT &desiredState1,
+               const StateT &desiredState2,
+               const StateT &desiredState3,
+               const StateT &desiredState4,
+               StateT &stateAchieved
+               )
+    {
+      if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3|| m_state == desiredState4) {// Check before we bother with locking.
+        stateAchieved = m_state;
+        return true;
+      }
+      bool ret = true;
+      m_cond.Lock();
+      m_waiting++;
+      DateC deadline = DateC::NowUTC() + maxTime;
+      while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && m_state != desiredState4 && ret)
+        ret = m_cond.WaitUntil(deadline);
+      int value = --m_waiting;
+      stateAchieved = m_state;
+      m_cond.Unlock();
+      if(value == 0)
+        m_cond.Broadcast(); // If something is waiting for it to be free...
+      return ret;
+    }
+    //: Wait for one of two states to be reached.
+    // Returns false if timed out.
+
+
+    bool WaitNot(RealT maxTime,const StateT &theState) {
+      if(m_state != theState) {// Check before we bother with locking.
+        return true;
+      }
+      bool ret = true;
+      m_cond.Lock();
+      m_waiting++;
+      DateC deadline = DateC::NowUTC() + maxTime;
+      while(m_state == theState && ret)
+        ret = m_cond.WaitUntil(deadline);
+      int value = --m_waiting;
+      m_cond.Unlock();
+      if(value == 0)
+        m_cond.Broadcast(); // If something is waiting for it to be free...
+      return ret;
+
+    }
+    //: Wait for a state to be left.
 
     operator StateT () const
     { return m_state; }
