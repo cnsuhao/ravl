@@ -17,6 +17,7 @@
 #include "Ravl/config.h"
 #include "Ravl/Threads/ConditionalMutex.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/Date.hh"
 
 namespace RavlN
@@ -57,7 +58,8 @@ namespace RavlN
   {
   public:
     ThreadStateC(const StateT &initialState)
-      : m_state(initialState)
+      : m_state(initialState),
+        m_sigState(initialState)
     {}
     //: Constructor
 
@@ -71,6 +73,7 @@ namespace RavlN
       m_state = newState;
       m_cond.Unlock();
       m_cond.Broadcast();
+      m_sigState(newState);
       return true;
     }
     //: Set the current state.
@@ -86,6 +89,7 @@ namespace RavlN
       m_state = newState;
       m_cond.Unlock();
       m_cond.Broadcast();
+      m_sigState(newState);
       return true;
     }
     //: Change from a given existing state to a new state
@@ -234,8 +238,13 @@ namespace RavlN
     { return m_state; }
     //: Access the current state.
 
+    RavlN::Signal1C<StateT> &SigState()
+    { return m_sigState; }
+    //: Access state change signal.
+
   protected:
     volatile StateT m_state;
+    RavlN::Signal1C<StateT> m_sigState;
   };
 };
 
