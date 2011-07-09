@@ -7,7 +7,7 @@
 #ifndef RAVL_FUNCINTERPOLATE_HEADER
 #define RAVL_FUNCINTERPOLATE_HEADER 1
 //! lib=RavlPatternRec
-//! date="21/4/1998"
+//! date="9/7/2011"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
 //! file="Ravl/PatternRec/Modeling/Basic/FuncInterpolate.hh"

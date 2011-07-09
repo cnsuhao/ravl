@@ -1,12 +1,16 @@
-/*
- * FuncInterpolateGridGrid.hh
- *
- *  Created on: 24 Jun 2011
- *      Author: charles
- */
-
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2011, OmniPerception Ltd.
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 #ifndef RAVL_FuncInterpolateGridGRID_HH_
 #define RAVL_FuncInterpolateGridGRID_HH_
+//! lib=RavlPatternRec
+//! date="9/7/2011"
+//! author="Charles Galambos"
+//! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
+//! file="Ravl/PatternRec/Modeling/Basic/FuncInterpolateGrid.hh"
 
 #include "Ravl/PatternRec/FuncInterpolate.hh"
 #include "Ravl/RealHistogramNd.hh"

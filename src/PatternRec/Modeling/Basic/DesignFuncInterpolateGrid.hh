@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DESIGNFUNCINTERPOLATEDGRID_HEADER
 #define RAVL_DESIGNFUNCINTERPOLATEDGRID_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
