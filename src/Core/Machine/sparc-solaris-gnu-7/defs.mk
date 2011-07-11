@@ -10,7 +10,7 @@ DESCRIPTION= Atomic operations for solaris-sparc
 
 NESTED=
 
-PACKAGE=sol2_7/Ravl
+PACKAGE=Ravl
 
 SUPPORT_ONLY = sol2_7
 

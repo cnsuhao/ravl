@@ -8,7 +8,7 @@
 
 DESCRIPTION= Atomic operations for sgi R10000
 
-PACKAGE=sgi/Ravl
+PACKAGE=Ravl
 
 SUPPORT_ONLY=sgi
 

@@ -8,7 +8,7 @@
 
 DESCRIPTION= Atomic operations for i386-linux
 
-PACKAGE=linux/Ravl
+PACKAGE=Ravl
 
 SUPPORT_ONLY=linux
 

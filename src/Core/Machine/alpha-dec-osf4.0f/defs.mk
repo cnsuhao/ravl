@@ -8,7 +8,7 @@
 
 DESCRIPTION= Atomic operations for alpha based systems.
 
-PACKAGE=alpha/Ravl
+PACKAGE=Ravl
 
 SUPPORT_ONLY=alpha
 

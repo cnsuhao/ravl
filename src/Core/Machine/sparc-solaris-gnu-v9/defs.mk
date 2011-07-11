@@ -10,7 +10,7 @@ DESCRIPTION= Atomic operations for solaris-sparc-v9
 
 NESTED=
 
-PACKAGE=sol2/Ravl
+PACKAGE=Ravl
 
 SUPPORT_ONLY=sol2
 

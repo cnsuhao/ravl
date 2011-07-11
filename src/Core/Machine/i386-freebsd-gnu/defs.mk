@@ -8,7 +8,7 @@
 
 DESCRIPTION= Atomic operations for i386-freebsd
 
-PACKAGE=freebsd_x86/Ravl
+PACKAGE=Ravl
 
 SUPPORT_ONLY=freebsd_x86
 
