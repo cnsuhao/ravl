@@ -181,7 +181,7 @@ $(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON
 
 # Declare recipies to build examples from single src file and lib
 define buildexamples
-  $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR) $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1
+  $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR) $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/$1
 
   $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
