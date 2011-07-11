@@ -7,3 +7,5 @@ core.*
 /install-sh
 autom4te.cache
 tmp.ppm
+*.swp
+tags
