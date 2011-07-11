@@ -56,21 +56,7 @@ namespace RavlN
     }
     //: Destructor.
     
-    void Wait() {
-      if(occurred) // Check before we bother with locking.
-        return ;
-      cond.Lock();
-      m_waiting++;
-      while(!occurred)
-        cond.Wait();
-      m_waiting--;
-      if(m_waiting == 0) {
-        cond.Unlock();
-        cond.Broadcast(); // If something is waiting for it to be free...
-        return ;
-      } 
-      cond.Unlock();
-    }
+    void Wait();
     //: Wait indefinitely for an event to be posted.
     
     bool WaitForFree();
@@ -83,14 +69,18 @@ namespace RavlN
     bool Wait(RealT maxTime);
     //: Wait for an event.
     // Returns false if timed out.
-    
+
+    bool WaitUntil(const DateC &deadline);
+    //: Wait for an event.
+    // Returns false if timed out.
+
     operator bool() const 
     { return occurred; }
     //: Test if the event has occurred.
     
     bool Occurred() const
     { return occurred; }
-    //: Test if event has occrued.
+    //: Test if event has occurred.
     
     void Reset()
     { occurred = false; }
