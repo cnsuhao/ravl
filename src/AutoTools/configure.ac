@@ -3247,6 +3247,7 @@ echo LN_S=@LN_S@ >> ./Config.Local.in
 echo MAKE=@MAKE@ >> ./Config.Local.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.Local.in
 echo RANLIB=@RANLIB@ >> ./Config.Local.in
+echo RAVL_PAGER=@RAVL_PAGER@ >> ./Config.Local.in
 echo RM=@RM@ >> ./Config.Local.in
 echo SED=@SED@ >> ./Config.Local.in
 echo SORT=@SORT@ >> ./Config.Local.in
