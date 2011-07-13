@@ -79,6 +79,10 @@ namespace RavlN
     //: Set the current state.
     // Returns true if new state has changed.  false it its at the given state already
 
+    bool SetState(const StateT &newState)
+    { return Update(newState); }
+    //: Set the current state, used for connecting signals as update is ambiguous.
+
     bool Update(const StateT &expectedCurrentState,const StateT &newState) {
       m_cond.Lock();
       if(m_state != expectedCurrentState) {
@@ -93,6 +97,23 @@ namespace RavlN
       return true;
     }
     //: Change from a given existing state to a new state
+    // Returns true if event transition was achieved.
+    // The state of class isn't 'expectedCurrentState' return false.
+
+    bool Update(const StateT &expectedCurrentState1,const StateT &expectedCurrentState2,const StateT &newState) {
+      m_cond.Lock();
+      if(m_state != expectedCurrentState1 && m_state != expectedCurrentState1) {
+        // No change.
+        m_cond.Unlock();
+        return false;
+      }
+      m_state = newState;
+      m_cond.Unlock();
+      m_cond.Broadcast();
+      m_sigState(newState);
+      return true;
+    }
+    //: Change from one of two given existing states to a new state
     // Returns true if event transition was achieved.
     // The state of class isn't 'expectedCurrentState' return false.
 
@@ -118,8 +139,9 @@ namespace RavlN
       bool ret = true;
       m_cond.Lock();
       m_waiting++;
+      DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState && ret)
-        ret = m_cond.Wait(maxTime);
+        ret = m_cond.WaitUntil(deadline);
       int value = --m_waiting;
       m_cond.Unlock();
       if(value == 0)
