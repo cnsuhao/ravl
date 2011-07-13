@@ -125,7 +125,7 @@ namespace RavlImageN {
     UIntT edgeCount; // Count of edges in the map.
   };
   
-  EdgeLinkC HysteresisThreshold(const ImageC<RealT> &img,RealT upThr,RealT downThr);
+  EdgeLinkC HysteresisThreshold(const ImageC<RealT> &img,RealT maxThr,RealT minThr);
 }
 
 

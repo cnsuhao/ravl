@@ -25,16 +25,16 @@
 
 namespace RavlImageN {
 
-  EdgeLinkC HysteresisThreshold(const ImageC<RealT> &img,RealT upThr,RealT downThr) {
+  EdgeLinkC HysteresisThreshold(const ImageC<RealT> &img,RealT maxThr,RealT minThr) {
     EdgeLinkC ret(img.Rectangle());
     Array2dIter2C<ByteT,RealT> it(ret,img);
     for(;it;it++)
-      it.Data1() = (it.Data2() <= downThr) ? EDGE_PROC : EDGE_UNPROC;
+      it.Data1() = (it.Data2() <= minThr) ? EDGE_PROC : EDGE_UNPROC;
     
     DrawFrame(ret,(ByteT) EDGE_PROC,ret.Frame());
     
     for(it.First();it;it++)
-      if((it.Data2() > upThr) && (((EdgeStateT) it.Data1()) == EDGE_UNPROC))
+      if((it.Data2() > maxThr) && (((EdgeStateT) it.Data1()) == EDGE_UNPROC))
 	ret.LabelContour(it.Index());
     
 #if 0
@@ -114,7 +114,7 @@ namespace RavlImageN {
     return ret;
   }
 
-  //: List all edgles in image
+  //: List all edgels in image
   
   SArray1dC<EdgelC> EdgeLinkC::ArrayOfEdgels(const ImageC<RealT> & inDrIm, 
 					     const ImageC<RealT> & inDcIm,  
@@ -136,7 +136,7 @@ namespace RavlImageN {
     return ret;
   }
 
-  //: Generate a list of all edgles in image
+  //: Generate a list of all edgels in image
   
   DListC<EdgelC> EdgeLinkC::ListOfEdgels(const ImageC<RealT> & inDrIm, 
 					 const ImageC<RealT> & inDcIm,  

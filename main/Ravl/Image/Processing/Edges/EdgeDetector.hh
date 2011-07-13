@@ -32,7 +32,7 @@ namespace RavlImageN {
     : public RCBodyC
   {
   public:
-    EdgeDetectorBodyC(bool useDeriche,RealT minHyst,RealT maxHyst);
+    EdgeDetectorBodyC(bool useDeriche,RealT maxHyst,RealT minHyst);
     //: Constructor.
     
     bool Apply(const ImageC<RealT> &img,EdgeLinkC &edgeMap,ImageC<RealT> &edgeDr,ImageC<RealT> &edgeDc,ImageC<RealT> &edgeMag) const;
@@ -97,7 +97,7 @@ namespace RavlImageN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    EdgeDetectorC(bool useDeriche,RealT minHyst= 15,RealT maxHyst = 20)
+    EdgeDetectorC(bool useDeriche,RealT maxHyst = 20,RealT minHyst= 15)
       : RCHandleC<EdgeDetectorBodyC>(*new EdgeDetectorBodyC(useDeriche,minHyst,maxHyst))
     {}
     //: Constructor.

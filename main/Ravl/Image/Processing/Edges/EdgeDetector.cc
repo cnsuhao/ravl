@@ -17,7 +17,7 @@ namespace RavlImageN {
 
   //: Constructor.
   
-  EdgeDetectorBodyC::EdgeDetectorBodyC(bool nuseDeriche,RealT nminHyst,RealT nmaxHyst) 
+  EdgeDetectorBodyC::EdgeDetectorBodyC(bool nuseDeriche,RealT nmaxHyst,RealT nminHyst) 
     : minHyst(nminHyst),
       maxHyst(nmaxHyst),
       useDeriche(nuseDeriche),
@@ -45,7 +45,7 @@ namespace RavlImageN {
     IntT edgels;
     nonMaxSup.Apply(edgeDr,edgeDc,edgeMag,nonMax,mean,edgels);
     
-    edgeMap = HysteresisThreshold(nonMax,minHyst,maxHyst);
+    edgeMap = HysteresisThreshold(nonMax,maxHyst,minHyst);
     
     return true;
   }
@@ -116,7 +116,7 @@ namespace RavlImageN {
     IntT edgels;
     nonMaxSup.Apply(edgeDr,edgeDc,edgeMag,nonMax,mean,edgels);
     
-    edgeMap = HysteresisThreshold(nonMax,minHyst,maxHyst);
+    edgeMap = HysteresisThreshold(nonMax,maxHyst,minHyst);
     
     return true;    
   }
