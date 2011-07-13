@@ -87,7 +87,6 @@ namespace RavlImageN {
       if(neighbours != 2) {
 	//ONDEBUG(cerr << "Junction at " << pxl << " Neigh=" << neighbours << "\n");
 	PutState(val,EDGE_JUNCT);
-	edgeCount++;
       } else {
 	//ONDEBUG(cerr << "Edge     at " << pxl << "\n");
 	PutDir(val, dir[0], FB_FORWARD);
@@ -132,6 +131,7 @@ namespace RavlImageN {
       *rit = EdgelC(at,inDcIm[at],inDrIm[at],inGrad[at]);
       rit++;
     }
+    RavlAssert(!rit);
     //ONDEBUG(cerr << "EdgeLinkC::ListEdgels(), Processed=" << rit.Index() << "\n");
     return ret;
   }

@@ -101,7 +101,8 @@ namespace RavlImageN {
       : RCHandleC<EdgeDetectorBodyC>(*new EdgeDetectorBodyC(useDeriche,minHyst,maxHyst))
     {}
     //: Constructor.
-    // If useDeriche is set to false the system defaults to Sobel edge detection.
+    // If useDeriche is set to false the system defaults to Sobel edge detection.<br>
+    // Note order of threshold arguments (for backwards compatibility).
     
   protected:
     
