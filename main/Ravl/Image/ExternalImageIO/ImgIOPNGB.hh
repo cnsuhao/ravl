@@ -34,6 +34,14 @@
 
 namespace RavlImageN {
 
+
+  static bool IsLittleEndian()
+  {
+    short test = 0x4321;
+    if(((char *) &test)[0] != 0x21) 
+      return false;  
+    return (((char *) &test)[1] == 0x43);
+  }
   
   //: PNG Utilities
 
@@ -241,6 +249,9 @@ namespace RavlImageN {
     // Check format...
     //ONDEBUG(cerr << "Row bytes " << png_get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * 3) << "\n");
     
+    if (bit_depth == 16 && IsLittleEndian())
+      png_set_swap(png_ptr);
+
     /* Now it's time to read the image. */
     
     const UIntT height = dat.Rows();
@@ -319,6 +330,9 @@ namespace RavlImageN {
     else
       number_passes = 1;
     
+    if (bit_depth == 16 && IsLittleEndian())
+      png_set_swap(png_ptr);
+
     png_bytep row_pointers[1];
     
     /* The number of passes is either 1 for non-interlaced images,
