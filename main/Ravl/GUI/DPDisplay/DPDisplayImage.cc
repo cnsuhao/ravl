@@ -19,6 +19,7 @@
 #include "Ravl/Array2dIter2.hh"
 #include "Ravl/StdConst.hh"
 #include "Ravl/IO.hh"
+#include "Ravl/Image/UInt16RGBValue.hh"
 #include "Ravl/GUI/DPDisplayImage.hh"
 #include "Ravl/GUI/MarkupImageRGB.hh"
 #include "Ravl/GUI/MarkupImageByte.hh"
@@ -89,6 +90,16 @@ namespace RavlGUIN {
   
   DP_REGISTER_CONVERSION_NAMED(ImageRGB2DPDisplayImageRGB,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<ByteRGBValueC> &)");
   
+  DPDisplayObjC Image16RGB2DPDisplayImageRGB(const ImageC<UInt16RGBValueC> &img) 
+  { 
+    ImageC<ByteRGBValueC> tmp(img.Frame());
+    for (Array2dIter2C<UInt16RGBValueC,ByteRGBValueC> i(img,tmp); i; ++i)
+      i.Data2() = i.Data1()/256;
+    return DPDisplayImageRGBC(tmp);
+  }
+  
+  DP_REGISTER_CONVERSION_NAMED(Image16RGB2DPDisplayImageRGB,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<UInt16RGBValueC> &)");
+
   //:--------------------------------------------------------------------
   
   //: Constructor
