@@ -113,9 +113,46 @@ namespace RavlN
       m_sigState(newState);
       return true;
     }
+
+    template<typename TransitionMapT>
+    bool Transition(TransitionMapT tmap) {
+      m_cond.Lock();
+      StateT newState = m_state; // Default to do nothing.
+      const StateT oldState = m_state;
+      bool ret = tmap(oldState,newState);
+      if(m_state == newState) {
+        // No change.
+        m_cond.Unlock();
+        return ret;
+      }
+      m_state = newState;
+      m_cond.Unlock();
+      m_cond.Broadcast();
+      m_sigState(newState);
+      return ret;
+    }
+
     //: Change from one of two given existing states to a new state
     // Returns true if event transition was achieved.
     // The state of class isn't 'expectedCurrentState' return false.
+
+    template<typename TransitionMapT,typename InputT>
+    bool Transition(TransitionMapT tmap,InputT input) {
+      m_cond.Lock();
+      StateT newState = m_state; // Default to do nothing.
+      const StateT oldState = m_state;
+      bool ret = tmap(oldState,input,newState);
+      if(m_state == newState) {
+        // No change.
+        m_cond.Unlock();
+        return ret;
+      }
+      m_state = newState;
+      m_cond.Unlock();
+      m_cond.Broadcast();
+      m_sigState(newState);
+      return ret;
+    }
 
     void Wait(const StateT &desiredState) {
       if(m_state == desiredState) // Check before we bother with locking.
