@@ -158,8 +158,8 @@ namespace RavlN {
     { return body != oth.body; }
     //: Are handles to different objects ?
     
-    UIntT Hash() const
-	{ return StdHash(reinterpret_cast<void *>(body)); }
+    size_t Hash() const
+    { return StdHash(reinterpret_cast<const void *>(body)); }
     //: Default hash function.
     // This hashes on the address of the body.
     
