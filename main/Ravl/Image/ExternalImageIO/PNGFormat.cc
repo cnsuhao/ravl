@@ -59,11 +59,11 @@ namespace RavlImageN {
     
     if(bit_depth == 16) {
       if(obj_type == typeid(ImageC<ByteRGBValueC>))
-	return typeid(ImageC<UInt16RGBValueC>);
+	return obj_type;
       if(obj_type == typeid(ImageC<ByteRGBAValueC>))
-	return typeid(ImageC<UInt16RGBValueC>); // Need a 16 bit RGBX ??
+	return obj_type; // Need a 16 bit RGBX ??
       if(obj_type == typeid(ImageC<ByteT>))
-	return typeid(ImageC<ByteT>);
+	return obj_type;
       
       // Use some hints...
       if(obj_type == typeid(ImageC<SByteT>))
