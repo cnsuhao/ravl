@@ -11,20 +11,24 @@
 #include "Ravl/DP/CacheIStream.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
-#include <ftw.h>
 
-#define DODEBUG 0
-#if DODEBUG
-#define ONDEBUG(x) x
-#else
-#define ONDEBUG(x)
-#endif
+#if RAVL_HAVE_FTW_H
+#include <ftw.h>
 
 #ifndef FTW_CONTINUE
 #define FTW_CONTINUE 0
 #endif
 #ifndef FTW_STOP
 #define FTW_STOP 1
+#endif
+
+#endif
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
 #endif
 
 namespace
@@ -39,6 +43,7 @@ namespace RavlN {
 
 
 
+#if RAVL_HAVE_FTW_H
 	int removeFTW(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
 	{
 		FilenameC filename(fpath);
@@ -46,6 +51,7 @@ namespace RavlN {
 
 		return filename.Remove() ? FTW_CONTINUE : FTW_STOP;
 	}
+#endif
   
   //: Constructor.
   
@@ -335,6 +341,7 @@ namespace RavlN {
 
   bool DataServerVFSRealDirBodyC::OnDelete(DListC<StringC>& remainingPath)
   {
+#if RAVL_HAVE_FTW_H
     ONDEBUG(cerr << "DataServerVFSRealDirBodyC::OnDelete path (" << StringListC(remainingPath).Cat("/") << ")" << endl);
 
     MutexLockC lock(access);
@@ -354,6 +361,9 @@ namespace RavlN {
 		}
 
     return true;
+#else
+    return false;
+#endif
   }
 
 
@@ -371,6 +381,7 @@ namespace RavlN {
 
   void DataServerVFSRealDirBodyC::DoDelete()
   {
+#if RAVL_HAVE_FTW_H
 		ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting (" << realDirname << ")" << endl);
 
 		if (nftw(realDirname, removeFTW, 64, FTW_DEPTH | FTW_PHYS) == 0)
@@ -382,6 +393,9 @@ namespace RavlN {
 		{
 			cerr << "DataServerVFSRealFileBodyC::DoDelete failed to delete (" << realDirname << ")" << endl;
 		}
+#else
+    RavlAssert(false);	
+#endif
   }
 
 }
