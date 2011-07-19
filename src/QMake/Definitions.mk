@@ -126,6 +126,12 @@ else
   BASENAME:=$(PLIB)#
 endif
 
+ifndef SHAREDBUILD
+ SHARED_LIB_POSTFIX=#
+else
+ SHARED_LIB_POSTFIX=/shared#
+endif
+
 ifndef PAGER
   PAGER=$(RAVL_PAGER)
 endif
@@ -167,11 +173,7 @@ else
  TMP=$(DEFAULTTMP)
 endif
 
-ifndef SHAREDBUILD 
-WORKTMP=$(LOCALTMP)/$(ARC)/$(BASENAME)/$(VAR)
-else
-WORKTMP=$(LOCALTMP)/$(ARC)/$(BASENAME)/$(VAR)/shared
-endif 
+WORKTMP=$(LOCALTMP)/$(ARC)/$(BASENAME)/$(VAR)$(SHARED_LIB_POSTFIX)
 
 # A file that definitly doesn't exist.
 #NOFILE = /notme/hiya/fruitcake/whippy
@@ -216,11 +218,7 @@ INST_AUX=$(ROOTDIR)/$(AUXDIR)
 
 # Binaries
 
-ifndef SHAREDBUILD 
-INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)
-else 
-INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)/shared
-endif 
+INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)
 INST_OBJS=$(WORKTMP)/objs
 INST_FORCEOBJS = $(ROOTDIR)/lib/RAVL/$(ARC)/obj
 
