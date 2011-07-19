@@ -36,9 +36,6 @@ AUXFILES =  QMake.mk \
 ifndef CONFIGFILE
 # Install default config files.
 AUXFILES += config.local.linux config.local.linux64 config.local.sgi config.local.sol2_7 config.local.sol2_9 config.local.arm
-else
-# Install users config file.
-AUXFILES += $(CONFIGFILE)
 endif
 
 HTML=Example.def.html  Help.txt
