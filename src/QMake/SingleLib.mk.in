@@ -13,6 +13,7 @@ BUILT_ROOT=$(INSTALLHOME)/$(ARC)
 buildsinglelibs: makedirs buildstatic buildshared
 
 makedirs: $(LIB_WORK)/single $(LIB_WORK)/shared/single
+	@: Suppress any Nothing to be done message if all dependencies exist
 
 $(LIB_WORK)/single:
 	@if [ ! -d $(LIB_WORK)/single ]; then $(MKDIR_P) $(LIB_WORK)/single; fi
@@ -72,6 +73,7 @@ $(foreach lib,$(BUILT_LIBS),$(eval $(call LIST_OBJS_IN_dotA,$(basename $(notdir 
 # Make libRavl.a from the objects in any new libraries we have found plus the
 # objects from the known ordered list
 buildstatic: $(LIB_WORK)/single/libRavl.a
+	@: Suppress any Nothing to be done message if library is up to date
 
 $(LIB_WORK)/single/libRavl.a: $(NEW_OBJS) $(ORDERED_OBJS)
 	$(AR) -rvs $@ $?
@@ -86,6 +88,7 @@ SHARED_OBJS=$(subst /$(VAR)/objs/,/$(VAR)/shared/objs/,$(NEW_OBJS) $(ORDERED_OBJ
 # Make libRavl.so from the objects in any new libraries we have found plus the
 # objects from the known ordered list
 buildshared: $(LIB_WORK)/shared/single/libRavl.so
+	@: Suppress any Nothing to be done message if library is up to date
 
 $(LIB_WORK)/shared/single/libRavl.so: $(SHARED_OBJS)
 	$(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@

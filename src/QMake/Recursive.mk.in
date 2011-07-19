@@ -140,13 +140,16 @@ test: $(BUILD_TESTS)
 # first group perform the action associated with the relevant cmd-line targets
 
 buildegs: $(EGS)
+	@if [ X$(QMAKE_INFO) != X ] ; then if [ X$(EGS) == X ] ; then echo No EGS to be built for this directory tree; fi; fi
 
 buildlib:
 	: Not implemented
 
 buildprogs: $(PROGS)
+	@if [ X$(QMAKE_INFO) != X ] ; then if [ X$(PROGS) == X ] ; then echo No PROGS to be built for this directory tree; fi; fi
 
 buildtests: $(TESTS)
+	@if [ X$(QMAKE_INFO) != X ] ; then if [ X$(TESTS) == X ] ; then echo No TESTS to be built for this directory tree; fi; fi
 
 cpheaders: $(HEADERS)
 	: Not implememted
