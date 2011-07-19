@@ -9,9 +9,27 @@
 //! file="Ravl/OS/Threads/Posix/ThreadEvent.cc"
 
 #include "Ravl/Threads/ThreadEvent.hh"
+#include "Ravl/OS/Date.hh"
 
 namespace RavlN
 {
+  //: Wait indefinitely for an event to be posted.
+  void ThreadEventC::Wait() {
+    if(occurred) // Check before we bother with locking.
+      return ;
+    cond.Lock();
+    m_waiting++;
+    while(!occurred)
+      cond.Wait();
+    m_waiting--;
+    if(m_waiting == 0) {
+      cond.Unlock();
+      cond.Broadcast(); // If something is waiting for it to be free...
+      return ;
+    }
+    cond.Unlock();
+  }
+
   //: Wait for an event.
   // Returns false if timed out.
   
@@ -20,8 +38,23 @@ namespace RavlN
       return true;
     bool ret(true);
     cond.Lock();
+    DateC deadline = DateC::NowUTC() + maxTime;
     while(!occurred && ret) 
-      ret = cond.Wait(maxTime);
+      ret = cond.WaitUntil(deadline);
+    cond.Unlock();
+    return ret;
+  }
+
+  //: Wait for an event.
+  // Returns false if timed out.
+
+  bool ThreadEventC::WaitUntil(const DateC &deadline) {
+    if(occurred) // Check before we bother with locking.
+      return true;
+    bool ret(true);
+    cond.Lock();
+    while(!occurred && ret)
+      ret = cond.WaitUntil(deadline);
     cond.Unlock();
     return ret;
   }

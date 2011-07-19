@@ -3,16 +3,34 @@
 
 namespace RavlN {
 
+  //: Default constructor
 
-  HistogramBaseNdC::HistogramBaseNdC(const SArray1dC<RealRangeC> &ranges,const SArray1dC<size_t> &binSizes)
+  RealHistogramBaseNdC::RealHistogramBaseNdC()
+   : m_dataSize(0)
+  {}
+
+
+  RealHistogramBaseNdC::RealHistogramBaseNdC(const SArray1dC<RealRangeC> &ranges,const SArray1dC<size_t> &binSizes)
    : m_inputLimits(ranges),
      m_gridSize(binSizes)
   {
     Init();
   }
 
+  RealHistogramBaseNdC::RealHistogramBaseNdC(BinIStreamC &strm)
+  {
+    ByteT version = 0;
+    strm >> version;
+    if(version != 1)
+      throw ExceptionUnexpectedVersionInStreamC("RealHistogramNdC<>");
+    strm >> m_inputLimits >> m_gridSize;
+    Init();
+  }
+  //: Binary stream constructor
+
+
   //: Scaling.
-  VectorC HistogramBaseNdC::Scale() const {
+  VectorC RealHistogramBaseNdC::Scale() const {
     VectorC ret(m_gridSize.Size());
     for(unsigned i = 0;i < ret.Size();i++)
       ret[i] = 1.0/m_inputLimits[i].Size();
@@ -20,14 +38,14 @@ namespace RavlN {
   }
 
   //: Offset used in hash table.
-  VectorC HistogramBaseNdC::Offset() const {
+  VectorC RealHistogramBaseNdC::Offset() const {
     VectorC ret(m_gridSize.Size());
     for(unsigned i = 0;i < ret.Size();i++)
       ret[i] = m_inputLimits[i].Min();
     return ret;
   }
 
-  void HistogramBaseNdC::Init() {
+  void RealHistogramBaseNdC::Init() {
     m_gridScale = SArray1dC<size_t>(m_gridSize.Size());
     size_t scale = 1;
     for(unsigned i = 0;i < m_gridSize.Size();i++) {
@@ -39,7 +57,7 @@ namespace RavlN {
 
   //: Access bin vector falls in.
 
-  IndexNdC HistogramBaseNdC::Bin(const VectorC &v) const {
+  IndexNdC RealHistogramBaseNdC::Bin(const VectorC &v) const {
     if(v.Size() != m_inputLimits.Size()) {
       throw RavlN::ExceptionOutOfRangeC("Unexpected number of input parameters.");
     }
@@ -50,7 +68,7 @@ namespace RavlN {
 
   //: Get the middle of given bin.
 
-  VectorC HistogramBaseNdC::MidBin(const IndexNdC &bin) const {
+  VectorC RealHistogramBaseNdC::MidBin(const IndexNdC &bin) const {
     if(bin.Size() != m_inputLimits.Size()) {
       throw RavlN::ExceptionOutOfRangeC("Unexpected number of input parameters.");
     }
@@ -60,7 +78,7 @@ namespace RavlN {
   }
 
   //! Compute index of bin
-  bool HistogramBaseNdC::ComputeIndex(const VectorC &data,size_t &bin) const {
+  bool RealHistogramBaseNdC::ComputeIndex(const VectorC &data,size_t &bin) const {
     if(!data.IsValid()) {
        throw RavlN::ExceptionOutOfRangeC("Invalid input vector.");
      }
@@ -90,7 +108,7 @@ namespace RavlN {
 
   //! Compute index of bin
   //! Returns false if vote has been clipped to bounds
-  bool HistogramBaseNdC::ComputeIndexAndRemainders(const VectorC &data,size_t &bin,SArray1dC<RealT> &offset) const {
+  bool RealHistogramBaseNdC::ComputeIndexAndRemainders(const VectorC &data,size_t &bin,SArray1dC<RealT> &offset) const {
     if(!data.IsValid()) {
       throw RavlN::ExceptionOutOfRangeC("Invalid input vector.");
     }
@@ -102,7 +120,7 @@ namespace RavlN {
     offset = SArray1dC<RealT>(m_gridSize.Size());
     for(unsigned i = 0;i < m_gridSize.Size();i++) {
       RealT value = m_inputLimits[i].Clip(data[i]);
-      offset[i] = ((value - m_inputLimits[i].Min())/m_inputLimits[i].Size()) * (double) m_gridSize[i];
+      offset[i] = (((value - m_inputLimits[i].Min())/m_inputLimits[i].Size()) * (double) m_gridSize[i]) - 0.5;
       int index = Floor(offset[i]);
       if(index < 0) { // Clip lower limit.
         index = 0;

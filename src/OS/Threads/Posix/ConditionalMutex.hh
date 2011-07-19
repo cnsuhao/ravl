@@ -39,6 +39,8 @@
 namespace RavlN
 {
   
+  class DateC;
+
   //! userlevel=Normal
   //: Sleeping until signal arrives.
   //
@@ -107,8 +109,17 @@ namespace RavlN
     // from either Signal, Broadcast or timeout.  When it get the signal
     // the mutex is re-locked and control returned to the
     // program. <p>
-    // Returns false, if timeout occures.
-    
+    // Returns false, if timeout occurs.
+
+    bool WaitUntil(const DateC &deadline);
+    //: Wait for conditional.
+    // This unlocks the mutex and then waits for a signal
+    // from either Signal, Broadcast or timeout.  When it get the signal
+    // the mutex is re-locked and control returned to the
+    // program. <p>
+    // Returns false, if timeout occurs.
+
+
   private:
     ConditionalMutexC(const ConditionalMutexC &)
     {}

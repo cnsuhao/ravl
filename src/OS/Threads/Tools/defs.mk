@@ -14,14 +14,11 @@ PACKAGE=Ravl/Threads
 
 HEADERS=MessageQueue.hh LaunchThread.hh TickerTrigger.hh \
  TimedTriggerQueue.hh Signal.hh Signal1.hh Signal2.hh Signal3.hh \
- SignalConnectionSet.hh MTPriQueueL.hh
-#  EventHandler.hh  TimedEventQueue.hh \
-# EventHandlerRef.hh
+ SignalConnectionSet.hh MTPriQueueL.hh  ThreadState.hh
 
 SOURCES=MessageQueue.cc LaunchThread.cc TickerTrigger.cc \
- TimedTriggerQueue.cc Signal.cc  SignalConnectionSet.cc
-
-# EventHandler.cc  TimedEventQueue.cc
+ TimedTriggerQueue.cc Signal.cc  SignalConnectionSet.cc \
+ ThreadState.cc
 
 EHT=Ravl.API.OS.Signals.html
 
@@ -33,5 +30,6 @@ USESLIBS = RavlThreads RavlOS
 
 EXAMPLES= exSignal.cc exSignal1.cc exSignal2.cc exLaunchThread.cc testAtomicSpeed.cc
 
-TESTEXES = testLaunchThread.cc testTickerTrigger.cc testTimedTriggerQueue.cc testSignal.cc testAtomic.cc
+TESTEXES = testLaunchThread.cc testTickerTrigger.cc testTimedTriggerQueue.cc testSignal.cc testAtomic.cc testThreads.cc
+
 

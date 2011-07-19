@@ -16,13 +16,14 @@
 #include "Ravl/DP/FileFormatIO.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/Image/UInt16RGBValue.hh"
 #include "Ravl/DP/MemIO.hh"
 #include "Ravl/Array2dIter.hh"
+#include "Ravl/Image/ImageConv.hh"
 
 
 using namespace RavlImageN;
 
-extern int testImgMemIO(const StringC &formatName,bool isLossy);
 template<typename PixelT>
 int testImgMemIO(const StringC &formatName,bool isLossy) {
   ImageC<PixelT> img(100,100);
@@ -63,6 +64,34 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
 }
 
 
+int test16bitPNG() {
+
+  ImageC<UInt16RGBValueC> im1(50,50);
+  UInt16RGBValueC p(0,0,0);
+  for (Array2dIterC<UInt16RGBValueC> i(im1); i; ++i) {
+    *i = p;
+    p.Red()++;
+  }
+  Save("/tmp/tmp.png", im1);
+  ImageC<RealRGBValueC> im2;
+  Load("/tmp/tmp.png", im2);
+  ImageC<UInt16RGBValueC> im3 = RealRGBImageCT2UInt16RGBImageCT(im2);
+  for (Array2dIterC<UInt16RGBValueC> i(im1-im3); i; ++i) 
+    if (*i != UInt16RGBValueC(0,0,0)) {
+      cout << i.Index() << " " << *i << endl;
+      return __LINE__;
+    }
+
+//   ImageC<ByteRGBValueC> im4;
+//   Load("/tmp/tmp.png", im4);
+//   Save("@X", im4);
+
+  return 0;
+}
+
+
+
+
 
 int main(int argc,char **argv) {  
   int ln;
@@ -79,6 +108,10 @@ int main(int argc,char **argv) {
     return 1;
   }
   if((ln = testImgMemIO<UInt16T>("png",false)) != 0) {
+    std::cerr << "Test failed on line:" << ln << "\n";
+    return 1;
+  }
+  if((ln = test16bitPNG()) != 0) {
     std::cerr << "Test failed on line:" << ln << "\n";
     return 1;
   }

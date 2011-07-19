@@ -17,6 +17,7 @@
 #include "Ravl/Threads/ConditionalMutex.hh"
 #include "Ravl/Threads/Thread.hh"
 #include "Ravl/Math.hh"
+#include "Ravl/OS/Date.hh"
 
 #if defined(VISUAL_CPP)
 #include <time.h>
@@ -28,7 +29,7 @@
 #include <unistd.h>
 #include <errno.h>
 #endif
-
+#include <stdio.h>
 #include <iostream>
 
 #define NANOSEC 1000000000
@@ -62,7 +63,6 @@ namespace RavlN
     
     // Get current time.
     gettimeofday(&tv,0);
-    int errcode;
     ts.tv_sec = tv.tv_sec;
     ts.tv_nsec = tv.tv_usec * 1000;
     
@@ -75,15 +75,51 @@ namespace RavlN
       ts.tv_nsec -= NANOSEC;
     }
     
+    int errcode;
     do {
       errcode = pthread_cond_timedwait(&cond,&mutex,&ts); 
       if(errcode == ETIMEDOUT)
         break;
-      // May be interupted by EINTR... ignore and restart the wait.
+      // May be interrupted by EINTR... ignore and restart the wait.
       if ( errcode == 0 ) break ;
       RavlAssertMsg(errcode == EINTR,"ConditionalMutexC::Wait(), ERROR: Unexpected return code.");
     } while(errcode != 0);
     
+    return (errcode != ETIMEDOUT);
+  }
+
+  //: Wait for conditional.
+  // This unlocks the mutex and then waits for a signal
+  // from either Signal, Broadcast or timeout.  When it get the signal
+  // the mutex is re-locked and control returned to the
+  // program. <p>
+  // Returns false, if timeout occurs.
+
+  bool ConditionalMutexC::WaitUntil(const DateC &deadline)
+  {
+    struct timespec ts;
+
+    ts.tv_sec = deadline.TotalSeconds();
+    ts.tv_nsec = deadline.USeconds() * 1000;
+    //std::cerr << "Deadline " << ts.tv_sec << " " <<ts.tv_nsec << "\n";
+    int errcode;
+
+    do {
+      errcode = pthread_cond_timedwait(&cond,&mutex,&ts);
+      if(errcode == ETIMEDOUT)
+        break;
+      // May be interrupted by EINTR... ignore and restart the wait.
+      if ( errcode == 0 ) break ;
+      if(errcode != EINTR) {
+        if(errcode==EPERM) {
+          std::cerr << "Conditional mutex not owned at time of call. \n";
+        } else {
+          std::cerr << "Code:" << errcode << "\n";
+        }
+        RavlAssertMsg(errcode == EINTR,"ConditionalMutexC::Wait(), ERROR: Unexpected return code.");
+      }
+    } while(errcode != 0);
+
     return (errcode != ETIMEDOUT);
   }
 

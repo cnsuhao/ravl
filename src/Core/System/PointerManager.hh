@@ -60,7 +60,7 @@ namespace RavlN {
     virtual void Free(void *data) const = 0;
     //: Free stored pointer
     
-    virtual void *Key(void *ptr) const = 0;
+    virtual const void *Key(const void *ptr) const = 0;
     //: Get key for lookup.
     
   };
@@ -123,7 +123,7 @@ namespace RavlN {
     { return actions; }
     //: Access action class.
     
-    void *Key() const
+    const void *Key() const
     { return actions->Key(ptr); }
     //: Get key for index.
     
@@ -224,7 +224,7 @@ namespace RavlN {
   protected:
     SizeT idAlloc;
     HashC<SizeT,StoredPointerC> id2ptr;
-    HashC<void *,SizeT> ptr2id;
+    HashC<const void *,SizeT> ptr2id;
   };
   
   //! userlevel=Advanced
@@ -341,11 +341,11 @@ namespace RavlN {
     }
     //: Store pointer for use later.
     
-    virtual void Free(void *) const 
+    virtual void Free(void *) const
     {}
     //: Free stored pointer
     
-    virtual void *Key(void *ptr) const
+    virtual const void *Key(const void *ptr) const
     { return *((void **)ptr); }
     //: Get key for lookup.
     
@@ -397,8 +397,8 @@ namespace RavlN {
     }
     //: Free stored pointer
     
-    virtual void *Key(void *ptr) const
-    { return static_cast<DataT *>(ptr)->VoidPtr(); }
+    virtual const void *Key(const void *ptr) const
+    { return static_cast<const DataT *>(ptr)->VoidPtr(); }
     //: Get key for lookup.
     
   };

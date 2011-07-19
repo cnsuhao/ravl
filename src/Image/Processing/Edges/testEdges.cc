@@ -108,10 +108,10 @@ int testEdgeDet2() {
 
   if (!det.Apply(imgB, edgeArrayList)) return __LINE__;
   if (edgeArrayList.Size() != 1) return __LINE__;
-  if (edgeArrayList.First().Size() != 12) return __LINE__;
-  for (IntT i=0; i<12; ++i) {
+  if (edgeArrayList.First().Size() != 7) return __LINE__;
+  for (IntT i=0; i<edgeArrayList.First().Size(); ++i) {
     if (edgeArrayList.First()[i].At()[0] != imgB.Rows()/2) return __LINE__;
-    if (edgeArrayList.First()[i].At()[1] != i+6)  return __LINE__;
+    if (edgeArrayList.First()[i].At()[1] != i+11)  return __LINE__;
   }
   cout << "DListC<SArray1dC<EdgelC> > size: " << edgeArrayList.First().Size()
        << "\n  uses #8\n";
