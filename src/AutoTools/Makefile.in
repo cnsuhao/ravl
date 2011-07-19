@@ -53,18 +53,18 @@ optshared: qmake
 	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
 qmake: 
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/QMake -f ./QMake.mk $(QMAKE_FLAGS) PROCS=1 INSTALLHOME=$(INSTALLHOME)
+	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/QMake -f ./QMake.mk $(QMAKE_FLAGS) VAR=opt PROCS=1 INSTALLHOME=$(INSTALLHOME)
 
 retestopt:
 	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) TEST_TARGET=opt retest
 
 retestsingleopt:
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single/bin; ls > ../TestExes
-	$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
+	$(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
 	
 retestsingleoptshared:
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single/bin; ls > ../TestExes
-	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
+	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
 	
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
 rpm: qmake 
@@ -102,13 +102,13 @@ testsingleopt:
 	@$(RM) -f $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single/bin/*
 	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 test recurse
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single/bin; ls > ../TestExes
-	$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
+	$(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/single
 	
 testsingleoptshared:
 	@$(RM) -f $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single/bin/*
 	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
 	@cd $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single/bin; ls > ../TestExes
-	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/lib/RAVL/$(ARC)/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
+	LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$(LD_LIBRARY_PATH) $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/opt/shared/single
 
 .DEFAULT: qmake
 	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@

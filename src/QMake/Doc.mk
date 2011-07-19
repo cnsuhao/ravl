@@ -17,8 +17,6 @@ endif
 
 include $(MAKEHOME)/Definitions.mk
 
-CXXDOC=$(INSTALLHOME)/lib/RAVL/$(ARC)/bin/CxxDoc
-
 AUTOTEMPL=$(MAKEHOME)/../AutoDoc
 
 SLIB:=$(strip $(SLIB))
@@ -108,7 +106,7 @@ docinit: docfiles
 
 doc: docinit $(INST_INCLUDE)/.dir $(TARG_DOCNODE)
 	$(SHOWIT)echo "--- Generating documentation" ; \
-	$(CXXDOC) $(PACKAGENAME_OPT) $(PACKAGEDESC_OPT) $(INCLUDE_OPT) -ih $(INSTALLHOME) -p $(PROJECT_OUT)
+	$(LOCALBIN)/CxxDoc $(PACKAGENAME_OPT) $(PACKAGEDESC_OPT) $(INCLUDE_OPT) -ih $(INSTALLHOME) -p $(PROJECT_OUT)
 
 $(INST_EHT)/% : % $(INST_EHT)/.dir
 	$(SHOWIT)echo "--- Installing EHT $(@F) to $(INST_EHT)" ; \

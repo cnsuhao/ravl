@@ -926,7 +926,7 @@ $(TARG_PUREEXE) : $(INST_BIN)/pure_%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAO
 	$(SHOWIT)echo "--- Purify $(@F)  ( $(INST_BIN)/$(@F) ) " ; \
 	purify -g++ -best-effort $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
 
-$(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(INST_GENBIN)/% $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
+$(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
 	$(SHOWIT)echo "--- Linking $(VAR_DISPLAY_NAME) $(@F) ( $(INST_BIN)/$*$(EXEEXT) ) " ; \
 	if [ -f $(INST_BIN)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_BIN)/$(@F)$(EXEEXT) ; \
@@ -945,25 +945,6 @@ $(ROOTDIR)/share/RAVL/config.arc : $(ROOTDIR)/share/RAVL/.dir $(MAKEHOME)/config
 	fi ; \
 	$(CP) $(MAKEHOME)/config.arc $(ROOTDIR)/share/RAVL/config.arc ; \
 	$(CHMOD) 555 $(ROOTDIR)/share/RAVL/config.arc
-
-$(INST_GENBIN)/RAVLExec : $(MAKEHOME)/RAVLExec $(INST_GENBIN)/.dir  $(ROOTDIR)/share/RAVL/config.arc
-	$(SHOWIT)if [ -f $(INST_GENBIN)/RAVLExec ] ; then \
-	  $(CHMOD) +w $(INST_GENBIN)/RAVLExec ; \
-	  $(RM) $(INST_GENBIN)/RAVLExec ; \
-	fi ; \
-	perl $(MAKEHOME)/Install.pl $(PROJECT_OUT)/share/RAVL/QMake $(PROJECT_OUT) $(MAKEHOME)/RAVLExec $(INST_GENBIN)/RAVLExec ; \
-	$(CHMOD) 555 $(INST_GENBIN)/RAVLExec
-
-# This rule to be a hard link to RAVLExec, but it causes problems on some systems.
-
-$(INST_GENBIN)/% : $(INST_GENBIN)/RAVLExec
-	$(SHOWIT)echo "--- Creating redirect for $(@F)." ; \
-	if [ -f $(INST_GENBIN)/$(@F) ] ; then \
-	  $(CHMOD) +w $(INST_GENBIN)/$(@F) ; \
-	  $(RM) $(INST_GENBIN)/$(@F) ; \
-	fi ; \
-	$(CP) $(INST_GENBIN)/RAVLExec $(INST_GENBIN)/$(@F) ; \
-	$(CHMOD) 555 $(INST_GENBIN)/$(@F)
 
 ifndef NOEXEBUILD
 build_test: $(TARG_TESTEXE)

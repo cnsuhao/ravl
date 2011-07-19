@@ -19,7 +19,9 @@ ifdef SHAREDBUILD
   CCPPFLAGS += -DCPUG_VAR_SHARED=1
 endif
 
-LOCALBIN=$(INSTALLHOME)/lib/RAVL/$(ARC)/bin
+LOCALBIN=$(INSTALLHOME)/bin/utils/opt/bin
+# Utilities used during the build process
+# Standardise on opt version for consistency
 
 NOLIBRARYPRELINK=1
 
@@ -229,7 +231,7 @@ INST_TESTLOG=$(INST_TEST)/log
 INST_TESTDB =$(INST_TEST)/TestExes
 
 INST_LIBDEF=$(ROOTDIR)/lib/RAVL/libdep
-INST_BIN=$(ROOTDIR)/lib/RAVL/$(ARC)/bin# Machine dependent programs.
+INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin
 INST_GENBIN=$(ROOTDIR)/bin# Machine independent scripts.
 INST_INCLUDE:=$(ROOTDIR)/include
 INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend/$(PACKAGE)/$(BASENAME)
