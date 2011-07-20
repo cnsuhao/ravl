@@ -4,6 +4,7 @@
 #include "Ravl/3D/PinholeCamera0.hh"
 #include "Ravl/3D/PinholeCamera1.hh"
 #include "Ravl/3D/PinholeCamera2.hh"
+#include "Ravl/3D/PinholeCamera3.hh"
 #include "Ravl/3D/PinholeCameraArray.hh"
 
 namespace Ravl3DN
@@ -19,6 +20,9 @@ namespace Ravl3DN
     { 
       switch (dist)
       {
+      case 3:
+        it.Data() = PinholeCamera3C();
+        break;
       case 2:
         it.Data() = PinholeCamera2C();
         break;
