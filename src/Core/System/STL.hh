@@ -134,6 +134,41 @@ namespace RavlN {
     return SArray1dC<DataT>(BufferSTLVectorC<DataT>(data),data.size());
   }
   //: Turn an STL vector into an SArray1dC.
+
+  template<typename DataT>
+  std::ostream &operator<<(std::ostream &strm,const std::vector<DataT> &value) {
+    strm << value.size() << " ";
+    for(unsigned i = 0;i < value.size();i++)
+      strm << value[i];
+    return strm;
+  }
+  //: Helpers for some RAVL templates.
+
+  template<typename DataT>
+  static std::istream &operator>>(std::istream &strm,std::vector<DataT> &value) {
+    throw RavlN::ExceptionOperationFailedC("Not implemented ");
+    return strm;
+  }
+  //: Helpers for some RAVL templates.
+
+  template<typename KeyT,typename DataT>
+  std::ostream &operator<<(std::ostream &strm,const std::map<KeyT,DataT> &value) {
+    value.size();
+    strm << value.size() << " ";
+    for(typename std::map<KeyT,DataT>::const_iterator it = value.begin();it != value.end();it++) {
+      strm << it->first << " = " << it->second << ";\n";
+    }
+    return strm;
+  }
+  //: Helpers for some RAVL templates.
+
+  template<typename KeyT,class DataT>
+  static std::istream &operator>>(std::istream &strm,std::map<KeyT,DataT> &value) {
+    throw RavlN::ExceptionOperationFailedC("Not implemented ");
+    return strm;
+  }
+  //: Helpers for some RAVL templates.
+
 }
 
 
