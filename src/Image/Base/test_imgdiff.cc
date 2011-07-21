@@ -45,7 +45,9 @@
    // Make sure we're called with no arguments because we're not
    // expecting any.
    if(argc == 1) {
-     const char command[] = PROJECT_OUT "/bin/imgdiff \"@str:P2 2 2 255 0 255 255 0\" \"@str:P2 2 2 255 255 0 0 255\" -o /dev/null";
+     const char command[] = "imgdiff \"@str:P2 2 2 255 0 255 255 0\" \"@str:P2 2 2 255 255 0 0 255\" -o /dev/null";
+     // This program must be called with a controlled setting of PATH to ensure
+     // the correct version of imgdiff is tested
 
      passed = Test_Command("imgdiff test", command, 0);
    }

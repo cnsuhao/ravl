@@ -254,12 +254,30 @@ test: src
 	  echo "test: Failed to do executable build. " ; \
 	  exit 1 ; \
 	fi ;
-	$(SHOWIT)$(SORT) -u -o$(INST_TESTDB) $(INST_TESTDB); \
-	$(LOCALBIN)/Validate -v $(INST_TEST)
+	$(SHOWIT)$(SORT) -u -o$(INST_TESTDB) $(INST_TESTDB)
+ifdef SHAREDBUILD
+	cd $(INST_TEST) && \
+           PATH=$(INST_TESTBIN):$(INST_BIN):$$PATH \
+           LD_LIBRARY_PATH=$(INST_LIB):$$LD_LIBRARY_PATH \
+           $(LOCALBIN)/Validate -v $(INST_TEST)
+else
+	cd $(INST_TEST) && \
+           PATH=$(INST_TESTBIN):$(INST_BIN):$$PATH \
+           $(LOCALBIN)/Validate -v $(INST_TEST)
+endif
 
 retest:
-	$(SHOWIT)$(SORT) -u -o$(INST_TESTDB) $(INST_TESTDB) ; \
-	$(LOCALBIN)/Validate -v $(INST_TEST)	
+	$(SHOWIT)$(SORT) -u -o$(INST_TESTDB) $(INST_TESTDB)
+ifdef SHAREDBUILD
+	cd $(INST_TEST) && \
+           PATH=$(INST_TESTBIN):$(INST_BIN):$$PATH \
+           LD_LIBRARY_PATH=$(INST_LIB):$$LD_LIBRARY_PATH \
+           $(LOCALBIN)/Validate -v $(INST_TEST)
+else
+	cd $(INST_TEST) && \
+           PATH=$(INST_TESTBIN):$(INST_BIN):$$PATH \
+           $(LOCALBIN)/Validate -v $(INST_TEST)
+endif
 
 # Build everything.
 

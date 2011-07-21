@@ -26,11 +26,9 @@ int testImageConvert(const Tuple3C<StringC,StringC,UIntT>& imFiles) {
   FilenameC out = dir + imFiles.Data2();
   cout << "Converting from " << in << " to " << out << endl;
   if (!in.Exists())  return __LINE__;
-  FilenameC prog = StringC(PROJECT_OUT)+"/bin/conv";
-  if (!prog.Exists()) {
-    cout << "conv not compiled in this build\n";
-    return 0;
-  }
+  FilenameC prog = "conv";
+  // This program must be called with a controlled setting of PATH to pickup the
+  // correct version of conv to be tested
   StringC cmd = prog + " -s " + in + " " + out;
   if (system(cmd.chars()) != 0) return __LINE__;
 

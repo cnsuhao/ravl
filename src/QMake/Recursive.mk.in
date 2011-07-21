@@ -170,13 +170,13 @@ notsupportonly:
 
 # Declare recipies to build utilities from single src file and lib
 define buildutils
-  $1: $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR) $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1
+  $1: $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin/$1
 
-  $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+  $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
-$(INSTALLHOME)/bin/utils/$(BIN_SUBDIR):
+$(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin:
 	@@MKDIR_P@ $@
 
 $(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON),$(NOLOCALLIB) $(LINK_WITH))))
@@ -184,13 +184,13 @@ $(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON
 
 # Declare recipies to build examples from single src file and lib
 define buildexamples
-  $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR) $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/$1
+  $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin/$1
 
-  $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+  $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
-$(INSTALLHOME)/bin/examples/$(BIN_SUBDIR):
+$(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin:
 	@@MKDIR_P@ $@
 
 $(foreach bin,$(EGS),$(eval $(call buildexamples,$(bin),$(NOLOCALLIB) $(DEPEND_ON),$(NOLOCALLIB) $(LINK_WITH))))
@@ -198,18 +198,18 @@ $(foreach bin,$(EGS),$(eval $(call buildexamples,$(bin),$(NOLOCALLIB) $(DEPEND_O
 
 # Declare recipies to build test binaries from single src file and lib
 define buildtest
-  $1: $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin \
-           $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/log \
-                $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin/$1
+  $1: $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin \
+           $(INSTALLHOME)/test/$(BIN_SUBDIR)/log \
+                $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin/$1
 
-  $(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+  $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
-$(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/bin:
+$(INSTALLHOME)/test/$(BIN_SUBDIR)/bin:
 	@@MKDIR_P@ $@
 
-$(INSTALLHOME)/share/RAVL/Admin/$(ARC)/test/$(BIN_SUBDIR)/log:
+$(INSTALLHOME)/test/$(BIN_SUBDIR)/log:
 	@@MKDIR_P@ $@
 
 $(foreach bin,$(TESTS),$(eval $(call buildtest,$(bin),$(NOLOCALLIB) $(TESTLIBS) $(DEPEND_ON),$(NOLOCALLIB) $(TESTLIBS) $(LINK_WITH))))
