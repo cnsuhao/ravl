@@ -170,10 +170,11 @@ namespace RavlN {
 	SaveOptions(optSave);
       return true;
     }
-    sout << "The following errors occured while parsing options.\n";
+    sout << "\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n\n"
+         << "The following errors occured while parsing options.\n\n";
     for(DLIterC<StringC> it(errors);it.IsElm();it.Next()) 
       sout << " " << it.Data() << endl;
-    sout << "\n";
+    sout << "\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n\n";
     PrintUsage();
     if(exitOnFail)
       exit(1);
