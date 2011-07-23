@@ -248,9 +248,13 @@ namespace RavlN {
     
     // Look for redirection.
     StringC name = AttributeString(rawname);
-    if(name.IsEmpty())
+    if(!name.IsEmpty()) {
+      // If name has been redefined use extended search scope.
+      searchScope = XMLFACTORY_SEARCH_PARENT_NODES;
+    } else {
       name = rawname;
-    
+    }
+
     if(!UsePath(name,child,true,factory.VerboseMode(),searchScope) || !child.IsValid()) {
       if(!silentError) {
         RavlSysLogf(SYSLOG_DEBUG,"Failed to find path to requested type, '%s' from path '%s' ",name.chars(),Path().chars());
