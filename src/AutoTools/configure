@@ -734,7 +734,7 @@ libdc1394_LIBS
 libdc1394_CFLAGS
 XARGS
 SYNC
-RAVL_PAGER
+PKG_PAGER
 LN_S
 GET_CWD
 TR
@@ -755,45 +755,45 @@ MKDIR_P
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
-RAVL_MAKEFLAGS
+PKG_MAKEFLAGS
 MAKEFLAGS
-RAVL_ARFLAGS
+PKG_ARFLAGS
 UNDEFSYMB
 LIBPATHSWITCH
-RAVL_SHARED_LDLIBFLAGS
-RAVL_PROF_LDLIBFLAGS
-RAVL_OPT_LDLIBFLAGS
-RAVL_GPROF_LDLIBFLAGS
-RAVL_GLOBAL_LDLIBFLAGS
-RAVL_DEFAULT_LDLIBFLAGS
-RAVL_DEBUG_LDLIBFLAGS
-RAVL_CHECK_LDLIBFLAGS
-RAVL_SHARED_LDFLAGS
-RAVL_PROF_LDFLAGS
-RAVL_OPT_LDFLAGS
-RAVL_GPROF_LDFLAGS
-RAVL_GLOBAL_LDFLAGS
-RAVL_DEFAULT_LDFLAGS
-RAVL_DEBUG_LDFLAGS
-RAVL_CHECK_LDFLAGS
-RAVL_SHARED_CCFLAGS
-RAVL_PROF_CCFLAGS
-RAVL_OPT_CCFLAGS
-RAVL_GPROF_CCFLAGS
-RAVL_GLOBAL_CCFLAGS
-RAVL_DEFAULT_CCFLAGS
-RAVL_DEBUG_CCFLAGS
-RAVL_CHECK_CCFLAGS
-RAVL_SHARED_CFLAGS
-RAVL_PROF_CFLAGS
-RAVL_OPT_CFLAGS
-RAVL_GPROF_CFLAGS
-RAVL_GLOBAL_CFLAGS
-RAVL_DEFAULT_CFLAGS
-RAVL_DEBUG_CFLAGS
-RAVL_CHECK_CFLAGS
-RAVL_CCANSIFLAG
-RAVL_CANSIFLAG
+PKG_SHARED_LDLIBFLAGS
+PKG_PROF_LDLIBFLAGS
+PKG_OPT_LDLIBFLAGS
+PKG_GPROF_LDLIBFLAGS
+PKG_GLOBAL_LDLIBFLAGS
+PKG_DEFAULT_LDLIBFLAGS
+PKG_DEBUG_LDLIBFLAGS
+PKG_CHECK_LDLIBFLAGS
+PKG_SHARED_LDFLAGS
+PKG_PROF_LDFLAGS
+PKG_OPT_LDFLAGS
+PKG_GPROF_LDFLAGS
+PKG_GLOBAL_LDFLAGS
+PKG_DEFAULT_LDFLAGS
+PKG_DEBUG_LDFLAGS
+PKG_CHECK_LDFLAGS
+PKG_SHARED_CCFLAGS
+PKG_PROF_CCFLAGS
+PKG_OPT_CCFLAGS
+PKG_GPROF_CCFLAGS
+PKG_GLOBAL_CCFLAGS
+PKG_DEFAULT_CCFLAGS
+PKG_DEBUG_CCFLAGS
+PKG_CHECK_CCFLAGS
+PKG_SHARED_CFLAGS
+PKG_PROF_CFLAGS
+PKG_OPT_CFLAGS
+PKG_GPROF_CFLAGS
+PKG_GLOBAL_CFLAGS
+PKG_DEFAULT_CFLAGS
+PKG_DEBUG_CFLAGS
+PKG_CHECK_CFLAGS
+PKG_CCANSIFLAG
+PKG_CANSIFLAG
 MAKE
 RANLIB
 AR
@@ -4731,9 +4731,9 @@ fi
 if (test X$GCC = Xyes)
 then
    # GNU C Compiler
-   RAVL_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
-   RAVL_CANSIFLAG=" -ansi "
-   RAVL_DEFAULT_CFLAGS=" -O "
+   PKG_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   PKG_CANSIFLAG=" -ansi "
+   PKG_DEFAULT_CFLAGS=" -O "
    CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
    CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
    CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print $2 }'`
@@ -4743,67 +4743,67 @@ then
       # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
       # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
       # that work with the Ravl source and employ -O3 as compensation
-      RAVL_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+      PKG_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
    else
-      RAVL_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+      PKG_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
-   RAVL_OPT_CFLAGS=$RAVL_OPT_CFLAGS" -march=native -mtune=native "
-   RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   PKG_OPT_CFLAGS=$PKG_OPT_CFLAGS" -march=native -mtune=native "
+   PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
    if test $ac_cv_prog_cc_g = yes
    then
-      RAVL_DEBUG_CFLAGS=" -g "$RAVL_DEBUG_CFLAGS
+      PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
    fi
-   RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
-   RAVL_SHARED_CFLAGS=" -shared -fPIC "
-   RAVL_PROF_CFLAGS=" -p "
-   RAVL_GPROF_CFLAGS=" -pg "
+   PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
+   PKG_SHARED_CFLAGS=" -shared -fPIC "
+   PKG_PROF_CFLAGS=" -p "
+   PKG_GPROF_CFLAGS=" -pg "
 else
    # No GNU compiler, try relevant machine specific options we have used before
    case X$host_os in
-   Xsolaris* ) RAVL_GLOBAL_CFLAGS=""
-               RAVL_CANSIFLAG=" -ansi "
-               RAVL_DEFAULT_CFLAGS=" -O "
-               RAVL_OPT_CFLAGS=" -O2 "
-               RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   Xsolaris* ) PKG_GLOBAL_CFLAGS=""
+               PKG_CANSIFLAG=" -ansi "
+               PKG_DEFAULT_CFLAGS=" -O "
+               PKG_OPT_CFLAGS=" -O2 "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                if test $ac_cv_prog_cc_g = yes
                then
-                  RAVL_DEBUG_CFLAGS=" -g "$RAVL_DEBUG_CFLAGS
+                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
                fi
-               RAVL_SHARED_CFLAGS=" -KPIC "
-               RAVL_PROF_CFLAGS=" -p "
-               RAVL_GPROF_CFLAGS=" -pg "
-               RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
+               PKG_SHARED_CFLAGS=" -KPIC "
+               PKG_PROF_CFLAGS=" -p "
+               PKG_GPROF_CFLAGS=" -pg "
+               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
    Xirix* )    CC=$CC" -n32 -J4 -mp "
                # Not sure why this originally was done this way rather than use
                # CFLAGS, but assume there was a reason and propogate the method
-               RAVL_GLOBAL_CFLAGS=" -mips4 -r1000 "
-               RAVL_CANSIFLAG=" -ansi "
-               RAVL_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
-               RAVL_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
-               RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               PKG_GLOBAL_CFLAGS=" -mips4 -r1000 "
+               PKG_CANSIFLAG=" -ansi "
+               PKG_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+               PKG_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                if test $ac_cv_prog_cc_g = yes
                then
-                  RAVL_DEBUG_CFLAGS=" -g "$RAVL_DEBUG_CFLAGS
+                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
                fi
-               RAVL_SHARED_CFLAGS=""
-               RAVL_PROF_CFLAGS=""
-               RAVL_GPROF_CFLAGS=""
-               RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
+               PKG_SHARED_CFLAGS=""
+               PKG_PROF_CFLAGS=""
+               PKG_GPROF_CFLAGS=""
+               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
-   * )         RAVL_GLOBAL_CFLAGS=""
-               RAVL_CANSIFLAG=" -ansi "
-               RAVL_DEFAULT_CFLAGS=" -O "
-               RAVL_OPT_CFLAGS=" -O2 "
-               RAVL_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   * )         PKG_GLOBAL_CFLAGS=""
+               PKG_CANSIFLAG=" -ansi "
+               PKG_DEFAULT_CFLAGS=" -O "
+               PKG_OPT_CFLAGS=" -O2 "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                if test $ac_cv_prog_cc_g = yes
                then
-                  RAVL_DEBUG_CFLAGS=" -g "$RAVL_DEBUG_CFLAGS
+                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
                fi
-               RAVL_SHARED_CFLAGS=""
-               RAVL_PROF_CFLAGS=""
-               RAVL_GPROF_CFLAGS=""
-               RAVL_CHECK_CFLAGS=" -DRAVL_CHECK "
+               PKG_SHARED_CFLAGS=""
+               PKG_PROF_CFLAGS=""
+               PKG_GPROF_CFLAGS=""
+               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
    esac
 fi
@@ -4812,7 +4812,7 @@ fi
 
 
 
-# Declare RAVL_XXXXX_CFLAGS variables as output for Config.Local
+# Declare PKG_XXXXX_CFLAGS variables as output for Config.Local
 
 
 
@@ -4826,9 +4826,9 @@ fi
 if (test X$GXX = Xyes)
 then
    # GNU C++ Compiler
-   RAVL_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
-   RAVL_CCANSIFLAG=" -ansi "
-   RAVL_DEFAULT_CCFLAGS=" -O "
+   PKG_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   PKG_CCANSIFLAG=" -ansi "
+   PKG_DEFAULT_CCFLAGS=" -O "
    CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
    CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
    CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print $2 }'`
@@ -4838,72 +4838,72 @@ then
       # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
       # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
       # that work with the Ravl source and employ -O3 as compensation
-      RAVL_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+      PKG_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
    else
-      RAVL_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+      PKG_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
-   RAVL_OPT_CCFLAGS=$RAVL_OPT_CCFLAGS" -march=native -mtune=native "
-   RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   PKG_OPT_CCFLAGS=$PKG_OPT_CCFLAGS" -march=native -mtune=native "
+   PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
    if test $ac_cv_prog_cc_g = yes
    then
-      RAVL_DEBUG_CCFLAGS=" -g "$RAVL_DEBUG_CCFLAGS
+      PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
    fi
-   RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
-   RAVL_SHARED_CCFLAGS=" -shared -fPIC "
-   RAVL_PROF_CCFLAGS=" -p "
-   RAVL_GPROF_CCFLAGS=" -pg "
+   PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
+   PKG_SHARED_CCFLAGS=" -shared -fPIC "
+   PKG_PROF_CCFLAGS=" -p "
+   PKG_GPROF_CCFLAGS=" -pg "
 else
    # No GNU compiler, try relevant machine specific options we have used before
    case X$host_os in
-   Xsolaris* ) RAVL_GLOBAL_CCFLAGS=""
-               RAVL_CCANSIFLAG=" -ansi "
-               RAVL_DEFAULT_CCFLAGS=" -O "
-               RAVL_OPT_CCFLAGS=" -O2 "
-               RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   Xsolaris* ) PKG_GLOBAL_CCFLAGS=""
+               PKG_CCANSIFLAG=" -ansi "
+               PKG_DEFAULT_CCFLAGS=" -O "
+               PKG_OPT_CCFLAGS=" -O2 "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                if test $ac_cv_prog_cc_g = yes
                then
-                  RAVL_DEBUG_CCFLAGS=" -g "$RAVL_DEBUG_CCFLAGS
+                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
                fi
-               RAVL_SHARED_CCFLAGS=" -KPIC "
-               RAVL_PROF_CCFLAGS=" -p "
-               RAVL_GPROF_CCFLAGS=" -pg "
-               RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
+               PKG_SHARED_CCFLAGS=" -KPIC "
+               PKG_PROF_CCFLAGS=" -p "
+               PKG_GPROF_CCFLAGS=" -pg "
+               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
    Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
                # Not sure why this originally was done this way rather than use
                # CCFLAGS, but assume there was a reason and propogate the method
-               RAVL_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
-               RAVL_CCANSIFLAG=" -ansi "
-               RAVL_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
-               RAVL_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
-               RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               PKG_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
+               PKG_CCANSIFLAG=" -ansi "
+               PKG_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
+               PKG_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                if test $ac_cv_prog_cc_g = yes
                then
-                  RAVL_DEBUG_CCFLAGS=" -g "$RAVL_DEBUG_CCFLAGS
+                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
                fi
-               RAVL_SHARED_CCFLAGS=""
-               RAVL_PROF_CCFLAGS=""
-               RAVL_GPROF_CCFLAGS=""
-               RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
+               PKG_SHARED_CCFLAGS=""
+               PKG_PROF_CCFLAGS=""
+               PKG_GPROF_CCFLAGS=""
+               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
-   * )         RAVL_GLOBAL_CCFLAGS=""
-               RAVL_CCANSIFLAG=" -ansi "
-               RAVL_DEFAULT_CCFLAGS=" -O "
-               RAVL_OPT_CCFLAGS=""
-               RAVL_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   * )         PKG_GLOBAL_CCFLAGS=""
+               PKG_CCANSIFLAG=" -ansi "
+               PKG_DEFAULT_CCFLAGS=" -O "
+               PKG_OPT_CCFLAGS=""
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                if test $ac_cv_prog_cc_g = yes
                then
-                  RAVL_DEBUG_CCFLAGS=" -g "$RAVL_DEBUG_CCFLAGS
+                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
                fi
-               RAVL_SHARED_CCFLAGS=""
-               RAVL_PROF_CCFLAGS=""
-               RAVL_GPROF_CCFLAGS=""
-               RAVL_CHECK_CCFLAGS=" -DRAVL_CHECK "
+               PKG_SHARED_CCFLAGS=""
+               PKG_PROF_CCFLAGS=""
+               PKG_GPROF_CCFLAGS=""
+               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
    esac
 fi
 
-# Declare RAVL_XXXXX_CCFLAGS variables as output for Config.Local
+# Declare PKG_XXXXX_CCFLAGS variables as output for Config.Local
 
 
 
@@ -4914,31 +4914,31 @@ fi
 
 
 
-# Set RAVL_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
+# Set PKG_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
 if ( test X$GNU_LD = Xyes )
 then
   # We are using a GNU linker
 
   # General Ravl link options
-  RAVL_CHECK_LDFLAGS=
-  RAVL_DEBUG_LDFLAGS=
+  PKG_CHECK_LDFLAGS=
+  PKG_DEBUG_LDFLAGS=
   # -g does nothing on the linker so omit it
-  RAVL_DEFAULT_LDFLAGS=
-  RAVL_GLOBAL_LDFLAGS=
-  RAVL_GPROF_LDFLAGS=
-  RAVL_OPT_LDFLAGS=
-  RAVL_PROF_LDFLAGS=
-  RAVL_SHARED_LDFLAGS=" -rdynamic "
+  PKG_DEFAULT_LDFLAGS=
+  PKG_GLOBAL_LDFLAGS=
+  PKG_GPROF_LDFLAGS=
+  PKG_OPT_LDFLAGS=
+  PKG_PROF_LDFLAGS=
+  PKG_SHARED_LDFLAGS=" -rdynamic "
 
   # Ravl link options used for libraries
-  RAVL_CHECK_LDLIBFLAGS=
-  RAVL_DEBUG_LDLIBFLAGS=
-  RAVL_DEFAULT_LDLIBFLAGS=
-  RAVL_GLOBAL_LDLIBFLAGS=
-  RAVL_GPROF_LDLIBFLAGS=
-  RAVL_OPT_LDLIBFLAGS=
-  RAVL_PROF_LDLIBFLAGS=
-  RAVL_SHARED_LDLIBFLAGS=" -shared "
+  PKG_CHECK_LDLIBFLAGS=
+  PKG_DEBUG_LDLIBFLAGS=
+  PKG_DEFAULT_LDLIBFLAGS=
+  PKG_GLOBAL_LDLIBFLAGS=
+  PKG_GPROF_LDLIBFLAGS=
+  PKG_OPT_LDLIBFLAGS=
+  PKG_PROF_LDLIBFLAGS=
+  PKG_SHARED_LDLIBFLAGS=" -shared "
 
   LIBPATHSWITCH=" -Wl,-rpath#"
   UNDEFSYMB=" -u#"
@@ -4946,88 +4946,88 @@ else
   # Not using a GNU linker, try native flags we have used before or default to
   # what works for GNU
   case X$host_os in
-  Xcygwin )   RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=" -g "
-              RAVL_GLOBAL_LDFLAGS=
-              RAVL_DEFAULT_LDFLAGS=
-              RAVL_GPROF_LDFLAGS=
-              RAVL_PROF_LDFLAGS=
-              RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=" -Wl,-export-dynamic "
+  Xcygwin )   PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=" -g "
+              PKG_GLOBAL_LDFLAGS=
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=" -Wl,-export-dynamic "
               # sic, this is an assumption on what compiler is in use
 
-              RAVL_CHECK_LDLIBFLAGS=
-              RAVL_DEBUG_LDLIBFLAGS=
-              RAVL_GLOBAL_LDLIBFLAGS=
-              RAVL_DEFAULT_LDLIBFLAGS=
-              RAVL_GPROF_LDLIBFLAGS=
-              RAVL_PROF_LDLIBFLAGS=
-              RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=" -shared "
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" -shared "
 
               LIBPATHSWITCH=" -Wl,-rpath#"
               # sic, this is an assumption on what compiler is in use
               UNDEFSYMB=" -u #"
               ;;
-  Xirix*    ) RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=
-              RAVL_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
-              RAVL_DEFAULT_LDFLAGS=
-              RAVL_GPROF_LDFLAGS=
-              RAVL_PROF_LDFLAGS=
-              RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=
+  Xirix*    ) PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=
+              PKG_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=
 
-              RAVL_CHECK_LDLIBFLAGS=
-              RAVL_DEBUG_LDLIBFLAGS=
-              RAVL_GLOBAL_LDLIBFLAGS=
-              RAVL_DEFAULT_LDLIBFLAGS=
-              RAVL_GPROF_LDLIBFLAGS=
-              RAVL_PROF_LDLIBFLAGS=
-              RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=" -shared "
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" -shared "
 
               LIBPATHSWITCH=" -Wl,-rpath#"
               UNDEFSYMB=" -u#"
               ;;
-  Xsolaris* ) RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=" -g "
-              RAVL_GLOBAL_LDFLAGS=
-              RAVL_DEFAULT_LDFLAGS=
-              RAVL_GPROF_LDFLAGS=
-              RAVL_PROF_LDFLAGS=
-              RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=
+  Xsolaris* ) PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=" -g "
+              PKG_GLOBAL_LDFLAGS=
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=
 
-              RAVL_CHECK_LDLIBFLAGS=
-              RAVL_DEBUG_LDLIBFLAGS=
-              RAVL_GLOBAL_LDLIBFLAGS=
-              RAVL_DEFAULT_LDLIBFLAGS=
-              RAVL_GPROF_LDLIBFLAGS=
-              RAVL_PROF_LDLIBFLAGS=
-              RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=" -dy -G "
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" -dy -G "
 
               LIBPATHSWITCH=" -R#"
               UNDEFSYMB=" -u#"
               ;;
-  * )         RAVL_CHECK_LDFLAGS=
-              RAVL_DEBUG_LDFLAGS=
-              RAVL_GLOBAL_LDFLAGS=
-              RAVL_DEFAULT_LDFLAGS=
-              RAVL_GPROF_LDFLAGS=
-              RAVL_PROF_LDFLAGS=
-              RAVL_OPT_LDFLAGS=
-              RAVL_SHARED_LDFLAGS=" -rdynamic "
+  * )         PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=
+              PKG_GLOBAL_LDFLAGS=
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=" -rdynamic "
 
-              RAVL_CHECK_LDLIBFLAGS=
-              RAVL_DEBUG_LDLIBFLAGS=
-              RAVL_GLOBAL_LDLIBFLAGS=
-              RAVL_DEFAULT_LDLIBFLAGS=
-              RAVL_GPROF_LDLIBFLAGS=
-              RAVL_PROF_LDLIBFLAGS=
-              RAVL_OPT_LDLIBFLAGS=
-              RAVL_SHARED_LDLIBFLAGS=" -shared "
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" -shared "
 
               LIBPATHSWITCH=" -Wl,-rpath#"
               UNDEFSYMB=" -u#"
@@ -5063,7 +5063,7 @@ fi
 
 # Declare flags for ar
 
-RAVL_ARFLAGS=ruc
+PKG_ARFLAGS=ruc
 
 
 
@@ -5072,9 +5072,9 @@ RAVL_ARFLAGS=ruc
 
 if ( test X$GNU_MAKE = Xyes )
 then
-  RAVL_MAKEFLAGS=" --no-print-directory -r "
+  PKG_MAKEFLAGS=" --no-print-directory -r "
 else
-  RAVL_MAKEFLAGS=" -r "
+  PKG_MAKEFLAGS=" -r "
 fi
 
 
@@ -6299,12 +6299,12 @@ if test x$PAGER = x; then :
 set dummy more; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_RAVL_PAGER+set}" = set; then :
+if test "${ac_cv_path_PKG_PAGER+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  case $RAVL_PAGER in
+  case $PKG_PAGER in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_RAVL_PAGER="$RAVL_PAGER" # Let the user override the test with a path.
+  ac_cv_path_PKG_PAGER="$PKG_PAGER" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -6314,7 +6314,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_RAVL_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PKG_PAGER="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -6322,31 +6322,31 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_RAVL_PAGER" && ac_cv_path_RAVL_PAGER="Missing"
+  test -z "$ac_cv_path_PKG_PAGER" && ac_cv_path_PKG_PAGER="Missing"
   ;;
 esac
 fi
-RAVL_PAGER=$ac_cv_path_RAVL_PAGER
-if test -n "$RAVL_PAGER"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RAVL_PAGER" >&5
-$as_echo "$RAVL_PAGER" >&6; }
+PKG_PAGER=$ac_cv_path_PKG_PAGER
+if test -n "$PKG_PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_PAGER" >&5
+$as_echo "$PKG_PAGER" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-       if test $RAVL_PAGER = Missing; then :
+       if test $PKG_PAGER = Missing; then :
   # Extract the first word of "pg", so it can be a program name with args.
 set dummy pg; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_RAVL_PAGER+set}" = set; then :
+if test "${ac_cv_path_PKG_PAGER+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  case $RAVL_PAGER in
+  case $PKG_PAGER in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_RAVL_PAGER="$RAVL_PAGER" # Let the user override the test with a path.
+  ac_cv_path_PKG_PAGER="$PKG_PAGER" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -6356,7 +6356,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_RAVL_PAGER="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PKG_PAGER="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -6364,21 +6364,21 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_RAVL_PAGER" && ac_cv_path_RAVL_PAGER="Missing"
+  test -z "$ac_cv_path_PKG_PAGER" && ac_cv_path_PKG_PAGER="Missing"
   ;;
 esac
 fi
-RAVL_PAGER=$ac_cv_path_RAVL_PAGER
-if test -n "$RAVL_PAGER"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RAVL_PAGER" >&5
-$as_echo "$RAVL_PAGER" >&6; }
+PKG_PAGER=$ac_cv_path_PKG_PAGER
+if test -n "$PKG_PAGER"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_PAGER" >&5
+$as_echo "$PKG_PAGER" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-              if test $RAVL_PAGER = Missing; then :
+              if test $PKG_PAGER = Missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working pager required for building Ravl
@@ -6390,7 +6390,7 @@ fi
 fi
 
 else
-  RAVL_PAGER=$PAGER
+  PKG_PAGER=$PAGER
 
 fi
 
@@ -13548,7 +13548,7 @@ echo LN_S=@LN_S@ >> ./Config.Local.in
 echo MAKE=@MAKE@ >> ./Config.Local.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.Local.in
 echo RANLIB=@RANLIB@ >> ./Config.Local.in
-echo RAVL_PAGER=@RAVL_PAGER@ >> ./Config.Local.in
+echo PKG_PAGER=@PKG_PAGER@ >> ./Config.Local.in
 echo RM=@RM@ >> ./Config.Local.in
 echo SED=@SED@ >> ./Config.Local.in
 echo SORT=@SORT@ >> ./Config.Local.in
@@ -13573,17 +13573,17 @@ echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Ravl compiler settings >> ./Config.Local.in
-echo RAVL_CHECK_CFLAGS=@RAVL_CHECK_CFLAGS@ >> ./Config.Local.in
-echo RAVL_DEBUG_CFLAGS=@RAVL_DEBUG_CFLAGS@ >> ./Config.Local.in
-echo RAVL_DEFAULT_CFLAGS=@RAVL_DEFAULT_CFLAGS@ >> ./Config.Local.in
-echo RAVL_GLOBAL_CFLAGS=@RAVL_GLOBAL_CFLAGS@ >> ./Config.Local.in
-echo RAVL_GPROF_CFLAGS=@RAVL_GPROF_CFLAGS@ >> ./Config.Local.in
-echo RAVL_OPT_CFLAGS=@RAVL_OPT_CFLAGS@ >> ./Config.Local.in
-echo RAVL_PROF_CFLAGS=@RAVL_PROF_CFLAGS@ >> ./Config.Local.in
-echo RAVL_SHARED_CFLAGS=@RAVL_SHARED_CFLAGS@ >> ./Config.Local.in
+echo PKG_CHECK_CFLAGS=@PKG_CHECK_CFLAGS@ >> ./Config.Local.in
+echo PKG_DEBUG_CFLAGS=@PKG_DEBUG_CFLAGS@ >> ./Config.Local.in
+echo PKG_DEFAULT_CFLAGS=@PKG_DEFAULT_CFLAGS@ >> ./Config.Local.in
+echo PKG_GLOBAL_CFLAGS=@PKG_GLOBAL_CFLAGS@ >> ./Config.Local.in
+echo PKG_GPROF_CFLAGS=@PKG_GPROF_CFLAGS@ >> ./Config.Local.in
+echo PKG_OPT_CFLAGS=@PKG_OPT_CFLAGS@ >> ./Config.Local.in
+echo PKG_PROF_CFLAGS=@PKG_PROF_CFLAGS@ >> ./Config.Local.in
+echo PKG_SHARED_CFLAGS=@PKG_SHARED_CFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# ANSI switch settings >> ./Config.Local.in
-echo RAVL_CANSIFLAG=@RAVL_CANSIFLAG@ >> ./Config.Local.in
+echo PKG_CANSIFLAG=@PKG_CANSIFLAG@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the C++ compiler >> ./Config.Local.in
@@ -13592,17 +13592,17 @@ echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Ravl compiler settings >> ./Config.Local.in
-echo RAVL_CHECK_CCFLAGS=@RAVL_CHECK_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_DEBUG_CCFLAGS=@RAVL_DEBUG_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_DEFAULT_CCFLAGS=@RAVL_DEFAULT_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_GLOBAL_CCFLAGS=@RAVL_GLOBAL_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_GPROF_CCFLAGS=@RAVL_GPROF_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_OPT_CCFLAGS=@RAVL_OPT_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_PROF_CCFLAGS=@RAVL_PROF_CCFLAGS@ >> ./Config.Local.in
-echo RAVL_SHARED_CCFLAGS=@RAVL_SHARED_CCFLAGS@ >> ./Config.Local.in
+echo PKG_CHECK_CCFLAGS=@PKG_CHECK_CCFLAGS@ >> ./Config.Local.in
+echo PKG_DEBUG_CCFLAGS=@PKG_DEBUG_CCFLAGS@ >> ./Config.Local.in
+echo PKG_DEFAULT_CCFLAGS=@PKG_DEFAULT_CCFLAGS@ >> ./Config.Local.in
+echo PKG_GLOBAL_CCFLAGS=@PKG_GLOBAL_CCFLAGS@ >> ./Config.Local.in
+echo PKG_GPROF_CCFLAGS=@PKG_GPROF_CCFLAGS@ >> ./Config.Local.in
+echo PKG_OPT_CCFLAGS=@PKG_OPT_CCFLAGS@ >> ./Config.Local.in
+echo PKG_PROF_CCFLAGS=@PKG_PROF_CCFLAGS@ >> ./Config.Local.in
+echo PKG_SHARED_CCFLAGS=@PKG_SHARED_CCFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# ANSI switch settings >> ./Config.Local.in
-echo RAVL_CCANSIFLAG=@RAVL_CCANSIFLAG@ >> ./Config.Local.in
+echo PKG_CCANSIFLAG=@PKG_CCANSIFLAG@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the linker >> ./Config.Local.in
@@ -13611,24 +13611,24 @@ echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# General Ravl linker settings >> ./Config.Local.in
-echo RAVL_CHECK_LDFLAGS=@RAVL_CHECK_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_DEBUG_LDFLAGS=@RAVL_DEBUG_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_DEFAULT_LDFLAGS=@RAVL_DEFAULT_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_GLOBAL_LDFLAGS=@RAVL_GLOBAL_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_GPROF_LDFLAGS=@RAVL_GPROF_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_OPT_LDFLAGS=@RAVL_OPT_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_PROF_LDFLAGS=@RAVL_PROF_LDFLAGS@ >> ./Config.Local.in
-echo RAVL_SHARED_LDFLAGS=@RAVL_SHARED_LDFLAGS@ >> ./Config.Local.in
+echo PKG_CHECK_LDFLAGS=@PKG_CHECK_LDFLAGS@ >> ./Config.Local.in
+echo PKG_DEBUG_LDFLAGS=@PKG_DEBUG_LDFLAGS@ >> ./Config.Local.in
+echo PKG_DEFAULT_LDFLAGS=@PKG_DEFAULT_LDFLAGS@ >> ./Config.Local.in
+echo PKG_GLOBAL_LDFLAGS=@PKG_GLOBAL_LDFLAGS@ >> ./Config.Local.in
+echo PKG_GPROF_LDFLAGS=@PKG_GPROF_LDFLAGS@ >> ./Config.Local.in
+echo PKG_OPT_LDFLAGS=@PKG_OPT_LDFLAGS@ >> ./Config.Local.in
+echo PKG_PROF_LDFLAGS=@PKG_PROF_LDFLAGS@ >> ./Config.Local.in
+echo PKG_SHARED_LDFLAGS=@PKG_SHARED_LDFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Linker settings for Ravl libraries >> ./Config.Local.in
-echo RAVL_CHECK_LDLIBFLAGS=@RAVL_CHECK_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_DEBUG_LDLIBFLAGS=@RAVL_DEBUG_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_DEFAULT_LDLIBFLAGS=@RAVL_DEFAULT_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_GLOBAL_LDLIBFLAGS=@RAVL_GLOBAL_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_GPROF_LDLIBFLAGS=@RAVL_GPROF_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_OPT_LDLIBFLAGS=@RAVL_OPT_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_PROF_LDLIBFLAGS=@RAVL_PROF_LDLIBFLAGS@ >> ./Config.Local.in
-echo RAVL_SHARED_LDLIBFLAGS=@RAVL_SHARED_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_CHECK_LDLIBFLAGS=@PKG_CHECK_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_DEBUG_LDLIBFLAGS=@PKG_DEBUG_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_DEFAULT_LDLIBFLAGS=@PKG_DEFAULT_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_GLOBAL_LDLIBFLAGS=@PKG_GLOBAL_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_GPROF_LDLIBFLAGS=@PKG_GPROF_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_OPT_LDLIBFLAGS=@PKG_OPT_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_PROF_LDLIBFLAGS=@PKG_PROF_LDLIBFLAGS@ >> ./Config.Local.in
+echo PKG_SHARED_LDLIBFLAGS=@PKG_SHARED_LDLIBFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Specific linker functionality >> ./Config.Local.in
 echo >> ./Config.Local.in
@@ -13638,7 +13638,7 @@ echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for the archiver >> ./Config.Local.in
 echo >> ./Config.Local.in
-echo RAVL_ARFLAGS=@RAVL_ARFLAGS@ >> ./Config.Local.in
+echo PKG_ARFLAGS=@PKG_ARFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# Flags for make >> ./Config.Local.in
@@ -13647,7 +13647,7 @@ echo \# User specified at configure time >> ./Config.Local.in
 echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 echo \# General Ravl make settings >> ./Config.Local.in
-echo RAVL_MAKEFLAGS=@RAVL_MAKEFLAGS@ >> ./Config.Local.in
+echo PKG_MAKEFLAGS=@PKG_MAKEFLAGS@ >> ./Config.Local.in
 echo >> ./Config.Local.in
 
 
@@ -13992,8 +13992,8 @@ then
                 # Probably would not want to do this today, but we used to...
                 # unroll loops and allow strict-aliasing optimisations (drop
                 # the -fno-strict-aliasing flag)
-                RAVL_OPT_CFLAGS=`echo " $RAVL_OPT_CFLAGS -funroll-loops" | $SED 's/ -fno-strict-aliasing / /'`
-                RAVL_OPT_CCFLAGS=`echo " $RAVL_OPT_CCFLAGS -funroll-loops" | $SED 's/ -fno-strict-aliasing / /'`
+                PKG_OPT_CFLAGS=`echo " $PKG_OPT_CFLAGS -funroll-loops" | $SED 's/ -fno-strict-aliasing / /'`
+                PKG_OPT_CCFLAGS=`echo " $PKG_OPT_CCFLAGS -funroll-loops" | $SED 's/ -fno-strict-aliasing / /'`
                 ;;
    Xcygwin )    trace 3 Dropping functionality unsupported under Cygwin
                 # 3D Support disabled under Cygwin
@@ -14021,13 +14021,13 @@ then
                       SwigPython_SUPPORT=""
                 trace 3 Amending compile settings for Cygwin
                 # Drop -Wall from {C}CFLAGS
-                RAVL_GLOBAL_CFLAGS=`echo " $RAVL_GLOBAL_CFLAGS " | $SED 's/ -Wall / /'`
-                RAVL_GLOBAL_CCFLAGS=`echo " $RAVL_GLOBAL_CCFLAGS " | $SED 's/ -Wall / /'`
+                PKG_GLOBAL_CFLAGS=`echo " $PKG_GLOBAL_CFLAGS " | $SED 's/ -Wall / /'`
+                PKG_GLOBAL_CCFLAGS=`echo " $PKG_GLOBAL_CCFLAGS " | $SED 's/ -Wall / /'`
                 # Drop -fPIC from {C}CFLAGS
-                RAVL_SHARED_CFLAGS=`echo " $RAVL_SHARED_CFLAGS " | $SED 's/ -fPIC / /'`
-                RAVL_SHARED_CCFLAGS=`echo " $RAVL_SHARED_CCFLAGS " | $SED 's/ -fPIC / /'`
+                PKG_SHARED_CFLAGS=`echo " $PKG_SHARED_CFLAGS " | $SED 's/ -fPIC / /'`
+                PKG_SHARED_CCFLAGS=`echo " $PKG_SHARED_CCFLAGS " | $SED 's/ -fPIC / /'`
                 # .exe suffix
-                RAVL_EXEEXT=.exe#
+                PKG_EXEEXT=.exe#
                 # Remember, source relies on __CYGWIN__ being set by the
                 # compiler; update the source or manually define this
                 # variable if this ceases to be the case
@@ -14039,9 +14039,9 @@ then
                 # settings being useful
                 trace 3 Amending compile settings for SGI
                 # Add s flag on ar
-                RAVL_ARFLAGS=crus
+                PKG_ARFLAGS=crus
                 # -M instead of -MM (hope that was not a typo)
-                RAVL_MKDEPFLAGS=-M
+                PKG_MKDEPFLAGS=-M
                 # Code also relies on the comipler in use setting both __sgi__
                 # and __mips. If this is not the case, you should manually set
                 # these.
@@ -14053,10 +14053,10 @@ then
                 # when the last port was carried out
                 trace 3 Amending compile settings for DEC Alpha
                 # Drop -pipe fron {C}CFLAGS
-                RAVL_SHARED_CFLAGS=`echo " $RAVL_SHARED_CFLAGS " | $SED 's/ -pipe / /'`
-                RAVL_SHARED_CCFLAGS=`echo " $RAVL_SHARED_CCFLAGS " | $SED 's/ -pipe / /'`
+                PKG_SHARED_CFLAGS=`echo " $PKG_SHARED_CFLAGS " | $SED 's/ -pipe / /'`
+                PKG_SHARED_CCFLAGS=`echo " $PKG_SHARED_CCFLAGS " | $SED 's/ -pipe / /'`
                 # Add s flag on ar
-                RAVL_ARFLAGS=rusc
+                PKG_ARFLAGS=rusc
                 # Code also relies on the comipler in use setting both __osf__
                 # and __alpha. If this is not the case, you should manually set
                 # these or update the Ravl code.

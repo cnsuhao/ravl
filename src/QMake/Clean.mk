@@ -85,7 +85,7 @@ subdirs:
 	+ $(SHOWIT)echo "------ Cleaning $(ARC)/$(VAR)/$(BASENAME)   $(TARGET)" ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR -f $(MAKEHOME)/Clean.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR -f $(MAKEHOME)/Clean.mk $(DEF_INC) ; \
 	  fi  \
 	done
 

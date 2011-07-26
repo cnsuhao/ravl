@@ -30,33 +30,33 @@ default: qmake fullsrc opt optshared optbin singleopt singleoptshared singleoptb
 check: testopt testsingleopt testsingleoptshared 
 
 debug: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug NOEXEBUILD=1 libbuild
 
 debugshared: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
 distdir: rpm
 
 doc: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fulldoc
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fulldoc
 
 fullsrc: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
 
 opt: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
 
 optbin: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fullopt
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fullopt
 
 optshared: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
 qmake: 
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/QMake -f ./QMake.mk $(QMAKE_FLAGS) VAR=opt PROCS=1 INSTALLHOME=$(INSTALLHOME)
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/QMake -f ./QMake.mk $(QMAKE_FLAGS) VAR=opt PROCS=1 INSTALLHOME=$(INSTALLHOME)
 
 retestopt:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt retest
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt retest
 
 retestsingleopt:
 	@cd $(INSTALLHOME)/test/opt/single/bin; ls > ../TestExes
@@ -73,39 +73,39 @@ retestsingleoptshared:
 	
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
 rpm: qmake 
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
 
 singleopt:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt makedirs buildstatic
 
 singleoptbin:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 programs recurse
 
 singleoptshared:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt SHAREDBUILD=1 makedirs buildshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt SHAREDBUILD=1 makedirs buildshared
 
 singleoptsharedbin:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
 singledebug:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug makedirs buildstatic
 
 singledebugbin:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 programs recurse
 
 singledebugshared:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug SHAREDBUILD=1 makedirs buildshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug SHAREDBUILD=1 makedirs buildshared
 
 singledebugsharedbin:
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
 testopt:
 	@$(RM) -f $(INSTALLHOME)/test/opt/bin/*
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt test
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt test
 
 testsingleopt:
 	@$(RM) -f $(INSTALLHOME)/test/opt/single/bin/*
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 test recurse
 	@cd $(INSTALLHOME)/test/opt/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/single && \
            PATH=$(INSTALLHOME)/test/opt/single/bin:$(INSTALLHOME)/bin/utils/opt/single/bin:$$PATH \
@@ -113,7 +113,7 @@ testsingleopt:
 	
 testsingleoptshared:
 	@$(RM) -f $(INSTALLHOME)/test/opt/shared/single/bin/*
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
 	@cd $(INSTALLHOME)/test/opt/shared/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/shared/single && \
            PATH=$(INSTALLHOME)/test/opt/shared/single/bin:$(INSTALLHOME)/bin/utils/opt/shared/single/bin:$$PATH \
@@ -121,7 +121,7 @@ testsingleoptshared:
            $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/test/opt/shared/single
 
 .DEFAULT: qmake
-	$(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
 
 #JFi:ToDo Targets for install install-strip install-check uninstall clean 
 #    dist distcheck html pdf install-html install-pdf installdirs distclean

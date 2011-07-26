@@ -53,7 +53,7 @@ listoff:
 	done ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	    $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listoff -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	    $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listoff -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done	
 
@@ -71,7 +71,7 @@ listco:
 	done ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	    $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listco -C $$SUBDIR  DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	    $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listco -C $$SUBDIR  DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -80,7 +80,7 @@ listlocked:
 	rlog -L -R $(SOURCESET) $(IFFYSOURCE) ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	    $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listlocked -C $$SUBDIR  DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	    $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listlocked -C $$SUBDIR  DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -90,7 +90,7 @@ listfix:
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
 	   echo "------ Fix's in $(DPATH)/"$$SUBDIR; \
-	    $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listfix -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	    $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) listfix -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -110,7 +110,7 @@ co:
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
 	   echo "------ Checking out $(DPATH)/"$$SUBDIR; \
-	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) co -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) co -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -125,7 +125,7 @@ ci:
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
 	   echo "------ Checking in $(DPATH)/"$$SUBDIR; \
-	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) ci -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) ci -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -141,7 +141,7 @@ mirror:
 	   if [ ! -h $(MIRROR)/$(DPATH)/$$SUBDIR/RCS -a ! -d $(MIRROR)/$(DPATH)/$$SUBDIR/RCS ] ; then \
 	     cd $(MIRROR)/$(DPATH)/$$SUBDIR; $(LN_S) $(QCWD)/$$SUBDIR/RCS RCS; \
 	   fi ; \
-	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) mirror -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) mirror -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -164,7 +164,7 @@ srcinst: $(TARG_SRCINST)
 	done ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) srcinst -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) srcinst -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done
 
@@ -193,7 +193,7 @@ udchangelog:
 	rlog -d'>$(LASTCLOGUPDATE)' $(SOURCESET) >> $(CHANGELOGFILE)
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	    $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) udchangelog -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
+	    $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) udchangelog -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Util.mk $(DEF_INC) ; \
 	  fi  \
 	done	
 

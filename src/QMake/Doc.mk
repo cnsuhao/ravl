@@ -100,7 +100,7 @@ docinit: docfiles
 	+ $(SHOWIT)for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
 	   echo "------ Documenting $(DPATH)/"$$SUBDIR; \
-	   $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) docinit -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Doc.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) docinit -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Doc.mk $(DEF_INC) ; \
 	  fi  \
 	done
 

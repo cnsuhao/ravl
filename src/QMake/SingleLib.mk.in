@@ -91,7 +91,7 @@ buildshared: $(LIB_WORK)/shared/single/libRavl.so
 	@: Suppress any Nothing to be done message if library is up to date
 
 $(LIB_WORK)/shared/single/libRavl.so: $(SHARED_OBJS)
-	$(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@
+	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(SHARED_OBJS) $(ALL_EXTERNAL_LIBS) -o $@
 
 
 clean:

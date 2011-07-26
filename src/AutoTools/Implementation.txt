@@ -69,12 +69,12 @@
   system over to the more flexible tuple.
 
 + It is common to allow a user to specify their own CFLAGS on a build, to allow
-  this, QMake has been modified to use: $(RAVL_CFLAGS) $(CFLAGS) in the .mk
-  file individual recipes. $(RAVL_CFLAGS) is set in Definitions.mk to the 
+  this, QMake has been modified to use: $(PKG_CFLAGS) $(CFLAGS) in the .mk
+  file individual recipes. $(PKG_CFLAGS) is set in Definitions.mk to the 
   relevant flags required for the particular build underway (shared; optimised;
   etc.). A similar approach has been implemented for LDFLAGS. As ARFLAGS do not
   really lend themselves to user intervention in this manner, QMake just uses
-  RAVL_ARFLAGS in the recipies.
+  PKG_ARFLAGS in the recipies.
 
 + Single static and shared libraries are built using the objects created
   by the standard Ravl build. The makefile used is located under

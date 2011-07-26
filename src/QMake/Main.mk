@@ -543,7 +543,7 @@ ifdef FULLCHECKING
 $(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
 	$(SHOWIT)echo "--- Checking header $(@F)" ; \
 	cat $< $< > $(WORKTMP)/$<$(CXXEXT) ; \
-	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
+	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT)  ; then \
 	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
 	else  \
 	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CXXEXT) ; \
@@ -554,7 +554,7 @@ $(INST_HEADERCERT)/%$(CHXXEXT) : %$(CHXXEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.di
 $(INST_HEADERCERT)/%$(CHEXT) : %$(CHEXT) $(TARG_HDRS) $(INST_HEADERCERT)/.dir $(WORKTMP)/.dir
 	$(SHOWIT)echo "--- Checking header $(@F)" ; \
 	cat $< $< > $(WORKTMP)/$<$(CEXT) ; \
-	if $(CC) -c $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
+	if $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT)  ; then \
 	  $(TOUCH) $(INST_HEADERCERT)/$< ; \
 	else \
 	  $(RM) $(WORKTMP)/$<$(OBJEXT) $(WORKTMP)/$<$(CEXT) ; \
@@ -630,11 +630,11 @@ $(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
 
 $(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(MAKEHOME)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
-	$(BINDEP) $(RAVL_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
+	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
 $(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(MAKEHOME)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
-	$(BINDEP) $(RAVL_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
+	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
 # Depend flag
 
@@ -673,7 +673,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXAUXEXT) $(INST_OBJS)/.dir $(I
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -684,7 +684,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CXXEXT) $(INST_OBJS)/.dir $(INST
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -695,7 +695,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %$(CEXT) $(INST_OBJS)/.dir $(INST_D
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -706,7 +706,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.mm $(INST_OBJS)/.dir $(INST_DEPEN
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CXX) -c $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
+	if $(CXX) -c $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS) $(INCLUDES) $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ;  then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -717,7 +717,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.m $(INST_OBJS)/.dir $(INST_DEPEND
 	if [ -f $(WORKTMP)/$*.d ] ; then \
 	  $(RM) $(WORKTMP)/$*.d ; \
 	fi ; \
-	if $(CC) -c $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
+	if $(CC) -c $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES)  $(AMKDEPFLAGS) -o $(INST_OBJS)/$*$(OBJEXT) $< ; then \
 	  $(MKDEPUP) ; \
 	else \
 	  exit 1 ; \
@@ -744,7 +744,7 @@ $(INST_OBJS)/%$(OBJEXT) $(INST_DEPEND)/%.d : %.cu $(INST_OBJS)/.dir $(INST_DEPEN
 
 $(INST_OBJS)/%$(OBJEXT) : %.S $(INST_OBJS)/.dir
 	$(SHOWIT)echo "--- Assemble $(VAR_DISPLAY_NAME) $< "; \
-	$(CC) -c -D__ASSEMBLY__=1 $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$(@F) $<
+	$(CC) -c -D__ASSEMBLY__=1 $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) $(CINCLUDES) -o $(INST_OBJS)/$(@F) $<
 
 # $(UNTOUCH) $(INST_LIB)/lib$(PLIB)$(LIBEXT)  ; \
 
@@ -811,7 +811,7 @@ endif
 
 $(INST_LIB)/dummymain$(OBJEXT) :: $(MAKEHOME)/dummymain$(CEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Compile internal dummymain$(OBJEXT) " ; \
-	$(CC) -c $(MAKEHOME)/dummymain$(CEXT) $(RAVL_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
+	$(CC) -c $(MAKEHOME)/dummymain$(CEXT) $(PKG_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
 
 
 # This lib update is nasty but fast, especialy if you have many objects.
@@ -820,15 +820,15 @@ ifndef SHAREDBUILD
 ifeq ($(NOLIBRARYPRELINK),1)
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
-	$(AR) $(RAVL_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
 else
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
-	$(AR) $(RAVL_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
-	if $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
+	$(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_LIB)/dummymain$(OBJEXT) $(TARG_OBJS) $(LIBS) -o $(WORKTMP)/a.out ; then \
 	  $(RM) $(WORKTMP)/a.out ; \
-	  $(AR) $(RAVL_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
+	  $(AR) $(PKG_ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	  $(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; \
 	else \
 	  if [ -f $(WORKTMP)/a.out ] ; then \
@@ -862,7 +862,7 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	$(SORT) -b -u $(INST_OBJS)/libObjs.new -t : -k 1,1 -o $(INST_OBJS)/libObjs.txt ; \
 	$(RM) $(INST_OBJS)/libObjs.new ; \
         echo "---- Building shared library $(INST_LIB)/$(@F) " ; \
-	$(AWK) -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	$(AWK) -F: '{ print $$1 }' $(INST_OBJS)/libObjs.txt | $(XARGS) $(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) $(filter-out -l$(PLIB),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ; 
 
 $(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
@@ -871,7 +871,7 @@ $(INST_LIB)/$(SINGLESO)$(LIBEXT) : $(INST_LIB)/lib$(PLIB)$(LIBEXT)
 	$(SORT) -b -u $(INST_OBJS)/libSharedObjs.new -t : -k 1,1 | $(AWK) -F: '{ print $$1 }' | $(TR) '\n' ' ' > $(INST_OBJS)/libSharedObjs.txt; \
 	$(RM) $(INST_OBJS)/libSharedObjs.new ; \
   echo "---- Building single shared library $(INST_LIB)/$(@F) " ; \
-	$(CXX) $(RAVL_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
+	$(CXX) $(PKG_LDLIBFLAGS) $(LDLIBFLAGS) @$(INST_OBJS)/libSharedObjs.txt $(filter-out $(patsubst %,-l%,$(PLIB) $(PLIBDEPENDS)),$(LIBSONLY)) -o $(INST_LIB)/$(@F) && \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(INST_LIB)/lib$(PLIB)$(LIBEXT) ;
 
 endif
@@ -924,14 +924,14 @@ endif
 
 $(TARG_PUREEXE) : $(INST_BIN)/pure_%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
 	$(SHOWIT)echo "--- Purify $(@F)  ( $(INST_BIN)/$(@F) ) " ; \
-	purify -g++ -best-effort $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
+	purify -g++ -best-effort $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F)$(EXEEXT) ;
 
 $(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TARG_LIBS) $(INST_BIN)/.dir $(TARG_HDRCERTS)
 	$(SHOWIT)echo "--- Linking $(VAR_DISPLAY_NAME) $(@F) ( $(INST_BIN)/$*$(EXEEXT) ) " ; \
 	if [ -f $(INST_BIN)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_BIN)/$(@F)$(EXEEXT) ; \
 	fi ; \
-	if $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
+	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT) $(EXTRAOBJS) $(BINLIBS) -o $(INST_BIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_BIN)/$(@F) ; \
 	else \
@@ -959,7 +959,7 @@ $(TARG_TESTEXE) : $(INST_TESTBIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(TARG_LI
 	if [ -f $(INST_TESTBIN)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_TESTBIN)/$(@F)$(EXEEXT) ; \
 	fi ; \
-	if $(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT)  $(EXTRAOBJS) $(TESTBINLIBS) -o $(INST_TESTBIN)/$(@F) ; then \
+	if $(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(INST_OBJS)/$*$(OBJEXT)  $(EXTRAOBJS) $(TESTBINLIBS) -o $(INST_TESTBIN)/$(@F) ; then \
 	  $(SYNC) ; \
 	  $(CHMOD) 555 $(INST_TESTBIN)/$(@F) ; \
 	  echo "$(@F)" >> $(INST_TESTDB) ; \
@@ -1092,10 +1092,10 @@ lib_info:
 
 info:
 	@echo "C++ Compiler    :" $(CXX)
-	@echo "C++ Flags       :" $(CCPPFLAGS) $(RAVL_CCFLAGS) $(CCFLAGS)
+	@echo "C++ Flags       :" $(CCPPFLAGS) $(PKG_CCFLAGS) $(CCFLAGS)
 	@echo "C Compiler      :" $(CC)
-	@echo "C Flags         :" $(CPPFLAGS) $(RAVL_CFLAGS) $(CFLAGS)
-	@echo "Link Flags      :" $(RAVL_LDFLAGS) $(LDFLAGS)
+	@echo "C Flags         :" $(CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS)
+	@echo "Link Flags      :" $(PKG_LDFLAGS) $(LDFLAGS)
 	@echo "Includes        :" $(INCLUDES)
 	@echo "Library libs    :" $(EXELIB)
 	@echo "Executable libs :" $(LIBS)

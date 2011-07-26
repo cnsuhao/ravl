@@ -131,7 +131,7 @@ library: $(BUILD_LIB)
 programs: $(BUILD_PROGS)
 
 recurse:
-	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(RAVL_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(INSTALLHOME)/lib/RAVL/libdep/ -C $$d -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
+	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(INSTALLHOME)/lib/RAVL/libdep/ -C $$d -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
 
 test: $(BUILD_TESTS)
 # Initial set-up not yet implemented - use QMake first
@@ -173,7 +173,7 @@ define buildutils
   $1: $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin/$1
 
   $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin:
@@ -187,7 +187,7 @@ define buildexamples
   $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin/$1
 
   $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin:
@@ -203,7 +203,7 @@ define buildtest
                 $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin/$1
 
   $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
-	$(CXX) $(RAVL_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
 $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin:
