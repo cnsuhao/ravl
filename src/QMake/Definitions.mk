@@ -29,7 +29,7 @@ NOLIBRARYPRELINK=1
 ifdef CONFIGFILE
   include $(CONFIGFILE)
 else
-  include $(INSTALLHOME)/Config.Local
+  include $(INSTALLHOME)/Config.Package
 endif
 
 

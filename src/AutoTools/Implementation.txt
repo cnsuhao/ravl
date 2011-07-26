@@ -44,7 +44,7 @@
   versions of members of the standard GNU AutoTools suite, put into source
   control to record the version used at any one time.
 
-+ When run, configure generates Config.Local in the top level directory. This
++ When run, configure generates Config.Package in the top level directory. This
   file receives all of the environemnt definitions needed by the Ravl build
   specifying the platform and machine specific configurations (including the
   location of the external libraries that can be utilised by Ravl). 

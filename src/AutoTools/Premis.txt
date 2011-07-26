@@ -1,12 +1,10 @@
 ﻿Basic Premiss
 
 + Replace existing install script and manual editing of config.local.XXX.
-	- Largely complete; configure creates single Config.Local file
+	- Largely complete; configure creates single Config.Package file
 
 + Combine all platform and machine specific configuration into one place 
-  (Config.Local), replacing existing config.XXX and config.local.XXX
-	- Config.Local created but not yet fully utilised by QMake system
-	  (see Current Limitations).
+  (Config.Package), replacing existing config.XXX and config.local.XXX
 	- Location of the utilities necessary for documentation production
 	  is not currently undertaken by configure (see Current Limitations). 
 

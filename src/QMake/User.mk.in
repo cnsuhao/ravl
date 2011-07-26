@@ -20,7 +20,7 @@ CPPFLAGS+=-I$(INSTALLHOME)/include -DPROJECT_OUT=\"$(INSTALLHOME)\"
 CFLAGS=$(INCLUDES)
 CXXFLAGS=$(INCLUDES)
 
-include $(INSTALLHOME)/Config.Local
+include $(INSTALLHOME)/Config.Package
 
 include defs.mk
 
