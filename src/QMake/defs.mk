@@ -25,18 +25,7 @@ AUXFILES =  QMake.mk \
   Help.txt Defs.txt \
   BinDep.pl mkdefs.pl \
   QLibs.pl GlobalMake qmake.cshrc qmake.sh \
-  AutoBuild.pl AutoBuild.sample.conf project.qpr \
-  config.arc config.linux_alpha config.sgi \
-  config.sol2_7 config.sol2_9 \
-  config.alpha config.unknown config.linux config.linux64 config.cygwin config.arm \
-  config.macosx config.local.macosx \
-  config.macosx386 config.local.macosx386 \
-  config.freebsd_x86 config.local.freebsd_x86
-
-ifndef CONFIGFILE
-# Install default config files.
-AUXFILES += config.local.linux config.local.linux64 config.local.sgi config.local.sol2_7 config.local.sol2_9 config.local.arm
-endif
+  AutoBuild.pl AutoBuild.sample.conf project.qpr 
 
 HTML=Example.def.html  Help.txt
 

@@ -26,7 +26,7 @@ endif
 
 # Dummy rule to stop make complaining when no project files are
 # installed the project file
-$(INSTALLHOME)/lib/RAVL/libdep/*.qpr : $(MAKEHOME)/config.$(ARC)
+$(INSTALLHOME)/lib/RAVL/libdep/*.qpr:
 	@true;
 
 #########################
@@ -938,13 +938,6 @@ $(TARG_EXE) : $(INST_BIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(EXTRAOBJS) $(TA
 	  exit 1; \
 	fi
 
-$(ROOTDIR)/share/RAVL/config.arc : $(ROOTDIR)/share/RAVL/.dir $(MAKEHOME)/config.arc
-	$(SHOWIT)if [ -f $(ROOTDIR)/share/RAVL/config.arc ] ; then \
-	  $(CHMOD) +w $(ROOTDIR)/share/RAVL/config.arc ; \
-	  $(RM) $(ROOTDIR)/share/RAVL/config.arc ; \
-	fi ; \
-	$(CP) $(MAKEHOME)/config.arc $(ROOTDIR)/share/RAVL/config.arc ; \
-	$(CHMOD) 555 $(ROOTDIR)/share/RAVL/config.arc
 
 ifndef NOEXEBUILD
 build_test: $(TARG_TESTEXE)

@@ -600,9 +600,6 @@ distclean:
 ###############################################
 # Misc
 
-$(MAKEHOME)/config.$(ARC) :
-	@true
-
 $(MAKEHOME)/Definitions.mk :
 	@true
 
