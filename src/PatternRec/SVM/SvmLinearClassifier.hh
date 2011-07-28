@@ -88,13 +88,18 @@ private:
 };
 //---------------------------------------------------------------------------
 //! Support vector machines linear classifier
-class SvmLinearClassifierC : public Classifier2C
+class SvmLinearClassifierC
+  : public Classifier2C
 {
 public:
   //! Default constructor creates empty classifier
   SvmLinearClassifierC()
-    : Classifier2C(*new SvmLinearClassifierBodyC())
-    {}
+   : Classifier2C(*new SvmLinearClassifierBodyC())
+  {}
+
+  SvmLinearClassifierC(Classifier2C &base)
+   : Classifier2C(dynamic_cast<SvmLinearClassifierBodyC *>(BodyPtr(base)))
+  {}
 
   //! Load from stream.
   SvmLinearClassifierC(istream &Strm);
@@ -144,8 +149,9 @@ public:
 
 protected:
   //! Body constructor.
-  SvmLinearClassifierC(SvmLinearClassifierBodyC &Bod) : Classifier2C(Bod)
-    {}
+  SvmLinearClassifierC(SvmLinearClassifierBodyC &Bod)
+    : Classifier2C(Bod)
+  {}
 
   //! Access body.
   SvmLinearClassifierBodyC &Body()
