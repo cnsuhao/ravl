@@ -383,7 +383,7 @@ endif
 
 MKDEPFLAGS=-MM
 AMKDEPFLAGS = -Wp,-MMD,$(WORKTMP)/$*.d
-MKDEPUP = echo '$$(INST_OBJS)/' | $(TR) '\n' ' '  > $(INST_DEPEND)/$*.d ; cat $(WORKTMP)/$*.d  >> $(INST_DEPEND)/$*.d ; \
+MKDEPUP = echo '$$(INST_OBJS)' | $(TR) '\n' '/'  > $(INST_DEPEND)/$*.d ; cat $(WORKTMP)/$*.d  >> $(INST_DEPEND)/$*.d ; \
  $(RM) $(WORKTMP)/$*.d
 
 
