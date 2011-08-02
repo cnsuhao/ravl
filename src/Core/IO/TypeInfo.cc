@@ -52,7 +52,7 @@ namespace RavlN {
   // an assert may fail.
   
   bool 
-  DPTypeInfoBodyC::Put(DPOPortBaseC &,const RCWrapAbstractC &) RAVL_THROW(ExceptionErrorCastC) {
+  DPTypeInfoBodyC::Put(DPOPortBaseC &,const RCWrapAbstractC &) {
     RavlAssertMsg(0,"abstract method"); // Abstract function called.
     return false;
   }
@@ -62,7 +62,7 @@ namespace RavlN {
   // an assert may fail.
   
   RCWrapAbstractC 
-  DPTypeInfoBodyC::Get(DPIPortBaseC &) RAVL_THROW2(ExceptionErrorCastC,DataNotReadyC) {
+  DPTypeInfoBodyC::Get(DPIPortBaseC &) {
     RavlAssertMsg(0,"abstract method"); // Abstract function called.
     return RCWrapAbstractC();
   }
