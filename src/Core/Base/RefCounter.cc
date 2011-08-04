@@ -20,12 +20,7 @@ namespace RavlN {
     RavlAssert(ravl_atomic_read(&counter) == 0);
   }
   //: Destructor.
-  
-  //: Access count of handles open to this object.
-  
-  UIntT RCBodyC::References() const
-  { return ravl_atomic_read(&counter); }
-  
+
   //: Make copy of body.
   // This should be provided in derived classes.
   // this funtion will issue an assertion failure if called.
