@@ -37,6 +37,9 @@ public:
   //! Load from binary stream.
   SvmQuadraticClassifierBodyC(BinIStreamC &Strm);
 
+  //! Construct from raw components
+  SvmQuadraticClassifierBodyC(const VectorC &w1,const VectorC &w2,RealT threshold);
+
   //! Destructor
   virtual ~SvmQuadraticClassifierBodyC();
 
@@ -116,7 +119,12 @@ public:
   SvmQuadraticClassifierC(Classifier2C &base)
     : Classifier2C(dynamic_cast<SvmQuadraticClassifierBodyC *>(BodyPtr(base)))
   {}
-  
+
+  //! Construct from raw components
+  SvmQuadraticClassifierC(const VectorC &w1,const VectorC &w2,RealT threshold)
+   : Classifier2C(new SvmQuadraticClassifierBodyC(w1,w2,threshold))
+  {}
+
   //! Classify vector 'data' and return value of descriminant function
   //! Size of data should be equal to size of support vector.
   RealT Classify2(const VectorC & Data) const

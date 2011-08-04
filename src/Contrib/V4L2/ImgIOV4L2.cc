@@ -746,6 +746,7 @@ namespace RavlImageN
       
     // Dequeue a buffer
     buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    buffer.memory = V4L2_MEMORY_MMAP;
     if (ioctl(m_fd, VIDIOC_DQBUF, &buffer) == -1)
     {
       cerr << "ImgIOV4L2BaseC::CaptureBuffer ioctl(VIDIOC_DQBUF) failed" << endl;
