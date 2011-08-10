@@ -67,7 +67,6 @@ int testPPHT() {
      += Point2dC(40,60)) += Point2dC(70,40)) += Point2dC(55,15));
   Polygon2dC poly(pts);
   DrawPolygon(img, 255.0, poly, true);
-  Save("tmp.ppm", img);
   // create set of line segments for polygon
   SArray1dC<LinePP2dC> polyLines(pts.Size());
   IntT i=0;
