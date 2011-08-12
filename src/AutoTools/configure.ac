@@ -3750,7 +3750,7 @@ then
                 PKG_ARFLAGS=crus
                 # -M instead of -MM (hope that was not a typo)
                 PKG_MKDEPFLAGS=-M
-                # Code also relies on the comipler in use setting both __sgi__
+                # Code also relies on the compiler in use setting both __sgi__
                 # and __mips. If this is not the case, you should manually set
                 # these. 
                 ;;
@@ -3765,7 +3765,7 @@ then
                 PKG_SHARED_CCFLAGS=`echo " $PKG_SHARED_CCFLAGS " | $SED 's/ -pipe / /'`
                 # Add s flag on ar
                 PKG_ARFLAGS=rusc
-                # Code also relies on the comipler in use setting both __osf__
+                # Code also relies on the compiler in use setting both __osf__
                 # and __alpha. If this is not the case, you should manually set
                 # these or update the Ravl code. 
                 ;;
