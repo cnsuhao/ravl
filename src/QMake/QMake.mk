@@ -630,5 +630,8 @@ help:
 	@$(PAGER) $(MAKEHOME)/Help.txt
 
 .DEFAULT:
+	@echo
 	@echo Unknown target: $@
+	@echo
 	@$(PAGER) $(MAKEHOME)/Help.txt
+	@echo QMake aborted owing to unknown target: $@
