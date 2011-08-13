@@ -89,7 +89,7 @@ namespace RavlN
     do {
       eventCount++;
       if(eventCount == 0)
-	eventCount++;
+	      eventCount++;
     } while(events.IsElm(eventCount));
     UIntT nEvent = eventCount;
     schedule.Insert(at,nEvent);
