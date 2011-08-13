@@ -52,7 +52,7 @@ namespace RavlN
     // Returns an ID for the event, which can
     // be used for cancelling it.
     
-    UIntT Schedule(DateC &startAt,const TriggerC &se,float period = -1);
+    UIntT Schedule(const DateC &startAt,const TriggerC &se,float period = -1);
     //: Schedule event for running.
     // Thread safe.
     // Returns an ID for the event, which can
@@ -138,7 +138,7 @@ namespace RavlN
     // Returns an ID for the event, which can
     // be used for cancelling it.
     
-    UIntT Schedule(DateC &at,const TriggerC &se,float period = -1)
+    UIntT Schedule(const DateC &at,const TriggerC &se,float period = -1)
     { return Body().Schedule(at,se,period); }
     //: Schedule event for running.
     // Thread safe.

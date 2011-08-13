@@ -82,7 +82,7 @@ namespace RavlN
   //: Schedule event for running.
   // Thread safe.
   
-  UIntT TimedTriggerQueueBodyC::Schedule(DateC &at,const TriggerC &se,float period) {
+  UIntT TimedTriggerQueueBodyC::Schedule(const DateC &at,const TriggerC &se,float period) {
     if(!se.IsValid())
       return 0;
     MutexLockC holdLock(access);
