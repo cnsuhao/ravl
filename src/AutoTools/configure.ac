@@ -724,13 +724,13 @@ AC_ARG_WITH([rpath],
                            )
             ],
             [case $with_rpath in
-                  'y' | 'Y' | 'yes' | 'Yes' ) with_rpath=yes
+                  'y' | 'Y' | 'yes' | 'Yes' ) with_rpath=Y
                                               ;;
-                  * )                         with_rpath=no
+                  * )                         with_rpath=N
                                               ;;
              esac
             ],
-            [with_rpath=no
+            [with_rpath=N
             ]
            )
 
@@ -3332,6 +3332,8 @@ echo >> ./Config.Package.in
 echo \# Specific linker functionality >> ./Config.Package.in
 echo >> ./Config.Package.in
 echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Package.in
+echo USE_LIBPATHSWITCH=$with_rpath >> ./Config.Package.in
+echo >> ./Config.Package.in
 echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Package.in
 echo >> ./Config.Package.in
 echo >> ./Config.Package.in
@@ -3407,7 +3409,24 @@ do
       'present' )
                    if ( test "$with_rpath" = 'Y' )
                    then
-                      ${lib}_LIBS=`echo ${lib}_LIBS | $SED 's/-L\([^ ]*\)/\$(LIBPATHSWITCH)=\1 -L\1/g'`
+                      eval setting=\$${lib}_LIBS
+                      setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+dnl                   # The sed command is actually:
+dnl                   #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+dnl                   # the square brackets having been substituted to prevent
+dnl                   # m4 removing them. 
+                      # The sed command looks for:
+                      #
+                      #        -L<optional spaces><something><space> 
+                      # 
+                      # if this pattern is found, each and every occurrence is
+                      # replaced by the following:
+                      #
+                      #       $(LIBPATHSWITCH)=<something> -L<something>
+                      #
+                      # <something> being the substring found in the original
+                      # fragment.
+                      eval ${lib}_LIBS=\$setting
                    fi
                    TRACE_INDENT="     "
                    trace 3 RESOURCES+=${lib}
@@ -3433,7 +3452,24 @@ do
       then
          if ( test "$lib_enablement" = 'present' )
          then
-            ${lib}_LIBS=`echo ${lib}_LIBS | $SED 's/-L\([^ ]*\)/\$(LIBPATHSWITCH)=\1 -L\1/g'`
+            eval setting=\$${lib}_LIBS
+            setting=`echo $setting | $SED 's/-L *\(@<:@^ @:>@@<:@^ @:>@*\)/\$(LIBPATHSWITCH)\=\1 -L\1/g'`
+dnl         # The sed command is actually:
+dnl         #    's/-L *\([^ ][^ ]*\)\$(LIBPATHSWITCH)\=\1 -L\1/g'
+dnl         # the square brackets having been substituted to prevent m4 removing
+dnl         # them. 
+            # The sed command looks for:
+            #
+            #            -L<optional spaces><something><space> 
+            # 
+            # if this pattern is found, each and every occurrence is replaced by
+            # the following (where <something> is the substring found in the
+            # original fragment):
+            #
+            #          $(LIBPATHSWITCH)=<something> -L<something>
+            #
+            # The rest of the line is left unchanged
+            eval ${lib}_LIBS=\$setting
          fi
       fi
       if ( test X$DBG != X && test $DBG -ge 3 )

@@ -399,16 +399,18 @@ endif
 
 
 # setup some library paths, so that binaries will always be able to find correct libraries.
-ifdef SHAREDBUILD
- ifneq ($(BASE_VAR),none)
-  LDFLAGS += $(LIBPATHSWITCH)$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)/shared
-  LDFLAGS += $(LIBPATHSWITCH)$(BASE_INSTALL)/lib/RAVL/$(ARC)/$(BASE_VAR)/shared
- else
-  LDFLAGS += $(LIBPATHSWITCH)$(ROOTDIR)/lib/RAVL/$(ARC)/$(BASE_VAR)/$(VAR)/shared
- endif
- ifdef EXTERNAL_PROJECTS
-  LDFLAGS += $(patsubst %,$(LIBPATHSWITCH)%/lib/RAVL/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX),$(EXTERNAL_PROJECTS))
- endif
+ifeq ($(USE_LIBPATHSWITCH),Y)
+  ifdef SHAREDBUILD
+    ifneq ($(BASE_VAR),none)
+      LDFLAGS += $(LIBPATHSWITCH)=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)/shared
+      LDFLAGS += $(LIBPATHSWITCH)=$(BASE_INSTALL)/lib/RAVL/$(ARC)/$(BASE_VAR)/shared
+    else
+      LDFLAGS += $(LIBPATHSWITCH)=$(ROOTDIR)/lib/RAVL/$(ARC)/$(BASE_VAR)/$(VAR)/shared
+    endif
+    ifdef EXTERNAL_PROJECTS
+      LDFLAGS += $(patsubst %,$(LIBPATHSWITCH)=%/lib/RAVL/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX),$(EXTERNAL_PROJECTS))
+    endif
+  endif
 endif
 
 ###############################
