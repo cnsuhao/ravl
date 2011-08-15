@@ -120,8 +120,8 @@ namespace RavlN {
       positionRefStream = videoStreamId;
       AVStream *avstream = pFormatCtx->streams[positionRefStream];
       
-      frameRate     = avstream->time_base.num*avstream->r_frame_rate.num;
-      frameRateBase = avstream->time_base.den*avstream->r_frame_rate.den;
+      frameRate     = avstream->r_frame_rate.num;
+      frameRateBase = avstream->r_frame_rate.den;
       startFrame = Time2Frame(pFormatCtx->start_time);      
       
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::FirstVideoStream Index=" << av_find_default_stream_index(pFormatCtx) << " " << positionRefStream << " \n");

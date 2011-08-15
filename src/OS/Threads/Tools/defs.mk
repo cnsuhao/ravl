@@ -13,12 +13,14 @@ DESCRIPTION=Threading tools
 PACKAGE=Ravl/Threads
 
 HEADERS=MessageQueue.hh LaunchThread.hh TickerTrigger.hh \
- TimedTriggerQueue.hh Signal.hh Signal1.hh Signal2.hh Signal3.hh \
- SignalConnectionSet.hh MTPriQueueL.hh  ThreadState.hh
+ Signal.hh Signal1.hh Signal2.hh Signal3.hh MTPriQueueL.hh \
+ SignalConnectionSet.hh TimedTriggerQueue.hh \
+ ThreadState.hh ThreadLimitCounter.hh
 
 SOURCES=MessageQueue.cc LaunchThread.cc TickerTrigger.cc \
- TimedTriggerQueue.cc Signal.cc  SignalConnectionSet.cc \
- ThreadState.cc
+ Signal.cc \
+ SignalConnectionSet.cc TimedTriggerQueue.cc \
+ ThreadState.cc ThreadLimitCounter.cc
 
 EHT=Ravl.API.OS.Signals.html
 

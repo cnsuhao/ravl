@@ -9,28 +9,27 @@
   <body>
   This set of classes covers non-linear optimisation of a vector of parameters
   using a combination of multiple observations.
-  Currently the supported algorithms are
-  <ul>
-    <li> Levenberg-Marquardt least squares minimisation, with the added feature
-         of allowing robust observations. There is a
-	 <a href="../../../LevenbergMarquardt/levmarq.pdf">PDF document</a>
-	 describing the theory underlying this implementation of
-	 Levenberg-Marquardt, which is also available in
-	 <a href="../../../LevenbergMarquardt/levmarq.html">HTML</a>,
-	 The LevenbergMarquardtC class implements a standard
-	 Levenberg-Marquardt damped least-squares iteration, given a
-	 state vector and a list of observations.
-	 There is an alternative Levenberg-Marquardt implementation in the
-	 <a href="Ravl.API.Pattern_Recognition.Optimisation.Implementation.html">Optimisation I</a> category.
-    <li> RANSAC robust model fitting using randomised sampling.
-         The RansacC class constitutes a generic implementation
-	 of RANSAC, with user-defined classes for sampling, fitting the
-	 model to a sample and evaluating model parameters.
-  </ul>
-  <p>
-  The main principle embodied in the design of these classes is the need
-  for separating the role of the four major classes of objects involved in
-  optimisation:
+  Currently the supported algorithms are:
+    <ul>
+      <li> Levenberg-Marquardt least squares minimisation, with the added feature
+        of allowing robust observations. There is a
+        <a href="../../../html/levmarq.pdf">PDF document</a>
+        describing the theory underlying this implementation of
+        Levenberg-Marquardt.
+        The LevenbergMarquardtC class implements a standard
+        Levenberg-Marquardt damped least-squares iteration, given a
+        state vector and a list of observations.
+        There is an alternative Levenberg-Marquardt implementation in the
+        <a href="Ravl.API.Pattern_Recognition.Optimisation.Implementation.html">Optimisation I</a> category.
+      <li> RANSAC robust model fitting using randomised sampling.
+        The RansacC class constitutes a generic implementation
+        of RANSAC, with user-defined classes for sampling, fitting the
+        model to a sample and evaluating model parameters.
+    </ul>
+    <p> There is also a <a href="../../../html/Optimisation.pdf">presentation on RANSAC and Levenberg-Marquardt</a>.</p>
+    <p> The main principle embodied in the design of these classes is the need
+      for separating the role of the four major classes of objects involved in
+      optimisation:
   <ol>
     <li> A data item such as a point or a line, signifying a piece of data
          that should fit one or more models for the data, along with an
@@ -74,7 +73,7 @@
 	 above classes.
   </ol>
 
-  <p> <a href="../../../html/Optimisation.pdf"> Some more information about RANSAC and Levenberg-Marquardt</a>.</p>
+  
 
   </body>
 </html>
