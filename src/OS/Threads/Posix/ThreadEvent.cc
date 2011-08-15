@@ -13,6 +13,34 @@
 
 namespace RavlN
 {
+
+  ThreadEventC::ThreadEventC()
+    : occurred(false),
+      m_waiting(0)
+  {}
+
+  bool ThreadEventC::Post() {
+    cond.Lock();
+    if(occurred) {
+      cond.Unlock();
+      return false;
+    }
+    occurred = true;
+    cond.Unlock();
+    cond.Broadcast();
+    return true;
+  }
+  //: Post an event.
+  // Returns true, if event has been posted by this thread.
+
+  ThreadEventC::~ThreadEventC()  {
+    if(!occurred)
+      Post();
+    if(m_waiting != 0)
+      cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
+  }
+  //: Destructor.
+
   //: Wait indefinitely for an event to be posted.
   void ThreadEventC::Wait() {
     if(occurred) // Check before we bother with locking.
@@ -38,9 +66,16 @@ namespace RavlN
       return true;
     bool ret(true);
     cond.Lock();
+    m_waiting++;
     DateC deadline = DateC::NowUTC() + maxTime;
     while(!occurred && ret) 
       ret = cond.WaitUntil(deadline);
+    m_waiting--;
+    if(m_waiting == 0) {
+      cond.Unlock();
+      cond.Broadcast(); // If something is waiting for it to be free...
+      return ret;
+    }
     cond.Unlock();
     return ret;
   }
@@ -53,8 +88,15 @@ namespace RavlN
       return true;
     bool ret(true);
     cond.Lock();
+    m_waiting++;
     while(!occurred && ret)
       ret = cond.WaitUntil(deadline);
+    m_waiting--;
+    if(m_waiting == 0) {
+      cond.Unlock();
+      cond.Broadcast(); // If something is waiting for it to be free...
+      return ret;
+    }
     cond.Unlock();
     return ret;
   }
