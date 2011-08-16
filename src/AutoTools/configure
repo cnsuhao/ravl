@@ -622,6 +622,7 @@ ParallelIO_SUPPORT
 EGREP
 DOTpc_LIBS
 DOTpc_CFLAGS
+DynLink_LIBS
 SWIG
 GnuPlot_SUPPORT
 GnuPlot
@@ -12040,6 +12041,82 @@ TRACE_INDENT="     "
 trace 3 RESOURCES now set to "[$RESOURCES]"
 
 
+# Check for common system functions that appear in different system libraries
+# dependant on the platform in use
+
+# dlopen is usually in libdl but can vary (e.g. for BSD it's in libc)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing dlopen" >&5
+$as_echo_n "checking for library containing dlopen... " >&6; }
+if test "${ac_cv_search_dlopen+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_func_search_save_LIBS=$LIBS
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char dlopen ();
+int
+main ()
+{
+return dlopen ();
+  ;
+  return 0;
+}
+_ACEOF
+for ac_lib in '' dl; do
+  if test -z "$ac_lib"; then
+    ac_res="none required"
+  else
+    ac_res=-l$ac_lib
+    LIBS="-l$ac_lib
+               $ac_func_search_save_LIBS"
+  fi
+  if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_search_dlopen=$ac_res
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext
+  if test "${ac_cv_search_dlopen+set}" = set; then :
+  break
+fi
+done
+if test "${ac_cv_search_dlopen+set}" = set; then :
+
+else
+  ac_cv_search_dlopen=no
+fi
+rm conftest.$ac_ext
+LIBS=$ac_func_search_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_dlopen" >&5
+$as_echo "$ac_cv_search_dlopen" >&6; }
+ac_res=$ac_cv_search_dlopen
+if test "$ac_res" != no; then :
+  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working dlopen function
+See \`config.log' for more details." "$LINENO" 5; }
+fi
+
+if ( $ac_cv_search_dlopen != 'none required' )
+then
+        DynLink_LIBS=$ac_cv_search_dlopen
+else
+        DynLink_LIBS=""
+fi
+
+
+
+
 # Check for all helper libraries used by Ravl.
 #
 # First see if each of the libraries exist and error out if the missing libs
@@ -13676,6 +13753,22 @@ echo >> ./Config.Package.in
 echo "SWIG=@SWIG@" >> ./Config.Package.in
 echo >> ./Config.Package.in
 
+
+# Declare which libraries are needed for particular system calls that can move
+# about on different platforms
+#
+# First initialise ALL_EXTERNAL_LIBS here as we need to record these libraries
+# as well as the external libs
+ALL_EXTERNAL_LIBS=""
+echo >> ./Config.Package.in
+echo \# Location of system calls that can vary their parent library >> ./Config.Package.in
+echo >> ./Config.Package.in
+# Location of dlopen
+echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Package.in
+echo >> ./Config.Package.in
+ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
+
+
 #
 # Now set RESOURCES & ALL_EXTERNAL_LIBS based on the libraries we can use
 # Also output each external library's <Lib>_CFLAGS and <Lib>_LIBS definition
@@ -13684,7 +13777,6 @@ echo >> ./Config.Package.in
 echo >> ./Config.Package.in
 echo \# List of external libraries available to Ravl >> ./Config.Package.in
 echo >> ./Config.Package.in
-ALL_EXTERNAL_LIBS=""
 trace 2 Calculating RESOURCES settings from library availability
 trace 3 \(Initial value of RESOURCES "[$RESOURCES]"\)
 for lib in $HelperLibs

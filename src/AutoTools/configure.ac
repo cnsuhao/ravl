@@ -1749,7 +1749,6 @@ dnl#
 dnl#   _HELPER_CC([Socket],      [socket],           [],     [-lsocket],   [], [sys/socket.h],    [], [NA])
 dnl#   _HELPER_CC([NetDB],       [gethostbyname_r],  [],     [-lnsr],        [], [netdb.h],         [], [NA])
 dnl#
-dnl#    DynLink 
 dnl#
 dnl# Less so
 dnl#
@@ -2528,6 +2527,26 @@ AS_IF([test "X$SWIG" != X], [ RESOURCES+="Swig "])
 AC_SUBST([SWIG])
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "@<:@$RESOURCES@:>@"
+
+
+# Check for common system functions that appear in different system libraries 
+# dependant on the platform in use
+
+# dlopen is usually in libdl but can vary (e.g. for BSD it's in libc)
+AC_SEARCH_LIBS([dlopen],
+               [dl],
+               [],
+               [AC_MSG_FAILURE([Cannot find a working dlopen function])],
+               []
+              )
+if ( $ac_cv_search_dlopen != 'none required' )
+then
+        DynLink_LIBS=$ac_cv_search_dlopen
+else
+        DynLink_LIBS=""
+fi
+AC_SUBST([DynLink_LIBS])
+
 
 
 # Check for all helper libraries used by Ravl.
@@ -3375,6 +3394,22 @@ echo >> ./Config.Package.in
 echo "SWIG=@SWIG@" >> ./Config.Package.in
 echo >> ./Config.Package.in
 
+
+# Declare which libraries are needed for particular system calls that can move
+# about on different platforms
+#
+# First initialise ALL_EXTERNAL_LIBS here as we need to record these libraries
+# as well as the external libs
+ALL_EXTERNAL_LIBS=""
+echo >> ./Config.Package.in
+echo \# Location of system calls that can vary their parent library >> ./Config.Package.in
+echo >> ./Config.Package.in
+# Location of dlopen
+echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Package.in
+echo >> ./Config.Package.in
+ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
+
+
 #
 # Now set RESOURCES & ALL_EXTERNAL_LIBS based on the libraries we can use
 # Also output each external library's <Lib>_CFLAGS and <Lib>_LIBS definition
@@ -3383,7 +3418,6 @@ echo >> ./Config.Package.in
 echo >> ./Config.Package.in
 echo \# List of external libraries available to Ravl >> ./Config.Package.in
 echo >> ./Config.Package.in
-ALL_EXTERNAL_LIBS=""
 trace 2 Calculating RESOURCES settings from library availability
 trace 3 \(Initial value of RESOURCES "@<:@$RESOURCES@:>@"\)
 for lib in $HelperLibs
