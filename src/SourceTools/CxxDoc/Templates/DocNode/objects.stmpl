@@ -1,7 +1,0 @@
-$(ifany:docleaf,$userlevel=$objLevel:
-$(ifany:docleaf,$userlevel=$objLevel&$docNodeType=$subType:<H2>$(objLevel) $(subTitle):</H2>
-<table>
-$(forall:docleaf,$userlevel=$objLevel&$docNodeType=$subType:
-$(ifset:!area:$(set:area=Class))
-<tr><td><code>&nbsp;</code><A HREF="../$(area)/$(content)">$(ObjectName)</A><td>$(ifset:brief:$(brief))</tr>
-)</table>))

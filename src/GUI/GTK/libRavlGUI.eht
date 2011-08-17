@@ -1,8 +1,0 @@
-! author="Charles Galambos"
-! docentry="Ravl.Graphics.GTK"
-
-: Graphical User Interface library
-
-Tools for building graphical user interfaces.  These tools act
-as wrappers for the 'C' GTK library.  The current version is very
-incomplete, but growing.  Additional functions can be added on request. 

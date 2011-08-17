@@ -1,9 +1,0 @@
-///////////////////////////////////////////////////////////
-//! author="Charles Galambos"
-
-#include "Ravl/Convolve1d.hh"
-
-namespace RavlN {
-
-  
-}
