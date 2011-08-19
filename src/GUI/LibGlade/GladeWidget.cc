@@ -33,9 +33,10 @@ namespace RavlGUIN {
     : xml(gladeXml),
       name(widgetName),
       customWidget(aCustomWidget),
-      m_widgetPrefix(prefix)
+      m_widgetPrefix(prefix),
+      m_abortOnMissingWidget(false)
   {
-    ONDEBUG(cerr << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ", prefix = " << prefix << ")" << endl);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ", prefix = " << prefix << ")" << endl);
     if(!m_widgetPrefix.IsEmpty() && m_widgetPrefix.lastchar() != '.')
       m_widgetPrefix += ".";
     
@@ -47,26 +48,28 @@ namespace RavlGUIN {
   
   GladeWidgetBodyC::GladeWidgetBodyC(const StringC &widgetName,bool aCustomWidget) 
     : name(widgetName),
-      customWidget(aCustomWidget)
+      customWidget(aCustomWidget),
+      m_abortOnMissingWidget(false)
   {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ")" << endl);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << widgetName << ", customWidget=" << aCustomWidget << ")");
   }
   
   GladeWidgetBodyC::GladeWidgetBodyC(const XMLFactoryContextC &factory)
    : WidgetBodyC(factory),
      name(factory.AttributeString("widgetName",factory.Name())),
      customWidget(factory.AttributeBool("customWidget",false)),
-     m_widgetPrefix(factory.AttributeString("widgetPrefix",""))
+     m_widgetPrefix(factory.AttributeString("widgetPrefix","")),
+     m_abortOnMissingWidget(factory.AttributeBool("abortOnMissingWidget",true))
   {
     if(!factory.UseComponent("GladeXML",xml,false,typeid(GladeXMLC))) {
-      RavlSysLog(SYSLOG_ERR) << "Failed to find glade xml file. \n";
+      RavlSysLog(SYSLOG_ERR) << "Failed to find glade xml file.  ";
     }
     if(!m_widgetPrefix.IsEmpty() && m_widgetPrefix.lastchar() != '.')
       m_widgetPrefix += ".";
     if(customWidget) {
       xml = GladeXMLC(xml.Filename(),name,xml.ModuleName());
     }
-    ONDEBUG(cerr << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << name << ", customWidget=" << customWidget << ", prefix = " << m_widgetPrefix << ")" << endl);
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::GladeWidgetBodyC(name=" << name << ", customWidget=" << customWidget << ", prefix = " << m_widgetPrefix << ")");
     for(RavlN::DLIterC<RavlN::XMLTreeC> it(factory.Children());it;it++) {
       if(it->Name() == "GladeXML" || it->AttributeString("typename","").IsEmpty())
         continue;
@@ -75,15 +78,16 @@ namespace RavlGUIN {
         // This just shouldn't happen.
         RavlAssert(0);
       }
-      
       // Need to read the attributes before we construct the objects,
       // so the post construction check for used attributes is aware of them.
       StringC widgetName = childContext.AttributeString("widgetName",it->Name());
+      if(widgetName.IsEmpty())
+        continue;
       bool optional = childContext.AttributeBool("optional",false);
       
       WidgetC widget;
-      if(!factory.UseComponent(it->Name(),widget)) {
-        RavlSysLog(SYSLOG_ERR) << "Failed to load component " << it->Name() << "\n";
+      if(!factory.UseComponent(it->Name(),widget,true)) {
+        RavlSysLog(SYSLOG_WARNING) << "Failed to load component " << it->Name() << " from " << factory.Path() << " ";
         continue;
       }
       AddObject(widgetName,widget,optional);
@@ -94,7 +98,7 @@ namespace RavlGUIN {
   {
     if (xml.IsValid())
     {
-      ONDEBUG(cerr << "GladeWidgetBodyC::SetXML already set" << endl;)
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::SetXML already set");
       return true;
     }
     
@@ -109,11 +113,11 @@ namespace RavlGUIN {
 
   
   bool GladeWidgetBodyC::CommonCreate(GtkWidget *newWidget) {
-    ONDEBUG(cerr << "GladeWidgetBodyC::CommonCreate(GtkWidget *), Called. Name=" << name << " \n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::CommonCreate(GtkWidget *), Called. Name=" << name << " ");
 
     if (!xml.IsValid())
     {
-      cerr << "GladeWidgetBodyC::CommonCreate called with no XML set" << endl;
+      RavlSysLog(SYSLOG_ERR) << "GladeWidgetBodyC::CommonCreate called with no XML set";
       return false;
     }
 
@@ -130,16 +134,18 @@ namespace RavlGUIN {
       {
         if (!GTK_IS_CONTAINER(widget))
         {
-          cerr << "ERROR: Custom widget for " << name << " isn't a container. (Try putting an event box here.) \n";
+          RavlSysLog(SYSLOG_ERR) << "ERROR: Custom widget for " << name << " isn't a container. (Try putting an event box here.) \n";
           RavlAssert(0);
           return false;
         }
         
-        ONDEBUG(cerr << "Adding custom child widget '" << name << "' into parent. \n");  
+        ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Adding custom child widget '" << name << "' into parent. ");
         GtkWidget *childWidget = xml.Widget(name);
         if (childWidget == 0)
         {
-          cerr << "ERROR: No child widget found for '" << name << "' \n";
+          RavlSysLog(SYSLOG_ERR) << "ERROR: No child widget found for '" << name << "' ";
+          if(m_abortOnMissingWidget)
+            throw RavlN::ExceptionBadConfigC("Failed to find widget ");
           return false;
         }
         
@@ -150,7 +156,7 @@ namespace RavlGUIN {
     
     if (widget == NULL)
     {
-      cerr << "ERROR: Failed to find widget '" << name << "' in '" << xml.Filename() << "'\n";
+      RavlSysLog(SYSLOG_ERR) << "ERROR: Failed to find widget '" << name << "' in '" << xml.Filename() << "' ";
       RavlAssertMsg(false,"Failed to find widget.");
       return false;
     }
@@ -160,19 +166,25 @@ namespace RavlGUIN {
       GtkWidget *childWidget = xml.Widget(it.Key());
       if (childWidget == NULL)
       {
-        if (!it.Data().Data2())
-          cerr << "WARNING: Can't find widget for '" << it.Key() << "'\n";
+        if (!it.Data().Data2()) {
+          RavlSysLog(SYSLOG_WARNING) << "WARNING: Can't find widget for '" << it.Key() << "' ";
+          if(m_abortOnMissingWidget)
+            throw RavlN::ExceptionBadConfigC("Failed to find widget ");
+        }
         continue;
       }
       if (it->Data1().IsValid())
         it->Data1()->Create(childWidget);
-      else
-        cerr << "WARNING: Invalid handle for widget '" << it.Key() << "' \n";
+      else {
+        RavlSysLog(SYSLOG_WARNING) << "WARNING: Invalid handle for widget '" << it.Key() << "' ";
+        if(m_abortOnMissingWidget)
+          throw RavlN::ExceptionBadConfigC("Failed to find widget ");
+      }
     }
     
     ConnectSignals();    
     
-    ONDEBUG(cerr << "GladeWidgetBodyC::CommonCreate(GtkWidget *), Done. Name=" << name << "\n");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "GladeWidgetBodyC::CommonCreate(GtkWidget *), Done. Name=" << name << " ");
     return true;
   }
 
