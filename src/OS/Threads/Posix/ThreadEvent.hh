@@ -29,32 +29,14 @@ namespace RavlN
   class ThreadEventC {
 
   public:
-    ThreadEventC()
-      : occurred(false),
-	m_waiting(0)
-    {}
+    ThreadEventC();
     
-    bool Post() {
-      cond.Lock();
-      if(occurred) {
-	cond.Unlock();
-	return false;
-      }
-      occurred = true;
-      cond.Unlock();
-      cond.Broadcast();
-      return true;
-    }
+    ~ThreadEventC();
+    //: Destructor.
+
+    bool Post();
     //: Post an event.
     // Returns true, if event has been posted by this thread.
-    
-    ~ThreadEventC()  { 
-      if(!occurred)
-	Post(); 
-      if(m_waiting != 0) 
-	cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
-    }
-    //: Destructor.
     
     void Wait();
     //: Wait indefinitely for an event to be posted.

@@ -113,13 +113,23 @@ namespace RavlN {
     
     // Find the first video stream.
     for (UIntT i = 0; i < pFormatCtx->nb_streams; i++) {
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+      if (pFormatCtx->streams[i]->codec->codec_type != AVMEDIA_TYPE_VIDEO)
+        continue;
+#else
       if (pFormatCtx->streams[i]->codec->codec_type != CODEC_TYPE_VIDEO) 
         continue;
+#endif
       
-      // Get a pointer to the codec context for the video stream.
-      AVCodecContext *pCodecCtx = pFormatCtx->streams[i]->codec;
+     // Get a pointer to the codec context for the video stream.
+     AVCodecContext *pCodecCtx = pFormatCtx->streams[i]->codec;
 
-    pCodecCtx->codec_type = CODEC_TYPE_VIDEO;
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+     pCodecCtx->codec_type = AVMEDIA_TYPE_VIDEO;
+#else
+     pCodecCtx->codec_type = CODEC_TYPE_VIDEO;
+#endif
+
      pCodecCtx->pix_fmt = PIX_FMT_YUV420P; 
 
       // Find the encoder for the video stream
@@ -215,7 +225,11 @@ namespace RavlN {
     }
     c = st->codec;
     c->codec_id = (CodecID)codec_id;
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    c->codec_type = AVMEDIA_TYPE_VIDEO;
+#else
     c->codec_type = CODEC_TYPE_VIDEO;
+#endif
 
     /* resolution must be a multiple of two */
     c->width = width;  //img_w;
@@ -299,7 +313,11 @@ namespace RavlN {
 
     c = st->codec;
     c->codec_id = (CodecID)codec_id;
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    c->codec_type = AVMEDIA_TYPE_AUDIO;
+#else
     c->codec_type = CODEC_TYPE_AUDIO;
+#endif
 
     /* put sample parameters */
     c->bit_rate = 64000;
@@ -417,14 +435,22 @@ namespace RavlN {
     ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Called \n");
 
     //Find output format.
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    fmt = av_guess_format(NULL, filename, NULL);
+#else
     fmt = guess_format(NULL, filename, NULL);
+#endif
     if (!fmt) {
         ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed to find format. \n");
         return false;
     }
     
    //Allocate the output media context.
-   pFormatCtx = av_alloc_format_context();
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    pFormatCtx = avformat_alloc_context();
+#else
+    pFormatCtx = av_alloc_format_context();
+#endif
    if(!pFormatCtx) {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << filename << "), Failed allocate output media context. \n");
       return false;
@@ -486,14 +512,22 @@ namespace RavlN {
     av_free(pFormatCtx);
     pFormatCtx = 0;
 
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    fmt = av_guess_format(NULL, out_filename, NULL);
+#else
     fmt = guess_format(NULL, out_filename, NULL);
+#endif
     if (!fmt) {
         ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed to find format. \n");
         return false;
     }
     
    //Allocate the output media context.
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    pFormatCtx = avformat_alloc_context();
+#else
    pFormatCtx = av_alloc_format_context();
+#endif
    if(!pFormatCtx) {
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open(" << out_filename << "), Failed allocate output media context. \n");
       return false;
@@ -594,6 +628,21 @@ namespace RavlN {
       attrValue = pFormatCtx->filename;
       return true;
     }
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    if(attrName=="title" || attrName == "author" || attrName == "copyright" || attrName == "comment" || attrName == "album") {
+      if(pFormatCtx == 0) {
+        attrValue = StringC();
+        return true;
+      }
+      AVDictionaryEntry *de = av_dict_get(pFormatCtx->metadata, attrName.data(),0,0);
+      if(de != 0) {
+        attrValue = de->value;
+        return true;
+      }
+      attrValue = StringC();
+      return true;
+    }
+#else
     if(attrName=="title") {
       if(pFormatCtx == 0) {
         attrValue = StringC();
@@ -634,6 +683,7 @@ namespace RavlN {
       attrValue = pFormatCtx->album;
       return true;
     }
+#endif
     if(attrName=="fullseek") {
       attrValue = StringC(haveSeek);
       return true;

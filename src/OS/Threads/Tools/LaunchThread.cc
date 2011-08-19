@@ -37,12 +37,12 @@ namespace RavlN {
 #if RAVL_REUSE_THREADS
     do {
       if(se.IsValid()) {
-	se.Invoke(); 
-	done.Post();
-	done.WaitForFree(); // Wait for everything to re-execute.
-	done.Reset();
+	    se.Invoke();
+	    done.Post();
+	    done.WaitForFree(); // Wait for everything to re-execute.
+	    done.Reset();
       } else 
-	cerr << "ERROR: LaunchThreadBodyC::Startup(), ask to launch an invalid event.\n";
+        RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), ask to launch an invalid event. ";
       
       reStart.Reset();
       
@@ -54,7 +54,16 @@ namespace RavlN {
       reStart.Wait();
     } while(1) ;
 #else
-    se.Invoke();
+    try {
+      se.Invoke();
+    } catch(RavlN::ExceptionC &exception) {
+      RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread. Text:" << exception.what() ;
+      exception.Dump(RavlSysLog(SYSLOG_ERR));
+      RavlAlwaysAssert(0);
+    } catch(...) {
+      RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread ";
+      RavlAssert(0);
+    }
     done.Post();
 #endif    
     return true;
