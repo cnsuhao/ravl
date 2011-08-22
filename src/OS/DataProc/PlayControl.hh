@@ -384,7 +384,7 @@ namespace RavlN {
       if(!input.Get(buff)) {
 	cerr << "DPIPlayControlBodyC::Get() ERROR: Failed, attempting to fudge stream position... \n";
 	at--;
-	return true;
+	return false;
       }
       UpdateAt();
       RavlAssert(&(lock.Mutex()) == &access);

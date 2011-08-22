@@ -678,6 +678,7 @@ namespace RavlN {
       RavlSysLogf(SYSLOG_DEBUG,"Loading file='%s' ", fullName.data());
       if(!RavlN::LoadAbstract(fullName, rawHandle, "", node.XMLNode().AttributeBool("loadVerbose", false))) {
         RavlSysLogf(SYSLOG_ERR," load node '%s' from '%s'",node.Name().chars(),fullName.chars());
+        throw RavlN::ExceptionBadConfigC("Failed to load node from file. ");
         return false;
       }
       
@@ -688,11 +689,13 @@ namespace RavlN {
       RavlSysLogf(SYSLOG_DEBUG,"Creating component, Path='%s' Type='%s' ",node.Path().chars(),typeToMake.chars());
       if(typeToMake.IsEmpty()) {
         RavlSysLogf(SYSLOG_ERR,"No type specified for node '%s'",node.Name().chars());
+        throw RavlN::ExceptionBadConfigC("Type not specified. ");
         return false;
       }
       TypeFactoryT *tf = Type2Factory().Lookup(typeToMake);
       if(tf == 0) {
         RavlSysLogf(SYSLOG_ERR,"Node '%s', Type '%s' unknown.",node.Name().chars(),typeToMake.chars());
+        throw RavlN::ExceptionBadConfigC("Type not known. ");
         return false;
       }
       XMLFactoryContextC createNode(*this,node);
