@@ -25,6 +25,7 @@ int testXML(int argc, char* argv[]) {
   if(outfile != "") {
     XMLOStreamC os(outfile);
 #if 1
+    os.Comment("A comment");
     os << XMLIndent << XMLStartTag("hello") << XMLEmptyTag;
     int i = 1;
     i++;
