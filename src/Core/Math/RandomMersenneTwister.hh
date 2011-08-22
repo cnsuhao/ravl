@@ -4,7 +4,7 @@
 #ifndef RAVL_RANDOMMERSENNETWISTER_HEADER
 #define RAVL_RANDOMMERSENNETWISTER_HEADER 1
 ///////////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
+//! rcsid="$Id: RandomMersenneTwister.hh 5437 2006-04-05 11:09:32Z ees1wc $"
 //! userlevel=Normal
 //! file="Ravl/Core/Math/RandomMersenneTwister.hh"
 //! lib=RavlCore
@@ -42,20 +42,20 @@ namespace RavlN {
     RandomMersenneTwisterC();
     //: Constructor
 
-    RandomMersenneTwisterC(unsigned long seed);
+    RandomMersenneTwisterC(UInt32T seed);
     //: Constructor with seed
 
-    void Seed(unsigned long seed);
+    void Seed(UInt32T seed);
     //: Initialises the random number generator with the passed seed
 
-    void Seed(unsigned long init_key[], unsigned long key_length);
+    void Seed(UInt32T init_key[], UInt32T key_length);
     //: Initialises the random number generator with the passed array
-    // This is for using seed values greater then can be stored in an unsigned long
+    // This is for using seed values greater than can be stored in a UInt32T
 
-    unsigned long UInt();
+    UInt32T UInt();
     //: Returns an unsigned integer uniformly distributed between 0 and RandomIntMaxValue
 
-    long Int();
+    Int32T Int();
     //: Returns a signed integer
 
     double Double();
@@ -74,8 +74,8 @@ namespace RavlN {
     
   protected:
 
-    unsigned long mt[624]; /* the array for the state vector  */
-    unsigned long mti; /* mti==N+1 means mt[N] is not initialized */
+    UInt32T mt[624]; /* the array for the state vector  */
+    UInt32T mti; /* mti==N+1 means mt[N] is not initialized */
 
   };
 
