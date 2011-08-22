@@ -645,9 +645,14 @@ namespace RavlN {
     OStreamC &Stream()
     { return *this; }
     //: Stream.
+    //Access to the underlying text stream
     
     bool WriteHeader();
     //: Write XML header.
+
+    void Comment(const StringC& comment)
+    { Stream() << "\n<!-- " << comment << " -->"; }
+    //: Write an XML comment.
     
     bool WritePI(const StringC &name,const RCHashC<StringC,StringC> &attribs);
     //: Write a Processing Instruction to the stream with the given name and attributes.
