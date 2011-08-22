@@ -168,7 +168,11 @@ namespace RavlImageN {
                 AVPacket pkt;
         av_init_packet(&pkt);
 
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+        pkt.flags |= AV_PKT_FLAG_KEY;
+#else
         pkt.flags |= PKT_FLAG_KEY;
+#endif
         pkt.stream_index= streamInfo->index;
         pkt.data= (uint8_t *)video_outbuf;  //(uint8_t *)tmp_picture->data;   //(uint8_t *)video_outbuf;   //tmp_picture->data;  //(uint8_t *)video_outbuf;
         pkt.size= bytesEncoded;   //video_outbuf_size;  //sizeof(AVPicture);
@@ -268,7 +272,11 @@ namespace RavlImageN {
         AVPacket pkt;
         av_init_packet(&pkt);
 
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+        pkt.flags |= AV_PKT_FLAG_KEY;
+#else
         pkt.flags |= PKT_FLAG_KEY;
+#endif
         pkt.stream_index= st->index;
         pkt.data= (uint8_t *)tmp_picture;
         pkt.size= sizeof(AVPicture);
@@ -293,7 +301,11 @@ namespace RavlImageN {
                 pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, st->time_base);
             }
             if(c->coded_frame->key_frame) {
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+              pkt.flags |= AV_PKT_FLAG_KEY;
+#else
                 pkt.flags |= PKT_FLAG_KEY;
+#endif
             }
             pkt.stream_index= pFormatCtx->streams[videoStreamId]->index;   //st->index;
             pkt.data= video_outbuf;   //(uint8_t *)out_picture->data;   //video_outbuf;

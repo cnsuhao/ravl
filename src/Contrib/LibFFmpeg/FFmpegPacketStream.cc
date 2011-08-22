@@ -78,8 +78,13 @@ namespace RavlN {
     
     // Find the first video stream
     for (UIntT i = 0; i < pFormatCtx->nb_streams; i++) {
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+      if (pFormatCtx->streams[i]->codec->codec_type != AVMEDIA_TYPE_VIDEO)
+        continue;
+#else
       if (pFormatCtx->streams[i]->codec->codec_type != CODEC_TYPE_VIDEO) 
         continue;
+#endif
       
       // Get a pointer to the codec context for the video stream
       AVCodecContext *pCodecCtx = pFormatCtx->streams[i]->codec;
@@ -148,8 +153,13 @@ namespace RavlN {
     
     // Find the first video stream
     for (UIntT i = 0; i < pFormatCtx->nb_streams; i++) {
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+      if (pFormatCtx->streams[i]->codec->codec_type != AVMEDIA_TYPE_VIDEO)
+        continue;
+#else
       if (pFormatCtx->streams[i]->codec->codec_type != CODEC_TYPE_VIDEO) 
         continue;
+#endif
       
       // Get a pointer to the codec context for the video stream
       AVCodecContext *pCodecCtx = pFormatCtx->streams[i]->codec;
@@ -271,22 +281,22 @@ namespace RavlN {
   // This is for handling attributes such as frame rate, and compression ratios.
   
   bool FFmpegPacketStreamBodyC::GetAttr(const StringC &attrName,StringC &attrValue) {
-    if(attrName=="duration") {
+
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    if(attrName=="title" || attrName == "author" || attrName == "copyright" || attrName == "comment" || attrName == "album") {
       if(pFormatCtx == 0) {
         attrValue = StringC();
         return true;
       }
-      attrValue = StringC((Int64T)(pFormatCtx->duration));
-      return true;
-    }
-    if(attrName=="filename") {
-      if(pFormatCtx == 0) {
-        attrValue = StringC();
+      AVDictionaryEntry *de = av_dict_get(pFormatCtx->metadata, attrName.data(),0,0);
+      if(de != 0) {
+        attrValue = de->value;
         return true;
       }
-      attrValue = pFormatCtx->filename;
+      attrValue = StringC();
       return true;
     }
+#else
     if(attrName=="title") {
       if(pFormatCtx == 0) {
         attrValue = StringC();
@@ -325,6 +335,23 @@ namespace RavlN {
         return true;
       }
       attrValue = pFormatCtx->album;
+      return true;
+    }
+#endif
+    if(attrName=="duration") {
+      if(pFormatCtx == 0) {
+        attrValue = StringC();
+        return true;
+      }
+      attrValue = StringC((Int64T)(pFormatCtx->duration));
+      return true;
+    }
+    if(attrName=="filename") {
+      if(pFormatCtx == 0) {
+        attrValue = StringC();
+        return true;
+      }
+      attrValue = pFormatCtx->filename;
       return true;
     }
     if(attrName=="fullseek") {
