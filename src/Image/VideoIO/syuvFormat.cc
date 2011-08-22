@@ -43,8 +43,12 @@ namespace RavlImageN {
   const type_info &
   FileFormatSYUVBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
   {
+#if 0
     // Should we really claim we can load this? there's no way to test what it is!
-    return typeid(ImageC<ByteYUVValueC>); 
+    return typeid(ImageC<ByteYUVValueC>);
+#else
+    return typeid(void);
+#endif
   }
   
   const type_info &
