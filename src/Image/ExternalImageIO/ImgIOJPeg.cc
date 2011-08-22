@@ -234,6 +234,7 @@ namespace RavlImageN {
   DPImageIOJPegIBaseC::DPImageIOJPegIBaseC(const IStreamC &nfin)
     : fin(nfin)
   {
+    ONDEBUG(cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC\n");
     /* We have to set up the error handler first, in case the initialization
      * step fails.  (Unlikely, but it could happen if you are out of memory.)
      * This routine fills in the contents of struct jerr, and returns jerr's
