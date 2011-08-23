@@ -8,17 +8,19 @@
 ifndef LIBFFMPEG_DEF
   LIBFFMPEG_DEF=1
 
+  LIBFFMPEG_LIBNAME = lib
+  ifeq ($(LOCALARC),linux64)
+    LIBFFMPEG_LIBNAME = lib64
+  endif
+
   ifndef LIBFFMPEG_HOME
     LIBFFMPEG_HOME := /usr
   else
-    EXELIB := -Wl,-rpath=$(LIBFFMPEG_HOME)/lib $(EXELIB)
+    EXELIB := -Wl,-rpath=$(LIBFFMPEG_HOME)/$(LIBFFMPEG_LIBNAME) $(EXELIB)
   endif
   
-  ifeq ($(LOCALARC),linux64)
-    PKG_CONFIG_PATH := $(LIBFFMPEG_HOME)/lib64/pkgconfig:$(PKG_CONFIG_PATH)
-  else
-    PKG_CONFIG_PATH := $(LIBFFMPEG_HOME)/lib/pkgconfig:$(PKG_CONFIG_PATH)
-  endif
+  PKG_CONFIG_PATH := $(LIBFFMPEG_HOME)/$(LIBFFMPEG_LIBNAME)/pkgconfig:$(PKG_CONFIG_PATH)
+
   LIBFFMPEG_INCLUDES := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config libavformat libavcodec --cflags-only-I)
   LIBFFMPEG_INCLUDES += $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config libswscale --silence-errors --cflags-only-I)
   LIBFFMPEG_INCLUDES += -I$(LIBFFMPEG_HOME)/include/libavformat -I$(LIBFFMPEG_HOME)/include/libavcodec
