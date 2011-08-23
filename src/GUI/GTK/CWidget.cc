@@ -6,7 +6,6 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////
 //! docentry="Graphics.GTK"
-//! rcsid="$Id$"
 //! lib=RavlGUI
 //! file="Ravl/GUI/GTK/CWidget.cc"
 
@@ -22,11 +21,22 @@ namespace RavlGUIN {
   //: Create the widget.
   
   bool ContainerWidgetBodyC::Create() {
-    for(DLIterC<WidgetC> it(children);it.IsElm();it.Next()) 
+    for(DLIterC<WidgetC> it(children);it.IsElm();it.Next())
       it.Data().Create();
     return true;
   }
-  
+
+
+
+  bool ContainerWidgetBodyC::Create(GtkWidget *newWidget) {
+    widget = newWidget;
+    for(DLIterC<WidgetC> it(children);it.IsElm();it.Next())
+    {
+      it.Data().Create();
+    }
+    return true;
+  }
+
   //: Undo all references.
   // Used to avoid problems with circluar references.
   // This should undo all references to RAVL and GUI
@@ -53,8 +63,8 @@ namespace RavlGUIN {
     RavlAssert(widge.IsValid());
     if(widge.Widget() == 0) {
       if(!widge.Create()) {
-	cerr << "ContainerWidgetBodyC::Create(), Widget create failed ! \n";
-	return true;
+        cerr << "ContainerWidgetBodyC::Create(), Widget create failed ! \n";
+        return true;
       }
     }
     gtk_container_add(GTK_CONTAINER(widget),widge.Widget());
