@@ -6,12 +6,12 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////
 //! lib=RavlGUI
-//! file="Ravl/GUI/GTK/exPixmap.cc"
+//! file="Ravl/GUI/GTK/exPixbuf.cc"
 //! docentry="Ravl.API.Graphics.GTK.Layout"
 //! userlevel=Normal
 
 #include "Ravl/GUI/Window.hh"
-#include "Ravl/GUI/Pixmap.hh"
+#include "Ravl/GUI/Pixbuf.hh"
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/Option.hh"
 
@@ -24,10 +24,10 @@ int main(int nargs,char *args[])
   opts.Check();
   
   WindowC win(100,100,"Hello");
-  PixmapC pix("info.xpm");
-  
-  win.Add(pix);
-  
+
+  PixbufC iconPix(PROJECT_OUT "/share/RAVL/pixmaps/CalibrationChart.png");
+  win.GUISetDefaultIcon(iconPix);
+
   win.GUIShow();
 
   Manager.Start();
