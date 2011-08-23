@@ -12,7 +12,6 @@
 //! author="Charles Galambos"
 //! date="23/03/1999"
 //! docentry="Ravl.API.Graphics.GTK.Control"
-//! rcsid="$Id$"
 
 #include "Ravl/GUI/Widget.hh"
 #include "Ravl/Threads/Mutex.hh"
@@ -44,9 +43,6 @@ namespace RavlGUIN {
     
     virtual bool Create(GtkWidget *widget);
     //: Create with a widget supplied from elsewhere.
-    
-    virtual bool Entry(const StringC &text);
-    //: Some new text has been entered.
     
     StringC GUIText();
     //: Access text
