@@ -20,7 +20,7 @@ MAINS=SysConf.cc untouch.cc findBuildTag.cc
 AUXDIR=share/RAVL/QMake
 
 AUXFILES =  QMake.mk \
-  Definitions.mk Main.mk MainDep.mk Util.mk rcs.mk Doc.mk Clean.mk \
+  Definitions.mk Main.mk MainDep.mk Doc.mk Clean.mk \
   Install.pl dummymain.c \
   Help.txt Defs.txt \
   BinDep.pl mkdefs.pl \

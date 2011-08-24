@@ -299,9 +299,6 @@ MAKEMO=$(MAKESM) -f $(MAKEHOME)/Main.mk
 MAKECL=$(MAKESM) -f $(MAKEHOME)/Clean.mk
 
 # Clean up makefile.
-MAKEUT=$(MAKESM) -f $(MAKEHOME)/Util.mk
-
-# Clean up makefile.
 MAKEDC=$(MAKESM) -f $(MAKEHOME)/Doc.mk
 
 # With Show it prefix.
@@ -310,7 +307,6 @@ SMAKESM=+ $(SHOWIT)$(MAKESM)
 SMAKEMD=+ $(SHOWIT)$(MAKEMD)
 SMAKEMO=+ $(SHOWIT)$(MAKEMO)
 SMAKECL=+ $(SHOWIT)$(MAKECL)
-SMAKEUT=+ $(SHOWIT)$(MAKEUT)
 SMAKEDC=+ $(SHOWIT)$(MAKEDC)
 
 

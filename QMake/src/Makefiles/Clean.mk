@@ -89,4 +89,3 @@ subdirs:
 	  fi  \
 	done
 
-#include $(MAKEHOME)/rcs.mk

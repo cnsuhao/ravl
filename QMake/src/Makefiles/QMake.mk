@@ -79,7 +79,7 @@ endif
 
 .PHONY : all depend opt qopt qdb develop qd distclean \
  clean pack unpack org help isdep srcp srcd org orgopt orgdebug chead \
- lib_info defs mdoc notes qc qcheck src mirror srcinst doconly log \
+ lib_info defs mdoc notes qc qcheck src doconly log \
  fulldoc fullcheck fullsrc fulltest fullbuild \
  check checkshared checkne checksharedne shared ne sharedne \
  debug debugshared debugne debugsharedne ds dsne \
@@ -96,18 +96,10 @@ endif
 
 # Make with dependancies
 
-ifdef MIRROR
-all: mirror
-else
- ifdef CIMSG
-all: ci
- else
-  ifdef VAR
+ifdef VAR
 all: novar
-  else
+else
 all: check
-  endif
- endif
 endif
 allns: all
 
@@ -507,27 +499,6 @@ fulldoc:
 mkdef:
 	$(MAKEDEFS) -i .
 
-##########################################################
-# Util
-
-mirror:
-	$(SMAKEUT) mirror
-
-srcinst:
-	$(SMAKEUT) srcinst
-
-listoff:
-	$(SMAKEUT) listoff
-
-listco:
-	$(SMAKEUT) listco
-
-listfix:
-	$(SMAKEUT) listfix
-
-listlocked:
-	$(SMAKEUT) listlocked
-
 ################################
 # Admin
 
@@ -557,15 +528,6 @@ lib_info:
 
 info:
 	$(SMAKEMO) info
-
-udchangelog:
-	$(SMAKEUT) udchangelog
-
-co:
-	$(SMAKEUT) co
-
-ci:
-	$(SMAKEUT) ci
 
 pack:
 	$(SMAKEMO) NOINCDEFS=1 pack
