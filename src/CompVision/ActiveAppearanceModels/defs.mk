@@ -4,7 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/CompVision/ActiveAppearanceModels/defs.mk"
 
 DESCRIPTION = Active appearance models
@@ -36,10 +35,10 @@ MUSTLINK = AAMActiveAppearanceModelMustLink.cc
 
 PLIB = RavlAAM
 
-USESLIBS = RavlCore RavlImage RavlImageProc  RavlMath RavlOS RavlPatternRec RavlOptimise \
- RavlIO Optimisation 
+USESLIBS = RavlCore RavlImage RavlImageProc RavlMath RavlOS RavlPatternRec RavlOptimise \
+ RavlIO Optimisation RavlGUI2D
 
-PROGLIBS = RavlImageIO RavlExtImgIO RavlMathIO RavlGUI.opt RavlDPDisplay.opt RavlImgIOV4L2.opt RavlGUI2D
+PROGLIBS = RavlImageIO RavlExtImgIO RavlMathIO RavlDPDisplay.opt RavlImgIOV4L2.opt
 
 EHT = AAM.html
 
