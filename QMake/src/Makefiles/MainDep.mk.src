@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -11,11 +11,11 @@
 
 .PRECIOUS : %.def 
 
-ifndef MAKEHOME
-  MAKEHOME=.
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=/Set/During/Staging/Process
 endif
 
-include $(MAKEHOME)/Main.mk
+include $(QMAKE_MAKEFILES)/Main.mk
 
 -include $(TARG_DEPEND)
 

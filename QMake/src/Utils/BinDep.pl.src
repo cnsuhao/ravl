@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!@PERL@
 
 @searchDirs = ('/usr/lib64', '/usr/lib', '/lib' );
 @ignoreLibs = {"m","c"};

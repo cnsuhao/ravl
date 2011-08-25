@@ -1,0 +1,350 @@
+# @configure_input@
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2011, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# JFi:To Do: Add StageDoc InstallDoc
+
+
+# Initial set-up
+
+# Include QMake configuration to pick up local tool definitions (MKDIR_P, etc)
+include @abs_top_builddir@/Config.QMake
+
+# Include site-tailored standard GNU installation variables
+include @abs_top_builddir@/Targets.QMake
+
+# Define the staging area (the location of the intermediate, configured but 
+# un-installed, QMake).
+#
+ifndef $(STAGING)
+  STAGING=@abs_builddir@
+endif
+# This variable is also used in combination with setting bindir, datadir, et al
+# to provide a local copy for building any particular package when QMake is not
+# currently installed. In this situation, the package build process will run
+# something of the form:
+#
+#     make -f $(PKG_HOME)/QMake/Makefile DESTDIR=staging
+#            bindir=$(PKG_HOME)/local/QMake/bin
+#               datadir=$(PKG_HOME)/local
+#                  STAGING=$(PKG_HOME)/local/QMake
+#                     sysconfdir=$(PKG_HOME)
+#
+# DESTDIR=staging is neccessary to prevent make complaining because this 
+# effectivly sets the staging and installation targets to be the same. This is
+# not otherwise as issue as we only need to perform the staging stage, not the
+# install phase. As data files are automatically placed in a QMake subdirectory
+# there is no trailing /QMake on the setting for datadir. As the main config
+# files (Config.QMake & Targets.QMake) are not recreated under the staging
+# directory, sysconfdir is set to $(PKG_DIR) to pick up the original files 
+# created by QMake's configure process (in $(PKG_HOME)/QMake as we always append
+# /QMake to all installation paths execp bindir)
+
+# Location of the QMake source
+ifndef $(SRC)
+  SRC=@abs_srcdir@/src
+endif
+
+
+# Determine the list of QMake makefiles
+#
+# -  List all *.mk.src makefiles (ingnore any defs.mk) in the QMake Makefiles
+#    directories (generic makefiles in $(SRC)/Makefiles and package specific
+#    ones under $(SRC)/Packages/$(PKG_NAME)/Makefiles). Strip the trailing .src
+#    from the pathnames.
+MAKEFILE_LIST=$(patsubst %.src,%,$(filter-out defs.mk, $(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Packages/*/Makefiles/*.mk.src))))
+
+
+
+
+# Main body of Makefile
+
+
+
+# Default target just prepares the staged version
+default: StageQMake
+	@:
+
+
+# Targets for preparing QMake source in the staging area
+
+StageQMake: ProcessMakefiles StageUtils StageSupport StageAB
+	@:
+# The configuration files do not get staged as install directly uses the live 
+# version (these files are unmodified by the staging process so a second copy
+# is unnecessary and, in fact, undesirable)
+# 
+
+
+
+# ProcessMakefiles
+#      - turn source copy into deployable makefiles held in the staging area
+ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(MAKEFILE_LIST))
+	@:
+
+# Define how to make the staged copy of each makefile
+#
+# - Set QMAKE_xxx to the final installation path ($(datadir)/Makefiles).
+#   We cannot use the standard installation variable in the makefile
+#   because if we did, QMake would start looking for its makefiles in 
+#   the datadir of the package it was building rather than its own 
+#   deployed directory
+#
+define MAKE_MAKEFILE
+$(STAGING)/$(1): $(SRC)/$(1).src
+	$(MKDIR_P) $(STAGING)/$(dir $(1))
+	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
+	    -e 's!QMAKE_SUPPORT=/Set/During/Staging/Process!QMAKE_SUPPORT=$(datadir)/QMake/Support!g' \
+	    -e 's!QMAKE_PACKAGES=/Set/During/Staging/Process!QMAKE_PACKAGES=$(datadir)/QMake/Packages!g' \
+	    -e 's!QMAKE_UTILS=/Set/During/Staging/Process!QMAKE_UTILS=$(bindir)!g' \
+	    -e 's!QMAKE_CONFIGFILES=/Set/During/Staging/Process!QMAKE_CONFIGFILES=$(sysconfdir)/QMake!g' \
+            $(SRC)/$(1).src > $(STAGING)/$(1)
+endef
+
+$(foreach makefile,$(MAKEFILE_LIST),$(eval $(call MAKE_MAKEFILE,$(makefile))))
+
+
+
+# Stage Utils
+#      - Copy scripts across and build compiled binaries into the staging area
+StageUtils: $(STAGING)/bin BuildUtils StagePerl StageShScripts
+	@:
+
+$(STAGING)/bin:
+	$(MKDIR_P) $@
+
+
+
+# Build compiled utilities (into staging area)
+BuildUtils: $(STAGING)/bin $(STAGING)/bin/SysConf $(STAGING)/bin/findBuildTag  $(STAGING)/bin/untouch 
+	@:
+
+$(STAGING)/bin/SysConf: $(SRC)/Utils/SysConf.cc
+	$(CXX) $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $? -o $@
+
+$(STAGING)/bin/findBuildTag: $(SRC)/Utils/findBuildTag.cc
+	$(CXX) $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $? -o $@
+
+$(STAGING)/bin/untouch: $(SRC)/Utils/untouch.cc
+	$(CXX) $(CCPPFLAGS) $(CCFLAGS) $(INCLUDES) $? -o $@
+
+
+
+# Stage Perl scripts
+StagePerl: $(STAGING)/bin $(STAGING)/bin/BinDep.pl $(STAGING)/bin/mkdefs.pl $(STAGING)/bin/QLibs.pl
+	@:
+
+$(STAGING)/bin/BinDep.pl: $(SRC)/Utils/BinDep.pl.src
+	sed -e 's![@]PERL[@]!$(PERL)!g' \
+                $(SRC)/Utils/BinDep.pl.src > $(STAGING)/bin/BinDep.pl
+
+$(STAGING)/bin/mkdefs.pl: $(SRC)/Utils/mkdefs.pl.src
+	sed -e 's![@]PERL[@]!$(PERL)!g' \
+                $(SRC)/Utils/mkdefs.pl.src > $(STAGING)/bin/mkdefs.pl
+
+$(STAGING)/bin/QLibs.pl: $(SRC)/Utils/QLibs.pl.src
+	sed -e 's![@]PERL[@]!$(PERL)!g' \
+                $(SRC)/Utils/QLibs.pl.src > $(STAGING)/bin/QLibs.pl
+
+
+
+# Stage shell scripts
+StageShScripts: $(STAGING)/bin $(STAGING)/bin/qm $(STAGING)/bin/QLibs
+	@:
+
+$(STAGING)/bin/qm: $(SRC)/Utils/qm.sh.src 
+	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES $(datadir)/QMake/Makefiles!g' \
+            -e 's![@]MAKE[@]!$(MAKE)!g' \
+	    -e 's![@]SHELL[@]!/bin/sh!g' \
+                $(SRC)/Utils/qm.sh.src > $(STAGING)/bin/qm
+
+$(STAGING)/bin/QLibs: $(SRC)/Utils/QLibs.sh.src 
+	sed -e 's![@]SHELL[@]!/bin/sh!g' \
+	    -e 's![@]PERL[@]!$(PERL)!g' \
+	    -e 's!QMAKE_UTILS=/Set/During/Staging/Process!QMAKE_UTILS=$(bindir)!g' \
+                $(SRC)/Utils/QLibs.sh.src > $(STAGING)/bin/QLibs
+
+
+
+# Stage QMake support files
+StageSupport: $(STAGING)/Support $(STAGING)/Support/dummymain.c $(STAGING)/Support/Defs.txt $(STAGING)/Support/qmake.cshrc $(STAGING)/Support/qmake.sh $(STAGING)/Support/Help.txt
+	@:
+
+$(STAGING)/Support:
+	$(MKDIR_P) $@
+
+$(STAGING)/Support/dummymain.c:
+	$(INSTALL_DATA) $(SRC)/Support/dummymain.c $(STAGING)/Support/dummymain.c
+
+$(STAGING)/Support/Defs.txt:
+	$(INSTALL_DATA) $(SRC)/Support/Defs.txt $(STAGING)/Support/Defs.txt
+
+$(STAGING)/Support/qmake.cshrc:
+	sed -e 's!QMAKE_MAKEFILES /Set/During/Staging/Process!QMAKE_MAKEFILES $(datadir)/QMake/Makefiles!g' \
+            -e 's![@]MAKE[@]!$(MAKE)!g' \
+                $(SRC)/Support/qmake.cshrc.src > $(STAGING)/Support/qmake.cshrc
+
+$(STAGING)/Support/qmake.sh:
+	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
+            -e 's![@]MAKE[@]!$(MAKE)!g' \
+                $(SRC)/Support/qmake.sh.src > $(STAGING)/Support/qmake.sh
+
+$(STAGING)/Support/Help.txt:
+	$(INSTALL_DATA) $(SRC)/Support/Help.txt $(STAGING)/Support/Help.txt
+
+
+
+# Stage AutoBuild
+StageAB: $(STAGING)/AutoBuild $(STAGING)/AutoBuild/AutoBuild.pl $(STAGING)/AutoBuild/AutoBuild.sample.conf
+	@:
+
+$(STAGING)/AutoBuild:
+	$(MKDIR_P) $@
+
+$(STAGING)/AutoBuild/AutoBuild.pl: $(SRC)/AutoBuild/AutoBuild.pl.src
+	sed -e 's![@]PERL[@]!$(PERL)!g' \
+                $(SRC)/AutoBuild/AutoBuild.pl.src > $(STAGING)/AutoBuild/AutoBuild.pl
+
+$(STAGING)/AutoBuild/AutoBuild.sample.conf: $(SRC)/AutoBuild/AutoBuild.sample.conf
+	$(INSTALL_DATA) $(SRC)/AutoBuild/AutoBuild.sample.conf $(STAGING)/AutoBuild/AutoBuild.sample.conf
+
+
+
+
+
+
+
+# Targets for installing QMake
+
+install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallAB
+# JFi:To Do: Add InstallDoc
+
+
+InstallConfig: $(DESTDIR)$(sysconfdir)/QMake $(DESTDIR)$(sysconfdir)/QMake/Config.QMake $(DESTDIR)$(sysconfdir)/QMake/Targets.QMake
+
+$(DESTDIR)$(sysconfdir)/QMake:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(sysconfdir)/QMake/Config.QMake: @abs_top_builddir@/Config.QMake
+	$(INSTALL_DATA)  @abs_top_builddir@/Config.QMake $(DESTDIR)$(sysconfdir)/QMake/Config.QMake
+
+
+$(DESTDIR)$(sysconfdir)/QMake/Targets.QMake: @abs_top_builddir@/Targets.QMake
+	$(INSTALL_DATA) @abs_top_builddir@/Targets.QMake $(DESTDIR)$(sysconfdir)/QMake/Targets.QMake
+
+
+
+InstallMakefiles: $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(MAKEFILE_LIST)) 
+
+# Define how to install each individual makefile
+define INSTALL_MAKEFILE
+$(DESTDIR)$(datadir)/QMake/$(1):
+	$(MKDIR_P) $(DESTDIR)$(datadir)/QMake/$(dir $(1))
+	$(INSTALL_DATA) $(STAGING)/$(1) $(DESTDIR)$(datadir)/QMake/$(1)
+endef
+
+$(foreach makefile,$(MAKEFILE_LIST),$(eval $(call INSTALL_MAKEFILE,$(makefile))))
+
+
+
+InstallUtils: InstallBuiltUtils InstallPerl InstallScripts
+	@:
+
+InstallBuiltUtils: $(DESTDIR)$(bindir) $(DESTDIR)$(bindir)/findBuildTag $(DESTDIR)$(bindir)/SysConf $(DESTDIR)$(bindir)/untouch
+	@:
+
+InstallPerl: $(DESTDIR)$(bindir) $(DESTDIR)$(bindir)/BinDep.pl $(DESTDIR)$(bindir)/mkdefs.pl $(DESTDIR)$(bindir)/QLibs.pl
+	@:
+
+InstallScripts: $(DESTDIR)$(bindir) $(DESTDIR)$(bindir)/qm $(DESTDIR)$(bindir)/QLibs
+	@:
+
+$(DESTDIR)$(bindir):
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(bindir)/BinDep.pl: $(STAGING)/bin/BinDep.pl
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/BinDep.pl $(DESTDIR)$(bindir)/BinDep.pl
+
+$(DESTDIR)$(bindir)/findBuildTag: $(STAGING)/bin/findBuildTag
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/findBuildTag $(DESTDIR)$(bindir)/findBuildTag
+
+$(DESTDIR)$(bindir)/mkdefs.pl: $(STAGING)/bin/mkdefs.pl
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/mkdefs.pl $(DESTDIR)$(bindir)/mkdefs.pl
+
+$(DESTDIR)$(bindir)/qm: $(STAGING)/bin/qm
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/qm $(DESTDIR)$(bindir)/qm
+
+$(DESTDIR)$(bindir)/QLibs: $(STAGING)/bin/QLibs
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/QLibs $(DESTDIR)$(bindir)/QLibs
+
+$(DESTDIR)$(bindir)/QLibs.pl: $(STAGING)/bin/QLibs.pl
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/QLibs.pl $(DESTDIR)$(bindir)/QLibs.pl
+
+$(DESTDIR)$(bindir)/SysConf: $(STAGING)/bin/SysConf
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/SysConf $(DESTDIR)$(bindir)/SysConf
+
+$(DESTDIR)$(bindir)/untouch: $(STAGING)/bin/untouch
+	 $(INSTALL_PROGRAM) $(STAGING)/bin/untouch $(DESTDIR)$(bindir)/untouch
+
+
+
+# Install QMake support files
+InstallSupport: $(DESTDIR)$(datadir)/QMake/Support $(DESTDIR)$(datadir)/QMake/Support/dummymain.c $(DESTDIR)$(datadir)/QMake/Support/Defs.txt
+	@:
+
+$(DESTDIR)$(datadir)/QMake/Support:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(datadir)/QMake/Support/dummymain.c:
+	$(INSTALL_DATA) $(STAGING)/Support/dummymain.c $(DESTDIR)$(datadir)/QMake/Support/dummymain.c
+
+$(DESTDIR)$(datadir)/QMake/Support/Defs.txt:
+	$(INSTALL_DATA) $(STAGING)/Support/Defs.txt $(DESTDIR)$(datadir)/QMake/Support/Defs.txt
+
+
+
+# Install AutoBuild
+InstallAB: $(DESTDIR)$(bindir) $(DESTDIR)$(bindir)/AutoBuild.pl $(DESTDIR)$(sysconfdir)/QMake $(DESTDIR)$(sysconfdir)/QMake/AutoBuild.sample.conf
+
+$(DESTDIR)$(bindir)/AutoBuild.pl: $(STAGING)/AutoBuild/AutoBuild.pl
+	$(INSTALL_PROGRAM) $(STAGING)/AutoBuild/AutoBuild.pl $(DESTDIR)$(bindir)/AutoBuild.pl
+
+$(DESTDIR)$(sysconfdir)/QMake/AutoBuild.sample.conf: $(STAGING)/AutoBuild/AutoBuild.sample.conf
+	$(INSTALL_DATA) $(STAGING)/AutoBuild/AutoBuild.sample.conf $(DESTDIR)$(sysconfdir)/QMake/AutoBuild.sample.conf
+
+
+# Basic debug information
+info:
+	@echo
+	@echo Effective Makefile settings...
+	@echo
+	@echo Source directory:
+	@echo "    [ $(SRC) ]"
+	@echo
+	@echo Staging directory:
+	@echo "    [ $(STAGING) ]"
+	@echo
+	@echo Makefile list:
+	@echo "    [ $(MAKEFILE_LIST) ]"
+	@echo
+	@echo GNU standard installation variables:
+	@echo "    DESTDIR         [ $(DESTDIR) ]"
+	@echo "    prefix          [ $(prefix) ]"
+	@echo "    datarootdir     [ $(datarootdir) ]"
+	@echo "    datadir         [ $(datadir) ]"
+	@echo "    sysconfdir      [ $(sysconfdir) ]"
+	@echo "    sharedstatedir  [ $(sharedstatedir) ]"
+	@echo "    localstatedir   [ $(localstatedir) ]"
+	@echo "    includedir      [ $(includedir) ]"
+	@echo "    oldincludedir   [ $(oldincludedir) ]"
+	@echo "    exec_prefix     [ $(exec_prefix) ]"
+	@echo "    bindir          [ $(bindir) ]"
+	@echo "    libdir          [ $(libdir) ]"
+	@echo "    libexecdir      [ $(libexecdir) ]"
+	@echo "    sbindir         [ $(sbindir) ]"
+	@echo "    docdir          [ $(docdir) ]"
+	@echo
+

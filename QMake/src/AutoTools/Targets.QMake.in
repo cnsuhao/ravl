@@ -1,0 +1,179 @@
+# @configure_input@
+# Declare site defaults for GNU standard installation variables
+
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2011, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+
+#$(DESTDIR) only user-initialised
+#       - Specifies a pseudo root for packaging (or testing) purposes
+#         Only effects destinations that explicitly use this variable in
+#         the receipe.
+
+
+
+ifndef prefix
+  prefix=@prefix@
+endif
+#       - Specifies the base location for installing all read-only;
+#         machine-independant files. Automatically prefixes most of the
+#         following variables. Default is /usr/local
+
+ifndef datarootdir
+datarootdir=@datarootdir@
+endif
+#       - Specifies the base location for installing machine-independant;
+#         read-only data. Automatically prefixes the variables for this
+#         type of information. Default is $(prefix)/share.
+
+
+ifndef datadir
+datadir=@datadir@
+endif
+#       - Specifies the base location for installing machine-independant;
+#         read-only data. Usually set to $(datarootdir), but can point
+#         to a different location. In use, a package-specific directory
+#         should be used under this location (use $(datadir)/$(package-name)
+#         os some other suitable construct).
+
+
+ifndef docdir
+docdir=@docdir@
+endif
+#       - Specifies the base location for installing all documentation files
+#         bar Info files. In use, this setting should always be used with a
+#         package-specific directory suffix e.g. $(docdir)/$(package-name). 
+#         Default value is $(datarootdir)/doc.
+
+
+ifndef infodir
+infodir=@infodir@
+endif
+#       - Specifies the target location in which to install documentation in
+#         the Info files format. Default is $(datarootdir)/info.
+
+
+ifndef htmldir
+htmldir=@htmldir@
+endif
+ifndef dvidir
+dvidir=@dvidir@
+endif
+ifndef pdfdir
+pdfdir=@pdfdir@
+endif
+ifndef psdir
+psdir=@psdir@
+endif
+#       - Specify the base location for installing documentation of the
+#         individual, specified formats. The default value, for each of
+#         these variables, is $(docdir). If installing localised versions
+#         of the documentation, suffix these variables with the name of
+#         the appropriate locale sub-directry.
+
+
+ifndef mandir
+mandir=@mandir@
+endif
+#       - Specifies the base location for installing Man manual pages. The
+#         default is $(datarootdir)/man and individual manual entries will
+#         usually be installed in $(mandir)/manN where N is the digit that
+#         represents to which particular section of the manual that the page
+#         belongs. The manual page itself will most likely also be suffixed 
+#         with the number indicating the section to which it belongs.
+
+
+ifndef localdir
+localedir=@localedir@
+endif
+#       - Specifies the base location for locale-specific message catalogues
+#         The default value is $(datarootdir)/locale and, in use, should be
+#         suffixed by the directory names of the individual locale being
+#         installed (e.g. $datarootdir/local/es, $datarootdir/local/zh, etc.)
+
+
+
+ifndef sysconfdir
+sysconfdir=@sysconfdir@
+endif
+#       - Specifies the target location in which to install machine-specific;
+#         read-only; ASCII configuration files. Default is $(prefix)/etc.
+
+
+ifndef sharedstatedir
+sharedstatedir=@sharedstatedir@
+endif
+#       - Specifies the base location for machine-independant; modifiable
+#         data files. Default is $(prefix)/com.
+
+
+ifndef localstatedir
+localstatedir=@localstatedir@
+endif
+#       - Specifies the base location for machine specific; modifiable data
+#         files. Default is $(prefix)/var.
+
+
+
+
+ifndef includedir
+includedir=@includedir@
+endif
+#       - Specifies the base location for installing header files when using
+#         a GNU compiler (or one that supports the alternative include
+#         directory  used). Default is $(prefix)/include.
+
+
+ifndef oldincludedir
+oldincludedir=@oldincludedir@
+endif
+#       - Specifies the base location for installing header files when using
+#         a compiler that does not support the alternative include directory
+#         set by $(includedir). Usual values are /usr/include or null. GNU
+#         coding standards suggest, if $(oldincludedir) is set, a package's 
+#         header files should be installed under both $(oldincludedir) and
+#         $(includedir).
+
+
+
+ifndef exec_prefix
+exec_prefix=@exec_prefix@
+endif
+#       - Specifies the base location for installing all read-only;
+#         machine-dependant files. Automatically prefixes the following
+#         variables. Default setting is $(prefix) but may point elsewhere.
+
+
+ifndef bindir
+bindir=@bindir@
+endif
+#       - Specifies the target location in which to install user-runable;
+#         machine-specific executables. Defaults to $(exec_prefix)/bin.
+
+
+ifndef sbindir
+sbindir=@sbindir@
+endif
+#       - Specifies the target location in which to install machine-specific;
+#         administrator-runable executables. Default is $(exec_prefix)/sbin.
+
+
+ifndef libexecdir
+libexecdir=@libexecdir@
+endif
+#       - Specifies the base location to receive executables that are only
+#         called from other programs. Default value $(exec_prefix)/libexec.
+#         When installing to this directory, suffix $(libexecdir) with a
+#         /$(package-name) directory.
+
+
+ifndef libdir
+libdir=@libdir@
+endif
+#       - Specifies the base location for installing both object files and
+#         libraries. The default value is $(exec_prefix)/lib
+
+

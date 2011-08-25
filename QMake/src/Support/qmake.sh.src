@@ -1,0 +1,14 @@
+
+# Where is QMake installed ?
+QMAKE_MAKEFILES=/Set/During/Staging/Process
+#define project area if not already set (for binaries, libs, *.hh etc.)
+if test -z ${PROJECT_OUT} ; then
+  PROJECT_OUT=${HOME}/build ;
+fi
+PATH=${PATH}\:${PROJECT_OUT}/bin ;
+
+# The USERBUILD=1 in the following causes USERLIBS = Auto to be used by default.
+
+# can use this alias for making
+alias qm='@MAKE@ -f ${QMAKE_MAKEFILES}/QMake.mk USERBUILD=1'
+

@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -11,6 +11,33 @@
 PAR_MAKE=--jobs=$(PROCS)
 
 # End of bodges
+
+
+# Declare location of QMake files
+
+# QMake configuration files
+ifndef QMAKE_CONFIGFILES
+  QMAKE_CONFIGFILES=/Set/During/Staging/Process
+endif
+
+# QMAKE_MAKEFILES has to be defined in each QMake makefile as it is needed to
+# locate this file.
+
+# Package specific QMake files (in same tree structure as generic files)
+ifndef QMAKE_PACKAGES
+  QMAKE_PACKAGES=/Set/During/Staging/Process
+endif
+
+# Misc QMake support files
+ifndef QMAKE_SUPPORT
+  QMAKE_SUPPORT=/Set/During/Staging/Process
+endif
+
+# Utilities called by QMake
+ifndef QMAKE_UTILS
+  QMAKE_UTILS=/Set/During/Staging/Process
+endif
+
 
 CPPFLAGS = -DPROJECT_OUT=\"$(PROJECT_OUT)\" -DCPUG_ARCH=\"$(ARC)\"
 CCPPFLAGS = -DPROJECT_OUT=\"$(PROJECT_OUT)\" -DCPUG_ARCH=\"$(ARC)\"
@@ -25,6 +52,9 @@ LOCALBIN=$(INSTALLHOME)/bin/utils/opt/bin
 
 NOLIBRARYPRELINK=1
 
+
+
+include $(QMAKE_CONFIGFILES)/Config.QMake
 
 ifdef CONFIGFILE
   include $(CONFIGFILE)
@@ -67,14 +97,6 @@ AUXFILES:=$(strip $(AUXFILES))#
 endif
 
 # Directories used in making.
-
-ifndef MAKEHOME
-  MAKEHOME=/path/set/by/QMake
-endif
-
-ifndef INSTALLHOME
-  INSTALLHOME = $(MAKEHOME)/../../..#
-endif
 
 
 # Select required ANSI setting (individual over-ride is by ANSIFLAG for
@@ -279,7 +301,7 @@ TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend/$(PACKAGE)/$(BASENAME)/.header
 
 # Parallel Jobs
 ifndef PROCS
-  SYSCONF:=$(LOCALBIN)/SysConf
+  SYSCONF:=$(QMAKE_UTILS)/SysConf
 
   PROCS=$(shell $(SYSCONF) -1)
 endif
@@ -290,16 +312,16 @@ MAKESM=$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(DEF_INC)
 #$(PAR_MAKE)
 
 # Make with dependancies
-MAKEMD=$(MAKESM) -f $(MAKEHOME)/MainDep.mk
+MAKEMD=$(MAKESM) -f $(QMAKE_MAKEFILES)/MainDep.mk
 
 # Make with dependancies
-MAKEMO=$(MAKESM) -f $(MAKEHOME)/Main.mk
+MAKEMO=$(MAKESM) -f $(QMAKE_MAKEFILES)/Main.mk
 
 # Clean up makefile.
-MAKECL=$(MAKESM) -f $(MAKEHOME)/Clean.mk
+MAKECL=$(MAKESM) -f $(QMAKE_MAKEFILES)/Clean.mk
 
-# Clean up makefile.
-MAKEDC=$(MAKESM) -f $(MAKEHOME)/Doc.mk
+# Documentation makefile.
+MAKEDC=$(MAKESM) -f $(QMAKE_MAKEFILES)/Doc.mk
 
 # With Show it prefix.
 

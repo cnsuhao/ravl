@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!@PERL@
 
 # Author: Kieron Messer
 # Date  : August 2000

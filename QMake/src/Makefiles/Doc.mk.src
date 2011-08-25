@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -11,13 +11,11 @@
 #! rcsid="$Id: Doc.mk 6058 2007-02-13 11:36:50Z ees1wc $"
 #! file="Ravl/QMake/Doc.mk"
 
-ifndef MAKEHOME
-  MAKEHOME=/path/set/by/QMake
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=/Set/During/Staging/Process
 endif
 
-include $(MAKEHOME)/Definitions.mk
-
-AUTOTEMPL=$(MAKEHOME)/../AutoDoc
+include $(QMAKE_MAKEFILES)/Definitions.mk
 
 SLIB:=$(strip $(SLIB))
 
@@ -76,7 +74,7 @@ TARG_DOCNODE=$(patsubst %,$(INST_DOCNODE)/%,$(DOCNODE))
 	$(SHOWIT)if [ ! -d $* ] ; then \
 	  echo "--- Making dir $* "; \
 	  $(MKDIR_P) $* ; \
-	  $(TOUCH) -r $(MAKEHOME)/Main.mk $*/.dir ; \
+	  $(TOUCH) -r $(QMAKE_MAKEFILES)/Main.mk $*/.dir ; \
 	else  \
 	  if [ ! -f $*/.dir ] ; then \
 	    $(TOUCH) -r $* $*/.dir ; \
@@ -100,7 +98,7 @@ docinit: docfiles
 	+ $(SHOWIT)for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
 	   echo "------ Documenting $(DPATH)/"$$SUBDIR; \
-	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) docinit -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(MAKEHOME)/Doc.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) docinit -C $$SUBDIR DPATH=$(DPATH)/$$SUBDIR -f $(QMAKE_MAKEFILES)/Doc.mk $(DEF_INC) ; \
 	  fi  \
 	done
 

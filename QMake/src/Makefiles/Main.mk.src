@@ -1,16 +1,16 @@
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 # file-header-ends-here
 #! file="Ravl/QMake/Main.mk"
 
-ifndef MAKEHOME
-  MAKEHOME=/path/set/by/QMake
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=/Set/During/Staging/Process
 endif
 
-include $(MAKEHOME)/Definitions.mk
+include $(QMAKE_MAKEFILES)/Definitions.mk
 
 export TARGET
 
@@ -20,23 +20,14 @@ ifdef USERBUILD
  USESLIBS = Auto
 endif
 
-# include external project information
-
--include $(MAKEHOME)/*.qpr $(INSTALLHOME)/lib/RAVL/libdep/*.qpr
-
-# Dummy rule to stop make complaining when no project files are
-# installed the project file
-$(INSTALLHOME)/lib/RAVL/libdep/*.qpr:
-	@true;
-
 #########################
 # Setup defaults.
 
-BINDEP := $(PERL) $(MAKEHOME)/BinDep.pl
-QLIBS := $(PERL) $(MAKEHOME)/QLibs.pl
+BINDEP := $(PERL) $(QMAKE_UTILS)/BinDep.pl
+QLIBS := $(PERL) $(QMAKE_UTILS)/QLibs.pl
 
 
-UNTOUCH:=$(LOCALBIN)/untouch
+UNTOUCH:=$(QMAKE_UTILS)/untouch
 
 ###########################
 # Platform supported ?
@@ -476,7 +467,7 @@ endif
 	$(SHOWIT)if [ ! -d $* ] ; then \
 	  echo "--- Making dir $* "; \
 	  $(MKDIR_P) $* ; \
-	  $(TOUCH) -r $(MAKEHOME)/Main.mk $*/.dir ; \
+	  $(TOUCH) -r $(QMAKE_MAKEFILES)/Main.mk $*/.dir ; \
 	else  \
 	  if [ ! -f $*/.dir ] ; then \
 	    $(TOUCH) -r $* $*/.dir ; \
@@ -488,7 +479,7 @@ $(INST_GENBIN)/.dir:
 	$(SHOWIT)if [ ! -d $(INST_GENBIN) ] ; then \
 	  echo "--- Making dir $(INST_GENBIN) "; \
 	  $(MKDIR_P) $(INST_GENBIN) ; \
-	  $(TOUCH) -r $(MAKEHOME)/Main.mk $(INST_GENBIN)/.dir ; \
+	  $(TOUCH) -r $(QMAKE_MAKEFILES)/Main.mk $(INST_GENBIN)/.dir ; \
 	else  \
 	  if [ ! -f $(INST_GENBIN)/.dir ] ; then \
 	    $(TOUCH) -r $(INST_GENBIN) $(INST_GENBIN)/.dir ; \
@@ -630,11 +621,11 @@ $(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
 
 # Binary depends.
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(MAKEHOME)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(MAKEHOME)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
@@ -811,9 +802,9 @@ endif
 
 #$(TARG_JAVA)
 
-$(INST_LIB)/dummymain$(OBJEXT) :: $(MAKEHOME)/dummymain$(CEXT) $(INST_LIB)/.dir
+$(INST_LIB)/dummymain$(OBJEXT) :: $(QMAKE_SUPPORT)/dummymain$(CEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Compile internal dummymain$(OBJEXT) " ; \
-	$(CC) -c $(MAKEHOME)/dummymain$(CEXT) $(PKG_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
+	$(CC) -c $(QMAKE_SUPPORT)/dummymain$(CEXT) $(PKG_CFLAGS) $(CFLAGS) $(CPPFLAGS) -o $(INST_LIB)/dummymain$(OBJEXT)
 
 
 # This lib update is nasty but fast, especialy if you have many objects.

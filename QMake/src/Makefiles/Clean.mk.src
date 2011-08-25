@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -10,11 +10,11 @@
 #! rcsid="$Id: Clean.mk 5747 2006-07-19 07:57:14Z craftit $"
 #! file="Ravl/QMake/Clean.mk"
 
-ifndef MAKEHOME
-  MAKEHOME=/path/set/by/QMake
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=/Set/During/Staging/Process
 endif
 
-include $(MAKEHOME)/Definitions.mk
+include $(QMAKE_MAKEFILES)/Definitions.mk
 
 SLIB:=$(strip $(SLIB))
 
@@ -85,7 +85,7 @@ subdirs:
 	+ $(SHOWIT)echo "------ Cleaning $(ARC)/$(VAR)/$(BASENAME)   $(TARGET)" ; \
 	for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
 	  if [ -d $$SUBDIR ] ; then \
-	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR -f $(MAKEHOME)/Clean.mk $(DEF_INC) ; \
+	   $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(TARGET) TARGET=$(TARGET) -C $$SUBDIR -f $(QMAKE_MAKEFILES)/Clean.mk $(DEF_INC) ; \
 	  fi  \
 	done
 

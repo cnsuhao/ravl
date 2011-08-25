@@ -1,0 +1,6 @@
+#!@SHELL@
+QMAKE_MAKEFILES=/Set/During/Staging/Process
+if test -z ${PROJECT_OUT} ; then
+  PROJECT_OUT=${HOME}/build 
+fi
+@MAKE@ -f ${QMAKE_INSTALL}/QMake.mk USERBUILD=1 $*
