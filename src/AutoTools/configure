@@ -593,10 +593,12 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
+enable_option_checking=no
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 ALL_EXTERNAL_LIBS
 RESOURCES
+subdirs
 ARC
 SerialIO_SUPPORT
 RavlXMPP
@@ -795,6 +797,8 @@ PKG_DEBUG_CFLAGS
 PKG_CHECK_CFLAGS
 PKG_CCANSIFLAG
 PKG_CANSIFLAG
+NeededQMake
+WORKING_QMAKE
 MAKE
 RANLIB
 AR
@@ -957,7 +961,7 @@ YACC
 YFLAGS
 DOTpc_CFLAGS
 DOTpc_LIBS'
-
+ac_subdirs_all='QMake'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -2617,6 +2621,12 @@ trace ()
 
 #     End of shell functions
 
+
+# Initialisation
+
+# Reset list of external libraries
+#
+echo > ./ExtPkgSupp.$$
 
 # Main body of configure script
 
@@ -4725,6 +4735,19 @@ fi
 
 
 
+# Look for QMake
+#
+
+   # No installed QMake found, use one staged from the source included with the
+   # Ravl distribution. We will need to stage this copy, so add LocalQMake to
+   # the target for the required QMake builds
+   WORKING_QMAKE=$ac_abs_top_builddir/share/QMake
+   NeededQMake="LocalQMake QMake"
+
+
+
+
+
 # Set relevant flags dependant on the software tools we have found
 #
 
@@ -6607,6 +6630,7 @@ fi
 
 
 
+          echo libdc1394_SUPPORT=@libdc1394_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -6706,6 +6730,7 @@ fi
 
 
 
+          echo libAudioFile_SUPPORT=@libAudioFile_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -6805,6 +6830,7 @@ fi
 
 
 
+          echo libavc1394_SUPPORT=@libavc1394_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -6904,6 +6930,7 @@ fi
 
 
 
+          echo libCurl_SUPPORT=@libCurl_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7003,6 +7030,7 @@ fi
 
 
 
+          echo libDV_SUPPORT=@libDV_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7102,6 +7130,7 @@ fi
 
 
 
+          echo FFMPEGCDEC_SUPPORT=@FFMPEGCDEC_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7201,6 +7230,7 @@ fi
 
 
 
+          echo FFMPEGCONT_SUPPORT=@FFMPEGCONT_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7300,6 +7330,7 @@ fi
 
 
 
+          echo FFMPEGSWS_SUPPORT=@FFMPEGSWS_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7399,6 +7430,7 @@ fi
 
 
 
+          echo FFMPEGUTIL_SUPPORT=@FFMPEGUTIL_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7498,6 +7530,7 @@ fi
 
 
 
+          echo iksemel_SUPPORT=@iksemel_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7597,6 +7630,7 @@ fi
 
 
 
+          echo libglade2_SUPPORT=@libglade2_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7696,6 +7730,7 @@ fi
 
 
 
+          echo LibGnome_SUPPORT=@LibGnome_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7795,6 +7830,7 @@ fi
 
 
 
+          echo libGTK2_SUPPORT=@libGTK2_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7894,6 +7930,7 @@ fi
 
 
 
+          echo GTKGLExt_SUPPORT=@GTKGLExt_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -7993,6 +8030,7 @@ fi
 
 
 
+          echo Loudmouth_SUPPORT=@Loudmouth_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8092,6 +8130,7 @@ fi
 
 
 
+          echo OpenCV_SUPPORT=@OpenCV_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8191,6 +8230,7 @@ fi
 
 
 
+          echo libPNG_SUPPORT=@libPNG_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8290,6 +8330,7 @@ fi
 
 
 
+          echo libGL_SUPPORT=@libGL_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8389,6 +8430,7 @@ fi
 
 
 
+          echo libGLU_SUPPORT=@libGLU_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8488,6 +8530,7 @@ fi
 
 
 
+          echo OpenSceneGraph_SUPPORT=@OpenSceneGraph_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8587,6 +8630,7 @@ fi
 
 
 
+          echo RLog_SUPPORT=@RLog_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8686,6 +8730,7 @@ fi
 
 
 
+          echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -8785,6 +8830,7 @@ fi
 
 
 
+          echo devVideo4Linux2_SUPPORT=@devVideo4Linux2_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -9218,6 +9264,7 @@ fi
 
 
 
+          echo LibJasper_SUPPORT=@LibJasper_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -9651,6 +9698,7 @@ fi
 
 
 
+          echo JPEG_SUPPORT=@JPEG_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -10084,6 +10132,7 @@ fi
 
 
 
+          echo posixThreads_SUPPORT=@posixThreads_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -10517,6 +10566,7 @@ fi
 
 
 
+          echo LibTIFF_SUPPORT=@LibTIFF_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -10950,49 +11000,70 @@ fi
 
 
 
+          echo Zlib_SUPPORT=@Zlib_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
 
 avifile_SUPPORT=""
+echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libClipStationPro_SUPPORT=""
+echo libClipStationPro_SUPPORT=@libClipStationPro_SUPPORT@ >> ./ExtPkgSupp.$$
 
 LibDirectShow_SUPPORT=""
+echo LibDirectShow_SUPPORT=@LibDirectShow_SUPPORT@ >> ./ExtPkgSupp.$$
 
 dvdread_SUPPORT=""
+echo dvdread_SUPPORT=@dvdread_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libehs_SUPPORT=""
+echo libehs_SUPPORT=@libehs_SUPPORT@ >> ./ExtPkgSupp.$$
 
 uEyeSDK_SUPPORT=""
+echo uEyeSDK_SUPPORT=@uEyeSDK_SUPPORT@ >> ./ExtPkgSupp.$$
 
 LibGd_SUPPORT=""
+echo LibGd_SUPPORT=@LibGd_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libGuppi_SUPPORT=""
+echo libGuppi_SUPPORT=@libGuppi_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libmkl_SUPPORT=""
+echo libmkl_SUPPORT=@libmkl_SUPPORT@ >> ./ExtPkgSupp.$$
 
 LAPACK_SUPPORT=""
+echo LAPACK_SUPPORT=@LAPACK_SUPPORT@ >> ./ExtPkgSupp.$$
 
 MacOSXRunLoop_SUPPORT=""
+echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
 
 MacOSXVideoCapture_SUPPORT=""
+echo MacOSXVideoCapture_SUPPORT=@MacOSXVideoCapture_SUPPORT@ >> ./ExtPkgSupp.$$
 
 Meteor1_SUPPORT=""
+echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libmcrypt_SUPPORT=""
+echo libmcrypt_SUPPORT=@libmcrypt_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libmpeg_SUPPORT=""
+echo libmpeg_SUPPORT=@libmpeg_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libmpeg2_SUPPORT=""
+echo libmpeg2_SUPPORT=@libmpeg2_SUPPORT@ >> ./ExtPkgSupp.$$
 
 LibPython_SUPPORT=""
+echo LibPython_SUPPORT=@LibPython_SUPPORT@ >> ./ExtPkgSupp.$$
 
 SGIVL_SUPPORT=""
+echo SGIVL_SUPPORT=@SGIVL_SUPPORT@ >> ./ExtPkgSupp.$$
 
 SwigPython_SUPPORT=""
+echo SwigPython_SUPPORT=@SwigPython_SUPPORT@ >> ./ExtPkgSupp.$$
 
 UUIdTheo_SUPPORT=""
+echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 
 # FFMPEG and OpenGL are special cases as Ravl regards these as single entities
 # while the packages are provided in smaller components. Initial definitions
@@ -11410,6 +11481,7 @@ fi
 libffmpeg_SUPPORT=""
 libffmpeg_RavlLib="libRavlLibFFmpeg"
 
+echo libffmpeg_SUPPORT=@libffmpeg_SUPPORT@ >> ./ExtPkgSupp.$$
 
 # Now we consider OpenGL; full package is named OpenGL while existing
 # component libraries are libGL and libGLU
@@ -11664,6 +11736,7 @@ fi
 OpenGL_SUPPORT=""
 OpenGL_RavlLib="libRavlDPDisplay3d libRavlGUI3D"
 
+echo OpenGL_SUPPORT=@OpenGL_SUPPORT@ >> ./ExtPkgSupp.$$
 
 # If debugging, output what we've defined from the cmd-line (with defaults)
 if ( test X$DBG != X && test $DBG -ge 3 )
@@ -11989,6 +12062,7 @@ if test "X$GnuPlot" != X; then :
 fi
 
 
+echo GnuPlot_SUPPORT=@GnuPlot_SUPPORT@ >> ./ExtPkgSupp.$$
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "[$RESOURCES]"
 
@@ -13925,7 +13999,6 @@ echo >> ./Config.Package.in
 
 echo >> ./Config.Package.in
 echo >> ./Config.Package.in
-echo >> ./Config.Package.in
 
 # Apply additional requirements that affect the <Lib>_SUPPORT variables (drop
 # any libs that have unmet complex dependancies on other external libs or on
@@ -13968,25 +14041,47 @@ SerialIO_SUPPORT=libRavlSerialIO
 
 
 
+echo ParallelIO_SUPPORT=@ParallelIO_SUPPORT@ >> ./ExtPkgSupp.$$
 
+echo Ravl2dGUI_LIBS=@Ravl2dGUI_LIBS@ >> ./ExtPkgSupp.$$
 
+echo Ravl3d_LIBS=@Ravl3d_LIBS@ >> ./ExtPkgSupp.$$
 
+echo RavlAAM=@RavlAAM@ >> ./ExtPkgSupp.$$
 
+echo RavlAutoPort=@RavlAutoPort@ >> ./ExtPkgSupp.$$
 
+echo RavlCameraCal=@RavlCameraCal@ >> ./ExtPkgSupp.$$
 
+echo RavlChartDetector=@RavlChartDetector@ >> ./ExtPkgSupp.$$
 
+echo RavlClassWizard=@RavlClassWizard@ >> ./ExtPkgSupp.$$
 
+echo RavlDataServer=@RavlDataServer@ >> ./ExtPkgSupp.$$
 
+echo RavlDevAudio=@RavlDevAudio@ >> ./ExtPkgSupp.$$
 
+echo RavlDPDisplay=@RavlDPDisplay@ >> ./ExtPkgSupp.$$
 
+echo RavlExtImgIO=@RavlExtImgIO@ >> ./ExtPkgSupp.$$
 
+echo RavlGUI=@RavlGUI@ >> ./ExtPkgSupp.$$
 
+echo RavlImageProc=@RavlImageProc@ >> ./ExtPkgSupp.$$
 
+echo RavlLogic_LIBS=@RavlLogic_LIBS@ >> ./ExtPkgSupp.$$
 
+echo RavlNet=@RavlNet@ >> ./ExtPkgSupp.$$
 
+echo RavlRawVidIO=@RavlRawVidIO@ >> ./ExtPkgSupp.$$
 
+echo RavlVDF=@RavlVDF@ >> ./ExtPkgSupp.$$
 
+echo RavlVPlay=@RavlVPlay@ >> ./ExtPkgSupp.$$
 
+echo RavlXMPP=@RavlXMPP@ >> ./ExtPkgSupp.$$
+
+echo SerialIO_SUPPORT=@SerialIO_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
@@ -14335,6 +14430,23 @@ Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\(0-9*\).*'`
 esac
 
 
+# Add, to Config.Package.in, the initialisation of the make variables used by
+# SingleLib.mk. These have been recorded in ExtPkgSupp.$$ as this script has
+# been running; so, sort this file and append it with a suitable heading.
+echo >> ./Config.Package.in
+echo \# Optional Ravl sub-libraries that may or may not be included in the >> ./Config.Package.in
+echo \# single library>> ./Config.Package.in
+$SORT ./ExtPkgSupp.$$ >> ./Config.Package.in
+rm ./ExtPkgSupp.$$
+echo >> ./Config.Package.in
+echo >> ./Config.Package.in
+echo >> ./Config.Package.in
+
+# Configure the included copy of QMake
+
+
+subdirs="$subdirs QMake"
+
 
 
 
@@ -14342,13 +14454,7 @@ esac
 
 ac_config_files="$ac_config_files Config.Package"
 
-ac_config_files="$ac_config_files Makefile"
-
-ac_config_files="$ac_config_files share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in"
-
-ac_config_files="$ac_config_files share/RAVL/QMake/User.mk:src/QMake/User.mk.in"
-
-ac_config_files="$ac_config_files share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in"
+ac_config_files="$ac_config_files Makefile:src/AutoTools/Makefile.in"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -15052,10 +15158,7 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "Config.Package") CONFIG_FILES="$CONFIG_FILES Config.Package" ;;
-    "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "share/RAVL/QMake/SingleLib.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in" ;;
-    "share/RAVL/QMake/User.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/User.mk:src/QMake/User.mk.in" ;;
-    "share/RAVL/QMake/Recursive.mk") CONFIG_FILES="$CONFIG_FILES share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in" ;;
+    "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile:src/AutoTools/Makefile.in" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -15499,6 +15602,151 @@ if test "$no_create" != yes; then
   # Use ||, not &&, to avoid exiting from the if with $? = 1, which
   # would make configure fail if this is the last instruction.
   $ac_cs_success || as_fn_exit $?
+fi
+
+#
+# CONFIG_SUBDIRS section.
+#
+if test "$no_recursion" != yes; then
+
+  # Remove --cache-file, --srcdir, and --disable-option-checking arguments
+  # so they do not pile up.
+  ac_sub_configure_args=
+  ac_prev=
+  eval "set x $ac_configure_args"
+  shift
+  for ac_arg
+  do
+    if test -n "$ac_prev"; then
+      ac_prev=
+      continue
+    fi
+    case $ac_arg in
+    -cache-file | --cache-file | --cache-fil | --cache-fi \
+    | --cache-f | --cache- | --cache | --cach | --cac | --ca | --c)
+      ac_prev=cache_file ;;
+    -cache-file=* | --cache-file=* | --cache-fil=* | --cache-fi=* \
+    | --cache-f=* | --cache-=* | --cache=* | --cach=* | --cac=* | --ca=* \
+    | --c=*)
+      ;;
+    --config-cache | -C)
+      ;;
+    -srcdir | --srcdir | --srcdi | --srcd | --src | --sr)
+      ac_prev=srcdir ;;
+    -srcdir=* | --srcdir=* | --srcdi=* | --srcd=* | --src=* | --sr=*)
+      ;;
+    -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+      ac_prev=prefix ;;
+    -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+      ;;
+    --disable-option-checking)
+      ;;
+    *)
+      case $ac_arg in
+      *\'*) ac_arg=`$as_echo "$ac_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+      esac
+      as_fn_append ac_sub_configure_args " '$ac_arg'" ;;
+    esac
+  done
+
+  # Always prepend --prefix to ensure using the same prefix
+  # in subdir configurations.
+  ac_arg="--prefix=$prefix"
+  case $ac_arg in
+  *\'*) ac_arg=`$as_echo "$ac_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+  esac
+  ac_sub_configure_args="'$ac_arg' $ac_sub_configure_args"
+
+  # Pass --silent
+  if test "$silent" = yes; then
+    ac_sub_configure_args="--silent $ac_sub_configure_args"
+  fi
+
+  # Always prepend --disable-option-checking to silence warnings, since
+  # different subdirs can have different --enable and --with options.
+  ac_sub_configure_args="--disable-option-checking $ac_sub_configure_args"
+
+  ac_popdir=`pwd`
+  for ac_dir in : $subdirs; do test "x$ac_dir" = x: && continue
+
+    # Do not complain, so a configure script can configure whichever
+    # parts of a large source tree are present.
+    test -d "$srcdir/$ac_dir" || continue
+
+    ac_msg="=== configuring in $ac_dir (`pwd`/$ac_dir)"
+    $as_echo "$as_me:${as_lineno-$LINENO}: $ac_msg" >&5
+    $as_echo "$ac_msg" >&6
+    as_dir="$ac_dir"; as_fn_mkdir_p
+    ac_builddir=.
+
+case "$ac_dir" in
+.) ac_dir_suffix= ac_top_builddir_sub=. ac_top_build_prefix= ;;
+*)
+  ac_dir_suffix=/`$as_echo "$ac_dir" | sed 's|^\.[\\/]||'`
+  # A ".." for each directory in $ac_dir_suffix.
+  ac_top_builddir_sub=`$as_echo "$ac_dir_suffix" | sed 's|/[^\\/]*|/..|g;s|/||'`
+  case $ac_top_builddir_sub in
+  "") ac_top_builddir_sub=. ac_top_build_prefix= ;;
+  *)  ac_top_build_prefix=$ac_top_builddir_sub/ ;;
+  esac ;;
+esac
+ac_abs_top_builddir=$ac_pwd
+ac_abs_builddir=$ac_pwd$ac_dir_suffix
+# for backward compatibility:
+ac_top_builddir=$ac_top_build_prefix
+
+case $srcdir in
+  .)  # We are building in place.
+    ac_srcdir=.
+    ac_top_srcdir=$ac_top_builddir_sub
+    ac_abs_top_srcdir=$ac_pwd ;;
+  [\\/]* | ?:[\\/]* )  # Absolute name.
+    ac_srcdir=$srcdir$ac_dir_suffix;
+    ac_top_srcdir=$srcdir
+    ac_abs_top_srcdir=$srcdir ;;
+  *) # Relative name.
+    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
+    ac_top_srcdir=$ac_top_build_prefix$srcdir
+    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
+esac
+ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
+
+
+    cd "$ac_dir"
+
+    # Check for guested configure; otherwise get Cygnus style configure.
+    if test -f "$ac_srcdir/configure.gnu"; then
+      ac_sub_configure=$ac_srcdir/configure.gnu
+    elif test -f "$ac_srcdir/configure"; then
+      ac_sub_configure=$ac_srcdir/configure
+    elif test -f "$ac_srcdir/configure.in"; then
+      # This should be Cygnus configure.
+      ac_sub_configure=$ac_aux_dir/configure
+    else
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: no configuration information is in $ac_dir" >&5
+$as_echo "$as_me: WARNING: no configuration information is in $ac_dir" >&2;}
+      ac_sub_configure=
+    fi
+
+    # The recursion is here.
+    if test -n "$ac_sub_configure"; then
+      # Make the cache file name correct relative to the subdirectory.
+      case $cache_file in
+      [\\/]* | ?:[\\/]* ) ac_sub_cache_file=$cache_file ;;
+      *) # Relative name.
+	ac_sub_cache_file=$ac_top_build_prefix$cache_file ;;
+      esac
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: running $SHELL $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_srcdir" >&5
+$as_echo "$as_me: running $SHELL $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_srcdir" >&6;}
+      # The eval makes quoting arguments work.
+      eval "\$SHELL \"\$ac_sub_configure\" $ac_sub_configure_args \
+	   --cache-file=\"\$ac_sub_cache_file\" --srcdir=\"\$ac_srcdir\"" ||
+	as_fn_error "$ac_sub_configure failed for $ac_dir" "$LINENO" 5
+    fi
+
+    cd "$ac_popdir"
+  done
 fi
 if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: unrecognized options: $ac_unrecognized_opts" >&5

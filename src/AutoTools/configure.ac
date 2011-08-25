@@ -15,6 +15,7 @@ dnl#JFi:ToDo-Investigate position of 32 v 64 bit lib paths
 dnl#JFi:ToDo-Investigate position of shared v static pkg-config results
 dnl#JFi:ToDo-Extend --with-${lib} to specify location/name of .pc
 dnl#JFi:ToDo-Extend --with-${lib}-pkgconf to specify path for known .pc
+dnl#JFi:ToDo-Implement use of existing QMake installation
 
 
 dnl     Define service Macros
@@ -146,6 +147,7 @@ AC_DEFUN([AX_RAVL_HELPER_PC],
           AC_SUBST([$1_CFLAGS])
           AC_SUBST([$1_LIBS])
           AC_SUBST([$1_SUPPORT])
+          echo $1_SUPPORT=@$1_SUPPORT@ >> ./ExtPkgSupp.$$
          ]
         )
 
@@ -541,6 +543,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
           AC_SUBST([$1_CFLAGS])
           AC_SUBST([$1_LIBS])
           AC_SUBST([$1_SUPPORT])
+          echo $1_SUPPORT=@$1_SUPPORT@ >> ./ExtPkgSupp.$$
          ]
         )
 
@@ -709,6 +712,29 @@ trace ()
 
 #     End of shell functions
 
+
+# Initialisation
+
+# Reset list of external libraries
+#
+echo > ./ExtPkgSupp.$$
+dnl# This file is used to prime Config.Package with the initialisation of the 
+dnl# make variables needed to build the single library. It should be appended
+dnl# to when the configure script declares each external library's XXX_SUPPORT
+dnl# variable. Towards the end of the configure process, this file is sorted
+dnl# and appended to the Config.Package file.
+dnl#
+dnl# Whenever you declare a new optional library/library-set in SingleLib.mk,
+dnl# you need to add both the correponding AC_SUBST call to this script and add
+dnl# the initialisation of the make variable to the ExtPkgSupp.$$ file. For
+dnl# example, To add the support code for a new external package, say LibPKG,
+dnl# the following lines need to be added to this configure script:
+dnl#
+dnl#      AC_SUBST([LibPKG_SUPPORT)
+dnl#      echo LibPKG_SUPPORT=@LibPKG_SUPPORT@ >> ./ExtPkgSupp.$$
+dnl#
+dnl# For this example, you would use $(LibPKG_SUPPORT) in SingleLib.mk to
+dnl# add the new support code to the single library.
 
 # Main body of configure script
 
@@ -1034,6 +1060,20 @@ else
 fi
 
 AC_SUBST([MAKE])
+
+# Look for QMake
+#
+dnl#JFi:ToDo-Implement use of existing QMake installation
+
+   # No installed QMake found, use one staged from the source included with the
+   # Ravl distribution. We will need to stage this copy, so add LocalQMake to
+   # the target for the required QMake builds
+   WORKING_QMAKE=$ac_abs_top_builddir/share/QMake
+   NeededQMake="LocalQMake QMake"
+
+AC_SUBST([WORKING_QMAKE])
+AC_SUBST([NeededQMake])
+
 
 # Set relevant flags dependant on the software tools we have found
 #
@@ -1812,44 +1852,64 @@ dnl#    libraries
 dnl#
 AC_SUBST([avifile_SUPPORT])
 avifile_SUPPORT=""
+echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libClipStationPro_SUPPORT])
 libClipStationPro_SUPPORT=""
+echo libClipStationPro_SUPPORT=@libClipStationPro_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([LibDirectShow_SUPPORT])
 LibDirectShow_SUPPORT=""
+echo LibDirectShow_SUPPORT=@LibDirectShow_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([dvdread_SUPPORT])
 dvdread_SUPPORT=""
+echo dvdread_SUPPORT=@dvdread_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libehs_SUPPORT])
 libehs_SUPPORT=""
+echo libehs_SUPPORT=@libehs_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([uEyeSDK_SUPPORT])
 uEyeSDK_SUPPORT=""
+echo uEyeSDK_SUPPORT=@uEyeSDK_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([LibGd_SUPPORT])
 LibGd_SUPPORT=""
+echo LibGd_SUPPORT=@LibGd_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libGuppi_SUPPORT])
 libGuppi_SUPPORT=""
+echo libGuppi_SUPPORT=@libGuppi_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libmkl_SUPPORT])
 libmkl_SUPPORT=""
+echo libmkl_SUPPORT=@libmkl_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([LAPACK_SUPPORT])
 LAPACK_SUPPORT=""
+echo LAPACK_SUPPORT=@LAPACK_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([MacOSXRunLoop_SUPPORT])
 MacOSXRunLoop_SUPPORT=""
+echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([MacOSXVideoCapture_SUPPORT])
 MacOSXVideoCapture_SUPPORT=""
+echo MacOSXVideoCapture_SUPPORT=@MacOSXVideoCapture_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([Meteor1_SUPPORT])
 Meteor1_SUPPORT=""
+echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libmcrypt_SUPPORT])
 libmcrypt_SUPPORT=""
+echo libmcrypt_SUPPORT=@libmcrypt_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libmpeg_SUPPORT])
 libmpeg_SUPPORT=""
+echo libmpeg_SUPPORT=@libmpeg_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libmpeg2_SUPPORT])
 libmpeg2_SUPPORT=""
+echo libmpeg2_SUPPORT=@libmpeg2_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([LibPython_SUPPORT])
 LibPython_SUPPORT=""
+echo LibPython_SUPPORT=@LibPython_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([SGIVL_SUPPORT])
 SGIVL_SUPPORT=""
+echo SGIVL_SUPPORT=@SGIVL_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([SwigPython_SUPPORT])
 SwigPython_SUPPORT=""
+echo SwigPython_SUPPORT=@SwigPython_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([UUIdTheo_SUPPORT])
 UUIdTheo_SUPPORT=""
+echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl#     End of workaround for currently unsupported libraries
 dnl# 
 
@@ -2120,6 +2180,7 @@ AC_ARG_WITH([libffmpeg],
 libffmpeg_SUPPORT=""
 libffmpeg_RavlLib="libRavlLibFFmpeg"
 AC_SUBST([libffmpeg_SUPPORT])
+echo libffmpeg_SUPPORT=@libffmpeg_SUPPORT@ >> ./ExtPkgSupp.$$
 
 # Now we consider OpenGL; full package is named OpenGL while existing
 # component libraries are libGL and libGLU
@@ -2289,6 +2350,7 @@ AC_ARG_WITH([OpenGL],
 OpenGL_SUPPORT=""
 OpenGL_RavlLib="libRavlDPDisplay3d libRavlGUI3D"
 AC_SUBST([OpenGL_SUPPORT])
+echo OpenGL_SUPPORT=@OpenGL_SUPPORT@ >> ./ExtPkgSupp.$$
 
 # If debugging, output what we've defined from the cmd-line (with defaults)
 if ( test X$DBG != X && test $DBG -ge 3 )
@@ -2518,6 +2580,7 @@ AS_IF([test "X$GnuPlot" != X],
       ])
 AC_SUBST([GnuPlot])
 AC_SUBST([GnuPlot_SUPPORT])
+echo GnuPlot_SUPPORT=@GnuPlot_SUPPORT@ >> ./ExtPkgSupp.$$
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "@<:@$RESOURCES@:>@"
 
@@ -3574,7 +3637,6 @@ echo >> ./Config.Package.in
 
 echo >> ./Config.Package.in
 echo >> ./Config.Package.in
-echo >> ./Config.Package.in
 
 # Apply additional requirements that affect the <Lib>_SUPPORT variables (drop
 # any libs that have unmet complex dependancies on other external libs or on
@@ -3618,26 +3680,48 @@ SerialIO_SUPPORT=libRavlSerialIO
 
 dnl# Declare the substitution variables for the optional parts of Ravl
 AC_SUBST([ParallelIO_SUPPORT])
+echo ParallelIO_SUPPORT=@ParallelIO_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([Ravl2dGUI_LIBS])
+echo Ravl2dGUI_LIBS=@Ravl2dGUI_LIBS@ >> ./ExtPkgSupp.$$
 AC_SUBST([Ravl3d_LIBS])
+echo Ravl3d_LIBS=@Ravl3d_LIBS@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlAAM])
+echo RavlAAM=@RavlAAM@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlAutoPort])
+echo RavlAutoPort=@RavlAutoPort@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlCameraCal])
+echo RavlCameraCal=@RavlCameraCal@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlChartDetector])
+echo RavlChartDetector=@RavlChartDetector@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlClassWizard])
+echo RavlClassWizard=@RavlClassWizard@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlDataServer])
+echo RavlDataServer=@RavlDataServer@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlDevAudio])
+echo RavlDevAudio=@RavlDevAudio@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlDPDisplay])
+echo RavlDPDisplay=@RavlDPDisplay@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlExtImgIO])
+echo RavlExtImgIO=@RavlExtImgIO@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlGUI])
+echo RavlGUI=@RavlGUI@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlImageProc])
+echo RavlImageProc=@RavlImageProc@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlLogic_LIBS])
+echo RavlLogic_LIBS=@RavlLogic_LIBS@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlNet])
+echo RavlNet=@RavlNet@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlRawVidIO])
+echo RavlRawVidIO=@RavlRawVidIO@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlVDF])
+echo RavlVDF=@RavlVDF@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlVPlay])
+echo RavlVPlay=@RavlVPlay@ >> ./ExtPkgSupp.$$
 AC_SUBST([RavlXMPP])
+echo RavlXMPP=@RavlXMPP@ >> ./ExtPkgSupp.$$
 AC_SUBST([SerialIO_SUPPORT])
+echo SerialIO_SUPPORT=@SerialIO_SUPPORT@ >> ./ExtPkgSupp.$$
+
 
 
 # Process those libraries dependant on external libs
@@ -3993,6 +4077,20 @@ Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
 esac
 AC_SUBST([ARC])
 
+# Add, to Config.Package.in, the initialisation of the make variables used by
+# SingleLib.mk. These have been recorded in ExtPkgSupp.$$ as this script has
+# been running; so, sort this file and append it with a suitable heading.
+echo >> ./Config.Package.in
+echo \# Optional Ravl sub-libraries that may or may not be included in the >> ./Config.Package.in
+echo \# single library>> ./Config.Package.in
+$SORT ./ExtPkgSupp.$$ >> ./Config.Package.in
+rm ./ExtPkgSupp.$$
+echo >> ./Config.Package.in
+echo >> ./Config.Package.in
+echo >> ./Config.Package.in
+
+# Configure the included copy of QMake
+AC_CONFIG_SUBDIRS([QMake])
 
 
 dnl Declare RESOURCES and ALL_EXTERNAL_LIBS as outputs
@@ -4001,8 +4099,5 @@ AC_SUBST([ALL_EXTERNAL_LIBS])
 
 dnl Create Makefiles and Config.Package
 AC_CONFIG_FILES([Config.Package])
-AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([share/RAVL/QMake/SingleLib.mk:src/QMake/SingleLib.mk.in])
-AC_CONFIG_FILES([share/RAVL/QMake/User.mk:src/QMake/User.mk.in])
-AC_CONFIG_FILES([share/RAVL/QMake/Recursive.mk:src/QMake/Recursive.mk.in])
+AC_CONFIG_FILES([Makefile:src/AutoTools/Makefile.in])
 AC_OUTPUT

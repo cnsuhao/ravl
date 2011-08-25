@@ -5,27 +5,30 @@ version = @PACKAGE_VERSION@
 tarname = @PACKAGE_TARNAME@
 distdir = $(tarname)-$(version)
 
-MAKEHOME=@abs_top_builddir@/share/RAVL/QMake
-
 SOURCEHOME=@abs_top_srcdir@/src
 
 INSTALLHOME=@abs_top_builddir@
 
-# Include platform specific definitions
+WORKING_QMAKE=@abs_top_builddir@/share/QMake
+#JFi:To Do - Set this from configure (to allow use of any installed QMake)
+
+# Include QMake global definitions
+include @abs_top_builddir@/QMake/Config.QMake
+
+# Include package specific definitions
 include $(INSTALLHOME)/Config.Package
 
 # RAVL Makefile and default flags for QMake and RAVL itself
 
-RAVL_MAKEFILE=$(MAKEHOME)/QMake.mk
+RAVL_MAKEFILE=$(WORKING_QMAKE)/Makefiles/QMake.mk
 
-QMAKE_FLAGS=BASEINSTALL=1 PROJECT_OUT=$(INSTALLHOME) FULLBUILDSRC='BASE_VAR=none' CONFIGFILE=$(INSTALLHOME)/Config.Package LOCALTMP=$(INSTALLHOME)
-
-RAVL_FLAGS=$(QMAKE_FLAGS) INCLUDEDIR=$(INSTALLHOME)/include
+RAVL_FLAGS=INSTALLHOME=$(INSTALLHOME) BASEINSTALL=1 PROJECT_OUT=$(INSTALLHOME) FULLBUILDSRC='BASE_VAR=none' CONFIGFILE=$(INSTALLHOME)/Config.Package LOCALTMP=$(INSTALLHOME) INCLUDEDIR=$(INSTALLHOME)/include
 
 
 # Builds
 
-default: qmake fullsrc opt optshared optbin singleopt singleoptshared singleoptbin singleoptsharedbin doc
+default: qmake fullsrc opt optshared optbin singleopt singleoptshared singleoptbin singleoptsharedbin
+#JFi:To Do- make doc (and support from configure i.e. locate tools)
 
 check: testopt testsingleopt testsingleoptshared 
 
@@ -52,8 +55,31 @@ optbin: qmake
 optshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
-qmake: 
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/QMake -f ./QMake.mk $(QMAKE_FLAGS) VAR=opt PROCS=1 INSTALLHOME=$(INSTALLHOME)
+qmake: @NeededQMake@
+# Will equate to "LocalQMake QMake" unless we already have an installed
+# QMake when only a new copy for installation (QMake) will be needed.
+
+QMake:
+	$(MAKE) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake
+# Stage, under @abs_top_builddir@/QMake, a version of QMake ready for a
+# standard install (one that will run when the makefiles are installed
+# under $(datadir)/QMake/Makefiles).
+
+LocalQMake: 
+	$(MAKE) -f @abs_top_builddir@/QMake/Makefile DESTDIR=staged bindir=@abs_top_builddir@/share/QMake/bin \
+                         datadir=@abs_top_builddir@/share sysconfdir=@abs_top_builddir@ STAGING=@abs_top_builddir@/share/QMake
+# Stage QMake under the Ravl build directory in a form that will run from
+# that directory. To achieve this, we have to set the destination for both
+# the staging and install targets to be the same for the makefiles. The
+# install target for the makefiles uses $(datadir)/QMake/Makefiles as its
+# destination, while the staging target uses $(STAGING)/Makefiles; hence the
+# slightly different values for those two variables. DESTDIR=staged prevents
+# make complaining about using identical destinations for both the staged and
+# install targets. As we are only staging and not performing an install,
+# DESTDIR will have no other effect and gives us the functionality we are
+# looking for. As well as $(datadir), $(sysconfdir) automatically has /QMake
+# suffixed to it for the install process, hence the value of $(sysconfdir) 
+# that is used here.
 
 retestopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt retest
@@ -76,28 +102,28 @@ rpm: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
 
 singleopt:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/SingleLib.mk INSTALLHOME=$(INSTALLHOME) VAR=opt makedirs buildstatic
 
 singleoptbin:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=opt SINGLELIB=1 programs recurse
 
 singleoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=opt SHAREDBUILD=1 makedirs buildshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/SingleLib.mk INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 makedirs buildshared
 
 singleoptsharedbin:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
 singledebug:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug makedirs buildstatic
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/SingleLib.mk INSTALLHOME=$(INSTALLHOME) VAR=debug makedirs buildstatic
 
 singledebugbin:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=debug SINGLELIB=1 programs recurse
 
 singledebugshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/SingleLib.mk VAR=debug SHAREDBUILD=1 makedirs buildshared
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/SingleLib.mk INSTALLHOME=$(INSTALLHOME) VAR=debug SHAREDBUILD=1 makedirs buildshared
 
 singledebugsharedbin:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
 testopt:
 	@$(RM) -f $(INSTALLHOME)/test/opt/bin/*
@@ -105,7 +131,7 @@ testopt:
 
 testsingleopt:
 	@$(RM) -f $(INSTALLHOME)/test/opt/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=opt SINGLELIB=1 test recurse
 	@cd $(INSTALLHOME)/test/opt/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/single && \
            PATH=$(INSTALLHOME)/test/opt/single/bin:$(INSTALLHOME)/bin/utils/opt/single/bin:$$PATH \
@@ -113,7 +139,7 @@ testsingleopt:
 	
 testsingleoptshared:
 	@$(RM) -f $(INSTALLHOME)/test/opt/shared/single/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(INSTALLHOME)/share/RAVL/QMake/Recursive.mk VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
 	@cd $(INSTALLHOME)/test/opt/shared/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/shared/single && \
            PATH=$(INSTALLHOME)/test/opt/shared/single/bin:$(INSTALLHOME)/bin/utils/opt/shared/single/bin:$$PATH \
@@ -128,4 +154,4 @@ testsingleoptshared:
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: default check debug debugshared distdir doc fullsrc opt optbin optshared qmake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
+.PHONY: default check debug debugshared distdir doc fullsrc opt optbin optshared qmake LocalQMake QMake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
