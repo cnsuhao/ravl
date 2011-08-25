@@ -10,5 +10,5 @@
 
 DESCRIPTION=RAVL, Recognition and Vision Library
 
-NESTED=ActiveAppearanceModels.r ShotBoundary.r
+NESTED=ActiveAppearanceModels.r ActiveAppearanceModelsGUI.r ShotBoundary.r
 
