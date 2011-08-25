@@ -2602,7 +2602,7 @@ AC_SEARCH_LIBS([dlopen],
                [AC_MSG_FAILURE([Cannot find a working dlopen function])],
                []
               )
-if ( $ac_cv_search_dlopen != 'none required' )
+if ( test $ac_cv_search_dlopen != 'none required' )
 then
         DynLink_LIBS=$ac_cv_search_dlopen
 else

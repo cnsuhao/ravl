@@ -12181,7 +12181,7 @@ as_fn_error "Cannot find a working dlopen function
 See \`config.log' for more details." "$LINENO" 5; }
 fi
 
-if ( $ac_cv_search_dlopen != 'none required' )
+if ( test $ac_cv_search_dlopen != 'none required' )
 then
         DynLink_LIBS=$ac_cv_search_dlopen
 else
