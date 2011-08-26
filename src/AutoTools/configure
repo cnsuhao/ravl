@@ -14454,6 +14454,8 @@ subdirs="$subdirs QMake"
 
 ac_config_files="$ac_config_files Config.Package"
 
+ac_config_files="$ac_config_files Targets.Package:src/AutoTools/Targets.Package.in"
+
 ac_config_files="$ac_config_files Makefile:src/AutoTools/Makefile.in"
 
 cat >confcache <<\_ACEOF
@@ -15158,6 +15160,7 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "Config.Package") CONFIG_FILES="$CONFIG_FILES Config.Package" ;;
+    "Targets.Package") CONFIG_FILES="$CONFIG_FILES Targets.Package:src/AutoTools/Targets.Package.in" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile:src/AutoTools/Makefile.in" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

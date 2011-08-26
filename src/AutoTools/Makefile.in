@@ -18,12 +18,21 @@ include @abs_top_builddir@/QMake/Config.QMake
 # Include package specific definitions
 include $(INSTALLHOME)/Config.Package
 
+# Include package specific installation targets
+include $(INSTALLHOME)/Targets.Package
+
 # RAVL Makefile and default flags for QMake and RAVL itself
 
 RAVL_MAKEFILE=$(WORKING_QMAKE)/Makefiles/QMake.mk
 
 RAVL_FLAGS=INSTALLHOME=$(INSTALLHOME) BASEINSTALL=1 PROJECT_OUT=$(INSTALLHOME) FULLBUILDSRC='BASE_VAR=none' CONFIGFILE=$(INSTALLHOME)/Config.Package LOCALTMP=$(INSTALLHOME) INCLUDEDIR=$(INSTALLHOME)/include
 
+# Trace commands if QMAKE_INFO is in use
+ifndef QMAKE_INFO
+SHOWIT=@
+else
+SHOWIT=
+endif
 
 # Builds
 
@@ -45,6 +54,31 @@ doc: qmake
 
 fullsrc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
+
+install: installQMake installsingleoptshared installHdrs
+
+installHdrs:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) PLIB= VAR=opt SHARED=/shared/single SHAREDBUILD=1 insHdrs recurse
+
+installoptshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 install recurse
+
+installsingleoptshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) PLIB= VAR=opt SHARED=/shared/single SHAREDBUILD=1 install recurse
+	$(SHOWIT)if [ ! -d $(DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(DESTDIR)$(libdir) ; fi
+	$(INSTALL) $(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single/libRavl.so $(DESTDIR)$(libdir)/libRavl.so
+# Use the 'install' function of QMake to install the Ravl utility binaries;
+# config files; data files and scripts. We must set SHARED (to /shared/single)
+# in order to force QMake to use the version of the binaries compiled against
+# the single shared Ravl library rather than the more usual (for QMake)
+# individual shared libraries. As we do not want to install the individual
+# libraries, we also force PLIB to an empty value to prevent this. We then
+# manually copy across the single shared library. This whole process starts off
+# in the top level source directory and the 'recurse' target walks down the
+# tree using the defs.mk files to determine the files to install
+
+installQMake:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake install
 
 opt: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
@@ -149,9 +183,9 @@ testsingleoptshared:
 .DEFAULT: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
 
-#JFi:ToDo Targets for install install-strip install-check uninstall clean 
+#JFi:ToDo Targets for install-strip install-check uninstall clean 
 #    dist distcheck html pdf install-html install-pdf installdirs distclean
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: default check debug debugshared distdir doc fullsrc opt optbin optshared qmake LocalQMake QMake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
+.PHONY: default check debug debugshared distdir doc fullsrc install opt optbin optshared qmake LocalQMake QMake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT

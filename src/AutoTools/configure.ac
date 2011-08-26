@@ -4099,5 +4099,6 @@ AC_SUBST([ALL_EXTERNAL_LIBS])
 
 dnl Create Makefiles and Config.Package
 AC_CONFIG_FILES([Config.Package])
+AC_CONFIG_FILES([Targets.Package:src/AutoTools/Targets.Package.in])
 AC_CONFIG_FILES([Makefile:src/AutoTools/Makefile.in])
 AC_OUTPUT

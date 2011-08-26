@@ -16,10 +16,12 @@
 
 + Install single library and utility programs in system directories (/usr/lib;
   /usr/bin; etc.)
-	- Next phase of development. Requires both 'make install' code to copy
-	  across Ravl (from build structure to the system directories) and
-	  modification to Ravl to cope with the modified paths this will cause
-	  (PROJECT_OUT is mostly hard-coded into the objects at compile time).
+	- 'make install' copies all built utilities, the single shared-library
+	   plus the Ravl header files, scripts, configuration; data and aux
+	   files to the installation taret directories (under /usr/local by
+	   default). Some work remains on modification to Ravl to cope with the
+	   modified  paths this will cause (PROJECT_OUT is mostly hard-coded
+	   into the objects at compile time).
 
 + Provide binary distribution
 	-Follows adaptation of Ravl for deployment in /usr/lib, etc.

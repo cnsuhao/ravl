@@ -8,7 +8,7 @@
 	# and optionally
 	make check
 	# followed by
-	make install   # Once this part has been developed
+	make install
 
   All built binaries and objects will be created in a tree under where the
   initial configure was run. Unlike the traditional QMake approach, no
@@ -78,13 +78,6 @@
 
   Setting any of these switches implies –with-<lib> and thus mandates configure
   find and enable the library or error out.
-
-+ Current makefiles assume the source is located in the structure ./src/Ravl/..
-  structure, i.e. in a src directory below the root of where the source is
-  loaded. If this approach is kept, it may be better incorporate this level in
-  the source repository. Any user working from the source repository currently
-  has to manually ensure the src directory is created and used to store the
-  Ravl source
 
 + Pulling the Ravl source from the source repository, rather than a release
   archive, requires the user to create the configure script from its master

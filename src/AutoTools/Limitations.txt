@@ -103,7 +103,7 @@
 	  integrate them into the autotools process. This step need no form
 	  part of the initial project.
 
-+ Top level Makefile does not provide make clean install install_check targets
++ Top level Makefile does not provide make clean or an install_check target
 	 - make install requires work to combat the hard coding of PROJECT_OUT
 	   into binaries at compile time. Work for the other targets will be
 	   undertaken as part of the same sub-project.  There is also scope
