@@ -1,0 +1,497 @@
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2011, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
+# Beware Development bodges at end of initialisation section 
+
+
+ifndef QMAKE_MAKEFILES
+  QMAKE_MAKEFILES=/Set/During/Staging/Process
+endif
+
+include $(QMAKE_MAKEFILES)/Definitions.mk
+
+ifndef INSTALLHOME
+  # Staging directory for package build
+  #      - Must be provided from top-level makefile/command-line
+  $(error Package home directory is not specified)
+endif
+
+# Include package default installation targets
+include $(INSTALLHOME)/Targets.Package
+
+# Determine the sub-directories we may have to process
+REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
+
+# Determine if the current sub-tree is supported
+ifeq ($(strip $(filter-out $(RESOURCES),$(REQUIRES))),)
+  # RESOURCES ok
+  ifeq ($(strip $(SUPPORT_ONLY)),)
+    # No list of specificly supported platforms - test for unsupported platforms
+    ifneq ($(ARC), $(filter $(ARC),$(DONOT_SUPPORT)))
+      # Not an unsupported platform
+      OK_TO_INSTALL=Yes
+    else
+      OK_TO_INSTALL=DoNotSupport
+    endif
+  else
+    # We have a specific list of supported platforms
+    ifeq ($(ARC),$(filter $(ARC),$(SUPPORT_ONLY)))
+      # Platform is on the list of specifically supported platforms
+      OK_TO_INSTALL=Yes
+    else
+      OK_TO_INSTALL=NotSupportOnly
+    endif
+  endif
+else
+  # RESOURCES not available
+  OK_TO_INSTALL=NoResource
+endif
+
+
+
+# Developemnt Bodges
+
+PRODUCT=RAVL
+PLIB=Ravl
+
+# End of Bodges
+
+# Main Body of makefile
+
+
+# Target definitions
+
+default: install
+
+
+# Installation sets
+
+# Regular install
+install: insConfig insMains insScripts insData insAux
+#JFi: To Do - insDoc
+#JFi: To Do - Ultimatly delete insAux?
+
+# Install development libraries and headers
+insDev: insLibs insHdrs
+#JFi: To Do - insDevDoc
+
+
+
+
+# Install the different classes of file
+#
+# Notes
+#
+#    +  There is no dependency against the target dirs because:
+#
+#       1. There would possibly be multiple definitions of the same targets
+#          (e.g. if AUXDIR and TESTDATADIR were the same then you would have
+#           two  $(DESTDIR)$(datadir)/$(PACKAGE)/XXX recepies).
+#       2. The directory would be created even if no files exist to populate it
+
+
+insAux: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(AUXFILES)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insConfig: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(CFGFILES)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(sysconfdir)/$(PACKAGE) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(CFGFILES) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ; \
+            fi ;\
+            $(INSTALL) $(CFGFILES) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insData:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(DATA)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(DATADIR)/%, $(DATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(DATADIR)/%, $(DATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+#JFi: To Do - implement DATA DATADIR in defs.mk
+
+insEgs: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EXAMPLES)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(bindir) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$SHARED)/bin/%, $(EXAMPLES)) $(DESTDIR)$(bindir) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$SHARED)/bin/%, $(EXAMPLES)) $(DESTDIR)$(bindir) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insEgData: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EGDATA)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(EGDATADIR)/%, $(EGDATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(EGDATADIR)/%, $(EGDATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+#JFi: To Do - implement EGDATA EGDATADIR in defs.mk
+
+insHdrs: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(HEADERS)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(includedir)/$(PACKAGE)  ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(includedir)/$(PACKAGE)  ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(includedir)/$(PACKAGE)  ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(includedir)/$(PACKAGE) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(includedir)/$(PACKAGE) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+            if [ $(oldincludedir) != $(includedir) ] && [ -d $(DESTDIR)$(oldincludedir) ] && [ "`ls $(DESTDIR)$(oldincludedir)`" ] ;\
+            then \
+               if [ ! -d $(DESTDIR)$(oldincludedir)/$(PACKAGE)  ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(MKDIR_P) $(DESTDIR)$(oldincludedir)/$(PACKAGE)  ;\
+                  fi ;\
+                  $(MKDIR_P) $(DESTDIR)$(oldincludedir)/$(PACKAGE)  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(oldincludedir)/$(PACKAGE) ; \
+               fi ;\
+               $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(oldincludedir)/$(PACKAGE) ; \
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+         fi
+
+insLibs: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(libdir)/$(PACKAGE) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insMains: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(MAINS)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(bindir) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(basename $(MAINS))) $(DESTDIR)$(bindir) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(basename $(MAINS))) $(DESTDIR)$(bindir) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insScripts: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(SCRIPTS)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(bindir) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(SCRIPTS)) $(DESTDIR)$(bindir) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(SCRIPTS)) $(DESTDIR)$(bindir) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insTests: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(TESTEXES)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(bindir) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(bindir) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED)/bin/%, $(TESTEXES)) $(DESTDIR)$(bindir) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED)/bin/%, $(TESTEXES)) $(DESTDIR)$(bindir) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+insTestData: 
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(TESTDATA)" != X ] ;\
+         then \
+            if [ ! -d $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ] ;\
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ;\
+               fi ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/share/Test/Data/$(TESTDATADIR)/%, $(TESTDATA)) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ; \
+            fi ;\
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/share/Test/Data/$(TESTDATADIR)/%, $(TESTDATA)) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ; \
+            RET=$$? ;\
+            if [ $$RET -ne 0 ] ;\
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+#JFi: To Do - implement TESTDATA TESTDATADIR in defs.mk
+
+
+recurse:
+	@if [ $(OK_TO_INSTALL) = Yes ] ;\
+         then \
+            for d in $(REQUIRED_DIRS) ;\
+            do \
+               $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $$d -f $(QMAKE_MAKEFILES)/Install.mk $(MAKECMDGOALS) ;\
+               RET=$$? ;\
+               if [ $$RET -ne 0 ] ;\
+               then \
+                  exit $$RET ;\
+               fi ;\
+            done ;\
+         fi
+
+
+
+# Basic debug information
+info:
+	@echo
+	@echo Effective Makefile settings...
+	@echo
+	@echo GNU standard installation variables:
+	@echo "    DESTDIR         [ $(DESTDIR) ]"
+	@echo "    prefix          [ $(prefix) ]"
+	@echo "    datarootdir     [ $(datarootdir) ]"
+	@echo "    datadir         [ $(datadir) ]"
+	@echo "    sysconfdir      [ $(sysconfdir) ]"
+	@echo "    sharedstatedir  [ $(sharedstatedir) ]"
+	@echo "    localstatedir   [ $(localstatedir) ]"
+	@echo "    includedir      [ $(includedir) ]"
+	@echo "    oldincludedir   [ $(oldincludedir) ]"
+	@echo "    exec_prefix     [ $(exec_prefix) ]"
+	@echo "    bindir          [ $(bindir) ]"
+	@echo "    libdir          [ $(libdir) ]"
+	@echo "    libexecdir      [ $(libexecdir) ]"
+	@echo "    sbindir         [ $(sbindir) ]"
+	@echo "    docdir          [ $(docdir) ]"
+	@echo
+	@echo QMake environment
+	@echo
+	@echo "    ARC             [ $(ARC) ]"
+	@echo "    AUXFILES        [ $(AUXFILES) ]"
+	@echo "    AUXFILESDIR     [ $(AUXFILESDIR) ]"
+	@echo "    CFGFILES        [ $(CFGFILES) ]"
+	@echo "    DATA            [ $(DATA) ]"
+	@echo "    DATADIR         [ $(DATADIR) ]"
+	@echo "    DONOT_SUPPORT   [ $(DONOT_SUPPORT) ]"
+	@echo "    EGDATA          [ $(EGDATA) ]"
+	@echo "    EGDATADIR       [ $(EGDATADIR) ]"
+	@echo "    EXAMPLES        [ $(EXAMPLES) ]"
+	@echo "    HEADERS         [ $(HEADERS) ]"
+	@echo "    MAINS           [ $(MAINS) ]"
+	@echo "    PACKAGE         [ $(PACKAGE) ]"
+	@echo "    PLIB            [ $(PLIB) ]"
+	@echo "    PRODUCT         [ $(PRODUCT) ]"
+	@echo "    REQUIRED_DIRS   [ $(REQUIRED_DIRS) ]"
+	@echo "    SCRIPTS         [ $(SCRIPTS) ]"
+	@echo "    SUPPORT_ONLY    [ $(SUPPORT_ONLY) ]"
+	@echo "    TESTEXES        [ $(TESTEXES) ]"
+	@echo "    TESTDATA        [ $(TESTDATA) ]"
+	@echo "    TESTDATADIR     [ $(TESTDATADIR) ]"
+	@echo
+
+

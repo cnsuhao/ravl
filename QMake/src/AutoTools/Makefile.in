@@ -292,7 +292,7 @@ $(DESTDIR)$(bindir)/untouch: $(STAGING)/bin/untouch
 
 
 # Install QMake support files
-InstallSupport: $(DESTDIR)$(datadir)/QMake/Support $(DESTDIR)$(datadir)/QMake/Support/dummymain.c $(DESTDIR)$(datadir)/QMake/Support/Defs.txt
+InstallSupport: $(DESTDIR)$(datadir)/QMake/Support $(DESTDIR)$(datadir)/QMake/Support/dummymain.c $(DESTDIR)$(datadir)/QMake/Support/Defs.txt $(DESTDIR)$(datadir)/QMake/Support/qmake.cshrc $(DESTDIR)$(datadir)/QMake/Support/qmake.sh $(DESTDIR)$(datadir)/QMake/Support/Help.txt
 	@:
 
 $(DESTDIR)$(datadir)/QMake/Support:
@@ -303,6 +303,15 @@ $(DESTDIR)$(datadir)/QMake/Support/dummymain.c:
 
 $(DESTDIR)$(datadir)/QMake/Support/Defs.txt:
 	$(INSTALL_DATA) $(STAGING)/Support/Defs.txt $(DESTDIR)$(datadir)/QMake/Support/Defs.txt
+
+$(DESTDIR)$(datadir)/QMake/Support/qmake.cshrc:
+	$(INSTALL_DATA) $(STAGING)/Support/qmake.cshrc $(DESTDIR)$(datadir)/QMake/Support/qmake.cshrc
+
+$(DESTDIR)$(datadir)/QMake/Support/qmake.sh:
+	$(INSTALL_DATA) $(STAGING)/Support/qmake.sh $(DESTDIR)$(datadir)/QMake/Support/qmake.sh
+
+$(DESTDIR)$(datadir)/QMake/Support/Help.txt:
+	$(INSTALL_DATA) $(STAGING)/Support/Help.txt $(DESTDIR)$(datadir)/QMake/Support/Help.txt
 
 
 
