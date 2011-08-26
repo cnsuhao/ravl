@@ -6,11 +6,8 @@
 # file-header-ends-here
 ifndef GTKDEF
 GTKDEF = 1
-################################################
-# $Id$
 
 # Check if we're using GTK
-
 ifneq ($(strip $(filter $(RESOURCES),libGTK2)),)
 
 include x11.def
@@ -32,6 +29,6 @@ endif
 INCLUDES += $(GTK_INCLUDES)
 EXTRA_CFLAGS += $(GTK_CFLAGS)
 EXTRA_CCFLAGS += $(GTK_CFLAGS)
-EXELIB :=  -lgthread-2.0 $(GTK_LIBS) $(EXELIB)
+EXELIB := $(GTK_LIBS) $(EXELIB)
 
 endif
