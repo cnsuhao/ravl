@@ -261,32 +261,6 @@ insHdrs:
             then \
                exit $$RET ;\
             fi ;\
-            if [ $(oldincludedir) != $(includedir) ] && [ -d $(DESTDIR)$(oldincludedir) ] && [ "`ls $(DESTDIR)$(oldincludedir)`" ] ;\
-            then \
-               if [ ! -d $(DESTDIR)$(oldincludedir)/$(PACKAGE)  ] ;\
-               then \
-                  if [ X$(QMAKE_INFO) != X ] ;\
-                  then \
-                     echo $(MKDIR_P) $(DESTDIR)$(oldincludedir)/$(PACKAGE)  ;\
-                  fi ;\
-                  $(MKDIR_P) $(DESTDIR)$(oldincludedir)/$(PACKAGE)  ;\
-                  RET=$$? ;\
-                  if [ $$RET -ne 0 ] ;\
-                  then \
-                     exit $$RET ;\
-                  fi ;\
-               fi ;\
-               if [ X$(QMAKE_INFO) != X ] ;\
-               then \
-                  echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(oldincludedir)/$(PACKAGE) ; \
-               fi ;\
-               $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(oldincludedir)/$(PACKAGE) ; \
-               RET=$$? ;\
-               if [ $$RET -ne 0 ] ;\
-               then \
-                  exit $$RET ;\
-               fi ;\
-            fi ;\
          fi
 
 insLibs: 
