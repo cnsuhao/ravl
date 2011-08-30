@@ -208,12 +208,12 @@ namespace RavlN {
     DataT &operator[](IntT n)
     { return at[n]; }
     //: Return the value at a index relative to the iterator.
-    // Note: Is it the users resposibility to ensure this is a valid element.
+    // Note: Is it the users responsibility to ensure this is a valid element.
 
     DataT &operator[](IndexC n)
     { return at[n.V()]; }
     //: Return the value at a index relative to the iterator.
-    // Note: Is it the users resposibility to ensure this is a valid element.
+    // Note: Is it the users responsibility to ensure this is a valid element.
         
   protected:
     DataT *at;

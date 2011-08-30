@@ -63,7 +63,7 @@ namespace RavlN {
       lIt.Next(); 
       return CheckValid(); 
     }
-    // Goto next iterm in table.
+    // Goto next item in table.
     // Once this returns false (or IsElm() is false) this 
     // should not be called again.
     
@@ -118,7 +118,12 @@ namespace RavlN {
     bool Del(void);
     //: Delete current item from table, move to next.
     // Returns true if at a valid element.
-    
+
+    void DelIncrementSafe(void);
+    //: Delete current item from table, move to last or current list header.
+    // Note: Inc must be used after use for the iterator to be valid again.
+    // This can be use to iterate through a hash removing elements.
+
     HashIterC<K,T> &operator=(const HashC<K,T> &oth) { 
       bIt = oth.table;
       hashtable = &const_cast<HashC<K,T> &>(oth);
@@ -151,6 +156,7 @@ namespace RavlN {
   template<class K,class T>
   bool HashIterC<K,T>::CheckValid(void) {
     while(!lIt.IsElm()) {
+      RavlAssert(bIt);
       bIt.Next();
       if(!bIt)
 	return false;
@@ -169,6 +175,16 @@ namespace RavlN {
     return Next(); // Goto next element.
   }
   
+  ///////////////////////////////////
+  //: Delete current item from table, move to last or current list header.
+  // Inc must be used after use for the iterator to be valid again.
+
+  template<class K,class T>
+  void HashIterC<K,T>::DelIncrementSafe(void) {
+    lIt.Del();// Delete old member from list.
+    hashtable->CheckDel(false); // Make sure element count is decremented, but don't resize the table.
+  }
+
 }
 
 #endif
