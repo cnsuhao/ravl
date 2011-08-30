@@ -116,15 +116,22 @@ namespace RavlN {
     //: Access data.
     
     bool Del(void);
-    //: Delete current item from table, move to next.
-    // Returns true if at a valid element.
-    // If your using this in a normal for(;it;it++) you may want to use DelNoInc() to ensure
-    // the element after the one you deleted isn't skipped.
+    //: Delete current item from table; move to next.
+
+    // Returns true if at a valid element.  If you are deleting elements in a typical
+    // "for(; it; it++)" construct, use <code>DelNoInc()</code> instead to ensure the
+    // element after the one you deleted isn't skipped.
 
     void DelNoInc(void);
-    //: Delete current item from table, don't move the iterator.
-    // Note: Leaves the iterator in an undefined state, and only ++ may be used after for the iterator to be valid again.
-    // This can be use to iterate through a hash removing elements.
+    //: Delete current item from table; don't move to next element.
+
+    // Use this method rather than <code> Del(void);</code> if using within a
+    // normal "for(; it; it++)" construct, in order to avoid moving the
+    // iterator on twice.<br>
+
+    // Note: It leaves the iterator in an undefined state, so something like
+    // <code>operator++</code> or <code>Next() must be used for the iterator
+    // to be valid again.
 
     HashIterC<K,T> &operator=(const HashC<K,T> &oth) { 
       bIt = oth.table;
