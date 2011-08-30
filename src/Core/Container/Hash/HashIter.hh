@@ -118,10 +118,12 @@ namespace RavlN {
     bool Del(void);
     //: Delete current item from table, move to next.
     // Returns true if at a valid element.
+    // If your using this in a normal for(;it;it++) you may want to use DelNoInc() to ensure
+    // the element after the one you deleted isn't skipped.
 
-    void DelIncrementSafe(void);
-    //: Delete current item from table, move to last or current list header.
-    // Note: Inc must be used after use for the iterator to be valid again.
+    void DelNoInc(void);
+    //: Delete current item from table, don't move the iterator.
+    // Note: Leaves the iterator in an undefined state, and only ++ may be used after for the iterator to be valid again.
     // This can be use to iterate through a hash removing elements.
 
     HashIterC<K,T> &operator=(const HashC<K,T> &oth) { 
@@ -180,7 +182,7 @@ namespace RavlN {
   // Inc must be used after use for the iterator to be valid again.
 
   template<class K,class T>
-  void HashIterC<K,T>::DelIncrementSafe(void) {
+  void HashIterC<K,T>::DelNoInc(void) {
     lIt.Del();// Delete old member from list.
     hashtable->CheckDel(false); // Make sure element count is decremented, but don't resize the table.
   }
