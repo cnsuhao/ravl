@@ -106,6 +106,12 @@ namespace RavlN {
     return (rename(this->chars(),newname.chars()) == 0);
   }
   
+  // Creates hard link of this file
+
+  bool FilenameC::Link(const StringC &linkname) const {
+    return (link(this->chars(),linkname.chars()) == 0);
+  }
+
   // Get the access permissions for this file.
   
   FilePermissionC FilenameC::Permissions() const {
