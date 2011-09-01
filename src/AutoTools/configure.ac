@@ -62,12 +62,12 @@ dnl                                   pkg-config
 dnl       use_<Lib>                   Flag specifying useage of library,
 dnl                                   primed initially by --with-<Lib> or
 dnl                                   as part of a dependancy check. 
-dnl       <Lib>_RavlLibs              Receives the name(s) of the Ravl libraries
+dnl       <Lib>_RavlLib               Receives the name(s) of the Ravl libraries
 dnl                                   that rely on the external library
 dnl       <Lib>_SUPPORT               Declared here, this variable is used to
 dnl                                   export the names of the dependant Ravl libs
 dnl                                   to the makefiles. This variable is set to
-dnl                                   null here and later set to <Lib>_RavlLibs
+dnl                                   null here and later set to <Lib>_RavlLib
 dnl                                   if the external package is present and
 dnl                                   usable
 dnl
@@ -143,7 +143,10 @@ AC_DEFUN([AX_RAVL_HELPER_PC],
                      )
           HelperLibs=$HelperLibs" "$1
           $1_SUPPORT=""
-          $1_RavlLib="$3"
+          AS_IF([ test "$3" = NA],
+                [$1_RavlLib=""],
+                [$1_RavlLib="$3"]
+               )
           AC_SUBST([$1_CFLAGS])
           AC_SUBST([$1_LIBS])
           AC_SUBST([$1_SUPPORT])
@@ -222,12 +225,12 @@ dnl       with_<Lib>_inc              Path to the library's headers
 dnl       with_<Lib>_fn               Function for the test link
 dnl       with_<Lib>_prq              Space separated list of pre-requisites
 dnl                                   of the library
-dnl       <Lib>_RavlLibs              Receives the name(s) of the Ravl libraries
+dnl       <Lib>_RavlLib               Receives the name(s) of the Ravl libraries
 dnl                                   that rely on the external library
 dnl       <Lib>_SUPPORT               Declared here, this variable is used to
 dnl                                   export the names of the dependant Ravl libs
 dnl                                   to the makefiles. This variable is set to
-dnl                                   null here and later set to <Lib>_RavlLibs
+dnl                                   null here and later set to <Lib>_RavlLib
 dnl                                   if the external package is present and
 dnl                                   usable
 dnl
@@ -539,7 +542,10 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
           with_$1_prq="$3"
           with_$1_hdr="$6"
           $1_SUPPORT=""
-          $1_RavlLib="$8"
+          AS_IF([ test "$8" = NA],
+                [$1_RavlLib=""],
+                [$1_RavlLib="$8"]
+               )
           AC_SUBST([$1_CFLAGS])
           AC_SUBST([$1_LIBS])
           AC_SUBST([$1_SUPPORT])

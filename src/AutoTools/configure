@@ -6626,7 +6626,12 @@ fi
 
           HelperLibs=$HelperLibs" "libdc1394
           libdc1394_SUPPORT=""
-          libdc1394_RavlLib="libRavlImgIO1394dc"
+          if  test "libRavlImgIO1394dc" = NA; then :
+  libdc1394_RavlLib=""
+else
+  libdc1394_RavlLib="libRavlImgIO1394dc"
+
+fi
 
 
 
@@ -6726,7 +6731,12 @@ fi
 
           HelperLibs=$HelperLibs" "libAudioFile
           libAudioFile_SUPPORT=""
-          libAudioFile_RavlLib="libRavlAudioFile"
+          if  test "libRavlAudioFile" = NA; then :
+  libAudioFile_RavlLib=""
+else
+  libAudioFile_RavlLib="libRavlAudioFile"
+
+fi
 
 
 
@@ -6826,7 +6836,12 @@ fi
 
           HelperLibs=$HelperLibs" "libavc1394
           libavc1394_SUPPORT=""
-          libavc1394_RavlLib="libRavlFireWire"
+          if  test "libRavlFireWire" = NA; then :
+  libavc1394_RavlLib=""
+else
+  libavc1394_RavlLib="libRavlFireWire"
+
+fi
 
 
 
@@ -6926,7 +6941,12 @@ fi
 
           HelperLibs=$HelperLibs" "libCurl
           libCurl_SUPPORT=""
-          libCurl_RavlLib="libRavlURLIO"
+          if  test "libRavlURLIO" = NA; then :
+  libCurl_RavlLib=""
+else
+  libCurl_RavlLib="libRavlURLIO"
+
+fi
 
 
 
@@ -7026,7 +7046,12 @@ fi
 
           HelperLibs=$HelperLibs" "libDV
           libDV_SUPPORT=""
-          libDV_RavlLib="libRavlDV"
+          if  test "libRavlDV" = NA; then :
+  libDV_RavlLib=""
+else
+  libDV_RavlLib="libRavlDV"
+
+fi
 
 
 
@@ -7126,7 +7151,12 @@ fi
 
           HelperLibs=$HelperLibs" "FFMPEGCDEC
           FFMPEGCDEC_SUPPORT=""
-          FFMPEGCDEC_RavlLib="NA"
+          if  test "NA" = NA; then :
+  FFMPEGCDEC_RavlLib=""
+else
+  FFMPEGCDEC_RavlLib="NA"
+
+fi
 
 
 
@@ -7226,7 +7256,12 @@ fi
 
           HelperLibs=$HelperLibs" "FFMPEGCONT
           FFMPEGCONT_SUPPORT=""
-          FFMPEGCONT_RavlLib="NA"
+          if  test "NA" = NA; then :
+  FFMPEGCONT_RavlLib=""
+else
+  FFMPEGCONT_RavlLib="NA"
+
+fi
 
 
 
@@ -7326,7 +7361,12 @@ fi
 
           HelperLibs=$HelperLibs" "FFMPEGSWS
           FFMPEGSWS_SUPPORT=""
-          FFMPEGSWS_RavlLib="NA"
+          if  test "NA" = NA; then :
+  FFMPEGSWS_RavlLib=""
+else
+  FFMPEGSWS_RavlLib="NA"
+
+fi
 
 
 
@@ -7426,7 +7466,12 @@ fi
 
           HelperLibs=$HelperLibs" "FFMPEGUTIL
           FFMPEGUTIL_SUPPORT=""
-          FFMPEGUTIL_RavlLib="NA"
+          if  test "NA" = NA; then :
+  FFMPEGUTIL_RavlLib=""
+else
+  FFMPEGUTIL_RavlLib="NA"
+
+fi
 
 
 
@@ -7526,7 +7571,12 @@ fi
 
           HelperLibs=$HelperLibs" "iksemel
           iksemel_SUPPORT=""
-          iksemel_RavlLib="libRavlXMPPIksemel"
+          if  test "libRavlXMPPIksemel" = NA; then :
+  iksemel_RavlLib=""
+else
+  iksemel_RavlLib="libRavlXMPPIksemel"
+
+fi
 
 
 
@@ -7626,7 +7676,12 @@ fi
 
           HelperLibs=$HelperLibs" "libglade2
           libglade2_SUPPORT=""
-          libglade2_RavlLib="libRavlLibGlade"
+          if  test "libRavlLibGlade" = NA; then :
+  libglade2_RavlLib=""
+else
+  libglade2_RavlLib="libRavlLibGlade"
+
+fi
 
 
 
@@ -7726,7 +7781,12 @@ fi
 
           HelperLibs=$HelperLibs" "LibGnome
           LibGnome_SUPPORT=""
-          LibGnome_RavlLib="libRavlGUIGnome"
+          if  test "libRavlGUIGnome" = NA; then :
+  LibGnome_RavlLib=""
+else
+  LibGnome_RavlLib="libRavlGUIGnome"
+
+fi
 
 
 
@@ -7826,7 +7886,12 @@ fi
 
           HelperLibs=$HelperLibs" "libGTK2
           libGTK2_SUPPORT=""
-          libGTK2_RavlLib="NA"
+          if  test "NA" = NA; then :
+  libGTK2_RavlLib=""
+else
+  libGTK2_RavlLib="NA"
+
+fi
 
 
 
@@ -7926,7 +7991,12 @@ fi
 
           HelperLibs=$HelperLibs" "GTKGLExt
           GTKGLExt_SUPPORT=""
-          GTKGLExt_RavlLib="NA"
+          if  test "NA" = NA; then :
+  GTKGLExt_RavlLib=""
+else
+  GTKGLExt_RavlLib="NA"
+
+fi
 
 
 
@@ -8026,7 +8096,12 @@ fi
 
           HelperLibs=$HelperLibs" "Loudmouth
           Loudmouth_SUPPORT=""
-          Loudmouth_RavlLib="libRavlXMPPLoudmouth"
+          if  test "libRavlXMPPLoudmouth" = NA; then :
+  Loudmouth_RavlLib=""
+else
+  Loudmouth_RavlLib="libRavlXMPPLoudmouth"
+
+fi
 
 
 
@@ -8126,7 +8201,12 @@ fi
 
           HelperLibs=$HelperLibs" "OpenCV
           OpenCV_SUPPORT=""
-          OpenCV_RavlLib="libRavlOpenCV"
+          if  test "libRavlOpenCV" = NA; then :
+  OpenCV_RavlLib=""
+else
+  OpenCV_RavlLib="libRavlOpenCV"
+
+fi
 
 
 
@@ -8226,7 +8306,12 @@ fi
 
           HelperLibs=$HelperLibs" "libPNG
           libPNG_SUPPORT=""
-          libPNG_RavlLib="NA"
+          if  test "NA" = NA; then :
+  libPNG_RavlLib=""
+else
+  libPNG_RavlLib="NA"
+
+fi
 
 
 
@@ -8326,7 +8411,12 @@ fi
 
           HelperLibs=$HelperLibs" "libGL
           libGL_SUPPORT=""
-          libGL_RavlLib="NA"
+          if  test "NA" = NA; then :
+  libGL_RavlLib=""
+else
+  libGL_RavlLib="NA"
+
+fi
 
 
 
@@ -8426,7 +8516,12 @@ fi
 
           HelperLibs=$HelperLibs" "libGLU
           libGLU_SUPPORT=""
-          libGLU_RavlLib="NA"
+          if  test "NA" = NA; then :
+  libGLU_RavlLib=""
+else
+  libGLU_RavlLib="NA"
+
+fi
 
 
 
@@ -8526,7 +8621,12 @@ fi
 
           HelperLibs=$HelperLibs" "OpenSceneGraph
           OpenSceneGraph_SUPPORT=""
-          OpenSceneGraph_RavlLib="libRavlGUIOpenSceneGraph"
+          if  test "libRavlGUIOpenSceneGraph" = NA; then :
+  OpenSceneGraph_RavlLib=""
+else
+  OpenSceneGraph_RavlLib="libRavlGUIOpenSceneGraph"
+
+fi
 
 
 
@@ -8626,7 +8726,12 @@ fi
 
           HelperLibs=$HelperLibs" "RLog
           RLog_SUPPORT=""
-          RLog_RavlLib="libRavlRLog"
+          if  test "libRavlRLog" = NA; then :
+  RLog_RavlLib=""
+else
+  RLog_RavlLib="libRavlRLog"
+
+fi
 
 
 
@@ -8726,7 +8831,12 @@ fi
 
           HelperLibs=$HelperLibs" "devVideo4Linux
           devVideo4Linux_SUPPORT=""
-          devVideo4Linux_RavlLib="libRavlImgIOV4L"
+          if  test "libRavlImgIOV4L" = NA; then :
+  devVideo4Linux_RavlLib=""
+else
+  devVideo4Linux_RavlLib="libRavlImgIOV4L"
+
+fi
 
 
 
@@ -8826,7 +8936,12 @@ fi
 
           HelperLibs=$HelperLibs" "devVideo4Linux2
           devVideo4Linux2_SUPPORT=""
-          devVideo4Linux2_RavlLib="libRavlImgIOV4L2"
+          if  test "libRavlImgIOV4L2" = NA; then :
+  devVideo4Linux2_RavlLib=""
+else
+  devVideo4Linux2_RavlLib="libRavlImgIOV4L2"
+
+fi
 
 
 
@@ -9260,7 +9375,12 @@ fi
           with_LibJasper_prq=""
           with_LibJasper_hdr="jasper/jasper.h"
           LibJasper_SUPPORT=""
-          LibJasper_RavlLib="libRavlImgIOJasper"
+          if  test "libRavlImgIOJasper" = NA; then :
+  LibJasper_RavlLib=""
+else
+  LibJasper_RavlLib="libRavlImgIOJasper"
+
+fi
 
 
 
@@ -9694,7 +9814,12 @@ fi
           with_JPEG_prq=""
           with_JPEG_hdr="jpeglib.h"
           JPEG_SUPPORT=""
-          JPEG_RavlLib="NA"
+          if  test "NA" = NA; then :
+  JPEG_RavlLib=""
+else
+  JPEG_RavlLib="NA"
+
+fi
 
 
 
@@ -10128,7 +10253,12 @@ fi
           with_posixThreads_prq=""
           with_posixThreads_hdr="pthread.h"
           posixThreads_SUPPORT=""
-          posixThreads_RavlLib="NA"
+          if  test "NA" = NA; then :
+  posixThreads_RavlLib=""
+else
+  posixThreads_RavlLib="NA"
+
+fi
 
 
 
@@ -10562,7 +10692,12 @@ fi
           with_LibTIFF_prq="Zlib"
           with_LibTIFF_hdr=""
           LibTIFF_SUPPORT=""
-          LibTIFF_RavlLib="NA"
+          if  test "NA" = NA; then :
+  LibTIFF_RavlLib=""
+else
+  LibTIFF_RavlLib="NA"
+
+fi
 
 
 
@@ -10996,7 +11131,12 @@ fi
           with_Zlib_prq=""
           with_Zlib_hdr=""
           Zlib_SUPPORT=""
-          Zlib_RavlLib="libRavlZLib"
+          if  test "libRavlZLib" = NA; then :
+  Zlib_RavlLib=""
+else
+  Zlib_RavlLib="libRavlZLib"
+
+fi
 
 
 
