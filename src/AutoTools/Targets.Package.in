@@ -120,16 +120,20 @@ endif
 #         directory  used). Default is $(prefix)/include.
 
 
-ifndef oldincludedir
-oldincludedir=@oldincludedir@
-endif
-#       - Specifies the base location for installing header files when using
-#         a compiler that does not support the alternative include directory
-#         set by $(includedir). Usual values are /usr/include or null. GNU
-#         coding standards suggest, if $(oldincludedir) is set, a package's 
-#         header files should be installed under both $(oldincludedir) and
-#         $(includedir).
-
+# Following is unsed by QMake as it does not observe the GNU standard of
+# installing header files into both ${includedir} and ${oldincludedir}.
+# QMake only installs to ${includedir}
+#
+#   ifndef oldincludedir
+#   oldincludedir=@oldincludedir@
+#   endif
+#   #       - Specifies the base location for installing header files when using
+#   #         a compiler that does not support the alternative include directory
+#   #         set by $(includedir). Usual values are /usr/include or null. GNU
+#   #         coding standards suggest, if $(oldincludedir) is set, a package's 
+#   #         header files should be installed under both $(oldincludedir) and
+#   #         $(includedir).
+#
 
 
 ifndef exec_prefix
