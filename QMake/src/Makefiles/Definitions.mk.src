@@ -452,6 +452,9 @@ PKG_CFLAGS+=$(USERCFLAGS)
 PKG_CCFLAGS+=$(USERCFLAGS)
 PKG_LDFLAGS+=$(USERLDFLAGS)
 
-# Ravl uses CPPFLAGS directly (again QMake has no seperate C++ variable)
+# Use pre-processor flags directly as they do not really work in an additive
+# manner (it is not easy for a user to override global definitions already set,
+# i.e. they cannot override a previous -I by appending their own flags).
+# Again, remember QMake has no seperate C++ variable
 CPPFLAGS+=$(USERCPPFLAGS)
 CCPPFLAGS+=$(USERCPPFLAGS)
