@@ -1,12 +1,10 @@
 // This file is part of QMake, Quick Make System 
-// Copyright (C) 2001, University of Surrey
+// Copyright (C) 2001-11, University of Surrey
 // This code may be redistributed under the terms of the GNU General 
 // Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
+
 // file-header-ends-here
-//! rcsid="$Id$"
-//! file="Ravl/QMake/SysConf.cc"
-//! date="6/12/1996"
 //! docentry="Ravl.QMake.sysconf"
 
 //  A Utility to retrieve some imformation about the

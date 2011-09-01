@@ -3,13 +3,9 @@
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+
 # file-header-ends-here
 ################################
-# Quick RAVL make system.
-# Documentation make file.
-# $Id: Doc.mk 6058 2007-02-13 11:36:50Z ees1wc $
-#! rcsid="$Id: Doc.mk 6058 2007-02-13 11:36:50Z ees1wc $"
-#! file="Ravl/QMake/Doc.mk"
 
 ifndef QMAKE_MAKEFILES
   QMAKE_MAKEFILES=/Set/During/Staging/Process

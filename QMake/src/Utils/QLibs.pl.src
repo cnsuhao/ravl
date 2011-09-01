@@ -2,7 +2,7 @@
 # qlibs.pl
 #
 #
-# This program works out the libraries needed to compile RAVL/RAVL programs.
+# This program works out the product libraries needed to compile programs.
 # author: Kieron Messer
 # date:   3 April 2001
 

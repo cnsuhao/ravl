@@ -3,9 +3,8 @@
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+
 # file-header-ends-here
-#! rcsid="$Id: QMake.mk 7345 2009-11-02 16:34:36Z craftit $"
-#! file="Ravl/QMake/QMake.mk"
 
 # Setup make flags.
 
@@ -295,11 +294,6 @@ buildall:
 	echo "Building documentation. " ; \
 	$(MAKEDC) doc 
 
-###########################################################
-# Utilities for RAVL installation.
-
-# The last INST_LIBDEF is because the calling PROJECT_OUT may not
-# be the one we using.
 
 FULLBUILDSRC := FULLCHECKING=1
 
@@ -333,7 +327,7 @@ fullclean:
 libbuild: 
 	$(SMAKEMD) libbuild  $(FULLBUILDFLAGS) TARGET=libbuild
 
-# Build Ravl.
+# Build Product.
 # Proceeds as follows:
 #  1-Src the latest version of the source.
 #  2-Compile all libraries.

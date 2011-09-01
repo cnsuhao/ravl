@@ -10,8 +10,8 @@ AC_INIT([QMake], [1.5.8030], [John.Field@Surrey.ac.UK])
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+
 # file-header-ends-here
-#! file="Ravl/QMake/Main.mk"
 
 dnl#JFi:ToDo-Check for ver 5 of Perl as a requirement
 

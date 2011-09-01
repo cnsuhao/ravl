@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+
 # file-header-ends-here
-#! file="Ravl/QMake/Definitions.mk"
 
 # Development Bodges....
 
@@ -132,9 +132,6 @@ else
   SHOWIT = @
 endif
 
-# FIXME: PACKAGEDIR is intented to replace all the RAVL's hardwired into
-# the make system.  Before it can be used we have to disentangle
-# what is QMAKE and the base installation.
 
 ifndef PACKAGENAME
   PACKAGEDIR=RAVL

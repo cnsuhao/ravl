@@ -13,7 +13,7 @@
     <h2>Running QMake</h2>
 
     <p>The basic command is <code>qm</code>, which is an alias for
-    <code>make</code> that is defined when you set up the RAVL
+    <code>make</code> that is defined when you set up the QMake
     environment.</p>
 
     <p>Typing <code>qm</code> with no arguments will build code that contains
@@ -31,7 +31,7 @@
       <li> The optimised versions (e.g. <code>qm opt</code>) produce optimised
       code with no checking.</li>
 
-      <li> You can include (and create) shared rather than static RAVL
+      <li> You can include (and create) shared rather than static product
       libraries in your executable (e.g. <code>qm shared</code>, <code>qm
       optshared</code>).</li>
 
@@ -77,7 +77,7 @@
 
 
 <p> QMake uses a configuration file to establish what libraries are available called config.local.(system name) . e.g. config.local.linux.
-To avoid problems with changes to the default ravl config files, there is an environment variable which if set redirects QMake to a local
+To avoid problems with changes to the default config files, there is an environment variable which if set redirects QMake to a local
 configuration file. This should avoid odd problems with compilers changing unexpectedly, or different libraries being enabled/disabled.
 Just added the following to your .cshrc :
 </p>
