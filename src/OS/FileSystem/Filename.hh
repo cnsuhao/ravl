@@ -67,6 +67,10 @@ namespace RavlN {
     // This does NOT change the value of this filename.
     // Ret true=Succeeded.
     
+    bool Link(const StringC &linkname) const;
+    //: Creates hard link of this file to <code>linkname</code>.
+    // Ret true=Succeeded.
+    
     inline bool IsReadable() const
       { return Permissions().IsReadable(); }
     //: Test if the file/directory is readable by this process.
