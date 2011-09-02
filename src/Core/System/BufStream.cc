@@ -91,7 +91,7 @@ namespace RavlN {
     int    size = oss->pcount() ;
     data = SArray1dC<char> ( astr, --size ) ;
 #else
-    data = SArray1dC<char>((char *) oss->str(),oss->pcount(),false);
+    data = SArray1dC<char>((char *) oss->str(),oss->pcount(),true);
 #endif // mips pro fix 
 #endif
     return data;
