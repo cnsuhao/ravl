@@ -11,6 +11,8 @@ DESCRIPTION = Pattern Recognition Classifiers
 
 PACKAGE = Ravl/PatternRec
 
+MAINS=doLeaveOneOut.cc doTrainClassifier.cc doTestClassifier.cc
+
 HEADERS= DesignClassifierSupervised.hh  \
  DesignDiscriminantFunction.hh DesignKNearestNeighbour.hh \
  ClassifierKNearestNeighbour.hh ClassifierAverageNearestNeighbour.hh \
@@ -44,12 +46,16 @@ TESTEXES=testClassifier.cc testClassifierXMLFactory.cc testClassifierOneAgainstA
 
 LIBDEPS = RavlPatternRecClassifier.def 
 
-USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann
+USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann RavlRLog
 
-PROGLIBS=RavlSVM
+PROGLIBS=RavlSVM RavlPatternRecIO
 
 EHT = Ravl.API.Pattern_Recognition.Classifier.html DesignClassifier.html
 
 EXAMPLES=  exKNearestNeighbour.cc
 
 MUSTLINK=linkClassifier.cc
+
+AUXFILES=classifier.xml
+
+AUXDIR=share/Ravl/PatternRec

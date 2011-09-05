@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?RAVL class='RavlN::XMLTreeC' ?>
+<Config verbose="false" >
+
+<!-- A K-Nearest Neighbour classifier using Euclidean distance-->
+<KNN  typename="RavlN::DesignKNearestNeighbourC" k="3" use_average_knn="true">
+	<Distance typename="RavlN::DistanceEuclideanC" />
+</KNN>
+
+<!-- A classifier based on Gaussian Mixtures -->
+<GMM typename="RavlN::DesignClassifierGaussianMixtureC" number_of_mixtures="3" />
+
+<!-- A simple liner SVM classifier -->
+<SVM  typename="RavlN::DesignSvmSmoC" >
+	<KernelFunction typename="RavlN::LinearKernelC" scale="1.0" />
+</SVM>
+
+</Config>
