@@ -43,6 +43,7 @@ namespace RavlOSGN {
     bool m_invertAxis2;
     float m_gap;
     float m_minSize;
+    bool m_homogenousGrid;
   };
 
 }
