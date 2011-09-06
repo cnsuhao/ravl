@@ -1006,69 +1006,93 @@ TARG_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(filter-out Auto,$(USES
 EXTRA_USESLIBS_R = $(filter-out %.opt,$(EXTRA_USESLIBS))
 EXTRA_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(EXTRA_USESLIBS)))
 
+ifdef REQUIRES	
+ REQUIRES_INDENT:='  '
+endif
+# Used for indenting the content in a .def file if REQUIRES is set (which causes 
+# an extra ifeq to be added to the file, so the lines inside that ifeq then need
+# to be indented by an extra couple of characters)
+
 ifdef LOCAL_DEFBASE
-ifdef USESLIBS
- ifneq (($(filter Auto,$(USESLIBS)),Auto),Auto)
-$(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir
- else
-  ifndef AUTOUSELIBS
-   AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-  endif
-$(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
- endif
+ ifdef USESLIBS
+  ifneq (($(filter Auto,$(USESLIBS)),Auto),Auto)
+   $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir
+  else
+   ifndef AUTOUSELIBS
+    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+   endif
+    $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
+   endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
-	fi ; \
-	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' > $(INST_LIBDEF)/$(@F) ; \
-	echo '$(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F) ;
+	fi
+	echo > $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
  ifdef REQUIRES	
-	$(SHOWIT)echo 'ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F)
- endif	
- ifdef USESLIBS
-  ifneq ($(USESLIBS),)
-   ifneq ($(USESLIBS),None)
-    ifneq ($(filter Auto,$(USESLIBS)),Auto)
-     ifneq ($(strip $(TARG_USESLIBS_R)),)
-	$(SHOWIT)echo 'include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
-     endif
-     ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '-include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
-     endif
-    else
-     ifneq ($(strip $(AUTOUSELIBS)),)
-      ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo 'include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif	
+  ifdef USESLIBS
+   ifneq ($(USESLIBS),)
+    ifneq ($(USESLIBS),None)
+     ifneq ($(filter Auto,$(USESLIBS)),Auto)
+      ifneq ($(strip $(TARG_USESLIBS_R)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
       endif
-      ifneq ($(strip $(EXTRA_USESLIBS_O)),)
-	$(SHOWIT)echo '-include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
+      ifneq ($(strip $(TARG_USESLIBS_O)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+      endif
+     else
+      ifneq ($(strip $(AUTOUSELIBS)),)
+       ifneq ($(strip $(EXTRA_USESLIBS_R)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+       endif
+       ifneq ($(strip $(EXTRA_USESLIBS_O)),)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+       endif
       endif
      endif
     endif
    endif
   endif
- endif
-	$(SHOWIT)echo 'PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ;
- ifdef PLIB
-  ifndef LIBDEPS
-	$(SHOWIT)echo 'EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+  ifdef PLIB
+   ifndef LIBDEPS
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+   endif
   endif
- endif
- ifdef MUSTLINK
-	$(SHOWIT)echo 'EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
- endif
- ifdef EXTPACKAGE
-        $(SHOWIT)echo 'INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) '
-        $(SHOWIT)echo 'ifneq ($(BASE_VAR),none)' ;
-        $(SHOWIT)echo ' INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ;
-        $(SHOWIT)echo 'endif' ;
- endif
- ifdef REQUIRES	
+  ifdef MUSTLINK
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif
+  ifdef EXTPACKAGE
+        $(SHOWIT)echo '$(REQUIRES_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) '
+	echo >> $(INST_LIBDEF)/$(@F)
+        $(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($(BASE_VAR),none)'
+	echo >> $(INST_LIBDEF)/$(@F)
+        $(SHOWIT)echo '$(REQUIRES_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)'
+	echo >> $(INST_LIBDEF)/$(@F)
+        $(SHOWIT)echo '$(REQUIRES_INDENT)  endif'
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif
+  ifdef REQUIRES	
+	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F)
+	echo >> $(INST_LIBDEF)/$(@F)
+  endif	
 	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F)
- endif	
-	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F) ; \
-	$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
-endif
+	echo >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
+ endif
 endif
 
 ###########################
