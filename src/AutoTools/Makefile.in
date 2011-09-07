@@ -58,13 +58,13 @@ fullsrc: qmake
 install: installQMake installsingleoptshared installHdrs
 
 installHdrs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) PLIB= VAR=opt SHARED=/shared/single SHAREDBUILD=1 insHdrs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) PLIB= VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 insHdrs recurse
 
 installoptshared:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 install recurse
 
 installsingleoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) PLIB= VAR=opt SHARED=/shared/single SHAREDBUILD=1 install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) PLIB= VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 install recurse
 	$(SHOWIT)if [ ! -d $(DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single/libRavl.so $(DESTDIR)$(libdir)/libRavl.so
 # Use the 'install' function of QMake to install the Ravl utility binaries;
