@@ -124,6 +124,9 @@ retestsingleopt:
            PATH=$(INSTALLHOME)/test/opt/single/bin:$(INSTALLHOME)/bin/utils/opt/single/bin:$$PATH \
            $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/test/opt/single
 	
+retestoptshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared retest
+
 retestsingleoptshared:
 	@cd $(INSTALLHOME)/test/opt/shared/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/shared/single && \
@@ -171,6 +174,10 @@ testsingleopt:
            PATH=$(INSTALLHOME)/test/opt/single/bin:$(INSTALLHOME)/bin/utils/opt/single/bin:$$PATH \
            $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/test/opt/single
 	
+testoptshared:
+	@$(RM) -f $(INSTALLHOME)/test/opt/shared/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared test
+
 testsingleoptshared:
 	@$(RM) -f $(INSTALLHOME)/test/opt/shared/single/bin/*
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Packages/Ravl/Makefiles/Recursive.mk INSTALLHOME=$(INSTALLHOME) VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
