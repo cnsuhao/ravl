@@ -196,9 +196,9 @@ insEgs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$SHARED)/bin/%, $(EXAMPLES)) $(DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$SHARED)/bin/%, $(EXAMPLES)) $(DESTDIR)$(bindir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -281,9 +281,9 @@ insLibs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -309,9 +309,9 @@ insMains:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(basename $(MAINS))) $(DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(basename $(MAINS))) $(DESTDIR)$(bindir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -337,9 +337,9 @@ insScripts:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(SCRIPTS)) $(DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(SCRIPTS)) $(DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED)/bin/%, $(SCRIPTS)) $(DESTDIR)$(bindir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(SCRIPTS)) $(DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -365,9 +365,9 @@ insTests:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED)/bin/%, $(TESTEXES)) $(DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED)/bin/%, $(TESTEXES)) $(DESTDIR)$(bindir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
