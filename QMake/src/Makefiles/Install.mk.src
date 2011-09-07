@@ -52,13 +52,6 @@ endif
 
 
 
-# Developemnt Bodges
-
-PRODUCT=RAVL
-PLIB=Ravl
-
-# End of Bodges
-
 # Main Body of makefile
 
 
