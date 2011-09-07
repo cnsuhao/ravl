@@ -266,13 +266,13 @@ insHdrs:
 insLibs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(libdir)/$(PACKAGE) ] ;\
+            if [ ! -d $(DESTDIR)$(libdir) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE) ;\
+                  echo $(MKDIR_P) $(DESTDIR)$(libdir) ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE) ;\
+               $(MKDIR_P) $(DESTDIR)$(libdir) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
