@@ -23,7 +23,7 @@ int main(int nargs, char **argv) {
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
   StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM].");
-  StringC dsetFile = opts.String("dset", "", "The dataset to perform leave one out on!");
+  StringC dsetFile = opts.String("dset", "", "The dataset to train on!");
   bool noNormaliseSample = opts.Boolean("noNormalise", false, "Do not normalise the sample to unit mean/var");
   FilenameC classifierOutFile = opts.String("o", "classifier.strm", "Save classifier to this file.");
   bool verbose = opts.Boolean("v", false, "Verbose mode.");
