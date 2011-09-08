@@ -46,9 +46,9 @@ TESTEXES=testClassifier.cc testClassifierXMLFactory.cc testClassifierOneAgainstA
 
 LIBDEPS = RavlPatternRecClassifier.def 
 
-USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann RavlRLog
+USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann
 
-PROGLIBS=RavlSVM RavlPatternRecIO
+PROGLIBS=RavlSVM RavlPatternRecIO RavlOS
 
 EHT = Ravl.API.Pattern_Recognition.Classifier.html DesignClassifier.html
 

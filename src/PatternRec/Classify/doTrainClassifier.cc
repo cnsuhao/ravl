@@ -1,6 +1,6 @@
 #include "Ravl/Option.hh"
 #include "Ravl/XMLFactory.hh"
-#include "Ravl/RLog.hh"
+#include "Ravl/OS/SysLog.hh"
 #include "Ravl/Resource.hh"
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
@@ -26,34 +26,28 @@ int main(int nargs, char **argv) {
   StringC dsetFile = opts.String("dset", "", "The dataset to train on!");
   bool noNormaliseSample = opts.Boolean("noNormalise", false, "Do not normalise the sample to unit mean/var");
   FilenameC classifierOutFile = opts.String("o", "classifier.strm", "Save classifier to this file.");
-  bool verbose = opts.Boolean("v", false, "Verbose mode.");
-  StringC logFile = opts.String("l", "stderr", "Checkpoint log file. ");
-  StringC logLevel = opts.String("ll", "debug", "Logging level (debug, info, warning, error)");
-
+  //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
-
-  RLogInit(nargs, argv, logFile.chars(), verbose);
-  RLogSubscribeL(logLevel.chars());
 
   try {
     XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
     XMLFactoryContextC context(*mainFactory);
 
     // Get classifier designer
-    rInfo("Initialising classifier '%s'", classifierType.data());
+    SysLog(SYSLOG_INFO,"Initialising classifier '%s'", classifierType.data());
     DesignClassifierSupervisedC design;
     if (!context.UseComponent(classifierType, design, true)) {
-      rError("No '%s' component in XML config", classifierType.data());
+      SysLog(SYSLOG_ERR,"No '%s' component in XML config", classifierType.data());
       return 1;
     }
 
     // Get dataset
-    rInfo("Loading dataset from file '%s'", dsetFile.data());
+    SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", dsetFile.data());
     // FIXME: Want to use Load/Save instead
     DataSetVectorLabelC trainingDataSet;
     IStreamC is(dsetFile);
     if (!is.good()) {
-      rError("Trouble loading dataset from file!");
+      SysLog(SYSLOG_ERR,"Trouble loading dataset from file!");
       return 1;
     }
     is >> trainingDataSet;
@@ -61,10 +55,10 @@ int main(int nargs, char **argv) {
     // Lets compute mean and variance of dataset and normalise input
     FuncMeanProjectionC func;
     if (noNormaliseSample) {
-      rDebug("You are not normalising your sample!  I hope you know what you are doing.");
+      SysLog(SYSLOG_INFO,"You are not normalising your sample!  I hope you know what you are doing.");
     } else {
       // FIXME: Sometimes you want to normalise on a class, rather than the whole sample
-      rInfo("Normalising the whole sample!");
+      SysLog(SYSLOG_INFO,"Normalising the whole sample!");
       MeanCovarianceC meanCovariance = trainingDataSet.Sample1().MeanCovariance();
       func = trainingDataSet.Sample1().NormalisationFunction(meanCovariance);
       trainingDataSet.Sample1().Normalise(meanCovariance);
@@ -73,32 +67,32 @@ int main(int nargs, char **argv) {
     // FIXME: Also having unequal samples can bias training as well
 
     // Train classifier
-    rInfo("Training the classifier");
+    SysLog(SYSLOG_INFO,"Training the classifier");
     ClassifierC classifier = design.Apply(trainingDataSet.Sample1(), trainingDataSet.Sample2());
-    rInfo(" - finished");
+    SysLog(SYSLOG_INFO," - finished");
 
     // Lets get error on training data set - even though highly biased
     ErrorC error;
     RealT pmc = error.Error(classifier, trainingDataSet);
-    rInfo("The (biased) probability of miss-classification is %0.4f ", pmc);
+    SysLog(SYSLOG_INFO,"The (biased) probability of miss-classification is %0.4f ", pmc);
 
     // If we have normalised the sample we need to make sure
     // all input data to classifier is normalised by same stats
     if(!noNormaliseSample) {
-      rInfo("Making classifier with preprocessing step!");
+      SysLog(SYSLOG_INFO,"Making classifier with preprocessing step!");
       classifier = ClassifierPreprocessC(func, classifier);
     }
 
     // And save the classifier
-    rInfo("Saving classifier to '%s'", classifierOutFile.data());
+    SysLog(SYSLOG_INFO,"Saving classifier to '%s'", classifierOutFile.data());
     if (!Save(classifierOutFile, classifier)) {
-      rError("Trouble saving classifier");
+      SysLog(SYSLOG_ERR,"Trouble saving classifier");
       return 1;
     }
 
   } catch (const RavlN::ExceptionC &exc) {
-    rError("Exception:%s", exc.Text());
+    SysLog(SYSLOG_ERR,"Exception:%s", exc.Text());
   } catch (...) {
-    rError("Unknown exception");
+    SysLog(SYSLOG_ERR,"Unknown exception");
   }
 }

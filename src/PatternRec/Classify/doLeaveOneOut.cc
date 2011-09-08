@@ -1,12 +1,12 @@
 #include "Ravl/Option.hh"
 #include "Ravl/XMLFactory.hh"
-#include "Ravl/RLog.hh"
 #include "Ravl/Resource.hh"
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/PatternRec/Error.hh"
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/Sums1d2.hh"
+#include "Ravl/OS/SysLog.hh"
 
 using namespace RavlN;
 
@@ -22,39 +22,34 @@ int main(int nargs, char **argv) {
       "Classifier config file.  Look here for setting-up classifier parameters.");
   StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to use [KNN|GMM|SVM].");
   StringC dsetFile = opts.String("dset", "", "The dataset to perform leave one out on!");
-  bool verbose = opts.Boolean("v", false, "Verbose mode.");
-  StringC logFile = opts.String("l", "stderr", "Checkpoint log file. ");
-  StringC logLevel = opts.String("ll", "debug", "Logging level (debug, info, warning, error)");
+  //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   UIntT maxIter = opts.Int("maxIter", 0, "Set the maximum number of iterations (0 do all)");
   opts.Check();
-
-  RLogInit(nargs, argv, logFile.chars(), verbose);
-  RLogSubscribeL(logLevel.chars());
 
   try {
     XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
     XMLFactoryContextC context(*mainFactory);
 
     // Get classifier designer
-    rInfo("Initialising classifier '%s'", classifierType.data());
+    SysLog(SYSLOG_INFO,"Initialising classifier '%s'", classifierType.data());
     DesignClassifierSupervisedC design;
     if (!context.UseComponent(classifierType, design, true)) {
-      rError("No '%s' component in XML config", classifierType.data());
+      SysLog(SYSLOG_ERR,"No '%s' component in XML config", classifierType.data());
       return 1;
     }
 
     // Get dataset
-    rInfo("Loading dataset from file '%s'", dsetFile.data());
+    SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", dsetFile.data());
     DataSetVectorLabelC dset;
     IStreamC is(dsetFile);
     if (!is.good()) {
-      rError("Trouble loading dataset from file!");
+      SysLog(SYSLOG_ERR,"Trouble loading dataset from file!");
       return 1;
     }
     is >> dset;
 
     // Lets compute mean and variance of dataset and normalise input
-    rInfo("Normalising sample!");
+    SysLog(SYSLOG_INFO,"Normalising sample!");
     MeanCovarianceC meanCovariance = dset.Sample1().MeanCovariance();
     dset.Sample1().Normalise(meanCovariance);
 
@@ -62,14 +57,14 @@ int main(int nargs, char **argv) {
     Sums1d2C sum;
     if (maxIter == 0 || maxIter > dset.Size()) {
       maxIter = dset.Size();
-      rInfo("Using maximum number of samples '%d' in leave-one-out tests", maxIter);
+      SysLog(SYSLOG_INFO,"Using maximum number of samples '%d' in leave-one-out tests", maxIter);
     } else {
       // We need to shuffle the dataset so we do no get bias if only doing a sub-set
       dset.Shuffle();
-      rInfo("Only using a sub-set of samples '%d' in leave one out test", maxIter);
+      SysLog(SYSLOG_INFO,"Only using a sub-set of samples '%d' in leave one out test", maxIter);
     }
 
-    rInfo("Performing leave-one-out test");
+    SysLog(SYSLOG_INFO,"Performing leave-one-out test");
     for (DataSet2IterC<SampleVectorC, SampleLabelC> outIt(dset); outIt; outIt++) {
 
       // check if we have reached max iterations set by user
@@ -103,12 +98,12 @@ int main(int nargs, char **argv) {
 
     }
     cerr << endl;
-    rInfo("The probability of miss-classification is %0.4f(%0.4f)", sum.MeanVariance().Mean(),
+    SysLog(SYSLOG_INFO,"The probability of miss-classification is %0.4f(%0.4f)", sum.MeanVariance().Mean(),
         sum.MeanVariance().Variance());
 
   } catch (const RavlN::ExceptionC &exc) {
-    rError("Exception:%s", exc.Text());
+    SysLog(SYSLOG_ERR,"Exception:%s", exc.Text());
   } catch (...) {
-    rError("Unknown exception");
+    SysLog(SYSLOG_ERR,"Unknown exception");
   }
 }
