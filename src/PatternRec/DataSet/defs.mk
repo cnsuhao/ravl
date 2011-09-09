@@ -46,7 +46,7 @@ TESTEXES=testDataSet.cc testDataSetXMLFactory.cc
 
 USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO
 
-PROGLIBS=RavlOS RavlRLog RavlPatternRecIO
+PROGLIBS=RavlOS RavlPatternRecIO
 
 EHT=Ravl.API.Pattern_Recognition.Data_Set.html
 

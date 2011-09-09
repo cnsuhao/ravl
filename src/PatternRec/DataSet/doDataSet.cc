@@ -1,6 +1,5 @@
 #include "Ravl/Option.hh"
 #include "Ravl/XMLFactory.hh"
-#include "Ravl/RLog.hh"
 #include "Ravl/Resource.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/PatternRec/DataSetIO.hh"
