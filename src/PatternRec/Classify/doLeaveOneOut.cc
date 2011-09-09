@@ -7,6 +7,7 @@
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/Sums1d2.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/PatternRec/DataSetIO.hh"
 
 using namespace RavlN;
 
@@ -26,6 +27,8 @@ int main(int nargs, char **argv) {
   UIntT maxIter = opts.Int("maxIter", 0, "Set the maximum number of iterations (0 do all)");
   opts.Check();
 
+  SysLogOpen("doLeaveOneOut");
+
   try {
     XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
     XMLFactoryContextC context(*mainFactory);
@@ -41,12 +44,10 @@ int main(int nargs, char **argv) {
     // Get dataset
     SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", dsetFile.data());
     DataSetVectorLabelC dset;
-    IStreamC is(dsetFile);
-    if (!is.good()) {
+    if (!LoadDataSetVectorLabel(dsetFile, dset)) {
       SysLog(SYSLOG_ERR,"Trouble loading dataset from file!");
       return 1;
     }
-    is >> dset;
 
     // Lets compute mean and variance of dataset and normalise input
     SysLog(SYSLOG_INFO,"Normalising sample!");

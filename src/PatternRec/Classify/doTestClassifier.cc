@@ -9,6 +9,7 @@
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/PatternRec/DataSetIO.hh"
 
 using namespace RavlN;
 
@@ -21,11 +22,13 @@ int main(int nargs, char **argv) {
   StringC installDir = opts.String("i", PROJECT_OUT, "Install directory.");
   RavlN::SetResourceRoot(installDir);
   StringC classifierFile = opts.String("classifier", "", "Load the trained classifier from this file.");
-  StringC dsetFile = opts.String("dset", "", "The dataset to perform the test on!");
+  StringC testDataSetFile = opts.String("dset", "", "The dataset to perform the test on!");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
 
   try {
+
+    SysLogOpen("doTestClassifier");
 
     // And save the classifier
     ClassifierC classifier;
@@ -36,15 +39,13 @@ int main(int nargs, char **argv) {
     }
 
     // Get dataset
-    SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", dsetFile.data());
-    // FIXME: Want to use Load/Save instead
+    SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", testDataSetFile.data());
+    // FIXME: Still want to use Load/Save instead
     DataSetVectorLabelC testDataSet;
-    IStreamC is(dsetFile);
-    if (!is.good()) {
-      SysLog(SYSLOG_ERR,"Trouble loading dataset from file!");
+    if (!LoadDataSetVectorLabel(testDataSetFile, testDataSet)) {
+      SysLog(SYSLOG_ERR,"Trouble loading dataset from file '%s'", testDataSetFile.data());
       return 1;
     }
-    is >> testDataSet;
 
     // Lets get error on the test data set
     ErrorC error;

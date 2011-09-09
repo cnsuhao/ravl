@@ -9,6 +9,7 @@
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/PatternRec/DataSetIO.hh"
 
 using namespace RavlN;
 
@@ -23,11 +24,13 @@ int main(int nargs, char **argv) {
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
   StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM].");
-  StringC dsetFile = opts.String("dset", "", "The dataset to train on!");
+  StringC trainingDataSetFile = opts.String("dset", "", "The dataset to train on!");
   bool noNormaliseSample = opts.Boolean("noNormalise", false, "Do not normalise the sample to unit mean/var");
   FilenameC classifierOutFile = opts.String("o", "classifier.strm", "Save classifier to this file.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
+
+  SysLogOpen("doTrainClassifier");
 
   try {
     XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
@@ -42,15 +45,13 @@ int main(int nargs, char **argv) {
     }
 
     // Get dataset
-    SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", dsetFile.data());
-    // FIXME: Want to use Load/Save instead
+    SysLog(SYSLOG_INFO,"Loading dataset from file '%s'", trainingDataSetFile.data());
+    // FIXME: Still want to use Load/Save instead
     DataSetVectorLabelC trainingDataSet;
-    IStreamC is(dsetFile);
-    if (!is.good()) {
-      SysLog(SYSLOG_ERR,"Trouble loading dataset from file!");
+    if(!LoadDataSetVectorLabel(trainingDataSetFile, trainingDataSet)) {
+      SysLog(SYSLOG_ERR,"Trouble loading dataset from file '%s'", trainingDataSetFile.data());
       return 1;
     }
-    is >> trainingDataSet;
 
     // Lets compute mean and variance of dataset and normalise input
     FuncMeanProjectionC func;
