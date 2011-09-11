@@ -6,25 +6,29 @@
 # file-header-ends-here
 ifndef GTKDEF
 GTKDEF = 1
-################################################
-# $Id$
 
 # Check if we're using GTK
-
 ifneq ($(strip $(filter $(RESOURCES),libGTK2)),)
 
 include x11.def
 
-ifndef GTKCFLAGS
-GTKCFLAGS= `pkg-config gtk+-2.0 --cflags` -DRAVL_USE_GTK=1
+ifndef GTK_INCLUDES
+GTK_INCLUDES = `pkg-config gtk+-2.0 --cflags-only-I`
 endif
-ifndef GTKLIBS
-GTKLIBS= -lgthread-2.0 `pkg-config gtk+-2.0 --libs`
+
+ifndef GTK_CFLAGS
+GTK_CFLAGS = `pkg-config gtk+-2.0 --cflags-only-other` -DRAVL_USE_GTK=1
+endif
+
+ifndef GTK_LIBS
+GTK_LIBS = -lgthread-2.0 `pkg-config gtk+-2.0 --libs`
 endif
 
 endif
 
-INCLUDES += $(GTKCFLAGS) $(GLIBCFLAGS)
-EXELIB :=  -lgthread-2.0 $(GTKLIBS) $(GLIBLIBS) $(EXELIB)
+INCLUDES += $(GTK_INCLUDES)
+EXTRA_CFLAGS += $(GTK_CFLAGS)
+EXTRA_CCFLAGS += $(GTK_CFLAGS)
+EXELIB := $(GTK_LIBS) $(EXELIB)
 
 endif

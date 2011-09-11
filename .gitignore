@@ -2,3 +2,5 @@ core.*
 .project
 .cproject
 .csettings
+/Ravl/nbproject/private/
+*~

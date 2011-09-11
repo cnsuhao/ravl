@@ -63,7 +63,7 @@ namespace RavlN {
       lIt.Next(); 
       return CheckValid(); 
     }
-    // Goto next iterm in table.
+    // Goto next item in table.
     // Once this returns false (or IsElm() is false) this 
     // should not be called again.
     
@@ -116,9 +116,23 @@ namespace RavlN {
     //: Access data.
     
     bool Del(void);
-    //: Delete current item from table, move to next.
-    // Returns true if at a valid element.
-    
+    //: Delete current item from table; move to next.
+
+    // Returns true if at a valid element.  If you are deleting elements in a typical
+    // "for(; it; it++)" construct, use <code>DelNoInc()</code> instead to ensure the
+    // element after the one you deleted isn't skipped.
+
+    void DelNoInc(void);
+    //: Delete current item from table; don't move to next element.
+
+    // Use this method rather than <code> Del(void);</code> if using within a
+    // normal "for(; it; it++)" construct, in order to avoid moving the
+    // iterator on twice.<br>
+
+    // Note: It leaves the iterator in an undefined state, so something like
+    // <code>operator++</code> or <code>Next() must be used for the iterator
+    // to be valid again.
+
     HashIterC<K,T> &operator=(const HashC<K,T> &oth) { 
       bIt = oth.table;
       hashtable = &const_cast<HashC<K,T> &>(oth);
@@ -151,6 +165,7 @@ namespace RavlN {
   template<class K,class T>
   bool HashIterC<K,T>::CheckValid(void) {
     while(!lIt.IsElm()) {
+      RavlAssert(bIt);
       bIt.Next();
       if(!bIt)
 	return false;
@@ -169,6 +184,16 @@ namespace RavlN {
     return Next(); // Goto next element.
   }
   
+  ///////////////////////////////////
+  //: Delete current item from table, move to last or current list header.
+  // Inc must be used after use for the iterator to be valid again.
+
+  template<class K,class T>
+  void HashIterC<K,T>::DelNoInc(void) {
+    lIt.Del();// Delete old member from list.
+    hashtable->CheckDel(false); // Make sure element count is decremented, but don't resize the table.
+  }
+
 }
 
 #endif

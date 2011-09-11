@@ -11,7 +11,6 @@
 //! lib=RavlGUI
 //! author="Charles Galambos"
 //! date="23/03/1999"
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Graphics.GTK.Internal"
 
 #include "Ravl/GUI/Widget.hh"
@@ -39,6 +38,9 @@ namespace RavlGUIN {
     virtual bool Create();
     //: Create the widget.
     
+    virtual bool Create(GtkWidget *newWidget);
+    //: Create the widget.
+
     virtual bool Add(const WidgetC &widge);
     //: Add a child widget.
     

@@ -5,9 +5,23 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 ifndef LIBGLADE_DEF
-LIBGLADE_DEF = 1
+  LIBGLADE_DEF = 1
 
-INCLUDES += `pkg-config libglade-2.0 --cflags`
-EXELIB := `pkg-config libglade-2.0 --libs` $(EXELIB)
+  ifndef LIBGLADE_INCLUDES
+    LIBGLADE_INCLUDES = `pkg-config libglade-2.0 --cflags-only-I`
+  endif
+
+  ifndef LIBGLADE_CFLAGS
+    LIBGLADE_CFLAGS = `pkg-config libglade-2.0 --cflags-only-other`
+  endif
+
+  ifndef LIBGLADE_LIBS
+    LIBGLADE_LIBS = `pkg-config libglade-2.0 --libs`
+  endif
+
+  INCLUDES += $(LIBGLADE_INCLUDES)
+  EXTRA_CFLAGS += $(LIBGLADE_CFLAGS)
+  EXTRA_CCFLAGS += $(LIBGLADE_CFLAGS)
+  EXELIB := $(LIBGLADE_LIBS) $(EXELIB)
 
 endif

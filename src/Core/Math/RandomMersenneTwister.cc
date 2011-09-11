@@ -2,7 +2,7 @@
 // Copyright (C) 2002, Omniperception Ltd.
 // file-header-ends-here
 ///////////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
+//! rcsid="$Id: RandomMersenneTwister.cc 3073 2003-06-13 07:18:32Z craftit $"
 //! file="Ravl/Core/Math/RandomMersenneTwister.cc"
 //! lib=RavlCore
 //! author="James Smith"
@@ -32,14 +32,14 @@ namespace RavlN {
     : mti(N+1)
   {}
 
-  RandomMersenneTwisterC::RandomMersenneTwisterC(unsigned long seed) 
+  RandomMersenneTwisterC::RandomMersenneTwisterC(UInt32T seed) 
     : mti(N+1)
   {
     Seed(seed);
   }
 
   /* initializes mt[N] with a seed */
-  void RandomMersenneTwisterC::Seed(unsigned long s) {
+  void RandomMersenneTwisterC::Seed(UInt32T s) {
     mt[0]= s & 0xffffffffUL;
     for (mti=1; mti<N; mti++) {
       mt[mti] = 
@@ -56,7 +56,7 @@ namespace RavlN {
   /* initialize by an array with array-length */
   /* init_key is the array for initializing keys */
   /* key_length is its length */
-  void RandomMersenneTwisterC::Seed(unsigned long init_key[], unsigned long key_length) {
+  void RandomMersenneTwisterC::Seed(UInt32T init_key[], UInt32T key_length) {
     unsigned int i, j, k;
     Seed(19650218UL);
     i=1; j=0;
@@ -81,10 +81,10 @@ namespace RavlN {
   }
 
   /* generates a random number on [0,0xffffffff]-interval */
-  unsigned long RandomMersenneTwisterC::UInt(void)
+  UInt32T RandomMersenneTwisterC::UInt(void)
   {
-    unsigned long y;
-    static unsigned long mag01[2]={0x0UL, MATRIX_A};
+    UInt32T y;
+    static UInt32T mag01[2]={0x0UL, MATRIX_A};
     /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
     if (mti >= N) { /* generate N words at one time */
@@ -119,9 +119,9 @@ namespace RavlN {
   }
 
   /* generates a random number on [0,0x7fffffff]-interval */
-  long RandomMersenneTwisterC::Int(void)
+  Int32T RandomMersenneTwisterC::Int(void)
   {
-    return (long)(UInt()>>1);
+    return (Int32T)(UInt()>>1);
   }
 
   /* generates a random number on [0,1]-real-interval */
@@ -148,7 +148,7 @@ namespace RavlN {
   /* generates a random number on [0,1) with 53-bit resolution*/
   double RandomMersenneTwisterC::Double53(void) 
   { 
-    unsigned long a=UInt()>>5, b=UInt()>>6; 
+    UInt32T a=UInt()>>5, b=UInt()>>6; 
     return(a*67108864.0+b)*(1.0/9007199254740992.0); 
   } 
 

@@ -16,6 +16,7 @@
 #include "Ravl/Vector.hh"
 #include "Ravl/Matrix.hh"
 #include "Ravl/XMLFactory.hh"
+#include "Ravl/PatternRec/FuncMeanProjection.hh"
 
 namespace RavlN {
 
@@ -104,6 +105,9 @@ namespace RavlN {
     void UndoNormalisation(const MeanCovarianceC & stats);
     //: Undo the normalisation done by 'Normalise()'.
     
+    FuncMeanProjectionC NormalisationFunction(const MeanCovarianceC & stats) const;
+    //: Get the function used for the normalisation
+
   }; 
   
 }

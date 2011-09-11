@@ -192,6 +192,12 @@ namespace RavlN
     return (rc == WAIT_OBJECT_0);
   }
   
+  bool ConditionalMutexC::WaitUntil(const DateC &deadline)
+  {
+    DateC maxTime = deadline - DateC::NowUTC();
+    RealT maxTimeMilliseconds = maxTime.TotalSeconds() + (maxTime.USeconds() / 1000000.0);
+    return Wait(maxTimeMilliseconds);
+  }
   
   //: Boardcast a signal to all waiting threads.
   // Always succeeds.

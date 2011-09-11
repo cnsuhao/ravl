@@ -4,7 +4,6 @@
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Ravl/CompVision/ActiveAppearanceModels/defs.mk"
 
 DESCRIPTION = Active appearance models
@@ -13,33 +12,32 @@ PACKAGE = Ravl/Image
 
 DONOT_SUPPORT = arm
 
-MAINS = aamBuildShapeModel.cc aamViewShapeModel.cc  aamBuildAppearanceModel.cc \
+MAINS = aamBuildShapeModel.cc aamBuildAppearanceModel.cc \
  aamBuildActiveAppearanceModel.cc  aamCombineActiveAppearanceModel.cc \
  aamLocaliseFace.cc aamBuildPoseEstimator.cc aamSynthesizeFrontal.cc aamTrackFace.cc
 
-EXAMPLES = aamBuildShapeModel.cc aamViewShapeModel.cc aamBuildAppearanceModel.cc \
+EXAMPLES = aamBuildShapeModel.cc aamBuildAppearanceModel.cc \
  aamBuildActiveAppearanceModel.cc aamCombineActiveAppearanceModel.cc aamLocaliseFace.cc \
  aamBuildPoseEstimator.cc aamSynthesizeFrontal.cc
 
 HEADERS = AAMAppearance.hh AAMShapeModel.hh AAMAffineShapeModel.hh AAMScaleRotationShapeModel.hh \
  AAMAppearanceModel.hh AAMAppearanceUtil.hh AAMActiveAppearanceModel.hh AAMSampleStream.hh \
  AAMMultiResActiveAppearanceModel.hh AAMFaceLocalisation.hh AAMPoseEstimateCostFunction.hh \
- AAMPoseEstimate.hh AAMFaceCorrection.hh AAMSampleStreamFileList.hh AAMViewLib.hh
+ AAMPoseEstimate.hh AAMFaceCorrection.hh AAMSampleStreamFileList.hh 
 
 SOURCES = AAMAppearance.cc AAMShapeModel.cc AAMAffineShapeModel.cc AAMScaleRotationShapeModel.cc \
  AAMAppearanceModel.cc AAMAppearanceUtil.cc AAMActiveAppearanceModel.cc AAMSampleStream.cc \
  AAMMultiResActiveAppearanceModel.cc AAMFaceLocalisation.cc AAMPoseEstimateCostFunction.cc \
- AAMPoseEstimate.cc AAMFaceCorrection.cc AAMActiveAppearanceModelsIO.cc AAMSampleStreamFileList.cc \
- AAMViewLib.cc
+ AAMPoseEstimate.cc AAMFaceCorrection.cc AAMActiveAppearanceModelsIO.cc AAMSampleStreamFileList.cc 
 
 MUSTLINK = AAMActiveAppearanceModelMustLink.cc
 
 PLIB = RavlAAM
 
-USESLIBS = RavlCore RavlImage RavlImageProc  RavlMath RavlOS RavlPatternRec RavlOptimise \
- RavlIO Optimisation RavlGUI2D
+USESLIBS = RavlCore RavlImage RavlImageProc RavlMath RavlOS RavlPatternRec RavlOptimise \
+ RavlIO Optimisation
 
-PROGLIBS = RavlImageIO RavlExtImgIO RavlMathIO RavlGUI.opt RavlDPDisplay.opt RavlImgIOV4L2.opt
+PROGLIBS = RavlImageIO RavlExtImgIO RavlMathIO RavlAAMGUI RavlDPDisplay.opt RavlImgIOV4L2.opt
 
 EHT = AAM.html
 
