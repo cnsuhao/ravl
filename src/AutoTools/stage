@@ -1,0 +1,1 @@
+cp aclocal.m4 configure config.guess config.sub install-sh ../..
