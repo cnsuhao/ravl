@@ -1,11 +1,10 @@
 # This file is part of CxxDoc, The RAVL C++ Documentation tool 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-11, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+#
 # file-header-ends-here
-#! rcsid="$Id$"
-#! file="Ravl/SourceTools/CodeManager/defs.mk"
 
 DONOT_SUPPORT=
 
@@ -35,7 +34,7 @@ MAINS = defsCheck.cc annotate.cc  amma2ravl.cc docSubst.cc docRename.cc
 
 EXAMPLES=exBuildInfo.cc
 
-AUXDIR=share/RAVL/CodeManager
+AUXDIR=share$(PROJECT_DIR)/CodeManager
 
 AUXFILES= fixSource.cfg
 

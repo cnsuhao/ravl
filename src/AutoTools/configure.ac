@@ -40,7 +40,7 @@ dnl           switch (LIB => --with-LIB, --with-LIB-pkgconf). It should be
 dnl           the name Ravl expects the RESOURCES string to take to enable
 dnl           the library's functionality. It will also be the name used
 dnl           for the LIB_CFLAGS and LIB_LIBS used in the relevant .def
-dnl           file and Config.Package. 
+dnl           file and Config.Project. 
 dnl       p2: Default name by which pkg-config knows the library.
 dnl       p3: Name(s) of the Ravl libraries that use the external library
 dnl
@@ -68,7 +68,7 @@ dnl       <Lib>_SUPPORT               Declared here, this variable is used to
 dnl                                   export the names of the dependant Ravl libs
 dnl                                   to the makefiles. This variable is set to
 dnl                                   null here and later set to <Lib>_RavlLib
-dnl                                   if the external package is present and
+dnl                                   if the external library is present and
 dnl                                   usable
 dnl
 AC_DEFUN([AX_RAVL_HELPER_PC],
@@ -231,7 +231,7 @@ dnl       <Lib>_SUPPORT               Declared here, this variable is used to
 dnl                                   export the names of the dependant Ravl libs
 dnl                                   to the makefiles. This variable is set to
 dnl                                   null here and later set to <Lib>_RavlLib
-dnl                                   if the external package is present and
+dnl                                   if the external library is present and
 dnl                                   usable
 dnl
 AC_DEFUN([AX_RAVL_HELPER_CC],
@@ -260,7 +260,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                              [Enable functionality that relies on the $1 library @<:@default=check@:>@]
                                             )
                              ],
-                             [trace 4 Not using pkg-config for $1 package
+                             [trace 4 Not using pkg-config for the $1 library package
                               case $with_$1 in
                               'n' | 'N' | 'no' | 'No' | 'NO' ) use_$1=no
                                        ;;
@@ -724,16 +724,16 @@ trace ()
 # Reset list of external libraries
 #
 echo > ./ExtPkgSupp.$$
-dnl# This file is used to prime Config.Package with the initialisation of the 
+dnl# This file is used to prime Config.Project with the initialisation of the 
 dnl# make variables needed to build the single library. It should be appended
 dnl# to when the configure script declares each external library's XXX_SUPPORT
 dnl# variable. Towards the end of the configure process, this file is sorted
-dnl# and appended to the Config.Package file.
+dnl# and appended to the Config.Project file.
 dnl#
 dnl# Whenever you declare a new optional library/library-set in SingleLib.mk,
 dnl# you need to add both the correponding AC_SUBST call to this script and add
 dnl# the initialisation of the make variable to the ExtPkgSupp.$$ file. For
-dnl# example, To add the support code for a new external package, say LibPKG,
+dnl# example, To add the support code for a new external library, say LibPKG,
 dnl# the following lines need to be added to this configure script:
 dnl#
 dnl#      AC_SUBST([LibPKG_SUPPORT)
@@ -794,7 +794,7 @@ AC_SUBST([SED])
 # these will form CONFIGURE_CFLAGS setting in Ravl (QMake) build system. 
 CONFIGURE_CFLAGS=$CFLAGS
 AC_SUBST([CONFIGURE_CFLAGS])
-# Now actually check for compiler and and allow Config.Package to record the
+# Now actually check for compiler and and allow Config.Project to record the
 # location found
 AC_PROG_CC
 AC_SUBST([CC])
@@ -810,7 +810,7 @@ AC_SUBST([CPP])
 
 # Check for C++ Compiler and Pre-processor
 #
-# Allow recording of any user-supplied CCFLAGS in Config.Package
+# Allow recording of any user-supplied CCFLAGS in Config.Project
 CONFIGURE_CCFLAGS=$CCFLAGS
 AC_SUBST([CONFIGURE_CCFLAGS])
 # Now check for compiler and allow that result to be recorded
@@ -1183,7 +1183,7 @@ fi
 AC_SUBST([PKG_CANSIFLAG])
 AC_SUBST([PKG_CCANSIFLAG])
 
-# Declare PKG_XXXXX_CFLAGS variables as output for Config.Package
+# Declare PKG_XXXXX_CFLAGS variables as output for Config.Project
 AC_SUBST([PKG_CHECK_CFLAGS])
 AC_SUBST([PKG_DEBUG_CFLAGS])
 AC_SUBST([PKG_DEFAULT_CFLAGS])
@@ -1285,7 +1285,7 @@ dnl
    esac
 fi
 
-# Declare PKG_XXXXX_CCFLAGS variables as output for Config.Package
+# Declare PKG_XXXXX_CCFLAGS variables as output for Config.Project
 AC_SUBST([PKG_CHECK_CCFLAGS])
 AC_SUBST([PKG_DEBUG_CCFLAGS])
 AC_SUBST([PKG_DEFAULT_CCFLAGS])
@@ -1428,9 +1428,9 @@ dnl
   esac
 fi
 
-# Declare variables that the linker as output for Config.Package
+# Declare variables that the linker as output for Config.Project
 AC_SUBST([LDFLAGS])
-# any user-provided LDFLAGS will be recorded in Config.Package as CONFIGURE_LDFLAGS
+# any user-provided LDFLAGS will be recorded in Config.Project as CONFIGURE_LDFLAGS
 
 AC_SUBST([PKG_CHECK_LDFLAGS])
 AC_SUBST([PKG_DEBUG_LDFLAGS])
@@ -1480,7 +1480,7 @@ else
 fi
 
 AC_SUBST([MAKEFLAGS])
-# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Package 
+# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Project 
 AC_SUBST([PKG_MAKEFLAGS])
 
 dnl End of software tools section
@@ -1682,14 +1682,14 @@ dnl
 dnl Parameters are:
 dnl
 dnl  1 Ravl name for library. The name used for RESOURCES and also for 
-dnl    LIB_CFLAGS, LIB_LIBS, etc. used in Config.Package and the .def files.
+dnl    LIB_CFLAGS, LIB_LIBS, etc. used in Config.Project and the .def files.
 dnl  2 Name by which pkg-config knows the library. Can be over-ridden by 
 dnl    --with-<lib>-pkgconf
 dnl  3 Name(s) of the Ravl libraries that provide functionality dependant on
 dnl    the third-party library. Only lists libraries that are omitted from the
-dnl    Ravl build if the external package is not present. Any Ravl library is 
-dnl    associated with the most appropriate external package, this does not
-dnl    imply this is the only external package that can inhibit the Ravl libs
+dnl    Ravl build if the external library is not present. Any Ravl library is 
+dnl    associated with the most appropriate external library, this does not
+dnl    imply this is the only external library that can inhibit the Ravl libs
 dnl    inclusion. If additional requirements may block the Ravl library, the
 dnl    associated <lib>_SUPPORT variable will be suitably amended towards the
 dnl    end of this script. This may include blockage by another external pkg
@@ -1742,7 +1742,7 @@ dnl
 dnl Parameters are:
 dnl
 dnl  1 Ravl name for library. The name used for RESOURCES and also for 
-dnl    LIB_CFLAGS, LIB_LIBS, etc. used in Config.Package and the .def files.
+dnl    LIB_CFLAGS, LIB_LIBS, etc. used in Config.Project and the .def files.
 dnl  2 Name of a function in the library that can be used as a test call
 dnl  3 Space separated list of dependancies of the library. Specify the Ravl
 dnl    name of the library - e.g. for dependancies on Zlib specify Zlib not 
@@ -1761,9 +1761,9 @@ dnl    headers, provide a space seperated list.
 dnl  7 Usual location of library's header files if different to sys defaults
 dnl  8 Name(s) of the Ravl libraries that provide functionality dependant on
 dnl    the third-party library. Only lists libraries that are omitted from the
-dnl    Ravl build if the external package is not present. Any Ravl library is 
-dnl    associated with the most appropriate external package, this does not
-dnl    imply this is the only external package that can inhibit the Ravl libs
+dnl    Ravl build if the external library is not present. Any Ravl library is 
+dnl    associated with the most appropriate external library, this does not
+dnl    imply this is the only external library that can inhibit the Ravl libs
 dnl    inclusion. If additional requirements may block the Ravl library, the
 dnl    associated <lib>_SUPPORT variable will be suitably amended towards the
 dnl    end of this script. This may include blockage by another external pkg
@@ -1920,10 +1920,10 @@ dnl#     End of workaround for currently unsupported libraries
 dnl# 
 
 # FFMPEG and OpenGL are special cases as Ravl regards these as single entities
-# while the packages are provided in smaller components. Initial definitions
+# while the libraries are provided in smaller components. Initial definitions
 # (above) work at the sub-component level, we now need to provide the switches
-# and checking for the meta-level. As both packages are checked for by using
-# pkg-config, we'll only define the top level --with-<lib> and specific
+# and checking for the meta-level. As both library packages are checked for by
+# using pkg-config, we'll only define the top level --with-<lib> and specific
 # --with-<lib>-pkgconfig flags.
 #
 # First we consider FFMPEG; full package is named libffmpeg while existing
@@ -3302,166 +3302,166 @@ trace 3 OpenGL::libGL libGLU:::::$with_OpenGL_pkgconf:$use_OpenGL
 
 
 #
-# Create proforma Config.Package.in
+# Create proforma Config.Project.in
 #
 
 # Create initial, empty file
-echo > ./Config.Package.in
+echo > ./Config.Project.in
 
-echo \# Ravl configuration file - regenerate using configure >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo \# Ravl configuration file - regenerate using configure >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 # Define location of compilers and helper programs for build system
-echo >> ./Config.Package.in
-echo \# List of programs required for the build process >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo AR=@AR@ >> ./Config.Package.in
-echo AWK=@AWK@ >> ./Config.Package.in
-echo CC=@CC@ >> ./Config.Package.in
-echo CP=@CP@ >> ./Config.Package.in
-echo CPP=@CPP@ >> ./Config.Package.in
-echo CHGRP=@CHGRP@ >> ./Config.Package.in
-echo CHMOD=@CHMOD@ >> ./Config.Package.in
-echo CHOWN=@CHOWN@ >> ./Config.Package.in
-echo CXX=@CXX@ >> ./Config.Package.in
-echo CXXCPP=@CXXCPP@ >> ./Config.Package.in
-echo EXPR=@EXPR@ >> ./Config.Package.in
-echo GET_CWD=@GET_CWD@ >> ./Config.Package.in
-echo GREP=@GREP@ >> ./Config.Package.in
-echo LD=@LD@ >> ./Config.Package.in
-echo LEX=@LEX@ >> ./Config.Package.in
-echo LEXLIB=@LEXLIB@ >> ./Config.Package.in
-echo LN_S=@LN_S@ >> ./Config.Package.in
-echo MAKE=@MAKE@ >> ./Config.Package.in
-echo MKDIR_P=@MKDIR_P@ >> ./Config.Package.in
-echo RANLIB=@RANLIB@ >> ./Config.Package.in
-echo PKG_PAGER=@PKG_PAGER@ >> ./Config.Package.in
-echo RM=@RM@ >> ./Config.Package.in
-echo SED=@SED@ >> ./Config.Package.in
-echo SORT=@SORT@ >> ./Config.Package.in
-echo SYNC=@SYNC@ >> ./Config.Package.in
-echo TOUCH=@TOUCH@ >> ./Config.Package.in
-echo TR=@TR@ >> ./Config.Package.in
-echo XARGS=@XARGS@ >> ./Config.Package.in
-echo YACC=@YACC@ >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# List of programs required for the build process >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo AR=@AR@ >> ./Config.Project.in
+echo AWK=@AWK@ >> ./Config.Project.in
+echo CC=@CC@ >> ./Config.Project.in
+echo CP=@CP@ >> ./Config.Project.in
+echo CPP=@CPP@ >> ./Config.Project.in
+echo CHGRP=@CHGRP@ >> ./Config.Project.in
+echo CHMOD=@CHMOD@ >> ./Config.Project.in
+echo CHOWN=@CHOWN@ >> ./Config.Project.in
+echo CXX=@CXX@ >> ./Config.Project.in
+echo CXXCPP=@CXXCPP@ >> ./Config.Project.in
+echo EXPR=@EXPR@ >> ./Config.Project.in
+echo GET_CWD=@GET_CWD@ >> ./Config.Project.in
+echo GREP=@GREP@ >> ./Config.Project.in
+echo LD=@LD@ >> ./Config.Project.in
+echo LEX=@LEX@ >> ./Config.Project.in
+echo LEXLIB=@LEXLIB@ >> ./Config.Project.in
+echo LN_S=@LN_S@ >> ./Config.Project.in
+echo MAKE=@MAKE@ >> ./Config.Project.in
+echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
+echo RANLIB=@RANLIB@ >> ./Config.Project.in
+echo PKG_PAGER=@PKG_PAGER@ >> ./Config.Project.in
+echo RM=@RM@ >> ./Config.Project.in
+echo SED=@SED@ >> ./Config.Project.in
+echo SORT=@SORT@ >> ./Config.Project.in
+echo SYNC=@SYNC@ >> ./Config.Project.in
+echo TOUCH=@TOUCH@ >> ./Config.Project.in
+echo TR=@TR@ >> ./Config.Project.in
+echo XARGS=@XARGS@ >> ./Config.Project.in
+echo YACC=@YACC@ >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 
 # Compiler, etc. switches
-echo >> ./Config.Package.in
-echo \# Relevant Ravl build process flags >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Declare platform architecture >> ./Config.Package.in
-echo ARC=@ARC@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Flags for the C compiler >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# User specified at configure time >> ./Config.Package.in
-echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Ravl compiler settings >> ./Config.Package.in
-echo PKG_CHECK_CFLAGS=@PKG_CHECK_CFLAGS@ >> ./Config.Package.in
-echo PKG_DEBUG_CFLAGS=@PKG_DEBUG_CFLAGS@ >> ./Config.Package.in
-echo PKG_DEFAULT_CFLAGS=@PKG_DEFAULT_CFLAGS@ >> ./Config.Package.in
-echo PKG_GLOBAL_CFLAGS=@PKG_GLOBAL_CFLAGS@ >> ./Config.Package.in
-echo PKG_GPROF_CFLAGS=@PKG_GPROF_CFLAGS@ >> ./Config.Package.in
-echo PKG_OPT_CFLAGS=@PKG_OPT_CFLAGS@ >> ./Config.Package.in
-echo PKG_PROF_CFLAGS=@PKG_PROF_CFLAGS@ >> ./Config.Package.in
-echo PKG_SHARED_CFLAGS=@PKG_SHARED_CFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# ANSI switch settings >> ./Config.Package.in
-echo PKG_CANSIFLAG=@PKG_CANSIFLAG@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Flags for the C++ compiler >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# User specified at configure time >> ./Config.Package.in
-echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Ravl compiler settings >> ./Config.Package.in
-echo PKG_CHECK_CCFLAGS=@PKG_CHECK_CCFLAGS@ >> ./Config.Package.in
-echo PKG_DEBUG_CCFLAGS=@PKG_DEBUG_CCFLAGS@ >> ./Config.Package.in
-echo PKG_DEFAULT_CCFLAGS=@PKG_DEFAULT_CCFLAGS@ >> ./Config.Package.in
-echo PKG_GLOBAL_CCFLAGS=@PKG_GLOBAL_CCFLAGS@ >> ./Config.Package.in
-echo PKG_GPROF_CCFLAGS=@PKG_GPROF_CCFLAGS@ >> ./Config.Package.in
-echo PKG_OPT_CCFLAGS=@PKG_OPT_CCFLAGS@ >> ./Config.Package.in
-echo PKG_PROF_CCFLAGS=@PKG_PROF_CCFLAGS@ >> ./Config.Package.in
-echo PKG_SHARED_CCFLAGS=@PKG_SHARED_CCFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# ANSI switch settings >> ./Config.Package.in
-echo PKG_CCANSIFLAG=@PKG_CCANSIFLAG@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Flags for the linker >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# User specified at configure time >> ./Config.Package.in
-echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# General Ravl linker settings >> ./Config.Package.in
-echo PKG_CHECK_LDFLAGS=@PKG_CHECK_LDFLAGS@ >> ./Config.Package.in
-echo PKG_DEBUG_LDFLAGS=@PKG_DEBUG_LDFLAGS@ >> ./Config.Package.in
-echo PKG_DEFAULT_LDFLAGS=@PKG_DEFAULT_LDFLAGS@ >> ./Config.Package.in
-echo PKG_GLOBAL_LDFLAGS=@PKG_GLOBAL_LDFLAGS@ >> ./Config.Package.in
-echo PKG_GPROF_LDFLAGS=@PKG_GPROF_LDFLAGS@ >> ./Config.Package.in
-echo PKG_OPT_LDFLAGS=@PKG_OPT_LDFLAGS@ >> ./Config.Package.in
-echo PKG_PROF_LDFLAGS=@PKG_PROF_LDFLAGS@ >> ./Config.Package.in
-echo PKG_SHARED_LDFLAGS=@PKG_SHARED_LDFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Linker settings for Ravl libraries >> ./Config.Package.in
-echo PKG_CHECK_LDLIBFLAGS=@PKG_CHECK_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_DEBUG_LDLIBFLAGS=@PKG_DEBUG_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_DEFAULT_LDLIBFLAGS=@PKG_DEFAULT_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_GLOBAL_LDLIBFLAGS=@PKG_GLOBAL_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_GPROF_LDLIBFLAGS=@PKG_GPROF_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_OPT_LDLIBFLAGS=@PKG_OPT_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_PROF_LDLIBFLAGS=@PKG_PROF_LDLIBFLAGS@ >> ./Config.Package.in
-echo PKG_SHARED_LDLIBFLAGS=@PKG_SHARED_LDLIBFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Specific linker functionality >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Package.in
-echo USE_LIBPATHSWITCH=$with_rpath >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Flags for the archiver >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo PKG_ARFLAGS=@PKG_ARFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# Flags for make >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# User specified at configure time >> ./Config.Package.in
-echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo \# General Ravl make settings >> ./Config.Package.in
-echo PKG_MAKEFLAGS=@PKG_MAKEFLAGS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# Relevant Ravl build process flags >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Declare platform architecture >> ./Config.Project.in
+echo ARC=@ARC@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Flags for the C compiler >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# User specified at configure time >> ./Config.Project.in
+echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Ravl compiler settings >> ./Config.Project.in
+echo PKG_CHECK_CFLAGS=@PKG_CHECK_CFLAGS@ >> ./Config.Project.in
+echo PKG_DEBUG_CFLAGS=@PKG_DEBUG_CFLAGS@ >> ./Config.Project.in
+echo PKG_DEFAULT_CFLAGS=@PKG_DEFAULT_CFLAGS@ >> ./Config.Project.in
+echo PKG_GLOBAL_CFLAGS=@PKG_GLOBAL_CFLAGS@ >> ./Config.Project.in
+echo PKG_GPROF_CFLAGS=@PKG_GPROF_CFLAGS@ >> ./Config.Project.in
+echo PKG_OPT_CFLAGS=@PKG_OPT_CFLAGS@ >> ./Config.Project.in
+echo PKG_PROF_CFLAGS=@PKG_PROF_CFLAGS@ >> ./Config.Project.in
+echo PKG_SHARED_CFLAGS=@PKG_SHARED_CFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# ANSI switch settings >> ./Config.Project.in
+echo PKG_CANSIFLAG=@PKG_CANSIFLAG@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Flags for the C++ compiler >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# User specified at configure time >> ./Config.Project.in
+echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Ravl compiler settings >> ./Config.Project.in
+echo PKG_CHECK_CCFLAGS=@PKG_CHECK_CCFLAGS@ >> ./Config.Project.in
+echo PKG_DEBUG_CCFLAGS=@PKG_DEBUG_CCFLAGS@ >> ./Config.Project.in
+echo PKG_DEFAULT_CCFLAGS=@PKG_DEFAULT_CCFLAGS@ >> ./Config.Project.in
+echo PKG_GLOBAL_CCFLAGS=@PKG_GLOBAL_CCFLAGS@ >> ./Config.Project.in
+echo PKG_GPROF_CCFLAGS=@PKG_GPROF_CCFLAGS@ >> ./Config.Project.in
+echo PKG_OPT_CCFLAGS=@PKG_OPT_CCFLAGS@ >> ./Config.Project.in
+echo PKG_PROF_CCFLAGS=@PKG_PROF_CCFLAGS@ >> ./Config.Project.in
+echo PKG_SHARED_CCFLAGS=@PKG_SHARED_CCFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# ANSI switch settings >> ./Config.Project.in
+echo PKG_CCANSIFLAG=@PKG_CCANSIFLAG@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Flags for the linker >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# User specified at configure time >> ./Config.Project.in
+echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# General Ravl linker settings >> ./Config.Project.in
+echo PKG_CHECK_LDFLAGS=@PKG_CHECK_LDFLAGS@ >> ./Config.Project.in
+echo PKG_DEBUG_LDFLAGS=@PKG_DEBUG_LDFLAGS@ >> ./Config.Project.in
+echo PKG_DEFAULT_LDFLAGS=@PKG_DEFAULT_LDFLAGS@ >> ./Config.Project.in
+echo PKG_GLOBAL_LDFLAGS=@PKG_GLOBAL_LDFLAGS@ >> ./Config.Project.in
+echo PKG_GPROF_LDFLAGS=@PKG_GPROF_LDFLAGS@ >> ./Config.Project.in
+echo PKG_OPT_LDFLAGS=@PKG_OPT_LDFLAGS@ >> ./Config.Project.in
+echo PKG_PROF_LDFLAGS=@PKG_PROF_LDFLAGS@ >> ./Config.Project.in
+echo PKG_SHARED_LDFLAGS=@PKG_SHARED_LDFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Linker settings for Ravl libraries >> ./Config.Project.in
+echo PKG_CHECK_LDLIBFLAGS=@PKG_CHECK_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_DEBUG_LDLIBFLAGS=@PKG_DEBUG_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_DEFAULT_LDLIBFLAGS=@PKG_DEFAULT_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_GLOBAL_LDLIBFLAGS=@PKG_GLOBAL_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_GPROF_LDLIBFLAGS=@PKG_GPROF_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_OPT_LDLIBFLAGS=@PKG_OPT_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_PROF_LDLIBFLAGS=@PKG_PROF_LDLIBFLAGS@ >> ./Config.Project.in
+echo PKG_SHARED_LDLIBFLAGS=@PKG_SHARED_LDLIBFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Specific linker functionality >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Project.in
+echo USE_LIBPATHSWITCH=$with_rpath >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Flags for the archiver >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo PKG_ARFLAGS=@PKG_ARFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Flags for make >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# User specified at configure time >> ./Config.Project.in
+echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# General Ravl make settings >> ./Config.Project.in
+echo PKG_MAKEFLAGS=@PKG_MAKEFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 
 
 # Allow definition of RESOURCES
-echo >> ./Config.Package.in
-echo \# List of resources available to Ravl >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo "RESOURCES=@RESOURCES@" >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# List of resources available to Ravl >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo "RESOURCES=@RESOURCES@" >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 # Declare where external executables used by Ravl may be found
 #
-echo >> ./Config.Package.in
-echo \# List of external programs available to Ravl >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# List of external programs available to Ravl >> ./Config.Project.in
+echo >> ./Config.Project.in
 # Definition of GnuPlot
-echo "GnuPlot=@GnuPlot@" >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo "GnuPlot=@GnuPlot@" >> ./Config.Project.in
+echo >> ./Config.Project.in
 # Definition of Perl
-echo "PERL=@PERL@" >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo "PERL=@PERL@" >> ./Config.Project.in
+echo >> ./Config.Project.in
 # Definition of SWIG
-echo "SWIG=@SWIG@" >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo "SWIG=@SWIG@" >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 
 # Declare which libraries are needed for particular system calls that can move
@@ -3470,23 +3470,23 @@ echo >> ./Config.Package.in
 # First initialise ALL_EXTERNAL_LIBS here as we need to record these libraries
 # as well as the external libs
 ALL_EXTERNAL_LIBS=""
-echo >> ./Config.Package.in
-echo \# Location of system calls that can vary their parent library >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# Location of system calls that can vary their parent library >> ./Config.Project.in
+echo >> ./Config.Project.in
 # Location of dlopen
-echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Project.in
+echo >> ./Config.Project.in
 ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
 
 
 #
 # Now set RESOURCES & ALL_EXTERNAL_LIBS based on the libraries we can use
 # Also output each external library's <Lib>_CFLAGS and <Lib>_LIBS definition
-# to Config.Package
+# to Config.Project
 #
-echo >> ./Config.Package.in
-echo \# List of external libraries available to Ravl >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# List of external libraries available to Ravl >> ./Config.Project.in
+echo >> ./Config.Project.in
 trace 2 Calculating RESOURCES settings from library availability
 trace 3 \(Initial value of RESOURCES "@<:@$RESOURCES@:>@"\)
 for lib in $HelperLibs
@@ -3536,11 +3536,11 @@ dnl                   # m4 removing them.
                    RESOURCES+="${lib} "
                    # Allow the dependant Ravl libs to be listed out to the makefile
                    eval ${lib}_SUPPORT=\$${lib}_RavlLib
-                   # Put the placeholders into Config.Package.in so we record the
+                   # Put the placeholders into Config.Project.in so we record the
                    # flags associated with the libraries that we can use
-                   echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Package.in
-                   echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Package.in
-                   echo >> ./Config.Package.in
+                   echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
+                   echo ${lib}_LIBS=@${lib}_LIBS@ >> Config.Project.in
+                   echo >> ./Config.Project.in
                    eval liblist=\$${lib}_LIBS
                    ALL_EXTERNAL_LIBS+=" "$liblist
                    ;;
@@ -3550,7 +3550,7 @@ dnl                   # m4 removing them.
       # Even though we don't record the FFMPEG libraries individually, we
       # still need to amend their _LIBS settings if we want to use RPATH (as 
       # we concatenate the individual _LIBS entries to form the single,
-      # libffmeg_LIBS setting used in Config.Package)
+      # libffmeg_LIBS setting used in Config.Project)
       if ( test "$with_rpath" = 'Y' )
       then
          if ( test "$lib_enablement" = 'present' )
@@ -3596,12 +3596,12 @@ then
       then
          if ( test X$FFMPEG_HDR_FMT = XOld )
          then
-            echo libffmpeg_CFLAGS=@FFMPEGCDEC_CFLAGS@ @FFMPEGCONT_CFLAGS@ @FFMPEGSWS_CFLAGS@ @FFMPEGUTIL_CFLAGS@ -DFFMPEG_OLD_HDR >> Config.Package.in
+            echo libffmpeg_CFLAGS=@FFMPEGCDEC_CFLAGS@ @FFMPEGCONT_CFLAGS@ @FFMPEGSWS_CFLAGS@ @FFMPEGUTIL_CFLAGS@ -DFFMPEG_OLD_HDR >> Config.Project.in
          else
-            echo libffmpeg_CFLAGS=@FFMPEGCDEC_CFLAGS@ @FFMPEGCONT_CFLAGS@ @FFMPEGSWS_CFLAGS@ @FFMPEGUTIL_CFLAGS@  >> Config.Package.in
+            echo libffmpeg_CFLAGS=@FFMPEGCDEC_CFLAGS@ @FFMPEGCONT_CFLAGS@ @FFMPEGSWS_CFLAGS@ @FFMPEGUTIL_CFLAGS@  >> Config.Project.in
          fi
-         echo libffmpeg_LIBS=@FFMPEGCDEC_LIBS@ @FFMPEGCONT_LIBS@ @FFMPEGSWS_LIBS@ @FFMPEGUTIL_LIBS@ >> Config.Package.in
-         echo >> ./Config.Package.in
+         echo libffmpeg_LIBS=@FFMPEGCDEC_LIBS@ @FFMPEGCONT_LIBS@ @FFMPEGSWS_LIBS@ @FFMPEGUTIL_LIBS@ >> Config.Project.in
+         echo >> ./Config.Project.in
          RESOURCES+="libffmpeg "
          libffmpeg_SUPPORT=$libffmpeg_RavlLib
          ALL_EXTERNAL_LIBS+=" ${FFMPEGCDEC_LIBS} ${FFMPEGCONT_LIBS} ${FFMPEGSWS_LIBS} ${FFMPEGUTIL_LIBS}"
@@ -3611,10 +3611,10 @@ then
          trace 3 libffmpeg dropped as FFMPEGxxx have inconsistent header layouts
       fi
    else
-      trace 3 libffmpeg disabled as we do not have all the FFMPEGxxx packages
+      trace 3 libffmpeg disabled as we do not have all the FFMPEGxxx libraries
    fi
 else
-   trace 4 libffmpeg not added to Config.Package as we did not want it
+   trace 4 libffmpeg not added to Config.Project as we did not want it
 fi
 
 if ( test X$use_OpenGL != 'Xno' )
@@ -3622,9 +3622,9 @@ then
    # Set up a single OpenGL set of flags if both the GL and GLU libraries exist
    if ( test X$use_libGL = 'Xpresent' -a X$use_libGLU = 'Xpresent' )
    then
-      echo OpenGL_CFLAGS=@libGL_CFLAGS@ @libGLU_CFLAGS@ >> Config.Package.in
-      echo OpenGL_LIBS=@libGL_LIBS@ @libGLU_LIBS@ >> Config.Package.in
-      echo >> ./Config.Package.in
+      echo OpenGL_CFLAGS=@libGL_CFLAGS@ @libGLU_CFLAGS@ >> Config.Project.in
+      echo OpenGL_LIBS=@libGL_LIBS@ @libGLU_LIBS@ >> Config.Project.in
+      echo >> ./Config.Project.in
       RESOURCES+="OpenGL "
       OpenGL_SUPPORT=$OpenGL_RavlLib
       trace 3 Added OpenGL to RESOURCES 
@@ -3633,16 +3633,16 @@ then
       trace 3 OpenGL disabled as we do not have bot libGL and libGLU
    fi
 else
-   trace 4 OpenGL not added to Config.Package as we did not want it
+   trace 4 OpenGL not added to Config.Project as we did not want it
 fi
 
-# finish Config.Package.in external libraries section with ALL_EXTERNAL_LIBS def
-echo ALL_EXTERNAL_LIBS=@ALL_EXTERNAL_LIBS@ >> ./Config.Package.in
-echo >> ./Config.Package.in
+# finish Config.Project.in external libraries section with ALL_EXTERNAL_LIBS def
+echo ALL_EXTERNAL_LIBS=@ALL_EXTERNAL_LIBS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 # Apply additional requirements that affect the <Lib>_SUPPORT variables (drop
 # any libs that have unmet complex dependancies on other external libs or on
@@ -3653,7 +3653,7 @@ echo >> ./Config.Package.in
 # variable). Initially set the variables to the name(s) of the libraries 
 # that may be included; we'll strip them out if dependencies dictate..
 #
-# As XXXX_SUPPORT relates to libraries that interface to a third-party package
+# As XXXX_SUPPORT relates to libraries that interface to a third-party libraries
 # use the convention of XXXX_LIBS to represent a set of wholly internal Ravl
 # libraries, or XXXX on its own to indicate a single optional internal library.
 
@@ -4083,17 +4083,17 @@ Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
 esac
 AC_SUBST([ARC])
 
-# Add, to Config.Package.in, the initialisation of the make variables used by
+# Add, to Config.Project.in, the initialisation of the make variables used by
 # SingleLib.mk. These have been recorded in ExtPkgSupp.$$ as this script has
 # been running; so, sort this file and append it with a suitable heading.
-echo >> ./Config.Package.in
-echo \# Optional Ravl sub-libraries that may or may not be included in the >> ./Config.Package.in
-echo \# single library>> ./Config.Package.in
-$SORT ./ExtPkgSupp.$$ >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo \# Optional Ravl sub-libraries that may or may not be included in the >> ./Config.Project.in
+echo \# single library>> ./Config.Project.in
+$SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
-echo >> ./Config.Package.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo >> ./Config.Project.in
 
 # Configure the included copy of QMake
 AC_CONFIG_SUBDIRS([QMake])
@@ -4103,8 +4103,8 @@ dnl Declare RESOURCES and ALL_EXTERNAL_LIBS as outputs
 AC_SUBST([RESOURCES])
 AC_SUBST([ALL_EXTERNAL_LIBS])
 
-dnl Create Makefiles and Config.Package
-AC_CONFIG_FILES([Config.Package])
-AC_CONFIG_FILES([Targets.Package:src/AutoTools/Targets.Package.in])
+dnl Create Makefiles and *.Project files
+AC_CONFIG_FILES([Config.Project])
+AC_CONFIG_FILES([Targets.Project:src/AutoTools/Targets.Project.in])
 AC_CONFIG_FILES([Makefile:src/AutoTools/Makefile.in])
 AC_OUTPUT

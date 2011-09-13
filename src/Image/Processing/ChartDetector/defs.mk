@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/Image/Processing/ChartDetector/defs.mk"
 
 PACKAGE=Ravl/Image
 
@@ -24,4 +24,4 @@ PROGLIBS=RavlDPDisplay.opt RavlExtImgIO.opt RavlOS
 
 AUXFILES=CalibrationChart.ps CalibrationChart.png CalibrationChart.coords
 
-AUXDIR=share/RAVL/pixmaps
+AUXDIR=share$(PROJECT_DIR)/pixmaps

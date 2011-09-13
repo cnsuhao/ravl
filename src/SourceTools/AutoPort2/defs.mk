@@ -3,6 +3,7 @@
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+#
 # file-header-ends-here
 
 
@@ -35,5 +36,5 @@ AUXFILES= header.tmpl guid.tmpl externalLib.xml  sln.tmpl vcproj.tmpl solution.g
  testProgram.guid.tmpl testProgram.tmpl exampleProgram.tmpl mainProgram.tmpl program.stmpl \
  mainProgram.guid.tmpl exampleProgram.guid.tmpl
 
-AUXDIR= share/RAVL/AutoPort2
+AUXDIR= share$(PROJECT_DIR)/AutoPort2
 

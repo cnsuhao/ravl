@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/Applications/VisualDataFlow/defs.mk"
 
 DESCRIPTION=Visual data flow programming tool.
 
@@ -31,4 +31,4 @@ PROGLIBS= RavlImgIOV4L.opt RavlExtImgIO.opt  DynLink
 
 AUXFILES= factory.cfg
 
-AUXDIR= share/RAVL/vdf
+AUXDIR= share$(PROJECT_DIR)/vdf

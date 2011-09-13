@@ -1,8 +1,9 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2010, OmniPerception Ltd.
+# Copyright (C) 2010-11, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
 
 PACKAGE=Ravl/OpenSceneGraph
@@ -40,4 +41,4 @@ EXTERNALLIBS=OpenSceneGraphGtk.def
 
 AUXFILES=exOpenSceneGraph.xml
 
-AUXDIR=share/RAVL/OpenSceneGraph
+AUXDIR=share$(PROJECT_DIR)/OpenSceneGraph

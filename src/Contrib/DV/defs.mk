@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/Contrib/DV/defs.mk"
 
 PACKAGE = Ravl/Image
 
@@ -22,7 +22,7 @@ SOURCES=ImgIODv.cc DvDecode.cc DvIFormat.cc DvFrameConvert.cc
 
 PLIB=RavlDV
 
-AUXDIR=lib/RAVL/libdep
+AUXDIR=lib$(PROJECT_DIR)/libdep
 
 AUXFILES= LibDV.def
 

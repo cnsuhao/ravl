@@ -1,10 +1,11 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2008, OmniPerception Ltd.
+# Copyright (C) 2008-11, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
 # Python is used under the terms of the Python License
 # Copyright (C) 2001, 2002, 2003, 2004 Python Software Foundation; All Rights Reserved
+#
 # file-header-ends-here
 
 REQUIRES = LibPython
@@ -25,6 +26,6 @@ TESTEXES =
 
 EXAMPLES = exPython.cc exPythonThreaded.cc exPythonMultipleInterpreters.cc exPyGTK.cc
 
-AUXDIR = lib/RAVL/libdep
+AUXDIR = lib$(PROJECT_DIR)/libdep
 
 AUXFILES = Python.def

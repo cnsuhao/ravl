@@ -30,7 +30,7 @@
   build trees for finalised binaries and intermediate object files. However,
   it is not currently intended to preclude the traditional use of QMake once
   the configure stage has been completed. Once configure has created the new,
-  combined configuration file (Config.Package), QMake should behave as
+  combined configuration file (Config.Project), QMake should behave as
   previously.
 
 + Installation from the Git repository currently requires the manually copying
@@ -38,7 +38,7 @@
   from the src/AutoTools directory into the root of the Ravl source directory.
 
 + Running configure will ensure the relevant compiler settings for the current
-  platform are recorded in Config.Package alongside the location of all the
+  platform are recorded in Config.Project alongside the location of all the
   required system tools. By default, configure creates a configuration where
   all libraries will be built without modification to their runtime library
   search path (it doesn't employ –rpath for the GNU compiler). This can be

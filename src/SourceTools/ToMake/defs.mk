@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
+#
 # file-header-ends-here
-#! file="Ravl/SourceTools/ToMake/defs.mk"
 
 DONOT_SUPPORT=VCPP
 
@@ -29,5 +29,5 @@ EHT =
 # Deal with template files.
 AUXFILES = Makefile.tmpl
 
-AUXDIR= share/RAVL/AutoPort
+AUXDIR= share$(PROJECT_DIR)/AutoPort
 

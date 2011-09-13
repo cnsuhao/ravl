@@ -3,10 +3,10 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/Core/Defs/defs.mk"
 
-DESCRIPTION= Defintion files for external packages that may be used in RAVL.  
+DESCRIPTION= Defintion files for external libraries that may be used in RAVL.  
 
 EXTERNALLIBS= GTK.def LibPNG.def posixThreads.def zlib.def \
  DynLink.def LibTIFF.def OpenGL.def libGL.def libGLU.def LibJPEG.def \

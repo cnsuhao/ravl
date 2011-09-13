@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/Image/VideoIO/defs.mk"
 
 PACKAGE = Ravl/Image
 
@@ -31,7 +31,7 @@ USESLIBS = RavlImageIO RavlImage RavlOSIO LibMPEG
 
 PROGLIBS = RavlDPDisplay.opt DynLink
 
-AUXDIR=lib/RAVL/libdep
+AUXDIR=lib$(PROJECT_DIR)/libdep
 
 AUXFILES=LibMPEG.def
 #USERCFLAGS = -g

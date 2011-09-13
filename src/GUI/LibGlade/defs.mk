@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/GUI/LibGlade/defs.mk"
 
 REQUIRES=libglade2 libGTK2
 
@@ -20,7 +20,7 @@ USESLIBS= RavlGUI RavlXMLFactory libglade
 
 AUXFILES= exlibgladecustommain.glade  exlibgladecustomwidget.glade  exlibglade.glade
 
-AUXDIR=share/RAVL/Glade
+AUXDIR=share$(PROJECT_DIR)/Glade
 
 EXAMPLES= exLibGlade.cc exLibGladeCustom.cc
 

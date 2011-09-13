@@ -3,8 +3,8 @@
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
+#
 # file-header-ends-here
-#! file="Ravl/Contrib/ClipStationPro/defs.mk"
 
 PACKAGE=Ravl/Image
 
@@ -30,6 +30,6 @@ PROGLIBS= RavlOSIO RavlImage RavlMath DynLink
 
 AUXFILES= ClipStationPro.def
 
-AUXDIR=lib/RAVL/libdep
+AUXDIR=lib$(PROJECT_DIR)/libdep
 
 EHT=Ravl.API.Images.Video.Video_IO.ClipStationPro.html

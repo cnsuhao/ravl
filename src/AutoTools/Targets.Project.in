@@ -1,5 +1,5 @@
 # @configure_input@
-# Declare package defaults for GNU standard installation variables
+# Declare project defaults for GNU standard installation variables
 
 #$(DESTDIR) only user-initialised
 #       - Specifies a pseudo root for packaging (or testing) purposes
@@ -28,8 +28,8 @@ datadir=@datadir@
 endif
 #       - Specifies the base location for installing machine-independant;
 #         read-only data. Usually set to $(datarootdir), but can point
-#         to a different location. In use, a package-specific directory
-#         should be used under this location (use $(datadir)/$(package-name)
+#         to a different location. In use, a project-specific directory
+#         should be used under this location (use $(datadir)/$(project-name)
 #         os some other suitable construct).
 
 
@@ -38,7 +38,7 @@ docdir=@docdir@
 endif
 #       - Specifies the base location for installing all documentation files
 #         bar Info files. In use, this setting should always be used with a
-#         package-specific directory suffix e.g. $(docdir)/$(package-name). 
+#         project-specific directory suffix e.g. $(docdir)/$(project-name). 
 #         Default value is $(datarootdir)/doc.
 
 
@@ -130,7 +130,7 @@ endif
 #   #       - Specifies the base location for installing header files when using
 #   #         a compiler that does not support the alternative include directory
 #   #         set by $(includedir). Usual values are /usr/include or null. GNU
-#   #         coding standards suggest, if $(oldincludedir) is set, a package's 
+#   #         coding standards suggest, if $(oldincludedir) is set, a project's 
 #   #         header files should be installed under both $(oldincludedir) and
 #   #         $(includedir).
 #
@@ -164,7 +164,7 @@ endif
 #       - Specifies the base location to receive executables that are only
 #         called from other programs. Default value $(exec_prefix)/libexec.
 #         When installing to this directory, suffix $(libexecdir) with a
-#         /$(package-name) directory.
+#         /$(project-name) directory.
 
 
 ifndef libdir

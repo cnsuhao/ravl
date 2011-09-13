@@ -25,7 +25,7 @@
 
 + The .Def files have been rewritten to a standard pattern. They now append a
   configure-set make variable to INCLUDES (xxx_CFLAGS) and  EXELIB (xxx_LIBS)
-  where xxx indicated the external package the .Def file defines. At present,
+  where xxx indicated the external library the .Def file defines. At present,
   there is no guaranteed synchronisation between the configure –with_xxx flag;
   name of the .Def file; REQUIRES entry and xxx_LIBS/CFLAGS although this could
   be undertaken if thought benificial.
@@ -44,7 +44,7 @@
   versions of members of the standard GNU AutoTools suite, put into source
   control to record the version used at any one time.
 
-+ When run, configure generates Config.Package in the top level directory. This
++ When run, configure generates Config.Project in the top level directory. This
   file receives all of the environemnt definitions needed by the Ravl build
   specifying the platform and machine specific configurations (including the
   location of the external libraries that can be utilised by Ravl). 
