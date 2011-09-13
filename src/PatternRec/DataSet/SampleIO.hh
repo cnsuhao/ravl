@@ -13,6 +13,7 @@
 //! file="Ravl/PatternRec/DataSet/SampleIO.hh"
 
 #include "Ravl/PatternRec/Sample.hh"
+#include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/DArray1dIter.hh"
 #include "Ravl/Vector.hh"
