@@ -362,8 +362,8 @@ AC_SUBST([MAKE])
 
 # Set relevant flags dependant on the software tools we have found
 #
-dnl Most options will be package specific so will be set by the configure script
-dnl for the individual package, Only set options that are required for QMake to
+dnl Most options will be project specific so will be set by the configure script
+dnl for the individual project. Only set options that are required for QMake to
 dnl operate correctly here; and even then, only select flags dependant on the
 dnl actual tools in use. Set all options pertaining to platform specifics later 
 dnl in this script

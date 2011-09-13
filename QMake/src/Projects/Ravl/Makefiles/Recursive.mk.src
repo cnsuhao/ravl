@@ -12,7 +12,7 @@ endif
 include $(QMAKE_MAKEFILES)/Definitions.mk
 
 ifndef INSTALLHOME
-  $(error Package home directory is not specified)
+  $(error Project home directory is not specified)
 endif
 
 #OBJ_HOME=$(INSTALLHOME)/$(LOGNAME)/qm/$(INSTALLHOME)/$(ARC)
@@ -33,13 +33,13 @@ EGS=$(basename $(filter-out $(TESTEXES),$(EXAMPLES)))
 ifdef SINGLELIB
 ifdef SHAREDBUILD
     BIN_SUBDIR=$(VAR)/shared/single
-    DEPEND_ON=$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)/shared/single/libRavl.so
-    LINK_WITH= -L$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)/shared/single -lRavl $(ALL_EXTERNAL_LIBS)
+    DEPEND_ON=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single/libRavl.so
+    LINK_WITH= -L$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single -lRavl $(ALL_EXTERNAL_LIBS)
 else
     BIN_SUBDIR=$(VAR)/single
-    DEPEND_ON=$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)/single/libRavl.a
-    #LINK_WITH=$(patsubst )%.cc,$(OBJ_HOME)/$(PLIB)/$(VAR)/objs/%.o,$(MUSTLINK)) -L$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)/single -lRavl $(ALL_EXTERNAL_LIBS)
-    LINK_WITH= -Wl,--whole-archive -L$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)/single -lRavl -Wl,--no-whole-archive $(ALL_EXTERNAL_LIBS)
+    DEPEND_ON=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single/libRavl.a
+    #LINK_WITH=$(patsubst )%.cc,$(OBJ_HOME)/$(PLIB)/$(VAR)/objs/%.o,$(MUSTLINK)) -L$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl $(ALL_EXTERNAL_LIBS)
+    LINK_WITH= -Wl,--whole-archive -L$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl -Wl,--no-whole-archive $(ALL_EXTERNAL_LIBS)
 endif
 else
 # LINK_WITH= $(PLIB) $(USESLIBS) (+ $(PROGLIBS)???) processed for AUTO keyword (& optionally supplemented vi QLibs)     
@@ -48,7 +48,7 @@ endif
 
 
 ifeq ($(strip $(PLIB)),)
-PLIB=$(PACKAGE)/None
+PLIB=$(PROJECT_DIR)$(PACKAGE)/None
 NOLOCALLIB=$(addprefix $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/,$(addsuffix .o,$(basename $(SOURCES))))
 endif
 # Some dirs build no library, only exes using SOURCES as additional objs.
@@ -143,7 +143,7 @@ library: $(BUILD_LIB)
 programs: $(BUILD_PROGS)
 
 recurse:
-	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(INSTALLHOME)/lib/RAVL/libdep/ -C $$d -f $(QMAKE_PACKAGES)/Ravl/Makefiles/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
+	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(INSTALLHOME)/lib$(PROJECT_DIR)/libdep/ -C $$d -f $(QMAKE_PROJECTS)/Ravl/Makefiles/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
 
 test: $(BUILD_TESTS)
 # Initial set-up not yet implemented - use QMake first

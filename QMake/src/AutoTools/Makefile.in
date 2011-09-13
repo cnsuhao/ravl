@@ -23,8 +23,8 @@ ifndef $(STAGING)
   STAGING=@abs_builddir@
 endif
 # This variable is also used in combination with setting bindir, datadir, et al
-# to provide a local copy for building any particular package when QMake is not
-# currently installed. In this situation, the package build process will run
+# to provide a local copy for building any particular project when QMake is not
+# currently installed. In this situation, the project build process will run
 # something of the form:
 #
 #     make -f $(PKG_HOME)/QMake/Makefile DESTDIR=staging
@@ -52,10 +52,10 @@ endif
 # Determine the list of QMake makefiles
 #
 # -  List all *.mk.src makefiles (ingnore any defs.mk) in the QMake Makefiles
-#    directories (generic makefiles in $(SRC)/Makefiles and package specific
-#    ones under $(SRC)/Packages/$(PKG_NAME)/Makefiles). Strip the trailing .src
+#    directories (generic makefiles in $(SRC)/Makefiles and project specific
+#    ones under $(SRC)/Projects/$(PKG_NAME)/Makefiles). Strip the trailing .src
 #    from the pathnames.
-MAKEFILE_LIST=$(patsubst %.src,%,$(filter-out defs.mk, $(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Packages/*/Makefiles/*.mk.src))))
+MAKEFILE_LIST=$(patsubst %.src,%,$(filter-out defs.mk, $(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Projects/*/Makefiles/*.mk.src))))
 
 
 
@@ -90,7 +90,7 @@ ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(MAKEFILE_LIST))
 # - Set QMAKE_xxx to the final installation path ($(datadir)/Makefiles).
 #   We cannot use the standard installation variable in the makefile
 #   because if we did, QMake would start looking for its makefiles in 
-#   the datadir of the package it was building rather than its own 
+#   the datadir of the project it was building rather than its own 
 #   deployed directory
 #
 define MAKE_MAKEFILE
@@ -98,7 +98,7 @@ $(STAGING)/$(1): $(SRC)/$(1).src
 	$(MKDIR_P) $(STAGING)/$(dir $(1))
 	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
 	    -e 's!QMAKE_SUPPORT=/Set/During/Staging/Process!QMAKE_SUPPORT=$(datadir)/QMake/Support!g' \
-	    -e 's!QMAKE_PACKAGES=/Set/During/Staging/Process!QMAKE_PACKAGES=$(datadir)/QMake/Packages!g' \
+	    -e 's!QMAKE_PROJECTS=/Set/During/Staging/Process!QMAKE_PROJECTS=$(datadir)/QMake/Projects!g' \
 	    -e 's!QMAKE_UTILS=/Set/During/Staging/Process!QMAKE_UTILS=$(bindir)!g' \
 	    -e 's!QMAKE_CONFIGFILES=/Set/During/Staging/Process!QMAKE_CONFIGFILES=$(sysconfdir)/QMake!g' \
             $(SRC)/$(1).src > $(STAGING)/$(1)

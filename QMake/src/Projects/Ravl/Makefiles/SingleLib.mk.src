@@ -7,7 +7,7 @@ ifndef INSTALLHOME
   # INSTALLHOME must be provided from higher-level makefile/cmd-line
 endif
 
-LIB_WORK=$(INSTALLHOME)/lib/RAVL/$(ARC)/$(VAR)
+LIB_WORK=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)
 
 #BUILT_ROOT=$(INSTALLHOME)/$(LOGNAME)/qm/$(INSTALLHOME)/$(ARC)
 BUILT_ROOT=$(INSTALLHOME)/$(ARC)

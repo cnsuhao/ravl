@@ -23,9 +23,9 @@ endif
 # QMAKE_MAKEFILES has to be defined in each QMake makefile as it is needed to
 # locate this file.
 
-# Package specific QMake files (in same tree structure as generic files)
-ifndef QMAKE_PACKAGES
-  QMAKE_PACKAGES=/Set/During/Staging/Process
+# Project specific QMake files (in same tree structure as generic files)
+ifndef QMAKE_PROJECTS
+  QMAKE_PROJECTS=/Set/During/Staging/Process
 endif
 
 # Misc QMake support files
@@ -59,7 +59,7 @@ include $(QMAKE_CONFIGFILES)/Config.QMake
 ifdef CONFIGFILE
   include $(CONFIGFILE)
 else
-  include $(INSTALLHOME)/Config.Package
+  include $(INSTALLHOME)/Config.Project
 endif
 
 
@@ -133,18 +133,20 @@ else
 endif
 
 
-ifndef PACKAGENAME
-  PACKAGEDIR=RAVL
+PROJECT_NAME:=$(strip $(PROJECT_NAME))#
+
+ifeq ($(PROJECT_NAME),)
+  PROJECT_DIR=
 else
-  PACKAGEDIR=$(PACKAGENAME)
+  PROJECT_DIR=/$(PROJECT_NAME)
 endif
 
 PACKAGE:=$(strip $(PACKAGE))#
 
 ifndef PLIB
-  BASENAME:=$(PACKAGE)/None#
+  BASENAME:=$(PROJECT_DIR)/$(PACKAGE)/None#
 else
-  BASENAME:=$(PLIB)#
+  BASENAME:=/$(PLIB)#
 endif
 
 ifndef SHAREDBUILD
@@ -198,7 +200,7 @@ else
  TMP=$(DEFAULTTMP)
 endif
 
-WORKTMP=$(LOCALTMP)/$(ARC)/$(BASENAME)/$(VAR)$(SHARED_LIB_POSTFIX)
+WORKTMP=$(LOCALTMP)/$(ARC)$(BASENAME)/$(VAR)$(SHARED_LIB_POSTFIX)
 
 # A file that definitly doesn't exist.
 #NOFILE = /notme/hiya/fruitcake/whippy
@@ -223,14 +225,14 @@ endif
 
 # Admin files used in build but not needed after.
 
-INST_ADMIN=$(ROOTDIR)/share/RAVL/Admin
+INST_ADMIN=$(ROOTDIR)/share$(PROJECT_DIR)/Admin
 
 # Documentation
 
 INST_AUTODOC=$(ROOTDIR)/share/doc/Auto
 INST_DOCNODE=$(INST_AUTODOC)/DocNode
-INST_DOC= $(ROOTDIR)/share/doc/RAVL
-INST_PDOC=$(INST_DOC)/$(PACKAGE)
+INST_DOC= $(ROOTDIR)/share/doc$(PROJECT_DIR)
+INST_PDOC=$(INST_DOC)$(PROJECT_DIR)/$(PACKAGE)
 INST_HTML=$(INST_DOC)/html
 INST_DOCEXAMPLES=$(INST_DOC)/examples
 INST_EHT= $(INST_ADMIN)/AutoDoc/EHT
@@ -243,9 +245,9 @@ INST_AUX=$(ROOTDIR)/$(AUXDIR)
 
 # Binaries
 
-INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)
+INST_LIB=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)
 INST_OBJS=$(WORKTMP)/objs
-INST_FORCEOBJS = $(ROOTDIR)/lib/RAVL/$(ARC)/obj
+INST_FORCEOBJS = $(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/obj
 
 # Test stuff.
 INST_TEST=$(ROOTDIR)/test/$(VAR)$(SHARED_LIB_POSTFIX)
@@ -253,21 +255,21 @@ INST_TESTBIN=$(INST_TEST)/bin
 INST_TESTLOG=$(INST_TEST)/log
 INST_TESTDB =$(INST_TEST)/TestExes
 
-INST_LIBDEF=$(ROOTDIR)/lib/RAVL/libdep
+INST_LIBDEF=$(ROOTDIR)/lib$(PROJECT_DIR)/libdep
 INST_BIN=$(ROOTDIR)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin
 INST_GENBIN=$(ROOTDIR)/bin# Machine independent scripts.
 INST_INCLUDE:=$(ROOTDIR)/include
-INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend/$(PACKAGE)/$(BASENAME)
+INST_DEPEND=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)
 
 ifeq ($(PACKAGE),local)
-INST_HEADER:=$(INST_INCLUDE)
-INST_HEADERSYM:=$(INST_ADMIN)/syminc
+INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)
+INST_HEADERSYM:=$(INST_ADMIN)$(PROJECT_DIR)/syminc
 else
-INST_HEADER:=$(INST_INCLUDE)/$(PACKAGE)
-INST_HEADERSYM:=$(INST_ADMIN)/syminc/$(PACKAGE)
+INST_HEADER:=$(INST_INCLUDE)$(PROJECT_DIR)/$(PACKAGE)
+INST_HEADERSYM:=$(INST_ADMIN)/syminc$(PROJECT_DIR)/$(PACKAGE)
 endif
 
-INST_HEADERCERT:=$(INST_ADMIN)/Cert/$(PACKAGE)
+INST_HEADERCERT:=$(INST_ADMIN)/Cert$(PROJECT_DIR)/$(PACKAGE)
 
 # Java classes
 
@@ -284,14 +286,14 @@ INST_JAVAEXE = $(INST_BIN)
 # then the   current PROJECT_OUT def's and finally those that 
 # were installed with the make system. 
 
-DEF_INC = -I. -I$(INST_LIBDEF) -I$(INSTALLHOME)/lib/RAVL/libdep  $(patsubst %,-I%/lib/RAVL/libdep,$(EXTERNAL_PROJECTS))
+DEF_INC = -I. -I$(INST_LIBDEF) -I$(INSTALLHOME)/lib$(PROJECT_DIR)/libdep  $(patsubst %,-I%/lib$(PROJECT_DIR)/libdep,$(EXTERNAL_PROJECTS))
 
 ############################
 # Some targets.
 
 # Published dependancy flag.
-TARG_DEPFLAG=$(INST_ADMIN)/$(ARC)/depend/$(PACKAGE)/$(BASENAME)/.depend
-TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend/$(PACKAGE)/$(BASENAME)/.header
+TARG_DEPFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.depend
+TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.header
 
 ##############################
 # Make setup

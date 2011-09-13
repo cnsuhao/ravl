@@ -14,13 +14,13 @@ endif
 include $(QMAKE_MAKEFILES)/Definitions.mk
 
 ifndef INSTALLHOME
-  # Staging directory for package build
+  # Staging directory for project build
   #      - Must be provided from top-level makefile/command-line
-  $(error Package home directory is not specified)
+  $(error Project home directory is not specified)
 endif
 
-# Include package default installation targets
-include $(INSTALLHOME)/Targets.Package
+# Include project default installation targets
+include $(INSTALLHOME)/Targets.Project
 
 # Determine the sub-directories we may have to process
 REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
@@ -89,13 +89,13 @@ insDev: insLibs insHdrs
 insAux: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(AUXFILES)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ] ;\
+            if [ ! -d $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
                   echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -104,9 +104,9 @@ insAux:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -117,13 +117,13 @@ insAux:
 insConfig: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(CFGFILES)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(sysconfdir)/$(PACKAGE) ] ;\
+            if [ ! -d $(DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ;\
+                  echo $(MKDIR_P) $(DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE) ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ;\
+               $(MKDIR_P) $(DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -132,9 +132,9 @@ insConfig:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(CFGFILES) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ; \
+               echo $(INSTALL) $(CFGFILES) $(DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE) ; \
             fi ;\
-            $(INSTALL) $(CFGFILES) $(DESTDIR)$(sysconfdir)/$(PACKAGE) ; \
+            $(INSTALL) $(CFGFILES) $(DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -145,13 +145,13 @@ insConfig:
 insData:
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(DATA)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ] ;\
+            if [ ! -d $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ;\
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR) ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -160,9 +160,9 @@ insData:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(DATADIR)/%, $(DATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(DATADIR)/%, $(DATA)) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(DATADIR)/%, $(DATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(DATADIR) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(DATADIR)/%, $(DATA)) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -202,13 +202,13 @@ insEgs:
 insEgData: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EGDATA)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ] ;\
+            if [ ! -d $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ;\
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR) ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -217,9 +217,9 @@ insEgData:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(EGDATADIR)/%, $(EGDATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(EGDATADIR)/%, $(EGDATA)) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(EGDATADIR)/%, $(EGDATA)) $(DESTDIR)$(datadir)/$(PACKAGE)/$(EGDATADIR) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(EGDATADIR)/%, $(EGDATA)) $(DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -231,13 +231,13 @@ insEgData:
 insHdrs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(HEADERS)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(includedir)/$(PACKAGE)  ] ;\
+            if [ ! -d $(DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE)  ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(DESTDIR)$(includedir)/$(PACKAGE)  ;\
+                  echo $(MKDIR_P) $(DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE)  ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(includedir)/$(PACKAGE)  ;\
+               $(MKDIR_P) $(DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE)  ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -246,9 +246,9 @@ insHdrs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(includedir)/$(PACKAGE) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PROJECT_DIR)$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(includedir)/$(PACKAGE) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/include/$(PROJECT_DIR)$(PACKAGE)/%, $(HEADERS)) $(DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -274,9 +274,9 @@ insLibs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib/$(PRODUCT)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(DESTDIR)$(libdir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -371,13 +371,13 @@ insTests:
 insTestData: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(TESTDATA)" != X ] ;\
          then \
-            if [ ! -d $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ] ;\
+            if [ ! -d $(DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ;\
+                  echo $(MKDIR_P) $(DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR) ;\
                fi ;\
-               $(MKDIR_P) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ;\
+               $(MKDIR_P) $(DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -386,9 +386,9 @@ insTestData:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/share/Test/Data/$(TESTDATADIR)/%, $(TESTDATA)) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/share/Test/Data/$(TESTDATADIR)/%, $(TESTDATA)) $(DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/share/Test/Data/$(TESTDATADIR)/%, $(TESTDATA)) $(DESTDIR)$(datadir)/$(PRODUCT)/Test/Data/$(TESTDATADIR) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/share/Test/Data/$(TESTDATADIR)/%, $(TESTDATA)) $(DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -451,8 +451,9 @@ info:
 	@echo "    HEADERS         [ $(HEADERS) ]"
 	@echo "    MAINS           [ $(MAINS) ]"
 	@echo "    PACKAGE         [ $(PACKAGE) ]"
+	@echo "    PROJECT         [ $(PROJECT) ]"
+	@echo "    PROJECT_DIR     [ $(PROJECT_DIR) ]"
 	@echo "    PLIB            [ $(PLIB) ]"
-	@echo "    PRODUCT         [ $(PRODUCT) ]"
 	@echo "    REQUIRED_DIRS   [ $(REQUIRED_DIRS) ]"
 	@echo "    SCRIPTS         [ $(SCRIPTS) ]"
 	@echo "    SUPPORT_ONLY    [ $(SUPPORT_ONLY) ]"
