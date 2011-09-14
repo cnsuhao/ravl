@@ -7,8 +7,6 @@
 # file-header-ends-here
 
 
-PACKAGENAME= VCPP
-
 DESCRIPTION = Visual C++ porting tool for QMake projects
 
 DONOT_SUPPORT=

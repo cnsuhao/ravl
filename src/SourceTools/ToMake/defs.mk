@@ -8,8 +8,6 @@
 
 DONOT_SUPPORT=VCPP
 
-PACKAGENAME= TOMAKE
-
 DESCRIPTION = Porting to the normal make 
 
 LICENSE = GPL

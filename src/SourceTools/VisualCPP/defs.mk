@@ -8,8 +8,6 @@
 
 DONOT_SUPPORT=VCPP
 
-PACKAGENAME= VCPP
-
 DESCRIPTION = Visual C++ porting tool for QMake projects
 
 LICENSE = GPL

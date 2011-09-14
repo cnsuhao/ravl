@@ -8,8 +8,6 @@
 
 PACKAGE = Ravl/PatternRec
 
-#PACKAGENAME = SVM
-
 MAINS    = oneClassTest.cc \
            oneClassLargeTest.cc \
            createClassifier.cc \

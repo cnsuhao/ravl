@@ -8,8 +8,6 @@
 
 DONOT_SUPPORT=
 
-PACKAGENAME = CxxDoc
-
 DESCRIPTION = The RAVL C++ Documentation tool
 
 LICENSE = GPL
