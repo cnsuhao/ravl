@@ -4,6 +4,13 @@
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/RLog.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlOSGN {
 
   //: Constructor
@@ -13,7 +20,8 @@ namespace RavlOSGN {
      m_stackAxis1(0),
      m_stackAxis2(1),
      m_gap(0.1),
-     m_minSize(1.0)
+     m_minSize(1.0),
+     m_homogenousGrid(false)
   {
   }
   
@@ -24,7 +32,8 @@ namespace RavlOSGN {
      m_stackAxis1(0),
      m_stackAxis2(1),
      m_gap(0.1),
-     m_minSize(1.0)
+     m_minSize(1.0),
+     m_homogenousGrid(false)
   {
     Setup(factory);
   }
@@ -36,18 +45,23 @@ namespace RavlOSGN {
     rDebug("Updating layout. ");
     
     unsigned colMax = 1;
+    unsigned rowMax = 1;
     const unsigned viewSize = m_nodes.size();
-    unsigned rowMax = RavlN::Floor(RavlN::Sqrt(viewSize));
+    rowMax = RavlN::Floor(RavlN::Sqrt(viewSize));
     colMax = rowMax;
     if(RavlN::Sqr(rowMax) < viewSize)
       colMax++;
-    
+    if((rowMax * colMax) < viewSize)
+      rowMax++;
+    ONDEBUG(rDebug("Nodes:%u RowMax:%u ColMax:%u ",viewSize,rowMax,colMax));
+    RavlAssert((colMax * rowMax) >= viewSize);
+
     // Sort out grid displays
     Vector3dC rowStart(0,0,0);
-    unsigned at = 0;
     
     std::vector<float> colSizes(colMax);
-    
+    float maxWidth = m_minSize;
+    float maxHeight = m_minSize;
     for(unsigned c = 0;c < colMax;c++) {
       float width = m_minSize;
       for(unsigned r = 0;r < rowMax;r++) {
@@ -57,13 +71,28 @@ namespace RavlOSGN {
         float csize = m_nodes[at]->Bounds()._max[m_stackAxis2] - m_nodes[at]->Bounds()._min[m_stackAxis2];
         if(csize > width)
           width = csize;
+        float rsize = m_nodes[at]->Bounds()._max[m_stackAxis1] - m_nodes[at]->Bounds()._min[m_stackAxis1];
+        if(rsize > maxHeight)
+          maxHeight = rsize;
       }
       colSizes[c] = width;
+      if(width > maxWidth)
+        maxWidth = width;
     }
-    
-    
+
+    // If we want the grid to be homogeneous, just use the max sizes all round.
+    float minHeight = m_minSize;
+    if(m_homogenousGrid) {
+      for(unsigned c = 0;c < colMax;c++)
+        colSizes[c] = maxWidth;
+      minHeight = maxHeight;
+    }
+
+    unsigned at = 0;
+    ONDEBUG(rDebug("Max height:%f Max Width:%f  Nodes:%u RowMax:%u ColMax:%u ",maxHeight,maxWidth,viewSize,rowMax,colMax));
+
     for(unsigned r = 0;r < rowMax;r++) {
-      float hight = m_minSize;
+      float hight = minHeight;
       Vector3dC vat = rowStart;
       
       unsigned atSave = at;
@@ -78,13 +107,13 @@ namespace RavlOSGN {
         rowStart[m_stackAxis1] -= (hight + m_gap);        
       }
       
-      // Work out the row hight.
+      // Work out the row height.
       for(unsigned c = 0;c < colMax && at < m_nodes.size();c++,at++) {
         if(m_invertAxis2)
           vat[m_stackAxis2] -= (colSizes[c] + m_gap);
         Vector3dC correctedPosition = vat - MakeVector3d(m_nodes[at]->Bounds()._min);
         m_nodes[at]->SetPosition(correctedPosition);
-        rDebug("Start %s ",RavlN::StringOf(correctedPosition).data());
+        ONDEBUG(rDebug("Start %s ",RavlN::StringOf(correctedPosition).data()));
         if(!m_invertAxis2)
           vat[m_stackAxis2] += (colSizes[c] + m_gap);
       }
@@ -122,6 +151,7 @@ namespace RavlOSGN {
     }
     m_gap = factory.AttributeReal("gap",0.1);
     m_minSize = factory.AttributeReal("minSize",1.0);
+    m_homogenousGrid = factory.AttributeBool("homogenousGrid",false);
     LayoutC::Setup(factory);
     return true;
   }

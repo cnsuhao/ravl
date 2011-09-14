@@ -13,10 +13,11 @@
 #include "Ravl/PatternRec/DataSet2.hh"
 
 namespace RavlN {
-  
-  DataSet2C<SampleC<VectorC>,SampleC<UIntT> > LoadVectorLabel(const StringC &fn);
-  //: Load a vector label dataset.
-}
 
+  DataSet2C<SampleC<VectorC>, SampleC<UIntT> > LoadVectorLabel(const StringC &fn);
+//: Load a vector label dataset.
+
+
+}
 
 #endif
