@@ -75,7 +75,6 @@ namespace RavlN {
     // Put in some headings if required
     SArray1dC<FieldInfoC> fieldInfo = dataset.Sample1().FieldInfo();
     if (fieldInfo.Size() != 0) {
-      cout << "Saving headings" << endl;
       // check dimensions match
       if (dataset.Sample1().First().Size() != fieldInfo.Size()) {
         SysLog(SYSLOG_ERR, "Samples dimension does not match number of headings");

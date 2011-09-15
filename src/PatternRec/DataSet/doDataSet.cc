@@ -16,10 +16,9 @@ bool MakeTrainTestDataSet(DataSetVectorLabelC & dset, const FilenameC & outputFi
 
   // What we will do is make two data sets - with equal samples per class
   UIntT minSamplesInAClass = dset.ClassNums()[dset.ClassNums().IndexOfMin()];
-  SysLog(SYSLOG_INFO, "There are going to be %d samples per class", minSamplesInAClass/2);
+  SysLog(SYSLOG_INFO, "There are going to be %d samples per class", minSamplesInAClass / 2);
 
-  // Make sure we shuffle dataset first
-  dset.Shuffle();
+  // Assumes dataset is shuffled from earlier
   dset = dset.ExtractPerLabel(minSamplesInAClass);
 
   // FIXME: Why doesn't inherit proper?
@@ -50,7 +49,7 @@ int main(int nargs, char **argv) {
   DListC<StringC> sampleSets = opts.List("samples", "A list of sample sets to append into a master dataset.");
   DListC<StringC> datasets = opts.List("datasets", "A list of datasets to append into a master dataset.");
   DListC<StringC> dataFields = opts.List("dataFields", "Insert these fields into the final dataset");
-  StringC labelField = opts.String("labelField","","Insert this as the field for the label");
+  StringC labelField = opts.String("labelField", "", "Insert this as the field for the label");
   FilenameC outputFile = opts.String("o", "out.csv", "The output dataset!  ");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   bool makeTrainTest = opts.Boolean("tt", false, "Make a training and test data set");
@@ -91,6 +90,9 @@ int main(int nargs, char **argv) {
       }
     }
 
+    // Always a good idea to shuffle
+    dset.Shuffle();
+
     // Check we have loaded some data from somewhere
     if (dset.Size() < 1) {
       SysLog(SYSLOG_ERR, "No samples in dataset.  Nothing to process!");
@@ -101,32 +103,36 @@ int main(int nargs, char **argv) {
       return 1;
     }
 
+    // Modify dataset if requested
     if (equaliseSamples) {
-      dset = dset.ExtractPerLabel(dset.ClassNums()[dset.ClassNums().IndexOfMax()]);
+      UIntT min = dset.ClassNums()[dset.ClassNums().IndexOfMin()];
+      SysLog(SYSLOG_INFO, "Equalising number of samples per class to %d", min);
+      dset = dset.ExtractPerLabel(min);
     }
-
-    if (samplesPerClass > 0 && samplesPerClass < dset.ClassNums()[dset.ClassNums().IndexOfMin()]) {
+    if (samplesPerClass > 0 && samplesPerClass <= dset.ClassNums()[dset.ClassNums().IndexOfMin()]) {
+      SysLog(SYSLOG_INFO, "Setting the samples per class to %d", samplesPerClass);
       dset = dset.ExtractPerLabel(samplesPerClass);
     }
 
     // Have we been asked to attach some fields to the dataset?
-    if(opts.IsOnCommandLine("dataFields")) {
-      SArray1dC<FieldInfoC>fieldInfo(dataFields.Size());
-      UIntT c=0;
-      for(DLIterC<StringC>it(dataFields);it;it++) {
+    if (opts.IsOnCommandLine("dataFields")) {
+      SArray1dC<FieldInfoC> fieldInfo(dataFields.Size());
+      UIntT c = 0;
+      for (DLIterC<StringC> it(dataFields); it; it++) {
+        SysLog(SYSLOG_INFO, "Attaching field to data set '%s'", it.Data().data());
         fieldInfo[c] = FieldInfoC(*it);
         c++;
       }
-      if(!dset.Sample1().SetFieldInfo(fieldInfo)) {
+      if (!dset.Sample1().SetFieldInfo(fieldInfo)) {
         SysLog(SYSLOG_ERR, "Trouble attaching fields to dataset.");
       }
     }
 
     // Set the label field
-    if(opts.IsOnCommandLine("labelField")) {
+    if (opts.IsOnCommandLine("labelField")) {
+      SysLog(SYSLOG_INFO, "Attaching label field to data set '%s'", labelField.data());
       dset.Sample2().SetFieldInfo(FieldInfoC(labelField));
     }
-
 
     // And save the datasets
     SysLog(SYSLOG_INFO, "Saving data set '%s'", outputFile.data());
