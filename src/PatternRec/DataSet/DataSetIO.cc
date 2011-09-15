@@ -25,8 +25,7 @@ namespace RavlN {
     // If we have csv extension lets save it as a csv file
     FilenameC fname(filename);
     if (fname.HasExtension("csv")) {
-      DListC<StringC> headings;
-      return SaveDataSetVectorLabelCSV(filename, dataset, headings);
+      return SaveDataSetVectorLabelCSV(filename, dataset);
     }
 
     OStreamC os(filename);
@@ -44,8 +43,7 @@ namespace RavlN {
     // If we have csv extension lets save it as a csv file
     FilenameC fname(filename);
     if (fname.HasExtension("csv")) {
-      DListC<StringC> headings;
-      return LoadDataSetVectorLabelCSV(filename, dataset, headings);
+      return LoadDataSetVectorLabelCSV(filename, dataset);
     }
 
     IStreamC is(filename);
@@ -58,8 +56,7 @@ namespace RavlN {
   }
 
   //! A function that saves a Vector dataset as a CSV file.
-  bool SaveDataSetVectorLabelCSV(const StringC & filename, const DataSetVectorLabelC & dataset,
-                                 const DListC<StringC> & headings) {
+  bool SaveDataSetVectorLabelCSV(const StringC & filename, const DataSetVectorLabelC & dataset) {
 
     // No point if empty sample size
     if (dataset.Size() < 1) {
@@ -76,23 +73,24 @@ namespace RavlN {
 
     // If use has supplied headings, let put them in
     // Put in some headings if required
-    if (!headings.IsEmpty()) {
+    SArray1dC<FieldInfoC> fieldInfo = dataset.Sample1().FieldInfo();
+    if (fieldInfo.Size() != 0) {
       cout << "Saving headings" << endl;
       // check dimensions match
-      if (dataset.Sample1().Size() + 1 != headings.Size()) {
+      if (dataset.Sample1().First().Size() != fieldInfo.Size()) {
         SysLog(SYSLOG_ERR, "Samples dimension does not match number of headings");
         return false;
       }
 
       // save the headings
-      for (DLIterC<StringC> it(headings); it; it++) {
-        os << *it;
-        if (!it.IsLast()) {
-          os << ",";
-        }
+      for (SArray1dIterC<FieldInfoC> it(fieldInfo); it; it++) {
+        os << it.Data().Name();
+        os << ",";
       }
-      // and a new line
-      os << "\n";
+
+      // and the field info for the label
+      os << dataset.Sample2().FieldInfo().Name() << "\n";
+
     }
 
     // Lets iterate through data
@@ -108,19 +106,19 @@ namespace RavlN {
   }
 
   //! A function that loads a DataSetVectorLabel from a CSV file.
-  bool LoadDataSetVectorLabelCSV(const StringC & filename, DataSetVectorLabelC & dataset, DListC<StringC> & headings) {
+  bool LoadDataSetVectorLabelCSV(const StringC & filename, DataSetVectorLabelC & dataset) {
 
-    // Open output file ane check all OK!
+    // Open output file and check all OK!
     FilenameC fname(filename);
     if (!fname.Exists()) {
-      SysLog(SYSLOG_ERR, "Dataset file does not exist for loadin '%s'", fname.data());
+      SysLog(SYSLOG_ERR, "Data set file does not exist for loading '%s'", fname.data());
       return false;
     }
 
     TextFileC textFile(filename);
     // Now the first line might be the headings - we need to guess
     UIntT startLine = 1;
-    headings = StringListC(textFile[1], ",");
+    StringListC headings(textFile[1].TopAndTail(), ",");
     for (DLIterC<StringC> it(headings); it; it++) {
       if (!it.Data().RealValue()) {
         startLine = 2;
@@ -128,7 +126,30 @@ namespace RavlN {
       }
     }
 
+    // Now lets put something into field information
+    SArray1dC<FieldInfoC> fieldInfo(headings.Size() - 1);
+    FieldInfoC labelFieldInfo;
+    UIntT c = 0;
+    for (DLIterC<StringC> it(headings); it; it++) {
+      if (startLine == 2) {
+        if (it.IsLast()) {
+          labelFieldInfo = FieldInfoC(*it);
+        } else {
+          fieldInfo[c] = FieldInfoC(*it);
+        }
+      } else {
+        if (it.IsLast()) {
+          labelFieldInfo = FieldInfoC("label");
+        } else {
+          fieldInfo[c] = "Unknown_" + (StringC) c;
+        }
+      }
+      c++;
+    }
+
     dataset = DataSetVectorLabelC(textFile.NoLines() - startLine + 1);
+    dataset.Sample1().SetFieldInfo(fieldInfo);
+    dataset.Sample2().SetFieldInfo(labelFieldInfo);
     for (UIntT i = startLine; i <= textFile.NoLines(); i++) {
       StringListC line(textFile[i], ",");
       VectorC vec(line.Size() - 1);

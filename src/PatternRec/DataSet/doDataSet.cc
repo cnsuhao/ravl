@@ -49,6 +49,8 @@ int main(int nargs, char **argv) {
   RavlN::SetResourceRoot(installDir);
   DListC<StringC> sampleSets = opts.List("samples", "A list of sample sets to append into a master dataset.");
   DListC<StringC> datasets = opts.List("datasets", "A list of datasets to append into a master dataset.");
+  DListC<StringC> dataFields = opts.List("dataFields", "Insert these fields into the final dataset");
+  StringC labelField = opts.String("labelField","","Insert this as the field for the label");
   FilenameC outputFile = opts.String("o", "out.csv", "The output dataset!  ");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   bool makeTrainTest = opts.Boolean("tt", false, "Make a training and test data set");
@@ -68,7 +70,7 @@ int main(int nargs, char **argv) {
       for (DLIterC<StringC> it(sampleSets); it; it++) {
         SysLog(SYSLOG_INFO, "Loading sample set '%s'", it.Data().data());
         SampleVectorC sample;
-        if (!Load(*it, sample, "", true)) {
+        if (!LoadSampleVector(*it, sample)) {
           SysLog(SYSLOG_ERR, "Trouble load sample set '%s'", it.Data().data());
           continue;
         }
@@ -84,6 +86,8 @@ int main(int nargs, char **argv) {
         DataSetVectorLabelC localDataset;
         LoadDataSetVectorLabel(*it, localDataset);
         dset.Append(localDataset);
+        dset.Sample1().SetFieldInfo(localDataset.Sample1().FieldInfo());
+        dset.Sample2().SetFieldInfo(localDataset.Sample2().FieldInfo());
       }
     }
 
@@ -105,7 +109,27 @@ int main(int nargs, char **argv) {
       dset = dset.ExtractPerLabel(samplesPerClass);
     }
 
+    // Have we been asked to attach some fields to the dataset?
+    if(opts.IsOnCommandLine("dataFields")) {
+      SArray1dC<FieldInfoC>fieldInfo(dataFields.Size());
+      UIntT c=0;
+      for(DLIterC<StringC>it(dataFields);it;it++) {
+        fieldInfo[c] = FieldInfoC(*it);
+        c++;
+      }
+      if(!dset.Sample1().SetFieldInfo(fieldInfo)) {
+        SysLog(SYSLOG_ERR, "Trouble attaching fields to dataset.");
+      }
+    }
+
+    // Set the label field
+    if(opts.IsOnCommandLine("labelField")) {
+      dset.Sample2().SetFieldInfo(FieldInfoC(labelField));
+    }
+
+
     // And save the datasets
+    SysLog(SYSLOG_INFO, "Saving data set '%s'", outputFile.data());
     SaveDataSetVectorLabel((StringC) outputFile, dset);
 
   } catch (const RavlN::ExceptionC &exc) {

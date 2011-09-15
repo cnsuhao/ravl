@@ -24,7 +24,8 @@ HEADERS = 	Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh SampleDiscrete
 		FunctionConcatenate.hh \
 		FunctionCascade.hh \
 		SampleStreamVectorLabel.hh \
-		DataSetIO.hh
+		DataSetIO.hh \
+		FieldInfo.hh
 
 SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		Function.cc Function1.cc Designer.cc DesignFunctionUnsupervised.cc DesignFunctionSupervised.cc \
@@ -34,7 +35,9 @@ SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		FunctionConcatenate.cc \
 		FunctionCascade.cc \
 		SampleStreamVectorLabel.cc \
-		DataSetIO.cc
+		SampleIO.cc \
+		DataSetIO.cc \
+		FieldInfo.cc 
 
 MAINS = doDataSet.cc
 

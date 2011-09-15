@@ -26,12 +26,11 @@ namespace RavlN {
   bool LoadDataSetVectorLabel(const StringC & filename, DataSetVectorLabelC & dataset);
 
   //! A function that saves a DataSetVectorLabel file as a CSV file.
-  bool SaveDataSetVectorLabelCSV(const StringC & filename, const DataSetVectorLabelC & dataset,
-                                 const DListC<StringC> & headings);
+  bool SaveDataSetVectorLabelCSV(const StringC & filename, const DataSetVectorLabelC & dataset);
 
   //! A function that loads a DataSetVectorLabel from a CSV file.  It will try and automatically any headings on the
   //! the first line of the data file
-  bool LoadDataSetVectorLabelCSV(const StringC & filename, DataSetVectorLabelC & dataset, DListC<StringC> & headings);
+  bool LoadDataSetVectorLabelCSV(const StringC & filename, DataSetVectorLabelC & dataset);
 
 }
 
