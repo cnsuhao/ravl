@@ -29,9 +29,6 @@ namespace RavlN {
     : pFormatCtx(0),
       positionRefStream(0),
       currentTimeStamp(0),
-      frameRate(0),
-      frameRateBase(0),
-      startFrame(0),
       haveSeek(true)
   { 
     Init();
@@ -45,9 +42,6 @@ namespace RavlN {
     : pFormatCtx(0),
       positionRefStream(0),
       currentTimeStamp(0),
-      frameRate(0),
-      frameRateBase(0),
-      startFrame(0),
       haveSeek(true)
   { Init(); }
   
@@ -124,21 +118,14 @@ namespace RavlN {
       
       positionRefStream = videoStreamId;
       AVStream *avstream = pFormatCtx->streams[positionRefStream];
-      
-      frameRate     = avstream->r_frame_rate.num;
-      frameRateBase = avstream->r_frame_rate.den;
-      startFrame = Time2Frame(pFormatCtx->start_time);      
-      
+
       ONDEBUG(cerr << "FFmpegPacketStreamBodyC::FirstVideoStream Index=" << av_find_default_stream_index(pFormatCtx) << " " << positionRefStream << " \n");
-      
-      
-      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::FirstVideoStream, FrameRate=" << frameRate << " FrameRateBase=" << frameRateBase << " Wrap=" << avstream->pts_wrap_bits << "\n");
+
       return true;
     }
     
     return false;
   }
-  
   
   //: Check for a readable video stream.
   
@@ -204,7 +191,6 @@ namespace RavlN {
     return false;
   }
   
-  
   //: Open file.
   
   bool FFmpegPacketStreamBodyC::Open(const StringC &filename) {
@@ -225,9 +211,6 @@ namespace RavlN {
     // Setup some default values.
     if(pFormatCtx->nb_streams >= 1) {
       positionRefStream = 0;
-      frameRate     = pFormatCtx->streams[positionRefStream]->r_frame_rate.num;
-      frameRateBase = pFormatCtx->streams[positionRefStream]->r_frame_rate.den;
-      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Open, FrameRate=" << frameRate << " FrameRateBase=" << frameRateBase << " \n");
     }
       
     ONDEBUG(dump_format(pFormatCtx, 0, filename, false));
@@ -238,12 +221,11 @@ namespace RavlN {
   //: Get a packet from the stream.
   
   FFmpegPacketC FFmpegPacketStreamBodyC::Get() {
-    FFmpegPacketC packet(true);
-    if(av_read_frame(pFormatCtx, &packet.Packet()) < 0)
+    FFmpegPacketC packet;
+
+    if (!Get(packet))
       throw DataNotReadyC("No more packets to read. "); 
-    if(packet.DecodeTimeStamp() != (Int64T) AV_NOPTS_VALUE1)   
-      currentTimeStamp = Time2Frame(packet.DecodeTimeStamp()); // This is acutally the next frame to be decoded.
-      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Get, currentTimeStamp=" << currentTimeStamp << " " << Time2Frame(packet.TimeStamp()) <<" " << packet.DecodeTimeStamp() << " Flags=" << hex << packet.Flags() << dec << "\n");
+
     return packet;
   }
   
@@ -257,10 +239,9 @@ namespace RavlN {
 
     if(packet.DecodeTimeStamp() != (Int64T) AV_NOPTS_VALUE1){
       currentTimeStamp = Time2Frame(packet.DecodeTimeStamp()); // This is acutally the next frame to be decoded.
-      
-      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Get, currentTimeStamp=" << currentTimeStamp << " Flags=" << hex << packet.Flags() << dec << "\n");
+      ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Get packetTimeStamp=" << packet.DecodeTimeStamp() << " currentTimeStamp=" << currentTimeStamp << " Flags=" << hex << packet.Flags() << dec << "\n");
     } else {
-      ONDEBUG(std::cerr << "FFmpegPacketStreamBodyC::Get, No time stamp. \n");
+      ONDEBUG(std::cerr << "FFmpegPacketStreamBodyC::Get No time stamp. \n");
     }
 
     return true;
@@ -377,11 +358,7 @@ namespace RavlN {
   bool FFmpegPacketStreamBodyC::GetAttr(const StringC &attrName,RealT &attrValue) {
     if(attrName == "framerate") {
       const AVStream *st = pFormatCtx->streams[positionRefStream];
-      //cerr << "FFmpegPacketStreamBodyC::GetAttr Framerate = num=" << st->time_base.num << " den=" << st->time_base.den << "\n";
-      if(st->time_base.num != 0)
-        attrValue = (RealT) st->r_frame_rate.num/st->r_frame_rate.den;
-      else
-        attrValue = (RealT) st->time_base.den;
+      attrValue = static_cast<RealT>(st->r_frame_rate.num) / static_cast<RealT>(st->r_frame_rate.den);
       return true;
     }
     return DPISPortBodyC<FFmpegPacketC>::GetAttr(attrName,attrValue);
@@ -464,13 +441,11 @@ namespace RavlN {
     } 
 #endif
 
-    if(!av_seek_frame(pFormatCtx, positionRefStream, Frame2Time(off), 0) < 0){
-      if(!av_seek_frame(pFormatCtx, -1, Frame2Time(off), 0) < 0){ 
+    if(av_seek_frame(pFormatCtx, positionRefStream, Frame2Time(off), 0) < 0){
     	cerr << "FFmpegAudioPacketStreamBodyC::Seek, Seek failed. " << off << " \n";
     	return false;
-      }
     }
-
+    
     currentTimeStamp = off;
     return true;
   }
@@ -481,10 +456,11 @@ namespace RavlN {
     if(pFormatCtx == 0)
       return 0;
     const AVStream *st = pFormatCtx->streams[positionRefStream];
-    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Size64, Duration=" << pFormatCtx->duration << " Start=" << pFormatCtx->start_time << " FrameRateBase=" << frameRateBase << "\n");
-    if(pFormatCtx->duration <= 0)
+    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Size64 Duration=" << st->duration << " Start=" << st->start_time << " Frame=" << Time2Frame(st->duration + st->start_time)<< "\n");
+    if (st->duration <= 0)
       return -1;
-    return Time2Frame((pFormatCtx->duration)*st->time_base.den/st->time_base.num/AV_TIME_BASE)+Start64();
+    
+    return Time2Frame(st->duration + st->start_time);
   }
   
   //: Find the total size of the stream.
@@ -493,8 +469,8 @@ namespace RavlN {
     if(pFormatCtx == 0)
       return 0;
     const AVStream *st = pFormatCtx->streams[positionRefStream];
-    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Start64, " << pFormatCtx->start_time << " Frame=" << Time2Frame(pFormatCtx->start_time) << "\n");
-    return Time2Frame(pFormatCtx->start_time*st->time_base.den/st->time_base.num/AV_TIME_BASE);
+    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Start64 Start=" << st->start_time << " Frame=" << Time2Frame(st->start_time) << "\n");
+    return Time2Frame(st->start_time);
   }
   
   //: Find the total size of the stream.
@@ -502,27 +478,34 @@ namespace RavlN {
   UIntT FFmpegPacketStreamBodyC::Start() const {
     return FFmpegPacketStreamBodyC::Start64();
   }
-  
+
   //: Convert a frame no into a time
   Int64T FFmpegPacketStreamBodyC::Frame2Time(Int64T arg) const {
-    RealT frac = (RealT) frameRate / (RealT) frameRateBase;
+    const AVStream *st = pFormatCtx->streams[positionRefStream];
+    const RealT timeUnit = static_cast<RealT>(st->time_base.num) / static_cast<RealT>(st->time_base.den);
+    const RealT frameRate = static_cast<RealT>(st->r_frame_rate.num) / static_cast<RealT>(st->r_frame_rate.den);
+    const RealT val = static_cast<RealT>(arg) / frameRate / timeUnit;
+    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Frame2Time " << arg << " => " << val << "\n");
 #if RAVL_OS_WIN32
-    RealT r = (RealT) arg / frac;
-    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+    return (val > 0.0) ? floor(val + 0.5) : ceil(val - 0.5);
 #else
-    return llround((RealT) arg / frac);
+    return llround(val);
 #endif
   }
   
   //: Convert a  time into a frame no
   
   Int64T FFmpegPacketStreamBodyC::Time2Frame(Int64T arg) const {
-    RealT frac = (RealT) frameRate / (RealT) frameRateBase;
+    const AVStream *st = pFormatCtx->streams[positionRefStream];
+    const RealT timeUnit = static_cast<RealT>(st->time_base.num) / static_cast<RealT>(st->time_base.den);
+    const RealT frameRate = static_cast<RealT>(st->r_frame_rate.num) / static_cast<RealT>(st->r_frame_rate.den);
+    const RealT val = static_cast<RealT>(arg) * timeUnit * frameRate;
+    ONDEBUG(cerr << "FFmpegPacketStreamBodyC::Time2Frame " << arg << " => " << val << "\n");
 #if RAVL_OS_WIN32
-    RealT r = (RealT) arg * frac;
-    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+    return (val > 0.0) ? floor(val + 0.5) : ceil(val - 0.5);
 #else
-    return llround((RealT) arg * frac);
+    return llround(val);
 #endif
   }
+
 }
