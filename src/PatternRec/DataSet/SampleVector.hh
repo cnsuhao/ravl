@@ -17,6 +17,7 @@
 #include "Ravl/Matrix.hh"
 #include "Ravl/XMLFactory.hh"
 #include "Ravl/PatternRec/FuncMeanProjection.hh"
+#include "Ravl/PatternRec/FieldInfo.hh"
 
 namespace RavlN {
 
@@ -33,25 +34,28 @@ namespace RavlN {
   {
     
   public:
-    SampleVectorC(SizeT maxSize=10)
-      : SampleC<VectorC>(maxSize)
+    SampleVectorC(SizeT maxSize=10, const SArray1dC<FieldInfoC> & fieldInfo = SArray1dC<FieldInfoC>())
+      : SampleC<VectorC>(maxSize),
+        m_fieldInfo(fieldInfo)
     {}
     //: Create a sample of data with a maximum size
     
-    SampleVectorC(const SArray1dC<VectorC> & dat)
-      : SampleC<VectorC>(dat)
+    SampleVectorC(const SArray1dC<VectorC> & dat, const SArray1dC<FieldInfoC> & fieldInfo = SArray1dC<FieldInfoC>())
+      : SampleC<VectorC>(dat),
+        m_fieldInfo(fieldInfo)
     {}
     //: Create a sample of data from an array
     
-    SampleVectorC(const SampleC<VectorC> &svec)
-      : SampleC<VectorC>(svec)
+    SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<FieldInfoC> & fieldInfo = SArray1dC<FieldInfoC>())
+      : SampleC<VectorC>(svec),
+        m_fieldInfo(fieldInfo)
     {}
     //: Construct from base class.
 
-    SampleVectorC(const SampleC<TVectorC<float> > &svec);
+    SampleVectorC(const SampleC<TVectorC<float> > &svec, const SArray1dC<FieldInfoC> & fieldInfo = SArray1dC<FieldInfoC>());
     //: Construct from a sample of floats.
 
-    SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet);
+    SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet, const SArray1dC<FieldInfoC> & fieldInfo = SArray1dC<FieldInfoC>());
     //: Construct a sample set with a reduced set of features
     //!param: svec       - a sample of vectors
     //!param: featureSet - the indexes of features to keep
@@ -107,6 +111,18 @@ namespace RavlN {
     
     FuncMeanProjectionC NormalisationFunction(const MeanCovarianceC & stats) const;
     //: Get the function used for the normalisation
+
+    const SArray1dC<FieldInfoC> & FieldInfo() const {
+      return m_fieldInfo;
+    }
+    //: Access information about the fields
+
+    bool SetFieldInfo(const SArray1dC<FieldInfoC> & fieldInfo);
+    //: Set the field information
+
+  protected:
+    SArray1dC<FieldInfoC>m_fieldInfo;
+    //: The information about each column in the sample set
 
   }; 
   

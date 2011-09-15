@@ -27,16 +27,18 @@ namespace RavlN {
 
   //: Construct from a sample of floats.
 
-  SampleVectorC::SampleVectorC(const SampleC<TVectorC<float> > &svec)
-      : SampleC<VectorC>(svec.Size()) {
+  SampleVectorC::SampleVectorC(const SampleC<TVectorC<float> > &svec, const SArray1dC<FieldInfoC> & fieldInfo)
+      : SampleC<VectorC>(svec.Size()),
+        m_fieldInfo(fieldInfo) {
     for (DArray1dIterC<TVectorC<float> > it(svec.DArray()); it; it++)
       Append(VectorC(*it));
   }
 
   //: Construct a new sample set with a reduced set of features
 
-  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet)
-      : SampleC<VectorC>(svec.Size()) {
+  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet, const SArray1dC<FieldInfoC> & fieldInfo)
+      : SampleC<VectorC>(svec.Size()),
+        m_fieldInfo(fieldInfo) {
     UIntT numFeatures = featureSet.Size();
     for (DataSet2IterC<SampleC<VectorC>, SampleC<VectorC> > it(svec, *this); it; it++) {
       VectorC out(numFeatures);
@@ -286,6 +288,12 @@ namespace RavlN {
     
     return func;
 
+  }
+
+  // Set the field info
+  bool SampleVectorC::SetFieldInfo(const SArray1dC<FieldInfoC> & fieldInfo) {
+    m_fieldInfo = fieldInfo;
+    return true;
   }
 
   RavlN::XMLFactoryRegisterHandleC<SampleVectorC> g_registerXMLFactorySampleVector("RavlN::SampleVectorC");

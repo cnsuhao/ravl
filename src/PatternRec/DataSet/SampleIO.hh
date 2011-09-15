@@ -13,11 +13,16 @@
 //! file="Ravl/PatternRec/DataSet/SampleIO.hh"
 
 #include "Ravl/PatternRec/Sample.hh"
+#include "Ravl/PatternRec/SampleIter.hh"
+#include "Ravl/PatternRec/SampleVector.hh"
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/DArray1dIter.hh"
 #include "Ravl/Vector.hh"
 #include "Ravl/DLIter.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/OS/Filename.hh"
+#include "Ravl/Text/TextFile.hh"
+#include "Ravl/StringList.hh"
 
 namespace RavlN {
 
@@ -50,54 +55,17 @@ namespace RavlN {
     return true;
   }
 
-  //: Save sample to a CSV file
+  //! Load SampleVectorC from a file
+  bool LoadSampleVector(const StringC & filename, SampleVectorC & sample);
 
-  bool SaveSampleCSV(const StringC & filename, const SampleC<VectorC> & sample, DListC<StringC> & headings) {
+  //! Save SampleVectorC from a file
+  bool SaveSampleVector(const StringC & filename, SampleVectorC & sample);
 
-    OStreamC os(filename);
-    if (!os.good())
-      return false;
+  //! Load SampleVectorC from a CSV file
+  bool LoadSampleVectorCSV(const StringC & filename, SampleVectorC & sample);
 
-    // No point if empty sample size
-    if (sample.Size() < 1) {
-      SysLog(SYSLOG_ERR, "No samples to save to file '%s'", filename.data());
-      return false;
-    }
-
-    // Put in some headings if required
-    if (!headings.IsEmpty()) {
-
-      // check dimensions match
-      if (sample.First().Size() != headings.Size()) {
-        SysLog(SYSLOG_ERR, "Samples dimension does not match number of headings");
-        return false;
-      }
-
-      // save the headings
-      for (DLIterC<StringC> it(headings); it; it++) {
-        os << *it;
-        if (!it.IsLast()) {
-          os << ",";
-        }
-      }
-      // and a new line
-      os << "\n";
-    }
-
-    // Save the sample stream
-    for (SampleIterC<VectorC> it(sample); it; it++) {
-      for (Array1dIterC<RealT> vecIt(*it); vecIt; vecIt++) {
-        os << *vecIt;
-        if (!vecIt.IsLast()) {
-          os << ",";
-        }
-      }
-      os << "\n";
-    }
-
-    // All OK
-    return true;
-  }
+  //: Save SampleVectorC to a CSV file
+  bool SaveSampleVectorCSV(const StringC & filename, const SampleVectorC & sample);
 
 }
 

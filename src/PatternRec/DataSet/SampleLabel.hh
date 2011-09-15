@@ -13,44 +13,58 @@
 //! file="Ravl/PatternRec/DataSet/SampleLabel.hh"
 
 #include "Ravl/PatternRec/SampleDiscrete.hh"
+#include "Ravl/PatternRec/FieldInfo.hh"
 
 namespace RavlN {
   class VectorC;
-  
+
   //! userlevel=Normal
   //: Sample of labels.
-  
-  class SampleLabelC 
-    : public SampleDiscreteC<UIntT>
-  {
-  public:
-    SampleLabelC(SizeT maxSize=10)
-      : SampleDiscreteC<UIntT>(maxSize)
-    {}
-    //: Create a sample of data with a maximum size
-    
-    SampleLabelC(const SArray1dC<UIntT> & dat)
-      : SampleDiscreteC<UIntT>(dat)
-    {}
-    //: Create a sample of data from an array
 
-    SampleLabelC(const SampleC<UIntT> &sample)
-      : SampleDiscreteC<UIntT>(sample)
-    {}
-    //: Construct from base class.
-    
-    UIntT MaxValue() const;
-    //: Find the value of the largest label.
+  class SampleLabelC: public SampleDiscreteC<UIntT> {
+    public:
+      SampleLabelC(SizeT maxSize = 10, const FieldInfoC & fieldInfo = FieldInfoC("label"))
+          : SampleDiscreteC<UIntT>(maxSize), m_fieldInfo(fieldInfo) {
+      }
+      //: Create a sample of data with a maximum size
 
-    SArray1dC<UIntT> LabelSums() const;
-    //: Return the number of samples in each class
-    
-    SampleC<VectorC> SampleVector(RealT inClass = 1,RealT outClass = 0,IntT maxLabel = -1) const;
-    //: Convert a sample of labels to vectors
-    // Where the label index is set to 'inClass' and the rest to 'outClass'.
-    
-  }; 
-  
+      SampleLabelC(const SArray1dC<UIntT> & dat, const FieldInfoC & fieldInfo = FieldInfoC("label"))
+          : SampleDiscreteC<UIntT>(dat), m_fieldInfo(fieldInfo) {
+      }
+      //: Create a sample of data from an array
+
+      SampleLabelC(const SampleC<UIntT> &sample, const FieldInfoC & fieldInfo = FieldInfoC("label"))
+          : SampleDiscreteC<UIntT>(sample), m_fieldInfo(fieldInfo) {
+      }
+      //: Construct from base class.
+
+      UIntT MaxValue() const;
+      //: Find the value of the largest label.
+
+      SArray1dC<UIntT> LabelSums() const;
+      //: Return the number of samples in each class
+
+      SampleC<VectorC> SampleVector(RealT inClass = 1, RealT outClass = 0, IntT maxLabel = -1) const;
+      //: Convert a sample of labels to vectors
+      // Where the label index is set to 'inClass' and the rest to 'outClass'.
+
+      const FieldInfoC & FieldInfo() const {
+        return m_fieldInfo;
+      }
+      //: Access field info
+
+      bool SetFieldInfo(const FieldInfoC & fieldInfo) {
+        m_fieldInfo = fieldInfo;
+        return true;
+      }
+      //: Set the field info
+
+    protected:
+      FieldInfoC m_fieldInfo;
+      //: Information about the data being held
+
+  };
+
 }
 
 #endif

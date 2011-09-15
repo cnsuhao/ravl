@@ -11,7 +11,7 @@
 <GMM typename="RavlN::DesignClassifierGaussianMixtureC" number_of_mixtures="3" />
 
 <!-- A simple liner SVM classifier -->
-<SVM typename="RavlN::DesignSvmSmoC" >
+<SVM typename="RavlN::DesignSvmSmoC" tolerance="0.1" penalty1="1000" penalty2="1000" eps="0.0000001" >
 	<KernelFunction typename="RavlN::QuadraticKernelC" scale="1.0" />
 </SVM>
 
