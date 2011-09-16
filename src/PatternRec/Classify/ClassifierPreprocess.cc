@@ -84,5 +84,7 @@ namespace RavlN {
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(ClassifierPreprocessBodyC,ClassifierPreprocessC,ClassifierC);
   
-  
+  void InitRavlClassifierPreprocess() {
+  }
+
 }

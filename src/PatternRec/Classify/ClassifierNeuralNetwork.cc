@@ -138,4 +138,7 @@ namespace RavlN {
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(ClassifierNeuralNetworkBodyC,ClassifierNeuralNetworkC,ClassifierC);
   
   
+  void InitRavlClassifierNeuralNetwork() {
+  }
+
 }
