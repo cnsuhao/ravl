@@ -71,7 +71,7 @@ default: StageQMake
 
 # Targets for preparing QMake source in the staging area
 
-StageQMake: ProcessMakefiles StageUtils StageSupport StageAB
+StageQMake: ProcessMakefiles StageUtils StageSupport StageAB StagePkgConf
 	@:
 # The configuration files do not get staged as install directly uses the live 
 # version (these files are unmodified by the staging process so a second copy
@@ -212,6 +212,25 @@ $(STAGING)/AutoBuild/AutoBuild.sample.conf: $(SRC)/AutoBuild/AutoBuild.sample.co
 	$(INSTALL_DATA) $(SRC)/AutoBuild/AutoBuild.sample.conf $(STAGING)/AutoBuild/AutoBuild.sample.conf
 
 
+# Stage pkg-config file
+StagePkgConf: $(STAGING)/lib/pkgconfig $(STAGING)/lib/pkgconfig/QMake.pc
+	@:
+
+$(STAGING)/lib/pkgconfig:
+	$(MKDIR_P) $@
+
+$(STAGING)/lib/pkgconfig/QMake.pc:
+	@echo prefix=$(prefix) > $@
+	@echo datarootdir=$(datarootdir) >> $@
+	@echo datadir=$(datadir) >> $@
+	@echo sysconfdir=$(sysconfdir) >> $@
+	@echo libdir=$(libdir) >> $@
+	@echo >> $@
+	@echo Name: QMake >> $@
+	@echo Description: QuickMake flexible compilation aid and build tool >> $@
+	@echo Version: 1.5.1 >> $@
+	@echo >> $@
+
 
 
 
@@ -219,7 +238,7 @@ $(STAGING)/AutoBuild/AutoBuild.sample.conf: $(SRC)/AutoBuild/AutoBuild.sample.co
 
 # Targets for installing QMake
 
-install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallAB
+install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallAB InstallPkgConf
 # JFi:To Do: Add InstallDoc
 
 
@@ -323,6 +342,19 @@ $(DESTDIR)$(bindir)/AutoBuild.pl: $(STAGING)/AutoBuild/AutoBuild.pl
 
 $(DESTDIR)$(sysconfdir)/QMake/AutoBuild.sample.conf: $(STAGING)/AutoBuild/AutoBuild.sample.conf
 	$(INSTALL_DATA) $(STAGING)/AutoBuild/AutoBuild.sample.conf $(DESTDIR)$(sysconfdir)/QMake/AutoBuild.sample.conf
+
+
+# Stage pkg-config file
+InstallPkgConf: $(DESTDIR)$(libdir)/pkgconfig $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
+	@:
+ 
+$(DESTDIR)$(libdir)/pkgconfig:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(libdir)/pkgconfig/QMake.pc:
+	$(INSTALL_DATA) $(STAGING)/lib/pkgconfig/QMake.pc $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
+
+
 
 
 # Basic debug information
