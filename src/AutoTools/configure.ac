@@ -764,169 +764,65 @@ trace 2 Looking for QMake
 WORKING_QMAKE=""
 QMAKE_CONFIGFILES=""
 
-dnl## Following code prefixed with 'dnl##' is embryonic --with-QMake switch.
-dnl## It is incomplete as the support mechanism for setting WORKING_QMAKE
-dnl## from the Config.QMake file does not exist (it is owing to the 
-dnl## complexities of achieving this that the switch was dropped). This is
-dnl## only included to record the developmental code in source control just
-dnl## in case this switch is ever needed in the future. It will be deleted
-dnl## in the next delta.
-dnl##
-dnl## # Declare and test the switch for direct selection of QMake
-dnl## AC_ARG_WITH([QMake],
-dnl##             [AS_HELP_STRING([--with-QMake],
-dnl##                             [Declare where to find the version of QMake with which to build Ravl. The setting specified should point to the location of the Config.QMake file
-dnl##                             ]
-dnl##                            )
-dnl##             ],
-dnl##             [trace 4 "--with-QMake=@<:@$with_QMake@:>@"
-dnl##              if ( test x$with_QMake = x )
-dnl##              then
-dnl##                # Assume the least disruptive option if the user supplies the
-dnl##                # setting: --with_QMake=
-dnl##                with_QMake=yes
-dnl##              fi
-dnl##              case $with_QMake in
-dnl##                     'n' | 'N' | 'no' | 'No' | 'NO' )
-dnl##                               AC_MSG_FAILURE([Asking to disable QMake but Ravl cannot be built without QMake])
-dnl##                               ;;
-dnl##                     'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
-dnl##                               # Not a terribly helpful setting provided by
-dnl##                               # the user. However, if we do nothing here and
-dnl##                               # continue, the pkg-config route may save the
-dnl##                               # day.
-dnl##                               ;;
-dnl##                     'l' | 'L' | 'local' | 'Local' | 'LOCAL' ) 
-dnl##                               # Use the version shipped with Ravl
-dnl##                               WORKING_QMAKE=UseLocal
-dnl##                               # Check any setting of with-QMake-pkconf is
-dnl##                               # not contradictory
-dnl##                               case x$with_QMake_pkgconf in
-dnl##                                    'x' | 'xn' | 'xN' | 'xno' | 'xNo' | 'xNO' | 'xl' | 'xL' | 'xlocal' | 'xLocal' | 'xLOCAL' ) 
-dnl##                                              # Non-contradictory, proceed
-dnl##                                              :
-dnl##                                              ;;
-dnl##                                    * )       # Switch indicates pkg-config
-dnl##                                              # should be used, i.e. is
-dnl##                                              # contradictory
-dnl##                                              AC_MSG_WARN([--with-QMake-pkgconfig contradicts --with-QMake, --with-QMake-pkgconf ignores])
-dnl##                                              ;;
-dnl##                               esac
-dnl##                               ;;
-dnl##                     * )       if ( test -f $with_QMake && test `expr "//$with_QMake" : '.*/\([[^/]]*\)'` = Config.QMake )
-dnl##                               then
-dnl##                                 # with-QMake correctly points to the
-dnl##                                 # Config.QMake file, we need to strip
-dnl##                                 # that off to set QMAKE_CONFIGFILES
-dnl##                                 QMAKE_CONFIGFILES=`expr "$with_QMake" : '\(.*\)/Config.QMake'`
-dnl##                                 WORKING_QMAKE=Something
-dnl##                                 #To Do: Need to correctly set WORKING_QMAKE somehow
-dnl##                               else
-dnl##                                 # with-QMake not pointing to Config.QMake
-dnl##                                 # like it should. See if the user specified
-dnl##                                 # the directory
-dnl##                                 if ( test -f $with_QMake/Config.QMake )
-dnl##                                 then
-dnl##                                   QMAKE_CONFIGFILES=$with_QMake
-dnl##                                   WORKING_QMAKE=Something
-dnl##                                   #To Do: Need to correctly set WORKING_QMAKE somehow
-dnl##                                 else
-dnl##                                   AC_MSG_FAILURE([Cannot find the specified QMake (Config.QMake file)])
-dnl##                                 fi
-dnl##                               fi
-dnl##                               # Check any setting of with-QMake-pkconf is
-dnl##                               # not contradictory
-dnl##                               case x$with_QMake_pkgconf in
-dnl##                                    'x' | 'xn' | 'xN' | 'xno' | 'xNo' | 'xNO' )
-dnl##                                              # No setting or not using
-dnl##                                              # pkgconf is non-contradictory
-dnl##                                              :
-dnl##                                              ;;
-dnl##                                    * )       # Using the local QMake or a
-dnl##                                              # specific pkg-config file 
-dnl##                                              # contradicts with-QMake 
-dnl##                                              AC_MSG_WARN([--with-QMake-pkgconfig contradicts --with-QMake, --with-QMake-pkgconf ignores])
-dnl##                                              ;;
-dnl##                               esac
-dnl##                               trace 2 Using requested QMake
-dnl##                               ;;
-dnl##                esac
-dnl##               ],
-dnl##               [trace 4 "--with-QMake not set"]
-dnl##              )
-dnl##
-dnl##       
-dnl## if ( test x$WORKING_QMAKE = x )
-dnl## then
-dnl##   # We have not already located QMake, use pkg-config
-dnl##
-dnl## dnl Declare and test the QMake pkg config switch (N.B. despite being in this
-dnl## dnl if statement, the declaration of the commandline switch will occur 
-dnl## dnl regardless)
-dnl##
-dnl## End of first section of omitted code, final fi follows after this 
-dnl## block of code (the AC_ARG_WITH and the following if)
-  AC_ARG_WITH([QMake-pkgconf],
-              [AS_HELP_STRING([--with-QMake-pkgconf],
-                              [Declare where to find the pkg-config file for the version of QMake with which to build Ravl
-                              ]
-                             )
-              ],
-              [trace 4 "--with-QMake-pkgconf=@<:@$with_QMake_pkgconf@:>@"
-               if ( test x$with_QMake_pkgconf = x )
-               then
-                 # Assume the setting: "--with_QMake_pkgconf=" implies the
-                 # user doesn't want to use pkgconf
-                 with_QMake_pkgconf=no
-               fi
-               case $with_QMake_pkgconf in
-                    'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' ) 
-                              # Disable the use of pkg-config and use the 
-                              # version shipped with Ravl
-                              with_QMake_pkgconf=UseLocal
-                              ;;
-                    'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
-                              with_QMake_pkgconf=QMake.pc
-                              Require_QMake_pkgconf=Yes
-                              ;;
-                    * )       # Name of .pc for relevant install of QMake
-                              Require_QMake_pkgconf=Yes
-                              ;;
-               esac
-              ],
-              [# Not specified, look for default on system paths
-               trace 4 "--with-QMake-pkgconf unset"
-               with_QMake_pkgconf=QMake.pc
-              ]
-             )
-  
-  if ( test $with_QMake_pkgconf != UseLocal )
-  then
-    AC_MSG_CHECKING(pkg-config for QMake)
-    PKG_CHECK_EXISTS([$with_QMake_pkgconf],
-                     [WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                      #  "      "  = ${datadir}/QMake
-                      QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
-                      # "        "     = ${sysconfdir}/QMake
-                      AC_MSG_RESULT([yes])
-                     ],
-                     [AC_MSG_RESULT([no])
-                      if ( test x$Require_QMake_pkgconf = xYes )
+AC_ARG_WITH([QMake-pkgconf],
+            [AS_HELP_STRING([--with-QMake-pkgconf],
+                            [Declare where to find the pkg-config file for the version of QMake with which to build Ravl
+                            ]
+                           )
+            ],
+            [trace 4 "--with-QMake-pkgconf=@<:@$with_QMake_pkgconf@:>@"
+             if ( test x$with_QMake_pkgconf = x )
+             then
+               # Assume the setting: "--with_QMake_pkgconf=" implies the
+               # user doesn't want to use pkgconf
+               with_QMake_pkgconf=no
+             fi
+             case $with_QMake_pkgconf in
+                  'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' ) 
+                            # Disable the use of pkg-config and use the 
+                            # version shipped with Ravl
+                            with_QMake_pkgconf=UseLocal
+                            ;;
+                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                            with_QMake_pkgconf=QMake.pc
+                            Require_QMake_pkgconf=Yes
+                            ;;
+                  * )       # Name of .pc for relevant install of QMake
+                            Require_QMake_pkgconf=Yes
+                            ;;
+             esac
+            ],
+            [# Not specified, look for default on system paths
+             trace 4 "--with-QMake-pkgconf unset"
+             with_QMake_pkgconf=QMake.pc
+            ]
+           )
+ 
+if ( test $with_QMake_pkgconf != UseLocal )
+then
+  AC_MSG_CHECKING(pkg-config for QMake)
+  PKG_CHECK_EXISTS([$with_QMake_pkgconf],
+                   [WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                    #  "      "  = ${datadir}/QMake
+                    QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                    # "        "     = ${sysconfdir}/QMake
+                    AC_MSG_RESULT([yes])
+                   ],
+                   [AC_MSG_RESULT([no])
+                    if ( test x$Require_QMake_pkgconf = xYes )
+                    then
+                      if ( test $with_QMake_pkgconf = QMake.pc )
                       then
-                        if ( test $with_QMake_pkgconf = QMake.pc )
-                        then
-                          AC_MSG_FAILURE([Cannot find the QMake pkg-config file)])
-                        else
-                          AC_MSG_FAILURE([Cannot find the specified QMake pkg-config file)])
-                        fi
+                        AC_MSG_FAILURE([Cannot find the QMake pkg-config file)])
                       else
-                        AC_MSG_WARN([Cannot find an installed QMake, will use the embedded version])
+                        AC_MSG_FAILURE([Cannot find the specified QMake pkg-config file)])
                       fi
-                     ]
-                    )
-  fi
-dnl## fi
-dnl## End of omitted development code
+                    else
+                      AC_MSG_WARN([Cannot find an installed QMake, will use the embedded version])
+                    fi
+                   ]
+                  )
+fi
 
 if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xUseLocal )
 then
