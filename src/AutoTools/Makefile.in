@@ -9,11 +9,11 @@ SOURCEHOME=@abs_top_srcdir@/src
 
 INSTALLHOME=@abs_top_builddir@
 
-WORKING_QMAKE=@abs_top_builddir@/share/QMake
+WORKING_QMAKE=@WORKING_QMAKE@
 #JFi:To Do - Set this from configure (to allow use of any installed QMake)
 
 # Include QMake global definitions
-include @abs_top_builddir@/QMake/Config.QMake
+include @QMAKE_CONFIGFILES@/Config.QMake
 
 # Include project specific definitions
 include $(INSTALLHOME)/Config.Project

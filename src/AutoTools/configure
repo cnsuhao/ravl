@@ -557,6 +557,7 @@ PACKAGE_STRING='RAVL 1.5.8030'
 PACKAGE_BUGREPORT='John.Field@Surrey.ac.UK'
 PACKAGE_URL=''
 
+enable_option_checking=no
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -593,12 +594,10 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-enable_option_checking=no
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 ALL_EXTERNAL_LIBS
 RESOURCES
-subdirs
 ARC
 SerialIO_SUPPORT
 RavlXMPP
@@ -753,7 +752,6 @@ LEX
 CHOWN
 CHMOD
 CHGRP
-PKG_CONFIG
 MKDIR_P
 INSTALL_DATA
 INSTALL_SCRIPT
@@ -797,8 +795,6 @@ PKG_DEBUG_CFLAGS
 PKG_CHECK_CFLAGS
 PKG_CCANSIFLAG
 PKG_CANSIFLAG
-NeededQMake
-WORKING_QMAKE
 MAKE
 RANLIB
 AR
@@ -821,6 +817,11 @@ SED
 GREP
 EXPR
 AWK
+NeededQMake
+QMAKE_CONFIGFILES
+WORKING_QMAKE
+subdirs
+PKG_CONFIG
 host_os
 host_vendor
 host_cpu
@@ -870,6 +871,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+with_QMake_pkgconf
 with_rpath
 with_pawd
 with_libdc1394_pkgconf
@@ -946,6 +948,7 @@ with_OpenGL
       ac_precious_vars='build_alias
 host_alias
 target_alias
+PKG_CONFIG
 CC
 CFLAGS
 LDFLAGS
@@ -956,7 +959,6 @@ CXX
 CXXFLAGS
 CCC
 CXXCPP
-PKG_CONFIG
 YACC
 YFLAGS
 DOTpc_CFLAGS
@@ -1574,6 +1576,9 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-QMake-pkgconf    Declare where to find the pkg-config file for the
+                          version of QMake with which to build Ravl
+
   --with-rpath            Add all library include paths (-L) to the runtime
                           search path of the binary
 
@@ -1854,6 +1859,7 @@ Optional Packages:
 
 
 Some influential environment variables:
+  PKG_CONFIG  path to pkg-config utility
   CC          C compiler command
   CFLAGS      C compiler flags
   LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
@@ -1865,7 +1871,6 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
-  PKG_CONFIG  path to pkg-config utility
   YACC        The `Yet Another C Compiler' implementation to use. Defaults to
               the first program found out of: `bison -y', `byacc', `yacc'.
   YFLAGS      The list of arguments that will be passed by default to $YACC.
@@ -2628,7 +2633,11 @@ trace ()
 #
 echo > ./ExtPkgSupp.$$
 
+
+
+
 # Main body of configure script
+
 
 # First determine the current platform
 ac_aux_dir=
@@ -2723,6 +2732,256 @@ shift; shift
 host_os=$*
 IFS=$ac_save_IFS
 case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
+
+
+
+
+# Now Check for pkg-config as we may need that next to check for QMake and
+# will certainly need it later
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
+$as_echo "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
+$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	else
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+		PKG_CONFIG=""
+	fi
+
+fi
+
+
+# Look for QMake
+#
+
+trace 2 Looking for QMake
+WORKING_QMAKE=""
+QMAKE_CONFIGFILES=""
+
+
+# Check whether --with-QMake-pkgconf was given.
+if test "${with_QMake_pkgconf+set}" = set; then :
+  withval=$with_QMake_pkgconf; trace 4 "--with-QMake-pkgconf=[$with_QMake_pkgconf]"
+               if ( test x$with_QMake_pkgconf = x )
+               then
+                 # Assume the setting: "--with_QMake_pkgconf=" implies the
+                 # user doesn't want to use pkgconf
+                 with_QMake_pkgconf=no
+               fi
+               case $with_QMake_pkgconf in
+                    'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' )
+                              # Disable the use of pkg-config and use the
+                              # version shipped with Ravl
+                              with_QMake_pkgconf=UseLocal
+                              ;;
+                    'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                              with_QMake_pkgconf=QMake.pc
+                              Require_QMake_pkgconf=Yes
+                              ;;
+                    * )       # Name of .pc for relevant install of QMake
+                              Require_QMake_pkgconf=Yes
+                              ;;
+               esac
+
+else
+  # Not specified, look for default on system paths
+               trace 4 "--with-QMake-pkgconf unset"
+               with_QMake_pkgconf=QMake.pc
+
+
+fi
+
+
+  if ( test $with_QMake_pkgconf != UseLocal )
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for QMake" >&5
+$as_echo_n "checking pkg-config for QMake... " >&6; }
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$with_QMake_pkgconf\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "$with_QMake_pkgconf") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                      #  "      "  = ${datadir}/QMake
+                      QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                      # "        "     = ${sysconfdir}/QMake
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                      if ( test x$Require_QMake_pkgconf = xYes )
+                      then
+                        if ( test $with_QMake_pkgconf = QMake.pc )
+                        then
+                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find the QMake pkg-config file)
+See \`config.log' for more details." "$LINENO" 5; }
+                        else
+                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find the specified QMake pkg-config file)
+See \`config.log' for more details." "$LINENO" 5; }
+                        fi
+                      else
+                        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find an installed QMake, will use the embedded version" >&5
+$as_echo "$as_me: WARNING: Cannot find an installed QMake, will use the embedded version" >&2;}
+                      fi
+
+
+fi
+  fi
+
+if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xUseLocal )
+then
+   trace 2 "Will use local QMake:"
+
+   # No installed QMake found or we explicitly want to use the use one staged
+   # from the source included with the Ravl distribution.
+   WORKING_QMAKE=@abs_top_builddir@/share/QMake
+   QMAKE_CONFIGFILES=@abs_top_builddir@/QMake
+
+   # We will also need to stage this copy as part of the Ravl build, so add
+   # LocalQMake to the target for the required QMake builds
+   NeededQMake="LocalQMake QMake"
+else
+   trace 2 "Will use pre-installed QMake:"
+
+   # We have an installed version of QMake to use so we don't need to stage
+   # our own copy for building Ravl. The Ravl build should therefore only
+   # build the updated QMake for possible later installation.
+   NeededQMake="QMake"
+fi
+trace 3 "   Config file $QMAKE_CONFIGFILES/Config.QMake"
+trace 3 "   Live QMake under $WORKING_QMAKE"
+trace 4 "   Build target(s) $NeededQMake"
+
+# We need to configure the QMake source supplied with Ravl as (even if we
+# are not using it for the Ravl build)
+#
+# N.B.
+#                              ************
+#
+# The actual configure will be carried out only at the end of this script
+# Do not rely on Config.QMake, etc. being available until then.
+#
+#                              ************
+#
+
+
+subdirs="$subdirs QMake"
+
+
+
+
 
 
 
@@ -4735,17 +4994,6 @@ fi
 
 
 
-# Look for QMake
-#
-
-   # No installed QMake found, use one staged from the source included with the
-   # Ravl distribution. We will need to stage this copy, so add LocalQMake to
-   # the target for the required QMake builds
-   WORKING_QMAKE=$ac_abs_top_builddir/share/QMake
-   NeededQMake="LocalQMake QMake"
-
-
-
 
 
 # Set relevant flags dependant on the software tools we have found
@@ -5251,124 +5499,6 @@ $as_echo "$MKDIR_P" >&6; }
 
 
 # Check for remaining utils
-
-# Check for pkg-config
-
-
-if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
-	if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
-set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_PKG_CONFIG+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PKG_CONFIG=$ac_cv_path_PKG_CONFIG
-if test -n "$PKG_CONFIG"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
-$as_echo "$PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-fi
-if test -z "$ac_cv_path_PKG_CONFIG"; then
-  ac_pt_PKG_CONFIG=$PKG_CONFIG
-  # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $ac_pt_PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
-if test -n "$ac_pt_PKG_CONFIG"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
-$as_echo "$ac_pt_PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-  if test "x$ac_pt_PKG_CONFIG" = x; then
-    PKG_CONFIG=""
-  else
-    case $cross_compiling:$ac_tool_warned in
-yes:)
-{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
-$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
-ac_tool_warned=yes ;;
-esac
-    PKG_CONFIG=$ac_pt_PKG_CONFIG
-  fi
-else
-  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
-fi
-
-fi
-if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
-$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
-	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-	else
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-		PKG_CONFIG=""
-	fi
-
-fi
 
 # Check for programs needed for the Ravl build
 # First check for those programs that GNU coding standards regard as safe to use
@@ -14581,12 +14711,6 @@ rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
-
-# Configure the included copy of QMake
-
-
-subdirs="$subdirs QMake"
-
 
 
 
