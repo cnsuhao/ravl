@@ -10,7 +10,14 @@ SOURCEHOME=@abs_top_srcdir@/src
 INSTALLHOME=@abs_top_builddir@
 
 WORKING_QMAKE=@WORKING_QMAKE@
-#JFi:To Do - Set this from configure (to allow use of any installed QMake)
+
+# Ensure any DESTDIR is an absolute path
+ifdef DESTDIR
+  ABS_DESTDIR-$(abspath $(DESTDIR))
+
+  # Propogate absolute path going forward
+  SET_DESTDIR=DESTDIR=$(ABS_DESTDIR)
+endif
 
 # Include QMake global definitions
 include @QMAKE_CONFIGFILES@/Config.QMake
@@ -62,16 +69,16 @@ install: installQMake installsingleoptshared installHdrs
 # installed from their built location in the build tree.
 
 installHdrs:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) insHdrs recurse
+	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) insHdrs recurse
 
 installoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 install recurse
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 insLibs recurse
+	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 install recurse
+	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 insLibs recurse
 
 installsingleoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 install recurse
-	$(SHOWIT)if [ ! -d $(DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(DESTDIR)$(libdir) ; fi
-	$(INSTALL) $(INSTALLHOME)/lib/$(ARC)/opt/shared/single/libRavl.so $(DESTDIR)$(libdir)/libRavl.so
+	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 install recurse
+	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
+	$(INSTALL) $(INSTALLHOME)/lib/$(ARC)/opt/shared/single/libRavl.so $(ABS_DESTDIR)$(libdir)/libRavl.so
 # Use the 'install' function of QMake to install the Ravl utility binaries;
 # config files; data files and scripts. We must set SHARED_LIB_POSTFIX
 # (to /shared/single) in order to force QMake to use the version of the
@@ -80,7 +87,7 @@ installsingleoptshared:
 # insLibs make target, we manually copy across the single shared library. 
 
 installQMake:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake install
+	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake install
 
 opt: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
