@@ -2867,78 +2867,78 @@ QMAKE_CONFIGFILES=""
 # Check whether --with-QMake-pkgconf was given.
 if test "${with_QMake_pkgconf+set}" = set; then :
   withval=$with_QMake_pkgconf; trace 4 "--with-QMake-pkgconf=[$with_QMake_pkgconf]"
-               if ( test x$with_QMake_pkgconf = x )
-               then
-                 # Assume the setting: "--with_QMake_pkgconf=" implies the
-                 # user doesn't want to use pkgconf
-                 with_QMake_pkgconf=no
-               fi
-               case $with_QMake_pkgconf in
-                    'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' )
-                              # Disable the use of pkg-config and use the
-                              # version shipped with Ravl
-                              with_QMake_pkgconf=UseLocal
-                              ;;
-                    'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
-                              with_QMake_pkgconf=QMake.pc
-                              Require_QMake_pkgconf=Yes
-                              ;;
-                    * )       # Name of .pc for relevant install of QMake
-                              Require_QMake_pkgconf=Yes
-                              ;;
-               esac
+             if ( test x$with_QMake_pkgconf = x )
+             then
+               # Assume the setting: "--with_QMake_pkgconf=" implies the
+               # user doesn't want to use pkgconf
+               with_QMake_pkgconf=no
+             fi
+             case $with_QMake_pkgconf in
+                  'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' )
+                            # Disable the use of pkg-config and use the
+                            # version shipped with Ravl
+                            with_QMake_pkgconf=UseLocal
+                            ;;
+                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                            with_QMake_pkgconf=QMake.pc
+                            Require_QMake_pkgconf=Yes
+                            ;;
+                  * )       # Name of .pc for relevant install of QMake
+                            Require_QMake_pkgconf=Yes
+                            ;;
+             esac
 
 else
   # Not specified, look for default on system paths
-               trace 4 "--with-QMake-pkgconf unset"
-               with_QMake_pkgconf=QMake.pc
+             trace 4 "--with-QMake-pkgconf unset"
+             with_QMake_pkgconf=QMake.pc
 
 
 fi
 
 
-  if ( test $with_QMake_pkgconf != UseLocal )
-  then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for QMake" >&5
+if ( test $with_QMake_pkgconf != UseLocal )
+then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for QMake" >&5
 $as_echo_n "checking pkg-config for QMake... " >&6; }
-    if test -n "$PKG_CONFIG" && \
+  if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$with_QMake_pkgconf\""; } >&5
   ($PKG_CONFIG --exists --print-errors "$with_QMake_pkgconf") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                      #  "      "  = ${datadir}/QMake
-                      QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
-                      # "        "     = ${sysconfdir}/QMake
-                      { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+                    #  "      "  = ${datadir}/QMake
+                    QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                    # "        "     = ${sysconfdir}/QMake
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-                      if ( test x$Require_QMake_pkgconf = xYes )
+                    if ( test x$Require_QMake_pkgconf = xYes )
+                    then
+                      if ( test $with_QMake_pkgconf = QMake.pc )
                       then
-                        if ( test $with_QMake_pkgconf = QMake.pc )
-                        then
-                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                        { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find the QMake pkg-config file)
 See \`config.log' for more details." "$LINENO" 5; }
-                        else
-                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+                      else
+                        { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find the specified QMake pkg-config file)
 See \`config.log' for more details." "$LINENO" 5; }
-                        fi
-                      else
-                        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find an installed QMake, will use the embedded version" >&5
-$as_echo "$as_me: WARNING: Cannot find an installed QMake, will use the embedded version" >&2;}
                       fi
+                    else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find an installed QMake, will use the embedded version" >&5
+$as_echo "$as_me: WARNING: Cannot find an installed QMake, will use the embedded version" >&2;}
+                    fi
 
 
 fi
-  fi
+fi
 
 if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xUseLocal )
 then
@@ -4604,19 +4604,19 @@ then
 $as_echo_n "checking which ld is used by $CC... " >&6; }
     LD=`$CC -print-prog-name=ld`
     # Test host_os != mingw*
-    if ( test  X`expr X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
+    if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
     then
       # gcc leaves a trailing carriage return which upsets mingw
       LD=`echo $LD | tr -d '\015'`
     fi
 
-    if ( test X`expr X$LD : '\(X[\\/].*\)'` = XX$LD )
+    if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` = XX$LD )
     then
       # $LD is an absolute path
       # Fold all \ to /
       LD=`$echo "$LD"| $SED 's%\\\\%/%g'`
       # $LD may be an absolute path but might still need cannonicalisation
-      while test X`expr X$LD : 'X\(.*/\.\./\.*\)'` != X
+      while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
       do
         LD=`echo $LD | $SED -e "s%/*[^/][^/]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
       done
@@ -4635,7 +4635,7 @@ $as_echo "unhelpful" >&6; }
     LD=""
   fi
 
-  if ( test X`expr X$LD : '\(X[\\/].*\)'` != XX$LD )
+  if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` != XX$LD )
   then
     # LD not set to an absolute path, must search for ld
 
@@ -4652,7 +4652,7 @@ $as_echo_n "checking for ld on the search-list... " >&6; }
       then
         # Some variants of GNU ld only accept -v, so use that not --version
         case `"$dir/ld" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+        *GNU* | *'with BFD'*)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
                                 then
                                   # We are not using AIX so favour the GNU linker
                                   # (that we have just found)
@@ -4670,7 +4670,7 @@ $as_echo_n "checking for ld on the search-list... " >&6; }
                                   fi
                                 fi
                                 ;;
-                           *)   if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                           *)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
                                 then
                                   # We are not on AIX so should favour the GUN
                                   # version of ld. As this is not a GNU version,
@@ -4694,7 +4694,7 @@ $as_echo_n "checking for ld on the search-list... " >&6; }
     if ( test X$LD = X )
     then
       # We haven't located our preferred linker, is there a fall-back?
-      if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+      if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
       then
         # We are not using AIX but found no GNU linker, use any other we found
         LD=$ANO_LD
@@ -4711,7 +4711,7 @@ $as_echo_n "checking for ld on the search-list... " >&6; }
   then
     # We have, what type is it?
     VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
     then
       # GNU linker
       GNU_LD=yes
@@ -4734,7 +4734,7 @@ else
   then
     # What type is it?
     VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
     then
       # GNU linker
       GNU_LD=yes
@@ -4912,7 +4912,7 @@ then
   MAKE=make
 fi
 
-if ( test X`expr X$MAKE : '\(X[\\/].*\)'` != XX$MAKE )
+if ( test X`$EXPR X$MAKE : '\(X[\\/].*\)'` != XX$MAKE )
 then
   # User has not asked for a specific path for the make utility, we have to look
   # for it on the search list
@@ -4974,7 +4974,7 @@ $as_echo_n "checking $$MAKE specified make utility... " >&6; }
   if ( test -x $MAKE )
   then
     VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
-    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
     then
       GNU_MAKE=yes
     else
@@ -9154,13 +9154,13 @@ $as_echo X$with_LibJasper |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_LibJasper`
-                                          file=`expr "//$with_LibJasper" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_LibJasper" : '.*/\(^/*\)'`
                                           if ( test X$with_LibJasper = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9173,7 +9173,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9310,13 +9310,13 @@ $as_echo X$with_LibJasper_library |
                                     then
                                        #file=`basename $with_LibJasper_library`
                                        # strip leading path
-                                       file=`expr "//$with_LibJasper_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_LibJasper_library" : '.*/\(^/*\)'`
                                        if ( test X$with_LibJasper_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9333,7 +9333,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9593,13 +9593,13 @@ $as_echo X$with_JPEG |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_JPEG`
-                                          file=`expr "//$with_JPEG" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_JPEG" : '.*/\(^/*\)'`
                                           if ( test X$with_JPEG = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9612,7 +9612,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9749,13 +9749,13 @@ $as_echo X$with_JPEG_library |
                                     then
                                        #file=`basename $with_JPEG_library`
                                        # strip leading path
-                                       file=`expr "//$with_JPEG_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_JPEG_library" : '.*/\(^/*\)'`
                                        if ( test X$with_JPEG_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9772,7 +9772,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10032,13 +10032,13 @@ $as_echo X$with_posixThreads |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_posixThreads`
-                                          file=`expr "//$with_posixThreads" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_posixThreads" : '.*/\(^/*\)'`
                                           if ( test X$with_posixThreads = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10051,7 +10051,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10188,13 +10188,13 @@ $as_echo X$with_posixThreads_library |
                                     then
                                        #file=`basename $with_posixThreads_library`
                                        # strip leading path
-                                       file=`expr "//$with_posixThreads_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_posixThreads_library" : '.*/\(^/*\)'`
                                        if ( test X$with_posixThreads_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10211,7 +10211,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10471,13 +10471,13 @@ $as_echo X$with_LibTIFF |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_LibTIFF`
-                                          file=`expr "//$with_LibTIFF" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_LibTIFF" : '.*/\(^/*\)'`
                                           if ( test X$with_LibTIFF = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10490,7 +10490,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10627,13 +10627,13 @@ $as_echo X$with_LibTIFF_library |
                                     then
                                        #file=`basename $with_LibTIFF_library`
                                        # strip leading path
-                                       file=`expr "//$with_LibTIFF_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_LibTIFF_library" : '.*/\(^/*\)'`
                                        if ( test X$with_LibTIFF_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10650,7 +10650,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10910,13 +10910,13 @@ $as_echo X$with_Zlib |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_Zlib`
-                                          file=`expr "//$with_Zlib" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_Zlib" : '.*/\(^/*\)'`
                                           if ( test X$with_Zlib = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10929,7 +10929,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -11066,13 +11066,13 @@ $as_echo X$with_Zlib_library |
                                     then
                                        #file=`basename $with_Zlib_library`
                                        # strip leading path
-                                       file=`expr "//$with_Zlib_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_Zlib_library" : '.*/\(^/*\)'`
                                        if ( test X$with_Zlib_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`expr "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -11089,7 +11089,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`expr "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -14448,7 +14448,7 @@ fi
 
 # Test host_os != linux*
 #if ( test  `echo X$host_os | $SED 's/-.*$//'` != 'Xlinux' )
-if ( test  X`expr X$host_os : 'X\(linux\).*'` != 'Xlinux' )
+if ( test  X`$EXPR X$host_os : 'X\(linux\).*'` != 'Xlinux' )
 then
    trace 3 Host OS is $host_os
    trace 3 Disallowing all linux-only libraries
@@ -14682,7 +14682,7 @@ Xlinux* )
             ;;
 Xosf* )     ARC=alpha
             ;;
-Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\(0-9*\).*'`
+Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\(0-9*\).*'`
             # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
             #  Solaris 2.6, Solaris 7, Solaris 8, etc.
             if ( test X$VER_STRING= X )
