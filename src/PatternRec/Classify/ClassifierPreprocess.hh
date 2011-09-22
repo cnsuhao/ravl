@@ -17,121 +17,127 @@
 #include "Ravl/PatternRec/Function.hh"
 
 namespace RavlN {
-  
+
   //! userlevel=Develop
   //: Preprocess input with another function before classifying.
-  
-  class ClassifierPreprocessBodyC 
-    : public ClassifierBodyC
-  {
-  public:
-    ClassifierPreprocessBodyC(const FunctionC &nfunc,const ClassifierC &nclassifier);
-    //: Create classifier from a discriminant function.
-    
-    ClassifierPreprocessBodyC(istream &strm);
-    //: Load from stream.
-    
-    ClassifierPreprocessBodyC(BinIStreamC &strm);
-    //: Load from binary stream.
-    
-    virtual bool Save (ostream &out) const;
-    //: Writes object to stream, can be loaded using constructor
-    
-    virtual bool Save (BinOStreamC &out) const;
-    //: Writes object to stream, can be loaded using constructor
-    
-    virtual UIntT Classify(const VectorC &data) const;
-    //: Classifier vector 'data' return the most likely label.
-    
-    virtual VectorC Confidence(const VectorC &data) const;
-    //: Estimate the confidence for each label.
-    // The meaning of the confidence assigned to each label depends
-    // on the function used. The higher the confidence the more likely
-    // it is the label is correct. The sum of the vector has been normalised
-    // to 1.
-    
-    const FunctionC &Preprocess() const
-    { return func; }
-    //: Access discriminant function.
-    
-  protected:
-    FunctionC func;
-    ClassifierC classifier;
+
+  class ClassifierPreprocessBodyC: public ClassifierBodyC {
+    public:
+      ClassifierPreprocessBodyC(const FunctionC &nfunc, const ClassifierC &nclassifier);
+      //: Create classifier from a discriminant function.
+
+      ClassifierPreprocessBodyC(istream &strm);
+      //: Load from stream.
+
+      ClassifierPreprocessBodyC(BinIStreamC &strm);
+      //: Load from binary stream.
+
+      virtual bool Save(ostream &out) const;
+      //: Writes object to stream, can be loaded using constructor
+
+      virtual bool Save(BinOStreamC &out) const;
+      //: Writes object to stream, can be loaded using constructor
+
+      virtual UIntT Classify(const VectorC &data) const;
+      //: Classifier vector 'data' return the most likely label.
+
+      virtual VectorC Confidence(const VectorC &data) const;
+      //: Estimate the confidence for each label.
+      // The meaning of the confidence assigned to each label depends
+      // on the function used. The higher the confidence the more likely
+      // it is the label is correct. The sum of the vector has been normalised
+      // to 1.
+
+      virtual VectorC Apply(const VectorC &data) const;
+      //: Estimate the confidence for each label.
+      // The meaning of the confidence assigned to each label depends
+      // on the function used. The higher the confidence the more likely
+      // it is the label is correct. The sum of the vector has been normalised
+      // to 1.
+
+      const FunctionC &Preprocess() const {
+        return func;
+      }
+      //: Access discriminant function.
+
+    protected:
+      FunctionC func;
+      ClassifierC classifier;
   };
-  
+
   //! userlevel=Normal
   //: Preprocess input with another function before classifying.
-  
-  class ClassifierPreprocessC 
-    : public ClassifierC
-  {
-  public:
-    ClassifierPreprocessC(const FunctionC &nfunc,const ClassifierC &classifier)
-      : ClassifierC(*new ClassifierPreprocessBodyC(nfunc,classifier))
-    {}
-    //: Create classifier from a discriminant function.
-    
-    ClassifierPreprocessC(istream &strm);
-    //: Load from stream.
-    
-    ClassifierPreprocessC(BinIStreamC &strm);
-    //: Load from binary stream.
-    
-  protected:
-    ClassifierPreprocessC(ClassifierPreprocessBodyC &bod)
-      : ClassifierC(bod)
-    {}
-    //: Body constructor.
 
-    ClassifierPreprocessC(ClassifierPreprocessBodyC *bod)
-      : ClassifierC(bod)
-    {}
-    //: Body constructor.
-    
-    ClassifierPreprocessBodyC &Body()
-    { return static_cast<ClassifierPreprocessBodyC &>(ClassifierC::Body()); }
-    //: Access body.
+  class ClassifierPreprocessC: public ClassifierC {
+    public:
+      ClassifierPreprocessC(const FunctionC &nfunc, const ClassifierC &classifier)
+          : ClassifierC(*new ClassifierPreprocessBodyC(nfunc, classifier)) {
+      }
+      //: Create classifier from a discriminant function.
 
-    const ClassifierPreprocessBodyC &Body() const
-    { return static_cast<const ClassifierPreprocessBodyC &>(ClassifierC::Body()); }
-    //: Access body.
-    
-  public:
-    const FunctionC &Preprocess() const
-    { return Body().Preprocess(); }
-    //: Access discriminant function.
-    
+      ClassifierPreprocessC(istream &strm);
+      //: Load from stream.
+
+      ClassifierPreprocessC(BinIStreamC &strm);
+      //: Load from binary stream.
+
+    protected:
+      ClassifierPreprocessC(ClassifierPreprocessBodyC &bod)
+          : ClassifierC(bod) {
+      }
+      //: Body constructor.
+
+      ClassifierPreprocessC(ClassifierPreprocessBodyC *bod)
+          : ClassifierC(bod) {
+      }
+      //: Body constructor.
+
+      ClassifierPreprocessBodyC &Body() {
+        return static_cast<ClassifierPreprocessBodyC &>(ClassifierC::Body());
+      }
+      //: Access body.
+
+      const ClassifierPreprocessBodyC &Body() const {
+        return static_cast<const ClassifierPreprocessBodyC &>(ClassifierC::Body());
+      }
+      //: Access body.
+
+    public:
+      const FunctionC &Preprocess() const {
+        return Body().Preprocess();
+      }
+      //: Access discriminant function.
+
   };
-  
-  inline istream &operator>>(istream &strm,ClassifierPreprocessC &obj) {
+
+  inline istream &operator>>(istream &strm, ClassifierPreprocessC &obj) {
     obj = ClassifierPreprocessC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
-  
-  inline ostream &operator<<(ostream &out,const ClassifierPreprocessC &obj) {
+
+  inline ostream &operator<<(ostream &out, const ClassifierPreprocessC &obj) {
     obj.Save(out);
     return out;
   }
   //: Save to a stream.
   // Uses virtual constructor.
-  
-  inline BinIStreamC &operator>>(BinIStreamC &strm,ClassifierPreprocessC &obj) {
+
+  inline BinIStreamC &operator>>(BinIStreamC &strm, ClassifierPreprocessC &obj) {
     obj = ClassifierPreprocessC(strm);
     return strm;
   }
   //: Load from a binary stream.
   // Uses virtual constructor.
-  
-  inline BinOStreamC &operator<<(BinOStreamC &out,const ClassifierPreprocessC &obj) {
+
+  inline BinOStreamC &operator<<(BinOStreamC &out, const ClassifierPreprocessC &obj) {
     obj.Save(out);
     return out;
   }
-  //: Save to a stream.
-  // Uses virtual constructor.
-  
-}
+//: Save to a stream.
+// Uses virtual constructor.
 
+}
 
 #endif
