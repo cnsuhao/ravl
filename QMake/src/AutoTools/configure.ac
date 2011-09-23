@@ -81,6 +81,12 @@ AC_SUBST([GREP])
 AC_PROG_SED
 AC_SUBST([SED])
 
+AC_PATH_PROG([TR],[tr],[Missing])
+AS_IF([test $TR = Missing],
+      [AC_MSG_FAILURE([Cannot find a working tr required for using QMake])]
+     )
+AC_SUBST([TR])
+
 # Check for C Compiler and Pre-processor
 #
 # Record CFLAGS in case user has supplied them on the configure cmd-line;
@@ -129,19 +135,19 @@ then
     AC_MSG_CHECKING([which ld is used by $CC])
     LD=`$CC -print-prog-name=ld`
     # Test host_os != mingw*
-    if ( test  X`expr X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
+    if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
     then
       # gcc leaves a trailing carriage return which upsets mingw
-      LD=`echo $LD | tr -d '\015'`
+      LD=`echo $LD | $TR -d '\015'`
     fi
     
-    if ( test X`expr X$LD : '\(X[[\\/]].*\)'` = XX$LD )
+    if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` = XX$LD )
     then
       # $LD is an absolute path
       # Fold all \ to /
-      LD=`$echo "$LD"| $SED 's%\\\\%/%g'`
+      LD=`echo "$LD"| $SED 's%\\\\%/%g'`
       # $LD may be an absolute path but might still need cannonicalisation
-      while test X`expr X$LD : 'X\(.*/\.\./\.*\)'` != X
+      while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
       do
         LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
       done
@@ -158,7 +164,7 @@ then
     LD=""
   fi
 
-  if ( test X`expr X$LD : '\(X[[\\/]].*\)'` != XX$LD )
+  if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` != XX$LD )
   then
     # LD not set to an absolute path, must search for ld
 
@@ -174,7 +180,7 @@ then
       then
         # Some variants of GNU ld only accept -v, so use that not --version
         case `"$dir/ld" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+        *GNU* | *'with BFD'*)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
                                 then
                                   # We are not using AIX so favour the GNU linker
                                   # (that we have just found)
@@ -192,7 +198,7 @@ then
                                   fi
                                 fi
                                 ;;
-                           *)   if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                           *)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
                                 then
                                   # We are not on AIX so should favour the GUN
                                   # version of ld. As this is not a GNU version,
@@ -216,7 +222,7 @@ then
     if ( test X$LD = X )
     then
       # We haven't located our preferred linker, is there a fall-back?
-      if ( test  X`expr X$host_os : 'X\(aix\).*'` != 'Xaix' )
+      if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
       then
         # We are not using AIX but found no GNU linker, use any other we found
         LD=$ANO_LD
@@ -233,7 +239,7 @@ then
   then
     # We have, what type is it?
     VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
     then
       # GNU linker
       GNU_LD=yes
@@ -251,7 +257,7 @@ else
   then
     # What type is it?
     VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
     then
       # GNU linker
       GNU_LD=yes
@@ -291,7 +297,7 @@ then
   MAKE=make
 fi
 
-if ( test X`expr X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
+if ( test X`$EXPR X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
 then
   # User has not asked for a specific path for the make utility, we have to look
   # for it on the search list
@@ -345,7 +351,7 @@ else
   if ( test -x $MAKE )
   then
     VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
-    if ( test `expr "$VER_STRING" : '.*GNU.*'` -gt 0 || test `expr "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
     then
       GNU_MAKE=yes
     else
@@ -663,12 +669,6 @@ AS_IF([test $TOUCH = Missing],
      )
 AC_SUBST([TOUCH])
 
-AC_PATH_PROG([TR],[tr],[Missing])
-AS_IF([test $TR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working tr required for using QMake])]
-     )
-AC_SUBST([TR])
-
 # Provide switch to allow use of pawd instead of pwd
 AC_ARG_WITH([pawd],
             [AS_HELP_STRING([--with-pawd],
@@ -927,7 +927,7 @@ Xlinux* )
             ;;
 Xosf* )     ARC=alpha
             ;;
-Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\([[0-9]]*\).*'`
+Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([[0-9]]*\).*'`
             # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
             #  Solaris 2.6, Solaris 7, Solaris 8, etc.
             if ( test X$VER_STRING= X )
