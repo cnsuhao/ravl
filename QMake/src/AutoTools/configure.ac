@@ -715,7 +715,7 @@ AC_ARG_WITH([pawd],
                                ;;
                        esac
             ],
-            [trace 5 No --with-$1 specified
+            [trace 5 No --with-pawd specified
              AC_PATH_PROG([GET_CWD],[pwd],[Missing])
              AS_IF([test $GET_CWD = Missing],
                    [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]

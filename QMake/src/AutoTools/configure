@@ -5403,7 +5403,7 @@ fi
                        esac
 
 else
-  trace 5 No --with-$1 specified
+  trace 5 No --with-pawd specified
              # Extract the first word of "pwd", so it can be a program name with args.
 set dummy pwd; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
