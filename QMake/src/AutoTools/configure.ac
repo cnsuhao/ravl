@@ -927,7 +927,7 @@ Xlinux* )
             ;;
 Xosf* )     ARC=alpha
             ;;
-Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
+Xsolaris* ) VER_STRING=`expr X$host_os : 'Xsolaris2\.\([[0-9]]*\).*'`
             # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
             #  Solaris 2.6, Solaris 7, Solaris 8, etc.
             if ( test X$VER_STRING= X )
