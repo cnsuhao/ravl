@@ -285,13 +285,13 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_$1`
-                                          file=`$EXPR "//$with_$1" : '.*/\([^/]*\)'`
+                                          file=`$EXPR "//$with_$1" : '.*/\([[^/]]*\)'`
                                           if ( test X$with_$1 = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -301,7 +301,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -396,13 +396,13 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                     then
                                        #file=`basename $with_$1_library`
                                        # strip leading path
-                                       file=`$EXPR "//$with_$1_library" : '.*/\([^/]*\)'`
+                                       file=`$EXPR "//$with_$1_library" : '.*/\([[^/]]*\)'`
                                        if ( test X$with_$1_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -414,7 +414,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -2936,7 +2936,7 @@ then
    for h in $FFMPEGCDEC_CFLAGS 
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -3011,7 +3011,7 @@ then
    for h in $FFMPEGCONT_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -3105,7 +3105,7 @@ then
    for h in $FFMPEGUTIL_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -3195,7 +3195,7 @@ then
    for h in $FFMPEGSWS_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([[^ ]]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -4169,7 +4169,7 @@ Xlinux* )
             ;;
 Xosf* )     ARC=alpha
             ;;
-Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
+Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([[0-9]]*\).*'`
             # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
             #  Solaris 2.6, Solaris 7, Solaris 8, etc.
             if ( test X$VER_STRING= X )

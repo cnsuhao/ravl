@@ -9154,13 +9154,13 @@ $as_echo X$with_LibJasper |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_LibJasper`
-                                          file=`$EXPR "//$with_LibJasper" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_LibJasper" : '.*/\([^/]*\)'`
                                           if ( test X$with_LibJasper = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9173,7 +9173,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9310,13 +9310,13 @@ $as_echo X$with_LibJasper_library |
                                     then
                                        #file=`basename $with_LibJasper_library`
                                        # strip leading path
-                                       file=`$EXPR "//$with_LibJasper_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_LibJasper_library" : '.*/\([^/]*\)'`
                                        if ( test X$with_LibJasper_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9333,7 +9333,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9593,13 +9593,13 @@ $as_echo X$with_JPEG |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_JPEG`
-                                          file=`$EXPR "//$with_JPEG" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_JPEG" : '.*/\([^/]*\)'`
                                           if ( test X$with_JPEG = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9612,7 +9612,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9749,13 +9749,13 @@ $as_echo X$with_JPEG_library |
                                     then
                                        #file=`basename $with_JPEG_library`
                                        # strip leading path
-                                       file=`$EXPR "//$with_JPEG_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_JPEG_library" : '.*/\([^/]*\)'`
                                        if ( test X$with_JPEG_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -9772,7 +9772,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10032,13 +10032,13 @@ $as_echo X$with_posixThreads |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_posixThreads`
-                                          file=`$EXPR "//$with_posixThreads" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_posixThreads" : '.*/\([^/]*\)'`
                                           if ( test X$with_posixThreads = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10051,7 +10051,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10188,13 +10188,13 @@ $as_echo X$with_posixThreads_library |
                                     then
                                        #file=`basename $with_posixThreads_library`
                                        # strip leading path
-                                       file=`$EXPR "//$with_posixThreads_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_posixThreads_library" : '.*/\([^/]*\)'`
                                        if ( test X$with_posixThreads_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10211,7 +10211,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10471,13 +10471,13 @@ $as_echo X$with_LibTIFF |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_LibTIFF`
-                                          file=`$EXPR "//$with_LibTIFF" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_LibTIFF" : '.*/\([^/]*\)'`
                                           if ( test X$with_LibTIFF = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10490,7 +10490,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10627,13 +10627,13 @@ $as_echo X$with_LibTIFF_library |
                                     then
                                        #file=`basename $with_LibTIFF_library`
                                        # strip leading path
-                                       file=`$EXPR "//$with_LibTIFF_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_LibTIFF_library" : '.*/\([^/]*\)'`
                                        if ( test X$with_LibTIFF_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10650,7 +10650,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10910,13 +10910,13 @@ $as_echo X$with_Zlib |
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_Zlib`
-                                          file=`$EXPR "//$with_Zlib" : '.*/\(^/*\)'`
+                                          file=`$EXPR "//$with_Zlib" : '.*/\([^/]*\)'`
                                           if ( test X$with_Zlib = X$path/$file )
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
                                              #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                              if ( test X$lib != X$file  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -10929,7 +10929,7 @@ $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
                                                 #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                                 if ( test X$lib != X$file )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -11066,13 +11066,13 @@ $as_echo X$with_Zlib_library |
                                     then
                                        #file=`basename $with_Zlib_library`
                                        # strip leading path
-                                       file=`$EXPR "//$with_Zlib_library" : '.*/\(^/*\)'`
+                                       file=`$EXPR "//$with_Zlib_library" : '.*/\([^/]*\)'`
                                        if ( test X$with_Zlib_library = X$path/$file )
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
                                           #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.^.a$'`
+                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
                                           if ( test X$lib != X$file  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -11089,7 +11089,7 @@ $as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
                                              #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.^.so$'`
+                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
                                              if ( test X$lib != X$file )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
@@ -13397,7 +13397,7 @@ then
    for h in $FFMPEGCDEC_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\(^ *\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -13487,7 +13487,7 @@ fi
    for h in $FFMPEGCONT_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\(^ *\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -13596,7 +13596,7 @@ fi
    for h in $FFMPEGUTIL_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\(^ *\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -13701,7 +13701,7 @@ fi
    for h in $FFMPEGSWS_CFLAGS
    do
       # for each part of the CFLAGS, look for a -Ipath entry and extract the path
-      path=`echo $h | $SED -n 's/-I\(^ *\).*/\1/p'`
+      path=`echo $h | $SED -n 's/-I\([^ ]*\).*/\1/p'`
       if ( test -n "$path" )
       then
          TRACE_INDENT="     "
@@ -14682,7 +14682,7 @@ Xlinux* )
             ;;
 Xosf* )     ARC=alpha
             ;;
-Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\(0-9*\).*'`
+Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
             # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
             #  Solaris 2.6, Solaris 7, Solaris 8, etc.
             if ( test X$VER_STRING= X )
