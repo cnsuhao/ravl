@@ -23,10 +23,11 @@ int main(int nargs, char **argv) {
   RavlN::SetResourceRoot(installDir);
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
-  StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM].");
+  StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|SVMOneClass].");
   StringC trainingDataSetFile = opts.String("dset", "", "The dataset to train on!");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
+  DListC<StringC>features = opts.List("features", "Use only these features");
   bool noNormaliseSample = opts.Boolean("noNormalise", false, "Do not normalise the sample to unit mean/var");
   FilenameC classifierOutFile = opts.String("o", "classifier.strm", "Save classifier to this file.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
@@ -55,7 +56,7 @@ int main(int nargs, char **argv) {
       return 1;
     }
 
-    // Modify dataset if requested
+    // Modify data set if requested
     trainingDataSet.Shuffle(); // always good practice to shuffle (inplace)
     if (equaliseSamples) {
       UIntT min = trainingDataSet.ClassNums()[trainingDataSet.ClassNums().IndexOfMin()];
@@ -66,8 +67,20 @@ int main(int nargs, char **argv) {
       SysLog(SYSLOG_INFO, "Setting the samples per class to %d", samplesPerClass);
       trainingDataSet = trainingDataSet.ExtractPerLabel(samplesPerClass);
     }
+    if(opts.IsOnCommandLine("features")) {
+      SysLog(SYSLOG_INFO, "Manually selecting features to use");
+      SArray1dC<IndexC>keep(features.Size());
+      UIntT c=0;
+      for(DLIterC<StringC>it(features);it;it++) {
+        keep[c] = it.Data().IntValue();
+        c++;
+      }
+      SampleVectorC vecs(trainingDataSet.Sample1(), keep);
+      trainingDataSet = DataSetVectorLabelC(vecs, trainingDataSet.Sample2());
+    }
 
-    // Lets compute mean and variance of dataset and normalise input
+
+    // Lets compute mean and variance of data set and normalise input
     FuncMeanProjectionC func;
     if (noNormaliseSample) {
       SysLog(SYSLOG_INFO, "You are not normalising your sample!  I hope you know what you are doing.");
@@ -78,8 +91,6 @@ int main(int nargs, char **argv) {
       func = trainingDataSet.Sample1().NormalisationFunction(meanCovariance);
       trainingDataSet.Sample1().Normalise(meanCovariance);
     }
-
-    // FIXME: Also having unequal samples can bias training as well
 
     // Train classifier
     SysLog(SYSLOG_INFO, "Training the classifier");
@@ -92,9 +103,9 @@ int main(int nargs, char **argv) {
     SysLog(SYSLOG_INFO, "The (biased) probability of miss-classification is %0.4f ", pmc);
 
     // If we have normalised the sample we need to make sure
-    // all input data to classifier is normalised by same stats
+    // all input data to classifier is normalised by same statistics
     if (!noNormaliseSample) {
-      SysLog(SYSLOG_INFO, "Making classifier with preprocessing step!");
+      SysLog(SYSLOG_INFO, "Making classifier with pre-processing step!");
       classifier = ClassifierPreprocessC(func, classifier);
     }
 

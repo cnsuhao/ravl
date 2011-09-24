@@ -28,23 +28,23 @@ namespace RavlN {
   //: Construct from a sample of floats.
 
   SampleVectorC::SampleVectorC(const SampleC<TVectorC<float> > &svec, const SArray1dC<FieldInfoC> & fieldInfo)
-      : SampleC<VectorC>(svec.Size()),
-        m_fieldInfo(fieldInfo) {
+      : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
     for (DArray1dIterC<TVectorC<float> > it(svec.DArray()); it; it++)
       Append(VectorC(*it));
   }
 
   //: Construct a new sample set with a reduced set of features
 
-  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet, const SArray1dC<FieldInfoC> & fieldInfo)
-      : SampleC<VectorC>(svec.Size()),
-        m_fieldInfo(fieldInfo) {
+  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet,
+                               const SArray1dC<FieldInfoC> & fieldInfo)
+      : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
     UIntT numFeatures = featureSet.Size();
-    for (DataSet2IterC<SampleC<VectorC>, SampleC<VectorC> > it(svec, *this); it; it++) {
+    for (DArray1dIterC<VectorC> it(svec.DArray()); it; it++) {
       VectorC out(numFeatures);
-      for (SArray1dIter2C<IndexC, RealT> itf(featureSet, out); itf; itf++)
-        itf.Data2() = it.Data1()[itf.Data1()];
-      it.Data2() = out;
+      for (SArray1dIter2C<IndexC, RealT> itf(featureSet, out); itf; itf++) {
+        itf.Data2() = it.Data()[itf.Data1()];
+      }
+      Append(out);
     }
   }
 
@@ -285,7 +285,7 @@ namespace RavlN {
     proj.SetDiagonal(stdDev);
 
     FuncMeanProjectionC func(stats.Mean(), proj);
-    
+
     return func;
 
   }

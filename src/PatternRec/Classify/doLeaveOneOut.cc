@@ -25,6 +25,7 @@ int main(int nargs, char **argv) {
   StringC dsetFile = opts.String("dset", "", "The dataset to perform leave one out on!");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
+  DListC<StringC>features = opts.List("features", "Use only these features");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   UIntT maxIter = opts.Int("maxIter", 0, "Set the maximum number of iterations (0 do all)");
   opts.Check();
@@ -61,6 +62,17 @@ int main(int nargs, char **argv) {
     if (samplesPerClass > 0 && samplesPerClass <= dset.ClassNums()[dset.ClassNums().IndexOfMin()]) {
       SysLog(SYSLOG_INFO, "Setting the samples per class to %d", samplesPerClass);
       dset = dset.ExtractPerLabel(samplesPerClass);
+    }
+    if (opts.IsOnCommandLine("features")) {
+      SysLog(SYSLOG_INFO, "Manually selecting features to use");
+      SArray1dC<IndexC> keep(features.Size());
+      UIntT c = 0;
+      for (DLIterC<StringC> it(features); it; it++) {
+        keep[c] = it.Data().IntValue();
+        c++;
+      }
+      SampleVectorC vecs(dset.Sample1(), keep);
+      dset = DataSetVectorLabelC(vecs, dset.Sample2());
     }
 
     // Lets compute mean and variance of dataset and normalise input
