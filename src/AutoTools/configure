@@ -2946,8 +2946,8 @@ then
 
    # No installed QMake found or we explicitly want to use the use one staged
    # from the source included with the Ravl distribution.
-   WORKING_QMAKE=@abs_top_builddir@/share/QMake
-   QMAKE_CONFIGFILES=@abs_top_builddir@/QMake
+   WORKING_QMAKE=\$\(INSTALLHOME\)/share/QMake
+   QMAKE_CONFIGFILES=\$\(INSTALLHOME\)/QMake
 
    # We will also need to stage this copy as part of the Ravl build, so add
    # LocalQMake to the target for the required QMake builds
