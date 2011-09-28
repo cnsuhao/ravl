@@ -844,6 +844,9 @@ else
    # build the updated QMake for possible later installation.
    NeededQMake="QMake"
 fi
+AC_SUBST([QMAKE_CONFIGFILES])
+AC_SUBST([WORKING_QMAKE])
+AC_SUBST([NeededQMake])
 trace 3 "   Config file $QMAKE_CONFIGFILES/Config.QMake"
 trace 3 "   Live QMake under $WORKING_QMAKE"
 trace 4 "   Build target(s) $NeededQMake"
@@ -861,13 +864,12 @@ trace 4 "   Build target(s) $NeededQMake"
 #
 AC_CONFIG_SUBDIRS([QMake])
 
-AC_SUBST([WORKING_QMAKE])
-AC_SUBST([QMAKE_CONFIGFILES])
-AC_SUBST([NeededQMake])
 
 
-# Declare non library specific cmd-line flags
+# Declare non library specific cmd-line flags (all override any global
+# QMake setting if present)
 
+# Switch to store library search paths in the calling library
 AC_ARG_WITH([rpath],
             [AS_HELP_STRING([--with-rpath],
                             [Add all library include paths (-L) to the runtime search path of the binary
@@ -875,808 +877,23 @@ AC_ARG_WITH([rpath],
                            )
             ],
             [case $with_rpath in
-                  'y' | 'Y' | 'yes' | 'Yes' ) with_rpath=Y
-                                              ;;
-                  * )                         with_rpath=N
-                                              ;;
+                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' ) with_rpath=Y
+                                                      USER_with_rpath=Y
+                                                      ;;
+                  'n' | 'N' | 'no' | 'No' | 'NO' )    with_rpath=N
+                                                      USER_with_rpath=N
+                                                      ;;
+                  * )                                 AC_MSG_WARN([--with-rpath set to an unknown option, setting ignored])
+                                                      ;;
              esac
             ],
-            [with_rpath=N
+            [trace 5 No --with-rpath specified
+             # Not setting vars so default from QMake config is used
             ]
            )
 
 
-# Check for required programs.
-trace 2 Checking for support programs
-
-# First check for utils required for this script itself. However, it is probably
-# too late to check for a lot of commands as the preceding code has already used
-# them (test, print, etc.) but we can check for what we're about to use...
-AC_PROG_AWK
-AC_SUBST([AWK])
-
-AC_PATH_PROG([EXPR],[expr],[Missing])
-AS_IF([test $EXPR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
-     )
-AC_SUBST([EXPR])
-
-AC_PROG_GREP
-AC_SUBST([GREP])
-
-AC_PROG_SED
-AC_SUBST([SED])
-
-# Check for C Compiler and Pre-processor
-#
-# Record CFLAGS in case user has supplied them on the configure cmd-line;
-# these will form CONFIGURE_CFLAGS setting in Ravl (QMake) build system. 
-CONFIGURE_CFLAGS=$CFLAGS
-AC_SUBST([CONFIGURE_CFLAGS])
-# Now actually check for compiler and and allow Config.Project to record the
-# location found
-AC_PROG_CC
-AC_SUBST([CC])
-# AC_PROG_CC won't actually have altered CFLAGS if a value was already set
-# however, if an initial value was not provided, AC_PROG_CC may have set CFLAGS
-# to include optimisation or -g. As we do not want this for the Ravl build, we
-# reinitialise CFLAGS to the original value (which may be null or what a user
-# supplied on the command line).
-CFLAGS=$CONFIGURE_CFLAGS
-# Find and record C pre-processor
-AC_PROG_CPP
-AC_SUBST([CPP])
-
-# Check for C++ Compiler and Pre-processor
-#
-# Allow recording of any user-supplied CCFLAGS in Config.Project
-CONFIGURE_CCFLAGS=$CCFLAGS
-AC_SUBST([CONFIGURE_CCFLAGS])
-# Now check for compiler and allow that result to be recorded
-AC_PROG_CXX
-AC_SUBST([CXX])
-# Prevent optimisation or -g being to CCFLAGS if it was initially unset
-CCFLAGS=$CONFIGURE_CCFLAGS
-# Find and record C++ pre-processor
-AC_PROG_CXXCPP
-AC_SUBST([CXXCPP])
-
-# Look for linker
-#
-# This code inspired by LT_PATH_LD from libtool
-
-if ( test X$LD = X )
-then
-  # User has not asked for a specific linker, we have to look for one
-
-  if ( test "$GCC" = yes )
-  then
-    # If we have gcc we can try: $CC -print-prog-name=ld
-    AC_MSG_CHECKING([which ld is used by $CC])
-    LD=`$CC -print-prog-name=ld`
-    # Test host_os != mingw*
-    if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
-    then
-      # gcc leaves a trailing carriage return which upsets mingw
-      LD=`echo $LD | tr -d '\015'`
-    fi
-    
-    if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` = XX$LD )
-    then
-      # $LD is an absolute path
-      # Fold all \ to /
-      LD=`$echo "$LD"| $SED 's%\\\\%/%g'`
-      # $LD may be an absolute path but might still need cannonicalisation
-      while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
-      do
-        LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
-      done
-      AC_MSG_RESULT([$LD])
-    else
-      # $CC -print-prog-name=ld has not delivered us an absolute path
-      # We need to use the searchlist
-      LD=""
-      AC_MSG_RESULT([unhelpful])
-    fi
-  else
-    # Not using GCC so we don't know how to ask the compiler, we will have to
-    # look for ld on the searchlist
-    LD=""
-  fi
-
-  if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` != XX$LD )
-  then
-    # LD not set to an absolute path, must search for ld
-
-    AC_MSG_CHECKING([for ld on the search-list])
-    GNU_LD=""
-    ANO_LD=""
-    save_ifs="$IFS"
-    IFS=$PATH_SEPARATOR
-    for dir in $PATH
-    do
-      IFS="$save_ifs"
-      if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
-      then
-        # Some variants of GNU ld only accept -v, so use that not --version
-        case `"$dir/ld" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-                                then
-                                  # We are not using AIX so favour the GNU linker
-                                  # (that we have just found)
-                                  LD=$dir/ld
-                                  break
-                                else
-                                  # We are on AIX so should use the native
-                                  # linker if possible but remember where the
-                                  # GNU version is should that be all we find
-                                  if ( test X$GNU_LD = X )
-                                  then
-                                    # This is the first GNU version of ld on the
-                                    # PATH so record it
-                                    GNU_LD=$dir/ld
-                                  fi
-                                fi
-                                ;;
-                           *)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-                                then
-                                  # We are not on AIX so should favour the GUN
-                                  # version of ld. As this is not a GNU version,
-                                  # merely remember where the first non-GNU
-                                  # version is should this be the only one we
-                                  # actually find.
-                                  if ( test X$ANO_LD = X )
-                                  then
-                                    ANO_LD=$dir/ld
-                                  fi
-                                else
-                                  # As we are on AIX and have found the non-GNU
-                                  # linker, we should favour that.
-                                  LD=$dir/ld
-                                fi
-                                ;;
-        esac
-      fi
-    done
-    IFS="$save_ifs"
-    if ( test X$LD = X )
-    then
-      # We haven't located our preferred linker, is there a fall-back?
-      if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-      then
-        # We are not using AIX but found no GNU linker, use any other we found
-        LD=$ANO_LD
-      else
-        # We are on AIX and wanted the native linker which we did not locate.
-        # No matter, try any GNU version we found
-        LD=$GNU_LD
-      fi
-    fi
-  fi # End of checking for ld on $PATH (LD not already an absolute pathname)
-
-  # Have we actually found a linker?
-  if ( test X$LD != X && test -x $LD )
-  then
-    # We have, what type is it?
-    VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      # GNU linker
-      GNU_LD=yes
-    else
-      GNU_LD=no
-    fi
-    AC_MSG_RESULT([$LD])
-  else
-    AC_MSG_RESULT([no])
-    AC_MSG_FAILURE([Cannot find a working ld required for building Ravl])
-  fi
-else
-  # User specified LD
-  if ( test -x $LD )
-  then
-    # What type is it?
-    VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      # GNU linker
-      GNU_LD=yes
-    else
-      GNU_LD=no
-    fi
-  else
-    AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
-  fi
-fi
-
-AC_SUBST([LD])
-
-
-
-# Look for archive tools
-
-AC_PATH_PROG([AR],[ar],[Missing])
-AS_IF([test $AR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working ar required for building Ravl])]
-     )
-AC_SUBST([AR])
-
-
-AC_PROG_RANLIB
-AC_SUBST([RANLIB])
-# Slight weakness of this check is that if ranlib is not found, we assume it is
-# not needed (set RANLIB to ":")
-
-
-
-# Look for the make utility
-
-if ( test X$MAKE = X )
-then
-  # User has not asked for a specific make utility, look for make
-  MAKE=make
-fi
-
-if ( test X`$EXPR X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
-then
-  # User has not asked for a specific path for the make utility, we have to look
-  # for it on the search list
-
-  AC_MSG_CHECKING([for make utility])
-  GNU_MAKE=""
-  ANO_MAKE=""
-  save_ifs="$IFS"
-  IFS=$PATH_SEPARATOR
-  for dir in $PATH
-  do
-    IFS="$save_ifs"
-    if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
-    then
-      # Run $MAKE -v to check if we have GNU Make
-      case `"$dir/$MAKE" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   GNU_MAKE=$dir/$MAKE
-                                # Found GNU Make which we prefer so we need
-                                # look no further
-                                break
-                                ;;
-                           *)   if ( test X$ANO_MAKE = X )
-                                then
-                                  ANO_MAKE=$dir/$MAKE
-                                fi
-                                ;;
-        esac
-    fi
-  done
-  IFS="$save_ifs"
-  if ( test X$GNU_MAKE = X )
-  then
-    # Preferred GNU Make not found, was there an alternative
-    if ( test  X$ANO_MAKE = X)
-    then
-      AC_MSG_RESULT([no])
-      AC_MSG_FAILURE([Cannot find a working make required for building Ravl])
-    else
-      MAKE=$ANO_MAKE
-      AC_MSG_RESULT([$MAKE])
-      GNU_MAKE=no
-    fi
-  else
-    MAKE=$GNU_MAKE
-    AC_MSG_RESULT([$MAKE])
-    GNU_MAKE=yes
-  fi
-else
-  # User specified a full path to make (in MAKE environment variable)
-  AC_MSG_CHECKING([$$MAKE specified make utility])
-  if ( test -x $MAKE )
-  then
-    VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      GNU_MAKE=yes
-    else
-      GNU_MAKE=no
-    fi
-    AC_MSG_RESULT([$MAKE])
-  else
-    AC_MSG_RESULT([unexecutable])
-    AC_MSG_FAILURE([$$MAKE does not specify a usable make utility])
-  fi
-fi
-
-AC_SUBST([MAKE])
-
-
-
-# Set relevant flags dependant on the software tools we have found
-#
-dnl Only select flags dependant on the tools in use here. Set all options
-dnl pertaining to platform specifics later in this script
-dnl
-
-# Set CFLAGS
-if (test X$GCC = Xyes)
-then
-   # GNU C Compiler
-   PKG_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
-   PKG_CANSIFLAG=" -ansi "
-   PKG_DEFAULT_CFLAGS=" -O "
-   CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
-   CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
-   CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print $2 }'`
-   CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print $3 }'`
-   if test X$CC_MAJOR=X4 && test $(($CC_MINOR)) -lt 3
-   then
-      # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
-      # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-      # that work with the Ravl source and employ -O3 as compensation
-      PKG_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
-   else
-      PKG_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
-   fi
-   PKG_OPT_CFLAGS=$PKG_OPT_CFLAGS" -march=native -mtune=native "
-   PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-   if test $ac_cv_prog_cc_g = yes
-   then
-      PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
-   fi
-   PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
-   PKG_SHARED_CFLAGS=" -shared -fPIC "
-   PKG_PROF_CFLAGS=" -p "
-   PKG_GPROF_CFLAGS=" -pg "
-else
-   # No GNU compiler, try relevant machine specific options we have used before
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-   case X$host_os in
-   Xsolaris* ) PKG_GLOBAL_CFLAGS=""
-               PKG_CANSIFLAG=" -ansi "
-               PKG_DEFAULT_CFLAGS=" -O "
-               PKG_OPT_CFLAGS=" -O2 "
-               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-               if test $ac_cv_prog_cc_g = yes
-               then
-                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
-               fi
-               PKG_SHARED_CFLAGS=" -KPIC "
-               PKG_PROF_CFLAGS=" -p "
-               PKG_GPROF_CFLAGS=" -pg "
-               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
-               ;;
-   Xirix* )    CC=$CC" -n32 -J4 -mp "
-               # Not sure why this originally was done this way rather than use
-               # CFLAGS, but assume there was a reason and propogate the method
-               PKG_GLOBAL_CFLAGS=" -mips4 -r1000 "
-               PKG_CANSIFLAG=" -ansi "
-               PKG_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
-               PKG_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
-               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-               if test $ac_cv_prog_cc_g = yes
-               then
-                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
-               fi
-               PKG_SHARED_CFLAGS=""
-               PKG_PROF_CFLAGS=""
-               PKG_GPROF_CFLAGS=""
-               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
-               ;;
-   * )         PKG_GLOBAL_CFLAGS=""
-               PKG_CANSIFLAG=" -ansi "
-               PKG_DEFAULT_CFLAGS=" -O "
-               PKG_OPT_CFLAGS=" -O2 "
-               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-               if test $ac_cv_prog_cc_g = yes
-               then
-                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
-               fi
-               PKG_SHARED_CFLAGS=""
-               PKG_PROF_CFLAGS=""
-               PKG_GPROF_CFLAGS=""
-               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
-               ;;
-   esac
-fi
-
-# Declare output variables for compiler ANSI switches
-AC_SUBST([PKG_CANSIFLAG])
-AC_SUBST([PKG_CCANSIFLAG])
-
-# Declare PKG_XXXXX_CFLAGS variables as output for Config.Project
-AC_SUBST([PKG_CHECK_CFLAGS])
-AC_SUBST([PKG_DEBUG_CFLAGS])
-AC_SUBST([PKG_DEFAULT_CFLAGS])
-AC_SUBST([PKG_GLOBAL_CFLAGS])
-AC_SUBST([PKG_GPROF_CFLAGS])
-AC_SUBST([PKG_OPT_CFLAGS])
-AC_SUBST([PKG_PROF_CFLAGS])
-AC_SUBST([PKG_SHARED_CFLAGS])
-
-# Set CCFLAGS
-if (test X$GXX = Xyes)
-then
-   # GNU C++ Compiler
-   PKG_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
-   PKG_CCANSIFLAG=" -ansi "
-   PKG_DEFAULT_CCFLAGS=" -O "
-   CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
-   CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
-   CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print $2 }'`
-   CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print $3 }'`
-   if test X$CXX_MAJOR=X4 && test $(($CXX_MINOR)) -lt 3
-   then
-      # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
-      # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
-      # that work with the Ravl source and employ -O3 as compensation
-      PKG_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
-   else
-      PKG_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
-   fi
-   PKG_OPT_CCFLAGS=$PKG_OPT_CCFLAGS" -march=native -mtune=native "
-   PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-   if test $ac_cv_prog_cc_g = yes
-   then
-      PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
-   fi
-   PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
-   PKG_SHARED_CCFLAGS=" -shared -fPIC "
-   PKG_PROF_CCFLAGS=" -p "
-   PKG_GPROF_CCFLAGS=" -pg "
-else
-   # No GNU compiler, try relevant machine specific options we have used before
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-   case X$host_os in
-   Xsolaris* ) PKG_GLOBAL_CCFLAGS=""
-               PKG_CCANSIFLAG=" -ansi "
-               PKG_DEFAULT_CCFLAGS=" -O "
-               PKG_OPT_CCFLAGS=" -O2 "
-               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-               if test $ac_cv_prog_cc_g = yes
-               then
-                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
-               fi
-               PKG_SHARED_CCFLAGS=" -KPIC "
-               PKG_PROF_CCFLAGS=" -p "
-               PKG_GPROF_CCFLAGS=" -pg "
-               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
-               ;;
-   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
-               # Not sure why this originally was done this way rather than use
-               # CCFLAGS, but assume there was a reason and propogate the method
-               PKG_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
-               PKG_CCANSIFLAG=" -ansi "
-               PKG_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
-               PKG_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
-               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-               if test $ac_cv_prog_cc_g = yes
-               then
-                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
-               fi
-               PKG_SHARED_CCFLAGS=""
-               PKG_PROF_CCFLAGS=""
-               PKG_GPROF_CCFLAGS=""
-               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
-               ;;
-   * )         PKG_GLOBAL_CCFLAGS=""
-               PKG_CCANSIFLAG=" -ansi "
-               PKG_DEFAULT_CCFLAGS=" -O "
-               PKG_OPT_CCFLAGS=""
-               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
-               if test $ac_cv_prog_cc_g = yes
-               then
-                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
-               fi
-               PKG_SHARED_CCFLAGS=""
-               PKG_PROF_CCFLAGS=""
-               PKG_GPROF_CCFLAGS=""
-               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
-               ;;
-   esac
-fi
-
-# Declare PKG_XXXXX_CCFLAGS variables as output for Config.Project
-AC_SUBST([PKG_CHECK_CCFLAGS])
-AC_SUBST([PKG_DEBUG_CCFLAGS])
-AC_SUBST([PKG_DEFAULT_CCFLAGS])
-AC_SUBST([PKG_GLOBAL_CCFLAGS])
-AC_SUBST([PKG_GPROF_CCFLAGS])
-AC_SUBST([PKG_OPT_CCFLAGS])
-AC_SUBST([PKG_PROF_CCFLAGS])
-AC_SUBST([PKG_SHARED_CCFLAGS])
-
-
-# Set PKG_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
-if ( test X$GNU_LD = Xyes )
-then
-  # We are using a GNU linker
-
-  # General Ravl link options
-  PKG_CHECK_LDFLAGS=
-  PKG_DEBUG_LDFLAGS=
-  # -g does nothing on the linker so omit it
-  PKG_DEFAULT_LDFLAGS=
-  PKG_GLOBAL_LDFLAGS=
-  PKG_GPROF_LDFLAGS=
-  PKG_OPT_LDFLAGS=
-  PKG_PROF_LDFLAGS=
-  PKG_SHARED_LDFLAGS=" -rdynamic "
-
-  # Ravl link options used for libraries
-  PKG_CHECK_LDLIBFLAGS=
-  PKG_DEBUG_LDLIBFLAGS=
-  PKG_DEFAULT_LDLIBFLAGS=
-  PKG_GLOBAL_LDLIBFLAGS=
-  PKG_GPROF_LDLIBFLAGS=
-  PKG_OPT_LDLIBFLAGS=
-  PKG_PROF_LDLIBFLAGS=
-  PKG_SHARED_LDLIBFLAGS=" -shared "
-
-  LIBPATHSWITCH=" -Wl,-rpath#"
-  UNDEFSYMB=" -u#"
-else
-  # Not using a GNU linker, try native flags we have used before or default to
-  # what works for GNU
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-  case X$host_os in
-  Xcygwin )   PKG_CHECK_LDFLAGS=
-              PKG_DEBUG_LDFLAGS=" -g "
-              PKG_GLOBAL_LDFLAGS=
-              PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
-              PKG_PROF_LDFLAGS=
-              PKG_OPT_LDFLAGS=
-              PKG_SHARED_LDFLAGS=" -Wl,-export-dynamic "
-              # sic, this is an assumption on what compiler is in use
-
-              PKG_CHECK_LDLIBFLAGS=
-              PKG_DEBUG_LDLIBFLAGS=
-              PKG_GLOBAL_LDLIBFLAGS=
-              PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
-              PKG_PROF_LDLIBFLAGS=
-              PKG_OPT_LDLIBFLAGS=
-              PKG_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              # sic, this is an assumption on what compiler is in use
-              UNDEFSYMB=" -u #"
-              ;;
-  Xirix*    ) PKG_CHECK_LDFLAGS=
-              PKG_DEBUG_LDFLAGS=
-              PKG_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
-              PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
-              PKG_PROF_LDFLAGS=
-              PKG_OPT_LDFLAGS=
-              PKG_SHARED_LDFLAGS=
-
-              PKG_CHECK_LDLIBFLAGS=
-              PKG_DEBUG_LDLIBFLAGS=
-              PKG_GLOBAL_LDLIBFLAGS=
-              PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
-              PKG_PROF_LDLIBFLAGS=
-              PKG_OPT_LDLIBFLAGS=
-              PKG_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              UNDEFSYMB=" -u#"
-              ;;
-  Xsolaris* ) PKG_CHECK_LDFLAGS=
-              PKG_DEBUG_LDFLAGS=" -g "
-              PKG_GLOBAL_LDFLAGS=
-              PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
-              PKG_PROF_LDFLAGS=
-              PKG_OPT_LDFLAGS=
-              PKG_SHARED_LDFLAGS=
-
-              PKG_CHECK_LDLIBFLAGS=
-              PKG_DEBUG_LDLIBFLAGS=
-              PKG_GLOBAL_LDLIBFLAGS=
-              PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
-              PKG_PROF_LDLIBFLAGS=
-              PKG_OPT_LDLIBFLAGS=
-              PKG_SHARED_LDLIBFLAGS=" -dy -G "
-
-              LIBPATHSWITCH=" -R#"
-              UNDEFSYMB=" -u#"
-              ;;
-  * )         PKG_CHECK_LDFLAGS=
-              PKG_DEBUG_LDFLAGS=
-              PKG_GLOBAL_LDFLAGS=
-              PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
-              PKG_PROF_LDFLAGS=
-              PKG_OPT_LDFLAGS=
-              PKG_SHARED_LDFLAGS=" -rdynamic "
-
-              PKG_CHECK_LDLIBFLAGS=
-              PKG_DEBUG_LDLIBFLAGS=
-              PKG_GLOBAL_LDLIBFLAGS=
-              PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
-              PKG_PROF_LDLIBFLAGS=
-              PKG_OPT_LDLIBFLAGS=
-              PKG_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              UNDEFSYMB=" -u#"
-              ;;
-  esac
-fi
-
-# Declare variables that the linker as output for Config.Project
-AC_SUBST([LDFLAGS])
-# any user-provided LDFLAGS will be recorded in Config.Project as CONFIGURE_LDFLAGS
-
-AC_SUBST([PKG_CHECK_LDFLAGS])
-AC_SUBST([PKG_DEBUG_LDFLAGS])
-AC_SUBST([PKG_DEFAULT_LDFLAGS])
-AC_SUBST([PKG_GLOBAL_LDFLAGS])
-AC_SUBST([PKG_GPROF_LDFLAGS])
-AC_SUBST([PKG_OPT_LDFLAGS])
-AC_SUBST([PKG_PROF_LDFLAGS])
-AC_SUBST([PKG_SHARED_LDFLAGS])
-
-AC_SUBST([PKG_CHECK_LDLIBFLAGS])
-AC_SUBST([PKG_DEBUG_LDLIBFLAGS])
-AC_SUBST([PKG_DEFAULT_LDLIBFLAGS])
-AC_SUBST([PKG_GLOBAL_LDLIBFLAGS])
-AC_SUBST([PKG_GPROF_LDLIBFLAGS])
-AC_SUBST([PKG_OPT_LDLIBFLAGS])
-AC_SUBST([PKG_PROF_LDLIBFLAGS])
-AC_SUBST([PKG_SHARED_LDLIBFLAGS])
-
-AC_SUBST([LIBPATHSWITCH])
-AC_SUBST([UNDEFSYMB])
-
-
-# Declare flags for ar
-
-dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a non-standard ar
-dnl that takes completely different flags then that is ok to list here (as it
-dnl pertains to the tool itself, not the platform). If your platform uses the
-dnl GNU version of ar but, for example requires an added 's' flag, that setting
-dnl should be put in the platform specific code at the end of this script, not
-dnl here.
-PKG_ARFLAGS=ruc
-
-AC_SUBST([PKG_ARFLAGS])
-
-# Declare flags for make
-
-dnl Only put make flags specific to any particular version of make here. DO NOT
-dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final section of this
-dnl script
-
-if ( test X$GNU_MAKE = Xyes )
-then
-  PKG_MAKEFLAGS=" --no-print-directory -r "
-else
-  PKG_MAKEFLAGS=" -r "
-fi
-
-AC_SUBST([MAKEFLAGS])
-# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Project 
-AC_SUBST([PKG_MAKEFLAGS])
-
-dnl End of software tools section
-
-
-dnl# It would be good to enable the following code, however _AC_... aren't 
-dnl# generally available macros and may dissappear/change in differing versions
-dnl# of autotools so its best not to rely on them. If only there was a supported
-dnl# means of doing this.. (you can check for the preprocessor (as we do, above)
-dnl# but not all of the calls that _AC_INCLUDES_DEFAULT_REQUIREMENTS expands to
-dnl# are individually available.
-dnl#
-dnl#      Cause the checks for the C pre-processor and default headers to be done now
-dnl#      (This can prevent multiple calls within the script's body)
-dnl       _AC_INCLUDES_DEFAULT_REQUIREMENTS
-
-
-# Check for install-sh as it may be needed for mkdir -p support
-AC_PROG_INSTALL
-
-# Ensure we have a mkdir -p capability (will use install-sh on systems without
-# a native mkdir -p)
-AC_PROG_MKDIR_P
-AC_SUBST([MKDIR_P])
-
-# Check for remaining utils
-
-# Check for programs needed for the Ravl build
-# First check for those programs that GNU coding standards regard as safe to use
-# in a makefile if they are employed via make variables (and thus create the
-# necessary variables)
-AC_PATH_PROG([CHGRP],[chgrp],[Missing])
-AS_IF([test $CHGRP = Missing],
-      [AC_MSG_FAILURE([Cannot find a working chgrp required for building Ravl])]
-     )
-AC_SUBST([CHGRP])
-
-AC_PATH_PROG([CHMOD],[chmod],[Missing])
-AS_IF([test $CHMOD = Missing],
-      [AC_MSG_FAILURE([Cannot find a working chmod required for building Ravl])]
-     )
-AC_SUBST([CHMOD])
-
-AC_PATH_PROG([CHOWN],[chown],[Missing])
-AS_IF([test $CHOWN = Missing],
-      [AC_MSG_FAILURE([Cannot find a working chown required for building Ravl])]
-     )
-AC_SUBST([CHOWN])
-
-AC_PROG_LEX
-AC_SUBST([LEX])
-AC_SUBST([LEXLIB])
-
-AC_PATH_PROG([SORT],[sort],[Missing])
-AS_IF([test $SORT = Missing],
-      [AC_MSG_FAILURE([Cannot find a working sort required for building Ravl])]
-     )
-AC_SUBST([SORT])
-
-AC_PROG_YACC
-AC_SUBST([YACC])
-
-# GNU standards regard the following safe to call directly but as we already
-# implemented them via a make variable, set those here...
-AC_PATH_PROG([CP],[cp],[Missing])
-AS_IF([test $CP = Missing],
-      [AC_MSG_FAILURE([Cannot find a working cp required for building Ravl])]
-     )
-AC_SUBST([CP])
-
-AC_PATH_PROG([RM],[rm],[Missing])
-AS_IF([test $RM = Missing],
-      [AC_MSG_FAILURE([Cannot find a working rm required for building Ravl])]
-     )
-AC_SUBST([RM])
-
-AC_PATH_PROG([TOUCH],[touch],[Missing])
-AS_IF([test $TOUCH = Missing],
-      [AC_MSG_FAILURE([Cannot find a working touch required for building Ravl])]
-     )
-AC_SUBST([TOUCH])
-
-AC_PATH_PROG([TR],[tr],[Missing])
-AS_IF([test $TR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working tr required for building Ravl])]
-     )
-AC_SUBST([TR])
-
-# Provide switch to allow use of pawd instead of pwd
+# Switch to allow use of pawd instead of pwd
 AC_ARG_WITH([pawd],
             [AS_HELP_STRING([--with-pawd],
                             [Employ pawd rather than pwd to return the current directory @<:@default=No@:>@]
@@ -1713,63 +930,1009 @@ AC_ARG_WITH([pawd],
                                       GET_CWD=$with_pawd
                                      ],
                                      [AC_MSG_WARN([--with-pawd set to an unknown option, setting ignored])
-                                      AC_PATH_PROG([GET_CWD],[pwd],[Missing])
-                                      AS_IF([test $GET_CWD = Missing],
-                                            [AC_MSG_FAILURE([Cannot find a working pwd required for building Ravl])]
-                                           )
                                      ]
                                     )
                                ;;
                        esac
             ],
-            [trace 5 No --with-$1 specified
-             AC_PATH_PROG([GET_CWD],[pwd],[Missing])
-             AS_IF([test $GET_CWD = Missing],
-                   [AC_MSG_FAILURE([Cannot find a working pwd required for building Ravl])]
-                  )
+            [trace 5 No --with-pawd specified
+             # Not setting GET_CWD so default from QMake config is used
             ]
            )
-AC_SUBST([GET_CWD])
 
-# Now check for those utilities we use in the Ravl build that aren't recognised
-# as being reliably portable by the GNU standard. For these, we will need to
-# consider providing an alternative implementation in cases where any are absent.
-AC_PROG_LN_S
-AC_SUBST([LN_S])
 
-AS_IF([test x$PAGER = x],
-      [AC_PATH_PROG([PKG_PAGER],[more],[Missing])
-       AS_IF([test $PKG_PAGER = Missing],
-             [AC_PATH_PROG([PKG_PAGER],[pg],[Missing])
-              AS_IF([test $PKG_PAGER = Missing],
-                    [AC_MSG_FAILURE([Cannot find a working pager required for building Ravl])]
-                   )
-             ]
-            )
+
+# Locate required programs.
+trace 2 Checking for support programs
+
+# Look for the programs and utilities that this script will need to call
+# (It may be too late to check for a lot of commands as the preceding code
+# has already used them (test, print, etc.) but we can check for what we're
+# about to use...)
+AS_IF([test -f $QMAKE_CONFIGFILES/Config.QMake],
+      [trace 2 Reading configuration from $QMAKE_CONFIGFILES/Config.QMake
+
+       # We are using an existing QMake so we can use the locations of the
+       # support programs as already determined by configuring QMake.
+     
+       # First find sed to extract the settings
+       if ( test x$SED = x )
+       then
+         # User has not specified a sed program to use, attempt to find one
+         AC_PROG_SED
+         if ( test x$SED = x )
+         then
+           # Found no sed, try grep and awk instead
+           if ( test x$GREP != x )
+           then
+             AC_PROG_GREP
+             if ( test x$GREP = x )
+             then
+               AC_MSG_FAILURE([Unable to find a working sed or grep command. Re-run configure adding the SED=... setting from $QMAKE_CONFIGFILES/Config.QMake])
+             fi
+           else
+             # User supplied the grep command to use, remember this setting
+             USER_GREP=$GREP
+           fi
+           if ( test x$AWK = x )
+           then
+             AC_PROG_AWK
+             if ( test x$AWK = x )
+             then
+               # Couldn't find awk (or sed), try cut
+               if ( test x$CUT =x )
+               then
+                 AC_PATH_PROG([CUT], [cut], [Missing])
+                 if ( test $CUT = Missing )
+                 then
+                   AC_MSG_FAILURE([Unable to find a working sed, awk or cut command. Re-run configure adding the SED=... setting from $QMAKE_CONFIGFILES/Config.QMake])
+                 fi
+               else
+                 # User supplied the cut command to use, remember the setting
+                 USER_CUT=$CUT
+               fi
+               # Use cut (and grep) to find what awk is (we could set SED
+               # here but this makes the coding more straight forward)
+               AWK=`$GREP ^AWK= $QMAKE_CONFIGFILES/Config.QMake | $CUT -d= -f2`
+               if ( test x$AWK = x )
+               then
+                 AC_MSG_FAILURE([Unable to read awk setting from $QMAKE_CONFIGFILES/Config.QMake])
+               fi
+               if ( test x$USER_CUT = x )
+               then
+                 # User didn't supply cut command, forget setting
+                 CUT=""
+               fi
+             fi
+           else
+             # User supplied the awk command to use, remember this setting
+             USER_AWK=$AWK
+           fi
+           # Now we can read what QMake uses for sed
+           SED=`$GREP ^SED= $QMAKE_CONFIGFILES/Config.QMake | $AWK -F= ' { print $2 }'`  
+           if ( test x$SED = x )
+           then
+             AC_MSG_FAILURE([Unable to read sed setting from $QMAKE_CONFIGFILES/Config.QMake])
+           fi
+           if ( test x$USER_AWK = x )
+           then
+             # User didn't supply awk command, forget setting (and use pick
+             # up the one from Config.QMake later
+             AWK=""
+           fi
+           if ( test x$USER_GREP = x )
+           then
+             # User didn't supply grep command, forget setting (and use pick
+             # up the one from Config.QMake later
+             GREP=""
+           fi
+         else
+           # Found a sed command to use for now, but we need to use that to
+           # find out what the value configured into QMake was
+           SED=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
+           if ( test x$SED = x )
+           then
+             AC_MSG_FAILURE([Unable to read sed setting from $QMAKE_CONFIGFILES/Config.QMake])
+           fi
+         fi
+       else
+         # User supplied the sed command to use, remember this setting
+         USER_SED=$SED
+       fi
+         
+
+       # Now find the rest of the required programs (if the user hasn't
+       # specified them)
+     
+       if ( test x$AWK = x )
+       then
+         AWK=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AWK=\(.*\)/\1/p'`
+       else
+         # Remeber the user setting so we output it to Config.Project
+         USER_AWK=$AWK
+       fi
+     
+       if ( test x$CC = x )
+       then
+         CC=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CC=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_CC=$CC
+       fi
+       dnl# We also need to call AC_PROG_CC as that initialises several
+       dnl# prerequisites of configure's operation. However, we cannot call
+       dnl# it here as the prerequisite code will get generated soley in this
+       dnl# branch of the AS_IF (even if we also call AC_PROG_CC in the else
+       dnl# branch).
+
+       if ( test x$CPP = x )
+       then
+         CPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CPP=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_CPP=$CPP
+       fi
+       dnl# Again we will need to call AC_PROG_CPP but cannot do that here
+     
+       if ( test x$CXX = x )
+       then
+         CXX=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXX=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_CXX=$CXX
+       fi
+       dnl# Need to call AC_PROG_CXX outside this AS_IF
+     
+       if ( test x$CXXCPP = x )
+       then
+         CXXCPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_CXXCPP=$CXXCPP
+       fi
+       dnl# Will need to call AC_PROG_CXXCPP later
+     
+       if ( test x$EXPR = x )
+       then
+         EXPR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^EXPR=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_EXPR=$EXPR
+       fi
+     
+       if ( test x$GREP = x )
+       then
+         GREP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GREP=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_GREP=$GREP
+       fi
+     
+       if ( test x$LD = x )
+       then
+         LD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^LD=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_LD=$LD
+       fi
+       case `"$LD" -v 2>&1 < /dev/null` in
+         *GNU* | *'with BFD'* )  GNU_LD=Yes
+                                 ;;
+                            * )  GNU_LD=No
+                                 ;;
+       esac
+     
+       if ( test x$MAKE = x )
+       then
+         MAKE=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^MAKE=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_MAKE=$MAKE
+       fi
+       # Run $MAKE -v to check if we have GNU Make
+       case `"$MAKE" -v 2>&1 </dev/null` in
+         *GNU* | *'with BFD'* )  GNU_MAKE=Yes
+                                 ;;
+                            * )  GNU_MAKE=No
+                                 ;;
+       esac
+     
+       if ( test x$SORT = x )
+       then
+         SORT=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SORT=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_SORT=$SORT
+       fi
+     
+       if ( test x$TR = x )
+       then
+         TR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^TR=\(.*\)/\1/p'`
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_TR=$TR
+       fi
+     
+     
+
+       # Read in any appropriate settings from QMake configuration
+
+       if ( test x$USER_with_rpath = x )
+       then
+         # QMake settings not overridden, so check what they were
+         with_rpath=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
+         if ( test x$with_rpath != Y )
+         then
+           # QMake didn't enable it so don't consider it from now on
+           with_rpath=""
+         fi
+       fi
       ],
-      [PKG_PAGER=$PAGER]
+      [# The definitive list of support programs will be located by the configure
+       # script from QMake. However, that will only get run towards the end of
+       # this configure script; we will have to ascertain where the programs are
+       # for those utilities that this script requires.
+     
+       trace 2 No existing QMake configuration, searching for required programs
+     
+       # Utils called by this script
+     
+       if ( test "x$AWK" = x )
+       then
+         # User has not already specified which awk program to use so find one
+         AC_PROG_AWK
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_AWK=$AWK
+       fi
+       
+       if ( test "x$EXPR" = x )
+       then
+         AC_PATH_PROG([EXPR],[expr],[Missing])
+         AS_IF([test $EXPR = Missing],
+               [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
+              )
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_EXPR=$EXPR
+       fi
+     
+       if ( test "x$GREP" = x )
+       then
+         AC_PROG_GREP
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_GREP=$GREP
+       fi
+       
+       if ( test "x$SED" = x )
+       then
+         AC_PROG_SED
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_SED=$SED
+       fi
+     
+       if ( test "x$SORT" = x )
+       then
+         AC_PATH_PROG([SORT],[sort],[Missing])
+         AS_IF([test $SORT = Missing],
+               [AC_MSG_FAILURE([Cannot find a working sort required for building Ravl])]
+              )
+         AC_SUBST([SORT])
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_SORT=$SORT
+       fi
+     
+       if ( test "x$TR" = x )
+       then
+         AC_PATH_PROG([TR],[tr],[Missing])
+         AS_IF([test $TR = Missing],
+               [AC_MSG_FAILURE([Cannot find a working tr - configure cannot continue])]
+              )
+       else
+         # Remember the user setting so we output it to Config.Project
+         USER_TR=$TR
+       fi
+     
+     
+     
+       # Programs this script needs to know more about (e.g. to check the 
+       # version or provider, etc.)
+     
+       # C and C++ compilers and preprocessors
+       #
+       dnl# We cannot call AC_PROG_xx to look for these prorgrams at this
+       dnl# point in the script; these calls must not be made conditionally
+       dnl# (in this AS_IF) as this can prevent some needed initialisation
+       dnl# code from being run on the alternative execution path. Instead,
+       dnl# preseve any user provided settings here and call the locating
+       dnl# macros outside of this if statement.
+       if ( test "x$CC" != x )
+       then
+         # Remember the user setting so we output it to Config.Project
+         USER_CC=$CC
+       fi
+     
+       if ( test "x$CPP" != x )
+       then
+         # Remember the user setting so we output it to Config.Project
+         USER_CPP=$CPP
+       fi
+     
+       if ( test "x$CXX" != x )
+       then
+         # Remember the user setting so we output it to Config.Project
+         USER_CXX=$CXX
+       fi
+     
+       if ( test "x$CXXCPP" != x )
+       then
+         # Remember the user setting so we output it to Config.Project
+         USER_CXXCPP=$CXXCPP
+       fi
+     
+       # Look for linker
+       #
+       # This code inspired by LT_PATH_LD from libtool
+       if ( test "x$LD" = x )
+       then
+         # User has not asked for a specific linker, we have to look for one
+     
+         if ( test "$GCC" = yes )
+         then
+           # If we have gcc we can try: $CC -print-prog-name=ld
+           AC_MSG_CHECKING([which ld is used by $CC])
+           LD=`$CC -print-prog-name=ld`
+           # Test host_os != mingw*
+           if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
+           then
+             # gcc leaves a trailing carriage return which upsets mingw
+             LD=`echo $LD | $TR -d '\015'`
+           fi
+           
+           if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` = XX$LD )
+           then
+             # $LD is an absolute path
+             # Fold all \ to /
+             LD=`echo "$LD"| $SED 's%\\\\%/%g'`
+             # $LD may be an absolute path but might still need cannonicalisation
+             while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
+             do
+               LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
+             done
+             AC_MSG_RESULT([$LD])
+           else
+             # $CC -print-prog-name=ld has not delivered us an absolute path
+             # We need to use the searchlist
+             LD=""
+             AC_MSG_RESULT([unhelpful])
+           fi
+         else
+           # Not using GCC so we don't know how to ask the compiler, we will have to
+           # look for ld on the searchlist
+           LD=""
+         fi
+       
+         if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` != XX$LD )
+         then
+           # LD not set to an absolute path, must search for ld
+       
+           AC_MSG_CHECKING([for ld on the search-list])
+           GNU_LD=""
+           ANO_LD=""
+           save_ifs="$IFS"
+           IFS=$PATH_SEPARATOR
+           for dir in $PATH
+           do
+             IFS="$save_ifs"
+             if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
+             then
+               # Some variants of GNU ld only accept -v, so use that not --version
+               case `"$dir/ld" -v 2>&1 </dev/null` in
+               *GNU* | *'with BFD'*)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                       then
+                                         # We are not using AIX so favour the GNU linker
+                                         # (that we have just found)
+                                         LD=$dir/ld
+                                         break
+                                       else
+                                         # We are on AIX so should use the native
+                                         # linker if possible but remember where the
+                                         # GNU version is should that be all we find
+                                         if ( test X$GNU_LD = X )
+                                         then
+                                           # This is the first GNU version of ld on the
+                                           # PATH so record it
+                                           GNU_LD=$dir/ld
+                                         fi
+                                       fi
+                                       ;;
+                                  *)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                       then
+                                         # We are not on AIX so should favour the GUN
+                                         # version of ld. As this is not a GNU version,
+                                         # merely remember where the first non-GNU
+                                         # version is should this be the only one we
+                                         # actually find.
+                                         if ( test X$ANO_LD = X )
+                                         then
+                                           ANO_LD=$dir/ld
+                                         fi
+                                       else
+                                         # As we are on AIX and have found the non-GNU
+                                         # linker, we should favour that.
+                                         LD=$dir/ld
+                                       fi
+                                       ;;
+               esac
+             fi
+           done
+           IFS="$save_ifs"
+           if ( test X$LD = X )
+           then
+             # We haven't located our preferred linker, is there a fall-back?
+             if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+             then
+               # We are not using AIX but found no GNU linker, use any other we found
+               LD=$ANO_LD
+             else
+               # We are on AIX and wanted the native linker which we did not locate.
+               # No matter, try any GNU version we found
+               LD=$GNU_LD
+             fi
+           fi
+         fi # End of checking for ld on $PATH (LD not already an absolute pathname)
+       
+         # Have we actually found a linker?
+         if ( test "X$LD" != X && test -x $LD )
+         then
+           # We have, what type is it?
+           VER_STRING=`"$LD" -v 2>&1 </dev/null`
+           if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+           then
+             # GNU linker
+             GNU_LD=yes
+           else
+             GNU_LD=no
+           fi
+           AC_MSG_RESULT([$LD])
+         else
+           AC_MSG_RESULT([no])
+           AC_MSG_FAILURE([Cannot find a working ld required for building Ravl])
+         fi
+       else
+         # User specified LD
+         if ( test -x $LD )
+         then
+           # What type is it?
+           VER_STRING=`"$LD" -v 2>&1 </dev/null`
+           if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+           then
+             # GNU linker
+             GNU_LD=yes
+           else
+             GNU_LD=no
+           fi
+           # Remember the user setting so we output it to Config.Project
+           USER_LD=$LD
+         else
+           AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
+         fi
+       fi
+     
+       # Look for the make utility
+     
+       if ( test "X$MAKE" = X )
+       then
+         # User has not asked for a specific make utility, look for make
+         MAKE=make
+       fi
+     
+       if ( test X`$EXPR X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
+       then
+         # User has not asked for a specific path for the make utility, we have to look
+         # for it on the search list
+     
+         AC_MSG_CHECKING([for make utility])
+         GNU_MAKE=""
+         ANO_MAKE=""
+         save_ifs="$IFS"
+         IFS=$PATH_SEPARATOR
+         for dir in $PATH
+         do
+           IFS="$save_ifs"
+           if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
+           then
+             # Run $MAKE -v to check if we have GNU Make
+             case `"$dir/$MAKE" -v 2>&1 </dev/null` in
+               *GNU* | *'with BFD'*)   GNU_MAKE=$dir/$MAKE
+                                       # Found GNU Make which we prefer so we need
+                                       # look no further
+                                       break
+                                       ;;
+                                  *)   if ( test X$ANO_MAKE = X )
+                                       then
+                                         ANO_MAKE=$dir/$MAKE
+                                       fi
+                                       ;;
+               esac
+           fi
+         done
+         IFS="$save_ifs"
+         if ( test X$GNU_MAKE = X )
+         then
+           # Preferred GNU Make not found, was there an alternative
+           if ( test  X$ANO_MAKE = X)
+           then
+             AC_MSG_RESULT([no])
+             AC_MSG_FAILURE([Cannot find a working make required for building Ravl])
+           else
+             MAKE=$ANO_MAKE
+             AC_MSG_RESULT([$MAKE])
+             GNU_MAKE=no
+           fi
+         else
+           MAKE=$GNU_MAKE
+           AC_MSG_RESULT([$MAKE])
+           GNU_MAKE=yes
+         fi
+       else
+         # User specified a full path to make (in MAKE environment variable)
+         AC_MSG_CHECKING([$$MAKE specified make utility])
+         if ( test -x $MAKE )
+         then
+           VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
+           if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+           then
+             GNU_MAKE=yes
+           else
+             GNU_MAKE=no
+           fi
+           AC_MSG_RESULT([$MAKE])
+         else
+           AC_MSG_RESULT([unexecutable])
+           AC_MSG_FAILURE([$$MAKE does not specify a usable make utility])
+         fi
+       fi
+       
+     
+     
+      ]
      )
-AC_SUBST([PKG_PAGER])
+  
+  
+dnl# Call routines to locate compilers etc. This is as much to
+dnl# initialise the prerequisites of later configure tests as to find
+dnl# the compiler themselves (as we will already know where they are
+dnl# if we are using an existing QMake installation or if the user
+dnl# has supplied their path).
+# Locate/initialise C compiler
+#
+# First record any user-supplied CFLAGS
+CONFIGURE_CFLAGS=$CFLAGS
+AC_PROG_CC
+# AC_PROG_CC won't actually have altered CFLAGS if a value was already set
+# however, if an initial value was not provided, AC_PROG_CC may have set CFLAGS
+# to include optimisation or -g. As we do not want this for the Ravl build, we
+# reinitialise CFLAGS to the original value (which may be null or what a user
+# supplied on the command line).
+CFLAGS=$CONFIGURE_CFLAGS
+     
+# Locate/initialise C preprocessor
+AC_PROG_CPP
 
-AC_PATH_PROG([SYNC],[sync],[Missing])
-AS_IF([test $SYNC = Missing],
-      [AC_MSG_FAILURE([Cannot find a working sync required for building Ravl])]
-     )
-AC_SUBST([SYNC])
+# Locate/initialise C++ compiler
+# 
+# Record any CCFLAGS configured by the user
+CONFIGURE_CCFLAGS=$CCFLAGS
+AC_PROG_CXX
+# Prevent optimisation or -g being to CCFLAGS if it was initially unset
+CCFLAGS=$CONFIGURE_CCFLAGS
 
-AC_PATH_PROG([XARGS],[xargs],[Missing])
-AS_IF([test $XARGS = Missing],
-      [AC_MSG_FAILURE([Cannot find a working xargs required for building Ravl])]
-     )
-AC_SUBST([XARGS])
+# Locate/initialise C++ preprocessor
+AC_PROG_CXXCPP
+  
+  
+  
 
-# Perl is also required by the Ravl (really QMake) build process but as it is 
-# also required for Ravl functionality, this is addressed by a check further on
-# in this script (where RESOURCES is being set-up)
+# Set relevant flags dependant on the software tools we have found
+#
+dnl Only select flags dependant on the tools in use here. Set all options
+dnl pertaining to platform specifics later in this script
+dnl
 
-# Remaining utils used to build Ravl are all regarded by the GNU standards as
-# safe for direct use:
-#       cat cmp diff ls mv rmdir tar test touch true
+# Set CFLAGS
+if ( test X$GCC = Xyes )
+then
+   # GNU C Compiler
+   PKG_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
+   PKG_DEFAULT_CFLAGS=" -O "
+   CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+   CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
+   CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print $2 }'`
+   CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print $3 }'`
+   if test X$CC_MAJOR=X4 && test $(($CC_MINOR)) -lt 3
+   then
+      # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
+      # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
+      # that work with the Ravl source and employ -O3 as compensation
+      PKG_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+   else
+      PKG_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+   fi
+   PKG_OPT_CFLAGS=$PKG_OPT_CFLAGS" -march=native -mtune=native "
+   PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   if test $ac_cv_prog_cc_g = yes
+   then
+      PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
+   fi
+   PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
+   PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
+   PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
+   PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
+else
+   # No GNU compiler, try relevant machine specific options we have used before
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
+dnl 
+   case X$host_os in
+   Xsolaris* ) PKG_GLOBAL_CFLAGS=""
+               PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
+               PKG_DEFAULT_CFLAGS=" -O "
+               PKG_OPT_CFLAGS=" -O2 "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               if test $ac_cv_prog_cc_g = yes
+               then
+                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
+               fi
+               PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
+               PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
+               PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
+               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
+               ;;
+   Xirix* )    CC=$CC" -n32 -J4 -mp "
+               # Not sure why this originally was done this way rather than use
+               # CFLAGS, but assume there was a reason and propogate the method
+               PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) "
+               PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
+               PKG_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+               PKG_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               if test $ac_cv_prog_cc_g = yes
+               then
+                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
+               fi
+               PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
+               PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
+               PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
+               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
+               ;;
+   * )         PKG_GLOBAL_CFLAGS=""
+               PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
+               PKG_DEFAULT_CFLAGS=" -O "
+               PKG_OPT_CFLAGS=" -O2 "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               if test $ac_cv_prog_cc_g = yes
+               then
+                  PKG_DEBUG_CFLAGS=" -g "$PKG_DEBUG_CFLAGS
+               fi
+               PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
+               PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
+               PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
+               PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
+               ;;
+   esac
+fi
+
+# Declare output variables for compiler ANSI switches
+AC_SUBST([PKG_CANSIFLAG])
+AC_SUBST([PKG_CCANSIFLAG])
+
+# Declare PKG_XXXXX_CFLAGS variables as output for Config.Project
+AC_SUBST([PKG_CHECK_CFLAGS])
+AC_SUBST([PKG_DEBUG_CFLAGS])
+AC_SUBST([PKG_DEFAULT_CFLAGS])
+AC_SUBST([PKG_GLOBAL_CFLAGS])
+AC_SUBST([PKG_GPROF_CFLAGS])
+AC_SUBST([PKG_OPT_CFLAGS])
+AC_SUBST([PKG_PROF_CFLAGS])
+AC_SUBST([PKG_SHARED_CFLAGS])
+
+# Allow output of any user provided CFLAGS
+AC_SUBST([CONFIGURE_CFLAGS])
+
+# Set CCFLAGS
+if ( test X$GXX = Xyes )
+then
+   # GNU C++ Compiler
+   PKG_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
+   PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
+   PKG_DEFAULT_CCFLAGS=" -O "
+   CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+   CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
+   CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print $2 }'`
+   CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print $3 }'`
+   if test X$CXX_MAJOR=X4 && test $(($CXX_MINOR)) -lt 3
+   then
+      # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
+      # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
+      # that work with the Ravl source and employ -O3 as compensation
+      PKG_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+   else
+      PKG_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+   fi
+   PKG_OPT_CCFLAGS=$PKG_OPT_CCFLAGS" -march=native -mtune=native "
+   PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+   if test $ac_cv_prog_cc_g = yes
+   then
+      PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
+   fi
+   PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
+   PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
+   PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
+   PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+else
+   # No GNU compiler, try relevant machine specific options we have used before
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
+dnl 
+   case X$host_os in
+   Xsolaris* ) PKG_GLOBAL_CCFLAGS=""
+               PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
+               PKG_DEFAULT_CCFLAGS=" -O "
+               PKG_OPT_CCFLAGS=" -O2 "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               if test $ac_cv_prog_cc_g = yes
+               then
+                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
+               fi
+               PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
+               PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
+               PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
+               ;;
+   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
+               # Not sure why this originally was done this way rather than use
+               # CCFLAGS, but assume there was a reason and propogate the method
+               PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) "
+               PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
+               PKG_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
+               PKG_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               if test $ac_cv_prog_cc_g = yes
+               then
+                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
+               fi
+               PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
+               PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
+               PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
+               ;;
+   * )         PKG_GLOBAL_CCFLAGS=""
+               PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
+               PKG_DEFAULT_CCFLAGS=" -O "
+               PKG_OPT_CCFLAGS=""
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
+               if test $ac_cv_prog_cc_g = yes
+               then
+                  PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
+               fi
+               PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
+               PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
+               PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+               PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
+               ;;
+   esac
+fi
+
+# Declare PKG_XXXXX_CCFLAGS variables as output for Config.Project
+AC_SUBST([PKG_CHECK_CCFLAGS])
+AC_SUBST([PKG_DEBUG_CCFLAGS])
+AC_SUBST([PKG_DEFAULT_CCFLAGS])
+AC_SUBST([PKG_GLOBAL_CCFLAGS])
+AC_SUBST([PKG_GPROF_CCFLAGS])
+AC_SUBST([PKG_OPT_CCFLAGS])
+AC_SUBST([PKG_PROF_CCFLAGS])
+AC_SUBST([PKG_SHARED_CCFLAGS])
+
+# Allow output of any user provided CCFLAGS
+AC_SUBST([CONFIGURE_CCFLAGS])
+
+
+# Set PKG_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
+if ( test X$GNU_LD = Xyes )
+then
+  # We are using a GNU linker
+
+  # General Ravl link options
+  PKG_CHECK_LDFLAGS=
+  PKG_DEBUG_LDFLAGS=
+  # -g does nothing on the linker so omit it
+  PKG_DEFAULT_LDFLAGS=
+  PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
+  PKG_GPROF_LDFLAGS=
+  PKG_OPT_LDFLAGS=
+  PKG_PROF_LDFLAGS=
+  PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
+
+  # Ravl link options used for libraries
+  PKG_CHECK_LDLIBFLAGS=
+  PKG_DEBUG_LDLIBFLAGS=
+  PKG_DEFAULT_LDLIBFLAGS=
+  PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
+  PKG_GPROF_LDLIBFLAGS=
+  PKG_OPT_LDLIBFLAGS=
+  PKG_PROF_LDLIBFLAGS=
+  PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
+else
+  # Not using a GNU linker, try native flags we have used before or default to
+  # what works for GNU
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
+dnl 
+  case X$host_os in
+  Xcygwin )   PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=" -g "
+              PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
+
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
+              ;;
+  Xirix*    ) PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=
+              PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
+
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
+              ;;
+  Xsolaris* ) PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=" -g "
+              PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS= "\$(LINKER_SHARED_LDFLAGS) "
+
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
+              ;;
+  * )         PKG_CHECK_LDFLAGS=
+              PKG_DEBUG_LDFLAGS=
+              PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
+              PKG_DEFAULT_LDFLAGS=
+              PKG_GPROF_LDFLAGS=
+              PKG_PROF_LDFLAGS=
+              PKG_OPT_LDFLAGS=
+              PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
+
+              PKG_CHECK_LDLIBFLAGS=
+              PKG_DEBUG_LDLIBFLAGS=
+              PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
+              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=
+              PKG_PROF_LDLIBFLAGS=
+              PKG_OPT_LDLIBFLAGS=
+              PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
+              ;;
+  esac
+fi
+
+# Declare variables that the linker as output for Config.Project
+AC_SUBST([LDFLAGS])
+# any user-provided LDFLAGS will be recorded in Config.Project as CONFIGURE_LDFLAGS
+
+AC_SUBST([PKG_CHECK_LDFLAGS])
+AC_SUBST([PKG_DEBUG_LDFLAGS])
+AC_SUBST([PKG_DEFAULT_LDFLAGS])
+AC_SUBST([PKG_GLOBAL_LDFLAGS])
+AC_SUBST([PKG_GPROF_LDFLAGS])
+AC_SUBST([PKG_OPT_LDFLAGS])
+AC_SUBST([PKG_PROF_LDFLAGS])
+AC_SUBST([PKG_SHARED_LDFLAGS])
+
+AC_SUBST([PKG_CHECK_LDLIBFLAGS])
+AC_SUBST([PKG_DEBUG_LDLIBFLAGS])
+AC_SUBST([PKG_DEFAULT_LDLIBFLAGS])
+AC_SUBST([PKG_GLOBAL_LDLIBFLAGS])
+AC_SUBST([PKG_GPROF_LDLIBFLAGS])
+AC_SUBST([PKG_OPT_LDLIBFLAGS])
+AC_SUBST([PKG_PROF_LDLIBFLAGS])
+AC_SUBST([PKG_SHARED_LDLIBFLAGS])
+
+
+# Declare flags for ar
+
+dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a non-standard ar
+dnl that takes completely different flags then that is ok to list here (as it
+dnl pertains to the tool itself, not the platform). If your platform uses the
+dnl GNU version of ar but, for example requires an added 's' flag, that setting
+dnl should be put in the platform specific code at the end of this script, not
+dnl here.
+PKG_ARFLAGS=" \$(AR_SPECIFIC_ARFLAGS) "
+
+AC_SUBST([PKG_ARFLAGS])
+
+# Declare flags for make
+
+dnl Only put make flags specific to any particular version of make here. DO NOT
+dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final section of this
+dnl script
+
+PKG_MAKEFLAGS=" \$(MAKE_SPECIFIC_MAKEFLAGS) "
+
+AC_SUBST([MAKEFLAGS])
+# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.Project 
+AC_SUBST([PKG_MAKEFLAGS])
+
+dnl End of software tools section
+
+
+dnl# It would be good to enable the following code, however _AC_... aren't 
+dnl# generally available macros and may dissappear/change in differing versions
+dnl# of autotools so its best not to rely on them. If only there was a supported
+dnl# means of doing this.. (you can check for the preprocessor (as we do, above)
+dnl# but not all of the calls that _AC_INCLUDES_DEFAULT_REQUIREMENTS expands to
+dnl# are individually available.
+dnl#
+dnl#      Cause the checks for the C pre-processor and default headers to be done now
+dnl#      (This can prevent multiple calls within the script's body)
+dnl       _AC_INCLUDES_DEFAULT_REQUIREMENTS
 
 
 trace 2 Initial checks complete, now processing cmd-line
@@ -3415,39 +3578,202 @@ echo > ./Config.Project.in
 echo \# Ravl configuration file - regenerate using configure >> ./Config.Project.in
 echo >> ./Config.Project.in
 
-# Define location of compilers and helper programs for build system
+# Define location of compilers and helper programs for build system that
+# override the QMake default settings
+#
+dnl Override comes from user supplying XXXX= on configure cmd line or
+dnl selecting an appropriate configure switch.
+dnl 
+dnl Testing for XXX variable being set will detect those overrides for 
+dnl command not used in this script. However, those commands used in this
+dnl script (awk, sed, etc.) will have had the variable set up. For this
+dnl reason, we check USER_XXX which will preserved any user setting prior
+dnl to this script setting the XXX variable for internal use.
+dnl
 echo >> ./Config.Project.in
-echo \# List of programs required for the build process >> ./Config.Project.in
+echo \# List of modified program settings >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo AR=@AR@ >> ./Config.Project.in
-echo AWK=@AWK@ >> ./Config.Project.in
-echo CC=@CC@ >> ./Config.Project.in
-echo CP=@CP@ >> ./Config.Project.in
-echo CPP=@CPP@ >> ./Config.Project.in
-echo CHGRP=@CHGRP@ >> ./Config.Project.in
-echo CHMOD=@CHMOD@ >> ./Config.Project.in
-echo CHOWN=@CHOWN@ >> ./Config.Project.in
-echo CXX=@CXX@ >> ./Config.Project.in
-echo CXXCPP=@CXXCPP@ >> ./Config.Project.in
-echo EXPR=@EXPR@ >> ./Config.Project.in
-echo GET_CWD=@GET_CWD@ >> ./Config.Project.in
-echo GREP=@GREP@ >> ./Config.Project.in
-echo LD=@LD@ >> ./Config.Project.in
-echo LEX=@LEX@ >> ./Config.Project.in
-echo LEXLIB=@LEXLIB@ >> ./Config.Project.in
-echo LN_S=@LN_S@ >> ./Config.Project.in
-echo MAKE=@MAKE@ >> ./Config.Project.in
-echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
-echo RANLIB=@RANLIB@ >> ./Config.Project.in
-echo PKG_PAGER=@PKG_PAGER@ >> ./Config.Project.in
-echo RM=@RM@ >> ./Config.Project.in
-echo SED=@SED@ >> ./Config.Project.in
-echo SORT=@SORT@ >> ./Config.Project.in
-echo SYNC=@SYNC@ >> ./Config.Project.in
-echo TOUCH=@TOUCH@ >> ./Config.Project.in
-echo TR=@TR@ >> ./Config.Project.in
-echo XARGS=@XARGS@ >> ./Config.Project.in
-echo YACC=@YACC@ >> ./Config.Project.in
+
+if ( test "x$AR" != x )
+then
+  AC_SUBST([AR])
+  echo AR=@AR@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_AWK" != x )
+then
+  AC_SUBST([USER_AWK])
+  echo AWK=@USER_AWK@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_CC" != x )
+then
+  AC_SUBST([USER_CC])
+  echo CC=@USER_CC@ >> ./Config.Project.in
+fi
+
+if ( test "x$CP" != x )
+then
+  AC_SUBST([CP])
+  echo CP=@CP@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_CPP" != x )
+then
+  AC_SUBST([USER_CPP])
+  echo CPP=@USER_CPP@ >> ./Config.Project.in
+fi
+
+if ( test "x$CHGRP" != x )
+then
+  AC_SUBST([CHGRP])
+  echo CHGRP=@CHGRP@ >> ./Config.Project.in
+fi
+
+if ( test "x$CHMOD" != x )
+then
+  AC_SUBST([CHMOD])
+  echo CHMOD=@CHMOD@ >> ./Config.Project.in
+fi
+
+if ( test "x$CHOWN" != x )
+then
+  AC_SUBST([CHOWN])
+  echo CHOWN=@CHOWN@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_CUT" != x )
+then
+  AC_SUBST([USER_CUT])
+  echo CUT=@USER_CUT@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_CXX" != x )
+then
+  AC_SUBST([USER_CXX])
+  echo CXX=@USER_CXX@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_CXXCPP" != x )
+then
+  AC_SUBST([USER_CXXCPP])
+  echo CXXCPP=@USER_CXXCPP@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_EXPR" != x )
+then
+  AC_SUBST([USER_EXPR])
+  echo EXPR=@USER_EXPR@ >> ./Config.Project.in
+fi
+
+if ( test "x$GET_CWD" != x )
+then
+  AC_SUBST([GET_CWD])
+  echo GET_CWD=@GET_CWD@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_GREP" != x )
+then
+  AC_SUBST([USER_GREP])
+  echo GREP=@USER_GREP@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_LD" != x )
+then
+  AC_SUBST([USER_LD])
+  echo LD=@USER_LD@ >> ./Config.Project.in
+fi
+
+if ( test "x$LEX" != x )
+then
+  AC_SUBST([LEX])
+  echo LEX=@LEX@ >> ./Config.Project.in
+fi
+
+if ( test "x$LEXLIB" != x )
+then
+  AC_SUBST([LEXLIB])
+  echo LEXLIB=@LEXLIB@ >> ./Config.Project.in
+fi
+
+if ( test "x$LN_S" != x )
+then
+  AC_SUBST([LN_S])
+  echo LN_S=@LN_S@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_MAKE" != x )
+then
+  AC_SUBST([USER_MAKE])
+  echo MAKE=@USER_MAKE@ >> ./Config.Project.in
+fi
+
+if ( test "x$MKDIR_P" != x )
+then
+  AC_SUBST([MKDIR_P])
+  echo MKDIR_P=@MKDIR_P@ >> ./Config.Project.in
+fi
+
+if ( test "x$PAGER" != x )
+then
+  AC_SUBST([PAGER])
+  echo PKG_PAGER=@PAGER@ >> ./Config.Project.in
+fi
+
+if ( test "x$RANLIB" != x )
+then
+  AC_SUBST([RANLIB])
+  echo RANLIB=@RANLIB@ >> ./Config.Project.in
+fi
+
+if ( test "x$RM" != x )
+then
+  AC_SUBST([RM])
+  echo RM=@RM@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_SED" != x )
+then
+  AC_SUBST([USER_SED])
+  echo SED=@USER_SED@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_SORT" != x )
+then
+  AC_SUBST([USER_SORT])
+  echo SORT=@USER_SORT@ >> ./Config.Project.in
+fi
+
+if ( test "x$SYNC" != x )
+then
+  AC_SUBST([SYNC])
+  echo SYNC=@SYNC@ >> ./Config.Project.in
+fi
+
+if ( test "x$TOUCH" != x )
+then
+  AC_SUBST([TOUCH])
+  echo TOUCH=@TOUCH@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_TR" != x )
+then
+  AC_SUBST([USER_TR])
+  echo TR=@USER_TR@ >> ./Config.Project.in
+fi
+
+if ( test "x$XARGS" != x )
+then
+  AC_SUBST([XARGS])
+  echo XARGS=@XARGS@ >> ./Config.Project.in
+fi
+
+if ( test "x$YACC" != x )
+then
+  AC_SUBST([YACC])
+  echo YACC=@YACC@ >> ./Config.Project.in
+fi
+
 echo >> ./Config.Project.in
 
 
@@ -3461,7 +3787,7 @@ echo >> ./Config.Project.in
 echo \# Flags for the C compiler >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
-echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.Project.in
+echo CONFIGURE_CFLAGS=" \$(QMAKE_CFLAGS) @CONFIGURE_CFLAGS@ ">> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Ravl compiler settings >> ./Config.Project.in
 echo PKG_CHECK_CFLAGS=@PKG_CHECK_CFLAGS@ >> ./Config.Project.in
@@ -3480,7 +3806,7 @@ echo >> ./Config.Project.in
 echo \# Flags for the C++ compiler >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
-echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.Project.in
+echo CONFIGURE_CCFLAGS=" \$(QMAKE_CCFLAGS) @CONFIGURE_CCFLAGS@ ">> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Ravl compiler settings >> ./Config.Project.in
 echo PKG_CHECK_CCFLAGS=@PKG_CHECK_CCFLAGS@ >> ./Config.Project.in
@@ -3499,7 +3825,7 @@ echo >> ./Config.Project.in
 echo \# Flags for the linker >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
-echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.Project.in
+echo CONFIGURE_LDFLAGS=" \$(QMAKE_LDFLAGS) @LDFLAGS@ ">> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# General Ravl linker settings >> ./Config.Project.in
 echo PKG_CHECK_LDFLAGS=@PKG_CHECK_LDFLAGS@ >> ./Config.Project.in
@@ -3523,10 +3849,24 @@ echo PKG_SHARED_LDLIBFLAGS=@PKG_SHARED_LDLIBFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Specific linker functionality >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.Project.in
-echo USE_LIBPATHSWITCH=$with_rpath >> ./Config.Project.in
-echo >> ./Config.Project.in
-echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.Project.in
+if ( test x$USER_LIBPATHSWITCH != x )
+then
+  AC_SUBST([USER_LIBPATHSWITCH])
+  echo LINKER_LIBPATHSWITCH=@USER_LIBPATHSWITCH@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+fi
+if ( test x$USER_with_rpath != x )
+then
+  AC_SUBST([USER_with_rpath])
+  echo USE_LIBPATHSWITCH=@USER_with_rpath@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+fi
+if ( test x$USER_UNDEFSYMB != x )
+then
+  AC_SUBST([USER_UNDEFSYMB])
+  echo LINKER_UNDEFSYMB=@USER_UNDEFSYMB@ >> ./Config.Project.in
+  echo >> ./Config.Project.in
+fi
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Flags for the archiver >> ./Config.Project.in
@@ -3537,7 +3877,7 @@ echo >> ./Config.Project.in
 echo \# Flags for make >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
-echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.Project.in
+echo CONFIGURE_MAKEFLAGS=" \$(QMAKE_MAKEFLAGS) @MAKEFLAGS@ ">> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# General Ravl make settings >> ./Config.Project.in
 echo PKG_MAKEFLAGS=@PKG_MAKEFLAGS@ >> ./Config.Project.in
