@@ -8498,7 +8498,7 @@ $as_echo "$as_me: WARNING: --with-LibJasper ignored. " >&2;}
                                           use_LibJasper=yes
                                        fi
                                   else
-                                       path = $as_dirname -- $with_LibJasper ||
+                                       path=`$as_dirname -- $with_LibJasper ||
 $as_expr X$with_LibJasper : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_LibJasper : 'X\(//\)[^/]' \| \
 	 X$with_LibJasper : 'X\(//\)$' \| \
@@ -8520,7 +8520,7 @@ $as_echo X$with_LibJasper |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_LibJasper`
@@ -8529,9 +8529,8 @@ $as_echo X$with_LibJasper |
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
-                                             #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                             if ( test X$lib != X$file  )
+                                             lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                             if ( test X$lib != X  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibJasper pointing to a .a will" >&5
@@ -8541,10 +8540,9 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: use $lib and LDFLAGS=$path instead. " >&5
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
-                                                #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                                if ( test X$lib != X$file )
+                                                lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                                if ( test X$lib != X )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
                                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibJasper pointing to a .so will" >&5
@@ -8555,7 +8553,7 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                                 else
                                                    # Parameter is path and name fragment
-                                                   lib=-l`echo $lib | $SED 's/^lib//'`
+                                                   lib=-l`echo $file | $SED 's/^lib//'`
                                                    trace 3 with_LibJasper asks to use $lib and LDFLAGS=$path
                                                 fi
                                              fi
@@ -8653,7 +8651,7 @@ $as_echo "$as_me: WARNING:    for new location: $with_LibJasper_library " >&2;}
                                     with_LibJasper_libpath=$with_LibJasper_library
                                     use_LibJasper=yes
                                  else
-                                    path = $as_dirname -- $with_LibJasper_library ||
+                                    path=`$as_dirname -- $with_LibJasper_library ||
 $as_expr X$with_LibJasper_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_LibJasper_library : 'X\(//\)[^/]' \| \
 	 X$with_LibJasper_library : 'X\(//\)$' \| \
@@ -8675,7 +8673,7 @@ $as_echo X$with_LibJasper_library |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                     if ( test -d $path  )
                                     then
                                        #file=`basename $with_LibJasper_library`
@@ -8685,41 +8683,35 @@ $as_echo X$with_LibJasper_library |
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
-                                          #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                          if ( test X$lib != X$file  )
+                                          lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibJasper_library pointing to a .a" >&5
 $as_echo "$as_me: WARNING: Specifying --with-LibJasper_library pointing to a .a" >&2;}
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
 $as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use:" >&5
-$as_echo "$as_me: WARNING: Instead we will use:" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib" >&5
-$as_echo "$as_me: WARNING:    $lib" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
-                                             #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                             if ( test X$lib != X$file )
+                                             lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                             if ( test X$lib != X )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibJasper_library pointing to" >&5
 $as_echo "$as_me: WARNING: Specifying --with-LibJasper_library pointing to" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with a .so" >&5
-$as_echo "$as_me: WARNING: will cause problems building with a .so" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use:" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use:" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib and" >&5
-$as_echo "$as_me: WARNING:    $lib and" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
                                              else
                                                 # Parameter is path and name fragment
-                                                lib='-l'`echo $lib | $SED 's/^lib//'`
+                                                lib='-l'`echo $file | $SED 's/^lib//'`
                                                 trace 3 $with_LibJasper_library asks to use $lib and LDFLAGS=$path
                                              fi
                                           fi
@@ -8831,7 +8823,7 @@ fi
                                                      # Whole of --with-LibJasper was a directory
                                                      trace 4 No --with-LibJasper-include specified using "[$with_LibJasper_inc]"
                                                   else
-                                                     with_LibJasper_inc = $as_dirname -- $with_LibJasper_inc ||
+                                                     with_LibJasper_inc=`$as_dirname -- $with_LibJasper_inc ||
 $as_expr X$with_LibJasper_inc : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_LibJasper_inc : 'X\(//\)[^/]' \| \
 	 X$with_LibJasper_inc : 'X\(//\)$' \| \
@@ -8853,7 +8845,7 @@ $as_echo X$with_LibJasper_inc |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                                      if  test -d $with_LibJasper_inc
                                                      then
                                                         # Take the path component of --with-LibJasper
@@ -8937,7 +8929,7 @@ $as_echo "$as_me: WARNING: --with-JPEG ignored. " >&2;}
                                           use_JPEG=yes
                                        fi
                                   else
-                                       path = $as_dirname -- $with_JPEG ||
+                                       path=`$as_dirname -- $with_JPEG ||
 $as_expr X$with_JPEG : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_JPEG : 'X\(//\)[^/]' \| \
 	 X$with_JPEG : 'X\(//\)$' \| \
@@ -8959,7 +8951,7 @@ $as_echo X$with_JPEG |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_JPEG`
@@ -8968,9 +8960,8 @@ $as_echo X$with_JPEG |
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
-                                             #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                             if ( test X$lib != X$file  )
+                                             lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                             if ( test X$lib != X  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-JPEG pointing to a .a will" >&5
@@ -8980,10 +8971,9 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: use $lib and LDFLAGS=$path instead. " >&5
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
-                                                #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                                if ( test X$lib != X$file )
+                                                lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                                if ( test X$lib != X )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
                                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-JPEG pointing to a .so will" >&5
@@ -8994,7 +8984,7 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                                 else
                                                    # Parameter is path and name fragment
-                                                   lib=-l`echo $lib | $SED 's/^lib//'`
+                                                   lib=-l`echo $file | $SED 's/^lib//'`
                                                    trace 3 with_JPEG asks to use $lib and LDFLAGS=$path
                                                 fi
                                              fi
@@ -9092,7 +9082,7 @@ $as_echo "$as_me: WARNING:    for new location: $with_JPEG_library " >&2;}
                                     with_JPEG_libpath=$with_JPEG_library
                                     use_JPEG=yes
                                  else
-                                    path = $as_dirname -- $with_JPEG_library ||
+                                    path=`$as_dirname -- $with_JPEG_library ||
 $as_expr X$with_JPEG_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_JPEG_library : 'X\(//\)[^/]' \| \
 	 X$with_JPEG_library : 'X\(//\)$' \| \
@@ -9114,7 +9104,7 @@ $as_echo X$with_JPEG_library |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                     if ( test -d $path  )
                                     then
                                        #file=`basename $with_JPEG_library`
@@ -9124,41 +9114,35 @@ $as_echo X$with_JPEG_library |
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
-                                          #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                          if ( test X$lib != X$file  )
+                                          lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-JPEG_library pointing to a .a" >&5
 $as_echo "$as_me: WARNING: Specifying --with-JPEG_library pointing to a .a" >&2;}
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
 $as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use:" >&5
-$as_echo "$as_me: WARNING: Instead we will use:" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib" >&5
-$as_echo "$as_me: WARNING:    $lib" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
-                                             #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                             if ( test X$lib != X$file )
+                                             lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                             if ( test X$lib != X )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-JPEG_library pointing to" >&5
 $as_echo "$as_me: WARNING: Specifying --with-JPEG_library pointing to" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with a .so" >&5
-$as_echo "$as_me: WARNING: will cause problems building with a .so" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use:" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use:" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib and" >&5
-$as_echo "$as_me: WARNING:    $lib and" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
                                              else
                                                 # Parameter is path and name fragment
-                                                lib='-l'`echo $lib | $SED 's/^lib//'`
+                                                lib='-l'`echo $file | $SED 's/^lib//'`
                                                 trace 3 $with_JPEG_library asks to use $lib and LDFLAGS=$path
                                              fi
                                           fi
@@ -9270,7 +9254,7 @@ fi
                                                      # Whole of --with-JPEG was a directory
                                                      trace 4 No --with-JPEG-include specified using "[$with_JPEG_inc]"
                                                   else
-                                                     with_JPEG_inc = $as_dirname -- $with_JPEG_inc ||
+                                                     with_JPEG_inc=`$as_dirname -- $with_JPEG_inc ||
 $as_expr X$with_JPEG_inc : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_JPEG_inc : 'X\(//\)[^/]' \| \
 	 X$with_JPEG_inc : 'X\(//\)$' \| \
@@ -9292,7 +9276,7 @@ $as_echo X$with_JPEG_inc |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                                      if  test -d $with_JPEG_inc
                                                      then
                                                         # Take the path component of --with-JPEG
@@ -9376,7 +9360,7 @@ $as_echo "$as_me: WARNING: --with-posixThreads ignored. " >&2;}
                                           use_posixThreads=yes
                                        fi
                                   else
-                                       path = $as_dirname -- $with_posixThreads ||
+                                       path=`$as_dirname -- $with_posixThreads ||
 $as_expr X$with_posixThreads : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_posixThreads : 'X\(//\)[^/]' \| \
 	 X$with_posixThreads : 'X\(//\)$' \| \
@@ -9398,7 +9382,7 @@ $as_echo X$with_posixThreads |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_posixThreads`
@@ -9407,9 +9391,8 @@ $as_echo X$with_posixThreads |
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
-                                             #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                             if ( test X$lib != X$file  )
+                                             lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                             if ( test X$lib != X  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-posixThreads pointing to a .a will" >&5
@@ -9419,10 +9402,9 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: use $lib and LDFLAGS=$path instead. " >&5
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
-                                                #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                                if ( test X$lib != X$file )
+                                                lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                                if ( test X$lib != X )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
                                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-posixThreads pointing to a .so will" >&5
@@ -9433,7 +9415,7 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                                 else
                                                    # Parameter is path and name fragment
-                                                   lib=-l`echo $lib | $SED 's/^lib//'`
+                                                   lib=-l`echo $file | $SED 's/^lib//'`
                                                    trace 3 with_posixThreads asks to use $lib and LDFLAGS=$path
                                                 fi
                                              fi
@@ -9531,7 +9513,7 @@ $as_echo "$as_me: WARNING:    for new location: $with_posixThreads_library " >&2
                                     with_posixThreads_libpath=$with_posixThreads_library
                                     use_posixThreads=yes
                                  else
-                                    path = $as_dirname -- $with_posixThreads_library ||
+                                    path=`$as_dirname -- $with_posixThreads_library ||
 $as_expr X$with_posixThreads_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_posixThreads_library : 'X\(//\)[^/]' \| \
 	 X$with_posixThreads_library : 'X\(//\)$' \| \
@@ -9553,7 +9535,7 @@ $as_echo X$with_posixThreads_library |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                     if ( test -d $path  )
                                     then
                                        #file=`basename $with_posixThreads_library`
@@ -9563,41 +9545,35 @@ $as_echo X$with_posixThreads_library |
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
-                                          #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                          if ( test X$lib != X$file  )
+                                          lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-posixThreads_library pointing to a .a" >&5
 $as_echo "$as_me: WARNING: Specifying --with-posixThreads_library pointing to a .a" >&2;}
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
 $as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use:" >&5
-$as_echo "$as_me: WARNING: Instead we will use:" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib" >&5
-$as_echo "$as_me: WARNING:    $lib" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
-                                             #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                             if ( test X$lib != X$file )
+                                             lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                             if ( test X$lib != X )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-posixThreads_library pointing to" >&5
 $as_echo "$as_me: WARNING: Specifying --with-posixThreads_library pointing to" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with a .so" >&5
-$as_echo "$as_me: WARNING: will cause problems building with a .so" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use:" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use:" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib and" >&5
-$as_echo "$as_me: WARNING:    $lib and" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
                                              else
                                                 # Parameter is path and name fragment
-                                                lib='-l'`echo $lib | $SED 's/^lib//'`
+                                                lib='-l'`echo $file | $SED 's/^lib//'`
                                                 trace 3 $with_posixThreads_library asks to use $lib and LDFLAGS=$path
                                              fi
                                           fi
@@ -9709,7 +9685,7 @@ fi
                                                      # Whole of --with-posixThreads was a directory
                                                      trace 4 No --with-posixThreads-include specified using "[$with_posixThreads_inc]"
                                                   else
-                                                     with_posixThreads_inc = $as_dirname -- $with_posixThreads_inc ||
+                                                     with_posixThreads_inc=`$as_dirname -- $with_posixThreads_inc ||
 $as_expr X$with_posixThreads_inc : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_posixThreads_inc : 'X\(//\)[^/]' \| \
 	 X$with_posixThreads_inc : 'X\(//\)$' \| \
@@ -9731,7 +9707,7 @@ $as_echo X$with_posixThreads_inc |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                                      if  test -d $with_posixThreads_inc
                                                      then
                                                         # Take the path component of --with-posixThreads
@@ -9815,7 +9791,7 @@ $as_echo "$as_me: WARNING: --with-LibTIFF ignored. " >&2;}
                                           use_LibTIFF=yes
                                        fi
                                   else
-                                       path = $as_dirname -- $with_LibTIFF ||
+                                       path=`$as_dirname -- $with_LibTIFF ||
 $as_expr X$with_LibTIFF : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_LibTIFF : 'X\(//\)[^/]' \| \
 	 X$with_LibTIFF : 'X\(//\)$' \| \
@@ -9837,7 +9813,7 @@ $as_echo X$with_LibTIFF |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_LibTIFF`
@@ -9846,9 +9822,8 @@ $as_echo X$with_LibTIFF |
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
-                                             #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                             if ( test X$lib != X$file  )
+                                             lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                             if ( test X$lib != X  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibTIFF pointing to a .a will" >&5
@@ -9858,10 +9833,9 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: use $lib and LDFLAGS=$path instead. " >&5
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
-                                                #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                                if ( test X$lib != X$file )
+                                                lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                                if ( test X$lib != X )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
                                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibTIFF pointing to a .so will" >&5
@@ -9872,7 +9846,7 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                                 else
                                                    # Parameter is path and name fragment
-                                                   lib=-l`echo $lib | $SED 's/^lib//'`
+                                                   lib=-l`echo $file | $SED 's/^lib//'`
                                                    trace 3 with_LibTIFF asks to use $lib and LDFLAGS=$path
                                                 fi
                                              fi
@@ -9970,7 +9944,7 @@ $as_echo "$as_me: WARNING:    for new location: $with_LibTIFF_library " >&2;}
                                     with_LibTIFF_libpath=$with_LibTIFF_library
                                     use_LibTIFF=yes
                                  else
-                                    path = $as_dirname -- $with_LibTIFF_library ||
+                                    path=`$as_dirname -- $with_LibTIFF_library ||
 $as_expr X$with_LibTIFF_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_LibTIFF_library : 'X\(//\)[^/]' \| \
 	 X$with_LibTIFF_library : 'X\(//\)$' \| \
@@ -9992,7 +9966,7 @@ $as_echo X$with_LibTIFF_library |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                     if ( test -d $path  )
                                     then
                                        #file=`basename $with_LibTIFF_library`
@@ -10002,41 +9976,35 @@ $as_echo X$with_LibTIFF_library |
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
-                                          #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                          if ( test X$lib != X$file  )
+                                          lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibTIFF_library pointing to a .a" >&5
 $as_echo "$as_me: WARNING: Specifying --with-LibTIFF_library pointing to a .a" >&2;}
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
 $as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use:" >&5
-$as_echo "$as_me: WARNING: Instead we will use:" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib" >&5
-$as_echo "$as_me: WARNING:    $lib" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
-                                             #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                             if ( test X$lib != X$file )
+                                             lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                             if ( test X$lib != X )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LibTIFF_library pointing to" >&5
 $as_echo "$as_me: WARNING: Specifying --with-LibTIFF_library pointing to" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with a .so" >&5
-$as_echo "$as_me: WARNING: will cause problems building with a .so" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use:" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use:" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib and" >&5
-$as_echo "$as_me: WARNING:    $lib and" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
                                              else
                                                 # Parameter is path and name fragment
-                                                lib='-l'`echo $lib | $SED 's/^lib//'`
+                                                lib='-l'`echo $file | $SED 's/^lib//'`
                                                 trace 3 $with_LibTIFF_library asks to use $lib and LDFLAGS=$path
                                              fi
                                           fi
@@ -10148,7 +10116,7 @@ fi
                                                      # Whole of --with-LibTIFF was a directory
                                                      trace 4 No --with-LibTIFF-include specified using "[$with_LibTIFF_inc]"
                                                   else
-                                                     with_LibTIFF_inc = $as_dirname -- $with_LibTIFF_inc ||
+                                                     with_LibTIFF_inc=`$as_dirname -- $with_LibTIFF_inc ||
 $as_expr X$with_LibTIFF_inc : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_LibTIFF_inc : 'X\(//\)[^/]' \| \
 	 X$with_LibTIFF_inc : 'X\(//\)$' \| \
@@ -10170,7 +10138,7 @@ $as_echo X$with_LibTIFF_inc |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                                      if  test -d $with_LibTIFF_inc
                                                      then
                                                         # Take the path component of --with-LibTIFF
@@ -10254,7 +10222,7 @@ $as_echo "$as_me: WARNING: --with-Zlib ignored. " >&2;}
                                           use_Zlib=yes
                                        fi
                                   else
-                                       path = $as_dirname -- $with_Zlib ||
+                                       path=`$as_dirname -- $with_Zlib ||
 $as_expr X$with_Zlib : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_Zlib : 'X\(//\)[^/]' \| \
 	 X$with_Zlib : 'X\(//\)$' \| \
@@ -10276,7 +10244,7 @@ $as_echo X$with_Zlib |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_Zlib`
@@ -10285,9 +10253,8 @@ $as_echo X$with_Zlib |
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
-                                             #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                             if ( test X$lib != X$file  )
+                                             lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                             if ( test X$lib != X  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Zlib pointing to a .a will" >&5
@@ -10297,10 +10264,9 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: use $lib and LDFLAGS=$path instead. " >&5
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                              else
-                                                #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                                if ( test X$lib != X$file )
+                                                lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                                if ( test X$lib != X )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
                                                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Zlib pointing to a .so will" >&5
@@ -10311,7 +10277,7 @@ $as_echo "$as_me: WARNING: cause problems building with shared libraries. We wil
 $as_echo "$as_me: WARNING: use $lib and LDFLAGS=$path instead. " >&2;}
                                                 else
                                                    # Parameter is path and name fragment
-                                                   lib=-l`echo $lib | $SED 's/^lib//'`
+                                                   lib=-l`echo $file | $SED 's/^lib//'`
                                                    trace 3 with_Zlib asks to use $lib and LDFLAGS=$path
                                                 fi
                                              fi
@@ -10409,7 +10375,7 @@ $as_echo "$as_me: WARNING:    for new location: $with_Zlib_library " >&2;}
                                     with_Zlib_libpath=$with_Zlib_library
                                     use_Zlib=yes
                                  else
-                                    path = $as_dirname -- $with_Zlib_library ||
+                                    path=`$as_dirname -- $with_Zlib_library ||
 $as_expr X$with_Zlib_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_Zlib_library : 'X\(//\)[^/]' \| \
 	 X$with_Zlib_library : 'X\(//\)$' \| \
@@ -10431,7 +10397,7 @@ $as_echo X$with_Zlib_library |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                     if ( test -d $path  )
                                     then
                                        #file=`basename $with_Zlib_library`
@@ -10441,41 +10407,35 @@ $as_echo X$with_Zlib_library |
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
-                                          #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[^.]a$'`
-                                          if ( test X$lib != X$file  )
+                                          lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Zlib_library pointing to a .a" >&5
 $as_echo "$as_me: WARNING: Specifying --with-Zlib_library pointing to a .a" >&2;}
                                              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
 $as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use:" >&5
-$as_echo "$as_me: WARNING: Instead we will use:" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib" >&5
-$as_echo "$as_me: WARNING:    $lib" >&2;}
-                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
                                           else
                                              # Does it have a '.so' extension
-                                             #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[^.]so$'`
-                                             if ( test X$lib != X$file )
+                                             lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                             if ( test X$lib != X )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-Zlib_library pointing to" >&5
 $as_echo "$as_me: WARNING: Specifying --with-Zlib_library pointing to" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with a .so" >&5
-$as_echo "$as_me: WARNING: will cause problems building with a .so" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use:" >&5
-$as_echo "$as_me: WARNING: static libraries. Instead, we will use:" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    $lib and" >&5
-$as_echo "$as_me: WARNING:    $lib and" >&2;}
-                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:    LDFLAGS=$path" >&5
-$as_echo "$as_me: WARNING:    LDFLAGS=$path" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
                                              else
                                                 # Parameter is path and name fragment
-                                                lib='-l'`echo $lib | $SED 's/^lib//'`
+                                                lib='-l'`echo $file | $SED 's/^lib//'`
                                                 trace 3 $with_Zlib_library asks to use $lib and LDFLAGS=$path
                                              fi
                                           fi
@@ -10587,7 +10547,7 @@ fi
                                                      # Whole of --with-Zlib was a directory
                                                      trace 4 No --with-Zlib-include specified using "[$with_Zlib_inc]"
                                                   else
-                                                     with_Zlib_inc = $as_dirname -- $with_Zlib_inc ||
+                                                     with_Zlib_inc=`$as_dirname -- $with_Zlib_inc ||
 $as_expr X$with_Zlib_inc : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X$with_Zlib_inc : 'X\(//\)[^/]' \| \
 	 X$with_Zlib_inc : 'X\(//\)$' \| \
@@ -10609,7 +10569,7 @@ $as_echo X$with_Zlib_inc |
 	    s//\1/
 	    q
 	  }
-	  s/.*/./; q'
+	  s/.*/./; q'`
                                                      if  test -d $with_Zlib_inc
                                                      then
                                                         # Take the path component of --with-Zlib

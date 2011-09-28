@@ -281,7 +281,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                           use_$1=yes
                                        fi
                                   else
-                                       path = AS_DIRNAME([$with_$1])
+                                       path=`AS_DIRNAME([$with_$1])`
                                        if ( test -d $path  )
                                        then
                                           #file=`basename $with_$1`
@@ -290,19 +290,17 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                           then
                                              # Parameter is a file path
                                              # Does it have a '.a' extension
-                                             #lib=`basename $file .a`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]a$'`
-                                             if ( test X$lib != X$file  )
+                                             lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                             if ( test X$lib != X  )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 AC_MSG_WARN([Specifying --with-$1 pointing to a .a will])
                                                 AC_MSG_WARN([cause problems building with shared libraries. We will])
                                                 AC_MSG_WARN([use $lib and LDFLAGS=$path instead. ])
                                              else
-                                                #lib=`basename $file .so`
                                                 # Does it have a '.so' extension
-                                                lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]so$'`
-                                                if ( test X$lib != X$file )
+                                                lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                                if ( test X$lib != X )
                                                 then
                                                    lib='-l'`echo $lib | $SED 's/^lib//'`
                                                    AC_MSG_WARN([Specifying --with-$1 pointing to a .so will])
@@ -310,7 +308,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                                    AC_MSG_WARN([use $lib and LDFLAGS=$path instead. ])
                                                 else
                                                    # Parameter is path and name fragment
-                                                   lib=-l`echo $lib | $SED 's/^lib//'`
+                                                   lib=-l`echo $file | $SED 's/^lib//'`
                                                    trace 3 with_$1 asks to use $lib and LDFLAGS=$path
                                                 fi
                                              fi
@@ -391,7 +389,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                     with_$1_libpath=$with_$1_library
                                     use_$1=yes
                                  else
-                                    path = AS_DIRNAME([$with_$1_library])
+                                    path=`AS_DIRNAME([$with_$1_library])`
                                     if ( test -d $path  )
                                     then
                                        #file=`basename $with_$1_library`
@@ -401,31 +399,27 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                        then
                                           # Parameter is a file path
                                           # Does it have a '.a' extension
-                                          #lib=`basename $file .a`
-                                          lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]a$'`
-                                          if ( test X$lib != X$file  )
+                                          lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                                          if ( test X$lib != X  )
                                           then
                                              lib='-l'`echo $lib | $SED 's/^lib//'`
                                              AC_MSG_WARN([Specifying --with-$1_library pointing to a .a])
                                              AC_MSG_WARN([will cause problems building with shared libraries.])
-                                             AC_MSG_WARN([Instead we will use:])
-                                             AC_MSG_WARN([   $lib])
-                                             AC_MSG_WARN([   LDFLAGS=$path])
+                                             AC_MSG_WARN([Instead we will use $lib and])
+                                             AC_MSG_WARN([LDFLAGS=$path])
                                           else
                                              # Does it have a '.so' extension
-                                             #lib=`basename $file .so`
-                                             lib=`$EXPR "//$file" : '\(.*\)\.[[^.]]so$'`
-                                             if ( test X$lib != X$file )
+                                             lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                             if ( test X$lib != X )
                                              then
                                                 lib='-l'`echo $lib | $SED 's/^lib//'`
                                                 AC_MSG_WARN([Specifying --with-$1_library pointing to])
-                                                AC_MSG_WARN([will cause problems building with a .so])
-                                                AC_MSG_WARN([static libraries. Instead, we will use:])
-                                                AC_MSG_WARN([   $lib and])
-                                                AC_MSG_WARN([   LDFLAGS=$path])
+                                                AC_MSG_WARN([a .so will cause problems building with ])
+                                                AC_MSG_WARN([static libraries. Instead, we will use])
+                                                AC_MSG_WARN([$lib and LDFLAGS=$path])
                                              else
                                                 # Parameter is path and name fragment
-                                                lib='-l'`echo $lib | $SED 's/^lib//'`
+                                                lib='-l'`echo $file | $SED 's/^lib//'`
                                                 trace 3 $with_$1_library asks to use $lib and LDFLAGS=$path
                                              fi
                                           fi
@@ -521,7 +515,7 @@ AC_DEFUN([AX_RAVL_HELPER_CC],
                                                      # Whole of --with-$1 was a directory
                                                      trace 4 No --with-$1-include specified using "@<:@$with_$1_inc@:>@"
                                                   else
-                                                     with_$1_inc = AS_DIRNAME([$with_$1_inc])
+                                                     with_$1_inc=`AS_DIRNAME([$with_$1_inc])`
                                                      if [ test -d $with_$1_inc ]
                                                      then
                                                         # Take the path component of --with-$1
