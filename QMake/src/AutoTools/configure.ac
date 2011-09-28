@@ -90,9 +90,9 @@ AC_SUBST([TR])
 # Check for C Compiler and Pre-processor
 #
 # Record CFLAGS in case user has supplied them on the configure cmd-line;
-# these will form CONFIGURE_CFLAGS setting in QMake build system. 
-CONFIGURE_CFLAGS=$CFLAGS
-AC_SUBST([CONFIGURE_CFLAGS])
+# these will form QMAKE_CFLAGS setting in QMake build system. 
+QMAKE_CFLAGS=$CFLAGS
+AC_SUBST([QMAKE_CFLAGS])
 # Now actually check for compiler and and allow Config.QMake to record the
 # location found
 AC_PROG_CC
@@ -102,7 +102,67 @@ AC_SUBST([CC])
 # to include optimisation or -g. As we do not want this for a QMake build, we
 # reinitialise CFLAGS to the original value (which may be null or what a user
 # supplied on the command line).
-CFLAGS=$CONFIGURE_CFLAGS
+CFLAGS=$QMAKE_CFLAGS
+# Now record the correct compiler switches for selecting relvant functionality
+if ( test x$GCC = xyes )
+then
+  # GCC Compiler
+  COMPILER_ANSI_CFLAGS=" -ansi "
+  COMPILER_DEBUG_CFLAGS=" -g "
+  COMPILER_GPROF_CFLAGS=" -pg "
+  COMPILER_PROF_CFLAGS=" -p "
+  COMPILER_SHARED_CFLAGS=" -shared -fPIC "
+  COMPILER_SPECIFIC_CFLAGS=""
+else
+   # Non-GNU compiler, try relevant machine specific options we have used
+   # before
+dnl 
+dnl Although testing the host OS, we are using that to identify the native
+dnl tool set that may be in use. These are not platform specific settings
+dnl per se. DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for
+dnl settings that relate to specific tool sets. They may or may not relate
+dnl to specific platforms but that is coincidental. Platform specific
+dnl settings must go in the section at the end of this script. If you have a
+dnl specific compiler on a platform, put its settings here. If you have
+dnl specific settings for a common tool (say the GNU compilers) when run on
+dnl a particular platform, put those settings at the end of this script.
+dnl 
+   case X$host_os in
+   Xsolaris* ) COMPILER_ANSI_CFLAGS=" -ansi "
+               COMPILER_DEBUG_CFLAGS=""
+               COMPILER_GPROF_CFLAGS=" -pg "
+               COMPILER_PROF_CFLAGS=" -p "
+               COMPILER_SHARED_CFLAGS=" -KPIC "
+               COMPILER_SPECIFIC_CFLAGS=""
+               ;;
+   Xirix* )    CC=$CC" -n32 -J4 -mp "
+               # Not sure why this originally was done this way rather than
+               # use CFLAGS, but assume there was a reason and propogate the
+               # method
+               COMPILER_ANSI_CFLAGS=" -ansi "
+               COMPILER_DEBUG_CFLAGS=""
+               COMPILER_GPROF_CFLAGS=""
+               COMPILER_PROF_CFLAGS=""
+               COMPILER_SHARED_CFLAGS=""
+               COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
+               ;;
+   * )         COMPILER_ANSI_CFLAGS=" -ansi "
+               COMPILER_DEBUG_CFLAGS=""
+               COMPILER_GPROF_CFLAGS=""
+               COMPILER_PROF_CFLAGS=""
+               COMPILER_SHARED_CFLAGS=""
+               COMPILER_SPECIFIC_CFLAGS=""
+               ;;
+   esac
+fi
+# Allow compiler switches to be written to Config.QMake
+AC_SUBST([COMPILER_ANSI_CFLAGS])
+AC_SUBST([COMPILER_DEBUG_CFLAGS])
+AC_SUBST([COMPILER_GPROF_CFLAGS])
+AC_SUBST([COMPILER_PROF_CFLAGS])
+AC_SUBST([COMPILER_SHARED_CFLAGS])
+AC_SUBST([COMPILER_SPECIFIC_CFLAGS])
+
 # Find and record C pre-processor
 AC_PROG_CPP
 AC_SUBST([CPP])
@@ -110,13 +170,74 @@ AC_SUBST([CPP])
 # Check for C++ Compiler and Pre-processor
 #
 # Allow recording of any user-supplied CCFLAGS in Config.QMake
-CONFIGURE_CCFLAGS=$CCFLAGS
-AC_SUBST([CONFIGURE_CCFLAGS])
+QMAKE_CCFLAGS=$CCFLAGS
+AC_SUBST([QMAKE_CCFLAGS])
 # Now check for compiler and allow that result to be recorded
 AC_PROG_CXX
 AC_SUBST([CXX])
 # Prevent optimisation or -g being to CCFLAGS if it was initially unset
-CCFLAGS=$CONFIGURE_CCFLAGS
+CCFLAGS=$QMAKE_CCFLAGS
+# Now record the correct compiler switches for selecting relvant functionality
+if ( test x$GXX = xyes )
+then
+  # GCC Compiler
+  COMPILER_ANSI_CCFLAGS=" -ansi "
+  COMPILER_DEBUG_CCFLAGS=" -g "
+  COMPILER_GPROF_CCFLAGS=" -pg "
+  COMPILER_PROF_CCFLAGS=" -p "
+  COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
+  COMPILER_SPECIFIC_CCFLAGS=""
+else
+   # Non-GNU compiler, try relevant machine specific options we have used
+   # before
+dnl 
+dnl Although testing the host OS, we are using that to identify the native
+dnl tool set that may be in use. These are not platform specific settings
+dnl per se. DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for
+dnl settings that relate to specific tool sets. They may or may not relate
+dnl to specific platforms but that is coincidental. Platform specific
+dnl settings must go in the section at the end of this script. If you have a
+dnl specific compiler on a platform, put its settings here. If you have
+dnl specific settings for a common tool (say the GNU compilers) when run on
+dnl a particular platform, put those settings at the end of this script.
+dnl 
+   case X$host_os in
+   Xsolaris* ) COMPILER_ANSI_CCFLAGS=" -ansi "
+               COMPILER_DEBUG_CCFLAGS=""
+               COMPILER_GPROF_CCFLAGS=" -pg "
+               COMPILER_PROF_CCFLAGS=" -p "
+               COMPILER_SHARED_CCFLAGS=" -KPIC "
+               COMPILER_SPECIFIC_CCFLAGS=""
+               ;;
+   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
+               # Not sure why this originally was done this way rather than
+               # use CCFLAGS, but assume there was a reason and propogate the
+               # method
+               COMPILER_ANSI_CCFLAGS=" -ansi "
+               COMPILER_DEBUG_CCFLAGS=""
+               COMPILER_GPROF_CCFLAGS=""
+               COMPILER_PROF_CCFLAGS=""
+               COMPILER_SHARED_CCFLAGS=""
+               COMPILER_SPECIFIC_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
+               # -woff switches possibly in response to Ravl code rather
+               # than being generically necessary for QMake
+               ;;
+   * )         COMPILER_ANSI_CCFLAGS=" -ansi "
+               COMPILER_DEBUG_CCFLAGS=""
+               COMPILER_GPROF_CCFLAGS=""
+               COMPILER_PROF_CCFLAGS=""
+               COMPILER_SHARED_CCFLAGS=""
+               COMPILER_SPECIFIC_CCFLAGS=""
+               ;;
+   esac
+fi
+# Allow compiler switches to be written to Config.QMake
+AC_SUBST([COMPILER_ANSI_CCFLAGS])
+AC_SUBST([COMPILER_DEBUG_CCFLAGS])
+AC_SUBST([COMPILER_GPROF_CCFLAGS])
+AC_SUBST([COMPILER_PROF_CCFLAGS])
+AC_SUBST([COMPILER_SHARED_CCFLAGS])
+AC_SUBST([COMPILER_SPECIFIC_CCFLAGS])
 # Find and record C++ pre-processor
 AC_PROG_CXXCPP
 AC_SUBST([CXXCPP])
@@ -268,20 +389,109 @@ else
     AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
   fi
 fi
-
 AC_SUBST([LD])
+# Set XX_LDFLAGS; XX_LDLIBFLAGS and other linker settings
+if ( test X$GNU_LD = Xyes )
+then
+  # We are using a GNU linker
+
+  LINKER_SPECIFIC_LDFLAGS=
+  LINKER_SHARED_LDFLAGS=" -rdynamic "
+
+  LINKER_SPECIFIC_LDLIBFLAGS=
+  LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+  LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+  LINKER_UNDEFSYMB=" -u#"
+else
+  # Not using a GNU linker, try native flags we have used before or default to
+  # what works for GNU
+dnl 
+dnl Although testing the host OS, we are using that to identify the native tool
+dnl set that may be in use. These are not platform specific settings per se.
+dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+dnl that relate to specific tool sets. They may or may not relate to specific 
+dnl platforms but that is coincidental. Platform specific settings must go in
+dnl the section at the end of this script. If you have a specific compiler on
+dnl a platform, put its settings here. If you have specific settings for a
+dnl common tool (say the GNU compilers) when run on a particular platform, put
+dnl those settings at the end of this script.
+dnl 
+  case X$host_os in
+  Xcygwin )   LINKER_SPECIFIC_LDFLAGS=
+              LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
+              # sic, this is an assumption on what compiler is in use
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+              # sic, this is an assumption on what compiler is in use
+              LINKER_UNDEFSYMB=" -u #"
+              ;;
+  Xirix*    ) LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
+              LINKER_SHARED_LDFLAGS=
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+              LINKER_UNDEFSYMB=" -u#"
+              ;;
+  Xsolaris* ) LINKER_SPECIFIC_LDFLAGS=
+              LINKER_SHARED_LDFLAGS=
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -dy -G "
+
+              LINKER_LIBPATHSWITCH=" -R#"
+              LINKER_UNDEFSYMB=" -u#"
+              ;;
+  * )         LINKER_SPECIFIC_LDFLAGS=
+              LINKER_SHARED_LDFLAGS=" -rdynamic "
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+              LINKER_UNDEFSYMB=" -u#"
+              ;;
+  esac
+fi
+# Allow linker flags to be saved in config file
+AC_SUBST([LDFLAGS])
+# any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
+AC_SUBST([LINKER_SPECIFIC_LDFLAGS])
+AC_SUBST([LINKER_SHARED_LDFLAGS])
+AC_SUBST([LINKER_SPECIFIC_LDLIBFLAGS])
+AC_SUBST([LINKER_SHARED_LDLIBFLAGS])
+AC_SUBST([LINKER_LIBPATHSWITCH])
+AC_SUBST([LINKER_UNDEFSYMB])
+
 
 
 
 # Look for archive tools
 
+# Archiver program
 AC_PATH_PROG([AR],[ar],[Missing])
 AS_IF([test $AR = Missing],
       [AC_MSG_FAILURE([Cannot find a working ar required for using QMake])]
      )
 AC_SUBST([AR])
+# Declare flags for ar
+dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a non-standard ar
+dnl that takes completely different flags then that is ok to list here (as it
+dnl pertains to the tool itself, not the platform). If your platform uses the
+dnl GNU version of ar but, for example requires an added 's' flag, that setting
+dnl should be put in the platform specific code at the end of this script, not
+dnl here.
+AR_SPECIFIC_ARFLAGS=ruc
+# No user specified ARFLAGS are allowed owing to the nature of how ar works,
+# such flags would most likely break the build
+AC_SUBST([AR_SPECIFIC_ARFLAGS])
 
-
+# Ranlib program (if necessary)
 AC_PROG_RANLIB
 AC_SUBST([RANLIB])
 # Slight weakness of this check is that if ranlib is not found, we assume it is
@@ -363,228 +573,23 @@ else
     AC_MSG_FAILURE([$$MAKE does not specify a usable make utility])
   fi
 fi
-
 AC_SUBST([MAKE])
-
-# Set relevant flags dependant on the software tools we have found
-#
-dnl Most options will be project specific so will be set by the configure script
-dnl for the individual project. Only set options that are required for QMake to
-dnl operate correctly here; and even then, only select flags dependant on the
-dnl actual tools in use. Set all options pertaining to platform specifics later 
-dnl in this script
-dnl
-
-# Set CFLAGS
-if (test X$GCC = Xyes)
-then
-   # GNU C Compiler
-   QMAKE_GLOBAL_CFLAGS=""
-   QMAKE_SHARED_CFLAGS=" -shared -fPIC "
-   QMAKE_PROF_CFLAGS=" -p "
-   QMAKE_GPROF_CFLAGS=" -pg "
-else
-   # No GNU compiler, try relevant machine specific options we have used before
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-   case X$host_os in
-   Xsolaris* ) QMAKE_GLOBAL_CFLAGS=""
-               QMAKE_SHARED_CFLAGS=" -KPIC "
-               QMAKE_PROF_CFLAGS=" -p "
-               QMAKE_GPROF_CFLAGS=" -pg "
-               ;;
-   Xirix* )    CC=$CC" -n32 -J4 -mp "
-               # Not sure why this originally was done this way rather than use
-               # CFLAGS, but assume there was a reason and propogate the method
-               QMAKE_GLOBAL_CFLAGS=" -mips4 -r1000 "
-               QMAKE_SHARED_CFLAGS=""
-               QMAKE_PROF_CFLAGS=""
-               QMAKE_GPROF_CFLAGS=""
-               ;;
-   * )         QMAKE_GLOBAL_CFLAGS=""
-               QMAKE_SHARED_CFLAGS=""
-               QMAKE_PROF_CFLAGS=""
-               QMAKE_GPROF_CFLAGS=""
-               ;;
-   esac
-fi
-
-# Declare QMAKE_XXXXX_CFLAGS variables as output for Config.QMake
-AC_SUBST([QMAKE_GLOBAL_CFLAGS])
-AC_SUBST([QMAKE_SHARED_CFLAGS])
-AC_SUBST([QMAKE_PROF_CFLAGS])
-AC_SUBST([QMAKE_GPROF_CFLAGS])
-
-# Set CCFLAGS
-if (test X$GXX = Xyes)
-then
-   # GNU C++ Compiler
-   QMAKE_GLOBAL_CCFLAGS=""
-   QMAKE_SHARED_CCFLAGS=" -shared -fPIC "
-   QMAKE_PROF_CCFLAGS=" -p "
-   QMAKE_GPROF_CCFLAGS=" -pg "
-else
-   # No GNU compiler, try relevant machine specific options we have used before
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-   case X$host_os in
-   Xsolaris* ) QMAKE_GLOBAL_CCFLAGS=""
-               QMAKE_SHARED_CCFLAGS=" -KPIC "
-               QMAKE_PROF_CCFLAGS=" -p "
-               QMAKE_GPROF_CCFLAGS=" -pg "
-               ;;
-   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
-               # Not sure why this originally was done this way rather than use
-               # CCFLAGS, but assume there was a reason and propogate the method
-               QMAKE_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
-               QMAKE_SHARED_CCFLAGS=""
-               QMAKE_PROF_CCFLAGS=""
-               QMAKE_GPROF_CCFLAGS=""
-               ;;
-   * )         QMAKE_GLOBAL_CCFLAGS=""
-               QMAKE_SHARED_CCFLAGS=""
-               QMAKE_PROF_CCFLAGS=""
-               QMAKE_GPROF_CCFLAGS=""
-               ;;
-   esac
-fi
-
-# Declare QMAKE_XXXXX_CCFLAGS variables as output for Config.QMake
-AC_SUBST([QMAKE_GLOBAL_CCFLAGS])
-AC_SUBST([QMAKE_SHARED_CCFLAGS])
-AC_SUBST([QMAKE_PROF_CCFLAGS])
-AC_SUBST([QMAKE_GPROF_CCFLAGS])
-
-
-# Set QMAKE_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
-if ( test X$GNU_LD = Xyes )
-then
-  # We are using a GNU linker
-
-  QMAKE_GLOBAL_LDFLAGS=
-  QMAKE_SHARED_LDFLAGS=" -rdynamic "
-
-  QMAKE_GLOBAL_LDLIBFLAGS=
-  QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-  LIBPATHSWITCH=" -Wl,-rpath#"
-  UNDEFSYMB=" -u#"
-else
-  # Not using a GNU linker, try native flags we have used before or default to
-  # what works for GNU
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-  case X$host_os in
-  Xcygwin )   QMAKE_GLOBAL_LDFLAGS=
-              QMAKE_SHARED_LDFLAGS=" -Wl,-export-dynamic "
-              # sic, this is an assumption on what compiler is in use
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              # sic, this is an assumption on what compiler is in use
-              UNDEFSYMB=" -u #"
-              ;;
-  Xirix*    ) QMAKE_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
-              QMAKE_SHARED_LDFLAGS=
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              UNDEFSYMB=" -u#"
-              ;;
-  Xsolaris* ) QMAKE_GLOBAL_LDFLAGS=
-              QMAKE_SHARED_LDFLAGS=
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -dy -G "
-
-              LIBPATHSWITCH=" -R#"
-              UNDEFSYMB=" -u#"
-              ;;
-  * )         QMAKE_GLOBAL_LDFLAGS=
-              QMAKE_SHARED_LDFLAGS=" -rdynamic "
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              UNDEFSYMB=" -u#"
-              ;;
-  esac
-fi
-
-# Declare variables that the linker as output for Config.QMake
-AC_SUBST([LDFLAGS])
-# any user-provided LDFLAGS will be recorded in Config.QMake as CONFIGURE_LDFLAGS
-
-AC_SUBST([QMAKE_GLOBAL_LDFLAGS])
-AC_SUBST([QMAKE_SHARED_LDFLAGS])
-
-AC_SUBST([QMAKE_GLOBAL_LDLIBFLAGS])
-AC_SUBST([QMAKE_SHARED_LDLIBFLAGS])
-
-AC_SUBST([LIBPATHSWITCH])
-AC_SUBST([UNDEFSYMB])
-
-
-# Declare flags for ar
-
-dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a non-standard ar
-dnl that takes completely different flags then that is ok to list here (as it
-dnl pertains to the tool itself, not the platform). If your platform uses the
-dnl GNU version of ar but, for example requires an added 's' flag, that setting
-dnl should be put in the platform specific code at the end of this script, not
-dnl here.
-QMAKE_ARFLAGS=ruc
-
-AC_SUBST([QMAKE_ARFLAGS])
-
 # Declare flags for make
-
 dnl Only put make flags specific to any particular version of make here. DO NOT
 dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final section of this
 dnl script
-
 if ( test X$GNU_MAKE = Xyes )
 then
-  QMAKE_MAKEFLAGS=" --no-print-directory -r "
+  MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r "
 else
-  QMAKE_MAKEFLAGS=" -r "
+  # Potential to add further options here for particular versions of make
+  # However, at the moment we just have a standard option for all
+  MAKE_SPECIFIC_MAKEFLAGS=" -r "
 fi
-
 AC_SUBST([MAKEFLAGS])
-# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.QMake 
-AC_SUBST([QMAKE_MAKEFLAGS])
+# User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake 
+AC_SUBST([MAKE_SPECIFIC_MAKEFLAGS])
+
 
 dnl End of software tools section
 
@@ -668,6 +673,29 @@ AS_IF([test $TOUCH = Missing],
       [AC_MSG_FAILURE([Cannot find a working touch required for using QMake])]
      )
 AC_SUBST([TOUCH])
+
+# Switch to store library search paths in the calling library
+AC_ARG_WITH([rpath],
+            [AS_HELP_STRING([--with-rpath],
+                            [Add all library include paths (-L) to the runtime search path of the binary
+                            ]
+                           )
+            ],
+            [case $with_rpath in
+                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' ) with_rpath=Y
+                                                      ;;
+                  'n' | 'N' | 'no' | 'No' | 'NO' )    with_rpath=N
+                                                      ;;
+                  * )                                 AC_MSG_WARN([--with-rpath set to an unknown option, setting ignored])
+                                                      with_rpath=N
+                                                      ;;
+             esac
+            ],
+            [trace 5 No --with-rpath specified
+             with_rpath=N
+            ]
+           )
+AC_SUBST([with_rpath])
 
 # Provide switch to allow use of pawd instead of pwd
 AC_ARG_WITH([pawd],
@@ -828,57 +856,64 @@ echo >> ./Config.QMake.in
 echo \# Flags for the C compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CFLAGS=@QMAKE_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
-echo QMAKE_GLOBAL_CFLAGS=@QMAKE_GLOBAL_CFLAGS@ >> ./Config.QMake.in
-echo QMAKE_GPROF_CFLAGS=@QMAKE_GPROF_CFLAGS@ >> ./Config.QMake.in
-echo QMAKE_PROF_CFLAGS=@QMAKE_PROF_CFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_CFLAGS=@QMAKE_SHARED_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_DEBUG_CFLAGS=@COMPILER_DEBUG_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_GPROF_CFLAGS=@COMPILER_GPROF_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_PROF_CFLAGS=@COMPILER_PROF_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SHARED_CFLAGS=@COMPILER_SHARED_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SPECIFIC_CFLAGS=@COMPILER_SPECIFIC_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the C++ compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CCFLAGS=@QMAKE_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
-echo QMAKE_GLOBAL_CCFLAGS=@QMAKE_GLOBAL_CCFLAGS@ >> ./Config.QMake.in
-echo QMAKE_GPROF_CCFLAGS=@QMAKE_GPROF_CCFLAGS@ >> ./Config.QMake.in
-echo QMAKE_PROF_CCFLAGS=@QMAKE_PROF_CCFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_CCFLAGS=@QMAKE_SHARED_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_DEBUG_CCFLAGS=@COMPILER_DEBUG_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_GPROF_CCFLAGS=@COMPILER_GPROF_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_PROF_CCFLAGS=@COMPILER_PROF_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SHARED_CCFLAGS=@COMPILER_SHARED_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SPECIFIC_CCFLAGS=@COMPILER_SPECIFIC_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the linker >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.QMake.in
+echo QMAKE_LDFLAGS=@LDFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# General QMake linker settings >> ./Config.QMake.in
-echo QMAKE_GLOBAL_LDFLAGS=@QMAKE_GLOBAL_LDFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_LDFLAGS=@QMAKE_SHARED_LDFLAGS@ >> ./Config.QMake.in
+echo LINKER_SPECIFIC_LDFLAGS=@LINKER_SPECIFIC_LDFLAGS@ >> ./Config.QMake.in
+echo LINKER_SHARED_LDFLAGS=@LINKER_SHARED_LDFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Linker settings for QMake libraries >> ./Config.QMake.in
-echo QMAKE_GLOBAL_LDLIBFLAGS=@QMAKE_GLOBAL_LDLIBFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_LDLIBFLAGS=@QMAKE_SHARED_LDLIBFLAGS@ >> ./Config.QMake.in
+echo LINKER_SPECIFIC_LDLIBFLAGS=@LINKER_SPECIFIC_LDLIBFLAGS@ >> ./Config.QMake.in
+echo LINKER_SHARED_LDLIBFLAGS=@LINKER_SHARED_LDLIBFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Specific linker functionality >> ./Config.QMake.in
 echo >> ./Config.QMake.in
-echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.QMake.in
-echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.QMake.in
+echo LINKER_LIBPATHSWITCH=@LINKER_LIBPATHSWITCH@ >> ./Config.QMake.in
+echo USE_LIBPATHSWITCH=@with_rpath@ >> ./Config.QMake.in
+echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the archiver >> ./Config.QMake.in
+echo \# >> ./Config.QMake.in
+echo \# No user supplied ARFLAGS are accepted owing to the nature of how ar works >> ./Config.QMake.in
 echo >> ./Config.QMake.in
-echo QMAKE_ARFLAGS=@QMAKE_ARFLAGS@ >> ./Config.QMake.in
+echo AR_SPECIFIC_ARFLAGS=@AR_SPECIFIC_ARFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for make >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.QMake.in
+echo QMAKE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# General QMake make settings >> ./Config.QMake.in
-echo QMAKE_MAKEFLAGS=@QMAKE_MAKEFLAGS@ >> ./Config.QMake.in
+echo MAKE_SPECIFIC_MAKEFLAGS=@MAKE_SPECIFIC_MAKEFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in

@@ -566,6 +566,7 @@ PERL
 QMAKE_PAGER
 LN_S
 GET_CWD
+with_rpath
 TOUCH
 RM
 CP
@@ -583,33 +584,37 @@ MKDIR_P
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
-QMAKE_MAKEFLAGS
+MAKE_SPECIFIC_MAKEFLAGS
 MAKEFLAGS
-QMAKE_ARFLAGS
-UNDEFSYMB
-LIBPATHSWITCH
-QMAKE_SHARED_LDLIBFLAGS
-QMAKE_GLOBAL_LDLIBFLAGS
-QMAKE_SHARED_LDFLAGS
-QMAKE_GLOBAL_LDFLAGS
-QMAKE_GPROF_CCFLAGS
-QMAKE_PROF_CCFLAGS
-QMAKE_SHARED_CCFLAGS
-QMAKE_GLOBAL_CCFLAGS
-QMAKE_GPROF_CFLAGS
-QMAKE_PROF_CFLAGS
-QMAKE_SHARED_CFLAGS
-QMAKE_GLOBAL_CFLAGS
 MAKE
 RANLIB
+AR_SPECIFIC_ARFLAGS
 AR
+LINKER_UNDEFSYMB
+LINKER_LIBPATHSWITCH
+LINKER_SHARED_LDLIBFLAGS
+LINKER_SPECIFIC_LDLIBFLAGS
+LINKER_SHARED_LDFLAGS
+LINKER_SPECIFIC_LDFLAGS
 LD
 CXXCPP
+COMPILER_SPECIFIC_CCFLAGS
+COMPILER_SHARED_CCFLAGS
+COMPILER_PROF_CCFLAGS
+COMPILER_GPROF_CCFLAGS
+COMPILER_DEBUG_CCFLAGS
+COMPILER_ANSI_CCFLAGS
 ac_ct_CXX
 CXXFLAGS
 CXX
-CONFIGURE_CCFLAGS
+QMAKE_CCFLAGS
 CPP
+COMPILER_SPECIFIC_CFLAGS
+COMPILER_SHARED_CFLAGS
+COMPILER_PROF_CFLAGS
+COMPILER_GPROF_CFLAGS
+COMPILER_DEBUG_CFLAGS
+COMPILER_ANSI_CFLAGS
 OBJEXT
 EXEEXT
 ac_ct_CC
@@ -617,7 +622,7 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
-CONFIGURE_CFLAGS
+QMAKE_CFLAGS
 TR
 SED
 GREP
@@ -672,6 +677,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+with_rpath
 with_pawd
 '
       ac_precious_vars='build_alias
@@ -1303,6 +1309,9 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-rpath            Add all library include paths (-L) to the runtime
+                          search path of the binary
+
   --with-pawd             Employ pawd rather than pwd to return the current
                           directory [default=No]
 
@@ -2389,8 +2398,8 @@ fi
 # Check for C Compiler and Pre-processor
 #
 # Record CFLAGS in case user has supplied them on the configure cmd-line;
-# these will form CONFIGURE_CFLAGS setting in QMake build system.
-CONFIGURE_CFLAGS=$CFLAGS
+# these will form QMAKE_CFLAGS setting in QMake build system.
+QMAKE_CFLAGS=$CFLAGS
 
 # Now actually check for compiler and and allow Config.QMake to record the
 # location found
@@ -3191,7 +3200,56 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # to include optimisation or -g. As we do not want this for a QMake build, we
 # reinitialise CFLAGS to the original value (which may be null or what a user
 # supplied on the command line).
-CFLAGS=$CONFIGURE_CFLAGS
+CFLAGS=$QMAKE_CFLAGS
+# Now record the correct compiler switches for selecting relvant functionality
+if ( test x$GCC = xyes )
+then
+  # GCC Compiler
+  COMPILER_ANSI_CFLAGS=" -ansi "
+  COMPILER_DEBUG_CFLAGS=" -g "
+  COMPILER_GPROF_CFLAGS=" -pg "
+  COMPILER_PROF_CFLAGS=" -p "
+  COMPILER_SHARED_CFLAGS=" -shared -fPIC "
+  COMPILER_SPECIFIC_CFLAGS=""
+else
+   # Non-GNU compiler, try relevant machine specific options we have used
+   # before
+   case X$host_os in
+   Xsolaris* ) COMPILER_ANSI_CFLAGS=" -ansi "
+               COMPILER_DEBUG_CFLAGS=""
+               COMPILER_GPROF_CFLAGS=" -pg "
+               COMPILER_PROF_CFLAGS=" -p "
+               COMPILER_SHARED_CFLAGS=" -KPIC "
+               COMPILER_SPECIFIC_CFLAGS=""
+               ;;
+   Xirix* )    CC=$CC" -n32 -J4 -mp "
+               # Not sure why this originally was done this way rather than
+               # use CFLAGS, but assume there was a reason and propogate the
+               # method
+               COMPILER_ANSI_CFLAGS=" -ansi "
+               COMPILER_DEBUG_CFLAGS=""
+               COMPILER_GPROF_CFLAGS=""
+               COMPILER_PROF_CFLAGS=""
+               COMPILER_SHARED_CFLAGS=""
+               COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
+               ;;
+   * )         COMPILER_ANSI_CFLAGS=" -ansi "
+               COMPILER_DEBUG_CFLAGS=""
+               COMPILER_GPROF_CFLAGS=""
+               COMPILER_PROF_CFLAGS=""
+               COMPILER_SHARED_CFLAGS=""
+               COMPILER_SPECIFIC_CFLAGS=""
+               ;;
+   esac
+fi
+# Allow compiler switches to be written to Config.QMake
+
+
+
+
+
+
+
 # Find and record C pre-processor
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -3335,7 +3393,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # Check for C++ Compiler and Pre-processor
 #
 # Allow recording of any user-supplied CCFLAGS in Config.QMake
-CONFIGURE_CCFLAGS=$CCFLAGS
+QMAKE_CCFLAGS=$CCFLAGS
 
 # Now check for compiler and allow that result to be recorded
 ac_ext=cpp
@@ -3597,7 +3655,57 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 # Prevent optimisation or -g being to CCFLAGS if it was initially unset
-CCFLAGS=$CONFIGURE_CCFLAGS
+CCFLAGS=$QMAKE_CCFLAGS
+# Now record the correct compiler switches for selecting relvant functionality
+if ( test x$GXX = xyes )
+then
+  # GCC Compiler
+  COMPILER_ANSI_CCFLAGS=" -ansi "
+  COMPILER_DEBUG_CCFLAGS=" -g "
+  COMPILER_GPROF_CCFLAGS=" -pg "
+  COMPILER_PROF_CCFLAGS=" -p "
+  COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
+  COMPILER_SPECIFIC_CCFLAGS=""
+else
+   # Non-GNU compiler, try relevant machine specific options we have used
+   # before
+   case X$host_os in
+   Xsolaris* ) COMPILER_ANSI_CCFLAGS=" -ansi "
+               COMPILER_DEBUG_CCFLAGS=""
+               COMPILER_GPROF_CCFLAGS=" -pg "
+               COMPILER_PROF_CCFLAGS=" -p "
+               COMPILER_SHARED_CCFLAGS=" -KPIC "
+               COMPILER_SPECIFIC_CCFLAGS=""
+               ;;
+   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
+               # Not sure why this originally was done this way rather than
+               # use CCFLAGS, but assume there was a reason and propogate the
+               # method
+               COMPILER_ANSI_CCFLAGS=" -ansi "
+               COMPILER_DEBUG_CCFLAGS=""
+               COMPILER_GPROF_CCFLAGS=""
+               COMPILER_PROF_CCFLAGS=""
+               COMPILER_SHARED_CCFLAGS=""
+               COMPILER_SPECIFIC_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
+               # -woff switches possibly in response to Ravl code rather
+               # than being generically necessary for QMake
+               ;;
+   * )         COMPILER_ANSI_CCFLAGS=" -ansi "
+               COMPILER_DEBUG_CCFLAGS=""
+               COMPILER_GPROF_CCFLAGS=""
+               COMPILER_PROF_CCFLAGS=""
+               COMPILER_SHARED_CCFLAGS=""
+               COMPILER_SPECIFIC_CCFLAGS=""
+               ;;
+   esac
+fi
+# Allow compiler switches to be written to Config.QMake
+
+
+
+
+
+
 # Find and record C++ pre-processor
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
@@ -3894,12 +4002,79 @@ See \`config.log' for more details." "$LINENO" 5; }
   fi
 fi
 
+# Set XX_LDFLAGS; XX_LDLIBFLAGS and other linker settings
+if ( test X$GNU_LD = Xyes )
+then
+  # We are using a GNU linker
+
+  LINKER_SPECIFIC_LDFLAGS=
+  LINKER_SHARED_LDFLAGS=" -rdynamic "
+
+  LINKER_SPECIFIC_LDLIBFLAGS=
+  LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+  LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+  LINKER_UNDEFSYMB=" -u#"
+else
+  # Not using a GNU linker, try native flags we have used before or default to
+  # what works for GNU
+  case X$host_os in
+  Xcygwin )   LINKER_SPECIFIC_LDFLAGS=
+              LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
+              # sic, this is an assumption on what compiler is in use
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+              # sic, this is an assumption on what compiler is in use
+              LINKER_UNDEFSYMB=" -u #"
+              ;;
+  Xirix*    ) LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
+              LINKER_SHARED_LDFLAGS=
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+              LINKER_UNDEFSYMB=" -u#"
+              ;;
+  Xsolaris* ) LINKER_SPECIFIC_LDFLAGS=
+              LINKER_SHARED_LDFLAGS=
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -dy -G "
+
+              LINKER_LIBPATHSWITCH=" -R#"
+              LINKER_UNDEFSYMB=" -u#"
+              ;;
+  * )         LINKER_SPECIFIC_LDFLAGS=
+              LINKER_SHARED_LDFLAGS=" -rdynamic "
+
+              LINKER_SPECIFIC_LDLIBFLAGS=
+              LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+              LINKER_UNDEFSYMB=" -u#"
+              ;;
+  esac
+fi
+# Allow linker flags to be saved in config file
+
+# any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
+
+
+
+
+
+
 
 
 
 
 # Look for archive tools
 
+# Archiver program
 # Extract the first word of "ar", so it can be a program name with args.
 set dummy ar; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -3949,8 +4124,13 @@ See \`config.log' for more details." "$LINENO" 5; }
 
 fi
 
+# Declare flags for ar
+AR_SPECIFIC_ARFLAGS=ruc
+# No user specified ARFLAGS are allowed owing to the nature of how ar works,
+# such flags would most likely break the build
 
 
+# Ranlib program (if necessary)
 if test -n "$ac_tool_prefix"; then
   # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
 set dummy ${ac_tool_prefix}ranlib; ac_word=$2
@@ -4137,178 +4317,18 @@ See \`config.log' for more details." "$LINENO" 5; }
   fi
 fi
 
-
-
-# Set relevant flags dependant on the software tools we have found
-#
-
-# Set CFLAGS
-if (test X$GCC = Xyes)
-then
-   # GNU C Compiler
-   QMAKE_GLOBAL_CFLAGS=""
-   QMAKE_SHARED_CFLAGS=" -shared -fPIC "
-   QMAKE_PROF_CFLAGS=" -p "
-   QMAKE_GPROF_CFLAGS=" -pg "
-else
-   # No GNU compiler, try relevant machine specific options we have used before
-   case X$host_os in
-   Xsolaris* ) QMAKE_GLOBAL_CFLAGS=""
-               QMAKE_SHARED_CFLAGS=" -KPIC "
-               QMAKE_PROF_CFLAGS=" -p "
-               QMAKE_GPROF_CFLAGS=" -pg "
-               ;;
-   Xirix* )    CC=$CC" -n32 -J4 -mp "
-               # Not sure why this originally was done this way rather than use
-               # CFLAGS, but assume there was a reason and propogate the method
-               QMAKE_GLOBAL_CFLAGS=" -mips4 -r1000 "
-               QMAKE_SHARED_CFLAGS=""
-               QMAKE_PROF_CFLAGS=""
-               QMAKE_GPROF_CFLAGS=""
-               ;;
-   * )         QMAKE_GLOBAL_CFLAGS=""
-               QMAKE_SHARED_CFLAGS=""
-               QMAKE_PROF_CFLAGS=""
-               QMAKE_GPROF_CFLAGS=""
-               ;;
-   esac
-fi
-
-# Declare QMAKE_XXXXX_CFLAGS variables as output for Config.QMake
-
-
-
-
-
-# Set CCFLAGS
-if (test X$GXX = Xyes)
-then
-   # GNU C++ Compiler
-   QMAKE_GLOBAL_CCFLAGS=""
-   QMAKE_SHARED_CCFLAGS=" -shared -fPIC "
-   QMAKE_PROF_CCFLAGS=" -p "
-   QMAKE_GPROF_CCFLAGS=" -pg "
-else
-   # No GNU compiler, try relevant machine specific options we have used before
-   case X$host_os in
-   Xsolaris* ) QMAKE_GLOBAL_CCFLAGS=""
-               QMAKE_SHARED_CCFLAGS=" -KPIC "
-               QMAKE_PROF_CCFLAGS=" -p "
-               QMAKE_GPROF_CCFLAGS=" -pg "
-               ;;
-   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
-               # Not sure why this originally was done this way rather than use
-               # CCFLAGS, but assume there was a reason and propogate the method
-               QMAKE_GLOBAL_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
-               QMAKE_SHARED_CCFLAGS=""
-               QMAKE_PROF_CCFLAGS=""
-               QMAKE_GPROF_CCFLAGS=""
-               ;;
-   * )         QMAKE_GLOBAL_CCFLAGS=""
-               QMAKE_SHARED_CCFLAGS=""
-               QMAKE_PROF_CCFLAGS=""
-               QMAKE_GPROF_CCFLAGS=""
-               ;;
-   esac
-fi
-
-# Declare QMAKE_XXXXX_CCFLAGS variables as output for Config.QMake
-
-
-
-
-
-
-# Set QMAKE_XXXXX_LDFLAGS; LDLIBFLAGS and other linker settings
-if ( test X$GNU_LD = Xyes )
-then
-  # We are using a GNU linker
-
-  QMAKE_GLOBAL_LDFLAGS=
-  QMAKE_SHARED_LDFLAGS=" -rdynamic "
-
-  QMAKE_GLOBAL_LDLIBFLAGS=
-  QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-  LIBPATHSWITCH=" -Wl,-rpath#"
-  UNDEFSYMB=" -u#"
-else
-  # Not using a GNU linker, try native flags we have used before or default to
-  # what works for GNU
-  case X$host_os in
-  Xcygwin )   QMAKE_GLOBAL_LDFLAGS=
-              QMAKE_SHARED_LDFLAGS=" -Wl,-export-dynamic "
-              # sic, this is an assumption on what compiler is in use
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              # sic, this is an assumption on what compiler is in use
-              UNDEFSYMB=" -u #"
-              ;;
-  Xirix*    ) QMAKE_GLOBAL_LDFLAGS=" -n32 -Wl,-woff 84 "
-              QMAKE_SHARED_LDFLAGS=
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              UNDEFSYMB=" -u#"
-              ;;
-  Xsolaris* ) QMAKE_GLOBAL_LDFLAGS=
-              QMAKE_SHARED_LDFLAGS=
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -dy -G "
-
-              LIBPATHSWITCH=" -R#"
-              UNDEFSYMB=" -u#"
-              ;;
-  * )         QMAKE_GLOBAL_LDFLAGS=
-              QMAKE_SHARED_LDFLAGS=" -rdynamic "
-
-              QMAKE_GLOBAL_LDLIBFLAGS=
-              QMAKE_SHARED_LDLIBFLAGS=" -shared "
-
-              LIBPATHSWITCH=" -Wl,-rpath#"
-              UNDEFSYMB=" -u#"
-              ;;
-  esac
-fi
-
-# Declare variables that the linker as output for Config.QMake
-
-# any user-provided LDFLAGS will be recorded in Config.QMake as CONFIGURE_LDFLAGS
-
-
-
-
-
-
-
-
-
-
-
-# Declare flags for ar
-
-QMAKE_ARFLAGS=ruc
-
-
-
 # Declare flags for make
-
-
 if ( test X$GNU_MAKE = Xyes )
 then
-  QMAKE_MAKEFLAGS=" --no-print-directory -r "
+  MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r "
 else
-  QMAKE_MAKEFLAGS=" -r "
+  # Potential to add further options here for particular versions of make
+  # However, at the moment we just have a standard option for all
+  MAKE_SPECIFIC_MAKEFLAGS=" -r "
 fi
 
+# User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake
 
-# User-provided MAKEFLAGS will be recorded as CONFIGURE_MAKEFLAGS in Config.QMake
 
 
 
@@ -5138,6 +5158,30 @@ See \`config.log' for more details." "$LINENO" 5; }
 fi
 
 
+# Switch to store library search paths in the calling library
+
+# Check whether --with-rpath was given.
+if test "${with_rpath+set}" = set; then :
+  withval=$with_rpath; case $with_rpath in
+                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' ) with_rpath=Y
+                                                      ;;
+                  'n' | 'N' | 'no' | 'No' | 'NO' )    with_rpath=N
+                                                      ;;
+                  * )                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-rpath set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-rpath set to an unknown option, setting ignored" >&2;}
+                                                      with_rpath=N
+                                                      ;;
+             esac
+
+else
+  trace 5 No --with-rpath specified
+             with_rpath=N
+
+
+fi
+
+
+
 # Provide switch to allow use of pawd instead of pwd
 
 # Check whether --with-pawd was given.
@@ -5791,57 +5835,64 @@ echo >> ./Config.QMake.in
 echo \# Flags for the C compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CFLAGS=@QMAKE_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
-echo QMAKE_GLOBAL_CFLAGS=@QMAKE_GLOBAL_CFLAGS@ >> ./Config.QMake.in
-echo QMAKE_GPROF_CFLAGS=@QMAKE_GPROF_CFLAGS@ >> ./Config.QMake.in
-echo QMAKE_PROF_CFLAGS=@QMAKE_PROF_CFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_CFLAGS=@QMAKE_SHARED_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_DEBUG_CFLAGS=@COMPILER_DEBUG_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_GPROF_CFLAGS=@COMPILER_GPROF_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_PROF_CFLAGS=@COMPILER_PROF_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SHARED_CFLAGS=@COMPILER_SHARED_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SPECIFIC_CFLAGS=@COMPILER_SPECIFIC_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the C++ compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CCFLAGS=@QMAKE_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
-echo QMAKE_GLOBAL_CCFLAGS=@QMAKE_GLOBAL_CCFLAGS@ >> ./Config.QMake.in
-echo QMAKE_GPROF_CCFLAGS=@QMAKE_GPROF_CCFLAGS@ >> ./Config.QMake.in
-echo QMAKE_PROF_CCFLAGS=@QMAKE_PROF_CCFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_CCFLAGS=@QMAKE_SHARED_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_DEBUG_CCFLAGS=@COMPILER_DEBUG_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_GPROF_CCFLAGS=@COMPILER_GPROF_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_PROF_CCFLAGS=@COMPILER_PROF_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SHARED_CCFLAGS=@COMPILER_SHARED_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_SPECIFIC_CCFLAGS=@COMPILER_SPECIFIC_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the linker >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_LDFLAGS=@LDFLAGS@ >> ./Config.QMake.in
+echo QMAKE_LDFLAGS=@LDFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# General QMake linker settings >> ./Config.QMake.in
-echo QMAKE_GLOBAL_LDFLAGS=@QMAKE_GLOBAL_LDFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_LDFLAGS=@QMAKE_SHARED_LDFLAGS@ >> ./Config.QMake.in
+echo LINKER_SPECIFIC_LDFLAGS=@LINKER_SPECIFIC_LDFLAGS@ >> ./Config.QMake.in
+echo LINKER_SHARED_LDFLAGS=@LINKER_SHARED_LDFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Linker settings for QMake libraries >> ./Config.QMake.in
-echo QMAKE_GLOBAL_LDLIBFLAGS=@QMAKE_GLOBAL_LDLIBFLAGS@ >> ./Config.QMake.in
-echo QMAKE_SHARED_LDLIBFLAGS=@QMAKE_SHARED_LDLIBFLAGS@ >> ./Config.QMake.in
+echo LINKER_SPECIFIC_LDLIBFLAGS=@LINKER_SPECIFIC_LDLIBFLAGS@ >> ./Config.QMake.in
+echo LINKER_SHARED_LDLIBFLAGS=@LINKER_SHARED_LDLIBFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Specific linker functionality >> ./Config.QMake.in
 echo >> ./Config.QMake.in
-echo LIBPATHSWITCH=@LIBPATHSWITCH@ >> ./Config.QMake.in
-echo UNDEFSYMB=@UNDEFSYMB@ >> ./Config.QMake.in
+echo LINKER_LIBPATHSWITCH=@LINKER_LIBPATHSWITCH@ >> ./Config.QMake.in
+echo USE_LIBPATHSWITCH=@with_rpath@ >> ./Config.QMake.in
+echo LINKER_UNDEFSYMB=@LINKER_UNDEFSYMB@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for the archiver >> ./Config.QMake.in
+echo \# >> ./Config.QMake.in
+echo \# No user supplied ARFLAGS are accepted owing to the nature of how ar works >> ./Config.QMake.in
 echo >> ./Config.QMake.in
-echo QMAKE_ARFLAGS=@QMAKE_ARFLAGS@ >> ./Config.QMake.in
+echo AR_SPECIFIC_ARFLAGS=@AR_SPECIFIC_ARFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# Flags for make >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo CONFIGURE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.QMake.in
+echo QMAKE_MAKEFLAGS=@MAKEFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# General QMake make settings >> ./Config.QMake.in
-echo QMAKE_MAKEFLAGS=@QMAKE_MAKEFLAGS@ >> ./Config.QMake.in
+echo MAKE_SPECIFIC_MAKEFLAGS=@MAKE_SPECIFIC_MAKEFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
