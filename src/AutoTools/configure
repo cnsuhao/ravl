@@ -639,6 +639,9 @@ LN_S
 LEXLIB
 LEX
 USER_LD
+INSTALL_PROGRAM
+INSTALL_DATA
+INSTALL
 USER_GREP
 USER_EXPR
 USER_CXXCPP
@@ -13365,6 +13368,24 @@ if ( test "x$USER_GREP" != x )
 then
 
   echo GREP=@USER_GREP@ >> ./Config.Project.in
+fi
+
+if ( test "x$INSTALL" != x )
+then
+
+  echo INSTALL=@INSTALL@ >> ./Config.Project.in
+fi
+
+if ( test "x$INSTALL_DATA" != x )
+then
+
+  echo INSTALL_DATA=@INSTALL_DATA@ >> ./Config.Project.in
+fi
+
+if ( test "x$INSTALL_PROGRAM" != x )
+then
+
+  echo INSTALL=@INSTALL_PROGRAM@ >> ./Config.Project.in
 fi
 
 if ( test "x$USER_LD" != x )

@@ -3672,6 +3672,24 @@ then
   echo GREP=@USER_GREP@ >> ./Config.Project.in
 fi
 
+if ( test "x$INSTALL" != x )
+then
+  AC_SUBST([INSTALL])
+  echo INSTALL=@INSTALL@ >> ./Config.Project.in
+fi
+
+if ( test "x$INSTALL_DATA" != x )
+then
+  AC_SUBST([INSTALL_DATA])
+  echo INSTALL_DATA=@INSTALL_DATA@ >> ./Config.Project.in
+fi
+
+if ( test "x$INSTALL_PROGRAM" != x )
+then
+  AC_SUBST([INSTALL_PROGRAM])
+  echo INSTALL=@INSTALL_PROGRAM@ >> ./Config.Project.in
+fi
+
 if ( test "x$USER_LD" != x )
 then
   AC_SUBST([USER_LD])
