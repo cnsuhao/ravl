@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlAAM"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -47,7 +47,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				Name="VCCLCompilerTool"
                         AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
+				AdditionalIncludeDirectories="include\Win32;include"
 				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -102,7 +102,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlAAM"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -127,7 +127,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
                         AdditionalOptions="/MP"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
+				AdditionalIncludeDirectories="include\Win32;include"
 				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -247,10 +247,6 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				>
 			</File>
 			<File
-				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMViewLib.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMActiveAppearanceModelMustLink.cc"
 				>
 			</File>
@@ -314,10 +310,6 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			</File>
 			<File
 				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMSampleStreamFileList.hh"
-				>
-			</File>
-			<File
-				RelativePath="..\.\CompVision\ActiveAppearanceModels\AAMViewLib.hh"
 				>
 			</File>
 		</Filter>

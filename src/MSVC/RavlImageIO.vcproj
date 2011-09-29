@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlImageIO"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -101,7 +101,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlImageIO"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

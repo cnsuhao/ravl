@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlMath"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -99,7 +99,7 @@
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlMath"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -614,6 +614,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Math\Statistics\Histogram\Parzen.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Math\Statistics\Histogram\RealHistogramNd.cc"
 				>
 			</File>
 			<File
@@ -1160,6 +1164,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Math\Statistics\Histogram\Parzen.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Math\Statistics\Histogram\RealHistogramNd.hh"
 				>
 			</File>
 			<File

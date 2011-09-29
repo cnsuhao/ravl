@@ -20,12 +20,13 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlPatternRec"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Modeling\GaussianMixture\class5.strm C:\Build\\class5.strm&#x0D;&#x0A;"
+if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Modeling\GaussianMixture\class5.strm C:\Build\\class5.strm&#x0D;&#x0A;
+if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Classify\classifier.xml C:\Build\\classifier.xml&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -101,12 +102,13 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlPatternRec"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Modeling\GaussianMixture\class5.strm C:\Build\\class5.strm&#x0D;&#x0A;"
+if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Modeling\GaussianMixture\class5.strm C:\Build\\class5.strm&#x0D;&#x0A;
+if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Classify\classifier.xml C:\Build\\classifier.xml&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -261,6 +263,18 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				>
 			</File>
 			<File
+				RelativePath="..\.\PatternRec\DataSet\SampleIO.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\DataSetIO.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FieldInfo.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\PatternRec\Distance\Distance.cc"
 				>
 			</File>
@@ -358,6 +372,14 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\Modeling\Basic\FuncMeanProjection.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Modeling\Basic\FuncInterpolate.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Modeling\Basic\FuncInterpolateGrid.cc"
 				>
 			</File>
 			<File
@@ -631,6 +653,14 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 				>
 			</File>
 			<File
+				RelativePath="..\.\PatternRec\DataSet\DataSetIO.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\DataSet\FieldInfo.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\PatternRec\Distance\Distance.hh"
 				>
 			</File>
@@ -728,6 +758,14 @@ if not exist C:\Build\\NUL mkdir C:\Build\&#x0D;&#x0A;copy ..\.\PatternRec\Model
 			</File>
 			<File
 				RelativePath="..\.\PatternRec\Modeling\Basic\FuncMeanProjection.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Modeling\Basic\FuncInterpolate.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\PatternRec\Modeling\Basic\FuncInterpolateGrid.hh"
 				>
 			</File>
 			<File
