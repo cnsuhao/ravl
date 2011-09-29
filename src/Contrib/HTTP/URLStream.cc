@@ -78,6 +78,11 @@ namespace RavlN {
     IntT errVal = 0;
     
     // Set options
+
+    curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+    // This is needed for thread safety. See 'Multi-threading Issues' in http://curl.haxx.se/libcurl/c/libcurl-tutorial.html
+    // There could be problems with DNS lookup timeouts though.
+
     curl_easy_setopt(curl, CURLOPT_URL, url.chars());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tmpstrm);
