@@ -140,7 +140,7 @@ retestsingleoptshared:
 	@cd $(INSTALLHOME)/test/opt/shared/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/shared/single && \
            PATH=$(INSTALLHOME)/test/opt/shared/single/bin:$(INSTALLHOME)/bin/utils/opt/shared/single/bin:$$PATH \
-           LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
+           LD_LIBRARY_PATH=$(INSTALLHOME)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
            $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/test/opt/shared/single
 	
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
@@ -193,7 +193,7 @@ testsingleoptshared:
 	@cd $(INSTALLHOME)/test/opt/shared/single/bin; ls > ../TestExes
 	cd $(INSTALLHOME)/test/opt/shared/single && \
            PATH=$(INSTALLHOME)/test/opt/shared/single/bin:$(INSTALLHOME)/bin/utils/opt/shared/single/bin:$$PATH \
-           LD_LIBRARY_PATH=$(INSTALLHOME)/lib/RAVL/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
+           LD_LIBRARY_PATH=$(INSTALLHOME)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
            $(INSTALLHOME)/bin/utils/opt/bin/Validate -v $(INSTALLHOME)/test/opt/shared/single
 
 .DEFAULT: qmake
