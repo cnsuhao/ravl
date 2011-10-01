@@ -109,7 +109,11 @@ namespace RavlN {
   // Creates hard link of this file
 
   bool FilenameC::Link(const StringC &linkname) const {
+#if RAVL_COMPILER_VISUALCPP
+    return 0;
+#else
     return (link(this->chars(),linkname.chars()) == 0);
+#endif 
   }
 
   // Get the access permissions for this file.
@@ -384,7 +388,7 @@ namespace RavlN {
       return false; // That was easy.  
     if(IsEmpty() || oth.IsEmpty())
       return false; // Can't compare non-existent files.
-    ifstream in1(*this),in2(oth);
+    ifstream in1(this->chars()),in2(oth.chars());
     if(!in1) {
       cerr << "FilenameC::BinCompare(), Failed to open file :" << (*this) << endl;
       return false;

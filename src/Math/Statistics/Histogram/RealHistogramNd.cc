@@ -1,5 +1,6 @@
 
 #include "Ravl/RealHistogramNd.hh"
+#include "Ravl/BinStream.hh" 
 
 namespace RavlN {
 
@@ -17,6 +18,7 @@ namespace RavlN {
     Init();
   }
 
+  //: Binary stream constructor
   RealHistogramBaseNdC::RealHistogramBaseNdC(BinIStreamC &strm)
   {
     ByteT version = 0;
@@ -26,7 +28,14 @@ namespace RavlN {
     strm >> m_inputLimits >> m_gridSize;
     Init();
   }
-  //: Binary stream constructor
+
+  //: Write histogram to binary stream
+  bool RealHistogramBaseNdC::Save(BinOStreamC &strm) const {
+    ByteT version = 1;
+    strm << version;
+    strm << m_inputLimits << m_gridSize;
+    return true;
+  }
 
 
   //: Scaling.

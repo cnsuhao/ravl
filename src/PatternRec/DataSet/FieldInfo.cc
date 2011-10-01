@@ -11,6 +11,7 @@
 #include "Ravl/PatternRec/FieldInfo.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/BinStream.hh"
 
 namespace RavlN {
 
