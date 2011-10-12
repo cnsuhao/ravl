@@ -252,7 +252,7 @@ namespace RavlN {
     //: Write to a stream.
     
     SizeT Hash() const
-    { return (sec + usec); }
+    { return static_cast<size_t>(sec + usec); }
     //: Generate a hash value.
     
   private:
