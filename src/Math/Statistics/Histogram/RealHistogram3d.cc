@@ -6,7 +6,7 @@ namespace RavlN {
   //: Create a histogram.
   
   RealHistogram3dC::RealHistogram3dC(const Point3dC &min,const Point3dC &max,const Index3dC &steps) 
-    : SArray3dC<UIntT>( (SizeT)RealT(steps[0]), (SizeT)RealT(steps[1]), (SizeT)RealT(steps[2]) )
+    : SArray3dC<UIntT>( (SizeT)static_cast<size_t>(RealT(steps[0])), (SizeT)static_cast<size_t>(RealT(steps[1])), (SizeT)static_cast<size_t>(RealT(steps[2])) )
   {
     scale = max - min;
     //cerr << "Diff=" << scale << "\n";
