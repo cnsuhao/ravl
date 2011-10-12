@@ -90,7 +90,7 @@ namespace RavlN
         {
           CheckPythonException();
         }
-        catch (PythonExceptionC &e)
+        catch (PythonExceptionC &)
         {
           PyThreadState_Swap(NULL);
           PyEval_ReleaseLock();
@@ -138,7 +138,7 @@ namespace RavlN
       {
         CheckPythonException();
       }
-      catch (PythonExceptionC &e)
+      catch (PythonExceptionC &)
       {
         PyThreadState_Swap(NULL);
         PyEval_ReleaseLock();
