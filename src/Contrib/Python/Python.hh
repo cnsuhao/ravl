@@ -44,7 +44,7 @@ namespace RavlN
     //: Destructor.
     
     const bool Initialised() const
-    { return m_threadState; }
+    { return m_threadState != NULL; }
     //: Is the interpreter ready?
     //!return: False on failure
     
