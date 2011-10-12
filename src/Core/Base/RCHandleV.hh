@@ -113,11 +113,13 @@ namespace RavlN {
     { return RCHandleVC<BodyT>(Body().DeepCopy(levels)); }
     //: Make a deep copy of body.
 
+#if !RAVL_COMPILER_VISUALCPP
     //! Convert a smart pointer to a RCAbstract handle
     friend RCAbstractC ToRCAbstract<>(const RavlN::RCHandleVC<BodyT> &value);
 
     //! Convert a smart pointer to from a RCAbstract handle
     friend void FromRCAbstract<>(const RavlN::RCAbstractC &val,RavlN::RCHandleVC<BodyT> &value);
+#endif
   };
   
   typedef RCHandleC<RCBodyVC> AbstractC;
