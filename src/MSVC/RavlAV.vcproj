@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlAV"
-	ProjectGUID="{cffd8a62-1619-4008-9264-4e7ff96fd2f1}"
+	ProjectGUID="{9d81c1a8-a38f-4cc7-be5c-0a234b36ef82}"
         RootNamespace="RavlAV"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlAV"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -99,7 +99,7 @@
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlAV"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

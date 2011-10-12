@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="exFeatureSet"
-	ProjectGUID="{9311d53a-ed93-4075-b5a8-7c2034d09034}"
+	ProjectGUID="{e8d9c921-1a8d-48e5-9715-bd4b088b226b}"
 	RootNamespace="exFeatureSet"
 	Keyword="Win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\exFeatureSet"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\exFeatureSet"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

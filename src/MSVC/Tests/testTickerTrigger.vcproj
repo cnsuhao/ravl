@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="testTickerTrigger"
-	ProjectGUID="{57544f27-9fa1-4281-927c-04098e63657a}"
+	ProjectGUID="{e8bc6513-5b24-44b3-be3c-38e04e7fd452}"
 	RootNamespace="testTickerTrigger"
 	Keyword="Win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\testTickerTrigger"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\testTickerTrigger"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

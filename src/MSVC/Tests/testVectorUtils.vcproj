@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="testVectorUtils"
-	ProjectGUID="{81cda0f6-89d0-4ac8-ac86-5392866b23ec}"
+	ProjectGUID="{65116d11-07b3-4d6d-a936-59d902bb506e}"
 	RootNamespace="testVectorUtils"
 	Keyword="Win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\testVectorUtils"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\testVectorUtils"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

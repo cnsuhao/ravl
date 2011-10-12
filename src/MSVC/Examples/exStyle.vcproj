@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="exStyle"
-	ProjectGUID="{6a1c5ed9-2caa-47e8-9882-74aa44f49e4f}"
+	ProjectGUID="{2cc27167-92a8-41de-9bab-719b67a15e5b}"
 	RootNamespace="exStyle"
 	Keyword="Win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\exStyle"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\exStyle"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

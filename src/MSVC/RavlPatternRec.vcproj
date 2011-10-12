@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlPatternRec"
-	ProjectGUID="{4106388b-0b1f-412d-88de-910a7ccdacb3}"
+	ProjectGUID="{ee7dbf84-e955-431b-9f19-fe90ead741ed}"
         RootNamespace="RavlPatternRec"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlPatternRec"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -102,7 +102,7 @@ if not exist ..\build\\NUL mkdir ..\build\&#x0D;&#x0A;copy ..\.\PatternRec\Class
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlPatternRec"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

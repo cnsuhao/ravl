@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlAAM"
-	ProjectGUID="{d5402573-f62d-44ee-af9b-0722ede9f660}"
+	ProjectGUID="{64abea67-bede-415f-8a30-c76217f083f6}"
         RootNamespace="RavlAAM"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlAAM"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -102,7 +102,7 @@ if not exist ..\build\share\doc\RAVL\Images\AAM\NUL mkdir ..\build\share\doc\RAV
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlAAM"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

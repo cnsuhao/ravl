@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="aamBuildActiveAppearanceModel"
-	ProjectGUID="{f4ee1431-634d-4094-a644-bbeef54e1363}"
+	ProjectGUID="{395678f1-50c5-491b-bdc8-8af7b59968f5}"
 	RootNamespace="aamBuildActiveAppearanceModel"
 	Keyword="Win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\aamBuildActiveAppearanceModel"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\aamBuildActiveAppearanceModel"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

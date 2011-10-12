@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlChartDetector"
-	ProjectGUID="{e8d26073-a22a-4d72-aef6-0b9e9078c1d2}"
+	ProjectGUID="{7d3df09e-55f7-4fd2-a233-b3df683923c6}"
         RootNamespace="RavlChartDetector"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlChartDetector"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -103,7 +103,7 @@ if not exist ..\build\share\RAVL\pixmaps\NUL mkdir ..\build\share\RAVL\pixmaps&#
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlChartDetector"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

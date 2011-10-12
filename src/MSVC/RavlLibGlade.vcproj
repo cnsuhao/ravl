@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlLibGlade"
-	ProjectGUID="{75234586-bf63-48bb-99f7-e3831518789b}"
+	ProjectGUID="{30a52a2e-9789-43b1-8884-09fd13aadddf}"
         RootNamespace="RavlLibGlade"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlLibGlade"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -103,7 +103,7 @@ if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlLibGlade"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Ravl3DIO"
-	ProjectGUID="{18b45926-140d-4688-937e-926d1250febd}"
+	ProjectGUID="{0986327e-7d35-4cde-8af3-38cae60d644f}"
         RootNamespace="Ravl3DIO"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\Ravl3DIO"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -101,7 +101,7 @@ if not exist ..\build\share\RAVL\data\NUL mkdir ..\build\share\RAVL\data&#x0D;&#
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\Ravl3DIO"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

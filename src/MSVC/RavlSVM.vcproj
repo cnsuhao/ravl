@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlSVM"
-	ProjectGUID="{67144c53-7b42-4fbf-b74f-64039a0d990f}"
+	ProjectGUID="{41e1b9b5-1f38-415f-b863-6da93e015191}"
         RootNamespace="RavlSVM"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlSVM"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -102,7 +102,7 @@ if not exist ..\build\share\RAVL\testData\svm\NUL mkdir ..\build\share\RAVL\test
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlSVM"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

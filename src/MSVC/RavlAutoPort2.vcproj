@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlAutoPort2"
-	ProjectGUID="{fdcb951f-118f-4ed4-b92d-542cd4814818}"
+	ProjectGUID="{c82ccac8-27bb-4c1c-ad33-501fd70d6fdc}"
         RootNamespace="RavlAutoPort2"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlAutoPort2"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -113,7 +113,7 @@ if not exist ..\build\share\RAVL\AutoPort2\NUL mkdir ..\build\share\RAVL\AutoPor
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlAutoPort2"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

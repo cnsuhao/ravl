@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlSourceTools"
-	ProjectGUID="{68fc403b-3517-49c5-b57b-f590f722cf89}"
+	ProjectGUID="{bc7c6385-9c58-47d3-b5b3-74fb5ebd7436}"
         RootNamespace="RavlSourceTools"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlSourceTools"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -101,7 +101,7 @@ if not exist ..\build\share\RAVL\CodeManager\NUL mkdir ..\build\share\RAVL\CodeM
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlSourceTools"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

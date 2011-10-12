@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlPython"
-	ProjectGUID="{97835493-3e34-48c3-8a34-43d61177e134}"
+	ProjectGUID="{ec9a321b-4c86-4aa9-a778-b0458a743e2f}"
         RootNamespace="RavlPython"
 	Keyword="win32Proj"
 	>
@@ -20,7 +20,7 @@
 			OutputDirectory="..\build\win32\debug\lib"
 			IntermediateDirectory="..\build\win32\debug\obj\RavlPython"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -101,7 +101,7 @@ if not exist ..\build\lib\RAVL\libdep\NUL mkdir ..\build\lib\RAVL\libdep&#x0D;&#
 			OutputDirectory="..\build\win32\opt\lib"
 			IntermediateDirectory="..\build\win32\opt\obj\RavlPython"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
