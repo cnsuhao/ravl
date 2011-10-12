@@ -103,7 +103,7 @@ namespace RavlN { namespace GeneticN {
       m_population.erase(m_population.begin(),it.base());
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Got %zu seeds. Pop:%zu Best score=%f Age:%u Generation:%u @ %p ",seeds.size(),m_population.size(),m_population.rbegin()->first,m_population.rbegin()->second->Age(),m_population.rbegin()->second->Generation(),m_population.rbegin()->second.BodyPtr());
+    RavlSysLogf(SYSLOG_DEBUG,"Got %zu seeds. Pop:%zu Best score=%f Age:%u Generation:%u @ %p ",(size_t) seeds.size(),(size_t) m_population.size(),m_population.rbegin()->first,m_population.rbegin()->second->Age(),m_population.rbegin()->second->Generation(),m_population.rbegin()->second.BodyPtr());
 
     std::vector<GenomeC::RefT> newTestSet;
     newTestSet.reserve(m_populationSize);

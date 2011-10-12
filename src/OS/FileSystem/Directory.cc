@@ -121,7 +121,7 @@ namespace RavlN {
 	HANDLE hFindFile = FindFirstFile(strSearch.chars(), &dataFind);
     BOOL bFoundNext = hFindFile ? true : false;
     while (bFoundNext) {
-	  mbstate_t state;
+	  //mbstate_t state;
 	  //char cbuff[1025];
 	  size_t csize = 0;
 	  char *wname = dataFind.cFileName;

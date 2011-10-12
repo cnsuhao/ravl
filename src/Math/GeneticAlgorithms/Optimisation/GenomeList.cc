@@ -148,9 +148,9 @@ namespace RavlN { namespace GeneticN {
     const GeneListC &oldListGene1 = dynamic_cast<const GeneListC &>(original1);
     const GeneListC &oldListGene2 = dynamic_cast<const GeneListC &>(original2);
 
-    float crossAt = Random1();
-    float crossAt1 = crossAt + ((Random1() * 0.3)-0.15);
-    float crossAt2 = crossAt + ((Random1() * 0.3)-0.15);
+    float crossAt = static_cast<float>(Random1());
+    float crossAt1 = crossAt + static_cast<float>((Random1() * 0.3)-0.15);
+    float crossAt2 = crossAt + static_cast<float>((Random1() * 0.3)-0.15);
     size_t size1 = oldListGene1.List().size();
     size_t size2 = oldListGene2.List().size();
     int ind1 = crossAt1 * size1;

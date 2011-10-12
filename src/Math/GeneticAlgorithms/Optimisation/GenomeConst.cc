@@ -91,7 +91,7 @@ namespace RavlN { namespace GeneticN {
     }
     const GeneIntC &originalInt = dynamic_cast<const GeneIntC &>(original);
 
-    float value = RavlN::Random1() * static_cast<float>(m_max - m_min) + static_cast<float>(m_min);
+    float value = static_cast<float>(RavlN::Random1() * (m_max - m_min)) + static_cast<float>(m_min);
     IntT newValue = Floor(fraction * static_cast<float>(originalInt.Value()) + (1.0 - fraction) * value);
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
@@ -226,7 +226,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Generate a new value
   void GeneTypeFloatC::RandomValue(float &newValue) const {
-    newValue = RavlN::Random1() * static_cast<float>(m_max - m_min) + static_cast<float>(m_min);
+    newValue = static_cast<float>(RavlN::Random1() * (m_max - m_min)) + static_cast<float>(m_min);
     if(newValue < m_min)
        newValue = m_min;
      if(newValue > m_max)
