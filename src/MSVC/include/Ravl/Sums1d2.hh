@@ -1,3 +1,3 @@
 
-#include "../.././Math/Statistics/MeanCovariance/Sums1d2.hh"
+#include "../../.\Math\Statistics\MeanCovariance\Sums1d2.hh"
 

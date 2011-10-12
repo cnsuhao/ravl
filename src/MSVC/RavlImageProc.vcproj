@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlImageProc"
-	ProjectGUID="{5655ce67-b0ce-48ad-b647-aff14b3994bf}"
+	ProjectGUID="{b690bbdf-fc9c-4280-89aa-db8af57a093a}"
         RootNamespace="RavlImageProc"
 	Keyword="win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlImageProc"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlImageProc"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlImageProc\RavlImageProc.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlImageProc\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlImageProc\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlImageProc.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlImageProc\RavlImageProc.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlImageProc\"
+				ObjectFile="..\build\win32\debug\obj\RavlImageProc\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlImageProc.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlImageProc.lib"
+				OutputFile="..\build\win32\debug\lib\RavlImageProc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlImageProc.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlImageProc.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,10 +96,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlImageProc"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlImageProc"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlImageProc/RavlImageProc.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlImageProc\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlImageProc\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlImageProc.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlImageProc/RavlImageProc.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlImageProc\"
+				ObjectFile="..\build\win32\opt\obj\RavlImageProc\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlImageProc.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlImageProc.lib"
+				OutputFile="..\build\win32\opt\lib\RavlImageProc.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlImageProc.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlImageProc.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

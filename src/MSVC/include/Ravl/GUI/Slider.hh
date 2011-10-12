@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/Slider.hh"
+#include "../../.\GUI\GTK\Slider.hh"
 

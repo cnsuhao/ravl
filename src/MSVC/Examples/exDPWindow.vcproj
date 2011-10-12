@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="exDPWindow"
-	ProjectGUID="{69514562-70e0-47a9-abb5-686be363354a}"
+	ProjectGUID="{d62cbd40-0b88-45a9-b261-cab1dd8b0453}"
 	RootNamespace="exDPWindow"
 	Keyword="Win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\exDPWindow"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\exDPWindow"
 			ConfigurationType="1"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\debug\bin\exDPWindow.exe"
+				OutputFile="..\build\win32\debug\bin\exDPWindow.exe"
 				AdditionalDependencies=" RavlCore.lib RavlIO.lib Rpcrt4.lib RavlOS.lib atk-1.0.lib cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib gdk_pixbuf-2.0.lib gdk-win32-2.0.lib gio-2.0.lib glib-2.0.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib intl.lib libpng.lib pango-1.0.lib pangocairo-1.0.lib pangoft2-1.0.lib pangowin32-1.0.lib zdll.lib RavlThreads.lib RavlXMLFactory.lib RavlGUI.lib ccmath.lib RavlMath.lib RavlImage.lib RavlImageIO.lib RavlGUI2D.lib RavlDPDisplay.lib"
-				AdditionalLibraryDirectories="c:\WindowsSources\GTK\lib\;C:\Build\win32\debug\lib"
+				AdditionalLibraryDirectories="c:\WindowsSources\GTK\lib\;..\build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,10 +97,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\exDPWindow"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\exDPWindow"
 			ConfigurationType="1"
-			CharacterSet="0"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\opt\bin\exDPWindow.exe"
+				OutputFile="..\build\win32\opt\bin\exDPWindow.exe"
 				AdditionalDependencies=" RavlCore.lib RavlIO.lib Rpcrt4.lib RavlOS.lib atk-1.0.lib cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib gdk_pixbuf-2.0.lib gdk-win32-2.0.lib gio-2.0.lib glib-2.0.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib intl.lib libpng.lib pango-1.0.lib pangocairo-1.0.lib pangoft2-1.0.lib pangowin32-1.0.lib zdll.lib RavlThreads.lib RavlXMLFactory.lib RavlGUI.lib ccmath.lib RavlMath.lib RavlImage.lib RavlImageIO.lib RavlGUI2D.lib RavlDPDisplay.lib"
-				AdditionalLibraryDirectories="c:\WindowsSources\GTK\lib\;C:\Build\win32\opt\lib"
+				AdditionalLibraryDirectories="c:\WindowsSources\GTK\lib\;..\build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

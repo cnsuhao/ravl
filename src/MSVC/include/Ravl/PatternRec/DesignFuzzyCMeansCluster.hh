@@ -1,3 +1,3 @@
 
-#include "../.././PatternRec/Cluster/DesignFuzzyCMeansCluster.hh"
+#include "../../.\PatternRec\Cluster\DesignFuzzyCMeansCluster.hh"
 

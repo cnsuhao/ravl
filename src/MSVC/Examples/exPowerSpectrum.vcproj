@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="exPowerSpectrum"
-	ProjectGUID="{2cf486b6-7a6d-4331-bf55-dcdd4af5a68b}"
+	ProjectGUID="{04a167c3-785a-4a43-8e17-835ef8cbb1cc}"
 	RootNamespace="exPowerSpectrum"
 	Keyword="Win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\exPowerSpectrum"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\exPowerSpectrum"
 			ConfigurationType="1"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\debug\bin\exPowerSpectrum.exe"
+				OutputFile="..\build\win32\debug\bin\exPowerSpectrum.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib"
-				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
+				AdditionalLibraryDirectories=";..\build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,10 +97,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\exPowerSpectrum"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\exPowerSpectrum"
 			ConfigurationType="1"
-			CharacterSet="0"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\opt\bin\exPowerSpectrum.exe"
+				OutputFile="..\build\win32\opt\bin\exPowerSpectrum.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib"
-				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
+				AdditionalLibraryDirectories=";..\build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

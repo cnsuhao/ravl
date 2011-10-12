@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlDPMT"
-	ProjectGUID="{4d6ddfa4-9f2c-4086-8b01-804dece20aee}"
+	ProjectGUID="{cbea3c37-5c14-482c-8ef1-4bd798a6916b}"
         RootNamespace="RavlDPMT"
 	Keyword="win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlDPMT"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlDPMT"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlDPMT\RavlDPMT.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlDPMT\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlDPMT\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlDPMT.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlDPMT\RavlDPMT.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlDPMT\"
+				ObjectFile="..\build\win32\debug\obj\RavlDPMT\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlDPMT.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlDPMT.lib"
+				OutputFile="..\build\win32\debug\lib\RavlDPMT.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlDPMT.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlDPMT.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,10 +96,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlDPMT"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlDPMT"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlDPMT/RavlDPMT.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlDPMT\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlDPMT\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlDPMT.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlDPMT/RavlDPMT.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlDPMT\"
+				ObjectFile="..\build\win32\opt\obj\RavlDPMT\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlDPMT.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlDPMT.lib"
+				OutputFile="..\build\win32\opt\lib\RavlDPMT.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlDPMT.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlDPMT.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

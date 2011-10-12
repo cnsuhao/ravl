@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/Ruler.hh"
+#include "../../.\GUI\GTK\Ruler.hh"
 

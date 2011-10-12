@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/ProgressBar.hh"
+#include "../../.\GUI\GTK\ProgressBar.hh"
 

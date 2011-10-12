@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlThreads"
-	ProjectGUID="{210f9972-f70e-4423-930e-969c24bf8ac8}"
+	ProjectGUID="{ba7f2601-6894-461d-aa3c-87798334b1a6}"
         RootNamespace="RavlThreads"
 	Keyword="win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlThreads"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlThreads"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlThreads\RavlThreads.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlThreads\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlThreads\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlThreads.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlThreads\RavlThreads.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlThreads\"
+				ObjectFile="..\build\win32\debug\obj\RavlThreads\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlThreads.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlThreads.lib"
+				OutputFile="..\build\win32\debug\lib\RavlThreads.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlThreads.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlThreads.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,10 +96,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlThreads"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlThreads"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlThreads/RavlThreads.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlThreads\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlThreads\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlThreads.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlThreads/RavlThreads.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlThreads\"
+				ObjectFile="..\build\win32\opt\obj\RavlThreads\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlThreads.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlThreads.lib"
+				OutputFile="..\build\win32\opt\lib\RavlThreads.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlThreads.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlThreads.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

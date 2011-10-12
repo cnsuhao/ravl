@@ -1,3 +1,3 @@
 
-#include "../.././PatternRec/Cluster/DesignKohonenNet.hh"
+#include "../../.\PatternRec\Cluster\DesignKohonenNet.hh"
 

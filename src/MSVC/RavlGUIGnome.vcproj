@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlGUIGnome"
-	ProjectGUID="{e1787a05-e2af-4b1d-94c9-58f419bb9d7a}"
+	ProjectGUID="{42c0a634-c5cd-49fd-a96f-819f39ec1948}"
         RootNamespace="RavlGUIGnome"
 	Keyword="win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlGUIGnome"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlGUIGnome"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlGUIGnome\RavlGUIGnome.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlGUIGnome\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlGUIGnome\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlGUIGnome.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlGUIGnome\RavlGUIGnome.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlGUIGnome\"
+				ObjectFile="..\build\win32\debug\obj\RavlGUIGnome\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlGUIGnome.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlGUIGnome.lib"
+				OutputFile="..\build\win32\debug\lib\RavlGUIGnome.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlGUIGnome.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlGUIGnome.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlGUIGnome"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlGUIGnome"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlGUIGnome/RavlGUIGnome.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlGUIGnome\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlGUIGnome\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlGUIGnome.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlGUIGnome/RavlGUIGnome.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlGUIGnome\"
+				ObjectFile="..\build\win32\opt\obj\RavlGUIGnome\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlGUIGnome.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlGUIGnome.lib"
+				OutputFile="..\build\win32\opt\lib\RavlGUIGnome.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlGUIGnome.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlGUIGnome.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

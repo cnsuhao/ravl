@@ -1,3 +1,3 @@
 
-#include "../.././GUI/Util/ThumbNailTimeLine.hh"
+#include "../../.\GUI\Util\ThumbNailTimeLine.hh"
 

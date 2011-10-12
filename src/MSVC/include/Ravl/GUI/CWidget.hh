@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/CWidget.hh"
+#include "../../.\GUI\GTK\CWidget.hh"
 

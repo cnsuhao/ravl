@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/ColourSelector.hh"
+#include "../../.\GUI\GTK\ColourSelector.hh"
 

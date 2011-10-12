@@ -1,3 +1,3 @@
 
-#include "../.././Core/Container/Misc/Stack.hh"
+#include "../../.\Core\Container\Misc\Stack.hh"
 

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="testI386SSE"
-	ProjectGUID="{a338a5db-284c-4426-a342-a4d18156d526}"
+	ProjectGUID="{d1f8cd57-a9f9-4fde-a682-200bacce95a4}"
 	RootNamespace="testI386SSE"
 	Keyword="Win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\testI386SSE"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\testI386SSE"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\debug\bin\testI386SSE.exe"
+				OutputFile="..\build\win32\debug\bin\testI386SSE.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib"
-				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
+				AdditionalLibraryDirectories=";..\build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,8 +97,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\testI386SSE"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\testI386SSE"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\opt\bin\testI386SSE.exe"
+				OutputFile="..\build\win32\opt\bin\testI386SSE.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib"
-				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
+				AdditionalLibraryDirectories=";..\build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlDPDisplay"
-	ProjectGUID="{459496d5-10f4-4cde-8b74-dfa546b57b09}"
+	ProjectGUID="{8febbab5-9205-4189-83ce-d0f5b7ac232d}"
         RootNamespace="RavlDPDisplay"
 	Keyword="win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlDPDisplay"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlDPDisplay"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlDPDisplay\RavlDPDisplay.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlDPDisplay\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlDPDisplay\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlDPDisplay.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlDPDisplay\RavlDPDisplay.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlDPDisplay\"
+				ObjectFile="..\build\win32\debug\obj\RavlDPDisplay\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlDPDisplay.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlDPDisplay.lib"
+				OutputFile="..\build\win32\debug\lib\RavlDPDisplay.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlDPDisplay.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlDPDisplay.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,10 +96,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlDPDisplay"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlDPDisplay"
 			ConfigurationType="4"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlDPDisplay/RavlDPDisplay.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlDPDisplay\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlDPDisplay\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlDPDisplay.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlDPDisplay/RavlDPDisplay.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlDPDisplay\"
+				ObjectFile="..\build\win32\opt\obj\RavlDPDisplay\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlDPDisplay.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlDPDisplay.lib"
+				OutputFile="..\build\win32\opt\lib\RavlDPDisplay.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlDPDisplay.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlDPDisplay.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

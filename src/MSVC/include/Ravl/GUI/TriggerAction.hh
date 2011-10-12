@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/TriggerAction.hh"
+#include "../../.\GUI\GTK\TriggerAction.hh"
 
