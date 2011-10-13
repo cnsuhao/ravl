@@ -1,3 +1,3 @@
 
-#include "../.././PatternRec/Classify/DesignClassifierGaussianMixture.hh"
+#include "../../.\PatternRec\Classify\DesignClassifierGaussianMixture.hh"
 

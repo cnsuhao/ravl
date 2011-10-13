@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlRLog"
-	ProjectGUID="{bd6295d8-2b78-40c1-8809-9f31534b96d2}"
+	ProjectGUID="{1fa19b50-d03c-4763-bf0e-f417841ff0de}"
         RootNamespace="RavlRLog"
 	Keyword="win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlRLog"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlRLog"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\rlog-1.4&quot;"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlRLog\RavlRLog.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlRLog\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlRLog\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlRLog.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlRLog\RavlRLog.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlRLog\"
+				ObjectFile="..\build\win32\debug\obj\RavlRLog\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlRLog.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlRLog.lib"
+				OutputFile="..\build\win32\debug\lib\RavlRLog.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlRLog.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlRLog.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,10 +96,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlRLog"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlRLog"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\rlog-1.4&quot;"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlRLog/RavlRLog.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlRLog\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlRLog\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlRLog.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlRLog/RavlRLog.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlRLog\"
+				ObjectFile="..\build\win32\opt\obj\RavlRLog\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlRLog.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlRLog.lib"
+				OutputFile="..\build\win32\opt\lib\RavlRLog.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlRLog.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlRLog.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

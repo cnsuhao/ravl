@@ -1,3 +1,3 @@
 
-#include "../.././PatternRec/Classify/DesignBayesNormalQuadratic.hh"
+#include "../../.\PatternRec\Classify\DesignBayesNormalQuadratic.hh"
 

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Ravl3DIO"
-	ProjectGUID="{ffeee78d-5167-4963-99d4-1eb8fdc0db73}"
+	ProjectGUID="{0986327e-7d35-4cde-8af3-38cae60d644f}"
         RootNamespace="Ravl3DIO"
 	Keyword="win32Proj"
 	>
@@ -17,15 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\Ravl3DIO"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\Ravl3DIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#x0A;copy ..\.\3D\MeshIO\cube.tri C:\Build\share\RAVL\data\cube.tri&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\data\NUL mkdir ..\build\share\RAVL\data&#x0D;&#x0A;copy ..\.\3D\MeshIO\cube.tri ..\build\share\RAVL\data\cube.tri&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -47,15 +47,15 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\Ravl3DIO\Ravl3DIO.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\Ravl3DIO\"
-				ObjectFile="C:\Build\win32\debug\obj\Ravl3DIO\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\Ravl3DIO.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\Ravl3DIO\Ravl3DIO.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\Ravl3DIO\"
+				ObjectFile="..\build\win32\debug\obj\Ravl3DIO\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\Ravl3DIO.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -75,7 +75,7 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\Ravl3DIO.lib"
+				OutputFile="..\build\win32\debug\lib\Ravl3DIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -87,7 +87,7 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\Ravl3DIO.bsc"
+				OutputFile="..\build\win32\debug\lib\Ravl3DIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -98,15 +98,15 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\Ravl3DIO"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\Ravl3DIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#x0A;copy ..\.\3D\MeshIO\cube.tri C:\Build\share\RAVL\data\cube.tri&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\data\NUL mkdir ..\build\share\RAVL\data&#x0D;&#x0A;copy ..\.\3D\MeshIO\cube.tri ..\build\share\RAVL\data\cube.tri&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -126,15 +126,15 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\Ravl3DIO/Ravl3DIO.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\Ravl3DIO\"
-				ObjectFile="C:\Build\win32\opt\obj\Ravl3DIO\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\Ravl3DIO.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\Ravl3DIO/Ravl3DIO.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\Ravl3DIO\"
+				ObjectFile="..\build\win32\opt\obj\Ravl3DIO\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\Ravl3DIO.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -153,7 +153,7 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\Ravl3DIO.lib"
+				OutputFile="..\build\win32\opt\lib\Ravl3DIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -165,7 +165,7 @@ if not exist C:\Build\share\RAVL\data\NUL mkdir C:\Build\share\RAVL\data&#x0D;&#
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\Ravl3DIO.bsc"
+				OutputFile="..\build\win32\opt\lib\Ravl3DIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlCameraCal"
-	ProjectGUID="{e4becfd4-cf7a-44d6-9c15-587620649bc0}"
+	ProjectGUID="{9b15ad26-e871-4dc6-8484-088bd05c58d0}"
         RootNamespace="RavlCameraCal"
 	Keyword="win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlCameraCal"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlCameraCal"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlCameraCal\RavlCameraCal.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlCameraCal\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlCameraCal\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlCameraCal.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlCameraCal\RavlCameraCal.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlCameraCal\"
+				ObjectFile="..\build\win32\debug\obj\RavlCameraCal\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlCameraCal.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlCameraCal.lib"
+				OutputFile="..\build\win32\debug\lib\RavlCameraCal.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlCameraCal.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlCameraCal.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlCameraCal"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlCameraCal"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlCameraCal/RavlCameraCal.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlCameraCal\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlCameraCal\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlCameraCal.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlCameraCal/RavlCameraCal.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlCameraCal\"
+				ObjectFile="..\build\win32\opt\obj\RavlCameraCal\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlCameraCal.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlCameraCal.lib"
+				OutputFile="..\build\win32\opt\lib\RavlCameraCal.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlCameraCal.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlCameraCal.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

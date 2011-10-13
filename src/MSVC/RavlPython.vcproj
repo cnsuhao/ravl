@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlPython"
-	ProjectGUID="{53c68d48-f44f-4606-a3ee-bffad43bc1da}"
+	ProjectGUID="{ec9a321b-4c86-4aa9-a778-b0458a743e2f}"
         RootNamespace="RavlPython"
 	Keyword="win32Proj"
 	>
@@ -17,15 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlPython"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlPython"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#x0A;copy ..\.\Contrib\Python\Python.def C:\Build\lib\RAVL\libdep\Python.def&#x0D;&#x0A;"
+if not exist ..\build\lib\RAVL\libdep\NUL mkdir ..\build\lib\RAVL\libdep&#x0D;&#x0A;copy ..\.\Contrib\Python\Python.def ..\build\lib\RAVL\libdep\Python.def&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -47,15 +47,15 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\Python-2.6.6\include&quot;"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlPython\RavlPython.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlPython\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlPython\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlPython.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlPython\RavlPython.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlPython\"
+				ObjectFile="..\build\win32\debug\obj\RavlPython\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlPython.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -75,7 +75,7 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlPython.lib"
+				OutputFile="..\build\win32\debug\lib\RavlPython.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -87,7 +87,7 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlPython.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlPython.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -98,15 +98,15 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlPython"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlPython"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#x0A;copy ..\.\Contrib\Python\Python.def C:\Build\lib\RAVL\libdep\Python.def&#x0D;&#x0A;"
+if not exist ..\build\lib\RAVL\libdep\NUL mkdir ..\build\lib\RAVL\libdep&#x0D;&#x0A;copy ..\.\Contrib\Python\Python.def ..\build\lib\RAVL\libdep\Python.def&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -126,15 +126,15 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\Python-2.6.6\include&quot;"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlPython/RavlPython.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlPython\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlPython\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlPython.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlPython/RavlPython.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlPython\"
+				ObjectFile="..\build\win32\opt\obj\RavlPython\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlPython.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -153,7 +153,7 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlPython.lib"
+				OutputFile="..\build\win32\opt\lib\RavlPython.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -165,7 +165,7 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlPython.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlPython.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -200,6 +200,10 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 				RelativePath="..\.\Contrib\Python\PythonLock.cc"
 				>
 			</File>
+			<File
+				RelativePath="..\.\Contrib\Python\PythonMainState.cc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -220,6 +224,10 @@ if not exist C:\Build\lib\RAVL\libdep\NUL mkdir C:\Build\lib\RAVL\libdep&#x0D;&#
 			</File>
 			<File
 				RelativePath="..\.\Contrib\Python\PythonLock.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Contrib\Python\PythonMainState.hh"
 				>
 			</File>
 		</Filter>

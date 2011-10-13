@@ -1,3 +1,3 @@
 
-#include "../.././PatternRec/Cluster/DesignMeanShiftCluster.hh"
+#include "../../.\PatternRec\Cluster\DesignMeanShiftCluster.hh"
 

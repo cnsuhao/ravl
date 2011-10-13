@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlAAM"
-	ProjectGUID="{709853a8-85ca-40b3-a309-854616226af7}"
+	ProjectGUID="{64abea67-bede-415f-8a30-c76217f083f6}"
         RootNamespace="RavlAAM"
 	Keyword="win32Proj"
 	>
@@ -17,16 +17,16 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlAAM"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlAAM"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.png C:\Build\share\doc\RAVL\Images\AAM\000_1_2_090.png&#x0D;&#x0A;
-if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.xml C:\Build\share\doc\RAVL\Images\AAM\000_1_2_090.xml&#x0D;&#x0A;"
+if not exist ..\build\share\doc\RAVL\Images\AAM\NUL mkdir ..\build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.png ..\build\share\doc\RAVL\Images\AAM\000_1_2_090.png&#x0D;&#x0A;
+if not exist ..\build\share\doc\RAVL\Images\AAM\NUL mkdir ..\build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.xml ..\build\share\doc\RAVL\Images\AAM\000_1_2_090.xml&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -48,15 +48,15 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlAAM\RavlAAM.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlAAM\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlAAM\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlAAM.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlAAM\RavlAAM.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlAAM\"
+				ObjectFile="..\build\win32\debug\obj\RavlAAM\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlAAM.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -76,7 +76,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlAAM.lib"
+				OutputFile="..\build\win32\debug\lib\RavlAAM.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -88,7 +88,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlAAM.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlAAM.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -99,16 +99,16 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlAAM"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlAAM"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.png C:\Build\share\doc\RAVL\Images\AAM\000_1_2_090.png&#x0D;&#x0A;
-if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.xml C:\Build\share\doc\RAVL\Images\AAM\000_1_2_090.xml&#x0D;&#x0A;"
+if not exist ..\build\share\doc\RAVL\Images\AAM\NUL mkdir ..\build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.png ..\build\share\doc\RAVL\Images\AAM\000_1_2_090.png&#x0D;&#x0A;
+if not exist ..\build\share\doc\RAVL\Images\AAM\NUL mkdir ..\build\share\doc\RAVL\Images\AAM&#x0D;&#x0A;copy ..\.\CompVision\ActiveAppearanceModels\000_1_2_090.xml ..\build\share\doc\RAVL\Images\AAM\000_1_2_090.xml&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -128,15 +128,15 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlAAM/RavlAAM.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlAAM\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlAAM\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlAAM.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlAAM/RavlAAM.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlAAM\"
+				ObjectFile="..\build\win32\opt\obj\RavlAAM\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlAAM.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -155,7 +155,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlAAM.lib"
+				OutputFile="..\build\win32\opt\lib\RavlAAM.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -167,7 +167,7 @@ if not exist C:\Build\share\doc\RAVL\Images\AAM\NUL mkdir C:\Build\share\doc\RAV
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlAAM.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlAAM.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

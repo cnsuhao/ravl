@@ -1,3 +1,3 @@
 
-#include "../.././PatternRec/HiddenMarkovModels/HiddenMarkovModel.hh"
+#include "../../.\PatternRec\HiddenMarkovModels\HiddenMarkovModel.hh"
 

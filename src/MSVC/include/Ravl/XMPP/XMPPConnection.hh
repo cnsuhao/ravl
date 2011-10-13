@@ -1,3 +1,3 @@
 
-#include "../.././Contrib/XMPP/Core/XMPPConnection.hh"
+#include "../../.\Contrib\XMPP\Core\XMPPConnection.hh"
 

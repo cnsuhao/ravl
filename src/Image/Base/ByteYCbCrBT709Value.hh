@@ -74,9 +74,9 @@ namespace RavlImageN {
     //: Conversion from floating point RGB.
     
     YCbCrBT709ValueC<float> FloatYCbCr() const
-    { return YCbCrBT709ValueC<float>(((float) data[0] -  16.0)/256.0,
-                                     ((float) data[1] - 128.0)/256.0,
-                                     ((float) data[2] - 128.0)/256.0 
+    { return YCbCrBT709ValueC<float>(((float) data[0] -  16.0f)/256.0f,
+                                     ((float) data[1] - 128.0f)/256.0f,
+                                     ((float) data[2] - 128.0f)/256.0f 
                                      ); }
     //: Convert to floating point values.
     

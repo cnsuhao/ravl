@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/Pixmap.hh"
+#include "../../.\GUI\GTK\Pixmap.hh"
 

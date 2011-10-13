@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlSourceTools"
-	ProjectGUID="{367fe45d-e65c-437c-aeab-d057f7e46a59}"
+	ProjectGUID="{bc7c6385-9c58-47d3-b5b3-74fb5ebd7436}"
         RootNamespace="RavlSourceTools"
 	Keyword="win32Proj"
 	>
@@ -17,15 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlSourceTools"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlSourceTools"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeManager&#x0D;&#x0A;copy ..\.\SourceTools\CodeManager\fixSource.cfg C:\Build\share\RAVL\CodeManager\fixSource.cfg&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\CodeManager\NUL mkdir ..\build\share\RAVL\CodeManager&#x0D;&#x0A;copy ..\.\SourceTools\CodeManager\fixSource.cfg ..\build\share\RAVL\CodeManager\fixSource.cfg&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -47,15 +47,15 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlSourceTools\RavlSourceTools.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlSourceTools\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlSourceTools\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlSourceTools.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlSourceTools\RavlSourceTools.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlSourceTools\"
+				ObjectFile="..\build\win32\debug\obj\RavlSourceTools\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlSourceTools.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -75,7 +75,7 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlSourceTools.lib"
+				OutputFile="..\build\win32\debug\lib\RavlSourceTools.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -87,7 +87,7 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlSourceTools.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlSourceTools.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -98,15 +98,15 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlSourceTools"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlSourceTools"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeManager&#x0D;&#x0A;copy ..\.\SourceTools\CodeManager\fixSource.cfg C:\Build\share\RAVL\CodeManager\fixSource.cfg&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\CodeManager\NUL mkdir ..\build\share\RAVL\CodeManager&#x0D;&#x0A;copy ..\.\SourceTools\CodeManager\fixSource.cfg ..\build\share\RAVL\CodeManager\fixSource.cfg&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -126,15 +126,15 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlSourceTools/RavlSourceTools.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlSourceTools\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlSourceTools\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlSourceTools.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlSourceTools/RavlSourceTools.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlSourceTools\"
+				ObjectFile="..\build\win32\opt\obj\RavlSourceTools\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlSourceTools.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -153,7 +153,7 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlSourceTools.lib"
+				OutputFile="..\build\win32\opt\lib\RavlSourceTools.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -165,7 +165,7 @@ if not exist C:\Build\share\RAVL\CodeManager\NUL mkdir C:\Build\share\RAVL\CodeM
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlSourceTools.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlSourceTools.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

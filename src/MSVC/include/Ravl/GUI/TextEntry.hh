@@ -1,3 +1,3 @@
 
-#include "../.././GUI/GTK/TextEntry.hh"
+#include "../../.\GUI\GTK\TextEntry.hh"
 

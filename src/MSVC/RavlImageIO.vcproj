@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlImageIO"
-	ProjectGUID="{04294bbd-e19d-4a26-bb44-fb3a37af5931}"
+	ProjectGUID="{2f67aead-12fc-4d1a-a592-a26f47481398}"
         RootNamespace="RavlImageIO"
 	Keyword="win32Proj"
 	>
@@ -17,15 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlImageIO"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlImageIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#x0D;&#x0A;copy ..\.\Image\ImageIO\monkey.ppm C:\Build\share\RAVL\pixmaps\monkey.ppm&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\pixmaps\NUL mkdir ..\build\share\RAVL\pixmaps&#x0D;&#x0A;copy ..\.\Image\ImageIO\monkey.ppm ..\build\share\RAVL\pixmaps\monkey.ppm&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -47,15 +47,15 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlImageIO\RavlImageIO.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlImageIO\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlImageIO\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlImageIO.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlImageIO\RavlImageIO.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlImageIO\"
+				ObjectFile="..\build\win32\debug\obj\RavlImageIO\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlImageIO.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -75,7 +75,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlImageIO.lib"
+				OutputFile="..\build\win32\debug\lib\RavlImageIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -87,7 +87,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlImageIO.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlImageIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -98,15 +98,15 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlImageIO"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlImageIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#x0D;&#x0A;copy ..\.\Image\ImageIO\monkey.ppm C:\Build\share\RAVL\pixmaps\monkey.ppm&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\pixmaps\NUL mkdir ..\build\share\RAVL\pixmaps&#x0D;&#x0A;copy ..\.\Image\ImageIO\monkey.ppm ..\build\share\RAVL\pixmaps\monkey.ppm&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -126,15 +126,15 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlImageIO/RavlImageIO.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlImageIO\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlImageIO\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlImageIO.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlImageIO/RavlImageIO.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlImageIO\"
+				ObjectFile="..\build\win32\opt\obj\RavlImageIO\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlImageIO.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -153,7 +153,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlImageIO.lib"
+				OutputFile="..\build\win32\opt\lib\RavlImageIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -165,7 +165,7 @@ if not exist C:\Build\share\RAVL\pixmaps\NUL mkdir C:\Build\share\RAVL\pixmaps&#
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlImageIO.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlImageIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

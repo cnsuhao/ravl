@@ -144,9 +144,9 @@ namespace RavlImageN
   ImageC<UInt16RGBValueC> RealRGBImageCT2UInt16RGBImageCT(const ImageC<RealRGBValueC> &dat) {
     ImageC<UInt16RGBValueC> ret(dat.Rectangle());
     for(Array2dIter2C<UInt16RGBValueC,RealRGBValueC> it(ret,dat);it.IsElm();it.Next()) 
-      it.Data1() = UInt16RGBValueC(static_cast<RealT>(it.Data2().Red()),
-                                   static_cast<RealT>(it.Data2().Green()),
-                                   static_cast<RealT>(it.Data2().Blue()));
+      it.Data1() = UInt16RGBValueC(static_cast<UInt16T>(it.Data2().Red()),
+                                   static_cast<UInt16T>(it.Data2().Green()),
+                                   static_cast<UInt16T>(it.Data2().Blue()));
     return ret;
   }
   

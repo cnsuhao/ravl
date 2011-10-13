@@ -104,7 +104,7 @@ namespace RavlN {
       return false;
 
     out.os().clear();
-    out.seekp(offset);
+    out.seekp(static_cast<std::streamoff>(offset));
     return !out.fail();
   }
 
@@ -116,7 +116,7 @@ namespace RavlN {
       return false;
 
     out.os().clear();
-    out.seekp(offset, ios_base::cur);
+    out.seekp(static_cast<std::streamoff>(offset), ios_base::cur);
     return !out.fail();
   }
 
@@ -209,7 +209,7 @@ namespace RavlN {
   bool DPIByteFileBodyC::Seek(UIntT newOff) {
     ONDEBUG(cerr << "DPIByteFileBodyC::Seek newOff=" << newOff << endl);
     in.is().clear(); // Clear any end of stream errors.
-    in.Seek(static_cast<UIntT>(static_cast<streampos>(dataStart) + static_cast<streampos>(newOff)));
+    in.Seek(static_cast<std::streamoff>(dataStart) + static_cast<std::streamoff>(newOff));
     off = newOff;
     return true;
   }
@@ -265,7 +265,7 @@ namespace RavlN {
       in.seekg(0, ios::end);
       size = in.tellg();
       size -= dataStart;
-      in.seekg(dataStart, ios::beg);
+      in.seekg(static_cast<std::streamoff>(dataStart), ios::beg);
     }
   }
 

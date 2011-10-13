@@ -1,3 +1,3 @@
 
-#include "../.././Logic/Base/MinTerm.hh"
+#include "../../.\Logic\Base\MinTerm.hh"
 

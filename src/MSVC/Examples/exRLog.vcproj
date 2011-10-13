@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="exRLog"
-	ProjectGUID="{435e3fc1-ad7c-4670-919b-69822d105935}"
+	ProjectGUID="{bba37736-1441-4fb1-9d7f-cb36cbd5785c}"
 	RootNamespace="exRLog"
 	Keyword="Win32Proj"
 	>
@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\exRLog"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\exRLog"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include;&quot;c:\WindowsSources\rlog-1.4&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\debug\bin\exRLog.exe"
+				OutputFile="..\build\win32\debug\bin\exRLog.exe"
 				AdditionalDependencies=" RavlCore.lib Rpcrt4.lib RavlOS.lib rlog.lib RavlRLog.lib"
-				AdditionalLibraryDirectories="c:\WindowsSources\rlog-1.4\win32\Release;C:\Build\win32\debug\lib"
+				AdditionalLibraryDirectories="c:\WindowsSources\rlog-1.4\win32\Release;..\build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,10 +97,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\exRLog"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\exRLog"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include;&quot;c:\WindowsSources\rlog-1.4&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="C:\Build\win32\opt\bin\exRLog.exe"
+				OutputFile="..\build\win32\opt\bin\exRLog.exe"
 				AdditionalDependencies=" RavlCore.lib Rpcrt4.lib RavlOS.lib rlog.lib RavlRLog.lib"
-				AdditionalLibraryDirectories="c:\WindowsSources\rlog-1.4\win32\Release;C:\Build\win32\opt\lib"
+				AdditionalLibraryDirectories="c:\WindowsSources\rlog-1.4\win32\Release;..\build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

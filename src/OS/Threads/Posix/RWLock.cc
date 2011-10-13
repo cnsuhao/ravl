@@ -254,7 +254,7 @@ namespace RavlN
     while((WrWait > 0 && m_preferWriter) || RdCount < 0) {
       RdWait++; // Should only go aroung this loop once !
       AccM.Unlock();
-      float timeToWait = (DateC::NowUTC() - timeOutAt).Double();
+      float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
       if(!ReadQueue.Wait(timeToWait)) {
@@ -300,7 +300,7 @@ namespace RavlN
     while(RdCount != 0) {
       WrWait++; // Should only go through here once !
       AccM.Unlock();
-      float timeToWait = (DateC::NowUTC() - timeOutAt).Double();
+      float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
       if(!WriteQueue.Wait(timeToWait)) {

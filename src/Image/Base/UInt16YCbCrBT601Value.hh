@@ -58,16 +58,16 @@ namespace RavlImageN {
     //: Convert from 8 bit values.
     
     UInt16YCbCrBT601ValueC(const YCbCrBT601ValueC<float> &oth)
-      : YCbCrBT601ValueC<UInt16T>((UInt16T)ClipRange( 16*256.0 + oth[0]*65535.0,0.0,65535.0),
-                                  (UInt16T)ClipRange(128*256.0 + oth[1]*65535.0,0.0,65535.0),
-                                  (UInt16T)ClipRange(128*256.0 + oth[2]*65535.0,0.0,65535.0))
+      : YCbCrBT601ValueC<UInt16T>((UInt16T)ClipRange( 16*256.0f + oth[0]*65535.0f,0.0f,65535.0f),
+                                  (UInt16T)ClipRange(128*256.0f + oth[1]*65535.0f,0.0f,65535.0f),
+                                  (UInt16T)ClipRange(128*256.0f + oth[2]*65535.0f,0.0f,65535.0f))
     {}
     //: Convert from floating point values.
     
     inline YCbCrBT601ValueC<float> FloatYCbCr() const
-    { return YCbCrBT601ValueC<float>((data[0] - 256.0* 16.0)/65535.0,
-                                     (data[1] - 256.0*128.0)/65535.0,
-                                     (data[2] - 256.0*128.0)/65535.0 
+    { return YCbCrBT601ValueC<float>((data[0] - 256.0f* 16.0f)/65535.0f,
+                                     (data[1] - 256.0f*128.0f)/65535.0f,
+                                     (data[2] - 256.0f*128.0f)/65535.0f 
                                      ); 
     }
     //: Convert to float.

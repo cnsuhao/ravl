@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlLibGlade"
-	ProjectGUID="{f330b8a5-07e1-4693-84d7-37e99de3cff9}"
+	ProjectGUID="{30a52a2e-9789-43b1-8884-09fd13aadddf}"
         RootNamespace="RavlLibGlade"
 	Keyword="win32Proj"
 	>
@@ -17,17 +17,17 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="C:\Build\win32\debug\lib"
-			IntermediateDirectory="C:\Build\win32\debug\obj\RavlLibGlade"
+			OutputDirectory="..\build\win32\debug\lib"
+			IntermediateDirectory="..\build\win32\debug\obj\RavlLibGlade"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustommain.glade C:\Build\share\RAVL\Glade\exlibgladecustommain.glade&#x0D;&#x0A;
-if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustomwidget.glade C:\Build\share\RAVL\Glade\exlibgladecustomwidget.glade&#x0D;&#x0A;
-if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibglade.glade C:\Build\share\RAVL\Glade\exlibglade.glade&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustommain.glade ..\build\share\RAVL\Glade\exlibgladecustommain.glade&#x0D;&#x0A;
+if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustomwidget.glade ..\build\share\RAVL\Glade\exlibgladecustomwidget.glade&#x0D;&#x0A;
+if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibglade.glade ..\build\share\RAVL\Glade\exlibglade.glade&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -49,15 +49,15 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;;&quot;c:\WindowsSources\GTK\include\libglade-2.0&quot;"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlLibGlade\RavlLibGlade.pch"
-				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlLibGlade\"
-				ObjectFile="C:\Build\win32\debug\obj\RavlLibGlade\"
-				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlLibGlade.pdb"
+				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlLibGlade\RavlLibGlade.pch"
+				AssemblerListingLocation="..\build\win32\debug\obj\RavlLibGlade\"
+				ObjectFile="..\build\win32\debug\obj\RavlLibGlade\"
+				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlLibGlade.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -77,7 +77,7 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\debug\lib\RavlLibGlade.lib"
+				OutputFile="..\build\win32\debug\lib\RavlLibGlade.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -89,7 +89,7 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\debug\lib\RavlLibGlade.bsc"
+				OutputFile="..\build\win32\debug\lib\RavlLibGlade.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -100,17 +100,17 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="C:\Build\win32\opt\lib"
-			IntermediateDirectory="C:\Build\win32\opt\obj\RavlLibGlade"
+			OutputDirectory="..\build\win32\opt\lib"
+			IntermediateDirectory="..\build\win32\opt\obj\RavlLibGlade"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustommain.glade C:\Build\share\RAVL\Glade\exlibgladecustommain.glade&#x0D;&#x0A;
-if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustomwidget.glade C:\Build\share\RAVL\Glade\exlibgladecustomwidget.glade&#x0D;&#x0A;
-if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibglade.glade C:\Build\share\RAVL\Glade\exlibglade.glade&#x0D;&#x0A;"
+if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustommain.glade ..\build\share\RAVL\Glade\exlibgladecustommain.glade&#x0D;&#x0A;
+if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibgladecustomwidget.glade ..\build\share\RAVL\Glade\exlibgladecustomwidget.glade&#x0D;&#x0A;
+if not exist ..\build\share\RAVL\Glade\NUL mkdir ..\build\share\RAVL\Glade&#x0D;&#x0A;copy ..\.\GUI\LibGlade\exlibglade.glade ..\build\share\RAVL\Glade\exlibglade.glade&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -130,15 +130,15 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include\&quot;;&quot;c:\WindowsSources\GTK\include\atk-1.0&quot;;&quot;c:\WindowsSources\GTK\include\cairo&quot;;&quot;c:\WindowsSources\GTK\include\fontconfig&quot;;&quot;c:\WindowsSources\GTK\include\freetype2&quot;;&quot;c:\WindowsSources\GTK\include\gail-1.0&quot;;&quot;c:\WindowsSources\GTK\include\glib-2.0&quot;;&quot;c:\WindowsSources\GTK\include\gtk-2.0&quot;;&quot;c:\WindowsSources\GTK\include\libpng14&quot;;&quot;c:\WindowsSources\GTK\include\pango-1.0&quot;;&quot;c:\WindowsSources\GTK\lib\gtk-2.0\include&quot;;&quot;c:\WindowsSources\GTK\lib\glib-2.0\include&quot;;&quot;c:\WindowsSources\GTK\include\libglade-2.0&quot;"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlLibGlade/RavlLibGlade.pch"
-				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlLibGlade\"
-				ObjectFile="C:\Build\win32\opt\obj\RavlLibGlade\"
-				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlLibGlade.pdb"
+				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlLibGlade/RavlLibGlade.pch"
+				AssemblerListingLocation="..\build\win32\opt\obj\RavlLibGlade\"
+				ObjectFile="..\build\win32\opt\obj\RavlLibGlade\"
+				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlLibGlade.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -157,7 +157,7 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="C:\Build\win32\opt\lib\RavlLibGlade.lib"
+				OutputFile="..\build\win32\opt\lib\RavlLibGlade.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -169,7 +169,7 @@ if not exist C:\Build\share\RAVL\Glade\NUL mkdir C:\Build\share\RAVL\Glade&#x0D;
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="C:\Build\win32\opt\lib\RavlLibGlade.bsc"
+				OutputFile="..\build\win32\opt\lib\RavlLibGlade.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
