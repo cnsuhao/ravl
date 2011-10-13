@@ -63,8 +63,8 @@ namespace RavlN { namespace GeneticN {
   //! Factory constructor
   GeneTypeFloatGaussC::GeneTypeFloatGaussC(const XMLFactoryContextC &factory)
    : GeneTypeFloatC(factory),
-     m_width(factory.AttributeReal("width",1.0)),
-     m_offset(factory.AttributeReal("offset",0.0))
+     m_width(static_cast<float>(factory.AttributeReal("width",1.0))),
+     m_offset(static_cast<float>(factory.AttributeReal("offset",0.0)))
   {
     factory.Attribute("foldMode",m_foldMode,FoldNone);
   }
