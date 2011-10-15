@@ -29,6 +29,8 @@
 #include "Ravl/Float16.hh"
 #include "Ravl/QuickSort.hh"
 #include "Ravl/Random.hh"
+#include "Ravl/UUId.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
@@ -58,6 +60,7 @@ int testIndexRange2d();
 int testRCWrap();
 int testFloat16();
 int testQuickSort();
+int testUUId();
 
 template class RCHandleC<TestBodyC>;
 template class RCWrapC<IntT>;
@@ -133,8 +136,12 @@ int main()
     cerr << "Test failed at line:" << ln << "\n";
     return 1;
   }
-#endif
   if((ln = testQuickSort()) != 0) {
+    cerr << "Test failed at line:" << ln << "\n";
+    return 1;
+  }
+#endif
+  if((ln = testUUId()) != 0) {
     cerr << "Test failed at line:" << ln << "\n";
     return 1;
   }
@@ -596,5 +603,24 @@ int testQuickSort() {
       }
     }
   }
+  return 0;
+}
+
+int testUUId() {
+  UUIdC v1(0x0123456789ABCDEF,0xFEDCBA9876543210);
+  StringC str = v1.Text();
+  //std::cout << "Value=" << str << "\n";
+  UUIdC v2;
+  if(!v2.Extract(str.chars()))
+    return __LINE__;
+  //std::cout << "Recon=" << v2.Text() << "\n";
+  using namespace RavlN;
+  if(v1 != v2)
+    return __LINE__;
+  UUIdC v3;
+  if(!RavlN::TestBinStreamIO(v1,v3))
+    return __LINE__;
+  if(v1 != v3)
+    return __LINE__;
   return 0;
 }

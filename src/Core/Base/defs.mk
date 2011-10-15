@@ -25,7 +25,7 @@ HEADERS=Types.hh config.h Pair.hh Resource.hh \
  fdstream.hh GenBinStream.hh Traits.hh FPNumber.hh QInt.hh CompilerHints.hh \
  stdio_fdstream.hh AMutex.hh RCLayer.hh SmartLayerPtr.hh CallMethodPtrs.hh CPUID.hh \
  FuncStream.hh VectorUtils.hh Float16.hh RCHandle.hh UnitTest.hh Size.hh QuickSort.hh \
- ExceptionTimeOut.hh
+ ExceptionTimeOut.hh UUId.hh
 
 SOURCES=Assert.cc Exception.cc EntryPnt.cc Index.cc String.cc \
  RefCounter.cc HandleRefCounter.cc Trigger.cc Calls.cc \
@@ -36,7 +36,7 @@ SOURCES=Assert.cc Exception.cc EntryPnt.cc Index.cc String.cc \
  RealRange1d.cc RealRange2d.cc RealRange3d.cc \
  RCBodyV.cc URLMapper.cc GenBinStream.cc Resource.cc \
  AMutex.cc RCLayer.cc CPUID.cc FuncStream.cc VectorUtils.cc \
- Float16.cc Size.cc ExceptionTimeOut.cc
+ Float16.cc Size.cc ExceptionTimeOut.cc UUId.cc
 
 PLIB=RavlCore
 
