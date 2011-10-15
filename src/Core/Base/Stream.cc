@@ -468,16 +468,17 @@ namespace RavlN {
   IntT IStreamC::CopyTo(OStreamC &out,IntT maxChars) {
     const int buffsize = 4096;
     char buff[buffsize];
-    IntT total = 0;
+    std::streamsize total = 0;
     do {
       IntT readSize = buffsize;
       if((total+buffsize) > maxChars && maxChars >= 0)
 	readSize = maxChars - total;
       read(buff,readSize);
-      int n = gcount();
+      std::streamsize n = gcount();
       out.write(buff,n);
       total += n;
     } while((*this).good() && out.good() && ((bool)(total < maxChars) || maxChars < 0)) ;
+	// FIXME:- Return streamsize
     return total;
   }
   

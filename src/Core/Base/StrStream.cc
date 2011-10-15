@@ -98,7 +98,8 @@ namespace RavlN {
 #if RAVL_HAVE_STRINGSTREAM
     return oss->str().size();
 #else
-    return oss->pcount();
+	// FIXME:- Should really return a SizeT
+    return static_cast<UIntT>(oss->pcount());
 #endif
   }
   

@@ -103,7 +103,7 @@ namespace RavlN { namespace GeneticN {
       m_population.erase(m_population.begin(),it.base());
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Got %zu seeds. Pop:%zu Best score=%f Age:%u Generation:%u @ %p ",(size_t) seeds.size(),(size_t) m_population.size(),m_population.rbegin()->first,m_population.rbegin()->second->Age(),m_population.rbegin()->second->Generation(),m_population.rbegin()->second.BodyPtr());
+    RavlSysLogf(SYSLOG_DEBUG,"Got %u seeds. Pop:%u Best score=%f Age:%u Generation:%u ",(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
     std::vector<GenomeC::RefT> newTestSet;
     newTestSet.reserve(m_populationSize);
@@ -128,7 +128,7 @@ namespace RavlN { namespace GeneticN {
       }
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Completing the population with mutation. %zu (Random fraction %f) ", (size_t) (m_populationSize - i),m_randomFraction);
+    RavlSysLogf(SYSLOG_DEBUG,"Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
     for(;i < m_populationSize;i++) {
       unsigned i1 = RandomInt() % seeds.size();
       GenomeC::RefT newGenome;

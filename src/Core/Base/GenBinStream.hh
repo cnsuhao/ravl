@@ -380,7 +380,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(Int64T dat) {
     if(toSwap) out.write((char *)&dat,8);
     else{
-      int buf = bswap_64(dat);
+      Int64T buf = bswap_64(dat);
       out.write((char *) &buf,8);  
     }
     return *this; 
@@ -389,7 +389,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(UInt64T dat) {
     if(toSwap) out.write((char *)&dat,8);
     else{
-      int buf = bswap_64(dat);
+      UInt64T buf = bswap_64(dat);
       out.write((char *) &buf,8);
     }
     return *this; 

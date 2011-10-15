@@ -131,27 +131,27 @@ namespace RavlN {
   bool FileFormatBodyC::ReadString(IStreamC &s,StringC &buff,UIntT maxLen) {
     if (!s)
       return false;
-    UIntT pos = s.Tell();
+    std::streamoff pos = s.Tell();
     bool ret = true;  
     int ch;
     register streambuf *sb = s.is().rdbuf();
     buff = StringC();
     while ((ch = sb->sbumpc()) != EOF)
-      {
-	if (ch == '\n' || ch == ' ' || ch == '\t')
-	  break;
-	if(!isprint(ch)) {
-	  ONDEBUG(cerr << "FileFormatBodyC::ReadString(), Found non printable char " << ((int) ch) << "\n");
-	  ret = false;
-	  break;
-	}
-	if(buff.length() >= maxLen) {
-	  ONDEBUG(cerr << "FileFormatBodyC::ReadString(), String to long '" << maxLen << "'\n");
-	  ret = false;
-	  break;
-	}
-	buff += ch;
-      }
+    {
+	  if (ch == '\n' || ch == ' ' || ch == '\t')
+	    break;
+	  if(!isprint(ch)) {
+	    ONDEBUG(cerr << "FileFormatBodyC::ReadString(), Found non printable char " << ((int) ch) << "\n");
+	    ret = false;
+	    break;
+	  }
+	  if(buff.length() >= maxLen) {
+  	    ONDEBUG(cerr << "FileFormatBodyC::ReadString(), String to long '" << maxLen << "'\n");
+	    ret = false;
+	    break;
+	  }
+	  buff += ch;
+    }
     if (ch == EOF) 
       s.is().clear(ios::eofbit|s.is().rdstate());
     s.Seek(pos);

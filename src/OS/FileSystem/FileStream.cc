@@ -122,7 +122,8 @@ namespace RavlN {
     return read(fd,data,length); 
 #else
     is.read(static_cast<char *>(data),length);
-    return is.is().gcount();    
+	// FIXME:- Should return a std::streamsize
+    return static_cast<IntT>(is.is().gcount());    
 #endif
   }
 

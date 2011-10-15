@@ -138,7 +138,7 @@ namespace RavlN { namespace GeneticN {
       newNode.SetPosition(newPos);
     } else {
       // Blend with random
-      newNode.SetStrength(static_cast<float>(Random1() * g_maxStrength * fraction) + oldNode.Strength()  * (1.0-fraction));
+      newNode.SetStrength(static_cast<float>(Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++)
         newPos[i] = static_cast<float>(Random1() * g_spaceSize * fraction) + oldNode.Position()[i] * (1.0 -fraction);
