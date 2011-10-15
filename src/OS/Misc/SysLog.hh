@@ -73,7 +73,7 @@ namespace RavlN {
   // Calling with a null function pointer restores the default behaviour.
 
 #define RavlSysLog(PRIORITY) RavlN::SysLog(PRIORITY,__LINE__,__FILE__)
-#define RavlSysLogf(PRIORITY,FORMAT, ...) RavlN::SysLog(PRIORITY,__LINE__,__FILE__, FORMAT,__VA_ARGS__)
+#define RavlSysLogf(PRIORITY,...) RavlN::SysLog(PRIORITY,__LINE__,__FILE__,__VA_ARGS__)
 }
 
 #endif

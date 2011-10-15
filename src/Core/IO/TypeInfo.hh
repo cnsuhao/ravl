@@ -383,7 +383,7 @@ namespace RavlN {
       // Copy data.
       SArray1dC<DataT> data;
       strm >> data;
-      return oport.PutArray(data) == data.Size().V();
+      return oport.PutArray(data) == (IntT) data.Size().V();
     }
     //: Read an array of items from the binary stream and write it to a port.
 
