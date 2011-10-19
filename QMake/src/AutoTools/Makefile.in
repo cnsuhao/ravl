@@ -227,8 +227,9 @@ $(STAGING)/lib/pkgconfig/QMake.pc:
 	@echo libdir=$(libdir) >> $@
 	@echo >> $@
 	@echo Name: QMake >> $@
-	@echo Description: QuickMake flexible compilation aid and build tool >> $@
 	@echo Version: 1.5.1 >> $@
+	@echo Description: QuickMake flexible compilation aid and build tool >> $@
+	@echo URL: http://sourceforge.net/projects/quickmake >> $@
 	@echo >> $@
 
 
