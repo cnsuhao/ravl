@@ -13,7 +13,7 @@ WORKING_QMAKE=@WORKING_QMAKE@
 
 # Ensure any DESTDIR is an absolute path
 ifdef DESTDIR
-  ABS_DESTDIR-$(abspath $(DESTDIR))
+  ABS_DESTDIR=$(abspath $(DESTDIR))
 
   # Propogate absolute path going forward
   SET_DESTDIR=DESTDIR=$(ABS_DESTDIR)
@@ -43,7 +43,7 @@ endif
 
 # Builds
 
-default: qmake fullsrc opt optshared optbin singleopt singleoptshared singleoptbin singleoptsharedbin
+default: qmake fullsrc opt optshared optbin singleopt singleoptshared singleoptbin singleoptsharedbin pkgconf
 #JFi:To Do- make doc (and support from configure i.e. locate tools)
 
 check: testopt testsingleopt testsingleoptshared 
@@ -62,7 +62,7 @@ doc: qmake
 fullsrc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
 
-install: installQMake installsingleoptshared installHdrs
+install: installQMake installsingleoptshared installHdrs installpkgconf
 
 # All the install targets recurse down the source directories using the defs.mk
 # files to determine what needs installing. The relevant files are then
@@ -74,6 +74,14 @@ installHdrs:
 installoptshared:
 	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 install recurse
 	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHAREDBUILD=1 insLibs recurse
+
+installpkgconf: $(ABS_DESTDIR)$(libdir)/pkgconfig $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
+
+$(ABS_DESTDIR)$(libdir)/pkgconfig:
+	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(libdir)/pkgconfig:
+
+$(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc:
+	$(INSTALL_DATA) $(INSTALLHOME)/lib/pkgconfig/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
 installsingleoptshared:
 	$(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 install recurse
@@ -97,6 +105,28 @@ optbin: qmake
 
 optshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+
+pkgconf: $(INSTALLHOME)/lib/pkgconfig $(INSTALLHOME)/lib/pkgconfig/Ravl.pc
+
+$(INSTALLHOME)/lib/pkgconfig:
+	$(SHOWIT) $(MKDIR_P) $@
+
+$(INSTALLHOME)/lib/pkgconfig/Ravl.pc:
+	$(SHOWIT)echo prefix=$(prefix) > $@
+	$(SHOWIT)echo datarootdir=$(datarootdir) >> $@
+	$(SHOWIT)echo datadir=$(datadir) >> $@
+	$(SHOWIT)echo sysconfdir=$(sysconfdir) >> $@
+	$(SHOWIT)echo libdir=$(libdir) >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo Name: Ravl >> $@
+	$(SHOWIT)echo Version: 1.5.1 >> $@
+	$(SHOWIT)echo Description: Recognition And Vision Library with modules for Computer Vision, Pattern Recognition and much more >> $@
+	$(SHOWIT)echo URL: http://sourceforge.net/projects/ravl >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo Libs=-L\${libdir} -lRavl >> $@
+	$(SHOWIT)echo Libs.private=$(ALL_EXTERNAL_LIBS)>> $@
+	$(SHOWIT)echo Cflags=-I\${includedir}>> $@
+	$(SHOWIT)echo >> $@
 
 qmake: @NeededQMake@
 # Will equate to "LocalQMake QMake" unless we already have an installed
@@ -204,4 +234,4 @@ testsingleoptshared:
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: default check debug debugshared distdir doc fullsrc install opt optbin optshared qmake LocalQMake QMake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
+.PHONY: default check debug debugshared distdir doc fullsrc install installpkgconf opt optbin optshared pkgconf qmake LocalQMake QMake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
