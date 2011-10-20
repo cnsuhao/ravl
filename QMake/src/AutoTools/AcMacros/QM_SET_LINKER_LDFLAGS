@@ -1,0 +1,126 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_SET_LINKER_LDFLAGS
+dnl
+dnl Macro to declare the linker flags used by QMake, dependant on the linker
+dnl actually in use.
+dnl
+dnl No macro parameters
+dnl
+dnl Global variables used:
+dnl       GNU_LD                     Flag, originally set by QM_LOCATE_LD 
+dnl                                  indicating if a GNU version of ld is
+dnl                                  in use. Set to yes for a GNU linker.
+dnl       LDFLAGS                    Not actually modified or interrogated by
+dnl                                  this macro; merely declared for output
+dnl                                  substitution into the configure settings
+dnl                                  file. Holds any user defined LDFLAGS.
+dnl       LINKER_SPECIFIC_LDFLAGS    } { Receive the linker specific LDFLAGS
+dnl       LINKER_SHARED_LDFLAGS      } { needed for the operation of QMake.
+dnl       LINKER_SPECIFIC_LDLIBFLAGS } { .._SHARED_.. is used when linking a
+dnl       LINKER_SHARED_LDLIBFLAGS   } { shared library/executable (static
+dnl                                    { links use ..._SPECIFIC_..) while
+dnl                                    { .._LDLIBFLAGS is used when linking
+dnl                                    { libraries (.._LDFLAGS for binaries)
+dnl       LINKER_LIBPATHSWITCH       Receives the switch(es) required to make
+dnl                                  the compiler request the linker include,
+dnl                                  in the binary, the path to any libraries
+dnl                                  used to build the binary. This currently
+dnl                                  assumes the compiler switch, to pass on
+dnl                                  options to the linker, is '-Wl'. This
+dnl                                  macro will need extending if a platform
+dnl                                  is encountered where this is not the 
+dnl                                  case. This macro does, however, select
+dnl                                  the linker switch (passed on) based on
+dnl                                  the type of linker in use.
+dnl       LINKER_UNDEFSYMB           Receives the linker switch to forcably
+dnl                                  undefine a particular symbol. Set based
+dnl                                  on the particular linker in use.
+dnl                          .         
+dnl
+AC_DEFUN([QM_SET_LINKER_LDFLAGS],
+         [trace 2 Set linker specific LDFLAGS
+          
+          if ( test X$GNU_LD = Xyes )
+          then
+             trace 3 We have a GNU linker
+
+             LINKER_SPECIFIC_LDFLAGS=
+             LINKER_SHARED_LDFLAGS=" -rdynamic "
+
+             LINKER_SPECIFIC_LDLIBFLAGS=
+             LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+             LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+             LINKER_UNDEFSYMB=" -u#"
+          else
+             trace 3 We do not have a GNU linker
+             # Try native flags we have used before or default to what works for GNU
+             dnl 
+             dnl Although testing the host OS, we are using that to identify the native tool
+             dnl set that may be in use. These are not platform specific settings per se.
+             dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
+             dnl that relate to specific tool sets. They may or may not relate to specific 
+             dnl platforms but that is coincidental. Platform specific settings must go in
+             dnl the section at the end of this script. If you have a specific compiler on
+             dnl a platform, put its settings here. If you have specific settings for a
+             dnl common tool (say the GNU compilers) when run on a particular platform, put
+             dnl those settings at the end of this script.
+             dnl 
+             case X$host_os in
+              Xcygwin )   trace 3 Setting LDFLAGS we have previously used under cygwin
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
+                          # sic, this is an assumption on what compiler is in use
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          # sic, this is an assumption on what compiler is in use
+                          LINKER_UNDEFSYMB=" -u #"
+                         ;;
+              Xirix*    ) trace 3 Setting LDFLAGS we have previously used under Irix
+                          LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
+                          LINKER_SHARED_LDFLAGS=
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
+              Xsolaris* ) trace 3 Setting LDFLAGS we have previously used on Solaris
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -dy -G "
+                          LINKER_LIBPATHSWITCH=" -R#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
+              * )         trace 3 Setting default LDFLAGS
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=" -rdynamic "
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
+             esac
+          fi
+          # Allow linker flags to be saved in config file
+          AC_SUBST([LDFLAGS])
+          # any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
+          AC_SUBST([LINKER_SPECIFIC_LDFLAGS])
+          AC_SUBST([LINKER_SHARED_LDFLAGS])
+          AC_SUBST([LINKER_SPECIFIC_LDLIBFLAGS])
+          AC_SUBST([LINKER_SHARED_LDLIBFLAGS])
+          AC_SUBST([LINKER_LIBPATHSWITCH])
+          AC_SUBST([LINKER_UNDEFSYMB])
+         ]
+        )
+

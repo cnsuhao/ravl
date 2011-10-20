@@ -1,10 +1,3 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
-
-AC_PREREQ([2.65])
-
-AC_INIT([QMake], [1.5.8030], [John.Field@Surrey.ac.UK])
-
 # This file is part of QMake, Quick Make System
 # Copyright (C) 2011, University of Surrey
 # This code may be redistributed under the terms of the GNU General
@@ -13,483 +6,126 @@ AC_INIT([QMake], [1.5.8030], [John.Field@Surrey.ac.UK])
 
 # file-header-ends-here
 
+
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.65])
+
+AC_INIT([QMake], [1.5.8030], [John.Field@Surrey.ac.UK])
+
+dnl Include standard QMake autoconf macros
+m4_include([./AcMacros/QM_CHOOSE_GETCWD])
+m4_include([./AcMacros/QM_CHOOSE_RPATH])
+m4_include([./AcMacros/QM_COMPILE_CK_FOR_LIB])
+m4_include([./AcMacros/QM_Debug_Fn])
+m4_include([./AcMacros/QM_DEFINE_EXTLIB_CC])
+m4_include([./AcMacros/QM_DEFINE_EXTLIB_PC])
+m4_include([./AcMacros/QM_DEFINE_VIRTUAL_EXTLIB])
+m4_include([./AcMacros/QM_LOCATE_KEY_TOOLS])
+m4_include([./AcMacros/QM_LOCATE_LD])
+m4_include([./AcMacros/QM_LOCATE_MAKE])
+m4_include([./AcMacros/QM_LOCATE_QMAKE])
+m4_include([./AcMacros/QM_PROCESS_EXTLIBS])
+m4_include([./AcMacros/QM_SET_ARC])
+m4_include([./AcMacros/QM_SET_ARCHIVER_ARFLAGS])
+m4_include([./AcMacros/QM_SET_COMPILER_CFLAGS])
+m4_include([./AcMacros/QM_SET_COMPILER_CCFLAGS])
+m4_include([./AcMacros/QM_SET_LINKER_LDFLAGS])
+m4_include([./AcMacros/QM_SET_MAKE_MAKEFLAGS])
+
 dnl#JFi:ToDo-Check for ver 5 of Perl as a requirement
-
-
-#     Define shell functions
-
-# Trace debug function
-#
-# Set DBG=<level> in the environment for extra output messages. Arguments to
-# the function are the 'level' of the trace message, and the message itself
-# (which may be provided over multiple arguments). Current values of level
-# are: 
-#	1 Assertions, 
-#	2 Progress tracing, 
-#	3 Moderate data reporting
-#       :
-#       6 High data reporting
-#
-# If an indentation is required (say, for iterated code), set TRACE_INDENT to
-# the indentation as you want if to appear on the screen (i.e. a number of
-# spaces, or -->, etc.). Current scheme is to use 5 spaces per level of indent
-trace ()
-{
-   if ( test X$DBG != X )
-   then
-      level=$1
-      shift
-      if ( test $DBG -ge $level )
-      then
-         if ( test X"$TRACE_INDENT" != X )
-         then
-            echo "$TRACE_INDENT" "$*"
-         else
-            echo "$*"
-         fi
-      fi
-   fi
-   TRACE_INDENT=""
-}
-
-#     End of shell functions
-
 
 # Main body of configure script
 
 # First determine the current platform
 AC_CANONICAL_HOST
 
-# Check for required programs.
-trace 2 Checking for support programs
 
-# First check for utils required for this script itself. However, it is probably
-# too late to check for a lot of commands as the preceding code has already used
-# them (test, print, etc.) but we can check for what we're about to use...
-AC_PROG_AWK
+dnl It would be good to enable the following code, however _AC_... aren't 
+dnl generally available macros and may dissappear/change in differing versions
+dnl of autotools so its best not to rely on them. If only there was a supported
+dnl means of doing this.. (you can check for the preprocessor (as we do, above)
+dnl but not all of the calls that _AC_INCLUDES_DEFAULT_REQUIREMENTS expands to
+dnl are individually available.
+dnl
+dnl#      Cause the checks for the C pre-processor and default headers to be done now
+dnl#      (This can prevent multiple calls within the script's body)
+dnl       _AC_INCLUDES_DEFAULT_REQUIREMENTS
+
+
+
+# Locate the tools needed to run this script (shell utils, compilers etc.)
+QM_LOCATE_KEY_TOOLS
+dnl Declare key tools for output to the Config.X file.
+dnl Ensure this tallies with the list of tools regarded as such in the
+dnl locate macro. There must be no additions or subtractions here.
+dnl
+AC_SUBST([AR])
 AC_SUBST([AWK])
-
-AC_PATH_PROG([EXPR],[expr],[Missing])
-AS_IF([test $EXPR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
-     )
+AC_SUBST([CC])
+AC_SUBST([CPP])
+AC_SUBST([CXX])
+AC_SUBST([CXXCPP])
 AC_SUBST([EXPR])
-
-AC_PROG_GREP
 AC_SUBST([GREP])
-
-AC_PROG_SED
+AC_SUBST([LD])
+AC_SUBST([MAKE])
 AC_SUBST([SED])
-
-AC_PATH_PROG([TR],[tr],[Missing])
-AS_IF([test $TR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working tr required for using QMake])]
-     )
 AC_SUBST([TR])
 
-# Check for C Compiler and Pre-processor
-#
-# Record CFLAGS in case user has supplied them on the configure cmd-line;
-# these will form QMAKE_CFLAGS setting in QMake build system. 
-QMAKE_CFLAGS=$CFLAGS
-AC_SUBST([QMAKE_CFLAGS])
-# Now actually check for compiler and and allow Config.QMake to record the
-# location found
-AC_PROG_CC
-AC_SUBST([CC])
-# AC_PROG_CC won't actually have altered CFLAGS if a value was already set
-# however, if an initial value was not provided, AC_PROG_CC may have set CFLAGS
-# to include optimisation or -g. As we do not want this for a QMake build, we
-# reinitialise CFLAGS to the original value (which may be null or what a user
-# supplied on the command line).
-CFLAGS=$QMAKE_CFLAGS
-# Now record the correct compiler switches for selecting relvant functionality
-if ( test x$GCC = xyes )
-then
-  # GCC Compiler
-  COMPILER_ANSI_CFLAGS=" -ansi "
-  COMPILER_DEBUG_CFLAGS=" -g "
-  COMPILER_GPROF_CFLAGS=" -pg "
-  COMPILER_PROF_CFLAGS=" -p "
-  COMPILER_SHARED_CFLAGS=" -shared -fPIC "
-  COMPILER_SPECIFIC_CFLAGS=""
-else
-   # Non-GNU compiler, try relevant machine specific options we have used
-   # before
-dnl 
-dnl Although testing the host OS, we are using that to identify the native
-dnl tool set that may be in use. These are not platform specific settings
-dnl per se. DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for
-dnl settings that relate to specific tool sets. They may or may not relate
-dnl to specific platforms but that is coincidental. Platform specific
-dnl settings must go in the section at the end of this script. If you have a
-dnl specific compiler on a platform, put its settings here. If you have
-dnl specific settings for a common tool (say the GNU compilers) when run on
-dnl a particular platform, put those settings at the end of this script.
-dnl 
-   case X$host_os in
-   Xsolaris* ) COMPILER_ANSI_CFLAGS=" -ansi "
-               COMPILER_DEBUG_CFLAGS=""
-               COMPILER_GPROF_CFLAGS=" -pg "
-               COMPILER_PROF_CFLAGS=" -p "
-               COMPILER_SHARED_CFLAGS=" -KPIC "
-               COMPILER_SPECIFIC_CFLAGS=""
-               ;;
-   Xirix* )    CC=$CC" -n32 -J4 -mp "
-               # Not sure why this originally was done this way rather than
-               # use CFLAGS, but assume there was a reason and propogate the
-               # method
-               COMPILER_ANSI_CFLAGS=" -ansi "
-               COMPILER_DEBUG_CFLAGS=""
-               COMPILER_GPROF_CFLAGS=""
-               COMPILER_PROF_CFLAGS=""
-               COMPILER_SHARED_CFLAGS=""
-               COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
-               ;;
-   * )         COMPILER_ANSI_CFLAGS=" -ansi "
-               COMPILER_DEBUG_CFLAGS=""
-               COMPILER_GPROF_CFLAGS=""
-               COMPILER_PROF_CFLAGS=""
-               COMPILER_SHARED_CFLAGS=""
-               COMPILER_SPECIFIC_CFLAGS=""
-               ;;
-   esac
-fi
-# Allow compiler switches to be written to Config.QMake
-AC_SUBST([COMPILER_ANSI_CFLAGS])
-AC_SUBST([COMPILER_DEBUG_CFLAGS])
-AC_SUBST([COMPILER_GPROF_CFLAGS])
-AC_SUBST([COMPILER_PROF_CFLAGS])
-AC_SUBST([COMPILER_SHARED_CFLAGS])
-AC_SUBST([COMPILER_SPECIFIC_CFLAGS])
+dnl Allow for output of the command-line switches initialised by the
+dnl QM_LOCATE_KEY_TOOLS macro. 
+AC_SUBST([GET_CWD])
+AC_SUBST([with_rpath])
 
-# Find and record C pre-processor
-AC_PROG_CPP
-AC_SUBST([CPP])
 
-# Check for C++ Compiler and Pre-processor
-#
-# Allow recording of any user-supplied CCFLAGS in Config.QMake
-QMAKE_CCFLAGS=$CCFLAGS
-AC_SUBST([QMAKE_CCFLAGS])
-# Now check for compiler and allow that result to be recorded
-AC_PROG_CXX
-AC_SUBST([CXX])
-# Prevent optimisation or -g being to CCFLAGS if it was initially unset
-CCFLAGS=$QMAKE_CCFLAGS
-# Now record the correct compiler switches for selecting relvant functionality
-if ( test x$GXX = xyes )
-then
-  # GCC Compiler
-  COMPILER_ANSI_CCFLAGS=" -ansi "
-  COMPILER_DEBUG_CCFLAGS=" -g "
-  COMPILER_GPROF_CCFLAGS=" -pg "
-  COMPILER_PROF_CCFLAGS=" -p "
-  COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
-  COMPILER_SPECIFIC_CCFLAGS=""
-else
-   # Non-GNU compiler, try relevant machine specific options we have used
-   # before
-dnl 
-dnl Although testing the host OS, we are using that to identify the native
-dnl tool set that may be in use. These are not platform specific settings
-dnl per se. DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for
-dnl settings that relate to specific tool sets. They may or may not relate
-dnl to specific platforms but that is coincidental. Platform specific
-dnl settings must go in the section at the end of this script. If you have a
-dnl specific compiler on a platform, put its settings here. If you have
-dnl specific settings for a common tool (say the GNU compilers) when run on
-dnl a particular platform, put those settings at the end of this script.
-dnl 
-   case X$host_os in
-   Xsolaris* ) COMPILER_ANSI_CCFLAGS=" -ansi "
-               COMPILER_DEBUG_CCFLAGS=""
-               COMPILER_GPROF_CCFLAGS=" -pg "
-               COMPILER_PROF_CCFLAGS=" -p "
-               COMPILER_SHARED_CCFLAGS=" -KPIC "
-               COMPILER_SPECIFIC_CCFLAGS=""
-               ;;
-   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
-               # Not sure why this originally was done this way rather than
-               # use CCFLAGS, but assume there was a reason and propogate the
-               # method
-               COMPILER_ANSI_CCFLAGS=" -ansi "
-               COMPILER_DEBUG_CCFLAGS=""
-               COMPILER_GPROF_CCFLAGS=""
-               COMPILER_PROF_CCFLAGS=""
-               COMPILER_SHARED_CCFLAGS=""
-               COMPILER_SPECIFIC_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
-               # -woff switches possibly in response to Ravl code rather
-               # than being generically necessary for QMake
-               ;;
-   * )         COMPILER_ANSI_CCFLAGS=" -ansi "
-               COMPILER_DEBUG_CCFLAGS=""
-               COMPILER_GPROF_CCFLAGS=""
-               COMPILER_PROF_CCFLAGS=""
-               COMPILER_SHARED_CCFLAGS=""
-               COMPILER_SPECIFIC_CCFLAGS=""
-               ;;
-   esac
-fi
-# Allow compiler switches to be written to Config.QMake
-AC_SUBST([COMPILER_ANSI_CCFLAGS])
-AC_SUBST([COMPILER_DEBUG_CCFLAGS])
-AC_SUBST([COMPILER_GPROF_CCFLAGS])
-AC_SUBST([COMPILER_PROF_CCFLAGS])
-AC_SUBST([COMPILER_SHARED_CCFLAGS])
-AC_SUBST([COMPILER_SPECIFIC_CCFLAGS])
-# Find and record C++ pre-processor
-AC_PROG_CXXCPP
-AC_SUBST([CXXCPP])
-
-# Look for linker
-#
-# This code inspired by LT_PATH_LD from libtool
-
-if ( test X$LD = X )
-then
-  # User has not asked for a specific linker, we have to look for one
-
-  if ( test "$GCC" = yes )
-  then
-    # If we have gcc we can try: $CC -print-prog-name=ld
-    AC_MSG_CHECKING([which ld is used by $CC])
-    LD=`$CC -print-prog-name=ld`
-    # Test host_os != mingw*
-    if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
-    then
-      # gcc leaves a trailing carriage return which upsets mingw
-      LD=`echo $LD | $TR -d '\015'`
-    fi
-    
-    if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` = XX$LD )
-    then
-      # $LD is an absolute path
-      # Fold all \ to /
-      LD=`echo "$LD"| $SED 's%\\\\%/%g'`
-      # $LD may be an absolute path but might still need cannonicalisation
-      while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
-      do
-        LD=`echo $LD | $SED -e "s%/*[[^/]][[^/]]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
-      done
-      AC_MSG_RESULT([$LD])
-    else
-      # $CC -print-prog-name=ld has not delivered us an absolute path
-      # We need to use the searchlist
-      LD=""
-      AC_MSG_RESULT([unhelpful])
-    fi
-  else
-    # Not using GCC so we don't know how to ask the compiler, we will have to
-    # look for ld on the searchlist
-    LD=""
-  fi
-
-  if ( test X`$EXPR X$LD : '\(X[[\\/]].*\)'` != XX$LD )
-  then
-    # LD not set to an absolute path, must search for ld
-
-    AC_MSG_CHECKING([for ld on the search-list])
-    GNU_LD=""
-    ANO_LD=""
-    save_ifs="$IFS"
-    IFS=$PATH_SEPARATOR
-    for dir in $PATH
-    do
-      IFS="$save_ifs"
-      if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
-      then
-        # Some variants of GNU ld only accept -v, so use that not --version
-        case `"$dir/ld" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-                                then
-                                  # We are not using AIX so favour the GNU linker
-                                  # (that we have just found)
-                                  LD=$dir/ld
-                                  break
-                                else
-                                  # We are on AIX so should use the native
-                                  # linker if possible but remember where the
-                                  # GNU version is should that be all we find
-                                  if ( test X$GNU_LD = X )
-                                  then
-                                    # This is the first GNU version of ld on the
-                                    # PATH so record it
-                                    GNU_LD=$dir/ld
-                                  fi
-                                fi
-                                ;;
-                           *)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-                                then
-                                  # We are not on AIX so should favour the GUN
-                                  # version of ld. As this is not a GNU version,
-                                  # merely remember where the first non-GNU
-                                  # version is should this be the only one we
-                                  # actually find.
-                                  if ( test X$ANO_LD = X )
-                                  then
-                                    ANO_LD=$dir/ld
-                                  fi
-                                else
-                                  # As we are on AIX and have found the non-GNU
-                                  # linker, we should favour that.
-                                  LD=$dir/ld
-                                fi
-                                ;;
-        esac
-      fi
-    done
-    IFS="$save_ifs"
-    if ( test X$LD = X )
-    then
-      # We haven't located our preferred linker, is there a fall-back?
-      if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-      then
-        # We are not using AIX but found no GNU linker, use any other we found
-        LD=$ANO_LD
-      else
-        # We are on AIX and wanted the native linker which we did not locate.
-        # No matter, try any GNU version we found
-        LD=$GNU_LD
-      fi
-    fi
-  fi # End of checking for ld on $PATH (LD not already an absolute pathname)
-
-  # Have we actually found a linker?
-  if ( test X$LD != X && test -x $LD )
-  then
-    # We have, what type is it?
-    VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      # GNU linker
-      GNU_LD=yes
-    else
-      GNU_LD=no
-    fi
-    AC_MSG_RESULT([$LD])
-  else
-    AC_MSG_RESULT([no])
-    AC_MSG_FAILURE([Cannot find a working ld required for using QMake])
-  fi
-else
-  # User specified LD
-  if ( test -x $LD )
-  then
-    # What type is it?
-    VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      # GNU linker
-      GNU_LD=yes
-    else
-      GNU_LD=no
-    fi
-  else
-    AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
-  fi
-fi
-AC_SUBST([LD])
-# Set XX_LDFLAGS; XX_LDLIBFLAGS and other linker settings
-if ( test X$GNU_LD = Xyes )
-then
-  # We are using a GNU linker
-
-  LINKER_SPECIFIC_LDFLAGS=
-  LINKER_SHARED_LDFLAGS=" -rdynamic "
-
-  LINKER_SPECIFIC_LDLIBFLAGS=
-  LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-  LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-  LINKER_UNDEFSYMB=" -u#"
-else
-  # Not using a GNU linker, try native flags we have used before or default to
-  # what works for GNU
-dnl 
-dnl Although testing the host OS, we are using that to identify the native tool
-dnl set that may be in use. These are not platform specific settings per se.
-dnl DO NOT PUT PLATFORM SPECIFIC SETTINGS HERE. This section is for settings
-dnl that relate to specific tool sets. They may or may not relate to specific 
-dnl platforms but that is coincidental. Platform specific settings must go in
-dnl the section at the end of this script. If you have a specific compiler on
-dnl a platform, put its settings here. If you have specific settings for a
-dnl common tool (say the GNU compilers) when run on a particular platform, put
-dnl those settings at the end of this script.
-dnl 
-  case X$host_os in
-  Xcygwin )   LINKER_SPECIFIC_LDFLAGS=
-              LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
-              # sic, this is an assumption on what compiler is in use
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-              # sic, this is an assumption on what compiler is in use
-              LINKER_UNDEFSYMB=" -u #"
-              ;;
-  Xirix*    ) LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
-              LINKER_SHARED_LDFLAGS=
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-              LINKER_UNDEFSYMB=" -u#"
-              ;;
-  Xsolaris* ) LINKER_SPECIFIC_LDFLAGS=
-              LINKER_SHARED_LDFLAGS=
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -dy -G "
-
-              LINKER_LIBPATHSWITCH=" -R#"
-              LINKER_UNDEFSYMB=" -u#"
-              ;;
-  * )         LINKER_SPECIFIC_LDFLAGS=
-              LINKER_SHARED_LDFLAGS=" -rdynamic "
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-              LINKER_UNDEFSYMB=" -u#"
-              ;;
-  esac
-fi
-# Allow linker flags to be saved in config file
-AC_SUBST([LDFLAGS])
-# any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
-AC_SUBST([LINKER_SPECIFIC_LDFLAGS])
-AC_SUBST([LINKER_SHARED_LDFLAGS])
-AC_SUBST([LINKER_SPECIFIC_LDLIBFLAGS])
-AC_SUBST([LINKER_SHARED_LDLIBFLAGS])
-AC_SUBST([LINKER_LIBPATHSWITCH])
-AC_SUBST([LINKER_UNDEFSYMB])
+# Now record the correct switches for the individual tools in use
+QM_SET_COMPILER_CFLAGS
+QM_SET_COMPILER_CCFLAGS
+QM_SET_LINKER_LDFLAGS
+QM_SET_ARCHIVER_ARFLAGS
+QM_SET_MAKE_MAKEFLAGS
 
 
 
 
-# Look for archive tools
+# Check for remaining utils
 
-# Archiver program
-AC_PATH_PROG([AR],[ar],[Missing])
-AS_IF([test $AR = Missing],
-      [AC_MSG_FAILURE([Cannot find a working ar required for using QMake])]
+# Check for programs needed by QMake
+# First check for those programs that GNU coding standards regard as safe to use
+# in a makefile if they are employed via make variables (and thus create the
+# necessary variables)
+AC_PATH_PROG([CHGRP],[chgrp],[missing])
+AS_IF([test $CHGRP = missing],
+      [AC_MSG_FAILURE([Cannot find a working chgrp required for using QMake])]
      )
-AC_SUBST([AR])
-# Declare flags for ar
-dnl DO NOT PUT PLATFORM SPECIFICS HERE. If your platform has a non-standard ar
-dnl that takes completely different flags then that is ok to list here (as it
-dnl pertains to the tool itself, not the platform). If your platform uses the
-dnl GNU version of ar but, for example requires an added 's' flag, that setting
-dnl should be put in the platform specific code at the end of this script, not
-dnl here.
-AR_SPECIFIC_ARFLAGS=ruc
-# No user specified ARFLAGS are allowed owing to the nature of how ar works,
-# such flags would most likely break the build
-AC_SUBST([AR_SPECIFIC_ARFLAGS])
+AC_SUBST([CHGRP])
+
+AC_PATH_PROG([CHMOD],[chmod],[missing])
+AS_IF([test $CHMOD = missing],
+      [AC_MSG_FAILURE([Cannot find a working chmod required for using QMake])]
+     )
+AC_SUBST([CHMOD])
+
+AC_PATH_PROG([CHOWN],[chown],[missing])
+AS_IF([test $CHOWN = missing],
+      [AC_MSG_FAILURE([Cannot find a working chown required for using QMake])]
+     )
+AC_SUBST([CHOWN])
+
+# Check for install-sh as it is needed directly by QMake and it also may be
+# needed for mkdir -p support
+AC_PROG_INSTALL
+
+AC_PROG_LEX
+AC_SUBST([LEX])
+AC_SUBST([LEXLIB])
+
+# Ensure we have a mkdir -p capability (will use install-sh on systems without
+# a native mkdir -p)
+AC_PROG_MKDIR_P
+AC_SUBST([MKDIR_P])
 
 # Ranlib program (if necessary)
 AC_PROG_RANLIB
@@ -497,260 +133,30 @@ AC_SUBST([RANLIB])
 # Slight weakness of this check is that if ranlib is not found, we assume it is
 # not needed (set RANLIB to ":")
 
-
-
-# Look for the make utility
-
-if ( test X$MAKE = X )
-then
-  # User has not asked for a specific make utility, look for make
-  MAKE=make
-fi
-
-if ( test X`$EXPR X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
-then
-  # User has not asked for a specific path for the make utility, we have to look
-  # for it on the search list
-
-  AC_MSG_CHECKING([for make utility])
-  GNU_MAKE=""
-  ANO_MAKE=""
-  save_ifs="$IFS"
-  IFS=$PATH_SEPARATOR
-  for dir in $PATH
-  do
-    IFS="$save_ifs"
-    if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
-    then
-      # Run $MAKE -v to check if we have GNU Make
-      case `"$dir/$MAKE" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   GNU_MAKE=$dir/$MAKE
-                                # Found GNU Make which we prefer so we need
-                                # look no further
-                                break
-                                ;;
-                           *)   if ( test X$ANO_MAKE = X )
-                                then
-                                  ANO_MAKE=$dir/$MAKE
-                                fi
-                                ;;
-        esac
-    fi
-  done
-  IFS="$save_ifs"
-  if ( test X$GNU_MAKE = X )
-  then
-    # Preferred GNU Make not found, was there an alternative
-    if ( test  X$ANO_MAKE = X)
-    then
-      AC_MSG_RESULT([no])
-      AC_MSG_FAILURE([Cannot find a working make required for using QMake])
-    else
-      MAKE=$ANO_MAKE
-      AC_MSG_RESULT([$MAKE])
-      GNU_MAKE=no
-    fi
-  else
-    MAKE=$GNU_MAKE
-    AC_MSG_RESULT([$MAKE])
-    GNU_MAKE=yes
-  fi
-else
-  # User specified a full path to make (in MAKE environment variable)
-  AC_MSG_CHECKING([$$MAKE specified make utility])
-  if ( test -x $MAKE )
-  then
-    VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      GNU_MAKE=yes
-    else
-      GNU_MAKE=no
-    fi
-    AC_MSG_RESULT([$MAKE])
-  else
-    AC_MSG_RESULT([unexecutable])
-    AC_MSG_FAILURE([$$MAKE does not specify a usable make utility])
-  fi
-fi
-AC_SUBST([MAKE])
-# Declare flags for make
-dnl Only put make flags specific to any particular version of make here. DO NOT
-dnl PUT PLATFORM SPECIFIC FLAGS HERE; they go in the final section of this
-dnl script
-if ( test X$GNU_MAKE = Xyes )
-then
-  MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r "
-else
-  # Potential to add further options here for particular versions of make
-  # However, at the moment we just have a standard option for all
-  MAKE_SPECIFIC_MAKEFLAGS=" -r "
-fi
-AC_SUBST([MAKEFLAGS])
-# User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake 
-AC_SUBST([MAKE_SPECIFIC_MAKEFLAGS])
-
-
-dnl End of software tools section
-
-
-dnl# It would be good to enable the following code, however _AC_... aren't 
-dnl# generally available macros and may dissappear/change in differing versions
-dnl# of autotools so its best not to rely on them. If only there was a supported
-dnl# means of doing this.. (you can check for the preprocessor (as we do, above)
-dnl# but not all of the calls that _AC_INCLUDES_DEFAULT_REQUIREMENTS expands to
-dnl# are individually available.
-dnl#
-dnl#      Cause the checks for the C pre-processor and default headers to be done now
-dnl#      (This can prevent multiple calls within the script's body)
-dnl       _AC_INCLUDES_DEFAULT_REQUIREMENTS
-
-
-# Check for install-sh as it may be needed for mkdir -p support
-AC_PROG_INSTALL
-
-# Ensure we have a mkdir -p capability (will use install-sh on systems without
-# a native mkdir -p)
-AC_PROG_MKDIR_P
-AC_SUBST([MKDIR_P])
-
-# Check for remaining utils
-
-# Check for pkg-config
-PKG_PROG_PKG_CONFIG
-
-# Check for programs needed by QMake
-# First check for those programs that GNU coding standards regard as safe to use
-# in a makefile if they are employed via make variables (and thus create the
-# necessary variables)
-AC_PATH_PROG([CHGRP],[chgrp],[Missing])
-AS_IF([test $CHGRP = Missing],
-      [AC_MSG_FAILURE([Cannot find a working chgrp required for using QMake])]
-     )
-AC_SUBST([CHGRP])
-
-AC_PATH_PROG([CHMOD],[chmod],[Missing])
-AS_IF([test $CHMOD = Missing],
-      [AC_MSG_FAILURE([Cannot find a working chmod required for using QMake])]
-     )
-AC_SUBST([CHMOD])
-
-AC_PATH_PROG([CHOWN],[chown],[Missing])
-AS_IF([test $CHOWN = Missing],
-      [AC_MSG_FAILURE([Cannot find a working chown required for using QMake])]
-     )
-AC_SUBST([CHOWN])
-
-AC_PROG_LEX
-AC_SUBST([LEX])
-AC_SUBST([LEXLIB])
-
-AC_PATH_PROG([SORT],[sort],[Missing])
-AS_IF([test $SORT = Missing],
-      [AC_MSG_FAILURE([Cannot find a working sort required for using QMake])]
-     )
-AC_SUBST([SORT])
-
 AC_PROG_YACC
 AC_SUBST([YACC])
 
 # GNU standards regard the following safe to call directly but as we already
 # implemented them via a make variable, set those here...
-AC_PATH_PROG([CP],[cp],[Missing])
-AS_IF([test $CP = Missing],
+AC_PATH_PROG([CP],[cp],[missing])
+AS_IF([test $CP = missing],
       [AC_MSG_FAILURE([Cannot find a working cp required for using QMake])]
      )
 AC_SUBST([CP])
 
-AC_PATH_PROG([RM],[rm],[Missing])
-AS_IF([test $RM = Missing],
+AC_PATH_PROG([RM],[rm],[missing])
+AS_IF([test $RM = missing],
       [AC_MSG_FAILURE([Cannot find a working rm required for using QMake])]
      )
 AC_SUBST([RM])
 
-AC_PATH_PROG([TOUCH],[touch],[Missing])
-AS_IF([test $TOUCH = Missing],
+AC_PATH_PROG([TOUCH],[touch],[missing])
+AS_IF([test $TOUCH = missing],
       [AC_MSG_FAILURE([Cannot find a working touch required for using QMake])]
      )
 AC_SUBST([TOUCH])
 
-# Switch to store library search paths in the calling library
-AC_ARG_WITH([rpath],
-            [AS_HELP_STRING([--with-rpath],
-                            [Add all library include paths (-L) to the runtime search path of the binary
-                            ]
-                           )
-            ],
-            [case $with_rpath in
-                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' ) with_rpath=Y
-                                                      ;;
-                  'n' | 'N' | 'no' | 'No' | 'NO' )    with_rpath=N
-                                                      ;;
-                  * )                                 AC_MSG_WARN([--with-rpath set to an unknown option, setting ignored])
-                                                      with_rpath=N
-                                                      ;;
-             esac
-            ],
-            [trace 5 No --with-rpath specified
-             with_rpath=N
-            ]
-           )
-AC_SUBST([with_rpath])
 
-# Provide switch to allow use of pawd instead of pwd
-AC_ARG_WITH([pawd],
-            [AS_HELP_STRING([--with-pawd],
-                            [Employ pawd rather than pwd to return the current directory @<:@default=No@:>@]
-                           )
-            ],
-            [case $with_pawd in
-                        'n' | 'N' | 'no' | 'No' | 'NO' ) 
-                               trace 4 --with-pawd disabling use of pawd
-                               AC_PATH_PROG([GET_CWD],[pwd],[Missing])
-                               AS_IF([test $GET_CWD = Missing],
-                                     [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
-                                    )
-                               ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
-                               trace 4 --with-pawd forcing use of pawd
-                               AC_PATH_PROG([GET_CWD],[pawd],[Missing])
-                               AS_IF([test $GET_CWD = Missing],
-                                     [AC_MSG_FAILURE([Asking to enable pawd via --with-pawd but it cannot be found])]
-                                    )
-                               ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                               trace 4 --with-pawd asking to use pawd if available
-                               AC_PATH_PROG([GET_CWD],[pawd],[Missing])
-                               AS_IF([test $GET_CWD = Missing],
-                                     [AC_PATH_PROG([GET_CWD],[pwd],[Missing])
-                                      AS_IF([test $GET_CWD = Missing],
-                                            [AC_MSG_FAILURE([Cannot find a working pawd or pwd required for using QMake])]
-                                           )
-                                     ]
-                                    )
-                               ;;
-                        * )    AS_IF([test -x $with_pawd],
-                                     [trace 4 --with-pawd asking to use "@<:@$with_pawd@:>@"
-                                      GET_CWD=$with_pawd
-                                     ],
-                                     [AC_MSG_WARN([--with-pawd set to an unknown option, setting ignored])
-                                      AC_PATH_PROG([GET_CWD],[pwd],[Missing])
-                                      AS_IF([test $GET_CWD = Missing],
-                                            [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
-                                           )
-                                     ]
-                                    )
-                               ;;
-                       esac
-            ],
-            [trace 5 No --with-pawd specified
-             AC_PATH_PROG([GET_CWD],[pwd],[Missing])
-             AS_IF([test $GET_CWD = Missing],
-                   [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
-                  )
-            ]
-           )
-AC_SUBST([GET_CWD])
 
 # Now check for those utilities we use in the build process that aren't recognised
 # as being reliably portable by the GNU standard. For these, we will need to
@@ -759,10 +165,10 @@ AC_PROG_LN_S
 AC_SUBST([LN_S])
 
 AS_IF([test x$PAGER = x],
-      [AC_PATH_PROG([QMAKE_PAGER],[more],[Missing])
-       AS_IF([test $QMAKE_PAGER = Missing],
-             [AC_PATH_PROG([QMAKE_PAGER],[pg],[Missing])
-              AS_IF([test $QMAKE_PAGER = Missing],
+      [AC_PATH_PROG([QMAKE_PAGER],[more],[missing])
+       AS_IF([test $QMAKE_PAGER = missing],
+             [AC_PATH_PROG([QMAKE_PAGER],[pg],[missing])
+              AS_IF([test $QMAKE_PAGER = missing],
                     [AC_MSG_FAILURE([Cannot find a working pager required for using QMake])]
                    )
              ]
@@ -772,20 +178,20 @@ AS_IF([test x$PAGER = x],
      )
 AC_SUBST([QMAKE_PAGER])
 
-AC_PATH_PROG([PERL],[perl],[Missing])
-AS_IF([test $PERL = Missing], 
+AC_PATH_PROG([PERL],[perl],[missing])
+AS_IF([test $PERL = missing], 
       [AC_MSG_FAILURE([Cannot find a working copy of Perl])]
      )
 AC_SUBST([PERL])
 
-AC_PATH_PROG([SYNC],[sync],[Missing])
-AS_IF([test $SYNC = Missing],
+AC_PATH_PROG([SYNC],[sync],[missing])
+AS_IF([test $SYNC = missing],
       [AC_MSG_FAILURE([Cannot find a working sync required for using QMake])]
      )
 AC_SUBST([SYNC])
 
-AC_PATH_PROG([XARGS],[xargs],[Missing])
-AS_IF([test $XARGS = Missing],
+AC_PATH_PROG([XARGS],[xargs],[missing])
+AS_IF([test $XARGS = missing],
       [AC_MSG_FAILURE([Cannot find a working xargs required for using QMake])]
      )
 AC_SUBST([XARGS])
@@ -856,7 +262,7 @@ echo >> ./Config.QMake.in
 echo \# Flags for the C compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo QMAKE_CFLAGS=@QMAKE_CFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.QMake.in
@@ -869,7 +275,7 @@ echo >> ./Config.QMake.in
 echo \# Flags for the C++ compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo QMAKE_CCFLAGS=@QMAKE_CCFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.QMake.in
@@ -920,64 +326,7 @@ echo >> ./Config.QMake.in
 
 
 
-# Map Platform/OS into Ravl ARCs
-case X$host_os in
-Xarm )      ARC=arm
-            # Unlikely to ever encounter this as an OS, most liekly to find arm
-            # as a linux cpu type (should process that as a variation of linux).
-            # This is only here as this is what we used to do
-            ;;
-Xcygwin )   ARC=cygwin
-            # Ravl support assumes an old i*86 platform. Could possibly require
-            # code changes to Ravl if we ever port to a more expansive
-            # environment (e.g. 64 bit support)
-            ;;
-Xdarwin* )  case X`uname -m` in
-               Xx86_64 )  ARC=macosx64
-                          ;;
-               Xi386 )    ARC=macosx32
-                          ;;
-               Xpowerpc ) ARC=macosxppc
-                          ;;
-            esac
-            # The above is needed as host_os currently comes back as i386 even
-            # for 64-bit installations of OSX
-            ;;
-Xirix* )    ARC=sgi
-            ;;
-Xlinux* )
-            case X$host_cpu in
-               Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
-                          ARC=linux
-                          ;;
-               Xx86_64* ) ARC=linux64
-                          ;;
-               Xalpha* )  ARC=linux_alpha
-                          # Will encompass more processors than the original
-                          # config.arc accounted for but should not be an issue
-                          ;;
-               * )        ARC=unknown
-                          ;;
-            esac
-            ;;
-Xosf* )     ARC=alpha
-            ;;
-Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([[0-9]]*\).*'`
-            # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
-            #  Solaris 2.6, Solaris 7, Solaris 8, etc.
-            if ( test X$VER_STRING= X )
-            then
-              # Just in case GNU change config.guess
-              ARC=sol
-            else
-              # Original Ravl support was for Solaris 7 & 9 only. Later
-              # versions may need further work on the Ravl source
-              ARC=sol2_$VER_STRING
-            fi
-            ;;
-* )         ARC=unknown
-            ;;
-esac
+QM_SET_ARC
 AC_SUBST([ARC])
 
 

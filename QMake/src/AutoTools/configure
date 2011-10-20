@@ -565,56 +565,53 @@ SYNC
 PERL
 QMAKE_PAGER
 LN_S
-GET_CWD
-with_rpath
 TOUCH
 RM
 CP
 YFLAGS
 YACC
-SORT
+RANLIB
+MKDIR_P
 LEXLIB
 LEX_OUTPUT_ROOT
 LEX
-CHOWN
-CHMOD
-CHGRP
-PKG_CONFIG
-MKDIR_P
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
+CHOWN
+CHMOD
+CHGRP
 MAKE_SPECIFIC_MAKEFLAGS
 MAKEFLAGS
-MAKE
-RANLIB
 AR_SPECIFIC_ARFLAGS
-AR
 LINKER_UNDEFSYMB
 LINKER_LIBPATHSWITCH
 LINKER_SHARED_LDLIBFLAGS
 LINKER_SPECIFIC_LDLIBFLAGS
 LINKER_SHARED_LDFLAGS
 LINKER_SPECIFIC_LDFLAGS
-LD
-CXXCPP
 COMPILER_SPECIFIC_CCFLAGS
 COMPILER_SHARED_CCFLAGS
 COMPILER_PROF_CCFLAGS
 COMPILER_GPROF_CCFLAGS
 COMPILER_DEBUG_CCFLAGS
 COMPILER_ANSI_CCFLAGS
-ac_ct_CXX
-CXXFLAGS
-CXX
-QMAKE_CCFLAGS
-CPP
+CONFIGURE_CCFLAGS
 COMPILER_SPECIFIC_CFLAGS
 COMPILER_SHARED_CFLAGS
 COMPILER_PROF_CFLAGS
 COMPILER_GPROF_CFLAGS
 COMPILER_DEBUG_CFLAGS
 COMPILER_ANSI_CFLAGS
+CONFIGURE_CFLAGS
+with_rpath
+MAKE
+LD
+CXXCPP
+ac_ct_CXX
+CXXFLAGS
+CXX
+CPP
 OBJEXT
 EXEEXT
 ac_ct_CC
@@ -622,12 +619,19 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
-QMAKE_CFLAGS
 TR
-SED
-GREP
+SORT
 EXPR
+AR
+CUT
 AWK
+GREP
+SED
+GET_CWD
+NeededQMake
+WORKING_QMAKE
+QMAKE_CONFIGFILES
+PKG_CONFIG
 host_os
 host_vendor
 host_cpu
@@ -677,12 +681,14 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+with_QMake_pkgconf
 with_rpath
 with_pawd
 '
       ac_precious_vars='build_alias
 host_alias
 target_alias
+PKG_CONFIG
 CC
 CFLAGS
 LDFLAGS
@@ -693,7 +699,6 @@ CXX
 CXXFLAGS
 CCC
 CXXCPP
-PKG_CONFIG
 YACC
 YFLAGS'
 
@@ -1309,6 +1314,9 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-QMake-pkgconf    Declare where to find the pkg-config file for the
+                          version of QMake with which to build
+
   --with-rpath            Add all library include paths (-L) to the runtime
                           search path of the binary
 
@@ -1317,6 +1325,7 @@ Optional Packages:
 
 
 Some influential environment variables:
+  PKG_CONFIG  path to pkg-config utility
   CC          C compiler command
   CFLAGS      C compiler flags
   LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
@@ -1328,7 +1337,6 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
-  PKG_CONFIG  path to pkg-config utility
   YACC        The `Yet Another C Compiler' implementation to use. Defaults to
               the first program found out of: `bison -y', `byacc', `yacc'.
   YFLAGS      The list of arguments that will be passed by default to $YACC.
@@ -1962,17 +1970,24 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-# This file is part of QMake, Quick Make System
-# Copyright (C) 2011, University of Surrey
-# This code may be redistributed under the terms of the GNU General
-# Public License (GPL). See the gpl.licence file for details or
-# see http://www.gnu.org/copyleft/gpl.html
-
-# file-header-ends-here
 
 
 
-#     Define shell functions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Trace debug function
 #
@@ -1988,7 +2003,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 #
 # If an indentation is required (say, for iterated code), set TRACE_INDENT to
 # the indentation as you want if to appear on the screen (i.e. a number of
-# spaces, or -->, etc.). Current scheme is to use 5 spaces per level of indent
+# spaces, or -->, etc.). Current scheme is to use five spaces per level of
+# indent.
+#
 trace ()
 {
    if ( test X$DBG != X )
@@ -2008,7 +2025,116 @@ trace ()
    TRACE_INDENT=""
 }
 
-#     End of shell functions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#     This section of code is inspired by LT_PATH_LD from libtool
+#
+       # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
+       #
+       #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
+       #                 2006, 2007, 2008 Free Software Foundation, Inc.
+       #   Written by Gordon Matzigkeit, 1996
+       #
+       # This file is free software; the Free Software Foundation gives
+       # unlimited permission to copy and/or distribute it, with or without
+       # modifications, as long as this notice is preserved.
+#
+
+
+#     End of section inspired by LT_PATH_LD from libtool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Main body of configure script
@@ -2109,66 +2235,27 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 
 
-# Check for required programs.
-trace 2 Checking for support programs
 
-# First check for utils required for this script itself. However, it is probably
-# too late to check for a lot of commands as the preceding code has already used
-# them (test, print, etc.) but we can check for what we're about to use...
-for ac_prog in gawk mawk nawk awk
-do
-  # Extract the first word of "$ac_prog", so it can be a program name with args.
-set dummy $ac_prog; ac_word=$2
+
+
+
+# Locate the tools needed to run this script (shell utils, compilers etc.)
+# First check for pkg-config as we may need that next to check for
+          # QMake and will certainly need it later
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_prog_AWK+set}" = set; then :
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  if test -n "$AWK"; then
-  ac_cv_prog_AWK="$AWK" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_prog_AWK="$ac_prog"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-AWK=$ac_cv_prog_AWK
-if test -n "$AWK"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AWK" >&5
-$as_echo "$AWK" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-  test -n "$AWK" && break
-done
-
-
-
-# Extract the first word of "expr", so it can be a program name with args.
-set dummy expr; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_EXPR+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $EXPR in
+  case $PKG_CONFIG in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_EXPR="$EXPR" # Let the user override the test with a path.
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -2178,7 +2265,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_EXPR="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -2186,95 +2273,492 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_EXPR" && ac_cv_path_EXPR="Missing"
   ;;
 esac
 fi
-EXPR=$ac_cv_path_EXPR
-if test -n "$EXPR"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EXPR" >&5
-$as_echo "$EXPR" >&6; }
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-if test $EXPR = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working expr - configure cannot continue
-See \`config.log' for more details." "$LINENO" 5; }
-
 fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for grep that handles long lines and -e" >&5
-$as_echo_n "checking for grep that handles long lines and -e... " >&6; }
-if test "${ac_cv_path_GREP+set}" = set; then :
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  if test -z "$GREP"; then
-  ac_path_GREP_found=false
-  # Loop through the user's path and test for each of PROGNAME-LIST
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
+for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
-    for ac_prog in grep ggrep; do
     for ac_exec_ext in '' $ac_executable_extensions; do
-      ac_path_GREP="$as_dir/$ac_prog$ac_exec_ext"
-      { test -f "$ac_path_GREP" && $as_test_x "$ac_path_GREP"; } || continue
-# Check for GNU ac_path_GREP and select it if it is found.
-  # Check for GNU $ac_path_GREP
-case `"$ac_path_GREP" --version 2>&1` in
-*GNU*)
-  ac_cv_path_GREP="$ac_path_GREP" ac_path_GREP_found=:;;
-*)
-  ac_count=0
-  $as_echo_n 0123456789 >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    $as_echo 'GREP' >> "conftest.nl"
-    "$ac_path_GREP" -e 'GREP$' -e '-(cannot match)-' < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    as_fn_arith $ac_count + 1 && ac_count=$as_val
-    if test $ac_count -gt ${ac_path_GREP_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_GREP="$ac_path_GREP"
-      ac_path_GREP_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-      $ac_path_GREP_found && break 3
-    done
-  done
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
   done
 IFS=$as_save_IFS
-  if test -z "$ac_cv_path_GREP"; then
-    as_fn_error "no acceptable grep could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" "$LINENO" 5
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
+$as_echo "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
   fi
 else
-  ac_cv_path_GREP=$GREP
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
 fi
 
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_GREP" >&5
-$as_echo "$ac_cv_path_GREP" >&6; }
- GREP="$ac_cv_path_GREP"
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
+$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	else
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+		PKG_CONFIG=""
+	fi
+
+fi
+
+
+          # Look for QMake
+          #
+          trace 2 Looking for QMake
+
+          WORKING_QMAKE=""
+          QMAKE_CONFIGFILES=""
+
+
+# Check whether --with-QMake-pkgconf was given.
+if test "${with_QMake_pkgconf+set}" = set; then :
+  withval=$with_QMake_pkgconf; trace 4 "--with-QMake-pkgconf=[$with_QMake_pkgconf]"
+                       if ( test x$with_QMake_pkgconf = x )
+                       then
+                         # Assume the setting: "--with_QMake_pkgconf=" implies the
+                         # user doesn't want to use pkgconf
+                         with_QMake_pkgconf=no
+                       fi
+                       case $with_QMake_pkgconf in
+                            'n' | 'N' | 'no' | 'No' | 'NO' | 'l' | 'L' | 'local' | 'Local' | 'LOCAL' )
+                                      # Disable the use of pkg-config and use the
+                                      # version shipped with this project
+                                      with_QMake_pkgconf=uselocal
+                                      ;;
+                            'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                                      with_QMake_pkgconf=QMake.pc
+                                      Require_QMake_pkgconf=yes
+                                      ;;
+                            * )       # Name of .pc for relevant install of QMake
+                                      Require_QMake_pkgconf=yes
+                                      ;;
+                       esac
+
+else
+  # Not specified, look for default on system paths
+                       trace 4 "--with-QMake-pkgconf unset"
+                       with_QMake_pkgconf=QMake.pc
+
+
+fi
+
+
+          if ( test $with_QMake_pkgconf != uselocal )
+          then
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config for QMake" >&5
+$as_echo_n "checking pkg-config for QMake... " >&6; }
+            if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$with_QMake_pkgconf\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "$with_QMake_pkgconf") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                              #  "      "  = ${datadir}/QMake
+                              QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                              # "        "     = ${sysconfdir}/QMake
+                              { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                              if ( test x$Require_QMake_pkgconf = xyes )
+                              then
+                                if ( test $with_QMake_pkgconf = QMake.pc )
+                                then
+                                  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find the QMake pkg-config file)
+See \`config.log' for more details." "$LINENO" 5; }
+                                else
+                                  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find the specified QMake pkg-config file)
+See \`config.log' for more details." "$LINENO" 5; }
+                                fi
+                              else
+                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find an installed QMake, will use the embedded version" >&5
+$as_echo "$as_me: WARNING: Cannot find an installed QMake, will use the embedded version" >&2;}
+                              fi
+
+
+fi
+          fi
+
+          if ( test x$WORKING_QMAKE = x || test x$WORKING_QMAKE = xuselocal )
+          then
+             trace 2 "Will use local QMake:"
+
+             # No installed QMake found or we explicitly want to use the use one staged
+             # from the source included with the project distribution.
+             WORKING_QMAKE=\$\(INSTALLHOME\)/share/QMake
+             QMAKE_CONFIGFILES=\$\(INSTALLHOME\)/QMake
+
+             # We will also need to stage this copy as part of the project build, so add
+             # LocalQMake to the target for the required QMake builds
+             NeededQMake="LocalQMake QMake"
+          else
+             trace 2 "Will use pre-installed QMake:"
+
+             # We have an installed version of QMake to use so we don't need to stage
+             # our own copy for building the project. The project build should therefore only
+             # build the updated QMake for possible later installation.
+             NeededQMake="QMake"
+          fi
+
+
+
+          trace 3 "   Config file $QMAKE_CONFIGFILES/Config.QMake"
+          trace 3 "   Live QMake under $WORKING_QMAKE"
+          trace 4 "   Build target(s) $NeededQMake"
+
+
+
+          # Declare non library specific cmd-line flags (all override any
+          # global QMake setting if present)
+          #
+          trace 2 Processing switches that effect QMake
+          # Switch to store library search paths in the calling library
+
+# Check whether --with-rpath was given.
+if test "${with_rpath+set}" = set; then :
+  withval=$with_rpath; case $with_rpath in
+                        'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
+                                  with_rpath=Y
+                                  USER_with_rpath=Y
+                                  ;;
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                  with_rpath=N
+                                  USER_with_rpath=N
+                                  ;;
+                        * )       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-rpath set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-rpath set to an unknown option, setting ignored" >&2;}
+                                  ;;
+                       esac
+
+else
+  trace 5 No --with-rpath specified
+                       with_rpath=N
+                       # Default to N. Do not set USER_with_rpath so that
+                       # the calling code knows to use default from QMake
+                       # configuration.
+
+
+fi
 
 
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
+          # Allow use of pawd instead of pwd
+
+# Check whether --with-pawd was given.
+if test "${with_pawd+set}" = set; then :
+  withval=$with_pawd; case $with_pawd in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                  trace 4 --with-pawd disabling use of pawd
+                                  # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                  if test $GET_CWD = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pwd required for building with
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+                                  ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                  trace 4 --with-pawd forcing use of pawd
+                                  # Extract the first word of "pawd", so it can be a program name with args.
+set dummy pawd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                  if test $GET_CWD = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to enable pawd via --with-pawd but it cannot be found
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+                                  ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                  trace 4 --with-pawd asking to use pawd if available
+                                  # Extract the first word of "pawd", so it can be a program name with args.
+set dummy pawd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                  if test $GET_CWD = missing; then :
+  # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                         if test $GET_CWD = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pawd or pwd required for building with
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+
+
+fi
+                                  ;;
+                        * )       if test -x $with_pawd; then :
+  trace 4 --with-pawd asking to use "[$with_pawd]"
+                                         GET_CWD=$with_pawd
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-pawd set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-pawd set to an unknown option, setting ignored" >&2;}
+
+
+fi
+                                  ;;
+                       esac
+
+else
+  trace 5 No --with-pawd specified
+
+
+fi
+
+
+
+
+
+          # Locate required programs.
+          trace 2 Checking for support programs
+
+          # Look for the programs and utilities that this script will need to
+          # call (It may be too late to check for a lot of commands as the
+          # preceding code has already used them (test, print, etc.) but we
+          # can check for what we're about to use...)
+
+          # Is there an existing QMake installation to prime the pumps?
+          if test -f $QMAKE_CONFIGFILES/Config.QMake; then :
+  trace 2 Reading configuration from $QMAKE_CONFIGFILES/Config.QMake
+
+                 # We are using an existing QMake so we can use the locations
+                 # of the support programs as already determined by
+                 # configuring QMake.
+
+                 # First find sed to extract the settings
+                 if ( test x$SED = x )
+                 then
+                    # User has not specified a sed program to use, attempt to
+                    # find one
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
 $as_echo_n "checking for a sed that does not truncate output... " >&6; }
 if test "${ac_cv_path_SED+set}" = set; then :
   $as_echo_n "(cached) " >&6
@@ -2343,9 +2827,1074 @@ $as_echo "$ac_cv_path_SED" >&6; }
  SED="$ac_cv_path_SED"
   rm -f conftest.sed
 
+                    if ( test x$SED = x )
+                    then
+                       # Found no sed, try grep and awk instead
+                       if ( test x$GREP != x )
+                       then
+                          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for grep that handles long lines and -e" >&5
+$as_echo_n "checking for grep that handles long lines and -e... " >&6; }
+if test "${ac_cv_path_GREP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -z "$GREP"; then
+  ac_path_GREP_found=false
+  # Loop through the user's path and test for each of PROGNAME-LIST
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_prog in grep ggrep; do
+    for ac_exec_ext in '' $ac_executable_extensions; do
+      ac_path_GREP="$as_dir/$ac_prog$ac_exec_ext"
+      { test -f "$ac_path_GREP" && $as_test_x "$ac_path_GREP"; } || continue
+# Check for GNU ac_path_GREP and select it if it is found.
+  # Check for GNU $ac_path_GREP
+case `"$ac_path_GREP" --version 2>&1` in
+*GNU*)
+  ac_cv_path_GREP="$ac_path_GREP" ac_path_GREP_found=:;;
+*)
+  ac_count=0
+  $as_echo_n 0123456789 >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    $as_echo 'GREP' >> "conftest.nl"
+    "$ac_path_GREP" -e 'GREP$' -e '-(cannot match)-' < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    as_fn_arith $ac_count + 1 && ac_count=$as_val
+    if test $ac_count -gt ${ac_path_GREP_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_GREP="$ac_path_GREP"
+      ac_path_GREP_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
+
+      $ac_path_GREP_found && break 3
+    done
+  done
+  done
+IFS=$as_save_IFS
+  if test -z "$ac_cv_path_GREP"; then
+    as_fn_error "no acceptable grep could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" "$LINENO" 5
+  fi
+else
+  ac_cv_path_GREP=$GREP
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_GREP" >&5
+$as_echo "$ac_cv_path_GREP" >&6; }
+ GREP="$ac_cv_path_GREP"
 
 
-# Extract the first word of "tr", so it can be a program name with args.
+                          if ( test x$GREP = x )
+                          then
+                             { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to find a working sed or grep command. Re-run configure adding the SED=... setting from $QMAKE_CONFIGFILES/Config.QMake
+See \`config.log' for more details." "$LINENO" 5; }
+                          fi
+                       else
+                          # User supplied the grep command to use, remember
+                          # this setting
+                          USER_GREP=$GREP
+                       fi
+                       if ( test x$AWK = x )
+                       then
+                          for ac_prog in gawk mawk nawk awk
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_AWK+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$AWK"; then
+  ac_cv_prog_AWK="$AWK" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_AWK="$ac_prog"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+AWK=$ac_cv_prog_AWK
+if test -n "$AWK"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AWK" >&5
+$as_echo "$AWK" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$AWK" && break
+done
+
+                          if ( test x$AWK = x )
+                          then
+                             # Couldn't find awk (or sed), try cut
+                             if ( test x$CUT =x )
+                             then
+                                # Extract the first word of "cut", so it can be a program name with args.
+set dummy cut; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CUT+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CUT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CUT="$CUT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CUT="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CUT" && ac_cv_path_CUT="missing"
+  ;;
+esac
+fi
+CUT=$ac_cv_path_CUT
+if test -n "$CUT"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CUT" >&5
+$as_echo "$CUT" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                                if ( test $CUT = missing )
+                                then
+                                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to find a working sed, awk or cut command. Re-run configure adding the SED=... setting from $QMAKE_CONFIGFILES/Config.QMake
+See \`config.log' for more details." "$LINENO" 5; }
+                                fi
+                             else
+                                # User supplied the cut command to use,
+                                # remember the setting
+                                USER_CUT=$CUT
+                             fi
+                             # Use cut (and grep) to find what awk is (we
+                             # could set SED here but this makes the coding
+                             # more straight forward)
+                             AWK=`$GREP ^AWK= $QMAKE_CONFIGFILES/Config.QMake | $CUT -d= -f2`
+                             if ( test x$AWK = x )
+                             then
+                                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to read awk setting from $QMAKE_CONFIGFILES/Config.QMake
+See \`config.log' for more details." "$LINENO" 5; }
+                             fi
+                             if ( test x$USER_CUT = x )
+                             then
+                                # User didn't supply cut command, forget
+                                # the setting
+                                CUT=""
+                             fi
+                          fi
+                       else
+                          # User supplied the awk command to use, remember
+                          # this setting
+                          USER_AWK=$AWK
+                       fi
+                       # Now we can read what QMake uses for sed
+                       SED=`$GREP ^SED= $QMAKE_CONFIGFILES/Config.QMake | $AWK -F= ' { print  }'`
+                       if ( test x$SED = x )
+                       then
+                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to read sed setting from $QMAKE_CONFIGFILES/Config.QMake
+See \`config.log' for more details." "$LINENO" 5; }
+                       fi
+                       if ( test x$USER_AWK = x )
+                       then
+                          # User didn't supply awk command, forget setting
+                          # and use pick up the one from Config.QMake later.
+                          AWK=""
+                       fi
+                       if ( test x$USER_GREP = x )
+                       then
+                          # User didn't supply grep command, forget setting
+                          # and use pick up the one from Config.QMake later.
+                          GREP=""
+                       fi
+                    else
+                       # Found a sed command to use for now, but we need to
+                       # use that to find out what the value configured into
+                       # QMake was.
+                       SED=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
+                       if ( test x$SED = x )
+                       then
+                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Unable to read sed setting from $QMAKE_CONFIGFILES/Config.QMake
+See \`config.log' for more details." "$LINENO" 5; }
+                       fi
+                    fi
+                 else
+                   # User supplied the sed command to use, remember
+                   # this setting.
+                   USER_SED=$SED
+                 fi
+
+
+                 # Now find the rest of the required programs (if the user
+                 # hasn't specified them)
+
+                 if ( test "x$AR" = x )
+                 then
+                    AR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AR=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_AR=$AR
+                 fi
+
+                 if ( test x$AWK = x )
+                 then
+                    AWK=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^AWK=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_AWK=$AWK
+                 fi
+
+                 if ( test x$CC = x )
+                 then
+                    CC=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CC=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CC=$CC
+                 fi
+
+                 if ( test x$CPP = x )
+                 then
+                    CPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CPP=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CPP=$CPP
+                 fi
+
+                 if ( test x$CXX = x )
+                 then
+                    CXX=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXX=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CXX=$CXX
+                 fi
+
+                 if ( test x$CXXCPP = x )
+                 then
+                    CXXCPP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^CXXCPP=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CXXCPP=$CXXCPP
+                 fi
+
+                 if ( test x$EXPR = x )
+                 then
+                    EXPR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^EXPR=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_EXPR=$EXPR
+                 fi
+
+                 if ( test x$GREP = x )
+                 then
+                    GREP=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GREP=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_GREP=$GREP
+                 fi
+
+                 if ( test x$LD = x )
+                 then
+                    LD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^LD=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_LD=$LD
+                 fi
+                 case `"$LD" -v 2>&1 < /dev/null` in
+                  *GNU* | *'with BFD'* )  GNU_LD=yes
+                                          ;;
+                                     * )  GNU_LD=no
+                                          ;;
+                 esac
+
+                 if ( test x$MAKE = x )
+                 then
+                    MAKE=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^MAKE=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_MAKE=$MAKE
+                 fi
+                 # Run $MAKE -v to check if we have GNU Make
+                 case `"$MAKE" -v 2>&1 </dev/null` in
+                   *GNU* | *'with BFD'* )  GNU_MAKE=yes
+                                           ;;
+                                      * )  GNU_MAKE=no
+                                           ;;
+                 esac
+
+                 if ( test x$SORT = x )
+                 then
+                    SORT=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SORT=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_SORT=$SORT
+                 fi
+
+                 if ( test x$TR = x )
+                 then
+                    TR=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^TR=\(.*\)/\1/p'`
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_TR=$TR
+                 fi
+
+
+
+                 # Process command line switches that effect QMake directly
+
+                 if ( test x$USER_with_rpath = x )
+                 then
+                    # QMake settings not overridden, so check what they were
+                    with_rpath=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^USE_LIBPATHSWITCH=\(.*\)/\1/p'`
+                    if ( test x$with_rpath != Y )
+                    then
+                       # QMake didn't enable it so don't consider it from
+                       # now on.
+                       with_rpath="N"
+                    fi
+                 fi
+
+                                                                    if ( test x$GET_CWD = x )
+                 then
+                    GET_CWD=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^GET_CWD=\(.*\)/\1/p'`
+                 else
+                    USER_GET_CWD=$GET_CWD
+                 fi
+
+else
+                  # The definitive list of support programs will be located by
+                 # the configure script from QMake. However, that will only
+                 # get run towards the end of this configure script; we will
+                 # have to ascertain where the programs are for those
+                 # utilities that this script requires.
+
+                 trace 2 No existing QMake configuration, searching for required programs
+
+                 # Utils needed by this script (for direct use)
+
+                 if ( test "x$AR" = x )
+                 then
+                    # User has not already specified which archiver to use
+                    # Extract the first word of "ar", so it can be a program name with args.
+set dummy ar; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_AR+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $AR in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_AR="$AR" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_AR="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_AR" && ac_cv_path_AR="missing"
+  ;;
+esac
+fi
+AR=$ac_cv_path_AR
+if test -n "$AR"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AR" >&5
+$as_echo "$AR" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                    if test $AR = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working ar required for using QMake
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_AR=$AR
+                 fi
+
+                 if ( test "x$AWK" = x )
+                 then
+                    # User has not already specified which awk program to use
+                    # so find one.
+                    for ac_prog in gawk mawk nawk awk
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_AWK+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$AWK"; then
+  ac_cv_prog_AWK="$AWK" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_AWK="$ac_prog"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+AWK=$ac_cv_prog_AWK
+if test -n "$AWK"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AWK" >&5
+$as_echo "$AWK" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$AWK" && break
+done
+
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_AWK=$AWK
+                 fi
+
+
+                 if ( test "x$CC" != x )
+                 then
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CC=$CC
+                 fi
+
+                 if ( test "x$CPP" != x )
+                 then
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CPP=$CPP
+                 fi
+
+                 if ( test "x$CXX" != x )
+                 then
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CXX=$CXX
+                 fi
+
+                 if ( test "x$CXXCPP" != x )
+                 then
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_CXXCPP=$CXXCPP
+                 fi
+
+                 if ( test "x$EXPR" = x )
+                 then
+                    # Extract the first word of "expr", so it can be a program name with args.
+set dummy expr; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_EXPR+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $EXPR in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_EXPR="$EXPR" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_EXPR="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_EXPR" && ac_cv_path_EXPR="missing"
+  ;;
+esac
+fi
+EXPR=$ac_cv_path_EXPR
+if test -n "$EXPR"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EXPR" >&5
+$as_echo "$EXPR" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                    if test $EXPR = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working expr - configure cannot continue
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_EXPR=$EXPR
+                 fi
+
+                 if ( test "x$GREP" = x )
+                 then
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for grep that handles long lines and -e" >&5
+$as_echo_n "checking for grep that handles long lines and -e... " >&6; }
+if test "${ac_cv_path_GREP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -z "$GREP"; then
+  ac_path_GREP_found=false
+  # Loop through the user's path and test for each of PROGNAME-LIST
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_prog in grep ggrep; do
+    for ac_exec_ext in '' $ac_executable_extensions; do
+      ac_path_GREP="$as_dir/$ac_prog$ac_exec_ext"
+      { test -f "$ac_path_GREP" && $as_test_x "$ac_path_GREP"; } || continue
+# Check for GNU ac_path_GREP and select it if it is found.
+  # Check for GNU $ac_path_GREP
+case `"$ac_path_GREP" --version 2>&1` in
+*GNU*)
+  ac_cv_path_GREP="$ac_path_GREP" ac_path_GREP_found=:;;
+*)
+  ac_count=0
+  $as_echo_n 0123456789 >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    $as_echo 'GREP' >> "conftest.nl"
+    "$ac_path_GREP" -e 'GREP$' -e '-(cannot match)-' < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    as_fn_arith $ac_count + 1 && ac_count=$as_val
+    if test $ac_count -gt ${ac_path_GREP_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_GREP="$ac_path_GREP"
+      ac_path_GREP_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
+
+      $ac_path_GREP_found && break 3
+    done
+  done
+  done
+IFS=$as_save_IFS
+  if test -z "$ac_cv_path_GREP"; then
+    as_fn_error "no acceptable grep could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" "$LINENO" 5
+  fi
+else
+  ac_cv_path_GREP=$GREP
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_GREP" >&5
+$as_echo "$ac_cv_path_GREP" >&6; }
+ GREP="$ac_cv_path_GREP"
+
+
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_GREP=$GREP
+                 fi
+
+                 # Look for linker (macro handles USER_LD)
+                 if ( test "x$LD" = x )
+          then
+             # User has not asked for a specific linker: look for one
+
+             if ( test "$GCC" = yes )
+             then
+                # If we have gcc we can try: $CC -print-prog-name=ld
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking which ld is used by $CC" >&5
+$as_echo_n "checking which ld is used by $CC... " >&6; }
+                LD=`$CC -print-prog-name=ld`
+                # Test host_os != mingw*
+                if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
+                then
+                   # gcc leaves a trailing carriage return which upsets mingw
+                   LD=`echo $LD | $TR -d '\015'`
+                fi
+
+                if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` = XX$LD )
+                then
+                   # $LD is an absolute path
+                   # Fold all \ to /
+                   LD=`echo "$LD"| $SED 's%\\\\%/%g'`
+                   # $LD may be an absolute path but might still need
+                   # cannonicalisation
+                   while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
+                   do
+                      LD=`echo $LD | $SED -e "s%/*[^/][^/]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
+                   done
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LD" >&5
+$as_echo "$LD" >&6; }
+                else
+                   # $CC -print-prog-name=ld has not delivered us an absolute
+                   # path; we need to use the searchlist
+                   LD=""
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: unhelpful" >&5
+$as_echo "unhelpful" >&6; }
+                fi
+             else
+                # Not using GCC so we don't know how to ask the compiler, we
+                # will have to look for ld on the searchlist
+                LD=""
+             fi
+
+             if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` != XX$LD )
+             then
+                # LD not set to an absolute path, must search for ld
+
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ld on the search-list" >&5
+$as_echo_n "checking for ld on the search-list... " >&6; }
+                GNU_LD=""
+                ANO_LD=""
+                save_ifs="$IFS"
+                IFS=$PATH_SEPARATOR
+                for dir in $PATH
+                do
+                   IFS="$save_ifs"
+                   if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
+                   then
+                      # Some variants of GNU ld only accept -v, so use that not --version
+                      case `"$dir/ld" -v 2>&1 </dev/null` in
+                       *GNU* | *'with BFD'*)  if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                              then
+                                                 # We are not using AIX so
+                                                 # favour the GNU linker
+                                                 # (that we have just found)
+                                                 LD=$dir/ld
+                                                 break
+                                              else
+                                                 # We are on AIX so should
+                                                 # use the native linker if
+                                                 # possible but remember
+                                                 # where the GNU version is
+                                                 # should that be all we find
+                                                 if ( test X$GNU_LD = X )
+                                                 then
+                                                    # This is the first GNU
+                                                    # version of ld on the
+                                                    # PATH so record it
+                                                    GNU_LD=$dir/ld
+                                                 fi
+                                              fi
+                                              ;;
+                       *)                     if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                                              then
+                                                 # We are not on AIX so
+                                                 # should favour the GNU
+                                                 # version of ld. As this is
+                                                 # not a GNU version, merely
+                                                 # remember where the first
+                                                 # non-GNU version is should
+                                                 # this be the only one we
+                                                 # actually find.
+                                                 if ( test X$ANO_LD = X )
+                                                 then
+                                                    ANO_LD=$dir/ld
+                                                 fi
+                                              else
+                                                 # As we are on AIX and have
+                                                 # found the non-GNU linker,
+                                                 # we should favour that.
+                                                 LD=$dir/ld
+                                              fi
+                                              ;;
+                      esac
+                   fi
+                done
+                IFS="$save_ifs"
+                if ( test X$LD = X )
+                then
+                   # Have not located preferred linker, is there a fall-back?
+                   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
+                   then
+                      # We are not using AIX but found no GNU linker, use any
+                      # other we found
+                      LD=$ANO_LD
+                   else
+                      # We are on AIX and wanted the native linker which we
+                      # did not locate. Try any GNU version we found
+                      LD=$GNU_LD
+                   fi
+                fi
+             fi # End of checking for ld on $PATH (LD not absolute pathname)
+
+             # Have we actually found a linker?
+             if ( test "X$LD" != X && test -x $LD )
+             then
+                # We have, what type is it?
+                VER_STRING=`"$LD" -v 2>&1 </dev/null`
+                if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+                then
+                   # GNU linker
+                   GNU_LD=yes
+                else
+                   GNU_LD=no
+                fi
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LD" >&5
+$as_echo "$LD" >&6; }
+             else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working ld required for building with
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          else
+             # User specified LD
+             if ( test -x $LD )
+             then
+                # What type is it?
+                VER_STRING=`"$LD" -v 2>&1 </dev/null`
+                if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+                then
+                   # GNU linker
+                   GNU_LD=yes
+                else
+                   GNU_LD=no
+                fi
+                # Remember the user setting so we output it to Config.Project
+                USER_LD=$LD
+             else
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "$LD does not appear to correctly specify a linker
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+
+
+
+                 # Look for the make utility (macro handles USER_MAKE)
+                 if ( test "X$MAKE" = X )
+          then
+             # User has not asked for a specific make utility, look for make
+             MAKE=make
+          else
+             # Record user-setting
+             USER_MAKE=$MAKE
+          fi
+
+          if ( test X`$EXPR X$MAKE : '\(X[\\/].*\)'` != XX$MAKE )
+          then
+             # User has not asked for a specific path for the make utility,
+             # we have to look for it on the search list
+
+             { $as_echo "$as_me:${as_lineno-$LINENO}: checking for make utility" >&5
+$as_echo_n "checking for make utility... " >&6; }
+             GNU_MAKE=""
+             ANO_MAKE=""
+             save_ifs="$IFS"
+             IFS=$PATH_SEPARATOR
+             for dir in $PATH
+             do
+                IFS="$save_ifs"
+                if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
+                then
+                   # Run $MAKE -v to check if we have GNU Make
+                   case `"$dir/$MAKE" -v 2>&1 </dev/null` in
+                    *GNU* | *'with BFD'*)  GNU_MAKE=$dir/$MAKE
+                                           # Found GNU Make which we prefer
+                                           # so we need look no further
+                                           break
+                                           ;;
+                    *)                     if ( test X$ANO_MAKE = X )
+                                           then
+                                              ANO_MAKE=$dir/$MAKE
+                                           fi
+                                           ;;
+                   esac
+                fi
+             done
+             IFS="$save_ifs"
+             if ( test X$GNU_MAKE = X )
+             then
+                # Preferred GNU Make not found, was there an alternative
+                if ( test  X$ANO_MAKE = X)
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working make required for building with
+See \`config.log' for more details." "$LINENO" 5; }
+                else
+                   MAKE=$ANO_MAKE
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
+$as_echo "$MAKE" >&6; }
+                   GNU_MAKE=no
+                fi
+             else
+                MAKE=$GNU_MAKE
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
+$as_echo "$MAKE" >&6; }
+                GNU_MAKE=yes
+             fi
+          else
+             # User specified a full path to make (in MAKE environment variable)
+             { $as_echo "$as_me:${as_lineno-$LINENO}: checking $$MAKE specified make utility" >&5
+$as_echo_n "checking $$MAKE specified make utility... " >&6; }
+             if ( test -x $MAKE )
+             then
+                VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
+                if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
+                then
+                   GNU_MAKE=yes
+                else
+                   GNU_MAKE=no
+                fi
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
+$as_echo "$MAKE" >&6; }
+             else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: unexecutable" >&5
+$as_echo "unexecutable" >&6; }
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "$$MAKE does not specify a usable make utility
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+          fi
+
+
+
+                 if ( test "x$SED" = x )
+                 then
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
+$as_echo_n "checking for a sed that does not truncate output... " >&6; }
+if test "${ac_cv_path_SED+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+            ac_script=s/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/
+     for ac_i in 1 2 3 4 5 6 7; do
+       ac_script="$ac_script$as_nl$ac_script"
+     done
+     echo "$ac_script" 2>/dev/null | sed 99q >conftest.sed
+     { ac_script=; unset ac_script;}
+     if test -z "$SED"; then
+  ac_path_SED_found=false
+  # Loop through the user's path and test for each of PROGNAME-LIST
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_prog in sed gsed; do
+    for ac_exec_ext in '' $ac_executable_extensions; do
+      ac_path_SED="$as_dir/$ac_prog$ac_exec_ext"
+      { test -f "$ac_path_SED" && $as_test_x "$ac_path_SED"; } || continue
+# Check for GNU ac_path_SED and select it if it is found.
+  # Check for GNU $ac_path_SED
+case `"$ac_path_SED" --version 2>&1` in
+*GNU*)
+  ac_cv_path_SED="$ac_path_SED" ac_path_SED_found=:;;
+*)
+  ac_count=0
+  $as_echo_n 0123456789 >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    $as_echo '' >> "conftest.nl"
+    "$ac_path_SED" -f conftest.sed < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    as_fn_arith $ac_count + 1 && ac_count=$as_val
+    if test $ac_count -gt ${ac_path_SED_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_SED="$ac_path_SED"
+      ac_path_SED_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
+
+      $ac_path_SED_found && break 3
+    done
+  done
+  done
+IFS=$as_save_IFS
+  if test -z "$ac_cv_path_SED"; then
+    as_fn_error "no acceptable sed could be found in \$PATH" "$LINENO" 5
+  fi
+else
+  ac_cv_path_SED=$SED
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_SED" >&5
+$as_echo "$ac_cv_path_SED" >&6; }
+ SED="$ac_cv_path_SED"
+  rm -f conftest.sed
+
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_SED=$SED
+                 fi
+
+                 if ( test "x$SORT" = x )
+                 then
+                    # Extract the first word of "sort", so it can be a program name with args.
+set dummy sort; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_SORT+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $SORT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_SORT="$SORT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_SORT="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_SORT" && ac_cv_path_SORT="missing"
+  ;;
+esac
+fi
+SORT=$ac_cv_path_SORT
+if test -n "$SORT"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SORT" >&5
+$as_echo "$SORT" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                    if test $SORT = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working sort required for building with
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_SORT=$SORT
+                 fi
+
+                 if ( test "x$TR" = x )
+                 then
+                    # Extract the first word of "tr", so it can be a program name with args.
 set dummy tr; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -2372,7 +3921,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_TR" && ac_cv_path_TR="Missing"
+  test -z "$ac_cv_path_TR" && ac_cv_path_TR="missing"
   ;;
 esac
 fi
@@ -2386,24 +3935,83 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $TR = Missing; then :
+                    if test $TR = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working tr required for using QMake
+as_fn_error "Cannot find a working tr - configure cannot continue
 See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                 else
+                    # Remember the user setting so we output it to
+                    # Config.Project.
+                    USER_TR=$TR
+                 fi
+
+                 # Process command line switches that effect QMake directly
+                                                                                                                                                                                                            if ( test x$GET_CWD = x )
+                 then
+                    # Extract the first word of "pwd", so it can be a program name with args.
+set dummy pwd; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GET_CWD+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GET_CWD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="missing"
+  ;;
+esac
+fi
+GET_CWD=$ac_cv_path_GET_CWD
+if test -n "$GET_CWD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
+$as_echo "$GET_CWD" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                    if test $GET_CWD = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working pwd required for using QMake
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
+                 else
+                    USER_GET_CWD=$GET_CWD
+                 fi
+
 
 fi
 
 
-# Check for C Compiler and Pre-processor
-#
-# Record CFLAGS in case user has supplied them on the configure cmd-line;
-# these will form QMAKE_CFLAGS setting in QMake build system.
-QMAKE_CFLAGS=$CFLAGS
-
-# Now actually check for compiler and and allow Config.QMake to record the
-# location found
-ac_ext=c
+                                                            # Locate/initialise C compiler
+          #
+          # First record any user-supplied CFLAGS
+          CONFIGURE_CFLAGS=$CFLAGS
+          ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -3194,64 +4802,16 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
+          # AC_PROG_CC won't actually have altered CFLAGS if a value was
+          # already set however, if an initial value was not provided,
+          # AC_PROG_CC may have set CFLAGS to include optimisation or -g.
+          # As we do not unconditionally want this, we re-initialise CFLAGS
+          # to the original value (which may be null or what a user supplied
+          # on the command line).
+          CFLAGS=$CONFIGURE_CFLAGS
 
-# AC_PROG_CC won't actually have altered CFLAGS if a value was already set
-# however, if an initial value was not provided, AC_PROG_CC may have set CFLAGS
-# to include optimisation or -g. As we do not want this for a QMake build, we
-# reinitialise CFLAGS to the original value (which may be null or what a user
-# supplied on the command line).
-CFLAGS=$QMAKE_CFLAGS
-# Now record the correct compiler switches for selecting relvant functionality
-if ( test x$GCC = xyes )
-then
-  # GCC Compiler
-  COMPILER_ANSI_CFLAGS=" -ansi "
-  COMPILER_DEBUG_CFLAGS=" -g "
-  COMPILER_GPROF_CFLAGS=" -pg "
-  COMPILER_PROF_CFLAGS=" -p "
-  COMPILER_SHARED_CFLAGS=" -shared -fPIC "
-  COMPILER_SPECIFIC_CFLAGS=""
-else
-   # Non-GNU compiler, try relevant machine specific options we have used
-   # before
-   case X$host_os in
-   Xsolaris* ) COMPILER_ANSI_CFLAGS=" -ansi "
-               COMPILER_DEBUG_CFLAGS=""
-               COMPILER_GPROF_CFLAGS=" -pg "
-               COMPILER_PROF_CFLAGS=" -p "
-               COMPILER_SHARED_CFLAGS=" -KPIC "
-               COMPILER_SPECIFIC_CFLAGS=""
-               ;;
-   Xirix* )    CC=$CC" -n32 -J4 -mp "
-               # Not sure why this originally was done this way rather than
-               # use CFLAGS, but assume there was a reason and propogate the
-               # method
-               COMPILER_ANSI_CFLAGS=" -ansi "
-               COMPILER_DEBUG_CFLAGS=""
-               COMPILER_GPROF_CFLAGS=""
-               COMPILER_PROF_CFLAGS=""
-               COMPILER_SHARED_CFLAGS=""
-               COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
-               ;;
-   * )         COMPILER_ANSI_CFLAGS=" -ansi "
-               COMPILER_DEBUG_CFLAGS=""
-               COMPILER_GPROF_CFLAGS=""
-               COMPILER_PROF_CFLAGS=""
-               COMPILER_SHARED_CFLAGS=""
-               COMPILER_SPECIFIC_CFLAGS=""
-               ;;
-   esac
-fi
-# Allow compiler switches to be written to Config.QMake
-
-
-
-
-
-
-
-# Find and record C pre-processor
-ac_ext=c
+          # Locate/initialise C preprocessor
+          ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -3389,14 +4949,11 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-
-# Check for C++ Compiler and Pre-processor
-#
-# Allow recording of any user-supplied CCFLAGS in Config.QMake
-QMAKE_CCFLAGS=$CCFLAGS
-
-# Now check for compiler and allow that result to be recorded
-ac_ext=cpp
+          # Locate/initialise C++ compiler
+          #
+          # Record any CCFLAGS configured by the user
+          CONFIGURE_CCFLAGS=$CCFLAGS
+          ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -3653,61 +5210,12 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
+          # Prevent optimisation or -g being to CCFLAGS if it was initially
+          # unset.
+          CCFLAGS=$CONFIGURE_CCFLAGS
 
-# Prevent optimisation or -g being to CCFLAGS if it was initially unset
-CCFLAGS=$QMAKE_CCFLAGS
-# Now record the correct compiler switches for selecting relvant functionality
-if ( test x$GXX = xyes )
-then
-  # GCC Compiler
-  COMPILER_ANSI_CCFLAGS=" -ansi "
-  COMPILER_DEBUG_CCFLAGS=" -g "
-  COMPILER_GPROF_CCFLAGS=" -pg "
-  COMPILER_PROF_CCFLAGS=" -p "
-  COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
-  COMPILER_SPECIFIC_CCFLAGS=""
-else
-   # Non-GNU compiler, try relevant machine specific options we have used
-   # before
-   case X$host_os in
-   Xsolaris* ) COMPILER_ANSI_CCFLAGS=" -ansi "
-               COMPILER_DEBUG_CCFLAGS=""
-               COMPILER_GPROF_CCFLAGS=" -pg "
-               COMPILER_PROF_CCFLAGS=" -p "
-               COMPILER_SHARED_CCFLAGS=" -KPIC "
-               COMPILER_SPECIFIC_CCFLAGS=""
-               ;;
-   Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
-               # Not sure why this originally was done this way rather than
-               # use CCFLAGS, but assume there was a reason and propogate the
-               # method
-               COMPILER_ANSI_CCFLAGS=" -ansi "
-               COMPILER_DEBUG_CCFLAGS=""
-               COMPILER_GPROF_CCFLAGS=""
-               COMPILER_PROF_CCFLAGS=""
-               COMPILER_SHARED_CCFLAGS=""
-               COMPILER_SPECIFIC_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
-               # -woff switches possibly in response to Ravl code rather
-               # than being generically necessary for QMake
-               ;;
-   * )         COMPILER_ANSI_CCFLAGS=" -ansi "
-               COMPILER_DEBUG_CCFLAGS=""
-               COMPILER_GPROF_CCFLAGS=""
-               COMPILER_PROF_CCFLAGS=""
-               COMPILER_SHARED_CCFLAGS=""
-               COMPILER_SPECIFIC_CCFLAGS=""
-               ;;
-   esac
-fi
-# Allow compiler switches to be written to Config.QMake
-
-
-
-
-
-
-# Find and record C++ pre-processor
-ac_ext=cpp
+          # Locate/initialise C++ preprocessor
+          ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -3842,226 +5350,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-# Look for linker
-#
-# This code inspired by LT_PATH_LD from libtool
-
-if ( test X$LD = X )
-then
-  # User has not asked for a specific linker, we have to look for one
-
-  if ( test "$GCC" = yes )
-  then
-    # If we have gcc we can try: $CC -print-prog-name=ld
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking which ld is used by $CC" >&5
-$as_echo_n "checking which ld is used by $CC... " >&6; }
-    LD=`$CC -print-prog-name=ld`
-    # Test host_os != mingw*
-    if ( test  X`$EXPR X$host_os : 'X\(mingw\).*'` != 'Xmingw' )
-    then
-      # gcc leaves a trailing carriage return which upsets mingw
-      LD=`echo $LD | $TR -d '\015'`
-    fi
-
-    if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` = XX$LD )
-    then
-      # $LD is an absolute path
-      # Fold all \ to /
-      LD=`echo "$LD"| $SED 's%\\\\%/%g'`
-      # $LD may be an absolute path but might still need cannonicalisation
-      while test X`$EXPR X$LD : 'X\(.*/\.\./\.*\)'` != X
-      do
-        LD=`echo $LD | $SED -e "s%/*[^/][^/]*/\.\./%/%g" -e "s%^/*\.\./%/%"`
-      done
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LD" >&5
-$as_echo "$LD" >&6; }
-    else
-      # $CC -print-prog-name=ld has not delivered us an absolute path
-      # We need to use the searchlist
-      LD=""
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: unhelpful" >&5
-$as_echo "unhelpful" >&6; }
-    fi
-  else
-    # Not using GCC so we don't know how to ask the compiler, we will have to
-    # look for ld on the searchlist
-    LD=""
-  fi
-
-  if ( test X`$EXPR X$LD : '\(X[\\/].*\)'` != XX$LD )
-  then
-    # LD not set to an absolute path, must search for ld
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ld on the search-list" >&5
-$as_echo_n "checking for ld on the search-list... " >&6; }
-    GNU_LD=""
-    ANO_LD=""
-    save_ifs="$IFS"
-    IFS=$PATH_SEPARATOR
-    for dir in $PATH
-    do
-      IFS="$save_ifs"
-      if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/ld" )
-      then
-        # Some variants of GNU ld only accept -v, so use that not --version
-        case `"$dir/ld" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-                                then
-                                  # We are not using AIX so favour the GNU linker
-                                  # (that we have just found)
-                                  LD=$dir/ld
-                                  break
-                                else
-                                  # We are on AIX so should use the native
-                                  # linker if possible but remember where the
-                                  # GNU version is should that be all we find
-                                  if ( test X$GNU_LD = X )
-                                  then
-                                    # This is the first GNU version of ld on the
-                                    # PATH so record it
-                                    GNU_LD=$dir/ld
-                                  fi
-                                fi
-                                ;;
-                           *)   if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-                                then
-                                  # We are not on AIX so should favour the GUN
-                                  # version of ld. As this is not a GNU version,
-                                  # merely remember where the first non-GNU
-                                  # version is should this be the only one we
-                                  # actually find.
-                                  if ( test X$ANO_LD = X )
-                                  then
-                                    ANO_LD=$dir/ld
-                                  fi
-                                else
-                                  # As we are on AIX and have found the non-GNU
-                                  # linker, we should favour that.
-                                  LD=$dir/ld
-                                fi
-                                ;;
-        esac
-      fi
-    done
-    IFS="$save_ifs"
-    if ( test X$LD = X )
-    then
-      # We haven't located our preferred linker, is there a fall-back?
-      if ( test  X`$EXPR X$host_os : 'X\(aix\).*'` != 'Xaix' )
-      then
-        # We are not using AIX but found no GNU linker, use any other we found
-        LD=$ANO_LD
-      else
-        # We are on AIX and wanted the native linker which we did not locate.
-        # No matter, try any GNU version we found
-        LD=$GNU_LD
-      fi
-    fi
-  fi # End of checking for ld on $PATH (LD not already an absolute pathname)
-
-  # Have we actually found a linker?
-  if ( test X$LD != X && test -x $LD )
-  then
-    # We have, what type is it?
-    VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      # GNU linker
-      GNU_LD=yes
-    else
-      GNU_LD=no
-    fi
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LD" >&5
-$as_echo "$LD" >&6; }
-  else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working ld required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-  fi
-else
-  # User specified LD
-  if ( test -x $LD )
-  then
-    # What type is it?
-    VER_STRING=`"$LD" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      # GNU linker
-      GNU_LD=yes
-    else
-      GNU_LD=no
-    fi
-  else
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "$LD does not appear to correctly specify a linker
-See \`config.log' for more details." "$LINENO" 5; }
-  fi
-fi
-
-# Set XX_LDFLAGS; XX_LDLIBFLAGS and other linker settings
-if ( test X$GNU_LD = Xyes )
-then
-  # We are using a GNU linker
-
-  LINKER_SPECIFIC_LDFLAGS=
-  LINKER_SHARED_LDFLAGS=" -rdynamic "
-
-  LINKER_SPECIFIC_LDLIBFLAGS=
-  LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-  LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-  LINKER_UNDEFSYMB=" -u#"
-else
-  # Not using a GNU linker, try native flags we have used before or default to
-  # what works for GNU
-  case X$host_os in
-  Xcygwin )   LINKER_SPECIFIC_LDFLAGS=
-              LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
-              # sic, this is an assumption on what compiler is in use
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-              # sic, this is an assumption on what compiler is in use
-              LINKER_UNDEFSYMB=" -u #"
-              ;;
-  Xirix*    ) LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
-              LINKER_SHARED_LDFLAGS=
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-              LINKER_UNDEFSYMB=" -u#"
-              ;;
-  Xsolaris* ) LINKER_SPECIFIC_LDFLAGS=
-              LINKER_SHARED_LDFLAGS=
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -dy -G "
-
-              LINKER_LIBPATHSWITCH=" -R#"
-              LINKER_UNDEFSYMB=" -u#"
-              ;;
-  * )         LINKER_SPECIFIC_LDFLAGS=
-              LINKER_SHARED_LDFLAGS=" -rdynamic "
-
-              LINKER_SPECIFIC_LDLIBFLAGS=
-              LINKER_SHARED_LDLIBFLAGS=" -shared "
-
-              LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
-              LINKER_UNDEFSYMB=" -u#"
-              ;;
-  esac
-fi
-# Allow linker flags to be saved in config file
-
-# any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
 
 
 
@@ -4072,19 +5360,245 @@ fi
 
 
 
-# Look for archive tools
 
-# Archiver program
-# Extract the first word of "ar", so it can be a program name with args.
-set dummy ar; ac_word=$2
+
+
+
+
+
+
+# Now record the correct switches for the individual tools in use
+trace 2 Set compiler specific CFLAGS
+
+          if ( test x$GCC = xyes )
+          then
+             trace 3 We have a GNU C Compiler
+             COMPILER_ANSI_CFLAGS=" -ansi "
+             COMPILER_DEBUG_CFLAGS=" -g "
+             COMPILER_GPROF_CFLAGS=" -pg "
+             COMPILER_PROF_CFLAGS=" -p "
+             COMPILER_SHARED_CFLAGS=" -shared -fPIC "
+             COMPILER_SPECIFIC_CFLAGS=""
+          else
+             trace 3 We do not have a GNU C compiler
+             # Try relevant machine specific options we have used before
+                                                                                                                                                            case X$host_os in
+              Xirix* )    trace 3 Setting CFLAGS we have previously used under Irix
+                          CC=$CC" -n32 -J4 -mp "
+                          # Not sure why this originally was done this way rather than
+                          # use CFLAGS, but assume there was a reason and propogate the
+                          # method
+                          COMPILER_ANSI_CFLAGS=" -ansi "
+                          COMPILER_DEBUG_CFLAGS=""
+                          COMPILER_GPROF_CFLAGS=""
+                          COMPILER_PROF_CFLAGS=""
+                          COMPILER_SHARED_CFLAGS=""
+                          COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
+                          ;;
+              Xsolaris* ) trace 3 Setting CFLAGS we have previously used on Solaris
+                          COMPILER_ANSI_CFLAGS=" -ansi "
+                          COMPILER_DEBUG_CFLAGS=""
+                          COMPILER_GPROF_CFLAGS=" -pg "
+                          COMPILER_PROF_CFLAGS=" -p "
+                          COMPILER_SHARED_CFLAGS=" -KPIC "
+                          COMPILER_SPECIFIC_CFLAGS=""
+                          ;;
+              * )         trace 3 Setting default CFLAGS
+                          COMPILER_ANSI_CFLAGS=" -ansi "
+                          COMPILER_DEBUG_CFLAGS=""
+                          COMPILER_GPROF_CFLAGS=""
+                          COMPILER_PROF_CFLAGS=""
+                          COMPILER_SHARED_CFLAGS=""
+                          COMPILER_SPECIFIC_CFLAGS=""
+                          ;;
+             esac
+          fi
+          # Allow C compiler switches to be written to Config.QMake
+
+          # Allow output of any user provided CFLAGS
+
+          # any user-provided CFLAGS will be recorded in Config.QMake as QMAKE_CFLAGS
+
+          # Allow output of compiler specific settings
+
+
+
+
+
+
+
+
+trace 2 Set compiler specific CCFLAGS
+
+          if ( test x$GXX = xyes )
+          then
+             trace 3 We have a GNU C++ Compiler
+             COMPILER_ANSI_CCFLAGS=" -ansi "
+             COMPILER_DEBUG_CCFLAGS=" -g "
+             COMPILER_GPROF_CCFLAGS=" -pg "
+             COMPILER_PROF_CCFLAGS=" -p "
+             COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
+             COMPILER_SPECIFIC_CCFLAGS=""
+          else
+              trace 3 We do not have a GNU C++ compiler
+              # Try relevant machine specific options we have used before
+                                                                                                                                                            case X$host_os in
+              Xirix* )    trace 3 Setting CCFLAGS we have previously used under Irix
+                          CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
+                          # Not sure why this originally was done this way rather than
+                          # use CCFLAGS, but assume there was a reason and propogate the
+                          # method
+                          COMPILER_ANSI_CCFLAGS=" -ansi "
+                          COMPILER_DEBUG_CCFLAGS=""
+                          COMPILER_GPROF_CCFLAGS=""
+                          COMPILER_PROF_CCFLAGS=""
+                          COMPILER_SHARED_CCFLAGS=""
+                          COMPILER_SPECIFIC_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
+                          # -woff switches possibly in response to Ravl code rather
+                          # than being generically necessary for QMake
+                          ;;
+              Xsolaris* ) trace 3 Setting CCFLAGS we have previously used on Solaris
+                          COMPILER_ANSI_CCFLAGS=" -ansi "
+                          COMPILER_DEBUG_CCFLAGS=""
+                          COMPILER_GPROF_CCFLAGS=" -pg "
+                          COMPILER_PROF_CCFLAGS=" -p "
+                          COMPILER_SHARED_CCFLAGS=" -KPIC "
+                          COMPILER_SPECIFIC_CCFLAGS=""
+                          ;;
+              * )         trace 3 Setting default CCFLAGS
+                          COMPILER_ANSI_CCFLAGS=" -ansi "
+                          COMPILER_DEBUG_CCFLAGS=""
+                          COMPILER_GPROF_CCFLAGS=""
+                          COMPILER_PROF_CCFLAGS=""
+                          COMPILER_SHARED_CCFLAGS=""
+                          COMPILER_SPECIFIC_CCFLAGS=""
+                          ;;
+             esac
+          fi
+          # Allow C++ compiler switches to be written to Config.QMake
+
+          # Allow output of any user provided CCFLAGS
+
+          # any user-provided CCFLAGS will be recorded in Config.QMake as QMAKE_CCFLAGS
+
+          # Allow output of compiler specific settings
+
+
+
+
+
+
+
+
+trace 2 Set linker specific LDFLAGS
+
+          if ( test X$GNU_LD = Xyes )
+          then
+             trace 3 We have a GNU linker
+
+             LINKER_SPECIFIC_LDFLAGS=
+             LINKER_SHARED_LDFLAGS=" -rdynamic "
+
+             LINKER_SPECIFIC_LDLIBFLAGS=
+             LINKER_SHARED_LDLIBFLAGS=" -shared "
+
+             LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+             LINKER_UNDEFSYMB=" -u#"
+          else
+             trace 3 We do not have a GNU linker
+             # Try native flags we have used before or default to what works for GNU
+                                                                                                                                                            case X$host_os in
+              Xcygwin )   trace 3 Setting LDFLAGS we have previously used under cygwin
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=" -Wl,-export-dynamic "
+                          # sic, this is an assumption on what compiler is in use
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          # sic, this is an assumption on what compiler is in use
+                          LINKER_UNDEFSYMB=" -u #"
+                         ;;
+              Xirix*    ) trace 3 Setting LDFLAGS we have previously used under Irix
+                          LINKER_SPECIFIC_LDFLAGS=" -n32 -Wl,-woff 84 "
+                          LINKER_SHARED_LDFLAGS=
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
+              Xsolaris* ) trace 3 Setting LDFLAGS we have previously used on Solaris
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -dy -G "
+                          LINKER_LIBPATHSWITCH=" -R#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
+              * )         trace 3 Setting default LDFLAGS
+                          LINKER_SPECIFIC_LDFLAGS=
+                          LINKER_SHARED_LDFLAGS=" -rdynamic "
+                          LINKER_SPECIFIC_LDLIBFLAGS=
+                          LINKER_SHARED_LDLIBFLAGS=" -shared "
+                          LINKER_LIBPATHSWITCH=" -Wl,-rpath#"
+                          LINKER_UNDEFSYMB=" -u#"
+                          ;;
+             esac
+          fi
+          # Allow linker flags to be saved in config file
+
+          # any user-provided LDFLAGS will be recorded in Config.QMake as QMAKE_LDFLAGS
+
+
+
+
+
+
+
+
+trace 2 Set archiver specific ARFLAGS
+
+
+
+          AR_SPECIFIC_ARFLAGS=ruc
+
+
+
+trace 2 Set make specific MAKEFLAGS
+
+
+          if ( test X$GNU_MAKE = Xyes )
+          then
+             MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r "
+          else
+             # Potential to add further options here for particular versions of make
+             # However, at the moment we just have a standard option for all
+             MAKE_SPECIFIC_MAKEFLAGS=" -r "
+          fi
+
+          # User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake
+
+
+
+
+
+
+
+# Check for remaining utils
+
+# Check for programs needed by QMake
+# First check for those programs that GNU coding standards regard as safe to use
+# in a makefile if they are employed via make variables (and thus create the
+# necessary variables)
+# Extract the first word of "chgrp", so it can be a program name with args.
+set dummy chgrp; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_AR+set}" = set; then :
+if test "${ac_cv_path_CHGRP+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  case $AR in
+  case $CHGRP in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_AR="$AR" # Let the user override the test with a path.
+  ac_cv_path_CHGRP="$CHGRP" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -4094,7 +5608,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_AR="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_CHGRP="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -4102,54 +5616,49 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_AR" && ac_cv_path_AR="Missing"
+  test -z "$ac_cv_path_CHGRP" && ac_cv_path_CHGRP="missing"
   ;;
 esac
 fi
-AR=$ac_cv_path_AR
-if test -n "$AR"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AR" >&5
-$as_echo "$AR" >&6; }
+CHGRP=$ac_cv_path_CHGRP
+if test -n "$CHGRP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHGRP" >&5
+$as_echo "$CHGRP" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-if test $AR = Missing; then :
+if test $CHGRP = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working ar required for using QMake
+as_fn_error "Cannot find a working chgrp required for using QMake
 See \`config.log' for more details." "$LINENO" 5; }
 
 fi
 
-# Declare flags for ar
-AR_SPECIFIC_ARFLAGS=ruc
-# No user specified ARFLAGS are allowed owing to the nature of how ar works,
-# such flags would most likely break the build
 
-
-# Ranlib program (if necessary)
-if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
-set dummy ${ac_tool_prefix}ranlib; ac_word=$2
+# Extract the first word of "chmod", so it can be a program name with args.
+set dummy chmod; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_prog_RANLIB+set}" = set; then :
+if test "${ac_cv_path_CHMOD+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  if test -n "$RANLIB"; then
-  ac_cv_prog_RANLIB="$RANLIB" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  case $CHMOD in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHMOD="$CHMOD" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_prog_RANLIB="${ac_tool_prefix}ranlib"
+    ac_cv_path_CHMOD="$as_dir/$ac_word$ac_exec_ext"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -4157,185 +5666,81 @@ done
   done
 IFS=$as_save_IFS
 
-fi
-fi
-RANLIB=$ac_cv_prog_RANLIB
-if test -n "$RANLIB"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RANLIB" >&5
-$as_echo "$RANLIB" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-fi
-if test -z "$ac_cv_prog_RANLIB"; then
-  ac_ct_RANLIB=$RANLIB
-  # Extract the first word of "ranlib", so it can be a program name with args.
-set dummy ranlib; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_prog_ac_ct_RANLIB+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$ac_ct_RANLIB"; then
-  ac_cv_prog_ac_ct_RANLIB="$ac_ct_RANLIB" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_prog_ac_ct_RANLIB="ranlib"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-ac_ct_RANLIB=$ac_cv_prog_ac_ct_RANLIB
-if test -n "$ac_ct_RANLIB"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_RANLIB" >&5
-$as_echo "$ac_ct_RANLIB" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-  if test "x$ac_ct_RANLIB" = x; then
-    RANLIB=":"
-  else
-    case $cross_compiling:$ac_tool_warned in
-yes:)
-{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
-$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
-ac_tool_warned=yes ;;
+  test -z "$ac_cv_path_CHMOD" && ac_cv_path_CHMOD="missing"
+  ;;
 esac
-    RANLIB=$ac_ct_RANLIB
-  fi
+fi
+CHMOD=$ac_cv_path_CHMOD
+if test -n "$CHMOD"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHMOD" >&5
+$as_echo "$CHMOD" >&6; }
 else
-  RANLIB="$ac_cv_prog_RANLIB"
-fi
-
-
-# Slight weakness of this check is that if ranlib is not found, we assume it is
-# not needed (set RANLIB to ":")
-
-
-
-# Look for the make utility
-
-if ( test X$MAKE = X )
-then
-  # User has not asked for a specific make utility, look for make
-  MAKE=make
-fi
-
-if ( test X`$EXPR X$MAKE : '\(X[\\/].*\)'` != XX$MAKE )
-then
-  # User has not asked for a specific path for the make utility, we have to look
-  # for it on the search list
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for make utility" >&5
-$as_echo_n "checking for make utility... " >&6; }
-  GNU_MAKE=""
-  ANO_MAKE=""
-  save_ifs="$IFS"
-  IFS=$PATH_SEPARATOR
-  for dir in $PATH
-  do
-    IFS="$save_ifs"
-    if ( test X"$dir" != X && test $dir != '.' && test -x "$dir/$MAKE" )
-    then
-      # Run $MAKE -v to check if we have GNU Make
-      case `"$dir/$MAKE" -v 2>&1 </dev/null` in
-        *GNU* | *'with BFD'*)   GNU_MAKE=$dir/$MAKE
-                                # Found GNU Make which we prefer so we need
-                                # look no further
-                                break
-                                ;;
-                           *)   if ( test X$ANO_MAKE = X )
-                                then
-                                  ANO_MAKE=$dir/$MAKE
-                                fi
-                                ;;
-        esac
-    fi
-  done
-  IFS="$save_ifs"
-  if ( test X$GNU_MAKE = X )
-  then
-    # Preferred GNU Make not found, was there an alternative
-    if ( test  X$ANO_MAKE = X)
-    then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working make required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-    else
-      MAKE=$ANO_MAKE
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
-$as_echo "$MAKE" >&6; }
-      GNU_MAKE=no
-    fi
-  else
-    MAKE=$GNU_MAKE
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
-$as_echo "$MAKE" >&6; }
-    GNU_MAKE=yes
-  fi
-else
-  # User specified a full path to make (in MAKE environment variable)
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking $$MAKE specified make utility" >&5
-$as_echo_n "checking $$MAKE specified make utility... " >&6; }
-  if ( test -x $MAKE )
-  then
-    VER_STRING=`"$MAKE" -v 2>&1 </dev/null`
-    if ( test `$EXPR "$VER_STRING" : '.*GNU.*'` -gt 0 || test `$EXPR "$VER_STRING" : '.*with BFD.*'` -gt 0 )
-    then
-      GNU_MAKE=yes
-    else
-      GNU_MAKE=no
-    fi
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAKE" >&5
-$as_echo "$MAKE" >&6; }
-  else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: unexecutable" >&5
-$as_echo "unexecutable" >&6; }
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "$$MAKE does not specify a usable make utility
-See \`config.log' for more details." "$LINENO" 5; }
-  fi
 fi
 
-# Declare flags for make
-if ( test X$GNU_MAKE = Xyes )
-then
-  MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r "
-else
-  # Potential to add further options here for particular versions of make
-  # However, at the moment we just have a standard option for all
-  MAKE_SPECIFIC_MAKEFLAGS=" -r "
+
+if test $CHMOD = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working chmod required for using QMake
+See \`config.log' for more details." "$LINENO" 5; }
+
 fi
 
-# User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake
+
+# Extract the first word of "chown", so it can be a program name with args.
+set dummy chown; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CHOWN+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CHOWN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CHOWN="$CHOWN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CHOWN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_CHOWN" && ac_cv_path_CHOWN="missing"
+  ;;
+esac
+fi
+CHOWN=$ac_cv_path_CHOWN
+if test -n "$CHOWN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHOWN" >&5
+$as_echo "$CHOWN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
 
 
+if test $CHOWN = missing; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Cannot find a working chown required for using QMake
+See \`config.log' for more details." "$LINENO" 5; }
+
+fi
 
 
-
-
-
-# Check for install-sh as it may be needed for mkdir -p support
+# Check for install-sh as it is needed directly by QMake and it also may be
+# needed for mkdir -p support
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
@@ -4428,326 +5833,6 @@ test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
-
-
-# Ensure we have a mkdir -p capability (will use install-sh on systems without
-# a native mkdir -p)
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a thread-safe mkdir -p" >&5
-$as_echo_n "checking for a thread-safe mkdir -p... " >&6; }
-if test -z "$MKDIR_P"; then
-  if test "${ac_cv_path_mkdir+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH$PATH_SEPARATOR/opt/sfw/bin
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_prog in mkdir gmkdir; do
-	 for ac_exec_ext in '' $ac_executable_extensions; do
-	   { test -f "$as_dir/$ac_prog$ac_exec_ext" && $as_test_x "$as_dir/$ac_prog$ac_exec_ext"; } || continue
-	   case `"$as_dir/$ac_prog$ac_exec_ext" --version 2>&1` in #(
-	     'mkdir (GNU coreutils) '* | \
-	     'mkdir (coreutils) '* | \
-	     'mkdir (fileutils) '4.1*)
-	       ac_cv_path_mkdir=$as_dir/$ac_prog$ac_exec_ext
-	       break 3;;
-	   esac
-	 done
-       done
-  done
-IFS=$as_save_IFS
-
-fi
-
-  test -d ./--version && rmdir ./--version
-  if test "${ac_cv_path_mkdir+set}" = set; then
-    MKDIR_P="$ac_cv_path_mkdir -p"
-  else
-    # As a last resort, use the slow shell script.  Don't cache a
-    # value for MKDIR_P within a source directory, because that will
-    # break other packages using the cache if that directory is
-    # removed, or if the value is a relative name.
-    MKDIR_P="$ac_install_sh -d"
-  fi
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $MKDIR_P" >&5
-$as_echo "$MKDIR_P" >&6; }
-
-
-
-# Check for remaining utils
-
-# Check for pkg-config
-
-
-if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
-	if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
-set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_PKG_CONFIG+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PKG_CONFIG=$ac_cv_path_PKG_CONFIG
-if test -n "$PKG_CONFIG"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
-$as_echo "$PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-fi
-if test -z "$ac_cv_path_PKG_CONFIG"; then
-  ac_pt_PKG_CONFIG=$PKG_CONFIG
-  # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $ac_pt_PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
-if test -n "$ac_pt_PKG_CONFIG"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
-$as_echo "$ac_pt_PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-  if test "x$ac_pt_PKG_CONFIG" = x; then
-    PKG_CONFIG=""
-  else
-    case $cross_compiling:$ac_tool_warned in
-yes:)
-{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
-$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
-ac_tool_warned=yes ;;
-esac
-    PKG_CONFIG=$ac_pt_PKG_CONFIG
-  fi
-else
-  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
-fi
-
-fi
-if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
-$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
-	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-	else
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-		PKG_CONFIG=""
-	fi
-
-fi
-
-# Check for programs needed by QMake
-# First check for those programs that GNU coding standards regard as safe to use
-# in a makefile if they are employed via make variables (and thus create the
-# necessary variables)
-# Extract the first word of "chgrp", so it can be a program name with args.
-set dummy chgrp; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_CHGRP+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $CHGRP in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_CHGRP="$CHGRP" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CHGRP="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_CHGRP" && ac_cv_path_CHGRP="Missing"
-  ;;
-esac
-fi
-CHGRP=$ac_cv_path_CHGRP
-if test -n "$CHGRP"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHGRP" >&5
-$as_echo "$CHGRP" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $CHGRP = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working chgrp required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-# Extract the first word of "chmod", so it can be a program name with args.
-set dummy chmod; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_CHMOD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $CHMOD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_CHMOD="$CHMOD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CHMOD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_CHMOD" && ac_cv_path_CHMOD="Missing"
-  ;;
-esac
-fi
-CHMOD=$ac_cv_path_CHMOD
-if test -n "$CHMOD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHMOD" >&5
-$as_echo "$CHMOD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $CHMOD = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working chmod required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-# Extract the first word of "chown", so it can be a program name with args.
-set dummy chown; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_CHOWN+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $CHOWN in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_CHOWN="$CHOWN" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CHOWN="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_CHOWN" && ac_cv_path_CHOWN="Missing"
-  ;;
-esac
-fi
-CHOWN=$ac_cv_path_CHOWN
-if test -n "$CHOWN"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHOWN" >&5
-$as_echo "$CHOWN" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test $CHOWN = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working chown required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
 
 
 
@@ -4911,26 +5996,72 @@ fi
 
 
 
-# Extract the first word of "sort", so it can be a program name with args.
-set dummy sort; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_SORT+set}" = set; then :
+# Ensure we have a mkdir -p capability (will use install-sh on systems without
+# a native mkdir -p)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a thread-safe mkdir -p" >&5
+$as_echo_n "checking for a thread-safe mkdir -p... " >&6; }
+if test -z "$MKDIR_P"; then
+  if test "${ac_cv_path_mkdir+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  case $SORT in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_SORT="$SORT" # Let the user override the test with a path.
-  ;;
-  *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/opt/sfw/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_prog in mkdir gmkdir; do
+	 for ac_exec_ext in '' $ac_executable_extensions; do
+	   { test -f "$as_dir/$ac_prog$ac_exec_ext" && $as_test_x "$as_dir/$ac_prog$ac_exec_ext"; } || continue
+	   case `"$as_dir/$ac_prog$ac_exec_ext" --version 2>&1` in #(
+	     'mkdir (GNU coreutils) '* | \
+	     'mkdir (coreutils) '* | \
+	     'mkdir (fileutils) '4.1*)
+	       ac_cv_path_mkdir=$as_dir/$ac_prog$ac_exec_ext
+	       break 3;;
+	   esac
+	 done
+       done
+  done
+IFS=$as_save_IFS
+
+fi
+
+  test -d ./--version && rmdir ./--version
+  if test "${ac_cv_path_mkdir+set}" = set; then
+    MKDIR_P="$ac_cv_path_mkdir -p"
+  else
+    # As a last resort, use the slow shell script.  Don't cache a
+    # value for MKDIR_P within a source directory, because that will
+    # break other packages using the cache if that directory is
+    # removed, or if the value is a relative name.
+    MKDIR_P="$ac_install_sh -d"
+  fi
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $MKDIR_P" >&5
+$as_echo "$MKDIR_P" >&6; }
+
+
+
+# Ranlib program (if necessary)
+if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
+set dummy ${ac_tool_prefix}ranlib; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_RANLIB+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$RANLIB"; then
+  ac_cv_prog_RANLIB="$RANLIB" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_SORT="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_prog_RANLIB="${ac_tool_prefix}ranlib"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -4938,28 +6069,75 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_SORT" && ac_cv_path_SORT="Missing"
-  ;;
-esac
 fi
-SORT=$ac_cv_path_SORT
-if test -n "$SORT"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SORT" >&5
-$as_echo "$SORT" >&6; }
+fi
+RANLIB=$ac_cv_prog_RANLIB
+if test -n "$RANLIB"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RANLIB" >&5
+$as_echo "$RANLIB" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 
 
-if test $SORT = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working sort required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
+fi
+if test -z "$ac_cv_prog_RANLIB"; then
+  ac_ct_RANLIB=$RANLIB
+  # Extract the first word of "ranlib", so it can be a program name with args.
+set dummy ranlib; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_ac_ct_RANLIB+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$ac_ct_RANLIB"; then
+  ac_cv_prog_ac_ct_RANLIB="$ac_ct_RANLIB" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_ac_ct_RANLIB="ranlib"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
 
 fi
+fi
+ac_ct_RANLIB=$ac_cv_prog_ac_ct_RANLIB
+if test -n "$ac_ct_RANLIB"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_RANLIB" >&5
+$as_echo "$ac_ct_RANLIB" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
 
+  if test "x$ac_ct_RANLIB" = x; then
+    RANLIB=":"
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    RANLIB=$ac_ct_RANLIB
+  fi
+else
+  RANLIB="$ac_cv_prog_RANLIB"
+fi
+
+
+# Slight weakness of this check is that if ranlib is not found, we assume it is
+# not needed (set RANLIB to ":")
 
 for ac_prog in 'bison -y' byacc
 do
@@ -5035,7 +6213,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_CP" && ac_cv_path_CP="Missing"
+  test -z "$ac_cv_path_CP" && ac_cv_path_CP="missing"
   ;;
 esac
 fi
@@ -5049,7 +6227,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $CP = Missing; then :
+if test $CP = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working cp required for using QMake
@@ -5085,7 +6263,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_RM" && ac_cv_path_RM="Missing"
+  test -z "$ac_cv_path_RM" && ac_cv_path_RM="missing"
   ;;
 esac
 fi
@@ -5099,7 +6277,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $RM = Missing; then :
+if test $RM = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working rm required for using QMake
@@ -5135,7 +6313,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_TOUCH" && ac_cv_path_TOUCH="Missing"
+  test -z "$ac_cv_path_TOUCH" && ac_cv_path_TOUCH="missing"
   ;;
 esac
 fi
@@ -5149,7 +6327,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $TOUCH = Missing; then :
+if test $TOUCH = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working touch required for using QMake
@@ -5157,348 +6335,6 @@ See \`config.log' for more details." "$LINENO" 5; }
 
 fi
 
-
-# Switch to store library search paths in the calling library
-
-# Check whether --with-rpath was given.
-if test "${with_rpath+set}" = set; then :
-  withval=$with_rpath; case $with_rpath in
-                  'y' | 'Y' | 'yes' | 'Yes' | 'YES' ) with_rpath=Y
-                                                      ;;
-                  'n' | 'N' | 'no' | 'No' | 'NO' )    with_rpath=N
-                                                      ;;
-                  * )                                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-rpath set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-rpath set to an unknown option, setting ignored" >&2;}
-                                                      with_rpath=N
-                                                      ;;
-             esac
-
-else
-  trace 5 No --with-rpath specified
-             with_rpath=N
-
-
-fi
-
-
-
-# Provide switch to allow use of pawd instead of pwd
-
-# Check whether --with-pawd was given.
-if test "${with_pawd+set}" = set; then :
-  withval=$with_pawd; case $with_pawd in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                               trace 4 --with-pawd disabling use of pawd
-                               # Extract the first word of "pwd", so it can be a program name with args.
-set dummy pwd; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GET_CWD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GET_CWD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
-  ;;
-esac
-fi
-GET_CWD=$ac_cv_path_GET_CWD
-if test -n "$GET_CWD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
-$as_echo "$GET_CWD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-                               if test $GET_CWD = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working pwd required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-                               ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                               trace 4 --with-pawd forcing use of pawd
-                               # Extract the first word of "pawd", so it can be a program name with args.
-set dummy pawd; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GET_CWD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GET_CWD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
-  ;;
-esac
-fi
-GET_CWD=$ac_cv_path_GET_CWD
-if test -n "$GET_CWD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
-$as_echo "$GET_CWD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-                               if test $GET_CWD = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to enable pawd via --with-pawd but it cannot be found
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-                               ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                               trace 4 --with-pawd asking to use pawd if available
-                               # Extract the first word of "pawd", so it can be a program name with args.
-set dummy pawd; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GET_CWD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GET_CWD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
-  ;;
-esac
-fi
-GET_CWD=$ac_cv_path_GET_CWD
-if test -n "$GET_CWD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
-$as_echo "$GET_CWD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-                               if test $GET_CWD = Missing; then :
-  # Extract the first word of "pwd", so it can be a program name with args.
-set dummy pwd; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GET_CWD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GET_CWD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
-  ;;
-esac
-fi
-GET_CWD=$ac_cv_path_GET_CWD
-if test -n "$GET_CWD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
-$as_echo "$GET_CWD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-                                      if test $GET_CWD = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working pawd or pwd required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-fi
-                               ;;
-                        * )    if test -x $with_pawd; then :
-  trace 4 --with-pawd asking to use "[$with_pawd]"
-                                      GET_CWD=$with_pawd
-
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-pawd set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-pawd set to an unknown option, setting ignored" >&2;}
-                                      # Extract the first word of "pwd", so it can be a program name with args.
-set dummy pwd; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GET_CWD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GET_CWD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
-  ;;
-esac
-fi
-GET_CWD=$ac_cv_path_GET_CWD
-if test -n "$GET_CWD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
-$as_echo "$GET_CWD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-                                      if test $GET_CWD = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working pwd required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-fi
-                               ;;
-                       esac
-
-else
-  trace 5 No --with-pawd specified
-             # Extract the first word of "pwd", so it can be a program name with args.
-set dummy pwd; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GET_CWD+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GET_CWD in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GET_CWD="$GET_CWD" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GET_CWD="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GET_CWD" && ac_cv_path_GET_CWD="Missing"
-  ;;
-esac
-fi
-GET_CWD=$ac_cv_path_GET_CWD
-if test -n "$GET_CWD"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GET_CWD" >&5
-$as_echo "$GET_CWD" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-             if test $GET_CWD = Missing; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Cannot find a working pwd required for using QMake
-See \`config.log' for more details." "$LINENO" 5; }
-
-fi
-
-
-fi
 
 
 
@@ -5546,7 +6382,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_QMAKE_PAGER" && ac_cv_path_QMAKE_PAGER="Missing"
+  test -z "$ac_cv_path_QMAKE_PAGER" && ac_cv_path_QMAKE_PAGER="missing"
   ;;
 esac
 fi
@@ -5560,7 +6396,7 @@ $as_echo "no" >&6; }
 fi
 
 
-       if test $QMAKE_PAGER = Missing; then :
+       if test $QMAKE_PAGER = missing; then :
   # Extract the first word of "pg", so it can be a program name with args.
 set dummy pg; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -5588,7 +6424,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_QMAKE_PAGER" && ac_cv_path_QMAKE_PAGER="Missing"
+  test -z "$ac_cv_path_QMAKE_PAGER" && ac_cv_path_QMAKE_PAGER="missing"
   ;;
 esac
 fi
@@ -5602,7 +6438,7 @@ $as_echo "no" >&6; }
 fi
 
 
-              if test $QMAKE_PAGER = Missing; then :
+              if test $QMAKE_PAGER = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working pager required for using QMake
@@ -5646,7 +6482,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_PERL" && ac_cv_path_PERL="Missing"
+  test -z "$ac_cv_path_PERL" && ac_cv_path_PERL="missing"
   ;;
 esac
 fi
@@ -5660,7 +6496,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $PERL = Missing; then :
+if test $PERL = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working copy of Perl
@@ -5696,7 +6532,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_SYNC" && ac_cv_path_SYNC="Missing"
+  test -z "$ac_cv_path_SYNC" && ac_cv_path_SYNC="missing"
   ;;
 esac
 fi
@@ -5710,7 +6546,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $SYNC = Missing; then :
+if test $SYNC = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working sync required for using QMake
@@ -5746,7 +6582,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_XARGS" && ac_cv_path_XARGS="Missing"
+  test -z "$ac_cv_path_XARGS" && ac_cv_path_XARGS="missing"
   ;;
 esac
 fi
@@ -5760,7 +6596,7 @@ $as_echo "no" >&6; }
 fi
 
 
-if test $XARGS = Missing; then :
+if test $XARGS = missing; then :
   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error "Cannot find a working xargs required for using QMake
@@ -5835,7 +6671,7 @@ echo >> ./Config.QMake.in
 echo \# Flags for the C compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo QMAKE_CFLAGS=@QMAKE_CFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CFLAGS=@CONFIGURE_CFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.QMake.in
@@ -5848,7 +6684,7 @@ echo >> ./Config.QMake.in
 echo \# Flags for the C++ compiler >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
-echo QMAKE_CCFLAGS=@QMAKE_CCFLAGS@ >> ./Config.QMake.in
+echo QMAKE_CCFLAGS=@CONFIGURE_CCFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.QMake.in
@@ -5899,64 +6735,62 @@ echo >> ./Config.QMake.in
 
 
 
-# Map Platform/OS into Ravl ARCs
 case X$host_os in
-Xarm )      ARC=arm
-            # Unlikely to ever encounter this as an OS, most liekly to find arm
-            # as a linux cpu type (should process that as a variation of linux).
-            # This is only here as this is what we used to do
-            ;;
-Xcygwin )   ARC=cygwin
-            # Ravl support assumes an old i*86 platform. Could possibly require
-            # code changes to Ravl if we ever port to a more expansive
-            # environment (e.g. 64 bit support)
-            ;;
-Xdarwin* )  case X`uname -m` in
-               Xx86_64 )  ARC=macosx64
-                          ;;
-               Xi386 )    ARC=macosx32
-                          ;;
-               Xpowerpc ) ARC=macosxppc
-                          ;;
-            esac
-            # The above is needed as host_os currently comes back as i386 even
-            # for 64-bit installations of OSX
-            ;;
-Xirix* )    ARC=sgi
-            ;;
-Xlinux* )
-            case X$host_cpu in
-               Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
-                          ARC=linux
-                          ;;
-               Xx86_64* ) ARC=linux64
-                          ;;
-               Xalpha* )  ARC=linux_alpha
-                          # Will encompass more processors than the original
-                          # config.arc accounted for but should not be an issue
-                          ;;
-               * )        ARC=unknown
-                          ;;
-            esac
-            ;;
-Xosf* )     ARC=alpha
-            ;;
-Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
-            # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
-            #  Solaris 2.6, Solaris 7, Solaris 8, etc.
-            if ( test X$VER_STRING= X )
-            then
-              # Just in case GNU change config.guess
-              ARC=sol
-            else
-              # Original Ravl support was for Solaris 7 & 9 only. Later
-              # versions may need further work on the Ravl source
-              ARC=sol2_$VER_STRING
-            fi
-            ;;
-* )         ARC=unknown
-            ;;
-esac
+           Xarm )      ARC=arm
+                       # Unlikely to ever encounter this as an OS, most
+                       # likely to find arm as a linux cpu type (should
+                       # process that as a variation of linux). This is only
+                       # here as this is what we used to do
+                       ;;
+           Xcygwin )   ARC=cygwin
+                       # Support assumes an old i*86 platform.
+                       ;;
+           Xdarwin* )  case X`uname -m` in
+                        Xx86_64 )  ARC=macosx64
+                                   ;;
+                        Xi386 )    ARC=macosx32
+                                   ;;
+                        Xpowerpc ) ARC=macosxppc
+                                   ;;
+                       esac
+                       # The above is needed as host_os currently comes
+                       # back as i386 even for 64-bit installations of OSX.
+                       ;;
+           Xirix* )    ARC=sgi
+                       ;;
+           Xlinux* )   case X$host_cpu in
+                        Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
+                                   ARC=linux
+                                   ;;
+                        Xx86_64* ) ARC=linux64
+                                   ;;
+                        Xalpha* )  ARC=linux_alpha
+                                   # Will encompass more processors than the
+                                   # original config.arc accounted for but
+                                   # should not be an issue.
+                                   ;;
+                        * )        ARC=unknown
+                                   ;;
+                       esac
+                       ;;
+           Xosf* )     ARC=alpha
+                       ;;
+           Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([0-9]*\).*'`
+                       # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
+                       #  Solaris 2.6, Solaris 7, Solaris 8, etc.
+                       if ( test X$VER_STRING= X )
+                       then
+                          # Just in case GNU change config.guess
+                          ARC=sol
+                       else
+                          ARC=sol2_$VER_STRING
+                       fi
+                       ;;
+           * )         ARC=unknown
+                       ;;
+           esac
+
+
 
 
 

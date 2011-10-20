@@ -1,0 +1,95 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+dnl QM_SET_ARC
+dnl
+dnl Macro to set up the ARC variable declaring the QMake identifying name for
+dnl the current platform.
+dnl
+dnl No macro parameters.
+dnl
+dnl Global variables used:
+dnl
+dnl       ARC                        Receives the QMake identifing string for
+dnl                                  the platform in use.
+dnl       VER_STRING                 Intermediate string used if the macro
+dnl                                  needs to determine the revision of the
+dnl                                  operating system in use.
+dnl       host_os                    Holds the name of the operating system
+dnl                                  in use. Primed via a previous call of
+dnl                                  configure.guess
+dnl       host_cpu                   Holds the processor architecture in use.
+dnl                                  Primed via a previous configure.guess
+dnl                                  call.
+dnl       EXPR                       Standard substitution variable pointing
+dnl                                  to the UNIX expr command.
+dnl
+AC_DEFUN([QM_SET_ARC],
+         [case X$host_os in
+           Xarm )      ARC=arm
+                       # Unlikely to ever encounter this as an OS, most 
+                       # likely to find arm as a linux cpu type (should 
+                       # process that as a variation of linux). This is only
+                       # here as this is what we used to do
+                       ;;
+           Xcygwin )   ARC=cygwin
+                       # Support assumes an old i*86 platform.
+                       ;;
+           Xdarwin* )  case X`uname -m` in
+                        Xx86_64 )  ARC=macosx64
+                                   ;;
+                        Xi386 )    ARC=macosx32
+                                   ;;
+                        Xpowerpc ) ARC=macosxppc
+                                   ;;
+                       esac
+                       # The above is needed as host_os currently comes
+                       # back as i386 even for 64-bit installations of OSX.
+                       ;;
+           Xirix* )    ARC=sgi
+                       ;;
+           Xlinux* )   case X$host_cpu in
+                        Xi386* | Xi486* | Xi586* | Xi686* | Xi786* )
+                                   ARC=linux
+                                   ;;
+                        Xx86_64* ) ARC=linux64
+                                   ;;
+                        Xalpha* )  ARC=linux_alpha
+                                   # Will encompass more processors than the
+                                   # original config.arc accounted for but 
+                                   # should not be an issue.
+                                   ;;
+                        * )        ARC=unknown
+                                   ;;
+                       esac
+                       ;;
+           Xosf* )     ARC=alpha
+                       ;;
+           Xsolaris* ) VER_STRING=`$EXPR X$host_os : 'Xsolaris2\.\([[0-9]]*\).*'`
+                       # config.guess returns solaris2.X regardless of if it is Solaris 2.5;
+                       #  Solaris 2.6, Solaris 7, Solaris 8, etc.
+                       if ( test X$VER_STRING= X )
+                       then
+                          # Just in case GNU change config.guess
+                          ARC=sol
+                       else
+                          ARC=sol2_$VER_STRING
+                       fi
+                       ;;
+           * )         ARC=unknown
+                       ;;
+           esac
+         ]
+        )
+
+
+
+
+

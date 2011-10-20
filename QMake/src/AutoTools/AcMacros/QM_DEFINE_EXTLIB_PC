@@ -1,0 +1,175 @@
+dnl This file is part of QMake, Quick Make System
+dnl Copyright (C) 2011, University of Surrey
+dnl This code may be redistributed under the terms of the GNU General
+dnl Public License (GPL). See the gpl.licence file for details or
+dnl see http://www.gnu.org/copyleft/gpl.html
+dnl
+dnl file-header-ends-here
+
+
+
+
+
+dnl QM_DEFINE_EXTLIB_PC
+dnl
+dnl Macro to define all helper libs that rely on pkg-config to see if they
+dnl exist. This macro will declare the --with-<lib> command-line switch and
+dnl create the simple --help text. The command-line switch will support a
+dnl Yes/No (upper, lower and sentence case accepted; plus Y,N) to explicitly 
+dnl en/dis-able use of the library; or 'check' (C, Ck, or Check etc.) to ask
+dnl to utilise the library if it is available (the default option). The macro
+dnl will go on to declare the --with-<lib>-pkgconf switch that explicitly
+dnl sets the pkg-config control file to use to check for the helper library.
+dnl This switch should be set to the full path of the control file.
+dnl
+dnl Macro parameters are:
+dnl       p1: QMake name for library. This is used for naming the cmd-line
+dnl           switch (LIB => --with-LIB, --with-LIB-pkgconf). It should be
+dnl           the name QMake expects the RESOURCES string to take to enable
+dnl           the library's functionality. It will also be the name used
+dnl           for the LIB_CFLAGS and LIB_LIBS used in the relevant .def
+dnl           file and Config.Project. 
+dnl       p2: Default name by which pkg-config knows the library.
+dnl
+dnl Global variables used:
+dnl
+dnl   All variables listed with a <lib> in their name are created with the
+dnl   <lib> being replaced by the QMake name of the package (the name passed
+dnl   into this macro as the first parameter). For example,the OpenCV package 
+dnl   will have variables named with_OpenCV; with_OpenCV; etc.
+dnl
+dnl       with_<Lib>                 Value of similarly named cmd-line switch
+dnl                                  Enables (actually requires) the use of
+dnl                                  the particular library. Can also be used
+dnl                                  to specify the location of the library
+dnl                                  and header files when the specific
+dnl                                  command-line switches are not used
+dnl                                  (ideal if both file types reside in the
+dnl                                  same directory).
+dnl       with_<Lib>_pkgconf         Value of similarly named cmd-line switch
+dnl                                  Specifies what name pkg-config will know
+dnl                                  the library as. This variable receives
+dnl                                  the default if the cmd-line switch isn't 
+dnl                                  used but the library is declared as
+dnl                                  using pkg-config.
+dnl       with_<Lib>_virtual         Flag specifying if the library in
+dnl                                  question is a virtual package set.
+dnl                                  Initialised to no in this macro.
+dnl       use_<Lib>                  Flag specifying useage of library,
+dnl                                  primed initially by --with-<Lib> or
+dnl                                  as part of a dependancy check. 
+dnl       <lib>_CFLAGS               Substitution variable (variable that is
+dnl                                  output to the configuration file for the
+dnl                                  (QMake) client project (i.e. to the
+dnl                                  Config.Project file) that receives the
+dnl                                  CFLAGS required when compiling with the
+dnl                                  external library. This macros does not
+dnl                                  set this variable, merely declare it for
+dnl                                  substitution out to the configuration
+dnl                                  file.
+dnl       <lib>_LIBS                 Substitution variable that receives the
+dnl                                  link line settings needed to link with
+dnl                                  the <lib> package. This info is supplied
+dnl                                  as on the link line itself  i.e. library
+dnl                                  names are specified in -lX form and the
+dnl                                  setting may include -Lpath entries. This
+dnl                                  macros does not set this variable,
+dnl                                  merely declare it for substitution out
+dnl                                  to the configuration file.
+dnl       KnownLibs                  Appended with the QMake name for the
+dnl                                  library to maintain a list of all the
+dnl                                  external libraries known to the script.
+dnl       ConfiguredLibs             Appended with the QMake name for the
+dnl                                  library only if the user supplied a
+dnl                                  command-line option for the library.
+dnl                                  This variable maintains a list of all
+dnl                                  the external libraries known to the
+dnl                                  configure script.
+dnl
+AC_DEFUN([QM_DEFINE_EXTLIB_PC],
+         [AC_ARG_WITH([$1-pkgconf],
+                      [AS_HELP_STRING([--with-$1-pkgconf],
+                                      [Enable the $1 library package via pkg-config and declare the name by which the $1 library package is known to pkg-config]
+                                     )
+                      ],
+                      [case $with_$1_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_$1=no
+                                          trace 4 --with-$1-pkgconf disabling $1
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
+                                          AS_IF([test X$2 != X],
+                                                [with_$1_pkgconf=$2
+                                                 use_$1=yes
+                                                 trace 4 --with-$1-pkgconf set to default @<:@$with_$1_pkgconf@:>@
+                                                ],
+                                                [AC_MSG_FAILURE([Asking to configure $1 via pkg-config but configure is unaware of the name of the DOTpc metadata file])
+                                                ]
+                                               )
+                                          ;;
+                        * )               use_$1=yes
+                                          trace 4 --with-$1-pkgconf set to @<:@$with_$1_pkgconf@:>@
+                                          ;;
+                       esac
+                      ],
+                      [AS_IF([test X$2 != X],
+                             [with_$1_pkgconf=$2
+                              trace 4 No --with-$1-pkgconf specified using default @<:@$with_$1_pkgconf@:>@
+                             ]
+                            )
+                      ]
+                     )
+          AC_ARG_WITH([$1],
+                      [AS_HELP_STRING([--with-$1],
+                                      [Enable functionality that relies on the $1 library @<:@default=check@:>@]
+                                     )
+                      ],
+                      [case $with_$1 in
+                        'n' | 'N' | 'no' | 'No' | 'NO' ) 
+                                       trace 4 --with-$1 disabling $1 libraries
+                                       AS_IF([test X$use_$1 = Xyes ],
+                                             [AC_MSG_FAILURE([Asking to disable $1 by --with-$1 but --with-$1-pkgconf has specifically enabled it])
+                                             ],
+                                             [use_$1=no]
+                                            )
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' ) 
+                                       trace 4 --with-$1 enabling $1 libraries
+                                       AS_IF([test X$use_$1 = Xno],
+                                             [AC_MSG_FAILURE([Asking to enable $1 by --with-$1 but --with-$1-pkgconf has specifically disabled it])
+                                             ],
+                                             [use_$1=yes]
+                                            )
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-$1 checking for $1 libraries
+                                       AS_IF([test X$use_$1 = Xyes],
+                                             [AC_MSG_WARN([--with-$1 asking to check for the libs but --with-$1-pkgconf has specifically enabled it])
+                                             ],
+                                             [AS_IF([test X$use_$1 = Xno],
+                                                    [AC_MSG_WARN([--with-$1 asking to check for the libs but --with-$1-pkgconf has specifically disabled it])
+                                                    ],
+                                                    [use_$1=check]
+                                                   )
+                                             ]
+                                            )
+                                       ;;
+                        * )            AC_MSG_WARN([--with-$1 set to an unknown option, setting ignored])
+                                       ;;
+                       esac
+                      ],
+                      [trace 5 No --with-$1 specified]
+                     )
+          KnownLibs=$KnownLibs" "$1
+          with_$1_virtual="no"
+          if ( test X$use_$1 = X )
+          then
+             use_$1=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "$1
+          fi
+          AC_SUBST([$1_CFLAGS])
+          AC_SUBST([$1_LIBS])
+         ]
+        )
+
