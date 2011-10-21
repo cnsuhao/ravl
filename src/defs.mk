@@ -13,6 +13,6 @@ DESCRIPTION=RAVL, Recognition and Vision Library
 NESTED=Core.r OS.r CCMath.r Math.r PatternRec.r Audio.r \
 Image.r 3D.r Logic.r SourceTools.r GUI.r CompVision.r Contrib.r Applications.r 
 
-LOCAL_FILES=install lgpl.license gpl.license README
+LOCAL_FILES=
 
 EHT=Ravl.eht Ravl.API.html
