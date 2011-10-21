@@ -156,7 +156,7 @@ StageShScripts: $(STAGING)/bin $(STAGING)/bin/qm $(STAGING)/bin/QLibs
 	@:
 
 $(STAGING)/bin/qm: $(SRC)/Utils/qm.sh.src 
-	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES $(datadir)/QMake/Makefiles!g' \
+	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
 	    -e 's![@]SHELL[@]!/bin/sh!g' \
                 $(SRC)/Utils/qm.sh.src > $(STAGING)/bin/qm
