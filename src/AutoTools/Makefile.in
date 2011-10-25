@@ -234,4 +234,10 @@ testsingleoptshared:
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: default check debug debugshared distdir doc fullsrc install installpkgconf opt optbin optshared pkgconf qmake LocalQMake QMake retest retestsingleopt retestsingleoptshared rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug singledebugbin singledebugshared singledebugsharedbin testopt testsingleopt testsingleoptshared .DEFAULT
+.PHONY: check debug debugshared default distdir doc fullsrc install \
+ installHdrs installoptshared installpkgconf installQMake \
+ installsingleoptshared LocalQMake opt optbin optshared pkgconf qmake QMake \
+ recurse retestopt retestoptshared retestsingleopt retestsingleoptshared \
+ rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug \
+ singledebugbin singledebugshared singledebugsharedbin testopt testoptshared \
+ testsingleopt testsingleoptshared .DEFAULT
