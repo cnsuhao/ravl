@@ -69,14 +69,14 @@ ifdef QMAKE_INFO
   export QMAKE_INFO
 endif
 
-.PHONY : all depend opt qopt qdb develop qd distclean \
- clean pack unpack org help isdep srcp srcd org orgopt orgdebug chead \
- lib_info defs mdoc notes qc qcheck src doconly log \
- fulldoc fullcheck fullsrc fulltest fullbuild \
- check checkshared checkne checksharedne shared ne sharedne \
- debug debugshared debugne debugsharedne ds dsne \
- debugall debugsharedall debugneall debugsharedneall \
- opt optshared optne optsharedne os osne
+.PHONY : all allns buildall chead check checkne checkshared checksharedne \
+ chkclean clean cleandep cleandoc cleanlib distclean dbclean \
+ debug debugall debugne debugneall debugshared debugsharedall debugsharedne \
+ debugsharedneall defs doc docinit ds dsne fullbuild fullcheck \
+ fullclean fulldebug fulldoc fullhdr fullinfo fullopt fullshared fullsrc \
+ gprof gprofne help info libbuild lib_info mkdef ne novar \
+ opt optclean optshared optne optsharedne os osne \
+ pack prof purify redoc retest rpmbuild shared sharedne src test unpack 
 
 ##################################
 # Do makes.

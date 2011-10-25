@@ -407,9 +407,19 @@ endif
 ###############################
 # Basic modes.
 
-.PHONY : srcfiles build_subdirs build_testsubdirs build_purifydirs build_libs build_exe \
-         all build_aux build_test test build_pureexe fullbuild testbuild purifybuild cheadbuild \
-         buildjavalibs libbuild localsrc
+ifdef FULLCHECKING
+.PHONY : all build_aux build_exe buildjavalibs build_libs build_pureexe \
+ build_subdirs build_test cheadbuild fullbuild info libbuild libinfo \
+ postbuildstep postbuildstepexe prebuildstep purifybuild src_all srcfiles \
+ testbuild
+
+# Difference is chead{build}  {} FULLCHECKING only
+else
+.PHONY : all build_aux build_exe buildjavalibs build_libs build_pureexe \
+ build_subdirs build_test chead fullbuild info libbuild libinfo \
+ postbuildstep postbuildstepexe prebuildstep purifybuild src_all srcfiles \
+ testbuild
+endif
 
 all: prebuildstep srcfiles build_aux
 	@echo "Internal error: No valid build target "

@@ -43,7 +43,7 @@ endif
 
 
 
-.PHONY : doc do_html bigautodoc autodoc
+.PHONY : doc dodocfiles docinit
 
 .PRECIOUS : %/.dir %.html %.eht
 

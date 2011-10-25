@@ -355,7 +355,10 @@ $(DESTDIR)$(libdir)/pkgconfig:
 $(DESTDIR)$(libdir)/pkgconfig/QMake.pc:
 	$(INSTALL_DATA) $(STAGING)/lib/pkgconfig/QMake.pc $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
 
-
+.PHONY: BuildUtils default info install InstallAB InstallBuiltUtils \
+ InstallConfig InstallMakefiles InstallPerl InstallPkgConf InstallScripts \
+ InstallSupport InstallUtils ProcessMakefiles StageAB StagePerl \
+ StagePkgConf StageQMake StageShScripts StageSupport StageUtils
 
 
 # Basic debug information

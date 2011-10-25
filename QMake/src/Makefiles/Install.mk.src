@@ -420,6 +420,10 @@ recurse:
             done ;\
          fi
 
+.PHONY: default info install insAUX insConfig insData insDev insEgs \
+ insEgData insHdrs insLibs insMains insScripts insTests insTestData \
+ recurse
+
 
 
 # Basic debug information

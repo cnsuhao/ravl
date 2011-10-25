@@ -22,7 +22,7 @@ endif
 endif
 
 
-.PHONY : clean cleandep cleanii
+.PHONY : clean cleandep cleandoc cleanlib subdirs
 
 VPATH = $(QCWD)
 
