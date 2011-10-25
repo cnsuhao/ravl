@@ -1,3 +1,3 @@
 
-#include "../../.\Image\VideoIO\rgbFormat.hh"
+#include "../.././Image/VideoIO/rgbFormat.hh"
 

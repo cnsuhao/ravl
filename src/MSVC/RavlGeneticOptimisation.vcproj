@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlGeneticOptimisation"
-	ProjectGUID="{02cae171-1bbf-4930-9d48-f51ac5d846d5}"
+	ProjectGUID="{3edc3c4e-0689-4c3a-8f2c-f09108c628c5}"
         RootNamespace="RavlGeneticOptimisation"
 	Keyword="win32Proj"
 	>
@@ -17,15 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\RavlGeneticOptimisation"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\RavlGeneticOptimisation"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic&#x0D;&#x0A;copy ..\.\Math\GeneticAlgorithms\Optimisation\exGeneticOptimisation.xml ..\build\\share\Ravl\Genetic\exGeneticOptimisation.xml&#x0D;&#x0A;"
+if not exist C:\Build\\share\Ravl\Genetic\NUL mkdir C:\Build\\share\Ravl\Genetic&#x0D;&#x0A;copy ..\.\Math\GeneticAlgorithms\Optimisation\exGeneticOptimisation.xml C:\Build\\share\Ravl\Genetic\exGeneticOptimisation.xml&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -47,15 +47,15 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlGeneticOptimisation\RavlGeneticOptimisation.pch"
-				AssemblerListingLocation="..\build\win32\debug\obj\RavlGeneticOptimisation\"
-				ObjectFile="..\build\win32\debug\obj\RavlGeneticOptimisation\"
-				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlGeneticOptimisation.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlGeneticOptimisation\RavlGeneticOptimisation.pch"
+				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlGeneticOptimisation\"
+				ObjectFile="C:\Build\win32\debug\obj\RavlGeneticOptimisation\"
+				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlGeneticOptimisation.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -75,7 +75,7 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\debug\lib\RavlGeneticOptimisation.lib"
+				OutputFile="C:\Build\win32\debug\lib\RavlGeneticOptimisation.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -87,7 +87,7 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\debug\lib\RavlGeneticOptimisation.bsc"
+				OutputFile="C:\Build\win32\debug\lib\RavlGeneticOptimisation.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -98,15 +98,15 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\RavlGeneticOptimisation"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\RavlGeneticOptimisation"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				CommandLine="
-if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic&#x0D;&#x0A;copy ..\.\Math\GeneticAlgorithms\Optimisation\exGeneticOptimisation.xml ..\build\\share\Ravl\Genetic\exGeneticOptimisation.xml&#x0D;&#x0A;"
+if not exist C:\Build\\share\Ravl\Genetic\NUL mkdir C:\Build\\share\Ravl\Genetic&#x0D;&#x0A;copy ..\.\Math\GeneticAlgorithms\Optimisation\exGeneticOptimisation.xml C:\Build\\share\Ravl\Genetic\exGeneticOptimisation.xml&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -126,15 +126,15 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlGeneticOptimisation/RavlGeneticOptimisation.pch"
-				AssemblerListingLocation="..\build\win32\opt\obj\RavlGeneticOptimisation\"
-				ObjectFile="..\build\win32\opt\obj\RavlGeneticOptimisation\"
-				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlGeneticOptimisation.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlGeneticOptimisation/RavlGeneticOptimisation.pch"
+				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlGeneticOptimisation\"
+				ObjectFile="C:\Build\win32\opt\obj\RavlGeneticOptimisation\"
+				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlGeneticOptimisation.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -153,7 +153,7 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\opt\lib\RavlGeneticOptimisation.lib"
+				OutputFile="C:\Build\win32\opt\lib\RavlGeneticOptimisation.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -165,7 +165,7 @@ if not exist ..\build\\share\Ravl\Genetic\NUL mkdir ..\build\\share\Ravl\Genetic
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\opt\lib\RavlGeneticOptimisation.bsc"
+				OutputFile="C:\Build\win32\opt\lib\RavlGeneticOptimisation.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

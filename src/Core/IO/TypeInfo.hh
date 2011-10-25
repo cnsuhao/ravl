@@ -340,7 +340,7 @@ namespace RavlN {
       Int64T dataRead = iport.GetArray(data);
       if (dataRead > 0)
       {
-        SArray1dC<DataT> subData(data, static_cast<size_t>(dataRead));
+        SArray1dC<DataT> subData(data, (UIntT) dataRead);
         strm << subData;
       }
 
@@ -383,7 +383,7 @@ namespace RavlN {
       // Copy data.
       SArray1dC<DataT> data;
       strm >> data;
-      return oport.PutArray(data) == static_cast<IntT>(data.Size().V());
+      return oport.PutArray(data) == (IntT) data.Size().V();
     }
     //: Read an array of items from the binary stream and write it to a port.
 

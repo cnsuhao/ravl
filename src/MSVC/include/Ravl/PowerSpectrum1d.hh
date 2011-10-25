@@ -1,3 +1,3 @@
 
-#include "../../.\Math\Signals\1D\PowerSpectrum1d.hh"
+#include "../.././Math/Signals/1D/PowerSpectrum1d.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\Core\Base\config.h"
+#include "../.././Core/Base/config.h"
 

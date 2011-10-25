@@ -1,3 +1,3 @@
 
-#include "../../.\Image\VideoIO\BGRFrmIOAvi.hh"
+#include "../.././Image/VideoIO/BGRFrmIOAvi.hh"
 

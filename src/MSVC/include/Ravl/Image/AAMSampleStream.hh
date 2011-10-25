@@ -1,3 +1,3 @@
 
-#include "../../.\CompVision\ActiveAppearanceModels\AAMSampleStream.hh"
+#include "../.././CompVision/ActiveAppearanceModels/AAMSampleStream.hh"
 

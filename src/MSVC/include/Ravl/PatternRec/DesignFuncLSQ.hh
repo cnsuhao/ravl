@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Modeling\Basic\DesignFuncLSQ.hh"
+#include "../.././PatternRec/Modeling/Basic/DesignFuncLSQ.hh"
 

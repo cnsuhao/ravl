@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\WidgetStyle.hh"
+#include "../.././GUI/GTK/WidgetStyle.hh"
 

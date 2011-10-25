@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlAudioIO"
-	ProjectGUID="{ff7ef9d6-2acd-4bb0-b926-110b5afcb34a}"
+	ProjectGUID="{0ad22430-63b1-415d-bf68-ba6fe6e54386}"
         RootNamespace="RavlAudioIO"
 	Keyword="win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\RavlAudioIO"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\RavlAudioIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlAudioIO\RavlAudioIO.pch"
-				AssemblerListingLocation="..\build\win32\debug\obj\RavlAudioIO\"
-				ObjectFile="..\build\win32\debug\obj\RavlAudioIO\"
-				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlAudioIO.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlAudioIO\RavlAudioIO.pch"
+				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlAudioIO\"
+				ObjectFile="C:\Build\win32\debug\obj\RavlAudioIO\"
+				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlAudioIO.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\debug\lib\RavlAudioIO.lib"
+				OutputFile="C:\Build\win32\debug\lib\RavlAudioIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\debug\lib\RavlAudioIO.bsc"
+				OutputFile="C:\Build\win32\debug\lib\RavlAudioIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\RavlAudioIO"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\RavlAudioIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlAudioIO/RavlAudioIO.pch"
-				AssemblerListingLocation="..\build\win32\opt\obj\RavlAudioIO\"
-				ObjectFile="..\build\win32\opt\obj\RavlAudioIO\"
-				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlAudioIO.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlAudioIO/RavlAudioIO.pch"
+				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlAudioIO\"
+				ObjectFile="C:\Build\win32\opt\obj\RavlAudioIO\"
+				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlAudioIO.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\opt\lib\RavlAudioIO.lib"
+				OutputFile="C:\Build\win32\opt\lib\RavlAudioIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\opt\lib\RavlAudioIO.bsc"
+				OutputFile="C:\Build\win32\opt\lib\RavlAudioIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

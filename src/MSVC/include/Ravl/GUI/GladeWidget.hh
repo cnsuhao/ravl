@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\LibGlade\GladeWidget.hh"
+#include "../.././GUI/LibGlade/GladeWidget.hh"
 

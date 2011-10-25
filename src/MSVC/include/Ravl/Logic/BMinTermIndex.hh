@@ -1,3 +1,3 @@
 
-#include "../../.\Logic\Index\BMinTermIndex.hh"
+#include "../.././Logic/Index/BMinTermIndex.hh"
 

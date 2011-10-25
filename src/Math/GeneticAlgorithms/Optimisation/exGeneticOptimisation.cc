@@ -28,7 +28,7 @@ using namespace RavlN::GeneticN;
 
 float EvaluateFitness(RavlN::Point2dC &point) {
   static RavlN::Point2dC target(0.1234,0.4321);
-  return 1.0/(point.EuclideanDistance(target) + 0.0001);
+  return static_cast<float>(1.0/(point.EuclideanDistance(target) + 0.0001));
 }
 
 // Define how to construct our target object.

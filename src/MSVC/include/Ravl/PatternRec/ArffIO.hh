@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Arff\ArffIO.hh"
+#include "../.././PatternRec/Arff/ArffIO.hh"
 

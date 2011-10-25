@@ -52,8 +52,8 @@ namespace RavlImageN {
     int pbr,y;
     // Mess about so it works on SGI.
     strm >> pbr >> y;
-    val.Pbr() = static_cast<RavlN::FloatT>(pbr);
-    val.Y() = static_cast<RavlN::FloatT>(y);
+    val.Pbr() = pbr;
+    val.Y() = y;
     return strm;
   }
   //: Stream input.

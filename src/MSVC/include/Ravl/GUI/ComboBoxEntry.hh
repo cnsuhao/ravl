@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\ComboBoxEntry.hh"
+#include "../.././GUI/GTK/ComboBoxEntry.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\SignalInfo.hh"
+#include "../.././GUI/GTK/SignalInfo.hh"
 

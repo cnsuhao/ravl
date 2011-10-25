@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Cluster\ClassifierFuzzyCMeans.hh"
+#include "../.././PatternRec/Cluster/ClassifierFuzzyCMeans.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\CompVision\ActiveAppearanceModels\AAMAppearanceModel.hh"
+#include "../.././CompVision/ActiveAppearanceModels/AAMAppearanceModel.hh"
 

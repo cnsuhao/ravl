@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Filters\Convolve\SumRectangles.hh"
+#include "../.././Image/Processing/Filters/Convolve/SumRectangles.hh"
 

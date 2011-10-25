@@ -251,8 +251,8 @@ namespace RavlN {
     void Save(ostream &out) const;
     //: Write to a stream.
     
-    SizeT Hash() const
-    { return static_cast<size_t>(sec + usec); }
+    size_t Hash() const
+    { return (size_t) (sec + usec); }
     //: Generate a hash value.
     
   private:

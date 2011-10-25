@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\ButtonBox.hh"
+#include "../.././GUI/GTK/ButtonBox.hh"
 

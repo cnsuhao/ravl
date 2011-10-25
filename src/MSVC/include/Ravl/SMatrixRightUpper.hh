@@ -1,3 +1,3 @@
 
-#include "../../.\Math\LinearAlgebra\General\SMatrixRightUpper.hh"
+#include "../.././Math/LinearAlgebra/General/SMatrixRightUpper.hh"
 

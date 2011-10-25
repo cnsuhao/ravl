@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="SkinBlobFind"
-	ProjectGUID="{87854d43-c098-4731-8bf5-cb9e2849db3c}"
+	ProjectGUID="{c6b3f030-b26e-49ab-9ba6-ba2ec05cdf33}"
 	RootNamespace="SkinBlobFind"
 	Keyword="Win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\SkinBlobFind"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\SkinBlobFind"
 			ConfigurationType="1"
 			CharacterSet="0"
 			>
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include;&quot;c:\WindowsSources\jpeg-6b-4\include&quot;;&quot;c:\WindowsSources\GTK\include&quot;;&quot;c:\WindowsSources\tiff-3.8.2-1\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\debug\bin\SkinBlobFind.exe"
+				OutputFile="C:\Build\win32\debug\bin\SkinBlobFind.exe"
 				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib RavlImageIO.lib jpeg.lib libpng.lib zdll.lib libtiff.lib RavlExtImgIO.lib Rpcrt4.lib RavlOS.lib RavlOSIO.lib RavlThreads.lib RavlOptimise.lib RavlImageProc.lib"
-				AdditionalLibraryDirectories="c:\WindowsSources\jpeg-6b-4\lib;c:\WindowsSources\GTK\lib;c:\WindowsSources\tiff-3.8.2-1\lib;..\build\win32\debug\lib"
+				AdditionalLibraryDirectories="c:\WindowsSources\jpeg-6b-4\lib;c:\WindowsSources\GTK\lib;c:\WindowsSources\tiff-3.8.2-1\lib;C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,8 +97,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\SkinBlobFind"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\SkinBlobFind"
 			ConfigurationType="1"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include;&quot;c:\WindowsSources\jpeg-6b-4\include&quot;;&quot;c:\WindowsSources\GTK\include&quot;;&quot;c:\WindowsSources\tiff-3.8.2-1\include&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\opt\bin\SkinBlobFind.exe"
+				OutputFile="C:\Build\win32\opt\bin\SkinBlobFind.exe"
 				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib RavlImageIO.lib jpeg.lib libpng.lib zdll.lib libtiff.lib RavlExtImgIO.lib Rpcrt4.lib RavlOS.lib RavlOSIO.lib RavlThreads.lib RavlOptimise.lib RavlImageProc.lib"
-				AdditionalLibraryDirectories="c:\WindowsSources\jpeg-6b-4\lib;c:\WindowsSources\GTK\lib;c:\WindowsSources\tiff-3.8.2-1\lib;..\build\win32\opt\lib"
+				AdditionalLibraryDirectories="c:\WindowsSources\jpeg-6b-4\lib;c:\WindowsSources\GTK\lib;c:\WindowsSources\tiff-3.8.2-1\lib;C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

@@ -116,7 +116,7 @@ namespace RavlN { namespace GeneticN {
     const GeneClassShareC &oldNode = dynamic_cast<const GeneClassShareC &>(original);
     if(fraction < 0.3) {
       // Wander
-      float delta = static_cast<float>((Random1() - 0.5) * g_maxStrength * fraction);
+      float delta = static_cast<float>(Random1() - 0.5) * g_maxStrength * fraction;
       float strength = oldNode.Strength() + delta;
       if(strength < 0 || strength > g_maxStrength)
         strength = oldNode.Strength() - delta;
@@ -126,7 +126,7 @@ namespace RavlN { namespace GeneticN {
 
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++) {
-        float delta = static_cast<float>((Random1() - 0.5) * g_spaceSize * fraction);
+        float delta = static_cast<float>(Random1() - 0.5) * g_spaceSize * fraction;
         newPos[i] = oldNode.Position()[i] + delta;
         if(newPos[i] < 0 || newPos[i] > g_spaceSize)
           newPos[i] = oldNode.Position()[i] - delta;
@@ -141,7 +141,7 @@ namespace RavlN { namespace GeneticN {
       newNode.SetStrength(static_cast<float>(Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++)
-        newPos[i] = static_cast<float>(Random1() * g_spaceSize * fraction + oldNode.Position()[i] * (1.0 -fraction));
+        newPos[i] = static_cast<float>(Random1() * g_spaceSize * fraction) + oldNode.Position()[i] * (1.0 -fraction);
       newNode.SetPosition(newPos);
     }
 

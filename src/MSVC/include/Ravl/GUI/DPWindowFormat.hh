@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\DPDisplay\DPWindowFormat.hh"
+#include "../.././GUI/DPDisplay/DPWindowFormat.hh"
 

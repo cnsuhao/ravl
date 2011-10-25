@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Classify\DesignWeakLinear.hh"
+#include "../.././PatternRec/Classify/DesignWeakLinear.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\SVM\DesignSvmSmoLarge.hh"
+#include "../.././PatternRec/SVM/DesignSvmSmoLarge.hh"
 

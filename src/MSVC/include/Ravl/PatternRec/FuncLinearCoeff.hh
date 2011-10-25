@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Modeling\Basic\FuncLinearCoeff.hh"
+#include "../.././PatternRec/Modeling/Basic/FuncLinearCoeff.hh"
 

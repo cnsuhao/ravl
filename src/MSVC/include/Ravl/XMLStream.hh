@@ -1,3 +1,3 @@
 
-#include "../../.\Core\System\XMLStream.hh"
+#include "../.././Core/System/XMLStream.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\Logic\Index\BLiteralIndex.hh"
+#include "../.././Logic/Index/BLiteralIndex.hh"
 

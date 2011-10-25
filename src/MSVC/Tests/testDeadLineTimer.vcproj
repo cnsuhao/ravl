@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="testDeadLineTimer"
-	ProjectGUID="{a47e2b31-6e97-4572-830b-c8db3fe0bc86}"
+	ProjectGUID="{32572c60-9512-471f-b858-62985d76689f}"
 	RootNamespace="testDeadLineTimer"
 	Keyword="Win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\testDeadLineTimer"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\testDeadLineTimer"
 			ConfigurationType="1"
 			CharacterSet="0"
 			>
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\debug\bin\testDeadLineTimer.exe"
+				OutputFile="C:\Build\win32\debug\bin\testDeadLineTimer.exe"
 				AdditionalDependencies=" RavlCore.lib Rpcrt4.lib RavlOS.lib"
-				AdditionalLibraryDirectories=";..\build\win32\debug\lib"
+				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,8 +97,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\testDeadLineTimer"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\testDeadLineTimer"
 			ConfigurationType="1"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\opt\bin\testDeadLineTimer.exe"
+				OutputFile="C:\Build\win32\opt\bin\testDeadLineTimer.exe"
 				AdditionalDependencies=" RavlCore.lib Rpcrt4.lib RavlOS.lib"
-				AdditionalLibraryDirectories=";..\build\win32\opt\lib"
+				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

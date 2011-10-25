@@ -1,3 +1,3 @@
 
-#include "../../.\Math\Statistics\MeanCovariance\Normal.hh"
+#include "../.././Math/Statistics/MeanCovariance/Normal.hh"
 

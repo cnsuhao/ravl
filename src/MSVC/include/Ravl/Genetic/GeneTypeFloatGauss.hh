@@ -1,3 +1,3 @@
 
-#include "../../.\Math\GeneticAlgorithms\Optimisation\GeneTypeFloatGauss.hh"
+#include "../.././Math/GeneticAlgorithms/Optimisation/GeneTypeFloatGauss.hh"
 

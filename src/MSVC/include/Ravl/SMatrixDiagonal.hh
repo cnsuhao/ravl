@@ -1,3 +1,3 @@
 
-#include "../../.\Math\LinearAlgebra\General\SMatrixDiagonal.hh"
+#include "../.././Math/LinearAlgebra/General/SMatrixDiagonal.hh"
 

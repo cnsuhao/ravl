@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Modeling\DimensionReduction\DesignFuncReduce.hh"
+#include "../.././PatternRec/Modeling/DimensionReduction/DesignFuncReduce.hh"
 

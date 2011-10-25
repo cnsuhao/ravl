@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlZLib"
-	ProjectGUID="{a3edbc67-8640-4745-a4a3-ed253492e7b0}"
+	ProjectGUID="{e723a47e-97e8-43ef-9629-66121d5ee15b}"
         RootNamespace="RavlZLib"
 	Keyword="win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\RavlZLib"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\RavlZLib"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include&quot;"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlZLib\RavlZLib.pch"
-				AssemblerListingLocation="..\build\win32\debug\obj\RavlZLib\"
-				ObjectFile="..\build\win32\debug\obj\RavlZLib\"
-				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlZLib.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlZLib\RavlZLib.pch"
+				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlZLib\"
+				ObjectFile="C:\Build\win32\debug\obj\RavlZLib\"
+				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlZLib.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\debug\lib\RavlZLib.lib"
+				OutputFile="C:\Build\win32\debug\lib\RavlZLib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\debug\lib\RavlZLib.bsc"
+				OutputFile="C:\Build\win32\debug\lib\RavlZLib.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\RavlZLib"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\RavlZLib"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include;&quot;c:\WindowsSources\GTK\include&quot;"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlZLib/RavlZLib.pch"
-				AssemblerListingLocation="..\build\win32\opt\obj\RavlZLib\"
-				ObjectFile="..\build\win32\opt\obj\RavlZLib\"
-				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlZLib.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlZLib/RavlZLib.pch"
+				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlZLib\"
+				ObjectFile="C:\Build\win32\opt\obj\RavlZLib\"
+				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlZLib.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\opt\lib\RavlZLib.lib"
+				OutputFile="C:\Build\win32\opt\lib\RavlZLib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\opt\lib\RavlZLib.bsc"
+				OutputFile="C:\Build\win32\opt\lib\RavlZLib.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

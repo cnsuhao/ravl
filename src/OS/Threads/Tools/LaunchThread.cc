@@ -59,10 +59,8 @@ namespace RavlN {
     } catch(RavlN::ExceptionC &exception) {
       RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread. Text:" << exception.what() ;
       exception.Dump(RavlSysLog(SYSLOG_ERR));
-      RavlAlwaysAssert(0);
     } catch(...) {
       RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread ";
-      RavlAssert(0);
     }
     done.Post();
 #endif    

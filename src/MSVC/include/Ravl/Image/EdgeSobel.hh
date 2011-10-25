@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Edges\EdgeSobel.hh"
+#include "../.././Image/Processing/Edges/EdgeSobel.hh"
 

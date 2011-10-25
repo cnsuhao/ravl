@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\PackInfo.hh"
+#include "../.././GUI/GTK/PackInfo.hh"
 

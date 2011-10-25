@@ -1,3 +1,3 @@
 
-#include "../../.\Image\VideoIO\AviFormat.hh"
+#include "../.././Image/VideoIO/AviFormat.hh"
 

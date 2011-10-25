@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Classify\DesignOneAgainstAll.hh"
+#include "../.././PatternRec/Classify/DesignOneAgainstAll.hh"
 

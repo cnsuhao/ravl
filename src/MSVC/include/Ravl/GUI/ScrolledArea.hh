@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\ScrolledArea.hh"
+#include "../.././GUI/GTK/ScrolledArea.hh"
 

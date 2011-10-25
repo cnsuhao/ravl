@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\DPDisplay\DPWindow.hh"
+#include "../.././GUI/DPDisplay/DPWindow.hh"
 

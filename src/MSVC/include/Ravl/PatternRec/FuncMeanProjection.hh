@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Modeling\Basic\FuncMeanProjection.hh"
+#include "../.././PatternRec/Modeling/Basic/FuncMeanProjection.hh"
 

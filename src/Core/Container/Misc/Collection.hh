@@ -538,7 +538,7 @@ namespace RavlN {
   template<class DataT>
   DataT CollectionBodyC<DataT>::Pick() {
     RavlAssert(n != 0);
-    SizeT i = (SizeT)static_cast<size_t>((RealT) Random1() * n);
+    SizeT i = static_cast<SizeT>((RealT) Random1() * n);
     if(i >= n-1)
       i = n-1; // Incase of rounding errors.
     DataT ret = data[i];
