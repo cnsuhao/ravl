@@ -8,6 +8,7 @@
 #define RAVL_UUID_HEADER 1
 
 #include "Ravl/String.hh"
+#include "Ravl/UUId.hh"
 
 namespace RavlN {
   
