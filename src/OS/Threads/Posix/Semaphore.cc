@@ -17,7 +17,7 @@ namespace RavlN
 {
   
   //: Constructor.
-  // Create a semaphore with an inital count of 'initVal'.
+  // Create a semaphore with an initial count of 'initVal'.
   
   SemaphoreC::SemaphoreC(int initVal) 
     : count(initVal)
@@ -42,7 +42,7 @@ namespace RavlN
   }
   
   bool SemaphoreC::Wait(RealT maxDelay) {
-    if(maxDelay == 0)
+    if(maxDelay <= 0)
       return TryWait();
     cond.Lock();
     while(count <= 0) {

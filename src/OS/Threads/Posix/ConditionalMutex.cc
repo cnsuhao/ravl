@@ -161,7 +161,10 @@ namespace RavlN
 
   //! Wait for something to happen
   bool ConditionalMutexC::WaiterC::Wait(float maxWait) {
-    DWORD rc = WaitForSingleObject(m_sema,Round(maxWait * 1000.0));
+    DWORD wait = 0;
+    // Make sure wait is >= 0
+    if(maxWait > 0) wait = Round(maxWait * 1000.0);
+    DWORD rc = WaitForSingleObject(m_sema,wait);
     if(rc != WAIT_OBJECT_0) {
       if(rc != WAIT_TIMEOUT) {
         // Warn if something unexpected happened.
