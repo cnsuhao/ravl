@@ -348,7 +348,7 @@ namespace RavlN {
     char buff[buffsize];
     do {
       in1.read(buff,buffsize);
-      int n = in1.gcount();
+      std::streamsize n = in1.gcount();
       in2.write(buff,n);
       //RavlAssert(n == in2.gcount());
     } while(in1) ;

@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Segmentation\RegionGrowSteal.hh"
+#include "../.././Image/Processing/Segmentation/RegionGrowSteal.hh"
 

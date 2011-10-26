@@ -1,3 +1,3 @@
 
-#include "../../.\Audio\IO\TranscriptionStream.hh"
+#include "../.././Audio/IO/TranscriptionStream.hh"
 

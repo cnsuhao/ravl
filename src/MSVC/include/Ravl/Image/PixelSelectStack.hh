@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Segmentation\PixelSelectStack.hh"
+#include "../.././Image/Processing/Segmentation/PixelSelectStack.hh"
 

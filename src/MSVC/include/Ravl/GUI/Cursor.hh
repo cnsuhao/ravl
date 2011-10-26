@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\Cursor.hh"
+#include "../.././GUI/GTK/Cursor.hh"
 

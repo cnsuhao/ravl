@@ -1,3 +1,3 @@
 
-#include "../../.\OS\IO\FileSequence.hh"
+#include "../.././OS/IO/FileSequence.hh"
 

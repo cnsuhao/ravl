@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\Fixed.hh"
+#include "../.././GUI/GTK/Fixed.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\Combo.hh"
+#include "../.././GUI/GTK/Combo.hh"
 

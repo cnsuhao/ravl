@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="testClassifierOneAgainstAll"
-	ProjectGUID="{6b83007a-5ce2-4f11-9084-623ca335ead5}"
+	ProjectGUID="{66a73f62-13ea-4085-ac9c-846a43ca26d2}"
 	RootNamespace="testClassifierOneAgainstAll"
 	Keyword="Win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\testClassifierOneAgainstAll"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\testClassifierOneAgainstAll"
 			ConfigurationType="1"
 			CharacterSet="0"
 			>
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\debug\bin\testClassifierOneAgainstAll.exe"
+				OutputFile="C:\Build\win32\debug\bin\testClassifierOneAgainstAll.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlThreads.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib RavlSVM.lib RavlPatternRecIO.lib"
-				AdditionalLibraryDirectories=";..\build\win32\debug\lib"
+				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,8 +97,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\testClassifierOneAgainstAll"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\testClassifierOneAgainstAll"
 			ConfigurationType="1"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\opt\bin\testClassifierOneAgainstAll.exe"
+				OutputFile="C:\Build\win32\opt\bin\testClassifierOneAgainstAll.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlThreads.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib RavlSVM.lib RavlPatternRecIO.lib"
-				AdditionalLibraryDirectories=";..\build\win32\opt\lib"
+				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

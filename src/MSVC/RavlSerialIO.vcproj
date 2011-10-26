@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlSerialIO"
-	ProjectGUID="{57a3793a-f048-4ad5-9258-7d432f8ec433}"
+	ProjectGUID="{cde5fbbe-44a4-4254-896e-1719ebe6ba84}"
         RootNamespace="RavlSerialIO"
 	Keyword="win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\RavlSerialIO"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\RavlSerialIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlSerialIO\RavlSerialIO.pch"
-				AssemblerListingLocation="..\build\win32\debug\obj\RavlSerialIO\"
-				ObjectFile="..\build\win32\debug\obj\RavlSerialIO\"
-				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlSerialIO.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlSerialIO\RavlSerialIO.pch"
+				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlSerialIO\"
+				ObjectFile="C:\Build\win32\debug\obj\RavlSerialIO\"
+				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlSerialIO.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\debug\lib\RavlSerialIO.lib"
+				OutputFile="C:\Build\win32\debug\lib\RavlSerialIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\debug\lib\RavlSerialIO.bsc"
+				OutputFile="C:\Build\win32\debug\lib\RavlSerialIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\RavlSerialIO"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\RavlSerialIO"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlSerialIO/RavlSerialIO.pch"
-				AssemblerListingLocation="..\build\win32\opt\obj\RavlSerialIO\"
-				ObjectFile="..\build\win32\opt\obj\RavlSerialIO\"
-				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlSerialIO.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlSerialIO/RavlSerialIO.pch"
+				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlSerialIO\"
+				ObjectFile="C:\Build\win32\opt\obj\RavlSerialIO\"
+				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlSerialIO.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\opt\lib\RavlSerialIO.lib"
+				OutputFile="C:\Build\win32\opt\lib\RavlSerialIO.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\opt\lib\RavlSerialIO.bsc"
+				OutputFile="C:\Build\win32\opt\lib\RavlSerialIO.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

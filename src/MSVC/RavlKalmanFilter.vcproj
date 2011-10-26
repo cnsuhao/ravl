@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="RavlKalmanFilter"
-	ProjectGUID="{9b4d6ae7-d14a-45b4-b03e-85716ac60f08}"
+	ProjectGUID="{0d3733f7-d2a0-42db-889d-b221da1c3c97}"
         RootNamespace="RavlKalmanFilter"
 	Keyword="win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\RavlKalmanFilter"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\RavlKalmanFilter"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -45,15 +45,15 @@
                         AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="_DEBUG;VISUAL_CPP;_LIB;WIN32;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\debug\obj\RavlKalmanFilter\RavlKalmanFilter.pch"
-				AssemblerListingLocation="..\build\win32\debug\obj\RavlKalmanFilter\"
-				ObjectFile="..\build\win32\debug\obj\RavlKalmanFilter\"
-				ProgramDataBaseFileName="..\build\win32\debug\lib\RavlKalmanFilter.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\debug\obj\RavlKalmanFilter\RavlKalmanFilter.pch"
+				AssemblerListingLocation="C:\Build\win32\debug\obj\RavlKalmanFilter\"
+				ObjectFile="C:\Build\win32\debug\obj\RavlKalmanFilter\"
+				ProgramDataBaseFileName="C:\Build\win32\debug\lib\RavlKalmanFilter.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\debug\lib\RavlKalmanFilter.lib"
+				OutputFile="C:\Build\win32\debug\lib\RavlKalmanFilter.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -85,7 +85,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\debug\lib\RavlKalmanFilter.bsc"
+				OutputFile="C:\Build\win32\debug\lib\RavlKalmanFilter.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\RavlKalmanFilter"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\RavlKalmanFilter"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -122,15 +122,15 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="include\Win32;include"
-				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="NDEBUG;_LIB;VISUAL_CPP;WIN32;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile="..\build\win32\opt\obj\RavlKalmanFilter/RavlKalmanFilter.pch"
-				AssemblerListingLocation="..\build\win32\opt\obj\RavlKalmanFilter\"
-				ObjectFile="..\build\win32\opt\obj\RavlKalmanFilter\"
-				ProgramDataBaseFileName="..\build\win32\opt\lib\RavlKalmanFilter.pdb"
+				PrecompiledHeaderFile="C:\Build\win32\opt\obj\RavlKalmanFilter/RavlKalmanFilter.pch"
+				AssemblerListingLocation="C:\Build\win32\opt\obj\RavlKalmanFilter\"
+				ObjectFile="C:\Build\win32\opt\obj\RavlKalmanFilter\"
+				ProgramDataBaseFileName="C:\Build\win32\opt\lib\RavlKalmanFilter.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				SuppressStartupBanner="true"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\build\win32\opt\lib\RavlKalmanFilter.lib"
+				OutputFile="C:\Build\win32\opt\lib\RavlKalmanFilter.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="..\build\win32\opt\lib\RavlKalmanFilter.bsc"
+				OutputFile="C:\Build\win32\opt\lib\RavlKalmanFilter.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

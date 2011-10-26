@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Classify\DesignClassifierNeuralNetwork.hh"
+#include "../.././PatternRec/Classify/DesignClassifierNeuralNetwork.hh"
 

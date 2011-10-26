@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Base\BGRValue.hh"
+#include "../.././Image/Base/BGRValue.hh"
 

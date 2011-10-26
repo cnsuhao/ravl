@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\fann\floatfann.h"
+#include "../.././PatternRec/fann/floatfann.h"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\SVM\OneClassLinear.hh"
+#include "../.././PatternRec/SVM/OneClassLinear.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\SVM\SvmClassifier.hh"
+#include "../.././PatternRec/SVM/SvmClassifier.hh"
 

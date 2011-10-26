@@ -1,3 +1,3 @@
 
-#include "../../.\OS\Text\TextFile.hh"
+#include "../.././OS/Text/TextFile.hh"
 

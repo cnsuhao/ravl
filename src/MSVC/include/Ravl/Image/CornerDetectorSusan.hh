@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Corners\CornerDetectorSusan.hh"
+#include "../.././Image/Processing/Corners/CornerDetectorSusan.hh"
 

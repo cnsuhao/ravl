@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\Paned.hh"
+#include "../.././GUI/GTK/Paned.hh"
 

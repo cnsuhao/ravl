@@ -1,3 +1,3 @@
 
-#include "../../.\Math\LinearAlgebra\General\TSMatrixPartial.hh"
+#include "../.././Math/LinearAlgebra/General/TSMatrixPartial.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\Math\Sequence\PrimitiveBinaryPolynomial.hh"
+#include "../.././Math/Sequence/PrimitiveBinaryPolynomial.hh"
 

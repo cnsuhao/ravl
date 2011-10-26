@@ -91,9 +91,9 @@ namespace RavlN { namespace GeneticN {
     RavlAssert(gcs != 0);
     TFVectorC<float,2> newPos;
     for(unsigned i = 0;i < 2;i++)
-      newPos[i] = Random1() * g_spaceSize;
+      newPos[i] = static_cast<float>(Random1() * g_spaceSize);
     gcs->SetPosition(newPos);
-    gcs->SetStrength(Random1() * g_maxStrength);
+    gcs->SetStrength(static_cast<float>(Random1() * g_maxStrength));
   }
 
   //! Mutate a gene
@@ -116,7 +116,7 @@ namespace RavlN { namespace GeneticN {
     const GeneClassShareC &oldNode = dynamic_cast<const GeneClassShareC &>(original);
     if(fraction < 0.3) {
       // Wander
-      float delta = (Random1() - 0.5) * g_maxStrength * fraction;
+      float delta = static_cast<float>(Random1() - 0.5) * g_maxStrength * fraction;
       float strength = oldNode.Strength() + delta;
       if(strength < 0 || strength > g_maxStrength)
         strength = oldNode.Strength() - delta;
@@ -126,7 +126,7 @@ namespace RavlN { namespace GeneticN {
 
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++) {
-        float delta = (Random1() - 0.5) * g_spaceSize * fraction;
+        float delta = static_cast<float>(Random1() - 0.5) * g_spaceSize * fraction;
         newPos[i] = oldNode.Position()[i] + delta;
         if(newPos[i] < 0 || newPos[i] > g_spaceSize)
           newPos[i] = oldNode.Position()[i] - delta;
@@ -138,10 +138,10 @@ namespace RavlN { namespace GeneticN {
       newNode.SetPosition(newPos);
     } else {
       // Blend with random
-      newNode.SetStrength(Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction));
+      newNode.SetStrength(static_cast<float>(Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++)
-        newPos[i] = Random1() * g_spaceSize * fraction + oldNode.Position()[i] * (1.0 -fraction);
+        newPos[i] = static_cast<float>(Random1() * g_spaceSize * fraction) + oldNode.Position()[i] * (1.0 -fraction);
       newNode.SetPosition(newPos);
     }
 
@@ -213,7 +213,7 @@ namespace RavlN { namespace GeneticN {
   //! Factory constructor
   GeneClassShareC::GeneClassShareC(const XMLFactoryContextC &factory)
    : GeneClassC(factory),
-     m_strength(factory.AttributeReal("strength",20.0))
+     m_strength(static_cast<float>(factory.AttributeReal("strength",20.0)))
   {
     RavlN::TFVectorC<float,2>  defaultValue;
     defaultValue[0] = 50.0;

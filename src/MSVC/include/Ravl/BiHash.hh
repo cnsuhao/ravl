@@ -1,3 +1,3 @@
 
-#include "../../.\Core\Container\Hash\BiHash.hh"
+#include "../.././Core/Container/Hash/BiHash.hh"
 

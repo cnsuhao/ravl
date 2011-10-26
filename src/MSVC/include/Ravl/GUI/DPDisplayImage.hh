@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\DPDisplay\DPDisplayImage.hh"
+#include "../.././GUI/DPDisplay/DPDisplayImage.hh"
 

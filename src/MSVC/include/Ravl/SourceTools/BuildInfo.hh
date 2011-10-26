@@ -1,3 +1,3 @@
 
-#include "../../.\SourceTools\CodeManager\BuildInfo.hh"
+#include "../.././SourceTools/CodeManager/BuildInfo.hh"
 

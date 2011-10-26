@@ -1,3 +1,3 @@
 
-#include "../../.\Logic\Index\LiteralIndexBase.hh"
+#include "../.././Logic/Index/LiteralIndexBase.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\Math\LinearAlgebra\General\SMatrixSymmetric.hh"
+#include "../.././Math/LinearAlgebra/General/SMatrixSymmetric.hh"
 

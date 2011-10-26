@@ -1,3 +1,3 @@
 
-#include "../../.\Logic\DecisionTree\Discriminator.hh"
+#include "../.././Logic/DecisionTree/Discriminator.hh"
 

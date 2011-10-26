@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\SpinButton.hh"
+#include "../.././GUI/GTK/SpinButton.hh"
 

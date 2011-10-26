@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\DataSet\SampleStreamVectorFloat.hh"
+#include "../.././PatternRec/DataSet/SampleStreamVectorFloat.hh"
 

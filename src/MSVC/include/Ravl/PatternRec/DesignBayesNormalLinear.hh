@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Classify\DesignBayesNormalLinear.hh"
+#include "../.././PatternRec/Classify/DesignBayesNormalLinear.hh"
 

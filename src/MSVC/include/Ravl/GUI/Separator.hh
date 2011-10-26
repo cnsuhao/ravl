@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\Separator.hh"
+#include "../.././GUI/GTK/Separator.hh"
 

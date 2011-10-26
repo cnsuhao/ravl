@@ -1,3 +1,3 @@
 
-#include "../../.\3D\Mesh\TriMesh.hh"
+#include "../.././3D/Mesh/TriMesh.hh"
 

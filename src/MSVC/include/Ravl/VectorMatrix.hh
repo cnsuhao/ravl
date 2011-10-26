@@ -1,3 +1,3 @@
 
-#include "../../.\Math\LinearAlgebra\General\VectorMatrix.hh"
+#include "../.././Math/LinearAlgebra/General/VectorMatrix.hh"
 

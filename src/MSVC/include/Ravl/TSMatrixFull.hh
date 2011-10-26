@@ -1,3 +1,3 @@
 
-#include "../../.\Math\LinearAlgebra\General\TSMatrixFull.hh"
+#include "../.././Math/LinearAlgebra/General/TSMatrixFull.hh"
 

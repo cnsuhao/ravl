@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Edges\EdgeDetector.hh"
+#include "../.././Image/Processing/Edges/EdgeDetector.hh"
 

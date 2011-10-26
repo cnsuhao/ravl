@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\DataSet\SampleReal.hh"
+#include "../.././PatternRec/DataSet/SampleReal.hh"
 

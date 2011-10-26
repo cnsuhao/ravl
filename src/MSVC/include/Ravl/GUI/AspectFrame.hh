@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\AspectFrame.hh"
+#include "../.././GUI/GTK/AspectFrame.hh"
 

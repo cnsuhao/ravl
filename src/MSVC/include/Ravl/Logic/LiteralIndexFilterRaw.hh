@@ -1,3 +1,3 @@
 
-#include "../../.\Logic\Index\LiteralIndexFilterRaw.hh"
+#include "../.././Logic/Index/LiteralIndexFilterRaw.hh"
 

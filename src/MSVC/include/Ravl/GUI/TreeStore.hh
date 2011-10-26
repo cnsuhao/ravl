@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\TreeStore.hh"
+#include "../.././GUI/GTK/TreeStore.hh"
 

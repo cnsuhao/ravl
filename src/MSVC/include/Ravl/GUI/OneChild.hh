@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\OneChild.hh"
+#include "../.././GUI/GTK/OneChild.hh"
 

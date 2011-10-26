@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\VLabel.hh"
+#include "../.././GUI/GTK/VLabel.hh"
 

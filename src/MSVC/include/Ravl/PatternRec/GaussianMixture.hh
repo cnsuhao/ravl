@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Modeling\GaussianMixture\GaussianMixture.hh"
+#include "../.././PatternRec/Modeling/GaussianMixture/GaussianMixture.hh"
 

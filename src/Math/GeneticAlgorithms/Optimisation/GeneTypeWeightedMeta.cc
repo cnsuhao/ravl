@@ -98,7 +98,7 @@ namespace RavlN { namespace GeneticN {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
-     float choice = RavlN::Random1() * m_totalWeights;
+     float choice = static_cast<float>(RavlN::Random1() * m_totalWeights);
      //RavlSysLogf(SYSLOG_DEBUG," %f from %f ",choice,m_totalWeights);
      std::map<float,GeneTypeC::ConstRefT>::const_iterator iter = m_typeMap.upper_bound(choice);
      iter--;

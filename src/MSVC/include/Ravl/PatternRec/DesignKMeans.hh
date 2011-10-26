@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Cluster\DesignKMeans.hh"
+#include "../.././PatternRec/Cluster/DesignKMeans.hh"
 

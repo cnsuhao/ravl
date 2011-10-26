@@ -1,3 +1,3 @@
 
-#include "../../.\Core\IO\SampleStream.hh"
+#include "../.././Core/IO/SampleStream.hh"
 

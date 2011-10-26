@@ -91,7 +91,7 @@ namespace RavlN { namespace GeneticN {
     }
     const GeneIntC &originalInt = dynamic_cast<const GeneIntC &>(original);
 
-    float value = RavlN::Random1() * static_cast<float>(m_max - m_min) + static_cast<float>(m_min);
+    float value = static_cast<float>(RavlN::Random1() * (m_max - m_min)) + static_cast<float>(m_min);
     IntT newValue = Floor(fraction * static_cast<float>(originalInt.Value()) + (1.0 - fraction) * value);
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
@@ -179,8 +179,8 @@ namespace RavlN { namespace GeneticN {
   //! Factory constructor
   GeneTypeFloatC::GeneTypeFloatC(const XMLFactoryContextC &factory)
    : GeneTypeC(factory),
-     m_min(factory.AttributeReal("min",0)),
-     m_max(factory.AttributeReal("max",100))
+     m_min(static_cast<float>(factory.AttributeReal("min",0.0))),
+     m_max(static_cast<float>(factory.AttributeReal("max",100.0)))
   {}
 
   //! Constructor
@@ -226,7 +226,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Generate a new value
   void GeneTypeFloatC::RandomValue(float &newValue) const {
-    newValue = RavlN::Random1() * static_cast<float>(m_max - m_min) + static_cast<float>(m_min);
+    newValue = static_cast<float>(RavlN::Random1() * (m_max - m_min)) + static_cast<float>(m_min);
     if(newValue < m_min)
        newValue = m_min;
      if(newValue > m_max)
@@ -251,7 +251,7 @@ namespace RavlN { namespace GeneticN {
     const GeneFloatC &originalFloat = dynamic_cast<const GeneFloatC &>(original);
     float value;
     RandomValue(value);
-    float newValue = fraction * static_cast<float>(originalFloat.Value()) + (1.0 - fraction) * value;
+    float newValue = fraction * static_cast<float>(originalFloat.Value()) + (1.0f - fraction) * value;
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
       newValue = m_min;
@@ -278,7 +278,7 @@ namespace RavlN { namespace GeneticN {
   //! Factory constructor
   GeneFloatC::GeneFloatC(const XMLFactoryContextC &factory)
    : GeneC(factory),
-     m_value(factory.AttributeReal("value",0))
+     m_value(static_cast<float>(factory.AttributeReal("value",0.0)))
   {
     RavlAssertMsg(dynamic_cast<GeneTypeFloatC *>(m_type.BodyPtr()) != 0,"Wrong type");
   }

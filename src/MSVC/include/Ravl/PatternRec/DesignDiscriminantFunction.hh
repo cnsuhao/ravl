@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Classify\DesignDiscriminantFunction.hh"
+#include "../.././PatternRec/Classify/DesignDiscriminantFunction.hh"
 

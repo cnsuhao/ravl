@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\Util\AttributeEditor.hh"
+#include "../.././GUI/Util/AttributeEditor.hh"
 

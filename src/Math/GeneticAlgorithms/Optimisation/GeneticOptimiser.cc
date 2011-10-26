@@ -25,15 +25,15 @@ namespace RavlN { namespace GeneticN {
 
 
   GeneticOptimiserC::GeneticOptimiserC(const XMLFactoryContextC &factory)
-   : m_mutationRate(factory.AttributeReal("mutationRate",0.1)),
-     m_crossRate(factory.AttributeReal("crossRate",0.2)),
-     m_keepFraction(factory.AttributeReal("keepFraction",0.3)),
-     m_randomFraction(factory.AttributeReal("randomFraction",0.01)),
+   : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.1))),
+     m_crossRate(static_cast<float>(factory.AttributeReal("crossRate",0.2))),
+     m_keepFraction(static_cast<float>(factory.AttributeReal("keepFraction",0.3))),
+     m_randomFraction(static_cast<float>(factory.AttributeReal("randomFraction",0.01))),
      m_populationSize(factory.AttributeUInt("populationSize",10)),
      m_numGenerations(factory.AttributeUInt("numGenerations",10)),
-     m_runLengthVirtual(factory.AttributeReal("runLengthVirtual",10)),
-     m_runLengthCPU(factory.AttributeReal("runLengthCPU",10)),
-     m_terminateScore(factory.AttributeReal("teminateScore",-1)),
+     m_runLengthVirtual(static_cast<float>(factory.AttributeReal("runLengthVirtual",10.0))),
+     m_runLengthCPU(static_cast<float>(factory.AttributeReal("runLengthCPU",10.0))),
+     m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1))
   {
@@ -103,7 +103,7 @@ namespace RavlN { namespace GeneticN {
       m_population.erase(m_population.begin(),it.base());
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Got %zu seeds. Pop:%zu Best score=%f Age:%u Generation:%u @ %p ",seeds.size(),m_population.size(),m_population.rbegin()->first,m_population.rbegin()->second->Age(),m_population.rbegin()->second->Generation(),m_population.rbegin()->second.BodyPtr());
+    RavlSysLogf(SYSLOG_DEBUG,"Got %u seeds. Pop:%u Best score=%f Age:%u Generation:%u ",(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
     std::vector<GenomeC::RefT> newTestSet;
     newTestSet.reserve(m_populationSize);
@@ -128,7 +128,7 @@ namespace RavlN { namespace GeneticN {
       }
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Completing the population with mutation. %zu (Random fraction %f) ", (size_t) (m_populationSize - i),m_randomFraction);
+    RavlSysLogf(SYSLOG_DEBUG,"Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
     for(;i < m_populationSize;i++) {
       unsigned i1 = RandomInt() % seeds.size();
       GenomeC::RefT newGenome;
@@ -210,7 +210,7 @@ namespace RavlN { namespace GeneticN {
     }
     size_t size = genome.Size();
     //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); //Floor(size / 10) * 0.01;
-    float sizeDiscount = Floor(size / 15) * 0.001;
+    float sizeDiscount = (size / 15) * 0.001f; //(AK) note integer division
     //float sizeDiscount = size / 1000.0;
     score -= sizeDiscount;
     return true;

@@ -1,3 +1,3 @@
 
-#include "../../.\Core\IO\FileFormatRegistry.hh"
+#include "../.././Core/IO/FileFormatRegistry.hh"
 

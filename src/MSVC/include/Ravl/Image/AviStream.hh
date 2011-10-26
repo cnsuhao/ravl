@@ -1,3 +1,3 @@
 
-#include "../../.\Image\VideoIO\AviStream.hh"
+#include "../.././Image/VideoIO/AviStream.hh"
 

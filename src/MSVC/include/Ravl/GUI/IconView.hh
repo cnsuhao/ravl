@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\IconView.hh"
+#include "../.././GUI/GTK/IconView.hh"
 

@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\SVM\DesignOneClass.hh"
+#include "../.././PatternRec/SVM/DesignOneClass.hh"
 

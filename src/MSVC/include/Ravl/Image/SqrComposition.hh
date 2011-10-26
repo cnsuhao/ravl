@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Edges\SqrComposition.hh"
+#include "../.././Image/Processing/Edges/SqrComposition.hh"
 

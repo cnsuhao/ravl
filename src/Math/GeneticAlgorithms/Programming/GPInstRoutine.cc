@@ -62,7 +62,7 @@ namespace RavlN { namespace GeneticN {
   //! Create the type
   static GeneTypeC::RefT CreateType() {
     GeneTypeC::RefT x = new GeneTypeClassShareC(typeid(GPInstRoutineC::RefT));
-    x->SetDefaultWeight(1.6);
+    x->SetDefaultWeight(1.6f);
     return x;
   }
 

@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\RawCanvas.hh"
+#include "../.././GUI/GTK/RawCanvas.hh"
 

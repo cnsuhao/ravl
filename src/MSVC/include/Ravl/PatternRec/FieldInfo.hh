@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\DataSet\FieldInfo.hh"
+#include "../.././PatternRec/DataSet/FieldInfo.hh"
 

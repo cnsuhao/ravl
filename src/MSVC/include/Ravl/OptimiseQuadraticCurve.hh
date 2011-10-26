@@ -1,3 +1,3 @@
 
-#include "../../.\Math\Optimisation\OptimiseQuadraticCurve.hh"
+#include "../.././Math/Optimisation/OptimiseQuadraticCurve.hh"
 

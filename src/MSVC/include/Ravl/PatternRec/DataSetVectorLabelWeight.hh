@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\DataSet\DataSetVectorLabelWeight.hh"
+#include "../.././PatternRec/DataSet/DataSetVectorLabelWeight.hh"
 

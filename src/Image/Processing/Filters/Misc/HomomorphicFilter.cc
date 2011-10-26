@@ -104,7 +104,7 @@ namespace RavlImageN {
     SArray2dC<ComplexC> result = filterSet.Data2().Apply(fdom);
     ImageC<float> retf(img.Frame());
     for(Array2dIter2C<ComplexC,float> rit(result,retf);rit;rit++)
-      rit.Data2() = static_cast<float>(Exp(rit.Data1().Mag()) - 1.);
+      rit.Data2() = Exp(rit.Data1().Mag()) - 1;
     return retf;
   }
 

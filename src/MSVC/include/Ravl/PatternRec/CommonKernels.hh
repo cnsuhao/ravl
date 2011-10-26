@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\SVM\CommonKernels.hh"
+#include "../.././PatternRec/SVM/CommonKernels.hh"
 

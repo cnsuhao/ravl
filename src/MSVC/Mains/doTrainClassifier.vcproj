@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="doTrainClassifier"
-	ProjectGUID="{e3962716-bc7b-4dee-8079-c13efe7fcc71}"
+	ProjectGUID="{ee828759-77fe-4e9b-96a3-ab7b4270646f}"
 	RootNamespace="doTrainClassifier"
 	Keyword="Win32Proj"
 	>
@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\build\win32\debug\lib"
-			IntermediateDirectory="..\build\win32\debug\obj\doTrainClassifier"
+			OutputDirectory="C:\Build\win32\debug\lib"
+			IntermediateDirectory="C:\Build\win32\debug\obj\doTrainClassifier"
 			ConfigurationType="1"
 			CharacterSet="0"
 			>
@@ -41,8 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;..\\build\&quot;"
-				MinimalRebuild="false"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;RAVL_USE_GTK2=1;RAVL_CHECK=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\debug\bin\doTrainClassifier.exe"
+				OutputFile="C:\Build\win32\debug\bin\doTrainClassifier.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlThreads.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib RavlSVM.lib RavlPatternRecIO.lib"
-				AdditionalLibraryDirectories=";..\build\win32\debug\lib"
+				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				IgnoreDefaultLibraryNames="msvcrt"
@@ -97,8 +97,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\build\win32\opt\lib"
-			IntermediateDirectory="..\build\win32\opt\obj\doTrainClassifier"
+			OutputDirectory="C:\Build\win32\opt\lib"
+			IntermediateDirectory="C:\Build\win32\opt\obj\doTrainClassifier"
 			ConfigurationType="1"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;..\\build\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RAVL_USE_GTK2=1;PROJECT_OUT=\&quot;C:\\Build\&quot;"
 				AdditionalIncludeDirectories="..\include\Win32;..\include"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\build\win32\opt\bin\doTrainClassifier.exe"
+				OutputFile="C:\Build\win32\opt\bin\doTrainClassifier.exe"
 				AdditionalDependencies=" RavlCore.lib ccmath.lib RavlMath.lib Rpcrt4.lib RavlOS.lib RavlIO.lib RavlOSIO.lib fann.lib RavlThreads.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib RavlSVM.lib RavlPatternRecIO.lib"
-				AdditionalLibraryDirectories=";..\build\win32\opt\lib"
+				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

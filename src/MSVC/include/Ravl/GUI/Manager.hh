@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\Manager.hh"
+#include "../.././GUI/GTK/Manager.hh"
 

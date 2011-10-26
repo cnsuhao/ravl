@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Segmentation\BlueScreen.hh"
+#include "../.././Image/Processing/Segmentation/BlueScreen.hh"
 

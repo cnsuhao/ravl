@@ -1,3 +1,3 @@
 
-#include "../../.\GUI\GTK\MenuCheck.hh"
+#include "../.././GUI/GTK/MenuCheck.hh"
 

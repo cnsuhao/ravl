@@ -1,3 +1,3 @@
 
-#include "../../.\OS\IO\SubSequenceSpec.hh"
+#include "../.././OS/IO/SubSequenceSpec.hh"
 

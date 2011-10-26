@@ -1,3 +1,3 @@
 
-#include "../../.\Image\Processing\Segmentation\PixelClassifyColour.hh"
+#include "../.././Image/Processing/Segmentation/PixelClassifyColour.hh"
 

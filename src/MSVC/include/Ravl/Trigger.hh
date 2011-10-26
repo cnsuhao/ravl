@@ -1,3 +1,3 @@
 
-#include "../../.\Core\Base\Trigger.hh"
+#include "../.././Core/Base/Trigger.hh"
 

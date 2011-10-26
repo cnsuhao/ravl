@@ -37,7 +37,7 @@ namespace RavlN { namespace GeneticN {
   //! Factory constructor
   GeneTypeC::GeneTypeC(const XMLFactoryContextC &factory)
    : m_name(factory.AttributeString("name",factory.Path().data()).data()),
-     m_defaultWeight(factory.AttributeReal("weight",1.0))
+     m_defaultWeight(static_cast<float>(factory.AttributeReal("weight",1.0)))
   {}
 
   //! Constructor

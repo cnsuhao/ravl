@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Optimise\OptimiseGrid.hh"
+#include "../.././PatternRec/Optimise/OptimiseGrid.hh"
 

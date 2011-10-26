@@ -1,3 +1,3 @@
 
-#include "../../.\Math\Sequence\PermutationIter.hh"
+#include "../.././Math/Sequence/PermutationIter.hh"
 

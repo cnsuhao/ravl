@@ -1,3 +1,3 @@
 
-#include "../../.\PatternRec\Distance\DistanceMahalanobis.hh"
+#include "../.././PatternRec/Distance/DistanceMahalanobis.hh"
 
