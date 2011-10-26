@@ -130,9 +130,12 @@ namespace RavlN
   ConditionalMutexC::WaiterC::WaiterC()
   {
 #if RAVL_HAVE_WIN32_THREADS
-    m_sema = CreateSemaphore(0,0,0x7fffffff,0);
+    m_sema = CreateSemaphore(0,0,1,0);
+    if(m_sema == 0) {
+      std::cerr << "Failed to create semaphore. \n";
+      RavlAlwaysAssert(0); // This is really bad, stop things now.
+    }
 #endif
-
   }
 
   //! Destructor
@@ -147,7 +150,13 @@ namespace RavlN
 
   void ConditionalMutexC::WaiterC::Wake()
   {
-    ReleaseSemaphore(m_sema,1,0);
+    LONG count = 0;
+    if(ReleaseSemaphore(m_sema,1,&count) == 0) {
+      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. \n";
+    }
+    if(count != 0) {
+      std::cerr << "ConditionalMutexC::Wake, Warning: Waiter already signalled, something strange is going on. \n";
+    }
   }
 
   //! Wait for something to happen
@@ -156,7 +165,7 @@ namespace RavlN
     if(rc != WAIT_OBJECT_0) {
       if(rc != WAIT_TIMEOUT) {
         // Warn if something unexpected happened.
-        cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
+        std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
       }
     }
     return (rc == WAIT_OBJECT_0);
@@ -168,14 +177,13 @@ namespace RavlN
   {
     DWORD rc = WaitForSingleObject(m_sema,INFINITE);
     if(rc != WAIT_OBJECT_0) {
-      if(rc != WAIT_TIMEOUT) {
-        // Warn if something unexpected happened.
-        cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
-      }
+      // Warn if something unexpected happened.
+      std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
     }
     return (rc == WAIT_OBJECT_0);
   }
 
+  // -----------------------------------------------------------------------------------
 
   ConditionalMutexC::ConditionalMutexC()
   {}
@@ -194,7 +202,7 @@ namespace RavlN
       //FIXME: Ideally m_free would be a per thread global list.
       waiter = &m_free.PopFirst();
       // Get rid of any excess counts.
-      while(waiter->Wait(0)) ;
+      waiter->Wait(0);
     } else {
       waiter = new WaiterC();
     }
