@@ -43,7 +43,7 @@ endif
 
 # Builds
 
-default: qmake fullsrc opt optshared optbin singleopt singleoptshared singleoptbin singleoptsharedbin pkgconf
+default: qmake fullsrc opt optshared optbin singleoptshared singleoptsharedbin pkgconf
 #JFi:To Do- make doc (and support from configure i.e. locate tools)
 
 check: testopt testsingleopt testsingleoptshared 
