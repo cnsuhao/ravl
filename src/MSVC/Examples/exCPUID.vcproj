@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\exCPUID"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\debug\bin\exCPUID.exe"
-				AdditionalDependencies=" RavlCore.lib"
+				AdditionalDependencies=" RavlCore.lib RavlI386SSE.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -100,7 +100,7 @@
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\exCPUID"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\opt\bin\exCPUID.exe"
-				AdditionalDependencies=" RavlCore.lib"
+				AdditionalDependencies=" RavlCore.lib RavlI386SSE.lib"
 				AdditionalLibraryDirectories=";C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"

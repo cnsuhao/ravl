@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?RAVL class='RavlN::XMLTreeC' ?>
+<Config verbose="false" checkConfig="true" >
+  <Optimiser typename="RavlN::GeneticN::GeneticOptimiserC"  mutationRate="0.1" keepFraction="0.7" populationSize="20000" numGenerations="10" createOnly="False" threads="4" teminateScore="95" >
+    <StartPopulation>
+      <Seed typename="RavlN::GeneticN::GenomeC">
+        <Gene typename="RavlN::GeneticN::GeneClassC">
+          <Type typename = "RavlN::GeneticN::GeneTypeClassC" className="RavlN::Point2dC" />
+        </Gene>
+      </Seed>
+    </StartPopulation>
+  </Optimiser>
+</Config>

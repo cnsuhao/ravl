@@ -64,7 +64,7 @@ namespace RavlN
   bool ThreadEventC::Wait(RealT maxTime) {
     if(occurred) // Check before we bother with locking.
       return true;
-    bool ret(true);
+    bool ret = true;
     cond.Lock();
     m_waiting++;
     DateC deadline = DateC::NowUTC() + maxTime;

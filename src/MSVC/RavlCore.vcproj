@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlCore"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -99,7 +99,7 @@
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlCore"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -345,7 +345,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\.\Core\I386SSE\VectorUtilsI386SSE.cc"
+				RelativePath="..\.\Core\Base\ExceptionTimeOut.cc"
 				>
 			</File>
 			<File
@@ -827,6 +827,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\Core\Base\ExceptionTimeOut.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\Core\Container\Buffer\Buffer.hh"
 				>
 			</File>
@@ -1191,6 +1195,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\Core\Container\Misc\Collection.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\Container\Misc\CollectionIter.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\Core\Container\Queue\PriQueue.hh"
 				>
 			</File>
@@ -1488,14 +1500,6 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\System\XMLTree.hh"
-				>
-			</File>
-			<File
-				RelativePath="..\.\Core\System\Collection.hh"
-				>
-			</File>
-			<File
-				RelativePath="..\.\Core\System\CollectionIter.hh"
 				>
 			</File>
 			<File

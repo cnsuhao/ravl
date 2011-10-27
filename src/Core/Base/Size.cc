@@ -31,7 +31,7 @@ namespace RavlN {
           throw ExceptionOutOfRangeC("Attempted to load object too large for this machine. ");
         }
       }
-      size = value;
+      size = static_cast<size_t>(value);
     }
     return strm;
   }

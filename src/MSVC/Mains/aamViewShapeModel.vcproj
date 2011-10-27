@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\aamViewShapeModel"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\debug\bin\aamViewShapeModel.exe"
-				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib fann.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib Optimisation.lib atk-1.0.lib cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib gdk_pixbuf-2.0.lib gdk-win32-2.0.lib gio-2.0.lib glib-2.0.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib intl.lib libpng.lib pango-1.0.lib pangocairo-1.0.lib pangoft2-1.0.lib pangowin32-1.0.lib zdll.lib RavlGUI.lib RavlGUI2D.lib RavlAAM.lib RavlImageIO.lib jpeg.lib libpng.lib zdll.lib libtiff.lib RavlExtImgIO.lib RavlDPDisplay.lib RavlImgIOV4L2.lib"
+				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib fann.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib Optimisation.lib RavlAAM.lib atk-1.0.lib cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib gdk_pixbuf-2.0.lib gdk-win32-2.0.lib gio-2.0.lib glib-2.0.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib intl.lib libpng.lib pango-1.0.lib pangocairo-1.0.lib pangoft2-1.0.lib pangowin32-1.0.lib zdll.lib RavlGUI.lib RavlGUI2D.lib RavlAAMGUI.lib RavlImageIO.lib jpeg.lib libpng.lib zdll.lib libtiff.lib RavlExtImgIO.lib RavlDPDisplay.lib RavlImgIOV4L2.lib"
 				AdditionalLibraryDirectories="c:\WindowsSources\GTK\lib\;c:\WindowsSources\jpeg-6b-4\lib;c:\WindowsSources\GTK\lib;c:\WindowsSources\tiff-3.8.2-1\lib;C:\Build\win32\debug\lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -100,7 +100,7 @@
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\aamViewShapeModel"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="C:\Build\win32\opt\bin\aamViewShapeModel.exe"
-				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib fann.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib Optimisation.lib atk-1.0.lib cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib gdk_pixbuf-2.0.lib gdk-win32-2.0.lib gio-2.0.lib glib-2.0.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib intl.lib libpng.lib pango-1.0.lib pangocairo-1.0.lib pangoft2-1.0.lib pangowin32-1.0.lib zdll.lib RavlGUI.lib RavlGUI2D.lib RavlAAM.lib RavlImageIO.lib jpeg.lib libpng.lib zdll.lib libtiff.lib RavlExtImgIO.lib RavlDPDisplay.lib RavlImgIOV4L2.lib"
+				AdditionalDependencies=" RavlCore.lib RavlIO.lib ccmath.lib RavlMath.lib RavlImage.lib Rpcrt4.lib RavlOS.lib RavlThreads.lib RavlOSIO.lib RavlOptimise.lib RavlImageProc.lib fann.lib RavlXMLFactory.lib RavlMathIO.lib RavlPatternRec.lib Optimisation.lib RavlAAM.lib atk-1.0.lib cairo.lib expat.lib fontconfig.lib freetype.lib gailutil.lib gdk_pixbuf-2.0.lib gdk-win32-2.0.lib gio-2.0.lib glib-2.0.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib intl.lib libpng.lib pango-1.0.lib pangocairo-1.0.lib pangoft2-1.0.lib pangowin32-1.0.lib zdll.lib RavlGUI.lib RavlGUI2D.lib RavlAAMGUI.lib RavlImageIO.lib jpeg.lib libpng.lib zdll.lib libtiff.lib RavlExtImgIO.lib RavlDPDisplay.lib RavlImgIOV4L2.lib"
 				AdditionalLibraryDirectories="c:\WindowsSources\GTK\lib\;c:\WindowsSources\jpeg-6b-4\lib;c:\WindowsSources\GTK\lib;c:\WindowsSources\tiff-3.8.2-1\lib;C:\Build\win32\opt\lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -183,7 +183,7 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			>
 			<File
-				RelativePath="..\..\.\CompVision\ActiveAppearanceModels\aamViewShapeModel.cc"
+				RelativePath="..\..\.\CompVision\ActiveAppearanceModelsGUI\aamViewShapeModel.cc"
 				>
 			</File>
 			<File
@@ -203,11 +203,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\.\GUI\GTK\LinkRavlGUI.cc"
+				RelativePath="..\..\.\CompVision\ActiveAppearanceModels\AAMActiveAppearanceModelMustLink.cc"
 				>
 			</File>
 			<File
-				RelativePath="..\..\.\CompVision\ActiveAppearanceModels\AAMActiveAppearanceModelMustLink.cc"
+				RelativePath="..\..\.\GUI\GTK\LinkRavlGUI.cc"
 				>
 			</File>
 			<File
