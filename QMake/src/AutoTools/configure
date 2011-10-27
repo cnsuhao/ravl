@@ -5568,7 +5568,7 @@ trace 2 Set make specific MAKEFLAGS
 
           if ( test X$GNU_MAKE = Xyes )
           then
-             MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r "
+             MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r --jobs \$(PROCS)"
           else
              # Potential to add further options here for particular versions of make
              # However, at the moment we just have a standard option for all

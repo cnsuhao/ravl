@@ -302,7 +302,7 @@ TARG_HDRFLAG=$(INST_ADMIN)/$(ARC)/depend$(PROJECT_DIR)/$(PACKAGE)$(BASENAME)/.he
 ifndef PROCS
   SYSCONF:=$(QMAKE_UTILS)/SysConf
 
-  PROCS=$(shell $(SYSCONF) -1)
+  PROCS=$(shell $(SYSCONF) -a)
 endif
 export PROCS
 
