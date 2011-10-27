@@ -46,7 +46,7 @@ endif
 default: qmake fullsrc opt optshared optbin singleoptshared singleoptsharedbin pkgconf
 #JFi:To Do- make doc (and support from configure i.e. locate tools)
 
-check: testopt testsingleopt testsingleoptshared 
+check: testsingleoptshared 
 
 debug: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug NOEXEBUILD=1 libbuild
