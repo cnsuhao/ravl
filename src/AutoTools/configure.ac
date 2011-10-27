@@ -112,7 +112,7 @@ fi
 if ( test X$GCC = Xyes )
 then
    # GNU C Compiler
-   PKG_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE  \$(COMPILER_SPECIFIC_CFLAGS) "
+   PKG_GLOBAL_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE  \$(COMPILER_SPECIFIC_CFLAGS) \$(COMPILER_DEBUG_CFLAGS)"
    PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
    PKG_DEFAULT_CFLAGS=" -O "
    CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
@@ -129,7 +129,7 @@ then
       PKG_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
    PKG_OPT_CFLAGS=$PKG_OPT_CFLAGS" -march=native -mtune=native "
-   PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CFLAGS) "
+   PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
    PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
    PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
    PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
@@ -148,31 +148,31 @@ dnl common tool (say the GNU compilers) when run on a particular platform, put
 dnl those settings at the end of this script.
 dnl 
    case X$host_os in
-   Xsolaris* ) PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) "
+   Xsolaris* ) PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) \$(COMPILER_DEBUG_CFLAGS)"
                PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
                PKG_DEFAULT_CFLAGS=" -O "
                PKG_OPT_CFLAGS=" -O2 "
-               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CFLAGS) "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
                PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
                PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
                PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
-   Xirix* )    PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) "
+   Xirix* )    PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) \$(COMPILER_DEBUG_CFLAGS)"
                PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
                PKG_DEFAULT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
                PKG_OPT_CFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
-               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CFLAGS) "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
                PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
                PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
                PKG_CHECK_CFLAGS=" -DRAVL_CHECK "
                ;;
-   * )         PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) "
+   * )         PKG_GLOBAL_CFLAGS=" \$(COMPILER_SPECIFIC_CFLAGS) \$(COMPILER_DEBUG_CFLAGS)"
                PKG_CANSIFLAG=" \$(COMPILER_ANSI_CFLAGS) "
                PKG_DEFAULT_CFLAGS=" -O "
                PKG_OPT_CFLAGS=" -O2 "
-               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID \$(COMPILER_DEBUG_CFLAGS) "
+               PKG_DEBUG_CFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                PKG_SHARED_CFLAGS=" \$(COMPILER_SHARED_CFLAGS) "
                PKG_PROF_CFLAGS=" \$(COMPILER_PROF_CFLAGS) "
                PKG_GPROF_CFLAGS=" \$(COMPILER_GPROF_CFLAGS) "
@@ -217,7 +217,7 @@ fi
 if ( test X$GXX = Xyes )
 then
    # GNU C++ Compiler
-   PKG_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE  \$(COMPILER_SPECIFIC_CCFLAGS) "
+   PKG_GLOBAL_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE  \$(COMPILER_SPECIFIC_CCFLAGS) \$(COMPILER_DEBUG_CCFLAGS)"
    PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
    PKG_DEFAULT_CCFLAGS=" -O "
    CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
@@ -234,7 +234,7 @@ then
       PKG_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
    fi
    PKG_OPT_CCFLAGS=$PKG_OPT_CCFLAGS" -march=native -mtune=native "
-   PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CCFLAGS) "
+   PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
    if test $ac_cv_prog_cc_g = yes
    then
       PKG_DEBUG_CCFLAGS=" -g "$PKG_DEBUG_CCFLAGS
@@ -257,11 +257,11 @@ dnl common tool (say the GNU compilers) when run on a particular platform, put
 dnl those settings at the end of this script.
 dnl 
    case X$host_os in
-   Xsolaris* ) PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) "
+   Xsolaris* ) PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) \$(COMPILER_DEBUG_CCFLAGS)"
                PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
                PKG_DEFAULT_CCFLAGS=" -O "
                PKG_OPT_CCFLAGS=" -O2 "
-               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CCFLAGS) "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
                PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
                PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
@@ -270,21 +270,21 @@ dnl
    Xirix* )    CXX=$CXX" -n32 -J4 -mp -LANG:ansi-for-init-scope=on "
                # Not sure why this originally was done this way rather than use
                # CCFLAGS, but assume there was a reason and propogate the method
-               PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) "
+               PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) \$(COMPILER_DEBUG_CCFLAGS)"
                PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
                PKG_DEFAULT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
                PKG_OPT_CCFLAGS=" -O3 -OPT:const_copy_limit=50000:Olimit=80000 "
-               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CCFLAGS) "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
                PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
                PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
                PKG_CHECK_CCFLAGS=" -DRAVL_CHECK "
                ;;
-   * )         PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) "
+   * )         PKG_GLOBAL_CCFLAGS=" \$(COMPILER_SPECIFIC_CCFLAGS) \$(COMPILER_DEBUG_CCFLAGS)"
                PKG_CCANSIFLAG=" \$(COMPILER_ANSI_CCFLAGS) "
                PKG_DEFAULT_CCFLAGS=" -O "
                PKG_OPT_CCFLAGS=""
-               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID  \$(COMPILER_DEBUG_CCFLAGS) "
+               PKG_DEBUG_CCFLAGS=" -DRAVL_CHECK -DQMAKE_PARANOID "
                PKG_SHARED_CCFLAGS=" \$(COMPILER_SHARED_CCFLAGS) "
                PKG_PROF_CCFLAGS=" \$(COMPILER_PROF_CCFLAGS) "
                PKG_GPROF_CCFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
