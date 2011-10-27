@@ -533,9 +533,10 @@ dnl    --with-<lib>-pkgconf
 dnl
 dnl                 Name,              pkg-config
 dnl
-QM_DEFINE_EXTLIB_PC([libdc1394],       [libdc1394])
-libdc1394_RavlLib=libRavlImgIO1394dc
-AC_SUBST([libdc1394_SUPPORT])
+dnl Modern versions of libdc1394 currently unsupported by Ravl. Drop for now:
+dnl QM_DEFINE_EXTLIB_PC([libdc1394],       [libdc1394])
+dnl libdc1394_RavlLib=libRavlImgIO1394dc
+dnl AC_SUBST([libdc1394_SUPPORT])
 QM_DEFINE_EXTLIB_PC([libAudioFile],    [audiofile])
 libAudioFile_RavlLib=libRavlAudioFile
 AC_SUBST([libAudioFile_SUPPORT])

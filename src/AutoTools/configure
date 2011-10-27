@@ -769,9 +769,6 @@ libavc1394_CFLAGS
 libAudioFile_SUPPORT
 libAudioFile_LIBS
 libAudioFile_CFLAGS
-libdc1394_SUPPORT
-libdc1394_LIBS
-libdc1394_CFLAGS
 PKG_MAKEFLAGS
 CONFIGURE_MAKEFLAGS
 MAKE_SPECIFIC_MAKEFLAGS
@@ -911,8 +908,6 @@ enable_option_checking
 with_QMake_pkgconf
 with_rpath
 with_pawd
-with_libdc1394_pkgconf
-with_libdc1394
 with_libAudioFile_pkgconf
 with_libAudioFile
 with_libavc1394_pkgconf
@@ -1617,14 +1612,6 @@ Optional Packages:
 
   --with-pawd             Employ pawd rather than pwd to return the current
                           directory [default=No]
-
-  --with-libdc1394-pkgconf
-                          Enable the libdc1394 library package via pkg-config
-                          and declare the name by which the libdc1394 library
-                          package is known to pkg-config
-
-  --with-libdc1394        Enable functionality that relies on the libdc1394
-                          library [default=check]
 
   --with-libAudioFile-pkgconf
                           Enable the libAudioFile library package via
@@ -6602,118 +6589,6 @@ trace 2 Initial checks complete, now processing external libraries
 
 # Define all Ravl Helper libraries and their associated cmd-line options
 #
-
-
-# Check whether --with-libdc1394-pkgconf was given.
-if test "${with_libdc1394_pkgconf+set}" = set; then :
-  withval=$with_libdc1394_pkgconf; case $with_libdc1394_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                          use_libdc1394=no
-                                          trace 4 --with-libdc1394-pkgconf disabling libdc1394
-                                          ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                          if test Xlibdc1394 != X; then :
-  with_libdc1394_pkgconf=libdc1394
-                                                 use_libdc1394=yes
-                                                 trace 4 --with-libdc1394-pkgconf set to default [$with_libdc1394_pkgconf]
-
-else
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to configure libdc1394 via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details." "$LINENO" 5; }
-
-
-fi
-                                          ;;
-                        * )               use_libdc1394=yes
-                                          trace 4 --with-libdc1394-pkgconf set to [$with_libdc1394_pkgconf]
-                                          ;;
-                       esac
-
-else
-  if test Xlibdc1394 != X; then :
-  with_libdc1394_pkgconf=libdc1394
-                              trace 4 No --with-libdc1394-pkgconf specified using default [$with_libdc1394_pkgconf]
-
-
-fi
-
-
-fi
-
-
-# Check whether --with-libdc1394 was given.
-if test "${with_libdc1394+set}" = set; then :
-  withval=$with_libdc1394; case $with_libdc1394 in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                       trace 4 --with-libdc1394 disabling libdc1394 libraries
-                                       if test X$use_libdc1394 = Xyes ; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to disable libdc1394 by --with-libdc1394 but --with-libdc1394-pkgconf has specifically enabled it
-See \`config.log' for more details." "$LINENO" 5; }
-
-else
-  use_libdc1394=no
-
-fi
-                                       ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                       trace 4 --with-libdc1394 enabling libdc1394 libraries
-                                       if test X$use_libdc1394 = Xno; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to enable libdc1394 by --with-libdc1394 but --with-libdc1394-pkgconf has specifically disabled it
-See \`config.log' for more details." "$LINENO" 5; }
-
-else
-  use_libdc1394=yes
-
-fi
-                                       ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                       trace 4 --with-libdc1394 checking for libdc1394 libraries
-                                       if test X$use_libdc1394 = Xyes; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libdc1394 asking to check for the libs but --with-libdc1394-pkgconf has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: --with-libdc1394 asking to check for the libs but --with-libdc1394-pkgconf has specifically enabled it" >&2;}
-
-else
-  if test X$use_libdc1394 = Xno; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libdc1394 asking to check for the libs but --with-libdc1394-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: --with-libdc1394 asking to check for the libs but --with-libdc1394-pkgconf has specifically disabled it" >&2;}
-
-else
-  use_libdc1394=check
-
-fi
-
-
-fi
-                                       ;;
-                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libdc1394 set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-libdc1394 set to an unknown option, setting ignored" >&2;}
-                                       ;;
-                       esac
-
-else
-  trace 5 No --with-libdc1394 specified
-
-fi
-
-          KnownLibs=$KnownLibs" "libdc1394
-          with_libdc1394_virtual="no"
-          if ( test X$use_libdc1394 = X )
-          then
-             use_libdc1394=check
-          else
-             ConfiguredLibs=$ConfiguredLibs" "libdc1394
-          fi
-
-
-
-
-libdc1394_RavlLib=libRavlImgIO1394dc
 
 
 # Check whether --with-libAudioFile-pkgconf was given.
