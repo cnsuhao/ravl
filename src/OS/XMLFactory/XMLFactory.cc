@@ -772,7 +772,9 @@ namespace RavlN {
       // As this is called before main() is executed and the program has had a chance
       // to redirect log messages we'll just send them to stderr.
       //RavlSysLogf(SYSLOG_WARNING,"Duplicate registration of type %s in factory.",);
-      std::cerr << "WARNING: Duplicate registration of type " << typeName << " in factory. \n";
+      std::cerr << "ERROR: Duplicate registration of type " << typeName << " in factory. \n";
+      // Make sure people don't just ignore this error.
+      RavlAlwaysAssert(0);
     }
     Type2Factory()[RavlN::TypeName(typeInfo)] = typeFactoryFunc;
   }
