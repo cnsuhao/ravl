@@ -114,7 +114,7 @@ namespace RavlN {
 
     if(pthread_setschedparam(threadID,policy,&sparam) == 0)
       return true; 
-    cerr << "SetCurrentThreadPriority(). Error:" << errno << "\n";
+    //cerr << "SetCurrentThreadPriority(). Error:" << errno << "\n";
     return false;
 #else
     return false;
