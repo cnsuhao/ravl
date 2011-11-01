@@ -77,6 +77,14 @@
 	  as we will return to a situation where the available conversions are
 	  more targetted to what the user is doing, even for the single library.
 
++ $PROJECT_OUT is still hard coded into binaries even though $datadir, etc.
+  should be used.
+       - The individual files need updating. The test programs will need
+         consideration as to how we successfully test RAVL prior to
+         installation because the support files will not be in the correct
+         location (unless a previous install is present). Currently some
+         test programs fail owing to using the wrong path.
+
 + No formal modification to the existing documentation has yet been carried out
   to reflect the new build system.
 
@@ -104,14 +112,13 @@
 	  part of the initial project.
 
 + Top level Makefile does not provide make clean or an install_check target
-	 - make install requires work to combat the hard coding of PROJECT_OUT
-	   into binaries at compile time. Work for the other targets will be
-	   undertaken as part of the same sub-project.  There is also scope
-	   for a make strip target if we adopt the autotools pseudo standard
-	   of not stripping binaries (and of building with -g) by default. To
-	   this last point, there is a related consideration of how we provide
-	   debug and profiling versions of the Ravl libraries when everything
-	   is in /usr/lib (or wherever the user selects the target loaction).
+         - Work for any other targets will be undertaken as part of the same
+           sub-project.  There is scope for a make strip target and there is 
+           a consideration of how (and if) we provide debug and profiling
+           versions of the Ravl libraries (do we install in different dirs
+           or have different names).
 
 + There is no support in configure for locating the RCS commands
 	 - SourceTools/CodeManager/RCSFile.cc will effectively loose support.
+           The rcs.mk file has been removed from the source installation, the
+           same may be applied to the relevant source code.
