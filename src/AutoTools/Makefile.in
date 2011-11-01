@@ -1,4 +1,10 @@
 # @configure_input@
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2011, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
 
 package = @PACKAGE_NAME@
 version = @PACKAGE_VERSION@
