@@ -375,6 +375,7 @@ namespace RavlN
   {
     if(m_nSocket <= 0)
       {
+        ONDEBUG(cerr <<  "SocketBodyC::Read invalid socket\n");
         return 0;
       }
 
@@ -387,7 +388,7 @@ namespace RavlN
             nTotBytes += bytesRecv;
             if ( bytesRecv == 0) 
               {
-                ONDEBUG(cerr <<  "Connection closed gracefully.\n");
+                ONDEBUG(cerr <<  "SocketBodyC::Read closed gracefully.\n");
                 break;
               }
           }
@@ -397,18 +398,21 @@ namespace RavlN
 	
             switch(nError) {
               case WSAECONNRESET: {
-                ONDEBUG(cerr << "Connection closed disgracefully.\n");
+                ONDEBUG(cerr << "SocketBodyC::Read closed disgracefully.\n");
                 return (IntT) nTotBytes;
               }
               case WSAEINPROGRESS: // Some other operation is waiting.
+                ONDEBUG(cerr << "SocketBodyC::Read error: WSAEINPROGRESS\n");
                 ::Sleep(10);
                 break;
               case WSAEINTR:
               case WSAEWOULDBLOCK: // We don't care about blocking errors
+                ONDEBUG(cerr << "SocketBodyC::Read error: WSAEINTR | WSAEWOULDBLOCK\n");
                 break;
               case WSAECONNABORTED:
               //case WSAENOTSOCK:
                 // Happens when socket is closed.
+                ONDEBUG(cerr << "SocketBodyC::Read error: WSAECONNABORTED\n");
                 return (IntT) nTotBytes;
               default: {
                 cerr << "Receive failed with error code: " << nError << "\n";
