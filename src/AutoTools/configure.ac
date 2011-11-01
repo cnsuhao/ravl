@@ -13,6 +13,12 @@ AC_PREREQ([2.65])
 
 AC_INIT([RAVL], [1.5.8030], [John.Field@Surrey.ac.UK])
 
+# This file is part of RAVL, Recognition And Vision Library
+# Copyright (C) 2011, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
+
 
 dnl Include standard QMake autoconf macros
 m4_include([../../QMake/src/AutoTools/AcMacros/QM_CHOOSE_GETCWD])
