@@ -52,7 +52,7 @@ namespace RavlOSGN
   //: Build the node
   bool ImageC::BuildNode(const RavlN::RealRange2dC &coords)
   {
-    rDebug("Building image node. Range=%s ",RavlN::StringOf(coords).data());
+    ONDEBUG(rDebug("Building image node. Range=%s ",RavlN::StringOf(coords).data()));
     ref_ptr<Geometry> geometryRef = new Geometry();
 
     ref_ptr<Vec3Array> vertexArray = new Vec3Array();
