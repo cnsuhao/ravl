@@ -71,7 +71,9 @@ namespace RavlN {
     MutexLockC hold(reqAccess);
     if(!connectionOk) {
       SysLog(SYSLOG_CRIT) << "NetRequestManagerC::WaitForReq(), ERROR: Connection not open! ";
-      throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
+      if(throwExceptionOnFail)
+        throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
+      return false;
     }
     NetRequestDataC reqInfo;
     if(!id2reqResults.Lookup(id,reqInfo)) {
@@ -90,7 +92,7 @@ namespace RavlN {
     if(!data.IsValid()) { // Request failed for some reason ?
       SysLog(SYSLOG_ERR) << "NetRequestManagerC::WaitForReq(), ERROR: Request Failed. ";
       if(throwExceptionOnFail)
-	throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
+        throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
       return false;
     }
     
