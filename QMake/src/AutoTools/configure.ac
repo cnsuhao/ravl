@@ -1,18 +1,15 @@
-# This file is part of QMake, Quick Make System
-# Copyright (C) 2011, University of Surrey
-# This code may be redistributed under the terms of the GNU General
-# Public License (GPL). See the gpl.licence file for details or
-# see http://www.gnu.org/copyleft/gpl.html
-
-# file-header-ends-here
-
-
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
 
 AC_INIT([QMake], [1.5.8030], [John.Field@Surrey.ac.UK])
+
+# This file is part of QMake, Quick Make System
+# Copyright (C) 2011, University of Surrey
+# This code may be redistributed under the terms of the GNU General
+# Public License (GPL). See the gpl.licence file for details or
+# see http://www.gnu.org/copyleft/gpl.html
 
 dnl Include standard QMake autoconf macros
 m4_include([./AcMacros/QM_CHOOSE_GETCWD])
