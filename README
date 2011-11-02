@@ -3,119 +3,118 @@
                 RAVL, Recognition And Vision Library
                 ------------------------------------
 
+RAVL provides a base C++ class library, together with a range of computer
+vision, pattern recognition classes and supporting tools. The aim of RAVL is
+to move software developed within the Centre for Vision, Speech and Signal
+Processing at the University of Surrey, England for research purposes into
+the public domain and to support its use in a wider community.
+
+Why should you use this library?
+
++ It has a simple user interface: the user does not have to use pointers or
+  deal with heap management. (Java programmers should find the interface
+  reasonably familiar.)
+
++ It has an I/O library that supports a wide range of file formats and
+  devices in a consistent manner (including image, video and audio). Type
+  conversion between file formats can be handled transparently.
+
++ It uses reference counting for large objects, making them thread-safe for
+  multi-threaded applications
+
++ It is freely available from SourceForge 
+                                     (http://sourceforge.net/projects/ravl)
+
++ It is distributed under the GNU Lesser General Public License
+
++ It is straightforward to port to any operating system / platform that
+  conforms to the Posix standard, has an ANSII C++ compiler and a make
+  utility that supports the GNU extensions to that program.
+
+Contributions to the library or suggestions on how it can be improved are
+welcome they can be posted via the sourceforge web pages 
+( http://sourceforge.net/projects/ravl ) or sent directly to me at
+John.Field@surrey.ac.uk
+
+
+PREFACE TO THE 1.1 ALPHA RELEASE
+--------------------------------
+
+Version 1.1 of RAVL introduces the use of the GNU AutoTools for the
+installation process. This greatly simplifies the initial configuration of
+the environment needed to build RAVL. RAVL can now automatically determine
+what external libraries are available on your system and use them as is
+appropriate. Please refer to the enclosed INSTALL file for details on
+installing RAVL on UNIX and UNIX-like systems.
+
+This alpha-test release of RAVL 1.1 is provided as a taster for the
+forthcoming release of version 1.1 of RAVL; showcasing the new installation
+method. As such, this revision of the product is ahead of the referenced
+on-line documentation in respect to the installation process and method for
+linking with the RAVL library itself. As a development version of the
+software, this alpha revision may also omit some of the most recent changes
+made to the RAVL code.
+
+Revision 1.1 of RAVL also moves to providing all of the class libraries
+in a single library file. This greatly simplifies the use of the class library
+as there is no longer a need to link with the correct list of multiple 
+libraries, just the one RAVL library is needed. To this end, the user may now
+employ the build tool of their choice and it is no longer necessary to build
+client projects using the QMake utility. The user may configure their build
+system either by manually declaring where the RAVL library and header files
+have been installed or, if their build tool supports it, by directing it to
+use the pkg-config utility which RAVL now supports.
+
 
 LICENSE
 -------
 
 The RAVL libraries are distributed under the GNU LESSER GENERAL PUBLIC 
-LICENSE (LGPL), however some of the tools built with the library have
-been issued under the more restrictive GNU GENERAL PUBLIC LICENSE, the
-headers attached to each of the files in the project indicate which of 
-these apply.
-
-It should be noted that this library is still in development so interfaces 
-may change in future releases. RAVL is split up into modules some of which
-are more stable than others, following is summary of the current status.
-
-Stable     : QMake Core OS 
-Development: Math PatternRec Image 3D Logic SourceTools GUI Applications
-
-Contributions to the library or suggestions on how it can be improved 
-are welcome they can be posted on the sourceforge web pages 
-( http://sourceforge.net/projects/ravl ) or sent directly to me at
-C.Galambos@eim.surrey.ac.uk
+LICENSE (LGPL), however some of the tools built with the library have been
+issued under the more restrictive GNU GENERAL PUBLIC LICENSE, the headers
+attached to each of the files in the project indicate which of these apply.
+A copy of each software license is provided for information in the files
+COPYING and COPYING.LESSER.
 
 
-INSTALLATION UNDER LINUX/UNIX
------------------------------
+ACKNOWLEDGEMENTS
+----------------
 
-Up-to-date installation instructions should be found at:
-
-http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Basic/Tree/Ravl.Installation.html
-
-
-Once RAVL is installed programs can be compiled with an alias similar
-to the following:
-
-alias qm gmake -f [location]/share/RAVL/QMake/QMake.mk PROJECT_OUT=$(HOME)/build
-
-if you've put RAVL's bin in the path there is also a 'qm' script which 
-invokes the make system in a simlar way.
-
-Some notes on installation:
-
-- RAVL is getting quite large, if you don't want to compile all the modules
-  you can remove the '.r' from the end of the directory names in the root 
-  defs.mk file.  In general modules later in the list generally depend on 
-  those found earlier so care must be with which modules are disabled.  (But
-  there *may* be some circular dependencies.)
-  Required modules for particular tools can be found in the documentation. 
-  (Or will be soon...)
-
-- By default the install process uses the compiler in your path.  This
-  isn't always best and you may want to change it. This can be done by
-  setting CC and CXX to the locations of the C and C++ compilers
-  respectively in the system configuration file. The configuration
-  file can be found in Ravl/QMake/config.$(ARC) where arc is one of
-  linux, sgi, sol2 etc., depending on your machine.
-
-- A version of the ccmath source code which will compile under QMake is
-  included the RAVL releases and as a separate file available for download.
-  Using this is NOT guaranteed to give the best code as the QMake release
-  does not currently make use of assembler provided with the official package.
-  It does make it much easier to install. If you don't wish to use this
-  code remove the 'CCMath.r' from the NESTED line in the Ravl/defs.mk file.
-
-- RAVL can be made to use an external version of CCMath.  The code
-  has been tested with version 2.2.1, but I would expect it to work with   
-  older versions as well.  The location of the ccmath package is set
-  in Ravl/Math/CCMath/CCMath.def: set the 'CCMATH' variable to the appropriate
-  directory, uncomment two lines following it, and comment out any other
-  'EXELIB' lines later in the file.  
-
-- The appropriate version of perl (Tested with 5.005_03) must be in your 
-  default path.
-
-- If you want to compile the GUI code 'pkg-config' should be on your path
-  before running the install script. If you don't need the module just remove
-  '.r' after the directory name in the root defs.mk file.  If you do this you
-  may need to disable some programs in the Applications directory, this can be
-  done by modifying the defs.mk in this directory in a similar way.
-
-- If you want temporary files to go somewhere other that /tmp you need
-  to set the enviromental variable DEFAULTTMP.  And add something like
-  
-   setenv DEFAULTTMP /buf
-
-  to your enviroment setup (.cshrc for me)
-
-NOTE: Most of the development of RAVL is being done on a Suse 10
-box with gcc-4.0.2; at this stage in development things are most
-likely to work on a similar box.  The installation system should be 
-changed to use a 'configure' script, its on my todo list.
+RAVL was originally derived from AMMA, written by Radek Marik with help
+from many other members of CVSSP. The work of porting AMMA to RAVL was
+largely being undertaken by Charles Galambos, again with help from other
+members of CVSSP. The RavlMath library includes ccmath, written by 
+Daniel A. Atkinson. RAVL is currently maintained by members of CVSSP
+and Omniperception.
 
 
-INSTALLATION FOR VISUAL C++
----------------------------
+DOCUMENTATION
+-------------
 
-These instructions are hideously out-of-date.
+A full suite of on-line documentation is available from:
 
-In order to compile RAVL with Visual C++ two things are needed.
-First you will need the latest service pack for Visual Studio. Secondly,
-you have to persuade Visual studio to recognised .cc and .hh files as 
-C++ source. The tweeks needed are described in 
+http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Basic/Tree/Ravl.html
 
-  http://support.Microsoft.com/support/kb/articles/Q181/5/06.ASP,
-
-there's a program which will do this automaticly called CCFix. It can
-be found at: 
-
-  http://www.vapourtech.com/dev/software.php
-
-The project file for Visual C++ can be found in the MSVC directory. There
-is a problem with the dependency checking as if a project include two
-different libraries that both include a third you will get multiply
-defined symbol warnings. These can be safely ignored.
+As noted in the preface to this 1.1 Alpha release, the on-line 
+documentation reflects the live release of RAVL; version 1.0. As such, 
+details for installation and the associated configure.local.xxxx file
+contained in the on-line documentation should be ignored. Please refer to
+the INSTALL file in the RAVL-1.1 directory of this distribution.
 
 
+QMAKE
+-----
+
+Revision 1.1 of RAVL introduces the provision of the class libraries in one,
+single library file. This precludes the need to use the QMake utility
+to ensure the correct individual RAVL libraries are linked into any client
+program. However, as of this Alpha release of RAVL, the supplied QMake does
+not currently support the building of client projects that use the new single
+library and should not therefore be used for builing such projects. Please
+use your own makefile or alternative build system to link your project with
+the RAVL library. Any references made in the on-line documentation to building
+applications using the RAVL libraries, should thus be ignored as they relate
+to the existing 1.0 release version of RAVL. When the finalised version of
+RAVL 1.1 is released, it will include a build tool for building client
+projects that use RAVL, along with updated documentation.
 

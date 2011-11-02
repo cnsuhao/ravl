@@ -1,0 +1,129 @@
+Advanced Installation Topics
+
+Basic installation of RAVL is discussed in the INSTALL file. This file
+details some of the more advanced concepts and command-line switches 
+that can be used with the configure utility should the need arise.
+
+The default directories where RAVL is installed may be changed by adding
+the command-line switch --prefix=<dir> to the configure command. This
+modify the base installation directory from /usr/local to whatever value
+of <dir> the user supplies. For example:
+
+        ./configure --prefix=$HOME
+
+will cause a subsequent 'make install' to place RAVL under the user's home
+directory. With the use of differing command-line switches (see the full
+list produced by configure --help) it is possible to re-direct where
+individual types of file are directed (for example, using --libdir can
+redirect just where the RAVL library is installed).
+
+When installing RAVL, please be aware that if the RAVL library is not
+installed to a library directory already known to the system (such as the
+standard /usr/lib or /usr/local/lib directories) then the runtime environment
+must be reconfigured before any program using the library may be used. Please
+discuss this with your systems administrator.
+
+The configure program tailors the RAVL source to the environment present
+on your machine. Running configure will generate a Config.Project file that
+records how RAVL has been set up. This file drives how RAVL is built and 
+what features are enabled. It is only utilised at compile time; it does not
+effect the running of RAVL (over and above what features have been compiled
+into the library).
+
+Configure will attempt to locate all of the optional external libraries that
+RAVL can employ, enabling the functionality for all those it finds. Those it
+does not find are dropped and their functionality is not included in RAVL.
+
+A –with-<lib> configure switch is provided to actively demand that library
+'<lib>' be used. If this request is made but the library is not found,
+configure will error out. The –with-<lib> switch may be set to 'N'; 'No';
+etc. to disable any particular library from use. The switch –without-<lib>
+has the same effect. For example:
+
+        ./configure --with-OpenCV=N --with-libPNG
+
+is equivalent to
+
+        ./configure --without-OpenCV --with-libPNG=Y
+
+and explicitly disables the use of OpenCV by RAVL (even if OpenCV is installed
+on the machine) while requiring libPNG.
+
+The configure program uses the pkg-config utility to locate the third-party
+libraries that RAVL can utilise. If the pkg-config meta file for a third-party
+library is not available in its usual location, configure provides an option
+to tell the configuration process where the file residesr:
+
+   --with-<lib>-pkgconf=<path-to>/<meta-file>
+           For external libraries that support pkg-config, this switch
+           allows the user to specify the location and name of a pkg-config
+           file for a particular library, <lib>. For example:
+
+           ./configure --with-OpenCV-pkgconf=/opt/lib/pkg-config/opencv.pc
+
+           instructs the configuration process to use the specified file,
+           /opt/lib/pkg-config/opencv.pc, as the pkg-config meta file. This
+           enables the user to insturct RAVL to be built using a particular
+           version of a third-party library. 
+
+Some of the third-party libraries that may be utilised by RAVL do not support
+the pkg-config utility. To allow configuration over these (the list of such
+libraries is libJasper, LibTIFF, Zlib, JPEG and posixThreads), configure
+provides the command-line options:
+
+   --with-<lib>-include=<path-to-include-files>
+           For libraries that do not normally use pkg-config (and those
+           alone), this switch provides a mechanism for declaring where
+           the library's header file(s) can be found.
+
+   --with-<lib>-library=<path-to>/<library-name>
+           As for –with-<lib>-include, this is only provided for those
+           libraries that do not normally support pkg-config. It allows
+           declaration of both where the third party library may be found
+           and also allows its name to be specified. When specifying the
+           name of the library, do not include any format extension (the
+           .a or .so suffix).
+
+           These two switches are typically used in tandem to override the
+           defaults associated with a particular library. For example:
+
+           ./configure --with-JPEG-include=/opt/libjpeg-turbo/include \
+                       --with-JPEG-library=/opt/libjpeg-turbo/lib/libjpeg
+
+           will employ the libjpeg-turbo instead of the more usual JPEG 
+           library. As the libjpeg-turbo library is a direct, drop-in
+           replacement for the JPEG library, use of these switches allows
+           RAVL to use libjpeg-turbo's more optimal code on machines where
+           it is installed.
+
+Setting any of these --with-<lib>-xxx switches implies –with-<lib> and thus
+mandates that configure find and enable the library or error out. 
+
+The RAVL build process uses the default compiler available in your system
+path. Should you wish to change this, prior to running configure, set the
+environment variables CC and/or CXX to the location(s) of the C and C++
+compilers you wish to use. Other influential environment variables allow
+for the redefinition of other commands for the build process to use or to
+allow the specification of extra CFLAGS to use.
+
+A full list of configure's available command-line switches and significant
+environment variables may be seen by issuing the command:
+
+        ./configure --help
+
+By executing configure in a directory away from where you installed the RAVL
+souece, it is possible to separate out the build and source locations. For
+instance, the commands:
+
+        mkdir ~/Source
+        cd ~/Source
+        tar -xvf $ArchivePath
+        mkdir /tmp/Build
+        cd /tmp/Build
+        ~/Source/configure
+        make
+        make install
+
+will install the RAVL source in the Source directory under the user's home
+location. RAVL itself will be built in the /tmp/Build directory which could
+be later deleted to save space once RAVL has been installed.

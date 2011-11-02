@@ -1,0 +1,27 @@
+Installation from source tarball
+
+Basic operation is to extract the source from the tar archive; move to the
+extracted directory and issue the relevant build commands:
+
+        tar -xvf RAVL-1.1.tar
+        cd ravl
+        ./configure
+        make
+        make install
+
+All built binaries and objects will be created in a tree under where the
+initial configure was run.  Once RAVL has been built, 'make install' will
+install the RAVL library and the utility programs. By default, these will be
+installed under the system /usr/local directory. You may need additional user
+privileges to complete this stage. Please consult your system administrator 
+if you do not administer your own machine.
+
+The default directories where RAVL is installed may be changed by using the
+configure script. This is facilitated by the --prefix command-line switch.
+This switch, along with other advanced installation topics, is discussed in
+the INSTALL.ADVANCED file. In addition, a full list of configure's available
+command-line switches and significant environment variables may be seen by
+issuing the command:
+
+        ./configure --help
+
