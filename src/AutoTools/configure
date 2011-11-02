@@ -763,9 +763,6 @@ libDV_CFLAGS
 libCurl_SUPPORT
 libCurl_LIBS
 libCurl_CFLAGS
-libavc1394_SUPPORT
-libavc1394_LIBS
-libavc1394_CFLAGS
 libAudioFile_SUPPORT
 libAudioFile_LIBS
 libAudioFile_CFLAGS
@@ -910,8 +907,6 @@ with_rpath
 with_pawd
 with_libAudioFile_pkgconf
 with_libAudioFile
-with_libavc1394_pkgconf
-with_libavc1394
 with_libCurl_pkgconf
 with_libCurl
 with_libDV_pkgconf
@@ -1619,14 +1614,6 @@ Optional Packages:
                           libAudioFile library package is known to pkg-config
 
   --with-libAudioFile     Enable functionality that relies on the libAudioFile
-                          library [default=check]
-
-  --with-libavc1394-pkgconf
-                          Enable the libavc1394 library package via pkg-config
-                          and declare the name by which the libavc1394 library
-                          package is known to pkg-config
-
-  --with-libavc1394       Enable functionality that relies on the libavc1394
                           library [default=check]
 
   --with-libCurl-pkgconf  Enable the libCurl library package via pkg-config
@@ -6707,118 +6694,6 @@ fi
 
 
 libAudioFile_RavlLib=libRavlAudioFile
-
-
-# Check whether --with-libavc1394-pkgconf was given.
-if test "${with_libavc1394_pkgconf+set}" = set; then :
-  withval=$with_libavc1394_pkgconf; case $with_libavc1394_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                          use_libavc1394=no
-                                          trace 4 --with-libavc1394-pkgconf disabling libavc1394
-                                          ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                          if test Xlibavc1394 != X; then :
-  with_libavc1394_pkgconf=libavc1394
-                                                 use_libavc1394=yes
-                                                 trace 4 --with-libavc1394-pkgconf set to default [$with_libavc1394_pkgconf]
-
-else
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to configure libavc1394 via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details." "$LINENO" 5; }
-
-
-fi
-                                          ;;
-                        * )               use_libavc1394=yes
-                                          trace 4 --with-libavc1394-pkgconf set to [$with_libavc1394_pkgconf]
-                                          ;;
-                       esac
-
-else
-  if test Xlibavc1394 != X; then :
-  with_libavc1394_pkgconf=libavc1394
-                              trace 4 No --with-libavc1394-pkgconf specified using default [$with_libavc1394_pkgconf]
-
-
-fi
-
-
-fi
-
-
-# Check whether --with-libavc1394 was given.
-if test "${with_libavc1394+set}" = set; then :
-  withval=$with_libavc1394; case $with_libavc1394 in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                       trace 4 --with-libavc1394 disabling libavc1394 libraries
-                                       if test X$use_libavc1394 = Xyes ; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to disable libavc1394 by --with-libavc1394 but --with-libavc1394-pkgconf has specifically enabled it
-See \`config.log' for more details." "$LINENO" 5; }
-
-else
-  use_libavc1394=no
-
-fi
-                                       ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                       trace 4 --with-libavc1394 enabling libavc1394 libraries
-                                       if test X$use_libavc1394 = Xno; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to enable libavc1394 by --with-libavc1394 but --with-libavc1394-pkgconf has specifically disabled it
-See \`config.log' for more details." "$LINENO" 5; }
-
-else
-  use_libavc1394=yes
-
-fi
-                                       ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                       trace 4 --with-libavc1394 checking for libavc1394 libraries
-                                       if test X$use_libavc1394 = Xyes; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libavc1394 asking to check for the libs but --with-libavc1394-pkgconf has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: --with-libavc1394 asking to check for the libs but --with-libavc1394-pkgconf has specifically enabled it" >&2;}
-
-else
-  if test X$use_libavc1394 = Xno; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libavc1394 asking to check for the libs but --with-libavc1394-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: --with-libavc1394 asking to check for the libs but --with-libavc1394-pkgconf has specifically disabled it" >&2;}
-
-else
-  use_libavc1394=check
-
-fi
-
-
-fi
-                                       ;;
-                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-libavc1394 set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-libavc1394 set to an unknown option, setting ignored" >&2;}
-                                       ;;
-                       esac
-
-else
-  trace 5 No --with-libavc1394 specified
-
-fi
-
-          KnownLibs=$KnownLibs" "libavc1394
-          with_libavc1394_virtual="no"
-          if ( test X$use_libavc1394 = X )
-          then
-             use_libavc1394=check
-          else
-             ConfiguredLibs=$ConfiguredLibs" "libavc1394
-          fi
-
-
-
-
-libavc1394_RavlLib=libRavlFireWire
 
 
 # Check whether --with-libCurl-pkgconf was given.

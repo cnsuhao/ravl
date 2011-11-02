@@ -539,16 +539,18 @@ dnl    --with-<lib>-pkgconf
 dnl
 dnl                 Name,              pkg-config
 dnl
-dnl Modern versions of libdc1394 currently unsupported by Ravl. Drop for now:
+dnl Modern versions of FireWire support currently unsupported by Ravl. Drop
+dnl for now. Would still work for the old depreciated versions of FireWire
+dnl (rev 1.X of the libs, Linux kernel <2.6.37)
 dnl QM_DEFINE_EXTLIB_PC([libdc1394],       [libdc1394])
 dnl libdc1394_RavlLib=libRavlImgIO1394dc
 dnl AC_SUBST([libdc1394_SUPPORT])
+dnl QM_DEFINE_EXTLIB_PC([libavc1394],      [libavc1394])
+dnl libavc1394_RavlLib=libRavlFireWire
+dnl AC_SUBST([libavc1394_SUPPORT])
 QM_DEFINE_EXTLIB_PC([libAudioFile],    [audiofile])
 libAudioFile_RavlLib=libRavlAudioFile
 AC_SUBST([libAudioFile_SUPPORT])
-QM_DEFINE_EXTLIB_PC([libavc1394],      [libavc1394])
-libavc1394_RavlLib=libRavlFireWire
-AC_SUBST([libavc1394_SUPPORT])
 dnl Modern versions of libAVIFile currently unsupported by Ravl. Drop for now:
 dnl QM_DEFINE_EXTLIB_PC([avifile],         [avifile])
 dnl avifile_RavlLib=libRavlAVIFile
