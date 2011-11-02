@@ -31,7 +31,8 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Fixed Point Number.
-  // A 32-bit real number with a fixed number N of fractional binary digits
+  // <p>A 32-bit real number with a fixed number N of fractional binary digits</p>
+  // <p><b>N.B.</b> Many methods in this class are missing from the documentation due to a bug in CxxDoc.  Consult the <a href="../../../../../../include/Ravl/FPNumber.hh">header file</a> for the full list.</p>
   
   template<UIntT N>
   class FPNumberC {
