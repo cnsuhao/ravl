@@ -197,12 +197,12 @@ namespace RavlN {
     { return (v >> N) + ((v & (1<<(N-1))) != 0 ? 1 : 0);}
     //: Round to the nearest whole integer.
     
-    IntT &V()
+    Int32T &V()
     { return v; }
     //: Access underlying integer value.
   
   protected:
-    IntT v;
+    Int32T v;
   };
   
   template<UIntT N>
