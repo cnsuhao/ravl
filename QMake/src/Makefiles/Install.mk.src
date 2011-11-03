@@ -411,7 +411,7 @@ recurse:
          then \
             for d in $(REQUIRED_DIRS) ;\
             do \
-               $(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $$d -f $(QMAKE_MAKEFILES)/Install.mk $(MAKECMDGOALS) ;\
+               $(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIGURE_MAKEFLAGS) -C $$d -f $(QMAKE_MAKEFILES)/Install.mk $(MAKECMDGOALS) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
