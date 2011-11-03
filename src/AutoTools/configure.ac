@@ -326,10 +326,14 @@ then
    # Take the time to record any user-provided LDFLAGS for output to the
    # configuration file (as we have not recorded them yet)
    CONFIGURE_LDFLAGS=" $LDFLAGS "
+   # Assume any LDFLAGS apply equally to libraries
+   CONFIGURE_LDLIBFLAGS=" $LDFLAGS "
 else
    # Bring in any configured LDFLAGS from the QMake configuration
    # plus any user-provided LDFLAGS
    CONFIGURE_LDFLAGS=" \$(QMAKE_LDFLAGS) $LDFLAGS "
+   # Assume any LDFLAGS apply equally to libraries
+   CONFIGURE_LDLIBFLAGS=" \$(QMAKE_LDLIBFLAGS) $LDFLAGS "
 fi
 #
 # Set package specific LDFLAGS
@@ -449,8 +453,10 @@ fi
 #
 # Declare linker variables as output for Config.Project
 AC_SUBST([CONFIGURE_LDFLAGS])
+AC_SUBST([CONFIGURE_LDLIBFLAGS])
 # any user-provided LDFLAGS will be recorded in Config.Project as
-# CONFIGURE_LDFLAGS
+# CONFIGURE_LDFLAGS (for use linking binaries) and CONFIGURE_LDLIBFLAGS
+# (for when linking libraries).
 #
 AC_SUBST([PKG_CHECK_LDFLAGS])
 AC_SUBST([PKG_DEBUG_LDFLAGS])
@@ -1197,10 +1203,12 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Flags for the linker >> ./Config.Project.in
 echo >> ./Config.Project.in
+echo \# Flags for linking binaries >> ./Config.Project.in
+echo >> ./Config.Project.in
 echo \# User specified at configure time >> ./Config.Project.in
 echo CONFIGURE_LDFLAGS=@CONFIGURE_LDFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo \# General Ravl linker settings >> ./Config.Project.in
+echo \# Package specific linker settings >> ./Config.Project.in
 echo PKG_CHECK_LDFLAGS=@PKG_CHECK_LDFLAGS@ >> ./Config.Project.in
 echo PKG_DEBUG_LDFLAGS=@PKG_DEBUG_LDFLAGS@ >> ./Config.Project.in
 echo PKG_DEFAULT_LDFLAGS=@PKG_DEFAULT_LDFLAGS@ >> ./Config.Project.in
@@ -1210,7 +1218,12 @@ echo PKG_OPT_LDFLAGS=@PKG_OPT_LDFLAGS@ >> ./Config.Project.in
 echo PKG_PROF_LDFLAGS=@PKG_PROF_LDFLAGS@ >> ./Config.Project.in
 echo PKG_SHARED_LDFLAGS=@PKG_SHARED_LDFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
-echo \# Linker settings for Ravl libraries >> ./Config.Project.in
+echo \# Flags for linking libraries >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# User specified at configure time >> ./Config.Project.in
+echo CONFIGURE_LDLIBFLAGS=@CONFIGURE_LDLIBFLAGS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo \# Package specific linker settings >> ./Config.Project.in
 echo PKG_CHECK_LDLIBFLAGS=@PKG_CHECK_LDLIBFLAGS@ >> ./Config.Project.in
 echo PKG_DEBUG_LDLIBFLAGS=@PKG_DEBUG_LDLIBFLAGS@ >> ./Config.Project.in
 echo PKG_DEFAULT_LDLIBFLAGS=@PKG_DEFAULT_LDLIBFLAGS@ >> ./Config.Project.in
