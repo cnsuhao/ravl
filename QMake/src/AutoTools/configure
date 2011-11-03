@@ -6714,6 +6714,9 @@ echo >> ./Config.QMake.in
 echo \# User specified at configure time >> ./Config.QMake.in
 echo QMAKE_LDFLAGS=@LDFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
+echo \# Take any user specified LDFLAGS as applying to libraries as well >> ./Config.QMake.in
+echo QMAKE_LDLIBFLAGS=@LDFLAGS@ >> ./Config.QMake.in
+echo >> ./Config.QMake.in
 echo \# General QMake linker settings >> ./Config.QMake.in
 echo LINKER_SPECIFIC_LDFLAGS=@LINKER_SPECIFIC_LDFLAGS@ >> ./Config.QMake.in
 echo LINKER_SHARED_LDFLAGS=@LINKER_SHARED_LDFLAGS@ >> ./Config.QMake.in
