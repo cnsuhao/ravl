@@ -6,12 +6,6 @@
 
 # file-header-ends-here
 
-# Development Bodges....
-
-PAR_MAKE=--jobs=$(PROCS)
-
-# End of bodges
-
 
 # Declare location of QMake files
 
@@ -304,7 +298,8 @@ ifndef PROCS
 
   PROCS=$(shell $(SYSCONF) -a)
 endif
-export PROCS
+
+PAR_MAKE=$(MAKE_SPECIFIC_PARALLEL)
 
 # Basic make.
 MAKESM=$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(DEF_INC) 

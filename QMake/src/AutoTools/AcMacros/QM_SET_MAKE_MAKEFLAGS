@@ -24,6 +24,11 @@ dnl       MAKE_SPECIFIC_MAKEFLAGS    Receives the MAKEFLAGS that relate to
 dnl                                  the specific make utility in use. The
 dnl                                  settings enable the make functionality
 dnl                                  required for the operation of QMake.
+dnl       MAKE_SPECIFIC_PARALLEL     Receives the MAKEFLAGS that relate to
+dnl                                  job control for the the specific make
+dnl                                  utility in use. This setting is intended
+dnl                                  to enable the execution of parallel make
+dnl                                  jobs.
 dnl       MAKEFLAGS                  Not actually modified or interrogated
 dnl                                  by this macro; merely declared for 
 dnl                                  output substitution into the configure
@@ -50,15 +55,18 @@ AC_DEFUN([QM_SET_MAKE_MAKEFLAGS],
 
           if ( test X$GNU_MAKE = Xyes )
           then
-             MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r --jobs \$(PROCS)"
+             MAKE_SPECIFIC_MAKEFLAGS=" --no-print-directory -r"
+             MAKE_SPECIFIC_PARALLEL="--jobs \$(PROCS)"
           else
              # Potential to add further options here for particular versions of make
              # However, at the moment we just have a standard option for all
              MAKE_SPECIFIC_MAKEFLAGS=" -r "
+             MAKE_SPECIFIC_PARALLEL=""
           fi
           AC_SUBST([MAKEFLAGS])
           # User-provided MAKEFLAGS will be recorded as QMAKE_MAKEFLAGS in Config.QMake 
           AC_SUBST([MAKE_SPECIFIC_MAKEFLAGS])
+          AC_SUBST([MAKE_SPECIFIC_PARALLEL])
          ]
         )
 

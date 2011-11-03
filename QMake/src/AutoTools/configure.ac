@@ -318,6 +318,8 @@ echo >> ./Config.QMake.in
 echo \# General QMake make settings >> ./Config.QMake.in
 echo MAKE_SPECIFIC_MAKEFLAGS=@MAKE_SPECIFIC_MAKEFLAGS@ >> ./Config.QMake.in
 echo >> ./Config.QMake.in
+echo MAKE_SPECIFIC_PARALLEL=@MAKE_SPECIFIC_PARALLEL@ >> ./Config.QMake.in
+echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 echo >> ./Config.QMake.in
 
