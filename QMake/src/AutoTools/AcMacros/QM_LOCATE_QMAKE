@@ -82,17 +82,21 @@ AC_DEFUN([QM_LOCATE_QMAKE],
                                       with_QMake_pkgconf=uselocal
                                       ;;
                             'y' | 'Y' | 'yes' | 'Yes' | 'YES' )
-                                      with_QMake_pkgconf=QMake.pc
                                       Require_QMake_pkgconf=yes
+                                      # We do not know the path so just look
+                                      # for the package name rather than the
+                                      # .pc file
+                                      with_QMake_pkgconf=QMake
                                       ;;
                             * )       # Name of .pc for relevant install of QMake
                                       Require_QMake_pkgconf=yes
                                       ;;
                        esac
                       ],
-                      [# Not specified, look for default on system paths
+                      [# Not specified, as we do not know the path just look
+                       # for the package name rather than the .pc file
+                       with_QMake_pkgconf=QMake
                        trace 4 "--with-QMake-pkgconf unset"
-                       with_QMake_pkgconf=QMake.pc
                       ]
                      )
  
