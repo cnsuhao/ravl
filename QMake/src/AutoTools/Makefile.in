@@ -176,23 +176,23 @@ StageSupport: $(STAGING)/Support $(STAGING)/Support/dummymain.c $(STAGING)/Suppo
 $(STAGING)/Support:
 	$(MKDIR_P) $@
 
-$(STAGING)/Support/dummymain.c:
+$(STAGING)/Support/dummymain.c: $(SRC)/Support/dummymain.c
 	$(INSTALL_DATA) $(SRC)/Support/dummymain.c $(STAGING)/Support/dummymain.c
 
-$(STAGING)/Support/Defs.txt:
+$(STAGING)/Support/Defs.txt: $(SRC)/Support/Defs.txt
 	$(INSTALL_DATA) $(SRC)/Support/Defs.txt $(STAGING)/Support/Defs.txt
 
-$(STAGING)/Support/qmake.cshrc:
+$(STAGING)/Support/qmake.cshrc: $(SRC)/Support/qmake.cshrc.src
 	sed -e 's!QMAKE_MAKEFILES /Set/During/Staging/Process!QMAKE_MAKEFILES $(datadir)/QMake/Makefiles!g' \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
                 $(SRC)/Support/qmake.cshrc.src > $(STAGING)/Support/qmake.cshrc
 
-$(STAGING)/Support/qmake.sh:
+$(STAGING)/Support/qmake.sh: $(SRC)/Support/qmake.sh.src
 	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
                 $(SRC)/Support/qmake.sh.src > $(STAGING)/Support/qmake.sh
 
-$(STAGING)/Support/Help.txt:
+$(STAGING)/Support/Help.txt: $(SRC)/Support/Help.txt
 	$(INSTALL_DATA) $(SRC)/Support/Help.txt $(STAGING)/Support/Help.txt
 
 
@@ -261,7 +261,7 @@ InstallMakefiles: $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(MAKEFILE_LIST))
 
 # Define how to install each individual makefile
 define INSTALL_MAKEFILE
-$(DESTDIR)$(datadir)/QMake/$(1):
+$(DESTDIR)$(datadir)/QMake/$(1): $(STAGING)/$(1)
 	$(MKDIR_P) $(DESTDIR)$(datadir)/QMake/$(dir $(1))
 	$(INSTALL_DATA) $(STAGING)/$(1) $(DESTDIR)$(datadir)/QMake/$(1)
 endef
@@ -318,19 +318,19 @@ InstallSupport: $(DESTDIR)$(datadir)/QMake/Support $(DESTDIR)$(datadir)/QMake/Su
 $(DESTDIR)$(datadir)/QMake/Support:
 	$(MKDIR_P) $@
 
-$(DESTDIR)$(datadir)/QMake/Support/dummymain.c:
+$(DESTDIR)$(datadir)/QMake/Support/dummymain.c: $(STAGING)/Support/dummymain.c
 	$(INSTALL_DATA) $(STAGING)/Support/dummymain.c $(DESTDIR)$(datadir)/QMake/Support/dummymain.c
 
-$(DESTDIR)$(datadir)/QMake/Support/Defs.txt:
+$(DESTDIR)$(datadir)/QMake/Support/Defs.txt: $(STAGING)/Support/Defs.txt
 	$(INSTALL_DATA) $(STAGING)/Support/Defs.txt $(DESTDIR)$(datadir)/QMake/Support/Defs.txt
 
-$(DESTDIR)$(datadir)/QMake/Support/qmake.cshrc:
+$(DESTDIR)$(datadir)/QMake/Support/qmake.cshrc: $(STAGING)/Support/qmake.cshrc
 	$(INSTALL_DATA) $(STAGING)/Support/qmake.cshrc $(DESTDIR)$(datadir)/QMake/Support/qmake.cshrc
 
-$(DESTDIR)$(datadir)/QMake/Support/qmake.sh:
+$(DESTDIR)$(datadir)/QMake/Support/qmake.sh: $(STAGING)/Support/qmake.sh
 	$(INSTALL_DATA) $(STAGING)/Support/qmake.sh $(DESTDIR)$(datadir)/QMake/Support/qmake.sh
 
-$(DESTDIR)$(datadir)/QMake/Support/Help.txt:
+$(DESTDIR)$(datadir)/QMake/Support/Help.txt: $(STAGING)/Support/Help.txt
 	$(INSTALL_DATA) $(STAGING)/Support/Help.txt $(DESTDIR)$(datadir)/QMake/Support/Help.txt
 
 
@@ -352,7 +352,7 @@ InstallPkgConf: $(DESTDIR)$(libdir)/pkgconfig $(DESTDIR)$(libdir)/pkgconfig/QMak
 $(DESTDIR)$(libdir)/pkgconfig:
 	$(MKDIR_P) $@
 
-$(DESTDIR)$(libdir)/pkgconfig/QMake.pc:
+$(DESTDIR)$(libdir)/pkgconfig/QMake.pc: $(STAGING)/lib/pkgconfig/QMake.pc
 	$(INSTALL_DATA) $(STAGING)/lib/pkgconfig/QMake.pc $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
 
 .PHONY: BuildUtils default info install InstallAB InstallBuiltUtils \
