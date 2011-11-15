@@ -12,11 +12,19 @@
 
 /********************************************************************************/
 /******* AMMA / QMAKE COMPATIBILITY *******/
+#if defined(WIN32)
+#if defined(_DEBUG)
+#define RAVL_CHECK 1
+#else
+#define RAVL_CHECK 0
+#endif
+#else
 #if !defined(RAVL_CHECK)
 #if defined(AMMA_CHECK) || defined(QMAKE_CHECK)
 #define RAVL_CHECK 1
 #else
 #define RAVL_CHECK 0
+#endif
 #endif
 #endif
 /****************************************/
