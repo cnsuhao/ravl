@@ -302,10 +302,10 @@ namespace RavlN {
     handle = RavlN::SystemTypeConverter().DoConversion(child->Component().Abstract(),from,to);
     if(!handle.IsValid()) {
       if(!silentError)
-        RavlSysLogf(SYSLOG_ERR," convert data to requested type, from '%s' to '%s' ",RavlN::TypeName(from),RavlN::TypeName(to));
+        RavlSysLogf(SYSLOG_ERR," convert data to requested type, from '%s' to '%s' in '%s'",RavlN::TypeName(from),RavlN::TypeName(to),Path().data());
       return false;
     }
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"UseComponentInternal, successfull @ '%s' ",name.chars()));
+    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"UseComponentInternal, successful @ '%s' ",name.chars()));
     return true;
   }
   
@@ -507,7 +507,7 @@ namespace RavlN {
       m_verbose(false),
       m_checkConfig(false)
   {
-    RavlSysLogf(SYSLOG_DEBUG,"XMLFactoryC, Config file '%s' ",configFile.chars());
+    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"XMLFactoryC, Config file '%s' ",configFile.chars()));
     if(!Read(configFile,loader)) {
       throw RavlN::ExceptionBadConfigC("Can't open config file. ");
     }
@@ -522,7 +522,7 @@ namespace RavlN {
       m_verbose(false),
       m_checkConfig(false)
   {
-    RavlSysLogf(SYSLOG_DEBUG,"XMLFactoryC, Sub factory. ");
+    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"XMLFactoryC, Sub factory. "));
     
     StringC fileName = context.AttributeString("configfile","");
     if(!fileName.IsEmpty())
@@ -539,7 +539,7 @@ namespace RavlN {
       m_verbose(false),
       m_checkConfig(false)
   {
-    RavlSysLogf(SYSLOG_DEBUG,"Constructing from preparsed tree %s. ",configFileName.chars());
+    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Constructing from preparsed tree %s. ",configFileName.chars()));
     // Setup the root.
     if(!m_configRoot.Child("Config",m_configTree)) {
       RavlSysLogf(SYSLOG_ERR,"No config section in '%s' ",m_masterConfigFilename.chars());
