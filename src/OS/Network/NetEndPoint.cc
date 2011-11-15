@@ -718,6 +718,7 @@ namespace RavlN {
       RavlSysLog(SYSLOG_INFO) << "NetEndPointBodyC::RunReceive(), Connection broken ";
 #endif
     if(sigConnectionBroken.IsValid()) {
+      ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "NetEndPointBodyC::RunReceive(), signalling connection broken.");
       sigConnectionBroken.Invoke();
       sigConnectionBroken.DisconnectAll(true);
     } else

@@ -74,6 +74,10 @@ namespace RavlN {
 
 #define RavlSysLog(PRIORITY) RavlN::SysLog(PRIORITY,__LINE__,__FILE__)
 #define RavlSysLogf(PRIORITY,...) RavlN::SysLog(PRIORITY,__LINE__,__FILE__,__VA_ARGS__)
+#define RavlError(...) RavlN::SysLog(SYSLOG_ERR,__LINE__,__FILE__,__VA_ARGS__)
+#define RavlWarning(...) RavlN::SysLog(SYSLOG_WARNING,__LINE__,__FILE__,__VA_ARGS__)
+#define RavlInfo(...) RavlN::SysLog(SYSLOG_INFO,__LINE__,__FILE__,__VA_ARGS__)
+#define RavlDebug(...) RavlN::SysLog(SYSLOG_DEBUG,__LINE__,__FILE__,__VA_ARGS__)
 }
 
 #endif

@@ -42,7 +42,7 @@ namespace RavlOSGN {
   
   bool LayoutGridC::UpdateLayout()
   {
-    rDebug("Updating layout. ");
+    ONDEBUG(rDebug("Updating layout. "));
     
     unsigned colMax = 1;
     unsigned rowMax = 1;

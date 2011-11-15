@@ -49,6 +49,15 @@ namespace RavlN {
   
   class RCBodyC {
   public:
+    RCBodyC()
+    { ravl_atomic_set(&counter,0); }
+    //: Default constructor.
+    // Creates a handle with 0 reference counts.
+
+    RCBodyC(const RCBodyC &)
+    { ravl_atomic_set(&counter,0); }
+    //: Make sure we don't copy the reference counter.
+
     ~RCBodyC();
     //: Destructor.
     
@@ -77,16 +86,6 @@ namespace RavlN {
     void SetRefCounter(UIntT val) const
     { ravl_atomic_set(&counter,val); }
     // Set reference counter. For use in RCHandle only.
-  protected:    
-    RCBodyC() 
-    { ravl_atomic_set(&counter,0); }
-    //: Default constructor.
-    // Creates a handle with 0 reference counts.
-    
-    RCBodyC(const RCBodyC &) 
-    { ravl_atomic_set(&counter,0); }
-    //: Make sure we don't copy the reference counter.
-
   private:
     mutable ravl_atomic_t counter;
   };

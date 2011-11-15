@@ -172,7 +172,7 @@ namespace RavlN {
     // This should only be used if net end point 
     // has been created by the default constructor.
     
-    bool WaitSetupComplete(RealT timeOut = 10);
+    bool WaitSetupComplete(RealT timeOut = 60);
     //: Wait for setup to complete.
     
     bool WaitTransmitQClear();
@@ -480,6 +480,7 @@ namespace RavlN {
     bool optimiseThroughput; // Optimise through put at the expense of latency.
     bool threadsStarted;
     SizeT m_maxPacketSize;   // Maximum size of any packet that can be handled.
+    IntT m_port;
   };
   
   //! userlevel=Normal

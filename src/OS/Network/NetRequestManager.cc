@@ -11,6 +11,7 @@
 #include "Ravl/OS/NetRequestManager.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/HashIter.hh"
+#include "Ravl/TypeName.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -50,11 +51,11 @@ namespace RavlN {
   //: Deliver data to waiting thread.
   
   bool NetRequestManagerC::DeliverReqAbstract(UIntT id,const RCWrapAbstractC &data) {
-    ONDEBUG(SysLog(SYSLOG_DEBUG) << "NetRequestManagerC::::DeliverReq(), ReqId=" << id << " Called.  Type=" << TypeName(data.DataType()) << " ");
+    ONDEBUG(SysLog(SYSLOG_DEBUG) << "NetRequestManagerC::DeliverReq(), ReqId=" << id << " Called.  Type=" << TypeName(data.DataType()) << " ");
     MutexLockC hold(reqAccess);
     NetRequestDataC reqInfo;
     if(!id2reqResults.Lookup(id,reqInfo)) {
-      SysLog(SYSLOG_WARNING) << "NetRequestManagerC::::DeliverReq(), WARNING: Unexpect reply " << id;
+      SysLog(SYSLOG_WARNING) << "NetRequestManagerC::DeliverReq(), WARNING: Unexpect reply " << id;
       return false;
     }
     reqInfo.Data() = data;
@@ -71,7 +72,9 @@ namespace RavlN {
     MutexLockC hold(reqAccess);
     if(!connectionOk) {
       SysLog(SYSLOG_CRIT) << "NetRequestManagerC::WaitForReq(), ERROR: Connection not open! ";
-      throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
+      if(throwExceptionOnFail)
+        throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
+      return false;
     }
     NetRequestDataC reqInfo;
     if(!id2reqResults.Lookup(id,reqInfo)) {
@@ -90,7 +93,7 @@ namespace RavlN {
     if(!data.IsValid()) { // Request failed for some reason ?
       SysLog(SYSLOG_ERR) << "NetRequestManagerC::WaitForReq(), ERROR: Request Failed. ";
       if(throwExceptionOnFail)
-	throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
+        throw ExceptionOperationFailedC("NetRequestManagerC::WaitForReq(), Failed. ");
       return false;
     }
     

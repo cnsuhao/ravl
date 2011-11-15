@@ -210,38 +210,35 @@ namespace RavlN
 #else
   
   RWLockC::RWLockC(RWLockKindT kind)
-    : AccM(), 
-      RdCount(0), 
-      WrWait(0), 
-      RdWait(0), 
-      WriteQueue(0),
-      ReadQueue(0),
+    : m_accM(), 
+      m_rdCount(0), 
+      m_wrWait(0), 
+      m_rdWait(0), 
       m_preferWriter(kind == RWLOCK_PREFER_WRITERS)
   {} 
   
   RWLockC::RWLockC(const RWLockC &other)
-    : AccM(), 
-      RdCount(0), 
-      WrWait(0), 
-      RdWait(0), 
-      WriteQueue(0),
-      ReadQueue(0),
+    : m_accM(), 
+      m_rdCount(0), 
+      m_wrWait(0), 
+      m_rdWait(0), 
       m_preferWriter(other.m_preferWriter)
   {} 
   
   bool RWLockC::RdLock()
   {
-    AccM.Lock();
-    while((WrWait > 0 && m_preferWriter) || RdCount < 0) {
-      RdWait++; // Should only go aroung this loop once !
-      AccM.Unlock();
-      ReadQueue.Wait();
-      AccM.Lock();
-      RdWait--;
+    MutexLockC alock(m_accM);
+    while((m_wrWait > 0 && m_preferWriter) || m_rdCount < 0) {
+      m_rdWait++; // Should only go around this loop once !
+      alock.Unlock();
+      m_readQueue.Lock();
+      m_readQueue.Wait();
+      m_readQueue.Unlock();
+      alock.Lock();
+      m_rdWait--;
     }
-    RavlAssert(RdCount >= 0);
-    RdCount++;
-    AccM.Unlock();
+    RavlAssert(m_rdCount >= 0);
+    m_rdCount++;
     return true;
   }
 
@@ -250,147 +247,138 @@ namespace RavlN
   bool RWLockC::RdLock(float timeout) {
     DateC timeOutAt = DateC::NowUTC();
     timeOutAt += timeout;
-    AccM.Lock();
-    while((WrWait > 0 && m_preferWriter) || RdCount < 0) {
-      RdWait++; // Should only go aroung this loop once !
-      AccM.Unlock();
+    MutexLockC alock(m_accM);
+    while((m_wrWait > 0 && m_preferWriter) || m_rdCount < 0) {
+      m_rdWait++; // Should only go around this loop once !
+      alock.Unlock();
       float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
-      if(!ReadQueue.Wait(timeToWait)) {
-        AccM.Lock();
-        RdWait--;
-        AccM.Unlock();
+      m_readQueue.Lock();
+      if(!m_readQueue.Wait(timeToWait)) {
+        m_readQueue.Unlock();
+        alock.Lock();
+        m_rdWait--;
         return false;
       }
-      AccM.Lock();
-      RdWait--;
+      m_readQueue.Unlock();
+      alock.Lock();
+      m_rdWait--;
     }
-    RavlAssert(RdCount >= 0);
-    RdCount++;
-    AccM.Unlock();
+    RavlAssert(m_rdCount >= 0);
+    m_rdCount++;
     return true;
   }
 
 
   bool RWLockC::WrLock(void)
   {
-    AccM.Lock();
-    while(RdCount != 0) {
-      WrWait++; // Should only go through here once !
-      AccM.Unlock();
-      WriteQueue.Wait();
-      AccM.Lock();
-      WrWait--;
+    MutexLockC alock(m_accM);
+    while(m_rdCount != 0) {
+      m_wrWait++; // Should only go through here once !
+      alock.Unlock();
+      m_writeQueue.Lock();
+      m_writeQueue.Wait();
+      m_writeQueue.Unlock();
+      alock.Lock();
+      m_wrWait--;
     }
-    RdCount = -1; // Flag write lock.
-    AccM.Unlock();
+    m_rdCount = -1; // Flag write lock.
     return true;
   }
 
-  //: Aquire a write lock with timeout
-  // Returns true if lock aquired, false if timeout.
+  //: Acquire a write lock with timeout
+  // Returns true if lock acquired, false if timeout.
   // Negative timeout's will cause the wait to last forever
 
   bool RWLockC::WrLock(float timeout)
   {
     DateC timeOutAt = DateC::NowUTC();
     timeOutAt += timeout;
-    AccM.Lock();
-    while(RdCount != 0) {
-      WrWait++; // Should only go through here once !
-      AccM.Unlock();
+    MutexLockC alock(m_accM);
+    while(m_rdCount != 0) {
+      m_wrWait++; // Should only go through here once !
+      alock.Unlock();
       float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
-      if(!WriteQueue.Wait(timeToWait)) {
-        AccM.Lock();
-        WrWait--;
-        AccM.Unlock();
+      m_writeQueue.Lock();
+      if(!m_writeQueue.Wait(timeToWait)) {
+        m_writeQueue.Unlock();
+        alock.Lock();
+        m_wrWait--;
         return false;
       }
-      AccM.Lock();
-      WrWait--;
+      m_writeQueue.Unlock();
+      alock.Lock();
+      m_wrWait--;
     }
-    RdCount = -1; // Flag write lock.
-    AccM.Unlock();
+    m_rdCount = -1; // Flag write lock.
     return true;
   }
 
 
   bool RWLockC::Unlock(void)
   {
-    AccM.Lock();
-    if(RdCount < 0) {
+    MutexLockC alock(m_accM);
+    if(m_rdCount < 0) {
       // Unlock a write lock.
-      RdCount = 0;
+      m_rdCount = 0;
       if(m_preferWriter) {
-        if(WrWait > 0) {
-    	  WriteQueue.Post(); // Wake up a waiting writer.
+        if(m_wrWait > 0) {
+    	  m_writeQueue.Signal(); // Wake up a waiting writer.
         } else {
-	  for(int i = 0;i < RdWait;i++)
-	    ReadQueue.Post(); // Wakeup all waiting readers.
+	  m_readQueue.Broadcast(); // Wake up all waiting readers.
         }
       } else {
-        if(RdWait == 0 && WrWait > 0)
-    	  WriteQueue.Post(); // Wake up a waiting writer.
+        if(m_rdWait == 0 && m_wrWait > 0)
+    	  m_writeQueue.Signal(); // Wake up a waiting writer.
         else {
-	  for(int i = 0;i < RdWait;i++)
-	    ReadQueue.Post(); // Wakeup all waiting readers.
+          m_readQueue.Broadcast(); // Wake up all waiting readers.
         }
       }
-      AccM.Unlock();
       return true;
     }
     // Unlock a read lock.
-    RdCount--;
+    m_rdCount--;
     if(m_preferWriter) {
-      if(WrWait < 1) {
+      if(m_wrWait < 1) {
         // No writers waiting so make sure readers are awake
-        for(int i = 0;i < RdWait;i++)
-	  ReadQueue.Post(); // Wakeup all waiting readers.
+        m_readQueue.Broadcast(); // Wake up all waiting readers.
       } else {
         // If no readers locking, start a writer.
-        if(RdCount <= 0)
-	  WriteQueue.Post(); // Wake up a waiting writer.
+        if(m_rdCount <= 0)
+          m_writeQueue.Signal(); // Wake up a waiting writer.
       }
     } else {
       // Reader preference.
-      if(RdWait > 0) {
+      if(m_rdWait > 0) {
         // They shouldn't be waiting, but in case.
-        for(int i = 0;i < RdWait;i++)
-	  ReadQueue.Post(); // Wakeup all waiting readers.
+	m_readQueue.Broadcast(); // Wake up all waiting readers.
       } else {
-        // Nothing waiting, and nothing hold a lock so let
+        // Nothing waiting, and nothing holding a lock so let
         // writers have a go.
-        if(RdCount <= 0)
-	  WriteQueue.Post(); // Wake up a waiting writer.
+        if(m_rdCount <= 0)
+	  m_writeQueue.Signal(); // Wake up a waiting writer.
       }
     }
-    AccM.Unlock();
     return true;
   }
 
   bool RWLockC::TryRdLock()  {
-    AccM.Lock();
-    if(WrWait > 0 || RdCount < 0) {
-      AccM.Unlock();
+    MutexLockC alock(m_accM);
+    if(m_wrWait > 0 || m_rdCount < 0)
       return false;
-    }
-    RdCount++;
-    AccM.Unlock();
+    m_rdCount++;
     return true;
   }
 
 
   bool RWLockC::TryWrLock(void)  {
-    AccM.Lock();
-    if(RdCount > 0) {
-      AccM.Unlock();
+    MutexLockC alock(m_accM);
+    if(m_rdCount > 0)
       return false;
-    }
-    RdCount = -1; // Flag write lock.
-    AccM.Unlock();
+    m_rdCount = -1; // Flag write lock.
     return true;
   }
 

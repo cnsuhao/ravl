@@ -38,7 +38,7 @@ namespace RavlN {
   //: Wait for connection complete.
   
   bool NetPortBaseC::WaitForConnect(RealT timeOut) {
-    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "NetPortBaseC::WaitForConnect(). Called. ");
+    ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "NetPortBaseC::WaitForConnect(). Called. timeOut(" << timeOut << ")");
     if(!streamReady.Wait(timeOut)) {
       RavlSysLog(SYSLOG_DEBUG) << "NetPortBaseC::WaitForConnect(), Connection failed to complete. ";
       return false;
