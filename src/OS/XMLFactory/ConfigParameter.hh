@@ -111,6 +111,8 @@ namespace RavlN
     virtual void ZeroOwners();
   };
 
+
+  bool SetupConfigParameter(const XMLFactoryContextC &factory,const std::string &name,const std::string &value,bool acceptEmptyString = true);
 }
 
 #endif
