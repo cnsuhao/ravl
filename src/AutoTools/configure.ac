@@ -1297,9 +1297,10 @@ echo >> ./Config.Project.in
 # Declare which libraries are needed for particular system calls that can move
 # about on different platforms
 #
-# First initialise ALL_EXTERNAL_LIBS here as we need to record these libraries
+# First initialise ALL_EXTERNAL_xxxS here as we need to record these libraries
 # as well as the external libs
 ALL_EXTERNAL_LIBS=""
+ALL_EXTERNAL_CFLAGS=""
 echo >> ./Config.Project.in
 echo \# Location of system calls that can vary their parent library >> ./Config.Project.in
 echo >> ./Config.Project.in
@@ -1307,10 +1308,11 @@ echo >> ./Config.Project.in
 echo "DynLink_LIBS=@DynLink_LIBS@" >> ./Config.Project.in
 echo >> ./Config.Project.in
 ALL_EXTERNAL_LIBS+=" "$DynLink_LIBS
+ALL_EXTERNAL_CFLAGS+=" "$DynLink_CFLAGS
 
 
 #
-# Now set RESOURCES & ALL_EXTERNAL_LIBS based on the libraries we can use
+# Now set RESOURCES & ALL_EXTERNAL_xxxS based on the libraries we can use
 # Also output each external library's <Lib>_CFLAGS and <Lib>_LIBS definition
 # to Config.Project
 #
@@ -1371,12 +1373,13 @@ dnl                   # m4 removing them.
                       do
                          cflags="$cflags @${p}_CFLAGS@"
                          libs="$libs @${p}_LIBS@"
-                         # No need to update ALL_EXTERNAL_LIBS as this
-                         # records the dependant libraries when the 
-                         # prerequisites are processed 
                       done
                       echo ${lib}_CFLAGS=$cflags >> Config.Project.in
                       echo ${lib}_LIBS=$libs >> Config.Project.in
+                      # No need to update ALL_EXTERNAL_xxxS here as these
+                      # variables already receive the settings for the
+                      # prerequisites when those libraries themselves are
+                      # processed .
                       echo >> ./Config.Project.in
                    else
                       echo ${lib}_CFLAGS=@${lib}_CFLAGS@ >> Config.Project.in
@@ -1384,15 +1387,21 @@ dnl                   # m4 removing them.
                       echo >> ./Config.Project.in
                       eval liblist=\$${lib}_LIBS
                       ALL_EXTERNAL_LIBS+=" "$liblist
+                      eval cflglist=\$${lib}_CFLAGS
+                      ALL_EXTERNAL_CFLAGS+=" "$cflglist
                    fi
                    ;;
    esac
 done
 trace 3 RESOURCES now "@<:@$RESOURCES@:>@"
 trace 3 ALL_EXTERNAL_LIBS now "@<:@$ALL_EXTERNAL_LIBS@:>@"
+trace 3 ALL_EXTERNAL_CFLAGS now "@<:@$ALL_EXTERNAL_CFLAGS@:>@"
 
-# finish Config.Project.in external libraries section with ALL_EXTERNAL_LIBS def
+# finish Config.Project.in external libraries section with ALL_EXTERNAL_LIBS and
+# ALL_EXTERNAL_CFLAGS def
 echo ALL_EXTERNAL_LIBS=@ALL_EXTERNAL_LIBS@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+echo ALL_EXTERNAL_CFLAGS=@ALL_EXTERNAL_CFLAGS@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 
@@ -1822,9 +1831,10 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 
-dnl Declare RESOURCES and ALL_EXTERNAL_LIBS as outputs
+dnl Declare RESOURCES and ALL_EXTERNAL_xxx as outputs
 AC_SUBST([RESOURCES])
 AC_SUBST([ALL_EXTERNAL_LIBS])
+AC_SUBST([ALL_EXTERNAL_CFLAGS])
 
 dnl Create Makefiles and *.Project files
 AC_CONFIG_FILES([Config.Project])

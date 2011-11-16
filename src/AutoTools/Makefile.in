@@ -49,7 +49,7 @@ endif
 
 # Builds
 
-default: qmake fullsrc opt optshared optbin singleoptshared singleoptsharedbin pkgconf
+default: qmake fullsrc opt optshared optbin singleoptshared singleoptsharedbin pkgconf Ravl.def
 #JFi:To Do- make doc (and support from configure i.e. locate tools)
 
 check: testsingleoptshared 
@@ -68,7 +68,26 @@ doc: qmake
 fullsrc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
 
-install: installQMake installsingleoptshared installHdrs installpkgconf
+install: installQMake installsingleoptshared installHdrs installpkgconf installRavl.def installDummyDefs
+
+BUILT_DOT_DEFS=$(filter-out Ravl.def, $(patsubst $(INSTALLHOME)/lib/libdep/%,%,$(wildcard $(INSTALLHOME)/lib/libdep/*)))
+# List of .def files created by build process (minus the single library's
+# Ravl.def). Listed as simple filename-only form.
+
+DUMMY_DOT_DEFS=$(patsubst %,$(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/%, $(BUILT_DOT_DEFS))
+# List of dummy .def files we should install (listed with installation target
+# path).
+
+define installddd
+  $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/$1: $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
+	@echo \# Dummy Dot Def file >  $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/$1
+endef
+
+$(foreach dotdef,$(BUILT_DOT_DEFS),$(eval $(call installddd,$(dotdef))))
+ 
+installDummyDefs: $(DUMMY_DOT_DEFS)
+
+
 
 # All the install targets recurse down the source directories using the defs.mk
 # files to determine what needs installing. The relevant files are then
@@ -89,7 +108,13 @@ $(ABS_DESTDIR)$(libdir)/pkgconfig:
 $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc:
 	$(INSTALL_DATA) $(INSTALLHOME)/lib/pkgconfig/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
-installsingleoptshared:
+installRavl.def:  $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
+	$(INSTALL) $(INSTALLHOME)/lib/libdep/Ravl.def $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def
+
+$(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
+	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
+
+installsingleoptshared: 
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk  INSTALLHOME=$(INSTALLHOME) VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 install recurse
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(INSTALL) $(INSTALLHOME)/lib/$(ARC)/opt/shared/single/libRavl.so $(ABS_DESTDIR)$(libdir)/libRavl.so
@@ -159,6 +184,40 @@ LocalQMake:
 # looking for. As well as $(datadir), $(sysconfdir) automatically has /QMake
 # suffixed to it for the install process, hence the value of $(sysconfdir) 
 # that is used here.
+
+
+Ravl.def: $(INSTALLHOME)/lib/libdep $(INSTALLHOME)/lib/libdep/Ravl.def
+
+$(INSTALLHOME)/lib/libdep:
+	$(SHOWIT) $(MKDIR_P) $@
+
+$(INSTALLHOME)/lib/libdep/Ravl.def:
+	$(SHOWIT)echo \# This file is part of RAVL, Recognition And Vision Library > $@
+	$(SHOWIT)echo \# Copyright \(C\) 2001-11,  University of Surrey. >> $@
+	$(SHOWIT)echo \# This code may be redistributed under the terms of the GNU Lesser >> $@
+	$(SHOWIT)echo \# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@
+	$(SHOWIT)echo \# see http://www.gnu.org/copyleft/lesser.html >> $@
+	$(SHOWIT)echo \# file-header-ends-here >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo ifndef RAVL_DEF >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo "  RAVL_DEF=1" >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo "  ifndef RAVL_LIBS" >> $@
+	$(SHOWIT)echo "    RAVL_LIBS=-L$(libdir) -lRavl" >> $@
+	$(SHOWIT)echo "  endif" >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo "  EXELIB := \$$(RAVL_LIBS) \$$(EXELIB)" >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo "  ifndef RAVL_CFLAGS" >> $@
+	$(SHOWIT)echo "    RAVL_CFLAGS=-I$(includedir) $(ALL_EXTERNAL_CFLAGS)" >> $@
+	$(SHOWIT)echo "  endif" >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo "  INCLUDES += \$$(RAVL_CFLAGS)" >> $@
+	$(SHOWIT)echo >> $@
+	$(SHOWIT)echo endif >> $@
+	$(SHOWIT)echo >> $@
+
 
 retestopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt retest
