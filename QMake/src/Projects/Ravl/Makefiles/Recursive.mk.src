@@ -21,11 +21,12 @@ OBJ_HOME=$(INSTALLHOME)/$(ARC)
 
 REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
 
-# Some dirs specify programs as both examples and tests. In these circumstances
-# we're better off stripping the tests from the example list so as to avoid
-# any possible confusion over 'Test' depending on both $(EG-Bin-Dir)/Test and 
-# $(Test-Bin-Dir)/Test
-EGS=$(basename $(filter-out $(TESTEXES),$(EXAMPLES)))
+# Some dirs specify programs as both examples and tests or examples and progs.
+# In these circumstances we're better off stripping the tests from the example
+# list so as to avoid any possible confusion over 'Test' depending on both
+# $(EG-Bin-Dir)/Test and $(Test-Bin-Dir)/Test or 'Util' depending on both
+# $(EG-Bin-Dir)/Util and $(Util-Bin-Dir)/Util.
+EGS=$(basename $(filter-out $(MAINS), $(filter-out $(TESTEXES),$(EXAMPLES))))
 
 
 
