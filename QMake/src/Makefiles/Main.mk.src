@@ -100,7 +100,7 @@ ifdef USESLIBS
  endif
  ifneq ($(USESLIBS),)
   ifneq ($(USESLIBS),None)
-   ifeq ($(filter Auto,$(USESLIBS)),Auto)
+   ifneq ($(filter Auto,$(USESLIBS)),)
     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
     EXTRA_USESLIBS = $(AUTOUSELIBS) $(filter-out Auto,$(USESLIBS))
     ifdef LIBDEPS
@@ -159,7 +159,7 @@ endif
 # Has the user included Auto in there useslibs ?
 # If so attempt to automaticly generate dependancies.
 
-ifeq ($(filter Auto,$(USESLIBS)),Auto)
+ifneq ($(filter Auto,$(USESLIBS)),)
  ifneq ($(strip $(MAINS) $(TESTEXES)),)
   AUTOPROGLIBS := $(shell $(QLIBS) -prog -d -p $(ROOTDIR))
   ifdef LIBDEPS
@@ -1025,7 +1025,7 @@ endif
 
 ifdef LOCAL_DEFBASE
  ifdef USESLIBS
-  ifneq (($(filter Auto,$(USESLIBS)),Auto),Auto)
+  ifeq ($(filter Auto,$(USESLIBS)),)
    $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir
   else
    ifndef AUTOUSELIBS
@@ -1049,7 +1049,7 @@ ifdef LOCAL_DEFBASE
   ifdef USESLIBS
    ifneq ($(USESLIBS),)
     ifneq ($(USESLIBS),None)
-     ifneq ($(filter Auto,$(USESLIBS)),Auto)
+     ifeq ($(filter Auto,$(USESLIBS)),)
       ifneq ($(strip $(TARG_USESLIBS_R)),)
 	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F)
 	echo >> $(INST_LIBDEF)/$(@F)
