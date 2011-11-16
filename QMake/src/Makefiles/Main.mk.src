@@ -101,7 +101,7 @@ ifdef USESLIBS
  ifneq ($(USESLIBS),)
   ifneq ($(USESLIBS),None)
    ifneq ($(filter Auto,$(USESLIBS)),)
-    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+    AUTOUSELIBS := Ravl.def
     EXTRA_USESLIBS = $(AUTOUSELIBS) $(filter-out Auto,$(USESLIBS))
     ifdef LIBDEPS
      ifdef PLIB
@@ -161,7 +161,7 @@ endif
 
 ifneq ($(filter Auto,$(USESLIBS)),)
  ifneq ($(strip $(MAINS) $(TESTEXES)),)
-  AUTOPROGLIBS := $(shell $(QLIBS) -prog -d -p $(ROOTDIR))
+  AUTOPROGLIBS := Ravl.def
   ifdef LIBDEPS
    AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
   endif
