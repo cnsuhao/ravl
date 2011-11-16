@@ -71,7 +71,7 @@ default: StageQMake
 
 # Targets for preparing QMake source in the staging area
 
-StageQMake: ProcessMakefiles StageUtils StageSupport StageAB StagePkgConf
+StageQMake: ProcessMakefiles StageUtils StageSupport StageDefaults StageAB StagePkgConf
 	@:
 # The configuration files do not get staged as install directly uses the live 
 # version (these files are unmodified by the staging process so a second copy
@@ -197,6 +197,17 @@ $(STAGING)/Support/Help.txt: $(SRC)/Support/Help.txt
 
 
 
+# Stage default client-build settings
+StageDefaults: $(STAGING)/Projects/Skeleton $(STAGING)/Projects/Skeleton/Config.Default
+
+$(STAGING)/Projects/Skeleton:
+	$(MKDIR_P) $@
+
+$(STAGING)/Projects/Skeleton/Config.Default: $(SRC)/Projects/Skeleton/Config.Default
+	$(INSTALL_DATA) $(SRC)/Projects/Skeleton/Config.Default $(STAGING)/Projects/Skeleton/Config.Default
+
+
+
 # Stage AutoBuild
 StageAB: $(STAGING)/AutoBuild $(STAGING)/AutoBuild/AutoBuild.pl $(STAGING)/AutoBuild/AutoBuild.sample.conf
 	@:
@@ -239,7 +250,7 @@ $(STAGING)/lib/pkgconfig/QMake.pc:
 
 # Targets for installing QMake
 
-install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallAB InstallPkgConf
+install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallDefaults InstallAB InstallPkgConf
 # JFi:To Do: Add InstallDoc
 
 
@@ -332,6 +343,17 @@ $(DESTDIR)$(datadir)/QMake/Support/qmake.sh: $(STAGING)/Support/qmake.sh
 
 $(DESTDIR)$(datadir)/QMake/Support/Help.txt: $(STAGING)/Support/Help.txt
 	$(INSTALL_DATA) $(STAGING)/Support/Help.txt $(DESTDIR)$(datadir)/QMake/Support/Help.txt
+
+
+
+# Install default client-build settings
+InstallDefaults: $(DESTDIR)$(datadir)/QMake/Projects/Skeleton $(DESTDIR)$(datadir)/QMake/Projects/Skeleton/Config.Default
+
+$(DESTDIR)$(datadir)/QMake/Projects/Skeleton:
+	$(MKDIR_P) $@
+
+$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/Config.Default: $(STAGING)/Projects/Skeleton/Config.Default
+	$(INSTALL_DATA) $(STAGING)/Projects/Skeleton/Config.Default $(DESTDIR)$(datadir)/QMake/Projects/Skeleton/Config.Default
 
 
 

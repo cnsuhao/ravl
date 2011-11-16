@@ -4,8 +4,6 @@
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 
-# Beware Development bodges at end of initialisation section 
-
 
 ifndef QMAKE_MAKEFILES
   QMAKE_MAKEFILES=/Set/During/Staging/Process
@@ -476,4 +474,8 @@ info:
 	@echo "    TESTDATADIR     [ $(TESTDATADIR) ]"
 	@echo
 
+
+
+$(INSTALLHOME)/Config.Project:
+	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
 

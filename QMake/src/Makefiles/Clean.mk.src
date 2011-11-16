@@ -86,3 +86,6 @@ subdirs:
 	  fi  \
 	done
 
+$(INSTALLHOME)/Config.Project:
+	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
+
