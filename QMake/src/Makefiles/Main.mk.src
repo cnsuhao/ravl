@@ -17,7 +17,7 @@ export TARGET
 VPATH = $(QCWD)
 
 ifdef USERBUILD
- USESLIBS = Auto
+ USESLIBS += Auto
 endif
 
 #########################
