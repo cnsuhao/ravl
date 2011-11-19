@@ -211,6 +211,9 @@ namespace RavlN
 #if RAVL_HAVE_WIN32_THREADS
     if((rc = WaitForSingleObject(mutex,0)) == WAIT_OBJECT_0)
       return true;
+    if(rc != WAIT_TIMEOUT) {
+      Error("TryLock failed",GetLastError(),rc);
+    }
 #endif
     return false;
   }
