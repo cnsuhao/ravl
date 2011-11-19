@@ -37,7 +37,20 @@
 namespace RavlN
 {
 
+  void ConditionalMutexC::Error(const char *msg)  {
+    cerr << "ConditionalMutexC::Error() :" << msg << " \n";
+    RavlAssert(0);
+  }
+
+
 #if RAVL_HAVE_PTHREAD_COND 
+
+  ConditionalMutexC::ConditionalMutexC()
+  {
+    if(pthread_cond_init(&cond,0))
+      Error("pthread_cond_init failed. \n");
+  }
+
   //: Destructor
   
   ConditionalMutexC::~ConditionalMutexC() { 
@@ -48,7 +61,7 @@ namespace RavlN
       Error("WARNING: ConditionalMutexC::~ConditionalMutexC(), destroy failed. \n");
   }
   
-  bool ConditionalMutexC::Wait(RealT maxTime) { 
+  bool ConditionalMutexC::Wait(MutexC &umutex,RealT maxTime) {
     if(maxTime <= 0) {
       std::cerr << "ConditionalMutexC::Wait, WARNING: Negative timeout given. Returning failed. \n";
       return false;
@@ -77,7 +90,7 @@ namespace RavlN
     
     int errcode;
     do {
-      errcode = pthread_cond_timedwait(&cond,&mutex,&ts); 
+      errcode = pthread_cond_timedwait(&cond,&umutex.mutex,&ts);
       if(errcode == ETIMEDOUT)
         break;
       // May be interrupted by EINTR... ignore and restart the wait.
@@ -95,7 +108,7 @@ namespace RavlN
   // program. <p>
   // Returns false, if timeout occurs.
 
-  bool ConditionalMutexC::WaitUntil(const DateC &deadline)
+  bool ConditionalMutexC::WaitUntil(MutexC &umutex,const DateC &deadline)
   {
     struct timespec ts;
 
@@ -105,7 +118,7 @@ namespace RavlN
     int errcode;
 
     do {
-      errcode = pthread_cond_timedwait(&cond,&mutex,&ts);
+      errcode = pthread_cond_timedwait(&cond,&umutex.mutex,&ts);
       if(errcode == ETIMEDOUT)
         break;
       // May be interrupted by EINTR... ignore and restart the wait.
@@ -189,7 +202,9 @@ namespace RavlN
   // -----------------------------------------------------------------------------------
 
   ConditionalMutexC::ConditionalMutexC()
-  {}
+  {
+    //std::cerr << "Using local cond mutex. \n";
+  }
   
   ConditionalMutexC::~ConditionalMutexC()
   {
@@ -221,39 +236,37 @@ namespace RavlN
     m_free.InsFirst(*waiter);
   }
 
-  bool ConditionalMutexC::Wait(RealT maxTime) {
+  bool ConditionalMutexC::Wait(MutexC &umutex,RealT maxTime) {
 #if RAVL_HAVE_WIN32_THREADS
     WaiterC *waiter = GetWaiter();
-    Unlock();
+    umutex.Unlock();
     bool gotSig = waiter->Wait(maxTime);
     FreeWaiter(waiter);
-    Lock();
+    umutex.Lock();
     return gotSig;
-#endif
-#if RAVL_HAVE_POSIX_THREADS
-    RavlAssert(0);// Not implemented.
+#else
+    RavlAlwaysAssert(0);// Not implemented.
 #endif
   }
   
-  bool ConditionalMutexC::WaitUntil(const DateC &deadline)
+  bool ConditionalMutexC::WaitUntil(MutexC &umutex,const DateC &deadline)
   {
     DateC maxTime = deadline - DateC::NowUTC();
     RealT maxTimeMilliseconds = maxTime.TotalSeconds() + (maxTime.USeconds() / 1000000.0);
-    return Wait(maxTimeMilliseconds);
+    return Wait(umutex,maxTimeMilliseconds);
   }
   
   //: Broadcast a signal to all waiting threads.
   // Always succeeds.
   
   void ConditionalMutexC::Broadcast() { 
-#if RAVL_HAVE_POSIX_THREADS
-    RavlAssert(0); // Not implemented.
-#endif
 #if RAVL_HAVE_WIN32_THREADS
     MutexLockC lock(m_access);
     while(!m_waiting.IsEmpty())
       m_waiting.PopFirst().Wake();
     return ;
+#else
+    RavlAssert(0); // Not implemented.
 #endif
   }
   
@@ -261,25 +274,23 @@ namespace RavlN
   // Always succeeds.
     
   void ConditionalMutexC::Signal() { 
-#if RAVL_HAVE_POSIX_THREADS
-    RavlAssert(0); // Not implemented.
-#endif
 #if RAVL_HAVE_WIN32_THREADS
     MutexLockC lock(m_access);
     if(!m_waiting.IsEmpty())
       m_waiting.PopFirst().Wake();
+#else
+    RavlAssert(0); // Not implemented.
 #endif
   }
   
-  void ConditionalMutexC::Wait() { 
+  void ConditionalMutexC::Wait(MutexC &umutex) {
 #if RAVL_HAVE_WIN32_THREADS
     WaiterC *waiter = GetWaiter();
-    Unlock();
+    umutex.Unlock();
     waiter->Wait();
     FreeWaiter(waiter);
-    Lock();
-#endif
-#if RAVL_HAVE_POSIX_THREADS
+    umutex.Lock();
+#else
     RavlAssert(0); // Not implemented.
 #endif
   }

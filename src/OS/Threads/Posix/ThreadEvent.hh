@@ -69,6 +69,7 @@ namespace RavlN
     //: Reset an event.
     
   protected:
+    MutexC m_access;
     ConditionalMutexC cond;
     volatile bool occurred;
     volatile IntT m_waiting; // Count of number of threads waiting on this...

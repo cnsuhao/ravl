@@ -51,6 +51,7 @@ namespace RavlN
   protected:
     IntT m_count;
     IntT m_maxCount;
+    mutable MutexC m_access;
     mutable ConditionalMutexC m_cond;
     volatile UIntT m_waiting; // Count of number of threads waiting on this...
   };

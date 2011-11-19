@@ -28,10 +28,10 @@ namespace RavlN
   bool ThreadStateBaseC::WaitForFree() {
     if(m_waiting == 0)
       return true;
-    m_cond.Lock();
+    m_access.Lock();
     while(m_waiting != 0)
-      m_cond.Wait();
-    m_cond.Unlock();
+      m_cond.Wait(m_access);
+    m_access.Unlock();
     return true;
   }
 

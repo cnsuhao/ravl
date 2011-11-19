@@ -44,6 +44,7 @@ namespace RavlN
 
   protected:
     ConditionalMutexC m_cond;
+    MutexC m_access;
     volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 
@@ -64,14 +65,14 @@ namespace RavlN
     //: Constructor
 
     bool Update(const StateT &newState) {
-      m_cond.Lock();
+      m_access.Lock();
       if(newState == m_state) {
         // No change.
-        m_cond.Unlock();
+        m_access.Unlock();
         return false;
       }
       m_state = newState;
-      m_cond.Unlock();
+      m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
       return true;
@@ -84,14 +85,14 @@ namespace RavlN
     //: Set the current state, used for connecting signals as update is ambiguous.
 
     bool Update(const StateT &expectedCurrentState,const StateT &newState) {
-      m_cond.Lock();
+      m_access.Lock();
       if(m_state != expectedCurrentState) {
         // No change.
-        m_cond.Unlock();
+        m_access.Unlock();
         return false;
       }
       m_state = newState;
-      m_cond.Unlock();
+      m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
       return true;
@@ -101,14 +102,14 @@ namespace RavlN
     // The state of class isn't 'expectedCurrentState' return false.
 
     bool Update(const StateT &expectedCurrentState1,const StateT &expectedCurrentState2,const StateT &newState) {
-      m_cond.Lock();
+      m_access.Lock();
       if(m_state != expectedCurrentState1 && m_state != expectedCurrentState1) {
         // No change.
-        m_cond.Unlock();
+        m_access.Unlock();
         return false;
       }
       m_state = newState;
-      m_cond.Unlock();
+      m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
       return true;
@@ -116,17 +117,17 @@ namespace RavlN
 
     template<typename TransitionMapT>
     bool Transition(TransitionMapT tmap) {
-      m_cond.Lock();
+      m_access.Lock();
       StateT newState = m_state; // Default to do nothing.
       const StateT oldState = m_state;
       bool ret = tmap(oldState,newState);
       if(m_state == newState) {
         // No change.
-        m_cond.Unlock();
+        m_access.Unlock();
         return ret;
       }
       m_state = newState;
-      m_cond.Unlock();
+      m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
       return ret;
@@ -138,17 +139,17 @@ namespace RavlN
 
     template<typename TransitionMapT,typename InputT>
     bool Transition(TransitionMapT tmap,InputT input) {
-      m_cond.Lock();
+      m_access.Lock();
       StateT newState = m_state; // Default to do nothing.
       const StateT oldState = m_state;
       bool ret = tmap(oldState,input,newState);
       if(m_state == newState) {
         // No change.
-        m_cond.Unlock();
+        m_access.Unlock();
         return ret;
       }
       m_state = newState;
-      m_cond.Unlock();
+      m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
       return ret;
@@ -157,12 +158,12 @@ namespace RavlN
     void Wait(const StateT &desiredState) {
       if(m_state == desiredState) // Check before we bother with locking.
         return ;
-      m_cond.Lock();
+      m_access.Lock();
       m_waiting++;
       while(m_state != desiredState)
-        m_cond.Wait();
+        m_cond.Wait(m_access);
       int value = --m_waiting;
-      m_cond.Unlock();
+      m_access.Unlock();
       if(value == 0)
         m_cond.Broadcast(); // If something is waiting for it to be free...
     }
@@ -174,13 +175,13 @@ namespace RavlN
       if(m_state == desiredState) // Check before we bother with locking.
         return true;
       bool ret = true;
-      m_cond.Lock();
+      m_access.Lock();
       m_waiting++;
       DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState && ret)
-        ret = m_cond.WaitUntil(deadline);
+        ret = m_cond.WaitUntil(m_access,deadline);
       int value = --m_waiting;
-      m_cond.Unlock();
+      m_access.Unlock();
       if(value == 0)
         m_cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
@@ -199,14 +200,14 @@ namespace RavlN
         return true;
       }
       bool ret = true;
-      m_cond.Lock();
+      m_access.Lock();
       m_waiting++;
       DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState1 && m_state != desiredState2 && ret)
-        ret = m_cond.WaitUntil(deadline);
+        ret = m_cond.WaitUntil(m_access,deadline);
       int value = --m_waiting;
       stateAchieved = m_state;
-      m_cond.Unlock();
+      m_access.Unlock();
       if(value == 0)
         m_cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
@@ -226,14 +227,14 @@ namespace RavlN
         return true;
       }
       bool ret = true;
-      m_cond.Lock();
+      m_access.Lock();
       m_waiting++;
       DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && ret)
-        ret = m_cond.WaitUntil(deadline);
+        ret = m_cond.WaitUntil(m_access,deadline);
       int value = --m_waiting;
       stateAchieved = m_state;
-      m_cond.Unlock();
+      m_access.Unlock();
       if(value == 0)
         m_cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
@@ -254,14 +255,14 @@ namespace RavlN
         return true;
       }
       bool ret = true;
-      m_cond.Lock();
+      m_access.Lock();
       m_waiting++;
       DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && m_state != desiredState4 && ret)
-        ret = m_cond.WaitUntil(deadline);
+        ret = m_cond.WaitUntil(m_access,deadline);
       int value = --m_waiting;
       stateAchieved = m_state;
-      m_cond.Unlock();
+      m_access.Unlock();
       if(value == 0)
         m_cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
@@ -275,13 +276,13 @@ namespace RavlN
         return true;
       }
       bool ret = true;
-      m_cond.Lock();
+      m_access.Lock();
       m_waiting++;
       DateC deadline = DateC::NowUTC() + maxTime;
       while(m_state == theState && ret)
-        ret = m_cond.WaitUntil(deadline);
+        ret = m_cond.WaitUntil(m_access,deadline);
       int value = --m_waiting;
-      m_cond.Unlock();
+      m_access.Unlock();
       if(value == 0)
         m_cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
@@ -302,6 +303,7 @@ namespace RavlN
     //: Access state change signal.
 
   protected:
+
     volatile StateT m_state;
     RavlN::Signal1C<StateT> m_sigState;
   };

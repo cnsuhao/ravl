@@ -20,13 +20,13 @@ namespace RavlN
   {}
 
   bool ThreadEventC::Post() {
-    cond.Lock();
+    m_access.Lock();
     if(occurred) {
-      cond.Unlock();
+      m_access.Unlock();
       return false;
     }
     occurred = true;
-    cond.Unlock();
+    m_access.Unlock();
     cond.Broadcast();
     return true;
   }
@@ -45,17 +45,17 @@ namespace RavlN
   void ThreadEventC::Wait() {
     if(occurred) // Check before we bother with locking.
       return ;
-    cond.Lock();
+    m_access.Lock();
     m_waiting++;
     while(!occurred)
-      cond.Wait();
+      cond.Wait(m_access);
     m_waiting--;
     if(m_waiting == 0) {
-      cond.Unlock();
+      m_access.Unlock();
       cond.Broadcast(); // If something is waiting for it to be free...
       return ;
     }
-    cond.Unlock();
+    m_access.Unlock();
   }
 
   //: Wait for an event.
@@ -65,18 +65,18 @@ namespace RavlN
     if(occurred) // Check before we bother with locking.
       return true;
     bool ret = true;
-    cond.Lock();
+    m_access.Lock();
     m_waiting++;
     DateC deadline = DateC::NowUTC() + maxTime;
     while(!occurred && ret) 
-      ret = cond.WaitUntil(deadline);
+      ret = cond.WaitUntil(m_access,deadline);
     m_waiting--;
     if(m_waiting == 0) {
-      cond.Unlock();
+      m_access.Unlock();
       cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
     }
-    cond.Unlock();
+    m_access.Unlock();
     return ret;
   }
 
@@ -87,17 +87,17 @@ namespace RavlN
     if(occurred) // Check before we bother with locking.
       return true;
     bool ret(true);
-    cond.Lock();
+    m_access.Lock();
     m_waiting++;
     while(!occurred && ret)
-      ret = cond.WaitUntil(deadline);
+      ret = cond.WaitUntil(m_access,deadline);
     m_waiting--;
     if(m_waiting == 0) {
-      cond.Unlock();
+      m_access.Unlock();
       cond.Broadcast(); // If something is waiting for it to be free...
       return ret;
     }
-    cond.Unlock();
+    m_access.Unlock();
     return ret;
   }
 
@@ -107,10 +107,10 @@ namespace RavlN
   bool ThreadEventC::WaitForFree() {
     if(m_waiting == 0)
       return true;
-    cond.Lock();
+    m_access.Lock();
     while(m_waiting != 0) 
-      cond.Wait();
-    cond.Unlock();
+      cond.Wait(m_access);
+    m_access.Unlock();
     return true;
   }
   

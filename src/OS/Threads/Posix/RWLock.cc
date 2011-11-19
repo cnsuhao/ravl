@@ -230,12 +230,11 @@ namespace RavlN
     MutexLockC alock(m_accM);
     while((m_wrWait > 0 && m_preferWriter) || m_rdCount < 0) {
       m_rdWait++; // Should only go around this loop once !
-      alock.Unlock();
-      m_readQueue.Lock();
-      m_readQueue.Wait();
-      m_readQueue.Unlock();
-      alock.Lock();
+      m_readQueue.Wait(m_accM);
       m_rdWait--;
+      // Transfer broadcast to readers if things have changed.
+      if(m_preferWriter && m_wrWait > 0)
+        m_writeQueue.Signal();
     }
     RavlAssert(m_rdCount >= 0);
     m_rdCount++;
@@ -254,16 +253,16 @@ namespace RavlN
       float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
-      m_readQueue.Lock();
-      if(!m_readQueue.Wait(timeToWait)) {
-        m_readQueue.Unlock();
+      if(!m_readQueue.Wait(m_accM,timeToWait)) {
         alock.Lock();
         m_rdWait--;
         return false;
       }
-      m_readQueue.Unlock();
       alock.Lock();
       m_rdWait--;
+      // Transfer broadcast to readers if things have changed.
+      if(m_preferWriter && m_wrWait > 0)
+        m_writeQueue.Signal();
     }
     RavlAssert(m_rdCount >= 0);
     m_rdCount++;
@@ -276,12 +275,11 @@ namespace RavlN
     MutexLockC alock(m_accM);
     while(m_rdCount != 0) {
       m_wrWait++; // Should only go through here once !
-      alock.Unlock();
-      m_writeQueue.Lock();
-      m_writeQueue.Wait();
-      m_writeQueue.Unlock();
-      alock.Lock();
+      m_writeQueue.Wait(m_accM);
       m_wrWait--;
+      // Transfer broadcast to readers if things have changed.
+      if(!m_preferWriter && m_rdCount > 0)
+        m_readQueue.Broadcast();
     }
     m_rdCount = -1; // Flag write lock.
     return true;
@@ -302,16 +300,14 @@ namespace RavlN
       float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
-      m_writeQueue.Lock();
-      if(!m_writeQueue.Wait(timeToWait)) {
-        m_writeQueue.Unlock();
-        alock.Lock();
+      if(!m_writeQueue.Wait(m_accM,timeToWait)) {
         m_wrWait--;
         return false;
       }
-      m_writeQueue.Unlock();
-      alock.Lock();
       m_wrWait--;
+      // Transfer broadcast to readers if things have changed.
+      if(!m_preferWriter && m_rdCount > 0)
+        m_readQueue.Broadcast();
     }
     m_rdCount = -1; // Flag write lock.
     return true;

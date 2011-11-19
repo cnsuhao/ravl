@@ -41,6 +41,7 @@
 
 namespace RavlN
 {
+  class ConditionalMutexC;
   //! userlevel=Normal
   //: Mutual Exclusion lock.
   // SMALL OBJECT<br>
@@ -133,6 +134,8 @@ namespace RavlN
       : isValid(false)
     { RavlAssert(0); }
     //: Make sure there's no attempt to use the copy constructor.
+
+    friend class ConditionalMutexC;
   };
   
   //! userlevel=Normal

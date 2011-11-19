@@ -57,19 +57,11 @@ namespace RavlN
   // <p>In this class, Wait() will only wake up once after each Broadcast(), which is why it does not need resetting after a Broadcast() (in contrast to <a href="RavlN.ThreadEventC.html">ThreadEventC</a>).  If this "edge-triggered" behaviour is not what is wanted, or if this class is used only for its ability to wake up other sleeping threads, <a href="RavlN.ThreadEventC.html">ThreadEventC</a> may be a better choice.</p>
   
   class ConditionalMutexC 
-    : public MutexC 
   {
   public:
-    ConditionalMutexC() 
-#if RAVL_HAVE_PTHREAD_COND 
-    { if(pthread_cond_init(&cond,0)) 
-      Error("pthread_cond_init failed. \n");
-    }
-#else
-    ;
-#endif
+    ConditionalMutexC();
     //: Constructor.
-    
+
     ~ConditionalMutexC();
     //: Destructor
 
@@ -91,9 +83,9 @@ namespace RavlN
     ;
 #endif
     
-    void Wait()
+    void Wait(MutexC &umutex)
 #if RAVL_HAVE_PTHREAD_COND 
-    { pthread_cond_wait(&cond,&mutex); }
+    { pthread_cond_wait(&cond,&umutex.mutex); }
     //: Wait for conditional.
     // <p>This unlocks the mutex and then waits for a signal
     // from either Signal or Broadcast.  When it gets the signal
@@ -104,7 +96,7 @@ namespace RavlN
     ;
 #endif
     
-    bool Wait(RealT maxTime);
+    bool Wait(MutexC &umutex,RealT maxTime);
     //: Wait for conditional.
     // This unlocks the mutex and then waits for a signal
     // from either Signal, Broadcast or timeout.  When it get the signal
@@ -112,7 +104,7 @@ namespace RavlN
     // program. <p>
     // Returns false, if timeout occurs.
 
-    bool WaitUntil(const DateC &deadline);
+    bool WaitUntil(MutexC &umutex,const DateC &deadline);
     //: Wait for conditional.
     // This unlocks the mutex and then waits for a signal
     // from either Signal, Broadcast or timeout.  When it get the signal
@@ -120,16 +112,21 @@ namespace RavlN
     // program. <p>
     // Returns false, if timeout occurs.
 
+  protected:
+    void Error(const char *msg);
+    //: Report an error.
 
   private:
     ConditionalMutexC(const ConditionalMutexC &)
     {}
     //: This is just a bad idea.
-    
+
 #if RAVL_HAVE_PTHREAD_COND 
     pthread_cond_t cond;
 #endif
 #if RAVL_HAVE_WIN32_THREADS
+    MutexC m_access;
+
     class WaiterC
       : public DLinkC
     {
@@ -151,7 +148,6 @@ namespace RavlN
 
       HANDLE m_sema;
     };
-    MutexC m_access;
 
     // Allocate a new waiter.
     WaiterC *GetWaiter();
