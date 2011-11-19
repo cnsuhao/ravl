@@ -41,7 +41,7 @@ namespace RavlN
     : isValid(false)
 #if RAVL_HAVE_WIN32_THREADS
       ,m_useCount(0),
-      m_recusive(false)
+      m_recursive(false)
 #endif
   { Init(false); }
   
@@ -51,7 +51,7 @@ namespace RavlN
     : isValid(false)
 #if RAVL_HAVE_WIN32_THREADS
       ,m_useCount(0),
-      m_recusive(false)
+      m_recursive(false)
 #endif
   { Init(recursive); }
   

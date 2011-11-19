@@ -144,15 +144,18 @@ namespace RavlN
   ConditionalMutexC::WaiterC::WaiterC()
   {
 #if RAVL_HAVE_WIN32_THREADS
-    m_sema = CreateSemaphore(0,0,1,0);
+    m_sema = CreateSemaphore(0,0,2,0);
     if(m_sema == 0) {
       std::cerr << "Failed to create semaphore. \n";
       RavlAlwaysAssert(0); // This is really bad, stop things now.
     }
+#else
+    RavlAssert(0);
 #endif
   }
 
   //! Destructor
+
   ConditionalMutexC::WaiterC::~WaiterC()
   {
 #if RAVL_HAVE_WIN32_THREADS
@@ -165,11 +168,13 @@ namespace RavlN
   void ConditionalMutexC::WaiterC::Wake()
   {
     LONG count = 0;
-    if(ReleaseSemaphore(m_sema,1,&count) == 0) {
-      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread " << count << ". \n";
+    if(!ReleaseSemaphore(m_sema,1,&count)) {
+      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. " << count << "\n";
+      RavlAssert(0);
     }
     if(count != 0) {
       std::cerr << "ConditionalMutexC::Wake, Warning: Waiter already signalled, something strange is going on. \n";
+      RavlAssert(0);
     }
   }
 
@@ -177,7 +182,8 @@ namespace RavlN
   bool ConditionalMutexC::WaiterC::Wait(float maxWait) {
     DWORD wait = 0;
     // Make sure wait is >= 0
-    if(maxWait > 0) wait = Round(maxWait * 1000.0);
+    if(maxWait > 0) 
+      wait = Round(maxWait * 1000.0);
     DWORD rc = WaitForSingleObject(m_sema,wait);
     if(rc != WAIT_OBJECT_0 && rc != WAIT_TIMEOUT) {
       // Warn if something unexpected happened.
@@ -190,8 +196,7 @@ namespace RavlN
 
   bool ConditionalMutexC::WaiterC::Wait()
   {
-
-	  DWORD rc = WaitForSingleObject(m_sema,INFINITE);
+    DWORD rc = WaitForSingleObject(m_sema,INFINITE);
     if(rc != WAIT_OBJECT_0) {
       // Warn if something unexpected happened.
       std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
@@ -202,6 +207,8 @@ namespace RavlN
   // -----------------------------------------------------------------------------------
 
   ConditionalMutexC::ConditionalMutexC()
+    : m_waiting(false),
+      m_free(false)
   {
     //std::cerr << "Using local cond mutex. \n";
   }
@@ -211,6 +218,9 @@ namespace RavlN
     if(!m_waiting.IsEmpty()) {
       std::cerr << "ERROR: Destroying conditional mutex when there are threads waiting. \n";
     }
+    std::cerr << "Destroying conditional mutex. \n";
+    while(!m_free.IsEmpty())
+      delete &m_free.PopFirst();
   }
   
   ConditionalMutexC::WaiterC *ConditionalMutexC::GetWaiter() {
