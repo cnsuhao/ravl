@@ -62,11 +62,12 @@ namespace RavlN
   }
   
   bool ConditionalMutexC::Wait(MutexC &umutex,RealT maxTime) {
-    if(maxTime <= 0) {
-      std::cerr << "ConditionalMutexC::Wait, WARNING: Negative timeout given. Returning failed. \n";
+    if(maxTime < 0) {
+      std::cerr << "ConditionalMutexC::Wait, WARNING: Negative timeout given " << maxTime << ". Returning failed. \n";
       return false;
     }
-    
+    if(maxTime == 0)
+      return false;
     struct timespec ts;
     struct timeval tv;
 
@@ -243,6 +244,7 @@ namespace RavlN
     bool gotSig = waiter->Wait(maxTime);
     umutex.Lock();
     FreeWaiter(waiter);
+    RavlAssert(!umutex.TryLock());
     return gotSig;
 #else
     RavlAlwaysAssert(0);// Not implemented.
