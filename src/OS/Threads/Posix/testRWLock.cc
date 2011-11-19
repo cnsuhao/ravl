@@ -51,8 +51,41 @@ public:
 
 int RWLTestBodyC::Start(void) {  
   for(;Num > 0;Num--) {
-    if((rand() % 20) == 0) {      // Check old values.
-      
+    if((rand() % 10) == 0) {      // Check old values.
+#if 1
+      if((rand() % 5) == 0) {
+        if(ARWLock->TryRdLock()) { // Write new values.
+          if(Val1 != Val2)
+            pass = false;
+          if(Val2 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          ARWLock->UnlockRd();
+        }
+      }
+#endif
+#if 1
+      if((rand() % 5) == 0) {
+        if(ARWLock->RdLock(0.1)) { // Write new values.
+          if(Val1 != Val2)
+            pass = false;
+          if(Val2 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          ARWLock->UnlockRd();
+        }
+      }
+#endif
       ARWLock->RdLock();
       if(Val1 != Val2)
 	pass = false;
@@ -68,6 +101,34 @@ int RWLTestBodyC::Start(void) {
       
     } else {
       
+      if((rand() % 5) == 0) {
+#if 1
+        if(ARWLock->TryWrLock()) { // Write new values.
+          Val1 = rand();
+          RavlN::Sleep(0);
+          Val2 = Val1;
+          RavlN::Sleep(0);
+          Val3 = Val2;
+          RavlN::Sleep(0);
+          ARWLock->UnlockWr();
+        }
+#endif
+      }
+
+      if((rand() % 5) == 0) {
+#if 1
+        if(ARWLock->WrLock(0.1)) { // Write new values.
+          Val1 = rand();
+          RavlN::Sleep(0);
+          Val2 = Val1;
+          RavlN::Sleep(0);
+          Val3 = Val2;
+          RavlN::Sleep(0);
+          ARWLock->UnlockWr();
+        }
+#endif
+      }
+
       ARWLock->WrLock();  // Write new values.
       Val1 = rand();
       RavlN::Sleep(0);
@@ -96,7 +157,7 @@ int main() {
 
      // Boil the RWLock for a bit.
     for(i = 0;i < TestSize;i++)
-      RWLTestC(10000).Execute();
+      RWLTestC(20000).Execute();
   
     for(i = 0;i < TestSize;i++) {
       Done->Wait();
