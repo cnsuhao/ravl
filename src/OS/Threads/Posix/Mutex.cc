@@ -39,12 +39,20 @@ namespace RavlN
   
   MutexC::MutexC() 
     : isValid(false)
+#if RAVL_HAVE_WIN32_THREADS
+      ,m_useCount(0),
+      m_recusive(false)
+#endif
   { Init(false); }
   
   //: Constructor.
   
   MutexC::MutexC(bool recursive) 
     : isValid(false)
+#if RAVL_HAVE_WIN32_THREADS
+      ,m_useCount(0),
+      m_recusive(false)
+#endif
   { Init(recursive); }
   
   //: Setup mutex.
@@ -104,6 +112,8 @@ namespace RavlN
     // ---------------------------------- WIN32 ----------------------------------
 #if RAVL_HAVE_WIN32_THREADS
     // FIXME: Does this support recursive locks?
+    m_recursive=recursive;
+    RavlAssert(m_useCount == 0);
     if((mutex = CreateMutex(0,false,0)) == 0) {
       Error("Failed to create mutex.",errno,0); 
     } else
@@ -185,6 +195,10 @@ namespace RavlN
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     if((rc = WaitForSingleObject(mutex,INFINITE)) == WAIT_OBJECT_0) {
+      m_useCount++;
+      if(!m_recursive && m_useCount > 1) {
+        RavlAssertMsg(0,"Deadlock!");
+      }
       return true;
     }
     Error("Lock failed",GetLastError(),rc);
@@ -209,8 +223,18 @@ namespace RavlN
       Error("Trylock failed for unexpected reason.",errno,rc);
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    if((rc = WaitForSingleObject(mutex,0)) == WAIT_OBJECT_0)
+    if((rc = WaitForSingleObject(mutex,0)) == WAIT_OBJECT_0) {
+      m_useCount++;
+      if(!m_recursive && m_useCount > 1) {
+        if(ReleaseMutex(mutex)) {
+          m_useCount--;
+        } else {
+          Error("TryLock going very wrong!",GetLastError(),rc);
+        }
+        return false;
+      }
       return true;
+    }
     if(rc != WAIT_TIMEOUT) {
       Error("TryLock failed",GetLastError(),rc);
     }
@@ -233,6 +257,8 @@ namespace RavlN
     Error("Unlock failed.",errno,rc);
 #endif
 #if RAVL_HAVE_WIN32_THREADS
+    RavlAssert(m_useCount > 0);
+    m_useCount--;
     if(ReleaseMutex(mutex))
       return true;
     Error("Unlock failed.",GetLastError(),rc);

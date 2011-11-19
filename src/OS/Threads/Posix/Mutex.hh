@@ -111,6 +111,8 @@ namespace RavlN
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     HANDLE mutex;
+    int m_useCount;
+    bool m_recusive;
 #endif
     bool isValid; // Used for debugging.
     
