@@ -231,9 +231,10 @@ namespace RavlN
     while((m_wrWait > 0 && m_preferWriter) || m_rdCount < 0) {
       m_rdWait++; // Should only go around this loop once !
       m_readQueue.Wait(m_accM);
+	  RavlAssert(!m_accM.TryLock());
       m_rdWait--;
       // Transfer broadcast to readers if things have changed.
-      if(m_preferWriter && m_wrWait > 0)
+      if(m_preferWriter && m_wrWait > 0 && m_rdCount == 0)
         m_writeQueue.Signal();
     }
     RavlAssert(m_rdCount >= 0);
@@ -249,19 +250,16 @@ namespace RavlN
     MutexLockC alock(m_accM);
     while((m_wrWait > 0 && m_preferWriter) || m_rdCount < 0) {
       m_rdWait++; // Should only go around this loop once !
-      alock.Unlock();
       float timeToWait = static_cast<float>((DateC::NowUTC() - timeOutAt).Double());
       if(timeToWait < 0)
         timeToWait = 0;
       if(!m_readQueue.Wait(m_accM,timeToWait)) {
-        alock.Lock();
         m_rdWait--;
         return false;
       }
-      alock.Lock();
       m_rdWait--;
       // Transfer broadcast to readers if things have changed.
-      if(m_preferWriter && m_wrWait > 0)
+      if(m_preferWriter && m_wrWait > 0 && m_rdCount == 0)
         m_writeQueue.Signal();
     }
     RavlAssert(m_rdCount >= 0);
@@ -273,9 +271,12 @@ namespace RavlN
   bool RWLockC::WrLock(void)
   {
     MutexLockC alock(m_accM);
+	RavlAssert(!m_accM.TryLock());
     while(m_rdCount != 0) {
       m_wrWait++; // Should only go through here once !
+	  RavlAssert(!m_accM.TryLock());
       m_writeQueue.Wait(m_accM);
+	  RavlAssert(!m_accM.TryLock());
       m_wrWait--;
       // Transfer broadcast to readers if things have changed.
       if(!m_preferWriter && m_rdCount > 0)
@@ -324,12 +325,13 @@ namespace RavlN
         if(m_wrWait > 0) {
     	  m_writeQueue.Signal(); // Wake up a waiting writer.
         } else {
-	  m_readQueue.Broadcast(); // Wake up all waiting readers.
+	      m_readQueue.Broadcast(); // Wake up all waiting readers.
         }
       } else {
-        if(m_rdWait == 0 && m_wrWait > 0)
+		// Prefer readers
+        if(m_rdWait == 0 && m_wrWait > 0) {
     	  m_writeQueue.Signal(); // Wake up a waiting writer.
-        else {
+		} else {
           m_readQueue.Broadcast(); // Wake up all waiting readers.
         }
       }
@@ -343,19 +345,21 @@ namespace RavlN
         m_readQueue.Broadcast(); // Wake up all waiting readers.
       } else {
         // If no readers locking, start a writer.
-        if(m_rdCount <= 0)
+        if(m_rdCount <= 0) {
           m_writeQueue.Signal(); // Wake up a waiting writer.
+		}
       }
     } else {
       // Reader preference.
       if(m_rdWait > 0) {
         // They shouldn't be waiting, but in case.
-	m_readQueue.Broadcast(); // Wake up all waiting readers.
+	    m_readQueue.Broadcast(); // Wake up all waiting readers.
       } else {
         // Nothing waiting, and nothing holding a lock so let
         // writers have a go.
-        if(m_rdCount <= 0)
-	  m_writeQueue.Signal(); // Wake up a waiting writer.
+        if(m_rdCount <= 0) {
+	      m_writeQueue.Signal(); // Wake up a waiting writer.
+		}
       }
     }
     return true;

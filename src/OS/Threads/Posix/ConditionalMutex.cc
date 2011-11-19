@@ -178,11 +178,9 @@ namespace RavlN
     // Make sure wait is >= 0
     if(maxWait > 0) wait = Round(maxWait * 1000.0);
     DWORD rc = WaitForSingleObject(m_sema,wait);
-    if(rc != WAIT_OBJECT_0) {
-      if(rc != WAIT_TIMEOUT) {
-        // Warn if something unexpected happened.
-        std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
-      }
+    if(rc != WAIT_OBJECT_0 && rc != WAIT_TIMEOUT) {
+      // Warn if something unexpected happened.
+      std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
     }
     return (rc == WAIT_OBJECT_0);
   }
@@ -191,7 +189,8 @@ namespace RavlN
 
   bool ConditionalMutexC::WaiterC::Wait()
   {
-    DWORD rc = WaitForSingleObject(m_sema,INFINITE);
+
+	  DWORD rc = WaitForSingleObject(m_sema,INFINITE);
     if(rc != WAIT_OBJECT_0) {
       // Warn if something unexpected happened.
       std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
@@ -238,11 +237,12 @@ namespace RavlN
 
   bool ConditionalMutexC::Wait(MutexC &umutex,RealT maxTime) {
 #if RAVL_HAVE_WIN32_THREADS
+    RavlAssert(!umutex.TryLock());
     WaiterC *waiter = GetWaiter();
     umutex.Unlock();
     bool gotSig = waiter->Wait(maxTime);
-    FreeWaiter(waiter);
     umutex.Lock();
+    FreeWaiter(waiter);
     return gotSig;
 #else
     RavlAlwaysAssert(0);// Not implemented.
@@ -285,11 +285,13 @@ namespace RavlN
   
   void ConditionalMutexC::Wait(MutexC &umutex) {
 #if RAVL_HAVE_WIN32_THREADS
+    RavlAssert(!umutex.TryLock());
     WaiterC *waiter = GetWaiter();
     umutex.Unlock();
     waiter->Wait();
-    FreeWaiter(waiter);
     umutex.Lock();
+    FreeWaiter(waiter);
+    RavlAssert(!umutex.TryLock());
 #else
     RavlAssert(0); // Not implemented.
 #endif
