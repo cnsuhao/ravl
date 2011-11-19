@@ -189,8 +189,7 @@ namespace RavlN
 
   bool ConditionalMutexC::WaiterC::Wait()
   {
-
-	  DWORD rc = WaitForSingleObject(m_sema,INFINITE);
+	DWORD rc = WaitForSingleObject(m_sema,INFINITE);
     if(rc != WAIT_OBJECT_0) {
       // Warn if something unexpected happened.
       std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
