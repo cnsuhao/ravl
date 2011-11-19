@@ -166,7 +166,7 @@ namespace RavlN
   {
     LONG count = 0;
     if(ReleaseSemaphore(m_sema,1,&count) == 0) {
-      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. \n";
+      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread " << count << ". \n";
     }
     if(count != 0) {
       std::cerr << "ConditionalMutexC::Wake, Warning: Waiter already signalled, something strange is going on. \n";
