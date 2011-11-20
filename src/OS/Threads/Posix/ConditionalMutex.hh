@@ -112,6 +112,8 @@ namespace RavlN
     // program. <p>
     // Returns false, if timeout occurs.
 
+    bool Reset();
+    //: Reset condition.
   protected:
     void Error(const char *msg);
     //: Report an error.

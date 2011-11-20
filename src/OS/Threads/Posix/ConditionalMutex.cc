@@ -144,7 +144,7 @@ namespace RavlN
   ConditionalMutexC::WaiterC::WaiterC()
   {
 #if RAVL_HAVE_WIN32_THREADS
-    m_sema = CreateSemaphore(0,0,2,0);
+    m_sema = CreateEvent(0,0,0,0);
     if(m_sema == 0) {
       std::cerr << "Failed to create semaphore. \n";
       RavlAlwaysAssert(0); // This is really bad, stop things now.
@@ -167,13 +167,8 @@ namespace RavlN
 
   void ConditionalMutexC::WaiterC::Wake()
   {
-    LONG count = 0;
-    if(!ReleaseSemaphore(m_sema,1,&count)) {
+    if(!SetEvent(m_sema)) {
       std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. " << count << "\n";
-      RavlAssert(0);
-    }
-    if(count != 0) {
-      std::cerr << "ConditionalMutexC::Wake, Warning: Waiter already signalled, something strange is going on. \n";
       RavlAssert(0);
     }
   }
@@ -204,6 +199,12 @@ namespace RavlN
     return (rc == WAIT_OBJECT_0);
   }
 
+  //: Reset condition.
+  bool ConditionalMutexC::WaiterC::Reset() {
+    ResetEvent(m_sema);
+    return true;
+  }
+
   // -----------------------------------------------------------------------------------
 
   ConditionalMutexC::ConditionalMutexC()
@@ -229,8 +230,8 @@ namespace RavlN
     if(!m_free.IsEmpty()) {
       //FIXME: Ideally m_free would be a per thread global list.
       waiter = &m_free.PopFirst();
-      // Get rid of any excess counts.
-      waiter->Wait(0);
+      // Make sure its ready to go.
+      waiter->Reset();
     } else {
       waiter = new WaiterC();
     }
