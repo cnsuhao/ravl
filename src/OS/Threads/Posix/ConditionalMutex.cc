@@ -168,7 +168,7 @@ namespace RavlN
   void ConditionalMutexC::WaiterC::Wake()
   {
     if(!SetEvent(m_sema)) {
-      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. " << count << "\n";
+      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. \n";
       RavlAssert(0);
     }
   }
