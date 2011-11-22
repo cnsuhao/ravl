@@ -6,52 +6,48 @@
 // file-header-ends-here
 /////////////////////////////////////////////////
 //! lib=RavlThreads
-//! file="Ravl/OS/Threads/Posix/ThreadEvent.cc"
+//! file="Ravl/OS/Threads/Posix/ThreadSignal.cc"
 
-#include "Ravl/Threads/ThreadEvent.hh"
+#include "Ravl/Threads/ThreadSignal.hh"
 #include "Ravl/OS/Date.hh"
 
 namespace RavlN
 {
 
-  ThreadEventC::ThreadEventC()
-    : m_occurred(false),
-      m_waiting(0)
+  ThreadSignalC::ThreadSignalC()
+    : m_waiting(0)
   {}
 
-  bool ThreadEventC::Post() {
-    m_access.Lock();
-    if(m_occurred) {
-      m_access.Unlock();
-      return false;
-    }
-    m_occurred = true;
-    m_access.Unlock();
-    m_cond.Broadcast();
+  bool ThreadSignalC::WakeAll() {
+    cond.Broadcast();
     return true;
   }
   //: Post an event.
   // Returns true, if event has been posted by this thread.
 
-  ThreadEventC::~ThreadEventC()  {
-    if(!m_occurred)
-      Post();
+  bool ThreadSignalC::WakeSingle() {
+    cond.Signal();
+    return true;
+  }
+  //: Post an event.
+  // Returns true, if event has been posted by this thread.
+
+  ThreadSignalC::~ThreadSignalC()  {
+    WakeAll();
+    WaitForFree();
     if(m_waiting != 0)
-      cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
+      cerr << "PThread::~ThreadSignal(), WARNING: Called while threads waiting. \n";
   }
   //: Destructor.
 
   //: Wait indefinitely for an event to be posted.
-  void ThreadEventC::Wait() {
-    if(m_occurred) // Check before we bother with locking.
-      return ;
+  void ThreadSignalC::Wait() {
     m_access.Lock();
     m_waiting++;
-    while(!m_occurred)
-      m_cond.Wait(m_access);
+    cond.Wait(m_access);
     m_waiting--;
     if(m_waiting == 0) {
-      m_condWaiting.Broadcast(); // If something is waiting for it to be free...
+      m_condWaiting.Broadcast();
       m_access.Unlock();
       return ;
     }
@@ -61,18 +57,15 @@ namespace RavlN
   //: Wait for an event.
   // Returns false if timed out.
   
-  bool ThreadEventC::Wait(RealT maxTime) {
-    if(m_occurred) // Check before we bother with locking.
-      return true;
+  bool ThreadSignalC::Wait(RealT maxTime) {
     bool ret = true;
     m_access.Lock();
     m_waiting++;
     DateC deadline = DateC::NowUTC() + maxTime;
-    while(!m_occurred && ret) 
-      ret = m_cond.WaitUntil(m_access,deadline);
+    ret = cond.WaitUntil(m_access,deadline);
     m_waiting--;
     if(m_waiting == 0) {
-      m_condWaiting.Broadcast(); // If something is waiting for it to be free...
+      m_condWaiting.Broadcast();
       m_access.Unlock();
       return ret;
     }
@@ -83,17 +76,14 @@ namespace RavlN
   //: Wait for an event.
   // Returns false if timed out.
 
-  bool ThreadEventC::WaitUntil(const DateC &deadline) {
-    if(m_occurred) // Check before we bother with locking.
-      return true;
-    bool ret(true);
+  bool ThreadSignalC::WaitUntil(const DateC &deadline) {
+    bool ret = true;
     m_access.Lock();
     m_waiting++;
-    while(!m_occurred && ret)
-      ret = m_cond.WaitUntil(m_access,deadline);
+    ret = cond.WaitUntil(m_access,deadline);
     m_waiting--;
     if(m_waiting == 0) {
-      m_condWaiting.Broadcast(); // If something is waiting for it to be free...
+      m_condWaiting.Broadcast();
       m_access.Unlock();
       return ret;
     }
@@ -104,7 +94,7 @@ namespace RavlN
   //: Wait for lock to be free.
   // NB. This is only guaranteed to work for one thread.
   
-  bool ThreadEventC::WaitForFree() {
+  bool ThreadSignalC::WaitForFree() {
     if(m_waiting == 0)
       return true;
     m_access.Lock();
