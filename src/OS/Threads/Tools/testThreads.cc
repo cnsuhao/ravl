@@ -25,15 +25,15 @@ int main()
 int testConditionalMutex() {
 
   RavlN::ConditionalMutexC condMutex;
-
-  condMutex.Lock();
+  RavlN::MutexC mutex;
+  mutex.Lock();
 
   const float theDelay = 1.0;
 
   {
     // Test WaitUntil.
     RavlN::DateC theDeadline = RavlN::DateC::NowUTC() + theDelay;
-    if(condMutex.WaitUntil(theDeadline)) return __LINE__;
+    if(condMutex.WaitUntil(mutex,theDeadline)) return __LINE__;
     RavlN::DateC expiredAt = RavlN::DateC::NowUTC();
     if(expiredAt < theDeadline) return __LINE__;
   }
@@ -41,12 +41,12 @@ int testConditionalMutex() {
   {
     // Test Wait() with fixed delay.
     RavlN::DateC theDeadline = RavlN::DateC::NowUTC() + theDelay;
-    if(condMutex.Wait(theDelay)) return __LINE__;
+    if(condMutex.Wait(mutex,theDelay)) return __LINE__;
     RavlN::DateC expiredAt = RavlN::DateC::NowUTC();
     if(expiredAt < theDeadline) return __LINE__;
   }
 
-  condMutex.Unlock();
+  mutex.Unlock();
   std::cout << "ConditionalMutex test passed. \n";
   return 0;
 }
