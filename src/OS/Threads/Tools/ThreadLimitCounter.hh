@@ -9,7 +9,7 @@
 //! date="25/05/2011"
 
 #include "Ravl/config.h"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/Date.hh"
@@ -52,7 +52,7 @@ namespace RavlN
     IntT m_count;
     IntT m_maxCount;
     mutable MutexC m_access;
-    mutable ConditionalMutexC m_cond;
+    mutable ConditionalVariableC m_cond;
     volatile UIntT m_waiting; // Count of number of threads waiting on this...
   };
 };

@@ -324,9 +324,9 @@ namespace RavlN
       m_rdCount = 0;
       if(m_preferWriter) {
         if(m_wrWait > 0) {
-    	  m_writeQueue.Signal(); // Wake up a waiting writer.
+      	  m_writeQueue.Signal(); // Wake up a waiting writer.
         } else {
-	  m_readQueue.Broadcast(); // Wake up all waiting readers.
+      	  m_readQueue.Broadcast(); // Wake up all waiting readers.
         }
       } else {
 	// Prefer readers
