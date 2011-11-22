@@ -34,6 +34,13 @@
 
 #define NANOSEC 1000000000
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN
 {
 
@@ -142,6 +149,7 @@ namespace RavlN
   
   //! Constructor
   ConditionalMutexC::WaiterC::WaiterC()
+    : m_woken(false)
   {
 #if RAVL_HAVE_WIN32_THREADS
     m_sema = CreateEvent(0,0,0,0);
@@ -167,6 +175,7 @@ namespace RavlN
 
   void ConditionalMutexC::WaiterC::Wake()
   {
+    m_woken = true;
     if(!SetEvent(m_sema)) {
       std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. \n";
       RavlAssert(0);
@@ -184,6 +193,7 @@ namespace RavlN
       // Warn if something unexpected happened.
       std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
     }
+    //std::cerr << "ConditionalMutexC::Wait " << rc << "\n";
     return (rc == WAIT_OBJECT_0);
   }
 
@@ -201,6 +211,7 @@ namespace RavlN
 
   //: Reset condition.
   bool ConditionalMutexC::WaiterC::Reset() {
+    m_woken = false;
     ResetEvent(m_sema);
     return true;
   }
@@ -211,15 +222,17 @@ namespace RavlN
     : m_waiting(false),
       m_free(false)
   {
+    ONDEBUG(printf("constructor ConditionalMutexC  %p\n", this));
     //std::cerr << "Using local cond mutex. \n";
   }
   
   ConditionalMutexC::~ConditionalMutexC()
   {
+    ONDEBUG(printf("destructor ConditionalMutexC %p\n", this));
+    //RavlAssert(!m_access.TryLock());
     if(!m_waiting.IsEmpty()) {
       std::cerr << "ERROR: Destroying conditional mutex when there are threads waiting. \n";
     }
-    std::cerr << "Destroying conditional mutex. \n";
     while(!m_free.IsEmpty())
       delete &m_free.PopFirst();
   }
@@ -227,22 +240,34 @@ namespace RavlN
   ConditionalMutexC::WaiterC *ConditionalMutexC::GetWaiter() {
     MutexLockC lock(m_access);
     WaiterC *waiter = 0;
+    ONDEBUG(printf("%p GetWaiter  m_free: %i  m_waiting: %i\n", this, int(m_free.Size()), int(m_waiting.Size())));
     if(!m_free.IsEmpty()) {
       //FIXME: Ideally m_free would be a per thread global list.
       waiter = &m_free.PopFirst();
       // Make sure its ready to go.
       waiter->Reset();
+      ONDEBUG(printf("using existing waiter %p\n", waiter));
     } else {
       waiter = new WaiterC();
+      ONDEBUG(printf("created new waiter %p\n", waiter));
     }
     m_waiting.InsLast(*waiter);
+    ONDEBUG(printf("%p done adding to wait list %i\n", this, int(m_waiting.Size())));
+    //ONDEBUG(for(IntrDLIterC<ConditionalMutexC::WaiterC> it(m_waiting);it;it++) { printf("p : %p \n", it.operator->()); })
     return waiter;
   }
 
-  void ConditionalMutexC::FreeWaiter(ConditionalMutexC::WaiterC *waiter) {
+  bool ConditionalMutexC::FreeWaiter(ConditionalMutexC::WaiterC *waiter) {
     MutexLockC lock(m_access);
+    ONDEBUG(printf("%p FreeWaiter %p m_free: %i  m_waiting : %i\n", this, waiter, int(m_free.Size()), int(m_waiting.Size())));
+    bool got = waiter->IsWoken();
+    if(!got) {
+      waiter->Unlink();
+    }
     // Put it on the free list.
     m_free.InsFirst(*waiter);
+    ONDEBUG(printf("%p FreeWaiter done %p m_free: %i  m_waiting %i\n", this, waiter, int(m_free.Size()), int(m_waiting.Size())));
+    return got;
   }
 
   bool ConditionalMutexC::Wait(MutexC &umutex,RealT maxTime) {
@@ -250,11 +275,9 @@ namespace RavlN
     RavlAssert(!umutex.TryLock());
     WaiterC *waiter = GetWaiter();
     umutex.Unlock();
-    bool gotSig = waiter->Wait(maxTime);
+    waiter->Wait(maxTime);
     umutex.Lock();
-    FreeWaiter(waiter);
-    RavlAssert(!umutex.TryLock());
-    return gotSig;
+    return FreeWaiter(waiter);
 #else
     RavlAlwaysAssert(0);// Not implemented.
 #endif
@@ -273,8 +296,10 @@ namespace RavlN
   void ConditionalMutexC::Broadcast() { 
 #if RAVL_HAVE_WIN32_THREADS
     MutexLockC lock(m_access);
-    while(!m_waiting.IsEmpty())
+    ONDEBUG(printf("Broadcast m_waiting size: %i\n", int(m_waiting.Size())));
+    while(!m_waiting.IsEmpty()) {
       m_waiting.PopFirst().Wake();
+    }
     return ;
 #else
     RavlAssert(0); // Not implemented.
@@ -287,8 +312,10 @@ namespace RavlN
   void ConditionalMutexC::Signal() { 
 #if RAVL_HAVE_WIN32_THREADS
     MutexLockC lock(m_access);
-    if(!m_waiting.IsEmpty())
+    ONDEBUG(printf("Signal m_waiting size: %i\n", int(m_waiting.Size())));
+    if(!m_waiting.IsEmpty()) {
       m_waiting.PopFirst().Wake();
+    }
 #else
     RavlAssert(0); // Not implemented.
 #endif
@@ -302,7 +329,6 @@ namespace RavlN
     waiter->Wait();
     umutex.Lock();
     FreeWaiter(waiter);
-    RavlAssert(!umutex.TryLock());
 #else
     RavlAssert(0); // Not implemented.
 #endif

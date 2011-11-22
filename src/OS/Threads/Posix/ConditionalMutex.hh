@@ -149,14 +149,19 @@ namespace RavlN
       //! Reset condition.
       bool Reset();
 
+      //! Has waiter been woken ?
+      bool IsWoken() const
+      { return m_woken; }
+
       HANDLE m_sema;
+      bool m_woken;
     };
 
     // Allocate a new waiter.
     WaiterC *GetWaiter();
 
     // Free a waiter.
-    void FreeWaiter(WaiterC *waiter);
+    bool FreeWaiter(WaiterC *waiter);
 
     IntrDListC<WaiterC> m_free;
     IntrDListC<WaiterC> m_waiting;
