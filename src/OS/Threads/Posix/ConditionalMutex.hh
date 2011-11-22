@@ -112,8 +112,6 @@ namespace RavlN
     // program. <p>
     // Returns false, if timeout occurs.
 
-    bool Reset();
-    //: Reset condition.
   protected:
     void Error(const char *msg);
     //: Report an error.
@@ -147,6 +145,9 @@ namespace RavlN
 
       //! Wait for something to happen
       bool Wait(float maxWait);
+
+      //! Reset condition.
+      bool Reset();
 
       HANDLE m_sema;
     };

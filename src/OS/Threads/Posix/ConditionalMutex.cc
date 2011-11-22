@@ -168,7 +168,7 @@ namespace RavlN
   void ConditionalMutexC::WaiterC::Wake()
   {
     if(!SetEvent(m_sema)) {
-      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. " << count << "\n";
+      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. \n";
       RavlAssert(0);
     }
   }
@@ -241,8 +241,6 @@ namespace RavlN
 
   void ConditionalMutexC::FreeWaiter(ConditionalMutexC::WaiterC *waiter) {
     MutexLockC lock(m_access);
-    // Make sure its not in an existing list.
-    waiter->Unlink();
     // Put it on the free list.
     m_free.InsFirst(*waiter);
   }
