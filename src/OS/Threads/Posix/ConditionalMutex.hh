@@ -156,7 +156,7 @@ namespace RavlN
     WaiterC *GetWaiter();
 
     // Free a waiter.
-    void FreeWaiter(WaiterC *waiter);
+    bool FreeWaiter(WaiterC *waiter);
 
     IntrDListC<WaiterC> m_free;
     IntrDListC<WaiterC> m_waiting;

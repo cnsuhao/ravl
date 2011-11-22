@@ -228,7 +228,8 @@ namespace RavlN
     MutexLockC lock(m_access);
     WaiterC *waiter = 0;
     if(!m_free.IsEmpty()) {
-      //FIXME: Ideally m_free would be a per thread global list.
+      //FIXME: Ideally m_free would be a per thread global, but this may cause problems
+      // with initialisation in dll's on windows. Just stick with a local list for now.
       waiter = &m_free.PopFirst();
       // Make sure its ready to go.
       waiter->Reset();
@@ -239,10 +240,15 @@ namespace RavlN
     return waiter;
   }
 
-  void ConditionalMutexC::FreeWaiter(ConditionalMutexC::WaiterC *waiter) {
+  bool ConditionalMutexC::FreeWaiter(ConditionalMutexC::WaiterC *waiter) {
     MutexLockC lock(m_access);
+    // Has waiter been signalled?
+    bool ret = waiter->Wait(0);
+    // If waiter hasn't been signalled its still in the list, remove it.
+    if(!ret) waiter->Unlink();
     // Put it on the free list.
     m_free.InsFirst(*waiter);
+    return ret;
   }
 
   bool ConditionalMutexC::Wait(MutexC &umutex,RealT maxTime) {
@@ -250,11 +256,9 @@ namespace RavlN
     RavlAssert(!umutex.TryLock());
     WaiterC *waiter = GetWaiter();
     umutex.Unlock();
-    bool gotSig = waiter->Wait(maxTime);
+    waiter->Wait(maxTime);
     umutex.Lock();
-    FreeWaiter(waiter);
-    RavlAssert(!umutex.TryLock());
-    return gotSig;
+    return FreeWaiter(waiter);
 #else
     RavlAlwaysAssert(0);// Not implemented.
 #endif
@@ -302,7 +306,6 @@ namespace RavlN
     waiter->Wait();
     umutex.Lock();
     FreeWaiter(waiter);
-    RavlAssert(!umutex.TryLock());
 #else
     RavlAssert(0); // Not implemented.
 #endif
