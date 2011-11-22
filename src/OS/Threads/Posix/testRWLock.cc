@@ -167,6 +167,8 @@ int main() {
       std::cerr << "ERROR in test.. \n";
       exit(1);
     }
+    delete Done;
+    delete ARWLock;
   }
   std::cout << "Test passed. \n";
   exit(0);
