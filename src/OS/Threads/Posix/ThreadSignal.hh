@@ -4,11 +4,10 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLTHREADS_EVENT_HEADER
-#define RAVLTHREADS_EVENT_HEADER 1
+#ifndef RAVL_THREADSIGNAL_HEADER
+#define RAVL_THREADSIGNAL_HEADER 1
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
-//! file="Ravl/OS/Threads/Posix/ThreadEvent.hh"
+//! file="Ravl/OS/Threads/Posix/ThreadSignal.hh"
 //! lib=RavlThreads
 //! userlevel=Normal
 //! docentry="Ravl.API.OS.Threads"
@@ -24,55 +23,47 @@ namespace RavlN
   //! userlevel=Normal
   //: Broadcast Event.
   // <p>This class enables a thread to sleep until signalled from another thread.</p>
-  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ConditionalMutexC.html">ConditionalMutexC</a>.</p>
+  // <p>In this class, the Wait() will wait until the next WakeSingle() or WakeAll() </p>
+  // <p> Note, if your implementing new threading primitives you may want to consider <a href="RavlN.ConditionalMutexC.html">ConditionalMutexC</a>
+  // which also manages the lock and unlocking of a mutex. </p>
 
-  class ThreadEventC {
+  class ThreadSignalC {
 
   public:
-    ThreadEventC();
+    ThreadSignalC();
+    //: Constructor.
     
-    ~ThreadEventC();
+    ~ThreadSignalC();
     //: Destructor.
 
-    bool Post();
-    //: Post an event.
-    // Returns true, if event has been posted by this thread.
-    
+    bool WakeSingle();
+    //: Wake a single waiting thread.
+
+    bool WakeAll();
+    //: Wake all waiting threads.
+
     void Wait();
-    //: Wait indefinitely for an event to be posted.
+    //: Wait indefinitely for a wake event
     
     bool WaitForFree();
     //: Wait for lock to be free of all waiters.
-    
+
     IntT ThreadsWaiting() const 
     { return m_waiting; }
     //: Get approximation of number of threads waiting.
     
     bool Wait(RealT maxTime);
-    //: Wait for an event.
+    //: Wait for a wake event for a limited amount of time.
     // Returns false if timed out.
 
     bool WaitUntil(const DateC &deadline);
-    //: Wait for an event.
+    //: Wait for a wake event or until a timeout
     // Returns false if timed out.
-
-    operator bool() const 
-    { return m_occurred; }
-    //: Test if the event has occurred.
-    
-    bool Occurred() const
-    { return m_occurred; }
-    //: Test if event has occurred.
-    
-    void Reset()
-    { m_occurred = false; }
-    //: Reset an event.
     
   protected:
     MutexC m_access;
-    ConditionalMutexC m_cond;
+    ConditionalMutexC cond;
     ConditionalMutexC m_condWaiting;
-    volatile bool m_occurred;
     volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 };
