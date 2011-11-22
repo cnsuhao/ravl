@@ -16,7 +16,7 @@
 //! date="25/05/2000"
 
 #include "Ravl/config.h"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 #include "Ravl/Stream.hh"
 
 namespace RavlN
@@ -24,7 +24,7 @@ namespace RavlN
   //! userlevel=Normal
   //: Broadcast Event.
   // <p>This class enables a thread to sleep until signalled from another thread.</p>
-  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ConditionalMutexC.html">ConditionalMutexC</a>.</p>
+  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ConditionalVariableC.html">ConditionalVariableC</a>.</p>
 
   class ThreadEventC {
 
@@ -70,8 +70,8 @@ namespace RavlN
     
   protected:
     MutexC m_access;
-    ConditionalMutexC m_cond;
-    ConditionalMutexC m_condWaiting;
+    ConditionalVariableC m_cond;
+    ConditionalVariableC m_condWaiting;
     volatile bool m_occurred;
     volatile IntT m_waiting; // Count of number of threads waiting on this...
   };

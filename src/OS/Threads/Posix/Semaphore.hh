@@ -17,7 +17,7 @@
 
 #include "Ravl/config.h"
 #include "Ravl/Types.hh"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 
 namespace RavlN
 {
@@ -87,7 +87,7 @@ namespace RavlN
     
   private:
     MutexC m_access;
-    ConditionalMutexC cond;
+    ConditionalVariableC cond;
     volatile int count;
   };
   

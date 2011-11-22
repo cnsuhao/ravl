@@ -16,7 +16,7 @@
 //! date="02/07/1999"
 
 #include "Ravl/config.h"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 
 #if RAVL_HAVE_POSIX_THREADS        
 #include <pthread.h>
@@ -186,8 +186,8 @@ namespace RavlN {
     int m_rdCount; // Count of readers with locks. -1=Writing
     int m_wrWait;  // Count of writers waiting.
     int m_rdWait;  // Count of readers waiting.
-    ConditionalMutexC m_writeQueue; // Writers queue.
-    ConditionalMutexC m_readQueue;  // Readers queue.
+    ConditionalVariableC m_writeQueue; // Writers queue.
+    ConditionalVariableC m_readQueue;  // Readers queue.
     bool m_preferWriter; // Do we prefer writers over readers?
   };
   

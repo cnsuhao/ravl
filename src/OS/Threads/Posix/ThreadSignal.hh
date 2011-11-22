@@ -15,7 +15,7 @@
 //! date="25/05/2000"
 
 #include "Ravl/config.h"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 #include "Ravl/Stream.hh"
 
 namespace RavlN
@@ -24,7 +24,7 @@ namespace RavlN
   //: Broadcast Event.
   // <p>This class enables a thread to sleep until signalled from another thread.</p>
   // <p>In this class, the Wait() will wait until the next WakeSingle() or WakeAll() </p>
-  // <p> Note, if your implementing new threading primitives you may want to consider <a href="RavlN.ConditionalMutexC.html">ConditionalMutexC</a>
+  // <p> Note, if your implementing new threading primitives you may want to consider <a href="RavlN.ConditionalVariableC.html">ConditionalVariableC</a>
   // which also manages the lock and unlocking of a mutex. </p>
 
   class ThreadSignalC {
@@ -62,8 +62,8 @@ namespace RavlN
     
   protected:
     MutexC m_access;
-    ConditionalMutexC cond;
-    ConditionalMutexC m_condWaiting;
+    ConditionalVariableC cond;
+    ConditionalVariableC m_condWaiting;
     volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 };
