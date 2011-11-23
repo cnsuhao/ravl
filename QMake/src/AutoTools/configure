@@ -594,6 +594,8 @@ LINKER_SPECIFIC_LDFLAGS
 COMPILER_SPECIFIC_CCFLAGS
 COMPILER_SHARED_CCFLAGS
 COMPILER_PROF_CCFLAGS
+COMPILER_OPT_CCFLAGS
+COMPILER_NON_OPT_CCFLAGS
 COMPILER_GPROF_CCFLAGS
 COMPILER_DEBUG_CCFLAGS
 COMPILER_ANSI_CCFLAGS
@@ -601,6 +603,8 @@ CONFIGURE_CCFLAGS
 COMPILER_SPECIFIC_CFLAGS
 COMPILER_SHARED_CFLAGS
 COMPILER_PROF_CFLAGS
+COMPILER_OPT_CFLAGS
+COMPILER_NON_OPT_CFLAGS
 COMPILER_GPROF_CFLAGS
 COMPILER_DEBUG_CFLAGS
 COMPILER_ANSI_CFLAGS
@@ -5387,9 +5391,25 @@ trace 2 Set compiler specific CFLAGS
              COMPILER_ANSI_CFLAGS=" -ansi "
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
+             COMPILER_NON_OPT_CFLAGS=" -O "
+             # Optimisation flags depend on version of GCC in use
+             CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print  }'`
+             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print  }'`
+             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print  }'`
+             CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print  }'`
+             if ( test X$CC_MAJOR = X4 && test $(($CC_MINOR)) -lt 3 )
+             then
+                # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
+                # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
+                # that work with the Ravl source and employ -O3 as compensation
+                COMPILER_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+             else
+                COMPILER_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+             fi
+             COMPILER_OPT_CFLAGS=$COMPILER_OPT_CFLAGS" -march=native -mtune=native "
              COMPILER_PROF_CFLAGS=" -p "
              COMPILER_SHARED_CFLAGS=" -shared -fPIC "
-             COMPILER_SPECIFIC_CFLAGS=""
+             COMPILER_SPECIFIC_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
           else
              trace 3 We do not have a GNU C compiler
              # Try relevant machine specific options we have used before
@@ -5402,6 +5422,8 @@ trace 2 Set compiler specific CFLAGS
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
+                          COMPILER_NON_OPT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_OPT_CFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
                           COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
@@ -5410,6 +5432,8 @@ trace 2 Set compiler specific CFLAGS
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=" -pg "
+                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=" -p "
                           COMPILER_SHARED_CFLAGS=" -KPIC "
                           COMPILER_SPECIFIC_CFLAGS=""
@@ -5418,6 +5442,8 @@ trace 2 Set compiler specific CFLAGS
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
+                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
                           COMPILER_SPECIFIC_CFLAGS=""
@@ -5439,17 +5465,36 @@ trace 2 Set compiler specific CFLAGS
 
 
 
+
+
 trace 2 Set compiler specific CCFLAGS
 
           if ( test x$GXX = xyes )
           then
              trace 3 We have a GNU C++ Compiler
+
              COMPILER_ANSI_CCFLAGS=" -ansi "
              COMPILER_DEBUG_CCFLAGS=" -g "
              COMPILER_GPROF_CCFLAGS=" -pg "
+             COMPILER_NON_OPT_CCFLAGS=" -O "
+             # Optimisation flags depend on version of GCC in use
+             CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print  }'`
+             CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print  }'`
+             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print  }'`
+             CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print  }'`
+             if ( test X$CXX_MAJOR = X4 && test $(($CXX_MINOR)) -lt 3 )
+             then
+                # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
+                # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
+                # that work with the Ravl source and employ -O3 as compensation
+                COMPILER_OPT_CCFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+             else
+                COMPILER_OPT_CCFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+             fi
+             COMPILER_OPT_CCFLAGS=$COMPILER_OPT_CCFLAGS" -march=native -mtune=native "
              COMPILER_PROF_CCFLAGS=" -p "
              COMPILER_SHARED_CCFLAGS=" -shared -fPIC "
-             COMPILER_SPECIFIC_CCFLAGS=""
+             COMPILER_SPECIFIC_CCFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
           else
               trace 3 We do not have a GNU C++ compiler
               # Try relevant machine specific options we have used before
@@ -5462,6 +5507,8 @@ trace 2 Set compiler specific CCFLAGS
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
                           COMPILER_GPROF_CCFLAGS=""
+                          COMPILER_NON_OPT_CCFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_OPT_CCFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
                           COMPILER_PROF_CCFLAGS=""
                           COMPILER_SHARED_CCFLAGS=""
                           COMPILER_SPECIFIC_CCFLAGS=" -mips4 -r1000 -woff 1021 -woff 1681 -woff 1882 "
@@ -5472,6 +5519,8 @@ trace 2 Set compiler specific CCFLAGS
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
                           COMPILER_GPROF_CCFLAGS=" -pg "
+                          COMPILER_NON_OPT_CCFLAGS=" -O "
+                          COMPILER_OPT_CCFLAGS=" -O2 "
                           COMPILER_PROF_CCFLAGS=" -p "
                           COMPILER_SHARED_CCFLAGS=" -KPIC "
                           COMPILER_SPECIFIC_CCFLAGS=""
@@ -5480,6 +5529,8 @@ trace 2 Set compiler specific CCFLAGS
                           COMPILER_ANSI_CCFLAGS=" -ansi "
                           COMPILER_DEBUG_CCFLAGS=""
                           COMPILER_GPROF_CCFLAGS=""
+                          COMPILER_NON_OPT_CCFLAGS=" -O "
+                          COMPILER_OPT_CCFLAGS=" -O2 "
                           COMPILER_PROF_CCFLAGS=""
                           COMPILER_SHARED_CCFLAGS=""
                           COMPILER_SPECIFIC_CCFLAGS=""
@@ -5493,6 +5544,8 @@ trace 2 Set compiler specific CCFLAGS
           # any user-provided CCFLAGS will be recorded in Config.QMake as QMAKE_CCFLAGS
 
           # Allow output of compiler specific settings
+
+
 
 
 
@@ -6691,6 +6744,8 @@ echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CFLAGS=@COMPILER_ANSI_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_DEBUG_CFLAGS=@COMPILER_DEBUG_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_GPROF_CFLAGS=@COMPILER_GPROF_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_NON_OPT_CFLAGS=@COMPILER_NON_OPT_CFLAGS@ >> ./Config.QMake.in
+echo COMPILER_OPT_CFLAGS=@COMPILER_OPT_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_PROF_CFLAGS=@COMPILER_PROF_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_SHARED_CFLAGS=@COMPILER_SHARED_CFLAGS@ >> ./Config.QMake.in
 echo COMPILER_SPECIFIC_CFLAGS=@COMPILER_SPECIFIC_CFLAGS@ >> ./Config.QMake.in
@@ -6704,6 +6759,8 @@ echo \# QMake compiler settings >> ./Config.QMake.in
 echo COMPILER_ANSI_CCFLAGS=@COMPILER_ANSI_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_DEBUG_CCFLAGS=@COMPILER_DEBUG_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_GPROF_CCFLAGS=@COMPILER_GPROF_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_NON_OPT_CCFLAGS=@COMPILER_NON_OPT_CCFLAGS@ >> ./Config.QMake.in
+echo COMPILER_OPT_CCFLAGS=@COMPILER_OPT_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_PROF_CCFLAGS=@COMPILER_PROF_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_SHARED_CCFLAGS=@COMPILER_SHARED_CCFLAGS@ >> ./Config.QMake.in
 echo COMPILER_SPECIFIC_CCFLAGS=@COMPILER_SPECIFIC_CCFLAGS@ >> ./Config.QMake.in

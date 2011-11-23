@@ -23,21 +23,25 @@ dnl                                  global compiler options.
 dnl       COMPILER_ANSI_CFLAGS     } { Receive the compiler specific flags
 dnl       COMPILER_DEBUG_CFLAGS    } { for setting the appropriate mode of
 dnl       COMPILER_GPROF_CFLAGS    } { compiler operation required by QMake.
-dnl       COMPILER_PROF_CFLAGS     } {  .._ANSI_.. is used for compiling
-dnl       COMPILER_SHARED_CFLAGS   } { ANSI-C source code; .._DEBUG_.. to
-dnl                                } { include debug info; .._GPROF_.. for
-dnl                                } { compiling code that can be analysed
+dnl       COMPILER_NON_OPT_CFLAGS  } {  .._ANSI_.. is used for compiling
+dnl       COMPILER_OPT_CFLAGS      } { ANSI-C source code; .._DEBUG_.. to
+dnl       COMPILER_PROF_CFLAGS     } { include debug info; .._GPROF_.. for
+dnl       COMPILER_SHARED_CFLAGS   } { compiling code that can be analysed
 dnl                                } { by the gprof utility (.._PROF_.. by
 dnl                                } { the prof utility) and .._SHARED_..
-dnl                                } { to compiled shared objects. All flags
-dnl                                } { drive the default value of the 
-dnl                                } { appropriately named PKG_... flags
-dnl                                } { which is the actual variable used in
-dnl                                } { the QMake makefiles. All of these
-dnl                                } { variables are primed based on the
-dnl                                } { compiler in use and declare the 
-dnl                                } { variable for output to the config.X
-dnl                                } { configuration file.
+dnl                                  { to compiled shared objects. With the
+dnl                                  { exception of the .._NON_OPT_.. flag,
+dnl                                  { all of these flags drive the default
+dnl                                  { value of the appropriately named
+dnl                                  { PKG_... flag (which is the actual
+dnl                                  { variable used in the QMake makefiles).
+dnl                                  { .._NON_OPT_.. is appended to the
+dnl                                  { PKG_DEFAULT... flags used for the
+dnl                                  { non-optimised builds. All of these
+dnl                                  { variables are primed based on the
+dnl                                  { compiler in use and declare the
+dnl                                  { variable for output to the config.X
+dnl                                  { configuration file.
 dnl       COMPILER_SPECIFIC_CFLAGS   Receive any compiler specific flags
 dnl                                  required to configure the C compiler
 dnl                                  to work with QMake. Unlike the above
@@ -66,9 +70,25 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
              COMPILER_ANSI_CFLAGS=" -ansi "
              COMPILER_DEBUG_CFLAGS=" -g "
              COMPILER_GPROF_CFLAGS=" -pg "
+             COMPILER_NON_OPT_CFLAGS=" -O "
+             # Optimisation flags depend on version of GCC in use
+             CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
+             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print $2 }'`
+             CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print $3 }'`
+             if ( test X$CC_MAJOR = X4 && test $(($CC_MINOR)) -lt 3 )
+             then
+                # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
+                # on versions 4.0/1/2 of GCC, so just implement the parts of -ffast-math
+                # that work with the Ravl source and employ -O3 as compensation
+                COMPILER_OPT_CFLAGS=" -O3 -fno-math-error -fno-trapping-math -fno-signalling-nans -D__FAST_MATH__ -Wstrict-aliasing=2 -fno-strict-aliasing "
+             else
+                COMPILER_OPT_CFLAGS=" -O2 -ffast-math -fno-strict-aliasing "
+             fi
+             COMPILER_OPT_CFLAGS=$COMPILER_OPT_CFLAGS" -march=native -mtune=native "
              COMPILER_PROF_CFLAGS=" -p "
              COMPILER_SHARED_CFLAGS=" -shared -fPIC "
-             COMPILER_SPECIFIC_CFLAGS=""
+             COMPILER_SPECIFIC_CFLAGS=" -Wall -pipe -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE "
           else
              trace 3 We do not have a GNU C compiler
              # Try relevant machine specific options we have used before
@@ -92,6 +112,8 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
+                          COMPILER_NON_OPT_CFLAGS=" -O1 -OPT:Olimit_opt=on "
+                          COMPILER_OPT_CFLAGS=" -O3 -OPT:condt_copy_limit=50000:Olimit=80000 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
                           COMPILER_SPECIFIC_CFLAGS=" -mips4 -r1000 "
@@ -100,6 +122,8 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=" -pg "
+                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=" -p "
                           COMPILER_SHARED_CFLAGS=" -KPIC "
                           COMPILER_SPECIFIC_CFLAGS=""
@@ -108,6 +132,8 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
                           COMPILER_ANSI_CFLAGS=" -ansi "
                           COMPILER_DEBUG_CFLAGS=""
                           COMPILER_GPROF_CFLAGS=""
+                          COMPILER_NON_OPT_CFLAGS=" -O "
+                          COMPILER_OPT_CFLAGS=" -O2 "
                           COMPILER_PROF_CFLAGS=""
                           COMPILER_SHARED_CFLAGS=""
                           COMPILER_SPECIFIC_CFLAGS=""
@@ -124,6 +150,8 @@ AC_DEFUN([QM_SET_COMPILER_CFLAGS],
           AC_SUBST([COMPILER_ANSI_CFLAGS])
           AC_SUBST([COMPILER_DEBUG_CFLAGS])
           AC_SUBST([COMPILER_GPROF_CFLAGS])
+          AC_SUBST([COMPILER_NON_OPT_CFLAGS])
+          AC_SUBST([COMPILER_OPT_CFLAGS])
           AC_SUBST([COMPILER_PROF_CFLAGS])
           AC_SUBST([COMPILER_SHARED_CFLAGS])
           AC_SUBST([COMPILER_SPECIFIC_CFLAGS])
