@@ -21,10 +21,10 @@
 namespace RavlN
 {
   //! userlevel=Normal
-  //: Broadcast Event.
+  //: Broadcast, signal or wait for an event &ndash; edge-triggered.
   // <p>This class enables a thread to sleep until signalled from another thread.</p>
   // <p>In this class, the Wait() will wait until the next WakeSingle() or WakeAll() </p>
-  // <p> Note, if your implementing new threading primitives you may want to consider <a href="RavlN.ConditionalVariableC.html">ConditionalVariableC</a>
+  // <p> Note: if you are implementing new threading primitives you may want to consider <a href="RavlN.ConditionalVariableC.html">ConditionalVariableC</a>
   // which also manages the lock and unlocking of a mutex. </p>
 
   class ThreadSignalC {

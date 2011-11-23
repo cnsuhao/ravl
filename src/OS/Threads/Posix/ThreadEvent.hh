@@ -22,9 +22,9 @@
 namespace RavlN
 {
   //! userlevel=Normal
-  //: Broadcast Event.
+  //: Post or wait for an event &ndash; level-triggered.
   // <p>This class enables a thread to sleep until signalled from another thread.</p>
-  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ConditionalVariableC.html">ConditionalVariableC</a>.</p>
+  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ThreadSignalC.html">ThreadSignalC</a>.</p>
 
   class ThreadEventC {
 
