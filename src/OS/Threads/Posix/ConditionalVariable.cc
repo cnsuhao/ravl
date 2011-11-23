@@ -233,8 +233,7 @@ namespace RavlN
     if(!m_waiting.IsEmpty()) {
       std::cerr << "ERROR: Destroying conditional mutex when there are threads waiting. \n";
     }
-    while(!m_free.IsEmpty())
-      delete &m_free.PopFirst();
+    m_free.Empty();
   }
   
   ConditionalVariableC::WaiterC *ConditionalVariableC::GetWaiter() {
