@@ -25,7 +25,7 @@ namespace RavlOSGN {
     _thrown = false;
     _distance = 1.0f;
     _trackballSize = 0.8f;
-    std::cerr << "CanvasManipulatorC::CanvasManipulatorC Called.\n";
+    ONDEBUG(std::cerr << "CanvasManipulatorC::CanvasManipulatorC Called.\n");
   }
 
   CanvasManipulatorC::~CanvasManipulatorC()
@@ -39,7 +39,7 @@ namespace RavlOSGN {
       const osg::BoundingSphere& boundingSphere = _node->getBound();
       _modelScale = boundingSphere._radius;
     }
-    std::cerr << "CanvasManipulatorC::setNode modelScale= " << _modelScale << "\n";
+    ONDEBUG(std::cerr << "CanvasManipulatorC::setNode modelScale= " << _modelScale << "\n");
     if(getAutoComputeHomePosition()) computeHomePosition();
   }
 

@@ -1,10 +1,9 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2001, University of Surrey
+// Copyright (C) 2001-11, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlCameraCal
 //! file="Ravl/3D/CameraCal/PinholeCamera0.cc"
 
@@ -13,47 +12,57 @@
 namespace Ravl3DN
 {
   using namespace RavlN;
+  using namespace RavlImageN;
 
-  istream& operator>>(istream& s, PinholeCamera0C& camera)
+  //: Load from stream.
+  bool
+  PinholeCameraBody0C::Load(istream &s)
   {
-    s >> camera.fx() >> camera.fy() >> camera.cx() >> camera.cy();
-    s >> camera.R();
-    s >> camera.t();
-    return s;
+    s >> m_frame;
+    s >> m_fx >> m_fy >> m_cx >> m_cy;
+    s >> m_R;
+    s >> m_t;
+    return true;
   }
-
-  ostream& operator<<(ostream& s, const PinholeCamera0C& camera)
+    
+  //: Load from binary stream.
+  bool
+  PinholeCameraBody0C::Load(BinIStreamC &s)
   {
-    s << camera.fx() 
-      << " " << camera.fy() 
-      << " " << camera.cx() 
-      << " " << camera.cy() 
+    s >> m_frame;
+    s >> m_fx >> m_fy >> m_cx >> m_cy;
+    s >> m_R;
+    s >> m_t;
+    return true;
+  }
+    
+  //: Writes object to stream, can be loaded using constructor
+  bool 
+  PinholeCameraBody0C::Save(ostream &s) const
+  {
+    s << m_frame
+      << endl << m_fx 
+      << " " << m_fy
+      << " " << m_cx
+      << " " << m_cy
       << endl;
-    s << camera.R();
-    s << camera.t();
-    return s;
+    s << m_R;
+    s << m_t << endl;
+    return true;
+  }
+    
+  //: Writes object to stream, can be loaded using constructor
+  bool 
+  PinholeCameraBody0C::Save(BinOStreamC &s) const
+  {
+    s << m_frame
+      << m_fx
+      << m_fy
+      << m_cx
+      << m_cy
+      << m_R
+      << m_t;
+    return true;
   }
 
-  BinIStreamC& operator>>(BinIStreamC& s, PinholeCamera0C& camera)
-  {
-    s >> 
-      camera.fx() >> 
-      camera.fy() >> 
-      camera.cx() >> 
-      camera.cy() >> 
-      camera.R()  >> 
-      camera.t();
-    return s;
-  }
-
-  BinOStreamC& operator<<(BinOStreamC& s, const PinholeCamera0C& camera)
-  {
-    s << camera.fx() 
-      << camera.fy() 
-      << camera.cx() 
-      << camera.cy() 
-      << camera.R()
-      << camera.t();
-    return s;
-  }
 };

@@ -18,35 +18,35 @@
 #endif
 
 namespace RavlN {
-  
-  DataSet2C<SampleC<VectorC>,SampleC<UIntT> > LoadVectorLabel(const StringC &fn) {
-    DataSet2C<SampleC<VectorC>,SampleC<UIntT> > ret;
+
+  DataSet2C<SampleC<VectorC>, SampleC<UIntT> > LoadVectorLabel(const StringC &fn) {
+    DataSet2C<SampleC<VectorC>, SampleC<UIntT> > ret;
     IStreamC in(fn);
-    if(!in)
+    if (!in)
       return ret;
     IntT samples;
     in >> samples;
     ONDEBUG(cerr << "Reading " << samples << " samples. \n");
-    ret = DataSet2C<SampleC<VectorC>,SampleC<UIntT> >(samples);
-    for(int i = 0;i < samples;i++) {
+    ret = DataSet2C<SampleC<VectorC>, SampleC<UIntT> >(samples);
+    for (int i = 0; i < samples; i++) {
       IntT vs;
       // Read vector.
       in >> vs;
       ONDEBUG(cerr << "Vector size " << vs << " elements. \n");
-      if(vs > 1000) {
-	cerr << "Unexpectedly large vector. \n";
-	return ret;
+      if (vs > 1000) {
+        cerr << "Unexpectedly large vector. \n";
+        return ret;
       }
-      
+
       VectorC nv(vs);
-      for(BufferAccessIterC<RealT> it(nv);it;it++)
-	in >> *it;
+      for (BufferAccessIterC<RealT> it(nv); it; it++)
+        in >> *it;
       // Read label.
       UIntT label;
-      in >> label; 
-      if(!in)
-	break;
-      ret.Append(nv,label);
+      in >> label;
+      if (!in)
+        break;
+      ret.Append(nv, label);
     }
     return ret;
   }

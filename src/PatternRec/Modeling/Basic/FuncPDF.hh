@@ -17,7 +17,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Abstract Probablity Distribution Function.
+  //: Abstract Probability Distribution Function.
   // The integral of these functions must be 1.
   
   class FuncPDFBodyC 
@@ -46,7 +46,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Abstract Probablity Distribution Function.
+  //: Abstract Probability Distribution Function.
   // The integral of these functions must be 1.
   
   class FuncPDFC

@@ -36,6 +36,8 @@ namespace RavlN {
   
   enum CreateBodyFlagT { CreateBodyE };
   
+  template<class BodyT> class RCHandleC;
+
   // Forward declarations.
   
   template<class BodyT> class RCHandleC;
@@ -47,10 +49,20 @@ namespace RavlN {
   
   class RCBodyC {
   public:
+    RCBodyC()
+    { ravl_atomic_set(&counter,0); }
+    //: Default constructor.
+    // Creates a handle with 0 reference counts.
+
+    RCBodyC(const RCBodyC &)
+    { ravl_atomic_set(&counter,0); }
+    //: Make sure we don't copy the reference counter.
+
     ~RCBodyC();
     //: Destructor.
     
-    UIntT References() const;
+    UIntT References() const
+    { return ravl_atomic_read(&counter); }
     //: Access count of handles open to this object.
     
     RCBodyC &Copy() const;
@@ -71,15 +83,9 @@ namespace RavlN {
     { return ravl_atomic_dec_and_test(&counter) != 0; }
     //: Decrement reference counter.
     
-  protected:    
-    RCBodyC() 
-    { ravl_atomic_set(&counter,0); }
-    //: Default constructor.
-    // Creates a handle with 0 reference counts.
-    
-    RCBodyC(const RCBodyC &) 
-    { ravl_atomic_set(&counter,0); }
-    //: Make sure we don't copy the reference counter.
+    void SetRefCounter(UIntT val) const
+    { ravl_atomic_set(&counter,val); }
+    // Set reference counter. For use in RCHandle only.
   private:
     mutable ravl_atomic_t counter;
   };
@@ -109,14 +115,16 @@ namespace RavlN {
     
     RCHandleC(CreateBodyFlagT)
       : body(new BodyT())
-    { body->IncRefCounter(); }
+    {
+      body->SetRefCounter(1);
+    }
     //: Constructor.
     // creates a body class with its default constructor.
     
     RCHandleC(istream &is)
       : body(new BodyT())
     { 
-      body->IncRefCounter(); 
+      body->SetRefCounter(1);
       is >> *body;
     }
     //: Load body from stream.
@@ -124,6 +132,15 @@ namespace RavlN {
     ~RCHandleC() {
       if(body == 0)
 	return;
+      if(body->References() == 1) {
+        // To save an expensive atom operation just delete the object
+#if RAVL_CHECK
+        // Stop the check code getting upset about the reference being non-zero.
+        body->SetRefCounter(0);
+#endif
+        delete body;
+        return ;
+      }
       if(body->DecRefCounter())
 	delete body;
     }
@@ -158,8 +175,8 @@ namespace RavlN {
     { return body != oth.body; }
     //: Are handles to different objects ?
     
-    UIntT Hash() const
-	{ return StdHash(reinterpret_cast<void *>(body)); }
+    size_t Hash() const
+    { return StdHash(reinterpret_cast<const void *>(body)); }
     //: Default hash function.
     // This hashes on the address of the body.
     
@@ -190,7 +207,7 @@ namespace RavlN {
     }
     //: Check handle type. Throw an exception if not.
     
-    void *VoidPtr() const
+    const void *VoidPtr() const
     { return body; }
     //: Access unique address for this object.
     // Used in PointerManagerC.  Not for general use
@@ -202,19 +219,39 @@ namespace RavlN {
   protected:
     RCHandleC(BodyT &bod)
       : body(&bod)
-    { body->IncRefCounter(); }
+    {
+      if(body->References() == 0) {
+        // Avoid unneeded atomic operation, they're slow.
+        body->SetRefCounter(1);
+      } else
+        body->IncRefCounter();
+    }
     //: Body constructor.
     
     RCHandleC(const BodyT *bod)
       : body(const_cast<BodyT *>(bod))
-    { if(body != 0) body->IncRefCounter(); }
+    {
+      if(body != 0) {
+        if(body->References() == 0) {
+          // Avoid unneeded atomic operation, they're slow.
+          body->SetRefCounter(1);
+        } else
+          body->IncRefCounter();
+      }
+    }
     //: Body base constructor.
     // This is used where the body may be a null ptr, such as
     // in the virtual constructor after a failed load.
     
     RCHandleC(RCBodyC &bod)
       : body(&static_cast<BodyT &>(bod))
-    { body->IncRefCounter(); }
+    {
+      if(body->References() == 0) {
+        // Avoid unneeded atomic operation, they're slow.
+        body->SetRefCounter(1);
+      } else
+        body->IncRefCounter();
+    }
     //: Body base constructor.
     
     BodyT &Body() { 

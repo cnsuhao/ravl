@@ -89,7 +89,7 @@ namespace RavlN {
     return 0;
   }
 
-  static bool initXMLFactoryStuff = InitMatrixXMLFactory();
+  static bool initXMLFactoryStuff = InitMatrixXMLFactory() != 0;
 
   FileFormatStreamC<MatrixC> FileFormatStream_Matrix;
   FileFormatStreamC<VectorC> FileFormatStream_Vector;

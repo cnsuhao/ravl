@@ -123,7 +123,7 @@ namespace RavlN {
 #endif
 #endif
 #ifndef __sgi__
-#ifndef NDEBUG
+#if RAVL_CHECK
     cerr << "WARNING: No standard type name for : " << name << endl;
 #endif
     AddTypeName(name,name); // Register name, to prevent repeated warnings.

@@ -174,10 +174,8 @@ namespace RavlN {
   }
   
   DataSetVectorLabelC DataSetVectorLabelBodyC::ExtractPerLabel(UIntT numSamples)  const {
-    cerr << "numSample: " << numSamples << endl;
     SArray1dC<SampleVectorC> arr = SeperateLabels();
     UIntT noClasses = arr.Size();
-    cerr << "classes: " << noClasses << endl;
     SampleVectorC input(numSamples * noClasses);
     SampleLabelC output(numSamples * noClasses);
     for(SArray1dIterC<SampleVectorC>it(arr);it;it++) {

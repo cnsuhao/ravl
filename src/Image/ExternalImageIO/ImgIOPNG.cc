@@ -235,12 +235,20 @@ namespace RavlImageN {
     if (color_type == PNG_COLOR_TYPE_PALETTE) {
       ONDEBUG(cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_expand(png_ptr), Called. \n");
       png_set_expand(png_ptr);
+      if(req_color_type == PNG_COLOR_TYPE_RGB || req_color_type == PNG_COLOR_TYPE_GRAY) {
+	      ONDEBUG(cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_strip_alpha(png_ptr), Called. \n");
+	      png_set_strip_alpha(png_ptr);
+      }
     }
     
     // Expand grayscale images to the full 8 bits from 1, 2, or 4 bits/pixel 
     if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) {
       ONDEBUG(cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_expand(png_ptr), Called. \n");
       png_set_expand(png_ptr);
+      if(req_color_type == PNG_COLOR_TYPE_RGB || req_color_type == PNG_COLOR_TYPE_GRAY) {
+	      ONDEBUG(cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_strip_alpha(png_ptr), Called. \n");
+	      png_set_strip_alpha(png_ptr);
+      }
     }
     
     if(req_color_type == PNG_COLOR_TYPE_RGB_ALPHA) {

@@ -55,12 +55,12 @@ namespace RavlN {
     virtual RCWrapAbstractC Load(const StringC &fn,const StringC &fmtName = "",bool verb = false) const;
     //: Attempt to load object from a file.
     
-    virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj) RAVL_THROW(ExceptionErrorCastC);
+    virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj);
     //: Put generic object to port.
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
     // an assert may fail.
   
-    virtual RCWrapAbstractC Get(DPIPortBaseC &port) RAVL_THROW2(ExceptionErrorCastC,DataNotReadyC);
+    virtual RCWrapAbstractC Get(DPIPortBaseC &port);
     //: Get generic object from port.
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
     // an assert may fail.
@@ -153,13 +153,13 @@ namespace RavlN {
     { return Body().Create(in); }
     //: Create instance of the type with the default constructor.
     
-    inline bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj) RAVL_THROW(ExceptionErrorCastC)
+    inline bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj)
     { return Body().Put(port,obj); }
     //: Put generic object to port.
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
     // an assert may fail.
     
-    inline RCWrapAbstractC Get(DPIPortBaseC &port) RAVL_THROW2(ExceptionErrorCastC,DataNotReadyC)
+    inline RCWrapAbstractC Get(DPIPortBaseC &port)
     { return Body().Get(port); }
     //: Get generic object from port.
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
@@ -244,7 +244,8 @@ namespace RavlN {
     }
     //: Attempt to load object from a file.
     
-    virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj) RAVL_THROW(ExceptionErrorCastC) { 
+    virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj)
+    {
       if(!obj.IsValid() || !port.IsValid()) {
         cerr << "DPTypeInfoInstBodyC::Put(), ERROR: Invalid arguments. \n";
         RavlAssert(0);
@@ -270,7 +271,7 @@ namespace RavlN {
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
     // an assert may fail.
     
-    virtual RCWrapAbstractC Get(DPIPortBaseC &port) RAVL_THROW2(ExceptionErrorCastC,DataNotReadyC) {
+    virtual RCWrapAbstractC Get(DPIPortBaseC &port) {
       if(!port.IsValid()) {
         cerr << "DPTypeInfoInstBodyC::Get(), ERROR: Invalid arguments. \n";
         RavlAssert(0);
@@ -335,11 +336,11 @@ namespace RavlN {
         return 0;
       }
 
-      SArray1dC<DataT> data(size);
+      SArray1dC<DataT> data(static_cast<size_t>(size));
       Int64T dataRead = iport.GetArray(data);
       if (dataRead > 0)
       {
-        SArray1dC<DataT> subData(data, dataRead);
+        SArray1dC<DataT> subData(data, (UIntT) dataRead);
         strm << subData;
       }
 
@@ -382,7 +383,7 @@ namespace RavlN {
       // Copy data.
       SArray1dC<DataT> data;
       strm >> data;
-      return oport.PutArray(data);
+      return oport.PutArray(data) == (IntT) data.Size().V();
     }
     //: Read an array of items from the binary stream and write it to a port.
 

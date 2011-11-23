@@ -16,6 +16,7 @@
 //! date="02/07/1999"
 
 #include "Ravl/config.h"
+#include "Ravl/Threads/ConditionalMutex.hh"
 
 #if RAVL_HAVE_POSIX_THREADS        
 #include <pthread.h>
@@ -154,8 +155,8 @@ namespace RavlN {
     // Get a write lock.
 
     bool WrLock(float timeout);
-    //: Aquire a write lock with timeout
-    // Returns true if lock aquired, false if timeout.
+    //: Acquire a write lock with timeout
+    // Returns true if lock acquired, false if timeout.
     // Negative timeout's will cause the wait to last forever
     
     bool TryWrLock(void);
@@ -181,12 +182,12 @@ namespace RavlN {
     //: Print an error.
     
   private:    
-    MutexC AccM; // Access control.
-    int RdCount; // Count of readers with locks. -1=Writing
-    int WrWait;  // Count of writers waiting.
-    int RdWait;  // Count of readers waiting.
-    SemaphoreC WriteQueue; // Writers queue.
-    SemaphoreC ReadQueue;  // Readers queue.
+    MutexC m_accM; // Access control.
+    int m_rdCount; // Count of readers with locks. -1=Writing
+    int m_wrWait;  // Count of writers waiting.
+    int m_rdWait;  // Count of readers waiting.
+    ConditionalMutexC m_writeQueue; // Writers queue.
+    ConditionalMutexC m_readQueue;  // Readers queue.
     bool m_preferWriter; // Do we prefer writers over readers?
   };
   

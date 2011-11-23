@@ -110,11 +110,17 @@ namespace RavlImageN {
   ImageC<ByteRGBValueC>  RealRGBImageCT2ByteRGBImageCT(const ImageC<RealRGBValueC> &dat);
   //: Image conversion: double RGB &rarr; byte RGB
 
+  ImageC<UInt16RGBValueC> RealRGBImageCT2UInt16RGBImageCT(const ImageC<RealRGBValueC> &dat);
+  //: Image conversion: double RGB &rarr; UInt16 RGB
+
   ImageC<UInt16RGBValueC> ByteRGBImageCT2UInt16RGBImageCT(const ImageC<ByteRGBValueC> &dat);
   //: Image conversion: byte RGB &rarr; UInt16 RGB
 
   ImageC<ByteRGBValueC>  UInt16RGBImageCT2ByteRGBImageCT(const ImageC<UInt16RGBValueC> &dat);
   //: Image conversion: UInt16 RGB &rarr; byte RGB
+
+  ImageC<RealRGBValueC>  UInt16RGBImageCT2RealRGBImageCT(const ImageC<UInt16RGBValueC> &dat);
+  //: Image conversion: UInt16 RGB &rarr; double RGB
 
   ImageC<RGBValueC<float> > RealRGBImageCT2RGBImageCFloat(const ImageC<RealRGBValueC> & dat );
   //: Image conversion: double RGB &rarr; float RGB

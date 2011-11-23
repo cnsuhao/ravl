@@ -90,6 +90,19 @@ SvmQuadraticClassifierBodyC::SvmQuadraticClassifierBodyC(BinIStreamC &Strm)
 
   Strm >> m_threshold;
 }
+
+//! Construct from raw components
+SvmQuadraticClassifierBodyC::SvmQuadraticClassifierBodyC(const VectorC &w1,
+                                                                 const VectorC &w2,
+                                                                 RealT threshold)
+ : m_threshold(threshold),
+   m_weights1(w1),
+   m_weights2(w2),
+   m_halfWeights(w1.Size().V())
+{
+  RavlAssert(w1.Size() == w2.Size());
+}
+
 //---------------------------------------------------------------------------
 //! Destructor.
 SvmQuadraticClassifierBodyC::~SvmQuadraticClassifierBodyC()

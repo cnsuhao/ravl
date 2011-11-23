@@ -44,7 +44,13 @@ namespace RavlImageN {
   
   const type_info &
   FileFormatAviBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
-  { return typeid(ImageC<ByteBGRValueC>); }
+  { 
+#if 0
+    return typeid(ImageC<ByteBGRValueC>); 
+#else
+	  return typeid(void);
+#endif    
+  }
 
   const type_info &
   FileFormatAviBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {

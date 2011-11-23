@@ -360,8 +360,8 @@ namespace RavlN
 	RealT bottom = (*X1 + *X2);
         if (bottom <= 0.0) return 0.0;
         sum += Sqr(*X1 - *X2) / bottom;
-	*X1++;
-	*X2++;
+	X1++;
+	X2++;
       }
     return exp(-0.5*sum / gamma);
   }

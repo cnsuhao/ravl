@@ -52,7 +52,7 @@ namespace RavlN {
     virtual bool Init();
     //: Initialise link.
     
-    bool WaitForConnect(RealT timeOut = 10);
+    bool WaitForConnect(RealT timeOut = 60);
     //: Wait for connection complete.
     
     bool Connect(NetEndPointC &ep);

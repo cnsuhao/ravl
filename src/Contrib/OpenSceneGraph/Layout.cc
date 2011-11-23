@@ -5,6 +5,12 @@
 #include "Node.hh"
 #include <osg/ComputeBoundsVisitor>
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlOSGN {
   
@@ -37,16 +43,16 @@ namespace RavlOSGN {
     osg::ComputeBoundsVisitor boundsVisitor; 
     m_element->Node()->accept(boundsVisitor);
     m_bounds = boundsVisitor.getBoundingBox(); 
-    rDebug("Bounds %f %f %f : %f %f %f",
+    ONDEBUG(rDebug("Bounds %f %f %f : %f %f %f",
            m_bounds._min[0],m_bounds._min[1],m_bounds._min[2],
            m_bounds._max[0],m_bounds._max[1],m_bounds._max[2]
-           );
+           ));
     return true;
   }
   
   void LayoutEntryC::SetTargetPosition(const Vector3dC &position)
   {
-    rDebug("Target position %s ",RavlN::StringOf(position).data());
+    ONDEBUG(rDebug("Target position %s ",RavlN::StringOf(position).data()));
     m_targetPosition = position;
     SetPosition(position);
   }

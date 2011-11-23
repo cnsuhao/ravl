@@ -251,6 +251,7 @@ namespace RavlN {
   
   template<class DataT>
   DataT TVectorC<DataT>::Dot(const TVectorC<DataT> & v) const {
+    RavlAssert(v.Size() == this->Size());
     DataT sum;
     BufferAccessIter2C<DataT,DataT> it(*this,v);
     if(!it) {
@@ -400,6 +401,7 @@ namespace RavlN {
 
   template<class DataT>
   DataT TVectorC<DataT>::MaxValueDistance(const TVectorC<DataT> & i) const {
+    RavlAssert(i.Size() == this->Size());
     DataT max;
     BufferAccessIter2C<DataT,DataT> it(*this,i);
     if(!it) {
@@ -417,6 +419,7 @@ namespace RavlN {
   
   template<class DataT>
   DataT TVectorC<DataT>::CityBlockDistance(const TVectorC<DataT> & i) const {
+    RavlAssert(i.Size() == this->Size());
     DataT sum;
     BufferAccessIter2C<DataT,DataT> it(*this,i);
     if(!it) {
@@ -431,6 +434,7 @@ namespace RavlN {
   
   template<class DataT>
   DataT TVectorC<DataT>::SqrEuclidDistance(const TVectorC<DataT> & i) const {
+    RavlAssert(i.Size() == this->Size());
     DataT sum;
     BufferAccessIter2C<DataT,DataT> it(*this,i);
     if(!it) {
@@ -459,24 +463,32 @@ namespace RavlN {
   
   template<>
   inline RealT TVectorC<RealT>::Dot(const TVectorC<RealT> & v) const {
+    RavlAssert(v.Size() == this->Size());
     return RavlBaseVectorN::DotProduct(this->DataStart(), v.DataStart(), this->Size());  
   }
   
   template<>
   inline FloatT TVectorC<FloatT>::Dot(const TVectorC<FloatT> & v) const {
+    RavlAssert(v.Size() == this->Size());
     return RavlBaseVectorN::DotProduct(this->DataStart(), v.DataStart(), this->Size());  
   }
 
   template<>
   inline RealT TVectorC<RealT>::Dot2(const TVectorC<RealT> & v1,
-		                             const TVectorC<RealT> & v2) const {
-	return RavlBaseVectorN::QuadProduct(this->DataStart(), v1.DataStart(), v2.DataStart(), this->Size());
+		                     const TVectorC<RealT> & v2) const
+  {
+     RavlAssert(v1.Size() == this->Size());
+     RavlAssert(v2.Size() == this->Size());
+     return RavlBaseVectorN::QuadProduct(this->DataStart(), v1.DataStart(), v2.DataStart(), this->Size());
   }
 
   template<>
   inline FloatT TVectorC<FloatT>::Dot2(const TVectorC<FloatT> & v1,
-		                               const TVectorC<FloatT> & v2) const {
-	return RavlBaseVectorN::QuadProduct(this->DataStart(), v1.DataStart(), v2.DataStart(), this->Size());
+		                       const TVectorC<FloatT> & v2) const
+  {
+    RavlAssert(v1.Size() == this->Size());
+    RavlAssert(v2.Size() == this->Size());
+    return RavlBaseVectorN::QuadProduct(this->DataStart(), v1.DataStart(), v2.DataStart(), this->Size());
   }
 
 }

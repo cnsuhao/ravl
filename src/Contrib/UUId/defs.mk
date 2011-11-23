@@ -16,9 +16,9 @@ DESCRIPTION=
 
 PACKAGE= Ravl
 
-HEADERS= UUId.hh
+HEADERS= GenerateUUId.hh
 
-SOURCES= UUId.cc
+SOURCES= GenerateUUId.cc
 
 MAINS=
 

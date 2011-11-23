@@ -128,12 +128,38 @@ namespace RavlImageN
     return ret;
   }
   
+  //  UInt16 colour image to RealT colour.
+  
+  ImageC<RealRGBValueC> UInt16RGBImageCT2RealRGBImageCT(const ImageC<UInt16RGBValueC> &dat) {
+    ImageC<RealRGBValueC> ret(dat.Rectangle());
+    for(Array2dIter2C<RealRGBValueC,UInt16RGBValueC> it(ret,dat);it.IsElm();it.Next()) 
+      it.Data1() = RealRGBValueC(static_cast<RealT>(it.Data2().Red()),
+				 static_cast<RealT>(it.Data2().Green()),
+				 static_cast<RealT>(it.Data2().Blue()));
+    return ret;
+  }
+  
+  // RealT colour image to UInt16 colour.
+  
+  ImageC<UInt16RGBValueC> RealRGBImageCT2UInt16RGBImageCT(const ImageC<RealRGBValueC> &dat) {
+    ImageC<UInt16RGBValueC> ret(dat.Rectangle());
+    for(Array2dIter2C<UInt16RGBValueC,RealRGBValueC> it(ret,dat);it.IsElm();it.Next()) 
+      it.Data1() = UInt16RGBValueC(static_cast<RealT>(it.Data2().Red()),
+                                   static_cast<RealT>(it.Data2().Green()),
+                                   static_cast<RealT>(it.Data2().Blue()));
+    return ret;
+  }
+  
   // Register conversions...
   
   DP_REGISTER_CONVERSION_FT_NAMED(ImageC<ByteRGBValueC>,ImageC<UInt16RGBValueC>,ByteRGBImageCT2UInt16RGBImageCT,1,
 				  "ImageC<UInt16RGBValueC> RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
   DP_REGISTER_CONVERSION_FT_NAMED(ImageC<UInt16RGBValueC>,ImageC<ByteRGBValueC>,UInt16RGBImageCT2ByteRGBImageCT,2,
 				  "ImageC<ByteRGBValueC> RavlImageN::Convert(const ImageC<UInt16RGBValueC> &dat)");
+  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<UInt16RGBValueC>,ImageC<RealRGBValueC>,UInt16RGBImageCT2RealRGBImageCT,1,
+				  "ImageC<RealRGBValueC> RavlImageN::Convert(const ImageC<UInt16RGBValueC> &dat)");
+  DP_REGISTER_CONVERSION_FT_NAMED(ImageC<RealRGBValueC>,ImageC<UInt16RGBValueC>,RealRGBImageCT2UInt16RGBImageCT,2,
+				  "ImageC<UInt16RGBValueC> RavlImageN::Convert(const ImageC<RealRGBValueC> &dat)");
   
   
 }

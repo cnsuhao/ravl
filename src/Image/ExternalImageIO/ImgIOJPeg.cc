@@ -234,6 +234,7 @@ namespace RavlImageN {
   DPImageIOJPegIBaseC::DPImageIOJPegIBaseC(const IStreamC &nfin)
     : fin(nfin)
   {
+    ONDEBUG(cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC\n");
     /* We have to set up the error handler first, in case the initialization
      * step fails.  (Unlikely, but it could happen if you are out of memory.)
      * This routine fills in the contents of struct jerr, and returns jerr's
@@ -258,6 +259,7 @@ namespace RavlImageN {
       /* If we get here, the JPEG code has signaled an error.
        * We need to clean up the JPEG object, close the input file, and return.
        */
+      std::cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC(), Error initialising decompressor. \n";
       jpeg_destroy_decompress(&cinfo);
       initalised = false;
       return ;
@@ -279,7 +281,7 @@ namespace RavlImageN {
       // Establish the setjmp return context for my_error_exit to use.
       if (setjmp(jerr.setjmp_buffer)) {
 	// If we get here, the JPEG code has signaled an error.
-	cerr << "DPImageIOJPegIBaseC::~DPImageIOJPegIBaseC(), WARNING: Error destorying decompressor. \n";
+	std::cerr << "DPImageIOJPegIBaseC::~DPImageIOJPegIBaseC(), Error destorying decompressor. \n";
 	return ;
       }
       /* This is an important step since it will release a good deal of memory. */

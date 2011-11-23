@@ -20,7 +20,7 @@ MUSTLINK=RavlGUIDisplay.cc
 
 REQUIRES=libGTK2
 
-USESLIBS=RavlIO RavlGUI RavlImageIO RavlGUI2D GTK
+USESLIBS=RavlIO RavlGUI RavlImageIO RavlGUI2D RavlImage GTK
 
 EXAMPLES=exDPWindow.cc
 

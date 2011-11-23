@@ -201,7 +201,7 @@ namespace RavlN
       Error("Trylock failed for unexpected reason.",errno,rc);
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    if((rc = WaitForSingleObject(mutex,INFINITE)) == WAIT_OBJECT_0)
+    if((rc = WaitForSingleObject(mutex,0)) == WAIT_OBJECT_0)
       return true;
 #endif
     return false;

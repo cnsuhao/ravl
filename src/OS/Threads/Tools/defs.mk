@@ -13,15 +13,14 @@ DESCRIPTION=Threading tools
 PACKAGE=Ravl/Threads
 
 HEADERS=MessageQueue.hh LaunchThread.hh TickerTrigger.hh \
- TimedTriggerQueue.hh Signal.hh Signal1.hh Signal2.hh Signal3.hh \
- SignalConnectionSet.hh MTPriQueueL.hh
-#  EventHandler.hh  TimedEventQueue.hh \
-# EventHandlerRef.hh
+ Signal.hh Signal1.hh Signal2.hh Signal3.hh MTPriQueueL.hh \
+ SignalConnectionSet.hh TimedTriggerQueue.hh \
+ ThreadState.hh ThreadLimitCounter.hh
 
 SOURCES=MessageQueue.cc LaunchThread.cc TickerTrigger.cc \
- TimedTriggerQueue.cc Signal.cc  SignalConnectionSet.cc
-
-# EventHandler.cc  TimedEventQueue.cc
+ Signal.cc \
+ SignalConnectionSet.cc TimedTriggerQueue.cc \
+ ThreadState.cc ThreadLimitCounter.cc
 
 EHT=Ravl.API.OS.Signals.html
 
@@ -33,5 +32,6 @@ USESLIBS = RavlThreads RavlOS
 
 EXAMPLES= exSignal.cc exSignal1.cc exSignal2.cc exLaunchThread.cc testAtomicSpeed.cc
 
-TESTEXES = testLaunchThread.cc testTickerTrigger.cc testTimedTriggerQueue.cc testSignal.cc testAtomic.cc
+TESTEXES = testLaunchThread.cc testTickerTrigger.cc testTimedTriggerQueue.cc testSignal.cc testAtomic.cc testThreads.cc
+
 

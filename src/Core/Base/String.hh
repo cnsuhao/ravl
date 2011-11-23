@@ -129,8 +129,13 @@ namespace RavlN {
   class StrRepP {
   public:
     void SetPtr(StrRepC *New) {
-      if(New != 0) 
-	ravl_atomic_inc(&(New->refs));
+      if(New != 0) {
+        if(ravl_atomic_read(&(New->refs)) == 0) {
+          // Short cut avoiding atomic operation, which can be slow on SMP systems.
+          ravl_atomic_set(&(New->refs),1);
+        } else
+	  ravl_atomic_inc(&(New->refs));
+      }
       if(Where != 0) {
 	if(ravl_atomic_dec_and_test(&(Where->refs)))
 	  delete [] ((char *) Where);
@@ -140,16 +145,26 @@ namespace RavlN {
     // Change the pointer to another value.
     
     StrRepP(StrRepC *SR) { 
-      if(SR != 0) 
-	ravl_atomic_inc(&(SR->refs)); 
+      if(SR != 0) {
+        if(ravl_atomic_read(&(SR->refs)) == 0) {
+          // Short cut avoiding atomic operation, which can be slow on SMP systems.
+          ravl_atomic_set(&(SR->refs),1);
+        } else
+          ravl_atomic_inc(&(SR->refs));
+      }
       Where = SR; 
     }
     // Create from a pointer to a string rep.
     
     StrRepP(const StrRepC *SR) { 
       Where = const_cast<StrRepC *>(SR);      
-      if(Where != 0) 
-	ravl_atomic_inc(&(Where->refs)); 
+      if(Where != 0) {
+        if(ravl_atomic_read(&Where->refs) == 0) {
+          // Short cut avoiding atomic operation, which can be slow on SMP systems.
+          ravl_atomic_set(&Where->refs,1);
+        } else
+	  ravl_atomic_inc(&(Where->refs));
+      }
     }
     // Create from a pointer to a string rep.
     
@@ -166,8 +181,14 @@ namespace RavlN {
     
     ~StrRepP(void) {  
       if(Where != 0) {
-	if(ravl_atomic_dec_and_test(&(Where->refs)))
-	  delete [] ((char *) Where);
+        if(ravl_atomic_read(&Where->refs) == 1) {
+          // Short cut avoiding atomic operation, which can be slow on SMP systems.
+          delete [] ((char *) Where);
+        } else
+        {
+          if(ravl_atomic_dec_and_test(&(Where->refs)))
+            delete [] ((char *) Where);
+        }
       }
     }
     //: Destructor.

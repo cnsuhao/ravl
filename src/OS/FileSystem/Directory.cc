@@ -107,29 +107,15 @@ namespace RavlN {
     WIN32_FIND_DATA dataFind;
     memset(&dataFind, 0, sizeof(WIN32_FIND_DATA));
     StringC strSearch = StringC(chars()) + "/*";
-#if !RAVL_COMPILER_VISUALCPPNET_2005
+
     HANDLE hFindFile = FindFirstFile(strSearch.chars(), &dataFind);
-    BOOL bFoundNext = hFindFile ? true : false;
+    BOOL bFoundNext = hFindFile != INVALID_HANDLE_VALUE ? true : false;
     while (bFoundNext) {
-      ret.InsLast(StringC(dataFind.cFileName));
+      const char *name = dataFind.cFileName;
+      if(name[0] != 0 && (name[0] != '.' || (name[1] != 0 && (name[1] != '.' || name[2] != 0))))
+        ret.InsLast(StringC(name));
       bFoundNext = FindNextFile(hFindFile, &dataFind);
     }
-#else
-	//char wsbuff[1025];
-	size_t size = 0;
-	//mbstowcs_s(&size,wsbuff, 1024,strSearch.chars(), strSearch.length());
-	HANDLE hFindFile = FindFirstFile(strSearch.chars(), &dataFind);
-    BOOL bFoundNext = hFindFile ? true : false;
-    while (bFoundNext) {
-	  mbstate_t state;
-	  //char cbuff[1025];
-	  size_t csize = 0;
-	  char *wname = dataFind.cFileName;
-	  //wcsrtombs_s(&csize,cbuff,1024,(const char **) &wname,1024,&state);
-      ret.InsLast(StringC(wname));
-      bFoundNext = FindNextFile(hFindFile, &dataFind);
-    }
-#endif
     return ret;
 #else
 #if RAVL_HAVE_UNIXDIRFUNCS
@@ -282,16 +268,16 @@ namespace RavlN {
     for(DLIterC<StringC> it(list);it;it++) {
       ONDEBUG(cerr << "DirectoryC::SearchTree() Testing:" << it.Data() << "\n");
       if(it->lastchar() != '/')
-	file = (*this) + '/' + *it;
+      	file = (*this) + '/' + *it;
       else
-	file = (*this) + *it;
+	      file = (*this) + *it;
       if(file.IsDirectory()) {
-	DListC<StringC> lst = file.SearchTree(filter);
-	ret.MoveLast(lst);
+	      DListC<StringC> lst = file.SearchTree(filter);
+      	ret.MoveLast(lst);
       }
       else { // Don't match directories...
-	if(MatchFilt(filter.chars(),it.Data().chars()))
-	  ret.InsLast(file);
+	      if(MatchFilt(filter.chars(),it.Data().chars()))
+      	  ret.InsLast(file);
       }
     }
     return ret;

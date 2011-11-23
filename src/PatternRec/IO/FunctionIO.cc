@@ -37,7 +37,7 @@ namespace RavlN {
   
   static TypeNameC type2(typeid(Function1C),"RavlN::Function1C");
   
-  FunctionC Function1C2Function(const FunctionC &func)
+  FunctionC Function1C2Function(const Function1C &func)
   { return func; }
   
   DP_REGISTER_CONVERSION_NAMED(Function1C2Function ,1,

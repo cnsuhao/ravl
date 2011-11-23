@@ -40,7 +40,7 @@ namespace RavlN
   {
   public:
     TimedTriggerQueueBodyC();
-    //: Default constuctor
+    //: Default constructor
 
     ~TimedTriggerQueueBodyC();
     //: Destructor.
@@ -50,23 +50,23 @@ namespace RavlN
     //: Schedule event for running after time 't' (in seconds).
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for canceling it. 
+    // be used for cancelling it.
     
-    UIntT Schedule(DateC &startAt,const TriggerC &se,float period = -1);
+    UIntT Schedule(const DateC &startAt,const TriggerC &se,float period = -1);
     //: Schedule event for running.
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for canceling it.
+    // be used for cancelling it.
 
     UIntT SchedulePeriodic(const TriggerC &se,float period);
-    //: Schedule event for running periodicly.
+    //: Schedule event for running periodically.
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for canceling it.
+    // be used for cancelling it.
 
     bool Cancel(UIntT eventID);
     //: Cancel pending event.
-    // Will return TRUE if event in canceled before
+    // Will return TRUE if event in cancelled before
     // it was run.
 
     void Shutdown();
@@ -136,26 +136,26 @@ namespace RavlN
     //: Schedule event for running after time 't' (in seconds).
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for canceling it. 
+    // be used for cancelling it.
     
-    UIntT Schedule(DateC &at,const TriggerC &se,float period = -1)
+    UIntT Schedule(const DateC &at,const TriggerC &se,float period = -1)
     { return Body().Schedule(at,se,period); }
     //: Schedule event for running.
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for canceling it.
+    // be used for cancelling it.
     
     UIntT SchedulePeriodic(const TriggerC &se,float period)
     { return Body().SchedulePeriodic(se,period); }
-    //: Schedule event for running periodicly.
+    //: Schedule event for running periodically.
     // Thread safe.
     // Returns an ID for the event, which can
-    // be used for canceling it.
+    // be used for cancelling it.
 
     bool Cancel(UIntT eventID)
     { return Body().Cancel(eventID); }
     //: Cancel pending event.
-    // Will return TRUE if event in canceled before
+    // Will return TRUE if event in cancelled before
     // it was run.
     
     void Shutdown()
@@ -168,7 +168,7 @@ namespace RavlN
 
   //! Access a global trigger queue.
   // As one thread is sharing all the work,
-  // long (>0.1s) tasks be spawned on a sperate thread.
+  // long (>0.1s) tasks be spawned on a separate thread.
   TimedTriggerQueueC GlobalTriggerQueue();
   
 }

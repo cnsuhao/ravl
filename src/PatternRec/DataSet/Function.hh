@@ -59,8 +59,8 @@ namespace RavlN {
     virtual VectorC Apply(const VectorC &data) const;
     //: Apply function to 'data'
 
-    TVectorC<float> Apply(const TVectorC<float> &data) const;
-    //: Apply function with float vecors to 'data'
+    virtual TVectorC<float> Apply(const TVectorC<float> &data) const;
+    //: Apply function with float vectors to 'data'
 
     virtual VectorC Apply(const VectorC & data1, const VectorC & data2) const ; 
     //: Apply function to two data vectors 
@@ -87,7 +87,6 @@ namespace RavlN {
     
     virtual bool EvaluateValue(const VectorC &X,VectorC &value) const;
     //: Evaluate the value of the function at point X
-    // Returns true if all values are provide, false if one or more is approximated.
     
     inline UIntT InputSize() const
     { return inputSize; }
@@ -181,7 +180,7 @@ namespace RavlN {
     
     inline VectorMatrixC Evaluate(const VectorC &X)
     { return Body().Evaluate(X); }
-    //: Evalate the function and its jacobian at the same time.
+    //: Evaluate the function and its jacobian at the same time.
     // This method defaults to calling 'Apply' and 'Jacobian' sperately.
     
     inline bool EvaluateValueJacobian(const VectorC &X,VectorC &value,MatrixC &jacobian) const

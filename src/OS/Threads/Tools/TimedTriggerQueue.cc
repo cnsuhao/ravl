@@ -74,7 +74,7 @@ namespace RavlN
     return Schedule(at,se,period);
   }
 
-  //: Schedule event for running periodicly.
+  //: Schedule event for running periodically.
   UIntT TimedTriggerQueueBodyC::SchedulePeriodic(const TriggerC &se,float period) {
     return Schedule(period,se,period);
   }
@@ -82,16 +82,16 @@ namespace RavlN
   //: Schedule event for running.
   // Thread safe.
   
-  UIntT TimedTriggerQueueBodyC::Schedule(DateC &at,const TriggerC &se,float period) {
+  UIntT TimedTriggerQueueBodyC::Schedule(const DateC &at,const TriggerC &se,float period) {
     if(!se.IsValid())
       return 0;
     MutexLockC holdLock(access);
     do {
       eventCount++;
       if(eventCount == 0)
-	eventCount++;
+	      eventCount++;
     } while(events.IsElm(eventCount));
-    int nEvent = eventCount; 
+    UIntT nEvent = eventCount;
     schedule.Insert(at,nEvent);
     Tuple2C<TriggerC,float> &entry = events[nEvent];
     entry.Data1() = se;
@@ -100,7 +100,7 @@ namespace RavlN
     holdLock.Unlock();
     ONDEBUG(std::cerr << "TimedTriggerQueueBodyC::Schedule() Event " << nEvent << " at " << at.Text() << " \n");
     semaSched.Post();
-    return eventCount;
+    return nEvent;
   }
 
   //: Process event queue.

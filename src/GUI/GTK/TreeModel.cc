@@ -439,7 +439,7 @@ namespace RavlGUIN {
 
   bool TreeModelBodyC::SetValue(TreeModelIterC &rowIter,IntT col, RealT value) {
     ONDEBUG(RavlAssert(0)); // This method is a bad idea. Row's can be deleted unexpectedly when method is queued
-    Manager.Queue(Trigger(TreeModelC(*this),&TreeModelC::GUISetValueInt,rowIter,col,value));
+    Manager.Queue(Trigger(TreeModelC(*this),&TreeModelC::GUISetValueInt,rowIter,col,static_cast<int>(value)));
     return false;
   }
 

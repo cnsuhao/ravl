@@ -79,7 +79,7 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: k nearest neighbours classifier.
-  // Classifier probe vector as the most common amoung its k nearest neighbours.
+  // Classifier probe vector as the most common among its k nearest neighbours.
   // If there's a conflict the label with the smallest average distance is used.
   // This class can be used with the <a href="RavlN.DesignKNearestNeighbourC.html"> DesignKNearestNeighbourC </a> class. 
 

@@ -6,7 +6,6 @@
 // file-header-ends-here
 ////////////////////////////////////////////
 //! docentry="Graphics.GTK"
-//! rcsid="$Id$"
 //! lib=RavlGUI
 //! file="Ravl/GUI/GTK/TextEntry.cc"
 
@@ -24,10 +23,6 @@
 #endif
 
 namespace RavlGUIN {
-
-  static void enter_callback(GtkWidget *widget, TextEntryBodyC *entry)
-  { entry->Entry(gtk_entry_get_text(GTK_ENTRY(entry->Widget()))); }
-  
   
   TextEntryBodyC::TextEntryBodyC(const StringC &ntext,IntT nMaxLen,bool nsigAllChanges,bool editable, IntT xdim,IntT ydim)
     : text(ntext),
@@ -91,13 +86,8 @@ namespace RavlGUIN {
     GUISetUSize( xsize, ysize ) ; 
     gtk_editable_set_editable(GTK_EDITABLE(widget), isEditable) ;
     
-    gtk_signal_connect(GTK_OBJECT(widget), "activate",
-		       GTK_SIGNAL_FUNC(enter_callback),
-		       this);
-    changed = Signal("changed");
-    RavlAssert(changed.IsValid());
     ConnectSignals();
-    ConnectRef(changed,*this,&TextEntryBodyC::SigChanged);
+    ConnectRef(Signal("changed"),*this,&TextEntryBodyC::SigChanged);
     ConnectRef(Signal("activate"),*this,&TextEntryBodyC::SigActivate);
 
     // Set password mode if necessary
@@ -110,15 +100,11 @@ namespace RavlGUIN {
 
   bool TextEntryBodyC::Create(GtkWidget *newWidget) {
     widget = newWidget;
-    gtk_signal_connect(GTK_OBJECT(widget), "activate",
-		       GTK_SIGNAL_FUNC(enter_callback),
-		       this);
     if(!text.IsEmpty())
       gtk_entry_set_text (GTK_ENTRY (widget), text);
-    changed = Signal("changed");
-    RavlAssert(changed.IsValid());
+      
     ConnectSignals();
-    ConnectRef(changed,*this,&TextEntryBodyC::SigChanged);
+    ConnectRef(Signal("changed"),*this,&TextEntryBodyC::SigChanged);
     ConnectRef(Signal("activate"),*this,&TextEntryBodyC::SigActivate);
 
     // Set password mode if necessary
@@ -159,16 +145,6 @@ namespace RavlGUIN {
       return true;
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     gtk_entry_set_text (GTK_ENTRY (widget), text);
-    return true;
-  }
-  
-  //: Some new text has been entered.
-  
-  bool TextEntryBodyC::Entry(const StringC &txt) {
-    MutexLockC lock(access);
-    text=txt;
-    lock.Unlock();
-    //cerr << "TextEntryBodyC::Entry(), Text:" << text << "\n";
     return true;
   }
   

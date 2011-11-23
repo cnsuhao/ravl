@@ -10,13 +10,18 @@
 PACKAGE=Ravl/PatternRec
 
 HEADERS=FuncLinearCoeff.hh FuncLinear.hh FuncQuadratic.hh FuncOrthPolynomial.hh \
- DesignFuncLSQ.hh FuncPDF.hh FuncPDFNormal.hh FuncMeanProjection.hh 
+ DesignFuncLSQ.hh FuncPDF.hh FuncPDFNormal.hh FuncMeanProjection.hh FuncInterpolate.hh \
+ FuncInterpolateGrid.hh 
 
 SOURCES=FuncLinearCoeff.cc FuncLinear.cc FuncQuadratic.cc FuncOrthPolynomial.cc \
- DesignFuncLSQ.cc FuncPDF.cc FuncPDFNormal.cc FuncMeanProjection.cc 
+ DesignFuncLSQ.cc FuncPDF.cc FuncPDFNormal.cc FuncMeanProjection.cc FuncInterpolate.cc \
+ FuncInterpolateGrid.cc 
+ 
 PLIB=RavlPatternRec
 
 LIBDEPS=RavlPatternRecModelBasic.def
+
+MUSTLINK=LinkRavlPatternRecModelBasic.cc
 
 USESLIBS=RavlPatternRec
 

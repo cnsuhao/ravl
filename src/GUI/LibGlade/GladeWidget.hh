@@ -86,6 +86,7 @@ namespace RavlGUIN {
     HashC<StringC, Tuple2C<RavlN::SmartPtrC<WidgetBodyC>, bool> > children;
     bool customWidget;
     StringC m_widgetPrefix;
+    bool m_abortOnMissingWidget;
   };
   
   //! userlevel=Normal

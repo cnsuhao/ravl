@@ -243,7 +243,7 @@ namespace RavlN  {
   GenBinIStreamC &GenBinIStreamC::operator>>(Int16T &dat) {
     if(toSwap) in.read((char *)&dat,2); 
     else {
-      short buf;
+      Int16T buf;
       in.read((char *)&buf,2);  
       dat = bswap_16(buf);
     }
@@ -253,7 +253,7 @@ namespace RavlN  {
   GenBinIStreamC &GenBinIStreamC::operator>>(UInt16T &dat) {
     if(toSwap) in.read((char *)&dat,2); 
     else{
-      short buf;
+      UInt16T buf;
       in.read((char *) &buf,2);  
       dat = (UInt16T) bswap_16(buf);
     }
@@ -283,7 +283,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinIStreamC &GenBinIStreamC::operator>>(IntT &dat) {
     if(toSwap) in.read((char *)&dat,4);
     else{
-    int buf;
+    IntT buf;
     in.read((char *) &buf,4);
     dat = (IntT) bswap_32(buf);
     }
@@ -293,7 +293,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinIStreamC &GenBinIStreamC::operator>>(UIntT &dat) {
     if(toSwap)in.read((char *)&dat,4);
     else{
-    int buf;
+    UIntT buf;
     in.read((char *) &buf,4);
     dat = (UIntT) bswap_32(buf);
     }
@@ -353,7 +353,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(UInt16T dat) {
     if(toSwap) out.write((char *)&dat,2);  
     else{
-      short buf = bswap_16(dat);
+      UInt16T buf = bswap_16(dat);
       out.write((char *) &buf,2);  
     }
     return *this; 
@@ -362,7 +362,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(IntT dat) {
     if(toSwap) out.write((char *)&dat,4);
     else{
-      int buf = bswap_32(dat);
+      IntT buf = bswap_32(dat);
       out.write((char *) &buf,4);  
     }
     return *this; 
@@ -371,7 +371,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(UIntT dat) {
     if(toSwap) out.write((char *)&dat,4);
     else{
-      int buf = bswap_32(dat);
+      UIntT buf = bswap_32(dat);
       out.write((char *) &buf,4);
     }
     return *this; 
@@ -380,7 +380,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(Int64T dat) {
     if(toSwap) out.write((char *)&dat,8);
     else{
-      int buf = bswap_64(dat);
+      Int64T buf = bswap_64(dat);
       out.write((char *) &buf,8);  
     }
     return *this; 
@@ -389,7 +389,7 @@ GenBinIStreamC & GenBinIStreamC::operator>>(Int64T & dat) {
   GenBinOStreamC &GenBinOStreamC::operator<<(UInt64T dat) {
     if(toSwap) out.write((char *)&dat,8);
     else{
-      int buf = bswap_64(dat);
+      UInt64T buf = bswap_64(dat);
       out.write((char *) &buf,8);
     }
     return *this; 

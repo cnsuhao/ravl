@@ -29,68 +29,40 @@ namespace RavlN
   class ThreadEventC {
 
   public:
-    ThreadEventC()
-      : occurred(false),
-	waiting(0)
-    {}
+    ThreadEventC();
     
-    bool Post() {
-      cond.Lock();
-      if(occurred) {
-	cond.Unlock();
-	return false;
-      }
-      occurred = true;
-      cond.Unlock();
-      cond.Broadcast();
-      return true;
-    }
+    ~ThreadEventC();
+    //: Destructor.
+
+    bool Post();
     //: Post an event.
     // Returns true, if event has been posted by this thread.
     
-    ~ThreadEventC()  { 
-      if(!occurred)
-	Post(); 
-      if(waiting != 0) 
-	cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
-    }
-    //: Destructor.
-    
-    void Wait() {
-      if(occurred) // Check before we bother with locking.
-        return ;
-      cond.Lock();
-      waiting++;
-      while(!occurred)
-        cond.Wait();
-      waiting--;
-      if(waiting == 0) {
-        cond.Unlock();
-        cond.Broadcast(); // If something is waiting for it to be free...
-        return ;
-      } 
-      cond.Unlock();
-    }
+    void Wait();
     //: Wait indefinitely for an event to be posted.
     
     bool WaitForFree();
     //: Wait for lock to be free of all waiters.
     
     IntT ThreadsWaiting() const 
-    { return waiting; }
+    { return m_waiting; }
     //: Get approximation of number of threads waiting.
     
     bool Wait(RealT maxTime);
     //: Wait for an event.
     // Returns false if timed out.
-    
+
+    bool WaitUntil(const DateC &deadline);
+    //: Wait for an event.
+    // Returns false if timed out.
+
     operator bool() const 
     { return occurred; }
     //: Test if the event has occurred.
     
     bool Occurred() const
     { return occurred; }
-    //: Test if event has occrued.
+    //: Test if event has occurred.
     
     void Reset()
     { occurred = false; }
@@ -99,7 +71,7 @@ namespace RavlN
   protected:
     ConditionalMutexC cond;
     volatile bool occurred;
-    volatile IntT waiting; // Count of number of threads waiting on this...
+    volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 };
 

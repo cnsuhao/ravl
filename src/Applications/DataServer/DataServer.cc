@@ -39,6 +39,7 @@ namespace RavlN {
 
     // Set up delete signal
     DataServerC ref(*this);
+    Connect(m_signalNodeClosed, ref, &DataServerC::OnClose);
     Connect(m_signalNodeRemoved, ref, &DataServerC::OnDelete);
   }
   
@@ -155,7 +156,7 @@ namespace RavlN {
         break; // Child not found.
     }
     
-    // There can only be a remainer in the path if the last node in the tree is not a directory.
+    // There can only be a remainder in the path if the last node in the tree is a directory.
     if(!at.Data().IsDirectory() && it)
       return false;
     
@@ -190,11 +191,20 @@ namespace RavlN {
     DListC<StringC> remainingPath;
     if (FindVFSNode(path, foundNode, remainingPath))
     {
+      RavlAssert(foundNode.IsValid());
+
+      if (foundNode.Data().DeletePending())
+      {
+        cerr << "DataServerBodyC::AddNode cannot add to node marked for deletion" << endl;
+        return false;
+      }
+
       if (remainingPath.Size() == 0)
       {
         cerr << "DataServerBodyC::AddNode path exists" << endl;
         return false;
       }
+
       if (remainingPath.Size() > 1)
       {
         cerr << "DataServerBodyC::AddNode not all leading path elements exist" << endl;
@@ -287,42 +297,67 @@ namespace RavlN {
       RavlAssert(vfsTree.IsValid());
       if (vfsTree.Child(*pathListIter, foundNode))
       {
+        RavlAssert(foundNode.IsValid());
+
         if (!pathListIter.IsLast())
         {
+          if (foundNode.Data().RemovePending() || foundNode.Data().DeletePending())
+          {
+          	ONDEBUG(cerr << "DataServerBodyC::RemoveNode parent node of (" << path << ") marked for removal or deletion" << endl);
+
+          	return true;
+          }
+
           continue;
         }
 
-        if (vfsTree.Remove(*pathListIter))
-        {
-          lock.Unlock();
+				if (!(foundNode.Data().IsDirectory() && foundNode.Data().PortsOpen()))
+				{
+					ONDEBUG(cerr << "DataServerBodyC::RemoveNode removing node from tree (" << path << ")" << endl);
 
-          if (foundNode.IsValid())
-          {
-            if (removeFromDisk)
-            {
-              return foundNode.Data().Delete();
-            }
+					if (!vfsTree.Remove(*pathListIter))
+					{
+						cerr << "DataServerBodyC::RemoveNode failed to remove node from tree '" << path << "'" << endl;
+						break;
+					}
+				}
+				else
+				{
+					ONDEBUG(cerr << "DataServerBodyC::RemoveNode marking node for removal (" << path << ")" << endl);
 
-            return true;
-          }
-          else
-          {
-            cerr << "DataServerBodyC::RemoveNode invalid node found at '" << path << "'" << endl;
-          }
-        }
-        else
-        {
-          cerr << "DataServerBodyC::RemoveNode failed to remove node from tree '" << path << "'" << endl;
-        }
+					foundNode.Data().SetRemovePending(true);
+				}
 
-        break;
+				lock.Unlock();
+
+				if (removeFromDisk)
+				{
+					return foundNode.Data().Delete();
+				}
+
+				return true;
       }
       else
       {
-        if (foundNode.IsValid() && foundNode.Data().IsDirectory())
+        RavlAssert(foundNode.IsValid());
+
+        if (foundNode.Data().IsDirectory())
         {
+          if (foundNode.Data().RemovePending() || foundNode.Data().DeletePending())
+          {
+          	ONDEBUG(cerr << "DataServerBodyC::RemoveNode parent node of (" << path << ") marked for removal or deletion" << endl);
+
+          	return true;
+          }
+
           lock.Unlock();
           
+          if (!removeFromDisk)
+          {
+            cerr << "DataServerBodyC::RemoveNode remove from directory failed as file deletion not enabled for '" << path << "'" << endl;
+          	break;
+          }
+
           DListC<StringC> remainingPath = pathListIter.InclusiveTail();
           return foundNode.Data().Delete(remainingPath);
         }
@@ -420,21 +455,89 @@ namespace RavlN {
   
 
 
-  bool DataServerBodyC::OnDelete(StringC& pathDeleted)
+  bool DataServerBodyC::OnClose(StringC& path)
   {
-    ONDEBUG(cerr << "DataServerBodyC::OnDelete path=" << pathDeleted << endl);
+  	return OnCloseOrDelete(path, false);
+  }
+
+
+
+  bool DataServerBodyC::OnDelete(StringC& path)
+  {
+  	return OnCloseOrDelete(path, true);
+  }
+
+
+
+  bool DataServerBodyC::OnCloseOrDelete(StringC &path, bool onDelete)
+  {
+    ONDEBUG(cerr << "DataServerBodyC::OnCloseOrDelete path (" << path << ") action (" << (onDelete ? "delete" : "close") << ")" << endl);
 
     MutexLockC lock(m_access);
 
     HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode;
     DListC<StringC> remainingPath;
-    if (!FindVFSNode(pathDeleted, foundNode, remainingPath))
-      return false;
+    if (FindVFSNode(path, foundNode, remainingPath))
+    {
+	    ONDEBUG(cerr << "DataServerBodyC::OnCloseOrDelete found node for path (" << path << ")" << endl);
 
-    lock.Unlock();
+			lock.Unlock();
 
-    RavlAssert(foundNode.IsValid());
-    return foundNode.Data().OnDelete(remainingPath);
+			RavlAssert(foundNode.IsValid());
+			bool signalValue = false;
+			if (onDelete)
+				signalValue = foundNode.Data().OnDelete(remainingPath);
+			else
+				signalValue = foundNode.Data().OnClose(remainingPath);
+
+			PruneRemovedNodes(path);
+
+			return signalValue;
+    }
+
+    return false;
+  }
+
+  bool DataServerBodyC::PruneRemovedNodes(StringC &path)
+  {
+    ONDEBUG(cerr << "DataServerBodyC::PruneRemovedNodes path (" << path << ")" << endl);
+
+    MutexLockC lock(m_access);
+
+		HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode = m_vfs;
+    StringListC pathList(path, "/");
+    DLIterC<StringC> pathListIter(pathList);
+
+    for (; pathListIter; pathListIter++)
+    {
+      HashTreeC<StringC, DataServerVFSNodeC> vfsTree(foundNode);
+      RavlAssert(vfsTree.IsValid());
+      if (vfsTree.Child(*pathListIter, foundNode))
+      {
+        RavlAssert(foundNode.IsValid());
+
+				if (foundNode.Data().IsDirectory() && foundNode.Data().RemovePending() && !foundNode.Data().PortsOpen())
+				{
+					ONDEBUG(cerr << "DataServerBodyC::PruneRemovedNodes removing node from tree (" << path << ")" << endl);
+					if (!vfsTree.Remove(*pathListIter))
+					{
+						cerr << "DataServerBodyC::PruneRemovedNodes failed to remove node from tree '" << path << "'" << endl;
+						break;
+					}
+
+					return true;
+				}
+
+        if (!pathListIter.IsLast())
+        {
+          continue;
+        }
+      }
+
+    	break;
+    }
+
+    return false;
   }
 
 }

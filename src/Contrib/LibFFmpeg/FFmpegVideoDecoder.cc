@@ -149,14 +149,25 @@ namespace RavlN {
   bool FFmpegVideoDecoderBaseC::DecodeFrame() {
     int             bytesDecoded;
     int             frameFinished;
-    
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    AVPacket avpkt;
+    av_init_packet(&avpkt);
+#endif
     // Decode packets until we have decoded a complete frame
     while(true) {
       // Work on the current packet until we have decoded all of it
       while(bytesRemaining > 0) {
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+        avpkt.data = rawData;
+        avpkt.size = bytesRemaining;
+        // Decode the next chunk of data
+        bytesDecoded=avcodec_decode_video2(pCodecCtx, pFrame,
+                                          &frameFinished, &avpkt);
+#else
         // Decode the next chunk of data
         bytesDecoded=avcodec_decode_video(pCodecCtx, pFrame,
                                           &frameFinished, rawData, bytesRemaining);
+#endif
         
         // Was there an error?
         if(bytesDecoded < 0) {
@@ -185,6 +196,10 @@ namespace RavlN {
       rawData = packet.Data();
     }
     
+#if LIBAVUTIL_VERSION_MAJOR >= 51
+    av_free_packet(&avpkt);
+#endif
+
     return false;
   }
   

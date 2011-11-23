@@ -147,10 +147,6 @@ namespace RavlN {
     
     IntT positionRefStream; // Stream to use as a position reference.
     Int64T currentTimeStamp;
-    Int64T frameRate;
-    Int64T frameRateBase;
-    
-    Int64T startFrame; // Frame number of start of sequence.
     bool haveSeek; // Do we have seeking ?
     
     Int64T Frame2Time(Int64T frame) const;

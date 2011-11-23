@@ -52,6 +52,10 @@ namespace RavlN {
     bool CanSeek() const
     { return canSeek; }
     //: Is stream seekable ?
+
+    void SetParent(DataServerVFSNodeC &parent)
+    { m_parent = parent; }
+    //: Set the parent node.
     
     virtual bool OpenIPort(DListC<StringC> &remainingPath,const StringC &dataType,NetISPortServerBaseC &port);
     //: Open input port.
@@ -102,11 +106,11 @@ namespace RavlN {
     bool AddOPortTypeConversion(const StringC &dataType, DPOPortBaseC& oPort);
     //: Add any required type conversion.
 
-    bool ZeroIPortClientsAbstract();
-    //: Called when input file stops being used.
+    bool DisconnectIPortClientAbstract();
+    //: Called when input file client disconnects.
 
-    bool ZeroIPortClientsByte();
-    //: Called when input file stops being used.
+    bool DisconnectIPortClientByte();
+    //: Called when input file client disconnects.
 
     bool DisconnectOPortClientAbstract();
     //: Called when output file client disconnects.
@@ -114,8 +118,14 @@ namespace RavlN {
     bool DisconnectOPortClientByte();
     //: Called when output file client disconnects.
 
-    bool DeleteOnClose();
-    //: Call to check there are no open ports, then delete the file.
+    bool ZeroIPortClientsAbstract();
+    //: Called when input file stops being used.
+
+    bool ZeroIPortClientsByte();
+    //: Called when input file stops being used.
+
+    bool DoDelete();
+    //: Delete the file.
     //!return: True if successfully deleted.
     
     MutexC access; // Access control for object.
@@ -137,7 +147,8 @@ namespace RavlN {
     
     bool canSeek;
     bool multiWrite; // Can multiple clients write to the same file ?
-    bool deleteOnClose;
+
+    DataServerVFSNodeC m_parent;
 
     friend class DataServerVFSRealFileC;
   };
@@ -174,6 +185,10 @@ namespace RavlN {
     { Body().SetFileFormat(fileFormat); }
     //: Set file format.
 
+    void SetParent(DataServerVFSNodeC &parent)
+    { Body().SetParent(parent); }
+    //: Set the parent node.
+
   protected:
     DataServerVFSRealFileC(DataServerVFSRealFileBodyC &bod)
      : DataServerVFSNodeC(bod)
@@ -195,6 +210,14 @@ namespace RavlN {
     bool ZeroIPortClientsByte()
     { return Body().ZeroIPortClientsByte(); }
     //: Called when input file stops being used.
+
+    bool DisconnectIPortClientAbstract()
+    { return Body().DisconnectIPortClientAbstract(); }
+    //: Called when input file client disconnects.
+
+    bool DisconnectIPortClientByte()
+    { return Body().DisconnectIPortClientByte(); }
+    //: Called when input file client disconnects.
 
     bool DisconnectOPortClientAbstract()
     { return Body().DisconnectOPortClientAbstract(); }

@@ -79,6 +79,8 @@ namespace RavlN {
   
   ///////////////////////////////////////////////////////////
   
+  void LinkFuncMeanProjection()
+  {}
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(FuncMeanProjectionBodyC,FuncMeanProjectionC,FunctionC);
   //FileFormatStreamC <FuncMeanProjectionC> FileFormatStream_FuncMeanProjectionC;

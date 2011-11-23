@@ -4,6 +4,7 @@
 #include "Ravl/OS/SysLog.hh"
 
 #include "Ravl/OS/WinSocket.hh"
+#include "Ravl/SArray1d.hh"
 
 #include <time.h>
 #include <stdio.h>
@@ -18,11 +19,18 @@
 #define ONDEBUG(x)
 #endif
 
+namespace 
+{
+
+  const int g_maxWriteVSize = 1500;
+
+}
+
 namespace RavlN 
 {
   CRITICAL_SECTION g_critSection;
   bool g_critSectionInitialised = false;
-  
+
   //: Open socket.  
   SocketBodyC::SocketBodyC(StringC strAddress, bool bServer) :
     m_nSocket(0), 
@@ -367,6 +375,7 @@ namespace RavlN
   {
     if(m_nSocket <= 0)
       {
+        ONDEBUG(cerr <<  "SocketBodyC::Read invalid socket\n");
         return 0;
       }
 
@@ -379,7 +388,7 @@ namespace RavlN
             nTotBytes += bytesRecv;
             if ( bytesRecv == 0) 
               {
-                ONDEBUG(cerr <<  "Connection closed gracefully.\n");
+                ONDEBUG(cerr <<  "SocketBodyC::Read closed gracefully.\n");
                 break;
               }
           }
@@ -389,18 +398,21 @@ namespace RavlN
 	
             switch(nError) {
               case WSAECONNRESET: {
-                ONDEBUG(cerr << "Connection closed disgracefully.\n");
+                ONDEBUG(cerr << "SocketBodyC::Read closed disgracefully.\n");
                 return (IntT) nTotBytes;
               }
               case WSAEINPROGRESS: // Some other operation is waiting.
+                ONDEBUG(cerr << "SocketBodyC::Read error: WSAEINPROGRESS\n");
                 ::Sleep(10);
                 break;
               case WSAEINTR:
               case WSAEWOULDBLOCK: // We don't care about blocking errors
+                ONDEBUG(cerr << "SocketBodyC::Read error: WSAEINTR | WSAEWOULDBLOCK\n");
                 break;
               case WSAECONNABORTED:
               //case WSAENOTSOCK:
                 // Happens when socket is closed.
+                ONDEBUG(cerr << "SocketBodyC::Read error: WSAECONNABORTED\n");
                 return (IntT) nTotBytes;
               default: {
                 cerr << "Receive failed with error code: " << nError << "\n";
@@ -496,9 +508,52 @@ namespace RavlN
       return 0;
     }
     int nTotBytesSent = 0;
-    for(int n = 0; n < numEntries; n++) {
-      nTotBytesSent += Write(&(*buffer[n]), len[n]);
+    int firstEntry = 0;
+    while (firstEntry < numEntries)
+    {
+      int lastEntry = firstEntry + 1;
+      int dataSent = 0;
+      int dataSize = len[firstEntry];
+
+      if (dataSize > g_maxWriteVSize)
+      {
+//        ONDEBUG(cerr << "Writing entry [" << lastEntry << "] " << dataSize << " bytes" << endl);
+        dataSent = Write(buffer[firstEntry], dataSize);
+      }
+      else
+      {
+        for (; lastEntry < numEntries; lastEntry++)
+        {
+          if (dataSize + len[lastEntry] > g_maxWriteVSize)
+            break;
+          dataSize += len[lastEntry];
+//          ONDEBUG(cerr << "Merging entry [" << lastEntry << "] " << dataSize << " bytes" << endl);
+        }
+//        ONDEBUG(cerr << "Copying " << lastEntry - firstEntry << " entries [" << firstEntry << " - " << lastEntry << "] " << dataSize << " bytes" << endl);
+
+        SArray1dC<char> data(dataSize);
+        int dataOffset = 0;
+        for (int index = firstEntry; index < lastEntry; index++)
+        {
+//          ONDEBUG(cerr << "Copying entry [" << index << "] " << len[index] << " bytes @ " << dataOffset << " offset" << endl);
+          memcpy(data.DataStart() + dataOffset, buffer[index], len[index]);
+          dataOffset += len[index];
+        }
+
+//        ONDEBUG(cerr << "Writing " << dataSize << " bytes" << endl);
+        dataSent = Write(data.DataStart(), dataSize);
+      }
+
+      nTotBytesSent += dataSent;
+      firstEntry = lastEntry;
+
+      if (dataSent != dataSize)
+      {
+        cerr << "SocketBodyC::WriteV error (" << dataSize << " size != " << dataSent << " sent)" << endl;
+        break;
+      }
     }
+
     return nTotBytesSent;
   }	
 	

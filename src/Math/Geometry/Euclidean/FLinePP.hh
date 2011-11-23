@@ -140,7 +140,7 @@ namespace RavlN {
     
     RealT Length() const
     { return point[0].EuclidDistance(point[1]); }
-    //: Return the length of the line in euclidian space.
+    //: Returns the length of the line in euclidian space.
     
     FPointC<N> Point(const RealT t) const
     { return FirstPoint() + Vector() * t; }
@@ -148,9 +148,11 @@ namespace RavlN {
     
     RealT ParClosest(const FPointC<N> &pnt) const {
       TFVectorC<RealT,N> v = Vector();
-      return v.Dot(pnt - point[0]) / v.SumOfSqr();
+      RealT l2 = v.SumOfSqr();
+      if (l2 == 0.0) throw ExceptionC("FLinePPC::ParClosest(): Cannot find line parameter for zero-length line");
+      return v.Dot(pnt - point[0]) / l2;
     }
-    //: Return the paramiter of the closest point on the line to 'pnt'.
+    //: Returns the parameter of the closest point on the line to 'pnt'.
     // Where 0 is at the start point and 1 is at the end. 
     
   protected:

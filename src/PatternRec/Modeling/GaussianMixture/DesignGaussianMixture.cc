@@ -311,7 +311,7 @@ namespace RavlN {
 
       //: we can stop early if change in likelihood is neglible
       RealT change = Abs((likelihood - prev_likelihood)/likelihood);
-      cout << "likelihood: " << likelihood << " change " << change << endl;
+      //cout << "likelihood: " << likelihood << " change " << change << endl;
       if((change < epsilon)&&(iter > 10)) done=true;
       else prev_likelihood = likelihood;   
     

@@ -5,15 +5,13 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////
-//! rcsid="$Id: exLabel.cc 5240 2005-12-06 17:16:50Z plugger $"
 //! lib=RavlGUI
-//! file="Ravl/GUI/GTK/exLabel.cc"
+//! file="Ravl/GUI/GTK/exPixmap.cc"
 //! docentry="Ravl.API.Graphics.GTK.Layout"
 //! userlevel=Normal
 
 #include "Ravl/GUI/Window.hh"
 #include "Ravl/GUI/Pixmap.hh"
-#include "Ravl/GUI/LBox.hh"
 #include "Ravl/GUI/Manager.hh"
 #include "Ravl/Option.hh"
 

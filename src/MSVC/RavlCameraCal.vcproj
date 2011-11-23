@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlCameraCal"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -99,7 +99,7 @@
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlCameraCal"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -184,6 +184,22 @@
 				RelativePath="..\.\3D\CameraCal\PinholeCamera0.cc"
 				>
 			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera1.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera2.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera3.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCameraArray.cc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -191,7 +207,27 @@
 			>
                         
 			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\3D\CameraCal\PinholeCamera0.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera1.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera2.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCamera3.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\3D\CameraCal\PinholeCameraArray.hh"
 				>
 			</File>
 		</Filter>

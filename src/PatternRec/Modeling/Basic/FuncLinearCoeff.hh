@@ -20,7 +20,7 @@ namespace RavlN {
   class MatrixRUTC;
   
   //! userlevel=Develop
-  //: Function with linear coeffiecents.
+  //: Function with linear coefficients.
   
   class FuncLinearCoeffBodyC
     : public FunctionBodyC
@@ -84,7 +84,7 @@ namespace RavlN {
   };
 
   //! userlevel=Develop
-  //: Function with linear coeffiecents.
+  //: Function with linear coefficients.
   
   class FuncLinearCoeffC
     : public FunctionC
@@ -142,7 +142,7 @@ namespace RavlN {
     
     UIntT NumberCoeffs(UIntT inputSize) const
     { return Body().NumberCoeffs(inputSize); }
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
     MatrixC &Transform()
     { return Body().Transform(); }

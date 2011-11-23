@@ -16,7 +16,6 @@
 //! date="02/07/1999"
 
 #include "Ravl/config.h"
-
 #if !defined(_POSIX_SOURCE) && !defined(__sgi__) && !RAVL_OS_FREEBSD
 #define _POSIX_SOURCE 1
 #endif
@@ -28,6 +27,8 @@
 
 #if RAVL_HAVE_WIN32_THREADS
 #include <windows.h>
+#include "Ravl/IntrDList.hh"
+
 #endif
 #if RAVL_HAVE_POSIX_THREADS
 #include <pthread.h>
@@ -39,6 +40,8 @@
 namespace RavlN
 {
   
+  class DateC;
+
   //! userlevel=Normal
   //: Sleeping until signal arrives.
   //
@@ -107,8 +110,17 @@ namespace RavlN
     // from either Signal, Broadcast or timeout.  When it get the signal
     // the mutex is re-locked and control returned to the
     // program. <p>
-    // Returns false, if timeout occures.
-    
+    // Returns false, if timeout occurs.
+
+    bool WaitUntil(const DateC &deadline);
+    //: Wait for conditional.
+    // This unlocks the mutex and then waits for a signal
+    // from either Signal, Broadcast or timeout.  When it get the signal
+    // the mutex is re-locked and control returned to the
+    // program. <p>
+    // Returns false, if timeout occurs.
+
+
   private:
     ConditionalMutexC(const ConditionalMutexC &)
     {}
@@ -118,8 +130,37 @@ namespace RavlN
     pthread_cond_t cond;
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    volatile LONG count;
-    HANDLE sema; // Flow control semaphore.
+    class WaiterC
+      : public DLinkC
+    {
+    public:
+      //! Constructor
+      WaiterC();
+
+      //! Destructor
+      ~WaiterC();
+
+      //! Wake the waiter.
+      void Wake();
+
+      //! Wait for something to happen
+      bool Wait();
+
+      //! Wait for something to happen
+      bool Wait(float maxWait);
+
+      HANDLE m_sema;
+    };
+    MutexC m_access;
+
+    // Allocate a new waiter.
+    WaiterC *GetWaiter();
+
+    // Free a waiter.
+    void FreeWaiter(WaiterC *waiter);
+
+    IntrDListC<WaiterC> m_free;
+    IntrDListC<WaiterC> m_waiting;
 #endif
   };
 }

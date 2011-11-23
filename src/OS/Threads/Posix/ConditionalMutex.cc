@@ -17,6 +17,7 @@
 #include "Ravl/Threads/ConditionalMutex.hh"
 #include "Ravl/Threads/Thread.hh"
 #include "Ravl/Math.hh"
+#include "Ravl/OS/Date.hh"
 
 #if defined(VISUAL_CPP)
 #include <time.h>
@@ -28,7 +29,7 @@
 #include <unistd.h>
 #include <errno.h>
 #endif
-
+#include <stdio.h>
 #include <iostream>
 
 #define NANOSEC 1000000000
@@ -62,7 +63,6 @@ namespace RavlN
     
     // Get current time.
     gettimeofday(&tv,0);
-    int errcode;
     ts.tv_sec = tv.tv_sec;
     ts.tv_nsec = tv.tv_usec * 1000;
     
@@ -75,11 +75,12 @@ namespace RavlN
       ts.tv_nsec -= NANOSEC;
     }
     
+    int errcode;
     do {
       errcode = pthread_cond_timedwait(&cond,&mutex,&ts); 
       if(errcode == ETIMEDOUT)
         break;
-      // May be interupted by EINTR... ignore and restart the wait.
+      // May be interrupted by EINTR... ignore and restart the wait.
       if ( errcode == 0 ) break ;
       RavlAssertMsg(errcode == EINTR,"ConditionalMutexC::Wait(), ERROR: Unexpected return code.");
     } while(errcode != 0);
@@ -87,77 +88,161 @@ namespace RavlN
     return (errcode != ETIMEDOUT);
   }
 
+  //: Wait for conditional.
+  // This unlocks the mutex and then waits for a signal
+  // from either Signal, Broadcast or timeout.  When it get the signal
+  // the mutex is re-locked and control returned to the
+  // program. <p>
+  // Returns false, if timeout occurs.
+
+  bool ConditionalMutexC::WaitUntil(const DateC &deadline)
+  {
+    struct timespec ts;
+
+    ts.tv_sec = deadline.TotalSeconds();
+    ts.tv_nsec = deadline.USeconds() * 1000;
+    //std::cerr << "Deadline " << ts.tv_sec << " " <<ts.tv_nsec << "\n";
+    int errcode;
+
+    do {
+      errcode = pthread_cond_timedwait(&cond,&mutex,&ts);
+      if(errcode == ETIMEDOUT)
+        break;
+      // May be interrupted by EINTR... ignore and restart the wait.
+      if ( errcode == 0 ) break ;
+      if(errcode != EINTR) {
+        if(errcode==EPERM) {
+          std::cerr << "Conditional mutex not owned at time of call. \n";
+        } else {
+          std::cerr << "Code:" << errcode << "\n";
+        }
+        RavlAssertMsg(errcode == EINTR,"ConditionalMutexC::Wait(), ERROR: Unexpected return code.");
+      }
+    } while(errcode != 0);
+
+    return (errcode != ETIMEDOUT);
+  }
+
 #else  
   // ----------------------------------------------------------------
   
-  ConditionalMutexC::ConditionalMutexC() 
-    : count(0)
+  //! Constructor
+  ConditionalMutexC::WaiterC::WaiterC()
   {
 #if RAVL_HAVE_WIN32_THREADS
-    sema = CreateSemaphore(0,0,0x7fffffff,0);
+    m_sema = CreateSemaphore(0,0,1,0);
+    if(m_sema == 0) {
+      std::cerr << "Failed to create semaphore. \n";
+      RavlAlwaysAssert(0); // This is really bad, stop things now.
+    }
 #endif
   }
-  
-  
-  ConditionalMutexC::~ConditionalMutexC() { 
+
+  //! Destructor
+  ConditionalMutexC::WaiterC::~WaiterC()
+  {
 #if RAVL_HAVE_WIN32_THREADS
-    CloseHandle(sema);
-    sema = 0;
+    CloseHandle(m_sema);
 #endif
   }
+
+  //! Wake the waiter.
+
+  void ConditionalMutexC::WaiterC::Wake()
+  {
+    LONG count = 0;
+    if(ReleaseSemaphore(m_sema,1,&count) == 0) {
+      std::cerr << "ConditionalMutexC::Wake, Warning: Failed to wake thread. \n";
+    }
+    if(count != 0) {
+      std::cerr << "ConditionalMutexC::Wake, Warning: Waiter already signalled, something strange is going on. \n";
+    }
+  }
+
+  //! Wait for something to happen
+  bool ConditionalMutexC::WaiterC::Wait(float maxWait) {
+    DWORD wait = 0;
+    // Make sure wait is >= 0
+    if(maxWait > 0) wait = Round(maxWait * 1000.0);
+    DWORD rc = WaitForSingleObject(m_sema,wait);
+    if(rc != WAIT_OBJECT_0) {
+      if(rc != WAIT_TIMEOUT) {
+        // Warn if something unexpected happened.
+        std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
+      }
+    }
+    return (rc == WAIT_OBJECT_0);
+  }
+
+  //! Wait for something to happen
+
+  bool ConditionalMutexC::WaiterC::Wait()
+  {
+    DWORD rc = WaitForSingleObject(m_sema,INFINITE);
+    if(rc != WAIT_OBJECT_0) {
+      // Warn if something unexpected happened.
+      std::cerr << "ConditionalMutexC::Wait(delay), Failed to wait for wake. \n";
+    }
+    return (rc == WAIT_OBJECT_0);
+  }
+
+  // -----------------------------------------------------------------------------------
+
+  ConditionalMutexC::ConditionalMutexC()
+  {}
   
-  static bool DecrementNotBelowZero(volatile LONG &count) {
-    LONG tmp,ret;
-    do {
-      tmp = count;
-      if(tmp == 0) 
-        return false;
-      ret = InterlockedCompareExchange(&count,tmp-1,tmp); // Try and decrement by one.
-      // Check if decrement worked, if not try again.
-    } while(ret != tmp);
-    return true;
+  ConditionalMutexC::~ConditionalMutexC()
+  {
+    if(!m_waiting.IsEmpty()) {
+      std::cerr << "ERROR: Destroying conditional mutex when there are threads waiting. \n";
+    }
+  }
+  
+  ConditionalMutexC::WaiterC *ConditionalMutexC::GetWaiter() {
+    MutexLockC lock(m_access);
+    WaiterC *waiter = 0;
+    if(!m_free.IsEmpty()) {
+      //FIXME: Ideally m_free would be a per thread global list.
+      waiter = &m_free.PopFirst();
+      // Get rid of any excess counts.
+      waiter->Wait(0);
+    } else {
+      waiter = new WaiterC();
+    }
+    m_waiting.InsLast(*waiter);
+    return waiter;
+  }
+
+  void ConditionalMutexC::FreeWaiter(ConditionalMutexC::WaiterC *waiter) {
+    MutexLockC lock(m_access);
+    // Make sure its not in an existing list.
+    waiter->Unlink();
+    // Put it on the free list.
+    m_free.InsFirst(*waiter);
   }
 
   bool ConditionalMutexC::Wait(RealT maxTime) {
 #if RAVL_HAVE_WIN32_THREADS
-    int rc;
-    InterlockedIncrement(&count); // Register our interest in getting signalled
+    WaiterC *waiter = GetWaiter();
     Unlock();
-    rc = WaitForSingleObject(sema,Round(maxTime * 1000.0));
+    bool gotSig = waiter->Wait(maxTime);
+    FreeWaiter(waiter);
     Lock();
-    if(rc != WAIT_OBJECT_0) {
-      if(rc != WAIT_TIMEOUT) {
-        // Warn if something unexpected happend.
-        cerr << "ConditionalMutexC::Wait(delay), Failed to wait for conditional mutex. \n";
-      }
-      // Decrement without going less than zero.  This may happen if
-      // there's been a broadcast just after WaitForSingleObject. In
-      // that case we'll just end up with the semaphore count 1 too high and
-      // the program and a Wait() will return early. 
-      if(!DecrementNotBelowZero(count)) {
-        // If we get here an extra signal must have been posted, decrement it
-        // to keep accounting straight.
-        cerr <<  "ConditionalMutexC::Wait(delay), Removing left over sema. \n";
-        int rc2 = 0;
-        do {
-          rc2 = WaitForSingleObject(sema,2000);
-          if(rc2 != WAIT_OBJECT_0) {
-            // This shouldn't happen, though its possible if the machine is heavily loaded.
-            cerr << "ConditionalMutexC::Wait(delay), WARNING: Unexpected failure to wait for semaphore. \n";
-          }
-        } while(rc2 != WAIT_OBJECT_0);
-      }
-    }
-
+    return gotSig;
 #endif
 #if RAVL_HAVE_POSIX_THREADS
     RavlAssert(0);// Not implemented.
 #endif
-    return (rc == WAIT_OBJECT_0);
   }
   
+  bool ConditionalMutexC::WaitUntil(const DateC &deadline)
+  {
+    DateC maxTime = deadline - DateC::NowUTC();
+    RealT maxTimeMilliseconds = maxTime.TotalSeconds() + (maxTime.USeconds() / 1000000.0);
+    return Wait(maxTimeMilliseconds);
+  }
   
-  //: Boardcast a signal to all waiting threads.
+  //: Broadcast a signal to all waiting threads.
   // Always succeeds.
   
   void ConditionalMutexC::Broadcast() { 
@@ -165,14 +250,9 @@ namespace RavlN
     RavlAssert(0); // Not implemented.
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    LONG tmp = 0; 
-    // Exchange count with zero and post that to the semaphore, this will restart all threads
-    // current waiting.
-    tmp = InterlockedExchange(&count,tmp);
-    if(tmp == 0) return ; // Nothing waiting for signal!
-    if(ReleaseSemaphore(sema,tmp,0) == 0) {
-      cerr << "ERROR: ConditionalMutex failed to broadcast! \n";
-    }
+    MutexLockC lock(m_access);
+    while(!m_waiting.IsEmpty())
+      m_waiting.PopFirst().Wake();
     return ;
 #endif
   }
@@ -185,45 +265,19 @@ namespace RavlN
     RavlAssert(0); // Not implemented.
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    // Decrement atomicly if greater than 0 and then post to semaphore.
-    // else just return.
-    if(!DecrementNotBelowZero(count))
-      return ; // Counter is zero, nothing to signal!
-    if(ReleaseSemaphore(sema,1,0) == 0) {
-      cerr << "ERROR: ConditionalMutexC::Signal, ERROR: failed to signal!";
-    }
-    return ;
+    MutexLockC lock(m_access);
+    if(!m_waiting.IsEmpty())
+      m_waiting.PopFirst().Wake();
 #endif
   }
   
   void ConditionalMutexC::Wait() { 
 #if RAVL_HAVE_WIN32_THREADS
-    int rc;
-    InterlockedIncrement(&count); // Register our interest in getting signalled
+    WaiterC *waiter = GetWaiter();
     Unlock();
-    rc = WaitForSingleObject(sema,INFINITE); // Wait for signal
+    waiter->Wait();
+    FreeWaiter(waiter);
     Lock();
-
-    if(rc != WAIT_OBJECT_0) {
-      cerr << "ConditionalMutexC::Wait, Failed to wait for conditional mutex. \n";
-      // Decrement without going less than zero.  This may happen if
-      // there's been a broadcast just after WaitForSingleObject. In
-      // that case we'll just end up with the semaphore count 1 too high and
-      // the program and a Wait() will return early.
-      if(!DecrementNotBelowZero(count)) { 
-        // If we get here an extra signal must have been posted, decrement it
-        // to keep accounting straight.
-        cerr << "ConditionalMutexC::Wait(delay), Decrement leftover semaphore. \n";
-        int rc2 = 0;
-        do {
-          rc2 = WaitForSingleObject(sema,2000);
-          if(rc2 != WAIT_OBJECT_0) {
-            // This shouldn't happen, unless the machine is heavily loaded.
-            cerr << "ConditionalMutexC::Wait(delay), WARNING: Unexpected failure to wait for semaphore. \n";
-          }
-        } while(rc2 != WAIT_OBJECT_0);
-      }
-    }
 #endif
 #if RAVL_HAVE_POSIX_THREADS
     RavlAssert(0); // Not implemented.

@@ -20,7 +20,7 @@
 			OutputDirectory="C:\Build\win32\debug\lib"
 			IntermediateDirectory="C:\Build\win32\debug\obj\RavlThreads"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -99,7 +99,7 @@
 			OutputDirectory="C:\Build\win32\opt\lib"
 			IntermediateDirectory="C:\Build\win32\opt\obj\RavlThreads"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -233,15 +233,23 @@
 				>
 			</File>
 			<File
-				RelativePath="..\.\OS\Threads\Tools\TimedTriggerQueue.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\.\OS\Threads\Tools\Signal.cc"
 				>
 			</File>
 			<File
 				RelativePath="..\.\OS\Threads\Tools\SignalConnectionSet.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Tools\TimedTriggerQueue.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Tools\ThreadState.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Tools\ThreadLimitCounter.cc"
 				>
 			</File>
 		</Filter>
@@ -295,10 +303,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\.\OS\Threads\Tools\TimedTriggerQueue.hh"
-				>
-			</File>
-			<File
 				RelativePath="..\.\OS\Threads\Tools\Signal.hh"
 				>
 			</File>
@@ -315,11 +319,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\OS\Threads\Tools\MTPriQueueL.hh"
+				>
+			</File>
+			<File
 				RelativePath="..\.\OS\Threads\Tools\SignalConnectionSet.hh"
 				>
 			</File>
 			<File
-				RelativePath="..\.\OS\Threads\Tools\MTPriQueueL.hh"
+				RelativePath="..\.\OS\Threads\Tools\TimedTriggerQueue.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Tools\ThreadState.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Tools\ThreadLimitCounter.hh"
 				>
 			</File>
 		</Filter>

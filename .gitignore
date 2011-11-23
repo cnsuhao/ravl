@@ -1,4 +1,3 @@
-core
 core.*
 /QMake
 /Makefile.in
@@ -11,3 +10,7 @@ autom4te.cache
 tmp.ppm
 *.swp
 tags
+.project
+.cproject
+.csettings
+*~

@@ -24,19 +24,19 @@ namespace RavlN
 
   bool DataServerControlInterfaceBodyC::AddNode(const StringC& path, const StringC& nodeType, const HashC<StringC, StringC>& options)
   {
-    RavlAssertMsg("Not implemented", false);
+    RavlAssertMsg(false,"Not implemented");
     return false;
   }
 
   bool DataServerControlInterfaceBodyC::RemoveNode(const StringC& path, bool removeFromDisk)
   {
-    RavlAssertMsg("Not implemented", false);
+    RavlAssertMsg(false,"Not implemented");
     return false;
   }
 
   bool DataServerControlInterfaceBodyC::QueryNodeSpace(const StringC& path, Int64T& total, Int64T& used, Int64T& available)
   {
-    RavlAssertMsg("Not implemented", false);
+    RavlAssertMsg(false,"Not implemented");
     return false;
   }
 

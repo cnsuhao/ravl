@@ -138,10 +138,10 @@ namespace RavlN {
     while(fin) {
       StringC Buff("",80);
       fin.read(buff,BuffSize);
-      int n = fin.gcount();
+      std::streamsize n = fin.gcount();
       //printf("Chars:%d \n",n);
       if(n <= 0)
-	break;
+	    break;
       char *start,*place,*eb = &buff[n];
       start = buff;
       while(start != eb) {

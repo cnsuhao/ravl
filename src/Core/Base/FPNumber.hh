@@ -31,7 +31,8 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Fixed Point Number.
-  // A 32-bit real number with a fixed number N of fractional binary digits
+  // <p>A 32-bit real number with a fixed number N of fractional binary digits</p>
+  // <p><b>N.B.</b> Many methods in this class are missing from the documentation due to a bug in CxxDoc.  Consult the <a href="../../../../../../include/Ravl/FPNumber.hh">header file</a> for the full list.</p>
   
   template<UIntT N>
   class FPNumberC {
@@ -197,12 +198,12 @@ namespace RavlN {
     { return (v >> N) + ((v & (1<<(N-1))) != 0 ? 1 : 0);}
     //: Round to the nearest whole integer.
     
-    IntT &V()
+    Int32T &V()
     { return v; }
     //: Access underlying integer value.
   
   protected:
-    IntT v;
+    Int32T v;
   };
   
   template<UIntT N>

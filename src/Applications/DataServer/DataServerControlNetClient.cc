@@ -107,16 +107,27 @@ namespace RavlN
       return false;
     }
 
-    UIntT requestId;
-    m_netRequestManager.CreateReq(requestId);
-    ONDEBUG(cerr << "DataServerControlNetClientBodyC::AddNode sending request (" << requestId << ")" << endl);
-    m_netEndPoint.Send(DATASERVERCONTROL_ADDNODE, requestId, path, nodeType, options);
-
     bool result = false;
-    if (!m_netRequestManager.WaitForReq(requestId, result))
+    try
     {
-      ONDEBUG(cerr << "DataServerControlNetClientBodyC::AddNode wait for request failed (" << requestId << ")" << endl);
-      return false;
+      UIntT requestId;
+      m_netRequestManager.CreateReq(requestId);
+      ONDEBUG(cerr << "DataServerControlNetClientBodyC::AddNode sending request (" << requestId << ")" << endl);
+      m_netEndPoint.Send(DATASERVERCONTROL_ADDNODE, requestId, path, nodeType, options);
+
+      if (!m_netRequestManager.WaitForReq(requestId, result))
+      {
+        ONDEBUG(cerr << "DataServerControlNetClientBodyC::AddNode wait for request failed (" << requestId << ")" << endl);
+        return false;
+      }
+    }
+    catch(ExceptionC &e)
+    {
+      cerr << "DataServerControlNetClientBodyC::AddNode exception(" << e.Text() << ")" << endl;
+    }
+    catch(...)
+    {
+      cerr << "DataServerControlNetClientBodyC::AddNode exception" << endl;
     }
 
     return result;
@@ -133,16 +144,27 @@ namespace RavlN
       return false;
     }
 
-    UIntT requestId;
-    m_netRequestManager.CreateReq(requestId);
-    ONDEBUG(cerr << "DataServerControlNetClientBodyC::RemoveNode sending request (" << requestId << ")" << endl);
-    m_netEndPoint.Send(DATASERVERCONTROL_REMOVENODE, requestId, path, removeFromDisk);
-
     bool result = false;
-    if (!m_netRequestManager.WaitForReq(requestId, result))
+    try
     {
-      ONDEBUG(cerr << "DataServerControlNetClientBodyC::RemoveNode wait for request failed (" << requestId << ")" << endl);
-      return false;
+      UIntT requestId;
+      m_netRequestManager.CreateReq(requestId);
+      ONDEBUG(cerr << "DataServerControlNetClientBodyC::RemoveNode sending request (" << requestId << ")" << endl);
+      m_netEndPoint.Send(DATASERVERCONTROL_REMOVENODE, requestId, path, removeFromDisk);
+
+      if (!m_netRequestManager.WaitForReq(requestId, result))
+      {
+        ONDEBUG(cerr << "DataServerControlNetClientBodyC::RemoveNode wait for request failed (" << requestId << ")" << endl);
+        return false;
+      }
+    }
+    catch(ExceptionC &e)
+    {
+      cerr << "DataServerControlNetClientBodyC::RemoveNode exception(" << e.Text() << ")" << endl;
+    }
+    catch(...)
+    {
+      cerr << "DataServerControlNetClientBodyC::RemoveNode exception" << endl;
     }
 
     return result;
@@ -159,27 +181,39 @@ namespace RavlN
       return false;
     }
 
-    UIntT requestId;
-    m_netRequestManager.CreateReq(requestId);
-    ONDEBUG(cerr << "DataServerControlNetClientBodyC::QueryNodeSpace sending request (" << requestId << ")" << endl);
-    m_netEndPoint.Send(DATASERVERCONTROL_QUERYNODESPACE, requestId, path);
-
     bool result = false;
-    SArray1dC<Int64T> values;
-    if (!m_netRequestManager.WaitForReq(requestId, result, values))
+    try
     {
-      ONDEBUG(cerr << "DataServerControlNetClientBodyC::QueryNodeSpace wait for request failed (" << requestId << ")" << endl);
-      return false;
+      UIntT requestId;
+      m_netRequestManager.CreateReq(requestId);
+      ONDEBUG(cerr << "DataServerControlNetClientBodyC::QueryNodeSpace sending request (" << requestId << ")" << endl);
+      m_netEndPoint.Send(DATASERVERCONTROL_QUERYNODESPACE, requestId, path);
+
+      SArray1dC<Int64T> values;
+      if (!m_netRequestManager.WaitForReq(requestId, result, values))
+      {
+        ONDEBUG(cerr << "DataServerControlNetClientBodyC::QueryNodeSpace wait for request failed (" << requestId << ")" << endl);
+        return false;
+      }
+
+      if (result && values.IsValid() && values.Size() == 3)
+      {
+        total = values[0];
+        used = values[1];
+        available = values[2];
+
+        return true;
+      }
+    }
+    catch(ExceptionC &e)
+    {
+      cerr << "DataServerControlNetClientBodyC::QueryNodeSpace exception(" << e.Text() << ")" << endl;
+    }
+    catch(...)
+    {
+      cerr << "DataServerControlNetClientBodyC::QueryNodeSpace exception" << endl;
     }
 
-    if (result && values.IsValid() && values.Size() == 3)
-    {
-      total = values[0];
-      used = values[1];
-      available = values[2];
-      
-      return true;
-    }
 
     return false;
   }

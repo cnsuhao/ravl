@@ -41,7 +41,7 @@ namespace RavlN
     bool Wait()
     { return Data().Wait(); }
     //: Wait for semaphore.
-    // Test is semaphore has a count greated than 0,
+    // Test is semaphore has a count greater than 0,
     // if it does decrement it and return.
     // If the count is 0, then wait until it a call
     // to Post() increments it, then decrement it
@@ -52,7 +52,7 @@ namespace RavlN
     //: Wait for semaphore.
     // As Wait(), but only wait for semaphore for up to
     // 'maxDelay' seconds. If the time expires return
-    // false. If the semaphore is recieved then return true.
+    // false. If the semaphore is received then return true.
     
     bool TryWait() 
     { return Data().TryWait(); }

@@ -20,7 +20,7 @@
 			OutputDirectory="$(ProjectOut)\win32\debug\lib"
 			IntermediateDirectory="$(ProjectOut)\win32\debug\obj\$(name)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -100,7 +100,7 @@
 			OutputDirectory="$(ProjectOut)\win32\opt\lib"
 			IntermediateDirectory="$(ProjectOut)\win32\opt\obj\$(name)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool

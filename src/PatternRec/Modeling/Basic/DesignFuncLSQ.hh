@@ -58,9 +58,9 @@ namespace RavlN {
     // Note: Construction from a sample stream may not be implemented by all designers.
     
     SArray1dC<IntT> FindCorrelatedParameters(const MatrixRUTC &mat,RealT thresh = 1e-6);
-    //: Find correlated paramiters.
-    // The array contains -1 if the paramiter is independant or the number of the 
-    // paramiter it corelates with.
+    //: Find correlated parameters.
+    // The array contains -1 if the parameter is independent or the number of the
+    // Parameter it correlates with.
     
   protected:
     UIntT order;

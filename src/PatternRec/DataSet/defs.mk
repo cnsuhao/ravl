@@ -22,7 +22,9 @@ HEADERS = 	Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh SampleDiscrete
 		FunctionSlice.hh \
 		FunctionConcatenate.hh \
 		FunctionCascade.hh \
-		SampleStreamVectorLabel.hh
+		SampleStreamVectorLabel.hh \
+		DataSetIO.hh \
+		FieldInfo.hh
 
 SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		Function.cc Function1.cc Designer.cc DesignFunctionUnsupervised.cc DesignFunctionSupervised.cc \
@@ -31,9 +33,12 @@ SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		FunctionSlice.cc \
 		FunctionConcatenate.cc \
 		FunctionCascade.cc \
-		SampleStreamVectorLabel.cc
+		SampleStreamVectorLabel.cc \
+		SampleIO.cc \
+		DataSetIO.cc \
+		FieldInfo.cc 
 
-MAINS = 
+MAINS = doDataSet.cc
 
 PLIB = RavlPatternRec
 
@@ -43,7 +48,7 @@ TESTEXES=testDataSet.cc testDataSetXMLFactory.cc
 
 USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO
 
-PROGLIBS=RavlOS DynLink
+PROGLIBS=RavlOS RavlPatternRecIO DynLink
 
 EHT=Ravl.API.Pattern_Recognition.Data_Set.html
 

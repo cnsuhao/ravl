@@ -47,6 +47,9 @@ namespace RavlN {
     virtual bool OpenOPort(DListC<StringC> &remainingPath,const StringC &dataType,NetOSPortServerBaseC &port);
     //: Open output port.
     
+    virtual bool PortsOpen();
+    //: Does this node contain ports that are still open?
+
     virtual bool Delete(const DListC<StringC>& remainingPath);
     //: Delete the physical media of the target path within the node.
     //!param: remainingPath - List of strings containing the path elements to the target within the node.
@@ -60,6 +63,10 @@ namespace RavlN {
     //!param: available - If the target path is a directory, return the space available on the partition containing the target node in bytes. -1 if the target path is a file.
     //!return: True if the query executed successfully.
 
+    virtual bool OnClose(DListC<StringC>& remainingPath);
+    //: Called when a target path is closed.
+    //!param: remainingPath - The closed target path within the node.
+
     virtual bool OnDelete(DListC<StringC>& remainingPath);
     //: Called when a child node is deleted.
     //!param: remainingPath - The deleted target path within the node.
@@ -68,6 +75,12 @@ namespace RavlN {
     bool OpenVFSFile(DListC<StringC> &remainingPath,DataServerVFSRealFileC &rfile,bool forWrite = false);
     //: Open VFS file.
     
+    bool ReadyToDelete();
+    //: Check if the directory is marked for deletion and no longer has open ports.
+
+    void DoDelete();
+    //: Recursively delete the directory.
+
     MutexC access; // Access control for object.
     HashC<StringC,DataServerVFSRealFileC> name2file;
     HSetC<StringC> nameDeletePending;
@@ -102,8 +115,8 @@ namespace RavlN {
     //: Set the file format for all directory files.
 
   protected:
-    DataServerVFSRealDirC(DataServerVFSRealDirBodyC &bod)
-     : DataServerVFSNodeC(bod)
+    DataServerVFSRealDirC(DataServerVFSRealDirBodyC &body)
+     : DataServerVFSNodeC(body)
     {}
     //: Body constructor. 
     
@@ -115,6 +128,7 @@ namespace RavlN {
     { return static_cast<const DataServerVFSRealDirBodyC &>(DataServerVFSNodeC::Body()); }
     //: Body Access. 
     
+    friend class DataServerVFSRealDirBodyC;
   };
 }
 

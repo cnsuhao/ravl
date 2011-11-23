@@ -12,11 +12,19 @@
 
 /********************************************************************************/
 /******* AMMA / QMAKE COMPATIBILITY *******/
+#if defined(WIN32)
+#if defined(_DEBUG)
+#define RAVL_CHECK 1
+#else
+#define RAVL_CHECK 0
+#endif
+#else
 #if !defined(RAVL_CHECK)
 #if defined(AMMA_CHECK) || defined(QMAKE_CHECK)
 #define RAVL_CHECK 1
 #else
 #define RAVL_CHECK 0
+#endif
 #endif
 #endif
 /****************************************/
@@ -198,6 +206,7 @@
 #define RAVL_HAVE_FDATASYNC    (RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_SOLARIS) /* have fdatasync */
 #define RAVL_HAVE_LSEEK64      (RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_SOLARIS) /* have lseek64 */
 #define RAVL_HAVE_CSQRT         !RAVL_OS_FREEBSD
+#define RAVL_HAVE_FTW_H        RAVL_OS_POSIX
 
 /********************************************************************************/
 /****** Processor properties ****************************************************/
