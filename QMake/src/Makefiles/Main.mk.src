@@ -1040,14 +1040,14 @@ ifdef LOCAL_DEFBASE
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
-	fi
-	echo > $(INST_LIBDEF)/$(@F)
-	$(SHOWIT)echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F)
-	echo >> $(INST_LIBDEF)/$(@F)
-	$(SHOWIT)echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F)
+	fi ; \
+	echo > $(INST_LIBDEF)/$(@F) ; \
+	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' >> $(INST_LIBDEF)/$(@F) ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+	echo '  $(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
  ifdef REQUIRES	
-	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '  ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif	
   ifdef USESLIBS
@@ -1055,21 +1055,21 @@ ifdef LOCAL_DEFBASE
     ifneq ($(USESLIBS),None)
      ifeq ($(filter Auto,$(USESLIBS)),)
       ifneq ($(strip $(TARG_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
       endif
       ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
       endif
      else
       ifneq ($(strip $(AUTOUSELIBS)),)
        ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
        endif
        ifneq ($(strip $(EXTRA_USESLIBS_O)),)
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  -include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
        endif
       endif
@@ -1077,33 +1077,33 @@ ifdef LOCAL_DEFBASE
     endif
    endif
   endif
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   ifdef PLIB
    ifndef LIBDEPS
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
    endif
   endif
   ifdef MUSTLINK
-	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '$(REQUIRES_INDENT)  EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif
   ifdef EXTPACKAGE
-        $(SHOWIT)echo '$(REQUIRES_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) '
-	echo >> $(INST_LIBDEF)/$(@F)
-        $(SHOWIT)echo '$(REQUIRES_INDENT)  ifneq ($(BASE_VAR),none)'
-	echo >> $(INST_LIBDEF)/$(@F)
-        $(SHOWIT)echo '$(REQUIRES_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)'
-	echo >> $(INST_LIBDEF)/$(@F)
-        $(SHOWIT)echo '$(REQUIRES_INDENT)  endif'
+        $(SHOWIT)echo '$(REQUIRES_INDENT)  INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) ' ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+        echo '$(REQUIRES_INDENT)  ifneq ($(BASE_VAR),none)' ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+        echo '$(REQUIRES_INDENT)    INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ; \
+	echo >> $(INST_LIBDEF)/$(@F) ; \
+        echo '$(REQUIRES_INDENT)  endif' ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif
   ifdef REQUIRES	
-	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo '  endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
   endif	
-	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F)
+	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F) ; \
 	echo >> $(INST_LIBDEF)/$(@F)
 	$(SHOWIT)$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
  endif
