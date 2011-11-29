@@ -6016,10 +6016,10 @@ then
              COMPILER_GPROF_CFLAGS=" -pg "
              COMPILER_NON_OPT_CFLAGS=" -O "
              # Optimisation flags depend on version of GCC in use
-             CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print  }'`
-             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print  }'`
-             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print  }'`
-             CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print  }'`
+                          CC_VERSION=`$CC --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+             CC_MAJOR=`echo $CC_VERSION | $AWK -F. '{ print $1 }'`
+             CC_MINOR=`echo $CC_VERSION | $AWK -F. '{ print $2 }'`
+             CC_PATCH=`echo $CC_VERSION | $AWK -F. '{ print $3 }'`
              if ( test X$CC_MAJOR = X4 && test $(($CC_MINOR)) -lt 3 )
              then
                 # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
@@ -6143,10 +6143,10 @@ then
              COMPILER_GPROF_CCFLAGS=" -pg "
              COMPILER_NON_OPT_CCFLAGS=" -O "
              # Optimisation flags depend on version of GCC in use
-             CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print  }'`
-             CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print  }'`
-             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print  }'`
-             CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print  }'`
+                          CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
+             CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
+             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print $2 }'`
+             CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print $3 }'`
              if ( test X$CXX_MAJOR = X4 && test $(($CXX_MINOR)) -lt 3 )
              then
                 # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
