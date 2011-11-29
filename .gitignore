@@ -1,11 +1,7 @@
 core.*
 /QMake
 /Makefile.in
-/configure
-/config.guess
-/config.sub
-/install-sh
-/aclocal.m4
+src/AutoTools/configure
 autom4te.cache
 tmp.ppm
 *.swp
