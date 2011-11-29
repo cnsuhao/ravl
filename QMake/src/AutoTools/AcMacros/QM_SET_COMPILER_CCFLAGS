@@ -73,10 +73,11 @@ AC_DEFUN([QM_SET_COMPILER_CCFLAGS],
              COMPILER_GPROF_CCFLAGS=" -pg "
              COMPILER_NON_OPT_CCFLAGS=" -O "
              # Optimisation flags depend on version of GCC in use
-             CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print $3 }'`
-             CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print $1 }'`
-             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print $2 }'`
-             CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print $3 }'`
+             dnl Using @S|@ glyph to prevent expansion of $1/2/3 as macro arg
+             CXX_VERSION=`$CXX --v 2>&1 | $GREP 'gcc version' | $AWK '{ print @S|@3 }'`
+             CXX_MAJOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@1 }'`
+             CXX_MINOR=`echo $CXX_VERSION | $AWK -F. '{ print @S|@2 }'`
+             CXX_PATCH=`echo $CXX_VERSION | $AWK -F. '{ print @S|@3 }'`
              if ( test X$CXX_MAJOR = X4 && test $(($CXX_MINOR)) -lt 3 )
              then
                 # -funsafe-math-optimisation (implied by -ffast-math) was indeed, unsafe
