@@ -1320,7 +1320,7 @@ done
 ParallelIO_SUPPORT=libPPDev
 Ravl2dGUI_LIBS="libRavlGUIUtil libRavlGUI2D"
 Ravl3d_LIBS="libRavl3DIO libRavl3D"
-RavlAAM=libRavlAAM
+RavlAAM="libRavlAAMGUI libRavlAAM"
 RavlAutoPort=""
 # libRavlAutoPort not currently implemented
 RavlCameraCal=libRavlCameraCal
@@ -1420,16 +1420,14 @@ then
          # dependancy on GTK
    # 2d-GUI support blocked both directly by lack of GTK2 and by lack of RavlGUI
    Ravl2dGUI_LIBS=""
-      # Lack of 2d-GUI support blocks the following:
-         RavlAAM=""
-         #   Blocked by RavlGUIUtil alone (although RavlGUI2D blocks RavlGUIUtil
-         #   anyway)
+      # RavlAAMGUI blocked by both lack of libGTK2 and 2d-GUI support
+      RavlAAM="libRavlAAM"
       # Lack of 2d-GUI would also block RavlVDF (blocked by RavlGUI2D missing) and
       # RavlVPlay (blocked by the absense of either of the 2d libs) if they hadn't
       # already been blocked by RavlGUI being omitted
-   RavlDPDisplay=""
    # DPDisplay Blocked by lack of GTK2 directly or indirectly by the lack of 
    # either RavlGUI2D or RavlGUI
+   RavlDPDisplay=""
       # DPDisplay blocks the following:
          MacOSXVideoCapture_SUPPORT=""
          # Also blocks RavlVDF which is already blocked by missing 2d-GUI
