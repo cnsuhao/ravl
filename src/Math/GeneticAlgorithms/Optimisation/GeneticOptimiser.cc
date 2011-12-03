@@ -217,6 +217,9 @@ namespace RavlN { namespace GeneticN {
   }
 
 
+  void LinkGeneticOptimiser()
+  {}
+
   XMLFactoryRegisterC<GeneticOptimiserC> g_registerGeneticOptimiser("RavlN::GeneticN::GeneticOptimiserC");
   static RavlN::TypeNameC g_typeEnvironmentSimpleState(typeid(RavlN::GeneticN::GeneticOptimiserC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneticOptimiserC>");
 
