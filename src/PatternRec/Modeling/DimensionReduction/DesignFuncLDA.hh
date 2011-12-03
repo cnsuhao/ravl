@@ -28,7 +28,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Design a dimension reducing function using Linear Discriminant Anaylsis (LDA)
+  //: Design a dimension reducing function using Linear Discriminant Analysis (LDA)
   
   class DesignFuncLDABodyC
     : public DesignFuncReduceBodyC
