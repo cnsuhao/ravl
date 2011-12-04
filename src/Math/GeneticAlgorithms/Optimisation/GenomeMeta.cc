@@ -88,6 +88,15 @@ namespace RavlN { namespace GeneticN {
      return false;
    }
 
+   //! Dump description in human readable form.
+   void GeneTypeEnumC::Dump(std::ostream &strm,UIntT indent) const {
+     GeneTypeC::Dump(strm,indent);
+     strm << "\n";
+     for(unsigned i = 0;i <  m_values.size();i++) {
+       m_values[i]->Dump(strm,indent+1);
+       strm << "\n";
+     }
+   }
 
    //! Create randomise value
    void GeneTypeEnumC::Random(GeneC::RefT &newValue) const
@@ -175,6 +184,16 @@ namespace RavlN { namespace GeneticN {
    {
      RavlAssertMsg(0,"not implemented");
      return false;
+   }
+
+   //! Dump description in human readable form.
+   void GeneTypeMetaC::Dump(std::ostream &strm,UIntT indent) const {
+     GeneTypeC::Dump(strm,indent);
+     strm << "\n";
+     for(unsigned i = 0;i < m_types.size();i++) {
+       m_types[i]->Dump(strm,indent+1);
+       strm << "\n";
+     }
    }
 
    //! Add type to list

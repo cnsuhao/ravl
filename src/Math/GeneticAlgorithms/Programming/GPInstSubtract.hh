@@ -15,7 +15,7 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Subtract two values
 
   template<typename DataT>
   class GPInstSubtractC

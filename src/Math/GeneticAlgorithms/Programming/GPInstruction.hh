@@ -52,7 +52,7 @@ namespace RavlN { namespace GeneticN {
     bool m_terminate;
   };
 
-  //! Help class to make keeping track of the call stack depth easier
+  //! Helper class to make keeping track of the call stack depth easier
 
   class ScopedCallC
   {
@@ -68,7 +68,8 @@ namespace RavlN { namespace GeneticN {
     GPExecutionContextC *m_ctxt;
   };
 
-  //! An environment for an agent.
+  //! Instruction base class.
+
   class GPInstructionC
    : public RCBodyVC
   {

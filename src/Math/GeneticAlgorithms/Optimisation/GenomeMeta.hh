@@ -38,6 +38,9 @@ namespace RavlN { namespace GeneticN {
     //! Save to binary stream
     virtual bool Save(std::ostream &strm) const;
 
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
+
     //! Create randomise value
     virtual void Random(GeneC::RefT &newValue) const;
 
@@ -78,6 +81,9 @@ namespace RavlN { namespace GeneticN {
 
      //! Save to binary stream
      virtual bool Save(std::ostream &strm) const;
+
+     //! Dump description in human readable form.
+     virtual void Dump(std::ostream &strm,UIntT indent) const;
 
      //! Create randomise value
      virtual void Random(GeneC::RefT &newValue) const;

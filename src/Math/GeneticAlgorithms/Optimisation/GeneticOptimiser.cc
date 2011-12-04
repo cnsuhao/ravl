@@ -54,28 +54,34 @@ namespace RavlN { namespace GeneticN {
       RavlAssertMsg(0,"No fitness function defined.");
       return ;
     }
+    if(m_population.empty()) {
+      RavlSysLogf(SYSLOG_DEBUG,"Ranking initial population");
+      RavlAssert(!m_startPopulation.empty());
+      Evaluate(m_startPopulation);
+    }
     for(unsigned i = 0;i < m_numGenerations;i++) {
       RavlSysLogf(SYSLOG_INFO,"Running generation %u ",i);
       RunGeneration(i);
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore)
         break;
     }
-    RavlSysLogf(SYSLOG_INFO,"Best final score %f ",m_population.rbegin()->first);
-    OStreamC ostrm(std::cout);
-    RavlN::XMLOStreamC outXML(ostrm);
-    m_population.rbegin()->second->Save(outXML);
+    if(m_population.empty()) {
+      RavlInfo("Population list empty. ");
+    } else {
+      RavlInfo("Best final score %f ",m_population.rbegin()->first);
+      OStreamC ostrm(std::cout);
+      RavlN::XMLOStreamC outXML(ostrm);
+      m_population.rbegin()->second->Save(outXML);
+    }
   }
 
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
     if(m_population.empty()) {
-      RavlSysLogf(SYSLOG_DEBUG,"Ranking initial population");
-      RavlAssert(!m_startPopulation.empty());
-      Evaluate(m_startPopulation);
+      RavlError("No previous population to rank.");
       return ;
     }
-
     RavlSysLogf(SYSLOG_DEBUG,"Examining results from last run. ");
     unsigned count = 0;
     std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
