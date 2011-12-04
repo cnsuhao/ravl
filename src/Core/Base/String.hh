@@ -1502,6 +1502,8 @@ namespace RavlN {
   inline bool operator<=(const SubStringC& x, const char* t) 
   { return compare(x, t) <= 0; }
   
- 
+  StringC Indent(int level);
+  //: Helper function for producing indented output.
+  // create a string with 'level' spaces.
 }
 #endif
