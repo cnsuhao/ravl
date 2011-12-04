@@ -110,7 +110,7 @@ namespace RavlN { namespace GeneticN {
       count++;
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Got %u seeds. Pop:%u Best score=%f Worst score=%f Age:%u Generation:%u ",(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
+    RavlSysLogf(SYSLOG_DEBUG,"Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",generation,(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
     if(m_randomiseDomain) {
       m_population.clear();
