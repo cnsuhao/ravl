@@ -45,6 +45,9 @@ namespace RavlN {  namespace GeneticN {
     //! Access type of object evaluated for fitness.
     virtual const type_info &ObjectType() const;
 
+    //! Generate a new problem in the domain.
+    virtual bool GenerateNewProblem();
+
     //! Evaluate the fit
     virtual bool Evaluate(RCWrapAbstractC &obj,float &score);
 
