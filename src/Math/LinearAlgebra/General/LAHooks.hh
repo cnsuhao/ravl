@@ -14,11 +14,8 @@ namespace RavlN {
   class MatrixRUTC;
 
   extern bool (*g_EigenVectorsSymmetric)(VectorC &resVals, MatrixC &resVecs, const MatrixC &M);
-
   inline bool EigenVectorsSymmetric(VectorC &resVals, MatrixC &resVecs, const MatrixC &M)
   { return (*g_EigenVectorsSymmetric)(resVals, resVecs, M); }
-
-
 
   extern void (*g_AddOuterProduct)(MatrixRUTC &matr, const VectorC &vec);
   inline void AddOuterProduct(MatrixRUTC &matr, const VectorC &vec)
@@ -35,6 +32,17 @@ namespace RavlN {
   extern void (*g_SubtractOuterProduct1)(MatrixRUTC &matr, const VectorC &vec, double a);
   inline void SubtractOuterProduct(MatrixRUTC &matr, const VectorC &vec, double a)
   { (*g_SubtractOuterProduct1)(matr, vec, a); }
+
+  extern bool (*g_SVD_IP_hook)(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v);
+  inline bool SVD_IP_hook(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v)
+  { return (*g_SVD_IP_hook)(m, u, s, v); }
+
+  extern bool (*g_Inverse_IP_hook)(MatrixC & m, double & det);
+  inline bool Inverse_IP_hook(MatrixC & m, double & det) {
+    return (*g_Inverse_IP_hook)(m, det);
+  }
+
+
 
 }
 

@@ -14,6 +14,7 @@
 #include "Ravl/StdMath.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/SVD.hh"
+#include "Ravl/LAHooks.hh"
 
 #define RAVL_USE_CCMATH_SVD 0
 
@@ -61,8 +62,14 @@ namespace RavlN {
   
 #else
   VectorC SVD_IP(MatrixC &mat) {
-    SVDC<RealT> svd(mat);
-    return svd.SingularValues();
+   // This hook function will run standard SVD routine
+   // However, if you link in the Intel MKL library then
+   // it will use the parallel Intel MKL libraries - which
+   // are super, super fast.
+   VectorC s;
+   MatrixC u, v;
+   SVD_IP_hook(mat, u, s, v);
+   return s;
   }
 #endif
   
@@ -74,6 +81,7 @@ namespace RavlN {
   // If the operation failes the returned vector is invalid.
   
   VectorC SVD(const MatrixC &mat,MatrixC & u, MatrixC & v) {
+
     MatrixC ret = mat.Copy();
     return SVD_IP(ret,u,v);
   }
@@ -125,10 +133,19 @@ namespace RavlN {
       return x;
     }
 #endif
+#if 0
     SVDC<RealT> svd(mat);
     v = svd.GetV();
     u = svd.GetU();
     return svd.SingularValues();
+#endif
+    // This hook function will run standard SVD routine
+    // However, if you link in the Intel MKL library then
+    // it will use the parallel Intel MKL libraries - which
+    // are super, super fast.
+    VectorC s;
+    SVD_IP_hook(mat, u, s, v);
+    return s;
   }  
 #endif
 }

@@ -280,7 +280,12 @@ namespace RavlN {
   MatrixC RandomPositiveDefiniteMatrix(int n);
   //: Create a random positive definite matrix.
   // The matrix is also symmetric in the current implementation, this may be changed at some point.
-  
+}
+
+namespace RavlN {
+  //! userlevel=Develop
+  bool InverseIP_GaussJordan(MatrixC & m, RealT & det);
+  //: The default Matrix inverse routine.
 }
 
 #endif

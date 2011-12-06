@@ -9,8 +9,9 @@
 
 #include "Ravl/Vector.hh"
 #include "Ravl/Matrix.hh"
-#include "Ravl/Lapack/ev_c.hh"
+#include "Ravl/Lapack/lapack.hh"
 #include "Ravl/Lapack/blas2.hh"
+#
 
 #define DODEBUG 0
 #if DODEBUG
@@ -23,13 +24,12 @@ namespace RavlN {
 
 //! compute eigen values and eigen vectors of symmetric matrix
 static bool EigenVectorsSymmetric_LAPACK(VectorC &resVals, MatrixC &resVecs, const MatrixC &mat) {
-  const SizeT mSize = mat.Size1();
-  resVals = VectorC(mSize);
-  resVecs = mat.Copy();
-  dsyev_c(mSize, &(resVecs[0][0]), &(resVals[0]), true, true, true, false);
+  VectorMatrixC vm;
+  EigenVectors_Lapack(mat, vm);
+  resVals = vm.Vector();
+  resVecs = vm.Matrix();
   return true;
 }
-
 
 //: Add outer product of 'vec' with itself to this matrix.
 static void AddOuterProduct_LAPACK(MatrixRUTC &matr, const VectorC &vec) {
@@ -53,6 +53,8 @@ static void SubtractOuterProduct1_LAPACK(MatrixRUTC &matr, const VectorC &vec,Re
 
 
 
+
+
 int LAHooksLAPACKInit() {
   ONDEBUG(cerr << "using LAPACK\n");
   g_EigenVectorsSymmetric = &EigenVectorsSymmetric_LAPACK;
@@ -60,6 +62,7 @@ int LAHooksLAPACKInit() {
   g_AddOuterProduct1 = &AddOuterProduct1_LAPACK;
   g_SubtractOuterProduct = &SubtractOuterProduct_LAPACK;
   g_SubtractOuterProduct1 = &SubtractOuterProduct1_LAPACK;
+  g_SVD_IP_hook = &SVD_IP_Lapack;
   return 0;
 }
 

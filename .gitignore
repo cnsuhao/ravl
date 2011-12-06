@@ -4,3 +4,4 @@ core.*
 .csettings
 /Ravl/nbproject/private/
 *~
+gmon.out
