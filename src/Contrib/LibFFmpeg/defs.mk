@@ -25,7 +25,7 @@ MUSTLINK = MustLinkLibFFmpeg.cc
 
 EXTERNALLIBS=LibFFmpeg.def
 
-USESLIBS = RavlImage RavlIO LibFFmpeg RavlRawVidIO RavlVideoIO
+USESLIBS = RavlImage RavlIO LibFFmpeg RavlRawVidIO.opt RavlVideoIO
 
 PROGLIBS = RavlGUI RavlDPDisplay
 

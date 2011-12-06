@@ -1334,7 +1334,8 @@ RavlGUI=libRavlGUI
 RavlImageProc=libRavlImageProc
 RavlLogic_LIBS="libRavlLogicAgent libRavlLogicNLP libRavlLogic"
 RavlNet=libRavlNet
-RavlRawVidIO=libRavlRawVidIO
+RavlRawVidIO=""
+# libRavlRawVidIO currently dropped
 RavlVDF=""
 # libRavlVDF not currently implemented
 RavlVPlay=libRavlVPlay
