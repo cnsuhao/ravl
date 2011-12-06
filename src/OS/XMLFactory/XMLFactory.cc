@@ -702,13 +702,13 @@ namespace RavlN {
         RavlSysLogf(SYSLOG_DEBUG,"Creating component, Path='%s' Type='%s' ",node.Path().chars(),typeToMake.chars());
       }
       if(typeToMake.IsEmpty()) {
-        RavlSysLogf(SYSLOG_ERR,"No type specified for node '%s'",node.Name().chars());
+        RavlSysLogf(SYSLOG_ERR,"No type specified for node '%s' ",node.Path().chars());
         throw RavlN::ExceptionBadConfigC("Type not specified. ");
         return false;
       }
       TypeFactoryT *tf = Type2Factory().Lookup(typeToMake);
       if(tf == 0) {
-        RavlSysLogf(SYSLOG_ERR,"Node '%s', Type '%s' unknown.",node.Name().chars(),typeToMake.chars());
+        RavlSysLogf(SYSLOG_ERR,"Node '%s', Type '%s' unknown.",node.Path().chars(),typeToMake.chars());
         throw RavlN::ExceptionBadConfigC("Type not known. ");
         return false;
       }

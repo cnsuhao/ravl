@@ -81,6 +81,12 @@ namespace RavlN { namespace GeneticN {
     return false;
   }
 
+  //! Dump description in human readable form.
+  void GeneTypeC::Dump(std::ostream &strm,UIntT indent) const
+  {
+    strm << Indent(indent) << "Gene:" << Name() << " Weight:" << m_defaultWeight << " Type:" << RavlN::TypeName(typeid(*this));
+  }
+
   //! Add a new entry to the gene
   void GeneTypeC::AddComponent(const std::string &name,const GeneTypeC &geneType)
   {
@@ -173,6 +179,12 @@ namespace RavlN { namespace GeneticN {
   {
     strm << RavlN::XMLStartTag("Gene") << XMLAttribute("typename",RavlN::TypeName(typeid(*this)))  << XMLAttribute("name",Name().data());
     return true;
+  }
+
+
+  //! Dump description in human readable form.
+  void GeneC::Dump(std::ostream &strm,UIntT indent) const {
+    strm << Indent(indent) << "Type:" << RavlN::TypeName(typeid(*this)) << " Name:" << Name().data();
   }
 
   //! Lookup value

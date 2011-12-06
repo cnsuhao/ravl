@@ -39,12 +39,20 @@ namespace RavlN
   
   MutexC::MutexC() 
     : isValid(false)
+#if RAVL_HAVE_WIN32_THREADS
+      ,m_useCount(0),
+      m_recursive(false)
+#endif
   { Init(false); }
   
   //: Constructor.
   
   MutexC::MutexC(bool recursive) 
     : isValid(false)
+#if RAVL_HAVE_WIN32_THREADS
+      ,m_useCount(0),
+      m_recursive(false)
+#endif
   { Init(recursive); }
   
   //: Setup mutex.
@@ -62,34 +70,36 @@ namespace RavlN
     pthread_mutexattr_t mutAttr;
     pthread_mutexattr_init(&mutAttr);
     
+    if(recursive) {  // Try and build a recursive mutex ?
+#if ( RAVL_OS_LINUX || RAVL_OS_LINUX64)
+      if(pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_RECURSIVE_NP) != 0) // Linux.
+        throw ExceptionOperationFailedC("ERROR: Recursive mutex's not available. ");
+#else
+#ifdef PTHREAD_MUTEX_RECURSIVE
+      if(pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_RECURSIVE) != 0) // Solaris and maybe other ?
+        throw ExceptionOperationFailedC("ERROR: Recursive mutex's not available. ");
+#endif
+#endif
+    } else {
     // Check if we want to enable debugging.
 #if RAVL_CHECK
-    ONDEBUG(cerr << "MutexC::Init(), Constructing debuging mutex. (@:" << ((void*) this) << ") \n");
+      ONDEBUG(cerr << "MutexC::Init(), Constructing debuging mutex. (@:" << ((void*) this) << ") \n");
     
     // Enable error checking, if available.
 #if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX || RAVL_OS_LINUX64
     // Set appropriate attribute.
 #if defined(PTHREAD_MUTEX_ERRORCHECK)
-    pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_ERRORCHECK);
+      pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_ERRORCHECK);
 #else
-    pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_ERRORCHECK_NP);
+      pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_ERRORCHECK_NP);
 #endif
 #endif
-    
 #else
-    ONDEBUG(cerr << "MutexC::Init(), Constructing normal mutex. (@:" << ((void*) this) << ") \n");    
+      ONDEBUG(cerr << "MutexC::Init(), Constructing normal mutex. (@:" << ((void*) this) << ") \n");
 #endif
-    
-    if(recursive) {  // Try and build a recursive mutex ?
-#if ( RAVL_OS_LINUX || RAVL_OS_LINUX64)
-      if(pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_RECURSIVE_NP) != 0) // Linux.
-#else
-#ifdef PTHREAD_MUTEX_RECURSIVE
-	if(pthread_mutexattr_settype(&mutAttr,PTHREAD_MUTEX_RECURSIVE) != 0) // Solaris and maybe other ?
-#endif
-#endif
-          throw ExceptionOperationFailedC("ERROR: Recursive mutex's not available. ");
     }
+
+    
     int rc;
     if((rc = pthread_mutex_init(&mutex,&mutAttr)) != 0) {
       Error("Failed to create mutex.",errno,rc); 
@@ -101,6 +111,9 @@ namespace RavlN
 #endif // RAVL_HAVE_POSIX_THREADS
     // ---------------------------------- WIN32 ----------------------------------
 #if RAVL_HAVE_WIN32_THREADS
+    // FIXME: Does this support recursive locks?
+    m_recursive=recursive;
+    RavlAssert(m_useCount == 0);
     if((mutex = CreateMutex(0,false,0)) == 0) {
       Error("Failed to create mutex.",errno,0); 
     } else
@@ -136,6 +149,7 @@ namespace RavlN
     int maxRetry = 100;
     // We need to make sure there's no threads waiting for the lock. There shouldn't be
     // if we're freeing it, as the resource its waiting for is probably on its way out too.
+    bool reportedError = false;
     while(--maxRetry > 0) {
       if(TryLock()) { // Try get an exclusive lock.
 	Unlock(); // Unlock... and destroy.
@@ -148,6 +162,10 @@ namespace RavlN
           break;
         cerr << "WARNING: MutexC::~MutexC(), destroy failed. " << GetLastError() << "\n";   
 #endif
+      }
+      if(!reportedError) {
+        cerr << "WARNING: MutexC::~MutexC(), thread holding lock on mutex in destructor. This indicates a likely problem with the code. \n";
+        reportedError = true;
       }
 #if RAVL_HAVE_WIN32_THREADS
       RavlN::Sleep(0.01);
@@ -177,6 +195,10 @@ namespace RavlN
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     if((rc = WaitForSingleObject(mutex,INFINITE)) == WAIT_OBJECT_0) {
+      m_useCount++;
+      if(!m_recursive && m_useCount > 1) {
+        RavlAssertMsg(0,"Deadlock!");
+      }
       return true;
     }
     Error("Lock failed",GetLastError(),rc);
@@ -201,8 +223,21 @@ namespace RavlN
       Error("Trylock failed for unexpected reason.",errno,rc);
 #endif
 #if RAVL_HAVE_WIN32_THREADS
-    if((rc = WaitForSingleObject(mutex,0)) == WAIT_OBJECT_0)
+    if((rc = WaitForSingleObject(mutex,0)) == WAIT_OBJECT_0) {
+      m_useCount++;
+      if(!m_recursive && m_useCount > 1) {
+        if(ReleaseMutex(mutex)) {
+          m_useCount--;
+        } else {
+          Error("TryLock going very wrong!",GetLastError(),rc);
+        }
+        return false;
+      }
       return true;
+    }
+    if(rc != WAIT_TIMEOUT) {
+      Error("TryLock failed",GetLastError(),rc);
+    }
 #endif
     return false;
   }
@@ -222,6 +257,8 @@ namespace RavlN
     Error("Unlock failed.",errno,rc);
 #endif
 #if RAVL_HAVE_WIN32_THREADS
+    RavlAssert(m_useCount > 0);
+    m_useCount--;
     if(ReleaseMutex(mutex))
       return true;
     Error("Unlock failed.",GetLastError(),rc);

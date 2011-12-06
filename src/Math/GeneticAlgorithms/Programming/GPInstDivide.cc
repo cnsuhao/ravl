@@ -8,7 +8,7 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Programming
 
-#include "Ravl/Genetic/GPInstSubtract.hh"
+#include "Ravl/Genetic/GPInstDivide.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GenomeList.hh"
@@ -16,10 +16,10 @@
 
 namespace RavlN { namespace GeneticN {
 
-  static RegisterGPInstructionC<GPInstSubtractC<IntT> > g_regInst1("RavlN::GeneticN::GPInstSubtractC<IntT>");
-  static RegisterGPInstructionC<GPInstSubtractC<float> > g_regInst2("RavlN::GeneticN::GPInstSubtractC<float>");
+  static RegisterGPInstructionC<GPInstDivideC<IntT> > g_regInst1("RavlN::GeneticN::GPInstDivideC<IntT>");
+  static RegisterGPInstructionC<GPInstDivideC<float> > g_regInst2("RavlN::GeneticN::GPInstDivideC<float>");
 
-  void LinkGPInstSubtract()
+  void LinkGPInstDivide()
   {}
 
 }}

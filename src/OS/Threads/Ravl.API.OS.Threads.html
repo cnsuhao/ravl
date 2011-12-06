@@ -13,7 +13,7 @@
     to allow the creation and management of threads within an application.
     See the very simple <a href="../../Examples/exLaunchThread.cc.html">
     example</a> of the creation and launching of a thread, and how to pass
-    arguments into the threads.</p>
+    arguments into the threads.</p> 
 
     <p>For thread-safe operation, the following are the responsibility
     of the programmer:</p>
@@ -29,9 +29,18 @@
       possible time.</li>
     </ul>
 
+    <h2>Sleeping and waking</h2>
+
+    <p>To control which threads are active in an application, the relevant high-level classes are ThreadSignalC, ThreadEventC and ThreadStateC.  All three classes provide "wait" methods for allowing the thread to sleep until something happens; they differ in how threads are woken.</p>
+    <ul>
+      <li> <a href="../Class/RavlN.ThreadSignalC.html">ThreadSignalC</a> is an "edge-triggered" class, where a wake-up call will wake up either one or all of the other threads that are currently asleep.  Next time any thread encounters a "wait" it will always sleep.</li>
+      <li> <a href="../Class/RavlN.ThreadEventC.html">ThreadEventC</a> is a related class, but "level-triggered".  In its waking mode, all threads will proceed uninterrupted, whereas when it is reset, any thread that encounters a wait will sleep until the next waking state.</li>
+      <li><a href="../Class/RavlN.ThreadStateC.html">ThreadStateC</a> is useful for multi-threaded state machines.  One thread can be made to sleep until another thread puts the state machine into a specified state.</li>
+    </ul>
+
     <h2>Locking</h2>
 
-    <p>To prevent multiple accesses to a resouce, on an equitable basis, use
+    <p>To prevent multiple accesses to a resource on an equitable basis, use
     the mutex classes.  <a
     href="../Class/RavlN.MutexC.html"><code>MutexC</code></a> provides the
     shared object for a particular lock.  It is the programmer's
@@ -78,7 +87,7 @@
     <address><a href="mailto:w.christmas@ee.surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Nov 21 15:50:48 GMT 2003 -->
 <!-- hhmts start -->
-Last modified: Tue Mar 29 15:42:41 BST 2011
+Last modified: Wed Nov 23 16:31:46 GMT 2011
 <!-- hhmts end -->
   </body>
 </html>

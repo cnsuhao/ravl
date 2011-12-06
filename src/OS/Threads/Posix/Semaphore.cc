@@ -33,26 +33,26 @@ namespace RavlN
   //: Wait for semaphore.
   
   bool SemaphoreC::Wait() {
-    cond.Lock();
+    m_access.Lock();
     while(count <= 0)
-      cond.Wait();
+      cond.Wait(m_access);
     count--;
-    cond.Unlock();
+    m_access.Unlock();
     return true;
   }
   
   bool SemaphoreC::Wait(RealT maxDelay) {
     if(maxDelay <= 0)
       return TryWait();
-    cond.Lock();
+    m_access.Lock();
     while(count <= 0) {
-      if(!cond.Wait(maxDelay)) {
-        cond.Unlock();
+      if(!cond.Wait(m_access,maxDelay)) {
+        m_access.Unlock();
         return false;
       }
     }
     count--;
-    cond.Unlock();
+    m_access.Unlock();
     return true;
   }
   

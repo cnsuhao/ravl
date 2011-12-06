@@ -29,6 +29,11 @@ namespace RavlN {  namespace GeneticN {
   const type_info &EvaluateFitnessC::ObjectType() const
   { return typeid(void); }
 
+  //! Generate a new problem in the domain.
+  bool EvaluateFitnessC::GenerateNewProblem() {
+    return true;
+  }
+
   //! Evaluate the fit
   bool EvaluateFitnessC::Evaluate(RCWrapAbstractC &obj,float &score)
   {

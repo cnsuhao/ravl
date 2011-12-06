@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_GENETIC_GPInstAdd_HH
-#define RAVL_GENETIC_GPInstAdd_HH 1
+#ifndef RAVL_GENETIC_GPInstDivide_HH
+#define RAVL_GENETIC_GPInstDivide_HH 1
 //! lib=RavlGeneticProgram
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Programming
@@ -18,12 +18,12 @@ namespace RavlN { namespace GeneticN {
   //! Add two values.
 
   template<typename DataT>
-  class GPInstAddC
+  class GPInstDivideC
    : public GPInstructionC
   {
   public:
     //! Factory constructor
-    GPInstAddC(const GeneFactoryC &factory)
+    GPInstDivideC(const GeneFactoryC &factory)
     {
       factory.Get("var1",m_variable1,*GPVariableC<DataT>::GeneType());
       factory.Get("var2",m_variable2,*GPVariableC<DataT>::GeneType());
@@ -31,12 +31,12 @@ namespace RavlN { namespace GeneticN {
     }
 
     //! Constructor
-    GPInstAddC()
+    GPInstDivideC()
     {}
 
     //! Access gene type for instructions
     static GeneTypeC::RefT &GeneType() {
-      static GeneTypeC::RefT x = new GeneTypeClassC(typeid(typename GPInstAddC<DataT>::RefT));
+      static GeneTypeC::RefT x = new GeneTypeClassC(typeid(typename GPInstDivideC<DataT>::RefT));
       return x;
     }
 
@@ -52,13 +52,18 @@ namespace RavlN { namespace GeneticN {
         m_result->Set(m_variable2->Data());
         return m_variable2->Data() > 0;
       }
-      DataT value = m_variable1->Data() + m_variable2->Data();
+      // Avoid divide by zero
+      if(m_variable2->Data() == 0) {
+        m_result->Set(0.0);
+        return 0;
+      }
+      DataT value = m_variable1->Data() / m_variable2->Data();
       m_result->Set(value);
       return value > 0;
     }
 
     //! Handle to this class.
-    typedef RavlN::SmartPtrC<GPInstAddC<DataT> > RefT;
+    typedef RavlN::SmartPtrC<GPInstDivideC<DataT> > RefT;
 
   protected:
     typename GPVariableC<DataT>::RefT m_variable1;

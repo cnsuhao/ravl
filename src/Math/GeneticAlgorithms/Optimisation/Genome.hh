@@ -27,6 +27,8 @@ namespace RavlN { namespace GeneticN {
   class GeneFactoryC;
   class GeneC;
 
+  //! Base class for gene visitor
+
   class GeneVisitorC
   {
   public:
@@ -34,6 +36,8 @@ namespace RavlN { namespace GeneticN {
     virtual bool Examine(const GeneC &gene);
   };
 
+
+  //! Base class for all gene's
 
   class GeneTypeC
    : public RavlN::RCBodyVC
@@ -56,6 +60,9 @@ namespace RavlN { namespace GeneticN {
 
     //! Save to binary stream
     virtual bool Save(std::ostream &strm) const;
+
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     //! Access name of gene
     const std::string &Name() const
@@ -125,6 +132,9 @@ namespace RavlN { namespace GeneticN {
 
     //! Save to binary stream
     virtual bool Save(RavlN::XMLOStreamC &strm) const;
+
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     //! Access name of gene.
     const std::string &Name() const

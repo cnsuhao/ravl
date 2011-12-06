@@ -17,7 +17,7 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Get a value from an array
 
   template<typename DataT>
   class GPInstGetArrayC

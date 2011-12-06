@@ -22,6 +22,8 @@ namespace RavlN { namespace GeneticN {
   extern void LinkGPInstIncrement();
   extern void LinkGPInstDecrement();
   extern void LinkGPInstLoop();
+  extern void LinkGPInstMultiply();
+  extern void LinkGPInstDivide();
 
   extern void LinkGPVariable();
 
@@ -40,6 +42,8 @@ namespace RavlN { namespace GeneticN {
     LinkGPInstIncrement();
     LinkGPInstDecrement();
     LinkGPInstLoop();
+    LinkGPInstMultiply();
+    LinkGPInstDivide();
   }
 
 }}

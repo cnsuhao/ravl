@@ -58,10 +58,10 @@ namespace RavlN { namespace GeneticN {
     virtual void AddType(const GeneTypeC &geneType,float weight = -1.0);
 
     // Reference to this gene.
-    typedef RavlN::SmartPtrC<GeneTypeMetaC> RefT;
+    typedef RavlN::SmartPtrC<GeneTypeWeightedMetaC> RefT;
 
     // Const reference to this gene.
-    typedef RavlN::SmartPtrC<const GeneTypeMetaC> ConstRefT;
+    typedef RavlN::SmartPtrC<const GeneTypeWeightedMetaC> ConstRefT;
 
   protected:
     //! Generate map again

@@ -349,6 +349,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\Core\Base\UUId.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\Core\Container\Buffer\RBfAcc2d.cc"
 				>
 			</File>
@@ -828,6 +832,10 @@
 			</File>
 			<File
 				RelativePath="..\.\Core\Base\ExceptionTimeOut.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\Core\Base\UUId.hh"
 				>
 			</File>
 			<File

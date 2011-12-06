@@ -25,7 +25,6 @@ int main()
 int testConditionalMutex() {
 
   RavlN::ConditionalMutexC condMutex;
-
   condMutex.Lock();
 
   const float theDelay = 1.0;

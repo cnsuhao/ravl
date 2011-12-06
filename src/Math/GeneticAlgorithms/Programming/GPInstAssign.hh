@@ -15,7 +15,7 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Assign a value
 
   template<typename DataT>
   class GPInstAssignC

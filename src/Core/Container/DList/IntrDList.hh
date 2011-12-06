@@ -168,19 +168,19 @@ namespace RavlN {
     DataT &PopFirst()  { 
       RavlAssert(!IsEmpty());
       DataT &tmp = First();
-      head.Next().Unlink();
+      head.Next().Remove();
       return tmp;
     }
-    //: Pop item off front of list.
+    //: Pop item off front of list and set it to self pointing.
     // It is up to the user to ensure the object is deleted.
     
     DataT &PopLast()  { 
       RavlAssert(!IsEmpty());
       DataT &tmp = Last();
-      head.Prev().Unlink();
+      head.Prev().Remove();
       return tmp;
     }
-    //: Pop item off back of list.
+    //: Pop item off back of list and set it to self pointing.
     // It is up to the user to ensure the object is deleted.
 
     void DelFirst()  { 

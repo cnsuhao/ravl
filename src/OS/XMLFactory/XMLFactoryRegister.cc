@@ -86,6 +86,7 @@ namespace RavlN {
 
   static int InitStringFactory() {
     RavlN::AddTypeName(typeid(std::string),"std::string");
+    RavlN::AddTypeName(typeid(RavlN::StringC),"RavlN::StringC");
     RavlN::AddTypeName(typeid(Signal0C),"RavlN::Signal0C");
     RavlN::AddTypeName(typeid(Signal1C<bool>),"RavlN::Signal1C<bool>");
     RavlN::AddTypeName(typeid(Signal1C<StringC>),"RavlN::Signal1C<RavlN::StringC>");
