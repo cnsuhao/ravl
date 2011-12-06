@@ -3,8 +3,8 @@
 #include "Ravl/VectorMatrix.hh"
 #include "Ravl/OS/Date.hh"
 
-#include "Omni/Lapack/lapack.hh"
-#include "Omni/Lapack/blas2.hh"
+#include "Ravl/Lapack/lapack.hh"
+#include "Ravl/Lapack/blas2.hh"
 
 using namespace RavlN;
 
@@ -19,7 +19,7 @@ int main()
   VectorC vec = RandomVector(dim);
   for(int i = 0; i < 200; i++)
   {
-    BlasN::AddOuterProduct(rutsMat, vec);
+    BlasN::AddOuterProduct(rutsMat, vec, 1.0);
     //rutsMat.AddOuterProduct(vec);
   }
   cout << "Time:" << DateC(true).Double() - startOP.Double() << endl;
@@ -53,6 +53,9 @@ int main()
     cerr << "Big error\n";
   else
     cout << "Everything is OK\n";
+
+  VectorC svd = LapackN::SVD(test);
+
 
   return 0;
 }

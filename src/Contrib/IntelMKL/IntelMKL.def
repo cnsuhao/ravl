@@ -7,15 +7,29 @@
 ifndef IntelMKL_Def 
 IntelMKL_Def = 1
 
+# Look at http://software.intel.com/en-us/articles/intel-mkl-link-line-advisor/
+# which gives some guide-lines on which libs you need to link....
+
+ifeq ($(ARC),linux)
   ifdef INTELMKL_HOME
     ifeq ($(INTELMKL_HOME),/usr)
-      EXELIB :=  -lmkl_ia32 -lguide -lpthread -lm $(EXELIB)
+      EXELIB :=  -lmkl_rt -lpthread $(EXELIB)
     else
       INCLUDES += -I$(INTELMKL_HOME)/include
-      EXELIB :=  -Wl,-rpath,$(INTELMKL_HOME)/lib/32 -L$(INTELMKL_HOME)/lib/32 -lmkl_ia32 -lguide -lpthread -lm $(EXELIB)
+      EXELIB :=  -Wl,-rpath,$(INTELMKL_HOME)/lib/32 -L$(INTELMKL_HOME)/lib/ia32 -lmkl_rt -lpthread $(EXELIB)
     endif
   else
     EXELIB :=  -lmkl_ia32 -lguide -lpthread -lm $(EXELIB)
   endif
+endif
+
+ifeq ($(ARC),linux64)
+  ifdef INTELMKL_HOME
+    INCLUDES += -I$(INTELMKL_HOME)/include
+    EXELIB :=  -Wl,-rpath,$(INTELMKL_HOME)/lib/intel64 -L$(INTELMKL_HOME)/lib/intel64 -lmkl_rt -lpthread $(EXELIB)  
+  else
+    EXELIB :=  -lmkl_rt -lpthread $(EXELIB)
+  endif
+endif
 
 endif
