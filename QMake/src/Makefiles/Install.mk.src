@@ -92,16 +92,38 @@ insDev: insLibs insHdrs
 #       2. The directory would be created even if no files exist to populate it
 
 
+
+# Aux files - original form of DATA, Ravl specific installed to:
+#
+#               $(datadir)/$(AUXHOME)/$(AUXDIR)
+#
+# where AUXDIR is the path as listed in the defs.mk file and AUXHOME is set to
+# allow Ravl files to get installed to a suitable location under $(datadir)/Ravl
+# which would otherwise not be possible as Ravl predates the standard use of
+# $(PROJECT_DIR) and $(PACKAGE) [Ravl only uses PACKAGE and sets this to what
+# should be $(PROJECT_DIR)/$(PACKAGE)]
+
+ifndef AUXHOME
+  ifndef PROJECT_DIR
+    ifdef PACKAGE
+      # Likely to be Ravl, assume PACKAGE is PRODUCT/PACKAGE
+      AUXHOME=$(dir $(PACKAGE))
+    endif
+  else
+    AUXHOME=$PROJECT_DIR
+  endif
+endif
+
 insAux: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(AUXFILES)" != X ] ;\
          then \
-            if [ ! -d $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ] ;\
+            if [ ! -d $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ] ;\
             then \
                if [ X$(QMAKE_INFO) != X ] ;\
                then \
-                  echo $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/$(PACKAGE)/$(AUXDIR) ;\
+                  echo $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ;\
                fi ;\
-               $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ;\
+               $(MKDIR_P) $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(AUXHOME)/$(AUXDIR) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \
@@ -110,9 +132,9 @@ insAux:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ; \
+               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(AUXDIR) ; \
+            $(INSTALL) $(patsubst %,$(INSTALLHOME)/$(AUXDIR)/%, $(AUXFILES)) $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
