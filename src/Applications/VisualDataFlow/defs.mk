@@ -31,4 +31,4 @@ PROGLIBS= RavlImgIOV4L.opt RavlExtImgIO.opt  DynLink
 
 AUXFILES= factory.cfg
 
-AUXDIR= share$(PROJECT_DIR)/vdf
+AUXDIR= share/RAVL/vdf

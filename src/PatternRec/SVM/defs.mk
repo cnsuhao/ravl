@@ -57,7 +57,7 @@ PROGLIBS = ArffIO
 
 AUXFILES = testClsSL32.abs testClsSL64.abs
 
-AUXDIR   = share$(PROJECT_DIR)/testData/svm
+AUXDIR   = share/RAVL/testData/svm
 
 MUSTLINK= linkRavlSVM.cc
 

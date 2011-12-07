@@ -60,6 +60,6 @@ EXAMPLES= exImage.cc imgdiff.cc exDraw.cc exFont.cc
 
 EHT=Ravl.API.Images.Pixel_Types.html Drawing.html YUV_Pixel_Types.html YCbCr_Pixel_Types.html
 
-AUXDIR=share$(PROJECT_DIR)/Fonts
+AUXDIR=share/RAVL/Fonts
 
 AUXFILES=default8x16.psf

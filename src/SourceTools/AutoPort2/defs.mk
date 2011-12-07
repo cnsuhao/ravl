@@ -34,5 +34,5 @@ AUXFILES= header.tmpl guid.tmpl externalLib.xml  sln.tmpl vcproj.tmpl solution.g
  testProgram.guid.tmpl testProgram.tmpl exampleProgram.tmpl mainProgram.tmpl program.stmpl \
  mainProgram.guid.tmpl exampleProgram.guid.tmpl
 
-AUXDIR= share$(PROJECT_DIR)/AutoPort2
+AUXDIR= share/RAVL/AutoPort2
 

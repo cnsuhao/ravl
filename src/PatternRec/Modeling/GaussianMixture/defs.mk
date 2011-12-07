@@ -28,4 +28,4 @@ USESLIBS=RavlCore RavlIO RavlMath RavlOS RavlPatternRec
 
 AUXFILES=class5.strm
 
-AUXDIR=share$(PROJECT_DIR)/data
+AUXDIR=share/RAVL/data

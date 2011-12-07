@@ -27,5 +27,5 @@ EHT =
 # Deal with template files.
 AUXFILES = Makefile.tmpl
 
-AUXDIR= share$(PROJECT_DIR)/AutoPort
+AUXDIR= share/RAVL/AutoPort
 

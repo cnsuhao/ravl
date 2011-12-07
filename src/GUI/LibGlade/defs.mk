@@ -20,7 +20,7 @@ USESLIBS= RavlGUI RavlXMLFactory libglade
 
 AUXFILES= exlibgladecustommain.glade  exlibgladecustomwidget.glade  exlibglade.glade
 
-AUXDIR=share$(PROJECT_DIR)/Glade
+AUXDIR=share/RAVL/Glade
 
 EXAMPLES= exLibGlade.cc exLibGladeCustom.cc
 

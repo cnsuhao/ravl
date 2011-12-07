@@ -31,5 +31,5 @@ USESLIBS=Ravl3D RavlIO RavlOS
 
 EHT= Ravl.API.3D.IO.html
 
-AUXDIR = share$(PROJECT_DIR)/data
+AUXDIR = share/RAVL/data
 AUXFILES = cube.tri

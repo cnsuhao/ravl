@@ -23,5 +23,5 @@ PROGLIBS= RavlDPDisplay.opt RavlDPDisplay3d.opt RavlExtImgIO.opt RavlDV.opt Ravl
 
 TESTEXES = testFileConverter.cc
 
-AUXDIR = share$(PROJECT_DIR)/testData
+AUXDIR = share/RAVL/testData
 AUXFILES = in0.ppm in1.ppm

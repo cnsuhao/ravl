@@ -34,5 +34,5 @@ PROGLIBS= RavlGeneticProgram
 
 AUXFILES= exGeneticOptimisation.xml
 
-AUXDIR= share$(PROJECT_DIR)/Genetic
+AUXDIR= share/Ravl/Genetic
  

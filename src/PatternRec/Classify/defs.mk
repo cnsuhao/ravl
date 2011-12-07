@@ -58,4 +58,4 @@ MUSTLINK=linkClassifier.cc
 
 AUXFILES=classifier.xml
 
-AUXDIR=share$(PROJECT_DIR)/PatternRec
+AUXDIR=share/Ravl/PatternRec

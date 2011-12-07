@@ -41,5 +41,5 @@ PROGLIBS = RavlOS
 
 EHT = Ravl.API.Images.IO.html
 
-AUXDIR = share$(PROJECT_DIR)/pixmaps
+AUXDIR = share/RAVL/pixmaps
 AUXFILES = monkey.ppm

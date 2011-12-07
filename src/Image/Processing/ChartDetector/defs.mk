@@ -24,4 +24,4 @@ PROGLIBS=RavlDPDisplay.opt RavlExtImgIO.opt RavlOS
 
 AUXFILES=CalibrationChart.ps CalibrationChart.png CalibrationChart.coords
 
-AUXDIR=share$(PROJECT_DIR)/pixmaps
+AUXDIR=share/RAVL/pixmaps

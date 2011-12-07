@@ -32,7 +32,7 @@ MAINS = defsCheck.cc annotate.cc  amma2ravl.cc docSubst.cc docRename.cc
 
 EXAMPLES=exBuildInfo.cc
 
-AUXDIR=share$(PROJECT_DIR)/CodeManager
+AUXDIR=share/RAVL/CodeManager
 
 AUXFILES= fixSource.cfg
 

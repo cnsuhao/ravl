@@ -41,4 +41,4 @@ EXTERNALLIBS=OpenSceneGraphGtk.def
 
 AUXFILES=exOpenSceneGraph.xml
 
-AUXDIR=share$(PROJECT_DIR)/OpenSceneGraph
+AUXDIR=share/RAVL/OpenSceneGraph
