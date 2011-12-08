@@ -37,7 +37,7 @@ namespace RavlN { namespace GeneticN {
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1)),
      m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
-     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",1))
+     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
   {
     rThrowBadConfigContextOnFailS(factory,UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC)),"No start population");
     // Setting the fitness function via XML is optional
