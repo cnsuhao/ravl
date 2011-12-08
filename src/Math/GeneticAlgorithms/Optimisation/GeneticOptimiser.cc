@@ -36,7 +36,8 @@ namespace RavlN { namespace GeneticN {
      m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1)),
-     m_randomiseDomain(factory.AttributeBool("randomiseDomain",false))
+     m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
+     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",1))
   {
     rThrowBadConfigContextOnFailS(factory,UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC)),"No start population");
     // Setting the fitness function via XML is optional
@@ -158,7 +159,7 @@ namespace RavlN { namespace GeneticN {
       newTestSet.push_back(newGenome);
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Evaluating population");
+    RavlSysLogf(SYSLOG_DEBUG,"Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
     // Evaluate the new genomes.
     Evaluate(newTestSet);
   }
@@ -202,6 +203,8 @@ namespace RavlN { namespace GeneticN {
       float score = 0;
       if(!Evaluate(*evaluator,*genome,score))
         continue;
+      if(m_runningAverageLength >= 1)
+        score = genome->UpdateScore(score,m_runningAverageLength);
       lock.Lock();
       m_population.insert(std::pair<const float,GenomeC::RefT>(score,genome));
       lock.Unlock();

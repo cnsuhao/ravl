@@ -69,6 +69,7 @@ namespace RavlN { namespace GeneticN {
     std::vector<GenomeC::RefT> m_workQueue;
     UIntT m_atWorkQueue;
     bool m_randomiseDomain; // Change the problem for each new generation
+    UIntT m_runningAverageLength;
 
   };
 }}

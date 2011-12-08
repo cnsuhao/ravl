@@ -243,12 +243,18 @@ namespace RavlN { namespace GeneticN {
     //! Set the generation
     void SetGeneration(UIntT value)
     { m_generation = value; }
+
+    //! Update running average score, return the latest value.
+    float UpdateScore(float newScore,UIntT maxAge);
   protected:
 
     bool m_const;
     GeneC::RefT m_genomeRoot;
     UIntT m_age;
     UIntT m_generation;
+
+    float m_averageScore;
+    UIntT m_averageCount;
   };
 
   //! Information used in instantiating an agent.

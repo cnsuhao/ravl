@@ -238,7 +238,8 @@ namespace RavlN { namespace GeneticN {
    : m_const(false),
      m_genomeRoot(&rootGene),
      m_age(0),
-     m_generation(0)
+     m_generation(0),
+     m_averageCount(0)
   {
   }
 
@@ -246,7 +247,8 @@ namespace RavlN { namespace GeneticN {
   GenomeC::GenomeC(const GeneTypeC &rootGeneType)
   : m_const(false),
     m_age(0),
-    m_generation(0)
+    m_generation(0),
+    m_averageCount(0)
   {
     rootGeneType.Random(m_genomeRoot);
   }
@@ -255,7 +257,8 @@ namespace RavlN { namespace GeneticN {
   GenomeC::GenomeC(const XMLFactoryContextC &factory)
    : m_const(factory.AttributeBool("const",false)),
      m_age(0),
-     m_generation(0)
+     m_generation(0),
+     m_averageCount(0)
   {
     factory.UseComponent("Gene",m_genomeRoot);
   }
@@ -265,7 +268,8 @@ namespace RavlN { namespace GeneticN {
   GenomeC::GenomeC(BinIStreamC &strm)
    : RCBodyVC(strm),
      m_const(false),
-     m_age(0)
+     m_age(0),
+     m_averageCount(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -276,7 +280,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GenomeC::GenomeC(std::istream &strm)
-   : RCBodyVC(strm)
+   : RCBodyVC(strm),
+     m_averageCount(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -367,6 +372,19 @@ namespace RavlN { namespace GeneticN {
     m_genomeRoot->Cross(other.RootGene(),newRootGene);
     newGenome = new GenomeC(*newRootGene);
     newGenome->SetAge(RavlN::Max(m_age,other.Age()));
+  }
+
+  //! Update running average score, return the latest value.
+  float GenomeC::UpdateScore(float newScore,UIntT maxAge) {
+    if(m_averageCount == 0) {
+      m_averageCount = 1;
+      m_averageScore = newScore;
+      return newScore;
+    }
+    m_averageScore = (m_averageScore * static_cast<float>(m_averageCount) + newScore) / static_cast<float>(m_averageCount + 1);
+    if(m_averageCount < maxAge)
+      m_averageCount++;
+    return m_averageScore;
   }
 
 
