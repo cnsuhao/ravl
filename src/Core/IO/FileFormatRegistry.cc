@@ -326,7 +326,7 @@ namespace RavlN {
 
     if(!bestFormat.IsValid()) {
       ONDEBUG(cerr << "FindInputFormat(StringC), Can't identify stream. \n");
-      if(verbose) {
+      if(verbose ONDEBUG(|| 1)) {
         if(aUsableFormat.IsValid()) {
           std::cerr << "Identified file format as " << aUsableFormat.Name() << " but could not convert result from " << RavlN::TypeName(*usableType) << " to requested type " << RavlN::TypeName(obj_type) << "\n";
         } else
@@ -356,7 +356,7 @@ namespace RavlN {
     FileFormatDescC fmtInfo;
     IStreamC inStream;
     if(!FindInputFormat(fmtInfo,filename,inStream,format,obj_type,verbose)) {
-      if(verbose) 
+      if(verbose ONDEBUG(|| 1)) 
 	cerr << "CreateInput(), Can't find format for file '" << filename << "'. \n"; 
       return DPIPortBaseC();
     }
@@ -429,7 +429,7 @@ namespace RavlN {
     }
     
     if(!minForm.IsValid()) {
-      if(verbose)
+      if(verbose ONDEBUG(|| 1))
 	cerr << "WARNING: Don't know how to save to file '" << filename << "' in format '" << format << "' from type '" << TypeName(obj_type) << "' \n"; 
       return false;
     }  
@@ -512,7 +512,7 @@ namespace RavlN {
     }
     if(!form.IsValid()) {
       ONDEBUG(cerr << "CreateInput(StreamC), Can't load stream. \n");
-      if(verbose) 
+      if(verbose ONDEBUG(|| 1)) 
 	cerr << "CreateInput(StreamC), Can't identify format. \n";
       return DPIPortBaseC();
     }
@@ -586,7 +586,7 @@ namespace RavlN {
     }
     
     if(!minForm.IsValid()) {
-      if(verbose)
+      if(verbose ONDEBUG(|| 1))
 	cerr << "WARNING: Don't know how to save to stream in format '" << format << "' from type '" << TypeName(obj_type) << "' \n";
       return DPOPortBaseC();
     }  
@@ -646,7 +646,7 @@ namespace RavlN {
   
   bool FileFormatRegistryBodyC::Save(const StringC &filename,const RCWrapAbstractC &obj,StringC fileformat,bool verbose) {
     if(!obj.IsValid()) {
-      if(verbose)
+      if(verbose ONDEBUG(|| 1))
 	cerr << "Save(RCWrapAbstractC), Asked to save invalid handle to file '" + filename + "'\n";
       return false;
     }
@@ -686,7 +686,7 @@ namespace RavlN {
   
   bool FileFormatRegistryBodyC::Save(OStreamC &strm,const RCWrapAbstractC &obj,StringC fileformat,bool verbose) {
     if(!obj.IsValid()) {
-      if(verbose)
+      if(verbose ONDEBUG(|| 1))
 	cerr << "Save(RCWrapAbstractC), Asked to save invalid handle to stream\n";
       return false;
     }
