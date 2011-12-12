@@ -481,10 +481,11 @@ namespace RavlN {
 						    )
   {
     MTReadLockC readLock(6);
-    FileFormatBaseC form;
+    FileFormatBaseC bestFormat;
     // Should look for best ??
-    DListC<DPConverterBaseC> conv;
-    const type_info *bestin = 0;
+    DListC<DPConverterBaseC> bestConverterList;
+    const type_info *bestFormatType = 0;
+    RealT bestConversionCost = 100000;
     
     for(DLIterC<FileFormatBaseC> it(Formats());
 	it.IsElm();
@@ -504,46 +505,55 @@ namespace RavlN {
       
       if(ti == typeid(void))
 	continue; // Can't load give input.
-      if(ti == obj_type) {
-	conv = DListC<DPConverterBaseC>();
-	form = it.Data();
-	bestin = &ti;
-	break;
+      if(ti == obj_type || obj_type == typeid (void)) 
+      { // Found direct load, store it if it's the highest priority!
+        if (bestConversionCost > 0 || (it.Data().Priority() > bestFormat.Priority()))
+        {  ONDEBUG(cerr << "IProbe storing '" << it.Data().Name() << "' '" << TypeName(it.Data().DefaultType()) << "'  = " << TypeName(ti) << " priority(" << it.Data().Priority() << ")\n");
+           bestFormat = it.Data();
+           bestConverterList = DListC<DPConverterBaseC>();
+           bestConversionCost = 0;
+           bestFormatType = &ti;
+        }
+        continue;
       }
-      // Can we convert to requested type ?
-      if(obj_type != typeid(void)) {
+
 #if RAVL_USE_IO_AUTO_TYPECONVERTER
-	conv = typeConverter.FindConversion(ti,obj_type);
-	if(conv.Size() > 0) {
-	  form = it.Data();
-	  bestin = &ti;
-	  break;
-	}
-#endif
-      } else {
-	conv = DListC<DPConverterBaseC>();
-	form = it.Data();
-	bestin = &ti;
+      if (bestConversionCost == 0)
+        continue;
+
+      // Can we convert to requested type ?
+      RealT conversionCost = -1;
+      DListC<DPConverterBaseC> converterList(typeConverter.FindConversion(ti, obj_type, conversionCost));
+      if (converterList.Size() == 0)
+        continue;
+
+      if (conversionCost < bestConversionCost || (conversionCost == bestConversionCost && bestFormat.IsValid() && it.Data().Priority() > bestFormat.Priority()))
+      {
+        bestFormat = it.Data();
+        bestConverterList = converterList;
+        bestConversionCost = conversionCost;
+        bestFormatType = &ti;
       }
+#endif
     }
-    if(!form.IsValid()) {
+    if(!bestFormat.IsValid()) {
       ONDEBUG(cerr << "CreateInput(StreamC), Can't load stream. \n");
       if(verbose ONDEBUG(|| 1)) 
 	cerr << "CreateInput(StreamC), Can't identify format. \n";
       return DPIPortBaseC();
     }
     if(verbose ONDEBUG(|| 1))
-      cerr << "Loading object '" << TypeName(obj_type) << "' in format '" << form.Name() << "' from stream \n";
+      cerr << "Loading object '" << TypeName(obj_type) << "' in format '" << bestFormat.Name() << "' from stream in " << bestConverterList.Size() << " steps.\n";
     
     //: Build conversion stream.
-    DPIPortBaseC inp = form.CreateInput(in,*bestin);
+    DPIPortBaseC inp = bestFormat.CreateInput(in,*bestFormatType);
     if(!inp.IsValid()) {
-      cerr << "Internal error: Failed to open input stream in format '" << form.Name() << "' \n" ;
+      cerr << "Internal error: Failed to open input stream in format '" << bestFormat.Name() << "' \n" ;
       RavlAssert(0);
       return DPIPortBaseC();
     }
-    for(DLIterC<DPConverterBaseC> it2(conv);it2.IsElm();it2.Next()) {
-      inp = it2.Data().CreateIStream(inp);
+    for(DLIterC<DPConverterBaseC> it(bestConverterList);it.IsElm();it.Next()) {
+      inp = it.Data().CreateIStream(inp);
       RavlAssert(inp.IsValid());
     }
     return inp;  
