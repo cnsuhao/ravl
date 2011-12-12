@@ -77,6 +77,11 @@ namespace RavlN {
     return proj * (data - mean);
   }
   
+  //: Return the inverse function
+  FuncLinearC FuncMeanProjectionBodyC::Reverse() const {
+    return FuncLinearC(proj.T(), mean);
+  }
+
   ///////////////////////////////////////////////////////////
   
   void LinkFuncMeanProjection()
