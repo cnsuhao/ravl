@@ -105,10 +105,10 @@ int test16bitPNG() {
 
 int main(int argc,char **argv) {  
   int ln;
-//  if((ln = testImgMemIO<ByteT>("",false)) != 0) {
-//    std::cerr << "Test failed on line:" << ln << "\n";
-//    return 1;
-//  }
+  if((ln = testImgMemIO<ByteT>("",false)) != 0) {
+    std::cerr << "Test failed on line:" << ln << "\n";
+    return 1;
+  }
   if((ln = testImgMemIO<ByteT>("jpeg",true)) != 0) {
     std::cerr << "Test failed on line:" << ln << "\n";
     return 1;
