@@ -21,6 +21,8 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/Image/ImageConv.hh"
 
+#define DODEBUG 0
+// No need to define ONDEBUG as that is declared in Ravl/DP/MemIO.hh
 
 using namespace RavlImageN;
 
@@ -33,13 +35,13 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
   }
 
   SArray1dC<char> buffer;
-  if(!MemSave(buffer,img,formatName,false)) {
+  if(!MemSave(buffer,img,formatName,DODEBUG)) {
     cerr << "Failed to save " << formatName << " image. \n";
     return __LINE__;
   }
 
   ImageC<PixelT> img2;
-  if(!MemLoad(buffer,img2,formatName,false)) {
+  if(!MemLoad(buffer,img2,formatName,DODEBUG)) {
     cerr << "Failed to load " << formatName << " image. \n";
     return __LINE__;
   }
@@ -47,13 +49,21 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
   for(Array2dIter2C<PixelT,PixelT> it(img,img2);it;it++) {
     if(isLossy) {
       if(Abs((int) it.Data1() - (int) it.Data2()) > 8) {
-        Save("@X:in",img);
-        Save("@X:out",img2);
+        if ( DODEBUG )
+        {
+          Save("@X:in",img);
+          Save("@X:out",img2);
+        }
         cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
         return __LINE__;
       }
     } else {
       if(it.Data1() != it.Data2()) {
+        if ( DODEBUG )
+        {
+          Save("@X:in",img);
+          Save("@X:out",img2);
+        }
         cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
         return __LINE__;
       }
