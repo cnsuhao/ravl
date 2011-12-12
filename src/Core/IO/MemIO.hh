@@ -19,14 +19,21 @@
 #include "Ravl/BufStream.hh"
 #include "Ravl/StrStream.hh"
 
+// Declare DODEBUG in the .cc module to allow sufficient trace granularity
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   
   template<class DataT>
   bool MemLoad(const SArray1dC<char> &buffer,DataT &obj,StringC fileformat = "",bool verbose = false) {
     BufIStreamC bufStrm(buffer);
-    DPIPortC<DataT> in(RavlN::BaseLoad(bufStrm,fileformat,typeid(DataT),verbose));
+    DPIPortC<DataT> in(RavlN::BaseLoad(bufStrm,fileformat,typeid(DataT),verbose ONDEBUG(|| 1)));
     if(!in.IsValid()) {
-      if(verbose) 
+      if(verbose ONDEBUG(|| 1)) 
 	cerr << "RavlN::Load(), Failed to load object from stream.\n";
       return false;
     }
@@ -43,14 +50,14 @@ namespace RavlN {
   template<class DataT>
   bool MemSave(SArray1dC<char> &buffer,const DataT &obj,StringC fileformat = "",bool verbose = false) {
     BufOStreamC bufStrm;
-    DPOPortC<DataT> out(BaseSave(bufStrm,fileformat,typeid(DataT),verbose));
+    DPOPortC<DataT> out(BaseSave(bufStrm,fileformat,typeid(DataT),verbose ONDEBUG(|| 1)));
     if(!out.IsValid()) {
-      if(verbose) 
+      if(verbose ONDEBUG(|| 1)) 
 	cerr << "RavlN::Save(), Failed to save object to stream\n";
       return false; // Failed to find format.
     }
     if(!out.Put(obj)) {
-      if(verbose)
+      if(verbose ONDEBUG(|| 1))
 	cerr << "WARNING: Save to stream failed. \n";
       return false;
     }
@@ -69,9 +76,9 @@ namespace RavlN {
   template<class DataT>
   bool MemLoad(const StringC &buffer,DataT &obj,StringC fileformat = "",bool verbose = false) {
     StrIStreamC bufStrm(buffer);
-    DPIPortC<DataT> in(RavlN::BaseLoad(bufStrm,fileformat,typeid(DataT),verbose));
+    DPIPortC<DataT> in(RavlN::BaseLoad(bufStrm,fileformat,typeid(DataT),verbose ONDEBUG(|| 1)));
     if(!in.IsValid()) {
-      if(verbose) 
+      if(verbose ONDEBUG(|| 1)) 
 	cerr << "RavlN::Load(), Failed to load object from stream.\n";
       return false;
     }
@@ -88,14 +95,14 @@ namespace RavlN {
   template<class DataT>
   bool MemSave(StringC &buffer,const DataT &obj,StringC fileformat = "",bool verbose = false) {
     StrOStreamC bufStrm;
-    DPOPortC<DataT> out(BaseSave(bufStrm,fileformat,typeid(DataT),verbose));
+    DPOPortC<DataT> out(BaseSave(bufStrm,fileformat,typeid(DataT),verbose ONDEBUG(|| 1)));
     if(!out.IsValid()) {
-      if(verbose) 
+      if(verbose ONDEBUG(|| 1)) 
 	cerr << "RavlN::Save(), Failed to save object to stream\n";
       return false; // Failed to find format.
     }
     if(!out.Put(obj)) {
-      if(verbose)
+      if(verbose ONDEBUG(|| 1))
 	cerr << "WARNING: Save to stream failed. \n";
       return false;
     }
