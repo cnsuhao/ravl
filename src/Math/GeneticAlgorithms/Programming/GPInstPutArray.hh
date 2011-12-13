@@ -17,7 +17,7 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Put a value into an array
 
   template<typename DataT>
   class GPInstPutArrayC

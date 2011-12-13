@@ -15,7 +15,7 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Decrement a value
 
   template<typename DataT>
   class GPInstDecrementC

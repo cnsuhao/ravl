@@ -40,4 +40,5 @@ int ssyev_c(int Size, float *Matrix, float *EigValues, bool UpperTriangle,
 int dsyev_c(int Size, double *Matrix, double *EigValues, bool UpperTriangle,
             bool CalcVec, bool RowMajor, bool UseStack);
 
+
 #endif

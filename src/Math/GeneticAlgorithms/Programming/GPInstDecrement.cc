@@ -17,6 +17,7 @@
 namespace RavlN { namespace GeneticN {
 
   static RegisterGPInstructionC<GPInstDecrementC<IntT> > g_regInst1("RavlN::GeneticN::GPInstDecrementC<IntT>");
+  static RegisterGPInstructionC<GPInstDecrementC<float> > g_regInst2("RavlN::GeneticN::GPInstDecrementC<float>");
 
   void LinkGPInstDecrement()
   {}

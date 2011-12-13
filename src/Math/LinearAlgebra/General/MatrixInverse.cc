@@ -13,6 +13,7 @@
 #include "Ravl/SArray1d.hh"
 #include "Ravl/CCMath.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/LAHooks.hh"
 
 #define DODEBUG 0
 #if DODEBUG 
@@ -47,7 +48,6 @@ namespace RavlN {
     //ONDEBUG(cerr << "V=" << V << "\n");
     ONDEBUG(cerr << "V=" << V.Size1() << " " << V.Size2() << "\n");
     ONDEBUG(cerr << "D=" << D << "\n");
-    
     // Invert diagonal
     RealT aver = D.Sum() / D.Size();
     for(SArray1dIterC<RealT> it(D);it;it++) {
@@ -65,7 +65,11 @@ namespace RavlN {
     return (V * md).MulT(U);
   }
   
+  bool MatrixC::InverseIP(RealT &det) {
+    return Inverse_IP_hook(*this, det);
+  }
   
+
   /*
    *------------------------------------------------------------------------
    *
@@ -99,11 +103,11 @@ namespace RavlN {
   
   //: Calculate the inverse of this matrix.
   
-  bool MatrixC::InverseIP(RealT &det) {
-    RavlAlwaysAssertMsg(Cols() == Rows(),"MatrixC::InverseIP(), Matrix must be square to invert ");
+  bool InverseIP_GaussJordan(MatrixC & m, RealT &det) {
+    RavlAlwaysAssertMsg(m.Cols() == m.Rows(),"MatrixC::InverseIP(), Matrix must be square to invert ");
     
-    if(IsContinuous())
-      return minv(&(*this)[0][0],Rows()) == 0; // ccmath routine.
+    if(m.IsContinuous())
+      return minv(&m[0][0],m.Rows()) == 0; // ccmath routine.
     
     // TODO:- Should either copy matrix to continous memory,
     // or make a version of the ccmath routine that will work
@@ -120,23 +124,23 @@ namespace RavlN {
     
     // Locations of pivots (indices start with 0)
     
-    SArray1dC<PivotC> pivots(Cols());
-    SArray1dC<bool> was_pivoted(Rows());
+    SArray1dC<PivotC> pivots(m.Cols());
+    SArray1dC<bool> was_pivoted(m.Rows());
     was_pivoted.Fill(false);
     
     register PivotC * pivotp;
-    const PivotC *endofrow = &(&pivots[0])[Rows()];
+    const PivotC *endofrow = &(&pivots[0])[m.Rows()];
     for(pivotp = &pivots[0]; pivotp < endofrow; pivotp++){
       unsigned int prow = 0,pcol = 0;		// Location of a pivot to be
       
       {					// Look through all non-pivoted Cols()
 	RealT max_value = 0;		// (and Rows()) for a pivot (max elem)
-	for(register unsigned int j=0; j<Rows(); j++)
+	for(register unsigned int j=0; j<m.Rows(); j++)
 	  if( !was_pivoted[j] ) {
 	    register RealT * cp =0;
 	    register unsigned int k = 0;
 	    RealT curr_value = 0;
-	    for(k=0,cp=(*this)[j].DataStart(); k<Cols(); k++,cp++)
+	    for(k=0,cp=m[j].DataStart(); k<m.Cols(); k++,cp++)
 	      if( !was_pivoted[k] && (curr_value = fabs(*cp)) > max_value )
 		max_value = curr_value, prow = k, pcol = j;
 	  }
@@ -150,44 +154,44 @@ namespace RavlN {
       
       if( prow != pcol ) {			// Swap prow-th and pcol-th columns to
 	                                       // bring the pivot to the diagonal
-	register RealT * cr = (*this)[prow].DataStart();
-	register RealT * cc = (*this)[pcol].DataStart();
-	for(register unsigned int k=0; k<Cols(); k++) {
+	register RealT * cr = m[prow].DataStart();
+	register RealT * cc = m[pcol].DataStart();
+	for(register unsigned int k=0; k<m.Cols(); k++) {
 	  RealT temp = *cr; *cr++ = *cc; *cc++ = temp;
 	}
       }
       was_pivoted[prow] = true;
       
       {					// Normalize the pivot column and
-	register RealT * pivot_cp = (*this)[prow].DataStart();
+	register RealT * pivot_cp = m[prow].DataStart();
 	double pivot_val = pivot_cp[prow];	// pivot is at the diagonal
 	determinant *= pivot_val;		// correct the determinant
 	pivot_cp[prow] = true;
-	for(register unsigned int k=0; k<Cols(); k++)
+	for(register unsigned int k=0; k<m.Cols(); k++)
 	  *pivot_cp++ /= pivot_val;
       }
       
       {					// Perform eliminations
-	register RealT * pivot_rp = (*this)[0].DataStart() + prow;	// pivot row
-	for(register unsigned int k=0; k<Cols(); k++, pivot_rp += Cols())
+	register RealT * pivot_rp = m[0].DataStart() + prow;	// pivot row
+	for(register unsigned int k=0; k<m.Cols(); k++, pivot_rp += m.Cols())
 	  if( k != prow ) {
 	    double temp = *pivot_rp;
 	    *pivot_rp = 0;
-	    register RealT * pivot_cp = (*this)[prow].DataStart();	// pivot column
-	    register RealT * elim_cp  = (*this)[k].DataStart();		// elimination column
-	      for(register unsigned int l=0; l<Cols(); l++)
+	    register RealT * pivot_cp = m[prow].DataStart();	// pivot column
+	    register RealT * elim_cp  = m[k].DataStart();		// elimination column
+	      for(register unsigned int l=0; l<m.Cols(); l++)
 		*elim_cp++ -= temp * *pivot_cp++;
 	  }
       }
     }
     
     int no_swaps = 0;		// Swap exchanged *Rows()* back in place
-    for(pivotp = &pivots[Rows()-1]; pivotp >= &pivots[0]; pivotp--)
+    for(pivotp = &pivots[m.Rows()-1]; pivotp >= &pivots[0]; pivotp--)
       if( pivotp->row != pivotp->col ) {
 	no_swaps++;
-	register RealT * rp = (*this)[0].DataStart() + pivotp->row;
-	register RealT * cp = (*this)[0].DataStart() + pivotp->col;
-	for(register unsigned int k=0; k<Rows(); k++, rp += Cols(), cp += Cols()) {
+	register RealT * rp = m[0].DataStart() + pivotp->row;
+	register RealT * cp = m[0].DataStart() + pivotp->col;
+	for(register unsigned int k=0; k<m.Rows(); k++, rp += m.Cols(), cp += m.Cols()) {
 	  RealT temp = *rp; *rp = *cp; *cp = temp;
 	}
       }

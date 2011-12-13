@@ -41,6 +41,7 @@
 
 namespace RavlN
 {
+  class ConditionalVariableC;
   //! userlevel=Normal
   //: Mutual Exclusion lock.
   // SMALL OBJECT<br>
@@ -110,6 +111,8 @@ namespace RavlN
 #endif
 #if RAVL_HAVE_WIN32_THREADS
     HANDLE mutex;
+    int m_useCount;
+    bool m_recursive;
 #endif
     bool isValid; // Used for debugging.
     
@@ -133,6 +136,8 @@ namespace RavlN
       : isValid(false)
     { RavlAssert(0); }
     //: Make sure there's no attempt to use the copy constructor.
+
+    friend class ConditionalVariableC;
   };
   
   //! userlevel=Normal

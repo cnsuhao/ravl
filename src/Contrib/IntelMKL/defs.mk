@@ -12,16 +12,22 @@ DONOT_SUPPORT=VCPP
 
 PACKAGE=Ravl
 
-HEADERS=IntelFFT2d.hh
+HEADERS=IntelMKL.hh IntelFFT2d.hh
 
-SOURCES=IntelFFT2d.cc
+SOURCES=IntelMKL.cc IntelFFT2d.cc
 
-TESTEXES= testIntelFFT2d.cc
+TESTEXES= testIntelFFT2d.cc testIntelMKL.cc
 
 PLIB=RavlIntelMKL
 
 USESLIBS=IntelMKL RavlMath
 
+PROGLIBS=RavlOS
+
 AUXFILES=IntelMKL.def
 
 AUXDIR=lib$(PROJECT_DIR)/libdep
+
+MUSTLINK=linkIntelMKL.cc
+
+EHT= Ravl.API.Math.Linear_Algebra.IntelMKL.html

@@ -35,7 +35,9 @@ namespace RavlN { namespace GeneticN {
      m_runLengthCPU(static_cast<float>(factory.AttributeReal("runLengthCPU",10.0))),
      m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
-     m_threads(factory.AttributeUInt("threads",1))
+     m_threads(factory.AttributeUInt("threads",1)),
+     m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
+     m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
   {
     rThrowBadConfigContextOnFailS(factory,UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC)),"No start population");
     // Setting the fitness function via XML is optional
@@ -54,28 +56,34 @@ namespace RavlN { namespace GeneticN {
       RavlAssertMsg(0,"No fitness function defined.");
       return ;
     }
+    if(m_population.empty()) {
+      RavlSysLogf(SYSLOG_DEBUG,"Ranking initial population");
+      RavlAssert(!m_startPopulation.empty());
+      Evaluate(m_startPopulation);
+    }
     for(unsigned i = 0;i < m_numGenerations;i++) {
       RavlSysLogf(SYSLOG_INFO,"Running generation %u ",i);
       RunGeneration(i);
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore)
         break;
     }
-    RavlSysLogf(SYSLOG_INFO,"Best final score %f ",m_population.rbegin()->first);
-    OStreamC ostrm(std::cout);
-    RavlN::XMLOStreamC outXML(ostrm);
-    m_population.rbegin()->second->Save(outXML);
+    if(m_population.empty()) {
+      RavlInfo("Population list empty. ");
+    } else {
+      RavlInfo("Best final score %f ",m_population.rbegin()->first);
+      OStreamC ostrm(std::cout);
+      RavlN::XMLOStreamC outXML(ostrm);
+      m_population.rbegin()->second->Save(outXML);
+    }
   }
 
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
     if(m_population.empty()) {
-      RavlSysLogf(SYSLOG_DEBUG,"Ranking initial population");
-      RavlAssert(!m_startPopulation.empty());
-      Evaluate(m_startPopulation);
+      RavlError("No previous population to rank.");
       return ;
     }
-
     RavlSysLogf(SYSLOG_DEBUG,"Examining results from last run. ");
     unsigned count = 0;
     std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
@@ -91,22 +99,30 @@ namespace RavlN { namespace GeneticN {
       return ;
     }
 
+    std::vector<GenomeC::RefT> newTestSet;
+    newTestSet.reserve(m_populationSize + numKeep);
+
     while(it != m_population.rend() && count < numKeep) {
       seeds.push_back(it->second);
       //RavlSysLogf(SYSLOG_DEBUG," Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
+      if(m_randomiseDomain)
+        newTestSet.push_back(it->second);
       it++;
       count++;
     }
 
-    // Erase things we don't want to keep.
-    if(it != m_population.rend()) {
-      m_population.erase(m_population.begin(),it.base());
+    RavlSysLogf(SYSLOG_DEBUG,"Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",generation,(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
+
+    if(m_randomiseDomain) {
+      m_population.clear();
+    } else {
+      // Erase things we don't want to keep.
+      if(it != m_population.rend()) {
+        m_population.erase(m_population.begin(),it.base());
+      }
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Got %u seeds. Pop:%u Best score=%f Age:%u Generation:%u ",(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
-    std::vector<GenomeC::RefT> newTestSet;
-    newTestSet.reserve(m_populationSize);
 
     unsigned noCrosses = Floor(m_populationSize * m_crossRate);
     RavlSysLogf(SYSLOG_DEBUG,"Creating %d crosses. ",noCrosses);
@@ -143,7 +159,7 @@ namespace RavlN { namespace GeneticN {
       newTestSet.push_back(newGenome);
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Evaluating population");
+    RavlSysLogf(SYSLOG_DEBUG,"Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
     // Evaluate the new genomes.
     Evaluate(newTestSet);
   }
@@ -153,7 +169,9 @@ namespace RavlN { namespace GeneticN {
     MutexLockC lock(m_access);
     //std::swap(m_workQueue,pop);
     m_workQueue = pop;
-
+    if(m_randomiseDomain) {
+      m_evaluateFitness->GenerateNewProblem();
+    }
     m_atWorkQueue = 0;
     lock.Unlock();
     if(m_threads == 1) {
@@ -185,6 +203,8 @@ namespace RavlN { namespace GeneticN {
       float score = 0;
       if(!Evaluate(*evaluator,*genome,score))
         continue;
+      if(m_runningAverageLength >= 1)
+        score = genome->UpdateScore(score,m_runningAverageLength);
       lock.Lock();
       m_population.insert(std::pair<const float,GenomeC::RefT>(score,genome));
       lock.Unlock();
@@ -216,6 +236,9 @@ namespace RavlN { namespace GeneticN {
     return true;
   }
 
+
+  void LinkGeneticOptimiser()
+  {}
 
   XMLFactoryRegisterC<GeneticOptimiserC> g_registerGeneticOptimiser("RavlN::GeneticN::GeneticOptimiserC");
   static RavlN::TypeNameC g_typeEnvironmentSimpleState(typeid(RavlN::GeneticN::GeneticOptimiserC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneticOptimiserC>");

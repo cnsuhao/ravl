@@ -80,7 +80,7 @@ namespace RavlN {
     { return elements; }
     //: Count number of elements in table.
     
-    SizeT NextPrime(SizeT v);
+    static SizeT NextPrime(SizeT v);
     //: Get the next prime not smaller than v.
     
   protected:

@@ -221,6 +221,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\.\OS\Threads\Posix\ThreadSignal.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Posix\ConditionalVariable.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\.\OS\Threads\Tools\MessageQueue.cc"
 				>
 			</File>
@@ -288,6 +296,14 @@
 			</File>
 			<File
 				RelativePath="..\.\OS\Threads\Posix\RCRWLock.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Posix\ThreadSignal.hh"
+				>
+			</File>
+			<File
+				RelativePath="..\.\OS\Threads\Posix\ConditionalVariable.hh"
 				>
 			</File>
 			<File

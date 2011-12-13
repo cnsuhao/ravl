@@ -108,6 +108,15 @@ namespace RavlN {
     // However, the links of this element stay unchanged.
     // Returns this list element.
     
+    inline DLinkC &Remove() {
+      Unlink();
+      SetSelfPointing();
+      return *this;
+    }
+    //: Remove element from the list and set it to self pointing.
+    //: This is safer than just using Unlink() as it avoid's
+    //: list corruption when DLinkC's are deleted.
+
     void CutPaste(DLinkC & firstCut, DLinkC & firstNotCut);
     //: Splice list elements between firstCut, and firstNotCut into this list.
     // Cuts the chain of double links elements starting at 'firstCut' and

@@ -17,7 +17,7 @@
 
 #include "Ravl/config.h"
 #include "Ravl/Types.hh"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 
 namespace RavlN
 {
@@ -58,13 +58,13 @@ namespace RavlN
     bool TryWait() {
       if(count == 0)
         return false; // Quick and dirty test.
-      cond.Lock();
+      m_access.Lock();
       if(count > 0) {
         count--;
-        cond.Unlock();
+        m_access.Unlock();
         return true;
       }
-      cond.Unlock();
+      m_access.Unlock();
       return false;
     }
     //: Try and wait for semaphore
@@ -72,9 +72,9 @@ namespace RavlN
     // been called. Otherwise do nothing and return false.
     
     bool Post() {
-      cond.Lock();
+      m_access.Lock();
       count++;
-      cond.Unlock();
+      m_access.Unlock();
       cond.Signal();
       return true;
     }
@@ -86,7 +86,8 @@ namespace RavlN
     //: Read semaphore count.
     
   private:
-    ConditionalMutexC cond;
+    MutexC m_access;
+    ConditionalVariableC cond;
     volatile int count;
   };
   

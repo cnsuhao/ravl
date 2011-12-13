@@ -23,10 +23,10 @@ namespace RavlN {
   //: Release a number of units back to the pool.
   void ThreadLimitCounterC::Release(UIntT units)
   {
-    m_cond.Lock();
+    m_access.Lock();
     m_count += units;
     RavlAssert(m_count <= m_maxCount);
-    m_cond.Unlock();
+    m_access.Unlock();
     m_cond.Broadcast();
   }
 
@@ -35,14 +35,14 @@ namespace RavlN {
     RavlAssert(((IntT) units) >= 0); // Alert us if we're being passed silly numbers
     if (units > (UIntT) m_maxCount)
       return false;
-    m_cond.Lock();
+    m_access.Lock();
     m_waiting++;
     while (m_count < (IntT) units)
-      m_cond.Wait();
+      m_cond.Wait(m_access);
     m_count -= units;
     RavlAssert(m_count >= 0);
     UIntT waiting = --m_waiting;
-    m_cond.Unlock();
+    m_access.Unlock();
     if(waiting == 0)
       m_cond.Broadcast();
     return true;
@@ -52,17 +52,17 @@ namespace RavlN {
   {
     bool ret = true;
     RavlAssert(((IntT) units) >= 0);// Alert us if we're being passed silly numbers
-    m_cond.Lock();
+    m_access.Lock();
     m_waiting++;
     DateC deadline = DateC::NowUTC() + maxTime;
     while (m_count < (IntT) units)
-      ret = m_cond.WaitUntil(deadline);
+      ret = m_cond.WaitUntil(m_access,deadline);
     if (ret) {
       m_count -= units;
       RavlAssert(m_count >= 0);
     }
     UIntT waiting = --m_waiting;
-    m_cond.Unlock();
+    m_access.Unlock();
     if(waiting == 0)
       m_cond.Broadcast();
     return ret;
@@ -73,10 +73,10 @@ namespace RavlN {
   {
     if (m_waiting == 0)
       return true;
-    m_cond.Lock();
+    m_access.Lock();
     while (m_waiting != 0)
-      m_cond.Wait();
-    m_cond.Unlock();
+      m_cond.Wait(m_access);
+    m_access.Unlock();
     return true;
   }
 

@@ -15,13 +15,13 @@ HEADERS= GPInstruction.hh \
  GPVariable.hh GPInstSendSignal.hh GPInstIf.hh GPInstRoutine.hh \
  GPInstLoadConst.hh GPInstAdd.hh GPInstSubtract.hh GPInstAssign.hh \
  GPInstPutArray.hh GPInstGetArray.hh GPInstIncrement.hh \
- GPInstDecrement.hh GPInstLoop.hh 
+ GPInstDecrement.hh GPInstLoop.hh GPInstMultiply.hh GPInstDivide.hh
 
 SOURCES=GPInstruction.cc \
  GPVariable.cc GPInstSendSignal.cc GPInstIf.cc GPInstRoutine.cc \
  GPInstLoadConst.cc GPInstAdd.cc GPInstSubtract.cc GPInstAssign.cc \
  GPInstPutArray.cc GPInstGetArray.cc GPInstIncrement.cc \
- GPInstDecrement.cc GPInstLoop.cc 
+ GPInstDecrement.cc GPInstLoop.cc GPInstMultiply.cc GPInstDivide.cc
 
 MAINS=
 

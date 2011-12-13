@@ -14,10 +14,12 @@ DESCRIPTION = Posix thread interface.
 PACKAGE = Ravl/Threads
 
 HEADERS = Thread.hh Mutex.hh ConditionalMutex.hh Semaphore.hh RWLock.hh \
- SemaphoreRC.hh ThreadEvent.hh RCRWLock.hh
+ SemaphoreRC.hh ThreadEvent.hh RCRWLock.hh ThreadSignal.hh \
+ ConditionalVariable.hh
 
 SOURCES = Thread.cc Mutex.cc ConditionalMutex.cc Semaphore.cc RWLock.cc \
- SemaphoreRC.cc MTLockImpl.cc ThreadEvent.cc AMutexImpl.cc RCRWLock.cc 
+ SemaphoreRC.cc MTLockImpl.cc ThreadEvent.cc AMutexImpl.cc RCRWLock.cc \
+ ThreadSignal.cc ConditionalVariable.cc
 
 PLIB = RavlThreads
 
