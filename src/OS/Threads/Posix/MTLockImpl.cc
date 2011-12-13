@@ -17,13 +17,14 @@ namespace RavlN {
   void IncPThreadSysDBLock()
   {}
   
-  static const int noLocks = 5;
+  static const int noLocks = 6;
   
   RWLockC posixDBRWLock[5];
   
   static inline void CheckLockID(int &lockId) {
     if(lockId >= noLocks || lockId < 0) {
-      cerr << "SysDBLockImpl.cc: Illegal lock selected " << lockId << "\n";
+      std::cerr << "SysDBLockImpl.cc: Illegal lock selected " << lockId << "\n";
+      RavlAssert(0);
       lockId = 0;
     }
   }
