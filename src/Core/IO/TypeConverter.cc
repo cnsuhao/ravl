@@ -69,8 +69,10 @@ namespace RavlN {
     UIntT version;
     {
       MTReadLockC cacheLock(5);
-      if(m_conversionCache.Lookup(cacheKey,conv))
+      if(m_conversionCache.Lookup(cacheKey,conv)) {
+        convResult = conv;
         return !conv.IsEmpty();
+      }
 
       GraphNodeHC<StringC,DPConverterBaseC> tFrom = GetTypeNode(cacheKey.Data1());
       GraphNodeHC<StringC,DPConverterBaseC> tTo = GetTypeNode(cacheKey.Data2());

@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/MTLockImpl.cc"
 
@@ -19,7 +18,8 @@ namespace RavlN {
   
   static const int noLocks = 6;
   
-  RWLockC posixDBRWLock[5];
+  // These can't be used until we've done all constructors from file and so is safe in terms of initialisation order.
+  RWLockC posixDBRWLock[noLocks];
   
   static inline void CheckLockID(int &lockId) {
     if(lockId >= noLocks || lockId < 0) {
