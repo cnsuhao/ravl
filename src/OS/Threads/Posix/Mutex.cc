@@ -164,7 +164,9 @@ namespace RavlN
 #endif
       }
       if(!reportedError) {
-        cerr << "WARNING: MutexC::~MutexC(), thread holding lock on mutex in destructor. This indicates a likely problem with the code. \n";
+        std::cerr << "WARNING: MutexC::~MutexC(), thread holding lock on mutex in destructor. This indicates a likely problem with the code. \n";
+        std::cerr << "Stack dump:\n";
+        DumpStack(std::cerr);
         reportedError = true;
       }
 #if RAVL_HAVE_WIN32_THREADS
@@ -172,6 +174,12 @@ namespace RavlN
 #else
       OSYield();
 #endif
+    }
+    if(reportedError) {
+      if(maxRetry > 0)
+        std::cerr << "WARNING: MutexC::~MutexC(), Thread released lock. \n";
+      else
+        std::cerr << "WARNING: MutexC::~MutexC(), Thread released lock. \n";
     }
     isValid = false;
     if(maxRetry <= 0)
