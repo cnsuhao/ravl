@@ -17,6 +17,7 @@
 #include "Ravl/DP/Converter.hh"
 #include "Ravl/Graph.hh"
 #include "Ravl/DList.hh"
+#include "Ravl/Cache.hh"
 
 namespace RavlN {
   
@@ -69,19 +70,43 @@ namespace RavlN {
   protected:
     static RealT EdgeEval(const DPConverterBaseC &edge);
     
+    bool FindConversion(const type_info &from,
+                        const type_info &to,
+                        RealT &cost,
+                        DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > &conv) const;
+    //: Find a conversion
+
     GraphC<StringC,DPConverterBaseC> &ConvGraph()
     { return convGraph; }
     //: Access conversion graph.
-    
+
+    const GraphC<StringC,DPConverterBaseC> &ConvGraph() const
+    { return convGraph; }
+    //: Access conversion graph.
+
     HashC<StringC,GraphNodeHC<StringC,DPConverterBaseC> > &NodeTab()
     { return nodeTab; }
     //: Type -> Node mapping.
-    
-    GraphNodeHC<StringC,DPConverterBaseC> GetTypeNode(const type_info &inf);
+
+    const HashC<StringC,GraphNodeHC<StringC,DPConverterBaseC> > &NodeTab() const
+    { return nodeTab; }
+    //: Type -> Node mapping.
+
+    GraphNodeHC<StringC,DPConverterBaseC> GetTypeNode(const type_info &inf) const;
     //: Get the graph node associated with a type_info.
-    
-    GraphC<StringC,DPConverterBaseC> convGraph; // Converstion graph.
+
+    GraphNodeHC<StringC,DPConverterBaseC> GetTypeNode(const StringC &name) const;
+    //: Get the graph node associated with a named type
+
+    GraphNodeHC<StringC,DPConverterBaseC> UseTypeNode(const type_info &inf);
+    //: Get the graph node associated with a type_info, create if needed
+
+    GraphC<StringC,DPConverterBaseC> convGraph; // Conversion graph.
+
     HashC<StringC,GraphNodeHC<StringC,DPConverterBaseC> > nodeTab; // Type to node mapping.
+
+    mutable CacheC<Tuple2C<StringC,StringC>, DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > > m_conversionCache;
+    UIntT m_version;
   };
 
 
