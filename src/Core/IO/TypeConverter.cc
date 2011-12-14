@@ -57,47 +57,45 @@ namespace RavlN {
                                           RealT &finalCost,
                                           DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > &convResult) const
   {
-    if(from == to)
+    if(from == to) {
+      finalCost = 0;
       return true;
+    }
 #if !(RAVL_COMPILER_VISUALCPP && !RAVL_COMPILER_VISUALCPPNET) || RAVL_COMPILER_VISUALCPPNET_2005
     // Visual C++ can't handle ptr's to functions with reference args.
     // hopefully we'll find a way around this but for now its out.
 
-    DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > conv;
-
+    Tuple2C<DListC<GraphEdgeIterC<StringC,DPConverterBaseC> >,RealT> conv;
+    conv.Data2() = 0;
     Tuple2C<StringC,StringC> cacheKey(from.name(),to.name());
-    UIntT version;
-    {
-      MTReadLockC cacheLock(5);
-      if(m_conversionCache.Lookup(cacheKey,conv)) {
-        convResult = conv;
-        return !conv.IsEmpty();
-      }
 
+    MTReadLockC cacheLock(5);
+    if(!m_conversionCache.Lookup(cacheKey,conv)) {
+      // We've not got it cached.
       GraphNodeHC<StringC,DPConverterBaseC> tFrom = GetTypeNode(cacheKey.Data1());
       GraphNodeHC<StringC,DPConverterBaseC> tTo = GetTypeNode(cacheKey.Data2());
       // Both the source and destination have to be registered for any
       // conversion to exist.
       if(tFrom.IsValid() && tTo.IsValid()) {
-        conv = GraphBestRoute(ConvGraph(),
+        conv.Data1() = GraphBestRoute(ConvGraph(),
                             tFrom,
                             tTo,
-                            finalCost,
+                            conv.Data2(),
                             &TypeConverterBodyC::EdgeEval);
       }
 
       // Remember the version of the graph we used to generate the conversion.
-      version = m_version;
+      UIntT version = m_version;
       cacheLock.Unlock();
-    }
-    {
-      MTWriteLockC cacheLock(5);
+
+      MTWriteLockC cacheWriteLock(5);
       if(version == m_version) // Check things haven't changed since we re-locked.
         m_conversionCache.Insert(cacheKey,conv);
-      cacheLock.Unlock();
+      cacheWriteLock.Unlock();
     }
-    convResult = conv;
-    return !conv.IsEmpty();
+    convResult = conv.Data1();
+    finalCost = conv.Data2();
+    return !conv.Data1().IsEmpty();
 #else
     RavlAssert(0);
     return false;

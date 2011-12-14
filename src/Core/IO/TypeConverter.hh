@@ -105,7 +105,7 @@ namespace RavlN {
 
     HashC<StringC,GraphNodeHC<StringC,DPConverterBaseC> > nodeTab; // Type to node mapping.
 
-    mutable CacheC<Tuple2C<StringC,StringC>, DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > > m_conversionCache;
+    mutable CacheC<Tuple2C<StringC,StringC>, Tuple2C<DListC<GraphEdgeIterC<StringC,DPConverterBaseC> >,RealT> > m_conversionCache;
     UIntT m_version;
   };
 
