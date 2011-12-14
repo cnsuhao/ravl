@@ -466,14 +466,10 @@ namespace RavlN {
     // Register wrapper converter.
   }
   
-  inline
-  const DPTypeInfoC &TypeInfo(const type_info &ti)
-  { return DPTypeInfoBodyC::Types()[ti.name()]; }
+  const DPTypeInfoC &TypeInfo(const type_info &ti);
   //: Access extra information about a type.
-  
-  inline
-  const DPTypeInfoC &TypeInfo(const char *tn)
-  { return DPTypeInfoBodyC::Types()[tn]; }
+
+  const DPTypeInfoC &TypeInfo(const char *tn);
   //: Access extra information about a type.
 }
 #endif

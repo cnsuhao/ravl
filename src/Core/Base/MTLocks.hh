@@ -28,6 +28,7 @@
 // Id 3 is reserved for use in RavlLogic & RavlIO.
 // Id 4 is used for generating uuid's
 // Id 5 is used for type conversion
+// Id 6 is used for file formats
 
 //: Ravl namespace.
 

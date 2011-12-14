@@ -16,6 +16,7 @@
 #include "Ravl/Hash.hh"
 #include "Ravl/DP/DataConv.hh"
 #include "Ravl/DP/Converter.hh"
+#include "Ravl/MTLocks.hh"
 #include <ctype.h>
 #include <stdio.h>
 

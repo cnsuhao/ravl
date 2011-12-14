@@ -16,7 +16,7 @@ namespace RavlN {
   void IncPThreadSysDBLock()
   {}
   
-  static const int noLocks = 6;
+  static const int noLocks = 7;
   
   // These can't be used until we've done all constructors from file and so is safe in terms of initialisation order.
   RWLockC posixDBRWLock[noLocks];

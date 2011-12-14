@@ -160,4 +160,20 @@ namespace RavlN {
       (*this) = *tip;
   }
   
+
+  const DPTypeInfoC &TypeInfo(const type_info &ti)
+  {
+    MTReadLockC readLock;
+    return DPTypeInfoBodyC::Types()[ti.name()];
+  }
+  //: Access extra information about a type.
+
+  const DPTypeInfoC &TypeInfo(const char *tn)
+  {
+    MTReadLockC readLock;
+    return DPTypeInfoBodyC::Types()[tn];
+  }
+  //: Access extra information about a type.
+
+
 }
