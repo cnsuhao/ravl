@@ -231,7 +231,7 @@ $(INSTALLHOME)/lib/libdep/Ravl.def:
 	$(SHOWIT)echo "  RAVL_DEF=1" >> $@
 	$(SHOWIT)echo >> $@
 	$(SHOWIT)echo "  ifndef RAVL_LIBS" >> $@
-	$(SHOWIT)echo "    RAVL_LIBS=-L$(libdir) -lRavl" >> $@
+	$(SHOWIT)echo "    RAVL_LIBS=-L$(libdir) -lRavl $(ALL_EXTERNAL_LIBS)" >> $@
 	$(SHOWIT)echo "  endif" >> $@
 	$(SHOWIT)echo >> $@
 	$(SHOWIT)echo "  EXELIB := \$$(RAVL_LIBS) \$$(EXELIB)" >> $@
