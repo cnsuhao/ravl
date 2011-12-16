@@ -18,6 +18,7 @@ VPATH = $(QCWD)
 
 ifdef USERBUILD
  USESLIBS += Auto
+ USE_LIBPATHSWITCH=Y
 endif
 
 #########################
