@@ -12,7 +12,7 @@ ifndef QMAKE_MAKEFILES
   QMAKE_MAKEFILES=/Set/During/Staging/Process
 endif
 
-MAKEDEFS:=$(PERL) -f $(QMAKE_UTILS)/mkdefs.pl
+MAKEDEFS=$(PERL) -f $(QMAKE_UTILS)/mkdefs.pl
 
 # Set default uses lib to auto?
 
