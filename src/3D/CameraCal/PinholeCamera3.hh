@@ -230,8 +230,9 @@ namespace Ravl3DN
   };
   
   //! userlevel=Normal
-  //: Simple pinhole camera model with 3rd and 5th order radial lens distortion
-  
+  //: Pinhole camera model with 3rd and 5th order radial lens distortion
+  // It uses the polynomial model to distort the image during projection and a numerical approximation to undistort the image during back-projection (similarly to the model used in OpenCV).  This is the reverse of <a href="Ravl3DN.PinholeCamera2C.html">PinholeCamera2C</a>.
+
   class PinholeCamera3C 
     : public PinholeCamera0C
   {
