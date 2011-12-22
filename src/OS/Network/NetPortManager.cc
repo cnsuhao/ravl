@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlNet
 //! file="Ravl/OS/Network/NetPortManager.cc"
@@ -261,7 +260,10 @@ namespace RavlN {
     return true;
   }
   
-  
+  //: Owning handles has dropped to zero.
+  void NetPortManagerBodyC::ZeroOwners()
+  {}
+
   //: Access global net port manager.
 
   NetPortManagerC &GlobalNetPortManager() {
