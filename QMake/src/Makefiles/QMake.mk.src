@@ -25,9 +25,9 @@ export TARGET
 ifndef PROJECT_OUT
   PROJECT_OUT := /tmp/$(USER)/ProjectOut
 else
-ifeq ($(PROJECT_OUT),"")
-  PROJECT_OUT := /tmp/$(USER)/ProjectOut
-endif
+  ifeq ($(PROJECT_OUT),"")
+    PROJECT_OUT := /tmp/$(USER)/ProjectOut
+  endif
 endif
 
 export PROJECT_OUT
@@ -39,18 +39,18 @@ export PROJECT_OUT
 # work on project outs with the same tag.
 
 ifdef BUILD_TAG
-PROJECT_OUT_BUILD_TAG :=$(strip $(shell cat $(PROJECT_OUT)/buildTag 2> /dev/null ))#
-ifeq ($(PROJECT_OUT_BUILD_TAG),)
-$(shell echo "$(BUILD_TAG)" > $(PROJECT_OUT)/buildTag )
-else
-ifneq ($(BUILD_TAG),$(PROJECT_OUT_BUILD_TAG))
-$(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the project. )")
-endif
-SOURCE_BUILD_TAG :=$(strip $(shell $(QMAKE_UTILS)/findBuildTag $(shell $(GET_CWD))))#
-ifneq ($(BUILD_TAG),$(SOURCE_BUILD_TAG))
-$(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the source tag. )")
-endif
-endif
+  PROJECT_OUT_BUILD_TAG :=$(strip $(shell cat $(PROJECT_OUT)/buildTag 2> /dev/null ))#
+  ifeq ($(PROJECT_OUT_BUILD_TAG),)
+    $(shell echo "$(BUILD_TAG)" > $(PROJECT_OUT)/buildTag )
+  else
+    ifneq ($(BUILD_TAG),$(PROJECT_OUT_BUILD_TAG))
+      $(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the project. )")
+    endif
+    SOURCE_BUILD_TAG :=$(strip $(shell $(QMAKE_UTILS)/findBuildTag $(shell $(GET_CWD))))#
+    ifneq ($(BUILD_TAG),$(SOURCE_BUILD_TAG))
+      $(error "Errr.. you didn't mean to do that.  (BUILD_TAG doesn't match the source tag. )")
+    endif
+  endif
 endif
 
 ##############################################################################
@@ -339,17 +339,17 @@ FULLBUILD_TARGETS ?= check opt checkshared optbin doc
 
 # replace shared alias for checkshared
 ifneq ($(strip $(filter shared,$(FULLBUILD_TARGETS))),)
-FULLBUILD_TARGETS := $(patsubst shared,checkshared,$(FULLBUILD_TARGETS))
+  FULLBUILD_TARGETS := $(patsubst shared,checkshared,$(FULLBUILD_TARGETS))
 endif 
 
 # make sure check libs get built before trying to build check binaries 
 ifneq ($(strip $(filter checkbin,$(FULLBUILD_TARGETS))),)
-FULLBUILD_TARGETS += check 
+  FULLBUILD_TARGETS += check 
 endif 
 
 # make sure opt libs get built before trying to build opt binaries 
 ifneq ($(strip $(filter optbin,$(FULLBUILD_TARGETS))),)
-FULLBUILD_TARGETS += opt 
+  FULLBUILD_TARGETS += opt 
 endif 
 
 fullbuild:
