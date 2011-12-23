@@ -237,7 +237,7 @@ namespace Ravl3DN
   };
 
   //! userlevel=Normal
-  //: PinholeCamera0 is the simplest pinhole camera model with no lens distortion
+  //: Simple pinhole camera model with no lens distortion
   //  Projects 2D image points z from 3D points x according to:<br>
   //    z[0] = cx + fx*( (R*x + t)[0] / (R*x + t)[2] )<br>
   //    z[1] = cy + fy*( (R*x + t)[1] / (R*x + t)[2] )<br>

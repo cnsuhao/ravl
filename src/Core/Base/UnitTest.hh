@@ -7,7 +7,7 @@
 #ifndef RAVL_UNITTEST_HEADER
 #define RAVL_UNITTEST_HEADER 1
 /////////////////////////////////////////////////////////////////////////
-//! docentry="Ravl.API.Core"
+//! docentry="Ravl.API.Core.Misc"
 //! file="Ravl/Core/Base/UnitTest.hh"
 //! lib=RavlCore
 //! userlevel=Normal
