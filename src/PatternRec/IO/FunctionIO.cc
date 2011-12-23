@@ -21,6 +21,8 @@
 #include "Ravl/PatternRec/FuncOrthPolynomial.hh"
 #include "Ravl/PatternRec/FuncLinearCoeff.hh"
 #include "Ravl/PatternRec/FuncPDFNormal.hh"
+#include "Ravl/PatternRec/FunctionCascade.hh"
+#include "Ravl/PatternRec/FunctionConcatenate.hh"
 #include "Ravl/DP/Converter.hh"
 
 namespace RavlN {
@@ -117,5 +119,34 @@ namespace RavlN {
   static TypeNameC type8(typeid(FuncPDFNormalC),"RavlN::FuncPDFNormalC");
   FileFormatStreamC <FuncPDFNormalC> FileFormatStream_FuncPDFNormal;
   FileFormatBinStreamC <FuncPDFNormalC> FileFormatBinStream_FuncPDFNormal;
+
+  //:-  FunctionCascadeC --------------------------------------------------------------
+
+  FunctionC FunctionCascade2Function(const FunctionCascadeC &func)
+  {
+    return func;
+  }
+
+  DP_REGISTER_CONVERSION_NAMED(FunctionCascade2Function, 1,
+      "RavlN::FunctionC RavlN::Convert(const RavlN::FunctionCascadeC &)");
+
+  static TypeNameC type9(typeid(FunctionCascadeC), "RavlN::FunctionCascadeC");
+  FileFormatStreamC<FunctionCascadeC> FileFormatStream_FunctionCascade;
+  FileFormatBinStreamC<FunctionCascadeC> FileFormatBinStream_FunctionCascade;
+
+  //:-  FunctionConcatenateC --------------------------------------------------------------
+
+  FunctionC FunctionConcatenate2Function(const FunctionConcatenateC &func)
+  {
+    return func;
+  }
+
+  DP_REGISTER_CONVERSION_NAMED(FunctionConcatenate2Function, 1,
+      "RavlN::FunctionC RavlN::Convert(const RavlN::FunctionConcatenateC &)");
+
+  static TypeNameC type10(typeid(FunctionConcatenateC), "RavlN::FunctionConcatenateC");
+  FileFormatStreamC<FunctionConcatenateC> FileFormatStream_FunctionConcatenate;
+  FileFormatBinStreamC<FunctionConcatenateC> FileFormatBinStream_FunctionConcatenate;
+
 
 }
