@@ -17,6 +17,7 @@
 #include "Ravl/Matrix.hh"
 #include "Ravl/XMLFactory.hh"
 #include "Ravl/PatternRec/FuncMeanProjection.hh"
+#include "Ravl/PatternRec/FuncLinear.hh"
 #include "Ravl/PatternRec/FieldInfo.hh"
 
 namespace RavlN {
@@ -111,6 +112,12 @@ namespace RavlN {
     
     FuncMeanProjectionC NormalisationFunction(const MeanCovarianceC & stats) const;
     //: Get the function used for the normalisation
+
+    FuncLinearC UndoNormalisationFunction(const MeanCovarianceC & stats);
+     //: Get the function used to un-normalise the data
+
+    void Scale(FuncLinearC & func);
+    //: Scale each dimension between 0 and 1 and return function created to do this
 
     const SArray1dC<FieldInfoC> & FieldInfo() const {
       return m_fieldInfo;
