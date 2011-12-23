@@ -12,6 +12,7 @@
 //! file="Ravl/PatternRec/Classify/DesignClassifierGaussianMixture.hh"
 
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
+#include "Ravl/OS/Filename.hh"
 #include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
@@ -21,8 +22,9 @@ namespace RavlN {
 
   class DesignClassifierNeuralNetworkBodyC: public DesignClassifierSupervisedBodyC {
     public:
-      DesignClassifierNeuralNetworkBodyC(UIntT nLayers, UIntT nInputs, UIntT nHidden, UIntT nOutputs);
-      //: Constructor.
+      DesignClassifierNeuralNetworkBodyC(UIntT nLayers, UIntT nInputs, UIntT nHidden, UIntT nOutputs, RealT desiredError,
+        UIntT maxEpochs, UIntT displayEpochs);
+    //: Constructor.
 
       DesignClassifierNeuralNetworkBodyC(const XMLFactoryContextC & factory);
       //: factory constructor
@@ -47,11 +49,21 @@ namespace RavlN {
       virtual ClassifierC Apply(const SampleC<VectorC> &in, const SampleC<UIntT> &out, const SampleC<RealT> &weight);
       //: Create a clasifier with weights for the samples.
 
+
+
+      virtual FunctionC Apply(const SampleC<VectorC>&in, const SampleC<VectorC>&out);
+
     protected:
+      ClassifierC Train(const FilenameC & datafile);
+
       UIntT m_nLayers;
       UIntT m_nInputs;
       UIntT m_nHidden;
       UIntT m_nOutputs;
+      RealT m_desiredError;
+      UIntT m_maxEpochs;
+      UIntT m_displayEpochs;
+      bool m_cascade; //!< perform cascade training, look at FANN documentation
   };
 
   //! userlevel=Normal
@@ -64,10 +76,13 @@ namespace RavlN {
       //: Default constructor.
       // Creates an invalid handle.
 
-      DesignClassifierNeuralNetworkC(UIntT nLayers, UIntT nInputs, UIntT nHidden, UIntT nOutputs)
-          : DesignClassifierSupervisedC(*new DesignClassifierNeuralNetworkBodyC(nLayers, nInputs, nHidden, nOutputs)) {
+      DesignClassifierNeuralNetworkC(UIntT nLayers, UIntT nInputs, UIntT nHidden, UIntT nOutputs, RealT desiredError =
+        0.00001, UIntT maxEpochs = 10000, UIntT displayEpochs=100) :
+        DesignClassifierSupervisedC(
+            *new DesignClassifierNeuralNetworkBodyC(nLayers, nInputs, nHidden, nOutputs, desiredError, maxEpochs,
+                displayEpochs)) {
       }
-      //: Create a new designer.
+    //: Create a new designer.
 
       DesignClassifierNeuralNetworkC(const XMLFactoryContextC &factory)
          :  DesignClassifierSupervisedC(*new DesignClassifierNeuralNetworkBodyC(factory))
@@ -102,6 +117,10 @@ namespace RavlN {
       //: Access body.
 
     public:
+      FunctionC Apply(const SampleC<VectorC> &in,const SampleC<VectorC> &out) {
+        return Body().Apply(in, out);
+      }
+             //: Create function from the given data.
 
   };
 
