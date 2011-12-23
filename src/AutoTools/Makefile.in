@@ -199,6 +199,11 @@ QMake:
 LocalQMake: 
 	$(MAKE) -f @abs_top_builddir@/QMake/Makefile DESTDIR=staged bindir=@abs_top_builddir@/share/QMake/bin \
                          datadir=@abs_top_builddir@/share sysconfdir=@abs_top_builddir@ STAGING=@abs_top_builddir@/share/QMake
+	$(SHOWIT)if [ ! -f @abs_top_builddir@/share/QMake/bin/Validate ]; \
+                 then \
+                   cd @abs_top_builddir@/share/QMake/bin; \
+                   $(LN_S) @abs_top_builddir@/bin/Validate Validate; \
+                 fi
 # Stage QMake under the Ravl build directory in a form that will run from
 # that directory. To achieve this, we have to set the destination for both
 # the staging and install targets to be the same for the makefiles. The
@@ -210,7 +215,12 @@ LocalQMake:
 # DESTDIR will have no other effect and gives us the functionality we are
 # looking for. As well as $(datadir), $(sysconfdir) automatically has /QMake
 # suffixed to it for the install process, hence the value of $(sysconfdir) 
-# that is used here.
+# that is used here. The final symbolic link allows the local QMake to find
+# Validate that, while it should be part of QMake, is currently part of RAVL.
+# This last stage is a bit of a bodge as it won't work on platforms that do
+# not support symbolic links (as the target doesn't actually exist at this
+# point). The proper solution is to uncouple Validate from RAVL (re-write
+# it) and move it into QMake.
 
 
 Ravl.def: $(INSTALLHOME)/lib/libdep $(INSTALLHOME)/lib/libdep/Ravl.def
