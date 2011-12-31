@@ -415,6 +415,7 @@ FANN_EXTERNAL struct fann_train_data *FANN_API fann_merge_train_data(struct fann
 
 	if((data1->num_input != data2->num_input) || (data1->num_output != data2->num_output))
 	{
+	        free(dest);
 		fann_error((struct fann_error*)data1, FANN_E_TRAIN_DATA_MISMATCH);
 		return NULL;
 	}
@@ -455,6 +456,7 @@ FANN_EXTERNAL struct fann_train_data *FANN_API fann_merge_train_data(struct fann
 	data_output = (fann_type *) calloc(dest->num_output * dest->num_data, sizeof(fann_type));
 	if(data_output == NULL)
 	{
+	        free(data_input);
 		fann_error((struct fann_error*)data1, FANN_E_CANT_ALLOCATE_MEM);
 		fann_destroy_train(dest);
 		return NULL;
@@ -524,6 +526,7 @@ FANN_EXTERNAL struct fann_train_data *FANN_API fann_duplicate_train_data(struct 
 	data_output = (fann_type *) calloc(dest->num_output * dest->num_data, sizeof(fann_type));
 	if(data_output == NULL)
 	{
+	        free(data_input);
 		fann_error((struct fann_error*)data, FANN_E_CANT_ALLOCATE_MEM);
 		fann_destroy_train(dest);
 		return NULL;
@@ -557,6 +560,7 @@ FANN_EXTERNAL struct fann_train_data *FANN_API fann_subset_train_data(struct fan
 	
 	if(pos > data->num_data || pos+length > data->num_data)
 	{
+	        free(dest);
 		fann_error((struct fann_error*)data, FANN_E_TRAIN_DATA_SUBSET, pos, length, data->num_data);
 		return NULL;
 	}
@@ -595,6 +599,7 @@ FANN_EXTERNAL struct fann_train_data *FANN_API fann_subset_train_data(struct fan
 	data_output = (fann_type *) calloc(dest->num_output * dest->num_data, sizeof(fann_type));
 	if(data_output == NULL)
 	{
+	        free(data_input);
 		fann_error((struct fann_error*)data, FANN_E_CANT_ALLOCATE_MEM);
 		fann_destroy_train(dest);
 		return NULL;
@@ -778,6 +783,7 @@ struct fann_train_data *fann_read_train_from_fd(FILE * file, const char *filenam
 	data_output = (fann_type *) calloc(num_output * num_data, sizeof(fann_type));
 	if(data_output == NULL)
 	{
+	        free(data_input);
 		fann_error(NULL, FANN_E_CANT_ALLOCATE_MEM);
 		fann_destroy_train(data);
 		return NULL;
