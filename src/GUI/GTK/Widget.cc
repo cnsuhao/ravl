@@ -578,18 +578,18 @@ namespace RavlGUIN {
           AddEventMask(GDK_BUTTON_PRESS_MASK);
         if(sN == "button_release_event") // Enable Release events.
           AddEventMask(GDK_BUTTON_RELEASE_MASK);
-        ret = Signal1C<MouseEventC>(MouseEventC(0,0,0));  break;
+        ret = Signal1C<MouseEventC>(MouseEventC(0,0,0));
         break;
       case SigTypeEventMouseMotion:   // Motion events..
         AddEventMask((int) GDK_POINTER_MOTION_MASK |
                      GDK_POINTER_MOTION_HINT_MASK |
                      GDK_LEAVE_NOTIFY_MASK);
-        ret = Signal1C<MouseEventC>(MouseEventC(0,0,0));  break;
+        ret = Signal1C<MouseEventC>(MouseEventC(0,0,0));
         break;
       case SigTypeEventScroll:   // Scroll events.
         if (sN == "scroll_event")
           AddEventMask(GDK_BUTTON_PRESS_MASK);
-        ret = Signal1C<ScrollEventC>(ScrollEventC(0,0,0));  break;
+        ret = Signal1C<ScrollEventC>(ScrollEventC(0,0,0));
         break;
       case SigTypeEventFocus: // Focus events
         AddEventMask(GDK_FOCUS_CHANGE_MASK);

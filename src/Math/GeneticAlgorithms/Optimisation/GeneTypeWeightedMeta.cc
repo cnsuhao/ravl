@@ -101,7 +101,7 @@ namespace RavlN { namespace GeneticN {
      float choice = static_cast<float>(RavlN::Random1() * m_totalWeights);
      //RavlSysLogf(SYSLOG_DEBUG," %f from %f ",choice,m_totalWeights);
      std::map<float,GeneTypeC::ConstRefT>::const_iterator iter = m_typeMap.upper_bound(choice);
-     iter--;
+     --iter;
      RavlAssert(iter != m_typeMap.end());
 
      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %f of %f '%s' ",choice,m_totalWeights,iter->second->Name().data()));

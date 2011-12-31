@@ -176,9 +176,9 @@ int main(int nargs,char **argv) {
 
   //cout.setf(ios_base::fixed);
   cout.setf(ios::fixed);
-  int n = 0;
-  RealT total = 0;
   if(testAll) {
+    RealT total = 0;
+    int n = 0;
     for(int i = 0;i < noMatrixTypes;i++) {
       for(int j = 0;j < noMatrixTypes;j++) {
 	SMatrixC mat1 = createMatrix(matSize,i);

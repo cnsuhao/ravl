@@ -19,7 +19,7 @@ double lsqsv(double *x,int *pr,double *var,double *d,double *b,double *v,
    }
   *pr=k;
   vmul(x,v,y,n);
-  if(var!=NULL && m>n){
+  if(var!=0 && m>n){
     sig=ssq/(double)(m-n);
     for(i=0; i<n ;++i){
       if(d[i]<th) y[i]=0.; else y[i]=sig/(d[i]*d[i]);

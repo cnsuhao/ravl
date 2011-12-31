@@ -428,7 +428,7 @@ namespace RavlOSGN {
    */
   float CanvasManipulatorC::tb_project_to_sphere(float r, float x, float y)
   {
-    float d, t, z;
+    float d, z;
 
     d = sqrt(x * x + y * y);
     /* Inside sphere */
@@ -436,7 +436,7 @@ namespace RavlOSGN {
       z = sqrt(r * r - d * d);
     }/* On hyperbola */
     else {
-      t = r / 1.41421356237309504880;
+      float t = r / 1.41421356237309504880;
       z = t * t / d;
     }
     return z;

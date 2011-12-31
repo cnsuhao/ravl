@@ -99,11 +99,10 @@ namespace RavlN {
   
   bool NetOSPortServerBaseBodyC::ReqStats() {
     ONDEBUG(cerr << "NetOSPortServerBaseBodyC::ReqStats(), Called. \n");
-    Int64T lat = 0;
     Int64T start = 0;
     Int64T size = ((UIntT) -1);
     if(seekCtrl.IsValid()) {
-      lat = seekCtrl.Tell64();
+      Int64T lat = seekCtrl.Tell64();
       if (lat != streamPosUnknown)
         at = lat;
       start = seekCtrl.Start64();

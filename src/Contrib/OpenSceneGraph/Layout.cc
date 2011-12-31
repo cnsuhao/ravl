@@ -89,7 +89,7 @@ namespace RavlOSGN {
   //: Remove a node object from the group.
   bool LayoutC::RemoveChildNode(const NodeC &node)
   {
-    for(std::vector<LayoutEntryC::RefT>::iterator i= m_nodes.begin();i != m_nodes.end();i++) {
+    for(std::vector<LayoutEntryC::RefT>::iterator i= m_nodes.begin();i != m_nodes.end();++i) {
       if((*i)->ElementRef().BodyPtr() == &node) {
         GroupC::RemoveChildNode(**i);
         m_nodes.erase(i);
