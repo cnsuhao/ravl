@@ -356,7 +356,7 @@ namespace RavlN {
 
   //////////////////////////////
 
-  std::string md5(const std::string str)
+  std::string md5(const std::string &str)
   {
       MD5 md5 = MD5(str);
 
