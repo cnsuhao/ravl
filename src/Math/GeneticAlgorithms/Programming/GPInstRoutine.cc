@@ -13,6 +13,7 @@
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GenomeList.hh"
 #include "Ravl/Genetic/GenomeShare.hh"
+#include "Ravl/VirtualConstructor.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -28,6 +29,7 @@ namespace RavlN { namespace GeneticN {
     return retType;
   }
 
+  static RavlN::VirtualConstructorInstC<GeneTypeListC<GPInstructionC::RefT> > vc_function_GeneTypeListC_GPInstructionC_RefT("RavlN::GeneticN::GeneTypeListC<RavlN::SmartPtrC<GPInstructionC> >");
 
   //! Factory constructor
   GPInstRoutineC::GPInstRoutineC(const GeneFactoryC &factory)
