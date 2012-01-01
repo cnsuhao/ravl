@@ -36,3 +36,4 @@ AUXFILES= exGeneticOptimisation.xml
 
 AUXDIR= /share/Ravl/Genetic
  
+TESTEXES=testGeneticOpt.cc

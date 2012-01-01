@@ -178,6 +178,9 @@ namespace RavlN { namespace GeneticN {
   : public RavlN::RCBodyVC
   {
   public:
+    //! Default constructor
+    GenomeC();
+
     //! Factory constructor
     GenomeC(const XMLFactoryContextC &factory);
 
