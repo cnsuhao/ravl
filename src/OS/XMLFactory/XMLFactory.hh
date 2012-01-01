@@ -305,6 +305,9 @@ namespace RavlN {
     {}
     //: Constructor.
 
+    explicit XMLFactoryContextC(const StringC &configFile,XMLTreeLoadC *loader = 0);
+    //: Setup directly from a config file name.
+
     XMLFactoryContextC(const XMLFactoryNodeC &iNode)
       : m_iNode(&iNode)
     {}
@@ -764,8 +767,6 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
-
-
 
     XMLFactoryHC(const StringC &configFile)
       : RCHandleC<XMLFactoryC>(new XMLFactoryC(configFile))

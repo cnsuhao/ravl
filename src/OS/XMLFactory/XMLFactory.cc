@@ -408,6 +408,17 @@ namespace RavlN {
 
   extern void linkXMLFactoryRegister();
   
+  //: Setup directly from a config file name.
+  XMLFactoryContextC::XMLFactoryContextC(const StringC &configFile,XMLTreeLoadC *loader)
+  {
+    XMLFactoryC *factory = new XMLFactoryC(configFile,loader);
+    m_factory = RCAbstractC(*factory);
+    m_iNode = &factory->IRoot();
+    factory->PostReadConfig();
+    UseAttribute("verbose");
+    UseAttribute("checkConfig");
+  }
+
   //! Construct from Factory.
   
   XMLFactoryContextC::XMLFactoryContextC(const XMLFactoryHC &factory)

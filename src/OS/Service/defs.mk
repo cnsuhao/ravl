@@ -9,20 +9,15 @@
 
 PACKAGE=Ravl
 
-HEADERS=XMLFactory.hh XMLFactoryRegister.hh XMLFactoryAutoStart.hh \
- ConfigParameter.hh
+HEADERS=Service.hh ServiceList.hh ServiceThread.hh
 
-SOURCES=XMLFactory.cc XMLFactoryRegister.cc XMLFactoryAutoStart.cc \
- ConfigParameter.cc
+SOURCES=Service.cc ServiceList.cc ServiceThread.cc
 
-MUSTLINK=LinkXMLFactory.cc
+MUSTLINK=LinkRavlService.cc
 
-PLIB=RavlXMLFactory
+PLIB= RavlService
 
-USESLIBS=RavlCore RavlIO RavlThreads RavlOS
+USESLIBS=RavlXMLFactory RavlCore RavlIO RavlThreads RavlOS
 
 PROGLIBS=
 
-EXAMPLES= exXMLFactory.cc
-
-TESTEXES= testXMLFactory.cc
