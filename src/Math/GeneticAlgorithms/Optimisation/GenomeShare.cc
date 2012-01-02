@@ -223,8 +223,19 @@ namespace RavlN { namespace GeneticN {
   }
 
   GeneClassShareC::GeneClassShareC(const GeneTypeClassShareC &geneType)
+  : GeneClassC(geneType),
+    m_strength(1.0)
+  {
+    m_position[0] = 50.0;
+    m_position[1] = 50.0;
+  }
+
+  GeneClassShareC::GeneClassShareC(const GeneTypeClassShareC &geneType,
+                                   const RavlN::TFVectorC<float,2> &position,
+                                   float strength)
    : GeneClassC(geneType),
-     m_strength(0)
+     m_position(position),
+     m_strength(strength)
   {}
 
   //! Load form a binary stream

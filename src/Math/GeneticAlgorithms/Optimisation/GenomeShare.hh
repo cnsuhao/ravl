@@ -26,6 +26,8 @@ namespace RavlN { namespace GeneticN {
     GeneTypeClassShareC(const XMLFactoryContextC &factory);
 
     //! Constructor
+    //! If mustConnect is true, then the resulting gene will connect to
+    //! the best match regardless how distant it is.
     GeneTypeClassShareC(const std::type_info &classType, bool mustConnect = false);
 
     //! Load form a binary stream
@@ -52,6 +54,10 @@ namespace RavlN { namespace GeneticN {
     //! Update share information.
     void UpdateShare(GeneFactoryC &factory,std::vector<GeneClassShareC *> &shares) const;
 
+    //! Must connection be made ?
+    bool IsMustConnect() const
+    { return m_mustConnect; }
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeClassShareC > RefT;
 
@@ -70,6 +76,9 @@ namespace RavlN { namespace GeneticN {
   public:
     //! Factory constructor
     GeneClassShareC(const XMLFactoryContextC &factory);
+
+    //! Constructor.
+    GeneClassShareC(const GeneTypeClassShareC &geneType,const RavlN::TFVectorC<float,2> &position,float strength = 1.0);
 
     //! Constructor.
     GeneClassShareC(const GeneTypeClassShareC &geneType);

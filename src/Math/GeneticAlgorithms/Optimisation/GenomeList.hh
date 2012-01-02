@@ -17,6 +17,7 @@
 namespace RavlN { namespace GeneticN {
 
   //! Base class for Lists with child fields.
+
   class GeneTypeListBaseC
    : public GeneTypeC
   {
@@ -54,6 +55,14 @@ namespace RavlN { namespace GeneticN {
     //! Add item to list.
     virtual bool AddToList(RCWrapAbstractC &list,RCWrapAbstractC &item) const;
 
+    //! Access maximum list length.
+    UIntT MaxLength() const
+    { return m_maxLength; }
+
+    //! Access content type of list.
+    const GeneTypeC &ContentType() const
+    { return *m_contentType; }
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeListBaseC> RefT;
 
@@ -64,6 +73,8 @@ namespace RavlN { namespace GeneticN {
     GeneTypeC::ConstRefT m_contentType;
     UIntT m_maxLength;
   };
+
+  //! Gene type for a list
 
   template<typename EntryT>
   class GeneTypeListC
@@ -140,7 +151,7 @@ namespace RavlN { namespace GeneticN {
   };
 
 
-  //! List containing sub gene's
+  //! List containing sub gene's of a particular type.
 
   class GeneListC
    : public GeneC

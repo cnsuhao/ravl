@@ -47,12 +47,12 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GeneC::RefT &newValue) const;
 
     //! Access list of types
-    std::vector<GeneTypeC::ConstRefT> &Types()
-    { return m_types; }
+    std::vector<float> &Weights()
+    { return m_weights; }
 
     //! Access list of types
-    const std::vector<GeneTypeC::ConstRefT> &Types() const
-    { return m_types; }
+    const std::vector<float> &Weights() const
+    { return m_weights; }
 
     //! Add type to list
     virtual void AddType(const GeneTypeC &geneType,float weight = -1.0);
