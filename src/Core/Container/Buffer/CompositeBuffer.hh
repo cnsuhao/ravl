@@ -55,7 +55,7 @@ namespace RavlN {
   
   //! userlevel=Advanced
   //: Composite buffer.
-  // This is usefull if the you need to access part of another buffer 
+  // This is useful if the you need to access part of another buffer
   // as a different type. Or if you the buffer your actually using is made
   // up of several parts.
   

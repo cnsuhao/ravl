@@ -186,15 +186,14 @@ namespace RavlN {
     va_list args;
     va_start(args,format);
     char buff[formSize];
-    int x;
 #if RAVL_COMPILER_VISUALCPPNET_2005
-    if((x = vsprintf_s(buff,formSize,format,args)) < 0)
+    if(vsprintf_s(buff,formSize,format,args) < 0)
       std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #elif RAVL_COMPILER_VISUALCPP
-    if((x = _vsnprintf(buff,formSize,format,args)) < 0)
+    if(_vsnprintf(buff,formSize,format,args) < 0)
       std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #else
-    if((x = vsnprintf(buff,formSize,format,args)) < 0)
+    if(vsnprintf(buff,formSize,format,args) < 0)
       std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #endif
     va_end(args);
@@ -208,15 +207,14 @@ namespace RavlN {
     va_list args;
     va_start(args,format);
     char buff[formSize];
-    int x;
 #if RAVL_COMPILER_VISUALCPPNET_2005
-    if((x = vsprintf_s(buff,formSize,format,args)) < 0)
+    if(vsprintf_s(buff,formSize,format,args) < 0)
       std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #elif RAVL_COMPILER_VISUALCPP
-    if((x = _vsnprintf(buff,formSize,format,args)) < 0)
+    if(_vsnprintf(buff,formSize,format,args) < 0)
       std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #else
-    if((x = vsnprintf(buff,formSize,format,args)) < 0)
+    if(vsnprintf(buff,formSize,format,args) < 0)
       std::cerr << "WARNING: SysLog(...), String truncated!! \n";
 #endif
     va_end(args);

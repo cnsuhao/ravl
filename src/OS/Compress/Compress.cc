@@ -21,9 +21,7 @@ namespace RavlN {
     }
     uLongf len = compressBound(data.Size());
     buff = SArray1dC<char>(len);
-    int ret = 0;
-    if((ret = compress2(reinterpret_cast<Bytef *>(&(buff[0])),&len,reinterpret_cast<const Bytef *>(&(data[0])),data.Size(),level)) != Z_OK) {
-      //cerr << "Compress failed " << ret << "\n";
+    if(compress2(reinterpret_cast<Bytef *>(&(buff[0])),&len,reinterpret_cast<const Bytef *>(&(data[0])),data.Size(),level) != Z_OK) {
       return false;
     }
     buff = SArray1dC<char>(buff,len);
@@ -56,9 +54,8 @@ namespace RavlN {
     }
     uLongf len = compressBound(data.Size());
     buff = StringC(len+2,(char *)0);
-    int ret = 0;
-    if((ret = compress2(reinterpret_cast<Bytef *>(&(buff[0])),&len,
-                        reinterpret_cast<const Bytef *>(&(data[0])),data.Size(),level)) != Z_OK) {
+    if(compress2(reinterpret_cast<Bytef *>(&(buff[0])),&len,
+                        reinterpret_cast<const Bytef *>(&(data[0])),data.Size(),level) != Z_OK) {
       //cerr << "Compress failed " << ret << "\n";
       return false;
     }

@@ -545,7 +545,6 @@ namespace RavlImageN {
       case 2: mode = mode | IS_BINNING_2X_VERTICAL ; break;
       case 3:
       case 4: mode = mode | IS_BINNING_4X_VERTICAL ; break;
-        break;
       default:
         RavlSysLog(SYSLOG_ERR) << "Unsupported binning request. ";
         return true;
@@ -571,7 +570,6 @@ namespace RavlImageN {
       case 2: mode = mode | IS_BINNING_2X_HORIZONTAL ; break;
       case 3:
       case 4: mode = mode | IS_BINNING_4X_HORIZONTAL ; break;
-        break;
       default:
         RavlSysLog(SYSLOG_ERR) << "Unsupported binning request. ";
         return true;

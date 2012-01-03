@@ -24,9 +24,9 @@ namespace RavlN {
     XMLFactoryAutoStartC();
     
     //! Start object.
-    //! This will be called automaticlly if the object
+    //! This will be called automatically if the object
     //! is loaded in the XMLFactoryC 'preload' section. This is
-    //! done after an inital refrence has been taken, and so
+    //! done after an initial reference has been taken, and so
     //! threads can be started safely from this method.
     virtual bool Init();
     

@@ -694,7 +694,6 @@ namespace RavlN {
   bool DateC::Wait() const {
 #if !RAVL_COMPILER_VISUALCPP
     struct timeval timeout;
-    int reterr;
 #if RAVL_OS_LINUX || RAVL_OS_LINUX64
     // Linux select modifies 'timeout' to time not slept, so we only have to setup once.
     DateC now = DateC::NowUTC();
@@ -705,7 +704,7 @@ namespace RavlN {
     timeout.tv_sec = toGo.TotalSeconds();
     timeout.tv_usec = toGo.USeconds();
     while(timeout.tv_sec > 0 || timeout.tv_usec > 0) {
-      reterr = select(0,0,0,0,&timeout);
+      select(0,0,0,0,&timeout);
       // A signal may throw us out of select early so check we're finished.
     };
     
@@ -717,7 +716,7 @@ namespace RavlN {
       DateC toGo = *this - now;
       timeout.tv_sec = toGo.TotalSeconds();
       timeout.tv_usec = toGo.USeconds();
-      reterr = select(0,0,0,0,&timeout);
+      select(0,0,0,0,&timeout);
       // A signal may throw us out of select early.
     } while(1);
 #endif

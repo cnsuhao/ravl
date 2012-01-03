@@ -194,18 +194,18 @@ namespace RavlN
   //: Lock mutex.
   
   bool MutexC::Lock(void) {
-    int rc;
     RavlAssert(isValid);
     
 #if RAVL_HAVE_POSIX_THREADS
+    int rc;
     //ONDEBUG(cerr << "MutexC::Lock() Start @:" << ((void*) this) << " \n");
     if((rc = pthread_mutex_lock(&mutex)) == 0) {
       //ONDEBUG(cerr << "MutexC::Lock() Obtained @:" << ((void*) this) << " \n");
       return true;
     }
     Error("Lock failed",errno,rc);
-#endif
-#if RAVL_HAVE_WIN32_THREADS
+#elif RAVL_HAVE_WIN32_THREADS
+    int rc;
     if((rc = WaitForSingleObject(mutex,INFINITE)) == WAIT_OBJECT_0) {
       m_useCount++;
       if(!m_recursive && m_useCount > 1) {

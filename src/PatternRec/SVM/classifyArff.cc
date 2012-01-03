@@ -58,7 +58,7 @@ float ScoresC::GetTER()
 
   unsigned int numFA = numNeg, numFR = 0;
 
-  for(std::vector<ScoreC>::iterator it = scores.begin(); it != scores.end(); it++)
+  for(std::vector<ScoreC>::iterator it = scores.begin(); it != scores.end(); ++it)
   {
     if(it->label > 0)
     {

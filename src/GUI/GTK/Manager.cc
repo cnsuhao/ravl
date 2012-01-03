@@ -398,7 +398,6 @@ namespace RavlGUIN {
       }
       trig.Invoke();
     }
-    return true;
 #else
 #if !RAVL_USE_GTKTHREADS 
     ONDEBUG(cerr << "ManagerC::HandleNotify(), Got event. \n");
