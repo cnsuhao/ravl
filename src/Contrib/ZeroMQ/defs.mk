@@ -6,6 +6,9 @@
 # file-header-ends-here
 #! author=Charles Galambos
 #! docentry=Ravl.API.ZeroMQ
+
+REQUIRES=ZeroMQ
+
 PACKAGE= Ravl/Zmq
 
 HEADERS= Context.hh Message.hh Socket.hh MsgBuffer.hh SocketDispatcher.hh Reactor.hh \
