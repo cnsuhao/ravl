@@ -4,6 +4,10 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlGeneticOptimisation
+//! author=Charles Galambos
+//! docentry=Ravl.API.Math.Genetic.Optimisation
+
 #include "Ravl/Genetic/GenomeConst.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
@@ -11,9 +15,13 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/PointerManager.hh"
 #include "Ravl/VirtualConstructor.hh"
-//! lib=RavlGeneticOptimisation
-//! author=Charles Galambos
-//! docentry=Ravl.API.Math.Genetic.Optimisation
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlN { namespace GeneticN {
 
@@ -42,6 +50,7 @@ namespace RavlN { namespace GeneticN {
     if(version != 1)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneTypeIntC");
     strm >> m_min >> m_max;
+    ONDEBUG(RavlDebug("Loading '%s'  Min:%d Max:%d ",Name().data(),m_min,m_max));
   }
 
   //! Load form a binary stream

@@ -72,6 +72,7 @@ namespace RavlN { namespace GeneticN {
       return false;
     ByteT version = 1;
     strm << version << m_name << m_defaultWeight;
+    ONDEBUG(RavlDebug("Loading GeneType '%s' weight=%f ",m_name.data(),m_defaultWeight));
     return true;
   }
 
@@ -149,6 +150,7 @@ namespace RavlN { namespace GeneticN {
     if(version != 1)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneC");
     strm >> ObjIO(m_type);
+    ONDEBUG(RavlDebug("Loading Gene, Type='%s' ",m_type->Name().data()));
   }
 
   //! Load form a binary stream
