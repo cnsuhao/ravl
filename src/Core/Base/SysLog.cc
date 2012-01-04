@@ -121,31 +121,24 @@ namespace RavlN {
       return true;
     }
 #if RAVL_OS_POSIX
-    if(syslog_StdErrOnly) {
+    //std::cerr << "Logging " <<syslog_StdErr << " Level:" << priority << " Threshold:" <<localLevel << std::endl;
+    if(syslog_StdErr) {
       if(priority <= localLevel) {
-	std::cerr << syslog_ident;
-	if(syslog_fileline)
-	  std::cerr << filename << ':' << lineno << ' ';
-	if(syslog_pid)
-	  std::cerr << "[" << getpid() << "]";
-	std::cerr << ":" << message << endl;
+        std::cerr << syslog_ident;
+        if(syslog_fileline)
+          std::cerr << filename << ':' << lineno << ' ';
+        if(syslog_pid)
+          std::cerr << "[" << getpid() << "]";
+        std::cerr << ":" << message << endl;
       }
-    } else {
-      if(priority < syslogLevel) {
+    }
+    if(!syslog_StdErrOnly && syslog_Open) {
+      if(priority <= syslogLevel) {
         if(syslog_fileline) {
           syslog(priority,"%s:%u %s",filename,lineno,message);
         } else {
           syslog(priority,"%s",message);
         }
-      } else {
-	if(syslog_StdErr && priority <= localLevel) {
-	  std::cerr << syslog_ident;
-	  if(syslog_fileline)
-	    std::cerr << filename << ':' << lineno << ' ';
-	  if(syslog_pid)
-	    std::cerr << "[" << getpid() << "]";
-	  std::cerr << ":" << message << endl;
-	}
       }
     }
 #else
