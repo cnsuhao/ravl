@@ -4,10 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlCore
 
 #include "Ravl/RCLayer.hh"
+#include "Ravl/TypeName.hh"
+#include "Ravl/VirtualConstructor.hh"
 
 namespace RavlN {
   
@@ -17,4 +18,8 @@ namespace RavlN {
     //... Abstract method
   }
   
+  static TypeNameC g_type(typeid(RCLayerBodyC),"RavlN::RCLayerBodyC");
+
+  RAVL_INITVIRTUALCONSTRUCTOR_NAMED(RCLayerBodyC,"RavlN::RCLayerBodyC");
+
 }
