@@ -7,6 +7,8 @@
 #! author=Charles Galambos
 #! docentry=Ravl.API.ZeroMQ
 
+DONOT_SUPPORT=VCPP
+
 REQUIRES=ZeroMQ
 
 PACKAGE= Ravl/Zmq
