@@ -4,10 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
-//! lib=RavlOS
+//! lib=RavlCore
 //! author="Charles Galambos"
-//! file="Ravl/OS/Misc/SysLog.cc"
 
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/StrStream.hh"

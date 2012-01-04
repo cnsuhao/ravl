@@ -13,7 +13,7 @@ DESCRIPTION=Interfaces for common computer hardware.
 
 HEADERS=UnixStreamIO.hh WinStreamIO.hh DMABuffer.hh SysLog.hh
 
-SOURCES=UnixStreamIO.cc WinStreamIO.cc SysLog.cc
+SOURCES=UnixStreamIO.cc WinStreamIO.cc
 
 PLIB=RavlOS
 
@@ -22,7 +22,5 @@ EHT= Ravl.API.OS.Hardware.html
 USESLIBS=RavlCore RavlIO
 
 LIBDEPS=RavlOSMisc.def
-
-EXAMPLES=exSysLog.cc
 
 TESTEXES=testOSMisc.cc
