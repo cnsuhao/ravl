@@ -19,6 +19,16 @@ extern "C" {
     abort();
     return;
   }
+
+  void dgetrf_(int *m, int *n, double *a, int *lda, int *ipiv, int *info) {
+    abort();
+    return;
+  }
+
+  void dgetri_(int *n, double *a, int *lda, int *ipiv, double *work, int *lwork, int *info) {
+    abort();
+    return;
+  }
 #else
   void dgesvd_(char *jobu, char *jobvt, int *m, int *n, double *a, int *lda, double *s, double *u, int * ldu,
       double *vt, int *ldvt, double *work, int *lwork, int *info);
