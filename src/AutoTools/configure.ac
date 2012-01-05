@@ -758,6 +758,19 @@ dnl#
 
 QM_PROCESS_EXTLIBS()
 
+# OpenCV is a special case, we need to post-process its include path
+if test x$use_OpenCV=xpresent
+then
+   # Add extra include directory for OpenCV so as to prevent any confusion over
+   # the inclusion of opencv/xx.h (previously, Ravl code included the OpenCV
+   # headers by specifying the opencv sub-dir; this was at odds with what the
+   # .pc file was set up to expect the user to do). To combat this, we add the
+   # parent directory (of the opencv directory) to the include path.
+   OpenCV_CFLAGS=`echo "$OpenCV_CFLAGS " | $SED '/\(-I@<:@^ @:>@*\)\/opencv /s//\1\/opencv \1 /g'`
+   dnl sed command is '/\(-I[^ ]*\)\/opencv /s//\1\/opencv \1 /g'
+fi
+
+
 # Now start checking for the existance of all we need or can use
 
 trace 2 Checking for necessary dependancies
