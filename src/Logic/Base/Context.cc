@@ -52,6 +52,11 @@ namespace RavlLogicN {
       IOPtrC objio = ObjIO(it.Data().Data1());
       UInt32T id = mgr.Insert(objio); // Register ID.
       strm << id << it.Data().Data2();
+#if RAVL_CHECK
+      // Mark saving complete
+      mgr.Insert(id,objio);
+#endif
+
     }
     return true;
   }

@@ -396,10 +396,12 @@ namespace RavlN {
     
     virtual void Assign(IOPtrC &ptr,StoredPointerC &obj) const
     {
+#if 0
       if(obj.Actions()->TypeInfo() != typeid(DataT)) {
         std::cerr << "Type mismatch loading pointer: " << TypeName(obj.Actions()->TypeInfo()) << " and " << TypeName(typeid(DataT)) << "\n";
         RavlAlwaysAssert(0);
       }
+#endif
       (*static_cast<DataT *>(ptr.Pointer())) = (*static_cast<DataT *>(obj.Pointer()));
     }
     //: Assign an object to the pointer.

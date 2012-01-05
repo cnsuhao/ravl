@@ -59,7 +59,7 @@ namespace RavlN {
   //: Default constructor.
   
   PointerManagerBodyC::PointerManagerBodyC(bool forSave) 
-    : idAlloc(0)
+    : idAlloc(1)
   {}
   
   //: Destructor.
@@ -82,6 +82,7 @@ namespace RavlN {
 
   SizeT PointerManagerBodyC::Insert(const IOPtrC &obj) {
     SizeT id = idAlloc++;
+    ONDEBUG(std::cerr << "Storing id " << id << " \n");
     ptr2id[obj.Key()] = id;
     return id;
   }
@@ -95,9 +96,10 @@ namespace RavlN {
       strm.PointerManager() = PointerManagerC(true);
     PointerManagerC mgr(strm.PointerManager());
     SizeT id;
+    ONDEBUG(std::cerr << "BinOStreamC<<(strm,IOPtrC) " << *((void **)obj.Pointer()) << "\n");
 
     if(mgr.Lookup(obj,id)) { // Seen this object already ?
-      ONDEBUG(cerr << "Storing id " << id << " from " << *((void **)obj.Pointer()) << "\n");
+      ONDEBUG(std::cerr << "Storing id " << id << " from " << *((void **)obj.Pointer()) << "\n");
 #if RAVL_CHECK
       // Check for cycles, had save been completed?
       if(mgr.Lookup(id) == 0) {
@@ -110,9 +112,10 @@ namespace RavlN {
     } else {
       // Not seen before, save id then object.
       id = mgr.Insert(obj);
-      ONDEBUG(cerr << "Storing data with id " << id << " \n");
+      ONDEBUG(std::cerr << "Started storing data with id " << id << " \n");
       strm << id;
       obj.Save(strm);
+      ONDEBUG(std::cerr << "Finished storing data with id " << id << " \n");
 #if RAVL_CHECK
       // Mark saving complete
       mgr.Insert(id,obj);

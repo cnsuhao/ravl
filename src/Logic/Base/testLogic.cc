@@ -349,7 +349,7 @@ int testLiteralIO() {
 
 int testBinaryIO() {
   cerr << "Testing binary IO. \n";
-#if 0
+#if 1
   ContextC context;
   LiteralC l1(true);
   LiteralC l2(true);
