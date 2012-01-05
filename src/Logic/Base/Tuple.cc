@@ -77,7 +77,7 @@ namespace RavlLogicN {
   bool TupleBodyC::IsGrounded() const {
     for(SArray1dIterC<LiteralC> it(Args());it;it++)
       if(!it->IsGrounded())
-	return false;
+        return false;
     return true;
   }
   
