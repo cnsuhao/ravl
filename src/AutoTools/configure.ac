@@ -417,19 +417,38 @@ dnl
 dnl Modern versions of FireWire support currently unsupported by Ravl. Drop
 dnl for now. Would still work for the old depreciated versions of FireWire
 dnl (rev 1.X of the libs, Linux kernel <2.6.37)
+dnl
+dnl Uncomment the next two lines to re-add libdc1394
 dnl QM_DEFINE_EXTLIB_PC([libdc1394],       [libdc1394])
 dnl libdc1394_RavlLib=libRavlImgIO1394dc
-dnl AC_SUBST([libdc1394_SUPPORT])
+dnl
+AC_SUBST([libdc1394_SUPPORT])
+dnl On re-instatement, drop the following 2 lines 
+libdc1394_SUPPORT=""
+echo libdc1394=@libdc1394_SUPPORT@ >> ./ExtPkgSupp.$$
+dnl
+dnl Similarly, uncomment the next two lines to re-instate libavc1394
 dnl QM_DEFINE_EXTLIB_PC([libavc1394],      [libavc1394])
 dnl libavc1394_RavlLib=libRavlFireWire
-dnl AC_SUBST([libavc1394_SUPPORT])
+dnl
+AC_SUBST([libavc1394_SUPPORT])
+dnl and drop the following 2 lines on restore
+libavc1394_SUPPORT=""
+echo libavc1394=@libavc1394_SUPPORT@ >> ./ExtPkgSupp.$$
+dnl
 QM_DEFINE_EXTLIB_PC([libAudioFile],    [audiofile])
 libAudioFile_RavlLib=libRavlAudioFile
 AC_SUBST([libAudioFile_SUPPORT])
 dnl Modern versions of libAVIFile currently unsupported by Ravl. Drop for now:
+dnl To re-instate, replace these 3 lines
+AC_SUBST([avifile_SUPPORT])
+avifile_SUPPORT=""
+echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
+dnl with the un-commented version of these 3
 dnl QM_DEFINE_EXTLIB_PC([avifile],         [avifile])
 dnl avifile_RavlLib=libRavlAVIFile
 dnl AC_SUBST([avifile_SUPPORT])
+dnl
 QM_DEFINE_EXTLIB_PC([libCurl],         [libcurl])
 libCurl_RavlLib=libRavlURLIO
 AC_SUBST([libCurl_SUPPORT])
@@ -551,7 +570,13 @@ dnl#      accurate (reflect current release of the library).
 dnl#   -l entry (and 5 params for _HELPER call) do not necessarily mean
 dnl#      pkg-config isn't supported
 dnl#   _HELPER_PC or _HELPER_CC rather than _HELPER_xC imply the method to use
-dnl#   When adding support for these, remember to update the .def file to remove the $(error call
+dnl#   When adding support for these, remember to update the .def file to remove
+dnl#   the $(error call
+dnl#
+dnl#
+dnl#   N.B.
+dnl#
+dnl#      When adding these, remember to remove the XXX_SUPPORT="" settings
 dnl#
 dnl# Priorities
 dnl#                Name,          Fn,                 Deps,   -l,           .h
@@ -669,9 +694,6 @@ dnl#    declare dummy <Lib>_SUPPORT substitution variables
 dnl#    here to prevent the single lib makefile trying to load unsupported
 dnl#    libraries
 dnl#
-AC_SUBST([avifile_SUPPORT])
-avifile_SUPPORT=""
-echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libClipStationPro_SUPPORT])
 libClipStationPro_SUPPORT=""
 echo libClipStationPro_SUPPORT=@libClipStationPro_SUPPORT@ >> ./ExtPkgSupp.$$

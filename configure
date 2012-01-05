@@ -682,7 +682,6 @@ libehs_SUPPORT
 dvdread_SUPPORT
 LibDirectShow_SUPPORT
 libClipStationPro_SUPPORT
-avifile_SUPPORT
 OpenGL_SUPPORT
 OpenGL_LIBS
 OpenGL_CFLAGS
@@ -764,9 +763,12 @@ libDV_CFLAGS
 libCurl_SUPPORT
 libCurl_LIBS
 libCurl_CFLAGS
+avifile_SUPPORT
 libAudioFile_SUPPORT
 libAudioFile_LIBS
 libAudioFile_CFLAGS
+libavc1394_SUPPORT
+libdc1394_SUPPORT
 PKG_MAKEFLAGS
 CONFIGURE_MAKEFLAGS
 MAKE_SPECIFIC_PARALLEL
@@ -6544,6 +6546,12 @@ trace 2 Initial checks complete, now processing external libraries
 #
 
 
+libdc1394_SUPPORT=""
+echo libdc1394=@libdc1394_SUPPORT@ >> ./ExtPkgSupp.$$
+
+libavc1394_SUPPORT=""
+echo libavc1394=@libavc1394_SUPPORT@ >> ./ExtPkgSupp.$$
+
 # Check whether --with-libAudioFile-pkgconf was given.
 if test "${with_libAudioFile_pkgconf+set}" = set; then :
   withval=$with_libAudioFile_pkgconf; case $with_libAudioFile_pkgconf in
@@ -6655,6 +6663,9 @@ fi
 
 libAudioFile_RavlLib=libRavlAudioFile
 
+
+avifile_SUPPORT=""
+echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
 
 # Check whether --with-libCurl-pkgconf was given.
 if test "${with_libCurl_pkgconf+set}" = set; then :
@@ -12554,9 +12565,6 @@ OpenGL_RavlLib="libRavlDPDisplay3d libRavlGUI3D"
 
 
 
-
-avifile_SUPPORT=""
-echo avifile_SUPPORT=@avifile_SUPPORT@ >> ./ExtPkgSupp.$$
 
 libClipStationPro_SUPPORT=""
 echo libClipStationPro_SUPPORT=@libClipStationPro_SUPPORT@ >> ./ExtPkgSupp.$$
