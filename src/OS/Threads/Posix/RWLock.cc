@@ -84,9 +84,23 @@ namespace RavlN
   
   RWLockC::~RWLockC() { 
     int x = 100;
+    bool reportedError = false;
+
     // This could fail if lock is held.
-    while(pthread_rwlock_destroy(&id) && x-- > 0)
+    while(x-- > 0) {
+      if(TryWrLock()) {
+        UnlockWr();
+        if(pthread_rwlock_destroy(&id) == 0)
+          break;
+      }
+      if(!reportedError) {
+        std::cerr << "WARNING: RWLockC::~RWLockC(), thread holding lock in destructor. This indicates a likely problem with the code. \n";
+        std::cerr << "Stack dump:\n";
+        DumpStack(std::cerr);
+        reportedError = true;
+      }
       OSYield();
+    }
     isValid = false;
     if(x == 0) 
       cerr << "WARNING: Failed to destory RWLock. \n";

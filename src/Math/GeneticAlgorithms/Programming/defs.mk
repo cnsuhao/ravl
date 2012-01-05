@@ -34,4 +34,6 @@ USESLIBS=RavlOS RavlGeneticOptimisation
 AUXFILES= 
 
 AUXDIR= /share/Ravl/Genetic
+
+#TESTEXES=testGeneticProgram.cc
  

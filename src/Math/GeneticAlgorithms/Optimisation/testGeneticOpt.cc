@@ -7,14 +7,16 @@
 #include "Ravl/Genetic/GenomeList.hh"
 #include "Ravl/Genetic/GenomeShare.hh"
 #include "Ravl/Genetic/GeneTypeWeightedMeta.hh"
+#include "Ravl/Genetic/GeneTypeFloatGauss.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/UnitTest.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/Point2d.hh"
 
 int testGenomeIO();
 int testGeneIntIO();
 int testGeneFloatIO();
+int testGeneFloatGaussIO();
 int testGeneClassIO();
 int testGeneTypeEnumIO();
 int testGeneTypeMetaIO();
@@ -24,13 +26,16 @@ int testGeneTypeShare();
 
 int main(int nargs,char **argv)
 {
-  RavlN::SysLogOpen("testGeneticOpt");
+
+  RavlN::SysLogOpen("testGeneticOpt",false,true,false,-1,true);
 
   RAVL_RUN_TEST(testGeneIntIO());
   RAVL_RUN_TEST(testGeneFloatIO());
+  RAVL_RUN_TEST(testGeneFloatGaussIO());
   RAVL_RUN_TEST(testGeneClassIO());
   RAVL_RUN_TEST(testGeneTypeEnumIO());
   RAVL_RUN_TEST(testGeneTypeMetaIO());
+  RAVL_RUN_TEST(testGeneTypeWeightedMetaIO());
   RAVL_RUN_TEST(testGeneTypeListIO());
   RAVL_RUN_TEST(testGeneTypeShare());
   RAVL_RUN_TEST(testGenomeIO());
@@ -55,7 +60,7 @@ using RavlN::GeneticN::GeneListC;
 using RavlN::GeneticN::GeneTypeWeightedMetaC;
 using RavlN::GeneticN::GeneTypeClassShareC;
 using RavlN::GeneticN::GeneClassShareC;
-
+using RavlN::GeneticN::GeneTypeFloatGaussC;
 using RavlN::IntT;
 
 int testGeneIntIO()
@@ -102,6 +107,20 @@ int testGeneFloatIO()
 
   RAVL_TEST_EQUALS(gene->Value(),geneRL->Value());
   RAVL_TEST_EQUALS(gene->Type().Name(),geneType->Name());
+
+  return 0;
+}
+
+int testGeneFloatGaussIO() {
+  GeneTypeFloatGaussC::RefT geneType = new GeneTypeFloatGaussC("flup",-21,32,5,1,RavlN::GeneticN::GeneTypeFloatGaussC::FoldUp);
+  GeneTypeFloatGaussC::RefT geneTypeRL;
+
+  if(!TestBinStreamIO(geneType,geneTypeRL))
+    return __LINE__;
+
+  RAVL_TEST_EQUALS(geneType->FoldMode(),geneTypeRL->FoldMode());
+  RAVL_TEST_ALMOST_EQUALS(geneType->Width(),geneTypeRL->Width(),1e-6);
+  RAVL_TEST_ALMOST_EQUALS(geneType->Offset(),geneTypeRL->Offset(),1e-6);
 
   return 0;
 }
@@ -224,13 +243,24 @@ int testGeneTypeMetaIO()
 
 int testGeneTypeWeightedMetaIO()
 {
+  std::vector<GeneTypeC::ConstRefT> types;
+  std::vector<float> weights;
+
+  GeneTypeWeightedMetaC::RefT geneTypeMetaE = new GeneTypeWeightedMetaC("empty",types,weights);
+  GeneTypeWeightedMetaC::RefT geneTypeMetaERL;
+
+  //! Check IO on an empty class works.
+  if(!TestBinStreamIO(geneTypeMetaE,geneTypeMetaERL))
+    return __LINE__;
+
+  RAVL_TEST_EQUALS(geneTypeMetaE->Name(),geneTypeMetaERL->Name());
+
+
   GeneTypeIntC::RefT geneTypeInt = new GeneTypeIntC("igloo",1,10);
   GeneTypeFloatC::RefT geneTypeFloat = new GeneTypeFloatC("bannana",1.0,10.0);
 
-  std::vector<GeneTypeC::ConstRefT> types;
   types.push_back(geneTypeInt.BodyPtr());
   types.push_back(geneTypeFloat.BodyPtr());
-  std::vector<float> weights;
   weights.push_back(0.3);
   weights.push_back(0.7);
 

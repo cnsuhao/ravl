@@ -9,6 +9,8 @@
 //! file="Ravl/Core/System/PointerManager.cc"
 
 #include "Ravl/PointerManager.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/Exception.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -18,6 +20,30 @@
 #endif
 
 namespace RavlN {
+
+  //: Destructor.
+
+  IOPtrActionC::~IOPtrActionC()
+  {}
+
+  //:----------------------------------------------------
+
+  void IOPtrC::Save(BinOStreamC &os)
+  { actions->Save(*this,os); }
+  //: Save object to a binary stream.
+
+  void IOPtrC::Load(BinIStreamC &is)
+  { actions->Load(*this,is); }
+  //: Load object from a binary stream.
+
+  void IOPtrC::Save(OStreamC &os)
+  { actions->Save(*this,os); }
+  //: Save object to a stream.
+
+  void IOPtrC::Load(IStreamC &is)
+  { actions->Load(*this,is); }
+  //: Load object from a stream.
+
   //:----------------------------------------------------
   
   //: Destructor.
@@ -41,6 +67,27 @@ namespace RavlN {
   PointerManagerBodyC::~PointerManagerBodyC() 
   { ONDEBUG(cerr << "PointerManagerBodyC::~PointerManagerBodyC(), Called. \n"); }
   
+
+  //: Test if an object has already been saved/loaded.
+
+  StoredPointerC *PointerManagerBodyC::Lookup(const IOPtrC &obj) {
+    SizeT id;
+    if(!Lookup(obj,id))
+      return 0;
+    return id2ptr.Lookup(id);
+  }
+
+  //: Store the address of an object.
+  // Returns the id for the ptr.
+
+  SizeT PointerManagerBodyC::Insert(const IOPtrC &obj) {
+    SizeT id = idAlloc++;
+    ptr2id[obj.Key()] = id;
+    return id;
+  }
+
+
+
   //:----------------------------------------------------
   
   BinOStreamC &operator<<(BinOStreamC &strm,IOPtrC obj) {
@@ -48,8 +95,17 @@ namespace RavlN {
       strm.PointerManager() = PointerManagerC(true);
     PointerManagerC mgr(strm.PointerManager());
     SizeT id;
+
     if(mgr.Lookup(obj,id)) { // Seen this object already ?
       ONDEBUG(cerr << "Storing id " << id << " from " << *((void **)obj.Pointer()) << "\n");
+#if RAVL_CHECK
+      // Check for cycles, had save been completed?
+      if(mgr.Lookup(id) == 0) {
+        RavlError("Cycle detected in pointers being saved, saving this structure is unsupported. ");
+        RavlAssertMsg(0,"Cycle in pointers");
+        throw RavlN::ExceptionOperationFailedC("Cycle in pointers");
+      }
+#endif
       strm << id;
     } else {
       // Not seen before, save id then object.
@@ -57,6 +113,10 @@ namespace RavlN {
       ONDEBUG(cerr << "Storing data with id " << id << " \n");
       strm << id;
       obj.Save(strm);
+#if RAVL_CHECK
+      // Mark saving complete
+      mgr.Insert(id,obj);
+#endif
     }
     return strm;
   }

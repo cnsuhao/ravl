@@ -7,7 +7,6 @@
 #ifndef RAVL_POINTERMANGER_HEADER
 #define RAVL_POINTERMANGER_HEADER 1
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! docentry="Ravl.API.Core.IO.Streams"
 //! userlevel=Normal
@@ -18,6 +17,8 @@
 #include "Ravl/BinStream.hh"
 #include "Ravl/Hash.hh"
 #include "Ravl/RCHandleV.hh"
+#include "Ravl/SmartPtr.hh"
+#include "Ravl/TypeName.hh"
 
 namespace RavlN {
   
@@ -35,26 +36,25 @@ namespace RavlN {
     {}
     //: Default constructor.
 
-    virtual ~IOPtrActionC()
-    {}
+    virtual ~IOPtrActionC();
     //: Destructor.
     
     virtual void Assign(IOPtrC &ptr,StoredPointerC &obj) const = 0;
     //: Assign an object to the pointer.
     
-    virtual void Save(IOPtrC &ptr,BinOStreamC &ostrm) const = 0;
+    virtual void Save(const IOPtrC &ptr,BinOStreamC &ostrm) const = 0;
     //: Save the body of the object to a binary stream
     
     virtual void Load(IOPtrC &ptr,BinIStreamC &istrm) const = 0;
-    //: Save the body of the object to a binary stream
+    //: Load the body of the object to a binary stream
 
-    virtual void Save(IOPtrC &ptr,OStreamC &ostrm) const = 0;
+    virtual void Save(const IOPtrC &ptr,OStreamC &ostrm) const = 0;
     //: Save the body of the object to a binary stream
     
     virtual void Load(IOPtrC &ptr,IStreamC &istrm) const = 0;
-    //: Save the body of the object to a binary stream
+    //: Load the body of the object to a binary stream
     
-    virtual void Store(StoredPointerC &store,IOPtrC &ptr) const = 0;
+    virtual void Store(StoredPointerC &store,const IOPtrC &ptr) const = 0;
     //: Store pointer for use later.
     
     virtual void Free(void *data) const = 0;
@@ -62,7 +62,9 @@ namespace RavlN {
     
     virtual const void *Key(const void *ptr) const = 0;
     //: Get key for lookup.
-    
+
+    virtual const type_info &TypeInfo() const = 0;
+    //: Get type of pointer
   };
   
   //! userlevel=Develop
@@ -73,40 +75,44 @@ namespace RavlN {
   public:
     IOPtrC()
       : ptr(0),
-	actions(0)
+	      actions(0)
     {}
     //: Default constructor.
     
-    IOPtrC(void *data,IOPtrActionC &nActions)
+    IOPtrC(void *data,const IOPtrActionC &nActions)
       : ptr(data),
-	actions(&nActions)
+	      actions(&nActions)
     {}
     //: Constructor.
     
+    bool IsValid() const
+    { return actions != 0; }
+    //: Test if IOPtr is valid.
+
     void Assign(StoredPointerC &data)
     { actions->Assign(*this,data); }
     //: Assign value to the pointer.
     
-    void Save(BinOStreamC &os)
-    { actions->Save(*this,os); }
+    void Save(BinOStreamC &os);
     //: Save object to a binary stream.
     
-    void Load(BinIStreamC &is)
-    { actions->Load(*this,is); }
+    void Load(BinIStreamC &is);
     //: Load object from a binary stream.
     
-    void Save(OStreamC &os)
-    { actions->Save(*this,os); }
+    void Save(OStreamC &os);
     //: Save object to a stream.
     
-    void Load(IStreamC &is)
-    { actions->Load(*this,is); }
+    void Load(IStreamC &is);
     //: Load object from a stream.
     
     void *Pointer()
     { return ptr; }
     //: Access pointer.
-    
+
+    const void *Pointer() const
+    { return ptr; }
+    //: Access pointer.
+
     void Pointer(void *nptr)
     { ptr = nptr; }
     //: Access pointer.
@@ -115,21 +121,25 @@ namespace RavlN {
     { return ptr == oth.ptr; }
     //: Are these handles to the same object ?
     
-    UIntT Hash() const
+    size_t Hash() const
     { return StdHash((const void *) ptr); }
     //: Create a hash value for the pointer.
     
-    IOPtrActionC *Actions()
+    //IOPtrActionC *Actions()
+    //{ return actions; }
+    //: Access action class.
+
+    const IOPtrActionC *Actions() const
     { return actions; }
     //: Access action class.
-    
+
     const void *Key() const
     { return actions->Key(ptr); }
     //: Get key for index.
     
   protected:
     void *ptr;
-    IOPtrActionC *actions;
+    const IOPtrActionC *actions;
   };
 
   //! userlevel=Develop
@@ -139,13 +149,15 @@ namespace RavlN {
   public:
     StoredPointerC()
       : obj(0),
-	actions(0)
+	      actions(0),
+	      m_complete(false)
     {}
     //: Default constructor.
     
     StoredPointerC(const StoredPointerC &oth)
       : obj(0),
-	actions(0)
+	      actions(0),
+        m_complete(false)
     { RavlAssert(oth.obj == 0); }
     //: Copy constructor.
     // Can't copy populated objects.
@@ -156,10 +168,18 @@ namespace RavlN {
     void *Pointer()
     { return obj; }
     //: Access pointer.
-    
+
+    const void *Pointer() const
+    { return obj; }
+    //: Access pointer.
+
     void Pointer(void *nptr)
     { obj = nptr; }
-    //: Access pointer.
+    //: Set pointer.
+
+    void Pointer(const void *nptr)
+    { obj = const_cast<void *>(nptr); }
+    //: Set pointer.
 
 #if 0    
     const StoredPointerC &operator=(const IOPtrC &mp) {
@@ -171,13 +191,16 @@ namespace RavlN {
     // Assign from a managed pointer.
 #endif
 
-    void Actions(IOPtrActionC *nptr)
+    void Actions(const IOPtrActionC *nptr)
     { actions = nptr; }
     //: Access pointer.
     
+    const IOPtrActionC *Actions() const
+    { return actions; }
   protected:
     void *obj;
-    IOPtrActionC *actions;
+    const IOPtrActionC *actions;
+    bool m_complete;
   };
   
   //! userlevel=Develop
@@ -193,25 +216,24 @@ namespace RavlN {
     ~PointerManagerBodyC();
     //: Destructor.
     
-    bool Lookup(IOPtrC &obj,SizeT &id)
+    bool Lookup(const IOPtrC &obj,SizeT &id) const
     { return ptr2id.Lookup(obj.Key(),id); }
     //: Test if an object has already been saved/loaded.
     // If it has then Lookup will return true and id will
     // be set to the id of the object.
-    
-    SizeT Insert(IOPtrC &obj) {
-      SizeT id = idAlloc++;
-      ptr2id[obj.Key()] = id;
-      return id;
-    }
+
+    SizeT Insert(const IOPtrC &obj);
     //: Store the address of an object.
-    // returns a unique id for that object.
+    // Returns the id for the ptr.
     
     StoredPointerC *Lookup(SizeT id)
     { return id2ptr.Lookup(id); }
     //: Lookup object by id.
-    
-    void Insert(SizeT id,IOPtrC &obj) {
+
+    StoredPointerC *Lookup(const IOPtrC &obj);
+    //: Test if an object has already been saved/loaded.
+
+    void Insert(SizeT id,const IOPtrC &obj) {
       //RavlAssert(id == idAlloc); // Check sequence.
       //idAlloc++;
       obj.Actions()->Store(id2ptr[id],obj);
@@ -269,7 +291,7 @@ namespace RavlN {
     //: Body access.
     
   public:
-    bool Lookup(IOPtrC &obj,SizeT &id)
+    bool Lookup(const IOPtrC &obj,SizeT &id)
     { return Body().Lookup(obj,id); }
     //: Test if an object has already been saved/loaded.
     // If it has then Lookup will return true and id will
@@ -278,13 +300,17 @@ namespace RavlN {
     StoredPointerC *Lookup(SizeT id)
     { return Body().Lookup(id); }
     //: Lookup object by id.
-    
-    SizeT Insert(IOPtrC &obj)
+
+    StoredPointerC *Lookup(IOPtrC &obj)
+    { return Body().Lookup(obj); }
+    //: Lookup object by id.
+
+    SizeT Insert(const IOPtrC &obj)
     { return Body().Insert(obj); }
     //: Store the address of an object.
     // returns a unique id for that object.
-    
-    void Insert(SizeT id,IOPtrC &obj)
+
+    void Insert(SizeT id,const IOPtrC &obj)
     { Body().Insert(id,obj); }
     //: Store by id.
     
@@ -308,13 +334,14 @@ namespace RavlN {
     //: Default constructor.
     
     virtual void Assign(IOPtrC &ptr,StoredPointerC &obj) const { 
+      RavlAssert(obj.Actions()->TypeInfo() == typeid(DataT));
       RavlAssert(obj.Pointer() != 0);
       *static_cast<DataT **>(ptr.Pointer()) = static_cast<DataT *>(obj.Pointer()); 
     }
     //: Assign an object to the pointer.
     
-    virtual void Save(IOPtrC &ptr,BinOStreamC &ostrm) const 
-    { ostrm << (**static_cast<DataT **>(ptr.Pointer())); }
+    virtual void Save(const IOPtrC &ptr,BinOStreamC &ostrm) const
+    { ostrm << (**static_cast<const DataT * const *>(ptr.Pointer())); }
     //: Save the body of the object to a binary stream
     
     virtual void Load(IOPtrC &ptr,BinIStreamC &istrm) const { 
@@ -324,8 +351,8 @@ namespace RavlN {
     }
     //: Load the body of the object from a binary stream
 
-    virtual void Save(IOPtrC &ptr,OStreamC &ostrm) const 
-    { ostrm << (**static_cast<DataT **>(ptr.Pointer())); }
+    virtual void Save(const IOPtrC &ptr,OStreamC &ostrm) const
+    { ostrm << (**static_cast<const DataT * const *>(ptr.Pointer())); }
     //: Save the body of the object to a binary stream
     
     virtual void Load(IOPtrC &ptr,IStreamC &istrm) const { 
@@ -335,7 +362,7 @@ namespace RavlN {
     }
     //: Load the body of the object from a binary stream
     
-    virtual void Store(StoredPointerC &store,IOPtrC &ptr) const { 
+    virtual void Store(StoredPointerC &store,const IOPtrC &ptr) const {
       store.Pointer(*((void **)ptr.Pointer())); // Get address of object.
       store.Actions(ptr.Actions());
     }
@@ -348,7 +375,11 @@ namespace RavlN {
     virtual const void *Key(const void *ptr) const
     { return *((void **)ptr); }
     //: Get key for lookup.
-    
+
+    virtual const type_info &TypeInfo() const
+    { return typeid(DataT); }
+    //: Get type of pointer
+
   };
 
   //! userlevel=Develop
@@ -364,29 +395,35 @@ namespace RavlN {
     //: Default constructor.
     
     virtual void Assign(IOPtrC &ptr,StoredPointerC &obj) const
-    { (*static_cast<DataT *>(ptr.Pointer())) = (*static_cast<DataT *>(obj.Pointer())); }
+    {
+      if(obj.Actions()->TypeInfo() != typeid(DataT)) {
+        std::cerr << "Type mismatch loading pointer: " << TypeName(obj.Actions()->TypeInfo()) << " and " << TypeName(typeid(DataT)) << "\n";
+        RavlAlwaysAssert(0);
+      }
+      (*static_cast<DataT *>(ptr.Pointer())) = (*static_cast<DataT *>(obj.Pointer()));
+    }
     //: Assign an object to the pointer.
     
-    virtual void Save(IOPtrC &ptr,BinOStreamC &ostrm) const 
-    { ostrm << (*static_cast<DataT *>(ptr.Pointer())); }
+    virtual void Save(const IOPtrC &ptr,BinOStreamC &ostrm) const
+    { ostrm << (*static_cast<const DataT *>(ptr.Pointer())); }
     //: Save the body of the object to a binary stream
     
     virtual void Load(IOPtrC &ptr,BinIStreamC &istrm) const 
     { istrm >> (*static_cast<DataT *>(ptr.Pointer())); }
     //: Load the body of the object from a binary stream
 
-    virtual void Save(IOPtrC &ptr,OStreamC &ostrm) const 
-    { ostrm << (*static_cast<DataT *>(ptr.Pointer())); }
+    virtual void Save(const IOPtrC &ptr,OStreamC &ostrm) const
+    { ostrm << (*static_cast<const DataT *>(ptr.Pointer())); }
     //: Save the body of the object to a stream
     
     virtual void Load(IOPtrC &ptr,IStreamC &istrm) const 
     { istrm >> (*static_cast<DataT *>(ptr.Pointer())); }
     //: Load the body of the object from a stream
     
-    virtual void Store(StoredPointerC &store,IOPtrC &ptr) const {
+    virtual void Store(StoredPointerC &store,const IOPtrC &ptr) const {
       RavlAssert(ptr.Pointer() != 0);
-      DataT *newobj = new DataT(*static_cast<DataT *>(ptr.Pointer()));
-      store.Pointer(static_cast<void *>(newobj));
+      const DataT *newobj = new DataT(*static_cast<const DataT *>(ptr.Pointer()));
+      store.Pointer(static_cast<const void *>(newobj));
       store.Actions(ptr.Actions());      
     }
     //: Store pointer for use later.
@@ -400,7 +437,11 @@ namespace RavlN {
     virtual const void *Key(const void *ptr) const
     { return static_cast<const DataT *>(ptr)->VoidPtr(); }
     //: Get key for lookup.
-    
+
+    virtual const type_info &TypeInfo() const
+    { return typeid(DataT); }
+    //: Get type of pointer
+
   };
 
   //! userlevel=Normal
@@ -432,7 +473,35 @@ namespace RavlN {
     return IOPtrC((void *) &ptr,action); 
   }
   //: Handle a reference counted object.
-  
+
+  template<class DataT>
+  inline IOPtrC ObjIO(SmartPtrC<DataT> &ptr) {
+    static IOPtrActionHandleC<SmartPtrC<DataT> > action;
+    return IOPtrC((void *) &ptr,action);
+  }
+  //: Handle a reference counted object.
+
+  template<class DataT>
+  inline IOPtrC ObjIO(const SmartPtrC<DataT> &ptr) {
+    static IOPtrActionHandleC<SmartPtrC<DataT> > action;
+    return IOPtrC((void *) &ptr,action);
+  }
+  //: Handle a reference counted object.
+
+  template<class DataT>
+  inline IOPtrC ObjIO(SmartPtrC<const DataT> &ptr) {
+    static IOPtrActionHandleC<SmartPtrC<DataT> > action;
+    return IOPtrC((void *) &ptr,action);
+  }
+  //: Handle a reference counted object.
+
+  template<class DataT>
+  inline IOPtrC ObjIO(const SmartPtrC<const DataT> &ptr) {
+    static IOPtrActionHandleC<SmartPtrC<DataT> > action;
+    return IOPtrC((void *) &ptr,action);
+  }
+  //: Handle a reference counted object.
+
   BinOStreamC &operator<<(BinOStreamC &strm,IOPtrC obj);
   //: Save managed pointer to a binary stream.
   

@@ -18,6 +18,7 @@
 
 #if RAVL_HAVE_UNISTD_H
 #include <unistd.h>
+#include <errno.h>
 #endif
 
 #define DODEBUG 0
@@ -151,11 +152,13 @@ namespace RavlN
     // if we're freeing it, as the resource its waiting for is probably on its way out too.
     bool reportedError = false;
     while(--maxRetry > 0) {
+      int ret = 0;
       if(TryLock()) { // Try get an exclusive lock.
 	Unlock(); // Unlock... and destroy.
 #if RAVL_HAVE_POSIX_THREADS
-	if(pthread_mutex_destroy(&mutex) == 0)
+	if((ret = pthread_mutex_destroy(&mutex)) == 0)
 	  break; // It worked ok..
+        std::cerr << "Failed to destroy mutex with error: " << ret << "\n";
 #endif
 #if RAVL_HAVE_WIN32_THREADS
         if(CloseHandle(mutex)) 
@@ -164,10 +167,11 @@ namespace RavlN
 #endif
       }
       if(!reportedError) {
-        std::cerr << "WARNING: MutexC::~MutexC(), thread holding lock on mutex in destructor. This indicates a likely problem with the code. \n";
+        std::cerr << "WARNING: MutexC::~MutexC(), thread holding lock on mutex in destructor. This indicates a problem with the code. \n";
         std::cerr << "Stack dump:\n";
         DumpStack(std::cerr);
         reportedError = true;
+        RavlAssert(0);
       }
 #if RAVL_HAVE_WIN32_THREADS
       RavlN::Sleep(0.01);
