@@ -12,7 +12,6 @@ ifdef ZMQ_HOME
   ZMQ_EXELIB += -L$(ZMQ_HOME)/lib -Wl,-rpath,$(ZMQ_HOME)/lib 
 endif
 
-EXELIB := -L/sw/lib -lzmq  $(ZMQ_EXELIB)  $(EXELIB)
-
+EXELIB := -lzmq  $(ZMQ_EXELIB)  $(EXELIB)
 
 endif
