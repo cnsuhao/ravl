@@ -38,15 +38,7 @@ namespace RavlN {
     RavlAssertMsg(0,"abstract method"); // Abstract function called.
     return RCWrapAbstractC();
   }
-  
-  /////////////////////////////
-  //: Attempt to load object from a file.
-  
-  RCWrapAbstractC DPTypeInfoBodyC::Load(const StringC &,const StringC &fmtName,bool) const {
-    RavlAssertMsg(0,"abstract method"); // Abstract function called.
-    return RCWrapAbstractC();
-  }
-  
+
   //: Put generic object to port.
   // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
   // an assert may fail.
