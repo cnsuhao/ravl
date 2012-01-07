@@ -15,10 +15,12 @@
 #include "Ravl/Stream.hh"
 #include "Ravl/ScalMath.hh"
 #include "Ravl/Math.hh"
+#include "Ravl/GPSCoordinate.hh"
 #include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
+int testGPS();
 int testSimple();
 int testRandom();
 int testFMatrixSimple();
@@ -29,34 +31,22 @@ int testFMatrixScalMath();
 
 
 int main() {
-  int line;
   
-  if((line = testSimple()) != 0) {
-    cerr << "Error on line: " << line << "\n";
-    return 1;
-  }
-  if((line = testRandom()) != 0) {
-    cerr << "Error on line: " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixSimple())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixValidate())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testSimple());
+  RAVL_RUN_TEST(testRandom());
+  RAVL_RUN_TEST(testFMatrixSimple());
+  RAVL_RUN_TEST(testFMatrixValidate());
   RAVL_RUN_TEST(testFMatrixValidateNS());
   RAVL_RUN_TEST(testFMatrixVectorOps());
   RAVL_RUN_TEST(testFMatrixScalMath());
   RAVL_RUN_TEST(testGPS());
-  cerr << "Test passed ok. \n";
+
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
 int testSimple() {
-  cerr <<"Checking math functions. \n";
+  //std::cerr <<"Checking math functions. \n";
   RealT cuberoot = Cbrt(8); // Really here to check if cbrt() exists.
   if(Abs(cuberoot - 2.0) > 1e-6) return __LINE__;
   cuberoot = Cbrt(-8); // Cbrt should handle negative numbers.
@@ -65,7 +55,7 @@ int testSimple() {
 }
 
 int testRandom() {
-  cerr <<"Checking random number generator. \n";
+  //std::cerr <<"Checking random number generator. \n";
   RealT num = 0;
   RealT min = 2;
   RealT max = -1;
@@ -75,7 +65,7 @@ int testRandom() {
     num = (RealT)rv / ((RealT) RandomIntMaxValue + 1.0);
     //cerr << "Num=" << num << "\n";
     if(num > 1 || num < 0) {
-      cout << "Bad random number:" << num << " RandomInt=" << rv << " (" << i << ")\n";
+      std::cerr << "Bad random number:" << num << " RandomInt=" << rv << " (" << i << ")\n";
       return __LINE__;
     }
     if(num < min)
@@ -84,16 +74,16 @@ int testRandom() {
       max = num;
   }
   if(min > 0.01) {
-    cerr << "Minimum value suspicously large: " << min << " \n";
+    std::cerr << "Minimum value suspicously large: " << min << " \n";
     return __LINE__;
   }
   if(max < 0.99) {
-    cerr << "Maximum value suspicously small: " << max << " \n";
+    std::cerr << "Maximum value suspicously small: " << max << " \n";
     return __LINE__;
   }
-  cerr <<"Values between " << min << " " << max << "\n";
+  //std::cerr <<"Values between " << min << " " << max << "\n";
   if (Random1(false) == 1.0) {
-    cerr << "Random1(false) should never return value of 1.0\n";
+    std::cerr << "Random1(false) should never return value of 1.0\n";
     return __LINE__;
   }
   return 0;
@@ -105,7 +95,8 @@ int testFMatrixSimple() {
   mat[Index2dC(0,0)] = 1;
   mat[1][1] = 1;
   TFMatrixC<RealT,2,2> mat2 = mat + mat;
-  cerr << mat2;
+  // FIXME:- Actually check something!
+  //std::cerr << mat2;
   return 0;
 }
 
@@ -130,21 +121,21 @@ int testFMatrixValidate()
   // Test 1.
   testR = t1 * t2;
   error = (testR - result).SumOfAbs();
-  cerr << "Mul:" << error << "\n";
+  //cerr << "Mul:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
   // Test 2.
   testR = (t1.T().TMul(t2));
   error = (testR - result).SumOfAbs();
-  cerr << "TTMul:" << error << "\n";
+  //cerr << "TTMul:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
   // Test 3.
   testR = (t1.MulT(t2.T()));
   error = (testR - result).SumOfAbs();
-  cerr << "MulTT:" << error << "\n";
+  //cerr << "MulTT:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   return 0;
@@ -169,14 +160,14 @@ int testFMatrixValidateNS()
   // Test 1.
   testR = (m1.T().TMul(m2));
   error = (testR - result).SumOfAbs();
-  cerr << "TTMul:" << error << "\n";
+  //cerr << "TTMul:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
   // Test 2.
   testR = (m1.MulT(m2.T()));
   error = (testR - result).SumOfAbs();
-  cerr << "MulTT:" << error << "\n";
+  //cerr << "MulTT:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
@@ -216,7 +207,7 @@ int testGPS()
   {
     StringC strTestCoord = "52 39' 27.2531\",1 43' 4.5177\",24.7m";
     GPSCoordinateC testCoord(strTestCoord);
-    std::cout << " DMS=[" << testCoord.TextDMS() << "]\n";
+    //std::cout << " DMS=[" << testCoord.TextDMS() << "]\n";
 
     GPSCoordinateC restoredCoord(testCoord.TextDMS());
     //std::cout << " RestoredDMS=[" << restoredCoord.TextDMS() << "]\n";
@@ -224,10 +215,10 @@ int testGPS()
     if((testCoord - restoredCoord).SumOfSqr() > 0.0001) return __LINE__;
 
     RavlN::Point3dC cartesianPlace = testCoord.Cartesian();
-    std::cout << " Metric=" << cartesianPlace << "\n";
+    //std::cout << " Metric=" << cartesianPlace << "\n";
 
     GPSCoordinateC recoveredGps = GPSCoordinateC::Cartesian2GPS(cartesianPlace,1e-12);
-    std::cout << " Restored DMS=[" << recoveredGps.TextDMS() << "]\n";
+    //std::cout << " Restored DMS=[" << recoveredGps.TextDMS() << "]\n";
   }
 
   const UIntT ntestdata = 7;
@@ -246,7 +237,7 @@ int testGPS()
 
     // Check text conversion.
     StringC stdCoordDMS = gps.TextDMS();
-    std::cout << "gps=" << stdCoordDMS << "\n";
+    //std::cout << "gps=" << stdCoordDMS << "\n";
 
     GPSCoordinateC restoredTextCoord(stdCoordDMS);
     if((gps - restoredTextCoord).SumOfSqr() > 0.0001) return __LINE__;
