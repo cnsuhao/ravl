@@ -407,6 +407,10 @@ namespace RavlN {
     }
     //: Invalidate context.
 
+    bool IsValid() const
+    { return m_iNode.IsValid() && m_factory.IsValid(); }
+    //: Test if context is valid.
+
     template<class DataT>
     bool UseComponent(const StringC &name,
                       DataT &data,
