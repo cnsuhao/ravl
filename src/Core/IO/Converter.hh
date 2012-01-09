@@ -16,7 +16,7 @@
 //! userlevel=Advanced
 
 // This header contains the classes need to define a single type
-// conversion.  The classes for handling a type converstion
+// conversion.  The classes for handling a type conversion
 // graph can be found in TypeConverterC.
 
 #include "Ravl/Types.hh"

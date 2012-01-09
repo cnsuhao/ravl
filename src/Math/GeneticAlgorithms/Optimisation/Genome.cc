@@ -17,6 +17,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/PointerManager.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/DP/FileFormatBinStream.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -71,6 +72,7 @@ namespace RavlN { namespace GeneticN {
       return false;
     ByteT version = 1;
     strm << version << m_name << m_defaultWeight;
+    ONDEBUG(RavlDebug("Loading GeneType '%s' weight=%f ",m_name.data(),m_defaultWeight));
     return true;
   }
 
@@ -148,6 +150,7 @@ namespace RavlN { namespace GeneticN {
     if(version != 1)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneC");
     strm >> ObjIO(m_type);
+    ONDEBUG(RavlDebug("Loading Gene, Type='%s' ",m_type->Name().data()));
   }
 
   //! Load form a binary stream
@@ -234,6 +237,15 @@ namespace RavlN { namespace GeneticN {
 
   // ---------------------------------------------------------------------
 
+  //! Default constructor
+
+  GenomeC::GenomeC()
+  : m_const(false),
+    m_age(0),
+    m_generation(0),
+    m_averageCount(0)
+  {}
+
   GenomeC::GenomeC(const GeneC &rootGene)
    : m_const(false),
      m_genomeRoot(&rootGene),
@@ -275,7 +287,7 @@ namespace RavlN { namespace GeneticN {
     strm >> version;
     if(version != 1)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("GenomeC");
-    strm >> ObjIO(m_genomeRoot) >> m_age >> m_generation;
+    strm >> ObjIO(m_genomeRoot) >> m_age >> m_generation >> m_averageScore >> m_averageCount;
   }
 
   //! Load form a binary stream
@@ -293,7 +305,7 @@ namespace RavlN { namespace GeneticN {
       return false;
     ByteT version = 1;
     strm << version;
-    strm << ObjIO(m_genomeRoot) << m_age << m_generation;
+    strm << ObjIO(m_genomeRoot) << m_age << m_generation << m_averageScore << m_averageCount;
     return true;
   }
 
@@ -381,6 +393,10 @@ namespace RavlN { namespace GeneticN {
       m_averageScore = newScore;
       return newScore;
     }
+    if(maxAge > 1000) {
+      m_averageScore += newScore;
+      return m_averageScore;
+    }
     m_averageScore = (m_averageScore * static_cast<float>(m_averageCount) + newScore) / static_cast<float>(m_averageCount + 1);
     if(m_averageCount < maxAge)
       m_averageCount++;
@@ -388,8 +404,11 @@ namespace RavlN { namespace GeneticN {
   }
 
 
+  RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GenomeC,"RavlN::GeneticN::GenomeC");
+
   XMLFactoryRegisterC<GenomeC> g_registerGenome("RavlN::GeneticN::GenomeC");
   static RavlN::TypeNameC g_typePtrGenome(typeid(GenomeC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GenomeC>");
+  static FileFormatBinStreamC<RavlN::SmartPtrC<RavlN::GeneticN::GenomeC> > g_registerGenomeBinStream;
 
   // ----------------------------------------------------------------------
 

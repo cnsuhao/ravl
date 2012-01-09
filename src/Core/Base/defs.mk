@@ -24,7 +24,8 @@ HEADERS=Types.hh config.h Pair.hh Resource.hh \
  fdstream.hh GenBinStream.hh Traits.hh FPNumber.hh QInt.hh CompilerHints.hh \
  stdio_fdstream.hh AMutex.hh RCLayer.hh SmartLayerPtr.hh CallMethodPtrs.hh CPUID.hh \
  FuncStream.hh VectorUtils.hh Float16.hh RCHandle.hh UnitTest.hh Size.hh QuickSort.hh \
- ExceptionTimeOut.hh UUId.hh
+ ExceptionTimeOut.hh UUId.hh SysLog.hh
+
 
 SOURCES=Assert.cc Exception.cc EntryPnt.cc Index.cc String.cc \
  RefCounter.cc HandleRefCounter.cc Trigger.cc Calls.cc \
@@ -35,7 +36,7 @@ SOURCES=Assert.cc Exception.cc EntryPnt.cc Index.cc String.cc \
  RealRange1d.cc RealRange2d.cc RealRange3d.cc \
  RCBodyV.cc URLMapper.cc GenBinStream.cc Resource.cc \
  AMutex.cc RCLayer.cc CPUID.cc FuncStream.cc VectorUtils.cc \
- Float16.cc Size.cc ExceptionTimeOut.cc UUId.cc
+ Float16.cc Size.cc ExceptionTimeOut.cc UUId.cc SysLog.cc
 
 PLIB=RavlCore
 
@@ -45,7 +46,9 @@ USESLIBS=
 
 TESTEXES= testRavlBase.cc testCalls.cc testString.cc testStream.cc testTFVector.cc testRCLayer.cc testVectorUtils.cc
 
-EXAMPLES = exIndex.cc exRefCounter.cc exRefCounterInherit.cc exRefCounterAbstractInherit.cc exQInt.cc exTrigger.cc testRCLayer.cc exCPUID.cc
+EXAMPLES = exIndex.cc exRefCounter.cc exRefCounterInherit.cc \
+ exRefCounterAbstractInherit.cc exQInt.cc exTrigger.cc \
+ testRCLayer.cc exCPUID.cc exSysLog.cc
 
 EHT=Ravl.API.Core.Indexing.eht Ravl.API.Core.Error_Handling.eht Ravl.API.Core.Misc.eht Ravl.API.Core.Reference_Counting.eht \
  Ravl.API.Core.Strings.html Ravl.API.Core.IO.Streams.html Ravl.API.Core.Calls.html Ravl.API.Math.QInt.html \

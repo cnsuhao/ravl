@@ -51,10 +51,7 @@ namespace RavlN {
     
     virtual RCWrapAbstractC Create(istream &strm) const;
     //: Create instance of the type from stream constructor.
-    
-    virtual RCWrapAbstractC Load(const StringC &fn,const StringC &fmtName = "",bool verb = false) const;
-    //: Attempt to load object from a file.
-    
+
     virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj);
     //: Put generic object to port.
     // Will throw ExceptionErrorCastC if types aren't correct, or in debug mode
@@ -231,18 +228,6 @@ namespace RavlN {
     virtual RCWrapAbstractC Create(istream &strm) const
     { return RCWrapC<DataT>(strm); }
     //: Create instance of the type from stream constructor.
-    
-    virtual RCWrapAbstractC Load(const StringC &fn,const StringC &fmtName = "",bool verb = false) const {
-#if 0
-      DPIPortC<DataT> in(BaseLoad(fn,fmtName,typeid(DataT),verb));
-      if(!in.IsValid())
-        return RCWrapAbstractC(); // Failed.
-      return RCWrapC<DataT>(in.Get());
-#else
-      return RCWrapAbstractC(); // Failed.
-#endif
-    }
-    //: Attempt to load object from a file.
     
     virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj)
     {
@@ -466,14 +451,10 @@ namespace RavlN {
     // Register wrapper converter.
   }
   
-  inline
-  const DPTypeInfoC &TypeInfo(const type_info &ti)
-  { return DPTypeInfoBodyC::Types()[ti.name()]; }
+  const DPTypeInfoC &TypeInfo(const type_info &ti);
   //: Access extra information about a type.
-  
-  inline
-  const DPTypeInfoC &TypeInfo(const char *tn)
-  { return DPTypeInfoBodyC::Types()[tn]; }
+
+  const DPTypeInfoC &TypeInfo(const char *tn);
   //: Access extra information about a type.
 }
 #endif

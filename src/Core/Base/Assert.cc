@@ -207,5 +207,17 @@ namespace RavlN {
     std::cerr << "WARNING " << file << ":" << lineNo << " :" << str << "\n";
   }
 
+  bool DumpStack(std::ostream &strm) {
+#if RAVL_HAVE_BACKTRACE
+    void *stack[g_maxStackDepth];
+    int depth = backtrace(stack,g_maxStackDepth);
+    DisplayStackTrace(std::cerr,stack,depth);
+    return true;
+#else
+    return false;
+#endif
+  }
+  //: Dump the current stack to the given stream.
+
 
 }

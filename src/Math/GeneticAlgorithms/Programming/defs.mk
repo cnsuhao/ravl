@@ -31,3 +31,5 @@ PLIB=RavlGeneticProgram
 
 USESLIBS=RavlOS RavlGeneticOptimisation
 
+#TESTEXES=testGeneticProgram.cc
+ 

@@ -4,6 +4,10 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlGeneticOptimisation
+//! author=Charles Galambos
+//! docentry=Ravl.API.Math.Genetic.Optimisation
+
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
@@ -11,9 +15,6 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/PointerManager.hh"
 #include "Ravl/VirtualConstructor.hh"
-//! lib=RavlGeneticOptimisation
-//! author=Charles Galambos
-//! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #define DODEBUG 0
 #if DODEBUG
@@ -58,12 +59,17 @@ namespace RavlN { namespace GeneticN {
     UInt32T size;
     strm >> size;
     std::string name;
+    ONDEBUG(RavlDebug("Loading node '%s' elements=%u ",m_name.data(),size));
+
     for(UInt32T i = 0;i < size;i++) {
       strm >> name;
+      ONDEBUG(RavlDebug("Loading '%s' ",name.data()));
       GeneTypeC::ConstRefT theGene;
       strm >> ObjIO(theGene);
+      ONDEBUG(RavlDebug("Loading '%s' -> %s ",name.data(),RavlN::TypeName(typeid(*theGene))));
       m_componentTypes.Insert(name,theGene);
     }
+    ONDEBUG(RavlDebug("Loading '%s' done. ",m_name.data()));
   }
 
   //! Load form a binary stream
@@ -85,7 +91,9 @@ namespace RavlN { namespace GeneticN {
     for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++) {
       strm << it.Key();
       strm << ObjIO(it.Data());
+      RavlAssert(size-- > 0);
     }
+    RavlAssert(size == 0);
     return true;
   }
 

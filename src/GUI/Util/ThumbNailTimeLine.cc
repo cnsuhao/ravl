@@ -402,9 +402,6 @@ namespace RavlGUIN {
       //ONDEBUG(cerr << "Noframes=" << noFrames << "\n");
       int startFrame = -noFrames/2;
       int endFrame = noFrames + startFrame;
-      int atx,aty;
-      aty = workingDisplayArea.TRow().V();
-      atx = 0;
       for(int i = startFrame;i < endFrame;i++) {
 	if(semaUpdate.TryWait()) { // Check if we've been interupted.
 	  restart = true;

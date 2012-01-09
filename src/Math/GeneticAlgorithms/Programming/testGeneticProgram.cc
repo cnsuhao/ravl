@@ -1,24 +1,45 @@
 
 #include "Ravl/Genetic/GPVariable.hh"
+#include "Ravl/Genetic/GPInstruction.hh"
+#include "Ravl/UnitTest.hh"
+#include "Ravl/OS/SysLog.hh"
 
-int testVariable();
+int testGeneInstIO();
 
 int main(int nargs,char **argv)
 {
-  int ln = 0;
-  if((ln = testVariable()) != 0) {
-    std::cerr <<"Test failed on line " << ln << "\n";
-    return 1;
-  }
+//  RavlN::SysLogOpen("testGeneticOpt",false,true,false,-1,true);
+
+  RavlInfo("Starting test. ");
+  RAVL_RUN_TEST(testGeneInstIO());
+
+  RavlInfo("Test passed ok. ");
   return 0;
 }
 
+using RavlN::GeneticN::GenomeC;
+using RavlN::GeneticN::GeneFactoryC;
+using RavlN::GeneticN::GPInstructionC;
 
-int testVariable()
+int testGeneInstIO()
 {
-  GPVariableC<int> var1;
-  GPVariableC<int> var2;
 
+  for(unsigned i = 0;i < 10000;i++) {
+    RavlInfo("Test %d ",i);
 
+    GenomeC::RefT genome = new GenomeC(*RavlN::GeneticN::InstructionGeneType());
+
+    // Instantiate genome
+    GeneFactoryC factory(*genome);
+    GPInstructionC::RefT inst;
+    factory.Get(inst);
+    RAVL_TEST_TRUE(inst.IsValid());
+
+    GenomeC::RefT genomeRL;
+    if(!TestBinStreamIO(genome,genomeRL))
+      return __LINE__;
+
+    RAVL_TEST_EQUALS(genome->Size(),genomeRL->Size());
+  }
   return 0;
 }

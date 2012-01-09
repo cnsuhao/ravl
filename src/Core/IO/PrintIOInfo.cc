@@ -10,6 +10,7 @@
 #include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/MTLocks.hh"
 
 namespace RavlN {
   
@@ -33,7 +34,9 @@ namespace RavlN {
   void PrintIOFormats(ostream &os) {
     os << "File Formats:\n";
     os << "Seq Pri\tFormat\t\tClass\t\t\t\tDescription\n";
+    MTReadLockC readLock(0);
     DListC<FileFormatBaseC> fmts = SystemFileFormatRegistry().Formats().Copy();
+    readLock.Unlock();
     fmts.MergeSort(ListFmts_LessThanOrEqual);
     for(DLIterC<FileFormatBaseC> it(fmts);
         it.IsElm();it.Next()) {
@@ -50,6 +53,7 @@ namespace RavlN {
   
   void PrintIOConversions(ostream &os) {
     os << "Type conversions:\n";
+    MTReadLockC cacheLock(5);
     for(GraphEdgeIterC<StringC,DPConverterBaseC> it(SystemTypeConverter().Graph());
         it.IsElm();it.Next()) {
       StringC name1 = TypeName(it.Data().ArgType(0)); 
@@ -61,6 +65,7 @@ namespace RavlN {
 
   void PrintIOClassTypes(ostream &os) {
     os << "Classes:\n";
+    MTReadLockC cacheLock(0);
     for(HashIterC<const char *,DPTypeInfoC> it(DPTypeInfoBodyC::Types());it.IsElm();it.Next()) 
       os << " " << TypeName(it.Key()) << "\n";
   }

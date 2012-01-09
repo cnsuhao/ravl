@@ -446,8 +446,11 @@ SvmClassifierC DesignSvmSmoBodyC::GetClassifier() const
     const double lambda = lambdas[objectID];
     if(lambda > 0)
     {
-      if(j >= numSV)
+      if(j >= numSV) {
+        delete[] svl;
+        delete[] lmbd;
         throw ExceptionC("Internal error in number of SV");
+      }
       sv.Append(trainSetVectors[objectID]);
       svl[j] = trainingSetLabels[objectID];
       lmbd[j] = lambda;
@@ -456,8 +459,11 @@ SvmClassifierC DesignSvmSmoBodyC::GetClassifier() const
     }
   }
   //cout << "j:" << j << "   numSV:" << numSV << endl;
-  if(j != numSV)
+  if(j != numSV) {
+    delete[] svl;
+    delete[] lmbd;
     throw ExceptionC("Internal error in number of SV");
+  }
 
   SvmClassifierC rv(kernelFunction, sv, svl, lmbd, b);
   delete[] svl;

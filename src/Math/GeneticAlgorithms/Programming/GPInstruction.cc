@@ -56,7 +56,7 @@ namespace RavlN { namespace GeneticN {
 
   static GeneTypeMetaC::RefT &InstructionMetaType()
   {
-    static GeneTypeMetaC::RefT x = new GeneTypeWeightedMetaC("GPIntructions",std::vector<GeneTypeC::ConstRefT>(),std::vector<float>());
+    static GeneTypeMetaC::RefT x = new GeneTypeWeightedMetaC("GPInstructions",std::vector<GeneTypeC::ConstRefT>(),std::vector<float>());
     return x;
   }
 

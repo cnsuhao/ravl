@@ -47,6 +47,10 @@ namespace RavlN { namespace GeneticN {
     //! Mutate a gene
     virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
+    //! Access values in enumeration.
+    const std::vector<GeneC::ConstRefT> &Values() const
+    { return m_values; }
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeEnumC> RefT;
 

@@ -15,6 +15,7 @@
 #include "Ravl/StringList.hh"
 #include "Ravl/HSet.hh"
 #include "Ravl/DP/FileFormatDesc.hh"
+#include "Ravl/MTLocks.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -41,9 +42,10 @@ namespace RavlN {
   {}
 #endif
   
-  //: Add a new format to the registry.
+  //: Add a new format to the registery.
   
   bool FileFormatRegistryBodyC::Insert(FileFormatBaseC &ff) {
+    MTWriteLockC writeLock(6);
     if(ff.Name() != "") {
       FormatByName()[ff.Name()].InsLast(ff);
       ONDEBUG(cout << "Registering file format '" << ff.Name() << "'  : " << ff.Description() << "\n");
@@ -66,7 +68,9 @@ namespace RavlN {
 						      const StringC &name,
 						      const type_info &objtype,
 						      bool useIndirect
-						      ) {
+						      )
+  {
+    MTReadLockC readLock(6);
     if(name == "") { // Request for default format ?
       for(DLIterC<FileFormatBaseC> it(Formats());
 	  it.IsElm();
@@ -108,7 +112,9 @@ namespace RavlN {
 							  const type_info &objtype,
 							  StringC formName,
 							  bool useIndirect
-							  ) {
+							  )
+  {
+    MTReadLockC readLock(6);
     if(formName == "") {
       for(DLIterC<FileFormatBaseC> it(Formats());
 	  it.IsElm();
@@ -173,7 +179,9 @@ namespace RavlN {
 						      const type_info &objtype,
 						      StringC formName,
 						      bool useIndirect
-						      ) {
+						      )
+  {
+    MTReadLockC readLock(6);
     if(formName == "") {
       for(DLIterC<FileFormatBaseC> it(Formats());
 	  it.IsElm();
@@ -213,7 +221,8 @@ namespace RavlN {
   
   static bool ParseFmts(StringC &fmts,
 			HSetC<StringC> &ignoreFmts,
-			HSetC<StringC> &acceptFmts) {
+			HSetC<StringC> &acceptFmts)
+  {
     StringListC aLst(fmts,", \n\t\0");
     for(DLIterC<StringC> it(aLst);it.IsElm();it.Next()) {
       if(it.Data()[0] == '!') {
@@ -233,7 +242,10 @@ namespace RavlN {
 						StringC format,
 						const type_info &obj_type,
 						bool verbose
-						) {
+						)
+  {
+    MTReadLockC readLock(6);
+
     ONDEBUG(cerr << "FindInputFormat(), Fn:'" << filename << "' Format:'" << format << "'  Loading into type : " << TypeName(obj_type) << "  Verb:" << verbose << "\n");
 
     if(filename.length() == 0) {
@@ -352,7 +364,8 @@ namespace RavlN {
 						    StringC format,
 						    const type_info &obj_type,
 						    bool verbose
-						    ) {
+						    )
+  {
     FileFormatDescC fmtInfo;
     IStreamC inStream;
     if(!FindInputFormat(fmtInfo,filename,inStream,format,obj_type,verbose)) {
@@ -375,6 +388,7 @@ namespace RavlN {
 						 bool verbose
 						 ) {
     ONDEBUG(cerr << "FindOutputFormat(), Fn:'" << filename << "' Format:'" << format << "'  Type : " << TypeName(obj_type) << "  Verb:" << verbose << "\n");
+    MTReadLockC readLock(6);
     // Find format thats least effort to convert to.
     RealT minCost = 100000;
     FileFormatBaseC minForm;
@@ -464,8 +478,11 @@ namespace RavlN {
 						    StringC format,
 						    const type_info &obj_type,
 						    bool verbose
-						    ) {
+						    )
+  {
+    MTReadLockC readLock(6);
     FileFormatBaseC bestFormat;
+
     // Should look for best ??
     DListC<DPConverterBaseC> bestConverterList;
     const type_info *bestFormatType = 0;
@@ -547,11 +564,13 @@ namespace RavlN {
 						     StringC format,
 						     const type_info &obj_type,
 						     bool verbose
-						     ) {
+						     )
+  {
     if(obj_type == typeid(void)) {
       ONDEBUG(cerr << "CreateOutput(OStreamC), Asked to output void. \n");
       return DPOPortBaseC();
     }
+    MTReadLockC readLock(6);
   // Find format thats least effort to convert to.
     RealT minCost = 100000;
     FileFormatBaseC minForm;
@@ -719,6 +738,7 @@ namespace RavlN {
   
   DListC<FileFormatBaseC> FileFormatRegistryBodyC::ListFormats(bool forLoad,const StringC &fileFormat,const type_info &typespec) {
     DListC<FileFormatBaseC> ret;
+    MTReadLockC readLock(6);
     bool forceFormat = (fileFormat != "");
     for(DLIterC<FileFormatBaseC> it(SystemFileFormatRegistry().Formats());
 	it.IsElm();

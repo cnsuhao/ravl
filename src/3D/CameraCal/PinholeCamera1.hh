@@ -197,7 +197,7 @@ namespace Ravl3DN
   };
   
   //! userlevel=Normal
-  //: Simple pinhole camera model with first order lense distortion
+  //: Pinhole camera model with first order radial lens distortion
   // This class adds distortion (1 + k1 * radius) to the pinhole camera model
   //  Projects 2D image points z from 3D points x according to:<br>
   //    z[0] = cx + fx*( (R*x + t)[0] / (R*x + t)[2] )* (1 + k1 * r) <br>

@@ -42,6 +42,18 @@ namespace RavlN { namespace GeneticN {
     //! Generate a new value
     virtual void RandomValue(float &value) const;
 
+    //! Access width
+    float Width() const
+    { return m_width; }
+
+    //! Access offset
+    float Offset() const
+    { return m_offset; }
+
+    //! Access fold mode.
+    FoldModeT FoldMode() const
+    { return m_foldMode; }
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeFloatGaussC> RefT;
 

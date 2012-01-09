@@ -50,7 +50,6 @@ namespace RavlN { namespace GeneticN {
        throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneC");
      UInt32T size;
      strm >> size;
-     std::string name;
      for(UInt32T i = 0;i < size;i++) {
        GeneC::ConstRefT theGene;
        strm >> ObjIO(theGene);
@@ -148,7 +147,6 @@ namespace RavlN { namespace GeneticN {
        throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneTypeMetaC");
      UInt32T size;
      strm >> size;
-     std::string name;
      for(UInt32T i = 0;i < size;i++) {
        GeneTypeC::ConstRefT theGene;
        strm >> ObjIO(theGene);

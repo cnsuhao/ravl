@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001-11, University of Surrey
+# Copyright (C) 2001-12, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -22,7 +22,7 @@ SOURCES = ImgIOPNM.cc PNMFormat.cc ImgIOInt.cc ImgIOByte.cc \
  ImgIOByteYUV422.cc ImgIOByteVYU.cc ImgTypeCnv5.cc ImgTypeCnv6.cc \
  ImgIOByteYCbCrBT709Value.cc ImgIOUInt16YCbCrBT709Value.cc ImgIOYCbCrBT709ValueFloat.cc \
  ImgIOByteYCbCr422BT709Value.cc ImgIOUInt16YCbCr422BT709Value.cc ImgIOYPbPrBT709ValueFloat.cc \
- ImgIOFloatYPbPr422BT709Value.cc
+ ImgIOFloatYPbPr422BT709Value.cc ImgIOInit.cc
 
 
 # ImgIOPixel.cc  PixelIO.cc 

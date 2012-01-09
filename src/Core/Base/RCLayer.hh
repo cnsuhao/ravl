@@ -176,6 +176,8 @@ namespace RavlN {
     }
     //: Destructor.
     
+    using RCHandleVC<BodyT>::VoidPtr;
+
     const RCLayerC<BodyT> &operator=(const RCLayerC<BodyT> &oth) { 
       // Increment owners for incoming handle.
       if(oth.IsHandleOwner() && oth.BodyPtr() != 0)

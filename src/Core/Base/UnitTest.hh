@@ -7,7 +7,7 @@
 #ifndef RAVL_UNITTEST_HEADER
 #define RAVL_UNITTEST_HEADER 1
 /////////////////////////////////////////////////////////////////////////
-//! docentry="Ravl.API.Core"
+//! docentry="Ravl.API.Core.Misc"
 //! file="Ravl/Core/Base/UnitTest.hh"
 //! lib=RavlCore
 //! userlevel=Normal
@@ -52,7 +52,7 @@ namespace RavlN {
   }
 
   template<typename Data1T, typename Data2T>
-  bool TestEquals(const Data1T &expected, const Data2T &actual, const char* file, int line) {
+  bool TestEquals(const Data1T &expected,const Data2T &actual, const char* file, int line) {
     if (!(expected == actual)) {
       std::cerr << file << ":" << line << " Expected value (" << expected << ") but instead got (" << actual << ")\n";
       return false;
@@ -140,6 +140,17 @@ namespace RavlN {
     return true;
   }
 
+}
+
+#define RAVL_RUN_TEST(x) { \
+  int ln; \
+  std::cerr << "Testing '" #x "' " << std::flush; \
+  if((ln = x) != 0) { \
+    std::cerr << "\r " << #x " FAILED on line " << ln << std::endl; \
+    return 1; \
+  } else { \
+    std::cerr << "\r " << #x " PASSED. \n" << std::flush; \
+  } \
 }
 
 #define RAVL_TEST_EQUALS(x,y) { \

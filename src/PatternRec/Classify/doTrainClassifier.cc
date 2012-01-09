@@ -28,7 +28,7 @@ int main(int nargs, char **argv) {
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
   DListC<StringC>features = opts.List("features", "Use only these features");
-  bool noNormaliseSample = opts.Boolean("noNormalise", false, "Do not normalise the sample to unit mean/var");
+  StringC NormaliseSample = opts.String("normalise", "mean", "Normalise sample (mean, none, scale)");
   FilenameC classifierOutFile = opts.String("o", "classifier.strm", "Save classifier to this file.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
@@ -81,15 +81,23 @@ int main(int nargs, char **argv) {
 
 
     // Lets compute mean and variance of data set and normalise input
-    FuncMeanProjectionC func;
-    if (noNormaliseSample) {
+    FunctionC normaliseFunc;
+    if (NormaliseSample == "none") {
       SysLog(SYSLOG_INFO, "You are not normalising your sample!  I hope you know what you are doing.");
-    } else {
+    } else if(NormaliseSample == "mean") {
       // FIXME: Sometimes you want to normalise on a class, rather than the whole sample
-      SysLog(SYSLOG_INFO, "Normalising the whole sample!");
+      SysLog(SYSLOG_INFO, "Normalising the whole sample using sample mean and variance!");
       MeanCovarianceC meanCovariance = trainingDataSet.Sample1().MeanCovariance();
-      func = trainingDataSet.Sample1().NormalisationFunction(meanCovariance);
+      normaliseFunc = trainingDataSet.Sample1().NormalisationFunction(meanCovariance);
       trainingDataSet.Sample1().Normalise(meanCovariance);
+    } else if(NormaliseSample == "scale") {
+      SysLog(SYSLOG_INFO, "Scaling the whole sample!");
+      FuncLinearC lfunc;
+      trainingDataSet.Sample1().Scale(lfunc);
+      normaliseFunc = lfunc;
+    } else {
+      SysLog(SYSLOG_ERR, "Normalisation method not known!");
+      return 1;
     }
 
     // Train classifier
@@ -104,9 +112,9 @@ int main(int nargs, char **argv) {
 
     // If we have normalised the sample we need to make sure
     // all input data to classifier is normalised by same statistics
-    if (!noNormaliseSample) {
+    if (NormaliseSample != "none") {
       SysLog(SYSLOG_INFO, "Making classifier with pre-processing step!");
-      classifier = ClassifierPreprocessC(func, classifier);
+      classifier = ClassifierPreprocessC(normaliseFunc, classifier);
     }
 
     // And save the classifier

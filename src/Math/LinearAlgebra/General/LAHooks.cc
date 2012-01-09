@@ -85,7 +85,6 @@ static bool SVD_IP_default(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v) {
 //: Compute inverse of matrix using standard Ravl algorithm
 static bool Inverse_IP_default(MatrixC & m, RealT & det) {
   return InverseIP_GaussJordan(m, det);
-  return true;
 }
 
 

@@ -244,7 +244,6 @@ namespace RavlN { namespace GeneticN {
     UInt32T size;
     strm >> size;
     m_list.reserve(size);
-    std::string name;
     for(UInt32T i = 0;i < size;i++) {
       GeneC::ConstRefT theGene;
       strm >> ObjIO(theGene);

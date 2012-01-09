@@ -32,7 +32,7 @@ int main(int na,char **av)
   int i,j,nn;
   unsigned int seed;
   nn=5000;
-  seed=(unsigned int)time(NULL); 
+  seed=(unsigned int)time(0);
   setunfl(seed);
   cout << "Seed used = " << seed << "\n";
   for(j=0; j<nn ;++j){

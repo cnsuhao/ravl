@@ -91,10 +91,12 @@ namespace RavlN {
     
     bool RegisterIPortRequestManager(const CallFunc3C<StringC,StringC,NetISPortServerBaseC &,bool> &requestIPort);
     //: Register IPort request manager.
+    // Args: PortName,DataType,Place to open port to
     // Return false if this replaces another request manager.
     
     bool RegisterOPortRequestManager(const CallFunc3C<StringC,StringC,NetOSPortServerBaseC &,bool> &requestOPort);
     //: Register OPort request manager.
+    // Args: PortName,DataType,Place to open port to
     // Return false if this replaces another request manager.
     
   protected:
@@ -107,7 +109,7 @@ namespace RavlN {
     bool ConnectionDroppedO(NetOSPortServerBaseC &sp);
     //: Called when connection to port is dropped.
     
-    virtual void ZeroOwners() {}
+    virtual void ZeroOwners();
     //: Owning handles has dropped to zero.
 
     StringC name;
@@ -232,11 +234,13 @@ namespace RavlN {
     bool RegisterIPortRequestManager(const CallFunc3C<StringC,StringC,NetISPortServerBaseC &,bool> &requestIPort)
     { return Body().RegisterIPortRequestManager(requestIPort); }
     //: Register IPort request manager.
+    // Args: PortName,DataType,Place to open port to
     // Return false if this replaces another request manager.
     
     bool RegisterOPortRequestManager(const CallFunc3C<StringC,StringC,NetOSPortServerBaseC &,bool> &requestOPort)
     { return Body().RegisterOPortRequestManager(requestOPort); }
     //: Register OPort request manager.
+    // Args: PortName,DataType,Place to open port to
     // Return false if this replaces another request manager.
     
     friend class NetPortManagerBodyC;

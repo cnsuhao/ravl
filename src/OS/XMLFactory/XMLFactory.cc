@@ -408,6 +408,17 @@ namespace RavlN {
 
   extern void linkXMLFactoryRegister();
   
+  //: Setup directly from a config file name.
+  XMLFactoryContextC::XMLFactoryContextC(const StringC &configFile,XMLTreeLoadC *loader)
+  {
+    XMLFactoryC *factory = new XMLFactoryC(configFile,loader);
+    m_factory = RCAbstractC(*factory);
+    m_iNode = &factory->IRoot();
+    factory->PostReadConfig();
+    UseAttribute("verbose");
+    UseAttribute("checkConfig");
+  }
+
   //! Construct from Factory.
   
   XMLFactoryContextC::XMLFactoryContextC(const XMLFactoryHC &factory)
@@ -675,21 +686,21 @@ namespace RavlN {
       // ---- Load component from file ----
       StringC resourceModule = node.AttributeString("resourceModule","");
       if(m_verbose) {
-        RavlSysLogf(SYSLOG_DEBUG,"Loading component, Name='%s' file='%s' ",node.Name().chars(), loadFilename.data());
+        RavlDebug("Loading component, Name='%s' file='%s' ",node.Name().chars(), loadFilename.data());
       }
       StringC fullName = RavlN::FilenameC::Search(loadFilename,
                                                   RavlN::FilenameC(MasterConfigFilename()).PathComponent(),
                                                   resourceModule.data());
       if(fullName.IsEmpty()) {
-        RavlSysLogf(SYSLOG_ERR," Failed to find file '%s'  in node '%s' resourceModule '%s'",
+        RavlError(" Failed to find file '%s'  in node '%s' resourceModule '%s'",
                loadFilename.chars(), node.Name().chars(),resourceModule.chars());
         return false;
       }
       if(m_verbose) {
-        RavlSysLogf(SYSLOG_DEBUG,"Loading file='%s' ", fullName.data());
+        RavlDebug("Loading file='%s' ", fullName.data());
       }
       if(!RavlN::LoadAbstract(fullName, rawHandle, "", node.XMLNode().AttributeBool("loadVerbose", false))) {
-        RavlSysLogf(SYSLOG_ERR," load node '%s' from '%s'",node.Name().chars(),fullName.chars());
+        RavlError(" load node '%s' from '%s'",node.Name().chars(),fullName.chars());
         throw RavlN::ExceptionBadConfigC("Failed to load node from file. ");
         return false;
       }
@@ -704,13 +715,11 @@ namespace RavlN {
       if(typeToMake.IsEmpty()) {
         RavlSysLogf(SYSLOG_ERR,"No type specified for node '%s' ",node.Path().chars());
         throw RavlN::ExceptionBadConfigC("Type not specified. ");
-        return false;
       }
       TypeFactoryT *tf = Type2Factory().Lookup(typeToMake);
       if(tf == 0) {
         RavlSysLogf(SYSLOG_ERR,"Node '%s', Type '%s' unknown.",node.Path().chars(),typeToMake.chars());
         throw RavlN::ExceptionBadConfigC("Type not known. ");
-        return false;
       }
       XMLFactoryContextC createNode(*this,node);
       rawHandle = (*tf)(createNode);

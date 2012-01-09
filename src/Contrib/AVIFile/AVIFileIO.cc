@@ -131,7 +131,7 @@ namespace RavlImageN {
     try {
       // Create file
       m_pFile = CreateIAviWriteFile(filename);
-    } catch (BaseError err) {
+    } catch (BaseError &err) {
       ONDEBUG(cerr << "DPOAVIFileBodyC::SetupAVIFile, could not open file " << filename << " for writing." << endl);
       ONDEBUG(cerr << " -- AVIFile error follows: " << endl);
       ONDEBUG(err.PrintAll());
@@ -161,7 +161,7 @@ namespace RavlImageN {
       // Add frames    
       m_pStream->Start();
 
-    } catch (BaseError err) {
+    } catch (BaseError &err) {
       ONDEBUG(cerr << "DPOAVIFileBodyC::SetupAVIStream, could not setup stream." << endl);
       ONDEBUG(cerr << " -- AVIFile error follows: " << endl);
       ONDEBUG(err.PrintAll());
