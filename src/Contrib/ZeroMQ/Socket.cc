@@ -89,7 +89,7 @@ namespace RavlN {
        m_verbose(context.AttributeBool("verbose",false))
     {
       ContextC::RefT ctxt;
-      if(!context.UseComponent("ZMQContext",ctxt,false,typeid(ZmqN::ContextC))) {
+      if(!context.UseComponent("ZmqContext",ctxt,false,typeid(ZmqN::ContextC))) {
         RavlError("No context for socket at %s ",context.Path().data());
         throw ExceptionOperationFailedC("No context. ");
       }
@@ -402,6 +402,6 @@ namespace RavlN {
     void LinkSocket()
     {}
 
-    XMLFactoryRegisterC<SocketC> g_regiserBreeder("RavlN::ZmqN::SocketC");
+    static XMLFactoryRegisterC<SocketC> g_regiserSocket("RavlN::ZmqN::SocketC");
 
 }}
