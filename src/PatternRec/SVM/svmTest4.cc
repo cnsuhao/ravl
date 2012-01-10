@@ -74,12 +74,12 @@ int main()
 {
   try
   {
-    DesignSvmSmoLargeC dsvm(LinearKernelC(1), 200, 1e5, 1e5);
+    DesignSvmSmoLargeC dsvm(QuadraticKernelC(1.0f), 200, 1e5, 1e5);
     dsvm.SetCallbackFunc(MyCallbackFunc, NULL);
 
     //run test
     const IntT numPoints = 1000;
-    const IntT dimension = 100;
+    const IntT dimension = 50;
     SampleC<VectorC> trVec(numPoints);
     SampleC<UIntT> trLab(numPoints);
     SArray1dC<IndexC> vecIDs(numPoints);
@@ -93,7 +93,7 @@ int main()
     cout << endl;
     DateC startTime(true);
     cout << "Current time:" << startTime.Double() << endl;
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 1; i++)
     {
       cout << "i:" << i << endl;
       
@@ -101,14 +101,22 @@ int main()
       GenerateTrainingSet(trVec, trLab, numPoints, dimension);
 
       //build rule
-      cout << "creating rule\n";
+      cout << "creating rule1\n";
       ClassifierC svm = dsvm.Apply(trVec, trLab);
+
+      OStreamC os1("c1.strm");
+      os1 << svm;
+
+      cout << "creating rule2\n";
+      ClassifierC svm2 = dsvm.Apply(trVec, trLab);
+      OStreamC os2("c2.strm");
+      os2 << svm2;
 
       //check rule
       cout << "checking rule\n";
       for(int i = 0; i < numPoints; i++)
       {
-        RealT d = svm.Classify(trVec[i]) == 0 ? -1 : 1;
+        RealT d = svm2.Classify(trVec[i]) == 0 ? -1 : 1;
         float s = d * trLab[i];
         if(s < 0)
         {

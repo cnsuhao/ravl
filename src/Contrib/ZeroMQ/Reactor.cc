@@ -13,6 +13,7 @@
 namespace RavlN {
   namespace ZmqN {
 
+
     //! Default constructor.
     ReactorC::ReactorC()
      : m_teminateCheckInterval(5.0),
@@ -193,7 +194,6 @@ namespace RavlN {
       return true;
     }
 
-
     //! Called when owner handles drop to zero.
     void ReactorC::ZeroOwners() {
       m_terminate = true;
@@ -204,5 +204,8 @@ namespace RavlN {
     { return reactor.BodyPtr(); }
 
     DP_REGISTER_CONVERSION(Reactor2ServiceThread,1.0);
+
+    static XMLFactoryRegisterConvertC<ReactorC,ServiceThreadC> g_regiserBreeder("RavlN::ZmqN::ReactorC");
+
   }
 }
