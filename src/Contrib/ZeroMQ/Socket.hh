@@ -132,6 +132,9 @@ namespace RavlN {
       //! Handle to socket.
       typedef SmartPtrC<SocketC> RefT;
     protected:
+
+
+
       void *m_socket;
       StringC m_defaultCodec;
       bool m_verbose;

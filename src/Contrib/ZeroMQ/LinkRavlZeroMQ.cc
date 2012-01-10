@@ -9,9 +9,11 @@ namespace RavlN { namespace ZmqN {
 
   extern void LinkContext();
   extern void LinkSocket();
+  extern void LinkMsgJSON();
 
   void LinkRavlZeroMQ() {
     LinkContext();
     LinkSocket();
+    LinkMsgJSON();
   }
 }}
