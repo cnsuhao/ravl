@@ -6,7 +6,7 @@
 // file-header-ends-here
 //! rcsid="$Id$"
 //! lib=RavlOptimise
-//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Examples"
+//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Cases"
 //! userlevel=Normal
 //! file="Ravl/Math/Optimisation/Homography2dFitTest.cc"
 

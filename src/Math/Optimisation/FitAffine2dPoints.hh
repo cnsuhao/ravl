@@ -10,7 +10,7 @@
 //! author="Charles Galambos"
 //! date="1/10/2002"
 //! rcsid="$Id$"
-//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Examples"
+//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Cases"
 //! example="AffineFitTest.cc"
 //! lib=RavlOptimise
 //! file="Ravl/Math/Optimisation/FitAffine2dPoints.hh"
