@@ -17,7 +17,8 @@ namespace RavlN {
     //! Default constructor.
     ReactorC::ReactorC()
      : m_teminateCheckInterval(5.0),
-       m_pollListChanged(true)
+       m_pollListChanged(true),
+       m_verbose(false)
     {
 
     }
@@ -26,7 +27,8 @@ namespace RavlN {
     ReactorC::ReactorC(const XMLFactoryContextC &factory)
      : ServiceThreadC(factory),
        m_teminateCheckInterval(factory.AttributeReal("terminateCheckInterval",5.0)),
-       m_pollListChanged(true)
+       m_pollListChanged(true),
+       m_verbose(factory.AttributeBool("verbose",false))
     {
 
     }
@@ -108,6 +110,9 @@ namespace RavlN {
       // it will be kept at least until the end of the poll cycle because
       // we don't want to delete a class we're calling.
 
+      if(m_verbose) {
+        RavlDebug("Starting reactor '%s' ",Name().data());
+      }
       OnStart();
 
       std::vector<SocketDispatcherC::RefT> inUse;
@@ -136,21 +141,35 @@ namespace RavlN {
         }
         long timeout = -1;
         if(m_teminateCheckInterval >= 0)
-          timeout = m_teminateCheckInterval * 1000.0;
+          timeout = m_teminateCheckInterval * 1000000.0;
+        if(m_verbose) {
+          RavlDebug("Reactor '%s' polling for %u sockets.",Name().data(),(unsigned) pollArr.size());
+        }
         int ret = zmq_poll (first, pollArr.size(),timeout);
+        if(m_verbose) {
+          RavlDebug("Reactor '%s' got ready for %d sockets. (Timeout:%u) ",Name().data(),ret,timeout);
+        }
         if(ret < 0) {
           int anErrno = zmq_errno ();
           // Shutting down ?
-          if(anErrno == ETERM)
+          if(anErrno == ETERM) {
+            if(m_verbose) {
+              RavlDebug("Reactor '%s' context shutdown.",Name().data());
+            }
             break;
-          if(anErrno == EINTR)
+          }
+          if(anErrno == EINTR) {
+            if(m_verbose) {
+              RavlDebug("Reactor '%s' Got interrupted.",Name().data());
+            }
             continue;
-          RavlError("Poll failed : %s ",zmq_strerror (anErrno));
+          }
+          RavlError("Reactor '%s' poll failed : %s ",Name().data(),zmq_strerror (anErrno));
           RavlAssertMsg(0,"unexpected error");
           continue;
         }
         unsigned i = 0;
-        while(i < pollArr.size()) {
+        while(i < pollArr.size() && ret > 0) {
           // Avoid repeatedly setting up try/catch as it can be expensive.
           try {
             for(;i < pollArr.size() && ret > 0;i++) {
@@ -177,6 +196,9 @@ namespace RavlN {
 
       OnFinish();
 
+      if(m_verbose) {
+        RavlDebug("Shutdown of reactor '%s' complete.",Name().data());
+      }
       return true;
     }
 
