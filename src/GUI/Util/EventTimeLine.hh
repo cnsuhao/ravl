@@ -9,6 +9,7 @@
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! lib=RavlGUIUtil
+//! docentry="Ravl.API.Graphics.GTK.Util"
 
 #include "Ravl/GUI/RawCanvas.hh"
 #include "Ravl/RealRange1d.hh"

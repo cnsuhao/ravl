@@ -76,7 +76,7 @@ namespace RavlN {
       std::vector<SocketDispatcherC::RefT> m_sockets;
       float m_teminateCheckInterval;
       bool m_pollListChanged;
-
+      bool m_verbose;
       //! Called when owner handles drop to zero.
       virtual void ZeroOwners();
 

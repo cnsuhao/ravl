@@ -8,7 +8,7 @@
 //! file = "Ravl/Contrib/V4L2/exV4L2.cc"
 //! lib = RavlImgIOV4L2
 //! author = "Warren Moore"
-//! docentry = "Ravl.Images.Video.Video IO.Video4Linux2"
+//! docentry = "Ravl.API.Images.Video.Video IO.Video4Linux2"
 
 #include "Ravl/Option.hh"
 #include "Ravl/EntryPnt.hh"
