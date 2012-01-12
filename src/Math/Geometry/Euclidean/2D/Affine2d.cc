@@ -265,7 +265,8 @@ namespace RavlN {
                      Matrix2dC &rotation,
                      Vector2dC &translation,
                      RealT &scale,
-                     bool forceUnitScale
+                     bool forceUnitScale,
+                     bool forceUnitRotation
                      ) 
   {
     
@@ -302,25 +303,33 @@ namespace RavlN {
     // Compute the scaling.
     scale = Sqrt(ps2/ps1);
     
-    // Compute the rotation from the covariance matrix.
-    covar /= n;
-    Matrix2dC u,v;
-    Vector2dC d = RavlN::SVD_IP(covar,u,v);
+    // Sometimes we do not want to rotate, useful for cropping things as is out
+    // of the image
+    if(forceUnitRotation) {
+      rotation = Matrix2dC(1., 0., 0., 1.);
+    }
+    // Otherwise compute the rotation from the covariance matrix.
+    else {
+
+      covar /= n;
+      Matrix2dC u,v;
+      Vector2dC d = RavlN::SVD_IP(covar,u,v);
     
-    // TODO :- Make this faster by avoiding use of so many temporaries.
+      // TODO :- Make this faster by avoiding use of so many temporaries.
     
-    Matrix2dC s(1,0,
+      Matrix2dC s(1,0,
                 0,1);
     
-    // Correct mirroring.
+      // Correct mirroring.
+
+      if((u.Det() * v.Det()) < 0) {
+        s[1][1] = -1;
+        d[1] *= -1;
+      }
     
-    if((u.Det() * v.Det()) < 0) {
-      s[1][1] = -1;
-      d[1] *= -1;
+      rotation = u * s * v.T();
     }
-    
-    rotation = u * s * v.T();
-    
+
     // Compute the translation.
     if(forceUnitScale) {
       translation = mean2 - rotation * mean1;
@@ -337,13 +346,16 @@ namespace RavlN {
   bool FitSimilarity(const SArray1dC<Point2dC> &points1,
                      const SArray1dC<Point2dC> &points2,
                      Affine2dC &transform,
-                     bool forceUnitScale
+                     bool forceUnitScale,
+                     bool forceUnitRotation
                      ) {
     Matrix2dC rotation;
     Vector2dC translation;
     RealT scale;
-    if(!FitSimilarity(points1,points2,rotation,translation,scale,forceUnitScale))
+
+    if(!FitSimilarity(points1,points2,rotation,translation,scale,forceUnitScale,forceUnitRotation))
       return false;
+
     if(forceUnitScale)
       transform = Affine2dC(rotation,translation);
     else
