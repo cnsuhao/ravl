@@ -84,7 +84,8 @@ namespace RavlN {
 
     //! Factory constructor
     SocketC::SocketC(const XMLFactoryContextC &context)
-     : m_socket(0),
+     : m_name(context.Path().data()),
+       m_socket(0),
        m_defaultCodec(context.AttributeString("defaultCodec","")),
        m_verbose(context.AttributeBool("verbose",false))
     {
@@ -208,7 +209,7 @@ namespace RavlN {
     void SocketC::Subscribe(const std::string &topic)
     {
       RavlAssert(m_socket != 0);
-      RavlDebug("Subscribing to '%s' ",topic.data());
+      RavlDebug("Subscribing '%s' to '%s' ",m_name.data(),topic.data());
       int ret = zmq_setsockopt (m_socket,ZMQ_SUBSCRIBE,topic.data(),topic.size());
       if(ret != 0) {
         RavlError("Failed to subscribe to %s : %s ",topic.data(),zmq_strerror (zmq_errno ()));
@@ -220,7 +221,7 @@ namespace RavlN {
     bool SocketC::Unsubscribe(const std::string &topic)
     {
       RavlAssert(m_socket != 0);
-      RavlDebug("Unsubscribing from %s ",topic.data());
+      RavlDebug("Unsubscribing '%s' from %s ",m_name.data(),topic.data());
       int ret = zmq_setsockopt (m_socket,ZMQ_UNSUBSCRIBE,topic.data(),topic.size());
       if(ret != 0) {
         RavlError("Failed to unsubscribe to %s : %s ",topic.data(),zmq_strerror (zmq_errno ()));
