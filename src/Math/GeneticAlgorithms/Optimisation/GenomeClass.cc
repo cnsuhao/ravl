@@ -9,6 +9,8 @@
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #include "Ravl/Genetic/GenomeClass.hh"
+#include "Ravl/Genetic/Genome.hh"
+
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"

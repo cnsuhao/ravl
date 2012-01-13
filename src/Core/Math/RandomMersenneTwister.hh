@@ -57,6 +57,7 @@ namespace RavlN {
 
     Int32T Int();
     //: Returns a signed integer
+    // The number is always positive.
 
     double Double();
     //: Returns a double uniformly distributed between 0 and 1

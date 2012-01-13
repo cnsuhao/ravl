@@ -9,16 +9,18 @@
 
 PACKAGE=Ravl/Genetic
 
-HEADERS=Genome.hh GeneticOptimiser.hh \
+HEADERS=GeneType.hh Genome.hh GeneticOptimiser.hh \
  GenomeConst.hh GenomeShare.hh GenomeList.hh GenomeClass.hh GenomeMeta.hh \
  GeneTypeWeightedMeta.hh GeneTypeFloatGauss.hh \
- EvaluateFitness.hh EvaluateFitnessFunc.hh
+ EvaluateFitness.hh EvaluateFitnessFunc.hh \
+ GenePalette.hh
 
-SOURCES=Genome.cc GeneticOptimiser.cc \
+SOURCES=GeneType.cc Genome.cc GeneticOptimiser.cc \
  GenomeConst.cc GenomeShare.cc GenomeList.cc GenomeClass.cc GenomeMeta.cc \
  GeneTypeWeightedMeta.cc GeneTypeFloatGauss.cc \
  Gene2ClassGenerator.cc \
- EvaluateFitness.cc EvaluateFitnessFunc.cc
+ EvaluateFitness.cc EvaluateFitnessFunc.cc \
+ GenePalette.cc
 
 MAINS= 
 

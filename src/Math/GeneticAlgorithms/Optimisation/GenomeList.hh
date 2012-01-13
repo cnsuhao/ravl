@@ -10,7 +10,7 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
-#include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/DP/TypeConverter.hh"
 
