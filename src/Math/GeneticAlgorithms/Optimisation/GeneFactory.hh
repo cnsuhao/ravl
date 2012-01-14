@@ -158,7 +158,7 @@ namespace RavlN { namespace GeneticN {
     //! Get the root object
     template<typename ValueT>
     void Get(ValueT &value) const {
-      RCWrapC<ValueT> handle(handle);
+      RCWrapC<ValueT> handle;
       Get(handle,typeid(ValueT));
       value = handle.Data();
     }
