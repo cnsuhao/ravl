@@ -1,12 +1,41 @@
 
 #include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Genetic/GeneType.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 namespace RavlN { namespace GeneticN {
 
   //! Default constructor
   GeneTypeProxyMapC::GeneTypeProxyMapC()
   {}
+
+  //! factory constructor
+  GeneTypeProxyMapC::GeneTypeProxyMapC(const XMLFactoryContextC &factory)
+  {
+
+  }
+
+  //! Load from text stream.
+  GeneTypeProxyMapC::GeneTypeProxyMapC(std::istream &strm)
+   : RCBodyVC(strm)
+  {
+    RavlAssertMsg(0,"not implemented");
+  }
+
+  //! Save to binary stream
+  bool GeneTypeProxyMapC::Save(BinOStreamC &strm) const
+  {
+    RCBodyVC::Save(strm);
+    RavlAssertMsg(0,"not implemented");
+    return true;
+  }
+
+  //! Save to text stream
+  bool GeneTypeProxyMapC::Save(std::ostream &strm) const {
+    RCBodyVC::Save(strm);
+    RavlAssertMsg(0,"not implemented");
+    return true;
+  }
 
   //! Add a new proxy to the map.
   void GeneTypeProxyMapC::AddProxy(const StringC &value,const GeneTypeC &geneType)
@@ -20,7 +49,16 @@ namespace RavlN { namespace GeneticN {
     return m_values.Lookup(key,val);
   }
 
+  static XMLFactoryRegisterC<GeneTypeProxyMapC> g_registerGeneTypeProxyMap("RavlN::GeneticN::GeneTypeProxyMapC");
+
   // --------------------------------------------------------------------------------
+
+  //! factory constructor
+  GenePaletteC::GenePaletteC(const XMLFactoryContextC &factory)
+   : m_random(factory.AttributeUInt("seed",0))
+  {
+
+  }
 
   //! Holds information used when mutating, crossing or generating genes.
 
@@ -30,6 +68,36 @@ namespace RavlN { namespace GeneticN {
     static GeneTypeProxyMapC::RefT emptyMap = new GeneTypeProxyMapC();
     m_proxyMap.Push(*emptyMap);
   }
+
+  //! Load from binary stream.
+  GenePaletteC::GenePaletteC(BinIStreamC &strm)
+   : RCBodyVC(strm)
+  {
+    RavlAssertMsg(0,"not implemented");
+  }
+
+  //! Load from text stream.
+  GenePaletteC::GenePaletteC(std::istream &strm)
+   : RCBodyVC(strm)
+  {
+    RavlAssertMsg(0,"not implemented");
+  }
+
+  //! Save to binary stream
+  bool GenePaletteC::Save(BinOStreamC &strm) const
+  {
+    RCBodyVC::Save(strm);
+    RavlAssertMsg(0,"not implemented");
+    return true;
+  }
+
+  //! Save to text stream
+  bool GenePaletteC::Save(std::ostream &strm) const {
+    RCBodyVC::Save(strm);
+    RavlAssertMsg(0,"not implemented");
+    return true;
+  }
+
 
   //! Generate a random value between 0 and 1.
   RealT GenePaletteC::RandomDouble()
@@ -68,5 +136,7 @@ namespace RavlN { namespace GeneticN {
   {
     m_proxyMap.DelTop();
   }
+
+  static XMLFactoryRegisterC<GenePaletteC> g_registerGenePalette("RavlN::GeneticN::GenePaletteC");
 
 }}

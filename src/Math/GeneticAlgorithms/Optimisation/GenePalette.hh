@@ -25,11 +25,26 @@ namespace RavlN { namespace GeneticN {
   //! Set of gene proxy values.
 
   class GeneTypeProxyMapC
-   : public RCBodyC
+   : public RCBodyVC
   {
   public:
     //! Default constructor
     GeneTypeProxyMapC();
+
+    //! factory constructor
+    GeneTypeProxyMapC(const XMLFactoryContextC &factory);
+
+    //! Load from binary stream.
+    GeneTypeProxyMapC(BinIStreamC &strm);
+
+    //! Load from text stream.
+    GeneTypeProxyMapC(std::istream &strm);
+
+    //! Save to binary stream
+    bool Save(BinOStreamC &strm) const;
+
+    //! Save to text stream
+    bool Save(std::ostream &strm) const;
 
     //! Add a new proxy to the map.
     void AddProxy(const StringC &value,const GeneTypeC &geneType);
@@ -51,6 +66,21 @@ namespace RavlN { namespace GeneticN {
   public:
     //! Construct from a seed.
     GenePaletteC(UInt32T seed = 0);
+
+    //! factory constructor
+    GenePaletteC(const XMLFactoryContextC &factory);
+
+    //! Load from binary stream.
+    GenePaletteC(BinIStreamC &strm);
+
+    //! Load from text stream.
+    GenePaletteC(std::istream &strm);
+
+    //! Save to binary stream
+    virtual bool Save(BinOStreamC &strm) const;
+
+    //! Save to text stream
+    virtual bool Save(std::ostream &strm) const;
 
     //! Generate a random value between 0 and 1.
     RealT RandomDouble();
