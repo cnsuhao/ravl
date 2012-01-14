@@ -75,13 +75,13 @@ namespace RavlN { namespace GeneticN {
     virtual bool LookupComponent(const std::string &name,RavlN::SmartPtrC<const GeneTypeC> &geneType);
 
     //! Create random instance
-    virtual void Random(RavlN::SmartPtrC<GeneC> &newValue) const = 0;
+    virtual void Random(GenePaletteC &palette,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
-    virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
-    virtual void Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Access default weight for gene
     //! Used to effect relative frequencies in meta types.
@@ -151,10 +151,10 @@ namespace RavlN { namespace GeneticN {
     typedef RavlN::SmartPtrC<const GeneC> ConstRefT;
 
     //! Mutate this gene
-    bool Mutate(float faction,GeneC::RefT &newOne) const;
+    bool Mutate(GenePaletteC &palette,float faction,GeneC::RefT &newOne) const;
 
     //! Cross this gene
-    void Cross(const GeneC &other,GeneC::RefT &newOne) const;
+    void Cross(GenePaletteC &palette,const GeneC &other,GeneC::RefT &newOne) const;
 
     //! Generate an instance of the class.
     virtual void Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const;

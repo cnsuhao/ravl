@@ -17,6 +17,8 @@
 #include "Ravl/PointerManager.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/HSet.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
+
 #include <algorithm>
 
 #define DODEBUG 0
@@ -82,23 +84,23 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Create randomise value
-  void GeneTypeClassShareC::Random(GeneC::RefT &newValue) const {
+  void GeneTypeClassShareC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const {
     if(!newValue.IsValid())
       newValue = new GeneClassShareC(*this);
 
-    GeneTypeClassC::Random(newValue);
+    GeneTypeClassC::Random(palette,newValue);
 
     GeneClassShareC *gcs = dynamic_cast<GeneClassShareC *>(newValue.BodyPtr());
     RavlAssert(gcs != 0);
     TFVectorC<float,2> newPos;
     for(unsigned i = 0;i < 2;i++)
-      newPos[i] = static_cast<float>(Random1() * g_spaceSize);
+      newPos[i] = static_cast<float>(palette.Random1() * g_spaceSize);
     gcs->SetPosition(newPos);
-    gcs->SetStrength(static_cast<float>(Random1() * g_maxStrength));
+    gcs->SetStrength(static_cast<float>(palette.Random1() * g_maxStrength));
   }
 
   //! Mutate a gene
-  bool GeneTypeClassShareC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
+  bool GeneTypeClassShareC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
     if(fraction <= 0) {
       newValue = &original;
       return false;
@@ -117,7 +119,7 @@ namespace RavlN { namespace GeneticN {
     const GeneClassShareC &oldNode = dynamic_cast<const GeneClassShareC &>(original);
     if(fraction < 0.3) {
       // Wander
-      float delta = static_cast<float>(Random1() - 0.5) * g_maxStrength * fraction;
+      float delta = static_cast<float>(palette.Random1() - 0.5) * g_maxStrength * fraction;
       float strength = oldNode.Strength() + delta;
       if(strength < 0 || strength > g_maxStrength)
         strength = oldNode.Strength() - delta;
@@ -127,7 +129,7 @@ namespace RavlN { namespace GeneticN {
 
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++) {
-        float delta = static_cast<float>(Random1() - 0.5) * g_spaceSize * fraction;
+        float delta = static_cast<float>(palette.Random1() - 0.5) * g_spaceSize * fraction;
         newPos[i] = oldNode.Position()[i] + delta;
         if(newPos[i] < 0 || newPos[i] > g_spaceSize)
           newPos[i] = oldNode.Position()[i] - delta;
@@ -139,23 +141,23 @@ namespace RavlN { namespace GeneticN {
       newNode.SetPosition(newPos);
     } else {
       // Blend with random
-      newNode.SetStrength(static_cast<float>(Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
+      newNode.SetStrength(static_cast<float>(palette.Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++)
-        newPos[i] = static_cast<float>(Random1() * g_spaceSize * fraction) + oldNode.Position()[i] * (1.0 -fraction);
+        newPos[i] = static_cast<float>(palette.Random1() * g_spaceSize * fraction) + oldNode.Position()[i] * (1.0 -fraction);
       newNode.SetPosition(newPos);
     }
 
-    GeneTypeClassC::Mutate(fraction,original,newValue);
+    GeneTypeClassC::Mutate(palette,fraction,original,newValue);
 
     return true;
   }
 
   //! Mutate a gene
-  void GeneTypeClassShareC::Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
+  void GeneTypeClassShareC::Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
     if(!newValue.IsValid())
       newValue = new GeneClassShareC(*this);
-    GeneTypeClassC::Cross(original1,original2,newValue);
+    GeneTypeClassC::Cross(palette,original1,original2,newValue);
   }
 
 

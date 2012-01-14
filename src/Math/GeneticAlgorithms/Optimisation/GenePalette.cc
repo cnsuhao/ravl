@@ -6,7 +6,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Holds information used when mutating, crossing or generating genes.
 
-  GenePalleteC::GenePalleteC(UInt32T seed)
+  GenePaletteC::GenePaletteC(UInt32T seed)
    : m_random(seed)
   {
     static RCHashC<StringC,SmartPtrC<GeneTypeC> > emptyMap(true);
@@ -14,31 +14,31 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Generate a random value between 0 and 1.
-  RealT GenePalleteC::RandomDouble()
+  RealT GenePaletteC::RandomDouble()
   {
     return m_random.Double();
   }
 
   //! Generate a random integer.
-  UInt32T GenePalleteC::RandomUInt32()
+  UInt32T GenePaletteC::RandomUInt32()
   {
     return m_random.UInt();
   }
 
   //! Generate an integer with a gaussian distribution.
-  float GenePalleteC::RandomGauss()
+  float GenePaletteC::RandomGauss()
   {
     return m_guass.Generate(m_random);
   }
 
   //! Push new proxy map on the stack.
-  void GenePalleteC::PushProxyMap(const RCHashC<StringC,SmartPtrC<GeneTypeC> > &newMap)
+  void GenePaletteC::PushProxyMap(const RCHashC<StringC,SmartPtrC<GeneTypeC> > &newMap)
   {
     m_proxyMap.Push(newMap);
   }
 
   //! Pop old map off the stack.
-  void GenePalleteC::PopProxyMap()
+  void GenePaletteC::PopProxyMap()
   {
     m_proxyMap.DelTop();
   }

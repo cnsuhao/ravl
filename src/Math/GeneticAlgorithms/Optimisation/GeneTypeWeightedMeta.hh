@@ -44,7 +44,7 @@ namespace RavlN { namespace GeneticN {
     virtual bool Save(std::ostream &strm) const;
 
     //! Create randomise value
-    virtual void Random(GeneC::RefT &newValue) const;
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Access list of types
     std::vector<float> &Weights()

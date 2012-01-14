@@ -24,14 +24,18 @@ namespace RavlN { namespace GeneticN {
 
   //! Holds information used when mutating, crossing or generating genes.
 
-  class GenePalleteC
+  class GenePaletteC
   {
   public:
     //! Construct from a seed.
-    GenePalleteC(UInt32T seed);
+    GenePaletteC(UInt32T seed = 0);
 
     //! Generate a random value between 0 and 1.
     RealT RandomDouble();
+
+    //! Generate a random value between 0 and 1.
+    RealT Random1()
+    { return RandomDouble(); }
 
     //! Generate a random integer.
     UInt32T RandomUInt32();

@@ -9,6 +9,7 @@
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #include "Ravl/Genetic/GeneticOptimiser.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/CallMethodPtrs.hh"
@@ -130,6 +131,7 @@ namespace RavlN { namespace GeneticN {
     unsigned i = 0;
     // In the first generation there may not be enough seeds to make
     // sense doing this.
+    GenePaletteC palette(RandomInt());
     if(seeds.size() > 1) {
       for(;i < noCrosses;i++) {
         unsigned i1 = RandomInt() % seeds.size();
@@ -138,7 +140,7 @@ namespace RavlN { namespace GeneticN {
         if(i1 == i2)
           i2 = (i1 + 1) % seeds.size();
         GenomeC::RefT newGenome;
-        seeds[i1]->Cross(*seeds[i2],newGenome);
+        seeds[i1]->Cross(palette,*seeds[i2],newGenome);
         newGenome->SetGeneration(generation);
         newTestSet.push_back(newGenome);
       }
@@ -150,10 +152,10 @@ namespace RavlN { namespace GeneticN {
       GenomeC::RefT newGenome;
       if(Random1() < m_randomFraction) {
         ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Random"));
-        seeds[i1]->Mutate(1.0,newGenome);
+        seeds[i1]->Mutate(palette,1.0,newGenome);
       } else {
         ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate"));
-        seeds[i1]->Mutate(m_mutationRate,newGenome);
+        seeds[i1]->Mutate(palette,m_mutationRate,newGenome);
       }
       newGenome->SetGeneration(generation);
       newTestSet.push_back(newGenome);

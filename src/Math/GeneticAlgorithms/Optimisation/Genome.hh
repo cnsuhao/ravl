@@ -18,6 +18,7 @@
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Genetic/GeneType.hh"
+#include "Ravl/Genetic/GenePalette.hh"
 
 namespace RavlN {
   class XMLFactoryContextC;
@@ -39,9 +40,6 @@ namespace RavlN { namespace GeneticN {
 
     //! Construct a genome from a root gene.
     GenomeC(const GeneC &rootGene);
-
-    //! Construct a genome from a root gene type.
-    GenomeC(const GeneTypeC &rootGeneType);
 
     //! Load form a binary stream
     GenomeC(BinIStreamC &strm);
@@ -77,10 +75,10 @@ namespace RavlN { namespace GeneticN {
     typedef RavlN::SmartPtrC<GenomeC> RefT;
 
     //! Mutate this genome.
-    bool Mutate(float faction,GenomeC::RefT &newGenome) const;
+    bool Mutate(GenePaletteC &pallete,float faction,GenomeC::RefT &newGenome) const;
 
     //! Cross this genome with another
-    void Cross(const GenomeC &other,GenomeC::RefT &newGenome) const;
+    void Cross(GenePaletteC &pallete,const GenomeC &other,GenomeC::RefT &newGenome) const;
 
     //! Update shared information.
     void UpdateShares(GeneFactoryC &factory) const;
@@ -113,155 +111,6 @@ namespace RavlN { namespace GeneticN {
     UIntT m_averageCount;
   };
 
-  //! Information used in instantiating an genome.
-
-  class GenomeScaffoldC
-   : public RavlN::RCBodyC
-  {
-  public:
-    //! Construct from a genome.
-    GenomeScaffoldC(const GenomeC &genome);
-
-    //! Access genome associated with scaffold.
-    const GenomeC &Genome() const
-    { return *m_genome; }
-
-    //! Test if genome is const.
-    bool IsGenomeConst() const
-    { return m_genome->IsConst(); }
-
-    //! Are we allowed to update the gene ?
-    bool AllowUpdate() const
-    { return m_allowUpdate; }
-
-    //! Lookup instance of class data.
-    bool Lookup(const void *gene,RCAbstractC &data) const
-    { return m_parts.Lookup(gene,data); }
-
-    //! Insert into table
-    bool Insert(const void *gene,const RCAbstractC &data)
-    { return m_parts.Insert(gene,data); }
-
-    //! Lookup instance of class data.
-    bool LookupOverride(const GeneC &gene,GeneC::RefT &theGene) const
-    { return m_overrides.Lookup(&gene,theGene); }
-
-    //! Insert into table
-    bool InsertOverride(const GeneC &gene,const GeneC &data)
-    { return m_overrides.Insert(&gene,&data); }
-
-    //! Handle to scaffold
-    typedef RavlN::SmartPtrC<GenomeScaffoldC> RefT;
-  protected:
-    GenomeC::RefT m_genome;
-    bool m_allowUpdate;
-    RavlN::HashC<const void *,RCAbstractC> m_parts;
-    RavlN::HashC<GeneC::RefT,GeneC::RefT> m_overrides;
-  };
-
-  //!  Default values for basic types
-  const GeneTypeC &GeneType(IntT value);
-
-  //!  Default values for basic types
-  const GeneTypeC &GeneType(float value);
-
-  //! Generate a gene type for
-  const GeneTypeC &CreateGeneType(const std::type_info &ti);
-
-  //!  Default values for basic types
-  template<typename DataT>
-  const GeneTypeC &GeneType(DataT &value)
-  {
-    static GeneTypeC::RefT gt = &CreateGeneType(typeid(DataT));
-    return *gt;
-  }
-
-
-  //! Factory class.
-  class GeneFactoryC
-  {
-  public:
-    //! Default factory
-    GeneFactoryC();
-
-    //! First level constructor.
-    GeneFactoryC(const GenomeC &genome);
-
-    //! Push another level on the stack.
-    GeneFactoryC(const GeneFactoryC &geneFactory,const GeneC &gene);
-
-  protected:
-    //! Get the component.
-    void GetComponent(const std::string &name,GeneC::ConstRefT &component,const GeneTypeC &geneType) const;
-
-  public:
-    //! Get an integer.
-    void Get(const std::string &name,IntT &value,const GeneTypeC &geneType) const;
-
-    //! Get a real value.
-    void Get(const std::string &name,float &value,const GeneTypeC &geneType) const;
-
-    //! Get a real value.
-    void Get(const std::string &name,double &value,const GeneTypeC &geneType) const;
-
-    //! Get a sub class
-    template<typename ValueT>
-    void Get(const std::string &name,ValueT &value,const GeneTypeC &geneType) const {
-      GeneC::ConstRefT theGene;
-      GetComponent(name,theGene,geneType);
-      RCWrapAbstractC handle;
-      theGene->Generate(*this,handle);
-      RavlAssert(handle.IsValid());
-      if(!SystemTypeConverter().TypeConvert(handle,value)) {
-        RavlSysLogf(SYSLOG_ERR,"Failed to convert generated type from %s to %s ",RavlN::TypeName(handle.DataType()),RavlN::TypeName(typeid(ValueT)));
-        RavlAssert(0);
-        throw RavlN::ExceptionOperationFailedC("Failed to instantiate genome. ");
-      }
-    }
-
-    //! Get a sub class
-    template<typename ValueT>
-    void Get(const std::string &name,ValueT &value) const
-    { Get(name,value,GeneType(value)); }
-
-    //! Get the root object as an abstract handle
-    void Get(RCWrapAbstractC &obj,const type_info &to) const;
-
-    //! Get the root object
-    template<typename ValueT>
-    void Get(ValueT &value) const {
-      RCWrapC<ValueT> handle(handle);
-      Get(handle,typeid(ValueT));
-      value = handle.Data();
-    }
-
-    //! Lookup instance of class data.
-    bool Lookup(const void *gene,RCAbstractC &data) const
-    { return m_scaffold->Lookup(gene,data); }
-
-    //! Insert into table
-    bool Insert(const void *gene,const RCAbstractC &data) const
-    { return m_scaffold->Insert(gene,data); }
-
-    //! Lookup instance of class data.
-    bool LookupOverride(const GeneC &gene,GeneC::RefT &theGene) const
-    { return m_scaffold->LookupOverride(gene,theGene); }
-
-    //! Insert into table
-    bool InsertOverride(const GeneC &gene,const GeneC &data)
-    { return m_scaffold->InsertOverride(gene,data); }
-
-    //! Check if gene is in stack already.
-    bool CheckStackFor(const GeneC &gene) const;
-  protected:
-    mutable RavlN::BStackC<GeneC::RefT> m_path;
-    mutable GenomeScaffoldC::RefT m_scaffold;
-  };
-
-  std::ostream &operator<<(std::ostream &strm,const GeneFactoryC &factory);
-  std::istream &operator>>(std::istream &strm,GeneFactoryC &factory);
-  RavlN::BinOStreamC &operator<<(RavlN::BinOStreamC &strm,const GeneFactoryC &factory);
-  RavlN::BinIStreamC &operator>>(RavlN::BinIStreamC &strm,GeneFactoryC &factory);
 }}
 
 #endif

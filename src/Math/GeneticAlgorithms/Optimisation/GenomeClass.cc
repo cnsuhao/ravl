@@ -10,6 +10,9 @@
 
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GenePalette.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
+
 
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
@@ -123,19 +126,19 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Create randomise value
-  void GeneTypeNodeC::Random(GeneC::RefT &newValue) const
+  void GeneTypeNodeC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
   {
     RavlAssert(newValue.IsValid());
     GeneNodeC &newNode = dynamic_cast<GeneNodeC &>(*newValue);
     for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++) {
       GeneC::RefT gene;
-      it.Data()->Random(gene);
+      it.Data()->Random(palette,gene);
       newNode.SetComponent(it.Key(),*gene);
     }
   }
 
   //! Mutate a gene
-  bool GeneTypeNodeC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeNodeC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     RavlAssert(newValue.IsValid());
     GeneNodeC &newNode = dynamic_cast<GeneNodeC &>(*newValue);
@@ -148,12 +151,12 @@ namespace RavlN { namespace GeneticN {
         RavlSysLogf(SYSLOG_ERR,"Failed to find component %s ",it.Key().data());
         throw RavlN::ExceptionOperationFailedC("No component");
       }
-      if(RavlN::Random1() > fraction) {
+      if(palette.Random1() > fraction) {
         newNode.SetComponent(it.Key(),*gene);
         continue;
       }
       RavlN::SmartPtrC<GeneC> newComp;
-      if(it.Data()->Mutate(fraction,*gene,newComp))
+      if(it.Data()->Mutate(palette,fraction,*gene,newComp))
         ret = true;
       newNode.SetComponent(it.Key(),*newComp);
     }
@@ -161,7 +164,7 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  void GeneTypeNodeC::Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const
+  void GeneTypeNodeC::Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     GeneNodeC &newNode = dynamic_cast<GeneNodeC &>(*newValue);
     const GeneNodeC &oldNode1 = dynamic_cast<const GeneNodeC &>(original1);
@@ -171,19 +174,19 @@ namespace RavlN { namespace GeneticN {
       if(!oldNode1.GetComponent(it.Key(),gene1)) {
         // This can happen went crossing with hand built genome's
         GeneC::RefT newGene;
-        it.Data()->Random(newGene);
+        it.Data()->Random(palette,newGene);
         gene1 = newGene.BodyPtr();
       }
       GeneC::ConstRefT gene2;
       if(!oldNode2.GetComponent(it.Key(),gene2)) {
         // This can happen went crossing with hand built genome's
         GeneC::RefT newGene;
-        it.Data()->Random(newGene);
+        it.Data()->Random(palette,newGene);
         gene2 = newGene.BodyPtr();
       }
       RavlAssert(gene1.IsValid());
       RavlAssert(gene2.IsValid());
-      int option = RandomInt() % 8;
+      unsigned option = palette.RandomUInt32() % 8;
       switch(option)
       {
         default:
@@ -192,7 +195,7 @@ namespace RavlN { namespace GeneticN {
         {
           RavlN::SmartPtrC<GeneC> newComp;
           if(&gene1->Type() == &gene2->Type()) {
-            gene1->Cross(*gene2,newComp);
+            gene1->Cross(palette,*gene2,newComp);
             RavlAssert(newComp.IsValid());
             newNode.SetComponent(it.Key(),*newComp);
           } else {
@@ -416,28 +419,28 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Create randomise value
-  void GeneTypeClassC::Random(GeneC::RefT &newValue) const {
+  void GeneTypeClassC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const {
     if(!newValue.IsValid())
       newValue = new GeneClassC(*this);
-    GeneTypeNodeC::Random(newValue);
+    GeneTypeNodeC::Random(palette,newValue);
   }
 
   //! Mutate a gene
-  bool GeneTypeClassC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
+  bool GeneTypeClassC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
     if(fraction <= 0) {
       newValue = &original;
       return false;
     }
     if(!newValue.IsValid())
       newValue = new GeneClassC(*this);
-    return GeneTypeNodeC::Mutate(fraction,original,newValue);
+    return GeneTypeNodeC::Mutate(palette,fraction,original,newValue);
   }
 
   //! Mutate a gene
-  void GeneTypeClassC::Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
+  void GeneTypeClassC::Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
     if(!newValue.IsValid())
       newValue = new GeneClassC(*this);
-    return GeneTypeNodeC::Cross(original1,original2,newValue);
+    return GeneTypeNodeC::Cross(palette,original1,original2,newValue);
   }
 
   //! Generate a gene type for

@@ -13,14 +13,14 @@ HEADERS=GeneType.hh Genome.hh GeneticOptimiser.hh \
  GenomeConst.hh GenomeShare.hh GenomeList.hh GenomeClass.hh GenomeMeta.hh \
  GeneTypeWeightedMeta.hh GeneTypeFloatGauss.hh \
  EvaluateFitness.hh EvaluateFitnessFunc.hh \
- GenePalette.hh
+ GenePalette.hh GeneFactory.hh
 
 SOURCES=GeneType.cc Genome.cc GeneticOptimiser.cc \
  GenomeConst.cc GenomeShare.cc GenomeList.cc GenomeClass.cc GenomeMeta.cc \
  GeneTypeWeightedMeta.cc GeneTypeFloatGauss.cc \
  Gene2ClassGenerator.cc \
  EvaluateFitness.cc EvaluateFitnessFunc.cc \
- GenePalette.cc
+ GenePalette.cc GeneFactory.cc
 
 MAINS= 
 

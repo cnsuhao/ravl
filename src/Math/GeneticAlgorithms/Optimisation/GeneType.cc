@@ -105,22 +105,22 @@ namespace RavlN { namespace GeneticN {
 
   //! Create random instance
 
-  void GeneTypeC::Random(SmartPtrC<GeneC> &newValue) const
+  void GeneTypeC::Random(GenePaletteC &palette,SmartPtrC<GeneC> &newValue) const
   {
     RavlAssert(0);
   }
 
   //! Mutate a gene
 
-  bool GeneTypeC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     RavlAssert(0);
     return false;
   }
 
   //! Mutate a gene
-  void GeneTypeC::Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
-    if(Random1() > 0.5)
+  void GeneTypeC::Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
+    if(palette.RandomDouble() > 0.5)
       newValue = &original1;
     else
       newValue = &original2;
@@ -205,13 +205,13 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate this gene
-  bool GeneC::Mutate(float fraction,GeneC::RefT &newOne) const {
-    return m_type->Mutate(fraction,*this,newOne);
+  bool GeneC::Mutate(GenePaletteC &palette,float fraction,GeneC::RefT &newOne) const {
+    return m_type->Mutate(palette,fraction,*this,newOne);
   }
 
   //! Cross this gene
-  void GeneC::Cross(const GeneC &other,GeneC::RefT &newOne) const {
-    m_type->Cross(*this,other,newOne);
+  void GeneC::Cross(GenePaletteC &palette,const GeneC &other,GeneC::RefT &newOne) const {
+    m_type->Cross(palette,*this,other,newOne);
   }
 
   //! Generate an instance of the class.

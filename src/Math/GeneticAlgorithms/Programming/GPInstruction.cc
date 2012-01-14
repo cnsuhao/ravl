@@ -13,6 +13,7 @@
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GenomeMeta.hh"
 #include "Ravl/Genetic/GeneTypeWeightedMeta.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 
 namespace RavlN { namespace GeneticN {
 
