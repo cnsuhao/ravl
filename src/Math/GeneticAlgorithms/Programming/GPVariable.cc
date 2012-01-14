@@ -13,6 +13,8 @@
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/Array1d.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
+
 
 namespace RavlN { namespace GeneticN {
 

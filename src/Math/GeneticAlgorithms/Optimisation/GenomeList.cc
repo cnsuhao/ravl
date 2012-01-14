@@ -15,6 +15,7 @@
 #include "Ravl/TypeName.hh"
 #include "Ravl/PointerManager.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/Genetic/GenePalette.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -79,26 +80,26 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Create randomise value
-  void GeneTypeListBaseC::Random(GeneC::RefT &newValue) const
+  void GeneTypeListBaseC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
   {
-    UIntT len = RandomInt() % m_maxLength;
+    UIntT len = palette.RandomUInt32() % m_maxLength;
     if(len == 0)
       len = 1;
     std::vector<GeneC::ConstRefT> newList;
     newList.reserve(len);
     for(unsigned i =0 ;i < len;i++) {
       GeneC::RefT newGene;
-      m_contentType->Random(newGene);
+      m_contentType->Random(palette,newGene);
       newList.push_back(newGene.BodyPtr());
     }
     newValue = new GeneListC(*this,newList);
   }
 
   //! Mutate a gene
-  bool GeneTypeListBaseC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeListBaseC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate list. "));
-    if(fraction < Random1()) {
+    if(fraction < palette.Random1()) {
       newValue = &original;
       return false;
     }
@@ -110,21 +111,21 @@ namespace RavlN { namespace GeneticN {
 
     for(unsigned i = 0;i < oldList.size();i++) {
       // Insert a new random element.
-      if(fraction < Random1()) {
+      if(fraction < palette.Random1()) {
         GeneC::RefT newGene;
-        m_contentType->Random(newGene);
+        m_contentType->Random(palette,newGene);
         newList.push_back(newGene.BodyPtr());
         ret = true;
       }
-      if(fraction < Random1()) {
+      if(fraction < palette.Random1()) {
         // Omit element
         ret = true;
         continue;
       }
       // Mutate an element
-      if(fraction < Random1()) {
+      if(fraction < palette.Random1()) {
         GeneC::RefT newGene;
-        if(oldList[i]->Mutate(fraction,newGene)) {
+        if(oldList[i]->Mutate(palette,fraction,newGene)) {
           ret = true;
         }
         newList.push_back(newGene.BodyPtr());
@@ -142,15 +143,15 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  void GeneTypeListBaseC::Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const
+  void GeneTypeListBaseC::Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Crossing list."));
     const GeneListC &oldListGene1 = dynamic_cast<const GeneListC &>(original1);
     const GeneListC &oldListGene2 = dynamic_cast<const GeneListC &>(original2);
 
     float crossAt = static_cast<float>(Random1());
-    float crossAt1 = crossAt + static_cast<float>((Random1() * 0.3)-0.15);
-    float crossAt2 = crossAt + static_cast<float>((Random1() * 0.3)-0.15);
+    float crossAt1 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
+    float crossAt2 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
     size_t size1 = oldListGene1.List().size();
     size_t size2 = oldListGene2.List().size();
     int ind1 = static_cast<int>(crossAt1 * size1);
@@ -172,7 +173,7 @@ namespace RavlN { namespace GeneticN {
     const GeneTypeC &gt2 =  oldListGene2.List()[ind2]->Type();
     if(&gt1 == &gt2) {
       GeneC::RefT newGene;
-      gt1.Cross(*oldListGene1.List()[ind1],*oldListGene2.List()[ind2],newGene);
+      gt1.Cross(palette,*oldListGene1.List()[ind1],*oldListGene2.List()[ind2],newGene);
       if(!newGene.IsValid()) {
         RavlSysLogf(SYSLOG_ERR,"Gene type %s failed to produce a cross value. ",TypeName(typeid(gt1)));
         RavlAssert(0);

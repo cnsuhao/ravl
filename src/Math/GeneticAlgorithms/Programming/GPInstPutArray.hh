@@ -14,6 +14,7 @@
 #include "Ravl/Genetic/GPVariable.hh"
 #include "Ravl/Genetic/GenomeConst.hh"
 #include "Ravl/Array1d.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 
 namespace RavlN { namespace GeneticN {
 

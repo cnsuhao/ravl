@@ -12,6 +12,7 @@
 
 #include "Ravl/Genetic/GPInstruction.hh"
 #include "Ravl/Genetic/GPVariable.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 
 namespace RavlN { namespace GeneticN {
 

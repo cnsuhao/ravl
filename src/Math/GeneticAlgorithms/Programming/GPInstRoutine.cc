@@ -9,6 +9,7 @@
 //! docentry=Ravl.API.Math.Genetic.Programming
 
 #include "Ravl/Genetic/GPInstRoutine.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GenomeList.hh"
