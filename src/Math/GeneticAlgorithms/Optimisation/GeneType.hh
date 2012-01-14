@@ -116,7 +116,7 @@ namespace RavlN { namespace GeneticN {
     GeneC(const XMLFactoryContextC &factory);
 
     //! Constructor
-    GeneC(const GeneTypeC &theType);
+    explicit GeneC(const GeneTypeC &theType);
 
     //! Load form a binary stream
     GeneC(BinIStreamC &strm);

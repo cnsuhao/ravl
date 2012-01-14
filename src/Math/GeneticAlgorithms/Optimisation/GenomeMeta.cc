@@ -220,7 +220,6 @@ namespace RavlN { namespace GeneticN {
        newValue = &original;
        return false;
      }
-     // FIXME:- Is this right ?
      Random(palette,newValue);
      return true;
    }

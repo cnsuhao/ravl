@@ -39,19 +39,41 @@ namespace RavlN { namespace GeneticN {
 
   //! Default factory
   GeneFactoryC::GeneFactoryC()
+   : m_palette(new GenePaletteC())
   {}
 
   //! First level constructor.
   GeneFactoryC::GeneFactoryC(const GenomeC &genome)
-   :  m_scaffold(new GenomeScaffoldC(genome))
+   :  m_scaffold(new GenomeScaffoldC(genome)),
+      m_palette(new GenePaletteC())
   {
     genome.UpdateShares(*this);
+  }
+
+  //! First level constructor.
+  GeneFactoryC::GeneFactoryC(const GenomeC &genome,GenePaletteC &palette)
+   :  m_scaffold(new GenomeScaffoldC(genome)),
+      m_palette(&palette)
+  {
+    genome.UpdateShares(*this);
+  }
+
+  //! First level constructor from just a gene type
+  GeneFactoryC::GeneFactoryC(const GeneTypeC &geneType,GenePaletteC &palette)
+   : m_palette(&palette)
+  {
+    GeneC::RefT aGene;
+    geneType.Random(*m_palette,aGene);
+    GenomeC::RefT genome = new GenomeC(*aGene);
+    m_scaffold = new GenomeScaffoldC(*genome);
+    genome->UpdateShares(*this);
   }
 
   //! Push another level on the stack.
   GeneFactoryC::GeneFactoryC(const GeneFactoryC &geneFactory,const GeneC &gene)
    : m_path(geneFactory.m_path),
-     m_scaffold(geneFactory.m_scaffold)
+     m_scaffold(geneFactory.m_scaffold),
+     m_palette(&geneFactory.GenePalette())
   {
     m_path.Push(&gene);
   }
@@ -70,7 +92,7 @@ namespace RavlN { namespace GeneticN {
         throw RavlN::ExceptionOperationFailedC("Can't instantiate incomplete genome. ");
       }
       GeneC::RefT newComponent;
-      geneType.Random(m_pallete,newComponent);
+      geneType.Random(*m_palette,newComponent);
       m_path.First()->AddComponent(name,*newComponent,geneType);
       component = newComponent.BodyPtr();
     }

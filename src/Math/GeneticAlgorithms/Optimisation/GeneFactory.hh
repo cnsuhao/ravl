@@ -95,6 +95,12 @@ namespace RavlN { namespace GeneticN {
     GeneFactoryC();
 
     //! First level constructor.
+    GeneFactoryC(const GenomeC &genome,GenePaletteC &palette);
+
+    //! First level constructor from just a gene type
+    GeneFactoryC(const GeneTypeC &geneType,GenePaletteC &palette);
+
+    //! First level constructor.
     GeneFactoryC(const GenomeC &genome);
 
     //! Push another level on the stack.
@@ -105,6 +111,18 @@ namespace RavlN { namespace GeneticN {
     void GetComponent(const std::string &name,GeneC::ConstRefT &component,const GeneTypeC &geneType) const;
 
   public:
+    //! Access genome
+    const GenomeC &Genome() const
+    { return m_scaffold->Genome(); }
+
+    //! Access palette
+    GenePaletteC &GenePalette()
+    { return *m_palette; }
+
+    //! Access palette
+    const GenePaletteC &GenePalette() const
+    { return *m_palette; }
+
     //! Get an integer.
     void Get(const std::string &name,IntT &value,const GeneTypeC &geneType) const;
 
@@ -166,7 +184,7 @@ namespace RavlN { namespace GeneticN {
   protected:
     mutable RavlN::BStackC<GeneC::RefT> m_path;
     mutable GenomeScaffoldC::RefT m_scaffold;
-    mutable GenePaletteC m_pallete;
+    mutable GenePaletteC::RefT m_palette;
   };
 
   std::ostream &operator<<(std::ostream &strm,const GeneFactoryC &factory);

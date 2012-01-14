@@ -4,13 +4,31 @@
 
 namespace RavlN { namespace GeneticN {
 
+  //! Default constructor
+  GeneTypeProxyMapC::GeneTypeProxyMapC()
+  {}
+
+  //! Add a new proxy to the map.
+  void GeneTypeProxyMapC::AddProxy(const StringC &value,const GeneTypeC &geneType)
+  {
+    m_values[value] = &geneType;
+  }
+
+  //! Lookup a value.
+  bool GeneTypeProxyMapC::Lookup(const StringC &key,SmartPtrC<const GeneTypeC> &val) const
+  {
+    return m_values.Lookup(key,val);
+  }
+
+  // --------------------------------------------------------------------------------
+
   //! Holds information used when mutating, crossing or generating genes.
 
   GenePaletteC::GenePaletteC(UInt32T seed)
    : m_random(seed)
   {
-    static RCHashC<StringC,SmartPtrC<GeneTypeC> > emptyMap(true);
-    m_proxyMap.Push(emptyMap);
+    static GeneTypeProxyMapC::RefT emptyMap = new GeneTypeProxyMapC();
+    m_proxyMap.Push(*emptyMap);
   }
 
   //! Generate a random value between 0 and 1.
@@ -31,10 +49,18 @@ namespace RavlN { namespace GeneticN {
     return m_guass.Generate(m_random);
   }
 
-  //! Push new proxy map on the stack.
-  void GenePaletteC::PushProxyMap(const RCHashC<StringC,SmartPtrC<GeneTypeC> > &newMap)
+  //! Add a new proxy to the map.
+  void GenePaletteC::AddProxy(const StringC &value,const GeneTypeC &geneType)
   {
-    m_proxyMap.Push(newMap);
+    GeneTypeProxyMapC::RefT newProxy = new GeneTypeProxyMapC(*m_proxyMap.Top());
+    newProxy->AddProxy(value,geneType);
+    m_proxyMap.Push(newProxy);
+  }
+
+  //! Push new proxy map on the stack.
+  void GenePaletteC::PushProxyMap(const GeneTypeProxyMapC &newMap)
+  {
+    m_proxyMap.Push(&newMap);
   }
 
   //! Pop old map off the stack.

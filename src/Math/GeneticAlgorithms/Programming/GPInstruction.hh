@@ -12,6 +12,7 @@
 
 #include "Ravl/SmartPtr.hh"
 #include "Ravl/Genetic/GenomeClass.hh"
+#include "Ravl/Genetic/GenomeMeta.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -116,7 +117,11 @@ namespace RavlN { namespace GeneticN {
   protected:
   };
 
-  //! Access list of available instructions
+  //! This returns type containing list of all known instructions
+  GeneTypeMetaC::RefT &InstructionMetaType();
+
+
+  //! Access list of available instructions, this actually returns a proxy for an instruction list.
   GeneTypeC::RefT &InstructionGeneType();
 }}
 

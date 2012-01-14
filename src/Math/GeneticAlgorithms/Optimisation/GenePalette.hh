@@ -22,9 +22,31 @@ namespace RavlN { namespace GeneticN {
 
   class GeneTypeC;
 
+  //! Set of gene proxy values.
+
+  class GeneTypeProxyMapC
+   : public RCBodyC
+  {
+  public:
+    //! Default constructor
+    GeneTypeProxyMapC();
+
+    //! Add a new proxy to the map.
+    void AddProxy(const StringC &value,const GeneTypeC &geneType);
+
+    //! Lookup a value.
+    bool Lookup(const StringC &key,SmartPtrC<const GeneTypeC> &val) const;
+
+    //! Handle to set.
+    typedef SmartPtrC<GeneTypeProxyMapC> RefT;
+  protected:
+    HashC<StringC,SmartPtrC<const GeneTypeC> > m_values;
+  };
+
   //! Holds information used when mutating, crossing or generating genes.
 
   class GenePaletteC
+    : public RCBodyVC
   {
   public:
     //! Construct from a seed.
@@ -43,20 +65,25 @@ namespace RavlN { namespace GeneticN {
     //! Generate an integer with a Gaussian distribution.
     float RandomGauss();
 
+    //! Add a new proxy to the map.
+    void AddProxy(const StringC &value,const GeneTypeC &geneType);
+
     //! Push new proxy map on the stack.
-    void PushProxyMap(const RCHashC<StringC,SmartPtrC<GeneTypeC> > &newMap);
+    void PushProxyMap(const GeneTypeProxyMapC &newMap);
 
     //! Pop old map off the stack.
     void PopProxyMap();
 
     //! Access the current map
-    const RCHashC<StringC,SmartPtrC<GeneTypeC> > &ProxyMap() const
-    { return m_proxyMap.Top(); }
+    const GeneTypeProxyMapC &ProxyMap() const
+    { return *m_proxyMap.Top(); }
 
-protected:
+    //! Handle to palette.
+    typedef SmartPtrC<GenePaletteC> RefT;
+  protected:
     RandomMersenneTwisterC m_random;
     RandomGaussC m_guass;
-    StackC<RCHashC<StringC,SmartPtrC<GeneTypeC> > > m_proxyMap;
+    StackC<GeneTypeProxyMapC::RefT > m_proxyMap;
   };
 
 }}
