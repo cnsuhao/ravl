@@ -1,6 +1,7 @@
 
 #include "Ravl/Genetic/GPVariable.hh"
 #include "Ravl/Genetic/GPInstruction.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/OS/SysLog.hh"
 
@@ -17,6 +18,8 @@ int main(int nargs,char **argv)
   return 0;
 }
 
+using RavlN::GeneticN::GeneC;
+using RavlN::GeneticN::GenePaletteC;
 using RavlN::GeneticN::GenomeC;
 using RavlN::GeneticN::GeneFactoryC;
 using RavlN::GeneticN::GPInstructionC;
@@ -27,10 +30,13 @@ int testGeneInstIO()
   for(unsigned i = 0;i < 10000;i++) {
     RavlInfo("Test %d ",i);
 
-    GenomeC::RefT genome = new GenomeC(*RavlN::GeneticN::InstructionGeneType());
+    GenePaletteC::RefT palette = new GenePaletteC();
+    palette->AddProxy("GPInstruction",*RavlN::GeneticN::InstructionMetaType());
 
     // Instantiate genome
-    GeneFactoryC factory(*genome);
+    GeneFactoryC factory(*RavlN::GeneticN::InstructionMetaType(),*palette);
+    GenomeC::RefT genome = &factory.Genome();
+
     GPInstructionC::RefT inst;
     factory.Get(inst);
     RAVL_TEST_TRUE(inst.IsValid());

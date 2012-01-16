@@ -10,7 +10,7 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
-#include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/TypeName.hh"
 
 namespace RavlN { namespace GeneticN {
@@ -45,13 +45,13 @@ namespace RavlN { namespace GeneticN {
     virtual bool LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType);
 
     //! Create randomise value
-    virtual void Random(GeneC::RefT &newValue) const;
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Mutate a gene
-    virtual void Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeNodeC> RefT;
@@ -140,13 +140,13 @@ namespace RavlN { namespace GeneticN {
      virtual bool Save(std::ostream &strm) const;
 
      //! Create randomise value
-     virtual void Random(GeneC::RefT &newValue) const;
+     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
      //! Mutate a gene
-     virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Mutate a gene
-     virtual void Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Access type of class generated.
      const std::type_info &TypeInfo() const

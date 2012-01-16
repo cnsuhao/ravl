@@ -40,7 +40,7 @@ namespace RavlN { namespace GeneticN {
     virtual bool Save(std::ostream &strm) const;
 
     //! Generate a new value
-    virtual void RandomValue(float &value) const;
+    virtual void RandomValue(GenePaletteC &palette,float &value) const;
 
     //! Access width
     float Width() const

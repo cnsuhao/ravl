@@ -13,7 +13,8 @@
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GenomeList.hh"
 #include "Ravl/Genetic/GenomeShare.hh"
-#
+#include "Ravl/Genetic/GeneFactory.hh"
+
 namespace RavlN { namespace GeneticN {
 
 

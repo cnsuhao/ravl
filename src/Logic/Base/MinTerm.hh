@@ -200,7 +200,7 @@ namespace RavlLogicN {
     
     MinTermC Copy() const { 
       if(!IsValid())
-	return MinTermC();
+	      return MinTermC();
       return MinTermC(static_cast<MinTermBodyC &>(Body().Copy()));
     }
     //: Copy this min term.

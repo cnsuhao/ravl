@@ -13,6 +13,7 @@
 #include "Ravl/Genetic/GenomeConst.hh"
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/EvaluateFitnessFunc.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/Option.hh"
 #include "Ravl/XMLFactory.hh"

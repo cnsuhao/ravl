@@ -7,7 +7,8 @@
 #define RAVL_IMGIOUEYE_HEADER 1
 //! author = "Charles Galambos"
 
-#include <uEye.h>
+#include <ueye.h>
+#include <ueye_deprecated.h>
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
