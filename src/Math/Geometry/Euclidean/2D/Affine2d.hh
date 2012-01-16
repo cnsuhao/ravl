@@ -159,7 +159,8 @@ namespace RavlN {
                      Matrix2dC &rotation,
                      Vector2dC &translation,
                      RealT &scaling,
-                     bool forceUnitScale = false
+                     bool forceUnitScale = false,
+                     bool forceUnitRotation = false
                      );
   //: <p>Least squares fit of a similarity transform between the two point sets.
   // If 'forceUnitScale' is true then unit scaling will be assumed, though
@@ -172,7 +173,8 @@ namespace RavlN {
   bool FitSimilarity(const SArray1dC<Point2dC> &points1,
                      const SArray1dC<Point2dC> &points2,
                      Affine2dC &transform,
-                     bool forceUnitScale = false
+                     bool forceUnitScale = false,
+                     bool forceUnitRotation = false
                      );
   //: Least squares fit of a similarity transform between the two point sets.
   // If 'forceUnitScale' is true then unit scaling will be assumed.

@@ -9,6 +9,7 @@
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #include "Ravl/Genetic/GenomeMeta.hh"
+#include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -98,23 +99,23 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Create randomise value
-   void GeneTypeEnumC::Random(GeneC::RefT &newValue) const
+   void GeneTypeEnumC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_values.size() == 0) {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
-     IntT n = RavlN::RandomInt() % m_values.size();
+     IntT n = palette.RandomUInt32() % m_values.size();
      newValue = m_values[n];
    }
 
    //! Mutate a gene
-   bool GeneTypeEnumC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeEnumC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
    {
-     if(fraction < RavlN::Random1()) {
-       return original.Mutate(fraction,newValue);
+     if(fraction < palette.Random1()) {
+       return original.Mutate(palette,fraction,newValue);
      }
-     Random(newValue);
+     Random(palette,newValue);
      return newValue.BodyPtr() != &original;
    }
 
@@ -201,25 +202,25 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Create randomise value
-   void GeneTypeMetaC::Random(GeneC::RefT &newValue) const
+   void GeneTypeMetaC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_types.size() == 0) {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
-     IntT n = RavlN::RandomInt() % m_types.size();
+     unsigned n = palette.RandomUInt32() % m_types.size();
      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
-     m_types[n]->Random(newValue);
+     m_types[n]->Random(palette,newValue);
    }
 
    //! Mutate a gene
-   bool GeneTypeMetaC::Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeMetaC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
    {
-     if(fraction < RavlN::Random1()) {
+     if(fraction < palette.Random1()) {
        newValue = &original;
        return false;
      }
-     Random(newValue);
+     Random(palette,newValue);
      return true;
    }
 
