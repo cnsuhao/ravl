@@ -717,6 +717,10 @@ namespace RavlN {
     // At the moment this just looks for unused 
     // attributes.
     
+    bool Clear();
+    //: Clear factory contents.
+    // This is can be used at shutdown to ensure all memory is free'd
+
     typedef SmartPtrC<XMLFactoryC> RefT;
     //: Reference
 

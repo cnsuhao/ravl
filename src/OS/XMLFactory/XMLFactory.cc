@@ -813,6 +813,16 @@ namespace RavlN {
     return m_iRoot->FollowPath(path,node);
   }
   
+  //: Clear factory contents.
+  // This is can be used at shutdown to ensure all memory is free'd
+
+  bool XMLFactoryC::Clear() {
+    m_configRoot.Invalidate();
+    m_configTree.Invalidate();
+    m_iRoot.Invalidate();
+    return true;
+  }
+
 
   //static RavlN::TypeNameC type1(typeid(XMLFactoryC),"RavlN::XMLFactoryC");  
   static RavlN::TypeNameC type2(typeid(RavlN::SmartPtrC<XMLFactoryC>),"RavlN::SmartPtrC<RavlN::XMLFactoryC>");  
