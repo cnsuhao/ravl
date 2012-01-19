@@ -1,6 +1,6 @@
 # @configure_input@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011, University of Surrey
+# Copyright (C) 2011-12, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -228,9 +228,9 @@ Ravl.def: $(INSTALLHOME)/lib/libdep $(INSTALLHOME)/lib/libdep/Ravl.def
 $(INSTALLHOME)/lib/libdep:
 	$(SHOWIT) $(MKDIR_P) $@
 
-$(INSTALLHOME)/lib/libdep/Ravl.def:
+$(INSTALLHOME)/lib/libdep/Ravl.def: $(INSTALLHOME)/Makefile
 	$(SHOWIT)echo \# This file is part of RAVL, Recognition And Vision Library > $@
-	$(SHOWIT)echo \# Copyright \(C\) 2001-11,  University of Surrey. >> $@
+	$(SHOWIT)echo \# Copyright \(C\) 2001-12,  University of Surrey. >> $@
 	$(SHOWIT)echo \# This code may be redistributed under the terms of the GNU Lesser >> $@
 	$(SHOWIT)echo \# General Public License \(LGPL\). See the lgpl.licence file for details or >> $@
 	$(SHOWIT)echo \# see http://www.gnu.org/copyleft/lesser.html >> $@
