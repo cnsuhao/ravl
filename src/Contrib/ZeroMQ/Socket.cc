@@ -244,6 +244,10 @@ namespace RavlN {
     //! Send a message
     bool SocketC::Send(const SArray1dC<char> &msg,BlockT block) {
       zmq_msg_t zmsg;
+      if(m_verbose) {
+        StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
+        RavlDebug("Send %s:'%s'",m_name.data(),tmp.data());
+      }
       ArrayToMessage(zmsg,msg);
       int ret;
       int flags = 0;
@@ -316,6 +320,10 @@ namespace RavlN {
           RavlError("RCVMORE failed : %s ",zmq_strerror (anErrno));
           throw ExceptionOperationFailedC("Recv failed. ");
         }
+      }
+      if(m_verbose) {
+        StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
+        RavlDebug("Recieved %s:'%s'",m_name.data(),tmp.data());
       }
       return true;
     }
