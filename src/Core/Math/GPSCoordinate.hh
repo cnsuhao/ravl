@@ -80,15 +80,15 @@ namespace RavlN {
     RavlN::Vector3dC Vertical() const;
     
     //! Access latitude in degree's
-    RealT Latitude() const
+    const RealT &Latitude() const
     { return (*this)[0]; }
     
     //! Access londitude in degree's
-    RealT Longitude() const
+    const RealT &Longitude() const
     { return (*this)[1]; }
     
     //! Height in meters
-    RealT Height() const
+    const RealT &Height() const
     { return (*this)[2]; }
 
     //! Access latitude in degree's
@@ -104,11 +104,11 @@ namespace RavlN {
     { return (*this)[2]; }
 
     //!< Standard deviation in position values in meters
-    FloatT HorizontalErrorBounds() const
+    const FloatT &HorizontalErrorBounds() const
     { return m_horizontalError; }
     
     //!< Standard deviation in height values in meters
-    FloatT VerticalErrorBounds() const
+    const FloatT &VerticalErrorBounds() const
     { return m_verticalError; }
     
     //!< Set error bounds on GPS position in meters
