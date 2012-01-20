@@ -30,26 +30,7 @@ namespace RavlN {
 
   enum XMLTagOpsT 
     { XMLEndTag, XMLContent, XMLIndent,XMLIndentDown, XMLBeginTag, XMLEmptyTag, XMLComment, XML_PI };
-  
-  //! userlevel=Normal
-  //: Exception issued when an parse error occurs.
-  
-  class ExceptionInvalidStreamC 
-    : public ExceptionC
-  {
-  public:
-    ExceptionInvalidStreamC(const char *ntext)
-      : ExceptionC(ntext)
-    {}
-    //: Constructor
     
-    ExceptionInvalidStreamC(const char *ntext,bool copy)
-      : ExceptionC(ntext,copy)
-    {}
-    //: Constructor.
-    // if copy is true, make a copy of ntext.
-  };
-  
   //! userlevel=Advanced
   //: Class for handling XML attributes.
   // SMALL object. <p>

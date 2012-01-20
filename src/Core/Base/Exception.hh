@@ -210,6 +210,24 @@ namespace RavlN {
     // if copy is true, make a copy of ntext.
   };
 
+  //! userlevel=Normal
+  //: Exception issued when an parse error occurs.
+
+  class ExceptionInvalidStreamC
+    : public ExceptionC
+  {
+  public:
+    ExceptionInvalidStreamC(const char *ntext)
+      : ExceptionC(ntext)
+    {}
+    //: Constructor
+
+    ExceptionInvalidStreamC(const char *ntext,bool copy)
+      : ExceptionC(ntext,copy)
+    {}
+    //: Constructor.
+    // if copy is true, make a copy of ntext.
+  };
 
 }
 
