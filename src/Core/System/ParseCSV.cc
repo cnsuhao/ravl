@@ -24,11 +24,11 @@ namespace RavlN {
     if(!ReadNonEmptyLine(text))
       return false;
     StringArrayC strArr = StringArrayC::SplitQuote(text,m_seperators);
-    if(strArr.Size() != m_expectHeaders) {
+    if(strArr.Size() != m_columns) {
       if(m_throwExceptionOnParseError) {
         throw ExceptionInvalidStreamC("Invalid number of columns found in record");
       }
-      RavlError("Incorrect number of columns in record %u, expected %u ",m_headers.Size(),m_columns);
+      RavlWarning("Incorrect number of columns in record %u, expected %u. ",strArr.Size(),m_columns);
       return false;
     }
     values = strArr.Array();
