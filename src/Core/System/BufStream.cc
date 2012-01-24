@@ -11,6 +11,7 @@
 
 #include "Ravl/BufStream.hh"
 #include "Ravl/config.h"
+#include "Ravl/Calls.hh"
 
 #if RAVL_HAVE_ANSICPPHEADERS
 #if RAVL_HAVE_STRINGSTREAM
@@ -72,6 +73,66 @@ namespace RavlN {
 #endif
   {}
   
+#if RAVL_HAVE_STRINGSTREAM
+  static bool CallUserTrigger(ostringstream *oss,TriggerC &trigger) {
+    CallFunc1C<SArray1dC<char> > call(trigger);
+    // Make sure there's a null terminator
+#if RAVL_COMPILER_VISUALCPP
+    // Make sure there's a null terminator
+    char term = 0;
+    oss->write(&term,1);
+#endif
+    if(call.IsValid()) {
+      std::string astr = oss->str();
+      SizeT size = astr.size();
+      BufferStringC buf(astr,size);
+      SArray1dC<char> data(buf,size);
+
+      call.Call(data);
+    } else
+      trigger.Invoke();
+    return true;
+  }
+#else
+  static bool CallUserTrigger(ostrstream *oss,TriggerC &trigger) {
+    CallFunc1C<SArray1dC<char> > call(trigger);
+#if RAVL_COMPILER_VISUALCPP
+    // Make sure there's a null terminator
+    char term = 0;
+    oss->write(&term,1);
+#endif
+    if(call.IsValid()) {
+      std::string astr = oss->str();
+      SizeT size = astr.size();
+      BufferStringC buf(astr,size);
+      SArray1dC<char> data(buf,size);
+
+      call.Call(data);
+    } else {
+      trigger.Invoke();
+    }
+    return true;
+  }
+#endif
+
+
+  //: Construct an output stream with a trigger to call upon its destruction.
+  // If trigger is CallFunc1C<SArray1dC<char> > (returning a bool) or
+  // one of its derived classes the first argument is set to the
+  // contents of the stream.
+
+  BufOStreamC::BufOStreamC(const TriggerC &sendto)
+  :
+#if RAVL_HAVE_STRINGSTREAM
+  OStreamC(*(oss = new ostringstream(ostringstream::binary)),true)
+#else
+  OStreamC(*(oss = new ostrstream(0,0,ios_base::app | ios_base::binary)),true)
+#endif
+  {
+    if(sendto.IsValid())
+      AddDestructionOp(Trigger(&CallUserTrigger,oss,sendto));
+  }
+
   ///////////////////
   //: Get text written to stream so far.
   // NB. This does NOT clean the buffer.
