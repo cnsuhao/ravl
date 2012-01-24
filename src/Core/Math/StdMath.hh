@@ -158,22 +158,43 @@ namespace RavlN {
 #endif
   }
   //: Is Not A Number ?
-  
-  inline RealT  Radians(RealT angle)
-  { return angle/180.0 * RavlConstN::pi; }
+
+
+  inline RealT Degrees2Radians(RealT angle)
+  { return angle/(180.0 * RavlConstN::pi); }
   //: Convert angle from degrees to radians.
-  
+
+  inline RealT Radians(RealT angle)
+  { return Degrees2Radians(angle); }
+  //: Convert angle from degrees to radians.
+  // OBSOLETE: Use Degrees2Radians
+
+  inline RealT Radians2Degrees(RealT angle)
+  { return angle/(RavlConstN::pi * 180.0);  }
+  //: Convert angle from radians to degrees.
+
   inline RealT Degrees(RealT angle)
-  { return angle/RavlConstN::pi * 180.0; }
+  { return Radians2Degrees(angle); }
   //: Convert angle from radians to degrees.
-  
-  inline float  Radians(float angle)
-  { return angle/180.0f * (float)RavlConstN::pi; }
+  // OBSOLETE: Use Radians2Degrees
+
+  inline float Degrees2Radians(float angle)
+  { return angle/((float) RavlConstN::pi * 180.0f); }
   //: Convert angle from degrees to radians.
+
+  inline float  Radians(float angle)
+  { return Radians2Degrees(angle); }
+  //: Convert angle from degrees to radians.
+  // OBSOLETE: Use Degrees2Radians
   
-  inline float Degrees(float angle)
-  { return angle/(float)RavlConstN::pi * 180.0f; }
+  inline float Radians2Degrees(float angle)
+  { return angle/((float) RavlConstN::pi * 180.0f);  }
   //: Convert angle from radians to degrees.
+
+  inline float Degrees(float angle)
+  { return Radians2Degrees(angle); }
+  //: Convert angle from radians to degrees.
+  // OBSOLETE: Use Radians2Degrees
   
   
 }  
