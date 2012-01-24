@@ -34,17 +34,17 @@ namespace RavlN {
     //: Default constructor.
 
     virtual RealT SolutionScore(const StateVectorC &stateVec,
-				DListC<ObservationC> &obsList) const;
+				const DListC<ObservationC> &obsList) const;
     //: Returns the score/vote/likelihood for the given state parameters
 
     virtual DListC<ObservationC> CompatibleObservations(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const;
-    //: Returns the observations compatible with the given state parameters
+					const DListC<ObservationC> &obsList) const;
+    //: Returns list of observations compatible with the given state parameters
 
     virtual DListC<bool> ObservationCompatibility(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const;
+					const DListC<ObservationC> &obsList) const;
     //: Returns  list of booleans indicating which observations are compatible with the given state parameters
   };
 
@@ -82,17 +82,17 @@ namespace RavlN {
     
   public:
     RealT SolutionScore(const StateVectorC &stateVec,
-			DListC<ObservationC> &obsList) const
+			const DListC<ObservationC> &obsList) const
     { return Body().SolutionScore(stateVec,obsList); }
     //: Returns the score/vote/likelihood for the given state parameters
 
     DListC<ObservationC> CompatibleObservations(const StateVectorC &stateVec,
-						DListC<ObservationC> &obsList) const
+						const DListC<ObservationC> &obsList) const
     { return Body().CompatibleObservations(stateVec,obsList); }
-    //: Returns the observations compatible with the given state parameters
+    //: Returns list of observations compatible with the given state parameters
 
     DListC<bool> ObservationCompatibility(const StateVectorC &stateVec,
-                                          DListC<ObservationC> &obsList) const
+                                          const DListC<ObservationC> &obsList) const
     { return Body().ObservationCompatibility(stateVec,obsList); }
     //: Returns  list of booleans indicating which observations are compatible with the given state parameters
   };
