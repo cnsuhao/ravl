@@ -1,5 +1,5 @@
 dnl This file is part of QMake, Quick Make System
-dnl Copyright (C) 2011, University of Surrey
+dnl Copyright (C) 2011-12, University of Surrey
 dnl This code may be redistributed under the terms of the GNU General
 dnl Public License (GPL). See the gpl.licence file for details or
 dnl see http://www.gnu.org/copyleft/gpl.html
@@ -12,7 +12,7 @@ dnl QM_LOCATE_KEY_TOOLS
 dnl
 dnl Macro to locate those UNIX tools that are required for the configured
 dnl script to run correctly. Any user-provided paths for these tools will be
-dnl preserved ant output to Config.Project to provide a project-specific
+dnl preserved and output to Config.Project to provide a project-specific
 dnl over-ride of the default QMake configuration.
 dnl
 dnl No Macro parameters
