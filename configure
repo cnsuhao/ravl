@@ -703,6 +703,9 @@ JPEG_CFLAGS
 LibJasper_SUPPORT
 LibJasper_LIBS
 LibJasper_CFLAGS
+ZeroMQ_SUPPORT
+ZeroMQ_LIBS
+ZeroMQ_CFLAGS
 devVideo4Linux2_SUPPORT
 devVideo4Linux2_LIBS
 devVideo4Linux2_CFLAGS
@@ -956,6 +959,8 @@ with_devVideo4Linux_pkgconf
 with_devVideo4Linux
 with_devVideo4Linux2_pkgconf
 with_devVideo4Linux2
+with_ZeroMQ_pkgconf
+with_ZeroMQ
 with_LibJasper_pkgconf
 with_LibJasper
 with_LibJasper_library
@@ -1777,6 +1782,13 @@ Optional Packages:
   --with-devVideo4Linux2  Enable functionality that relies on the
                           devVideo4Linux2 library [default=check]
 
+  --with-ZeroMQ-pkgconf   Enable the ZeroMQ library package via pkg-config and
+                          declare the name by which the ZeroMQ library package
+                          is known to pkg-config
+
+  --with-ZeroMQ           Enable functionality that relies on the ZeroMQ
+                          library [default=check]
+
   --with-LibJasper-pkgconf
                           Enable the LibJasper library package via pkg-config
                           and declare the name by which the LibJasper library
@@ -2579,7 +2591,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011, University of Surrey
+# Copyright (C) 2011-12, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -8896,6 +8908,118 @@ fi
 
 
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
+
+
+# Check whether --with-ZeroMQ-pkgconf was given.
+if test "${with_ZeroMQ_pkgconf+set}" = set; then :
+  withval=$with_ZeroMQ_pkgconf; case $with_ZeroMQ_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_ZeroMQ=no
+                                          trace 4 --with-ZeroMQ-pkgconf disabling ZeroMQ
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test Xlibzmq != X; then :
+  with_ZeroMQ_pkgconf=libzmq
+                                                 use_ZeroMQ=yes
+                                                 trace 4 --with-ZeroMQ-pkgconf set to default [$with_ZeroMQ_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure ZeroMQ via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_ZeroMQ=yes
+                                          trace 4 --with-ZeroMQ-pkgconf set to [$with_ZeroMQ_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test Xlibzmq != X; then :
+  with_ZeroMQ_pkgconf=libzmq
+                              trace 4 No --with-ZeroMQ-pkgconf specified using default [$with_ZeroMQ_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-ZeroMQ was given.
+if test "${with_ZeroMQ+set}" = set; then :
+  withval=$with_ZeroMQ; case $with_ZeroMQ in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-ZeroMQ disabling ZeroMQ libraries
+                                       if test X$use_ZeroMQ = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to disable ZeroMQ by --with-ZeroMQ but --with-ZeroMQ-pkgconf has specifically enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_ZeroMQ=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-ZeroMQ enabling ZeroMQ libraries
+                                       if test X$use_ZeroMQ = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to enable ZeroMQ by --with-ZeroMQ but --with-ZeroMQ-pkgconf has specifically disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_ZeroMQ=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-ZeroMQ checking for ZeroMQ libraries
+                                       if test X$use_ZeroMQ = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ZeroMQ asking to check for the libs but --with-ZeroMQ-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-ZeroMQ asking to check for the libs but --with-ZeroMQ-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_ZeroMQ = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ZeroMQ asking to check for the libs but --with-ZeroMQ-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-ZeroMQ asking to check for the libs but --with-ZeroMQ-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_ZeroMQ=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-ZeroMQ set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-ZeroMQ set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-ZeroMQ specified
+
+fi
+
+          KnownLibs=$KnownLibs" "ZeroMQ
+          with_ZeroMQ_virtual="no"
+          if ( test X$use_ZeroMQ = X )
+          then
+             use_ZeroMQ=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "ZeroMQ
+          fi
+
+
+
+
+ZeroMQ_RavLib=libRavlZmq
 
 
 # Check whether --with-LibJasper-pkgconf was given.

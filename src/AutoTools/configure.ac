@@ -14,7 +14,7 @@ AC_PREREQ([2.65])
 AC_INIT([RAVL], [1.5.8030], [John.Field@Surrey.ac.UK])
 
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011, University of Surrey
+# Copyright (C) 2011-12, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -512,6 +512,9 @@ AC_SUBST([devVideo4Linux_SUPPORT])
 QM_DEFINE_EXTLIB_PC([devVideo4Linux2], [libv4l2])
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 AC_SUBST([devVideo4Linux2_SUPPORT])
+QM_DEFINE_EXTLIB_PC([ZeroMQ], [libzmq])
+ZeroMQ_RavLib=libRavlZmq
+AC_SUBST([ZeroMQ_SUPPORT])
 dnl 
 dnl Now define those libraries needing manual compilation checks:
 dnl
