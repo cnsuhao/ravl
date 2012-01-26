@@ -5,5 +5,6 @@
 
 This program goes through a list of executables a checks
 they cleanly return '0' (Indicating test passed.) in a 
-timely manner.  It and excutable takes more than two minutes
-to run, it will killed and the result assumed to be fail.
+timely manner.  If an executable takes more than two minutes
+to run, it will be killed and the test result regarded as a
+failure.
