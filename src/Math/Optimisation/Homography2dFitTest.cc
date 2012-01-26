@@ -219,9 +219,25 @@ static bool
   x = stateVec.GetX();
   x *= 1.0/x[8];
 
-  cout << "Solution: (" << x[0] << " " << x[1] << " " << x[2] << ")" << endl;
-  cout << "          (" << x[3] << " " << x[4] << " " << x[5] << ")" << endl;
-  cout << "          (" << x[6] << " " << x[7] << " " << x[8] << ")" << endl;
+  cout << "Solution: (" << x[0] << " " << x[1] << " " << x[2] << ")" << endl
+       << "          (" << x[3] << " " << x[4] << " " << x[5] << ")" << endl
+       << "          (" << x[6] << " " << x[7] << " " << x[8] << ")" << endl;
+
+  // Test shrink-wrapped method
+  cout << "Testing shrink-wrap method" << endl;
+  FitHomog2dPointsC fit2d(ZHOMOG1, ZHOMOG2);
+  Projection2dC p = fit2d.FitModelRobust(obsList, RANSAC_ITERATIONS,
+                                            3.0, 10.0, 20, 100.0, 0.1 );
+  cout << "Solution: (" << p.Matrix()[0][0] << " " << p.Matrix()[0][1] << " " << p.Matrix()[0][2] << ")" << endl
+       << "          (" << p.Matrix()[1][0] << " " << p.Matrix()[1][1] << " " << p.Matrix()[1][2] << ")" << endl
+       << "          (" << p.Matrix()[2][0] << " " << p.Matrix()[2][1] << " " << p.Matrix()[2][2] << ")" << endl;
+
+  for (UIntT r=0; r<=2; ++r) for (UIntT c=0; c<=2; ++c) {
+    if (Abs(x[3*r+c] - p.Matrix()[r][c]) > 0.01) {
+      cout << "Bad correspondence at element [" << r << "][" << c << "]\n";
+      return __LINE__;
+    }
+  }
 
   return true;
 }
