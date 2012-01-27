@@ -1,1 +1,1 @@
-NESTED=src.r
+NESTED=src.r QMake.r
