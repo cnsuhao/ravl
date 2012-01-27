@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/System/StringList.cc"
 
@@ -50,7 +49,7 @@ namespace RavlN {
 	  case '"': // a quote.
 	    inQuote = !inQuote;
 	    break;
-	  case '\\': // Excape char ?
+	  case '\\': // Escape char ?
 	    place++;
 	    if(place == eos) {
 	      InsLast(work);
@@ -197,11 +196,11 @@ namespace RavlN {
             work += *place;
             // move to next character.
             ++place;
-            // dont care what is after an escape.
+            // don't care what is after an escape.
             work += *place;
             break;
 
-          // found a non-escaped delimter - so split.
+          // found a non-escaped delimiter - so split.
           case ',':
             work.gsub("\\,", ",");
             ret.InsLast(work);

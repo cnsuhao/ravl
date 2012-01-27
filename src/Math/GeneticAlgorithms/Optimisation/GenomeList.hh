@@ -10,7 +10,7 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
-#include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/DP/TypeConverter.hh"
 
@@ -41,13 +41,13 @@ namespace RavlN { namespace GeneticN {
     virtual bool Save(std::ostream &strm) const;
 
     //! Create randomise value
-    virtual void Random(GeneC::RefT &newValue) const;
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Mutate a gene
-    virtual void Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Create a new list
     virtual bool CreateList(RCWrapAbstractC &list) const;

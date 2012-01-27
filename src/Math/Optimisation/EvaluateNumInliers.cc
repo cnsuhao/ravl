@@ -9,6 +9,7 @@
 //! file="Ravl/Math/Optimisation/EvaluateNumInliers.cc"
 
 #include "Ravl/EvaluateNumInliers.hh"
+#include "Ravl/CDLIter.hh"
 
 namespace RavlN {
 
@@ -22,12 +23,13 @@ namespace RavlN {
   }
 
   //: Returns the number of inliers for the given state parameters
-  RealT EvaluateNumInliersBodyC::SolutionScore(const StateVectorC &stateVec,
-					   DListC<ObservationC> &obsList) const
+  RealT EvaluateNumInliersBodyC::SolutionScore(
+                                        const StateVectorC &stateVec,
+					const DListC<ObservationC> &obsList) const
   {
     RavlAssert(stateVec.IsValid());
     UIntT totalVote=0;
-    for(DLIterC<ObservationC> it(obsList);it;it++)
+    for(ConstDLIterC<ObservationC> it(obsList);it;it++)
       // only use observations that have not already been selected
       if(!it.Data().GetSelected()) {
 	// compute the residual
@@ -44,12 +46,12 @@ namespace RavlN {
   //: Returns the observations compatible with the given state parameters
   DListC<ObservationC> EvaluateNumInliersBodyC::CompatibleObservations(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const
+					const DListC<ObservationC> &obsList) const
   {
     RavlAssert(stateVec.IsValid());
     DListC<ObservationC> compatibleList;
 
-    for(DLIterC<ObservationC> it(obsList);it;it++) {
+    for(ConstDLIterC<ObservationC> it(obsList);it;it++) {
       // compute the residual
       RealT residual = it.Data().NonRobustResidual(stateVec);
 
@@ -64,12 +66,12 @@ namespace RavlN {
   //: Returns  list of booleans indicating which observations are compatible with the given state parameters
   DListC<bool> EvaluateNumInliersBodyC::ObservationCompatibility(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const
+					const DListC<ObservationC> &obsList) const
   {
     RavlAssert(stateVec.IsValid());
     DListC<bool> compatibleList;
 
-    for(DLIterC<ObservationC> it(obsList);it;it++) {
+    for(ConstDLIterC<ObservationC> it(obsList);it;it++) {
       // compute the residual
       RealT residual = it.Data().NonRobustResidual(stateVec);
 

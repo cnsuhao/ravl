@@ -32,12 +32,12 @@ namespace RavlN {
     //: Constructor.
 
     virtual RealT SolutionScore(const StateVectorC &stateVec,
-				DListC<ObservationC> &obsList) const;
+				const DListC<ObservationC> &obsList) const;
     //: Returns the log likelihood for the given state parameters
 
     DListC<ObservationC> CompatibleObservations(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const;
+					const DListC<ObservationC> &obsList) const;
     //: Returns the observations compatible with the given state parameters
 
 

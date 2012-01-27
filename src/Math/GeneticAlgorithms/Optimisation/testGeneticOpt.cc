@@ -8,6 +8,7 @@
 #include "Ravl/Genetic/GenomeShare.hh"
 #include "Ravl/Genetic/GeneTypeWeightedMeta.hh"
 #include "Ravl/Genetic/GeneTypeFloatGauss.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/SysLog.hh"

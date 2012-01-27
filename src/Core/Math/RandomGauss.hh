@@ -36,7 +36,11 @@ namespace RavlN {
       return Generate(twister);
     }
     //: Generate number with internal generator
-    
+
+    RandomMersenneTwisterC &MersenneTwister()
+    { return twister; }
+    //: Access the underlying random number generator.
+
   protected:
     RandomMersenneTwisterC twister;
     bool iset;

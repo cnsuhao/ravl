@@ -33,17 +33,17 @@ namespace RavlN {
     //: Constructor.
 
     virtual RealT SolutionScore(const StateVectorC &StateVec,
-				DListC<ObservationC> &obsList) const;
+				const DListC<ObservationC> &obsList) const;
     //: Returns the number of inliers for the given state parameters
 
     virtual DListC<ObservationC> CompatibleObservations(
 					const StateVectorC &StateVec,
-					DListC<ObservationC> &obsList) const;
+					const DListC<ObservationC> &obsList) const;
     //: Returns the observations compatible with the given state parameters
 
     virtual DListC<bool> ObservationCompatibility(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const;
+					const DListC<ObservationC> &obsList) const;
     //: Returns  list of booleans indicating which observations are compatible with the given state parameters
 
   private:

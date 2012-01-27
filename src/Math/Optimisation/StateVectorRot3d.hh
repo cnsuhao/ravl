@@ -10,7 +10,7 @@
 //! author="Phil McLauchlan"
 //! date="24/7/2002"
 //! rcsid="$Id$"
-//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Examples"
+//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Cases"
 //! lib=RavlOptimise
 //! file="Ravl/Math/Optimisation/StateVectorRot3d.hh"
 

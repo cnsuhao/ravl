@@ -9,6 +9,7 @@
 
 #include "Ravl/Zmq/Message.hh"
 #include "Ravl/DP/MemIO.hh"
+#include "Ravl/TypeName.hh"
 #include "Ravl/OS/SysLog.hh"
 #include <zmq.h>
 
@@ -104,7 +105,7 @@ namespace RavlN {
       bool Send(const DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;
         if(!MemSave(data,value,m_defaultCodec,m_verbose)) {
-          RavlError("Failed to encode message ");
+          RavlError("Failed to encode message using codec %s from type '%s' ",m_defaultCodec.data(),RavlN::TypeName(typeid(DataT)));
           RavlAssert(0);
           return false;
         }
@@ -132,6 +133,8 @@ namespace RavlN {
       //! Handle to socket.
       typedef SmartPtrC<SocketC> RefT;
     protected:
+
+      std::string m_name;
       void *m_socket;
       StringC m_defaultCodec;
       bool m_verbose;

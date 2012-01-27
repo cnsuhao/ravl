@@ -12,7 +12,13 @@
 #include "Ravl/StateVectorHomog2d.hh"
 #include "Ravl/ObservationHomog2dPoint.hh"
 #include "Ravl/ObservationImpHomog2dPoint.hh"
+#include "Ravl/ObservationManager.hh"
+#include "Ravl/EvaluateNumInliers.hh"
+#include "Ravl/Ransac.hh"
+#include "Ravl/LevenbergMarquardt.hh"
+#include "Ravl/Point2dPairObs.hh"
 #include "Ravl/Matrix3d.hh"
+#include "Ravl/CDLIter.hh"
 
 namespace RavlN {
 
@@ -90,4 +96,58 @@ namespace RavlN {
     StateVectorHomog2dC sv(P,zh1,zh2);
     return sv;
   }
+
+
+  Projection2dC FitHomog2dPointsBodyC::FitModelRobust
+  ( const DListC<ObservationC> obsList,
+    UIntT noRansacIterations,
+    RealT ransacChi2Thres,
+    RealT compatChi2Thres,
+    UIntT noLevMarqIterations,
+    RealT lambdaStart,
+    RealT lambdaFactor )
+  {
+    // Build RANSAC components
+    ObservationListManagerC obsManager(obsList);
+    EvaluateNumInliersC evaluator(ransacChi2Thres, compatChi2Thres);
+  
+    // use RANSAC to fit homography
+    FitToSampleC fitter(*this);
+    RansacC ransac(obsManager, fitter, evaluator);
+
+    // select and evaluate the given number of samples
+    for ( UIntT iteration=0; iteration < noRansacIterations; iteration++ )
+      ransac.ProcessSample(8);
+    if(!ransac.GetSolution().IsValid())  throw ExceptionNumericalC("No valid solution found from RANSAC in FitHomog2dPointsC::FitModelRobust()");
+
+    // select observations compatible with solution
+    DListC<ObservationC> compatibleObsList = 
+      evaluator.CompatibleObservations(ransac.GetSolution(), obsList);
+    inliers = evaluator.ObservationCompatibility(ransac.GetSolution(),compatibleObsList);
+
+    // initialise Levenberg-Marquardt algorithm with Ransac solution
+    StateVectorHomog2dC stateVecInit = ransac.GetSolution();
+    LevenbergMarquardtC lm = LevenbergMarquardtC(stateVecInit, obsList);
+
+    // apply Levenberg-Marquardt iterations
+    lm.NIterations ( obsList, noLevMarqIterations, lambdaStart, lambdaFactor );
+
+    // get solution homography
+    StateVectorHomog2dC sv(lm.GetSolution()); 
+    Matrix3dC P = sv.GetHomog();
+    P /= P[2][2];
+    return Projection2dC(P, zh1, zh2);
+  }
+
+
+
+  SArray1dC<bool> FitHomog2dPointsBodyC::Compatibility()
+  { 
+    SArray1dC<bool> result(inliers.Size());
+    IndexC j=0;
+    for (ConstDLIterC<bool> i(inliers); i; ++i,++j) result[j] = *i;
+    return result;
+  }
+
+
 }

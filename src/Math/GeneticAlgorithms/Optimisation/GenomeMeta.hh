@@ -10,7 +10,7 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
-#include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GeneType.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -42,10 +42,10 @@ namespace RavlN { namespace GeneticN {
     virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     //! Create randomise value
-    virtual void Random(GeneC::RefT &newValue) const;
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Access values in enumeration.
     const std::vector<GeneC::ConstRefT> &Values() const
@@ -90,10 +90,10 @@ namespace RavlN { namespace GeneticN {
      virtual void Dump(std::ostream &strm,UIntT indent) const;
 
      //! Create randomise value
-     virtual void Random(GeneC::RefT &newValue) const;
+     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
      //! Mutate a gene
-     virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Access list of types
      const std::vector<GeneTypeC::ConstRefT> &Types() const

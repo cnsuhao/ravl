@@ -11,6 +11,7 @@
 #include "Ravl/Genetic/GPInstIf.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Genetic/GenomeClass.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 
 namespace RavlN { namespace GeneticN {
 

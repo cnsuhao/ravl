@@ -8,7 +8,6 @@
 #define RAVL_ATTRIBUTEVALUETYPES_HEADER 1
 //! author="Charles Galambos"
 //! date="23/8/2003"
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! file="Ravl/Core/IO/AttributeValueTypes.hh"
 //! docentry="Ravl.API.Core.Data_Processing.Attributes"

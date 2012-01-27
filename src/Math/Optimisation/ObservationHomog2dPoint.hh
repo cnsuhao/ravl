@@ -10,7 +10,7 @@
 //! author="Phil McLauchlan"
 //! date="24/7/2002"
 //! rcsid="$Id$"
-//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Examples"
+//! docentry="Ravl.API.Pattern Recognition.Optimisation2.Cases"
 //! example="Homography2dFitTest.cc"
 //! lib=RavlOptimise
 //! file="Ravl/Math/Optimisation/ObservationHomog2dPoint.hh"
@@ -31,7 +31,6 @@ namespace RavlN {
     ObservationHomog2dPointBodyC(const Vector2dC &nz1, const MatrixRSC &nNi1,
 				 const Vector2dC &nz2, const MatrixRSC &nNi2);
     //: Constructor.
-    
     ObservationHomog2dPointBodyC(const Vector2dC &nz1, const MatrixRSC &nNi1,
 				 const Vector2dC &nz2, const MatrixRSC &nNi2,
 				 RealT varScale, RealT chi2Thres);
@@ -132,6 +131,8 @@ namespace RavlN {
       : ObservationExplicitC(*new ObservationHomog2dPointBodyC(nz1,nNi1,nz2,nNi2))
     {}
     //: Constructor.
+    //!param: nz1, nz2 - pair of corresponding vectors
+    //!param: nNi1, nNi2 -  Inverse covariance matrix N^-1 of noise vector added to nz1, nz2
     
     ObservationHomog2dPointC(const Vector2dC &nz1, const MatrixRSC &nNi1,
 			     const Vector2dC &nz2, const MatrixRSC &nNi2,
@@ -139,6 +140,8 @@ namespace RavlN {
       : ObservationExplicitC(*new ObservationHomog2dPointBodyC(nz1,nNi1,nz2,nNi2,varScale,chi2Thres))
     {}
     //: Constructor for robust bi-Gaussian observation.
+    //!param: nz1, nz2 - pair of corresponding vectors
+    //!param: nNi1, nNi2 -  Inverse covariance matrix N^-1 of noise vector added to nz1, nz2
     
     ObservationHomog2dPointC(const ObservationC &obs)
       : ObservationExplicitC(dynamic_cast<const ObservationHomog2dPointBodyC *>(BodyPtr(obs)))

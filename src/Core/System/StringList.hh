@@ -12,7 +12,6 @@
 //! userlevel=Normal
 //! author="Bill Christmas"
 //! docentry="Ravl.API.Core.Lists;Ravl.API.Core.Strings"
-//! rcsid="$Id$"
 //! date="12/07/1996"
 
 #include "Ravl/String.hh"
@@ -22,31 +21,32 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: List of StringC's
+  // This class is obsolete, StringArrayC is preferred for new code.
   
   class StringListC 
     : public DListC<StringC> 
   {
   public:
     inline StringListC()
-      {}
+    {}
     //: Default constructor
     
     inline StringListC (const StringListC &oth)
       : DListC<StringC>(oth)
-      {}
+    {}
     //: Copy constructor
     
     inline StringListC (const DListC<StringC> &alist)
       : DListC<StringC>(alist)
-      {}
+    {}
     //: Constructor
     
     StringListC (const StringC &str, const char* delim = " \n\t\0")
-      { Parse(str, delim); }
+    { Parse(str, delim); }
     //: Constructor that tokenises string into string list from StringC
     
     StringListC (const char* str, const char* delim = " \n\t\0")
-      { Parse(StringC(str), delim); }
+    { Parse(StringC(str), delim); }
     //: Constructor that tokenises string into string list from char*
     
     StringListC (const StringC &str, bool fullParse,const char* delim = " \n\t\0");

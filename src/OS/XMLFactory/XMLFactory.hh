@@ -407,6 +407,10 @@ namespace RavlN {
     }
     //: Invalidate context.
 
+    bool IsValid() const
+    { return m_iNode.IsValid() && m_factory.IsValid(); }
+    //: Test if context is valid.
+
     template<class DataT>
     bool UseComponent(const StringC &name,
                       DataT &data,
@@ -713,6 +717,10 @@ namespace RavlN {
     // At the moment this just looks for unused 
     // attributes.
     
+    bool Clear();
+    //: Clear factory contents.
+    // This is can be used at shutdown to ensure all memory is free'd
+
     typedef SmartPtrC<XMLFactoryC> RefT;
     //: Reference
 

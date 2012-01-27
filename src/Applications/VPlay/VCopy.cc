@@ -25,6 +25,7 @@
 #include "Ravl/DP/EventSet.hh"
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/DP/FixedBuffer.hh"
+#include "Ravl/DP/SplitO.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/OS/NetPortManager.hh"
@@ -44,6 +45,7 @@ int main(int nargs,char *args[])
   bool verb = option.Boolean("v",false,"Verbose mode. ");
   StringC formatIn = option.String("if","","Input format. ");
   StringC formatOut = option.String("of","","Output format. ");
+  StringC displayOutName = option.String("do","","Display output name (Use @X) ");
   bool netExport = option.Boolean("e",false,"Export to network. ");
   IntT bufferSize = option.Int("b",10,"Buffer size.");
   StringC serverAddress = option.String("a","localhost:4046","Video server address. ");
@@ -68,8 +70,7 @@ int main(int nargs,char *args[])
   
   if(!yuvMode) {
     DPISPortC<ImageC<ByteRGBValueC> > vidIn;
-    DPOSPortC<ImageC<ByteRGBValueC> > vidOut;
-    
+    DPOPortC<ImageC<ByteRGBValueC> > vidOut;
     if(!OpenISequence(vidIn,infile,formatIn,verb)) {
       if(verb)
 	cout << "STATUS: Open failed. \n" << flush;
@@ -99,6 +100,21 @@ int main(int nargs,char *args[])
       cerr << "ERROR: Failed to open output '" << infile << "'\n";
       exit(1);
     }
+
+    DPOSPortC<ImageC<ByteRGBValueC> > dispOut;
+    DPSplitOC<ImageC<ByteRGBValueC> > splitOut(true);
+    if(!displayOutName.IsEmpty()) {
+      if(!OpenOSequence(dispOut,displayOutName,"",verb)) {
+        cerr << "ERROR: Failed to open display output '" << displayOutName << "'\n";
+        exit(1);
+      }
+      RavlAssert(dispOut.IsValid());
+      RavlAssert(vidOut.IsValid());
+      splitOut.Add(vidOut);
+      splitOut.Add(dispOut);
+      vidOut = splitOut;
+      RavlAssert(vidOut.IsValid());
+    }
     
     if (!vidOut.IsPutReady()) {
       if (verb) 
@@ -118,7 +134,7 @@ int main(int nargs,char *args[])
     
   } else {
     DPISPortC<ImageC<ByteYUVValueC> > vidIn;
-    DPOSPortC<ImageC<ByteYUVValueC> > vidOut;
+    DPOPortC<ImageC<ByteYUVValueC> > vidOut;
     
     if(!OpenISequence(vidIn,infile,formatIn,verb)) {
       if(verb)
@@ -148,6 +164,20 @@ int main(int nargs,char *args[])
     if(!OpenOSequence(vidOut,outfile,formatOut,verb)) {
       cerr << "ERROR: Failed to open output '" << infile << "'\n";
       exit(1);
+    }
+    DPOSPortC<ImageC<ByteYUVValueC> > dispOut;
+    DPSplitOC<ImageC<ByteYUVValueC> > splitOut(true);
+    if(!displayOutName.IsEmpty()) {
+      if(!OpenOSequence(dispOut,displayOutName,"",verb)) {
+        cerr << "ERROR: Failed to open display output '" << displayOutName << "'\n";
+        exit(1);
+      }
+      RavlAssert(dispOut.IsValid());
+      RavlAssert(vidOut.IsValid());
+      splitOut.Add(vidOut);
+      splitOut.Add(dispOut);
+      vidOut = splitOut;
+      RavlAssert(vidOut.IsValid());
     }
 
     if (!vidOut.IsPutReady()) {
