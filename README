@@ -34,7 +34,7 @@ Why should you use this library?
 Contributions to the library or suggestions on how it can be improved are
 welcome they can be posted via the sourceforge web pages 
 ( http://sourceforge.net/projects/ravl ) or sent directly to me at
-John.Field@surrey.ac.uk
+john.field@surrey.ac.uk
 
 
 PREFACE TO THE 1.1 ALPHA RELEASE
@@ -80,12 +80,11 @@ COPYING and COPYING.LESSER.
 ACKNOWLEDGEMENTS
 ----------------
 
-RAVL was originally derived from AMMA, written by Radek Marik with help
-from many other members of CVSSP. The work of porting AMMA to RAVL was
-largely being undertaken by Charles Galambos, again with help from other
-members of CVSSP. The RavlMath library includes ccmath, written by 
-Daniel A. Atkinson. RAVL is currently maintained by members of CVSSP
-and Omniperception.
+RAVL was originally derived from AMMA, written by Radek Marik with help from
+many other members of CVSSP. The work of porting AMMA to RAVL was largely
+undertaken by Charles Galambos, again with help from other members of CVSSP.
+The RavlMath library includes ccmath, written by Daniel A. Atkinson. RAVL is
+currently maintained by members of CVSSP and Omniperception.
 
 
 DOCUMENTATION
@@ -95,26 +94,11 @@ A full suite of on-line documentation is available from:
 
 http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Basic/Tree/Ravl.html
 
-As noted in the preface to this 1.1 Alpha release, the on-line 
-documentation reflects the live release of RAVL; version 1.0. As such, 
-details for installation and the associated configure.local.xxxx file
-contained in the on-line documentation should be ignored. Please refer to
-the INSTALL file in the RAVL-1.1 directory of this distribution.
+As noted in the preface to this 1.1 Alpha release, the on-line documentation
+reflects the live release of RAVL; version 1.0. As such, details for
+installation and the associated configure.local.xxxx file contained in the
+on-line documentation should be ignored. Please refer to the INSTALL file in
+the RAVL-1.1 directory of this distribution.
 
 
-QMAKE
------
-
-Revision 1.1 of RAVL introduces the provision of the class libraries in one,
-single library file. This precludes the need to use the QMake utility
-to ensure the correct individual RAVL libraries are linked into any client
-program. However, as of this Alpha release of RAVL, the supplied QMake does
-not currently support the building of client projects that use the new single
-library and should not therefore be used for builing such projects. Please
-use your own makefile or alternative build system to link your project with
-the RAVL library. Any references made in the on-line documentation to building
-applications using the RAVL libraries, should thus be ignored as they relate
-to the existing 1.0 release version of RAVL. When the finalised version of
-RAVL 1.1 is released, it will include a build tool for building client
-projects that use RAVL, along with updated documentation.
 

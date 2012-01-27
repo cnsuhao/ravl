@@ -1,8 +1,5 @@
 ﻿Implementation Notes
 
-+ The configure script should be provided in the root of the source
-  distribution (parallel with the src directory).
-
 + configure is actually built from src/Ravl/AutoTools/configure.ac and
   includes src/Ravl/AutoTools/aclocal.m4. The configure.ac is unique to Ravl
   while aclocal.m4 is a copy of the current (as shipped by Ubuntu LTS version)
@@ -32,17 +29,13 @@
 
 + As with configure, the source for the top level Makefile can be found in the 
   src/Ravl/AutoTools directory. It is Makefile.in and is processed into
-  Makefile when the user runs configure. Currently, the Makefile.in file needs
-  to be installed in the top level directory (parallel with the src directory).
-  While this could be changed, it may be seen as slightly counter to what an
-  experienced configure user may expect.
+  Makefile when the user runs configure. 
 
-+ Much the same as for the top level Makefile.in, three helper utilities exist
-  in the src/Ravl/AutoTools directory and should be distributed in the top
-  level directory. These three scripts, config.guess, config.sub and install.sh
-  provide support functions to the configure script. They are preserved
-  versions of members of the standard GNU AutoTools suite, put into source
-  control to record the version used at any one time.
++ Three helper utilities exist in the top level ravl directory and in the
+  ravl/QMake directory. These three scripts, config.guess, config.sub and
+  install.sh provide support functions to the configure script. They are
+  preserved versions of members of the standard GNU AutoTools suite, put into
+  source control to record the version used at any one time.
 
 + When run, configure generates Config.Project in the top level directory. This
   file receives all of the environemnt definitions needed by the Ravl build
@@ -76,12 +69,14 @@
   really lend themselves to user intervention in this manner, QMake just uses
   PKG_ARFLAGS in the recipies.
 
-+ Single static and shared libraries are built using the objects created
-  by the standard Ravl build. The makefile used is located under
-  the build directory as share/RAVL/QMake/SingleLib.mk. This is created
-  by configure from the master file src/Ravl/QMake/SingleLib.mk.in.
++ Single static and shared libraries are built using the objects created by the
+  standard Ravl build. The makefile used is located under the build directory
+  as share/QMake/Projects/Ravl/Makefiles/SingleLib.mk. This makefile is created
+  by configure using the ravl/QMake/src/Projects/Ravl/Makefiles/SingleLib.mk.in
+  file in the distributed Ravl source as a proforma.
 
-+ Binaries linked against the single libraries are built using the
-  makefile created by configure: share/RAVL/QMake/Recursive.mk (master
-  file is Recursive.mk.in under src/Ravl/QMake). Again, object files
++ Binaries linked against the single libraries are built using a makefile created
+  by configure; share/QMake/Projects/Ravl/Makefiles/Recursive.mk.in. Similarly to
+  SingleLib.mk, this file is created from a master file in the distributed source
+  under the ravl/QMake/src/Projects/Ravl/Makefiles directory. Again, object files
   used are from the standard build which must be performed first.

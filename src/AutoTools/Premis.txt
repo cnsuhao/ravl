@@ -19,9 +19,13 @@
 	- 'make install' copies all built utilities, the single shared-library
 	   plus the Ravl header files, scripts, configuration; data and aux
 	   files to the installation taret directories (under /usr/local by
-	   default). Some work remains on modification to Ravl to cope with the
-	   modified  paths this will cause (PROJECT_OUT is mostly hard-coded
-	   into the objects at compile time).
+	   default). 
 
 + Provide binary distribution
 	-Follows adaptation of Ravl for deployment in /usr/lib, etc.
+
++ Separate QMake from Ravl
+	- Largly achieved with QMake becomming a fully seperate build tool with
+	  the exception that the Validate and CxxDoc tools are still built from
+	  within Ravl (as they rely heavily on the Ravl package to provide
+	  needed service routines).

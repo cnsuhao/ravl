@@ -9,10 +9,35 @@
 	  sub-project. Web availability of the documentation somewhat obviates
 	  this requirement.
 
-+ Static version of single library currently not configured for selective
-  linking (MUSTLINK infrastructure needs incorporating) so client code must
-  include the whole library (using the -Wl,--whole-archive switch). This
-  results in unusably large binaries
++ Not all external libraries that can be used by Ravl are currently supported
+  by the configure script.
+
+	- Current state of development, currently unsupported libraries will be
+	  added in due course, as priority dictates. In the meantime, manual
+	  editing of the Config.Project file can allow the build to use an 
+	  unsupported library (add it's identifier to RESOURCES; declare the
+	  XXX_CFLAGS and XXX_LIBS variables; set the appropriate XXX_SUPPORT
+	  variable and add the value of XXX_LIBS to an appropriate point in the
+	  setting of the ALL_EXTERNAL_LIBS variable).
+
++ In addition to those libraries for which configure has not currently been
+  written to support, the Firewire support libraries, along with the AVIfile
+  library have had automatic support disabled.
+
+	- This is due to the current versions of these libraries not being
+	  compatible with the wrapper code in Ravl. This incompatability needs
+	  addressing as part of the on-going maintenance of Ravl but from the
+	  point of view of the AutoTools project, it may be beneficial to add
+	  a means for configure to revision check the version of any library
+	  that is available. In the meantime, should a compatible version of
+	  these external libraries be available to the Ravl build, manual
+	  editing of the Config.Project file (see above) will enable the use
+	  of that compatible library.
+
++ The static version of the single library is not currently configured for
+  selective linking (the MUSTLINK infrastructure needs incorporating) so client
+  code must include the whole library (using the -Wl,--whole-archive switch).
+  This results in unusably large binaries.
 
 	- There are several ways to allow the removal of the “greedy” linking
 
@@ -35,61 +60,49 @@
 	  pro-forma link line/makefile for the user which addresses this
 	  somewhat.
 
-+ Shared version of single library currently still attempts dynamic loads of
-  individual component libraries.
++ Shared version of single library currently still includes code for  dynamic
+  loads of individual component libraries.
 
 	- Rectification pending decision on future of MUSTLINKS
 
-+ configure script currently does not produce compiler options for Mac or BSD
-  platforms. 
++ The configure script currently does not produce compiler options for Mac or
+  BSD platforms. 
 	- Current state of development, will be provided.
 
++ A build of the single libraries (shared or static) currently requires a 
+  previous build of the corresponding version of the multiple libraries to
+  have been carried out first. In fact, the build of the single shared library
+  currently requires both the shared and the static individual libraries to
+  have been built first.
+	- In future, the build process should be optimised to obliviate the
+	  need for this. However, this is best carried out after a decision
+	  on the long-term direction over the use and provision of the
+	  multiple/individual/traditional Ravl libraries.
 
-+ Failure of testDataProc test program when linked against a single library
-  (static or shared).
++ RavlRawVidIO library has been omitted from the single libraries
 
-	- Failure is due to a default type selection activating different code
-	  when using the single library. Test program assumes the default
-	  conversion selected (as no format type is specified) will work with
- 	  the test data. However, with more types available in the single
-	  library (compared to the targetted subset of libraries usually
-	  linked in for the test), the default picked fails when using the
-	  single library. This is initially a failing on the test program but
-	  does highlight that:
+	- Omitted owing to an issue made more apparent by the single library.
+	  If the routines in this library are called to convert something other
+	  than the specific format of video stream, the conversion produces a
+	  fatal error. Where previously this library was only utilised in
+	  applications where the correct fomat stream was being processed, 
+	  with the single library, the possibility of hitting this problem is
+	  greatly enhanced (and in fact occurs from one on the test programs).
+	  Both the "voting" mechanism that causes this library's routines to
+	  be erroneously called for inappropriate data and the error processing
+	  of the routines themselves need improving to allow the reinsertion of
+	  this library.
 
-		 + Default format selection can be improved to better select
-		   the conversion based on the data format.
++ As the location of the root directory containing Ravl's data files is compiled
+  into the library, installation of Ravl currently needs to re-build the single
+  library to modify the encoded location from that of the staging location
+  (under the build directory) to that of the fully installed files ($datadir).
 
-		 + (As the failure is on a conversion back from another default
-		   conversion into a buffer) default selection would be best if
-		   the same default is selected in both directions (not use one
-		   conversion in one direction and another in the reverse)
-
-		 + Some conversions produce fatal errors if they find they
-		   cannot convert the supplied data. Certainly, in the default
-		   case, the conversion should be more robust and allow a new
-		   default to be tried if the conversion fails.
-
-	  This test failure is an indication of existing limitations in Ravl
-	  that are made more apparent by the single library, rather than being
-	  a newly introduced issue. Moving to using an initialisation function
-	  to solve the MUSTLINKS issue (see above) will mitigate this somewhat,
-	  as we will return to a situation where the available conversions are
-	  more targetted to what the user is doing, even for the single library.
-
-+ $PROJECT_OUT is still hard coded into binaries even though $datadir, etc.
-  should be used.
-       - The individual files need updating. The test programs will need
-         consideration as to how we successfully test RAVL prior to
-         installation because the support files will not be in the correct
-         location (unless a previous install is present). Currently some
-         test programs fail owing to using the wrong path.
-
-+ No formal modification to the existing documentation has yet been carried out
-  to reflect the new build system.
-
-	- This will be carried out prior to committal of the first phase of
-	  development.
+       - Further development may be undertaken to improve this aspect: possible
+	 solutions include the use of some form of runtime configuration
+	 capability; some form of binary editing to deliver a modified library;
+	 a runtime check based on where the library is being sourced.
+         
 
 + No analysis has been undertaken on if/how the modifications required for this
   work influence other systems (such as any on-going use of AutoPort2) that
@@ -108,7 +121,7 @@
 
 + Existing config.h files (Ravl/PatternRec/fann and Core/Base) need unifying
 	- These may also require some processing in configure to fully
-	  integrate them into the autotools process. This step need no form
+	  integrate them into the autotools process. This step need not form
 	  part of the initial project.
 
 + Top level Makefile does not provide make clean or an install_check target

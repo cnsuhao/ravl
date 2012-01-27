@@ -9,191 +9,257 @@
 
     <p> These instructions were developed for a Linux environment.  They
     should work for most Unix-type environments.  There are also instructions
-    for compiling RAVL under <a href="Ravl.Installation.Windows.html">M$
+    for compiling RAVL under <a href="Ravl.Installation.Windows.html">Microsoft
     Windows</a>.</p>
 
-    <p> The installation process by default will build several versions of the
-    library, including varying degrees of optimisation and debug information,
-    and also including shared and static versions of the libraries.</p>
-
-    <p> The instructions are for downloading the current version on the
-    SourceForge SVN repository.  If you prefer, you can download the <a
-    href="http://sourceforge.net/projects/ravl">latest release</a> (select
-    "Download"). </p>
+    <p> The instructions are for downloading the current version from the
+    SourceForge Git repository.  If you prefer, you can download the <a
+    href="http://sourceforge.net/projects/ravl/files/RAVL/1.1/RAVL-1.1.tar/download">latest release</a> as a tar
+    archive (select "Download"). </p>
 
     <h2>RAVL Prerequisites</h2>
 
-    <p> The RAVL library requires the use of the gcc compiler.  Use either
-    version 3.4.6, or a stable release of version 4. If it is not on the
-    system, <a href="Ravl.Installation.Compiler.html">install it
-    first</a>.</p>
+    <p> Building the RAVL library requires the use of an ANSI C++ compiler
+    along with the <a href="http://www.gnu.org/software/make">GNU make</a>
+    utility (or another compatible version of make).  Please make sure you
+    have suitable software installed before attempting to build RAVL. The RAVL
+    build process is actually managed by the <a href="Ravl.QMake.html"><def>QMake</def></a>
+    utility. QMake is a flexible compilation aid, designed to provide a simpler
+    interface to the GNU make program. As part of the RAVL instalation process,
+    a copy of QMake will be configured and installed.
+    </p>
 
-    <p>The <a href="Ravl.Installation.Contrib.html">gtk 2.0 library</a> is
-    strongly recommended.  Much of RAVL will not build if gtk is not
+    <p>The functionality provided by the RAVL library may be extended by the
+    use of certain third-party libraries. For instance, using the libraries
+    written by the <a href="http://ffmpeg.org">FFmpeg</a> project allows
+    RAVL to process many types of multimedia files. A partial list of such
+    libraries may be found <a href="Ravl.Installation.Contrib.html">here</a>.
+    </p>
+
+    <p>Any compatible third-party libraries that are installed on your system
+    will automatically be utilised by RAVL. All the installer needs to do is
+    ensure they are installed prior to running the RAVL configure program. We
+    recommend that the <a href="http://www.gtk.org">gtk 2.0 library</a> is
+    installed on your machine; much of RAVL will not be built if gtk is not
     installed.</p>
 
     
     <h2>Installing the RAVL library and applications</h2> 
 
-    <p> Installation of the RAVL library and executables is rather
-    non-standard, but seems to work for most people.  Root priviledge is not
-    needed.</p>
-
     <ol>
-      <li> Make sure you use the appropriate commands depending on your shell
-      (C or bash).  Decide on a place for the installation and define the
-      environment variable <code>RAVL_INSTALLATION</code> accordingly.  This
-      can optionally point to an existing directory.  For C shell:
-
-        <pre>
-setenv RAVL_INSTALLATION ~/RavlProject
-mkdir -p $RAVL_INSTALLATION/src
-cd $RAVL_INSTALLATION/src</pre>
-
-        <p>or for bash shell:</p>
-
-        <pre>
-export RAVL_INSTALLATION=~/RavlProject
-mkdir -p $RAVL_INSTALLATION/src
-cd $RAVL_INSTALLATION/src</pre>
+      <li> Select a suitable location on your system in which to build RAVL.
+           The amount of disk space required will vary depending both on the
+           amount of extra functionality that gets built into RAVL (available
+           third-party libraries) and on your particular system or compiler in
+           use. We suggest that you budget for a requirement of around 10G of
+           disk space.<br/>
+           <br/>
       </li>
 
-      <li>Download the source code:
-    <pre>
-git clone git://ravl.git.sourceforge.net/gitroot/ravl/ravl
-cd ravl
-</pre>
+      <li> Download the source code (both for RAVL itself and for QMake):
+           <pre><kbd>           git clone git://ravl.git.sourceforge.net/gitroot/ravl/ravl
+           cd ravl
+           git clone git://git.code.sf.net/p/quickmake/code QMake </kbd></pre>
       </li>
 
-      <li> Select the relevant <code>config.local</code> file from
-      <code>$RAVL_INSTALLATION/src/Ravl/QMake</code> as follows.  Determine
-      the correct suffix for the file by running:
-<pre>
-$RAVL_INSTALLATION/src/ravl/src/QMake/config.arc</pre> 
+      <li> Configure the source to your system
+           <pre><kbd>           ./configure </kbd></pre>
+           This phase will locate the software tools required to build both RAVL
+           and QMake. It will also determine the third-party libraries that are
+           available to allow the extended functionality of RAVL to be enabled.
+           It is possible for the user to shape how this configuration phase
+           operates; including the possibility of over-riding what libraries RAVL
+           will utilise and  where the RAVL library will be installed. Please
+           refer to the following <a href="#advinst">Advanced Installation</a>
+           section.<br/>
+           <br/>
+      </li>
 
-        For a standard Linux installation on a 32-bit machine the returned
-        string should be <code>linux</code>, and so the required config file
-        is <code>config.local.linux</code> (<code>config.local.linux64</code>
-        for a 64-bit machine).  (If the script generates an error message you
-        will need to hack it to match your installation.  Sorry.)  In what
-        follows the config file is referred to as
-        <code>config.local.xxx</code>.  Then:
-    <pre>
-cp src/QMake/config.local.xxx .</pre></li>
+      <li> Build the RAVL libraries
+           <pre><kbd>           make </kbd></pre>
+           All built binaries and objects will be created in a tree under where the
+           initial configure was run. This stage will also build QMake.<br/>
+           <br/>
+      </li>
 
-      <li>  Then edit the chosen copied <code>config.local.xxx</code>.
-    Typical modifications include:
-        <ul>
-          <li> turning off some of the library versions via the
-          <code>FULLBUILD_TARGETS</code> variable (especially if space is
-          limited - a full install currently uses about 2Gbyte):
-            <ul>
-          
-              <li><code>debug</code> - includes debugging information and array
-                bound checking</li>
-              
-              <li><code>check</code> - includes array bound checking</li>
-              
-              <li><code>opt</code> - generates optimised code with no array
-              bound checking</li>
-              
-              <li><code>debugshared, checkshared, optshared</code> - builds
-              shared versions of the above.  These link faster </li>
-              
-              <li><code>optbin</code> - builds application binaries.  Strongly
-              recommended to leave it turned on, in order to build
-              <code>CxxDoc</code>, the program that builds this documentation.
-              If you turn <code>optbin</code> off, you need to build
-              <code>CxxDoc</code> separately to get a complete
-              installation.</li>
-            </ul>
-          </li>
-          <li> picking up the correct compiler if a new one has been
-          installed, or incorporating <code>ccache</code></li>
-          
-          <li> adjusting the available resources using the
-          <code>RESOURCES</code> variable.  The packages in the <code><a
-          href="Ravl.Installation.Contrib.html">Ravl/Contrib</a></code>
-          directory all depend on various external libraries; different
-          operating systems have different sets of these libraries.  Most of
-          them are turned off by default.  It is probably best to leave them
-          turned off when first installing RAVL.  Also if your system doesn't
-          have for example <code>gtk</code>, needed by the RAVL
-          <code>GUI</code> module, that needs turning off. </li>
+      <li> Install the RAVL libraries
+           <pre><kbd>           make install </kbd></pre>
+           By default, the RAVL libraries will be installed under the system
+           <code>/usr/local</code> directory. You may need additional user
+           privileges to complete this stage. <br/>
+           <br/>
+      </li>
 
-          
-        </ul> 
+      <li> Inform your system about RAVL<br/>
+           <p>If you have installed RAVL to the standard location (under 
+           <code>/usr/local</code>), your system should already be configured 
+           to use the RAVL libraries and utilities. If not, or if you have
+           selected a non-standard installation location for RAVL, there are
+           two paths that need setting up:</p>
 
-        Here is an <a href="Ravl.Installation.Config.html">example</a> of some
-        edits from an actual installation.</li>
-      
-      
-      <li>Finally, the installation is:
+      <pre>        1) The bin directory (<code>/usr/local/bin</code> by default) should appear 
+           in the <kbd>$PATH</kbd> environment variable, e.g. for bash users:
 
-        <pre>
-cd $RAVL_INSTALLATION/src/ravl/src
-./install $RAVL_INSTALLATION auto $RAVL_INSTALLATION/src/ravl/config.local.xxx
-rehash</pre> 
-    (<code>rehash</code> is only necessary if using a C-shell.)
+                      <kbd>export PATH=${PATH}:${HOME}/Ravl/bin</kbd>
+
+        2) The lib directory needs to be made known to the loader,
+           either by including it in the loader's configuration file
+           (usually <code>/etc/ld.so.conf</code> or <code>/etc/ld.conf</code>) or by adding it
+           to <kbd>$LD_LIBRARY_PATH</kbd>, e.g.:
+
+              <kbd>export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${HOME}/Ravl/lib</kbd></pre>
+           <p>If you wish to use your own build system, rather than the one
+           included with RAVL (QMake), your compiler and linker will also need
+           to know the location of the RAVL header files and library.</p>
+
       </li>
     </ol>
+
+    <p>You are now ready to begin programming with RAVL. Full documentation for
+    the RAVL classes can then be found via the index
+    <a href=../index.html>here</a> or from the <a href=Ravl.html>search page</a>,
+    while an introductory guide to writing a RAVL program is available
+    <a href=Ravl.Introduction.Getting_Started.html>here</a>.</p>
+
+
+    <h2 id="advinst">Advanced Installation</h2>
+
+    <p>This section details some of the more advanced concepts and command-line
+    switches that can be used with the configure utility should the need arise.</p>
+
+    <p>The default directories where RAVL is installed may be changed by adding
+    the command-line switch <kbd>--prefix=</kbd><var>dir</var> to the configure
+    command. This modifies the base installation directory from <code>/usr/local</code>
+    to whatever value of <var>dir</var> the user supplies. For example:
+    <pre>
+    <kbd>./configure --prefix=$HOME</kbd></pre>
+
+    will cause a subsequent '<kbd>make install</kbd>' to place RAVL under the
+    user's home directory.  With the use of differing command-line switches,
+    it is possible to re-direct where individual types of file are directed;
+    for example:
+    <pre>
+    <kbd>./configure --libdir=$HOME/RavlLibs</kbd></pre>
+
+    will redirect where the RAVL libraries are installed to. For a full list
+    of options to re-direct individual file types, along with all of the 
+    available command line options for configure, see the output from running
+    <pre>
+    <kbd>./configure --help</kbd></pre></p>
     
-    <h3>Troubleshooting</h3>
+    <p>The configure program tailors the RAVL source to the environment present
+    on your machine. Running configure will generate a <dfn>Config.Project</dfn>
+    file that records how RAVL has been set up. This file drives how RAVL is
+    built and what features are enabled.</p>
 
-    <p>If the install fails (usually because libraries that are required in
-    <code>config.local.xxx</code> are not actually installed), then after
-    fixing the problem it is usually sufficient to simply re-run the
-    <code>./install ...</code> command.  However, if this leads to further
-    compilation errors, you should remove the following directory trees before
-    re-running the install script:</p>
-    <ul>
-      <li>Everything in <code>$RAVL_INSTALLATION</code> except <code>src</code></li>
-      <li><code>/tmp/$USER/qm</code></li>
-    </ul>
+    <p>Configure will attempt to locate all of the optional external libraries
+    that RAVL can employ, enabling the functionality for all those it finds.
+    Those it does not find are dropped and their functionality is not included
+    in RAVL.</p>
 
-    <h2> Usage </h2><a name="USAGE"></a>
+    <p>A <kbd>--with-</kbd><var>lib</var> configure switch is provided to
+    actively demand that library '<var>lib</var>' be used. If this request is
+    made but the library is not found, configure will error out. The 
+    <kbd>--with-</kbd><var>lib</var> switch may be set to '<var>N</var>';
+    '<var>No</var>'; etc. to disable any particular library from use. The switch
+    <kbd>--without-</kbd><var>lib</var> has the same effect. For example:
+    <pre>
+    <kbd>./configure --with-OpenCV=N --with-libPNG</kbd></pre>
+    is equivalent to
+    <pre>
+    <kbd>./configure --without-OpenCV --with-libPNG=Y</kbd></pre>
 
-    <ul>
-      <li>
-        <p><b>C shell users</b>: Put the following alias and variable settings
-        for compilation (modified as appropriate) in your <code>.cshrc</code>
-        file:</p>
+    and explicitly disables the use of OpenCV by RAVL (even if OpenCV is
+    installed on the machine) while requiring libPNG.</p>
 
-        <pre>
-setenv RAVL_INSTALLATION ~/RavlProject
-setenv PROJECT_OUT ~/ProjOut
-setenv PATH  ${PATH}:${PROJECT_OUT}/lib/RAVL/linux/bin:${RAVL_INSTALLATION}/bin
-rehash
-</pre></li>
-      <li>
-        <p><b>bash users</b>: Put the following alias and variable settings
-        for compilation (modified if appropriate) in your <code>.bashrc</code>
-        file:</p>
+    <p>The configure program uses the
+    <a href=http://www.freedesktop.org/wiki/Software/pkg-config>pkg-config</a>
+    utility to locate the third-party libraries that RAVL can use. If the
+    pkg-config meta file for a third-party library is not available in its
+    usual location, configure provides an option to tell the configuration
+    process where the file resides:</p>
+    <pre>
+    <kbd>--with-</kbd><var>lib</var><kbd>-pkgconf=</kbd><var>path-to/meta-file</var>
 
-        <pre>
-export RAVL_INSTALLATION=~/RavlProject
-export PROJECT_OUT=~/ProjOut
-export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux/bin:${RAVL_INSTALLATION}/bin
-</pre>
-      </li>
-    </ul> 
-    <p>Notes:</p>
-    <ul>
-      <li><code>$RAVL_INSTALLATION</code> <i>must</i> be set here to the same
-      as for the installation above.</li>
+        For external libraries that support pkg-config, this switch 
+        allows the user to specify the location and name of a pkg-config
+        file for a particular library, <var>lib</var>.
 
-      <li><code>$PROJECT_OUT</code> controls the directory into which your own
-      code will be compiled.</li>
+        For example:
 
-      <li>The additions to <code>$PATH</code> will include your own
-      executables built using qm, as well as some RAVL utilities.</li>
-    </ul>
+        <kbd>./configure --with-OpenCV-pkgconf=/opt/lib/pkg-config/opencv.pc</kbd>
 
-    <p>Locally-built documentation for the RAVL classes can then be found at:
-    <nobr><code>$RAVL_INSTALLATION/share/doc/RAVL/Auto/Basic/Tree/Ravl.html</code></nobr></p>
+        instructs the configuration process to use the specified file,
+        <code>/opt/lib/pkg-config/opencv.pc</code>, as the pkg-config meta file. This
+        enables the user to instruct RAVL to be built using a particular
+        version of a third-party library.</pre>
 
-    <p>Now you are <a href="Ravl.Introduction.Getting_Started.html">ready to
-    program</a> using the RAVL library and QMake make system.</p>
+    <p>Some of the third-party libraries  (LibJasper, LibTIFF, Zlib, JPEG and
+    posixThreads) that may be used by RAVL do not support the pkg-config utility.
+    To allow configuration with these, configure provides the command-line
+    options:
+    <pre>
+    <kbd>--with-</kbd><var>lib</var><kbd>-include=</kbd><var>path-to-include-files</var>
+
+        For libraries that do not normally use pkg-config (and those
+        alone), this switch provides a mechanism for declaring where
+        the library's header file(s) can be found.
+
+    <kbd>--with-</kbd><var>lib</var><kbd>-library=</kbd><var>path-to/library-name</var>
+
+        As for <kbd>--with-</kbd><var>lib</var><kbd>-include</kbd>, this is only provided for those
+        libraries that do not normally support pkg-config. It allows
+        declaration of both where the third party library may be found
+        and also allows its name to be specified. When specifying the
+        name of the library, do not include any format extension (the
+        .a or .so suffix).</pre>
+
+    <p>These two switches are typically used in tandem to override the
+    defaults associated with a particular library. For example:</p>
+    <pre>
+    <kbd>./configure --with-JPEG-include=/opt/libjpeg-turbo/include \
+                     --with-JPEG-library=/opt/libjpeg-turbo/lib/libjpeg</kbd></pre>
+
+    <p>will employ libjpeg-turbo instead of the more usual JPEG library.
+    As the libjpeg-turbo library is a direct, drop-in replacement for the
+    JPEG library, use of these switches allows RAVL to use libjpeg-turbo's
+    more optimal code on machines where it is installed.</p>
+
+    <p>Setting any of these <kbd>--with-</kbd><var>lib-xxx</var> switches 
+implies <kbd>--with-</kbd><var>lib</var> and thus mandates that configure
+find and enable the library or error out. </p>
+
+    <p>The RAVL build process uses the default compiler available in your system
+path. Should you wish to change this, prior to running configure, set the
+environment variables <def>CC</def> and/or <def>CXX</def> to the location(s) of the C and C++
+compilers you wish to use. Other influential environment variables allow
+for the redefinition of other commands for the build process to use or to
+allow the specification of extra <def>CFLAGS</def> to use.</p>
+
+    <p>A full list of configure's available command-line switches and significant
+environment variables may be seen by issuing the command:
+    <pre>
+    <kbd>./configure --help</kbd></pre>
+
+    By executing configure in a directory away from where you installed the RAVL
+source, it is possible to separate out the build and source locations. For
+instance, the commands:
+
+    <pre>
+    <kbd>mkdir ~/Source
+    cd ~/Source
+    tar -xvf $ArchivePath
+    mkdir /tmp/Build
+    cd /tmp/Build
+    ~/Source/configure
+    make
+    make install</kbd></pre>
+
+    will install the RAVL source in the Source directory under the user's home
+location. RAVL itself will be built in the <code>/tmp/Build</code> directory which could
+be later deleted to save space once RAVL has been installed.</p>
+
+
 
     <h2> See also </h2>
 
@@ -204,7 +270,7 @@ export PATH=${PATH}:${PROJECT_OUT}/lib/RAVL/linux/bin:${RAVL_INSTALLATION}/bin
     <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Dec 23 09:31:09 GMT 2005 -->
 <!-- hhmts start -->
-Last modified: Wed Aug  3 16:08:43 BST 2011
+Last modified: Tue Nov 22 15:36:43 GMT 2011
 <!-- hhmts end -->
   </body>
 </html>

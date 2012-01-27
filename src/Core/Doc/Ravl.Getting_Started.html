@@ -4,35 +4,34 @@
 <!--! autoLink=on -->
 <html>
   <head>
-    <title>How to write a simple program with RAVL.</title>
+    <title>How to write a simple RAVL program.</title>
   </head>
 
   <body>
 
     <p>
-      This page shows how to write and compile a simple program with 
-      RAVL. </p>
+      This page shows how to write and compile a simple RAVL program. It
+      assumes you already have a fully <a href="Ravl.Installation.html">installed</a>
+      copy of RAVL. To build our RAVL application, we will use the
+      <a href="Ravl.QMake.html">QMake</a> utility. This will have been
+      automatically installed and configured as part of the RAVL installation.</p>
     
     <p>
-      Firstly you need to set up your environment.  Consult your local site
-      RAVL documentation for how to do this.  Alternatively, if you have
-      installed RAVL yourself, you can set up the environment by sourcing
-      either <code>{install}/share/RAVL/QMake/qmake.cshrc</code> if you use a
-      <code>'csh</code>'-type shell or
-      <code>{install}/share/RAVL/QMake/qmake.sh</code> if you use a
-      bourne-type shell (like <code>bash</code>)  
-      <br> where <code>{install}</code> is
-      the root of your local RAVL installation tree.  This should:</p>
-    <ul>
+      First, we need to tell QMake where we would like it to build the RAVL
+      application to. When using QMake, any code that is built will be placed
+      in the <a href="Ravl.QMake.Build_Structure.html">directory structure</a>
+      pointed to by the <def>PROJECT_OUT</def> environment variable. By default,
+      this output directory will be <code>$HOME/build</code> (the '<code>build</code>'
+      directory under your home directory). You may set PROJECT_OUT to any
+      location you choose (provided you have sufficient write privledges to
+      create the directory and write files there), QMake will even create the
+      directory for you if it does not exist.</p>
 
-      <li>set the $PROJECT_OUT variable (if not already set), to indicate
-      where your compilation results should go, </li>
-
-      <li>create the <code>qm</code> alias for compiling your code, and</li>
-      <li>add an entry to your $PATH variable so that the system will
-      automatically locate your executables.</li>
-    </ul>
-
+    <p>
+      Besides informing QMake of where you would like your programs created,
+      in order to run your RVL programs, you will need to tell the system where
+      your programs will be. You must therefore add the <code>$PROJECT_OUT/bin</code>
+      directory to your system's PATH environment variable.
 
     <p>
       Create a directory of your choice and in it create two files. The first
@@ -83,8 +82,8 @@ int main(int nargs,char **argv) {
       Next you'll have to tell QMake that you want to build an executable.  To
       do this, you need to create a file called <code>defs.mk</code> to
       tell it about files in the current directory.  More information on
-      <code>defs.mk</code> files can be found in <a
-      href="Ravl.QMake.html">Ravl.QMake</a>.  For this example all you need to
+      <code>defs.mk</code> files can be found in the <a
+      href="Ravl.QMake.html#defs.mk">QMake documentation</a>.  For this example all you need to
       put in <code>defs.mk</code> is a single line: </p>
 
 <pre>  MAINS=myprog.cc

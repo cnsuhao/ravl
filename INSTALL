@@ -11,17 +11,38 @@ extracted directory and issue the relevant build commands:
 
 All built binaries and objects will be created in a tree under where the
 initial configure was run.  Once RAVL has been built, 'make install' will
-install the RAVL library and the utility programs. By default, these will be
-installed under the system /usr/local directory. You may need additional user
-privileges to complete this stage. Please consult your system administrator 
-if you do not administer your own machine.
+install the RAVL library and the utility programs.  By default, these will be
+installed under the system '/usr/local' directory.  You may need additional
+user privileges to complete this stage.
 
-The default directories where RAVL is installed may be changed by using the
-configure script. This is facilitated by the --prefix command-line switch.
-This switch, along with other advanced installation topics, is discussed in
-the INSTALL.ADVANCED file. In addition, a full list of configure's available
-command-line switches and significant environment variables may be seen by
-issuing the command:
+The default installation directory may be changed by using the --prefix option 
+at the configure stage, e.g.:
+
+        ./configure --prefix=${HOME}/Ravl
+
+
+To get the full range of configure options (discussed in INSTALL.ADVANCED), 
+type:
 
         ./configure --help
 
+If installed in the default location, (/usr/local), your system should already
+be configured to use the RAVL libraries and utilities. If not, or if you have
+selected a non-standard installation location for RAVL, there are two paths
+that need setting up:
+
+1) The bin directory (/usr/local/bin by default) should appear in the $PATH
+environment variable, e.g. for bash users who have installed with a --prefix
+of ${HOME}/Ravl:
+
+        export PATH=${PATH}:${HOME}/Ravl/bin
+
+2) The lib directory needs to be made known to the loader, either by including
+it in the loader's configuration file (usually /etc/ld.so.conf or
+/etc/ld.conf) or by adding to $LD_LIBRARY_PATH, e.g.:
+
+        export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${HOME}/Ravl/lib
+
+If you wish to use your own build system, rather than the one included with RAVL
+(QMake), your  compilier and linker will also need to know the location of the
+RAVL header files and library.
