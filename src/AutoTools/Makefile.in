@@ -201,8 +201,11 @@ LocalQMake:
                          datadir=@abs_top_builddir@/share sysconfdir=@abs_top_builddir@ STAGING=@abs_top_builddir@/share/QMake
 	$(SHOWIT)if [ ! -f @abs_top_builddir@/share/QMake/bin/Validate ]; \
                  then \
-                   cd @abs_top_builddir@/share/QMake/bin; \
-                   $(LN_S) @abs_top_builddir@/bin/Validate Validate; \
+                   if [ ! -h @abs_top_builddir@/share/QMake/bin/Validate ]; \
+                   then \
+                     cd @abs_top_builddir@/share/QMake/bin; \
+                     $(LN_S) @abs_top_builddir@/bin/Validate Validate; \
+                   fi \
                  fi
 # Stage QMake under the Ravl build directory in a form that will run from
 # that directory. To achieve this, we have to set the destination for both
