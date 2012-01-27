@@ -9,24 +9,16 @@ page describes its structure.  The structure is based on the linux standard file
 system.
 <p>
 <table>
-<tr><td><b> (ProjectOut)/bin </b><td> Machine independant scripts.
-<tr><td><b> (ProjectOut)/lib </b><td> Libraries
-<tr><td><b> (ProjectOut)/lib/RAVL/libdep </b><td> Library dependancy files.
-<tr><td><b> (ProjectOut)/lib/RAVL/(ARC)/bin </b><td> Architecture specific executables.
-<tr><td><b> (ProjectOut)/lib/RAVL/(ARC)/check </b><td> 'check' version of the libraries.
-<tr><td><b> (ProjectOut)/lib/RAVL/(ARC)/opt </b><td> Optimised version of the libraries.
-<tr><td><b> (ProjectOut)/lib/RAVL/(ARC)/debug </b><td> Libraries with debuging information included.
-<tr><td><b> (ProjectOut)/lib/RAVL/(ARC)/obj </b><td> Object files from 'MUSTLINK' directive.
-<tr><td><b> (ProjectOut)/share </b><td> Machine independant files.
-<tr><td><b> (ProjectOut)/share/doc/RAVL </b><td> Documentation
-<tr><td><b> (ProjectOut)/share/doc/RAVL/Auto </b><td> Automaticly generated documentation.
-<tr><td><b> (ProjectOut)/share/doc/RAVL/examples </b><td> Example programs.
-<tr><td><b> (ProjectOut)/share/doc/RAVL/html </b><td> Manually created HTML pages.
-<tr><td><b> (ProjectOut)/share/doc/RAVL/Images </b><td> Images used in the documentation.
-<tr><td><b> (ProjectOut)/share/RAVL </b><td> Machine independant files needed by RAVL utilities.
-<tr><td><b> (ProjectOut)/share/RAVL/Admin </b><td> Files need during build, these are not needed in a final installation.
-<tr><td><b> (ProjectOut)/share/RAVL/QMake </b><td> QMake's make files.
-<tr><td><b> (ProjectOut)/include </b><td> Include files.
+<tr><td><b> $PROJECT_OUT/$ARC/$PLIB/$VAR{/shared}/objs           </b><td> Receives (intermediate to the build process) object files
+<tr><td><b> $PROJECT_OUT/bin                                     </b><td> Receives scripts and compiled programs
+<tr><td><b> $PROJECT_OUT/bin/utils/$VAR{/shared}/bin             </b><td> Receives compiled programs
+<tr><td><b> $PROJECT_OUT/include/$PACKAGE                        </b><td> Receives the header files for PACKAGE
+<tr><td><b> $PROJECT_OUT/lib/$ARC/$VAR{/shared}/                 </b><td> Receives compiled libraries
+<tr><td><b> $PROJECT_OUT/lib/$ARC/obj                            </b><td> Receives object files needed for building static binaries
+<tr><td><b> $PROJECT_OUT/lib/libdep                              </b><td> Library dependancy files
+<tr><td><b> $PROJECT_OUT/lib/libdep/$PLIB.def                    </b><td> Library dependancy file for library PLIB
+<tr><td><b> $PROJECT_OUT/lib/pkgconf                             </b><td> Receives any pkgconfig meta file
+<tr><td><b> $PROJECT_OUT/share/Admin/$VAR/depend/$PACKAGE/$PLIB  </b><td> Dependancy files inherent to the build process
 </table>
   </body>
 </html>
