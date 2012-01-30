@@ -31,6 +31,14 @@ namespace RavlN {
     //! Start parsing a stream;
     bool Open(IStreamC &strm);
 
+    //! Start parsing a stream;
+    bool Open(const StringC &filename);
+
+    //! Set number of columns to expect.
+    // Setting to zero allows variable lengths.
+    void SetColumns(UIntT cols)
+    { m_columns = cols; }
+
     //! Access number of columns
     UIntT ColumnCount() const
     { return m_columns; }
