@@ -29,7 +29,7 @@ namespace RavlN {
     {}
     
     //! Constructor.
-    //! Note: The default standard deviation for hight and position of 10 cm and 15cm is rather
+    //! Note: The default standard deviation for height and position of 10 cm and 15cm is rather
     //! generous. 
     GPSCoordinateC(RealT latitude,
                    RealT longitude,
@@ -83,7 +83,7 @@ namespace RavlN {
     const RealT &Latitude() const
     { return (*this)[0]; }
     
-    //! Access londitude in degree's
+    //! Access longitude in degree's
     const RealT &Longitude() const
     { return (*this)[1]; }
     
