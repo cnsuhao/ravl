@@ -313,7 +313,7 @@ namespace RavlN {
   const SizeBufferAccessC<DataT> & 
   SizeBufferAccessC<DataT>::Swap(SizeBufferAccessC<DataT> & a) {
     BufferAccessC<DataT>::Swap(a);
-    Swap(sz,a.sz);
+    RavlN::Swap(sz,a.sz);
     return *this;
   }
   
