@@ -153,8 +153,8 @@ namespace RavlN {
     // Returns true if the iterator is in a valid row, and false
     // if it is at the end of the array. 
     
-    bool SkipRow(IntT rowOffset) {
-      rit.Next(this->offset);
+    bool SkipRow(IntT offset) {
+      rit.Next(offset);
       if(!rit.IsElm())
 	return false;
       cit.First(rit.Data1(),rng1,
