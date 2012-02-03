@@ -87,6 +87,8 @@ namespace RavlN {
       //! Set linger time for socket.
       void SetLinger(float timeSeconds);
 
+      //! Set the high water mark.
+      void SetHighWaterMark(UInt64T number);
 
       //! Send a message
       bool Send(const MessageC &msg,BlockT block = ZSB_BLOCK);

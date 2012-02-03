@@ -138,6 +138,10 @@ namespace RavlN {
             SetLinger(it->AttributeReal("value",-1.0));
             continue;
           }
+          if(it->Name() == "HighWaterMark") {
+            SetHighWaterMark(it->AttributeUInt("value",0));
+            continue;
+          }
           RavlError("Unknown socket property '%s' at %s ",it->Name().data(),childContext.Path().data());
           throw ExceptionOperationFailedC("Unknown property. ");
         }
@@ -201,6 +205,16 @@ namespace RavlN {
       int ret;
       if((ret = zmq_setsockopt (m_socket,ZMQ_LINGER,&lingerTime,sizeof(lingerTime))) != 0) {
         RavlError("Failed to set linger to %f : %s ",timeSeconds,zmq_strerror (zmq_errno ()));
+        throw ExceptionOperationFailedC("connect failed. ");
+      }
+    }
+
+    //! Set the high water mark.
+    void SocketC::SetHighWaterMark(UInt64T queueLimit) {
+      RavlAssert(m_socket != 0);
+      int ret;
+      if((ret = zmq_setsockopt (m_socket,ZMQ_HWM,&queueLimit,sizeof(queueLimit))) != 0) {
+        RavlError("Failed to set high water mark to %u : %s ",(UIntT) queueLimit,zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("connect failed. ");
       }
     }
