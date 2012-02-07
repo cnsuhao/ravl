@@ -13,10 +13,10 @@ MAINS = doPPHT.cc doArcs.cc
 #genSobelImg.cc
 
 HEADERS= PixelMap.hh PixelMapSearch.hh PCPixel.hh PCPixelList.hh \
- PCMapping.hh PPHT.hh ArcDetector.hh WhiteLines.hh
+ PCMapping.hh PPHT.hh ArcDetector.hh WhiteLineDetector.hh
 
 SOURCES= PixelMap.cc PixelMapSearch.cc PCPixel.cc PCPixelList.cc \
- PCMapping.cc PPHT.cc ArcDetector.cc WhiteLines.cc
+ PCMapping.cc PPHT.cc ArcDetector.cc WhiteLineDetector.cc
 
 PLIB=RavlImageProc
 
