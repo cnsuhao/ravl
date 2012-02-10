@@ -6,7 +6,7 @@
 // file-header-ends-here
 /////////////////////////////////////////////////////////////
 //! lib=RavlIO
-//! file="Ravl/Core/IO/CoreIO.cc"
+//! file="Ravl/Core/IO/linkCoreIO.cc"
 
 #include "Ravl/DP/CoreIO.hh"
 
