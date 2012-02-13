@@ -12,4 +12,6 @@ PLIB=RavlLapack
 
 USESLIBS = RavlMath RavlLapackWraps
 
+PROGLIBS=RavlOS
+
 TESTEXES=testMatrixLapack.cc

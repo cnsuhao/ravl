@@ -21,9 +21,6 @@
 namespace RavlLogicN {
   using namespace RavlN;
   class StateC;
-  StringC Indent(int level);
-  //: Helper function for producing debug output.
-  // create a string with 'level' spaces.
   
   class VarC;
   class VarBodyC;

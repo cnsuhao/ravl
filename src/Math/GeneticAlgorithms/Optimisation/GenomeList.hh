@@ -10,13 +10,14 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
-#include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/DP/TypeConverter.hh"
 
 namespace RavlN { namespace GeneticN {
 
   //! Base class for Lists with child fields.
+
   class GeneTypeListBaseC
    : public GeneTypeC
   {
@@ -40,19 +41,27 @@ namespace RavlN { namespace GeneticN {
     virtual bool Save(std::ostream &strm) const;
 
     //! Create randomise value
-    virtual void Random(GeneC::RefT &newValue) const;
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Mutate a gene
-    virtual void Cross(const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Create a new list
     virtual bool CreateList(RCWrapAbstractC &list) const;
 
     //! Add item to list.
     virtual bool AddToList(RCWrapAbstractC &list,RCWrapAbstractC &item) const;
+
+    //! Access maximum list length.
+    UIntT MaxLength() const
+    { return m_maxLength; }
+
+    //! Access content type of list.
+    const GeneTypeC &ContentType() const
+    { return *m_contentType; }
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeListBaseC> RefT;
@@ -64,6 +73,8 @@ namespace RavlN { namespace GeneticN {
     GeneTypeC::ConstRefT m_contentType;
     UIntT m_maxLength;
   };
+
+  //! Gene type for a list
 
   template<typename EntryT>
   class GeneTypeListC
@@ -140,7 +151,7 @@ namespace RavlN { namespace GeneticN {
   };
 
 
-  //! List containing sub gene's
+  //! List containing sub gene's of a particular type.
 
   class GeneListC
    : public GeneC

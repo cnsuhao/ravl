@@ -13,8 +13,9 @@
 namespace RavlN {
 
   //: Returns the score/vote/likelihood for the given state parameters
-  RealT EvaluateSolutionBodyC::SolutionScore(const StateVectorC &stateVec,
-					 DListC<ObservationC> &obsList) const
+  RealT EvaluateSolutionBodyC::SolutionScore(
+                                        const StateVectorC &stateVec,
+					const DListC<ObservationC> &obsList) const
   {
     RavlAssertMsg(0,"EvaluateSolutionBodyC::SolutionScore(const StateVectorC &, DListC<ObservationC> &) const, Abstract method called ");
     return 0.0;
@@ -23,7 +24,7 @@ namespace RavlN {
   //: Returns the observations compatible with the given state parameters
   DListC<ObservationC> EvaluateSolutionBodyC::CompatibleObservations(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const
+					const DListC<ObservationC> &obsList) const
   {
     DListC<ObservationC> emptyObsList;
     RavlAssertMsg(0,"EvaluateSolutionBodyC::CompatibleObservations(const StateVectorC &, DListC<ObservationC> &) const, Abstract method called ");
@@ -33,7 +34,7 @@ namespace RavlN {
   //: Returns the observations compatible with the given state parameters
   DListC<bool> EvaluateSolutionBodyC::ObservationCompatibility(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const
+					const DListC<ObservationC> &obsList) const
   {
     DListC<bool> emptyObsList;
     RavlAssertMsg(0,"EvaluateSolutionBodyC::ObservationCompatibility(const StateVectorC &, DListC<ObservationC> &) const, Abstract method called ");

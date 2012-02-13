@@ -59,10 +59,10 @@ namespace RavlN {
 
   //! userlevel=Normal
   //: Fixed size cache class.
-  // This is effectly a hash table with a 'recently used' list and a maximum size.
+  // This is effectively a hash table with a 'recently used' list and a maximum size.
   // When a new item is added and the table is full, the oldest item is removed from
   // the cache. <br>
-  // Note: This class is not refrence counted.
+  // Note: This class is not reference counted.
   
   template<class KeyT,class DataT>
   class CacheC 
@@ -123,9 +123,9 @@ namespace RavlN {
       return true;
     }
     //: Remove oldest item from the cache.
-    // If there is data in the cache the key from the removed item is assigned to paramiter
+    // If there is data in the cache the key from the removed item is assigned to parameter
     // 'key', the data to 'data' and true is returned  If the cache is empty
-    // false is returned and the paramiters are unchanged.
+    // false is returned and the parameters are unchanged.
     
     bool Insert(const KeyT &key,const DataT &data,bool bump = true) {
       SizeT hashVal;

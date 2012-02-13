@@ -349,6 +349,7 @@ int testLiteralIO() {
 
 int testBinaryIO() {
   cerr << "Testing binary IO. \n";
+#if 1
   ContextC context;
   LiteralC l1(true);
   LiteralC l2(true);
@@ -402,7 +403,7 @@ int testBinaryIO() {
   if(t2[0] == t2[1]) return __LINE__;
   if(!state2.Ask(t2[0])) return __LINE__;
   if(value2.Data() != value1.Data()) return __LINE__;
-  
+#endif
   cerr << "Done.\n";
   return 0;
 }

@@ -9,6 +9,8 @@
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #include "Ravl/Genetic/GeneTypeWeightedMeta.hh"
+#include "Ravl/Genetic/GenePalette.hh"
+
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -92,21 +94,21 @@ namespace RavlN { namespace GeneticN {
 
 
    //! Create randomise value
-   void GeneTypeWeightedMetaC::Random(GeneC::RefT &newValue) const
+   void GeneTypeWeightedMetaC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_types.size() == 0) {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
-     float choice = static_cast<float>(RavlN::Random1() * m_totalWeights);
+     float choice = static_cast<float>(palette.Random1() * m_totalWeights);
      //RavlSysLogf(SYSLOG_DEBUG," %f from %f ",choice,m_totalWeights);
      std::map<float,GeneTypeC::ConstRefT>::const_iterator iter = m_typeMap.upper_bound(choice);
-     iter--;
+     --iter;
      RavlAssert(iter != m_typeMap.end());
 
      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %f of %f '%s' ",choice,m_totalWeights,iter->second->Name().data()));
 
-     iter->second->Random(newValue);
+     iter->second->Random(palette,newValue);
    }
 
    //! Generate map again

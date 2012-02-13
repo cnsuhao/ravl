@@ -34,11 +34,9 @@ namespace Ravl3DN {
       return false;
 
     // TO BE IMPLEMENTED
-    cerr << "Error: not implemented yet!\n";
+    std::cerr << "Error: not implemented yet!\n";
+    RavlAssertMsg(0,"not implemented");
     return false;
-
-    // Done
-    return true;
   }
   
   //: Is port ready for data ?
@@ -64,10 +62,8 @@ namespace Ravl3DN {
 
     // TO BE IMPLEMENTED
     cerr << "Error: not implemented yet!\n";
+    RavlAssertMsg(0,"not implemented");
     return false;
-
-    // Done
-    return true;
   }
   
   //: Is port ready for data ?

@@ -16,15 +16,15 @@
 //! date="25/05/2000"
 
 #include "Ravl/config.h"
-#include "Ravl/Threads/ConditionalMutex.hh"
+#include "Ravl/Threads/ConditionalVariable.hh"
 #include "Ravl/Stream.hh"
 
 namespace RavlN
 {
   //! userlevel=Normal
-  //: Broadcast Event.
+  //: Post or wait for an event &ndash; level-triggered.
   // <p>This class enables a thread to sleep until signalled from another thread.</p>
-  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ConditionalMutexC.html">ConditionalMutexC</a>.</p>
+  // <p>In this class, the Wait() will wait until the next Post(), whereupon it will not wait until the next Reset().  Thus it is a "level-triggerered" event, in contrast to <a href="RavlN.ThreadSignalC.html">ThreadSignalC</a>.</p>
 
   class ThreadEventC {
 
@@ -57,20 +57,22 @@ namespace RavlN
     // Returns false if timed out.
 
     operator bool() const 
-    { return occurred; }
+    { return m_occurred; }
     //: Test if the event has occurred.
     
     bool Occurred() const
-    { return occurred; }
+    { return m_occurred; }
     //: Test if event has occurred.
     
     void Reset()
-    { occurred = false; }
+    { m_occurred = false; }
     //: Reset an event.
     
   protected:
-    ConditionalMutexC cond;
-    volatile bool occurred;
+    MutexC m_access;
+    ConditionalVariableC m_cond;
+    ConditionalVariableC m_condWaiting;
+    volatile bool m_occurred;
     volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 };

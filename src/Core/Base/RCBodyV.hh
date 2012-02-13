@@ -47,13 +47,14 @@ namespace RavlN {
     // This should be provided in derived classes.
     // this function will issue an assertion failure if called.
 
-  protected:
     RCBodyVC()
     {}
     //: Default constructor.
     // Creates a handle with 0 reference counts.
     
-    RCBodyVC(istream &strm)
+  protected:
+
+    RCBodyVC(std::istream &strm)
     {}
     //: Construct from a stream.
     

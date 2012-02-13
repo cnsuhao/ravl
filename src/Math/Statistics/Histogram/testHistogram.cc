@@ -18,6 +18,8 @@
 #include "Ravl/RealHistogramNd.hh"
 #include "Ravl/Parzen.hh"
 #include "Ravl/Random.hh"
+#include "Ravl/Resource.hh"
+#include "Ravl/OS/Directory.hh"
 
 using namespace RavlN;
 
@@ -28,6 +30,7 @@ int testRealHistogram2d();
 int testRealHistogram3d();
 int testRealHistogramNd();
 int testParzen();
+int testIO();
 
 int main() {
   int ln;
@@ -57,6 +60,10 @@ int main() {
     return 1;
   }
   if((ln = testParzen()) != 0) {
+    cerr << "Test failed on line " << ln << "\n";
+    return 1;
+  }
+  if((ln = testIO()) != 0) {
     cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
@@ -171,5 +178,22 @@ int testRealHistogramNd() {
     if(!testHist.Interpolate(at,value)) return __LINE__;
     //std::cout << " At:" << at << " Votes:" << value << " InRange:" << inRange << "\n";
   }
+  return 0;
+}
+
+int testIO() {
+  DirectoryC dir(Resource("RAVL", "testData"));
+  if (!dir.MakeDir())  return __LINE__;
+  HistogramC<int> x;
+  x.Vote(1);
+  x.Vote(3);
+  x.Vote(3);
+  OStreamC out(dir + "/histTest");
+  out << x << endl;
+  out.Close();
+  HistogramC<int> y;
+  IStreamC in(dir + "/histTest");
+  in >> y;
+  if (x.Total() != y.Total())  return __LINE__;
   return 0;
 }

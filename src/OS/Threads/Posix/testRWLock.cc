@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ///////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/testRWLock.cc"
 
@@ -51,34 +50,95 @@ public:
 
 int RWLTestBodyC::Start(void) {  
   for(;Num > 0;Num--) {
-    if((rand() % 20) == 0) {      // Check old values.
-      
+    if((rand() % 10) == 0) {      // Check old values.
+#if 1
+      if((rand() % 5) == 0) {
+        if(ARWLock->TryRdLock()) { // Write new values.
+          if(Val1 != Val2)
+            pass = false;
+          if(Val2 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          ARWLock->UnlockRd();
+        }
+      }
+#endif
+#if 1
+      if((rand() % 5) == 0) {
+        if(ARWLock->RdLock(0.1)) { // Write new values.
+          if(Val1 != Val2)
+            pass = false;
+          if(Val2 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          RavlN::Sleep(0);
+          if(Val1 != Val3)
+            pass = false;
+          ARWLock->UnlockRd();
+        }
+      }
+#endif
       ARWLock->RdLock();
       if(Val1 != Val2)
 	pass = false;
       if(Val2 != Val3)
 	pass = false;
-      Sleep(0);
+      RavlN::Sleep(0);
       if(Val1 != Val3)
 	pass = false;
-      Sleep(0);
+      RavlN::Sleep(0);
       if(Val1 != Val3)
 	pass = false;
       ARWLock->UnlockRd();
       
     } else {
       
+      if((rand() % 5) == 0) {
+#if 1
+        if(ARWLock->TryWrLock()) { // Write new values.
+          Val1 = rand();
+          RavlN::Sleep(0);
+          Val2 = Val1;
+          RavlN::Sleep(0);
+          Val3 = Val2;
+          RavlN::Sleep(0);
+          ARWLock->UnlockWr();
+        }
+#endif
+      }
+
+      if((rand() % 5) == 0) {
+#if 1
+        if(ARWLock->WrLock(0.1)) { // Write new values.
+          Val1 = rand();
+          RavlN::Sleep(0);
+          Val2 = Val1;
+          RavlN::Sleep(0);
+          Val3 = Val2;
+          RavlN::Sleep(0);
+          ARWLock->UnlockWr();
+        }
+#endif
+      }
+
       ARWLock->WrLock();  // Write new values.
       Val1 = rand();
-      Sleep(0);
+      RavlN::Sleep(0);
       Val2 = Val1;
-      Sleep(0);
+      RavlN::Sleep(0);
       Val3 = Val2;
-      Sleep(0);
+      RavlN::Sleep(0);
       ARWLock->UnlockWr();
       
     }
-    Sleep(0);
+    RavlN::Sleep(0);
   }
   Done->Post();
   return 0;
@@ -96,7 +156,7 @@ int main() {
 
      // Boil the RWLock for a bit.
     for(i = 0;i < TestSize;i++)
-      RWLTestC(10000).Execute();
+      RWLTestC(20000).Execute();
   
     for(i = 0;i < TestSize;i++) {
       Done->Wait();
@@ -106,6 +166,8 @@ int main() {
       std::cerr << "ERROR in test.. \n";
       exit(1);
     }
+    delete Done;
+    delete ARWLock;
   }
   std::cout << "Test passed. \n";
   exit(0);

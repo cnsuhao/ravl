@@ -162,7 +162,7 @@ namespace RavlN {
     if(getnameinfo(&sin,1024, strHostName, 1024, 0,0,NI_NUMERICSERV) == SOCKET_ERROR)
       return false;
     strRet = StringC(strHostName);
-	return true;
+    return true;
 #else
     RavlAssertMsg(0,"Not implemetned. ");
     return false;
@@ -227,8 +227,8 @@ namespace RavlN {
     delete [] hostentData;
     MTWriteLockC hold; // this call isn't MT safe.
     name = inet_ntoa(((sockaddr_in &)sin).sin_addr); // Convert to a dot notation string.
-#endif
     return true;
+#endif
   }
   
 }

@@ -254,7 +254,7 @@ namespace RavlN {
     return Projection2dC (P,zh1,zh2); 
   }
   
-  //: Fit projection to a set of points.  4 or point correspondances are required
+  //: Fit projection to a set of points.  4 or point correspondences are required
 
   bool FitProjection(const SArray1dC<Point2dC> &from,const SArray1dC<Point2dC> &to,const SArray1dC<RealT> &weight,Matrix3dC &proj) {
     RavlAssert(from.Size() == to.Size());

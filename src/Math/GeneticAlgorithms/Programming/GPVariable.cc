@@ -13,6 +13,8 @@
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/Array1d.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
+
 
 namespace RavlN { namespace GeneticN {
 
@@ -39,6 +41,8 @@ namespace RavlN { namespace GeneticN {
 
   static RegisterGeneClassC<GPVariableC<IntT> > g_registerGPVariableInt("RavlN::GeneticN::GPVariableC<IntT>");
   static RegisterGeneClassC<GPVariableC<float> > g_registerGPVariableFloat("RavlN::GeneticN::GPVariableC<float>");
+  static RegisterGeneClassC<GPVariableC<RavlN::Array1dC<IntT> > > g_registerGPVariableArrayInt("RavlN::GeneticN::GPVariableC<RavlN::Array1dC<IntT>>");
+  static RegisterGeneClassC<GPVariableC<RavlN::Array1dC<float> > > g_registerGPVariableArrayFloat("RavlN::GeneticN::GPVariableC<RavlN::Array1dC<float>>");
 
   void LinkGPVariable()
   {}

@@ -15,7 +15,7 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Callable routine
 
   class GPInstRoutineC
    : public GPInstructionC

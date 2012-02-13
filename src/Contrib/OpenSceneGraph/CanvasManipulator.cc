@@ -25,7 +25,7 @@ namespace RavlOSGN {
     _thrown = false;
     _distance = 1.0f;
     _trackballSize = 0.8f;
-    std::cerr << "CanvasManipulatorC::CanvasManipulatorC Called.\n";
+    ONDEBUG(std::cerr << "CanvasManipulatorC::CanvasManipulatorC Called.\n");
   }
 
   CanvasManipulatorC::~CanvasManipulatorC()
@@ -39,7 +39,7 @@ namespace RavlOSGN {
       const osg::BoundingSphere& boundingSphere = _node->getBound();
       _modelScale = boundingSphere._radius;
     }
-    std::cerr << "CanvasManipulatorC::setNode modelScale= " << _modelScale << "\n";
+    ONDEBUG(std::cerr << "CanvasManipulatorC::setNode modelScale= " << _modelScale << "\n");
     if(getAutoComputeHomePosition()) computeHomePosition();
   }
 
@@ -428,7 +428,7 @@ namespace RavlOSGN {
    */
   float CanvasManipulatorC::tb_project_to_sphere(float r, float x, float y)
   {
-    float d, t, z;
+    float d, z;
 
     d = sqrt(x * x + y * y);
     /* Inside sphere */
@@ -436,7 +436,7 @@ namespace RavlOSGN {
       z = sqrt(r * r - d * d);
     }/* On hyperbola */
     else {
-      t = r / 1.41421356237309504880;
+      float t = r / 1.41421356237309504880;
       z = t * t / d;
     }
     return z;

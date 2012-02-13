@@ -58,7 +58,11 @@ namespace RavlN {
     
     static DateC FromODBCString(const StringC &dataString);
     //: Generate date from odbc string.
-    
+
+    static DateC FromISO8601String(const StringC &dataString,bool storeInUTC = true);
+    //: Generate date from ISO8601 string.
+    // Note this may not support all variants, if the string fails to parse and exception will be thrown.
+
     inline DateC(bool setval,bool useVirt = false);
     //: Constructor.
     // This constructor is obsolete. Use one of NowUTC,NowLocal or NowVirtual.

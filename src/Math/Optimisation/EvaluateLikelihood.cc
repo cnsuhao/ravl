@@ -9,6 +9,7 @@
 //! file="Ravl/Math/Optimisation/EvaluateLikelihood.cc"
 
 #include "Ravl/EvaluateLikelihood.hh"
+#include "Ravl/CDLIter.hh"
 
 namespace RavlN {
 
@@ -19,11 +20,12 @@ namespace RavlN {
   }
 
   //: Returns the log likelihood for the given state parameters
-  RealT EvaluateLikelihoodBodyC::SolutionScore(const StateVectorC &stateVec,
-					   DListC<ObservationC> &obsList) const
+  RealT EvaluateLikelihoodBodyC::SolutionScore(
+                                        const StateVectorC &stateVec,
+					const DListC<ObservationC> &obsList) const
   {
     RealT totalLogLikelihood=0.0;
-    for(DLIterC<ObservationC> it(obsList);it;it++)
+    for(ConstDLIterC<ObservationC> it(obsList);it;it++)
       // only use observations that have not already been selected
       if(!it.Data().GetSelected())
 	// compute the residual and decrement likelihood with it
@@ -35,11 +37,11 @@ namespace RavlN {
   //: Returns the observations compatible with the given state parameters
   DListC<ObservationC> EvaluateLikelihoodBodyC::CompatibleObservations(
 					const StateVectorC &stateVec,
-					DListC<ObservationC> &obsList) const
+					const DListC<ObservationC> &obsList) const
   {
     DListC<ObservationC> compatibleList;
 
-    for(DLIterC<ObservationC> it(obsList);it;it++) {
+    for(ConstDLIterC<ObservationC> it(obsList);it;it++) {
       // compute the residual
       RealT residual = it.Data().NonRobustResidual(stateVec);
 

@@ -35,8 +35,9 @@ namespace RavlN {
 
   //: Construct a new sample set with a reduced set of features
 
-  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec, const SArray1dC<IndexC> &featureSet,
-                               const SArray1dC<FieldInfoC> & fieldInfo)
+  SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec,
+      const SArray1dC<IndexC> &featureSet,
+      const SArray1dC<FieldInfoC> & fieldInfo)
       : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
     UIntT numFeatures = featureSet.Size();
     for (DArray1dIterC<VectorC> it(svec.DArray()); it; it++) {
@@ -287,6 +288,68 @@ namespace RavlN {
     FuncMeanProjectionC func(stats.Mean(), proj);
 
     return func;
+
+  }
+
+  //: Undo the normalisation done by 'Normalise()'.
+
+  FuncLinearC SampleVectorC::UndoNormalisationFunction(const MeanCovarianceC & stats) {
+
+    UIntT d = VectorSize();
+    MatrixC stdDev(d, d);
+    stdDev.Fill(0.0);
+    for (UIntT i = 0; i < d; i++) {
+      if (stats.Covariance()[i][i] > 0)
+        stdDev[i][i] = stats.Covariance()[i][i];
+      else
+        stdDev[i][i] = stats.Mean()[i];
+    }
+    for (UIntT i = 0; i < d; i++)
+      stdDev[i][i] = Sqrt(stdDev[i][i]);
+    return FuncLinearC(stdDev, stats.Mean());
+
+  }
+
+
+  //: Scale each dimension between 0 and 1 and return function created to do this
+  void SampleVectorC::Scale(FuncLinearC & func) {
+
+    DArray1dIterC<VectorC> it(*this);
+    if (!it)
+      return;
+
+    VectorC min = it.Data().Copy();
+    VectorC max = it.Data().Copy();
+
+    for (it++; it; it++) {
+      for (SArray1dIter2C<RealT, RealT> minIt(min, *it); minIt; minIt++) {
+        if (minIt.Data2() < minIt.Data1()) {
+          minIt.Data1() = minIt.Data2();
+        }
+      }
+      for (SArray1dIter2C<RealT, RealT> maxIt(max, *it); maxIt; maxIt++) {
+        if (maxIt.Data2() > maxIt.Data1()) {
+          maxIt.Data1() = maxIt.Data2();
+        }
+      }
+    } // end data it
+
+
+    // work out transform
+    MatrixC proj(min.Size(), min.Size());
+    proj.Fill(0.0);
+    VectorC offset(min.Size());
+    for(SizeT i=0;i<min.Size();i++) {
+      proj[i][i] = 1.0 / Abs(max[i] - min[i]);
+      offset[i] = (min[i]/Abs(max[i] - min[i])) * -1.0;
+    }
+    func = FuncLinearC(proj, offset);
+
+    // Apply transform
+    for(it.First();it;it++) {
+      *it = func.Apply(*it);
+    }
+    return;
 
   }
 

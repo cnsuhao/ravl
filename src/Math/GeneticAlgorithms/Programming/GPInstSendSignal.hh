@@ -15,12 +15,15 @@
 #include "Ravl/Genetic/GPVariable.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/Calls.hh"
+#include "Ravl/TypeName.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
+
 
 namespace RavlN { namespace GeneticN {
 
   //! An environment for an agent.
 
-  template<typename VarDataT,typename DataT>
+  template<typename VarDataT,typename DataT = VarDataT>
   class GPInstSendSignalC
    : public GPInstructionC
   {
@@ -29,7 +32,7 @@ namespace RavlN { namespace GeneticN {
     //! Factory constructor
     GPInstSendSignalC(const GeneFactoryC &factory)
     {
-      //RavlSysLogf(SYSLOG_DEBUG,"new GPInstSentSignal. ");
+      //RavlSysLogf(SYSLOG_DEBUG,"new GPInstSentSignal %s. ",TypeName(typeid(DataT)));
       factory.Get("Data",m_data,*GPVariableC<VarDataT>::GeneType());
       factory.Get("Signal",m_sig,*GPVariableC<RavlN::CallFunc1C<DataT> >::GeneType());
     }
@@ -45,16 +48,19 @@ namespace RavlN { namespace GeneticN {
 
     //! Execute instruction
     virtual bool Execute(GPExecutionContextC &context) {
+      //RavlDebug("Do GPInstSentSignal %s. Sig:%d Data:%d ",TypeName(typeid(DataT)),(int) m_sig->IsSet(),(int) m_data->IsSet());
       if(!m_sig->IsSet())
         return false;
       if(!m_sig->Data().IsValid()) {
-        //RavlSysLogf(SYSLOG_DEBUG,"No where to put data. ");
+        //RavlDebug("Nowhere to put data. ");
         return false;
       }
-      if(!m_data->IsSet())
+      if(!m_data->IsSet()) {
+        //RavlDebug("Data not set. ");
         return false;
-      //RavlSysLogf(SYSLOG_DEBUG,"Sending data! ");
-      m_sig->Data().Call(*m_data->Data());
+      }
+      //RavlDebug("Sending data! ");
+      m_sig->Data().Call(m_data->Data());
       return true;
     }
 

@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Math/testMath.cc"
 //! author="Charles Galambos"
@@ -16,9 +15,12 @@
 #include "Ravl/Stream.hh"
 #include "Ravl/ScalMath.hh"
 #include "Ravl/Math.hh"
+#include "Ravl/GPSCoordinate.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
+int testGPS();
 int testSimple();
 int testRandom();
 int testFMatrixSimple();
@@ -29,42 +31,22 @@ int testFMatrixScalMath();
 
 
 int main() {
-  int line;
   
-  if((line = testSimple()) != 0) {
-    cerr << "Error on line: " << line << "\n";
-    return 1;
-  }
-  if((line = testRandom()) != 0) {
-    cerr << "Error on line: " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixSimple())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixValidate())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixValidateNS())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixVectorOps())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
-  if((line = testFMatrixScalMath())) {
-    cerr << "test failed on line " << line << "\n";
-    return 1;
-  }
-  cerr << "Test passed ok. \n";
+  RAVL_RUN_TEST(testSimple());
+  RAVL_RUN_TEST(testRandom());
+  RAVL_RUN_TEST(testFMatrixSimple());
+  RAVL_RUN_TEST(testFMatrixValidate());
+  RAVL_RUN_TEST(testFMatrixValidateNS());
+  RAVL_RUN_TEST(testFMatrixVectorOps());
+  RAVL_RUN_TEST(testFMatrixScalMath());
+  RAVL_RUN_TEST(testGPS());
+
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
 int testSimple() {
-  cerr <<"Checking math functions. \n";
+  //std::cerr <<"Checking math functions. \n";
   RealT cuberoot = Cbrt(8); // Really here to check if cbrt() exists.
   if(Abs(cuberoot - 2.0) > 1e-6) return __LINE__;
   cuberoot = Cbrt(-8); // Cbrt should handle negative numbers.
@@ -73,7 +55,7 @@ int testSimple() {
 }
 
 int testRandom() {
-  cerr <<"Checking random number generator. \n";
+  //std::cerr <<"Checking random number generator. \n";
   RealT num = 0;
   RealT min = 2;
   RealT max = -1;
@@ -83,7 +65,7 @@ int testRandom() {
     num = (RealT)rv / ((RealT) RandomIntMaxValue + 1.0);
     //cerr << "Num=" << num << "\n";
     if(num > 1 || num < 0) {
-      cout << "Bad random number:" << num << " RandomInt=" << rv << " (" << i << ")\n";
+      std::cerr << "Bad random number:" << num << " RandomInt=" << rv << " (" << i << ")\n";
       return __LINE__;
     }
     if(num < min)
@@ -92,16 +74,16 @@ int testRandom() {
       max = num;
   }
   if(min > 0.01) {
-    cerr << "Minimum value suspicously large: " << min << " \n";
+    std::cerr << "Minimum value suspicously large: " << min << " \n";
     return __LINE__;
   }
   if(max < 0.99) {
-    cerr << "Maximum value suspicously small: " << max << " \n";
+    std::cerr << "Maximum value suspicously small: " << max << " \n";
     return __LINE__;
   }
-  cerr <<"Values between " << min << " " << max << "\n";
+  //std::cerr <<"Values between " << min << " " << max << "\n";
   if (Random1(false) == 1.0) {
-    cerr << "Random1(false) should never return value of 1.0\n";
+    std::cerr << "Random1(false) should never return value of 1.0\n";
     return __LINE__;
   }
   return 0;
@@ -113,7 +95,8 @@ int testFMatrixSimple() {
   mat[Index2dC(0,0)] = 1;
   mat[1][1] = 1;
   TFMatrixC<RealT,2,2> mat2 = mat + mat;
-  cerr << mat2;
+  // FIXME:- Actually check something!
+  //std::cerr << mat2;
   return 0;
 }
 
@@ -138,21 +121,21 @@ int testFMatrixValidate()
   // Test 1.
   testR = t1 * t2;
   error = (testR - result).SumOfAbs();
-  cerr << "Mul:" << error << "\n";
+  //cerr << "Mul:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
   // Test 2.
   testR = (t1.T().TMul(t2));
   error = (testR - result).SumOfAbs();
-  cerr << "TTMul:" << error << "\n";
+  //cerr << "TTMul:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
   // Test 3.
   testR = (t1.MulT(t2.T()));
   error = (testR - result).SumOfAbs();
-  cerr << "MulTT:" << error << "\n";
+  //cerr << "MulTT:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   return 0;
@@ -177,14 +160,14 @@ int testFMatrixValidateNS()
   // Test 1.
   testR = (m1.T().TMul(m2));
   error = (testR - result).SumOfAbs();
-  cerr << "TTMul:" << error << "\n";
+  //cerr << "TTMul:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
   // Test 2.
   testR = (m1.MulT(m2.T()));
   error = (testR - result).SumOfAbs();
-  cerr << "MulTT:" << error << "\n";
+  //cerr << "MulTT:" << error << "\n";
   if(error > 0.000000001)
     return __LINE__;
   
@@ -218,3 +201,67 @@ int testFMatrixScalMath() {
   }
   return 0;
 }
+
+int testGPS()
+{
+  {
+    StringC strTestCoord = "52 39' 27.2531\",1 43' 4.5177\",24.7m";
+    GPSCoordinateC testCoord(strTestCoord);
+    //std::cout << " DMS=[" << testCoord.TextDMS() << "]\n";
+
+    GPSCoordinateC restoredCoord(testCoord.TextDMS());
+    //std::cout << " RestoredDMS=[" << restoredCoord.TextDMS() << "]\n";
+
+    if((testCoord - restoredCoord).SumOfSqr() > 0.0001) return __LINE__;
+
+    RavlN::Point3dC cartesianPlace = testCoord.Cartesian();
+    //std::cout << " Metric=" << cartesianPlace << "\n";
+
+    GPSCoordinateC recoveredGps = GPSCoordinateC::Cartesian2GPS(cartesianPlace,1e-12);
+    //std::cout << " Restored DMS=[" << recoveredGps.TextDMS() << "]\n";
+  }
+
+  const UIntT ntestdata = 7;
+  const GPSCoordinateC testdata[ntestdata] = {
+    GPSCoordinateC(-26.2025543,28.032913,1730),
+    GPSCoordinateC( 120,60,-20 ),
+    GPSCoordinateC( -10,-10,0 ),
+    GPSCoordinateC( -10,15,10 ),
+    GPSCoordinateC( -80,34.3,123 ),
+    GPSCoordinateC( 170,170,100 ),
+    GPSCoordinateC(" 51.240322 N, 0.614352 W" )
+  };
+
+  for(UIntT i = 0;i < ntestdata;i++) {
+    const GPSCoordinateC &gps = testdata[i];
+
+    // Check text conversion.
+    StringC stdCoordDMS = gps.TextDMS();
+    //std::cout << "gps=" << stdCoordDMS << "\n";
+
+    GPSCoordinateC restoredTextCoord(stdCoordDMS);
+    if((gps - restoredTextCoord).SumOfSqr() > 0.0001) return __LINE__;
+
+    // Check cartersian conversion.
+    RavlN::Point3dC cart = gps.Cartesian();
+    GPSCoordinateC recoveredCartGps = GPSCoordinateC::Cartesian2GPS(cart,1e-12);
+    if(cart.EuclidDistance(recoveredCartGps.Cartesian()) > 0.01) return __LINE__;
+
+    // Check differentials.
+    RavlN::Vector3dC dlat,dlong,dheight;
+    gps.Differential(dlat,dlong,dheight);
+
+#if 0
+    std::cout << "DiffLat=" << dlat << "\n";
+    std::cout << "DiffLong=" << dlong << "\n";
+    std::cout << "DiffHeight=" << dheight << "\n";
+
+    std::cout << "lat.long=" << dlat.Dot(dlong) << "\n";
+    std::cout << "lat.vert=" << dlat.Dot(dheight) << "\n";
+    std::cout << "long.vert=" << dlong.Dot(dheight) << "\n";
+#endif
+  }
+
+  return 0;
+}
+

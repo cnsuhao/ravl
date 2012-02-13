@@ -90,6 +90,9 @@ namespace RavlN {
     // Note: This is NOT the total number of votes.
   protected:
     UIntT total; // Total of count in all bins
+
+     template<class K> friend
+    istream &operator>>(istream &in,HistogramC<K> &obj);
   };
   
   template<class KeyT>
@@ -175,7 +178,17 @@ namespace RavlN {
     }
     return diff;
   }
-  
+
+
+  template<class KeyT>
+  inline istream &operator>>(istream &in,HistogramC<KeyT> &obj) {
+    HashC<KeyT,UIntC> hash(in);
+    obj.Move(hash);
+    obj.total = 0;
+    for (HashIterC<KeyT,UIntC> i(obj); i; ++i)  obj.total += *i;
+    return in;
+  }
+
 }
 
 #endif

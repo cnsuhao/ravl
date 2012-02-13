@@ -368,7 +368,7 @@ namespace RavlImageN {
       return ;
     }
     defaultFmt = fmtInfo->id;
-    if (fmtName != "jp2" && fmtName != "jp2") {
+    if (fmtName != "jp2" && fmtName != "jpc") {
       // "Rate" only supported by jp2 and jpc
       useCompressionRate = false;
     } else {

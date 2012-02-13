@@ -22,7 +22,7 @@ namespace RavlN {
   //! userlevel=Develop
   //: Generic format loader.
   // This class provides a simple way of adding new file formats to
-  // the system, all it needs is a few points to functions which 
+  // the system, all it needs is a few pointers to functions which
   // create the appropriate I/O streams.
   
   class FileFormatGenericBodyC  
@@ -98,7 +98,7 @@ namespace RavlN {
     // Will create an Invalid port if not supported.
     
     virtual const type_info &DefaultType() const;
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     // This specifies the native class for representing the data in a file. <p>
     // typeid(void) if none, indicates an indirect driver.
     
@@ -113,7 +113,7 @@ namespace RavlN {
     
     
   protected:
-    StringC ext;    // Extentsion name of file.
+    StringC ext;    // Extension name of file.
     StringC headerData; // Prefix in file header.
     IntT priority;
     LoadFuncT loadFunc;

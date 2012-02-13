@@ -13,6 +13,8 @@
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GenomeMeta.hh"
 #include "Ravl/Genetic/GeneTypeWeightedMeta.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
+#include "Ravl/Genetic/GeneTypeProxy.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -54,9 +56,9 @@ namespace RavlN { namespace GeneticN {
     return true;
   }
 
-  static GeneTypeMetaC::RefT &InstructionMetaType()
+  GeneTypeMetaC::RefT &InstructionMetaType()
   {
-    static GeneTypeMetaC::RefT x = new GeneTypeWeightedMetaC("GPIntructions",std::vector<GeneTypeC::ConstRefT>(),std::vector<float>());
+    static GeneTypeMetaC::RefT x = new GeneTypeWeightedMetaC("GPInstructions",std::vector<GeneTypeC::ConstRefT>(),std::vector<float>());
     return x;
   }
 
@@ -67,7 +69,7 @@ namespace RavlN { namespace GeneticN {
   //! Access list of available instructions
   GeneTypeC::RefT &InstructionGeneType()
   {
-    static GeneTypeC::RefT x = InstructionMetaType().BodyPtr();
+    static GeneTypeC::RefT x = new GeneTypeProxyC("GPInstruction");
     return x;
   }
 

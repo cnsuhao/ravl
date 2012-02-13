@@ -16,6 +16,7 @@
 
 #include <stdarg.h>
 #include "Ravl/config.h"
+#include <iostream>
 
 namespace RavlN {  
   class StringC; // Forward declare StringC.
@@ -59,6 +60,9 @@ namespace RavlN {
   void IssueWarning(const char *file,int lineNo,const StringC &str);
   //: Call when program encounters an a unexpected occurrence.
   // this prints the message and continues.
+
+  bool DumpStack(std::ostream &strm);
+  //: Dump the current stack to the given stream.
 
 }
 

@@ -157,8 +157,7 @@ void DesignSvmSmoLargeBodyC::Prepare(const SampleC<VectorC> &TrainingSetVectors,
   //additional actions
   if(errorCacheSize != trainSetSize || errorCache == NULL || lambdas == NULL
      || trainingSetLabels == NULL  || trSetVectorPtrs == NULL
-     || kernelCacheIndices == NULL || kernelCacheIndices == NULL
-     || objectsToUse == NULL)
+     || kernelCacheIndices == NULL || objectsToUse == NULL)
   {
     delete[] errorCache;
     delete[] lambdas;

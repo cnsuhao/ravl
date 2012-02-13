@@ -126,7 +126,7 @@ namespace RavlN {
       manager.RegisterConnection(osport);
     }
     Send(NPMsg_StreamReady);
-    ONDEBUG(cerr << "NetPortClientBodyC::MsgConnectTo(), Done. ");
+    ONDEBUG(cerr << "NetPortClientBodyC::MsgConnectTo(), Done. \n");
     return true;
   }
 

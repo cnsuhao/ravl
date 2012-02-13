@@ -23,6 +23,8 @@ LIBDEPS=RavlMathHistogram.def
 
 USESLIBS=RavlMath
 
+PROGLIBS=RavlOS
+
 TESTEXES=testHistogram.cc
 
 EXAMPLES=exHistogram.cc

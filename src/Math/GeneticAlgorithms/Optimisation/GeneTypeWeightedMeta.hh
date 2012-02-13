@@ -44,24 +44,24 @@ namespace RavlN { namespace GeneticN {
     virtual bool Save(std::ostream &strm) const;
 
     //! Create randomise value
-    virtual void Random(GeneC::RefT &newValue) const;
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Access list of types
-    std::vector<GeneTypeC::ConstRefT> &Types()
-    { return m_types; }
+    std::vector<float> &Weights()
+    { return m_weights; }
 
     //! Access list of types
-    const std::vector<GeneTypeC::ConstRefT> &Types() const
-    { return m_types; }
+    const std::vector<float> &Weights() const
+    { return m_weights; }
 
     //! Add type to list
     virtual void AddType(const GeneTypeC &geneType,float weight = -1.0);
 
     // Reference to this gene.
-    typedef RavlN::SmartPtrC<GeneTypeMetaC> RefT;
+    typedef RavlN::SmartPtrC<GeneTypeWeightedMetaC> RefT;
 
     // Const reference to this gene.
-    typedef RavlN::SmartPtrC<const GeneTypeMetaC> ConstRefT;
+    typedef RavlN::SmartPtrC<const GeneTypeWeightedMetaC> ConstRefT;
 
   protected:
     //! Generate map again

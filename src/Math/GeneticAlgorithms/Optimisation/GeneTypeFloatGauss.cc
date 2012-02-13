@@ -9,6 +9,8 @@
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
 #include "Ravl/Genetic/GeneTypeFloatGauss.hh"
+#include "Ravl/Genetic/GenePalette.hh"
+
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -113,8 +115,8 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Generate a new value
-  void GeneTypeFloatGaussC::RandomValue(float &newValue) const {
-    newValue = RavlN::RandomGauss() * m_width;
+  void GeneTypeFloatGaussC::RandomValue(GenePaletteC &palette,float &newValue) const {
+    newValue = palette.RandomGauss() * m_width;
     switch(m_foldMode) {
       case FoldNone:  break;
       case FoldUp: {

@@ -150,7 +150,7 @@ namespace RavlN {
   };
 
   //: Exception: Out of Range
-  // Thrown if an operation in someway exceeds the allowed value.
+  // Thrown if an operation in some way exceeds the allowed value.
   // Examples: Access outside the range of an array, or
   // one to many pop's from a stack
 
@@ -167,7 +167,7 @@ namespace RavlN {
 
   //: Exception: Assertion Failed
   // Thrown if an assertion failed during the running of the program.
-  // these should only be thrown if an internal inconsitancy
+  // these should only be thrown if an internal inconstancy
   // has been detected.
 
   class ExceptionAssertionFailedC : public ExceptionC {
@@ -181,7 +181,7 @@ namespace RavlN {
   };
 
   //: Exception: Numerical exception.
-  // May be thrown where an operation failes for
+  // May be thrown where an operation fails for
   // a numerical reason, such as taking the Sqrt(-1) or
   // inverting a singular matrix.
 
@@ -210,6 +210,24 @@ namespace RavlN {
     // if copy is true, make a copy of ntext.
   };
 
+  //! userlevel=Normal
+  //: Exception issued when an parse error occurs.
+
+  class ExceptionInvalidStreamC
+    : public ExceptionC
+  {
+  public:
+    ExceptionInvalidStreamC(const char *ntext)
+      : ExceptionC(ntext)
+    {}
+    //: Constructor
+
+    ExceptionInvalidStreamC(const char *ntext,bool copy)
+      : ExceptionC(ntext,copy)
+    {}
+    //: Constructor.
+    // if copy is true, make a copy of ntext.
+  };
 
 }
 

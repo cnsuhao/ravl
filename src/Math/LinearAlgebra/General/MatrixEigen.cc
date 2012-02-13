@@ -53,9 +53,10 @@ namespace RavlN {
   VectorMatrixC EigenVectors(const MatrixC &mat)
 #if 1
   {
-    VectorMatrixC res;
-    EigenVectorsSymmetric(res.Vector(), res.Matrix(), mat);
-    return res;
+    VectorC v;
+    MatrixC e;
+    EigenVectorsSymmetric(v, e, mat);
+    return VectorMatrixC(v, e);
   }
 #else
   {

@@ -109,7 +109,8 @@ namespace RavlN {
     IndexRange2dC rng = a.Frame();
     rng.LCol()++;
     proj = SArray2dC<RealT>(a,rng);
-    
+    InputSize(proj.Rows());
+    OutputSize(mean.Size());
     return true;
   }
 

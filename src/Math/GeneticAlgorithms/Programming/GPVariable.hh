@@ -18,7 +18,8 @@ namespace RavlN { namespace GeneticN {
 
   class GeneFactoryC;
 
-  //! An environment for an agent.
+  //! A variable in a program
+
   class GPVariableBaseC
    : public RCBodyVC
   {
@@ -43,6 +44,8 @@ namespace RavlN { namespace GeneticN {
     std::string m_name;
     bool m_isSet;
   };
+
+  //! Template for variable containing arbitrary type.
 
   template<typename DataT>
   class GPVariableC

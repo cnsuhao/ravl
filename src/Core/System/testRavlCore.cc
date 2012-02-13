@@ -40,10 +40,12 @@
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/PointerManager.hh"
 #include "Ravl/SmartPtr.hh"
+#include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/RCWrapIO.hh"
 #include "Ravl/StrStream.hh"
 #include "Ravl/XMLStream.hh"
+#include "Ravl/UnitTest.hh"
 #include "XMLTree.hh"
 
 #include <string.h>
@@ -82,91 +84,32 @@ int testStreamParse();
 int testXMLTree();
 
 int testRavlCore(int argc,char **argv) {
-  int line = 0;
 #if 1
-  if((line = testArray1()) != 0) {
-    cerr << "Array1 test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testArray2()) != 0) {
-    cerr << "Array2 test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testDList()) != 0) {
-    cerr << "DList test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testTypeName()) != 0) {
-    cerr << "TypeName test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testStrList()) != 0) {
-    cerr << "StrList test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testIntrDList()) != 0) {
-    cerr << "IntrDList test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testOption()) != 0) {
-    cerr << "Option test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testFunctionRegister()) != 0) {
-    cerr << "FunctionRegister test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testCache()) != 0) {
-    cerr << "Cache test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testStringArrayIO()) != 0) {
-    cerr << "String array io test failed line :" << line << "\n";
-    return 1;
-  }  
-  if((line = testSArrayIO()) != 0) {
-    cerr << "SArrayIO io test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testIndexRange2dSet()) != 0) {
-    cerr << "IndexRange2dSet test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testRealRange1dSet()) != 0) {
-    cerr << "IndexRange1dSet test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testBase64()) != 0) {
-    cerr << "Base64 io test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testObjIO()) != 0) {
-    cerr << "Base64 io test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testVectorIO()) != 0) {
-    cerr << "Base64 io test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testSmartPtr()) != 0) {
-    cerr << "SmartPtr io test failed line :" << line << "\n";
-    return 1;
-  }
-  if((line = testStreamParse()) != 0) {
-    cerr << "Stream test failed line :" << line << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testArray1());
+  RAVL_RUN_TEST(testArray2());
+  RAVL_RUN_TEST(testDList());
+  RAVL_RUN_TEST(testTypeName());
+  RAVL_RUN_TEST(testStrList());
+  RAVL_RUN_TEST(testIntrDList());
+  RAVL_RUN_TEST(testOption());
+  RAVL_RUN_TEST(testFunctionRegister());
+  RAVL_RUN_TEST(testCache());
+  RAVL_RUN_TEST(testStringArrayIO());
+  RAVL_RUN_TEST(testSArrayIO());
+  RAVL_RUN_TEST(testIndexRange2dSet());
+  RAVL_RUN_TEST(testRealRange1dSet());
+  RAVL_RUN_TEST(testBase64());
+  RAVL_RUN_TEST(testObjIO());
+  RAVL_RUN_TEST(testVectorIO());
+  RAVL_RUN_TEST(testSmartPtr());
+  RAVL_RUN_TEST(testStreamParse());
+  RAVL_RUN_TEST(testXMLTree());
 #endif
-  if((line = testXMLTree()) != 0) {
-    cerr << "Stream test failed line :" << line << "\n";
-    return 1;
-  }
-  cout << "Test passed. \n";
+  std::cout << "Test passed. \n";
   return 0;
 }
 
 int testArray1() {
-  cout << "Testing Array1dC \n";  
   Array1dC<int> test(10);
   Array1dC<int> test2(10);
   test[0] = 1;
@@ -191,7 +134,6 @@ int testArray1() {
 }
 
 int testArray2() {
-  cout << "Testing Array2dC \n";  
   Array2dC<int> test(10,10);
   Array2dC<int> test2(10,10);
   test[0][1] = 1;
@@ -213,7 +155,6 @@ static bool IntLessOrEqual(const int &v1,const int &v2)
 { return v1 <= v2; }
 
 int testDList() {
-  cout << "Testing DListC \n";
   DListC<IntT> alist;
   if(!alist.IsEmpty()) return __LINE__;
   alist.InsFirst(1);
@@ -262,7 +203,6 @@ int testDList() {
 
 int testTypeName() {
 #if RAVL_HAVE_RTTI
-  cout << "Testing TypeName() functions" << endl;
   const char *nm = TypeName(typeid(IntT));
   if(strcmp(nm,"IntT") != 0)  return __LINE__;
   nm = TypeName(typeid(RealT));
@@ -275,7 +215,6 @@ int testTypeName() {
 
 int testStrList()
 {
-  cout << "Testing StringListC" << endl;
   StringListC alist("one two 3");
   if(alist.Size() != 3) return __LINE__;
   if(alist.First() != "one") return __LINE__;
@@ -286,7 +225,6 @@ int testStrList()
 }
 
 int testIntrDList() {
-  cout << "Testing IntrDList\n";
   IntrDListC<DLinkC> lst;
   if(!lst.IsEmpty()) return __LINE__;
   DLinkC lnk1,lnk2,lnk3;
@@ -319,11 +257,10 @@ int testIntrDList() {
 }
 
 int testOption() {
-  cout << "Testing OptionC.\n";
   // Do a quick check that OptionC is doing something sensible.
   int nargs = 15;
-  char *argv[] = { "arg0","-d","0.3","-i","4","-k","1","2","-o1","t1 t2","-o2","t3 t4","-o3","t5 t6","-b",0 };
-  OptionC opt(nargs,argv);
+  char const *argv[] = { "arg0","-d","0.3","-i","4","-k","1","2","-o1","t1 t2","-o2","t3 t4","-o3","t5 t6","-b",0 };
+  OptionC opt(nargs,(char **) argv);
   RealT vd= opt.Real("d",0,"Read in a real. ");
   RealT vd2= opt.Real("d2",0.4,"Read in a real. ");
   IntT vi= opt.Int("i",1,"Read in a int. ");
@@ -342,6 +279,7 @@ int testOption() {
   if(s1 != "t1 t2") return __LINE__;
   if(s2 != "t3 t4") return __LINE__;
   if(s3 != "t5 t6") return __LINE__;
+  RAVL_TEST_EQUALS(ind,Index2dC(1,2));
   if(!b) return __LINE__;
   StrOStreamC str;
   str <<opt;
@@ -351,7 +289,6 @@ int testOption() {
 }
 
 int testFunctionRegister() {
-  cout << "Testing FunctionRegister. \n";
   
   int (*afunc)(int);
   
@@ -361,7 +298,6 @@ int testFunctionRegister() {
 }
 
 int testCache() {
-  cout << "Testing CacheC. \n";
   CacheC<IntT,IntT> cache(5);
   for(int i = 0;i < 10;i++)
     cache.Insert(i,i);
@@ -381,7 +317,6 @@ int testCache() {
 }
 
 int testStringArrayIO() {
-  cout << "Testing SArray1dC<StringC> IO. \n";
  
   // Test SArray1dC...
   SArray1dC<StringC> str(3);
@@ -419,7 +354,6 @@ int testStringArrayIO() {
 }
 
 int testSArrayIO() {
-  cout << "Testing SArray1dC<RealT> Binary IO. \n";
   for(int s = 0;s < 500;s++) {
     UIntT i;
     SArray1dC<ByteT> bytePad(s);
@@ -448,7 +382,6 @@ int testSArrayIO() {
 
 
 int testIndexRange2dSet() {
-  cout << "Testing IndexRange2dSetC. \n";
   IndexRange2dC rect1(0,1,0,1);
   IndexRange2dC rect2(1,2,1,2);
   //cout << "R1:" << rect1 << " Area:" << rect1.Area() << "\n";
@@ -486,7 +419,6 @@ int testIndexRange2dSet() {
 }
 
 int testRealRange1dSet() {
-  cout << "Testing IndexRange2dSetC. \n";
   RealRangeC range1(0,1);
   RealRangeC range2(2,3);
   RealRangeC range3(0,3);
@@ -508,7 +440,6 @@ int testRealRange1dSet() {
 }
 
 int testBase64() {
-  cerr << "Testing Base64C. \n";
   for(int i = 0;i <100;i++) {
     SArray1dC<char> data(RandomInt() % 400);
     for(SArray1dIterC<char> it(data);it;it++)
@@ -523,8 +454,8 @@ int testBase64() {
     for(SArray1dIter2C<char,char> it(data,data2);it;it++) {
       //cerr  << (int) it.Data1() << " != " << (int) it.Data2() << " \n";
       if(it.Data1() != it.Data2())  {
-	cerr << "Mismatch at " << it.Index() << " :  " << (int) it.Data1() << " != " << (int) it.Data2() << " \n";
-	//	return __LINE__;
+      	std::cerr << "Mismatch at " << it.Index() << " :  " << (int) it.Data1() << " != " << (int) it.Data2() << " \n";
+	      return __LINE__;
       }
     }
   }
@@ -576,7 +507,6 @@ int testObjIO() {
   int *val1 = &x;
   int *val2 = &x;
   
-  cerr << "Testing ObjIO. \n";
   DListC<int> alist;
   alist.InsLast(1);
   alist.InsLast(2);
@@ -586,7 +516,13 @@ int testObjIO() {
   StrOStreamC os;
   BinOStreamC bos(os);
   
+  RavlN::SmartOwnerPtrC<RCLayerBodyC> ownerPtr = new RCLayerBodyC();
+  RavlN::SmartCallbackPtrC<RCLayerBodyC> callbackPtr = ownerPtr.BodyPtr();
+
   bos << ObjIO(val1) << ObjIO(val2) << ObjIO(alist) << ObjIO(blist);
+
+  // IO of Owner/Callback pointers not supported yet.
+  //<< ObjIO(ownerPtr) << ObjIO(callbackPtr);
   
   StringC data = os.String();
   //OStreamC file("test.abs");
@@ -600,8 +536,14 @@ int testObjIO() {
 
   DListC<int> list1;
   DListC<int> list2;
-  
+
+  RavlN::SmartOwnerPtrC<RCLayerBodyC> ownerPtrRL;
+  RavlN::SmartCallbackPtrC<RCLayerBodyC> callbackPtrRL;
+
   bis >> ObjIO(valx) >> ObjIO(valy) >> ObjIO(list1) >> ObjIO(list2);
+
+  // IO of Owner/Callback pointers not supported yet.
+  //>> ObjIO(ownerPtrRL) >> ObjIO(callbackPtrRL);
 
   if(valx != valy) return __LINE__;
   
@@ -611,6 +553,9 @@ int testObjIO() {
   for(DLIterC<int> it(list1);it;it++)
     sum += *it;
   if(sum != 6) return __LINE__;
+
+
+
   return 0;
 }
 
@@ -686,7 +631,6 @@ BinIStreamC &operator>>(BinIStreamC &strm,TestDerivedC &obj) {
 RAVL_INITVIRTUALCONSTRUCTOR_NAMED(TestDerived2C,"TestDerived2C");
 
 int testSmartPtr() {
-  cerr << "testSmartPtr, Called \n";
   
   {
     StrOStreamC outs;
@@ -779,8 +723,8 @@ void InitStream(IStreamC &istrm) {
   StringC buff =
     "<config> \n"
     " <test1 value=\"Hello\" /> \n"
-    " <test2/> \n"
-    " <test3/> \n"
+    " <test2 /> \n"
+    " <test3 /> \n"
     "</config> \n";
 
   StrIStreamC strIStrm(buff.Copy());

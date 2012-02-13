@@ -13,6 +13,8 @@ MAINS= testIksemel.cc
 
 USESLIBS=RavlOS iksemel RavlXMPP
 
+PROGLIBS=RavlIO RavlXMLFactory
+
 MUSTLINK=LinkRavlXMPPIksemel.cc
 
 EXTERNALLIBS=iksemel.def

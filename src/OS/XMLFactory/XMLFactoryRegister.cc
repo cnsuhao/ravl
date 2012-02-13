@@ -73,7 +73,7 @@ namespace RavlN {
         throw RavlN::ExceptionBadConfigC("Unused attribute found ");
       }
       std::string key = key = it->AttributeString("key",it->Name()).data();
-      std::string value = it->AttributeString("value",it->Name()).data();
+      std::string value = it->AttributeString("value",it->Content()).data();
       if(hashTable.IsElm(key)) {
         RavlSysLogf(SYSLOG_ERR,"Duplicate definition of attribute '%s' in string hash table definition in %s ",it->Name().data(),node.Path().data());
         throw RavlN::ExceptionBadConfigC("Duplicate entry found ");
@@ -86,6 +86,7 @@ namespace RavlN {
 
   static int InitStringFactory() {
     RavlN::AddTypeName(typeid(std::string),"std::string");
+    RavlN::AddTypeName(typeid(RavlN::StringC),"RavlN::StringC");
     RavlN::AddTypeName(typeid(Signal0C),"RavlN::Signal0C");
     RavlN::AddTypeName(typeid(Signal1C<bool>),"RavlN::Signal1C<bool>");
     RavlN::AddTypeName(typeid(Signal1C<StringC>),"RavlN::Signal1C<RavlN::StringC>");

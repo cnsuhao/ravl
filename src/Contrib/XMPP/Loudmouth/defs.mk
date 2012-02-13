@@ -19,6 +19,8 @@ PLIB=RavlXMPPLoudmouth
 
 USESLIBS=RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory
 
+PROGLIBS=RavlXMPP
+
 MUSTLINK=LinkRavlXMPP.cc
 
 EXTERNALLIBS=Loudmouth.def

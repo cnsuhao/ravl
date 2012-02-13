@@ -33,8 +33,10 @@ namespace RavlN {
     //: Default constructor.
     
     virtual StateVectorC FitModel(DListC<ObservationC> sample);
-    //: Fit model parameters to sample of observations
+    //: Fit model parameters to sample of observations using least mean squares
+
   };
+
 
   //! userlevel=Normal
   //! autoLink=on
@@ -74,6 +76,7 @@ namespace RavlN {
     // Supply this function in a sub-class.
     
     friend class FitToSampleBodyC;
+    friend class FitHomog2dPointsBodyC;
   };
 }
 

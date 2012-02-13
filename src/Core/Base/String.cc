@@ -1646,4 +1646,31 @@ namespace RavlN {
     return v;
   }
 
+
+  //: Helper function for producing debug output.
+  // create a string with 'level' spaces.
+  StringC Indent(int level) {
+    static StringC retEmpty;
+    static StringC ret1(" ");
+    static StringC ret2("  ");
+    static StringC ret3("   ");
+    static StringC ret4("    ");
+    static StringC ret5("     ");
+    static StringC ret6("      ");
+    switch(level) {
+      case 0: return retEmpty;
+      case 1: return ret1;
+      case 2: return ret2;
+      case 3: return ret3;
+      case 4: return ret4;
+      case 5: return ret5;
+      case 6: return ret6;
+    }
+    StringC ret;
+    for(;level > 0;level--)
+      ret += ' ';
+    return ret;
+  }
+
+
 }

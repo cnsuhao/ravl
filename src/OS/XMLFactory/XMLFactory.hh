@@ -305,6 +305,9 @@ namespace RavlN {
     {}
     //: Constructor.
 
+    explicit XMLFactoryContextC(const StringC &configFile,XMLTreeLoadC *loader = 0);
+    //: Setup directly from a config file name.
+
     XMLFactoryContextC(const XMLFactoryNodeC &iNode)
       : m_iNode(&iNode)
     {}
@@ -403,6 +406,10 @@ namespace RavlN {
       m_factory.Invalidate();
     }
     //: Invalidate context.
+
+    bool IsValid() const
+    { return m_iNode.IsValid() && m_factory.IsValid(); }
+    //: Test if context is valid.
 
     template<class DataT>
     bool UseComponent(const StringC &name,
@@ -710,6 +717,10 @@ namespace RavlN {
     // At the moment this just looks for unused 
     // attributes.
     
+    bool Clear();
+    //: Clear factory contents.
+    // This is can be used at shutdown to ensure all memory is free'd
+
     typedef SmartPtrC<XMLFactoryC> RefT;
     //: Reference
 
@@ -764,8 +775,6 @@ namespace RavlN {
     {}
     //: Default constructor.
     // Creates an invalid handle.
-
-
 
     XMLFactoryHC(const StringC &configFile)
       : RCHandleC<XMLFactoryC>(new XMLFactoryC(configFile))

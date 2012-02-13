@@ -15,7 +15,7 @@
 #undef _POSIX_C_SOURCE
 
 #include "Ravl/config.h"
-
+#include "Ravl/SysLog.hh"
 #if RAVL_OS_SOLARIS
 #define _POSIX_PTHREAD_SEMANTICS 1
 #define _REENTRANT 1
@@ -51,6 +51,7 @@ extern "C" {
 #include "Ravl/StrStream.hh"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #if RAVL_HAVE_WIN32_THREADS
 #include <windows.h>
@@ -365,6 +366,42 @@ namespace RavlN {
                );
     }
     return str;
+  }
+
+  //: Generate date from ISO8601 string.
+  // Note this may not support all variants, if the string fails to parse and exception will be thrown.
+
+  DateC DateC::FromISO8601String(const StringC &dataString,bool storeInUTC)
+  {
+    StringC work = dataString;
+    UIntT year = 0;
+    UIntT month = 1;
+    UIntT day = 1;
+    UIntT hour = 0;
+    UIntT min = 0;
+    UIntT sec = 0;
+    //2012-01-30 10:00Z
+    //2012-01-30T10:00Z
+    //2012-01-30T10:00:00Z
+
+    int elems = sscanf(work.data(),"%4u-%2u-%2u",&year,&month,&day);
+    if(elems != 3) {
+      RavlDebug("Failed to parse date from: '%s' ",work.data());
+      throw ExceptionOperationFailedC("Parse error in date.");
+    }
+    if(work.Size() > 10) {
+      work = work.from(10);
+      if(work[0] != ' ' && work[0] != 'T') {
+        throw ExceptionOperationFailedC("Parse error in date.");
+      }
+      work = work.from(1);
+    }
+    elems = sscanf(work.data(),"%2u:%2u:%2u",&hour,&min,&sec);
+    if(elems != 3) {
+      RavlDebug("Failed to parse time from: '%s' ",work.data());
+      throw ExceptionOperationFailedC("Parse error in time.");
+    }
+    return DateC(year,month,day,hour,min,sec);
   }
 
   //: Generate date from odbc string.
@@ -694,7 +731,6 @@ namespace RavlN {
   bool DateC::Wait() const {
 #if !RAVL_COMPILER_VISUALCPP
     struct timeval timeout;
-    int reterr;
 #if RAVL_OS_LINUX || RAVL_OS_LINUX64
     // Linux select modifies 'timeout' to time not slept, so we only have to setup once.
     DateC now = DateC::NowUTC();
@@ -705,7 +741,7 @@ namespace RavlN {
     timeout.tv_sec = toGo.TotalSeconds();
     timeout.tv_usec = toGo.USeconds();
     while(timeout.tv_sec > 0 || timeout.tv_usec > 0) {
-      reterr = select(0,0,0,0,&timeout);
+      select(0,0,0,0,&timeout);
       // A signal may throw us out of select early so check we're finished.
     };
     
@@ -717,7 +753,7 @@ namespace RavlN {
       DateC toGo = *this - now;
       timeout.tv_sec = toGo.TotalSeconds();
       timeout.tv_usec = toGo.USeconds();
-      reterr = select(0,0,0,0,&timeout);
+      select(0,0,0,0,&timeout);
       // A signal may throw us out of select early.
     } while(1);
 #endif

@@ -12,12 +12,20 @@
 
 /********************************************************************************/
 /******* AMMA / QMAKE COMPATIBILITY *******/
-#if !defined(RAVL_CHECK)
-#if defined(AMMA_CHECK) || defined(QMAKE_CHECK)
-#define RAVL_CHECK 1
+#if defined(WIN32)
+  #if defined(_DEBUG)
+    #define RAVL_CHECK 1
+  #else
+    #define RAVL_CHECK 0
+  #endif
 #else
-#define RAVL_CHECK 0
-#endif
+  #if !defined(RAVL_CHECK)
+    #if defined(AMMA_CHECK) || defined(QMAKE_CHECK)
+      #define RAVL_CHECK 1
+    #else
+      #define RAVL_CHECK 0
+    #endif
+  #endif
 #endif
 /****************************************/
 /******** RAVL Paranoid checking. ********
@@ -25,103 +33,103 @@
  * obscure bugs.
  */
 #ifdef QMAKE_PARANOID
-#define RAVL_PARANOID(x) x
+  #define RAVL_PARANOID(x) x
 #else
-#define RAVL_PARANOID(x)
+  #define RAVL_PARANOID(x)
 #endif
 
 /********************************************************************************/
 /***** Detect the OS, compiler and processor type being used. *******************/
 
 #if !defined(WIN32)
-#define RAVL_COMPILER_GCC defined(__GNUC__)                        /* GNU compiler ? */
-#define RAVL_COMPILER_GCC2 (defined(__GNUC__) && (__GNUC__ == 2))   /* gcc 2.x (No longer supported) */
-#define RAVL_COMPILER_GCC3 (defined(__GNUC__) && (__GNUC__ == 3))  /* gcc 3.x */
-#define RAVL_COMPILER_GCC3_4 (defined(__GNUC__) && (__GNUC__ == 3) && (__GNUC_MINOR__ >= 4))  /* gcc 3.4.x or later. */
-#define RAVL_COMPILER_GCC4  (defined(__GNUC__) && (__GNUC__ >= 4))  /* gcc 4.x or later. */
-#define RAVL_COMPILER_GCC42  (defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ == 2)) /* gcc 4.3.x */
-#define RAVL_COMPILER_GCC43  (defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ == 3)) /* gcc 4.3.x */
-#define RAVL_COMPILER_MIPSPRO (!defined(__GNUC__) && defined(__sgi))   /* MIPS Pro compiler */
-#define RAVL_COMPILER_VISUALCPP (!defined(__GNUC__) && defined(WIN32)) /* Visual C++ */
-#define RAVL_COMPILER_VISUALCPPNET (!defined(__GNUC__) && defined(WIN32) && (_MSC_VER >= 1300)) /* Visual C++ .NET*/
-#define RAVL_COMPILER_VISUALCPP6 (!defined(__GNUC__) && defined(WIN32) && !RAVL_COMPILER_VISUALCPPNET) /* Visual C++ 6 */
+  #define RAVL_COMPILER_GCC defined(__GNUC__)                        /* GNU compiler ? */
+  #define RAVL_COMPILER_GCC2 (defined(__GNUC__) && (__GNUC__ == 2))   /* gcc 2.x (No longer supported) */
+  #define RAVL_COMPILER_GCC3 (defined(__GNUC__) && (__GNUC__ == 3))  /* gcc 3.x */
+  #define RAVL_COMPILER_GCC3_4 (defined(__GNUC__) && (__GNUC__ == 3) && (__GNUC_MINOR__ >= 4))  /* gcc 3.4.x or later. */
+  #define RAVL_COMPILER_GCC4  (defined(__GNUC__) && (__GNUC__ >= 4))  /* gcc 4.x or later. */
+  #define RAVL_COMPILER_GCC42  (defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ == 2)) /* gcc 4.3.x */
+  #define RAVL_COMPILER_GCC43  (defined(__GNUC__) && (__GNUC__ >= 4) && (__GNUC_MINOR__ == 3)) /* gcc 4.3.x */
+  #define RAVL_COMPILER_MIPSPRO (!defined(__GNUC__) && defined(__sgi))   /* MIPS Pro compiler */
+  #define RAVL_COMPILER_VISUALCPP (!defined(__GNUC__) && defined(WIN32)) /* Visual C++ */
+  #define RAVL_COMPILER_VISUALCPPNET (!defined(__GNUC__) && defined(WIN32) && (_MSC_VER >= 1300)) /* Visual C++ .NET*/
+  #define RAVL_COMPILER_VISUALCPP6 (!defined(__GNUC__) && defined(WIN32) && !RAVL_COMPILER_VISUALCPPNET) /* Visual C++ 6 */
 
-#define RAVL_CPU_IX86    defined(__i386__)      /* 386 base varient. */
-#define RAVL_CPU_X86_64 (defined (__x86_64__) || defined(__LP64__))
-#define RAVL_CPU_SPARC   defined(__sparc)       /* sun sparc based system. */
-#define RAVL_CPU_SPARC_V9 defined(__sparc_v9__)  /* sparc v9 instruction set */
+  #define RAVL_CPU_IX86    defined(__i386__)      /* 386 base varient. */
+  #define RAVL_CPU_X86_64 (defined (__x86_64__) || defined(__LP64__))
+  #define RAVL_CPU_SPARC   defined(__sparc)       /* sun sparc based system. */
+  #define RAVL_CPU_SPARC_V9 defined(__sparc_v9__)  /* sparc v9 instruction set */
 /* for __sparc_v9__ to be set the appropriate compile time options may have to be applied */
 /* for example,  -Wa,-xarch=v8plus -mcpu=v9 */
 
-#define RAVL_CPU_MIPS  defined(__mips)    /* mips */
-#define RAVL_CPU_ALPHA defined(__alpha)   /* alpha based system */
-#define RAVL_CPU_ARM defined(__arm)   /* arm based system */
-#define RAVL_CPU_PPC defined(__ppc__)   /* powerpc based system */
+  #define RAVL_CPU_MIPS  defined(__mips)    /* mips */
+  #define RAVL_CPU_ALPHA defined(__alpha)   /* alpha based system */
+  #define RAVL_CPU_ARM defined(__arm)   /* arm based system */
+  #define RAVL_CPU_PPC defined(__ppc__)   /* powerpc based system */
 
-#define RAVL_CPUTYPE_64 (defined (__x86_64__) || defined(__LP64__))   /* 64 bit cpu */
-#define RAVL_CPUTYPE_32 !(RAVL_CPUTYPE_64) /* 32 bit cpu */
+  #define RAVL_CPUTYPE_64 (defined (__x86_64__) || defined(__LP64__))   /* 64 bit cpu */
+  #define RAVL_CPUTYPE_32 !(RAVL_CPUTYPE_64) /* 32 bit cpu */
 
-#define RAVL_OS_LINUX64   (defined(__linux__) && defined (__x86_64__))
-#define RAVL_OS_LINUX   (defined(__linux__) && !defined(__x86_64__)) /* Linux based OS. */
-#define RAVL_OS_WIN32   defined(WIN32)      /* Windows platform. */
-#define RAVL_OS_IRIX    defined(__sgi__)    /* IRIX.      */
-#define RAVL_OS_SOLARIS defined(__sun)      /* Solaris.   */
-#define RAVL_OS_SOLARIS7 defined(__sol2_7__)/* Solaris. 2.5.7 */
-#define RAVL_OS_SOLARIS9 defined(__sol2_9__)/* Solaris. 2.5.9 */
-#define RAVL_OS_MACOSX  defined(__APPLE__)  /* Mac OS-X */
-#define RAVL_OS_FREEBSD defined(__FreeBSD__) /* FreeBSD */
+  #define RAVL_OS_LINUX64   (defined(__linux__) && defined (__x86_64__))
+  #define RAVL_OS_LINUX   (defined(__linux__) && !defined(__x86_64__)) /* Linux based OS. */
+  #define RAVL_OS_WIN32   defined(WIN32)      /* Windows platform. */
+  #define RAVL_OS_IRIX    defined(__sgi__)    /* IRIX.      */
+  #define RAVL_OS_SOLARIS defined(__sun)      /* Solaris.   */
+  #define RAVL_OS_SOLARIS7 defined(__sol2_7__)/* Solaris. 2.5.7 */
+  #define RAVL_OS_SOLARIS9 defined(__sol2_9__)/* Solaris. 2.5.9 */
+  #define RAVL_OS_MACOSX  defined(__APPLE__)  /* Mac OS-X */
+  #define RAVL_OS_FREEBSD defined(__FreeBSD__) /* FreeBSD */
 
-#define RAVL_OS_OSF     defined(__osf__)   /* OSF.       */
-#define RAVL_OS_CYGWIN  defined(__CYGWIN__) /* Cygwin is a windows/unix hybrid */
+  #define RAVL_OS_OSF     defined(__osf__)   /* OSF.       */
+  #define RAVL_OS_CYGWIN  defined(__CYGWIN__) /* Cygwin is a windows/unix hybrid */
 #else
 /* Unfortunately the Visual C++ preprocessor doesn't accept defined() as anything but part
    of an #if or #elif so the compiler selection breaks. Here are the settings for a windows box.
 */
-#define RAVL_COMPILER_GCC       0
-#define RAVL_COMPILER_GCC2      0
-#define RAVL_COMPILER_GCC3      0
-#define RAVL_COMPILER_GCC4      0
-#define RAVL_COMPILER_MIPSPRO   0
+  #define RAVL_COMPILER_GCC       0
+  #define RAVL_COMPILER_GCC2      0
+  #define RAVL_COMPILER_GCC3      0
+  #define RAVL_COMPILER_GCC4      0
+  #define RAVL_COMPILER_MIPSPRO   0
 
-#if (!defined(__GNUC__) && defined(WIN32))
-#define RAVL_COMPILER_VISUALCPP 1 /* Visual C++ */
-#if (_MSC_VER >= 1400)
-#define RAVL_COMPILER_VISUALCPP6 0
-#define RAVL_COMPILER_VISUALCPPNET_2005 1
-#define RAVL_COMPILER_VISUALCPPNET 0
-#elif (_MSC_VER >= 1300)
-#define RAVL_COMPILER_VISUALCPP6 0
-#define RAVL_COMPILER_VISUALCPPNET_2005 0
-#define RAVL_COMPILER_VISUALCPPNET 1
-#else
-#define RAVL_COMPILER_VISUALCPP6 1
-#define RAVL_COMPILER_VISUALCPPNET_2005 0
-#define RAVL_COMPILER_VISUALCPPNET 0
-#endif
-#else
-#define RAVL_COMPILER_VISUALCPPNET_2005 0
-#define RAVL_COMPILER_VISUALCPP 0 /* Visual C++ */
-#define RAVL_COMPILER_VISUALCPPNET 0 /* Visual C++ .NET*/
-#define RAVL_COMPILER_VISUALCPP6 0 /* Visual C++ 6 */
-#endif
+  #if (!defined(__GNUC__) && defined(WIN32))
+    #define RAVL_COMPILER_VISUALCPP 1 /* Visual C++ */
+    #if (_MSC_VER >= 1400)
+      #define RAVL_COMPILER_VISUALCPP6 0
+      #define RAVL_COMPILER_VISUALCPPNET_2005 1
+      #define RAVL_COMPILER_VISUALCPPNET 0
+    #elif (_MSC_VER >= 1300)
+      #define RAVL_COMPILER_VISUALCPP6 0
+      #define RAVL_COMPILER_VISUALCPPNET_2005 0
+      #define RAVL_COMPILER_VISUALCPPNET 1
+    #else
+      #define RAVL_COMPILER_VISUALCPP6 1
+      #define RAVL_COMPILER_VISUALCPPNET_2005 0
+      #define RAVL_COMPILER_VISUALCPPNET 0
+    #endif
+  #else
+    #define RAVL_COMPILER_VISUALCPPNET_2005 0
+    #define RAVL_COMPILER_VISUALCPP 0 /* Visual C++ */
+    #define RAVL_COMPILER_VISUALCPPNET 0 /* Visual C++ .NET*/
+    #define RAVL_COMPILER_VISUALCPP6 0 /* Visual C++ 6 */
+  #endif
 
-#define RAVL_CPU_IX86  1
-#define RAVL_CPU_SPARC 0
-#define RAVL_CPU_MIPS  0
-#define RAVL_CPU_ALPHA 0
-#define RAVL_CPU_ARM   0
+  #define RAVL_CPU_IX86  1
+  #define RAVL_CPU_SPARC 0
+  #define RAVL_CPU_MIPS  0
+  #define RAVL_CPU_ALPHA 0
+  #define RAVL_CPU_ARM   0
 
-#define RAVL_OS_LINUX   0
-#define RAVL_OS_WIN32   1
-#define RAVL_OS_IRIX    0
-#define RAVL_OS_SOLARIS 0
-#define RAVL_OS_OSF     0
-#define RAVL_OS_CYGWIN  0
-#define RAVL_OS_FREEBSD 0
+  #define RAVL_OS_LINUX   0
+  #define RAVL_OS_WIN32   1
+  #define RAVL_OS_IRIX    0
+  #define RAVL_OS_SOLARIS 0
+  #define RAVL_OS_OSF     0
+  #define RAVL_OS_CYGWIN  0
+  #define RAVL_OS_FREEBSD 0
 
 //TODO(WM) Test these macros on 64bit Windows (_M_IX86, _M_X64, _WIN32, _WIN64)
-#define RAVL_CPUTYPE_32 1
-#define RAVL_CPUTYPE_64 0
+  #define RAVL_CPUTYPE_32 1
+  #define RAVL_CPUTYPE_64 0
 #endif
 
 #define RAVL_OS_UNIX !RAVL_OS_WIN32       /* a unix style system */
@@ -266,13 +274,13 @@
 // for functions.
 */
 #if RAVL_HAVE_EXCEPTION_SPECS
-#define RAVL_THROW(x) throw(x)
-#define RAVL_THROW2(x,y) throw(x,y)
-#define RAVL_THROW3(x,y,z) throw(x,y,z)
+  #define RAVL_THROW(x) throw(x)
+  #define RAVL_THROW2(x,y) throw(x,y)
+  #define RAVL_THROW3(x,y,z) throw(x,y,z)
 #else
-#define RAVL_THROW(x)
-#define RAVL_THROW2(x,y)
-#define RAVL_THROW3(x,y,z)
+  #define RAVL_THROW(x)
+  #define RAVL_THROW2(x,y)
+  #define RAVL_THROW3(x,y,z)
 #endif
 
 /********************************************************************************/
@@ -281,30 +289,30 @@
  */
 
 #if (!RAVL_OS_IRIX && !RAVL_OS_FREEBSD)
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1
-#endif
-#ifndef _POSIX_SOURCE
-#define _POSIX_SOURCE 1
-#endif
+  #ifndef _GNU_SOURCE
+    #define _GNU_SOURCE 1
+  #endif
+  #ifndef _POSIX_SOURCE
+    #define _POSIX_SOURCE 1
+  #endif
 #endif
 
 #if RAVL_OS_LINUX || RAVL_OS_LINUX64 || RAVL_OS_CYGWIN
-#ifndef _ISOC9X_SOURCE
-#define _ISOC9X_SOURCE 1
-#endif
+  #ifndef _ISOC9X_SOURCE
+    #define _ISOC9X_SOURCE 1
+  #endif
 #endif
 
 #if RAVL_OS_OSF
-#ifndef _OSF_SOURCE
-#define _OSF_SOURCE 1
-#endif
-#ifndef _XOPEN_SOURCE
-#define _XOPEN_SOURCE 1
-#endif
-#ifndef _REENTRANT
-#define _REENTRANT 1
-#endif
+  #ifndef _OSF_SOURCE
+    #define _OSF_SOURCE 1
+  #endif
+  #ifndef _XOPEN_SOURCE
+    #define _XOPEN_SOURCE 1
+  #endif
+  #ifndef _REENTRANT
+    #define _REENTRANT 1
+  #endif
 #endif
 
 /*********************************************************************

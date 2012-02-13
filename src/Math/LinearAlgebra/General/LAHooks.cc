@@ -12,9 +12,10 @@
 #include "Ravl/MatrixRUT.hh"
 #include "Ravl/VectorMatrix.hh"
 #include "Ravl/Eigen.hh"
-
+#include "Ravl/SVD.hh"
 
 namespace RavlN {
+
 
 static bool EigenVectorsSymmetric_default(VectorC &resVals, MatrixC &resVecs, const MatrixC &mat) {
   EigenValueC<RealT> ev(mat);
@@ -72,13 +73,29 @@ static void SubtractOuterProduct1_default(MatrixRUTC &matr, const VectorC &vec,R
   }
 }
 
+//: Compute SVD of matrix
+static bool SVD_IP_default(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v) {
+  SVDC<RealT> svd(m);
+  v = svd.GetV();
+  u = svd.GetU();
+  s = svd.SingularValues();
+  return true;
+}
+
+//: Compute inverse of matrix using standard Ravl algorithm
+static bool Inverse_IP_default(MatrixC & m, RealT & det) {
+  return InverseIP_GaussJordan(m, det);
+}
+
+
 
 bool (*g_EigenVectorsSymmetric)(VectorC &resVals, MatrixC &resVecs, const MatrixC &M) = &EigenVectorsSymmetric_default;
-
 void (*g_AddOuterProduct)(MatrixRUTC &matr, const VectorC &vec) = &AddOuterProduct_default;
 void (*g_AddOuterProduct1)(MatrixRUTC &matr, const VectorC &vec, RealT a) = &AddOuterProduct1_default;
 void (*g_SubtractOuterProduct)(MatrixRUTC &matr, const VectorC &vec) = &SubtractOuterProduct_default;
 void (*g_SubtractOuterProduct1)(MatrixRUTC &matr, const VectorC &vec, RealT a) = &SubtractOuterProduct1_default;
+bool (*g_SVD_IP_hook)(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v) = &SVD_IP_default;
+bool (*g_Inverse_IP_hook)(MatrixC & m, RealT & det) = &Inverse_IP_default;
 
 
 }

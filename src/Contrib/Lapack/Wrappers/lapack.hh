@@ -4,16 +4,34 @@
 // General Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
-// $Id$
-#ifndef LAPACK_H
-#define LAPACK_H
+////////////////////////////////////////////////////////////////////
+//! rcsid="$Id$"
+//! docentry="Ravl.API.Math.Linear Algebra.Lapack"
+//! lib=RavlLapack
+//! file="Ravl/Contrib/Lapack/lapack.hh"
+//! author="Kieron Messer"
+
+
+#ifndef RAVL_LAPACK_HH
+#define RAVL_LAPACK_HH
 
 #include "Ravl/VectorMatrix.hh"
 
-namespace LapackN
+namespace RavlN
 {
-  //! compute eigen values and eigen vectors of symmetric matrix
-  RavlN::VectorMatrixC EigenVectorsSymmetric(const RavlN::MatrixC &M);
+  //! userlevel=Normal
+
+  bool InverseIP_Lapack(MatrixC & matrix);
+  //: Invert a matrix in-place using Lapack routines.
+
+
+  bool SVD_IP_Lapack(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v);
+  //: Compute singular value decomposition of matrix using Lapack routines.
+  // M = U * S * V.T().  Note the contents of m are destroyed
+
+
+  bool EigenVectors_Lapack(const MatrixC & mat, VectorMatrixC & vm);
+  //: Compute eigen-values and eigen-vectors of a real symmetric matrix using Lapack routines
 
 }//end of namespace
 

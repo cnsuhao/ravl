@@ -13,6 +13,7 @@
 //! file="Ravl/PatternRec/Modeling/Basic/FuncMeanProjection.hh"
 
 #include "Ravl/PatternRec/Function.hh"
+#include "Ravl/PatternRec/FuncLinear.hh"
 #include "Ravl/Matrix.hh"
 #include "Ravl/Vector.hh"
 
@@ -56,6 +57,9 @@ namespace RavlN {
     { return proj; }
     //: Access projection matrix.
     
+    FuncLinearC Reverse() const;
+    //: Return the function that applies the reverse, i.e. X * proj.T() + mean
+
   protected:
     VectorC mean;
     MatrixC proj;
@@ -119,6 +123,13 @@ namespace RavlN {
     { return Body().Projection(); }
     //: Access projection matrix.
     
+    FuncLinearC Reverse() const {
+      return Body().Reverse();
+    }
+    //: Return the function that applies the reverse, i.e. X * proj.T() + mean
+    // For example if this a PCA projection, this will apply the
+    // inverse to get your original vector back (minus some variance e.t.c.)
+
   };
   
   

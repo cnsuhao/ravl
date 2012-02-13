@@ -24,15 +24,6 @@
 #endif
 
 namespace RavlLogicN {
-
-  //: Helper function for producing debug output.
-  // create a string with 'level' spaces.
-  StringC Indent(int level) {
-    StringC ret;
-    for(;level > 0;level--)
-      ret += ' ';
-    return ret;
-  }
   
   //: Construct from a binary stream.
   

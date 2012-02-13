@@ -14,10 +14,11 @@
 #include "Ravl/Genetic/GPVariable.hh"
 #include "Ravl/Genetic/GenomeConst.hh"
 #include "Ravl/Array1d.hh"
+#include "Ravl/Genetic/GeneFactory.hh"
 
 namespace RavlN { namespace GeneticN {
 
-  //! An environment for an agent.
+  //! Put a value into an array
 
   template<typename DataT>
   class GPInstPutArrayC

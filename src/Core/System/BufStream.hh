@@ -57,7 +57,13 @@ namespace RavlN {
   public:
     BufOStreamC();
     //: Default constructor.
-    
+
+    BufOStreamC(const TriggerC &sendto);
+    //: Construct an output stream with a trigger to call upon its destruction.
+    // If trigger is CallFunc1C<SArray1dC<char> > (returning a bool) or
+    // one of its derived classes the first argument is set to the
+    // contents of the stream.
+
     SArray1dC<char> &Data();
     //: Get data written to stream. 
     // Note, this will reset the buffer.

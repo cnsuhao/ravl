@@ -18,7 +18,8 @@
 #include "Ravl/Graph.hh"
 #include "Ravl/Hash.hh"
 #include "Ravl/DList.hh"
-#include "Ravl/PriQueueL.hh"
+#include "Ravl/PriQueue.hh"
+#include "Ravl/StdMath.hh"
 
 namespace RavlN {
   
@@ -32,9 +33,9 @@ namespace RavlN {
 						      GraphNodeHC<NodeT,EdgeT> to,
 						      CostT &costOut,
 						      CostT (*EvalT)(const EdgeT &dat)) {
-    PriQueueLC<CostT,GraphNodeHC<NodeT,EdgeT> > open; // List of open nodes.
+    PriQueueC<CostT,GraphNodeHC<NodeT,EdgeT> > open(64); // List of open nodes.
     GraphNodeHC<NodeT,EdgeT> at = from;               // Place marker in graph.
-    HashC<GraphNodeHC<NodeT,EdgeT>,CostT> dist;     // Cost mapping.
+    HashC<GraphNodeHC<NodeT,EdgeT>,CostT> dist(21); // Cost mapping.
     open.Insert(0,from); // Setup start node.
     dist[from] = 0;
     // Fill all distances until 'to' is found.
@@ -67,7 +68,7 @@ namespace RavlN {
       return DListC<GraphEdgeIterC<NodeT,EdgeT> > (); // Not found, return empty list.
     costOut = dist[to];
     // Backtrack along shortest path.
-    // FIXME :- Would this be faster if we remebered the the link that had 
+    // FIXME :- Would this be faster if we remembered the the link that had
     // the shortest path to each node ? That way back tracking would be
     // a trivial operation.  Probably depends on the properties of the graph.
     DListC<GraphEdgeIterC<NodeT,EdgeT> > ret;
