@@ -19,7 +19,7 @@ WhiteLineDetectorBodyC::WhiteLineDetectorBodyC(bool Verbose)
     verbose(Verbose),
     gFilter(3),
     edgeDet(true, 0.3, 1.0),
-    pphtProc(Point2dC(0.1, 1.0),0.9999999,90,-1,false,1.4,true),
+    pphtProc(Point2dC(0.01, 1.0),0.9999999,90,-1,false,1.4,true),
     maxAngle(1), maxSep(6), overlap(0.5), minLen(50)
 {
   pphtProc.SetCorridor(4);
