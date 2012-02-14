@@ -17,9 +17,9 @@ MAINS= exLoudmouth.cc
 
 PLIB=RavlXMPPLoudmouth
 
-USESLIBS=RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory
+USESLIBS=RavlXMPP RavlCore Loudmouth RavlOS RavlThreads RavlXMLFactory
 
-PROGLIBS=RavlXMPP
+PROGLIBS=
 
 MUSTLINK=LinkRavlXMPP.cc
 
