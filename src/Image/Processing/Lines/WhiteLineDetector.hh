@@ -79,9 +79,10 @@ namespace RavlImageN {
     //: Constructor 
     // If Verbose, lines are displayed on i/p image
     
-    void SetEdgeDet(IntT blur,RealT HystLower,RealT HystUpper) 
-    { Body().SetEdgeDet(blur,HystLower,HystUpper); }
+    void SetEdgeDet(IntT Blur,RealT HystLower,RealT HystUpper) 
+    { Body().SetEdgeDet(Blur,HystLower,HystUpper); }
     //: Sets the edge detector parameters 
+    //!param: Blur - Edge detector: image blur mask width using <a href="RavlImageN.GaussConvolve2dC.html">GaussConvolve2dC</a> (default: 5)
     //!param: HystLower - Edge detector: lower hysteresis threshold (default: 0.3)
     //!param: HystUpper - Edge detector: upper hysteresis threshold (default: 1.0)
     
