@@ -61,71 +61,13 @@ namespace RavlImageN {
     
     last = corners;
 
-    ObservationListManagerC obsListManager(obsList);
-    RansacC ransac(obsListManager,fitHomog2d,evalInliers);
-
-    for(int i = 0;i <100;i++) {
-      try {
-	ransac.ProcessSample(8);
-      }
-      catch (ExceptionC ex) {
-	cerr << "Ravl Exception caught in RansacC::ProcessSample\n"
-	     << ex.Text() << endl;
-      }  
-    }
-
-    // carry on optimising solution if Ransac succeeding
-    if(!ransac.GetSolution().IsValid()) {
-      
-      if (verbose)  cout << "Failed to find a solution" << endl;
-      return Projection2dC();  // null projection
-    }
-
-    // select observations compatible with solution
-    compatibleObsList = evalInliers.CompatibleObservations(ransac.GetSolution(),obsList);
-
-    // initialise Levenberg-Marquardt algorithm
-    StateVectorHomog2dC sv = ransac.GetSolution();
-    LevenbergMarquardtC lm = LevenbergMarquardtC(sv, compatibleObsList);
-      
-    if (verbose) {
-      cout << "2D homography fitting: Initial residual=" << lm.GetResidual()
-	   << "\nSelected " << compatibleObsList.Size()
-	   << " observations using RANSAC" << endl;
-    }
-    VectorC x = lm.SolutionVector();
-    x /= x[8];
     try {
-      // apply iterations
-      RealT lambda = 100.0;
-      for ( int i = 0; i < 4; i++ ) {
-	bool accepted = lm.Iteration(compatibleObsList, lambda);
-	if ( accepted )
-	  // iteration succeeded in reducing the residual
-	  lambda /= 10.0;
-	else
-	  // iteration failed to reduce the residual
-	  lambda *= 10.0;
-	  
-	if (verbose) {
-	  cout << " Accepted=" << accepted << " Residual=" << lm.GetResidual()
-	       << " DOF=" << 2*compatibleObsList.Size()-8 << endl;
-	}
-      }
-    } catch(...) {
-      // Failed to find a solution.
-      cerr << "Caught exception from LevenbergMarquardtC. \n";
-      return Projection2dC();  // null projection
+      FitHomog2dPointsC fitHomog2d(zhomog,zhomog);
+      return fitHomog2d.FitModelRobust(obsList);
     }
-
-    // get solution homography
-    sv = lm.GetSolution();
-    Matrix3dC P = sv.GetHomog();
-    P /= P[2][2];
-
-    if (verbose)  cout << "Solution:\n" << P << endl;
-
-    return Projection2dC(P, zhomog, zhomog);
+    catch (...) {
+      return Projection2dC();
+    }
   }
 
 }
