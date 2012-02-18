@@ -84,7 +84,7 @@ namespace RavlN {
   UInt32T RandomMersenneTwisterC::UInt(void)
   {
     UInt32T y;
-    static UInt32T mag01[2]={0x0UL, MATRIX_A};
+    static unsigned long mag01[2]={0x0UL, MATRIX_A};
     /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
     if (mti >= N) { /* generate N words at one time */
@@ -121,7 +121,7 @@ namespace RavlN {
   /* generates a random number on [0,0x7fffffff]-interval */
   Int32T RandomMersenneTwisterC::Int(void)
   {
-    return (Int32T)(UInt()>>1);
+    return (long)(UInt()>>1);
   }
 
   /* generates a random number on [0,1]-real-interval */
@@ -148,7 +148,7 @@ namespace RavlN {
   /* generates a random number on [0,1) with 53-bit resolution*/
   double RandomMersenneTwisterC::Double53(void) 
   { 
-    UInt32T a=UInt()>>5, b=UInt()>>6; 
+    unsigned long a=UInt()>>5, b=UInt()>>6; 
     return(a*67108864.0+b)*(1.0/9007199254740992.0); 
   } 
 

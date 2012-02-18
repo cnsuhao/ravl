@@ -112,8 +112,8 @@ namespace RavlImageN {
     void SetTracker(IntT cthreshold,IntT cwidth,IntT mthreshold,IntT mwidth,IntT lifeTime,IntT searchSize,IntT newFreq) 
     { Body().SetTracker(cthreshold,cwidth,mthreshold,mwidth,lifeTime,searchSize,newFreq); }
     //: Set tracker parameters 
+    // See <a href="RavlImageN.PointTrackerC.html#PointTrackerCObint_int_RealT_int_int_int_int_boolCb">PointTrackerC constructor</a> for details of arguments.<br>
     // Defaults are respectively: 30, 7, 20, 17, 8, 25, 1
-    //!cwiz:author
     
     void SetMask(const ImageC<bool> & nmask) 
     { Body().SetMask(nmask); }
