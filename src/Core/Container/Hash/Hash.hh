@@ -143,7 +143,7 @@ namespace RavlN {
     //!param: oth - Table to copy to make this one.
     //!param: levels - Depth of copy 
     
-    HashC(Tuple2C<K,T> *data); 
+    HashC(const Tuple2C<K,T> *data);
     //: Initialise from simple array.
     //!param: data - pointer to array of tuples to initialise the table with, terminated with an entry with a duplicate key of the first entry.
     // Note: Array must be terminated by a duplicate of the first key. (i.e. == must return true between them)
@@ -520,10 +520,10 @@ namespace RavlN {
   }
   
   template<class K,class T>
-  HashC<K,T>::HashC(Tuple2C<K,T> *data) 
+  HashC<K,T>::HashC(const Tuple2C<K,T> *data)
     : table(7)
   {
-    K &firstKey = data->Data1();
+    const K &firstKey = data->Data1();
     Insert(data->Data1(),data->Data2());
     data++;
     for(;data->Data1() != firstKey;data++)
