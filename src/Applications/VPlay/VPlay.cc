@@ -357,7 +357,7 @@ int doVPlay(int nargs,char *args[])
   }
   
   if(noDisplay) {
-    cerr << "ERROR: No DISPLAY enviroment set. \n";
+    cerr << "ERROR: No DISPLAY environment set. \n";
     return 1;
   }
   
@@ -413,7 +413,7 @@ int doVPlay(int nargs,char *args[])
   ImageRectangleC rect;
   {
     ImageC<ByteRGBValueC> tmp(vidIn.Get());
-    ONDEBUG(cerr << "VPlay: Got inital frame. \n");
+    ONDEBUG(cerr << "VPlay: Got initial frame. \n");
     if(!noSeek) vidIn.DSeek(-1);
     rect = tmp.Rectangle();
   }
