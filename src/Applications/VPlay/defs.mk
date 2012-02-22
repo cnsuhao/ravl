@@ -31,7 +31,10 @@ PROGLIBS =  RavlImgIOV4L.opt RavlExtImgIO.opt RavlDPDisplay \
  RavlImageProc RavlNet RavlDVDRead.opt RavlAVIFile.opt \
  RavlImgIOJasper.opt RavlDV.opt  RavlImgIOV4L2.opt \
  RavlRawVidIO.opt RavlLibFFmpeg.opt RavlImgIO1394dc.opt \
- RavlImgIOuEye.opt
+ OmniSanyoVCCHD4000P.opt  OmniFlashCamera OmniImageImgIOProsilica 
+        
+  
+# RavlImgIOuEye.opt
 
 #EHT = exeVPlay.eht
 

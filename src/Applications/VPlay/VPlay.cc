@@ -47,6 +47,8 @@
 #include "Ravl/GUI/FileSelector.hh"
 #include "Ravl/GUI/MouseEvent.hh"
 #include "Ravl/GUI/Widget.hh"
+#include "Ravl/GUI/ScrolledArea.hh"
+
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeys.h>
@@ -333,6 +335,7 @@ int doVPlay(int nargs,char *args[])
   bool listAttribs = option.Boolean("la", "List all available attributes of this video");
   StringC formatIn = option.String("if","","Input format. ");
   bool noSeek = option.Boolean("ns",false,"Suppress seeking. ");
+  bool forceScrollBox = option.Boolean("fs",false,"Force scroll box ");
   bool listFormats    = option.Boolean("lf",    false,                    "Print list of available data formats. ");
   bool listConversions= option.Boolean("lc",    false,                    "Print list of available data converters. ");
   StringC infile = option.String("","","Input filename");  
@@ -440,6 +443,14 @@ int doVPlay(int nargs,char *args[])
 
   CanvasC vidout(sx,sy,directDraw);  
   
+  WidgetC scrolledVideo;
+
+  if(sx > 1000 || sy > 700 || forceScrollBox) {
+    scrolledVideo = ScrolledAreaC(vidout,RavlN::Min(sx,1000),RavlN::Min(sy,700));
+  } else {
+    scrolledVideo = vidout;
+  }
+
   StringC strinfile(infile);
   Tuple2C<DPIPlayControlC<ImageC<ByteRGBValueC> > ,CanvasC> guiData(vpCtrl,vidout);
   
@@ -490,7 +501,7 @@ int doVPlay(int nargs,char *args[])
   table.GUIAddObject(lr,2,3,1,2,(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),GTK_FILL);
   table.GUIAddObject(guiFrameRate,3,4,1,2,(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),GTK_FILL);
 
-  table.GUIAddObject(vidout,0,4,2,3,(GtkAttachOptions) (GTK_FILL),(GtkAttachOptions)(GTK_FILL),5,5);
+  table.GUIAddObject(scrolledVideo,0,4,2,3,(GtkAttachOptions) (GTK_FILL| GTK_EXPAND),(GtkAttachOptions)(GTK_FILL| GTK_EXPAND),5,5);
   table.GUIAddObject(guiPlayControl,0,4,3,4,(GtkAttachOptions) (GTK_FILL | GTK_SHRINK),(GtkAttachOptions)GTK_FILL);
   table.GUIAddObject(grab,2,4,4,5,(GtkAttachOptions) (GTK_FILL| GTK_EXPAND),(GtkAttachOptions)(GTK_FILL));
   table.GUIAddObject(examine,0,2,4,5,(GtkAttachOptions) (GTK_FILL| GTK_EXPAND),(GtkAttachOptions)(GTK_FILL));
