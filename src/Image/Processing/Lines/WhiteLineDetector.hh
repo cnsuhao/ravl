@@ -79,31 +79,32 @@ namespace RavlImageN {
     //: Constructor 
     // If Verbose, lines are displayed on i/p image
     
-    void SetEdgeDet(IntT blur,RealT HystLower,RealT HystUpper) 
-    { Body().SetEdgeDet(blur,HystLower,HystUpper); }
+    void SetEdgeDet(IntT Blur,RealT HystLower,RealT HystUpper) 
+    { Body().SetEdgeDet(Blur,HystLower,HystUpper); }
     //: Sets the edge detector parameters 
-    //!param: HystLower - Edge detector: lower hysteresis threshold
-    //!param: HystUpper - Edge detector: upper hysteresis threshold
+    //!param: Blur - Edge detector: image blur mask width using <a href="RavlImageN.GaussConvolve2dC.html">GaussConvolve2dC</a> (default: 5)
+    //!param: HystLower - Edge detector: lower hysteresis threshold (default: 0.3)
+    //!param: HystUpper - Edge detector: upper hysteresis threshold (default: 1.0)
     
     void SetHoughResolution(RealT Distance,RealT Angle) 
     { Body().SetHoughResolution(Distance,Angle); }
     //: Sets the resolution of the probabilistic Hough transform 
-    //!param: Distance - Position resolution (pixels)
-    //!param: Angle - Angle resolution (radians)
+    //!param: Distance - Position resolution (pixels) (default: 1.0)
+    //!param: Angle - Angle resolution (radians) (default: 0.01)
     
     void SetHoughParameters(RealT CWidth,IntT MaxGap,IntT MinLen) 
     { Body().SetHoughParameters(CWidth,MaxGap,MinLen); }
     //: Sets the line parameters of the probabilistic Hough transform 
-    //!param: CWidth - Line corridor width (pixels)
-    //!param: MaxGap - Maxium size of gap in line (pixels)
-    //!param: MinLen - Minimum line length to be included (pixels)
+    //!param: CWidth - Line corridor width (pixels) (default: 4)
+    //!param: MaxGap - Maxium size of gap in line (pixels) (default: 25)
+    //!param: MinLen - Minimum line length to be included (pixels) (default: 50)
     
     void SetRidgeParameters(RealT MaxAngle,RealT MaxSep,RealT Overlap) 
     { Body().SetRidgeParameters(MaxAngle,MaxSep,Overlap); }
     //: Sets the parameters for finding the white line from the Hough o/p 
-    //!param: MaxAngle - Max angle between edge pair to be ridge (degrees)
-    //!param: MaxSep   - Max separation between edge pair to be ridge (pixels)
-    //!param: Overlap  - Min overlap of edges to be ridge (fraction of edge length)
+    //!param: MaxAngle - Max angle between edge pair to be ridge (degrees) (default: 1.0)
+    //!param: MaxSep   - Max separation between edge pair to be ridge (pixels) (default: 6)
+    //!param: Overlap  - Min overlap of edges to be ridge (fraction of edge length) (default: 0.5)
     
     SArray1dC<LinePP2dC> Apply(const ImageC<RealT> & img) 
     { return Body().Apply(img); }

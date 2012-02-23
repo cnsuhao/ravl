@@ -213,10 +213,21 @@ namespace RavlN {
     void SocketC::SetHighWaterMark(UInt64T queueLimit) {
       RavlAssert(m_socket != 0);
       int ret;
+#ifdef ZMQ_HWM
       if((ret = zmq_setsockopt (m_socket,ZMQ_HWM,&queueLimit,sizeof(queueLimit))) != 0) {
         RavlError("Failed to set high water mark to %u : %s ",(UIntT) queueLimit,zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("connect failed. ");
       }
+#else
+      if((ret = zmq_setsockopt (m_socket,ZMQ_SNDHWM,&queueLimit,sizeof(queueLimit))) != 0) {
+        RavlError("Failed to set high water mark to %u : %s ",(UIntT) queueLimit,zmq_strerror (zmq_errno ()));
+        throw ExceptionOperationFailedC("connect failed. ");
+      }
+      if((ret = zmq_setsockopt (m_socket,ZMQ_RCVHWM,&queueLimit,sizeof(queueLimit))) != 0) {
+        RavlError("Failed to set high water mark to %u : %s ",(UIntT) queueLimit,zmq_strerror (zmq_errno ()));
+        throw ExceptionOperationFailedC("connect failed. ");
+      }
+#endif
     }
 
     //! Subscribe to a topic
