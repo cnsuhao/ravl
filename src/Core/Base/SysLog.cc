@@ -11,6 +11,7 @@
 #include "Ravl/StrStream.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/MTLocks.hh"
+#include <iostream>
 
 #if RAVL_COMPILER_VISUALCPP
 #pragma warning ( disable : 4244 )
@@ -25,13 +26,20 @@
 #endif
 #endif
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 #include <stdio.h>
 
 namespace RavlN {
   
   static StringC syslog_ident("NoName");
   static bool syslog_Open = false;
-  static bool syslog_StdErrOnly = false;
+  static bool syslog_StdErrOnly = true;
   static bool syslog_StdErr = true;
   static bool syslog_pid = false;
   static bool syslog_fileline = false;
@@ -46,6 +54,7 @@ namespace RavlN {
   // Calling with a null function pointer restores the default behavour.
   
   bool SysLogRedirect(void (*logFunc)(SysLogPriorityT level,const char *message,unsigned lineno,const char *filename)) {
+    ONDEBUG(std::cerr << "SysLogRedirect called. " << std::endl);
     MTWriteLockC lockWrite(2); // Be careful in multi-threaded programs.
     syslogRedirect = logFunc;
     return true;
@@ -62,6 +71,7 @@ namespace RavlN {
   // If sendStdErr is set the messages will also be send the standard error channel.
   
   bool SysLogOpen(const StringC &name,bool logPid,bool sendStdErr,bool stdErrOnly,int facility,bool logFileLine) {
+    ONDEBUG(std::cerr << "SysLogOpen called. logPid=" << logPid << " SendStdErr=" << sendStdErr << " stdErrOnly=" << stdErrOnly << std::endl);
     syslog_ident = name;
     syslog_Open = true;
     syslog_StdErrOnly = stdErrOnly;
@@ -85,10 +95,17 @@ namespace RavlN {
     return true;
   }
   
+  //: Enable/Disable logging file and line numbers.
+
+  void SysLogFileAndLine(bool enable) {
+    syslog_fileline = enable;
+  }
+
   //: Close connection to system logger.
   // The call of this function is optional.
   
   bool SysLogClose() {
+    ONDEBUG(std::cerr << "SysLogClose called. " << std::endl);
 #if RAVL_OS_POSIX
     closelog();
     syslog_Open = false;
@@ -111,6 +128,7 @@ namespace RavlN {
 #endif
   
   static bool LogMessage(const char *message,int priority,unsigned lineno =0,const char *filename = 0) {
+    ONDEBUG(std::cerr << "Logging " <<syslog_StdErr << " Level:" << priority << " Threshold:" <<localLevel << std::endl);
     MTWriteLockC lockWrite(2); // Be careful in multi-threaded programs.
     if(syslogRedirect != 0) {
       // Avoid possible deadlocks when handling redirected messages
@@ -121,33 +139,35 @@ namespace RavlN {
       return true;
     }
 #if RAVL_OS_POSIX
-    //std::cerr << "Logging " <<syslog_StdErr << " Level:" << priority << " Threshold:" <<localLevel << std::endl;
-    if(syslog_StdErr) {
+    if(syslog_StdErr && (!syslog_Open || syslog_StdErrOnly)) {
       if(priority <= localLevel) {
         std::cerr << syslog_ident;
         if(syslog_fileline)
-          std::cerr << filename << ':' << lineno << ' ';
+          std::cerr << ' ' << filename << ':' << lineno << ' ';
         if(syslog_pid)
           std::cerr << "[" << getpid() << "]";
-        std::cerr << ":" << message << endl;
+        std::cerr << ": " << message << std::endl;
       }
     }
+#if 1
     if(!syslog_StdErrOnly && syslog_Open) {
+      ONDEBUG(std::cerr << "Sending to syslog \n");
       if(priority <= syslogLevel) {
         if(syslog_fileline) {
-          syslog(priority,"%s:%u %s",filename,lineno,message);
+          ::syslog(priority,"%s:%u %s",filename,lineno,message);
         } else {
-          syslog(priority,"%s",message);
+          ::syslog(priority,"%s",message);
         }
       }
     }
-#else
-    if(syslog_fileline)
-      std::cerr << filename << ':' << lineno << ' ';
-    if(priority < localLevel)
-      std::cerr << syslog_ident << ":" << message << endl;
 #endif
-    std::cerr << std::flush;
+#else
+    if(priority < localLevel) {
+      if(syslog_fileline)
+        std::cerr << filename << ':' << lineno << ' ';
+      std::cerr << syslog_ident << ":" << message << std::endl;
+    }
+#endif
     return true;
   }
   
@@ -156,8 +176,8 @@ namespace RavlN {
   // SysLog(SYSLOG_DEBUG) << "Send message to log";
   
   OStreamC SysLog(SysLogPriorityT priority,unsigned lineno,const char *filename) {
-    if(!syslog_Open)
-      SysLogOpen("NoName",true,true);
+    ONDEBUG(std::cerr << "OStreamC SysLog(pri,line,file) called. " << std::endl);
+    //if(!syslog_Open) SysLogOpen("NoName",true,true);
 #if RAVL_OS_POSIX
     int pri = LOG_DEBUG;
     if(priority >= 0 && priority < 8)
@@ -173,6 +193,7 @@ namespace RavlN {
   // SysLog(SYSLOG_DEBUG,"msg",args...);
   
   void SysLog(SysLogPriorityT priority,const char *format,...) {
+    ONDEBUG(std::cerr << "SysLog(pri,format,...) called. " << std::endl);
     const int formSize = 4096;
     va_list args;
     va_start(args,format);
@@ -194,6 +215,7 @@ namespace RavlN {
 
   void SysLog(SysLogPriorityT priority,unsigned lineno,const char *filename,const char *format ...)
   {
+    ONDEBUG(std::cerr << "SysLog(pri,line,file,format,...) called. " << std::endl);
     const int formSize = 4096;
     va_list args;
     va_start(args,format);
@@ -221,6 +243,7 @@ namespace RavlN {
   
   bool SysLogLevel(SysLogPriorityT level) 
   { 
+    ONDEBUG(std::cerr << "SysLogLevel called. " << std::endl);
     int pri = (int) level;
     if(pri < 0)
       pri = 0;
@@ -240,6 +263,7 @@ namespace RavlN {
   // Only messages with a priority lower than 'level' we be sent.
   
   bool SysLogLevelStdErr(SysLogPriorityT level) { 
+    ONDEBUG(std::cerr << "SysLogLevelStdErr called. " << std::endl);
     int pri = (int) level; 
     if(pri < 0)
       pri = 0;
