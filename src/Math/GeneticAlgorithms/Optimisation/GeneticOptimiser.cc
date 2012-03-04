@@ -43,6 +43,9 @@ namespace RavlN { namespace GeneticN {
     rThrowBadConfigContextOnFailS(factory,UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC)),"No start population");
     // Setting the fitness function via XML is optional
     factory.UseComponent("Fitness",m_evaluateFitness,true);
+    if(!factory.UseComponent("GenePalette",m_genePalette,true,typeid(GenePaletteC))) {
+      m_genePalette = new GenePaletteC();
+    }
   }
 
   //! Set fitness function to use
@@ -123,45 +126,42 @@ namespace RavlN { namespace GeneticN {
       }
     }
 
-
-
     unsigned noCrosses = Floor(m_populationSize * m_crossRate);
     RavlSysLogf(SYSLOG_DEBUG,"Creating %d crosses. ",noCrosses);
 
     unsigned i = 0;
     // In the first generation there may not be enough seeds to make
     // sense doing this.
-    GenePaletteC::RefT palette = new GenePaletteC(RandomInt());
     if(seeds.size() > 1) {
       for(;i < noCrosses;i++) {
-        unsigned i1 = palette->RandomUInt32() % seeds.size();
-        unsigned i2 = palette->RandomUInt32() % seeds.size();
+        unsigned i1 = m_genePalette->RandomUInt32() % seeds.size();
+        unsigned i2 = m_genePalette->RandomUInt32() % seeds.size();
         // Don't breed with itself.
         if(i1 == i2)
           i2 = (i1 + 1) % seeds.size();
         GenomeC::RefT newGenome;
-        seeds[i1]->Cross(*palette,*seeds[i2],newGenome);
+        seeds[i1]->Cross(*m_genePalette,*seeds[i2],newGenome);
         newGenome->SetGeneration(generation);
         newTestSet.push_back(newGenome);
       }
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
+    RavlDebug("Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
     for(;i < m_populationSize;i++) {
-      unsigned i1 = palette->RandomUInt32() % seeds.size();
+      unsigned i1 = m_genePalette->RandomUInt32() % seeds.size();
       GenomeC::RefT newGenome;
       if(Random1() < m_randomFraction) {
-        ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Random"));
-        seeds[i1]->Mutate(*palette,1.0,newGenome);
+        ONDEBUG(RavlDebug("Random"));
+        seeds[i1]->Mutate(*m_genePalette,1.0,newGenome);
       } else {
-        ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate"));
-        seeds[i1]->Mutate(*palette,m_mutationRate,newGenome);
+        ONDEBUG(RavlDebug("Mutate"));
+        seeds[i1]->Mutate(*m_genePalette,m_mutationRate,newGenome);
       }
       newGenome->SetGeneration(generation);
       newTestSet.push_back(newGenome);
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
+    RavlDebug("Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
     // Evaluate the new genomes.
     Evaluate(newTestSet);
   }
@@ -194,16 +194,22 @@ namespace RavlN { namespace GeneticN {
 
   void GeneticOptimiserC::EvaluateWorker() {
     EvaluateFitnessC::RefT evaluator = &dynamic_cast<EvaluateFitnessC &>(m_evaluateFitness->Copy());
+
+    MutexLockC lock(m_access);
+    GenePaletteC::RefT palette = new GenePaletteC(*m_genePalette);
+    lock.Unlock();
+
+    //RavlInfo("Palette has %u proxies. ",(unsigned) palette->ProxyMap().Size());
     while(1) {
       UIntT candidate;
-      MutexLockC lock(m_access);
+      lock.Lock();
       candidate = m_atWorkQueue++;
       if(candidate >= m_workQueue.size())
         break;
       GenomeC::RefT genome = m_workQueue[candidate];
       lock.Unlock();
       float score = 0;
-      if(!Evaluate(*evaluator,*genome,score))
+      if(!Evaluate(*evaluator,*genome,*palette,score))
         continue;
       if(m_runningAverageLength >= 1)
         score = genome->UpdateScore(score,m_runningAverageLength);
@@ -215,8 +221,12 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Evaluate a single genome
-  bool GeneticOptimiserC::Evaluate(EvaluateFitnessC &evaluator,const GenomeC &genome,float &score) {
-    GeneFactoryC factory(genome);
+  bool GeneticOptimiserC::Evaluate(EvaluateFitnessC &evaluator,
+                                   const GenomeC &genome,
+                                   GenePaletteC &palette,
+                                   float &score)
+  {
+    GeneFactoryC factory(genome,palette);
     score = 0;
     try {
       RCWrapAbstractC anObj;
