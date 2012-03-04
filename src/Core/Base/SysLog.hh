@@ -32,6 +32,9 @@ namespace RavlN {
   // If logPid is true the processes id will be recorded in the log. <br>
   // If sendStdErr is set the messages will also be send the standard error channel.
   
+  void SysLogFileAndLine(bool enable);
+  //: Enable/Disable logging file and line numbers.
+
   bool SysLogClose();
   //: Close connection to system logger.
   // The call of this function is optional.
