@@ -225,8 +225,16 @@ namespace RavlN { namespace GeneticN {
         return false;
       if(!evaluator.Evaluate(anObj,score))
         return false;
+    } catch(std::exception &ex) {
+      RavlWarning("Caught std exception '%s' evaluating agent.",ex.what());
+      RavlAssert(0);
+      return false;
+    } catch(RavlN::ExceptionC &ex) {
+      RavlWarning("Caught exception '%s' evaluating agent.",ex.what());
+      RavlAssert(0);
+      return false;
     } catch(...) {
-      RavlSysLogf(SYSLOG_WARNING,"Failed to evaluate agent.");
+      RavlWarning("Caught exception evaluating agent.");
       RavlAssert(0);
       return false;
     }
