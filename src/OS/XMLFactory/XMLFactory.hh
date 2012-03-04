@@ -527,6 +527,24 @@ namespace RavlN {
     //: Load component list.
     // Returns true if child group exists, though it still may be empty.
 
+    template<typename ObjT,typename DataT,typename RetT>
+    bool UseComponentGroup(const StringC &group,ObjT &obj,RetT (ObjT::*addMethod)(const StringC &name,DataT),const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        typename TraitsC<DataT>::BaseTypeT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        (obj.*addMethod)(it->Name(),value);
+      }
+      return true;
+    }
+    //: Load named component list.
+    // Returns true if child group exists, though it still may be empty.
+
   protected:
     mutable XMLFactoryNodeC::RefT m_iNode;
     RCAbstractC m_factory;
