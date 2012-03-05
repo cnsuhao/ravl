@@ -28,7 +28,7 @@ namespace RavlN {
       if(m_throwExceptionOnParseError) {
         throw ExceptionInvalidStreamC("Invalid number of columns found in record");
       }
-      RavlWarning("Incorrect number of columns in record %u, expected %u. ",strArr.Size(),m_columns);
+      RavlWarning("Incorrect number of columns in record %u, expected %u. ",(unsigned) strArr.Size(),m_columns);
       return false;
     }
     values = strArr.Array();
@@ -77,7 +77,7 @@ namespace RavlN {
           if(m_throwExceptionOnParseError) {
             throw ExceptionInvalidStreamC("Invalid number of columns found in record");
           }
-          RavlError("Incorrect number of columns in header %u, expected %u ",m_headers.Size(),m_columns);
+          RavlError("Incorrect number of columns in header %u, expected %u ",(unsigned) m_headers.Size(),m_columns);
           return false;
         }
       }
