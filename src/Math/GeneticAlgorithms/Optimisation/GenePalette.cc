@@ -2,6 +2,16 @@
 #include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/Random.hh"
+#include "Ravl/TypeName.hh"
+#include "Ravl/SysLog.hh"
+
+#define DODEBUG 1
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlN { namespace GeneticN {
 
@@ -12,7 +22,7 @@ namespace RavlN { namespace GeneticN {
   //! factory constructor
   GeneTypeProxyMapC::GeneTypeProxyMapC(const XMLFactoryContextC &factory)
   {
-
+    factory.UseComponentGroup("Map",*this,&GeneTypeProxyMapC::AddProxyRef);
   }
 
   //! Load from text stream.
@@ -20,6 +30,11 @@ namespace RavlN { namespace GeneticN {
    : RCBodyVC(strm)
   {
     RavlAssertMsg(0,"not implemented");
+  }
+
+  //! Copy proxy map.
+  RavlN::RCBodyVC &GeneTypeProxyMapC::Copy() const {
+    return *new GeneTypeProxyMapC(*this);
   }
 
   //! Save to binary stream
@@ -40,7 +55,17 @@ namespace RavlN { namespace GeneticN {
   //! Add a new proxy to the map.
   void GeneTypeProxyMapC::AddProxy(const StringC &value,const GeneTypeC &geneType)
   {
+    ONDEBUG(RavlInfo("Adding proxy '%s' -> '%s' ",value.data(),RavlN::TypeName(typeid(geneType))));
     m_values[value] = &geneType;
+  }
+
+  //! Add a new proxy to the map via reference.
+  //! Used for loading from FactoryXML.
+
+  void GeneTypeProxyMapC::AddProxyRef(const StringC &value,const GeneTypeC::RefT &geneType)
+  {
+    ONDEBUG(RavlInfo("Adding proxy '%s' -> '%s' ",value.data(),RavlN::TypeName(typeid(*geneType))));
+    m_values[value] = geneType;
   }
 
   //! Lookup a value.
@@ -49,15 +74,43 @@ namespace RavlN { namespace GeneticN {
     return m_values.Lookup(key,val);
   }
 
+  //! Test if there is a proxy map.
+
+  bool GeneTypeProxyMapC::HasProxy(const StringC &key) const
+  {
+    return m_values.IsElm(key);
+  }
+
   static XMLFactoryRegisterC<GeneTypeProxyMapC> g_registerGeneTypeProxyMap("RavlN::GeneticN::GeneTypeProxyMapC");
 
   // --------------------------------------------------------------------------------
 
+  static GeneTypeProxyMapC::RefT g_emptyMap = new GeneTypeProxyMapC();
+
   //! factory constructor
   GenePaletteC::GenePaletteC(const XMLFactoryContextC &factory)
-   : m_random(factory.AttributeUInt("seed",0))
   {
+    StringC randomSeed = factory.AttributeString("seed","global");
+    if(randomSeed == "global") {
+      SeedFromGlobalRandomGenerator();
+    } else {
+      m_random.Seed(randomSeed.chars(),randomSeed.Size());
+    }
+    GeneTypeProxyMapC::RefT proxyMap;
+    if(factory.UseChildComponent("ProxyMap",proxyMap,true,typeid(GeneTypeProxyMapC))) {
+      ONDEBUG(RavlInfo("Using proxymap with %u entries ",(unsigned) proxyMap->Size()));
+      PushProxyMap(*proxyMap);
+    } else {
+      m_proxyMap.Push(*g_emptyMap);
+    }
+  }
 
+  //! Default constructor.
+  //! Seed from the global random number source.
+  GenePaletteC::GenePaletteC()
+  {
+    SeedFromGlobalRandomGenerator();
+    m_proxyMap.Push(*g_emptyMap);
   }
 
   //! Holds information used when mutating, crossing or generating genes.
@@ -65,8 +118,25 @@ namespace RavlN { namespace GeneticN {
   GenePaletteC::GenePaletteC(UInt32T seed)
    : m_random(seed)
   {
-    static GeneTypeProxyMapC::RefT emptyMap = new GeneTypeProxyMapC();
-    m_proxyMap.Push(*emptyMap);
+    m_proxyMap.Push(*g_emptyMap);
+  }
+
+  //! Copy constructor
+  GenePaletteC::GenePaletteC(GenePaletteC &other)
+   : m_proxyMap(other.m_proxyMap)
+  {
+    const unsigned keyLen = 8;
+    UInt32T init_key[keyLen];
+    for(unsigned i = 0;i < keyLen;i++)
+      init_key[i] = other.m_random.UInt();
+    m_random.Seed(init_key,keyLen);
+  }
+
+  //! Copy constructor
+  GenePaletteC::GenePaletteC(const GenePaletteC &other)
+   : m_proxyMap(other.m_proxyMap)
+  {
+    SeedFromGlobalRandomGenerator();
   }
 
   //! Load from binary stream.
@@ -82,6 +152,19 @@ namespace RavlN { namespace GeneticN {
   {
     RavlAssertMsg(0,"not implemented");
   }
+
+  //! Generate a seed from the global random number source.
+  void GenePaletteC::SeedFromGlobalRandomGenerator() {
+    const unsigned keyLen = 8;
+    UInt32T init_key[keyLen];
+    for(unsigned i = 0;i < keyLen;i++)
+      init_key[i] = (unsigned) RavlN::RandomInt();
+    m_random.Seed(init_key,keyLen);
+  }
+
+  //! Make a copy of the palette.
+  RavlN::RCBodyVC &GenePaletteC::Copy() const
+  { return *new GenePaletteC(*this); }
 
   //! Save to binary stream
   bool GenePaletteC::Save(BinOStreamC &strm) const

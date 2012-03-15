@@ -12,6 +12,7 @@
 
 #include "Ravl/Genetic/EvaluateFitness.hh"
 #include "Ravl/Genetic/Genome.hh"
+#include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Threads/Mutex.hh"
 #include <vector>
 #include <map>
@@ -45,7 +46,7 @@ namespace RavlN { namespace GeneticN {
     void EvaluateWorker();
 
     //! Evaluate a single genome
-    bool Evaluate(EvaluateFitnessC &evaluator,const GenomeC &genome,float &score);
+    bool Evaluate(EvaluateFitnessC &evaluator,const GenomeC &genome,GenePaletteC &palette,float &score);
 
     float m_mutationRate;
     float m_crossRate;
@@ -71,6 +72,7 @@ namespace RavlN { namespace GeneticN {
     bool m_randomiseDomain; // Change the problem for each new generation
     UIntT m_runningAverageLength;
 
+    GenePaletteC::RefT m_genePalette;
   };
 }}
 
