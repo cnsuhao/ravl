@@ -17,6 +17,8 @@
 #include "Ravl/DataServer/DataServerVFSRealFile.hh"
 #include "Ravl/DataServer/DataServerVFSRealDir.hh"
 
+#include "Ravl/XMLFactoryRegister.hh"
+
 #define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -25,6 +27,26 @@
 #endif
 
 namespace RavlN {
+
+  //: XML Factory constructor.
+
+  DataServerBodyC::DataServerBodyC(const XMLFactoryContextC &factory)
+   : NetPortManagerBodyC(factory),
+     m_vfs(true),
+     m_signalNodeClosed(StringC()),
+     m_signalNodeRemoved(StringC())
+  {
+    SetUnregisterOnDisconnect(true);
+
+    if(!factory.UseChildComponent("Root",m_vfs.Data(),false,typeid(DataServerVFSNodeC))) {
+      // Setup root VFS node.
+      m_vfs.Data() = DataServerVFSNodeC("","",false,true);
+    }
+
+    // Set up delete signal
+    m_connectionSet += ConnectPtr(m_signalNodeClosed, CBRefT(this), &DataServerBodyC::OnClose);
+    m_connectionSet += ConnectPtr(m_signalNodeRemoved,CBRefT(this), &DataServerBodyC::OnDelete);
+  }
 
   //: Constructor.
   
@@ -38,9 +60,8 @@ namespace RavlN {
     m_vfs.Data() = DataServerVFSNodeC("","",false,true);
 
     // Set up delete signal
-    DataServerC ref(*this);
-    Connect(m_signalNodeClosed, ref, &DataServerC::OnClose);
-    Connect(m_signalNodeRemoved, ref, &DataServerC::OnDelete);
+    m_connectionSet += ConnectPtr(m_signalNodeClosed, CBRefT(this), &DataServerBodyC::OnClose);
+    m_connectionSet += ConnectPtr(m_signalNodeRemoved,CBRefT(this), &DataServerBodyC::OnDelete);
   }
   
   //: Open server connection.
@@ -176,9 +197,10 @@ namespace RavlN {
 
   void DataServerBodyC::ZeroOwners()
   {
-    NetPortManagerBodyC::ZeroOwners();
-
+    m_connectionSet.DisconnectAll();
     m_vfs.Invalidate();
+
+    NetPortManagerBodyC::ZeroOwners();
   }
 
 
@@ -539,5 +561,10 @@ namespace RavlN {
 
     return false;
   }
+
+  void LinkDataServer()
+  {}
+
+  XMLFactoryRegisterHandleConvertC<DataServerC,NetPortManagerC> g_registerXMLFactoryDataServer("RavlN::DataServerC");
 
 }

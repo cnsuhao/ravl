@@ -13,6 +13,8 @@
 #include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/DP/FileFormatDesc.hh"
 #include "Ravl/Calls.hh"
+#include "Ravl/XMLFactoryRegister.hh"
+
 
 #define DODEBUG 0
 #if DODEBUG
@@ -23,6 +25,20 @@
 
 namespace RavlN {
   
+  //: XMLFactory Constructor
+
+  DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC(const XMLFactoryContextC &factory)
+   : DataServerVFSNodeBodyC(factory),
+     defaultDataType(factory.AttributeString("defaultDataType","")),
+     defaultFileFormat(factory.AttributeString("defaultFileFormat","")),
+     cacheSize(factory.AttributeInt64("cacheSize",0)),
+     realFilename(factory.AttributeString("realFilename","")),
+     canSeek(factory.AttributeBool("canSeek",true)),
+     multiWrite(factory.AttributeBool("multiWrite",false))
+  {
+
+  }
+
   //: Constructor.
   
   DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC(const StringC &vname,const StringC& npath,const StringC &nRealFilename,bool canWrite)
@@ -32,7 +48,7 @@ namespace RavlN {
       canSeek(true),
       multiWrite(false)
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC (" << this << ") Called name=" << name << " path=" << path << "\n");
+    ONDEBUG(std::cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC (" << this << ") Called name=" << name << " path=" << path << "\n");
   }
   
   //: Destructor.
@@ -292,7 +308,7 @@ namespace RavlN {
       DPSeekCtrlC seekControl;
       if (!OpenISequenceBase(iPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
       {
-        cerr << "DataServerBodyC::OpenFileReadByte failed to open stream '" << name << "'" << endl;
+        std::cerr << "DataServerBodyC::OpenFileReadByte failed to open stream '" << name << "'" << std::endl;
         return false;
       }
 
@@ -302,7 +318,7 @@ namespace RavlN {
       // Setup inline cache?
       if (cacheSize > 0)
       {
-        ONDEBUG(cerr << "DataServerBodyC::OpenFileReadByte added cache size=" << cacheSize << endl);
+        ONDEBUG(std::cerr << "DataServerBodyC::OpenFileReadByte added cache size=" << cacheSize << std::endl);
         iSPortByte = CacheIStreamC<ByteT>(iSPortByte, cacheSize);
       }
 
@@ -642,7 +658,7 @@ namespace RavlN {
   {
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract (" << this << ")" << endl);
 
-		CloseIFileAbstract();
+    CloseIFileAbstract();
 
     return true;
   }
@@ -653,7 +669,7 @@ namespace RavlN {
   {
     ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClientsByte (" << this << ")" << endl);
 
-		CloseIFileByte();
+    CloseIFileByte();
 
     return true;
   }
@@ -662,15 +678,17 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::DoDelete()
   {
-  	RavlAssert(deletePending);
+    RavlAssert(deletePending);
 
-		ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting '" << realFilename << "'" << endl);
-		bool deleted = realFilename.Exists() && realFilename.Remove();
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting '" << realFilename << "'" << endl);
+    bool deleted = realFilename.Exists() && realFilename.Remove();
 
-		if (deleted && sigOnDelete.IsValid())
-			sigOnDelete(AbsoluteName());
+    if (deleted && sigOnDelete.IsValid())
+      sigOnDelete(AbsoluteName());
 
-		return deleted;
+    return deleted;
   }
   
+  XMLFactoryRegisterHandleC<DataServerVFSRealFileC> g_registerXMLFactoryDataServerVFSRealFile("RavlN::DataServerVFSRealFileC");
+
 }

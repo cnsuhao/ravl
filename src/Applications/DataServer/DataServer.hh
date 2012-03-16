@@ -11,6 +11,7 @@
 #include "Ravl/Threads/Mutex.hh"
 #include "Ravl/HashTree.hh"
 #include "Ravl/DataServer/DataServerVFSNode.hh"
+#include "Ravl/Threads/SignalConnectionSet.hh"
 
 namespace RavlN {
 
@@ -23,6 +24,9 @@ namespace RavlN {
   : public NetPortManagerBodyC
   {
   public:
+    DataServerBodyC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor.
+
     DataServerBodyC(const StringC &name);
     //: Constructor.
     
@@ -73,6 +77,12 @@ namespace RavlN {
     //: Called when a target path is deleted.
     // Used to inform directory nodes that a file marked for deletion has actually been deleted.
 
+    //! Owner reference counted ptr to class
+    typedef RavlN::SmartOwnerPtrC<DataServerBodyC> RefT;
+
+    //! Callback reference counter ptr to class
+    typedef RavlN::SmartCallbackPtrC<DataServerBodyC> CBRefT;
+
   protected:
     bool HandleRequestIPort(StringC name,StringC dataType,NetISPortServerBaseC &port);
     //: Handle a request for an input port.
@@ -104,6 +114,8 @@ namespace RavlN {
     Signal1C<StringC> m_signalNodeClosed;
     Signal1C<StringC> m_signalNodeRemoved;
 
+    SignalConnectionSetC m_connectionSet;
+
     friend class DataServerC;
   };
   
@@ -120,8 +132,13 @@ namespace RavlN {
     //: Constructor.
     // Creates an invalid handle.
 
+    DataServerC(const XMLFactoryContextC &factory)
+     : NetPortManagerC(*new DataServerBodyC(factory))
+    {}
+    //: XML Factory constructor.
+
     DataServerC(const StringC & name) 
-    : NetPortManagerC(*new DataServerBodyC(name))
+     : NetPortManagerC(*new DataServerBodyC(name))
     {}
     //: Constructor. 
     //!cwiz:author
