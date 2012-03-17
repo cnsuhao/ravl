@@ -14,6 +14,7 @@
 #include "Ravl/Image/ImgIOV4L2.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Image/RealRGBValue.hh"
+#include "Ravl/SysLog.hh"
 
 #define DPDEBUG 0
 #if DPDEBUG
@@ -44,7 +45,7 @@ namespace RavlImageN
   
   const type_info &FileFormatV4L2BodyC::ProbeLoad(IStreamC &in, const type_info &obj_type) const
   {
-    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad not a V4L2 input" << endl;)
+    ONDEBUG(RavlDebug("FileFormatV4L2BodyC::ProbeLoad not a V4L2 input"));
     return typeid(void); 
   }
   
@@ -52,7 +53,7 @@ namespace RavlImageN
   
   const type_info &FileFormatV4L2BodyC::ProbeLoad(const StringC &filename, IStreamC &in, const type_info &obj_type) const
   {
-    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad filename(" << filename << ") type(" << obj_type.name() << ")" << endl;)
+    ONDEBUG(RavlDebug(" filename(%s) type(%s)",filename.data(),obj_type.name()));
 
     // Get the parameters
     StringC device;
@@ -62,20 +63,40 @@ namespace RavlImageN
     ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad device(" << device << ") channel(" << channel << ")" << endl);
 
     // Create the V4L2 object (will not be open after construction if not supported)
-    ImgIOV4L2BaseC v4l2(device, channel, obj_type);
+    ImgIOV4L2BaseC v4l2(device, channel);
     if(!v4l2.IsOpen())
       return typeid(void);
     
     ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad format supported(" << (v4l2.IsOpen() ? "Y" : "N") << ")" << endl);
+    if (obj_type == typeid(ImageC<ByteYUVValueC>) || obj_type == typeid(ImageC<ByteRGBValueC>)) {
+      if(v4l2.CheckFormat(typeid(ImageC<ByteRGBValueC>)))
+        return typeid(ImageC<ByteRGBValueC>);
+      if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>)))
+        return typeid(ImageC<ByteYUV422ValueC>);
+      if(v4l2.CheckFormat(typeid(ImageC<ByteT>)))
+        return typeid(ImageC<ByteT>);
+      return typeid(void);
+    }
     
-    if (obj_type == typeid(ImageC<ByteYUVValueC>))
-      return typeid(ImageC<ByteRGBValueC>);
+    if (obj_type == typeid(ImageC<ByteT>) || obj_type == typeid(ImageC<FloatT>) || obj_type == typeid(ImageC<RealT>)) {
+      if(v4l2.CheckFormat(typeid(ImageC<ByteT>)))
+        return typeid(ImageC<ByteT>);
+      if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>)))
+        return typeid(ImageC<ByteYUV422ValueC>);
+      if(v4l2.CheckFormat(typeid(ImageC<ByteRGBValueC>)))
+        return typeid(ImageC<ByteRGBValueC>);
+      return typeid(void);
+    }
     
-    if (obj_type == typeid(ImageC<ByteT>) || obj_type == typeid(ImageC<FloatT>) || obj_type == typeid(ImageC<RealT>))
-      return typeid(ImageC<ByteT>);
-    
-    if (obj_type == typeid(ImageC<ByteYUV422ValueC>))
-      return typeid(ImageC<ByteYUV422ValueC>);
+    if (obj_type == typeid(ImageC<ByteYUV422ValueC>)) {
+      if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>)))
+        return typeid(ImageC<ByteYUV422ValueC>);
+      if(v4l2.CheckFormat(typeid(ImageC<ByteRGBValueC>)))
+        return typeid(ImageC<ByteRGBValueC>);
+      if(v4l2.CheckFormat(typeid(ImageC<ByteT>)))
+        return typeid(ImageC<ByteT>);
+      return typeid(void);
+    }
     
     return typeid(ImageC<ByteRGBValueC>);
   }

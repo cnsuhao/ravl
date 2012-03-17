@@ -23,7 +23,7 @@
 #include "Ravl/HSet.hh"
 
 #include <unistd.h>
-#include <linux/videodev.h>
+#include <linux/videodev2.h>
 
 namespace RavlImageN
 {
@@ -41,10 +41,16 @@ namespace RavlImageN
   public:
     ImgIOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType);
     //: Constructor
-    
+
+    ImgIOV4L2BaseC(const StringC &device, const UIntT input);
+    //: Constructor
+
     ~ImgIOV4L2BaseC();
     //: Destructor
     
+    bool CheckFormat(const type_info &pixelType);
+    //: Check if the pixel type is supported
+
     bool GetFrame(ImageC<ByteRGBValueC> &img, ImgIOV4L2C<ByteRGBValueC> parent);
     //: Get next image.
 
@@ -109,9 +115,6 @@ namespace RavlImageN
     void Close();
     //: Close the device.
     // Does not release the capture buffers
-    
-    bool CheckFormat(const type_info &pixelType);
-    //: Check if the pixel type is supported
     
     bool CheckInput();
     //: Check the input
