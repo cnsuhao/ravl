@@ -1,4 +1,4 @@
-ifndef GTKGLEXTL_DEF
+ifndef GTKGLEXT_DEF
 GTKGLEXT_DEF = 1
 
 include GTK.def
