@@ -41,6 +41,6 @@ PROGLIBS = RavlImageIO RavlExtImgIO RavlMathIO RavlAAMGUI RavlDPDisplay.opt Ravl
 
 EHT = AAM.html
 
-AUXDIR=share/doc/RAVL/Images/AAM
+AUXDIR=share/doc/Ravl/Images/AAM
 
 AUXFILES= 000_1_2_090.png 000_1_2_090.xml

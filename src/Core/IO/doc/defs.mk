@@ -8,7 +8,7 @@
 
 PACKAGE=Ravl/DP
 
-AUXDIR=share/doc/RAVL/Images/DataProc
+AUXDIR=share/doc/Ravl/Images/DataProc
 
 AUXFILES= img1.png img11.png img13.png img17.png img19.png \
  img20.png img22.png img3.png img5.png img7.png img9.png \
