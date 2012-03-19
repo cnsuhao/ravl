@@ -2,6 +2,10 @@ $(FileObject:one)$(FilePattern:Basic/index.html)
 <html><head><TITLE>Class List</TITLE><BASE TARGET="_parent" ></head>
 <body BGCOLOR=#FFFFFF>
 
+$(set:hdrcolour=#007FFF)
+$(set:pagemode=user)
+$(set:othpagemode=develop)
+$(define:othref:$(MakeFilename:../Develop/index.html))
 $(set:toroot=..)
 $(include:topbar.stmpl)
 
