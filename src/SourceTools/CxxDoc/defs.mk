@@ -1,5 +1,5 @@
 # This file is part of CxxDoc, The RAVL C++ Documentation tool 
-# Copyright (C) 2001-11, University of Surrey
+# Copyright (C) 2001-12, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -42,7 +42,7 @@ MAINS = CxxDoc.cc
 
 EHT= Ravl.API.Source_Tools.CxxDoc.html Documentation.html \
  Documentation.Code.html Documentation.Sections.html \
- Documentation.docentry.html Documentation.Changes.html\
+ Documentation.docentry.html \
  Ravl.API.Source_Tools.CxxDoc.Templates.html Ravl.API.Source_Tools.CxxDoc.Internal.html \
  Ravl.undocumented.html Ravl.undocumented.anonymous.html
 # Documentation.Formatting.html
