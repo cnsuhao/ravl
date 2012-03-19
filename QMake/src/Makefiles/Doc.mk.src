@@ -97,9 +97,9 @@ docinit: docfiles
 	  fi  \
 	done
 
-doc: docinit $(INST_INCLUDE)/.dir $(TARG_DOCNODE)
+doc: docinit $(INST_INCLUDE)/.dir
 	$(SHOWIT)echo "--- Generating documentation" ; \
-	$(LOCALBIN)/CxxDoc $(PROJECT_NAME_OPT) $(PACKAGEDESC_OPT) $(INCLUDE_OPT) -ih $(INSTALLHOME) -p $(PROJECT_OUT) -eht $(INST_EHT)
+	$(LOCALBIN)/CxxDoc $(PROJECT_NAME_OPT) $(PACKAGEDESC_OPT) $(INCLUDE_OPT) -ih $(INSTALLHOME) -p $(PROJECT_OUT)
 
 $(INST_EHT)/% : % $(INST_EHT)/.dir
 	$(SHOWIT)echo "--- Installing EHT $(@F) to $(INST_EHT)" ; \
