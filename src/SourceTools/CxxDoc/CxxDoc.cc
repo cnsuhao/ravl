@@ -151,9 +151,9 @@ int BuildCxx(int argc, char **argv)
   StringC inFiles = opt.String("i",localProjOut + "/include" , "Directory containing header files");
   StringC outFile = opt.String("o",localProjOut + "/share/doc/RAVL/Auto", "output document");
   StringC sourceTree = opt.String("st",".", "Source tree.");
-  StringC ehtFiles = opt.String("eht",localProjOut + "/share/RAVL/Admin/AutoDoc/EHT","Location of EHT files. ");
 
   StringC instAdmin = opt.String("ia", localProjOut + "/transient/" + projName, "Install Admin.");
+  StringC ehtFiles = opt.String("eht", instAdmin + "/CxxDoc/EHT", "Location of EHT files. ");
   StringC templFiles = opt.String("tc", instAdmin + "/CxxDoc/Class", "Directory of template files for class pages, or single template file");
   StringC docNodeFiles = opt.String("td", instAdmin + "/CxxDoc/DocNode", "Directory of template files for doc node page, or single template file");
   
