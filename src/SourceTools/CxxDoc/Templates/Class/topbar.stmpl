@@ -15,7 +15,9 @@ $(ifset:!thispagemode:$(set:thispagemode=Basic))
 $(ifset:othpagemode:<a href="$(othref:)"><B>$(uppercase:$(othpagemode))</B></a>)
 $(else:$(ifset:othlink & othname:<a href="$(othlink)"><B>$(uppercase:$(othname))</B></a>))</font></td>
 <td width=25% align="middle"><font size="-1" face="helvetica,arial">
-<a href="$(toroot)/Basic/Tree/Ravl.html"><B>HOME PAGE</B></a></font></td>
+$(ifset:!docentry:<a href="$(toroot)/$(thispagemode)/Tree/Ravl.html"><B>HOME PAGE</B></a></font></td>)
+$(else:$(if:$docentry=Ravl:<B>HOME PAGE</B></font></td>)
+$(else:<a href="$(toroot)/$(thispagemode)/Tree/Ravl.html"><B>HOME PAGE</B></a></font></td>))
 <td width=25% align="middle"><font size="-1" face="helvetica,arial">
 $(ifset:!isclasslist:<a href="$(toroot)/$(thispagemode)/index.html"><B>CLASS LIST</B></a></font></td>)
 $(else:<B>CLASS LIST</B></font></td>)
