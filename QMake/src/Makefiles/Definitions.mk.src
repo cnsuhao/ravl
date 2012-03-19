@@ -220,7 +220,7 @@ endif
 
 # Admin files used in build but not needed after.
 
-INST_ADMIN=$(ROOTDIR)/share$(PROJECT_DIR)/Admin
+INST_ADMIN=$(ROOTDIR)/transient$(PROJECT_DIR)
 
 # Documentation
 
