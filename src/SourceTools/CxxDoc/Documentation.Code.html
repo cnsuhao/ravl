@@ -181,19 +181,6 @@ ALIGN=CENTER><B>Description</B></TD> </TR>
 This should be what a user would put in the <TT>USESLIBS</TT> line in a <TT>defs.mk</TT> 
 file if he wanted to use your class. It is case sensitive, and should be typed without 
 quotes.</td></tr>
-<tr><td><b>//!&nbsp;rcsid =</b> </td><td>When you add the <EM>rcsid</EM>
-variable, you cut and paste it from here (or any other valid rcsid
-entry in any RAVL header file): 
-<P>
-&nbsp; <TT><font size=-1>//! rcsid="$Id$"</font></TT>
-</P>
-Once you check the file in, CVS will automatically fill in the right
-details - it doesn't matter what it said when you pasted it in. 
-Each time you check in a new version it will automatically be
-updated. You should make sure that this entry is present in your 
-header files. You need to add it the first time, after which it 
-will be updated automatically.
-</td></tr>
 </TABLE>
 
 <P>
@@ -223,7 +210,6 @@ Referencing & Validity</A>.
 //! author =    "Author's Name"
 //! lib =       libname [no quotes]
 //! date =      "6/01/00"
-//! rcsid =     "$Id$"
 //! userlevel = Normal
 //! example =   example.cc [no quotes]
 //! docentry =  "Image.Image Representations"
