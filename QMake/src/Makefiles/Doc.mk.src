@@ -61,7 +61,6 @@ TARG_MAN1  =$(patsubst %,$(INST_MAN1)/%,$(MAN1))
 TARG_MAN3  =$(patsubst %,$(INST_MAN3)/%,$(MAN3))
 TARG_MAN5  =$(patsubst %,$(INST_MAN5)/%,$(MAN5))
 TARG_DOCEXAMPLES  =$(patsubst %,$(INST_DOCEXAMPLES)/%,$(EXAMPLES))
-TARG_DOCNODE=$(patsubst %,$(INST_DOCNODE)/%,$(DOCNODE))
 
 ###############################
 # Make directories
@@ -88,7 +87,7 @@ TARG_DOCNODE=$(patsubst %,$(INST_DOCNODE)/%,$(DOCNODE))
 #############################
 # Build Documentation.
 
-docfiles: $(TARG_MAN1) $(TARG_MAN2) $(TARG_MAN5) $(TARG_DOCEXAMPLES) $(TARG_HTML) $(TARG_EHT) $(TARG_DOCNODE)
+docfiles: $(TARG_MAN1) $(TARG_MAN2) $(TARG_MAN5) $(TARG_DOCEXAMPLES) $(TARG_HTML) $(TARG_EHT)
 
 docinit: docfiles
 	+ $(SHOWIT)for SUBDIR in stupid_for_loop_thing $(TARG_NESTED) ; do \
@@ -150,14 +149,6 @@ $(INST_DOCEXAMPLES)/% : % $(INST_DOCEXAMPLES)/.dir
 	fi ; \
 	$(CP) $< $(INST_DOCEXAMPLES)/$(@F); \
 	$(CHMOD) 444 $(INST_DOCEXAMPLES)/$(@F)
-
-$(INST_DOCNODE)/% : % $(INST_DOCNODE)/.dir
-	$(SHOWIT)echo "--- Installing DocNode $(@F)" ; \
-	if [ -f $(INST_DOCNODE)/$(@F) ] ; then \
-	  $(CHMOD) +w $(INST_DOCNODE)/$(@F) ; \
-	fi ; \
-	$(CP) $< $(INST_DOCNODE)/$(@F) ; \
-	$(CHMOD) 444 $(INST_DOCNODE)/$(@F)
 
 $(INSTALLHOME)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi

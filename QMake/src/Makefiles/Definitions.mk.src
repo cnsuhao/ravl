@@ -224,8 +224,6 @@ INST_ADMIN=$(ROOTDIR)/transient$(PROJECT_DIR)
 
 # Documentation
 
-INST_AUTODOC=$(ROOTDIR)/share/doc/Auto
-INST_DOCNODE=$(INST_AUTODOC)/DocNode
 INST_DOC= $(ROOTDIR)/share/doc$(PROJECT_DIR)
 INST_HTML=$(INST_DOC)/html
 INST_DOCEXAMPLES=$(INST_DOC)/examples

@@ -434,7 +434,7 @@ libbuild: prebuildstep build_subdirs build_libs build_aux postbuildstep
 purifybuild: prebuildstep  build_subdirs build_libs build_pureexe postbuildstep
 
 srcfiles: $(TARG_DEFS) $(TARG_HDRS) $(LOCAL_FILES) $(LOCALHEADERS) $(SOURCES) $(MAINS) $(AUXFILES) $(HEADERS) \
- $(EXAMPLES) $(TESTEXES) $(DOCNODE) $(HTML) $(MAN1) $(MAN2) $(MAN3) $(EHT) $(MUSTLINK) $(EXTERNALLIBS) $(TARG_HDRSYMS)
+ $(EXAMPLES) $(TESTEXES) $(HTML) $(MAN1) $(MAN2) $(MAN3) $(EHT) $(MUSTLINK) $(EXTERNALLIBS) $(TARG_HDRSYMS)
 
 prebuildstep:
 ifdef PREBUILDSTEP
