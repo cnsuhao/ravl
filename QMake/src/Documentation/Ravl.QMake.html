@@ -75,21 +75,51 @@
 <h2> Advanced Configuration </h2>
 
 
-<p> QMake uses a configuration file to establish what libraries are available called config.local.(system name) . e.g. config.local.linux.
-To avoid problems with changes to the default config files, there is an environment variable which if set redirects QMake to a local
-configuration file. This should avoid odd problems with compilers changing unexpectedly, or different libraries being enabled/disabled.
-Just added the following to your .cshrc :
-</p>
+<p> QMake is optionally configured using a project configuration file. This
+configuration file, allows a project to alter the default settings for QMake.
+For instance, the project may be set to be compiled with a more or less
+aggressive code optimistation level; or to use a different (experimental)
+version of an external library.</p>
 
-<code>
-setenv QMAKECONFIGHOME /vol/src/QMakeConfig
-</code>
-<p>
-or for bash users the following should be added to .bashrc
-</p>
-<code>
-export QMAKECONFIGHOME=/vol/src/QMakeConfig
-</code>
+<p> When run, QMake will look for the file <code>Config.Project</code> in the
+root directory of your project's build tree. If this file is found, QMake will
+use the file's contents to override the default configuration settings. The
+environment variable <code>CONFIGFILE</code> may be used to direct QMake to use
+an alternative as the configuration file.</p>
+
+<p> To configure your project to use non-default options, start by copying the
+pro-forma <code>Config.Default</code> to <code>Config.Project</code> in the root
+of your build (<code>PROJECT_OUT</code>) directory. The Config.Default file can
+be found in the QMake <code>Projects/Skeleton</code> directory (this is usually
+file <code>/usr/local/share/QMake/Projects/Skeleton/Config.Default</code>,
+depending on where QMake was installed). You may then modify your newly created
+Config.Project file to tailor how QMake behaves for your project.</p>
+
+<p> The first item that you should change in your new configuration file is to
+ensure that the value of <code>PROJECT_OUT</code> is set correctly. This
+defaults to $HOME/build; if you require your project to be built in a different
+location, change the setting appropriately. The remaining changes that can be
+made allow QMake to operate differently to the default when compiling your
+particular project.</p>
+
+<p> For example, to use a different C compiler when compiling your project, set
+the <code>CC</code> variable to the pathname of the compiler you wish QMake to
+use. The full list of command substitution variables that are supported by QMake
+can be seen by referring to the default settings that are listed in the
+<code>Config.QMake</code> file. This file declares the system-wide default QMake
+settings and, dependent on where QMake was installed, can usually be found in
+the <code>/usr/local/etc/QMake</code> directory.</p>
+
+<p> To build your project so QMake uses a non-standard version of an external
+library instead of the default, you must add modified XX_CFLAGS and XX_LIBS
+variables to your configuration file (where XX_ is the name of the external
+library as recognised by QMake). If you are adding an external library that has
+not previously been recognised by QMake, you will also need to add the name of
+the library to the list of RESOURCES that are available to QMake (append the
+library's name to the setting of the RESOURCES variable in the configureation
+file).</p>
+
+
 
 <h2>Build Tags</h2>
 
