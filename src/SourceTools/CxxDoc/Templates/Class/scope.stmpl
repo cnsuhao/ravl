@@ -3,7 +3,7 @@ $(ifset:!lastFilename:$(set:lastFilename=.))
 $(define:chk_header:$(if:$filename!=$lastFilename:$(set:lastFilename=$(filename))<p>
 </table>
 <table width=50% bgcolor="#C0C0C0"><tr>
-<td width=50% align="middle">#include "<A HREF="../../../../inc/$(filename)">$(filename)</A>"</td>
+<td width=50% align="middle">#include "<A HREF="../../../../../../include/$(filename)">$(filename)</A>"</td>
 </table>
 <table WIDTH="100%" NOSAVE>
 ))
