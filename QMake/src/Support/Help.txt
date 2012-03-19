@@ -21,7 +21,10 @@ Common targets (some compile targets may not have been installed on your system)
             As check,debug, opt etc. but only building libraries, not executables.
   build     Build check, debug, opt and executables
   buildall  Build check, debug, opt, executables and the documentation.
-  fullbuild Builds all the variants specified by the FULLBUILD_TARGETS variable that is normally set in the relevant config.local.xxx file
+  fullbuild Builds all the variants specified by the FULLBUILD_TARGETS variable
+            (by default this is the "check opt checkshared optbin doc" targets)
+            A different default value may be set in either Config.Project or
+            Config.QMake.
   prof      Output optimised code with profiling info suitable for prof.
   gprof     Output optimised code with profiling info suitable for gprof.
   purify    Build all executables in the CURRENT directory with purify.
