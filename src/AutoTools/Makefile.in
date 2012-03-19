@@ -63,7 +63,7 @@ debugshared: qmake
 distdir: rpm
 
 doc: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fulldoc
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) PROJECT_NAME=Ravl PROJECT_DESC="RAVL, Recognition And Vision Library" fulldoc
 	cp $(INSTALLHOME)/share/QMake/Support/Help.txt $(INSTALLHOME)/share/doc/Ravl/html/Help.txt
 # We currently start from above the src directory ($SOURCEHOME)/..) in order
 # to pick up the documentation from QMake. This is because there is currently
@@ -71,6 +71,13 @@ doc: qmake
 # cannot produce the QMake documentation from within that seperate project
 # and link to that from the Ravl documentation. We therefore have to treat the
 # QMake documentation as if it was part Ravl, hence the start point.
+#
+# PROJECT_NAME setting is to force the examples and other html files into the
+# correct directory. This is required because Ravl currently does not use
+# PACKAGE and PROJECT_NAME in the designed way for QMake. Ravl currently will
+# use a PACKAGE setting of Ravl/pkg rather than setting PROJECT_NAME to Ravl
+# and setting PACKAGE to pkg. This cannot currently be changed until ccmath
+# is moved out of the Ravl source tree and used as a seperate external library.
 #
 # Final step copies across the QMake help file; this is again due to there being
 # no existing mechanism to link to documentation in an external project.

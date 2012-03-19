@@ -145,12 +145,14 @@ int BuildCxx(int argc, char **argv)
     prjo = PROJECT_OUT; // Hmmm ... where else ?
   
   OptionC opt(argc,argv);
-  projName = opt.String("pn","Ravl","Project Name. ").TopAndTail();
-  projDesc = opt.String("pd","RAVL, Recognition And Vision Library","Project description. ").TopAndTail();
-  StringC localProjOut = opt.String("p",prjo,"Project out. ");
-  StringC inFiles = opt.String("i",localProjOut + "/include" , "Directory containing header files");
-  StringC outFile = opt.String("o",localProjOut + "/share/doc/RAVL/Auto", "output document");
-  StringC sourceTree = opt.String("st",".", "Source tree.");
+  projName = opt.String("pn", "MyProject", "Project Name. ").TopAndTail();
+  projDesc = opt.String("pd", projName + " Documentation", "Project description. ").TopAndTail();
+
+  StringC localProjOut = opt.String("p", prjo, "Project out. ");
+  StringC inFiles = opt.String("i", localProjOut + "/include" , "Directory containing header files");
+  StringC outFile = opt.String("o", localProjOut + "/share/doc/" + projName + "/Auto", "output document");
+
+  StringC sourceTree = opt.String("st", ".", "Source tree.");
 
   StringC instAdmin = opt.String("ia", localProjOut + "/transient/" + projName, "Install Admin.");
   StringC ehtFiles = opt.String("eht", instAdmin + "/CxxDoc/EHT", "Location of EHT files. ");
