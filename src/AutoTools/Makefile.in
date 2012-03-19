@@ -63,7 +63,17 @@ debugshared: qmake
 distdir: rpm
 
 doc: qmake
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fulldoc
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fulldoc
+	cp $(INSTALLHOME)/share/QMake/Support/Help.txt $(INSTALLHOME)/share/doc/Ravl/html/Help.txt
+# We currently start from above the src directory ($SOURCEHOME)/..) in order
+# to pick up the documentation from QMake. This is because there is currently
+# no framework to link to documentation from another project. This means we
+# cannot produce the QMake documentation from within that seperate project
+# and link to that from the Ravl documentation. We therefore have to treat the
+# QMake documentation as if it was part Ravl, hence the start point.
+#
+# Final step copies across the QMake help file; this is again due to there being
+# no existing mechanism to link to documentation in an external project.
 
 fullsrc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
