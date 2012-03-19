@@ -153,9 +153,10 @@ int BuildCxx(int argc, char **argv)
   StringC sourceTree = opt.String("st",".", "Source tree.");
   StringC ehtFiles = opt.String("eht",localProjOut + "/share/RAVL/Admin/AutoDoc/EHT","Location of EHT files. ");
   StringC installHome = opt.String("ih",PROJECT_OUT,"Install home.");
-  StringC templFiles = opt.String("tc",installHome + "/share/RAVL/CxxDoc/Class", "Directory of template files for class pages, or single template file");
-  
-  StringC docNodeFiles = opt.String("td",installHome + "/share/RAVL/CxxDoc/DocNode", "Directory of template files for doc node page, or single template file");
+
+  StringC instAdmin = opt.String("ia", localProjOut + "/transient/" + projName, "Install Admin.");
+  StringC templFiles = opt.String("tc", instAdmin + "/CxxDoc/Class", "Directory of template files for class pages, or single template file");
+  StringC docNodeFiles = opt.String("td", instAdmin + "/CxxDoc/DocNode", "Directory of template files for doc node page, or single template file");
   
   stopOnError = opt.Boolean("s",false,"Stop on error. ");
   bool noParse = opt.Boolean("np",false,"Don't do a header parse. ");
