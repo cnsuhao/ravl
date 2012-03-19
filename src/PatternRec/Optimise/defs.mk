@@ -36,6 +36,4 @@ HTML =
 
 LOCAL_FILES = 
 
-DOCNODE = 
-
 TESTEXES = testBrent.cc
