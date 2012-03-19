@@ -24,7 +24,7 @@ Common targets (some compile targets may not have been installed on your system)
   purify    Build all executables in the CURRENT directory with purify.
 	    "purify" executables are prefixed with 'pure_'.  (Not available in
             CVSSP.)
-  src       Check-out all source, and put headers in the right place.
+  src       Initialises header files into the build structure.
   clean     Removes all object files created during compilation for this library
             - This forces all objects in the current source tree to be recompiled.
             - Use VAR=... to select variant - see below:
