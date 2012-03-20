@@ -24,6 +24,9 @@ namespace RavlN {
     : public DataServerVFSNodeBodyC
   {
   public:
+    DataServerVFSRealDirBodyC(const XMLFactoryContextC &factory);
+    //: Factory constructor
+
     DataServerVFSRealDirBodyC(const StringC &vname,const StringC& npath,const StringC &nRealDirname,bool canWrite,bool canCreate_);
     //: Constructor.
     
@@ -99,6 +102,11 @@ namespace RavlN {
     : public DataServerVFSNodeC
   {
   public:
+    DataServerVFSRealDirC(const XMLFactoryContextC &factory)
+     : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(factory))
+    {}
+    //: Factory constructor
+
     DataServerVFSRealDirC(const StringC & vname,const StringC& npath,const StringC & nRealDirname,bool canWrite = false, bool canCreate = false)
       : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(vname,npath,nRealDirname,canWrite,canCreate))
     {}

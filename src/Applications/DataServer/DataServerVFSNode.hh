@@ -15,6 +15,7 @@
 
 namespace RavlN {
   
+  class XMLFactoryContextC;
   class NetOSPortServerBaseC;
   class NetISPortServerBaseC;
   
@@ -25,6 +26,9 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
+    DataServerVFSNodeBodyC(const XMLFactoryContextC &factory);
+    //: Factory constructor
+
     DataServerVFSNodeBodyC(const StringC &nname,const StringC& npath,bool ncanWrite,bool isDir);
     //: Constructor.
     
@@ -132,6 +136,11 @@ namespace RavlN {
     : public RCHandleVC<DataServerVFSNodeBodyC>
   {
   public:
+    DataServerVFSNodeC(const XMLFactoryContextC &factory)
+      : RCHandleVC<DataServerVFSNodeBodyC>(*new DataServerVFSNodeBodyC(factory))
+    {}
+    //: Factory constructor
+
     DataServerVFSNodeC(const StringC & nname,const StringC& npath,bool ncanWrite,bool isDir)
       : RCHandleVC<DataServerVFSNodeBodyC>(*new DataServerVFSNodeBodyC(nname,npath,ncanWrite,isDir))
     {}

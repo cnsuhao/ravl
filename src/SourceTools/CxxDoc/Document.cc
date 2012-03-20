@@ -499,7 +499,7 @@ namespace RavlCxxDocN {
       ONDEBUG(cerr << "DocumentBodyC::TextFor() Attempting to generate link for '" << xObj.Name() << "' \n");
       ObjectListC scopePath = const_cast<DataTypeC &>(tn).ScopePath();
       if(scopePath.IsValid()) {
-	// Do a template subsitution ?
+	// Do a template substitution ?
 	if(scopePath.List().Size() == 1) {
 	  ObjectC &obj = scopePath.List().Last();
 	  ObjectC *lu = templArgSub.Top().Lookup(obj.Name());

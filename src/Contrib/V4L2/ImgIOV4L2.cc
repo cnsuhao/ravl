@@ -14,7 +14,9 @@
 #include "Ravl/Image/V4L2Buffer.hh"
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/DList.hh"
+#include "Ravl/SysLog.hh"
 
+#include <string.h>
 #include <linux/types.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -47,7 +49,10 @@ namespace RavlImageN
     const bool m_fastBuffer;                //: Fast buffers available
 
     SupportedFormatT(const type_info &objectType, const UIntT pixelFormat, const bool fastBuffer) :
-      m_objectType(objectType), m_pixelFormat(pixelFormat), m_fastBuffer(fastBuffer) {}
+      m_objectType(objectType),
+      m_pixelFormat(pixelFormat),
+      m_fastBuffer(fastBuffer)
+    {}
   };
   //: Structure used to store supported pixel formats
 
@@ -125,9 +130,37 @@ namespace RavlImageN
   //: Default number of capture buffers
   
 
+  ImgIOV4L2BaseC::ImgIOV4L2BaseC(const StringC &device, const UIntT input)
+    : m_pixelType(typeid(void)),
+      m_device(device),
+      m_input(input),
+      m_inputMax(0),
+      m_fd(-1),
+      m_width(g_defaultWidth),
+      m_height(g_defaultHeight),
+      m_widthMax(g_defaultWidthMaximum),
+      m_heightMax(g_defaultHeightMaximum),
+      m_widthMin(g_defaultWidthMinimum),
+      m_heightMin(g_defaultHeightMinimum),
+      m_fieldFormat(0),
+      m_standard(0),
+      m_fastBufferUsed(false),
+      m_bufferMax(g_defaultBuffers),
+      m_bufferCount(0),
+      m_buffers(NULL),
+      m_bufferIdCount(0),
+      m_seqNum(-1)
+  {
+    // Lock the capture device
+    MutexLockC lockCapture(m_lockCapture);
 
-  ImgIOV4L2BaseC::ImgIOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType) :
-    m_pixelType(pixelType),
+    // Open the device
+    Open(device, input);
+  }
+
+
+  ImgIOV4L2BaseC::ImgIOV4L2BaseC(const StringC &device, const UIntT input, const type_info &pixelType)
+  : m_pixelType(pixelType),
     m_device(device),
     m_input(input),
     m_inputMax(0),
@@ -164,7 +197,7 @@ namespace RavlImageN
       else
       {
         // Failed to find supported format
-        ONDEBUG(cerr << "ImgIOV4L2BaseC::ImgIOV4L2BaseC unsupported image format" << endl;)
+        RavlError("Can't open video device, unsupported image format.");
         Close();
       }
     }
@@ -370,14 +403,14 @@ namespace RavlImageN
     }
     else
     {
-      ONDEBUG(cerr << "ImgIOV4L2BaseC::CheckFormat ioctl(VIDIOC_QUERYCAP) device(" << m_device << ") capture not supported" << endl;)
+      RavlError("ioctl(VIDIOC_QUERYCAP) device(%s) capture not supported", m_device.data());
       return false;
     }
     
     // Check for a valid input
     if (!CheckInput())
     {
-      cerr << "ImgIOV4L2BaseC::CheckFormat input(" << m_input << ") not supported" << endl;
+      RavlError(" input(%u) not supported", m_input);
       return false;
     }
 
@@ -584,19 +617,21 @@ namespace RavlImageN
     v4l2_std_id stdId = g_supportedStandard[m_standard].m_id;
     if (ioctl(m_fd, VIDIOC_S_STD, &stdId) == -1)
     {
-      cerr << "ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_S_STD) failed to set standard(" << g_supportedStandard[m_standard].m_name << ")" << endl;
+      RavlWarning("Failed to set standard(%s) " ,g_supportedStandard[m_standard].m_name.data());
       //return false;
     }
     
     // Set the input
     if (!CheckInput())
     {
-      cerr << "ImgIOV4L2BaseC::ConfigureCapture failed to set input(" << m_input << ")" << endl;
-      return false;
+      RavlWarning("Failed to set input(%u) " ,m_input);
+      //return false;
     }
 
     // Set the capture mode 
     v4l2_format fmt;
+    memset(&fmt,0,sizeof(v4l2_format));
+
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     v4l2_pix_format *pfmt = (v4l2_pix_format*)&(fmt.fmt);
     pfmt->width = m_width;
@@ -605,14 +640,14 @@ namespace RavlImageN
     pfmt->field = g_supportedField[m_fieldFormat].m_field;
     if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) == -1)
     {
-      ONDEBUG(cerr << "ImgIOV4L2BaseC::ConfigureCapture unable to set capture format" << endl;)
+      RavlError("Unable to set capture format.");
       return false;
     }
     
     // Check we got what we asked for
     if (pfmt->width != m_width || pfmt->height != m_height)
     {
-      cerr << "ImgIOV4L2BaseC::ConfigureCapture failed to get requested size(" << m_height << " x " << m_width << ")" << endl;
+      RavlError("Failed to get requested size(%u,%u) ",m_height,m_width);
       return false;
     }
     

@@ -11,6 +11,7 @@
 #include "Ravl/DP/CacheIStream.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #if RAVL_HAVE_FTW_H
 #include <ftw.h>
@@ -41,24 +42,30 @@ namespace
 
 namespace RavlN {
 
-
-
 #if RAVL_HAVE_FTW_H
-	int removeFTW(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
-	{
-		FilenameC filename(fpath);
-		ONDEBUG(cerr << "removeFTW deleting (" << filename << ")" << endl);
+  int removeFTW(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
+  {
+    FilenameC filename(fpath);
+    ONDEBUG(cerr << "removeFTW deleting (" << filename << ")" << endl);
 
-		return filename.Remove() ? FTW_CONTINUE : FTW_STOP;
-	}
+    return filename.Remove() ? FTW_CONTINUE : FTW_STOP;
+  }
 #endif
   
+  //: Factory constructor
+
+  DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const XMLFactoryContextC &factory)
+   : DataServerVFSNodeBodyC(factory),
+     realDirname(factory.AttributeString("realDirname","")),
+     canCreate(factory.AttributeBool("canCreate",false))
+  {}
+
   //: Constructor.
   
   DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const StringC &nname,const StringC& npath,const StringC &nRealDirname,bool ncanWrite,bool ncanCreate)
-	: DataServerVFSNodeBodyC(nname,npath,ncanWrite,true),
-		realDirname(nRealDirname),
-		canCreate(ncanCreate)
+    : DataServerVFSNodeBodyC(nname,npath,ncanWrite,true),
+      realDirname(nRealDirname),
+      canCreate(ncanCreate)
   {
     ONDEBUG(cerr << "DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC nname (" << nname << ")" << endl);
 
@@ -185,7 +192,7 @@ namespace RavlN {
   {
     MutexLockC lock(access);
 
-  	return !name2file.IsEmpty() || !nameDeletePending.IsEmpty();
+    return !name2file.IsEmpty() || !nameDeletePending.IsEmpty();
   }
 
 
@@ -215,17 +222,17 @@ namespace RavlN {
     
     if (!name2file.Lookup(targetFilename, targetFileNode))
     {
-  		if(!targetFile.Exists())
-	  	{
-		  	cerr << "DataServerVFSRealDirBodyC::Delete failed to find file '" << targetFilename << "' for '" << name << "'" << endl;
-			  return false;
-		  }
+      if(!targetFile.Exists())
+      {
+        cerr << "DataServerVFSRealDirBodyC::Delete failed to find file '" << targetFilename << "' for '" << name << "'" << endl;
+        return false;
+      }
 
-		  targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
-		  targetFileNode.SetCloseSignal(sigOnClose);
-		  targetFileNode.SetDeleteSignal(sigOnDelete);
-		  DataServerVFSRealDirC ref(*this);
-		  targetFileNode.SetParent(ref);
+      targetFileNode = DataServerVFSRealFileC(targetFilename, AbsoluteName(), targetFile, canWrite);
+      targetFileNode.SetCloseSignal(sigOnClose);
+      targetFileNode.SetDeleteSignal(sigOnDelete);
+      DataServerVFSRealDirC ref(*this);
+      targetFileNode.SetParent(ref);
     }
 
     ONDEBUG(cerr << "DataServerVFSRealDirBodyC::Delete delete pending of (" << targetFilename << ") on (" << name << ")" << endl);
@@ -323,16 +330,16 @@ namespace RavlN {
 
     MutexLockC lock(access);
 
-    RavlAssert(!remainingPath.IsEmpty())
-		StringC targetFilename = StringListC(remainingPath).Cat("/");
-		name2file.Del(targetFilename);
+    RavlAssert(!remainingPath.IsEmpty());
+    StringC targetFilename = StringListC(remainingPath).Cat("/");
+    name2file.Del(targetFilename);
 
-		if (ReadyToDelete())
-		{
-			lock.Unlock();
+    if (ReadyToDelete())
+    {
+      lock.Unlock();
 
-			DoDelete();
-		}
+      DoDelete();
+    }
 
     return true;
   }
@@ -370,11 +377,11 @@ namespace RavlN {
 
   bool DataServerVFSRealDirBodyC::ReadyToDelete()
   {
-		ONDEBUG(cerr << "DataServerVFSRealDirBodyC::ReadyToDelete pending (" << (deletePending ? "Y" : "N") << ") " << \
-			              "name2file (" << name2file.Size() << ") " << \
-			              "nameDeletePending (" << nameDeletePending.Size() << ")" << endl);
+    ONDEBUG(cerr << "DataServerVFSRealDirBodyC::ReadyToDelete pending (" << (deletePending ? "Y" : "N") << ") " << \
+                          "name2file (" << name2file.Size() << ") " << \
+                          "nameDeletePending (" << nameDeletePending.Size() << ")" << endl);
 
-  	return deletePending && name2file.IsEmpty() && nameDeletePending.IsEmpty();
+    return deletePending && name2file.IsEmpty() && nameDeletePending.IsEmpty();
   }
 
 
@@ -382,20 +389,22 @@ namespace RavlN {
   void DataServerVFSRealDirBodyC::DoDelete()
   {
 #if RAVL_HAVE_FTW_H
-		ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting (" << realDirname << ")" << endl);
+    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting (" << realDirname << ")" << endl);
 
-		if (nftw(realDirname, removeFTW, 64, FTW_DEPTH | FTW_PHYS) == 0)
-		{
-			if (sigOnDelete.IsValid())
-				sigOnDelete(AbsoluteName());
-		}
-		else
-		{
-			cerr << "DataServerVFSRealFileBodyC::DoDelete failed to delete (" << realDirname << ")" << endl;
-		}
+    if (nftw(realDirname, removeFTW, 64, FTW_DEPTH | FTW_PHYS) == 0)
+    {
+      if (sigOnDelete.IsValid())
+        sigOnDelete(AbsoluteName());
+    }
+    else
+    {
+      cerr << "DataServerVFSRealFileBodyC::DoDelete failed to delete (" << realDirname << ")" << endl;
+    }
 #else
     RavlAssert(false);	
 #endif
   }
+
+  XMLFactoryRegisterHandleC<DataServerVFSRealDirC> g_registerXMLFactoryDataServerVFSRealDir("RavlN::DataServerVFSRealDirC");
 
 }

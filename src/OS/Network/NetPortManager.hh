@@ -23,6 +23,7 @@
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/Threads/SignalConnectionSet.hh"
+#include "Ravl/Service.hh"
 
 namespace RavlN {
   
@@ -32,17 +33,24 @@ namespace RavlN {
   //: Port server.
   
   class NetPortManagerBodyC 
-    : public RCLayerBodyC
+    : public ServiceC
   {
   public:
+    NetPortManagerBodyC();
+    //: Default constructor.
+
+    NetPortManagerBodyC(const XMLFactoryContextC &factory);
+    //: XML Factory constructor.
+
     NetPortManagerBodyC(const StringC &name,bool nUnregisterOnDisconnect = false);
     //: Constructor.
 
-    StringC Name() const
+
+    const StringC &Name() const
     { return name; }
     //: Get the name.
 
-    StringC Address() const
+    const StringC &Address() const
     { return address; }
     //: Get the address.
 
@@ -99,10 +107,26 @@ namespace RavlN {
     // Args: PortName,DataType,Place to open port to
     // Return false if this replaces another request manager.
     
+    virtual bool Start();
+    //: Start service.
+
+    virtual bool Shutdown();
+    //: Shutdown service
+
+    //! Owner reference counted ptr to class
+    typedef RavlN::SmartOwnerPtrC<NetPortManagerBodyC> RefT;
+
+    //! Callback reference counter ptr to class
+    typedef RavlN::SmartCallbackPtrC<NetPortManagerBodyC> CBRefT;
+
   protected:
     bool Run();
     //: Run port manager.
-    
+
+    void SetUnregisterOnDisconnect(bool enable)
+    { unregisterOnDisconnect = enable; }
+    //: Set UnregisterOnDisconnect config flag.
+
     bool ConnectionDroppedI(NetISPortServerBaseC &sp);
     //: Called when connection to port is dropped.
     
@@ -131,6 +155,11 @@ namespace RavlN {
     friend class NetPortManagerC;
   };
 
+  NetPortManagerBodyC::RefT NetPortManager2Service(const NetPortManagerC &npm);
+  //: Convert a net port manager to a service reference.
+
+  //:-
+
   //! userlevel=Advanced
   //: Port server.
   // Server side exported port manager. <br>
@@ -143,6 +172,10 @@ namespace RavlN {
     : public RCLayerC<NetPortManagerBodyC>
   {
   public:
+    NetPortManagerC(const XMLFactoryContextC &factory)
+    : RCLayerC<NetPortManagerBodyC>(*new NetPortManagerBodyC(factory))
+    {}
+    //: XML Factory constructor.
 
     NetPortManagerC(const StringC &name, bool nUnregisterOnDisconnect = false)
     : RCLayerC<NetPortManagerBodyC>(*new NetPortManagerBodyC(name, nUnregisterOnDisconnect))
@@ -244,6 +277,7 @@ namespace RavlN {
     // Return false if this replaces another request manager.
     
     friend class NetPortManagerBodyC;
+    friend NetPortManagerBodyC::RefT NetPortManager2Service(const NetPortManagerC &npm);
   };
   
   NetPortManagerC &GlobalNetPortManager();
