@@ -1,5 +1,5 @@
 # This file is part of CxxDoc, The RAVL C++ Documentation tool 
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2001-12, University of Surrey
 # This code may be redistributed under the terms of the GNU General 
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -18,6 +18,13 @@ LICENSE = GPL
 ifeq ($(ARC),sgi)
 CCFLAGS += -CG:longbranch_limit=100000
 endif
+
+# Uncomment the following 2 lines to enable generation of a consistent date on
+# CxxDoc produced documentation. This is for testing purposes and forces the
+# date to Wed May 25 22:07:00 2005.
+#
+#CPPFLAGS+=-DCXXDOC_FALSE_TIME
+#CCPPFLAGS+=-DCXXDOC_FALSE_TIME
 
 PACKAGE= Ravl/CxxDoc
 

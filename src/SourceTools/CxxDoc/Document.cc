@@ -799,7 +799,11 @@ namespace RavlCxxDocN {
     
     if(ip == "buildtime") { // Setup default
       DateC now(true);
+#ifdef CXXDOC_FALSE_TIME
+      buff = "Wed May 25 22:07:00 2005";
+#else
       buff = now.CTime();
+#endif
       SetVar(ip,buff);
       return true;
     }
