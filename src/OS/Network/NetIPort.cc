@@ -40,13 +40,13 @@ namespace RavlN {
   //: Destructor.
   
   NetISPortBaseC::~NetISPortBaseC() { 
-    ONDEBUG(cerr << "NetISPortBaseC::~NetISPortBaseC(), Called. \n");
+    ONDEBUG(RavlDebug("NetISPortBaseC::~NetISPortBaseC(), Called. "));
   }
   
   bool NetISPortBaseC::Init() {
-    ONDEBUG(cerr << "NetISPortBaseC::Init(), Called for '" << portName << "'\n");
+    ONDEBUG(RavlDebug("NetISPortBaseC::Init(), Called for '%s'",portName.data()));
     if(!ep.IsOpen()) {
-      cerr << "NetISPortBaseC::Init(), WARNING: No connection. \n";
+      RavlWarning("No connection. ");
       gotEOS = true;
       return false;
     }
@@ -59,19 +59,21 @@ namespace RavlN {
     ep.RegisterR(NPMsg_ReqFailed,"ReqFailed",*this,&NetISPortBaseC::ReqFailed);
     ep.Ready();
     if(!ep.WaitSetupComplete()) {
-      cerr << "NetIPort(), ERROR: Failed to complete connection. \n";
+      RavlError("ERROR: Failed to complete connection. ");
       ep.Close();
       return false;
     }
     
     if(ep.PeerInfo().ProtocolName() != "PortServer") {
-      RavlSysLog(SYSLOG_ERR) << "Unexpected connection protocol '" << ep.PeerInfo().ProtocolName() << "'";
+      RavlError("Unexpected connection protocol '%s' ",ep.PeerInfo().ProtocolName().data());
       ep.Close();
       return false;
     }
     
     if(ep.PeerInfo().ProtocolVersion() != ep.LocalInfo().ProtocolVersion()) {
-      RavlSysLog(SYSLOG_ERR) << "Unexpected protocol version '" << ep.PeerInfo().ProtocolVersion() << "'  (Local version "  << ep.LocalInfo().ProtocolVersion() << ") ";
+      RavlError("Unexpected protocol version '%s' (Local version %s) ",
+          ep.PeerInfo().ProtocolVersion().data(),
+          ep.LocalInfo().ProtocolVersion().data());
       ep.Close();
       return false;
     }

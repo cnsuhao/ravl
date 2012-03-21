@@ -194,7 +194,10 @@ namespace RavlN {
     tempLoc.pub = 0;
     tempLoc.publish = &rlog::RLogPublisher::Publish;
     tempLoc.component = "Ravl";
-    tempLoc.fileName = filename;
+    if(filename == 0)
+      tempLoc.fileName = "(Unknown)";
+    else
+      tempLoc.fileName = filename;
     tempLoc.lineNum = lineno;
     tempLoc.functionName = "*undefined*";
 

@@ -142,8 +142,13 @@ namespace RavlN {
     if(syslog_StdErr && (!syslog_Open || syslog_StdErrOnly)) {
       if(priority <= localLevel) {
         std::cerr << syslog_ident;
-        if(syslog_fileline)
-          std::cerr << ' ' << filename << ':' << lineno << ' ';
+        if(syslog_fileline) {
+          if(filename == 0) {
+            std::cerr << " (NULL):" << lineno << ' ';
+          } else {
+            std::cerr << ' ' << filename << ':' << lineno << ' ';
+          }
+        }
         if(syslog_pid)
           std::cerr << "[" << getpid() << "]";
         std::cerr << ": " << message << std::endl;

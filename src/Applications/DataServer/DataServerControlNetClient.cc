@@ -7,6 +7,7 @@
 
 #include "Ravl/DataServer/DataServerControlNetClient.hh"
 #include "Ravl/DataServer/DataServerControlMessages.hh"
+#include "Ravl/SysLog.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -22,9 +23,7 @@ namespace RavlN
   : m_signalNodeClosed(StringC()),
     m_signalNodeRemoved(StringC()),
     m_netRequestManager(false)
-  {
-
-  }
+  {}
 
   DataServerControlNetClientBodyC::~DataServerControlNetClientBodyC()
   {
@@ -41,7 +40,7 @@ namespace RavlN
     m_netEndPoint = NetEndPointC(serverAddress, false);
     if (!m_netEndPoint.IsOpen())
     {
-      cerr << "DataServerControlNetClientBodyC::Open end point failed to open (" << serverAddress << ")" << endl;
+      RavlError("Open end point failed to open (%s)",serverAddress.data());
       m_netEndPoint.Close();
       m_netEndPoint.Invalidate();
       netLock.Unlock();
@@ -65,7 +64,7 @@ namespace RavlN
 
     if (!m_netEndPoint.WaitSetupComplete())
     {
-      cerr << "DataServerControlNetClientBodyC::Open end point failed to complete setup (" << serverAddress << ")" << endl;
+      RavlError("EndPoint failed to complete setup (%s)",serverAddress.data());
       return false;
     }
 
@@ -82,7 +81,7 @@ namespace RavlN
     if (!m_netEndPoint.IsValid())
       return false;
 
-    ONDEBUG(cerr << "DataServerControlNetClientBodyC::Close closing" << endl);
+    ONDEBUG(RavlDebug("DataServerControlNetClientBodyC::Close closing"));
     m_netEndPoint.Close();
     m_netEndPoint.Invalidate();
     m_signalConnectionSet.DisconnectAll();
@@ -123,11 +122,11 @@ namespace RavlN
     }
     catch(ExceptionC &e)
     {
-      cerr << "DataServerControlNetClientBodyC::AddNode exception(" << e.Text() << ")" << endl;
+      RavlError("DataServerControlNetClientBodyC::AddNode exception(%s)",e.Text());
     }
     catch(...)
     {
-      cerr << "DataServerControlNetClientBodyC::AddNode exception" << endl;
+      RavlError("DataServerControlNetClientBodyC::AddNode exception");
     }
 
     return result;
@@ -160,11 +159,11 @@ namespace RavlN
     }
     catch(ExceptionC &e)
     {
-      cerr << "DataServerControlNetClientBodyC::RemoveNode exception(" << e.Text() << ")" << endl;
+      RavlError("DataServerControlNetClientBodyC::RemoveNode exception(%s)",e.Text());
     }
     catch(...)
     {
-      cerr << "DataServerControlNetClientBodyC::RemoveNode exception" << endl;
+      RavlError("DataServerControlNetClientBodyC::RemoveNode exception");
     }
 
     return result;
@@ -207,11 +206,11 @@ namespace RavlN
     }
     catch(ExceptionC &e)
     {
-      cerr << "DataServerControlNetClientBodyC::QueryNodeSpace exception(" << e.Text() << ")" << endl;
+      RavlError("DataServerControlNetClientBodyC::QueryNodeSpace exception(%s)",e.Text());
     }
     catch(...)
     {
-      cerr << "DataServerControlNetClientBodyC::QueryNodeSpace exception" << endl;
+      RavlError("DataServerControlNetClientBodyC::QueryNodeSpace exception");
     }
 
 
@@ -220,7 +219,7 @@ namespace RavlN
 
   bool DataServerControlNetClientBodyC::ConnectionBroken()
   {
-    ONDEBUG(cerr << "DataServerControlNetClientBodyC::ConnectionBroken" << endl);
+    ONDEBUG(RavlDebug("DataServerControlNetClientBodyC::ConnectionBroken"));
 
     Close();
 
@@ -229,7 +228,7 @@ namespace RavlN
 
   bool DataServerControlNetClientBodyC::OnAddNode(UIntT requestId, bool result)
   {
-    ONDEBUG(cerr << "DataServerControlNetClientBodyC::OnAddNode requestId("<< requestId << ")" << endl);
+    ONDEBUG(RavlDebug("DataServerControlNetClientBodyC::OnAddNode requestId(%u)",requestId));
 
     m_netRequestManager.DeliverReq(requestId, result);
 

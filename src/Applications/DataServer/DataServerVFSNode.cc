@@ -49,13 +49,17 @@ namespace RavlN {
     
     // Sort out write flag.
     StringC canWriteStr = config["CanWrite"];
-    if(canWriteStr.IsEmpty() || canWriteStr == "1") canWrite = true;
-    else canWrite = false;
+    if(canWriteStr.IsEmpty() || canWriteStr == "1")
+      canWrite = true;
+    else
+      canWrite = false;
     
     // Setup verbose flag.
     StringC verboseStr = config["Verbose"];
-    if(verboseStr.IsEmpty() || verboseStr == "1") verbose = true;
-    else verbose = false;
+    if(verboseStr.IsEmpty() || verboseStr == "1")
+      verbose = true;
+    else
+      verbose = false;
     
     return true;
   }

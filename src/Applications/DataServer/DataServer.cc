@@ -68,9 +68,9 @@ namespace RavlN {
   
   bool DataServerBodyC::Open(const StringC &addr) {
     StringC empty;
-
     if (IsOpen())
       return true;
+    RavlDebug("DataServer opening '%s'",addr.data());
     
     RegisterIPortRequestManager(TriggerR(*this,&DataServerBodyC::HandleRequestIPort,empty,empty,NetISPortServerBaseC()));
     RegisterOPortRequestManager(TriggerR(*this,&DataServerBodyC::HandleRequestOPort,empty,empty,NetOSPortServerBaseC()));
@@ -79,7 +79,7 @@ namespace RavlN {
   }
   
   //: Read a new config file.
-  // Build Virtual File System appropriatly.
+  // Build Virtual File System appropriately.
   
   bool DataServerBodyC::ReadConfigFile(const StringC &filename, bool useAddress) {
     ConfigFileC cfg(filename);
