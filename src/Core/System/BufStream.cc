@@ -29,13 +29,12 @@
 
 namespace RavlN {
 
-#if RAVL_HAVE_STRINGSTREAM
 
   class BufferStringBodyC 
     : public BufferBodyC<char>
   {
   public:
-    BufferStringBodyC(string &nstr,UIntT size)
+    BufferStringBodyC(std::string &nstr,UIntT size)
       : BufferBodyC<char>(size,(char *) nstr.data()),
 	str(nstr)
     {}
@@ -54,13 +53,12 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    BufferStringC(string &str,UIntT size)
+    BufferStringC(std::string &str,UIntT size)
       : BufferC<char>(*new BufferStringBodyC(str,size))
     {}
     //: Constructor.
   };
     
-#endif
   ///////////////////
   //: Default constructor.
   

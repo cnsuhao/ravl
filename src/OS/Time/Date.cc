@@ -15,7 +15,7 @@
 #undef _POSIX_C_SOURCE
 
 #include "Ravl/config.h"
-
+#include "Ravl/SysLog.hh"
 #if RAVL_OS_SOLARIS
 #define _POSIX_PTHREAD_SEMANTICS 1
 #define _REENTRANT 1
@@ -51,6 +51,7 @@ extern "C" {
 #include "Ravl/StrStream.hh"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #if RAVL_HAVE_WIN32_THREADS
 #include <windows.h>
@@ -365,6 +366,42 @@ namespace RavlN {
                );
     }
     return str;
+  }
+
+  //: Generate date from ISO8601 string.
+  // Note this may not support all variants, if the string fails to parse and exception will be thrown.
+
+  DateC DateC::FromISO8601String(const StringC &dataString,bool storeInUTC)
+  {
+    StringC work = dataString;
+    UIntT year = 0;
+    UIntT month = 1;
+    UIntT day = 1;
+    UIntT hour = 0;
+    UIntT min = 0;
+    UIntT sec = 0;
+    //2012-01-30 10:00Z
+    //2012-01-30T10:00Z
+    //2012-01-30T10:00:00Z
+
+    int elems = sscanf(work.data(),"%4u-%2u-%2u",&year,&month,&day);
+    if(elems != 3) {
+      RavlDebug("Failed to parse date from: '%s' ",work.data());
+      throw ExceptionOperationFailedC("Parse error in date.");
+    }
+    if(work.Size() > 10) {
+      work = work.from(10);
+      if(work[0] != ' ' && work[0] != 'T') {
+        throw ExceptionOperationFailedC("Parse error in date.");
+      }
+      work = work.from(1);
+    }
+    elems = sscanf(work.data(),"%2u:%2u:%2u",&hour,&min,&sec);
+    if(elems != 3) {
+      RavlDebug("Failed to parse time from: '%s' ",work.data());
+      throw ExceptionOperationFailedC("Parse error in time.");
+    }
+    return DateC(year,month,day,hour,min,sec);
   }
 
   //: Generate date from odbc string.

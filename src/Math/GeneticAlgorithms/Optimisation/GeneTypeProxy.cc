@@ -95,11 +95,15 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Mutate a gene
-   bool GeneTypeProxyC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeProxyC::Mutate(GenePaletteC &palette,
+                               float fraction,
+                               const GeneC &original,
+                               RavlN::SmartPtrC<GeneC> &newValue
+                               ) const
    {
      SmartPtrC<const GeneTypeC> geneType;
      if(!palette.ProxyMap().Lookup(m_proxyName,geneType)) {
-       RavlError("No proxy value for '%s' ",m_proxyName.data());
+       RavlError("No proxy value for '%s' (%u available) ",m_proxyName.data(),(unsigned) palette.ProxyMap().Size());
        throw RavlN::ExceptionOperationFailedC("No value for proxy");
      }
      RavlAssert(geneType.IsValid());

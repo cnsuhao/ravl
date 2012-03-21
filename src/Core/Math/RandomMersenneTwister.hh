@@ -48,9 +48,12 @@ namespace RavlN {
     void Seed(UInt32T seed);
     //: Initialises the random number generator with the passed seed
 
-    void Seed(UInt32T init_key[], UInt32T key_length);
+    void Seed(const UInt32T init_key[], UInt32T key_length);
     //: Initialises the random number generator with the passed array
     // This is for using seed values greater than can be stored in a UInt32T
+
+    void Seed(const char *str,UInt32T key_len);
+    //: Initialises the random number generator with the passed character array
 
     UInt32T UInt();
     //: Returns an unsigned integer uniformly distributed between 0 and RandomIntMaxValue

@@ -16,6 +16,13 @@ ifeq ($(ARC),sgi)
 CCFLAGS += -CG:longbranch_limit=100000
 endif
 
+# Uncomment the following 2 lines to enable generation of a consistent date on
+# CxxDoc produced documentation. This is for testing purposes and forces the
+# date to Wed May 25 22:07:00 2005.
+#
+#CPPFLAGS+=-DCXXDOC_FALSE_TIME
+#CCPPFLAGS+=-DCXXDOC_FALSE_TIME
+
 PACKAGE= Ravl/CxxDoc
 
 NESTED = Templates.r

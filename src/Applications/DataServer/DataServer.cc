@@ -17,6 +17,8 @@
 #include "Ravl/DataServer/DataServerVFSRealFile.hh"
 #include "Ravl/DataServer/DataServerVFSRealDir.hh"
 
+#include "Ravl/XMLFactoryRegister.hh"
+
 #define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -25,6 +27,26 @@
 #endif
 
 namespace RavlN {
+
+  //: XML Factory constructor.
+
+  DataServerBodyC::DataServerBodyC(const XMLFactoryContextC &factory)
+   : NetPortManagerBodyC(factory),
+     m_vfs(true),
+     m_signalNodeClosed(StringC()),
+     m_signalNodeRemoved(StringC())
+  {
+    SetUnregisterOnDisconnect(true);
+
+    if(!factory.UseChildComponent("Root",m_vfs.Data(),false,typeid(DataServerVFSNodeC))) {
+      // Setup root VFS node.
+      m_vfs.Data() = DataServerVFSNodeC("","",false,true);
+    }
+
+    // Set up delete signal
+    m_connectionSet += ConnectPtr(m_signalNodeClosed, CBRefT(this), &DataServerBodyC::OnClose);
+    m_connectionSet += ConnectPtr(m_signalNodeRemoved,CBRefT(this), &DataServerBodyC::OnDelete);
+  }
 
   //: Constructor.
   
@@ -38,9 +60,8 @@ namespace RavlN {
     m_vfs.Data() = DataServerVFSNodeC("","",false,true);
 
     // Set up delete signal
-    DataServerC ref(*this);
-    Connect(m_signalNodeClosed, ref, &DataServerC::OnClose);
-    Connect(m_signalNodeRemoved, ref, &DataServerC::OnDelete);
+    m_connectionSet += ConnectPtr(m_signalNodeClosed, CBRefT(this), &DataServerBodyC::OnClose);
+    m_connectionSet += ConnectPtr(m_signalNodeRemoved,CBRefT(this), &DataServerBodyC::OnDelete);
   }
   
   //: Open server connection.
@@ -176,9 +197,10 @@ namespace RavlN {
 
   void DataServerBodyC::ZeroOwners()
   {
-    NetPortManagerBodyC::ZeroOwners();
-
+    m_connectionSet.DisconnectAll();
     m_vfs.Invalidate();
+
+    NetPortManagerBodyC::ZeroOwners();
   }
 
 
@@ -303,39 +325,39 @@ namespace RavlN {
         {
           if (foundNode.Data().RemovePending() || foundNode.Data().DeletePending())
           {
-          	ONDEBUG(cerr << "DataServerBodyC::RemoveNode parent node of (" << path << ") marked for removal or deletion" << endl);
+            ONDEBUG(cerr << "DataServerBodyC::RemoveNode parent node of (" << path << ") marked for removal or deletion" << endl);
 
-          	return true;
+            return true;
           }
 
           continue;
         }
 
-				if (!(foundNode.Data().IsDirectory() && foundNode.Data().PortsOpen()))
-				{
-					ONDEBUG(cerr << "DataServerBodyC::RemoveNode removing node from tree (" << path << ")" << endl);
+        if (!(foundNode.Data().IsDirectory() && foundNode.Data().PortsOpen()))
+        {
+          ONDEBUG(cerr << "DataServerBodyC::RemoveNode removing node from tree (" << path << ")" << endl);
 
-					if (!vfsTree.Remove(*pathListIter))
-					{
-						cerr << "DataServerBodyC::RemoveNode failed to remove node from tree '" << path << "'" << endl;
-						break;
-					}
-				}
-				else
-				{
-					ONDEBUG(cerr << "DataServerBodyC::RemoveNode marking node for removal (" << path << ")" << endl);
+          if (!vfsTree.Remove(*pathListIter))
+          {
+            cerr << "DataServerBodyC::RemoveNode failed to remove node from tree '" << path << "'" << endl;
+            break;
+          }
+        }
+        else
+        {
+          ONDEBUG(cerr << "DataServerBodyC::RemoveNode marking node for removal (" << path << ")" << endl);
 
-					foundNode.Data().SetRemovePending(true);
-				}
+          foundNode.Data().SetRemovePending(true);
+        }
 
-				lock.Unlock();
+        lock.Unlock();
 
-				if (removeFromDisk)
-				{
-					return foundNode.Data().Delete();
-				}
+        if (removeFromDisk)
+        {
+          return foundNode.Data().Delete();
+        }
 
-				return true;
+        return true;
       }
       else
       {
@@ -345,9 +367,9 @@ namespace RavlN {
         {
           if (foundNode.Data().RemovePending() || foundNode.Data().DeletePending())
           {
-          	ONDEBUG(cerr << "DataServerBodyC::RemoveNode parent node of (" << path << ") marked for removal or deletion" << endl);
+            ONDEBUG(cerr << "DataServerBodyC::RemoveNode parent node of (" << path << ") marked for removal or deletion" << endl);
 
-          	return true;
+            return true;
           }
 
           lock.Unlock();
@@ -355,7 +377,7 @@ namespace RavlN {
           if (!removeFromDisk)
           {
             cerr << "DataServerBodyC::RemoveNode remove from directory failed as file deletion not enabled for '" << path << "'" << endl;
-          	break;
+            break;
           }
 
           DListC<StringC> remainingPath = pathListIter.InclusiveTail();
@@ -457,14 +479,14 @@ namespace RavlN {
 
   bool DataServerBodyC::OnClose(StringC& path)
   {
-  	return OnCloseOrDelete(path, false);
+    return OnCloseOrDelete(path, false);
   }
 
 
 
   bool DataServerBodyC::OnDelete(StringC& path)
   {
-  	return OnCloseOrDelete(path, true);
+    return OnCloseOrDelete(path, true);
   }
 
 
@@ -479,20 +501,20 @@ namespace RavlN {
     DListC<StringC> remainingPath;
     if (FindVFSNode(path, foundNode, remainingPath))
     {
-	    ONDEBUG(cerr << "DataServerBodyC::OnCloseOrDelete found node for path (" << path << ")" << endl);
+      ONDEBUG(cerr << "DataServerBodyC::OnCloseOrDelete found node for path (" << path << ")" << endl);
 
-			lock.Unlock();
+      lock.Unlock();
 
-			RavlAssert(foundNode.IsValid());
-			bool signalValue = false;
-			if (onDelete)
-				signalValue = foundNode.Data().OnDelete(remainingPath);
-			else
-				signalValue = foundNode.Data().OnClose(remainingPath);
+      RavlAssert(foundNode.IsValid());
+      bool signalValue = false;
+      if (onDelete)
+        signalValue = foundNode.Data().OnDelete(remainingPath);
+      else
+        signalValue = foundNode.Data().OnClose(remainingPath);
 
-			PruneRemovedNodes(path);
+      PruneRemovedNodes(path);
 
-			return signalValue;
+      return signalValue;
     }
 
     return false;
@@ -504,7 +526,7 @@ namespace RavlN {
 
     MutexLockC lock(m_access);
 
-		HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode = m_vfs;
+    HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode = m_vfs;
     StringListC pathList(path, "/");
     DLIterC<StringC> pathListIter(pathList);
 
@@ -516,17 +538,17 @@ namespace RavlN {
       {
         RavlAssert(foundNode.IsValid());
 
-				if (foundNode.Data().IsDirectory() && foundNode.Data().RemovePending() && !foundNode.Data().PortsOpen())
-				{
-					ONDEBUG(cerr << "DataServerBodyC::PruneRemovedNodes removing node from tree (" << path << ")" << endl);
-					if (!vfsTree.Remove(*pathListIter))
-					{
-						cerr << "DataServerBodyC::PruneRemovedNodes failed to remove node from tree '" << path << "'" << endl;
-						break;
-					}
+        if (foundNode.Data().IsDirectory() && foundNode.Data().RemovePending() && !foundNode.Data().PortsOpen())
+        {
+          ONDEBUG(cerr << "DataServerBodyC::PruneRemovedNodes removing node from tree (" << path << ")" << endl);
+          if (!vfsTree.Remove(*pathListIter))
+          {
+            cerr << "DataServerBodyC::PruneRemovedNodes failed to remove node from tree '" << path << "'" << endl;
+            break;
+          }
 
-					return true;
-				}
+          return true;
+        }
 
         if (!pathListIter.IsLast())
         {
@@ -534,10 +556,15 @@ namespace RavlN {
         }
       }
 
-    	break;
+      break;
     }
 
     return false;
   }
+
+  void LinkDataServer()
+  {}
+
+  XMLFactoryRegisterHandleConvertC<DataServerC,NetPortManagerC> g_registerXMLFactoryDataServer("RavlN::DataServerC");
 
 }

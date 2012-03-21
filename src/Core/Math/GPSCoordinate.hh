@@ -29,7 +29,7 @@ namespace RavlN {
     {}
     
     //! Constructor.
-    //! Note: The default standard deviation for hight and position of 10 cm and 15cm is rather
+    //! Note: The default standard deviation for height and position of 10 cm and 15cm is rather
     //! generous. 
     GPSCoordinateC(RealT latitude,
                    RealT longitude,
@@ -43,7 +43,7 @@ namespace RavlN {
     {}
     
     //! Constructor.
-    //! Note: The default standard deviation for hight and position of 10 cm and 15cm is rather
+    //! Note: The default standard deviation for height and position of 10 cm and 15cm is rather
     //! generous. 
     GPSCoordinateC(const RavlN::Point3dC &val,
                    FloatT verticalError = 0.1,
@@ -68,7 +68,7 @@ namespace RavlN {
     
     //! Convert a Cartesian position to gps.
     static GPSCoordinateC Cartesian2GPS(const Point3dC &position,RealT precision = 1e-12);
-    
+
     // Print as text in degree's minutes seconds N/S E/W
     RavlN::StringC TextDMS() const;
     
@@ -78,12 +78,17 @@ namespace RavlN {
     //! Access local vertical  direction
     //! Of gravity.
     RavlN::Vector3dC Vertical() const;
-    
+
+    //! Interpolate between two GPS positions.
+    //! Fraction is between 0.0 and 1.0, where 0 is p1, and 1 is p2.
+    //! This currently just does a linear interpolation of all the gps parameters.
+    static bool BilinearInterpolate(RealT fraction,const GPSCoordinateC &p1,const GPSCoordinateC &p2,GPSCoordinateC &position);
+
     //! Access latitude in degree's
     const RealT &Latitude() const
     { return (*this)[0]; }
     
-    //! Access londitude in degree's
+    //! Access longitude in degree's
     const RealT &Longitude() const
     { return (*this)[1]; }
     

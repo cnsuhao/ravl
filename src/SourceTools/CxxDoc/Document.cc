@@ -163,6 +163,7 @@ namespace RavlCxxDocN {
     ret += "xor_eq";
     
     ret += "root";
+
     return ret;
   }
   
@@ -495,10 +496,10 @@ namespace RavlCxxDocN {
     if(DataTypeC::IsA(anObj)) {
       DataTypeC tn(anObj);
       anObj.Invalidate();
-      //cerr << "Attempting to generate link for '" << xObj.Name() << "' \n";
+      ONDEBUG(cerr << "DocumentBodyC::TextFor() Attempting to generate link for '" << xObj.Name() << "' \n");
       ObjectListC scopePath = const_cast<DataTypeC &>(tn).ScopePath();
       if(scopePath.IsValid()) {
-	// Do a template subsitution ?
+	// Do a template substitution ?
 	if(scopePath.List().Size() == 1) {
 	  ObjectC &obj = scopePath.List().Last();
 	  ObjectC *lu = templArgSub.Top().Lookup(obj.Name());
@@ -518,19 +519,22 @@ namespace RavlCxxDocN {
       ONDEBUG(cerr << "DocumentBodyC::TextFor() Looking up name '" << xObj.Name() << "' in scope :'" << scope.Name() <<"'\n");
       anObj = scope.ResolveName(xObj.Name());
       if(anObj.IsValid()) {
-	//cerr << "  DocumentBodyC::TextFor() Found '" << anObj.Name() << "'\n";
+        ONDEBUG(cerr << "DocumentBodyC::TextFor() Found '" << anObj.Name() << "'\n");
 	ss.InsLast(xObj);
       }
     }
     
     if(!anObj.IsValid()) { // Assume its not documented...
+      ONDEBUG(cerr << "DocumentBodyC::TextFor() Undocumented" << xObj.Name() << "\n\r");
       if(nativeTypes.IsMember(xObj.Name()))
 	return xObj.Name(); // All native types are fine as plain text.
-      ONDEBUG(cerr << "WARNING: Can't resolve name, for HtmlTypeName. '" << xObj.Name() << "' -> '" << xObj.Name() << "'\n");
+      ONDEBUG(cerr << "WARNING: DocumentBodyC::TextFor() Can't resolve name, for HtmlTypeName. '" << xObj.Name() << "' -> '" << xObj.Name() << "'\n");
       return MakeHtml(xObj.Name());
     }
     
-    //cerr << "Resolved '" << tn.Name() << " to " << anObj.Name() << "\n";
+    if ( anObj.ActualPath().TopAndTail().index("std::") == 0 )
+        return xObj.Name(); // We don't document things from the standard namespace
+
     // Put a link in around the type.
     StringC ret = "<a href=\"";
     StringC refPattern;
@@ -547,7 +551,7 @@ namespace RavlCxxDocN {
       ret += '#';
       ret += MakeHRef(anObj.Name());
     }
-    //cerr << "Linking  '" << xObj.Name() << '" to '" "'\n";
+    ONDEBUG(cerr << "DocumentBodyC::TextFor() Linking  '" << MakeHtml(xObj.Name()) << "' to '" << ret.after(7) << "'\n");
     ret += StringC("\">") + MakeHtml(xObj.Name()) + "</a>";
     return ret;
   }
@@ -799,7 +803,11 @@ namespace RavlCxxDocN {
     
     if(ip == "buildtime") { // Setup default
       DateC now(true);
+#ifdef CXXDOC_FALSE_TIME
+      buff = "Wed May 25 22:07:00 2005";
+#else
       buff = now.CTime();
+#endif
       SetVar(ip,buff);
       return true;
     }

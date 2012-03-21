@@ -85,7 +85,7 @@ namespace RavlN {
   bool GPSCoordinateC::UsesEW(const StringC &coord) 
   { return coord.contains('E') || coord.contains('W') || coord.contains('e') || coord.contains('w'); }
   
-  // Convert a gps coorindate from text form to a GPS class.
+  // Convert a gps coordinate from text form to a GPS class.
   // Returns false if text is not correctly formatted
   
   bool GPSCoordinateC::Text2GPS(const StringC &text,GPSCoordinateC &gps) {
@@ -238,7 +238,7 @@ namespace RavlN {
 
         angle = tmp.RealValue();
         if(modf(angle,&tv) != 0) {
-          RavlError("Factional value in degree's gps coordinate. ");
+          RavlError("Fractional value in degree's gps coordinate. ");
           return false;
         }
       } else {
@@ -254,12 +254,12 @@ namespace RavlN {
         RealT rv = tmp.RealValue();
         if(secondsAt >= 0) {
           if(modf(angle,&tv) != 0) {
-            RavlError("Factional value in minutes of gps coordinate.");
+            RavlError("Fractional value in minutes of gps coordinate.");
             return false;
           }
         }
         if(rv < 0) {
-          RavlError("Negative mintues values in gps coordinate.");
+          RavlError("Negative minutes values in gps coordinate.");
           return false; 
         }
         angle += rv * (1.0/60.0);
@@ -313,7 +313,7 @@ namespace RavlN {
       
     case AF_NS:
       if(haveEast || haveWest || (haveNorth && haveSouth)) {
-        RavlError("Inconsistant designator in [%s] ",value.chars());
+        RavlError("Inconsistent designator in [%s] ",value.chars());
         return false;
       }
       if(angle < 0) {
@@ -343,7 +343,7 @@ namespace RavlN {
   }
 
   
-  //! Convert GPS coordinate into global cartesian coordinates.
+  //! Convert GPS coordinate into global Cartesian coordinates.
   
   RavlN::Point3dC GPSCoordinateC::Cartesian() const {
     RealT latRad = RavlConstN::deg2rad * (*this)[0]; 
@@ -366,7 +366,7 @@ namespace RavlN {
     return ret;
   }
   
-  //! Access local virtical direction 
+  //! Access local vertical direction
   
   RavlN::Vector3dC GPSCoordinateC::Vertical() const {
     
@@ -386,6 +386,27 @@ namespace RavlN {
     return ret;
     
   }
+
+  //! Interpolate between two GPS positions.
+  //! Fraction is between 0.0 and 1.0, where 0 is p1, and 1 is p2.
+
+  bool GPSCoordinateC::BilinearInterpolate(RealT fraction,
+                                           const GPSCoordinateC &p1,
+                                           const GPSCoordinateC &p2,
+                                           GPSCoordinateC &position)
+  {
+    RealT mf = 1.0 - fraction;
+    // FIXME: This isn't ideal.  We really want to find the shortest path over a sphere,
+    // but it'll do for now.
+    position = GPSCoordinateC(p1.Latitude() * mf + p2.Latitude() * fraction,
+                              p1.Longitude() * mf + p2.Longitude() * fraction,
+                              p1.Height() * mf + p2.Height() * fraction,
+                              p1.HorizontalErrorBounds() * mf + p2.HorizontalErrorBounds() * fraction,
+                              p1.VerticalErrorBounds() * mf + p2.VerticalErrorBounds() * fraction
+                              );
+    return true;
+  }
+
 
   //! Compute the differential 
   

@@ -24,11 +24,11 @@ namespace RavlN {
     if(!ReadNonEmptyLine(text))
       return false;
     StringArrayC strArr = StringArrayC::SplitQuote(text,m_seperators);
-    if(strArr.Size() != m_columns) {
+    if(m_columns > 0 && strArr.Size() != m_columns) {
       if(m_throwExceptionOnParseError) {
         throw ExceptionInvalidStreamC("Invalid number of columns found in record");
       }
-      RavlWarning("Incorrect number of columns in record %u, expected %u. ",strArr.Size(),m_columns);
+      RavlWarning("Incorrect number of columns in record %u, expected %u. ",(unsigned) strArr.Size(),m_columns);
       return false;
     }
     values = strArr.Array();
@@ -38,8 +38,14 @@ namespace RavlN {
 
   //! Read line from stream.
   bool ParseCSVC::ReadLine(StringC &text) {
-    int n = readline(m_strm,text,'\n',false);
-    if(n > 0) return true;
+    int n = readline(m_strm,text,'\n',true);
+    if(n > 0) {
+      // DOS/Windows compatibility remove line feeds.
+      if(text.lastchar() == '\r') {
+        text = text.before((int) text.Size().V()-1);
+      }
+      return true;
+    }
     return m_strm.good();
   }
 
@@ -71,13 +77,22 @@ namespace RavlN {
           if(m_throwExceptionOnParseError) {
             throw ExceptionInvalidStreamC("Invalid number of columns found in record");
           }
-          RavlError("Incorrect number of columns in header %u, expected %u ",m_headers.Size(),m_columns);
+          RavlError("Incorrect number of columns in header %u, expected %u ",(unsigned) m_headers.Size(),m_columns);
           return false;
         }
       }
     }
     return true;
   }
+
+  //! Start parsing a stream;
+  bool ParseCSVC::Open(const StringC &filename) {
+    IStreamC strm(filename);
+    if(!strm.IsOpen())
+      return false;
+    return Open(strm);
+  }
+
 
 
 

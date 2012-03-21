@@ -65,6 +65,10 @@ namespace RavlN { namespace GeneticN {
      RavlAssertMsg(0,"not implemented");
    }
 
+   //! Make a copy of this class.
+   RavlN::RCBodyVC &GeneTypeEnumC::Copy() const
+   { return *new GeneTypeEnumC(*this); }
+
    //! Save to binary stream
    bool GeneTypeEnumC::Save(BinOStreamC &strm) const
    {
@@ -161,6 +165,11 @@ namespace RavlN { namespace GeneticN {
    {
      RavlAssertMsg(0,"not implemented");
    }
+
+   //! Make a copy of this class.
+   RavlN::RCBodyVC &GeneTypeMetaC::Copy() const
+   { return *new GeneTypeMetaC(*this); }
+
 
    //! Save to binary stream
    bool GeneTypeMetaC::Save(BinOStreamC &strm) const

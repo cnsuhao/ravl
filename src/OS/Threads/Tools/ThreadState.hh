@@ -103,7 +103,7 @@ namespace RavlN
 
     bool Update(const StateT &expectedCurrentState1,const StateT &expectedCurrentState2,const StateT &newState) {
       m_access.Lock();
-      if(m_state != expectedCurrentState1 && m_state != expectedCurrentState1) {
+      if(m_state != expectedCurrentState1 && m_state != expectedCurrentState2) {
         // No change.
         m_access.Unlock();
         return false;

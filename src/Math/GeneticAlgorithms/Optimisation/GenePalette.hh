@@ -40,6 +40,9 @@ namespace RavlN { namespace GeneticN {
     //! Load from text stream.
     GeneTypeProxyMapC(std::istream &strm);
 
+    //! Copy proxy map.
+    RavlN::RCBodyVC &Copy() const;
+
     //! Save to binary stream
     bool Save(BinOStreamC &strm) const;
 
@@ -49,13 +52,24 @@ namespace RavlN { namespace GeneticN {
     //! Add a new proxy to the map.
     void AddProxy(const StringC &value,const GeneTypeC &geneType);
 
+    //! Add a new proxy to the map via reference.
+    //! Used for loading from FactoryXML.
+    void AddProxyRef(const StringC &value,const RavlN::SmartPtrC<GeneTypeC> &geneType);
+
     //! Lookup a value.
     bool Lookup(const StringC &key,SmartPtrC<const GeneTypeC> &val) const;
+
+    //! Test if there is a key in the proxy map.
+    bool HasProxy(const StringC &key) const;
+
+    //! Get number of entries in map.
+    size_t Size() const
+    { return m_values.Size(); }
 
     //! Handle to set.
     typedef SmartPtrC<GeneTypeProxyMapC> RefT;
   protected:
-    HashC<StringC,SmartPtrC<const GeneTypeC> > m_values;
+    HashC<StringC,RavlN::SmartPtrC<const GeneTypeC> > m_values;
   };
 
   //! Holds information used when mutating, crossing or generating genes.
@@ -64,17 +78,33 @@ namespace RavlN { namespace GeneticN {
     : public RCBodyVC
   {
   public:
+    //! Default constructor.
+    //! Seed from the global random number source.
+    GenePaletteC();
+
     //! Construct from a seed.
-    GenePaletteC(UInt32T seed = 0);
+    GenePaletteC(UInt32T seed);
 
     //! factory constructor
     GenePaletteC(const XMLFactoryContextC &factory);
+
+    //! Copy constructor
+    //! This generates a new random seed based on the other palette,
+    //! and so modifies it in the process.
+    GenePaletteC(GenePaletteC &other);
+
+    //! Copy constructor
+    //! This seeds the random palette from the global random number source.
+    GenePaletteC(const GenePaletteC &other);
 
     //! Load from binary stream.
     GenePaletteC(BinIStreamC &strm);
 
     //! Load from text stream.
     GenePaletteC(std::istream &strm);
+
+    //! Make a copy of the palette.
+    virtual RavlN::RCBodyVC &Copy() const;
 
     //! Save to binary stream
     virtual bool Save(BinOStreamC &strm) const;
@@ -111,6 +141,9 @@ namespace RavlN { namespace GeneticN {
     //! Handle to palette.
     typedef SmartPtrC<GenePaletteC> RefT;
   protected:
+    //! Generate a seed from the global random number source.
+    void SeedFromGlobalRandomGenerator();
+
     RandomMersenneTwisterC m_random;
     RandomGaussC m_guass;
     StackC<GeneTypeProxyMapC::RefT > m_proxyMap;

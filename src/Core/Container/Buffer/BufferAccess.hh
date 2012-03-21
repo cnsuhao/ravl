@@ -110,6 +110,11 @@ namespace RavlN {
     bool operator!=(const BufferAccessC<DataT> &ba) const
     { return buff != ba.buff; }
     //: Are two accesses the same ?
+
+    const BufferAccessC<DataT> & Swap(BufferAccessC<DataT> & a)
+    { RavlN::Swap(buff, a.buff); return *this; }
+    //: Exchanges the contents of this buffer with buffer 'a'.
+    
   protected:
     DataT *buff;
   };

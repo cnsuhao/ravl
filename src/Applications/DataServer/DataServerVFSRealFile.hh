@@ -24,6 +24,9 @@ namespace RavlN {
     : public DataServerVFSNodeBodyC
   {
   public:
+    DataServerVFSRealFileBodyC(const XMLFactoryContextC &factory);
+    //: XMLFactory Constructor
+
     DataServerVFSRealFileBodyC(const StringC &vname,const StringC& npath,const StringC &nRealFilename,bool canWrite);
     //: Constructor.
     
@@ -156,11 +159,16 @@ namespace RavlN {
   //! userlevel=Normal
   //: Handle file's or directories in a real filesystem. 
   //!cwiz:author
-  
+
   class DataServerVFSRealFileC
     : public DataServerVFSNodeC
   {
   public:
+    DataServerVFSRealFileC(const XMLFactoryContextC &factory)
+      : DataServerVFSNodeC(*new DataServerVFSRealFileBodyC(factory))
+    {}
+    //: XMLFactory Constructor
+
     DataServerVFSRealFileC(const StringC & vname,const StringC& npath,const StringC & nRealFilename,bool canWrite = false)
       : DataServerVFSNodeC(*new DataServerVFSRealFileBodyC(vname,npath,nRealFilename,canWrite))
     {}

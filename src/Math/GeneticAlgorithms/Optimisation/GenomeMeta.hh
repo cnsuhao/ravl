@@ -32,6 +32,9 @@ namespace RavlN { namespace GeneticN {
     //! Load form a binary stream
     GeneTypeEnumC(std::istream &strm);
 
+    //! Make a copy of this class.
+    virtual RavlN::RCBodyVC &Copy() const;
+
     //! Save to binary stream
     virtual bool Save(BinOStreamC &strm) const;
 
@@ -79,6 +82,9 @@ namespace RavlN { namespace GeneticN {
 
      //! Load form a binary stream
      GeneTypeMetaC(std::istream &strm);
+
+     //! Make a copy of this class.
+     virtual RavlN::RCBodyVC &Copy() const;
 
      //! Save to binary stream
      virtual bool Save(BinOStreamC &strm) const;
