@@ -3087,8 +3087,8 @@ fi
 
              # No installed QMake found or we explicitly want to use the use one staged
              # from the source included with the project distribution.
-             WORKING_QMAKE=\$\(INSTALLHOME\)/share/QMake
-             QMAKE_CONFIGFILES=\$\(INSTALLHOME\)/QMake
+             WORKING_QMAKE=\$\(PROJECT_OUT\)/share/QMake
+             QMAKE_CONFIGFILES=\$\(PROJECT_OUT\)/QMake
 
              # We will also need to stage this copy as part of the project build, so add
              # LocalQMake to the target for the required QMake builds
