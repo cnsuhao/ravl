@@ -11,7 +11,7 @@ dnl#JFi:ToDo-Allow compile check with pre-requisites specified by pkg-config
 # Initialisation
 AC_PREREQ([2.65])
 
-AC_INIT([RAVL], [1.5.8030], [John.Field@Surrey.ac.UK])
+AC_INIT([RAVL], [1.1.1], [John.Field@Surrey.ac.UK])
 
 # This file is part of RAVL, Recognition And Vision Library
 # Copyright (C) 2011-12, University of Surrey
