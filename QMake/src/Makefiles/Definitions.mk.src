@@ -205,10 +205,6 @@ WORKTMP=$(LOCALTMP)/$(ARC)$(BASENAME)/$(VAR)$(SHARED_LIB_POSTFIX)
 
 PROJ_ID := $(subst ~,,$(PROJECT_OUT))
 
-ifndef LOCALTMP
- LOCALTMP:=$(TMP)/$(LOGNAME)/qm/$(PROJ_ID)/
-endif
-
 # ROOTDIR is where the software will be installed.
 
 ifndef ROOTDIR
