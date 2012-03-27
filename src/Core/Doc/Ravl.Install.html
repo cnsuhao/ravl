@@ -12,18 +12,12 @@
     for compiling RAVL under <a href="Ravl.Installation.Windows.html">Microsoft
     Windows</a>.</p>
 
-    <p> The instructions are for downloading the current version from the
-    SourceForge Git repository.  If you prefer, you can download the <a
-    href="http://sourceforge.net/projects/ravl/files/RAVL/1.1/RAVL-1.1.tar/download">latest release</a> as a tar
-    archive (select "Download"). </p>
-
     <h2>RAVL Prerequisites</h2>
 
     <p> Building the RAVL library requires the use of an ANSI C++ compiler
     along with the <a href="http://www.gnu.org/software/make">GNU make</a>
-    utility (or another compatible version of make).  Please make sure you
-    have suitable software installed before attempting to build RAVL. The RAVL
-    build process is actually managed by the <a href="Ravl.QMake.html"><def>QMake</def></a>
+    utility (or another compatible version of make). The RAVL build process is
+    actually managed by the <a href="Ravl.QMake.html"><dfn>QMake</dfn></a>
     utility. QMake is a flexible compilation aid, designed to provide a simpler
     interface to the GNU make program. As part of the RAVL instalation process,
     a copy of QMake will be configured and installed.
@@ -46,74 +40,32 @@
     
     <h2>Installing the RAVL library and applications</h2> 
 
-    <ol>
-      <li> Select a suitable location on your system in which to build RAVL.
-           The amount of disk space required will vary depending both on the
-           amount of extra functionality that gets built into RAVL (available
-           third-party libraries) and on your particular system or compiler in
-           use. We suggest that you budget for a requirement of around 10G of
-           disk space.<br/>
-           <br/>
-      </li>
+    <p> The amount of disk space required to build RAVL will vary depending
+    both on the amount of extra functionality that gets built into RAVL
+    (available third-party libraries) and on your particular system or compiler
+    in use. We suggest that you budget for a requirement of around 10G of disk
+    space.</p>
 
-      <li> Download the source code (both for RAVL itself and for QMake):
-           <pre><kbd>           git clone git://ravl.git.sourceforge.net/gitroot/ravl/ravl
-           cd ravl
-           git clone git://git.code.sf.net/p/quickmake/code QMake </kbd></pre>
-      </li>
+    <p> The following procedure will build the RAVL libraries. First download
+    the latest source archive. As of this document, the current release is
+    version 1.1.1 of RAVL and is available
+<a href=http://sourceforge.net/projects/ravl/files/RAVL/1.1/RAVL-1.1.1.tgz/download>here</a>
+    . The
+<a href=http://sourceforge.net/projects/ravl/files/RAVL>RAVL distribution area on sourceforge</a>
+    contains all available versions of the RAVL source and will contain any
+    version that has been released after these instructions were written. If
+    you download a later version of the source from the distribution area, the
+    name of the tar archive in the following procedure will need to be changed
+    to reflect this.</p>
 
-      <li> Configure the source to your system
-           <pre><kbd>           ./configure </kbd></pre>
-           This phase will locate the software tools required to build both RAVL
-           and QMake. It will also determine the third-party libraries that are
-           available to allow the extended functionality of RAVL to be enabled.
-           It is possible for the user to shape how this configuration phase
-           operates; including the possibility of over-riding what libraries RAVL
-           will utilise and  where the RAVL library will be installed. Please
-           refer to the following <a href="#advinst">Advanced Installation</a>
-           section.<br/>
-           <br/>
-      </li>
-
-      <li> Build the RAVL libraries
-           <pre><kbd>           make </kbd></pre>
-           All built binaries and objects will be created in a tree under where the
-           initial configure was run. This stage will also build QMake.<br/>
-           <br/>
-      </li>
-
-      <li> Install the RAVL libraries
-           <pre><kbd>           make install </kbd></pre>
-           By default, the RAVL libraries will be installed under the system
-           <code>/usr/local</code> directory. You may need additional user
-           privileges to complete this stage. <br/>
-           <br/>
-      </li>
-
-      <li> Inform your system about RAVL<br/>
-           <p>If you have installed RAVL to the standard location (under 
-           <code>/usr/local</code>), your system should already be configured 
-           to use the RAVL libraries and utilities. If not, or if you have
-           selected a non-standard installation location for RAVL, there are
-           two paths that need setting up:</p>
-
-      <pre>        1) The bin directory (<code>/usr/local/bin</code> by default) should appear 
-           in the <kbd>$PATH</kbd> environment variable, e.g. for bash users:
-
-                      <kbd>export PATH=${PATH}:${HOME}/Ravl/bin</kbd>
-
-        2) The lib directory needs to be made known to the loader,
-           either by including it in the loader's configuration file
-           (usually <code>/etc/ld.so.conf</code> or <code>/etc/ld.conf</code>) or by adding it
-           to <kbd>$LD_LIBRARY_PATH</kbd>, e.g.:
-
-              <kbd>export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${HOME}/Ravl/lib</kbd></pre>
-           <p>If you wish to use your own build system, rather than the one
-           included with RAVL (QMake), your compiler and linker will also need
-           to know the location of the RAVL header files and library.</p>
-
-      </li>
-    </ol>
+    <p>Once you have downloaded the source archive, execute the following:</p>
+    <pre>
+    <kbd>tar -xvzf ./RAVL-1.1.1.tgz</kbd>
+    <kbd>cd ravl</kbd>
+    <kbd>./configure </kbd>
+    <kbd>make </kbd>
+    <kbd>sudo make install</kbd>
+    </pre>
 
     <p>You are now ready to begin programming with RAVL. Full documentation for
     the RAVL classes can then be found via the index
@@ -146,6 +98,14 @@
     available command line options for configure, see the output from running
     <pre>
     <kbd>./configure --help</kbd></pre></p>
+
+    <p>If you install RAVL outside of the standard installtion location you will
+    need to ensure that the RAVL binaries are in a location specified in your
+    PATH environment variable and that the RAVL libraries themselves are in a
+    directory that the system's loader will look in. Configuring the loader to
+    find the RAVL libraries is  achieved either by adding the RAVL lib directory
+    to the loader's configuration file (usually /etc/ld.so.conf or /etc/ld.conf)
+    or by adding the directory to $LD_LIBRARY_PATH.</p>
     
     <p>The configure program tailors the RAVL source to the environment present
     on your machine. Running configure will generate a <dfn>Config.Project</dfn>
@@ -231,10 +191,10 @@ find and enable the library or error out. </p>
 
     <p>The RAVL build process uses the default compiler available in your system
 path. Should you wish to change this, prior to running configure, set the
-environment variables <def>CC</def> and/or <def>CXX</def> to the location(s) of the C and C++
+environment variables <dfn>CC</dfn> and/or <dfn>CXX</dfn> to the location(s) of the C and C++
 compilers you wish to use. Other influential environment variables allow
 for the redefinition of other commands for the build process to use or to
-allow the specification of extra <def>CFLAGS</def> to use.</p>
+allow the specification of extra <dfn>CFLAGS</dfn> to use.</p>
 
     <p>A full list of configure's available command-line switches and significant
 environment variables may be seen by issuing the command:
@@ -243,21 +203,18 @@ environment variables may be seen by issuing the command:
 
     By executing configure in a directory away from where you installed the RAVL
 source, it is possible to separate out the build and source locations. For
-instance, the commands:
+instance, if you had the RAVL source installed under /usr/src/RAVL, the
+commands:
 
     <pre>
-    <kbd>mkdir ~/Source
-    cd ~/Source
-    tar -xvf $ArchivePath
-    mkdir /tmp/Build
-    cd /tmp/Build
-    ~/Source/configure
+    <kbd>mkdir ~/MyRavlBuild
+    cd ~/MyRavlBuild
+    /usr/src/RAVL/configure
     make
     make install</kbd></pre>
 
-    will install the RAVL source in the Source directory under the user's home
-location. RAVL itself will be built in the <code>/tmp/Build</code> directory which could
-be later deleted to save space once RAVL has been installed.</p>
+will use the RAVL source from the centrally installed copy and build RAVL itself
+into the directory user's local HOME.</p>
 
 
 
@@ -270,7 +227,7 @@ be later deleted to save space once RAVL has been installed.</p>
     <address><a href="mailto:w.christmas@surrey.ac.uk">Bill Christmas</a></address>
 <!-- Created: Fri Dec 23 09:31:09 GMT 2005 -->
 <!-- hhmts start -->
-Last modified: Tue Nov 22 15:36:43 GMT 2011
+Last modified: Tue Mar 27 16:48:42 BST 2012
 <!-- hhmts end -->
   </body>
 </html>
