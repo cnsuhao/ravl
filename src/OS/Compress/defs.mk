@@ -5,6 +5,8 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
+REQUIRES=Zlib
+
 PACKAGE=Ravl
 
 HEADERS=Compress.hh
