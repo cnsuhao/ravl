@@ -266,6 +266,8 @@ endif
 
 # Record the contents of EXELIB before we add prog libs in LIBLIBS
 LIBLIBS := $(EXELIB)
+
+ifndef NOEXEBUILD   # Don't even look if we're not building exe's
 ifndef NOINCDEFS
  REQUIRED_PROGLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(PROGLIBS)))
  OPTIONAL_PROGLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(PROGLIBS)))
@@ -298,13 +300,16 @@ ifeq ($(filter Auto,$(USESLIBS)),Auto)
   endif
  endif
 endif
-endif
+endif # ifndef NOEXEBUILD
+
+endif # ifdef USESLIBS
 
 LINKLIBS := $(EXELIB)
 
 ######################################
 # Sort out libraries needed for test executables. TESTLIBS
 
+ifndef NOEXEBUILD  # Don't even look if we're not building exe's
 ifndef NOINCDEFS
  ifdef TESTLIBS
  REQUIRED_TESTLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(TESTLIBS)))
@@ -318,6 +323,7 @@ $(OPTIONAL_TESTLIBS) : $(INST_LIB)/.dir
 	@true;
  endif
  endif
+endif
 endif
 
 LINKTESTLIBS := $(EXELIB)
