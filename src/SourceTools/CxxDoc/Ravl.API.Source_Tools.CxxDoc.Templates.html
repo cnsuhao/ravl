@@ -6,30 +6,17 @@
   </head>
 
   <body>
-    CxxDoc uses series of directories to generate documentation:
-
-<ul>
-      <li><b>(install dir)/Tools/CxxDoc/Class/*</b> are the scripts used to generate HTML
-for the Class dir of the documentation.
-
-      <li><b>(install dir)/Tools/CxxDoc/DocNode/*</b> are the scripts used to generate
-HTML for the Tree dir of the documentation.
-
-      <li><b>(install dir)/Tools/AutoDoc/EHT/*</b> is the set of extra documention pages to
-be place in the documentation tree. EHT stands for Embedded Hyper Text, as the pages are
-wrapped with headers and footers generated from the templates. These files are copied here
-by QMake from files listed in the <b>EHT</b> tag.
-</ul>
     
+
+<p>CxxDoc works by parsing all the headers from a project, generating a
+'parse tree`, then using a stack based approach to traverse the tree.  Commands
+such as 'forall' (see below) push a new context onto the stack. </p>
+
     <h3> CxxDoc template commands </h3>
 
-
-CxxDoc works by parsing all the headers from a project, generating a 'parse tree`, then using a 
-stack based approach to traverse the tree.  Commands such as 'forall' (see below) push a new context onto the stack.  <p>
-
-CxxDoc uses  the basic text template system, these commands can be found in 
-<a href="Ravl.API.OS.Text_Processing.Templates.html">Ravl.API.OS.Text_Processing.Templates</a>, and adds
-the following commands to deal with the parse tree. <p>
+<p>CxxDoc uses  the basic text template system, these commands can be found in 
+<a href="Ravl.API.OS.Text_Processing.Templates.html">Ravl.API.OS.Text_Processing.Templates</a>
+, and adds the following commands to deal with the parse tree. </p>
 
     <table>
       <tr><td> <B>$(forall:a:b)</B><td> For all child objects in the current scope of type 'a' push 
