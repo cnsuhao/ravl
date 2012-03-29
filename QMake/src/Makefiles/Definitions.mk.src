@@ -216,7 +216,7 @@ endif
 
 # Admin files used in build but not needed after.
 
-INST_ADMIN=$(ROOTDIR)/transient$(PROJECT_DIR)
+INST_ADMIN=$(LOCALTMP)$(PROJECT_DIR)
 
 # Documentation
 
