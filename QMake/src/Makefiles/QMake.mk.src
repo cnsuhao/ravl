@@ -571,6 +571,6 @@ help:
 	@$(PAGER) $(QMAKE_SUPPORT)/Help.txt
 	@echo QMake aborted owing to unknown target: $@
 
-$(INSTALLHOME)/Config.Project:
+$(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
 

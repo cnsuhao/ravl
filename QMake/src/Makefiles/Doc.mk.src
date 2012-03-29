@@ -154,6 +154,6 @@ $(INST_DOCEXAMPLES)/% : % $(INST_DOCEXAMPLES)/.dir
 	$(CP) $< $(INST_DOCEXAMPLES)/$(@F); \
 	$(CHMOD) 444 $(INST_DOCEXAMPLES)/$(@F)
 
-$(INSTALLHOME)/Config.Project:
+$(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
 

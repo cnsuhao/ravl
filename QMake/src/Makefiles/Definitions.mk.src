@@ -54,7 +54,7 @@ ifdef CONFIGFILE
   include $(CONFIGFILE)
 else
   include $(QMAKE_PROJECTS)/Skeleton/Config.Default
-  -include $(INSTALLHOME)/Config.Project
+  -include $(PROJECT_OUT)/Config.Project
 endif
 
 

@@ -18,7 +18,7 @@ ifndef INSTALLHOME
 endif
 
 # Include project default installation targets
-include $(INSTALLHOME)/Targets.Project
+include $(PROJECT_OUT)/Targets.Project
 
 # Ensure we havent got a relative path for any DESTDIR setting
 ifdef DESTDIR
@@ -498,6 +498,6 @@ info:
 
 
 
-$(INSTALLHOME)/Config.Project:
+$(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
 

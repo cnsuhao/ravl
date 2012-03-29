@@ -1139,6 +1139,6 @@ info:
 	@echo "ERROR: Don't know how to make " $@ ; \
 	exit 1
 
-$(INSTALLHOME)/Config.Project:
+$(PROJECT_OUT)/Config.Project:
 	@if [ X$(QMAKE_INFO) != X ]; then echo No Config.Project - Using default settings; fi
 
