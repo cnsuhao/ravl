@@ -19,6 +19,11 @@ namespace RavlN {
     }
   }
 
+  //! Test if its a valid uuid.
+  //! All zeros fails.
+  bool UUIdC::IsValid() const
+  { return !((m_val[0] == 0) && (m_val[1] == 0)); }
+
   //! Parse UUId string
   bool UUIdC::Extract(const char *str) {
     if(str == 0)

@@ -14,6 +14,7 @@
 #include "Ravl/OS/NetPortClient.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/Threads/Signal1.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -23,7 +24,31 @@
 #endif
 
 namespace RavlN {
-  
+
+
+  //: Default constructor.
+
+  NetPortManagerBodyC::NetPortManagerBodyC()
+    : name("*anon*"),
+      managerOpen(false),
+      ready(0),
+      terminate(false),
+      conIdAlloc(0),
+      unregisterOnDisconnect(false)
+  {}
+
+  //: XML Factory constructor.
+
+  NetPortManagerBodyC::NetPortManagerBodyC(const XMLFactoryContextC &factory)
+   : name(factory.AttributeString("name",factory.Name())),
+     address(factory.AttributeString("address","localhost:4143")),
+     managerOpen(false),
+     ready(0),
+     terminate(false),
+     conIdAlloc(0),
+     unregisterOnDisconnect(factory.AttributeBool("unregisterOnDisconnect",false))
+  {}
+
   //: Constructor.
   
   NetPortManagerBodyC::NetPortManagerBodyC(const StringC &nname,bool nUnregisterOnDisconnect)
@@ -38,17 +63,17 @@ namespace RavlN {
   //: Open manager at address.
   
   bool NetPortManagerBodyC::Open(const StringC &addr) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Open(), Called for " << addr << " \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Open(), Called for '%s' ",addr.data()));
     
     RWLockHoldC hold(access,false);
     if(managerOpen) {
-      cerr << "NetPortManagerBodyC::Open(), Attempt to re-open port manager at '" << addr << "'\n";
+      std::cerr << "NetPortManagerBodyC::Open(), Attempt to re-open port manager at '" << addr << "'\n";
       return false; 
     }
     
     sktserv = SocketC(addr,true);
     if(!sktserv.IsOpen()) {
-      cerr << "NetPortManagerBodyC::Run(), Failed to open server socket. '" << addr << "' \n";
+      RavlError("NetPortManagerBodyC::Run(), Failed to open server socket. '%s' ",addr.data());
       return false;
     }
 
@@ -72,7 +97,7 @@ namespace RavlN {
   //: Run port manager.
   
   bool NetPortManagerBodyC::Run() {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Run(), Called. \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Run(), Called. "));
     RavlAssert(sktserv.IsOpen());
     NetPortManagerC manager(*this);
     ready.Post();
@@ -108,7 +133,11 @@ namespace RavlN {
 
   //: Search for port in table.
   
-  bool NetPortManagerBodyC::Lookup(const StringC &name,const StringC &dataType,NetISPortServerBaseC &isport,bool attemptCreate) {
+  bool NetPortManagerBodyC::Lookup(const StringC &name,
+                                   const StringC &dataType,
+                                   NetISPortServerBaseC &isport,
+                                   bool attemptCreate)
+  {
     ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetISPortServerBaseC),  Called. Port='" << name << "' \n");
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(iports.Lookup(name,isport))
@@ -136,7 +165,11 @@ namespace RavlN {
     return true;
   }
   
-  bool NetPortManagerBodyC::Lookup(const StringC &name,const StringC &dataType,NetOSPortServerBaseC &osport,bool attemptCreate) {
+  bool NetPortManagerBodyC::Lookup(const StringC &name,
+                                   const StringC &dataType,
+                                   NetOSPortServerBaseC &osport,
+                                   bool attemptCreate)
+  {
     ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetOSPortServerBaseC),  Called. Port='" << name << "' \n");
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(oports.Lookup(name,osport))
@@ -260,9 +293,25 @@ namespace RavlN {
     return true;
   }
   
+  //! Start service.
+  bool NetPortManagerBodyC::Start() {
+    if(!address.IsEmpty())
+      Open(address);
+    return true;
+  }
+
+  //! Shutdown service
+  bool NetPortManagerBodyC::Shutdown()
+  {
+    Close();
+    return true;
+  }
+
   //: Owning handles has dropped to zero.
   void NetPortManagerBodyC::ZeroOwners()
-  {}
+  {
+    ServiceC::ZeroOwners();
+  }
 
   //: Access global net port manager.
 
@@ -270,7 +319,8 @@ namespace RavlN {
     static NetPortManagerC npm("global");
     return npm;
   }
-  
+
+
   //: Open net port manager.
   
   bool NetPortOpen(const StringC &addr) 
@@ -284,4 +334,15 @@ namespace RavlN {
   }
   //: Close down net port manager.
 
+  NetPortManagerBodyC::RefT NetPortManager2Service(const NetPortManagerC &npm)
+  { return &npm.Body(); }
+
+  DP_REGISTER_CONVERSION(NetPortManager2Service,1.0);
+
+  ServiceC::RefT NetPortManagerBody2Service(const NetPortManagerBodyC::RefT &npm)
+  { return npm.BodyPtr(); }
+
+  DP_REGISTER_CONVERSION(NetPortManagerBody2Service,1.0);
+
+  XMLFactoryRegisterHandleC<NetPortManagerC> g_registerXMLFactoryNetPortManager("RavlN::NetPortManagerC");
 }

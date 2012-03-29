@@ -387,6 +387,27 @@ namespace RavlN {
     
   }
 
+  //! Interpolate between two GPS positions.
+  //! Fraction is between 0.0 and 1.0, where 0 is p1, and 1 is p2.
+
+  bool GPSCoordinateC::BilinearInterpolate(RealT fraction,
+                                           const GPSCoordinateC &p1,
+                                           const GPSCoordinateC &p2,
+                                           GPSCoordinateC &position)
+  {
+    RealT mf = 1.0 - fraction;
+    // FIXME: This isn't ideal.  We really want to find the shortest path over a sphere,
+    // but it'll do for now.
+    position = GPSCoordinateC(p1.Latitude() * mf + p2.Latitude() * fraction,
+                              p1.Longitude() * mf + p2.Longitude() * fraction,
+                              p1.Height() * mf + p2.Height() * fraction,
+                              p1.HorizontalErrorBounds() * mf + p2.HorizontalErrorBounds() * fraction,
+                              p1.VerticalErrorBounds() * mf + p2.VerticalErrorBounds() * fraction
+                              );
+    return true;
+  }
+
+
   //! Compute the differential 
   
   bool GPSCoordinateC::Differential(Vector3dC &diffLat,Vector3dC &diffLong,Vector3dC &diffHeight) const {

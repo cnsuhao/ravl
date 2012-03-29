@@ -33,6 +33,10 @@ namespace RavlN {
     //! Parse UUId string
     bool Extract(const char *str);
 
+    //! Test if its a valid uuid.
+    //! All zeros fails, which is the value constructed by the default constructor.
+    bool IsValid() const;
+
     //! Access first half of uuid
     UInt64T Value1() const
     { return m_val[0]; }

@@ -6,6 +6,7 @@
 // file-header-ends-here
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -15,6 +16,18 @@
 #endif
 
 namespace RavlN {
+
+  //: Factory constructor
+
+  DataServerVFSNodeBodyC::DataServerVFSNodeBodyC(const XMLFactoryContextC &factory)
+    : name(factory.AttributeString("name",factory.Name())),
+      path(factory.AttributeString("path",".")),
+      isDirectory(factory.AttributeBool("isDir",false)),
+      canWrite(factory.AttributeBool("canWrite",false)),
+      verbose(factory.AttributeBool("verbose",false)),
+      deletePending(false),
+      removePending(false)
+  {}
 
   //: Constructor.
   
@@ -27,7 +40,7 @@ namespace RavlN {
       deletePending(false),
       removePending(false)
   {
-    ONDEBUG(cerr << "DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called name=" << name << " path=" << path << " isDir=" << isDir <<"\n");
+    ONDEBUG(std::cerr << "DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called name=" << name << " path=" << path << " isDir=" << isDir <<"\n");
   }
   
   //: Configure node with given setup.
@@ -36,13 +49,17 @@ namespace RavlN {
     
     // Sort out write flag.
     StringC canWriteStr = config["CanWrite"];
-    if(canWriteStr.IsEmpty() || canWriteStr == "1") canWrite = true;
-    else canWrite = false;
+    if(canWriteStr.IsEmpty() || canWriteStr == "1")
+      canWrite = true;
+    else
+      canWrite = false;
     
     // Setup verbose flag.
     StringC verboseStr = config["Verbose"];
-    if(verboseStr.IsEmpty() || verboseStr == "1") verbose = true;
-    else verbose = false;
+    if(verboseStr.IsEmpty() || verboseStr == "1")
+      verbose = true;
+    else
+      verbose = false;
     
     return true;
   }
@@ -96,4 +113,7 @@ namespace RavlN {
     return false;
   }
 
+  XMLFactoryRegisterHandleC<DataServerVFSNodeC> g_registerXMLFactoryDataServerVFSNode("RavlN::DataServerVFSNodeC");
+
+  //DataServerVFSNodeC
 }

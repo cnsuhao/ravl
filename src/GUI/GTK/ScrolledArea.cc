@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlGUI
 //! file="Ravl/GUI/GTK/ScrolledArea.cc"
 
