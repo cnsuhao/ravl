@@ -12,7 +12,7 @@ endif
 #
 # Location for intermediate files
 ifndef LOCALTMP
-  LOCALTMP=$(INSTALLHOME)
+  LOCALTMP=$(PROJECT_OUT)/transient
 endif
 
 # Default settings for compiling C
