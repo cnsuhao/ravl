@@ -15,8 +15,7 @@ ifndef INSTALLHOME
   $(error Project home directory is not specified)
 endif
 
-#OBJ_HOME=$(INSTALLHOME)/$(LOGNAME)/qm/$(INSTALLHOME)/$(ARC)
-OBJ_HOME=$(INSTALLHOME)/$(ARC)
+OBJ_HOME=$(LOCALTMP)/$(ARC)
 
 
 REQUIRED_DIRS=$(patsubst %.r,%, $(filter %.r,$(filter-out QMake.r,$(NESTED))))
