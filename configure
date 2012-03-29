@@ -14760,7 +14760,7 @@ echo PROJECT_OUT=@abs_top_builddir@ >> ./Config.Project.in
 echo INSTALLHOME=@abs_top_builddir@ >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# Location for transient build files >> ./Config.Project.in
-echo LOCALTMP=\$\(PROJECT_OUT\) >> ./Config.Project.in
+echo LOCALTMP=\$\(PROJECT_OUT\)/transient >> ./Config.Project.in
 echo >> ./Config.Project.in
 
 # Define location of compilers and helper programs for build system that
