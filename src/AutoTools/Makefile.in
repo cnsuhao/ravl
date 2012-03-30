@@ -200,7 +200,7 @@ $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc:
 	$(SHOWIT)echo >> $@
 	$(SHOWIT)echo Libs:-L\${libdir} -lRavl >> $@
 	$(SHOWIT)echo Libs.private:$(ALL_EXTERNAL_LIBS)>> $@
-	$(SHOWIT)echo Cflags=-I\${includedir}>> $@
+	$(SHOWIT)echo Cflags:-I\${includedir}>> $@
 	$(SHOWIT)echo >> $@
 
 qmake: @NeededQMake@
