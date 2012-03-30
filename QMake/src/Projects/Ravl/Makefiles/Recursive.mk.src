@@ -11,10 +11,6 @@ endif
 
 include $(QMAKE_MAKEFILES)/Definitions.mk
 
-ifndef INSTALLHOME
-  $(error Project home directory is not specified)
-endif
-
 OBJ_HOME=$(LOCALTMP)/$(ARC)
 
 
@@ -33,13 +29,13 @@ EGS=$(basename $(filter-out $(MAINS), $(filter-out $(TESTEXES),$(EXAMPLES))))
 ifdef SINGLELIB
 ifdef SHAREDBUILD
     BIN_SUBDIR=$(VAR)/shared/single
-    DEPEND_ON=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single/libRavl.so
-    LINK_WITH= -L$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single -lRavl $(ALL_EXTERNAL_LIBS)
+    DEPEND_ON=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single/libRavl.so
+    LINK_WITH= -L$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/shared/single -lRavl $(ALL_EXTERNAL_LIBS)
 else
     BIN_SUBDIR=$(VAR)/single
-    DEPEND_ON=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single/libRavl.a
-    #LINK_WITH=$(patsubst )%.cc,$(OBJ_HOME)/$(PLIB)/$(VAR)/objs/%.o,$(MUSTLINK)) -L$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl $(ALL_EXTERNAL_LIBS)
-    LINK_WITH= -Wl,--whole-archive -L$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl -Wl,--no-whole-archive $(ALL_EXTERNAL_LIBS)
+    DEPEND_ON=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single/libRavl.a
+    #LINK_WITH=$(patsubst )%.cc,$(OBJ_HOME)/$(PLIB)/$(VAR)/objs/%.o,$(MUSTLINK)) -L$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl $(ALL_EXTERNAL_LIBS)
+    LINK_WITH= -Wl,--whole-archive -L$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)/single -lRavl -Wl,--no-whole-archive $(ALL_EXTERNAL_LIBS)
 endif
 else
 # LINK_WITH= $(PLIB) $(USESLIBS) (+ $(PROGLIBS)???) processed for AUTO keyword (& optionally supplemented vi QLibs)     
@@ -143,7 +139,7 @@ library: $(BUILD_LIB)
 programs: $(BUILD_PROGS)
 
 recurse:
-	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(INSTALLHOME)/lib$(PROJECT_DIR)/libdep/ -C $$d -f $(QMAKE_PROJECTS)/Ravl/Makefiles/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
+	@if [ $(RECURSE) = Yes ] ;then for d in $(REQUIRED_DIRS);do $(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -I$(PROJECT_OUT)/lib$(PROJECT_DIR)/libdep/ -C $$d -f $(QMAKE_PROJECTS)/Ravl/Makefiles/Recursive.mk $(MAKECMDGOALS); RET=$$?; if [ $$RET -ne 0 ] ;then exit $$RET; fi; done; fi
 
 test: $(BUILD_TESTS)
 # Initial set-up not yet implemented - use QMake first
@@ -182,13 +178,13 @@ notsupportonly:
 
 # Declare recipies to build utilities from single src file and lib
 define buildutils
-  $1: $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin/$1
+  $1: $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1
 
-  $(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+  $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
-$(INSTALLHOME)/bin/utils/$(BIN_SUBDIR)/bin:
+$(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin:
 	@$(MKDIR_P) $@
 
 $(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON),$(NOLOCALLIB) $(LINK_WITH))))
@@ -196,13 +192,13 @@ $(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON
 
 # Declare recipies to build examples from single src file and lib
 define buildexamples
-  $1: $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin/$1
+  $1: $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1
 
-  $(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+  $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
-$(INSTALLHOME)/bin/examples/$(BIN_SUBDIR)/bin:
+$(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin:
 	@$(MKDIR_P) $@
 
 $(foreach bin,$(EGS),$(eval $(call buildexamples,$(bin),$(NOLOCALLIB) $(DEPEND_ON),$(NOLOCALLIB) $(LINK_WITH))))
@@ -210,18 +206,18 @@ $(foreach bin,$(EGS),$(eval $(call buildexamples,$(bin),$(NOLOCALLIB) $(DEPEND_O
 
 # Declare recipies to build test binaries from single src file and lib
 define buildtest
-  $1: $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin \
-           $(INSTALLHOME)/test/$(BIN_SUBDIR)/log \
-                $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin/$1
+  $1: $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin \
+           $(PROJECT_OUT)/test/$(BIN_SUBDIR)/log \
+                $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1
 
-  $(INSTALLHOME)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
+  $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
 endef
 
-$(INSTALLHOME)/test/$(BIN_SUBDIR)/bin:
+$(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin:
 	@$(MKDIR_P) $@
 
-$(INSTALLHOME)/test/$(BIN_SUBDIR)/log:
+$(PROJECT_OUT)/test/$(BIN_SUBDIR)/log:
 	@$(MKDIR_P) $@
 
 $(foreach bin,$(TESTS),$(eval $(call buildtest,$(bin),$(NOLOCALLIB) $(TESTLIBS) $(DEPEND_ON),$(NOLOCALLIB) $(TESTLIBS) $(LINK_WITH))))

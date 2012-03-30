@@ -2,12 +2,7 @@ QMAKE_MAKEFILES=/Set/During/Staging/Process
 
 include $(QMAKE_MAKEFILES)/Definitions.mk
 
-ifndef INSTALLHOME
-  $(error INSTALLHOME unset)
-  # INSTALLHOME must be provided from higher-level makefile/cmd-line
-endif
-
-LIB_WORK=$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)
+LIB_WORK=$(PROJECT_OUT)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)
 
 BUILT_ROOT=$(LOCALTMP)/$(ARC)
 
