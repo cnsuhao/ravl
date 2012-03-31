@@ -10,4 +10,7 @@
       </Seed>
     </StartPopulation>
   </Optimiser>
+
+  <OptimiserCheckPoint typename="RavlN::GeneticN::GeneticOptimiserCheckPointC" filename="checkPoint" interval="60" numberToKeep="2" Optimiser="Optimiser" />
+  
 </Config>

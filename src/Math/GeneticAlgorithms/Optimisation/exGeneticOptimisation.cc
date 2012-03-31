@@ -10,6 +10,7 @@
 
 
 #include "Ravl/Genetic/GeneticOptimiser.hh"
+#include "Ravl/Genetic/GeneticOptimiserCheckPoint.hh"
 #include "Ravl/Genetic/GenomeConst.hh"
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/EvaluateFitnessFunc.hh"
@@ -72,8 +73,15 @@ int main(int nargs,char **argv)
 
     GeneticOptimiserC::RefT optimiser;
 
+    GeneticOptimiserCheckPointC::RefT optimiserCheckPoint;
+
     if(!factory.UseComponent("Optimiser",optimiser)) {
-      RavlSysLogf(RavlN::SYSLOG_ERR,"Failed to find optimiser.");
+      RavlError("Failed to find optimiser.");
+      return 1;
+    }
+
+    if(!factory.UseComponent("OptimiserCheckPoint",optimiserCheckPoint)) {
+      RavlError("Failed to find optimiser checkpoint.");
       return 1;
     }
 
@@ -81,7 +89,11 @@ int main(int nargs,char **argv)
 
     RavlSysLogf(RavlN::SYSLOG_INFO,"Running optimisation.");
 
+    optimiserCheckPoint->Start();
+
     optimiser->Run();
+
+    optimiserCheckPoint->Shutdown();
 
     RavlSysLogf(RavlN::SYSLOG_INFO,"Optimisation complete");
 

@@ -13,14 +13,16 @@ HEADERS=GeneType.hh Genome.hh GeneticOptimiser.hh \
  GenomeConst.hh GenomeShare.hh GenomeList.hh GenomeClass.hh GenomeMeta.hh \
  GeneTypeWeightedMeta.hh GeneTypeFloatGauss.hh \
  EvaluateFitness.hh EvaluateFitnessFunc.hh \
- GenePalette.hh GeneFactory.hh GeneTypeProxy.hh
+ GenePalette.hh GeneFactory.hh GeneTypeProxy.hh \
+ GeneticOptimiserCheckPoint.hh
 
 SOURCES=GeneType.cc Genome.cc GeneticOptimiser.cc \
  GenomeConst.cc GenomeShare.cc GenomeList.cc GenomeClass.cc GenomeMeta.cc \
  GeneTypeWeightedMeta.cc GeneTypeFloatGauss.cc \
  Gene2ClassGenerator.cc \
  EvaluateFitness.cc EvaluateFitnessFunc.cc \
- GenePalette.cc GeneFactory.cc GeneTypeProxy.cc
+ GenePalette.cc GeneFactory.cc GeneTypeProxy.cc \
+ GeneticOptimiserCheckPoint.cc
 
 MAINS= 
 
@@ -30,7 +32,7 @@ MUSTLINK=LinkGeneticOpt.cc
 
 PLIB=RavlGeneticOptimisation
 
-USESLIBS=RavlOS RavlIO RavlXMLFactory
+USESLIBS=RavlOS RavlIO RavlXMLFactory RavlService RavlThreads
 
 PROGLIBS= RavlGeneticProgram 
 

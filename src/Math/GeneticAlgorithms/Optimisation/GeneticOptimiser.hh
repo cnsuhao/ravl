@@ -19,6 +19,7 @@
 
 namespace RavlN { namespace GeneticN {
 
+
   //! Optimiser
 
   class GeneticOptimiserC
@@ -33,6 +34,22 @@ namespace RavlN { namespace GeneticN {
 
     //! Run generation.
     void RunGeneration(UIntT generation);
+
+    //! Save population to file
+    //! Note: This thread safe
+    bool SavePopulation(const StringC &filename) const;
+
+    //! Save population to file
+    //! Note: This thread safe
+    bool LoadPopulation(const StringC &filename);
+
+    //! Extract population from optimisers
+    //! Note: This thread safe
+    void ExtractPopulation(SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population) const;
+
+    //! Add population to optimisers, not this does not remove any entries already there
+    //! Note: This thread safe
+    void AddPopulation(const SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population);
 
     //! Run whole optimisation
     void Run();
@@ -74,6 +91,7 @@ namespace RavlN { namespace GeneticN {
 
     GenePaletteC::RefT m_genePalette;
   };
+
 }}
 
 #endif
