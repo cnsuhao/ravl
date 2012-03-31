@@ -112,9 +112,12 @@ namespace RavlN { namespace GeneticN {
   //! Extract population from optimisers
   void GeneticOptimiserC::ExtractPopulation(SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population) const
   {
-    MutexLockC lock(m_access);
+    RavlN::MutexLockC lock(m_access);
     size_t arraySize = m_population.size();
     population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(arraySize);
+    if(m_randomiseDomain) {
+      RavlWarning("Can't checkpoint randomised domains reliably");
+    }
     unsigned i = 0;
     for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());
         it != m_population.end();it++,i++)
@@ -140,6 +143,7 @@ namespace RavlN { namespace GeneticN {
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
+
     MutexLockC lock(m_access);
      if(m_population.empty()) {
       RavlError("No previous population to rank.");
@@ -161,6 +165,7 @@ namespace RavlN { namespace GeneticN {
     }
 
     std::vector<GenomeC::RefT> newTestSet;
+    //m_newTestSet.clear();
     newTestSet.reserve(m_populationSize + numKeep);
 
     while(it != m_population.rend() && count < numKeep) {

@@ -54,6 +54,10 @@ namespace RavlN { namespace GeneticN {
     //! Run whole optimisation
     void Run();
 
+    //! Test if we're using a randomised domain
+    bool IsUsingRandomisedDomain() const
+    { return m_randomiseDomain; }
+
     //! Handle to optimiser
     typedef SmartPtrC<GeneticOptimiserC> RefT;
 
