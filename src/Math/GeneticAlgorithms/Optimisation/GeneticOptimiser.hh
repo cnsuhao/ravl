@@ -82,7 +82,7 @@ namespace RavlN { namespace GeneticN {
     UIntT m_threads;
 
     EvaluateFitnessC::RefT m_evaluateFitness;
-
+    RavlN::SArray1dC<GenomeC::RefT> m_currentSeeds;
     std::vector<GenomeC::RefT> m_startPopulation;
     std::multimap<float,GenomeC::RefT> m_population;
     GeneTypeC::RefT m_rootGeneType;

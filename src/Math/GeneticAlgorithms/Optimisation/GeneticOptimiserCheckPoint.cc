@@ -45,11 +45,6 @@ namespace RavlN { namespace GeneticN {
 
     RavlDebug("Starting checkpointer. ");
 
-    if(m_optimiser->IsUsingRandomisedDomain()) {
-      RavlError("Randomised domains not supported. ");
-      throw RavlN::ExceptionOperationFailedC("Randomised domains not supported");
-    }
-
     // First check if we're restoring from a previous checkpoint.
     StringC prefix = m_filename.NameComponent();
     DirectoryC dir = m_filename.PathComponent();

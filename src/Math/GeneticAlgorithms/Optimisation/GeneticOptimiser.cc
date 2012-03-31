@@ -113,11 +113,14 @@ namespace RavlN { namespace GeneticN {
   void GeneticOptimiserC::ExtractPopulation(SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population) const
   {
     RavlN::MutexLockC lock(m_access);
+    if(m_randomiseDomain) {
+      population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(m_currentSeeds.Size());
+      for(unsigned i = 0;i < m_currentSeeds.Size();i++)
+        population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(0,m_currentSeeds[i]);
+      return ;
+    }
     size_t arraySize = m_population.size();
     population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(arraySize);
-    if(m_randomiseDomain) {
-      RavlWarning("Can't checkpoint randomised domains reliably");
-    }
     unsigned i = 0;
     for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());
         it != m_population.end();it++,i++)
@@ -125,7 +128,6 @@ namespace RavlN { namespace GeneticN {
       population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(it->first,it->second);
     }
     RavlAssert(i == arraySize);
-    lock.Unlock();
   }
 
 
@@ -154,10 +156,9 @@ namespace RavlN { namespace GeneticN {
     std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
 
     // Select genomes to be used as seeds for the next generation.
-    std::vector<GenomeC::RefT> seeds;
     unsigned numKeep = Floor(m_populationSize * m_keepFraction);
     if(numKeep < 1) numKeep = 1;
-    seeds.reserve(numKeep);
+    CollectionC<GenomeC::RefT> seeds(numKeep);
 
     if(m_population.empty()) {
       RavlSysLogf(SYSLOG_ERR,"Population empty.");
@@ -169,7 +170,7 @@ namespace RavlN { namespace GeneticN {
     newTestSet.reserve(m_populationSize + numKeep);
 
     while(it != m_population.rend() && count < numKeep) {
-      seeds.push_back(it->second);
+      seeds.Append(it->second);
       //RavlSysLogf(SYSLOG_DEBUG," Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
       if(m_randomiseDomain)
         newTestSet.push_back(it->second);
@@ -178,7 +179,7 @@ namespace RavlN { namespace GeneticN {
     }
 
     RavlDebug("Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",
-        generation,(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
+        generation,(UIntT) seeds.Size().V(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
     if(m_randomiseDomain) {
       m_population.clear();
@@ -188,6 +189,7 @@ namespace RavlN { namespace GeneticN {
         m_population.erase(m_population.begin(),it.base());
       }
     }
+    m_currentSeeds = seeds.Array();
     lock.Unlock();
 
     unsigned noCrosses = Floor(m_populationSize * m_crossRate);
@@ -196,13 +198,13 @@ namespace RavlN { namespace GeneticN {
     unsigned i = 0;
     // In the first generation there may not be enough seeds to make
     // sense doing this.
-    if(seeds.size() > 1) {
+    if(seeds.Size() > 1) {
       for(;i < noCrosses;i++) {
-        unsigned i1 = m_genePalette->RandomUInt32() % seeds.size();
-        unsigned i2 = m_genePalette->RandomUInt32() % seeds.size();
+        unsigned i1 = m_genePalette->RandomUInt32() % seeds.Size().V();
+        unsigned i2 = m_genePalette->RandomUInt32() % seeds.Size().V();
         // Don't breed with itself.
         if(i1 == i2)
-          i2 = (i1 + 1) % seeds.size();
+          i2 = (i1 + 1) % seeds.Size();
         GenomeC::RefT newGenome;
         seeds[i1]->Cross(*m_genePalette,*seeds[i2],newGenome);
         newGenome->SetGeneration(generation);
@@ -212,7 +214,7 @@ namespace RavlN { namespace GeneticN {
 
     RavlDebug("Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
     for(;i < m_populationSize;i++) {
-      unsigned i1 = m_genePalette->RandomUInt32() % seeds.size();
+      unsigned i1 = m_genePalette->RandomUInt32() % seeds.Size().V();
       GenomeC::RefT newGenome;
       if(Random1() < m_randomFraction) {
         ONDEBUG(RavlDebug("Random"));
