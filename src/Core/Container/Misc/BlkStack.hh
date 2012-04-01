@@ -24,9 +24,9 @@ namespace RavlN {
   //: Block stack.
   // This is a small object <p>
   // This is designed to handle simple data types efficiently. It
-  // has some draw backs however, there is no garantee when the
+  // has some draw backs however, there is no guarantee when the
   // data held on the stack will have its destructor called, nor
-  // are there any garantees in what order they well happen. If
+  // are there any guarantees in what order they well happen. If
   // this is a problem use StackC instead as it handles these cases
   // properly.
   

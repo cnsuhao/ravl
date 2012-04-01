@@ -153,7 +153,10 @@ namespace RavlN {
     
     inline void   Push(const T&);
     //: Push element onto stack.
-    
+
+    inline void   Push();
+    //: Push element created with its default constructor onto the stack.
+
     inline void   InsFirst(const T& d) 
     { Push(d); }
     //: Push element onto stack.
@@ -265,6 +268,18 @@ namespace RavlN {
       this->top     =  0;
     }
     new(&this->topBlk->d[this->top++]) T(data);   // like a straightforward array impl.
+  }
+
+  //--------------------------------------------------------------------------
+  template <class T>
+  inline void StackC<T>::Push()
+  {
+    if (this->top == this->blkSize) { // run out of space in current block
+      this->blkSize += this->incrBlkSize;
+      AddBlk();
+      this->top     =  0;
+    }
+    new(&this->topBlk->d[this->top++]) T();   // like a straightforward array impl.
   }
 
   //--------------------------------------------------------------------------
