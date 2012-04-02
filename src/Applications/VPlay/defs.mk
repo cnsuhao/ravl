@@ -24,9 +24,9 @@ MAINS= VPlay.cc VCopy.cc
 
 PLIB= RavlVPlay
 
-USESLIBS = RavlCore RavlOS RavlImage RavlOSIO RavlGUI RavlDPMT RavlGUI2D RavlGUIUtil 
+USESLIBS = RavlCore RavlOS RavlImage RavlOSIO RavlGUI RavlDPMT RavlGUI2D RavlGUIUtil
 
-PROGLIBS =  RavlImgIOV4L.opt RavlExtImgIO.opt RavlDPDisplay \
+PROGLIBS =  RavlImgIOV4L.opt RavlExtImgIO.opt RavlDPDisplay RavlThreads \
  RavlImageIO RavlVideoIO  CSPDriver.opt RavlURLIO.opt RavlLibMPEG2.opt \
  RavlImageProc RavlNet RavlDVDRead.opt RavlAVIFile.opt \
  RavlImgIOJasper.opt RavlDV.opt  RavlImgIOV4L2.opt \
