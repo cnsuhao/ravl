@@ -71,7 +71,7 @@ namespace RavlN  {
   //: Test if we should default to 32 bit compatibility mode.
 
   void SetCompatibilityMode32Bit(bool activate);
-  //: Set 32 bit compatiblity mode.
+  //: Set 32 bit compatibility mode.
 
 #if RAVL_HAVE_BYTESWAP
 #include <byteswap.h>
@@ -177,7 +177,7 @@ namespace RavlN  {
         m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit()),
         m_arraySizeLimit((size_t) -1)
     {}
-    //: Default construtor.
+    //: Default constructor.
 
     ~BinIStreamC();
     //: Destructor.
@@ -409,13 +409,13 @@ namespace RavlN  {
     //: Access the pointer manager.
 
     void UseNativeEndian(bool nUseNativeEndian) {
-      RavlAssertMsg(nUseNativeEndian || RAVL_ENDIAN_COMPATILIBITY,"Compatiblity binary streams not enabled. ");
+      RavlAssertMsg(nUseNativeEndian || RAVL_ENDIAN_COMPATILIBITY,"Compatibility binary streams not enabled. ");
       useNativeEndian = nUseNativeEndian;
     }
     //: Set native endian
 
     void UseBigEndian(bool nUseBigEndian) {
-      RavlAssertMsg((nUseBigEndian == RAVL_BINSTREAM_ENDIAN_BIG) || RAVL_ENDIAN_COMPATILIBITY,"Compatiblity binary streams not enabled. ");
+      RavlAssertMsg((nUseBigEndian == RAVL_BINSTREAM_ENDIAN_BIG) || RAVL_ENDIAN_COMPATILIBITY,"Compatibility binary streams not enabled. ");
       useNativeEndian = (RAVL_ENDIAN_BIG == nUseBigEndian);
     }
     //: Set endian to use

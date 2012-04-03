@@ -11,7 +11,7 @@
 //! lib=RavlOS
 //! file="Ravl/OS/FileSystem/Directory.cc"
 
-// This config stuff should be moved elseware.
+// This config stuff should be moved elsewhere.
 
 #include "Ravl/config.h"
 #if RAVL_OS_MACOSX
@@ -83,9 +83,6 @@ namespace RavlN {
 		return ws;
 	}
 #endif
-
-
-
 
   static inline bool ReturnInList(const char *nm) {
     if(nm[0] != '.')
