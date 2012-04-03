@@ -289,7 +289,9 @@ namespace RavlN {
     else
       Init(out = new ofstream(fd,0,0),StringC(fd)); 
 #else
-    ofdstream *ofs = new ofdstream(fd); 
+    std::ios_base::openmode mode = std::ios_base::out;
+    if(binary) mode |= std::ios_base::binary;
+    ofdstream *ofs = new ofdstream(fd,mode);
     Init(out = ofs,StringC(fd)); 
 #endif
   }
@@ -429,7 +431,9 @@ namespace RavlN {
     else
       Init(in = new ifstream(fd,0,0),StringC(fd));
 #else
-    ifdstream *ifs = new ifdstream(fd);
+    std::ios_base::openmode mode = std::ios_base::in;
+    if(binary) mode |= std::ios_base::binary;
+    ifdstream *ifs = new ifdstream(fd,mode);
     Init(in = ifs,StringC(fd));    
 #endif
   }
