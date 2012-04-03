@@ -13,6 +13,7 @@
 #include "Ravl/Genetic/GeneticOptimiser.hh"
 #include "Ravl/Threads/TimedTriggerQueue.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/Service.hh"
 #include "Ravl/Threads/Mutex.hh"
 
 namespace RavlN { namespace GeneticN {

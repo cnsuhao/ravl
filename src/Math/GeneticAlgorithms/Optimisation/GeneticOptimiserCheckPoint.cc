@@ -35,8 +35,7 @@ namespace RavlN { namespace GeneticN {
      m_checkTaskId(0)
   {
     factory.UseChildComponent("Optimiser",m_optimiser);
-    if(!factory.UseComponent("Timer",m_timer,true,typeid(TimedTriggerQueueBodyC)))
-      m_timer = GlobalTriggerQueue().BodyPtr();
+    m_timer = GlobalTriggerQueue().BodyPtr();
   }
 
   //! Start service.
