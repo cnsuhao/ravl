@@ -22,7 +22,7 @@
 #include "Ravl/Threads/Semaphore.hh"
 #include "Ravl/Threads/ThreadEvent.hh"
 #include "Ravl/Calls.hh"
-#include "Ravl/Service.hh"
+#include "Ravl/SmartLayerPtr.hh"
 
 // The new timed trigger code doesn't rely the un*x select system call,
 // but gives less accurate timing.  
@@ -37,12 +37,9 @@ namespace RavlN
   // See the handle class for more details.
   
   class TimedTriggerQueueBodyC 
-    : public ServiceC
+    : public RavlN::RCLayerBodyC
   {
   public:
-    TimedTriggerQueueBodyC(const XMLFactoryContextC &factory);
-    //: Default constructor
-
     TimedTriggerQueueBodyC();
     //: Default constructor
 

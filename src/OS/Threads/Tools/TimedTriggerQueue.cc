@@ -17,7 +17,6 @@
 
 #include "Ravl/Threads/TimedTriggerQueue.hh"
 #include "Ravl/Threads/LaunchThread.hh"
-#include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/Exception.hh"
 #include "Ravl/SysLog.hh"
 
@@ -36,17 +35,6 @@
 
 namespace RavlN
 {
-
-  //: XML factory constructor
-
-  TimedTriggerQueueBodyC::TimedTriggerQueueBodyC(const XMLFactoryContextC &factory)
-  : ServiceC(factory),
-    m_started(false),
-    eventCount(0),
-    done(false),
-    semaSched(0)
-  {}
-
 
   //: Default constuctor
   
@@ -219,6 +207,5 @@ namespace RavlN
     return triggerQueue;
   }
 
-  static XMLFactoryRegisterConvertC<TimedTriggerQueueBodyC,ServiceC> g_registerTimedTriggerQueueBody("RavlN::TimedTriggerQueueBodyC");
 
 }

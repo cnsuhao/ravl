@@ -24,7 +24,7 @@ SOURCES = Thread.cc Mutex.cc ConditionalMutex.cc Semaphore.cc RWLock.cc \
 
 PLIB = RavlThreads
 
-USESLIBS = RavlCore posixThreads RavlOS system RavlService
+USESLIBS = RavlCore posixThreads RavlOS system
 
 TESTEXES = testRWLock.cc
 
