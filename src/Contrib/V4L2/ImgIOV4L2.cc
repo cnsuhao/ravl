@@ -61,6 +61,7 @@ namespace RavlImageN
   const static SupportedFormatT g_supportedFormat[] =
   {
     SupportedFormatT(typeid(ImageC<ByteT           >), v4l2_fourcc('G', 'R', 'E', 'Y'),  true),
+    SupportedFormatT(typeid(ImageC<ByteT           >), v4l2_fourcc('Y', 'U', '1', '2'), false),
     SupportedFormatT(typeid(ImageC<ByteRGBValueC   >), v4l2_fourcc('B', 'G', 'R', '4'), false),
     SupportedFormatT(typeid(ImageC<ByteYUV422ValueC>), v4l2_fourcc('Y', 'U', 'Y', 'V'), false),
   };
@@ -263,7 +264,8 @@ namespace RavlImageN
     
     // Create the fast buffer image
     RavlAssertMsg(buffer.memory == V4L2_MEMORY_MMAP, "ImgIOV4L2BaseC::GetFrame<ByteT> buffer not mmap-ed");
-    img = ImageC<ByteT>(m_height, m_width, V4L2BufferC<ByteT>(parent, m_buffers[buffer.index].m_id, buffer.index, (ByteT*)m_buffers[buffer.index].m_start, (UIntT)m_buffers[buffer.index].m_length));
+    img = ImageC<ByteT>(m_height, m_width,
+                        V4L2BufferC<ByteT>(parent, m_buffers[buffer.index].m_id, buffer.index, (ByteT*)m_buffers[buffer.index].m_start, (UIntT)m_buffers[buffer.index].m_length));
     
     // Unlock
     lockCapture.Unlock();
@@ -325,7 +327,9 @@ namespace RavlImageN
         
         // Query the buffer
         v4l2_buffer buffer;
+        memset(&buffer,0,sizeof(v4l2_buffer));
         buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buffer.memory = V4L2_MEMORY_MMAP;
         buffer.index = index;
         if (ioctl(m_fd, VIDIOC_QUERYBUF, &buffer) == -1)
         {
@@ -432,34 +436,7 @@ namespace RavlImageN
       m_width = pfmt->width;
       m_height = pfmt->height;
     }
-    
-    // Which format do I need to support this pixel format?
-    UIntT pixelIndex = 0;
-    ONDEBUG( \
-      cerr << "ImgIOV4L2BaseC::CheckFormat typeid(" << pixelType.name() << ")" << endl; \
-    )
-    while (pixelIndex < g_supportedFormats)
-    {
-      // Search the table
-      if (pixelType == g_supportedFormat[pixelIndex].m_objectType)
-      {
-        ONDEBUG( \
-          cerr << "ImgIOV4L2BaseC::CheckFormat requires format(" << CHAR_STREAM_FROM_4CC(g_supportedFormat[pixelIndex].m_pixelFormat) << ")" << endl; \
-        )
-        m_pixelFormat = g_supportedFormat[pixelIndex].m_pixelFormat;
-        m_fastBufferAvailable = g_supportedFormat[pixelIndex].m_fastBuffer;
-        break;
-      }
-      
-      // Try the next entry
-      pixelIndex++;
-    }
-    if (pixelIndex == g_supportedFormats)
-    {
-      ONDEBUG(cerr << "ImgIOV4L2BaseC::CheckFormat no suitable pixel format supported" << endl;)
-      return false;
-    }
-    
+
     // Enumerate the capture formats
     bool supported = false;
     v4l2_fmtdesc desc;
@@ -474,9 +451,31 @@ namespace RavlImageN
         cerr << "desc(" << desc.description << ")" << endl; \
       )
       desc.index++;
-      
+
+      bool found = false;
+
+      UIntT pixelIndex = 0;
+      while (pixelIndex < g_supportedFormats)
+      {
+        // Search the table
+        if (pixelType == g_supportedFormat[pixelIndex].m_objectType &&
+             desc.pixelformat == g_supportedFormat[pixelIndex].m_pixelFormat)
+        {
+          ONDEBUG( \
+            cerr << "ImgIOV4L2BaseC::CheckFormat requires format(" << CHAR_STREAM_FROM_4CC(g_supportedFormat[pixelIndex].m_pixelFormat) << ")" << endl; \
+          )
+          m_pixelFormat = desc.pixelformat;
+          m_fastBufferAvailable = g_supportedFormat[pixelIndex].m_fastBuffer;
+          found = true;
+          break;
+        }
+
+        // Try the next entry
+        pixelIndex++;
+      }
+
       // Check the pixel format is supported
-      if (desc.pixelformat == m_pixelFormat)
+      if (found)
       {
         ONDEBUG(cerr << "ImgIOV4L2BaseC::CheckFormat pixel format supported by device" << endl;)
         supported = true;
@@ -660,11 +659,7 @@ namespace RavlImageN
     {
       if (m_bufferMax != reqbuf.count)
       {
-        cerr << "ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_REQBUFS) requested(" << m_bufferMax << ") buffers, got(" << reqbuf.count << ")" << endl;
-      }
-      else
-      {
-        ONDEBUG(cerr << "ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_REQBUFS) requested(" << m_bufferMax << ") buffers, got(" << reqbuf.count << ")" << endl;)
+        RavlWarning("ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_REQBUFS) requested(%u) buffers, got(%u)", m_bufferMax,reqbuf.count );
       }
       
       if (reqbuf.count <= 0)
@@ -682,14 +677,18 @@ namespace RavlImageN
       {
         // Query the buffer
         v4l2_buffer buffer;
+        memset(&buffer,0,sizeof(v4l2_buffer));
         buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buffer.memory = V4L2_MEMORY_MMAP;
         buffer.index = m_bufferCount;
         if (ioctl(m_fd, VIDIOC_QUERYBUF, &buffer) == -1)
         {
-          ONDEBUG(cerr << "ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_QUERYBUF) failed buffer(" << m_bufferCount << ")" << endl;)
+          RavlError("ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_QUERYBUF) failed buffer(%u)",m_bufferCount);
           break;
         }
-      
+
+        RavlDebug("Allocating buffer size %u (Pixels:%u) ",buffer.length,m_width * m_height);
+
         // Map the buffer
         m_buffers[m_bufferCount].m_id = m_bufferIdCount++;
         m_buffers[m_bufferCount].m_length = buffer.length;
@@ -703,7 +702,7 @@ namespace RavlImageN
         // Verify
         if (m_buffers[m_bufferCount].m_start == MAP_FAILED)
         {
-          ONDEBUG(cerr << "ImgIOV4L2BaseC::ConfigureCapture mmap failed buffer(" << m_bufferCount << ")" << endl;)
+          ONDEBUG(RavlError("ImgIOV4L2BaseC::ConfigureCapture mmap failed buffer(%u)",m_bufferCount));
           break;
         }
         
@@ -734,7 +733,7 @@ namespace RavlImageN
       return false;
     }
     
-    return true;
+    return m_bufferCount > 0;
   }
   
   
@@ -748,7 +747,7 @@ namespace RavlImageN
     const int type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if (ioctl(m_fd, VIDIOC_STREAMOFF, &type) == -1)
     {
-      cerr << "ImgIOV4L2BaseC::ReleaseCapture ioctl(VIDIOC_STREAMOFF) failed" << endl;
+      RavlError("ImgIOV4L2BaseC::ReleaseCapture ioctl(VIDIOC_STREAMOFF) failed");
     }
 
     // Unmap the buffers
