@@ -17,6 +17,8 @@ namespace RavlN {
   class UUIdC
   {
   public:
+    typedef unsigned char rawUUId_t[16];
+
     //! Default constructor.
     UUIdC();
 
@@ -45,13 +47,24 @@ namespace RavlN {
     UInt64T Value2() const
     { return m_val[1]; }
 
+    //! Access raw bytes
+    const rawUUId_t &Raw() const
+    { return m_raw; }
+
+    //! Access raw bytes
+    rawUUId_t &Raw()
+    { return m_raw; }
+
     //! Obtain an text description of the UUId.
     StringC Text() const;
 
     //! Compute a hash value
     size_t Hash() const;
   protected:
-    UInt64T m_val[2];
+    union {
+      UInt64T m_val[2];
+      rawUUId_t m_raw;
+    };
   };
 
   //! Compare two id's

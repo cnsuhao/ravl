@@ -18,6 +18,16 @@
 
 namespace RavlN {
   
+  //: Geneate a binary UUId;
+
+  void GenerateUUId(UUIdC &anId) {
+#if RAVL_COMPILER_VISUALCPP
+    anId = UUIdC(GenerateUUId().data());
+#else
+    uuid_generate(anId.Raw());
+#endif
+  }
+
   //: Geneate a UUId in string form.
   
   
