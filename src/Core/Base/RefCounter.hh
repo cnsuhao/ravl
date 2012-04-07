@@ -61,6 +61,14 @@ namespace RavlN {
     ~RCBodyC();
     //: Destructor.
     
+    bool Save(std::ostream &strm) const
+    { return true; }
+    //: Default text save.
+
+    bool Save(BinOStreamC &strm) const
+    { return true; }
+    //: Default binary save.
+
     UIntT References() const
     { return ravl_atomic_read(&counter); }
     //: Access count of handles open to this object.
@@ -142,7 +150,7 @@ namespace RavlN {
         return ;
       }
       if(body->DecRefCounter())
-	delete body;
+        delete body;
     }
     //: Destructor.
     // Decrement reference count, and delete object if it reaches zero.
@@ -153,10 +161,10 @@ namespace RavlN {
     
     const RCHandleC<BodyT> &operator=(const RCHandleC<BodyT> &oth) { 
       if(oth.body != 0)
-	oth.body->IncRefCounter();
+        oth.body->IncRefCounter();
       if(body != 0) {
-	if(body->DecRefCounter())
-	  delete body;
+        if(body->DecRefCounter())
+          delete body;
       }
       body = oth.body;
       return *this;
@@ -201,7 +209,7 @@ namespace RavlN {
     template<class DT>
     void CheckHandleType(const DT &dummy) const RAVL_THROW(ExceptionErrorCastC) { 
       if(!IsHandleType(dummy))
-	throw ExceptionErrorCastC("RCHandleC::CheckRCHandleType(), Failed.",
+        throw ExceptionErrorCastC("RCHandleC::CheckRCHandleType(), Failed.",
 				  typeid(Body()),
 				  typeid(DT));
     }
@@ -242,17 +250,6 @@ namespace RavlN {
     //: Body base constructor.
     // This is used where the body may be a null ptr, such as
     // in the virtual constructor after a failed load.
-    
-    RCHandleC(RCBodyC &bod)
-      : body(&static_cast<BodyT &>(bod))
-    {
-      if(body->References() == 0) {
-        // Avoid unneeded atomic operation, they're slow.
-        body->SetRefCounter(1);
-      } else
-        body->IncRefCounter();
-    }
-    //: Body base constructor.
     
     BodyT &Body() { 
       RAVL_PARANOID(RavlAssertMsg(IsValid(),"Attempt to access invalid handle. "));
