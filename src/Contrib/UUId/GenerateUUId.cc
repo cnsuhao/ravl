@@ -7,6 +7,7 @@
 
 #include "Ravl/MTLocks.hh"
 #include "Ravl/UUId.hh"
+#include "Ravl/GenerateUUId.hh"
 
 #if RAVL_COMPILER_VISUALCPP
   #include <Rpc.h>
@@ -18,7 +19,7 @@
 
 namespace RavlN {
   
-  //: Geneate a binary UUId;
+  //: Generate a binary UUId;
 
   void GenerateUUId(UUIdC &anId) {
 #if RAVL_COMPILER_VISUALCPP
@@ -28,12 +29,10 @@ namespace RavlN {
 #endif
   }
 
-  //: Geneate a UUId in string form.
-  
-  
-  StringC GenerateUUId() 
-  {
+  //: Generate a UUId in string form.
     
+  StringC GenerateUUId() 
+  {    
     // Not sure if these routines are thread safe, so lock to be sure.
     
     MTWriteLockC lock(4);

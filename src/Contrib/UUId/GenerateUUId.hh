@@ -13,10 +13,10 @@
 namespace RavlN {
   
   StringC GenerateUUId();
-  //: Geneate a UUId in string form.
+  //: Generate a UUId in string form.
 
   void GenerateUUId(UUIdC &anId);
-  //: Geneate a binary UUId;
+  //: Generate a binary UUId;
 
 }
 
