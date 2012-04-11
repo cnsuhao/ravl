@@ -172,7 +172,7 @@ namespace RavlN {
     //: Assign handle.
 
     RCHandleC<BodyT> DeepCopy(UIntT levels = ((UIntT) -1)) const
-    { return RCHandleC<BodyT>(Body().DeepCopy(levels)); }
+    { return RCHandleC<BodyT>(static_cast<BodyT &>(Body().DeepCopy(levels))); }
     //: Do a deep copy of the object.
     
     bool operator==(const RCHandleC<BodyT> &oth) const
