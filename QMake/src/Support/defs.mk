@@ -4,7 +4,5 @@
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 
-EHT=exeSysConf.eht
-
-LOCAL_FILES=BinDep.pl.src findBuildTag.cc mkdefs.pl.src QLibs.pl.src  \
-            QLibs.sh.src qm.sh.src SysConf.cc untouch.cc
+LOCAL_FILES=Defs.txt dummymain.c Help.txt qmake.cshrc.src qmake.sh.src \
+            Skeleton.def
