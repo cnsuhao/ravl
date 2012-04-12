@@ -54,7 +54,8 @@ debug: qmake
 debugshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=debug SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
-distdir: rpm
+dist:
+	$(MAKE) -C @abs_top_srcdir@ -f $(WORKING_QMAKE)/Makefiles/Dist.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project dist
 
 doc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/.. -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) PROJECT_NAME=Ravl PROJECT_DESC="RAVL, Recognition And Vision Library" fulldoc
@@ -346,11 +347,11 @@ testsingleoptshared:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
 
 #JFi:ToDo Targets for install-strip install-check uninstall clean 
-#    dist distcheck html pdf install-html install-pdf installdirs distclean
+#    distcheck html pdf install-html install-pdf installdirs distclean
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: check debug debugshared default distdir doc fullsrc install \
+.PHONY: check debug debugshared default dist doc fullsrc install \
  installHdrs installoptshared installpkgconf installQMake \
  installsingleoptshared LocalQMake opt optbin optshared pkgconf qmake QMake \
  recurse retestopt retestoptshared retestsingleopt retestsingleoptshared \
