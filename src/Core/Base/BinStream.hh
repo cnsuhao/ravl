@@ -155,7 +155,7 @@ namespace RavlN  {
 
 #if RAVL_HAVE_INTFILEDESCRIPTORS
     BinIStreamC(int fd)
-      : in(fd),
+      : in(fd,true,true),
 	useNativeEndian(RAVL_BINSTREAM_DEFAULT),
 	m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit()),
         m_arraySizeLimit((size_t) -1)
@@ -317,7 +317,7 @@ namespace RavlN  {
 
 #if RAVL_HAVE_INTFILEDESCRIPTORS
     BinOStreamC(int fd)
-      : out(fd),
+      : out(fd,true,true),
 	useNativeEndian(RAVL_BINSTREAM_DEFAULT),
 	m_compatibiltyMode32Bit(DefaultToCompatibilityMode32Bit())
     {}
