@@ -1,3 +1,8 @@
+# Default project name and version information.
+PROJECT_NAME=MyProject
+PROJECT_VERSION=0.1.1
+PROJECT_DISTDIR=ProjectFiles-$(PROJECT_VERSION)
+
 # Default locations
 #
 # Location for built binaries
