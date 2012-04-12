@@ -19,11 +19,11 @@ description of which can be found in <a
 href="Ravl.API.OS.Sequence.html">Ravl.API.OS.Sequence</a>.</p>
 
 <h2> <a name="LoadSave"></a>Using the <a href=
-"../Class/RavlN.LoadObconst_StringC_Amp_DataT_Amp_StringC_boolCb.html">
+"../Class/RavlN.html#LoadObconst_StringC_Ref_DataT_Ref_StringC_boolCb">
 <code>Load()</code></a> / <a href=
-"../Class/RavlN.SaveObconst_StringC_Amp_const_DataT_Amp_StringC_boolCb.html"> <code>Save()</code></a> functions</h2>
+"../Class/RavlN.html#SaveObconst_StringC_Ref_const_DataT_Ref_StringC_boolCb"> <code>Save()</code></a> functions</h2>
 
-<p>The <code>Load()</code> / <code>Save()</code> global functions provide a
+<p>The <code>Load()</code> / <code>Save()</code> functions in the RavlN namespace provide a
 more sophisticated I/O mechanism.  They were originally developed for the <a
 href="../Class/RavlImageN.ImageC.html">ImageC</a> template class (see <a
 href="Ravl.API.Images.IO.html">Image I/O</a>), but are now available for other
@@ -40,8 +40,8 @@ and store it in a pgm file:</p>
   #include "Ravl/IO.hh"
   ....
   ImageC&lt;RealT&gt; x;
-  Load("fred", x);
-  Save("jim.pgm", x);
+  RavlN::Load("fred", x);
+  RavlN::Save("jim.pgm", x);
 </pre>
 
 <p>The pixel types in the files "fred" and "jim.pgm" are unknown at compile time; the appropriate
