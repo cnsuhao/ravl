@@ -6,7 +6,7 @@
 #
 # file-header-ends-here
 
-NESTED=src.r QMake.r
+PACKAGE=
 
-LOCAL_FILES=config.guess config.sub configure COPYING COPYING.LESSER INSTALL \
-            INSTALL.ADVANCED install-sh README
+LOCAL_FILES=aclocal.m4 configure.ac Implementation.txt Limitations.txt \
+            Makefile.in Operation.txt Premis.txt Targets.Project.in
