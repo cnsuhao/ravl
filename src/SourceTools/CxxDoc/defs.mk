@@ -27,7 +27,7 @@ PACKAGE= Ravl/CxxDoc
 
 NESTED = Templates.r
 
-LOCALHEADERS= tokenizer.h FlexLexer.h
+LOCALHEADERS= tokenizer.h FlexLexer.h cxx.tab.h
 
 HEADERS= Object.hh Document.hh Parser.hh CxxElements.hh \
  CxxScope.hh DocNode.hh DocTree.hh Strings.hh Executables.hh
