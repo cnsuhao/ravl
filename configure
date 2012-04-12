@@ -14755,6 +14755,11 @@ echo > ./Config.Project.in
 echo \# Ravl configuration file - regenerate using configure >> ./Config.Project.in
 echo >> ./Config.Project.in
 
+echo \# Declare current version of RAVL >> ./Config.Project.in
+echo PROJECT_VERSION=@PACKAGE_VERSION@ >> ./Config.Project.in
+echo PROJECT_DISTDIR=RAVL-@PACKAGE_VERSION@ >> ./Config.Project.in
+echo >> ./Config.Project.in
+
 # Provide locations for QMake to work with
 echo \# Location to which to build >> ./Config.Project.in
 echo PROJECT_OUT=@abs_top_builddir@ >> ./Config.Project.in
