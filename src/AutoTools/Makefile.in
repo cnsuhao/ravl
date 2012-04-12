@@ -196,7 +196,7 @@ $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc:
 	$(SHOWIT)echo Name: Ravl >> $@
 	$(SHOWIT)echo Version: $(version) >> $@
 	$(SHOWIT)echo Description: Recognition And Vision Library with modules for Computer Vision, Pattern Recognition and much more >> $@
-	$(SHOWIT)echo URL: http://sourceforge.net/projects/ravl >> $@
+	$(SHOWIT)echo URL: @PACKAGE_URL@ >> $@
 	$(SHOWIT)echo >> $@
 	$(SHOWIT)echo Libs:-L\${libdir} -lRavl >> $@
 	$(SHOWIT)echo Libs.private:$(ALL_EXTERNAL_LIBS)>> $@
