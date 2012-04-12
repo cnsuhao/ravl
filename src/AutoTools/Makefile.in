@@ -5,12 +5,6 @@
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 
-
-package = @PACKAGE_NAME@
-version = @PACKAGE_VERSION@
-tarname = @PACKAGE_TARNAME@
-distdir = $(tarname)-$(version)
-
 SOURCEHOME=@abs_top_srcdir@/src
 
 PROJECT_OUT=@abs_top_builddir@
@@ -194,7 +188,7 @@ $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc:
 	$(SHOWIT)echo libdir=$(libdir) >> $@
 	$(SHOWIT)echo >> $@
 	$(SHOWIT)echo Name: Ravl >> $@
-	$(SHOWIT)echo Version: $(version) >> $@
+	$(SHOWIT)echo Version: @PACKAGE_VERSION@ >> $@
 	$(SHOWIT)echo Description: Recognition And Vision Library with modules for Computer Vision, Pattern Recognition and much more >> $@
 	$(SHOWIT)echo URL: @PACKAGE_URL@ >> $@
 	$(SHOWIT)echo >> $@
