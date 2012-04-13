@@ -1,5 +1,20 @@
-# Default project name and version information.
-PROJECT_NAME=MyProject
+# Default project name and version information. When creating a Config.Project
+# for your project, set these variables to reflect the your software.
+#
+# Preferred settings:
+#
+#    PROJECT_NAME=MyProject
+#    PROJECT_VERSION=0.1.1
+#    PROJECT_DISTDIR=$(PROJECT_NAME)-$(PROJECT_VERSION)
+#
+#  However, use of these (PROJECT_NAME in particular) requires all header files
+#  in your source to be included in the form #include "MyProject/HeaderFile.h".
+#  As existing projects may not be written to this form, the default set here
+#  omits the definition of PROJECT_NAME. You are recommended to migrate any
+#  existing projects to using headers from a project specific directory. Any
+#  new projects should be created in a similar vane and specify a value for
+#  PROJECT_NAME.
+#
 PROJECT_VERSION=0.1.1
 PROJECT_DISTDIR=ProjectFiles-$(PROJECT_VERSION)
 
