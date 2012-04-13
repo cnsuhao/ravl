@@ -35,13 +35,13 @@ int main (int argc, char ** argv)
   
   // Load the image 
    ImageC<PixelT> img ; 
-  if ( ! Load ( inputFile, img ) ) { cerr << "\n Error failed to load input image " ; exit (1) ; }   
+  if ( ! RavlN::Load ( inputFile, img ) ) { cerr << "\n Error failed to load input image " ; exit (1) ; }   
   
   // Apply the algorithm 
   Tuple2C<ImageC<UIntT>, UIntT> result = connected.Apply(img) ; 
 
   // output the result 
-  if ( ! Save ( outputFile, result.Data1() )) { cerr << "\n Error failed to load output image " ; exit (1) ; } 
+  if ( ! RavlN::Save ( outputFile, result.Data1() )) { cerr << "\n Error failed to load output image " ; exit (1) ; } 
   cout << "\n\n The segmented image contains " << result.Data2() << " labels \n\n"  ;  
   return 0 ; 
 }; 

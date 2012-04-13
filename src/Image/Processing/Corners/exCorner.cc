@@ -48,7 +48,7 @@ int main(int nargs,char **argv) {
     // Process a signle image
     
     ImageC<ByteT> img;
-    if(!Load(inf,img)) { // Load an image.
+    if(!RavlN::Load(inf,img)) { // Load an image.
       cerr << "Failed to load image '" << inf << "'\n";
       return 1;
     }
@@ -67,7 +67,7 @@ int main(int nargs,char **argv) {
     
     // Save image to a file.
     
-    if(!Save(outf,img)) {
+    if(!RavlN::Save(outf,img)) {
       cerr << "Failed to save image '" << inf << "'\n";
       return 1;
     }

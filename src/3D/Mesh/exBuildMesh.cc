@@ -23,7 +23,7 @@ int main(int nargs,char **argv) {
   opts.Check();
   
   ImageC<ByteRGBValueC> img;
-  if (!Load(file,img,"",verbose)) {
+  if (!RavlN::Load(file,img,"",verbose)) {
     cerr << "Could not load input file " << file << endl;
     return 1;
   }
@@ -45,7 +45,7 @@ int main(int nargs,char **argv) {
   buildMesh.AddFace(texId,positions,outline);
   
   // Show mesh to the user.
-  Save("@GL:Example",buildMesh.Build());
+  RavlN::Save("@GL:Example",buildMesh.Build());
   
   return 0;
 }

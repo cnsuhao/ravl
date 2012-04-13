@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     in[im_size/2][im_size/2] = 255;
   }
   else
-    Load (ipfile, in, "", true);
+    RavlN::Load (ipfile, in, "", true);
 
   // create Gabor filter bank
   GaborComplexC bank(nscale, ntheta, offset);
@@ -64,13 +64,13 @@ int main(int argc, char* argv[]) {
     for (IntT itheta=0; itheta < ntheta; ++itheta) {
       if (opt.IsOnCommandLine("o")) {
         if (opfile.contains("@X", 0))
-          Save(StringC("@X:frequency = ") + centreFreq/pow(ratio,iscale) + "f_s; orientation = " + itheta + "pi/" + ntheta, out[iscale][itheta]);
+          RavlN::Save(StringC("@X:frequency = ") + centreFreq/pow(ratio,iscale) + "f_s; orientation = " + itheta + "pi/" + ntheta, out[iscale][itheta]);
         else
-          Save(opfile + "_" + iscale + "_" + itheta + ".pgm", out[iscale][itheta]);
+          RavlN::Save(opfile + "_" + iscale + "_" + itheta + ".pgm", out[iscale][itheta]);
       }
     }
   }
   // plot filter spectra
-  Save(freqplot, bank.FilterSpectrum()*128);
+  RavlN::Save(freqplot, bank.FilterSpectrum()*128);
 
 }

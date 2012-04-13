@@ -77,7 +77,7 @@ int main(int nargs,char **argv) {
     }
   }
   if(!file.IsEmpty())
-    Save(file,img);
+    RavlN::Save(file,img);
   
   return 0;
 }

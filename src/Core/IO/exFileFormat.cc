@@ -35,7 +35,7 @@ int main(int argc,char **argv)
   if(!loadOnly) {
     //: Save a value into file 'fn' from local variable 'val'.
     
-    if(!Save(fn,val,streamType,verb)) {
+    if(!RavlN::Save(fn,val,streamType,verb)) {
       cerr << "Failed to save data. \n";
       return 1;
     }
@@ -44,7 +44,7 @@ int main(int argc,char **argv)
 
   //: Load a value from file 'fn' into local variable 'val'.
   
-  if(!Load(fn,val,"",verb)) {
+  if(!RavlN::Load(fn,val,"",verb)) {
     cerr << "Failed to load data. \n";
     return 1;
   }

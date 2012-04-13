@@ -56,11 +56,11 @@ int exLMSOptic(int argc, char **argv)
   
   PairC<ImageC<RealT> > image, filtered;
   
-  if(!Load(ImageFileName1, image[0])) {
+  if(!RavlN::Load(ImageFileName1, image[0])) {
     cerr << "Failed to load image '" << ImageFileName1 << "'\n";
     return 1;
   }
-  if(!Load(ImageFileName2, image[1])) {    
+  if(!RavlN::Load(ImageFileName2, image[1])) {    
     cerr << "Failed to load image '" << ImageFileName2 << "'\n";
     return 1;
   }
@@ -91,7 +91,7 @@ int exLMSOptic(int argc, char **argv)
   ImageC<ByteYUVValueC> img;
   motion.DrawMotion(image[0],img);
   if(!opDisplay.IsEmpty())
-    Save(opDisplay,img);
+    RavlN::Save(opDisplay,img);
   //cout << motion.Eigenvalues()<<'\n';
   if(!opFileName.IsEmpty())
     OStreamC (opFileName) << motion.Motion() << '\n';

@@ -26,9 +26,9 @@ int main(int nargs,char **argv) {
   InitDynamicIO();
   
   Array2dC<RealT> img;
-  if(!Load(inf,img))
+  if(!RavlN::Load(inf,img))
     cerr << "Failed to load "<< inf << "\n";
-  if(!Save(outf,img))
+  if(!RavlN::Save(outf,img))
     cerr << "Failed to Save "<< outf << "\n";
   return 0;
 }

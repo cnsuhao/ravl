@@ -35,7 +35,7 @@ int main(int nargs,char **argv) {
   
   for(UIntT i = 0;i < results.Size();i++) {
     StringC fn = StringC("@X:Gabor") + StringC(i);
-    Save(fn,results[i]);
+    RavlN::Save(fn,results[i]);
   }
   return 0;
 }

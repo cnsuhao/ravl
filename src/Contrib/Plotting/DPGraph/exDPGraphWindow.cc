@@ -28,7 +28,7 @@ int main() {
   for(Array1dIterC<RealT> it(data);it;it++,val += (RavlConstN::pi/40))
     *it = Sin(val);
   
-  if(!Save("@GRAPH:exDPGraphWindow",data,"",true)) {
+  if(!RavlN::Save("@GRAPH:exDPGraphWindow",data,"",true)) {
     cerr << "Failed to save graph. \n";
     return 1;
   }
@@ -40,7 +40,7 @@ int main() {
   for(Array1dIterC<Point2dC> it2(dataxy);it2;it2++,val += (RavlConstN::pi/50))
     *it2 = Point2dC(Sin(val),Cos(val));
   
-  if(!Save("@GRAPH:exDPGraphWindow2",dataxy,"",true)) {
+  if(!RavlN::Save("@GRAPH:exDPGraphWindow2",dataxy,"",true)) {
     cerr << "Failed to save graph. \n";
     return 1;
   }
@@ -52,7 +52,7 @@ int main() {
   //for(Array1dIterC<RealT> it(data);it;it++,val += (RavlConstN::pi/40))
   // *it = Sin(val);
   data[50] = 1;
-  if(!Save("@GRAPH:exDPGraphWindow",data,"",true)) {
+  if(!RavlN::Save("@GRAPH:exDPGraphWindow",data,"",true)) {
     cerr << "Failed to save graph. \n";
     return 1;
   }

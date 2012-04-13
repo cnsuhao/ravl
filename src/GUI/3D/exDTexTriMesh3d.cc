@@ -43,7 +43,7 @@ int main(int nargs,char *args[])
   // Load an image.
   
   ImageC<ByteRGBValueC> img;
-  if (!Load(file,img,"",verbose)) {
+  if (!RavlN::Load(file,img,"",verbose)) {
     cerr << "Could not load input file " << file << endl;
     return 1;
   }
