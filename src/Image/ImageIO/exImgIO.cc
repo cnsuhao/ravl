@@ -32,12 +32,6 @@ int main(int argc,char **argv) {
   bool verbose = option.Boolean("v",false,"Verbose mode ");
   option.Check();
   
-  // The following line says use the Ravl StdIO Load() and Save() functions.
-  // you can also use these functions as Load() Save(), but
-  // its cleaner to do it this way.  See C++ documentation on namespaces for
-  // more information.
-  
-  
   if(viaByte) {
     // Convert via a byte image.
     

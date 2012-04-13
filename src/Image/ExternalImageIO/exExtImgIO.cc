@@ -34,11 +34,6 @@ int main(int argc,char **argv) {
   StringC output = option.String("","testo.pgm","Output filename");
   option.Check();
   
-  // The following line says use the Ravl StdIO Load() and Save() functions.
-  // you can also use these functions as StdIO::Load() StdIO::Save(), but
-  // its cleaner to do it this way.  See C++ documentation on namespaces for
-  // more information.
-  
   if(viaByte) {
     // Convert via a byte image.
     if(verbose)
