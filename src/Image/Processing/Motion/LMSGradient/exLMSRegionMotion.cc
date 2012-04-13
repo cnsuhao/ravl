@@ -44,11 +44,11 @@ int main (int argc, char **argv)
   
   // load pair of images
   PairC<ImageC<RealT> > image, filtered;
-  if(!Load(ImageFileName1, image[0])) {
+  if(!RavlN::Load(ImageFileName1, image[0])) {
     cerr << "Failed to load " << ImageFileName1 << "\n";
     return 1;
   }
-  if(!Load(ImageFileName2, image[1])) {
+  if(!RavlN::Load(ImageFileName2, image[1])) {
     cerr << "Failed to load " << ImageFileName2 << "\n";
     return 1;
   }
@@ -66,7 +66,7 @@ int main (int argc, char **argv)
   }
   // load image of regions & centre it
   ImageC<IntT> regions;
-  if(!Load(regionName, regions)) {
+  if(!RavlN::Load(regionName, regions)) {
     cerr << "Failed to load region " << regionName << "\n";
     return 1;
   }

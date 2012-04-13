@@ -27,7 +27,7 @@ int main(int nargs,char **argv) {
   opts.Check();
   
   ImageC<ByteT> inImg,outImg;
-  if(!Load(inFile,inImg)) {
+  if(!RavlN::Load(inFile,inImg)) {
     std::cerr << "Failed to load image '" << inFile << "' \n";
     return 1;
   }
@@ -42,7 +42,7 @@ int main(int nargs,char **argv) {
     break;
   }
   
-  if(!Save(outFile,outImg)) {
+  if(!RavlN::Save(outFile,outImg)) {
     std::cerr << "Failed to save image '" << outFile << "' \n";
     return 1;    
   }

@@ -45,7 +45,7 @@ int main(int nargs,char **argv) {
       img[a][i] = 255;
   }
   
-  Save("@X",img);
+  RavlN::Save("@X",img);
 
   
   return 0;

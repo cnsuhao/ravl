@@ -37,28 +37,28 @@ int main() {
     for(int y = 0;y < 256;y++)
       img[origin[0] + x][origin[1] + y] = ByteRGBValueC(x,y,128);
   
-  if(!Save("@X:hello",img,"",true)) {
+  if(!RavlN::Save("@X:hello",img,"",true)) {
     cerr << "Failed to save image. \n";
     return 1;
   }
   
   // Add a point to the image.
   Point2dC aPnt(128,64);
-  if(!Save("@XA:hello",aPnt)) {
+  if(!RavlN::Save("@XA:hello",aPnt)) {
     cerr << "Failed to save point. \n";
     return 1;
   }
   
   // Add a closed polygon to the image
   Polygon2dC aPoly(RealRange2dC(Point2dC(30,25),10));
-  if(!Save("@XA:hello",aPoly)) {
+  if(!RavlN::Save("@XA:hello",aPoly)) {
     cerr << "Failed to save polygon. \n";
     return 1;
   }
   
   // Add a polyline to the image
   PolyLine2dC aPolyLine(Polygon2dC(RealRange2dC(Point2dC(60,25),10)));
-  if(!Save("@XA:hello",aPolyLine)) {
+  if(!RavlN::Save("@XA:hello",aPolyLine)) {
     cerr << "Failed to save polygon. \n";
     return 1;
   }
@@ -66,7 +66,7 @@ int main() {
   // Add some "arrows" to the image
   for (IndexC r=150; r<=250; r+= 10) for (IndexC c=20; c<=120; c+= 10) {
     PolyLine2dC arrow = Arrow(Point2dC(r,c), Point2dC(r+8,c+6));
-    if(!Save("@XA:hello",arrow)) {
+    if(!RavlN::Save("@XA:hello",arrow)) {
       cerr << "Failed to save arrow. \n";
       return 1;
     }
@@ -85,13 +85,13 @@ int main() {
 	img2[x][y] = x;
     }
   
-  if(!Save("@X:hello2",img,"",true)) {
+  if(!RavlN::Save("@X:hello2",img,"",true)) {
     cerr << "Failed to save image 2. \n";
     return 1;
   }
   
   // Display a new image, and reset the origin and scale
-  if(!Save("@XR:hello2",img2,"",true)) {
+  if(!RavlN::Save("@XR:hello2",img2,"",true)) {
     cerr << "Failed to save image 2. \n";
     return 1;
   }

@@ -30,5 +30,5 @@ int main()
   ImageC<ByteRGBValueC> out;
   cout << "CV 2 RAVL: " << IplImage2RavlImage(&im2, out) << endl;
   cvReleaseImage(&im1);
-  Save("@X", out);
+  RavlN::Save("@X", out);
 }

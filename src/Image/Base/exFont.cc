@@ -54,7 +54,7 @@ int main(int nargs,char **argv) {
     hsize += font[i].Cols() + 1;
   }  
   
-  Save("@X",img);
+  RavlN::Save("@X",img);
   
   return 0;
 }

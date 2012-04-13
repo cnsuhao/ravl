@@ -37,7 +37,7 @@ int main()
     return 1;
   }
   cerr << "Save image 1\n";
-  if(!Save("test1.ppm",testImg)) {
+  if(!RavlN::Save("test1.ppm",testImg)) {
     cerr << "Failed to save image. \n";
     return 1;
   }
@@ -47,7 +47,7 @@ int main()
     return 1;
   }
   cerr << "Save image 2\n";
-  if(!Save("test2.ppm",testImg)) {
+  if(!RavlN::Save("test2.ppm",testImg)) {
     cerr << "Failed to save image. \n";
     return 1;
   }

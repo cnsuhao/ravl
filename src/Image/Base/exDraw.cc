@@ -53,7 +53,7 @@ int main(int nargs,char **argv) {
     DrawPolygon(img,colour,poly,false);
   }
   
-  Save("@X",img);
+  RavlN::Save("@X",img);
 
   return 0;
 }
