@@ -493,6 +493,9 @@ mkdef:
 ################################
 # Admin
 
+dist:
+	$(SMAKESM) -f $(QMAKE_MAKEFILES)/Dist.mk dist
+
 clean:
 	-$(SMAKECL) clean TARGET=clean
 
