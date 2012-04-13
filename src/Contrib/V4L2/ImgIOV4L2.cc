@@ -15,6 +15,7 @@
 #include "Ravl/Array2dIter.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/TypeName.hh"
 
 #include <string.h>
 #include <linux/types.h>
@@ -390,7 +391,7 @@ namespace RavlImageN
   bool ImgIOV4L2BaseC::CheckFormat(const type_info &pixelType)
   {
     RavlAssertMsg(IsOpen(), "ImgIOV4L2BaseC::Open called without open device");
-    
+    ONDEBUG(RavlDebug("Checking pixel type %s ",RavlN::TypeName(pixelType)));
     // Is capture supported?
     v4l2_capability cap;
     if (ioctl(m_fd, VIDIOC_QUERYCAP, &cap) != -1)
@@ -488,7 +489,7 @@ namespace RavlImageN
     {
       CheckSize();
     }
-    
+    ONDEBUG(RavlDebug("Result %d ",(int) supported));
     return supported;
   }
   
@@ -503,21 +504,27 @@ namespace RavlImageN
     m_inputMax = 0;
     v4l2_input input;
     input.index = 0;
-    ONDEBUG(cerr << "ImgIOV4L2BaseC::CheckInput ioctl(VIDIOC_ENUMINPUT)" << endl;)
+    ONDEBUG(RavlDebug("ImgIOV4L2BaseC::CheckInput ioctl(VIDIOC_ENUMINPUT)"));
     while (ioctl(m_fd, VIDIOC_ENUMINPUT, &input) != -1)
     {
-      ONDEBUG(cerr << "  [" << m_inputMax << "] name(" << input.name << ")" << endl;)
+      ONDEBUG(RavlDebug("  [%u] name(%s)",m_inputMax,input.name));
       m_inputMax++;
       input.index = m_inputMax;
     }
 
-    // Set the input
-    if (ioctl(m_fd, VIDIOC_S_INPUT, &m_input) == -1)
-    {
+    // If there is only 1 input, there's no point in changing it.
+    if(m_inputMax <= 1)
+      return true;
+
+    // Are we trying to do something sensible ?
+    if(m_input >= m_inputMax) {
+      RavlWarning("Requested input out of range. Input %u of %u available",m_input,m_inputMax);
       return false;
     }
 
-    return (m_input >= 0 && m_input < m_inputMax);
+
+    // Set the input
+    return (ioctl(m_fd, VIDIOC_S_INPUT, &m_input) != -1);
   }
 
   
@@ -595,13 +602,15 @@ namespace RavlImageN
       }
     } 
     ONDEBUG(cerr << "ImgIOV4L2BaseC::CheckSize height min(" << m_heightMin << ")" << endl;)
-    
+    ONDEBUG(RavlDebug("Restoring Width:%u Height:%u ",m_width,m_height));
     // Reset the initial size
     pfmt->width = m_width;
     pfmt->height = m_height;
     pfmt->pixelformat = m_pixelFormat;
     pfmt->field = g_supportedField[m_fieldFormat].m_field;
-    ioctl(m_fd, VIDIOC_S_FMT, &fmt);
+    if(ioctl(m_fd, VIDIOC_S_FMT, &fmt) == -1) {
+      RavlWarning("Failed to restore state. ");
+    }
     
     return true;
   }
@@ -637,9 +646,10 @@ namespace RavlImageN
     pfmt->height = m_height;
     pfmt->pixelformat = m_pixelFormat;
     pfmt->field = g_supportedField[m_fieldFormat].m_field;
+    ONDEBUG(RavlDebug("Setting capture format. Size:%u %u Format:%u Field:%u",m_width,m_height,m_pixelFormat,m_fieldFormat));
     if (ioctl(m_fd, VIDIOC_S_FMT, &fmt) == -1)
     {
-      RavlError("Unable to set capture format.");
+      RavlError("Unable to set capture format. Size:%u %u Format:%u Field:%u",m_width,m_height,m_pixelFormat,m_fieldFormat);
       return false;
     }
     
@@ -687,7 +697,7 @@ namespace RavlImageN
           break;
         }
 
-        RavlDebug("Allocating buffer size %u (Pixels:%u) ",buffer.length,m_width * m_height);
+        ONDEBUG(RavlDebug("Allocating buffer size %u (Pixels:%u) ",buffer.length,m_width * m_height));
 
         // Map the buffer
         m_buffers[m_bufferCount].m_id = m_bufferIdCount++;
@@ -716,7 +726,8 @@ namespace RavlImageN
 
       if (reqbuf.count != m_bufferCount)
       {
-        cerr << "ImgIOV4L2BaseC::ConfigureCapture allocated(" << reqbuf.count << ") buffers, mmap-ed(" << m_bufferCount << ") buffers" << endl;
+        // Report its not quite what we wanted..
+        RavlDebug("ImgIOV4L2BaseC::ConfigureCapture allocated(%u) buffers, mmap-ed(%u) buffers",reqbuf.count,m_bufferCount);
       }
       else
       {
@@ -728,7 +739,7 @@ namespace RavlImageN
     const int type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if (ioctl(m_fd, VIDIOC_STREAMON, &type) == -1)
     {
-      cerr << "ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_STREAMON) failed (" << errno << ")" << endl;
+      RavlError("ImgIOV4L2BaseC::ConfigureCapture ioctl(VIDIOC_STREAMON) failed (%d)",errno);
       ReleaseCapture();
       return false;
     }
@@ -783,7 +794,7 @@ namespace RavlImageN
     buffer.memory = V4L2_MEMORY_MMAP;
     if (ioctl(m_fd, VIDIOC_DQBUF, &buffer) == -1)
     {
-      cerr << "ImgIOV4L2BaseC::CaptureBuffer ioctl(VIDIOC_DQBUF) failed" << endl;
+      RavlError("CaptureBuffer ioctl(VIDIOC_DQBUF) failed");
       return false;
     }
     /*
@@ -894,7 +905,7 @@ namespace RavlImageN
           // Try the new config, and restore the old if failed
           if (!ConfigureCapture())
           {
-            cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set standard(" << attrValue << ")" << endl;
+            RavlWarning("ImgIOV4L2BaseC::HandleSetAttr failed to set standard(%s)",attrValue.data());
             m_standard = tempStd;
           }
         }
@@ -937,7 +948,7 @@ namespace RavlImageN
           // Try the new config, and restore the old if failed
           if (!ConfigureCapture())
           {
-            cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set field(" << attrValue << ")" << endl;
+            RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set field(%s)",attrValue.data());
             m_fieldFormat = tempField;
           }
         }
@@ -999,7 +1010,7 @@ namespace RavlImageN
           // Set the width
           UIntT tempWidth = m_width;
           m_width = attrValue;
-          ONDEBUG(cerr << "ImgIOV4L2BaseC::HandleSetAttr width(" << m_width << ")" << endl;)
+          ONDEBUG(cerr << "ImgIOV4L2BaseC::HandleSetAttr width(" << m_width << ")" << endl);
   
           // If configure, test reconfiguring
           if (IsConfigured())
@@ -1014,11 +1025,13 @@ namespace RavlImageN
             }
           }
         }
-        else
-          cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set width (" << attrValue << ") within range (" << m_widthMin << " - " << m_widthMax << ")" << endl;
+        else {
+          RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set width (%d) within range (%u - %u)",attrValue, m_widthMin,m_widthMax);
+        }
       }
-      else
-        cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set width less than zero (" << attrValue << ")" << endl;
+      else {
+        RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set width less than zero (%d)",attrValue);
+      }
 
       return true;
     }
@@ -1037,7 +1050,7 @@ namespace RavlImageN
           // Set the height
           UIntT tempWidth = m_height;
           m_height = attrValue;
-          ONDEBUG(cerr << "ImgIOV4L2BaseC::HandleSetAttr height(" << m_height << ")" << endl;)
+          ONDEBUG(cerr << "ImgIOV4L2BaseC::HandleSetAttr height(" << m_height << ")" << endl);
     
           // If configure, test reconfiguring
           if (IsConfigured())
@@ -1052,11 +1065,13 @@ namespace RavlImageN
             }
           }
         }
-        else
-          cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set height (" << attrValue << ") within range (" << m_heightMin << " - " << m_heightMax << ")" << endl;
+        else {
+          RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set height (%d) within range (%u - %u)",attrValue,m_heightMin,m_heightMax);
+        }
       }
-      else
-        cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set height less than zero (" << attrValue << ")" << endl;
+      else {
+        RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set height less than zero (%d)",attrValue);
+      }
       
       return true;
     }
@@ -1090,7 +1105,7 @@ namespace RavlImageN
       }
       else
       {
-        cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set input" << endl;
+        RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set input");
       }
 
       return true;
@@ -1129,8 +1144,9 @@ namespace RavlImageN
     {
       if (m_fastBufferAvailable)
         m_fastBufferUsed = attrValue;
-      else
-        cerr << "ImgIOV4L2BaseC::HandleSetAttr failed to set fast buffers" << endl;
+      else {
+        RavlError("ImgIOV4L2BaseC::HandleSetAttr failed to set fast buffers");
+      }
       return true;
     }
     
