@@ -747,8 +747,12 @@ namespace RavlN {
     
     inline const char* data() const
     { return &(rep->s[0]); }    
+    //: Access string data, in the stl style.
+
+    inline const char* c_str() const
+    { return &(rep->s[0]); }
     //: Access as a 'C' sytle string, in the stl style.
-    
+
     operator std::string () const;
     //: Convert to a STL string.
     
