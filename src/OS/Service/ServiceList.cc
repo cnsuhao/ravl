@@ -46,7 +46,9 @@ namespace RavlN {
   //! Shutdown remaining services.
   bool ServiceListC::Shutdown() {
     //! Shutdown in reverse order.
-    for(int i = static_cast<int>(m_services.size())-1;i >= 0;i++) {
+    for(int i = static_cast<int>(m_services.size())-1;i >= 0;i--) {
+      RavlAssert(m_services[i].IsValid());
+      //RavlDebug("Shutting down %d %s ",i,m_services[i]->Name().data());
       m_services[i]->Shutdown();
     }
     m_services.clear();
