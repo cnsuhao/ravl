@@ -106,6 +106,16 @@ namespace RavlN { namespace GeneticN {
     float m_defaultWeight;
   };
 
+  //! Test if two gene types are the same.
+  //! Just check addresses.
+  inline bool operator==(const GeneTypeC &gt1,const GeneTypeC &gt2)
+  { return &gt1 == &gt2; }
+
+  //! Test if two gene types are different.
+  //! Just check addresses.
+  inline bool operator!=(const GeneTypeC &gt1,const GeneTypeC &gt2)
+  { return &gt1 != &gt2; }
+
   //! Gene for a single block.
 
   class GeneC
@@ -168,10 +178,20 @@ namespace RavlN { namespace GeneticN {
     //! Visit all gene's in tree.
     virtual void Visit(GeneVisitorC &visit) const;
 
+    //! Generate a hash value for the gene
+    virtual size_t Hash() const;
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
   protected:
     GeneTypeC::RefT m_type;
   };
 
+  //! This actually tests if they are effectively equal which allows for some small
+  //! user defined differences in some floating point numbers. This allows hash tables
+  // to be created of similar genes.
+  //bool operator==(const GeneC::RefT &g1,const GeneC::RefT &g2);
 
 }}
 

@@ -226,6 +226,29 @@ namespace RavlN { namespace GeneticN {
     visit.Examine(*this);
   }
 
+  //! Test is value is effectively equal to this.
+  bool GeneC::IsEffectivelyEqual(const GeneC &other) const
+  {
+    RavlAssertMsg(0,"Abstract method called.");
+    return other.Type() == Type();
+  }
+
+  //! Generate a hash value for the gene
+  size_t GeneC::Hash() const {
+    return RavlN::StdHash((void *) m_type.BodyPtr());
+  }
+
+  //! This actually tests if they are effectively equal which allows for some small
+  //! user defined differences in some floating point numbers. This allows hash tables
+  // to be created of similar genes.
+  bool operator==(const GeneC::RefT &g1,const GeneC::RefT &g2) {
+    if(g1.BodyPtr() == g2.BodyPtr())
+      return true;
+    if(!g1.IsValid() || !g2.IsValid())
+      return false;
+    return g1->IsEffectivelyEqual(*g2);
+  }
+
   static RavlN::TypeNameC g_typeGene(typeid(GeneC),"RavlN::GeneticN::GeneC");
   static RavlN::TypeNameC g_typePtrGene(typeid(GeneC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneC>");
   static RavlN::TypeNameC g_typeConstPtrGene(typeid(GeneC::ConstRefT),"RavlN::SmartPtrC<const RavlN::GeneticN::GeneC>");

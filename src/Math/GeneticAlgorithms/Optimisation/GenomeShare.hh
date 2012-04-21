@@ -117,6 +117,12 @@ namespace RavlN { namespace GeneticN {
     void SetStrength(float val)
     { m_strength = val; }
 
+    //! Generate a hash value for the gene
+    virtual size_t Hash() const;
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneClassShareC> RefT;
 

@@ -346,6 +346,36 @@ namespace RavlN { namespace GeneticN {
     }
   }
 
+  //! Generate a hash value for the gene
+  size_t GeneNodeC::Hash() const
+  {
+    size_t value = RavlN::StdHash((void *) m_type.BodyPtr());
+    for(RavlN::HashIterC<std::string,GeneC::ConstRefT> it(m_components);it;it++) {
+      value += RavlN::StdHash(it.Key());
+      value += it.Data().Hash();
+    }
+    return value;
+  }
+
+  //! Test is value is effectively equal to this within tolerances specified in the type.
+  bool GeneNodeC::IsEffectivelyEqual(const GeneC &other) const
+  {
+    if(*m_type != other.Type())
+      return false;
+    const GeneNodeC* node = dynamic_cast<const GeneNodeC*>(&other);
+    if(node == 0)
+      return false;
+    if(node->m_components.Size() != m_components.Size())
+      return false;
+    for(RavlN::HashIterC<std::string,GeneC::ConstRefT> it(m_components);it;it++) {
+      const GeneC::ConstRefT *cref = node->m_components.Lookup(it.Key());
+      if(cref == 0) return false;
+      if(!(*cref)->IsEffectivelyEqual(*it.Data()))
+        return false;
+    }
+    return true;
+  }
+
   XMLFactoryRegisterConvertC<GeneNodeC,GeneC> g_registerGeneNode("RavlN::GeneticN::GeneNodeC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneNodeC,"RavlN::GeneticN::GeneNodeC");
   static RavlN::TypeNameC g_typePtrGeneNode(typeid(GeneNodeC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneNodeC>");
