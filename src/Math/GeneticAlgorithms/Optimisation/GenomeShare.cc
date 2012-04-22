@@ -315,7 +315,7 @@ namespace RavlN { namespace GeneticN {
   size_t GeneClassShareC::Hash() const {
     size_t ret = GeneClassC::Hash();
     // They have to be exactly the same for the moment.
-    ret += StdHash(m_position[0]) + StdHash(m_position[1]) << 2 + StdHash(m_strength) << 3;
+    ret += StdHash(m_position[0]) + (StdHash(m_position[1]) << 2) + (StdHash(m_strength) << 3);
     return ret;
   }
 

@@ -36,7 +36,7 @@ namespace RavlN {
     bool Save(BinOStreamC &strm) const;
 
     //! Name of service
-    const std::string &Name() const
+    const RavlN::StringC &Name() const
     { return m_name; }
 
     //! Start service.
@@ -53,7 +53,7 @@ namespace RavlN {
 
   protected:
     //! Name of service.
-    std::string m_name;
+    RavlN::StringC m_name;
 
     //! Called when owner handles drop to zero.
     virtual void ZeroOwners();

@@ -16,13 +16,15 @@
 namespace RavlN {
 
   //! Constructor.
-  ServiceListC::ServiceListC(const XMLFactoryContextC &factory)
+  ServiceListC::ServiceListC(const XMLFactoryContextC &factory,bool warnOnMissingSection)
+   : m_warnOnMissingSection(warnOnMissingSection)
   {
     Load(factory);
   }
 
   //! Default constructor.
-  ServiceListC::ServiceListC()
+  ServiceListC::ServiceListC(bool warnOnMissingSection)
+   : m_warnOnMissingSection(warnOnMissingSection)
   {}
 
   //! Destructor
@@ -31,15 +33,25 @@ namespace RavlN {
     Shutdown();
   }
 
-  //! Load services from the given factory context.
-  bool ServiceListC::Load(const XMLFactoryContextC &factory) {
-    if(!factory.UseComponentGroup("Services",m_services)) {
-      RavlWarning("No services section found under '%s'. ",factory.Path().data());
-      return false;
-    }
-    //! Start in the order they appear in the file.
+  //! Go through and call start on all services.
+  bool ServiceListC::Start() {
     for(unsigned i = 0;i < m_services.size();i++)
       m_services[i]->Start();
+    return true;
+  }
+
+  //! Load services from the given factory context.
+  bool ServiceListC::Load(const XMLFactoryContextC &factory,bool startOnLoad) {
+    if(!factory.UseComponentGroup("Services",m_services)) {
+      if(m_warnOnMissingSection)
+        RavlWarning("No services section found under '%s'. ",factory.Path().data());
+      return false;
+    }
+    if(startOnLoad) {
+      //! Start in the order they appear in the file.
+      for(unsigned i = 0;i < m_services.size();i++)
+        m_services[i]->Start();
+    }
     return true;
   }
 

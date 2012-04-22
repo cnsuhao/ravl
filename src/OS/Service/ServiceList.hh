@@ -19,21 +19,25 @@ namespace RavlN {
   {
   public:
     //! Default constructor.
-    ServiceListC();
+    ServiceListC(bool warnOnMissingSection = true);
 
     //! Constructor.
-    ServiceListC(const XMLFactoryContextC &factory);
+    ServiceListC(const XMLFactoryContextC &factory,bool warnOnMissingSection = true);
 
     //! Destructor
     ~ServiceListC();
 
     //! Load services from the given factory context.
-    bool Load(const XMLFactoryContextC &factory);
+    bool Load(const XMLFactoryContextC &factory,bool startOnLoad = true);
+
+    //! Go through and call start on all services.
+    bool Start();
 
     //! Shutdown remaining services.
     bool Shutdown();
 
   protected:
+    bool m_warnOnMissingSection;
     std::vector<ServiceC::RefT> m_services;
   };
 
