@@ -31,11 +31,9 @@ namespace RavlN { namespace GeneticN {
    : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.1))),
      m_crossRate(static_cast<float>(factory.AttributeReal("crossRate",0.2))),
      m_keepFraction(static_cast<float>(factory.AttributeReal("keepFraction",0.3))),
-     m_randomFraction(static_cast<float>(factory.AttributeReal("randomFraction",0.01))),
+     m_mutationDegree(static_cast<float>(factory.AttributeReal("mutationDegree",factory.AttributeReal("randomFraction",0.01)))),
      m_populationSize(factory.AttributeUInt("populationSize",10)),
      m_numGenerations(factory.AttributeUInt("numGenerations",10)),
-     m_runLengthVirtual(static_cast<float>(factory.AttributeReal("runLengthVirtual",10.0))),
-     m_runLengthCPU(static_cast<float>(factory.AttributeReal("runLengthCPU",10.0))),
      m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1)),
@@ -48,6 +46,7 @@ namespace RavlN { namespace GeneticN {
     if(!factory.UseComponent("GenePalette",m_genePalette,true,typeid(GenePaletteC))) {
       m_genePalette = new GenePaletteC();
     }
+    RavlDebug("Mutation rate:%f Cross rate:%f Random:%f Keep:%f ",m_mutationRate,m_crossRate,m_mutationDegree,m_keepFraction);
   }
 
   //! Set fitness function to use
@@ -75,10 +74,13 @@ namespace RavlN { namespace GeneticN {
       RavlSysLogf(SYSLOG_INFO,"Running generation %u ",i);
       RunGeneration(i);
       lock.Lock();
-      if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore)
+      if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
+        lock.Unlock();
         break;
+      }
       lock.Unlock();
     }
+
     lock.Lock();
     if(m_population.empty()) {
       RavlInfo("Population list empty. ");
@@ -212,11 +214,11 @@ namespace RavlN { namespace GeneticN {
       }
     }
 
-    RavlDebug("Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
+    RavlDebug("Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_mutationDegree);
     for(;i < m_populationSize;i++) {
       unsigned i1 = m_genePalette->RandomUInt32() % seeds.Size().V();
       GenomeC::RefT newGenome;
-      if(Random1() < m_randomFraction) {
+      if(Random1() < m_mutationDegree) {
         ONDEBUG(RavlDebug("Random"));
         seeds[i1]->Mutate(*m_genePalette,1.0,newGenome);
       } else {

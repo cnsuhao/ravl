@@ -75,6 +75,7 @@ namespace RavlN { namespace GeneticN {
     typedef RavlN::SmartPtrC<GenomeC> RefT;
 
     //! Mutate this genome.
+    //! Returns true if something changed.
     bool Mutate(GenePaletteC &pallete,float faction,GenomeC::RefT &newGenome) const;
 
     //! Cross this genome with another

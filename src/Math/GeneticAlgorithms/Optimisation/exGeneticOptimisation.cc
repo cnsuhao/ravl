@@ -42,6 +42,7 @@ RavlN::Point2dC ConvertGeneFactory2Point2d(const RavlN::GeneticN::GeneFactoryC &
   float x,y;
   factory.Get("x",x,*g_numType);
   factory.Get("y",y,*g_numType);
+  //RavlDebug("Values: %f %f ",x,y);
   return RavlN::Point2dC(x,y);
 }
 

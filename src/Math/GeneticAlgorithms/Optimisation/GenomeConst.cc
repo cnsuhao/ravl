@@ -101,16 +101,15 @@ namespace RavlN { namespace GeneticN {
       return false;
     }
     const GeneIntC &originalInt = dynamic_cast<const GeneIntC &>(original);
-
     float value = static_cast<float>(palette.Random1() * (m_max - m_min)) + static_cast<float>(m_min);
-    IntT newValue = Floor(fraction * static_cast<float>(originalInt.Value()) + (1.0 - fraction) * value);
+    IntT newValue = Floor((1.0 -fraction) * static_cast<float>(originalInt.Value()) + fraction * value);
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
       newValue = m_min;
     if(newValue > m_max)
       newValue = m_max;
     newGene = new GeneIntC(*this,newValue);
-    return true;
+    return originalInt.Value() != newValue;
   }
 
   //!  Default values for basic types
@@ -262,14 +261,14 @@ namespace RavlN { namespace GeneticN {
     const GeneFloatC &originalFloat = dynamic_cast<const GeneFloatC &>(original);
     float value;
     RandomValue(palette,value);
-    float newValue = fraction * static_cast<float>(originalFloat.Value()) + (1.0f - fraction) * value;
+    float newValue = (1.0f - fraction) * static_cast<float>(originalFloat.Value()) + fraction * value;
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
       newValue = m_min;
     if(newValue > m_max)
       newValue = m_max;
     newGene = new GeneFloatC(*this,newValue);
-    return true;
+    return originalFloat.Value() != newValue;
   }
 
   //!  Default values for basic types
