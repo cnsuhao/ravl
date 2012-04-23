@@ -99,6 +99,12 @@ namespace RavlN { namespace GeneticN {
     void SetGeneration(UIntT value)
     { m_generation = value; }
 
+    //! Generate a hash value for the genome
+    size_t Hash() const;
+
+    //! Test if the genome is effective the same as another.
+    bool IsEffectivelyEqual(const GenomeC &genome);
+
     //! Update running average score, return the latest value.
     float UpdateScore(float newScore,UIntT maxAge);
   protected:
@@ -111,6 +117,11 @@ namespace RavlN { namespace GeneticN {
     float m_averageScore;
     UIntT m_averageCount;
   };
+
+  //! This actually tests if they are effectively equal which allows for some small
+  //! user defined differences in some floating point numbers. This allows hash tables
+  // to be created of similar genes.
+  bool operator==(const GenomeC::RefT &g1,const GenomeC::RefT &g2);
 
 }}
 

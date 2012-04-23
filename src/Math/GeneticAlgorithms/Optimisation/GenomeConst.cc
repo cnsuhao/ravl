@@ -18,6 +18,8 @@
 #include "Ravl/PointerManager.hh"
 #include "Ravl/VirtualConstructor.hh"
 
+#include <math.h>
+
 #define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
@@ -84,7 +86,7 @@ namespace RavlN { namespace GeneticN {
   //! Create randomise value
   void GeneTypeIntC::Random(GenePaletteC &palette,GeneC::RefT &newGene) const
   {
-    float value = palette.Random1() * static_cast<float>(m_max - m_min) + static_cast<float>(m_min);
+    float value = palette.Random1() * static_cast<float>((1 + m_max) - m_min) + static_cast<float>(m_min) ;
     IntT newValue = Floor(value);
     if(newValue < m_min)
        newValue = m_min;
@@ -101,7 +103,7 @@ namespace RavlN { namespace GeneticN {
       return false;
     }
     const GeneIntC &originalInt = dynamic_cast<const GeneIntC &>(original);
-    float value = static_cast<float>(palette.Random1() * (m_max - m_min)) + static_cast<float>(m_min);
+    float value = static_cast<float>(palette.Random1() * ((1 + m_max) - m_min)) + static_cast<float>(m_min);
     IntT newValue = Floor((1.0 -fraction) * static_cast<float>(originalInt.Value()) + fraction * value);
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
@@ -180,6 +182,16 @@ namespace RavlN { namespace GeneticN {
     return true;
   }
 
+  //! Test is value is effectively equal to this within tolerances specified in the type.
+  bool GeneIntC::IsEffectivelyEqual(const GeneC &other) const {
+    if(other.Type() != Type()) return false;
+    const GeneIntC* og = dynamic_cast<const GeneIntC*>(&other);
+    if(og == 0)
+      return false;
+    return (og->Value() == m_value);
+  }
+
+
   XMLFactoryRegisterConvertC<GeneIntC,GeneC> g_registerGeneInt("RavlN::GeneticN::GeneIntC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneIntC,"RavlN::GeneticN::GeneIntC");
   static RavlN::TypeNameC g_typePtrGeneInt(typeid(GeneIntC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneIntC>");
@@ -190,14 +202,16 @@ namespace RavlN { namespace GeneticN {
   GeneTypeFloatC::GeneTypeFloatC(const XMLFactoryContextC &factory)
    : GeneTypeC(factory),
      m_min(static_cast<float>(factory.AttributeReal("min",0.0))),
-     m_max(static_cast<float>(factory.AttributeReal("max",100.0)))
+     m_max(static_cast<float>(factory.AttributeReal("max",100.0))),
+     m_inc(static_cast<float>(factory.AttributeReal("inc",0.0)))
   {}
 
   //! Constructor
-  GeneTypeFloatC::GeneTypeFloatC(const std::string &name,float min,float max)
+  GeneTypeFloatC::GeneTypeFloatC(const std::string &name,float min,float max,float inc)
   : GeneTypeC(name),
     m_min(min),
-    m_max(max)
+    m_max(max),
+    m_inc(inc)
   {}
 
   GeneTypeFloatC::GeneTypeFloatC(BinIStreamC &strm)
@@ -205,9 +219,14 @@ namespace RavlN { namespace GeneticN {
   {
     ByteT version = 0;
     strm >> version;
-    if(version != 1)
+    if(version < 1 || version > 2)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneTypeFloatC");
     strm >> m_min >> m_max;
+    if(version > 1) {
+      strm >> m_inc;
+    } else {
+      m_inc = 0.0;
+    }
   }
 
   //! Load form a binary stream
@@ -222,8 +241,8 @@ namespace RavlN { namespace GeneticN {
   {
     if(!GeneTypeC::Save(strm))
       return false;
-    ByteT version = 1;
-    strm << version << m_min << m_max;
+    ByteT version = 2;
+    strm << version << m_min << m_max << m_inc;
     return true;
   }
 
@@ -258,6 +277,7 @@ namespace RavlN { namespace GeneticN {
       newGene = &original;
       return false;
     }
+
     const GeneFloatC &originalFloat = dynamic_cast<const GeneFloatC &>(original);
     float value;
     RandomValue(palette,value);
@@ -276,8 +296,6 @@ namespace RavlN { namespace GeneticN {
     static GeneTypeC::RefT defaultFloatType = new GeneTypeFloatC("DefaultFloat",0.0,1.0);
     return *defaultFloatType;
   }
-
-
 
   XMLFactoryRegisterConvertC<GeneTypeFloatC,GeneTypeC> g_registerGeneTypeFloat("RavlN::GeneticN::GeneTypeFloatC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneTypeFloatC,"RavlN::GeneticN::GeneTypeFloatC");
@@ -342,6 +360,24 @@ namespace RavlN { namespace GeneticN {
     return true;
   }
 
+  //! Generate a hash value for the type.
+  size_t GeneFloatC::Hash() const {
+    const GeneTypeFloatC *gtf = dynamic_cast<const GeneTypeFloatC *>(m_type.BodyPtr());
+    if(gtf != 0 && gtf->SmallestIncrement() > 0)
+      return StdHash(::truncf(m_value / gtf->SmallestIncrement()));
+
+    return StdHash(m_value);
+  }
+
+  //! Test is value is effectively equal to this within tolerances specified in the type.
+  bool GeneFloatC::IsEffectivelyEqual(const GeneC &other) const {
+    if(other.Type() != Type()) return false;
+    const GeneFloatC* og = dynamic_cast<const GeneFloatC*>(&other);
+    if(og == 0) return false;
+    const GeneTypeFloatC *gtf = dynamic_cast<const GeneTypeFloatC *>(m_type.BodyPtr());
+    RavlAssert(gtf != 0);
+    return Abs(og->Value() - m_value) < gtf->SmallestIncrement();
+  }
 
   XMLFactoryRegisterConvertC<GeneFloatC,GeneC> g_registerGeneFloat("RavlN::GeneticN::GeneFloatC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneFloatC,"RavlN::GeneticN::GeneFloatC");

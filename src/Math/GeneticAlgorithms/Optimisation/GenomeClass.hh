@@ -106,6 +106,12 @@ namespace RavlN { namespace GeneticN {
     //! Visit all gene's in tree.
     virtual void Visit(GeneVisitorC &visitor) const;
 
+    //! Generate a hash value for the gene
+    virtual size_t Hash() const;
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneNodeC> RefT;
 
@@ -199,6 +205,14 @@ namespace RavlN { namespace GeneticN {
       //! Access class type.
       const GeneTypeClassC &ClassType() const
       { return dynamic_cast<const GeneTypeClassC &>(*m_type); }
+
+      //! Generate a hash value for the gene
+      virtual size_t Hash() const
+      { return GeneNodeC::Hash(); }
+
+      //! Test is value is effectively equal to this within tolerances specified in the type.
+      virtual bool IsEffectivelyEqual(const GeneC &other) const
+      { return GeneNodeC::IsEffectivelyEqual(other); }
 
       // Reference to this gene.
       typedef RavlN::SmartPtrC<GeneClassC> RefT;

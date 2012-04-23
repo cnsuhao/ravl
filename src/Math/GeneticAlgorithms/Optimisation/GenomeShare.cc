@@ -311,6 +311,26 @@ namespace RavlN { namespace GeneticN {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Putting instance into context from %s ",Name().data()));
   }
 
+  //! Generate a hash value for the gene
+  size_t GeneClassShareC::Hash() const {
+    size_t ret = GeneClassC::Hash();
+    // They have to be exactly the same for the moment.
+    ret += StdHash(m_position[0]) + (StdHash(m_position[1]) << 2) + (StdHash(m_strength) << 3);
+    return ret;
+  }
+
+  //! Test is value is effectively equal to this within tolerances specified in the type.
+  bool GeneClassShareC::IsEffectivelyEqual(const GeneC &other) const {
+    if(!GeneClassC::IsEffectivelyEqual(other))
+      return false;
+    const GeneClassShareC *gcs = dynamic_cast<const GeneClassShareC *>(&other);
+    if(gcs == 0) return false;
+    // They have to be exactly the same for the moment.
+    if(gcs->m_position != m_position) return false;
+    if(gcs->m_strength != m_strength) return false;
+    return true;
+  }
+
 
   XMLFactoryRegisterConvertC<GeneClassShareC,GeneNodeC> g_registerGeneClassShare("RavlN::GeneticN::GeneClassShareC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneClassShareC,"RavlN::GeneticN::GeneClassShareC");
@@ -363,8 +383,6 @@ namespace RavlN { namespace GeneticN {
         classes.push_back(*git);
       gts->UpdateShare(factory,classes);
     }
-
-
   }
 
 

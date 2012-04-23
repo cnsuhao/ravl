@@ -328,6 +328,27 @@ namespace RavlN { namespace GeneticN {
     }
   }
 
+  //! Generate a hash value for the gene
+  size_t GeneListC::Hash() const {
+    size_t ret = m_list.size();
+    for(unsigned i = 0;i < m_list.size();i++)
+      ret += m_list[i]->Hash();
+    return ret;
+  }
+
+  //! Test is value is effectively equal to this within tolerances specified in the type.
+  bool GeneListC::IsEffectivelyEqual(const GeneC &other) const
+  {
+    if(other.Type() != Type()) return false;
+    const GeneListC *geneList = dynamic_cast<const GeneListC *>(&other);
+    if(geneList == 0) return false;
+    if(geneList->m_list.size() != m_list.size()) return false;
+    for(unsigned i = 0;i < m_list.size();i++) {
+      if(!m_list[i]->IsEffectivelyEqual(*geneList->m_list[i]))
+        return false;
+    }
+    return true;
+  }
 
   static XMLFactoryRegisterConvertC<GeneListC,GeneC> g_registerGeneList("RavlN::GeneticN::GeneListC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneListC,"RavlN::GeneticN::GeneListC");
