@@ -75,28 +75,25 @@ namespace RavlN {
     //: Get Scale/Rotate matrix.
     
     inline const FAffineC<N> &operator=(const FAffineC &Oth);
-    //: Assigmment.
+    //: Assignment.
     
+    bool IsReal() const;
+    //: Check all components of transform are real.
+
   protected:
     FMatrixC<N,N> SR; // Scale/rotate.
     FVectorC<N> T;   // Translate.
     
   };
-  
+
   template<unsigned int N>
-  ostream & operator<< (ostream & outS, const FAffineC<N> & vector);
-  
-  template<unsigned int N>
-  istream & operator>> (istream & inS, FAffineC<N> & vector);
-  
-  template<unsigned int N>
-  inline BinOStreamC & operator<< (BinOStreamC & outS, const FAffineC<N> & vector) {
+  BinOStreamC & operator<< (BinOStreamC & outS, const FAffineC<N> & vector) {
     outS << vector.SRMatrix() << vector.Translation();
     return outS;
   }
   
   template<unsigned int N>
-  inline BinIStreamC & operator>> (BinIStreamC & inS, FAffineC<N> & vector) {
+  BinIStreamC & operator>> (BinIStreamC & inS, FAffineC<N> & vector) {
     inS >> vector.SRMatrix() >> vector.Translation();
     return inS;
   }
@@ -126,7 +123,7 @@ namespace RavlN {
   {}
   
   template<unsigned int N>
-  inline void FAffineC<N>::Scale(const FVectorC<N> &xy) {
+  void FAffineC<N>::Scale(const FVectorC<N> &xy) {
     for(UIntT i = 0;i < N;i++)
       for(UIntT j = 0;j < N;j++)
 	SR[i][j] *= xy[j];
@@ -138,7 +135,7 @@ namespace RavlN {
   }
   
   template<unsigned int N>
-  inline FAffineC<N> FAffineC<N>::Inverse(void) const {
+  FAffineC<N> FAffineC<N>::Inverse(void) const {
     FAffineC<N> ret;
     ret.SR = SR.Inverse();
     Mul(ret.SR,T,ret.T);
@@ -147,17 +144,17 @@ namespace RavlN {
   }
   
   template<unsigned int N>
-  inline FVectorC<N> FAffineC<N>::operator*(const FVectorC<N> &In) const {
+  FVectorC<N> FAffineC<N>::operator*(const FVectorC<N> &In) const {
     return (SR * In) + T;
   }
   
   template<unsigned int N>
-  inline FAffineC<N> FAffineC<N>::operator*(const FAffineC &In) const{
+  FAffineC<N> FAffineC<N>::operator*(const FAffineC &In) const{
     return FAffineC(SR*In.SRMatrix(), SR*In.Translation() + T);
   }
   
   template<unsigned int N>
-  inline FAffineC<N> FAffineC<N>::operator/(const FAffineC &In) const{
+  FAffineC<N> FAffineC<N>::operator/(const FAffineC &In) const{
     FMatrixC<N,N> inverse = In.SRMatrix().Inverse();
     return FAffineC(SR*inverse, inverse*(T-In.Translation()));
   }
@@ -169,17 +166,28 @@ namespace RavlN {
     return *this;
   }
   
+  template<unsigned int N>
+  bool FAffineC<N>::IsReal() const {
+    for(UIntT i = 0;i < N;i++) {
+      for(UIntT j = 0;j < N;j++) {
+        if(IsNan(SR[i][j]) || IsInf(SR[i][j]))
+          return false;
+      }
+      if(IsNan(T[i]) || IsInf(T[i]))
+        return false;
+    }
+    return true;
+  }
+
   
   template<unsigned int N>
-  ostream &
-  operator<<(ostream & outS, const FAffineC<N> & vector) {
+  ostream &operator<<(ostream & outS, const FAffineC<N> & vector) {
     outS << vector.SRMatrix() << "\t" << vector.Translation();
     return outS;
   }
   
   template<unsigned int N>
-  istream & 
-  operator>>(istream & inS, FAffineC<N> & vector) {
+  istream &operator>>(istream & inS, FAffineC<N> & vector) {
     inS >> vector.SRMatrix() >> vector.Translation();
     return inS;
   }
