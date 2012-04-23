@@ -76,7 +76,7 @@ namespace RavlN { namespace GeneticN {
 
     //! Mutate this genome.
     //! Returns true if something changed.
-    bool Mutate(GenePaletteC &pallete,float faction,GenomeC::RefT &newGenome) const;
+    bool Mutate(GenePaletteC &pallete,float fraction,GenomeC::RefT &newGenome) const;
 
     //! Cross this genome with another
     void Cross(GenePaletteC &pallete,const GenomeC &other,GenomeC::RefT &newGenome) const;

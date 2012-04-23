@@ -146,13 +146,12 @@ namespace RavlN { namespace GeneticN {
     GeneC::RefT newRootGene;
     bool ret = false;
     if(fraction <= 1e-6) {
-      // We've asked for a near identical copy.
-      ret = m_genomeRoot->Mutate(pallete,fraction,newRootGene);
+      ret = m_genomeRoot->Mutate(pallete,fraction,true,newRootGene);
     } else {
-      int tryNo = 20;
+      int tryNo = 5;
       float localFraction = fraction;
       while(!ret && tryNo-- > 0) {
-        ret = m_genomeRoot->Mutate(pallete,localFraction,newRootGene);
+        ret = m_genomeRoot->Mutate(pallete,localFraction,true,newRootGene);
         localFraction *= 1.5; // Increase rate bit and try again.
       }
 #if 0
@@ -161,11 +160,7 @@ namespace RavlN { namespace GeneticN {
 #endif
 
       if(!ret) {
-        static bool reported = false;
-        if(!reported) {
-          RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
-          reported = true;
-        }
+        RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
       }
     }
     newGenome = new GenomeC(*newRootGene);

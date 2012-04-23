@@ -70,7 +70,7 @@ namespace RavlN { namespace GeneticN {
     bool Evaluate(EvaluateFitnessC &evaluator,const GenomeC &genome,GenePaletteC &palette,float &score);
 
     float m_mutationRate;  //!< How much of a genome to change in a mutation.
-    float m_crossRate;     //!< Fraction of new population to cross.
+    float m_cross2mutationRatio;     //!< Fraction of new population to cross.
     float m_keepFraction;  //!< What part of the population should persist to breed.
     float m_randomFraction;//!< Fraction of the mutation's to make completely random
     UIntT m_populationSize;//!< Number of genome's in the total population

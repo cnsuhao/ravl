@@ -41,7 +41,7 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Access min value
     IntT Min() const
@@ -138,7 +138,7 @@ namespace RavlN { namespace GeneticN {
      virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
      //! Mutate a gene
-     virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Access min value
      float Min() const
@@ -151,6 +151,9 @@ namespace RavlN { namespace GeneticN {
      //! Access size smallest interesting increment.
      float SmallestIncrement() const
      { return m_inc; }
+
+     //! Check if values are the same under constraints included in the type.
+     bool IsEffectivelyEqual(float v1,float v2) const;
 
      // Reference to this gene.
      typedef RavlN::SmartPtrC<GeneTypeFloatC> RefT;

@@ -100,8 +100,8 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  bool GeneTypeClassShareC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
-    if(fraction <= 0) {
+  bool GeneTypeClassShareC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
+    if(fraction <= 0 && !mustChange) {
       newValue = &original;
       return false;
     }
@@ -148,7 +148,7 @@ namespace RavlN { namespace GeneticN {
       newNode.SetPosition(newPos);
     }
 
-    GeneTypeClassC::Mutate(palette,fraction,original,newValue);
+    GeneTypeClassC::Mutate(palette,fraction,mustChange,original,newValue);
 
     return true;
   }

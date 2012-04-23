@@ -114,12 +114,18 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Mutate a gene
-   bool GeneTypeEnumC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeEnumC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
    {
      if(fraction < palette.Random1()) {
-       return original.Mutate(palette,fraction,newValue);
+       return original.Mutate(palette,fraction,mustChange,newValue);
      }
-     Random(palette,newValue);
+     // FIXME:- Do some sanity check on the number of options ?
+     int retryLimit = 1000;
+     do {
+       Random(palette,newValue);
+     } while((newValue.BodyPtr() != &original) && mustChange && retryLimit-- > 0) ;
+     if(retryLimit <= 0)
+       RavlWarning("Retry limit exceeded trying to mutate enum.");
      return newValue.BodyPtr() != &original;
    }
 
@@ -223,12 +229,12 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Mutate a gene
-   bool GeneTypeMetaC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeMetaC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
    {
-     if(fraction < palette.Random1()) {
-       newValue = &original;
-       return false;
+     if(fraction < palette.Random1() && !mustChange) {
+       return original.Mutate(palette,fraction,mustChange,newValue);
      }
+     // FIXME:- Do some sanity check on the number of options ?
      Random(palette,newValue);
      return true;
    }

@@ -29,7 +29,7 @@ namespace RavlN { namespace GeneticN {
 
   GeneticOptimiserC::GeneticOptimiserC(const XMLFactoryContextC &factory)
    : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.1))),
-     m_crossRate(static_cast<float>(factory.AttributeReal("crossRate",0.2))),
+     m_cross2mutationRatio(static_cast<float>(factory.AttributeReal("cross2mutationRatio",0.2))),
      m_keepFraction(static_cast<float>(factory.AttributeReal("keepFraction",0.3))),
      m_randomFraction(factory.AttributeReal("randomFraction",0.01)),
      m_populationSize(factory.AttributeUInt("populationSize",10)),
@@ -46,7 +46,7 @@ namespace RavlN { namespace GeneticN {
     if(!factory.UseComponent("GenePalette",m_genePalette,true,typeid(GenePaletteC))) {
       m_genePalette = new GenePaletteC();
     }
-    RavlDebug("Mutation rate:%f Cross rate:%f Random:%f Keep:%f ",m_mutationRate,m_crossRate,m_randomFraction,m_keepFraction);
+    RavlDebug("Mutation rate:%f Cross rate:%f Random:%f Keep:%f ",m_mutationRate,m_cross2mutationRatio,m_randomFraction,m_keepFraction);
   }
 
   //! Set fitness function to use
@@ -158,7 +158,12 @@ namespace RavlN { namespace GeneticN {
 
     // Select genomes to be used as seeds for the next generation.
     unsigned numKeep = Floor(m_populationSize * m_keepFraction);
+    if(numKeep >= m_populationSize)
+      numKeep = m_populationSize - 1;
     if(numKeep < 1) numKeep = 1;
+    // Compute the number of new genomes to create
+    unsigned numCreate = m_populationSize - numKeep;
+
     CollectionC<GenomeC::RefT> seeds(numKeep);
 
     if(m_population.empty()) {
@@ -193,7 +198,7 @@ namespace RavlN { namespace GeneticN {
     m_currentSeeds = seeds.Array();
     lock.Unlock();
 
-    unsigned noCrosses = Floor(m_populationSize * m_crossRate);
+    unsigned noCrosses = Floor(numCreate * m_cross2mutationRatio);
     RavlSysLogf(SYSLOG_DEBUG,"Creating %d crosses. ",noCrosses);
 
     unsigned i = 0;

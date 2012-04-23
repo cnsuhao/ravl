@@ -112,7 +112,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Mutate a gene
 
-  bool GeneTypeC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     RavlAssert(0);
     return false;
@@ -205,8 +205,12 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate this gene
-  bool GeneC::Mutate(GenePaletteC &palette,float fraction,GeneC::RefT &newOne) const {
-    return m_type->Mutate(palette,fraction,*this,newOne);
+  bool GeneC::Mutate(GenePaletteC &palette,
+                     float fraction,
+                     bool mustChange,
+                     GeneC::RefT &newOne) const
+  {
+    return m_type->Mutate(palette,fraction,mustChange,*this,newOne);
   }
 
   //! Cross this gene

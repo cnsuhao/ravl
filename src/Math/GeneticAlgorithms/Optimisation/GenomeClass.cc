@@ -138,25 +138,34 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  bool GeneTypeNodeC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeNodeC::Mutate(GenePaletteC &palette,
+                             float fraction,
+                             bool mustChange,
+                             const GeneC &original,
+                             RavlN::SmartPtrC<GeneC> &newValue) const
   {
     RavlAssert(newValue.IsValid());
     GeneNodeC &newNode = dynamic_cast<GeneNodeC &>(*newValue);
     const GeneNodeC &oldNode = dynamic_cast<const GeneNodeC &>(original);
     bool ret = false;
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutating %zu components in %s. faction %f  ",(size_t) m_componentTypes.Size().V(),Name().data(),fraction));
-    for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++) {
+    int mustChangeIndex = -1;
+    if(mustChange) {
+      mustChangeIndex = palette.RandomUInt32() % m_componentTypes.Size();
+    }
+    int index = 0;
+    for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++,index++) {
       GeneC::ConstRefT gene;
       if(!oldNode.GetComponent(it.Key(),gene)) {
         RavlSysLogf(SYSLOG_ERR,"Failed to find component %s ",it.Key().data());
         throw RavlN::ExceptionOperationFailedC("No component");
       }
-      if(palette.Random1() > fraction) {
+      if(palette.Random1() > fraction && mustChangeIndex != index) {
         newNode.SetComponent(it.Key(),*gene);
         continue;
       }
       RavlN::SmartPtrC<GeneC> newComp;
-      if(it.Data()->Mutate(palette,fraction,*gene,newComp))
+      if(it.Data()->Mutate(palette,fraction,mustChangeIndex == index,*gene,newComp))
         ret = true;
       newNode.SetComponent(it.Key(),*newComp);
     }
@@ -456,14 +465,14 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  bool GeneTypeClassC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
-    if(fraction <= 0) {
+  bool GeneTypeClassC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
+    if(fraction <= 0 && !mustChange) {
       newValue = &original;
       return false;
     }
     if(!newValue.IsValid())
       newValue = new GeneClassC(*this);
-    return GeneTypeNodeC::Mutate(palette,fraction,original,newValue);
+    return GeneTypeNodeC::Mutate(palette,fraction,mustChange,original,newValue);
   }
 
   //! Mutate a gene

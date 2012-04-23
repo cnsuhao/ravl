@@ -96,20 +96,36 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  bool GeneTypeIntC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newGene) const
+  bool GeneTypeIntC::Mutate(GenePaletteC &palette,
+                            float fraction,
+                            bool mustChange,
+                            const GeneC &original,
+                            RavlN::SmartPtrC<GeneC> &newGene) const
   {
-    if(fraction <= 0) {
+    if(fraction <= 0 && !mustChange) {
       newGene = &original;
       return false;
     }
     const GeneIntC &originalInt = dynamic_cast<const GeneIntC &>(original);
+
     float value = static_cast<float>(palette.Random1() * ((1 + m_max) - m_min)) + static_cast<float>(m_min);
     IntT newValue = Floor((1.0 -fraction) * static_cast<float>(originalInt.Value()) + fraction * value);
-    // Clip to valid range just in case of rounding problems
+
+    // Make sure there is some change if required
+    if(mustChange && originalInt.Value() == newValue) {
+      if(palette.Random1() > 0.5 && newValue < m_max) {
+        newValue++;
+      } else {
+        newValue--;
+      }
+    }
+
+    // Clip to valid range just in case of rounding problems, or no room for change.
     if(newValue < m_min)
       newValue = m_min;
     if(newValue > m_max)
       newValue = m_max;
+
     newGene = new GeneIntC(*this,newValue);
     return originalInt.Value() != newValue;
   }
@@ -270,27 +286,49 @@ namespace RavlN { namespace GeneticN {
     newGene = new GeneFloatC(*this,newValue);
   }
 
+  //! Check if values are the same under constraints included in the type.
+  bool GeneTypeFloatC::IsEffectivelyEqual(float v1,float v2) const {
+    if(m_inc > 0) return Abs(v1 - v2) < m_inc;
+    return v1 != v2;
+  }
+
   //! Mutate a gene
-  bool GeneTypeFloatC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newGene) const
+  bool GeneTypeFloatC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newGene) const
   {
-    if(fraction <= 0) {
+    if(fraction <= 0 && !mustChange) {
       newGene = &original;
       return false;
     }
-
     const GeneFloatC &originalFloat = dynamic_cast<const GeneFloatC &>(original);
     float value;
     RandomValue(palette,value);
     float newValue = (1.0f - fraction) * static_cast<float>(originalFloat.Value()) + fraction * value;
+
+    // Make sure there is some change if required
+    if(mustChange && IsEffectivelyEqual(originalFloat.Value(),newValue)) {
+      if(m_inc > 0) {
+        if(palette.Random1() > 0.5 && newValue < m_max) {
+          newValue += m_inc;
+        } else {
+          newValue -= m_inc;
+        }
+      } else {
+        // Just pick another random one, the chances of it being the same are very small.
+        RandomValue(palette,newValue);
+        // Maybe we have a stupidly small range?
+        if(IsEffectivelyEqual(originalFloat.Value(),newValue))
+          RandomValue(palette,newValue);
+      }
+    }
+
     // Clip to valid range just in case of rounding problems
     if(newValue < m_min)
       newValue = m_min;
     if(newValue > m_max)
       newValue = m_max;
+
     newGene = new GeneFloatC(*this,newValue);
-    if(SmallestIncrement() > 0)
-      return Abs(originalFloat.Value() - newValue) > SmallestIncrement();
-    return originalFloat.Value() != newValue;
+    return IsEffectivelyEqual(originalFloat.Value(),newValue);
   }
 
   //!  Default values for basic types
@@ -378,7 +416,7 @@ namespace RavlN { namespace GeneticN {
     if(og == 0) return false;
     const GeneTypeFloatC *gtf = dynamic_cast<const GeneTypeFloatC *>(m_type.BodyPtr());
     RavlAssert(gtf != 0);
-    return Abs(og->Value() - m_value) < gtf->SmallestIncrement();
+    return gtf->IsEffectivelyEqual(og->Value(),m_value);
   }
 
   XMLFactoryRegisterConvertC<GeneFloatC,GeneC> g_registerGeneFloat("RavlN::GeneticN::GeneFloatC");

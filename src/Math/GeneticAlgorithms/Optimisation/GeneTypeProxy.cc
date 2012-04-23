@@ -97,6 +97,7 @@ namespace RavlN { namespace GeneticN {
    //! Mutate a gene
    bool GeneTypeProxyC::Mutate(GenePaletteC &palette,
                                float fraction,
+                               bool mustChange,
                                const GeneC &original,
                                RavlN::SmartPtrC<GeneC> &newValue
                                ) const
@@ -107,7 +108,7 @@ namespace RavlN { namespace GeneticN {
        throw RavlN::ExceptionOperationFailedC("No value for proxy");
      }
      RavlAssert(geneType.IsValid());
-     geneType->Mutate(palette,fraction,original,newValue);
+     geneType->Mutate(palette,fraction,mustChange,original,newValue);
      return true;
    }
 

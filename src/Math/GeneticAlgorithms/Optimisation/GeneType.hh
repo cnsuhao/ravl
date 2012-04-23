@@ -78,7 +78,7 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
@@ -163,7 +163,7 @@ namespace RavlN { namespace GeneticN {
     //! Mutate this gene
     //! fraction - Amount of change to add, the higher the more random the result, 1.0= Completely random. 0.0 = No change.
     //! Returns true if something is changed.
-    bool Mutate(GenePaletteC &palette,float fraction,GeneC::RefT &newOne) const;
+    bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,GeneC::RefT &newOne) const;
 
     //! Cross this gene
     void Cross(GenePaletteC &palette,const GeneC &other,GeneC::RefT &newOne) const;
