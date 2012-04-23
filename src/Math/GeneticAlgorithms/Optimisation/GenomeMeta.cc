@@ -109,6 +109,7 @@ namespace RavlN { namespace GeneticN {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
+     RavlAssert(m_values.size() > 0);
      IntT n = palette.RandomUInt32() % m_values.size();
      newValue = m_values[n];
    }
@@ -223,6 +224,7 @@ namespace RavlN { namespace GeneticN {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
+     RavlAssert(m_types.size() > 0);
      unsigned n = palette.RandomUInt32() % m_types.size();
      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
      m_types[n]->Random(palette,newValue);

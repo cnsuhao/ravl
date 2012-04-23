@@ -150,7 +150,10 @@ namespace RavlN { namespace GeneticN {
     bool ret = false;
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutating %zu components in %s. faction %f  ",(size_t) m_componentTypes.Size().V(),Name().data(),fraction));
     int mustChangeIndex = -1;
+    if(m_componentTypes.Size() == 0)
+      return false;
     if(mustChange) {
+
       mustChangeIndex = palette.RandomUInt32() % m_componentTypes.Size();
     }
     int index = 0;
