@@ -28,7 +28,7 @@ namespace RavlN { namespace GeneticN {
 
 
   GeneticOptimiserC::GeneticOptimiserC(const XMLFactoryContextC &factory)
-   : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.1))),
+   : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.2))),
      m_cross2mutationRatio(static_cast<float>(factory.AttributeReal("cross2mutationRatio",0.2))),
      m_keepFraction(static_cast<float>(factory.AttributeReal("keepFraction",0.3))),
      m_randomFraction(factory.AttributeReal("randomFraction",0.01)),
@@ -124,6 +124,7 @@ namespace RavlN { namespace GeneticN {
     size_t arraySize = m_population.size();
     population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(arraySize);
     unsigned i = 0;
+    // Note: this saves worst to best, just in case you were thinking of truncating the list...
     for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());it != m_population.end();it++,i++)
     {
       population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(it->first,it->second);
@@ -147,14 +148,8 @@ namespace RavlN { namespace GeneticN {
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
 
-    MutexLockC lock(m_access);
-     if(m_population.empty()) {
-      RavlError("No previous population to rank.");
-      return ;
-    }
     RavlSysLogf(SYSLOG_DEBUG,"Examining results from last run. ");
     unsigned count = 0;
-    std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
 
     // Select genomes to be used as seeds for the next generation.
     unsigned numKeep = Floor(m_populationSize * m_keepFraction);
@@ -165,19 +160,20 @@ namespace RavlN { namespace GeneticN {
     unsigned numCreate = m_populationSize - numKeep;
 
     CollectionC<GenomeC::RefT> seeds(numKeep);
-
-    if(m_population.empty()) {
-      RavlSysLogf(SYSLOG_ERR,"Population empty.");
-      return ;
-    }
-
     std::vector<GenomeC::RefT> newTestSet;
     //m_newTestSet.clear();
     newTestSet.reserve(m_populationSize + numKeep);
 
+    MutexLockC lock(m_access);
+    if(m_population.empty()) {
+      RavlError("Population empty.");
+      return ;
+    }
+
+    std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
     while(it != m_population.rend() && count < numKeep) {
       seeds.Append(it->second);
-      //RavlSysLogf(SYSLOG_DEBUG," Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
+      //RavlDebug(" Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
       if(m_randomiseDomain)
         newTestSet.push_back(it->second);
       it++;
