@@ -150,8 +150,22 @@ namespace RavlN { namespace GeneticN {
       ret = m_genomeRoot->Mutate(pallete,fraction,newRootGene);
     } else {
       int tryNo = 20;
+      float localFraction = fraction;
       while(!ret && tryNo-- > 0) {
-        ret = m_genomeRoot->Mutate(pallete,fraction,newRootGene);
+        ret = m_genomeRoot->Mutate(pallete,localFraction,newRootGene);
+        localFraction *= 1.5; // Increase rate bit and try again.
+      }
+#if 0
+      if(tryNo < 18)
+        RavlDebug("Trys %d ",tryNo);
+#endif
+
+      if(!ret) {
+        static bool reported = false;
+        if(!reported) {
+          RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
+          reported = true;
+        }
       }
     }
     newGenome = new GenomeC(*newRootGene);

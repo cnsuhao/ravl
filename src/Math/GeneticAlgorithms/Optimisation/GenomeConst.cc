@@ -288,6 +288,8 @@ namespace RavlN { namespace GeneticN {
     if(newValue > m_max)
       newValue = m_max;
     newGene = new GeneFloatC(*this,newValue);
+    if(SmallestIncrement() > 0)
+      return Abs(originalFloat.Value() - newValue) > SmallestIncrement();
     return originalFloat.Value() != newValue;
   }
 

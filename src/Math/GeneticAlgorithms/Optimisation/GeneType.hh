@@ -161,7 +161,9 @@ namespace RavlN { namespace GeneticN {
     typedef RavlN::SmartPtrC<const GeneC> ConstRefT;
 
     //! Mutate this gene
-    bool Mutate(GenePaletteC &palette,float faction,GeneC::RefT &newOne) const;
+    //! fraction - Amount of change to add, the higher the more random the result, 1.0= Completely random. 0.0 = No change.
+    //! Returns true if something is changed.
+    bool Mutate(GenePaletteC &palette,float fraction,GeneC::RefT &newOne) const;
 
     //! Cross this gene
     void Cross(GenePaletteC &palette,const GeneC &other,GeneC::RefT &newOne) const;
