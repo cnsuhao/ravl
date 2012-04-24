@@ -41,7 +41,7 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Access min value
     IntT Min() const
@@ -91,6 +91,13 @@ namespace RavlN { namespace GeneticN {
     IntT Value() const
     { return m_value; }
 
+    //! Access hash value.
+    virtual size_t Hash() const
+    { return RavlN::StdHash(m_value); }
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneIntC> RefT;
 
@@ -109,7 +116,8 @@ namespace RavlN { namespace GeneticN {
      GeneTypeFloatC(const XMLFactoryContextC &factory);
 
      //! Constructor
-     GeneTypeFloatC(const std::string &name,float min,float max);
+     //! inc is the smallest interesting increment.
+     GeneTypeFloatC(const std::string &name,float min,float max,float inc = 0);
 
      //! Load form a binary stream
      GeneTypeFloatC(BinIStreamC &strm);
@@ -130,7 +138,7 @@ namespace RavlN { namespace GeneticN {
      virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
      //! Mutate a gene
-     virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Access min value
      float Min() const
@@ -140,6 +148,13 @@ namespace RavlN { namespace GeneticN {
      float Max() const
      { return m_max; }
 
+     //! Access size smallest interesting increment.
+     float SmallestIncrement() const
+     { return m_inc; }
+
+     //! Check if values are the same under constraints included in the type.
+     bool IsEffectivelyEqual(float v1,float v2) const;
+
      // Reference to this gene.
      typedef RavlN::SmartPtrC<GeneTypeFloatC> RefT;
 
@@ -148,6 +163,7 @@ namespace RavlN { namespace GeneticN {
    protected:
      float m_min;
      float m_max;
+     float m_inc; //!< Access size smallest interesting increment.
    };
 
   //! Gene for floating point variable
@@ -180,6 +196,12 @@ namespace RavlN { namespace GeneticN {
      //! Access value
      float Value() const
      { return m_value; }
+
+     //! Generate a hash value for the type.
+     virtual size_t Hash() const;
+
+     //! Test is value is effectively equal to this within tolerances specified in the type.
+     virtual bool IsEffectivelyEqual(const GeneC &other) const;
 
      // Reference to this gene.
      typedef RavlN::SmartPtrC<GeneFloatC> RefT;

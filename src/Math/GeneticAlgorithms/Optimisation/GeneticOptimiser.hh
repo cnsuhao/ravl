@@ -69,17 +69,15 @@ namespace RavlN { namespace GeneticN {
     //! Evaluate a single genome
     bool Evaluate(EvaluateFitnessC &evaluator,const GenomeC &genome,GenePaletteC &palette,float &score);
 
-    float m_mutationRate;
-    float m_crossRate;
-    float m_keepFraction;
-    float m_randomFraction;
-    UIntT m_populationSize;
-    UIntT m_numGenerations;
-    float m_runLengthVirtual;
-    float m_runLengthCPU;
-    float m_terminateScore;
-    bool m_createOnly; // Used for debugging.
-    UIntT m_threads;
+    float m_mutationRate;  //!< How much of a genome to change in a mutation.
+    float m_cross2mutationRatio;     //!< Fraction of new population to cross.
+    float m_keepFraction;  //!< What part of the population should persist to breed.
+    float m_randomFraction;//!< Fraction of the mutation's to make completely random
+    UIntT m_populationSize;//!< Number of genome's in the total population
+    UIntT m_numGenerations;//!< Limit on the number of generations to perform.
+    float m_terminateScore;//!< Score at which to stop the optimisation.
+    bool m_createOnly;     //!< Create objects only, don't evaluate them, used for debugging.
+    UIntT m_threads;       //!< Number of threads to use for evaluation.
 
     EvaluateFitnessC::RefT m_evaluateFitness;
     RavlN::SArray1dC<GenomeC::RefT> m_currentSeeds;

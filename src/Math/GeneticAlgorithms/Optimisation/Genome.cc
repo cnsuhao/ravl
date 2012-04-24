@@ -146,12 +146,21 @@ namespace RavlN { namespace GeneticN {
     GeneC::RefT newRootGene;
     bool ret = false;
     if(fraction <= 1e-6) {
-      // We've asked for a near identical copy.
-      ret = m_genomeRoot->Mutate(pallete,fraction,newRootGene);
+      ret = m_genomeRoot->Mutate(pallete,fraction,true,newRootGene);
     } else {
-      int tryNo = 20;
+      int tryNo = 5;
+      float localFraction = fraction;
       while(!ret && tryNo-- > 0) {
-        ret = m_genomeRoot->Mutate(pallete,fraction,newRootGene);
+        ret = m_genomeRoot->Mutate(pallete,localFraction,true,newRootGene);
+        localFraction *= 1.5; // Increase rate bit and try again.
+      }
+#if 0
+      if(tryNo < 18)
+        RavlDebug("Trys %d ",tryNo);
+#endif
+
+      if(!ret) {
+        RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
       }
     }
     newGenome = new GenomeC(*newRootGene);
@@ -185,6 +194,30 @@ namespace RavlN { namespace GeneticN {
     return m_averageScore;
   }
 
+  //! Generate a hash value for the genome
+  size_t GenomeC::Hash() const {
+    if(!m_genomeRoot.IsValid())
+      return 0;
+    return m_genomeRoot->Hash();
+  }
+
+  //! Test if the genome is effective the same as another.
+
+  bool GenomeC::IsEffectivelyEqual(const GenomeC &genome) {
+    RavlAssert(m_genomeRoot.IsValid());
+    return m_genomeRoot->IsEffectivelyEqual(RootGene());
+  }
+
+  //! This actually tests if they are effectively equal which allows for some small
+  //! user defined differences in some floating point numbers. This allows hash tables
+  // to be created of similar genes.
+  bool operator==(const GenomeC::RefT &g1,const GenomeC::RefT &g2) {
+    if(g1.BodyPtr() == g2.BodyPtr())
+      return true;
+    if(!g1.IsValid() || !g2.IsValid())
+      return false;
+    return g1->RootGene().IsEffectivelyEqual(g2->RootGene());
+  }
 
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GenomeC,"RavlN::GeneticN::GenomeC");
 

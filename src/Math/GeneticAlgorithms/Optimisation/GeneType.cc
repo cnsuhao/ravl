@@ -112,7 +112,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Mutate a gene
 
-  bool GeneTypeC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
   {
     RavlAssert(0);
     return false;
@@ -205,8 +205,12 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate this gene
-  bool GeneC::Mutate(GenePaletteC &palette,float fraction,GeneC::RefT &newOne) const {
-    return m_type->Mutate(palette,fraction,*this,newOne);
+  bool GeneC::Mutate(GenePaletteC &palette,
+                     float fraction,
+                     bool mustChange,
+                     GeneC::RefT &newOne) const
+  {
+    return m_type->Mutate(palette,fraction,mustChange,*this,newOne);
   }
 
   //! Cross this gene
@@ -224,6 +228,29 @@ namespace RavlN { namespace GeneticN {
   //! Visit all gene's in tree.
   void GeneC::Visit(GeneVisitorC &visit) const {
     visit.Examine(*this);
+  }
+
+  //! Test is value is effectively equal to this.
+  bool GeneC::IsEffectivelyEqual(const GeneC &other) const
+  {
+    RavlAssertMsg(0,"Abstract method called.");
+    return other.Type() == Type();
+  }
+
+  //! Generate a hash value for the gene
+  size_t GeneC::Hash() const {
+    return RavlN::StdHash((void *) m_type.BodyPtr());
+  }
+
+  //! This actually tests if they are effectively equal which allows for some small
+  //! user defined differences in some floating point numbers. This allows hash tables
+  // to be created of similar genes.
+  bool operator==(const GeneC::RefT &g1,const GeneC::RefT &g2) {
+    if(g1.BodyPtr() == g2.BodyPtr())
+      return true;
+    if(!g1.IsValid() || !g2.IsValid())
+      return false;
+    return g1->IsEffectivelyEqual(*g2);
   }
 
   static RavlN::TypeNameC g_typeGene(typeid(GeneC),"RavlN::GeneticN::GeneC");

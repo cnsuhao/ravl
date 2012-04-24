@@ -96,7 +96,11 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  bool GeneTypeListBaseC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+  bool GeneTypeListBaseC::Mutate(GenePaletteC &palette,
+                                 float fraction,
+                                 bool mustChange,
+                                 const GeneC &original,
+                                 RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate list. "));
     if(fraction < palette.Random1()) {
@@ -109,30 +113,45 @@ namespace RavlN { namespace GeneticN {
     newList.reserve(oldList.size() + 16);
     bool ret = false;
 
+    int changeIndex = -1;
+    if(mustChange) {
+      if(oldList.size() > 0)
+        changeIndex = palette.RandomUInt32() % oldList.size();
+    }
+    // Randomly insert something at the beginning.
+    if(oldList.size() == 0 && (fraction < palette.Random1() || mustChange)) {
+      GeneC::RefT newGene;
+      m_contentType->Random(palette,newGene);
+      newList.push_back(newGene.BodyPtr());
+      ret = true;
+    }
     for(unsigned i = 0;i < oldList.size();i++) {
+      int doOp = -1;
+      if(i == changeIndex || fraction > palette.Random1()) {
+        doOp = palette.RandomUInt32() % 3;
+      }
       // Insert a new random element.
-      if(fraction < palette.Random1()) {
-        GeneC::RefT newGene;
-        m_contentType->Random(palette,newGene);
-        newList.push_back(newGene.BodyPtr());
-        ret = true;
-      }
-      if(fraction < palette.Random1()) {
-        // Omit element
-        ret = true;
-        continue;
-      }
-      // Mutate an element
-      if(fraction < palette.Random1()) {
-        GeneC::RefT newGene;
-        if(oldList[i]->Mutate(palette,fraction,newGene)) {
+      switch(doOp) {
+        case 1: { // Omit element
           ret = true;
-        }
-        newList.push_back(newGene.BodyPtr());
-        continue;
+        } break;
+        case 2: { // Mutate an element
+          GeneC::RefT newGene;
+          if(oldList[i]->Mutate(palette,fraction,changeIndex == (int) i,newGene)) {
+            ret = true;
+          }
+          newList.push_back(newGene.BodyPtr());
+        } break;
+        case 0: { // Insert a new element
+          GeneC::RefT newGene;
+          m_contentType->Random(palette,newGene);
+          newList.push_back(newGene.BodyPtr());
+          ret = true;
+        }  // Fall through
+        default:  // Just leave it alone
+          newList.push_back(oldList[i]);
+          break;
       }
-      // Just leave it alone
-      newList.push_back(oldList[i]);
     }
     if(ret) {
       newValue = new GeneListC(*this,newList);
@@ -328,6 +347,27 @@ namespace RavlN { namespace GeneticN {
     }
   }
 
+  //! Generate a hash value for the gene
+  size_t GeneListC::Hash() const {
+    size_t ret = m_list.size();
+    for(unsigned i = 0;i < m_list.size();i++)
+      ret += m_list[i]->Hash();
+    return ret;
+  }
+
+  //! Test is value is effectively equal to this within tolerances specified in the type.
+  bool GeneListC::IsEffectivelyEqual(const GeneC &other) const
+  {
+    if(other.Type() != Type()) return false;
+    const GeneListC *geneList = dynamic_cast<const GeneListC *>(&other);
+    if(geneList == 0) return false;
+    if(geneList->m_list.size() != m_list.size()) return false;
+    for(unsigned i = 0;i < m_list.size();i++) {
+      if(!m_list[i]->IsEffectivelyEqual(*geneList->m_list[i]))
+        return false;
+    }
+    return true;
+  }
 
   static XMLFactoryRegisterConvertC<GeneListC,GeneC> g_registerGeneList("RavlN::GeneticN::GeneListC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneListC,"RavlN::GeneticN::GeneListC");

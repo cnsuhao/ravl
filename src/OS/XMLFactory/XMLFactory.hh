@@ -496,6 +496,8 @@ namespace RavlN {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
         return false;
+      if(!list.IsValid())
+        list = CollectionC<DataT>(childContext.Children().Size());
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
         DataT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {

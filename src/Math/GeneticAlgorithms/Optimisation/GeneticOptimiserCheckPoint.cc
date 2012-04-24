@@ -109,7 +109,7 @@ namespace RavlN { namespace GeneticN {
     }
     FilenameC tmpFilename = newFilename + '~';
     if(tmpFilename.Exists()) {
-      RavlWarning("Checkpoint temporay file '%s' already exists, most likely old. Removing it." ,newFilename.data());
+      RavlWarning("Checkpoint temporary file '%s' already exists, most likely old. Removing it." ,newFilename.data());
       tmpFilename.Remove();
     }
     if(!m_optimiser->SavePopulation(tmpFilename)) {
