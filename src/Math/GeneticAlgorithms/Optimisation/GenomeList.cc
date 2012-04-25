@@ -127,7 +127,7 @@ namespace RavlN { namespace GeneticN {
     }
     for(unsigned i = 0;i < oldList.size();i++) {
       int doOp = -1;
-      if(i == changeIndex || fraction > palette.Random1()) {
+      if(static_cast<int>(i) == changeIndex || fraction > palette.Random1()) {
         doOp = palette.RandomUInt32() % 3;
       }
       // Insert a new random element.
