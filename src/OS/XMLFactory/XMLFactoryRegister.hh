@@ -40,7 +40,32 @@ namespace RavlN {
     //! Construct and set typename.
     
   };
-  
+
+
+  //! Syntactic sugar for registering abstract classes in XMLFactory hierarchy.
+  template<class DataT,class UsedAsT>
+  class XMLFactoryRegisterConvertAbstractC {
+  public:
+    static typename UsedAsT::RefT ConvertToBase(const typename DataT::RefT &x)
+    { return x.BodyPtr(); }
+    //! Method to convert to base class.
+
+    XMLFactoryRegisterConvertAbstractC()
+    {
+      if(typeid(DataT) != typeid(UsedAsT)) // Only needed if types are different
+        RavlN::RegisterConversion(&ConvertToBase);
+    }
+    //! Typename already set, just register the factory
+
+    XMLFactoryRegisterConvertAbstractC(const char *nameOfType) {
+      RavlN::AddTypeName(typeid(DataT),nameOfType);
+      if(typeid(DataT) != typeid(UsedAsT)) // Only needed if types are different
+        RavlN::RegisterConversion(&ConvertToBase);
+    }
+    //! Construct and set typename.
+
+  };
+
   
   template<class DataT,class UsedAsT>
   class XMLFactoryRegisterHandleConvertC {
