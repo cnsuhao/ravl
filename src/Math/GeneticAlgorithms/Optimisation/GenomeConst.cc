@@ -108,11 +108,14 @@ namespace RavlN { namespace GeneticN {
     }
     const GeneIntC &originalInt = dynamic_cast<const GeneIntC &>(original);
 
+    IntT newValue;
+
     float value = static_cast<float>(palette.Random1() * ((1 + m_max) - m_min)) + static_cast<float>(m_min);
-    IntT newValue = Floor((1.0 -fraction) * static_cast<float>(originalInt.Value()) + fraction * value);
+    // FIXME:- Is this the best way of mutating ? Often it won't be any change at all??
+    newValue = Floor((1.0 -fraction) * static_cast<float>(originalInt.Value()) + fraction * value);
 
     // Make sure there is some change if required
-    if(mustChange && originalInt.Value() == newValue) {
+    if((mustChange || (fraction > palette.Random1())) && originalInt.Value() == newValue) {
       if(palette.Random1() > 0.5 && newValue < m_max) {
         newValue++;
       } else {
@@ -301,6 +304,7 @@ namespace RavlN { namespace GeneticN {
     }
     const GeneFloatC &originalFloat = dynamic_cast<const GeneFloatC &>(original);
     float value;
+    // FIXME:- Is this the best way of mutating ?
     RandomValue(palette,value);
     float newValue = (1.0f - fraction) * static_cast<float>(originalFloat.Value()) + fraction * value;
 
