@@ -10,8 +10,6 @@
 //! lib=RavlOS
 //! file="Ravl/OS/FileSystem/FileStream.cc"
 
-#include "Ravl/OS/FileStream.hh"
-#include "Ravl/OS/Filename.hh"
 
 #if !RAVL_COMPILER_VISUALCPP
 #include <unistd.h>
@@ -24,6 +22,10 @@
 #include <memory.h>
 #include <io.h>
 #endif
+
+#include "Ravl/OS/FileStream.hh"
+#include "Ravl/OS/Filename.hh"
+
 
 namespace RavlN {
   
@@ -207,7 +209,7 @@ namespace RavlN {
       return false;
 #if RAVL_HAVE_FDATASYNC
     if(metaDataToo)
-      return fsync(fd) == 0;
+      return ::fsync(fd) == 0;
     else
       return fdatasync(fd) == 0;
 #else
