@@ -49,7 +49,14 @@ int main(int nargs,char *args[])
   bool wrap(true);
   label5.Wrap(wrap);
 
-  win.Add(VBox(FrameC(label1,1) + FrameC(label2,1) + FrameC(label3,1) + FrameC(label4,1) + FrameC(label5,1)));
+  LabelC label6("<span font_size=\"xx-large\" weight=\"bold\">Large bold Pango markup</span>", true);
+
+  win.Add(VBox(FrameC(label1, 1) +
+               FrameC(label2, 1) +
+               FrameC(label3, 1) +
+               FrameC(label4, 1) +
+               FrameC(label5, 1) +
+               FrameC(label6, 1)));
   
   win.Show();  
   Manager.Start();
