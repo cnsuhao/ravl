@@ -17,10 +17,11 @@ namespace RavlGUIN  {
 
   //: Constructor.
   
-  LabelBodyC::LabelBodyC(const StringC &ntext)
+  LabelBodyC::LabelBodyC(const StringC &ntext, const bool markup)
     : text(ntext.Copy()),
       lineWrap(false),
-      justification(0)
+      justification(0),
+      m_markup(markup)
   {}
   
   StringC LabelBodyC::Name() const
@@ -36,6 +37,9 @@ namespace RavlGUIN  {
       gtk_label_set_line_wrap (GTK_LABEL(widget),lineWrap);
     if(justification != 0)
       gtk_label_set_justify (GTK_LABEL(widget),(GtkJustification) justification);
+    if (m_markup)
+      gtk_label_set_markup(GTK_LABEL(widget), text.chars());
+
     ConnectSignals();
     return true;
   }
@@ -52,6 +56,7 @@ namespace RavlGUIN  {
   
   bool LabelBodyC::GUISetLabel(const StringC &txt) {
     text = txt;
+    m_markup = false;
     if(widget == 0) return true;
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     gtk_label_set (GTK_LABEL(widget),text);
@@ -91,5 +96,25 @@ namespace RavlGUIN  {
     return true;
   }
 
+  bool LabelBodyC::SetMarkup(const StringC &text)
+  {
+    Manager.Queue(Trigger(LabelC(*this), &LabelC::GUISetMarkup, text));
+    return true;
+  }
+
+  bool LabelBodyC::GUISetMarkup(const StringC &newText)
+  {
+    m_markup = true;
+    text = newText;
+
+    if (widget == 0)
+      return true;
+
+    RavlAssertMsg(Manager.IsGUIThread(), "Incorrect thread. This method may only be called on the GUI thread.");
+
+    gtk_label_set_markup(GTK_LABEL(widget), text.chars());
+
+    return true;
+  }
 
 }

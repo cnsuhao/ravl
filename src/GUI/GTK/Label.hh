@@ -28,7 +28,7 @@ namespace RavlGUIN {
     : public WidgetBodyC
   {
   public:
-    LabelBodyC(const StringC &ntext);
+    LabelBodyC(const StringC &ntext, bool markup);
     //: Constructor.
     
     virtual ~LabelBodyC() { }
@@ -64,6 +64,12 @@ namespace RavlGUIN {
     bool GUISetLabel(const StringC &txt);
     //: Set label.
 
+    bool SetMarkup(const StringC &newText);
+    //: Set label using Pango markup.
+
+    bool GUISetMarkup(const StringC &newText);
+    //: Set label using Pango markup.
+
   protected:
 
     bool GUIJustify(GtkJustification& justify);
@@ -77,6 +83,7 @@ namespace RavlGUIN {
     
     bool lineWrap;
     IntT justification;
+    bool m_markup;
     
     friend class LabelC;
   };
@@ -90,13 +97,13 @@ namespace RavlGUIN {
     : public WidgetC
   {
   public:
-    LabelC(const StringC &text)
-      : WidgetC(*new LabelBodyC(text))
+    LabelC(const StringC &text, const bool markup = false)
+      : WidgetC(*new LabelBodyC(text, markup))
     {}
     //: Constructor
     
-    LabelC(const char *text)
-      : WidgetC(*new LabelBodyC(text))
+    LabelC(const char *text, const bool markup = false)
+      : WidgetC(*new LabelBodyC(text, markup))
     {}
     //: Constructor
     
@@ -164,6 +171,14 @@ namespace RavlGUIN {
     bool Wrap(const bool& wrap)
     { return Body().Wrap(wrap); }    
     //: Set line wrap mode
+
+    bool SetMarkup(const StringC &newText)
+    { return Body().SetMarkup(newText); }
+    //: Set label using Pango markup.
+
+    bool GUISetMarkup(const StringC &newText)
+    { return Body().GUISetMarkup(newText); }
+    //: Set label using Pango markup.
 
     friend class LabelBodyC;
   };
