@@ -75,6 +75,9 @@ namespace RavlN { namespace GeneticN {
   //!  Default values for basic types
   const GeneTypeC &GeneType(float value);
 
+  //!  Default values for basic types
+  const GeneTypeC &GeneType(bool value);
+
   //! Generate a gene type for
   const GeneTypeC &CreateGeneType(const std::type_info &ti);
 
@@ -122,6 +125,9 @@ namespace RavlN { namespace GeneticN {
     //! Access palette
     const GenePaletteC &GenePalette() const
     { return *m_palette; }
+
+    //! Get an integer.
+    void Get(const std::string &name,bool &value,const GeneTypeC &geneType) const;
 
     //! Get an integer.
     void Get(const std::string &name,IntT &value,const GeneTypeC &geneType) const;

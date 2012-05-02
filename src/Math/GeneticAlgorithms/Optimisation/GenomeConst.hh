@@ -14,7 +14,8 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! Type informat for int
+  //! Type information for int
+
   class GeneTypeIntC
    : public GeneTypeC
   {
