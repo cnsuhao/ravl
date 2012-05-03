@@ -76,7 +76,7 @@ namespace RavlN {
   bool SVD_IP_IntelMKL(MatrixC & m, MatrixC & u, VectorC & s, MatrixC & v)
   {
 
-    ONDEBUG(cerr << "Intel Inverse" << endl);
+    ONDEBUG(cerr << "Intel SVD" << endl);
     // both of these work, no difference between them
 #if 1
     MatrixC t = m.T();
