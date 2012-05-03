@@ -1,11 +1,11 @@
 /*****************************************************************************
- * $Id: createClassifier.cc 10976 2007-07-25 11:09:23Z alex $
  * This file is used in conjunction with RAVL, Recognition And Vision Library
  * Copyright (C) 2006, OmniPerception Ltd.
  * This code may be redistributed under the terms of the GNU Lesser
  * General Public License (LGPL). See the gpl.licence file for details or
  * see http://www.gnu.org/copyleft/lesser.html
  *****************************************************************************/
+// file-header-ends-here
 
 //! author="Alexey Kostin"
 

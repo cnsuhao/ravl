@@ -15,7 +15,8 @@
  * details.
  *
  */
-		                                                                                
+// file-header-ends-here
+
                              
 #ifndef _StdioDateNode_incl_
 #define _StdioDateNode_incl_
