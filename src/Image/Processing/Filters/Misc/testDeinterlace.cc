@@ -13,6 +13,7 @@
 #include "Ravl/DList.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/Moments2d2.hh"
+//! lib=RavlImageProc
 
 
 using namespace RavlN;

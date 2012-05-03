@@ -5,6 +5,7 @@
  * General Public License (LGPL). See the gpl.licence file for details or
  * see http://www.gnu.org/copyleft/lesser.html
  *****************************************************************************/
+//! lib=RavlSVM
 // file-header-ends-here
 
 //! author="Alexey Kostin"

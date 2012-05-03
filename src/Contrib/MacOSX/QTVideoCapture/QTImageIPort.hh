@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_QTIMAGEIPORT_HEADER
 #define RAVL_QTIMAGEIPORT_HEADER 1
+//! lib=RavlMacOSXVideoCapture
 
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Image/Image.hh"

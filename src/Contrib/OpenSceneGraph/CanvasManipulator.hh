@@ -10,6 +10,7 @@
  *
  * Created on 31 March 2011, 14:11
  */
+//! lib=RavlGUIOpenSceneGraph
 
 #ifndef RAVLOSGN_CANVASMANIPULATOR_HH
 #define	RAVLOSGN_CANVASMANIPULATOR_HH

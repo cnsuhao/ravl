@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/OS/XMLFactory/ConfigParameter.cc"
-//! lib = Ravl
+//! lib=RavlXMLFactory
 
 #include "Ravl/ConfigParameter.hh"
 #include "Ravl/XMLFactoryRegister.hh"

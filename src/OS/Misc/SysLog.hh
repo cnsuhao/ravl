@@ -6,4 +6,5 @@
 // file-header-ends-here
 // Compatibility header.
 #include "Ravl/SysLog.hh"
+//! lib=RavlOS
 

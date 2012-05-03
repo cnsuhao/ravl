@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/GUI/GTK/FileChooserDialog.hh"
-//! lib = RavlGUI
+//! lib=RavlGUI
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Graphics.GTK.Control"
 //! example = "exFileChooser.cc"

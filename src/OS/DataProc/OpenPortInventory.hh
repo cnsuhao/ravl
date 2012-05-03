@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_SHAREINVENTORY_HH
 #define	RAVL_SHAREINVENTORY_HH
+//! lib=RavlDPMT
 
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Hash.hh"

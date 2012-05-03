@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlIntelMKL
 
 #include "Ravl/IntelMKL.hh"
 #include "Ravl/LAHooks.hh"

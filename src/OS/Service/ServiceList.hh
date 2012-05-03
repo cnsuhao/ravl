@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! lib=RavlXMLFactory
+//! lib=RavlService
 //! author="Charles Galambos"
 //! docentry=Ravl.API.Core.Services
 #ifndef RAVL_SERVICELIST_HEADER

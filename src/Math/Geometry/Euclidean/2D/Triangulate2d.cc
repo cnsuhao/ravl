@@ -3,6 +3,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlMath
 
 // Based on code submitted to flipcode by John W. Ratcliff (jratcliff@verant.com) July 22, 2000
 

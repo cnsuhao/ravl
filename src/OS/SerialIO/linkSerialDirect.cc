@@ -10,6 +10,7 @@
  *  Created on: 23 Sep 2010
  *      Author: Alexey Kostin
  */
+//! lib=RavlSerialIO
 
 namespace RavlN {
   extern void InitSerialDirectFormat();

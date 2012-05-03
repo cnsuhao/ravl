@@ -11,6 +11,7 @@
 #include "Ravl/GUI/ToggleButton.hh"
 #include <gdk/gdktypes.h>
 #include <gtk/gtk.h>
+//! lib=RavlGUI
 
 
 namespace RavlGUIN {

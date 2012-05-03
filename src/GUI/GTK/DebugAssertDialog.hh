@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVLGUI_DEBUGASSERT_DIALOG_HEADER
 #define RAVLGUI_DEBUGASSERT_DIALOG_HEADER 1
+//! lib=RavlGUI
 
 //ONLY USE THIS CLASS WHEN IN DEBUG MODE
 //Used to warn the programmer when something's happening that shouldn't be 

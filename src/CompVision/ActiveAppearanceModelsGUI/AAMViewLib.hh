@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVLIMAGE_AAMVIEWLIB_HEADER
 #define RAVLIMAGE_AAMVIEWLIB_HEADER 1
+//! lib=RavlAAMGUI
 
 #include "Ravl/Types.hh"
 

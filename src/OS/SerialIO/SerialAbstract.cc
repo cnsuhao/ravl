@@ -11,7 +11,7 @@
 //! author="Alex Kostin"
 //! docentry="Ravl.API.OS.Hardware"
 //! rcsid="$Id$"
-//! lib=RavlOS
+//! lib=RavlSerialIO
 //! file="Ravl/OS/Misc/SerialAbstract.cc"
 
 #include "Ravl/OS/SerialAbstract.hh"

@@ -10,6 +10,7 @@
  *  Created on: 2 Mar 2010
  *      Author: Alexey Kostin
  */
+//! lib=RavlLapack
 
 #include "Ravl/LAHooks.hh"
 

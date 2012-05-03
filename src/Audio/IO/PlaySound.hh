@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVLAUDIO_PLAYSOUND_HH
 #define	RAVLAUDIO_PLAYSOUND_HH
+//! lib=RavlAudioIO
 
 #include "Ravl/String.hh"
 

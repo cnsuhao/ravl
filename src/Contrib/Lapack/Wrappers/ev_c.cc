@@ -10,6 +10,7 @@
 #ifdef WIN32
 #include <malloc.h>
 #endif
+//! lib=RavlLapackWraps
 
 //This file contains C wrappers of LAPACK function for eigen vectors computation
 extern "C"

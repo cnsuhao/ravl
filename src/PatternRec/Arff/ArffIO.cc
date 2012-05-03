@@ -8,6 +8,7 @@
 #include "Ravl/PatternRec/SampleIter.hh"
 #include <string.h>
 #include <stdio.h>
+//! lib=ArffIO
 
 namespace RavlN
 {

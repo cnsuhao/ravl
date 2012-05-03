@@ -9,6 +9,7 @@
 //! author="Charles Galambos"
 //! rcsid="$Id$"
 //! docentry="Ravl.API.Graphics.GTK.Util"
+//! lib=RavlGUIUtil
 
 #include "Ravl/Image/Image.hh"
 #include "Ravl/DP/SPort.hh"

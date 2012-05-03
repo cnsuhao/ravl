@@ -4,7 +4,7 @@
 #ifndef RAVLN_CPUID_HEADER
 #define RAVLN_CPUID_HEADER 1
 //! rcsid="$Id$"
-//! lib=
+//! lib=RavlCore
 //! docentry="Ravl.API.Core.Misc"
 //! file="Ravl/Core/Base"
 //! author="Kieron J Messer"

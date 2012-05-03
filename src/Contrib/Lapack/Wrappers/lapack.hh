@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! docentry="Ravl.API.Math.Linear Algebra.Lapack"
-//! lib=RavlLapack
+//! lib=RavlLapackWraps
 //! file="Ravl/Contrib/Lapack/lapack.hh"
 //! author="Kieron Messer"
 

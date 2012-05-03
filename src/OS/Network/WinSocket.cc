@@ -6,6 +6,7 @@
 // file-header-ends-here
 #include "Ravl/config.h"
 #if RAVL_USE_WINSOCK
+//! lib=RavlNet
 
 #include "Ravl/OS/SysLog.hh"
 

@@ -10,6 +10,7 @@
  *
  * Created on November 14, 2010, 12:42 PM
  */
+//! lib=RavlXMPPIksemel
 #ifndef RAVL_XMPP_IKSEMEL_HH
 #define	RAVL_XMPP_IKSEMEL_HH
 

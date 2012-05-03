@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! author="Charles Galambos"
+//! lib=RavlThreads
 
 #include "Ravl/AMutex.hh"
 #include "Ravl/Threads/Mutex.hh"

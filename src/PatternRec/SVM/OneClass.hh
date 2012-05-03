@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 // $Id: OneClass.hh 12208 2008-02-07 12:54:07Z alex $
+//! lib=RavlSVM
 
 #ifndef RAVL_ONE_CLASS_HEADER
 #define RAVL_ONE_CLASS_HEADER

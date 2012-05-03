@@ -10,6 +10,7 @@
  *
  * Created on April 25, 2011, 10:13 AM
  */
+//! lib=RavlGUIOpenSceneGraph
 
 #ifndef RAVLOSGN_LayoutGrid_HH
 #define	RAVLOSGN_LayoutGrid_HH

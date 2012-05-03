@@ -11,6 +11,7 @@
 #include "Ravl/PatternRec/DataSetIO.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Filename.hh"
+//! lib=RavlPatternRec
 
 using namespace RavlN;
 

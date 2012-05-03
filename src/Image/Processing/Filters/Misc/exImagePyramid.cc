@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 #include "Ravl/Image/ImagePyramid.hh"
+//! lib=RavlImageProc
 
 using namespace RavlN;
 using namespace RavlImageN;

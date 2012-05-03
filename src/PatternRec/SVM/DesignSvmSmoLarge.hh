@@ -11,7 +11,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! file =      "Ravl/PatternRec/Svm/DesignClassifierSvmSmo.hh"
 //! author =    "Alexey Kostin"
-//! lib =       RavlSVM
+//! lib=RavlSVM
 //! date =      "06/09/05"
 //! rcsid =     "$Id: DesignClassifierSvmSmo.hh,v 1.2 2005/05/12 14:19:26 alex Exp $"
 //! docentry =  "Ravl.API.Pattern_Recognition.Classifier.SVM"

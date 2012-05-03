@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 // $Id: FaceGraph.cc 8674 2006-05-24 12:19:29Z alex $
+//! lib=RavlSVM
 
 //! author="Alexey Kostin"
 

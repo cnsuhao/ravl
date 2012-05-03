@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVLGUI_COMBOBOXENTRY_HEADER
 #define RAVLGUI_COMBOBOXENTRY_HEADER 1
+//! lib=RavlGUI
 
 //! docentry="Ravl.API.Graphics.GTK.Control"
 

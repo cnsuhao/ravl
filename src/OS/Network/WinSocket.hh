@@ -6,6 +6,7 @@
 // file-header-ends-here
 #include "Ravl/config.h"
 #if RAVL_USE_WINSOCK
+//! lib=RavlNet
 
 #ifndef RAVL_WINSOCKET_HEADER
 #define RAVL_WINSOCKET_HEADER 1

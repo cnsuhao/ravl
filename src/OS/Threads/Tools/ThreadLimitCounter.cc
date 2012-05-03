@@ -10,6 +10,7 @@
  *  Created on: 9 Aug 2011
  *      Author: charles
  */
+//! lib=RavlThreads
 
 #include "Ravl/Threads/ThreadLimitCounter.hh"
 

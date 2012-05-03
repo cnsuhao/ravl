@@ -10,6 +10,7 @@
  *  Created on: 2 Mar 2010
  *      Author: Alexey Kostin
  */
+//! lib=RavlMath
 
 #ifndef LAHOOKS_HH_
 #define LAHOOKS_HH_
