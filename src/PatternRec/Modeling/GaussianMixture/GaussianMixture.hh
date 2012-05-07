@@ -19,7 +19,7 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Reduce dimension by taking a subset of features.
+  //: Function which computes the value of a mixture of gaussian's
   
   class GaussianMixtureBodyC 
     : public Function1BodyC
@@ -85,7 +85,7 @@ namespace RavlN {
     //: We pre-compute inverse of covariance matrix
 
     SArray1dC<RealT> det;
-    //: We pre-compute the determinant or log deteminant of cov
+    //: We pre-compute the determinant or log determinant of cov
 
     RealT konst;
     //: The constant used in pdf. 
@@ -96,7 +96,7 @@ namespace RavlN {
   };
 
   //! userlevel=Develop
-  //: Reduce dimension by taking a subset of features.
+  //: Function which computes the value of a mixture of gaussian's
 
   class GaussianMixtureC 
     : public Function1C

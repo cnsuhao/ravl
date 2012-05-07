@@ -21,7 +21,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Computes normal parameters of a set of unlabbelled data using EM alg
+  //: Computes normal parameters of a set of unlabelled data using EM algorithm
   // This function estimates a PDF as a Gausian mixture.
   // It can be constructed from a set of data points.  The parameters
   // of the gaussians are then estimated using the Expectation Maximisation
@@ -83,7 +83,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Computes normal parameters of a set of unlabbelled data using EM alg
+  //: Computes normal parameters of a set of unlabelled data using EM algorithm
   // This function estimates a PDF as a Gausian mixture.
   // It can be constructed from a set of data points.  The parameters
   // of the gaussians are then estimated using the Expectation Maximisation
