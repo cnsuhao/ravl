@@ -64,7 +64,10 @@ namespace RavlN {
     //: Apply function to 'data'
     
     virtual float Apply1(const TVectorC<float> &data) const;
-    //! Apply to a vector of floats.
+    //: Apply to a vector of floats.
+
+    typedef SmartPtrC<Function1BodyC> RefT;
+    //: Smart ptr to function
   };
 
   //! userlevel=Normal
