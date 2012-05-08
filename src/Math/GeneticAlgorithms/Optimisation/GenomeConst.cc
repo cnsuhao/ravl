@@ -408,7 +408,7 @@ namespace RavlN { namespace GeneticN {
   size_t GeneFloatC::Hash() const {
     const GeneTypeFloatC *gtf = dynamic_cast<const GeneTypeFloatC *>(m_type.BodyPtr());
     if(gtf != 0 && gtf->SmallestIncrement() > 0)
-      return StdHash(::truncf(m_value / gtf->SmallestIncrement()));
+      return StdHash(Floor(m_value / gtf->SmallestIncrement()));
 
     return StdHash(m_value);
   }
