@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERCONTROLNETCLIENT_H
 #define	RAVL_DATASERVERCONTROLNETCLIENT_H
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerControlInterface.hh"
 #include "Ravl/String.hh"

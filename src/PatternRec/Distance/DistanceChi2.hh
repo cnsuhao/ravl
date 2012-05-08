@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! file =      "Ravl/PatternRec/Distance/DistanceChi2.hh"
 //! author =    "Teo de Campos"
-//! lib =       RavlPatternRec
+//! lib=RavlPatternRec
 //! date =      "12/10/2010"
 //! rcsid =     "$Id: DistanceChi2.hh 12208 2010-10-12 12:54:07Z td0005 $"
 //! docentry =  "Ravl.API.Pattern_Recognition.Distance"

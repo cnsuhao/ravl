@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_ZMQ_MSGJSON_HH_
 #define RAVL_ZMQ_MSGJSON_HH_
+//! lib=RavlZmq
 
 #include "Ravl/SArray1d.hh"
 

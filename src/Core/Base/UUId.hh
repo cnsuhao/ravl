@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_UUId_HEADER
 #define RAVL_UUId_HEADER 1
+//! lib=RavlCore
 
 #include "Ravl/String.hh"
 #include "Ravl/BinStream.hh"

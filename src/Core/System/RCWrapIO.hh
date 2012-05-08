@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_RCWRAPIO_HEADER
 #define RAVL_RCWRAPIO_HEADER 1
+//! lib=RavlCore
 
 #include "Ravl/RCWrap.hh"
 

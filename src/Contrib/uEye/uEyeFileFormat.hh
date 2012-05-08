@@ -5,6 +5,7 @@
 // file-header-ends-here
 #ifndef RAVLIMAGE_UEYEFORMAT_HEADER
 #define RAVLIMAGE_UEYEFORMAT_HEADER 1
+//! lib=RavlImgIOuEye
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"

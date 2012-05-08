@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERCONTROLMESSAGES_H
 #define	RAVL_DATASERVERCONTROLMESSAGES_H
+//! lib=RavlDataServer
 
 namespace RavlN
 {

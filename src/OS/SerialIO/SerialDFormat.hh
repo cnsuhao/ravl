@@ -5,6 +5,7 @@
 // file-header-ends-here
 #ifndef RAVL_SERIAL_DIRECT_FORMAT_HEADER
 #define RAVL_SERIAL_DIRECT_FORMAT_HEADER 1
+//! lib=RavlSerialIO
 
 #ifndef VISUAL_CPP
 #include "Ravl/DP/FileFormat.hh"

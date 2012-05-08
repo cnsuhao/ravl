@@ -2,7 +2,7 @@
 // Copyright (C) 2003, OmniPerception Ltd.
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=OmniMagGUI
+//! lib=RavlGUIUtil
 //! file="Magellan/GUI/VideoSampleTimeLine.cc"
 
 #include "Ravl/GUI/ThumbNailTimeLine.hh"

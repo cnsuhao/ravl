@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_INITAUTORELEASEPOOL_HEADER
 #define RAVL_INITAUTORELEASEPOOL_HEADER 1
+//! lib=RavlMacOSXRunLoop
 
 namespace RavlN {
 

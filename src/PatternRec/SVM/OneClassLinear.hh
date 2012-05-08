@@ -5,6 +5,7 @@
 // General Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
+//! lib=RavlSVM
 
 //! author="Alexey Kostin"
 

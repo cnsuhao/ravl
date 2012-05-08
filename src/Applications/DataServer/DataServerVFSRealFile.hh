@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERVFSREALFILE_HEADER
 #define RAVL_DATASERVERVFSREALFILE_HEADER 1
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/OS/Filename.hh"

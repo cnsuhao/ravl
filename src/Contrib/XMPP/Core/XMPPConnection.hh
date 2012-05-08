@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_XMPP_XMPPCONNECTION_HEADER
 #define RAVL_XMPP_XMPPCONNECTION_HEADER 1
+//! lib=RavlXMPP
 
 #include "Ravl/XMLFactory.hh"
 #include "Ravl/SmartLayerPtr.hh"

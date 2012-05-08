@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_ZMQN_MESSAGE_HEADER
 #define RAVL_ZMQN_MESSAGE_HEADER
+//! lib=RavlZmq
 
 #include "Ravl/Zmq/Context.hh"
 #include "Ravl/SArray1d.hh"

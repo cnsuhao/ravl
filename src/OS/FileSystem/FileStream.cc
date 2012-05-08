@@ -5,27 +5,24 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! docentry="Ravl.OS.File System"
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlOS
 //! file="Ravl/OS/FileSystem/FileStream.cc"
 
-
-#if !RAVL_COMPILER_VISUALCPP
+#if RAVL_COMPILER_VISUALCPP
+#include <direct.h>
+#include <memory.h>
+#include <io.h>
+#else
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-#else
-#include <direct.h>
-#include <memory.h>
-#include <io.h>
 #endif
 
 #include "Ravl/OS/FileStream.hh"
 #include "Ravl/OS/Filename.hh"
-
 
 namespace RavlN {
   

@@ -1,5 +1,5 @@
 // This file is part of RAVL, Recognition And Vision Library
-// Copyright (C) 2005, University of Surrey
+// Copyright (C) 2005-12, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
@@ -12,7 +12,7 @@
 #include  <iomanip>
 #include <stdint.h>
 //! rcsid="$Id: fixSource.cfg,v 1.6 2005/03/02 09:28:41 craftit Exp $"
-//! lib=RawVid
+//! lib=RavlRawVidIO
 
 #define DODEBUG 0
 #if DODEBUG

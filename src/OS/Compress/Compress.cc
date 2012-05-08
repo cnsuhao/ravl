@@ -6,6 +6,7 @@
 // file-header-ends-here
 //! author="Charles Galambos"
 //! docentry="Ravl.OS.Compression"
+//! lib=RavlZLib
 
 #include "Ravl/Compress.hh"
 #include <zlib.h>

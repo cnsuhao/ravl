@@ -8,7 +8,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////
 //! file = "Ravl/Contrib/Python/PythonException.cc"
-//! lib = RavlPython
+//! lib=RavlPython
 //! author = "Warren Moore"
 
 #include "Ravl/PythonException.hh"

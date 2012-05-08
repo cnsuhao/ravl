@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/V4L2/ImgIOV4L2.cc"
-//! lib = RavlImgIOV4L2
+//! lib=RavlImgIOV4L2
 //! author = "Warren Moore"
 
 #include "Ravl/Image/ImgIOV4L2.hh"

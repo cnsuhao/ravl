@@ -29,6 +29,8 @@ These notices must be retained in any copies of any part of this
 documentation and/or software.
 
 */
+//! lib=RavlCore
+// file-header-ends-here
 
 #ifndef BZF_MD5_H
 #define BZF_MD5_H

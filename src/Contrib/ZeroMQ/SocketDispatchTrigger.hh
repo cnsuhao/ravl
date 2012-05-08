@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_ZMQN_SOCKETDISPATCHTRIGGER_HEADER
 #define RAVL_ZMQN_SOCKETDISPATCHTRIGGER_HEADER 1
+//! lib=RavlZmq
 
 #include "Ravl/Zmq/SocketDispatcher.hh"
 #include "Ravl/Trigger.hh"

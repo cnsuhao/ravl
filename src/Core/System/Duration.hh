@@ -1,5 +1,12 @@
-#ifndef DURATION_HH
-#define DURATION_HH
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2003-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+#ifndef RAVL_DURATION_HH
+#define RAVL_DURATION_HH
+//! lib=RavlCore
 
 #include "Ravl/TimeCode.hh"
 #include "Ravl/Pair.hh"

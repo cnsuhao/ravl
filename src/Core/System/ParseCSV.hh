@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_PARSECSV_HH_
 #define RAVL_PARSECSV_HH_
+//! lib=RavlCore
 
 #include "Ravl/String.hh"
 #include "Ravl/Stream.hh"

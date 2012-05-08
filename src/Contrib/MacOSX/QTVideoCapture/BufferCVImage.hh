@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_BUFFER2DCVIMAGE_HEADER
 #define RAVL_BUFFER2DCVIMAGE_HEADER 1
+//! lib=RavlMacOSXVideoCapture
 
 #include "Ravl/Buffer2d.hh"
 #include <QuartzCore/QuartzCore.h>

@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! file =      "Ravl/PatternRec/Svm/CommonKernels.hh"
 //! author =    "Alexey Kostin"
-//! lib =       RavlSVM
+//! lib=RavlSVM
 //! date =      "3/07/03"
 //! rcsid =     "$Id: CommonKernels.hh 12208 2008-02-07 12:54:07Z alex $"
 //! docentry =  "Ravl.API.Pattern_Recognition.Classifier.SVM.Kernel functions"

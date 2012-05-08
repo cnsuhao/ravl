@@ -11,6 +11,7 @@
 //! date="22/2/2008"
 //! userlevel=Normal
 //! docentry="Ravl.API.Math.Geometry.2D"
+//! lib=RavlMath
 
 #include "Ravl/Polygon2d.hh"
 #include "Ravl/Index3d.hh"
