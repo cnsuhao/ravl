@@ -9,14 +9,15 @@
 #include "Ravl/Text/TemplateComplex.hh"
 #include "Ravl/Option.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/Resource.hh"
 
 using namespace RavlN;
 
 int main(int argc,char **argv) 
 {
   OptionC  option(argc,argv);
-  StringC input = option.String("","testTC.tmpl","Input file. ");
-  StringC output = option.String("","testTC.out","Output file. ");
+  StringC input = option.String("",RavlN::Resource("RAVL/testData", "testTC.tmpl"),"Input file. ");
+  StringC output = option.String("",RavlN::Resource("RAVL/testData","testTC.out"),"Output file. ");
   StringC status;
   StringC NL("\n");
   StringC CRNL("\r\n");
