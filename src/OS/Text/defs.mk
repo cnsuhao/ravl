@@ -25,7 +25,7 @@ LOCAL_FILES = template.x template2.x test.conf
 EXAMPLES = exTemplateFile.cc exTemplateComplex.cc exConfigFile.cc
 # exText.cc 
 
-TESTEXES = testTextFile.cc
+TESTEXES = testTextFile.cc testTC.cc
 #exConfig.cc
 
 PLIB=RavlOS
