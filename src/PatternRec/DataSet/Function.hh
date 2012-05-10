@@ -110,6 +110,11 @@ namespace RavlN {
     
     virtual void Describe(ostream &out);
     //: Write a human readable text description of the function.
+
+
+    typedef SmartPtrC<FunctionBodyC> RefT;
+    //: Smart ptr to function
+
   protected:
     
     UIntT inputSize;  // (X in amma speak.)
