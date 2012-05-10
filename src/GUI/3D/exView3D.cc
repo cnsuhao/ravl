@@ -44,7 +44,7 @@ int main(int nargs,char *args[])
   switch(shapeId)
   {
   case -1:
-    if (!Load(file,mesh,"",verbose))
+    if (!RavlN::Load(file,mesh,"",verbose))
     {
       cerr << "Could not load input file " << file << endl;
       return 1;

@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_WINSTREAMIO_HEADER
 #define RAVL_WINSTREAMIO_HEADER 1
+//! lib=RavlOS
 
 #include "Ravl/config.h"
 #if RAVL_OS_WIN32

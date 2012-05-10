@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_UUID_HEADER
 #define RAVL_UUID_HEADER 1
+//! lib=RavlUUId
 
 #include "Ravl/String.hh"
 #include "Ravl/UUId.hh"
@@ -13,7 +14,10 @@
 namespace RavlN {
   
   StringC GenerateUUId();
-  //: Geneate a UUId in string form.
+  //: Generate a UUId in string form.
+
+  void GenerateUUId(UUIdC &anId);
+  //: Generate a binary UUId;
 
 }
 

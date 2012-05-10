@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! file = "Ravl/Contrib/LibGd/Gd.hh"
-//! lib = RavlImgGd
+//! lib=RavlImgGd
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Images.Converters.LibGD"
 //! example = "testGd.cc"

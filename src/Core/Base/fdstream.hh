@@ -84,7 +84,6 @@ namespace RavlN {
     buf_type filebuf;
   };
   
-  
   //! userlevel=Develop
   //: Basic fdstream.
   
@@ -122,7 +121,7 @@ namespace RavlN {
 
 namespace RavlN {
   using namespace __gnu_cxx;
-  
+
   //! userlevel=Develop
   //: Basic input from a fd stream.
   
@@ -139,9 +138,11 @@ namespace RavlN {
     
     typedef  stdio_filebuf  <char_type, traits_type>  buf_type;
     
-    explicit basic_ifdstream(int fd, ios_base::openmode mode = ios_base::in)
+    explicit basic_ifdstream(int fd,
+                             ios_base::openmode mode = ios_base::in,
+                             size_t buffSize = static_cast<size_t>(BUFSIZ))
       : basic_istream<char_type, traits_type>(0),
-	filebuf(fd,mode)
+	filebuf(fd,mode,buffSize)
     {
       init(&filebuf);
     }
@@ -171,9 +172,12 @@ namespace RavlN {
 
     typedef stdio_filebuf <char_type, traits_type>  buf_type;
     
-    explicit basic_ofdstream(int fd,ios_base::openmode mode = ios_base::out|ios_base::trunc)
+    explicit basic_ofdstream(int fd,
+                             ios_base::openmode mode = ios_base::out|ios_base::trunc,
+                             size_t buffSize = static_cast<size_t>(BUFSIZ)
+                             )
       : basic_ostream<char_type, traits_type>(0),
-	filebuf(fd,mode)
+	filebuf(fd,mode,buffSize)
     { init(&filebuf); }
     //: Construct from a file handle.
     
@@ -198,9 +202,11 @@ namespace RavlN {
     
     typedef stdio_filebuf <char_type, traits_type>  buf_type;
     
-    explicit basic_fdstream(int fd,ios_base::openmode mode = ios_base::in | ios_base::out)
+    explicit basic_fdstream(int fd,
+                            ios_base::openmode mode = ios_base::in | ios_base::out,
+                            size_t buffSize = static_cast<size_t>(BUFSIZ))
       : basic_iostream<char_type, traits_type>(NULL), 
-	filebuf(fd,mode)
+	filebuf(fd,mode, buffSize)
     { init(&filebuf); }
     //: Cosntructor.
     

@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlRLog
 
 #include "Ravl/Stream.hh"
 
@@ -194,7 +195,10 @@ namespace RavlN {
     tempLoc.pub = 0;
     tempLoc.publish = &rlog::RLogPublisher::Publish;
     tempLoc.component = "Ravl";
-    tempLoc.fileName = filename;
+    if(filename == 0)
+      tempLoc.fileName = "(Unknown)";
+    else
+      tempLoc.fileName = filename;
     tempLoc.lineNum = lineno;
     tempLoc.functionName = "*undefined*";
 

@@ -4,12 +4,14 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerControlServer.hh"
 #include "Ravl/DataServer/DataServerControlClient.hh"
 #include "Ravl/DataServer/DataServerControlConnection.hh"
 #include "Ravl/OS/Socket.hh"
 #include "Ravl/Threads/LaunchThread.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -20,11 +22,43 @@
 
 namespace RavlN
 {
+  //: XMLFactory constructor
+
+  DataServerControlServerBodyC::DataServerControlServerBodyC(const XMLFactoryContextC &factory)
+   : ServiceC(factory),
+     m_controlAddress(factory.AttributeString("address","localhost:6447")),
+     m_started(false),
+     m_terminated(false)
+  {
+    if(!factory.UseChildComponent("DataServer",m_dataServer,false,typeid(DataServerC))) {
+      RavlError("No data server provided in '%s' ",factory.Path().data());
+    }
+  }
 
   DataServerControlServerBodyC::DataServerControlServerBodyC(const StringC& controlAddress, const DataServerC& dataServer)
   : m_controlAddress(controlAddress),
-    m_dataServer(dataServer)
+    m_dataServer(dataServer),
+    m_started(false),
+    m_terminated(false)
   {}
+
+  //! Start service.
+  bool DataServerControlServerBodyC::Start() {
+    RavlDebug("Starting DataServerControl. %d %d ",m_terminated,m_started);
+    if(m_terminated || m_started)
+      return true;
+    m_started = true;
+    RavlN::LaunchThread(TriggerPtr(CBRefT(this),&DataServerControlServerBodyC::Listen));
+    return true;
+  }
+
+  //! Shutdown service
+  bool DataServerControlServerBodyC::Shutdown() {
+    m_terminated = true;
+    if(m_socketServer.IsValid())
+      m_socketServer.Close();
+    return true;
+  }
 
   static bool startClient(SocketC socketConnection, DataServerC dataServer)
   {
@@ -36,35 +70,37 @@ namespace RavlN
 
   bool DataServerControlServerBodyC::Listen()
   {
-    SocketC socketServer(m_controlAddress, true);
-    if (!socketServer.IsOpen())
+    RavlDebug("DataServerControl Listening on '%s' ",m_controlAddress.data());
+    m_started = true;
+    m_socketServer = SocketC(m_controlAddress, true);
+    if (!m_socketServer.IsOpen())
     {
-      cerr << "DataServerControlServerBodyC::Listen failed to open socket (" << m_controlAddress << ")" << endl;
+      RavlError("DataServerControlServerBodyC::Listen failed to open socket (%s)",m_controlAddress.data());
       return false;
     }
 
     //TODO(WM) Add a kill signal to this loop?
-    while (true)
+    while (!m_terminated)
     {
       try
       {
         ONDEBUG(cerr << "DataServerControlServerBodyC::Listen listening on (" << m_controlAddress << ")" << endl);
-        SocketC socketConnection = socketServer.Listen(true, 20);
+        SocketC socketConnection = m_socketServer.Listen(true, 20);
         if (!socketConnection.IsValid())
         {
-          cerr << "DataServerControlServerBodyC::Listen opened invalid socket" << endl;
+          RavlError("DataServerControlServerBodyC::Listen opened invalid socket ");
           break;
         }
 
         if (!socketConnection.IsOpen())
         {
-          if (!socketServer.IsOpen())
+          if (!m_socketServer.IsOpen())
           {
-            cerr << "DataServerControlServerBodyC::Listen server socket was closed on us" << endl;
+            RavlWarning("DataServerControlServerBodyC::Listen server socket was closed on us, shutting down.");
             break;
           }
 
-          cerr << "DataServerControlServerBodyC::Listen connection not opened, looping again" << endl;
+          RavlWarning("DataServerControlServerBodyC::Listen connection not opened, looping again");
           continue;
         }
 
@@ -72,18 +108,33 @@ namespace RavlN
       }
       catch(ExceptionC& e)
       {
-        cerr << "DataServerControlServerBodyC::Listen RAVL exception (" << e.Text() << ")" << endl;
+        RavlError("DataServerControlServerBodyC::Listen RAVL exception (%s)",e.Text());
         break;
       }
       catch( ... )
       {
-        cerr << "DataServerControlServerBodyC::Listen unknown exception" << endl;
+        RavlError("DataServerControlServerBodyC::Listen unknown exception ");
         break;
       }
     }
 
-    ONDEBUG(cerr << "DataServerControlServerBodyC::Listen loop finished (so something went wrong)");
+    ONDEBUG(RavlDebug("DataServerControlServerBodyC::Listen loop finished (so something went wrong)"));
     return false;
   }
+
+  //! Called when owner handles drop to zero.
+  void DataServerControlServerBodyC::ZeroOwners() {
+    ServiceC::ZeroOwners();
+  }
+
+  void LinkDataServerControlServer()
+  {}
+
+  ServiceC::RefT DataServerControlServer2Service(const DataServerControlServerC &ds)
+  { return ds.BodyPtr(); }
+
+  DP_REGISTER_CONVERSION(DataServerControlServer2Service,1.0);
+
+  static XMLFactoryRegisterHandleC<DataServerControlServerC> g_registerXMLFactoryDataServerControlServer("RavlN::DataServerControlServerC");
 
 }

@@ -44,7 +44,7 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Mutate a gene
     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
@@ -187,6 +187,12 @@ namespace RavlN { namespace GeneticN {
 
     //! Visit all gene's in tree.
     virtual void Visit(GeneVisitorC &visitor) const;
+
+    //! Generate a hash value for the gene
+    virtual size_t Hash() const;
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneListC> RefT;

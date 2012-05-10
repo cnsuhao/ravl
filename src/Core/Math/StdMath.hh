@@ -183,7 +183,7 @@ namespace RavlN {
   //: Convert angle from degrees to radians.
 
   inline float  Radians(float angle)
-  { return Radians2Degrees(angle); }
+  { return float(Radians2Degrees(angle)); }
   //: Convert angle from degrees to radians.
   // OBSOLETE: Use Degrees2Radians
   
@@ -192,7 +192,7 @@ namespace RavlN {
   //: Convert angle from radians to degrees.
 
   inline float Degrees(float angle)
-  { return Radians2Degrees(angle); }
+  { return float(Radians2Degrees(angle)); }
   //: Convert angle from radians to degrees.
   // OBSOLETE: Use Radians2Degrees
   

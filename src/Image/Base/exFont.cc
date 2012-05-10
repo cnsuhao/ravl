@@ -1,3 +1,10 @@
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2001-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+//! lib=RavlImage
 
 #include "Ravl/Image/Font.hh"
 #include "Ravl/Option.hh"
@@ -54,7 +61,7 @@ int main(int nargs,char **argv) {
     hsize += font[i].Cols() + 1;
   }  
   
-  Save("@X",img);
+  RavlN::Save("@X",img);
   
   return 0;
 }

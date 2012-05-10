@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_RLOG_HEADER
 #define RAVL_RLOG_HEADER
+//! lib=RavlRLog
 
 #ifndef RLOG_COMPONENT
 #define RLOG_COMPONENT Ravl

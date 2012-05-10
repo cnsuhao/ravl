@@ -35,7 +35,7 @@ int main (int argc, char** argv)
   cmd.Check();
   
   ImageC<ByteRGBValueC> image;
-  if(!Load(file_in, image)) {
+  if(!RavlN::Load(file_in, image)) {
     cerr << "Failed to load " << file_in << "\n";
     return 1;
   }
@@ -51,7 +51,7 @@ int main (int argc, char** argv)
     regions = reg_grower.Apply(image);
   }
   
-  if(!Save(file_out, regions.RandomImage())) {
+  if(!RavlN::Save(file_out, regions.RandomImage())) {
     cerr << "Failed to save " << file_out << "\n";
   }
   

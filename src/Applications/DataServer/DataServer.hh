@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_VIDEOSERVER_HEADER
 #define RAVL_VIDEOSERVER_HEADER 1
+//! lib=RavlDataServer
 
 #include "Ravl/OS/NetPortManager.hh"
 #include "Ravl/Threads/Mutex.hh"

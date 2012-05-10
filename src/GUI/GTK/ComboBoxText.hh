@@ -9,6 +9,7 @@
 //! docentry="Ravl.API.Graphics.GTK.Control"
 //! author="Charles Galambos"
 //! date="21/04/2008"
+//! lib=RavlGUI
 
 #include "Ravl/GUI/ComboBox.hh"
 #include "Ravl/DList.hh"

@@ -11,7 +11,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! file =      "Ravl/API/PatternRec/Svm/SvmClassifier.hh"
 //! author =    "Alexey Kostin"
-//! lib =       RavlSVM
+//! lib=RavlSVM
 //! date =      "03/10/05"
 //! rcsid =     "$Id: SvmClassifier.hh 12208 2008-02-07 12:54:07Z alex $"
 //! docentry =  "Ravl.API.Pattern_Recognition.Classifier.SVM"

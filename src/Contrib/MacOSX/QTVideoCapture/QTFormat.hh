@@ -9,6 +9,7 @@
 ////////////////////////////////////////////////////////////////
 //! author = "Charles Galambos"
 //! docentry = "Ravl.API.Images.Video.Video IO.QuickTime WebCam"
+//! lib=RavlMacOSXVideoCapture
 
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"

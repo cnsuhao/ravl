@@ -8,6 +8,9 @@
 //! rcsid="$Id$"
 //! file="Ravl/SourceTools/CodeManager/SourceFile.cc"
 
+#include <time.h>
+#include <stdio.h>
+
 #include "Ravl/SourceTools/SourceFile.hh"
 #include "Ravl/Text/TextCursor.hh"
 #include "Ravl/OS/Filename.hh"
@@ -349,6 +352,25 @@ namespace RavlN {
       else
         return true;      // Don't replace existing header.
     }
+
+    char year[5], yr[3];
+    time_t t;
+    struct tm *now;
+
+    t=time(NULL);
+    now=localtime(&t);
+    if (now == NULL)
+    {
+       cerr << "WARNING: Problem calculating current year - using default.\n";
+       snprintf (year, 5, "%4d", 2012);
+       snprintf (yr, 3, "%2d", 12);
+    }
+    else
+    {
+       strftime(year, 5, "%Y", now);
+       strftime(yr, 3, "%y", now);
+    }
+
     // Copy in new section.
     it2.First();
     for(it1.First();it1;it1++) {
@@ -357,6 +379,8 @@ namespace RavlN {
 	newLine.gsub("%name%",name);
 	newLine.gsub("%desc%",desc);
 	newLine.gsub("%org%",org);
+	newLine.gsub("%yr%",yr);
+	newLine.gsub("%year%",year);
 	it2.InsertBef(TextFileLineC(0,newLine));
       } else
 	it2.InsertBef(*it1);

@@ -9,7 +9,7 @@
 //! author=CPUInfo
 //! docentry="Ravl.API.OS.Exec"
 //! file=
-//! lib=
+//! lib=RavlOS
 //! userlevel=Normal
 //! date="16 September 2009"
 

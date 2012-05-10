@@ -4,6 +4,7 @@
 // License. See http://www.opensource.org/licenses/mit-license.html
 // file-header-ends-here
 //! author = "Charles Galambos"
+//! lib=RavlImgIOuEye
 
 #include "Ravl/Image/ImgIOuEye.hh"
 #include "Ravl/Exception.hh"

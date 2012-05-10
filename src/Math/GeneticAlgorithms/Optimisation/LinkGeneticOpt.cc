@@ -16,7 +16,8 @@ namespace RavlN { namespace GeneticN {
   extern void LinkGenomeWeightedMeta();
   extern void LinkGeneticOptimiser();
   extern void LinkGeneTypeProxy();
-
+  extern void LinkGeneticOptimiserCheckPoint();
+  extern void LinkGeneTypeBool();
 
   void LinkGeneticOpt() {
     LinkGene2ClassGenerators();
@@ -25,7 +26,9 @@ namespace RavlN { namespace GeneticN {
     LinkGenomeShare();
     LinkGenomeWeightedMeta();
     LinkGeneticOptimiser();
+    LinkGeneticOptimiserCheckPoint();
     LinkGeneTypeProxy();
+    LinkGeneTypeBool();
   }
 
 }}

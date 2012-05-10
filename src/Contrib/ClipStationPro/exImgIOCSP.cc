@@ -90,8 +90,7 @@ int main (int argc, char ** argv )
 	  TimeCodeC tc = input.GetAttr("timecode") ;    // grab the timecode 
 	  cout << "\n" << tc.ToText() ;                 // output the timecode 
 	  
-	  Save(
-	   "test.ppm", img) ; 
+	  RavlN::Save( "test.ppm", img) ; 
 	  /*
 	  // randomly perturb the position of the rectangle
 	  pos += Index2dC( Random1() * 10 - 5.0 , Random1()*10 - 5.0 ) ;

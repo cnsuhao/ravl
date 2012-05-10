@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! file =      "Ravl/CompVision/ActiveAppearanceModels/AAMFaceLocalisation.cc"
 //! author =    "Jean-Yves Guillemaut"
-//! lib =       RavlAAM
+//! lib=RavlAAM
 //! date =      "01/03/2006"
 
 #include "Ravl/Image/ImgIO.hh"

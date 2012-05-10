@@ -22,6 +22,7 @@
 #include "Ravl/Threads/Semaphore.hh"
 #include "Ravl/Threads/ThreadEvent.hh"
 #include "Ravl/Calls.hh"
+#include "Ravl/SmartLayerPtr.hh"
 
 // The new timed trigger code doesn't rely the un*x select system call,
 // but gives less accurate timing.  
@@ -36,7 +37,7 @@ namespace RavlN
   // See the handle class for more details.
   
   class TimedTriggerQueueBodyC 
-    : public RCLayerBodyC
+    : public RavlN::RCLayerBodyC
   {
   public:
     TimedTriggerQueueBodyC();
@@ -69,9 +70,18 @@ namespace RavlN
     // Will return TRUE if event in cancelled before
     // it was run.
 
-    void Shutdown();
+    virtual bool Shutdown();
     //: Shutdown even queue.
     
+    virtual bool Start();
+    //: Start service.
+
+    typedef RavlN::SmartOwnerPtrC<TimedTriggerQueueBodyC> RefT;
+    //: Owner reference counted ptr to class
+
+    typedef RavlN::SmartCallbackPtrC<TimedTriggerQueueBodyC> CBRefT;
+    //: Callback reference counter ptr to class
+
   protected:
     bool Process();
     //: Process event queue.
@@ -80,6 +90,7 @@ namespace RavlN
     //: Called when owning handles drops to zero.
     
     MutexC access;
+    bool m_started;
     UIntT eventCount;
     PriQueueC<DateC,UIntT> schedule;
     HashC<UIntT,Tuple2C<TriggerC,float> > events;
@@ -161,7 +172,6 @@ namespace RavlN
     void Shutdown()
     { Body().Shutdown(); }
     //: Shutdown even queue.
-    // NB. This will block until shutdown is complete
     
     friend class TimedTriggerQueueBodyC;
   };

@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -49,13 +50,17 @@ namespace RavlN {
     
     // Sort out write flag.
     StringC canWriteStr = config["CanWrite"];
-    if(canWriteStr.IsEmpty() || canWriteStr == "1") canWrite = true;
-    else canWrite = false;
+    if(canWriteStr.IsEmpty() || canWriteStr == "1")
+      canWrite = true;
+    else
+      canWrite = false;
     
     // Setup verbose flag.
     StringC verboseStr = config["Verbose"];
-    if(verboseStr.IsEmpty() || verboseStr == "1") verbose = true;
-    else verbose = false;
+    if(verboseStr.IsEmpty() || verboseStr == "1")
+      verbose = true;
+    else
+      verbose = false;
     
     return true;
   }

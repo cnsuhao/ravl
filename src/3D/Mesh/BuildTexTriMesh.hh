@@ -9,6 +9,7 @@
 //! docentry="Ravl.API.3D.Mesh"
 //! author="Charles Galambos"
 //! date="22/2/2008"
+//! lib=Ravl3D
 
 #include "Ravl/Math.hh"
 #include "Ravl/Collection.hh"

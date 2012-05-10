@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlZmq
 
 #ifndef RAVL_ZMQ_MSGBUFFER_HH_
 #define RAVL_ZMQ_MSGBUFFER_HH_

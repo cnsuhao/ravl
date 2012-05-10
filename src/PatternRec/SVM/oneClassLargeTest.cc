@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 // $Id: oneClassLargeTest.cc 9564 2006-09-28 13:19:30Z alex $
+//! lib=RavlSVM
 
 //! author="Alexey Kostin"
 

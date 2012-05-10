@@ -15,6 +15,8 @@
  * details.
  *
  */
+//! lib=RavlRLog
+// file-header-ends-here
 		                                                                                
 
 #include "Ravl/StdioDateNode.hh"

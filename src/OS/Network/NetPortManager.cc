@@ -63,7 +63,7 @@ namespace RavlN {
   //: Open manager at address.
   
   bool NetPortManagerBodyC::Open(const StringC &addr) {
-    ONDEBUG(std::cerr << "NetPortManagerBodyC::Open(), Called for " << addr << " \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Open(), Called for '%s' ",addr.data()));
     
     RWLockHoldC hold(access,false);
     if(managerOpen) {
@@ -73,7 +73,7 @@ namespace RavlN {
     
     sktserv = SocketC(addr,true);
     if(!sktserv.IsOpen()) {
-      std::cerr << "NetPortManagerBodyC::Run(), Failed to open server socket. '" << addr << "' \n";
+      RavlError("NetPortManagerBodyC::Run(), Failed to open server socket. '%s' ",addr.data());
       return false;
     }
 
@@ -97,7 +97,7 @@ namespace RavlN {
   //: Run port manager.
   
   bool NetPortManagerBodyC::Run() {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Run(), Called. \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Run(), Called. "));
     RavlAssert(sktserv.IsOpen());
     NetPortManagerC manager(*this);
     ready.Post();
@@ -133,7 +133,11 @@ namespace RavlN {
 
   //: Search for port in table.
   
-  bool NetPortManagerBodyC::Lookup(const StringC &name,const StringC &dataType,NetISPortServerBaseC &isport,bool attemptCreate) {
+  bool NetPortManagerBodyC::Lookup(const StringC &name,
+                                   const StringC &dataType,
+                                   NetISPortServerBaseC &isport,
+                                   bool attemptCreate)
+  {
     ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetISPortServerBaseC),  Called. Port='" << name << "' \n");
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(iports.Lookup(name,isport))
@@ -161,7 +165,11 @@ namespace RavlN {
     return true;
   }
   
-  bool NetPortManagerBodyC::Lookup(const StringC &name,const StringC &dataType,NetOSPortServerBaseC &osport,bool attemptCreate) {
+  bool NetPortManagerBodyC::Lookup(const StringC &name,
+                                   const StringC &dataType,
+                                   NetOSPortServerBaseC &osport,
+                                   bool attemptCreate)
+  {
     ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetOSPortServerBaseC),  Called. Port='" << name << "' \n");
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(oports.Lookup(name,osport))

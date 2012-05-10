@@ -41,7 +41,7 @@ ImageByteRGBAC::RefT CreateImage()
 {
   ImageByteRGBAC::RefT imageRef = new ImageByteRGBAC(RealRange2dC(-1, 1));
   RavlImageN::ImageC<ByteRGBAValueC> image;
-  if (Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", image, "", true))
+  if (RavlN::Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", image, "", true))
     imageRef->SetImage(image);
 
   return imageRef;
@@ -85,7 +85,7 @@ TexTriMeshC::RefT CreateTexTriMesh()
   triArray[1].SetColour(colourWhite);
 
   SArray1dC<RavlImageN::ImageC<ByteRGBValueC> > imageArray(1);
-  if (!Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", imageArray[0], "", true))
+  if (!RavlN::Load(PROJECT_OUT "/share/RAVL/pixmaps/monkey.ppm", imageArray[0], "", true))
     return TexTriMeshC::RefT();
 
   SArray1dC<StringC> filenameArray(1);
@@ -110,7 +110,7 @@ bool releaseFunc(MouseEventC &me) {
 bool CBSetImage(ImageByteRGBAC::RefT &imageRef)
 {
   RavlImageN::ImageC<ByteRGBAValueC> image;
-  if (Load(PROJECT_OUT "/share/RAVL/pixmaps/CalibrationChart.png", image, "", true))
+  if (RavlN::Load(PROJECT_OUT "/share/RAVL/pixmaps/CalibrationChart.png", image, "", true))
     imageRef->SetImage(image);
   imageRef->SetAlpha(0.5);
 //  imageRef->AlphaImageEnable(true);

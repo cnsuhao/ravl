@@ -1,8 +1,15 @@
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2011-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 #include "Ravl/Image/OpenCVConvert.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/IO.hh"
 #include "opencv/cv.h"
+//! lib=RavlOpenCV
 
 using namespace RavlN;
 using namespace RavlImageN;
@@ -30,5 +37,5 @@ int main()
   ImageC<ByteRGBValueC> out;
   cout << "CV 2 RAVL: " << IplImage2RavlImage(&im2, out) << endl;
   cvReleaseImage(&im1);
-  Save("@X", out);
+  RavlN::Save("@X", out);
 }

@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_ZMQN_CONTEXT_HEADER
 #define RAVL_ZMQN_CONTEXT_HEADER
+//! lib=RavlZmq
 
 #include "Ravl/SmartPtr.hh"
 

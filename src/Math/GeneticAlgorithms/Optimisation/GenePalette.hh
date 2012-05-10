@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_GENETIC_GENEPALETTE_HH
 #define RAVL_GENETIC_GENEPALETTE_HH 1
+//! lib=RavlGeneticOptimisation
 
 #include "Ravl/RandomMersenneTwister.hh"
 #include "Ravl/RandomGauss.hh"

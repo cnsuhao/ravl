@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_GPSCOORDINATE_HEADER
 #define RAVL_GPSCOORDINATE_HEADER 1
+//! lib=RavlCore
 
 #include "Ravl/BinStream.hh"
 #include "Ravl/Point3d.hh"

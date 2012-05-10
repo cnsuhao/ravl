@@ -1,4 +1,4 @@
-// This file is part of RAVL, Recognition And Vision Library 
+// This file is part of RAVL, Recognition And Vision Library
 // Copyright (C) 2001, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
@@ -40,46 +40,46 @@ namespace RavlN {
     int val;
     is >> val;
     b = (val != 0);
-    return is; 
+    return is;
   }
   //: Fix for Visual C++'s lack of a bool stream operator.
-  
-  inline ostream& operator<<(ostream& os, bool b) { 
+
+  inline ostream& operator<<(ostream& os, bool b) {
     os << ((int)b);
     return os;
   }
   //: Fix for Visual C++'s lack of a bool stream operator.
 #endif
-  
+
   typedef StringC (*URLMapperFuncT)(const StringC &fn);
   //: Pointer to URL mapping function.
-  
+
   //! userlevel=Normal
-  
+
   bool EnableURLMapper();
   //: Enable url mapping of filenames.
-  // With the expection of 'file:' specifications this enabled the  changing of URL's 
-  // to a RAVL special files. i.e. 'http:' becomes '@http:'  This allows us to 
+  // With the expection of 'file:' specifications this enabled the  changing of URL's
+  // to a RAVL special files. i.e. 'http:' becomes '@http:'  This allows us to
   // implement handlers in seperate libraries which can link in as required.
   // If the 'file:' if found not to have a domain specifier then the 'file:' is stripped
   // off and the file is treated normally. <p>
   // Note: At the moment the URL handling mechanism may not handle relative filenames
   // correctly as it uses the program current working directory as a start point. If this
   // becomes a problem some optional data maybe added to StreamC which holds a current directory.
-  
+
   bool DisableURLMapper();
-  //: Dissable url mapping of filenames.
-  
+  //: Disable url mapping of filenames.
+
   bool IsURLMappingEnabled();
   //: Test if URL mapping enabled.
   // Returns true if it is.
-  
+
   //:-
-  
+
   //! userlevel=Develop
   //: Reference counter IO stream base class.
-  
-  class StreamBaseC 
+
+  class StreamBaseC
     : public HandleRefCounterC
   {
   public:
@@ -94,21 +94,21 @@ namespace RavlN {
     typedef ios::seek_dir SeekDirT;
 #endif
 #endif
-    
+
     StreamBaseC()
       : s(0),
         m_openFailed(false)
     {}
     //: Default constructor.
-    
+
     StreamBaseC(const StringC &nname)
       : name(nname),
       	s(0),
         m_openFailed(false)
     {}
     //: Constructor.
-    
-    StreamBaseC(const StreamBaseC &oth) 
+
+    StreamBaseC(const StreamBaseC &oth)
       : HandleRefCounterC(oth),
         name(oth.name),
         s(oth.s),
@@ -117,10 +117,10 @@ namespace RavlN {
 
     {}
     //: Copy Constructor.
-    
+
     virtual ~StreamBaseC();
     //: Ensure correct destructor is used.
-    
+
     inline const StringC &Name() const
     { return name; }
     //: Returns the name of the stream.
@@ -129,7 +129,7 @@ namespace RavlN {
     { name = nname; }
     //: Set the name to be used for the stream
 
-    inline bool IsOpen() const 
+    inline bool IsOpen() const
     { return !m_openFailed && !bad(); }
     //: Test if this stream is open.
 
@@ -150,7 +150,7 @@ namespace RavlN {
     }
 #endif
 
-    bool good() const { 
+    bool good() const {
       if(s == 0)
         return false;
 #if RAVL_DUMP_IOSTATE
@@ -159,7 +159,7 @@ namespace RavlN {
       return (s->good() != 0);
     }
     //: Is stream good ?
-    
+
     bool bad() const {
       if(s == 0)
         return true;
@@ -169,7 +169,7 @@ namespace RavlN {
       return (s->bad() != 0);
     }
     //: Is stream corrupted ?
-    
+
     inline bool eof() const {
       if (s == 0)
         return true;
@@ -179,7 +179,7 @@ namespace RavlN {
       return (s->eof() != 0);
     }
     //: End of file ?
-    
+
     inline bool fail() const {
       if (s == 0)
         return true;
@@ -189,160 +189,163 @@ namespace RavlN {
       return (s->fail() != 0);
     }
     //: Operation failed ?
-    
+
     bool operator!() const {
       return fail();
     }
     //: Not failed ?
-    
-    operator void*() const  { 
-      return fail() ? (void*)0 : (void*)(-1); 
+
+    operator void*() const  {
+      return fail() ? (void*)0 : (void*)(-1);
     }
     //: Ok ?
-    
+
     bool DiagnoseStream(ostream &out);
     //: Print diagnostic message about the streams state to out.
-    
+
     bool Close();
     //: Close this stream.
     // After this is called no further IO should be attempted!
-    
+
     RCHandleC<RCBodyVC> &PointerManager()
     { return ptrManager; }
     //: Access the pointer manager.
-    
+
+    static bool EnableStreamExceptions(bool value = true, ios_base::iostate except = ios_base::badbit);
+    //: make STL stream throw exceptions
+
   protected:
     StreamBaseC(ostream *ns,StringC afilename,bool nDelOnClose = true);
     //: Body Constructor.
-    
+
     StreamBaseC(istream *ns,StringC afilename,bool nDelOnClose = true);
     //: Body Constructor.
-    
+
     bool Init(istream *ns,StringC afilename,bool nDelOnClose = true);
-    //: Setup 
+    //: Setup
     // This should only be called on Stream's constructed with the
     // default constructor!
-    
+
     bool Init(ostream *ns,StringC afilename,bool nDelOnClose = true);
-    //: Setup 
+    //: Setup
     // This should only be called on Stream's constructed with the
     // default constructor!
-    
-    ios &buf() { 
+
+    ios &buf() {
       RavlAssert(s != 0);
-      return *s; 
+      return *s;
     }
     //: Access handle.
-    
-    const ios &buf() const  { 
+
+    const ios &buf() const  {
       RavlAssert(s != 0);
-      return *s; 
+      return *s;
     }
     //: Access handle.
-    
+
   protected:
     StringC name; // Name of stream.
     ios *s;
     RCHandleC<RCBodyVC> ptrManager;
     bool m_openFailed;
   };
-  
+
   //! userlevel=Normal
   //: Standard output streams with reference counting.
-  
-  class OStreamC 
+
+  class OStreamC
     : public StreamBaseC
   {
   public:
     OStreamC()
     {}
     //:Default constructor.
-    
+
     OStreamC(const StringC &filename,bool binary = true,bool buffered=true,bool append = false);
     //: Open a file for output.
     // '-' is treated as cout.
-    
-#if RAVL_HAVE_INTFILEDESCRIPTORS 
+
+#if RAVL_HAVE_INTFILEDESCRIPTORS
     OStreamC(int fd,bool binary = true,bool buffered = true);
-    //: Send data to unix filehandle.
+    //: Send data to unix file handle.
 #endif
-    
+
     inline OStreamC(ostream &strm,bool deletable = false)
       : StreamBaseC(&strm,"",deletable),
         out(&strm)
     {}
     //: Constructor.
-    
+
     inline OStreamC(const OStreamC &oth)
       : StreamBaseC(oth),
 	out(oth.out)
     {}
     //: Copy constructor.
-    
+
     ostream& form(const char *format ...);
     //: Print to stream using good old 'C' style formating.
-    // This isn't the saftest function, it uses a fixed
+    // This isn't the safest function, it uses a fixed
     // buffer of 4096 bytes.  <p>
     // This is a duplication of the function  GNU iostreams
     // for those platforms that don't have this function.
 
-    ostream &os() { 
+    ostream &os() {
       RAVL_PARANOID(RavlAssertMsg(out != 0,"Attempt to use invalid OStreamC. "));
-      return *out; 
+      return *out;
     }
     //: Access ostream.
     // Enables access to the underlying ostream functionality
-    
-    const ostream &os() const { 
+
+    const ostream &os() const {
       RAVL_PARANOID(RavlAssertMsg(out != 0,"Attempt to use invalid OStreamC. "));
-      return *out; 
+      return *out;
     }
     //: Access ostream.
     // Enables access to the underlying ostream functionality
-    
-    operator ostream &() 
+
+    operator ostream &()
     { return os(); }
     //: Converter.
-    
-    operator const ostream &() const 
+
+    operator const ostream &() const
     { return os(); }
-    //: Converter.  
-    
-    ostream &write(const char *d,StreamSizeT n) 
+    //: Converter.
+
+    ostream &write(const char *d,StreamSizeT n)
     { return os().write(d,n); }
     //: Write data.
-    // ostream compatable.
-    
-    ostream &put(char ch) 
+    // ostream compatible.
+
+    ostream &put(char ch)
     { return os().put(ch); }
     //: Put character.
-    // ostream compatable.
-    
+    // ostream compatible.
+
     ostream &operator<<(const char *txt)
     { return os() << txt; }
     //: Output text.
-    
+
     template<class DataT>
     ostream &operator<<(const DataT &dat)
     { return os() << dat; }
-    
+
     streampos Tell() const { return out->tellp(); }
     //: Where are we in the stream.
-    
+
     void Seek(streampos to) { os().seekp(to); }
     //: Goto a position in the stream.
-    
+
     streampos tellp() const { return out->tellp(); }
     //: Where are we in the stream.
-    // ostream compatable.
-    
+    // ostream compatible.
+
     ostream &seekp(streampos to) { return os().seekp(to); }
     //: Goto a position in the stream.
-    // ostream compatable.
-    
+    // ostream compatible.
+
     ostream &seekp(streampos to,SeekDirT dir) { return os().seekp(to,dir); }
     //: Goto a position in the stream.
-    // ostream compatable.
+    // ostream compatible.
 
     bool Close()
     { os().flush(); return StreamBaseC::Close(); }
@@ -352,12 +355,12 @@ namespace RavlN {
   protected:
     ostream *out;
   };
-  
-  
+
+
   //! userlevel=Normal
   //: Standard input streams with reference counting.
-  
-  class IStreamC 
+
+  class IStreamC
     : public StreamBaseC
   {
   public:
@@ -365,14 +368,14 @@ namespace RavlN {
      : in(0)
     {}
     //:Default constructor.
-    
+
     IStreamC(const StringC &filename,bool binary = true,bool buffered=true);
     //: Open a file.
     // '-' is treated as cin.
 
 #if RAVL_HAVE_INTFILEDESCRIPTORS
     IStreamC(int fd,bool binary = true,bool buffered = true);
-    //: Get data from unix filehandle.
+    //: Get data from unix file handle.
 #endif
 
     inline IStreamC(istream &strm,bool deletable = false)
@@ -380,102 +383,102 @@ namespace RavlN {
         in(&strm)
     {}
     //: Constructor.
-    
+
     inline IStreamC(const IStreamC &oth)
       : StreamBaseC(oth),
         in(oth.in)
     {}
     //: Copy constructor.
-    
+
     void Unget(StringC text);
-    //: Put string back. 
+    //: Put string back.
     // Note: you must unget exactly what was previously read.
-    // This includes a '\n' as a terminator 
-    
+    // This includes a '\n' as a terminator
+
     void Unget(const char *dat,int len);
     //: Put string back.
     // Note: you must unget exactly what was previously read.
-    
+
     IntT CopyTo(OStreamC &out,IntT maxChars = -1);
     //: Copy stream to output.
-        
-    istream &is() { 
+
+    istream &is() {
       RAVL_PARANOID(RavlAssertMsg(in != 0,"Attempt to use invalid IStreamC. "));
-      return *in; 
-    }
-    //: Access istream.
-    // Enables access to the underlying istream functionality
-    
-    const istream &is() const { 
-      RAVL_PARANOID(RavlAssertMsg(in != 0,"Attempt to use invalid IStreamC. "));
-      return *in; 
+      return *in;
     }
     //: Access istream.
     // Enables access to the underlying istream functionality
 
-    operator istream &() 
+    const istream &is() const {
+      RAVL_PARANOID(RavlAssertMsg(in != 0,"Attempt to use invalid IStreamC. "));
+      return *in;
+    }
+    //: Access istream.
+    // Enables access to the underlying istream functionality
+
+    operator istream &()
     { return is(); }
     //: Converter.
-    
-    operator const istream &() const 
+
+    operator const istream &() const
     { return is(); }
     //: Converter.
-    
-    istream &read(char *d,streamsize n) 
+
+    istream &read(char *d,streamsize n)
     { return is().read(d,n); }
     //: read data.
     // istream compatible function.
-    
-    istream &get(char &ch) 
+
+    istream &get(char &ch)
     { return is().get(ch); }
     //: Get character.
     // istream compatible function.
-    
-    char get() 
+
+    char get()
     { return is().get(); }
     //: Get character.
     // istream compatible function.
-    
-    istream &get(char *buff,int buffsize) 
+
+    istream &get(char *buff,int buffsize)
     { return is().get(buff,buffsize); }
     //: Read in a line.
     // istream compatible function.
-    
-    istream &getline(char *buff,int buffsize) 
+
+    istream &getline(char *buff,int buffsize)
     { return is().getline(buff,buffsize); }
     //: Read in a line.
     // istream compatible function.
-    
-    streamsize gcount() 
+
+    streamsize gcount()
     { return is().gcount(); }
     //: Get number of character read in last operation.
     // istream compatible function.
-    
+
     template<class DataT>
     istream &operator>>(DataT &dat)
     { return is() >> dat; }
-    
+
     istream &operator>>(char *dat)
     { return is() >> dat; }
-    
+
     streampos Tell() const { return in->tellg(); }
     //: Where are we in the stream.
-    
+
     void Seek(streampos to) { is().clear(); is().seekg(to); }
     //: Goto a position in the stream.
-    
+
     streampos tellg() const { return in->tellg(); }
     //: Where are we in the stream.
     // istream compatible function.
-    
+
     istream &seekg(streampos to) { return is().seekg(to); }
     //: Goto a position in the stream.
     // istream compatible function.
-    
+
     istream &seekg(streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
     //: Goto a position in the stream.
     // istream compatible.
-    
+
     inline bool IsEndOfStream() {
       // Check there's more to read...
       if(!in->good())
@@ -489,7 +492,7 @@ namespace RavlN {
     }
     //: Test if its the end of the stream is comming up...
     // Maybe there's a better way ?
-    
+
     //:-------------------------------------------------
     //: Parsing Functions.
     // Some methods to help parse text streams.
@@ -498,51 +501,51 @@ namespace RavlN {
     //: Get next character.
     // This will throw an ExceptionEndOfStreamC if the end
     // of the input stream is found.
-    
+
     char SkipWhiteSpace();
     //: Skip white space characters.
-    // returns the first non-white space character found. This stream is left on 
-    // the charactor after the one returned. <p>
+    // returns the first non-white space character found. This stream is left on
+    // the character after the one returned. <p>
     // This will throw an ExceptionEndOfStreamC if the end
     // of the input stream is found. <br>
-    
+
     bool Skip(const char *delim = " \n\t\r");
     //: Skip all 'delim' characters.
     // Leaves stream at first character this is not one of those
     // listed in 'delim'. If end of stream is found before
     // returns false.
-    
+
     bool SkipWord(const char *word);
     //: Skip to after word if it matches the characters in the stream.
     //: otherwise return false and leave stream where it is.
-    
+
     bool SkipTo(const StringC &endStr);
     //: Skip through stream until endStr is found.
     // this leaves the stream positioned at the
     // first character after the string. <p>
     // returns false if the end of the stream is found first.
-    
+
     bool SkipTo(char let);
     //: Skip through stream until 'let' is found.
     // returns false if the end of the stream is found first.
-    
+
     StringC ClipTo(char let);
     //: Return all characters before let.
     // the 'let' character is discarded. <p>
     // If the end of stream is found, all data found
     // upto that point is returned.
-    
+
     StringC ClipTo(const StringC &endStr);
     //: Return all characters before 'endStr'.
     // this leaves the stream positioned at the
     // first character after the 'endStr'. <p>
     // If the end of stream is found, all data found
     // upto that point is returned.
-    
+
     StringC ClipWord(const char *delim = " \n\t\r",bool initalSkipDelim = false);
     //: Clip word until one of 'delim' characters are found.
-    // Stream is left at the terminating deliminator.
-    
+    // Stream is left at the terminating delimiter.
+
     bool Close()
     { return StreamBaseC::Close(); }
     //: Close stream
@@ -552,14 +555,14 @@ namespace RavlN {
   };
 }
 
-#if RAVL_COMPILER_MIPSPRO 
-istream & operator >> ( istream & str,  signed char & dat ) 
-{ 
-  char tmp ; 
-  str >> tmp ; 
-  dat = (signed char) tmp ; 
-  return str ; 
-} 
-#endif 
+#if RAVL_COMPILER_MIPSPRO
+istream & operator >> ( istream & str,  signed char & dat )
+{
+  char tmp ;
+  str >> tmp ;
+  dat = (signed char) tmp ;
+  return str ;
+}
+#endif
 
 #endif

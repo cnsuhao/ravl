@@ -36,7 +36,7 @@ int main(int nargs,char *args[]) {
 
   // Load an image to use as background
   ImageC<ByteRGBValueC> img;
-  if (!Load(file,img)) {
+  if (!RavlN::Load(file,img)) {
     return 1;
   }
 

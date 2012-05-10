@@ -55,6 +55,8 @@ namespace RavlN {
     typedef traits_type::int_type int_type;
     
     //: Constructor.
+    //: The read function should be of the form.
+
     FuncIStreamBufC(const CallFunc2C<char *,SizeT,SizeT> &readCall, SizeT bufferSize = 8192);
     
     //: Destructor.

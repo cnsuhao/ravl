@@ -77,7 +77,7 @@ namespace RavlN {
 #define RavlAlwaysAssert(x) { if(!(x)) RavlN::AssertFailed(__FILE__,__LINE__); }
 #define RavlAlwaysAssertMsg(x,m) { if(!(x)) RavlN::AssertFailed(__FILE__,__LINE__,m); }
 
-#define RavlIssueError(x) IssueError(__FILE__,__LINE__,x);
-#define RavlIssueWarning(x) IssueWarning(__FILE__,__LINE__,x);
+#define RavlIssueError(x) RavlN::IssueError(__FILE__,__LINE__,x);
+#define RavlIssueWarning(x) RavlN::IssueWarning(__FILE__,__LINE__,x);
 
 #endif

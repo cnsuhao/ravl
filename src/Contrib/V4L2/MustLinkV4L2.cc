@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/V4L2/MustLinkV4L2.cc"
-//! lib = RavlImgIOV4L2
+//! lib=RavlImgIOV4L2
 //! author = "Warren Moore"
 
 namespace RavlImageN

@@ -78,7 +78,7 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const = 0;
 
     //! Mutate a gene
     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
@@ -105,6 +105,16 @@ namespace RavlN { namespace GeneticN {
     std::string m_name;
     float m_defaultWeight;
   };
+
+  //! Test if two gene types are the same.
+  //! Just check addresses.
+  inline bool operator==(const GeneTypeC &gt1,const GeneTypeC &gt2)
+  { return &gt1 == &gt2; }
+
+  //! Test if two gene types are different.
+  //! Just check addresses.
+  inline bool operator!=(const GeneTypeC &gt1,const GeneTypeC &gt2)
+  { return &gt1 != &gt2; }
 
   //! Gene for a single block.
 
@@ -151,7 +161,9 @@ namespace RavlN { namespace GeneticN {
     typedef RavlN::SmartPtrC<const GeneC> ConstRefT;
 
     //! Mutate this gene
-    bool Mutate(GenePaletteC &palette,float faction,GeneC::RefT &newOne) const;
+    //! fraction - Amount of change to add, the higher the more random the result, 1.0= Completely random. 0.0 = No change.
+    //! Returns true if something is changed.
+    bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,GeneC::RefT &newOne) const;
 
     //! Cross this gene
     void Cross(GenePaletteC &palette,const GeneC &other,GeneC::RefT &newOne) const;
@@ -168,10 +180,20 @@ namespace RavlN { namespace GeneticN {
     //! Visit all gene's in tree.
     virtual void Visit(GeneVisitorC &visit) const;
 
+    //! Generate a hash value for the gene
+    virtual size_t Hash() const;
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
   protected:
     GeneTypeC::RefT m_type;
   };
 
+  //! This actually tests if they are effectively equal which allows for some small
+  //! user defined differences in some floating point numbers. This allows hash tables
+  // to be created of similar genes.
+  //bool operator==(const GeneC::RefT &g1,const GeneC::RefT &g2);
 
 }}
 

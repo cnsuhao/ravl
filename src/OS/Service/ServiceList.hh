@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! lib=RavlXMLFactory
+//! lib=RavlService
 //! author="Charles Galambos"
 //! docentry=Ravl.API.Core.Services
 #ifndef RAVL_SERVICELIST_HEADER
@@ -19,21 +19,25 @@ namespace RavlN {
   {
   public:
     //! Default constructor.
-    ServiceListC();
+    ServiceListC(bool warnOnMissingSection = true);
 
     //! Constructor.
-    ServiceListC(const XMLFactoryContextC &factory);
+    ServiceListC(const XMLFactoryContextC &factory,bool warnOnMissingSection = true);
 
     //! Destructor
     ~ServiceListC();
 
     //! Load services from the given factory context.
-    bool Load(const XMLFactoryContextC &factory);
+    bool Load(const XMLFactoryContextC &factory,bool startOnLoad = true);
+
+    //! Go through and call start on all services.
+    bool Start();
 
     //! Shutdown remaining services.
     bool Shutdown();
 
   protected:
+    bool m_warnOnMissingSection;
     std::vector<ServiceC::RefT> m_services;
   };
 

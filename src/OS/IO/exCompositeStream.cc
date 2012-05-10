@@ -59,7 +59,7 @@ int exStreamComposite(int argc,char **argv)
     lst.InsLast(EditSpecC(file3));
     pl = PlayListC(lst);
   } else {
-    if(!Load(compFile,pl,"",true)) {
+    if(!RavlN::Load(compFile,pl,"",true)) {
       cerr << "Failed to open play list '" << compFile << "'\n";
       return 1;
     }

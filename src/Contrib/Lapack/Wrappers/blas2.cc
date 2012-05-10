@@ -7,6 +7,7 @@
 // $Id$
 #include "blas2.hh"
 #include "blas2_c.hh"
+//! lib=RavlLapackWraps
 
 namespace BlasN
 {

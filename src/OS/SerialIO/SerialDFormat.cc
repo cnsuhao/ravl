@@ -5,6 +5,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! author = "Alex Kostin"
+//! lib=RavlSerialIO
 
 #ifndef VISUAL_CPP
 

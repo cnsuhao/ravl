@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Ravl/Types.hh"
 #include "Ravl/OS/WinStreamIO.hh"
+//! lib=RavlOS
 
 namespace RavlN {
 

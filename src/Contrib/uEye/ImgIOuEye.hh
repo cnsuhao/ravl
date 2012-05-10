@@ -6,6 +6,7 @@
 #ifndef RAVL_IMGIOUEYE_HEADER
 #define RAVL_IMGIOUEYE_HEADER 1
 //! author = "Charles Galambos"
+//! lib=RavlImgIOuEye
 
 #include <ueye.h>
 #include <ueye_deprecated.h>

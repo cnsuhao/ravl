@@ -5,6 +5,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
 //! author = "Charles Galambos"
+//! lib=RavlImgIOuEye
 
 #include "Ravl/Image/ByteYUVValue.hh"
 #include "Ravl/Image/uEyeFileFormat.hh"

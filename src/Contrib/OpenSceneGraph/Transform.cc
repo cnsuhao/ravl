@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/OpenSceneGraph/Transform.cc"
-//! lib = RavlGUIOpenSceneGraph
+//! lib=RavlGUIOpenSceneGraph
 //! author = "Warren Moore"
 
 #include "Ravl/OpenSceneGraph/Transform.hh"

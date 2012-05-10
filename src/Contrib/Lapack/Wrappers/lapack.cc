@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 // $Id$
+//! lib=RavlLapackWraps
 
 #include "lapack.hh"
 #include "ev_c.hh"

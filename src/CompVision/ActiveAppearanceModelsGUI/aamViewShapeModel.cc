@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
-//! lib=RavlAAM
+//! lib=RavlAAMGUI
 //! file="Ravl/CompVision/ActiveAppearanceModels/aamViewShapeModel.hh"
 //! docentry="Ravl.API.Images.AAM"
 //! userlevel="Normal"

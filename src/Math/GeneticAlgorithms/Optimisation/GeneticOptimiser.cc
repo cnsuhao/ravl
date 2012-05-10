@@ -14,6 +14,8 @@
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/CallMethodPtrs.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/DP/FileFormatBinStream.hh"
+#include "Ravl/IO.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -26,14 +28,12 @@ namespace RavlN { namespace GeneticN {
 
 
   GeneticOptimiserC::GeneticOptimiserC(const XMLFactoryContextC &factory)
-   : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.1))),
-     m_crossRate(static_cast<float>(factory.AttributeReal("crossRate",0.2))),
+   : m_mutationRate(static_cast<float>(factory.AttributeReal("mutationRate",0.2))),
+     m_cross2mutationRatio(static_cast<float>(factory.AttributeReal("cross2mutationRatio",0.2))),
      m_keepFraction(static_cast<float>(factory.AttributeReal("keepFraction",0.3))),
-     m_randomFraction(static_cast<float>(factory.AttributeReal("randomFraction",0.01))),
+     m_randomFraction(factory.AttributeReal("randomFraction",0.01)),
      m_populationSize(factory.AttributeUInt("populationSize",10)),
      m_numGenerations(factory.AttributeUInt("numGenerations",10)),
-     m_runLengthVirtual(static_cast<float>(factory.AttributeReal("runLengthVirtual",10.0))),
-     m_runLengthCPU(static_cast<float>(factory.AttributeReal("runLengthCPU",10.0))),
      m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1)),
@@ -46,6 +46,7 @@ namespace RavlN { namespace GeneticN {
     if(!factory.UseComponent("GenePalette",m_genePalette,true,typeid(GenePaletteC))) {
       m_genePalette = new GenePaletteC();
     }
+    RavlDebug("Mutation rate:%f Cross rate:%f Random:%f Keep:%f ",m_mutationRate,m_cross2mutationRatio,m_randomFraction,m_keepFraction);
   }
 
   //! Set fitness function to use
@@ -60,17 +61,27 @@ namespace RavlN { namespace GeneticN {
       RavlAssertMsg(0,"No fitness function defined.");
       return ;
     }
+    MutexLockC lock(m_access);
     if(m_population.empty()) {
       RavlSysLogf(SYSLOG_DEBUG,"Ranking initial population");
       RavlAssert(!m_startPopulation.empty());
+      lock.Unlock();
       Evaluate(m_startPopulation);
+    } else {
+      lock.Unlock();
     }
     for(unsigned i = 0;i < m_numGenerations;i++) {
       RavlSysLogf(SYSLOG_INFO,"Running generation %u ",i);
       RunGeneration(i);
-      if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore)
+      lock.Lock();
+      if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
+        lock.Unlock();
         break;
+      }
+      lock.Unlock();
     }
+
+    lock.Lock();
     if(m_population.empty()) {
       RavlInfo("Population list empty. ");
     } else {
@@ -79,43 +90,98 @@ namespace RavlN { namespace GeneticN {
       RavlN::XMLOStreamC outXML(ostrm);
       m_population.rbegin()->second->Save(outXML);
     }
+    lock.Unlock();
   }
+
+  //! Save population to file
+  bool GeneticOptimiserC::SavePopulation(const StringC &filename) const
+  {
+    SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > population;
+    ExtractPopulation(population);
+    return RavlN::Save(filename,population,"abs",true);
+  }
+
+  //! Save population to file
+  bool GeneticOptimiserC::LoadPopulation(const StringC &filename)
+  {
+    SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > population;
+    if(!RavlN::Load(filename,population))
+      return false;
+    AddPopulation(population);
+    return true;
+  }
+
+  //! Extract population from optimisers
+  void GeneticOptimiserC::ExtractPopulation(SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population) const
+  {
+    RavlN::MutexLockC lock(m_access);
+    if(m_randomiseDomain) {
+      population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(m_currentSeeds.Size());
+      for(unsigned i = 0;i < m_currentSeeds.Size();i++)
+        population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(0,m_currentSeeds[i]);
+      return ;
+    }
+    size_t arraySize = m_population.size();
+    population = SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> >(arraySize);
+    unsigned i = 0;
+    // Note: this saves worst to best, just in case you were thinking of truncating the list...
+    for(std::multimap<float,GenomeC::RefT>::const_iterator it(m_population.begin());it != m_population.end();it++,i++)
+    {
+      population[i] = RavlN::Tuple2C<float,GenomeC::RefT>(it->first,it->second);
+    }
+    RavlAssert(i == arraySize);
+  }
+
+
+  //! Add population to optimisers, not this does not remove any entries already there
+  void GeneticOptimiserC::AddPopulation(const SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population)
+  {
+    MutexLockC lock(m_access);
+    for(unsigned i = 0;i < population.Size();i++) {
+      m_population.insert(std::pair<const float,GenomeC::RefT>(population[i].Data1(),population[i].Data2()));
+    }
+    lock.Unlock();
+  }
+
 
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
-    if(m_population.empty()) {
-      RavlError("No previous population to rank.");
-      return ;
-    }
+
     RavlSysLogf(SYSLOG_DEBUG,"Examining results from last run. ");
     unsigned count = 0;
-    std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
 
     // Select genomes to be used as seeds for the next generation.
-    std::vector<GenomeC::RefT> seeds;
     unsigned numKeep = Floor(m_populationSize * m_keepFraction);
+    if(numKeep >= m_populationSize)
+      numKeep = m_populationSize - 1;
     if(numKeep < 1) numKeep = 1;
-    seeds.reserve(numKeep);
+    // Compute the number of new genomes to create
+    unsigned numCreate = m_populationSize - numKeep;
 
+    CollectionC<GenomeC::RefT> seeds(numKeep);
+    std::vector<GenomeC::RefT> newTestSet;
+    //m_newTestSet.clear();
+    newTestSet.reserve(m_populationSize + numKeep);
+
+    MutexLockC lock(m_access);
     if(m_population.empty()) {
-      RavlSysLogf(SYSLOG_ERR,"Population empty.");
+      RavlError("Population empty.");
       return ;
     }
 
-    std::vector<GenomeC::RefT> newTestSet;
-    newTestSet.reserve(m_populationSize + numKeep);
-
+    std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
     while(it != m_population.rend() && count < numKeep) {
-      seeds.push_back(it->second);
-      //RavlSysLogf(SYSLOG_DEBUG," Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
+      seeds.Append(it->second);
+      //RavlDebug(" Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
       if(m_randomiseDomain)
         newTestSet.push_back(it->second);
       it++;
       count++;
     }
 
-    RavlSysLogf(SYSLOG_DEBUG,"Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",generation,(UIntT) seeds.size(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
+    RavlDebug("Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",
+        generation,(UIntT) seeds.Size().V(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
     if(m_randomiseDomain) {
       m_population.clear();
@@ -125,20 +191,22 @@ namespace RavlN { namespace GeneticN {
         m_population.erase(m_population.begin(),it.base());
       }
     }
+    m_currentSeeds = seeds.Array();
+    lock.Unlock();
 
-    unsigned noCrosses = Floor(m_populationSize * m_crossRate);
+    unsigned noCrosses = Floor(numCreate * m_cross2mutationRatio);
     RavlSysLogf(SYSLOG_DEBUG,"Creating %d crosses. ",noCrosses);
 
     unsigned i = 0;
     // In the first generation there may not be enough seeds to make
     // sense doing this.
-    if(seeds.size() > 1) {
+    if(seeds.Size() > 1) {
       for(;i < noCrosses;i++) {
-        unsigned i1 = m_genePalette->RandomUInt32() % seeds.size();
-        unsigned i2 = m_genePalette->RandomUInt32() % seeds.size();
+        unsigned i1 = m_genePalette->RandomUInt32() % seeds.Size().V();
+        unsigned i2 = m_genePalette->RandomUInt32() % seeds.Size().V();
         // Don't breed with itself.
         if(i1 == i2)
-          i2 = (i1 + 1) % seeds.size();
+          i2 = (i1 + 1) % seeds.Size();
         GenomeC::RefT newGenome;
         seeds[i1]->Cross(*m_genePalette,*seeds[i2],newGenome);
         newGenome->SetGeneration(generation);
@@ -148,7 +216,7 @@ namespace RavlN { namespace GeneticN {
 
     RavlDebug("Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
     for(;i < m_populationSize;i++) {
-      unsigned i1 = m_genePalette->RandomUInt32() % seeds.size();
+      unsigned i1 = m_genePalette->RandomUInt32() % seeds.Size().V();
       GenomeC::RefT newGenome;
       if(Random1() < m_randomFraction) {
         ONDEBUG(RavlDebug("Random"));
@@ -260,7 +328,9 @@ namespace RavlN { namespace GeneticN {
   void LinkGeneticOptimiser()
   {}
 
-  XMLFactoryRegisterC<GeneticOptimiserC> g_registerGeneticOptimiser("RavlN::GeneticN::GeneticOptimiserC");
-  static RavlN::TypeNameC g_typeEnvironmentSimpleState(typeid(RavlN::GeneticN::GeneticOptimiserC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneticOptimiserC>");
+  static XMLFactoryRegisterC<GeneticOptimiserC> g_registerGeneticOptimiser("RavlN::GeneticN::GeneticOptimiserC");
+  static RavlN::TypeNameC g_typeGeneticOptimiserRef(typeid(RavlN::GeneticN::GeneticOptimiserC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneticOptimiserC>");
+  static RavlN::TypeNameC g_typeGeneticOptimiserState(typeid(SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > ),"RavlN::SArray1dC<RavlN::Tuple2C<float,RavlN::GeneticN::GenomeC::RefT>>");
+  static FileFormatBinStreamC<SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > > g_FileFormatBinStream_Array_Score_Genome("abs","Stuff");
 
 }}

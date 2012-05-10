@@ -1,6 +1,12 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2005-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 //////////////////////////////////////////////////////////////////////////////
 //! author =    "Jean-Yves Guillemaut"
-//! lib =       RavlAAM
+//! lib=RavlAAM
 //! date =      "01/03/2006"
 //! file="Ravl/CompVision/ActiveAppearanceModels/AAMPoseEstimateCostFunction.cc"
 //! rcsid="$Id: AAMPoseEstimateCostFunction.cc,v 1.3 2005/07/25 16:31:07 ees1wc Exp $"

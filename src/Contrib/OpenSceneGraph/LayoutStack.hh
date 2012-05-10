@@ -1,9 +1,16 @@
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2011, OmniPerception Ltd.
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 /* 
  * File:   LayoutStack.hh
  * Author: charlesgalambos
  *
  * Created on April 25, 2011, 10:13 AM
  */
+//! lib=RavlGUIOpenSceneGraph
 
 #ifndef RAVLOSGN_LAYOUTSTACK_HH
 #define	RAVLOSGN_LAYOUTSTACK_HH

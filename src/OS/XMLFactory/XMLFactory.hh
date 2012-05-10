@@ -417,7 +417,7 @@ namespace RavlN {
                       bool suppressErrorMessages = false,
                       const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
-    // This will search parent context's succesively up the tree until a
+    // This will search parent context's successively up the tree until a
     // component with a matching name is found.
 
     template<class DataT>
@@ -434,7 +434,7 @@ namespace RavlN {
                       bool suppressErrorMessages = false,
                       const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
-    // This will search parent context's succesively up the tree until a
+    // This will search parent context's successively up the tree until a
     // component with a matching name is found.
 
     bool UseChildComponent(const StringC &name,
@@ -496,6 +496,8 @@ namespace RavlN {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
         return false;
+      if(!list.IsValid())
+        list = CollectionC<DataT>(childContext.Children().Size());
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
         DataT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {

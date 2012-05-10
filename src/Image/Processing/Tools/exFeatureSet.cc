@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlImageProc
 
 #include "Ravl/Option.hh"
 #include "Ravl/IO.hh"
@@ -19,7 +20,7 @@ int main(int nargs,char **argv) {
   opt.Check();
   
   ImagePointFeatureSetC fs;
-  if(!Load(inFile,fs)) {
+  if(!RavlN::Load(inFile,fs)) {
     cerr << "Failed to save file " << inFile << "\n";
     return 1;
   }
@@ -27,7 +28,7 @@ int main(int nargs,char **argv) {
   cerr << "Attribs=" << fs.Attributes() << "\n";
   cerr << "Attribs=" << fs.SubsetAttrib("Left Outer Eye 1") << "\n";
 
-  if(!Save(outFile,fs)) {
+  if(!RavlN::Save(outFile,fs)) {
     cerr << "Failed to save file " << outFile << "\n";
     return 1;
   }

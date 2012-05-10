@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/V4L2/exV4L2.cc"
-//! lib = RavlImgIOV4L2
+//! lib=RavlMacOSXVideoCapture
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Images.Video.Video IO.Video4Linux2"
 

@@ -7,6 +7,7 @@
 // $Id$
 #ifndef BLAS2_H
 #define BLAS2_H
+//! lib=RavlLapackWraps
 
 #include "Ravl/MatrixRUT.hh"
 #include "Ravl/Vector.hh"

@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Tools/TimedTriggerQueue.cc"
 
@@ -19,6 +18,7 @@
 #include "Ravl/Threads/TimedTriggerQueue.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/SysLog.hh"
 
 #define DODEBUG 0
 
@@ -39,7 +39,8 @@ namespace RavlN
   //: Default constuctor
   
   TimedTriggerQueueBodyC::TimedTriggerQueueBodyC() 
-    : eventCount(0),
+    : m_started(true),
+      eventCount(0),
       done(false),
       semaSched(0)
   {
@@ -48,8 +49,8 @@ namespace RavlN
   
   //: Destructor.
   
-  TimedTriggerQueueBodyC::~TimedTriggerQueueBodyC() {
-  }
+  TimedTriggerQueueBodyC::~TimedTriggerQueueBodyC()
+  {}
   
   //: Called when owning handles drops to zero.
   
@@ -62,10 +63,22 @@ namespace RavlN
   
   //: Shutdown even queue.
   
-  void TimedTriggerQueueBodyC::Shutdown() {
+  bool TimedTriggerQueueBodyC::Shutdown() {
     done = true;
+    return true;
   }
   
+  //! Start service.
+  bool TimedTriggerQueueBodyC::Start() {
+    MutexLockC holdLock(access);
+    if(m_started) return true;
+    m_started = true;
+    holdLock.Unlock();
+
+    LaunchThread(TimedTriggerQueueC(*this,RCLH_CALLBACK),&TimedTriggerQueueC::Process);
+    return true;
+  }
+
   //: Schedule event for running after time 't' (in seconds).
   
   UIntT TimedTriggerQueueBodyC::Schedule(RealT t,const TriggerC &se,float period) {
@@ -83,7 +96,7 @@ namespace RavlN
   // Thread safe.
   
   UIntT TimedTriggerQueueBodyC::Schedule(const DateC &at,const TriggerC &se,float period) {
-    if(!se.IsValid())
+    if(!se.IsValid() || done)
       return 0;
     MutexLockC holdLock(access);
     do {
@@ -170,11 +183,12 @@ namespace RavlN
       }
     } while(!done) ;
 #endif
+    // FIXME:- Dump all pending events.
     return true;
    }
   
   //: Cancel pending event.
-  // Will return TRUE if event in canceled before
+  // Will return TRUE if event in cancelled before
   // it was run.
   
   bool TimedTriggerQueueBodyC::Cancel(UIntT eventID) {
@@ -187,7 +201,7 @@ namespace RavlN
 
   //! Access a global trigger queue.
   // As one thread is sharing all the work,
-  // long (>0.1s) tasks be spawned on a sperate thread.
+  // long (>0.1s) tasks be spawned on a separate thread.
   TimedTriggerQueueC GlobalTriggerQueue() {
     static TimedTriggerQueueC triggerQueue(true);
     return triggerQueue;

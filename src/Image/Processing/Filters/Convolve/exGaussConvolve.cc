@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   
   // load in an image
   
-  Load(inIm, in, "", Verbose);
+  RavlN::Load(inIm, in, "", Verbose);
   
   // Filter image (method 1)
   out = gc.Apply(in);
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
   gc(in, out);
   
   // Save result.
-  Save(outIm,in, "", Verbose);
+  RavlN::Save(outIm,in, "", Verbose);
   
   return 0;
 }

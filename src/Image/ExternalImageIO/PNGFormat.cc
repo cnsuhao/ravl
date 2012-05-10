@@ -17,8 +17,8 @@
 #include "Ravl/TypeName.hh"
 #include <ctype.h>
 
-#define DPDEBUG 0
-#if DPDEBUG
+#define DODEBUG 0
+#if DODEBUG
 #define ONDEBUG(x) x
 #else
 #define ONDEBUG(x)
@@ -154,7 +154,7 @@ namespace RavlImageN {
   
   const type_info &
   FileFormatPNGBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatPNGBodyC::ProbeLoad(), called. \n");
+    ONDEBUG(cerr << "FileFormatPNGBodyC::ProbeLoad(), called.. \n");
     if(!in.good())
       return typeid(void);
     ByteT buff[9];

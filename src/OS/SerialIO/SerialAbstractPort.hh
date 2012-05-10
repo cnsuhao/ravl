@@ -5,6 +5,7 @@
 // file-header-ends-here
 #ifndef RAVL_SERIALABSTRACTPORT_HH
 #define	RAVL_SERIALABSTRACTPORT_HH
+//! lib=RavlSerialIO
 
 #include "Ravl/SmartPtr.hh"
 #include "Ravl/OS/SerialAbstract.hh"

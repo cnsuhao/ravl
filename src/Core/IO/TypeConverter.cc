@@ -187,9 +187,9 @@ namespace RavlN {
     IntT size = 0;
     for(GraphEdgeIterC<StringC,DPConverterBaseC> it(ConvGraph());it.IsElm();it.Next()) {
       if(&it.Data().Body() == &tc.Body()) {
-	it.Del();
-	ok = true;
-	break;
+        it.Del();
+        ok = true;
+        break;
       }
       size++;
     }
