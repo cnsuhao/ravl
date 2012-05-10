@@ -39,3 +39,7 @@ EHT= Ravl.API.OS.Text_Processing.html \
      Ravl.API.OS.Configuration_Files.html
 
 HTML= 
+
+AUXDIR=share/RAVL/testData
+
+AUXFILES=testTC.tmpl testTC.inc
