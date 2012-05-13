@@ -24,7 +24,10 @@ else
 ifeq ($(ARC),linux64)
 EXELIB := -L/usr/X11R6/lib64 -lX11 $(EXELIB)
 else
+ifeq ($(ARC),macosx386)
+else
 EXELIB := -lX11 $(EXELIB)
+endif
 endif
 endif
 endif
