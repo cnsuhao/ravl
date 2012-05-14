@@ -9,7 +9,7 @@
 //! lib=RavlOS
 //! file="Ravl/OS/FileSystem/FileStream.cc"
 
-#if RAVL_COMPILER_VISUALCPP
+#if VISUAL_CPP
 #include <direct.h>
 #include <memory.h>
 #include <io.h>
