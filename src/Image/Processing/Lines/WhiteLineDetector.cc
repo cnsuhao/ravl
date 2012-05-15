@@ -62,7 +62,7 @@ SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
     m++;
     for (; m; m++) {
       RealT signedGap = l->SignedDistance(m->MidPoint());  // ridges, not troughs
-      if (// parallel & opposite dirns & overlapping
+      if (// parallel & opposite dirns
           (l->UnitNormal().Dot(m->UnitNormal()) < -cos(RavlConstN::pi/180.0*maxAngle)) &&
           // "clockwise pair" && close by
           (signedGap > -maxSep) && (signedGap < 0.0) &&
