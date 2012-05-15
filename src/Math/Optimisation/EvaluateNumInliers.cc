@@ -75,7 +75,7 @@ namespace RavlN {
       // compute the residual
       RealT residual = it.Data().NonRobustResidual(stateVec);
 
-      // add to list if residual is within threshold
+      // add true/false to list if residual is within / not within threshold
       compatibleList.InsLast( residual < compatChi2Thres );
     }
 
