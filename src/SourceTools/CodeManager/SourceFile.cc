@@ -15,6 +15,10 @@
 #include "Ravl/Text/TextCursor.hh"
 #include "Ravl/OS/Filename.hh"
 
+#if VISUAL_CPP
+#define snprintf _snprintf
+#endif
+
 #define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
