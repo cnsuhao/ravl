@@ -45,7 +45,11 @@ endif
 
 ifeq ($(strip $(PLIB)),)
 PLIB=$(PROJECT_DIR)$(PACKAGE)/None
+ifdef SHAREDBUILD
+NOLOCALLIB=$(addprefix $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/,$(addsuffix .o,$(basename $(SOURCES))))
+else
 NOLOCALLIB=$(addprefix $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/,$(addsuffix .o,$(basename $(SOURCES))))
+endif
 endif
 # Some dirs build no library, only exes using SOURCES as additional objs.
 # In these dirs, derive a list of '.o's from SOURCES and add them to the link 
@@ -180,8 +184,13 @@ notsupportonly:
 define buildutils
   $1: $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1
 
+ifdef SHAREDBUILD
+  $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $3 -o $$@
+else
   $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+endif
 endef
 
 $(PROJECT_OUT)/bin/utils/$(BIN_SUBDIR)/bin:
@@ -194,8 +203,13 @@ $(foreach bin,$(PROGS),$(eval $(call buildutils,$(bin),$(NOLOCALLIB) $(DEPEND_ON
 define buildexamples
   $1: $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1
 
+ifdef SHAREDBUILD
+  $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $3 -o $$@
+else
   $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+endif
 endef
 
 $(PROJECT_OUT)/bin/examples/$(BIN_SUBDIR)/bin:
@@ -210,8 +224,13 @@ define buildtest
            $(PROJECT_OUT)/test/$(BIN_SUBDIR)/log \
                 $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1
 
+ifdef SHAREDBUILD
+  $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $2
+	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/shared/objs/$1.o $3 -o $$@
+else
   $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin/$1: $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $2
 	$(CXX) $(PKG_LDFLAGS) $(LDFLAGS) $(OBJ_HOME)/$(PLIB)/$(VAR)/objs/$1.o $3 -o $$@
+endif
 endef
 
 $(PROJECT_OUT)/test/$(BIN_SUBDIR)/bin:
