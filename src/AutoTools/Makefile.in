@@ -176,6 +176,9 @@ optbin: qmake
 optshared: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 
+optsharedbin: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 fullopt
+
 pkgconf: $(PROJECT_OUT)/lib/pkgconfig $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc
 
 $(PROJECT_OUT)/lib/pkgconfig:
