@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id: OptimiseConjugateGradient.cc 5398 2006-03-09 16:55:13Z craftit $"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/OptimiseConjugateGradient.cc"
 
@@ -16,7 +15,7 @@
 #include "Ravl/PatternRec/OptimisePowell.hh"
 #include "Ravl/PatternRec/CostFunction1d.hh"
 #include "Ravl/PatternRec/BracketMinimum.hh"
-
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -26,6 +25,17 @@
 #endif
 
 namespace RavlN {
+
+  //: Constructor from xml factory.
+
+  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC(const XMLFactoryContextC & factory)
+   : OptimiseBodyC(factory),
+     _iterations(factory.AttributeUInt("iterations",1000)),
+     _tolerance(factory.AttributeReal("tolerance",1e-6)),
+     _useBracketMinimum(factory.AttributeBool("useBracketMinimum",true))
+  {
+
+  }
 
   OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum)
     : OptimiseBodyC("OptimiseConjugateGradientBodyC"),
@@ -64,7 +74,7 @@ namespace RavlN {
     steps /= domain.Steps().Size();
     if(steps < 3) steps = 3; // Check there;s actually some space to optimise in.
     
-    //Point in full space to evaulate is given by: _point + _direction * X[0];  Where X[0] is the paramiter we're optimising.
+    //Point in full space to evaluate is given by: _point + _direction * X[0];  Where X[0] is the paramiter we're optimising.
     parameters1d.Setup(0,min,max,steps);
   }
   
@@ -72,10 +82,12 @@ namespace RavlN {
   // ------------------------------------------------------------------------
   // **********  OptimalX    ************************************************
   // ------------------------------------------------------------------------
-  //
   
   VectorC OptimiseConjugateGradientBodyC::MinimalX (const CostC &domain, RealT &minimumCost) const
   {
+
+    RavlAssertMsg(domain.GetParameters().IsValid(),"Cost function has no parameters setup.");
+
     UIntT counter = 0;
     VectorC iterX = domain.StartX();         // Copy start into temporary var;
     
@@ -97,7 +109,7 @@ namespace RavlN {
       
       // Setup minimisation along line.
       
-      CostFunction1dC cost1d(parameters1d, // Limits for paramiters.
+      CostFunction1dC cost1d(parameters1d, // Limits for parameters.
                              domain,       // Cost function we're trying to minimise.
                              iterX,        // Current best position.
                              dYdX          // Direction we wish to optimise along.
@@ -132,7 +144,7 @@ namespace RavlN {
         dgg += (it.Data1() + it.Data2()) * it.Data1();
       }
       if(gg == 0) {
-        ONDEBUG(cerr << "Terminated on gg == 0\n");
+        ONDEBUG(std::cerr << "Terminated on gg == 0\n");
         break;
       }
       RealT gama = dgg/gg;
@@ -152,7 +164,7 @@ namespace RavlN {
   {
     StrOStreamC stream;
     stream << OptimiseBodyC::GetInfo () << "\n";
-    stream << "Gradient descent optimization algorithm. Iterations = " << _iterations;
+    stream << "Gradient descent optimisation algorithm. Iterations = " << _iterations;
     return stream.String();
   }
   
@@ -163,4 +175,7 @@ namespace RavlN {
     return true;
   }
   
+  static RavlN::XMLFactoryRegisterHandleConvertC<OptimiseConjugateGradientC, OptimiseC> g_registerXMLFactoryDesignClassifierGaussianMixture("RavlN::OptimiseConjugateGradientC");
+
+
 }

@@ -79,7 +79,7 @@ namespace RavlN {
   
   //: Return the inverse function
   FuncLinearC FuncMeanProjectionBodyC::Reverse() const {
-    return FuncLinearC(proj.T(), mean);
+    return FuncLinearC(proj.Inverse(), mean);
   }
 
   ///////////////////////////////////////////////////////////

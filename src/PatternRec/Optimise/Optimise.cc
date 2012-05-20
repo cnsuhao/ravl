@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/Optimise.cc"
 
@@ -15,16 +14,20 @@
 
 namespace RavlN {
 
+  //: Constructor from xml factory.
+
+  OptimiseBodyC::OptimiseBodyC (const XMLFactoryContextC & factory)
+   : _name(factory.AttributeString("name",factory.Name()))
+  {}
+
+
   OptimiseBodyC::OptimiseBodyC (const StringC &name)
     :_name(name)
-  {
-  }
+  {}
   
   OptimiseBodyC::OptimiseBodyC (const StringC &name, istream &)
     : _name(name)
-  {
-    
-  }
+  {}
 
   //: Load from stream.
   OptimiseBodyC::OptimiseBodyC (std::istream &strm)

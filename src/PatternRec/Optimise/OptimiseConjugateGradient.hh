@@ -32,6 +32,9 @@ namespace RavlN {
   class OptimiseConjugateGradientBodyC: public OptimiseBodyC
   {
   public:
+    OptimiseConjugateGradientBodyC(const XMLFactoryContextC & factory);
+    //: Constructor from xml factory.
+
     OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum = true);
     //: Constructor requires the number of iterations to use
     
@@ -64,8 +67,18 @@ namespace RavlN {
   class OptimiseConjugateGradientC: public OptimiseC
   {
   public:
-    OptimiseConjugateGradientC (UIntT iterations, RealT tolerance = 1e-6,bool useBacketMinimum = true)
-      :OptimiseC(*(new OptimiseConjugateGradientBodyC (iterations, tolerance,useBacketMinimum))) {}
+    OptimiseConjugateGradientC()
+    {}
+    //: Create invalid handle.
+
+    OptimiseConjugateGradientC(const XMLFactoryContextC & factory)
+     : OptimiseC(*(new OptimiseConjugateGradientBodyC (factory)))
+    {}
+    //: XML Factory constructor
+
+    OptimiseConjugateGradientC(UIntT iterations, RealT tolerance = 1e-6,bool useBacketMinimum = true)
+      : OptimiseC(*(new OptimiseConjugateGradientBodyC (iterations, tolerance,useBacketMinimum)))
+    {}
     //: Constructor
     //!param: iterations - maximum number of iterations to use
     // Searches along direction of Jacobian (steepest descent) with ever

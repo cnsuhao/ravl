@@ -35,11 +35,14 @@ namespace RavlN {
   class OptimiseBodyC: public RCBodyVC
   {
   public:
+    OptimiseBodyC (const XMLFactoryContextC & factory);
+    //: Constructor from xml factory.
+
     OptimiseBodyC (const StringC &name);
     //: Constructor with derived class name
     // The name is provided by the concrete class at instantiation so that the
     // base class knows what derived type it is.
-    
+
     OptimiseBodyC (const StringC &name, istream &in);
     //: Contructs from stream with derived class name
     // The name or type must be known so that the correct virtual constructor

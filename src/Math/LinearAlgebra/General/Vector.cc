@@ -44,6 +44,30 @@ namespace RavlN {
   }
 
 
+  VectorC Sigmoid(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Sigmoid(z[i]);
+    return ret;
+  }
+
+  VectorC Log(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Log(z[i]);
+    return ret;
+  }
+  //: Compute the element wise log of z.
+
+  VectorC Exp(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Exp(z[i]);
+    return ret;
+  }
+  //: Compute the element wise exponent of z.
+
+
 
 #ifdef __sgi__
   // Help the compiler a bit...
