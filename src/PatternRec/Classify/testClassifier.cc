@@ -13,9 +13,14 @@
 #include "Ravl/PatternRec/ClassifierAverageNearestNeighbour.hh"
 #include "Ravl/PatternRec/DesignClassifierGaussianMixture.hh"
 #include "Ravl/PatternRec/DesignClassifierLogisticRegression.hh"
+#include "Ravl/PatternRec/DesignWeakLinear.hh"
 #include "Ravl/PatternRec/DesignKMeans.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/PatternRec/DataSet2Iter.hh"
+#include "Ravl/PatternRec/DesignBayesNormalLinear.hh"
+#include "Ravl/PatternRec/DesignBayesNormalQuadratic.hh"
+#include "Ravl/PatternRec/FuncQuadratic.hh"
+
 #include "Ravl/HSet.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/SysLog.hh"
@@ -28,6 +33,11 @@ int testAverageNearestNeighbour();
 int testDesignKMeans();
 int testDesignClassifierGaussianMixture();
 int testDesignClassifierLogisticRegression();
+int testDesignClassifierLogisticRegressionQuadratic();
+int testDesignClassifierWeakLinear();
+int testDesignClassifierBayesNormalLinear();
+int testDesignClassifierBayesNormalQuadratic();
+
 
 int main() {
   SysLogOpen("testClassifier",false,true,true);
@@ -37,6 +47,10 @@ int main() {
   RAVL_RUN_TEST(testDesignKMeans());
   RAVL_RUN_TEST(testDesignClassifierGaussianMixture());
   RAVL_RUN_TEST(testDesignClassifierLogisticRegression());
+  RAVL_RUN_TEST(testDesignClassifierLogisticRegressionQuadratic());
+  RAVL_RUN_TEST(testDesignClassifierWeakLinear());
+  RAVL_RUN_TEST(testDesignClassifierBayesNormalLinear());
+  RAVL_RUN_TEST(testDesignClassifierBayesNormalQuadratic());
   cerr << "Test passed ok. \n";
   return 0;
 }
@@ -55,11 +69,11 @@ int GenerateDataSet() {
   dataset.Append(VectorC(0.32,0.81),2);
   dataset.Append(VectorC(0.50,0.90),2);
   dataset.Append(VectorC(0.51,0.92),2);
-  dataset.Append(VectorC(0.90,0.30),3);
-  dataset.Append(VectorC(0.90,0.20),3);
-  dataset.Append(VectorC(0.93,0.24),3);
-  dataset.Append(VectorC(0.90,0.40),3);
-  dataset.Append(VectorC(0.95,0.42),3);
+  dataset.Append(VectorC(0.90,0.30),0);
+  dataset.Append(VectorC(0.90,0.20),0);
+  dataset.Append(VectorC(0.93,0.24),0);
+  dataset.Append(VectorC(0.90,0.40),0);
+  dataset.Append(VectorC(0.95,0.42),0);
   RAVL_TEST_TRUE(dataset.Size() == 15);
   return 0;
 }
@@ -71,7 +85,18 @@ int testKNearestNeighbour() {
   int c = knn.Classify(VectorC(0.3,0.2));
   RAVL_TEST_TRUE(c == 1);
   VectorC vec =  knn.Confidence(VectorC(0.3,0.2));
-  RAVL_TEST_TRUE(vec.Size() == 4);
+  RAVL_TEST_TRUE(vec.Size() == 3);
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = knn.Classify(it.Data1());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  RAVL_TEST_TRUE(right == dataset.Size());
+  //RavlDebug("Average KNearest Right=%u Wrong=%u ",right,wrong);
   return 0;
 }
 
@@ -81,7 +106,17 @@ int testAverageNearestNeighbour() {
   int c = knn.Classify(VectorC(0.3,0.2));
   if(c != 1) return __LINE__;
   VectorC vec =  knn.Confidence(VectorC(0.3,0.2));
-  RAVL_TEST_TRUE(vec.Size() == 4);
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = knn.Classify(it.Data1());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  //RavlDebug("Average KNearest Right=%u Wrong=%u ",right,wrong);
+  RAVL_TEST_TRUE(right == dataset.Size());
   return 0;
 }
 
@@ -91,15 +126,9 @@ int testDesignKMeans() {
   ClassifierC cv = kmeans.Apply(dataset.Sample1());
   RAVL_TEST_TRUE(cv.IsValid());
   HSetC<UIntT> labels;
-  UIntT right = 0,wrong = 0;
   for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
     UIntT label = cv.Classify(it.Data1());
     labels += label;
-    if(label == it.Data2()) {
-      right ++;
-    } else {
-      wrong ++;
-    }
     //std::cerr << "Label=" << label << "\n";
   }
   //RavlDebug("Right=%u Wrong=%u ",right,wrong);
@@ -112,11 +141,9 @@ int testDesignClassifierGaussianMixture() {
   DesignClassifierGaussianMixtureC gm(1);
   ClassifierC cv = gm.Apply(dataset.Sample1(),dataset.Sample2());
   RAVL_TEST_TRUE(cv.IsValid());
-  HSetC<UIntT> labels;
   UIntT right = 0,wrong = 0;
   for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
     UIntT label = cv.Classify(it.Data1());
-    labels += label;
     if(label == it.Data2()) {
       right ++;
     } else {
@@ -125,22 +152,20 @@ int testDesignClassifierGaussianMixture() {
     //std::cerr << "Label=" << label << "\n";
   }
   //RavlDebug("Right=%u Wrong=%u ",right,wrong);
-  RAVL_TEST_TRUE(labels.Size() == 3);
+  RAVL_TEST_TRUE(right == dataset.Size());
   return 0;
 }
 
 int testDesignClassifierLogisticRegression()
 {
-  DesignClassifierLogisticRegressionC lr(true);
+  DesignClassifierLogisticRegressionC lr(0.0);
   ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
   RAVL_TEST_TRUE(cv.IsValid());
-  HSetC<UIntT> labels;
   UIntT right = 0,wrong = 0;
   for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
     UIntT label = cv.Classify(it.Data1());
     VectorC conf = cv.Confidence(it.Data1());
     //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
-    labels += label;
     if(label == it.Data2()) {
       right ++;
     } else {
@@ -148,6 +173,89 @@ int testDesignClassifierLogisticRegression()
     }
   }
   //RavlDebug("Right=%u Wrong=%u ",right,wrong);
-  //RAVL_TEST_TRUE(labels.Size() == 3);
+  RAVL_TEST_TRUE(right == dataset.Size());
+  return 0;
+}
+
+int testDesignClassifierLogisticRegressionQuadratic()
+{
+  DesignClassifierLogisticRegressionC lr(100,FuncQuadraticC(2));
+  ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
+  RAVL_TEST_TRUE(cv.IsValid());
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = cv.Classify(it.Data1());
+    VectorC conf = cv.Confidence(it.Data1());
+    //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  //RavlDebug("Right=%u Wrong=%u ",right,wrong);
+  RAVL_TEST_TRUE(right == dataset.Size());
+  return 0;
+}
+
+int testDesignClassifierWeakLinear() {
+#if 0
+  DesignWeakLinearC lr;
+  ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
+  RAVL_TEST_TRUE(cv.IsValid());
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = cv.Classify(it.Data1());
+    VectorC conf = cv.Confidence(it.Data1());
+    //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  //RavlDebug("Right=%u Wrong=%u ",right,wrong);
+  RAVL_TEST_TRUE(right == dataset.Size());
+#endif
+  return 0;
+}
+
+int testDesignClassifierBayesNormalLinear() {
+  DesignBayesNormalLinearC lr(true);
+  ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
+  RAVL_TEST_TRUE(cv.IsValid());
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = cv.Classify(it.Data1());
+    VectorC conf = cv.Confidence(it.Data1());
+    //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  //RavlDebug("Right=%u Wrong=%u ",right,wrong);
+  RAVL_TEST_TRUE(right == dataset.Size());
+  return 0;
+}
+
+int testDesignClassifierBayesNormalQuadratic() {
+  DesignBayesNormalQuadraticC lr(true);
+  ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
+  RAVL_TEST_TRUE(cv.IsValid());
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = cv.Classify(it.Data1());
+    VectorC conf = cv.Confidence(it.Data1());
+    //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  //RavlDebug("Right=%u Wrong=%u ",right,wrong);
+  RAVL_TEST_TRUE(right == dataset.Size());
   return 0;
 }

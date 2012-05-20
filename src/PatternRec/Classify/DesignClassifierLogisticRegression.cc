@@ -20,6 +20,7 @@
 #include "Ravl/PatternRec/OptimiseConjugateGradient.hh"
 #include "Ravl/PatternRec/OptimiseDescent.hh"
 #include "Ravl/PatternRec/SampleLabel.hh"
+#include "Ravl/PatternRec/FunctionCascade.hh"
 #include "Ravl/SysLog.hh"
 #include "Ravl/MeanCovariance.hh"
 #include "Ravl/PatternRec/ClassifierLogisticRegression.hh"
@@ -43,10 +44,15 @@ namespace RavlN {
   {
   public:
     //! Constructor
-    CostLogisticRegressionC(UIntT label,UIntT vecSize,const SampleC<VectorC> &in,const SampleC<UIntT> &out)
+    CostLogisticRegressionC(UIntT label,
+                            UIntT vecSize,
+                            const SampleC<VectorC> &in,
+                            const SampleC<UIntT> &out,
+                            RealT regularisation)
      : m_label(label),
        m_in(in),
-       m_out(out)
+       m_out(out),
+       m_regularisation(regularisation)
     {
       ParametersC parameters(vecSize,true);
       SetParameters(parameters);
@@ -64,6 +70,7 @@ namespace RavlN {
     SampleC<VectorC> m_in;
     SampleC<UIntT> m_out;
     SampleC<RealT> m_weight;
+    RealT m_regularisation;
   };
 
 
@@ -84,10 +91,17 @@ namespace RavlN {
         cost += -Log(1-dotProdS);
       }
     }
+    // This assumes the first value of X is just the bias.
+    if(m_regularisation > 0) {
+      RealT sum = 0;
+      for(unsigned i = 1;i < theta.Size();i++)
+        sum += Sqr(theta[i]);
+      cost += m_regularisation * sum;
+    }
 
     //J = sum(-y .* log( sigmoid(X * theta) ) - (1 -y) .* log(1 - sigmoid(X * theta)))/ m;
     RealT fcost = cost / ((RealT) m_in.Size());
-    //ONDEBUG(RavlDebug("Cost=%f",fcost));
+    ONDEBUG(RavlDebug("Cost=%f",fcost));
     //RavlN::Sleep(1.0);
     return fcost;
   }
@@ -107,8 +121,16 @@ namespace RavlN {
       for(unsigned i = 0;i < grad.Size();i++)
         grad[i] += it.Data1()[i] * num;
     }
+    // Include regularisation term.
+    if(m_regularisation > 0) {
+      for(unsigned i = 1;i < grad.Size();i++) {
+        grad[i] -= m_regularisation * theta[i];
+      }
+    }
     //grad = (1 / m) * X' * (sigmoid(X * theta) - y) ;
     grad /= ((RealT) m_in.Size());
+
+
     //ONDEBUG(RavlDebug("Grad @ %s = %s",RavlN::StringOf(theta).c_str(),RavlN::StringOf(grad).c_str()));
     return grad;
   }
@@ -117,10 +139,15 @@ namespace RavlN {
 
   //: Constructor.
   
-  DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(RealT regularisation,const OptimiseC &optimiser)
-   : m_optimiser(optimiser),
-     m_regularisation(regularisation)
-
+  DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(RealT regularisation,
+                                                                                   const FunctionC &featureExpand,
+                                                                                   bool prependUnit,
+                                                                                   const OptimiseC &optimiser
+                                                                                   )
+   : m_featureExpand(featureExpand),
+     m_optimiser(optimiser),
+     m_regularisation(regularisation),
+     m_prependUnit(prependUnit)
   {
     if(!m_optimiser.IsValid()) {
       //m_optimiser = OptimiseConjugateGradientC(1000);
@@ -132,10 +159,13 @@ namespace RavlN {
   
   DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(const XMLFactoryContextC & factory)
     : DesignClassifierSupervisedBodyC(factory),
-      m_regularisation(factory.AttributeReal("regularisation",0))
+      m_regularisation(factory.AttributeReal("regularisation",0)),
+      m_prependUnit(factory.AttributeBool("prependUnit",true))
   {
+    factory.UseChildComponent("FeatureMap",m_featureExpand,true); // Optional feature expansion.
     if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
-      m_optimiser = OptimiseConjugateGradientC(1000);
+      //m_optimiser = OptimiseConjugateGradientC(1000);
+      m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
   
@@ -191,6 +221,12 @@ namespace RavlN {
     ONDEBUG(RavlDebug("Designing logistic regression classifier."));
 
     SampleVectorC inVec(in);
+
+    // Need to expand features ?
+    if(m_featureExpand.IsValid()) {
+      inVec = m_featureExpand.Apply(in);
+    }
+
     MeanCovarianceC meanCov = inVec.MeanCovariance();
     SampleVectorC normVec(in.Size());
 
@@ -206,10 +242,10 @@ namespace RavlN {
 
     MatrixC weights(maxLabel+1,features);
     // If its a two class problem we only need 1 classifier.
-    if(maxLabel == 2) maxLabel = 1;
+    if(maxLabel == 1) maxLabel = 0;
     for(unsigned i = 0;i <= maxLabel;i++) {
       ONDEBUG(RavlDebug("Processing column %i ",i));
-      CostC costFunc(new CostLogisticRegressionC(i,features,normVec,labels));
+      CostC costFunc(new CostLogisticRegressionC(i,features,normVec,labels,m_regularisation));
       ONDEBUG(RavlDebug("Start at:%s",RavlN::StringOf(costFunc.StartX()).c_str()));
 
       RealT minimumCost;
@@ -218,7 +254,12 @@ namespace RavlN {
     }
 
     FunctionC normFunc = inVec.NormalisationFunction(meanCov);
-    return ClassifierLogisticRegressionC(normFunc,weights);
+
+    if(m_featureExpand.IsValid()) {
+      normFunc = FunctionCascadeC(m_featureExpand,normFunc);
+    }
+
+    return ClassifierLogisticRegressionC(normFunc,weights,true);
   }
   
   //: Create a classifier with weights for the samples.

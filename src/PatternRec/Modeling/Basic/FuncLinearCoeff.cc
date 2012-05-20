@@ -69,14 +69,23 @@ namespace RavlN {
   //: Apply function to 'data'
   
   VectorC FuncLinearCoeffBodyC::Apply(const VectorC &data) const 
-  { return a*MakeInput(data); }
+  {
+    if(!a.IsValid()) // If no a is set assume the identity matrix
+      return MakeInput(data);
+    return a*MakeInput(data);
+  }
   
   //: Calculate Jacobian matrix at X
   
   MatrixC FuncLinearCoeffBodyC::Jacobian (const VectorC &X) const {
     MatrixC ret(OutputSize(),InputSize());
-    for(UIntT i = 0;i < X.Size();i++)
-      ret.SetColumn(i,a*MakeJacobianInput(X,i));
+    if(!a.IsValid()) {  // If no a is set assume the identity matrix
+      for(UIntT i = 0;i < X.Size();i++)
+        ret.SetColumn(i,MakeJacobianInput(X,i));
+    } else {
+      for(UIntT i = 0;i < X.Size();i++)
+        ret.SetColumn(i,a*MakeJacobianInput(X,i));
+    }
     return ret;
   }
   

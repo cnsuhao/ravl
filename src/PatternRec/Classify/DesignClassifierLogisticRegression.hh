@@ -25,7 +25,11 @@ namespace RavlN {
     : public DesignClassifierSupervisedBodyC
   {
   public:
-    DesignClassifierLogisticRegressionBodyC(RealT regularisation = 0,const OptimiseC &optimiser = OptimiseC());
+    DesignClassifierLogisticRegressionBodyC(RealT regularisation = 0,
+                                            const FunctionC &featureMap = FunctionC(),
+                                            bool prependUnit = true,
+                                            const OptimiseC &optimiser = OptimiseC()
+                                            );
     //: Constructor.
 
     DesignClassifierLogisticRegressionBodyC(const XMLFactoryContextC &factory);
@@ -58,8 +62,10 @@ namespace RavlN {
     //: Set current regularisation parameter.
 
   protected:
+    FunctionC m_featureExpand;
     OptimiseC m_optimiser;
     RealT m_regularisation;
+    bool m_prependUnit;
   };
   
   //! userlevel=Normal
@@ -74,8 +80,12 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    DesignClassifierLogisticRegressionC(RealT regularisation,const OptimiseC &optimiser = OptimiseC())
-      : DesignClassifierSupervisedC(*new DesignClassifierLogisticRegressionBodyC(regularisation,optimiser))
+    DesignClassifierLogisticRegressionC(RealT regularisation,
+                                        const FunctionC &featureMap = FunctionC(),
+                                        bool prependUnit = true,
+                                        const OptimiseC &optimiser = OptimiseC()
+                                        )
+      : DesignClassifierSupervisedC(*new DesignClassifierLogisticRegressionBodyC(regularisation,featureMap,prependUnit,optimiser))
     {}
     //: Create a new designer.
 

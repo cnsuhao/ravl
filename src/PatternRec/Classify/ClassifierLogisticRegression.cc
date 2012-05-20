@@ -22,10 +22,13 @@ namespace RavlN {
   
   //: Create classifier from function.
   
-  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(const FunctionC &nfunc,const MatrixC &weights)
-    : ClassifierBodyC(weights.Rows()),
+  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(const FunctionC &nfunc,
+                                                                       const MatrixC &weights,
+                                                                       bool prependUnit)
+    : ClassifierBodyC(weights.Rows() == 1 ? (unsigned) 2 : (unsigned) weights.Rows().V()),
       m_norm(nfunc),
-      m_weights(weights)
+      m_weights(weights),
+      m_prependUnit(prependUnit)
   {}
   
   //: Load from stream.
@@ -38,7 +41,7 @@ namespace RavlN {
     if(version != 1)
       throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &), Unrecognised version number in stream. ");
 
-    strm >> m_norm >> m_weights;
+    strm >> m_norm >> m_weights >> m_prependUnit;
   }
   
   //: Load from binary stream.
@@ -50,7 +53,7 @@ namespace RavlN {
     strm >> version;
     if(version != 1)
       throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(BinIStreamC &), Unrecognised version number in stream. ");
-    strm >> m_norm >> m_weights;
+    strm >> m_norm >> m_weights >> m_prependUnit;
   }
   
   //: Writes object to stream, can be loaded using constructor
@@ -69,7 +72,7 @@ namespace RavlN {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;
-    out << version << m_norm << m_weights;
+    out << version << m_norm << m_weights << m_prependUnit;
     return true;    
   }
   
@@ -94,7 +97,16 @@ namespace RavlN {
       vec = m_norm(data);
     else
       vec = data;
-    VectorC result = m_weights * VectorC(BiasVector().Join(vec));
+    VectorC result;
+    if(m_prependUnit) {
+      result = m_weights * VectorC(BiasVector().Join(vec));
+    } else {
+      result = m_weights * VectorC(vec);
+    }
+    // Just a binary classifier?
+    if(result.Size() == 1) {
+      return result[0] > 0.0 ? 1 : 0;
+    }
     return result.MaxIndex().V();
   }
   
@@ -109,7 +121,17 @@ namespace RavlN {
       vec = m_norm(data);
     else
       vec = data;
-    VectorC result = Sigmoid(m_weights * vec);
+    VectorC result;
+    if(m_prependUnit) {
+      result = Sigmoid(m_weights * VectorC(BiasVector().Join(vec)));
+    } else {
+      result = Sigmoid(m_weights * vec);
+    }
+    if(result.Size() == 1){ // Just a binary classifier?
+      VectorC ret(2);
+      ret[0] = 1.0 - result[0];
+      ret[1] = result[0];
+    }
     return result.MakeUnit();
   }
   

@@ -81,11 +81,11 @@ namespace RavlN {
     else max = 0;
     for(lit++;lit;lit++) {
       if(!lit->IsValid())
-	continue;
+        continue;
       RealT v = lit->DensityValue(data);
       if(v > max) {
-	max = v;
-	ret = lit.Index().V();
+        max = v;
+        ret = lit.Index().V();
       }
     }
     return ret;

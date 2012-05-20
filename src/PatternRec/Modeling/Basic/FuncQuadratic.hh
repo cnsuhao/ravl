@@ -24,10 +24,9 @@ namespace RavlN {
     : public FuncLinearCoeffBodyC
   {
   public:
-    FuncQuadraticBodyC(int inSize,int outSize)
-      : FuncLinearCoeffBodyC(inSize,outSize)
-    { noCoeffs = NumberCoeffs(inSize); }
+    FuncQuadraticBodyC(int inSize,int outSize = -1);
     //: Constructor.
+    //: Setting output size to 0 generates an output for each coefficient.
     
     FuncQuadraticBodyC(istream &strm);
     //: Load from stream.
@@ -69,7 +68,7 @@ namespace RavlN {
     : public FuncLinearCoeffC
   {
   public:    
-    FuncQuadraticC(int inSize,int outSize)
+    FuncQuadraticC(int inSize,int outSize = -1)
       : FuncLinearCoeffC(*new FuncQuadraticBodyC(inSize,outSize))
     {}
     //: Constructor.

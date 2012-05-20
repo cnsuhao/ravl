@@ -31,7 +31,10 @@ namespace RavlN {
   //: Default constructor.
   
   ClassifierBayesNormalQuadraticBodyC::ClassifierBayesNormalQuadraticBodyC(const SArray1dC<MeanCovarianceC> & classStats, const SArray1dC<RealT> & priors)
-    : mean(classStats.Size()), invCov(classStats.Size()), konst(classStats.Size())
+    : ClassifierBodyC(classStats.Size()),
+      mean(classStats.Size()),
+      invCov(classStats.Size()),
+      konst(classStats.Size())
   {     
     //: Lets compute the constant
     for(SArray1dIter5C<VectorC, MatrixC, RealT, MeanCovarianceC, RealT>it(mean, invCov, konst, classStats, priors);it;it++) {

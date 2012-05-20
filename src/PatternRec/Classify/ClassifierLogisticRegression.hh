@@ -25,7 +25,7 @@ namespace RavlN {
     : public ClassifierBodyC
   {
   public:
-    ClassifierLogisticRegressionBodyC(const FunctionC &normFunc,const MatrixC &weights);
+    ClassifierLogisticRegressionBodyC(const FunctionC &normFunc,const MatrixC &weights,bool prependUnit);
     //: Create classifier from a normalisation function and some weights.
     
     ClassifierLogisticRegressionBodyC(istream &strm);
@@ -51,8 +51,10 @@ namespace RavlN {
     // to 1.
 
   protected:
+    FunctionC m_featureExpand;
     FunctionC m_norm;
     MatrixC m_weights;
+    bool m_prependUnit;
   };
   
   //! userlevel=Develop
@@ -67,8 +69,8 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    ClassifierLogisticRegressionC(const FunctionC &normFunc,const MatrixC &weights)
-      : ClassifierC(*new ClassifierLogisticRegressionBodyC(normFunc,weights))
+    ClassifierLogisticRegressionC(const FunctionC &normFunc,const MatrixC &weights,bool prependUnit)
+      : ClassifierC(*new ClassifierLogisticRegressionBodyC(normFunc,weights,prependUnit))
     {}
     //: Create classifier from a normalisation function and some weights.
     
@@ -96,9 +98,7 @@ namespace RavlN {
     const ClassifierLogisticRegressionBodyC &Body() const
     { return static_cast<const ClassifierLogisticRegressionBodyC &>(ClassifierC::Body()); }
     //: Access body.
-    
   public:
-    
   };
   
   inline istream &operator>>(istream &strm,ClassifierLogisticRegressionC &obj) {
