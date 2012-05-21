@@ -79,7 +79,7 @@ namespace RavlN {
   RealT CostLogisticRegressionC::Cost (const VectorC &theta) const
   {
     RealT cost = 0;
-    //ONDEBUG(RavlDebug("Theta:%s",RavlN::StringOf(theta).c_str()));
+    ONDEBUG(RavlDebug("Theta:%s",RavlN::StringOf(theta).c_str()));
     for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_in,m_out);it;it++)
     {
       //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
@@ -101,7 +101,7 @@ namespace RavlN {
 
     //J = sum(-y .* log( sigmoid(X * theta) ) - (1 -y) .* log(1 - sigmoid(X * theta)))/ m;
     RealT fcost = cost / ((RealT) m_in.Size());
-    ONDEBUG(RavlDebug("Cost=%f",fcost));
+    ONDEBUG(RavlDebug("Theta=%s Cost=%f",RavlN::StringOf(theta).c_str(),fcost));
     //RavlN::Sleep(1.0);
     return fcost;
   }
@@ -110,6 +110,7 @@ namespace RavlN {
 
   VectorC CostLogisticRegressionC::Jacobian1(const VectorC &theta) const
   {
+    ONDEBUG(RavlDebug("Theta %s",RavlN::StringOf(theta).c_str()));
     VectorC grad(theta.Size());
     grad.Fill(0);
     for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_in,m_out);it;it++)
@@ -150,8 +151,8 @@ namespace RavlN {
      m_prependUnit(prependUnit)
   {
     if(!m_optimiser.IsValid()) {
-      //m_optimiser = OptimiseConjugateGradientC(1000);
-      m_optimiser = OptimiseDescentC(1000,1e-3);
+      m_optimiser = OptimiseConjugateGradientC(1000);
+      //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
   
@@ -164,8 +165,8 @@ namespace RavlN {
   {
     factory.UseChildComponent("FeatureMap",m_featureExpand,true); // Optional feature expansion.
     if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
-      //m_optimiser = OptimiseConjugateGradientC(1000);
-      m_optimiser = OptimiseDescentC(1000,1e-3);
+      m_optimiser = OptimiseConjugateGradientC(1000);
+      //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
   

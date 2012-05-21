@@ -143,11 +143,16 @@ namespace RavlN {
         gg += Sqr(it.Data2());
         dgg += (it.Data1() + it.Data2()) * it.Data1();
       }
+      //RavlDebug("gg=%f dgg=%f ",gg,dgg);
       if(gg == 0) {
         ONDEBUG(std::cerr << "Terminated on gg == 0\n");
         break;
       }
       RealT gama = dgg/gg;
+      if(Abs(gama) < 1e-8) {
+        ONDEBUG(std::cerr << "Directions exhausted \n");
+        break;
+      }
       for(SArray1dIter3C<RealT,RealT,RealT> it(dYdX,gdYdX,hdYdX);it;it++) {
         it.Data2() = -it.Data1();
         it.Data1() = it.Data2() + gama * it.Data3();
