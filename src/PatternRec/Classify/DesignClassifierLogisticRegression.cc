@@ -101,7 +101,8 @@ namespace RavlN {
 
     //J = sum(-y .* log( sigmoid(X * theta) ) - (1 -y) .* log(1 - sigmoid(X * theta)))/ m;
     RealT fcost = cost / ((RealT) m_in.Size());
-    ONDEBUG(RavlDebug("Theta=%s Cost=%f",RavlN::StringOf(theta).c_str(),fcost));
+    //ONDEBUG(RavlDebug("Theta=%s Cost=%f",RavlN::StringOf(theta).c_str(),fcost));
+    RavlDebug("Cost=%f",fcost);
     //RavlN::Sleep(1.0);
     return fcost;
   }
@@ -163,7 +164,9 @@ namespace RavlN {
       m_regularisation(factory.AttributeReal("regularisation",0)),
       m_prependUnit(factory.AttributeBool("prependUnit",true))
   {
-    factory.UseChildComponent("FeatureMap",m_featureExpand,true); // Optional feature expansion.
+    if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
+      //m_featureExpand = FuncOrthPolynomialC(2);
+    }
     if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
       m_optimiser = OptimiseConjugateGradientC(1000);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
@@ -225,6 +228,7 @@ namespace RavlN {
 
     // Need to expand features ?
     if(m_featureExpand.IsValid()) {
+      //m_featureExpand
       inVec = m_featureExpand.Apply(in);
     }
 
