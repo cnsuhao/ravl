@@ -117,7 +117,7 @@ namespace RavlN {
       
       if (_useBracketMinimum) {
         BracketMinimum(cost1d);
-        iterX = cost1d.Point(_brent.MinimalX(cost1d,currentCost,minimumCost));
+        iterX = cost1d.Point(_brent.MinimalX(cost1d,minimumCost));
       } else
         iterX = cost1d.Point(_brent.MinimalX(cost1d,currentCost,minimumCost));
       
@@ -158,7 +158,6 @@ namespace RavlN {
         it.Data1() = it.Data2() + gama * it.Data3();
         it.Data3() = it.Data1();
       }
-      
       
     } while (counter++ < _iterations); 
     ONDEBUG(cerr << "Terminated after " << counter << " iterations. MinCost=" << currentCost << "\n");
