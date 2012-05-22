@@ -21,7 +21,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: A classifier based on a mixture of gaussian distributions.
+  //: A classifier based on fann neural network library.
   //  This classifier returns the label with the highest value.
   // This class can be used with the <a href="RavlN.DesignClassifierNeuralNetworkC.html"> DesignClassifierNeuralNetworkC </a> class. 
 
@@ -72,7 +72,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: A classifier based on a mixture of gaussian distributions.
+  //: A classifier based on fann neural network library.
   //  This classifier returns the label with the highest value.
   // This class can be used with the <a href="RavlN.DesignClassifierNeuralNetworkC.html"> DesignClassifierNeuralNetworkC </a> class. 
 

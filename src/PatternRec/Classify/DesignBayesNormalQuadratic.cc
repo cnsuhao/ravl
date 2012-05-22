@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Kieron Messer"
 //! file="Ravl/PatternRec/Classify/DesignBayesNormalQuadratic.cc"
@@ -21,7 +20,7 @@
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/SArray1dIter2.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else

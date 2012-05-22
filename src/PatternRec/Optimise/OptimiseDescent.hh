@@ -32,6 +32,9 @@ namespace RavlN {
   class OptimiseDescentBodyC: public OptimiseBodyC
   {
   public:
+    OptimiseDescentBodyC(const XMLFactoryContextC & factory);
+    //: Constructor from xml factory.
+
     OptimiseDescentBodyC (UIntT iterations, RealT tolerance);
     //: Constructor requires the number of iterations to use
     
@@ -64,8 +67,18 @@ namespace RavlN {
   class OptimiseDescentC: public OptimiseC
   {
   public:
+    OptimiseDescentC()
+    {}
+    //: Default constructor, creates an invalid handle
+
+    OptimiseDescentC(const XMLFactoryContextC & factory)
+     : OptimiseC(*(new OptimiseDescentBodyC (factory)))
+    {}
+    //: XML Factory constructor
+
     OptimiseDescentC (UIntT iterations, RealT tolerance = 1e-6)
-      :OptimiseC(*(new OptimiseDescentBodyC (iterations, tolerance))) {}
+      :OptimiseC(*(new OptimiseDescentBodyC (iterations, tolerance)))
+    {}
     //: Constructor
     //!param: iterations - maximum number of iterations to use
     // Searches along direction of Jacobian (steepest descent) with ever

@@ -18,12 +18,11 @@ using namespace RavlImageN;
 using namespace RavlConstN;
 
 
-WhiteLineDetectorBodyC::WhiteLineDetectorBodyC(bool Verbose)
+WhiteLineDetectorBodyC::WhiteLineDetectorBodyC()
   : darkred(128,   0,   0),
     red    (255,   0,   0),
     yellow (255, 255,   0),
     brown  (128, 128,   0),
-    verbose(Verbose),
     gFilter(3),
     edgeDet(true, 0.3, 1.0),
     pphtProc(Point2dC(0.01, 1.0),0.9999999,90,-1,false,1.4,true),
@@ -37,9 +36,8 @@ WhiteLineDetectorBodyC::WhiteLineDetectorBodyC(bool Verbose)
 }
 
 SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
-  ImageC<ByteRGBValueC> canvas = RealRGBImageCT2ByteRGBImageCT(RealImageCT2RealRGBImageCT(img));
+  canvas = RealRGBImageCT2ByteRGBImageCT(RealImageCT2RealRGBImageCT(img));
   ImageC<RealT> fImg = gFilter.Apply(img);
-  if (verbose)  RavlN::Save("@X:filter", fImg);
 
   // Find straight edges
   DListC<EdgelC> inList = edgeDet.LApply(fImg);
@@ -62,7 +60,7 @@ SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
     m++;
     for (; m; m++) {
       RealT signedGap = l->SignedDistance(m->MidPoint());  // ridges, not troughs
-      if (// parallel & opposite dirns & overlapping
+      if (// parallel & opposite dirns
           (l->UnitNormal().Dot(m->UnitNormal()) < -cos(RavlConstN::pi/180.0*maxAngle)) &&
           // "clockwise pair" && close by
           (signedGap > -maxSep) && (signedGap < 0.0) &&
@@ -106,7 +104,6 @@ SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
     if (!intersectFound) r.Del();
   }
   for (DLIterC<LinePP2dC> r(ridges); r; r++)  DrawLine(canvas, red, *r);
-  if (verbose)  RavlN::Save("@X:lines", canvas);
 
   SArray1dC<LinePP2dC> ridgeArray(ridges.Size());
   for (SArray1dIterC<LinePP2dC>i(ridgeArray); i; ++i) 

@@ -35,11 +35,14 @@ namespace RavlN {
   class OptimiseBodyC: public RCBodyVC
   {
   public:
+    OptimiseBodyC (const XMLFactoryContextC & factory);
+    //: Constructor from xml factory.
+
     OptimiseBodyC (const StringC &name);
     //: Constructor with derived class name
     // The name is provided by the concrete class at instantiation so that the
     // base class knows what derived type it is.
-    
+
     OptimiseBodyC (const StringC &name, istream &in);
     //: Contructs from stream with derived class name
     // The name or type must be known so that the correct virtual constructor
@@ -64,6 +67,7 @@ namespace RavlN {
     virtual VectorC MinimalX (const CostC &domain, RealT startCost, RealT &minimumCost) const;
     //: Determines Xmin=arg min_{X} domain(X)
     //!param: domain      - the cost function that will be minimised
+    //!param: startCost   - the cost at the start position.
     //!param: minimumCost - the maximum cost value found
     //!return: the X value which gives the minimum cost
     // A minimisation algorithm must be provided for each derived optimisation
@@ -80,6 +84,7 @@ namespace RavlN {
     virtual VectorC MaximalX (const CostC &domain, RealT startCost, RealT &maximumCost) const;
     //: Determines Xmax=arg max_{X} domain(X)
     //!param: domain - the cost function that will be maximised
+    //!param: startCost   - the cost at the start position, to save it being computed.
     //!param: maximumCost - the maximum cost value found
     //!return: the X value which gives the maximum cost
     
@@ -138,34 +143,52 @@ namespace RavlN {
     inline VectorC MinimalX (const CostC &domain, RealT startCost, RealT &minimumCost) const
     { return Body().MinimalX (domain,startCost,minimumCost); }
     //: Do the Optimisation.
-    // Determines which X gives minimum cost function value and gives access to 
+    //!param: domain      - the cost function that will be minimised
+    //!param: startCost   - the cost at the start position.
+    //!param: minimumCost - the maximum cost value found
+    //!return: the X value which gives the minimum cost
+    // Determines which X gives minimum cost function value and gives access to
     // calculated minimum cost
 
     inline VectorC MinimalX (const CostC &domain, RealT &minimumCost) const
     { return Body().MinimalX (domain,minimumCost); }
     //: Do the Optimisation.
-    // Determines which X gives minimum cost function value and gives access to 
+    //!param: domain      - the cost function that will be minimised
+    //!param: minimumCost - the maximum cost value found
+    //!return: the X value which gives the minimum cost
+    // Determines which X gives minimum cost function value and gives access to
     // calculated minimum cost
 
     inline VectorC MinimalX (const CostC &domain) const
     { RealT minimumCost; return Body().MinimalX (domain,minimumCost); }
     //: Do the Optimisation. Determines which X gives minimum cost function value
+    //!param: domain      - the cost function that will be minimised
+    //!return: the X value which gives the minimum cost
     
     inline VectorC MaximalX (const CostC &domain, RealT startCost, RealT &maximumCost) const
     { return Body().MaximalX (domain,startCost,maximumCost); }
     //: Do the Optimisation.
+    //!param: domain - the cost function that will be maximised
+    //!param: startCost   - the cost at the start position, to save it being computed.
+    //!param: maximumCost - the maximum cost value found
+    //!return: the X value which gives the maximum cost
     // Determines which X gives maximum cost function value and gives access to 
     // calculated maximum cost
 
     inline VectorC MaximalX (const CostC &domain, RealT &maximumCost) const
     { return Body().MaximalX (domain,maximumCost); }
     //: Do the Optimisation.
+    //!param: domain - the cost function that will be maximised
+    //!param: maximumCost - the maximum cost value found
+    //!return: the X value which gives the maximum cost
     // Determines which X gives maximum cost function value and gives access to 
     // calculated maximum cost
 
     inline VectorC MaximalX (const CostC &domain) const
     { RealT maximumCost; return Body().MaximalX (domain,maximumCost); }
     //: Do the Optimisation. Determines which X gives maximum cost function value
+    //!param: domain - the cost function that will be maximised
+    //!return: the X value which gives the maximum cost
     
     inline const StringC GetInfo () const
     { return Body().GetInfo (); }

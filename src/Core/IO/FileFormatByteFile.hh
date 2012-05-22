@@ -28,123 +28,41 @@ namespace RavlN
   {
   public:
 
-    FileFormatByteFileBodyC(bool deletable)
-    : FileFormatBodyC("bytefile", "Raw binary file.", deletable)
-    {}
+    FileFormatByteFileBodyC(bool deletable);
     //: Ctor.
 
-    FileFormatByteFileBodyC(const StringC& formatId, const StringC& formatDescriptor, bool deletable = true)
-    : FileFormatBodyC(formatId, formatDescriptor, deletable)
-    {}
+    FileFormatByteFileBodyC(const StringC& formatId, const StringC& formatDescriptor, bool deletable = true);
     //: Ctor with full format info.
 
-    virtual const type_info& ProbeLoad(IStreamC& inputStream, const type_info& objType) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return typeid(void);
+    virtual const type_info& ProbeLoad(IStreamC& inputStream, const type_info& objType) const;
 
-      // Input stream must be good
-      if (!inputStream.good())
-        return typeid(void);
+    virtual const type_info& ProbeLoad(const StringC& filename, IStreamC& inputStream, const type_info& objType) const;
 
-      return typeid(ByteT);
-    }
+    virtual const type_info& ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const;
 
-    virtual const type_info& ProbeLoad(const StringC& filename, IStreamC& inputStream, const type_info& objType) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return typeid(void);
-
-      // No filename, so test input stream
-      if (filename.IsEmpty())
-        return ProbeLoad(inputStream, objType);
-
-      // Need a real filename
-      if (filename[0] == '@')
-        return typeid(void);
-
-      return typeid(ByteT);
-    }
-
-    virtual const type_info& ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return typeid(void);
-
-      // Need a filename
-      if (filename.IsEmpty())
-        return typeid(void);
-
-      // Need a real filename
-      if (filename[0] == '@')
-        return typeid(void);
-
-      return typeid(ByteT);
-    }
-
-    virtual DPIPortBaseC CreateInput(IStreamC& inputStream, const type_info& objType) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return DPIPortBaseC();
-
-      return DPIByteFileC(inputStream);
-    }
+    virtual DPIPortBaseC CreateInput(IStreamC& inputStream, const type_info& objType) const;
     //: Create an input port for loading.
     //!return: An invalid port if not supported.
 
-    virtual DPOPortBaseC CreateOutput(OStreamC& outputStream, const type_info& objType) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return DPOPortBaseC();
-
-      return DPOByteFileC(outputStream);
-    }
+    virtual DPOPortBaseC CreateOutput(OStreamC& outputStream, const type_info& objType) const;
     //: Create an output port for saving.
     //!return: An invalid port if not supported.
 
-    DPIPortBaseC CreateInput(const StringC& filename, const type_info& objType) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return DPIPortBaseC();
-
-      return DPIByteFileC(filename);
-    }
+    DPIPortBaseC CreateInput(const StringC& filename, const type_info& objType) const;
     //: Create an input port for loading.
     //!return: An invalid port if not supported.
 
-    DPOPortBaseC CreateOutput(const StringC& filename, const type_info& objType) const
-    {
-      // Byte only
-      if (objType != typeid(ByteT))
-        return DPOPortBaseC();
-
-      return DPOByteFileC(filename);
-    }
+    DPOPortBaseC CreateOutput(const StringC& filename, const type_info& objType) const;
     //: Create an output port for saving.
     //!return: An invalid port if not supported.
 
-    virtual const type_info& DefaultType() const
-    {
-      return typeid(ByteT);
-    }
+    virtual const type_info& DefaultType() const;
     //: Get preferred data type.
 
-    virtual bool IsStream() const
-    {
-      return true;
-    }
+    virtual bool IsStream() const;
     //: Show it is a streamable format.
 
-    virtual IntT Priority() const
-    {
-      return -1; // Default is 0.
-    }
+    virtual IntT Priority() const;
     //: Find the priority of the format. The higher the better.
 
   };

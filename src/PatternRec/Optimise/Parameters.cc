@@ -13,6 +13,15 @@
 #include "Ravl/Random.hh"
 #include "Ravl/config.h"
 #include <stdlib.h>
+#include "Ravl/StdConst.hh"
+#include "Ravl/SysLog.hh"
+
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
 
 namespace RavlN {
 
@@ -48,10 +57,10 @@ namespace RavlN {
   
   /////////////////////////////////////////
   //: Constructor.
-  // This setsup nparams with defaults settings of :
+  // This setup nparams with defaults settings of :
   // minP=0 maxP=1 Steps=1 mask=0 (constP = 0)
   
-  ParametersBodyC::ParametersBodyC (SizeT nparams)
+  ParametersBodyC::ParametersBodyC (SizeT nparams,bool unlimited )
     :_minP(nparams),
      _maxP(nparams),
      _constP(nparams),
@@ -59,11 +68,18 @@ namespace RavlN {
      _mask(nparams),
       m_cacheDirty(true)
   {
-    _minP.Fill(0);
-    _maxP.Fill(1);
+    if(!unlimited) {
+      _minP.Fill(0);
+      _maxP.Fill(1);
+      _mask.Fill(0);
+    } else {
+      _minP.Fill(-100000);
+      _maxP.Fill(100000);
+      _mask.Fill(1);
+    }
     _steps.Fill(1);
-    _mask.Fill(0);
     _constP.Fill(0);
+    ONDEBUG(RavlDebug("Setting up %u parameters. Unlimited=%d ",(unsigned) nparams.V(),(bool) unlimited));
   }
   
   ParametersBodyC::ParametersBodyC (istream &in)
@@ -137,7 +153,7 @@ namespace RavlN {
   
   
   //////////////////////////////////
-  //: Setup paramiter p.
+  //: Setup parameter p.
   
   void ParametersBodyC::Setup(IndexC p,RealT min,RealT max,IntT steps,IntT mask)
   {
@@ -149,7 +165,7 @@ namespace RavlN {
   }
   
   //////////////////////////////////
-  //: Setup paramiter p, and constant value.
+  //: Setup parameter p, and constant value.
   
   void ParametersBodyC::Setup(IndexC p,RealT min,RealT max,IntT steps,RealT constV,IntT mask) 
   {
@@ -169,7 +185,7 @@ namespace RavlN {
   }
 
 
-  //: Generate a random positon in the parameter space.
+  //: Generate a random position in the parameter space.
   
   VectorC ParametersBodyC::Random() {
     VectorC ret(_minP.Size());

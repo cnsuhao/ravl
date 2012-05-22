@@ -15,6 +15,7 @@
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/SysLog.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -40,7 +41,7 @@ namespace RavlN {
   //: XML Factory constructor.
 
   NetPortManagerBodyC::NetPortManagerBodyC(const XMLFactoryContextC &factory)
-   : name(factory.AttributeString("name",factory.Name())),
+   : name(factory.AttributeString("name",factory.Path())),
      address(factory.AttributeString("address","localhost:4143")),
      managerOpen(false),
      ready(0),
@@ -63,11 +64,11 @@ namespace RavlN {
   //: Open manager at address.
   
   bool NetPortManagerBodyC::Open(const StringC &addr) {
-    ONDEBUG(RavlDebug("NetPortManagerBodyC::Open(), Called for '%s' ",addr.data()));
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Open(), Called for '%s' on manager '%s' ",addr.c_str(),name.c_str()));
     
     RWLockHoldC hold(access,false);
     if(managerOpen) {
-      std::cerr << "NetPortManagerBodyC::Open(), Attempt to re-open port manager at '" << addr << "'\n";
+      RavlWarning("NetPortManagerBodyC::Open(), Attempt to re-open port manager at '%s'",addr.c_str());
       return false; 
     }
     
@@ -118,7 +119,7 @@ namespace RavlN {
   
   bool NetPortManagerBodyC::WaitForTerminate() {
     if(!managerOpen) {
-      cerr << "NetPortManagerBodyC::WaitForTerminate, Called before Open(). \n";
+      RavlError("WaitForTerminate, Called before Open(). ");
       return false;
     }
     while(!terminate) {
@@ -138,7 +139,7 @@ namespace RavlN {
                                    NetISPortServerBaseC &isport,
                                    bool attemptCreate)
   {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetISPortServerBaseC),  Called. Port='" << name << "' \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Lookup(NetISPortServerBaseC),  Called. Port='%s' ",name.c_str()));
     RWLockHoldC hold(access,RWLOCK_READONLY);
     if(iports.Lookup(name,isport))
       return true;
@@ -170,19 +171,25 @@ namespace RavlN {
                                    NetOSPortServerBaseC &osport,
                                    bool attemptCreate)
   {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Lookup(NetOSPortServerBaseC),  Called. Port='" << name << "' \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Lookup(NetOSPortServerBaseC),  Called. Port='%s' ",name.c_str()));
     RWLockHoldC hold(access,RWLOCK_READONLY);
-    if(oports.Lookup(name,osport))
+    if(oports.Lookup(name,osport)) {
+      ONDEBUG(RavlDebug("NetPortManagerBodyC::Lookup, found port "));
       return true;
+    }
     // Do we have a request handler ?
-    if(!attemptCreate || !requestOPort.IsValid())
+    if(!attemptCreate || !requestOPort.IsValid()) {
+      ONDEBUG(RavlDebug("NetPortManagerBodyC::Lookup, giving up "));
       return false;
+    }
     // Request new connection.
     CallFunc3C<StringC,StringC,NetOSPortServerBaseC &,bool> rp = requestOPort; // Make a copy of handle to ensure its thread safe.
     hold.Unlock();
     // Register connection in table.
-    if(!rp.Call(const_cast<StringC &>(name),const_cast<StringC &>(dataType),osport))
+    if(!rp.Call(const_cast<StringC &>(name),const_cast<StringC &>(dataType),osport)) {
+      ONDEBUG(RavlDebug("NetPortManagerBodyC::Lookup, Create failed. "));
       return false;
+    }
     
     // Register connection in table.
     hold.LockWr();
@@ -197,13 +204,14 @@ namespace RavlN {
     // Register port.
     osport.SetName(conName);
     oports[conName] = osport;    
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Lookup, completed ok. "));
     return true;
   }
   
   //: Register new port.
   
   bool NetPortManagerBodyC::Register(const StringC &name,NetISPortServerBaseC &ips) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Register(),  Called. Port='" << name << "' \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Register(),  Called. Port='%s'",name.c_str()));
     RWLockHoldC hold(access,RWLOCK_WRITE);
     if(iports.IsElm(name)) 
       return false; // Already registered.
@@ -212,7 +220,7 @@ namespace RavlN {
   }
 
   bool NetPortManagerBodyC::Register(const StringC &name,NetOSPortServerBaseC &ops) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Register(),  Called. Port='" << name << "' \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Register(),  Called. Port='%s' ",name.c_str()));
     RWLockHoldC hold(access,RWLOCK_WRITE);
     if(oports.IsElm(name)) 
       return false; // Already registered.
@@ -223,7 +231,7 @@ namespace RavlN {
   //: Unregister port.
   
   bool NetPortManagerBodyC::Unregister(const StringC &name,bool isInput) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::Unregister(), Called. Name='" << name << "'\n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::Unregister(), Called. Name='%s' ",name.c_str()));
     RWLockHoldC hold(access,RWLOCK_WRITE);
     if(isInput)
     {
@@ -272,7 +280,7 @@ namespace RavlN {
   //: Called when connection to port is dropped.
   
   bool NetPortManagerBodyC::ConnectionDroppedI(NetISPortServerBaseC &sp) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::ConnectionDroppedI, Called \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::ConnectionDroppedI, Called "));
     // Hold handle to object to stop it being deleted before we're finished.
     NetISPortServerBaseC sph = sp;
     
@@ -284,7 +292,7 @@ namespace RavlN {
   //: Called when connection to port is dropped.
   
   bool NetPortManagerBodyC::ConnectionDroppedO(NetOSPortServerBaseC &sp) {
-    ONDEBUG(cerr << "NetPortManagerBodyC::ConnectionDroppedO, Called \n");
+    ONDEBUG(RavlDebug("NetPortManagerBodyC::ConnectionDroppedO, Called "));
     // Hold handle to object to stop it being deleted before we're finished.
     NetOSPortServerBaseC sph = sp;
     

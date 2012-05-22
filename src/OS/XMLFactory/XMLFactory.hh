@@ -417,7 +417,7 @@ namespace RavlN {
                       bool suppressErrorMessages = false,
                       const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
-    // This will search parent context's succesively up the tree until a
+    // This will search parent context's successively up the tree until a
     // component with a matching name is found.
 
     template<class DataT>
@@ -434,7 +434,7 @@ namespace RavlN {
                       bool suppressErrorMessages = false,
                       const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
-    // This will search parent context's succesively up the tree until a
+    // This will search parent context's successively up the tree until a
     // component with a matching name is found.
 
     bool UseChildComponent(const StringC &name,

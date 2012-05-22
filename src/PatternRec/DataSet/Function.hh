@@ -31,13 +31,13 @@ namespace RavlN {
   public:
     FunctionBodyC()
       : inputSize(0),
-	outputSize(0)
+	      outputSize(0)
     {}
     //: Default constructor.
     
     FunctionBodyC(UIntT inSize,UIntT outSize)
       : inputSize(inSize),
-	outputSize(outSize)
+	      outputSize(outSize)
     {}
     //: Create function with given number of inputs and outputs.
     

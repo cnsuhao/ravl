@@ -123,7 +123,7 @@ namespace RavlN {
     // select observations compatible with solution
     DListC<ObservationC> compatibleObsList = 
       evaluator.CompatibleObservations(ransac.GetSolution(), obsList);
-    inliers = evaluator.ObservationCompatibility(ransac.GetSolution(),compatibleObsList);
+    inliers = evaluator.ObservationCompatibility(ransac.GetSolution(),obsList);
 
     // initialise Levenberg-Marquardt algorithm with Ransac solution
     StateVectorHomog2dC stateVecInit = ransac.GetSolution();

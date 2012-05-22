@@ -149,11 +149,6 @@ namespace RavlN {
       : Function1C(oth)
     {}
     //: Body constructor
-
-    CostC (CostBodyC *oth)
-      : Function1C(oth)
-    {}
-    //: Body constructor.
     
     inline CostBodyC & Body()
     { return static_cast<CostBodyC&>(FunctionC::Body()); }
@@ -173,6 +168,11 @@ namespace RavlN {
     { CheckHandleType(Body()); }
     //: Constructs from stream
     
+    CostC (CostBodyC *oth)
+      : Function1C(oth)
+    {}
+    //: Body constructor.
+
     
     inline RealT Cost (const VectorC &X) const
     { return Body().Cost (X); }

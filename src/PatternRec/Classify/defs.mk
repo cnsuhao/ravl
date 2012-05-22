@@ -24,7 +24,8 @@ HEADERS= DesignClassifierSupervised.hh  \
  ClassifierBayesNormalLinear.hh DesignBayesNormalLinear.hh \
  DesignBayesNormalQuadratic.hh ClassifierBayesNormalQuadratic.hh \
  ClassifierNeuralNetwork.hh DesignClassifierNeuralNetwork.hh \
- Classifier2.hh ClassifierOneAgainstAll.hh DesignOneAgainstAll.hh
+ Classifier2.hh ClassifierOneAgainstAll.hh DesignOneAgainstAll.hh \
+ DesignClassifierLogisticRegression.hh ClassifierLogisticRegression.hh
 
 SOURCES= DesignClassifierSupervised.cc \
  DesignDiscriminantFunction.cc DesignKNearestNeighbour.cc \
@@ -37,7 +38,8 @@ SOURCES= DesignClassifierSupervised.cc \
  ClassifierBayesNormalLinear.cc DesignBayesNormalLinear.cc \
  DesignBayesNormalQuadratic.cc ClassifierBayesNormalQuadratic.cc \
  ClassifierNeuralNetwork.cc DesignClassifierNeuralNetwork.cc \
- Classifier2.cc ClassifierOneAgainstAll.cc DesignOneAgainstAll.cc
+ Classifier2.cc ClassifierOneAgainstAll.cc DesignOneAgainstAll.cc \
+ DesignClassifierLogisticRegression.cc ClassifierLogisticRegression.cc
 
 PLIB = RavlPatternRec
 
@@ -46,7 +48,7 @@ TESTEXES=testClassifier.cc testClassifierXMLFactory.cc testClassifierOneAgainstA
 
 LIBDEPS = RavlPatternRecClassifier.def 
 
-USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann
+USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann Optimisation
 
 PROGLIBS=RavlSVM RavlPatternRecIO RavlOS
 

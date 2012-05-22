@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_FUNCTIONCONCATENATE_HEADER
 #define RAVL_FUNCTIONCONCATENATE_HEADER 1
-//! rcsid="$Id: FunctionConcatenate.hh 6820 2008-05-30 14:30:11Z ees1wc $"
 //! lib=RavlPatternRec
 //! author="Kieron"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
@@ -18,7 +17,7 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Function which con-catenates a set of functions together!
+  //: Function which con-catenates a set of functions together.
   
   class FunctionConcatenateBodyC
     : public FunctionBodyC
@@ -60,7 +59,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Function which concatenates a set of functions together!
+  //: Function which concatenates a set of functions together.
   
   class FunctionConcatenateC
     : public FunctionC 

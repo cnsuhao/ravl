@@ -80,7 +80,9 @@ namespace RavlN {
     funcostream(const CallFunc2C<const char *,SizeT> &writeCall, SizeT bufferSize = 8192)
       : std::ostream(0),
         m_streamBuf(writeCall, bufferSize)
-    { rdbuf(&m_streamBuf); }
+    {
+      rdbuf(&m_streamBuf);
+    }
     
   protected:
     FuncOStreamBufC m_streamBuf;
@@ -95,7 +97,9 @@ namespace RavlN {
     funcistream(const CallFunc2C<char *,SizeT,SizeT> &readCall, SizeT bufferSize = 8192)
       : std::istream(0),
         m_streamBuf(readCall, bufferSize)
-    { rdbuf(&m_streamBuf); }
+    {
+      rdbuf(&m_streamBuf);
+    }
     
   protected:
     FuncIStreamBufC m_streamBuf;

@@ -14,7 +14,6 @@
 //! example=testCost.cc
 //! file="Ravl/PatternRec/Optimise/Parameters.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation.Cost Functions"
-//! rcsid="$Id$"
 
 #include "Ravl/RefCounter.hh"
 #include "Ravl/Vector.hh"
@@ -27,7 +26,7 @@ namespace RavlN {
   // --------------------------------------------------------------------------
   //: Implementation class for optimisation parameter bounds.
   //
-  // This is the implemtation class for optimisation parameter bounds. The
+  // This is the implementation class for optimisation parameter bounds. The
   // ParametersC handle class should be used.
   
   class ParametersBodyC
@@ -54,10 +53,11 @@ namespace RavlN {
     //!param: mask  - specifies which elements of P to use in X
     // Only the parameters with a mask value of 1 are presented to the optimiser.
     
-    ParametersBodyC (SizeT nparams);
+    ParametersBodyC (SizeT nparams,bool unlimited = false);
     //: Constructor.
-    // This setsup nparams with defaults settings of :
+    // This setup nparams with defaults settings of :
     // minP=0 maxP=1 Steps=1 mask=0 (constP = 0)
+    // if unlimited is true parameters can be any real number, and all parameters are enabled.
     
     ParametersBodyC (const ParametersBodyC &other);
     //: Copy Constructor.
@@ -69,7 +69,7 @@ namespace RavlN {
     //: Makes a deep copy
     
     VectorC Random();
-    //: Generate a random positon in the parameter space.
+    //: Generate a random position in the parameter space.
     
   protected:
     inline SizeT Size() const
@@ -125,10 +125,10 @@ namespace RavlN {
     //: Returns initial parameter value which is TransP2X * constP
     
     void Setup(IndexC p,RealT min,RealT max,IntT steps,IntT mask = 1);
-    //: Setup paramiter p.
+    //: Setup parameter p.
     
     void Setup(IndexC p,RealT min,RealT max,IntT steps,RealT constV,IntT mask = 1);
-    //: Setup paramiter p, and constant value.
+    //: Setup parameter p, and constant value.
     
     void Save (ostream &out) const;
     //: Saves to stream, from which can be constructed
@@ -204,12 +204,13 @@ namespace RavlN {
     //!param: mask  - specifies which elements of P to use in X
     // Only the parameters with a mask value of 1 are presented to the optimiser.
     
-    ParametersC (SizeT nparams)
-      : RCHandleC<ParametersBodyC>(*new ParametersBodyC (nparams))
+    ParametersC (SizeT nparams,bool unlimited = false)
+      : RCHandleC<ParametersBodyC>(*new ParametersBodyC (nparams,unlimited))
     {}
     //: Constructor.
-    // This setsup nparams with defaults settings of :
+    // This setup nparams with defaults settings of :
     // minP=0 maxP=1 Steps=1 mask=0 (constP = 0)
+    // if unlimited is true parameters can be any real number, and all parameters are enabled.
     
     ParametersC (istream &in)
       : RCHandleC<ParametersBodyC>(*new ParametersBodyC (in))
@@ -218,7 +219,7 @@ namespace RavlN {
     
     inline SizeT Size() const
     { return Body().Size(); }
-    //: Get number of paramtiers in set.
+    //: Get number of parameters in set.
     
     inline void SetMask (const SArray1dC<IntT> &mask)
     { Body().SetMask (mask); }
@@ -260,19 +261,19 @@ namespace RavlN {
     
     inline void Setup(IndexC p,RealT min,RealT max,IntT steps,IntT mask = 1)
     { Body().Setup(p,min,max,steps,mask); }
-    //: Setup paramiter p.
+    //: Setup parameter p.
     
     inline void Setup(IndexC p,RealT min,RealT max,IntT steps,RealT constV,IntT mask = 1)
     { Body().Setup(p,min,max,steps,constV,mask); }
-    //: Setup paramiter p, and constant value.
+    //: Setup parameter p, and constant value.
     
     inline void Save (ostream &out) const
     { Body().Save (out); }
-    //: Writes object to stream, cna be loaded using constructor
+    //: Writes object to stream, can be loaded using constructor
     
     inline VectorC Random()
     { return Body().Random(); }
-    //: Generate a random positon in the parameter space.
+    //: Generate a random position in the parameter space.
   };
   
 }

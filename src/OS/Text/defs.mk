@@ -25,7 +25,7 @@ LOCAL_FILES = template.x template2.x test.conf
 EXAMPLES = exTemplateFile.cc exTemplateComplex.cc exConfigFile.cc
 # exText.cc 
 
-TESTEXES = testTextFile.cc
+TESTEXES = testTextFile.cc testTC.cc
 #exConfig.cc
 
 PLIB=RavlOS
@@ -39,3 +39,7 @@ EHT= Ravl.API.OS.Text_Processing.html \
      Ravl.API.OS.Configuration_Files.html
 
 HTML= 
+
+AUXDIR=share/RAVL/testData
+
+AUXFILES=testTC.tmpl testTC.inc

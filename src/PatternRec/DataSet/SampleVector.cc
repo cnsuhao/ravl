@@ -211,7 +211,7 @@ namespace RavlN {
     return ret;
   }
 
-  //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
+  //: Compute the sum of the outer products weighting each with the corresponding value from 'w'.
   // sam2 must have the same size as this sample vector.
 
   MatrixC SampleVectorC::TMul(const SampleC<VectorC> &sam2, const SampleC<RealT> &w) const {
@@ -228,8 +228,10 @@ namespace RavlN {
   }
 
   void SampleVectorC::Normalise(const MeanCovarianceC & stats) {
-    if (Size() < 2)
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
       return; // Can't normalise only 1 sample!
+    }
     UIntT d = VectorSize();
     VectorC stdDev(d);
     for (UIntT i = 0; i < d; i++) {
@@ -249,8 +251,10 @@ namespace RavlN {
   //: Undo the normalisation done by 'Normalise()'.
 
   void SampleVectorC::UndoNormalisation(const MeanCovarianceC & stats) {
-    if (Size() < 2)
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
       return; // Can't normalise only 1 sample!
+    }
     UIntT d = VectorSize();
     VectorC stdDev(d);
     for (UIntT i = 0; i < d; i++) {
@@ -265,6 +269,71 @@ namespace RavlN {
     for (SampleIterC<VectorC> it(*this); it; it++)
       *it = (*it * stdDev) + stats.Mean();
   }
+
+  //: Normalises the input vectors using given stats.
+  // In order to achieve zero mean and unity variance this function should be
+  // called with the return value from MeanCovariance. Subsequent data sets can
+  // then be normalised the same way by recording the MeanCovarianceC returned by
+  // MeanCovariance.
+  void SampleVectorC::Normalise(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool addBiasElement) const {
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
+      return; // Can't normalise only 1 sample!
+    }
+    UIntT d = VectorSize();
+    VectorC stdDev(d);
+    for (UIntT i = 0; i < d; i++) {
+      if (stats.Covariance()[i][i] > 0)
+        stdDev[i] = stats.Covariance()[i][i];
+      else
+        stdDev[i] = stats.Mean()[i];
+    }
+    for (UIntT i = 0; i < d; i++)
+      stdDev[i] = Sqrt(stdDev[i]);
+    stdDev.Reciprocal();
+
+    if(addBiasElement) {
+      VectorC bias(1);
+      bias[0] = 1;
+      for (SampleIterC<VectorC> it(*this); it; it++) {
+        VectorC input = (*it - stats.Mean()) * stdDev;
+        sampleVector.Append(bias.Join(input));
+      }
+    } else {
+      for (SampleIterC<VectorC> it(*this); it; it++)
+        sampleVector.Append((*it - stats.Mean()) * stdDev);
+    }
+  }
+
+  //: Undo the normalisation done by 'Normalise()'.
+  void SampleVectorC::UndoNormalisation(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool removeBiasElement) const {
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
+      return; // Can't normalise only 1 sample!
+    }
+    UIntT d = VectorSize();
+    VectorC stdDev(d);
+    for (UIntT i = 0; i < d; i++) {
+      if (stats.Covariance()[i][i] > 0)
+        stdDev[i] = stats.Covariance()[i][i];
+      else
+        stdDev[i] = stats.Mean()[i];
+    }
+    for (UIntT i = 0; i < d; i++)
+      stdDev[i] = Sqrt(stdDev[i]);
+
+    if(removeBiasElement) {
+      for (SampleIterC<VectorC> it(*this); it; it++) {
+        sampleVector.Append((VectorC((*it).From(1)) * stdDev) + stats.Mean());
+      }
+    } else {
+      for (SampleIterC<VectorC> it(*this); it; it++) {
+        sampleVector.Append((*it * stdDev) + stats.Mean());
+      }
+    }
+  }
+
+
 
   FuncMeanProjectionC SampleVectorC::NormalisationFunction(const MeanCovarianceC & stats) const {
 
@@ -281,11 +350,11 @@ namespace RavlN {
       stdDev[i] = Sqrt(stdDev[i]);
     stdDev.Reciprocal();
 
+    FuncMeanProjectionC func;
     MatrixC proj(d, d);
     proj.Fill(0.0);
     proj.SetDiagonal(stdDev);
-
-    FuncMeanProjectionC func(stats.Mean(), proj);
+    func = FuncMeanProjectionC(stats.Mean(), proj);
 
     return func;
 
@@ -293,7 +362,7 @@ namespace RavlN {
 
   //: Undo the normalisation done by 'Normalise()'.
 
-  FuncLinearC SampleVectorC::UndoNormalisationFunction(const MeanCovarianceC & stats) {
+  FuncLinearC SampleVectorC::UndoNormalisationFunction(const MeanCovarianceC & stats) const {
 
     UIntT d = VectorSize();
     MatrixC stdDev(d, d);

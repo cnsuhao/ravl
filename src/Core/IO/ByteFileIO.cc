@@ -8,6 +8,8 @@
 //! file="Ravl/Core/IO/ByteFileIO.cc"
 
 #include "Ravl/DP/ByteFileIO.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/StrStream.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -177,8 +179,10 @@ namespace RavlN {
   //: Get next piece of data.
   
   bool DPIByteFileBodyC::Get(ByteT &buff) {
-    if(in.IsEndOfStream())
+    if(in.IsEndOfStream()) {
+      ONDEBUG(RavlDebug("Get failed, end of stream reached. "));
       return false;
+    }
     in.read((char *)&buff,1);
     off++;
     return in.good();
@@ -188,11 +192,16 @@ namespace RavlN {
   // returns the number of elements processed.
   
   IntT DPIByteFileBodyC::GetArray(SArray1dC<ByteT> &data) {
-    if(!in.good() || data.Size() == 0)
+    ONDEBUG(RavlDebug("GetArray %u ",(unsigned) data.Size()));
+    if(!in.good() || data.Size() == 0) {
+      ONDEBUG(RavlDebug("Input stream is invalid or 0 byte read. "));
       return 0;
+    }
     in.read((char *) &data[0],data.Size());
     IntT dataRead = in.gcount();
-    off += dataRead;
+    if(dataRead > 0)
+      off += dataRead;
+    ONDEBUG(RavlDebug("Read %d bytes ",dataRead));
     return dataRead;
   }
     
@@ -207,7 +216,7 @@ namespace RavlN {
   // Currently will only seek to begining of stream.
   
   bool DPIByteFileBodyC::Seek(UIntT newOff) {
-    ONDEBUG(cerr << "DPIByteFileBodyC::Seek newOff=" << newOff << endl);
+    ONDEBUG(RavlDebug("DPIByteFileBodyC::Seek newOff=%u",newOff));
     in.is().clear(); // Clear any end of stream errors.
     in.Seek(static_cast<UIntT>(static_cast<streampos>(dataStart) + static_cast<streampos>(newOff)));
     off = newOff;
@@ -218,7 +227,7 @@ namespace RavlN {
   
   UIntT DPIByteFileBodyC::Tell() const
   {
-    ONDEBUG(cerr << "DPIByteFileBodyC::Tell off=" << off << endl);
+    ONDEBUG(RavlDebug("DPIByteFileBodyC::Tell off=%u",(unsigned) off));
     return static_cast<UIntT>(off);
   }
   
@@ -234,7 +243,7 @@ namespace RavlN {
   // Currently will only seek to begining of stream.
   
   bool DPIByteFileBodyC::Seek64(StreamPosT newOff) {
-    ONDEBUG(cerr << "DPIByteFileBodyC::Seek64 newOff=" << newOff << endl);
+    ONDEBUG(RavlDebug("DPIByteFileBodyC::Seek64 newOff=%s ",RavlN::StringOf(newOff).c_str()));
     in.is().clear(); // Clear any end of stream errors.
     in.Seek(static_cast<streamoff>(dataStart +  newOff));
     off = newOff;
@@ -245,7 +254,7 @@ namespace RavlN {
   
   StreamPosT DPIByteFileBodyC::Tell64() const 
   {
-    ONDEBUG(cerr << "DPIByteFileBodyC::Tell64 off=" << off << endl);
+    ONDEBUG(RavlDebug("DPIByteFileBodyC::Tell64 off=%s ",RavlN::StringOf( off).c_str()));
     return off;
   }
   
@@ -253,7 +262,7 @@ namespace RavlN {
   
   StreamPosT DPIByteFileBodyC::Size64() const 
   {
-    ONDEBUG(cerr << "DPIByteFileBodyC::Size64 size=" << size << endl);
+    ONDEBUG(RavlDebug("DPIByteFileBodyC::Size64 size=%s",RavlN::StringOf(size).c_str()));
     return size;
   }
 

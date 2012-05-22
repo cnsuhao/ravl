@@ -4,12 +4,12 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlIO
 
 #include "Ravl/DP/AttributeCtrlInternal.hh"
 #include "Ravl/CallMethods.hh"
 #include "Ravl/HashIter.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
   //: Default constructor.
@@ -86,20 +86,20 @@ namespace RavlN {
     AMutexLockC lock(access);
     if(parent != parentAttrCtrl) {
       if(parentAttrCtrl.IsValid())
-        cerr << "AttributeCtrlInternalC::RegisterChangedSignal, WARNING: Late remapping of attribute changed signal. \n";
+        RavlWarning("AttributeCtrlInternalC::RegisterChangedSignal, WARNING: Late remapping of attribute changed signal. ");
       RemapChangedSignals(parent);
     }
     // Do we need to map a parent changed signal into this one ?
     if((!attribTypes.IsElm(attrName) || mapSignalBack[attrName]) && !parentSignalMap.IsElm(attrName)) {
       if(!parentAttrCtrl.IsValid() && !mapSignalBack[attrName]) {
-        cerr << "AttributeCtrlInternalC::RegisterChangedSignal, Unknown attribute '" << attrName << "' (No parent) \n";
+        RavlWarning("AttributeCtrlInternalC::RegisterChangedSignal, Unknown attribute '%s' (No parent) ",attrName.c_str());
         //RavlAssert(0);
         return -1;
       }
       if(parentAttrCtrl.IsValid()) {
         IntT value = parentAttrCtrl.RegisterChangedSignal(attrName,TriggerR(*this,&AttributeCtrlInternalC::CBHandleChangeSignal,attrName));
         if(value < 0 && !mapSignalBack[attrName]) {
-          cerr << "AttributeCtrlInternalC::RegisterChangedSignal, Unknown attribute '" << attrName << "' \n";
+          RavlWarning("AttributeCtrlInternalC::RegisterChangedSignal, Unknown attribute '%s' ",attrName.c_str());
           return -1;
         }
         parentSignalMap[attrName] = value;
@@ -120,7 +120,7 @@ namespace RavlN {
     AMutexLockC lock(access);
     if(parent != parentAttrCtrl) {
       if(parentAttrCtrl.IsValid())
-        cerr << "AttributeCtrlInternalC::RemoveChangedSignal, WARNING: Late remapping of attribute changed signal. \n";
+        RavlWarning("AttributeCtrlInternalC::RemoveChangedSignal, WARNING: Late remapping of attribute changed signal. ");
       RemapChangedSignals(parent);
     }
     

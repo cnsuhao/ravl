@@ -24,10 +24,9 @@ namespace RavlN {
     : public FuncLinearCoeffBodyC
   {
   public:
-    FuncQuadraticBodyC(int inSize,int outSize)
-      : FuncLinearCoeffBodyC(inSize,outSize)
-    { noCoeffs = NumberCoeffs(inSize); }
+    FuncQuadraticBodyC(int inSize,int outSize = -1);
     //: Constructor.
+    //: Setting output size to 0 generates an output for each coefficient.
     
     FuncQuadraticBodyC(istream &strm);
     //: Load from stream.
@@ -48,14 +47,14 @@ namespace RavlN {
     //: Expand vector to linear coefficients.
     
     virtual UIntT NumberCoeffs(UIntT inputSize) const;
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
     virtual void Describe(ostream &out);
     //: Write a human readable text description of the function.
     
   protected:
     
-    UIntT noCoeffs; // Number of coefficents.
+    UIntT noCoeffs; // Number of coefficients.
   };
   
   //! userlevel=Normal
@@ -69,10 +68,11 @@ namespace RavlN {
     : public FuncLinearCoeffC
   {
   public:    
-    FuncQuadraticC(int inSize,int outSize)
+    FuncQuadraticC(int inSize,int outSize = -1)
       : FuncLinearCoeffC(*new FuncQuadraticBodyC(inSize,outSize))
     {}
     //: Constructor.
+    // Setting the number of outputs to -1 creates a function which outputs a value for each coefficient.
     
     FuncQuadraticC()
     {}

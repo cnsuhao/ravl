@@ -127,7 +127,8 @@ namespace RavlN {
   //: Body Constructor.
   StreamBaseC::StreamBaseC(ostream *ns,StringC afilename,bool nDelOnClose)
     : name(afilename.Copy()),
-      s(ns)
+      s(ns),
+      m_openFailed(false)
   {
     if(nDelOnClose)
       SetDestructionOp(CallFunc1C<ostream *&,bool>(&NukeOStream,ns));
@@ -139,8 +140,8 @@ namespace RavlN {
   //: Body Constructor.
   StreamBaseC::StreamBaseC(istream *ns,StringC afilename,bool nDelOnClose)
     : name(afilename.Copy()),
-      s(ns)
-
+      s(ns),
+      m_openFailed(false)
   {
     if(nDelOnClose)
       SetDestructionOp(CallFunc1C<istream *&,bool>(&NukeIStream,ns));
@@ -153,8 +154,6 @@ namespace RavlN {
     g_stlExceptionThrowingMask = except;
     return true;
   }
-
-
 
   //: Setup
   // This should only be called on Stream's constructed with the
