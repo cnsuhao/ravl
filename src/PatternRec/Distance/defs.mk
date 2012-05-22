@@ -17,13 +17,13 @@ HEADERS=Distance.hh DistanceEuclidean.hh DistanceMax.hh DistanceCityBlock.hh \
 SOURCES=Distance.cc DistanceEuclidean.cc DistanceMax.cc DistanceCityBlock.cc \
  DistanceMahalanobis.cc DistanceSqrEuclidean.cc DistanceRobust.cc DistanceChi2.cc
 
-LIBDEPS=RavlPatternRecDistance.def
+#LIBDEPS=RavlPatternRecDistance.def
 
 PLIB=RavlPatternRec
 
 TESTEXES=testMeasure.cc testDistanceXMLFactory.cc
 
-USESLIBS=RavlPatternRec RavlMath RavlXMLFactory RavlMathIO
+USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO RavlDataSet Optimisation
 
 EHT=Ravl.API.Pattern_Recognition.Distance.html
 

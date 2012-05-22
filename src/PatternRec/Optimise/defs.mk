@@ -26,7 +26,7 @@ MAINS =
 
 PLIB = Optimisation
 
-USESLIBS = RavlCore RavlPatternRec
+USESLIBS = RavlCore RavlDataSet
 
 EXAMPLES = testBrent.cc
 
