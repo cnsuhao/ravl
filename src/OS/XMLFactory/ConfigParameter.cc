@@ -36,7 +36,7 @@ namespace RavlN
       return false;
     }
     RavlN::ConfigParameterStringC::RefT paramStr;
-    if(!factory.UseComponent(name,paramStr)) {
+    if(!factory.UseChildComponent(name,paramStr)) {
       RavlError("Failed to setup '%s'.",name.data());
       return false;
     }

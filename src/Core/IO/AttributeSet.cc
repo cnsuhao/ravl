@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! file="Ravl/Core/IO/AttributeSet.cc"
 

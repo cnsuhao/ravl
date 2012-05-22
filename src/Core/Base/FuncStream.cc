@@ -83,7 +83,7 @@ namespace RavlN {
     //create buffer
     m_buffer = new char[bufferSize];
     if(m_buffer == NULL) {
-      throw ExceptionOperationFailedC("Cann't allocate buffer");
+      throw ExceptionOperationFailedC("Can't allocate buffer");
     }
     m_bufferSize = bufferSize;
 

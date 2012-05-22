@@ -6,7 +6,6 @@
 // file-header-ends-here
 //! author="Charles Galambos"
 //! date="26/8/2003"
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! file="Ravl/Core/IO/AttributeCtrlXML.cc"
 

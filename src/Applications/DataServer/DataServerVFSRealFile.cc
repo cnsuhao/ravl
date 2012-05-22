@@ -15,6 +15,7 @@
 #include "Ravl/DP/FileFormatDesc.hh"
 #include "Ravl/Calls.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/SysLog.hh"
 
 
 #define DODEBUG 0
@@ -36,9 +37,7 @@ namespace RavlN {
      realFilename(factory.AttributeString("realFilename","")),
      canSeek(factory.AttributeBool("canSeek",true)),
      multiWrite(factory.AttributeBool("multiWrite",false))
-  {
-
-  }
+  {}
 
   //: Constructor.
   
@@ -49,20 +48,20 @@ namespace RavlN {
       canSeek(true),
       multiWrite(false)
   {
-    ONDEBUG(std::cerr << "DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC (" << this << ") Called name=" << name << " path=" << path << "\n");
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DataServerVFSRealFileBodyC (%p) Called name=%s path=%s ",this,name.c_str(),path.c_str()));
   }
   
   //: Destructor.
   
   DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC (" << this << ")\n");
-
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::~DataServerVFSRealFileBodyC " << \
-                    "iSPortShareAbstract (" << (iSPortShareAbstract.IsValid() ? static_cast<Int64T>(iSPortShareAbstract.References()) : -1) << ") " << \
-                    "iSPortShareByte (" << (iSPortShareByte.IsValid() ? static_cast<Int64T>(iSPortShareByte.References()) : -1) << ") " << \
-                    "oPortAbstract (" << (oPortAbstract.IsValid() ? static_cast<Int64T>(oPortAbstract.References()) : -1) << ") " << \
-                    "oPortByte (" << (oPortByte.IsValid() ? static_cast<Int64T>(oPortByte.References()) : -1) << ") " << endl);
+    ONDEBUG(RavlDebug("~DataServerVFSRealFileBodyC this=%p iSPortShareAbstract=%d iSPortShareByte=%d oPortAbstract=%d oPortByte=%d ",
+        this,
+        (iSPortShareAbstract.IsValid() ? static_cast<Int64T>(iSPortShareAbstract.References()) : -1),
+        (iSPortShareByte.IsValid() ? static_cast<Int64T>(iSPortShareByte.References()) : -1),
+        (oPortAbstract.IsValid() ? static_cast<Int64T>(oPortAbstract.References()) : -1),
+        (oPortByte.IsValid() ? static_cast<Int64T>(oPortByte.References()) : -1)
+        ));
 
     CloseIFileAbstract();
     CloseIFileByte();
@@ -113,7 +112,7 @@ namespace RavlN {
   {
     if (!remainingPath.IsEmpty())
     {
-      cerr << "DataServerVFSRealFileBodyC::OpenIPort failed to open as path remaining after a valid filename." << endl;
+      RavlError("DataServerVFSRealFileBodyC::OpenIPort failed to open as path remaining after a valid filename.");
       return false;
     }
 
@@ -121,7 +120,7 @@ namespace RavlN {
 
     if (oPortAbstract.IsValid() || oPortByte.IsValid())
     {
-      cerr << "DataServerVFSRealFileBodyC::OpenIPort failed to open for reading, as already open for writing." << endl;
+      RavlError("DataServerVFSRealFileBodyC::OpenIPort failed to open for reading, as already open for writing.");
       return false;
     }
 
@@ -137,21 +136,21 @@ namespace RavlN {
       iTypeInfo = TypeInfo(RTypeInfo(useType));
       if (!iTypeInfo.IsValid())
       {
-        cerr << "DataServerVFSRealFileBodyC::OpenIPort failed to open as type '" << useType << "' unknown" << endl;
+        RavlError("DataServerVFSRealFileBodyC::OpenIPort failed to open as type '%s' unknown",useType.c_str());
         return false;
       }
     }
     RavlAssert(iTypeInfo.IsValid());
 
     // Choose the correct input port
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenIPort dataType='" << dataType << "' iTypeInfo='" << iTypeInfo.Name() << "' defaultFileFormat='" << defaultFileFormat << "'" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenIPort dataType='%s' oTypeInfo='%s' defaultFileFormat='%s'",dataType.c_str(),iTypeInfo.Name().c_str(),defaultFileFormat.c_str()));
     if (iTypeInfo.TypeInfo() == typeid(ByteT) && defaultFileFormat == "bytefile")
     {
-      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenIPort opening byte file for '" << name << "'" << endl);
+      ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenIPort opening byte file for '%s'",name.c_str()));
       return OpenFileReadByte(dataType, port);
     }
 
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenIPort opening abstract file for '" << name << "'" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenIPort opening abstract file for '%s'",name.c_str()));
     return OpenFileReadAbstract(dataType, port);
   }
   
@@ -161,7 +160,7 @@ namespace RavlN {
   {
     if (!remainingPath.IsEmpty())
     {
-      cerr << "DataServerVFSRealFileBodyC::OpenOPort failed to open as path remaining after a valid filename." << endl;
+      RavlError("DataServerVFSRealFileBodyC::OpenOPort failed to open as path remaining after a valid filename.");
       return false;
     }
     
@@ -169,7 +168,7 @@ namespace RavlN {
 
     if (iSPortShareAbstract.IsValid() || iSPortShareByte.IsValid())
     {
-      cerr << "DataServerVFSRealFileBodyC::OpenOPort failed to open for writing, as already open for reading." << endl;
+      RavlError("DataServerVFSRealFileBodyC::OpenOPort failed to open for writing, as already open for reading.");
       return false;
     }
 
@@ -185,21 +184,21 @@ namespace RavlN {
       oTypeInfo = TypeInfo(RTypeInfo(useType));
       if (!oTypeInfo.IsValid())
       {
-        cerr << "DataServerVFSRealFileBodyC::OpenOPort failed to open as type '" << useType << "' unknown" << endl;
+        RavlError("DataServerVFSRealFileBodyC::OpenOPort failed to open as type '%s' unknown",useType.c_str());
         return false;
       }
     }
     RavlAssert(oTypeInfo.IsValid());
 
     // Choose the correct output port
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenOPort dataType='" << dataType << "' oTypeInfo='" << oTypeInfo.Name() << "' defaultFileFormat='" << defaultFileFormat << "'" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenOPort dataType='%s' oTypeInfo='%s' defaultFileFormat='%s'",dataType.c_str(),oTypeInfo.Name().c_str(),defaultFileFormat.c_str()));
     if (oTypeInfo.TypeInfo() == typeid(ByteT) && defaultFileFormat == "bytefile")
     {
-      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenOPort opening byte file for '" << name << "'" << endl);
+      ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenOPort opening byte file for '%s'",name.c_str()));
       return OpenFileWriteByte(dataType, port);
     }
 
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::OpenOPort opening abstract file for '" << name << "'" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::OpenOPort opening abstract file for '%s'",name.c_str()));
     return OpenFileWriteAbstract(dataType, port);
   }
 
@@ -224,7 +223,7 @@ namespace RavlN {
   {
     if (!remainingPath.IsEmpty())
     {
-      cerr << "DataServerVFSRealFileBodyC::QueryNodeSpace failed to open as path remaining after a valid filename." << endl;
+      RavlError("DataServerVFSRealFileBodyC::QueryNodeSpace failed to open as path remaining after a valid filename.");
       return false;
     }
 
@@ -232,7 +231,7 @@ namespace RavlN {
 
     if (!realFilename.Exists() || realFilename.IsDirectory() || !realFilename.IsRegular() || !realFilename.IsReadable())
     {
-      cerr << "DataServerVFSRealFileBodyC::QueryNodeSpace cannot query file size for '" << realFilename << "'." << endl;
+      RavlError("DataServerVFSRealFileBodyC::QueryNodeSpace cannot query file size for '%s'.",realFilename.c_str());
       return false;
     }
 
@@ -309,7 +308,7 @@ namespace RavlN {
       DPSeekCtrlC seekControl;
       if (!OpenISequenceBase(iPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
       {
-        std::cerr << "DataServerBodyC::OpenFileReadByte failed to open stream '" << name << "'" << std::endl;
+        RavlError("OpenFileReadByte failed to open stream '%s' ",name.c_str());
         return false;
       }
 
@@ -319,7 +318,7 @@ namespace RavlN {
       // Setup inline cache?
       if (cacheSize > 0)
       {
-        ONDEBUG(std::cerr << "DataServerBodyC::OpenFileReadByte added cache size=" << cacheSize << std::endl);
+        ONDEBUG(RavlDebug("OpenFileReadByte added cache size=%u ",(unsigned) cacheSize));
         iSPortByte = CacheIStreamC<ByteT>(iSPortByte, cacheSize);
       }
 
@@ -378,7 +377,7 @@ namespace RavlN {
 
       if (multiWrite)
       {
-        ONDEBUG(cerr << "DataServerBodyC::OpenFileWriteAbstract adding port serialisation" << endl);
+        ONDEBUG(RavlDebug("DataServerBodyC::OpenFileWriteAbstract adding port serialisation"));
         oPortAbstract = DPOSerialisePortC<RCWrapAbstractC>(oPortAbstract);
       }
     }
@@ -386,7 +385,7 @@ namespace RavlN {
     
     if (oPortAbstract.References() > 1 && !multiWrite)
     {
-      cerr << "DataServerVFSRealFileBodyC::OpenFileWriteAbstract failed as port already open and multi-write not enabled" << endl;
+      RavlError("OpenFileWriteAbstract failed as port already open and multi-write not enabled.");
       return false;
     }
 
@@ -412,7 +411,7 @@ namespace RavlN {
   {
     if (oPortAbstract.IsValid())
     {
-      cerr << "DataServerBodyC::OpenFileWriteAbstract failed to open byte stream '" << name << "' as abstract stream already open" << endl;
+      RavlError("DataServerBodyC::OpenFileWriteAbstract failed to open byte stream '%s' as abstract stream already open",name.c_str());
       return false;
     }
 
@@ -422,7 +421,7 @@ namespace RavlN {
       DPSeekCtrlC seekControl;
       if (!OpenOSequenceBase(oPortBase, seekControl, realFilename, defaultFileFormat, typeid(ByteT), verbose))
       {
-        cerr << "DataServerBodyC::OpenFileWriteByte failed to open stream '" << name << "'" << endl;
+        RavlError("DataServerBodyC::OpenFileWriteByte failed to open stream '%s' ",name.c_str());
         return false;
       }
 
@@ -431,7 +430,7 @@ namespace RavlN {
 
       if (multiWrite)
       {
-        ONDEBUG(cerr << "DataServerBodyC::OpenFileWriteByte adding port serialisation" << endl);
+        ONDEBUG(RavlDebug("DataServerBodyC::OpenFileWriteByte adding port serialisation"));
         oPortByte = DPOSerialisePortC<ByteT>(oPortByte);
       }
     }
@@ -439,7 +438,7 @@ namespace RavlN {
 
     if (oPortByte.References() > 1 && !multiWrite)
     {
-      cerr << "DataServerVFSRealFileBodyC::OpenFileWriteByte failed as port already open and multi-write not enabled" << endl;
+      RavlError("DataServerVFSRealFileBodyC::OpenFileWriteByte failed as port already open and multi-write not enabled");
       return false;
     }
 
@@ -468,11 +467,11 @@ namespace RavlN {
 
     if (dataType != TypeName(iTypeInfo.TypeInfo()))
     {
-      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::AddTypeConversion building type converter." << endl);
+      ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::AddTypeConversion building type converter."));
       DListC<DPConverterBaseC> converterList = SystemTypeConverter().FindConversion(iPort.InputType(), RTypeInfo(dataType));
       if (converterList.IsEmpty())
       {
-        cerr << "DataServerVFSRealFileBodyC::AddTypeConversion failed to find type conversion." << endl;
+        RavlError("DataServerVFSRealFileBodyC::AddTypeConversion failed to find type conversion.");
         return false;
       }
 
@@ -491,11 +490,11 @@ namespace RavlN {
 
     if (dataType != TypeName(oTypeInfo.TypeInfo()))
     {
-      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::AddOPortTypeConversion building type converter." << endl);
+      ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::AddOPortTypeConversion building type converter."));
       DListC<DPConverterBaseC> converterList = SystemTypeConverter().FindConversion(RTypeInfo(dataType), oPort.OutputType());
       if (converterList.IsEmpty())
       {
-        cerr << "DataServerVFSRealFileBodyC::AddOPortTypeConversion failed to find type conversion." << endl;
+        RavlError("DataServerVFSRealFileBodyC::AddOPortTypeConversion failed to find type conversion.");
         return false;
       }
 
@@ -599,7 +598,7 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract refs (" << (iSPortShareAbstract.IsValid() ? iSPortShareAbstract.References() : -1) << ")" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DisconnectIPortClientAbstract refs (%d)",(iSPortShareAbstract.IsValid() ? iSPortShareAbstract.References() : -1)));
 
     return true;
   }
@@ -608,7 +607,7 @@ namespace RavlN {
 
   bool DataServerVFSRealFileBodyC::DisconnectIPortClientByte()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectIPortClientByte refs (" << (iSPortShareByte.IsValid() ? iSPortShareByte.References() : -1) << ")" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DisconnectIPortClientByte refs (%d)",(iSPortShareByte.IsValid() ? iSPortShareByte.References() : -1)));
 
     return true;
   }
@@ -646,42 +645,34 @@ namespace RavlN {
     {
       lock.Unlock();
 
-      ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DisconnectOPortClientByte(), Dropping output port. \n");
+      ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DisconnectOPortClientByte(), Dropping output port. "));
       CloseOFileByte();
     }
     
     return true;
   }
 
-
-  
   bool DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract (" << this << ")" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::ZeroIPortClientsAbstract (%p) ",this));
 
     CloseIFileAbstract();
-
     return true;
   }
-
-
 
   bool DataServerVFSRealFileBodyC::ZeroIPortClientsByte()
   {
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::ZeroIPortClientsByte (" << this << ")" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::ZeroIPortClientsByte (%p)",this));
 
     CloseIFileByte();
-
     return true;
   }
-
-
 
   bool DataServerVFSRealFileBodyC::DoDelete()
   {
     RavlAssert(deletePending);
 
-    ONDEBUG(cerr << "DataServerVFSRealFileBodyC::DoDelete deleting '" << realFilename << "'" << endl);
+    ONDEBUG(RavlDebug("DataServerVFSRealFileBodyC::DoDelete deleting '%s' ",realFilename.c_str()));
     bool deleted = realFilename.Exists() && realFilename.Remove();
 
     if (deleted && sigOnDelete.IsValid())
@@ -690,6 +681,6 @@ namespace RavlN {
     return deleted;
   }
   
-  XMLFactoryRegisterHandleC<DataServerVFSRealFileC> g_registerXMLFactoryDataServerVFSRealFile("RavlN::DataServerVFSRealFileC");
+  XMLFactoryRegisterHandleConvertC<DataServerVFSRealFileC,DataServerVFSNodeC> g_registerXMLFactoryDataServerVFSRealFile("RavlN::DataServerVFSRealFileC");
 
 }

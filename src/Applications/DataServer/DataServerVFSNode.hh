@@ -117,6 +117,10 @@ namespace RavlN {
     //: Called when a target path is deleted.
     //!param: remainingPath - The deleted target path within the node.
 
+    void SetVerbose(bool useVerbose)
+    { verbose = useVerbose; }
+    //: Set verbose flag
+
   protected:
     StringC name;
     StringC path;
@@ -247,6 +251,10 @@ namespace RavlN {
     { return Body().OnDelete(remainingPath); }
     //: Called when a target path is deleted.
     //!param: remainingPath - The deleted target path within the node.
+
+    void SetVerbose(bool useVerbose)
+    { return Body().SetVerbose(useVerbose); }
+    //: Use verbose logging.
 
   protected:
     DataServerVFSNodeC(DataServerVFSNodeBodyC &bod)

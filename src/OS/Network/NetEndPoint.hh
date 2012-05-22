@@ -422,6 +422,10 @@ namespace RavlN {
     { return useBigEndianBinStream; }
     //: True if using big endian stream in packet composition 
     
+    bool Use32BitMode() const
+    { return use32mode; }
+    //: Test if we're using 32 bit mode.
+
     void SetPacketSizeLimit(SizeT sizeLimit)
     { m_maxPacketSize = sizeLimit; }
     //: Set the maximum size of any packet that can be handled. 
@@ -823,6 +827,11 @@ namespace RavlN {
     bool UseBigEndianBinStream() const
     { return Body().UseBigEndianBinStream(); }
     //: True if using big endian stream in packet composition 
+
+    bool Use32BitMode() const
+    { return Body().Use32BitMode(); }
+    //: Test if we're using 32 bit mode.
+    // Return true if we are.
 
     void SetPacketSizeLimit(SizeT sizeLimit)
     { Body().SetPacketSizeLimit(sizeLimit); }

@@ -9,13 +9,133 @@
 //! file = "Ravl/Core/IO/FileFormatByteFile.cc"
 
 #include "Ravl/DP/FileFormatByteFile.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN
 {
+  FileFormatByteFileBodyC::FileFormatByteFileBodyC(bool deletable)
+  : FileFormatBodyC("bytefile", "Raw binary file.", deletable)
+  {}
+  //: Ctor.
+
+  FileFormatByteFileBodyC::FileFormatByteFileBodyC(const StringC& formatId, const StringC& formatDescriptor, bool deletable)
+  : FileFormatBodyC(formatId, formatDescriptor, deletable)
+  {}
+  //: Ctor with full format info.
+
   
+  const type_info& FileFormatByteFileBodyC::ProbeLoad(IStreamC& inputStream, const type_info& objType) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return typeid(void);
+
+    // Input stream must be good
+    if (!inputStream.good())
+      return typeid(void);
+
+    return typeid(ByteT);
+  }
+
+  const type_info& FileFormatByteFileBodyC::ProbeLoad(const StringC& filename, IStreamC& inputStream, const type_info& objType) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return typeid(void);
+
+    // No filename, so test input stream
+    if (filename.IsEmpty())
+      return ProbeLoad(inputStream, objType);
+
+    // Need a real filename
+    if (filename[0] == '@')
+      return typeid(void);
+
+    return typeid(ByteT);
+  }
+
+  const type_info& FileFormatByteFileBodyC::ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return typeid(void);
+
+    // Need a filename
+    if (filename.IsEmpty())
+      return typeid(void);
+
+    // Need a real filename
+    if (filename[0] == '@')
+      return typeid(void);
+
+    return typeid(ByteT);
+  }
+
+  DPIPortBaseC FileFormatByteFileBodyC::CreateInput(IStreamC& inputStream, const type_info& objType) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return DPIPortBaseC();
+
+    return DPIByteFileC(inputStream);
+  }
+  //: Create an input port for loading.
+  //!return: An invalid port if not supported.
+
+  DPOPortBaseC FileFormatByteFileBodyC::CreateOutput(OStreamC& outputStream, const type_info& objType) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return DPOPortBaseC();
+
+    return DPOByteFileC(outputStream);
+  }
+  //: Create an output port for saving.
+  //!return: An invalid port if not supported.
+
+  DPIPortBaseC FileFormatByteFileBodyC::CreateInput(const StringC& filename, const type_info& objType) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return DPIPortBaseC();
+
+    return DPIByteFileC(filename);
+  }
+  //: Create an input port for loading.
+  //!return: An invalid port if not supported.
+
+  DPOPortBaseC FileFormatByteFileBodyC::CreateOutput(const StringC& filename, const type_info& objType) const
+  {
+    // Byte only
+    if (objType != typeid(ByteT))
+      return DPOPortBaseC();
+
+    return DPOByteFileC(filename);
+  }
+  //: Create an output port for saving.
+  //!return: An invalid port if not supported.
+
+  const type_info& FileFormatByteFileBodyC::DefaultType() const
+  {
+    return typeid(ByteT);
+  }
+  //: Get preferred data type.
+
+  bool FileFormatByteFileBodyC::IsStream() const
+  {
+    return true;
+  }
+  //: Show it is a streamable format.
+
+  IntT FileFormatByteFileBodyC::Priority() const
+  {
+    return -1; // Default is 0.
+  }
+  //: Find the priority of the format. The higher the better.
+
   void InitFileFormatByteFile()
   {}
   
-  FileFormatByteFileC g_fileFormatByteFile;
+  static FileFormatByteFileC g_fileFormatByteFile;
   
 }

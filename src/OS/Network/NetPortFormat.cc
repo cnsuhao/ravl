@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlNet
 //! file="Ravl/OS/Network/NetPortFormat.cc"
 
@@ -14,5 +13,6 @@ namespace RavlN {
   void NetPortFormat_MustLink() 
   {}
   
-  static NetPortFormatC<IntT> netFormat;
+  static NetPortFormatC<IntT> g_netFormat_Int;
+  static NetPortFormatC<ByteT> g_netFormat_Byte;
 }
