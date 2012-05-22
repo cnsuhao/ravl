@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_SAMPLEVECTOR_HEADER
 #define RAVL_SAMPLEVECTOR_HEADER 1
-//! rcsid="$Id$"
 //! author="Kieron Messer"
 //! docentry="Ravl.API.Pattern Recognition.Data Set"
 //! lib=RavlPatternRec
