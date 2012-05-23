@@ -29,7 +29,6 @@ namespace RavlImageN {
     
   private:
     const ByteRGBValueC darkred, red, yellow, brown;
-    bool  verbose;
     GaussConvolve2dC<RealT> gFilter; // Gaussian filter
     EdgeDetectorC edgeDet;
     PPHoughTransformC pphtProc; // Progressive probablistic Hough transform
@@ -38,11 +37,11 @@ namespace RavlImageN {
     RealT maxSep;   // Max separation between edge pair to be ridge (pixels)
     RealT overlap;  // Min overlap of edges to be ridge (fraction of edge length)
     IntT  minLen;   // Min line length to be included (currently both PPHT and ridge finding)
+    ImageC<ByteRGBValueC> canvas;
 
   public:
-    WhiteLineDetectorBodyC(bool Verbose);
+    WhiteLineDetectorBodyC();
     //: Constructor
-    // If Verbose, lines are displayed on i/p image
 
     void SetEdgeDet(IntT blur, RealT HystLower, RealT HystUpper) {
       gFilter = GaussConvolve2dC<RealT>(blur);
@@ -69,6 +68,11 @@ namespace RavlImageN {
     SArray1dC<LinePP2dC> Apply(const ImageC<RealT> &img);
     //: Returns white lines found in <code>img</code> 
 
+    ImageC<ByteRGBValueC> Image()
+    { return canvas; }
+    //: Returns input image with lines overlaid
+    // Yellow lines are candidate edges; red lines are detected white lines
+
   };
   
   //! userlevel=Normal
@@ -79,11 +83,10 @@ namespace RavlImageN {
     : public RCHandleC<WhiteLineDetectorBodyC>
   {
   public:
-    WhiteLineDetectorC(bool Verbose) 
-      : RCHandleC<WhiteLineDetectorBodyC>(*new WhiteLineDetectorBodyC(Verbose))
+    WhiteLineDetectorC() 
+      : RCHandleC<WhiteLineDetectorBodyC>(*new WhiteLineDetectorBodyC())
     {}
     //: Constructor 
-    // If Verbose, lines are displayed on i/p image
     
     void SetEdgeDet(IntT Blur,RealT HystLower,RealT HystUpper) 
     { Body().SetEdgeDet(Blur,HystLower,HystUpper); }
@@ -116,6 +119,11 @@ namespace RavlImageN {
     { return Body().Apply(img); }
     //: Returns white lines found in <code>img</code> 
     
+    ImageC<ByteRGBValueC> Image()
+    { return Body().Image(); }
+    //: Returns input image with lines overlaid
+    // Yellow lines are candidate edges; red lines are detected white lines
+
   protected:
     WhiteLineDetectorC(WhiteLineDetectorBodyC &bod)
      : RCHandleC<WhiteLineDetectorBodyC>(bod)
