@@ -43,7 +43,7 @@ endif
 
 # Builds
 
-default: qmake fullsrc opt optshared optbin singleoptshared singleoptsharedbin pkgconf Ravl.def
+default: qmake fullsrc optshared optsharedbin singleoptsharedbin pkgconf Ravl.def
 #JFi:To Do- make doc (and support from configure i.e. locate tools)
 
 check: testsingleoptshared 
@@ -146,13 +146,15 @@ installsingleoptshared:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(datadir)/Ravl\\\"" VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 makedirs buildshared
+	$(RM) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl.so
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(INSTALL) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl.so $(ABS_DESTDIR)$(libdir)/libRavl.so
 	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 makedirs buildshared
+	$(RM) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl.so
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 # Use the 'install' function of QMake to install the Ravl utility binaries;
 # config files; data files and scripts. We must set SHARED_LIB_POSTFIX
 # (to /shared/single) in order to force QMake to use the version of the

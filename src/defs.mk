@@ -12,7 +12,7 @@ DESCRIPTION=RAVL, Recognition and Vision Library
 
 NESTED=Core.r OS.r CCMath.r Math.r PatternRec.r Audio.r \
 Image.r 3D.r Logic.r SourceTools.r GUI.r CompVision.r Contrib.r \
-Applications.r AutoTools.r
+Applications.r AutoTools.r Single.r
 
 LOCAL_FILES=
 
