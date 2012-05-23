@@ -41,13 +41,13 @@ SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 
 MAINS = doDataSet.cc
 
-PLIB = RavlPatternRec
+PLIB = RavlDataSet
 
 EXAMPLES = exSample.cc exSampleStream.cc
 
 TESTEXES=testDataSet.cc testDataSetXMLFactory.cc
 
-USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO
+USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO 
 
 PROGLIBS=RavlOS RavlPatternRecIO
 
