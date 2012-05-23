@@ -7,8 +7,6 @@
 //! lib=RavlCore
 //! file="Ravl/Core/System/TypeName.cc"
 
-//! rcsid="$Id$"
-
 #include "Ravl/TypeName.hh"
 #include "Ravl/Hash.hh"
 #include "Ravl/String.hh"
@@ -16,6 +14,7 @@
 #include "Ravl/RCWrap.hh"
 #include "Ravl/RealRange2d.hh"
 #include "Ravl/IndexRange2d.hh"
+#include "Ravl/SysLog.hh"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -125,7 +124,7 @@ namespace RavlN {
 #endif
 #ifndef __sgi__
 #if RAVL_CHECK
-    cerr << "WARNING: No standard type name for : " << name << endl;
+    RavlWarning("No standard type name for : %s ",name);
 #endif
     AddTypeName(name,name); // Register name, to prevent repeated warnings.
     return name;
@@ -168,8 +167,9 @@ namespace RavlN {
     MTWriteLockC lock;
 #if RAVL_CHECK
     if(TypeNameMapping().IsElm(sysname)) {
-      if(strcmp(TypeNameMapping()[sysname],newname) != 0)
-	IssueWarning(__FILE__,__LINE__,"Redefining TypeName '%s' from '%s' to '%s' ",sysname,TypeNameMapping()[sysname],newname);
+      if(strcmp(TypeNameMapping()[sysname],newname) != 0) {
+        RavlWarning("Redefining TypeName '%s' from '%s' to '%s' ",sysname,TypeNameMapping()[sysname],newname);
+      }
     }
 #endif
     TypeNameMapping()[sysname] = newname;
