@@ -7,7 +7,6 @@
 #ifndef RAVL_URLISTREAM_HEADER
 #define RAVL_URLISTREAM_HEADER 1
 /////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlURLIO
 //! author="James Smith"
 //! docentry="Ravl.API.Core.IO.URL Handling"
@@ -20,7 +19,6 @@
 #include "Ravl/RCHash.hh"
 
 namespace RavlN {
-
 
 
   IntT URLRetrieve(const StringC &url,SArray1dC<char> &buf);
