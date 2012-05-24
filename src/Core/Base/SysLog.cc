@@ -139,7 +139,7 @@ namespace RavlN {
       return true;
     }
 #if RAVL_OS_POSIX
-    if(syslog_StdErr && (!syslog_Open || syslog_StdErrOnly)) {
+    if((syslog_StdErr && !syslog_Open) || syslog_StdErrOnly) {
       if(priority <= localLevel) {
         std::cerr << syslog_ident;
         if(syslog_fileline) {

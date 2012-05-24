@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/testRavlBase.cc"
 //! userlevel=Develop
@@ -31,6 +30,7 @@
 #include "Ravl/Random.hh"
 #include "Ravl/UUId.hh"
 #include "Ravl/UnitTest.hh"
+#include "Ravl/SysLog.hh"
 
 using namespace RavlN;
 
@@ -43,6 +43,7 @@ public:
 };
 
 
+int testSysLog();
 int testTypes();
 int testEndian();
 int testIndex();
@@ -72,80 +73,33 @@ int main()
 #endif
   int ln;
 #if 1
-  if((ln = testTypes()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testEndian()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndex()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndex2d()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testMisc()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testRefCounter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testSubIndexRange2dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testSubIndexRange3dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndexRange2dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndexRange3dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testFPNumber()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testException()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testQInt()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndexRange2d()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testRCWrap()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testFloat16()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testQuickSort()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testTypes());
+  RAVL_RUN_TEST(testSysLog());
+  RAVL_RUN_TEST(testEndian());
+  RAVL_RUN_TEST(testIndex());
+  RAVL_RUN_TEST(testIndex2d());
+  RAVL_RUN_TEST(testMisc());
+  RAVL_RUN_TEST(testRefCounter());
+  RAVL_RUN_TEST(testSubIndexRange2dIter());
+  RAVL_RUN_TEST(testSubIndexRange3dIter());
+  RAVL_RUN_TEST(testIndexRange2dIter());
+  RAVL_RUN_TEST(testIndexRange3dIter());
+  RAVL_RUN_TEST(testFPNumber());
+  RAVL_RUN_TEST(testException());
+  RAVL_RUN_TEST(testQInt());
+  RAVL_RUN_TEST(testIndexRange2d());
+  RAVL_RUN_TEST(testIndexRange2d());
+  RAVL_RUN_TEST(testRCWrap());
+  RAVL_RUN_TEST(testFloat16());
+  RAVL_RUN_TEST(testQuickSort());
+  RAVL_RUN_TEST(testUUId());
 #endif
-  if((ln = testUUId()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  cout << "Test completed ok. \n";
+  std::cout << "Test completed ok. \n";
+  return 0;
+}
+
+int testSysLog() {
+  RavlInfo("Hello!");
   return 0;
 }
 
@@ -163,7 +117,7 @@ int testTypes()
   if(sizeof(StreamOffsetT) < 8) return __LINE__;
   if(sizeof(streampos) < 8) return __LINE__;
 #else
-  cerr << "Large file support: Disabled. \n";
+  std::cerr << "Large file support: Disabled. \n";
   if(sizeof(StreamSizeT) < 4) return __LINE__;
   if(sizeof(StreamOffsetT) < 4) return __LINE__;
 #endif
@@ -177,7 +131,7 @@ cerr << "\n doing little endian test\n" ;
   if(((char *)(&x))[0] != 0x34) return __LINE__;
   if(((char *)(&x))[1] != 0x12) return __LINE__;
 #else
-cerr << "\n doing big endian test\n" ;
+  std::cerr << "\n doing big endian test\n" ;
   if(((char *)(&x))[0] != 0x12) return __LINE__;
   if(((char *)(&x))[1] != 0x34) return __LINE__;
 #endif

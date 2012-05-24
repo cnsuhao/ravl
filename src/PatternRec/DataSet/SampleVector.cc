@@ -27,7 +27,9 @@ namespace RavlN {
   //: Construct from a sample of floats.
 
   SampleVectorC::SampleVectorC(const SampleC<TVectorC<float> > &svec, const SArray1dC<FieldInfoC> & fieldInfo)
-      : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
+      : SampleC<VectorC>(svec.Size()),
+        m_fieldInfo(fieldInfo)
+  {
     for (DArray1dIterC<TVectorC<float> > it(svec.DArray()); it; it++)
       Append(VectorC(*it));
   }
@@ -35,9 +37,11 @@ namespace RavlN {
   //: Construct a new sample set with a reduced set of features
 
   SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec,
-      const SArray1dC<IndexC> &featureSet,
-      const SArray1dC<FieldInfoC> & fieldInfo)
-      : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
+                                const SArray1dC<IndexC> &featureSet,
+                                const SArray1dC<FieldInfoC> & fieldInfo)
+      : SampleC<VectorC>(svec.Size()),
+        m_fieldInfo(fieldInfo)
+  {
     UIntT numFeatures = featureSet.Size();
     for (DArray1dIterC<VectorC> it(svec.DArray()); it; it++) {
       VectorC out(numFeatures);
@@ -49,7 +53,8 @@ namespace RavlN {
   }
 
   SampleVectorC::SampleVectorC(const MeanCovarianceC & meanCovariance)
-      : SampleC<VectorC>(Floor(meanCovariance.Number())) {
+      : SampleC<VectorC>(Floor(meanCovariance.Number()))
+  {
     // Random number generator
     RandomGaussC random;
 
