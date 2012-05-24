@@ -28,6 +28,8 @@ PLIB = Optimisation
 
 USESLIBS = RavlCore RavlDataSet
 
+PROGLIBS = RavlPatternRec
+
 EXAMPLES = testBrent.cc
 
 EHT = Optimise.html
