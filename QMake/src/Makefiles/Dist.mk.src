@@ -20,12 +20,12 @@ SOURCE_FILES=defs.mk $(MAINS) $(SCRIPTS) $(SOURCES) $(MUSTLINK) $(HEADERS) \
              $(LOCAL_FILES) $(EHT) $(HTML) $(MAN1) $(MAN3) $(MAN5) \
              $(EXTERNALLIBS)
 
-dist: $(PROJECT_OUT)/$(PROJECT_DISTDIR).tar.gz
-	$(SHOWIT)echo Dist file is $(PROJECT_OUT)/$(PROJECT_DISTDIR).tar.gz
+dist: $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz
+	$(SHOWIT)echo Dist file is $(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz
 
-$(PROJECT_OUT)/$(PROJECT_DISTDIR).tar.gz: $(PROJECT_OUT)/$(PROJECT_DISTDIR)
+$(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz: $(PROJECT_OUT)/$(PROJECT_DISTDIR)
 	$(SHOWIT)cd $(PROJECT_OUT)/$(PROJECT_DISTDIR) ; \
-	         tar -cvf - . | gzip -9 -c >$(PROJECT_OUT)/$(PROJECT_DISTDIR).tar.gz 
+	         tar -cvf - . | gzip -9 -c >$(PROJECT_OUT)/$(PROJECT_DISTDIR).tgz 
 
 $(PROJECT_OUT)/$(PROJECT_DISTDIR): remake_distdir populate_distdir
 	@
