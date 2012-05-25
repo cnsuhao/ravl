@@ -161,7 +161,7 @@ namespace RavlImageN {
   inline IntT PPHoughTransformBodyC::GetThresh(IntT votes) {
     UIntT ind = votes >> 3;
     if(ind >= threshTab.Size()) {
-      cerr << "Warning... Over spill from threshold cache..." << ind << " \n";
+      //cerr << "Warning... Over spill from threshold cache..." << ind << " \n";
       
       // Expand threshold table.
       SArray1dC<IntT> newthreshTab = SArray1dC<IntT>(ind + 500);
