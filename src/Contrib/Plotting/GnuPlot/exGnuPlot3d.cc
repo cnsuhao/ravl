@@ -1,6 +1,5 @@
 #include "Ravl/Plot/GnuPlot3d.hh"
 #include "Ravl/IO.hh"
-#include "Ravl/RLog.hh"
 #include "Ravl/Option.hh"
 #include "Ravl/RandomGauss.hh"
 
@@ -12,13 +11,8 @@ int main(int nargs, char **argv) {
 
   //: parse options
   OptionC opt(nargs, argv);
-  StringC logFile = opt.String("l", "stderr", "Log file. ");
-  StringC logLevel = opt.String("ll", "info", "Logging level. ");
-  bool verbose = opt.Boolean("v", true, "Verbose, Output context information. ");
   opt.Check();
 
-  RavlN::RLogInit(nargs, argv, logFile.chars(), verbose);
-  RavlN::RLogSubscribeL(logLevel.chars());
 
   GnuPlot3dC plot("Big Test", "apples", "bananas", "pears");
 

@@ -1,7 +1,6 @@
 #include "Ravl/Plot/GnuPlot.hh"
 #include "Ravl/Array1dIter.hh"
 #include "Ravl/OS/Date.hh"
-#include "Ravl/RLog.hh"
 #include "Ravl/IO.hh"
 //! lib=RavlPlot
 
@@ -128,7 +127,6 @@ namespace RavlGUIN {
 
         // check for empty data
         if (it.Data().IsEmpty()) {
-          rDebug("Empty data no point plotting");
           continue;
         }
 
@@ -232,7 +230,6 @@ namespace RavlGUIN {
 
       for (Array1dIterC<PlotT> it(plots); it; it++) {
         if (it.Data().IsEmpty()) {
-          rDebug("Data is empty, no point plotting!");
           continue;
         }
 
@@ -309,13 +306,11 @@ namespace RavlGUIN {
     // Do the plot
     ImageC<ByteRGBValueC> image;
     if (!Plot(pngFile)) {
-      rError("Trouble performing plot");
       return image;
     }
 
     // Load image
     if (!RavlN::Load(pngFile, image)) {
-      rError("Trouble loading image %s", pngFile.data());
       return image;
     }
 
@@ -364,13 +359,11 @@ namespace RavlGUIN {
     // Do the plot
     ImageC<ByteRGBValueC> image;
     if (!MultiPlot(pngFile)) {
-      rError("Trouble performing plot");
       return image;
     }
 
     // Load image
     if (!RavlN::Load(pngFile, image)) {
-      rError("Trouble loading image %s", pngFile.data());
       return image;
     }
 

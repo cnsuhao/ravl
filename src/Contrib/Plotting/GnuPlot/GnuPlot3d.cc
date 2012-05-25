@@ -1,6 +1,5 @@
 #include "Ravl/Plot/GnuPlot3d.hh"
 #include "Ravl/OS/Filename.hh"
-#include "Ravl/RLog.hh"
 #include "Ravl/HashIter.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
@@ -24,7 +23,6 @@ namespace RavlGUIN {
   {
 
     if (!IsElm(plotName)) {
-      rInfo("Creating new plot %s", StringOf(plotName).data());
       Insert(plotName, DListC<Point3dC>());
     }
     (*this)[plotName].InsLast(point3d);
@@ -35,12 +33,10 @@ namespace RavlGUIN {
   bool GnuPlot3dC::Plot(const StringC & outfile) const
   {
 
-    rInfo("Attempting to perform 3d plot...");
 
     // Need to copy data to data files
     RCHashC<StringC, FilenameC> dataFiles;
     for (HashIterC<StringC, DListC<Point3dC> > it(*this); it; it++) {
-      rInfo("Plotting '%s'", it.Key().data());
       FilenameC tmpData = "/tmp/" + it.Key();
       tmpData = tmpData.MkTemp(4);
       dataFiles.Insert(it.Key(), tmpData);
@@ -51,7 +47,6 @@ namespace RavlGUIN {
 
     FilenameC main("/tmp/gnu");
     main = main.MkTemp(4);
-    rDebug("Main gnu file %s", main.data());
     {
       OStreamC ofsGnu(main);
 
@@ -72,7 +67,6 @@ namespace RavlGUIN {
       for (HashIterC<StringC, FilenameC> it(dataFiles); it; it++) {
 
         if ((*this)[it.Key()].IsEmpty()) {
-          rDebug("No data, no point in plotting!");
           continue;
         }
 
@@ -96,19 +90,14 @@ namespace RavlGUIN {
 
     //: Run gnuplot
     StringC com = "gnuplot " + main;
-    rInfo("Plotting using command '%s'", com.data());
     system(com);
     Sleep(1);
 
     //: Then remove tmp files
-    if (!main.Remove()) {
-      rWarning("Trouble removing temp file %s", main.data());
-    }
+    main.Remove();
 
     for (HashIterC<StringC, FilenameC> it(dataFiles); it; it++) {
-      if (!it.Data().Remove()) {
-        rWarning("Trouble removing temp file %s", it.Data().data());
-      }
+      it.Data().Remove();
     }
 
     return true;
@@ -130,13 +119,11 @@ namespace RavlGUIN {
       // Do the plot
       ImageC<ByteRGBValueC> image;
       if (!Plot(pngFile)) {
-        rError("Trouble performing plot");
         return image;
       }
 
       // Load image
       if (!RavlN::Load(pngFile, image)) {
-        rError("Trouble loading image %s", pngFile.data());
         return image;
       }
 
