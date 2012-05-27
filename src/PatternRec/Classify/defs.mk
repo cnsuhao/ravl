@@ -25,7 +25,8 @@ HEADERS= DesignClassifierSupervised.hh  \
  DesignBayesNormalQuadratic.hh ClassifierBayesNormalQuadratic.hh \
  ClassifierNeuralNetwork.hh DesignClassifierNeuralNetwork.hh \
  Classifier2.hh ClassifierOneAgainstAll.hh DesignOneAgainstAll.hh \
- DesignClassifierLogisticRegression.hh ClassifierLogisticRegression.hh
+ DesignClassifierLogisticRegression.hh ClassifierLogisticRegression.hh \
+ ClassifierNeuralNetwork2.hh DesignClassifierNeuralNetwork2.hh
 
 SOURCES= DesignClassifierSupervised.cc \
  DesignDiscriminantFunction.cc DesignKNearestNeighbour.cc \
@@ -39,7 +40,8 @@ SOURCES= DesignClassifierSupervised.cc \
  DesignBayesNormalQuadratic.cc ClassifierBayesNormalQuadratic.cc \
  ClassifierNeuralNetwork.cc DesignClassifierNeuralNetwork.cc \
  Classifier2.cc ClassifierOneAgainstAll.cc DesignOneAgainstAll.cc \
- DesignClassifierLogisticRegression.cc ClassifierLogisticRegression.cc
+ DesignClassifierLogisticRegression.cc ClassifierLogisticRegression.cc \
+ ClassifierNeuralNetwork2.cc DesignClassifierNeuralNetwork2.cc
 
 PLIB = RavlPatternRec
 

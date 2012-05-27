@@ -51,7 +51,6 @@ namespace RavlN {
     // to 1.
 
   protected:
-    FunctionC m_featureExpand;
     FunctionC m_norm;
     MatrixC m_weights;
     bool m_prependUnit;

@@ -137,6 +137,30 @@ namespace RavlN {
     DataT Dot2(const TVectorC<DataT> & v1, const TVectorC<DataT> &v2) const;
     //: returns this * v1 + this^2 * v2
 
+    void ElemMul(const TVectorC<DataT> &v2,TVectorC<DataT> &result) const {
+      if(result.Size() != this->Size())
+        result = SArray1dC<DataT>(this->Size());
+      for(BufferAccessIter3C<DataT,DataT,DataT> it(result,*this,v2);it;it++)
+        it.Data1() = it.Data2() * it.Data3();
+    }
+    //: Return the element wise product of this vector times v2.
+
+    void ElemSum(const TVectorC<DataT> &v2,TVectorC<DataT> &result) const {
+      if(result.Size() != this->Size())
+        result = SArray1dC<DataT>(this->Size());
+      for(BufferAccessIter3C<DataT,DataT,DataT> it(result,*this,v2);it;it++)
+        it.Data1() = it.Data2() + it.Data3();
+    }
+    //: Return the element wise sum of v2 and this vector.
+
+    void ElemSubtract(const TVectorC<DataT> &v2,TVectorC<DataT> &result) const {
+      if(result.Size() != this->Size())
+        result = SArray1dC<DataT>(this->Size());
+      for(BufferAccessIter3C<DataT,DataT,DataT> it(result,*this,v2);it;it++)
+        it.Data1() = it.Data2() - it.Data3();
+    }
+    //: Return the element wise of v2 subtracted from this vector.
+
     const TVectorC<DataT> &SetSmallToBeZero(const DataT &min);
     //: Set values smaller than 'min' to zero in vector.
     

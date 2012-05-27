@@ -69,7 +69,7 @@ namespace RavlN {
     //: Constructor.
     // Fill the matrix with 'data'..
     
-    inline TMatrixC(SizeT rows,SizeT cols,SArray1dC<DataT> &data,SizeT stride = 0)
+    inline TMatrixC(SizeT rows,SizeT cols,const SArray1dC<DataT> &data,SizeT stride = 0)
       : SArray2dC<DataT>(data.Buffer(),rows,cols,&(data[0]) - data.Buffer().ReferenceElm(),stride)
     {}
     //: Convert an array into a rows by cols matrix.

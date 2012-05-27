@@ -127,7 +127,7 @@ namespace RavlN {
   bool DesignClassifierNeuralNetworkBodyC::Save(BinOStreamC &out) const {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    int version = 0;
+    int version = 1;
     out << version << m_nLayers << m_nInputs << m_nHidden << m_nOutputs;
     out << m_desiredError;
     out << m_maxEpochs;
