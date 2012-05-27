@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/Function.cc"
 
@@ -14,6 +13,7 @@
 #include "Ravl/PatternRec/Sample.hh"
 #include "Ravl/DArray1dIter2.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
 
@@ -90,7 +90,9 @@ namespace RavlN {
     MatrixC approx = NumericalJacobian(X,epsilon);
     MatrixC comp = Jacobian (X);
     MatrixC diff = approx - comp;
-    return (diff.SumOfAbs() / (RealT) diff.Size()) < tolerance;
+    RealT err = (diff.SumOfAbs() / (RealT) diff.Size());
+    RavlDebug("Jacobian error:%f ",err);
+    return err < tolerance;
   }
 
   //: Calculate numerical approximation of Jacobian matrix at X
