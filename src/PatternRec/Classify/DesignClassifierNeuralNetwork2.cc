@@ -240,6 +240,13 @@ namespace RavlN {
       }
     }
 
+    // Include regularisation term.
+    if(m_regularisation > 0) {
+      for(unsigned i = 1;i < grad.Size();i++) {
+        grad[i] -= m_regularisation * theta[i];
+      }
+    }
+
     grad /= ((RealT) m_in.Size());
 
     //ONDEBUG(RavlDebug("Grad @ %s = %s",RavlN::StringOf(theta).c_str(),RavlN::StringOf(grad).c_str()));
