@@ -32,6 +32,21 @@
 
 namespace RavlN {
 
+  //: Compute the derivative of sigmoid at z
+  inline RealT SigmoidDerivative(const RealT z)
+  {
+    RealT sig = Sigmoid(z);
+    return sig * (1-sig);
+  }
+
+  inline VectorC SigmoidDerivative(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = SigmoidDerivative(z[i]);
+    return ret;
+  }
+
+
   //! Cost function for logistic regression.
 
   class CostNeuralNetwork2C
@@ -93,8 +108,9 @@ namespace RavlN {
      ParametersC parameters(vecSize,true);
 
      VectorC startX(vecSize);
+     RealT eint = 0.12;
      for(unsigned i = 0;i < vecSize;i++)
-       startX[i] = Random1() * 2.0 - 1.0;
+       startX[i] = Random1() * 2.0 * eint - eint;
      parameters.SetConstP(startX);
      SetParameters(parameters);
      RavlAssert(parameters.StartX().Size() == vecSize);
@@ -188,6 +204,7 @@ namespace RavlN {
     Unroll(theta,w,bias);
 
     SArray1dC<VectorC> a(m_layers.Size()+1);
+    SArray1dC<VectorC> z(m_layers.Size()+1);
 
     SArray1dC<MatrixC> gw;
     SArray1dC<VectorC> gbias;
@@ -206,6 +223,7 @@ namespace RavlN {
         VectorC res;
         // FIXME:- This could be faster and avoid lots of allocations.
         res = w[i] * work + bias[i];
+        z[i+1] = res;
         work = Sigmoid(res);
         a[i+1] = work;
       }
@@ -235,7 +253,7 @@ namespace RavlN {
         }
 
         VectorC newErr;
-        w[l].TMul(err).ElemMul(a[l],newErr);
+        w[l].TMul(err).ElemMul(SigmoidDerivative(z[l]),newErr);
         err = newErr;
       }
     }
@@ -410,7 +428,7 @@ namespace RavlN {
       lastLayer = outputs;
     }
 
-    CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0);
+    CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0 );
     CostC costFunc(costnn.BodyPtr());
 
 #if 0
