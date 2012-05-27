@@ -1,11 +1,10 @@
 # This file is part of OmniSoft, Pattern recognition software
 # Copyright (C) 2003, Omniperception Ltd.
 # file-header-ends-here
-#! rcsid="$Id$"
 
 PACKAGE=Ravl
 
-ORGANISATION=Omniperception Ltd.
+ORGANISATION=OmniPerception Ltd.
 
 DESCRIPTION=Misc Stuff
 

@@ -1,10 +1,11 @@
 # This file is part of OmniSoft, Pattern recognition software 
 # Copyright (C) 2002, Omniperception Ltd.
 # file-header-ends-here
-#! rcsid="$Id$"
 #! file="Contrib/Face/Xml/defs.mk"
 
 LICENSE=Copyright
+
+REQUIRES=RLog
 
 ORGANISATION=
 

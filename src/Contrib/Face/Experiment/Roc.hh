@@ -1,14 +1,13 @@
 // This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2003, Omniperception Ltd.
 // file-header-ends-here
-#ifndef ROC_HH
-#define ROC_HH
+#ifndef RAVL_FACE_ROC_HH
+#define RAVL_FACE_ROC_HH
 ////////////////////////////////////////////////////////////////////////////
 //! author="Kieron J Messer"
 //! date="11/10/2001"
 //! lib=RavlFace
 //! docentry="Ravl.Contrib.Face"
-//! rcsid="$Id$"
 //! file="Ravl/Contrib/Face/Experiment/Roc.hh"
 
 #include "Ravl/RefCounter.hh"
