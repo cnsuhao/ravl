@@ -13,6 +13,7 @@
 #include "Ravl/PatternRec/ClassifierAverageNearestNeighbour.hh"
 #include "Ravl/PatternRec/DesignClassifierGaussianMixture.hh"
 #include "Ravl/PatternRec/DesignClassifierLogisticRegression.hh"
+#include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
 #include "Ravl/PatternRec/DesignWeakLinear.hh"
 #include "Ravl/PatternRec/DesignKMeans.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
@@ -33,6 +34,7 @@ int testAverageNearestNeighbour();
 int testDesignKMeans();
 int testDesignClassifierGaussianMixture();
 int testDesignClassifierLogisticRegression();
+int testDesignClassifierNeuralNetwork2();
 int testDesignClassifierLogisticRegressionQuadratic();
 int testDesignClassifierWeakLinear();
 int testDesignClassifierBayesNormalLinear();
@@ -51,7 +53,8 @@ int main() {
   RAVL_RUN_TEST(testDesignClassifierWeakLinear());
   RAVL_RUN_TEST(testDesignClassifierBayesNormalLinear());
   RAVL_RUN_TEST(testDesignClassifierBayesNormalQuadratic());
-  cerr << "Test passed ok. \n";
+  RAVL_RUN_TEST(testDesignClassifierNeuralNetwork2());
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
@@ -242,6 +245,27 @@ int testDesignClassifierBayesNormalLinear() {
 
 int testDesignClassifierBayesNormalQuadratic() {
   DesignBayesNormalQuadraticC lr(true);
+  ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
+  RAVL_TEST_TRUE(cv.IsValid());
+  UIntT right = 0,wrong = 0;
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = cv.Classify(it.Data1());
+    VectorC conf = cv.Confidence(it.Data1());
+    //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  //RavlDebug("Right=%u Wrong=%u ",right,wrong);
+  RAVL_TEST_TRUE(right == dataset.Size());
+  return 0;
+}
+
+
+int testDesignClassifierNeuralNetwork2() {
+  DesignClassifierNeuralNetwork2C lr(3,4);
   ClassifierC cv = lr.Apply(dataset.Sample1(),dataset.Sample2());
   RAVL_TEST_TRUE(cv.IsValid());
   UIntT right = 0,wrong = 0;

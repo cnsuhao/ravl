@@ -26,6 +26,12 @@ namespace RavlN {
     SYSLOG_DEBUG
   };
   
+  std::ostream &operator<<(std::ostream &strm,SysLogPriorityT priority);
+  //: Write log level to stream
+
+  std::istream &operator>>(std::istream &strm,SysLogPriorityT &priority);
+  //: Read log level from stream
+
   bool SysLogOpen(const StringC &name,bool logPid = false,bool sendStdErr = true,bool stdErrOnly = false,int facility = -1,bool logFileLine = false);
   //: Open connection to system logger.
   // Facility is set to 'LOG_USER' by default. <br>

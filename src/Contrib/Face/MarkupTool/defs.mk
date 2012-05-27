@@ -1,5 +1,5 @@
 # This file is part of OmniSoft,
-# Copyright (C) 2003, University of Surrey
+# Copyright (C) 2003, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -10,8 +10,9 @@
 #    * PLIB Name of library to create.
 #    * USESLIBS Libraries needed to compile source code.
 #    * NESTED Subdirectories to compile.
-#! rcsid="$Id$"
 #! file="OmniSoft/Applications/WhoFIT/defs.mk"
+
+REQUIRES=RLog
 
 PACKAGENAME = RavlFace
 

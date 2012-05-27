@@ -64,7 +64,12 @@ namespace RavlN {
       : TMatrixC<RealT>(rows,cols,data)
     {}      
     //: Convert an array into a rows by cols matrix.
-    
+
+    MatrixC(SizeT rows,SizeT cols,const SArray1dC<RealT> &data)
+      : TMatrixC<RealT>(rows,cols,data)
+    {}
+    //: Convert an array into a rows by cols matrix.
+
     MatrixC(const TMatrixC<RealT> &oth)
       : TMatrixC<RealT>(oth)
     {}

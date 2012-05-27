@@ -6,13 +6,16 @@
 
 LICENSE=Copyright
 
-ORGANISATION=
+REQUIRES=RLog
+
+ORGANISATION=OmniPerception Ltd
 
 PACKAGENAME=RavlFace
 
 DESCRIPTION=Specification of face data sets using XML
 
 PACKAGE = 	Ravl/Face
+
 
 MAINS=		readFaceXml.cc \
 			copyFaceXml.cc \

@@ -46,7 +46,7 @@ namespace RavlN {
       //: the output labels must run from 0 to nOutputs-1.
 
       virtual ClassifierC Apply(const SampleC<VectorC> &in, const SampleC<UIntT> &out, const SampleC<RealT> &weight);
-      //: Create a clasifier with weights for the samples.
+      //: Create a classifier with weights for the samples.
 
 
 

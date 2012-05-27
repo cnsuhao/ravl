@@ -5,7 +5,6 @@
 //! author="Kieron J Messer"
 //! lib=OmniFaceXml
 //! date="11/10/101"
-//! rcsid="$Id$"
 //! file="OmniSoft/Biometrics/TestHarness/Roc.cc"
 
 #include "Ravl/Face/Roc.hh"
