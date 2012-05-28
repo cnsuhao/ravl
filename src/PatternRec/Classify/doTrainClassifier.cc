@@ -39,7 +39,7 @@ int main(int nargs, char **argv) {
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
   DListC<StringC>features = opts.List("features", "Use only these features");
   StringC NormaliseSample = opts.String("normalise", "mean", "Normalise sample (mean, none, scale)");
-  FilenameC classifierOutFile = opts.String("o", "classifier.strm", "Save classifier to this file.");
+  FilenameC classifierOutFile = opts.String("o", "classifier.abs", "Save classifier to this file.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
 
