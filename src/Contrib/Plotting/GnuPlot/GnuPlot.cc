@@ -37,7 +37,7 @@ namespace RavlGUIN {
 
   void GnuPlotC::AddPoint(IntT i, const Point2dC &pt)
   {
-    if (i > n) {
+    if (i > n - 1) {
       RavlIssueError("adding point to not numbered plot\n");
     }
     plots[i].InsLast(pt);
@@ -45,7 +45,7 @@ namespace RavlGUIN {
 
   void GnuPlotC::AddPoint(IntT i, RealT x, RealT y)
   {
-    if (i > n) {
+    if (i > n - 1) {
       RavlIssueError("adding point to not numbered plot\n");
     }
     Point2dC pt(x, y);
@@ -54,7 +54,7 @@ namespace RavlGUIN {
 
   bool GnuPlotC::AddLegendTitle(IntT i, const StringC & legendTitle)
   {
-    if (i > m_legendTitles.Size()) {
+    if (i > m_legendTitles.Size() - 1) {
       return false;
     }
     m_legendTitles[i] = legendTitle;
@@ -176,21 +176,23 @@ namespace RavlGUIN {
     }
 
     // Sort out how to display plots
-    UIntT rows = 1;
-    UIntT cols = 1;
-
-    if (plots.Size() == 2) {
+    UIntT rows = 3;
+    UIntT cols = 3;
+    if(plots.Size() == 1) {
+      rows = 1;
+      cols = 1;
+    }
+    else if (plots.Size() == 2) {
+      rows = 1;
       cols = 2;
     } else if (plots.Size() == 3) {
+      rows = 1;
       cols = 3;
     } else if (plots.Size() == 4) {
       rows = 2;
       cols = 2;
     } else if (plots.Size() == 5 || plots.Size() == 6) {
       rows = 2;
-      cols = 3;
-    } else {
-      rows = 3;
       cols = 3;
     }
 
@@ -261,7 +263,6 @@ namespace RavlGUIN {
 
     //: Run gnuplot
     StringC com = "gnuplot " + tmpGnu;
-    cerr << com << endl;
     system(com);
     Sleep(1.0); // give it time to run...
 
@@ -278,7 +279,7 @@ namespace RavlGUIN {
     for (Array1dIterC<PlotT> it(plots); it; it++) {
       FilenameC tmpData = names[it.Index()];
       if (!tmpData.Remove())
-      return false;
+        return false;
     }
 
     //: return success
@@ -375,6 +376,25 @@ namespace RavlGUIN {
 
     return image;
   }
+
+  // Plot a RAVL function
+  bool PlotFunction(const FunctionC & function, RealT min, RealT max, RealT step)
+  {
+    GnuPlotC plot(function.OutputSize());
+    std::cerr << function.OutputSize() << std::endl;
+    for(RealT x=min;x<=max;x+=step) {
+      VectorC xvec(function.InputSize());
+      xvec.Fill(x);
+      VectorC y=function.Apply(xvec);
+      for(SArray1dIterC<RealT>it(y);it;it++) {
+        Point2dC pt(x, *it);
+        plot.AddPoint(it.Index().V(), pt);
+      }
+    }
+    plot.MultiPlot();
+    return true;
+  }
+
   ostream &
   operator<<(ostream & s, const GnuPlotC & out)
   {

@@ -26,6 +26,7 @@
 #include "Ravl/Vector2d.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/PatternRec/Function.hh"
 
 // --------------------------------------------------------------------------
 // **********  GnuPlotC  **************************************************
@@ -169,6 +170,9 @@ namespace RavlGUIN {
     //: Store the yrange
 
   };
+
+  // Plot a RAVL function
+  bool PlotFunction(const FunctionC & function, RealT min, RealT max, RealT step);
 
 }
 
