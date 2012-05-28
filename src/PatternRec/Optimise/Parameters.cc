@@ -73,8 +73,8 @@ namespace RavlN {
       _maxP.Fill(1);
       _mask.Fill(0);
     } else {
-      _minP.Fill(-100000);
-      _maxP.Fill(100000);
+      _minP.Fill(-RavlConstN::maxReal);
+      _maxP.Fill(RavlConstN::maxReal);
       _mask.Fill(1);
     }
     _steps.Fill(1);

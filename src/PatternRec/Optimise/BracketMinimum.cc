@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/BracketMinimum.cc"
 
@@ -33,9 +32,16 @@ namespace RavlN {
     RealT steps = static_cast<RealT>(cost.Steps ()[0]);;
     if(steps < 2)
       steps = 2;
+
+#if 0
     x1 = cost.MaxX ()[0] / steps;
+#else
+    x1 = x0 + 0.5;
+    if(x1 > (cost.MaxX()[0]/ steps))
+      x1 = (cost.MaxX()[0]/ steps);
+#endif
     
-    ONDEBUG(cerr << "BracketMinimum. Start: Min=" << x0 << " Max=" << x1 << "\n");
+    ONDEBUG(RavlDebug("BracketMinimum. Start: Min=%f Max=%f ",x0,x1));
     
     VectorC vcx(1);
     RealT &x2 = vcx[0];
@@ -52,7 +58,7 @@ namespace RavlN {
     }
     
     x2 = x1 + gold * (x1 - x0);
-    ONDEBUG(cerr << "X2=" << x2 << "\n");
+    ONDEBUG(RavlDebug("X2=%f",x2));
     
     RealT fx2 = cost.Cost(vcx); // Find cost at center
     
@@ -69,7 +75,7 @@ namespace RavlN {
         if (fxn < fx2) {
           x0 = x1;
           x1 = xn;
-          ONDEBUG(cerr << "BracketMinimum. Done: Min=" << x0 << " Max=" << x2 << "\n");
+          ONDEBUG(RavlDebug("BracketMinimum. Done: Min=%f Max=%f ",x0,x2));
           parameters.Setup(0, x0, x2, 1, x1);
           cost.SetParameters(parameters);
           return;
@@ -77,7 +83,7 @@ namespace RavlN {
         else
           if (fxn > fx1) {
             x2 = xn;
-            ONDEBUG(cerr << "BracketMinimum. Done: Min=" << x0 << " Max=" << x2 << "\n");
+            ONDEBUG(RavlDebug("BracketMinimum. Done: Min=%f Max=%f ",x0,x2));
             parameters.Setup(0, x0, x2, 1, x1); // Start, Min, Max, Steps
             cost.SetParameters(parameters);
             return;
@@ -105,7 +111,11 @@ namespace RavlN {
       x0 = x1; x1 = x2; x2 = xn;
       fx0 = fx1; fx1 = fx2; fx2 = fxn;
     }
-    ONDEBUG(cerr << "BracketMinimum. Done: No change. \n");
+#if 1
+    ONDEBUG(RavlDebug("BracketMinimum. Done: Min=%f Max=%f ",x0,x2));
+    parameters.Setup(0, x0, x2, 1, x1); // Start, Min, Max, Steps
+    cost.SetParameters(parameters);
+#endif
   }
   
 }

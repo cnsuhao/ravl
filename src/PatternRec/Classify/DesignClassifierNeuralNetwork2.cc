@@ -289,7 +289,7 @@ namespace RavlN {
       m_doNormalisation(true)
   {
     if(!m_optimiser.IsValid()) {
-      m_optimiser = OptimiseConjugateGradientC(1000);
+      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
@@ -308,7 +308,7 @@ namespace RavlN {
       //m_featureExpand = FuncOrthPolynomialC(2);
     }
     if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
-      m_optimiser = OptimiseConjugateGradientC(1000);
+      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
