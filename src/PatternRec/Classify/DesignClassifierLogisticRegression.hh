@@ -66,6 +66,7 @@ namespace RavlN {
     OptimiseC m_optimiser;
     RealT m_regularisation;
     bool m_prependUnit;
+    bool m_doNormalisation; //!< do normalisation ?
   };
   
   //! userlevel=Normal

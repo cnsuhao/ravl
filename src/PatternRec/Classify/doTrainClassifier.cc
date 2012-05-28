@@ -21,6 +21,8 @@
 
 using namespace RavlN;
 
+#define USE_EXCEPTIONS 0
+
 // Simple program which performs leave one out
 
 int main(int nargs, char **argv) {
@@ -43,7 +45,9 @@ int main(int nargs, char **argv) {
 
   SysLogOpen("doTrainClassifier");
 
+#if USE_EXCEPTIONS
   try {
+#endif
     XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
     XMLFactoryContextC context(*mainFactory);
 
@@ -132,9 +136,11 @@ int main(int nargs, char **argv) {
       return 1;
     }
 
+#if USE_EXCEPTIONS
   } catch (const RavlN::ExceptionC &exc) {
     SysLog(SYSLOG_ERR, "Exception:%s", exc.Text());
   } catch (...) {
     SysLog(SYSLOG_ERR, "Unknown exception");
   }
+#endif
 }

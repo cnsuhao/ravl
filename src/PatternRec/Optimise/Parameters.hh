@@ -99,18 +99,16 @@ namespace RavlN {
       return m_stepsP;
     }
     //: Number of steps in each parameter for optimisation
-    
-    const MatrixC &TransP2X () const {
-      if(m_cacheDirty) UpdateCache();
-      return m_transP2X;      
-    }
+
+    VectorC TransP2X (const VectorC &inVec) const;
     //: Transformation between P and X
-    
-    const MatrixC &TransX2P () const {
-      if(m_cacheDirty) UpdateCache();
-      return m_transX2P;
-    }
+
+    VectorC TransX2P (const VectorC &inVec) const;
     //: Transformation between X and P
+
+    MatrixC TransP2X (const MatrixC &inMat) const;
+    //: Transformation between P and X
+    // Equivelent of inMat * TransX2P ()
     
     const VectorC &ConstP () const {
       if(m_cacheDirty) UpdateCache();
@@ -145,11 +143,11 @@ namespace RavlN {
 
     void UpdateCache() const;
     
+    mutable unsigned m_sizeX;
     mutable bool m_cacheDirty;
+    mutable SArray1dC<unsigned> m_maskMap;
     mutable VectorC m_minX;
     mutable VectorC m_maxX;
-    mutable MatrixC m_transP2X;
-    mutable MatrixC m_transX2P;
     mutable VectorC m_constP;
     mutable VectorC m_startX;
     mutable SArray1dC<IntT> m_stepsP;
@@ -240,17 +238,7 @@ namespace RavlN {
     inline const SArray1dC<IntT> &Steps () const
     { return Body().Steps (); }
     //: Number of steps to use for each dimension
-    
-    inline const MatrixC &TransP2X () const
-    { return Body().TransP2X (); }
-    //: Matrix for converting P to X
-    
-    inline const MatrixC &TransX2P () const
-    { return Body().TransX2P (); }
-    //: Matrix for converting X to P.
-    // Note that const P elements will be 0 and must add the vector ConstP
-    // below for proper estimate of P.
-    
+
     inline const VectorC &ConstP () const
     { return Body().ConstP(); }
     //: Vector containing constant P elements and 0s
@@ -258,7 +246,20 @@ namespace RavlN {
     inline const VectorC &StartX () const
     { return Body().StartX (); }
     //: Starting vector for X which is subset of value specified in SetConstP.
-    
+
+    VectorC TransP2X (const VectorC &inVec) const
+    { return Body().TransP2X(inVec); }
+    //: Transformation between P and X
+
+    VectorC TransX2P (const VectorC &inVec) const
+    { return Body().TransX2P(inVec); }
+    //: Transformation between X and P
+
+    MatrixC TransP2X (const MatrixC &inVec) const
+    { return Body().TransP2X(inVec); }
+    //: Transformation between P and X
+    // Equivelent of inMat * TransX2P ()
+
     inline void Setup(IndexC p,RealT min,RealT max,IntT steps,IntT mask = 1)
     { Body().Setup(p,min,max,steps,mask); }
     //: Setup parameter p.

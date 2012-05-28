@@ -61,6 +61,7 @@ namespace RavlN {
     UIntT m_maxEpochs;
     UIntT m_displayEpochs;
     RealT m_regularisation;
+    bool m_doNormalisation; //!< No normalisation.
   };
 
   //! userlevel=Normal

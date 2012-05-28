@@ -31,6 +31,14 @@ namespace RavlN {
       m_prependUnit(prependUnit)
   {}
   
+  //: Create classifier from some weights.
+
+  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(const MatrixC &weights,bool prependUnit)
+   : ClassifierBodyC(weights.Rows() == 1 ? (unsigned) 2 : (unsigned) weights.Rows().V()),
+     m_weights(weights),
+     m_prependUnit(prependUnit)
+  {}
+
   //: Load from stream.
   
   ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &strm)

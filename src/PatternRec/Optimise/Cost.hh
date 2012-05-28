@@ -14,7 +14,6 @@
 //! example=testCost.cc
 //! file="Ravl/PatternRec/Optimise/Cost.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation.Cost Functions"
-//! rcsid="$Id$"
 
 #include "Ravl/PatternRec/Function1.hh"
 #include "Ravl/PatternRec/Parameters.hh"
@@ -51,7 +50,8 @@ namespace RavlN {
     
     CostBodyC (istream &in);
     //: Contructs from stream with derived class name
-    
+
+#if 0
     const MatrixC &TransP2X () const
     { return _parameters.TransP2X (); }
     //: Convert variable parameters to X vector
@@ -59,6 +59,7 @@ namespace RavlN {
     const MatrixC &TransX2P () const
     { return _parameters.TransX2P (); }
     //: Convert X vector to variable parameters
+#endif
     
     const VectorC &ConstP () const
     { return _parameters.ConstP (); }
@@ -90,11 +91,16 @@ namespace RavlN {
     //: Returns the initial point for X as non-const part of constP
     
     VectorC ConvertX2P (const VectorC &X) const
-    { return _parameters.TransX2P()*X + _parameters.ConstP(); }
+    { return _parameters.TransX2P(X); }
     //: Expands X to P using TransX2P * X + Const P
 
+    MatrixC ConvertP2X (const MatrixC &inMat) const
+    { return _parameters.TransP2X(inMat); }
+    //: Transformation between X and P
+    // Equivelent of inMat * TransX2P ()
+
     void ConvertX2P (const VectorC &X,VectorC &out) const
-    { out = _parameters.TransX2P()*X + _parameters.ConstP(); }
+    { out = _parameters.TransX2P(X); }
     //: Expands X to P using TransX2P * X + Const P
     
     const SArray1dC<IntT> &Steps () const
@@ -115,7 +121,7 @@ namespace RavlN {
     virtual bool Save (ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
-  private:
+  protected:
     ParametersC _parameters;
     
     virtual VectorC Apply(const VectorC &data) const;
@@ -202,7 +208,12 @@ namespace RavlN {
     inline VectorC ConvertX2P (const VectorC &X) const
     { return Body().ConvertX2P (X); }
     //: Converts an X vector to a full P vector
-    
+
+    MatrixC ConvertP2X (const MatrixC &inMat) const
+    { return Body().ConvertP2X(inMat); }
+    //: Transformation between X and P
+    // Equivelent of inMat * TransX2P ()
+
     inline VectorC ClipX (const VectorC &X) const
     { return Body().ClipX (X); }
     //: Returns the input vector clipped by the parameter range

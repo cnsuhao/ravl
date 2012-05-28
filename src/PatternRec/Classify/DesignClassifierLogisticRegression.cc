@@ -149,7 +149,8 @@ namespace RavlN {
    : m_featureExpand(featureExpand),
      m_optimiser(optimiser),
      m_regularisation(regularisation),
-     m_prependUnit(prependUnit)
+     m_prependUnit(prependUnit),
+     m_doNormalisation(true)
   {
     if(!m_optimiser.IsValid()) {
       m_optimiser = OptimiseConjugateGradientC(1000);
@@ -162,7 +163,8 @@ namespace RavlN {
   DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(const XMLFactoryContextC & factory)
     : DesignClassifierSupervisedBodyC(factory),
       m_regularisation(factory.AttributeReal("regularisation",0)),
-      m_prependUnit(factory.AttributeBool("prependUnit",true))
+      m_prependUnit(factory.AttributeBool("prependUnit",true)),
+      m_doNormalisation(factory.AttributeReal("doNormalisation", true))
   {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
@@ -182,7 +184,7 @@ namespace RavlN {
     strm >> version;
     if(version != 0)
       throw ExceptionOutOfRangeC("DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(istream &), Unrecognised version number in stream. ");
-    //strm >> k >> distanceMetric >> useAverageKNN;
+    RavlAssertMsg(0,"not supported");
   }
   
   //: Load from binary stream.
@@ -192,9 +194,9 @@ namespace RavlN {
   {
     int version;
     strm >> version;
-    if(version != 0)
+    if(version != 1)
       throw ExceptionOutOfRangeC("DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(BinIStreamC &), Unrecognised version number in stream. ");
-   strm >> m_optimiser;
+    strm >> m_featureExpand >> m_optimiser >> m_regularisation >> m_prependUnit >> m_doNormalisation;
   }
   
   //: Writes object to stream, can be loaded using constructor
@@ -202,6 +204,7 @@ namespace RavlN {
   bool DesignClassifierLogisticRegressionBodyC::Save (ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
+    RavlAssertMsg(0,"not supported");
     int version = 0;
     out << ' ' << version;
     return true;
@@ -212,8 +215,8 @@ namespace RavlN {
   bool DesignClassifierLogisticRegressionBodyC::Save (BinOStreamC &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    int version = 0;
-    out << version << m_optimiser;
+    ByteT version = 1;
+    out << version << m_featureExpand << m_optimiser << m_regularisation << m_prependUnit << m_doNormalisation;
     return true;
   }
   
@@ -224,6 +227,12 @@ namespace RavlN {
     RavlAssertMsg(in.Size() == out.Size(),"DesignClassifierLogisticRegressionBodyC::Apply(), Sample of vector and labels should be the same size.");
     ONDEBUG(RavlDebug("Designing logistic regression classifier."));
 
+    if(m_featureExpand.IsValid() && !m_doNormalisation) {
+      RavlError("Normalisation required if using a feature expander. ");
+      RavlAssert(0);
+      return ClassifierC();
+    }
+
     SampleVectorC inVec(in);
 
     // Need to expand features ?
@@ -232,15 +241,23 @@ namespace RavlN {
       inVec = m_featureExpand.Apply(in);
     }
 
-    MeanCovarianceC meanCov = inVec.MeanCovariance();
-    SampleVectorC normVec(in.Size());
-
+    MeanCovarianceC meanCov;
+    SampleVectorC normVec;
     SampleLabelC labels(out);
 
-    inVec.Normalise(meanCov,normVec,true);
+    if(m_doNormalisation) {
+      meanCov = inVec.MeanCovariance();
+      normVec = SampleVectorC(in.Size());
+      inVec.Normalise(meanCov,normVec,true);
+    } else {
+      normVec = in;
+    }
+
     unsigned features = normVec.VectorSize();
+
     VectorC theta(features);
     theta.Fill(0);
+
 
     unsigned maxLabel = labels.MaxValue() ;
     ONDEBUG(RavlDebug("Features:%u Labels:%u",features,maxLabel));
@@ -258,13 +275,16 @@ namespace RavlN {
       weights.SetRow(i,result);
     }
 
-    FunctionC normFunc = inVec.NormalisationFunction(meanCov);
+    if(m_doNormalisation) {
+      FunctionC normFunc = inVec.NormalisationFunction(meanCov);
 
-    if(m_featureExpand.IsValid()) {
-      normFunc = FunctionCascadeC(m_featureExpand,normFunc);
+      if(m_featureExpand.IsValid()) {
+        normFunc = FunctionCascadeC(m_featureExpand,normFunc);
+      }
+      return ClassifierLogisticRegressionC(normFunc,weights,true);
     }
 
-    return ClassifierLogisticRegressionC(normFunc,weights,true);
+    return ClassifierLogisticRegressionC(weights,true);
   }
   
   //: Create a classifier with weights for the samples.

@@ -90,9 +90,12 @@ namespace RavlN {
     : ClassifierBodyC(layers[layers.Size()-1]->NumOutputs()),
       m_norm(norm),
       m_layers(layers)
-  {
+  {}
 
-  }
+  ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(const SArray1dC<NeuralNetworkLayerC::RefT> &layers)
+    : ClassifierBodyC(layers[layers.Size()-1]->NumOutputs()),
+      m_layers(layers)
+  {}
 
   //: Load from stream.
 
@@ -151,7 +154,11 @@ namespace RavlN {
   // it is the label is correct.
 
   VectorC ClassifierNeuralNetwork2BodyC::Apply(const VectorC &data) const {
-    VectorC work = m_norm.Apply(data);
+    VectorC work;
+    if(m_norm.IsValid())
+      work = m_norm.Apply(data);
+    else
+      work = data;
     for(unsigned i = 0;i < m_layers.Size();i++) {
       VectorC res;
       // FIXME:- This could be faster and avoid lots of allocations.

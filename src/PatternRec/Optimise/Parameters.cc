@@ -97,7 +97,51 @@ namespace RavlN {
   
   ParametersBodyC & ParametersBodyC::Copy () const
   { return *(new ParametersBodyC (*this)); }
-  
+
+  //: Transformation between P and X
+  VectorC ParametersBodyC::TransP2X (const VectorC &P) const {
+    if(m_cacheDirty) UpdateCache();
+    VectorC ret(m_maskMap.Size());
+    for(unsigned i = 0 ;i < m_maskMap.Size();i++)
+      ret[i] = P[m_maskMap[i]];
+    return ret;
+    //return m_transP2X * P;
+  }
+
+  //: Transformation between X and P
+  VectorC ParametersBodyC::TransX2P (const VectorC &X) const {
+    if(m_cacheDirty) UpdateCache();
+    // Check if its the an identiy matrix.
+    if(m_sizeX == _mask.Size())
+      return X;
+    VectorC ret = _constP.Copy();
+    for(unsigned i = 0 ;i < m_maskMap.Size();i++)
+      ret[m_maskMap[i]] = X[i];
+    return ret;
+  }
+
+  //: Transformation between P and X
+  // Equivelent of inMat * TransX2P ()
+  // TransX2P.Rows() = P.Size() Full parameter set. _mask.Size()
+  // TransX2P.Cols() = X.Size() Optimise set. m_sizeX
+
+  MatrixC ParametersBodyC::TransP2X (const MatrixC &inMat) const {
+    if(m_cacheDirty) UpdateCache();
+    //return inMat * m_transX2P;
+    // RavlAssert(inMat.Cols() == m_transX2P.Rows());
+    RavlAssert(inMat.Cols() == _mask.Size());
+    // Check if its the an identiy matrix.
+    if(m_sizeX == _mask.Size())
+      return inMat;
+    // Else pick out the columns required.
+    MatrixC ret(inMat.Rows(), m_sizeX);
+    for(unsigned i = 0;i < m_sizeX;i++) {
+      ret.SetColumn(i,const_cast<MatrixC &>(inMat).SliceColumn(m_maskMap[i]));
+    }
+    return ret;
+  }
+
+
   void ParametersBodyC::SetMask (const SArray1dC<IntT> &mask)
   {
     if (mask.Size() != _mask.Size()) {
@@ -115,17 +159,17 @@ namespace RavlN {
   }
   
   void ParametersBodyC::UpdateCache() const {
-    UIntT maskSum = _mask.Sum();
-    if(m_stepsP.Size() != maskSum)
-      m_stepsP = SArray1dC<IntT>(maskSum);
-    
-    if(m_transP2X.Rows() != maskSum || m_transX2P.Cols() != _mask.Size())
-      m_transP2X = MatrixC(maskSum,_mask.Size());
-    m_transP2X.Fill (0);
-    
-    if(m_transX2P.Rows() != _mask.Size() || m_transX2P.Cols() != maskSum)
-        m_transX2P = MatrixC(_mask.Size(),maskSum);
-    m_transX2P.Fill (0);
+    m_sizeX = _mask.Sum();
+    m_maskMap = SArray1dC<unsigned>(m_sizeX);
+    unsigned at = 0;
+    for(unsigned i = 0 ;i < _mask.Size();i++) {
+      if(_mask[i] > 0)
+        m_maskMap[at++] = i;
+    }
+    RavlAssert(m_maskMap.Size() == at);
+
+    if(m_stepsP.Size() != m_sizeX)
+      m_stepsP = SArray1dC<IntT>(m_sizeX);
     
     if(m_constP.Size() != _mask.Size())
       m_constP = VectorC(_mask.Size());
@@ -134,21 +178,20 @@ namespace RavlN {
     IndexC counter = 0;
     for (SArray1dIterC<IntT> it (_mask); it; it++) {
       if (*it == 1) {
-        m_transX2P[it.Index()][counter] = 1;      
-        m_transP2X[counter][it.Index()] = 1;
         m_stepsP[counter] = _steps[it.Index()];
         counter++;
       } else {
         m_constP[it.Index()] = _constP[it.Index()];
       }
     }
-    RavlAssert(counter == maskSum);
-    
-    m_minX = m_transP2X * _minP;
-    m_maxX = m_transP2X * _maxP;
-    m_startX = m_transP2X * _constP;
+    RavlAssert(counter == m_sizeX);
     
     m_cacheDirty = false;
+
+    m_minX = TransP2X(_minP);
+    m_maxX = TransP2X(_maxP);
+    m_startX = TransP2X(_constP);
+    
   }
   
   

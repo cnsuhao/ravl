@@ -4,10 +4,10 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#include "Ravl/PatternRec/CostFunction.hh"
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/CostFunction.cc"
+
+#include "Ravl/PatternRec/CostFunction.hh"
 
 namespace RavlN {
 
@@ -33,19 +33,21 @@ namespace RavlN {
   
   RealT CostFunctionBodyC::Cost (const VectorC &X) const
   {
-    VectorC P = TransX2P() * X + ConstP ();
+    VectorC P = _parameters.TransX2P(X);
     VectorC diff = _function.Apply (P) - _Yd;
     return _metric.Magnitude (diff);
   }
   
   MatrixC CostFunctionBodyC::Jacobian (const VectorC &X) const
   {
-    VectorC P = TransX2P() * X + ConstP ();
+    VectorC P = _parameters.TransX2P(X);
     VectorC diff = _function.Apply (P) - _Yd;
     MatrixC dSdY = _metric.Jacobian (diff);
     MatrixC dYdP = _function.Jacobian (P);
-    MatrixC dPdX = TransX2P();
-    return dSdY*dYdP*dPdX;
+    // This was:
+    //MatrixC dPdX = TransX2P();
+    //return dSdY*dYdP*dPdX;
+    return _parameters.TransP2X(dSdY*dYdP);
   }
   
   bool CostFunctionBodyC::Save (ostream &out) const

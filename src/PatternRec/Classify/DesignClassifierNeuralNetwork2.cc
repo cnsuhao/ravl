@@ -105,6 +105,7 @@ namespace RavlN {
       m_verbose(verbose)
    {
      size_t vecSize = NumParameters();
+     ONDEBUG(RavlDebug("Paramaters:%s ",RavlN::StringOf(vecSize).c_str()));
      ParametersC parameters(vecSize,true);
 
      VectorC startX(vecSize);
@@ -284,7 +285,8 @@ namespace RavlN {
       m_desiredError(desiredError),
       m_maxEpochs(maxEpochs),
       m_displayEpochs(displayEpochs),
-      m_regularisation(0)
+      m_regularisation(0),
+      m_doNormalisation(true)
   {
     if(!m_optimiser.IsValid()) {
       m_optimiser = OptimiseConjugateGradientC(1000);
@@ -299,7 +301,8 @@ namespace RavlN {
         m_desiredError(factory.AttributeReal("desiredError", 0.0001)),
         m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
         m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
-        m_regularisation(factory.AttributeReal("regularisation", 0.0))
+        m_regularisation(factory.AttributeReal("regularisation", 0.0)),
+        m_doNormalisation(factory.AttributeReal("doNormalisation", true))
   {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
@@ -344,6 +347,7 @@ namespace RavlN {
     strm >> m_maxEpochs;
     strm >> m_displayEpochs;
     strm >> m_regularisation;
+    strm >> m_doNormalisation;
   }
 
   //: Writes object to stream, can be loaded using constructor
@@ -354,13 +358,14 @@ namespace RavlN {
       return false;
     int version = 1;
     out << version << endl;
-    out << m_featureExpand << endl;
-    out << m_nLayers << endl;
-    out << m_nHidden << endl;
-    out << m_desiredError << endl;
-    out << m_maxEpochs << endl;
-    out << m_displayEpochs << endl;
-    out << m_regularisation << endl;
+    out << m_featureExpand << std::endl;
+    out << m_nLayers << std::endl;
+    out << m_nHidden << std::endl;
+    out << m_desiredError << std::endl;
+    out << m_maxEpochs << std::endl;
+    out << m_displayEpochs << std::endl;
+    out << m_regularisation << std::endl;
+    out << m_doNormalisation << std::endl;
     return true;
   }
 
@@ -379,6 +384,7 @@ namespace RavlN {
     out << m_maxEpochs;
     out << m_displayEpochs;
     out << m_regularisation;
+    out << m_doNormalisation;
     return true;
   }
 
@@ -388,6 +394,12 @@ namespace RavlN {
   {
     RavlAssertMsg(in.Size() == out.Size(),
         "DesignClassifierNeuralNetwork2BodyC::Apply(), Sample of vector and labels should be the same size.");
+
+    if(m_featureExpand.IsValid() && !m_doNormalisation) {
+      RavlError("Normalisation required if using a feature expander. ");
+      RavlAssert(0);
+      return ClassifierC();
+    }
 
     //size_t nInputs = in.First().Size();
 
@@ -406,10 +418,16 @@ namespace RavlN {
       inVec = m_featureExpand.Apply(in);
     }
 
-    MeanCovarianceC meanCov = inVec.MeanCovariance();
-    SampleVectorC normVec(in.Size());
+    MeanCovarianceC meanCov;
+    SampleVectorC normVec;
+    if(m_doNormalisation) {
+      meanCov = inVec.MeanCovariance();
+      normVec = SampleVectorC(in.Size());
+      inVec.Normalise(meanCov,normVec,false);
+    } else {
+      normVec = inVec;
+    }
 
-    inVec.Normalise(meanCov,normVec,false);
     unsigned features = normVec.VectorSize();
 
     // Assemble the network.
@@ -430,6 +448,7 @@ namespace RavlN {
 
     CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0 );
     CostC costFunc(costnn.BodyPtr());
+
 
 #if 0
     // Check we're computing the gradient correctly.
@@ -456,13 +475,16 @@ namespace RavlN {
       layers[i]->SetBias(bias[i]);
     }
 
-    FunctionC normFunc = inVec.NormalisationFunction(meanCov);
+    if(m_doNormalisation) {
+      FunctionC normFunc = inVec.NormalisationFunction(meanCov);
 
-    if(m_featureExpand.IsValid()) {
-      normFunc = FunctionCascadeC(m_featureExpand,normFunc);
+      if(m_featureExpand.IsValid()) {
+        normFunc = FunctionCascadeC(m_featureExpand,normFunc);
+      }
+      return ClassifierNeuralNetwork2C(normFunc,layers);
     }
 
-    return ClassifierNeuralNetwork2C(normFunc,layers);
+    return ClassifierNeuralNetwork2C(layers);
   }
 
 

@@ -221,6 +221,35 @@ namespace RavlN {
     //: Set the values in the row i to those in 'val'.
     // 'val' must have a size equal to the number of columns
 
+    void SetColumn(IndexC i,const Slice1dC<DataT> &val) {
+      RavlAssert(val.Size() == Size1());
+      for(unsigned j = 0;j < Size1();j++)
+        (*this)[j][i] = val[j];
+    }
+    //: Set the values in the column i to those in 'val'.
+    // 'val' must have a size equal to the number of rows.
+
+    void SetRow(IndexC i,const Slice1dC<DataT> &val) {
+      RavlAssert(val.Size() == Size2());
+      for(unsigned j = 0;j < Size2();j++)
+        (*this)[i][j] = val[j];
+    }
+    //: Set the values in the row i to those in 'val'.
+    // 'val' must have a size equal to the number of columns
+
+    void SetColumn(IndexC i,const DataT &val) {
+      RavlAssert(val.Size() == Size1());
+      for(unsigned j = 0;j < Size1();j++)
+        (*this)[j][i] = val;
+    }
+    //: Set the values in the column i to 'val'.
+
+    void SetRow(IndexC i,const DataT &val) {
+      for(unsigned j = 0;j < Size2();j++)
+        (*this)[i][j] = val;
+    }
+    //: Set the values in the row i to  'val'.
+
     void SetSubArray(const Index2dC &origin,const SArray2dC<DataT> &vals);
     //: Set sub array of this one.
     // The origin of 'vals' will be places at 'origin' of this array.

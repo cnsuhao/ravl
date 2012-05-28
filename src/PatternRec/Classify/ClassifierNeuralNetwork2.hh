@@ -89,6 +89,9 @@ namespace RavlN {
     ClassifierNeuralNetwork2BodyC(const FunctionC &norm,const SArray1dC<NeuralNetworkLayerC::RefT> &layers);
     //: Create classifier
 
+    ClassifierNeuralNetwork2BodyC(const SArray1dC<NeuralNetworkLayerC::RefT> &layers);
+    //: Create classifier
+
     ClassifierNeuralNetwork2BodyC(istream &strm);
     //: Load from stream.
 
@@ -133,6 +136,11 @@ namespace RavlN {
 
     ClassifierNeuralNetwork2C(const FunctionC &norm,const SArray1dC<NeuralNetworkLayerC::RefT> &layers)
       : ClassifierC(*new ClassifierNeuralNetwork2BodyC(norm,layers))
+    {}
+    //: Create classifier from a set of layers
+
+    ClassifierNeuralNetwork2C(const SArray1dC<NeuralNetworkLayerC::RefT> &layers)
+      : ClassifierC(*new ClassifierNeuralNetwork2BodyC(layers))
     {}
     //: Create classifier from a set of layers
 

@@ -7,7 +7,6 @@
 #ifndef RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER
 #define RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER 1
 ///////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Classifier"
 //! lib=RavlPatternRec
@@ -27,7 +26,10 @@ namespace RavlN {
   public:
     ClassifierLogisticRegressionBodyC(const FunctionC &normFunc,const MatrixC &weights,bool prependUnit);
     //: Create classifier from a normalisation function and some weights.
-    
+
+    ClassifierLogisticRegressionBodyC(const MatrixC &weights,bool prependUnit);
+    //: Create classifier from some weights.
+
     ClassifierLogisticRegressionBodyC(istream &strm);
     //: Load from stream.
     
@@ -72,7 +74,12 @@ namespace RavlN {
       : ClassifierC(*new ClassifierLogisticRegressionBodyC(normFunc,weights,prependUnit))
     {}
     //: Create classifier from a normalisation function and some weights.
-    
+
+    ClassifierLogisticRegressionC(const MatrixC &weights,bool prependUnit)
+      : ClassifierC(*new ClassifierLogisticRegressionBodyC(weights,prependUnit))
+    {}
+    //: Create classifier from a normalisation function and some weights.
+
     ClassifierLogisticRegressionC(istream &strm);
     //: Load from stream.
     
