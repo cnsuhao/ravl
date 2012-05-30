@@ -54,7 +54,7 @@ int main() {
   RAVL_RUN_TEST(testDesignClassifierBayesNormalLinear());
   RAVL_RUN_TEST(testDesignClassifierBayesNormalQuadratic());
   RAVL_RUN_TEST(testDesignClassifierNeuralNetwork2());
-  std::cerr << "Test passed ok. \n";
+  RavlInfo("Test passed ok. ");
   return 0;
 }
 

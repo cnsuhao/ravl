@@ -195,7 +195,7 @@ namespace RavlN {
 
   VectorC CostNeuralNetwork2C::Jacobian1(const VectorC &theta) const
   {
-    ONDEBUG(RavlDebug("Theta %s",RavlN::StringOf(theta).c_str()));
+    ONDEBUG(RavlDebug("Reg %f Theta %s ",m_regularisation,RavlN::StringOf(theta).c_str()));
     VectorC grad(theta.Size());
     grad.Fill(0);
 
@@ -206,6 +206,7 @@ namespace RavlN {
 
     SArray1dC<VectorC> a(m_layers.Size()+1);
     SArray1dC<VectorC> z(m_layers.Size()+1);
+    SArray1dC<VectorC> eps(m_layers.Size()+1);
 
     SArray1dC<MatrixC> gw;
     SArray1dC<VectorC> gbias;
@@ -220,6 +221,7 @@ namespace RavlN {
     {
       // Go forward.
       VectorC work = it.Data1();
+      a[0] = work;
       for(unsigned i = 0;i < m_layers.Size();i++) {
         VectorC res;
         // FIXME:- This could be faster and avoid lots of allocations.
@@ -240,29 +242,32 @@ namespace RavlN {
           err[j] = work[j];
         }
       }
-      for(unsigned l = m_layers.Size() -1;l > 0;l--) {
-        MatrixC &dw = gw[l];
-        VectorC &db = gbias[l];
-        //RavlDebug("Error size:%u   dw:%u %u db:%u la:%u ",(unsigned) err.Size(),(unsigned) dw.Rows().V(),(unsigned) dw.Cols().V(),(unsigned) db.Size().V(),(unsigned) a[l].Size().V());
+      eps[m_layers.Size()] = err;
 
-        const VectorC &la = a[l];
-        for(unsigned i = 0;i < dw.Rows();i++) {
-          for(unsigned j = 0;j < dw.Cols();j++) {
-            dw[i][j] += la[j] * err[i];
-          }
-          db[i] += err[i];
-        }
-
+      for(int l = m_layers.Size() -1;l > 0;l--) {
+        //RavlDebug("Back prop err.");
         VectorC newErr;
         w[l].TMul(err).ElemMul(SigmoidDerivative(z[l]),newErr);
         err = newErr;
+        eps[l] = err;
+      }
+
+      for(int l = m_layers.Size() -1;l >= 0;l--) {
+        MatrixC &dw = gw[l];
+        VectorC &db = gbias[l];
+        //RavlDebug("Error layer %d size:%u   dw:%u %u db:%u la:%u ",l,(unsigned) err.Size(),(unsigned) dw.Rows().V(),(unsigned) dw.Cols().V(),(unsigned) db.Size().V(),(unsigned) a[l].Size().V());
+
+        const VectorC &la = a[l];
+        const VectorC &err = eps[l+1];
+        dw.AddOuterProduct(err,la);
+        db += err;
       }
     }
 
     // Include regularisation term.
     if(m_regularisation > 0) {
       for(unsigned i = 1;i < grad.Size();i++) {
-        grad[i] -= m_regularisation * theta[i];
+        grad[i] += m_regularisation * theta[i];
       }
     }
 

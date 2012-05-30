@@ -123,17 +123,18 @@ namespace RavlN {
       for(unsigned i = 0;i < grad.Size();i++)
         grad[i] += it.Data1()[i] * num;
     }
+    //J = sum(-y .* log( sigmoid(X * theta) ) - (1 -y) .* log(1 - sigmoid(X * theta)))/ m + theta(2:size(theta))' * theta(2:size(theta)) * (lambda/(2 * m));
+
     // Include regularisation term.
     if(m_regularisation > 0) {
       for(unsigned i = 1;i < grad.Size();i++) {
-        grad[i] -= m_regularisation * theta[i];
+        grad[i] += m_regularisation * theta[i];
       }
     }
     //grad = (1 / m) * X' * (sigmoid(X * theta) - y) ;
-    grad /= ((RealT) m_in.Size());
+    grad = grad / ((RealT) m_in.Size());
 
-
-    //ONDEBUG(RavlDebug("Grad @ %s = %s",RavlN::StringOf(theta).c_str(),RavlN::StringOf(grad).c_str()));
+    ONDEBUG(RavlDebug("Grad @ %s = %s (%f) ",RavlN::StringOf(theta).c_str(),RavlN::StringOf(grad).c_str(),m_regularisation));
     return grad;
   }
 

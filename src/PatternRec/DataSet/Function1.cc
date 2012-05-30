@@ -77,7 +77,8 @@ namespace RavlN {
   }
 
   MatrixC Function1BodyC::Jacobian(const VectorC &X) const {
-    return MatrixC(1,X.Size(),X);
+    VectorC g = Jacobian1(X);
+    return MatrixC((UIntT) 1,(UIntT)g.Size().V(),static_cast<SArray1dC<RealT> &>(g));
   }
   //: Compute the jacobian using jacobian1
 

@@ -309,7 +309,7 @@ namespace RavlN {
     return ClassifierNeuralNetworkC(m_nLayers, m_nInputs, m_nHidden, m_nOutputs, nn);
   }
 
-//: Create a clasifier with weights for the samples.
+//: Create a classifier with weights for the samples.
 
   ClassifierC DesignClassifierNeuralNetworkBodyC::Apply(const SampleC<VectorC> &in,
       const SampleC<UIntT> &out,

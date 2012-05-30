@@ -138,6 +138,7 @@ namespace RavlN {
     //: returns this * v1 + this^2 * v2
 
     void ElemMul(const TVectorC<DataT> &v2,TVectorC<DataT> &result) const {
+      RavlAssert(v2.Size() == this->Size());
       if(result.Size() != this->Size())
         result = SArray1dC<DataT>(this->Size());
       for(BufferAccessIter3C<DataT,DataT,DataT> it(result,*this,v2);it;it++)
@@ -146,6 +147,7 @@ namespace RavlN {
     //: Return the element wise product of this vector times v2.
 
     void ElemSum(const TVectorC<DataT> &v2,TVectorC<DataT> &result) const {
+      RavlAssert(v2.Size() == this->Size());
       if(result.Size() != this->Size())
         result = SArray1dC<DataT>(this->Size());
       for(BufferAccessIter3C<DataT,DataT,DataT> it(result,*this,v2);it;it++)
@@ -154,6 +156,7 @@ namespace RavlN {
     //: Return the element wise sum of v2 and this vector.
 
     void ElemSubtract(const TVectorC<DataT> &v2,TVectorC<DataT> &result) const {
+      RavlAssert(v2.Size() == this->Size());
       if(result.Size() != this->Size())
         result = SArray1dC<DataT>(this->Size());
       for(BufferAccessIter3C<DataT,DataT,DataT> it(result,*this,v2);it;it++)
