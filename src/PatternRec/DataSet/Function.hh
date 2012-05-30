@@ -183,7 +183,7 @@ namespace RavlN {
     { return Body().Apply(X); }
     //: Evaluate Y=f(X)
     
-    bool CheckJacobian(const VectorC &X,RealT tolerance = 1e-4,RealT epsilon = 1e-6) const
+    bool CheckJacobian(const VectorC &X,RealT tolerance = 1e-4,RealT epsilon = 1e-4) const
     { return Body().CheckJacobian(X,tolerance,epsilon); }
     //: Compare the numerical and computed jacobians at X, return true if the match.
     // Useful for debugging!

@@ -76,7 +76,13 @@ namespace RavlN {
     return Apply1(tmp);
   }
 
+  MatrixC Function1BodyC::Jacobian(const VectorC &X) const {
+    return MatrixC(1,X.Size(),X);
+  }
+  //: Compute the jacobian using jacobian1
+
   VectorC Function1BodyC::Jacobian1(const VectorC &X) const {
+    RavlAssert(0); // Should be overridden.
     return Jacobian(X).SliceRow(0);
   }
 

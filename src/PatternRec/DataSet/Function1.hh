@@ -35,7 +35,10 @@ namespace RavlN {
     
     Function1BodyC(BinIStreamC &strm);
     //: Load from binary stream.
-    
+
+    virtual MatrixC Jacobian(const VectorC &X) const;
+    //: Compute the jacobian using jacobian1
+
     virtual VectorC Jacobian1(const VectorC &X) const;
     //: Calculate Jacobian at X for single valued function
     // The default implementation performs numerical estimation of the Jacobian using differences. This

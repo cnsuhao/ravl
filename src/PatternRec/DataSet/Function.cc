@@ -91,7 +91,9 @@ namespace RavlN {
     MatrixC comp = Jacobian (X);
     MatrixC diff = approx - comp;
     RealT err = (diff.SumOfAbs() / (RealT) diff.Size());
-    RavlDebug("Jacobian error:%f ",err);
+    RavlDebug("Jacobian error:%e ",err);
+    RavlDebug("Jacobian   approx:%s ",RavlN::StringOf(approx).c_str());
+    RavlDebug("Jacobian computed:%s ",RavlN::StringOf(comp).c_str());
     return err < tolerance;
   }
 
@@ -99,6 +101,7 @@ namespace RavlN {
 
   MatrixC FunctionBodyC::NumericalJacobian(const VectorC &X,RealT epsilon) const
   {
+    RavlDebug("Num Jacobian. eps:%f ",epsilon);
     RavlAssert(X.Size() == inputSize);
     MatrixC J (outputSize,inputSize);
     VectorC dX (inputSize);
