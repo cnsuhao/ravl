@@ -22,7 +22,7 @@ namespace RavlN {
 
   //! Layer in neural network.
   class NeuralNetworkLayerC
-   : public RCBodyVC
+   : public RCBodyC
   {
   public:
     //: Constructor

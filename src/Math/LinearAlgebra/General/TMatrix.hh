@@ -9,7 +9,6 @@
 ///////////////////////////////////////////////////////////
 //! userlevel=Normal
 //! docentry="Ravl.API.Math.Linear Algebra"
-//! rcsid="$Id$"
 //! file="Ravl/Math/LinearAlgebra/General/TMatrix.hh"
 //! author="Charles Galambos"
 //! date="10/09/1998"
@@ -612,7 +611,24 @@ namespace RavlN {
   { result = vec * mat + add; }
   //: Compute result = vec * mat + add;
   // For compatibility with the fixed length vectors.
-  
+
+  template<class DataT>
+  void MulAdd(const TMatrixC<DataT> &mat,const TVectorC<DataT> &vec,const TVectorC<DataT> &add,TVectorC<DataT> &result)
+  {
+    //result = vec * mat + add;
+    RavlAssert(mat.Rows() == add.Size());
+    RavlAssert(mat.Cols() == vec.Size());
+    if(result.Size() != add.Size())
+      result = TVectorC<DataT>(add.Size());
+    for(unsigned i = 0;i < mat.Rows();i++) {
+      result[i] = add[i] + mat[i][0]*vec[0];
+      for(unsigned j = 1;j < mat.Cols();j++)
+        result[i] += mat[i][j]*vec[j];
+    }
+  }
+  //: Compute result = mat * vec + add;
+  // For compatibility with the fixed length vectors.
+
   template<class DataT>
   void Mul(const TVectorC<DataT> &vec,const TMatrixC<DataT> &mat,TVectorC<DataT> &out) 
   { out = vec * mat; }

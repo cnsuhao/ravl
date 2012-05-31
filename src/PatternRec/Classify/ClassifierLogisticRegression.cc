@@ -49,7 +49,11 @@ namespace RavlN {
     if(version != 1)
       throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &), Unrecognised version number in stream. ");
 
-    strm >> m_norm >> m_weights >> m_prependUnit;
+    bool haveNorm = false;
+    strm >> haveNorm;
+    if(haveNorm)
+      strm >> m_norm;
+    strm >> m_weights >> m_prependUnit;
   }
   
   //: Load from binary stream.
@@ -61,7 +65,11 @@ namespace RavlN {
     strm >> version;
     if(version != 1)
       throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(BinIStreamC &), Unrecognised version number in stream. ");
-    strm >> m_norm >> m_weights >> m_prependUnit;
+    bool haveNorm = false;
+    strm >> haveNorm;
+    if(haveNorm)
+      strm >> m_norm;
+    strm >> m_weights >> m_prependUnit;
   }
   
   //: Writes object to stream, can be loaded using constructor
@@ -70,7 +78,11 @@ namespace RavlN {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;
-    out << ' ' << version << ' ' << m_norm << m_weights;
+    out << ' ' << version << ' ';
+    out << m_norm.IsValid() << ' ';
+    if(m_norm.IsValid())
+      out << m_norm << ' ';
+    out << m_weights;
     return true;
   }
   
@@ -80,7 +92,11 @@ namespace RavlN {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;
-    out << version << m_norm << m_weights << m_prependUnit;
+    out << version;
+    out << m_norm.IsValid();
+    if(m_norm.IsValid())
+      out << m_norm;
+    out << m_weights << m_prependUnit;
     return true;    
   }
   

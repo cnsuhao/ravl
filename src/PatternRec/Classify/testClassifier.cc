@@ -281,5 +281,23 @@ int testDesignClassifierNeuralNetwork2() {
   }
   //RavlDebug("Right=%u Wrong=%u ",right,wrong);
   RAVL_TEST_TRUE(right == dataset.Size());
+  ClassifierC cvrl;
+  if(!TestBinStreamIO(cv,cvrl))
+    return __LINE__;
+  right = 0;
+  wrong = 0;
+  // Check the reloaded one still works.
+  for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
+    UIntT label = cvrl.Classify(it.Data1());
+    VectorC conf = cvrl.Confidence(it.Data1());
+    //RavlDebug(" %u -> %s ",label,RavlN::StringOf(conf).c_str());
+    if(label == it.Data2()) {
+      right ++;
+    } else {
+      wrong ++;
+    }
+  }
+  RAVL_TEST_TRUE(right == dataset.Size());
+
   return 0;
 }

@@ -44,7 +44,7 @@ namespace RavlN {
 
   //: Constructor from binary stream
   NeuralNetworkLayerC::NeuralNetworkLayerC(BinIStreamC &strm)
-   : RCBodyVC(strm)
+   //: RCBodyC(strm)
   {
     ByteT version = 0;
     strm >> version;
@@ -55,7 +55,7 @@ namespace RavlN {
 
   //: Constructor from text stream
   NeuralNetworkLayerC::NeuralNetworkLayerC(std::istream &strm)
-  : RCBodyVC(strm)
+  //: RCBodyC(strm)
   {
     IntT version = 0;
     strm >> version;
@@ -67,20 +67,21 @@ namespace RavlN {
   //! Have to binary stream
   bool NeuralNetworkLayerC::Save(BinOStreamC &strm) const
   {
-    RCBodyVC::Save(strm);
+    //RCBodyC::Save(strm);
     ByteT version =1;
-    strm << version << m_weights;
+    strm << version << m_weights << m_bias;
     return true;
   }
 
   //! Have to text stream
   bool NeuralNetworkLayerC::Save(std::ostream &strm) const
   {
-    RCBodyVC::Save(strm);
+    //RCBodyC::Save(strm);
     IntT version = 0;
     strm << version << " " << m_weights;
     return true;
   }
+
 
   // ----------------------------------------------------------------------
 
@@ -106,7 +107,9 @@ namespace RavlN {
     strm >> version;
     if(version != 1)
       throw ExceptionUnexpectedVersionInStreamC("ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(istream &), Unrecognised version number in stream. ");
-    strm >> m_norm >> m_layers;
+
+    strm >> m_norm;
+    strm >> m_layers;
   }
 
   //: Load from binary stream.
@@ -114,11 +117,15 @@ namespace RavlN {
   ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(BinIStreamC &strm)
     : ClassifierBodyC(strm)
   {
-    IntT version;
+    ByteT version;
     strm >> version;
     if(version != 1)
       throw ExceptionUnexpectedVersionInStreamC("ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(BinIStreamC &), Unrecognised version number in stream. ");
-    strm >> m_norm >> m_layers;
+    bool haveNorm = false;
+    strm >> haveNorm;
+    if(haveNorm)
+      strm >> m_norm;
+    strm >> m_layers;
   }
 
   //: Writes object to stream, can be loaded using constructor
@@ -139,7 +146,10 @@ namespace RavlN {
       return false;
     ByteT version = 1;
     out << version;
-    out << m_norm << m_layers;
+    out << m_norm.IsValid();
+    if(m_norm.IsValid())
+      out << m_norm;
+    out << m_layers;
     return true;
   }
 
@@ -159,10 +169,11 @@ namespace RavlN {
       work = m_norm.Apply(data);
     else
       work = data;
+    VectorC res;
     for(unsigned i = 0;i < m_layers.Size();i++) {
-      VectorC res;
+      //res = m_layers[i]->Weights() * work + m_layers[i]->Bias();
+      RavlN::MulAdd(m_layers[i]->Weights(),work,m_layers[i]->Bias(),res);
       // FIXME:- This could be faster and avoid lots of allocations.
-      res = m_layers[i]->Weights() * work + m_layers[i]->Bias();
       work = Sigmoid(res);
     }
     return work;

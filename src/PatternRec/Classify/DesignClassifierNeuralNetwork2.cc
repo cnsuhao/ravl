@@ -32,6 +32,13 @@
 
 namespace RavlN {
 
+  void Sigmoid(const VectorC &z,VectorC &ret) {
+    if(ret.Size() != z.Size())
+      ret = VectorC(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Sigmoid(z[i]);
+  }
+
   //: Compute the derivative of sigmoid at z
   inline RealT SigmoidDerivative(const RealT z)
   {
@@ -151,15 +158,18 @@ namespace RavlN {
     //  Row - Outputs
     //  Col - input weight.
 
+    SArray1dC<VectorC> a(m_layers.Size()+1); // Stop vectors from being repeatedly allocated.
+
     for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_in,m_out);it;it++)
     {
       // Go forward.
       VectorC work = it.Data1();
       for(unsigned i = 0;i < m_layers.Size();i++) {
-        VectorC res;
-        // FIXME:- This could be faster and avoid lots of allocations.
-        res = w[i] * work + bias[i];
-        work = Sigmoid(res);
+        VectorC &res = a[i+1];
+        //res = w[i] * work + bias[i];
+        RavlN::MulAdd(w[i],work,bias[i],res);
+        SigmoidIP(res);
+        work = res;
       }
 
       //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
@@ -225,10 +235,10 @@ namespace RavlN {
       for(unsigned i = 0;i < m_layers.Size();i++) {
         VectorC res;
         // FIXME:- This could be faster and avoid lots of allocations.
-        res = w[i] * work + bias[i];
-        z[i+1] = res;
-        work = Sigmoid(res);
-        a[i+1] = work;
+        //res = w[i] * work + bias[i];
+        RavlN::MulAdd(w[i],work,bias[i],z[i+1]);
+        Sigmoid(z[i+1],a[i+1]);
+        work = a[i+1];
       }
 
       // Work backward through the network.
@@ -247,6 +257,7 @@ namespace RavlN {
       for(int l = m_layers.Size() -1;l > 0;l--) {
         //RavlDebug("Back prop err.");
         VectorC newErr;
+        // FIXME:- Could be faster.
         w[l].TMul(err).ElemMul(SigmoidDerivative(z[l]),newErr);
         err = newErr;
         eps[l] = err;
