@@ -137,6 +137,7 @@ namespace RavlN {
                                  bool restrictToXMLTree,
                                  bool verbose)
   {
+    m_usedAttributes += name;
     if(FindChild(name,child)) {
       RavlAssert(child.IsValid());
       return true;
