@@ -9,7 +9,6 @@
 /////////////////////////////////////////////////////
 //! userlevel=Normal
 //! docentry="Ravl.API.Core.Arrays.2D"
-//! rcsid="$Id$"
 //! file="Ravl/Core/Container/SArray/SArray2d.hh"
 //! lib=RavlCore
 //! author="Charles Galambos"
