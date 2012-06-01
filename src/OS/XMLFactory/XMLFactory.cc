@@ -568,7 +568,7 @@ namespace RavlN {
       m_configRoot.Dump(std::cerr);
     }
     m_checkConfig = m_configTree.AttributeBool("checkConfig",false);
-    RavlSysLogf(SYSLOG_DEBUG,"Enabled check config:%d ",(int) m_checkConfig);
+    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Enabled check config:%d ",(int) m_checkConfig));
   }
   
   //! Read config file.

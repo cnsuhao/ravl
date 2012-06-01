@@ -243,6 +243,16 @@ namespace RavlN {
     //: Access generic attribute.
     // Return true if non default value has been specified.
     
+    bool HasAttribute(const StringC &name) const
+    {
+      if(XMLNode().HasAttribute(name)) {
+        UseAttribute(name);
+        return true;
+      }
+      return false;
+    }
+    //: Test if attribute is set.
+
     const RavlN::HSetC<RavlN::StringC> &UseAttributes() const
     { return m_usedAttributes; }
     //: Access set of used attributes.
@@ -397,7 +407,11 @@ namespace RavlN {
     { return INode().Attribute(name,value,defaultValue); }
     //: Access generic attribute.
     // Return true if non default value has been specified.
-    
+
+    bool HasAttribute(const StringC &name) const
+    { return INode().HasAttribute(name); }
+    //: Is a named attribute set ?
+
     XMLFactoryC &Factory() const;
     //: Access handle to associated factory.
 

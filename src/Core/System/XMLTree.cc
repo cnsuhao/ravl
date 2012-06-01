@@ -705,6 +705,9 @@ namespace RavlN {
   }
   //: Access attribute.
 
+  bool XMLTreeBodyC::HasAttribute(const StringC &name) const
+  { return Data().Lookup(name) != 0; }
+  //: Test if attribute is set.
   
   static TypeNameC type0(typeid(XMLTreeC),"RavlN::XMLTreeC");
   
