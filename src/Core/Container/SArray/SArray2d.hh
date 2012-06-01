@@ -238,7 +238,6 @@ namespace RavlN {
     // 'val' must have a size equal to the number of columns
 
     void SetColumn(IndexC i,const DataT &val) {
-      RavlAssert(val.Size() == Size1());
       for(unsigned j = 0;j < Size1();j++)
         (*this)[j][i] = val;
     }
