@@ -1,5 +1,4 @@
 /////////////////////////////////////////////
-//! rcsid="$Id$"
 
 #include "Ravl/SArray3d.hh"
 #include "Ravl/SArray3dIter2.hh"

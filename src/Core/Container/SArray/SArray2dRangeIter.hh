@@ -1,8 +1,7 @@
-#ifndef SARR2RANGEITER_HEADER
-#define SARR2RANGEITER_HEADER 1
+#ifndef RAVL_SARR2RANGEITER_HEADER
+#define RAVL_SARR2RANGEITER_HEADER 1
 ////////////////////////////////////////////////////////////
 //! docentry="Ravl.Core.Arrays.2D"
-//! rcsid="$Id$
 //! file="amma/Contain/Array/SArray/SArray2dRangeIter.hh"
 //! lib=MSArr1
 //! author="Manuel Segovia"
