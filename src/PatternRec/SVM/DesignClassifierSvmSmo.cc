@@ -203,7 +203,7 @@ Classifier2C DesignSvmSmoBodyC::Apply(const SampleC<VectorC> &TrainingSetVectors
     delete[] objectsToUse;
     objectsToUse = new int[trainSetSize];
     if(objectsToUse == NULL)
-      throw ExceptionOperationFailedC("Can't allocate memory for internal svm beffers");
+      throw ExceptionOperationFailedC("Can't allocate memory for internal svm buffers");
     numTrainObjects = trainSetSize;
   }
 
@@ -229,7 +229,7 @@ ClassifierC DesignSvmSmoBodyC::Apply(const SampleC<VectorC> &TrainingSetVectors,
     delete[] objectsToUse;
     objectsToUse = new int[trainSetSize];
     if(objectsToUse == NULL)
-      throw ExceptionOperationFailedC("Can't allocate memory for internal svm beffers");
+      throw ExceptionOperationFailedC("Can't allocate memory for internal svm buffers");
     numTrainObjects = trainSetSize;
   }
 

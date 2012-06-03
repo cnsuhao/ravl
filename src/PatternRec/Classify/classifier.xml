@@ -16,8 +16,10 @@
 	<SVM typename="RavlN::DesignSvmSmoC" tolerance="0.00000001" penalty1="100"
 		penalty2="100" eps="0.0000001" lambdaThreshold="0.0000000000001">
 		<!--KernelFunction typename="RavlN::PolynomialKernelC" power="3" scale="1.0"
-			b="1.0"/-->
+			b="1.0" />
 		<KernelFunction typename="RavlN::QuadraticKernelC" scale="1.0" />
+    -->
+        <KernelFunction typename="RavlN::RBFKernelC" gamma="0.1" />
 	</SVM>
 
 	<!-- A simple liner SVM classifier -->
