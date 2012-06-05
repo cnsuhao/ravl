@@ -148,9 +148,9 @@ namespace RavlAudioN {
       DataT ret;
       IntT size = sizeof(DataT);
       if(!this->Read((void *) &ret,size))
-	throw DataNotReadyC("Failed to read sample.");
+        throw DataNotReadyC("Failed to read sample.");
       if(size != sizeof(DataT))
-	throw DataNotReadyC("Failed to read sample.");
+        throw DataNotReadyC("Failed to read sample.");
       return ret;
     }
     //: Get sample from stream.
@@ -158,7 +158,7 @@ namespace RavlAudioN {
     bool Get(DataT &buff)  { 
       IntT size = sizeof(DataT);
       if(!this->Read((void *) &buff,size))
-	return false;
+        return false;
       return size == sizeof(DataT);
     }
     //: Get sample from stream.
@@ -166,7 +166,7 @@ namespace RavlAudioN {
     IntT GetArray(SArray1dC<DataT> &data) {
       IntT size = data.Size() * sizeof(DataT);
       if(!this->Read(&(data[0]),size))
-	return 0;
+        return 0;
       return size / sizeof(DataT);
     }
     //: Get an array of samples.
@@ -297,7 +297,7 @@ namespace RavlAudioN {
     
     IntT PutArray(const SArray1dC<DataT> &data) {
       if(!this->Write(&(data[0]),sizeof(DataT) * data.Size()))
-	return 0;
+        return 0;
       return (IntT) data.Size();
     }
     //: Get an array of samples.
