@@ -15,7 +15,7 @@
 #include "Ravl/SysLog.hh"
 #include <portaudio.h>
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -26,8 +26,8 @@ namespace RavlAudioN {
   
   //: Access port audio mutex.
   RavlN::MutexC &PortAudioMutex() {
-    static RavlN::MutexC mutex;
-    return mutex;
+    static RavlN::MutexC *mutex = new RavlN::MutexC();
+    return *mutex;
   }
 
   void InitPortAudioFormat()
@@ -39,17 +39,19 @@ namespace RavlAudioN {
   FileFormatPortAudioBodyC::FileFormatPortAudioBodyC(const StringC &nvName)
     : FileFormatBodyC(nvName,StringC("PortAudio driver.")),
       m_isOpen(false)
-  {}
+  {
+    ONDEBUG(std::cerr << "Registering format. \n");
+  }
   
   //: Destructor.
   FileFormatPortAudioBodyC::~FileFormatPortAudioBodyC()
   {
+    RavlN::MutexLockC lock(PortAudioMutex());
     if(m_isOpen) {
       m_isOpen = false;
-      RavlN::MutexLockC lock(PortAudioMutex());
       Pa_Terminate();
-      lock.Unlock();
     }
+    lock.Unlock();
   }
 
   const type_info &FileFormatPortAudioBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
@@ -61,11 +63,13 @@ namespace RavlAudioN {
     ONDEBUG(RavlDebug("ProbeLoad(), Checking file type. %s for '%s' ",RavlN::TypeName(obj_type),filename.c_str()));
 
     StringC devType = ExtractDevice(filename);
-    RavlDebug("Got type %s ",devType.c_str());
-    if(devType != "@PORTAUDIO") {
+    ONDEBUG(RavlDebug("Got type %s ",devType.c_str()));
+    if(devType != "PORTAUDIO") {
+      ONDEBUG(RavlDebug("Not recognised."));
       return typeid(void);
     }
     StringC device = ExtractParams(filename);
+    ONDEBUG(RavlDebug("Got device '%s' ",device.c_str()));
     int devId = 0;
     const PaDeviceInfo *devInfo = FindDevice(device,false,devId);
 
@@ -92,10 +96,12 @@ namespace RavlAudioN {
 
     StringC devType = ExtractDevice(filename);
     RavlDebug("Got type %s ",devType.c_str());
-    if(devType != "@PORTAUDIO") {
+    if(devType != "PORTAUDIO") {
+      ONDEBUG(RavlDebug("Not recognised."));
       return typeid(void);
     }
     StringC device = ExtractParams(filename);
+    ONDEBUG(RavlDebug("Got device '%s' ",device.c_str()));
     int devId = 0;
     const PaDeviceInfo *devInfo = FindDevice(device,false,devId);
 
@@ -131,7 +137,7 @@ namespace RavlAudioN {
          (obj_type == typeid(SampleElemC<8,float>) ) )
          return 8;
     RavlError("Can't find the number of channels from %s ",TypeName(obj_type));
-    RavlAssert("Unknown type");
+    RavlAssertMsg(0,"Unknown type");
     return 0;
   }
 
@@ -146,7 +152,6 @@ namespace RavlAudioN {
         (obj_type == typeid(SampleElemC<7,Int16T>) ) ||
         (obj_type == typeid(SampleElemC<8,Int16T>) ))
       return false;
-
     return true;
   }
 
@@ -167,6 +172,7 @@ namespace RavlAudioN {
       }
     }
     RavlError("Format isFloat=%d Channels=%d not supported",(int)isFloat,channels);
+    RavlAssertMsg(0,"Unknown type");
     return typeid(void);
   }
 
@@ -186,6 +192,8 @@ namespace RavlAudioN {
       return sizeof(SampleElemC<2,float>);
     if(obj_type == typeid(SampleElemC<1,float>))
       return sizeof(SampleElemC<1,float>);
+    RavlError("Format isFloat=%d Channels=%d not supported",RavlN::TypeName(obj_type));
+    RavlAssertMsg(0,"Unknown type");
     return 0;
   }
 
@@ -209,7 +217,7 @@ namespace RavlAudioN {
   {
     ONDEBUG(cerr << "FileFormatPortAudioBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
     int devId = 0;
-    StringC device = ExtractDevice(filename);
+    StringC device = ExtractParams(filename);
     if(FindDevice(device,false,devId) == 0)
       return DPIPortBaseC();
 
@@ -246,25 +254,30 @@ namespace RavlAudioN {
   
   DPOPortBaseC FileFormatPortAudioBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const
   { 
-    ONDEBUG(cerr << "FileFormatPortAudioBodyC::CreateOutput(const StringC &,const type_info &), Called. \n");
+    ONDEBUG(RavlDebug("FileFormatPortAudioBodyC::CreateOutput(const StringC &,const type_info &), Called. "));
     int devId = 0;
-    StringC device = ExtractDevice(filename);
-    if(FindDevice(device,false,devId) == 0)
+    StringC device = ExtractParams(filename);
+    if(FindDevice(device,false,devId) == 0) {
+      RavlError("Failed to find device '%s' ",device.c_str());
       return DPOPortBaseC();
+    }
 
     if(obj_type == typeid(SampleElemC<8,Int16T>))
       return DPOAudioC<SampleElemC<8,Int16T>,PortAudioBaseC>(filename,devId);
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,PortAudioBaseC>(filename,devId);
     if(obj_type == typeid(SampleElemC<1,Int16T>))
-	return DPOAudioC<SampleElemC<1,Int16T>, PortAudioBaseC> (filename,devId) ;
+	    return DPOAudioC<SampleElemC<1,Int16T>, PortAudioBaseC> (filename,devId) ;
 
     if(obj_type == typeid(SampleElemC<8,float>))
       return DPOAudioC<SampleElemC<8,float>,PortAudioBaseC>(filename,devId);
     if(obj_type == typeid(SampleElemC<2,float>))
       return DPOAudioC<SampleElemC<2,float>,PortAudioBaseC>(filename,devId);
     if(obj_type == typeid(SampleElemC<1,float>))
-        return DPOAudioC<SampleElemC<1,float>, PortAudioBaseC> (filename,devId) ;
+      return DPOAudioC<SampleElemC<1,float>, PortAudioBaseC> (filename,devId) ;
+
+    RavlError("Sample type '%s' not known.",TypeName(obj_type));
+
     return DPOPortBaseC();
   }
   

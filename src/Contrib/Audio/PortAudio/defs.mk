@@ -6,7 +6,7 @@
 # file-header-ends-here
 #! file="Ravl/Contrib/Audio/PortAudio/defs.mk"
 
-#REQUIRES = PortAudio
+REQUIRES = PortAudio
 
 #DONOT_SUPPORT=VCPP
 
@@ -24,7 +24,7 @@ MUSTLINK=RavlPortAudio.cc
 
 USESLIBS=RavlIO RavlAudioUtil RavlAudioIO portAudio RavlThreads
 
-PROGLIBS= 
+PROGLIBS= RavlAudioFile.opt
 
 EXTERNALLIBS=portAudio.def
 

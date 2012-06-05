@@ -91,12 +91,12 @@ namespace RavlAudioN {
     bool m_doneSetup;
     IntT m_latency;
 
-    UIntT frameSize;
-    IntT channel;
-    const type_info *dtype;
-    StringC fileName;
-    RealT sampleRate;
-    bool forInput;
+    UIntT m_frameSize;
+    IntT m_channel;
+    const std::type_info *m_dtype;
+    RealT m_sampleRate;
+    bool m_forInput;
+    UIntT m_framerPerBuffer;
   };
   
 

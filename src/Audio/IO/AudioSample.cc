@@ -42,7 +42,7 @@ namespace RavlAudioN {
   static TypeNameC type7(typeid(SampleElemC < 1, float>), "RavlAudioN::SampleElemC<1,float>");
 
   //: register stereo Real
-  static TypeNameC type7(typeid(SampleElemC < 2, float>), "RavlAudioN::SampleElemC<2,float>");
+  static TypeNameC type8(typeid(SampleElemC < 2, float>), "RavlAudioN::SampleElemC<2,float>");
 
   //: some normalising values 
   const RealT normInt16 = 32678 - 1;
@@ -73,7 +73,7 @@ namespace RavlAudioN {
 
   static SampleElemC < 1, float> Sample1Int16ToFloat(const SampleElemC < 1, Int16T> & sample)
   {
-    SampleElemC < 1, RealT> newSample;
+    SampleElemC < 1, float> newSample;
     newSample.channel[0] = sample.channel[0] / normInt16;
     return newSample;
   }
@@ -82,7 +82,7 @@ namespace RavlAudioN {
 
   static SampleElemC < 2, float> Sample2Int16ToFloat(const SampleElemC < 2, Int16T> & sample)
   {
-    SampleElemC < 2, RealT> newSample;
+    SampleElemC < 2, float> newSample;
     newSample.channel[0] = sample.channel[0] / normInt16;
     newSample.channel[1] = sample.channel[1] / normInt16;
     return newSample;
@@ -191,6 +191,7 @@ namespace RavlAudioN {
     return(Int16T) (((IntT) samp.channel[0] + (IntT) samp.channel[1]) / 2);
   }
 
+#if 0
   static SampleElemC < 2, Int16T> Int16ToSample2Int16(const Int16T &samp)
   {
     SampleElemC < 2, Int16T> ret;
@@ -213,6 +214,7 @@ namespace RavlAudioN {
   {
     return(RealT) v;
   }
+#endif
 
   DP_REGISTER_CONVERSION_NAMED(Sample2ToSample1, 2, "SampleElemC<1,RealT > Sample2ToSample1 ( const SampleElemC<2,RealT>  & sample) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1ToSample2, 1, "SampleElemC<2,RealT> Sample1ToSample2 ( const SampleElemC<1,RealT> & sample ) ");
@@ -222,8 +224,8 @@ namespace RavlAudioN {
   DP_REGISTER_CONVERSION_NAMED(Sample2Int16ToReal, 1, "SampleElemC<2,RealT> Sample2Int16ToReal ( const SampleElemC<2,Int16T> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1RealToInt16, 2, "SampleElemC<1,Int16T> Sample1RealToInt16 ( const SampleElemC<1,RealT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2RealToInt16, 2, "SampleElemC<2,Int16T> Sample2RealToInt16 ( const SampleElemC<2,RealT> & sample ) ");
-  DP_REGISTER_CONVERSION_NAMED(Sample1FloatToInt16, 2, "SampleElemC<1,Int16T> Sample1RealToInt16 ( const SampleElemC<1,RealT> & sample ) ");
-  DP_REGISTER_CONVERSION_NAMED(Sample2FloatToInt16, 2, "SampleElemC<2,Int16T> Sample2RealToInt16 ( const SampleElemC<2,RealT> & sample ) ");
+  DP_REGISTER_CONVERSION_NAMED(Sample1FloatToInt16, 2, "SampleElemC<1,Int16T> Sample1FloatToInt16 ( const SampleElemC<1,float> & sample ) ");
+  DP_REGISTER_CONVERSION_NAMED(Sample2FloatToInt16, 2, "SampleElemC<2,Int16T> Sample2FloatToInt16 ( const SampleElemC<2,float> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1UByteToReal, 1, "SampleElemC<1,RealT> Sample1UByteToReal (const SampleElemC<1,UByteT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2UByteToReal, 1, "SampleElemC<2,RealT> Sample1UByteToReal (const SampleElemC<2,UByteT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1RealToUByte, 2, "SampleElemC<1,UByteT> Sample1RealToUByte (const SampleElemC<1,RealT> & sample ) ");

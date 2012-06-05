@@ -15,7 +15,7 @@
 
 #include <string.h>
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -31,26 +31,29 @@ namespace RavlAudioN {
     : m_stream(0),
       m_doneSetup(false),
       m_latency(0),
-      frameSize(FileFormatPortAudioBodyC::FrameSize(ndtype)),
-      channel(nchannel),
-      dtype(&ndtype),
-      sampleRate(16000),
-      forInput(nforInput)
+      m_frameSize(0),
+      m_channel(nchannel),
+      m_dtype(&ndtype),
+      m_sampleRate(16000),
+      m_forInput(nforInput),
+      m_framerPerBuffer(1024) // FIXME:- Should be an attribute.
   {
     RavlN::MutexLockC lock(PortAudioMutex());
-    const PaDeviceInfo *devInfo = Pa_GetDeviceInfo(channel);
+    const PaDeviceInfo *devInfo = Pa_GetDeviceInfo(m_channel);
     if(devInfo == 0) {
       RavlError("No information found about device!");
       // FIXME:- Throw exception?
       return ;
     }
-    sampleRate = devInfo->defaultSampleRate;
+    RavlDebug("Opening device '%s' Inputs:%u Outputs:%u SampleFormat:%s ",devInfo->name,devInfo->maxInputChannels,devInfo->maxOutputChannels,RavlN::TypeName(ndtype));
+    m_sampleRate = devInfo->defaultSampleRate;
     if(nforInput) {
       m_latency = devInfo->defaultHighInputLatency;
     } else {
       m_latency = devInfo->defaultHighOutputLatency;
     }
-    ONDEBUG(RavlDebug("Default latency %d frame size %u ",m_latency,(unsigned) frameSize));
+    m_frameSize = FileFormatPortAudioBodyC::FrameSize(ndtype);
+    ONDEBUG(RavlDebug("Default latency %d frame size %u ",m_latency,(unsigned) m_frameSize));
   }
 
   //: Destructor.
@@ -70,7 +73,7 @@ namespace RavlAudioN {
     AudioIOBaseC::BuildAttributes( attributes ) ;
 
     // cant set attributes when reading from a file
-    if ( forInput) {
+    if ( m_forInput) {
       AttributeTypeC
         sampleRate = attributes.GetAttrType("samplerate") ,
         sampleBits  = attributes.GetAttrType("samplebits") ;
@@ -86,9 +89,9 @@ namespace RavlAudioN {
   bool PortAudioBaseC::SetupParameters(PaStreamParameters &inputParameters) {
     memset(&inputParameters,0,sizeof(inputParameters));
 
-    inputParameters.device = channel;
-    inputParameters.channelCount = FileFormatPortAudioBodyC::Channels(*dtype);
-    inputParameters.sampleFormat = FileFormatPortAudioBodyC::IsFloat(*dtype) ? paFloat32 : paInt16;
+    inputParameters.device = m_channel;
+    inputParameters.channelCount = FileFormatPortAudioBodyC::Channels(*m_dtype);
+    inputParameters.sampleFormat = FileFormatPortAudioBodyC::IsFloat(*m_dtype) ? paFloat32 : paInt16;
     inputParameters.suggestedLatency = m_latency ;
 
     return true;
@@ -96,6 +99,7 @@ namespace RavlAudioN {
 
   bool PortAudioBaseC::IOpen() {
     ONDEBUG(RavlDebug("PortAudioBaseC::IOpen(), Called. "));
+    m_doneSetup = true;
 
     PaStreamParameters inputParameters;
     SetupParameters(inputParameters);
@@ -105,15 +109,21 @@ namespace RavlAudioN {
     PaError err = Pa_OpenStream(&m_stream,
             &inputParameters,
             0,
-            sampleRate,
-            0,
+            m_sampleRate,
+            m_framerPerBuffer,
             paNoFlag,
             0, // User callback
             0  // User data
              );
 
     if(err != paNoError) {
-      RavlError("Failed to open input.");
+      RavlError("Failed to open output. Error: %s ",Pa_GetErrorText (err));
+      return false;
+    }
+
+    err = Pa_StartStream(m_stream);
+    if(err != paNoError) {
+      RavlError("Failed to start output. Error: %s ",Pa_GetErrorText (err));
       return false;
     }
 
@@ -123,6 +133,8 @@ namespace RavlAudioN {
   //: Open audio device.
   
   bool PortAudioBaseC::OOpen() {
+    ONDEBUG(RavlDebug("PortAudioBaseC::OOpen(), Called. "));
+    m_doneSetup = true;
     PaStreamParameters outputParameters;
     SetupParameters(outputParameters);
 
@@ -131,17 +143,24 @@ namespace RavlAudioN {
     PaError err = Pa_OpenStream(&m_stream,
             0,
             &outputParameters,
-            sampleRate,
-            0,
+            m_sampleRate,
+            m_framerPerBuffer,
             paNoFlag,
             0, // User callback
             0  // User data
              );
 
     if(err != paNoError) {
-      RavlError("Failed to open input.");
+      RavlError("Failed to open output. Error: %s ",Pa_GetErrorText (err));
       return false;
     }
+
+    err = Pa_StartStream(m_stream);
+    if(err != paNoError) {
+      RavlError("Failed to start output. Error: %s ",Pa_GetErrorText (err));
+      return false;
+    }
+
     return true;
   }
   
@@ -162,7 +181,7 @@ namespace RavlAudioN {
     SetupParameters(ioParameters);
     PaError err;
     RavlN::MutexLockC lock(PortAudioMutex());
-    if(forInput) {
+    if(m_forInput) {
       err = Pa_IsFormatSupported( &ioParameters, 0, rate);
     } else {
       err = Pa_IsFormatSupported( 0, &ioParameters, rate);
@@ -170,7 +189,7 @@ namespace RavlAudioN {
     lock.Unlock();
     if(err != paNoError)
        return false;
-    sampleRate = rate;
+    m_sampleRate = rate;
     return true;
   }
   
@@ -189,7 +208,7 @@ namespace RavlAudioN {
   bool PortAudioBaseC::GetSampleRate(RealT &rate) {
     ONDEBUG(RavlDebug("GetSampleRate(RealT &rate)")) ;
     if(m_stream == 0) {
-      rate = sampleRate;
+      rate = m_sampleRate;
       return true;
     }
     RavlN::MutexLockC lock(PortAudioMutex());
@@ -213,14 +232,14 @@ namespace RavlAudioN {
     }
     if(m_stream == 0)
       return false;
-    if((len % frameSize) != 0) {
-      RavlError("Miss aligned read!");
+    if((len % m_frameSize) != 0) {
+      RavlError("Miss aligned read! frameSize=%d len=%d ",m_frameSize,len);
       return false;
     }
-    int blocks = len / frameSize;
+    int blocks = len / m_frameSize;
     PaError err = Pa_ReadStream(m_stream, buf, blocks);
-    if(err) {
-      RavlError("Error writing to stream. ");
+    if(err != paNoError) {
+      RavlError("Error reading from stream. Error: %s ",Pa_GetErrorText (err));
       return false;
     }
     return true;
@@ -236,15 +255,15 @@ namespace RavlAudioN {
     }
     if(m_stream == 0)
       return false;
-    if((len % frameSize) != 0) {
-      RavlError("Miss aligned write!");
+    if((len % m_frameSize) != 0) {
+      RavlError("Miss aligned write! frameSize=%d len=%d ",m_frameSize,len);
       return false;
     }
-    int blocks = len / frameSize;
+    int blocks = len / m_frameSize;
 
     PaError err = Pa_WriteStream(m_stream, buf, blocks);
-    if(err) {
-      RavlError("Error writing to stream. ");
+    if(err != paNoError) {
+      RavlError("Error writing to stream. Error: %s ",Pa_GetErrorText (err));
       return false;
     }
     return true;
