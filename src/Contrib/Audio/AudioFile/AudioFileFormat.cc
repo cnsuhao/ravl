@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.Audio.Audio IO.Audio File"
 //! lib=RavlAudioFile
 //! file="Ravl/Contrib/Audio/AudioFile/AudioFileFormat.cc"
@@ -14,7 +13,7 @@
 #include "Ravl/Audio/AudioFileIO.hh"
 #include "Ravl/TypeName.hh"
 
-#define DPDEBUG 0
+#define DPDEBUG 1
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -61,14 +60,16 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "Open of file '" << filename << "' ok. Probe passed. Channels=" << channels << " Format=" <<sampfmt << " Width=" << sampwidth << " \n");
     afCloseFile(setup);
 
+
+
     // 16 bit samples     
     if (sampwidth == 16) {
       ONDEBUG(cerr << "16 bit samples " ) ; 
       if(channels == 1) {
-	return typeid(SampleElemC<1,Int16T>);
+        return typeid(SampleElemC<1,Int16T>);
       }
       if(channels == 2) {
-	return typeid(SampleElemC<2,Int16T>);
+        return typeid(SampleElemC<2,Int16T>);
       }
       if(channels == 8) {
         return typeid(SampleElemC<8,Int16T>);
@@ -78,9 +79,9 @@ namespace RavlAudioN {
     if (sampwidth == 8) {
       ONDEBUG(cerr << "8 bit samples " ) ; 
       if(channels == 1)
-	return typeid(SampleElemC<1,UByteT> );
+        return typeid(SampleElemC<1,UByteT> );
       if(channels == 2) 
-	return typeid(SampleElemC<2,UByteT> ); 
+        return typeid(SampleElemC<2,UByteT> );
     }
     
     cerr << "Unexpected number of audio channels in '" << filename << "' Channels=" << channels << "\n";
@@ -101,9 +102,9 @@ namespace RavlAudioN {
       // mono formats
     if ( (obj_type == typeid ( SampleElemC<1,Int16T> )) || (obj_type == typeid(SampleElemC<1,RealT>)) ||
          (obj_type == typeid ( SampleElemC<1,UByteT>)) || (obj_type == typeid(SampleElemC<1,IntT>) ) )
-	 return typeid ( SampleElemC<1,Int16T> ) ; // default for mono formats
+      return typeid ( SampleElemC<1,Int16T> ) ; // default for mono formats
       
-      return typeid ( SampleElemC<2,Int16T> ) ; // stereo is the default for all others
+    return typeid ( SampleElemC<2,Int16T> ) ; // stereo is the default for all others
   }
   
   //: Create a input port for loading.
@@ -131,6 +132,14 @@ namespace RavlAudioN {
     // 2 channels 16 bit 
     if(obj_type == typeid(SampleElemC<2,Int16T> ))
       return DPIAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
+
+    // 1 channel
+    if(obj_type == typeid(SampleElemC<1,float> ))
+      return DPIAudioC<SampleElemC<1,float>,AudioFileBaseC>(filename,0);
+
+    // 2 channels
+    if(obj_type == typeid(SampleElemC<2,float> ))
+      return DPIAudioC<SampleElemC<2,float>,AudioFileBaseC>(filename,0);
 
     // 8 channel 16 bit 
     if(obj_type == typeid(SampleElemC<8,Int16T> )) {
@@ -160,7 +169,11 @@ namespace RavlAudioN {
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,AudioFileBaseC>(filename,0);
     if(obj_type == typeid(SampleElemC<1,Int16T>))
-	return DPOAudioC<SampleElemC<1,Int16T>, AudioFileBaseC> (filename,0) ; 
+      return DPOAudioC<SampleElemC<1,Int16T>, AudioFileBaseC> (filename,0) ;
+    if(obj_type == typeid(SampleElemC<2,float>))
+      return DPOAudioC<SampleElemC<2,float>,AudioFileBaseC>(filename,0);
+    if(obj_type == typeid(SampleElemC<1,float>))
+      return DPOAudioC<SampleElemC<1,float>, AudioFileBaseC> (filename,0) ;
    // if(obj_type == typeid(SByteT))
      // return DPOAudioC<SByteT,AudioFileBaseC>(filename,0);
     return DPOPortBaseC();

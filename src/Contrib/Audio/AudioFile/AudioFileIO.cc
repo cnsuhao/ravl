@@ -77,6 +77,12 @@ namespace RavlAudioN {
     } else if(ndtype == typeid(SampleElemC<2,Int16T>)) {
       afSetVirtualChannels(handle,AF_DEFAULT_TRACK,2);
       afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_TWOSCOMP, 16);
+    } else if(ndtype == typeid(SampleElemC<2,float>)) {
+      afSetVirtualChannels(handle,AF_DEFAULT_TRACK,2);
+      afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_FLOAT, 32);
+    } else if(ndtype == typeid(SampleElemC<1,float>)) {
+      afSetVirtualChannels(handle,AF_DEFAULT_TRACK,1);
+      afSetVirtualSampleFormat(handle,AF_DEFAULT_TRACK,AF_SAMPFMT_FLOAT, 32);
     } else {
       cerr << "AudioFileBaseC::IOpen(), Don't know to handle type " << TypeName(ndtype) << "\n";
       return false;
@@ -117,9 +123,16 @@ namespace RavlAudioN {
     ONDEBUG(cerr << "AudioFileBaseC::OOpen(), Called. \n");
     IntT channels = 2 ; 
      if(ndtype == typeid(SampleElemC<2,Int16T>)) {
-      frameSize = sizeof(SampleElemC<2,Int16T>); channels = 2 ; 
+      frameSize = sizeof(SampleElemC<2,Int16T>); channels = 2 ;
+
     } else if(ndtype == typeid(SampleElemC<1,Int16T> )) {
-      frameSize = sizeof(SampleElemC<1,Int16T> ) ; channels = 1 ;  
+      frameSize = sizeof(SampleElemC<1,Int16T> ) ; channels = 1 ;
+
+    } else if(ndtype == typeid(SampleElemC<2,float> )) {
+      frameSize = sizeof(SampleElemC<2,float> ) ; channels = 2 ;
+
+    } else if(ndtype == typeid(SampleElemC<1,float> )) {
+      frameSize = sizeof(SampleElemC<1,float> ) ; channels = 1 ;
     } else {
       cerr << "AudioFileBaseC::OOpen(), ERROR: Unrecognised sample type:" << ndtype.name() << "\n";
       return false;
@@ -225,7 +238,7 @@ bool AudioFileBaseC::GetSampleBits(IntT &bits) {
       afInitRate(setup, AF_DEFAULT_TRACK, sampleRate);
       handle = afOpenFile(fileName.chars(),"w",setup);
       if(handle == 0)
-	throw DataNotReadyC("AudioFileBaseC::Write(), Failed to open file for writting. ");
+        throw DataNotReadyC("AudioFileBaseC::Write(), Failed to open file for writting. ");
       SetupChannel(channel,*dtype);
     }
     RavlAssert((len % frameSize) == 0);
