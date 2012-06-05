@@ -107,17 +107,17 @@ int testFeatureMFCC() {
     case 0: {
       cerr << "Sine wave.\n";
       for(int i= 0;i < 32000;i++)
-	list.InsLast(Round(Sin(i *(200 / RavlConstN::pi)) * 32000));
+        list.InsLast(Round(Sin(i *(200 / RavlConstN::pi)) * 32000));
     } break;
     case 1: {
       cerr << "Noise.\n";
       for(int i= 0;i < 32000;i++)
-	list.InsLast((RandomInt() % 64000)-32000);
+        list.InsLast((RandomInt() % 64000)-32000);
     } break;
     case 2: {
       cerr << "Zero.\n";
       for(int i= 0;i < 32000;i++)
-	list.InsLast(0);
+        list.InsLast(0);
     } break;
     }
     DPISListC<Int16T> ip(list);
@@ -127,8 +127,8 @@ int testFeatureMFCC() {
     for(int i = 0;i < 20;i++) {
       fextract.Get(v1);
       for(SArray1dIterC<RealT> it(v1);it;it++)
-	if(*it < 0.001)
-	  *it = 0;
+        if(*it < 0.001)
+          *it = 0;
       cerr << "v1=" << v1 << "\n";
     }
   }

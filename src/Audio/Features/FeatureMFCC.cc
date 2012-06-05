@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlAudioFeatures
 //! file="Ravl/Audio/Features/FeatureMFCC.cc"
 
@@ -27,7 +26,7 @@ namespace RavlAudioN {
 				     IntT frameSize,      // Size of a frame.
 				     RealRangeC freqRange,// Range of frequencies.
 				     IntT numMelFilters,  // Number of mel spectrum filters.
-				     IntT numCep,        // Number of ceptstrum co-efficents to compute.
+				     IntT numCep,         // Number of ceptstrum co-efficents to compute.
 				     RealT preEmphasisAlpha
 				     )
     : preEmphasis(preEmphasisAlpha),

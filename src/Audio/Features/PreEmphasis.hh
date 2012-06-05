@@ -9,7 +9,6 @@
 //! userlevel=Normal
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Audio.Feature Extraction"
-//! rcsid="$Id$"
 //! lib=RavlAudioFeatures
 //! file="Ravl/Audio/Features/PreEmphasis.hh"
 
@@ -31,7 +30,7 @@ namespace RavlAudioN {
   public:
     PreEmphasisBodyC(const DPIPortC<InT> &in,FilterT nAlpha = 0.97)
       : DPIStreamOpBodyC<InT,OutT>(in),
-	alpha(nAlpha)
+        alpha(nAlpha)
     { SetZero(last); }
     //: Constructor.
     
@@ -43,7 +42,7 @@ namespace RavlAudioN {
     virtual OutT Get() {
       OutT ret;
       if(!Get(ret))
-	throw DataNotReadyC("Failed to get sample.");
+        throw DataNotReadyC("Failed to get sample.");
       return ret;
     }
     //: Get next sample
@@ -51,7 +50,7 @@ namespace RavlAudioN {
     virtual bool Get(OutT &buff) {
       InT in;
       if(!this->input.Get(in))
-	return false;
+        return false;
       FilterT val = static_cast<FilterT>(in);
       buff = static_cast<OutT>(val - last * alpha);
       last = val;
@@ -64,9 +63,9 @@ namespace RavlAudioN {
       IntT elems = this->input.GetArray(din);
       FilterT val;
       for(SArray1dIter2C<InT,OutT> it(din,data);it;it++) {
-	val = static_cast<FilterT>(it.Data1());
-	it.Data2() = static_cast<OutT>(val - last * alpha);
-	last = val;
+        val = static_cast<FilterT>(it.Data1());
+        it.Data2() = static_cast<OutT>(val - last * alpha);
+        last = val;
       }
       return elems;
     }

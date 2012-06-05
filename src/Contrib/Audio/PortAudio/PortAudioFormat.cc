@@ -126,7 +126,8 @@ namespace RavlAudioN {
   int FileFormatPortAudioBodyC::Channels(const type_info &obj_type) {
     if ( (obj_type == typeid ( SampleElemC<1,Int16T> )) || (obj_type == typeid(SampleElemC<1,RealT>)) ||
          (obj_type == typeid ( SampleElemC<1,UByteT>)) || (obj_type == typeid(SampleElemC<1,IntT>)) ||
-         (obj_type == typeid(SampleElemC<1,float>) ) )
+         (obj_type == typeid(SampleElemC<1,float>) ) ||
+         obj_type == typeid(float) || obj_type == typeid(Int16T))
          return 1;
     if ( (obj_type == typeid ( SampleElemC<2,Int16T> )) || (obj_type == typeid(SampleElemC<2,RealT>)) ||
          (obj_type == typeid ( SampleElemC<2,UByteT>)) || (obj_type == typeid(SampleElemC<2,IntT>)) ||
@@ -150,7 +151,9 @@ namespace RavlAudioN {
         (obj_type == typeid(SampleElemC<5,Int16T>) ) ||
         (obj_type == typeid(SampleElemC<6,Int16T>) ) ||
         (obj_type == typeid(SampleElemC<7,Int16T>) ) ||
-        (obj_type == typeid(SampleElemC<8,Int16T>) ))
+        (obj_type == typeid(SampleElemC<8,Int16T>) ) ||
+        (obj_type == typeid(Int16T) )
+        )
       return false;
     return true;
   }
