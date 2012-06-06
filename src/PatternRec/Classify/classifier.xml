@@ -34,9 +34,9 @@
 		/>
 
   <!-- Another neural network -->
-  <NeuralNetwork2 typename="RavlN::DesignClassifierNeuralNetwork2C" numberOfLayers="3"
+  <NN2 typename="RavlN::DesignClassifierNeuralNetwork2C" numberOfLayers="3"
     numberOfHiddenUnits="128" desiredError="0.00001" maxEpochs="10000" displayEpochs="100"
-    doNormalisation="False"
+    doNormalisation="False" threads="8"
     />
 
   <LR  typename="RavlN::DesignClassifierLogisticRegressionC" regularisation="0.0" >

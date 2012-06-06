@@ -62,6 +62,7 @@ namespace RavlN {
     UIntT m_displayEpochs;
     RealT m_regularisation;
     bool m_doNormalisation; //!< No normalisation.
+    int m_threads;
   };
 
   //! userlevel=Normal

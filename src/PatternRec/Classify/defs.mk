@@ -52,7 +52,7 @@ LIBDEPS = RavlPatternRecClassifier.def
 
 USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann Optimisation
 
-PROGLIBS=RavlSVM RavlPatternRecIO RavlOS
+PROGLIBS=RavlSVM RavlPatternRecIO
 
 EHT = Ravl.API.Pattern_Recognition.Classifier.html DesignClassifier.html
 

@@ -265,7 +265,12 @@ namespace RavlN {
     
     void Fill(const DataT &value);
     //: Fill array with given value.
-    
+
+    DArray1dC<DataT> CompactFrom(IndexC start,SizeT size);
+    //: Get sub array from this one.
+    // The new array will be indexed from zero and continous
+    // This does not copy the elements, it only creates a new access to existing ones.
+
     SArray1dC<DataT> SArray(bool alwaysCopy = false);
     //: Access content's of DArray as single array.
     // This assumes the array starts at zero. If it does
@@ -525,7 +530,13 @@ namespace RavlN {
     void Fill(const DataT &value)
     { Body().Fill(value); }
     //: Fill array with given value.
-    
+
+    DArray1dC<DataT> CompactFrom(IndexC start,SizeT size)
+    { return Body().CompactFrom(start,size); }
+    //: Get sub array from this one.
+    // The new array will be indexed from 0 and continous.
+    // This does not copy the elements, it only creates a new access to existing ones.
+
     IndexRangeC Range() const
     { return Body().Range(); }
     //: Get range of indexes covered by array.
@@ -955,6 +966,46 @@ namespace RavlN {
     if(it && it->Contains(max))
       it->Data().SetSubRange(max+1,it->IMax());
     return true;
+  }
+
+  //: Get sub array from this one.
+  // This does not copy the elements, it only creates a new access to existing ones.
+
+  template<class DataT>
+  DArray1dC<DataT> DArray1dBodyC<DataT>::CompactFrom(IndexC start,SizeT size) {
+    if(size == 0)
+      return DArray1dC<DataT>();
+    IndexC max = (start + size)-1;
+    IntrDLIterC<DChunkC<DataT> > it(chunks);
+    for(;it;it++) {
+      if(it->IMax() >= start)
+        break;
+    }
+    if(!it || (it->IMin() > max)) // Was range missed entirely ?
+      return DArray1dC<DataT>();
+    if(it->IMax() >= max) {
+      // If its within a single block, just cut out the index's we want.
+      Array1dC<DataT> newArr = it->Data();
+      newArr.SetSubRange(start,max);
+      return DArray1dC<DataT>(newArr);
+    }
+    // Copy part we want from first chunk.
+    DArray1dC<DataT> ret;
+    ret.Append(it->Data().From(start));
+
+    // FIXME:- This will fill in any holes, should it?
+    for(it++;it && (it->IMax() <= max);it++)
+      ret.Append(it->Data());
+
+    // Copy last bit of last chunk.
+    if(it.IsElm()) {
+      if(it->IMin() <= max) {
+        Array1dC<DataT> newArr = it->Data();
+        newArr.SetSubRange(it->IMin(),max);
+        ret.Append(newArr);
+      }
+    }
+    return ret;
   }
 
   //: Access content's of DArray as single array.

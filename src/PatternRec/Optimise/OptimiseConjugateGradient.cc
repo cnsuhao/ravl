@@ -149,10 +149,12 @@ namespace RavlN {
         break;
       }
       RealT gama = dgg/gg;
-      if(Abs(gama) < 1e-8) {
-        ONDEBUG(std::cerr << "Directions exhausted \n");
+#if 1
+      if(Abs(gama) < 1e-9) {
+        std::cerr << "Directions exhausted \n";
         break;
       }
+#endif
       for(SArray1dIter3C<RealT,RealT,RealT> it(dYdX,gdYdX,hdYdX);it;it++) {
         it.Data2() = -it.Data1();
         it.Data1() = it.Data2() + gama * it.Data3();

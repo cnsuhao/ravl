@@ -20,6 +20,8 @@
 #include "Ravl/PatternRec/OptimiseConjugateGradient.hh"
 #include "Ravl/PatternRec/OptimiseDescent.hh"
 #include "Ravl/PatternRec/FunctionCascade.hh"
+#include "Ravl/Threads/LaunchThread.hh"
+#include "Ravl/CallMethodPtrs.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -65,7 +67,8 @@ namespace RavlN {
                             const SampleC<VectorC> &in,
                             const SampleC<UIntT> &out,
                             RealT regularisation,
-                            bool verbose);
+                            bool verbose,
+                            unsigned threads = 1);
 
     //! Compute the cost of a solution.
     virtual RealT Cost (const VectorC &X) const;
@@ -88,28 +91,39 @@ namespace RavlN {
     //! Unroll parameters
     void Unroll(const VectorC &theta,SArray1dC<MatrixC> &w,SArray1dC<VectorC> &bias) const;
 
+    //! Compute cost for section.
+    bool SubCost (const SArray1dC<MatrixC> &w,const SArray1dC<VectorC> &bias,unsigned section,double *cost);
+
+    //! Compute cost for section.
+    bool SubGrad (const SArray1dC<MatrixC> &w,const SArray1dC<VectorC> &bias,unsigned section,VectorC &grad);
+
     //! Handle
     typedef SmartPtrC<CostNeuralNetwork2C> RefT;
   protected:
     SArray1dC<NeuralNetworkLayerC::RefT> m_layers;
     SampleC<VectorC> m_in;
     SampleC<UIntT> m_out;
-    SampleC<RealT> m_weight;
+
+    SArray1dC<Tuple2C<SampleC<VectorC>,SampleC<UIntT> > > m_sections;
+
     RealT m_regularisation;
     bool m_verbose;
+    unsigned m_threads;
   };
 
    //! Constructor
    CostNeuralNetwork2C::CostNeuralNetwork2C(const SArray1dC<NeuralNetworkLayerC::RefT> &layers,
-                           const SampleC<VectorC> &in,
-                           const SampleC<UIntT> &out,
-                           RealT regularisation,
-                           bool verbose)
+                                           const SampleC<VectorC> &in,
+                                           const SampleC<UIntT> &out,
+                                           RealT regularisation,
+                                           bool verbose,
+                                           unsigned threads)
     : m_layers(layers),
       m_in(in),
       m_out(out),
       m_regularisation(regularisation),
-      m_verbose(verbose)
+      m_verbose(verbose),
+      m_threads(threads)
    {
      size_t vecSize = NumParameters();
      ONDEBUG(RavlDebug("Paramaters:%s ",RavlN::StringOf(vecSize).c_str()));
@@ -123,6 +137,30 @@ namespace RavlN {
      SetParameters(parameters);
      RavlAssert(parameters.StartX().Size() == vecSize);
      //m_a = SArray1dC<VectorC>(layers.Size());
+
+     if(threads > 1) {
+       m_sections = SArray1dC<Tuple2C<SampleC<VectorC>,SampleC<UIntT> > >(threads);
+       size_t total = m_in.Size();
+       size_t sectionSize = total / threads;
+       IndexC at = 0;
+       unsigned i = 0;
+       for(;i < (threads-1);i++) {
+         Tuple2C<SampleC<VectorC>,SampleC<UIntT> > &sec = m_sections[i];
+         sec.Data1() = in.CompactFrom(at,sectionSize);
+         sec.Data2() = out.CompactFrom(at,sectionSize);
+         at += sectionSize;
+       }
+       // Do last block to ensure all elements are used.
+       Tuple2C<SampleC<VectorC>,SampleC<UIntT> > &sec = m_sections[i];
+       SizeT remainingBlocks = in.Size()-at;
+       sec.Data1() = in.CompactFrom(at,remainingBlocks);
+       sec.Data2() = out.CompactFrom(at,remainingBlocks);
+       at += remainingBlocks;
+       RavlAssert(at == total);
+     } else {
+       m_sections = SArray1dC<Tuple2C<SampleC<VectorC>,SampleC<UIntT> > >(1);
+       m_sections[0] = Tuple2C<SampleC<VectorC>,SampleC<UIntT> >(in,out);
+     }
    }
 
    //! Unroll parameters
@@ -139,6 +177,40 @@ namespace RavlN {
        bias[i] = const_cast<VectorC &>(theta).From(at,numOut);
        at += numOut;
      }
+   }
+
+   bool CostNeuralNetwork2C::SubCost (const SArray1dC<MatrixC> &w,
+                                      const SArray1dC<VectorC> &bias,
+                                      unsigned section,
+                                      double *costPtr)
+   {
+     SArray1dC<VectorC> a(m_layers.Size()+1); // Stop vectors from being repeatedly allocated.
+     RealT cost = 0;
+     for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_sections[section].Data1(),m_sections[section].Data2());it;it++)
+     {
+       // Go forward.
+       VectorC work = it.Data1();
+       for(unsigned i = 0;i < m_layers.Size();i++) {
+         VectorC &res = a[i+1];
+         //res = w[i] * work + bias[i];
+         RavlN::MulAdd(w[i],work,bias[i],res);
+         SigmoidIP(res);
+         work = res;
+       }
+
+       //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
+       //RavlDebug("Dot %f ",dotProdS);
+       for(unsigned i = 0;i < work.Size();i++) {
+         if((work[i] > 0) == (it.Data2() == i)) {
+           // Got it right
+           cost += -Log(work[i]);
+         } else {
+           cost += -Log(1-work[i]);
+         }
+       }
+     }
+     *costPtr = cost;
+     return true;
    }
 
   //! Compute the cost of a solution.
@@ -158,30 +230,22 @@ namespace RavlN {
     //  Row - Outputs
     //  Col - input weight.
 
-    SArray1dC<VectorC> a(m_layers.Size()+1); // Stop vectors from being repeatedly allocated.
-
-    for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_in,m_out);it;it++)
-    {
-      // Go forward.
-      VectorC work = it.Data1();
-      for(unsigned i = 0;i < m_layers.Size();i++) {
-        VectorC &res = a[i+1];
-        //res = w[i] * work + bias[i];
-        RavlN::MulAdd(w[i],work,bias[i],res);
-        SigmoidIP(res);
-        work = res;
+    if(m_threads <= 1) {
+      const_cast<CostNeuralNetwork2C *>(this)->SubCost(w,bias,0,&cost);
+    } else {
+      //RavlDebug("Using threaded costs.");
+      VectorC costs(m_threads);
+      SArray1dC<LaunchThreadC> threads(m_threads);
+      costs.Fill(0);
+      for(unsigned i = 1;i < m_threads;i++) {
+        threads[i] = RavlN::LaunchThread(RavlN::TriggerPtr(const_cast<CostNeuralNetwork2C *>(this),&CostNeuralNetwork2C::SubCost,w,bias,i,&costs[i]));
       }
-
-      //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
-      //RavlDebug("Dot %f ",dotProdS);
-      for(unsigned i = 0;i < work.Size();i++) {
-        if((work[i] > 0) == (it.Data2() == i)) {
-          // Got it right
-          cost += -Log(work[i]);
-        } else {
-          cost += -Log(1-work[i]);
-        }
+      // Do a bit of processing on this thread.
+      const_cast<CostNeuralNetwork2C *>(this)->SubCost(w,bias,0,&costs[0]);
+      for(unsigned i = 1;i < m_threads;i++) {
+        threads[i].WaitForExit();
       }
+      cost = costs.Sum();
     }
 
     if(m_regularisation > 0) {
@@ -201,33 +265,22 @@ namespace RavlN {
     return fcost;
   }
 
-  //! Compute the jacobian.
 
-  VectorC CostNeuralNetwork2C::Jacobian1(const VectorC &theta) const
+  //! Compute cost for section.
+  bool CostNeuralNetwork2C::SubGrad (const SArray1dC<MatrixC> &w,
+                                     const SArray1dC<VectorC> &bias,
+                                     unsigned section,
+                                     VectorC &grad)
   {
-    ONDEBUG(RavlDebug("Reg %f Theta %s ",m_regularisation,RavlN::StringOf(theta).c_str()));
-    VectorC grad(theta.Size());
-    grad.Fill(0);
-
-    // Unroll parameters.
-    SArray1dC<MatrixC> w;
-    SArray1dC<VectorC> bias;
-    Unroll(theta,w,bias);
+    SArray1dC<MatrixC> gw;
+    SArray1dC<VectorC> gbias;
+    Unroll(grad,gw,gbias);
 
     SArray1dC<VectorC> a(m_layers.Size()+1);
     SArray1dC<VectorC> z(m_layers.Size()+1);
     SArray1dC<VectorC> eps(m_layers.Size()+1);
 
-    SArray1dC<MatrixC> gw;
-    SArray1dC<VectorC> gbias;
-    Unroll(grad,gw,gbias);
-
-    // Weights
-    //  Row - Outputs
-    //  Col - input weight.
-
-
-    for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_in,m_out);it;it++)
+    for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_sections[section].Data1(),m_sections[section].Data2());it;it++)
     {
       // Go forward.
       VectorC work = it.Data1();
@@ -275,6 +328,53 @@ namespace RavlN {
       }
     }
 
+    return true;
+  }
+
+  //! Compute the jacobian.
+
+  VectorC CostNeuralNetwork2C::Jacobian1(const VectorC &theta) const
+  {
+    ONDEBUG(RavlDebug("Reg %f Theta %s ",m_regularisation,RavlN::StringOf(theta).c_str()));
+    VectorC grad(theta.Size());
+    grad.Fill(0);
+
+    // Unroll parameters.
+    SArray1dC<MatrixC> w;
+    SArray1dC<VectorC> bias;
+    Unroll(theta,w,bias);
+
+    SArray1dC<VectorC> a(m_layers.Size()+1);
+    SArray1dC<VectorC> z(m_layers.Size()+1);
+    SArray1dC<VectorC> eps(m_layers.Size()+1);
+
+
+    // Weights
+    //  Row - Outputs
+    //  Col - input weight.
+    if(m_threads <= 1) {
+      const_cast<CostNeuralNetwork2C *>(this)->SubGrad(w,bias,0,grad);
+    } else {
+      //RavlDebug("Using threaded grads.");
+
+      SArray1dC<LaunchThreadC> threads(m_threads);
+      SArray1dC<VectorC> grads(m_threads);
+
+      for(unsigned i = 1;i < m_threads;i++) {
+        grads[i] = VectorC(theta.Size());
+        grads[i].Fill(0);
+        threads[i] = RavlN::LaunchThread(RavlN::TriggerPtr(const_cast<CostNeuralNetwork2C *>(this),&CostNeuralNetwork2C::SubGrad,w,bias,i,grads[i]));
+      }
+      // Do a bit of processing on this thread.
+      const_cast<CostNeuralNetwork2C *>(this)->SubGrad(w,bias,0,grad);
+      for(unsigned i = 1;i < m_threads;i++) {
+        threads[i].WaitForExit();
+        // Add in results.
+        grad += grads[i];
+      }
+    }
+
+
     // Include regularisation term.
     if(m_regularisation > 0) {
       for(unsigned i = 1;i < grad.Size();i++) {
@@ -302,7 +402,8 @@ namespace RavlN {
       m_maxEpochs(maxEpochs),
       m_displayEpochs(displayEpochs),
       m_regularisation(0),
-      m_doNormalisation(true)
+      m_doNormalisation(true),
+      m_threads(1)
   {
     if(!m_optimiser.IsValid()) {
       m_optimiser = OptimiseConjugateGradientC(m_maxEpochs);
@@ -318,7 +419,8 @@ namespace RavlN {
         m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
         m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
         m_regularisation(factory.AttributeReal("regularisation", 0.0)),
-        m_doNormalisation(factory.AttributeReal("doNormalisation", true))
+        m_doNormalisation(factory.AttributeReal("doNormalisation", true)),
+        m_threads(factory.AttributeInt("threads", 1))
   {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
@@ -462,7 +564,7 @@ namespace RavlN {
       lastLayer = outputs;
     }
 
-    CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0 );
+    CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0,m_threads);
     CostC costFunc(costnn.BodyPtr());
 
 
