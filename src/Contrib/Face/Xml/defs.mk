@@ -75,9 +75,10 @@ USESLIBS=	RavlMath \
 			RavlOS \
 			RavlXMLFactory \
 			RavlRLog \
-			RavlPlot
+			RavlPlot \
+			RavlDataSet
 
-PROGLIBS = 	RavlExtImgIO.opt
+PROGLIBS = 	RavlExtImgIO.opt 
 
 SCRIPTS=
 

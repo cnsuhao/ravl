@@ -46,6 +46,9 @@ namespace RavlN {
       faceIds = faceDb.Keys();
       iter = DLIterC<StringC>(faceIds);
       faceDbFile = db.Name();
+      for (DLIterC<StringC> it(faceIds); it; it++) {
+        m_selected.Insert(*it, false);
+      }
 
     }
 
@@ -66,11 +69,14 @@ namespace RavlN {
       ButtonC next = ButtonR("Next", *this, &ViewPageBodyC::NextPrevButton, 1);
       ButtonC prev = ButtonR("Prev", *this, &ViewPageBodyC::NextPrevButton, 2);
       ButtonC save = ButtonR("Save", *this, &ViewPageBodyC::SaveButton);
+      ButtonC deleteButton = ButtonR("Delete", *this, &ViewPageBodyC::DeleteButton);
+      ButtonC saveSelectedButton = ButtonR("Save Selected", *this, &ViewPageBodyC::SaveSelectedButton);
 
       //: Make the tree store
-      SArray1dC<AttributeTypeC> types(2);
+      SArray1dC<AttributeTypeC> types(3);
       types[0] = AttributeTypeStringC("ID", "...");
       types[1] = AttributeTypeStringC("Face ID", "...");
+      types[2] = AttributeTypeBoolC("Delete", "...");
       treeStore = TreeStoreC(types);
       UpdateTreeStore();
       treeView = TreeViewC(treeStore);
@@ -98,7 +104,7 @@ namespace RavlN {
 
       //: This is the layout
       LabelC dateLabel("Capture Date");
-      Add(VBox(PackInfoC(HBox(PackInfoC(VBox(PackInfoC(canvas, true) + PackInfoC(save, false)), true)
+      Add(VBox(PackInfoC(HBox(PackInfoC(VBox(PackInfoC(canvas, true) + HBox(save + saveSelectedButton + deleteButton)), true)
           + PackInfoC(ScrolledAreaC(treeView, 350, 30), false)),
           true)
           + PackInfoC(HBox(LabelC("Path") + imagepath + HBox(dateLabel + date)), false)
@@ -106,9 +112,13 @@ namespace RavlN {
 
       // Connect an event handler to the frame widget.
       ConnectRef(canvas.Signal("key_press_event"), *this, &ViewPageBodyC::ProcessKeyboard);
+      ConnectRef(treeView.Signal("key_press_event"), *this, &ViewPageBodyC::ProcessKeyboard);
 
-      fs = FileSelectorC("Save XML file", "*.xml");
-      ConnectRef(fs.Selected(), *this, &ViewPageBodyC::Save);
+      m_fileSelectorSave = FileSelectorC("Save XML file", "*.xml");
+      ConnectRef(m_fileSelectorSave.Selected(), *this, &ViewPageBodyC::Save);
+
+      m_fileSelectorSaveSelected = FileSelectorC("Save XML file", "*.xml");
+      ConnectRef(m_fileSelectorSaveSelected.Selected(), *this, &ViewPageBodyC::SaveSelected);
 
       LoadData();
 
@@ -288,6 +298,14 @@ namespace RavlN {
 
     //////////////////////////////////////////////
 
+    bool ViewPageBodyC::SaveButton()
+    {
+      m_fileSelectorSave.GUIShow();
+      return true;
+    }
+
+    //////////////////////////////////////////////
+
     bool ViewPageBodyC::Save(const StringC & filename)
     {
       rInfo("Saving to file '%s'", filename.data());
@@ -299,10 +317,57 @@ namespace RavlN {
     }
 
     //////////////////////////////////////////////
-
-    bool ViewPageBodyC::SaveButton()
+    bool ViewPageBodyC::SaveSelectedButton()
     {
-      fs.GUIShow();
+      m_fileSelectorSaveSelected.GUIShow();
+      return true;
+    }
+
+    //////////////////////////////////////////////
+
+    bool ViewPageBodyC::SaveSelected(const StringC & filename)
+    {
+      rInfo("Saving selected to file '%s'", filename.data());
+
+      FaceInfoDbC newDb;
+      for(HashIterC<StringC, bool>it(m_selected);it;it++) {
+        if(it.Data()) {
+          newDb.Insert(it.Key(), faceDb[it.Key()]);
+        }
+      }
+
+      if (!FaceN::Save(filename, newDb)) {
+        AlertBox(StringC("trouble saving database"));
+        return false;
+      }
+      return true;
+    }
+
+    //////////////////////////////////////////////
+
+    bool ViewPageBodyC::DeleteButton()
+    {
+      MutexLockC lock(m_mutex);
+
+      FaceInfoDbC newDb;
+      for (HashIterC<StringC, FaceInfoC> it(faceDb); it; it++) {
+
+        if (!m_selected[it.Key()]) {
+          newDb.Insert(it.Key(), it.Data());
+        }
+
+      }
+      faceDb = newDb;
+      //: lets get a list of all our faceids and point the iterator to the first
+      faceIds = faceDb.Keys();
+      iter = DLIterC<StringC>(faceDb.Keys());
+      m_selected.Empty();
+      for (DLIterC<StringC> it(faceIds); it; it++) {
+        m_selected.Insert(*it, false);
+      }
+      treeStore.GUIEmpty();
+      UpdateTreeStore();
+      LoadData();
       return true;
     }
 
@@ -372,6 +437,18 @@ namespace RavlN {
           m_autoScale = false;
         }
       }
+      // Delete
+      else if (KeyEvent->keyval == 65293) {
+        DListC<TreeModelIterC> selected = treeView.GUISelected();
+        if (selected.IsEmpty())
+          return true; // none selected, do not do anything
+        StringC faceId;
+        if (!treeStore.GetValue(selected.First(), 1, faceId))
+          return false; // had trouble getting value, do nothing
+        m_selected[faceId] = !m_selected[faceId];
+        treeStore.SetValue(selected.First(), 2, m_selected[faceId]);
+
+      }
 
       return true; //event processed
     }
@@ -396,11 +473,12 @@ namespace RavlN {
           //: do the first row
           treeStore.GUISetValue(iter1, 0, it.Data());
           treeStore.GUISetValue(iter1, 1, faceIt.Data().FaceId());
-
+          treeStore.GUISetValue(iter1, 2, m_selected[faceIt.Data().FaceId()]);
           for (faceIt++; faceIt; faceIt++) {
             treeStore.AppendRow(iter2, iter1);
             treeStore.GUISetValue(iter2, 0, StringC(""));
             treeStore.GUISetValue(iter2, 1, faceIt.Data().FaceId());
+            treeStore.GUISetValue(iter2, 2, m_selected[faceIt.Data().FaceId()]);
           }
 
         }
