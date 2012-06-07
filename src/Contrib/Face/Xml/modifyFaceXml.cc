@@ -33,7 +33,7 @@ int modifyXml(int argc, char **argv)
   StringC OrigPathFrom = opt.String("from", "", "change the path of the original images to");
   StringC OrigPathTo = opt.String("to", "", "change the path of the original images to");
   StringC Concatenate = opt.String("cat", "", "concatenate all files into this one");
-  IntT Pick = opt.Int("pick", -1, "when concatenating pick this many random faces from each file");
+  IntT Pick = opt.Int("pick", -1, "Pick random faces and save to file!  Save remainder.");
   StringC tag = opt.String("tag", "", "Tag to search on (e.g. faceId)");
   StringC value = opt.String("value", "", "Value to search tag on");
   bool exactMatch = opt.Boolean("exactMatch", false, "Do we want an exact match");
@@ -174,6 +174,11 @@ int modifyXml(int argc, char **argv)
       FaceInfoC faceInfo = collection.Pick();
       master.Insert(faceInfo.FaceId(), faceInfo);
     }
+    FaceInfoDbC remainder;
+    for(CollectionIterC<FaceInfoC>it(collection);it;it++) {
+      remainder.Insert(it.Data().FaceId(), *it);
+    }
+    Save("remainder.xml", remainder);
     faceInfoDb = master;
   }
 

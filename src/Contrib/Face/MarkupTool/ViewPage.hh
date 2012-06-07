@@ -21,6 +21,7 @@
 #include "Ravl/GUI/TreeStore.hh"
 #include "Ravl/GUI/TreeView.hh"
 #include "Ravl/GUI/FileSelector.hh"
+#include "Ravl/Threads/Mutex.hh"
 
 namespace RavlN {
   namespace FaceN {
@@ -61,6 +62,15 @@ namespace RavlN {
       bool SaveButton();
       //: Save the xml file
 
+      bool SaveSelectedButton();
+      //: Just save the XML which have been selected
+
+      bool SaveSelected(const StringC & filename);
+      //: Just save the XML which have been selected
+
+      bool DeleteButton();
+      //: Save the xml file
+
     protected:
       FaceInfoDbC faceDb;
       //: A database of the faces
@@ -73,6 +83,8 @@ namespace RavlN {
 
       DLIterC<StringC> iter;
       //: The iterator which points at the image we are looking at
+
+      RCHashC<StringC, bool>m_selected;
 
       StringC faceDbFile;
       //: The faceDb file to save as
@@ -101,9 +113,12 @@ namespace RavlN {
 
       //: Date of image
       TextEntryC date;
-      FileSelectorC fs;
+      FileSelectorC m_fileSelectorSave;
+      FileSelectorC m_fileSelectorSaveSelected;
 
       bool m_markupMode;
+
+      MutexC m_mutex;
 
       TreeModelIterC m_lastParent;
 
