@@ -13,6 +13,7 @@
 #include "Ravl/Option.hh"
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/Audio/Types.hh"
+#include "Ravl/DP/PrintIOInfo.hh"
 #include "Ravl/DP/AttributeType.hh"
 using namespace RavlN;
 using namespace RavlAudioN ; 
@@ -29,8 +30,14 @@ int main(int nargs,char **argv) {
   StringC odev = opt.String("o","@DEVAUDIO:/dev/dsp","Output device.");
   StringC format = opt.String("f","","Format.");
   bool stereo = opt.Boolean("s",false,"Stereo. ");
+  bool verbose = opt.Boolean("v",false,"Verbose ");
+  bool listFormats = opt.Boolean("lf",false,"List formats ");
   opt.Check();
 
+  if(listFormats) {
+    PrintIOFormats();
+    return 0;
+  }
   if(!stereo) {
     // open the input port
     DPIPortC<SampleElemC<1,Int16T> > in;
