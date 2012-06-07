@@ -66,6 +66,10 @@ namespace RavlN {
     { Next(); }
     //: Goto next element.
     
+    DArray1dIter4C &operator++()
+    { Next(); return *this; }
+    //: Goto next element.
+
     IndexC Index() const
     { return this->it1.Index(); }
     //: Get index of current element.
