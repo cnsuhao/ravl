@@ -337,9 +337,11 @@ int testDArray1dFrom() {
   anArray.Append(arr3);
   RAVL_TEST_EQUALS(anArray.Size(),(SizeT) 15);
 
+#if 0
   for(unsigned i = 0;i < anArray.Size();i++) {
     std::cerr << " " << i << "=" << anArray[i] << "\n";
   }
+#endif
 
   DArray1dC<IntT> sa1 = anArray.CompactFrom(1,3);
   RAVL_TEST_EQUALS((SizeT) 3,sa1.Size());
@@ -349,16 +351,18 @@ int testDArray1dFrom() {
 
   DArray1dC<IntT> sa2 = anArray.CompactFrom(1,7);
   RAVL_TEST_EQUALS((SizeT) 7,sa2.Size());
+#if 0
   std::cerr << " Test:\n";
   for(unsigned i = 0;i < sa2.Size();i++) {
     std::cerr << " " << i << "=" << sa2[i] << "\n";
   }
-  for(unsigned i = 1;i < 8;i++) {
-    std::cerr <<  " " << i <<  "=" << sa2[i] << " ";
-    if(i < 5) {
-      RAVL_TEST_EQUALS((IntT) 10+i,sa2[i]);
+#endif
+  for(unsigned i = 0;i < 7;i++) {
+    //std::cerr <<  " " << i <<  "=" << sa2[i] << " ";
+    if(i < 4) {
+      RAVL_TEST_EQUALS((IntT) 11+i,sa2[i]);
     } else {
-      RAVL_TEST_EQUALS((IntT) 20+i,sa2[i]);
+      RAVL_TEST_EQUALS((IntT) 16+i,sa2[i]);
     }
   }
 
