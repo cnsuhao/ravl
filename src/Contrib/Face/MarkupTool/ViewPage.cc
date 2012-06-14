@@ -437,8 +437,8 @@ namespace RavlN {
           m_autoScale = false;
         }
       }
-      // Delete
-      else if (KeyEvent->keyval == 65293) {
+      // Select Enter or Space
+      else if (KeyEvent->keyval == 65293 || KeyEvent->keyval == 32) {
         DListC<TreeModelIterC> selected = treeView.GUISelected();
         if (selected.IsEmpty())
           return true; // none selected, do not do anything
