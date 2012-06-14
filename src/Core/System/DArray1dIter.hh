@@ -100,7 +100,11 @@ namespace RavlN {
     void operator++(int)
     { Next(); }
     //: Goto next element.
-    
+
+    DArray1dIterC &operator++()
+    { Next(); return *this; }
+    //: Goto next element.
+
     IndexC Index() const
     { return IndexC((IntT)( &(*it) - cit.Data().Data().ReferenceElm())); }
     //: Get index of current element.

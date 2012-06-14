@@ -95,9 +95,10 @@ namespace RavlAudioN {
     
     if (nfilename.IsEmpty())
       return typeid(void);
-
-    if (!CheckFilenameExtension(nfilename))
-      return typeid(void);
+    if(!forceFormat) {
+      if (!CheckFilenameExtension(nfilename))
+        return typeid(void);
+    }
 
       // mono formats
     if ( (obj_type == typeid ( SampleElemC<1,Int16T> )) || (obj_type == typeid(SampleElemC<1,RealT>)) ||

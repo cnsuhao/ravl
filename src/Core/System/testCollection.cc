@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/System/testCollection.cc"
 //! docentry="Ravl.API.Core.Misc"
@@ -23,6 +22,7 @@
 #include "Ravl/DArray1dIter4.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
@@ -31,6 +31,7 @@ int testDArray1d();
 int testDArray1dIO();
 int testDArray1dMore();
 int testDArray1dEvenMore();
+int testDArray1dFrom();
 
 int main()
 {
@@ -52,6 +53,10 @@ int main()
     return 1;
   }
   if((err = testDArray1dEvenMore()) != 0) {
+    cerr << "Test failed line :" << err <<"\n";
+    return 1;
+  }
+  if((err = testDArray1dFrom()) != 0) {
     cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
@@ -146,6 +151,14 @@ int testDArray1d() {
     if(it.Index() != i) return __LINE__;
   }
   if(i != 10) return __LINE__;
+
+  i = 0;
+  for(DArray1dIter2C<int,int> it(test,test2);it;++it,i++) {
+    if(it.Data1() != it.Data2()) return __LINE__;
+    if(it.Index() != i) return __LINE__;
+  }
+  if(i != 10) return __LINE__;
+
   return 0;
 }
 
@@ -305,5 +318,53 @@ int testDArray1dEvenMore() {
       }
   }
   
+  return 0;
+}
+
+int testDArray1dFrom() {
+  cerr << "testDArray1d(), From. \n";
+  DArray1dC<IntT> anArray;
+  Array1dC<IntT> arr1(5);
+  Array1dC<IntT> arr2(5);
+  Array1dC<IntT> arr3(5);
+  for(unsigned i = 0;i < arr1.Size();i++) {
+    arr1[i] = 10+i;
+    arr2[i] = 20+i;
+    arr3[i] = 30+i;
+  }
+  anArray.Append(arr1);
+  anArray.Append(arr2);
+  anArray.Append(arr3);
+  RAVL_TEST_EQUALS(anArray.Size(),(SizeT) 15);
+
+#if 0
+  for(unsigned i = 0;i < anArray.Size();i++) {
+    std::cerr << " " << i << "=" << anArray[i] << "\n";
+  }
+#endif
+
+  DArray1dC<IntT> sa1 = anArray.CompactFrom(1,3);
+  RAVL_TEST_EQUALS((SizeT) 3,sa1.Size());
+  for(unsigned i = 1;i < 3;i++) {
+    RAVL_TEST_EQUALS(sa1[i],(IntT) 10+i);
+  }
+
+  DArray1dC<IntT> sa2 = anArray.CompactFrom(1,7);
+  RAVL_TEST_EQUALS((SizeT) 7,sa2.Size());
+#if 0
+  std::cerr << " Test:\n";
+  for(unsigned i = 0;i < sa2.Size();i++) {
+    std::cerr << " " << i << "=" << sa2[i] << "\n";
+  }
+#endif
+  for(unsigned i = 0;i < 7;i++) {
+    //std::cerr <<  " " << i <<  "=" << sa2[i] << " ";
+    if(i < 4) {
+      RAVL_TEST_EQUALS((IntT) 11+i,sa2[i]);
+    } else {
+      RAVL_TEST_EQUALS((IntT) 16+i,sa2[i]);
+    }
+  }
+
   return 0;
 }
