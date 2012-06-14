@@ -33,7 +33,7 @@ int modifyXml(int argc, char **argv)
   StringC OrigPathFrom = opt.String("from", "", "change the path of the original images to");
   StringC OrigPathTo = opt.String("to", "", "change the path of the original images to");
   StringC Concatenate = opt.String("cat", "", "concatenate all files into this one");
-  IntT Pick = opt.Int("pick", -1, "Pick random faces and save to file!  Save remainder.");
+  RealT Pick = opt.Real("pick", 0, "Pick random faces and save to file!  Save remainder.");
   StringC tag = opt.String("tag", "", "Tag to search on (e.g. faceId)");
   StringC value = opt.String("value", "", "Value to search tag on");
   bool exactMatch = opt.Boolean("exactMatch", false, "Do we want an exact match");
@@ -164,21 +164,28 @@ int modifyXml(int argc, char **argv)
 
   //: Do we just want to pick some random faces
   if (opt.IsOnCommandLine("pick")) {
+    UIntT p = Round(Pick);
+    if(Pick < 1.0) {
+      p = Round(Pick * (RealT)faceInfoDb.Size());
+    }
     FaceInfoDbC master;
     CollectionC<FaceInfoC> collection(faceInfoDb.Size());
     for (HashIterC<StringC, FaceInfoC> faceIt(faceInfoDb); faceIt; faceIt++)
       collection.Insert(*faceIt);
-    if ((IntT) faceInfoDb.Size() < Pick)
-      Pick = faceInfoDb.Size();
-    for (IntT i = 0; i < Pick; i++) {
+    if ((UIntT) faceInfoDb.Size() < p)
+      p = faceInfoDb.Size();
+    for (UIntT i = 0; i < p; i++) {
       FaceInfoC faceInfo = collection.Pick();
       master.Insert(faceInfo.FaceId(), faceInfo);
     }
+    // Lets save remainder as well
     FaceInfoDbC remainder;
     for(CollectionIterC<FaceInfoC>it(collection);it;it++) {
       remainder.Insert(it.Data().FaceId(), *it);
     }
+    rInfo("Saving remainder of pick operation 'remainder.xml'");
     Save("remainder.xml", remainder);
+    // Set master set, this will get saved later
     faceInfoDb = master;
   }
 
