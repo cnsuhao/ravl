@@ -127,6 +127,10 @@ namespace RavlN {
     { return Body().DataVoidPtr(); }
     //: Access void pointer to data member.
 
+    template<class DataT>
+    bool GetPtr(DataT *&value);
+    //: Get pointer to value if type matches.
+    // Returns true if the value has been retrieved
   };
 
   //! userlevel=Develop
@@ -350,6 +354,18 @@ namespace RavlN {
     RavlN::RCWrapC<DataT> wrap(val,true);
     RavlAssert(wrap.IsValid());
     value = wrap.Data();
+  }
+
+  // ----------------------------------------------------------
+
+  //: Get pointer to value if type matches.
+  template<class DataT>
+  bool RCWrapAbstractC::GetPtr(DataT *&value) {
+    RCWrapBodyC<DataT> *theBody = dynamic_cast<RCWrapBodyC<DataT> *>(BodyPtr());
+    if(theBody == 0)
+      return false;
+    value = &theBody->Data();
+    return true;
   }
 
 }
