@@ -72,7 +72,7 @@ namespace RavlN { namespace GeneticN {
     virtual void AddComponent(const std::string &name,const GeneTypeC &geneType);
 
     //! Lookup component
-    virtual bool LookupComponent(const std::string &name,RavlN::SmartPtrC<const GeneTypeC> &geneType);
+    virtual bool LookupComponent(const std::string &name,RavlN::SmartPtrC<const GeneTypeC> &geneType) const;
 
     //! Create random instance
     virtual void Random(GenePaletteC &palette,RavlN::SmartPtrC<GeneC> &newValue) const = 0;

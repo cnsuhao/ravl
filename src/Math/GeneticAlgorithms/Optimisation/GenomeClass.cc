@@ -15,7 +15,7 @@
 
 
 #include "Ravl/Random.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/PointerManager.hh"
@@ -109,6 +109,15 @@ namespace RavlN { namespace GeneticN {
     return false;
   }
 
+  //! List names of fields.
+  void GeneTypeNodeC::ListFields(RavlN::CollectionC<Tuple2C<StringC,GeneTypeC::ConstRefT> > &col) const {
+    if(!col.IsValid())
+      col = RavlN::CollectionC<Tuple2C<StringC,GeneTypeC::ConstRefT> >(m_componentTypes.Size());
+    for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++) {
+      col.Append(Tuple2C<StringC,GeneTypeC::ConstRefT>(it.Key(),it.Data()));
+    }
+  }
+
   //! Add a new entry to the gene
 
   void GeneTypeNodeC::AddComponent(const std::string &name,const GeneTypeC &geneType)
@@ -120,7 +129,7 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Lookup component
-  bool GeneTypeNodeC::LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType)
+  bool GeneTypeNodeC::LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType) const
   {
     return m_componentTypes.Lookup(name,geneType);
   }

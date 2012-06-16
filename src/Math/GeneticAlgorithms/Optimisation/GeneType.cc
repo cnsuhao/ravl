@@ -97,7 +97,7 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Lookup component
-  bool GeneTypeC::LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType)
+  bool GeneTypeC::LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType) const
   {
     RavlAssert(0);
     return false;

@@ -12,6 +12,8 @@
 
 #include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/STL.hh"
+#include "Ravl/Collection.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -42,7 +44,7 @@ namespace RavlN { namespace GeneticN {
     virtual void AddComponent(const std::string &name,const GeneTypeC &geneType);
 
     //! Lookup component
-    virtual bool LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType);
+    virtual bool LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType) const;
 
     //! Create randomise value
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
@@ -52,6 +54,9 @@ namespace RavlN { namespace GeneticN {
 
     //! Mutate a gene
     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+
+    //! List names of fields.
+    void ListFields(RavlN::CollectionC<Tuple2C<StringC,GeneTypeC::ConstRefT> > &col) const;
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeNodeC> RefT;
