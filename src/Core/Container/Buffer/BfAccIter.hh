@@ -75,7 +75,10 @@ namespace RavlN {
     
     inline bool First(const RangeBufferAccessC<DataT> &buff);
     //: Goto fist element.
-    
+
+    inline bool Last(const RangeBufferAccessC<DataT> &buff);
+    //: Goto last valid element in range
+
     inline bool First(const SizeBufferAccessC<DataT> &buff);
     //: Goto fist element.
     
@@ -119,19 +122,19 @@ namespace RavlN {
     inline void Next(int skip)
     { at += skip; }
     //: Advance 'skip' elements.
-    // WARNING: When using negative values, positions before the begining of the array will
+    // WARNING: When using negative values, positions before the beginning of the array will
     // not be detected correctly by IsElm().
     
     inline BufferAccessIterC<DataT> & operator+=(int skip)
     { Next(skip); return *this; }
     //: Advance 'skip' elements.
-    // WARNING: When using negative values, positions before the begining of the array will
+    // WARNING: When using negative values, positions before the beginning of the array will
     // not be detected correctly by IsElm().
     
     inline BufferAccessIterC<DataT> & operator-=(int skip)
     { Next(-skip); return *this; }
     //: Go back 'skip' elements.
-    // WARNING: When using positive values, positions before the begining of the array will
+    // WARNING: When using positive values, positions before the beginning of the array will
     // not be detected correctly by IsElm().
     
     inline void operator++(int) 
@@ -143,7 +146,19 @@ namespace RavlN {
     { RavlAssert(at != endOfRow); at++; return *this; }
     //: Goto next element.
     // Call ONLY if IsElm() is valid.
-    
+
+    inline void operator--(int)
+    { RavlAssert(at != endOfRow); at--; }
+    //: Goto previous element.
+    // WARNING: When using positive values, positions before the beginning of the array will
+    // not be detected correctly by IsElm().
+
+    inline BufferAccessIterC<DataT> &operator--()
+    { RavlAssert(at != endOfRow); at--; return *this; }
+    //: Goto previous element.
+    // WARNING: When using positive values, positions before the beginning of the array will
+    // not be detected correctly by IsElm().
+
     DataT &operator*() 
     { return *at; }
     //: Access data.
@@ -167,7 +182,15 @@ namespace RavlN {
     inline const DataT &Data() const
     { return *at; }
     //: Access data.
+
+    inline DataT *DataPtr()
+    { return at; }
+    //: Access data.
     
+    inline const DataT *DataPtr() const
+    { return at; }
+    //: Access data.
+
     inline DataT &Data1()
     { return *at; }  
     //: Access data.
@@ -267,7 +290,20 @@ namespace RavlN {
     endOfRow = &(at[buff.Size()]);
     return true;
   }
-  
+
+  template <class DataT>
+  inline
+  bool BufferAccessIterC<DataT>::Last(const RangeBufferAccessC<DataT> &buff) {
+    if(buff.Size() <= 0) {
+      at = 0;
+      endOfRow = 0;
+      return false;
+    }
+    at = const_cast<DataT *>(&buff[buff.IMax()]);
+    endOfRow = &(at[1]);
+    return true;
+  }
+
   template <class DataT>
   inline 
   bool BufferAccessIterC<DataT>::First(const SizeBufferAccessC<DataT> &buff) {

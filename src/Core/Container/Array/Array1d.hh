@@ -315,8 +315,8 @@ namespace RavlN {
       RavlAssertMsg(Size() > 0,"Array1dC::IndexOfMax() Called on an empty array");
       const DataT *valueOfMax = &(this->operator[](Range().Min()));
       for (Array1dIterC<DataT> i(*this); i; i++)
-	if (*valueOfMax < *i)
-	  valueOfMax = &(*i);
+        if (*valueOfMax < *i)
+          valueOfMax = &(*i);
       return IndexC((IntT)(valueOfMax - this->ReferenceElm()));
     }
     //: Calculate the index of the maximum element in the array
@@ -325,8 +325,8 @@ namespace RavlN {
       RavlAssertMsg(Size() > 0,"Array1dC::IndexOfMin() Called on an empty array");
       const DataT *valueOfMin = &(this->operator[](Range().Min()));
       for (Array1dIterC<DataT> i(*this); i; i++)
-	if (*valueOfMin > *i)
-	  valueOfMin = &(*i);
+        if (*valueOfMin > *i)
+          valueOfMin = &(*i);
       return IndexC((IntT)(valueOfMin - this->ReferenceElm()));
     }
     //: Calculate the index of the minimum element in the array (defined using <)
@@ -341,7 +341,7 @@ namespace RavlN {
 
     Array1dC<DataT> From(IndexC offset) {
       if(offset > Range().Max())
-	return Array1dC<DataT>(); // Empty array.
+        return Array1dC<DataT>(); // Empty array.
       RavlAssert(offset >= Range().Min()); // Ensure its within the array.
       return Array1dC<DataT>(*this,IndexRangeC(offset,Range().Max()));
     }
@@ -351,7 +351,7 @@ namespace RavlN {
 
     Array1dC<DataT> From(IndexC offset,UIntT size) {
       if(offset > Range().Max())
-	return Array1dC<DataT>(); // Empty array.
+        return Array1dC<DataT>(); // Empty array.
       RavlAssert(Range().Contains(offset) && Range().Contains(offset + size));
       return Array1dC<DataT>(*this,IndexRangeC(offset,(offset+size)-1));
     }
@@ -367,7 +367,7 @@ namespace RavlN {
 
     bool SetIMin(IndexC imin) {
       if(imin.V() < (buff.ReferenceElm() - this->ReferenceElm()))
-	return false;
+        return false;
       this->range.Min() = imin;
       return true;
     }
@@ -376,7 +376,7 @@ namespace RavlN {
 
     bool SetIMax(IndexC imax) {
       if(imax >= ((buff.ReferenceElm() - this->ReferenceElm()) + buff.Size()))
-	return false;
+        return false;
       this->range.Max() = imax;
       return true;
     }
