@@ -14,6 +14,7 @@
 #include "Ravl/RCHash.hh"
 #include "Ravl/String.hh"
 #include "Ravl/SmartPtr.hh"
+#include "Ravl/Genetic/GeneType.hh"
 
 namespace RavlN {
   class XMLFactoryContextC;
@@ -118,6 +119,10 @@ namespace RavlN { namespace GeneticN {
 
     //! Generate a random value between 0 and 1.
     RealT Random1()
+    { return RandomDouble(); }
+
+    //! Generate a random value between 0 and 1.
+    float RandomFloat()
     { return RandomDouble(); }
 
     //! Generate a random integer.
