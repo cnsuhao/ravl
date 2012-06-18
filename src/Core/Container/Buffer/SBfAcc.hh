@@ -345,7 +345,7 @@ namespace RavlN {
   SizeBufferAccessC<DataT>::Copy(void) const {
     if (IsEmpty()) 
       return SizeBufferAccessC<DataT>();
-    DataT * bp = new DataT[Size()];
+    DataT * bp = new DataT[Size().V()];
     SizeBufferAccessC<DataT> b(bp, Size());
     DataT *at = DataStart();
     DataT *at2 = b.DataStart();
@@ -358,7 +358,7 @@ namespace RavlN {
   template <class DataT>
   void SizeBufferAccessC<DataT>::Fill(const DataT & d) {
     DataT *at = DataStart();
-    DataT *endOfRow = &at[sz];
+    DataT *endOfRow = &at[sz.V()];
     for(;at != endOfRow;at++)
       *at = d;
   }

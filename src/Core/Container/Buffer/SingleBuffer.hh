@@ -25,7 +25,7 @@ namespace RavlN {
   void ConstructRawArray(DataT *data,SizeT size) {
 #if RAVL_COMPILER_VISUALCPP
     DataT *at = data;
-    DataT *end = &at[size];
+    DataT *end = &at[size.V()];
     try {
       for(;at != end;at++)
         new(at) DataT;
@@ -36,7 +36,7 @@ namespace RavlN {
       throw ;
     }
 #else
-    new(data) DataT[size];
+    new(data) DataT[size.V()];
 #endif
   }
   
@@ -44,7 +44,7 @@ namespace RavlN {
   inline
   void DestructRawArray(DataT *data,SizeT size) {
     DataT *at = data;
-    DataT *end = &at[size];
+    DataT *end = &at[size.V()];
     for(;at != end;at++)
       at->~DataT();    
   }
