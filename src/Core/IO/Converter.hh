@@ -162,9 +162,9 @@ namespace RavlN {
     virtual RCAbstractC Apply(const DPProcessBaseC &proc,SArray1dC<RCAbstractC> dat) {
       DPProcessC<InT,OutT> p(proc);
       if(!p.IsValid())
-	throw ExceptionC("Apply(), Bad process handle. ");
+        throw ExceptionC("Apply(), Bad process handle. ");
       if(dat.Size() != 1)
-	throw ExceptionC("Apply(), Wrong number of args. ");
+        throw ExceptionC("Apply(), Wrong number of args. ");
       return RCWrapC<OutT>(p.Apply(RCWrapC<InT>(dat[0],true).Data())).Abstract();
     }
     //: Apply process using abstract data handle.

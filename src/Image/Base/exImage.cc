@@ -36,7 +36,7 @@ int main(int nargs,char **argv) {
   
   // Load an image from a file.
   
-  if(!Load(inf,image)) {
+  if(!RavlN::Load(inf,image)) {
     cerr << "Failed to load file '" << inf << "' \n";
     return 1;
   }
@@ -51,7 +51,7 @@ int main(int nargs,char **argv) {
   
   // Load a second image.
   ImageC<ByteT> image2;
-  if(!Load(inf2,image2)) {
+  if(!RavlN::Load(inf2,image2)) {
     cerr << "Failed to load file '" << inf2 << "' \n";
     return 1;
   }
@@ -70,7 +70,7 @@ int main(int nargs,char **argv) {
   
   // Save image to a file.
   
-  if(!Save(outf,image)) {
+  if(!RavlN::Save(outf,image)) {
     cerr << "Failed to save to file '" << inf << "' \n";
     return 1;
   }

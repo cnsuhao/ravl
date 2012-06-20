@@ -95,6 +95,8 @@ namespace RavlN {
                                           const DListC<ObservationC> &obsList) const
     { return Body().ObservationCompatibility(stateVec,obsList); }
     //: Returns  list of booleans indicating which observations are compatible with the given state parameters
+    // Thus the number of true entries in the list corresponds to the size of the CompatibleObservations list.
+
   };
 
 }

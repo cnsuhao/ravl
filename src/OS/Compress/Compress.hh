@@ -8,6 +8,7 @@
 #define RAVL_COMPRESS_HEADER 1
 //! docentry="Ravl.API.OS.Compression"
 //! author="Charles Galambos"
+//! lib=RavlZLib
 
 #include "Ravl/SArray1d.hh"
 #include "Ravl/String.hh"

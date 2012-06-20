@@ -1,3 +1,10 @@
+// This file is part of RAVL, Recognition And Vision Library 
+// Copyright (C) 2012, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+//! lib=RavlGeneticOptimisation
 
 
 #include "Ravl/Genetic/Genome.hh"
@@ -8,6 +15,7 @@
 #include "Ravl/Genetic/GenomeShare.hh"
 #include "Ravl/Genetic/GeneTypeWeightedMeta.hh"
 #include "Ravl/Genetic/GeneTypeFloatGauss.hh"
+#include "Ravl/Genetic/GeneTypeBool.hh"
 #include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/UnitTest.hh"
@@ -17,6 +25,7 @@
 int testGenomeIO();
 int testGeneIntIO();
 int testGeneFloatIO();
+int testGeneBoolIO();
 int testGeneFloatGaussIO();
 int testGeneClassIO();
 int testGeneTypeEnumIO();
@@ -33,6 +42,7 @@ int main(int nargs,char **argv)
   RAVL_RUN_TEST(testGeneIntIO());
   RAVL_RUN_TEST(testGeneFloatIO());
   RAVL_RUN_TEST(testGeneFloatGaussIO());
+  RAVL_RUN_TEST(testGeneBoolIO());
   RAVL_RUN_TEST(testGeneClassIO());
   RAVL_RUN_TEST(testGeneTypeEnumIO());
   RAVL_RUN_TEST(testGeneTypeMetaIO());
@@ -50,6 +60,8 @@ using RavlN::GeneticN::GeneC;
 using RavlN::GeneticN::GeneTypeC;
 using RavlN::GeneticN::GeneTypeIntC;
 using RavlN::GeneticN::GeneIntC;
+using RavlN::GeneticN::GeneTypeBoolC;
+using RavlN::GeneticN::GeneBoolC;
 using RavlN::GeneticN::GeneTypeFloatC;
 using RavlN::GeneticN::GeneFloatC;
 using RavlN::GeneticN::GeneTypeClassC;
@@ -78,6 +90,29 @@ int testGeneIntIO()
 
   GeneIntC::RefT gene = new GeneIntC(*geneType,5);
   GeneIntC::RefT geneRL;
+
+  if(!TestBinStreamIO(gene,geneRL))
+    return __LINE__;
+
+  RAVL_TEST_EQUALS(gene->Value(),geneRL->Value());
+  RAVL_TEST_EQUALS(gene->Type().Name(),geneType->Name());
+
+  return 0;
+}
+
+int testGeneBoolIO()
+{
+  GeneTypeBoolC::RefT geneType = new GeneTypeBoolC("igloo",0.76);
+  GeneTypeBoolC::RefT geneTypeRL;
+
+  if(!TestBinStreamIO(geneType,geneTypeRL))
+    return __LINE__;
+
+  RAVL_TEST_EQUALS(geneType->Name(),geneTypeRL->Name());
+  RAVL_TEST_EQUALS(geneType->Bias(),geneTypeRL->Bias());
+
+  GeneBoolC::RefT gene = new GeneBoolC(*geneType,true);
+  GeneBoolC::RefT geneRL;
 
   if(!TestBinStreamIO(gene,geneRL))
     return __LINE__;

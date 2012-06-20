@@ -243,6 +243,16 @@ namespace RavlN {
     //: Access generic attribute.
     // Return true if non default value has been specified.
     
+    bool HasAttribute(const StringC &name) const
+    {
+      if(XMLNode().HasAttribute(name)) {
+        UseAttribute(name);
+        return true;
+      }
+      return false;
+    }
+    //: Test if attribute is set.
+
     const RavlN::HSetC<RavlN::StringC> &UseAttributes() const
     { return m_usedAttributes; }
     //: Access set of used attributes.
@@ -397,7 +407,11 @@ namespace RavlN {
     { return INode().Attribute(name,value,defaultValue); }
     //: Access generic attribute.
     // Return true if non default value has been specified.
-    
+
+    bool HasAttribute(const StringC &name) const
+    { return INode().HasAttribute(name); }
+    //: Is a named attribute set ?
+
     XMLFactoryC &Factory() const;
     //: Access handle to associated factory.
 
@@ -417,7 +431,7 @@ namespace RavlN {
                       bool suppressErrorMessages = false,
                       const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
-    // This will search parent context's succesively up the tree until a
+    // This will search parent context's successively up the tree until a
     // component with a matching name is found.
 
     template<class DataT>
@@ -434,7 +448,7 @@ namespace RavlN {
                       bool suppressErrorMessages = false,
                       const std::type_info &defaultType=typeid(void)) const;
     //: Get named component, or create it if not found.
-    // This will search parent context's succesively up the tree until a
+    // This will search parent context's successively up the tree until a
     // component with a matching name is found.
 
     bool UseChildComponent(const StringC &name,
@@ -496,6 +510,8 @@ namespace RavlN {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
         return false;
+      if(!list.IsValid())
+        list = CollectionC<DataT>(childContext.Children().Size());
       for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
         DataT value;
         if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {

@@ -176,14 +176,14 @@ namespace RavlAudioN {
     //: Constructor.
     // sigType - Type of window to use. <br>
     // frameSize - Size of output frame in samples.<br>
-    // frameSeperation - Seperation of successive frames in samples.<br>
+    // frameSeperation - Separation of successive frames in samples.<br>
     
     WindowSignalC(const SArray1dC<FilterT> &filter,UIntT frameSeperation)
       : DPEntityC(*new WindowSignalBodyC<InT,OutT,FilterT>(filter,frameSeperation))
     {}
     //: Constructor.
     // nfilter - Filter to use. <br>
-    // frameSeperation - Seperation of successive frames in samples.
+    // frameSeperation - Separation of successive frames in samples.
     
   protected:
     WindowSignalBodyC<InT,OutT,FilterT> &Body()

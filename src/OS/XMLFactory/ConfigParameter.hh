@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/OS/XMLFactory/ConfigParameter.hh"
-//! lib = Ravl
+//! lib=RavlXMLFactory
 //! docentry = "Ravl.API.Core.IO.XMLFactory"
 
 #ifndef RAVL_CONFIGPARAMETER_HEADER

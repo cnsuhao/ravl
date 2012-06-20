@@ -52,7 +52,7 @@ namespace RavlN {
     //: Returns array of booleans to indicate sample compatibility.
     // The array indicates which of the samples used in the FitModelRobust() method was compatible with the fit.<br>
     // The method is only valid after the  FitModelRobust() method is called.
-  private:
+  protected:
     RealT zh1, zh2; // 3rd homogeneous coordinates of planes on which points lie
     DListC<bool> inliers;
   };

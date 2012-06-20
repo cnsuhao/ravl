@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ///////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlIO
 //! file="Ravl/Core/IO/FileFormatBinStream.cc"
 
@@ -18,9 +17,9 @@ namespace RavlN {
   
   // Some basic file types.
   
-  FileFormatBinStreamC<RealT>   FileFormatBinStream_RealT;
-  FileFormatBinStreamC<IntT>    FileFormatBinStream_IntT;
-  FileFormatBinStreamC<UIntT>   FileFormatBinStream_UIntT;
-  FileFormatBinStreamC<StringC> FileFormatBinStream_StringC;
-  FileFormatBinStreamC<ByteT>   FileFormatBinStream_ByteT;
+  static FileFormatBinStreamC<RealT>   FileFormatBinStream_RealT;
+  static FileFormatBinStreamC<IntT>    FileFormatBinStream_IntT;
+  static FileFormatBinStreamC<UIntT>   FileFormatBinStream_UIntT;
+  static FileFormatBinStreamC<StringC> FileFormatBinStream_StringC;
+  static FileFormatBinStreamC<ByteT>   FileFormatBinStream_ByteT;
 }

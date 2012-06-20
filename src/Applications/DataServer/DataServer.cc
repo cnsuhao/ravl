@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServer.hh"
 #include "Ravl/CallMethods.hh"
@@ -38,10 +39,7 @@ namespace RavlN {
   {
     SetUnregisterOnDisconnect(true);
 
-    if(!factory.UseChildComponent("Root",m_vfs.Data(),false,typeid(DataServerVFSNodeC))) {
-      // Setup root VFS node.
-      m_vfs.Data() = DataServerVFSNodeC("","",false,true);
-    }
+    ReadConfig(factory);
 
     // Set up delete signal
     m_connectionSet += ConnectPtr(m_signalNodeClosed, CBRefT(this), &DataServerBodyC::OnClose);
@@ -68,8 +66,10 @@ namespace RavlN {
   
   bool DataServerBodyC::Open(const StringC &addr) {
     StringC empty;
-    if (IsOpen())
+    if (IsOpen()) {
+      ONDEBUG(RavlDebug("DataServer already open '%s' on '%s' ",addr.data(),name.c_str()));
       return true;
+    }
     RavlDebug("DataServer opening '%s'",addr.data());
     
     RegisterIPortRequestManager(TriggerR(*this,&DataServerBodyC::HandleRequestIPort,empty,empty,NetISPortServerBaseC()));
@@ -78,6 +78,81 @@ namespace RavlN {
     return NetPortManagerBodyC::Open(addr);
   }
   
+  //: Read XML configuration.
+
+  bool DataServerBodyC::ReadConfig(const XMLFactoryContextC &factory) {
+    MutexLockC lock(m_access);
+
+    //: Configure the root node.
+
+    BlkQueueC<Tuple2C<XMLFactoryContextC,HashTreeC<StringC,DataServerVFSNodeC> > > toDo;
+    XMLFactoryContextC rootFactory;
+    if(!factory.ChildContext("Root",rootFactory)) {
+      RavlWarning("No VFS configuration found in '%s' ",factory.Path().c_str());
+      return false;
+    }
+
+    if(!factory.UseChildComponent("Root",m_vfs.Data(),false,typeid(DataServerVFSNodeC))) {
+      // Setup root VFS node.
+      //m_vfs.Data() = DataServerVFSNodeC("","",false,true);
+      return false;
+    }
+
+    RavlAssert(m_vfs.IsValid());
+    toDo.InsLast(Tuple2C<XMLFactoryContextC,HashTreeC<StringC,DataServerVFSNodeC> >(rootFactory,m_vfs));
+
+    while(!toDo.IsEmpty()) {
+      // Get next thing.
+      Tuple2C<XMLFactoryContextC,HashTreeC<StringC,DataServerVFSNodeC> > at = toDo.GetFirst();
+      ONDEBUG(RavlDebug("Reading config from '%s' ",at.Data1().Path().c_str()));
+      // Configure it.
+      RavlAssert(at.Data2().Data().IsValid());
+      //at.Data2().Data().Configure(at.Data1());
+
+      // Any children ?
+
+      DListC<XMLTreeC> children = at.Data1().Children();
+      if(!at.Data2().Data().IsDirectory() && !children.IsEmpty()) {
+        RavlError("ReadConfig, SubSection's in non directory object '%s' ",at.Data1().Name().c_str());
+        continue;
+      }
+
+      for(DLIterC<XMLTreeC> it(children);it;it++) {
+        DataServerVFSNodeC node;
+        if(!at.Data1().UseChildComponent(it->Name(),node)) {
+          RavlWarning("Illegal node '%s' found  in '%s'. ",it->Name().c_str(),at.Data1().Path().c_str());
+          continue;
+        }
+
+        RavlAssert(node.IsValid());
+        node.SetCloseSignal(m_signalNodeClosed);
+        node.SetDeleteSignal(m_signalNodeRemoved);
+
+        // Add new node into tree.
+        if(!at.Data2().Add(it->Name(),node)) {
+          RavlError("ReadConfig, WARNING: Duplicate node entry '%s' at '%s'  ",it->Name().c_str(),at.Data1().Path().c_str());
+          continue;
+        }
+
+        // Retrieve new node entry.
+        HashTreeC<StringC,DataServerVFSNodeC>  entry;
+        at.Data2().Child(it->Name(),entry); // Lookup new child in tree.
+        RavlAssert(entry.IsValid());
+
+        XMLFactoryContextC subSection;
+        if(!at.Data1().ChildContext(it->Name(),subSection)) {
+          RavlAssertMsg(0,"Internal error.");
+          continue;
+        }
+
+        // Put it on the todo list.
+        toDo.InsLast(Tuple2C<XMLFactoryContextC,HashTreeC<StringC,DataServerVFSNodeC> >(subSection,entry));
+      }
+    }
+
+    return true;
+  }
+
   //: Read a new config file.
   // Build Virtual File System appropriately.
   
@@ -166,20 +241,27 @@ namespace RavlN {
   // Returns true if node found successfully.
   
   bool DataServerBodyC::FindVFSNode(const StringC &vfilename,HashTreeNodeC<StringC,DataServerVFSNodeC> &vfs,DListC<StringC> &remainingPath) {
+    ONDEBUG(RavlDebug("FindVFSNode Filename='%s' IsLeaf=%d ",vfilename.c_str(),m_vfs.IsLeaf()));
     StringListC path(vfilename,"/");
     HashTreeNodeC<StringC,DataServerVFSNodeC> at = m_vfs;
+    RavlAssert(at.IsValid());
     DLIterC<StringC> it(path);
     for(;it && !at.IsLeaf();it++) {
+      ONDEBUG(RavlDebug("Looking for '%s' .",it->c_str()));
       // Is this a node in the tree with children ?
       HashTreeC<StringC,DataServerVFSNodeC> ht(at);
       RavlAssert(ht.IsValid()); // No children.
-      if(!ht.Child(*it,at))
+      if(!ht.Child(*it,at)) {
+        ONDEBUG(RavlDebug("Child %s not found.",it->c_str()));
         break; // Child not found.
+      }
     }
     
     // There can only be a remainder in the path if the last node in the tree is a directory.
-    if(!at.Data().IsDirectory() && it)
+    if(!at.Data().IsDirectory() && it) {
+      RavlWarning("Incomplete path given '%s'. Final node '%s' ",vfilename.c_str(),at.Data().Name().c_str());
       return false;
+    }
     
     // Retrieve node of interest.
     vfs = at;
@@ -189,7 +271,7 @@ namespace RavlN {
       remainingPath = it.InclusiveTail();
     else
       remainingPath.Empty();
-    ONDEBUG(cerr << "DataServerBodyC::FindVFSNode, '" << vfilename << "' -> '" << vfs.Data().Name() << "' PathSize=" << remainingPath.Size() << "\n");
+    ONDEBUG(RavlDebug("FindVFSNode, complete '%s' -> '%s' PathSize=%u ",vfilename.c_str(),vfs.Data().Name().c_str(),(unsigned) remainingPath.Size().V()));
     return true;
   }
 
@@ -207,6 +289,7 @@ namespace RavlN {
 
   bool DataServerBodyC::AddNode(const StringC& path, const StringC& nodeType, const HashC<StringC, StringC>& options)
   {
+    ONDEBUG(RavlDebug("AddNode path=%s ",path.c_str()));
     MutexLockC lock(m_access);
 
     HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode;
@@ -308,6 +391,7 @@ namespace RavlN {
 
   bool DataServerBodyC::RemoveNode(const StringC& path, bool removeFromDisk)
   {
+    ONDEBUG(RavlDebug("RemoveNode path=%s ",path.c_str()));
     MutexLockC lock(m_access);
 
     HashTreeNodeC<StringC, DataServerVFSNodeC> foundNode = m_vfs;
@@ -423,7 +507,7 @@ namespace RavlN {
           return foundNode.Data().QueryNodeSpace(remainingPath.Cat("/"), total, used, available);
         }
 
-        cerr << "DataServerBodyC::QueryNodeSpace failed to find node '" << path << "'" << endl;
+        RavlError("DataServerBodyC::QueryNodeSpace failed to find node '%s'",path.c_str());
         break;
       }
     }
@@ -434,14 +518,14 @@ namespace RavlN {
   //: Handle a request for an input port.
   
   bool DataServerBodyC::HandleRequestIPort(StringC name,StringC dataType,NetISPortServerBaseC &port) {
-    ONDEBUG(cerr << "DataServerBodyC::HandleRequestIPort, Name=" << name << " Type=" << dataType << "\n");
+    ONDEBUG(RavlDebug("HandleRequestIPort, Name=%s Type=%s ",name.c_str(),dataType.c_str()));
     
     MutexLockC lock(m_access);
 
     HashTreeNodeC<StringC,DataServerVFSNodeC> foundNode;
     DListC<StringC> remainingPath;
     if(!FindVFSNode(name,foundNode,remainingPath)) {
-      cerr << "DataServerBodyC::HandleRequestIPort, Failed to find VFSNode for '" << name << "'\n";
+      RavlError("HandleRequestIPort, Failed to find VFSNode for '%s'",name.c_str());
       return false;
     }
 
@@ -449,7 +533,7 @@ namespace RavlN {
 
     RavlAssert(foundNode.IsValid());
     if(!foundNode.Data().OpenIPort(remainingPath,dataType,port)) {
-      cerr << "DataServerBodyC::HandleRequestIPort, Failed to open file '" << name << "'\n";
+      RavlError("HandleRequestIPort, Failed to open file '%s' ",name.c_str());
       return false;
     }
     return true;
@@ -458,14 +542,14 @@ namespace RavlN {
   //: Handle a request for an output port.
   
   bool DataServerBodyC::HandleRequestOPort(StringC name,StringC dataType,NetOSPortServerBaseC &port) {
-    ONDEBUG(cerr << "DataServerBodyC::HandleRequestOPort, Name=" << name << " Type=" << dataType << "\n");
+    ONDEBUG(RavlDebug("HandleRequestOPort, Name=%s Type=%s ",name.c_str(),dataType.c_str()));
     
     MutexLockC lock(m_access);
 
     HashTreeNodeC<StringC,DataServerVFSNodeC> foundNode;
     DListC<StringC> remainingPath;
     if(!FindVFSNode(name,foundNode,remainingPath)) {
-      cerr << "DataServerBodyC::HandleRequestIPort, Failed to find VFSNode for '" << name << "'\n";
+      RavlError("HandleRequestIPort, Failed to find VFSNode for '%s'",name.c_str());
       return false;
     }
 
@@ -493,7 +577,7 @@ namespace RavlN {
 
   bool DataServerBodyC::OnCloseOrDelete(StringC &path, bool onDelete)
   {
-    ONDEBUG(cerr << "DataServerBodyC::OnCloseOrDelete path (" << path << ") action (" << (onDelete ? "delete" : "close") << ")" << endl);
+    ONDEBUG(RavlDebug("OnCloseOrDelete path (%s) action (%s)",path.c_str(),(onDelete ? "delete" : "close")));
 
     MutexLockC lock(m_access);
 
@@ -501,7 +585,7 @@ namespace RavlN {
     DListC<StringC> remainingPath;
     if (FindVFSNode(path, foundNode, remainingPath))
     {
-      ONDEBUG(cerr << "DataServerBodyC::OnCloseOrDelete found node for path (" << path << ")" << endl);
+      ONDEBUG(RavlDebug("OnCloseOrDelete found node for path (%s)",path.c_str()));
 
       lock.Unlock();
 
@@ -522,7 +606,7 @@ namespace RavlN {
 
   bool DataServerBodyC::PruneRemovedNodes(StringC &path)
   {
-    ONDEBUG(cerr << "DataServerBodyC::PruneRemovedNodes path (" << path << ")" << endl);
+    ONDEBUG(RavlDebug("DataServerBodyC::PruneRemovedNodes path (%s)",path.c_str()));
 
     MutexLockC lock(m_access);
 
@@ -540,10 +624,10 @@ namespace RavlN {
 
         if (foundNode.Data().IsDirectory() && foundNode.Data().RemovePending() && !foundNode.Data().PortsOpen())
         {
-          ONDEBUG(cerr << "DataServerBodyC::PruneRemovedNodes removing node from tree (" << path << ")" << endl);
+          ONDEBUG(RavlDebug("PruneRemovedNodes removing node from tree (%s)",path.c_str()));
           if (!vfsTree.Remove(*pathListIter))
           {
-            cerr << "DataServerBodyC::PruneRemovedNodes failed to remove node from tree '" << path << "'" << endl;
+            RavlError("PruneRemovedNodes failed to remove node from tree '%s' ",path.c_str());
             break;
           }
 

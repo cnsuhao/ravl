@@ -6,7 +6,7 @@
 // file-header-ends-here
 //////////////////////////////////////////////////
 //! file = "Ravl/Contrib/LibGd/Gd.cc"
-//! lib = RavlImgGd
+//! lib=RavlImgGd
 //! author = "Warren Moore"
 
 #include "Ravl/Image/Gd.hh"

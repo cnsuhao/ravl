@@ -53,7 +53,7 @@ namespace RavlN {
     steps /= domain.Steps().Size();
     if(steps < 3) steps = 3; // Check there;s actually some space to optimise in.
     
-    //Point in full space to evaulate is given by: _point + _direction * X[0];  Where X[0] is the paramiter we're optimising.
+    //Point in full space to evaluate is given by: _point + _direction * X[0];  Where X[0] is the paramiter we're optimising.
     parameters1d.Setup(0,min,max,steps);
   }
   
@@ -101,7 +101,7 @@ namespace RavlN {
 	// Minimise along line.
 	
         RealT fPlast = minimumCost;
-        CostFunction1dC cost1d(parameters1d, // Limits for paramiters.
+        CostFunction1dC cost1d(parameters1d, // Limits for parameters.
                                domain,       // Cost function we're trying to minimise.
                                P,            // Current best position.
                                *it           // Direction we wish to optimise along.

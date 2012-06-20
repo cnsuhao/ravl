@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/OS/XMLFactory/ConfigParameter.cc"
-//! lib = Ravl
+//! lib=RavlXMLFactory
 
 #include "Ravl/ConfigParameter.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -36,7 +36,7 @@ namespace RavlN
       return false;
     }
     RavlN::ConfigParameterStringC::RefT paramStr;
-    if(!factory.UseComponent(name,paramStr)) {
+    if(!factory.UseChildComponent(name,paramStr)) {
       RavlError("Failed to setup '%s'.",name.data());
       return false;
     }

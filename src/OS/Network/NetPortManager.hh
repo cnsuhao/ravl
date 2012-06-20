@@ -77,7 +77,7 @@ namespace RavlN {
     bool Unregister(const StringC &name,bool isInput);
     //: Unregister port.
     
-    bool Open(const StringC &addr);
+    virtual bool Open(const StringC &addr);
     //: Open manager at address.
     
     bool Close();

@@ -51,8 +51,8 @@ namespace RavlAudioN {
       RealT i = 0.5;
       ONDEBUG(cerr << it.Index() << " Freq=" << freq << "\n");
       for(SArray1dIterC<RealT> fit(coeff);fit;fit++,i++) {
-	*fit = Cos(freq * i);
-	ONDEBUG(cerr << " " << *fit );
+        *fit = Cos(freq * i);
+        ONDEBUG(cerr << " " << *fit );
       }
       *it = coeff;
       ONDEBUG(cerr << "\n");
@@ -66,9 +66,9 @@ namespace RavlAudioN {
     SArray1dC<RealT> logSpec(melSpectrum);
     for(SArray1dIter2C<RealT,RealT> sit(logSpec,melSpectrum);sit;sit++) {
       if(sit.Data2() > 0)
-	sit.Data1() = Log(sit.Data2());
+        sit.Data1() = Log(sit.Data2());
       else
-	sit.Data1() = -1.0e+6;
+        sit.Data1() = -1.0e+6;
     }
     
     for(SArray1dIter2C<RealT,SArray1dC<RealT> > it(ret,filters);it;it++) {
@@ -79,7 +79,7 @@ namespace RavlAudioN {
       fit++;
 #endif
       for(;fit;fit++)
-	sum += fit.Data1() * fit.Data2();
+        sum += fit.Data1() * fit.Data2();
       it.Data1() = sum;
     }
     return ret;

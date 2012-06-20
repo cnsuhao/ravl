@@ -48,7 +48,7 @@ namespace RavlN { namespace GeneticN {
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Access values in enumeration.
     const std::vector<GeneC::ConstRefT> &Values() const
@@ -99,7 +99,7 @@ namespace RavlN { namespace GeneticN {
      virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
      //! Mutate a gene
-     virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Access list of types
      const std::vector<GeneTypeC::ConstRefT> &Types() const

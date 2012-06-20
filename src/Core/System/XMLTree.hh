@@ -164,6 +164,9 @@ namespace RavlN {
     bool AttributeBool(const StringC &name,bool defaultValue = false) const ;
     //: Access attribute.
     
+    bool HasAttribute(const StringC &name) const;
+    //: Test if attribute is set.
+
     template<typename DataT>
     bool Attribute(const StringC &name,DataT &data,const DataT &defaultValue = DataT()) const {
       const StringC *value = Data().Lookup(name);
@@ -382,7 +385,11 @@ namespace RavlN {
     { return Body().Attribute(name,value,defaultValue); }
     //: Access generic attribute.
     // Return true if non default value has been specified.
-    
+
+    bool HasAttribute(const StringC &name) const
+    { return Body().HasAttribute(name); }
+    //: Test if attribute is set.
+
     StringC Content() const
     { return Body().Content(); } 
     //: Access content of tag (if any)

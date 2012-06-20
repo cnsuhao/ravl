@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/DVDRead/DVDRead.hh"
-//! lib = RavlDVDRead
+//! lib=RavlDVDRead
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Images.Video.Video IO.LibDVDRead"
 //! example = "exDVDRead.cc;exDVDMPEG2.cc"

@@ -8,7 +8,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/Python/Python.hh"
-//! lib = RavlPython
+//! lib=RavlPython
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Python"
 //! example = "exPython.cc;exPythonThreaded.cc"

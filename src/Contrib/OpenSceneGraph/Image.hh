@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/OpenSceneGraph/Image.hh"
-//! lib = RavlGUIOpenSceneGraph
+//! lib=RavlGUIOpenSceneGraph
 //! author = "Warren Moore"
 //! docentry = "Ravl.API.Graphics.OpenSceneGraph"
 //! example = "exOpenSceneGraphWidget.cc"

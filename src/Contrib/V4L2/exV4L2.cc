@@ -38,8 +38,10 @@ template <class PixelT> int process(IntT frames, const StringC &iname, const Str
   }
 
   // Set some attributes
-  ip.SetAttr("width",  720);
-  ip.SetAttr("height", 576);
+#if 0
+  ip.SetAttr("width",  640);
+  ip.SetAttr("height", 480);
+#endif
   
   // Frame capture loop
   bool seq = (frames > 0);

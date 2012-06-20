@@ -1,6 +1,7 @@
 // This file is part of OmniSoft, Pattern recognition software
 // Copyright (C) 2009, OmniPerception Ltd.
 // file-header-ends-here
+//! lib=RavlPatternRec
 
 #include "Ravl/UnitTest.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"

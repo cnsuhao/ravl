@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/OpenSceneGraph/exOpenSceneGraphWidget.cc"
-//! lib = RavlGUIOpenSceneGraph
+//! lib=RavlGUIOpenSceneGraph
 //! author = "Warren Moore"
 
 #include "Ravl/GUI/Manager.hh"

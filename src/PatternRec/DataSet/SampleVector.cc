@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/SampleVector.cc"
 
@@ -28,7 +27,9 @@ namespace RavlN {
   //: Construct from a sample of floats.
 
   SampleVectorC::SampleVectorC(const SampleC<TVectorC<float> > &svec, const SArray1dC<FieldInfoC> & fieldInfo)
-      : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
+      : SampleC<VectorC>(svec.Size()),
+        m_fieldInfo(fieldInfo)
+  {
     for (DArray1dIterC<TVectorC<float> > it(svec.DArray()); it; it++)
       Append(VectorC(*it));
   }
@@ -36,9 +37,11 @@ namespace RavlN {
   //: Construct a new sample set with a reduced set of features
 
   SampleVectorC::SampleVectorC(const SampleC<VectorC> &svec,
-      const SArray1dC<IndexC> &featureSet,
-      const SArray1dC<FieldInfoC> & fieldInfo)
-      : SampleC<VectorC>(svec.Size()), m_fieldInfo(fieldInfo) {
+                                const SArray1dC<IndexC> &featureSet,
+                                const SArray1dC<FieldInfoC> & fieldInfo)
+      : SampleC<VectorC>(svec.Size()),
+        m_fieldInfo(fieldInfo)
+  {
     UIntT numFeatures = featureSet.Size();
     for (DArray1dIterC<VectorC> it(svec.DArray()); it; it++) {
       VectorC out(numFeatures);
@@ -50,7 +53,8 @@ namespace RavlN {
   }
 
   SampleVectorC::SampleVectorC(const MeanCovarianceC & meanCovariance)
-      : SampleC<VectorC>(Floor(meanCovariance.Number())) {
+      : SampleC<VectorC>(Floor(meanCovariance.Number()))
+  {
     // Random number generator
     RandomGaussC random;
 
@@ -211,7 +215,7 @@ namespace RavlN {
     return ret;
   }
 
-  //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
+  //: Compute the sum of the outer products weighting each with the corresponding value from 'w'.
   // sam2 must have the same size as this sample vector.
 
   MatrixC SampleVectorC::TMul(const SampleC<VectorC> &sam2, const SampleC<RealT> &w) const {
@@ -228,8 +232,10 @@ namespace RavlN {
   }
 
   void SampleVectorC::Normalise(const MeanCovarianceC & stats) {
-    if (Size() < 2)
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
       return; // Can't normalise only 1 sample!
+    }
     UIntT d = VectorSize();
     VectorC stdDev(d);
     for (UIntT i = 0; i < d; i++) {
@@ -249,8 +255,10 @@ namespace RavlN {
   //: Undo the normalisation done by 'Normalise()'.
 
   void SampleVectorC::UndoNormalisation(const MeanCovarianceC & stats) {
-    if (Size() < 2)
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
       return; // Can't normalise only 1 sample!
+    }
     UIntT d = VectorSize();
     VectorC stdDev(d);
     for (UIntT i = 0; i < d; i++) {
@@ -266,8 +274,16 @@ namespace RavlN {
       *it = (*it * stdDev) + stats.Mean();
   }
 
-  FuncMeanProjectionC SampleVectorC::NormalisationFunction(const MeanCovarianceC & stats) const {
-
+  //: Normalises the input vectors using given stats.
+  // In order to achieve zero mean and unity variance this function should be
+  // called with the return value from MeanCovariance. Subsequent data sets can
+  // then be normalised the same way by recording the MeanCovarianceC returned by
+  // MeanCovariance.
+  void SampleVectorC::Normalise(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool addBiasElement) const {
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
+      return; // Can't normalise only 1 sample!
+    }
     UIntT d = VectorSize();
     VectorC stdDev(d);
     for (UIntT i = 0; i < d; i++) {
@@ -276,82 +292,53 @@ namespace RavlN {
       else
         stdDev[i] = stats.Mean()[i];
     }
-
     for (UIntT i = 0; i < d; i++)
       stdDev[i] = Sqrt(stdDev[i]);
     stdDev.Reciprocal();
 
-    MatrixC proj(d, d);
-    proj.Fill(0.0);
-    proj.SetDiagonal(stdDev);
-
-    FuncMeanProjectionC func(stats.Mean(), proj);
-
-    return func;
-
+    if(addBiasElement) {
+      VectorC bias(1);
+      bias[0] = 1;
+      for (SampleIterC<VectorC> it(*this); it; it++) {
+        VectorC input = (*it - stats.Mean()) * stdDev;
+        sampleVector.Append(bias.Join(input));
+      }
+    } else {
+      for (SampleIterC<VectorC> it(*this); it; it++)
+        sampleVector.Append((*it - stats.Mean()) * stdDev);
+    }
   }
 
   //: Undo the normalisation done by 'Normalise()'.
-
-  FuncLinearC SampleVectorC::UndoNormalisationFunction(const MeanCovarianceC & stats) {
-
+  void SampleVectorC::UndoNormalisation(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool removeBiasElement) const {
+    if (stats.Number() < 2) {
+      RavlAssertMsg(0,"Degerate stat's");
+      return; // Can't normalise only 1 sample!
+    }
     UIntT d = VectorSize();
-    MatrixC stdDev(d, d);
-    stdDev.Fill(0.0);
+    VectorC stdDev(d);
     for (UIntT i = 0; i < d; i++) {
       if (stats.Covariance()[i][i] > 0)
-        stdDev[i][i] = stats.Covariance()[i][i];
+        stdDev[i] = stats.Covariance()[i][i];
       else
-        stdDev[i][i] = stats.Mean()[i];
+        stdDev[i] = stats.Mean()[i];
     }
     for (UIntT i = 0; i < d; i++)
-      stdDev[i][i] = Sqrt(stdDev[i][i]);
-    return FuncLinearC(stdDev, stats.Mean());
+      stdDev[i] = Sqrt(stdDev[i]);
 
+    if(removeBiasElement) {
+      for (SampleIterC<VectorC> it(*this); it; it++) {
+        sampleVector.Append((VectorC((*it).From(1)) * stdDev) + stats.Mean());
+      }
+    } else {
+      for (SampleIterC<VectorC> it(*this); it; it++) {
+        sampleVector.Append((*it * stdDev) + stats.Mean());
+      }
+    }
   }
 
 
-  //: Scale each dimension between 0 and 1 and return function created to do this
-  void SampleVectorC::Scale(FuncLinearC & func) {
 
-    DArray1dIterC<VectorC> it(*this);
-    if (!it)
-      return;
-
-    VectorC min = it.Data().Copy();
-    VectorC max = it.Data().Copy();
-
-    for (it++; it; it++) {
-      for (SArray1dIter2C<RealT, RealT> minIt(min, *it); minIt; minIt++) {
-        if (minIt.Data2() < minIt.Data1()) {
-          minIt.Data1() = minIt.Data2();
-        }
-      }
-      for (SArray1dIter2C<RealT, RealT> maxIt(max, *it); maxIt; maxIt++) {
-        if (maxIt.Data2() > maxIt.Data1()) {
-          maxIt.Data1() = maxIt.Data2();
-        }
-      }
-    } // end data it
-
-
-    // work out transform
-    MatrixC proj(min.Size(), min.Size());
-    proj.Fill(0.0);
-    VectorC offset(min.Size());
-    for(SizeT i=0;i<min.Size();i++) {
-      proj[i][i] = 1.0 / Abs(max[i] - min[i]);
-      offset[i] = (min[i]/Abs(max[i] - min[i])) * -1.0;
-    }
-    func = FuncLinearC(proj, offset);
-
-    // Apply transform
-    for(it.First();it;it++) {
-      *it = func.Apply(*it);
-    }
-    return;
-
-  }
 
   // Set the field info
   bool SampleVectorC::SetFieldInfo(const SArray1dC<FieldInfoC> & fieldInfo) {

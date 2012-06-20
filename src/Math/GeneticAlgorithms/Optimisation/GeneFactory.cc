@@ -10,6 +10,7 @@
 
 #include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/Genetic/GenomeConst.hh"
+#include "Ravl/Genetic/GeneTypeBool.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
 #include "Ravl/BListIter.hh"
@@ -67,6 +68,7 @@ namespace RavlN { namespace GeneticN {
     GenomeC::RefT genome = new GenomeC(*aGene);
     m_scaffold = new GenomeScaffoldC(*genome);
     genome->UpdateShares(*this);
+    m_path.Push(*aGene);
   }
 
   //! Push another level on the stack.
@@ -96,6 +98,14 @@ namespace RavlN { namespace GeneticN {
       m_path.First()->AddComponent(name,*newComponent,geneType);
       component = newComponent.BodyPtr();
     }
+  }
+
+  //! Get an integer.
+  void GeneFactoryC::Get(const std::string &name,bool &value,const GeneTypeC &geneType) const {
+    GeneC::ConstRefT component;
+    GetComponent(name,component,geneType);
+    const GeneBoolC &theGene = dynamic_cast<const GeneBoolC &>(*component);
+    value = theGene.Value();
   }
 
   void GeneFactoryC::Get(const std::string &name,IntT &value,const GeneTypeC &geneType) const

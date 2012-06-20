@@ -35,8 +35,7 @@ namespace RavlN { namespace GeneticN {
      m_checkTaskId(0)
   {
     factory.UseChildComponent("Optimiser",m_optimiser);
-    if(!factory.UseComponent("Timer",m_timer,true,typeid(TimedTriggerQueueBodyC)))
-      m_timer = GlobalTriggerQueue().BodyPtr();
+    m_timer = GlobalTriggerQueue().BodyPtr();
   }
 
   //! Start service.
@@ -110,7 +109,7 @@ namespace RavlN { namespace GeneticN {
     }
     FilenameC tmpFilename = newFilename + '~';
     if(tmpFilename.Exists()) {
-      RavlWarning("Checkpoint temporay file '%s' already exists, most likely old. Removing it." ,newFilename.data());
+      RavlWarning("Checkpoint temporary file '%s' already exists, most likely old. Removing it." ,newFilename.data());
       tmpFilename.Remove();
     }
     if(!m_optimiser->SavePopulation(tmpFilename)) {

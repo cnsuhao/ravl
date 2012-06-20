@@ -1,5 +1,5 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2008, University of Surrey
+// Copyright (C) 2008-12, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
@@ -8,7 +8,7 @@
 #define RAVLGUI_DPWINDOW3DFORMAT_HEADER 1
 //////////////////////////////////////////////////////////////////////////////
 //! rcsid="$Id: DPWindowFormat.hh 5342 2006-02-02 15:37:51Z hickson $"
-//! lib=RavlDPDisplay
+//! lib=RavlDPDisplay3d
 //! file="Ravl/GUI/DPDisplay/DPWindowFormat.hh"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Graphics.3D Data Display"

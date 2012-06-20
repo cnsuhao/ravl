@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_SAMPLEVECTOR_HEADER
 #define RAVL_SAMPLEVECTOR_HEADER 1
-//! rcsid="$Id$"
 //! author="Kieron Messer"
 //! docentry="Ravl.API.Pattern Recognition.Data Set"
 //! lib=RavlPatternRec
@@ -101,19 +100,29 @@ namespace RavlN {
     // sam2 must have the same size as this sample vector.
     
     void Normalise(const MeanCovarianceC & stats);
-    //: Normalises the input vectors using given stats
+    //: Normalises the input vectors using given stats, in place
     // In order to achieve zero mean and unity variance this function should be
     // called with the return value from MeanCovariance. Subsequent data sets can
     // then be normalised the same way by recording the MeanCovarianceC returned by
     // MeanCovariance.
     
     void UndoNormalisation(const MeanCovarianceC & stats);
-    //: Undo the normalisation done by 'Normalise()'.
+    //: Undo the normalisation done by 'Normalise()', in place.
+
+    void Normalise(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool addBiasElement = false) const;
+    //: Normalises the input vectors using given stats, append results to sampleVector
+    // In order to achieve zero mean and unity variance this function should be
+    // called with the return value from MeanCovariance. Subsequent data sets can
+    // then be normalised the same way by recording the MeanCovarianceC returned by
+    // MeanCovariance.
     
+    void UndoNormalisation(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool removeBiasElement = false) const;
+    //: Undo the normalisation done by 'Normalise()', append results to sampleVector
+
     FuncMeanProjectionC NormalisationFunction(const MeanCovarianceC & stats) const;
     //: Get the function used for the normalisation
 
-    FuncLinearC UndoNormalisationFunction(const MeanCovarianceC & stats);
+    FuncLinearC UndoNormalisationFunction(const MeanCovarianceC & stats) const;
      //: Get the function used to un-normalise the data
 
     void Scale(FuncLinearC & func);

@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! rcsid="$Id$"
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServer.hh"
 #include "Ravl/Option.hh"

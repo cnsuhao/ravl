@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERVFSNODE_HEADER
 #define RAVL_DATASERVERVFSNODE_HEADER 1
+//! lib=RavlDataServer
 
 #include "Ravl/String.hh"
 #include "Ravl/RCHandleV.hh"
@@ -115,6 +116,10 @@ namespace RavlN {
     { return true; }
     //: Called when a target path is deleted.
     //!param: remainingPath - The deleted target path within the node.
+
+    void SetVerbose(bool useVerbose)
+    { verbose = useVerbose; }
+    //: Set verbose flag
 
   protected:
     StringC name;
@@ -246,6 +251,10 @@ namespace RavlN {
     { return Body().OnDelete(remainingPath); }
     //: Called when a target path is deleted.
     //!param: remainingPath - The deleted target path within the node.
+
+    void SetVerbose(bool useVerbose)
+    { return Body().SetVerbose(useVerbose); }
+    //: Use verbose logging.
 
   protected:
     DataServerVFSNodeC(DataServerVFSNodeBodyC &bod)

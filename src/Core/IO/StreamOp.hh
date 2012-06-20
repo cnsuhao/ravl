@@ -135,27 +135,27 @@ namespace RavlN {
     
     DPIStreamOpBodyC(const DPIPortC<InT> &nin)
       : DPIPortBodyC<OutT>("Out1"),
-	input(nin)
+        input(nin)
     {}
     //: Constructor.
     
     DPIStreamOpBodyC(istream &in) 
       : DPEntityBodyC(in),
-	DPIPortBodyC<OutT>(in),
-	DPStreamOpBodyC(in)
+        DPIPortBodyC<OutT>(in),
+        DPStreamOpBodyC(in)
     {}
     //: Stream constructor.
     
     DPIStreamOpBodyC(BinIStreamC &in) 
       : DPEntityBodyC(in),
-	DPIPortBodyC<OutT>(in),
-	DPStreamOpBodyC(in)
+        DPIPortBodyC<OutT>(in),
+        DPStreamOpBodyC(in)
     {}
     //: Binary stream constructor.
     
     virtual bool IsGetReady() const {
       if(!input.IsValid())
-	return false;
+        return false;
       return input.IsGetReady(); 
     }
     //: Is some data ready ?
@@ -163,7 +163,7 @@ namespace RavlN {
     
     virtual bool IsGetEOS() const {
       if(!input.IsValid())
-	return true;
+        return true;
       return input.IsGetEOS(); 
     }
     //: Has the End Of Stream been reached ?
@@ -278,7 +278,7 @@ namespace RavlN {
     
     DPOStreamOpBodyC(const DPOPortC<OutT> &nout)
       : DPOPortBodyC<InT>("In1"),
-	output(nout)
+        output(nout)
     {}
     //: Constructor.
     
@@ -291,7 +291,7 @@ namespace RavlN {
     
     virtual void PutEOS() {
       if(output.IsValid())
-	output.PutEOS();
+        output.PutEOS();
     }
     //: Put End Of Stream marker.
     

@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/GUI/GTK/FileChooserButton.cc"
-//! lib = RavlGUI
+//! lib=RavlGUI
 //! author = "Warren Moore"
 
 #include "Ravl/GUI/FileChooserButton.hh"

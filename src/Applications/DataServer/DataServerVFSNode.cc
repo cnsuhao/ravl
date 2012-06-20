@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/XMLFactoryRegister.hh"
@@ -27,7 +28,9 @@ namespace RavlN {
       verbose(factory.AttributeBool("verbose",false)),
       deletePending(false),
       removePending(false)
-  {}
+  {
+    //factory.UseComponentGroup();
+  }
 
   //: Constructor.
   
@@ -40,7 +43,7 @@ namespace RavlN {
       deletePending(false),
       removePending(false)
   {
-    ONDEBUG(std::cerr << "DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called name=" << name << " path=" << path << " isDir=" << isDir <<"\n");
+    ONDEBUG(RavlDebug("DataServerVFSNodeBodyC::DataServerVFSNodeBodyC, Called name=%s path=%s isDir=%d ",name.c_str(),path.c_str(),(int) isDir));
   }
   
   //: Configure node with given setup.
@@ -78,14 +81,14 @@ namespace RavlN {
   //: Open input port.
   
   bool DataServerVFSNodeBodyC::OpenIPort(DListC<StringC> &remainingPath,const StringC &dataType,NetISPortServerBaseC &port) {
-    cerr << "DataServerVFSNodeBodyC::OpenIPort, Not supported on '" << name << "' \n";
+    RavlError("OpenIPort, Not supported on '%s' ",name.c_str());
     return false;
   }
     
   //: Open output port.
   
   bool DataServerVFSNodeBodyC::OpenOPort(DListC<StringC> &remainingPath,const StringC &dataType,NetOSPortServerBaseC &port) {
-    cerr << "DataServerVFSNodeBodyC::OpenIPort, Not supported on '" << name << "' \n";
+    RavlError("OpenOPort, Not supported on '%s' ",name.c_str());
     return false;
   }
 

@@ -7,7 +7,6 @@
 #ifndef RAVL_MATH_HEADER
 #define RAVL_MATH_HEADER 1
 ////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Math"
 //! file="Ravl/Core/Base/Math.hh"
 //! lib=RavlCore
@@ -262,6 +261,14 @@ namespace RavlN {
     return val;
   }
   //: Limit range of values to between min and max.
+
+  inline RealT Sigmoid(const RealT z)
+  { return 1.0f / ( 1.0f + Exp(-z)); }
+  //: Compute the sigmoid of z
+
+  inline float Sigmoid(const float z)
+  { return 1.0f / ( 1.0f + Exp(-z)); }
+  //: Compute the sigmoid of z
 
 }
 

@@ -1,8 +1,7 @@
-#ifndef SARR1RANGEITER_HEADER
-#define SARR1RANGEITER_HEADER 1
+#ifndef RAVL_SARR1RANGEITER_HEADER
+#define RAVL_SARR1RANGEITER_HEADER 1
 ///////////////////////////////////////////////////
 //! docentry="Ravl.Core.Arrays.1D"
-//! rcsid="$Id$"
 //! file="amma/Contain/Array/SArray/SArray1dRangeIter.hh"
 //! lib=MSArr1
 //! author="Charles Galambos"

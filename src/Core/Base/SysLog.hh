@@ -1,5 +1,5 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2003, University of Surrey
+// Copyright (C) 2003-12, University of Surrey
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
@@ -9,7 +9,7 @@
 //! author="Charles Galambos"
 //! example=exSysLog.cc
 //! docentry="Ravl.API.OS.SysLog"
-//! lib=RavlOS
+//! lib=RavlCore
 //! file="Ravl/Core/Base/SysLog.hh"
 
 #include "Ravl/Stream.hh"
@@ -26,6 +26,12 @@ namespace RavlN {
     SYSLOG_DEBUG
   };
   
+  std::ostream &operator<<(std::ostream &strm,SysLogPriorityT priority);
+  //: Write log level to stream
+
+  std::istream &operator>>(std::istream &strm,SysLogPriorityT &priority);
+  //: Read log level from stream
+
   bool SysLogOpen(const StringC &name,bool logPid = false,bool sendStdErr = true,bool stdErrOnly = false,int facility = -1,bool logFileLine = false);
   //: Open connection to system logger.
   // Facility is set to 'LOG_USER' by default. <br>

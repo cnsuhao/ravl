@@ -28,7 +28,7 @@ PLIB=RavlThreads
 
 LIBDEPS=RavlThreadTools.def
 
-USESLIBS = RavlThreads RavlOS RavlService
+USESLIBS = RavlThreads RavlOS
 
 EXAMPLES= exSignal.cc exSignal1.cc exSignal2.cc exLaunchThread.cc testAtomicSpeed.cc
 

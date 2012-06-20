@@ -22,11 +22,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: DirectionSet distribution search optimiser implementation class.
-  //
-  // This is the implementation class of the sobol distribution search
-  // optimiser for the PatternRec toolbox. The OptimiseDirectionSetC handle
-  // class should be used.
+  //: DirectionSet .
   
   class OptimiseDirectionSetBodyC: public OptimiseBodyC
   {
@@ -57,7 +53,7 @@ namespace RavlN {
   //! userlevel=Normal
   //: DirectionSet distribution search optimisation.
   //
-  // Class for performing a search using a sobol distribution.
+  // Class for performing a search using a direction set.
   
   class OptimiseDirectionSetC: public OptimiseC
   {

@@ -42,6 +42,7 @@ RavlN::Point2dC ConvertGeneFactory2Point2d(const RavlN::GeneticN::GeneFactoryC &
   float x,y;
   factory.Get("x",x,*g_numType);
   factory.Get("y",y,*g_numType);
+  //RavlDebug("Values: %f %f ",x,y);
   return RavlN::Point2dC(x,y);
 }
 
@@ -50,13 +51,15 @@ DP_REGISTER_CONVERSION(ConvertGeneFactory2Point2d,1.0);
 
 int main(int nargs,char **argv)
 {
-  RavlN::SysLogOpen("exGeneticOptimisation");
 
   RavlN::OptionC opt(nargs,argv);
   RavlN::SetResourceRoot(opt.String("i", PROJECT_OUT, "Install location. "));
   RavlN::StringC configFile = opt.String("c", RavlN::Resource("Ravl/Genetic", "exGeneticOptimisation.xml"), "Configuration file");
   bool listConv = opt.Boolean("lc",false,"List conversions");
+  bool verbose = opt.Boolean("v",false,"Verbose logging.");
   opt.Check();
+
+  RavlN::SysLogOpen("exGeneticOptimisation",false,true,true,-1,verbose);
 
   if(listConv) {
     RavlN::PrintIOConversions(std::cout);

@@ -137,6 +137,7 @@ namespace RavlN {
                                  bool restrictToXMLTree,
                                  bool verbose)
   {
+    m_usedAttributes += name;
     if(FindChild(name,child)) {
       RavlAssert(child.IsValid());
       return true;
@@ -567,7 +568,7 @@ namespace RavlN {
       m_configRoot.Dump(std::cerr);
     }
     m_checkConfig = m_configTree.AttributeBool("checkConfig",false);
-    RavlSysLogf(SYSLOG_DEBUG,"Enabled check config:%d ",(int) m_checkConfig);
+    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Enabled check config:%d ",(int) m_checkConfig));
   }
   
   //! Read config file.
@@ -685,12 +686,14 @@ namespace RavlN {
     if(!loadFilename.IsEmpty()) {
       // ---- Load component from file ----
       StringC resourceModule = node.AttributeString("resourceModule","");
-      if(m_verbose) {
-        RavlDebug("Loading component, Name='%s' file='%s' ",node.Name().chars(), loadFilename.data());
-      }
+      FilenameC configPath = RavlN::FilenameC(MasterConfigFilename()).PathComponent();
       StringC fullName = RavlN::FilenameC::Search(loadFilename,
-                                                  RavlN::FilenameC(MasterConfigFilename()).PathComponent(),
+                                                  configPath,
                                                   resourceModule.data());
+      if(m_verbose) {
+        RavlDebug("Loading component, Name='%s' file='%s' Found='%s' Config='%s' ",
+            node.Name().chars(), loadFilename.data(),fullName.data(),configPath.data());
+      }
       if(fullName.IsEmpty()) {
         RavlError(" Failed to find file '%s'  in node '%s' resourceModule '%s'",
                loadFilename.chars(), node.Name().chars(),resourceModule.chars());

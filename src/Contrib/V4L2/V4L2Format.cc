@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/Contrib/V4L2/V4L2Format.cc"
-//! lib = RavlImgIOV4L2
+//! lib=RavlImgIOV4L2
 //! author = "Warren Moore"
 
 #include "Ravl/Image/ByteYUVValue.hh"
@@ -35,40 +35,35 @@ namespace RavlImageN
   void InitV4L2Format()
   {}
   
-  
-  
   FileFormatV4L2BodyC::FileFormatV4L2BodyC() :
     FileFormatBodyC("v4l2", "V4L2 input (@V4L2)")
   {}
   
-  
-  
   const type_info &FileFormatV4L2BodyC::ProbeLoad(IStreamC &in, const type_info &obj_type) const
   {
-    ONDEBUG(RavlDebug("FileFormatV4L2BodyC::ProbeLoad not a V4L2 input"));
+    ONDEBUG(RavlDebug("ProbeLoad not a V4L2 input"));
     return typeid(void); 
   }
   
-  
-  
   const type_info &FileFormatV4L2BodyC::ProbeLoad(const StringC &filename, IStreamC &in, const type_info &obj_type) const
   {
-    ONDEBUG(RavlDebug(" filename(%s) type(%s)",filename.data(),obj_type.name()));
+    ONDEBUG(RavlDebug("ProbeLoad filename(%s) type(%s)",filename.data(),obj_type.name()));
 
     // Get the parameters
     StringC device;
     IntT channel;
     if (!FindParams(filename, device, channel))
       return typeid(void);
-    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad device(" << device << ") channel(" << channel << ")" << endl);
+    ONDEBUG(RavlDebug("ProbeLoad device(%s) channel(%d)",device.data(),channel));
 
     // Create the V4L2 object (will not be open after construction if not supported)
     ImgIOV4L2BaseC v4l2(device, channel);
     if(!v4l2.IsOpen())
       return typeid(void);
     
-    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeLoad format supported(" << (v4l2.IsOpen() ? "Y" : "N") << ")" << endl);
+    ONDEBUG(RavlDebug("ProbeLoad format supported(%s)  ",(v4l2.IsOpen() ? "Y" : "N")));
     if (obj_type == typeid(ImageC<ByteYUVValueC>) || obj_type == typeid(ImageC<ByteRGBValueC>)) {
+      ONDEBUG(RavlDebug("Targeting a colour image "));
       if(v4l2.CheckFormat(typeid(ImageC<ByteRGBValueC>)))
         return typeid(ImageC<ByteRGBValueC>);
       if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>)))
@@ -79,6 +74,7 @@ namespace RavlImageN
     }
     
     if (obj_type == typeid(ImageC<ByteT>) || obj_type == typeid(ImageC<FloatT>) || obj_type == typeid(ImageC<RealT>)) {
+      ONDEBUG(RavlDebug("Targeting a grey level image "));
       if(v4l2.CheckFormat(typeid(ImageC<ByteT>)))
         return typeid(ImageC<ByteT>);
       if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>)))
@@ -89,6 +85,7 @@ namespace RavlImageN
     }
     
     if (obj_type == typeid(ImageC<ByteYUV422ValueC>)) {
+      ONDEBUG(RavlDebug("Targeting a YUV422 image. "));
       if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>)))
         return typeid(ImageC<ByteYUV422ValueC>);
       if(v4l2.CheckFormat(typeid(ImageC<ByteRGBValueC>)))
@@ -98,14 +95,28 @@ namespace RavlImageN
       return typeid(void);
     }
     
-    return typeid(ImageC<ByteRGBValueC>);
+    ONDEBUG(RavlDebug("Falling back to default format. "));
+    if(v4l2.CheckFormat(typeid(ImageC<ByteRGBValueC>))) {
+      ONDEBUG(RavlDebug("ByteRGBValueC supported. "));
+      return typeid(ImageC<ByteRGBValueC>);
+    }
+    if(v4l2.CheckFormat(typeid(ImageC<ByteYUV422ValueC>))) {
+      ONDEBUG(RavlDebug("ByteYUV422ValueC supported. "));
+      return typeid(ImageC<ByteYUV422ValueC>);
+    }
+    if(v4l2.CheckFormat(typeid(ImageC<ByteT>))) {
+      ONDEBUG(RavlDebug("ByteT supported. "));
+      return typeid(ImageC<ByteT>);
+    }
+    ONDEBUG(RavlDebug("Format not supported. "));
+    return typeid(void);
   }
   
   
   
   const type_info &FileFormatV4L2BodyC::ProbeSave(const StringC &filename, const type_info &obj_type, bool forceFormat ) const
   {
-    ONDEBUG(cerr << "FileFormatV4L2BodyC::ProbeSave unsupported" << endl;)
+    ONDEBUG(RavlDebug("FileFormatV4L2BodyC::ProbeSave unsupported"));
     return typeid(void);   
   }
   

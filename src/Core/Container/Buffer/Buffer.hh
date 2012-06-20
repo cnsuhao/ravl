@@ -35,13 +35,13 @@ namespace RavlN {
   {
   public:
     BufferBodyC(SizeT nsize,const DataT &defaultVal)
-      : SizeBufferAccessC<DataT>(new DataT[nsize],nsize),
+      : SizeBufferAccessC<DataT>(new DataT[nsize.V()],nsize),
         deletable(true)
     { Fill(defaultVal); }
     //: Constructor a buffer of 'nsize' items, with default value.
     
     BufferBodyC(SizeT nsize)
-      : SizeBufferAccessC<DataT>(new DataT[nsize],nsize),
+      : SizeBufferAccessC<DataT>(new DataT[nsize.V()],nsize),
         deletable(true)
     {}
     //: Constructor a buffer of 'nsize' items.
@@ -169,8 +169,8 @@ namespace RavlN {
   {
     if(!copy)
       return ;
-    this->buff = new DataT[nsize];
-    DataT *place,*end = &this->buff[nsize];
+    this->buff = new DataT[nsize.V()];
+    DataT *place,*end = &this->buff[nsize.V()];
     const DataT *source = ndat;
     for(place = this->buff;place != end;place++,source++)
       *place = *source;

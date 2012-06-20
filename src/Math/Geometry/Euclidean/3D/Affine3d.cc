@@ -7,6 +7,7 @@
 //! author="Charles Galambos"
 //! date="17/3/2007"
 //! docentry="Ravl.API.Math.Geometry.3D"
+//! lib=RavlMath
 
 #include "Ravl/Affine3d.hh"
 #include "Ravl/Matrix.hh"

@@ -9,6 +9,7 @@
 //! docentry="Ravl.API.Graphics.GTK.Control"
 //! author="Charles Galambos"
 //! date="21/04/2008"
+//! lib=RavlGUI
 
 #include "Ravl/GUI/Widget.hh"
 #include "Ravl/GUI/TreeStore.hh"

@@ -66,7 +66,7 @@ namespace RavlAudioN {
       RealT at = melRng.Min();
       // Compute edge frequency's and round them to fit nicely to results of dft
       for(SArray1dIterC<RealT> it(edges);it;it++,at += rStep) 
-	*it = (RealT) Round(Mel2Lin(at) / dfreq) * dfreq; 
+        *it = (RealT) Round(Mel2Lin(at) / dfreq) * dfreq;
       //cerr << "Edges=" << edges << "\n";
     }
     
@@ -76,39 +76,39 @@ namespace RavlAudioN {
     {
       int i = 0;
       for(SArray1dIterC<Array1dC<RealT> > it(filters);it;it++,i++) {
-	Array1dC<RealT> &filt = *it;
-	IntT imin = Round(edges[i]/dfreq)+1;
-	IntT imax = Round(edges[i+2]/dfreq)-1;
-	if(imax < imin)
-	  imax = imin;
-	filt = Array1dC<RealT>(imin,imax);
-	ONDEBUG(cerr << "Range=" << filt.Range() << "\n");
-	
-	RealT left = edges[i];
-	RealT cent = edges[i+1];
-	RealT right = edges[i+2];
-	ONDEBUG(cerr << "Left=" << left << " Cent=" << cent << " Right=" << right << "\n");
-	RealT width = right - left;
-	RealT height = (2 * dfreq)/width;
-	RealT slope1 = height / (cent - left);
-	RealT slope2 = height / (cent - right);
-	RealT freq = (filt.Range().Min()) * dfreq;
-	ONDEBUG(cerr << "Width=" << width << " Slope1=" << slope1 << " Slope2=" << slope2 << "\n");
-	
-	if(filt.Size() == 1) { // Range small ?
-	  filt[filt.IMin()] = 1;
-	  ONDEBUG(cerr << " 1");
-	} else {
-	  for(Array1dIterC<RealT> fit(filt);fit;fit++) {
-	    if(freq <= cent)
-	      *fit = (freq - left) * slope1;
-	    else
-	      *fit = (freq - right) * slope2;
-	    ONDEBUG(cerr << " " << *fit);
-	    freq += dfreq;
-	  }
-	}
-	ONDEBUG(cerr << "\n\n");
+        Array1dC<RealT> &filt = *it;
+        IntT imin = Round(edges[i]/dfreq)+1;
+        IntT imax = Round(edges[i+2]/dfreq)-1;
+        if(imax < imin)
+          imax = imin;
+        filt = Array1dC<RealT>(imin,imax);
+        ONDEBUG(cerr << "Range=" << filt.Range() << "\n");
+
+        RealT left = edges[i];
+        RealT cent = edges[i+1];
+        RealT right = edges[i+2];
+        ONDEBUG(cerr << "Left=" << left << " Cent=" << cent << " Right=" << right << "\n");
+        RealT width = right - left;
+        RealT height = (2 * dfreq)/width;
+        RealT slope1 = height / (cent - left);
+        RealT slope2 = height / (cent - right);
+        RealT freq = (filt.Range().Min()) * dfreq;
+        ONDEBUG(cerr << "Width=" << width << " Slope1=" << slope1 << " Slope2=" << slope2 << "\n");
+
+        if(filt.Size() == 1) { // Range small ?
+          filt[filt.IMin()] = 1;
+          ONDEBUG(cerr << " 1");
+        } else {
+          for(Array1dIterC<RealT> fit(filt);fit;fit++) {
+            if(freq <= cent)
+              *fit = (freq - left) * slope1;
+            else
+              *fit = (freq - right) * slope2;
+            ONDEBUG(cerr << " " << *fit);
+            freq += dfreq;
+          }
+        }
+        ONDEBUG(cerr << "\n\n");
       }
     }
     return true;

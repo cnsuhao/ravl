@@ -3,6 +3,7 @@
 // This code may be redistributed under the terms of the MIT
 // License. See http://www.opensource.org/licenses/mit-license.html
 // file-header-ends-here
+//! lib=RavlImgIOuEye
 
 namespace RavlImageN {
  

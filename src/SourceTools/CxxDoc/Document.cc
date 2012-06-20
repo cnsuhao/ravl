@@ -752,6 +752,28 @@ namespace RavlCxxDocN {
       buff = ihf.ScopeDef();
       return true;
     }
+
+    if(ip == "FullParentScope") {
+      if(obj.Top().HasParentScope()) { // Is it a member of a class ?
+       ScopeC ps(obj.Top().ParentScope());
+       buff = ps.Name().Copy();
+       obj.Top().SetVar("ClassName",ps.Name());
+        while (ps.HasParentScope())
+        {  ps=ps.ParentScope();
+           if (ps.Name() == "std" )
+              break;
+           if (buff.matches("::") == 0)
+              buff.prepend("::");
+           buff.prepend(ps.Name());
+        }
+      } else {
+       obj.Top().SetVar("ClassName","std");
+       Output() << "std";
+      }
+
+      return true;
+    }
+
     if(ip == "ParentScope") {
       if(obj.Top().HasParentScope()) { // Is it a member of a class ?
 	ScopeC ps(obj.Top().ParentScope());

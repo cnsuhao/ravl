@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_XMPP_CONNECTION_HEADER
 #define RAVL_XMPP_CONNECTION_HEADER 1
+//! lib=RavlXMPPLoudmouth
 
 #include "loudmouth/loudmouth.h"
 #include "Ravl/XMLFactory.hh"

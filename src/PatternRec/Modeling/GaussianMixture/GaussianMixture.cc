@@ -179,7 +179,7 @@ namespace RavlN {
     RealT smallDeterminant = 1e-150;
 
     //: lets regularise our model
-    //: this has effect of increasing the distance slighty in all orthogonal directions
+    //: this has effect of increasing the distance slightly in all orthogonal directions
     //: not great, bit of  a hack
     if(regularise) {
       for(SArray1dIterC<MeanCovarianceC> paramIt(params);paramIt;paramIt++)  {

@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id: DesignClassifierNeuralNetwork.cc,v 1.3 2004/03/18 17:14:37 ees1wc Exp $"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/Classify/DesignClassifierNeuralNetwork.cc"
 
@@ -128,7 +127,7 @@ namespace RavlN {
   bool DesignClassifierNeuralNetworkBodyC::Save(BinOStreamC &out) const {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    int version = 0;
+    int version = 1;
     out << version << m_nLayers << m_nInputs << m_nHidden << m_nOutputs;
     out << m_desiredError;
     out << m_maxEpochs;
@@ -310,7 +309,7 @@ namespace RavlN {
     return ClassifierNeuralNetworkC(m_nLayers, m_nInputs, m_nHidden, m_nOutputs, nn);
   }
 
-//: Create a clasifier with weights for the samples.
+//: Create a classifier with weights for the samples.
 
   ClassifierC DesignClassifierNeuralNetworkBodyC::Apply(const SampleC<VectorC> &in,
       const SampleC<UIntT> &out,

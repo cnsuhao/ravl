@@ -8,7 +8,6 @@
 #define RAVL_SARR2ITER_HEADER 1
 ////////////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Arrays.2D"
-//! rcsid="$Id$
 //! file="Ravl/Core/Container/SArray/SArray2dIter.hh"
 //! lib=RavlCore
 //! author="Charles Galambos"

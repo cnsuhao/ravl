@@ -1,3 +1,9 @@
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2011-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 #include "WhiteLineDetector.hh"
 #include "Ravl/IO.hh"
 #include "Ravl/LinePP2d.hh"
@@ -5,18 +11,18 @@
 #include "Ravl/Image/DrawCircle.hh"
 #include "Ravl/Image/Font.hh"
 #include "Ravl/Image/ImageConv.hh"
+//! lib=RavlImageProc
 
 using namespace RavlN;
 using namespace RavlImageN;
 using namespace RavlConstN;
 
 
-WhiteLineDetectorBodyC::WhiteLineDetectorBodyC(bool Verbose)
+WhiteLineDetectorBodyC::WhiteLineDetectorBodyC()
   : darkred(128,   0,   0),
     red    (255,   0,   0),
     yellow (255, 255,   0),
     brown  (128, 128,   0),
-    verbose(Verbose),
     gFilter(3),
     edgeDet(true, 0.3, 1.0),
     pphtProc(Point2dC(0.01, 1.0),0.9999999,90,-1,false,1.4,true),
@@ -30,9 +36,8 @@ WhiteLineDetectorBodyC::WhiteLineDetectorBodyC(bool Verbose)
 }
 
 SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
-  ImageC<ByteRGBValueC> canvas = RealRGBImageCT2ByteRGBImageCT(RealImageCT2RealRGBImageCT(img));
+  canvas = RealRGBImageCT2ByteRGBImageCT(RealImageCT2RealRGBImageCT(img));
   ImageC<RealT> fImg = gFilter.Apply(img);
-  if (verbose)  RavlN::Save("@X:filter", fImg);
 
   // Find straight edges
   DListC<EdgelC> inList = edgeDet.LApply(fImg);
@@ -55,7 +60,7 @@ SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
     m++;
     for (; m; m++) {
       RealT signedGap = l->SignedDistance(m->MidPoint());  // ridges, not troughs
-      if (// parallel & opposite dirns & overlapping
+      if (// parallel & opposite dirns
           (l->UnitNormal().Dot(m->UnitNormal()) < -cos(RavlConstN::pi/180.0*maxAngle)) &&
           // "clockwise pair" && close by
           (signedGap > -maxSep) && (signedGap < 0.0) &&
@@ -99,7 +104,6 @@ SArray1dC<LinePP2dC> WhiteLineDetectorBodyC::Apply(const ImageC<RealT> &img) {
     if (!intersectFound) r.Del();
   }
   for (DLIterC<LinePP2dC> r(ridges); r; r++)  DrawLine(canvas, red, *r);
-  if (verbose)  RavlN::Save("@X:lines", canvas);
 
   SArray1dC<LinePP2dC> ridgeArray(ridges.Size());
   for (SArray1dIterC<LinePP2dC>i(ridgeArray); i; ++i) 

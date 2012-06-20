@@ -1,5 +1,5 @@
 # This file is part of QMake, Quick Make System
-# Copyright (C) 2001, University of Surrey
+# Copyright (C) 2012, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -7,7 +7,7 @@
 #! file="Ravl/QMake/Main.mk"
 
 ifndef MAKEHOME
-  MAKEHOME=.
+ MAKEHOME=.
 endif
 
 ifndef INSTALLHOME
@@ -19,12 +19,12 @@ export TARGET
 MAKEFLAGS += --no-print-directory -r
 
 ifndef QCWD
-ifeq ($(ARC),freebsd_x86)
- # TODO: pawd hangs for a minute on a FreeBSD system where amd isn't running
- QCWD :=$(shell sh -c "pwd")
-else
- QCWD :=$(shell sh -c "if [ -x /usr/bin/pawd ] ; then /usr/bin/pawd ; else pwd ; fi")
-endif
+ ifeq ($(ARC),freebsd_x86)
+  # TODO: pawd hangs for a minute on a FreeBSD system where amd isn't running
+  QCWD :=$(shell sh -c "pwd")
+ else
+  QCWD :=$(shell sh -c "if [ -x /usr/bin/pawd ] ; then /usr/bin/pawd ; else pwd ; fi")
+ endif
 endif
 
 VPATH = $(QCWD)
@@ -53,14 +53,14 @@ ifndef VAR
 endif
 
 ifndef QMAKECONFIGHOME
-QMAKECONFIGHOME = $(MAKEHOME)
+ QMAKECONFIGHOME = $(MAKEHOME)
 endif
 
 # Include a local system file
 ifdef CONFIGFILE
-include ${CONFIGFILE}
+ include ${CONFIGFILE}
 else
-include $(QMAKECONFIGHOME)/config.local.$(ARC)
+ include $(QMAKECONFIGHOME)/config.local.$(ARC)
 endif
 
 # Include system stuff.
@@ -102,37 +102,37 @@ endif
 
 # Default Object file extension
 ifndef OBJEXT
-  OBJEXT:=.o#
+ OBJEXT:=.o#
 endif
 
 # Default C++ source file extension.
 ifndef CXXEXT
-  CXXEXT:=.cc#
+ CXXEXT:=.cc#
 endif
 
 # Default C++ auxilary source file extension. (used to force template instansiation.)
 ifndef CXXAUXEXT
-  CXXAUXEXT:=.cxx#
+ CXXAUXEXT:=.cxx#
 endif
 
 # Default C++ header file extension.
 ifndef CHXXEXT
-  CHXXEXT:=.hh#
+ CHXXEXT:=.hh#
 endif
 
 # Default C source file extension.
 ifndef CEXT
-  CEXT:=.c#
+ CEXT:=.c#
 endif
 
 # Default C header file extension.
 ifndef CHEXT
-  CHEXT:=.h#
+ CHEXT:=.h#
 endif
 
 # Extension expected on executables.
 ifndef EXEEXT
-  EXEEXT:=#
+ EXEEXT:=#
 endif
 
 
@@ -173,11 +173,11 @@ endif
 # Required libraries available ?
 
 ifeq ($(SUPPORT_OK),yes)
-  ifeq ($(strip $(filter-out $(RESOURCES),$(REQUIRES))),)
-    SUPPORT_OK=yes
-  else
-    SUPPORT_OK=no
-  endif
+ ifeq ($(strip $(filter-out $(RESOURCES),$(REQUIRES))),)
+  SUPPORT_OK=yes
+ else
+  SUPPORT_OK=no
+ endif
 endif
 
 ########################
@@ -185,7 +185,7 @@ endif
 
 # Compile examples as well when doing a test build.
 ifeq ($(TARGET),testbuild)
-  MAINS := $(sort $(MAINS) $(EXAMPLES))
+ MAINS := $(sort $(MAINS) $(EXAMPLES))
 endif
 
 
@@ -194,115 +194,121 @@ include $(MAKEHOME)/Dirs.mk
 # Don't include this stuff, unless we're building this directory.
 ifeq ($(SUPPORT_OK),yes)
 
-ifndef MKMUSTLINK
+ ifndef MKMUSTLINK
   MKMUSTLINK := $(patsubst %$(CEXT),$(INST_FORCEOBJS)/%$(OBJEXT), $(patsubst %$(CXXEXT),%$(CEXT), $(MUSTLINK)))
-endif
+ endif
 
-#######################################
-# Sort out external library dependancies.
+ #######################################
+ # Sort out external library dependancies.
 
-ifdef TARG_EXTERNALLIBS
-# Remove the .def from the name to make it match other external libs.
- USESLIBS += $(patsubst %,%.def,$(TARG_EXTERNALLIBS))
-endif
+ ifdef TARG_EXTERNALLIBS
+  # Remove the .def from the name to make it match other external libs.
+  USESLIBS += $(patsubst %,%.def,$(TARG_EXTERNALLIBS))
+ endif
 
-#######################################
-# Sort out library dependancies from USESLIBS
+ #######################################
+ # Sort out library dependancies from USESLIBS
 
-ifdef USESLIBS
- ifndef LIBDEPS
-  ifdef PLIB
-   LOCAL_DEFBASE=$(PLIB)#
+ ifdef USESLIBS
+  ifndef LIBDEPS
+   ifdef PLIB
+    LOCAL_DEFBASE=$(PLIB)#
+    DEFVARNAME:=$(LOCAL_DEFBASE)_AUTO_DEF#
+    $(DEFVARNAME) := 1
+   endif
+  else
+   LOCAL_DEFBASE = $(patsubst %.def,%,$(LIBDEPS))
    DEFVARNAME:=$(LOCAL_DEFBASE)_AUTO_DEF#
    $(DEFVARNAME) := 1
   endif
- else
-  LOCAL_DEFBASE = $(patsubst %.def,%,$(LIBDEPS))
-  DEFVARNAME:=$(LOCAL_DEFBASE)_AUTO_DEF#
-  $(DEFVARNAME) := 1
- endif
- ifneq ($(USESLIBS),)
-  ifneq ($(USESLIBS),None)
-   ifeq ($(filter Auto,$(USESLIBS)),Auto)
-    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-    EXTRA_USESLIBS = $(AUTOUSELIBS) $(filter-out Auto,$(USESLIBS))
-    ifdef LIBDEPS
-     ifdef PLIB
-      AUTOUSELIBS := $(PLIB).def $(AUTOUSELIBS)
+  ifneq ($(USESLIBS),)
+   ifneq ($(USESLIBS),None)
+    ifeq ($(filter Auto,$(USESLIBS)),Auto)
+     AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+     EXTRA_USESLIBS = $(AUTOUSELIBS) $(filter-out Auto,$(USESLIBS))
+     ifdef LIBDEPS
+      ifdef PLIB
+       AUTOUSELIBS := $(PLIB).def $(AUTOUSELIBS)
+      endif
      endif
+    else # USELIBS != Auto
+     EXTRA_USESLIBS = $(USESLIBS)
     endif
-   else
-    EXTRA_USESLIBS = $(USESLIBS)
-   endif
-   REQUIRED_USESLIBS=$(patsubst %.def.def,%.def,$(patsubst %,%.def,$(filter-out %.opt,$(EXTRA_USESLIBS))))
-   OPTIONAL_USESLIBS=$(filter %.opt,$(EXTRA_USESLIBS))
-   EXTRA_USESLIBS := $(REQUIRED_USESLIBS) $(OPTIONAL_USESLIBS)
-   ifndef NOINCDEFS
-    ifneq ($(strip $(REQUIRED_USESLIBS)),)
-     include $(REQUIRED_USESLIBS)
-    endif
-    OPTIONAL_USESLIBS_D=$(patsubst %.opt,%.def,$(OPTIONAL_USESLIBS))
-    ifneq ($(strip $(OPTIONAL_USESLIBS_D)),)
-     -include $(OPTIONAL_USESLIBS_D)
+    REQUIRED_USESLIBS=$(patsubst %.def.def,%.def,$(patsubst %,%.def,$(filter-out %.opt,$(EXTRA_USESLIBS))))
+    OPTIONAL_USESLIBS=$(filter %.opt,$(EXTRA_USESLIBS))
+    EXTRA_USESLIBS := $(REQUIRED_USESLIBS) $(OPTIONAL_USESLIBS)
+    ifndef NOINCDEFS
+     ifneq ($(strip $(REQUIRED_USESLIBS)),)
+      include $(REQUIRED_USESLIBS)
+     endif
+     OPTIONAL_USESLIBS_D=$(patsubst %.opt,%.def,$(OPTIONAL_USESLIBS))
+     ifneq ($(strip $(OPTIONAL_USESLIBS_D)),)
+      -include $(OPTIONAL_USESLIBS_D)
+
 $(OPTIONAL_USESLIBS_D) : $(INST_LIB)/.dir
 	@true;
+
+     endif
     endif
    endif
   endif
+ else # i.e. ndef USESLIBS
+  ifdef LIBDEPS
+   # -include $(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS))
+   -include $(LIBDEPS)
+  endif
  endif
-else
- ifdef LIBDEPS
-# -include $(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS))
-  -include $(LIBDEPS)
+ ifdef PLIB
+  EXELIB := $(MKMUSTLINK) -l$(PLIB) $(EXELIB)
  endif
-endif
-ifdef PLIB
- EXELIB := $(MKMUSTLINK) -l$(PLIB) $(EXELIB)
-endif
 
-###########################
-# Sort out libraries needed for executables from PROGLIBS
+ ###########################
+ # Sort out libraries needed for executables from PROGLIBS
 
 
-# Record the contents of EXELIB before we add prog libs in LIBLIBS
-LIBLIBS := $(EXELIB)
+ # Record the contents of EXELIB before we add prog libs in LIBLIBS
+ LIBLIBS := $(EXELIB)
 
-ifndef NOEXEBUILD   # Don't even look if we're not building exe's
-ifndef NOINCDEFS
- REQUIRED_PROGLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(PROGLIBS)))
- OPTIONAL_PROGLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(PROGLIBS)))
- ifneq ($(strip $(REQUIRED_PROGLIBS)),)
-  include $(REQUIRED_PROGLIBS)
- endif
- ifneq ($(strip $(OPTIONAL_PROGLIBS)),)
-  -include $(OPTIONAL_PROGLIBS)
+ ifndef NOEXEBUILD   # Don't even look if we're not building exe's
+
+  ifndef NOINCDEFS
+   REQUIRED_PROGLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(PROGLIBS)))
+   OPTIONAL_PROGLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(PROGLIBS)))
+   ifneq ($(strip $(REQUIRED_PROGLIBS)),)
+    include $(REQUIRED_PROGLIBS)
+   endif
+   ifneq ($(strip $(OPTIONAL_PROGLIBS)),)
+    -include $(OPTIONAL_PROGLIBS)
+
 $(OPTIONAL_PROGLIBS) : $(INST_LIB)/.dir
 	@true;
- endif
-endif
 
-# Has the user included Auto in there useslibs ?
-# If so attempt to automaticly generate dependancies.
-
-ifeq ($(filter Auto,$(USESLIBS)),Auto)
- ifneq ($(strip $(MAINS) $(TESTEXES)),)
-  AUTOPROGLIBS := $(shell $(QLIBS) -prog -d -p $(ROOTDIR))
-  ifdef LIBDEPS
-   AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
-  endif
-  ifdef PLIB
-   AUTOPROGLIBS := $(PLIB).def $(AUTOPROGLIBS)
-  endif
-  ifndef NOINCDEFS
-   ifneq ($(strip $(filter-out $(PLIB).def,$(AUTOPROGLIBS))),)
-    include $(filter-out $(PLIB).def,$(AUTOPROGLIBS))
    endif
   endif
- endif
-endif
-endif # ifndef NOEXEBUILD
 
-endif # ifdef USESLIBS
+  # Has the user included Auto in there useslibs ?
+  # If so attempt to automaticly generate dependancies.
+
+  ifeq ($(filter Auto,$(USESLIBS)),Auto)
+   ifneq ($(strip $(MAINS) $(TESTEXES)),)
+    AUTOPROGLIBS := $(shell $(QLIBS) -prog -d -p $(ROOTDIR))
+    ifdef LIBDEPS
+     AUTOPROGLIBS := $(filter-out $(LIBDEPS),$(AUTOPROGLIBS))
+    endif
+    ifdef PLIB
+     AUTOPROGLIBS := $(PLIB).def $(AUTOPROGLIBS)
+    endif
+    ifndef NOINCDEFS
+     ifneq ($(strip $(filter-out $(PLIB).def,$(AUTOPROGLIBS))),)
+      include $(filter-out $(PLIB).def,$(AUTOPROGLIBS))
+     endif
+    endif
+   endif
+  endif
+
+ endif # ifndef NOEXEBUILD
+
+endif # ifdef SUPPORT_OK=yes
 
 LINKLIBS := $(EXELIB)
 
@@ -310,20 +316,22 @@ LINKLIBS := $(EXELIB)
 # Sort out libraries needed for test executables. TESTLIBS
 
 ifndef NOEXEBUILD  # Don't even look if we're not building exe's
-ifndef NOINCDEFS
- ifdef TESTLIBS
- REQUIRED_TESTLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(TESTLIBS)))
- OPTIONAL_TESTLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(TESTLIBS)))
- ifneq ($(strip $(REQUIRED_TESTLIBS)),)
-  include $(REQUIRED_TESTLIBS)
- endif
- ifneq ($(strip $(OPTIONAL_TESTLIBS)),)
-  -include $(OPTIONAL_TESTLIBS)
+ ifndef NOINCDEFS
+  ifdef TESTLIBS
+   REQUIRED_TESTLIBS=$(patsubst %,%.def,$(filter-out %.opt,$(TESTLIBS)))
+   OPTIONAL_TESTLIBS=$(patsubst %.opt,%.def,$(filter %.opt,$(TESTLIBS)))
+   ifneq ($(strip $(REQUIRED_TESTLIBS)),)
+     include $(REQUIRED_TESTLIBS)
+   endif
+   ifneq ($(strip $(OPTIONAL_TESTLIBS)),)
+    -include $(OPTIONAL_TESTLIBS)
+
 $(OPTIONAL_TESTLIBS) : $(INST_LIB)/.dir
 	@true;
+
+   endif
+  endif
  endif
- endif
-endif
 endif
 
 LINKTESTLIBS := $(EXELIB)
@@ -344,7 +352,7 @@ PREPROCFLAGS = -DPROJECT_OUT=\"$(PROJECT_OUT)\" -DCPUG_ARCH=\"$(ARC)\"
 # Set pre processor flag if we're doing a shared build
 
 ifdef SHAREDBUILD
-PREPROCFLAGS += -DCPUG_VAR_SHARED=1
+ PREPROCFLAGS += -DCPUG_VAR_SHARED=1
 endif
 
 # Make sure current directory is included in path if we have local headers.
@@ -363,31 +371,31 @@ CCFLAGS += $(USERCFLAGS) $(ANSIFLAG)
 
 # nvcc flags.
 ifndef NVCC
-  NVCC=nvcc
+ NVCC=nvcc
 endif
 NVCCFLAGS = 
 
 ifeq ($(VAR),debug)
-  NVCCFLAGS += -g 
+ NVCCFLAGS += -g 
 endif
 
 ifeq ($(VAR),opt)
-  NVCCFLAGS += -O2 
+ NVCCFLAGS += -O2 
 endif
 
 ifeq ($(VAR),gprof)
-  NVCCFLAGS += -O2 -g -pg 
+ NVCCFLAGS += -O2 -g -pg 
 endif
 
 ifdef SHAREDBUILD
-  NVCCFLAGS += -shared
+ NVCCFLAGS += -shared
 endif
 
 # If QMAKE_INFO is set don't prepend commands with @ so we can see what they are.
 ifdef QMAKE_INFO
-  SHOWIT=
+ SHOWIT=
 else
-  SHOWIT=@
+ SHOWIT=@
 endif
 
 #####################
@@ -410,11 +418,11 @@ ifeq ($(SUPPORT_OK),yes)
     $(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(SOURCES))))))))))
  TARG_OBJS=$(patsubst %$(CXXAUXEXT),$(INST_OBJS)/%$(OBJEXT),$(TARG_BASEOBJS))
  TARG_HDRS:=$(patsubst %,$(INST_HEADER)/%,$(HEADERS))
-ifdef USE_INCLUDE_SYMINC
- TARG_HDRSYMS:=$(patsubst %,$(INST_HEADERSYM)/%,$(HEADERS))
-else
- TARG_HDRSYMS=
-endif
+ ifdef USE_INCLUDE_SYMINC
+  TARG_HDRSYMS:=$(patsubst %,$(INST_HEADERSYM)/%,$(HEADERS))
+ else
+  TARG_HDRSYMS=
+ endif
 
  ifdef FULLCHECKING
   TARG_HDRCERTS:=$(patsubst %$(CHXXEXT),$(INST_HEADERCERT)/%$(CHXXEXT),$(HEADERS)) $(patsubst %$(CHEXT),$(INST_HEADERCERT)/%$(CHEXT),$(HEADERS))
@@ -428,8 +436,8 @@ endif
  TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
  TARG_TESTEXE := $(patsubst %$(CEXT),$(INST_TESTBIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_TESTBIN)/%$(EXEEXT),$(TESTEXES)))
  TARG_TESTEXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(TESTEXES)))
-ifndef NOEXEBUILD
- TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
+ ifndef NOEXEBUILD
+  TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %.m,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.mm,$(INST_DEPEND)/%.d, \
@@ -450,8 +458,8 @@ ifndef NOEXEBUILD
                $(patsubst %.m,$(INST_DEPEND)/%.$(VAR).bin.d,  \
                $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR).bin.d, \
                $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
-else
- TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
+ else
+  TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %$(CEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %.mm,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.m,$(INST_DEPEND)/%.d, \
@@ -462,7 +470,7 @@ else
 	       $(patsubst %.l,$(INST_DEPEND)/%.yy.d, \
                $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.d, \
 	       $(patsubst %.java,,$(SOURCES) $(MUSTLINK)))))))))))) $(INST_DEPEND)/.dir
-endif
+ endif
  TARG_JAVA    =$(patsubst %.java,$(INST_JAVA)/%.class,$(JAVA_SRC))
  TARG_JAVAEXE =$(patsubst %.java,$(INST_JAVAEXE)/%,$(filter %.java,$(MAINS)))
  TARG_NESTED =$(patsubst %.r,%,$(filter %.r,$(NESTED)))
@@ -493,7 +501,7 @@ endif
   TARG_LIBS=
  endif
 
-else
+else # SUPPORT_OK != yes
  TARG_OBJS=
  TARG_HDRS=
  TARG_HDRSYMS=
@@ -753,7 +761,7 @@ $(TARG_HDRSYMS) : $(INST_HEADERSYM)/% : % $(INST_HEADERSYM)/.dir
 build_aux: $(TARG_AUXFILES) $(TARG_EXTERNALLIBS)
 
 ifndef AUXINSTALL
-  AUXINSTALL=$(CP)
+ AUXINSTALL=$(CP)
 endif
 
 $(TARG_AUXFILES) : $(INST_AUX)/% : % $(INST_AUX)/.dir
@@ -805,7 +813,7 @@ endif
 #define a name for the build type to be displayed to the user.
 VAR_DISPLAY_NAME=$(VAR)
 ifdef SHAREDBUILD
-VAR_DISPLAY_NAME +=  (shared)
+ VAR_DISPLAY_NAME +=  (shared)
 endif
 
 # Must link objects
@@ -915,27 +923,27 @@ endif
 
 %.tab$(CXXEXT) %.tab$(CHEXT) : %.y
 ifndef BISON_DO_NOT_GENERATE
-ifeq ($(SUPPORT_OK),yes)
+ ifeq ($(SUPPORT_OK),yes)
 	$(SHOWIT)echo "--- Bison" $< ; \
 	$(BISON) -d -o$*.tab$(CEXT) $< ; \
 	mv $*.tab$(CEXT) $*.tab$(CXXEXT)
-endif
+ endif
 endif
 
 %.yy$(CXXEXT) : %.l
 ifndef FLEX_DO_NOT_GENERATE
-ifeq ($(SUPPORT_OK),yes)
+ ifeq ($(SUPPORT_OK),yes)
 	$(SHOWIT)echo "--- Flex" $< ; \
 	$(FLEX) -o$*.yy$(CXXEXT) $<
-endif
+ endif
 endif
 
 %_$(ARC)_wrap$(CXXEXT) %.py : %.i *.i
 ifndef SWIG_DO_NOT_GENERATE
-ifeq ($(SUPPORT_OK),yes)
+ ifeq ($(SUPPORT_OK),yes)
 	$(SHOWIT)echo "--- swig" $< ; \
 	$(SWIG) -c++ $(SWIGOPTS) -D$(ARC) $(INCLUDES) -o $*_$(ARC)_wrap$(CXXEXT) $<
-endif
+ endif
 endif
 
 #############################
@@ -946,15 +954,15 @@ endif
 ifneq ($(strip $(TARG_JAVA)),)
 build_libs: $(TARG_LIBS) buildjavalibs prebuildstep
 else
-ifneq ($(strip $(PLIB)),)
-ifneq ($(strip $(SOURCES)),)
+ ifneq ($(strip $(PLIB)),)
+  ifneq ($(strip $(SOURCES)),)
 build_libs: $(TARG_LIBS) $(TARG_LIBS) prebuildstep
-else
+  else
 build_libs: prebuildstep
-endif
-else
+  endif
+ else
 build_libs: prebuildstep
-endif
+ endif
 endif
 
 #$(TARG_JAVA)
@@ -966,21 +974,22 @@ $(INST_LIB)/dummymain$(OBJEXT) :: $(MAKEHOME)/dummymain$(CEXT) $(INST_LIB)/.dir
 
 # This lib update is nasty but fast, especialy if you have many objects.
 ifndef XARGS
-  XARGS = xargs
+ XARGS = xargs
 endif
 
 ifndef TR
-  TR = tr
+ TR = tr
 endif
 
 
 ifndef SHAREDBUILD
-ifeq ($(NOLIBRARYPRELINK),1)
+ ifeq ($(NOLIBRARYPRELINK),1)
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
 	$(UNTOUCH) $(INST_LIB)/$(@F) $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) ;
-else
+
+ else
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building" $(@F) ; \
 	$(AR) $(ARFLAGS) $(INST_LIB)/$(@F) $(TARG_OBJS) ; \
@@ -994,22 +1003,23 @@ $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)
 	  fi ; \
 	  exit 1 ; \
 	fi
-endif
-else
-# We don't want to link the must link object files into the dynamic library. Ideally we'd include them
-# in two different variables, but this would mean a huge reworking of the include mechanism, so instead
-# we'll just remove all objects files from the library list. Hence the following line.
 
-ifdef NOSHAREDLIBDEPENDS
+ endif
+else
+ # We don't want to link the must link object files into the dynamic library. Ideally we'd include them
+ # in two different variables, but this would mean a huge reworking of the include mechanism, so instead
+ # we'll just remove all objects files from the library list. Hence the following line.
+
+ ifdef NOSHAREDLIBDEPENDS
   LIBSONLY=
-else
+ else
   LIBSONLY=$(filter-out %$(OBJEXT),$(LIBS))
-endif
+ endif
 
-DIRECTORYID=$(QCWD)#
+ DIRECTORYID=$(QCWD)#
 
-# DIRECTORYID is used to keep a track of where an object file has come from so if the file is removed or
-# renamed it can be taken out of the list. 
+ # DIRECTORYID is used to keep a track of where an object file has come from so if the file is removed or
+ # renamed it can be taken out of the list. 
 
 $(INST_LIB)/lib$(PLIB)$(LIBEXT) : $(TARG_OBJS) $(TARG_MUSTLINK_OBJS) $(INST_LIB)/dummymain$(OBJEXT) $(INST_LIB)/.dir
 	$(SHOWIT)echo "--- Building " $(@F) ; \
@@ -1058,7 +1068,7 @@ endif
 build_pureexe: $(TARG_PUREEXE)
 
 ifndef SCRIPT_INSTALL
-SCRIPT_INSTALL=$(CP)
+ SCRIPT_INSTALL=$(CP)
 endif
 
 $(TARG_SCRIPT) : $(INST_GENBIN)/% : % $(INST_GENBIN)/.dir
@@ -1150,7 +1160,7 @@ $(TARG_TESTEXE) : $(INST_TESTBIN)/%$(EXEEXT) : $(INST_OBJS)/%$(OBJEXT) $(TARG_LI
 # Java
 
 ifndef JAVAC
-  JAVAC =javac
+ JAVAC =javac
 endif
 
 # : $(INST_JAVA)/%.class %.java
@@ -1174,7 +1184,7 @@ $(TARG_JAVAEXE) : $(INST_JAVAEXE)/% : %.java $(INST_JAVA)/%.class $(TARG_JAVA) $
 ### .def files ############################################################################
 
 ifdef LIBDEPS
-ifndef USESLIBS
+ ifndef USESLIBS
 $(INST_LIBDEF)/$(LIBDEPS) : $(LIBDEPS) $(INST_LIBDEF)/.dir
 	$(SHOWIT)echo "--- Install def $(@F)" ;  \
 	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
@@ -1183,7 +1193,8 @@ $(INST_LIBDEF)/$(LIBDEPS) : $(LIBDEPS) $(INST_LIBDEF)/.dir
 	$(CP) $< $(INST_LIBDEF)/$(@F) ; \
         $(SYNC) ; \
 	$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
-endif
+
+ endif
 endif
 
 ifdef BASEINSTALL
@@ -1199,68 +1210,68 @@ EXTRA_USESLIBS_R = $(filter-out %.opt,$(EXTRA_USESLIBS))
 EXTRA_USESLIBS_O = $(patsubst %.opt,%.def,$(filter %.opt,$(EXTRA_USESLIBS)))
 
 ifdef LOCAL_DEFBASE
-ifdef USESLIBS
- ifneq (($(filter Auto,$(USESLIBS)),Auto),Auto)
+ ifdef USESLIBS
+  ifneq (($(filter Auto,$(USESLIBS)),Auto),Auto)
 $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir
- else
-  ifndef AUTOUSELIBS
-   AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
-  endif
+  else
+   ifndef AUTOUSELIBS
+    AUTOUSELIBS := $(shell $(QLIBS) -use -d -p $(ROOTDIR))
+   endif
 $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SOURCES) $(MAINS)
- endif
+  endif
 	$(SHOWIT)echo "--- Creating $(@F)" ; \
 	if [ -f $(INST_LIBDEF)/$(@F) ] ; then \
 	  $(CHMOD) +w $(INST_LIBDEF)/$(@F) ; \
 	fi ; \
 	echo 'ifndef $(LOCAL_DEFBASE)_AUTO_DEF' > $(INST_LIBDEF)/$(@F) ; \
 	echo '$(LOCAL_DEFBASE)_AUTO_DEF=1' >> $(INST_LIBDEF)/$(@F) ;
- ifdef REQUIRES	
+  ifdef REQUIRES	
 	$(SHOWIT)echo 'ifeq ($$(strip $$(filter-out $$(RESOURCES),$(REQUIRES))),)' >> $(INST_LIBDEF)/$(@F)
- endif	
- ifdef USESLIBS
-  ifneq ($(USESLIBS),)
-   ifneq ($(USESLIBS),None)
-    ifneq ($(filter Auto,$(USESLIBS)),Auto)
-     ifneq ($(strip $(TARG_USESLIBS_R)),)
+  endif	
+  ifdef USESLIBS
+   ifneq ($(USESLIBS),)
+    ifneq ($(USESLIBS),None)
+     ifneq ($(filter Auto,$(USESLIBS)),Auto)
+      ifneq ($(strip $(TARG_USESLIBS_R)),)
 	$(SHOWIT)echo 'include $(TARG_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
-     endif
-     ifneq ($(strip $(TARG_USESLIBS_O)),)
-	$(SHOWIT)echo '-include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
-     endif
-    else
-     ifneq ($(strip $(AUTOUSELIBS)),)
-      ifneq ($(strip $(EXTRA_USESLIBS_R)),)
-	$(SHOWIT)echo 'include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
       endif
-      ifneq ($(strip $(EXTRA_USESLIBS_O)),)
+      ifneq ($(strip $(TARG_USESLIBS_O)),)
+	$(SHOWIT)echo '-include $(TARG_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
+      endif
+     else
+      ifneq ($(strip $(AUTOUSELIBS)),)
+       ifneq ($(strip $(EXTRA_USESLIBS_R)),)
+	$(SHOWIT)echo 'include $(EXTRA_USESLIBS_R)' >> $(INST_LIBDEF)/$(@F) ;
+       endif
+       ifneq ($(strip $(EXTRA_USESLIBS_O)),)
 	$(SHOWIT)echo '-include $(EXTRA_USESLIBS_O)' >> $(INST_LIBDEF)/$(@F) ;
+       endif
       endif
      endif
     endif
    endif
   endif
- endif
 	$(SHOWIT)echo 'PLIBDEPENDS += $(PLIB)' >> $(INST_LIBDEF)/$(@F) ;
- ifdef PLIB
-  ifndef LIBDEPS
+  ifdef PLIB
+   ifndef LIBDEPS
 	$(SHOWIT)echo 'EXELIB := -l$(PLIB) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
+   endif
   endif
- endif
- ifdef MUSTLINK
+  ifdef MUSTLINK
 	$(SHOWIT)echo 'EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
- endif
- ifdef EXTPACKAGE
+  endif
+  ifdef EXTPACKAGE
         $(SHOWIT)echo 'INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) '
         $(SHOWIT)echo 'ifneq ($(BASE_VAR),none)' ;
         $(SHOWIT)echo ' INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ;
         $(SHOWIT)echo 'endif' ;
- endif
- ifdef REQUIRES	
+  endif
+  ifdef REQUIRES	
 	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F)
- endif	
+  endif	
 	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F) ; \
 	$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
-endif
+ endif
 endif
 
 ###########################

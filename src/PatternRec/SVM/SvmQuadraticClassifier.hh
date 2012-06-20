@@ -11,7 +11,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //! file =      "Ravl/PatternRec/Svm/SvmQuadraticClassifier.hh"
 //! author =    "Alexey Kostin"
-//! lib =       RavlSVM
+//! lib=RavlSVM
 //! date =      "11/11/05"
 //! rcsid =     "$Id: SvmQuadraticClassifier.hh,v 1.2 2005/05/12 14:19:26 alex Exp $"
 //! docentry =  "Ravl.API.Pattern_Recognition.Classifier.SVM"

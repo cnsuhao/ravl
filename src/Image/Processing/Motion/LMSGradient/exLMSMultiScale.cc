@@ -41,10 +41,10 @@ int main (int argc, char **argv) {
   opt.Check();
   
   ImageC<RealT> im1; 
-  Load(inf1, im1);
+  RavlN::Load(inf1, im1);
   
   ImageC<RealT> im2; 
-  Load(inf2, im2);
+  RavlN::Load(inf2, im2);
   
   // Compute filter coefficients: currently 2:1 antialias filter
   Array1dC<RealT> coeffs(-4,4);
@@ -67,7 +67,7 @@ int main (int argc, char **argv) {
     
     ImageC<ByteYUVValueC> img;
     LMSOpticFlowC::DrawMotion(im1,motionImg,img);
-    Save(opDisplay,img);
+    RavlN::Save(opDisplay,img);
   }
 
 }

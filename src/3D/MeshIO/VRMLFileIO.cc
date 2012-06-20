@@ -91,7 +91,7 @@ namespace Ravl3DN {
 
   static bool ReadVRML(IStreamC &inf, const StringC &path, TriMeshC &mesh)
   {
-    cerr << "----------   ReadVRML called\n";
+    ONDEBUG(cerr << "----------   ReadVRML called\n");
     DListC<Vector3dC> verts; //3d vertices
     DListC<Vector3dC> norms;
     DListC<Vector2dC> tex;   // vertices in texture

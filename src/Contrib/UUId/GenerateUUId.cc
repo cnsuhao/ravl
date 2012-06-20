@@ -4,9 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlUUId
 
 #include "Ravl/MTLocks.hh"
 #include "Ravl/UUId.hh"
+#include "Ravl/GenerateUUId.hh"
 
 #if RAVL_COMPILER_VISUALCPP
   #include <Rpc.h>
@@ -18,12 +20,20 @@
 
 namespace RavlN {
   
-  //: Geneate a UUId in string form.
-  
-  
-  StringC GenerateUUId() 
-  {
+  //: Generate a binary UUId;
+
+  void GenerateUUId(UUIdC &anId) {
+#if RAVL_COMPILER_VISUALCPP
+    anId = UUIdC(GenerateUUId().data());
+#else
+    uuid_generate(anId.Raw());
+#endif
+  }
+
+  //: Generate a UUId in string form.
     
+  StringC GenerateUUId() 
+  {    
     // Not sure if these routines are thread safe, so lock to be sure.
     
     MTWriteLockC lock(4);

@@ -1,3 +1,10 @@
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2001-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
+//! lib=RavlNet
 
 #include "Ravl/OS/SocketAddr.hh"
 
@@ -216,7 +223,12 @@ namespace RavlN {
 	hostentData = new char [buffSize];
 	continue;
       }
-      RavlSysLog(SYSLOG_ERR) << "WARNING: Error while attempting to find hostname from ip address. errno=" << error << " ";
+#if 0
+      char msgBuff[1024];
+      msgBuff[0] = 0;
+      strerror_r(error,msgBuff,1024);
+      RavlSysLog(SYSLOG_WARNING) << "Failed to find hostname from ip address. Error=" << msgBuff << " ("<< error << ") ";
+#endif
       break; // Unknown error.
     }
     if(error == 0) { // If we got the name ok.

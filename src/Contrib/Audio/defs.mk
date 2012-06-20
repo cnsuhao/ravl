@@ -7,4 +7,4 @@
 #! rcsid="$Id$"
 #! file="Ravl/Contrib/Audio/defs.mk"
 
-NESTED=DevAudio.r AudioFile.r
+NESTED=DevAudio.r AudioFile.r PortAudio.r

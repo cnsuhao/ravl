@@ -35,7 +35,10 @@ namespace RavlN {
     
     Function1BodyC(BinIStreamC &strm);
     //: Load from binary stream.
-    
+
+    virtual MatrixC Jacobian(const VectorC &X) const;
+    //: Compute the jacobian using jacobian1
+
     virtual VectorC Jacobian1(const VectorC &X) const;
     //: Calculate Jacobian at X for single valued function
     // The default implementation performs numerical estimation of the Jacobian using differences. This
@@ -64,7 +67,10 @@ namespace RavlN {
     //: Apply function to 'data'
     
     virtual float Apply1(const TVectorC<float> &data) const;
-    //! Apply to a vector of floats.
+    //: Apply to a vector of floats.
+
+    typedef SmartPtrC<Function1BodyC> RefT;
+    //: Smart ptr to function
   };
 
   //! userlevel=Normal

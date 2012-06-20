@@ -214,6 +214,21 @@ namespace RavlN {
   { vec.Fill(0); }
   //: Fill vector with zero's.
   
+  VectorC Sigmoid(const VectorC &z);
+  //: Compute the element wise sigmoid of z.
+
+  void SigmoidIP(VectorC &z);
+  //: Compute sigmoid values and store the results in place.
+
+  VectorC Log(const VectorC &z);
+  //: Compute the element wise log of z.
+
+  void LogIP(const VectorC &z);
+  //: Compute the element wise log of z and store the results in place.
+
+  VectorC Exp(const VectorC &z);
+  //: Compute the element wise exponent of z.
+
 }
 
 #endif

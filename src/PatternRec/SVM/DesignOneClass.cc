@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 // $Id: DesignOneClass.cc 10146 2007-02-01 11:17:56Z alex $
+//! lib=RavlSVM
 
 //! author="Alexey Kostin"
 

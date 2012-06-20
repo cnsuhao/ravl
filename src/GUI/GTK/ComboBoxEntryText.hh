@@ -6,7 +6,7 @@
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
 //! file = "Ravl/GUI/GTK/ComboBoxEntryText.hh"
-//! lib = Ravl/GUI
+//! lib=RavlGUI
 //! author = "Charles Galambos"
 //! docentry = "Ravl.API.Graphics.GTK.Control"
 //! example = "exComboBoxEntryText.cc"

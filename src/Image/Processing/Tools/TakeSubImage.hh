@@ -8,6 +8,7 @@
 #define RAVLIMAGE_TAKESUBIMAGE_HEADER 1
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Images.Misc"
+//! lib=RavlImageProc
 
 #include "Ravl/Image/Image.hh"
 

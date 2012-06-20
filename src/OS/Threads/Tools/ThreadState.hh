@@ -43,9 +43,9 @@ namespace RavlN
     //: Get approximation of number of threads waiting.
 
   protected:
-    ConditionalVariableC m_cond;
-    MutexC m_access;
-    volatile IntT m_waiting; // Count of number of threads waiting on this...
+    mutable ConditionalVariableC m_cond;
+    mutable MutexC m_access;
+    mutable volatile IntT m_waiting; // Count of number of threads waiting on this...
   };
 
   //! userlevel=Normal
@@ -155,7 +155,7 @@ namespace RavlN
       return ret;
     }
 
-    void Wait(const StateT &desiredState) {
+    void Wait(const StateT &desiredState) const {
       if(m_state == desiredState) // Check before we bother with locking.
         return ;
       m_access.Lock();
@@ -170,7 +170,7 @@ namespace RavlN
     //: Wait indefinitely for an event to be posted.
 
 
-    bool Wait(RealT maxTime,const StateT &desiredState)
+    bool Wait(RealT maxTime,const StateT &desiredState) const
     {
       if(m_state == desiredState) // Check before we bother with locking.
         return true;
@@ -193,7 +193,7 @@ namespace RavlN
                const StateT &desiredState1,
                const StateT &desiredState2,
                StateT &stateAchieved
-               )
+               ) const
     {
       if(m_state == desiredState1 || m_state == desiredState2) { // Check before we bother with locking.
         stateAchieved = m_state;
@@ -220,7 +220,7 @@ namespace RavlN
                const StateT &desiredState2,
                const StateT &desiredState3,
                StateT &stateAchieved
-               )
+               ) const
     {
       if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3) {// Check before we bother with locking.
         stateAchieved = m_state;
@@ -248,7 +248,7 @@ namespace RavlN
                const StateT &desiredState3,
                const StateT &desiredState4,
                StateT &stateAchieved
-               )
+               ) const
     {
       if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3|| m_state == desiredState4) {// Check before we bother with locking.
         stateAchieved = m_state;
@@ -271,7 +271,7 @@ namespace RavlN
     // Returns false if timed out.
 
 
-    bool WaitNot(RealT maxTime,const StateT &theState) {
+    bool WaitNot(RealT maxTime,const StateT &theState) const {
       if(m_state != theState) {// Check before we bother with locking.
         return true;
       }

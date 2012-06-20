@@ -62,6 +62,16 @@ namespace RavlN {
     //: Returns the distance of two indexes in Euclid metric.
     // Identical to EuclideanDistance, which should be used in new code.
     
+    bool IsReal() const
+    {
+      for(unsigned int i = 0; i < N;i++) {
+        if(IsNan(this->data[i]) || IsInf(this->data[i]))
+          return false;
+      }
+      return true;
+    }
+    //: Check all components of transform are real values.
+
   };
 }
 

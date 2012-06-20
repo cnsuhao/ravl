@@ -1,155 +1,413 @@
-// This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2006, University of Surrey
-// This code may be redistributed under the terms of the GNU Lesser
-// General Public License (LGPL). See the lgpl.licence file for details or
-// see http://www.gnu.org/copyleft/lesser.html
-// file-header-ends-here
 #include "Ravl/Plot/GnuPlot.hh"
-#include "Ravl/HashIter.hh"
+#include "Ravl/Array1dIter.hh"
 #include "Ravl/OS/Date.hh"
-#include "Ravl/OS/Filename.hh"
-#include "Ravl/StdConst.hh"
-#include "Ravl/StdMath.hh"
-#include "Ravl/Point2d.hh"
+#include "Ravl/IO.hh"
 //! lib=RavlPlot
 
 namespace RavlGUIN {
-using namespace RavlConstN;
 
-GnuPlotC::GnuPlotC()
-//==========================================
-  : range(nanReal, nanReal, nanReal, nanReal)
-{
-  //: Set up some sensible default value
-  Terminal("x11 persist raise");
-  Size(1.0);
-  Title("GnuPlot");
-  Xlabel("x-label");
-  Ylabel("y-label");
-  With("lines");
-}
-
-void
-GnuPlotC::Set(const StringC & com, const StringC &val)
-//====================================================
-{
-  list.Insert(com, val);
-}
-
-
-void
-GnuPlotC::AddPoint(IntT i, const Point2dC &pt)
-//====================================
-{
-  plots[i].InsLast(pt);
-}
-
-void
-GnuPlotC::AddPoint(IntT i, RealT x, RealT y)
-//==========================================
-{
-  Point2dC pt(x, y);
-  plots[i].InsLast(pt);
-}
-
-
-bool
-GnuPlotC::Plot(const StringC &outfile) const
-//===================
-{
-  if(plots[0].Size()==0) {
-    RavlIssueWarning("bool GnuPlotC::Plot() const: No points defined");
-    return false;
-  }
-  
-  FilenameC tmpGnu = "/tmp/gnu";
-  tmpGnu = tmpGnu.MkTemp();
-  RCHashC<IntT, StringC>names(plots.Size());
+  GnuPlotC::GnuPlotC(IntT num) :
+      plots(num), m_legendTitles(num), xrange(0, 0), yrange(0, 0)
   {
-   
-    OStreamC ofsGnu(tmpGnu);
- 
-    //: Print out the data
-    for(HashIterC<IntT, PlotT>it(plots);it;it++) {
-      FilenameC tmpData = "/tmp/data" + StringC(it.Key());
-      tmpData = tmpData.MkTemp();
-      names[it.Key()] = tmpData;
-      OStreamC ofsData(tmpData);
-      for(DLIterC<Point2dC>pt(*it);pt.IsElm();pt.Next()) ofsData << *pt << endl;
+    n = num;
+    Terminal("x11 persist raise");
+    Size(1.0);
+    Title("GnuPlot");
+    Xlabel("x-label");
+    Ylabel("y-label");
+    With("lines");
+  }
+
+  GnuPlotC::GnuPlotC(const StringC & title, const StringC & xlabel, const StringC & ylabel, const Array1dC<StringC> & subPlotTitles) :
+      plots(subPlotTitles.Size()), m_legendTitles(subPlotTitles), xrange(0, 0), yrange(0, 0)
+  {
+    n = plots.Size();
+    Terminal("x11 persist raise");
+    Size(1.0);
+    Title(title);
+    Xlabel(xlabel);
+    Ylabel(ylabel);
+    With("points");
+  }
+
+  void GnuPlotC::Set(const StringC & com, const StringC &val)
+  {
+    list.Insert(com, val);
+  }
+
+  void GnuPlotC::AddPoint(IntT i, const Point2dC &pt)
+  {
+    if (i > n - 1) {
+      RavlIssueError("adding point to not numbered plot\n");
     }
-    
-    //: Print out the commands
-    ofsGnu << "set title \'" << list["title"] << "\'" << endl;
-    ofsGnu << "set xlabel \'" << list["xlabel"] << "\'" << endl;
-    ofsGnu << "set ylabel \'" << list["ylabel"] << "\'" << endl;
-    if (!outfile.IsEmpty())  ofsGnu << "set output \'" << outfile << "\'" << endl;
-    ofsGnu << "set size " << list["size"] << endl;
-    ofsGnu << "set terminal " << list["terminal"] << endl;
-    ofsGnu << "set grid" << endl;
-    ofsGnu << "plot ";
-    
-    //: output ranges
-    ofsGnu << "[" << (IsNan(range.LCol()) ? " " : StringC(range.LCol()))
-           << ":" << (IsNan(range.RCol()) ? " " : StringC(range.RCol())) << "]"
-           << "[" << (IsNan(range.TRow()) ? " " : StringC(range.TRow()))
-           << ":" << (IsNan(range.BRow()) ? " " : StringC(range.BRow())) << "] ";
-
-    StringC with = list["with"];
-    IntT max=0;
-    for(HashIterC<IntT, PlotT>it(plots);it;it++) if (it.Key()>max) max = it.Key();
-
-    for(HashIterC<IntT, PlotT>it(plots);it;it++) {
-      FilenameC tmpData = names[it.Key()];
-      ofsGnu << "\'" << tmpData << "\' title \"" << keys[it.Key()] << "\" with " << with;
-      if(it.Key()<max) ofsGnu << ", ";
-      //else ofsGnu << endl;
-    }    
+    plots[i].InsLast(pt);
   }
-  
-  //: Run gnuplot
-  StringC com = "gnuplot " + tmpGnu;
-  cout << com << endl;
-  system(com);
 
-  //: Then remove tmp files
-  if(!tmpGnu.Remove()) {
-    return false;
+  void GnuPlotC::AddPoint(IntT i, RealT x, RealT y)
+  {
+    if (i > n - 1) {
+      RavlIssueError("adding point to not numbered plot\n");
+    }
+    Point2dC pt(x, y);
+    plots[i].InsLast(pt);
   }
-  for(HashIterC<IntT, PlotT>it(plots);it;it++) {
-    FilenameC tmpData = names[it.Key()];
-    if(!tmpData.Remove())
+
+  bool GnuPlotC::AddLegendTitle(IntT i, const StringC & legendTitle)
+  {
+    if (i > m_legendTitles.Size() - 1) {
       return false;
+    }
+    m_legendTitles[i] = legendTitle;
+    return true;
   }
-  
-  //: return success
-  return true;
-}
 
-void
-GnuPlotC::View(const FilenameC &out) 
-//==============
-{
-  StringC com;
-  if (out.Extension() == "png") {
-    Terminal("png");
-    Plot(out);
-    com = "xv " + out + "&";
+  bool GnuPlotC::SetAxisRange(RealT xlo, RealT xhi, RealT ylo, RealT yhi)
+  {
+
+    // FIXME: Do some checking
+    xrange.X() = xlo;
+    xrange.Y() = xhi;
+    yrange.X() = ylo;
+    yrange.Y() = yhi;
+    return true;
   }
-  else if(out.Extension() == "ps") {
-    Terminal("postscript landscape colour");
-    Plot(out);
-    com = "gv " + out + "&";
-  }
-  else {
-    Terminal("postscript landscape colour");
+
+  bool GnuPlotC::Plot(const StringC & outfile) const
+  {
+
+    // check we have valid data
+    if (plots[0].Size() == 0) {
+      RavlIssueWarning("bool GnuPlotC::Plot() const: No points defined");
+      return false;
+    }
+
     FilenameC tmpGnu = "/tmp/gnu";
     tmpGnu = tmpGnu.MkTemp();
-    Plot(tmpGnu);
-    com = "ps2pdf " + tmpGnu + " " + out + " && xpdf " + out + "&";
-  }
-  cerr << "command: " << com << endl;
-  system(com);
-}
+    Array1dC<StringC> names(plots.Size());
+    {
 
+      OStreamC ofsGnu(tmpGnu);
+
+      //: Print out the data
+      for (Array1dIterC<PlotT> it(plots); it; it++) {
+        FilenameC tmpData = "/tmp/data" + StringC(it.Index().V());
+        tmpData = tmpData.MkTemp();
+        names[it.Index()] = tmpData;
+        OStreamC ofsData(tmpData);
+        for (DLIterC<Point2dC> pt(*it); pt.IsElm(); pt.Next())
+          ofsData << *pt << endl;
+      }
+
+      //: Print out the commands
+      ofsGnu << "set title \'" << list["title"] << "\'" << endl;
+      ofsGnu << "set xlabel \'" << list["xlabel"] << "\'" << endl;
+      ofsGnu << "set ylabel \'" << list["ylabel"] << "\'" << endl;
+      if (!outfile.IsEmpty())
+        ofsGnu << "set output \'" << outfile << "\'" << endl;
+      ofsGnu << "set size " << list["size"] << endl;
+      ofsGnu << "set terminal " << list["terminal"] << endl;
+      ofsGnu << "set grid" << endl;
+      ofsGnu << "plot ";
+
+      //: output ranges
+#if 0
+      if ((xrange.X() == 0.0) && (xrange.Y() == 0.0))
+      ofsGnu << "[]";
+      else
+      ofsGnu << "[" << xrange.X() << ":" << xrange.Y() << "]";
+      if ((yrange.X() == 0.0) && (yrange.Y() == 0.0))
+      ofsGnu << "[]";
+      else
+      ofsGnu << "[" << yrange.X() << ":" << yrange.Y() << "] ";
+#endif
+
+      StringC with = list["with"];
+      bool first = true;
+      for (Array1dIterC<PlotT> it(plots); it; it++) {
+
+        // check for empty data
+        if (it.Data().IsEmpty()) {
+          continue;
+        }
+
+        // Add a comma if it is not first
+        if (!first) {
+          ofsGnu << ",";
+        }
+
+        FilenameC tmpData = names[it.Index()];
+        // If we are plotting multiple graphs with points
+        // then let change the shape for each plot
+        StringC localWith = with;
+        if (with == "points") {
+          localWith = "points pointtype " + (StringC) (it.Index() + 1);
+        }
+        ofsGnu << "\'" << tmpData << "\' with " << localWith;
+        // Put in a nice title for the legend
+        ofsGnu << " title \"" << m_legendTitles[it.Index()] << "\"";
+        first = false;
+      }
+    }
+
+    //: Run gnuplot
+    StringC com = "gnuplot " + tmpGnu;
+    system(com);
+    Sleep(1.0); // give it time to run
+    //: Then remove tmp files
+    if (!tmpGnu.Remove()) {
+      return false;
+    }
+    for (Array1dIterC<PlotT> it(plots); it; it++) {
+      FilenameC tmpData = names[it.Index()];
+      if (!tmpData.Remove())
+        return false;
+    }
+
+    //: return success
+    return true;
+  }
+
+  bool GnuPlotC::MultiPlot(const StringC & outfile) const
+  {
+
+    if (plots[0].Size() == 0) {
+      RavlIssueWarning("bool GnuPlotC::Plot() const: No points defined");
+      return false;
+    }
+
+    // Sort out how to display plots
+    UIntT rows = 3;
+    UIntT cols = 3;
+    if(plots.Size() == 1) {
+      rows = 1;
+      cols = 1;
+    }
+    else if (plots.Size() == 2) {
+      rows = 1;
+      cols = 2;
+    } else if (plots.Size() == 3) {
+      rows = 1;
+      cols = 3;
+    } else if (plots.Size() == 4) {
+      rows = 2;
+      cols = 2;
+    } else if (plots.Size() == 5 || plots.Size() == 6) {
+      rows = 2;
+      cols = 3;
+    }
+
+    FilenameC tmpGnu = "/tmp/gnu";
+    tmpGnu = tmpGnu.MkTemp();
+    FilenameC pngFile = "/tmp/plot.png";
+    pngFile = pngFile.MkTemp();
+    Array1dC<StringC> names(plots.Size());
+    {
+      OStreamC ofsGnu(tmpGnu);
+
+      //: Print out the data
+      for (Array1dIterC<PlotT> it(plots); it; it++) {
+        FilenameC tmpData = "/tmp/data" + StringC(it.Index().V());
+        tmpData = tmpData.MkTemp();
+        names[it.Index()] = tmpData;
+        OStreamC ofsData(tmpData);
+        for (DLIterC<Point2dC> pt(*it); pt.IsElm(); pt.Next())
+          ofsData << *pt << endl;
+      }
+
+      //: Print out the commands
+      ofsGnu << "set xlabel \'" << list["xlabel"] << "\'" << endl;
+      ofsGnu << "set ylabel \'" << list["ylabel"] << "\'" << endl;
+      ofsGnu << "set output \'" << pngFile << "\'" << endl;
+      ofsGnu << "set size " << list["size"] << endl;
+      ofsGnu << "set terminal " << list["terminal"] << endl;
+      if (!outfile.IsEmpty())
+        ofsGnu << "set output \'" << outfile << "\'" << endl;
+
+      ofsGnu << "set grid" << endl;
+      ofsGnu << "set size 1, 1" << endl;
+      ofsGnu << "set origin 0,0" << endl;
+      ofsGnu << "set multiplot layout " << rows << "," << cols << " title \'" << list["title"] << "\' columnsfirst scale 1.1,0.9" << endl;
+
+      StringC with = list["with"];
+
+      for (Array1dIterC<PlotT> it(plots); it; it++) {
+        if (it.Data().IsEmpty()) {
+          continue;
+        }
+
+        // Set title based on legend title
+        ofsGnu << "set title \'" << m_legendTitles[it.Index()] << "\'" << endl;
+
+        FilenameC tmpData = names[it.Index()];
+        // If we are plotting multiple graphs with points
+        // then let change the shape for each plot
+        StringC localWith = with;
+        if (with == "points") {
+          localWith = "points pointtype " + (StringC) (it.Index() + 1);
+        }
+
+        ofsGnu << "plot ";
+        //: output ranges
+        if ((xrange.X() == 0.0) && (xrange.Y() == 0.0))
+          ofsGnu << "[]";
+        else
+          ofsGnu << "[" << xrange.X() << ":" << xrange.Y() << "]";
+        if ((yrange.X() == 0.0) && (yrange.Y() == 0.0))
+          ofsGnu << "[]";
+        else
+          ofsGnu << "[" << yrange.X() << ":" << yrange.Y() << "] ";
+        ofsGnu << " \'" << tmpData << "\' with " << localWith << " title \'" << m_legendTitles[it.Index()] << "\'" << endl;
+      }
+      ofsGnu << "unset multiplot" << endl;
+    }
+
+    //: Run gnuplot
+    StringC com = "gnuplot " + tmpGnu;
+    system(com);
+    Sleep(1.0); // give it time to run...
+
+    //: Then remove tmp files
+    if (!tmpGnu.Remove()) {
+      return false;
+    }
+
+    //: Then remove tmp files
+    if (!pngFile.Remove()) {
+      return false;
+    }
+
+    for (Array1dIterC<PlotT> it(plots); it; it++) {
+      FilenameC tmpData = names[it.Index()];
+      if (!tmpData.Remove())
+        return false;
+    }
+
+    //: return success
+    return true;
+  }
+
+  void GnuPlotC::Terminal(const StringC &term)
+  {
+    Set("terminal", term);
+  }
+
+// Get an image of the plot
+  ImageC<ByteRGBValueC> GnuPlotC::Image(UIntT rows, UIntT cols)
+  {
+
+    // Sort out the terminal
+    StringC term;
+    term.form("png size %d, %d", cols, rows);
+    Terminal(term);
+
+    // Make the temporary png file
+    FilenameC pngFile = "/tmp/plot.png";
+    pngFile = pngFile.MkTemp();
+
+    // Do the plot
+    ImageC<ByteRGBValueC> image;
+    if (!Plot(pngFile)) {
+      return image;
+    }
+
+    // Load image
+    if (!RavlN::Load(pngFile, image)) {
+      return image;
+    }
+
+    // Remove png file
+    pngFile.Remove();
+
+    // Reset terminal to x11
+    Terminal("x11 persist raise");
+
+    // and return
+    return image;
+  }
+
+  ImageC<ByteRGBValueC> GnuPlotC::MultiPlotImage()
+  {
+
+    // Sort out a decent image size based on number of plots
+    UIntT imageRows = 1000;
+    UIntT imageCols = 1000;
+    if (plots.Size() == 2) {
+      imageRows = 500;
+      imageCols = 1000;
+    } else if (plots.Size() == 3) {
+      imageRows = 500;
+      imageCols = 1000;
+    } else if (plots.Size() == 4) {
+      imageRows = 1000;
+      imageCols = 1000;
+    } else if (plots.Size() == 5 || plots.Size() == 6) {
+      imageRows = 666;
+      imageCols = 1000;
+    } else {
+      imageRows = 1000;
+      imageCols = 1000;
+    }
+
+    // Sort out the terminal
+    StringC term;
+    term.form("png size %d, %d", imageCols, imageRows);
+    Terminal(term);
+
+    // Make the temporary png file
+    FilenameC pngFile = "/tmp/plot.png";
+    pngFile = pngFile.MkTemp();
+
+    // Do the plot
+    ImageC<ByteRGBValueC> image;
+    if (!MultiPlot(pngFile)) {
+      return image;
+    }
+
+    // Load image
+    if (!RavlN::Load(pngFile, image)) {
+      return image;
+    }
+
+    // Remove png file
+    pngFile.Remove();
+
+    // Reset terminal to x11
+    Terminal("x11 persist raise");
+
+    return image;
+  }
+
+  // Plot a RAVL function
+  bool PlotFunction(const FunctionC & function, RealT min, RealT max, RealT step)
+  {
+    GnuPlotC plot(function.OutputSize());
+    std::cerr << function.OutputSize() << std::endl;
+    for(RealT x=min;x<=max;x+=step) {
+      VectorC xvec(function.InputSize());
+      xvec.Fill(x);
+      VectorC y=function.Apply(xvec);
+      for(SArray1dIterC<RealT>it(y);it;it++) {
+        Point2dC pt(x, *it);
+        plot.AddPoint(it.Index().V(), pt);
+      }
+    }
+    plot.MultiPlot();
+    return true;
+  }
+
+  ostream &
+  operator<<(ostream & s, const GnuPlotC & out)
+  {
+    // output your class members
+
+    return s;
+  }
+
+  istream &
+  operator>>(istream & s, GnuPlotC & in)
+  {
+    // input your class members
+    return s;
+  }
 
 }

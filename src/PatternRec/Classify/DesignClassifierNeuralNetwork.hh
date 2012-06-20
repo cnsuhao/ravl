@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DESIGNCLASSIFIERNEURALNETWORK_HEADER
 #define RAVL_DESIGNCLASSIFIERNEURALNETWORK_HEADER 1
-//! rcsid="$Id: DesignClassifierGaussianMixture.hh,v 1.4 2005/12/06 17:16:50 plugger Exp $"
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! file="Ravl/PatternRec/Classify/DesignClassifierGaussianMixture.hh"
@@ -18,7 +17,7 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Design a gaussian mixture classifier .
+  //: Design a neural network classifier .
 
   class DesignClassifierNeuralNetworkBodyC: public DesignClassifierSupervisedBodyC {
     public:
@@ -47,7 +46,7 @@ namespace RavlN {
       //: the output labels must run from 0 to nOutputs-1.
 
       virtual ClassifierC Apply(const SampleC<VectorC> &in, const SampleC<UIntT> &out, const SampleC<RealT> &weight);
-      //: Create a clasifier with weights for the samples.
+      //: Create a classifier with weights for the samples.
 
 
 
@@ -67,7 +66,7 @@ namespace RavlN {
   };
 
   //! userlevel=Normal
-  //: Design a gaussian mixture classifier .
+  //: Design a neural network classifier
 
   class DesignClassifierNeuralNetworkC: public DesignClassifierSupervisedC {
     public:
@@ -120,7 +119,7 @@ namespace RavlN {
       FunctionC Apply(const SampleC<VectorC> &in,const SampleC<VectorC> &out) {
         return Body().Apply(in, out);
       }
-             //: Create function from the given data.
+      //: Create function from the given data.
 
   };
 

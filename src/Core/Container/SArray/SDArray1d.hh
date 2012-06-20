@@ -13,7 +13,6 @@
 //! author="Charles Galambos"
 //! date="4/9/1996"
 //! docentry="Ravl.API.Core.Arrays.1D"
-//! rcsid="$Id$"
 
 #include "Ravl/Types.hh"
 #include "Ravl/Index.hh"

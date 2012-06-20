@@ -12,6 +12,8 @@
 
 #include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/STL.hh"
+#include "Ravl/Collection.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -42,16 +44,19 @@ namespace RavlN { namespace GeneticN {
     virtual void AddComponent(const std::string &name,const GeneTypeC &geneType);
 
     //! Lookup component
-    virtual bool LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType);
+    virtual bool LookupComponent(const std::string &name,GeneTypeC::ConstRefT &geneType) const;
 
     //! Create randomise value
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
     //! Mutate a gene
-    virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
     //! Mutate a gene
     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+
+    //! List names of fields.
+    void ListFields(RavlN::CollectionC<Tuple2C<StringC,GeneTypeC::ConstRefT> > &col) const;
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeNodeC> RefT;
@@ -106,6 +111,12 @@ namespace RavlN { namespace GeneticN {
     //! Visit all gene's in tree.
     virtual void Visit(GeneVisitorC &visitor) const;
 
+    //! Generate a hash value for the gene
+    virtual size_t Hash() const;
+
+    //! Test is value is effectively equal to this within tolerances specified in the type.
+    virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneNodeC> RefT;
 
@@ -143,7 +154,7 @@ namespace RavlN { namespace GeneticN {
      virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
      //! Mutate a gene
-     virtual bool Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+     virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
      //! Mutate a gene
      virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
@@ -199,6 +210,14 @@ namespace RavlN { namespace GeneticN {
       //! Access class type.
       const GeneTypeClassC &ClassType() const
       { return dynamic_cast<const GeneTypeClassC &>(*m_type); }
+
+      //! Generate a hash value for the gene
+      virtual size_t Hash() const
+      { return GeneNodeC::Hash(); }
+
+      //! Test is value is effectively equal to this within tolerances specified in the type.
+      virtual bool IsEffectivelyEqual(const GeneC &other) const
+      { return GeneNodeC::IsEffectivelyEqual(other); }
 
       // Reference to this gene.
       typedef RavlN::SmartPtrC<GeneClassC> RefT;

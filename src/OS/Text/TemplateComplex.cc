@@ -486,20 +486,62 @@ namespace RavlN {
   //: Substitution
   
   bool TemplateComplexBodyC::DoSubst(StringC &txt) {
-    
-    int arg1s = txt.index(':');
-    if(arg1s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring ";
-      return false;
-    }
-    int arg2s = txt.index(':',arg1s+1);
-    if(arg2s < 0) {
-      RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring ";
-      return false;
-    }
-    SubStringC arg1 = txt.before(arg1s);
-    SubStringC arg2 = txt.at(arg1s+1,(arg2s-arg1s)-1);
+   
+    int arg1s, arg2s, before;
+
+    arg1s=-1;
+    do // Find the first non-escaped :
+    {  arg1s  = txt.index(':',arg1s+1);
+       if(arg1s < 0) {
+         RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring ";
+         return false;
+       }
+       before = arg1s-1;
+       while (before >= 0)
+       {  if (txt.matches("\\",before,false))
+             before--;
+          else
+             break;
+       }
+    } while ((arg1s-before)%2 == 0);
+    // An even result implies \:, \\\:, etc. i.e. : is escaped so look for the next
+
+    arg2s=arg1s;
+    do // Find the next non-escaped :
+    {  arg2s = txt.index(':',arg2s+1);
+       if(arg2s < 0) {
+         RavlSysLog(SYSLOG_ERR) << "Malformed 'subst' in template. '" << txt << "' ignoring ";
+         return false;
+       }
+       before = arg2s-1;
+       while (before > arg1s) {
+         if (txt.matches("\\",before,false))
+             before--;
+          else
+             break;
+       }
+    } while ((arg2s-before)%2 == 0);
+    // An odd result implies c:, c\\:, etc. i.e. : is not escaped so is the separator
+
+    // Extract arguments dropping escape (\) characters  
+    StringC arg1 = txt.before(arg1s);
+    arg1.gsub("\\:",":");  // We know this is not going to wrongly change \\:
+                           // as we will not have a \\: as that will have been
+                           // regarded as the : terminating the argument
+    arg1.gsub("\\\\","\\");// Collapse \\ into \
+
+    StringC arg2 = txt.at(arg1s+1,(arg2s-arg1s)-1);
+    arg2.gsub("\\:",":");  // Again we know we have no \\: to break
+    arg2.gsub("\\\\","\\");
+
     StringC value = txt.after(arg2s);
+    // We do not process the original text for \-escape sequences. They are not
+    // required to get $(subst to work, and such processing would cause problems
+    // with nesting of commands (the user would need to double-up (then triple,
+    // etc) any \ characters). This is offset against the slightly inconsistent
+    // design where 2 parameters have one form of processing, the third another
+    // form. However, the selected path is probably the more straightforward of
+    // the two possibilities.
     
     ONDEBUG(RavlSysLog(SYSLOG_ERR) << "DoSubst '" << arg1 << "' '" << arg2 << "' '" << value << "' ");
     
@@ -508,7 +550,7 @@ namespace RavlN {
     Output() << resultStr;
     return true;
   }
-  
+
   //: 
   
   bool TemplateComplexBodyC::DoDefine(StringC &data) {

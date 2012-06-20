@@ -109,17 +109,24 @@ namespace RavlN { namespace GeneticN {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
+     RavlAssert(m_values.size() > 0);
      IntT n = palette.RandomUInt32() % m_values.size();
      newValue = m_values[n];
    }
 
    //! Mutate a gene
-   bool GeneTypeEnumC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeEnumC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
    {
      if(fraction < palette.Random1()) {
-       return original.Mutate(palette,fraction,newValue);
+       return original.Mutate(palette,fraction,mustChange,newValue);
      }
-     Random(palette,newValue);
+     // FIXME:- Do some sanity check on the number of options ?
+     int retryLimit = 1000;
+     do {
+       Random(palette,newValue);
+     } while((newValue.BodyPtr() != &original) && mustChange && retryLimit-- > 0) ;
+     if(retryLimit <= 0)
+       RavlWarning("Retry limit exceeded trying to mutate enum.");
      return newValue.BodyPtr() != &original;
    }
 
@@ -217,18 +224,19 @@ namespace RavlN { namespace GeneticN {
        RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
+     RavlAssert(m_types.size() > 0);
      unsigned n = palette.RandomUInt32() % m_types.size();
      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
      m_types[n]->Random(palette,newValue);
    }
 
    //! Mutate a gene
-   bool GeneTypeMetaC::Mutate(GenePaletteC &palette,float fraction,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
+   bool GeneTypeMetaC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const
    {
-     if(fraction < palette.Random1()) {
-       newValue = &original;
-       return false;
+     if(fraction < palette.Random1() && !mustChange) {
+       return original.Mutate(palette,fraction,mustChange,newValue);
      }
+     // FIXME:- Do some sanity check on the number of options ?
      Random(palette,newValue);
      return true;
    }

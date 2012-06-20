@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlMath
 //! file="Ravl/Math/LinearAlgebra/General/Vector.cc"
 
@@ -41,6 +40,43 @@ namespace RavlN {
     for(BufferAccessIter2C<RealT,float> it(*this,vec);it;it++)
       it.Data1() += it.Data2() * a;
     return *this;
+  }
+
+  //: Compute sigmoid for all elements in the vector.
+  VectorC Sigmoid(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Sigmoid(z[i]);
+    return ret;
+  }
+
+  //: Compute sigmoid in place for all elements in the vector.
+  void SigmoidIP(VectorC &z) {
+    for(unsigned i = 0;i < z.Size();i++)
+      z[i] = Sigmoid(z[i]);
+  }
+
+
+  //: Compute the element wise log of z.
+  VectorC Log(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Log(z[i]);
+    return ret;
+  }
+
+  //: Compute the element wise log of z in place
+  void LogIP(VectorC &z) {
+    for(unsigned i = 0;i < z.Size();i++)
+      z[i] = Log(z[i]);
+  }
+
+  //: Compute the element wise exponent of z.
+  VectorC Exp(const VectorC &z) {
+    VectorC ret(z.Size());
+    for(unsigned i = 0;i < z.Size();i++)
+      ret[i] = Exp(z[i]);
+    return ret;
   }
 
 

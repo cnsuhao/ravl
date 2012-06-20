@@ -5,7 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////
-//! lib = RavlImgIOQT
+//! lib=RavlMacOSXVideoCapture
 //! author = "Charles Galambos"
 
 #include "Ravl/MacOSX/QTFormat.hh"

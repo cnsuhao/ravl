@@ -63,7 +63,7 @@ namespace RavlN {
     bool pwr2; // Is length a power of two ?
     bool zeroPad; // Zero pad input to 'n' bytes ?
     int primeFactors[32];
-    int nf; // Number of factors. Sufficent for all 32-bit lengths.
+    int nf; // Number of factors. Sufficient for all 32-bit lengths.
   };
   
   //! userlevel=Normal

@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlURLIO
 //! file="Ravl/Contrib/HTTP/URLStream.cc"
 
@@ -18,6 +17,8 @@
 #include <curl/curl.h>
 //#include <curl/types.h>
 #include <curl/easy.h>
+
+#include "Ravl/IO/Curl.hh"
 
 #include <unistd.h>
 
@@ -41,7 +42,7 @@
 
 namespace RavlN {
 
-   void InitURLStreamIO() {}
+  void InitURLStreamIO() {}
 
   static size_t dataReady(void *ptr, size_t size, size_t nmemb, void *stream) {      
     static_cast<OStreamC*>(stream)->write(static_cast<char*>(ptr),size*nmemb);
@@ -67,21 +68,15 @@ namespace RavlN {
     // Create temporary memory buffer
     BufOStreamC tmpstrm;
     // Fetch URL
-    CURL *curl = NULL;
+    //CURL *curl = NULL;
     ONDEBUG(cerr << "Retrieving URL: " << url);
     
     // Initialise CURL
-    curl = curl_easy_init();
-    if(curl == 0)
-      return 1;
+    CurlC curl;
     
     IntT errVal = 0;
     
     // Set options
-
-    curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    // This is needed for thread safety. See 'Multi-threading Issues' in http://curl.haxx.se/libcurl/c/libcurl-tutorial.html
-    // There could be problems with DNS lookup timeouts though.
 
     curl_easy_setopt(curl, CURLOPT_URL, url.chars());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dataReady);
@@ -100,7 +95,6 @@ namespace RavlN {
     errVal = curl_easy_perform(curl);
     
     // Clean up
-    curl_easy_cleanup(curl);
     ONDEBUG(cerr << "Building output stream. ");
     // Recreate IStream from the read pipe
     buf = tmpstrm.Data();
@@ -303,8 +297,8 @@ namespace RavlN {
       //: Get type of stream.
     
       virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
-	StringC rurl("https:" + url);
-	return URLIStreamC(rurl,buffered); 
+        StringC rurl("https:" + url);
+        return URLIStreamC(rurl,buffered);
       }
       //: Open input stream.
     
@@ -323,8 +317,8 @@ namespace RavlN {
       //: Get type of stream.
     
       virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
-	StringC rurl("ftp:" + url);
-	return URLIStreamC(rurl,buffered); 
+        StringC rurl("ftp:" + url);
+        return URLIStreamC(rurl,buffered);
       }
       //: Open input stream.
     
@@ -343,8 +337,8 @@ namespace RavlN {
       //: Get type of stream.
     
       virtual IStreamC OpenI(const StringC &url, bool binary = false,bool buffered = true) { 
-	StringC rurl("ldap:" + url);
-	return URLIStreamC(rurl,buffered); 
+        StringC rurl("ldap:" + url);
+        return URLIStreamC(rurl,buffered);
       }
       //: Open input stream.
     

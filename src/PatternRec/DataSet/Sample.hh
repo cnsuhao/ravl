@@ -62,6 +62,18 @@ namespace RavlN {
     SampleC<DataT> SubSample(const CollectionC<UIntT> &x);
     //: Take a subsample of the given indexes in x.
     
+    SampleC<DataT> CompactFrom(IndexC start,SizeT size)
+    { return DArray1dC<DataT>::CompactFrom(start,size); }
+    //: Get sub array from this one.
+    // The new array will be indexed from zero and continous
+    // This does not copy the elements, it only creates a new access to existing ones.
+
+    const SampleC<DataT> CompactFrom(IndexC start,SizeT size) const
+    { return const_cast<SampleC<DataT> *>(this)->DArray1dC<DataT>::CompactFrom(start,size); }
+    //: Get sub array from this one.
+    // The new array will be indexed from zero and continous
+    // This does not copy the elements, it only creates a new access to existing ones.
+
     DataT ExtractEntry(int ind);
     //: Extract an entry from sample.
 

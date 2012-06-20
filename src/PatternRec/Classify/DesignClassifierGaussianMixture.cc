@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/Classify/DesignClassifierGaussianMixture.cc"
 
@@ -75,7 +74,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Create a clasifier.
+  //: Create a classifier.
   
   ClassifierC DesignClassifierGaussianMixtureBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out) {
     RavlAssertMsg(in.Size() == out.Size(),"DesignClassifierGaussianMixtureBodyC::Apply(), Sample of vector and labels should be the same size.");
@@ -91,7 +90,7 @@ namespace RavlN {
     return ClassifierGaussianMixtureC(gma);
   }
   
-  //: Create a clasifier with weights for the samples.
+  //: Create a classifier with weights for the samples.
   
   ClassifierC DesignClassifierGaussianMixtureBodyC::Apply(const SampleC<VectorC> &in,
 							  const SampleC<UIntT> &out,
@@ -101,7 +100,7 @@ namespace RavlN {
   }
  
   //////////////////////////////////////////////////////////
-  RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierGaussianMixtureC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierGaussianMixture("RavlN::DesignClassifierGaussianMixtureC");
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierGaussianMixtureC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierGaussianMixture("RavlN::DesignClassifierGaussianMixtureC");
 
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignClassifierGaussianMixtureBodyC,DesignClassifierGaussianMixtureC,DesignClassifierSupervisedC);

@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
 // $Id$
+//! lib=RavlLapackWraps
 
 //This file contains C wrappers of LAPACK function for eigen vectors computation
 #ifndef EV_C_H

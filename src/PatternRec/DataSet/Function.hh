@@ -31,13 +31,13 @@ namespace RavlN {
   public:
     FunctionBodyC()
       : inputSize(0),
-	outputSize(0)
+	      outputSize(0)
     {}
     //: Default constructor.
     
     FunctionBodyC(UIntT inSize,UIntT outSize)
       : inputSize(inSize),
-	outputSize(outSize)
+	      outputSize(outSize)
     {}
     //: Create function with given number of inputs and outputs.
     
@@ -70,6 +70,13 @@ namespace RavlN {
     virtual SampleC<VectorC> Apply(const SampleC<VectorC> &data);
     //: Apply transform to whole dataset.
     
+    bool CheckJacobian(const VectorC &X,RealT tolerance = 1e-4,RealT epsilon = 1e-6) const;
+    //: Compare the numerical and computed jacobians at X, return true if the match.
+    // Useful for debugging!
+
+    MatrixC NumericalJacobian(const VectorC &X,RealT epsilon = 1e-6) const;
+    //: Calculate numerical approximation of Jacobian matrix at X
+
     virtual MatrixC Jacobian (const VectorC &X) const;
     //: Calculate Jacobian matrix at X
     // The default implementation performs numerical estimation of the Jacobian using differences. This
@@ -110,6 +117,11 @@ namespace RavlN {
     
     virtual void Describe(ostream &out);
     //: Write a human readable text description of the function.
+
+
+    typedef SmartPtrC<FunctionBodyC> RefT;
+    //: Smart ptr to function
+
   protected:
     
     UIntT inputSize;  // (X in amma speak.)
@@ -171,6 +183,11 @@ namespace RavlN {
     { return Body().Apply(X); }
     //: Evaluate Y=f(X)
     
+    bool CheckJacobian(const VectorC &X,RealT tolerance = 1e-4,RealT epsilon = 1e-4) const
+    { return Body().CheckJacobian(X,tolerance,epsilon); }
+    //: Compare the numerical and computed jacobians at X, return true if the match.
+    // Useful for debugging!
+
     MatrixC Jacobian(const VectorC &X) const
     { return Body().Jacobian(X); }    
     //: Calculate Jacobian matrix at X

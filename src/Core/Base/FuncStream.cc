@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlCore
 
 #include "Ravl/FuncStream.hh"
 #include <cstring>
@@ -82,7 +83,7 @@ namespace RavlN {
     //create buffer
     m_buffer = new char[bufferSize];
     if(m_buffer == NULL) {
-      throw ExceptionOperationFailedC("Cann't allocate buffer");
+      throw ExceptionOperationFailedC("Can't allocate buffer");
     }
     m_bufferSize = bufferSize;
 

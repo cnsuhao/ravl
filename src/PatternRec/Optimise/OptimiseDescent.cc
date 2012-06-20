@@ -4,12 +4,12 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/OptimiseDescent.cc"
 
 #include "Ravl/PatternRec/OptimiseDescent.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -19,6 +19,14 @@
 #endif
 
 namespace RavlN {
+
+  //: Constructor from xml factory.
+
+  OptimiseDescentBodyC::OptimiseDescentBodyC(const XMLFactoryContextC & factory)
+   : OptimiseBodyC(factory),
+     _iterations(factory.AttributeUInt("iterations",1000)),
+     _tolerance(factory.AttributeReal("tolerance",1e-6))
+  {}
 
   OptimiseDescentBodyC::OptimiseDescentBodyC (UIntT iterations, RealT tolerance)
     :OptimiseBodyC("OptimiseDescentBodyC"),
@@ -38,7 +46,7 @@ namespace RavlN {
   // **********  OptimalX    ************************************************
   // ------------------------------------------------------------------------
   //
-  // Steepest descent optimizer. From each point determines the direction of
+  // Steepest descent optimiser. From each point determines the direction of
   // steepest descent and proceeds along that vector by a certain amount. The
   // amount is initially chosen as the magnitude of the gradient and is 
   // halved until the cost is less than at the current location. The search 
@@ -47,6 +55,8 @@ namespace RavlN {
   //
   VectorC OptimiseDescentBodyC::MinimalX (const CostC &domain, RealT &minimumCost) const
   {
+    RavlAssertMsg(domain.GetParameters().IsValid(),"Cost function has no parameters setup.");
+
     VectorC dYdX;                            // Jacobian or gradient at location
     UIntT counter = 0;
     VectorC iterX = domain.StartX();         // Copy start into temporary var;
@@ -55,10 +65,6 @@ namespace RavlN {
 #if 0
     cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
     cerr << "    X=" << iterX << "\n";
-#endif
-#if USE_BRENT
-    ParametersC parameters1d(1);
-    OptimiseBrentC _brent(_iterations, _tolerance);
 #endif
     
     UIntT maxSteps = 15;  // Allow quite a few steps on the first iteration to get the scale right.
@@ -70,7 +76,7 @@ namespace RavlN {
       //cout << "X=" << X << "\tcurrentcost = " << iterCost <<  "\n";
       RealT startCost = currentCost;
       dYdX = domain.Jacobian(iterX).SliceRow(0); // Determine current Jacobian
-      dYdX /= dYdX.Modulus(); // Normalise to unit step.
+      //dYdX /= dYdX.Modulus(); // Normalise to unit step.
       //cerr << "Jacobian=" << dYdX << "\n";
       VectorC Xstep;
       VectorC Xat = iterX;
@@ -101,7 +107,7 @@ namespace RavlN {
   {
     StrOStreamC stream;
     stream << OptimiseBodyC::GetInfo () << "\n";
-    stream << "Gradient descent optimization algorithm. Iterations = " << _iterations;
+    stream << "Gradient descent optimisation algorithm. Iterations = " << _iterations;
     return stream.String();
   }
   
@@ -112,4 +118,6 @@ namespace RavlN {
     return true;
   }
   
+  static RavlN::XMLFactoryRegisterHandleConvertC<OptimiseDescentC, OptimiseC> g_registerXMLFactoryDesignClassifierGaussianMixture("RavlN::OptimiseDescentC");
+
 }

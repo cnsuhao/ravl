@@ -139,7 +139,7 @@ namespace RavlN {
       return true;
     }
 #if RAVL_OS_POSIX
-    if(syslog_StdErr && (!syslog_Open || syslog_StdErrOnly)) {
+    if((syslog_StdErr && !syslog_Open) || syslog_StdErrOnly) {
       if(priority <= localLevel) {
         std::cerr << syslog_ident;
         if(syslog_fileline) {
@@ -281,6 +281,50 @@ namespace RavlN {
 #endif
     return true;
   }
-  
+
+  // ---------------------------------------------------------------------------
+
+  static const char *g_logLevelName[] = {
+  "EMERG",
+  "ALERT",
+  "CRIT",
+  "ERR",
+  "WARNING",
+  "NOTICE",
+  "INFO",
+  "DEBUG",
+  "ALL",
+  "DEBUG3",
+  "DEBUG4",
+  0
+  };
+
+  //: Write log level to stream
+  std::ostream &operator<<(std::ostream &strm,SysLogPriorityT priority) {
+    unsigned level = (unsigned) priority;
+    if(level > 10) {
+      strm << "INVALID";
+    } else {
+      strm << g_logLevelName[level];
+    }
+    return strm;
+  }
+
+  //: Read log level from stream
+  std::istream &operator>>(std::istream &strm,SysLogPriorityT &priority) {
+    std::string str;
+    strm >> str;
+    unsigned at = 0;
+    for(;g_logLevelName[at] != 0;at++) {
+      if(str == g_logLevelName[at]) {
+        priority = static_cast<SysLogPriorityT>(at);
+        return strm;
+      }
+    }
+    RavlError("Unexpected priority level '%s' ",str.c_str());
+    throw RavlN::ExceptionOperationFailedC("Unexpected priority");
+    return strm;
+  }
+
   
 }

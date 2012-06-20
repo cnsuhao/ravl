@@ -5,6 +5,7 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! author="Charles Galambos"
+//! lib=RavlMath
 
 #include "Ravl/PProjection3d.hh"
 #include "Ravl/PPoint3d.hh"

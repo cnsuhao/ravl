@@ -7,6 +7,7 @@
 // $Id$
 #ifndef BLAS2_HH
 #define BLAS2_HH
+//! lib=RavlLapackWraps
 
 
 /*! Adds outer product to the matrix

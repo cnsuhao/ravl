@@ -37,7 +37,7 @@ namespace RavlImageN {
     BoundaryC boundary(static_cast<Array2dC<UIntT> >(segmentation.SegMap()),1);
     DListC<BoundaryC> edges = boundary.OrderEdges();
     if(edges.Size() == 0) {
-      Save("@X:Region",segmentation.SegMap());
+      RavlN::Save("@X:Region",segmentation.SegMap());
       cerr << "ChartDetectorRegionBodyC::UpdateStats(), WARNING: Zero boundries for region ?!? \n";
       holes = 0;
     } else

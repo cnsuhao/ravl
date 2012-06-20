@@ -6,6 +6,7 @@
 // file-header-ends-here
 #ifndef RAVL_DATASERVERVFSREALDIR_HEADER
 #define RAVL_DATASERVERVFSREALDIR_HEADER 1
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerVFSNode.hh"
 #include "Ravl/DataServer/DataServerVFSRealFile.hh"
@@ -92,6 +93,7 @@ namespace RavlN {
     StringC defaultFileFormat;
 
     bool canCreate;
+    bool m_syncBeforeRead;
   };
   
   //! userlevel=Normal
@@ -102,6 +104,10 @@ namespace RavlN {
     : public DataServerVFSNodeC
   {
   public:
+    DataServerVFSRealDirC()
+    {}
+    //: Create invalid handle
+
     DataServerVFSRealDirC(const XMLFactoryContextC &factory)
      : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(factory))
     {}

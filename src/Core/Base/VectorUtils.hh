@@ -1,8 +1,15 @@
+// This file is part of RAVL, Recognition And Vision Library
+// Copyright (C) 2001-12, University of Surrey
+// This code may be redistributed under the terms of the GNU Lesser
+// General Public License (LGPL). See the lgpl.licence file for details or
+// see http://www.gnu.org/copyleft/lesser.html
+// file-header-ends-here
 //! docentry="Ravl.API.Math.Linear Algebra"
 //! userlevel=Develop
 //! author="Bill Christmas; Charles Galambos"
 #ifndef RAVLBASEVECTORNDOTPRODUCT_HH
 #define RAVLBASEVECTORNDOTPRODUCT_HH
+//! lib=RavlCore
 
 #include <cstddef>
 

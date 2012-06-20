@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=RavlDataServer
 
 #include "Ravl/DataServer/DataServerVFSRealDir.hh"
 #include "Ravl/OS/NetPortManager.hh"
@@ -12,6 +13,8 @@
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/ChildOSProcess.hh"
 #include "Ravl/XMLFactoryRegister.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/OS/Directory.hh"
 
 #if RAVL_HAVE_FTW_H
 #include <ftw.h>
@@ -57,15 +60,20 @@ namespace RavlN {
   DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const XMLFactoryContextC &factory)
    : DataServerVFSNodeBodyC(factory),
      realDirname(factory.AttributeString("realDirname","")),
-     canCreate(factory.AttributeBool("canCreate",false))
-  {}
+     defaultFileFormat(factory.AttributeString("defaultFileFormat","")),
+     canCreate(factory.AttributeBool("canCreate",false)),
+     m_syncBeforeRead(factory.AttributeBool("syncBeforeRead",true))
+  {
+
+  }
 
   //: Constructor.
   
   DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC(const StringC &nname,const StringC& npath,const StringC &nRealDirname,bool ncanWrite,bool ncanCreate)
     : DataServerVFSNodeBodyC(nname,npath,ncanWrite,true),
       realDirname(nRealDirname),
-      canCreate(ncanCreate)
+      canCreate(ncanCreate),
+      m_syncBeforeRead(false)
   {
     ONDEBUG(cerr << "DataServerVFSRealDirBodyC::DataServerVFSRealDirBodyC nname (" << nname << ")" << endl);
 
@@ -120,35 +128,43 @@ namespace RavlN {
   {
     if (deletePending)
     {
-      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile refusing to open file in soon to be deleted path (" << name << ")" << endl;
+      RavlWarning("OpenVFSFile refusing to open file in soon to be deleted path (%s)",name.c_str());
       return false;
     }
 
     StringC vfile = StringListC(remainingPath).Cat("/");
     if (vfile.IsEmpty())
     {
-      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile no filename specified in path (" << name << ")" << endl;
+      RavlWarning("OpenVFSFile no filename specified in path (%s)", name.c_str());
       return false;
     }
     FilenameC absFile = realDirname + "/" + vfile;
+    ONDEBUG(RavlDebug("OpenVFSFile asked to open '%s' from '%s'",absFile.c_str(),realDirname.c_str()));
 
     MutexLockC lock(access);
 
     if (nameDeletePending.IsMember(vfile))
     {
-      cerr << "DataServerVFSRealDirBodyC::OpenVFSFile refusing to open soon to be deleted file (" << absFile << ")" << endl;
+      RavlWarning("OpenVFSFile refusing to open soon to be deleted file (%s)",absFile.c_str());
       return false;
     }
 
     if (!name2file.Lookup(vfile, rfile))
     {
+      if(!absFile.Exists() && !forWrite && m_syncBeforeRead) {
+        // Wait for sync of directory to disk, just to check.
+        DirectoryC blobDir = absFile.PathComponent();
+        blobDir.Sync();
+      }
+
       if (!absFile.Exists() && !forWrite)
       {
-        cerr << "DataServerVFSRealDirBodyC::OpenVFSFile failed to open file (" << absFile << ")" << endl;
+        RavlWarning("OpenVFSFile failed to open file '%s' with default format '%s' ",absFile.c_str(),defaultFileFormat.c_str());
         return false;
       }
       
       rfile = DataServerVFSRealFileC(vfile, AbsoluteName(), absFile, canWrite);
+      rfile.SetVerbose(verbose);
       rfile.SetFileFormat(defaultFileFormat);
       rfile.SetCloseSignal(sigOnClose);
       rfile.SetDeleteSignal(sigOnDelete);
@@ -353,19 +369,19 @@ namespace RavlN {
 
     MutexLockC lock(access);
 
-		StringC targetFilename = StringListC(remainingPath).Cat("/");
-		if (!targetFilename.IsEmpty())
-		{
-			RavlAssert(nameDeletePending.Contains(targetFilename));
-			nameDeletePending.Remove(targetFilename);
+    StringC targetFilename = StringListC(remainingPath).Cat("/");
+    if (!targetFilename.IsEmpty())
+    {
+      RavlAssert(nameDeletePending.Contains(targetFilename));
+      nameDeletePending.Remove(targetFilename);
 
-			if (ReadyToDelete())
-			{
-				lock.Unlock();
+      if (ReadyToDelete())
+      {
+        lock.Unlock();
 
-				DoDelete();
-			}
-		}
+        DoDelete();
+      }
+    }
 
     return true;
 #else
@@ -405,6 +421,6 @@ namespace RavlN {
 #endif
   }
 
-  XMLFactoryRegisterHandleC<DataServerVFSRealDirC> g_registerXMLFactoryDataServerVFSRealDir("RavlN::DataServerVFSRealDirC");
+  XMLFactoryRegisterHandleConvertC<DataServerVFSRealDirC,DataServerVFSNodeC> g_registerXMLFactoryDataServerVFSRealDir("RavlN::DataServerVFSRealDirC");
 
 }

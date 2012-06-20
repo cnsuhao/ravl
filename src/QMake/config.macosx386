@@ -139,9 +139,9 @@ endif
 # 'gprof' variant.
 
 ifeq ($(VAR),gprof)
- CFLAGS += -finstrument-functions -g $(OPTCFLAGS)
- CCFLAGS += -finstrument-functions -g $(OPTCFLAGS)
- LDFLAGS += -lSaturn -g -O2
+ CFLAGS += -g $(OPTCFLAGS)
+ CCFLAGS +=  -g $(OPTCFLAGS)
+ LDFLAGS += -g -O2
 endif
 
 

@@ -44,6 +44,7 @@ namespace RavlAudioN {
 		     );
     //: Constructor.
     
+
     virtual VectorC Get();
     //: Get next sample
     

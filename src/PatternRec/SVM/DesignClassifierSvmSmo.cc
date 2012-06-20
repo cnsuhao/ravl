@@ -4,6 +4,7 @@
 // General Public License (GPL). See the gpl.licence file for details or
 // see http://www.gnu.org/copyleft/gpl.html
 // file-header-ends-here
+//! lib=RavlSVM
 
 //! author="Alexey Kostin"
 
@@ -206,7 +207,7 @@ Classifier2C DesignSvmSmoBodyC::Apply(const SampleC<VectorC> &TrainingSetVectors
     delete[] objectsToUse;
     objectsToUse = new int[trainSetSize];
     if(objectsToUse == NULL)
-      throw ExceptionOperationFailedC("Can't allocate memory for internal svm beffers");
+      throw ExceptionOperationFailedC("Can't allocate memory for internal svm buffers");
     numTrainObjects = trainSetSize;
   }
 
@@ -232,7 +233,7 @@ ClassifierC DesignSvmSmoBodyC::Apply(const SampleC<VectorC> &TrainingSetVectors,
     delete[] objectsToUse;
     objectsToUse = new int[trainSetSize];
     if(objectsToUse == NULL)
-      throw ExceptionOperationFailedC("Can't allocate memory for internal svm beffers");
+      throw ExceptionOperationFailedC("Can't allocate memory for internal svm buffers");
     numTrainObjects = trainSetSize;
   }
 

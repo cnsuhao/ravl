@@ -320,7 +320,7 @@ namespace RavlN {
     { return Body().Pick(); }
     //: Pick a random item from the collection.
     // the element will be removed from the set.
-    // It is the users responsiblity to ensure the
+    // It is the users responsibility to ensure the
     // set is not empty when this method is called.
     // See 'IsEmpty()'
     

@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/Function.cc"
 
@@ -14,6 +13,7 @@
 #include "Ravl/PatternRec/Sample.hh"
 #include "Ravl/DArray1dIter2.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
 
@@ -82,20 +82,43 @@ namespace RavlN {
     return ret;
   }
   
-  MatrixC FunctionBodyC::Jacobian (const VectorC &X) const {
+  //: Compare the numerical and computed Jacobian, return true if the match.
+  // Useful for debugging!
+
+  bool FunctionBodyC::CheckJacobian(const VectorC &X,RealT tolerance,RealT epsilon) const
+  {
+    MatrixC approx = NumericalJacobian(X,epsilon);
+    MatrixC comp = Jacobian (X);
+    MatrixC diff = approx - comp;
+    RealT err = (diff.SumOfAbs() / (RealT) diff.Size());
+    RavlDebug("Jacobian error:%e ",err);
+    RavlDebug("Jacobian   approx:%s ",RavlN::StringOf(approx).c_str());
+    RavlDebug("Jacobian computed:%s ",RavlN::StringOf(comp).c_str());
+    return err < tolerance;
+  }
+
+  //: Calculate numerical approximation of Jacobian matrix at X
+
+  MatrixC FunctionBodyC::NumericalJacobian(const VectorC &X,RealT epsilon) const
+  {
+    RavlDebug("Num Jacobian. eps:%f ",epsilon);
     RavlAssert(X.Size() == inputSize);
     MatrixC J (outputSize,inputSize);
     VectorC dX (inputSize);
     dX.Fill(0);
     for(UIntT index = 0;index < inputSize;index++) {
-      dX[index] = 1e-6;
+      dX[index] = epsilon;
       VectorC temp = Apply(X+dX) - Apply(X-dX);
-      temp /= 2e-6;
+      temp /= epsilon * 2;
       J.SetColumn (index,temp);
       dX[index] = 0;
     }
     return J;
   }
+
+
+  MatrixC FunctionBodyC::Jacobian (const VectorC &X) const
+  { return NumericalJacobian(X,1e-6); }
   
   //: Evalate the function and its jacobian at the same time.
   // This method defaults to calling 'Apply' and 'Jacobian' sperately.

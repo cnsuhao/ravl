@@ -4,6 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
+//! lib=Ravl3D
 
 //! docentry="Ravl.API.3D.Mesh"
 //! author="Charles Galambos"
@@ -23,7 +24,7 @@ int main(int nargs,char **argv) {
   opts.Check();
   
   ImageC<ByteRGBValueC> img;
-  if (!Load(file,img,"",verbose)) {
+  if (!RavlN::Load(file,img,"",verbose)) {
     cerr << "Could not load input file " << file << endl;
     return 1;
   }
@@ -45,7 +46,7 @@ int main(int nargs,char **argv) {
   buildMesh.AddFace(texId,positions,outline);
   
   // Show mesh to the user.
-  Save("@GL:Example",buildMesh.Build());
+  RavlN::Save("@GL:Example",buildMesh.Build());
   
   return 0;
 }
