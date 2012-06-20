@@ -59,7 +59,8 @@ DesignSvmSmoBodyC::DesignSvmSmoBodyC(const KernelFunctionC &KernelFunction,
                                      RealT Penalty1, RealT Penalty2,
                                      RealT Tolerance, RealT Eps,
                                      RealT LambdaThreshold)
-  : DesignSvmBodyC()
+  : DesignSvmBodyC(),
+    verbosity(0)
 {
   Init(KernelFunction, Penalty1, Penalty2, Tolerance, Eps, LambdaThreshold);
 }
@@ -71,7 +72,8 @@ DesignSvmSmoBodyC::DesignSvmSmoBodyC(const XMLFactoryContextC & factory)
     c2(factory.AttributeReal("penalty2", 1e3)),
     tolerance(factory.AttributeReal("tolerance", 1e-7)),
     eps(factory.AttributeReal("eps", 1e-9)),
-    lambdaThreshold(factory.AttributeReal("lambdaThreshold", 1e-12))
+    lambdaThreshold(factory.AttributeReal("lambdaThreshold", 1e-12)),
+    verbosity(factory.AttributeBool("verbosity", 0))
         
 {
   if(!factory.UseComponent("KernelFunction", kernelFunction))
@@ -102,6 +104,7 @@ DesignSvmSmoBodyC::DesignSvmSmoBodyC(istream &strm)
   strm >> _lambdaThreshold;
 
   Init(kFunction, _c1, _c2, _tolerance, _eps, _lambdaThreshold);
+  verbosity = 0;
 }
 //---------------------------------------------------------------------------
 //: Load from binary stream.
@@ -123,6 +126,7 @@ DesignSvmSmoBodyC::DesignSvmSmoBodyC(BinIStreamC &strm)
   strm >> _lambdaThreshold;
 
   Init(kFunction, _c1, _c2, _tolerance, _eps, _lambdaThreshold);
+  verbosity = 0;
 }
 //---------------------------------------------------------------------------
 //: Writes object to stream
@@ -264,9 +268,6 @@ bool DesignSvmSmoBodyC::Reset() {
 
   callbackFunc = NULL;
   callbackData = NULL;
-
-  verbosity = 0;
-  
 
 
   return true;
