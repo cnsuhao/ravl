@@ -159,9 +159,11 @@ namespace RavlN { namespace GeneticN {
         RavlDebug("Trys %d ",tryNo);
 #endif
 
+#if 1
       if(!ret) {
         RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
       }
+#endif
     }
     newGenome = new GenomeC(*newRootGene);
     newGenome->SetAge(m_age+1);

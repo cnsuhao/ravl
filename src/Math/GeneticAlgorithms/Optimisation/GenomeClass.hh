@@ -12,8 +12,8 @@
 
 #include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/TypeName.hh"
-#include "Ravl/STL.hh"
 #include "Ravl/Collection.hh"
+#include "Ravl/STL.hh"
 
 namespace RavlN { namespace GeneticN {
 
