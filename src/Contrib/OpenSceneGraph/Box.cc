@@ -54,23 +54,24 @@ namespace RavlOSGN
     return true;
   }
 
+  bool BoxC::SetRotation(const RavlN::Quatern3dC &angle) {
+    RavlAssert(m_box);
+    m_box->setRotation(osg::Quat(angle[1],angle[2],angle[3],angle[0]));
+    return true;
+  }
+
+
   bool BoxC::SetPosition(const RavlN::Vector3dC &position)
   {
-    if (!m_box)
-      return false;
-
+    RavlAssert(m_box);
     m_box->setCenter(Vec3(position.X(), position.Y(), position.Z()));
-
     return true;
   }
 
   bool BoxC::SetSize(const RavlN::Vector3dC &size)
   {
-    if (!m_box)
-      return false;
-
+    RavlAssert(m_box);
     m_box->setHalfLengths(Vec3(size.X(), size.Y(), size.Z()));
-
     return true;
   }
 

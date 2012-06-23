@@ -18,10 +18,12 @@
           <Stack typename="RavlOSGN::LayoutStackC" gap="0.1" stackAxis="-1" >
             <Nodes>
               <Box1 typename="RavlOSGN::BoxC" colour="0.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
-              <Box2 typename="RavlOSGN::BoxC" colour="0.0 1.0 0.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
+              <Shape2 typename="RavlOSGN::CylinderC" colour="0.0 1.0 0.0 1.0" height="1.0" radius="1.5" position="0 0 0" />
               <Box3 typename="RavlOSGN::BoxC" colour="1.0 0.0 0.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
+              <Box4 typename="RavlOSGN::ConeC" colour="0.0 1.0 0.0 1.0" height="1.0" radius="1.5" position="0 0 0" />
               <Sphere typename="RavlOSGN::SphereC" colour="0.0 1.0 1.0 1.0" radius="0.5" />
-              <Box4 typename="RavlOSGN::BoxC" colour="1.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
+              <Shape5 typename="RavlOSGN::BoxC" colour="1.0 0.0 1.0 1.0" size="1.0 1.0 1.0" position="0 0 0" />
+              <Shape6 typename="RavlOSGN::CapsuleC" colour="1.0 0.0 1.0 1.0" height="1.5" radius="1.0" position="0 0 0" />
             </Nodes>
           </Stack>
         <HUD typename="RavlOSGN::HUDC" coords="0 768 0 1024" >

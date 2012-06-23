@@ -16,6 +16,7 @@
 
 #include "Ravl/OpenSceneGraph/Drawable.hh"
 #include "Ravl/Vector3d.hh"
+#include "Ravl/Quatern3d.hh"
 #include "Ravl/Image/RealRGBAValue.hh"
 #include <osg/Shape>
 
@@ -41,6 +42,9 @@ namespace RavlOSGN
 
     bool SetPosition(const RavlN::Vector3dC &position);
     //: Set the Box centre position.
+
+    bool SetRotation(const RavlN::Quatern3dC &angle);
+    //: Set the Box rotation
 
     bool SetSize(const RavlN::Vector3dC &size);
     //: Set the Box radius.
