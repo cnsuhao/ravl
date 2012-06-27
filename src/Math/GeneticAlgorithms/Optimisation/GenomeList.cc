@@ -173,33 +173,37 @@ namespace RavlN { namespace GeneticN {
     float crossAt2 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
     size_t size1 = oldListGene1.List().size();
     size_t size2 = oldListGene2.List().size();
+    std::vector<GeneC::ConstRefT> newList;
+
     int ind1 = static_cast<int>(crossAt1 * size1);
     int ind2 = static_cast<int>(crossAt2 * size2);
-    if(ind1 < 0)
-      ind1 = 0;
     if(ind1 >= (int) size1)
       ind1 = size1 - 1;
-    if(ind2 < 0)
-      ind2 = 0;
+    if(ind1 < 0)
+      ind1 = 0;
     if(ind2 >= (int) size2)
        ind2 = (int) size2-1;
-    std::vector<GeneC::ConstRefT> newList;
+    if(ind2 < 0)
+      ind2 = 0;
+
     newList.reserve(ind1 + (oldListGene2.List().size()-ind2));
     for(int i = 0;i < ind1;i++) {
       newList.push_back(oldListGene1.List()[i]);
     }
-    const GeneTypeC &gt1 =  oldListGene1.List()[ind1]->Type();
-    const GeneTypeC &gt2 =  oldListGene2.List()[ind2]->Type();
-    if(&gt1 == &gt2) {
-      GeneC::RefT newGene;
-      gt1.Cross(palette,*oldListGene1.List()[ind1],*oldListGene2.List()[ind2],newGene);
-      if(!newGene.IsValid()) {
-        RavlSysLogf(SYSLOG_ERR,"Gene type %s failed to produce a cross value. ",TypeName(typeid(gt1)));
-        RavlAssert(0);
-        newGene = oldListGene1.List()[ind1];
+    if(size1 > 0 && size2 > 0) {
+      const GeneTypeC &gt1 =  oldListGene1.List()[ind1]->Type();
+      const GeneTypeC &gt2 =  oldListGene2.List()[ind2]->Type();
+      if(&gt1 == &gt2) {
+        GeneC::RefT newGene;
+        gt1.Cross(palette,*oldListGene1.List()[ind1],*oldListGene2.List()[ind2],newGene);
+        if(!newGene.IsValid()) {
+          RavlSysLogf(SYSLOG_ERR,"Gene type %s failed to produce a cross value. ",TypeName(typeid(gt1)));
+          RavlAssert(0);
+          newGene = oldListGene1.List()[ind1];
+        }
+        newList.push_back(newGene.BodyPtr());
+        ind2++;
       }
-      newList.push_back(newGene.BodyPtr());
-      ind2++;
     }
     for(int j = ind2;j < (int) size2;j++) {
       newList.push_back(oldListGene2.List()[j]);

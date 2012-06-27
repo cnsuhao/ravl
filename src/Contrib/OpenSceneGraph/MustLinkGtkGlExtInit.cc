@@ -9,21 +9,25 @@
 namespace RavlOSGN
 {
 
-  extern bool RegisterGtkGlExtInit();
-  extern bool LinkOpenSceneGraphWidget();
-  extern void LinkImageByteRGBA();
-  extern void LinkImageByteRGB();
-  extern void LinkSphere();
-  extern void LinkGroup();
-  extern void LinkText();
-  extern void LinkTransform();
-  extern void LinkHUD();
-  extern void LinkBox();
-  extern void LinkModelFile();
-  extern void LinkLayout();
-  extern void LinkLayoutStack();
-  extern void LinkLayoutGrid();
-  
+  bool RegisterGtkGlExtInit();
+  bool LinkOpenSceneGraphWidget();
+  void LinkImageByteRGBA();
+  void LinkImageByteRGB();
+  void LinkSphere();
+  void LinkGroup();
+  void LinkText();
+  void LinkTransform();
+  void LinkHUD();
+  void LinkBox();
+  void LinkModelFile();
+  void LinkLayout();
+  void LinkLayoutStack();
+  void LinkLayoutGrid();
+  void LinkCylinder();
+  void LinkCone();
+  void LinkCapsule();
+  void LinkInfinitePlane();
+
   void LinkGtkGlExtInit()
   {
     RegisterGtkGlExtInit();
@@ -41,5 +45,9 @@ namespace RavlOSGN
     LinkLayout();
     LinkLayoutStack();
     LinkLayoutGrid();
+    LinkCylinder();
+    LinkCone();
+    LinkCapsule();
+    LinkInfinitePlane();
   }
 }

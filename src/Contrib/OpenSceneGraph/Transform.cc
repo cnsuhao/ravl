@@ -159,6 +159,20 @@ namespace RavlOSGN
     return true;
   }
 
+  //: Get the transform attitude.
+  bool TransformPositionAttitudeC::GetAttitude(RavlN::Quatern3dC &attitude) {
+    if (!m_node)
+      return false;
+
+    ref_ptr<PositionAttitudeTransform> transformRef = dynamic_cast<PositionAttitudeTransform*>(m_node.get());
+    if (!transformRef)
+      return false;
+
+    Quat quat = transformRef->getAttitude();
+    attitude = RavlN::Quatern3dC(quat.w(),quat.x(),quat.y(),quat.z());
+    return true;
+  }
+
   bool TransformPositionAttitudeC::SetScale(const RavlN::Vector3dC &scale)
   {
     if (!m_node)

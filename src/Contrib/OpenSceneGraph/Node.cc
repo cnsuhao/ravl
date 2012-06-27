@@ -94,13 +94,18 @@ namespace RavlOSGN
   }
   
 
+  //: Setup node ref so we can get back from the scene graph node to this one.
+  void NodeC::SetNodeRef() {
+    m_node->setUserData(new NodeRefC(this));
+  }
+
   bool NodeC::EnableCallback(const bool enable)
   {
     if (!m_node)
       return false;
     
-    m_node->setUserData(new NodeRefC(this));
-    
+    SetNodeRef();
+
     if (enable)
     {
       if (m_callback)
@@ -147,7 +152,7 @@ namespace RavlOSGN
     if(nd == 0)
       return false;
     node = nd->Node();
-    return true;
+    return node.IsValid();
   }
   
   //: Process a callback.

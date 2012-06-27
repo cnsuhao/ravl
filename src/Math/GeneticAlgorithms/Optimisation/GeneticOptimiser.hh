@@ -58,6 +58,10 @@ namespace RavlN { namespace GeneticN {
     bool IsUsingRandomisedDomain() const
     { return m_randomiseDomain; }
 
+    //! Set gene palette to use
+    void SetGenePalette(const GenePaletteC &palette)
+    { m_genePalette = &palette; }
+
     //! Handle to optimiser
     typedef SmartPtrC<GeneticOptimiserC> RefT;
 

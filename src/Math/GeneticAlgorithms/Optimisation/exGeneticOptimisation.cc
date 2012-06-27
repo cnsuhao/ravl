@@ -15,13 +15,12 @@
 #include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/EvaluateFitnessFunc.hh"
 #include "Ravl/Genetic/GeneFactory.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/Option.hh"
 #include "Ravl/XMLFactory.hh"
 #include "Ravl/Resource.hh"
 #include "Ravl/DP/PrintIOInfo.hh"
 #include "Ravl/Point2d.hh"
-#include "Ravl/OS/SysLog.hh"
 
 #define CATCH_EXCEPTIONS 1
 

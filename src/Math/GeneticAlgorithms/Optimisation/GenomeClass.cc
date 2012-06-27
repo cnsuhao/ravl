@@ -123,7 +123,7 @@ namespace RavlN { namespace GeneticN {
   void GeneTypeNodeC::AddComponent(const std::string &name,const GeneTypeC &geneType)
   {
     if(m_componentTypes.Insert(name,&geneType)) {
-      RavlSysLogf(SYSLOG_ERR,"Member '%s' exists already in '%s' ",name.data(),Name().data());
+      RavlError("Member '%s' exists already in '%s' ",name.data(),Name().data());
       throw RavlN::ExceptionOperationFailedC("Member of given name exists already. ");
     }
   }
@@ -169,7 +169,7 @@ namespace RavlN { namespace GeneticN {
     for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++,index++) {
       GeneC::ConstRefT gene;
       if(!oldNode.GetComponent(it.Key(),gene)) {
-        RavlSysLogf(SYSLOG_ERR,"Failed to find component %s ",it.Key().data());
+        RavlError("Failed to find component %s ",it.Key().data());
         throw RavlN::ExceptionOperationFailedC("No component");
       }
       if(palette.Random1() > fraction && mustChangeIndex != index) {
@@ -410,12 +410,12 @@ namespace RavlN { namespace GeneticN {
   {
     m_typeInfo = &RTypeInfo(m_typeName.data());
     if(*m_typeInfo == typeid(void)) {
-      RavlSysLogf(SYSLOG_ERR,"Type '%s' unknown ",m_typeName.data());
+      RavlError("Type '%s' unknown ",m_typeName.data());
       throw RavlN::ExceptionBadConfigC("Unknown type");
     }
     if(!SystemTypeConverter().CanConvert(typeid(GeneFactoryC),*m_typeInfo)) {
-      RavlSysLogf(SYSLOG_ERR,"Don't know how to create class '%s' ",m_typeName.data());
-      throw RavlN::ExceptionBadConfigC("Asked to creat unknown class. ");
+      RavlError("Don't know how to create class '%s' ",m_typeName.data());
+      throw RavlN::ExceptionBadConfigC("Asked to create unknown class. ");
     }
   }
 
@@ -438,7 +438,7 @@ namespace RavlN { namespace GeneticN {
     strm >> m_typeName;
     m_typeInfo = &RTypeInfo(m_typeName.data());
     if(*m_typeInfo == typeid(void)) {
-      RavlSysLogf(SYSLOG_ERR,"Type '%s' unknown ",m_typeName.data());
+      RavlError("Type '%s' unknown ",m_typeName.data());
       throw RavlN::ExceptionBadConfigC("Unknown type");
     }
   }
@@ -566,7 +566,7 @@ namespace RavlN { namespace GeneticN {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Creating class '%s' ",ClassType().TypeName().data()));
     handle = SystemTypeConverter().DoConversion(fgwrap.Abstract(),fgwrap.DataType(),ClassType().TypeInfo());
     if(!handle.IsValid()) {
-      RavlSysLogf(SYSLOG_ERR,"Failed to create class '%s' ",ClassType().TypeName().data());
+      RavlError("Failed to create class '%s' ",ClassType().TypeName().data());
     }
     RavlAssert(handle.IsValid());
   }

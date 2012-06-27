@@ -24,6 +24,8 @@
 #define ONDEBUG(x)
 #endif
 
+#define RAVL_CATCH_EXCEPTIONS 1
+
 namespace RavlN { namespace GeneticN {
 
 
@@ -57,7 +59,7 @@ namespace RavlN { namespace GeneticN {
   //! Run whole optimisation
   void GeneticOptimiserC::Run() {
     if(!m_evaluateFitness.IsValid()) {
-      RavlSysLogf(SYSLOG_ERR,"Not fitness function defined.");
+      RavlError("Not fitness function defined.");
       RavlAssertMsg(0,"No fitness function defined.");
       return ;
     }
@@ -71,7 +73,7 @@ namespace RavlN { namespace GeneticN {
       lock.Unlock();
     }
     for(unsigned i = 0;i < m_numGenerations;i++) {
-      RavlSysLogf(SYSLOG_INFO,"Running generation %u ",i);
+      RavlInfo("Running generation %u ",i);
       RunGeneration(i);
       lock.Lock();
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
@@ -264,7 +266,7 @@ namespace RavlN { namespace GeneticN {
     EvaluateFitnessC::RefT evaluator = &dynamic_cast<EvaluateFitnessC &>(m_evaluateFitness->Copy());
 
     MutexLockC lock(m_access);
-    GenePaletteC::RefT palette = new GenePaletteC(*m_genePalette);
+    GenePaletteC::RefT palette = m_genePalette.Copy();
     lock.Unlock();
 
     //RavlInfo("Palette has %u proxies. ",(unsigned) palette->ProxyMap().Size());
@@ -296,13 +298,16 @@ namespace RavlN { namespace GeneticN {
   {
     GeneFactoryC factory(genome,palette);
     score = 0;
+#if RAVL_CATCH_EXCEPTIONS
     try {
+#endif
       RCWrapAbstractC anObj;
       factory.Get(anObj,evaluator.ObjectType());
       if(m_createOnly)
         return false;
       if(!evaluator.Evaluate(anObj,score))
         return false;
+#if RAVL_CATCH_EXCEPTIONS
     } catch(std::exception &ex) {
       RavlWarning("Caught std exception '%s' evaluating agent.",ex.what());
       RavlAssert(0);
@@ -316,6 +321,7 @@ namespace RavlN { namespace GeneticN {
       RavlAssert(0);
       return false;
     }
+#endif
     size_t size = genome.Size();
     //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); //Floor(size / 10) * 0.01;
     float sizeDiscount = (size / 15) * 0.001f; //(AK) note integer division
