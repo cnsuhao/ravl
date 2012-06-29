@@ -160,7 +160,7 @@ namespace RavlN
         return ;
       m_access.Lock();
       m_waiting++;
-      while(m_state != desiredState)
+      while(!(m_state == desiredState))
         m_cond.Wait(m_access);
       int value = --m_waiting;
       m_access.Unlock();
@@ -168,6 +168,20 @@ namespace RavlN
         m_cond.Broadcast(); // If something is waiting for it to be free...
     }
     //: Wait indefinitely for an event to be posted.
+
+    void Wait(const StateT &desiredState1, const StateT &desiredState2) const {
+      if(m_state == desiredState1 || m_state == desiredState2) // Check before we bother with locking.
+        return ;
+      m_access.Lock();
+      m_waiting++;
+      while(!(m_state == desiredState1 || m_state == desiredState2))
+        m_cond.Wait(m_access);
+      int value = --m_waiting;
+      m_access.Unlock();
+      if(value == 0)
+        m_cond.Broadcast(); // If something is waiting for it to be free...
+    }
+    //: Wait indefinitely until either one or another state is reached
 
 
     bool Wait(RealT maxTime,const StateT &desiredState) const
