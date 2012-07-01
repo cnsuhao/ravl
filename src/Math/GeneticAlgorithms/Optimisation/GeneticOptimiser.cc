@@ -145,6 +145,17 @@ namespace RavlN { namespace GeneticN {
     lock.Unlock();
   }
 
+  //! Get the current best genome and its score.
+
+  bool GeneticOptimiserC::GetBestGenome(GenomeC::RefT &genome,float &score) {
+    MutexLockC lock(m_access);
+    if(m_population.empty())
+      return false;
+    score = m_population.begin()->first;
+    genome = m_population.begin()->second;
+    return true;
+  }
+
 
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
