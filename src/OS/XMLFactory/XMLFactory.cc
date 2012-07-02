@@ -303,9 +303,9 @@ namespace RavlN {;
     
     handle = RavlN::SystemTypeConverter().DoConversion(child->Component().Abstract(),from,to);
     if(!handle.IsValid()) {
-      if(!silentError)
+      if(!silentError) {
         RavlError(" convert data to requested type, from '%s' to '%s' in '%s'",RavlN::TypeName(from),RavlN::TypeName(to),Path().data());
-      throw RavlN::ExceptionBadConfigC("Failed to follow path");
+      }
       return false;
     }
     ONDEBUG(RavlDebug("UseComponentInternal, successful @ '%s' ",name.chars()));
