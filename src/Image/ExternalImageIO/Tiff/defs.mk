@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library 
-# Copyright (C) 2001-12, University of Surrey
+# Copyright (C) 2012, University of Surrey
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -8,8 +8,18 @@
 
 PACKAGE=Ravl/Image
 
-DESCRIPTION = External Image IO routines
+DESCRIPTION = External Image TIFF IO routines
+
+REQUIRES=LibTIFF
 
 DONOT_SUPPORT=cygwin arm
 
-NESTED=Core.r JPEG.r PNG.r Tiff.r
+PLIB = RavlExtImgIO
+
+LIBDEPS = RavlTIFF.def
+
+HEADERS = ImgIOTiff.hh ImgIOTiffB.hh TiffFormat.hh
+
+SOURCES = ImgIOTiff.cc TiffFormat.cc 
+
+USESLIBS = RavlImage RavlIO RavlImageIO LibTIFF
