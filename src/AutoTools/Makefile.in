@@ -44,7 +44,8 @@ endif
 # Builds
 
 default: qmake fullsrc optshared optsharedbin singleoptsharedbin pkgconf Ravl.def
-#JFi:To Do- make doc (and support from configure i.e. locate tools)
+# optshared now responsible for building the single libRavl.so as it builds it
+# from the SINGLESO definition in Single/defs.mk
 
 check: testsingleoptshared 
 
@@ -305,8 +306,7 @@ singleopt:
 singleoptbin:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 programs recurse
 
-singleoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 makedirs buildshared
+singleoptshared: optshared
 
 singleoptsharedbin:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 SHAREDBUILD=1 programs recurse
@@ -317,8 +317,7 @@ singledebug:
 singledebugbin:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 programs recurse
 
-singledebugshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SHAREDBUILD=1 makedirs buildshared
+singledebugshared: debugshared
 
 singledebugsharedbin:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
