@@ -25,7 +25,7 @@
 #define ONDEBUG(x)
 #endif
 
-namespace RavlN {
+namespace RavlN {;
   using RavlN::StringC;
 
   RavlN::HashC<StringC,XMLFactoryC::TypeFactoryT> &XMLFactoryC::Type2Factory() {
@@ -305,6 +305,7 @@ namespace RavlN {
     if(!handle.IsValid()) {
       if(!silentError)
         RavlError(" convert data to requested type, from '%s' to '%s' in '%s'",RavlN::TypeName(from),RavlN::TypeName(to),Path().data());
+      throw RavlN::ExceptionBadConfigC("Failed to follow path");
       return false;
     }
     ONDEBUG(RavlDebug("UseComponentInternal, successful @ '%s' ",name.chars()));

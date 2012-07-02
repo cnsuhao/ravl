@@ -64,14 +64,8 @@ namespace RavlN { namespace GeneticN {
       return ;
     }
     MutexLockC lock(m_access);
-    if(m_population.empty()) {
-      RavlSysLogf(SYSLOG_DEBUG,"Ranking initial population");
-      RavlAssert(!m_startPopulation.empty());
-      lock.Unlock();
-      Evaluate(m_startPopulation);
-    } else {
-      lock.Unlock();
-    }
+    lock.Unlock();
+
     for(unsigned i = 0;i < m_numGenerations;i++) {
       RavlInfo("Running generation %u ",i);
       RunGeneration(i);
@@ -145,12 +139,22 @@ namespace RavlN { namespace GeneticN {
     lock.Unlock();
   }
 
+  //! Get the current best genome and its score.
+
+  bool GeneticOptimiserC::GetBestGenome(GenomeC::RefT &genome,float &score) {
+    MutexLockC lock(m_access);
+    if(m_population.empty())
+      return false;
+    score = m_population.begin()->first;
+    genome = m_population.begin()->second;
+    return true;
+  }
+
 
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
-
-    RavlSysLogf(SYSLOG_DEBUG,"Examining results from last run. ");
+    RavlDebug("Examining results from last run. ");
     unsigned count = 0;
 
     // Select genomes to be used as seeds for the next generation.
@@ -168,8 +172,14 @@ namespace RavlN { namespace GeneticN {
 
     MutexLockC lock(m_access);
     if(m_population.empty()) {
-      RavlError("Population empty.");
-      return ;
+      RavlAssert(!m_startPopulation.empty());
+      lock.Unlock();
+      Evaluate(m_startPopulation);
+      lock.Lock();
+      if(m_population.empty()) {
+        RavlError("Population empty.");
+        return ;
+      }
     }
 
     std::multimap<float,GenomeC::RefT>::reverse_iterator it(m_population.rbegin());
@@ -197,7 +207,7 @@ namespace RavlN { namespace GeneticN {
     lock.Unlock();
 
     unsigned noCrosses = Floor(numCreate * m_cross2mutationRatio);
-    RavlSysLogf(SYSLOG_DEBUG,"Creating %d crosses. ",noCrosses);
+    RavlDebug("Creating %d crosses. ",noCrosses);
 
     unsigned i = 0;
     // In the first generation there may not be enough seeds to make
