@@ -63,8 +63,8 @@ endif
  chkclean clean cleandep cleandoc cleanlib distclean dbclean \
  debug debugall debugne debugneall debugshared debugsharedall debugsharedne \
  debugsharedneall defs doc docinit ds dsne fullbuild fullcheck \
- fullclean fulldebug fulldoc fullhdr fullinfo fullopt fullshared fullsrc \
- gprof gprofne help info libbuild lib_info mkdef ne novar \
+ fullclean fulldebug fulldoc fullhdr fullinfo fullopt fullgprof fullshared \
+ fullsrc gprof gprofne help info libbuild lib_info mkdef ne novar \
  opt optclean optshared optne optsharedne os osne \
  pack prof purify redoc retest rpmbuild shared sharedne src test unpack 
 
@@ -119,6 +119,11 @@ else
   ifneq ($(strip $(filter opt%,$(TEST_TARGET))),)
     override TEST_TARGET := $(patsubst opt%,%,$(TEST_TARGET))
     TEST_TARGET_PARAMS := VAR=opt
+  else
+    ifneq ($(strip $(filter gprof%,$(TEST_TARGET))),)
+      override TEST_TARGET := $(patsubst gprof%,%,$(TEST_TARGET))
+      TEST_TARGET_PARAMS := VAR=gprof
+    endif
   endif
 endif
 
@@ -321,6 +326,9 @@ fulldebug:
 
 fullopt:	
 	$(SMAKEMD) $(PAR_MAKE) fullbuild VAR=opt $(FULLBUILDFLAGS) TARGET=fullbuild
+
+fullgprof:	
+	$(SMAKEMD) $(PAR_MAKE) fullbuild VAR=gprof $(FULLBUILDFLAGS) TARGET=fullbuild
 
 fullinfo:	
 	$(SMAKEMO) $(PAR_MAKE) info VAR=check $(FULLBUILDFLAGS)
