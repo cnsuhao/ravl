@@ -87,6 +87,11 @@ namespace RavlN {
     {}
     //: Default constructor.
 
+    DataSetVectorLabelC(const DataSet2C<SampleVectorC,SampleLabelC> &dataSet)
+     : DataSet2C<SampleVectorC,SampleLabelC>(dataSet)
+    {}
+    //: base class constructor
+
     DataSetVectorLabelC(UIntT sizeEstimate)
       : DataSet2C<SampleVectorC,SampleLabelC>(sizeEstimate)
     {}

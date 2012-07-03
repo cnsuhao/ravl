@@ -13,7 +13,6 @@
 //! example=testOptimise.cc
 //! file="Ravl/PatternRec/Optimise/Optimise.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation"
-//! rcsid="$Id$"
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/String.hh"
@@ -129,7 +128,10 @@ namespace RavlN {
     
     OptimiseC (OptimiseBodyC &oth);
     //: Constructs from base class
-    
+
+    OptimiseC (OptimiseBodyC *oth);
+    //: Constructs from base class
+
   protected:
     inline OptimiseBodyC & Body ()
     { return RCHandleC<OptimiseBodyC>::Body(); }

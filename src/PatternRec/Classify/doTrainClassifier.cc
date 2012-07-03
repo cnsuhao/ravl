@@ -18,6 +18,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/PatternRec/DataSetIO.hh"
+#include "Ravl/PatternRec/OptimiseClassifierDesign.hh"
 
 using namespace RavlN;
 
@@ -34,11 +35,12 @@ int main(int nargs, char **argv) {
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
   StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|SVMOneClass].");
+  bool doMetaDesign = opts.Boolean("md",false,"Do meta design, optimise the design parameters ");
   StringC trainingDataSetFile = opts.String("dset", "", "The dataset to train on!");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
   DListC<StringC>features = opts.List("features", "Use only these features");
-  StringC NormaliseSample = opts.String("normalise", "mean", "Normalise sample (mean, none, scale)");
+  StringC NormaliseSample = opts.String("normalise",doMetaDesign ? "none" : "mean", "Normalise sample (mean, none, scale)");
   FilenameC classifierOutFile = opts.String("o", "classifier.abs", "Save classifier to this file.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
@@ -48,8 +50,7 @@ int main(int nargs, char **argv) {
 #if USE_EXCEPTIONS
   try {
 #endif
-    XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
-    XMLFactoryContextC context(*mainFactory);
+    XMLFactoryContextC context(configFile);
 
     // Get classifier designer
     RavlInfo("Initialising classifier '%s'", classifierType.data());
@@ -95,7 +96,8 @@ int main(int nargs, char **argv) {
     // Lets compute mean and variance of data set and normalise input
     FunctionC normaliseFunc;
     if (NormaliseSample == "none") {
-      RavlInfo( "You are not normalising your sample!  I hope you know what you are doing.");
+      if(!doMetaDesign)
+        RavlInfo( "You are not normalising your sample!  I hope you know what you are doing.");
     } else if(NormaliseSample == "mean") {
       // FIXME: Sometimes you want to normalise on a class, rather than the whole sample
       RavlInfo( "Normalising the whole sample using sample mean and variance!");
@@ -112,15 +114,32 @@ int main(int nargs, char **argv) {
       return 1;
     }
 
-    // Train classifier
-    RavlInfo( "Training the classifier");
-    ClassifierC classifier = design.Apply(trainingDataSet.Sample1(), trainingDataSet.Sample2());
-    RavlInfo( " - finished");
+    ClassifierC classifier;
 
-    // Lets get error on training data set - even though highly biased
-    ErrorC error;
-    RealT pmc = error.Error(classifier, trainingDataSet);
-    RavlInfo( "The (biased) probability of miss-classification is %0.4f ", pmc);
+    if(doMetaDesign) {
+      OptimiseClassifierDesignC ocd;
+      context.UseComponent("OptimiseClassifierDesign",ocd);
+      VectorC bestClassifierParams;
+      RealT finalResult;
+      ocd.Apply(design,
+                trainingDataSet.Sample1(),
+                trainingDataSet.Sample2(),
+                classifier,
+                bestClassifierParams,
+                finalResult
+                ) ;
+
+      RavlInfo( "The (biased) probability of miss-classification is %0.4f  @ %s ", finalResult,RavlN::StringOf(bestClassifierParams).c_str());
+    } else {
+      // Train classifier
+      RavlInfo( "Training the classifier");
+      classifier = design.Apply(trainingDataSet.Sample1(), trainingDataSet.Sample2());
+      RavlInfo( " - finished");
+      // Lets get error on training data set - even though highly biased
+      ErrorC error;
+      RealT pmc = error.Error(classifier, trainingDataSet);
+      RavlInfo( "The (biased) probability of miss-classification is %0.4f ", pmc);
+    }
 
     // If we have normalised the sample we need to make sure
     // all input data to classifier is normalised by same statistics

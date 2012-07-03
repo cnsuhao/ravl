@@ -87,7 +87,8 @@ namespace RavlN {
 
   //: Create classifier from function.
 
-  ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(const FunctionC &norm,const SArray1dC<NeuralNetworkLayerC::RefT> &layers)
+  ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(const FunctionC &norm,
+                                                               const SArray1dC<NeuralNetworkLayerC::RefT> &layers)
     : ClassifierBodyC(layers[layers.Size()-1]->NumOutputs()),
       m_norm(norm),
       m_layers(layers)

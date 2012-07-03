@@ -4,14 +4,13 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_FEATURESELECTOR_HEADER
-#define RAVL_FEATURESELECTOR_HEADER 1
+#ifndef RAVL_ERROR_HEADER
+#define RAVL_ERROR_HEADER 1
 ///////////////////////////////////////////////////////////
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Performance Evaluation"
 //! author="Kieron Messer"
 //! file="Ravl/PatternRec/Performance/Error.hh"
-//! rcsid="$Id$"
 
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/PatternRec/Classifier2.hh"
@@ -29,9 +28,12 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
-    ErrorBodyC() {}
+    ErrorBodyC();
     //: Constructor.
-    
+
+    ErrorBodyC(const XMLFactoryContextC &factory);
+    //: XML factory constructor
+
     ErrorBodyC(istream &strm);
     //: Load from stream.
     
@@ -67,6 +69,9 @@ namespace RavlN {
     {}
     //: Default constructor.
     
+    ErrorC(const XMLFactoryContextC &factory);
+    //: XML factory constructor
+
     ErrorC(istream &strm);
     //: Load from stream.
     

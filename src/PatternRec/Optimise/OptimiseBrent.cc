@@ -126,6 +126,7 @@ namespace RavlN {
         fx3 = fx2; fx2 = fx1; fx1 = fx0;
       }
     }
+    minimumCost = fx1;
     return iterX1;
   }
   

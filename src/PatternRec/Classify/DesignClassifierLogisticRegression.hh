@@ -47,6 +47,17 @@ namespace RavlN {
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
 
+    virtual void ParameterLimits(VectorC &defaultValues,VectorC &min,VectorC &max,SArray1dC<StringC> &names) const;
+    //: Get the default parameter values and their limits.
+
+    virtual VectorC Parameters() const;
+    //: Get the current parameters.
+
+    virtual VectorC SetParameters(const VectorC &params);
+    //: Set the current parameters.
+    // Returns the current parameters, which may not be exactly those
+    // set in 'params', but will be the closest legal values.
+
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Create a clasifier.
     
@@ -60,6 +71,7 @@ namespace RavlN {
     void SetRegularisation(RealT regularisation)
     { m_regularisation = regularisation; }
     //: Set current regularisation parameter.
+
 
   protected:
     FunctionC m_featureExpand;

@@ -170,7 +170,7 @@ namespace RavlN {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
     }
-    if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
+    if(!factory.UseChildComponent("Optimiser",m_optimiser,true)) {
       m_optimiser = OptimiseConjugateGradientC(1000);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
@@ -221,6 +221,45 @@ namespace RavlN {
     return true;
   }
   
+  //: Get the default parameter values and their limits.
+  void DesignClassifierLogisticRegressionBodyC::ParameterLimits(
+      VectorC &defaultValues,
+      VectorC &min,
+      VectorC &max,
+      SArray1dC<StringC> &names
+      ) const
+  {
+    defaultValues = VectorC(1);
+    defaultValues[0] = 0.01;
+
+    min = VectorC(1);
+    min[0] = 0;
+
+    max = VectorC(1);
+    max[0] = 1e5;
+
+    names = SArray1dC<StringC>(1);
+    names[0] = "Regularisation";
+  }
+
+  //: Get the current parameters.
+  VectorC DesignClassifierLogisticRegressionBodyC::Parameters() const {
+    VectorC vec(1);
+    vec[0] = m_regularisation;
+    return vec;
+  }
+
+  //: Set the current parameters.
+  // Returns the current parameters, which may not be exactly those
+  // set in 'params', but will be the closest legal values.
+  VectorC DesignClassifierLogisticRegressionBodyC::SetParameters(const VectorC &params)
+  {
+    m_regularisation = params[0];
+    if(m_regularisation < 0)
+      m_regularisation = 0;
+    return params;
+  }
+
   //: Create a classifier.
   
   ClassifierC DesignClassifierLogisticRegressionBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out)

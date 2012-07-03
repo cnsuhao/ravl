@@ -14,7 +14,6 @@
 //! example=testOptimise.cc
 //! file="Ravl/PatternRec/Optimise/OptimiseConjugateGradientDescent.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation.Implementation"
-//! rcsid="$Id: OptimiseConjugateGradientDescent.hh 5398 2006-03-09 16:55:13Z craftit $"
 
 #include "Ravl/PatternRec/Optimise.hh"
 
@@ -35,7 +34,7 @@ namespace RavlN {
     OptimiseConjugateGradientBodyC(const XMLFactoryContextC & factory);
     //: Constructor from xml factory.
 
-    OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum = true);
+    OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum = true,bool useAbsoluteCostForTolerance = false,UIntT brentIterations = 0, RealT brentTolerance = 0);
     //: Constructor requires the number of iterations to use
     
     OptimiseConjugateGradientBodyC (istream &in);
@@ -54,7 +53,10 @@ namespace RavlN {
   private:
     UIntT _iterations;
     RealT _tolerance;
+    UIntT _brentIterations;
+    RealT _brentTolerance;
     bool _useBracketMinimum;
+    bool m_useAbsoluteCostForTolerance;
   };
   
   //! userlevel=Normal
@@ -76,8 +78,10 @@ namespace RavlN {
     {}
     //: XML Factory constructor
 
-    OptimiseConjugateGradientC(UIntT iterations, RealT tolerance = 1e-6,bool useBacketMinimum = true)
-      : OptimiseC(*(new OptimiseConjugateGradientBodyC (iterations, tolerance,useBacketMinimum)))
+    OptimiseConjugateGradientC(UIntT iterations,RealT tolerance = 1e-6,
+        bool useBacketMinimum = true,bool useAbsoluteCostForTolerance = false,
+        UIntT brentIterations = 0, RealT brentTolerance = 0)
+      : OptimiseC(*(new OptimiseConjugateGradientBodyC (iterations, tolerance,useBacketMinimum,useAbsoluteCostForTolerance,brentIterations,brentTolerance)))
     {}
     //: Constructor
     //!param: iterations - maximum number of iterations to use

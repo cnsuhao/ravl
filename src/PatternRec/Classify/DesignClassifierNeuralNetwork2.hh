@@ -19,7 +19,8 @@ namespace RavlN {
   //! userlevel=Develop
   //: Design a neural network classifier .
 
-  class DesignClassifierNeuralNetwork2BodyC: public DesignClassifierSupervisedBodyC
+  class DesignClassifierNeuralNetwork2BodyC
+    : public DesignClassifierSupervisedBodyC
   {
   public:
     DesignClassifierNeuralNetwork2BodyC(UIntT nLayers,
@@ -44,6 +45,17 @@ namespace RavlN {
     virtual bool Save(BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
 
+    virtual void ParameterLimits(VectorC &defaultValues,VectorC &min,VectorC &max,SArray1dC<StringC> &names) const;
+    //: Get the default parameter values and their limits.
+
+    virtual VectorC Parameters() const;
+    //: Get the current parameters.
+
+    virtual VectorC SetParameters(const VectorC &params);
+    //: Set the current parameters.
+    // Returns the current parameters, which may not be exactly those
+    // set in 'params', but will be the closest legal values.
+
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Train a neural network.  The number of input dimensions must be the same as specified in the
     //: constructor.  The number of different labels must be the same as the number of outputs.  Also
@@ -57,6 +69,7 @@ namespace RavlN {
     FunctionC m_featureExpand;
     UIntT m_nLayers;
     UIntT m_nHidden;
+    RealT m_hiddenFraction; // Hidden units as a fraction of number of inputs + outputs.  -1 = Use default
     RealT m_desiredError;
     UIntT m_maxEpochs;
     UIntT m_displayEpochs;

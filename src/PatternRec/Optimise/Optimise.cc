@@ -99,6 +99,8 @@ namespace RavlN {
     out << _name;
     return true;
   }
+
+  // ------------------------------------------------------------------------
   
   OptimiseC::OptimiseC ()
   {
@@ -113,7 +115,11 @@ namespace RavlN {
   OptimiseC::OptimiseC (OptimiseBodyC &oth)
     :RCHandleVC<OptimiseBodyC> (oth)
   {}
-  
+
+  OptimiseC::OptimiseC (OptimiseBodyC *oth)
+    :RCHandleVC<OptimiseBodyC> (oth)
+  {}
+
 }
 
 

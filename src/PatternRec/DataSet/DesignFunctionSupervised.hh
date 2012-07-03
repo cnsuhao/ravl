@@ -90,6 +90,11 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
 
+    DesignFunctionSupervisedC(const DesignFunctionSupervisedC &other)
+     : DesignerC(other)
+    {}
+    //: Copy constructor.
+
     DesignFunctionSupervisedC(const XMLFactoryContextC &factory)
       :  DesignerC(*new DesignFunctionSupervisedBodyC(factory))
     {}
