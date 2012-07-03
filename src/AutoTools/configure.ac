@@ -220,7 +220,13 @@ then
   # -g does nothing on the linker so omit it
   PKG_DEFAULT_LDFLAGS=
   PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
-  PKG_GPROF_LDFLAGS=
+  PKG_GPROF_LDFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl .._LDFLAGS currently only ever used when the linker is called by the C++
+dnl compiler, hence we use the C++ compiler's GPROF switch. If QMake is ever
+dnl extended, we probably need extra versions of .._LDFLAGS for when the linker
+dnl is called from the regular C compiler or when it is called directly. If
+dnl using the linker directly, "GPROF" needs to cause /lib/gcrt0.o to be linked
+dnl in as the first object file and to use -lc_p instead of defaulting to -lc.
   PKG_OPT_LDFLAGS=
   PKG_PROF_LDFLAGS=
   PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
@@ -230,7 +236,10 @@ then
   PKG_DEBUG_LDLIBFLAGS=
   PKG_DEFAULT_LDLIBFLAGS=
   PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
-  PKG_GPROF_LDLIBFLAGS=
+  PKG_GPROF_LDLIBFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl As for .._LDFLAGS, .._LDLIBFLAGS is currently only ever used when the c++
+dnl compiler calls the linker. All the caveats as per .._LDFLAGS apply (see
+dnl above)
   PKG_OPT_LDLIBFLAGS=
   PKG_PROF_LDLIBFLAGS=
   PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
@@ -253,7 +262,8 @@ dnl
               PKG_DEBUG_LDFLAGS=" -g "
               PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
               PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
+              PKG_GPROF_LDFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDFLAGS
               PKG_PROF_LDFLAGS=
               PKG_OPT_LDFLAGS=
               PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
@@ -262,7 +272,8 @@ dnl
               PKG_DEBUG_LDLIBFLAGS=
               PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
               PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDLIBFLAGS
               PKG_PROF_LDLIBFLAGS=
               PKG_OPT_LDLIBFLAGS=
               PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
@@ -271,7 +282,8 @@ dnl
               PKG_DEBUG_LDFLAGS=
               PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
               PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
+              PKG_GPROF_LDFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDFLAGS
               PKG_PROF_LDFLAGS=
               PKG_OPT_LDFLAGS=
               PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
@@ -280,7 +292,8 @@ dnl
               PKG_DEBUG_LDLIBFLAGS=
               PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
               PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDLIBFLAGS
               PKG_PROF_LDLIBFLAGS=
               PKG_OPT_LDLIBFLAGS=
               PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "
@@ -289,7 +302,8 @@ dnl
               PKG_DEBUG_LDFLAGS=" -g "
               PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
               PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
+              PKG_GPROF_LDFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDFLAGS
               PKG_PROF_LDFLAGS=
               PKG_OPT_LDFLAGS=
               PKG_SHARED_LDFLAGS= "\$(LINKER_SHARED_LDFLAGS) "
@@ -297,7 +311,8 @@ dnl
               PKG_CHECK_LDLIBFLAGS=
               PKG_DEBUG_LDLIBFLAGS=
               PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
-              PKG_DEFAULT_LDLIBFLAGS=
+              PKG_DEFAULT_LDLIBFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDLIBFLAGS
               PKG_GPROF_LDLIBFLAGS=
               PKG_PROF_LDLIBFLAGS=
               PKG_OPT_LDLIBFLAGS=
@@ -307,7 +322,8 @@ dnl
               PKG_DEBUG_LDFLAGS=
               PKG_GLOBAL_LDFLAGS=" \$(LINKER_SPECIFIC_LDFLAGS) "
               PKG_DEFAULT_LDFLAGS=
-              PKG_GPROF_LDFLAGS=
+              PKG_GPROF_LDFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDFLAGS
               PKG_PROF_LDFLAGS=
               PKG_OPT_LDFLAGS=
               PKG_SHARED_LDFLAGS=" \$(LINKER_SHARED_LDFLAGS) "
@@ -316,7 +332,8 @@ dnl
               PKG_DEBUG_LDLIBFLAGS=
               PKG_GLOBAL_LDLIBFLAGS=" \$(LINKER_SPECIFIC_LDLIBFLAGS) "
               PKG_DEFAULT_LDLIBFLAGS=
-              PKG_GPROF_LDLIBFLAGS=
+              PKG_GPROF_LDLIBFLAGS=" \$(COMPILER_GPROF_CCFLAGS) "
+dnl See discussion in GNU linker section above, about caveats for .._LDLIBFLAGS
               PKG_PROF_LDLIBFLAGS=
               PKG_OPT_LDLIBFLAGS=
               PKG_SHARED_LDLIBFLAGS=" \$(LINKER_SHARED_LDLIBFLAGS) "

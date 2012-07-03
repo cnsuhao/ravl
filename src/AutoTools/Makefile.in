@@ -81,6 +81,18 @@ doc: qmake
 fullsrc: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) NOCHECKOUT=1 fullsrc
 
+gprof: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof NOEXEBUILD=1 libbuild
+
+gprofbin: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) fullgprof
+
+gprofshared: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 NOEXEBUILD=1 libbuild
+
+gprofsharedbin: qmake
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) SHAREDBUILD=1 fullgprof
+
 install: installQMake installsingleoptshared installHdrs installpkgconf installRavl.def installDummyDefs
 
 BUILT_DOT_DEFS=$(filter-out Ravl.def, $(patsubst $(PROJECT_OUT)/lib/libdep/%,%,$(wildcard $(PROJECT_OUT)/lib/libdep/*)))
@@ -277,17 +289,36 @@ $(PROJECT_OUT)/lib/libdep/Ravl.def: $(PROJECT_OUT)/Makefile
 	$(SHOWIT)echo >> $@
 
 
+retestgprof:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof TEST_TARGET=gprof retest
+
+retestgprofshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 TEST_TARGET=gprofshared retest
+
 retestopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt retest
 
+retestoptshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared retest
+
+retestsinglegprof:
+	@cd $(PROJECT_OUT)/test/gprof/single/bin; ls > ../TestExes
+	cd $(PROJECT_OUT)/test/gprof/single && \
+           PATH=$(PROJECT_OUT)/test/gprof/single/bin:$(PROJECT_OUT)/bin/utils/gprof/single/bin:$$PATH \
+           $(PROJECT_OUT)/bin/utils/gprof/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/single
+	
+retestsinglegprofshared:
+	@cd $(PROJECT_OUT)/test/gprof/shared/single/bin; ls > ../TestExes
+	cd $(PROJECT_OUT)/test/gprof/shared/single && \
+           PATH=$(PROJECT_OUT)/test/gprof/shared/single/bin:$(PROJECT_OUT)/bin/utils/gprof/shared/single/bin:$$PATH \
+           LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/gprof/shared/single:$$LD_LIBRARY_PATH \
+           $(PROJECT_OUT)/bin/utils/gprof/shared/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/shared/single
+	
 retestsingleopt:
 	@cd $(PROJECT_OUT)/test/opt/single/bin; ls > ../TestExes
 	cd $(PROJECT_OUT)/test/opt/single && \
            PATH=$(PROJECT_OUT)/test/opt/single/bin:$(PROJECT_OUT)/bin/utils/opt/single/bin:$$PATH \
            $(PROJECT_OUT)/bin/utils/opt/single/bin/Validate -v $(PROJECT_OUT)/test/opt/single
-	
-retestoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared retest
 	
 retestsingleoptshared:
 	@cd $(PROJECT_OUT)/test/opt/shared/single/bin; ls > ../TestExes
@@ -299,6 +330,17 @@ retestsingleoptshared:
 #JFi:Only start of RPM process implemented. Should automate everything or drop.
 rpm: qmake 
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) rpmbuild 
+
+singlegprof:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof makedirs buildstatic
+
+singlegprofbin:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 programs recurse
+
+singlegprofshared: gprofshared
+
+singlegprofsharedbin:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
 singleopt:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/SingleLib.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt makedirs buildstatic
@@ -322,9 +364,38 @@ singledebugshared: debugshared
 singledebugsharedbin:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
+testgprof:
+	@$(RM) -f $(PROJECT_OUT)/test/gprof/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof TEST_TARGET=gprof test
+
+testgprofshared:
+	@$(RM) -f $(PROJECT_OUT)/test/gprof/shared/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof SHAREDBUILD=1 TEST_TARGET=gprofshared test
+
 testopt:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/bin/*
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt TEST_TARGET=opt test
+
+testoptshared:
+	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared test
+
+testsinglegprof:
+	@$(RM) -f $(PROJECT_OUT)/test/gprof/single/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 test recurse
+	@cd $(PROJECT_OUT)/test/gprof/single/bin; ls > ../TestExes
+	cd $(PROJECT_OUT)/test/gprof/single && \
+           PATH=$(PROJECT_OUT)/test/gprof/single/bin:$(PROJECT_OUT)/bin/utils/gprof/single/bin:$$PATH \
+           $(PROJECT_OUT)/bin/utils/gprof/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/single
+
+testsinglegprofshared:
+	@$(RM) -f $(PROJECT_OUT)/test/gprof/shared/single/bin/*
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=gprof SINGLELIB=1 SHAREDBUILD=1 test recurse
+	@cd $(PROJECT_OUT)/test/gprof/shared/single/bin; ls > ../TestExes
+	cd $(PROJECT_OUT)/test/gprof/shared/single && \
+           PATH=$(PROJECT_OUT)/test/gprof/shared/single/bin:$(PROJECT_OUT)/bin/utils/gprof/shared/single/bin:$$PATH \
+           LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/gprof/shared/single:$$LD_LIBRARY_PATH \
+           $(PROJECT_OUT)/bin/utils/gprof/shared/single/bin/Validate -v $(PROJECT_OUT)/test/gprof/shared/single
 
 testsingleopt:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/single/bin/*
@@ -334,10 +405,6 @@ testsingleopt:
            PATH=$(PROJECT_OUT)/test/opt/single/bin:$(PROJECT_OUT)/bin/utils/opt/single/bin:$$PATH \
            $(PROJECT_OUT)/bin/utils/opt/single/bin/Validate -v $(PROJECT_OUT)/test/opt/single
 	
-testoptshared:
-	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/bin/*
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 TEST_TARGET=optshared test
-
 testsingleoptshared:
 	@$(RM) -f $(PROJECT_OUT)/test/opt/shared/single/bin/*
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SINGLELIB=1 SHAREDBUILD=1 test recurse
@@ -355,12 +422,16 @@ testsingleoptshared:
 #    mostlyclean maintainter-clean tags ctags
 
 
-.PHONY: check debug debugshared default dist doc fullsrc install \
- installHdrs installoptshared installpkgconf installQMake \
- installsingleoptshared LocalQMake opt optbin optshared pkgconf qmake QMake \
- recurse retestopt retestoptshared retestsingleopt retestsingleoptshared \
- rpm singleopt singleoptbin singleoptshared singleoptsharedbin singledebug \
- singledebugbin singledebugshared singledebugsharedbin testopt testoptshared \
+.PHONY: check debug debugshared default dist doc fullsrc \
+ gprof gprofbin gprofshared gprofsharedbin install installHdrs \
+ installoptshared installpkgconf installQMake installsingleoptshared \
+ LocalQMake opt optbin optshared pkgconf qmake QMake recurse \
+ retestgprof retestgprofshared retestopt retestoptshared retestsinglegprof \
+ retestsinglegprofshared retestsingleopt retestsingleoptshared rpm \
+ singlegprof singlegprofbin singlegprofshared singlegprofsharedbin \
+ singleopt singleoptbin singleoptshared singleoptsharedbin singledebug \
+ singledebugbin singledebugshared singledebugsharedbin testgprof \
+ testgprofshared testopt testoptshared testsinglegprof testsinglegprofshared \
  testsingleopt testsingleoptshared .DEFAULT
 
 SetRootInstalledOptStatic:
