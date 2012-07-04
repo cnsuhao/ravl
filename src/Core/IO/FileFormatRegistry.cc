@@ -280,7 +280,7 @@ namespace RavlN {
         it.IsElm();
         it.Next()) {
       // Format specified ?
-      if(ignoreFmts.IsMember(it.Data().Name()))
+      if(!ignoreFmts.IsEmpty() && ignoreFmts.IsMember(it.Data().Name()))
         continue;
       if(!acceptAll) {
         if(!acceptFmts.IsMember(it.Data().Name()))
