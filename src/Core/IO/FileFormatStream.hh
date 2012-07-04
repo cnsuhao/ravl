@@ -9,7 +9,6 @@
 ////////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.IO.Formats" 
 //! lib=RavlIO
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/FileFormatStream.hh"
 //! author="Charles Galambos"
 //! date="12/08/1998"
@@ -20,6 +19,8 @@
 #include "Ravl/TypeName.hh"
 
 namespace RavlN {
+  //: Register file format.
+  bool RegisterFormatStreamMeta(FileFormatBaseC &fileformat);
   
   /////////////////////////////
   //: Stream File Format.
@@ -31,7 +32,7 @@ namespace RavlN {
   {
   public:
     FileFormatStreamBodyC()
-      : FileFormatBodyC("stream","Standard C++ iostream headed with the class name. ")
+      : FileFormatBodyC("stream","Standard C++ iostream headed with the class name. ",false)
     {}
     //: Default constructor.
     
@@ -105,7 +106,7 @@ namespace RavlN {
   public:
     FileFormatStreamC()
       : FileFormatC<DataT>(*new FileFormatStreamBodyC<DataT>())
-    {}
+    { RegisterFormatStreamMeta(*this); }
   };
 }
 

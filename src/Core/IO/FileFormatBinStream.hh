@@ -12,7 +12,6 @@
 //! file="Ravl/Core/IO/FileFormatBinStream.hh"
 //! author="Charles Galambos"
 //! date="12/08/1998"
-//! rcsid="$Id$"
 //! userlevel=Default
 
 #include "Ravl/DP/FileFormat.hh"
@@ -20,6 +19,9 @@
 #include "Ravl/TypeName.hh"
 
 namespace RavlN {
+  bool RegisterFormatBinStreamMeta(FileFormatBaseC &fileformat);
+  //: Register file format.
+
   /////////////////////////////
   //: Binary stream file format.
   //! userlevel=Develop
@@ -27,13 +29,13 @@ namespace RavlN {
   template<class DataT>
   class FileFormatBinStreamBodyC : public FileFormatBodyC {
   public:
-    FileFormatBinStreamBodyC(bool deletable)
-      : FileFormatBodyC("abs","RAVL binary stream. ",deletable)
+    FileFormatBinStreamBodyC(bool pubList)
+      : FileFormatBodyC("abs","RAVL binary stream. ",false)
     {}
     //: Constructor.
 
-    FileFormatBinStreamBodyC(const StringC &formatId,const StringC &formatDescriptor,bool deletable = true)
-      : FileFormatBodyC(formatId,formatDescriptor,deletable)
+    FileFormatBinStreamBodyC(const StringC &formatId,const StringC &formatDescriptor,bool pubList = false)
+      : FileFormatBodyC(formatId,formatDescriptor,false)
     {}
     //: Constructor with full format info.
 
@@ -163,11 +165,11 @@ namespace RavlN {
   public:
     FileFormatBinStreamC()
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
-    {}
+    { RegisterFormatBinStreamMeta(*this); }
 
     FileFormatBinStreamC(const StringC &formatId,const StringC &formatDescriptor)
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(formatId,formatDescriptor))
-    {}
+    { RegisterFormatBinStreamMeta(*this); }
     //: Construct will format id and descriptor
 
   };
