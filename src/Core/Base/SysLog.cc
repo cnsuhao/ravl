@@ -293,6 +293,7 @@ namespace RavlN {
   "NOTICE",
   "INFO",
   "DEBUG",
+  "DEBUG2",
   "ALL",
   "DEBUG3",
   "DEBUG4",

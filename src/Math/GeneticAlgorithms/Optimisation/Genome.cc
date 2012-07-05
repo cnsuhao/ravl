@@ -159,7 +159,7 @@ namespace RavlN { namespace GeneticN {
         RavlDebug("Trys %d ",tryNo);
 #endif
 
-#if 1
+#if 0
       if(!ret) {
         RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
       }

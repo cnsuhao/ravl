@@ -23,7 +23,8 @@ namespace RavlN {
     SYSLOG_WARNING,
     SYSLOG_NOTICE,
     SYSLOG_INFO,
-    SYSLOG_DEBUG
+    SYSLOG_DEBUG,
+    SYSLOG_DEBUG2
   };
   
   std::ostream &operator<<(std::ostream &strm,SysLogPriorityT priority);
@@ -86,6 +87,12 @@ namespace RavlN {
 #define RavlWarning(...) RavlN::SysLog(RavlN::SYSLOG_WARNING,__LINE__,__FILE__,__VA_ARGS__)
 #define RavlInfo(...) RavlN::SysLog(RavlN::SYSLOG_INFO,__LINE__,__FILE__,__VA_ARGS__)
 #define RavlDebug(...) RavlN::SysLog(RavlN::SYSLOG_DEBUG,__LINE__,__FILE__,__VA_ARGS__)
+
+#define RavlErrorIf(logLevel,...) { if(logLevel >= RavlN::SYSLOG_ERR) RavlN::SysLog(RavlN::SYSLOG_ERR,__LINE__,__FILE__,__VA_ARGS__); }
+#define RavlWarningIf(logLevel,...) { if(logLevel >= RavlN::SYSLOG_WARNING) RavlN::SysLog(RavlN::SYSLOG_WARNING,__LINE__,__FILE__,__VA_ARGS__); }
+#define RavlInfoIf(logLevel,...) { if(logLevel >= RavlN::SYSLOG_INFO) RavlN::SysLog(RavlN::SYSLOG_INFO,__LINE__,__FILE__,__VA_ARGS__); }
+#define RavlDebugIf(logLevel,...) { if(logLevel >= RavlN::SYSLOG_DEBUG) RavlN::SysLog(RavlN::SYSLOG_DEBUG,__LINE__,__FILE__,__VA_ARGS__); }
+#define RavlDebug2If(logLevel,...) { if(logLevel >= RavlN::SYSLOG_DEBUG2) RavlN::SysLog(RavlN::SYSLOG_DEBUG,__LINE__,__FILE__,__VA_ARGS__); }
 }
 
 #endif
