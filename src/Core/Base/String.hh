@@ -80,32 +80,32 @@ namespace RavlN {
   //: Read a string from a binary stream.
   
   int compare(const StringC&    x, const StringC&     y);
-  //: Compair two strings
+  //: Compare two strings
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
   
   int compare(const StringC&    x, const SubStringC&  y);
-  //: Compair two strings
+  //: Compare two strings
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
 
   int compare(const StringC&    x, const char* y);
-  //: Compair two strings
+  //: Compare two strings
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
 
   int compare(const SubStringC& x, const StringC&     y);
-  //: Compair two strings
+  //: Compare two strings
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
   
   int compare(const SubStringC& x, const SubStringC&  y);
-  //: Compair two strings
+  //: Compare two strings
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
 
   int compare(const SubStringC& x, const char* y);
-  //: Compair two strings
+  //: Compare two strings
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
   
   int fcompare(const StringC&   x, const StringC&     y);
   //! userlevel=Normal
-  //: Compair two strings ignoring case.
+  //: Compare two strings ignoring case.
   // Returns 0 if equal, and +ve or -ve value depending on alphabetic order.
   
   /////////////////////////////////////
@@ -329,7 +329,7 @@ namespace RavlN {
     {}
     //: Create a string from a char "c"
     
-    explicit StringC(istream & in);
+    explicit StringC(std::istream & in);
     //: Create a string from the stream "in"
     
     StringC(const std::string& x);
@@ -739,11 +739,11 @@ namespace RavlN {
     
     operator const char*() const
     { return &(rep->s[0]); }    
-    //: Access as a 'C' sytle string.
+    //: Access as a 'C' style string.
     
     inline const char* chars() const
     { return &(rep->s[0]); }    
-    //: Access as a 'C' sytle string.
+    //: Access as a 'C' style string.
     
     inline const char* data() const
     { return &(rep->s[0]); }    
@@ -751,19 +751,19 @@ namespace RavlN {
 
     inline const char* c_str() const
     { return &(rep->s[0]); }
-    //: Access as a 'C' sytle string, in the stl style.
+    //: Access as a 'C' style string, in the stl style.
 
     operator std::string () const;
     //: Convert to a STL string.
     
     // IO
     
-    friend ostream& operator<<(ostream& s, const StringC& x);
-    friend ostream& operator<<(ostream& s, const SubStringC& x);
-    friend istream& operator>>(istream& s, StringC& x);
+    friend std::ostream& operator<<(std::ostream& s, const StringC& x);
+    friend std::ostream& operator<<(std::ostream& s, const SubStringC& x);
+    friend std::istream& operator>>(std::istream& s, StringC& x);
     friend BinIStreamC& operator>>(BinIStreamC& s, StringC& x);
     
-    friend int readline(istream& s, StringC& x, 
+    friend int readline(std::istream& s, StringC& x,
 			char terminator,
 			bool discard_terminator);
     

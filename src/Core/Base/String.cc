@@ -566,7 +566,7 @@ namespace RavlN {
     *this = TBuff;    
   }
 
-  StringC::StringC(istream & in) {
+  StringC::StringC(std::istream & in) {
     in >> *this;
   }
 
@@ -892,7 +892,7 @@ namespace RavlN {
     (*this) = StringC(buff);  // Slower, but saves memory.
 #else
     if((x = vsnprintf(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: StringC::form(...), String truncated!! \n";
+      std::cerr << "WARNING: StringC::form(...), String truncated!! \n";
     (*this) = StringC(buff);  // Slower, but saves memory.
 #endif
     va_end(args);
@@ -1314,15 +1314,15 @@ namespace RavlN {
 
 // IO
 
-  istream& operator>>(istream& s, StringC& x) {
-    if (!s || (!(s.flags() & ios::skipws) && !ws(s))) {
-      s.clear(ios::failbit|s.rdstate()); // Redundant if using GNU iostreams.
+  std::istream& operator>>(std::istream& s, StringC& x) {
+    if (!s || (!(s.flags() & std::ios::skipws) && !ws(s))) {
+      s.clear(std::ios::failbit|s.rdstate()); // Redundant if using GNU iostreams.
       return s;
     }
     int ch;
     int i = 0;
     x.rep = Sresize(x.rep, 20);
-    register streambuf *sb = s.rdbuf();
+    register std::streambuf *sb = s.rdbuf();
     int new_state;
     // Skip spaces.
     while ((ch = sb->sbumpc()) != EOF) {
@@ -1331,7 +1331,7 @@ namespace RavlN {
     }
     // Get rest of string.
     if(ch != EOF) {
-      x.rep->s[i++] = ch;// Store first charactor.
+      x.rep->s[i++] = ch;// Store first character.
       
       // Get string.
       while ((ch = sb->sbumpc()) != EOF) {
@@ -1345,8 +1345,8 @@ namespace RavlN {
     x.rep->s[i] = 0;
     x.rep->len = i;
     new_state = s.rdstate();
-    if (i == 0) new_state |= ios::failbit;
-    if (ch == EOF) new_state |= ios::eofbit;
+    if (i == 0) new_state |= std::ios::failbit;
+    if (ch == EOF) new_state |= std::ios::eofbit;
 #if RAVL_COMPILER_GCC
     s.clear((std::_Ios_Iostate )new_state);
 #else
@@ -1355,9 +1355,9 @@ namespace RavlN {
     return s;
   }
   
-  int readline(istream& s, StringC& x, char terminator, bool discard) {
+  int readline(std::istream& s, StringC& x, char terminator, bool discard) {
 #if RAVL_COMPILER_GCC
-    const int eof = istream::traits_type::eof();
+    const int eof = std::istream::traits_type::eof();
 #else
     // Should check what this does before just disabling it.
     if (!s.ipfx(0))
@@ -1367,7 +1367,7 @@ namespace RavlN {
     int ch = 0;
     int i = 0;
     x.rep = Sresize(x.rep, 80);
-    register streambuf *sb = s.rdbuf();
+    register std::streambuf *sb = s.rdbuf();
     while ((ch = sb->sbumpc()) != eof) {
       if (ch != terminator || !discard) {
 	if (i >= ((int) x.rep->sz) - 1)
@@ -1381,7 +1381,7 @@ namespace RavlN {
     x.rep->len = i;
 #if RAVL_COMPILER_GCC
     if (ch == eof) 
-      s.setstate(ios::eofbit | ios::failbit);
+      s.setstate(std::ios::eofbit | std::ios::failbit);
 #else
     if (ch == eof)
       s.clear(ios::eofbit | ios::failbit);
@@ -1390,7 +1390,7 @@ namespace RavlN {
   }
   
   
-  ostream& operator<<(ostream & s, const SubStringC& x) { 
+  std::ostream& operator<<(std::ostream & s, const SubStringC& x) {
 #if USE_STREAMPUT
     const char* a = x.chars();
     const char* lasta = &(a[x.length()]);
@@ -1402,7 +1402,7 @@ namespace RavlN {
     return(s);
   }
   
-  ostream& operator<<(ostream & s, const StringC& x) { 
+  std::ostream& operator<<(std::ostream & s, const StringC& x) {
 #if USE_STREAMPUT
     s << x.chars(); 
 #else
