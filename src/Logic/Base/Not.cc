@@ -36,7 +36,7 @@ namespace RavlLogicN {
 
   //: Construct from a binary stream.
   
-  NotBodyC::NotBodyC(istream &strm)
+  NotBodyC::NotBodyC(std::istream &strm)
     : ConditionBodyC(strm)
   {}
   
@@ -48,7 +48,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool NotBodyC::Save(ostream &out) const
+  bool NotBodyC::Save(std::ostream &out) const
   { return ConditionBodyC::Save(out); }
   
   //: Save to binary stream 'out'.

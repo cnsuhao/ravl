@@ -53,7 +53,7 @@ int Main(int argc, char* argv[])
   }
   
   if (!Save("square.pgm", image))
-     cerr << "Image saving failed" << endl;
+     std::cerr << "Image saving failed" << std::endl;
 
   return 0;
 }

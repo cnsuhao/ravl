@@ -36,13 +36,13 @@ namespace RavlLogicN {
     virtual ~ValueBaseBodyC() {}
     // Destructor.
     
-    ValueBaseBodyC(istream &strm);
+    ValueBaseBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     ValueBaseBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -71,7 +71,7 @@ namespace RavlLogicN {
     //: Constructor.
     // Will create an invalid handle if types don't match.
     
-    ValueBaseC(istream &strm);
+    ValueBaseC(std::istream &strm);
     //: Load from stream.
     
     ValueBaseC(BinIStreamC &strm);
@@ -118,7 +118,7 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
     
-    ValueBodyC(istream &strm)
+    ValueBodyC(std::istream &strm)
       : ValueBaseBodyC(strm)
     { strm >> data; }
     //: Construct from a binary stream.
@@ -128,7 +128,7 @@ namespace RavlLogicN {
     { strm >> data; }
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const {
+    virtual bool Save(std::ostream &out) const {
       if(!ValueBaseBodyC::Save(out)) return false;
       out << ' ' << data;
       return true;
@@ -157,7 +157,7 @@ namespace RavlLogicN {
     }
     //: Name for value.
     
-    virtual void Dump(ostream &out) 
+    virtual void Dump(std::ostream &out) 
     { out << data; }
     //: Dump in human readable format.
     
@@ -198,7 +198,7 @@ namespace RavlLogicN {
     //: Constructor.
     // Will create an invalid handle if types don't match.
 
-    ValueC(istream &strm)
+    ValueC(std::istream &strm)
       : ValueBaseC(RAVL_VIRTUALCONSTRUCTOR(strm,ValueBodyC<DataT>))
     {}
     //: Construct from a binary stream.

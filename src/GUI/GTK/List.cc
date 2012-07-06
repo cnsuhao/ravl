@@ -114,14 +114,14 @@ namespace RavlGUIN {
 			ListItemKey,
 			(void *) id);
     
-    ONDEBUG(cerr << "Added " << widge.Name() << " \n");
+    ONDEBUG(std::cerr << "Added " << widge.Name() << " \n");
     return true;
   }
   
   //: Del widget from list.
   
   bool ListBodyC::GUIRemoveLine(const IntT &id) {
-    //ONDEBUG(cerr << "CListBodyC::GUIRemoveLine(), ID:" << id << " \n");
+    //ONDEBUG(std::cerr << "CListBodyC::GUIRemoveLine(), ID:" << id << " \n");
     GList   *dlist=GTK_LIST(widget)->children;    
     while (dlist) {
       GtkObject       *list_item;
@@ -151,7 +151,7 @@ if(rid == id) {
   bool ListBodyC::Create() {
     if(widget != 0)
       return true; // Done already!
-    ONDEBUG(cerr << "ListBodyC::Create(), Called. \n");
+    ONDEBUG(std::cerr << "ListBodyC::Create(), Called. \n");
     widget = gtk_list_new();
     gtk_list_set_selection_mode(GTK_LIST(widget),selMode);  
     for(DLIterC<Tuple2C<IntT,WidgetC> > it(children);it;it++)
@@ -159,7 +159,7 @@ if(rid == id) {
     //gtk_signal_connect(GTK_OBJECT(GTK_COMBO(widget)->entry), "changed",
     //GTK_SIGNAL_FUNC (combo_activate),& signals["combo_activate"]);
     ConnectSignals();
-    ONDEBUG(cerr << "ListBodyC::Create(), Done. \n");
+    ONDEBUG(std::cerr << "ListBodyC::Create(), Done. \n");
     return true;
   }
   

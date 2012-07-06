@@ -66,6 +66,7 @@ int pfac(int n,int *kk,int fe) {
       }
     }
   }
+  return 0;
 }
 
 

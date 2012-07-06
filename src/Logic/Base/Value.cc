@@ -22,7 +22,7 @@ namespace RavlLogicN {
   
   //: Construct from a binary stream.
   
-  ValueBaseBodyC::ValueBaseBodyC(istream &strm)
+  ValueBaseBodyC::ValueBaseBodyC(std::istream &strm)
     : LiteralBodyC(strm)
   {}
   
@@ -34,7 +34,7 @@ namespace RavlLogicN {
     
   //: Save to binary stream 'out'.
   
-  bool ValueBaseBodyC::Save(ostream &out) const
+  bool ValueBaseBodyC::Save(std::ostream &out) const
   { return LiteralBodyC::Save(out); }
   
   //: Save to binary stream 'out'.

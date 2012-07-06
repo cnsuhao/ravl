@@ -21,13 +21,13 @@ using namespace RavlGUIN;
 
 bool HandleCombo(TreeModelIterC &row, TextEntryC& entry)
 {
-  cerr << "Combo changed: '" <<  entry.GUIText() << "'\n";
+  std::cerr << "Combo changed: '" <<  entry.GUIText() << "'\n";
   return true;
 }
 
 bool HandleEntry(StringC &text)
 {
-  cerr << "Entry activated: '" << text << "'\n";
+  std::cerr << "Entry activated: '" << text << "'\n";
   return true ;
 }
 
@@ -68,5 +68,6 @@ int main(int nargs,char *args[])
 
   // Start the UI.
   Manager.Start();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

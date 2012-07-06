@@ -23,7 +23,7 @@ using namespace RavlGUIN;
 
 bool AlertBoxDone()
 {
-  cerr << "Alert box finished!" << endl;
+  std::cerr << "Alert box finished!" << std::endl;
   return true;
 }
 
@@ -35,12 +35,12 @@ bool AlertBoxStart()
 
 bool QuestionBoxDone(bool &bResult)
 {
-  cerr << "Question box finished! Result: ";
+  std::cerr << "Question box finished! Result: ";
   if (bResult) {
-    cerr << "Yes!" << endl;
+    std::cerr << "Yes!" << std::endl;
   }
   else {
-    cerr << "No!" << endl;
+    std::cerr << "No!" << std::endl;
   }  
   return true;
 }
@@ -54,13 +54,13 @@ bool QuestionBoxStart()
 bool OnButtonClick(UIntT &buttonNo)
 {
   if(buttonNo == 0) 
-    cerr << "Yes" << endl;
+    std::cerr << "Yes" << std::endl;
   else if(buttonNo ==1) 
-    cerr << "No" << endl;
+    std::cerr << "No" << std::endl;
   else if(buttonNo == 2)
-    cerr << "Cancel" << endl;
+    std::cerr << "Cancel" << std::endl;
   else {
-    cerr << "button no too high" << endl;
+    std::cerr << "button no too high" << std::endl;
     return false;
   }
   return true;
@@ -108,5 +108,6 @@ int main(int nargs,char *args[])
  
   Manager.Start();
 
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

@@ -59,7 +59,7 @@ namespace RavlGUIN {
     //: Constructor.
   };
 
-  ostream &operator<<(ostream &strm,const DTexTriMesh3DC &);
-  istream &operator>>(istream &strm,DTexTriMesh3DC &);
+  std::ostream &operator<<(std::ostream &strm,const DTexTriMesh3DC &);
+  std::istream &operator>>(std::istream &strm,DTexTriMesh3DC &);
 }
 #endif

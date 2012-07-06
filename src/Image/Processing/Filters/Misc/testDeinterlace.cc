@@ -64,7 +64,7 @@ template<class PixelT> int testDeinterlace() {
     for (Array2dIterC<PixelT> j(imgR); j; ++j)  mom.AddPixel(j.Index(), YValue(*j));
     centroid[i] = Point2dC(mom.CentroidX(),mom.CentroidY());
   }
-  cout << centroid << endl;
+  std::cout << centroid << std::endl;
   if (centroid[0].EuclideanDistance(centroid[1]) > 1.0e-10)  return __LINE__;
   return 0;
 }
@@ -73,22 +73,22 @@ template<class PixelT> int testDeinterlace() {
 int main() {
   int ln;
   if((ln = testDeinterlace<RealT>()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   //if((ln = testDeinterlace<ByteT>()) != 0) {
-  //  cerr << "Test failed on line " << ln << "\n";
+  //  std::cerr << "Test failed on line " << ln << "\n";
   //  return 1;
   //}
   if((ln = testDeinterlace<RealRGBValueC>()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   //if((ln = testDeinterlace<ByteRGBValueC>()) != 0) {
-  //  cerr << "Test failed on line " << ln << "\n";
+  //  std::cerr << "Test failed on line " << ln << "\n";
   //  return 1;
   //}
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 

@@ -42,6 +42,7 @@ namespace RavlN {
   {
   public:
     DPOBinFileBodyC()
+     : version(0)
     {}
     //: Default constructor.
 

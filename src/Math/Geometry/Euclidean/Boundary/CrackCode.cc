@@ -37,6 +37,7 @@ namespace RavlN {
     case 4: crackCode = CR_NODIR; break;
     default:
       RavlAssertMsg(0,"CrackCodeC(const IntT i), Invalid code. ");
+      break;
     }
   }
 

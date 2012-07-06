@@ -23,14 +23,14 @@ BuildInfoC info;
 
 static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
   if(verb)
-    cerr << "Checking '" << dir << "' \n";
+    std::cerr << "Checking '" << dir << "' \n";
   info.ScanDirectory(dir,defs);
   if(defs.IsDefined("PLIB")) {
     StringC lib = defs["PLIB"];
-    cerr << lib << " :";
+    std::cerr << lib << " :";
     for(DLIterC<StringC> it(info.LibDepends(lib));it;it++)
-      cerr << " " << *it;
-    cerr << "\n";
+      std::cerr << " " << *it;
+    std::cerr << "\n";
   }
   return true;
 }

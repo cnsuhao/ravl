@@ -45,7 +45,7 @@ namespace RavlN {
     }
 
     RealRange1dSetC ret;
-    ONDEBUG(cerr << "range overlap. \n");
+    ONDEBUG(std::cerr << "range overlap. \n");
 
     // Before ?
     if(range1.Min() < range2.Min()) {
@@ -143,7 +143,7 @@ namespace RavlN {
   RealT RealRange1dSetC::Length() const {
     RealT ret = 0;
     for(DLIterC<RealRangeC> it(*this);it.IsElm();it.Next()) {
-      ONDEBUG(cerr << "+Area: " << it.Data().Area() << "\n");
+      ONDEBUG(std::cerr << "+Area: " << it.Data().Area() << "\n");
       ret += it.Data().Size();
     }
     return ret;

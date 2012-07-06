@@ -45,7 +45,7 @@ namespace RavlImageN {
   DPOImageTIFFByteRGBABodyC::DPOImageTIFFByteRGBABodyC(StringC fn)
     : done(false)
   {
-    ONDEBUG(cerr << "DPOImageTIFFByteRGBABodyC(), Open file '" << fn << "' \n");
+    ONDEBUG(std::cerr << "DPOImageTIFFByteRGBABodyC(), Open file '" << fn << "' \n");
     tif = TIFFOpen(fn.chars(),"w");
   }
   
@@ -55,7 +55,7 @@ namespace RavlImageN {
     : outf(strm),
       done(false)
   {
-    ONDEBUG(cerr << "DPOImageTIFFByteRGBABodyC(), Open stream '" << strm.Name() << "' \n");
+    ONDEBUG(std::cerr << "DPOImageTIFFByteRGBABodyC(), Open stream '" << strm.Name() << "' \n");
     tif = TIFFClientOpen(outf.Name().chars(),"w",
 			 (thandle_t)this,
 			 &TIFFReadProc, &TIFFWriteProc,
@@ -78,7 +78,7 @@ namespace RavlImageN {
     uint32 w = img.Cols();
     uint32 h = img.Rows();
   
-    ONDEBUG(cerr << "DPIImageTIFFByteRGBABodyC::Put(), Called. " << w << " " << h << " \n");
+    ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC::Put(), Called. " << w << " " << h << " \n");
     
     if (tif == 0) 
       return false;
@@ -98,7 +98,7 @@ namespace RavlImageN {
     
     const IndexC offset = img.LCol();
     
-    ONDEBUG(cerr << "DPIImageTIFFByteRGBABodyC::Put(), TRow:" << img.TRow() << " BRow:" << img.BRow() << " . \n");
+    ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC::Put(), TRow:" << img.TRow() << " BRow:" << img.BRow() << " . \n");
     for (IndexC row = img.TRow(); row <= img.BRow(); row++)
       TIFFWriteScanline(tif,(char *) &(img[row][offset]), row.V(),0);
     
@@ -111,7 +111,7 @@ namespace RavlImageN {
   // Read some data.
   
   tsize_t DPOImageTIFFByteRGBABodyC::TIFFReadProc(thandle_t dptr, tdata_t data, tsize_t noBytes) {
-    cerr << "DPOImageTIFFByteRGBABodyC::TIFFWriteProc(), WARNING: read called on a write-only stream. \n";
+    std::cerr << "DPOImageTIFFByteRGBABodyC::TIFFWriteProc(), WARNING: read called on a write-only stream. \n";
     RavlAssert(0);
     return 0;
   }
@@ -127,17 +127,18 @@ namespace RavlImageN {
     switch(whence)
       {
       case SEEK_SET: body.outf.seekp(off,ios::beg); break;
-      case SEEK_CUR: if(off != 0) body.outf.seekp(off,ios::cur); break;
+      case SEEK_CUR: if(off != 0) body.outf.seekp(off,std::ios::cur); break;
       case SEEK_END: body.outf.seekp(off,ios::end); break;
       default:
-	cerr << "DPOImageTIFFByteRGBABodyC::TIFFSeekProc(), WARNING: Illegal value for whence : " << whence << "\n";
+	std::cerr << "DPOImageTIFFByteRGBABodyC::TIFFSeekProc(), WARNING: Illegal value for whence : " << whence << "\n";
+	break;
       }
     return body.outf.Tell();
   }
   
   int DPOImageTIFFByteRGBABodyC::TIFFCloseProc(thandle_t dptr) {
     DPOImageTIFFByteRGBABodyC &body = *((DPOImageTIFFByteRGBABodyC *) dptr);
-    body.outf.os() << flush;   
+    body.outf.os() << std::flush;
     // We don't actuall close there.
     return 1;
   }
@@ -146,9 +147,9 @@ namespace RavlImageN {
     DPOImageTIFFByteRGBABodyC &body = *((DPOImageTIFFByteRGBABodyC *) dptr);
     // Not very quick, but it should work...
     toff_t at = body.outf.Tell();
-    body.outf.seekp(0,ios::end);
+    body.outf.seekp(0,std::ios::end);
     toff_t ret = body.outf.Tell();
-    body.outf.seekp(at,ios::beg);
+    body.outf.seekp(at,std::ios::beg);
     return ret;
   }
 
@@ -166,7 +167,7 @@ namespace RavlImageN {
   DPIImageTIFFByteRGBABodyC::DPIImageTIFFByteRGBABodyC(StringC fn)
   : done(false)
   {
-    ONDEBUG(cerr << "DPIImageTIFFByteRGBABodyC(), Open file '" << fn << "' \n");
+    ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC(), Open file '" << fn << "' \n");
     tif = TIFFOpen(fn.chars(),"r");
   }
   
@@ -177,7 +178,7 @@ namespace RavlImageN {
     : inf(in),
       done(false)
   {
-    ONDEBUG(cerr << "DPIImageTIFFByteRGBABodyC(), Open istream \n");
+    ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC(), Open std::istream \n");
     tif = TIFFClientOpen(inf.Name().chars(),"r",
 			 (thandle_t)this,
 			 &TIFFReadProc, &TIFFWriteProc,
@@ -198,7 +199,7 @@ namespace RavlImageN {
   
   ImageC<ByteRGBAValueC> DPIImageTIFFByteRGBABodyC::Get()
   {
-    ONDEBUG(cerr << "DPIImageTIFFByteRGBABodyC::Get(), Called. \n");
+    ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC::Get(), Called. \n");
 
     ImageC<ByteRGBAValueC> img;
     if (tif == 0) 
@@ -249,13 +250,14 @@ namespace RavlImageN {
     // FIXME: this is very inefficient - should read straight from file to image
     img = ImageC<ByteRGBAValueC>(tiffimg.height, tiffimg.width);
 
-    ONDEBUG(cerr << "DPIImageTIFFByteRGBABodyC::Get(), Orientation : " << tiffimg.orientation << "\n");
+    ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC::Get(), Orientation : " << tiffimg.orientation << "\n");
     switch(tiffimg.orientation)
     {
       default:
       {
-	cerr << "DPIImageTIFFByteRGBABodyC::Get(), WARNING Unexpected orientation : " << tiffimg.orientation << "\n";
+	std::cerr << "DPIImageTIFFByteRGBABodyC::Get(), WARNING Unexpected orientation : " << tiffimg.orientation << "\n";
       }
+      /* no break */
       case ORIENTATION_BOTLEFT:
       {
 #ifndef __sgi__
@@ -326,7 +328,7 @@ namespace RavlImageN {
   }
   
   tsize_t DPIImageTIFFByteRGBABodyC::TIFFWriteProc(thandle_t dptr, tdata_t, tsize_t) {
-    cerr << "DPIImageTIFFByteRGBABodyC::TIFFWriteProc(), WARNING: Write called on a read-only stream. \n";
+    std::cerr << "DPIImageTIFFByteRGBABodyC::TIFFWriteProc(), WARNING: Write called on a read-only stream. \n";
     RavlAssert(0);
     return 0;
   }
@@ -335,11 +337,12 @@ namespace RavlImageN {
     DPIImageTIFFByteRGBABodyC &body = *(DPIImageTIFFByteRGBABodyC *) dptr;
     switch(whence)
       {
-      case SEEK_SET: body.inf.seekg(off,ios::beg); break;
-      case SEEK_CUR: if(off != 0) body.inf.seekg(off,ios::cur); break;
-      case SEEK_END: body.inf.seekg(off,ios::end); break;
+      case SEEK_SET: body.inf.seekg(off,std::ios::beg); break;
+      case SEEK_CUR: if(off != 0) body.inf.seekg(off,std::ios::cur); break;
+      case SEEK_END: body.inf.seekg(off,std::ios::end); break;
       default:
-	cerr << "DPIImageTIFFByteRGBABodyC::TIFFSeekProc(), WARNING: Illegal value for whence : " << whence << "\n";
+	std::cerr << "DPIImageTIFFByteRGBABodyC::TIFFSeekProc(), WARNING: Illegal value for whence : " << whence << "\n";
+	break;
       }
     return body.inf.Tell();
   }

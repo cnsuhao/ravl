@@ -64,7 +64,7 @@ namespace RavlN
 #if RAVL_HAVE_POSIX_THREADS
 #if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX || RAVL_OS_LINUX64
 #else
-    ONDEBUG(cerr << "MutexC::Init(), Attempting to construct debugging mutex but don't know how. \n");
+    ONDEBUG(std::cerr << "MutexC::Init(), Attempting to construct debugging mutex but don't know how. \n");
 #endif
     
     // Build an error checking mutex.
@@ -84,7 +84,7 @@ namespace RavlN
     } else {
     // Check if we want to enable debugging.
 #if RAVL_CHECK
-      ONDEBUG(cerr << "MutexC::Init(), Constructing debuging mutex. (@:" << ((void*) this) << ") \n");
+      ONDEBUG(std::cerr << "MutexC::Init(), Constructing debuging mutex. (@:" << ((void*) this) << ") \n");
     
     // Enable error checking, if available.
 #if defined(PTHREAD_MUTEX_ERRORCHECK) || defined(PTHREAD_MUTEX_ERRORCHECK_NP) || RAVL_OS_LINUX || RAVL_OS_LINUX64
@@ -96,7 +96,7 @@ namespace RavlN
 #endif
 #endif
 #else
-      ONDEBUG(cerr << "MutexC::Init(), Constructing normal mutex. (@:" << ((void*) this) << ") \n");
+      ONDEBUG(std::cerr << "MutexC::Init(), Constructing normal mutex. (@:" << ((void*) this) << ") \n");
 #endif
     }
 
@@ -124,7 +124,7 @@ namespace RavlN
   }
   
   void MutexC::Error(const char *msg)  {
-    cerr << "MutexC::Error() :" << msg << " \n";
+    std::cerr << "MutexC::Error() :" << msg << " \n";
     RavlAssert(0);
   }
   
@@ -134,19 +134,19 @@ namespace RavlN
 #if RAVL_COMPILER_VISUALCPPNET_2005
     char buff[1024];
     strerror_s(buff,1024,anerrno);
-    cerr << "MutexC::Error() err=" << anerrno << " (" << buff << ") : " << msg << " \n";
+    std::cerr << "MutexC::Error() err=" << anerrno << " (" << buff << ") : " << msg << " \n";
     RavlAlwaysAssert(0);
 #else
-    cerr << "MutexC::Error() err=" << anerrno << " (" << strerror(anerrno) << ") : " << msg << " \n";
-    cerr << "MutexC::Error()  rc=" << rc << " (" << strerror(rc) << ") \n";
+    std::cerr << "MutexC::Error() err=" << anerrno << " (" << strerror(anerrno) << ") : " << msg << " \n";
+    std::cerr << "MutexC::Error()  rc=" << rc << " (" << strerror(rc) << ") \n";
 #endif
-    cerr << "MutexC::Error() @:" << ((void*) this) << "\n";
+    std::cerr << "MutexC::Error() @:" << ((void*) this) << "\n";
     RavlAssert(0);
   }
   
   //: Destructor.
   MutexC::~MutexC() { 
-    ONDEBUG(cerr << "MutexC::~MutexC(), Destroying mutex. (@:" << ((void*) this) << ")\n");
+    ONDEBUG(std::cerr << "MutexC::~MutexC(), Destroying mutex. (@:" << ((void*) this) << ")\n");
     int maxRetry = 100;
     // We need to make sure there's no threads waiting for the lock. There shouldn't be
     // if we're freeing it, as the resource its waiting for is probably on its way out too.
@@ -163,7 +163,7 @@ namespace RavlN
 #if RAVL_HAVE_WIN32_THREADS
         if(CloseHandle(mutex)) 
           break;
-        cerr << "WARNING: MutexC::~MutexC(), destroy failed. " << GetLastError() << "\n";   
+        std::cerr << "WARNING: MutexC::~MutexC(), destroy failed. " << GetLastError() << "\n";   
 #endif
       }
       if(!reportedError) {
@@ -187,7 +187,7 @@ namespace RavlN
     }
     isValid = false;
     if(maxRetry <= 0)
-      cerr << "WARNING: MutexC::~MutexC(), destroy failed. \n";
+      std::cerr << "WARNING: MutexC::~MutexC(), destroy failed. \n";
   }
   
 #if !RAVL_USE_INLINEMUTEXCALLS  
@@ -198,9 +198,9 @@ namespace RavlN
     
 #if RAVL_HAVE_POSIX_THREADS
     int rc;
-    //ONDEBUG(cerr << "MutexC::Lock() Start @:" << ((void*) this) << " \n");
+    //ONDEBUG(std::cerr << "MutexC::Lock() Start @:" << ((void*) this) << " \n");
     if((rc = pthread_mutex_lock(&mutex)) == 0) {
-      //ONDEBUG(cerr << "MutexC::Lock() Obtained @:" << ((void*) this) << " \n");
+      //ONDEBUG(std::cerr << "MutexC::Lock() Obtained @:" << ((void*) this) << " \n");
       return true;
     }
     Error("Lock failed",errno,rc);
@@ -225,12 +225,12 @@ namespace RavlN
     int rc;
     RavlAssert(isValid);
 #if RAVL_HAVE_POSIX_THREADS
-    //ONDEBUG(cerr << "MutexC:TryLock() @:" << ((void*) this) << " \n");
+    //ONDEBUG(std::cerr << "MutexC:TryLock() @:" << ((void*) this) << " \n");
     if((rc = pthread_mutex_trylock(&mutex)) == 0) {
-      //ONDEBUG(cerr << "MutexC:TryLock() Succeeded. @:" << ((void*) this) << "  \n");
+      //ONDEBUG(std::cerr << "MutexC:TryLock() Succeeded. @:" << ((void*) this) << "  \n");
       return true;
     }
-    //ONDEBUG(cerr << "MutexC:TryLock() Failed. @:" << ((void*) this) << "  rc=" << rc << "\n");
+    //ONDEBUG(std::cerr << "MutexC:TryLock() Failed. @:" << ((void*) this) << "  rc=" << rc << "\n");
     if(rc != EBUSY && rc != EDEADLK)
       Error("Trylock failed for unexpected reason.",errno,rc);
 #endif
@@ -261,9 +261,9 @@ namespace RavlN
     int rc = 0;
     RavlAssert(isValid);
 #if RAVL_HAVE_POSIX_THREADS
-    //ONDEBUG(cerr << "MutexC:Unlock() @:" << ((void*) this) << "\n");
+    //ONDEBUG(std::cerr << "MutexC:Unlock() @:" << ((void*) this) << "\n");
     if((rc = pthread_mutex_unlock(&mutex)) == 0) {
-      //ONDEBUG(cerr << "MutexC::Unlock() Released @:" << ((void*) this) << " \n");
+      //ONDEBUG(std::cerr << "MutexC::Unlock() Released @:" << ((void*) this) << " \n");
       return true;
     }
     Error("Unlock failed.",errno,rc);

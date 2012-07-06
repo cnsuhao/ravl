@@ -61,7 +61,7 @@ namespace RavlN {
     StringC fnName;
     strm >> fnName;
     if(!LookupFunctionByName(fnName,funcPtr)) {
-      cerr << "Failed to find function '" << fnName << "\n";
+      std::cerr << "Failed to find function '" << fnName << "\n";
       throw ExceptionOperationFailedC("Failed to find function pointer.");
     }
     return true;
@@ -73,7 +73,7 @@ namespace RavlN {
     StringC fnName;
     strm >> fnName;
     if(!LookupFunctionByName(fnName,funcPtr)) {
-      cerr << "Failed to find function '" << fnName << "\n";
+      std::cerr << "Failed to find function '" << fnName << "\n";
       throw ExceptionOperationFailedC("Failed to find function pointer.");
     }
     return true;
@@ -84,7 +84,7 @@ namespace RavlN {
   bool SaveFunctionPointer(std::ostream &strm,DataT &funcPtr) { 
     const char *fnName = LookupFunctionByPointer(funcPtr);
     if(fnName == 0) {
-      cerr << "Internal error: Asked to save unregistered function. \n";
+      std::cerr << "Internal error: Asked to save unregistered function. \n";
       throw ExceptionOperationFailedC("Failed to find function name.");
     }
     strm << fnName << ' ';
@@ -96,7 +96,7 @@ namespace RavlN {
   bool SaveFunctionPointer(BinOStreamC &strm,const DataT &funcPtr) { 
     const char *fnName = LookupFunctionByPointer(funcPtr);
     if(fnName == 0) {
-      cerr << "Internal error: Asked to save unregistered function. \n";
+      std::cerr << "Internal error: Asked to save unregistered function. \n";
       throw ExceptionOperationFailedC("Failed to find function name.");
     }
     strm << fnName;

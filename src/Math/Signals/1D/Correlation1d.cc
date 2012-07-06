@@ -43,13 +43,13 @@ namespace RavlN {
     // Do a forward fft.
     Array1dC<ComplexC> fftd1 = fft.Apply(d1);
     Array1dC<ComplexC> fftd2 = fft.Apply(d2);
-    ONDEBUG(cerr << "CRes Size1:" << fftd1.Size() << " Size2:" << fftd2.Size() << "\n");
+    ONDEBUG(std::cerr << "CRes Size1:" << fftd1.Size() << " Size2:" << fftd2.Size() << "\n");
     // Multiply by the complex conjugate and put result back in fftd1.
     for(Array1dIter2C<ComplexC,ComplexC> it(fftd1,fftd2);it;it++)
       it.Data1() = it.Data1() * it.Data2().Conj();
     // Do a reverse fft.
     Array1dC<ComplexC> cres = ifft.Apply(fftd1);
-    ONDEBUG(cerr << "CRes Size:" << cres.Size() << "\n");
+    ONDEBUG(std::cerr << "CRes Size:" << cres.Size() << "\n");
     Array1dC<RealT> ret(cres.Size());
     // Convert to real parts only.
     for(Array1dIter2C<RealT,ComplexC> itx(ret,cres);itx;itx++)

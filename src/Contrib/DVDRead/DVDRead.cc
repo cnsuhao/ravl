@@ -643,7 +643,7 @@ namespace RavlN
           
           default:
             height = 0;
-        }
+            break;
         if (height != 0)
         {
           attrValue = width + StringC(height);

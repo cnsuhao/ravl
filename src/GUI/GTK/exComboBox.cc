@@ -29,7 +29,7 @@ bool HandleCombo(TreeModelIterC &row, ListStoreC &listStore)
     StringC val;
     if (listStore.GetValue(row, 0, val))
     {
-      cerr << "Selected: '" << val<< "'" << endl;
+      std::cerr << "Selected: '" << val<< "'" << std::endl;
     }
   }
 
@@ -86,5 +86,6 @@ int main(int nargs,char *args[])
 
   // Start the UI.
   Manager.Start();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

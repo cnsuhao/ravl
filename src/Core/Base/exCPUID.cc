@@ -25,5 +25,7 @@ int main(int argc, char **argv) {
   std::cout << "SSE: " << SSE()  << std::endl;
   std::cout << "SSE2:" << SSE2() << std::endl;
   std::cout << "HTT: " << HTT()  << std::endl;
+
+  return 0;
 }
 

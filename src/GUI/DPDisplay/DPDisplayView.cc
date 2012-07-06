@@ -60,7 +60,7 @@ namespace RavlGUIN {
 	ByteRGBValueC(255,255,255)
       };
 	
-    ONDEBUG(cerr << "DPDisplayViewBodyC::Create(), Called \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::Create(), Called \n");
     
     
     int rows = winSize.Rows();
@@ -162,7 +162,7 @@ namespace RavlGUIN {
   //: Add object to the display list.
 
   bool DPDisplayViewBodyC::AddObject(const DPDisplayObjC &obj) {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::AddObject(), Called \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::AddObject(), Called \n");
     RWLockHoldC hold(lockDisplayList,RWLOCK_WRITE);
     if(displayList.IsEmpty()) {
       displaySize = obj.Frame();
@@ -186,7 +186,7 @@ namespace RavlGUIN {
   //: Clear the display list.
   
   bool DPDisplayViewBodyC::Clear() {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::Clear(), Called \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::Clear(), Called \n");
     RWLockHoldC hold(lockDisplayList,RWLOCK_WRITE);
     displayList.Empty(); 
     return true;
@@ -195,7 +195,7 @@ namespace RavlGUIN {
   //: Refresh the display.
   
   bool DPDisplayViewBodyC::Refresh() {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::Refresh(), Called \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::Refresh(), Called \n");
     if(refreshQueued)
       return true;
     refreshQueued = true;
@@ -206,7 +206,7 @@ namespace RavlGUIN {
   //: Refresh the display.
   
   bool DPDisplayViewBodyC::GUIRefresh() {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::GUIRefresh(), Called \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::GUIRefresh(), Called \n");
     if(!canvas.IsValid() || canvas.Widget() == 0) {
       refreshQueued = false;
       return false;
@@ -225,7 +225,7 @@ namespace RavlGUIN {
   //: Update ruler info.
   
   bool DPDisplayViewBodyC::GUIUpdateRuler() {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::UpdateRuler(), Called. \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::UpdateRuler(), Called. \n");
     Point2dC origin = canvas.GUI2World(Point2dC(0,0));
     Point2dC canSize = canvas.GUI2World(canvas.Size());
     vRuler.GUISetRangeAndPosition(origin[0],canSize[0],lastMousePos[0]);
@@ -243,22 +243,22 @@ namespace RavlGUIN {
   //: Query position,
   
   bool DPDisplayViewBodyC::Query(Vector2dC pos,StringC &info) { 
-    //ONDEBUG(cerr <<"DPDisplayViewBodyC::Query(), Position=" << pos << "\n");
+    //ONDEBUG(std::cerr <<"DPDisplayViewBodyC::Query(), Position=" << pos << "\n");
     RWLockHoldC hold(lockDisplayList,RWLOCK_READONLY); // To protect access to displaySize.
     for(DLIterC<DPDisplayObjC> it(displayList);it;it++) {
       if(it->Query(pos,info)) {
-	//ONDEBUG(cerr <<"DPDisplayViewBodyC::Query(), Position=" << pos << " Result=" << info <<"\n");
+	//ONDEBUG(std::cerr <<"DPDisplayViewBodyC::Query(), Position=" << pos << " Result=" << info <<"\n");
 	return true;
       }
     }
-    //ONDEBUG(cerr <<"DPDisplayViewBodyC::Query(), Position=" << pos << " No result.\n");
+    //ONDEBUG(std::cerr <<"DPDisplayViewBodyC::Query(), Position=" << pos << " No result.\n");
     return false;
   }
   
   //: Handle an expose event.
   
   bool DPDisplayViewBodyC::CallbackExpose(GdkEvent *&event) {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::Expose(), Called \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::Expose(), Called \n");
 #if 0
     // The markup canvas handles this itself.
     RWLockHoldC hold(lockDisplayList,RWLOCK_READONLY);
@@ -274,7 +274,7 @@ namespace RavlGUIN {
   //: Handle configure callback.
   
   bool DPDisplayViewBodyC::CallbackConfigure(GdkEvent *&event) {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::CallbackConfigure(), Called. \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::CallbackConfigure(), Called. \n");
     GUIUpdateRuler();
     return true;
   }
@@ -294,7 +294,7 @@ namespace RavlGUIN {
   //: Call back for mouse press events.
   
   bool DPDisplayViewBodyC::CallbackMousePress(MouseEventC &mouseEvent) {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::CallbackMousePress(), Called. \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::CallbackMousePress(), Called. \n");
     if(mouseEvent.HasChanged(2))
       backMenu.Popup();
     return true;
@@ -325,7 +325,7 @@ namespace RavlGUIN {
   //: Start image save.
   
   bool DPDisplayViewBodyC::CallbackStartSave() {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::CallbackStartSave(), Called. \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::CallbackStartSave(), Called. \n");
     fileSelector.Show();
     return true;
   }
@@ -333,7 +333,7 @@ namespace RavlGUIN {
   //: Save image to a file.
   
   bool DPDisplayViewBodyC::CallbackSave(StringC &str) {
-    ONDEBUG(cerr << "DPDisplayViewBodyC::CallbackSave(), Called. File='" << str << "' \n");
+    ONDEBUG(std::cerr << "DPDisplayViewBodyC::CallbackSave(), Called. File='" << str << "' \n");
     for(DLIterC<DPDisplayObjC> it(displayList);it;it++) {
       if(it->Save(str))
 	break;

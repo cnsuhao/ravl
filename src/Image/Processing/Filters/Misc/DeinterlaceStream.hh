@@ -129,8 +129,8 @@ namespace RavlImageN {
       switch(state) 
 	{
 	case 10:
-	  cerr << "DeinterlaceStreamC, WARNING: Stream sync lost. State=" << state << ". Restarting. \n";
-	  // Fall through.
+	  std::cerr << "DeinterlaceStreamC, WARNING: Stream sync lost. State=" << state << ". Restarting. \n";
+	  /* no break */
 	case 0:
 	  state = 10; // Mark as error if we get interrupted by an exception.
 	  if(!input.Get(img))
@@ -144,8 +144,8 @@ namespace RavlImageN {
 	  state = 0;
 	  return true;
 	case 11:
-	  cerr << "DeinterlaceStreamC, WARNING: Stream sync lost. State=" << state << ". Restarting. \n";
-	  // Fall through.
+	  std::cerr << "DeinterlaceStreamC, WARNING: Stream sync lost. State=" << state << ". Restarting. \n";
+	  /* no break */
 	case 2: // Load frame for second field.
  	  state = 11; // Mark as error if we get interrupted by an exception.
 	  if(!input.Get(img))
@@ -155,8 +155,9 @@ namespace RavlImageN {
 	  state = 0;
 	  return true;
 	default: // Something's going really wrong.
-	  cerr << "DeinterlaceStreamC, WARNING: Stream sync lost. State=" << state << ".  \n";
+	  std::cerr << "DeinterlaceStreamC, WARNING: Stream sync lost. State=" << state << ".  \n";
 	  RavlAssert(0);
+	  break;
 	}
       return false;
     }
@@ -168,7 +169,7 @@ namespace RavlImageN {
       state = (off % 2);
       if(state == 1)
 	state = 2; // Make sure we load the appropriate frame.
-      //cerr << "Seek to " << off << " Frame=" << (off/2) << " State=" << state << "\n";
+      //std::cerr << "Seek to " << off << " Frame=" << (off/2) << " State=" << state << "\n";
       return true;
     }
     //: Seek to location in stream.
@@ -181,7 +182,7 @@ namespace RavlImageN {
       if(tmp == ((UIntT) -1))
 	return false; // If tell doesn't work it'll fail.
       IntT at = tmp;
-      //cerr << "DSeek by " << off << " " << at  << " State=" << state << "\n";
+      //std::cerr << "DSeek by " << off << " " << at  << " State=" << state << "\n";
       // There may be slight more efficient ways of doing this, but
       // it will work for now.
       if(off < 0 && (-off) > at)
@@ -207,6 +208,7 @@ namespace RavlImageN {
 	break;
       default: // Fatal error.
 	RavlAssert(0);
+	break;
       }
       return fn;
     }

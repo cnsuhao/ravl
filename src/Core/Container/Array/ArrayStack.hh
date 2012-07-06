@@ -221,7 +221,7 @@ public:
   //: Goto next element.
   // Call only when IsElm(), is TRUE!
   
-  BooleanT IsElm() const { place != stack.Body().end; }
+  BooleanT IsElm() const { return place != stack.Body().end; }
   //: At valid element ?
   
   void First() 

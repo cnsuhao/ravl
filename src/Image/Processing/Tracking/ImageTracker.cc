@@ -39,7 +39,7 @@ namespace RavlImageN {
     IndexRange2dC roi = data.Frame().Shrink(patchSize);
     
     DListC<CornerC> corners = cornerDet.Apply(data);
-    ONDEBUG(cerr << "Corners=" << corners.Size() << "\n");
+    ONDEBUG(std::cerr << "Corners=" << corners.Size() << "\n");
     
     Projection2dC iproj = proj.Inverse();
     
@@ -76,7 +76,7 @@ namespace RavlImageN {
 
       // Match patches to original image.
       SearchMinAbsDifferenceCreep(patchOffset,mosaic,projLoc,rat,sum,searchSize);
-      ONDEBUG(cerr << "Thresh=" << sum << "\n");
+      ONDEBUG(std::cerr << "Thresh=" << sum << "\n");
       // Put matches in the list.
       if(sum < removeThresh) {
 	// correct coordinates to centre of pixel

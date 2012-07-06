@@ -23,11 +23,11 @@ namespace RavlImageN {
   
   class PointTrackC;
   
-  ostream &operator<<(ostream &strm,const PointTrackC &pt);
-  //: Save to ostream.
+  std::ostream &operator<<(std::ostream &strm,const PointTrackC &pt);
+  //: Save to std::ostream.
   
-  istream &operator>>(istream &strm,PointTrackC &pt);
-  //: Load from istream.
+  std::istream &operator>>(std::istream &strm,PointTrackC &pt);
+  //: Load from std::istream.
   
   //:-
   
@@ -73,7 +73,7 @@ namespace RavlImageN {
     Point2dC at;
     RealT conf;
     
-    friend istream &operator>>(istream &strm,PointTrackC &pt);
+    friend std::istream &operator>>(std::istream &strm,PointTrackC &pt);
   };
   
   BinOStreamC &operator<<(BinOStreamC &strm,const PointTrackC &pt);

@@ -45,4 +45,6 @@ int main(int nargs,char *argv[]) {
   
   for(HashIterC<StringC,IntC> it(wordFreq);it.IsElm();it.Next())
     std::cout << "'" << it.Key() <<  "' " << it.Data() << " \n";
+
+  return 0;
 }

@@ -24,7 +24,7 @@ namespace RavlLogicN {
 
   //: Construct from a binary stream.
   
-  StateBodyC::StateBodyC(istream &strm) 
+  StateBodyC::StateBodyC(std::istream &strm) 
     : RCBodyVC(strm)
   {}
   
@@ -35,7 +35,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool StateBodyC::Save(ostream &out) const 
+  bool StateBodyC::Save(std::ostream &out) const 
   { return RCBodyVC::Save(out); }
 
   //: Make a copy of this state.
@@ -118,7 +118,7 @@ namespace RavlLogicN {
 	continue;
       neg += *it;
     }
-    return MinTermC(pos.Array(),neg.Array());;
+    return MinTermC(pos.Array(),neg.Array());
   }
   
   //: List all common terms between this state and 'oth'.
@@ -159,7 +159,7 @@ namespace RavlLogicN {
   
   //: Dump in human readable format to out.
   
-  void StateBodyC::Dump(ostream &out) const {
+  void StateBodyC::Dump(std::ostream &out) const {
     for(LiteralIterC it(List());it;it++)
       out << *it << "\n";
   }
@@ -170,7 +170,7 @@ namespace RavlLogicN {
     RavlAssert(0);
   }
   
-  ostream &operator<<(ostream &s,const StateC &state) {
+  std::ostream &operator<<(std::ostream &s,const StateC &state) {
     RavlAssert(state.IsValid());
     for(LiteralIterC it(state.List());it;it++)
       s << it.Data() << "\n";
@@ -178,8 +178,8 @@ namespace RavlLogicN {
   }
   //: Write out to stream.
   
-  istream &operator>>(istream &s,StateC &state) {
-    RavlAssertMsg(0,"operator>>(istream &s,StateC &state), Not implemented. ");
+  std::istream &operator>>(std::istream &s,StateC &state) {
+    RavlAssertMsg(0,"operator>>(std::istream &s,StateC &state), Not implemented. ");
     return s;
   }
   //: Read in from stream.

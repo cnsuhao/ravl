@@ -82,7 +82,7 @@ namespace RavlImageN {
     //: Get information about a png file.
     
   protected:
-    bool ReadHeader(const type_info &ti);
+    bool ReadHeader(const std::type_info &ti);
     //: Read header information.
     // and setup read.
     
@@ -103,7 +103,7 @@ namespace RavlImageN {
     //: Destructor.
     
   protected:
-    bool WriteHeader(const type_info &ti,const ImageRectangleC &nimgRect);
+    bool WriteHeader(const std::type_info &ti,const ImageRectangleC &nimgRect);
     //: Write header information.
     
     OStreamC fout;
@@ -195,12 +195,12 @@ namespace RavlImageN {
       return ImageC<PixelT>();
     done = true;
     if(!fin.good()) {
-      cerr << "DPIImagePNGByteRGBBodyC<PixelT>::Get(), ERROR: Bad stream. \n";
+      std::cerr << "DPIImagePNGByteRGBBodyC<PixelT>::Get(), ERROR: Bad stream. \n";
       return ImageC<PixelT>();
     }
     ImageC<PixelT> ret;
     if(!Read(ret)) 
-      cerr << "DPIImagePNGByteRGBBodyC<PixelT>::Get(), Error in file. \n";
+      std::cerr << "DPIImagePNGByteRGBBodyC<PixelT>::Get(), Error in file. \n";
     return ret;
   }
   
@@ -245,9 +245,9 @@ namespace RavlImageN {
     dat = ImageC<PixelT>(IndexRange2dC(imgRect.Origin(),imgRect.End() + Index2dC(2,0)));
     dat = ImageC<PixelT>(dat,imgRect);
     
-    //ONDEBUG(cerr << "Width:" << dat.Cnum() << " Height:" << dat.Rnum() << " passes:" << number_passes << " \n");
+    //ONDEBUG(std::cerr << "Width:" << dat.Cnum() << " Height:" << dat.Rnum() << " passes:" << number_passes << " \n");
     // Check format...
-    //ONDEBUG(cerr << "Row bytes " << png_get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * 3) << "\n");
+    //ONDEBUG(std::cerr << "Row bytes " << png_get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * 3) << "\n");
     
     if (bit_depth == 16 && IsLittleEndian())
       png_set_swap(png_ptr);
@@ -296,7 +296,7 @@ namespace RavlImageN {
       return false;
     done = true;
     if(!fout.good()) {
-      cerr << "DPIOImagePNGBodyC<PixelT>::Get(), ERROR: bad stream.\n";
+      std::cerr << "DPIOImagePNGBodyC<PixelT>::Get(), ERROR: bad stream.\n";
       return false;
     }
     return Write(dat);

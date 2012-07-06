@@ -24,7 +24,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  FuncQuadraticBodyC::FuncQuadraticBodyC(istream &strm)
+  FuncQuadraticBodyC::FuncQuadraticBodyC(std::istream &strm)
     : FuncLinearCoeffBodyC(strm)
   { noCoeffs = NumberCoeffs(inputSize); }
   
@@ -36,7 +36,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FuncQuadraticBodyC::Save (ostream &out) const {
+  bool FuncQuadraticBodyC::Save (std::ostream &out) const {
     return FuncLinearCoeffBodyC::Save(out);
   }
   
@@ -99,7 +99,7 @@ namespace RavlN {
 
   //: Write a human readable text description of the function.
   
-  void FuncQuadraticBodyC::Describe(ostream &out) {
+  void FuncQuadraticBodyC::Describe(std::ostream &out) {
     out << "Inputs:" << InputSize() << " Outputs:" << OutputSize() << "\n";
     out << "Quadratic model: " << a << "\n";
   }

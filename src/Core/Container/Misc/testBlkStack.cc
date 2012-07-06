@@ -111,6 +111,7 @@ int RandomTest() {
 	    if(Len > MaxLen)
 	      MaxLen = Len;
 	  }
+	  break;
 	}
     }
     // Empty some stacks.

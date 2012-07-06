@@ -33,7 +33,9 @@ namespace RavlN {
 
   //: Create a boundary from the edges between 'inLabel' pixels an other values
   
-  BoundaryC::BoundaryC(const Array2dC<IntT> &emask,IntT inLabel) {
+  BoundaryC::BoundaryC(const Array2dC<IntT> &emask,IntT inLabel)
+   : orientation(false)
+  {
     if(emask.Frame().Rows() < 3 || emask.Frame().Cols() < 3) {
       cerr << "RegionMaskBodyC::Boundary(), Mask too small to compute boundary. \n";
       return;
@@ -55,7 +57,9 @@ namespace RavlN {
 
   //: Create a boundary from the edges between 'inLabel' pixels an other values
   
-  BoundaryC::BoundaryC(const Array2dC<UIntT> &emask,IntT inLabel) {
+  BoundaryC::BoundaryC(const Array2dC<UIntT> &emask,IntT inLabel)
+   : orientation(false)
+  {
     if(emask.Frame().Rows() < 3 || emask.Frame().Cols() < 3) {
       cerr << "RegionMaskBodyC::Boundary(), Mask too small to compute boundary. \n";
       return;
@@ -130,6 +134,7 @@ namespace RavlN {
       case CR_NODIR :
       default       : 
         RavlAssertMsg(0,"BoundaryC::Area(), Illegal direction code. ");
+        break;
       };
       //ONDEBUG(cerr << "BoundaryC::Area() Area=" << area << " col=" << col << "\n");
     }
@@ -247,6 +252,7 @@ namespace RavlN {
 	} break;
       default:
 	RavlAssertMsg(0,"BoundaryC::OrderEdges(), Unexpected edge topology. ");
+	break;
       }
     }
     leavers.Empty(); // Done with these.

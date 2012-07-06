@@ -39,7 +39,8 @@ namespace RavlImageN {
       m_samplesPerFrame(0),
       m_sampleNo(0),
       m_incrSize(pincrSize),
-      m_done(false)
+      m_done(false),
+      m_useTypeId(false)
   {
     m_samplesPerFrame = m_am.Dimensions() * 2*m_incrSize + 1;
     m_sample = AAMSampleStreamFileListC(pfileList, pdir, pmirrorFile, m_typeMap, m_namedTypeMap, m_useTypeId, ignoreSuspect, true);
@@ -55,7 +56,8 @@ namespace RavlImageN {
      m_samplesPerFrame(0),
      m_sampleNo(0),
      m_incrSize(incrSize),
-     m_done(false)
+     m_done(false),
+     m_useTypeId(false)
 
   {
     m_samplesPerFrame = m_am.Dimensions() * 2 * m_incrSize + 1;
@@ -151,8 +153,10 @@ namespace RavlImageN {
             maxVar = 0.3 * trueVal;
             break;
           }
+          /* no break */
         default:
           maxVar = 3.0 * Sqrt(m_am.EigenValues()[paramNo]);
+          break;
       }
 
       bool isInRange;

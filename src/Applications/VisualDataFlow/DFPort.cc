@@ -36,7 +36,7 @@ namespace RavlDFN {
   
   //: Load from stream.
   
-  DFPortBodyC::DFPortBodyC(istream &strm)
+  DFPortBodyC::DFPortBodyC(std::istream &strm)
     : DFObjectBodyC(strm)
   {}
   
@@ -53,7 +53,7 @@ namespace RavlDFN {
   {
   }
   
-  //: Save ostream.
+  //: Save std::ostream.
   
   bool DFPortBodyC::Save(XMLOStreamC &strm,bool inCharge) const {
     if(inCharge)
@@ -67,7 +67,7 @@ namespace RavlDFN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DFPortBodyC::Save (ostream &out) const {
+  bool DFPortBodyC::Save (std::ostream &out) const {
     if(!DFObjectBodyC::Save(out))
       return false;
     return true;
@@ -184,7 +184,7 @@ namespace RavlDFN {
   
   //: Get type of port.
   
-  const type_info &DFPortBodyC::PortType() const {
+  const std::type_info &DFPortBodyC::PortType() const {
     // Default return voide.
     return typeid(void);
   }
@@ -247,11 +247,11 @@ namespace RavlDFN {
   //: Attempt to link to another object.
   
   DFObjectC DFIPortBodyC::LinkTo(const DFObjectC &obj,DFSystemC &system,bool autoConvert) {
-    ONDEBUG(cerr << "DFIPortBodyC::LinkTo(), Called \n");
+    ONDEBUG(std::cerr << "DFIPortBodyC::LinkTo(), Called \n");
     DFIPlugC objp(obj);
     if(!objp.IsValid()) {
       // Can only link to an IPlug.
-      ONDEBUG(cerr << "DFIPortBodyC::LinkTo(), Object is not an IPlug. \n");
+      ONDEBUG(std::cerr << "DFIPortBodyC::LinkTo(), Object is not an IPlug. \n");
       return DFObjectC();
     }
     return objp.LinkTo(DFIPortC(*this),system,autoConvert);
@@ -268,7 +268,7 @@ namespace RavlDFN {
     if(!dfiplug.IPlug().IsValid())
       return false;
     if(dfiplug.IPlug().InputType() != iport.InputType()) {
-      cerr << "DFOPlugBodyC::Connect(), Type mismatch. \n";
+      std::cerr << "DFOPlugBodyC::Connect(), Type mismatch. \n";
       return false;
     }
     dfiplug.IPlug().ConnectPort(iport);
@@ -281,7 +281,7 @@ namespace RavlDFN {
     return true;
   }
   
-  const type_info &DFIPortBodyC::PortType() const {
+  const std::type_info &DFIPortBodyC::PortType() const {
     return iport.InputType(); 
   }
 
@@ -336,11 +336,11 @@ namespace RavlDFN {
   //: Attempt to link to another object.
   
   DFObjectC DFOPortBodyC::LinkTo(const DFObjectC &obj,DFSystemC &system,bool autoConvert) {
-    ONDEBUG(cerr << "DFOPortBodyC::LinkTo(), Called \n");
+    ONDEBUG(std::cerr << "DFOPortBodyC::LinkTo(), Called \n");
     DFOPlugC objp(obj);
     if(!objp.IsValid()) {
       // Can only link to an IPlug.
-      ONDEBUG(cerr << "DFOPortBodyC::LinkTo(), Object is not an OPlug. \n");
+      ONDEBUG(std::cerr << "DFOPortBodyC::LinkTo(), Object is not an OPlug. \n");
       return DFObjectC();
     }
     return objp.LinkTo(DFOPortC(*this),system,autoConvert);
@@ -357,7 +357,7 @@ namespace RavlDFN {
     if(!dfoplug.OPlug().IsValid())
       return false;
     if(dfoplug.OPlug().OutputType() != oport.OutputType()) {
-      cerr << "DFOPortBodyC::Connect(), Type mismatch. \n";
+      std::cerr << "DFOPortBodyC::Connect(), Type mismatch. \n";
       return false;
     }
     dfoplug.OPlug().ConnectPort(oport);
@@ -377,7 +377,7 @@ namespace RavlDFN {
     return true;
   }
   
-  const type_info &DFOPortBodyC::PortType() const {
+  const std::type_info &DFOPortBodyC::PortType() const {
     return oport.OutputType(); 
   }
   
@@ -426,18 +426,18 @@ namespace RavlDFN {
   //: Attempt to link to another object.
   
   DFObjectC DFIPlugBodyC::LinkTo(const DFObjectC &obj,DFSystemC &system,bool autoConvert) {
-    ONDEBUG(cerr << "DFIPlugBodyC::LinkTo(), Called \n");
+    ONDEBUG(std::cerr << "DFIPlugBodyC::LinkTo(), Called \n");
     DFIPortC objp(obj);
     if(!objp.IsValid()) {
       // Can only link to an IPlug.
-      ONDEBUG(cerr << "DFIPlugBodyC::LinkTo(), Object is not an IPort. \n");
+      ONDEBUG(std::cerr << "DFIPlugBodyC::LinkTo(), Object is not an IPort. \n");
       return DFObjectC();
     }
     if(PortType() == objp.PortType()) // Check if types match.
       return DFLinkC(obj,DFIPlugC(*this));
     
     if(!autoConvert) {
-      ONDEBUG(cerr << "DFIPlugBodyC::LinkTo(), Can't link " << TypeName(objp.PortType()) <<" and " << TypeName(PortType()) << " \n");
+      ONDEBUG(std::cerr << "DFIPlugBodyC::LinkTo(), Can't link " << TypeName(objp.PortType()) <<" and " << TypeName(PortType()) << " \n");
       return DFObjectC();
     }
     
@@ -483,7 +483,7 @@ namespace RavlDFN {
     if(!op.IPort().IsValid())
       return false;
     if(iplug.InputType() != op.IPort().InputType()) {
-      cerr << "DFIPlugBodyC::Connect(), Type mismatch. \n";
+      std::cerr << "DFIPlugBodyC::Connect(), Type mismatch. \n";
       return false;
     }
     iplug.ConnectPort(op.IPort());
@@ -500,7 +500,7 @@ namespace RavlDFN {
     return true;
   }
 
-  const type_info &DFIPlugBodyC::PortType() const {
+  const std::type_info &DFIPlugBodyC::PortType() const {
     return iplug.InputType(); 
   }
 
@@ -526,17 +526,17 @@ namespace RavlDFN {
   //: Attempt to link to another object.
   
   DFObjectC DFOPlugBodyC::LinkTo(const DFObjectC &obj,DFSystemC &system,bool autoConvert) {
-    ONDEBUG(cerr << "DFOPlugBodyC::LinkTo(), Called \n");
+    ONDEBUG(std::cerr << "DFOPlugBodyC::LinkTo(), Called \n");
     DFOPortC objp(obj);
     if(!objp.IsValid()) {
       // Can only link to an IPlug.
-      ONDEBUG(cerr << "DFOPlugBodyC::LinkTo(), Object is not an OPort. \n");
+      ONDEBUG(std::cerr << "DFOPlugBodyC::LinkTo(), Object is not an OPort. \n");
       return DFObjectC();
     }
     if(PortType() == objp.PortType()) // Linking the same type ?
       return DFLinkC(DFOPlugC(*this),obj);    
     if(!autoConvert) {
-      ONDEBUG(cerr << "DFIPlugBodyC::LinkTo(), Can't link " << TypeName(PortType()) <<" and " << TypeName(objp.PortType()) << " \n");
+      ONDEBUG(std::cerr << "DFIPlugBodyC::LinkTo(), Can't link " << TypeName(PortType()) <<" and " << TypeName(objp.PortType()) << " \n");
       return DFObjectC();
     }
     // Find conversion path.
@@ -600,7 +600,7 @@ namespace RavlDFN {
     if(!op.OPort().IsValid())
       return false;
     if(oplug.OutputType() != op.OPort().OutputType()) {
-      cerr << "DFOPlugBodyC::Connect(), Type mismatch. \n";
+      std::cerr << "DFOPlugBodyC::Connect(), Type mismatch. \n";
       return false;
     }
     oplug.ConnectPort(op.OPort());
@@ -617,7 +617,7 @@ namespace RavlDFN {
     return true;
   }
   
-  const type_info &DFOPlugBodyC::PortType() const {
+  const std::type_info &DFOPlugBodyC::PortType() const {
     return oplug.OutputType(); 
   }
 

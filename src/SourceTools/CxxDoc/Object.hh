@@ -246,7 +246,7 @@ namespace RavlCxxDocN {
     { return comment.Vars().IsElm(nm); }
     //: Test if variable is set.
     
-    virtual void Dump(ostream &out,int indent = 0);
+    virtual void Dump(std::ostream &out,int indent = 0);
     //: Dump to 'out' in human readable form.
     
     virtual void SetScope(ObjectC &obj) {}
@@ -341,7 +341,7 @@ namespace RavlCxxDocN {
     //: Create a new object with subsituted args.
     
   protected:
-    ostream & Pad(ostream &out,int indent);
+    std::ostream & Pad(std::ostream &out,int indent);
     //: Put padding spaces in.
     
     StringC name;
@@ -446,7 +446,7 @@ namespace RavlCxxDocN {
     { return Body().IsVar(nm); }
     //: Set variable.
     
-    void Dump(ostream &out,int indent = 0)
+    void Dump(std::ostream &out,int indent = 0)
     { Body().Dump(out,indent); }
     //: Dump to 'out' in human readable form.
     
@@ -570,10 +570,10 @@ namespace RavlCxxDocN {
   { return name == ob.Name(); }
   //: Is equal ?
   
-  ostream &operator<<(ostream &,const ObjectC &out);
+  std::ostream &operator<<(std::ostream &,const ObjectC &out);
   //: Output to stream.
   
-  istream &operator>>(istream &,ObjectC &out);
+  std::istream &operator>>(std::istream &,ObjectC &out);
   //: Input from stream.
   // Not implemented.
   
@@ -635,7 +635,7 @@ namespace RavlCxxDocN {
     //: Is a wrapper ?
     // Is this used to return multipal items ??
     
-    virtual void Dump(ostream &out,int indent = 0);
+    virtual void Dump(std::ostream &out,int indent = 0);
     //: Dump to 'out' in human readable form.
 
     void AppendList(DListC<ObjectC> &contents);

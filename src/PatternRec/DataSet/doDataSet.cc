@@ -19,11 +19,11 @@ using namespace RavlN;
 
 bool MakeTrainTestDataSet(DataSetVectorLabelC & dset, const FilenameC & outputFile) {
 
-  SysLog(SYSLOG_INFO, "Making a training and test data set.");
+  RavlInfo( "Making a training and test data set.");
 
   // What we will do is make two data sets - with equal samples per class
   UIntT minSamplesInAClass = dset.ClassNums()[dset.ClassNums().IndexOfMin()];
-  SysLog(SYSLOG_INFO, "There are going to be %d samples per class", minSamplesInAClass / 2);
+  RavlInfo( "There are going to be %d samples per class", minSamplesInAClass / 2);
 
   // Assumes dataset is shuffled from earlier
   dset = dset.ExtractPerLabel(minSamplesInAClass);
@@ -38,9 +38,9 @@ bool MakeTrainTestDataSet(DataSetVectorLabelC & dset, const FilenameC & outputFi
   path += outputFile.BaseNameComponent();
   StringC trainFile = path + "_train." + outputFile.Extension();
   StringC testFile = path + "_test." + outputFile.Extension();
-  SysLog(SYSLOG_INFO, "Saving training data set to '%s'", trainFile.data());
+  RavlInfo( "Saving training data set to '%s'", trainFile.data());
   SaveDataSetVectorLabel(trainFile, DataSetVectorLabelC(train.Sample1(), train.Sample2()));
-  SysLog(SYSLOG_INFO, "Saving test data set to '%s'", testFile.data());
+  RavlInfo( "Saving test data set to '%s'", testFile.data());
   SaveDataSetVectorLabel(testFile, dset);
 
   return true;
@@ -67,7 +67,7 @@ int main(int nargs, char **argv) {
   SysLogOpen("doDataSet", true, true, false, -1, false);
 
   try {
-    SysLog(SYSLOG_INFO, "Ravl dataset manipulation program");
+    RavlInfo( "Ravl dataset manipulation program");
 
     DataSetVectorLabelC dset(10000);
 
@@ -75,10 +75,10 @@ int main(int nargs, char **argv) {
     if (opts.IsOnCommandLine("samples")) {
       UIntT label = 0;
       for (DLIterC<StringC> it(sampleSets); it; it++) {
-        SysLog(SYSLOG_INFO, "Loading sample set '%s'", it.Data().data());
+        RavlInfo( "Loading sample set '%s'", it.Data().data());
         SampleVectorC sample;
         if (!LoadSampleVector(*it, sample)) {
-          SysLog(SYSLOG_ERR, "Trouble load sample set '%s'", it.Data().data());
+          RavlError( "Trouble load sample set '%s'", it.Data().data());
           continue;
         }
         dset.Append(sample, label);
@@ -89,7 +89,7 @@ int main(int nargs, char **argv) {
     // Maybe we have been asked to load in datasets
     if (opts.IsOnCommandLine("datasets")) {
       for (DLIterC<StringC> it(datasets); it; it++) {
-        SysLog(SYSLOG_INFO, "Loading dataset '%s'", it.Data().data());
+        RavlInfo( "Loading dataset '%s'", it.Data().data());
         DataSetVectorLabelC localDataset;
         LoadDataSetVectorLabel(*it, localDataset);
         dset.Append(localDataset);
@@ -103,7 +103,7 @@ int main(int nargs, char **argv) {
 
     // Check we have loaded some data from somewhere
     if (dset.Size() < 1) {
-      SysLog(SYSLOG_ERR, "No samples in dataset.  Nothing to process!");
+      RavlError( "No samples in dataset.  Nothing to process!");
     }
 
     if (makeTrainTest) {
@@ -114,11 +114,11 @@ int main(int nargs, char **argv) {
     // Modify dataset if requested
     if (equaliseSamples) {
       UIntT min = dset.ClassNums()[dset.ClassNums().IndexOfMin()];
-      SysLog(SYSLOG_INFO, "Equalising number of samples per class to %d", min);
+      RavlInfo( "Equalising number of samples per class to %d", min);
       dset = dset.ExtractPerLabel(min);
     }
     if (samplesPerClass > 0 && samplesPerClass <= dset.ClassNums()[dset.ClassNums().IndexOfMin()]) {
-      SysLog(SYSLOG_INFO, "Setting the samples per class to %d", samplesPerClass);
+      RavlInfo( "Setting the samples per class to %d", samplesPerClass);
       dset = dset.ExtractPerLabel(samplesPerClass);
     }
     // Scale data set if requested
@@ -132,28 +132,28 @@ int main(int nargs, char **argv) {
       SArray1dC<FieldInfoC> fieldInfo(dataFields.Size());
       UIntT c = 0;
       for (DLIterC<StringC> it(dataFields); it; it++) {
-        SysLog(SYSLOG_INFO, "Attaching field to data set '%s'", it.Data().data());
+        RavlInfo( "Attaching field to data set '%s'", it.Data().data());
         fieldInfo[c] = FieldInfoC(*it);
         c++;
       }
       if (!dset.Sample1().SetFieldInfo(fieldInfo)) {
-        SysLog(SYSLOG_ERR, "Trouble attaching fields to dataset.");
+        RavlError( "Trouble attaching fields to dataset.");
       }
     }
 
     // Set the label field
     if (opts.IsOnCommandLine("labelField")) {
-      SysLog(SYSLOG_INFO, "Attaching label field to data set '%s'", labelField.data());
+      RavlInfo( "Attaching label field to data set '%s'", labelField.data());
       dset.Sample2().SetFieldInfo(FieldInfoC(labelField));
     }
 
     // And save the datasets
-    SysLog(SYSLOG_INFO, "Saving data set '%s'", outputFile.data());
+    RavlInfo( "Saving data set '%s'", outputFile.data());
     SaveDataSetVectorLabel((StringC) outputFile, dset);
 
   } catch (const RavlN::ExceptionC &exc) {
-    SysLog(SYSLOG_ERR, "Exception: %s", exc.Text());
+    RavlError( "Exception: %s", exc.Text());
   } catch (...) {
-    SysLog(SYSLOG_ERR, "Unknown exception");
+    RavlError( "Unknown exception");
   }
 }

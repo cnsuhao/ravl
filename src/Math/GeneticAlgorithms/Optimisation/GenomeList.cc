@@ -45,7 +45,9 @@ namespace RavlN { namespace GeneticN {
   {}
 
   GeneTypeListBaseC::GeneTypeListBaseC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_contentType(0),
+     m_maxLength(0)
   {
     ByteT version = 0;
     strm >> version;

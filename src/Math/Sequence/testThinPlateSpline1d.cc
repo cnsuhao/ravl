@@ -16,14 +16,14 @@ using namespace RavlN;
 int main() {
   int ln;
   if((ln =  TestThinPlateSpline1d_Linear()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln =  TestThinPlateSpline1d_Poly()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
-  cout << "Test passed. \n";
+  std::cout << "Test passed. \n";
   return 0;
 }
 

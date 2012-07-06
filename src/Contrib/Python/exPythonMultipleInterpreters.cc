@@ -21,16 +21,16 @@ using namespace RavlN;
 
 void displayError(const char *errorMessage)
 {
-  cerr << "#### Error" << endl;
-  cerr << "## " << errorMessage << endl;
+  std::cerr << "#### Error" << std::endl;
+  std::cerr << "## " << errorMessage << std::endl;
 }
 
 void displayException(PythonExceptionC &e)
 {
-  cerr << "#### Error" << endl;
-  cerr << "##  Type:  " << e.Type() << endl;
-  cerr << "##  Value: " << e.Value() << endl;
-  cerr << "##  Trace: " << endl << e.Trace() << endl;
+  std::cerr << "#### Error" << std::endl;
+  std::cerr << "##  Type:  " << e.Type() << std::endl;
+  std::cerr << "##  Value: " << e.Value() << std::endl;
+  std::cerr << "##  Trace: " << endl << e.Trace() << std::endl;
 }
 
 int runScripts(PythonC &python)
@@ -41,14 +41,14 @@ int runScripts(PythonC &python)
     return -1;
   }
 
-  cerr << "#### Appending '.' to system path" << endl;
+  std::cerr << "#### Appending '.' to system path" << std::endl;
   if (!python.AppendSystemPath("."))
   {
     displayError("Failed to append system path");
     return -1;
   }
 
-  cerr << "#### Importing 'ravlexample'" <<endl;
+  std::cerr << "#### Importing 'ravlexample'" <<endl;
   if (!python.Import("ravlexample"))
   {
     displayError("Failed to import 'ravlexample'");
@@ -65,13 +65,13 @@ int runScripts(PythonC &python)
   args.BuildTuple(argList);
 
   // Call the example function and display the results
-  cerr << "#### Calling 'ravlexample.myprint(" << name.String() << ")'" << endl;
+  std::cerr << "#### Calling 'ravlexample.myprint(" << name.String() << ")'" << std::endl;
   PythonObjectC res = python.Call("ravlexample", "myprint", args);
   if (res.IsValid())
   {
     if (res.IsString())
     {
-      cerr << "## Result(string): " << res.String() << endl;
+      std::cerr << "## Result(string): " << res.String() << std::endl;
     }
     else
     {
@@ -92,21 +92,21 @@ try:\n\
 except:\n\
   x = 5";
 
-  cerr << "#### Calling script from string" << endl;
+  std::cerr << "#### Calling script from string" << std::endl;
   if (python.Run(script))
   {
     // Read the globals from the script
     PythonObjectC x = python.GetValue("x");
-    cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
+    std::cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << std::endl;
     if (x.IsValid())
     {
       if (x.IsInt())
       {
-        cerr << "## 'x'= " << x.Int() << endl;
+        std::cerr << "## 'x'= " << x.Int() << std::endl;
       }
       else
       {
-        cerr << "## 'x' is not an int" << endl;
+        std::cerr << "## 'x' is not an int" << std::endl;
       }
     }
   }
@@ -124,35 +124,35 @@ int main(int argc, char **argv)
   try 
   {
     // Initialise the python module
-    cerr << "#### Initialising first and second interpreter" << endl;
+    std::cerr << "#### Initialising first and second interpreter" << std::endl;
     PythonC python1(true);
     PythonC python2(true);
 
     int ret = runScripts(python1);
     if (ret != 0)
     {
-      cerr << "#### Failed to run scripts on first interpreter" << endl;
+      std::cerr << "#### Failed to run scripts on first interpreter" << std::endl;
     }
 
-    cerr << "#### Destroying first interpreter" << endl;
+    std::cerr << "#### Destroying first interpreter" << std::endl;
     python1.Invalidate();
 
     ret = runScripts(python2);
     if (ret != 0)
     {
-      cerr << "#### Failed to run scripts on second interpreter" << endl;
+      std::cerr << "#### Failed to run scripts on second interpreter" << std::endl;
     }
 
-    cerr << "#### Destroying second interpreter" << endl;
+    std::cerr << "#### Destroying second interpreter" << std::endl;
     python2.Invalidate();
 
-    cerr << "#### Initialising third interpreter" << endl;
+    std::cerr << "#### Initialising third interpreter" << std::endl;
     PythonC python3(true);
 
     ret = runScripts(python3);
     if (ret != 0)
     {
-      cerr << "#### Failed to run scripts on third interpreter" << endl;
+      std::cerr << "#### Failed to run scripts on third interpreter" << std::endl;
     }
   }
   catch (PythonExceptionC &e)

@@ -126,9 +126,9 @@ namespace RavlGUIN {
     }
     ifp = p[0];
     ofp = p[1];
-    ONDEBUG(cerr << "ManagerC::ManagerC(), Using piped event queue. \n");
+    ONDEBUG(std::cerr << "ManagerC::ManagerC(), Using piped event queue. \n");
 #else
-    ONDEBUG(cerr << "ManagerC::ManagerC(), Using threaded event queue. \n");
+    ONDEBUG(std::cerr << "ManagerC::ManagerC(), Using threaded event queue. \n");
 #endif
   } 
   
@@ -150,7 +150,7 @@ namespace RavlGUIN {
       awin.Destroy();
       wins.Del(key); // Make sure its removed...
     }
-    ONDEBUG(cerr << "ManagerC::~ManagerC(), Removing final reference to root win.. \n");
+    ONDEBUG(std::cerr << "ManagerC::~ManagerC(), Removing final reference to root win.. \n");
     
     delayEvents.Empty();
 #if !RAVL_USE_GTKTHREADS && !RAVL_USE_IDLEMETHOD
@@ -164,7 +164,7 @@ namespace RavlGUIN {
   
   //: Desructor.  
   ManagerC::~ManagerC() {
-    ONDEBUG(cerr << "ManagerC::~ManagerC(), Started. \n");
+    ONDEBUG(std::cerr << "ManagerC::~ManagerC(), Started. \n");
     TidyUp();
     if(startupDone) {
       startupDone.WaitForFree();
@@ -178,13 +178,13 @@ namespace RavlGUIN {
 	cerr << "ERROR: Destroying manager before its event started, (Threads waiting) \n";
     }
     
-    ONDEBUG(cerr << "ManagerC::~ManagerC(), Done.. \n");
+    ONDEBUG(std::cerr << "ManagerC::~ManagerC(), Done.. \n");
   }
   
   //: Initalise system.
   
   void ManagerC::Init(int &nargs,char *args[])  {
-    ONDEBUG(cerr << "ManagerC::Init(), Called. \n");
+    ONDEBUG(std::cerr << "ManagerC::Init(), Called. \n");
     RavlAssert(!initCalled); // Init should only be called once.
 
 
@@ -220,8 +220,8 @@ namespace RavlGUIN {
     gtk_widget_set_default_colormap (gdk_rgb_get_cmap ());
     gtk_widget_set_default_visual (gdk_rgb_get_visual ());
     if(!guiGlobalToolTips.Create())
-      cerr << "ManagerC::Init(), ERROR : Failed to creat global tool tips. \n";
-    ONDEBUG(cerr << "ManagerC::Init(), Done. \n");
+      std::cerr << "ManagerC::Init(), ERROR : Failed to creat global tool tips. \n";
+    ONDEBUG(std::cerr << "ManagerC::Init(), Done. \n");
   }
   
   
@@ -258,7 +258,7 @@ namespace RavlGUIN {
     RavlAssertMsg(0,"ManagerC::Execute(), Not supported for windows, use ManagerC::Start() ");
 #endif
     if(managerStarted) {
-      cerr << "ManagerC::Execute(), WARNING: Manager already started. \n";
+      std::cerr << "ManagerC::Execute(), WARNING: Manager already started. \n";
       return ;
     }
     LaunchThread(Trigger(StartFunc)); // Bit of a hack, but it'll do.
@@ -267,12 +267,12 @@ namespace RavlGUIN {
   //: Handle over control to manager.
   
   void ManagerC::Start()  {
-    ONDEBUG(cerr << "ManagerC::Start(), Called.\n");
+    ONDEBUG(std::cerr << "ManagerC::Start(), Called.\n");
     // Make sure only one manager is started...
     
     MutexLockC lock(access);
     if(managerStarted) {
-      cerr << "ManagerC::Start(), WARNING: Manager already started. \n";
+      std::cerr << "ManagerC::Start(), WARNING: Manager already started. \n";
       return ;
     }
     guiThreadID = ThisThreadID();
@@ -295,11 +295,11 @@ namespace RavlGUIN {
     gtkLock.Unlock();
     
     startupDone.Post();
-    ONDEBUG(cerr << "ManagerC::Start(), Starting gtk_main().\n");
+    ONDEBUG(std::cerr << "ManagerC::Start(), Starting gtk_main().\n");
     gtkLock.Lock();
     gtk_main();
     gtkLock.Unlock();
-    ONDEBUG(cerr << "ManagerC::Start(), gtk_main() Done.\n");
+    ONDEBUG(std::cerr << "ManagerC::Start(), gtk_main() Done.\n");
 #else
     
     // Get screen size from GDK
@@ -316,7 +316,7 @@ namespace RavlGUIN {
     startupDone.Post();
     
     // Pass control over to GTK.
-    ONDEBUG(cerr << "ManagerC::Start(), gtk_main() Started. ifp=" << ifp << "\n");
+    ONDEBUG(std::cerr << "ManagerC::Start(), gtk_main() Started. ifp=" << ifp << "\n");
     
     gtk_main ();
 #endif
@@ -324,9 +324,9 @@ namespace RavlGUIN {
     managerStarted = false;
     
     shutdownDone.Post();  
-    ONDEBUG(cerr << "ManagerC::Start(), Start tidy.... \n");
+    ONDEBUG(std::cerr << "ManagerC::Start(), Start tidy.... \n");
     TidyUp();
-    ONDEBUG(cerr << "ManagerC::Start(), Start done.... \n");
+    ONDEBUG(std::cerr << "ManagerC::Start(), Start done.... \n");
     
   }
   
@@ -400,13 +400,13 @@ namespace RavlGUIN {
     }
 #else
 #if !RAVL_USE_GTKTHREADS 
-    ONDEBUG(cerr << "ManagerC::HandleNotify(), Got event. \n");
+    ONDEBUG(std::cerr << "ManagerC::HandleNotify(), Got event. \n");
     IntT r;
     if(read(ifp,&r,sizeof(IntT)) != sizeof(IntT)) {
       perror("ManagerC::HandleNotify(),  Failed ");
       return false;
     }
-    ONDEBUG(cerr << "ManagerC::HandleNotify() Called on " << r << " Started.\n");
+    ONDEBUG(std::cerr << "ManagerC::HandleNotify() Called on " << r << " Started.\n");
     if(r == 0) { // Shutdown request ?
       gtk_main_quit ();
       return true;
@@ -418,7 +418,7 @@ namespace RavlGUIN {
 	trig.Invoke();
       return true;
     }
-    ONDEBUG(cerr << "ManagerC::HandleNotify() Called on " << r << " Done.\n");
+    ONDEBUG(std::cerr << "ManagerC::HandleNotify() Called on " << r << " Done.\n");
 #else
     RavlAssert(0);
 #endif
@@ -497,32 +497,32 @@ namespace RavlGUIN {
 #if RAVL_USE_GTKTHREADS
     RavlAssertMsg(initCalled,"MangerC::Init(...) must be called before an other method. ");
     if(IsGUIThread()) {
-      ONDEBUG(cerr << "ManagerC::Queue(), Event Start... \n");
+      ONDEBUG(std::cerr << "ManagerC::Queue(), Event Start... \n");
       if(se.IsValid())
 	const_cast<TriggerC &>(se).Invoke();
       else 
 	gtk_main_quit ();
-      ONDEBUG(cerr << "ManagerC::Queue(), Event Finished.. \n");
+      ONDEBUG(std::cerr << "ManagerC::Queue(), Event Finished.. \n");
     } else  {
       LockGtkThreadC lock(*this);
       
-      ONDEBUG(cerr << "ManagerC::Queue(), Event Start... \n");
+      ONDEBUG(std::cerr << "ManagerC::Queue(), Event Start... \n");
       if(se.IsValid())
 	const_cast<TriggerC &>(se).Invoke();
       else
 	gtk_main_quit ();
       
-      ONDEBUG(cerr << "ManagerC::Queue(), Event Finished.. \n");
+      ONDEBUG(std::cerr << "ManagerC::Queue(), Event Finished.. \n");
       lock.Unlock();
     }
 #else
     if(shutdownFlag) {
-      cerr << "ManagerC::Queue(), WARNING: Called after shutdown started. \n";
+      std::cerr << "ManagerC::Queue(), WARNING: Called after shutdown started. \n";
       return ;
     }
     if(!events.TryPut(se)) 
     {
-      ONDEBUG(cerr << "ManagerC::Queue(), WARNING: Event queue full. \n");
+      ONDEBUG(std::cerr << "ManagerC::Queue(), WARNING: Event queue full. \n");
       if(!IsGUIThread()) // Are we running in the GUI thread?
       {
 	events.Put(se); // Nope, just wait...
@@ -561,7 +561,7 @@ namespace RavlGUIN {
   
   void ManagerC::Queue(RealT t,const TriggerC &se) {
     if(shutdownFlag) {
-      cerr << "ManagerC::Queue(), Called after shutdown started. \n";
+      std::cerr << "ManagerC::Queue(), Called after shutdown started. \n";
       return ;
     }
     static TimedTriggerQueueC teQueue(true);
@@ -582,7 +582,7 @@ namespace RavlGUIN {
   
   IntT ManagerC::Register(WidgetBodyC &win) {
     if(shutdownFlag) {
-      cerr << "ManagerC::Register(), Called after shutdown started. \n";
+      std::cerr << "ManagerC::Register(), Called after shutdown started. \n";
       return 0;
     }
     MutexLockC lock(access);
@@ -597,10 +597,10 @@ namespace RavlGUIN {
   void ManagerC::Deregister(IntT widgeID) {
     if(widgeID == 0)
       return ;
-    ONDEBUG(cerr << "ManagerC::Deregister() WidgetID " << widgeID << " Started. \n");
+    ONDEBUG(std::cerr << "ManagerC::Deregister() WidgetID " << widgeID << " Started. \n");
     MutexLockC lock(access);
     wins.Del(widgeID);
-    ONDEBUG(cerr << "ManagerC::Deregister() WidgetID " << widgeID << " Done. \n");
+    ONDEBUG(std::cerr << "ManagerC::Deregister() WidgetID " << widgeID << " Done. \n");
   }
   
   //: Deregister new window.
@@ -609,11 +609,11 @@ namespace RavlGUIN {
     if(win.WidgetID() == 0)
       return ;
     int tmpID = win.WidgetID();
-    ONDEBUG(cerr << "ManagerC::Deregister() WidgetID " << tmpID << " Started. (" << &win << ") \n");
+    ONDEBUG(std::cerr << "ManagerC::Deregister() WidgetID " << tmpID << " Started. (" << &win << ") \n");
     win.widgetId = 0; // Stop recursions!
     MutexLockC lock(access);
     wins.Del(tmpID);
-    ONDEBUG(cerr << "ManagerC::Deregister() WidgetID " << tmpID << " Done. (" << &win << ") \n");
+    ONDEBUG(std::cerr << "ManagerC::Deregister() WidgetID " << tmpID << " Done. (" << &win << ") \n");
   }
 
 }

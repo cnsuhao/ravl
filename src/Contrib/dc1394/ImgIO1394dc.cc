@@ -75,7 +75,7 @@ namespace RavlImageN {
 
   //: Default constructor.
   
-  ImgIO1394dcBaseC::ImgIO1394dcBaseC(UIntT channel,const type_info &pixelType)
+  ImgIO1394dcBaseC::ImgIO1394dcBaseC(UIntT channel,const std::type_info &pixelType)
     : raw1394handle(0),
       cam_channel(channel),
       cam_format(FORMAT_VGA_NONCOMPRESSED),
@@ -85,22 +85,22 @@ namespace RavlImageN {
       oneShotMode(false)
   {
     if(pixelType == typeid(ByteT)) {
-      ONDEBUG(cerr << "Open in grayscale mode\n");
+      ONDEBUG(std::cerr << "Open in grayscale mode\n");
       cam_mode = MODE_640x480_MONO;
     } else if(pixelType == typeid(ByteRGBValueC)) {
-      ONDEBUG(cerr << "Open in RGB mode\n");
+      ONDEBUG(std::cerr << "Open in RGB mode\n");
       cam_mode = MODE_640x480_RGB;
     } else if(pixelType == typeid(ByteYUV422ValueC)) {
-      ONDEBUG(cerr << "Open in YUV422 mode\n");
+      ONDEBUG(std::cerr << "Open in YUV422 mode\n");
       cam_mode = MODE_640x480_YUV422;
     } else if(pixelType == typeid(ByteYUVValueC)) { 
-      ONDEBUG(cerr << "Open in YUV444 mode\n");
+      ONDEBUG(std::cerr << "Open in YUV444 mode\n");
       cam_mode = MODE_160x120_YUV444;
     } else if(pixelType == typeid(ImageC<UInt16T>)) {
-      ONDEBUG(cerr << "Open in UInt16T mode\n");
+      ONDEBUG(std::cerr << "Open in UInt16T mode\n");
       cam_mode = MODE_640x480_MONO16;
     } else {
-      cerr << "unsupported image pixel type\n";
+      std::cerr << "unsupported image pixel type\n";
     }
   }
 
@@ -113,14 +113,14 @@ namespace RavlImageN {
     if(cam_channel >= 100) // DMA
     {
       if(dc1394_dma_unlisten(raw1394handle, &camera) != DC1394_SUCCESS)
-        cerr << "couldn't stop the camera?\n";
+        std::cerr << "couldn't stop the camera?\n";
       if(dc1394_dma_release_camera(raw1394handle, &camera) != DC1394_SUCCESS)
-        cerr << "couldn't release the camera?\n";
+        std::cerr << "couldn't release the camera?\n";
     }
     else
     {
       if(dc1394_stop_iso_transmission(raw1394handle,camera.node)!=DC1394_SUCCESS)
-        cerr << "couldn't stop the camera?\n";
+        std::cerr << "couldn't stop the camera?\n";
       dc1394_release_camera(raw1394handle,&camera);
     }
     raw1394_destroy_handle(raw1394handle);
@@ -130,23 +130,23 @@ namespace RavlImageN {
   bool ImgIO1394dcBaseC::Open(const StringC &dev)
   {
 #if DODEBUG
-    cerr << "Cam channel = " << cam_channel << '\n';
+    std::cerr << "Cam channel = " << cam_channel << '\n';
     if(cam_channel >= 100) // DMA access
-      cerr << "ImgIO1394dcBaseC::Open(), Called. Dev=" << dev << " using DMA acceess\n";
+      std::cerr << "ImgIO1394dcBaseC::Open(), Called. Dev=" << dev << " using DMA acceess\n";
     else
-      cerr << "ImgIO1394dcBaseC::Open(), Called. Dev=" << dev << "\n";
+      std::cerr << "ImgIO1394dcBaseC::Open(), Called. Dev=" << dev << "\n";
 #endif
     
     if(cam_mode == -1)
     {
-      cerr << "unsupported format\n";
+      std::cerr << "unsupported format\n";
       return false;
     }
     MTWriteLockC hold(2);
     raw1394handle = dc1394_create_handle(0); //assume only one port=0
     if(raw1394handle == 0)
     {
-      cerr << "ERROR: Unable to aqure a raw1394 handle\n"
+      std::cerr << "ERROR: Unable to aqure a raw1394 handle\n"
               "Please check \n"
               "  - if the kernel modules `ieee1394',`raw1394' and `ohci1394' are loaded  \n"
               "  - if you have read/write access to /dev/raw1394";
@@ -157,11 +157,11 @@ namespace RavlImageN {
     nodeid_t * camera_nodes = dc1394_get_camera_nodes(raw1394handle,&numCameras,1);
     if (numCameras<1)
     {
-      cerr << "ERROR: No cameras found. \n";
+      std::cerr << "ERROR: No cameras found. \n";
       return false;
     }
-    cerr << numCameras << " camera(s) found\n";
-    cerr << numNodes << " camera node(s) found\n";
+    std::cerr << numCameras << " camera(s) found\n";
+    std::cerr << numNodes << " camera node(s) found\n";
     
     if(cam_channel >= 100) // DMA
       camera.node = camera_nodes[cam_channel - 100];
@@ -172,7 +172,7 @@ namespace RavlImageN {
     dc1394_camerainfo camerainfo;
     if(dc1394_get_camera_info(raw1394handle,camera.node,&camerainfo) < 0)
     {
-      cerr << "Failed to get camera info. \n";
+      std::cerr << "Failed to get camera info. \n";
       return false;
     }
 
@@ -189,10 +189,10 @@ namespace RavlImageN {
     quadlet_t supportedModes;
     if(dc1394_query_supported_modes(raw1394handle, camera.node, cam_format,&supportedModes) != DC1394_SUCCESS) {
       
-      cerr << "Failed to query modes. \n";
+      std::cerr << "Failed to query modes. \n";
       return false;
     }
-    cerr << "Modes=" << hex << supportedModes << "\n";
+    std::cerr << "Modes=" << hex << supportedModes << "\n";
 #endif
     
     
@@ -200,11 +200,11 @@ namespace RavlImageN {
     if(dc1394_query_supported_framerates(raw1394handle, camera.node, cam_format,
                                          cam_mode, &available_framerates) != DC1394_SUCCESS)
     {
-      cerr << "Failed to query rates. \n";
+      std::cerr << "Failed to query rates. \n";
       return false;
     }
 
-    cerr << "Rate=" << hex << available_framerates << "\n" << dec;
+    std::cerr << "Rate=" << hex << available_framerates << "\n" << dec;
     
     // Find fastest supported framerate.
     if (available_framerates & (1U << (31-5)))
@@ -226,11 +226,11 @@ namespace RavlImageN {
       dc1394_feature_set features;
       if(dc1394_get_camera_feature_set(raw1394handle, camera.node, &features) != DC1394_SUCCESS )
       {
-        cerr << "unable to get camera features\n";
+        std::cerr << "unable to get camera features\n";
       }
       else
       {
-        cerr << "features\n";
+        std::cerr << "features\n";
         dc1394_print_feature_set(&features);
       }
       const int NUM_BUFFERS = 8;
@@ -238,15 +238,15 @@ namespace RavlImageN {
       unsigned int ch, sp;
       if(dc1394_get_iso_channel_and_speed(raw1394handle, camera.node, &ch, &sp) != DC1394_SUCCESS )
       {
-         cerr << "unable to get channel and speed\n";
+         std::cerr << "unable to get channel and speed\n";
       }
-      cerr << "channel=" << ch << "\nspeed" << sp << "\n";
-      cerr << "trining to set\nchannel=" << cam_channel-100 << "\nspeed" << cam_speed << "\n";
+      std::cerr << "channel=" << ch << "\nspeed" << sp << "\n";
+      std::cerr << "trining to set\nchannel=" << cam_channel-100 << "\nspeed" << cam_speed << "\n";
       if(dc1394_dma_setup_capture(raw1394handle, camera.node, cam_channel-100+1, cam_format,
                                   cam_mode, cam_speed, cam_framerate, NUM_BUFFERS,
                                   DROP_FRAMES, dev.chars(), &camera) != DC1394_SUCCESS)
       {
-        cerr << "unable to setup camera-\n"
+        std::cerr << "unable to setup camera-\n"
                 "check that the video mode, framerate and format are\n"
                 "supported by your camera\n";
         return false;
@@ -257,7 +257,7 @@ namespace RavlImageN {
       if(dc1394_setup_capture(raw1394handle, camera.node, cam_channel, cam_format,
                    cam_mode, cam_speed, cam_framerate, &camera)!=DC1394_SUCCESS)
       {
-        cerr << "unable to setup camera-\n"
+        std::cerr << "unable to setup camera-\n"
                 "check that the video mode, framerate and format are\n"
                 "supported by your camera\n";
         return false;
@@ -266,10 +266,10 @@ namespace RavlImageN {
 
     if (dc1394_start_iso_transmission(raw1394handle, camera.node) != DC1394_SUCCESS)
     {
-      cerr << "unable to start camera iso transmission\n";
+      std::cerr << "unable to start camera iso transmission\n";
       return false;
     }
-    cerr << "Size=" << camera.frame_width << " " << camera.frame_height << "\n";
+    std::cerr << "Size=" << camera.frame_width << " " << camera.frame_height << "\n";
     return true;
   }
   
@@ -280,12 +280,12 @@ namespace RavlImageN {
     MTWriteLockC hold(2);
     if(cam_channel >= 100) { // DMA
       if(dc1394_dma_single_capture(&camera) != DC1394_SUCCESS){
-        cerr << "unable to capture a frame (dma)\n";
+        std::cerr << "unable to capture a frame (dma)\n";
         return false;
       }
     } else {
       if (dc1394_single_capture(raw1394handle,&camera) != DC1394_SUCCESS) {
-        cerr << "unable to capture a frame (no-dma)\n";
+        std::cerr << "unable to capture a frame (no-dma)\n";
         return false;
       }
     }
@@ -343,7 +343,7 @@ namespace RavlImageN {
 	OneShotMode(true);
       else {
 	if(attrValue != "continuous")
-	  cerr << "ImgIO1394dcBaseC::HandleSetAttr(), WARNING: Unrecognised capture mode '" << attrValue << "' \n";
+	  std::cerr << "ImgIO1394dcBaseC::HandleSetAttr(), WARNING: Unrecognised capture mode '" << attrValue << "' \n";
 	OneShotMode(false);
       }
       return true;
@@ -369,7 +369,7 @@ namespace RavlImageN {
     case CT_FloatValue:
     case CT_OnOff:
     case CT_Auto:
-      cerr << "ImgIO1394dcBaseC::HandleGetAttr(), WARNING: Used for On/Off or Auto. \n";
+      std::cerr << "ImgIO1394dcBaseC::HandleGetAttr(), WARNING: Used for On/Off or Auto. \n";
       return false;
     }
     return true;
@@ -393,7 +393,7 @@ namespace RavlImageN {
       break;
     case CT_OnOff:
     case CT_Auto:
-      cerr << "ImgIO1394dcBaseC::HandleSetAttr(), WARNING: Used for On/Off or Auto. \n";
+      std::cerr << "ImgIO1394dcBaseC::HandleSetAttr(), WARNING: Used for On/Off or Auto. \n";
       return false;
     }
     return true;
@@ -419,7 +419,7 @@ namespace RavlImageN {
           return true;
         }
       }
-      cerr << "ImgIO1394dcBaseC::HandleGetAttr(), Unrecognised speed attribute " << setting << "\n";
+      std::cerr << "ImgIO1394dcBaseC::HandleGetAttr(), Unrecognised speed attribute " << setting << "\n";
       attrValue = 15;
       return true;
     }
@@ -436,7 +436,7 @@ namespace RavlImageN {
     case CT_FloatValue:
     case CT_OnOff:
     case CT_Auto:
-      cerr << "ImgIO1394dcBaseC::HandleGetAttr(), WARNING: Used for On/Off or Auto. \n";
+      std::cerr << "ImgIO1394dcBaseC::HandleGetAttr(), WARNING: Used for On/Off or Auto. \n";
       return false;
     }
     return true;
@@ -465,7 +465,7 @@ namespace RavlImageN {
       break;
     case CT_OnOff:
     case CT_Auto:
-      cerr << "ImgIO1394dcBaseC::HandleSetAttr(), WARNING: Used for On/Off or Auto. \n";
+      std::cerr << "ImgIO1394dcBaseC::HandleSetAttr(), WARNING: Used for On/Off or Auto. \n";
       return false;
     }
     return true;
@@ -556,14 +556,14 @@ namespace RavlImageN {
       const char *cfeatName = featureInfo->name;
       if(cfeatName == 0)
       {
-        cerr << "WARNING: Unknown featureid " << feature.feature_id << "\n";
+        std::cerr << "WARNING: Unknown featureid " << feature.feature_id << "\n";
         continue;
       }
       StringC featName(cfeatName);
 
       if((feature.abs_control > 0) && (feature.absolute_capable > 0))
       {
-        ONDEBUG(cerr << "Setting up " << featName << " Absolute. Min=" << feature.abs_min << " Max=" << feature.abs_max << " Value=" << feature.abs_value << "\n");
+        ONDEBUG(std::cerr << "Setting up " << featName << " Absolute. Min=" << feature.abs_min << " Max=" << feature.abs_max << " Value=" << feature.abs_value << "\n");
         RealT diff = feature.abs_max - feature.abs_min;
         AttributeTypeNumC<RealT> attr(featName,featureInfo->desc,feature.readout_capable,feature.manual_capable,
                     feature.abs_min,feature.abs_max,diff/1000,feature.abs_value);
@@ -572,7 +572,7 @@ namespace RavlImageN {
       }
       else
       {
-        ONDEBUG(cerr << "Setting up " << featName << " Int. Min=" << feature.min << " Max=" << feature.max << " Value=" << feature.value << "\n");
+        ONDEBUG(std::cerr << "Setting up " << featName << " Int. Min=" << feature.min << " Max=" << feature.max << " Value=" << feature.value << "\n");
         AttributeTypeNumC<IntT> attr(featName,featureInfo->desc,feature.readout_capable,feature.manual_capable,
                    feature.min,feature.max,1,feature.value);
         attrCtrl.RegisterAttribute(attr);
@@ -651,7 +651,7 @@ namespace RavlImageN {
     }
     if(setting < 0)
     {
-      cerr << "ERROR: failed to find appropriate framerate. \n";
+      std::cerr << "ERROR: failed to find appropriate framerate. \n";
       return -1;
     }
     unsigned int current = 0;
@@ -663,11 +663,11 @@ namespace RavlImageN {
     if(current != newsetting) { // Need to change
       if(dc1394_set_video_framerate(raw1394handle, camera.node, newsetting) != DC1394_SUCCESS)
       {
-        cerr << "Failed to setup camera for new framerate. \n";
+        std::cerr << "Failed to setup camera for new framerate. \n";
         return 0;
       }
 /*      if (dc1394_stop_iso_transmission(raw1394handle,camera.node)!=DC1394_SUCCESS)
-        cerr << "ERROR: couldn't stop the camera?\n";
+        std::cerr << "ERROR: couldn't stop the camera?\n";
       //dc1394_set_video_framerate(raw1394handle,camera.node,);
       dc1394_release_camera(raw1394handle,&camera);
       if (dc1394_setup_capture(raw1394handle,cameraNode,
@@ -678,13 +678,13 @@ namespace RavlImageN {
 			       newsetting,
 			       &camera)!=DC1394_SUCCESS)
       {
-        cerr << "Failed to setup camera for new framerate. \n";
+        std::cerr << "Failed to setup camera for new framerate. \n";
         return 0;
       }
       cam_framerate = newsetting;
       if (dc1394_start_iso_transmission(raw1394handle,camera.node) != DC1394_SUCCESS)
       {
-        cerr << "ERROR: unable to restart camera iso transmission\n";
+        std::cerr << "ERROR: unable to restart camera iso transmission\n";
         return 0;
       }*/
     }

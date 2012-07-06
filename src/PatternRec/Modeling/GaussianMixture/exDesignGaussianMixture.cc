@@ -29,8 +29,9 @@ int main(int argc, char **argv)
   GaussianMixtureC func = gmm.Apply(Samples);
   
   MeanCovarianceC mc = func.MeanCovariances()[0];
-  cout << "Means:" << mc.Mean() << endl;
-  cout << "Covs:" << mc.Covariance() << endl;
+  std::cout << "Means:" << mc.Mean() << std::endl;
+  std::cout << "Covs:" << mc.Covariance() << std::endl;
+  return 0;
 }
 
 

@@ -20,7 +20,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncPDFBodyC::FuncPDFBodyC(istream &strm)
+  FuncPDFBodyC::FuncPDFBodyC(std::istream &strm)
     : FunctionBodyC(strm)
   {}
   
@@ -32,7 +32,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool FuncPDFBodyC::Save (ostream &out) const {
+  bool FuncPDFBodyC::Save (std::ostream &out) const {
     return FunctionBodyC::Save(out);
   }
   
@@ -46,7 +46,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncPDFC::FuncPDFC(istream &strm)
+  FuncPDFC::FuncPDFC(std::istream &strm)
     : FunctionC(RAVL_VIRTUALCONSTRUCTOR(strm,FunctionBodyC))
   {}
   

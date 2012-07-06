@@ -141,7 +141,7 @@ namespace RavlGUIN {
   
   
   
-  ostream &operator<<(ostream &out,const MarkupInfoC &obj) {
+  std::ostream &operator<<(std::ostream &out,const MarkupInfoC &obj) {
     out << obj.Id();
     return out;
   }
@@ -153,7 +153,7 @@ namespace RavlGUIN {
   }
   //: Binary stream operator.
   
-  istream &operator>>(istream &in,MarkupInfoC &obj) {
+  std::istream &operator>>(std::istream &in,MarkupInfoC &obj) {
     Int64T id;
     in >> id;
     return in;

@@ -56,7 +56,7 @@ int testXML(int argc, char* argv[]) {
     RCHashC<StringC,StringC> attr;
     StringC str;
     while(is) {
-      cerr << "Looking for tag.\n";
+      std::cerr << "Looking for tag.\n";
       if(is.ReadTag(str,attr)) {
 	cerr << "Got tag '" << str << "' with " << attr.Size() << " attributes \n";
       }
@@ -64,7 +64,7 @@ int testXML(int argc, char* argv[]) {
 #endif
     SArray1dC<int> arr;
     is >> arr;
-    cerr << arr;
+    std::cerr << arr;
   }
   return 0;
 }

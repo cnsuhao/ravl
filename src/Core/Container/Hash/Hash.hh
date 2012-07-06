@@ -509,16 +509,16 @@ namespace RavlN {
       levels--;
       table = SArray1dC<IntrDListC<HashElemC<K,T> > >(NextPrime(oth.elements));
       for(BufferAccessIterC<IntrDListC<HashElemC<K,T> > > it(oth.table);it;it++) {
-	for(IntrDLIterC<HashElemC<K,T> > place(*it);place;place++) {
-	  const SizeT hashVal = place->GetHashVal();
-	  const SizeT ind = hashVal % table.Size();
-	  table[ind].InsFirst(*new HashElem(place->GetKey(),
-					    hashVal,
-					    StdDeepCopy(place->GetData(),levels)));
-	}
+        for(IntrDLIterC<HashElemC<K,T> > place(*it);place;place++) {
+          const SizeT hashVal = place->GetHashVal();
+          const SizeT ind = hashVal % table.Size();
+          table[ind].InsFirst(*new HashElem(place->GetKey(),
+                    hashVal,
+                    StdDeepCopy(place->GetData(),levels)));
+        }
 	
       }
-    }
+    } break;
     }
   }
   
@@ -538,7 +538,7 @@ namespace RavlN {
     out << elements << '\n';
     for(BufferAccessIterC<IntrDListC<HashElemC<K,T> > > it(table);it;it++) {
       for(IntrDLIterC<HashElemC<K,T> > place(*it);place;place++)
-	out << *place << '\n';
+        out << *place << '\n';
     }    
   }
   
@@ -548,7 +548,7 @@ namespace RavlN {
     out << saveElements;
     for(BufferAccessIterC<IntrDListC<HashElemC<K,T> > > it(table);it;it++) {
       for(IntrDLIterC<HashElemC<K,T> > place(*it);place;place++)
-	out << *place;
+        out << *place;
     }    
   }
     

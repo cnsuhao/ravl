@@ -33,13 +33,13 @@ namespace RavlLogicN {
     NotBodyC(const LiteralC &nterm);
     //: Constructor.
 
-    NotBodyC(istream &strm);
+    NotBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     NotBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -106,7 +106,7 @@ namespace RavlLogicN {
     {}
     //: Constructor from a single term.
     
-    NotC(istream &strm);
+    NotC(std::istream &strm);
     //: Load from stream.
     
     NotC(BinIStreamC &strm);

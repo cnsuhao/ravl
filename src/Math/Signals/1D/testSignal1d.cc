@@ -26,23 +26,23 @@ int main()
 {
   int ln;
   if((ln = testfft()) != 0) {
-    cerr << "Test failed at " << ln << "\n";
+    std::cerr << "Test failed at " << ln << "\n";
     return 1;
   }
   if((ln = testConvolve()) != 0) {
-    cerr << "Test failed at " << ln << "\n";
+    std::cerr << "Test failed at " << ln << "\n";
     return 1;
   }
   if((ln = testCorrelate()) != 0) {
-    cerr << "Test failed at " << ln << "\n";
+    std::cerr << "Test failed at " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
 int testfft() {
-  cerr << "Testing fft. \n";
+  std::cerr << "Testing fft. \n";
   Array1dC<RealT> x(16);
   x.Fill(0);
   x[4] = 2;
@@ -54,14 +54,14 @@ int testfft() {
   if(res2.Size() != x.Size()) return __LINE__;
   for(Array1dIter2C<ComplexC,RealT> it(res2,x);it;it++) {
     if(Abs(it.Data1().Re()) > 0.000001)
-      cerr << it.Data1().Re() << ":";
+      std::cerr << it.Data1().Re() << ":";
     else
-      cerr << "0:";
+      std::cerr << "0:";
     
     if(Abs(it.Data1().Im()) > 0.000001)
-      cerr << it.Data1().Im() << " ";
+      std::cerr << it.Data1().Im() << " ";
     else
-      cerr << "0 ";
+      std::cerr << "0 ";
     
     if(Abs(it.Data1().Re() - it.Data2()) > 0.000000001) return __LINE__;
     if(Abs(it.Data1().Im()) > 0.000000001) return __LINE__;
@@ -70,7 +70,7 @@ int testfft() {
 }
 
 int testConvolve() {
-  cerr << "Testing Convolution. \n";
+  std::cerr << "Testing Convolution. \n";
   Array1dC<RealT> x(3),y(2);
   UIntT i;
   for(i = 1;i <= y.Size();i++)
@@ -87,7 +87,7 @@ int testConvolve() {
 }
 
 int testCorrelate() {
-  cerr << "Testing Correlation. \n";
+  std::cerr << "Testing Correlation. \n";
   Array1dC<RealT> arr1(8);
   Array1dC<RealT> arr2(8);
   arr1.Fill(0);
@@ -97,7 +97,7 @@ int testCorrelate() {
   //arr2[2] = 1;
   Correlation1dC corr(8);
   Array1dC<RealT> res = corr.Apply(arr1,arr2);
-  cerr << "Correlation:\n";
-  cerr << res;
+  std::cerr << "Correlation:\n";
+  std::cerr << res;
   return 0;
 }

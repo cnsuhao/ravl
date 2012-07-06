@@ -179,7 +179,7 @@ namespace RavlN {
   { 
     if(live) {
       RavlAssertMsg(0,"ERROR: Destructor called on live thread."); // This is bad!  Core dump so we can trace where this happened.
-      cerr << "WARNING: Destructor called on live thread. \n";
+      std::cerr << "WARNING: Destructor called on live thread. \n";
       
 #if RAVL_HAVE_POSIX_THREADS
 #if RAVL_OS_CYGWIN
@@ -211,7 +211,7 @@ namespace RavlN {
   // Execute() is called. 
   
   int ThreadBodyC::Start() {
-    cerr << "WARNING: Abstract method called, ThreadBodyC::Start(). \n";
+    std::cerr << "WARNING: Abstract method called, ThreadBodyC::Start(). \n";
     return 0;
   }
   
@@ -233,14 +233,14 @@ namespace RavlN {
     try {
       End();
     } catch(ExceptionC &e) {
-      cerr << "RAVL Exception :'" << e.what() << "'\n";
-      cerr << "While terminating thread. \n";
+      std::cerr << "RAVL Exception :'" << e.what() << "'\n";
+      std::cerr << "While terminating thread. \n";
     } catch(exception &e) {
-      cerr << "C++ Exception :'" << e.what() << "'\n";
-      cerr << "While terminating thread. \n";
+      std::cerr << "C++ Exception :'" << e.what() << "'\n";
+      std::cerr << "While terminating thread. \n";
     } catch(...) {
-      cerr << "Unknown exception caught. \n";
-      cerr << "While terminating thread. \n";
+      std::cerr << "Unknown exception caught. \n";
+      std::cerr << "While terminating thread. \n";
     }
     // Lastly remove reference to class from thread.
     // and delete if needed.
@@ -265,16 +265,16 @@ namespace RavlN {
     terminatePending = true;
 #if RAVL_HAVE_WIN32_THREADS
     if(!TerminateThread(threadID,-1)) 
-      cerr << "ThreadBodyC::Terminate(), Error killing thread. Error:" << GetLastError() << "\n";
+      std::cerr << "ThreadBodyC::Terminate(), Error killing thread. Error:" << GetLastError() << "\n";
 #endif
 #if RAVL_HAVE_POSIX_THREADS
     int ret = 0;
 #if defined(__cygwin_OLD__)
     if((ret = pthread_exit((void *)threadID)) != 0)
-      cerr << "ThreadBodyC::Terminate(), Error killing thread. " << ret << "\n";
+      std::cerr << "ThreadBodyC::Terminate(), Error killing thread. " << ret << "\n";
 #else
     if((ret = pthread_cancel(threadID)) != 0)
-      cerr << "ThreadBodyC::Terminate(), Error killing thread. " << ret << "\n";
+      std::cerr << "ThreadBodyC::Terminate(), Error killing thread. " << ret << "\n";
 #endif
 #endif
   }
@@ -308,20 +308,20 @@ namespace RavlN {
     // The following code is used to dump the default stacksize.
     SizeT val;
     pthread_attr_getstacksize(&attr,&val);
-    cerr << "StackSize=" << val << "\n";
+    std::cerr << "StackSize=" << val << "\n";
 #endif
 #if 0
     // Check the guard size used to detect overflows.
     size_t guardSize = 0;
     if(pthread_attr_getguardsize (&attr,&guardSize) != 0){
-      cerr << "Failed to obtain guard size. \n";
+      std::cerr << "Failed to obtain guard size. \n";
     }
-    cerr << "GuardSize=" << guardSize << "\n";
+    std::cerr << "GuardSize=" << guardSize << "\n";
 #endif
 
     if(stackSize > 0) {
       if(pthread_attr_setstacksize(&attr,stackSize) != 0) {
-        cerr << "ThreadBodyC::Execute, Failed to set stack size to " << stackSize << "\n";
+        std::cerr << "ThreadBodyC::Execute, Failed to set stack size to " << stackSize << "\n";
       }
     }
     
@@ -392,14 +392,14 @@ namespace RavlN {
       Start();
 #if 0
     } catch(ExceptionC &e) {
-      cerr << "RAVL Exception :'" << e.what() << "'\n";
-      cerr << "Terminating thread. \n";
+      std::cerr << "RAVL Exception :'" << e.what() << "'\n";
+      std::cerr << "Terminating thread. \n";
     } catch(exception &e) {
-      cerr << "C++ Exception :'" << e.what() << "'\n";
-      cerr << "Terminating thread. \n";
+      std::cerr << "C++ Exception :'" << e.what() << "'\n";
+      std::cerr << "Terminating thread. \n";
     } catch(...) {
-      cerr << "Unknown exception caught. \n";
-      cerr << "Terminating thread. \n";
+      std::cerr << "Unknown exception caught. \n";
+      std::cerr << "Terminating thread. \n";
     }
 #endif
   }

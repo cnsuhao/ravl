@@ -50,7 +50,7 @@ namespace RavlN {
       if(!DPProcessBodyC<VectorC, VectorC>::Save(out))
         return false;
       out << m_function;
-      return true;;
+      return true;
     }
     //: Save to std::ostream.
     

@@ -189,11 +189,11 @@ namespace RavlGUIN {
                                            imgRect.ColRange().Min(),
                                            imgRect.ColRange().Max() - 1);
 
-    //ONDEBUG(cerr << "DrawRect=" << drawRect << " widgetSize=" << widgetSize << "\n");
+    //ONDEBUG(std::cerr << "DrawRect=" << drawRect << " widgetSize=" << widgetSize << "\n");
     drawRect.ClipBy(widgetSize);
     if(drawRect.Area() <= 0)
       return ;
-    //ONDEBUG(cerr << "FinalDrawRect=" << drawRect << "\n");
+    //ONDEBUG(std::cerr << "FinalDrawRect=" << drawRect << "\n");
 
     if(Abs(scale[0] - 1) < 0.0001 && Abs(scale[1] - 1) < 0.0001) {
       RawCanvasBodyC::GUIDrawImage(image,Index2dC(doffset + offset),false);

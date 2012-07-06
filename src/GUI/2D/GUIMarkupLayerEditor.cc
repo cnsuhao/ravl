@@ -288,7 +288,7 @@ namespace RavlGUIN
   
   bool GUIMarkupLayerEditorBodyC::CBToggleVisibility(TreeModelIterC &row)
   {
-    ONDEBUG(cerr << "GUIMarkupLayerEditorBodyC::CBToggleVisibility" << endl);
+    ONDEBUG(std::cerr << "GUIMarkupLayerEditorBodyC::CBToggleVisibility" << endl);
     
     MutexLockC lock(m_lock);
    
@@ -363,7 +363,7 @@ namespace RavlGUIN
   
   bool GUIMarkupLayerEditorBodyC::CBActivated(TreeModelPathC &path, StringC &colName)
   {
-    ONDEBUG(cerr << "GUIMarkupLayerEditorBodyC::CBActivated colName=" << colName << endl);
+    ONDEBUG(std::cerr << "GUIMarkupLayerEditorBodyC::CBActivated colName=" << colName << endl);
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     
     // Get the row values
@@ -410,7 +410,7 @@ namespace RavlGUIN
   
   bool GUIMarkupLayerEditorBodyC::CBColourSelected(UInt16RGBValueC &colour)
   {
-    ONDEBUG(cerr << "GUIMarkupLayerEditorBodyC::CBColourSelected colour=" << colour[0] / 256 << ", " << colour[1] / 256 << ", " << colour[2] / 256 << endl);
+    ONDEBUG(std::cerr << "GUIMarkupLayerEditorBodyC::CBColourSelected colour=" << colour[0] / 256 << ", " << colour[1] / 256 << ", " << colour[2] / 256 << endl);
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
 
     MutexLockC lock(m_lock);
@@ -458,7 +458,7 @@ namespace RavlGUIN
 
   void GUIMarkupLayerEditorBodyC::UpdateZOrderLayerData(HashC<IntT, bool> &zOrderSet, const bool visible)
   {
-    ONDEBUG(cerr << "GUIMarkupLayerEditorBodyC::UpdateZOrderLayerData setSize=" << zOrderSet.Size() << " visible=" << (visible? "Y" : "N") << endl);
+    ONDEBUG(std::cerr << "GUIMarkupLayerEditorBodyC::UpdateZOrderLayerData setSize=" << zOrderSet.Size() << " visible=" << (visible? "Y" : "N") << endl);
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     
     // Signal all effected layers

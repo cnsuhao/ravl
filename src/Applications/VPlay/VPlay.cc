@@ -93,8 +93,8 @@ PlayControlC guiPlayControl;
 
 static bool gui_quit(DPIPlayControlC<ImageC<ByteRGBValueC> > &pc) 
 {
-  cerr << "Quitting. \n";
-  //cout << "Quitting." << endl;
+  std::cerr << "Quitting. \n";
+  //cout << "Quitting." << std::endl;
   terminateVPlay = true;
   pc.Continue();
   //cerr << "Shutting down play control. \n";
@@ -162,7 +162,7 @@ static bool HandleKeyPress(GdkEventKey * keyEvent) {
      }
      break;
   case(GDK_q) :
-       cerr << terminateVPlay << " \n"; 
+       std::cerr << terminateVPlay << " \n"; 
        win.Signal("delete_event").Invoke();
        break;
   case(GDK_Left) :
@@ -217,8 +217,9 @@ static bool HandleKeyPress(GdkEventKey * keyEvent) {
              }
              break;
          default :
-            cerr << "unrecognised key pressed. \n";
-      }
+            std::cerr << "unrecognised key pressed. \n";
+            break;
+      } break;
   }
   return false;
 }
@@ -243,9 +244,9 @@ MutexC frameGrabLock;
 
 bool GrabFrame(StringC &filename) {
   MutexLockC lock(frameGrabLock);
-  cerr << "Saving file '" << filename << "'\n";
+  std::cerr << "Saving file '" << filename << "'\n";
   if(!Save(filename,frameGrabbed)) {
-    cerr << "ERROR: Failed to save file '" << filename << "'\n";
+    std::cerr << "ERROR: Failed to save file '" << filename << "'\n";
   }
   return true;
 }
@@ -256,7 +257,7 @@ bool ExamineFrame(StringC &filename) {
   frameGrabbed = frameCache;
   lock2.Unlock();
   if(!Save(filename,frameGrabbed)) {
-    cerr << "ERROR: Failed to save file '" << filename << "'\n";
+    std::cerr << "ERROR: Failed to save file '" << filename << "'\n";
   }
   lock1.Unlock();
   return true;
@@ -292,12 +293,12 @@ static bool file_selector(StringC &filename,FileSelectorC &fs,Tuple2C<DPIPlayCon
   }
   DPISPortC<ImageC<ByteRGBValueC> > vidIn;
   if(!OpenISequence(vidIn,filename)) {
-    cerr << "ERROR: Failed to open '" << filename << "'\n";
+    std::cerr << "ERROR: Failed to open '" << filename << "'\n";
     return true;
   }
   ImageC<ByteRGBValueC> tmp;
   if(!vidIn.Get(tmp)) {
-    cerr << "ERROR: Failed to find image size '" << filename << "'\n";
+    std::cerr << "ERROR: Failed to find image size '" << filename << "'\n";
     return true;
   }
   vidIn.DSeek(-1); // Back up.
@@ -349,48 +350,48 @@ int doVPlay(int nargs,char *args[])
   // Does the user just want some information about support formats ?
   
   if(listFormats) {
-    PrintIOFormats(cout);
+    PrintIOFormats(std::cout);
     return 0;
   }
   
   if(listConversions) {
-    PrintIOConversions(cout);
+    PrintIOConversions(std::cout);
     return 0;
   }
   
   if(noDisplay) {
-    cerr << "ERROR: No DISPLAY environment set. \n";
+    std::cerr << "ERROR: No DISPLAY environment set. \n";
     return 1;
   }
   
-  ONDEBUG(cerr << "VPlay: Setting up input stream ... \n");
+  ONDEBUG(std::cerr << "VPlay: Setting up input stream ... \n");
   // Setup video source.
   // Put in vpCtrl early, else we may not get a seekable port.
   
   DPISPortC<ImageC<ByteRGBValueC> > vidIn;
   
   if(!OpenISequence(vidIn,infile,formatIn,verb)) {
-    cerr << "VPlay: Failed to open '" << infile << "'\n";
+    std::cerr << "VPlay: Failed to open '" << infile << "'\n";
     exit(1);
   }
   for(DLIterC<StringC> it(attribs);it;it++) {
     StringC attrName = it->before('=').TopAndTail();
     StringC attrValue = it->after('=').TopAndTail();
     if(!vidIn.SetAttr(attrName,attrValue))
-      cerr << "WARNING: Failed to set attribute '" << attrName << "' to '" << attrValue <<  "'\n";
+      std::cerr << "WARNING: Failed to set attribute '" << attrName << "' to '" << attrValue <<  "'\n";
   }
   if (listAttribs) {
     vidIn.GetAttrList(attribs);
-    cout << "Available attributes are:\n";
+    std::cout << "Available attributes are:\n";
     StringC attr;
     for(ConstDLIterC<StringC> it(attribs);it;it++) {
       vidIn.GetAttr(*it, attr);
-      cout << "  " << *it << " " << attr << endl;
+      std::cout << "  " << *it << " " << attr << std::endl;
     }
     exit (0);
   }
   
-  ONDEBUG(cerr << "VPlay: Sequence opened.\n");
+  ONDEBUG(std::cerr << "VPlay: Sequence opened.\n");
   if(start < 0) {
     start = vidIn.Tell();
     if(start < 0)
@@ -403,11 +404,11 @@ int doVPlay(int nargs,char *args[])
   
   DPIPlayControlC<ImageC<ByteRGBValueC> > vpCtrl(vidIn,false,start,endFrame);  
 
-  ONDEBUG(cerr << "VPlay: Play control built.\n");
+  ONDEBUG(std::cerr << "VPlay: Play control built.\n");
   
   DPIPortC<ImageC<ByteRGBValueC> > src =  vpCtrl;// >> YUVImageCT2RGBImageCT;
   
-  ONDEBUG(cerr << "VPlay: Conversion stream built.\n");
+  ONDEBUG(std::cerr << "VPlay: Conversion stream built.\n");
   // Try and establish size of images.
   
   int sx = 300,sy = 300;
@@ -415,16 +416,16 @@ int doVPlay(int nargs,char *args[])
   ImageRectangleC rect;
   {
     ImageC<ByteRGBValueC> tmp(vidIn.Get());
-    ONDEBUG(cerr << "VPlay: Got initial frame. \n");
+    ONDEBUG(std::cerr << "VPlay: Got initial frame. \n");
     if(!noSeek) vidIn.DSeek(-1);
     rect = tmp.Rectangle();
   }
   
-  ONDEBUG(cerr << "VPlay: Image size found..\n");
+  ONDEBUG(std::cerr << "VPlay: Image size found..\n");
   sy = rect.Rows();
   sx = rect.Cols();
   if(sx < 1 || sy < 1) {
-    cerr << "ERROR: Image size too small opening : '" << infile << "'.\n";
+    std::cerr << "ERROR: Image size too small opening : '" << infile << "'.\n";
     sy = 100;
     sx = 100;
   }
@@ -433,7 +434,7 @@ int doVPlay(int nargs,char *args[])
   
   // Setup GUI stuff.
   
-  ONDEBUG(cerr << "Setting up GUI ... \n");
+  ONDEBUG(std::cerr << "Setting up GUI ... \n");
   
   //WindowC win(sx,sy,infile);
   win = WindowC(sx,sy,infile);
@@ -512,14 +513,14 @@ int doVPlay(int nargs,char *args[])
   
   // Get GUI going ...
   
-  ONDEBUG(cerr << "Executing manager... \n");
+  ONDEBUG(std::cerr << "Executing manager... \n");
 #if !RAVL_OS_WIN32
   // On windows the gui thread must be the main thread.
   Manager.Execute();
   Sleep(0.1); // Give it a chance to setup the display before starting the video.
 #endif
 
-  ONDEBUG(cerr << "Starting video... \n");
+  ONDEBUG(std::cerr << "Starting video... \n");
   DPEventSetC es;  
   
   // Setup play stream.
@@ -534,7 +535,7 @@ int doVPlay(int nargs,char *args[])
   Manager.Start();
 #endif
 
-  ONDEBUG(cerr << "Terminating... \n");
+  ONDEBUG(std::cerr << "Terminating... \n");
   exit(0);
   return 0;
 }

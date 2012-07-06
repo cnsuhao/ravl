@@ -42,12 +42,12 @@ namespace RavlLogicN {
       solIt = state.Filter(*it,binds);
       RavlAssert(solIt.IsValid());
       if(solIt) {
-	ONDEBUG(cerr << "StateOrIterBodyC::NextValid(), Found:" << solIt.Data() << " in or term " << it.Index() << " " << *it << "\n");
+	ONDEBUG(std::cerr << "StateOrIterBodyC::NextValid(), Found:" << solIt.Data() << " in or term " << it.Index() << " " << *it << "\n");
 	return true;
       }
     };
     solIt = LiteralIter1C(false); // Is this the best way of making an invalid iterator ?
-    ONDEBUG(cerr << "StateOrIterBodyC::NextValid(), No more solutions. \n");
+    ONDEBUG(std::cerr << "StateOrIterBodyC::NextValid(), No more solutions. \n");
     return false;
   }
   
@@ -56,7 +56,7 @@ namespace RavlLogicN {
   // returns true if next element is valid.
   
   bool StateOrIterBodyC::Next() {
-    ONDEBUG(cerr << "StateOrIterBodyC::Next() \n");
+    ONDEBUG(std::cerr << "StateOrIterBodyC::Next() \n");
     solIt++;
     if(solIt)
       return true;
@@ -68,7 +68,7 @@ namespace RavlLogicN {
   // returns true if next element is valid.
   
   bool StateOrIterBodyC::First() {
-    ONDEBUG(cerr << "StateOrIterBodyC::First() \n");
+    ONDEBUG(std::cerr << "StateOrIterBodyC::First() \n");
     it.First();
     return NextValid();
   }

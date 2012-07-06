@@ -119,11 +119,11 @@ namespace RavlN {
   //: Register function pointer.
   
   bool BaseFunctionRegister(const char *name,void *ptr,int size,const std::type_info &ti) {
-    ONDEBUG(cerr << "BaseFunctionRegister(), Called. \n");
+    ONDEBUG(std::cerr << "BaseFunctionRegister(), Called. \n");
     MTWriteLockC lock(0);
     FunctionPointerEntryC *ent;
     if(FunctionPointerName2Pointer().Lookup(name,ent)) {
-      cerr <<"WARNING: Duplicate function pointer registeration for '" << name << "'\n";
+      std::cerr <<"WARNING: Duplicate function pointer registeration for '" << name << "'\n";
       return false;
     }
     FunctionPointerEntries().InsLast(FunctionPointerEntryC(name,ptr,size,ti));
@@ -136,7 +136,7 @@ namespace RavlN {
   //: Register function pointer.
   
   bool BaseFunctionLookupByName(const char *name,void *ptr,int size,const std::type_info &ti) {
-    ONDEBUG(cerr << "BaseFunctionLookupByName(), Called. \n");
+    ONDEBUG(std::cerr << "BaseFunctionLookupByName(), Called. \n");
     FunctionPointerEntryC *fpe;
     MTReadLockC lock(0);
     if(!FunctionPointerName2Pointer().Lookup(name,fpe))
@@ -147,7 +147,7 @@ namespace RavlN {
   //: Lookup function by pointer.
   
   const char *BaseFunctionLookupByPointer(void *ptr,int size,const std::type_info &ti) {
-    ONDEBUG(cerr << "BaseFunctionLookupByPointer(), Called. \n");
+    ONDEBUG(std::cerr << "BaseFunctionLookupByPointer(), Called. \n");
     FunctionPointerEntryC *fpe;
     MTReadLockC lock(0);
     if(!FunctionPointerPointer2Name().Lookup(FPEFuncPtrC(ptr,size),fpe))

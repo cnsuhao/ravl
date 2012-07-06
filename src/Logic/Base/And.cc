@@ -58,13 +58,13 @@ namespace RavlLogicN {
     args[0] = literalAnd;
     for(BufferAccessIter2C<LiteralC,LiteralC> it(nterms,args.BufferFrom(1,nterms.Size()));it;it++)
       it.Data2() = it.Data1();
-    ONDEBUG(cerr << "AndBodyC::AndBodyC(), Name=" << Name() << "\n");    
+    ONDEBUG(std::cerr << "AndBodyC::AndBodyC(), Name=" << Name() << "\n");    
   }
   
   
   //: Construct from a binary stream.
   
-  AndBodyC::AndBodyC(istream &strm)
+  AndBodyC::AndBodyC(std::istream &strm)
     : ConditionBodyC(strm)
   {}
   
@@ -76,7 +76,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool AndBodyC::Save(ostream &out) const
+  bool AndBodyC::Save(std::ostream &out) const
   { return ConditionBodyC::Save(out); }
   
   //: Save to binary stream 'out'.
@@ -174,7 +174,7 @@ namespace RavlLogicN
   
   TupleC operator*(const LiteralC &l1,const LiteralC &l2) {
     SizeT size = 0;
-    ONDEBUG(cerr << "operator*(LiteralC,LiteralC) Called for '" << l1 << "' and '" << l2 << "'\n");
+    ONDEBUG(std::cerr << "operator*(LiteralC,LiteralC) Called for '" << l1 << "' and '" << l2 << "'\n");
     // Can we use something more specific ?
     MinTermC mt1(l1);
     if(mt1.IsValid())
@@ -208,7 +208,7 @@ namespace RavlLogicN
     } else
       arr[at] = l2;
     AndC ret(arr,true); 
-    ONDEBUG(cerr << "operator*(LiteralC,LiteralC) Result=" << ret.Name() << "\n");
+    ONDEBUG(std::cerr << "operator*(LiteralC,LiteralC) Result=" << ret.Name() << "\n");
     return ret;
   }
   //: And operator.

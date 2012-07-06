@@ -55,7 +55,7 @@ namespace RavlGUIN {
   
   bool GLContextBodyC::Begin() {
     if(m_widget == 0) {
-      ONDEBUG(cerr << "GLContextBodyC::Begin(), ERROR: Called with invalid widget. \n");
+      ONDEBUG(std::cerr << "GLContextBodyC::Begin(), ERROR: Called with invalid widget. \n");
       return false;
     }
 #if RAVL_USE_GTKGLEXT
@@ -65,7 +65,7 @@ namespace RavlGUIN {
       return FALSE;
 #else
     if (!gtk_gl_area_make_current(GTK_GL_AREA(m_widget))) {
-      ONDEBUG(cerr << "WARNING: Canvas3DBodyC::BeginGL(), Failed. \n");
+      ONDEBUG(std::cerr << "WARNING: Canvas3DBodyC::BeginGL(), Failed. \n");
       return false;
     }
 #endif

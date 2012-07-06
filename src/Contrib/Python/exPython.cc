@@ -21,16 +21,16 @@ using namespace RavlN;
 
 void displayError(const char *errorMessage)
 {
-  cerr << "#### Error" << endl;
-  cerr << "## " << errorMessage << endl;
+  std::cerr << "#### Error" << std::endl;
+  std::cerr << "## " << errorMessage << std::endl;
 }
 
 void displayException(PythonExceptionC &e)
 {
-  cerr << "#### Error" << endl;
-  cerr << "##  Type:  " << e.Type() << endl;
-  cerr << "##  Value: " << e.Value() << endl;
-  cerr << "##  Trace: " << endl << e.Trace() << endl;
+  std::cerr << "#### Error" << std::endl;
+  std::cerr << "##  Type:  " << e.Type() << std::endl;
+  std::cerr << "##  Value: " << e.Value() << std::endl;
+  std::cerr << "##  Trace: " << endl << e.Trace() << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -40,14 +40,14 @@ int main(int argc, char **argv)
     // Initialise the python module
     PythonC python(true);
 
-    cerr << "#### Initialising interpreter" << endl;
+    std::cerr << "#### Initialising interpreter" << std::endl;
     if (!python.Initialised())
     {
       displayError("Failed to initialise interpreter");
       return -1;
     }
 
-    cerr << "#### Appending '.' to system path" << endl;
+    std::cerr << "#### Appending '.' to system path" << std::endl;
     if (!python.AppendSystemPath("."))
     {
       displayError("Failed to append system path");
@@ -71,13 +71,13 @@ int main(int argc, char **argv)
 	  args.BuildTuple(argList);
   
 	  // Call the example function and display the results
-	  cerr << "#### Calling 'ravlexample.myprint(" << name.String() << ")'" << endl;
+	  std::cerr << "#### Calling 'ravlexample.myprint(" << name.String() << ")'" << std::endl;
 	  PythonObjectC res = python.Call("ravlexample", "myprint", args);
 	  if (res.IsValid())
 	  {
 	    if (res.IsString())
       {
-	      cerr << "## Result(string): " << res.String() << endl;
+	      std::cerr << "## Result(string): " << res.String() << std::endl;
       }
       else
       {
@@ -92,21 +92,21 @@ int main(int argc, char **argv)
     }
      
 	  // Run a script from a string
-	  cerr << "#### Calling script from string" << endl;
+	  std::cerr << "#### Calling script from string" << std::endl;
     if (python.Run("x = 5"))
     {
       // Read the globals from the script
       PythonObjectC x = python.GetValue("x");
-      cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
+      std::cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << std::endl;
       if (x.IsValid())
       {  
         if (x.IsInt())
         {
-          cerr << "## 'x'= " << x.Int() << endl;
+          std::cerr << "## 'x'= " << x.Int() << std::endl;
         }
         else
         {
-          cerr << "## 'x' is not an int" << endl;
+          std::cerr << "## 'x' is not an int" << std::endl;
         }
       }
     }

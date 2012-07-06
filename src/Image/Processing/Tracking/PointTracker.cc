@@ -105,7 +105,7 @@ namespace RavlImageN {
       for(Array2dIterC<ByteT> sit(templ);sit;sit++)
 	tsums += *sit;
       RealT var = tsums.Variance();
-      cerr << "Patch var=" << var << "\n";
+      std::cerr << "Patch var=" << var << "\n";
       if(var < 1000)
 	continue;
 #endif

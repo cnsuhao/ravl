@@ -573,7 +573,7 @@ namespace RavlN {
   };
   
   template<class Data1T,class Data2T,class Data3T>
-  ostream &operator<<(ostream &out,const Signal3C<Data1T,Data2T,Data3T> &) { 
+  std::ostream &operator<<(std::ostream &out,const Signal3C<Data1T,Data2T,Data3T> &) { 
     RavlAssert(0); // Not implemented.
     return out;
   }

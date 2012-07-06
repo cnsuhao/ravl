@@ -98,17 +98,17 @@ protected:
 //#===--- Application callbacks
 
 bool OnPress1() {
-  cerr << "Pressed 1. \n";
+  std::cerr << "Pressed 1. \n";
   return true;
 }
 
 bool OnPressC1() {
-  cerr << "Pressed custom1. \n";
+  std::cerr << "Pressed custom1. \n";
   return true;
 }
 
 bool OnPressC2() {
-  cerr << "Pressed custom2. \n";
+  std::cerr << "Pressed custom2. \n";
   return true;
 }
 
@@ -123,7 +123,7 @@ bool OnQuit()
 int main(int nargs,char **argv) {
   Manager.Init(nargs,argv);
   
-  cerr << "Create widgets." << endl;
+  std::cerr << "Create widgets." << std::endl;
 
   // Create the main window
   GladeXMLC glade(PROJECT_OUT "/share/RAVL/Glade/exlibgladecustommain.glade");
@@ -142,15 +142,15 @@ int main(int nargs,char **argv) {
   mainWindow.AddObject("custom1",custom1);
   mainWindow.AddObject("custom2",custom2);
   
-  cerr << "Show widgets. \n";
+  std::cerr << "Show widgets. \n";
   
   mainWindow.GUIShow();
   
-  cerr << "Start GUI. \n";
+  std::cerr << "Start GUI. \n";
   
   Manager.Start();
 
-  cerr << "Done. \n";
+  std::cerr << "Done. \n";
   
   return 0;
 }

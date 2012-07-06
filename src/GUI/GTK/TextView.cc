@@ -29,7 +29,7 @@ namespace RavlGUIN
   
   bool TextViewBodyC::CommonCreate(GtkWidget *_widget)
   {
-    ONDEBUG(cerr << "TextViewBodyC::Create()\n");
+    ONDEBUG(std::cerr << "TextViewBodyC::Create()\n");
     
     if (widget != 0)
       return true;

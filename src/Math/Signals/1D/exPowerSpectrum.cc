@@ -24,9 +24,9 @@ int main()
   Array1dC<RealT> data(size);
   for(Array1dIterC<RealT> it(data);it;it++)
     it.Data() = Random1();
-  cerr << "Calculating power spectrum.:\n";
+  std::cerr << "Calculating power spectrum.:\n";
   PowerSpectrum1dC ps(size);
   Array1dC<RealT> res = ps.Apply(data);
-  cerr << "Result:";
-  cerr << res << "\n";
+  std::cerr << "Result:";
+  std::cerr << res << "\n";
 }

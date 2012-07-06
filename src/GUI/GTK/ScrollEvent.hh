@@ -57,7 +57,7 @@ namespace RavlGUIN
     ScrollDirectionT m_direction;
   };
   
-  ostream &operator<<(ostream &stream, const ScrollEventC &event);
+  std::ostream &operator<<(std::ostream &stream, const ScrollEventC &event);
   //: Print description of scroll event to stream.
   
 }

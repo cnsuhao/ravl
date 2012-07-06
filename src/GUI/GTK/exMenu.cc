@@ -109,5 +109,6 @@ int main(int nargs,char *args[])
   statusBar.Next("Ready...");
   
   Manager.Start();
-  cerr << "Finished.\n";
+  std::cerr << "Finished.\n";
+  return 0;
 }

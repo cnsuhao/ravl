@@ -37,30 +37,30 @@ int main()
 {
   int err;
   if((err = testBasic()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1d()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dIO()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dMore()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dEvenMore()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dFrom()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
-  cerr << "Collection test passed. \n";
+  std::cerr << "Collection test passed. \n";
   return 0;
 }
 
@@ -102,7 +102,7 @@ template class DArray1dIter4C<IntT,RealT,ByteT,bool>;
 const int testSize = 10000;
 
 int testDArray1d() {
-  cerr << "testDArray1d(), Called. \n";
+  std::cerr << "testDArray1d(), Called. \n";
   DArray1dC<int> test(10);
   
   if(!test.Contains(2)) return __LINE__;
@@ -132,7 +132,7 @@ int testDArray1d() {
   DArray1dC<int> test2(5,true);
   for(i = 0;i < testSize;i++) {
     if(test2.Size() != (UIntT) i) {
-      cerr << "Test failed at count=" << i << " size=" << test2.Size() << "\n";
+      std::cerr << "Test failed at count=" << i << " size=" << test2.Size() << "\n";
       return __LINE__;
     }
     test2.Append(i);
@@ -192,7 +192,7 @@ int testDArray1dIO() {
 }
 
 int testDArray1dMore() {
-  cerr << "testDArray1dMore(), Called. \n";
+  std::cerr << "testDArray1dMore(), Called. \n";
   DArray1dC<int> test1;
   DArray1dC<int> test2;
   DArray1dC<int> test3;
@@ -219,7 +219,7 @@ int testDArray1dMore() {
   //cout << "dset=" << dset << std::endl;
   DArray1dC<int> dset2(10,true);
   dset2.Append(dset);
-  //  cout << "dset2=" << dset2 << std::endl;
+  //  std::cout << "dset2=" << dset2 << std::endl;
   if(dset2.Size() != 2) return __LINE__;
   int count = 0;
   for(DArray1dIterC<int> it(dset2);it;it++) {
@@ -283,7 +283,7 @@ int testDArray1dMore() {
 }
 
 int testDArray1dEvenMore() {
-  cerr << "testDArray1d(), Add/Delete. \n";
+  std::cerr << "testDArray1d(), Add/Delete. \n";
   DArray1dC<IntT> anArray;
   CollectionC<UIntT> validIndex(64);
   IntT opSize = 128;
@@ -322,7 +322,7 @@ int testDArray1dEvenMore() {
 }
 
 int testDArray1dFrom() {
-  cerr << "testDArray1d(), From. \n";
+  std::cerr << "testDArray1d(), From. \n";
   DArray1dC<IntT> anArray;
   Array1dC<IntT> arr1(5);
   Array1dC<IntT> arr2(5);

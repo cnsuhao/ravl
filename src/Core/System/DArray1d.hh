@@ -441,7 +441,7 @@ namespace RavlN {
     bool Save(std::ostream &strm) const { 
       if(this->IsValid())
 	return Body().Save(strm); 
-      cerr << "0\n";
+      std::cerr << "0\n";
       return true;
     }
     //: Save to stream.

@@ -59,7 +59,7 @@ namespace RavlN {
     : leftOk(false),
       help(false),
       progName("-Unknown-"),
-      sout(cerr),
+      sout(std::cerr),
       unnamed(0),
       doneUnnamed(false)
   {
@@ -127,7 +127,7 @@ namespace RavlN {
    */
   
   bool OptionC::IsParam(const StringC &arg) const {
-    ONDEBUG(cerr << "Testing '" << arg << "' for being a paramiter. \n");
+    ONDEBUG(std::cerr << "Testing '" << arg << "' for being a paramiter. \n");
     if(arg.IsEmpty())
       return true;
     if (arg[0]!='-')  
@@ -447,10 +447,10 @@ namespace RavlN {
       if(it.Data() != srch) 
       continue;
       MarkProcessed(it.Data());
-      ONDEBUG(cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> found." << endl);
+      ONDEBUG(std::cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> found." << endl);
       return true;
   } 
-    ONDEBUG(cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> Not found." << endl);
+    ONDEBUG(std::cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> Not found." << endl);
     return false;
   }
   
@@ -459,7 +459,7 @@ namespace RavlN {
   StringC OptionC::GetOption1(const char *name) {
     StringC ret;
     MarkProcessed(ret); // Mark as unfound by default.
-    ONDEBUG(cerr << "OptionC::GetOption1(), Called looking for '"<< name <<"'\n");
+    ONDEBUG(std::cerr << "OptionC::GetOption1(), Called looking for '"<< name <<"'\n");
     RavlAssert(name != 0);
     if(*name == 0) { // Unnamed arg ?
       doneUnnamed = true;
@@ -511,7 +511,7 @@ namespace RavlN {
   
   DListC<StringC> OptionC::GetOptions(const char *name,int nargs) {
     DListC<StringC> ret;
-    ONDEBUG(cerr << "OptionC::GetOptions(), Called looking for "<< name <<" with " << nargs << " args. \n");
+    ONDEBUG(std::cerr << "OptionC::GetOptions(), Called looking for "<< name <<" with " << nargs << " args. \n");
     
     RavlAssert(name != 0);
     
@@ -535,7 +535,7 @@ namespace RavlN {
     if(name != 0)
       srch += name;
     else {
-      ONDEBUG(cerr << "GetOptions(), Searching for unamed arg of length " << nargs << "\n"); 
+      ONDEBUG(std::cerr << "GetOptions(), Searching for unamed arg of length " << nargs << "\n"); 
     }
     
     for(DLIterC<StringC> it(args);it.IsElm();it.Next()) {
@@ -543,7 +543,7 @@ namespace RavlN {
       if(*name == 0) {
 	if(IsProcessed(it.Data()))
 	  continue;
-	ONDEBUG(cerr << "GetOptions(), Start of unamed args : '" << it.Data() << "\n"); 
+	ONDEBUG(std::cerr << "GetOptions(), Start of unamed args : '" << it.Data() << "\n"); 
       } else 
 #endif      
 	{

@@ -210,7 +210,7 @@ namespace RavlImageN {
       //: Returns next image from sequence
       {	
 	if(!input.Get(img)) {
-	  cerr<<"Could not read image at frame no. "<<frameNo<<endl;
+	  std::cerr<<"Could not read image at frame no. "<<frameNo<<endl;
 	  img = ImageC<ByteRGBValueC>();
 	  return false;
 	}

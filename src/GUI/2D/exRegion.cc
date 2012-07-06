@@ -48,7 +48,7 @@ int exRegion(int nargs,char *args[])
   ImageC<ByteRGBValueC> image;
   
   if(!StdIO::Load(infile,image,ifmt,verbose)) {
-    cerr << "Failed to load image "<< infile <<". \n";
+    std::cerr << "Failed to load image "<< infile <<". \n";
     return 1;
   }
   
@@ -70,11 +70,11 @@ int exRegion(int nargs,char *args[])
   
   // Do some work with the gui...
   
-  ONDEBUG(cerr << "Drawing stuff... \n");
+  ONDEBUG(std::cerr << "Drawing stuff... \n");
   
   draw.RGB().Put(image);
   
-  ONDEBUG(cerr << "Executing manager... \n");
+  ONDEBUG(std::cerr << "Executing manager... \n");
   
 #if USEMT  
   GUIManager.Wait();              // Wait for GUI to finish.

@@ -23,20 +23,21 @@ namespace RavlN {
     switch(radius)
       {
       case 0:
-	x = y;
-	octant = 7;
-	break;
-      case 1:
-	octant = 4; 
-	d += deltaSE;
-	deltaE += 2;
-	deltaSE += 4;
-	y--; 
-	x++;
-	data = Index2dC(x,y) + offset;
-	break;
+        x = y;
+        octant = 7;
+        break;
+            case 1:
+        octant = 4;
+        d += deltaSE;
+        deltaE += 2;
+        deltaSE += 4;
+        y--;
+        x++;
+        data = Index2dC(x,y) + offset;
+        break;
       default:
-	octant = 0;
+        octant = 0;
+        break;
       }
   }
     
@@ -70,7 +71,7 @@ namespace RavlN {
 	  break;
 	}
 	octant++;
-	// Fall through.
+	/* no break */
       case 2:
 	data = Index2dC(y,-x) + offset;
 	break;

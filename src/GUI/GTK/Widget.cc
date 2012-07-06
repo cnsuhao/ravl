@@ -42,7 +42,7 @@ namespace RavlGUIN {
   using namespace RavlImageN;
 
   int WidgetBodyC::gtkDestroy (GtkWidget *widget,WidgetBodyC * data) {
-    ONDEBUG(cerr << "Got destroy for widget : " << ((void *) data) << "\n");
+    ONDEBUG(std::cerr << "Got destroy for widget : " << ((void *) data) << "\n");
     data->WidgetDestroy();
     return 1;
   }
@@ -163,7 +163,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkEventMouseButton(GtkWidget *widget,GdkEvent *event,Signal0C *data)  {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEventMouseButton\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEventMouseButton\n");
     MouseEventC me((GdkEventButton &) *event);
     Signal1C<MouseEventC> sig(*data);
     RavlAssert(sig.IsValid());
@@ -172,7 +172,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkEventMouseMotion(GtkWidget *widget,GdkEvent *event,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEventMouseMotion\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEventMouseMotion\n");
     MouseEventC me((GdkEventMotion &) *event);
     Signal1C<MouseEventC> sig(*data);
     RavlAssert(sig.IsValid());
@@ -181,7 +181,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkEventScroll(GtkWidget *widget,GdkEvent *event,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEventScroll\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEventScroll\n");
     ScrollEventC scrollEvent(reinterpret_cast<GdkEventScroll&>(*event));
     Signal1C<ScrollEventC> sig(*data);
     RavlAssert(sig.IsValid());
@@ -190,7 +190,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkString(GtkWidget *widget,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkString\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkString\n");
     Signal1C<StringC> sig(*data);
     RavlAssert(sig.IsValid());
     StringC sendStr(gtk_entry_get_text(GTK_ENTRY(widget)));
@@ -199,7 +199,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkEvent(GtkWidget *widget,GdkEvent *event,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEvent\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEvent\n");
     Signal1C<GdkEvent *> sig(*data);
     RavlAssert(sig.IsValid());
     sig(event);
@@ -208,7 +208,7 @@ namespace RavlGUIN {
 
   int WidgetBodyC::gtkEventDelete(GtkWidget *widget,GdkEvent *event,Signal0C *data)
   {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEventDelete\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEventDelete\n");
     Signal3C<GdkEvent*, WidgetC, bool> sig(*data);
     RavlAssert(sig.IsValid());
     bool ret = true;	//Set the default to true. For "destroy" to be called, set this value to false in the implementation
@@ -217,7 +217,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkEventKeyboard(GtkWidget *widget,GdkEvent *event,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEventKeyboard\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEventKeyboard\n");
     Signal1C<GdkEventKey *> sig(*data);
     RavlAssert(sig.IsValid());
     sig((GdkEventKey *)event);
@@ -227,14 +227,14 @@ namespace RavlGUIN {
 
   int WidgetBodyC::gtkGeneric(GtkWidget *widget,Signal0C *data)
   {
-    ONDEBUG(cerr << "WidgetBodyC::gtkGeneric\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkGeneric\n");
     (*data)();
     return 0;
   }
 
   int WidgetBodyC::gtkEventFocus(GtkWidget *widget,GdkEvent *focus,Signal0C *data)
   {
-    ONDEBUG(cerr << "WidgetBodyC::gtkEventFocus\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkEventFocus\n");
     Signal0C sig(*data);
     RavlAssert(sig.IsValid());
     sig();
@@ -245,7 +245,7 @@ namespace RavlGUIN {
                                   gint row,gint column,
                                   GdkEventButton *event,
                                   Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkCListSelect\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkCListSelect\n");
     Signal1C<CListEventC> sig(*data);
     RavlAssert(sig.IsValid());
 #if RAVL_CPUTYPE_64
@@ -254,14 +254,14 @@ namespace RavlGUIN {
     IntT rowId = (IntT) gtk_clist_get_row_data(GTK_CLIST(widget),row);
 #endif
 
-    ONDEBUG(cerr << "WidgetBodyC::gtkCListSelect(), RowID: " << rowId << " Event: " << ((void *) event)  << "\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkCListSelect(), RowID: " << rowId << " Event: " << ((void *) event)  << "\n");
     CListEventC cle(rowId,row,column);
     sig(cle);
     return 0;
   }
 
   int WidgetBodyC::gtkCListCol(GtkWidget *widget,gint column,Signal0C *data)  {
-    ONDEBUG(cerr << "WidgetBodyC::gtkCListCol\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkCListCol\n");
     Signal1C<IntT> sig(*data);
     RavlAssert(sig.IsValid());
     sig(column);
@@ -269,7 +269,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkDNDContext(GtkWidget *widget,GdkDragContext *context,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkDNDContext\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkDNDContext\n");
     Signal1C<GdkDragContext *> sig(*data);
     RavlAssert(sig.IsValid());
     sig(context);
@@ -277,7 +277,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkDNDContextTime(GtkWidget *widget,GdkDragContext *context,unsigned int time,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkDNDContextTime\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkDNDContextTime\n");
     Signal2C<GdkDragContext *,PositionTimeC> sig(*data);
     RavlAssert(sig.IsValid());
     PositionTimeC pt(0,0,time);
@@ -286,7 +286,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkDNDPosition(GtkWidget *widget,GdkDragContext *context,int x,int y,unsigned int time,Signal0C *data) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkDNDPosition\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkDNDPosition\n");
     Signal2C<GdkDragContext *,PositionTimeC> sig(*data);
     RavlAssert(sig.IsValid());
     PositionTimeC pt(x,y,time);
@@ -295,15 +295,15 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkDNDDataRecieved(GtkWidget *widget,GdkDragContext *context,int x,int y,GtkSelectionData *data,unsigned int info,unsigned int time,Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkDNDDataRecieved\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkDNDDataRecieved\n");
 
     // Do some sanity checks
     if(data == 0) {
-      cerr << "WidgetBodyC::gtkDNDDataRecieved(), WARNING: Recieved NULL selection. \n";
+      std::cerr << "WidgetBodyC::gtkDNDDataRecieved(), WARNING: Recieved NULL selection. \n";
       return 1;
     }
     if(data->length < 0) {
-      cerr << "WidgetBodyC::gtkDNDDataRecieved(), WARNING: Recieved invalid selection. \n";
+      std::cerr << "WidgetBodyC::gtkDNDDataRecieved(), WARNING: Recieved invalid selection. \n";
       return 1;
     }
     Signal1C<DNDDataInfoC> sig(*sigptr);
@@ -319,7 +319,7 @@ namespace RavlGUIN {
                                  unsigned int info,
                                  unsigned int time,
                                  Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkDNDDataGet\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkDNDDataGet\n");
     Signal1C<DNDDataInfoC> sig(*sigptr);
     RavlAssert(sig.IsValid());
     DNDDataInfoC inf(context,data,info,time);
@@ -328,7 +328,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkInt(GtkWidget *widget,int page, Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkInt\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkInt\n");
     Signal1C<IntT> sig(*sigptr);
     RavlAssert(sig.IsValid());
     sig(page);
@@ -336,7 +336,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkWidgetInt(GtkWidget *widget,GtkWidget *notebookpage, unsigned int page, Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkWidgetInt\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkWidgetInt\n");
     Signal1C<UIntT> sig(*sigptr);
     RavlAssert(sig.IsValid());
     sig(page);
@@ -344,7 +344,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkTreeRow(GtkWidget *widge, GtkTreeIter *iter, GtkTreePath *path, Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkTreeRow\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkTreeRow\n");
     RavlAssert(sigptr != 0);
     // Get signal
     Signal2C<TreeModelIterC,TreeModelPathC> sig(*sigptr);
@@ -360,7 +360,7 @@ namespace RavlGUIN {
 
 
   int WidgetBodyC::gtkTreePathCol(GtkWidget *widget, GtkTreePath *path, GtkTreeViewColumn *col, Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkTreePathCol\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkTreePathCol\n");
     RavlAssert(sigptr != 0);
     // Get signal
     Signal2C<TreeModelPathC,StringC> sig(*sigptr);
@@ -379,7 +379,7 @@ namespace RavlGUIN {
   }
 
   int WidgetBodyC::gtkTreePath(GtkWidget *widget, GtkTreePath *path, Signal0C *sigptr) {
-    ONDEBUG(cerr << "WidgetBodyC::gtkTreePath\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::gtkTreePath\n");
     RavlAssert(sigptr != 0);
     // Get signal
     Signal1C<TreeModelPathC> sig(*sigptr);
@@ -432,7 +432,7 @@ namespace RavlGUIN {
   //: Destructor.
 
   WidgetBodyC::~WidgetBodyC() {
-    ONDEBUG(cerr << "WidgetBodyC::~WidgetBodyC(), Started  " << ((void *) this) << " Name=" << GUIWidgetName() << "\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::~WidgetBodyC(), Started  " << ((void *) this) << " Name=" << GUIWidgetName() << "\n");
     //RavlAssert(IsValidObject());
 
     // Disconnect signals
@@ -460,14 +460,14 @@ namespace RavlGUIN {
       delete dndInfo;
       dndInfo = 0;
     }
-    ONDEBUG(cerr << "WidgetBodyC::~WidgetBodyC(), Done.  " << ((void *) this) << "\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::~WidgetBodyC(), Done.  " << ((void *) this) << "\n");
   }
 
   //: Get widget's name.
   // Call only from GUI thread.
 
   StringC WidgetBodyC::GUIWidgetName() const {
-     ONDEBUG(cerr << "WidgetBodyC::GUIWidgetName()\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::GUIWidgetName()\n");
      if(widget == 0)
       return StringC("-Unknown-");
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -483,7 +483,7 @@ namespace RavlGUIN {
   }
 
   StringC WidgetBodyC::Name() const { 
-    ONDEBUG(cerr << "WidgetBodyC::Name()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::Name()\n");
     ReadBackLockC lock;
     return GUIWidgetName();
   }
@@ -492,15 +492,15 @@ namespace RavlGUIN {
   //: Create the widget.
 
   bool WidgetBodyC::Create() {
-    ONDEBUG(cerr << "WidgetBodyC::Create()\n");
-    cerr << "bool WidgetBodyC::Create(), Abstract function called. \n";
+    ONDEBUG(std::cerr << "WidgetBodyC::Create()\n");
+    std::cerr << "bool WidgetBodyC::Create(), Abstract function called. \n";
     return true;
   }
 
   //: Create with a widget supplied from elsewhere.
 
   bool WidgetBodyC::Create(GtkWidget *newWidget) {
-    ONDEBUG(cerr << "WidgetBodyC::Create\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::Create\n");
     //cerr << "bool WidgetBodyC::Create(GtkWidget *), Called.. \n";
     widget = newWidget;
     ConnectSignals();
@@ -510,7 +510,7 @@ namespace RavlGUIN {
   //: Set state
 
   bool WidgetBodyC::GUISetState(GtkStateType state) {
-    ONDEBUG(cerr << "WidgetBodyC::GUISetState\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUISetState\n");
     reqState = state;
     if(widget == 0)
       return true;
@@ -527,13 +527,13 @@ namespace RavlGUIN {
   //: Set state
 
   void WidgetBodyC::SetState(GtkStateType state) {
-     ONDEBUG(cerr << "WidgetBodyC::SetState\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::SetState\n");
    Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetState,state));
   }
 
   void WidgetBodyC::WidgetDestroy() {
-    ONDEBUG(cerr << "WidgetBodyC::WidgetDestroy()\n");
-    ONDEBUG(cerr << "WidgetBodyC::WidgetDestroy(), Called. \n");
+    ONDEBUG(std::cerr << "WidgetBodyC::WidgetDestroy()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::WidgetDestroy(), Called. \n");
     if(gotRef && widget != 0)
       gtk_object_unref(GTK_OBJECT(widget));  // Not sure if this can happen....
     widget = 0;
@@ -543,7 +543,7 @@ namespace RavlGUIN {
   // See handle class for description.
 
   Signal0C &WidgetBodyC::Signal(const char *nm) {
-     ONDEBUG(cerr << "WidgetBodyC::Signal(const char * nm = " << nm << ")\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::Signal(const char * nm = " << nm << ")\n");
    ReadBackLockC lock;
     Signal0C &ret = signals[nm].Data1();
     if(ret.IsValid())
@@ -598,7 +598,7 @@ namespace RavlGUIN {
       case SigTypeCListSel: {CListEventC val; ret = Signal1C<CListEventC>(val); }  break;
       case SigTypeCListCol: ret = Signal1C<IntT>(-1);  break;
       case SigTypeString: // HACK!!
-        cerr << "WidgetBodyC::Signal(), Got SigTypeString from:" << nm << "\n";
+        std::cerr << "WidgetBodyC::Signal(), Got SigTypeString from:" << nm << "\n";
         return ret;
       case SigTypeDNDContext: ret = Signal1C<GdkDragContext *>((GdkDragContext *)0); break;
       case SigTypeDNDPosition: ret = Signal2C<GdkDragContext *,PositionTimeC>((GdkDragContext *)0); break;
@@ -610,7 +610,7 @@ namespace RavlGUIN {
       case SigTypeTreePath: ret = Signal1C<TreeModelPathC>(TreeModelPathC()); break;
       case SigTypeUnknown:
       default:
-        cerr << "WidgetBodyC::Signal(), ERROR Unknown signal type:" << nm << " Type:" << (IntT) (si.signalType) << "\n";
+        std::cerr << "WidgetBodyC::Signal(), ERROR Unknown signal type:" << nm << " Type:" << (IntT) (si.signalType) << "\n";
         return ret;
     }
 
@@ -623,7 +623,7 @@ namespace RavlGUIN {
 
 
   IntT WidgetBodyC::ConnectUp(const char *nm,Signal0C &sig) {
-    ONDEBUG(cerr << "WidgetBodyC::ConnectUp\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::ConnectUp\n");
     if(widget == 0)
       return -1;
     if(StringC(nm) == "combo_activate")
@@ -631,13 +631,13 @@ namespace RavlGUIN {
     IntT id = 0;
     GTKSignalInfoC &si = SigInfo(nm);
     if(si.name == 0) {
-      cerr << "WidgetBodyC::ConnectUp(), ERROR: Unknown signal: '" << nm << "'\n";
+      std::cerr << "WidgetBodyC::ConnectUp(), ERROR: Unknown signal: '" << nm << "'\n";
       return -1;
     }
     id = gtk_signal_connect (GTK_OBJECT (widget), nm,
                              (GtkSignalFunc) si.func,&sig);
     if(id == 0)
-      cerr << "WidgetBodyC::ConnectUp(), Warning failed to connect signal " << nm << "\n";
+      std::cerr << "WidgetBodyC::ConnectUp(), Warning failed to connect signal " << nm << "\n";
     return id;
   }
 
@@ -645,7 +645,7 @@ namespace RavlGUIN {
   // NB. Not all widgets can display tooltips.
 
   void WidgetBodyC::SetToolTip(const char *text,const char *ctxt) {
-    ONDEBUG(cerr << "WidgetBodyC::SetToolTip\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::SetToolTip\n");
     tooltip = text;
   }
 
@@ -653,7 +653,7 @@ namespace RavlGUIN {
 
   void WidgetBodyC::ConnectSignals()
   {
-    ONDEBUG(cerr << "WidgetBodyC::ConnectSignals\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::ConnectSignals\n");
     RavlAssert(Manager.IsGUIThread());
 
     if(widget == 0)
@@ -706,10 +706,10 @@ namespace RavlGUIN {
   // Call only from GUI thread.
 
   bool WidgetBodyC::GUIShow() {
-     ONDEBUG(cerr << "WidgetBodyC::GUIShow()\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::GUIShow()\n");
    if(widget == 0) {
       if(!Create()) {
-        cerr << "WARNING: WidgetBodyC::GUIShow(), Failed. \n";
+        std::cerr << "WARNING: WidgetBodyC::GUIShow(), Failed. \n";
         return false;
       }
     }
@@ -724,7 +724,7 @@ namespace RavlGUIN {
   // Call only from GUI thread.
 
   bool WidgetBodyC::GUIHide() {
-    ONDEBUG(cerr << "WidgetBodyC::GUIHide()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIHide()\n");
     if(widget == 0)
       return false;
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -735,7 +735,7 @@ namespace RavlGUIN {
   //: Show widget to the world.
 
   bool WidgetBodyC::Show() {
-    ONDEBUG(cerr << " WidgetBodyC::Show()\n");
+    ONDEBUG(std::cerr << " WidgetBodyC::Show()\n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUIShow));
     return true;
   }
@@ -743,7 +743,7 @@ namespace RavlGUIN {
   //: Hide widget from the world.
 
   bool WidgetBodyC::Hide() {
-    ONDEBUG(cerr << "WidgetBodyC::Hide(\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::Hide(\n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUIHide));
     return true;
   }
@@ -752,7 +752,7 @@ namespace RavlGUIN {
   //: Widget position.
 
   Index2dC WidgetBodyC::Position() const {
-    ONDEBUG(cerr << "WidgetBodyC::Position()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::Position()\n");
     if(widget == 0)
       return Index2dC(0,0);
     return Index2dC(widget->allocation.x,widget->allocation.y);
@@ -761,7 +761,7 @@ namespace RavlGUIN {
   //: Size of wiget.
 
   Index2dC WidgetBodyC::Size() const {
-     ONDEBUG(cerr << "WidgetBodyC::Size()\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::Size()\n");
    if(widget == 0)
       return Index2dC(0,0);
     return Index2dC(widget->allocation.height,widget->allocation.width);
@@ -776,9 +776,9 @@ namespace RavlGUIN {
   // GUI thread only.
 
   bool WidgetBodyC::GUISetUSize(IntT& x,IntT& y) {
-    ONDEBUG(cerr << "WidgetBodyC::GUISetUSize(IntT& x,IntT& y)\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUISetUSize(IntT& x,IntT& y)\n");
     if(widget == 0) {
-      cerr << "WARNING: WidgetBodyC::GUISetUSize() Called on widget before its been displayed. \n";
+      std::cerr << "WARNING: WidgetBodyC::GUISetUSize() Called on widget before its been displayed. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -790,7 +790,7 @@ namespace RavlGUIN {
 
 
   IndexRange2dC WidgetBodyC::Rectangle() const {
-     ONDEBUG(cerr << "WidgetBodyC::Rectangle()\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::Rectangle()\n");
    if(widget == 0)
       return IndexRange2dC(0,0,0,0);
     Index2dC tl(widget->allocation.x,widget->allocation.y);
@@ -806,7 +806,7 @@ namespace RavlGUIN {
   // destructor.
 
   void WidgetBodyC::Destroy() {
-    ONDEBUG(cerr << "WidgetBodyC::Destroy()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::Destroy()\n");
     for(HashIterC<StringC,Tuple2C<Signal0C,IntT> > it(signals);it.IsElm();it.Next()) {
       if(widget != 0 && GTK_IS_WIDGET(widget) && it.Data().Data2() >= 0) // Incase it was destroyed within GTK.
         gtk_signal_disconnect (GTK_OBJECT(widget), it.Data().Data2() );
@@ -820,21 +820,21 @@ namespace RavlGUIN {
   //: Add to the event mask.
 
   void WidgetBodyC::AddEventMask(IntT event) {
-    ONDEBUG(cerr << "WidgetBodyC::AddEventMask\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::AddEventMask\n");
     ((int &) eventMask) |= event;
   }
 
   //: Remove from the event mask.
 
   void WidgetBodyC::DelEventMask(IntT event) {
-    ONDEBUG(cerr << "WidgetBodyC::DelEventMask\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::DelEventMask\n");
     ((int &)eventMask) &= ~((int)event);
   }
 
   //: Make a shape mask for the widget.
 
   bool WidgetBodyC::GUIShapeCombineMask(GdkBitmap *mask,int off_x,int off_y) {
-    ONDEBUG(cerr << "WidgetBodyC::GUIShapeCombineMask\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIShapeCombineMask\n");
     RavlAssert(widget != 0);
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     gtk_widget_shape_combine_mask(widget,mask,off_x,off_y);
@@ -844,14 +844,14 @@ namespace RavlGUIN {
   //: Grab keyboard focus.
 
   void WidgetBodyC::GrabFocus() {
-    ONDEBUG(cerr << "WidgetBodyC::GrabFocus()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GrabFocus()\n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUIGrabFocus));
   }
 
   //: Grab keyboard focus.
 
   void WidgetBodyC::GUIGrabFocus() {
-    ONDEBUG(cerr << "WidgetBodyC::GUIGrabFocus()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIGrabFocus()\n");
     if(widget == 0)
       return ;
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -862,7 +862,7 @@ namespace RavlGUIN {
 
   bool WidgetBodyC::GUIIsFocus()
   {
-    ONDEBUG(cerr << "WidgetBodyC::GUIIsFocus()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIIsFocus()\n");
     if (widget == 0)
     {
       return false;
@@ -876,7 +876,7 @@ namespace RavlGUIN {
   //: Setup widget as drag and drop source.
 
   bool WidgetBodyC::GUIDNDSource(ModifierTypeT flags,const SArray1dC<GtkTargetEntry> &entries,DragActionT actions) {
-     ONDEBUG(cerr << "WidgetBodyC::GUIDNDSource\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::GUIDNDSource\n");
 
     if(dndInfo == 0)
       dndInfo = new WidgetDndInfoC();
@@ -898,7 +898,7 @@ namespace RavlGUIN {
   //: Disable widget as a drag and drop source.
 
   bool WidgetBodyC::GUIDNDSourceDisable() {
-    ONDEBUG(cerr << "WidgetBodyC::GUIDNDSourceDisable()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIDNDSourceDisable()\n");
     if(dndInfo != 0)
       dndInfo->isSource = false;
     if(widget == 0) return true;
@@ -910,7 +910,7 @@ namespace RavlGUIN {
   //: Setup widget as drag and drop target.
 
   bool WidgetBodyC::GUIDNDTarget(DestDefaultsT flags,const SArray1dC<GtkTargetEntry> &entries,DragActionT actions) {
-    ONDEBUG(cerr << "WidgetBodyC::GUIDNDTarget\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIDNDTarget\n");
     if(dndInfo == 0)
       dndInfo = new WidgetDndInfoC();
     dndInfo->TargFlags = flags;
@@ -931,7 +931,7 @@ namespace RavlGUIN {
   //: Disable widget as a drag and drop source.
 
   bool WidgetBodyC::GUIDNDTargetDisable() {
-    ONDEBUG(cerr << "WidgetBodyC::GUIDNDTargetDisable()\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUIDNDTargetDisable()\n");
     if(dndInfo != 0)
       dndInfo->isSource = false;
     if(widget == 0) return true;
@@ -946,13 +946,13 @@ namespace RavlGUIN {
   //!return: true, Drag started ok.
 
   bool WidgetBodyC::GUIDNDBegin(IntT button,GdkEvent *event) {
-     ONDEBUG(cerr << "WidgetBodyC::GUIDNDBegin\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::GUIDNDBegin\n");
    if(dndInfo == 0) {
-      cerr << "WidgetBodyC::GUIDNDBegin, ERROR: Drag and drop not setup. \n";
+      std::cerr << "WidgetBodyC::GUIDNDBegin, ERROR: Drag and drop not setup. \n";
       return false;
     }
     if(widget == 0) {
-      cerr << "WidgetBodyC::GUIDNDBegin, ERROR: No widget! \n";
+      std::cerr << "WidgetBodyC::GUIDNDBegin, ERROR: No widget! \n";
       return false;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -999,7 +999,7 @@ namespace RavlGUIN {
 
   //: Set the widget position
   bool WidgetBodyC::GUISetUPosition(int &width, int &height) {
-    ONDEBUG(cerr << "WidgetBodyC::GUISetUPosition\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUISetUPosition\n");
     if(widget == 0)
       return false;
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -1009,14 +1009,14 @@ namespace RavlGUIN {
 
   //: Set the widget position
   bool WidgetBodyC::SetUPosition(int &width, int &height) {
-    ONDEBUG(cerr << "WidgetBodyC::SetUPosition(int &width, int &height) \n");
+    ONDEBUG(std::cerr << "WidgetBodyC::SetUPosition(int &width, int &height) \n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetUPosition,width,height));
     return true;
   }
 
   //: Set the widget style
   bool WidgetBodyC::GUISetStyle(WidgetStyleC& style) {
-     ONDEBUG(cerr << "WidgetBodyC::GUISetStyle(WidgetStyleC& style)\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::GUISetStyle(WidgetStyleC& style)\n");
    RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(style != m_style)
       m_style = style;
@@ -1027,7 +1027,7 @@ namespace RavlGUIN {
 
   //: Set the widget style
   void WidgetBodyC::SetStyle(WidgetStyleC& style) {
-     ONDEBUG(cerr << "WidgetBodyC::SetStyle(WidgetStyleC& style)\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::SetStyle(WidgetStyleC& style)\n");
    Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetStyle,style));
   }
 
@@ -1035,7 +1035,7 @@ namespace RavlGUIN {
   //: Set background colour.
 
   bool WidgetBodyC::SetBackgroundColour(const ByteRGBValueC &colour,GtkStateType &state) {
-    ONDEBUG(cerr << "WidgetBodyC::SetBackgroundColour\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::SetBackgroundColour\n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetBackgroundColour,colour,state));
     return true;
   }
@@ -1043,7 +1043,7 @@ namespace RavlGUIN {
   //: Set background colour.
 
   bool WidgetBodyC::SetForgroundColour(const ByteRGBValueC &colour,GtkStateType &state) {
-    ONDEBUG(cerr << "WidgetBodyC::SetForgroundColour\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::SetForgroundColour\n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetForgroundColour,colour,state));
     return true;
   }
@@ -1051,7 +1051,7 @@ namespace RavlGUIN {
   //: Set text colour.
 
   bool WidgetBodyC::SetTextColour(const ByteRGBValueC &colour,GtkStateType &state) {
-    ONDEBUG(cerr << "WidgetBodyC::SetTextColour\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::SetTextColour\n");
     Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetTextColour,colour,state));
     return true;
   }
@@ -1059,13 +1059,13 @@ namespace RavlGUIN {
   //: Set base colour.
 
   bool WidgetBodyC::SetBaseColour(const ByteRGBValueC &colour,GtkStateType &state) {
-     ONDEBUG(cerr << "WidgetBodyC::SetBaseColour\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::SetBaseColour\n");
    Manager.Queue(Trigger(WidgetC(*this),&WidgetC::GUISetBaseColour,colour,state));
     return true;
   }
 
   bool WidgetBodyC::GUISetTextColour(const ByteRGBValueC &colour,GtkStateType &state) {
-    ONDEBUG(cerr << "WidgetBodyC::GUISetTextColour\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUISetTextColour\n");
     GdkColor color;
     color.red = (IntT) colour.Red() * 255;
     color.green = (IntT) colour.Green() * 255;
@@ -1078,7 +1078,7 @@ namespace RavlGUIN {
   //: Set base colour.
 
   bool WidgetBodyC::GUISetBaseColour(const ByteRGBValueC &colour,GtkStateType &state) {
-    ONDEBUG(cerr << "WidgetBodyC::GUISetBaseColour\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUISetBaseColour\n");
     GdkColor color;
     color.red = (IntT) colour.Red() * 255;
     color.green = (IntT) colour.Green() * 255;
@@ -1091,7 +1091,7 @@ namespace RavlGUIN {
   //: Set background colour.
 
   bool WidgetBodyC::GUISetBackgroundColour(const ByteRGBValueC &colour,GtkStateType &state) {
-    ONDEBUG(cerr << "WidgetBodyC::GUISetBackgroundColour\n");
+    ONDEBUG(std::cerr << "WidgetBodyC::GUISetBackgroundColour\n");
     GdkColor color;
     color.red = (IntT) colour.Red() * 255;
     color.green = (IntT) colour.Green() * 255;
@@ -1104,7 +1104,7 @@ namespace RavlGUIN {
   //: Set background colour.
 
   bool WidgetBodyC::GUISetForgroundColour(const ByteRGBValueC &colour,GtkStateType &state) {
-     ONDEBUG(cerr << "WidgetBodyC::GUISetForgroundColour\n");
+     ONDEBUG(std::cerr << "WidgetBodyC::GUISetForgroundColour\n");
    GdkColor color;
     color.red = (IntT) colour.Red() * 255;
     color.green = (IntT) colour.Green() * 255;
@@ -1115,7 +1115,7 @@ namespace RavlGUIN {
   }
 
   void GUIBeep() {
-    ONDEBUG(cerr << "\n");
+    ONDEBUG(std::cerr << "\n");
     gdk_beep();
   }
   //: Emit a short beep

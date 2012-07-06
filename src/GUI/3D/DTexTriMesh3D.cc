@@ -52,13 +52,13 @@ namespace RavlGUIN {
 
   bool DTexTriMesh3DBodyC::GUIRender(Canvas3DC &canvas) const
   {
-    ONDEBUG(cerr << "DTexTriMesh3DBodyC::GUIRender\n");
+    ONDEBUG(std::cerr << "DTexTriMesh3DBodyC::GUIRender\n");
     if (!tmodel.IsValid())
       return true; // Don't do anything.
 
     // Setup GL texturing if it's not already done
     if (texNames.Size() == 0 && tmodel.NumTextures() != 0) {
-      ONDEBUG(cerr << "creating tex names\n");
+      ONDEBUG(std::cerr << "creating tex names\n");
 
       //roate texture coordinates
       glMatrixMode(GL_TEXTURE);
@@ -77,7 +77,7 @@ namespace RavlGUIN {
       glGenTextures(tmodel.NumTextures(), &(texNames[0]));
       for(int i = 0; i < tmodel.NumTextures(); i++)
       {
-        //cerr << "texture:" << i << endl;
+        //cerr << "texture:" << i << std::endl;
         glBindTexture(GL_TEXTURE_2D, texNames[i]);
         // Setup texture parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_REPEAT);
@@ -87,7 +87,7 @@ namespace RavlGUIN {
 
         // Setup texture image
         const ImageC<ByteRGBValueC> &curTexture = tmodel.Textures()[i];
-        //cerr << "size:" << curTexture.Cols() << "  " << curTexture.Rows() << endl;
+        //cerr << "size:" << curTexture.Cols() << "  " << curTexture.Rows() << std::endl;
 
         IntT newRows = PowerOfTwo(curTexture.Rows());
         IntT newCols = PowerOfTwo(curTexture.Cols());
@@ -103,11 +103,11 @@ namespace RavlGUIN {
         } else {
           
           // Create texture with power of two size
-          //cerr << "size:" << newCols << "  " << newRows << endl;
+          //cerr << "size:" << newCols << "  " << newRows << std::endl;
           ImageC<ByteRGBValueC> texture =
             WarpScaleC<ByteRGBValueC, ByteRGBValueC>(ImageRectangleC(newRows, newCols)).
             Apply(curTexture);
-          //cerr << "size:" << texture.Cols() << "  " << texture.Rows() << endl;
+          //cerr << "size:" << texture.Cols() << "  " << texture.Rows() << std::endl;
           
           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                        texture.Cols(), texture.Rows(),
@@ -181,7 +181,7 @@ namespace RavlGUIN {
       }
       break;
     case C3D_FLAT: {
-      ONDEBUG(cerr << "flat render. \n");
+      ONDEBUG(std::cerr << "flat render. \n");
       IntT eGLShadeModel;
       glGetIntegerv(GL_SHADE_MODEL,&eGLShadeModel);
       glShadeModel(GL_FLAT); // Flat shading
@@ -191,10 +191,10 @@ namespace RavlGUIN {
         glColor3ubv(&(it->Colour()[0]));
 #endif
         GLNormal(it->FaceNormal());
-        //cerr << "textureid:" << int(it->TextureID()) << endl;
+        //cerr << "textureid:" << int(it->TextureID()) << std::endl;
         glBindTexture(GL_TEXTURE_2D, texNames[it->TextureID()]);
         glBegin(GL_POLYGON);
-        //cerr << "tc: " << it->TextureCoord(0) << "  " << it->TextureCoord(1) << "  " << it->TextureCoord(2) << endl;
+        //cerr << "tc: " << it->TextureCoord(0) << "  " << it->TextureCoord(1) << "  " << it->TextureCoord(2) << std::endl;
         GLTexCoord(it->TextureCoord(0));
         glArrayElement(tmodel.Index(*it, 0));
         GLTexCoord(it->TextureCoord(1));
@@ -206,7 +206,7 @@ namespace RavlGUIN {
       glShadeModel((GLenum)eGLShadeModel); // Restore old shade model
     } break;
     case C3D_SMOOTH: {
-      ONDEBUG(cerr << "Smooth render. \n");
+      ONDEBUG(std::cerr << "Smooth render. \n");
       IntT eGLShadeModel;
       glGetIntegerv(GL_SHADE_MODEL, &eGLShadeModel);
       glShadeModel(GL_SMOOTH); // smooth shading
@@ -216,11 +216,11 @@ namespace RavlGUIN {
 #if USEMESHCOLOUR
         glColor3ubv(&(it->Colour()[0]));
 #endif
-        //cerr << "textureid:" << int(it->TextureID()) << endl;
+        //cerr << "textureid:" << int(it->TextureID()) << std::endl;
         glBindTexture(GL_TEXTURE_2D, texNames[it->TextureID()]);
         //glBegin(GL_POLYGON);
         glBegin(GL_TRIANGLES);
-        //cerr << "tc: " << it->TextureCoord(0) << "  " << it->TextureCoord(1) << "  " << it->TextureCoord(2) << endl;
+        //cerr << "tc: " << it->TextureCoord(0) << "  " << it->TextureCoord(1) << "  " << it->TextureCoord(2) << std::endl;
         GLTexCoord(it->TextureCoord(0));
         glArrayElement(tmodel.Index(*it, 0));
         GLTexCoord(it->TextureCoord(1));
@@ -244,6 +244,7 @@ namespace RavlGUIN {
     case C3D_POINT:
     case C3D_WIRE:
       glDisableClientState(GL_NORMAL_ARRAY);
+      /* no break */
     case C3D_FLAT:
       glDisableClientState(GL_VERTEX_ARRAY);
       break;
@@ -254,12 +255,12 @@ namespace RavlGUIN {
     return true;
   }
 
-  ostream &operator<<(ostream &strm,const DTexTriMesh3DC &) {
+  std::ostream &operator<<(std::ostream &strm,const DTexTriMesh3DC &) {
     RavlAssert(0);
     return strm;
   }
 
-  istream &operator>>(istream &strm,DTexTriMesh3DC &) {
+  std::istream &operator>>(std::istream &strm,DTexTriMesh3DC &) {
     RavlAssert(0);
     return strm;
   }

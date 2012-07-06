@@ -153,7 +153,7 @@ namespace RavlImageN {
       memcpy(&data[dif_sequence * 150 * 80 + (7 + (dif_block / 15) + dif_block) * 80], p, 480);
       break;
     
-    default:   // we can´t handle any other data
+    default:   // we canï¿½t handle any other data
       break;
     }
  
@@ -366,6 +366,7 @@ namespace RavlImageN {
       
       default:
 	info.samples = 0;
+	break;
       }
     }
   

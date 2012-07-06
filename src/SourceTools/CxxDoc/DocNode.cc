@@ -56,13 +56,13 @@ namespace RavlCxxDocN {
       nodeType(nnodeType),
       placeHolder(aplaceHolder)
   {
-    ONDEBUG(cerr << "DocNodeBodyC::DocNodeBodyC(), Creating node :'" << nm << "' DocName:'" << docName << "' Userlevel:'" << userlvl << "' \n");
+    ONDEBUG(std::cerr << "DocNodeBodyC::DocNodeBodyC(), Creating node :'" << nm << "' DocName:'" << docName << "' Userlevel:'" << userlvl << "' \n");
     Comment().Header() = brief;
     SetVar("brief",brief);
     if(validUserlevels[userlvl])
       SetVar("userlevel",userlvl);
     else {
-      cerr << "WARNING: Invalid userlevel detected '" << userlvl << "' in node :'" << nm << "' DocName:'" << docName << "' \n";
+      std::cerr << "WARNING: Invalid userlevel detected '" << userlvl << "' in node :'" << nm << "' DocName:'" << docName << "' \n";
       SetVar("userlevel","Default");
     }
     SetVar("docentry",nposition);
@@ -116,7 +116,7 @@ namespace RavlCxxDocN {
       newPath += tmp;
       place = place.FindChild(tmp,create,newPath);
       if(!place.IsValid()) {
-	ONDEBUG(cerr << "DocNodeBodyC::AddNode(), Failed to create node. \n");
+	ONDEBUG(std::cerr << "DocNodeBodyC::AddNode(), Failed to create node. \n");
 	return DocNodeC();
       }
     }

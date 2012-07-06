@@ -56,40 +56,40 @@ int SelfCheck()
 {
   // Intercept signals ??
   int lineNo;
-  cout << "VALIDATE: Starting self test\n" << flush;
+  std::cout << "VALIDATE: Starting self test\n" << flush;
   if((lineNo = CheckTypes()) != 0) {
-    cerr << "ERROR: Basic type check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: Basic type check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckBool()) != 0) {
-    cerr << "ERROR: Boolean check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: Boolean check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckDList()) != 0) {
-    cerr << "ERROR: DList check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: DList check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckRefCount()) != 0) {
-    cerr << "ERROR: RefCounter check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: RefCounter check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckString()) != 0) {
-    cerr << "ERROR: String check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: String check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckDeadLine()) != 0) {
-    cerr << "ERROR: Deadline check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: Deadline check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckFiles()) != 0) {
-    cerr << "ERROR: File handling check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: File handling check failed. Line:" << lineNo << "\n";
     return 0;
   }
   if((lineNo = CheckChildProc()) != 0) {
-    cerr << "ERROR: Child proc check failed. Line:" << lineNo << "\n";
+    std::cerr << "ERROR: Child proc check failed. Line:" << lineNo << "\n";
     return 0;
   }
-  cout << "VALIDATE: Self test PASSED \n" << flush;
+  std::cout << "VALIDATE: Self test PASSED \n" << flush;
   return 1;
 }
 
@@ -154,7 +154,7 @@ public:
     {}
 };
 
-// Reference couting.
+// Reference std::couting.
 
 int CheckRefCount()
 {  
@@ -331,19 +331,19 @@ int CheckFiles()
 {
   FilenameC myself(procname);
   if(!myself.Exists()) {
-    cerr << "I can't find myself! '" << procname << "'\n";
+    std::cerr << "I can't find myself! '" << procname << "'\n";
     return __LINE__;
   }
 #if 0
   if(!myself.IsExecutable()) {
-    cerr << "I'm not self executable! \n";
+    std::cerr << "I'm not self executable! \n";
     return __LINE__;
   }
 #endif
   FilenameC tmpFile("/tmp/validFile");
   tmpFile = tmpFile.MkTemp(4,100);
   if(tmpFile.Exists() || tmpFile.IsEmpty()) {
-    cerr << "Failed to choose temp file. \n";
+    std::cerr << "Failed to choose temp file. \n";
     return __LINE__;
   }
   {
@@ -352,15 +352,15 @@ int CheckFiles()
     delete os;
   }
   if(!tmpFile.Exists()) {
-    cerr << "Failed to create temp file. \n";
+    std::cerr << "Failed to create temp file. \n";
     return __LINE__;
   }
   if(!tmpFile.Remove()) {
-    cerr << "Failed to remove temp file. \n";
+    std::cerr << "Failed to remove temp file. \n";
     return __LINE__;
   }
   if(tmpFile.Exists()) {
-    cerr << "Failed to delete temp file. \n";
+    std::cerr << "Failed to delete temp file. \n";
     return __LINE__;
   }
   return 0;
@@ -370,102 +370,102 @@ int CheckFiles()
 
 int CheckChildProc()
 {
-  ONDEBUG(cerr << "Starting child prog test.... \n");
+  ONDEBUG(std::cerr << "Starting child prog test.... \n");
   StringC pn(procname);
-  ONDEBUG(cerr << "Using procname='" << procname << "' \n");
-  //cerr << "Validate:" << pn << endl;
+  ONDEBUG(std::cerr << "Using procname='" << procname << "' \n");
+  //cerr << "Validate:" << pn << std::endl;
   if(pn.IsEmpty()) {
-    cerr << "Can't find path to validation program. \n";
+    std::cerr << "Can't find path to validation program. \n";
     return __LINE__;
   }
 #if 1
   // Check return true.
   ChildOSProcessC xp3(pn + " -t");
   if(!xp3.Wait(1)) {
-    cerr << "ERROR: Wait failed 2 \n";
+    std::cerr << "ERROR: Wait failed 2 \n";
     return __LINE__;
   }
   if(!xp3.ExitedOk()) {
-    cerr << "ERROR: Child exited with error\n";
+    std::cerr << "ERROR: Child exited with error\n";
     return __LINE__;
   }
   if(xp3.ExitCode() != 0) {
-    cerr << "Expected exitcode == 0 : " << xp3.ExitCode() << endl;
+    std::cerr << "Expected exitcode == 0 : " << xp3.ExitCode() << std::endl;
     return __LINE__;
   }
   
   // Check return false.
   ChildOSProcessC xp4(pn + " -f");
   if(!xp4.Wait(1)) {
-    cerr << "ERROR: Wait failed 2 \n";
+    std::cerr << "ERROR: Wait failed 2 \n";
     return __LINE__;
   }
   if(!xp4.ExitedOk()) {
-    cerr << "ERROR: Child exited with error\n";
+    std::cerr << "ERROR: Child exited with error\n";
     return __LINE__;
   }
   if(xp4.ExitCode() == 0) {
-    cerr << "Expected exitcode != 0 : " << xp4.ExitCode() << endl;
+    std::cerr << "Expected exitcode != 0 : " << xp4.ExitCode() << std::endl;
     return __LINE__;
   }
   
   // Check segmentation faults.
-  ONDEBUG(cerr << "Starting seg fault test... \n");
+  ONDEBUG(std::cerr << "Starting seg fault test... \n");
   FilenameC tmpDir("/tmp");
   if(!tmpDir.Exists()) {
-    cerr << "Can't find temp directory. \n";
+    std::cerr << "Can't find temp directory. \n";
     return __LINE__;
   }
   FilenameC tmpFile("/tmp/validate");
-  ONDEBUG(cerr << "Calling mktemp \n");
+  ONDEBUG(std::cerr << "Calling mktemp \n");
   tmpFile = tmpFile.MkTemp(4,100);
   if(tmpFile.Exists() || tmpFile.IsEmpty()) {
-    cerr << "Failed to choose temp file. \n";
+    std::cerr << "Failed to choose temp file. \n";
     return __LINE__;
   }
   StringC segcmd = pn + " -s";
-  ONDEBUG(cerr << "Executing '" << segcmd << "'\n");
+  ONDEBUG(std::cerr << "Executing '" << segcmd << "'\n");
 #if 0
   ChildOSProcessC xp2(segcmd,tmpFile,true);
   if(!tmpFile.Exists()) {
-    cerr << "Failed to create temp file. \n";
+    std::cerr << "Failed to create temp file. \n";
     return __LINE__;
   }
 #else  
   ChildOSProcessC xp2(segcmd);
 #endif
-  ONDEBUG(cerr << "Waiting for exit... \n");
+  ONDEBUG(std::cerr << "Waiting for exit... \n");
   xp2.Wait(0.5);
   if(xp2.IsRunning()) {
-    cerr << "ERROR: Child running, during test.\n";
+    std::cerr << "ERROR: Child running, during test.\n";
     return __LINE__;
   }
   tmpFile.Remove();
   if(xp2.ExitedOk()) {
-    cerr << "ERROR: Child exited ok, during failure test!\n";
+    std::cerr << "ERROR: Child exited ok, during failure test!\n";
     return __LINE__;
   }
 #endif
   // Check for hangs.
   StringC cmd = pn + " -hang";
-  ONDEBUG(cerr << "Starting hang test... '" << cmd << "'\n");
+  ONDEBUG(std::cerr << "Starting hang test... '" << cmd << "'\n");
   ChildOSProcessC xp1(cmd);
   if(!xp1.IsRunning()) {
-    cerr << "Run failed.\n";
+    std::cerr << "Run failed.\n";
     return __LINE__;
   }
   if(xp1.Wait(0.5)) {
-    cerr << "Wait failed.\n";
+    std::cerr << "Wait failed.\n";
     return __LINE__;
   }
   if(!xp1.IsRunning()) {
-    cerr << "ERROR: Child not running.!\n";
+    std::cerr << "ERROR: Child not running.!\n";
     return __LINE__;
   }
   if(!xp1.Terminate()) {
-    cerr << "ERROR: Termination failed.!\n";
+    std::cerr << "ERROR: Termination failed.!\n";
     return __LINE__;
   }
-  ONDEBUG(cerr << "hang test done. \n");
+  ONDEBUG(std::cerr << "hang test done. \n");
   return 0;
 }

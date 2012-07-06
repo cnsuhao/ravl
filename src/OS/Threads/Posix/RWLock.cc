@@ -103,7 +103,7 @@ namespace RavlN
     }
     isValid = false;
     if(x == 0) 
-      cerr << "WARNING: Failed to destory RWLock. \n";
+      std::cerr << "WARNING: Failed to destory RWLock. \n";
   }
 
   //: Get a read lock.
@@ -404,18 +404,18 @@ namespace RavlN
   //: Print an error.
   
   void RWLockC::Error(const char *msg,int ret) {
-    cerr << msg << " (errno=" << errno << ") Return=" << ret << " \n";
+    std::cerr << msg << " (errno=" << errno << ") Return=" << ret << " \n";
     RavlAssert(0); // Abort so we can get a stack trace.
   }
 
-  ostream &operator<<(ostream &strm,const RWLockC &vertex) {
+  std::ostream &operator<<(std::ostream &strm,const RWLockC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
   //: Text stream output.
   // Not implemented
   
-  istream &operator>>(istream &strm,RWLockC &vertex) {
+  std::istream &operator>>(std::istream &strm,RWLockC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }

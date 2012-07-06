@@ -186,7 +186,7 @@ namespace RavlGUIN
   {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     
-    ONDEBUG(cerr << "ButtonBodyC::GUISetImage()\n");
+    ONDEBUG(std::cerr << "ButtonBodyC::GUISetImage()\n");
     PixmapC tempPixmap = pixmap;
     GtkWidget *tempPixmapWidget = NULL;
     if (tempPixmap.IsValid())
@@ -209,7 +209,7 @@ namespace RavlGUIN
       // Is it the label?
       if (GTK_IS_PIXMAP(child) || GTK_IS_IMAGE(child))
       {
-        ONDEBUG(cerr << "ButtonBodyC::GUISetImage() replacing label for pixmap\n");
+        ONDEBUG(std::cerr << "ButtonBodyC::GUISetImage() replacing label for pixmap\n");
         
         // Remove the old, add the new and store the pixmap
         gtk_container_remove(GTK_CONTAINER(widget), child);
@@ -220,7 +220,7 @@ namespace RavlGUIN
       {
         if (GTK_IS_LABEL(child))
         {
-          ONDEBUG(cerr << "ButtonBodyC::GUISetImage() replacing label for pixmap and label\n");
+          ONDEBUG(std::cerr << "ButtonBodyC::GUISetImage() replacing label for pixmap and label\n");
           
           // Remove the existing label
           gtk_container_remove(GTK_CONTAINER(widget), child);
@@ -247,7 +247,7 @@ namespace RavlGUIN
           // Find the first label in the nest of children
           if (GTK_IS_CONTAINER(child))
           {
-            ONDEBUG(cerr << "ButtonBodyC::GUISetImage() replacing pixmap child\n");
+            ONDEBUG(std::cerr << "ButtonBodyC::GUISetImage() replacing pixmap child\n");
             
             // Find an existing pixmap
             GtkWidget *oldPixmapWidget = NULL;
@@ -301,13 +301,13 @@ namespace RavlGUIN
       widget = BuildWidget(label.Size() == 0 ? NULL : label.chars());
       if (label.Size() == 0) 
       {
-        ONDEBUG(cerr << "ButtonBodyC::Create() Pixmap\n");
+        ONDEBUG(std::cerr << "ButtonBodyC::Create() Pixmap\n");
         gtk_container_add(GTK_CONTAINER(widget), pixmapWidget);
       }
       else
       {
         // Create an hbox
-        ONDEBUG(cerr << "ButtonBodyC::Create() Pixmap Label:'" << strLabel << "'\n");
+        ONDEBUG(std::cerr << "ButtonBodyC::Create() Pixmap Label:'" << strLabel << "'\n");
         GtkWidget *box = gtk_hbox_new(false, 0);
         gtk_container_set_border_width(GTK_CONTAINER(box), g_pixmapBorder);
         
@@ -323,7 +323,7 @@ namespace RavlGUIN
       }
     } else
     {
-      ONDEBUG(cerr << "ButtonBodyC::Create() Label:'" << strLabel << "'\n");
+      ONDEBUG(std::cerr << "ButtonBodyC::Create() Label:'" << strLabel << "'\n");
       widget = BuildWidget(strLabel);
     }
     

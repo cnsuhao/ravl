@@ -56,11 +56,11 @@ namespace RavlN {
   
   Array1dC<ComplexC> FFT1dBodyC::Apply(const Array1dC<ComplexC> &dat)
   {
-    ONDEBUG(cerr << "FFT1dBodyC::Apply(Array1dC<ComplexC>) n=" << n << " inv=" << inv << " \n");
+    ONDEBUG(std::cerr << "FFT1dBodyC::Apply(Array1dC<ComplexC>) n=" << n << " inv=" << inv << " \n");
     Array1dC<ComplexC> ret(n);
     Array1dC<ComplexC> tmpArr(n);
     if (dat.Size() < (UIntT) n && zeroPad) {
-      ONDEBUG(cerr << "Zero padding. \n");
+      ONDEBUG(std::cerr << "Zero padding. \n");
       ret = Array1dC<ComplexC>(n);
       // Copy original data.
       for (BufferAccessIter2C<ComplexC, ComplexC> it(dat, tmpArr); it; it++)
@@ -99,9 +99,9 @@ namespace RavlN {
   //: Apply transform to array.
   
   Array1dC<ComplexC> FFT1dBodyC::Apply(const Array1dC<RealT> &dat) {
-    ONDEBUG(cerr << "FFT1dBodyC::Apply(Array1dC<RealT>) n=" << n << " inv=" << inv << " \n");
+    ONDEBUG(std::cerr << "FFT1dBodyC::Apply(Array1dC<RealT>) n=" << n << " inv=" << inv << " \n");
     if(dat.Size() < (UIntT) n && zeroPad) {
-      ONDEBUG(cerr << "Zero padding. \n");
+      ONDEBUG(std::cerr << "Zero padding. \n");
       Array1dC<RealT> ndat(n);
       // Copy original data.
       for(BufferAccessIter2C<RealT,RealT> it(dat,ndat);it;it++)

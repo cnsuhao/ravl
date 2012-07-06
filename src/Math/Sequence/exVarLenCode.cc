@@ -47,9 +47,9 @@ int exVarLenCode (int argc, char** argv)
   VariableLengthCodeIterC decoder(code_table);
   while(istrm.good()){ // 8 extra 0's are output at the end..
     decoder.NextToken(istrm); 
-    cout <<  decoder.Data() << " ";
+    std::cout <<  decoder.Data() << " ";
   }
-  cout << "\n";
+  std::cout << "\n";
 
   return 0;
 }

@@ -30,7 +30,7 @@ namespace RavlDFN {
   
   //: Load from stream.
   
-  DFStreamOpBodyC::DFStreamOpBodyC(istream &strm) 
+  DFStreamOpBodyC::DFStreamOpBodyC(std::istream &strm) 
     : DFObjectBodyC(strm)
   {
     int version;
@@ -52,7 +52,7 @@ namespace RavlDFN {
     strm >> packStacked >> streamOp;    
   }
   
-  //: Save ostream.
+  //: Save std::ostream.
   
   bool DFStreamOpBodyC::Save(XMLOStreamC &strm,bool inCharge) const {
     if(inCharge)
@@ -67,7 +67,7 @@ namespace RavlDFN {
 
   //: Writes object to stream, can be loaded using constructor
   
-  bool DFStreamOpBodyC::Save (ostream &strm) const {
+  bool DFStreamOpBodyC::Save (std::ostream &strm) const {
     if(!DFObjectBodyC::Save(strm))
       return false;
     int version = 0;
@@ -118,7 +118,7 @@ namespace RavlDFN {
   //: Render object to view.
   
   bool DFStreamOpBodyC::Render(GUIViewBodyC &view,const Index2dC &at,DFRenderModeT mode) {
-    ONDEBUG(cerr << "DFStreamOpBodyC::Render(), Called. At=" << at << " Mode=" << (int)mode << "\n");
+    ONDEBUG(std::cerr << "DFStreamOpBodyC::Render(), Called. At=" << at << " Mode=" << (int)mode << "\n");
     
     Index2dC textSize = view.TextSize(view.DrawFont(),name);
     Index2dC size = textSize + Index2dC(3,8);
@@ -162,7 +162,7 @@ namespace RavlDFN {
     
     IntT leftSide = size.Col().V();
     IntT rightSide = size.Col().V();
-    //ONDEBUG(cerr << "Row=" << size.Row() << " Col=" << size.Col().V() << "\n");
+    //ONDEBUG(std::cerr << "Row=" << size.Row() << " Col=" << size.Col().V() << "\n");
     for(DLIterC<DFAttachC> it(parts);it;it++) {
       Index2dC osize = it->Object().PackingSize().Size();
       Index2dC off;

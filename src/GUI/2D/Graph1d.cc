@@ -103,7 +103,7 @@ namespace RavlGUIN {
   //: Mouse event.
   
   void Graph1dBodyC::MouseMoveEvent(MouseEventC &me) {
-    //ONDEBUG(cerr << "Graph1dBodyC::MouseMoveEvent() Called. \n");
+    //ONDEBUG(std::cerr << "Graph1dBodyC::MouseMoveEvent() Called. \n");
     Index2dC mpos = me.Position();
     if(!me.HasChanged()) {
     }
@@ -112,9 +112,9 @@ namespace RavlGUIN {
   //: Mouse event.
   
   void Graph1dBodyC::MousePressEvent(MouseEventC &me) {
-    //ONDEBUG(cerr << "Graph1dBodyC::MousePressEvent() Called. \n");
+    //ONDEBUG(std::cerr << "Graph1dBodyC::MousePressEvent() Called. \n");
     if(me.HasChanged(2)) {
-      ONDEBUG(cerr << "Show menu. \n");
+      ONDEBUG(std::cerr << "Show menu. \n");
       if(backMenu.IsValid())
 	backMenu.Popup();
     }
@@ -123,7 +123,7 @@ namespace RavlGUIN {
   //: Mouse event.
   
   void Graph1dBodyC::MouseReleaseEvent(MouseEventC &me) {
-    //ONDEBUG(cerr << "Graph1dBodyC::MouseReleaseEvent() Called. \n");
+    //ONDEBUG(std::cerr << "Graph1dBodyC::MouseReleaseEvent() Called. \n");
   }
   
   
@@ -131,7 +131,7 @@ namespace RavlGUIN {
   // Resize as well ?
   
   void Graph1dBodyC::ConfigureEvent(GdkEvent* &event) {
-    ONDEBUG(cerr << "Graph1dBodyC::ConfigureEvent(), Got event. \n");
+    ONDEBUG(std::cerr << "Graph1dBodyC::ConfigureEvent(), Got event. \n");
     GtkWidget *widget = Widget();
     
     // Make sure we have a drawing context.
@@ -156,7 +156,7 @@ namespace RavlGUIN {
     dataArea = IndexRectangleC(drawOrigin,drawMax);
     max = ReverseMap(drawMax);
     
-    ONDEBUG(cerr << "Graph1dBodyC::ConfigureEvent(), TextWidth=" << textWidth << " TextHeight=" << textHeight << "\n");
+    ONDEBUG(std::cerr << "Graph1dBodyC::ConfigureEvent(), TextWidth=" << textWidth << " TextHeight=" << textHeight << "\n");
   }
   
   //: Draw the graph into the window.
@@ -175,7 +175,7 @@ namespace RavlGUIN {
 		       expose.area.height + expose.area.y);
     
     
-    //ONDEBUG(cerr << "Graph1dBodyC::ExposeEvent(), Max:" << max << "\n");
+    //ONDEBUG(std::cerr << "Graph1dBodyC::ExposeEvent(), Max:" << max << "\n");
     DrawXAxis();
     DrawYAxis();
     DrawData();
@@ -208,7 +208,7 @@ namespace RavlGUIN {
 		       windowSize.Col().V());
     
     
-    ONDEBUG(cerr << "Graph1dBodyC::ExposeEvent(), Max:" << max << "\n");
+    ONDEBUG(std::cerr << "Graph1dBodyC::ExposeEvent(), Max:" << max << "\n");
     DrawXAxis();
     DrawYAxis();
     DrawData();
@@ -393,7 +393,7 @@ namespace RavlGUIN {
     rect.width = (dataArea.End().Col().V() - rect.x);
     rect.height = (dataArea.Origin().Row().V() - rect.y);
     //cerr << "DataArea:" << dataArea << "\n";
-    //  cerr << "ClipRect:" << rect.x << " " << rect.y << "   Ext:" << rect.width << " " << rect.height << " \n";
+    //  std::cerr << "ClipRect:" << rect.x << " " << rect.y << "   Ext:" << rect.width << " " << rect.height << " \n";
     gdk_gc_set_clip_rectangle(winGC,&rect);
 #endif
     
@@ -439,6 +439,7 @@ namespace RavlGUIN {
 			   at.Col().V(),
 			   at.Row().V()
 			   );
+	    break;
 	  }
 	if(!doneFirst) 
 	  doneFirst = true;
@@ -495,9 +496,9 @@ namespace RavlGUIN {
     origin = rect.Origin();
     int width = dataArea.End().Col().V() - dataArea.Origin().Col().V();
     int height = dataArea.Origin().Row().V() - dataArea.End().Row().V();
-    cerr << "Width=" << width << " Height=" << height << "\n";
+    std::cerr << "Width=" << width << " Height=" << height << "\n";
     scale = Point2dC(width,height) / rect.Size();
-    cerr << "Origin=" << origin << " Scale=" << scale << "\n";
+    std::cerr << "Origin=" << origin << " Scale=" << scale << "\n";
     PlaceTicks();
     RefreshAll();
   }

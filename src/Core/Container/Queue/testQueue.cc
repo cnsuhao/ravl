@@ -38,6 +38,7 @@ int main() {
 	  }
 	  lget = lval;
 	}
+	break;
       }
   }
   std::cerr << "Queue test passed ok. \n";

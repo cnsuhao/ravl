@@ -383,6 +383,7 @@ OneClassC DesignOneClassBodyC::GetClassifier() const
     delete[] lmbd;
     throw;
   }
+  return OneClassC();
 }
 //---------------------------------------------------------------------------
 RealT DesignOneClassBodyC::GetKernelValue(int I1, int I2) const

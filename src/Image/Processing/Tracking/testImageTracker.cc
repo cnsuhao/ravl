@@ -27,7 +27,7 @@ int main(int nargs,char **argv) {
   
   ImageC<ByteT> img;
   if(!Load(inFile1,img)) {
-    cerr << "Failed to load input image '" << inFile1 << "' \n";
+    std::cerr << "Failed to load input image '" << inFile1 << "' \n";
     return 1;
   }
   Projection2dC ident;
@@ -38,7 +38,7 @@ int main(int nargs,char **argv) {
   
   DListC<PairC<Point2dC> > pairs = track.TrackImage(img,img2,ident);
   
-  cerr << "Pairs=" << pairs << "\n";
+  std::cerr << "Pairs=" << pairs << "\n";
   
   return 0;
 }

@@ -39,6 +39,7 @@ namespace RavlN {
     
     RavlAssert(0);
     //return domain.ConvertX2P (currentX);     // Return final estimate
+    return VectorC();
   }
   
   

@@ -469,6 +469,7 @@ int main(int argc, char **argv)
       }
       default:
         classifier = svmClassifier;
+        break;
     }
 
     //save classifier

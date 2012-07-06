@@ -24,11 +24,11 @@ namespace RavlImageN {
   
   class PointTrackModelC;
   
-  ostream &operator<<(ostream &strm,const PointTrackModelC &pt);
-  //: Save to ostream.
+  std::ostream &operator<<(std::ostream &strm,const PointTrackModelC &pt);
+  //: Save to std::ostream.
   
-  istream &operator>>(istream &strm,PointTrackModelC &pt);
-  //: Load from istream.
+  std::istream &operator>>(std::istream &strm,PointTrackModelC &pt);
+  //: Load from std::istream.
 
   //:-
   

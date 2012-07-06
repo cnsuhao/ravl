@@ -65,7 +65,7 @@ namespace RavlN {
           break;
         case RavlN::RAVLInvBinaryID:
           bin.UseNativeEndian(!bin.NativeEndian());
-          // Fall through
+          /* no break */
         case RavlN::RAVLBinaryID:
           // Use what every default 32/64 bit mode is set in the stream.
           break;

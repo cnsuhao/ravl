@@ -192,7 +192,7 @@ namespace RavlN
 
     default:
       RavlAlwaysAssert(false);  // unknown euler sequence
-
+      break;
     }
   }
 
@@ -217,6 +217,7 @@ namespace RavlN
 
     default:
       RavlAlwaysAssert(false);  // unknown euler sequence
+      break;
     }
 
   }

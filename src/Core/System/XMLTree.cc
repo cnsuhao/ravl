@@ -250,7 +250,7 @@ namespace RavlN {
       XMLTagOpsT tt = in.ReadTag(name,attr);
       
       if(tt == XMLContent) {
-	ONDEBUG(cerr << "Found tag '" << name << "' XMLContent \n");
+	ONDEBUG(std::cerr << "Found tag '" << name << "' XMLContent \n");
 	continue;
       }
       if(tt == XMLEndTag ) {
@@ -259,13 +259,13 @@ namespace RavlN {
           throw RavlN::ExceptionBadConfigC("Mismatched tags in XML file. ");
           return false;
         }
-	ONDEBUG(cerr << "Found end tag '" << name << "' \n");
+	ONDEBUG(std::cerr << "Found end tag '" << name << "' \n");
 	break;
       }
       // Process includes using XInclude syntax.
       XMLTreeC subtree(name,attr,tt == XML_PI);
       if(tt == XMLBeginTag) {
-	ONDEBUG(cerr << "Found begin tag '" << name << "' \n");
+	ONDEBUG(std::cerr << "Found begin tag '" << name << "' \n");
 	if(!subtree.Read(in,includedFiles,loader)) {
           ONDEBUG(std::cerr << "Failed to read sub node. \n");
 	  return false;

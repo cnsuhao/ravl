@@ -113,7 +113,7 @@ namespace RavlCxxDocN
   
   //: Dump to 'out' in human readable form.
   
-  void ObjectBodyC::Dump(ostream &out,int indent) {
+  void ObjectBodyC::Dump(std::ostream &out,int indent) {
     Pad(out,indent) << "Object: '" << name << "'  Type:" << TypeName() << "\n";
     for(HashIterC<StringC,StringC> it(comment.Vars());it.IsElm();it.Next())
       Pad(out,indent+1) << "(" << it.Key() << "=" << it.Data() <<")\n";
@@ -138,7 +138,7 @@ namespace RavlCxxDocN
   
   //: Put padding spaces in.
   
-  ostream & ObjectBodyC::Pad(ostream &out,int indent) {
+  std::ostream & ObjectBodyC::Pad(std::ostream &out,int indent) {
     for(int i= 0;i <indent;i++)
       out << ' ';
     return out;
@@ -200,7 +200,7 @@ namespace RavlCxxDocN
   }
   
   //: Output to stream.
-  ostream &operator<<(ostream &s,const ObjectC &out) { 
+  std::ostream &operator<<(std::ostream &s,const ObjectC &out) { 
     if(!out.IsValid())
       s << "(NULL)";
     else
@@ -241,8 +241,8 @@ namespace RavlCxxDocN
       return dg.TextFor(ObjectC(const_cast<ObjectBodyC &>(*this)));
     }
     if(maxDepth < 1) {
-      ONDEBUG(cerr << "ObjectBodyC::FullName() ");
-      cerr << "ERROR: Maximum template depth exceeded in '" << Name() <<"' -> '" << lu->Name() << "'\n";
+      ONDEBUG(std::cerr << "ObjectBodyC::FullName() ");
+      std::cerr << "ERROR: Maximum template depth exceeded in '" << Name() <<"' -> '" << lu->Name() << "'\n";
       return lu->Name();
     }
     return lu->FullName(emptyTemplSubst,dg,maxDepth-1); // Only do substition once!
@@ -251,7 +251,7 @@ namespace RavlCxxDocN
   //: Create a new object with subsituted args.
   
   ObjectC ObjectBodyC::Subst(RCHashC<StringC,ObjectC> &subst) const {
-    ONDEBUG(cerr << "ObjectBodyC::Subst(), Called '" << Name() << "' \n");
+    ONDEBUG(std::cerr << "ObjectBodyC::Subst(), Called '" << Name() << "' \n");
     ObjectC *lu = subst.Lookup(Name());
     if(lu != 0)
       return *lu;
@@ -276,7 +276,7 @@ namespace RavlCxxDocN
   
   //: Dump to 'out' in human readable form.
   
-  void ObjectListBodyC::Dump(ostream &out,int indent) {
+  void ObjectListBodyC::Dump(std::ostream &out,int indent) {
     Pad(out,indent) << "List: '" << name << "'  Type:" << TypeName() << "\n";
     {
       for(HashIterC<StringC,StringC> it(comment.Vars());it.IsElm();it.Next())
