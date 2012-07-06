@@ -148,6 +148,7 @@ static bool HandleKeyPress(GdkEventKey * keyEvent) {
         break;
      default:
         guiPlayControl.Play();
+        break;
      }
      break;
   case(GDK_Down) :
@@ -157,6 +158,7 @@ static bool HandleKeyPress(GdkEventKey * keyEvent) {
         break;
      default:
         guiPlayControl.Back();
+        break;
      }
      break;
   case(GDK_q) :

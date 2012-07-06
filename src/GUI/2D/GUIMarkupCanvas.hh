@@ -39,7 +39,7 @@ namespace RavlGUIN {
     GUIMarkupCanvasBodyC(int rows,int cols);
     //: Constructor.
     
-    ~GUIMarkupCanvasBodyC();
+    virtual ~GUIMarkupCanvasBodyC();
     //: Destructor.
     
     virtual bool Create();

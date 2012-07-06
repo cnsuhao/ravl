@@ -33,7 +33,10 @@ namespace RavlN { namespace GeneticN {
   class GeneVisitorC
   {
   public:
-    // Examine a gene.
+    //! Virtual destructor.
+    virtual ~GeneVisitorC();
+
+    //! Examine a gene.
     virtual bool Examine(const GeneC &gene);
   };
 

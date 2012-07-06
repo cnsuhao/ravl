@@ -29,6 +29,10 @@
 
 namespace RavlN { namespace GeneticN {
 
+  //! Virtual destructor.
+  GeneVisitorC::~GeneVisitorC()
+  {}
+
   bool GeneVisitorC::Examine(const GeneC &gene)
   {
     return true;

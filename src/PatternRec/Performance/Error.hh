@@ -64,6 +64,11 @@ namespace RavlN {
     : public RCHandleVC<ErrorBodyC>
   {
   public:
+    //! Construct from a base handle
+    ErrorC(const RCHandleVC<ErrorBodyC> &other)
+     : RCHandleVC<ErrorBodyC>(other)
+    {}
+
     ErrorC()
       : RCHandleVC<ErrorBodyC>(*new ErrorBodyC())
     {}

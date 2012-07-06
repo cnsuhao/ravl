@@ -231,7 +231,7 @@ namespace RavlN {
 	default: // Require exact match.
 	  if(*str != *filt)
 	    return false;
-	  // Fall through.
+	    /* no break */
 	case '?': // Match any character.
 	  str++;
 	  filt++;

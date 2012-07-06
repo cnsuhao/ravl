@@ -48,7 +48,7 @@ namespace RavlN {
     { ravl_atomic_set(&owners,0); }
     //: Copy constructor
 
-    ~RCLayerBodyC()
+    virtual ~RCLayerBodyC()
     { RavlAssert(ravl_atomic_read(&owners) == 0); }
     //: Destructor
     

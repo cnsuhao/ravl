@@ -31,7 +31,7 @@ namespace RavlN {
        MsgBufferBodyC();
 
        //! Destructor
-       ~MsgBufferBodyC();
+       virtual ~MsgBufferBodyC();
 
        //! Build access to buffer.
        //! Use after msg has been updated in any way
