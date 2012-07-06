@@ -96,6 +96,7 @@ namespace RavlN {
       case 2: // Quadratic
 	if(!orthogonal)
 	  return FuncQuadraticC(inSize,outSize);
+	/* no break */
       default:
 	return FuncOrthPolynomialC(inSize,outSize,order);
       };

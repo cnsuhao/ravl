@@ -148,6 +148,7 @@ namespace RavlN { namespace GeneticN {
           newList.push_back(newGene.BodyPtr());
           ret = true;
         }  // Fall through
+        /* no break */
         default:  // Just leave it alone
           newList.push_back(oldList[i]);
           break;

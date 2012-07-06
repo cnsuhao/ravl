@@ -39,6 +39,9 @@ namespace RavlN {
 #endif
   }
 
+  XMLTreeLoadC::~XMLTreeLoadC()
+  {}
+
   //! Create a new node in the tree.
 
   bool XMLTreeLoadC::NewNode(const StringC &name,

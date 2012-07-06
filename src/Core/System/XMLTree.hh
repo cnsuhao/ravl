@@ -30,6 +30,8 @@ namespace RavlN {
 
   class XMLTreeLoadC {
   public:
+    virtual ~XMLTreeLoadC();
+    //! Destructor
 
     virtual bool NewNode(const StringC &name,
                          const RCHashC<StringC,StringC> &attr,

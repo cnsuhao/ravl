@@ -213,7 +213,7 @@ namespace RavlN {
     PointerManagerBodyC(bool forSave);
     //: Constructor.
     
-    ~PointerManagerBodyC();
+    virtual ~PointerManagerBodyC();
     //: Destructor.
     
     bool Lookup(const IOPtrC &obj,SizeT &id) const

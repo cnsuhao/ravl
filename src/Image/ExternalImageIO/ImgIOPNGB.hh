@@ -50,7 +50,7 @@ namespace RavlImageN {
     DPImageIOPNGBaseC();
     //: Constructor.
     
-    ~DPImageIOPNGBaseC();
+    virtual ~DPImageIOPNGBaseC();
     //: Destructor.
     
     
@@ -75,7 +75,7 @@ namespace RavlImageN {
     DPIImageIOPNGBaseC(const IStreamC &fin);
     //: Constructor
     
-    ~DPIImageIOPNGBaseC();
+    virtual ~DPIImageIOPNGBaseC();
     //: Destructor.
     
     bool ReadHeaderInfo(int &bit_depth,int &colourType,int &interlace);
@@ -99,7 +99,7 @@ namespace RavlImageN {
     DPOImageIOPNGBaseC(const OStreamC &fout);
     //: Constructor.
     
-    ~DPOImageIOPNGBaseC();
+    virtual ~DPOImageIOPNGBaseC();
     //: Destructor.
     
   protected:

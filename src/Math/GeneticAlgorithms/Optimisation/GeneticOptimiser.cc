@@ -42,6 +42,9 @@ namespace RavlN { namespace GeneticN {
      m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
      m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
   {
+    factory.Attribute("logLevel",m_logLevel,RavlN::SYSLOG_INFO);
+    RavlInfo("Setting debug level to '%s' ",RavlN::StringOf(m_logLevel).c_str());
+
     rThrowBadConfigContextOnFailS(factory,UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC)),"No start population");
     // Setting the fitness function via XML is optional
     factory.UseComponent("Fitness",m_evaluateFitness,true);
@@ -154,7 +157,7 @@ namespace RavlN { namespace GeneticN {
   //! Run generation.
   void GeneticOptimiserC::RunGeneration(UIntT generation)
   {
-    RavlDebug("Examining results from last run. ");
+    RavlDebugIf(m_logLevel,"Examining results from last run. %s ",RavlN::StringOf(m_logLevel).c_str());
     unsigned count = 0;
 
     // Select genomes to be used as seeds for the next generation.
@@ -192,7 +195,7 @@ namespace RavlN { namespace GeneticN {
       count++;
     }
 
-    RavlDebug("Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",
+    RavlDebugIf(m_logLevel,"Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",
         generation,(UIntT) seeds.Size().V(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
     if(m_randomiseDomain) {
@@ -207,7 +210,7 @@ namespace RavlN { namespace GeneticN {
     lock.Unlock();
 
     unsigned noCrosses = Floor(numCreate * m_cross2mutationRatio);
-    RavlDebug("Creating %d crosses. ",noCrosses);
+    RavlDebugIf(m_logLevel,"Creating %d crosses. ",noCrosses);
 
     unsigned i = 0;
     // In the first generation there may not be enough seeds to make
@@ -226,7 +229,7 @@ namespace RavlN { namespace GeneticN {
       }
     }
 
-    RavlDebug("Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
+    RavlDebugIf(m_logLevel,"Completing the population with mutation. %u (Random fraction %f) ", (UIntT) (m_populationSize - i),m_randomFraction);
     for(;i < m_populationSize;i++) {
       unsigned i1 = m_genePalette->RandomUInt32() % seeds.Size().V();
       GenomeC::RefT newGenome;
@@ -241,7 +244,7 @@ namespace RavlN { namespace GeneticN {
       newTestSet.push_back(newGenome);
     }
 
-    RavlDebug("Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
+    RavlDebugIf(m_logLevel,"Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
     // Evaluate the new genomes.
     Evaluate(newTestSet);
   }

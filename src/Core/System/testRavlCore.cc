@@ -595,11 +595,13 @@ class TestDerived2C
 {
 public:
   TestDerived2C(BinIStreamC &strm)
-    : RCBodyVC(strm)
+    : RCBodyVC(strm),
+     m_i(0)
   { strm >> m_i; }
 
   TestDerived2C(istream &strm)
-    : RCBodyVC(strm)
+    : RCBodyVC(strm),
+      m_i(0)
   { strm >> m_i; }
   
   TestDerived2C(int i)
@@ -750,7 +752,7 @@ int testXMLTree() {
   XMLTreeC::ReadNode(xs, "test2"); // read node with static method
   bool xcpt(false);
   try { XMLTreeC::ReadNode(xs, "test2"); } // read node with static method: should fail
-  catch (ExceptionBadConfigC) { xcpt = true; }
+  catch (ExceptionBadConfigC &) { xcpt = true; }
   if (!xcpt) return __LINE__;
   return 0;
 }

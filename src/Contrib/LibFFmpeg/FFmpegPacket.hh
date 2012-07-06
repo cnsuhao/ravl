@@ -128,12 +128,11 @@ using namespace std;
     //: Access packet. 
     //!cwiz:author
     
-    void setPacket(AVPacket &pak) {
-    return Body().setPacket(pak);}
+    void setPacket(AVPacket &pak)
+    { Body().setPacket(pak);}
  
-    void setWH(SizeT wid,SizeT hgt) {
-       return Body().setWidthHeight(wid,hgt);
-    }
+    void setWH(SizeT wid,SizeT hgt)
+    { Body().setWidthHeight(wid,hgt); }
 
     IntT getWidth() {
        return Body().getWidth();

@@ -131,7 +131,7 @@ namespace RavlN {
     // returns its index.
     
     void Append(const DataSet3C<Sample1T,Sample2T,Sample3T> &data)
-    { return Body().Append(data); }
+    { Body().Append(data); }
     //: Append a data set to this one
     // Note that the elements are not copied
     

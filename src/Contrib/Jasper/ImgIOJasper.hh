@@ -26,7 +26,7 @@ namespace RavlImageN {
     DPImageIOJasperBaseC(const RealT compressionRate = 1.0);
     //: Default constructor.
     
-    ~DPImageIOJasperBaseC();
+    virtual ~DPImageIOJasperBaseC();
     //: Destructor.
     
     bool OpenRead(const StringC &filename);

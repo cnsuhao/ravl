@@ -35,6 +35,7 @@ namespace RavlN { namespace GeneticN {
   : m_const(false),
     m_age(0),
     m_generation(0),
+    m_averageScore(0),
     m_averageCount(0)
   {}
 
@@ -43,6 +44,7 @@ namespace RavlN { namespace GeneticN {
      m_genomeRoot(&rootGene),
      m_age(0),
      m_generation(0),
+     m_averageScore(0),
      m_averageCount(0)
   {
   }
@@ -52,6 +54,7 @@ namespace RavlN { namespace GeneticN {
    : m_const(factory.AttributeBool("const",false)),
      m_age(0),
      m_generation(0),
+     m_averageScore(0),
      m_averageCount(0)
   {
     factory.UseComponent("Gene",m_genomeRoot);
@@ -63,6 +66,8 @@ namespace RavlN { namespace GeneticN {
    : RCBodyVC(strm),
      m_const(false),
      m_age(0),
+     m_generation(0),
+     m_averageScore(0),
      m_averageCount(0)
   {
     ByteT version = 0;
@@ -159,7 +164,7 @@ namespace RavlN { namespace GeneticN {
         RavlDebug("Trys %d ",tryNo);
 #endif
 
-#if 1
+#if 0
       if(!ret) {
         RavlWarning("Failed to mutate gene, mutation rate %f is set too low ?",fraction);
       }

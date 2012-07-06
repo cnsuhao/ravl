@@ -177,7 +177,7 @@ namespace RavlN {
   #else
             throw ExceptionOperationFailedC("Stream is incompatible. endian mismatch. ");
   #endif
-            // Fall through
+            /* no break */
           case RavlN::RAVLBinaryID:
             // Just use the default stream option.
             break;
