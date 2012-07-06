@@ -46,6 +46,7 @@ using namespace std;
   {
   public:
     FFmpegPacketBodyC() 
+      : width(0), height(0)
     { packet.data = 0; }
     //: Default constructor.
     
