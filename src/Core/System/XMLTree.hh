@@ -101,7 +101,7 @@ namespace RavlN {
     { return name; }
     //: Access name.
 
-    ostream &Dump(ostream &out,int level= 0) const;
+    std::ostream &Dump(std::ostream &out,int level= 0) const;
     //: Dump tree in a human readable format.
     
     bool IsPI() const
@@ -206,7 +206,7 @@ namespace RavlN {
                                 XMLTreeLoadC *loader);
     //: Look for fallback
     
-    static ostream &Indent(ostream &out,int level);
+    static std::ostream &Indent(std::ostream &out,int level);
     bool isPI; // Is this a processing instruction ?
     StringC name;
     DListC<XMLTreeC> children; // Ordered list of children.

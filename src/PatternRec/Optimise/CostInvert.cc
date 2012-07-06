@@ -18,7 +18,7 @@ namespace RavlN {
   {
   }
   
-  CostInvertBodyC::CostInvertBodyC (istream &in)
+  CostInvertBodyC::CostInvertBodyC (std::istream &in)
     :CostBodyC(in),
      _cost(in)
   {
@@ -34,7 +34,7 @@ namespace RavlN {
     return _cost.Jacobian (X) * -1.0;
   }
   
-  bool CostInvertBodyC::Save (ostream &out) const
+  bool CostInvertBodyC::Save (std::ostream &out) const
   {
     CostBodyC::Save (out);
     _cost.Save (out);

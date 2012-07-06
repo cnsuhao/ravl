@@ -129,7 +129,7 @@ namespace RavlN {
     //: Constructor.
     // creates a body class with its default constructor.
     
-    RCHandleC(istream &is)
+    RCHandleC(std::istream &is)
       : body(new BodyT())
     { 
       body->SetRefCounter(1);
@@ -155,7 +155,7 @@ namespace RavlN {
     //: Destructor.
     // Decrement reference count, and delete object if it reaches zero.
     
-    bool Save(ostream &out) const
+    bool Save(std::ostream &out) const
     { out << *body; return true; }
     //: Save body to stream.
     
@@ -290,11 +290,11 @@ namespace RavlN {
   };
   
   
-  istream &operator>>(istream &strm,RCBodyC &obj);
+  std::istream &operator>>(std::istream &strm,RCBodyC &obj);
   //: Input body.
   // No-op.
   
-  ostream &operator<<(ostream &strm,const RCBodyC &obj);
+  std::ostream &operator<<(std::ostream &strm,const RCBodyC &obj);
   //: Output body.
   // No-op.
   
@@ -307,14 +307,14 @@ namespace RavlN {
   // No-op.
     
   template<class BodyT>
-  ostream &operator<<(ostream &strm,const RCHandleC<BodyT> &obj) { 
+  std::ostream &operator<<(std::ostream &strm,const RCHandleC<BodyT> &obj) { 
     obj.Save(strm); 
     return strm;
   }
   //: Write a handle to a stream.
   
   template<class BodyT>
-  istream &operator>>(istream &strm,RCHandleC<BodyT> &obj) {
+  std::istream &operator>>(std::istream &strm,RCHandleC<BodyT> &obj) {
     obj = RCHandleC<BodyT>(strm);
     return strm;
   }

@@ -38,13 +38,13 @@ int main(int argc,char **argv) {
     ImageC<ByteT> bi;
     
     if(!RavlN::Load(infile,bi,ifmt,verbose)) {
-      cerr << "Failed to load data. \n";
+      std::cerr << "Failed to load data. \n";
       return 1;
     }
     if(verbose)
-      cout << "Image size:" << bi.Rectangle() << endl;
+      std::cout << "Image size:" << bi.Rectangle() << std::endl;
     if(!RavlN::Save(output,bi,ofmt,verbose)) {
-      cerr << "Failed to save data. \n";
+      std::cerr << "Failed to save data. \n";
       return 1;
     }
   } else {
@@ -53,13 +53,13 @@ int main(int argc,char **argv) {
     ImageC<ByteRGBValueC> rgb;
     
     if(!RavlN::Load(infile,rgb,ifmt,verbose)) {
-      cerr << "Failed to load data. \n";
+      std::cerr << "Failed to load data. \n";
       return 1;
     }
     if(verbose)
-      cout << "Image size:" << rgb.Rectangle() << endl;
+      std::cout << "Image size:" << rgb.Rectangle() << std::endl;
     if(!RavlN::Save(output,rgb,ofmt,verbose)) {
-      cerr << "Failed to save data. \n";
+      std::cerr << "Failed to save data. \n";
       return 1;
     }
   }

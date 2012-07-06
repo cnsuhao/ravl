@@ -7,7 +7,6 @@
 #ifndef RAVL_WRAP_HEADER
 #define RAVL_WRAP_HEADER 1
 //////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Reference Counting"
 //! file="Ravl/Core/Base/RCWrap.hh"
 //! lib=RavlCore
@@ -71,7 +70,7 @@ namespace RavlN {
     //: Access void pointer to data member.
 
 #if RAVL_HAVE_RTTI
-    virtual const type_info &DataType() const;
+    virtual const std::type_info &DataType() const;
     //: Get type of wrapped object.
 #endif
   };
@@ -115,7 +114,7 @@ namespace RavlN {
   public:
 
 #if RAVL_HAVE_RTTI
-    const type_info &DataType() const
+    const std::type_info &DataType() const
     { return Body().DataType(); }
     //: Get type of wrapped object.
 #endif
@@ -150,7 +149,7 @@ namespace RavlN {
     {}
     //: Constructor.
 
-    RCWrapBodyC(istream &in)
+    RCWrapBodyC(std::istream &in)
       : RCWrapBaseBodyC(in)
     { in >> data; }
     //: Construct from a stream.
@@ -226,7 +225,7 @@ namespace RavlN {
     //: Access void pointer to data member.
 
 #if RAVL_HAVE_RTTI
-    virtual const type_info &DataType() const
+    virtual const std::type_info &DataType() const
     { return typeid(DataT); }
     //: Get type of wrapped object.
 #endif
@@ -275,7 +274,7 @@ namespace RavlN {
     {}
     //: Construct from an abstract handle.
 
-    RCWrapC(istream &in)
+    RCWrapC(std::istream &in)
       : RCWrapAbstractC(*new RCWrapBodyC<DataT>(in))
     {}
     //: Construct from a stream.

@@ -466,13 +466,13 @@ namespace RavlN {
   }
   
   template<class DataT>
-  ostream &operator<<(ostream &s,const CollectionC<DataT> &d) {
+  std::ostream &operator<<(std::ostream &s,const CollectionC<DataT> &d) {
     s << d.Array();
     return s;
   }
 
   template<class DataT>
-  istream &operator>>(istream &s,CollectionC<DataT> &d) {
+  std::istream &operator>>(std::istream &s,CollectionC<DataT> &d) {
     SArray1dC<DataT> ad;
     s >> ad;
     d = CollectionC<DataT>(ad);

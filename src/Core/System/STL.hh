@@ -14,7 +14,7 @@
 //! docentry="Ravl.API.Core.STL"
 //! userlevel=Normal
 
-// STL Compatibily methods.
+// STL Compatibly methods.
 
 #include "Ravl/StdHash.hh"
 #include "Ravl/SArray1d.hh"

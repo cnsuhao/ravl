@@ -33,31 +33,31 @@ namespace RavlN {
     FileFormatBinStreamMetaBodyC(const StringC &formatId,const StringC &formatDescriptor,bool pubList = true);
     //: Constructor with full format info.
 
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const;
     //: Is stream in std stream format ?
 
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
 
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const;
 
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
 
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
 
 
-    DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const;
+    DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
 
-    DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const;
+    DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
 
-    virtual const type_info &DefaultType() const;
+    virtual const std::type_info &DefaultType() const;
     //: Get preferred IO type.
 
     virtual bool IsStream() const;

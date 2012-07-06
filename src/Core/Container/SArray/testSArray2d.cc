@@ -26,23 +26,23 @@ int testIO();
 int main() {
   int ln ;
   if((ln = testBasic()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testSubArray()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testIO()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0; 
 }
 
 int testBasic() {
-  cerr << "Starting test of SArray2d.\n";
+  std::cerr << "Starting test of SArray2d.\n";
   SArray2dC<int> testArr(10,10);
   testArr[Index2dC(1,1)] = 2;
   
@@ -65,14 +65,14 @@ int testBasic() {
   int v = 0;
   for(Slice1dIterC<int> its(slice);its;its++,v+=11) {
     if(*its != v) {
-      cerr << "Diagonal slice test failed. " << *its << " " << v << "\n";
+      std::cerr << "Diagonal slice test failed. " << *its << " " << v << "\n";
       return __LINE__;
     }
   }
   v = 0;
   for(SArray2dIterC<int> it(testArr);it;it++,v++) {
     if(*it != v) {
-      cerr << "Iterator test failed. " << *it << " " << v << "\n";
+      std::cerr << "Iterator test failed. " << *it << " " << v << "\n";
       return __LINE__;
     }
     *it = 0;

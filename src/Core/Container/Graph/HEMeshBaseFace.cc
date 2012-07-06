@@ -31,7 +31,7 @@ namespace RavlN {
 	HEMeshBaseEdgeBodyC *eb = &(edge->Next());
 #if 0
 	if(!eb->CorrectVertexEdgePtr())
-	  cerr << "WARNING: Failed to correct vertex pointer. \n";
+	  std::cerr << "WARNING: Failed to correct vertex pointer. \n";
 #else
 	if(eb->VertexPtr()->edge == eb)
 	  eb->vertex->edge = 0;
@@ -92,14 +92,14 @@ namespace RavlN {
     return HEMeshBaseEdgeC();
   }
 
-  ostream &operator<<(ostream &strm,const HEMeshBaseFaceC &vertex) {
+  std::ostream &operator<<(std::ostream &strm,const HEMeshBaseFaceC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
   //: Text stream output.
   // Not implemented
   
-  istream &operator>>(istream &strm,HEMeshBaseFaceC &vertex) {
+  std::istream &operator>>(std::istream &strm,HEMeshBaseFaceC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }

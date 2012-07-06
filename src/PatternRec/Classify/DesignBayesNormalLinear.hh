@@ -27,13 +27,13 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DesignBayesNormalLinearBodyC(istream &strm);
+    DesignBayesNormalLinearBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalLinearBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -64,7 +64,7 @@ namespace RavlN {
   {
   public:
 
-    DesignBayesNormalLinearC(istream &strm);
+    DesignBayesNormalLinearC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalLinearC(BinIStreamC &strm);
@@ -104,14 +104,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DesignBayesNormalLinearC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignBayesNormalLinearC &obj) {
     obj = DesignBayesNormalLinearC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignBayesNormalLinearC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignBayesNormalLinearC &obj) {
     obj.Save(out);
     return out;
   }

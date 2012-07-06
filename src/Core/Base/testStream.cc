@@ -56,49 +56,49 @@ StringC testFile = "/tmp/testStream" + StringC((IntT) getpid());
 #endif
 
 int main() {
-  cerr << "Starting test... \n";
+  std::cerr << "Starting test... \n";
   int errLine;
   // NOTE: test may fail if file exits and belongs to someone else!!
   if((errLine = SimpleTest()) != 0) {
-    cerr << "Stream test failed line: " << errLine << "\n";
+    std::cerr << "Stream test failed line: " << errLine << "\n";
     return 1;
   }
   if((errLine = VectorTest()) != 0) {
-    cerr << "Stream vector test failed line: " << errLine << "\n";
+    std::cerr << "Stream vector test failed line: " << errLine << "\n";
     return 1;
   }
   if((errLine = StringTest()) != 0) {
-    cerr << "Stream string test failed line: " << errLine << "\n";
+    std::cerr << "Stream string test failed line: " << errLine << "\n";
     return 1;
   }
   if((errLine = StrStreamTest()) != 0) {
-    cerr << "String stream test failed line: " << errLine << "\n";
+    std::cerr << "String stream test failed line: " << errLine << "\n";
     return 1;
   }
   if((errLine = testFDStream()) != 0) {
-    cerr << "test failed line: " << errLine << "\n";
+    std::cerr << "test failed line: " << errLine << "\n";
     return 1;
   }
 #if RAVL_HAVE_INTFILEDESCRIPTORS
   if((errLine = testRawFD()) != 0) {
-    cerr << "test failed line: " << errLine << "\n";
+    std::cerr << "test failed line: " << errLine << "\n";
     return 1;
   }
 #endif
   if((errLine = testBitStream()) != 0) {
-    cerr << "test failed line: " << errLine << "\n";
+    std::cerr << "test failed line: " << errLine << "\n";
     return 1;
   }
   if((errLine = testFuncStream()) != 0) {
-    cerr << "test failed line: " << errLine << "\n";
+    std::cerr << "test failed line: " << errLine << "\n";
     return 1;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
 int VectorTest() {
-  cerr << "VectorTest(), Called. \n";
+  std::cerr << "VectorTest(), Called. \n";
   TFVectorC<ByteT,3> val;
   
   val[0] = 1;
@@ -107,7 +107,7 @@ int VectorTest() {
   {
     BinOStreamC os(testFile);
     if(!os.Stream()) {
-      cerr << "Failed to open output. \n";
+      std::cerr << "Failed to open output. \n";
       return __LINE__;
     }
     
@@ -120,34 +120,34 @@ int VectorTest() {
   {
     BinIStreamC is(testFile);
     if(!is.Stream()) {
-      cerr << "Failed to open output. \n";
+      std::cerr << "Failed to open output. \n";
       return __LINE__;
     }
     is >> val;
     if(val[0] != 1 || val[1] != 2 || val[2] != 3) {
-      cerr << "Test failed. \n";
+      std::cerr << "Test failed. \n";
       return __LINE__; 
     }
   }
-  cerr << "VectorTest(), Done. \n";
+  std::cerr << "VectorTest(), Done. \n";
   return 0;
   
 }
 
 int StringTest() {
-  cerr << "StringTest(), Called. \n";
+  std::cerr << "StringTest(), Called. \n";
   StringC strings[] = {"Hello", "this", "is", "a", "test"};
   {
     OStreamC os(testFile);
     if(!os) {
-      cerr << "Failed to open output. \n";
+      std::cerr << "Failed to open output. \n";
       return __LINE__;
     }
     for (int i=0; i<5; i++) {
       os << i << " " << strings[i] << " ";
     }
     if(!os) {
-      cerr << "Failed output stream bad after write. \n";
+      std::cerr << "Failed output stream bad after write. \n";
       return __LINE__;
     }
   }
@@ -155,7 +155,7 @@ int StringTest() {
   {
     IStreamC is(testFile);
     if(!is) {
-      cerr << "Failed to open output. \n";
+      std::cerr << "Failed to open output. \n";
       return __LINE__;
     }
     for (int i=0; i<5; i++) {
@@ -170,16 +170,16 @@ int StringTest() {
 	cerr << str << " ";
       }
     }
-    cerr << "\n";
+    std::cerr << "\n";
   }
-  cerr << "StringTest(), Done. \n";
+  std::cerr << "StringTest(), Done. \n";
   return 0;
   
 }
 
 
 int SimpleTest() {
-  cerr << "SimpleTest(), Called. \n";
+  std::cerr << "SimpleTest(), Called. \n";
   
   ByteT val;
   RealT rval = 0.5;
@@ -188,7 +188,7 @@ int SimpleTest() {
   {
     BinOStreamC os(testFile);
     if(!os.Stream()) {
-      cerr << "Failed to open output. \n";
+      std::cerr << "Failed to open output. \n";
       return __LINE__;
     }
     os << val << rval << fval;
@@ -199,18 +199,18 @@ int SimpleTest() {
   {
     BinIStreamC is(testFile);
     if(!is.Stream()) {
-      cerr << "Failed to open output. \n";
+      std::cerr << "Failed to open output. \n";
       return __LINE__;
     }
     is >> val >> nval >> nfval;
     if(val != 1) {
-      cerr << "Test failed. " << ((int) val) << "\n";
+      std::cerr << "Test failed. " << ((int) val) << "\n";
       return __LINE__;
     }
   }
   if(Abs(nval - rval) > 0.00000001)  return __LINE__;
   if(Abs(nfval - fval) > 0.00000001) return __LINE__;
-  cerr << "SimpleTest(), Done. \n";
+  std::cerr << "SimpleTest(), Done. \n";
   return 0;
 }
 
@@ -226,15 +226,15 @@ int StrStreamTest() {
   {
     StrOStreamC sos;
     StringC hello("hello");
-    sos << hello << ' ' << hello << "zyz" << flush << "x";
+    sos << hello << ' ' << hello << "zyz" << std::flush << "x";
     sos << hello.before('o');
     sos << hello.after('h');
     OStreamC *tmp = new OStreamC(sos);
     delete tmp;
     StringC got = sos.String();
-    cerr << "'" << got << "'\n";
+    std::cerr << "'" << got << "'\n";
     if(got != "hello hellozyzxhellello") {
-      cerr << " Got:'" << got << "'\n";
+      std::cerr << " Got:'" << got << "'\n";
       return __LINE__;
     }
   }
@@ -244,7 +244,7 @@ int StrStreamTest() {
     SubStringC rol = hello.from(0);
     sos << rol;
     StringC ret = sos.String();
-    cerr << "'" << ret << "'\n";
+    std::cerr << "'" << ret << "'\n";
     
   }  
   {
@@ -273,31 +273,31 @@ int StrStreamTest() {
 
 int testFDStream() {
 #if RAVL_COMPILER_GCC
-  cerr << "testFDStream(), Started. \n";
+  std::cerr << "testFDStream(), Started. \n";
   int fds[2];
   pipe(fds);
   char let = 'a';
-  cerr << "Writting data... \n";
+  std::cerr << "Writting data... \n";
   
   ofdstream os(fds[1]);
   if(!os)  return __LINE__;
   os << let << let;
   os.flush();
   
-  cerr << "Read data... \n";
+  std::cerr << "Read data... \n";
   
   char rlet1 = 0,rlet2 = 0;
   
   ifdstream is(fds[0]);
   if(!is)  return __LINE__;
-  cerr << "Reading byte1 \n";
+  std::cerr << "Reading byte1 \n";
   is >> rlet1;
-  cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
+  std::cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
   if(!is)  return __LINE__;  
   is >> rlet2;
   if(!is)  return __LINE__;  
   
-  cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
+  std::cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
   
   if(let != rlet1) return __LINE__;
   if(let != rlet2) return __LINE__;
@@ -311,7 +311,7 @@ int testRawFD() {
   pipe(fds);
   
   char let = 'a';
-  cerr << "Writting data... \n";
+  std::cerr << "Writting data... \n";
   
 #if 0
   write(fds[1],&let,1);
@@ -322,7 +322,7 @@ int testRawFD() {
   os << let << let;
   os.os().flush();
 #endif
-  cerr << "Read data... \n";
+  std::cerr << "Read data... \n";
   
   char rlet1 = 0,rlet2 = 0;
   
@@ -337,14 +337,14 @@ int testRawFD() {
 #else
   IStreamC is(fds[0],true,false);
   if(!is)  return __LINE__;
-  cerr << "Reading byte1 \n";
+  std::cerr << "Reading byte1 \n";
   is >> rlet1;
-  cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
+  std::cerr << "Reading byte1 done. Let=" << (int) rlet1 <<" \n";
   if(!is)  return __LINE__;  
   is >> rlet2;
   if(!is)  return __LINE__;  
 #endif
-  cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
+  std::cerr << "Let=" << (int) let << " RLet1=" << (int) rlet1 << " RLet2=" << (int) rlet2 << "\n";
   
   if(let != rlet1) return __LINE__;
   if(let != rlet2) return __LINE__;
@@ -353,7 +353,7 @@ int testRawFD() {
 #endif
 
 int testBitStream() {
-  cerr << "testBitStream(), Called. \n";
+  std::cerr << "testBitStream(), Called. \n";
   StrOStreamC ostr;
   int i;
   {

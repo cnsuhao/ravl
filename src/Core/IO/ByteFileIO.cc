@@ -148,9 +148,9 @@ namespace RavlN {
     return 0;
   }
 
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  bool DPOByteFileBodyC::Save(ostream &sout) const  { 
+  bool DPOByteFileBodyC::Save(std::ostream &sout) const  { 
     sout << out.Name(); 
     return true; 
   }
@@ -205,9 +205,9 @@ namespace RavlN {
     return dataRead;
   }
     
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  bool DPIByteFileBodyC::Save(ostream &out) const { 
+  bool DPIByteFileBodyC::Save(std::ostream &out) const { 
     out << in.Name(); 
     return true; 
   }

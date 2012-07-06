@@ -28,7 +28,7 @@ namespace RavlN {
   
   //: Write to output.
   
-  bool DPEventBodyC::Save(ostream &out) const {
+  bool DPEventBodyC::Save(std::ostream &out) const {
     out << "DPEventBodyC::Save()\n";
     return false;
   }

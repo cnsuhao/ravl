@@ -131,14 +131,14 @@ namespace RavlN {
   };
   
   template <class DataT>
-  ostream & operator<<(ostream & s, const SArray3dC<DataT> & arr) {
+  std::ostream & operator<<(std::ostream & s, const SArray3dC<DataT> & arr) {
     s << arr.Size1() << " " << arr.Size2() << " " << arr.Size3() << "\n";
     return s << ((SizeBufferAccess3dC<DataT> &) arr);
   }
   // Prints into the stream 's'
   
   template <class DataT>
-  istream & operator>>(istream & s, SArray3dC<DataT> & arr) {
+  std::istream & operator>>(std::istream & s, SArray3dC<DataT> & arr) {
     SizeT size1,size2,size3;
     s >> size1 >> size2 >> size3;
     arr = SArray3dC<DataT>(size1,size2,size3);

@@ -22,7 +22,7 @@ namespace RavlN {
   
   class DPEntityC;
   
-  istream &operator>>(istream &strm,DPEntityC &obj);
+  std::istream &operator>>(std::istream &strm,DPEntityC &obj);
   
   //! userlevel=Develop
   //: Data processing entity body.
@@ -43,7 +43,7 @@ namespace RavlN {
     {}
     //: Copy constructor.
     
-    DPEntityBodyC(istream &in) 
+    DPEntityBodyC(std::istream &in) 
       : RCBodyVC(in)
     {}
     //: Stream constructor.
@@ -53,8 +53,8 @@ namespace RavlN {
     {}
     //: Binary stream constructor.
     
-    virtual bool Save(ostream &out) const; 
-    //: Save to ostream.  
+    virtual bool Save(std::ostream &out) const; 
+    //: Save to std::ostream.  
     
     virtual bool Save(BinOStreamC &out) const; 
     //: Save to binary stream.  
@@ -92,7 +92,7 @@ namespace RavlN {
     DPEntityC(const RCAbstractC &abst);
     //: Constructor from an abstract handle.
     
-    DPEntityC(istream &in);
+    DPEntityC(std::istream &in);
     //: Load from stream using virtual constructor.
 
     DPEntityC(BinIStreamC &in);
@@ -117,14 +117,14 @@ namespace RavlN {
     //: Body ptr constructor.
   };
   
-  inline istream &operator>>(istream &strm,DPEntityC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DPEntityC &obj) {
     obj = DPEntityC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DPEntityC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DPEntityC &obj) {
     obj.Save(out);
     return out;
   }

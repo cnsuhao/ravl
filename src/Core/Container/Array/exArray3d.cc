@@ -21,7 +21,7 @@ using namespace RavlN;
 int Main(int argc, char* argv[])
 {
   Array3dC<IntT> arr(-5,6,-7,8,-9,10);
-  cout << "array has arr.Range1() = " << arr.Range1() << "  arr.Range2() = " << arr.Range1() << "\n";
+  std::cout << "array has arr.Range1() = " << arr.Range1() << "  arr.Range2() = " << arr.Range1() << "\n";
   
   // Index each dimension separately.
   
@@ -36,7 +36,7 @@ int Main(int argc, char* argv[])
   
   for(Array3dIterC<IntT> it(arr);it;it++) 
     if(*it != 0)
-      cout << "Element " << it.Index() << " is non zero, " << *it << "\n";
+      std::cout << "Element " << it.Index() << " is non zero, " << *it << "\n";
   
   return 0;
 }

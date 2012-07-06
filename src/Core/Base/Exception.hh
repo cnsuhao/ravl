@@ -58,7 +58,7 @@ namespace RavlN {
     const char *Text() const { return desc; }
     //: Get error description.
 
-    virtual void Dump(ostream &strm);
+    virtual void Dump(std::ostream &strm);
     //: Dump contents of exception to strm;
 
     const char *what() const { return desc; }
@@ -78,20 +78,20 @@ namespace RavlN {
 
   class ExceptionErrorCastC : public ExceptionC {
   public:
-    ExceptionErrorCastC(const char *ndesc,const type_info &nfrom,const type_info &nto);
+    ExceptionErrorCastC(const char *ndesc,const std::type_info &nfrom,const std::type_info &nto);
     //: Constructor.
 
-    const type_info &From() const { return from; }
+    const std::type_info &From() const { return from; }
     //: Cast from.
 
-    const type_info &To() const { return to; }
+    const std::type_info &To() const { return to; }
     //: Cast to.
 
     virtual void Dump();
-    //: Dump contents of exception to cerr;
+    //: Dump contents of exception to std::cerr;
   protected:
-    const type_info &from;
-    const type_info &to;
+    const std::type_info &from;
+    const std::type_info &to;
   };
 
   //: Exception: Operation Failed

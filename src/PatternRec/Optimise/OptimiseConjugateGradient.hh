@@ -37,7 +37,7 @@ namespace RavlN {
     OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum = true,bool useAbsoluteCostForTolerance = false,UIntT brentIterations = 0, RealT brentTolerance = 0);
     //: Constructor requires the number of iterations to use
     
-    OptimiseConjugateGradientBodyC (istream &in);
+    OptimiseConjugateGradientBodyC (std::istream &in);
     //: Constructs from stream
     
   protected:
@@ -47,7 +47,7 @@ namespace RavlN {
     virtual const StringC GetInfo () const;
     //: Prints information about the optimiser
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
   private:

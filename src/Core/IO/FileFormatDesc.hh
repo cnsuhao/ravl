@@ -36,7 +36,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    FileFormatDescC(FileFormatBaseC nform,DListC<DPConverterBaseC> nconv,const type_info &ntype,bool nisInput)
+    FileFormatDescC(FileFormatBaseC nform,DListC<DPConverterBaseC> nconv,const std::type_info &ntype,bool nisInput)
       : form(nform),
         conv(nconv),
         stype(&ntype),
@@ -63,7 +63,7 @@ namespace RavlN {
     const DListC<DPConverterBaseC> &Conversion() const { return conv; }
     //: Required type conversion.
     
-    const type_info &SourceType() const { return *stype; }
+    const std::type_info &SourceType() const { return *stype; }
     //: Type to request in load.
     
     bool IsInput() const { return isInput; }
@@ -88,13 +88,13 @@ namespace RavlN {
     DPOPortBaseC BuildOutputConv(const DPOPortBaseC &op) const;
     //: Build output conversion.
     
-    void DumpConv(ostream &out) const;
+    void DumpConv(std::ostream &out) const;
     //: Dump conversion to out.
     
   protected:
     FileFormatBaseC form;
     DListC<DPConverterBaseC> conv;
-    const type_info *stype;  // Not used internally.
+    const std::type_info *stype;  // Not used internally.
     bool isInput;
   };
   

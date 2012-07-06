@@ -24,7 +24,7 @@ namespace RavlN {
   /////////////////////////////
   //: Get type of process
   
-  const type_info &DPProcInfoBodyC::ProcType() const
+  const std::type_info &DPProcInfoBodyC::ProcType() const
   { return typeid(void); }
   
   /////////////////////////////
@@ -36,13 +36,13 @@ namespace RavlN {
   /////////////////////////////
   //: Type of args.
   
-  const type_info &DPProcInfoBodyC::ArgType(IntT) const
+  const std::type_info &DPProcInfoBodyC::ArgType(IntT) const
   { return typeid(void); }
   
   //////////////////////////////
   //: Output type.
   
-  const type_info &DPProcInfoBodyC::Output() const
+  const std::type_info &DPProcInfoBodyC::Output() const
   { return typeid(void); }
   
   ////////////////////////////////

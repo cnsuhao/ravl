@@ -89,14 +89,14 @@ namespace RavlN {
     return count;
   }
 
-  ostream &operator<<(ostream &strm,const HEMeshBaseVertexC &vertex) {
+  std::ostream &operator<<(std::ostream &strm,const HEMeshBaseVertexC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
   //: Text stream output.
   // Not implemented
   
-  istream &operator>>(istream &strm,HEMeshBaseVertexC &vertex) {
+  std::istream &operator>>(std::istream &strm,HEMeshBaseVertexC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }

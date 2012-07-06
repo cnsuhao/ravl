@@ -63,7 +63,7 @@ namespace RavlN {
     virtual const void *Key(const void *ptr) const = 0;
     //: Get key for lookup.
 
-    virtual const type_info &TypeInfo() const = 0;
+    virtual const std::type_info &TypeInfo() const = 0;
     //: Get type of pointer
   };
   
@@ -376,7 +376,7 @@ namespace RavlN {
     { return *((void **)ptr); }
     //: Get key for lookup.
 
-    virtual const type_info &TypeInfo() const
+    virtual const std::type_info &TypeInfo() const
     { return typeid(DataT); }
     //: Get type of pointer
 
@@ -440,7 +440,7 @@ namespace RavlN {
     { return static_cast<const DataT *>(ptr)->VoidPtr(); }
     //: Get key for lookup.
 
-    virtual const type_info &TypeInfo() const
+    virtual const std::type_info &TypeInfo() const
     { return typeid(DataT); }
     //: Get type of pointer
 

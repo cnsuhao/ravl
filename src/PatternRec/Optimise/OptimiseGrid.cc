@@ -26,7 +26,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseGridBodyC::OptimiseGridBodyC (istream &in)
+  OptimiseGridBodyC::OptimiseGridBodyC (std::istream &in)
     :OptimiseBodyC("OptimiseGridBodyC",in)
   {
   }
@@ -80,7 +80,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseGridBodyC::Save (ostream &out) const
+  bool OptimiseGridBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     return true;

@@ -35,7 +35,7 @@ class RBAccC
 
 int  ExRBfAcc(int, char * [] )
 {
-  cout << "Buffer access with known size example\n"
+  std::cout << "Buffer access with known size example\n"
            << "=====================================\n";
 
   char buffer[] = "absdefghijklmnopqrstuvwxyz\n";
@@ -55,8 +55,8 @@ int  ExRBfAcc(int, char * [] )
   
   RangeBufferAccessC<char> acc8(acc6); // a new buffer with an access
   acc8.ShiftIndexes(1);
-  cout << acc8[0] <<  acc6[0] << "\n";
-  cout << "Buffer1 ?  " << acc1.IsValid() << ' ' << acc1.IsEmpty() << ' '
+  std::cout << acc8[0] <<  acc6[0] << "\n";
+  std::cout << "Buffer1 ?  " << acc1.IsValid() << ' ' << acc1.IsEmpty() << ' '
                             << acc1.Size() << ' ' << acc1.ReferenceVoid() << '\n'
            << "Buffer2 ?  " << acc2.IsValid() << ' ' << acc2.IsEmpty() << ' '
                             << acc2.Size() << ' ' << acc2.ReferenceVoid() << '\n'
@@ -81,7 +81,7 @@ int  ExRBfAcc(int, char * [] )
            << "Buffer2.Range()  " << acc2.Range()   << '\n'
            << "Buffer2[16]:     " << acc2[16]       << '\n'
            << "\n"; 
-  cout << "End of the example\n";
+  std::cout << "End of the example\n";
   return 0;
 }
 

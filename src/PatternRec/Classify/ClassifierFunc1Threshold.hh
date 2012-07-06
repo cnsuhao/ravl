@@ -29,13 +29,13 @@ namespace RavlN {
     ClassifierFunc1ThresholdBodyC(const Function1C &nfunc,RealT nthreshold);
     //: Constructor.
     
-    ClassifierFunc1ThresholdBodyC(istream &strm);
+    ClassifierFunc1ThresholdBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierFunc1ThresholdBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -77,7 +77,7 @@ namespace RavlN {
     {}
     //: Constructor.
 
-    ClassifierFunc1ThresholdC(istream &strm);
+    ClassifierFunc1ThresholdC(std::istream &strm);
     //: Load from stream.
     
     ClassifierFunc1ThresholdC(BinIStreamC &strm);
@@ -115,14 +115,14 @@ namespace RavlN {
   };
 
   
-  inline istream &operator>>(istream &strm,ClassifierFunc1ThresholdC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierFunc1ThresholdC &obj) {
     obj = ClassifierFunc1ThresholdC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierFunc1ThresholdC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierFunc1ThresholdC &obj) {
     obj.Save(out);
     return out;
   }

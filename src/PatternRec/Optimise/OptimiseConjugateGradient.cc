@@ -58,7 +58,7 @@ namespace RavlN {
       _brentTolerance = _tolerance;
   }
   
-  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (istream &in)
+  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (std::istream &in)
     : OptimiseBodyC("OptimiseConjugateGradientBodyC",in)
   {
     in >> _iterations;
@@ -105,8 +105,8 @@ namespace RavlN {
     VectorC iterX = domain.StartX();         // Copy start into temporary var;
     
 #if 0
-    cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
-    cerr << "    X=" << iterX << "\n";
+    std::cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
+    std::cerr << "    X=" << iterX << "\n";
 #endif
     
     ParametersC parameters1d(1);
@@ -218,7 +218,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseConjugateGradientBodyC::Save (ostream &out) const
+  bool OptimiseConjugateGradientBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << "\n";

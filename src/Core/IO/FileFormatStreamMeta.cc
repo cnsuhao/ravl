@@ -19,7 +19,7 @@ namespace RavlN {
   {}
   //: Default constructor.
 
-  const type_info &FileFormatStreamMetaBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const  {
+  const std::type_info &FileFormatStreamMetaBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const  {
     if(!in.good())
       return typeid(void);
     StringC classname;
@@ -33,7 +33,7 @@ namespace RavlN {
   }
   //: Is stream in std stream format ?
 
-  const type_info &FileFormatStreamMetaBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const  {
+  const std::type_info &FileFormatStreamMetaBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const  {
     //cout << "File Probe '" << filename << "' Looking for:" << TypeName(obj_type) << endl;
     if(filename == "") {
       FileFormatBaseC ff;
@@ -44,7 +44,7 @@ namespace RavlN {
     return ProbeLoad(in,obj_type); // Check load from stream.
   }
 
-  const type_info &FileFormatStreamMetaBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const {
+  const std::type_info &FileFormatStreamMetaBodyC::ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const {
     // If there's no extention or the extention is 'strm' we can handle it.
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
@@ -63,7 +63,7 @@ namespace RavlN {
 
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
-  DPIPortBaseC FileFormatStreamMetaBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatStreamMetaBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
       return DPIPortBaseC();
@@ -72,7 +72,7 @@ namespace RavlN {
 
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
-  DPOPortBaseC FileFormatStreamMetaBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatStreamMetaBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
       return DPOPortBaseC();

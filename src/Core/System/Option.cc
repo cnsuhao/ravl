@@ -173,7 +173,7 @@ namespace RavlN {
     sout << "\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n\n"
          << "The following errors occured while parsing options.\n\n";
     for(DLIterC<StringC> it(errors);it.IsElm();it.Next()) 
-      sout << " " << it.Data() << endl;
+      sout << " " << it.Data() << std::endl;
     sout << "\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n\n";
     PrintUsage();
     if(exitOnFail)
@@ -194,7 +194,7 @@ namespace RavlN {
     return true;
   }
   
-  ostream & operator<<(ostream & out, const OptionC opt) {
+  std::ostream & operator<<(std::ostream & out, const OptionC opt) {
     out << opt.progName << ' ';
     for(DLIterC<StringC> it(opt.allargs);it.IsElm();it.Next()) {
       if(it.Data() == "-optsave") {
@@ -606,11 +606,11 @@ namespace RavlN {
   void OptionC::PrintUsage() {
     sout << "Usage: " << progName << " [options] \n";
     for(DLIterC<StringC> it(usage);it.IsElm();it.Next())
-      sout << "   " << it.Data() << endl;
+      sout << "   " << it.Data() << std::endl;
     if(!depend.IsEmpty()) {
       sout << "\nDependencies:\n";
       for(DLIterC<StringC> it(depend);it.IsElm();it.Next())
-	sout << "   " << it.Data() << endl;
+	sout << "   " << it.Data() << std::endl;
     }
   }
   

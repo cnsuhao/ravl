@@ -135,7 +135,7 @@ namespace RavlN {
 
   
   template <class DataT>
-  ostream & operator<<(ostream & s, const RangeBufferAccess3dC<DataT> & arr) {
+  std::ostream & operator<<(std::ostream & s, const RangeBufferAccess3dC<DataT> & arr) {
     for(BufferAccess3dIterC<DataT> it(arr,arr.Range2(),arr.Range3());it;) {
       s << *it;
       for(;it.Next();) 
@@ -146,7 +146,7 @@ namespace RavlN {
   }
   
   template <class DataT>
-  istream & operator>>(istream & s, RangeBufferAccess3dC<DataT> & arr) {
+  std::istream & operator>>(std::istream & s, RangeBufferAccess3dC<DataT> & arr) {
     for(BufferAccess3dIterC<DataT> it(arr,arr.Range2(),arr.Range3());it;it++) 
       s >> *it;
     return s;

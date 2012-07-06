@@ -17,7 +17,7 @@ namespace RavlN {
   ////////////////////////////
   //: Default constructor.
   
-  DPTypeInfoBodyC::DPTypeInfoBodyC(const type_info &typeInfo)
+  DPTypeInfoBodyC::DPTypeInfoBodyC(const std::type_info &typeInfo)
     : typeInfo(typeInfo)
   { 
     MTWriteLockC writeLock;
@@ -34,7 +34,7 @@ namespace RavlN {
   
   //: Create instance of the type from stream constructor.
   
-  RCWrapAbstractC DPTypeInfoBodyC::Create(istream &) const {
+  RCWrapAbstractC DPTypeInfoBodyC::Create(std::istream &) const {
     RavlAssertMsg(0,"abstract method"); // Abstract function called.
     return RCWrapAbstractC();
   }
@@ -143,7 +143,7 @@ namespace RavlN {
   //: Lookup type. 
   // Creates an invalid handle if failed.
   
-  DPTypeInfoC::DPTypeInfoC(const type_info &ti) 
+  DPTypeInfoC::DPTypeInfoC(const std::type_info &ti) 
     : DPEntityC(true)
   {
     MTReadLockC readLock;
@@ -153,7 +153,7 @@ namespace RavlN {
   }
   
 
-  const DPTypeInfoC &TypeInfo(const type_info &ti)
+  const DPTypeInfoC &TypeInfo(const std::type_info &ti)
   {
     MTReadLockC readLock;
     return DPTypeInfoBodyC::Types()[ti.name()];

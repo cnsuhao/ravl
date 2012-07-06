@@ -26,13 +26,13 @@ namespace RavlN {
       ClassifierPreprocessBodyC(const FunctionC &nfunc, const ClassifierC &nclassifier);
       //: Create classifier from a discriminant function.
 
-      ClassifierPreprocessBodyC(istream &strm);
+      ClassifierPreprocessBodyC(std::istream &strm);
       //: Load from stream.
 
       ClassifierPreprocessBodyC(BinIStreamC &strm);
       //: Load from binary stream.
 
-      virtual bool Save(ostream &out) const;
+      virtual bool Save(std::ostream &out) const;
       //: Writes object to stream, can be loaded using constructor
 
       virtual bool Save(BinOStreamC &out) const;
@@ -75,7 +75,7 @@ namespace RavlN {
       }
       //: Create classifier from a discriminant function.
 
-      ClassifierPreprocessC(istream &strm);
+      ClassifierPreprocessC(std::istream &strm);
       //: Load from stream.
 
       ClassifierPreprocessC(BinIStreamC &strm);
@@ -110,14 +110,14 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm, ClassifierPreprocessC &obj) {
+  inline std::istream &operator>>(std::istream &strm, ClassifierPreprocessC &obj) {
     obj = ClassifierPreprocessC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out, const ClassifierPreprocessC &obj) {
+  inline std::ostream &operator<<(std::ostream &out, const ClassifierPreprocessC &obj) {
     obj.Save(out);
     return out;
   }

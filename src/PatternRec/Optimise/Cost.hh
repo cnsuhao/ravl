@@ -48,7 +48,7 @@ namespace RavlN {
     }
     //: Constructor
     
-    CostBodyC (istream &in);
+    CostBodyC (std::istream &in);
     //: Contructs from stream with derived class name
 
 #if 0
@@ -118,7 +118,7 @@ namespace RavlN {
     void SetParameters(const ParametersC &parameters);
     //: Change the parameter storage structure
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
   protected:
@@ -169,7 +169,7 @@ namespace RavlN {
     {}
     //: Default constructor
     
-    CostC (istream &in)
+    CostC (std::istream &in)
       : Function1C(in)
     { CheckHandleType(Body()); }
     //: Constructs from stream

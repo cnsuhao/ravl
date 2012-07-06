@@ -35,13 +35,13 @@ namespace RavlN {
     DesignClassifierLogisticRegressionBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DesignClassifierLogisticRegressionBodyC(istream &strm);
+    DesignClassifierLogisticRegressionBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignClassifierLogisticRegressionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -107,7 +107,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
     
-    DesignClassifierLogisticRegressionC(istream &strm);
+    DesignClassifierLogisticRegressionC(std::istream &strm);
     //: Load from stream.
     
     DesignClassifierLogisticRegressionC(BinIStreamC &strm);
@@ -145,14 +145,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DesignClassifierLogisticRegressionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignClassifierLogisticRegressionC &obj) {
     obj = DesignClassifierLogisticRegressionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignClassifierLogisticRegressionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignClassifierLogisticRegressionC &obj) {
     obj.Save(out);
     return out;
   }

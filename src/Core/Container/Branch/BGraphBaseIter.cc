@@ -19,14 +19,14 @@ namespace RavlN {
   //////////////////////
   // Dump to stdout.
   void BGraphBaseAdjIterC::Dump(void) {
-    cerr << "BGraphBaseAdjIterC::Dump(), Not implemented. \n";
+    std::cerr << "BGraphBaseAdjIterC::Dump(), Not implemented. \n";
   }
   
   /////////////////////
   // Dump to stdout.
   
   void BGraphBaseNodeIterC::Dump(void) {
-    cerr << "BGraphBaseAdjIterC::Dump(), Not implemented. \n";
+    std::cerr << "BGraphBaseAdjIterC::Dump(), Not implemented. \n";
   }
   
 }

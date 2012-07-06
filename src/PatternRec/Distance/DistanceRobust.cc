@@ -39,14 +39,14 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DistanceRobustBodyC::DistanceRobustBodyC(istream &strm) 
+  DistanceRobustBodyC::DistanceRobustBodyC(std::istream &strm) 
     : DistanceBodyC(strm)
   { 
     int ver;
     // We might change this in the future, so add version info.
     strm >> ver;
     if(ver != 1)
-      cerr << "DistanceRobustBodyC::DistanceRobustBodyC(), WARNING: Unknown format version. \n";
+      std::cerr << "DistanceRobustBodyC::DistanceRobustBodyC(), WARNING: Unknown format version. \n";
     strm >> clipLimit >> metric; 
   }
   
@@ -58,13 +58,13 @@ namespace RavlN {
     char ver;
     strm >> ver;
     if(ver != 1)
-      cerr << "DistanceRobustBodyC::DistanceRobustBodyC(), WARNING: Unknown format version. \n";    
+      std::cerr << "DistanceRobustBodyC::DistanceRobustBodyC(), WARNING: Unknown format version. \n";    
     strm >> clipLimit >> metric; 
   }
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceRobustBodyC::Save (ostream &out) const {
+  bool DistanceRobustBodyC::Save (std::ostream &out) const {
     if(!DistanceBodyC::Save(out))
       return false;
     int ver = 1;

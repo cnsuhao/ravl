@@ -92,13 +92,13 @@ namespace RavlN {
     ClassifierNeuralNetwork2BodyC(const SArray1dC<NeuralNetworkLayerC::RefT> &layers);
     //: Create classifier
 
-    ClassifierNeuralNetwork2BodyC(istream &strm);
+    ClassifierNeuralNetwork2BodyC(std::istream &strm);
     //: Load from stream.
 
     ClassifierNeuralNetwork2BodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual bool Save (BinOStreamC &out) const;
@@ -144,7 +144,7 @@ namespace RavlN {
     {}
     //: Create classifier from a set of layers
 
-    ClassifierNeuralNetwork2C(istream &strm);
+    ClassifierNeuralNetwork2C(std::istream &strm);
     //: Load from stream.
 
     ClassifierNeuralNetwork2C(BinIStreamC &strm);
@@ -173,14 +173,14 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm,ClassifierNeuralNetwork2C &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierNeuralNetwork2C &obj) {
     obj = ClassifierNeuralNetwork2C(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out,const ClassifierNeuralNetwork2C &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierNeuralNetwork2C &obj) {
     obj.Save(out);
     return out;
   }

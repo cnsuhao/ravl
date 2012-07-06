@@ -39,7 +39,7 @@ namespace RavlN {
     OptimisePowellBodyC (const XMLFactoryContextC & factory);
     //: Factory constructor
 
-    OptimisePowellBodyC (istream &in);
+    OptimisePowellBodyC (std::istream &in);
     //: Constructs from stream
 
     //ACCESSOR METHODS:
@@ -60,7 +60,7 @@ namespace RavlN {
     virtual const StringC GetInfo () const;
     //: Prints information about the optimiser
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
    
   private:

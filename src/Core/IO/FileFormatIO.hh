@@ -32,28 +32,28 @@ namespace RavlN {
   template <class DataC> class DListC;
 
   
-  DPIPortBaseC BaseLoad(const StringC &filename,StringC fformat,const type_info &obj_type,bool verbose = false);
+  DPIPortBaseC BaseLoad(const StringC &filename,StringC fformat,const std::type_info &obj_type,bool verbose = false);
   //! userlevel=Develop
   //: Base load function.
   // If fileformat string is empty, the file format is detected automatically.
   // When verbose flag is true, a message is printed to stdout describing the filename, the format
   // used and the object type being loaded. 
   
-  DPOPortBaseC BaseSave(const StringC &filename,StringC fformat,const type_info &obj_type,bool verbose = false);
+  DPOPortBaseC BaseSave(const StringC &filename,StringC fformat,const std::type_info &obj_type,bool verbose = false);
   //! userlevel=Develop
   //: Base save function.
   // If fileformat string is empty, the default file format for the type is used.
   // When verbose flag is true, a message is printed to stdout describing the filename, the format
   // used and the object type being saved. 
   
-  DPIPortBaseC BaseLoad(IStreamC &is,StringC fformat,const type_info &obj_type,bool verbose = false);
+  DPIPortBaseC BaseLoad(IStreamC &is,StringC fformat,const std::type_info &obj_type,bool verbose = false);
   //! userlevel=Develop
   //: Base load function for streams.
   // If fileformat string is empty, the file format is detected automatically.
   // When verbose flag is true, a message is printed to stdout describing the filename, the format
   // used and the object type being loaded. 
   
-  DPOPortBaseC BaseSave(OStreamC &os,StringC fformat,const type_info &obj_type,bool verbose = false);
+  DPOPortBaseC BaseSave(OStreamC &os,StringC fformat,const std::type_info &obj_type,bool verbose = false);
   //! userlevel=Develop
   //: Base save function for streams
   // If fileformat string is empty, the default file format for the type is used.
@@ -170,7 +170,7 @@ namespace RavlN {
   // NB. an instace of TypeInfoInstC must exists for the contained class if this
   // is to work.
   
-  DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat = StringC(""),const type_info &typespec = typeid(void));
+  DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat = StringC(""),const std::type_info &typespec = typeid(void));
   //! userlevel=Normal
   //: List all file formats that support the given type.
   // forLoad == true, then for load. forLoad == false, then for save. <p>  

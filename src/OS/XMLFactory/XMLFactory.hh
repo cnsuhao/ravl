@@ -622,7 +622,7 @@ namespace RavlN {
                       const StringC &name,
                       DataT &data,
                       bool suppressErrors = false,
-                      const type_info &defaultType = typeid(void),
+                      const std::type_info &defaultType = typeid(void),
                       XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES
                       ) const
     {
@@ -649,7 +649,7 @@ namespace RavlN {
                       const StringC &name,
                       RCWrapAbstractC &data,
                       bool suppressErrors = false,
-                      const type_info &defaultType = typeid(void),
+                      const std::type_info &defaultType = typeid(void),
                       XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES
                       ) const
     {

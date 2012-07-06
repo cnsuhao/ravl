@@ -100,8 +100,8 @@ namespace RavlN {
     IntT v;
   };
 
-  ostream &operator<<(ostream &out,const IntC &x);
-  istream &operator>>(istream &in,IntC &x);
+  std::ostream &operator<<(std::ostream &out,const IntC &x);
+  std::istream &operator>>(std::istream &in,IntC &x);
 
   BinOStreamC &operator<<(BinOStreamC &out,const IntC &x);
   BinIStreamC &operator>>(BinIStreamC &in,IntC &x);
@@ -174,8 +174,8 @@ namespace RavlN {
   // This is included to avoid some confusing type casts which can
   // lead to odd results.
 
-  ostream &operator<<(ostream &out,const UIntC &x);
-  istream &operator>>(istream &in,UIntC &x);
+  std::ostream &operator<<(std::ostream &out,const UIntC &x);
+  std::istream &operator>>(std::istream &in,UIntC &x);
 
   BinOStreamC &operator<<(BinOStreamC &out,const UIntC &x);
   BinIStreamC &operator>>(BinIStreamC &in,UIntC &x);

@@ -46,13 +46,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(istream &strm)
+  DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(std::istream &strm)
     : DesignClassifierSupervisedBodyC(strm)
   {
     int ver;
     strm >> ver;
     if(ver != 1)
-      cerr << "DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(), Unknown format version. \n";
+      std::cerr << "DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(), Unknown format version. \n";
     strm >> priors;
   }
   
@@ -64,13 +64,13 @@ namespace RavlN {
     char ver;
     strm >> ver;
     if(ver != 1)
-      cerr << "DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(), Unknown format version. \n";
+      std::cerr << "DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(), Unknown format version. \n";
     strm >> priors;
   }
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignBayesNormalLinearBodyC::Save (ostream &out) const {
+  bool DesignBayesNormalLinearBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     char ver = 1;

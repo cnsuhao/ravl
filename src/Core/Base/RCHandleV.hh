@@ -62,7 +62,7 @@ namespace RavlN {
     //: Copy Constructor.
     // Creates a new reference to 'oth'
 
-    RCHandleVC(istream &strm)
+    RCHandleVC(std::istream &strm)
       : RCHandleC<BodyT>(dynamic_cast<BodyT *>(VCLoad(strm)))
     {}
     //: Stream constructor.
@@ -94,7 +94,7 @@ namespace RavlN {
     
   public:
 
-    bool Save(ostream &out) const
+    bool Save(std::ostream &out) const
     { return Body().Save(out); }
     //: Save to stream 'out'.
     
@@ -128,7 +128,7 @@ namespace RavlN {
   // from RCBodyVC.
   
   template<class BodyT>
-  BodyT *VCLoad(istream &s,BodyT *) { 
+  BodyT *VCLoad(std::istream &s,BodyT *) { 
     RCBodyVC *bp = VCLoad(s);
     BodyT *ret = dynamic_cast<BodyT *>(bp);
     if(ret == 0) {
@@ -150,7 +150,7 @@ namespace RavlN {
   }
   
   template<class BodyT>
-  ostream &operator<<(ostream &strm,const RCHandleVC<BodyT> &obj) {
+  std::ostream &operator<<(std::ostream &strm,const RCHandleVC<BodyT> &obj) {
     RavlAssertMsg(obj.IsValid(),"Attempt to write an invalid object handle.");
     obj.Save(strm);
     return strm;
@@ -166,7 +166,7 @@ namespace RavlN {
   //: Write binary handle to a stream.
   
   template<class BodyT>
-  istream &operator>>(istream &strm,RCHandleVC<BodyT> &obj) {
+  std::istream &operator>>(std::istream &strm,RCHandleVC<BodyT> &obj) {
     obj = RCHandleVC<BodyT>(strm);
     return strm;
   }

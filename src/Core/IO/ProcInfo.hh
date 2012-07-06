@@ -37,16 +37,16 @@ namespace RavlN {
     DPProcInfoBodyC();
     //: Default constructor.
     
-    virtual const type_info &ProcType() const;
+    virtual const std::type_info &ProcType() const;
     //: Get type of process
     
     virtual IntT Args() const;
     //: Number of args for process.
     
-    virtual const type_info &ArgType(IntT i) const;
+    virtual const std::type_info &ArgType(IntT i) const;
     //: Type of args.
     
-    virtual const type_info &Output() const;
+    virtual const std::type_info &Output() const;
     //: Output type.
     
     virtual DPProcessBaseC CreateProc() const;
@@ -107,7 +107,7 @@ namespace RavlN {
     //: Access body.
     
   public:
-    inline const type_info &ProcType() const
+    inline const std::type_info &ProcType() const
       { return Body().ProcType(); }
     //: Get type of process
     
@@ -115,11 +115,11 @@ namespace RavlN {
     { return Body().Args(); }
     //: Number of args for process.
     
-    inline const type_info &ArgType(IntT i) const
+    inline const std::type_info &ArgType(IntT i) const
       { return Body().ArgType(i); }
     //: Type of args.
     
-    inline const type_info &Output() const
+    inline const std::type_info &Output() const
       { return Body().Output(); }
     //: Output type.
     

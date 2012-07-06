@@ -24,7 +24,7 @@
 namespace RavlN {
   
   
-  typedef const char *(*TypeNameMapT)(const type_info &type);
+  typedef const char *(*TypeNameMapT)(const std::type_info &type);
   extern TypeNameMapT TypeNameMap;
   
   static HashC<const char *,const char *> InitNameMapping();
@@ -40,8 +40,8 @@ namespace RavlN {
     return typeNameMapping;
   }
   
-  inline static HashC<const char *,const type_info *> &RTypeMapping() {
-    static HashC<const char *,const type_info *> rTypeNameMapping;
+  inline static HashC<const char *,const std::type_info *> &RTypeMapping() {
+    static HashC<const char *,const std::type_info *> rTypeNameMapping;
     return rTypeNameMapping;
   }
   
@@ -131,17 +131,17 @@ namespace RavlN {
 #endif
   }
   
-  const char *TypeHandleName(const type_info &info) {
+  const char *TypeHandleName(const std::type_info &info) {
     MTReadLockC lock;
     const char **ptr = HandleNameMapping().Lookup(info.name());
     if(ptr == 0) {
-      cerr << "WARNING: Handle type name not know for '" << info.name() << "' \n";
+      std::cerr << "WARNING: Handle type name not know for '" << info.name() << "' \n";
       return "Unknown";
     }
     return *ptr;
   }
   
-  const char *TypeName(const type_info &info)  { 
+  const char *TypeName(const std::type_info &info)  {
     return TypeName(info.name()); 
   }
 
@@ -150,9 +150,9 @@ namespace RavlN {
     return HashC<const char *,const char *>();
   }
   
-  const type_info &RTypeInfo(const char *name) { 
+  const std::type_info &RTypeInfo(const char *name) {
     MTReadLockC lock;
-    const type_info **tinf = RTypeMapping().Lookup(name);
+    const std::type_info **tinf = RTypeMapping().Lookup(name);
     if(tinf != NULL) 
       return **tinf;
     return typeid(void); 
@@ -175,7 +175,7 @@ namespace RavlN {
     TypeNameMapping()[sysname] = newname;
   }
   
-  void AddTypeName(const type_info &info,const char *newname) { 
+  void AddTypeName(const std::type_info &info,const char *newname) {
     AddTypeName(info.name(),newname); 
     MTWriteLockC lock;
     RTypeMapping()[newname] = &info;
@@ -183,7 +183,7 @@ namespace RavlN {
   
   //: Add body to handle type mapping.
   
-  void AddTypeHandleName(const type_info &info,const char *newname) {
+  void AddTypeHandleName(const std::type_info &info,const char *newname) {
     MTWriteLockC lock;
     HandleNameMapping()[info.name()] = newname;
   }

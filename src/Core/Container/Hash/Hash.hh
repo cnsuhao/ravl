@@ -148,7 +148,7 @@ namespace RavlN {
     //!param: data - pointer to array of tuples to initialise the table with, terminated with an entry with a duplicate key of the first entry.
     // Note: Array must be terminated by a duplicate of the first key. (i.e. == must return true between them)
     
-    HashC(istream &in);
+    HashC(std::istream &in);
     //: Recreate from stream.
     //!param: in - Stream to construct table from
     
@@ -156,7 +156,7 @@ namespace RavlN {
     //: Recreate from stream.
     //!param: in - Binary stream to construct table from
     
-    void Save(ostream &strm) const;
+    void Save(std::ostream &strm) const;
     //: Save to stream.
     
     void Save(BinOStreamC &strm) const;
@@ -394,7 +394,7 @@ namespace RavlN {
     //: Default constructor.
     // To keep the compiler happy.
     
-    inline HashElemC(istream &in);
+    inline HashElemC(std::istream &in);
     //: Load from stream.
     
     inline HashElemC(BinIStreamC &in);
@@ -449,7 +449,7 @@ namespace RavlN {
   //////////////////////////////////////////////////
   
   template<class K,class T>
-  inline HashElemC<K,T>::HashElemC(istream &in) { 
+  inline HashElemC<K,T>::HashElemC(std::istream &in) { 
     in >> Key >> Hold;
     hashVal = StdHash(Key); 
   }
@@ -461,13 +461,13 @@ namespace RavlN {
   }
 
   template<class K,class T>
-  ostream &operator<<(ostream &out,const HashElemC<K,T> &obj) {  
+  std::ostream &operator<<(std::ostream &out,const HashElemC<K,T> &obj) {  
     out << obj.GetKey() << ' ' << obj.Data(); 
     return out;
   }
   
   template<class K,class T>
-  istream &operator>>(istream &in,HashElemC<K,T> &obj) { 
+  std::istream &operator>>(std::istream &in,HashElemC<K,T> &obj) { 
     obj = HashElemC<K,T>(in);
     return in;
   }
@@ -534,7 +534,7 @@ namespace RavlN {
   }
 
   template<class K,class T>
-  void HashC<K,T>::Save(ostream &out) const {
+  void HashC<K,T>::Save(std::ostream &out) const {
     out << elements << '\n';
     for(BufferAccessIterC<IntrDListC<HashElemC<K,T> > > it(table);it;it++) {
       for(IntrDLIterC<HashElemC<K,T> > place(*it);place;place++)
@@ -554,12 +554,12 @@ namespace RavlN {
     
 
   template<class K,class T>
-  inline ostream &operator<<(ostream &out,const HashC<K,T> &obj) 
+  inline std::ostream &operator<<(std::ostream &out,const HashC<K,T> &obj) 
   { obj.Save(out);  return out;  }
   
   
   template<class K,class T>
-  inline istream &operator>>(istream &in,HashC<K,T> &obj) { 
+  inline std::istream &operator>>(std::istream &in,HashC<K,T> &obj) { 
     HashC<K,T> newun(in);
     obj.Move(newun);
     return in;
@@ -578,7 +578,7 @@ namespace RavlN {
   }
   
   template<class K,class T>
-  HashC<K,T>::HashC(istream &in)  {
+  HashC<K,T>::HashC(std::istream &in)  {
     SizeT size;
     in >> size;
     table = SArray1dC<IntrDListC<HashElemC<K,T> > > (NextPrime(size));

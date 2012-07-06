@@ -44,7 +44,7 @@ namespace RavlN {
 
   //: Default constructor.
   
-  VirtualConstructorBodyC::VirtualConstructorBodyC(const type_info &info,const char *typesname)
+  VirtualConstructorBodyC::VirtualConstructorBodyC(const std::type_info &info,const char *typesname)
   {
     ONDEBUG(cerr << "VirtualConstructorBodyC::VirtualConstructorBodyC(), Registering '" << info.name() << "' as '" <<typesname << "' \n");
     Table()[typesname] = VirtualConstructorC(*this);
@@ -52,23 +52,23 @@ namespace RavlN {
     
   }
 
-  //: Construct from an istream.
+  //: Construct from an std::istream.
   // Dummy method.
   
-  VirtualConstructorBodyC::VirtualConstructorBodyC(istream &in)
+  VirtualConstructorBodyC::VirtualConstructorBodyC(std::istream &in)
     : RCBodyVC(in)
   {}
   
-  //: Construct from an istream.
+  //: Construct from an std::istream.
   // Dummy method
   
   VirtualConstructorBodyC::VirtualConstructorBodyC(BinIStreamC &in) 
     : RCBodyVC(in)
   {}
   
-  //: Load an object of this type from an istream
+  //: Load an object of this type from an std::istream
   
-  RCBodyVC *VirtualConstructorBodyC::Load(istream &in) const { 
+  RCBodyVC *VirtualConstructorBodyC::Load(std::istream &in) const { 
     RavlAssertMsg(0,"VirtualConstructorBodyC::Load(), Abstract method called. ");
     return 0; 
   }
@@ -81,7 +81,7 @@ namespace RavlN {
   }
 
   
-  RCBodyVC *VCLoad(istream &s) {
+  RCBodyVC *VCLoad(std::istream &s) {
     StringC name;
     s >> name;
     VirtualConstructorC vc;

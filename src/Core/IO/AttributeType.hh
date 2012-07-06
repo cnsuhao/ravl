@@ -47,7 +47,7 @@ namespace RavlN {
     AttributeTypeBodyC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeBodyC(istream &is);
+    AttributeTypeBodyC(std::istream &is);
     //: stream constructor.
     
     AttributeTypeBodyC(const StringC &name,const StringC &desc,bool nCanRead = true,bool nCanWrite = true);
@@ -59,7 +59,7 @@ namespace RavlN {
     virtual AttributeValueTypeT ValueType() const;
     //: Get hint about type of value attribute has.
     
-    virtual bool Save(ostream & strm) const ; 
+    virtual bool Save(std::ostream & strm) const ; 
     //: Save the attribute to a stream 
     
     virtual bool Save(BinOStreamC & strm) const ; 
@@ -106,7 +106,7 @@ namespace RavlN {
     bool canWrite; // Can be written to
     
 
-    friend ostream & operator << (ostream & strm, const AttributeTypeBodyC & obj) ; 
+    friend std::ostream & operator << (std::ostream & strm, const AttributeTypeBodyC & obj) ; 
     //: output operator 
 
   };
@@ -126,7 +126,7 @@ namespace RavlN {
     AttributeTypeC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeC(istream &is);
+    AttributeTypeC(std::istream &is);
     //: stream constructor.
     
   protected:
@@ -193,10 +193,10 @@ namespace RavlN {
   BinIStreamC &operator>>(BinIStreamC &strm,AttributeTypeC &attrType);
   //: Read attribute type from binary stream.
   
-  ostream &operator<<(ostream &strm,const AttributeTypeC &attrType);
+  std::ostream &operator<<(std::ostream &strm,const AttributeTypeC &attrType);
   //: Write attribute type to stream.
   
-  istream &operator>>(istream &strm,AttributeTypeC &attrType);
+  std::istream &operator>>(std::istream &strm,AttributeTypeC &attrType);
   //: Read attribute type from stream.
   
 }

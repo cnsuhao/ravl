@@ -216,10 +216,10 @@ int testDArray1dMore() {
   DArray1dC<int> dset(10,true);
   dset.Append(1);
   dset.Append(2);
-  //cout << "dset=" << dset << endl;
+  //cout << "dset=" << dset << std::endl;
   DArray1dC<int> dset2(10,true);
   dset2.Append(dset);
-  //  cout << "dset2=" << dset2 << endl;
+  //  cout << "dset2=" << dset2 << std::endl;
   if(dset2.Size() != 2) return __LINE__;
   int count = 0;
   for(DArray1dIterC<int> it(dset2);it;it++) {

@@ -21,7 +21,7 @@ namespace RavlN {
 
   //: Return type of port.
   
-  const type_info &DPIPlugBaseBodyC::InputType() const
+  const std::type_info &DPIPlugBaseBodyC::InputType() const
   { return typeid(void); }
   
   ////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ namespace RavlN {
   
   //: Return type of port.
   
-  const type_info &DPOPlugBaseBodyC::OutputType() const 
+  const std::type_info &DPOPlugBaseBodyC::OutputType() const 
   { return typeid(void); }
 
 }

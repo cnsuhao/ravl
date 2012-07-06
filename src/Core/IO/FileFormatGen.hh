@@ -35,7 +35,7 @@ namespace RavlN {
     typedef DPOPortBaseC (*SaveFuncFnT)(const StringC &);
     
     FileFormatGenericBodyC(const StringC &nformatName,
-			   const type_info &formatType,
+			   const std::type_info &formatType,
 			   LoadFuncT nLoadFunc,
 			   SaveFuncT nSaveFunc,
 			   LoadFuncFnT loadFuncFn,
@@ -48,7 +48,7 @@ namespace RavlN {
     //: Constructor.
     
     FileFormatGenericBodyC(const StringC &nformatName,
-			   const type_info &formatType,
+			   const std::type_info &formatType,
 			   LoadFuncFnT nLoadFunc,
 			   SaveFuncFnT nSaveFunc,
 			   
@@ -59,45 +59,45 @@ namespace RavlN {
 			   const StringC &nHdrData = "" );
     //: Constructor.
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
     // typeid(void) == no, otherwise returns the prefered load type.
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
     // If used with a empty filename asks: Can load this type of object ?
     // typeid(void) == no, otherwise returns the prefered load type.
     
     
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be saved with object 'obj_type' ?
     // If used with a empty filename asks: Can save this type of object ?
     // typeid(void) == no, otherwise returns the prefered save type.
     
-    virtual DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a input port for loading from file 'filename'.
     // Will create an Invalid port if not supported. <p>
     // The default version of this functions opens the file and passes
     // the stream to CreateInput(IStreamC ....)
   
-    virtual DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a output port for saving to file 'filename'..
     // Will create an Invalid port if not supported. <p>
     // The default version of this functions opens the file and passes
     // the stream to CreateOutput(OStreamC ....)
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading from stream 'in'.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving to stream 'out'.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const;
+    virtual const std::type_info &DefaultType() const;
     //: Get preferred IO type.
     // This specifies the native class for representing the data in a file. <p>
     // typeid(void) if none, indicates an indirect driver.
@@ -121,7 +121,7 @@ namespace RavlN {
     LoadFuncFnT loadFuncFn;
     SaveFuncFnT saveFuncFn;
     bool aStream;
-    const type_info *formatType;
+    const std::type_info *formatType;
     
   };
   
@@ -141,7 +141,7 @@ namespace RavlN {
     // Creates an invalid object.
     
     FileFormatGenericC(const StringC &nformatName,
-		       const type_info &formatType,
+		       const std::type_info &formatType,
 		       FileFormatGenericBodyC::LoadFuncT nLoadFunc,
 		       FileFormatGenericBodyC::SaveFuncT nSaveFunc,
 		       FileFormatGenericBodyC::LoadFuncFnT nLoadFuncFn,
@@ -168,7 +168,7 @@ namespace RavlN {
     
     
     FileFormatGenericC(const StringC &nformatName,
-		       const type_info &formatType,
+		       const std::type_info &formatType,
 		       FileFormatGenericBodyC::LoadFuncT nLoadFunc,
 		       FileFormatGenericBodyC::SaveFuncT nSaveFunc,
 		       const StringC &nDesc = "None.",
@@ -191,7 +191,7 @@ namespace RavlN {
     //: Constructor.
     
     FileFormatGenericC(const StringC &nformatName,
-		       const type_info &formatType,
+		       const std::type_info &formatType,
 		       FileFormatGenericBodyC::LoadFuncFnT nLoadFunc,
 		       FileFormatGenericBodyC::SaveFuncFnT nSaveFunc,
 		       const StringC &nDesc = "None.",

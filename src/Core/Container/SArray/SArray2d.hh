@@ -279,7 +279,7 @@ namespace RavlN {
   };
 
   template <class DataT>
-  ostream & operator<<(ostream & s, const SArray2dC<DataT> & arr) {
+  std::ostream & operator<<(std::ostream & s, const SArray2dC<DataT> & arr) {
     s  << arr.Size1() << " " << arr.Size2() << "\n";
     s << ((SizeBufferAccess2dC<DataT> &) arr);
     return s;
@@ -287,7 +287,7 @@ namespace RavlN {
   // Prints into the stream 's'
 
   template <class DataT>
-  istream & operator>>(istream & s, SArray2dC<DataT> & arr) {
+  std::istream & operator>>(std::istream & s, SArray2dC<DataT> & arr) {
     SizeT size1,size2;
     s >> size1 >> size2;
     arr = SArray2dC<DataT>(size1,size2);

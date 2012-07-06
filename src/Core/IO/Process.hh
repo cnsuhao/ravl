@@ -41,7 +41,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DPProcessBaseBodyC(istream &in) 
+    DPProcessBaseBodyC(std::istream &in) 
       : DPEntityBodyC(in)
     {}
     //: Stream constructor.
@@ -56,8 +56,8 @@ namespace RavlN {
     {}
     //: Copy constructor.
     
-    virtual bool Save(ostream &out) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &out) const;
+    //: Save to std::ostream.
     
     virtual bool Save(BinOStreamC &out) const;
     //: Save to binary stream.  
@@ -70,10 +70,10 @@ namespace RavlN {
     //: Get number of outputs.
     // Defaults to 1.
     
-    virtual const type_info &InputType(int n = 0) const;
+    virtual const std::type_info &InputType(int n = 0) const;
     //: Get input types.
     
-    virtual const type_info &OutputType(int n = 0) const;
+    virtual const std::type_info &OutputType(int n = 0) const;
     //: Get output types.
     
     enum ProcTypeT { ConversionT,ConversionLossyT,LossyT };
@@ -104,7 +104,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    inline DPProcessBodyC(istream &in)
+    inline DPProcessBodyC(std::istream &in)
       : DPProcessBaseBodyC(in)
     {}
     //: Stream constructor.
@@ -119,9 +119,9 @@ namespace RavlN {
     //: Destructor. 
     // To see if this helps gcc-1.0.3 sort itself out.
 
-    virtual bool Save(ostream &out) const
+    virtual bool Save(std::ostream &out) const
     { return DPProcessBaseBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Save(BinOStreamC &out) const
     { return DPProcessBaseBodyC::Save(out); }
@@ -137,13 +137,13 @@ namespace RavlN {
     //: Apply operation to an array of elements.
     // returns the number of elements processed.
     
-    virtual const type_info &InputType(int n = 0) const { 
+    virtual const std::type_info &InputType(int n = 0) const { 
       if(n != 0) return typeid(void);
       return typeid(InT); 
     }
     //: Get input type.
     
-    virtual const type_info &OutputType(int n = 0) const { 
+    virtual const std::type_info &OutputType(int n = 0) const { 
       if(n != 0) return typeid(void);
       return typeid(OutT); 
     }
@@ -183,7 +183,7 @@ namespace RavlN {
     DPProcessBaseC(const RCAbstractC &abst);
     //: Constructor from an abstract handle.
     
-    DPProcessBaseC(istream &in);
+    DPProcessBaseC(std::istream &in);
     //: Stream constructor.
     
     DPProcessBaseC(BinIStreamC &in);
@@ -221,12 +221,12 @@ namespace RavlN {
     { return Body().NoOutputs(); }
     //: Get number of outputs.
     
-    inline const type_info &InputType(int n = 0) const 
+    inline const std::type_info &InputType(int n = 0) const 
     { return Body().InputType(n); }
     //: Get input type.
     // n is the input number to query, numbering starts from 0.
     
-    inline const type_info &OutputType(int n = 0) const 
+    inline const std::type_info &OutputType(int n = 0) const 
     { return Body().OutputType(n); }
     //: Get input type.  
     // n is the output number to query, numbering starts from 0.
@@ -260,7 +260,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DPProcessC(istream &in)
+    DPProcessC(std::istream &in)
       : DPProcessBaseC(in)
     { CheckHandleType(Body()); }
     //: Stream constructor.

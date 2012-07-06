@@ -66,7 +66,7 @@ namespace RavlN {
   
   FileFormatBaseC FileFormatRegistryBodyC::FindFormat(bool forLoad,
 						      const StringC &name,
-						      const type_info &objtype,
+						      const std::type_info &objtype,
 						      bool useIndirect
 						      )
   {
@@ -109,7 +109,7 @@ namespace RavlN {
   
   FileFormatBaseC FileFormatRegistryBodyC::FindFormatFile(bool forLoad,
 							  const StringC &filename,
-							  const type_info &objtype,
+							  const std::type_info &objtype,
 							  StringC formName,
 							  bool useIndirect
 							  )
@@ -176,7 +176,7 @@ namespace RavlN {
   //: Find the format of the file.
   
   FileFormatBaseC FileFormatRegistryBodyC::FindFormat(IStreamC &in,
-						      const type_info &objtype,
+						      const std::type_info &objtype,
 						      StringC formName,
 						      bool useIndirect
 						      )
@@ -240,7 +240,7 @@ namespace RavlN {
 						StringC filename,
 						IStreamC &in,
 						StringC format,
-						const type_info &obj_type,
+						const std::type_info &obj_type,
 						bool verbose
 						)
   {
@@ -269,7 +269,7 @@ namespace RavlN {
     const std::type_info *usableType = 0;
     DListC<DPConverterBaseC> bestConverterList;
     RealT bestConversionCost = 100000;
-    const type_info *bestFormatType = 0;
+    const std::type_info *bestFormatType = 0;
     HSetC<StringC> ignoreFmts,acceptFmts;
     bool acceptAll = ParseFmts(format,ignoreFmts,acceptFmts);
     
@@ -287,7 +287,7 @@ namespace RavlN {
           continue;
       }
       // Look for all loaders that can load from stream.
-      const type_info *ti;
+      const std::type_info *ti;
       if(filename != "-")
         ti = &it.Data().ProbeLoad(filename,in,obj_type); // Use file probe.
       else
@@ -362,7 +362,7 @@ namespace RavlN {
   
   DPIPortBaseC FileFormatRegistryBodyC::CreateInput(StringC filename,
 						    StringC format,
-						    const type_info &obj_type,
+						    const std::type_info &obj_type,
 						    bool verbose
 						    )
   {
@@ -384,7 +384,7 @@ namespace RavlN {
   bool FileFormatRegistryBodyC::FindOutputFormat(FileFormatDescC &fmtInfo,
 						 StringC filename,
 						 StringC format,
-						 const type_info &obj_type,
+						 const std::type_info &obj_type,
 						 bool verbose
 						 ) {
     ONDEBUG(cerr << "FindOutputFormat(), Fn:'" << filename << "' Format:'" << format << "'  Type : " << TypeName(obj_type) << "  Verb:" << verbose << "\n");
@@ -393,12 +393,12 @@ namespace RavlN {
     RealT minCost = 100000;
     FileFormatBaseC minForm;
     DListC<DPConverterBaseC> bestConv;
-    const type_info *bestout = 0;
+    const std::type_info *bestout = 0;
     IntT bestPri = 0;
     
     HSetC<StringC> ignoreFmts,acceptFmts;
     bool acceptAll = ParseFmts(format,ignoreFmts,acceptFmts);
-    const type_info *testType = &obj_type;
+    const std::type_info *testType = &obj_type;
       
     for(DLIterC<FileFormatBaseC> it(Formats());
 	it.IsElm();
@@ -411,7 +411,7 @@ namespace RavlN {
       }
       if(obj_type == typeid(void))
 	testType = &(it.Data().DefaultType());
-      const type_info &ti = it.Data().ProbeSave(filename,*testType,!acceptAll); // it.Data().DefaultType()
+      const std::type_info &ti = it.Data().ProbeSave(filename,*testType,!acceptAll); // it.Data().DefaultType()
       ONDEBUG(cerr << "OProbe '" << it.Data().Name() << "' '" << TypeName(it.Data().DefaultType()) << "'  = " << TypeName(ti) << "\n");
       if(ti == typeid(void))
 	continue;
@@ -459,7 +459,7 @@ namespace RavlN {
 
   DPOPortBaseC FileFormatRegistryBodyC::CreateOutput(StringC filename,
 						     StringC format,
-						     const type_info &obj_type,
+						     const std::type_info &obj_type,
 						     bool verbose
 						     ) {
     FileFormatDescC fmtInfo;
@@ -476,7 +476,7 @@ namespace RavlN {
   
   DPIPortBaseC FileFormatRegistryBodyC::CreateInput(IStreamC &in,
 						    StringC format,
-						    const type_info &obj_type,
+						    const std::type_info &obj_type,
 						    bool verbose
 						    )
   {
@@ -484,7 +484,7 @@ namespace RavlN {
     FileFormatBaseC bestFormat;
     // Should look for best ??
     DListC<DPConverterBaseC> bestConverterList;
-    const type_info *bestFormatType = 0;
+    const std::type_info *bestFormatType = 0;
     RealT bestConversionCost = 100000;
     
     for(DLIterC<FileFormatBaseC> it(Formats());
@@ -496,12 +496,12 @@ namespace RavlN {
       }
       // Look for all loaders that can load from stream.
 
-      const type_info *reqType = 0;
+      const std::type_info *reqType = 0;
       if(obj_type != typeid(void))
 	reqType = &obj_type;
       else
 	reqType = &it.Data().DefaultType();
-      const type_info &ti = it.Data().ProbeLoad(in,*reqType);
+      const std::type_info &ti = it.Data().ProbeLoad(in,*reqType);
       
       if(ti == typeid(void))
 	continue; // Can't load give input.
@@ -561,7 +561,7 @@ namespace RavlN {
   
   DPOPortBaseC FileFormatRegistryBodyC::CreateOutput(OStreamC &to,
 						     StringC format,
-						     const type_info &obj_type,
+						     const std::type_info &obj_type,
 						     bool verbose
 						     )
   {
@@ -575,7 +575,7 @@ namespace RavlN {
     FileFormatBaseC minForm;
     DListC<DPConverterBaseC> bestConv;
     IntT bestPri = 0;
-    const type_info *bestout = 0;
+    const std::type_info *bestout = 0;
     bool forceFormat = (format != "");
     for(DLIterC<FileFormatBaseC> it(Formats());
 	it.IsElm();
@@ -584,7 +584,7 @@ namespace RavlN {
 	if(format != it.Data().Name())
 	  continue;
       }
-      const type_info &ti = it.Data().ProbeSave(obj_type);//it.Data().DefaultType());
+      const std::type_info &ti = it.Data().ProbeSave(obj_type);//it.Data().DefaultType());
       if(ti == typeid(void))
 	continue;
       if(ti == obj_type) {
@@ -735,7 +735,7 @@ namespace RavlN {
   //: List all file formats that support the given type.
   // If typespec is void then all types are listed.
   
-  DListC<FileFormatBaseC> FileFormatRegistryBodyC::ListFormats(bool forLoad,const StringC &fileFormat,const type_info &typespec) {
+  DListC<FileFormatBaseC> FileFormatRegistryBodyC::ListFormats(bool forLoad,const StringC &fileFormat,const std::type_info &typespec) {
     DListC<FileFormatBaseC> ret;
     MTReadLockC readLock(6);
     bool forceFormat = (fileFormat != "");

@@ -36,26 +36,26 @@ int main() {
   // To prove it go through the list with an iterator 
   // and print out elements.
   
-  cout << "List:";
+  std::cout << "List:";
   for(DLIterC<int> it(aList);it;it++)
-    cout << " " << *it;
-  cout << "\n";
+    std::cout << " " << *it;
+  std::cout << "\n";
 
   // To sort the list into ascending order, use the sort method with default
   // comparison function:
   aList.MergeSort();
-  cout << "List:";
+  std::cout << "List:";
   for(DLIterC<int> it(aList);it;it++)
-    cout << " " << *it;
-  cout << "\n";
+    std::cout << " " << *it;
+  std::cout << "\n";
 
   // To sort the list into *descending* order, you have to define your own
   // comparison function (see IntGrEq() above), and use it like this:
   aList.MergeSort(IntGrEq);
-  cout << "List:";
+  std::cout << "List:";
   for(DLIterC<int> it(aList);it;it++)
-    cout << " " << *it;
-  cout << "\n";
+    std::cout << " " << *it;
+  std::cout << "\n";
 
   
   return 0;

@@ -27,13 +27,13 @@ namespace RavlN {
     DesignDiscriminantFunctionBodyC(const DesignFunctionSupervisedC &func);
     //: Default constructor.
     
-    DesignDiscriminantFunctionBodyC(istream &strm);
+    DesignDiscriminantFunctionBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignDiscriminantFunctionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -70,7 +70,7 @@ namespace RavlN {
     {}
     //: Create a new designer.
     
-    DesignDiscriminantFunctionC(istream &strm);
+    DesignDiscriminantFunctionC(std::istream &strm);
     //: Load from stream.
     
     DesignDiscriminantFunctionC(BinIStreamC &strm);
@@ -103,14 +103,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,DesignDiscriminantFunctionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignDiscriminantFunctionC &obj) {
     obj = DesignDiscriminantFunctionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignDiscriminantFunctionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignDiscriminantFunctionC &obj) {
     obj.Save(out);
     return out;
   }

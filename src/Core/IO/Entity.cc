@@ -30,7 +30,7 @@ namespace RavlN {
   ///// DPEntityBC /////////////////////////////////////////////////////////
   
   
-  bool DPEntityBodyC::Save(ostream &out) const  { 
+  bool DPEntityBodyC::Save(std::ostream &out) const  { 
     return RCBodyVC::Save(out);
   }
 
@@ -55,7 +55,7 @@ namespace RavlN {
 #if 0
   // Constructor from stream.
   
-  DPEntityC::DPEntityC(istream &strm)
+  DPEntityC::DPEntityC(std::istream &strm)
     : RCHandleVC<DPEntityBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,DPEntityBodyC))
   {}
   

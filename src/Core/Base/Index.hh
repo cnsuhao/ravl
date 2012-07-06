@@ -789,10 +789,10 @@ namespace RavlN {
   // I/O operators
   // -------------
 
-  istream & operator>>(istream & s, IndexC & r);
+  std::istream & operator>>(std::istream & s, IndexC & r);
   //: Reads value for index from an input stream
 
-  ostream & operator<<(ostream & s, const IndexC & r);
+  std::ostream & operator<<(std::ostream & s, const IndexC & r);
   //: Writes the index index to an output stream
 
 

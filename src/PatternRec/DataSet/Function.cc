@@ -24,7 +24,7 @@ namespace RavlN {
   }
   //: XMLFactoryC constructor.
   
-  FunctionBodyC::FunctionBodyC(istream &strm)
+  FunctionBodyC::FunctionBodyC(std::istream &strm)
     : RCBodyVC(strm)
   { strm >> inputSize >> outputSize; }
   
@@ -36,7 +36,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FunctionBodyC::Save (ostream &out) const {
+  bool FunctionBodyC::Save (std::ostream &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     out  << ' ' << inputSize << ' ' << outputSize << ' ';
@@ -145,7 +145,7 @@ namespace RavlN {
   }
   
   //: Write a human readable text description of the function.
-  void FunctionBodyC::Describe(ostream &out) {
+  void FunctionBodyC::Describe(std::ostream &out) {
     out << "Describe not implemented\n";
   }
   
@@ -158,7 +158,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  FunctionC::FunctionC(istream &strm) 
+  FunctionC::FunctionC(std::istream &strm) 
     : RCHandleVC<FunctionBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,FunctionBodyC))
   {}
     

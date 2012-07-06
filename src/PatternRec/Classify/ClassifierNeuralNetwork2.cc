@@ -101,13 +101,13 @@ namespace RavlN {
 
   //: Load from stream.
 
-  ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(istream &strm)
+  ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(std::istream &strm)
     : ClassifierBodyC(strm)
   {
     ByteT version;
     strm >> version;
     if(version != 1)
-      throw ExceptionUnexpectedVersionInStreamC("ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("ClassifierNeuralNetwork2BodyC::ClassifierNeuralNetwork2BodyC(std::istream &), Unrecognised version number in stream. ");
 
     strm >> m_norm;
     strm >> m_layers;
@@ -131,11 +131,11 @@ namespace RavlN {
 
   //: Writes object to stream, can be loaded using constructor
 
-  bool ClassifierNeuralNetwork2BodyC::Save(ostream &out) const {
+  bool ClassifierNeuralNetwork2BodyC::Save(std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;
-    out << version << " " << m_norm << " " << m_layers << endl;
+    out << version << " " << m_norm << " " << m_layers << std::endl;
     return true;
   }
 

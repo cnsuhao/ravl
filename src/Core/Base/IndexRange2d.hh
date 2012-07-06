@@ -420,8 +420,8 @@ namespace RavlN {
     IndexRangeC cols;
   };
 
-  ostream &operator<<(ostream &s,const IndexRange2dC &ir);
-  istream &operator>>(istream &s,IndexRange2dC &ir);
+  std::ostream &operator<<(std::ostream &s,const IndexRange2dC &ir);
+  std::istream &operator>>(std::istream &s,IndexRange2dC &ir);
 
   BinOStreamC &operator<<(BinOStreamC &s,const IndexRange2dC &ir);
   BinIStreamC &operator>>(BinIStreamC &s,IndexRange2dC &ir);

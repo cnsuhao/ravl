@@ -38,7 +38,7 @@ namespace RavlN {
      _verbose(factory.AttributeBool("verbose",true))
   {}
 
-  OptimisePowellBodyC::OptimisePowellBodyC (istream &in)
+  OptimisePowellBodyC::OptimisePowellBodyC (std::istream &in)
     :OptimiseBodyC("OptimisePowellBodyC",in)
   {
     in >> _iterations;
@@ -183,7 +183,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimisePowellBodyC::Save (ostream &out) const
+  bool OptimisePowellBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << "\n";

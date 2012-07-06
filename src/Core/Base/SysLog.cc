@@ -264,7 +264,7 @@ namespace RavlN {
   
   //: Set the level of messages to send to standard error.
   // This controls the level of messages to send to
-  // cerr. <br>
+  // std::cerr. <br>
   // Only messages with a priority lower than 'level' we be sent.
   
   bool SysLogLevelStdErr(SysLogPriorityT level) { 

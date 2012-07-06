@@ -28,7 +28,7 @@ namespace RavlN {
   ///////////////////////
   //: Constructor.
   
-  DPConverterBaseBodyC::DPConverterBaseBodyC(const type_info &ninput_type,const type_info &noutput_type,RealT ncost) 
+  DPConverterBaseBodyC::DPConverterBaseBodyC(const std::type_info &ninput_type,const std::type_info &noutput_type,RealT ncost)
     : input_type(ninput_type),
       output_type(noutput_type),
       cost(ncost)
@@ -48,7 +48,7 @@ namespace RavlN {
   ////////////////////////////
   //: Type of args.
   
-  const type_info &DPConverterBaseBodyC::ArgType(IntT i) const {
+  const std::type_info &DPConverterBaseBodyC::ArgType(IntT i) const {
     if(i != 0)
       return typeid(void); 
     return input_type;
@@ -57,7 +57,7 @@ namespace RavlN {
   ////////////////////////////
   //: Output type.
   
-  const type_info &DPConverterBaseBodyC::Output() const { 
+  const std::type_info &DPConverterBaseBodyC::Output() const { 
     return output_type; 
   }
   

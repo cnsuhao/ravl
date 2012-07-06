@@ -31,7 +31,7 @@ class SBAccC: public SizeBufferAccessC<char>
 
 int  ExSBfAcc(int, char * [] )
 {
-  cout << "Buffer access with known size example\n"
+  std::cout << "Buffer access with known size example\n"
            << "=====================================\n";
 
   char buffer[] = "absdefghijklmnopqrstuvwxyz\n";
@@ -48,7 +48,7 @@ int  ExSBfAcc(int, char * [] )
   SizeBufferAccessC<char> acc7(acc6.Copy()); // a new buffer with an access
   acc6.Fill('*');                            // modify the contents
   
-  cout << "Buffer1 ?  " << acc1.IsValid() << ' ' << acc1.IsEmpty() << ' '
+  std::cout << "Buffer1 ?  " << acc1.IsValid() << ' ' << acc1.IsEmpty() << ' '
                             << acc1.Size() << ' ' << acc1.ReferenceVoid() << '\n'
            << "Buffer2 ?  " << acc2.IsValid() << ' ' << acc2.IsEmpty() << ' '
                             << acc2.Size() << ' ' << acc2.ReferenceVoid() << '\n'
@@ -73,7 +73,7 @@ int  ExSBfAcc(int, char * [] )
            << "Buffer2.Range()  " << acc2.Range()   << '\n'
            << "Buffer2[3]:" << acc2[1]              << '\n'
            << "\n"; 
-  cout << "End of the example\n";
+  std::cout << "End of the example\n";
   return 0;
 }
 

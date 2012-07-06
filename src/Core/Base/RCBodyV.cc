@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/RCBodyV.cc"
@@ -27,11 +26,11 @@ namespace RavlN {
   RCBodyVC::~RCBodyVC()
   {}
   
-  const char *(*TypeNameMap)(const type_info &type) = 0;
+  const char *(*TypeNameMap)(const std::type_info &type) = 0;
   
   //: Save to stream out.
   
-  bool RCBodyVC::Save(ostream &out) const {
+  bool RCBodyVC::Save(std::ostream &out) const {
     RavlAssert(TypeNameMap != 0);
     out << TypeNameMap(typeid(*this)) << " ";
     return true;
@@ -59,13 +58,13 @@ namespace RavlN {
   }
   //: Make copy of body.
   
-  istream &operator>>(istream &strm,RCBodyVC &obj) {
+  std::istream &operator>>(std::istream &strm,RCBodyVC &obj) {
     return strm;
   }
   //: Input virtual body.
   // No-op.
   
-  ostream &operator<<(ostream &strm,const RCBodyVC &obj) {
+  std::ostream &operator<<(std::ostream &strm,const RCBodyVC &obj) {
     return strm;
   }
   //: Output virtual body.

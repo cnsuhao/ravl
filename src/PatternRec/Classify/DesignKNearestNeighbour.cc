@@ -39,13 +39,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(istream &strm)
+  DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(std::istream &strm)
     : DesignClassifierSupervisedBodyC(strm)
   {
     int version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> k >> distanceMetric >> useAverageKNN;
   }
   
@@ -63,7 +63,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignKNearestNeighbourBodyC::Save (ostream &out) const {
+  bool DesignKNearestNeighbourBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 0;

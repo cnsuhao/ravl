@@ -329,7 +329,7 @@ namespace RavlN {
     {}
     //: Create a string from a char "c"
     
-    explicit StringC(istream & in);
+    explicit StringC(std::istream & in);
     //: Create a string from the stream "in"
     
     StringC(const std::string& x);
@@ -758,12 +758,12 @@ namespace RavlN {
     
     // IO
     
-    friend ostream& operator<<(ostream& s, const StringC& x);
-    friend ostream& operator<<(ostream& s, const SubStringC& x);
-    friend istream& operator>>(istream& s, StringC& x);
+    friend std::ostream& operator<<(std::ostream& s, const StringC& x);
+    friend std::ostream& operator<<(std::ostream& s, const SubStringC& x);
+    friend std::istream& operator>>(std::istream& s, StringC& x);
     friend BinIStreamC& operator>>(BinIStreamC& s, StringC& x);
     
-    friend int readline(istream& s, StringC& x, 
+    friend int readline(std::istream& s, StringC& x, 
 			char terminator,
 			bool discard_terminator);
     
@@ -1053,7 +1053,7 @@ namespace RavlN {
    
     // IO 
     
-    friend ostream& operator<<(ostream& s, const SubStringC& x);
+    friend std::ostream& operator<<(std::ostream& s, const SubStringC& x);
     
     // status
     
@@ -1104,7 +1104,7 @@ namespace RavlN {
     friend class StringC;
   };
 
-  int readline(istream& s, StringC& x, 
+  int readline(std::istream& s, StringC& x, 
 	       char terminator = '\n',
 	       bool discard_terminator=true);
   //: Read a line of text from a stream.
@@ -1394,7 +1394,7 @@ namespace RavlN {
     StringC r; cat(x, StringC(y), r); return r; 
   }
   
-  ostream& operator<<(ostream& s, const StringC& x);
+  std::ostream& operator<<(std::ostream& s, const StringC& x);
   
   // a zillion comparison operators
   

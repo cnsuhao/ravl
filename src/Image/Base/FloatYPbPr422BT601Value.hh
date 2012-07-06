@@ -48,7 +48,7 @@ namespace RavlImageN {
   };
   
   inline
-  istream &operator>>(istream &strm,FloatYPbPr422BT601ValueC &val) { 
+  std::istream &operator>>(std::istream &strm,FloatYPbPr422BT601ValueC &val) { 
     int pbr,y;
     // Mess about so it works on SGI.
     strm >> pbr >> y;
@@ -59,7 +59,7 @@ namespace RavlImageN {
   //: Stream input.
   
   inline
-  ostream &operator<<(ostream &strm,const FloatYPbPr422BT601ValueC &val) 
+  std::ostream &operator<<(std::ostream &strm,const FloatYPbPr422BT601ValueC &val) 
   { return strm << ((FloatT) val.Pbr()) << ' ' << ((FloatT) val.Y()); }
   //: Stream output.
   

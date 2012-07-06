@@ -435,13 +435,13 @@ namespace RavlN {
 
   //: Load from stream.
 
-  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(istream &strm) :
+  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &strm) :
     DesignClassifierSupervisedBodyC(strm)
   {
     int version;
     strm >> version;
     if (version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_featureExpand;
     strm >> m_nLayers;
     strm >> m_nHidden;
@@ -472,12 +472,12 @@ namespace RavlN {
 
   //: Writes object to stream, can be loaded using constructor
 
-  bool DesignClassifierNeuralNetwork2BodyC::Save(ostream &out) const
+  bool DesignClassifierNeuralNetwork2BodyC::Save(std::ostream &out) const
   {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 1;
-    out << version << endl;
+    out << version << std::endl;
     out << m_featureExpand << std::endl;
     out << m_nLayers << std::endl;
     out << m_nHidden << std::endl;

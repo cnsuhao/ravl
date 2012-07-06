@@ -63,6 +63,10 @@ namespace RavlN { namespace GeneticN {
     void SetGenePalette(const GenePaletteC &palette)
     { m_genePalette = &palette; }
 
+    //! Access gene palette.
+    GenePaletteC &GenePalette()
+    { return *m_genePalette; }
+
     //! Get the current best genome and its score.
     bool GetBestGenome(GenomeC::RefT &genome,float &score);
 

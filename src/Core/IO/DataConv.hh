@@ -19,11 +19,11 @@
 #include "Ravl/RCAbstract.hh"
 
 namespace RavlN {
-  extern bool DPCanConvert(const type_info &from,const type_info &to);
+  extern bool DPCanConvert(const std::type_info &from,const std::type_info &to);
   //! userlevel=Normal
   //: Test if conversion is possible.
   
-  extern RCAbstractC DPDoConversion(const RCAbstractC &dat,const type_info &from,const type_info &to);
+  extern RCAbstractC DPDoConversion(const RCAbstractC &dat,const std::type_info &from,const std::type_info &to);
   //! userlevel=Normal
   //: Do conversion through abstract handles.
   

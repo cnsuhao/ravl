@@ -34,46 +34,46 @@ int main(int nargs,char **argv) {
   int ln;
 #if 1
   if((ln = testHEMeshBase()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testTHEMeshBasic()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testInsertVertexOnFace()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
 #endif
   if((ln = testTwistEdge()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
 #if 1
   if((ln = testTwistEdgeMore()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
  if((ln = testSplitFace()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testInsertVertexInEdge()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   } 
   if((ln = testInsertVertexInEdgeTri()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   } 
 #endif
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
 int testInsertVertexOnFace() {
-  cerr << "testInsertVertexOnFace(). \n";
+  std::cerr << "testInsertVertexOnFace(). \n";
   HEMeshBaseC mesh(true);
   SArray1dC<HEMeshBaseVertexC> tempFace(3);
   tempFace[0] = mesh.InsertVertex();
@@ -100,7 +100,7 @@ int testInsertVertexOnFace() {
 }
 
 int testTwistEdge() {
-  cerr << "testTwistEdge(). \n";
+  std::cerr << "testTwistEdge(). \n";
   HEMeshBaseC mesh(true);
   SArray1dC<HEMeshBaseVertexC> tempFace1(3);
   tempFace1[0] = mesh.InsertVertex();
@@ -118,7 +118,7 @@ int testTwistEdge() {
   
   mesh.InsertFace(tempFace2,edgeTab); // Insert initial face.
   
-  cerr << "Checking initial mesh.  EdgeTabSize=" << edgeTab.Size() << "\n";
+  std::cerr << "Checking initial mesh.  EdgeTabSize=" << edgeTab.Size() << "\n";
   if(!mesh.CheckMesh(true)) return __LINE__;
   
   HEMeshBaseEdgeC edge = edgeTab[Tuple2C<HEMeshBaseVertexC,HEMeshBaseVertexC>(tempFace1[1],tempFace1[2])];
@@ -133,19 +133,19 @@ int testTwistEdge() {
   // Twist edge.
   
   mesh.TwistEdge(edge,efrom,eto);
-  cerr << "Checking twisted mesh. \n";
+  std::cerr << "Checking twisted mesh. \n";
   
   if(!mesh.CheckMesh(true)) return __LINE__;
   
   // Twist edge back.
   
   mesh.TwistEdge(edge,edge.Next(),edge.Pair().Next());
-  cerr << "Checking untwisted mesh. \n";
+  std::cerr << "Checking untwisted mesh. \n";
   
   if(!mesh.CheckMesh(true)) return __LINE__;
   
   mesh.TwistEdge(edge,edge.Next(),edge.Pair().Next());
-  cerr << "Checking twisted mesh. \n";
+  std::cerr << "Checking twisted mesh. \n";
   
   if(!mesh.CheckMesh(true)) return __LINE__;
   
@@ -187,7 +187,7 @@ int testTwistEdgeMore() {
 }
 
 int testSplitFace() {
-  cout << "testSplitFace(), Called. \n";
+  std::cout << "testSplitFace(), Called. \n";
   HEMeshBaseC mesh(true);
   SArray1dC<HEMeshBaseVertexC> tempFace(4);
   tempFace[0] = mesh.InsertVertex();
@@ -212,7 +212,7 @@ int testSplitFace() {
 }
 
 int testInsertVertexInEdge() {
-  cout << "testInsertVertexInEdge(), Called. \n";
+  std::cout << "testInsertVertexInEdge(), Called. \n";
   {
     HEMeshBaseC mesh(true);
     SArray1dC<HEMeshBaseVertexC> tempFace(3);
@@ -260,7 +260,7 @@ int testInsertVertexInEdge() {
 }
 
 int testInsertVertexInEdgeTri() {
-  cout << "testInsertVertexInEdgeTri(), Called. \n";
+  std::cout << "testInsertVertexInEdgeTri(), Called. \n";
 
   // Test in a single triangle.
   {
@@ -281,7 +281,7 @@ int testInsertVertexInEdgeTri() {
     if(!mesh.CheckMesh(true)) return __LINE__;
   }
   
-  //  cout << "testInsertVertexInEdgeTri(), Checking with internal edge. ********************\n";
+  //  std::cout << "testInsertVertexInEdgeTri(), Checking with internal edge. ********************\n";
   
   {
     HEMeshBaseC mesh(true);
@@ -313,7 +313,7 @@ int testInsertVertexInEdgeTri() {
 }
 
 int testHEMeshBase() {
-  cout << "testHEMeshBase(), Called. \n";
+  std::cout << "testHEMeshBase(), Called. \n";
   HEMeshBaseC mesh(true);
   HEMeshBaseVertexC vert = mesh.InsertVertex();
   // Check vertex iterator copes with floating vertex's
@@ -348,7 +348,7 @@ int testHEMeshBase() {
 }
 
 int testTHEMeshBasic() {
-  cout << "testTHEMeshBasic(), Called. \n";
+  std::cout << "testTHEMeshBasic(), Called. \n";
   THEMeshC<IntT,RealT,bool> test(true);
   
   SArray1dC<HEMeshBaseVertexC> arr(3);

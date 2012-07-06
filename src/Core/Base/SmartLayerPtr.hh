@@ -173,14 +173,14 @@ namespace RavlN {
 
   //: Write entity from text stream
   template<typename BodyT>
-  ostream &operator<<(ostream &strm,const SmartOwnerPtrC<BodyT> &ptr) {
+  std::ostream &operator<<(std::ostream &strm,const SmartOwnerPtrC<BodyT> &ptr) {
     SaveStreamImpl(strm,ptr,*ptr);
     return strm;
   }
   
   //: Read entity from text stream
   template<typename BodyT>
-  istream &operator>>(istream &strm,SmartOwnerPtrC<BodyT> &ptr) {
+  std::istream &operator>>(std::istream &strm,SmartOwnerPtrC<BodyT> &ptr) {
     LoadStreamImpl(strm,ptr,*ptr);
     return strm;
   }

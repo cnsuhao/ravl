@@ -71,7 +71,7 @@ namespace RavlN {
     CallFunc2C<char *,SizeT,SizeT> m_read;
   };
   
-  //: function based ostream
+  //: function based std::ostream
   
   class funcostream
     : public std::ostream 
@@ -88,7 +88,7 @@ namespace RavlN {
     FuncOStreamBufC m_streamBuf;
   };
   
-  //: function based ostream
+  //: function based std::ostream
   
   class funcistream
     : public std::istream 

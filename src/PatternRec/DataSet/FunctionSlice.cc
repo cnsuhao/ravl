@@ -21,7 +21,7 @@
 #if RAVL_COMPILER_MIPSPRO 
 #include "Ravl/VirtualConstructor.hh"
 #pragma instantiate RavlN::FunctionSliceBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::FunctionSliceBodyC*)
-#pragma instantiate RavlN::FunctionSliceBodyC* RavlN::VCLoad(istream &,RavlN::FunctionSliceBodyC*)
+#pragma instantiate RavlN::FunctionSliceBodyC* RavlN::VCLoad(std::istream &,RavlN::FunctionSliceBodyC*)
 #endif 
 
 namespace RavlN {
@@ -42,7 +42,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FunctionSliceBodyC::FunctionSliceBodyC(istream &strm) 
+  FunctionSliceBodyC::FunctionSliceBodyC(std::istream &strm) 
     : FunctionBodyC(strm)
   { strm >> m_indexRange; }
   
@@ -54,7 +54,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool FunctionSliceBodyC::Save (ostream &out) const {
+  bool FunctionSliceBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << ' ' << m_indexRange;

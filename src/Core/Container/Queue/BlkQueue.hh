@@ -89,7 +89,7 @@ namespace RavlN {
     { return GetFirst();}
     //: Pop an item off the front on the queue.
     
-    void DbPrint(){ cerr << "queue -> "<< last <<", "<< first <<", "<< Size() <<"\n"; }
+    void DbPrint(){ std::cerr << "queue -> "<< last <<", "<< first <<", "<< Size() <<"\n"; }
     //: Debug print.
     
   protected:

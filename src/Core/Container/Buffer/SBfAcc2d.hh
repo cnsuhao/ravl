@@ -179,7 +179,7 @@ namespace RavlN {
   }
   
   template <class DataT>
-  ostream & operator<<(ostream & s, const SizeBufferAccess2dC<DataT> & arr) {
+  std::ostream & operator<<(std::ostream & s, const SizeBufferAccess2dC<DataT> & arr) {
     for(BufferAccess2dIterC<DataT> it(arr,arr.Size2());it;) {
       s << *it;
       for(;it.Next();) 
@@ -190,7 +190,7 @@ namespace RavlN {
   }
   
   template <class DataT>
-  istream & operator>>(istream & s, SizeBufferAccess2dC<DataT> & arr) {
+  std::istream & operator>>(std::istream & s, SizeBufferAccess2dC<DataT> & arr) {
     for(BufferAccess2dIterC<DataT> it(arr,arr.Size2());it;it++) 
       s >> *it;
     return s;

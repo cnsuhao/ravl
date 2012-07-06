@@ -82,7 +82,7 @@ namespace RavlN {
     ONDEBUG(RavlDebug("Setting up %u parameters. Unlimited=%d ",(unsigned) nparams.V(),(bool) unlimited));
   }
   
-  ParametersBodyC::ParametersBodyC (istream &in)
+  ParametersBodyC::ParametersBodyC (std::istream &in)
     : m_cacheDirty(true)
   { in >> _minP >> _maxP >> _constP >> _steps >> _mask; }
   
@@ -145,7 +145,7 @@ namespace RavlN {
   void ParametersBodyC::SetMask (const SArray1dC<IntT> &mask)
   {
     if (mask.Size() != _mask.Size()) {
-      cerr << "Error: parameter mask must be same size!\n";
+      std::cerr << "Error: parameter mask must be same size!\n";
       exit(1);
     }
     _mask = mask;
@@ -221,7 +221,7 @@ namespace RavlN {
   }
   
   
-  void ParametersBodyC::Save (ostream &out) const
+  void ParametersBodyC::Save (std::ostream &out) const
   {
     out << _minP << "\n" << _maxP << "\n" << _constP << "\n";
     out << _steps << "\n" << _mask << "\n";

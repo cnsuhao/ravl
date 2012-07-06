@@ -22,7 +22,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DesignerBodyC::DesignerBodyC(istream &strm)
+  DesignerBodyC::DesignerBodyC(std::istream &strm)
     : RCBodyVC(strm)
   {}
   
@@ -34,7 +34,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignerBodyC::Save (ostream &out) const 
+  bool DesignerBodyC::Save (std::ostream &out) const 
   { return RCBodyVC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor
@@ -76,7 +76,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignerC::DesignerC(istream &strm)
+  DesignerC::DesignerC(std::istream &strm)
     : RCHandleVC<DesignerBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,DesignerBodyC))
   {}
   

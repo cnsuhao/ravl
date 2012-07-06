@@ -313,7 +313,7 @@ namespace RavlImageN{
     //private variables
     bool hasIndex; //true if the AVI has the HasIndex flag set into the header 
     bool correct;//true if the format is correct (it's the result of methods GetStreamInfo())
-    bool verbose; //if true writes into cerr info strings
+    bool verbose; //if true writes into std::cerr info strings
   
     StreamHeaderST strh;//temporary variable to store a stream header
 
@@ -432,7 +432,7 @@ namespace RavlImageN{
     int dataChunks;//number of data chunks written
     int current; //is the data chunk to write next (NOTE: not necesserily the one after the last one). 1st = 1.
 
-    bool verbose; //if true writes into cerr info strings
+    bool verbose; //if true writes into std::cerr info strings
     bool hasIndex; //true if the index has been writen yet and the header updated 
 
     //positions of data to access after constructor is called

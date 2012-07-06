@@ -36,7 +36,7 @@ int main(int argc,char **argv) {
   DPIPortC<ImageC<ByteT> > video;
   
   if(!factory.UseComponent("Video", video)) {
-    cerr << "Failed to open video \n";
+    std::cerr << "Failed to open video \n";
     return 1;
   }
   

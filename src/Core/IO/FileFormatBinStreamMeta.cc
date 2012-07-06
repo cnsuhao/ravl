@@ -25,7 +25,7 @@ namespace RavlN {
   {}
   //: Constructor with full format info.
 
-  const type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const
+  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const
   {
     if(!in.good())
       return typeid(void);
@@ -73,7 +73,7 @@ namespace RavlN {
   }
   //: Is stream in std stream format ?
 
-  const type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const
+  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const
   {
     //cout << "File Probe '" << filename << "' Looking for:" << TypeName(obj_type) << endl;
     if(filename == "") {
@@ -87,7 +87,7 @@ namespace RavlN {
     return ProbeLoad(in,obj_type); // Check load from stream.
   }
 
-  const type_info &FileFormatBinStreamMetaBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const
+  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const
   {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
@@ -107,7 +107,7 @@ namespace RavlN {
     return typeid(void); // Nope.
   }
 
-  DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
       return DPIPortBaseC();
@@ -116,7 +116,7 @@ namespace RavlN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
 
-  DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
       return DPOPortBaseC();
@@ -126,7 +126,7 @@ namespace RavlN {
   // Will create an Invalid port if not supported.
 
 
-  DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const  {
+  DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const  {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
       return DPIPortBaseC();
@@ -136,7 +136,7 @@ namespace RavlN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
 
-  DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
     if(!m_class2format.Lookup(TypeName(obj_type),ff))
       return DPOPortBaseC();
@@ -145,7 +145,7 @@ namespace RavlN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
 
-  const type_info &FileFormatBinStreamMetaBodyC::DefaultType() const
+  const std::type_info &FileFormatBinStreamMetaBodyC::DefaultType() const
   { return typeid(void); }
   //: Get preferred IO type.
 

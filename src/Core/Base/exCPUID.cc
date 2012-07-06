@@ -20,10 +20,10 @@ int main(int argc, char **argv) {
   cpuid.Info();
 
   //test non class functions
-  cout << "Non class functions test\n";
-  cout << "MMX: " << MMX()  << endl;
-  cout << "SSE: " << SSE()  << endl;
-  cout << "SSE2:" << SSE2() << endl;
-  cout << "HTT: " << HTT()  << endl;
+  std::cout << "Non class functions test\n";
+  std::cout << "MMX: " << MMX()  << std::endl;
+  std::cout << "SSE: " << SSE()  << std::endl;
+  std::cout << "SSE2:" << SSE2() << std::endl;
+  std::cout << "HTT: " << HTT()  << std::endl;
 }
 

@@ -33,19 +33,19 @@ int testHashMisc();
 int main() {  
   int ret;
   if((ret = Hashtest()) != 0) {
-    cerr << "Test failed at :" << ret<< "\n";
+    std::cerr << "Test failed at :" << ret<< "\n";
     return 1;
   }
   if((ret = HashCopytest()) != 0) {
-    cerr << "Test failed at :" << ret<< "\n";
+    std::cerr << "Test failed at :" << ret<< "\n";
     return 1;    
   }  
   if((ret = HashAddFrom()) != 0) {
-    cerr << "Test failed at :" << ret<< "\n";
+    std::cerr << "Test failed at :" << ret<< "\n";
     return 1;    
   }  
   if((ret = testHashMisc()) != 0) {
-    cerr << "Test failed at :" << ret<< "\n";
+    std::cerr << "Test failed at :" << ret<< "\n";
     return 1;    
   }  
   return 0;
@@ -57,14 +57,14 @@ int CountEntries(const HashC<T,T> &tab) {
   for(HashIterC<T,T> it(tab);it;it++)
     ret++;
   if((int) tab.Size() != ret) {
-    cerr << "CountEntries(), Found size mismatch. \n"; 
+    std::cerr << "CountEntries(), Found size mismatch. \n"; 
     return -1;
   }
   return ret;
 }
 
 int Hashtest() {
-  cerr << "------Starting Hash consistancy check.------ \n";
+  std::cerr << "------Starting Hash consistancy check.------ \n";
   int n = 0;
   {
     HashC<int,int> Fwd;
@@ -123,7 +123,7 @@ int Hashtest() {
     if(ACount != (Total-Sub)) return __LINE__;
     n += Total;
   }
-  cerr << "Starting Hash Iterator test. \n";
+  std::cerr << "Starting Hash Iterator test. \n";
   {
     HashC<int,int> HTab;
     int Total = 0;
@@ -145,13 +145,13 @@ int Hashtest() {
       if(Count != Total) return __LINE__;
     }
   }
-  cerr << "------ Hash Passed. " << n << " ops tested. ------ \n";
+  std::cerr << "------ Hash Passed. " << n << " ops tested. ------ \n";
   return 0;
 }
 
 
 int HashCopytest() {
-  cerr << "--------- Doing copy test. \n";
+  std::cerr << "--------- Doing copy test. \n";
   for(int k = 0;k < 100;k += 5) {
     //cerr << "Loop : " << k << "\n";
     HashC<int,int> someData;
@@ -177,16 +177,16 @@ int HashCopytest() {
       }
     }
     if((UIntT) items != someData.Size()) {
-      cerr << "Size mismatch. Items:" << items << " Size:" << someData.Size() << "\n";
+      std::cerr << "Size mismatch. Items:" << items << " Size:" << someData.Size() << "\n";
       return __LINE__;
     }
   }
-  cerr << "--------- Copy test passed. \n";
+  std::cerr << "--------- Copy test passed. \n";
   return 0;
 }
 
 int HashAddFrom() {
-  cerr << "--------- Add from test. \n";
+  std::cerr << "--------- Add from test. \n";
   HashC<StringC,StringC> tab1;
   tab1["Var1"] = "hello1";
   tab1["Var2"] = "hello2";
@@ -215,12 +215,12 @@ int HashAddFrom() {
   if(tab1.Size() != 3) return __LINE__;
   if(CountEntries(tab1) != 3) return __LINE__;
   
-  cerr << "--------- Add from test passed. \n";
+  std::cerr << "--------- Add from test passed. \n";
   return 0;
 }
 
 int testHashMisc() {
-  cerr << "Check handling of empty hash tables. \n";
+  std::cerr << "Check handling of empty hash tables. \n";
   HashC<int,int> test;
   // Check lookup in a empty copied table.
   HashC<int,int> test2(test);
@@ -249,16 +249,16 @@ int testHashMisc() {
 #if 0
   HashC<StringC,StringC> tab;
   StringC s1("hello");
-  cerr << "S1="<< (void *) &(s1[0]) << "\n";
+  std::cerr << "S1="<< (void *) &(s1[0]) << "\n";
   StringC s2("hello");
   StringC s3("hello");
-  cerr << "S2="<< (void *) &(s2[0]) << "\n";
+  std::cerr << "S2="<< (void *) &(s2[0]) << "\n";
   tab[s1] = s1;
   tab.NormaliseKey(s2);
-  cerr << "N S2="<< (void *) &(s2[0]) << "\n";
-  cerr << "S3="<< (void *) &(s3[0]) << "\n";
+  std::cerr << "N S2="<< (void *) &(s2[0]) << "\n";
+  std::cerr << "S3="<< (void *) &(s3[0]) << "\n";
   tab.NormaliseKey(s3);
-  cerr << "N S3="<< (void *) &(s3[0]) << "\n";
+  std::cerr << "N S3="<< (void *) &(s3[0]) << "\n";
 #endif
   
   return 0;

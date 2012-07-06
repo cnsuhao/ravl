@@ -599,7 +599,7 @@ public:
      m_i(0)
   { strm >> m_i; }
 
-  TestDerived2C(istream &strm)
+  TestDerived2C(std::istream &strm)
     : RCBodyVC(strm),
       m_i(0)
   { strm >> m_i; }

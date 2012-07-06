@@ -25,12 +25,12 @@
 #if RAVL_HAVE_STREAMASCLASS
 #if RAVL_HAVE_STDNAMESPACE
 namespace std {
-  class istream;
-  class ostream;
+  class std::istream;
+  class std::ostream;
 }
 #else
-class istream;
-class ostream;
+class std::istream;
+class std::ostream;
 #endif
 #else
 #if RAVL_HAVE_ANSICPPHEADERS

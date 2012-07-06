@@ -32,7 +32,7 @@ namespace RavlN {
     {}
     //: Constructor.
 
-    ProcessVectorLabelFunctionBodyC(istream &in) 
+    ProcessVectorLabelFunctionBodyC(std::istream &in) 
       : DPProcessBodyC<Tuple2C<VectorC, UIntT>, Tuple2C<VectorC, UIntT> >(in)
     {
       in >> m_function;
@@ -46,12 +46,12 @@ namespace RavlN {
     }
     //: Stream constructor.
     
-    virtual bool Save(ostream &out) const
+    virtual bool Save(std::ostream &out) const
     {
       out << m_function;
       return DPProcessBodyC<Tuple2C<VectorC, UIntT>, Tuple2C<VectorC, UIntT> >::Save(out);
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Save(BinOStreamC &out) const
     {
@@ -83,7 +83,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    ProcessVectorLabelFunctionC(istream &in)
+    ProcessVectorLabelFunctionC(std::istream &in)
       : DPProcessC<Tuple2C<VectorC, UIntT>, Tuple2C<VectorC, UIntT> >(*new ProcessVectorLabelFunctionBodyC(in))
     {}
     //: Stream constructor.

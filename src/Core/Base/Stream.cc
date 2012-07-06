@@ -71,7 +71,7 @@ namespace RavlN {
 
   //: Print diagnostic message about the streams state.
 
-  bool StreamBaseC::DiagnoseStream(ostream &out) {
+  bool StreamBaseC::DiagnoseStream(std::ostream &out) {
     bool found = false;
     out << "StreamBaseC, '" << name << "' Diagnoses: ";
     if(s == 0) {
@@ -108,13 +108,13 @@ namespace RavlN {
     return false;
   }
 
-  static bool NukeIStream(istream *&is) {
+  static bool NukeIStream(std::istream *&is) {
     ONDEBUG(cerr << "NukeIStream(), Called. \n");
     delete is;
     return true;
   }
 
-  static bool NukeOStream(ostream *&os) {
+  static bool NukeOStream(std::ostream *&os) {
     ONDEBUG(cerr << "NukeOStream(), Called. \n");
     delete os;
     return true;
@@ -125,7 +125,7 @@ namespace RavlN {
   {}
 
   //: Body Constructor.
-  StreamBaseC::StreamBaseC(ostream *ns,StringC afilename,bool nDelOnClose)
+  StreamBaseC::StreamBaseC(std::ostream *ns,StringC afilename,bool nDelOnClose)
     : name(afilename.Copy()),
       s(ns),
       m_openFailed(false)
@@ -138,7 +138,7 @@ namespace RavlN {
   }
 
   //: Body Constructor.
-  StreamBaseC::StreamBaseC(istream *ns,StringC afilename,bool nDelOnClose)
+  StreamBaseC::StreamBaseC(std::istream *ns,StringC afilename,bool nDelOnClose)
     : name(afilename.Copy()),
       s(ns),
       m_openFailed(false)
@@ -159,8 +159,8 @@ namespace RavlN {
   // This should only be called on Stream's constructed with the
   // default constructor!
 
-  bool StreamBaseC::Init(istream *ns,StringC afilename,bool nDelOnClose) {
-    ONDEBUG(cerr << "StreamBaseC::Init((istream *)" << ((void *) ns) << "," << afilename << "," << nDelOnClose << ")\n");
+  bool StreamBaseC::Init(std::istream *ns,StringC afilename,bool nDelOnClose) {
+    ONDEBUG(cerr << "StreamBaseC::Init((std::istream *)" << ((void *) ns) << "," << afilename << "," << nDelOnClose << ")\n");
     name = afilename;
     s = ns;
     if(nDelOnClose)
@@ -176,8 +176,8 @@ namespace RavlN {
   // This should only be called on Stream's constructed with the
   // default constructor!
 
-  bool StreamBaseC::Init(ostream *ns,StringC afilename,bool nDelOnClose) {
-    ONDEBUG(cerr << "StreamBaseC::Init((ostream *)" << ((void *) ns) << "," << afilename << "," << nDelOnClose << ")\n");
+  bool StreamBaseC::Init(std::ostream *ns,StringC afilename,bool nDelOnClose) {
+    ONDEBUG(cerr << "StreamBaseC::Init((std::ostream *)" << ((void *) ns) << "," << afilename << "," << nDelOnClose << ")\n");
     name = afilename;
     s = ns;
     if(nDelOnClose)
@@ -192,14 +192,14 @@ namespace RavlN {
   ////////////////////////////////////////////////////
 
   //: Open a file.
-  // '-' is treated as cout.
+  // '-' is treated as std::cout.
 
   OStreamC::OStreamC(const StringC &sfilename,bool binaryMod,bool buffered,bool append)
     : StreamBaseC(sfilename),
       out(0)
   {
     ONDEBUG(cerr << "OStreamC::OStreamC(" << sfilename << "," << ((int) binaryMod) << ","  << (int) buffered << "," << (int) append << ") Called \n");
-    ostream *ofstrm = 0;
+    std::ostream *ofstrm = 0;
     if(sfilename == "-") {
       Init(out = &cout,sfilename,false);
       if(!buffered)
@@ -271,20 +271,20 @@ namespace RavlN {
 
       Init(ofstrm = new ofstream(filename.chars(),(std::_Ios_Openmode) fmode),filename);
       if(!buffered) {
-        cerr << "WARNING: Unbuffered streams are not currently supported under gcc3.\n";
+        std::cerr << "WARNING: Unbuffered streams are not currently supported under gcc3.\n";
       }
     }
 #else
     Init(ofstrm = new ofstream(filename.chars(),(std::_Ios_Openmode) fmode),filename);
     if(!buffered) {
-      cerr << "WARNING: Unbuffered streams are not currently supported under gcc3.\n";
+      std::cerr << "WARNING: Unbuffered streams are not currently supported under gcc3.\n";
     }
 #endif
 #else // RAVL_COMPILER_GCC
     Init(ofstrm = new ofstream(filename.chars(),fmode),filename);
 #if RAVL_COMPILER_VISUALCPP
     if(!buffered) {
-      cerr << "WARNING: Unbuffered streams are not currently supported under windows.\n";
+      std::cerr << "WARNING: Unbuffered streams are not currently supported under windows.\n";
     }
 #else // RAVL_COMPILER_VISUALCPP
     if(!buffered)
@@ -317,7 +317,7 @@ namespace RavlN {
   // This isn't the saftest function, it uses a fixed
   // buffer of 4096 bytes.
 
-  ostream& OStreamC::form(const char *format ...) {
+  std::ostream& OStreamC::form(const char *format ...) {
 
     va_list args;
     va_start(args,format);
@@ -332,7 +332,7 @@ namespace RavlN {
     int x = vsnprintf(buff,formSize,format,args);
 #endif
     if(x < 0)
-      cerr << "OStreamC::form(...), WARNING: Output string is over buffer length. \n";
+      std::cerr << "OStreamC::form(...), WARNING: Output string is over buffer length. \n";
     else
       os() << buff;
 
@@ -352,7 +352,7 @@ namespace RavlN {
     if(sfilename == "-") {
       Init(in = &cin,sfilename,false);
       if(!buffered)
-        cerr << "WARNING: IStreamC() Can't disable buffering on 'cin'. \n";
+        std::cerr << "WARNING: IStreamC() Can't disable buffering on 'cin'. \n";
       return ;
     }
 
@@ -401,7 +401,7 @@ namespace RavlN {
 
     int fd = open(filename.chars(),mode);
     if(fd >= 0) {
-      istream *ifs;
+      std::istream *ifs;
       if(buffered) {
         ifs = new stdifdstream(fd,static_cast<std::ios_base::openmode>(fmode));
       } else {
@@ -410,7 +410,7 @@ namespace RavlN {
       Init(ifs ,filename);
       in = ifs;
     } else {
-      // If we failed to open it as file descriptor try again with the normal istream interface.
+      // If we failed to open it as file descriptor try again with the normal std::istream interface.
       // This keeps behaviour consistant with the behavour of ifstream of files that failed to open.
       ifstream *ifstrm = 0;
       fmode |= ios::binary;
@@ -426,7 +426,7 @@ namespace RavlN {
 
 #if RAVL_COMPILER_VISUALCPPNET || RAVL_COMPILER_GCC || RAVL_COMPILER_VISUALCPPNET_2005
     if(!buffered) {
-      cerr << "WARNING: Unbuffered streams are not currently supported under windows or gcc3.\n";
+      std::cerr << "WARNING: Unbuffered streams are not currently supported under windows or gcc3.\n";
     }
 #else
     if(!buffered) {

@@ -16,7 +16,7 @@ namespace RavlImageN {
   
   //: Override default IO to handle byte images correctly.
   
-  ostream &operator<<(ostream &s,const ImageC<ByteT> &img) {
+  std::ostream &operator<<(std::ostream &s,const ImageC<ByteT> &img) {
     s << img.Rectangle() << "\n";
     for(BufferAccess2dIterC<ByteT> it(img,img.Range2());it;) {
       do {
@@ -30,7 +30,7 @@ namespace RavlImageN {
   //: Load byte image from stream 
   // Override default IO to handle byte images correctly.
   
-  istream &operator>>(istream &s,ImageC<ByteT> &img) {
+  std::istream &operator>>(std::istream &s,ImageC<ByteT> &img) {
     IndexRange2dC rect;
     s >> rect;
     img = ImageC<ByteT>(rect);

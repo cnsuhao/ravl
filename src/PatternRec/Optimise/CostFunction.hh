@@ -42,7 +42,7 @@ namespace RavlN {
     //!param: function   - the function to be optimised
     //!param: metric     - a method for calculating the size of |f(X)-Yd|
     
-    CostFunctionBodyC (istream &in);
+    CostFunctionBodyC (std::istream &in);
     //: Contructs from stream
     
     virtual RealT Cost (const VectorC &X) const;
@@ -51,7 +51,7 @@ namespace RavlN {
     virtual MatrixC Jacobian (const VectorC &X) const;
     //: Calculate Jacobian matrix at X
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
   protected:

@@ -100,13 +100,13 @@ namespace RavlImageN {
 
   template<class CompT>
   inline
-  istream &operator>>(istream &strm,YCbCrAValueC<CompT> &val) 
+  std::istream &operator>>(std::istream &strm,YCbCrAValueC<CompT> &val) 
   { return strm >> ((TFVectorC<CompT,4> &)(val)); }
   //: Stream input.
   
   template<class CompT>
   inline
-  ostream &operator<<(ostream &strm,const YCbCrAValueC<CompT> &val) 
+  std::ostream &operator<<(std::ostream &strm,const YCbCrAValueC<CompT> &val) 
   { return strm << ((const TFVectorC<CompT,4> &)(val)); }
   //: Stream output.
   

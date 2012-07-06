@@ -28,13 +28,13 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    DesignWeakLinearBodyC(istream &strm);
+    DesignWeakLinearBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignWeakLinearBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -73,7 +73,7 @@ namespace RavlN {
     {}
     //: Create a new designer.
     
-    DesignWeakLinearC(istream &strm);
+    DesignWeakLinearC(std::istream &strm);
     //: Load from stream.
     
     DesignWeakLinearC(BinIStreamC &strm);

@@ -23,7 +23,7 @@ namespace RavlN {
     RavlAssert (_Yd.Size() == _function.OutputSize());
   }
   
-  CostFunctionBodyC::CostFunctionBodyC (istream &in)
+  CostFunctionBodyC::CostFunctionBodyC (std::istream &in)
     :CostBodyC(in)
   {
     in >> _Yd;
@@ -50,7 +50,7 @@ namespace RavlN {
     return _parameters.TransP2X(dSdY*dYdP);
   }
   
-  bool CostFunctionBodyC::Save (ostream &out) const
+  bool CostFunctionBodyC::Save (std::ostream &out) const
   {
     CostBodyC::Save (out);
     out << _Yd << "\n";

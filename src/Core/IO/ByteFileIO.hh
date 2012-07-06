@@ -110,8 +110,8 @@ namespace RavlN {
     //: Find the offset where the stream begins.
     //!return: RavlN::streamPosUnknown if unsuccessful.
 
-    virtual bool Save(ostream &sout) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &sout) const;
+    //: Save to std::ostream.
 
   private:
     OStreamC out;
@@ -175,8 +175,8 @@ namespace RavlN {
     //: Get multiple pieces of input data.
     // returns the number of elements processed.
 
-    virtual bool Save(ostream &out) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &out) const;
+    //: Save to std::ostream.
 
     virtual bool Seek(UIntT newOff);
     //: Seek to position in stream.

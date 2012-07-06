@@ -32,7 +32,7 @@ namespace RavlN {
     EmptyC() {}
     //: Default constructor.
     
-    EmptyC(istream &in) {}
+    EmptyC(std::istream &in) {}
     //: Stream constructor.
     
     EmptyC operator=(const EmptyC &)
@@ -64,10 +64,10 @@ namespace RavlN {
     
   };
   
-  inline ostream &operator <<(ostream &out,const EmptyC &)
+  inline std::ostream &operator <<(std::ostream &out,const EmptyC &)
   { return out; }
 
-  inline istream &operator >>(istream &in,EmptyC &)
+  inline std::istream &operator >>(std::istream &in,EmptyC &)
   { return in; }
 
   inline BinOStreamC &operator <<(BinOStreamC &out,const EmptyC &)

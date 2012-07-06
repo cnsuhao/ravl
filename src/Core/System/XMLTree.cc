@@ -534,7 +534,7 @@ namespace RavlN {
 
   //: Indents the XML listing
 
-  ostream &XMLTreeBodyC::Indent(ostream &out,int level) {
+  std::ostream &XMLTreeBodyC::Indent(std::ostream &out,int level) {
     for(int i = 0;i < level;i++)
       out << ' ';
     return out;
@@ -577,7 +577,7 @@ namespace RavlN {
 
   //: Dump tree in a human readable format.
   
-  ostream &XMLTreeBodyC::Dump(ostream &out,int level) const {
+  std::ostream &XMLTreeBodyC::Dump(std::ostream &out,int level) const {
     XMLTreeC me(const_cast<XMLTreeBodyC &>(*this));
     Indent(out,level) << '<';
     if (isPI) {

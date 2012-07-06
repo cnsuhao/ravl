@@ -33,7 +33,7 @@ namespace RavlN {
     Tuple4C() {}
     //: Default constructor.
     
-    Tuple4C(istream &in) 
+    Tuple4C(std::istream &in) 
     { in >> d1 >> d2 >> d3 >> d4; }
     //: Stream constructor.
     
@@ -118,14 +118,14 @@ namespace RavlN {
   };
   
   template<class T1,class T2,class T3,class T4>
-  ostream &operator<<(ostream &out,const Tuple4C<T1,T2,T3,T4> &obj) {
+  std::ostream &operator<<(std::ostream &out,const Tuple4C<T1,T2,T3,T4> &obj) {
     out << obj.Data1() << ' ' << obj.Data2() << ' ';
     out << obj.Data3() << ' ' << obj.Data4() << ' ';
     return out;
   }
   
   template<class T1,class T2,class T3,class T4>
-  istream &operator>>(istream &in,Tuple4C<T1,T2,T3,T4> &obj) {
+  std::istream &operator>>(std::istream &in,Tuple4C<T1,T2,T3,T4> &obj) {
     obj = Tuple4C<T1,T2,T3,T4>(in);
     return in;
   }

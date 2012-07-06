@@ -400,13 +400,13 @@ namespace RavlN {
   };
 
   template <class DataT>
-  ostream &
-  operator<<(ostream & s, const Array1dC<DataT> & arr);
+  std::ostream &
+  operator<<(std::ostream & s, const Array1dC<DataT> & arr);
   // Prints array into the stream 's'.
 
   template <class DataT>
-  istream &
-  operator>>(istream & s, Array1dC<DataT> & arr);
+  std::istream &
+  operator>>(std::istream & s, Array1dC<DataT> & arr);
   // Assigns the values into the array 'arr'.
 
   template <class DataT>
@@ -637,8 +637,8 @@ namespace RavlN {
   }
 
   template <class DataT>
-  ostream &
-  operator<<(ostream & s, const Array1dC<DataT> & arr) {
+  std::ostream &
+  operator<<(std::ostream & s, const Array1dC<DataT> & arr) {
     const IndexRangeC newRange(arr.Range());
     s << newRange << '\n';
     for(BufferAccessIterC<DataT> it(arr);it;it++)
@@ -648,8 +648,8 @@ namespace RavlN {
 
 
   template <class DataT>
-  istream &
-  operator>>(istream & s, Array1dC<DataT> & arr) {
+  std::istream &
+  operator>>(std::istream & s, Array1dC<DataT> & arr) {
     IndexRangeC newRange(s);
     s.get(); // Get '\n' after size to avoid trouble with reading StringC's.
     if (newRange != arr.Range()) {

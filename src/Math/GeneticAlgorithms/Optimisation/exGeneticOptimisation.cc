@@ -21,6 +21,7 @@
 #include "Ravl/Resource.hh"
 #include "Ravl/DP/PrintIOInfo.hh"
 #include "Ravl/Point2d.hh"
+#include "Ravl/DP/TypeConverter.hh"
 
 #define CATCH_EXCEPTIONS 1
 
@@ -64,14 +65,13 @@ int main(int nargs,char **argv)
     RavlN::PrintIOConversions(std::cout);
     return 0;
   }
-  RavlSysLogf(RavlN::SYSLOG_INFO,"Started.");
+  RavlInfo("Started.");
 
 #if CATCH_EXCEPTIONS
   try {
 #endif
 
-    RavlN::XMLFactoryC::RefT mainFactory = new RavlN::XMLFactoryC(configFile);
-    RavlN::XMLFactoryContextC factory(*mainFactory);
+    RavlN::XMLFactoryContextC factory(configFile);
 
     GeneticOptimiserC::RefT optimiser;
 
@@ -89,7 +89,7 @@ int main(int nargs,char **argv)
 
     optimiser->SetFitnessFunction(*new RavlN::GeneticN::EvaluateFitnessFuncC<RavlN::Point2dC>(&EvaluateFitness));
 
-    RavlSysLogf(RavlN::SYSLOG_INFO,"Running optimisation.");
+    RavlInfo("Running optimisation.");
 
     optimiserCheckPoint->Start();
 
@@ -97,11 +97,11 @@ int main(int nargs,char **argv)
 
     optimiserCheckPoint->Shutdown();
 
-    RavlSysLogf(RavlN::SYSLOG_INFO,"Optimisation complete");
+    RavlInfo("Optimisation complete");
 
 #if CATCH_EXCEPTIONS
   } catch(...) {
-    RavlSysLogf(RavlN::SYSLOG_ERR,"Caught exception running model.");
+    RavlError("Caught exception running model.");
   }
 #endif
 

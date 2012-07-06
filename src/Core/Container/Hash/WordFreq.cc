@@ -20,7 +20,7 @@
 using namespace RavlN;
 
 int main(int nargs,char *argv[]) {
-  cout << "Counting..... \n";
+  std::cout << "Counting..... \n";
   
   // Creat the table...
   
@@ -39,10 +39,10 @@ int main(int nargs,char *argv[]) {
   
   // Print out the results.
   
-  cout << wordFreq.Size() << " Unique words found: \n";
+  std::cout << wordFreq.Size() << " Unique words found: \n";
   
   // Print out the number of times we've seen each word.
   
   for(HashIterC<StringC,IntC> it(wordFreq);it.IsElm();it.Next())
-    cout << "'" << it.Key() <<  "' " << it.Data() << " \n";
+    std::cout << "'" << it.Key() <<  "' " << it.Data() << " \n";
 }

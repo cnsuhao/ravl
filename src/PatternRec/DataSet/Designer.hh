@@ -32,13 +32,13 @@ namespace RavlN {
     DesignerBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DesignerBodyC(istream &strm);
+    DesignerBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignerBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -79,7 +79,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
     
-    DesignerC(istream &strm);
+    DesignerC(std::istream &strm);
     //: Load from stream.
     
     DesignerC(BinIStreamC &strm);
@@ -129,14 +129,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,DesignerC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignerC &obj) {
     obj = DesignerC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignerC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignerC &obj) {
     obj.Save(out);
     return out;
   }

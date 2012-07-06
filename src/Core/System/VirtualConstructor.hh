@@ -37,15 +37,15 @@ namespace RavlN {
     //: Default constructor.
     
     VirtualConstructorBodyC(std::istream &in);
-    //: Construct from an istream.
+    //: Construct from an std::istream.
     // Dummy method.
 
     VirtualConstructorBodyC(BinIStreamC &in);
-    //: Construct from an istream.
+    //: Construct from an std::istream.
     // Dummy method
     
     virtual RCBodyVC *Load(std::istream &in) const;
-    //: Load an object of this type from an istream
+    //: Load an object of this type from an std::istream
     
     virtual RCBodyVC *Load(BinIStreamC &in) const;
     //: Load an object of this type from a BinIStreamC    
@@ -65,7 +65,7 @@ namespace RavlN {
     
     RCBodyVC *Load(std::istream &in) const
     { return Body().Load(in); }
-    //: Load an object of this type from an istream
+    //: Load an object of this type from an std::istream
     
     RCBodyVC *Load(BinIStreamC &in) const
     { return Body().Load(in); }
@@ -95,7 +95,7 @@ namespace RavlN {
     
     virtual RCBodyVC *Load(std::istream &in) const
     { return new DataT(in); }
-    //: Load an object of this type from an istream.
+    //: Load an object of this type from an std::istream.
     
     virtual RCBodyVC *Load(BinIStreamC &in) const
     { return new DataT(in); }

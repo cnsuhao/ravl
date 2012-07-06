@@ -42,7 +42,7 @@ namespace RavlImageN {
   
   //: Is stream in std stream format ?
   
-  const type_info & FileFormatJSBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const { 
+  const std::type_info & FileFormatJSBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const { 
 #if 0
     // FIXME :- Check magic number.
     return typeid(ImageC<ByteYUV422ValueC>); 
@@ -51,8 +51,8 @@ namespace RavlImageN {
 #endif
   }
   
-  const type_info &
-  FileFormatJSBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatJSBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     ONDEBUG(cerr << "FileFormatJSBodyC::ProbeLoad() Called. Filename:'"<<nfilename <<"' Ext:'" << Extension(nfilename) << "'  LoadType:'" << TypeName(obj_type) << "'\n");
 
     if (!nfilename.IsEmpty() && nfilename[0] == '@')
@@ -70,8 +70,8 @@ namespace RavlImageN {
     return typeid(ImageC<ByteYUV422ValueC>);
   }
   
-  const type_info &
-  FileFormatJSBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const {
+  const std::type_info &
+  FileFormatJSBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat) const {
     ONDEBUG(cerr << "FileFormatJSBodyC::ProbeSave() Called. Filename:'"<< nfilename <<"' Ext:'" << Extension(nfilename) << "'  LoadType:'" << TypeName(obj_type) << "'\n");
 
     if (!nfilename.IsEmpty() && nfilename[0] == '@')
@@ -88,8 +88,8 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatJSBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatJSBodyC::CreateInput(IStreamC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatJSBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatJSBodyC::CreateInput(IStreamC &,const std::type_info &), Called. \n");
 #if 0
     if(!in.good())
       return DPIPortBaseC();
@@ -102,7 +102,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatJSBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
+  DPOPortBaseC FileFormatJSBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
 #if 0
     if(!out.good())
       return DPOPortBaseC();
@@ -115,8 +115,8 @@ namespace RavlImageN {
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
   
-  DPIPortBaseC FileFormatJSBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatJSBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatJSBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatJSBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type == typeid(ImageC<ByteYUV422ValueC>))
       return DPIImageJSC(filename);
     return DPIPortBaseC();
@@ -125,8 +125,8 @@ namespace RavlImageN {
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
   
-  DPOPortBaseC FileFormatJSBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatJSBodyC::CreateOutput(const StringC &,const type_info &), Called. \n");
+  DPOPortBaseC FileFormatJSBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatJSBodyC::CreateOutput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type == typeid(ImageC<ByteYUV422ValueC>))
       return DPOImageJSC(filename);
     return DPOPortBaseC();
@@ -134,7 +134,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatJSBodyC::DefaultType() const 
+  const std::type_info &FileFormatJSBodyC::DefaultType() const 
   { return typeid(ImageC<ByteYUV422ValueC>); }
   
   

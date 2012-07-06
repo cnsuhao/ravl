@@ -58,12 +58,12 @@ namespace RavlN {
 
 //: Load from stream.
 
-  DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(istream &strm)
+  DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &strm)
       : DesignClassifierSupervisedBodyC(strm) {
     int version;
     strm >> version;
     if (version != 0 && version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_nLayers;
     strm >> m_nInputs;
     strm >> m_nHidden;
@@ -106,19 +106,19 @@ namespace RavlN {
 
 //: Writes object to stream, can be loaded using constructor
 
-  bool DesignClassifierNeuralNetworkBodyC::Save(ostream &out) const {
+  bool DesignClassifierNeuralNetworkBodyC::Save(std::ostream &out) const {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 1;
-    out << version << endl;
-    out << m_nLayers << endl;
-    out << m_nInputs << endl;
-    out << m_nHidden << endl;
-    out << m_nOutputs << endl;
-    out << m_desiredError << endl;
-    out << m_maxEpochs << endl;
-    out << m_displayEpochs << endl;
-    out << m_cascade << endl;
+    out << version << std::endl;
+    out << m_nLayers << std::endl;
+    out << m_nInputs << std::endl;
+    out << m_nHidden << std::endl;
+    out << m_nOutputs << std::endl;
+    out << m_desiredError << std::endl;
+    out << m_maxEpochs << std::endl;
+    out << m_displayEpochs << std::endl;
+    out << m_cascade << std::endl;
     return true;
   }
 
@@ -168,12 +168,12 @@ namespace RavlN {
 
     {
       OStreamC os(tmpData);
-      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << endl;
+      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << std::endl;
       for (DataSet2IterC<SampleC<VectorC>, SampleC<UIntT> > it(dset); it; it++) {
         for (SArray1dIterC<RealT> vit(it.Data1()); vit; vit++) {
           os << *vit << " ";
         }
-        os << " " << endl;
+        os << " " << std::endl;
 
         VectorC nnOutput(m_nOutputs);
         nnOutput.Fill(-0.9);
@@ -182,7 +182,7 @@ namespace RavlN {
           os << *vit << " ";
         }
 
-        os << " " << endl;
+        os << " " << std::endl;
       }
     }
 
@@ -211,17 +211,17 @@ namespace RavlN {
 
     {
       OStreamC os(tmpData);
-      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << endl;
+      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << std::endl;
       for (DataSet2IterC<SampleC<VectorC>, SampleC<VectorC> > it(dset); it; it++) {
         for (SArray1dIterC<RealT> vit(it.Data1()); vit; vit++) {
           os << *vit << " ";
         }
-        os << " " << endl;
+        os << " " << std::endl;
 
         for (SArray1dIterC<RealT> vit(it.Data2()); vit; vit++) {
           os << *vit << " ";
         }
-        os << " " << endl;
+        os << " " << std::endl;
       }
     }
 

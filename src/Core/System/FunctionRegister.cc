@@ -63,7 +63,7 @@ namespace RavlN {
   
   class FunctionPointerEntryC {
   public:
-    FunctionPointerEntryC(const char *nname,void *data,int nsize,const type_info &nptype)
+    FunctionPointerEntryC(const char *nname,void *data,int nsize,const std::type_info &nptype)
       : name(nname),
 	ptype(nptype),
 	size(nsize)
@@ -74,7 +74,7 @@ namespace RavlN {
     { return name; }
     //: Access name.
 
-    bool SetPointer(void *data,const type_info &nptype) {
+    bool SetPointer(void *data,const std::type_info &nptype) {
       if(nptype != ptype)
 	return false;
       memcpy((char *) data,ptrdata,size);
@@ -88,7 +88,7 @@ namespace RavlN {
     
   protected:
     const char *name;
-    const type_info &ptype;
+    const std::type_info &ptype;
     char ptrdata[sizeof(MethodPtrT)]; // Method pointers may be larger than normal function pointer.
     int size;
   };
@@ -118,7 +118,7 @@ namespace RavlN {
   //! userlevel=Develop
   //: Register function pointer.
   
-  bool BaseFunctionRegister(const char *name,void *ptr,int size,const type_info &ti) {
+  bool BaseFunctionRegister(const char *name,void *ptr,int size,const std::type_info &ti) {
     ONDEBUG(cerr << "BaseFunctionRegister(), Called. \n");
     MTWriteLockC lock(0);
     FunctionPointerEntryC *ent;
@@ -135,7 +135,7 @@ namespace RavlN {
   
   //: Register function pointer.
   
-  bool BaseFunctionLookupByName(const char *name,void *ptr,int size,const type_info &ti) {
+  bool BaseFunctionLookupByName(const char *name,void *ptr,int size,const std::type_info &ti) {
     ONDEBUG(cerr << "BaseFunctionLookupByName(), Called. \n");
     FunctionPointerEntryC *fpe;
     MTReadLockC lock(0);
@@ -146,7 +146,7 @@ namespace RavlN {
   
   //: Lookup function by pointer.
   
-  const char *BaseFunctionLookupByPointer(void *ptr,int size,const type_info &ti) {
+  const char *BaseFunctionLookupByPointer(void *ptr,int size,const std::type_info &ti) {
     ONDEBUG(cerr << "BaseFunctionLookupByPointer(), Called. \n");
     FunctionPointerEntryC *fpe;
     MTReadLockC lock(0);

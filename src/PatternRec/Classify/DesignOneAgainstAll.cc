@@ -33,13 +33,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignOneAgainstAllBodyC::DesignOneAgainstAllBodyC(istream &strm)
+  DesignOneAgainstAllBodyC::DesignOneAgainstAllBodyC(std::istream &strm)
     : DesignClassifierSupervisedBodyC(strm)
   {
     int version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("DesignOneAgainstAllBodyC::DesignOneAgainstAllBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignOneAgainstAllBodyC::DesignOneAgainstAllBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_design;
   }
   
@@ -57,7 +57,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignOneAgainstAllBodyC::Save (ostream &out) const {
+  bool DesignOneAgainstAllBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 0;
@@ -98,7 +98,7 @@ namespace RavlN {
         }        
       }
       
-      cerr << "building classifier for label: " << classLabel << endl;
+      std::cerr << "building classifier for label: " << classLabel << std::endl;
       // now we train our classifier for this label
       if(!m_design.Reset())
         RavlIssueError("Failed to reset our classifier");

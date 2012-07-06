@@ -95,7 +95,7 @@ namespace RavlN {
             break;
           }
       }
-      //cerr << "Str: " << len << " = " << lstart << endl;
+      //cerr << "Str: " << len << " = " << lstart << std::endl;
       // At end of string.
       ret.Append(work);
     }  
@@ -133,7 +133,7 @@ namespace RavlN {
     return ret;
   }
   
-  ostream & operator<<(ostream & s, const StringArrayC & list) {
+  std::ostream & operator<<(std::ostream & s, const StringArrayC & list) {
     s << list.Cat();
     return s;
   }
@@ -166,7 +166,7 @@ namespace RavlN {
 	  break;
 	len++;
       }
-      //cerr << "Str: " << len << " = " << lstart << endl;
+      //cerr << "Str: " << len << " = " << lstart << std::endl;
       // At end of string.
       Append(StringC(lstart,len,len));
     }

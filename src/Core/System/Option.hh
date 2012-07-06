@@ -195,7 +195,7 @@ namespace RavlN {
     // This MUST be called before any options are processed for
     // it to have any effect.
 
-    friend ostream & operator<<(ostream & s, const OptionC opt);
+    friend std::ostream & operator<<(std::ostream & s, const OptionC opt);
     
 #if !RAVL_COMPILER_VISUALCPP
   protected:
@@ -262,7 +262,7 @@ namespace RavlN {
   //template<class DataT>
   //DataT OptionC::Get(const char * name,const DataT &def,const char * comment,int nArgs)
   
-  ostream & operator<<(ostream & s, const OptionC opt); 
+  std::ostream & operator<<(std::ostream & s, const OptionC opt); 
 
 }
 

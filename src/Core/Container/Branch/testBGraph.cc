@@ -44,12 +44,12 @@ int testBGraph();
 
 int main() {
   int ln;
-  cout << "Testing branching graphs... \n";
+  std::cout << "Testing branching graphs... \n";
   if((ln = testBGraph()) != 0) {
-    cerr << "Test faile at line " << ln << "\n";
+    std::cerr << "Test faile at line " << ln << "\n";
     return 1;
   }
-  cout << "Test passed ok. \n";
+  std::cout << "Test passed ok. \n";
   return 0;
 }
 
@@ -73,7 +73,7 @@ int testBGraph() {
       It.IsElm();
       It.Next()) {
     check += It.Data();
-    //cout << "Node:" << It.Data() << endl;
+    //cout << "Node:" << It.Data() << std::endl;
     nc++;
   }
   if(check.Size() != 4) return __LINE__;
@@ -82,7 +82,7 @@ int testBGraph() {
   for(BGraphAdjIterC<DataT,DataT> ItAdj(G.NodeObj(H2),BGraphTypesC::Fwd);
       ItAdj.IsElm();
       ItAdj.Next()) {
-    //cout << "Edge:" << ItAdj.Data() << endl;
+    //cout << "Edge:" << ItAdj.Data() << std::endl;
     check += ItAdj.Data();
     ec++;
   }

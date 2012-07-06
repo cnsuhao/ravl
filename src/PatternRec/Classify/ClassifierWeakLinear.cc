@@ -37,13 +37,13 @@ namespace RavlN {
 
   //: Load from stream.
   
-  ClassifierWeakLinearBodyC::ClassifierWeakLinearBodyC(istream &strm) 
+  ClassifierWeakLinearBodyC::ClassifierWeakLinearBodyC(std::istream &strm) 
     : ClassifierBodyC(strm)
   {
     IntT version;
     strm >> version;
     if(version != 1)
-      throw ExceptionOutOfRangeC("ClassifierWeakLinearBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierWeakLinearBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_featureSet >> m_parityThreshold1 >> m_parity1 >> m_parityThreshold2 >> m_parity2;
   }
   
@@ -61,7 +61,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierWeakLinearBodyC::Save (ostream &out) const {
+  bool ClassifierWeakLinearBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;

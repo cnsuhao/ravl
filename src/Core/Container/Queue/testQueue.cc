@@ -33,14 +33,14 @@ int main() {
 	{
 	  int lval = q.GetFirst();
 	  if(lval != (lget+1)) {
-	    cerr << "Queue test failed. \n";
+	    std::cerr << "Queue test failed. \n";
 	    return 1; 
 	  }
 	  lget = lval;
 	}
       }
   }
-  cerr << "Queue test passed ok. \n";
+  std::cerr << "Queue test passed ok. \n";
   return 0;
 }
 

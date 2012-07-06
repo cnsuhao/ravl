@@ -71,7 +71,7 @@ namespace RavlN {
   bool SysLogLevelStdErr(SysLogPriorityT level);
   //: Set the level of messages to send to standard error.
   // This controls the level of messages to send to
-  // cerr. <br>
+  // std::cerr. <br>
   // Only messages with a priority higher or equal to 'level' we be sent.
   
   const StringC &SysLogApplicationName();

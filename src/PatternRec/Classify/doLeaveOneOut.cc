@@ -109,7 +109,7 @@ int main(int nargs, char **argv) {
 
       DataSetVectorLabelC trainDataSet(dset.Size() - 1);
       DataSetVectorLabelC testDataSet(1);
-      cerr << "\rProcessing (" << outPos << "/" << maxIter << ")...." << (RealT) outPos / (RealT) maxIter * 100.0
+      std::cerr << "\rProcessing (" << outPos << "/" << maxIter << ")...." << (RealT) outPos / (RealT) maxIter * 100.0
           << "\%";
       // Build the dataset
       UIntT inPos = 0;
@@ -133,7 +133,7 @@ int main(int nargs, char **argv) {
       outPos++;
 
     }
-    cerr << endl;
+    std::cerr << std::endl;
     SysLog(SYSLOG_INFO, "The probability of miss-classification is %0.4f(%0.4f)", sum.MeanVariance().Mean(),
         sum.MeanVariance().Variance());
 

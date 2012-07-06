@@ -25,7 +25,7 @@ namespace RavlN {
     :_name(name)
   {}
   
-  OptimiseBodyC::OptimiseBodyC (const StringC &name, istream &)
+  OptimiseBodyC::OptimiseBodyC (const StringC &name, std::istream &)
     : _name(name)
   {}
 
@@ -82,7 +82,7 @@ namespace RavlN {
   { return _name; }
   
   
-  bool OptimiseBodyC::Save (ostream &out) const
+  bool OptimiseBodyC::Save (std::ostream &out) const
   { 
     if(!RCBodyVC::Save (out))
       return false;
@@ -106,7 +106,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseC::OptimiseC (istream &in)
+  OptimiseC::OptimiseC (std::istream &in)
     : RCHandleVC<OptimiseBodyC>(RAVL_VIRTUALCONSTRUCTOR(in,OptimiseBodyC))
   {
     CheckHandleType(Body());

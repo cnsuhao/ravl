@@ -24,10 +24,10 @@ int main() {
   hashTable[3] = "a 3.";
   hashTable[10] = "a 10.";
   
-  cout << "Lookup of 3 gives " << hashTable[3] << "\n";
+  std::cout << "Lookup of 3 gives " << hashTable[3] << "\n";
   
   for(HashIterC<int,char *> it(hashTable);it;it++)
-    cout << " Key=" << it.Key() << " Data=" << it.Data() << "\n";
+    std::cout << " Key=" << it.Key() << " Data=" << it.Data() << "\n";
   
   return 0;
 }

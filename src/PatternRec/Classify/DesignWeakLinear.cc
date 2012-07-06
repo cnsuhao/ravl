@@ -19,13 +19,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignWeakLinearBodyC::DesignWeakLinearBodyC(istream &strm)
+  DesignWeakLinearBodyC::DesignWeakLinearBodyC(std::istream &strm)
     : DesignClassifierSupervisedBodyC(strm)
   {
     int version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("DesignWeakLinearBodyC::DesignWeakLinearBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignWeakLinearBodyC::DesignWeakLinearBodyC(std::istream &), Unrecognised version number in stream. ");
   }
   
   //: Load from binary stream.
@@ -41,7 +41,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignWeakLinearBodyC::Save (ostream &out) const {
+  bool DesignWeakLinearBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 0;
@@ -119,7 +119,7 @@ namespace RavlN {
       ThresholdAndParity(threshold1,parity1,threshold2,parity2);
     }
     else {
-      cout << "Empty label count in one class!\n";
+      std::cout << "Empty label count in one class!\n";
       parity1 = parity2 = 1;
       threshold1 = threshold2 = 1e6;
     }

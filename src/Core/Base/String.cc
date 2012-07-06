@@ -566,7 +566,7 @@ namespace RavlN {
     *this = TBuff;    
   }
 
-  StringC::StringC(istream & in) {
+  StringC::StringC(std::istream & in) {
     in >> *this;
   }
 
@@ -883,16 +883,16 @@ namespace RavlN {
     int x;
 #if RAVL_COMPILER_VISUALCPPNET_2005
     if((x = vsprintf_s(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: StringC::form(...), String truncated!! \n";
+      std::cerr << "WARNING: StringC::form(...), String truncated!! \n";
     StringC oth(buff);
     (*this) = oth;  // Slower, but saves memory.
 #elif RAVL_COMPILER_VISUALCPP
     if((x = _vsnprintf(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: StringC::form(...), String truncated!! \n";
+      std::cerr << "WARNING: StringC::form(...), String truncated!! \n";
     (*this) = StringC(buff);  // Slower, but saves memory.
 #else
     if((x = vsnprintf(buff,formSize,format,args)) < 0)
-      cerr << "WARNING: StringC::form(...), String truncated!! \n";
+      std::cerr << "WARNING: StringC::form(...), String truncated!! \n";
     (*this) = StringC(buff);  // Slower, but saves memory.
 #endif
     va_end(args);
@@ -1314,7 +1314,7 @@ namespace RavlN {
 
 // IO
 
-  istream& operator>>(istream& s, StringC& x) {
+  std::istream& operator>>(std::istream& s, StringC& x) {
     if (!s || (!(s.flags() & ios::skipws) && !ws(s))) {
       s.clear(ios::failbit|s.rdstate()); // Redundant if using GNU iostreams.
       return s;
@@ -1355,9 +1355,9 @@ namespace RavlN {
     return s;
   }
   
-  int readline(istream& s, StringC& x, char terminator, bool discard) {
+  int readline(std::istream& s, StringC& x, char terminator, bool discard) {
 #if RAVL_COMPILER_GCC
-    const int eof = istream::traits_type::eof();
+    const int eof = std::istream::traits_type::eof();
 #else
     // Should check what this does before just disabling it.
     if (!s.ipfx(0))
@@ -1390,7 +1390,7 @@ namespace RavlN {
   }
   
   
-  ostream& operator<<(ostream & s, const SubStringC& x) { 
+  std::ostream& operator<<(std::ostream & s, const SubStringC& x) { 
 #if USE_STREAMPUT
     const char* a = x.chars();
     const char* lasta = &(a[x.length()]);
@@ -1402,7 +1402,7 @@ namespace RavlN {
     return(s);
   }
   
-  ostream& operator<<(ostream & s, const StringC& x) { 
+  std::ostream& operator<<(std::ostream & s, const StringC& x) { 
 #if USE_STREAMPUT
     s << x.chars(); 
 #else

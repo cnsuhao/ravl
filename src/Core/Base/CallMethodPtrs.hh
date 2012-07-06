@@ -110,11 +110,11 @@ namespace RavlN {
 
     virtual RetT Call()
     { return (obj->*FuncPtr())(this->dat1); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
     
     virtual RetT Call(Arg1T &pd)
     { return (obj->*FuncPtr())(pd); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
 
   protected:
     virtual RCBodyVC &Copy() const
@@ -182,15 +182,15 @@ namespace RavlN {
     
     virtual RetT Call()
     { return (obj->*FuncPtr())(this->dat1,this->dat2); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
     
     virtual RetT Call(Arg1T &pd)
     { return (obj->*FuncPtr())(pd,this->dat2); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
 
     virtual RetT Call(Arg1T &pd1,Arg2T &pd2)
     { return (obj->*FuncPtr())(pd1,pd2); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
     
   protected:
     
@@ -264,19 +264,19 @@ namespace RavlN {
     
     virtual RetT Call()
     { return (obj->*FuncPtr())(this->dat1,this->dat2,this->dat3); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
 
     virtual RetT Call(Arg1T &pd)
     { return (obj->*FuncPtr())(pd,this->dat2,this->dat3); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
 
     virtual RetT Call(Arg1T &pd1,Arg2T &pd2)
     { return (obj->*FuncPtr())(pd1,pd2,this->dat3); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
     
     virtual RetT Call(Arg1T &pd1,Arg2T &pd2,Arg3T &pd3)
     { return (obj->*FuncPtr())(pd1,pd2,pd3); }
-    //: Invoke event, with paramiter.
+    //: Invoke event, with parameter.
     
   protected:
     virtual RCBodyVC &Copy() const

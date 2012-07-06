@@ -30,7 +30,7 @@ namespace RavlN {
     Tuple3C() {}
     //: Default constructor.
     
-    Tuple3C(istream &in) 
+    Tuple3C(std::istream &in) 
     { in >> d1 >> d2 >> d3; }
     //: Stream constructor.
     
@@ -104,13 +104,13 @@ namespace RavlN {
   };
   
   template<class T1,class T2,class T3>
-  ostream &operator<<(ostream &out,const Tuple3C<T1,T2,T3> &obj) {
+  std::ostream &operator<<(std::ostream &out,const Tuple3C<T1,T2,T3> &obj) {
     out << obj.Data1() << ' ' << obj.Data2() << ' ' << obj.Data3() << ' ';
     return out;
   }
   
   template<class T1,class T2,class T3>
-  istream &operator>>(istream &in,Tuple3C<T1,T2,T3> &obj) {
+  std::istream &operator>>(std::istream &in,Tuple3C<T1,T2,T3> &obj) {
     obj = Tuple3C<T1,T2,T3>(in);
     return in;
   }

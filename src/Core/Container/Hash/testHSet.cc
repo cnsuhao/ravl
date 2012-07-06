@@ -23,14 +23,14 @@ int main(int nargs,char *argv[])
 {
   int errline;
   if((errline = BasicTest()) != 0) {
-    cerr << "HSetC test failed on line " << errline << "\n";
+    std::cerr << "HSetC test failed on line " << errline << "\n";
     return 1;
   }
   if((errline = IntersectTest()) != 0) {
-    cerr << "HSetC test failed on line " << errline << "\n";
+    std::cerr << "HSetC test failed on line " << errline << "\n";
     return 1;    
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
