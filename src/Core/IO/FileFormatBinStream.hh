@@ -39,11 +39,11 @@ namespace RavlN {
     {}
     //: Constructor with full format info.
 
-    virtual const std::type_info &ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const  {
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &/*obj_type*/) const  {
       if(!in.good())
 	return typeid(void);
       BinIStreamC bin(in);
-      streampos mark = bin.Tell();
+      std::streampos mark = bin.Tell();
       UInt16T id;
       // Check magic number.
       bin >> id;
@@ -85,14 +85,14 @@ namespace RavlN {
     }
     //: Is stream in std stream format ?
 
-    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const {
       //cout << "File Probe '" << filename << "' Looking for:" << TypeName(obj_type) << endl;
       if(filename == "")
 	return typeid(DataT); // Yep, can handle load to DataT.
       return ProbeLoad(in,obj_type); // Check load from stream.
     }
 
-    virtual const std::type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const {
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &/*obj_type*/,bool forceFormat) const {
       if(forceFormat)
 	return typeid(DataT); // If we're forced just accept it.
       StringC ext = Extension(filename);

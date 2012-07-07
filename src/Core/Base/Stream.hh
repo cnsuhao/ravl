@@ -211,7 +211,7 @@ namespace RavlN {
     { return ptrManager; }
     //: Access the pointer manager.
 
-    static bool EnableStreamExceptions(bool value = true, ios_base::iostate except = ios_base::badbit);
+    static bool EnableStreamExceptions(bool value = true, std::ios_base::iostate except = std::ios_base::badbit);
     //: make STL stream throw exceptions
 
   protected:
@@ -231,13 +231,13 @@ namespace RavlN {
     // This should only be called on Stream's constructed with the
     // default constructor!
 
-    ios &buf() {
+    std::ios &buf() {
       RavlAssert(s != 0);
       return *s;
     }
     //: Access handle.
 
-    const ios &buf() const  {
+    const std::ios &buf() const  {
       RavlAssert(s != 0);
       return *s;
     }
@@ -245,7 +245,7 @@ namespace RavlN {
 
   protected:
     StringC name; // Name of stream.
-    ios *s;
+    std::ios *s;
     RCHandleC<RCBodyVC> ptrManager;
     bool m_openFailed;
   };
@@ -258,6 +258,7 @@ namespace RavlN {
   {
   public:
     OStreamC()
+     : out(0)
     {}
     //:Default constructor.
 
@@ -329,21 +330,21 @@ namespace RavlN {
     std::ostream &operator<<(const DataT &dat)
     { return os() << dat; }
 
-    streampos Tell() const { return out->tellp(); }
+    std::streampos Tell() const { return out->tellp(); }
     //: Where are we in the stream.
 
-    void Seek(streampos to) { os().seekp(to); }
+    void Seek(std::streampos to) { os().seekp(to); }
     //: Goto a position in the stream.
 
-    streampos tellp() const { return out->tellp(); }
+    std::streampos tellp() const { return out->tellp(); }
     //: Where are we in the stream.
     // std::ostream compatible.
 
-    std::ostream &seekp(streampos to) { return os().seekp(to); }
+    std::ostream &seekp(std::streampos to) { return os().seekp(to); }
     //: Goto a position in the stream.
     // std::ostream compatible.
 
-    std::ostream &seekp(streampos to,SeekDirT dir) { return os().seekp(to,dir); }
+    std::ostream &seekp(std::streampos to,SeekDirT dir) { return os().seekp(to,dir); }
     //: Goto a position in the stream.
     // std::ostream compatible.
 
@@ -424,7 +425,7 @@ namespace RavlN {
     { return is(); }
     //: Converter.
 
-    std::istream &read(char *d,streamsize n)
+    std::istream &read(char *d,std::streamsize n)
     { return is().read(d,n); }
     //: read data.
     // std::istream compatible function.
@@ -449,7 +450,7 @@ namespace RavlN {
     //: Read in a line.
     // std::istream compatible function.
 
-    streamsize gcount()
+    std::streamsize gcount()
     { return is().gcount(); }
     //: Get number of character read in last operation.
     // std::istream compatible function.
@@ -461,21 +462,21 @@ namespace RavlN {
     std::istream &operator>>(char *dat)
     { return is() >> dat; }
 
-    streampos Tell() const { return in->tellg(); }
+    std::streampos Tell() const { return in->tellg(); }
     //: Where are we in the stream.
 
-    void Seek(streampos to) { is().clear(); is().seekg(to); }
+    void Seek(std::streampos to) { is().clear(); is().seekg(to); }
     //: Goto a position in the stream.
 
-    streampos tellg() const { return in->tellg(); }
+    std::streampos tellg() const { return in->tellg(); }
     //: Where are we in the stream.
     // std::istream compatible function.
 
-    std::istream &seekg(streampos to) { return is().seekg(to); }
+    std::istream &seekg(std::streampos to) { return is().seekg(to); }
     //: Goto a position in the stream.
     // std::istream compatible function.
 
-    std::istream &seekg(streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
+    std::istream &seekg(std::streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
     //: Goto a position in the stream.
     // std::istream compatible.
 

@@ -13,7 +13,6 @@
 //! author="Charles Galambos"
 //! date="09/02/1999"
 //! docentry="Ravl.API.Core.IO.Streams"
-//! rcsid="$Id$"
 
 #include "Ravl/config.h"
 #include "Ravl/Stream.hh"
@@ -221,10 +220,10 @@ namespace RavlN  {
     inline BinIStreamC &operator>>(bool &dat);
     //: Read in a boolean value.
 
-    streampos Tell() const { return in.Tell(); }
+    std::streampos Tell() const { return in.Tell(); }
     //: Where are we in the stream.
 
-    void Seek(streampos to) { in.Seek(to); }
+    void Seek(std::streampos to) { in.Seek(to); }
     //: Goto a position in the stream.
 
     inline const StringC &Name() const
@@ -384,10 +383,10 @@ namespace RavlN  {
     BinOStreamC &operator<<(const char *text);
     //: Write a 'C' style string.
 
-    streampos Tell() const { return out.Tell(); }
+    std::streampos Tell() const { return out.Tell(); }
     //: Where are we in the stream.
 
-    void Seek(streampos to) { out.Seek(to); }
+    void Seek(std::streampos to) { out.Seek(to); }
     //: Goto a position in the stream.
 
     inline const StringC &Name() const
