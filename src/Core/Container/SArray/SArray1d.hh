@@ -306,16 +306,21 @@ namespace RavlN {
     // If offset is larger than the array an empty array
     // is returned,
 
+    SArray1dC<DataT> Before(UIntT offset)
+    { return From(0,offset); }
+    //: Return array from the start to the element before offset
+    // If offset is larger then the whole array will be returned.
+
     //:------------------
     // Special operations
 
     BufferC<DataT> &Buffer()
-      { return buff; }
+    { return buff; }
     //: Access base data buffer.
     // Experts only.
 
     const BufferC<DataT> &Buffer() const
-      { return buff; }
+    { return buff; }
     //: Constant access base data buffer.
     // Experts only.
 

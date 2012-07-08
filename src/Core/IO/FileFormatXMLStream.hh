@@ -32,7 +32,7 @@ namespace RavlN {
       {}
     //: Default constructor.
     
-    virtual const std::type_info &ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const  {
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &/*obj_type*/) const  {
       if(!in.good())
 	return typeid(void);
       streampos mark = in.Tell();
@@ -62,18 +62,18 @@ namespace RavlN {
     }
     //: Is stream in std stream format ?
     
-    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const {
       //cout << "File Probe '" << filename << "' Looking for:" << TypeName(obj_type) << endl;
       if(filename == "") 
 	return typeid(DataT); // Yep, can handle load to DataT.
       return ProbeLoad(in,obj_type); // Check load from stream.
     }
     
-    virtual const std::type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const {
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &/*obj_type*/,bool forceFormat) const {
       if(forceFormat)
 	return typeid(DataT); // If we're forced just accept it.
       StringC ext = Extension(filename);
-      // If there's no extention or the extention is 'xml' we can handle it.
+      // If there's no extension or the extension is 'xml' we can handle it.
       if(filename.IsEmpty())
 	return typeid(void); // Nope.
       if(filename[0] == '@')
@@ -123,7 +123,7 @@ namespace RavlN {
     
     virtual const std::type_info &DefaultType() const 
     { return typeid(DataT); }
-    //: Get prefered IO type.
+    //: Get preferred IO type.
 
     virtual bool IsStream() const
     { return true; }

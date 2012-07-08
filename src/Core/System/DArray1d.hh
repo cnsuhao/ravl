@@ -268,7 +268,13 @@ namespace RavlN {
 
     DArray1dC<DataT> CompactFrom(IndexC start,SizeT size);
     //: Get sub array from this one.
-    // The new array will be indexed from zero and continous
+    // If size is set to zero the rest of the array will be used.
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
+    // This does not copy the elements, it only creates a new access to existing ones.
+
+    DArray1dC<DataT> CompactBefore(IndexC end);
+    //: Make a copy of the array of all the elements before 'end'
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
     // This does not copy the elements, it only creates a new access to existing ones.
 
     SArray1dC<DataT> SArray(bool alwaysCopy = false);
@@ -409,7 +415,7 @@ namespace RavlN {
       : RCHandleC<DArray1dBodyC<DataT> >(*new DArray1dBodyC<DataT>(size,preAlloc))
     {}
     //: Constructor an array with an expected size.
-    // This is usefull if you know you'll be appending 'size' elements.  The array
+    // This is useful if you know you'll be appending 'size' elements.  The array
     // will initial appear empty, but Append operations will be fast.
     // preAlloc is used to distinguish this constructor from DArray1dC<>(SizeT) and
     // should be set to 'true'.
@@ -488,7 +494,13 @@ namespace RavlN {
     //: Append data to this array.
     // Note the data is not copied!
     // The number of items appended is returned.
-    
+
+    IndexC Append(const SArray1dC<DataT> &newData)
+    { return Body().Append(Array1dC<DataT>(newData)); }
+    //: Append data to this array.
+    // Note the data is not copied!
+    // The number of items appended is returned.
+
     IndexC Append(const DArray1dC<DataT> &newData)
     { return Body().Append(newData); }
     //: Append data to this array.
@@ -531,10 +543,17 @@ namespace RavlN {
     { Body().Fill(value); }
     //: Fill array with given value.
 
-    DArray1dC<DataT> CompactFrom(IndexC start,SizeT size)
+    DArray1dC<DataT> CompactFrom(IndexC start,SizeT size = 0)
     { return Body().CompactFrom(start,size); }
     //: Get sub array from this one.
-    // The new array will be indexed from 0 and continous.
+    // If size is set to zero the rest of the array will be used.
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
+    // This does not copy the elements, it only creates a new access to existing ones.
+
+    DArray1dC<DataT> CompactBefore(IndexC end)
+    { return Body().CompactBefore(end); }
+    //: Make a copy of the array of all the elements before 'end'
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
     // This does not copy the elements, it only creates a new access to existing ones.
 
     IndexRangeC Range() const
@@ -974,6 +993,8 @@ namespace RavlN {
   template<class DataT>
   DArray1dC<DataT> DArray1dBodyC<DataT>::CompactFrom(IndexC start,SizeT size) {
     if(size == 0)
+      size = IMax() - start;
+    if(size == 0)
       return DArray1dC<DataT>();
     IndexC max = (start + size)-1;
     IntrDLIterC<DChunkC<DataT> > it(chunks);
@@ -993,7 +1014,6 @@ namespace RavlN {
     DArray1dC<DataT> ret;
     ret.Append(it->Data().From(start));
 
-    // FIXME:- This will fill in any holes, should it?
     for(it++;it && (it->IMax() <= max);it++)
       ret.Append(it->Data());
 
@@ -1006,6 +1026,15 @@ namespace RavlN {
       }
     }
     return ret;
+  }
+
+  //: Make a copy of the array of all the elements before 'end'
+  template<class DataT>
+  DArray1dC<DataT> DArray1dBodyC<DataT>::CompactBefore(IndexC end)
+  {
+    if(end <= IMin())
+      return DArray1dC<DataT>();
+    return CompactFrom(IMin(),end - IMin());
   }
 
   //: Access content's of DArray as single array.

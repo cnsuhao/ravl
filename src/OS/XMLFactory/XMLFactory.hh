@@ -294,8 +294,8 @@ namespace RavlN {
     mutable RavlN::HSetC<RavlN::StringC> m_usedAttributes;
 
   private:
-    XMLFactoryNodeC(const XMLFactoryNodeC &other)
-    { RavlAssert(0); }
+    XMLFactoryNodeC(const XMLFactoryNodeC &other);
+    //! Copy constructor not supported
 
     friend class XMLFactoryC;
   };
@@ -808,8 +808,8 @@ namespace RavlN {
     friend class XMLFactoryNodeC;
 
   private:
-    XMLFactoryC(const XMLFactoryC &)
-    { RavlAssert(0); }
+    XMLFactoryC(const XMLFactoryC &);
+    //: Copy constructor, not supported!
   };
 
   //! userlevel=Normal
