@@ -20,6 +20,15 @@
 #include "Ravl/Threads/Signal1.hh"
 #include "Ravl/OS/Date.hh"
 
+#define DODEBUG_TH 0
+#if DODEBUG_TH
+#include <Ravl/SysLog.hh>
+#define ONDEBUG_TH(x) x
+#else
+#define ONDEBUG_TH(x)
+#endif
+
+
 namespace RavlN
 {
 
@@ -65,6 +74,7 @@ namespace RavlN
     //: Constructor
 
     bool Update(const StateT &newState) {
+      ONDEBUG_TH(RavlDebug("Updating state (current %i) to %i", int(m_state), int(newState)));
       m_access.Lock();
       if(newState == m_state) {
         // No change.
@@ -75,6 +85,7 @@ namespace RavlN
       m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
+      ONDEBUG_TH(RavlDebug("New state %i", int(m_state)));
       return true;
     }
     //: Set the current state.
@@ -85,6 +96,7 @@ namespace RavlN
     //: Set the current state, used for connecting signals as update is ambiguous.
 
     bool Update(const StateT &expectedCurrentState,const StateT &newState) {
+      ONDEBUG_TH(RavlDebug("Updating state (current %i) expected current %i  to %i", int(m_state), int(expectedCurrentState), int(newState)));
       m_access.Lock();
       if(m_state != expectedCurrentState) {
         // No change.
@@ -95,6 +107,7 @@ namespace RavlN
       m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
+      ONDEBUG_TH(RavlDebug("New state %i", int(m_state)));
       return true;
     }
     //: Change from a given existing state to a new state
@@ -102,6 +115,7 @@ namespace RavlN
     // The state of class isn't 'expectedCurrentState' return false.
 
     bool Update(const StateT &expectedCurrentState1,const StateT &expectedCurrentState2,const StateT &newState) {
+      ONDEBUG_TH(RavlDebug("Updating state (current %i) expected current %i or %i  to %i", int(m_state), int(expectedCurrentState1), int(expectedCurrentState2), int(newState)));
       m_access.Lock();
       if(m_state != expectedCurrentState1 && m_state != expectedCurrentState2) {
         // No change.
@@ -112,11 +126,13 @@ namespace RavlN
       m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
+      ONDEBUG_TH(RavlDebug("New state %i", int(m_state)));
       return true;
     }
 
     template<typename TransitionMapT>
     bool Transition(TransitionMapT tmap) {
+      ONDEBUG_TH(RavlDebug("Transition"));
       m_access.Lock();
       StateT newState = m_state; // Default to do nothing.
       const StateT oldState = m_state;
@@ -130,6 +146,7 @@ namespace RavlN
       m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
+      ONDEBUG_TH(RavlDebug("New state %i", int(m_state)));
       return ret;
     }
 
@@ -139,6 +156,7 @@ namespace RavlN
 
     template<typename TransitionMapT,typename InputT>
     bool Transition(TransitionMapT tmap,InputT input) {
+      ONDEBUG_TH(RavlDebug("Transition"));
       m_access.Lock();
       StateT newState = m_state; // Default to do nothing.
       const StateT oldState = m_state;
@@ -152,10 +170,12 @@ namespace RavlN
       m_access.Unlock();
       m_cond.Broadcast();
       m_sigState(newState);
+      ONDEBUG_TH(RavlDebug("New state %i", int(m_state)));
       return ret;
     }
 
     void Wait(const StateT &desiredState) const {
+      ONDEBUG_TH(RavlDebug("Wait for %i (current %i)", int(desiredState), int(m_state)));
       if(m_state == desiredState) // Check before we bother with locking.
         return ;
       m_access.Lock();
@@ -170,6 +190,7 @@ namespace RavlN
     //: Wait indefinitely for an event to be posted.
 
     void Wait(const StateT &desiredState1, const StateT &desiredState2) const {
+      ONDEBUG_TH(RavlDebug("Wait for %i or %i (current %i)", int(desiredState1), int(desiredState2), int(m_state)));
       if(m_state == desiredState1 || m_state == desiredState2) // Check before we bother with locking.
         return ;
       m_access.Lock();
@@ -184,8 +205,8 @@ namespace RavlN
     //: Wait indefinitely until either one or another state is reached
 
 
-    bool Wait(RealT maxTime,const StateT &desiredState) const
-    {
+    bool Wait(RealT maxTime,const StateT &desiredState) const {
+      ONDEBUG_TH(RavlDebug("Timed wait for %i  timeout %g (current %i)", int(desiredState), maxTime, int(m_state)));
       if(m_state == desiredState) // Check before we bother with locking.
         return true;
       bool ret = true;
@@ -212,8 +233,8 @@ namespace RavlN
                const StateT &desiredState1,
                const StateT &desiredState2,
                StateT &stateAchieved
-               ) const
-    {
+               ) const {
+      ONDEBUG_TH(RavlDebug("Timed wait for %i or %i  timeout %g (current %i)", int(desiredState1), int(desiredState2), maxTime, int(m_state)));
       if(m_state == desiredState1 || m_state == desiredState2) { // Check before we bother with locking.
         stateAchieved = m_state;
         return true;
@@ -244,8 +265,8 @@ namespace RavlN
                const StateT &desiredState2,
                const StateT &desiredState3,
                StateT &stateAchieved
-               ) const
-    {
+               ) const {
+      ONDEBUG_TH(RavlDebug("Timed wait for %i or %i or %i  timeout %g (current %i)", int(desiredState1), int(desiredState2), int(desiredState3), maxTime, int(m_state)));
       if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3) {// Check before we bother with locking.
         stateAchieved = m_state;
         return true;
@@ -277,8 +298,8 @@ namespace RavlN
                const StateT &desiredState3,
                const StateT &desiredState4,
                StateT &stateAchieved
-               ) const
-    {
+               ) const {
+      ONDEBUG_TH(RavlDebug("Timed wait for %i or %i or %i or %i  timeout %g (current %i)", int(desiredState1), int(desiredState2), int(desiredState3), int(desiredState4), maxTime, int(m_state)));
       if(m_state == desiredState1 || m_state == desiredState2 || m_state == desiredState3|| m_state == desiredState4) {// Check before we bother with locking.
         stateAchieved = m_state;
         return true;
@@ -306,6 +327,7 @@ namespace RavlN
 
 
     bool WaitNot(RealT maxTime,const StateT &theState) const {
+      ONDEBUG_TH(RavlDebug("Timed wait not for %i   timeout %g (current %i)", int(theState), maxTime, int(m_state)));
       if(m_state != theState) {// Check before we bother with locking.
         return true;
       }
