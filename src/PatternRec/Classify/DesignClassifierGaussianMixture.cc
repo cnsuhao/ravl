@@ -33,7 +33,8 @@ namespace RavlN {
   //: Load from stream.
   
   DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(std::istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      mixtures(0)
   {
     int version;
     strm >> version;
@@ -45,7 +46,8 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      mixtures(0)
   {
     int version;
     strm >> version;

@@ -31,7 +31,7 @@ namespace RavlN {
     : public NetPortBaseC
   {
   public:
-    NetISPortBaseC(const StringC &server,const StringC &portName,const type_info &ndataType);
+    NetISPortBaseC(const StringC &server,const StringC &portName,const std::type_info &ndataType);
     //: Constructor.
     // The 'server' has the format  'host:port' where port may be a
     // host name or its ip (dotted numbers) address and port is the 

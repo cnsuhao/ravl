@@ -23,8 +23,7 @@ namespace RavlN {
     : public DesignClassifierSupervisedBodyC
   {
   public:
-    DesignBayesNormalLinearBodyC()
-    {}
+    DesignBayesNormalLinearBodyC();
     //: Default constructor.
     
     DesignBayesNormalLinearBodyC(std::istream &strm);
