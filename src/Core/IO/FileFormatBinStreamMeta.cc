@@ -102,7 +102,7 @@ namespace RavlN {
       return typeid(void); // Nope.
     if(filename[0] == '@')
       return typeid(void); // Nope.
-    if(ext == ""  || ext == "abs" || ext == "bin" || ext == formatName)
+    if(ext == ""  || ext == "abs" || ext == "bin" || m_ext.IsMember(ext))
       return ff.DefaultType(); // Yep, can save in format.
     return typeid(void); // Nope.
   }
@@ -162,6 +162,7 @@ namespace RavlN {
       return false;
     }
     entry = fileformat;
+    m_ext += fileformat.Name();
     return true;
   }
 

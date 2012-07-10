@@ -17,6 +17,7 @@
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Hash.hh"
+#include "Ravl/HSet.hh"
 
 namespace RavlN {
   /////////////////////////////
@@ -67,6 +68,7 @@ namespace RavlN {
     //: Register format
   protected:
     HashC<StringC,FileFormatBaseC> m_class2format;
+    HSetC<StringC> m_ext;
   };
 
   /////////////////////////////
