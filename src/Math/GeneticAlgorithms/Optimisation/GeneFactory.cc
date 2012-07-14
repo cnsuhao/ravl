@@ -32,7 +32,8 @@ namespace RavlN { namespace GeneticN {
   //! Construct from a genome.
 
   GenomeScaffoldC::GenomeScaffoldC(const GenomeC &genome)
-   : m_genome(&genome)
+   : m_genome(&genome),
+     m_allowUpdate(true)
   {}
 
 
