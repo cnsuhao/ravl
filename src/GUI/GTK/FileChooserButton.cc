@@ -25,7 +25,7 @@ namespace RavlGUIN
 
   static void CBFileChooserButtonResponse(GtkWidget *widget, FileChooserButtonBodyC *fileChooserButtonBodyPtr)
   {
-    ONDEBUG(cerr << "CBFileChooserButtonResponse " << endl);
+    ONDEBUG(std::cerr << "CBFileChooserButtonResponse " << endl);
     RavlAssert(fileChooserButtonBodyPtr);
 
     StringC filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
@@ -58,7 +58,7 @@ namespace RavlGUIN
 
   bool FileChooserButtonBodyC::CommonCreate(GtkWidget *newWidget)
   {
-    ONDEBUG(cerr << "FileChooserButtonBodyC::CommonCreate" << endl);
+    ONDEBUG(std::cerr << "FileChooserButtonBodyC::CommonCreate" << endl);
 
     if (newWidget)
     {

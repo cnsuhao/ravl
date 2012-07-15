@@ -12,17 +12,17 @@
 
 namespace RavlImageN {
   
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  ostream &operator<<(ostream &strm,const PointTrackModelC &pt) {
-    RavlAssertMsg(0,"ostream &operator<<(ostream &strm,const PointTrackModelC &pt), Not implemented. ");
+  std::ostream &operator<<(std::ostream &strm,const PointTrackModelC &pt) {
+    RavlAssertMsg(0,"ostream &operator<<(std::ostream &strm,const PointTrackModelC &pt), Not implemented. ");
     return strm;
   }
   
-  //: Load from istream.
+  //: Load from std::istream.
   
-  istream &operator>>(istream &strm,PointTrackModelC &pt) {
-    RavlAssertMsg(0,"istream &operator>>(istream &strm,PointTrackModelC &), Not implemented. ");
+  std::istream &operator>>(std::istream &strm,PointTrackModelC &pt) {
+    RavlAssertMsg(0,"istream &operator>>(std::istream &strm,PointTrackModelC &), Not implemented. ");
     return strm;
   }
 

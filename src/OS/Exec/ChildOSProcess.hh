@@ -45,7 +45,7 @@ namespace RavlN {
     //: Start a child process.
     // where the first arg is the name of the program to run.
     
-    ~ChildOSProcessBodyC();
+    virtual ~ChildOSProcessBodyC();
     //: Destructor
     
     bool Run(StringListC args,bool useStdOut = false,bool useStdErr = false,bool useStdIn = false);

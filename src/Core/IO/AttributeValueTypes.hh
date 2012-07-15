@@ -32,10 +32,10 @@ namespace RavlN {
     AttributeTypeBoolBodyC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeBoolBodyC(istream &is);
+    AttributeTypeBoolBodyC(std::istream &is);
     //: stream constructor.
     
-    virtual bool Save(ostream & strm) const ; 
+    virtual bool Save(std::ostream & strm) const ; 
     //: Save the attribute to a stream 
     
     virtual bool Save(BinOStreamC & strm) const ; 
@@ -74,7 +74,7 @@ namespace RavlN {
     AttributeTypeBoolC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeBoolC(istream &is);
+    AttributeTypeBoolC(std::istream &is);
     //: stream constructor.
     
     AttributeTypeBoolC(const StringC &name,const StringC &desc,bool nCanRead = true,bool nCanWrite = true,bool ndefaultValue = false)
@@ -139,12 +139,12 @@ namespace RavlN {
     { is >> minv >> maxv >> step >> defaultValue; }
     //: Binary stream constructor.
     
-    AttributeTypeNumBodyC(istream &is)
+    AttributeTypeNumBodyC(std::istream &is)
       : AttributeTypeBodyC(is)
     { is >> minv >> maxv >> step >> defaultValue; }
     //: stream constructor.
     
-    virtual bool Save(ostream & strm) const {
+    virtual bool Save(std::ostream & strm) const {
       if(!AttributeTypeBodyC::Save(strm))
 	return false;
       strm << ' ' << minv << ' ' << maxv << ' ' << step << ' ' << defaultValue; 
@@ -221,7 +221,7 @@ namespace RavlN {
     {}
     //: Binary stream constructor.
     
-    AttributeTypeNumC(istream &is)
+    AttributeTypeNumC(std::istream &is)
       : AttributeTypeC(RAVL_VIRTUALCONSTRUCTOR(is,AttributeTypeNumBodyC<ValueT>))
     {}
     //: stream constructor.
@@ -287,10 +287,10 @@ namespace RavlN {
     AttributeTypeStringBodyC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeStringBodyC(istream &is);
+    AttributeTypeStringBodyC(std::istream &is);
     //: stream constructor.
     
-    virtual bool Save(ostream & strm) const ; 
+    virtual bool Save(std::ostream & strm) const ; 
     //: Save the attribute to a stream 
     
     virtual bool Save(BinOStreamC & strm) const ; 
@@ -346,7 +346,7 @@ namespace RavlN {
     AttributeTypeStringC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeStringC(istream &is);
+    AttributeTypeStringC(std::istream &is);
     //: Stream constructor.
     
   protected:
@@ -390,10 +390,10 @@ namespace RavlN {
     AttributeTypeEnumBodyC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeEnumBodyC(istream &is);
+    AttributeTypeEnumBodyC(std::istream &is);
     //: stream constructor.
     
-    virtual bool Save(ostream & strm) const ; 
+    virtual bool Save(std::ostream & strm) const ; 
     //: Save the attribute to a stream 
     
     virtual bool Save(BinOStreamC & strm) const ; 
@@ -449,7 +449,7 @@ namespace RavlN {
     AttributeTypeEnumC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeEnumC(istream &is);
+    AttributeTypeEnumC(std::istream &is);
     //: Stream constructor.
     
   protected:
@@ -492,10 +492,10 @@ namespace RavlN {
     AttributeTypeComponentBodyC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeComponentBodyC(istream &is);
+    AttributeTypeComponentBodyC(std::istream &is);
     //: Stream constructor.
     
-    virtual bool Save(ostream & strm) const ; 
+    virtual bool Save(std::ostream & strm) const ; 
     //: Save the attribute to a stream 
     
     virtual bool Save(BinOStreamC & strm) const ; 
@@ -536,7 +536,7 @@ namespace RavlN {
     AttributeTypeComponentC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeComponentC(istream &is);
+    AttributeTypeComponentC(std::istream &is);
     //: Stream constructor.
     
   protected:
@@ -571,10 +571,10 @@ namespace RavlN {
     AttributeTypeMiscBodyC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeMiscBodyC(istream &is);
+    AttributeTypeMiscBodyC(std::istream &is);
     //: Stream constructor.
     
-    virtual bool Save(ostream & strm) const ; 
+    virtual bool Save(std::ostream & strm) const ; 
     //: Save the attribute to a stream 
     
     virtual bool Save(BinOStreamC & strm) const ; 
@@ -616,7 +616,7 @@ namespace RavlN {
     AttributeTypeMiscC(BinIStreamC &is);
     //: Binary stream constructor.
     
-    AttributeTypeMiscC(istream &is);
+    AttributeTypeMiscC(std::istream &is);
     //: Stream constructor.
     
   protected:

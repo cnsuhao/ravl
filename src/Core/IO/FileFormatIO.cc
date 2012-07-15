@@ -36,7 +36,7 @@ namespace RavlN {
   
   DPIPortBaseC BaseLoad(const StringC &filename,
 			StringC fformat,
-			const type_info &obj_type,
+			const std::type_info &obj_type,
 			bool verbose) 
   { return SystemFileFormatRegistry().CreateInput(filename,fformat,obj_type,verbose); }
   
@@ -49,7 +49,7 @@ namespace RavlN {
   
   DPOPortBaseC BaseSave(const StringC &filename,
 			StringC fformat,
-			const type_info &obj_type,
+			const std::type_info &obj_type,
 			bool verbose) 
   { return SystemFileFormatRegistry().CreateOutput(filename,fformat,obj_type,verbose); }
   
@@ -63,7 +63,7 @@ namespace RavlN {
   
   DPIPortBaseC BaseLoad(IStreamC &is,
 			StringC fformat,
-			const type_info &obj_type,
+			const std::type_info &obj_type,
 			bool verbose) 
   { return SystemFileFormatRegistry().CreateInput(is,fformat,obj_type,verbose); }
   
@@ -76,7 +76,7 @@ namespace RavlN {
   
   DPOPortBaseC BaseSave(OStreamC &os,
 			StringC fformat,
-			const type_info &obj_type,
+			const std::type_info &obj_type,
 			bool verbose) 
   { return SystemFileFormatRegistry().CreateOutput(os,fformat,obj_type,verbose); }
   
@@ -124,7 +124,7 @@ namespace RavlN {
   //: List all file formats that support the given type.
   // If typespec is void then all types are listed.
   
-  DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat,const type_info &typespec) 
+  DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat,const std::type_info &typespec) 
   { return SystemFileFormatRegistry().ListFormats(forLoad,fileFormat,typespec); }
   
   //////////////////////////////////

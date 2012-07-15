@@ -388,7 +388,7 @@ namespace RavlN {
   }
   
   template <class DataT>
-  ostream &operator<<(ostream &out,const SizeBufferAccessC<DataT> &dat) {
+  std::ostream &operator<<(std::ostream &out,const SizeBufferAccessC<DataT> &dat) {
     const DataT *at = dat.DataStart();
     const DataT *endOfRow = &at[dat.Size()];
     if(dat.Size() == 0)
@@ -404,7 +404,7 @@ namespace RavlN {
   // NB. The buffer must be pre-allocated.
 
   template <class DataT>
-  istream &operator>>(istream &strm,SizeBufferAccessC<DataT> &dat) {
+  std::istream &operator>>(std::istream &strm,SizeBufferAccessC<DataT> &dat) {
     DataT *at = dat.DataStart();
     DataT *endOfRow = &at[dat.Size()];
     for(;at != endOfRow;at++)

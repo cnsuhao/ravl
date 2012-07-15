@@ -22,7 +22,7 @@
 namespace RavlN {
   
   FileFormatGenericBodyC::FileFormatGenericBodyC(const StringC &nformatName,
-						 const type_info &nformatType,
+						 const std::type_info &nformatType,
 						 LoadFuncT nLoadFunc,
 						 SaveFuncT nSaveFunc,
 						 LoadFuncFnT nLoadFuncFn,
@@ -47,7 +47,7 @@ namespace RavlN {
   //: Constructor.
   
   FileFormatGenericBodyC::FileFormatGenericBodyC(const StringC &nformatName,
-						 const type_info &nformatType,
+						 const std::type_info &nformatType,
 						 LoadFuncFnT nLoadFunc,
 						 SaveFuncFnT nSaveFunc,
 						 const StringC &nDesc,
@@ -72,7 +72,7 @@ namespace RavlN {
   // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
   // typeid(void) == no, otherwise returns the prefered load type.
   
-  const type_info &FileFormatGenericBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &FileFormatGenericBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
     if(loadFunc == 0)
       return typeid(void); // Don't know how !
     if(headerData.length() > 0) { // Check header data infile.
@@ -93,7 +93,7 @@ namespace RavlN {
   // If used with a empty filename asks: Can load this type of object ?
   // typeid(void) == no, otherwise returns the prefered load type.
   
-  const type_info &FileFormatGenericBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &FileFormatGenericBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
     if(loadFuncFn == 0 && loadFunc == 0)
       return typeid(void); // Don't know how !
     if(ext.length() > 0) {
@@ -117,7 +117,7 @@ namespace RavlN {
   // If used with a empty filename asks: Can save this type of object ?
   // typeid(void) == no, otherwise returns the prefered save type.
   
-  const type_info &FileFormatGenericBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const {
+  const std::type_info &FileFormatGenericBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const {
     if(saveFuncFn == 0 && saveFunc == 0)
       return typeid(void); // Don't know how !
     if(forceFormat)
@@ -133,7 +133,7 @@ namespace RavlN {
   //: Create a input port for loading from stream 'in'.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatGenericBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatGenericBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     if(loadFunc == 0)
       return DPIPortBaseC();
     if(obj_type != *formatType)
@@ -144,7 +144,7 @@ namespace RavlN {
   //: Create a output port for saving to stream 'out'.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatGenericBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatGenericBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
     if(saveFunc == 0)
       return DPOPortBaseC();
     if(obj_type != *formatType)
@@ -155,7 +155,7 @@ namespace RavlN {
   //: Create a input port for loading from stream 'in'.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatGenericBodyC::CreateInput(const StringC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatGenericBodyC::CreateInput(const StringC &in,const std::type_info &obj_type) const {
     if(loadFuncFn == 0) {
       IStreamC strm(in);
       if(!strm.good())
@@ -170,7 +170,7 @@ namespace RavlN {
   //: Create a output port for saving to stream 'out'.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatGenericBodyC::CreateOutput(const StringC &out,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatGenericBodyC::CreateOutput(const StringC &out,const std::type_info &obj_type) const {
     if(saveFuncFn == 0) {
       OStreamC strm(out);
       if(!strm.good())
@@ -186,7 +186,7 @@ namespace RavlN {
   // This specifies the native class for representing the data in a file. <p>
   // typeid(void) if none, indicates an indirect driver.
   
-  const type_info &FileFormatGenericBodyC::DefaultType() const
+  const std::type_info &FileFormatGenericBodyC::DefaultType() const
   { return *formatType; }
   
   //: Find the priority of the format. the higher the better.

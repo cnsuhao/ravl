@@ -349,8 +349,8 @@ namespace RavlN {
       Theroot = true;
     }
     for(int i = 0;i < level;i++)
-      cout << "  ";
-    cout << Place->Key() << "\n";
+      std::cout << "  ";
+    std::cout << Place->Key() << "\n";
     //printf("(%p [%p<%d>%p]) ",Place,Place->Child(0),Place->GetBalance(),Place->Child(1));
     if(Place->Child(0) != 0)
       Dump(Place->Child(0),level+1);

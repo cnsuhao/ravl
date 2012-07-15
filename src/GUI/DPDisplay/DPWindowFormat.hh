@@ -31,14 +31,14 @@ namespace RavlGUIN {
     virtual ~DPWindowFormatBodyC() { }
     //: Need virtual destructor for class with virtual methods
 
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
     //: Probe for Save.
     
-    virtual DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const
+    virtual const std::type_info &DefaultType() const
     { return typeid(DPDisplayObjC); }
     //: Get prefered IO type.
     

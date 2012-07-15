@@ -322,7 +322,7 @@ namespace RavlN {
   // the result.
   
   template<class DataT,unsigned int N,unsigned int M>
-  ostream &operator<<(ostream &s,const TFMatrixC<DataT,N,M> &oth) {
+  std::ostream &operator<<(std::ostream &s,const TFMatrixC<DataT,N,M> &oth) {
     for(UIntT i = 0;i < N;i++) {
       for(UIntT j = 0;j < M;j++)
 	s << oth[i][j] << ' ';
@@ -332,7 +332,7 @@ namespace RavlN {
   }
 
   template<class DataT,unsigned int N,unsigned int M>
-  istream &operator>>(istream &s,TFMatrixC<DataT,N,M> &oth) {
+  std::istream &operator>>(std::istream &s,TFMatrixC<DataT,N,M> &oth) {
     for(UIntT i = 0;i < N;i++)
       for(UIntT j = 0;j < M;j++)
 	s >> oth[i][j];

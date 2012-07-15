@@ -38,13 +38,13 @@ namespace RavlN {
     FuncInterpolateBodyC(const XMLFactoryContextC &factory);
     //: Factory constructor
 
-    FuncInterpolateBodyC(istream &strm);
+    FuncInterpolateBodyC(std::istream &strm);
     //: Load from stream.
 
     FuncInterpolateBodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual bool Save (BinOStreamC &out) const;
@@ -67,7 +67,7 @@ namespace RavlN {
     {}
     //: Default constructor.
 
-    FuncInterpolateC(istream &strm);
+    FuncInterpolateC(std::istream &strm);
     //: Load from stream.
 
     FuncInterpolateC(BinIStreamC &strm);
@@ -95,14 +95,14 @@ namespace RavlN {
   public:
   };
 
-  inline istream &operator>>(istream &strm,FuncInterpolateC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FuncInterpolateC &obj) {
     obj = FuncInterpolateC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out,const FuncInterpolateC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FuncInterpolateC &obj) {
     obj.Save(out);
     return out;
   }

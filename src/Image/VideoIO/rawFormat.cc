@@ -41,14 +41,14 @@ namespace RavlImageN {
   
   // Just say no ??
   
-  const type_info &
-  FileFormatRawBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const { 
+  const std::type_info &
+  FileFormatRawBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const { 
     ONDEBUG(cerr << "FileFormatRawBodyC::ProbeLoad(IStreamC)  Called.  LoadType:'" << TypeName(obj_type) << "'\n");
     return typeid(void); 
   }
   
-  const type_info &
-  FileFormatRawBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatRawBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     StringC suffix = Extension(nfilename);
     ONDEBUG(cerr << "FileFormatRawBodyC::ProbeLoad()  Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
     if (suffix != "raw")     
@@ -56,8 +56,8 @@ namespace RavlImageN {
     return typeid(ImageC<ByteRGBValueC>);
   }
   
-  const type_info &
-  FileFormatRawBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const {
+  const std::type_info &
+  FileFormatRawBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat) const {
     if(!forceFormat) {
       StringC suffix = Extension(nfilename);
       ONDEBUG(cerr << "FileFormatRawBodyC::ProbeSave()  Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
@@ -70,8 +70,8 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatRawBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatRawBodyC::CreateInput(IStreamC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatRawBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatRawBodyC::CreateInput(IStreamC &,const std::type_info &), Called. \n");
     if(!in.good())
       return DPIPortBaseC();
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
@@ -82,8 +82,8 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatRawBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
-    ONDEBUG(cerr << "FileFormatRawBodyC::CreateOutput(OStreamC &,const type_info &), Called. \n");
+  DPOPortBaseC FileFormatRawBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
+    ONDEBUG(cerr << "FileFormatRawBodyC::CreateOutput(OStreamC &,const std::type_info &), Called. \n");
     if(!out.good())
       return DPOPortBaseC();
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
@@ -94,8 +94,8 @@ namespace RavlImageN {
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
   
-  DPIPortBaseC FileFormatRawBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatRawBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatRawBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatRawBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type != typeid(ImageC<ByteRGBValueC>)) 
       return DPIPortBaseC();  
     return DPIImageRGBC(filename);
@@ -104,8 +104,8 @@ namespace RavlImageN {
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
   
-  DPOPortBaseC FileFormatRawBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatRawBodyC::CreateOutput(const StringC &,const type_info &), Called. \n");
+  DPOPortBaseC FileFormatRawBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatRawBodyC::CreateOutput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type != typeid(ImageC<ByteRGBValueC>)) 
       return DPOPortBaseC();    
     return DPOImageRGBC(filename);  
@@ -113,7 +113,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatRawBodyC::DefaultType() const 
+  const std::type_info &FileFormatRawBodyC::DefaultType() const 
   { return typeid(ImageC<ByteRGBValueC>); }
   
   FileFormatRawC RegisterFileFormatRaw();

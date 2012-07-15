@@ -121,12 +121,12 @@ int main(int nargs,char **argv) {
   }
   if(!block) {
     if(verbose)
-      cerr << "Array2dC.. \n";
+      std::cerr << "Array2dC.. \n";
     for(int i = 0;i < loops;i++)
       loopArray2();
   } else {
     if(verbose)
-      cerr << "BlockArray2dC.. ";
+      std::cerr << "BlockArray2dC.. ";
     for(int i = 0;i < loops;i++)
       loopArray();
   }

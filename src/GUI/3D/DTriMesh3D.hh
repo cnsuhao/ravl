@@ -72,7 +72,7 @@ namespace RavlGUIN {
     //: Body constructor.
   };
 
-  ostream &operator<<(ostream &strm,const DTriMesh3DC &);
-  istream &operator>>(istream &strm,DTriMesh3DC &);
+  std::ostream &operator<<(std::ostream &strm,const DTriMesh3DC &);
+  std::istream &operator>>(std::istream &strm,DTriMesh3DC &);
 }
 #endif

@@ -18,7 +18,7 @@ namespace RavlLogicN
   
   //: Construct from a binary stream.
   
-  LListBodyC::LListBodyC(istream &strm)
+  LListBodyC::LListBodyC(std::istream &strm)
     : LiteralBodyC(strm)
   { RavlAssertMsg(0,"Not implemented. "); }
     
@@ -38,7 +38,7 @@ namespace RavlLogicN
   
   //: Save to binary stream 'out'.
   
-  bool LListBodyC::Save(ostream &out) const {
+  bool LListBodyC::Save(std::ostream &out) const {
     RavlAssertMsg(0,"Not implemented. ");
     return false;
   }

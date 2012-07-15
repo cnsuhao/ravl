@@ -27,21 +27,21 @@ using namespace RavlN ;
  
 bool Func1 (void) 
 {
-  cerr << "\n Func1 Called - \t with no arguments" ; 
+  std::cerr << "\n Func1 Called - \t with no arguments" ; 
   return true ; 
 }
 
 
 bool Func2 (RealT a) 
 {
-  cerr << "\n Func2 Called - \t with arguments " << a ; 
+  std::cerr << "\n Func2 Called - \t with arguments " << a ; 
   return true ; 
 }
 
 
 bool Func3 (UIntT * pa, const IntT & b ) 
 {
-  cerr << "\n Func3 Called - \t with arguments " << pa << " and " << b ;
+  std::cerr << "\n Func3 Called - \t with arguments " << pa << " and " << b ;
   return true ; 
 }
 
@@ -58,15 +58,15 @@ class MethodCallsC
   //: Default Constructor 
   
   MethodCallsC (const MethodCallsC & other) 
-    { cerr << "\n Copy constructor called MethodCallsC " ; }
+    { std::cerr << "\n Copy constructor called MethodCallsC " ; }
   //: Copy Constructor 
 
   void Method1 (void) 
-    { cerr << "\n Method1 Called - \t with no arguments"  ; }
+    { std::cerr << "\n Method1 Called - \t with no arguments"  ; }
   //: Method 1 
   
   RealT Method2 (IntT & a, RealT & b ) 
-    { cerr << "\n Method2 Called - \t with arguments " << a << " and " << b  ; return 0 ;  }
+    { std::cerr << "\n Method2 Called - \t with arguments " << a << " and " << b  ; return 0 ;  }
   // Method 2
 }; 
 

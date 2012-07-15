@@ -62,7 +62,7 @@ namespace RavlN {
     ParametersBodyC (const ParametersBodyC &other);
     //: Copy Constructor.
     
-    ParametersBodyC (istream &in);
+    ParametersBodyC (std::istream &in);
     //: Constructs for a stream
     
     ParametersBodyC & Copy () const;
@@ -128,7 +128,7 @@ namespace RavlN {
     void Setup(IndexC p,RealT min,RealT max,IntT steps,RealT constV,IntT mask = 1);
     //: Setup parameter p, and constant value.
     
-    void Save (ostream &out) const;
+    void Save (std::ostream &out) const;
     //: Saves to stream, from which can be constructed
     
     friend class ParametersC;
@@ -210,7 +210,7 @@ namespace RavlN {
     // minP=0 maxP=1 Steps=1 mask=0 (constP = 0)
     // if unlimited is true parameters can be any real number, and all parameters are enabled.
     
-    ParametersC (istream &in)
+    ParametersC (std::istream &in)
       : RCHandleC<ParametersBodyC>(*new ParametersBodyC (in))
     {}
     //: Constructs from stream
@@ -268,7 +268,7 @@ namespace RavlN {
     { Body().Setup(p,min,max,steps,constV,mask); }
     //: Setup parameter p, and constant value.
     
-    inline void Save (ostream &out) const
+    inline void Save (std::ostream &out) const
     { Body().Save (out); }
     //: Writes object to stream, can be loaded using constructor
     

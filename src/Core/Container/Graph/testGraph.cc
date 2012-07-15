@@ -50,12 +50,12 @@ int main() {
   }
 
   if(G.NoNodes() != x.NoNodes()) {
-    cerr << "ERROR: Node number mismatch. \n";
+    std::cerr << "ERROR: Node number mismatch. \n";
     return 1;
   }
   
   if(G.NoEdges() != x.NoEdges()) {
-    cerr << "ERROR: Edge number mismatch. \n";
+    std::cerr << "ERROR: Edge number mismatch. \n";
     return 1;
   }
 
@@ -64,34 +64,34 @@ int main() {
   UIntT edges = 0;
   GraphNodeIterC<IntC,IntC> Iter(G);
   for(;Iter.IsElm();Iter.Next()) {
-    cout << "Node:" << Iter.Data() << " \n";
+    std::cout << "Node:" << Iter.Data() << " \n";
     nodes++;
     GraphAdjIterC<IntC,IntC> LIt(Iter.In());
     for(;LIt.IsElm();LIt.Next()) {
       edges++;
-      cout << " In  " << LIt.Data() << " : " << LIt.SourceData() << "->" << LIt.TargetData() << " \n";
+      std::cout << " In  " << LIt.Data() << " : " << LIt.SourceData() << "->" << LIt.TargetData() << " \n";
     }
     LIt = Iter.Out();
     for(;LIt.IsElm();LIt.Next()) {
       edges++;
-      cout << " Out  " << LIt.Data() << " : " << LIt.SourceData() << "->" << LIt.TargetData() << " \n";
+      std::cout << " Out  " << LIt.Data() << " : " << LIt.SourceData() << "->" << LIt.TargetData() << " \n";
     }
   }
 
   if(G.NoNodes() != nodes) {
-    cerr << "ERROR: Iterator node number mismatch. \n";
+    std::cerr << "ERROR: Iterator node number mismatch. \n";
     return 1;
   }
   
   if((G.NoEdges()*2) != edges) {
-    cerr << "ERROR: Iterator edges number mismatch. \n";
+    std::cerr << "ERROR: Iterator edges number mismatch. \n";
     return 1;
   }
   
-  cout << "Cyclic:" << G.IsCyclic() << " \n";
+  std::cout << "Cyclic:" << G.IsCyclic() << " \n";
 
   if(!G.IsCyclic()) {
-    cerr << "Cyclic check failed. \n";
+    std::cerr << "Cyclic check failed. \n";
     return 1;
   }
   

@@ -28,7 +28,7 @@ namespace RavlLogicN {
 
   //: Construct from a binary stream.
   
-  TupleBodyC::TupleBodyC(istream &strm) 
+  TupleBodyC::TupleBodyC(std::istream &strm) 
     : LiteralBodyC(strm)
   {
     UIntT arity;
@@ -52,7 +52,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool TupleBodyC::Save(ostream &out) const {
+  bool TupleBodyC::Save(std::ostream &out) const {
     if(!LiteralBodyC::Save(out))
       return false;
     out << Arity() << ' ';
@@ -149,7 +149,7 @@ namespace RavlLogicN {
   //: Is this equial to another LiteralC ?
   
   bool TupleBodyC::IsEqual(const LiteralC &oth) const {
-    ONDEBUG(cerr << "TupleBodyC::IsEqual(), Called '" << Name() << "' and '" << oth << "'\n");
+    ONDEBUG(std::cerr << "TupleBodyC::IsEqual(), Called '" << Name() << "' and '" << oth << "'\n");
     TupleC tup(oth);
     if(!tup.IsValid())
       return false;
@@ -198,7 +198,7 @@ namespace RavlLogicN {
   }
   
   //: Dump info in human readable format to stream 'out'.
-  void TupleBodyC::Dump(ostream &out) {
+  void TupleBodyC::Dump(std::ostream &out) {
     out << Name();
   }
   

@@ -82,7 +82,7 @@ namespace RavlGUIN {
   // be created easily.
   
   GtkWidget *RadioButtonBodyC::BuildWidget(const char *lab) {
-    ONDEBUG(cerr << "RadioButtonBodyC::BuildWidget() Start : " << ((void *) gtkgroup) << "\n");
+    ONDEBUG(std::cerr << "RadioButtonBodyC::BuildWidget() Start : " << ((void *) gtkgroup) << "\n");
     GSList *last = 0;
     for(DLIterC<RadioButtonBodyC *> it(group);it;it++) {
       if(*it == this)
@@ -99,7 +99,7 @@ namespace RavlGUIN {
     //if(gtkgroup == 0)
     //    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), true);
     gtkgroup = gtk_radio_button_group (GTK_RADIO_BUTTON (ret));
-    ONDEBUG(cerr << "RadioButtonBodyC::BuildWidget() End : " << ((void *) gtkgroup) << "\n");
+    ONDEBUG(std::cerr << "RadioButtonBodyC::BuildWidget() End : " << ((void *) gtkgroup) << "\n");
     return ret;
   }
 }

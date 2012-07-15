@@ -35,30 +35,30 @@ int  main()
 {
   int err;
   if((err = BasicTest()) != 0) {
-    cerr << "Basic test failed at line " << err << "\n";
+    std::cerr << "Basic test failed at line " << err << "\n";
     return 1;
   }
   
   if((err = ApplyTest()) != 0) {
-    cerr << "Apply test failed at line " << err << "\n";
+    std::cerr << "Apply test failed at line " << err << "\n";
     return 1;
   }
   if((err = ReverseTest()) != 0) {
-    cerr << "Apply test failed at line " << err << "\n";
+    std::cerr << "Apply test failed at line " << err << "\n";
     return 1;
   }
   if((err = testQuickSort()) != 0) {
-    cerr << "Test failed line " << err << "\n";
+    std::cerr << "Test failed line " << err << "\n";
     return 1;
   }
   
-  cerr << "Array test passed ok. \n";
+  std::cerr << "Array test passed ok. \n";
   return 0;
 }
 
 
 int BasicTest() {
-  cerr << "Testing basic funcionality of Array1dC. \n";
+  std::cerr << "Testing basic funcionality of Array1dC. \n";
   
   ////////////////////////////////////////////////////
   // Test conversions between SArray1dC and Array1dC.
@@ -68,28 +68,28 @@ int BasicTest() {
   sarr1[1] = 2;
   
   if(sarr1.Contains(2)) {
-    cerr << "Array bounds problem. 1 \n";
+    std::cerr << "Array bounds problem. 1 \n";
     return __LINE__;
   }
   
   Array1dC<IntT> arr1(sarr1);
   if(arr1[0] != 1 || arr1[1] != 2) {
-    cerr << "Array to SArray conversion test 1 failed.  (" << arr1[0] << "," << arr1[1] <<")\n";
+    std::cerr << "Array to SArray conversion test 1 failed.  (" << arr1[0] << "," << arr1[1] <<")\n";
     return __LINE__;
   }
   if( arr1.Contains(2) || arr1.Contains(-1)) {
-    cerr << "Array bounds problem. 2 \n";
+    std::cerr << "Array bounds problem. 2 \n";
     return __LINE__;
   }
   
   Array1dC<IntT> arr2(arr1);
   if(arr2[0] != 1 || arr2[1] != 2) {
-    cerr << "Array to Array conversion test 2 failed. \n";
+    std::cerr << "Array to Array conversion test 2 failed. \n";
     return __LINE__;
   }
   
   if(arr1.Size() != arr2.Size()) {
-    cerr << "Array size mismatch. " << arr1.Size() << "  " << arr2.Size() << "\n";
+    std::cerr << "Array size mismatch. " << arr1.Size() << "  " << arr2.Size() << "\n";
     return __LINE__;
   }
   
@@ -98,11 +98,11 @@ int BasicTest() {
   a1.Append(arr1);
   a1.Append(arr2);
   if((arr1.Size() + arr2.Size()) != a1.Size()) {
-    cerr << "Array size mismatch. " << (arr1.Size() + arr2.Size()) << "  " << a1.Size() << "\n";
+    std::cerr << "Array size mismatch. " << (arr1.Size() + arr2.Size()) << "  " << a1.Size() << "\n";
     return __LINE__;
   }
   if(a1[0] != 1 || a1[1] != 2 || a1[2] != 1 || a1[3] != 2) {
-    cerr << "Array to Array conversion test 3 failed. \n" << a1 ;
+    std::cerr << "Array to Array conversion test 3 failed. \n" << a1 ;
     return __LINE__;
   }
   
@@ -113,56 +113,56 @@ int BasicTest() {
   a2.Append(a1);
   a2.Append(arr1);
   if((a1.Size() + arr1.Size()) != a2.Size()) {
-    cerr << "Array size mismatch. " << (a1.Size() + arr1.Size()) << "  " << a2.Size() << "\n";
+    std::cerr << "Array size mismatch. " << (a1.Size() + arr1.Size()) << "  " << a2.Size() << "\n";
     return __LINE__;
   }
   if(a2[0] != 1 || a2[1] != 2 || a2[2] != 1 || a2[3] != 2 || a2[4] != 1 || a2[5] != 2) {
-    cerr << "Array to Array conversion test 4 failed. \n";
+    std::cerr << "Array to Array conversion test 4 failed. \n";
     return __LINE__;
   }
   // Double check the orginal arrays.
   if(arr1.Size() != arr2.Size()) {
-    cerr << "Array size mismatch. " << arr1.Size() << "  " << arr2.Size() << "\n";
+    std::cerr << "Array size mismatch. " << arr1.Size() << "  " << arr2.Size() << "\n";
     return __LINE__;
   }
-  cerr << ax2.Size() << " " << ax1.Size() << "\n";
+  std::cerr << ax2.Size() << " " << ax1.Size() << "\n";
 
   Array1dC<IntT> c1 = a2.Copy();
   if((a1.Size() + arr1.Size()) != c1.Size()) {
-    cerr << "Array size mismatch. " << (a1.Size() + arr1.Size()) << "  " << a2.Size() << "\n";
+    std::cerr << "Array size mismatch. " << (a1.Size() + arr1.Size()) << "  " << a2.Size() << "\n";
     return __LINE__;
   }
   if(c1[0] != 1 || c1[1] != 2 || c1[2] != 1 || c1[3] != 2 || c1[4] != 1 || c1[5] != 2) {
-    cerr << "Array to Array conversion test 5 failed. \n";
+    std::cerr << "Array to Array conversion test 5 failed. \n";
     return __LINE__;
   }
   if(a2.Range() != c1.Range()) {
-    cerr << "Array copy range check failed. \n";
+    std::cerr << "Array copy range check failed. \n";
     return __LINE__;
   }
     
   IndexRangeC ir(3,4);
   if(ir.Size() != 2) {
-    cerr << "Array range size check failed. " << ir.Size() <<  "\n";
+    std::cerr << "Array range size check failed. " << ir.Size() <<  "\n";
     return __LINE__;
   }
   Array1dC<IntT> s1 = Array1dC<IntT>(a2,ir);
   if(s1.Range() != ir) {
-    cerr << "Array sub range check failed. \n";
+    std::cerr << "Array sub range check failed. \n";
     return __LINE__;
   }
   if(s1[3] != 2 || s1[4] != 1) {
-    cerr << "Array to Array conversion test 6 failed. \n";
+    std::cerr << "Array to Array conversion test 6 failed. \n";
     return __LINE__;
   }  
   Array1dC<IntT> s2 = s1.Copy();
   s1[3] = 5;
   if(s2.Range() != ir && s2.Size() == (UIntT) ir.Size()) {
-    cerr << "Array sub range check failed. \n";
+    std::cerr << "Array sub range check failed. \n";
     return __LINE__;
   }
   if(s2[3] != 2 || s2[4] != 1) {
-    cerr << "Array to Array conversion test 7 failed. \n";
+    std::cerr << "Array to Array conversion test 7 failed. \n";
     return __LINE__;
   }
 
@@ -173,7 +173,7 @@ int BasicTest() {
     ta.Fill(0);
     Array1dIterC<IntT> it(ta);
     if(it.Index() != ta.Range().Min()) {
-      cerr << "Iterator index check failed. \n";
+      std::cerr << "Iterator index check failed. \n";
       return __LINE__;
     }
     UIntT count = 0;
@@ -182,7 +182,7 @@ int BasicTest() {
       count++;
     }
     if(count != (UIntT) rng.Size()) {
-      cerr << "Iterator range size mis-match.\n";
+      std::cerr << "Iterator range size mis-match.\n";
       return __LINE__;
     }
   }
@@ -200,7 +200,7 @@ void timesTwoIP(IntT &v) {
 }
 
 int ApplyTest() {
-  cerr << "Testing apply funcionality of Array1dC. \n";
+  std::cerr << "Testing apply funcionality of Array1dC. \n";
   
   Array1dC<IntT> arr1(3);
   arr1[0] = 1;
@@ -221,7 +221,7 @@ int ApplyTest() {
 }
 
 int ReverseTest() {
-  cerr << "Reverse test. \n";
+  std::cerr << "Reverse test. \n";
   Array1dC<IntT> arr(3);
   for(IntT i = 0;i < (IntT) arr.Size();i++)
     arr[i] = i;
@@ -252,12 +252,12 @@ int testQuickSort() {
   arr[7] = 3;
   if(arr.IndexOfMax() != 4) return __LINE__;
   arr.QuickSort(); // sort ascending
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   for(IndexC i = arr.IMin()+1;i <= arr.IMax();i++)
     if(arr[i-1] > arr[i]) return __LINE__;
   if(arr.IndexOfMax() != 7) return __LINE__;
   arr.QuickSort(MyComparisonOp);  // sort descending
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   for(IndexC i = arr.IMin()+1;i <= arr.IMax();i++)
     if(arr[i-1] < arr[i]) return __LINE__;
   if(arr.IndexOfMax() != 3) return __LINE__;
@@ -265,7 +265,7 @@ int testQuickSort() {
   arr[0] = 1;
   arr[1] = 0;
   arr.QuickSort(); // sort ascending - check 2 element array works ok
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   if (arr[0] != 0 || arr[1] != 1) return __LINE__;
 
   return 0;

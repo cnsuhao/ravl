@@ -40,8 +40,8 @@ namespace RavlImageN {
   // No way to tell !!
   // Just say no ??
   
-  const type_info &
-  FileFormatSYUVBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
+  const std::type_info &
+  FileFormatSYUVBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
   {
 #if 0
     // Should we really claim we can load this? there's no way to test what it is!
@@ -51,8 +51,8 @@ namespace RavlImageN {
 #endif
   }
   
-  const type_info &
-  FileFormatSYUVBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatSYUVBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     if(nfilename == "-") 
     return typeid(ImageC<ByteYUVValueC>);
     StringC suffix = Extension(nfilename);
@@ -62,8 +62,8 @@ namespace RavlImageN {
     return typeid(ImageC<ByteYUVValueC>);
   }
   
-  const type_info &
-  FileFormatSYUVBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const {
+  const std::type_info &
+  FileFormatSYUVBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat) const {
     if(forceFormat) 
       return typeid(ImageC<ByteYUVValueC>);
     StringC suffix = Extension(nfilename);
@@ -76,8 +76,8 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatSYUVBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatSYUVBodyC::CreateInput(IStreamC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatSYUVBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatSYUVBodyC::CreateInput(IStreamC &,const std::type_info &), Called. \n");
     if(!in.good())
       return DPIPortBaseC();
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -88,7 +88,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatSYUVBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
+  DPOPortBaseC FileFormatSYUVBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
     if(!out.good())
       return DPOPortBaseC();
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -99,8 +99,8 @@ namespace RavlImageN {
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
   
-  DPIPortBaseC FileFormatSYUVBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatSYUVBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatSYUVBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatSYUVBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type == typeid(ImageC<ByteYUVValueC>)) {
       IStreamC strm(filename);
       if(!strm)
@@ -113,7 +113,7 @@ namespace RavlImageN {
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
   
-  DPOPortBaseC FileFormatSYUVBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatSYUVBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteYUVValueC>)) {
       OStreamC strm(filename);
       if(!strm)
@@ -125,7 +125,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatSYUVBodyC::DefaultType() const 
+  const std::type_info &FileFormatSYUVBodyC::DefaultType() const 
   { return typeid(ImageC<ByteYUVValueC>); }
   
   // Some common cif formats.

@@ -92,23 +92,23 @@ namespace RavlImageN
   
   bool DPImageJSBaseBodyC::ReadHeader() {
     if(!m_inputStream.IsValid() || !m_inputStream.IsGetReady()) {
-      cerr << "DPImageJSBaseBodyC::ReadHeader(), Bad stream. \n";
+      std::cerr << "DPImageJSBaseBodyC::ReadHeader(), Bad stream. \n";
       return false;
     }
     ByteT magic[4];
     SArray1dC<ByteT> magicArray(magic, 4, false);
     if(m_inputStream.GetArray(magicArray) < 0) {
-      cerr << "DPImageJSBaseBodyC::ReadHeader(), Failed to read magic bytes. \n";
+      std::cerr << "DPImageJSBaseBodyC::ReadHeader(), Failed to read magic bytes. \n";
       return false;
     }
 #if DODEBUG
     for(int i = 0;i < 4;i++)
-      cerr << hex << (int) magic[i] << ' ';
-    cerr << "\n";
+      std::cerr << hex << (int) magic[i] << ' ';
+    std::cerr << "\n";
 #endif
     if((((int) magic[0]) != 0) || (((int) magic[1]) != 0x6) || 
        (((int) magic[2]) != 0x9) || (((int) magic[3]) != ((int) 0xce))) {
-      cerr << "DPImageJSBaseBodyC::ReadHeader(), Bad magic number. \n";
+      std::cerr << "DPImageJSBaseBodyC::ReadHeader(), Bad magic number. \n";
       return false;
     }
     
@@ -127,15 +127,15 @@ namespace RavlImageN
     }
     
 #if DODEBUG
-    cerr << "Header :\n";
+    std::cerr << "Header :\n";
     for(i = 0;i < 9;i++) {
-      cerr << " " << i << "=" << header[i];
+      std::cerr << " " << i << "=" << header[i];
     }
-    cerr << "\n" << hex;
+    std::cerr << "\n" << hex;
     for(i = 0;i < 9;i++) {
-      cerr << " " << i << "=" << header[i];
+      std::cerr << " " << i << "=" << header[i];
     }
-    cerr << dec << "\n";
+    std::cerr << dec << "\n";
 #endif
     
     // 0 Typical 3
@@ -485,7 +485,7 @@ namespace RavlImageN
     
     if(!m_doneHeader) {
       if(!WriteHeader(img.Rectangle())) {
-        cerr << "DPOImageJSBodyC::Put(), ERROR: Failed to write file header. \n";
+        std::cerr << "DPOImageJSBodyC::Put(), ERROR: Failed to write file header. \n";
         return false;
       }
     }

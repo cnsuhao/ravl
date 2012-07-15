@@ -38,18 +38,18 @@ namespace RavlN {
     {}
     //: Constructor with a port id.
     
-    DPIOPortBodyC(istream &in) 
+    DPIOPortBodyC(std::istream &in) 
       : DPIPortBodyC<InT>(in),
 	DPOPortBodyC<OutT>(in)
     {}
     //: Stream constructor.
     
-    virtual bool Save(ostream &out) const  {
+    virtual bool Save(std::ostream &out) const  {
       if(!DPIPortBodyC<InT>::Save(out))
 	return false;
       return DPOPortBodyC<OutT>::Save(out);
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
 
     virtual DListC<DPIPortBaseC> IPorts() const;
     //: Input ports.
@@ -83,7 +83,7 @@ namespace RavlN {
     {}
     //: Body constructor.
     
-    DPIOPortC(istream &in) 
+    DPIOPortC(std::istream &in) 
       : DPEntityC(in)
     {}
     //: Stream constructor.
@@ -116,13 +116,13 @@ namespace RavlN {
   };
   
   template <class InT,class OutT>
-  ostream & operator<<(ostream & s,const DPIOPortC<InT,OutT> &port) { 
+  std::ostream & operator<<(std::ostream & s,const DPIOPortC<InT,OutT> &port) { 
     port.Save(s); 
     return s; 
   }
   
   template <class InT,class OutT>
-  istream & operator>>(istream & s, DPIOPortC<InT,OutT> &port) { 
+  std::istream & operator>>(std::istream & s, DPIOPortC<InT,OutT> &port) { 
     DPIOPortC<InT,OutT> nport(s); 
     port = nport; 
     return s; 

@@ -46,11 +46,11 @@ namespace RavlGUIN {
 	at = where[it.Data()];
       if(it.Data().Widget() == 0) {
 	if(!it.Data().Create()) {
-	  cerr << "FixedWidgetBodyC::Create(), Widget create failed ! \n";
+	  std::cerr << "FixedWidgetBodyC::Create(), Widget create failed ! \n";
 	  continue;
 	}
       }
-      ONDEBUG(cerr << "Placing widget " << it.Data().Hash() << " at " << at << "\n");
+      ONDEBUG(std::cerr << "Placing widget " << it.Data().Hash() << " at " << at << "\n");
       gtk_fixed_put (GTK_FIXED (widget), it.Data().Widget(), at.Row().V(),at.Col().V());
       gtk_widget_show (it.Data().Widget());
     }
@@ -75,7 +75,7 @@ namespace RavlGUIN {
       where[newun] = loc;
       GUIMove(newun,loc);
     } else {
-      ONDEBUG(cerr << "Adding new widget \n");
+      ONDEBUG(std::cerr << "Adding new widget \n");
       where[newun] = loc;
       GUIAdd(newun);
     }
@@ -100,11 +100,11 @@ namespace RavlGUIN {
       return false;
     }
     if(widget != 0) { // Are we adding a widget later ?
-      ONDEBUG(cerr << "FixedWidgetBodyC::GUIAdd(), Adding widget to existing window. \n");
+      ONDEBUG(std::cerr << "FixedWidgetBodyC::GUIAdd(), Adding widget to existing window. \n");
       // Nope, do setup now.
       if(widge.Widget() == 0) {
 	if(!widge.Create()) {
-	  cerr << "FixedWidgetBodyC::Create(), Widget create failed ! \n";
+	  std::cerr << "FixedWidgetBodyC::Create(), Widget create failed ! \n";
 	}
       }
       Index2dC &at = where[widge];
@@ -117,7 +117,7 @@ namespace RavlGUIN {
   //: Move a widget.
   
   bool FixedWidgetBodyC::GUIMove(WidgetC &widge,Index2dC at) {
-    ONDEBUG(cerr << "Moveing widget :" << widge.IsValid() << " to " << at << "\n");
+    ONDEBUG(std::cerr << "Moveing widget :" << widge.IsValid() << " to " << at << "\n");
     // Should check the widget is actual inside.
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     gtk_fixed_move(GTK_FIXED (widget), widge.Widget(),at.Row().V(),at.Col().V());

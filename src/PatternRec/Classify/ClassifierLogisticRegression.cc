@@ -41,13 +41,13 @@ namespace RavlN {
 
   //: Load from stream.
   
-  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &strm)
+  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(std::istream &strm)
     : ClassifierBodyC(strm)
   { 
     IntT version;
     strm >> version;
     if(version != 1)
-      throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(std::istream &), Unrecognised version number in stream. ");
 
     bool haveNorm = false;
     strm >> haveNorm;
@@ -74,7 +74,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierLogisticRegressionBodyC::Save(ostream &out) const {
+  bool ClassifierLogisticRegressionBodyC::Save(std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;

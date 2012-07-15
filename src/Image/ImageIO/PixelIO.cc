@@ -16,7 +16,7 @@ DListC<Point2dC> DPConvDListC_Pixel2DListC_Point2d(const DListC<PixelC> &dat)
   DListC<Point2dC> ret;
   for(ConstDLIterC<PixelC> it(dat);it.IsElm();it.Next())
     ret.InsLast(it.Data());
-  return ret;; 
+  return ret;
 }
 
 DP_REGISTER_CONVERSION(DPConvPixel2Point2d,1);

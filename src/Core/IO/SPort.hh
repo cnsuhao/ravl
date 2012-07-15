@@ -279,9 +279,9 @@ namespace RavlN {
     { DPSeekCtrlBodyC::RegisterSPortAttributes(*this); }
     //: Default constructor.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPIPortBodyC<DataT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool GetAt(StreamPosT off,DataT &buffer) {
       if(!Seek64(off)) return false;
@@ -364,9 +364,9 @@ namespace RavlN {
     { DPSeekCtrlBodyC::RegisterSPortAttributes(*this); }
     //: Default constructor.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPOPortBodyC<DataT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool PutAt(StreamPosT off,const DataT &buffer) {
       if(!Seek64(off)) return false;

@@ -182,7 +182,7 @@ namespace RavlCxxDocN {
   {
     templArgSub.Push(RCHashC<StringC,ObjectC>());
     if(!tmplName.Exists())
-      cerr << "WARNING: Can't open template file '" << tmplName << "' \n";
+      std::cerr << "WARNING: Can't open template file '" << tmplName << "' \n";
     Init();
     SetVar("projectName",projName);
     SetVar("projectDesc",projDesc);
@@ -221,7 +221,7 @@ namespace RavlCxxDocN {
     
 #if 1
     if(verbose) {
-      cerr << "Found file object '" << fileObject << "'\n";
+      std::cerr << "Found file object '" << fileObject << "'\n";
     }
 #endif
     
@@ -336,7 +336,7 @@ namespace RavlCxxDocN {
       if(fileObject == ol.TypeName()) {
 	FilenameC fn = MakeFilename(ol);
 	if(verbose) 
-	  cerr << "Writing docnode file '" << fn << "' \n";
+	  std::cerr << "Writing docnode file '" << fn << "' \n";
 	obj.Push(ol);
 	Build(fn);
 	obj.DelTop();
@@ -385,7 +385,7 @@ namespace RavlCxxDocN {
 	  FilenameC fn(outputDir + filePattern);
 	  StringC cfn = FilenameC(*it).NameComponent();
 	  fn.gsub("%",cfn);
-	  cerr << "******* GENERATING FILE " << fn << " for '" << *it << "' ********** \n";
+	  std::cerr << "******* GENERATING FILE " << fn << " for '" << *it << "' ********** \n";
 	  DocNodeC docNode(cfn,"Examples","Default","",*it);
 	  docNode.SetVar("dir",searchDir);
 	  docNode.SetVar("file",*it);
@@ -397,18 +397,18 @@ namespace RavlCxxDocN {
       }
     }
     
-    cerr << "Unknown file object: '" << fileObject << "' in template " << templFile.Filename() << "\n";
+    std::cerr << "Unknown file object: '" << fileObject << "' in template " << templFile.Filename() << "\n";
   }
   
   //: Make string suitable for use in plain html.
   //: Make a linked version of the method name.
   
   bool DocumentBodyC::HtmlMethodName(StringC &x) {
-    ONDEBUG(cerr << "DocumentBodyC::HtmlMethodName(), Processing: '" << obj.Top().Name() << "'\n");
+    ONDEBUG(std::cerr << "DocumentBodyC::HtmlMethodName(), Processing: '" << obj.Top().Name() << "'\n");
 #if RAVL_CHECK
     if(!MethodC::IsA(obj.Top())) {
-      ONDEBUG(cerr << "DocumentBodyC::HtmlMethodName(), ");
-      cerr << "WARNING: HtmlMethodName called on non method object '" << obj.Top().Name() << "' \n";
+      ONDEBUG(std::cerr << "DocumentBodyC::HtmlMethodName(), ");
+      std::cerr << "WARNING: HtmlMethodName called on non method object '" << obj.Top().Name() << "' \n";
     }
 #endif
     Output() << obj.Top().FullName(templArgSub.Top(),*this,60);
@@ -420,7 +420,7 @@ namespace RavlCxxDocN {
   bool DocumentBodyC::HtmlTypeName(StringC &arg) {
     OStreamC &out = Output();
     if(obj.Top().IsTemplate()) {
-      ONDEBUG(cerr << "DocumentBodyC::HtmlTypeName(), Processing :" << obj.Top().Name() << "\n");
+      ONDEBUG(std::cerr << "DocumentBodyC::HtmlTypeName(), Processing :" << obj.Top().Name() << "\n");
       if(arg == "link") {
 	out << obj.Top().FullName(templArgSub.Top(),*this);
 	return true;
@@ -485,7 +485,7 @@ namespace RavlCxxDocN {
   }
 
   StringC DocumentBodyC::TextFor(const ObjectC &xObj) {
-    ONDEBUG(cerr << "DocumentBodyC::TextFor() '" << xObj.Name() << "' type:'" << xObj.TypeName() << "' called. Template:" << xObj.IsTemplate() << "\n");
+    ONDEBUG(std::cerr << "DocumentBodyC::TextFor() '" << xObj.Name() << "' type:'" << xObj.TypeName() << "' called. Template:" << xObj.IsTemplate() << "\n");
     ObjectC anObj(xObj);
     DListC<ObjectC> ss;
     if(!obj.Top().IsValid())
@@ -496,7 +496,7 @@ namespace RavlCxxDocN {
     if(DataTypeC::IsA(anObj)) {
       DataTypeC tn(anObj);
       anObj.Invalidate();
-      ONDEBUG(cerr << "DocumentBodyC::TextFor() Attempting to generate link for '" << xObj.Name() << "' \n");
+      ONDEBUG(std::cerr << "DocumentBodyC::TextFor() Attempting to generate link for '" << xObj.Name() << "' \n");
       ObjectListC scopePath = const_cast<DataTypeC &>(tn).ScopePath();
       if(scopePath.IsValid()) {
 	// Do a template substitution ?
@@ -516,19 +516,19 @@ namespace RavlCxxDocN {
 	// Should do something with templSub here ??
       }
     } else {
-      ONDEBUG(cerr << "DocumentBodyC::TextFor() Looking up name '" << xObj.Name() << "' in scope :'" << scope.Name() <<"'\n");
+      ONDEBUG(std::cerr << "DocumentBodyC::TextFor() Looking up name '" << xObj.Name() << "' in scope :'" << scope.Name() <<"'\n");
       anObj = scope.ResolveName(xObj.Name());
       if(anObj.IsValid()) {
-        ONDEBUG(cerr << "DocumentBodyC::TextFor() Found '" << anObj.Name() << "'\n");
+        ONDEBUG(std::cerr << "DocumentBodyC::TextFor() Found '" << anObj.Name() << "'\n");
 	ss.InsLast(xObj);
       }
     }
     
     if(!anObj.IsValid()) { // Assume its not documented...
-      ONDEBUG(cerr << "DocumentBodyC::TextFor() Undocumented" << xObj.Name() << "\n\r");
+      ONDEBUG(std::cerr << "DocumentBodyC::TextFor() Undocumented" << xObj.Name() << "\n\r");
       if(nativeTypes.IsMember(xObj.Name()))
 	return xObj.Name(); // All native types are fine as plain text.
-      ONDEBUG(cerr << "WARNING: DocumentBodyC::TextFor() Can't resolve name, for HtmlTypeName. '" << xObj.Name() << "' -> '" << xObj.Name() << "'\n");
+      ONDEBUG(std::cerr << "WARNING: DocumentBodyC::TextFor() Can't resolve name, for HtmlTypeName. '" << xObj.Name() << "' -> '" << xObj.Name() << "'\n");
       return MakeHtml(xObj.Name());
     }
     
@@ -551,7 +551,7 @@ namespace RavlCxxDocN {
       ret += '#';
       ret += MakeHRef(anObj.Name());
     }
-    ONDEBUG(cerr << "DocumentBodyC::TextFor() Linking  '" << MakeHtml(xObj.Name()) << "' to '" << ret.after(7) << "'\n");
+    ONDEBUG(std::cerr << "DocumentBodyC::TextFor() Linking  '" << MakeHtml(xObj.Name()) << "' to '" << ret.after(7) << "'\n");
     ret += StringC("\">") + MakeHtml(xObj.Name()) + "</a>";
     return ret;
   }
@@ -559,16 +559,16 @@ namespace RavlCxxDocN {
   //: Make a linked version of the method name.
   
   StringC DocumentBodyC::GetHtmlTypeName(const DataTypeC &tn) {    
-    ONDEBUG(cerr << "DocumentBodyC::GetHtmlTypeName(), Processing: '" << tn.Name() << "' Template:" << tn.IsTemplated() << " FN:" << tn.FullName(templArgSub.Top()) <<  "\n");
+    ONDEBUG(std::cerr << "DocumentBodyC::GetHtmlTypeName(), Processing: '" << tn.Name() << "' Template:" << tn.IsTemplated() << " FN:" << tn.FullName(templArgSub.Top()) <<  "\n");
     if(!obj.Top().HasParentScope()) {
-      ONDEBUG(cerr << "DocumentBodyC::GetHtmlTypeName() ");
-      cerr << "WARNING: Can't resolve name, no parent scope for :" << obj.Top().Name() << "\n";
-      ONDEBUG(cerr << " Doc:" << tn.Name() << "\n");
+      ONDEBUG(std::cerr << "DocumentBodyC::GetHtmlTypeName() ");
+      std::cerr << "WARNING: Can't resolve name, no parent scope for :" << obj.Top().Name() << "\n";
+      ONDEBUG(std::cerr << " Doc:" << tn.Name() << "\n");
       return MakeHtml(tn.Name());
     }
     
     StringC ret = tn.FullName(templArgSub.Top(),*this);
-    ONDEBUG(cerr << "DocumentBodyC::GetHtmlTypeName(), Fullname:" << ret << "\n");
+    ONDEBUG(std::cerr << "DocumentBodyC::GetHtmlTypeName(), Fullname:" << ret << "\n");
     // Need to add template args ?
     return ret;
   }
@@ -594,12 +594,12 @@ namespace RavlCxxDocN {
     }
     
     if(!found) {
-      cerr << "WARNING: GotoInherit used outside inherit. In:'" << anobj.Name() << "'\n";
+      std::cerr << "WARNING: GotoInherit used outside inherit. In:'" << anobj.Name() << "'\n";
       Output() << "***Invalid GotoInherit***";
       return false;
     }
     if(!newObj.IsValid()) {
-      cerr << "ERROR: Invalid object from inherit. " << anobj.Name() << " Type:" << anobj.TypeName() << "\n";
+      std::cerr << "ERROR: Invalid object from inherit. " << anobj.Name() << " Type:" << anobj.TypeName() << "\n";
       return false;
     }
     obj.Push(newObj);
@@ -630,7 +630,7 @@ namespace RavlCxxDocN {
       ret = outputDir.Copy();
     if(!anobj.IsValid()) {
       ret += "unknown";
-      cerr << "DocumentBodyC::MakeFilename(), Called with an invalid object. (Returning '" << ret << "')\n";
+      std::cerr << "DocumentBodyC::MakeFilename(), Called with an invalid object. (Returning '" << ret << "')\n";
       return ret;
     }
     ret += pattern;
@@ -655,14 +655,14 @@ namespace RavlCxxDocN {
   
   bool DocumentBodyC::Lookup(const StringC &varname,StringC &buff) {
     // Retrieve value from current object ?
-    //ONDEBUG(cerr << "DocumentBodyC::Lookup(), " << obj.Top().Name() << " '" << varname << "' \n");
+    //ONDEBUG(std::cerr << "DocumentBodyC::Lookup(), " << obj.Top().Name() << " '" << varname << "' \n");
     if(!obj.Top().IsValid()) {
-      cerr << "DocumentBodyC::Lookup(), ERROR: Called on invalid object. Stackdepth:" << obj.Size() << "\n";
+      std::cerr << "DocumentBodyC::Lookup(), ERROR: Called on invalid object. Stackdepth:" << obj.Size() << "\n";
       RavlAssert(0);
       return false;
     }
     if(obj.Top().Comment().Vars().Lookup(varname,buff)) {
-      //ONDEBUG(cerr << "DocumentBodyC::Lookup(), ObjectVar: " << varname << " = " << buff << "\n");
+      //ONDEBUG(std::cerr << "DocumentBodyC::Lookup(), ObjectVar: " << varname << " = " << buff << "\n");
       return !buff.IsEmpty();
     }
     if(obj.Top().Comment().Locals().Lookup(varname,buff))
@@ -738,7 +738,7 @@ namespace RavlCxxDocN {
 	return true;
       }
       buff = "*** NOT A CLASS ***";
-      cerr << "WARNING: ClassName used outside class. In:'" << obj.Top().Name() << "'\n";
+      std::cerr << "WARNING: ClassName used outside class. In:'" << obj.Top().Name() << "'\n";
       return true;
     }
     
@@ -863,13 +863,13 @@ namespace RavlCxxDocN {
 
   
   bool DocumentBodyC::Foralli(StringC &data,bool ifAny,bool inClassScope) {
-    //ONDEBUG(cerr << "For all in '"<< obj.Top().Name() << "' do '" << dat << "'\n");
+    //ONDEBUG(std::cerr << "For all in '"<< obj.Top().Name() << "' do '" << dat << "'\n");
     
     int templStart = data.index(':');
     if(ifAny)
       lastIf = false;
     if(templStart < 1) {
-      cerr << "Malformed 'forall' in template. '" << data << "' ignoring \n";
+      std::cerr << "Malformed 'forall' in template. '" << data << "' ignoring \n";
       return false;
     }    
     StringC typedata = data.before(templStart);
@@ -915,16 +915,16 @@ namespace RavlCxxDocN {
        typedata != "all" &&
        typedata != "docnode" &&
        typedata != "docleaf") {
-      cerr << "WARNING: Unknown forall type :" << typedata << "\n";
+      std::cerr << "WARNING: Unknown forall type :" << typedata << "\n";
     }
 #endif
     StringC subtempltxt = data.after(templStart);
     
     TextFileC subTextBuff(subtempltxt,true,true);
-    //subTextBuff.Dump(cerr);
+    //subTextBuff.Dump(std::cerr);
     //cerr << "For all dump. \n";
     if(!ObjectListC::IsA(obj.Top())) {
-      cerr << "ERROR: Forall " << obj.Top().Name() << ", is not an object list! \n";
+      std::cerr << "ERROR: Forall " << obj.Top().Name() << ", is not an object list! \n";
       return false;
     }
     ObjectListC ol(obj.Top());
@@ -1048,7 +1048,7 @@ namespace RavlCxxDocN {
     Lookup("NodeType",nodeType);
     
     brief = obj.Top().Comment().Header();
-    ONDEBUG(cerr << "DocumentBodyC::InsertDocNode(), Called for : '" << node << "' File:'" << thisFilename <<"'\n");
+    ONDEBUG(std::cerr << "DocumentBodyC::InsertDocNode(), Called for : '" << node << "' File:'" << thisFilename <<"'\n");
     docTree.InsertDocLeaf(node,obj.Top().Name(),userlevel,brief,thisFilename,nodeType.Copy());
     
     return true;
@@ -1065,7 +1065,7 @@ namespace RavlCxxDocN {
     // See if the context is set explicity.
     
     if(Lookup("autoLinkContext",linkContext)) {
-      cerr << "Found AutoLink Context '" << linkContext <<"' specification. \n";
+      std::cerr << "Found AutoLink Context '" << linkContext <<"' specification. \n";
       RavlAssert(root.IsValid());
       RavlAssert(ScopeC::IsA(root));
       parentScope = ScopeC(root);
@@ -1073,7 +1073,7 @@ namespace RavlCxxDocN {
       if(nscope.IsValid()) {
 	if(ScopeC::IsA(nscope)) {
 	  parentScope = ScopeC(nscope);
-	  cerr << "Found AutoLink scope " << parentScope.Name() << "\n";
+	  std::cerr << "Found AutoLink scope " << parentScope.Name() << "\n";
 	}
       }
     }
@@ -1090,7 +1090,7 @@ namespace RavlCxxDocN {
     }
     
     if(!parentScope.IsValid()) {
-      cerr << "DocumentBodyC::AutoLink(), No parent scope for object. Root=" << root.Name() << "\n";
+      std::cerr << "DocumentBodyC::AutoLink(), No parent scope for object. Root=" << root.Name() << "\n";
       Output() << text;
       return false;
     }
@@ -1107,7 +1107,7 @@ namespace RavlCxxDocN {
     } else
       linkMode = 2;
     
-    ONDEBUG(cerr << "DocumentBodyC::AutoLink(), Called, Mode: " << linkMode << " Data:'" << text <<"' \n");
+    ONDEBUG(std::cerr << "DocumentBodyC::AutoLink(), Called, Mode: " << linkMode << " Data:'" << text <<"' \n");
     int namespaceState = 0;
     if(linkMode == 1) {
       // Full auto link.
@@ -1137,14 +1137,14 @@ namespace RavlCxxDocN {
 	    inAnchor = true;
 	  if(word.matches("</a") || word.matches("</A"))
 	    inAnchor = false;
-	  ONDEBUG(cerr << "Got markup:" << word << "\n");
+	  ONDEBUG(std::cerr << "Got markup:" << word << "\n");
 	  Output() << word;
 	  continue;
 	}
 	for(;(isalnum(*place) || *place == '_' || *place == ':') && place != eos;place++) ;
 	len = (place - lw);
 	StringC word(lw,len,len);
-	ONDEBUG(cerr << "Found word :'" << word << "'\n");
+	ONDEBUG(std::cerr << "Found word :'" << word << "'\n");
 	if(isdigit(word.firstchar()) || inAnchor) {
 	  Output() << word;
 	  continue;
@@ -1213,7 +1213,7 @@ namespace RavlCxxDocN {
 	at++;
 	Output() << text.at(lat,at - lat); // Output text upto '['	
 	StringC word = text.at(at,cat - at);
-	ONDEBUG(cerr << "Found word :'" << word << "'\n");
+	ONDEBUG(std::cerr << "Found word :'" << word << "'\n");
 	ObjectC dobj = parentScope.ResolveName(word);
 	if(dobj.IsValid())
 	  Output() << TextFor(dobj);

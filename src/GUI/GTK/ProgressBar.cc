@@ -27,6 +27,7 @@ namespace RavlGUIN {
       {
       case GUIPROGBAR_CONTINUOUS_WITH_TEXT:
 	gtk_progress_set_show_text (GTK_PROGRESS(widget),true);
+	/* no break */
       case GUIPROGBAR_CONTINUOUS:
 	gtk_progress_bar_set_bar_style (GTK_PROGRESS_BAR(widget),GTK_PROGRESS_CONTINUOUS);
 	break;
@@ -39,7 +40,8 @@ namespace RavlGUIN {
 	gtk_progress_bar_set_activity_blocks(GTK_PROGRESS_BAR(widget),blocks);
 	break;
       default:
-	cerr << "ProgressBarBodyC::Create(), WARNING: Unknow style : " << ((int) type) << "\n";
+	std::cerr << "ProgressBarBodyC::Create(), WARNING: Unknow style : " << ((int) type) << "\n";
+	break;
       }
     
     GtkProgressBarOrientation orientmap[] = {
@@ -49,7 +51,7 @@ namespace RavlGUIN {
       GTK_PROGRESS_TOP_TO_BOTTOM
     };
     if(((int) orient) < 0 && ((int) orient) > 3)
-      cerr << "ProgressBarBodyC::Create(), WARNING: Unknow orientation : " << ((int) orient) << "\n";
+      std::cerr << "ProgressBarBodyC::Create(), WARNING: Unknow orientation : " << ((int) orient) << "\n";
     else
       gtk_progress_bar_set_orientation(GTK_PROGRESS_BAR(widget),orientmap[(int) orient]);
     ConnectSignals();
@@ -94,6 +96,7 @@ namespace RavlGUIN {
       {
       case GUIPROGBAR_CONTINUOUS_WITH_TEXT:
 	gtk_progress_set_show_text (GTK_PROGRESS(widget),true);
+	/* no break */
       case GUIPROGBAR_CONTINUOUS:
 	gtk_progress_bar_set_bar_style (GTK_PROGRESS_BAR(widget),GTK_PROGRESS_CONTINUOUS);
 	break;
@@ -106,7 +109,8 @@ namespace RavlGUIN {
 	gtk_progress_bar_set_activity_blocks(GTK_PROGRESS_BAR(widget),blocks);
 	break;
       default:
-	cerr << "ProgressBarBodyC::GUISetStyle(), WARNING: Unknow style : " << ((int) type) << "\n";
+	std::cerr << "ProgressBarBodyC::GUISetStyle(), WARNING: Unknow style : " << ((int) type) << "\n";
+	break;
       }
     return true;
   }

@@ -42,7 +42,7 @@ namespace RavlImageN {
   class ImgIO1394dcBaseC
   {
   public:
-    ImgIO1394dcBaseC(UIntT channel=0,const type_info &pixelType = typeid(void));
+    ImgIO1394dcBaseC(UIntT channel=0,const std::type_info &pixelType = typeid(void));
     //: Constructor.
     // channel > 100 means DMA access to channel = channel-100
 

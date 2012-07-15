@@ -21,7 +21,7 @@
 #if RAVL_COMPILER_MIPSPRO 
 #include "Ravl/VirtualConstructor.hh"
 #pragma instantiate RavlN::FunctionConcatenateBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::FunctionConcatenateBodyC*)
-#pragma instantiate RavlN::FunctionConcatenateBodyC* RavlN::VCLoad(istream &,RavlN::FunctionConcatenateBodyC*)
+#pragma instantiate RavlN::FunctionConcatenateBodyC* RavlN::VCLoad(std::istream &,RavlN::FunctionConcatenateBodyC*)
 #endif 
 
 namespace RavlN {
@@ -72,7 +72,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(istream &strm) 
+  FunctionConcatenateBodyC::FunctionConcatenateBodyC(std::istream &strm) 
     : FunctionBodyC(strm)
   { strm >> m_functions; }
   
@@ -84,7 +84,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool FunctionConcatenateBodyC::Save (ostream &out) const {
+  bool FunctionConcatenateBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << ' ' << m_functions;

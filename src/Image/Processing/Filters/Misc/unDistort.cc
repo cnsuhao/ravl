@@ -43,7 +43,7 @@ int Mosaic(int nargs,char **argv) {
 
   // Open the input image.
   if(!Load(inputFileName,inputImage)) {
-    cerr << "Failed to open input image '" << inputFileName << "'\n";
+    std::cerr << "Failed to open input image '" << inputFileName << "'\n";
     return 1;
   }
 
@@ -71,7 +71,7 @@ int Mosaic(int nargs,char **argv) {
   
   // save distortion-corrected image
   if(!Save(outputFileName,outputImage)) {
-    cerr << "Failed to write to output image '" << outputFileName << "'\n";
+    std::cerr << "Failed to write to output image '" << outputFileName << "'\n";
     return 1;
   }
 

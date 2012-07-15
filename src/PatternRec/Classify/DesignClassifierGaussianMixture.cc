@@ -32,20 +32,22 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+  DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(std::istream &strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      mixtures(0)
   {
     int version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> mixtures;
   }
   
   //: Load from binary stream.
   
   DesignClassifierGaussianMixtureBodyC::DesignClassifierGaussianMixtureBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      mixtures(0)
   {
     int version;
     strm >> version;
@@ -56,7 +58,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignClassifierGaussianMixtureBodyC::Save (ostream &out) const {
+  bool DesignClassifierGaussianMixtureBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 0;

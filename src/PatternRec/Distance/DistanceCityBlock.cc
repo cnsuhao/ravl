@@ -23,7 +23,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DistanceCityBlockBodyC::DistanceCityBlockBodyC(istream &strm)
+  DistanceCityBlockBodyC::DistanceCityBlockBodyC(std::istream &strm)
     : DistanceBodyC(strm)
   {}
   
@@ -36,7 +36,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceCityBlockBodyC::Save (ostream &out) const  
+  bool DistanceCityBlockBodyC::Save (std::ostream &out) const  
   { return DistanceBodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor

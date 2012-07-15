@@ -415,6 +415,7 @@ namespace RavlImageN
           break;
       }
     }
+    return false;
   }
   
   bool MPEG2DemuxBodyC::Reset()

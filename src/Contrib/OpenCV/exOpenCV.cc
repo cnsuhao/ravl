@@ -25,7 +25,7 @@ int main()
 
   // convert it to an OpenCV Mat
   IplImage* im1 = 0;
-  cout << "RAVL 2 CV: " << RavlImage2IplImage(src, im1) << endl;
+  std::cout << "RAVL 2 CV: " << RavlImage2IplImage(src, im1) << std::endl;
   Mat mat1(im1);
   Mat mat2;
 
@@ -35,7 +35,8 @@ int main()
   // convert it back to a RAVL image and display it
   IplImage im2 = mat2;
   ImageC<ByteRGBValueC> out;
-  cout << "CV 2 RAVL: " << IplImage2RavlImage(&im2, out) << endl;
+  std::cout << "CV 2 RAVL: " << IplImage2RavlImage(&im2, out) << std::endl;
   cvReleaseImage(&im1);
   RavlN::Save("@X", out);
+  return 0;
 }

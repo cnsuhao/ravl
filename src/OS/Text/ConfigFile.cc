@@ -166,6 +166,8 @@ namespace RavlN {
 	      break;
 	    }
 	  }
+	  // FIXME:- Not sure if this should fall through or not.
+	  /* no break */
 	default:
 	  cerr << "ERROR: assignment expected at " << tc.PositionTxt() << "\n";
 	  ret = false;
@@ -243,7 +245,7 @@ namespace RavlN {
 	  case '#':
 	    if(!inQuotes)
 	      tc.NextLine();
-            // Fall through.
+	      /* no break */
 	  case '\n':
 	    if(!inQuotes) {
 	      nf.End() = tc;
@@ -251,9 +253,11 @@ namespace RavlN {
 	      done = true;
 	      break;
 	    }
+	    /* no break */
 	  default:
 	    //cout << tc.Char();
 	    data += tc.Char();
+	    break;
 	  }
 	if(done)
 	  break;

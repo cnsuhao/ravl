@@ -53,19 +53,19 @@ namespace RavlDFN {
     DFObjectBodyC(const StringC &nname);
     //: Create named object.
     
-    DFObjectBodyC(istream &strm);
+    DFObjectBodyC(std::istream &strm);
     //: Load from stream.
     
     DFObjectBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
     DFObjectBodyC(XMLIStreamC &is,DFSystemC &context);
-    //: Read from istream.
+    //: Read from std::istream.
     
     virtual bool Save(XMLOStreamC &strm,bool inCharge = true) const;
-    //: Save ostream.
+    //: Save std::ostream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -147,7 +147,7 @@ namespace RavlDFN {
     //: Default constructor
     // Creates an invalid handle.
     
-    DFObjectC(istream &strm);
+    DFObjectC(std::istream &strm);
     //: Construct from a stream.
     
     DFObjectC(BinIStreamC &strm);    
@@ -175,15 +175,15 @@ namespace RavlDFN {
   public:
     bool Save(XMLOStreamC &strm,bool inCharge = true) const
     { return Body().Save(strm,inCharge); }
-    //: Save ostream.
+    //: Save std::ostream.
     
     bool Save(BinOStreamC &strm) const
     { return Body().Save(strm); }
-    //: Save ostream.
+    //: Save std::ostream.
     
-    bool Save(ostream &strm) const
+    bool Save(std::ostream &strm) const
     { return Body().Save(strm); }
-    //: Save ostream.
+    //: Save std::ostream.
     
     bool Init(FactoryC &factory)
     { return Body().Init(factory); }
@@ -247,10 +247,10 @@ namespace RavlDFN {
   BinIStreamC &operator>>(BinIStreamC &strm,DFObjectC &dfo);
   //: Read DFObject from stream.
 
-  ostream &operator<<(ostream &strm,const DFObjectC &dfo);
+  std::ostream &operator<<(std::ostream &strm,const DFObjectC &dfo);
   //: Write DFObjectC to stream.
   
-  istream &operator>>(istream &strm,DFObjectC &dfo);
+  std::istream &operator>>(std::istream &strm,DFObjectC &dfo);
   //: Read DFObject from stream.
   
   ///////////////////////////////////////////////////////////////////////
@@ -271,10 +271,10 @@ namespace RavlDFN {
     DFAttachBodyC(BinIStreamC &strm);
     //: Load from stream.
     
-    DFAttachBodyC(istream &strm);
+    DFAttachBodyC(std::istream &strm);
     //: Load from stream.
     
-    bool Save (ostream &out) const;
+    bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     bool Save (BinOStreamC &out) const;
@@ -333,7 +333,7 @@ namespace RavlDFN {
     {}
     //: Load from stream.
     
-    DFAttachC(istream &strm)
+    DFAttachC(std::istream &strm)
       : RCHandleC<DFAttachBodyC>(*new DFAttachBodyC(strm))
     {}
     //: Load from stream.
@@ -348,7 +348,7 @@ namespace RavlDFN {
     //: Access body.
     
   public:
-    bool Save (ostream &out) const
+    bool Save (std::ostream &out) const
     { return Body().Save(out); }
     //: Writes object to stream, can be loaded using constructor
     
@@ -378,17 +378,17 @@ namespace RavlDFN {
     
   };
   
-  ostream &operator<<(ostream &strm,const DFAttachC &dfa);
-  //: Write to an ostream.
+  std::ostream &operator<<(std::ostream &strm,const DFAttachC &dfa);
+  //: Write to an std::ostream.
   
-  istream &operator>>(istream &strm,DFAttachC &dfa);
-  //: Read from an istream.
+  std::istream &operator>>(std::istream &strm,DFAttachC &dfa);
+  //: Read from an std::istream.
   
   BinOStreamC &operator<<(BinOStreamC &strm,const DFAttachC &dfa);
-  //: Write to an ostream.
+  //: Write to an std::ostream.
   
   BinIStreamC &operator>>(BinIStreamC &strm,DFAttachC &dfa);
-  //: Read from an istream.
+  //: Read from an std::istream.
   
   ////////////////////////////////////////////////////
   

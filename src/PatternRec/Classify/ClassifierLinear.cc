@@ -21,7 +21,7 @@
 #if RAVL_COMPILER_MIPSPRO 
 #include "Ravl/VirtualConstructor.hh"
 #pragma instantiate RavlN::ClassifierLinearBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::ClassifierLinearBodyC*)
-#pragma instantiate RavlN::ClassifierLinearBodyC* RavlN::VCLoad(istream &,RavlN::ClassifierLinearBodyC*)
+#pragma instantiate RavlN::ClassifierLinearBodyC* RavlN::VCLoad(std::istream &,RavlN::ClassifierLinearBodyC*)
 #endif 
 
 namespace RavlN {
@@ -43,7 +43,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierLinearBodyC::ClassifierLinearBodyC(istream &strm) 
+  ClassifierLinearBodyC::ClassifierLinearBodyC(std::istream &strm) 
     : ClassifierBodyC(strm)
 { strm >> mean >> invCov >> konst; }
   
@@ -55,7 +55,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool ClassifierLinearBodyC::Save (ostream &out) const {
+  bool ClassifierLinearBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     out << ' ' << mean << ' ' << invCov << ' ' << konst;

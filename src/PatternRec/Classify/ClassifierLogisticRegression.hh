@@ -30,13 +30,13 @@ namespace RavlN {
     ClassifierLogisticRegressionBodyC(const MatrixC &weights,bool prependUnit);
     //: Create classifier from some weights.
 
-    ClassifierLogisticRegressionBodyC(istream &strm);
+    ClassifierLogisticRegressionBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierLogisticRegressionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -80,7 +80,7 @@ namespace RavlN {
     {}
     //: Create classifier from a normalisation function and some weights.
 
-    ClassifierLogisticRegressionC(istream &strm);
+    ClassifierLogisticRegressionC(std::istream &strm);
     //: Load from stream.
     
     ClassifierLogisticRegressionC(BinIStreamC &strm);
@@ -107,14 +107,14 @@ namespace RavlN {
   public:
   };
   
-  inline istream &operator>>(istream &strm,ClassifierLogisticRegressionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierLogisticRegressionC &obj) {
     obj = ClassifierLogisticRegressionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierLogisticRegressionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierLogisticRegressionC &obj) {
     obj.Save(out);
     return out;
   }

@@ -69,5 +69,5 @@ int main (int argc, char **argv) {
     LMSOpticFlowC::DrawMotion(im1,motionImg,img);
     RavlN::Save(opDisplay,img);
   }
-
+  return 0;
 }

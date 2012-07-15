@@ -183,12 +183,12 @@ public:
 
 template <class DataC>
 ostream & 
-operator<<(ostream & s, const ArrayStackC<DataC> & stack);
+operator<<(std::ostream & s, const ArrayStackC<DataC> & stack);
 // print stack into the stream 's'
 
 template <class DataC>
 istream & 
-operator>>(istream & s, ArrayStackC<DataC> & stack);
+operator>>(std::istream & s, ArrayStackC<DataC> & stack);
 // assign the values into the stack 'stack'
 
 ///////////////////////////////////////////////////////////////
@@ -221,7 +221,7 @@ public:
   //: Goto next element.
   // Call only when IsElm(), is TRUE!
   
-  BooleanT IsElm() const { place != stack.Body().end; }
+  BooleanT IsElm() const { return place != stack.Body().end; }
   //: At valid element ?
   
   void First() 
@@ -337,7 +337,7 @@ ArrayStackBodyC<DataC>::Copy() const
 
 template <class DataC>
 ostream &
-operator<<(ostream & s, const ArrayStackC<DataC> & stack)
+operator<<(std::ostream & s, const ArrayStackC<DataC> & stack)
 //=======================================================
 {
   s << stack.Depth() << " " << stack.Size() << "\n";
@@ -348,7 +348,7 @@ operator<<(ostream & s, const ArrayStackC<DataC> & stack)
 
 template <class DataC>
 istream &
-operator>>(istream & s, ArrayStackC<DataC> & stack)
+operator>>(std::istream & s, ArrayStackC<DataC> & stack)
 //=================================================
 {
   SizeT sizeStack = 0;

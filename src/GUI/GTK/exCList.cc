@@ -19,12 +19,12 @@
 using namespace RavlGUIN;
 
 bool GUISelectSalvo(CListEventC &cle) {
-  cerr << "GUISelectSalvo(), Called \n";
+  std::cerr << "GUISelectSalvo(), Called \n";
   return true;
 }
 
 bool GUIUnselectSalvo(CListEventC &cle) {
-  cerr << "GUIUnselectSalvo(), Called \n";
+  std::cerr << "GUIUnselectSalvo(), Called \n";
   return true;
 }
 
@@ -55,5 +55,6 @@ int main(int nargs,char *args[])
   aList.AppendLine(val,lineInfo);
   
   Manager.Wait();
-  
+
+  return 0;
 }

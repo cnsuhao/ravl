@@ -41,7 +41,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPIImageYUVBodyC::DPIImageYUVBodyC(IStreamC), Passed bad stream. \n";
+      std::cerr << "DPIImageYUVBodyC::DPIImageYUVBodyC(IStreamC), Passed bad stream. \n";
     else {
       if(!nStrm.Name().IsEmpty()) {
 	FilenameC tmp(nStrm.Name());
@@ -144,7 +144,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPOImageYUVBodyC::DPOImageYUVBodyC(OStreamC), Passed bad stream. \n";
+      std::cerr << "DPOImageYUVBodyC::DPOImageYUVBodyC(OStreamC), Passed bad stream. \n";
   }
   
   //: Seek to location in stream.

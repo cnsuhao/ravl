@@ -54,9 +54,9 @@ namespace RavlN {
     }
     //: Get Array of data.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPOStreamOpBodyC<InT,OutT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   }; 
 

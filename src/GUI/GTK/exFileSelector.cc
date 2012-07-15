@@ -63,5 +63,6 @@ int main(int nargs,char **argv) {
   // Start the GUI.
   
   Manager.Start();
-  
+
+  return 0;
 }

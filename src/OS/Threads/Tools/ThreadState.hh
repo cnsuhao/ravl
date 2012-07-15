@@ -191,9 +191,14 @@ namespace RavlN
       bool ret = true;
       m_access.Lock();
       m_waiting++;
-      DateC deadline = DateC::NowUTC() + maxTime;
-      while(m_state != desiredState && ret)
-        ret = m_cond.WaitUntil(m_access,deadline);
+      if(maxTime >= 0) {
+        DateC deadline = DateC::NowUTC() + maxTime;
+        while(m_state != desiredState && ret)
+          ret = m_cond.WaitUntil(m_access,deadline);
+      } else {
+        while(m_state != desiredState)
+          m_cond.Wait(m_access);
+      }
       int value = --m_waiting;
       m_access.Unlock();
       if(value == 0)
@@ -216,9 +221,14 @@ namespace RavlN
       bool ret = true;
       m_access.Lock();
       m_waiting++;
-      DateC deadline = DateC::NowUTC() + maxTime;
-      while(m_state != desiredState1 && m_state != desiredState2 && ret)
-        ret = m_cond.WaitUntil(m_access,deadline);
+      if(maxTime >= 0) {
+        DateC deadline = DateC::NowUTC() + maxTime;
+        while(m_state != desiredState1 && m_state != desiredState2 && ret)
+          ret = m_cond.WaitUntil(m_access,deadline);
+      } else {
+        while(m_state != desiredState1 && m_state != desiredState2)
+          m_cond.Wait(m_access);
+      }
       int value = --m_waiting;
       stateAchieved = m_state;
       m_access.Unlock();
@@ -243,9 +253,14 @@ namespace RavlN
       bool ret = true;
       m_access.Lock();
       m_waiting++;
-      DateC deadline = DateC::NowUTC() + maxTime;
-      while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && ret)
-        ret = m_cond.WaitUntil(m_access,deadline);
+      if(maxTime >= 0) {
+        DateC deadline = DateC::NowUTC() + maxTime;
+        while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && ret)
+          ret = m_cond.WaitUntil(m_access,deadline);
+      } else {
+        while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3)
+          m_cond.Wait(m_access);
+      }
       int value = --m_waiting;
       stateAchieved = m_state;
       m_access.Unlock();
@@ -271,9 +286,14 @@ namespace RavlN
       bool ret = true;
       m_access.Lock();
       m_waiting++;
-      DateC deadline = DateC::NowUTC() + maxTime;
-      while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && m_state != desiredState4 && ret)
-        ret = m_cond.WaitUntil(m_access,deadline);
+      if(maxTime >= 0) {
+        DateC deadline = DateC::NowUTC() + maxTime;
+        while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && m_state != desiredState4 && ret)
+          ret = m_cond.WaitUntil(m_access,deadline);
+      } else {
+        while(m_state != desiredState1 && m_state != desiredState2 && m_state != desiredState3 && m_state != desiredState4)
+          m_cond.Wait(m_access);
+      }
       int value = --m_waiting;
       stateAchieved = m_state;
       m_access.Unlock();
@@ -292,9 +312,14 @@ namespace RavlN
       bool ret = true;
       m_access.Lock();
       m_waiting++;
-      DateC deadline = DateC::NowUTC() + maxTime;
-      while(m_state == theState && ret)
-        ret = m_cond.WaitUntil(m_access,deadline);
+      if(maxTime >= 0) {
+        DateC deadline = DateC::NowUTC() + maxTime;
+        while(m_state == theState && ret)
+          ret = m_cond.WaitUntil(m_access,deadline);
+      } else {
+        while(m_state == theState)
+          m_cond.Wait(m_access);
+      }
       int value = --m_waiting;
       m_access.Unlock();
       if(value == 0)

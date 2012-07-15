@@ -207,14 +207,14 @@ namespace RavlN {
   };
   
   template<UIntT N>
-  ostream &operator<<(ostream &s,FPNumberC<N> n) {
+  std::ostream &operator<<(std::ostream &s,FPNumberC<N> n) {
     s << (((RealT) n.V()) / ((RealT) (1 << N)));
     return s;
   }
   //: Output a number to a stream
   
   template<UIntT N>
-  istream &operator<<(istream &s,FPNumberC<N> n) {
+  std::istream &operator<<(std::istream &s,FPNumberC<N> n) {
     RealT v;
     s >> v;
     n = v;

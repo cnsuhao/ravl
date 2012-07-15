@@ -27,12 +27,12 @@ namespace RavlN {
   //: Construct from a transform matrix.
   
   FuncLinearBodyC::FuncLinearBodyC() {
-    ONDEBUG(cerr << "FuncLinearBodyC::FuncLinearBodyC(), Called. \n");
+    ONDEBUG(std::cerr << "FuncLinearBodyC::FuncLinearBodyC(), Called. \n");
   }
   
   //: Load from stream.
   
-  FuncLinearBodyC::FuncLinearBodyC(istream &strm)
+  FuncLinearBodyC::FuncLinearBodyC(std::istream &strm)
     : FuncLinearCoeffBodyC(strm)
   {
     SetTransform(a); // make sure transform is setup properly.
@@ -59,7 +59,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool FuncLinearBodyC::Save (ostream &out) const 
+  bool FuncLinearBodyC::Save (std::ostream &out) const 
   { return FuncLinearCoeffBodyC::Save(out); }
   
   //: Writes object to binary stream.

@@ -21,7 +21,7 @@ namespace RavlN {
   {
   }
   
-  DistanceBodyC::DistanceBodyC(istream &strm)
+  DistanceBodyC::DistanceBodyC(std::istream &strm)
     : Function1BodyC(strm)
   {}
   
@@ -33,7 +33,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceBodyC::Save (ostream &out) const 
+  bool DistanceBodyC::Save (std::ostream &out) const 
   { return Function1BodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor
@@ -68,7 +68,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DistanceC::DistanceC(istream &strm)
+  DistanceC::DistanceC(std::istream &strm)
     : Function1C(RAVL_VIRTUALCONSTRUCTOR(strm,DistanceBodyC))
   {}
   

@@ -36,16 +36,16 @@ namespace RavlImageN {
     return true;
   }
   
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  ostream &operator<<(ostream &strm,const PointTrackC &pt) {
+  std::ostream &operator<<(std::ostream &strm,const PointTrackC &pt) {
     strm << pt.ID() << ' ' << pt.Location() << ' ' << pt.Confidence() << "\n";
     return strm;
   }
   
-  //: Load from istream.
+  //: Load from std::istream.
   
-  istream &operator>>(istream &strm,PointTrackC &pt) {
+  std::istream &operator>>(std::istream &strm,PointTrackC &pt) {
     strm >> pt.id >> pt.at >> pt.conf;
     return strm;
   }

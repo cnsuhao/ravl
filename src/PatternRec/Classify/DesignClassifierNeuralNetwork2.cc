@@ -126,7 +126,7 @@ namespace RavlN {
       m_threads(threads)
    {
      size_t vecSize = NumParameters();
-     ONDEBUG(RavlDebug("Paramaters:%s ",RavlN::StringOf(vecSize).c_str()));
+     ONDEBUG(RavlDebug("Parameters:%s ",RavlN::StringOf(vecSize).c_str()));
      ParametersC parameters(vecSize,true);
 
      VectorC startX(vecSize);
@@ -398,6 +398,7 @@ namespace RavlN {
        UIntT displayEpochs)
     : m_nLayers(nLayers),
       m_nHidden(nHidden),
+      m_hiddenFraction(-1),
       m_desiredError(desiredError),
       m_maxEpochs(maxEpochs),
       m_displayEpochs(displayEpochs),
@@ -415,6 +416,7 @@ namespace RavlN {
   : DesignClassifierSupervisedBodyC(factory),
         m_nLayers(factory.AttributeInt("numberOfLayers", 3)),
         m_nHidden(factory.AttributeInt("numberOfHiddenUnits", 7)),
+        m_hiddenFraction(-1),
         m_desiredError(factory.AttributeReal("desiredError", 0.0001)),
         m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
         m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
@@ -425,21 +427,30 @@ namespace RavlN {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
     }
-    if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
-      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs);
+    if(!factory.UseChildComponent("Optimiser",m_optimiser,true)) {
+      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs,m_desiredError,true,true,10);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
 
   //: Load from stream.
 
-  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(istream &strm) :
-    DesignClassifierSupervisedBodyC(strm)
+  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &strm)
+   : DesignClassifierSupervisedBodyC(strm),
+     m_nLayers(0),
+     m_nHidden(0),
+     m_hiddenFraction(0),
+     m_desiredError(0),
+     m_maxEpochs(0),
+     m_displayEpochs(0),
+     m_regularisation(0),
+     m_doNormalisation(false),
+     m_threads(1)
   {
     int version;
     strm >> version;
     if (version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_featureExpand;
     strm >> m_nLayers;
     strm >> m_nHidden;
@@ -451,13 +462,22 @@ namespace RavlN {
 
   //: Load from binary stream.
 
-  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &strm) :
-    DesignClassifierSupervisedBodyC(strm)
+  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &strm)
+   : DesignClassifierSupervisedBodyC(strm),
+    m_nLayers(0),
+    m_nHidden(0),
+    m_hiddenFraction(0),
+    m_desiredError(0),
+    m_maxEpochs(0),
+    m_displayEpochs(0),
+    m_regularisation(0),
+    m_doNormalisation(false),
+    m_threads(1)
   {
     ByteT version;
     strm >> version;
     if (version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &), Unrecognised version number in stream. ");
     strm >> m_featureExpand;
     strm >> m_nLayers;
     strm >> m_nHidden;
@@ -466,16 +486,17 @@ namespace RavlN {
     strm >> m_displayEpochs;
     strm >> m_regularisation;
     strm >> m_doNormalisation;
+    // FIXME:- Load threads ??
   }
 
   //: Writes object to stream, can be loaded using constructor
 
-  bool DesignClassifierNeuralNetwork2BodyC::Save(ostream &out) const
+  bool DesignClassifierNeuralNetwork2BodyC::Save(std::ostream &out) const
   {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 1;
-    out << version << endl;
+    out << version << std::endl;
     out << m_featureExpand << std::endl;
     out << m_nLayers << std::endl;
     out << m_nHidden << std::endl;
@@ -505,6 +526,60 @@ namespace RavlN {
     out << m_doNormalisation;
     return true;
   }
+
+
+  //: Get the default parameter values and their limits.
+  void DesignClassifierNeuralNetwork2BodyC::ParameterLimits(
+      VectorC &defaultValues,
+      VectorC &min,
+      VectorC &max,
+      SArray1dC<StringC> &names
+      ) const
+  {
+    defaultValues = VectorC(3);
+    defaultValues[0] = 0.01;
+    defaultValues[1] = 3.0;
+    defaultValues[2] = 0.1;
+
+    min = VectorC(3);
+    min[0] = 0;
+    min[1] = 2;
+    min[2] = 0.1;
+
+    max = VectorC(3);
+    max[0] = 1e4;
+    max[1] = 6;
+    max[2] = 3.0;
+
+    names = SArray1dC<StringC>(3);
+    names[0] = "Regularisation";
+    names[1] = "Layers";
+    names[2] = "HiddenUnits";
+  }
+
+  //: Get the current parameters.
+  VectorC DesignClassifierNeuralNetwork2BodyC::Parameters() const {
+    VectorC vec(1);
+    vec[0] = m_regularisation;
+    vec[1] = m_nLayers;
+    vec[2] = m_hiddenFraction;
+    return vec;
+  }
+
+  //: Set the current parameters.
+  // Returns the current parameters, which may not be exactly those
+  // set in 'params', but will be the closest legal values.
+  VectorC DesignClassifierNeuralNetwork2BodyC::SetParameters(const VectorC &params)
+  {
+    m_regularisation = params[0];
+    if(m_regularisation < 0)
+      m_regularisation = 0;
+    m_nLayers = Round(params[1]);
+    m_hiddenFraction = Round(params[2]);
+
+    return params;
+  }
+
 
   //: Create a classifier.
 
@@ -552,13 +627,17 @@ namespace RavlN {
 
     ONDEBUG(RavlDebug("Layers:%u ",m_nLayers));
     SArray1dC<NeuralNetworkLayerC::RefT> layers(m_nLayers -1);
+    unsigned hiddenUnits = m_nHidden;
+    if(m_hiddenFraction > 0) {
+      hiddenUnits = Round((double) (nOutputs + features) * m_hiddenFraction);
+    }
     unsigned lastLayer = features;
     for(unsigned i = 0;i < layers.Size();i++) {
       size_t outputs;
       if(i == (layers.Size() -1)) // Last layer?
         outputs = nOutputs;
       else
-        outputs = m_nHidden;
+        outputs = hiddenUnits;
       ONDEBUG(RavlDebug("Layer %u : In=%u Out=%u",i,lastLayer,outputs));
       layers[i] = new NeuralNetworkLayerC(lastLayer,outputs);
       lastLayer = outputs;
@@ -566,18 +645,6 @@ namespace RavlN {
 
     CostNeuralNetwork2C::RefT costnn = new CostNeuralNetwork2C(layers,normVec,labels,m_regularisation,m_displayEpochs > 0,m_threads);
     CostC costFunc(costnn.BodyPtr());
-
-
-#if 0
-    // Check we're computing the gradient correctly.
-    RavlInfo("Checking gradient. ");
-    if(!costFunc.CheckJacobian(costnn->ConstP())) {
-      RavlError("Gradient test failed. ");
-    } else {
-      RavlInfo("Gradient test passed. ");
-    }
-#endif
-
 
     RealT minimumCost;
     VectorC result = m_optimiser.MinimalX (costFunc,minimumCost);

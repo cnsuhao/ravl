@@ -30,24 +30,24 @@ namespace RavlImageN {
     FileFormatPGMBodyC();
     //: Default constructor.
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in std stream format ?
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
     //: Probe for load.
 
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
     //: Probe for Save.
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const; 
+    virtual const std::type_info &DefaultType() const; 
     //: Get prefered IO type.
     
     virtual IntT Priority() const { return 1; }
@@ -68,24 +68,24 @@ namespace RavlImageN {
     FileFormatPPMBodyC();
     //: Default constructor.
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in std stream format ?
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
     //: Probe for load.
     
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
     //: Probe for Save.
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const;
+    virtual const std::type_info &DefaultType() const;
     //: Get prefered IO type.
     
     virtual IntT Priority() const { return 1; }
@@ -110,24 +110,24 @@ namespace RavlImageN {
     FileFormatPBMBodyC();
     //: Default constructor.
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in std stream format ?
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
     //: Probe for load.
     
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
     //: Probe for Save.
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const; 
+    virtual const std::type_info &DefaultType() const; 
     //: Get prefered IO type.
     
     //virtual IntT Priority() const { return 1; }

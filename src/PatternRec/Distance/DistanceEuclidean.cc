@@ -23,7 +23,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DistanceEuclideanBodyC::DistanceEuclideanBodyC(istream &strm)
+  DistanceEuclideanBodyC::DistanceEuclideanBodyC(std::istream &strm)
     : DistanceBodyC(strm)
   {}
   
@@ -35,7 +35,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceEuclideanBodyC::Save (ostream &out) const 
+  bool DistanceEuclideanBodyC::Save (std::ostream &out) const 
   { return DistanceBodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor

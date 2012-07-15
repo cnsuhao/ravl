@@ -34,13 +34,13 @@ namespace RavlN {
     
     FunctionCascadeBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
     
-    FunctionCascadeBodyC(istream &strm);
+    FunctionCascadeBodyC(std::istream &strm);
     //: Load from stream.
     
     FunctionCascadeBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -85,7 +85,7 @@ namespace RavlN {
     {}
     //: Construct from a set of functions
     
-    FunctionCascadeC(istream &is);
+    FunctionCascadeC(std::istream &is);
     //: Stream constructor.
     
     FunctionCascadeC(BinIStreamC &is);
@@ -125,14 +125,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,FunctionCascadeC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FunctionCascadeC &obj) {
     obj = FunctionCascadeC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FunctionCascadeC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionCascadeC &obj) {
     obj.Save(out);
     return out;
   }

@@ -51,7 +51,7 @@ namespace RavlN {
     //!param: 'copy' == false - options and pars. are removed from argv, argc
     //!param: 'copy' == true  - leave argv, argc untouched, work on a copy
 
-    OptionC(DListC<StringC> opts,OStreamC msgout = OStreamC(cerr));
+    OptionC(DListC<StringC> opts,OStreamC msgout = OStreamC(std::cerr));
     //: Creates the option processing system from a list of strings.
     // Note that the list has to mimic the "argv" list; hence it requires a dummy "main program" name as the first item
     //!param: msgout - Where to send messages about option processing.
@@ -195,7 +195,7 @@ namespace RavlN {
     // This MUST be called before any options are processed for
     // it to have any effect.
 
-    friend ostream & operator<<(ostream & s, const OptionC opt);
+    friend std::ostream & operator<<(std::ostream & s, const OptionC opt);
     
 #if !RAVL_COMPILER_VISUALCPP
   protected:
@@ -262,7 +262,7 @@ namespace RavlN {
   //template<class DataT>
   //DataT OptionC::Get(const char * name,const DataT &def,const char * comment,int nArgs)
   
-  ostream & operator<<(ostream & s, const OptionC opt); 
+  std::ostream & operator<<(std::ostream & s, const OptionC opt); 
 
 }
 

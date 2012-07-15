@@ -30,13 +30,13 @@ namespace RavlN {
     DesignOneAgainstAllBodyC(const XMLFactoryContextC & factory);
     //: Constructor.
 
-    DesignOneAgainstAllBodyC(istream &strm);
+    DesignOneAgainstAllBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignOneAgainstAllBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -74,7 +74,7 @@ namespace RavlN {
     {}
     //: Create a new designer.
     
-    DesignOneAgainstAllC(istream &strm);
+    DesignOneAgainstAllC(std::istream &strm);
     //: Load from stream.
     
     DesignOneAgainstAllC(BinIStreamC &strm);
@@ -103,14 +103,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,DesignOneAgainstAllC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignOneAgainstAllC &obj) {
     obj = DesignOneAgainstAllC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignOneAgainstAllC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignOneAgainstAllC &obj) {
     obj.Save(out);
     return out;
   }

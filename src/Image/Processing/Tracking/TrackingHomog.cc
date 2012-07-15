@@ -31,7 +31,7 @@ namespace RavlImageN {
 
   bool TrackingHomogBodyC::SetMask(const StringC& fileName) {
     if (!Load(fileName, mask)) {
-      cerr << "Failed to load file: " << fileName << endl;
+      std::cerr << "Failed to load file: " << fileName << std::endl;
       return false;
     }
     return true;
@@ -44,7 +44,7 @@ namespace RavlImageN {
     // Generate an observation set for tracked points.
     DListC<ObservationC> obsList;
     for(HashIterC<UIntT,PointTrackC> it(corners);it;it++) {
-      //      cout << "Confidence: " << it->Confidence() << endl;
+      //      std::cout << "Confidence: " << it->Confidence() << std::endl;
       if(it->Confidence() < 0.1)
 	continue; // Filter out points we haven't got recent info on.
       PointTrackC lat;
@@ -66,8 +66,8 @@ namespace RavlImageN {
       return fitHomog2d.FitModelRobust(obsList);
     }
     catch (...) {
-      return Projection2dC();
     }
+    return Projection2dC();
   }
 
 }

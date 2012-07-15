@@ -34,13 +34,13 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
 
-    StateSetBodyC(istream &strm);
+    StateSetBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     StateSetBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -119,7 +119,7 @@ namespace RavlLogicN {
     // If given state is not a StateSetC an invalid handle
     // will be generated.
     
-    StateSetC(istream &strm);
+    StateSetC(std::istream &strm);
     //: Load from stream.
     
     StateSetC(BinIStreamC &strm);

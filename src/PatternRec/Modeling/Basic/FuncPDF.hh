@@ -28,13 +28,13 @@ namespace RavlN {
     {}
     //: Default constructor.
 
-    FuncPDFBodyC(istream &strm);
+    FuncPDFBodyC(std::istream &strm);
     //: Load from stream.
     
     FuncPDFBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -58,7 +58,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    FuncPDFC(istream &strm);
+    FuncPDFC(std::istream &strm);
     //: Load from stream.
     
     FuncPDFC(BinIStreamC &strm);
@@ -87,14 +87,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,FuncPDFC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FuncPDFC &obj) {
     obj = FuncPDFC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FuncPDFC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FuncPDFC &obj) {
     obj.Save(out);
     return out;
   }

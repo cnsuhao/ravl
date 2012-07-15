@@ -37,19 +37,19 @@ namespace RavlN {
   
   class DPTypeInfoBodyC : public DPEntityBodyC {
   public:
-    DPTypeInfoBodyC(const type_info &typeInfo);
+    DPTypeInfoBodyC(const std::type_info &typeInfo);
     //: Default constructor.
     
     StringC Name() const { return StringC(typeInfo.name()); }
     //: Get name of type.
     
-    const type_info & TypeInfo() const { return typeInfo; }
+    const std::type_info & TypeInfo() const { return typeInfo; }
     //: Access type information.
     
     virtual RCWrapAbstractC Create() const;
     //: Create instance of the type with the default constructor.
     
-    virtual RCWrapAbstractC Create(istream &strm) const;
+    virtual RCWrapAbstractC Create(std::istream &strm) const;
     //: Create instance of the type from stream constructor.
 
     virtual bool Put(DPOPortBaseC &port,const RCWrapAbstractC &obj);
@@ -98,7 +98,7 @@ namespace RavlN {
     UIntT Hash() const { return Name().Hash(); }
     //: Calculate hash value.
   protected:
-    const type_info &typeInfo;
+    const std::type_info &typeInfo;
   };
 
   
@@ -117,7 +117,7 @@ namespace RavlN {
     {}
     //: Default constructor.
   
-    DPTypeInfoC(const type_info &);
+    DPTypeInfoC(const std::type_info &);
     //: Lookup type. 
     // Creates an invalid handle if failed.
     
@@ -138,7 +138,7 @@ namespace RavlN {
     { return Body().Name(); }
     //: Get name of type.
     
-    inline const type_info & TypeInfo() const 
+    inline const std::type_info & TypeInfo() const 
     { return Body().TypeInfo(); }
     //: Access type information.
     
@@ -146,7 +146,7 @@ namespace RavlN {
     { return Body().Create(); }
     //: Create instance of the type with the default constructor.
     
-    inline RCWrapAbstractC Create(istream &in) const
+    inline RCWrapAbstractC Create(std::istream &in) const
     { return Body().Create(in); }
     //: Create instance of the type with the default constructor.
     
@@ -225,7 +225,7 @@ namespace RavlN {
     { return RCWrapC<DataT>(); }
     //: Create instance of the type with the default constructor.
     
-    virtual RCWrapAbstractC Create(istream &strm) const
+    virtual RCWrapAbstractC Create(std::istream &strm) const
     { return RCWrapC<DataT>(strm); }
     //: Create instance of the type from stream constructor.
     
@@ -451,7 +451,7 @@ namespace RavlN {
     // Register wrapper converter.
   }
   
-  const DPTypeInfoC &TypeInfo(const type_info &ti);
+  const DPTypeInfoC &TypeInfo(const std::type_info &ti);
   //: Access extra information about a type.
 
   const DPTypeInfoC &TypeInfo(const char *tn);

@@ -40,8 +40,8 @@ namespace RavlImageN {
   //: Is stream in std stream format ?
 // Assume it is...  if it doesn't work, the user will have to sort it out...
 
-  const type_info &
-  FileFormatCifBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
+  const std::type_info &
+  FileFormatCifBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
   { 
 #if 1
     return typeid(void);
@@ -50,8 +50,8 @@ namespace RavlImageN {
 #endif
   }
 
-  const type_info &
-  FileFormatCifBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatCifBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     StringC suffix = Extension(nfilename);
     ONDEBUG(cerr << "FileFormatCifBodyC::ProbeLoad() [" << vName << "] Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
     if (suffix != vName)     
@@ -59,8 +59,8 @@ namespace RavlImageN {
     return typeid(ImageC<ByteYUVValueC>);
   }
 
-  const type_info &
-  FileFormatCifBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const {
+  const std::type_info &
+  FileFormatCifBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat) const {
     if(!forceFormat) {
       StringC suffix = Extension(nfilename);
       ONDEBUG(cerr << "FileFormatCifBodyC::ProbeSave() [" << vName << "] Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
@@ -73,8 +73,8 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
 
-  DPIPortBaseC FileFormatCifBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatCifBodyC::CreateInput(IStreamC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatCifBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatCifBodyC::CreateInput(IStreamC &,const std::type_info &), Called. \n");
     if(!in)
       return DPIPortBaseC();
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -85,7 +85,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
 
-  DPOPortBaseC FileFormatCifBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
+  DPOPortBaseC FileFormatCifBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
     if(!out)
       return DPOPortBaseC();
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -96,8 +96,8 @@ namespace RavlImageN {
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
   
-  DPIPortBaseC FileFormatCifBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatCifBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+  DPIPortBaseC FileFormatCifBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(cerr << "FileFormatCifBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     if(obj_type == typeid(ImageC<ByteYUVValueC>)) {
       IStreamC strm(filename);
       if(!strm)
@@ -110,7 +110,7 @@ namespace RavlImageN {
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
   
-  DPOPortBaseC FileFormatCifBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatCifBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteYUVValueC>)) {
       OStreamC strm(filename);
       if(!strm)
@@ -122,7 +122,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatCifBodyC::DefaultType() const { 
+  const std::type_info &FileFormatCifBodyC::DefaultType() const { 
     return typeid(ImageC<ByteYUVValueC>); 
   }
 

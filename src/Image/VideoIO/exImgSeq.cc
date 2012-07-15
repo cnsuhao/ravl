@@ -41,12 +41,12 @@ int main(int argc,char **argv)
   DPOPortC<ImageC<ByteT> > outputStream;
   
   if(!OpenISequence(inputStream,ifilename,ifmt,verbose)) {
-    cerr << "Failed to open input sequence '" << ifilename << "' \n";
+    std::cerr << "Failed to open input sequence '" << ifilename << "' \n";
     return 1;
   }
   
   if(!OpenOSequence(outputStream,ofilename,ofmt,verbose)) {
-    cerr << "Failed to open output sequence '" << ofilename << "' \n";
+    std::cerr << "Failed to open output sequence '" << ofilename << "' \n";
     return 1;
   }
   
@@ -57,7 +57,7 @@ int main(int argc,char **argv)
     if(!inputStream.Get(buff)) // End of stream ?
       break; 
     if(!outputStream.Put(buff)) {
-      cerr << "ERROR: Failed to write output. \n";
+      std::cerr << "ERROR: Failed to write output. \n";
       break;
     }
   }
@@ -68,7 +68,7 @@ int main(int argc,char **argv)
   for(;!inputStream.IsGetEOS();) { // Is End Of Stream ?
     ImageC<ByteT> buff = inputStream.Get();
     if(!outputStream.Put(buff)) {
-      cerr << "ERROR: Failed to write output. \n";
+      std::cerr << "ERROR: Failed to write output. \n";
       break;
     }    
   }  

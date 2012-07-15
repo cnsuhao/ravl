@@ -121,19 +121,19 @@ int testBasic() {
   
   sig1();
   if(callcount != 3) {
-    cerr<< "Signal test failed \n";
+    std::cerr<< "Signal test failed \n";
     return 1;
   }
   c1.Disconnect();
   sig1();
   if(callcount != 5) {
-    cerr<< "Signal test failed \n";
+    std::cerr<< "Signal test failed \n";
     return 1;
   }
   SignalConnectorC c3 = Connect(sig1,&test2);
   sig1();
   if(callcount != 9) {
-    cerr<< "Signal test failed \n";
+    std::cerr<< "Signal test failed \n";
     return 1;
   }
   Signal0C sig2(true);
@@ -141,7 +141,7 @@ int testBasic() {
   Connect(sig2,&test2);
   sig1();
   if(callcount != 15) {
-    cerr<< "Signal test failed  " << callcount << "\n";
+    std::cerr<< "Signal test failed  " << callcount << "\n";
     return 1;
   }
 
@@ -314,16 +314,16 @@ int testInterconnect() {
     *it = Signal0C(true);
   }
   
-  cerr << "Starting thread test. \n";
+  std::cerr << "Starting thread test. \n";
   IntT numberOfThreads = 10;
   for(int i = 0;i < numberOfThreads;i++)
     LaunchThread(Trigger(&invokeThread,signals,rwLock));
   RavlN::Sleep(20);
-  cerr << "Shutting down. \n";
+  std::cerr << "Shutting down. \n";
   done = true;
   for(int i = 0;i < numberOfThreads;i++)
     semaThreadDone.Wait();
-  cerr << "Test done. Passed ok. \n";
+  std::cerr << "Test done. Passed ok. \n";
   return 0;
 }
 
@@ -332,16 +332,16 @@ int main(int argc,char **argv)
 {
   int ln;
   if((ln = testBasic()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testInterconnect()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   
   //  Launch(ae,&ExampleC::DoItArg,1);
-  cerr << "testSignal(): Passed. \n";
+  std::cerr << "testSignal(): Passed. \n";
   return 0;
 }
 

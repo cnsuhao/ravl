@@ -23,7 +23,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncOrthPolynomialBodyC::FuncOrthPolynomialBodyC(istream &strm)
+  FuncOrthPolynomialBodyC::FuncOrthPolynomialBodyC(std::istream &strm)
     : FuncLinearCoeffBodyC(strm)
   { strm >> noCoeffs >> order; }
   
@@ -35,7 +35,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FuncOrthPolynomialBodyC::Save (ostream &out) const {
+  bool FuncOrthPolynomialBodyC::Save (std::ostream &out) const {
     if(!FuncLinearCoeffBodyC::Save(out))
       return false;
     out  << ' ' << noCoeffs << ' ' << order;

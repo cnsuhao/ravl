@@ -42,24 +42,24 @@ int main(int nargs,char **argv) {
   } else {
     StringC fn = StringC("@IIDC:") + dev + "#" + StringC(camera);
     if(!OpenISequence(imgIn,fn)) {
-      cerr << "Failed to setup camera. \n";
+      std::cerr << "Failed to setup camera. \n";
       return 1;
     }
   }
   
   if(!imgIn.IsGetReady()) {
-    cerr << "Failed to setup camera. \n";
+    std::cerr << "Failed to setup camera. \n";
     return 1;
   }
   DPOPortC<ImageC<PixelType> > imgOut;
   if(!OpenOSequence(imgOut,out))
   {
-    cerr << "Failed to open output. \n";
+    std::cerr << "Failed to open output. \n";
     return 0;
   }
   RealT fr;
   imgIn.GetAttr("framerate", fr);
-  cerr << "Frame rate:" << fr << '\n';
+  std::cerr << "Frame rate:" << fr << '\n';
   for(IntT i(0); i!=n; ++i)
     imgOut.Put(imgIn.Get());
   

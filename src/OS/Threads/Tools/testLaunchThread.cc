@@ -28,14 +28,14 @@ class ExampleC
 public:
   bool DoIt()
     {
-      cerr << "Done it. \n";
+      std::cerr << "Done it. \n";
       count1++;
       return true;
     }
   
   bool DoItArg(int &x)
     {
-      cerr << "Done it:" << x << ". \n";
+      std::cerr << "Done it:" << x << ". \n";
       count2 += x;
       return true;
     }
@@ -48,10 +48,10 @@ int main()
 {
   int ln;
   if((ln = TestLaunchThreads()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
@@ -67,7 +67,7 @@ int TestLaunchThreads() {
   LaunchThread(ae,&ExampleC::DoItArg,2);
   sleep(1);
   if(count1 != 1 || count2 != 2) {
-    cerr << "Error launching threads. \n";
+    std::cerr << "Error launching threads. \n";
     return __LINE__;
   }
   return 0;

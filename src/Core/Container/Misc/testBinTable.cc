@@ -31,7 +31,7 @@ int main() {
   tab[at3] = "Hello3";
   BinIterC<TFVectorC<RealT,2>,Index2dC,StringC> it(tab);
   for(;it.IsElm();it.Next())
-    cout << it.Data();
+    std::cout << it.Data();
   
   TFVectorC<RealT,2> at4; at4[0] = -1; at4[1] = -1;
   TFVectorC<RealT,2> at5; at5[0] = -3.2; at5[1] = -3.2;
@@ -39,13 +39,13 @@ int main() {
   TFVectorC<RealT,2> bincentre4 = tab.BinCentre(at4);
   TFVectorC<RealT,2> bincentre5 = tab.BinCentre(at5);
   
-  cout << " Bin centre for " << at1 << " is " <<  bincentre1 << "\n";
-  cout << " Bin centre for " << at4 << " is " <<  bincentre4 << "\n";
-  cout << " Bin centre for " << at5 << " is " <<  bincentre5 << "\n";
+  std::cout << " Bin centre for " << at1 << " is " <<  bincentre1 << "\n";
+  std::cout << " Bin centre for " << at4 << " is " <<  bincentre4 << "\n";
+  std::cout << " Bin centre for " << at5 << " is " <<  bincentre5 << "\n";
   
-  cout << at1 << " falls in bin " <<  tab.Scale(at1) << "\n";
-  cout << at4 << " falls in bin " <<  tab.Scale(at4) << "\n";
-  cout << at5 << " falls in bin " <<  tab.Scale(at5) << "\n";
+  std::cout << at1 << " falls in bin " <<  tab.Scale(at1) << "\n";
+  std::cout << at4 << " falls in bin " <<  tab.Scale(at4) << "\n";
+  std::cout << at5 << " falls in bin " <<  tab.Scale(at5) << "\n";
   
   return 0;
 }

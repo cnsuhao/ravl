@@ -15,13 +15,13 @@
 
 namespace RavlN {
   
-  void PrintIOFormats(ostream &os = cout);
+  void PrintIOFormats(std::ostream &os = std::cout);
   //: Print in human readable format, information about available formats to 'os'.
   
-  void PrintIOConversions(ostream &os = cout);
+  void PrintIOConversions(std::ostream &os = std::cout);
   //: Print in human readable format, information about available type conversions to 'os'.
   
-  void PrintIOClassTypes(ostream &os = cout);
+  void PrintIOClassTypes(std::ostream &os = std::cout);
   //: Print in human readable format, information about available class types to 'os'.
   
 }

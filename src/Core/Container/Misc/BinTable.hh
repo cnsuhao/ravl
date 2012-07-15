@@ -22,8 +22,8 @@ namespace RavlN {
 
   template<class IT,class DIT,class BT> class BinIterC;
   template<class IT,class DIT,class BT> class BinTableC;
-  template<class IT,class DIT,class BT> ostream &operator<<(ostream &s,const BinTableC<IT,DIT,BT> &);
-  template<class IT,class DIT,class BT> istream &operator>>(istream &s,BinTableC<IT,DIT,BT> &);
+  template<class IT,class DIT,class BT> std::ostream &operator<<(std::ostream &s,const BinTableC<IT,DIT,BT> &);
+  template<class IT,class DIT,class BT> std::istream &operator>>(std::istream &s,BinTableC<IT,DIT,BT> &);
   
   /////////////////////////////////
   //: A table of bins.  Hashing for real valued paramiters.
@@ -100,11 +100,11 @@ namespace RavlN {
     friend class BinIterC<IT,DIT,BT>;
     
 #if !defined(__sgi__) && !(RAVL_COMPILER_VISUALCPP && !RAVL_COMPILER_VISUALCPPNET)
-    friend ostream &operator<< <>(ostream &s,const BinTableC<IT,DIT,BT> &);
-    friend istream &operator>> <>(istream &s,BinTableC<IT,DIT,BT> &);
+    friend std::ostream &operator<< <>(std::ostream &s,const BinTableC<IT,DIT,BT> &);
+    friend std::istream &operator>> <>(std::istream &s,BinTableC<IT,DIT,BT> &);
 #else
-    friend ostream &operator<<(ostream &s,const BinTableC<IT,DIT,BT> &);
-    friend istream &operator>>(istream &s,BinTableC<IT,DIT,BT> &);
+    friend std::ostream &operator<<(std::ostream &s,const BinTableC<IT,DIT,BT> &);
+    friend std::istream &operator>>(std::istream &s,BinTableC<IT,DIT,BT> &);
 #endif
   };
   
@@ -144,14 +144,14 @@ namespace RavlN {
 
   
   template<class IT,class DIT,class BT>
-  ostream &operator<<(ostream &s,const BinTableC<IT,DIT,BT> &tab) {
+  std::ostream &operator<<(std::ostream &s,const BinTableC<IT,DIT,BT> &tab) {
     s << tab.BinSize() << ' ' << tab.bins;
     return s;
   }
   //: Write bin table to a stream.
   
   template<class IT,class DIT,class BT>
-  istream &operator>>(istream &s,BinTableC<IT,DIT,BT> &tab) {
+  std::istream &operator>>(std::istream &s,BinTableC<IT,DIT,BT> &tab) {
     s >> tab.binSize >> tab.bins;
     return s;
   }

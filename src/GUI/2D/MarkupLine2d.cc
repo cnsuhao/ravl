@@ -56,7 +56,7 @@ namespace RavlGUIN {
   //: Method for rendering frame.  
   
   bool MarkupLine2dBodyC::Render(GUIMarkupCanvasBodyC &mv,const RealRange2dC &area,bool selected) { 
-    ONDEBUG(cerr << "MarkupLine2dBodyC::Render, Called. Length=" <<m_length << "\n");
+    ONDEBUG(std::cerr << "MarkupLine2dBodyC::Render, Called. Length=" <<m_length << "\n");
     // Set up the gc
     if (!SetDrawStyle(mv))
       return true;
@@ -66,7 +66,7 @@ namespace RavlGUIN {
       Vector2dC dir = m_normal.Perpendicular();
       Point2dC start = m_centre - dir * m_length;
       Point2dC end = m_centre + dir * m_length;
-      ONDEBUG(cerr << "MarkupLine2dBodyC::Render, Start=" << start << " End=" << end << "\n");
+      ONDEBUG(std::cerr << "MarkupLine2dBodyC::Render, Start=" << start << " End=" << end << "\n");
       mv.GUIDrawLine(dc, start, end);
     } else {
       // Infinite line.

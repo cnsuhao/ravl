@@ -27,14 +27,14 @@ namespace RavlLogicN {
       return ;
     pos = const_cast<SArray1dC<LiteralC> &>(mt.Pos());
     neg = const_cast<SArray1dC<LiteralC> &>(mt.Neg());
-    ONDEBUG(cerr << "MinTermIterC::MinTermIterC(), Mt=" << mt.Name() << "\n");
+    ONDEBUG(std::cerr << "MinTermIterC::MinTermIterC(), Mt=" << mt.Name() << "\n");
     First(); 
   }
   
   //: Assign to a min term.
   
   const MinTermIterC &MinTermIterC::operator=(const MinTermC &mt) {
-    ONDEBUG(cerr << "MinTermIterC::operator=(), Mt=" << mt.Name() << "\n");
+    ONDEBUG(std::cerr << "MinTermIterC::operator=(), Mt=" << mt.Name() << "\n");
     pos = const_cast<SArray1dC<LiteralC> &>(mt.Pos());
     neg = const_cast<SArray1dC<LiteralC> &>(mt.Neg());
     First();

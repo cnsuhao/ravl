@@ -41,7 +41,7 @@ namespace RavlGUIN {
       filename(nfilename),
       data(0)
   {
-    ONDEBUG(cerr << "PixmapBodyC::PixmapBodyC() fn:'" << filename << "'\n");
+    ONDEBUG(std::cerr << "PixmapBodyC::PixmapBodyC() fn:'" << filename << "'\n");
   }
   
   //: Constructor.
@@ -53,7 +53,7 @@ namespace RavlGUIN {
       data(0),
       image(im)
   {
-    ONDEBUG(cerr << "PixmapBodyC::PixmapBodyC() image constructor\n");
+    ONDEBUG(std::cerr << "PixmapBodyC::PixmapBodyC() image constructor\n");
   }
 
 
@@ -115,7 +115,7 @@ namespace RavlGUIN {
 
     if(pixmap == 0) {
       // As a last resort... 
-      cerr << "PixmapBodyC::Create(), No pixmap specified. \n";
+      std::cerr << "PixmapBodyC::Create(), No pixmap specified. \n";
       pixmap = gdk_pixmap_create_from_xpm_d( window,  &mask,
 					     &style->bg[GTK_STATE_NORMAL],
 					     (char **) xpmData_OpenFile);

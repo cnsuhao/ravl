@@ -30,14 +30,14 @@ namespace RavlN {
   class BinIStreamC;
   class BinOStreamC;
   
-  bool BaseFunctionRegister(const char *name,void *ptr,int size,const type_info &ti);
+  bool BaseFunctionRegister(const char *name,void *ptr,int size,const std::type_info &ti);
   //! userlevel=Develop
   //: Register function pointer.
   
-  bool BaseFunctionLookupByName(const char *name,void *ptr,int size,const type_info &ti);
+  bool BaseFunctionLookupByName(const char *name,void *ptr,int size,const std::type_info &ti);
   //: Register function pointer.
 
-  const char *BaseFunctionLookupByPointer(void *ptr,int size,const type_info &ti);
+  const char *BaseFunctionLookupByPointer(void *ptr,int size,const std::type_info &ti);
   //: Lookup function by pointer.
   
   template<class DataT>
@@ -61,7 +61,7 @@ namespace RavlN {
     StringC fnName;
     strm >> fnName;
     if(!LookupFunctionByName(fnName,funcPtr)) {
-      cerr << "Failed to find function '" << fnName << "\n";
+      std::cerr << "Failed to find function '" << fnName << "\n";
       throw ExceptionOperationFailedC("Failed to find function pointer.");
     }
     return true;
@@ -69,11 +69,11 @@ namespace RavlN {
   //: Load function pointer.
   
   template<class DataT>
-  bool LoadFunctionPointer(istream &strm,DataT &funcPtr) { 
+  bool LoadFunctionPointer(std::istream &strm,DataT &funcPtr) { 
     StringC fnName;
     strm >> fnName;
     if(!LookupFunctionByName(fnName,funcPtr)) {
-      cerr << "Failed to find function '" << fnName << "\n";
+      std::cerr << "Failed to find function '" << fnName << "\n";
       throw ExceptionOperationFailedC("Failed to find function pointer.");
     }
     return true;
@@ -81,10 +81,10 @@ namespace RavlN {
   //: Load function pointer.
 
   template<class DataT>
-  bool SaveFunctionPointer(ostream &strm,DataT &funcPtr) { 
+  bool SaveFunctionPointer(std::ostream &strm,DataT &funcPtr) { 
     const char *fnName = LookupFunctionByPointer(funcPtr);
     if(fnName == 0) {
-      cerr << "Internal error: Asked to save unregistered function. \n";
+      std::cerr << "Internal error: Asked to save unregistered function. \n";
       throw ExceptionOperationFailedC("Failed to find function name.");
     }
     strm << fnName << ' ';
@@ -96,7 +96,7 @@ namespace RavlN {
   bool SaveFunctionPointer(BinOStreamC &strm,const DataT &funcPtr) { 
     const char *fnName = LookupFunctionByPointer(funcPtr);
     if(fnName == 0) {
-      cerr << "Internal error: Asked to save unregistered function. \n";
+      std::cerr << "Internal error: Asked to save unregistered function. \n";
       throw ExceptionOperationFailedC("Failed to find function name.");
     }
     strm << fnName;

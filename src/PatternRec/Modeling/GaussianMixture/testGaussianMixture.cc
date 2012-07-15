@@ -25,28 +25,28 @@ int testBiggerDesignGaussianMixture(UIntT nSamples);
 int main() {
   int ln;
   if((ln = testGaussianMixture()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
 
   if((ln = testDesignGaussianMixture()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
 
   if((ln = testBiggerDesignGaussianMixture(5000)) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
 
   if((ln = testBiggerDesignGaussianMixture(15000)) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
 
   return 0;
 }
@@ -93,10 +93,10 @@ int testGaussianMixture() {
   test[1] = 2.3;
 
 #if 0
-  cout << "gm1 - " << gm1.Apply(test) << endl;
-  cout << "gm2 - " << gm2.Apply(test) << endl;
-  cout << "gm3 - " << gm3.Apply(test) << endl;
-  cout  << "MeanCov - " << arr[0].Gauss(test) << endl << flush;
+  std::cout << "gm1 - " << gm1.Apply(test) << std::endl;
+  std::cout << "gm2 - " << gm2.Apply(test) << std::endl;
+  std::cout << "gm3 - " << gm3.Apply(test) << std::endl;
+  std::cout  << "MeanCov - " << arr[0].Gauss(test) << endl << flush;
 #endif
   
   RealT dif = 0.001;
@@ -129,7 +129,7 @@ int testDesignGaussianMixture()
   RealT value = gm.DensityValue(X);
 
 #if 0
-  cout << gm << endl;
+  std::cout << gm << std::endl;
 #endif
 
   //: This should be about 0.03
@@ -164,9 +164,9 @@ int testBiggerDesignGaussianMixture(UIntT nSamples) {
 
   for (UIntT k=0; k<nGaussians; ++k) {
     MeanCovarianceC mc = gaussian.MeanCovariances()[k];
-//     cout << "Weight: " << gaussian.Weights()[k] << endl;
-//     cout << "Means: " << mc.Mean() << endl;
-//     cout << "Covs: " << mc.Covariance() << endl;
+//     std::cout << "Weight: " << gaussian.Weights()[k] << std::endl;
+//     std::cout << "Means: " << mc.Mean() << std::endl;
+//     std::cout << "Covs: " << mc.Covariance() << std::endl;
     // s.d.s should be ~ 1, but sometimes 2 GMM components chase the same cluster & there are not enough to go round.  In that case one component tries to cover 2 clusters, hence s.d. is about clusterSpacing/2.
     RealT covFactor = (Round(gaussian.Weights()[k]*nGaussians)==2) ? Sqr(clusterSpacing/2.0) : 1.0;
     for (UIntT i=0; i< dimensionality; i++){

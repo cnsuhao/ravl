@@ -100,11 +100,11 @@ namespace RavlN {
     { return out.good(); }
     //: Is port ready for data ?
     
-    virtual bool Save(ostream &sout) const  { 
+    virtual bool Save(std::ostream &sout) const  { 
       sout << out.Name(); 
       return true; 
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   private:
     OStreamC out;
@@ -208,11 +208,11 @@ namespace RavlN {
     //: Get multiple pieces of input data.
     // returns the number of elements processed.
     
-    virtual bool Save(ostream &out) const { 
+    virtual bool Save(std::ostream &out) const { 
       out << in.Name(); 
       return true; 
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Seek(UIntT newOff) {
       if(newOff == 0) {

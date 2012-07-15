@@ -46,12 +46,12 @@ namespace RavlN {
     IndexRange2dSetC ret;
     IndexRange2dC remainder(rect1);
   
-    ONDEBUG(cerr << "Rectangles overlap. \n");
+    ONDEBUG(std::cerr << "Rectangles overlap. \n");
 	  
     // Cut top.
   
     if(remainder.TRow() < rect2.TRow()) {
-      ONDEBUG(cerr << "Top Cut. \n");
+      ONDEBUG(std::cerr << "Top Cut. \n");
       ret.InsLast(IndexRange2dC(remainder.TRow(),rect2.TRow()-1,remainder.LCol(),remainder.RCol()));
       remainder.TRow() = rect2.TRow(); // Cut it down.
     }
@@ -59,7 +59,7 @@ namespace RavlN {
     // Cut left.
   
     if(remainder.LCol() < rect2.LCol()) {
-      ONDEBUG(cerr << "Left Cut. \n");
+      ONDEBUG(std::cerr << "Left Cut. \n");
       ret.InsLast(IndexRange2dC(remainder.TRow(),remainder.BRow(),remainder.LCol(),rect2.LCol()-1));
       remainder.LCol() = rect2.LCol(); // Cut it down.
     }
@@ -67,7 +67,7 @@ namespace RavlN {
     // Cut bottom.
   
     if(remainder.BRow() > rect2.BRow()) {
-      ONDEBUG(cerr << "Bottom Cut. \n");
+      ONDEBUG(std::cerr << "Bottom Cut. \n");
       ret.InsLast(IndexRange2dC(rect2.BRow()+1,remainder.BRow(),remainder.LCol(),remainder.RCol()));
       remainder.BRow() = rect2.BRow(); // Cut it down.
     }
@@ -75,7 +75,7 @@ namespace RavlN {
     // Cut right.
   
     if(remainder.RCol() > rect2.RCol()) {
-      ONDEBUG(cerr << "Right Cut. \n");
+      ONDEBUG(std::cerr << "Right Cut. \n");
       ret.InsLast(IndexRange2dC(remainder.TRow(),remainder.BRow(),rect2.RCol()+1,remainder.RCol()));
       remainder.RCol() = rect2.RCol(); // Cut it down.
     }
@@ -160,7 +160,7 @@ namespace RavlN {
   SizeT IndexRange2dSetC::Area() const {
     SizeT ret = 0;
     for(DLIterC<IndexRange2dC> it(*this);it.IsElm();it.Next()) {
-      ONDEBUG(cerr << "+Area: " << it.Data().Area() << "\n");
+      ONDEBUG(std::cerr << "+Area: " << it.Data().Area() << "\n");
       ret += it.Data().Area();
     }
     return ret;

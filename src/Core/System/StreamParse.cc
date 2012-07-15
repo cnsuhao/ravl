@@ -98,7 +98,7 @@ namespace RavlN {
     while(1) {
       at = &endStr[0];
       for(it = fq;it;it++,at++) {
-	//ONDEBUG(cerr << "Str cmp '" << *it << "' == '" << *at << "'\n");
+	//ONDEBUG(std::cerr << "Str cmp '" << *it << "' == '" << *at << "'\n");
 	if(*it != *at)
 	  break;
       }
@@ -107,7 +107,7 @@ namespace RavlN {
       read(&c,1);
       if(is().gcount() != 1)
 	break;
-      //ONDEBUG(cerr << "Nope! got '" << c <<"'\n");
+      //ONDEBUG(std::cerr << "Nope! got '" << c <<"'\n");
       fq.ForceInsLast(c);
     }
     return false;
@@ -167,23 +167,23 @@ namespace RavlN {
     while(1) {
       at = &endStr[0];
       for(it = fq;it;it++,at++) {
-	ONDEBUG(cerr << "Str cmp '" << *it << "' == '" << *at << "'\n");
+	ONDEBUG(std::cerr << "Str cmp '" << *it << "' == '" << *at << "'\n");
 	if(*it != *at)
 	  break;
       }
       if(!it.IsElm()) {
-        ONDEBUG(cerr << "Return '" << ret <<"'\n");
+        ONDEBUG(std::cerr << "Return '" << ret <<"'\n");
 	ret = ret.before((int) ret.length() - (int) endStr.length()); // Clip out 'endStr'.
 	return ret; // Found!
       }
       read(&c,1);
       if(is().gcount() != 1)
 	break;
-      ONDEBUG(cerr << "Nope! got '" << c <<"' (" << ret << ")\n");
+      ONDEBUG(std::cerr << "Nope! got '" << c <<"' (" << ret << ")\n");
       fq.ForceInsLast(c);
       ret += c;
     }
-    ONDEBUG(cerr << "Return '" << ret <<"'\n");
+    ONDEBUG(std::cerr << "Return '" << ret <<"'\n");
     
     return ret;    
   }

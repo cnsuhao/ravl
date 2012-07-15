@@ -4,14 +4,22 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/Performance/Error.cc"
 
 #include "Ravl/PatternRec/Error.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/PatternRec/DataSet2Iter.hh"
+
 namespace RavlN {
+
+  //: Constructor.
+  ErrorBodyC::ErrorBodyC()
+  {}
+
+  //: XML factory constructor
+  ErrorBodyC::ErrorBodyC(const XMLFactoryContextC &factory)
+  {}
 
   //: Load from stream.
   

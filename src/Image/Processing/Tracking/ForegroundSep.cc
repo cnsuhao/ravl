@@ -36,7 +36,7 @@ namespace RavlImageN {
   //: Set binary mask to exclude regions from tracker
   bool ForegroundSepC::SetMask(const StringC& fileName) {
     if (!Load(fileName, mask)) {
-      cerr << "Failed to load file: " << fileName << endl;
+      std::cerr << "Failed to load file: " << fileName << std::endl;
       return false;
     }
     return true;
@@ -61,7 +61,7 @@ namespace RavlImageN {
       kernel[-2][-2] = kernel[-2][2] = kernel[2][-2] = kernel[2][2] = false;
       break;
     default: 
-      cerr<<"Opening size  of "<<Width<<" not supported."<<endl;
+      std::cerr<<"Opening size  of "<<Width<<" not supported."<<std::endl;
       SetOpening(0);
     }
     if (!progressive) { // delete alternate rows for interlaced version
@@ -80,7 +80,7 @@ void ForegroundSepC::SetFilter(IntT Width) {
   else { // interlaced (field-based)
     if (Width%2 == 0) {
       ++Width;
-      cerr << "Even-sized filters not allowed; increasing size to " << Width << endl;
+      std::cerr << "Even-sized filters not allowed; increasing size to " << Width << std::endl;
     }
     Array1dC<RealT> hkernel = GenerateBinomial(1.0, Width, true, true);
     // create vertical kernel with every other coeff = 0

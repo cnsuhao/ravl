@@ -31,13 +31,13 @@ namespace RavlN {
     ClassifierOneAgainstAllBodyC(const RCHashC<UIntT, ClassifierC> & classifiers);
     //: Construct from a set of classifiers
     
-    ClassifierOneAgainstAllBodyC(istream &strm);
+    ClassifierOneAgainstAllBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierOneAgainstAllBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -67,7 +67,7 @@ namespace RavlN {
     {}
     //: Construct from a mean and a projection matrix.
     
-    ClassifierOneAgainstAllC(istream &is);
+    ClassifierOneAgainstAllC(std::istream &is);
     //: Stream constructor.
     
     ClassifierOneAgainstAllC(BinIStreamC &is);
@@ -98,14 +98,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,ClassifierOneAgainstAllC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierOneAgainstAllC &obj) {
     obj = ClassifierOneAgainstAllC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierOneAgainstAllC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierOneAgainstAllC &obj) {
     obj.Save(out);
     return out;
   }

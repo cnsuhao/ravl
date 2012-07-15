@@ -27,6 +27,8 @@ namespace RavlN {
   public:
     //! Default constructor.
     GPSCoordinateC()
+     : m_horizontalError(0.1),
+       m_verticalError(0.15)
     {}
     
     //! Constructor.

@@ -35,11 +35,20 @@
 
   <!-- Another neural network -->
   <NN2 typename="RavlN::DesignClassifierNeuralNetwork2C" numberOfLayers="3"
-    numberOfHiddenUnits="128" desiredError="0.00001" maxEpochs="10000" displayEpochs="100"
+    numberOfHiddenUnits="128" desiredError="0.00001" maxEpochs="10000" displayEpochs="1"
     doNormalisation="False" threads="8"
-    />
+    >
+    <Optimiser typename="RavlN::OptimiseConjugateGradientC" 
+    iterations="500" useAbsoluteCostForTolerance="true" tolerance="1e-4" brentIterations="6" brentTolerance="1e-2" />
+  </NN2>
 
   <LR  typename="RavlN::DesignClassifierLogisticRegressionC" regularisation="0.0" >
   </LR>
+
+  <OptimiseClassifierDesign typename="RavlN::OptimiseClassifierDesignC" >
+    <Optimiser typename="RavlN::OptimisePowellC" 
+      iterations="100" tolerance="1e-4" brentIterations="8" brentTolerance="1e-4" />
+  </OptimiseClassifierDesign>
+  
 
 </Config>

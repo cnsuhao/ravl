@@ -26,7 +26,7 @@ namespace RavlImageN {
     else if (suffix == "4cif") { size = Index2dC(576,704);   }
     else if (suffix == "16cif"){ size = Index2dC(1152,1408); }
     else {
-      cerr << "Unknown cif suffix :" << suffix << "\n";
+      std::cerr << "Unknown cif suffix :" << suffix << "\n";
       return false;
     }
     return SetupForVariant(size);
@@ -57,7 +57,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPIImageCifBodyC::DPIImageCifBodyC(IStreamC), Passed bad stream. \n";
+      std::cerr << "DPIImageCifBodyC::DPIImageCifBodyC(IStreamC), Passed bad stream. \n";
     else {
       if(!nStrm.Name().IsEmpty()) {
 	FilenameC tmp(nStrm.Name());
@@ -77,7 +77,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPIImageCifBodyC::DPIImageCifBodyC(IStreamC), Passed bad stream. \n";
+      std::cerr << "DPIImageCifBodyC::DPIImageCifBodyC(IStreamC), Passed bad stream. \n";
     else {
       if(!nStrm.Name().IsEmpty()) {
 	FilenameC tmp(nStrm.Name());
@@ -213,7 +213,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPOImageCifBodyC::DPOImageCifBodyC(OStreamC), Passed bad stream. \n";
+      std::cerr << "DPOImageCifBodyC::DPOImageCifBodyC(OStreamC), Passed bad stream. \n";
   }
   
   //: Constructor from stream.  
@@ -223,7 +223,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPOImageCifBodyC::DPOImageCifBodyC(OStreamC), Passed bad stream. \n";
+      std::cerr << "DPOImageCifBodyC::DPOImageCifBodyC(OStreamC), Passed bad stream. \n";
   }
   
   //: Seek to location in stream.

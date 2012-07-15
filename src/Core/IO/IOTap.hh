@@ -41,7 +41,7 @@ namespace RavlN {
     {}
     //: Default Constructor.
     
-    DPIOTapBodyC(istream &in)
+    DPIOTapBodyC(std::istream &in)
       : tap(in),
 	target(in)
     {}
@@ -71,8 +71,8 @@ namespace RavlN {
     //: Is some data ready ?
     // true = yes.
     
-    virtual bool Save(ostream &out) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &out) const;
+    //: Save to std::ostream.
     
     inline DPOPortC<Tuple2C<OutT,InT> > &Tap()
     { return tap; }
@@ -110,7 +110,7 @@ namespace RavlN {
     {}
     //: Default Constructor.
     
-    DPIOTapC(istream &in)
+    DPIOTapC(std::istream &in)
       : DPEntityC(in)
     {}
     //: Stream constructor.
@@ -188,7 +188,7 @@ namespace RavlN {
   }
   
   template<class InT,class OutT>
-  bool DPIOTapBodyC<InT,OutT>::Save(ostream &out) const {
+  bool DPIOTapBodyC<InT,OutT>::Save(std::ostream &out) const {
     if(!DPIOPortBodyC<InT,OutT>::Save(out))
       return false;
     if(!tap.Save(out))

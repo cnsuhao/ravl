@@ -57,7 +57,8 @@ namespace RavlN
       case REQUESTMETHOD_INVALID:
       default:
         m_method = EHTTPRequest_UNKNOWN;
-        RavlAssertMsg(false, "HTTPRequestC::HTTPRequestC unknown request method");
+        RavlIssueError("HTTPRequestC::HTTPRequestC unknown request method");
+        break;
     }
   }
 

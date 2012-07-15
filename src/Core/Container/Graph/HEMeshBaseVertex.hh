@@ -218,11 +218,11 @@ namespace RavlN {
     friend class HEMeshBaseC;
   };
   
-  ostream &operator<<(ostream &strm,const HEMeshBaseVertexC &vertex);
+  std::ostream &operator<<(std::ostream &strm,const HEMeshBaseVertexC &vertex);
   //: Text stream output.
   // Not implemented
   
-  istream &operator>>(istream &strm,HEMeshBaseVertexC &vertex);
+  std::istream &operator>>(std::istream &strm,HEMeshBaseVertexC &vertex);
   //: Text stream input.
   // Not implemented
   

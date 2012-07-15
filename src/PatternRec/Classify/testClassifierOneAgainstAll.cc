@@ -129,7 +129,7 @@ int testOneAgainstAll(void) {
   ClassifierC classifier = design.Apply(g_train.Sample1(), g_train.Sample2());
   
   ErrorC performance;
-  cerr << performance.Error(classifier, g_test);
+  std::cerr << performance.Error(classifier, g_test);
 #if 0
   if(!TestAlmostEquals(0.0, performance.Error(classifier, g_test), 1e-10, __FILE__, __LINE__)) {
     return __LINE__;

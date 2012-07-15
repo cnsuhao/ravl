@@ -306,16 +306,21 @@ namespace RavlN {
     // If offset is larger than the array an empty array
     // is returned,
 
+    SArray1dC<DataT> Before(UIntT offset)
+    { return From(0,offset); }
+    //: Return array from the start to the element before offset
+    // If offset is larger then the whole array will be returned.
+
     //:------------------
     // Special operations
 
     BufferC<DataT> &Buffer()
-      { return buff; }
+    { return buff; }
     //: Access base data buffer.
     // Experts only.
 
     const BufferC<DataT> &Buffer() const
-      { return buff; }
+    { return buff; }
     //: Constant access base data buffer.
     // Experts only.
 
@@ -389,7 +394,7 @@ namespace RavlN {
   // Sorts arr using operator <.
 
   template <class DataT>
-  istream & operator>>(istream & s, SArray1dC<DataT> & arr);
+  std::istream & operator>>(std::istream & s, SArray1dC<DataT> & arr);
   // Assigns the values into the array 'arr'.
 
   template <class DataT>
@@ -503,8 +508,8 @@ namespace RavlN {
   }
 
   template <class DataT>
-  ostream &
-  operator<<(ostream & s, const SArray1dC<DataT> & arr) {
+  std::ostream &
+  operator<<(std::ostream & s, const SArray1dC<DataT> & arr) {
     s << arr.Size() << '\n';
     for(BufferAccessIterC<DataT> it(arr);it;it++)
       s << ((const DataT &) *it) << '\n';
@@ -512,8 +517,8 @@ namespace RavlN {
   }
 
   template <class DataT>
-  istream &
-  operator>>(istream & s, SArray1dC<DataT> & arr) {
+  std::istream &
+  operator>>(std::istream & s, SArray1dC<DataT> & arr) {
     SizeT n = 0;
     s >> n;
     s.get(); // Get '\n' after size to avoid trouble with reading StringC's.

@@ -28,10 +28,10 @@ int main()
 {
   int ln;
   if((ln = TestRangeBuffer()) != 0) {
-    cerr << "Buffer test failed on line :" << ln << "\n";
+    std::cerr << "Buffer test failed on line :" << ln << "\n";
     return 1;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
@@ -57,21 +57,21 @@ int TestRangeBuffer() {
   rba.Attach(bf,r1);
   
   if(r1 != rba.Range1()) {
-    cerr<< "Range 1 incorrect. " << rba.Range1() <<" should be " << r1 << "\n";
+    std::cerr<< "Range 1 incorrect. " << rba.Range1() <<" should be " << r1 << "\n";
     return __LINE__;
   }
   if(r2 != rba.Range2()) {
-    cerr<< "Range 2 incorrect. " << rba.Range2() <<" should be " << r2 << "\n";
+    std::cerr<< "Range 2 incorrect. " << rba.Range2() <<" should be " << r2 << "\n";
     return __LINE__;
   }
 
   if(r3 != rba.Range3()) {
-    cerr<< "Range 2 incorrect. " << rba.Range2() <<" should be " << r2 << "\n";
+    std::cerr<< "Range 2 incorrect. " << rba.Range2() <<" should be " << r2 << "\n";
     return __LINE__;
   }
   {    
-    cerr << "AccBuffer @ " << bf.DataIndex().ReferenceElm() << "\n";
-    cerr << "DataBuffer @ " << bf.Data().ReferenceElm() << "\n";
+    std::cerr << "AccBuffer @ " << bf.DataIndex().ReferenceElm() << "\n";
+    std::cerr << "DataBuffer @ " << bf.Data().ReferenceElm() << "\n";
     const SizeT d3Size = rba.Range3().Size();
     const SizeT d2Size = rba.Range2().Size();
     BufferAccessC<int> *acc2 = bf.DataIndex().ReferenceElm() - rba.Range2().Min().V();
@@ -80,7 +80,7 @@ int TestRangeBuffer() {
     for(BufferAccessIterC<BufferAccessC<BufferAccessC<int> > > it(rba,rba.Range1());it;it++,acc2 += d2Size) {
       *it = acc2 ;
       
-      cerr << "Acc:" << ((void *) acc2) << " (" << ((void *) &acc2[rba.Range2().Min().V()]) << ") " << ((void *) it->ReferenceElm()) << "\n";
+      std::cerr << "Acc:" << ((void *) acc2) << " (" << ((void *) &acc2[rba.Range2().Min().V()]) << ") " << ((void *) it->ReferenceElm()) << "\n";
       for(BufferAccessIterC<BufferAccessC<int> > it2(*it,rba.Range2());it2;it2++,atData += d3Size) {
 	*it2 = atData;
 	cerr << "Data:" << ((void *) atData) << "\n";
@@ -89,24 +89,24 @@ int TestRangeBuffer() {
   }
   
   if(&(rba[rba.Range1().Min()].ReferenceElm()[rba.Range2().Min().V()]) != bf.DataIndex().ReferenceElm()) {
-    cerr << "Buffer index setup incorrect. Min @" << ((void *) &(rba[rba.Range1().Min()].ReferenceElm()[rba.Range2().Min().V()])) << "\n";
-    cerr << "Ref @" << ((void *) bf.DataIndex().ReferenceElm()) << "\n";
+    std::cerr << "Buffer index setup incorrect. Min @" << ((void *) &(rba[rba.Range1().Min()].ReferenceElm()[rba.Range2().Min().V()])) << "\n";
+    std::cerr << "Ref @" << ((void *) bf.DataIndex().ReferenceElm()) << "\n";
     return __LINE__;
   }
   
   if(&(rba[rba.Range1().Min()][rba.Range2().Min()][rba.Range3().Min()]) != bf.Data().ReferenceElm()) {
-    cerr << "Buffer setup incorrect. Min @" << ((void *)&(rba[rba.Range1().Min()][rba.Range2().Min()][rba.Range3().Min()])) << "\n";
-    cerr << "Ref @" << ((void *) bf.Data().ReferenceElm()) << "\n";
+    std::cerr << "Buffer setup incorrect. Min @" << ((void *)&(rba[rba.Range1().Min()][rba.Range2().Min()][rba.Range3().Min()])) << "\n";
+    std::cerr << "Ref @" << ((void *) bf.Data().ReferenceElm()) << "\n";
     return __LINE__;
   }
   
   BufferAccess3dIterC<int> it(rba,r2,r3);
   if(!it.IsElm()) {
-    cerr << "Failed to create valid iterator. \n";
+    std::cerr << "Failed to create valid iterator. \n";
     return __LINE__;
   }
   if(&(*it) != &(rba[rba.Range1().Min()][rba.Range2().Min()][rba.Range3().Min()])) {
-    cerr << "Inital iterator position incorrect. " << ((void *) &(*it) ) << " should be " << ((void *) &(rba[rba.Range1().Min()][rba.Range2().Min()][rba.Range3().Min()])) <<  "\n";
+    std::cerr << "Inital iterator position incorrect. " << ((void *) &(*it) ) << " should be " << ((void *) &(rba[rba.Range1().Min()][rba.Range2().Min()][rba.Range3().Min()])) <<  "\n";
     return __LINE__;
   }
   for(;it;it++)

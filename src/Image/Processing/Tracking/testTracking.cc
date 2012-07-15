@@ -37,16 +37,16 @@ int testNormalisedCorrelation();
 int main(int nargs,char **argv) {
   int ln;
   if((ln = testNormalisedCorrelation()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   
-  cout << "Test passed ok. \n";
+  std::cout << "Test passed ok. \n";
   return 0;
 }
 
 int testNormalisedCorrelation() {
-  cerr << "testNormalisedCorrelation(), Called. \n";
+  std::cerr << "testNormalisedCorrelation(), Called. \n";
   ImageC<ByteT> img(200,200);
   for(Array2dIterC<ByteT> it(img);it;it++)
     *it = (RandomInt() % 200);
@@ -71,7 +71,7 @@ int testNormalisedCorrelation() {
   RealT score;
   Index2dC at;
   match.Search(targ,img.Frame(),score,at);
-  cerr << "Targ1, At=" << at << " Score=" << score << "\n";
+  std::cerr << "Targ1, At=" << at << " Score=" << score << "\n";
   if(score < 0.8)
     return __LINE__;
   if((at - Index2dC(50,50)).SumOfSqr() > 1)
@@ -81,7 +81,7 @@ int testNormalisedCorrelation() {
   for(Array2dIterC<ByteT> it(targ2);it;it++)
     *it = (RandomInt() % 200);
   match.Search(targ2,img.Frame(),score,at);
-  cerr << "Targ2, At=" << at << " Score=" << score << "\n";
+  std::cerr << "Targ2, At=" << at << " Score=" << score << "\n";
   if(score > 0.7)
     return __LINE__;
   

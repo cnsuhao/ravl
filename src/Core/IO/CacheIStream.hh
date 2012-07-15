@@ -51,9 +51,9 @@ namespace RavlN {
     }
     //: Constructor from port and size.
 
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPISPortBodyC<DataT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
 
     const DPISPortC<DataT> &Input() const
     { return inPort; }

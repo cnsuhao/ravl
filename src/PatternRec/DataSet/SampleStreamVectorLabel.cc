@@ -61,7 +61,7 @@ namespace RavlN {
   
   MatrixC SampleStreamVectorLabelC::SumOuterProducts() {
     if(!First()) { // Goto first element.
-      cerr << "SampleStreamVectorLabelC::SumOuterProducts(), WARNING: Failed to seek to first element in sample stream.\n";
+      std::cerr << "SampleStreamVectorLabelC::SumOuterProducts(), WARNING: Failed to seek to first element in sample stream.\n";
     }
     VectorC vec;
     UIntT sumLimit = 500;
@@ -113,7 +113,7 @@ namespace RavlN {
   
   MeanCovarianceC SampleStreamVectorLabelC::MeanCovariance()  {
     if(!First()) { // Goto first element.
-      cerr << "SampleStreamVectorLabelC::MeanCovariance(), WARNING: Failed to seek to first element in sample stream.\n";
+      std::cerr << "SampleStreamVectorLabelC::MeanCovariance(), WARNING: Failed to seek to first element in sample stream.\n";
     }
     UIntT sumLimit = 500;
     SArray1dC<VectorC> vecs(sumLimit);

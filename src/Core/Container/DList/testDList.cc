@@ -163,9 +163,9 @@ int testDLIter() {
   DListC<IntT> incHead = ita.Head();
   DListC<IntT> incTail = itb.InclusiveTail();
 #if 0
-  cerr << "IncHead=" << incHead << "\n";
-  cerr << "IncTail=" << incTail << "\n";
-  cerr << "list=" << list << "\n";
+  std::cerr << "IncHead=" << incHead << "\n";
+  std::cerr << "IncTail=" << incTail << "\n";
+  std::cerr << "list=" << list << "\n";
 #endif
   if(list.Size() != 2) return __LINE__;
   if(incTail.Size() != 7) return __LINE__;
@@ -263,7 +263,7 @@ int testDoubleLinked() {
   int count = 0;
   for(IterRing2T it2(list2);it2;it2++)
     count++;
-  cerr << "Count=" << count <<"\n";
+  std::cerr << "Count=" << count <<"\n";
   if(count != 3) return __LINE__;
   
   for(int i = 0;i < 20;i++)
@@ -272,12 +272,12 @@ int testDoubleLinked() {
   count = 0;
   for(IterRing1T it2(list1);it2;it2++)
     count++;
-  cerr << "Count=" << count <<"\n";
+  std::cerr << "Count=" << count <<"\n";
   if(count != 20) return __LINE__;
   count = 0;
   for(IterRing2T it2(list2);it2;it2++)
     count++;
-  cerr << "Count=" << count <<"\n";
+  std::cerr << "Count=" << count <<"\n";
   if(count != 3) return __LINE__;
   return 0;
 }

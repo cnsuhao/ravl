@@ -34,7 +34,7 @@ namespace RavlN {
       in >> vs;
       ONDEBUG(cerr << "Vector size " << vs << " elements. \n");
       if (vs > 1000) {
-        cerr << "Unexpectedly large vector. \n";
+        std::cerr << "Unexpectedly large vector. \n";
         return ret;
       }
 

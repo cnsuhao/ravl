@@ -15,6 +15,7 @@
 #include "Ravl/OS/SysLog.hh"
 
 #define RAVL_REUSE_THREADS 0
+#define CATCH_EXCEPTIONS !RAVL_CHECK
 
 namespace RavlN {
 #if RAVL_REUSE_THREADS
@@ -54,14 +55,18 @@ namespace RavlN {
       reStart.Wait();
     } while(1) ;
 #else
+#if CATCH_EXCEPTIONS
     try {
+#endif
       se.Invoke();
+#if CATCH_EXCEPTIONS
     } catch(RavlN::ExceptionC &exception) {
       RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread. Text:" << exception.what() ;
       exception.Dump(RavlSysLog(SYSLOG_ERR));
     } catch(...) {
       RavlSysLog(SYSLOG_ERR) << "ERROR: LaunchThreadBodyC::Startup(), Caught exception running thread ";
     }
+#endif
     done.Post();
 #endif    
     return true;

@@ -23,6 +23,7 @@ int main() {
     cerr << "Test failed on line " << lineNo << "\n";
     return 1;
   }
+  return 0;
 }
 
 

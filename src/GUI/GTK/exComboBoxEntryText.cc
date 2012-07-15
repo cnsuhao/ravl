@@ -20,13 +20,13 @@ using namespace RavlGUIN;
 
 bool HandleCombo(StringC& text, ComboBoxEntryTextC &combo)
 {
-  cerr << "Combo selected: '" << text << "'\t'" << combo.TextSelected() << "'\n";
+  std::cerr << "Combo selected: '" << text << "'\t'" << combo.TextSelected() << "'\n";
   return true ;
 }
 
 bool HandleEntry(StringC &text, TextEntryC& entry)
 {
-  cerr << "Entry activate: '" << text << "'\t'" << entry.Text() << "'\n";
+  std::cerr << "Entry activate: '" << text << "'\t'" << entry.Text() << "'\n";
   return true ;
 }
 
@@ -57,5 +57,6 @@ int main(int nargs,char *args[])
   
   // Start the UI.
   Manager.Start();
-  cerr << "Finished...\n";
+  std::cerr << "Finished...\n";
+  return 0;
 }

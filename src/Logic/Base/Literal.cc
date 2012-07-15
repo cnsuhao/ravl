@@ -33,7 +33,7 @@ namespace RavlLogicN {
 
   //: Construct from a stream.
   
-  LiteralBodyC::LiteralBodyC(istream &strm) 
+  LiteralBodyC::LiteralBodyC(std::istream &strm) 
     : RCBodyVC(strm)
   {}
   
@@ -44,7 +44,7 @@ namespace RavlLogicN {
   
   //: Save to stream 'out'.
   
-  bool LiteralBodyC::Save(ostream &out) const 
+  bool LiteralBodyC::Save(std::ostream &out) const 
   { return RCBodyVC::Save(out); }
   
   //: Is this a variable ?
@@ -78,7 +78,7 @@ namespace RavlLogicN {
 
   //: Dump info in human readable format to stream 'out'.
   
-  void LiteralBodyC::Dump(ostream &out) {
+  void LiteralBodyC::Dump(std::ostream &out) {
     out << "L:" << ((void *) this);
   }
   

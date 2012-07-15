@@ -42,11 +42,11 @@ int main()
 {
   int ln;
   if((ln = testTickerTrigger()) != 0) {
-    cerr << "Test failed on line " << ln << " \n";
+    std::cerr << "Test failed on line " << ln << " \n";
     return 1;
   }
   if((ln = testTimedTriggerQueueTicker()) != 0) {
-    cerr << "Test failed on line " << ln << " \n";
+    std::cerr << "Test failed on line " << ln << " \n";
     return 1;
   }
 
@@ -54,7 +54,7 @@ int main()
 }
 
 int testTickerTrigger() {
-  cerr << "Starting tick test. \n";
+  std::cerr << "Starting tick test. \n";
   ravl_atomic_set(&callcount,0);
 
   ExampleC ae;
@@ -62,7 +62,7 @@ int testTickerTrigger() {
   TickerTriggerC tt1 = TickerTrigger(0.2,ae,&ExampleC::DoIt);
   TickerTriggerC tt2 = TickerTrigger(0.2,ae,&ExampleC::DoIt);
 
-  cerr << "Waiting 10 seconds. \n";
+  std::cerr << "Waiting 10 seconds. \n";
 
   DeadLineTimerC dlt(10.0);
   dlt.WaitForIt();
@@ -71,18 +71,18 @@ int testTickerTrigger() {
   
   int result = ravl_atomic_read(&callcount);
   int targ = 100;
-  cerr << "Result : " << result << "  Target:" << targ << "\n";
+  std::cerr << "Result : " << result << "  Target:" << targ << "\n";
 
   if(result < (targ - 6) || result > (targ + 6)) {
-    cerr << "Result out of range. \n";
+    std::cerr << "Result out of range. \n";
     return __LINE__;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
 int testTimedTriggerQueueTicker() {
-  cerr << "Starting queued tick test. \n";
+  std::cerr << "Starting queued tick test. \n";
   ravl_atomic_set(&callcount,0);
 
   ExampleC ae;
@@ -91,7 +91,7 @@ int testTimedTriggerQueueTicker() {
   UIntT qid1 = ttq.SchedulePeriodic(Trigger(ae,&ExampleC::DoIt),0.2);
   UIntT qid2 = ttq.SchedulePeriodic(Trigger(ae,&ExampleC::DoIt),0.2);
 
-  cerr << "Waiting 10 seconds. \n";
+  std::cerr << "Waiting 10 seconds. \n";
 
   DeadLineTimerC dlt(10.0);
   dlt.WaitForIt();
@@ -101,12 +101,12 @@ int testTimedTriggerQueueTicker() {
 
   int result = ravl_atomic_read(&callcount);
   int targ = 100;
-  cerr << "Result : " << result << "  Target:" << targ << "\n";
+  std::cerr << "Result : " << result << "  Target:" << targ << "\n";
 
   if(result < (targ - 6) || result > (targ + 6)) {
-    cerr << "Result out of range. \n";
+    std::cerr << "Result out of range. \n";
     return __LINE__;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }

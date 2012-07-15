@@ -237,13 +237,13 @@ namespace RavlGUIN {
     
   };
   
-  ostream &operator<<(ostream &out,const MarkupInfoC &obj);
+  std::ostream &operator<<(std::ostream &out,const MarkupInfoC &obj);
   //: Stream operator.
   
   BinOStreamC &operator<<(BinOStreamC &out,const MarkupInfoC &obj);
   //: Binary stream operator.
   
-  istream &operator>>(istream &in,MarkupInfoC &obj);
+  std::istream &operator>>(std::istream &in,MarkupInfoC &obj);
   //: Stream operator.
   
   BinIStreamC &operator>>(BinIStreamC &in,MarkupInfoC &obj);

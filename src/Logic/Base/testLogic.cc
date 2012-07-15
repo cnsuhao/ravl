@@ -47,50 +47,50 @@ int main() {
   int err;
 #if 1
   if((err = testBasic()) != 0) {
-    cerr << "testBasic failed at : " << err << "\n";
+    std::cerr << "testBasic failed at : " << err << "\n";
     return 1;
   }
   if((err = testBind()) != 0) {
-    cerr << "testBind failed at : " << err << "\n";
+    std::cerr << "testBind failed at : " << err << "\n";
     return 1;
   }
   if((err = testCompose()) != 0) {
-    cerr << "testBasic failed at : " << err << "\n";
+    std::cerr << "testBasic failed at : " << err << "\n";
     return 1;
   }
   if((err = testStateSet()) != 0) {
-    cerr << "testStateSet failed at : " << err << "\n";
+    std::cerr << "testStateSet failed at : " << err << "\n";
     return 1;
   }
   if((err = testStateOr()) != 0) {
-    cerr << "testStateOr failed at : " << err << "\n";
+    std::cerr << "testStateOr failed at : " << err << "\n";
     return 1;
   }
   if((err = testStateAnd()) != 0) {
-    cerr << "testStateAnd failed at : " << err << "\n";
+    std::cerr << "testStateAnd failed at : " << err << "\n";
     return 1;
   }
   if((err = testStateNot()) != 0) {
-    cerr << "testStateAnd failed at : " << err << "\n";
+    std::cerr << "testStateAnd failed at : " << err << "\n";
     return 1;
   }
   if((err = testLiteralIO()) != 0) {
-    cerr << "testLiteralIO failed at : " << err << "\n";
+    std::cerr << "testLiteralIO failed at : " << err << "\n";
     return 1;
   }
 #endif
   if((err = testBinaryIO()) != 0) {
-    cerr << "testBinaryIO failed at : " << err << "\n";
+    std::cerr << "testBinaryIO failed at : " << err << "\n";
     return 1;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
 //: Test basic literal operations and unification.
 
 int testBasic() {
-  cout << "testBasic() Started. \n";  
+  std::cout << "testBasic() Started. \n";  
   
   if(!Literal().IsValid()) return __LINE__;
   if(!Var().IsValid()) return __LINE__;
@@ -121,14 +121,14 @@ int testBasic() {
   
   // Check the most basic unify operation.
   TupleC e1 = Tuple(s1,s2);
-  //e1.Dump(cerr);   cerr <<"\n";
+  //e1.Dump(std::cerr);   std::cerr <<"\n";
   TupleC e2 = Tuple(s1,s2);
   if(e1.Hash() != e2.Hash()) return __LINE__;
   if(e1 != e2) return __LINE__;
   BindSetC bs(true);
   if(!Unify(e1,e2,bs)) return __LINE__;
   TupleC e3 = Tuple(s1,Var());
-  //e3.Dump(cerr); cerr << "\n";
+  //e3.Dump(std::cerr); std::cerr << "\n";
   if(!Unify(e1,e3,bs)) return __LINE__;
   if(bs.Size() != 1) return __LINE__;
 
@@ -136,7 +136,7 @@ int testBasic() {
 }
 
 int testCompose() {
-  cerr << "testCompose() Started. \n";
+  std::cerr << "testCompose() Started. \n";
   // Check and...
   AndC land(true);
   LiteralC l1("l1");;
@@ -150,23 +150,23 @@ int testCompose() {
   if(land.Arity() != 3) return __LINE__;  
   if(land.Terms()[1] != l1) return __LINE__;
   if(land.Terms()[2] != l2) return __LINE__;
-  cerr << "And=" << land << "\n";
+  std::cerr << "And=" << land << "\n";
   // Check minterm.
   MinTermC mt((const LiteralC &)land,false);
-  cerr << "MinTerm=" << mt << "\n";
+  std::cerr << "MinTerm=" << mt << "\n";
   NotC nt(true,l3);
   mt *= nt;
-  cerr << "MinTerm=" << mt << "\n";
+  std::cerr << "MinTerm=" << mt << "\n";
   
   LiteralC goalSymb = l1 * !l2 * !l3;
-  cerr << "Term=" << goalSymb << "\n";
+  std::cerr << "Term=" << goalSymb << "\n";
   return 0;
 }
 
 // Test BindSetC.
 
 int testBind() {
-  cout << "testBind() Started. \n";  
+  std::cout << "testBind() Started. \n";  
   BindSetC test(true);
   if(!test.IsValid()) return __LINE__;
   VarC v1(true);
@@ -201,7 +201,7 @@ int testBind() {
 // Test BindSetC.
 
 int testStateSet() {
-  cout << "testStateSet() Started. \n";
+  std::cout << "testStateSet() Started. \n";
   StateSetC state(true);
   if(!state.IsValid()) return __LINE__;
   LiteralC l1(true);
@@ -232,14 +232,14 @@ int testStateSet() {
   }
   if(count != 1) return __LINE__;
   // Dump state.
-  cout << "Test dump of state: \n";
-  cout << state;
+  std::cout << "Test dump of state: \n";
+  std::cout << state;
   return 0;
 }
 
 
 int testStateOr() {
-  cout << "testStateOr() Started. \n";
+  std::cout << "testStateOr() Started. \n";
   //cerr << "testStateOr() \n";
   StateSetC state(true);
   LiteralC l1(true);
@@ -273,7 +273,7 @@ int testStateOr() {
 }
 
 int testStateAnd() {
-  cout << "testStateAnd() Started. \n";
+  std::cout << "testStateAnd() Started. \n";
   //cerr << "testStateAnd() \n";
   StateSetC state(true);
   LiteralC l1(true);
@@ -296,7 +296,7 @@ int testStateAnd() {
   BindSetC binds(true);
   int count = 0;
   for(LiteralIterC it(andTest.Solutions(state,binds));it;it++) {
-    //ONDEBUG(cerr << "Got solution, Binds :" << binds << "\n");
+    //ONDEBUG(std::cerr << "Got solution, Binds :" << binds << "\n");
     if(!binds.IsBound(v1)) return __LINE__;
     if(!binds.IsBound(v2)) return __LINE__;
     count++;
@@ -306,7 +306,7 @@ int testStateAnd() {
 }
 
 int testStateNot() {
-  cout << "testStateNot() Started. \n";
+  std::cout << "testStateNot() Started. \n";
   //cerr << "testStateAnd() \n";
   StateSetC state(true);
   LiteralC l1(true);
@@ -328,7 +328,7 @@ int testStateNot() {
   BindSetC binds(true);
   int count = 0;
   for(LiteralIterC it(notTest.Solutions(state,binds));it;it++) {
-    //ONDEBUG(cerr << "Got solution, Binds :" << binds << "\n");
+    //ONDEBUG(std::cerr << "Got solution, Binds :" << binds << "\n");
     //    if(!binds.IsEmpty()) return __LINE__;
     if(it.Data() != t1) return __LINE__;
     count++;
@@ -343,12 +343,12 @@ int testLiteralIO() {
   ContextC context;
   if(!LoadState(is,state,context)) return __LINE__;
   if(state.Size() != 3) return __LINE__;
-  state.Dump(cerr);
+  state.Dump(std::cerr);
   return 0;
 }
 
 int testBinaryIO() {
-  cerr << "Testing binary IO. \n";
+  std::cerr << "Testing binary IO. \n";
 #if 1
   ContextC context;
   LiteralC l1(true);
@@ -393,7 +393,7 @@ int testBinaryIO() {
   
   bis >> context >> t2 >> lt2 >> bs2 >> state2 >> mt2 >> value2;
   
-  // cout << "Binds=" << bs2 <<"\n";
+  // std::cout << "Binds=" << bs2 <<"\n";
   //cout << "l1=" << t2[0].Name() <<"\n";
   //cout << mt1.Name() << "\n";
   //cout << mt2.Name() << "\n";
@@ -404,6 +404,6 @@ int testBinaryIO() {
   if(!state2.Ask(t2[0])) return __LINE__;
   if(value2.Data() != value1.Data()) return __LINE__;
 #endif
-  cerr << "Done.\n";
+  std::cerr << "Done.\n";
   return 0;
 }

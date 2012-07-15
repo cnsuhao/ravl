@@ -21,13 +21,13 @@ namespace RavlN {
   
   // Dump to stream.
   
-  void BGraphEdgeBaseC::Dump(ostream &out) 
+  void BGraphEdgeBaseC::Dump(std::ostream &out) 
   { out << "BGraphBaseC::Dump() Unimplemented\n"; }
   
   /////////////////////
   // Dump to stream.
   
-  void BGraphNodeBaseC::Dump(ostream &out) 
+  void BGraphNodeBaseC::Dump(std::ostream &out) 
   { out << "BGraphBaseC::Dump() Unimplemented\n"; }
   
   BGraphBaseAdjIterC BGraphNodeBaseC::In() 
@@ -39,7 +39,7 @@ namespace RavlN {
   /////////////////////
   // Dump to stream.
   
-  void BGraphBaseC::Dump(ostream &out) 
+  void BGraphBaseC::Dump(std::ostream &out) 
   { out << "BGraphBaseC::Dump() Unimplemented\n"; }
   
 }

@@ -19,7 +19,8 @@ namespace RavlN {
   //! userlevel=Develop
   //: Design a neural network classifier .
 
-  class DesignClassifierNeuralNetwork2BodyC: public DesignClassifierSupervisedBodyC
+  class DesignClassifierNeuralNetwork2BodyC
+    : public DesignClassifierSupervisedBodyC
   {
   public:
     DesignClassifierNeuralNetwork2BodyC(UIntT nLayers,
@@ -32,17 +33,28 @@ namespace RavlN {
     DesignClassifierNeuralNetwork2BodyC(const XMLFactoryContextC & factory);
     //: factory constructor
 
-    DesignClassifierNeuralNetwork2BodyC(istream &strm);
+    DesignClassifierNeuralNetwork2BodyC(std::istream &strm);
     //: Load from stream.
 
     DesignClassifierNeuralNetwork2BodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual bool Save(BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
+
+    virtual void ParameterLimits(VectorC &defaultValues,VectorC &min,VectorC &max,SArray1dC<StringC> &names) const;
+    //: Get the default parameter values and their limits.
+
+    virtual VectorC Parameters() const;
+    //: Get the current parameters.
+
+    virtual VectorC SetParameters(const VectorC &params);
+    //: Set the current parameters.
+    // Returns the current parameters, which may not be exactly those
+    // set in 'params', but will be the closest legal values.
 
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Train a neural network.  The number of input dimensions must be the same as specified in the
@@ -57,6 +69,7 @@ namespace RavlN {
     FunctionC m_featureExpand;
     UIntT m_nLayers;
     UIntT m_nHidden;
+    RealT m_hiddenFraction; // Hidden units as a fraction of number of inputs + outputs.  -1 = Use default
     RealT m_desiredError;
     UIntT m_maxEpochs;
     UIntT m_displayEpochs;
@@ -92,7 +105,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
 
-    DesignClassifierNeuralNetwork2C(istream &strm);
+    DesignClassifierNeuralNetwork2C(std::istream &strm);
     //: Load from stream.
 
     DesignClassifierNeuralNetwork2C(BinIStreamC &strm);
@@ -121,7 +134,7 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm, DesignClassifierNeuralNetwork2C &obj)
+  inline std::istream &operator>>(std::istream &strm, DesignClassifierNeuralNetwork2C &obj)
   {
     obj = DesignClassifierNeuralNetwork2C(strm);
     return strm;
@@ -129,7 +142,7 @@ namespace RavlN {
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out,
+  inline std::ostream &operator<<(std::ostream &out,
       const DesignClassifierNeuralNetwork2C &obj)
   {
     obj.Save(out);

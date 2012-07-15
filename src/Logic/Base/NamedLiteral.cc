@@ -18,7 +18,7 @@ namespace RavlLogicN {
 
   //: Construct from a stream.
   
-  NamedLiteralBodyC::NamedLiteralBodyC(istream &strm)
+  NamedLiteralBodyC::NamedLiteralBodyC(std::istream &strm)
     : LiteralBodyC(strm)
   { strm >> name; }
     
@@ -30,7 +30,7 @@ namespace RavlLogicN {
   
   //: Save to stream 'out'.
   
-  bool NamedLiteralBodyC::Save(ostream &out) const { 
+  bool NamedLiteralBodyC::Save(std::ostream &out) const { 
     if(!LiteralBodyC::Save(out)) return false;
     out << ' ' << name;
     return true;

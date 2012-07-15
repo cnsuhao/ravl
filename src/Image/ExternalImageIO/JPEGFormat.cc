@@ -55,7 +55,7 @@ namespace RavlImageN {
   
   //: Try and choose best format for IO.
   
-  const type_info &FileFormatJPEGBodyC::ChooseFormat(const type_info &obj_type) const {
+  const std::type_info &FileFormatJPEGBodyC::ChooseFormat(const std::type_info &obj_type) const {
     if(obj_type == typeid(CompressedImageJPEGC))
       return obj_type;
 
@@ -84,15 +84,15 @@ namespace RavlImageN {
   
   //: Is stream in std stream format ?
   
-  const type_info &
-  FileFormatJPEGBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
-    ONDEBUG(cerr << "FileFormatJPEGBodyC::ProbeLoad(), called. \n");
+  const std::type_info &
+  FileFormatJPEGBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const {
+    ONDEBUG(std::cerr << "FileFormatJPEGBodyC::ProbeLoad(), called. \n");
     if(!in.good())
       return typeid(void);
     ByteT buff[3];
     in.read((char*)buff,2);
     in.Unget((char *)buff,2);
-    ONDEBUG(cerr << "FileFormatJPEGBodyC::ProbeLoad(), called. " << hex << ((UIntT) buff[0])  << " " << ((UIntT) buff[1])  << dec << " \n");
+    ONDEBUG(std::cerr << "FileFormatJPEGBodyC::ProbeLoad(), called. " << hex << ((UIntT) buff[0])  << " " << ((UIntT) buff[1])  << dec << " \n");
     if(buff[0] != ((ByteT) 0xff))
       return typeid(void);
     if(buff[1] != ((ByteT) 0xd8))
@@ -100,8 +100,8 @@ namespace RavlImageN {
     return ChooseFormat(obj_type);
   }
   
-  const type_info &
-  FileFormatJPEGBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatJPEGBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     //StringC filename(nfilename);
     //  if(obj_type != typeid(ImageC<ByteRGBValueC>))
     //    return FALSE; // Can only deal with rgb at the moment.
@@ -109,23 +109,23 @@ namespace RavlImageN {
     return ProbeLoad(in,obj_type);
   }
   
-  const type_info &
-  FileFormatJPEGBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat ) const {
+  const std::type_info &
+  FileFormatJPEGBodyC::ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat ) const {
     if(forceFormat)
       return ChooseFormat(obj_type);
     if(filename.IsEmpty() || filename[0]=='@') // Is this a special file ?
       return typeid(void);
     if(Extension(filename) != "jpg" && filename != "-")
       return typeid(void);
-    const type_info &ret_type = ChooseFormat(obj_type);
-    ONDEBUG(cerr << "FileFormatJPEGBodyC::ProbeSave(), Using:'" << ret_type.name() << " Requested:'" << obj_type.name() << "'\n");
+    const std::type_info &ret_type = ChooseFormat(obj_type);
+    ONDEBUG(std::cerr << "FileFormatJPEGBodyC::ProbeSave(), Using:'" << ret_type.name() << " Requested:'" << obj_type.name() << "'\n");
     return ret_type;
   }
   
   
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
-  DPIPortBaseC FileFormatJPEGBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const {  
+  DPIPortBaseC FileFormatJPEGBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const {  
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return DPIImageJPegByteRGBC(filename);
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -141,7 +141,7 @@ namespace RavlImageN {
   
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
-  DPOPortBaseC FileFormatJPEGBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatJPEGBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return  DPOImageJPegByteRGBC(filename,compression);
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -158,7 +158,7 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
 
-  DPIPortBaseC FileFormatJPEGBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatJPEGBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return DPIImageJPegByteRGBC(in);
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -175,7 +175,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatJPEGBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
+  DPOPortBaseC FileFormatJPEGBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return  DPOImageJPegByteRGBC(out,compression);
     if(obj_type == typeid(ImageC<ByteYUVValueC>))
@@ -191,7 +191,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatJPEGBodyC::DefaultType() const { 
+  const std::type_info &FileFormatJPEGBodyC::DefaultType() const { 
     return typeid(ImageC<ByteRGBValueC>); 
   }
   

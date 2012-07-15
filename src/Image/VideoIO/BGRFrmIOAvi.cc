@@ -24,7 +24,7 @@ namespace RavlImageN {
     : aviStrm(nStrm,false),
       currentframeNo(0) 
   {
-    if(!aviStrm.Stream()) cerr << "DPISBGRAviFrameBodyC::DPISBGRAviFrameBodyC(IStreamC), Passed bad stream. \n";
+    if(!aviStrm.Stream()) std::cerr << "DPISBGRAviFrameBodyC::DPISBGRAviFrameBodyC(IStreamC), Passed bad stream. \n";
 
     aviStrm.GetVideoStreamFormatInfo(strf); //gets the video info 
   }
@@ -130,7 +130,7 @@ namespace RavlImageN {
       framesAdded(0)
   {
     if(!nStrm)
-      cerr << "DPOSBGRAviFrameBodyC::DPOSBGRAviFrameBodyC(OStreamC), Passed bad stream. \n";
+      std::cerr << "DPOSBGRAviFrameBodyC::DPOSBGRAviFrameBodyC(OStreamC), Passed bad stream. \n";
 
     DListC<StringC> fccTypes;
     fccTypes += "vids";

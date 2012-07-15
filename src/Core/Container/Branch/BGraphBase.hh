@@ -54,7 +54,7 @@ namespace RavlN {
     { return *Next[Way]; }
     //: Get edges.
     
-    void Dump(ostream &out);
+    void Dump(std::ostream &out);
     //: Dump to stream.
     
     inline SizeT Hash() const
@@ -101,7 +101,7 @@ namespace RavlN {
     { return IO[Way]; }
     //: Get edge lists.
     
-    void Dump(ostream &out);
+    void Dump(std::ostream &out);
     //: Dump to stream.
     
     inline SizeT Hash() const
@@ -173,7 +173,7 @@ namespace RavlN {
     { return (H >= 0) && (H < Nodes.Size()); }
     //: Check a node handle is valid. (For debuging.)
   
-    void Dump(ostream &out);
+    void Dump(std::ostream &out);
     //: Dump to stream.
     
   private:

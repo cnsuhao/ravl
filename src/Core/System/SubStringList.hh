@@ -60,10 +60,10 @@ namespace RavlN {
     
   private:
     
-    friend ostream & operator<<(ostream & s, const SubStringListC & list);
+    friend std::ostream & operator<<(std::ostream & s, const SubStringListC & list);
   };
   
-  ostream & operator<<(ostream & s, const SubStringListC & list);
+  std::ostream & operator<<(std::ostream & s, const SubStringListC & list);
   // Saves the string list into the output stream 's'.
   
   

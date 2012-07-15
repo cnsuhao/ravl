@@ -184,13 +184,13 @@ int TestMatMulVec() {
 
 int testConvolveKernel() {
   for(size_t matrRows = 128-2*13; matrRows <= 200; matrRows += 13) {
-    //cerr << "matrRows:" << matrRows << endl;
+    //cerr << "matrRows:" << matrRows << std::endl;
     for(size_t matrCols = 128-2*13; matrCols <= 200; matrCols += 13) {
-      //cerr << "matrCols:" << matrCols << endl;
+      //cerr << "matrCols:" << matrCols << std::endl;
       for(size_t kernRows = 32-2*5; kernRows <= 64; kernRows += 5) {
-        //cerr << "kernRows:" << kernRows << endl;
+        //cerr << "kernRows:" << kernRows << std::endl;
         for(size_t kernCols = 32-2*5; kernCols <= 64; kernCols += 5) {
-          //cerr << "kernCols:" << kernCols << endl;
+          //cerr << "kernCols:" << kernCols << std::endl;
           float matrix[matrRows][matrCols];
           float kernel[kernRows][kernCols];
 
@@ -208,9 +208,9 @@ int testConvolveKernel() {
 
 
           for(size_t posRow = 20-2; posRow <= 25; posRow += 1) {
-            //cerr << "posRow:" << posRow << endl;
+            //cerr << "posRow:" << posRow << std::endl;
             for(size_t posCol = 10-2; posCol <= 15; posCol += 1) {
-              //cerr << "posCol:" << posCol << endl;
+              //cerr << "posCol:" << posCol << std::endl;
 
               //compute old way
               float resOld = 0.f;
@@ -241,13 +241,13 @@ int testConvolveKernel() {
 
 int testConvolveKernelQuad() {
   for(size_t matrRows = 128-2*13; matrRows <= 200; matrRows += 13) {
-    //cerr << "matrRows:" << matrRows << endl;
+    //cerr << "matrRows:" << matrRows << std::endl;
     for(size_t matrCols = 128-2*13; matrCols <= 200; matrCols += 13) {
-      //cerr << "matrCols:" << matrCols << endl;
+      //cerr << "matrCols:" << matrCols << std::endl;
       for(size_t kernRows = 32-2*5; kernRows <= 64; kernRows += 5) {
-        //cerr << "kernRows:" << kernRows << endl;
+        //cerr << "kernRows:" << kernRows << std::endl;
         for(size_t kernCols = 32-2*5; kernCols <= 64; kernCols += 5) {
-          //cerr << "kernCols:" << kernCols << endl;
+          //cerr << "kernCols:" << kernCols << std::endl;
           float matrix[matrRows][matrCols];
           float kernel1[kernRows][kernCols];
           float kernel2[kernRows][kernCols];
@@ -267,9 +267,9 @@ int testConvolveKernelQuad() {
 
 
           for(size_t posRow = 20-2; posRow <= 25; posRow += 1) {
-            //cerr << "posRow:" << posRow << endl;
+            //cerr << "posRow:" << posRow << std::endl;
             for(size_t posCol = 10-2; posCol <= 15; posCol += 1) {
-              //cerr << "posCol:" << posCol << endl;
+              //cerr << "posCol:" << posCol << std::endl;
 
               //compute old way
               float resOld = 0.f;

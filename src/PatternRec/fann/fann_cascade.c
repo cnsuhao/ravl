@@ -223,6 +223,7 @@ float fann_train_outputs_epoch(struct fann *ann, struct fann_train_data *data)
 		case FANN_TRAIN_BATCH:
 		case FANN_TRAIN_INCREMENTAL:
 			fann_error((struct fann_error *) ann, FANN_E_CANT_USE_TRAIN_ALG);
+			break;
 	}
 
 	return fann_get_MSE(ann);

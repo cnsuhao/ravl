@@ -72,7 +72,7 @@ namespace RavlImageN {
   //: Set binary mask to exclude regions from tracker
   bool MosaicBuilderBodyC::SetMask(const StringC& fileName) {
     if (!Load(fileName, mask)) {
-      cerr << "Failed to load file: " << fileName << endl;
+      std::cerr << "Failed to load file: " << fileName << std::endl;
       return false;
     }
     trackingHomogs.SetMask(mask);
@@ -88,7 +88,7 @@ namespace RavlImageN {
     ImageC<ByteRGBValueC> img;
     if (resize == twopass) { // two-pass version
       for (; frameNo < noOfFrames; ++frameNo) {
-	if (verbose)  log << "Tracking frame " << frameNo << endl;
+	if (verbose)  log << "Tracking frame " << frameNo << std::endl;
 	if (!GetImage(img))  break;
 	if (!PrepareFrame(img)) break; 
 	if (!FindProj(img)) break;
@@ -99,7 +99,7 @@ namespace RavlImageN {
       for (frameNo = 0; frameNo < Parray.Size(); ++frameNo) {
 	if (!GetImage(img))  break;
 	if (frameNo % filterSubsample == 0) {
-	  if (verbose)  log << "Warping frame " << frameNo << endl;
+	  if (verbose)  log << "Warping frame " << frameNo << std::endl;
 	  if (!PrepareFrame(img)) break;
 	  WarpFrame(img);
 	}
@@ -107,7 +107,7 @@ namespace RavlImageN {
     }
     else { // one-pass version
       while(frameNo < noOfFrames) {
-	if (verbose)  log << "Processing frame " << frameNo << endl;
+	if (verbose)  log << "Processing frame " << frameNo << std::endl;
 	if (!GetImage(img))  break;
 	if (!Apply(img)) break;
       }
@@ -125,7 +125,7 @@ namespace RavlImageN {
       // If we are resizing the mosaic as we go, and mosaic rectangle needs 
       // expanding, then we need to copy mosaic to a new, bigger image.
       if (InvolveFrame(img.Rectangle(),Parray[frameNo]) && (resize==onepass)) {
-	if (verbose)  log << "Mosaic was expanded to " << img.Rectangle() << endl;
+	if (verbose)  log << "Mosaic was expanded to " << img.Rectangle() << std::endl;
 	ExpandMosaic();
       }
       WarpFrame(img);
@@ -160,7 +160,7 @@ namespace RavlImageN {
   //: Open file for mosaicing
   bool MosaicBuilderBodyC::OpenSequence(const StringC& ipFile, IntT startFrame) {
     if(!OpenISequence(input,ipFile)) {
-      cerr << "Failed to open input sequence `" << ipFile << "'" << endl;
+      std::cerr << "Failed to open input sequence `" << ipFile << "'" << std::endl;
       return false;
     }
     if (startFrame > 0)  input.Seek(startFrame);
@@ -185,7 +185,7 @@ namespace RavlImageN {
       cropRect.LCol() += cropL; cropRect.RCol() -= cropR;
     }
     if (!cropRect.IsValid()) {
-      cerr<<"Cropped image rectangle too small at frame no. "<<frameNo<<endl;
+      std::cerr<<"Cropped image rectangle too small at frame no. "<<frameNo<<endl;
       img = ImageC<ByteRGBValueC>();
       return false;
     }
@@ -336,7 +336,7 @@ namespace RavlImageN {
     if (updateSearchSize == 0) return false;
     try  {
       // use proj as estimate to match image with current mosaic & update homog
-      if (verbose) log << "Unrefined homography:\n" << proj << endl;
+      if (verbose) log << "Unrefined homography:\n" << proj << std::endl;
       ImageMatcherC matchUpdate(RGBImageCT2ByteImageCT(GetMosaic()),
 				0, 0, 0, 0, 17, updateSearchSize, 20,
 				mosaicZHomog, zhomog);
@@ -345,10 +345,10 @@ namespace RavlImageN {
 	return false;
       }
       proj = projCopy;
-      if (verbose) log << "Refined homography:\n" << proj << endl;
+      if (verbose) log << "Refined homography:\n" << proj << std::endl;
     }
     catch (...) {
-      cerr << "Exception caught in mosaic image matcher." << endl;
+      std::cerr << "Exception caught in mosaic image matcher." << std::endl;
       return false;
     }
     return true;

@@ -56,7 +56,7 @@ namespace RavlN {
 	cout << "Processing directory '" << at << "'\n";
       if(!op(at,defs)) {
 	if(verbose) 
-	  cerr << "SourceCodeManagerC::ForAll(), Error processing directory :'" << at << "'\n";
+	  std::cerr << "SourceCodeManagerC::ForAll(), Error processing directory :'" << at << "'\n";
 	break;
       }
       // Sort out subdirectories.
@@ -71,7 +71,7 @@ namespace RavlN {
 	toDo.InsFirst(at + filenameSeperator + *it);
 	if(checkList.Contains(*it))
 	{
-	  cerr << "ERROR: duplicate nested dirs in " << at + filenameSeperator + "defs.mk" << endl;
+	  std::cerr << "ERROR: duplicate nested dirs in " << at + filenameSeperator + "defs.mk" << std::endl;
 	}
 	else
 	  checkList.InsLast(*it);

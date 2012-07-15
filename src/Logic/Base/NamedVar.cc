@@ -17,7 +17,7 @@ namespace RavlLogicN {
   
   //: Construct from a stream.
   
-  NamedVarBodyC::NamedVarBodyC(istream &strm)
+  NamedVarBodyC::NamedVarBodyC(std::istream &strm)
     : VarBodyC(strm)
   { strm >> name; }
     
@@ -29,7 +29,7 @@ namespace RavlLogicN {
     
   //: Save to stream 'out'.
   
-  bool NamedVarBodyC::Save(ostream &out) const { 
+  bool NamedVarBodyC::Save(std::ostream &out) const { 
     if(!VarBodyC::Save(out)) return false;
     out << ' ' << name;
     return true;

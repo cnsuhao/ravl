@@ -28,23 +28,23 @@ int testModelSingleIO();
 int main() {
   int ln;
   if((ln = testDesignFuncLSQ()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testModelSingleIO()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testModelIO()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
 int testDesignFuncLSQ() {
-  cout << "testDesignFuncLSQ(), Called. \n";
+  std::cout << "testDesignFuncLSQ(), Called. \n";
   SampleVectorC ins(10);
   SampleVectorC outs(10);
   
@@ -59,7 +59,7 @@ int testDesignFuncLSQ() {
   FunctionC func = design.Apply(ins,outs);
   if(!func.IsValid()) return __LINE__;
   VectorC to = func.Apply(VectorC(1,2,1));
-  cerr << "Testout=" << to << "\n";
+  std::cerr << "Testout=" << to << "\n";
   if((to - VectorC(3,2)).SumOfSqr() > 0.000000001) return __LINE__;
   
   return 0;
@@ -81,7 +81,7 @@ FunctionC designRandomFunc(UIntT inSize,UIntT outSize,UIntT order,bool orth) {
 }
 
 int testModelIO() {
-  cout << "testModelIO(), Called. \n";
+  std::cout << "testModelIO(), Called. \n";
   FuncMeanProjectionC fmp(RandomVector(3),RandomMatrix(3,3));
   FuncLinearC fl(RandomMatrix(3,3),RandomVector(3));
   SArray1dC<FuncLinearCoeffC> funcs(10);
@@ -157,7 +157,7 @@ int testModelIO() {
 }
 
 int testModelSingleIO() {
-  cout << "testModelSingleIO(), Called. \n";
+  std::cout << "testModelSingleIO(), Called. \n";
   
   for(int i = 0;i < 20;i++) {
     FuncLinearCoeffC func = designRandomFunc(RandomInt() % 8 + 2,RandomInt() % 8 + 2,((i/2) % 2)+1,(i % 1) == 0);
@@ -185,8 +185,8 @@ int testModelSingleIO() {
 	StringC val;
 	bis >> val;
 	if(!val.IsEmpty()) {
-	  cerr << "Full=" << str << "\n";
-	  cerr << "Text remaining... '" << val << "'\n";
+	  std::cerr << "Full=" << str << "\n";
+	  std::cerr << "Text remaining... '" << val << "'\n";
 	  
 	  return __LINE__;
 	}

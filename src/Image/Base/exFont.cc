@@ -28,7 +28,7 @@ int main(int nargs,char **argv) {
   }
   
   if(!font.IsValid()) {
-    cerr << "No font loaded. \n";
+    std::cerr << "No font loaded. \n";
     return 1;
   }
   

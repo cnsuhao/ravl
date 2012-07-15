@@ -45,7 +45,9 @@ namespace RavlN { namespace GeneticN {
   {}
 
   GeneTypeListBaseC::GeneTypeListBaseC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_contentType(0),
+     m_maxLength(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -148,6 +150,7 @@ namespace RavlN { namespace GeneticN {
           newList.push_back(newGene.BodyPtr());
           ret = true;
         }  // Fall through
+        /* no break */
         default:  // Just leave it alone
           newList.push_back(oldList[i]);
           break;

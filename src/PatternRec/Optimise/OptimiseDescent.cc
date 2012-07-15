@@ -35,7 +35,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseDescentBodyC::OptimiseDescentBodyC (istream &in)
+  OptimiseDescentBodyC::OptimiseDescentBodyC (std::istream &in)
     :OptimiseBodyC("OptimiseDescentBodyC",in)
   {
     in >> _iterations;
@@ -63,8 +63,8 @@ namespace RavlN {
     RealT stepSize = 1;
     
 #if 0
-    cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
-    cerr << "    X=" << iterX << "\n";
+    std::cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
+    std::cerr << "    X=" << iterX << "\n";
 #endif
     
     UIntT maxSteps = 15;  // Allow quite a few steps on the first iteration to get the scale right.
@@ -111,7 +111,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseDescentBodyC::Save (ostream &out) const
+  bool OptimiseDescentBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << "\n";

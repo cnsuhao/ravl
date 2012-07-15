@@ -128,6 +128,7 @@ namespace RavlN {
       FVectorC<N> vec = point[1] - point[0];
       point[0] = p;
       point[1] = p + vec;
+      return *this;
     }
     //: Translates the line segment to start in the point 'p'.
     
@@ -135,6 +136,7 @@ namespace RavlN {
       FVectorC<N> vec = point[1] - point[0];
       point[0] = p - vec;
       point[1] = p;
+      return *this;
     }
     //: Translates the line segment to end in the point 'p'.
     

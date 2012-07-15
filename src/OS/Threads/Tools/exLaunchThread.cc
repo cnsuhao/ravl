@@ -30,7 +30,7 @@ bool Func1 (void)
   for (UIntT i = 1 ; i <= 5 ; ++i ) 
     {
       Sleep(1) ; 
-      cout << "\n Func1 counting:" << i ; 
+      std::cout << "\n Func1 counting:" << i ; 
     }
   return true ; 
 }
@@ -38,11 +38,11 @@ bool Func1 (void)
 
 bool Func2 (IntT & dummy) 
 {
-  cout << "\n Func2 const argument is: " << dummy;
+  std::cout << "\n Func2 const argument is: " << dummy;
   for ( UIntT i = 1 ; i <= 10 ; i++ ) 
     { 
       Sleep(1) ; 
-      cout << "\n Func2 counting:" << i ; 
+      std::cout << "\n Func2 counting:" << i ; 
     }
   return true ;
 }
@@ -57,7 +57,7 @@ bool Func3 (Array1dC<UIntT> &a, Array1dC<UIntT> &b)
   for ( UIntT i = 1 ; i <= 15 ; i++ ) 
     { 
       Sleep(1) ; 
-      cout << "\n Func3 counting:" << i ; 
+      std::cout << "\n Func3 counting:" << i ; 
     }
   a[0] = 6;
   Array1dC<UIntT> c(1);
@@ -85,18 +85,18 @@ int main (void)
   LaunchThreadC thread3 = LaunchThread ( trig3 ) ; 
   
   for ( UIntT i = 1 ; i <= 5 ; ++i ) 
-    { Sleep(1) ; cout << "\n Main counting " ; } 
+    { Sleep(1) ; std::cout << "\n Main counting " ; } 
 
   thread1.WaitForExit() ; 
-  cout << "\n\n **** Thread 1 Finished " ; 
+  std::cout << "\n\n **** Thread 1 Finished " ; 
   thread2.WaitForExit() ; 
-  cout << "\n\n **** Thread 2 Finished " ; 
+  std::cout << "\n\n **** Thread 2 Finished " ; 
   thread3.WaitForExit() ; 
-  cout << "\n\n **** Thread 3 Finished " ; 
+  std::cout << "\n\n **** Thread 3 Finished " ; 
 
   // Because "a" is a big object, the value set in the thread can be retrieved
   // in the main thread (or any other thread).  On the other hand, because the
   // handle of "b" was reassigned, the link with the body is lost
-  cout << "\n\n ****** Thread 3 arg values: "<< a[0] << " " << b[0] << endl;
-
+  std::cout << "\n\n ****** Thread 3 arg values: "<< a[0] << " " << b[0] << std::endl;
+  return 0;
 }

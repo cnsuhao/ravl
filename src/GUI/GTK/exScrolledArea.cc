@@ -41,5 +41,5 @@ int main(int nargs,char *args[])
     aList.AppendLine(i,lineInfo);
   }  
   Manager.Wait();
-  
+  return 0;
 }

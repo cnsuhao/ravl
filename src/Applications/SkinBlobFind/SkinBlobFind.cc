@@ -53,7 +53,7 @@ int main(int argc, char** argv)
   if (!Load(strSkin, skin))
 
   {
-    cerr << "skin image load failed" << endl;
+    std::cerr << "skin image load failed" << std::endl;
     return 0;
   }
 
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
   DPISPortC< ImageC<ByteRGBAValueC> > port_image;
   if (!OpenISequence(port_image, strInput))
   {
-    cerr << "couldn't open input sequence" << endl;
+    std::cerr << "couldn't open input sequence" << std::endl;
     return 0;
   }
 
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
     ImageC<ByteRGBAValueC> image;
     if (!port_image.Get(image))
     {
-      cerr << "finishing after " << iframe << " frames" << endl;
+      std::cerr << "finishing after " << iframe << " frames" << std::endl;
       break;
     }
 
@@ -167,11 +167,12 @@ int main(int argc, char** argv)
 
     // ouptut results
     for (UIntT iout = 0; iout < nlargest; iout++)
-      cout << comp_best[iout] << endl;
+      std::cout << comp_best[iout] << std::endl;
 
 
     DateC date2(true);
-    cerr << "Connected components time: " << (date2-date1).Double() << endl;
-    cerr << "Total frame time: " << (date2-date0).Double() << endl;  
+    std::cerr << "Connected components time: " << (date2-date1).Double() << std::endl;
+    std::cerr << "Total frame time: " << (date2-date0).Double() << std::endl;  
   }
+  return 0;
 }

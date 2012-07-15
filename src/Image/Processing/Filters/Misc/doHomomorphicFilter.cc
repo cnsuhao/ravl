@@ -36,7 +36,7 @@ int main(int nargs,char **argv) {
   HomomorphicFilterC hf(sigma,depth);
   if(!seq) {
     if(!Load(inf,img)) {
-      cerr << "Failed to load image '" << inf << "'\n";
+      std::cerr << "Failed to load image '" << inf << "'\n";
       return 1;
     }
     if(!bypass)
@@ -44,18 +44,18 @@ int main(int nargs,char **argv) {
     else
       res = img;
     if(!Save(outf,res)) {
-      cerr << "Failed to save image '" << outf << "'\n";
+      std::cerr << "Failed to save image '" << outf << "'\n";
       return 1;
     }
   } else {
     DPIPortC<ImageC<RealT> > in;
     if(!OpenISequence(in,inf)) {
-      cerr << "Failed to open input file '" << inf << "'\n";
+      std::cerr << "Failed to open input file '" << inf << "'\n";
       return 1;
     }
     DPOPortC<ImageC<RealT> > out;
     if(!OpenOSequence(out,outf)) {
-      cerr << "Failed to open output file '" << outf << "'\n";
+      std::cerr << "Failed to open output file '" << outf << "'\n";
       return 1;
     }
     ImageC<RealT> img;

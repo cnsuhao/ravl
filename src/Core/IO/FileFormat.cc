@@ -54,15 +54,15 @@ namespace RavlN {
   ///////////////////////////////
   //: Is stream in this format ?
   
-  const type_info &
-  FileFormatBodyC::ProbeLoad(IStreamC &/*in*/,const type_info &/*obj_type*/) const 
+  const std::type_info &
+  FileFormatBodyC::ProbeLoad(IStreamC &/*in*/,const std::type_info &/*obj_type*/) const 
   { return typeid(void); }
 
   //////////////////////////////
   //: Is Filename in this format ?
   
-  const type_info &
-  FileFormatBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const  { 
+  const std::type_info &
+  FileFormatBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const  { 
     if(!in.good())
       return typeid(void);
     return ProbeLoad(in,obj_type);
@@ -71,15 +71,15 @@ namespace RavlN {
   //////////////////////////////
   //: Is Filename in this format ?
   
-  const type_info &
-  FileFormatBodyC::ProbeSave(const StringC &/*filename*/,const type_info &/*obj_type*/,bool /*forceFormat*/) const 
+  const std::type_info &
+  FileFormatBodyC::ProbeSave(const StringC &/*filename*/,const std::type_info &/*obj_type*/,bool /*forceFormat*/) const 
   { return typeid(void); }
 
   //////////////////////////////
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const  { 
+  DPIPortBaseC FileFormatBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const  { 
     IStreamC in(filename,true); // Open in binary mode by default.
     if(!in) // File opened ok ?
       return DPIPortBaseC();
@@ -90,7 +90,7 @@ namespace RavlN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const  { 
+  DPOPortBaseC FileFormatBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const  { 
     OStreamC out(filename,true); // Open in binary mode by default.
     if(!out) // File opened ok ?
       return DPOPortBaseC();
@@ -101,21 +101,21 @@ namespace RavlN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatBodyC::CreateInput(IStreamC &,const type_info &) const
+  DPIPortBaseC FileFormatBodyC::CreateInput(IStreamC &,const std::type_info &) const
   { return DPIPortBaseC(); }
   
   //////////////////////////////
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatBodyC::CreateOutput(OStreamC &,const type_info &) const
+  DPOPortBaseC FileFormatBodyC::CreateOutput(OStreamC &,const std::type_info &) const
   { return DPOPortBaseC(); }
   
   //////////////////////////////
   //: Get prefered IO type.
   // typeid(void) if none.
   
-  const type_info &FileFormatBodyC::DefaultType() const
+  const std::type_info &FileFormatBodyC::DefaultType() const
   { return typeid(void); }
   
   ///////////////////////////////
@@ -197,19 +197,19 @@ namespace RavlN {
   
   //: Save constructor.
   
-  FileFormatBaseC::FileFormatBaseC(bool forLoad,StringC name,const type_info &objtype) 
+  FileFormatBaseC::FileFormatBaseC(bool forLoad,StringC name,const std::type_info &objtype) 
     : DPEntityC(true)
   { (*this) = SystemFileFormatRegistry().FindFormat(forLoad,name,objtype); }
 
   //: Load constructor.
 
-  FileFormatBaseC::FileFormatBaseC(bool forLoad,const StringC &filename,StringC formName,const type_info &objtype) 
+  FileFormatBaseC::FileFormatBaseC(bool forLoad,const StringC &filename,StringC formName,const std::type_info &objtype) 
     : DPEntityC(true)
   {  (*this) = SystemFileFormatRegistry().FindFormatFile(forLoad,filename,objtype,formName); }
  
   //: Load constructor.
   
-  FileFormatBaseC::FileFormatBaseC(IStreamC &in,StringC formName,const type_info &objtype) 
+  FileFormatBaseC::FileFormatBaseC(IStreamC &in,StringC formName,const std::type_info &objtype) 
     : DPEntityC(true)
   { (*this) = SystemFileFormatRegistry().FindFormat(in,objtype,formName); }
 }

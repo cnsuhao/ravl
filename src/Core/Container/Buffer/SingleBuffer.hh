@@ -155,7 +155,7 @@ namespace RavlN {
 #else
       this->buff = reinterpret_cast<DataT *>(&(this[1]));
 #endif
-	 // cerr << "Memory at " << (void*) this->buff << "\n";
+	 // std::cerr << "Memory at " << (void*) this->buff << "\n";
 #if RAVL_COMPILER_GCC43
       // This is a bug workaround for a problem with gcc-4.3.x compilers
       new(this->buff) DataT[this->Size()];

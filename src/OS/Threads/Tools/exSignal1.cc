@@ -18,12 +18,12 @@
 using namespace RavlN;
 
 bool PrintNumberA(int &i) {
-  cout << "PrintNumberA called with value " << i << "\n";
+  std::cout << "PrintNumberA called with value " << i << "\n";
   return true;
 }
 
 bool PrintNumberB(const int &i) {
-  cout << "PrintNumberB called with value " << i << "\n";
+  std::cout << "PrintNumberB called with value " << i << "\n";
   return true;
 }
 
@@ -49,12 +49,12 @@ int main() {
 
   // Trigger signal 1.  Both PrintNumberA and PrintNumberB will be called.
   
-  cout << "Triggering signal 'sig1' with value 1 \n";
+  std::cout << "Triggering signal 'sig1' with value 1 \n";
   sig1(1); // Send a signal.
   
   // Trigger signal 2.  Only PrintNumberB will be called.
   
-  cout << "Triggering signal 'sig2' with value 2 \n";
+  std::cout << "Triggering signal 'sig2' with value 2 \n";
   sig2(2);
   
   return 0;

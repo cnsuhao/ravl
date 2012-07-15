@@ -29,26 +29,26 @@ int testBStack();
 int main() {
   int ln;
   if((ln = testBList()) != 0) {
-    cerr << "Error at line:" << ln << "\n";
+    std::cerr << "Error at line:" << ln << "\n";
     return 1;
   }
   if((ln = testBListIter()) != 0) {
-    cerr << "Error at line:" << ln << "\n";
+    std::cerr << "Error at line:" << ln << "\n";
     return 1;
   }
   if((ln = testBHash()) != 0) {
-    cerr << "Error at line:" << ln << "\n";
+    std::cerr << "Error at line:" << ln << "\n";
     return 1;
   }
   if((ln = testBHashIter()) != 0) {
-    cerr << "Error at line:" << ln << "\n";
+    std::cerr << "Error at line:" << ln << "\n";
     return 1;
   }
   if((ln = testBStack()) != 0) {
-    cerr << "Error at line:" << ln << "\n";
+    std::cerr << "Error at line:" << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 

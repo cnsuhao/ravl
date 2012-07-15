@@ -37,4 +37,5 @@ Fluttering and dancing in the breeze.");
   win.GUIShow();
   
   Manager.Start();
+  return 0;
 }

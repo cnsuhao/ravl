@@ -28,13 +28,13 @@ namespace RavlN {
     FuncOrthPolynomialBodyC(int inSize,int outSize,UIntT order);
     //: Construct an orthogonal polynomial of given 'order'.
     
-    FuncOrthPolynomialBodyC(istream &strm);
+    FuncOrthPolynomialBodyC(std::istream &strm);
     //: Load from stream.
     
     FuncOrthPolynomialBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -80,7 +80,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    FuncOrthPolynomialC(istream &strm);
+    FuncOrthPolynomialC(std::istream &strm);
     //: Load from stream.
     
     FuncOrthPolynomialC(BinIStreamC &strm);
@@ -114,14 +114,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,FuncOrthPolynomialC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FuncOrthPolynomialC &obj) {
     obj = FuncOrthPolynomialC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FuncOrthPolynomialC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FuncOrthPolynomialC &obj) {
     obj.Save(out);
     return out;
   }

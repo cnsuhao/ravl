@@ -47,9 +47,9 @@ main(int argc, char **argv)
   option.Check();
   
   if (option.IsOnCommandLine(optionN))
-    cerr << "The option " << optionN << " is on command line.\n";
+    std::cerr << "The option " << optionN << " is on command line.\n";
   
-  cout << "var a:     " << a << '\n'
+  std::cout << "var a:     " << a << '\n'
        << "var d:     " << d << '\n'
        << "var f:     " << f << '\n'
        << "switch:    " << sw << '\n'
@@ -58,10 +58,10 @@ main(int argc, char **argv)
        << "file 1:    " << file1 << '\n'
        << "file 2:    " << file2 << '\n';
   
-  cout << "List=";
+  std::cout << "List=";
   for(DLIterC<StringC> it(opts);it;it++)
-    cout << "'" << *it << "' ";
-  cout << "\n";
+    std::cout << "'" << *it << "' ";
+  std::cout << "\n";
   option.PrintUsage();
   return 0;
 } 

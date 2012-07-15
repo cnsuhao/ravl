@@ -65,13 +65,13 @@ namespace RavlGUIN {
   
   bool StatusBarBodyC::GUIPush(IntT &context,StringC &str) {
     if(widget == 0) {
-      ONDEBUG(cerr << "Msg early: " << str << "\n");
+      ONDEBUG(std::cerr << "Msg early: " << str << "\n");
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(context == 0)
       context = defaultContext;
-    ONDEBUG(cerr << "StatusBarBodyC::GUIPush()  Ctxt:" << context << " Msg:" << str << "\n");
+    ONDEBUG(std::cerr << "StatusBarBodyC::GUIPush()  Ctxt:" << context << " Msg:" << str << "\n");
     gtk_statusbar_push(GTK_STATUSBAR(widget),context,str.chars());
     return true;
   }
@@ -81,13 +81,13 @@ namespace RavlGUIN {
   
   bool StatusBarBodyC::GUIPop(IntT &context) {
     if(widget == 0) {
-      ONDEBUG(cerr << "Pop early Ctxt:" << context << "\n");
+      ONDEBUG(std::cerr << "Pop early Ctxt:" << context << "\n");
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(context == 0)
       context = defaultContext;
-    ONDEBUG(cerr << "StatusBarBodyC::GUIPop()  Ctxt:" << context << " \n");
+    ONDEBUG(std::cerr << "StatusBarBodyC::GUIPop()  Ctxt:" << context << " \n");
     gtk_statusbar_pop(GTK_STATUSBAR(widget),context);
     return true;
   }
@@ -97,7 +97,7 @@ namespace RavlGUIN {
   
   void StatusBarBodyC::Push(IntT context,const StringC &str) 
   { 
-    ONDEBUG(cerr << "StatusBarBodyC::Push()  Ctxt:" << context << " Msg:" << str << "\n");
+    ONDEBUG(std::cerr << "StatusBarBodyC::Push()  Ctxt:" << context << " Msg:" << str << "\n");
     Manager.QueueOnGUI(Trigger(StatusBarC(*this),&StatusBarC::GUIPush,context,str));
   }
   
@@ -105,7 +105,7 @@ namespace RavlGUIN {
   // Thread safe.
   
   void StatusBarBodyC::PushTimed(RealT t,IntT context,const StringC &str)  {
-    ONDEBUG(cerr << "StatusBarBodyC::PushTimed(), t:" << t << " Ctxt" << context << " Msg:" << str << "\n");
+    ONDEBUG(std::cerr << "StatusBarBodyC::PushTimed(), t:" << t << " Ctxt" << context << " Msg:" << str << "\n");
     Push(context,str);
     Manager.Queue(t,Trigger(StatusBarC(*this,context),&StatusBarC::Pop));
   }
@@ -114,7 +114,7 @@ namespace RavlGUIN {
   
   bool StatusBarBodyC::Pop(IntT context) 
   {
-    ONDEBUG(cerr << "StatusBarBodyC::Pop()   Ctxt:" << context << " \n");
+    ONDEBUG(std::cerr << "StatusBarBodyC::Pop()   Ctxt:" << context << " \n");
     Manager.QueueOnGUI(Trigger(StatusBarC(*this),&StatusBarC::GUIPop,context));
     return true;
   }
@@ -159,7 +159,7 @@ namespace RavlGUIN {
 			      &StatusBarCtxtUpdateC::ChangeContext));
     sema.Wait(); // Wait for change...
 #else
-    cerr << "StatusBarC::ChangeContext(), Not Implemented for non-gui threads \n";
+    std::cerr << "StatusBarC::ChangeContext(), Not Implemented for non-gui threads \n";
 #endif
   }
 

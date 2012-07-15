@@ -29,7 +29,7 @@ namespace RavlDFN {
   //: Render object to view.
   
   bool DFDataBodyC::Render(GUIViewBodyC &view,const Index2dC &at,DFRenderModeT mode) {
-    //ONDEBUG(cerr << "DFDataBodyC::Render(), Called. At=" << at << " \n");
+    //ONDEBUG(std::cerr << "DFDataBodyC::Render(), Called. At=" << at << " \n");
     
     Index2dC size = view.TextSize(view.DrawFont(),name) + Index2dC(5,0);
     GdkGC *fggc = view.DrawModeFG(mode);
@@ -44,7 +44,7 @@ namespace RavlDFN {
   
   //: Load from stream.
   
-  DFDataBodyC::DFDataBodyC(istream &strm)
+  DFDataBodyC::DFDataBodyC(std::istream &strm)
     : DFObjectBodyC(strm)
   {}
   
@@ -56,7 +56,7 @@ namespace RavlDFN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DFDataBodyC::Save (ostream &out) const {
+  bool DFDataBodyC::Save (std::ostream &out) const {
     if(!DFObjectBodyC::Save(out))
       return false;
     

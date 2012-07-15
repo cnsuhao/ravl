@@ -7,7 +7,6 @@
 #ifndef RAVL_DLIST_HEADER
 #define RAVL_DLIST_HEADER 1
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Lists"
 //! file="Ravl/Core/Container/DList/DList.hh"
 //! lib=RavlCore
@@ -57,13 +56,13 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DListBodyC(istream &is);
+    DListBodyC(std::istream &is);
     //: Construct from stream.
     
     DListBodyC(BinIStreamC &is);
     //: Construct from stream.
     
-    void Save(ostream &os) const;
+    void Save(std::ostream &os) const;
     //: Save to stream.
     
     void Save(BinOStreamC &os) const;
@@ -81,7 +80,7 @@ namespace RavlN {
     RCBodyC &DeepCopy(UIntT levels = ((UIntT) -1)) const;
     //: Make a deep copy of body.
     // If levels == 0, no copy is made.
-    // levels == 1 is equivelent to Copy().
+    // levels == 1 is equivalent to Copy().
     
     void Empty() {
       while(&head.Next() != &head)
@@ -91,7 +90,7 @@ namespace RavlN {
     
     void InsFirst(const DataT &dat)
     { DLinkHeadC::InsFirst(*new DLinkDataC<DataT>(dat)); }
-    //: Insert element into the begining of the list.
+    //: Insert element into the beginning of the list.
 
     void InsLast(const DataT &dat)
     { DLinkHeadC::InsLast(*new DLinkDataC<DataT>(dat)); }
@@ -291,7 +290,7 @@ namespace RavlN {
     //: Default constructor.
     // This creates an empty list.
 
-    DListC(istream &is)
+    DListC(std::istream &is)
       : RCHandleC<DListBodyC<DataT> >(*new DListBodyC<DataT>(is))
     {}
     //: Construct from stream.
@@ -301,7 +300,7 @@ namespace RavlN {
     {}
     //: Construct from stream.
     
-    void Save(ostream &os) const
+    void Save(std::ostream &os) const
     { Body().Save(os); }
     //: Save to stream.
     
@@ -494,7 +493,7 @@ namespace RavlN {
   //: Construct from stream.
   
   template<class DataT> 
-  DListBodyC<DataT>::DListBodyC(istream &strm) {
+  DListBodyC<DataT>::DListBodyC(std::istream &strm) {
     SizeT i;
     Empty();
     strm >> i;
@@ -522,7 +521,7 @@ namespace RavlN {
   //: Save to stream.
   
   template<class DataT> 
-  void DListBodyC<DataT>::Save(ostream &strm) const {
+  void DListBodyC<DataT>::Save(std::ostream &strm) const {
     strm << Size() << "\n";
     for(DLIterC<DataT> it(*this);it;it++)
       strm << *it << "\n";    
@@ -646,12 +645,12 @@ namespace RavlN {
   }
   
   template<class DataT>
-  inline ostream &operator<<(ostream &strm,const DListC<DataT> &alist) 
+  inline std::ostream &operator<<(std::ostream &strm,const DListC<DataT> &alist) 
   { alist.Save(strm); return strm; }
   //: Send to stream.
   
   template<class DataT>
-  inline istream &operator>>(istream &strm,DListC<DataT> &alist) 
+  inline std::istream &operator>>(std::istream &strm,DListC<DataT> &alist) 
   { alist = DListC<DataT>(strm); return strm; }
   //: Read from stream.
   

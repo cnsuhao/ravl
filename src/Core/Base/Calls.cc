@@ -77,10 +77,10 @@ int TestCalls();
 int main() {
   int error;
   if((error = TestCalls()) != 0) {
-    cerr << "TestCalls(), Failed at line :" << error << "\n";
+    std::cerr << "TestCalls(), Failed at line :" << error << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 

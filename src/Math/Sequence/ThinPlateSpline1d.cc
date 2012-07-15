@@ -59,15 +59,15 @@ namespace RavlN {
       for(int j = size;j < size+2;j++)
 	Ld[i][j] = 0;
     }
-    ONDEBUG(cerr << "Ld=" << Ld << "\n");
-    ONDEBUG(cerr << "W=" << w << "\n");
+    ONDEBUG(std::cerr << "Ld=" << Ld << "\n");
+    ONDEBUG(std::cerr << "W=" << w << "\n");
     //MatrixC old = Ld.Copy();
     //VectorC ow = w.Copy();
     if(!SolveIP(Ld,w)) {
-      cerr << "WarpThinPlateSpline1dC::Design(), Failed to compute weight vector. \n";
+      std::cerr << "WarpThinPlateSpline1dC::Design(), Failed to compute weight vector. \n";
       return false;
     }
-    ONDEBUG(cerr << "W=" << w << "\n");
+    ONDEBUG(std::cerr << "W=" << w << "\n");
     //cerr << "Ld*w=" << old * w << "\n";
     return true;
   }

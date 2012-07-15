@@ -37,7 +37,7 @@ namespace RavlN {
     // If 'noFinalReturn' is false, ensure each line ends with '\n', otherwise leave it alone. <p>
     // concat, if true don't split up lines,  otherwise do.
     
-    SourceFileBodyC(istream &fin);
+    SourceFileBodyC(std::istream &fin);
     //: Constructor from a stream.
 
     bool Load(const StringC &filename);
@@ -130,7 +130,7 @@ namespace RavlN {
     // If 'noFinalReturn' is false, ensure each line ends with '\n', otherwise leave it alone. <p>
     // concat, if true don't split lines at \n's, otherwise do.
     
-    SourceFileC(istream &fin)
+    SourceFileC(std::istream &fin)
       : TextFileC(*new SourceFileBodyC(fin))
     {}
     //: Constructor from a stream.
@@ -161,7 +161,7 @@ namespace RavlN {
     // will be created. <p>
     // ** MUST BE OVERLOADED IN DERIVED CLASSES **
     
-    bool Load(istream &instrm) { 
+    bool Load(std::istream &instrm) { 
       if(!IsValid())
 	(*this) = SourceFileC(true);
       return Body().Load(StringC(instrm)); 

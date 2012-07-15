@@ -189,7 +189,7 @@ namespace RavlN {
     FilenameC DBFilename();
     //: Get the RCS file name itself.
     
-    StringC GetEntry(istream &in);
+    StringC GetEntry(std::istream &in);
     //: Extract next entry from RCS file.
     // reads upto the next ';' character.
     // the ';' is discarded.
@@ -354,7 +354,7 @@ namespace RavlN {
     
   };
   
-  inline ostream &operator <<(ostream &out,const RCSFileC &file) { 
+  inline std::ostream &operator <<(std::ostream &out,const RCSFileC &file) { 
     out << file.Filename();
     return out;
   }

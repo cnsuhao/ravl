@@ -38,7 +38,7 @@ namespace RavlN {
     OptimiseDescentBodyC (UIntT iterations, RealT tolerance);
     //: Constructor requires the number of iterations to use
     
-    OptimiseDescentBodyC (istream &in);
+    OptimiseDescentBodyC (std::istream &in);
     //: Constructs from stream
     
   protected:
@@ -48,7 +48,7 @@ namespace RavlN {
     virtual const StringC GetInfo () const;
     //: Prints information about the optimiser
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
   private:

@@ -38,6 +38,7 @@ namespace Ravl3DN
         break;
       default:
         it.Data() = PinholeCamera0C();
+        break;
       }
     }
   }

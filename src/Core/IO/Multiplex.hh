@@ -59,7 +59,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    DPMultiplexBodyC(istream &ins)
+    DPMultiplexBodyC(std::istream &ins)
       : DPIOPortBodyC<InT,OutT>(ins)
     { ins >> in >> out >> procs; }
     //: Stream constructor.
@@ -112,8 +112,8 @@ namespace RavlN {
     { return *new DPMultiplexBodyC<InT,OutT>(*this); }
     //: Make a deep copy of object.
     
-    virtual bool Save(ostream &out) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &out) const;
+    //: Save to std::ostream.
     
   private:
     IntT in,out;
@@ -261,7 +261,7 @@ namespace RavlN {
   }
   
   template<class InT,class OutT>
-  bool DPMultiplexBodyC<InT,OutT>::Save(ostream &out) const {
+  bool DPMultiplexBodyC<InT,OutT>::Save(std::ostream &out) const {
     DPIOPortBodyC<InT,OutT>::Save(out);
     out << in << " " << out << " " << procs;
     return true;

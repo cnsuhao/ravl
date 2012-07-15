@@ -24,7 +24,7 @@ namespace RavlN {
 
   FuncInterpolateGridBodyC::FuncInterpolateGridBodyC()
   {
-    ONDEBUG(cerr << "FuncInterpolateGridBodyC::FuncInterpolateGridBodyC(), Called. \n");
+    ONDEBUG(std::cerr << "FuncInterpolateGridBodyC::FuncInterpolateGridBodyC(), Called. \n");
   }
 
   //: Factory constructor
@@ -41,7 +41,7 @@ namespace RavlN {
 
   //: Load from stream.
 
-  FuncInterpolateGridBodyC::FuncInterpolateGridBodyC(istream &strm)
+  FuncInterpolateGridBodyC::FuncInterpolateGridBodyC(std::istream &strm)
     : FuncInterpolateBodyC(strm)
   {
     RavlAssertMsg(0,"not implemented");
@@ -62,7 +62,7 @@ namespace RavlN {
 
   //: Writes object to stream.
 
-  bool FuncInterpolateGridBodyC::Save (ostream &out) const
+  bool FuncInterpolateGridBodyC::Save (std::ostream &out) const
   {
     if(!FuncInterpolateBodyC::Save(out))
       return false;

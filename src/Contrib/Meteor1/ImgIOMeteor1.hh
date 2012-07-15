@@ -50,13 +50,13 @@ namespace RavlImageN {
     };
     
     const char *ParamName(VideoParamT pr) const;
-    //: Get the name of each paramiter.
+    //: Get the name of each parameter.
     
     int GetParam(VideoParamT pr) const;
-    //: Get paramiter value
+    //: Get parameter value
     
     bool SetParam(VideoParamT pr,int val);
-    //: Setup paramiter value.
+    //: Setup parameter value.
     
     void DumpParam(ostream &out) const;
     //: Dump current settings to 'out'.
@@ -104,13 +104,16 @@ namespace RavlImageN {
     {}
     //: Constructor.
     
+    virtual ~DPIImageMeteor1BodyC() {}
+    //: Destructor
+
     virtual ImageC<PixelT> Get() {
       char *dat = NextFrame();
       if(dat == 0)
-	throw DataNotReadyC("DPIImageMeteor1BodyC::NextFrame(), failed to return image buf. \n");
+        throw DataNotReadyC("DPIImageMeteor1BodyC::NextFrame(), failed to return image buf. \n");
       ImageC<PixelT> mb(maxRect.Rows(),maxRect.Cols(),(PixelT *)((void *) dat),true);
       if(rect != maxRect)
-	return ImageC<PixelT>(mb,rect);
+        return ImageC<PixelT>(mb,rect);
       return mb;
     }
     //: Get next image.
@@ -118,12 +121,12 @@ namespace RavlImageN {
     virtual bool Get(ImageC<PixelT> &buff) {
       char *dat = NextFrame();
       if(dat == 0)
-	return false;
+        return false;
       ImageC<PixelT> mb(maxRect.Rows(),maxRect.Cols(),(PixelT *)((void *) dat),true);
       if(rect != maxRect)
-	buff = ImageC<PixelT>(mb,rect);
+        buff = ImageC<PixelT>(mb,rect);
       else
-	buff = mb;
+        buff = mb;
       return true;
     }
     //: Get next image.
@@ -172,18 +175,18 @@ namespace RavlImageN {
     
     const char *ParamName(DPIImageBaseMeteor1BodyC::VideoParamT pr) const
     { return Body().ParamName(pr); }
-    //: Get the name of each paramiter.
+    //: Get the name of each parameter.
     
     int GetParam(DPIImageBaseMeteor1BodyC::VideoParamT pr) const
     { return Body().GetParam(pr); }
-    //: Get paramiter value
+    //: Get parameter value
     
     bool SetParam(DPIImageBaseMeteor1BodyC::VideoParamT pr,int val)
     { return Body().SetParam(pr,val); }
-    //: Setup paramiter value.
+    //: Setup parameter value.
     
     void DumpParam(ostream &out) const
-    { return Body().DumpParam(out); }
+    { Body().DumpParam(out); }
     //: Dump current settings to 'out'.
     
   };

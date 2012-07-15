@@ -60,7 +60,7 @@ namespace RavlN {
     }
     if(StreamTypeC::Find(urltype.chars()) != 0)
       return StringC("@") + urltype + StringC(fn).from(sep); // Turn it into a RAVL stream type.
-    cerr << "WARNING: Unsupported URL type '" << urltype << "'. \n";
+    std::cerr << "WARNING: Unsupported URL type '" << urltype << "'. \n";
     return StringC(fn);
   }
   

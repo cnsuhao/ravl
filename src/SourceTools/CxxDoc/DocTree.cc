@@ -39,28 +39,28 @@ namespace RavlCxxDocN {
   // This creates the appropriate doc node structure.
   
   bool DocTreeBodyC::ReadDocentries(const StringC &fn) {
-    ONDEBUG(cerr << "DocTreeBodyC::ReadDocentries() Reading file '" << fn << "'\n");
+    ONDEBUG(std::cerr << "DocTreeBodyC::ReadDocentries() Reading file '" << fn << "'\n");
     IStreamC is(fn);
     if(!is) {
-      ONDEBUG(cerr << "DocTreeBodyC::ReadDocentries() :");
-      cerr << " ERROR:Failed to read docentries file '" << fn << "' \n";
+      ONDEBUG(std::cerr << "DocTreeBodyC::ReadDocentries() :");
+      std::cerr << " ERROR:Failed to read docentries file '" << fn << "' \n";
       return false;
     }
     while(is) {
       StringC line;
       readline(is,line);
-      //ONDEBUG(cerr <<"Readline:" << line << "\n");
+      //ONDEBUG(std::cerr <<"Readline:" << line << "\n");
       StringListC strList(line,true);
       DLIterC<StringC> it(strList);
       if(!it) continue; // Skip empty lines.
       StringC name = *it;
-      it.Next(); if(!it) { cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
+      it.Next(); if(!it) { std::cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
       StringC docFilename = *it;
-      it.Next(); if(!it) { cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
+      it.Next(); if(!it) { std::cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
       StringC userlevel = *it;
-      it.Next(); if(!it) { cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
+      it.Next(); if(!it) { std::cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
       StringC brief = *it;
-      it.Next(); if(!it) { cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
+      it.Next(); if(!it) { std::cerr << "WARNING: Incomplete line in docentry. \n"; continue; }    
       StringC position = *it;
       
       StringListC locations(position,";");
@@ -73,7 +73,7 @@ namespace RavlCxxDocN {
 	parent.Append(DocNodeC(name,*pit,userlevel,brief,docFilename,StringC("docnode"),true));
       }
     }
-    //ONDEBUG(root.Dump(cerr));
+    //ONDEBUG(root.Dump(std::cerr));
     return true;
   }
 
@@ -82,11 +82,11 @@ namespace RavlCxxDocN {
   // Puts information into the appropriate node.
   
   bool DocTreeBodyC::ReadEHT(const StringC &fn) {
-    ONDEBUG(cerr << "Reading EHT '" << fn << "' \n");
+    ONDEBUG(std::cerr << "Reading EHT '" << fn << "' \n");
     IStreamC is(fn);
     if(!is) {
-      ONDEBUG(cerr << "DocTreeBodyC::ReadEHT(), ");
-      cerr << "Failed to open file '" << fn << "' \n";
+      ONDEBUG(std::cerr << "DocTreeBodyC::ReadEHT(), ");
+      std::cerr << "Failed to open file '" << fn << "' \n";
       return false;
     }
     StringC brief;
@@ -118,7 +118,7 @@ namespace RavlCxxDocN {
 	    line = line.after(0);
 	    IntT eat = line.index('=');
 	    if(eat < 0) {
-	      cerr << "Malformed variable in EHT file '" << fn << "' \n";
+	      std::cerr << "Malformed variable in EHT file '" << fn << "' \n";
 	      continue;
 	    }
 	    StringC name = line.before(eat);
@@ -171,7 +171,7 @@ namespace RavlCxxDocN {
       oc = StringListC(vars["children"],";");
     
     for(;pit;pit++) {
-      ONDEBUG(cerr << "Updating node '" << *pit << "'\n");
+      ONDEBUG(std::cerr << "Updating node '" << *pit << "'\n");
       StringListC path(*pit,".");
       if(path.IsEmpty())
 	path.InsFirst(projName);
@@ -196,7 +196,7 @@ namespace RavlCxxDocN {
   // Puts information into the appropriate node.
   
   bool DocTreeBodyC::ReadHTML(const StringC &fn) {
-    ONDEBUG(cerr << "DocTreeBodyC::ReadHTML(), Called for '" << fn << "' \n");
+    ONDEBUG(std::cerr << "DocTreeBodyC::ReadHTML(), Called for '" << fn << "' \n");
     TextFileC tf(true);
     if(!tf.Load(fn)) 
       return false;
@@ -204,7 +204,7 @@ namespace RavlCxxDocN {
     HashC<StringC,StringC> vars;
     
     TextCursorC it(tf);
-    ONDEBUG(cerr << "Extracting variables. \n");
+    ONDEBUG(std::cerr << "Extracting variables. \n");
     while(it.IsElm()) {
       if(!it.SkipTo("<!--! "))
 	break; // Not found.
@@ -242,7 +242,7 @@ namespace RavlCxxDocN {
       }
     }
     
-    ONDEBUG(cerr << "Extracting content. \n");
+    ONDEBUG(std::cerr << "Extracting content. \n");
     it.First();
     it.SkipTo("<head>");
     if(brief == "") {
@@ -256,7 +256,7 @@ namespace RavlCxxDocN {
     if(docentry == "") // Default to file name without extention for docentry.
       docentry = StringC(StringC(fn).before('.',-1)).after('/',-1);
     
-    ONDEBUG(cerr << "Adding node. '"<< docentry <<"' Brief:'"  << brief << "'\n");
+    ONDEBUG(std::cerr << "Adding node. '"<< docentry <<"' Brief:'"  << brief << "'\n");
     
     StringListC locations(docentry,";");    
     DLIterC<StringC> pit(locations);
@@ -264,7 +264,7 @@ namespace RavlCxxDocN {
     if(children != "")
       oc = StringListC(children,";");
     for(;pit;pit++) {
-      ONDEBUG(cerr << "Updating node '" << *pit << "'\n");
+      ONDEBUG(std::cerr << "Updating node '" << *pit << "'\n");
       StringC pathnm = pit->Copy();
       StringListC path(pathnm,".");
       if(path.IsEmpty())
@@ -295,7 +295,7 @@ namespace RavlCxxDocN {
       DListC<StringC> fl = dir.List();
       for(DLIterC<StringC> it(fl);it;it++) {
 	FilenameC efn(adir + filenameSeperator + *it);
-	ONDEBUG(cerr << "DocTreeBodyC::ReadEHTSet(), Found file '" << efn << "' \n");
+	ONDEBUG(std::cerr << "DocTreeBodyC::ReadEHTSet(), Found file '" << efn << "' \n");
 	if(!efn.IsRegular())
 	  continue;
 	StringC aext = efn.Extension();
@@ -311,7 +311,7 @@ namespace RavlCxxDocN {
       }
       return true;
     }
-    ONDEBUG(cerr << "DocTreeBodyC::ReadEHTSet() '" << fn << "' isn't a directory. \n");
+    ONDEBUG(std::cerr << "DocTreeBodyC::ReadEHTSet() '" << fn << "' isn't a directory. \n");
     return ReadEHT(adir); // Try reading as a single file.
   }
 
@@ -335,7 +335,7 @@ namespace RavlCxxDocN {
       pos = projName + '.' + xpos;
     }
     DocNodeC parent = root.AddNode(path); // Find parent node.
-    ONDEBUG(cerr << "DocTreeBodyC::InsertDocLeaf(), Adding leaf '" << pos << "' to node '" << parent.Name() << "' \n");
+    ONDEBUG(std::cerr << "DocTreeBodyC::InsertDocLeaf(), Adding leaf '" << pos << "' to node '" << parent.Name() << "' \n");
     // Add child.
     parent.Append(DocNodeC(nm,pos,userlevel,brief,docFilename,nodeType,true));
     return true;

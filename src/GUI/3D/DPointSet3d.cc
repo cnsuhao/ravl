@@ -23,8 +23,8 @@ namespace RavlGUIN {
   // Render object.
   bool DPointSet3dBodyC::GUIRender(Canvas3DC& canvas) const
   {
-    ONDEBUG(cerr << "DPointSet3dBodyC::GUIRender(), Called. \n");
-    // cerr << "Point set render number: " << pointSet.RenderNumber() << endl;
+    ONDEBUG(std::cerr << "DPointSet3dBodyC::GUIRender(), Called. \n");
+    // std::cerr << "Point set render number: " << pointSet.RenderNumber() << std::endl;
 
     glColor3d(1.0,1.0,1.0);
     glBegin(GL_POINTS);
@@ -35,7 +35,7 @@ namespace RavlGUIN {
     glEnd();
 
 #if 0
-    cerr << "vertex[0].Position(): " << verts[0].Position() << endl;
+    std::cerr << "vertex[0].Position(): " << verts[0].Position() << std::endl;
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3,GL_DOUBLE,sizeof(VertexC),&verts[0].Position()[0]);
     glDrawArrays(GL_POINTS,0,pointSet.RenderNumber());

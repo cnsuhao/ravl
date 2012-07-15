@@ -37,14 +37,14 @@ int BasicTest();
 int main() {
   int ln;
   if((ln =BasicTest()) != 0) {
-    cerr << "Basic test failed at " << ln << "\n";
+    std::cerr << "Basic test failed at " << ln << "\n";
     return 1;
   }  
   if((ln = RandomTest()) != 0) {
-    cerr << "Random test failed at " << ln << "\n";
+    std::cerr << "Random test failed at " << ln << "\n";
     return 1;
   }
-  cerr << "BlkStack test passed. \n";
+  std::cerr << "BlkStack test passed. \n";
   return 0;
 }
 
@@ -59,12 +59,12 @@ int BasicTest() {
   stk.Push(2);
   stk.Empty();
   if(!stk.IsEmpty()) return __LINE__;
-  cerr << "Basic test passed. \n";
+  std::cerr << "Basic test passed. \n";
   return 0;
 }
 
 int RandomTest() {
-  cerr << "Starting random stack test. \n";
+  std::cerr << "Starting random stack test. \n";
   int Counters[MaxCounters];
   int i,j,k;
   int MaxLen = 0;
@@ -111,6 +111,7 @@ int RandomTest() {
 	    if(Len > MaxLen)
 	      MaxLen = Len;
 	  }
+	  break;
 	}
     }
     // Empty some stacks.
@@ -119,7 +120,7 @@ int RandomTest() {
   } // Final stack should go out of scope here.
   for(i = 0;i < MaxCounters;i++)
     if(Counters[i] != 0) return __LINE__;
-  cerr << "Test completed ok. (Max depth found:" << MaxLen << ") \n";
+  std::cerr << "Test completed ok. (Max depth found:" << MaxLen << ") \n";
   return 0;
 }
 

@@ -33,16 +33,16 @@ int main() {
   // Go through the tree from the smallest to largest
   // key values.
   
-  cout << "Up....\n";
+  std::cout << "Up....\n";
   for(BinaryTreeUpIterC<int,char *> it(tree);it;it++) 
-    cout << "Key=" << it.Key() <<" Data=" << it.Data() << "\n";
+    std::cout << "Key=" << it.Key() <<" Data=" << it.Data() << "\n";
   
   // Go through the tree from the largest to smallest 
   // key values.
   
-  cout << "Down....\n";
+  std::cout << "Down....\n";
   for(BinaryTreeDownIterC<int,char *> it(tree);it;it++) 
-    cout << "Key=" << it.Key() <<" Data=" << it.Data() << "\n";
+    std::cout << "Key=" << it.Key() <<" Data=" << it.Data() << "\n";
 
   return 0;
 }

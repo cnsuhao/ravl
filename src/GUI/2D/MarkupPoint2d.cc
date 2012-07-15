@@ -98,7 +98,7 @@ namespace RavlGUIN {
       
       mv.GUIDrawLine(dc, Point2dC(centre + p1),Point2dC(centre - p1));
       mv.GUIDrawLine(dc, Point2dC(centre + p2),Point2dC(centre - p2));
-    }
+    } break;
     }
       
 

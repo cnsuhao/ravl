@@ -78,7 +78,7 @@ namespace RavlImageN {
   };
   
   template<class DataT>
-  ostream &operator<<(ostream &s,const HistogramEqualiseC<DataT> &hist) {
+  std::ostream &operator<<(std::ostream &s,const HistogramEqualiseC<DataT> &hist) {
     int v = 0; // stream version no.
     s << v << ' ' << hist.MinValue() << ' ' << hist.MaxValue() << ' ' << ((int) hist.IsRescale());
     return s;
@@ -86,7 +86,7 @@ namespace RavlImageN {
   //: Write to a stream.
   
   template<class DataT>
-  istream &operator>>(istream &s,HistogramEqualiseC<DataT> &hist) {
+  std::istream &operator>>(std::istream &s,HistogramEqualiseC<DataT> &hist) {
     int v;
     DataT min,max;
     int rescale;

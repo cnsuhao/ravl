@@ -34,13 +34,13 @@ namespace RavlN {
     //!param: weights         - relative weights for each classifier
     // Classification is label 1 if sum(weight[i]*classify[i](x)) >= 0.5sum(weight[i])
     
-    ClassifierLinearCombinationBodyC(istream &strm);
+    ClassifierLinearCombinationBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierLinearCombinationBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -95,7 +95,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    ClassifierLinearCombinationC(istream &strm);
+    ClassifierLinearCombinationC(std::istream &strm);
     //: Load from stream.
     
     ClassifierLinearCombinationC(BinIStreamC &strm);

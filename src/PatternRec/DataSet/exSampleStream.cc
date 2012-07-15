@@ -75,6 +75,6 @@ public:
 int main(int nargs,char **argv) {
   RandomVectorStreamC randomVectorStream(5,1000000);
   MeanCovarianceC meanCov = randomVectorStream.MeanCovariance();
-  cerr << "Mean and Coverance of random stream =" << meanCov << "\n";
+  std::cerr << "Mean and Coverance of random stream =" << meanCov << "\n";
   return 0;
 }

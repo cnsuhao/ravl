@@ -26,7 +26,7 @@ namespace RavlGUIN {
       fill(true),
       padding(0)
   {
-    ONDEBUG(cerr << "PackInfoBodyC::PackInfoBodyC(), Called \n");
+    ONDEBUG(std::cerr << "PackInfoBodyC::PackInfoBodyC(), Called \n");
   }
     
   //: Constructor.
@@ -36,13 +36,13 @@ namespace RavlGUIN {
       fill(nfill),
       padding(npadding)
   {
-    ONDEBUG(cerr << "PackInfoBodyC::PackInfoBodyC(), Called " << expand <<" "<< fill <<" "<< padding <<"\n");
+    ONDEBUG(std::cerr << "PackInfoBodyC::PackInfoBodyC(), Called " << expand <<" "<< fill <<" "<< padding <<"\n");
   }
   
   //: Destructor.
 
   PackInfoBodyC::~PackInfoBodyC() {
-    ONDEBUG(cerr << "PackInfoBodyC::~PackInfoBodyC(), Called \n");
+    ONDEBUG(std::cerr << "PackInfoBodyC::~PackInfoBodyC(), Called \n");
   }
 
   //: Create the widget.

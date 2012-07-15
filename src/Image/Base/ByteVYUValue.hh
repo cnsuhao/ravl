@@ -89,7 +89,7 @@ namespace RavlImageN {
   };
 
   inline
-  istream &operator>>(istream &strm,ByteVYUValueC &val) { 
+  std::istream &operator>>(std::istream &strm,ByteVYUValueC &val) { 
     int u,v,y;
     strm >> v >> y >> u;
     val.V() = v; 
@@ -100,7 +100,7 @@ namespace RavlImageN {
   //: Stream input.
   
   inline
-  ostream &operator<<(ostream &strm,const ByteVYUValueC &val) 
+  std::ostream &operator<<(std::ostream &strm,const ByteVYUValueC &val) 
   { return strm << ((int) val.V()) << ' ' << ((int) val.Y()) << ' ' << ((int) val.U()); }
   //: Stream output.
   

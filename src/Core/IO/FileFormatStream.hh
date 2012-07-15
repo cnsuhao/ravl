@@ -9,7 +9,6 @@
 ////////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.IO.Formats" 
 //! lib=RavlIO
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/FileFormatStream.hh"
 //! author="Charles Galambos"
 //! date="12/08/1998"
@@ -20,6 +19,8 @@
 #include "Ravl/TypeName.hh"
 
 namespace RavlN {
+  //: Register file format.
+  bool RegisterFormatStreamMeta(FileFormatBaseC &fileformat);
   
   /////////////////////////////
   //: Stream File Format.
@@ -31,11 +32,11 @@ namespace RavlN {
   {
   public:
     FileFormatStreamBodyC()
-      : FileFormatBodyC("stream","Standard C++ iostream headed with the class name. ")
+      : FileFormatBodyC("stream","Standard C++ iostream headed with the class name. ",false)
     {}
     //: Default constructor.
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const  {
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const  {
       if(!in.good())
 	return typeid(void);
       StringC classname;
@@ -48,14 +49,14 @@ namespace RavlN {
     }
     //: Is stream in std stream format ?
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const  {
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const  {
       //cout << "File Probe '" << filename << "' Looking for:" << TypeName(obj_type) << endl;
       if(filename == "") 
 	return typeid(DataT); // Yep, can handle load to DataT.
       return ProbeLoad(in,obj_type); // Check load from stream.
     }
     
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const {
+    virtual const std::type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const {
       StringC ext = Extension(filename);
       // If there's no extention or the extention is 'strm' we can handle it.
       if(forceFormat)
@@ -69,7 +70,7 @@ namespace RavlN {
       return typeid(void); // Nope.
     }
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const {
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const {
       if(obj_type != typeid(DataT))
 	return DPIPortBaseC();
       return DPIFileC<DataT>(in,true);
@@ -77,7 +78,7 @@ namespace RavlN {
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const {
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
       if(obj_type != typeid(DataT))
 	return DPOPortBaseC();
       return DPOFileC<DataT>(out,true);
@@ -85,7 +86,7 @@ namespace RavlN {
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const 
+    virtual const std::type_info &DefaultType() const 
     { return typeid(DataT); }
     //: Get prefered IO type.
     
@@ -105,7 +106,7 @@ namespace RavlN {
   public:
     FileFormatStreamC()
       : FileFormatC<DataT>(*new FileFormatStreamBodyC<DataT>())
-    {}
+    { RegisterFormatStreamMeta(*this); }
   };
 }
 

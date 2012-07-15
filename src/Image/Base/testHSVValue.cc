@@ -22,14 +22,14 @@ int TestBasic();
 
 int main()
 {
-  cerr << "\n\nTesting basic HSV RGB conversion operations \n";
+  std::cerr << "\n\nTesting basic HSV RGB conversion operations \n";
   int lineno;
   if((lineno = TestBasic()) != 0) {
-    cerr << "\nHSV RGB Conversion Failed : " << lineno << "\n";
+    std::cerr << "\nHSV RGB Conversion Failed : " << lineno << "\n";
     return 1;
   }
   
-  cerr << "Test Completed OK " ; 
+  std::cerr << "Test Completed OK " ; 
   return 0;
 }
 

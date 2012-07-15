@@ -54,17 +54,17 @@ bool InitGL()
 }
 
 bool pressFunc(MouseEventC &me) {
-  cerr << "Press " << me.Row() << " " << me.Col() << "\n";
+  std::cerr << "Press " << me.Row() << " " << me.Col() << "\n";
   return true;
 }
 
 bool releaseFunc(MouseEventC &me) {
-  cerr << "Release " << me.Row() << " " << me.Col() << "\n";
+  std::cerr << "Release " << me.Row() << " " << me.Col() << "\n";
   return true;
 }
 
 bool moveFunc(MouseEventC &me) {
-  cerr << "Move " << me.Row() << " " << me.Col() << "\n";
+  std::cerr << "Move " << me.Row() << " " << me.Col() << "\n";
   return true;
 }
 
@@ -92,7 +92,7 @@ int main(int nargs,char *args[])
     Connect(area.Signal("motion_notify_event"),&moveFunc);
   
   win.Add(area);
-  cerr << "Starting gui. \n";
+  std::cerr << "Starting gui. \n";
   Manager.Execute();
   win.Show();
   Sleep(1);
@@ -115,7 +115,8 @@ int main(int nargs,char *args[])
     area.SwapBuffers();
     Sleep(0.01);
   }
-  cerr << "Execute done, waiting... \n";
+  std::cerr << "Execute done, waiting... \n";
   Manager.Wait();
+  return 0;
 }
  

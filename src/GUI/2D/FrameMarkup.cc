@@ -30,7 +30,7 @@ namespace RavlGUIN {
   //:--------------------------------------------------------------------------
   
   //: Stream operator.
-  ostream &operator<<(ostream &out,const FrameMarkupC &obj) {
+  std::ostream &operator<<(std::ostream &out,const FrameMarkupC &obj) {
     IntT version = 0;
     out << version << ' '  << ' ' << obj.Markup();
     return out;
@@ -44,11 +44,11 @@ namespace RavlGUIN {
   }
   
   //: Stream operator.
-  istream &operator>>(istream &in,FrameMarkupC &obj) {
+  std::istream &operator>>(std::istream &in,FrameMarkupC &obj) {
     IntT version;
     in >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("FrameMarkupC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("FrameMarkupC(std::istream &), Unrecognised version number in stream.");
     in >> obj.Markup();
     return in;
   }
@@ -58,7 +58,7 @@ namespace RavlGUIN {
     IntT version;
     in >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("FrameMarkupC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("FrameMarkupC(std::istream &), Unrecognised version number in stream.");
     in >> obj.Markup();
     return in;
   }

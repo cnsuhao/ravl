@@ -25,7 +25,7 @@ namespace RavlGUIN
 
   static void CBFileChooserDialogResponse(GtkWidget *widget, gint response, FileChooserDialogBodyC *fileChooserDialogBodyPtr)
   {
-    ONDEBUG(cerr << "CBFileChooserDialogResponse response(" << response << ")" << endl);
+    ONDEBUG(std::cerr << "CBFileChooserDialogResponse response(" << response << ")" << endl);
     RavlAssert(fileChooserDialogBodyPtr);
 
     if (fileChooserDialogBodyPtr->HideOnResponse())
@@ -84,7 +84,7 @@ namespace RavlGUIN
 
   bool FileChooserDialogBodyC::CommonCreate(GtkWidget *newWidget)
   {
-    ONDEBUG(cerr << "FileChooserDialogBodyC::CommonCreate widget(" << (newWidget ? "Y" : "N") << ")" << endl);
+    ONDEBUG(std::cerr << "FileChooserDialogBodyC::CommonCreate widget(" << (newWidget ? "Y" : "N") << ")" << endl);
 
     if (newWidget)
     {

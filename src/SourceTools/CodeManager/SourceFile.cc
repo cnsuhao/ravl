@@ -113,7 +113,7 @@ namespace RavlN {
   
   //: Constructor from a stream.
   
-  SourceFileBodyC::SourceFileBodyC(istream &fin)
+  SourceFileBodyC::SourceFileBodyC(std::istream &fin)
     : TextFileBodyC(fin),
       fileType("Unknown")
   {}
@@ -123,7 +123,7 @@ namespace RavlN {
   StringC SourceFileBodyC::IdFile() {
     FilenameC fn = Filename();
     StringC ext = fn.Extension();
-    //ONDEBUG(cerr << "SourceFileBodyC::IdFile(), File '" << fn << "' of type '" <<extToType[ext] << "' Loaded\n");
+    //ONDEBUG(std::cerr << "SourceFileBodyC::IdFile(), File '" << fn << "' of type '" <<extToType[ext] << "' Loaded\n");
     return extToType[ext];
   }
 
@@ -155,7 +155,7 @@ namespace RavlN {
       if(at.LineText().matches("/*",0,false) > 0) {
 	at.SkipTo("/*");
 	if(!at.SkipTo("*/")) {
-	  cerr << "WARNING: End of 'C' comment not found. ";
+	  std::cerr << "WARNING: End of 'C' comment not found. ";
 	  at.GotoCol(0);
 	  // Insert variable before comment.
 	  break;
@@ -190,11 +190,11 @@ namespace RavlN {
     const StringC &comStr = commentString[fileType];
     const StringC &comEndStr = commentEndString[fileType];
     if(comStr.IsEmpty()) {
-      ONDEBUG(cerr << "SourceFileBodyC::CheckDocVar() Comment str not know for :" << fileType << "\n");
+      ONDEBUG(std::cerr << "SourceFileBodyC::CheckDocVar() Comment str not know for :" << fileType << "\n");
       return false; // Don't know the comment string for this filetype.
     }
     StringC newline =  comStr + "! " + var + '=' + value + comEndStr;
-    ONDEBUG(cerr << "SourceFileBodyC::CheckDocVar() Newline :" << newline);
+    ONDEBUG(std::cerr << "SourceFileBodyC::CheckDocVar() Newline :" << newline);
     if((atline = FindLineMatch(comStr + "! " + var)) >= 0) {
       StringC &theLine = (*this)[atline];
       //cerr << "(Found " + var +") ";
@@ -227,11 +227,11 @@ namespace RavlN {
     if(comStr.IsEmpty())
       return false; // Don't know the comment string for this filetype.
     StringC newline =  comStr + "! " + var + '=' + value + comEndStr;
-    cerr << "SourceFileBodyC::CheckDocVarSub() Newline :" << newline;
+    std::cerr << "SourceFileBodyC::CheckDocVarSub() Newline :" << newline;
     if((atline = (*this).FindLineMatch(comStr + "! " + var)) >= 0) {
       StringC &theLine = (*this)[atline];
       bool update = force;
-      //    cerr << "(Found " + var +") ";
+      //    std::cerr << "(Found " + var +") ";
       if(!update) {
 	int eqAt = theLine.index("=");
 	if(eqAt > 0) {
@@ -267,7 +267,7 @@ namespace RavlN {
     if(comStr.IsEmpty())
       return StringC(); // Don't know the comment string for this filetype.
     StringC prefix = comStr + "! ";
-    //ONDEBUG(cerr << "SourceFileBodyC::CheckDocVarSub() prefix :" << prefix << "\n");
+    //ONDEBUG(std::cerr << "SourceFileBodyC::CheckDocVarSub() prefix :" << prefix << "\n");
     StringC matchline = prefix + var;
     if((atline = FindLineMatch(matchline)) < 0)
       return StringC(); // Not found.
@@ -333,10 +333,10 @@ namespace RavlN {
 	eoh = eoh.before('\n');
     }
     if(eoh.IsEmpty() || eoh == "\n") {
-      cerr << "ERROR: End of file marker is an empty string. \n";
+      std::cerr << "ERROR: End of file marker is an empty string. \n";
       return false;
     }
-    ONDEBUG(cerr << "Using marker:'" << eoh << "' \n");
+    ONDEBUG(std::cerr << "Using marker:'" << eoh << "' \n");
     DLIterC<TextFileLineC> it1(const_cast<TextBufferC &>(hdr).Lines());
     DLIterC<TextFileLineC> it2(Lines());
     for(;it1 && it2;it1++,it2++) {
@@ -365,7 +365,7 @@ namespace RavlN {
     now=localtime(&t);
     if (now == NULL)
     {
-       cerr << "WARNING: Problem calculating current year - using default.\n";
+       std::cerr << "WARNING: Problem calculating current year - using default.\n";
        snprintf (year, 5, "%4d", 2012);
        snprintf (yr, 3, "%2d", 12);
     }

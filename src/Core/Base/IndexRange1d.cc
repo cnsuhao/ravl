@@ -14,17 +14,17 @@
 
 namespace RavlN {
   
-  IndexRangeC::IndexRangeC(istream & s)
+  IndexRangeC::IndexRangeC(std::istream & s)
   { s >> minI >> maxI; }
   
-  istream & 
-  operator>>(istream & sss, IndexRangeC & range) { 
+  std::istream & 
+  operator>>(std::istream & sss, IndexRangeC & range) { 
     sss >> range.Min() >> range.Max();
     return  sss;
   }
   
-  ostream & 
-  operator<<(ostream & s, const IndexRangeC & range) { 
+  std::ostream & 
+  operator<<(std::ostream & s, const IndexRangeC & range) { 
     s << range.Min() << ' ' << range.Max();
     return s;
   }

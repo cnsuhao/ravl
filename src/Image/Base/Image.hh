@@ -247,11 +247,11 @@ namespace RavlImageN {
   
   
   
-  ostream &operator<<(ostream &s,const ImageC<ByteT> &img);
+  std::ostream &operator<<(std::ostream &s,const ImageC<ByteT> &img);
   //: Save byte image to stream 
   // Override default IO to handle byte images correctly.
   
-  istream &operator>>(istream &s,ImageC<ByteT> &img);
+  std::istream &operator>>(std::istream &s,ImageC<ByteT> &img);
   //: Load byte image from stream 
   // Override default IO to handle byte images correctly.
 

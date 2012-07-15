@@ -28,22 +28,22 @@ int main(int nargs,char **argv) {
   
   SArray1dC<char> buffer;
   if(!MemSave(buffer,img,formatName,verbose)) {
-    cerr << "Failed to save image. \n";
+    std::cerr << "Failed to save image. \n";
     return 1;
   }
   
   ImageC<ByteT> img2;
   if(!MemLoad(buffer,img2,formatName,verbose)) {
-    cerr << "Failed to load image. \n";
+    std::cerr << "Failed to load image. \n";
     return 1;    
   }
   
   for(Array2dIter2C<ByteT,ByteT> it(img,img2);it;it++) {
     if(it.Data1() != it.Data2()) {
-      cerr << "Images differ. \n";
+      std::cerr << "Images differ. \n";
       return 1;
     }
   }
-  cerr << "Test passed ok. BufferSize=" << buffer.Size() << "\n";
+  std::cerr << "Test passed ok. BufferSize=" << buffer.Size() << "\n";
   return 0;
 }

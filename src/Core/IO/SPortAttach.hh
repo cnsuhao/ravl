@@ -150,9 +150,9 @@ namespace RavlN {
     //: Constructor.
     // Attach 'aport' to seek ctrl 'sc'
 
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPISPortBodyC<DataT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Seek(UIntT off)
     { return sctrl.Seek(off); }
@@ -206,7 +206,7 @@ namespace RavlN {
     //: Has the End Of Stream been reached ?
     // true = yes.
     
-    virtual const type_info &InputType() const
+    virtual const std::type_info &InputType() const
     { return port.InputType(); }
     //: Input type.
     
@@ -305,9 +305,9 @@ namespace RavlN {
     //: Constructor.
     // Attach 'aport' to seek ctrl 'sc'
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPOSPortBodyC<DataT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Seek(UIntT off)
     { return sctrl.Seek(off); }
@@ -356,7 +356,7 @@ namespace RavlN {
     // true = yes.
     // Defaults to !IsGetEOS().
     
-    virtual const type_info &OutputType() const
+    virtual const std::type_info &OutputType() const
     { return port.OutputType(); }
     //: Input type.
     

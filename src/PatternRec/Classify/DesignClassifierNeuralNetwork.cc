@@ -43,14 +43,14 @@ namespace RavlN {
   }
 
   DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(const XMLFactoryContextC & factory)
-      : DesignClassifierSupervisedBodyC(factory),
-        m_nLayers(factory.AttributeInt("numberOfLayers", 3)),
-        m_nHidden(factory.AttributeInt("numberOfHiddenUnits", 7)),
-        m_desiredError(factory.AttributeReal("desiredError", 0.0001)),
-        m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
-        m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
-        m_cascade(factory.AttributeBool("cascade", false)) {
-
+    : DesignClassifierSupervisedBodyC(factory),
+      m_nLayers(factory.AttributeInt("numberOfLayers", 3)),
+      m_nHidden(factory.AttributeInt("numberOfHiddenUnits", 7)),
+      m_desiredError(factory.AttributeReal("desiredError", 0.0001)),
+      m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
+      m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
+      m_cascade(factory.AttributeBool("cascade", false))
+  {
     // we will let the training data set decide these two...not sure why I didn't before
     m_nInputs = 0;
     m_nOutputs = 0;
@@ -58,12 +58,18 @@ namespace RavlN {
 
 //: Load from stream.
 
-  DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(istream &strm)
-      : DesignClassifierSupervisedBodyC(strm) {
+  DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &strm)
+      : DesignClassifierSupervisedBodyC(strm),
+        m_nLayers(0),
+        m_nInputs(0),
+        m_nHidden(0),
+        m_nOutputs(0),
+        m_cascade(false)
+  {
     int version;
     strm >> version;
     if (version != 0 && version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_nLayers;
     strm >> m_nInputs;
     strm >> m_nHidden;
@@ -83,11 +89,17 @@ namespace RavlN {
 //: Load from binary stream.
 
   DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(BinIStreamC &strm)
-      : DesignClassifierSupervisedBodyC(strm) {
+      : DesignClassifierSupervisedBodyC(strm),
+        m_nLayers(0),
+        m_nInputs(0),
+        m_nHidden(0),
+        m_nOutputs(0),
+        m_cascade(false)
+  {
     int version;
     strm >> version;
     if (version != 0 && version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(BinIStreamC &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(BinIStreamC &), Unrecognised version number in stream. ");
     strm >> m_nLayers;
     strm >> m_nInputs;
     strm >> m_nHidden;
@@ -106,19 +118,19 @@ namespace RavlN {
 
 //: Writes object to stream, can be loaded using constructor
 
-  bool DesignClassifierNeuralNetworkBodyC::Save(ostream &out) const {
+  bool DesignClassifierNeuralNetworkBodyC::Save(std::ostream &out) const {
     if (!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     int version = 1;
-    out << version << endl;
-    out << m_nLayers << endl;
-    out << m_nInputs << endl;
-    out << m_nHidden << endl;
-    out << m_nOutputs << endl;
-    out << m_desiredError << endl;
-    out << m_maxEpochs << endl;
-    out << m_displayEpochs << endl;
-    out << m_cascade << endl;
+    out << version << std::endl;
+    out << m_nLayers << std::endl;
+    out << m_nInputs << std::endl;
+    out << m_nHidden << std::endl;
+    out << m_nOutputs << std::endl;
+    out << m_desiredError << std::endl;
+    out << m_maxEpochs << std::endl;
+    out << m_displayEpochs << std::endl;
+    out << m_cascade << std::endl;
     return true;
   }
 
@@ -161,19 +173,19 @@ namespace RavlN {
 
     //: format of data
     //: data_set_size  number_of_inputs number_of_outputs
-    //: input_data seperated by space
-    //: output_data seperated by space
+    //: input_data separated by space
+    //: output_data separated by space
     //: ....
     //: ....
 
     {
       OStreamC os(tmpData);
-      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << endl;
+      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << std::endl;
       for (DataSet2IterC<SampleC<VectorC>, SampleC<UIntT> > it(dset); it; it++) {
         for (SArray1dIterC<RealT> vit(it.Data1()); vit; vit++) {
           os << *vit << " ";
         }
-        os << " " << endl;
+        os << " " << std::endl;
 
         VectorC nnOutput(m_nOutputs);
         nnOutput.Fill(-0.9);
@@ -182,7 +194,7 @@ namespace RavlN {
           os << *vit << " ";
         }
 
-        os << " " << endl;
+        os << " " << std::endl;
       }
     }
 
@@ -211,17 +223,17 @@ namespace RavlN {
 
     {
       OStreamC os(tmpData);
-      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << endl;
+      os << in.Size() << " " << m_nInputs << " " << m_nOutputs << std::endl;
       for (DataSet2IterC<SampleC<VectorC>, SampleC<VectorC> > it(dset); it; it++) {
         for (SArray1dIterC<RealT> vit(it.Data1()); vit; vit++) {
           os << *vit << " ";
         }
-        os << " " << endl;
+        os << " " << std::endl;
 
         for (SArray1dIterC<RealT> vit(it.Data2()); vit; vit++) {
           os << *vit << " ";
         }
-        os << " " << endl;
+        os << " " << std::endl;
       }
     }
 

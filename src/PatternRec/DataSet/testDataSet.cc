@@ -63,52 +63,52 @@ template DataSet3C<SampleC<IntT>,SampleC<RealT>,SampleC<bool> >;
 int main() {
   int ln;
   if((ln = testSample()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testSampleIO()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testDataSet1()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testDataSet2()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testDataSet3()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testDataSet4()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testSampleVector()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testDataSetVectorLabel()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testSampleStreamVector()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testSampleStreamVectorFunction()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
 #if USE_SPEEDTEST
   if((ln = testSpeed()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
 #endif
-  cout << "Test passed ok. \n";
+  std::cout << "Test passed ok. \n";
   return 0;
 }
 
@@ -151,7 +151,7 @@ int testSampleIO() {
   istr >> sample3;
   //cerr << "DataStr=" << dataStr << "\n";
   if(sample.Size() != sample3.Size()) {
-    cerr << "Size1=" << sample.Size() << " Size3=" << sample3.Size() << "\n";
+    std::cerr << "Size1=" << sample.Size() << " Size3=" << sample3.Size() << "\n";
     return __LINE__;
   }
   
@@ -185,10 +185,10 @@ int testDataSet2() {
   VectorC x2(3.0, 4.0);
   dset.Append(x1, 0);
   dset.Append(x2, 0);
-  cout << dset << endl;
+  std::cout << dset << std::endl;
   DataSet2C<SampleVectorC, SampleLabelC>dset2(10);
   dset2.Append(dset);
-  cout << dset2.Sample1() << endl;
+  std::cout << dset2.Sample1() << std::endl;
 
   return 0;
 }
@@ -218,7 +218,7 @@ int testDataSet4() {
 }
 
 int testSampleVector() {
-  cerr << "testSampleVector() \n";
+  std::cerr << "testSampleVector() \n";
   SampleVectorC sv;
   sv += VectorC(1,2,3);
   sv += VectorC(1,1,1);
@@ -238,8 +238,8 @@ int testSampleVector() {
   cmc += VectorC(1,2,3);
   cmc += VectorC(1,1,1);
 #if 0
-  cerr << "sv mc=" << mc << "\n";
-  cerr << "lc mc=" << cmc << "\n";
+  std::cerr << "sv mc=" << mc << "\n";
+  std::cerr << "lc mc=" << cmc << "\n";
 #endif
   
   if((mc.Covariance() - cmc.Covariance()).SumOfSqr() > 0.00001) return __LINE__;
@@ -260,7 +260,7 @@ int testSampleVector() {
 }
 
 int testDataSetVectorLabel() {
-  cerr << "testDataSetVectorLabel()\n";
+  std::cerr << "testDataSetVectorLabel()\n";
   DataSetVectorLabelC svl(2);
   svl.Append(VectorC(2,2,3),1);
   svl.Append(VectorC(2,1,1),1);
@@ -304,15 +304,15 @@ int testDataSetVectorLabel() {
   MatrixC tbcs = VectorC(cmc.Mean() - global.Mean()).OuterProduct();
   tbcs += VectorC(cmc1.Mean() - global.Mean()).OuterProduct();
   
-  cerr << "tbcs=" << tbcs << "\n";
+  std::cerr << "tbcs=" << tbcs << "\n";
   MatrixC bcs = svl.BetweenClassScatter();
-  cerr << "bcs=" << bcs << "\n";
+  std::cerr << "bcs=" << bcs << "\n";
   if((tbcs - bcs).SumOfSqr() > 0.00001) return __LINE__;
   
   MatrixC tics = cmc1.Covariance() * (3.0/5.0) + cmc.Covariance() * (2.0/5.0);
   MatrixC ics = svl.WithinClassScatter(false);
-  cerr << "tics=" << tics << "\n";
-  cerr << "ics=" << ics << "\n";
+  std::cerr << "tics=" << tics << "\n";
+  std::cerr << "ics=" << ics << "\n";
   if((tics - ics).SumOfSqr() > 0.00001) return __LINE__;
   
   return 0;
@@ -367,8 +367,8 @@ int testSampleStreamVectorFunction() {
   SampleStreamVectorC ssv(vecs, slice);
   VectorC vec;
   MatrixRUTC accum2 = ssv.SumOuterProducts();
-  //cerr << accum << endl;
-  //cerr << accum2 << endl;
+  //cerr << accum << std::endl;
+  //cerr << accum2 << std::endl;
   MatrixC mat(accum[1][1], accum[1][2], accum[2][1], accum[2][2]);
   if((mat - accum2).SumOfSqr() > 0.1) return __LINE__;
 
@@ -383,55 +383,55 @@ int testSpeed() {
   for(int i = 0;i < testSize;i++) 
     dataset1.Append(i);
   DateC end(true);
-  cerr << "Create Time1 = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "Create Time1 = " << (end.Double() - start.Double()) << "\n";
   
   DataSet2C<SampleC<IntT>,SampleC<RealT> > dataset2(true);
   start.SetToNow();
   for(int i = 0;i < testSize;i++) 
     dataset2.Append(i,0.3);
   end.SetToNow();
-  cerr << "Create Time2 = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "Create Time2 = " << (end.Double() - start.Double()) << "\n";
   
   DataSet3C<SampleC<IntT>,SampleC<RealT>,SampleC<bool> > dataset3(true);
   start.SetToNow();
   for(int i = 0;i < testSize;i++) 
     dataset3.Append(i,0.3,true);
   end.SetToNow();
-  cerr << "Create Time3 = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "Create Time3 = " << (end.Double() - start.Double()) << "\n";
 
   start.SetToNow();
   DListC<int> aList;
   for(int i = 0;i < testSize;i++) 
     aList.InsLast(i);
   end.SetToNow();
-  cerr << "DList Create Time = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "DList Create Time = " << (end.Double() - start.Double()) << "\n";
   
   UIntT val = 0;
   start.SetToNow();
   for(DataSet1IterC<SampleC<IntT> > it1(dataset1);it1;it1++)
     val += it1.Data();
   end.SetToNow();
-  cerr << "Iter Time1 = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "Iter Time1 = " << (end.Double() - start.Double()) << "\n";
   
   start.SetToNow();
   for(DataSet2IterC<SampleC<IntT>,SampleC<RealT> > it2(dataset2);it2;it2++) {
     val += it2.Data1() + it2.Data2();
   }
   end.SetToNow();
-  cerr << "Iter Time2 = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "Iter Time2 = " << (end.Double() - start.Double()) << "\n";
 
   start.SetToNow();
   for(DataSet3IterC<SampleC<IntT>,SampleC<RealT>,SampleC<bool> > it3(dataset3);it3;it3++) {
     val += it3.Data1() + it3.Data2() + ((int) it3.Data3());
   }
   end.SetToNow();
-  cerr << "Iter Time3 = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "Iter Time3 = " << (end.Double() - start.Double()) << "\n";
   start.SetToNow();
   for(DLIterC<int > itl(aList);itl;itl++)
     val += itl.Data();
   end.SetToNow();
 
-  cerr << "DList Iter Time = " << (end.Double() - start.Double()) << "\n";
+  std::cerr << "DList Iter Time = " << (end.Double() - start.Double()) << "\n";
   
   return 0;
 }

@@ -25,7 +25,7 @@ namespace RavlN {
   // This is a BIG OBJECT.
   // See <a href="RavlN.HashC.html">HashC</a> for more details. <p>
   // NB. This class requires the standard stream operators to
-  // be implemented. ie.  operator<<(ostream &os,xxx) etc...
+  // be implemented. ie.  operator<<(std::ostream &os,xxx) etc...
   
   template<class Key,class Dat >
   class RCHashBodyC
@@ -47,7 +47,7 @@ namespace RavlN {
     {}
     //: Base constructor.*/
     
-    RCHashBodyC(istream &in)
+    RCHashBodyC(std::istream &in)
       : m_data(in)
     {}
     //: Stream constructor.
@@ -96,7 +96,7 @@ namespace RavlN {
   // This is a BIG OBJECT.
   // See <a href="RavlN.HashC.html">HashC</a> for more details. <p>
   // NB. This class requires the standard stream operators to
-  // be implemented. ie.  operator<<(ostream &os,xxx) etc...
+  // be implemented. ie.  operator<<(std::ostream &os,xxx) etc...
 
   template<class Key,class Dat >
   class RCHashC
@@ -124,7 +124,7 @@ namespace RavlN {
     {}
     //: Base constructor.
 
-    RCHashC(istream &in)
+    RCHashC(std::istream &in)
       : RCHandleC<RCHashBodyC<Key,Dat> > (new RCHashBodyC<Key,Dat>(in))
     {}
     //: Stream constructor.

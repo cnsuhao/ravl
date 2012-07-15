@@ -29,13 +29,13 @@ namespace RavlN {
   
   //: stream constructor.
   
-  AttributeTypeBoolBodyC::AttributeTypeBoolBodyC(istream &is)
+  AttributeTypeBoolBodyC::AttributeTypeBoolBodyC(std::istream &is)
     : AttributeTypeBodyC(is)
   { is >> defaultValue; }
   
   //: Save the attribute to a stream 
   
-  bool AttributeTypeBoolBodyC::Save(ostream & strm) const {
+  bool AttributeTypeBoolBodyC::Save(std::ostream & strm) const {
     if(!AttributeTypeBodyC::Save(strm))
       return false;
     strm << ' ' << defaultValue;
@@ -81,13 +81,13 @@ namespace RavlN {
   
   //: stream constructor.
 
-  AttributeTypeStringBodyC::AttributeTypeStringBodyC(istream &is)
+  AttributeTypeStringBodyC::AttributeTypeStringBodyC(std::istream &is)
     : AttributeTypeBodyC(is)
   { is >> defaultValue >> maxLength; }
   
   //: Save the attribute to a stream 
   
-  bool AttributeTypeStringBodyC::Save(ostream & strm) const {
+  bool AttributeTypeStringBodyC::Save(std::ostream & strm) const {
     if(!AttributeTypeBodyC::Save(strm))
       return false;
     strm << ' ' << defaultValue << ' ' << maxLength;
@@ -134,13 +134,13 @@ namespace RavlN {
   
   //: stream constructor.
   
-  AttributeTypeEnumBodyC::AttributeTypeEnumBodyC(istream &is)
+  AttributeTypeEnumBodyC::AttributeTypeEnumBodyC(std::istream &is)
     : AttributeTypeBodyC(is)
   { is >> defaultValue >> values; }
     
   //: Save the attribute to a stream 
   
-  bool AttributeTypeEnumBodyC::Save(ostream & strm) const {
+  bool AttributeTypeEnumBodyC::Save(std::ostream & strm) const {
     if(!AttributeTypeBodyC::Save(strm))
       return false;
     strm << ' ' << defaultValue << ' ' << values;
@@ -182,13 +182,13 @@ namespace RavlN {
   
   //: Stream constructor.
   
-  AttributeTypeComponentBodyC::AttributeTypeComponentBodyC(istream &is)
+  AttributeTypeComponentBodyC::AttributeTypeComponentBodyC(std::istream &is)
     : AttributeTypeBodyC(is)
   {}
   
   //: Save the attribute to a stream 
   
-  bool AttributeTypeComponentBodyC::Save(ostream & strm) const {
+  bool AttributeTypeComponentBodyC::Save(std::ostream & strm) const {
     return AttributeTypeBodyC::Save(strm);
   }
   
@@ -235,7 +235,7 @@ namespace RavlN {
   
   //: Stream constructor.
   
-  AttributeTypeMiscBodyC::AttributeTypeMiscBodyC(istream &is)
+  AttributeTypeMiscBodyC::AttributeTypeMiscBodyC(std::istream &is)
     : AttributeTypeBodyC(is)
   { 
     int x;
@@ -245,7 +245,7 @@ namespace RavlN {
   
   //: Save the attribute to a stream 
   
-  bool AttributeTypeMiscBodyC::Save(ostream & strm) const {
+  bool AttributeTypeMiscBodyC::Save(std::ostream & strm) const {
     if(!AttributeTypeBodyC::Save(strm))
       return false;
     strm << ' ' << static_cast<IntT>(valType);

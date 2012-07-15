@@ -140,8 +140,8 @@ namespace RavlN {
     int x = vsprintf(buff,msg,args);
 #endif
     if(x > (formSize - 256)) 
-      cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
-    cerr << buff;
+      std::cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
+    std::cerr << buff;
     va_end(args);
 #if RAVL_HAVE_EXCEPTIONS
     if(g_assertThrowException)
@@ -173,8 +173,8 @@ namespace RavlN {
     int x = vsprintf(buff,msg,args);
 #endif
     if(x > (formSize - 256)) 
-      cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
-    cerr << buff;
+      std::cerr << "OStreamC::form(...), WARNING: Ouput string is near or over buffer length. \n";
+    std::cerr << buff;
     va_end(args);
   }
 

@@ -75,10 +75,10 @@ namespace RavlN {
     void Parse (const StringC &str, const char* delim);
     //: Parses string into list
 
-    friend ostream & operator<<(ostream & s, const StringArrayC & list);
+    friend std::ostream & operator<<(std::ostream & s, const StringArrayC & list);
   };
   
-  ostream & operator<<(ostream & s, const StringArrayC & list);
+  std::ostream & operator<<(std::ostream & s, const StringArrayC & list);
   // Saves the string list into the output stream 's'.
   
 }

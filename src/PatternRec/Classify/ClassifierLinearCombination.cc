@@ -44,13 +44,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierLinearCombinationBodyC::ClassifierLinearCombinationBodyC(istream &strm) 
+  ClassifierLinearCombinationBodyC::ClassifierLinearCombinationBodyC(std::istream &strm) 
     : ClassifierBodyC(strm)
   {
     IntT version;
     strm >> version;
     if(version < 0 || version > 1)
-      throw ExceptionOutOfRangeC("ClassifierLinearCombinationBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierLinearCombinationBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_weakClassifiers >> m_weights >> m_sumWeights >> m_featureSet;
     if(version > 0) {
       strm >> m_threshold;
@@ -86,7 +86,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierLinearCombinationBodyC::Save (ostream &out) const {
+  bool ClassifierLinearCombinationBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;

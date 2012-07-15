@@ -60,7 +60,7 @@ namespace RavlN {
     {}
     //: Construct from point and size. The data is not copied, and not deletable.
     
-    ~BufferBodyC() { 
+    virtual ~BufferBodyC() {
       if(this->buff != 0 && deletable)
 	delete [] this->buff;
     }

@@ -26,7 +26,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseBrentBodyC::OptimiseBrentBodyC (istream &in)
+  OptimiseBrentBodyC::OptimiseBrentBodyC (std::istream &in)
     :OptimiseBodyC("OptimiseBrentBodyC",in)
   {
     in >> _iterations >> _tolerance;
@@ -126,6 +126,7 @@ namespace RavlN {
         fx3 = fx2; fx2 = fx1; fx1 = fx0;
       }
     }
+    minimumCost = fx1;
     return iterX1;
   }
   
@@ -137,7 +138,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseBrentBodyC::Save (ostream &out) const
+  bool OptimiseBrentBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << " " << _tolerance << "\n";

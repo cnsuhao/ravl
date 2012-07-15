@@ -15,12 +15,12 @@
 
 namespace RavlN {
   
-  ostream &operator<<(ostream &out,const LogValueC &x) {
+  std::ostream &operator<<(std::ostream &out,const LogValueC &x) {
     out << x.Log();
     return out;
   }
   
-  istream &operator>>(istream &in,LogValueC &x) {
+  std::istream &operator>>(std::istream &in,LogValueC &x) {
     RealT v;
     in >> v;
     x = LogValueC(v,true);

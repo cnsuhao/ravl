@@ -29,7 +29,7 @@ namespace RavlN {
 
   //: Dump info about handle
   
-  void RCAbstractC::Dump(ostream &out) const {
+  void RCAbstractC::Dump(std::ostream &out) const {
     out << "RCAbstractC::Dump(), NOT IMPLEMENTED. \n";
   }
 }

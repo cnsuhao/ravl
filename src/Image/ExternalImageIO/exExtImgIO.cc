@@ -37,35 +37,35 @@ int main(int argc,char **argv) {
   if(viaByte) {
     // Convert via a byte image.
     if(verbose)
-      cerr << "Using grey image. \n";
+      std::cerr << "Using grey image. \n";
     
     ImageC<ByteT> bi;
     
     if(!RavlN::Load(infile,bi,ifmt,verbose)) {
-      cerr << "Failed to load data. \n";
+      std::cerr << "Failed to load data. \n";
       return 1;
     }
     if(verbose)
-      cout << "Image size:" << bi.Rectangle() << endl;
+      std::cout << "Image size:" << bi.Rectangle() << std::endl;
     if(!RavlN::Save(output,bi,ofmt,verbose)) {
-      cerr << "Failed to save data. \n";
+      std::cerr << "Failed to save data. \n";
       return 1;
     }
   } else {
     // Convert via an rgb image.
     
     if(verbose)
-      cerr << "Using colour image. \n";
+      std::cerr << "Using colour image. \n";
     ImageC<ByteRGBValueC> rgb;
     
     if(!RavlN::Load(infile,rgb,ifmt,verbose)) {
-      cerr << "Failed to load data. \n";
+      std::cerr << "Failed to load data. \n";
       return 1;
     }
     if(verbose)
-      cout << "Image size:" << rgb.Rectangle() << endl;
+      std::cout << "Image size:" << rgb.Rectangle() << std::endl;
     if(!RavlN::Save(output,rgb,ofmt,verbose)) {
-      cerr << "Failed to save data. \n";
+      std::cerr << "Failed to save data. \n";
       return 1;
     }
   }

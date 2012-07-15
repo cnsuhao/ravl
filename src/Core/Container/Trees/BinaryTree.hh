@@ -108,7 +108,7 @@ namespace RavlN {
     //: Get the balance of the child 1.
     // if no child exists, the balance is -1.
 
-    void Dump(ostream &out,int level = 0);
+    void Dump(std::ostream &out,int level = 0);
     //: Dump node in human readable format.
   protected:
     KeyT key;
@@ -189,7 +189,7 @@ namespace RavlN {
     // key is already in the tree then it will be overwritten
     // otherwise 'false' will be returned.
     
-    void Dump(ostream &out) {
+    void Dump(std::ostream &out) {
       if(root == 0)
 	out << "(NIL)";
       else
@@ -312,7 +312,7 @@ namespace RavlN {
     //: Get the largest key in the tree.
     // Note, the tree must NOT be empty, this can be checked with IsEmpty().
     
-    void Dump(ostream &out)
+    void Dump(std::ostream &out)
     { Body().Dump(out); }
     //: Dump the stream in a human readable fomat.
     // Usefull for debuging.
@@ -322,7 +322,7 @@ namespace RavlN {
   };
   
   template<class KeyT,class DataT>
-  void BinaryTreeNodeC<KeyT,DataT>::Dump(ostream &out,int level) {
+  void BinaryTreeNodeC<KeyT,DataT>::Dump(std::ostream &out,int level) {
     if(child[0] == 0) {
       for(int i = 0;i < level;i++)
 	out << ' ';

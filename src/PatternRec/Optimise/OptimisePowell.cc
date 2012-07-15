@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/OptimisePowell.cc"
 
@@ -17,15 +16,29 @@
 namespace RavlN {
 
   OptimisePowellBodyC::OptimisePowellBodyC (UIntT iterations, RealT tolerance, bool useBracketMinimum,bool verbose)
-    :OptimiseBodyC("OptimisePowellBodyC"),
+    : OptimiseBodyC("OptimisePowellBodyC"),
      _iterations(iterations),
      _tolerance(tolerance),
+     _brentIterations(_iterations),
+     _brentTolerance(_tolerance),
      _brent(iterations,tolerance),
      _useBracketMinimum(useBracketMinimum),
      _verbose(verbose)
   {}
-  
-  OptimisePowellBodyC::OptimisePowellBodyC (istream &in)
+
+  //: Factory constructor
+  OptimisePowellBodyC::OptimisePowellBodyC (const XMLFactoryContextC & factory)
+   : OptimiseBodyC(factory),
+     _iterations(factory.AttributeUInt("iterations",100)),
+     _tolerance(factory.AttributeReal("tolerance",1e-4)),
+     _brentIterations(factory.AttributeUInt("brentIterations",_iterations)),
+     _brentTolerance(factory.AttributeReal("brentTolerance",_tolerance)),
+     _brent(_brentIterations,_brentTolerance),
+     _useBracketMinimum(factory.AttributeBool("useBracketMinimum",true)),
+     _verbose(factory.AttributeBool("verbose",true))
+  {}
+
+  OptimisePowellBodyC::OptimisePowellBodyC (std::istream &in)
     :OptimiseBodyC("OptimisePowellBodyC",in)
   {
     in >> _iterations;
@@ -74,7 +87,9 @@ namespace RavlN {
     IntT numDim = P.Size();
     SArray1dC<VectorC> Di(numDim);
     
-    //cerr << "OptimisePowellBodyC::MinimalX " << _useBracketMinimum << "\n";
+    if(_verbose) {
+      RavlDebug("MinimalX bracketMin=%d Iterations=%u Tolerance=%f ",(int) _useBracketMinimum, _iterations,_tolerance);
+    }
     
     // initialise directions to basis unit vectors
     for (SArray1dIterC<VectorC> it(Di); it; it++) {
@@ -124,7 +139,7 @@ namespace RavlN {
       RealT fPdiff = fP-minimumCost;
       
       // Check if we're stopped converging.
-      if (2.0*Abs(fPdiff) <= _tolerance*(Abs(fP)+Abs(minimumCost)))
+      if (_tolerance > 0 && 2.0*Abs(fPdiff) <= _tolerance*(Abs(fP)+Abs(minimumCost)))
         break;
       
       
@@ -136,7 +151,7 @@ namespace RavlN {
       fP = minimumCost;
       
       // if it has still improved in the same direction
-      if (fPsameagain < fP) {
+      if (fPsameagain <= fP) {
         RealT t = 
           2.0 * ((fP+fPsameagain)-2.0*minimumCost)*Sqr(fPdiff-valueOfBiggest)
           - valueOfBiggest*Sqr(fP-fPsameagain);
@@ -155,7 +170,7 @@ namespace RavlN {
         }
       }
       if(_verbose)
-        std::cerr << "Iter " << iter << " Cost=" << minimumCost << "\n";
+        RavlDebug("Iter %u Cost=%f  ",iter,minimumCost);
     }
     return P;
   }
@@ -168,7 +183,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimisePowellBodyC::Save (ostream &out) const
+  bool OptimisePowellBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << "\n";

@@ -33,13 +33,13 @@ namespace RavlLogicN {
     {}
     //: Constructor.
 
-    NamedVarBodyC(istream &strm);
+    NamedVarBodyC(std::istream &strm);
     //: Construct from a stream.
     
     NamedVarBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to stream 'out'.
     
     virtual bool Save(BinOStreamC &out) const;
@@ -97,7 +97,7 @@ namespace RavlLogicN {
     // if 'oth' isn't a named literal an invalid handle
     // will be created.
     
-    NamedVarC(istream &strm);
+    NamedVarC(std::istream &strm);
     //: Load from stream.
     
     NamedVarC(BinIStreamC &strm);

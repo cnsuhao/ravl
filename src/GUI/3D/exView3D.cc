@@ -46,7 +46,7 @@ int main(int nargs,char *args[])
   case -1:
     if (!RavlN::Load(file,mesh,"",verbose))
     {
-      cerr << "Could not load input file " << file << endl;
+      std::cerr << "Could not load input file " << file << std::endl;
       return 1;
     }
     break;
@@ -60,7 +60,7 @@ int main(int nargs,char *args[])
     mesh = CreateTriMeshSphere(5,8,1.0);
     break;
   default:
-    cerr << "Invalid shape id " << shapeId << "\n";
+    std::cerr << "Invalid shape id " << shapeId << "\n";
     return -1;
     break;
   }
@@ -80,7 +80,7 @@ int main(int nargs,char *args[])
   win.Add(layout);
   win.Show();
 
-  cout << "Starting gui. \n";
+  std::cout << "Starting gui. \n";
   Manager.Execute();
 
   view.Add(object);

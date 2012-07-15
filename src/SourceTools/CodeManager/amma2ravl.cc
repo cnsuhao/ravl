@@ -28,18 +28,18 @@ bool guiSrc = false;
 static bool UpdateFile(FilenameC fn) {
   bool c_source = false;
   if(!fn.Exists()) {
-    cerr << "ERROR: Source file '" << fn << "' does not exist. \n";
+    std::cerr << "ERROR: Source file '" << fn << "' does not exist. \n";
     return false;
   }
   if(!fn.IsReadable()) {
-    cerr << "ERROR: Source file '" << fn << "' is not readable \n";
+    std::cerr << "ERROR: Source file '" << fn << "' is not readable \n";
     return false;
   }
   if(fn.Extension() == "c" || fn.Extension() == "h")
     c_source = true;
   SourceFileC theFile;
   if(!theFile.Load(fn)) {
-    cerr << "Failed to load file '" << fn << "'\n";
+    std::cerr << "Failed to load file '" << fn << "'\n";
     return false;
   }
   if(c_source) {
@@ -56,7 +56,7 @@ static bool UpdateFile(FilenameC fn) {
     theFile.GlobalSubst("include \"xpre.h\"","include \"ccmath/xpre.h\"");
       
     if(theFile.IsModified()) {
-      cerr << "Updated file :" << fn << "\n";
+      std::cerr << "Updated file :" << fn << "\n";
       if(!dryRun)
 	theFile.Save();
     }
@@ -228,7 +228,7 @@ static bool UpdateFile(FilenameC fn) {
   theFile.GlobalSubst("ConstDLIterC","DLIterC");
   
   if(theFile.IsModified()) {
-    cerr << "Updated file :" << fn << "\n";
+    std::cerr << "Updated file :" << fn << "\n";
     if(!dryRun)
       theFile.Save();
   }
@@ -238,7 +238,7 @@ static bool UpdateFile(FilenameC fn) {
 
 static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
   if(verb)
-    cerr << "Checking '" << dir << "' \n";
+    std::cerr << "Checking '" << dir << "' \n";
   StringListC source = defs.AllSources();
   for(DLIterC<StringC> it(source);it;it++) {
     FilenameC fn(dir + filenameSeperator + *it);
@@ -258,7 +258,7 @@ int main(int nargs,char **argv) {
   option.Check();
   
   if(!fn.Exists()) {
-    cerr << "Can't find file " << fn << "\n";
+    std::cerr << "Can't find file " << fn << "\n";
     return 1;
   }
   

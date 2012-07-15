@@ -33,6 +33,13 @@ namespace RavlN {;
     return type2factory;
   }
 
+  //! Copy constructor not supported
+
+  XMLFactoryNodeC::XMLFactoryNodeC(const XMLFactoryNodeC &other)
+   : m_createComponentCalled(false)
+  { RavlIssueError("not supported"); }
+
+
   //! Destructor.
   XMLFactoryNodeC::~XMLFactoryNodeC()
   {
@@ -303,9 +310,9 @@ namespace RavlN {;
     
     handle = RavlN::SystemTypeConverter().DoConversion(child->Component().Abstract(),from,to);
     if(!handle.IsValid()) {
-      if(!silentError)
+      if(!silentError) {
         RavlError(" convert data to requested type, from '%s' to '%s' in '%s'",RavlN::TypeName(from),RavlN::TypeName(to),Path().data());
-      throw RavlN::ExceptionBadConfigC("Failed to follow path");
+      }
       return false;
     }
     ONDEBUG(RavlDebug("UseComponentInternal, successful @ '%s' ",name.chars()));
@@ -409,7 +416,6 @@ namespace RavlN {;
   
   //------------------------------------------------------------
 
-  extern void linkXMLFactoryRegister();
   
   //: Setup directly from a config file name.
   XMLFactoryContextC::XMLFactoryContextC(const StringC &configFile,XMLTreeLoadC *loader)
@@ -505,6 +511,7 @@ namespace RavlN {;
   XMLFactoryC::XMLFactoryC()
     : m_configRoot(true),
       m_setupClean(true),
+      m_donePostSetup(false),
       m_verbose(false),
       m_checkConfig(false)
   {
@@ -572,6 +579,14 @@ namespace RavlN {;
     m_checkConfig = m_configTree.AttributeBool("checkConfig",false);
     ONDEBUG(RavlDebug("Enabled check config:%d ",(int) m_checkConfig));
   }
+
+  XMLFactoryC::XMLFactoryC(const XMLFactoryC &)
+  : m_setupClean(true),
+    m_donePostSetup(false),
+    m_verbose(false),
+    m_checkConfig(false)
+  { RavlIssueError("not supported"); }
+
   
   //! Read config file.
   

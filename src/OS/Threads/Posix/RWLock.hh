@@ -193,11 +193,11 @@ namespace RavlN {
   
 #endif
 
-  ostream &operator<<(ostream &strm,const RWLockC &vertex);
+  std::ostream &operator<<(std::ostream &strm,const RWLockC &vertex);
   //: Text stream output.
   // Not implemented
   
-  istream &operator>>(istream &strm,RWLockC &vertex);
+  std::istream &operator>>(std::istream &strm,RWLockC &vertex);
   //: Text stream input.
   // Not implemented
   

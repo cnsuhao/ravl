@@ -23,16 +23,16 @@ bool verb;
 
 static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
   if(verb)
-    cerr << "Checking '" << dir << "' \n";
+    std::cerr << "Checking '" << dir << "' \n";
   StringListC source = defs.AllSources();
   for(DLIterC<StringC> it(source);it;it++) {
     FilenameC fn(dir + filenameSeperator + *it);
     if(!fn.Exists()) {
-      cerr << "ERROR: Source file '" << fn << "' does not exist. \n";
+      std::cerr << "ERROR: Source file '" << fn << "' does not exist. \n";
       return false;
     }
     if(!fn.IsReadable()) {
-      cerr << "ERROR: Source file '" << fn << "' is not readable \n";
+      std::cerr << "ERROR: Source file '" << fn << "' is not readable \n";
       return false;
     }
   }

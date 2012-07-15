@@ -389,14 +389,14 @@ int testIndexRange2dSet() {
   
   IndexRange2dSetC t1 = IndexRange2dSetC::Subtract(rect1,rect2);
   if(t1.Area() != 3) {
-    cerr << "Failed test 1. " << t1.Area() << " Elems:" << t1.Size() << "\n";
-    cerr << t1 << "\n";
+    std::cerr << "Failed test 1. " << t1.Area() << " Elems:" << t1.Size() << "\n";
+    std::cerr << t1 << "\n";
     return __LINE__;
   }
 
   IndexRange2dSetC t2 = IndexRange2dSetC::Subtract(rect2,rect1);
   if(t2.Area() != 3) {
-    cerr << "Failed test 2. \n";
+    std::cerr << "Failed test 2. \n";
     return __LINE__;
   }
 
@@ -404,15 +404,15 @@ int testIndexRange2dSet() {
   
   IndexRange2dSetC t3 = IndexRange2dSetC::Subtract(rect2,rect3);
   if(t3.Area() != 3) {
-    cerr << "Failed test 3. " << t3.Area() << " Elems:" << t3.Size() << "\n";
-    cerr << t3 << "\n";
+    std::cerr << "Failed test 3. " << t3.Area() << " Elems:" << t3.Size() << "\n";
+    std::cerr << t3 << "\n";
     return __LINE__;
   }
   
   IndexRange2dSetC t4 = IndexRange2dSetC::Subtract(rect3,rect2);
   if(t4.Area() != 3) {
-    cerr << "Failed test 4. " << t4.Area() << " Elems:" << t4.Size() << "\n";
-    cerr << t4 << "\n";
+    std::cerr << "Failed test 4. " << t4.Area() << " Elems:" << t4.Size() << "\n";
+    std::cerr << t4 << "\n";
     return __LINE__;
   }
   return 0;
@@ -512,7 +512,7 @@ int testObjIO() {
   alist.InsLast(2);
   alist.InsLast(3);
   DListC<int> blist(alist);
-  // cerr << "&x=" << ((void *)&x) << " &val=" << ((void *) &val) << "\n";
+  // std::cerr << "&x=" << ((void *)&x) << " &val=" << ((void *) &val) << "\n";
   StrOStreamC os;
   BinOStreamC bos(os);
   
@@ -562,7 +562,7 @@ int testObjIO() {
 int testVectorIO() {
   TFVectorC<int,3> value;
   value.Fill(0);
-  cout << value;
+  std::cout << value;
   return 0;
 }
 
@@ -595,11 +595,13 @@ class TestDerived2C
 {
 public:
   TestDerived2C(BinIStreamC &strm)
-    : RCBodyVC(strm)
+    : RCBodyVC(strm),
+     m_i(0)
   { strm >> m_i; }
 
-  TestDerived2C(istream &strm)
-    : RCBodyVC(strm)
+  TestDerived2C(std::istream &strm)
+    : RCBodyVC(strm),
+      m_i(0)
   { strm >> m_i; }
   
   TestDerived2C(int i)
@@ -750,7 +752,7 @@ int testXMLTree() {
   XMLTreeC::ReadNode(xs, "test2"); // read node with static method
   bool xcpt(false);
   try { XMLTreeC::ReadNode(xs, "test2"); } // read node with static method: should fail
-  catch (ExceptionBadConfigC) { xcpt = true; }
+  catch (ExceptionBadConfigC &) { xcpt = true; }
   if (!xcpt) return __LINE__;
   return 0;
 }

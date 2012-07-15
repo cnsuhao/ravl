@@ -56,9 +56,9 @@ int exVarLenCode (int argc, char** argv)
   VariableLengthCodeIterC decoder(code_table);
   for(int i =0;i < 5;i++) {
     decoder.NextToken(istrm); 
-    cout <<  decoder.Data() << " ";
+    std::cout <<  decoder.Data() << " ";
   }
-  cout << "\n";
+  std::cout << "\n";
 
   return 0;
 }

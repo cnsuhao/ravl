@@ -116,14 +116,14 @@ int testBasic() {
   StrIStreamC ss(
                  "<?xml version='1.0' encoding='UTF-8' ?>\n"
                  "<?RAVL class='RavlN::XMLTreeC' ?>\n"
-                 "<Config verbose=\"true\" >\n"
+                 "<Config verbose=\"false\" >\n"
                  "  <Test typename=\"RavlN::XMLFactoryC\" />\n"
                  "  <Test2 typename=\"RavlN::TestClassC\" >\n"
                  "    <child typename=\"RavlN::TestClassC\" noChild=\"true\" />\n"
                  "  </Test2>\n"
                  "  <Nodes> \n"
-                 "    <Test3 typename=\"RavlN::TestClassC\" />\n"
-                 "    <Test4 typename=\"RavlN::TestClassC\" />\n"
+                 "    <Test3 typename=\"RavlN::TestClassC\" noChild=\"true\" />\n"
+                 "    <Test4 typename=\"RavlN::TestClassC\" noChild=\"true\" />\n"
                  "  </Nodes> \n"
                  "</Config>\n"
                  );

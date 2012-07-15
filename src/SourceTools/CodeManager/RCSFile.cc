@@ -60,7 +60,7 @@ namespace RavlN {
 	numstart = at+1;
 	continue;
       }
-      cerr << "RCSVersionC(StringC), Unexpected character '" << frm[at] << "' in '" << frm <<"'\n";
+      std::cerr << "RCSVersionC(StringC), Unexpected character '" << frm[at] << "' in '" << frm <<"'\n";
       // FIXME :- throw an error ?
       break;
     }
@@ -274,14 +274,14 @@ namespace RavlN {
       command += vers;
     command += " " + other + " >" + tmpFile;
     if(system(command) != 0) {
-      cerr << "RCSFileBodyC::IsDifferent(), Failed to check out version " << vers << " of " << other << endl;
+      std::cerr << "RCSFileBodyC::IsDifferent(), Failed to check out version " << vers << " of " << other << std::endl;
       // FIXME :- Throw exception ?
       if(tmpFile.Exists())
 	tmpFile.Remove(); // Tidy up.
       return true; // Assume different.
     }
     bool ret = VerDiff(tmpFile);
-    ONDEBUG(cout << "RCSFileBodyC::IsDifferent() " << ret << " " << (*this) << " " << tmpFile << endl);
+    ONDEBUG(std::cout << "RCSFileBodyC::IsDifferent() " << ret << " " << (*this) << " " << tmpFile << endl);
     tmpFile.Remove(); // Tidy up.
     return ret;
   }
@@ -292,9 +292,9 @@ namespace RavlN {
   
   bool RCSFileBodyC::IsDiffFromHead() {
     IntT ret = system("rcsdiff -q " + (*this) + " >/dev/null");
-    //cerr << "RCSFileBodyC::IsDiffFromHead() Called on " << (*this) << " = " << ret << endl;
+    //cerr << "RCSFileBodyC::IsDiffFromHead() Called on " << (*this) << " = " << ret << std::endl;
     if(ret == 2) {
-      cerr << "RCSFileBodyC::IsDiffFromHead(), Failed. " << ((const char *)(*this)) << "\n";
+      std::cerr << "RCSFileBodyC::IsDiffFromHead(), Failed. " << ((const char *)(*this)) << "\n";
       return true; // Don't know, assume the worst.
     }
     return (ret != 0);
@@ -315,7 +315,7 @@ namespace RavlN {
       return false; // Failed to find rcs file.
     ifstream inf(rcsFile.chars());
     if(!inf) {
-      cerr << "RCSFileBodyC::ParseRCS(), Failed to open " << rcsFile << endl;
+      std::cerr << "RCSFileBodyC::ParseRCS(), Failed to open " << rcsFile << std::endl;
       return false;
     }
     usesRCS = true;
@@ -368,7 +368,7 @@ namespace RavlN {
 	  }
 	  if(state == 0)
 	    break; // Change of state ?
-	  // Fall through.
+	  /* no break */
 	case 1:
 	  // Parse delta info...
 	  // Don't need this info so just return.
@@ -391,12 +391,12 @@ namespace RavlN {
     } else
       rcsFile = DBFilename();
     if(rcsFile.IsEmpty()) {
-      cerr << "RCSFileBodyC::ExtractInital(), No RCS file for '" << ((const char *)(*this)) << "' found. \n";
+      std::cerr << "RCSFileBodyC::ExtractInital(), No RCS file for '" << ((const char *)(*this)) << "' found. \n";
       return false; // Failed to find rcs file.
     }
     ifstream inf(rcsFile.chars());
     if(!inf) {
-      cerr << "RCSFileBodyC::ExtractInital(), Failed to open " << rcsFile << endl;
+      std::cerr << "RCSFileBodyC::ExtractInital(), Failed to open " << rcsFile << std::endl;
       return false;
     }
     int state = 0; // Start in admin.
@@ -421,7 +421,7 @@ namespace RavlN {
 	  }
 	if(state == 0)
 	  break; // Change of state ?
-	// Fall through.
+	/* no break */
 	case 1:
 	  // Parse delta info...
 	  if(isdigit(id.firstchar())) {
@@ -453,6 +453,7 @@ namespace RavlN {
 	  }
 	  if(state == 1)
 	    break; // Change of state ?
+	  /* no break */
 	case 2:
 	  // Parse delta info...
 	  // Don't need this info so just return.
@@ -480,12 +481,12 @@ namespace RavlN {
     } else
       rcsFile = DBFilename();
     if(rcsFile.IsEmpty()) {
-      cerr << "RCSFileBodyC::ExtractInital(), No RCS file for '" << ((const char *) (*this)) << "' found. \n";
+      std::cerr << "RCSFileBodyC::ExtractInital(), No RCS file for '" << ((const char *) (*this)) << "' found. \n";
       return ret; // Failed to find rcs file.
     }
     ifstream inf(rcsFile.chars());
     if(!inf) {
-      cerr << "RCSFileBodyC::ExtractInital(), Failed to open " << rcsFile << endl;
+      std::cerr << "RCSFileBodyC::ExtractInital(), Failed to open " << rcsFile << std::endl;
       return ret;
     }
     int state = 0; // Start in admin.
@@ -508,7 +509,7 @@ namespace RavlN {
 	    state = 2;	
 	  if(state == 0)
 	    break; // Change of state ?
-	  // Fall through.
+	  /* no break */
 	case 1:
 	  // Parse delta info...
 	  if(isdigit(id.firstchar())) {
@@ -530,6 +531,7 @@ namespace RavlN {
 	  }
 	  if(state == 1)
 	    break; // Change of state ?
+	  /* no break */
 	case 2:
 	  if(isdigit(id.firstchar())) {
 	    cver = id;
@@ -555,37 +557,37 @@ namespace RavlN {
     UserInfoC cu = UserInfoC::WhoAmI();
     FilenameC fn = DBFilename();
     if(fn.IsEmpty()) {
-      cerr << "WARNING: '" << chars() << "' has no RCS file. \n";
+      std::cerr << "WARNING: '" << chars() << "' has no RCS file. \n";
       return true;
     }
     UserInfoC orgowner = fn.OwnerInfo();
 #if 0
     if(verbose)
-      cerr << "Checking ownership of '" << fn << "'.  Target:'" << cu.Login() << "'  Cur:'" << orgowner.Login() << "'\n";
+      std::cerr << "Checking ownership of '" << fn << "'.  Target:'" << cu.Login() << "'  Cur:'" << orgowner.Login() << "'\n";
 #endif
     if(cu == orgowner)
       return true; // Already right.
     if(verbose) 
-      cerr << "Attempting to possess file '" << fn << "'\n";
+      std::cerr << "Attempting to possess file '" << fn << "'\n";
     // First try an rename original file.
     FilenameC org(fn + ".orig");
     if(org.Exists()) // Make sure its unique.
       org = org.MkTemp();
     if(!fn.Rename(org)) {
-      cerr << "ERROR: Failed to possess file '" << fn << "' rename failed. \n";
+      std::cerr << "ERROR: Failed to possess file '" << fn << "' rename failed. \n";
       return false;
     }
     if(!org.Exists()) { // Double check.
-      cerr << "ERROR: Failed to possess file '" << fn << "' rename failed without error. \n";
+      std::cerr << "ERROR: Failed to possess file '" << fn << "' rename failed without error. \n";
       return false;
     }
     if(fn.Exists()) { // Triple check.
-      cerr << "ERROR: Failed to possess file '" << fn << "' orginal file still exists. \n";
+      std::cerr << "ERROR: Failed to possess file '" << fn << "' orginal file still exists. \n";
       return false;
     }
     // Copy file to newone with correct ownership.
     if(!org.CopyTo(fn)) {
-      cerr << "ERROR: Posses failed. Can't copy. '" << org << "' to '" << fn << "'.  Tiding up. \n";
+      std::cerr << "ERROR: Posses failed. Can't copy. '" << org << "' to '" << fn << "'.  Tiding up. \n";
       // Tidy up.
       if(!org.Rename(fn)) 
 	cerr << "ERROR: Renamed of '" << org << "' to '" << fn << "' failed. \n";
@@ -593,7 +595,7 @@ namespace RavlN {
     }
     // Double check all looks ok.
     if(org.FileSize() != fn.FileSize()) {
-      cerr << "ERROR: Filesize mismatch.   Restoring orginal file '" << org << "' in directory. \n";
+      std::cerr << "ERROR: Filesize mismatch.   Restoring orginal file '" << org << "' in directory. \n";
       if(!fn.Remove()) {
 	cerr<< "ERROR: Failed to remove new file. '" << fn << "' \n";
 	return false;
@@ -603,14 +605,14 @@ namespace RavlN {
       return false;
     }
     if(!org.Remove())
-      cerr << "WARNING: Failed to remove orginal file '" << org << "'.\n";
+      std::cerr << "WARNING: Failed to remove orginal file '" << org << "'.\n";
     else {
       if(verbose)
 	cerr << "File '" << fn << "' successfully possessed. \n";
     }
     // Check RCS mode.
     if(system(StringC("rcs -q -L -a") + orgowner.Login() + "," + cu.Login() + " " + fn) != 0) {
-      cerr << "WARNING: rcs command failed for file '" << fn << "'\n";
+      std::cerr << "WARNING: rcs command failed for file '" << fn << "'\n";
     }
     return true;
   }
@@ -620,7 +622,7 @@ namespace RavlN {
   //: Extract next entry from RCS file.
   // reads upto the next ';' character.
   
-  StringC RCSFileBodyC::GetEntry(istream &in) {
+  StringC RCSFileBodyC::GetEntry(std::istream &in) {
     StringC ret;
     bool lastwasspace = true;
     UIntT maxStringLen = 32000;
@@ -671,8 +673,8 @@ namespace RavlN {
 	    }
 	    ret += alet;
 	    if(ret.length() > maxStringLen) {
-	      cerr << "ERROR: RCS String too long in '" << chars() << "'\n"; 
-	      cerr << ret;
+	      std::cerr << "ERROR: RCS String too long in '" << chars() << "'\n"; 
+	      std::cerr << ret;
 	      return StringC();
 	    }
 	  }
@@ -682,6 +684,7 @@ namespace RavlN {
 	default:
 	  lastwasspace = false;
 	  ret += (char) letter;
+	  break;
 	}
     }
     return ret;
@@ -708,7 +711,7 @@ namespace RavlN {
       ret += str[at];
     }
     // Finished incorrectly!
-    cerr << "RCSFileBodyC::Unstuff(), WARNING: Incomplete string found.\n";
+    std::cerr << "RCSFileBodyC::Unstuff(), WARNING: Incomplete string found.\n";
     return ret;
   }
   
@@ -726,7 +729,7 @@ namespace RavlN {
     if(auser == dbFilename.OwnerInfo())
       return true; // If we own the RCS file we have access.
     for(DLIterC<UserInfoC> it(access);it.IsElm();it.Next()) {
-      //cerr << "Who:" << it.Data().Login() << endl;
+      //cerr << "Who:" << it.Data().Login() << std::endl;
       if(it.Data() == auser)
 	return true;
     }
@@ -746,7 +749,7 @@ namespace RavlN {
     UserInfoC lockBy = LockedBy(head);
     if(lockBy.IsValid())
       return (lockBy == uId);
-    //  cerr << "File is available. \n";
+    //  std::cerr << "File is available. \n";
     return true; // File not locked.
   }
   
@@ -767,7 +770,7 @@ namespace RavlN {
   
   bool RCSFileBodyC::HasChangedFrom(RCSVersionC fromVer)  {
     if(fromVer != HeadVersion()) {
-      //cerr << "RCSFileBodyC::HasChangedFrom() Head Vers differ: " << fromVer << " " << HeadVersion() << endl;
+      //cerr << "RCSFileBodyC::HasChangedFrom() Head Vers differ: " << fromVer << " " << HeadVersion() << std::endl;
       return true;
     }
 #if 0
@@ -797,15 +800,15 @@ namespace RavlN {
   bool 
   RCSFileBodyC::VerDiff(const FilenameC &othFn)  {
     const char *rcsInfoTxt[7] = {"$Id","$Revision","$Date","$RCSfile","$Author","$Header",0};
-    //cerr << "VerDiff() " << (*this) << " " << othFn << endl;
+    //cerr << "VerDiff() " << (*this) << " " << othFn << std::endl;
     ifstream in1(this->chars());
     ifstream in2(othFn.chars());
     if(!in1) {
-      cerr << "RCSFileBodyC::VerDiff(), Failed to open file :" << chars() << endl;
+      std::cerr << "RCSFileBodyC::VerDiff(), Failed to open file :" << chars() << std::endl;
       return true;
     }
     if(!in2) {
-      cerr << "RCSFileBodyC::VerDiff(), Failed to open file :" << othFn << endl;
+      std::cerr << "RCSFileBodyC::VerDiff(), Failed to open file :" << othFn << std::endl;
       return true;
     }
     StringC buf1,buf2;  
@@ -830,21 +833,21 @@ namespace RavlN {
 	  }
 	}
 	if(mini < 0) {
-	  ONDEBUG(cerr << "No subst :" << buf1 << endl);
+	  ONDEBUG(std::cerr << "No subst :" << buf1 << endl);
 	  return true; // Yep there different.
 	}
 	off = minoff;
 	matchTxt = rcsInfoTxt[mini];
 	if(!buf2.matches(matchTxt,off,false)) {
 #if RCSDEBUG
-	  cerr << "                Txt:" << matchTxt << endl;
-	  cerr << "               buf1:" << buf1 << endl;
-	  cerr << "No match in second :" << buf2 << endl;
+	  std::cerr << "                Txt:" << matchTxt << std::endl;
+	  std::cerr << "               buf1:" << buf1 << std::endl;
+	  std::cerr << "No match in second :" << buf2 << std::endl;
 #endif
 	  return true; // No 'matchTxt' found in buf2.
 	}
-	//cerr << "F1: " << buf1 << endl;
-	//cerr << "F2: " << buf2 << endl;
+	//cerr << "F1: " << buf1 << std::endl;
+	//cerr << "F2: " << buf2 << std::endl;
 	// Work out where the text we want to ignore ends.
 	int r1,r2,rest = off + matchTxt.Size();
 	char tmp = buf1[rest];
@@ -852,7 +855,7 @@ namespace RavlN {
 	  r1 = buf1.index('$',rest+1);
 	else {
 	  if(tmp != '$') {
-	    cerr << "RCSFileBodyC::VerDiff(), Unexpected character in line :" << buf1 << endl;
+	    std::cerr << "RCSFileBodyC::VerDiff(), Unexpected character in line :" << buf1 << std::endl;
 	    return true;
 	  }
 	  r1 = rest;
@@ -862,7 +865,7 @@ namespace RavlN {
 	  r2 = buf2.index('$',rest+1);
 	else {
 	  if(tmp != '$') {
-	    cerr << "RCSFileBodyC::VerDiff(), Unexpected character in line :" << buf2 << endl;
+	    std::cerr << "RCSFileBodyC::VerDiff(), Unexpected character in line :" << buf2 << std::endl;
 	    return true;
 	  }
 	  r2 = rest;
@@ -871,15 +874,15 @@ namespace RavlN {
 	buf1 = buf1.before(off) + buf1.after(r1);
 	buf2 = buf2.before(off) + buf2.after(r2);
 #if RCSDEBUG
-	cerr << "Removed: " << matchTxt << endl;
-	cerr << "   Buf1:" << buf1 << endl; 
-	cerr << "   Buf2:" << buf2 << endl;
+	cerr << "Removed: " << matchTxt << std::endl;
+	cerr << "   Buf1:" << buf1 << std::endl; 
+	cerr << "   Buf2:" << buf2 << std::endl;
 #endif
       }
       
       // All seems ok.
     }
-    //cerr << "final:" << ((bool) in1) << " " << ((bool) in2) << endl;
+    //cerr << "final:" << ((bool) in1) << " " << ((bool) in2) << std::endl;
     return in1 || in2; // Both streams should be finished
   }
   
@@ -928,7 +931,7 @@ namespace RavlN {
     RCSVersionC it(str);
     SArray1dC<UIntT> &arr = it.Array();
     if(arr.Size() != 6) {
-      cerr << "RCSFileBodyC::DateRCS2DateC(), Illegal date. \n";
+      std::cerr << "RCSFileBodyC::DateRCS2DateC(), Illegal date. \n";
       return DateC();
     }
     return DateC(arr[0] + 1900,arr[1],arr[2],arr[3],arr[4],arr[5]);

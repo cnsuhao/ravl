@@ -43,7 +43,7 @@ namespace RavlImageN {
 
   ImageC<RealRGBValueC> FloatYPbPr422BT709ImageCT2RealRGBValueImageCT(const ImageC<FloatYPbPr422BT709ValueC> &dat) { 
     ImageRectangleC outRect = dat.Rectangle();
-    //cout << "outRect created " << endl;
+    //cout << "outRect created " << std::endl;
     if(outRect.Area() == 0)
       return ImageC<RealRGBValueC>();
     // Make sure we're aligned correctly.

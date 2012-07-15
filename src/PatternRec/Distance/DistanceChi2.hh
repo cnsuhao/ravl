@@ -42,13 +42,13 @@ namespace RavlN{
     DistanceChi2BodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DistanceChi2BodyC(istream &strm);
+    DistanceChi2BodyC(std::istream &strm);
     //: Load from stream.
     
     DistanceChi2BodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -77,7 +77,7 @@ namespace RavlN{
     {}
     //: Construct from XML factory
 
-    DistanceChi2C(istream &strm);
+    DistanceChi2C(std::istream &strm);
     //: Load from stream.
     
     DistanceChi2C(BinIStreamC &strm);
@@ -91,14 +91,14 @@ namespace RavlN{
     
   };
   
-  inline istream &operator>>(istream &strm,DistanceChi2C &obj) {
+  inline std::istream &operator>>(std::istream &strm,DistanceChi2C &obj) {
     obj = DistanceChi2C(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DistanceChi2C &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DistanceChi2C &obj) {
     obj.Save(out);
     return out;
   }

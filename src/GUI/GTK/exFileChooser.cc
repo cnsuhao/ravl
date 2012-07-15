@@ -25,7 +25,7 @@ bool FileChooserDialogResponse(StringC &filename, TextBoxC &textBox)
   StringC message;
   message.form("FileChooserDialogResponse filename(%s)\n", filename.chars());
   textBox.Insert(message);
-  cerr << message;
+  std::cerr << message;
   return true;
 }
 
@@ -34,7 +34,7 @@ bool FileChooserButtonResponse(StringC &filename, TextBoxC &textBox)
   StringC message;
   message.form("FileChooserButtonResponse filename(%s)\n", filename.chars());
   textBox.Insert(message);
-  cerr << message;
+  std::cerr << message;
   return true;
 }
 
