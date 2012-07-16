@@ -139,8 +139,8 @@ namespace RavlImageN {
   DP_REGISTER_CONVERSION_NAMED(ByteRGBImageCT2ByteYCbCr422BT601ImageCT,1.5,
 			       "RavlImageN::ImageC<RavlImageN::ByteYCbCr422BT601ValueC> RavlImageN::Convert(const RavlImageN::ImageC<RavlImageN::ByteRGBValueC> &)");
   
-  FileFormatStreamC<ImageC<ByteYCbCr422BT601ValueC> > FileFormatStream_ImageC_ByteYCbCr422BT601ValueC;
-  FileFormatBinStreamC<ImageC<ByteYCbCr422BT601ValueC> > FileFormatBinStream_ImageC_ByteYCbCr422BT601ValueC;
+  static FileFormatStreamC<ImageC<ByteYCbCr422BT601ValueC> > FileFormatStream_ImageC_ByteYCbCr422BT601ValueC;
+  static FileFormatBinStreamC<ImageC<ByteYCbCr422BT601ValueC> > FileFormatBinStream_ImageC_ByteYCbCr422BT601ValueC;
   
 
 }

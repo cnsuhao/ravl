@@ -44,6 +44,9 @@ namespace RavlN {
   // error channel and the program will continue with the
   // compiler generated name.
   
+  bool HaveTypeName(const std::type_info &info);
+  //: Test if we have a typename registered
+
   const char *TypeHandleName(const std::type_info &info);
   //: Lookup the name of a handle type from body std::type_info structure.
   

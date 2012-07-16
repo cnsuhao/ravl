@@ -23,7 +23,7 @@ namespace RavlImageN {
   void InitImgIOBool()
   {}
   
-  FileFormatStreamC<ImageC<bool> > FileFormatStream_ImageC_bool;
-  FileFormatBinStreamC<ImageC<bool> > FileFormatBinStream_ImageC_bool;
+  static FileFormatStreamC<ImageC<bool> > FileFormatStream_ImageC_bool;
+  static FileFormatBinStreamC<ImageC<bool> > FileFormatBinStream_ImageC_bool;
   
 }

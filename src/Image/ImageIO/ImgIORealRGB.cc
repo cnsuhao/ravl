@@ -26,11 +26,11 @@ namespace RavlImageN {
   static TypeNameC type1(typeid(ImageC<RealRGBValueC>),"ImageC<RealRGBValueC>");  
   static TypeNameC type2(typeid(ImageC<RGBValueC<float> >),"RavlImageN::ImageC<RGBValueC<float> >");  
   
-  FileFormatStreamC<ImageC<RealRGBValueC> > FileFormatStream_ImageC_RealRGBValueC;
-  FileFormatBinStreamC<ImageC<RealRGBValueC> > FileFormatBinStream_ImageC_RealRGBValueC;
+  static FileFormatStreamC<ImageC<RealRGBValueC> > FileFormatStream_ImageC_RealRGBValueC;
+  static FileFormatBinStreamC<ImageC<RealRGBValueC> > FileFormatBinStream_ImageC_RealRGBValueC;
   
-  FileFormatStreamC<ImageC<RGBValueC<float> > > FileFormatStream_ImageC_RGBValueC_float;
-  FileFormatBinStreamC<ImageC<RGBValueC<float> > > FileFormatBinStream_ImageC_RGBValueC_float;
+  static FileFormatStreamC<ImageC<RGBValueC<float> > > FileFormatStream_ImageC_RGBValueC_float;
+  static FileFormatBinStreamC<ImageC<RGBValueC<float> > > FileFormatBinStream_ImageC_RGBValueC_float;
   
   // Some conversions.
   

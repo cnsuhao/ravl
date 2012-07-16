@@ -91,23 +91,23 @@ namespace RavlN {
 
   static bool initXMLFactoryStuff = InitMatrixXMLFactory() != 0;
 
-  FileFormatStreamC<MatrixC> FileFormatStream_Matrix;
-  FileFormatStreamC<VectorC> FileFormatStream_Vector;
-  FileFormatStreamC<VectorMatrixC> FileFormatStream_VectorMatrix;
-  FileFormatStreamC<MeanCovarianceC> FileFormatStream_MeanCovariance;
+  static FileFormatStreamC<MatrixC> FileFormatStream_Matrix;
+  static FileFormatStreamC<VectorC> FileFormatStream_Vector;
+  static FileFormatStreamC<VectorMatrixC> FileFormatStream_VectorMatrix;
+  static FileFormatStreamC<MeanCovarianceC> FileFormatStream_MeanCovariance;
   
-  FileFormatBinStreamC<MatrixC> FileFormatBinStream_Matrix;
-  FileFormatBinStreamC<VectorC> FileFormatBinStream_Vector;
-  FileFormatBinStreamC<VectorMatrixC> FileFormatBinStream_VectorMatrix;
-  FileFormatBinStreamC<MeanCovarianceC> FileFormatBinStream_MeanCovariance;
+  static FileFormatBinStreamC<MatrixC> FileFormatBinStream_Matrix;
+  static FileFormatBinStreamC<VectorC> FileFormatBinStream_Vector;
+  static FileFormatBinStreamC<VectorMatrixC> FileFormatBinStream_VectorMatrix;
+  static FileFormatBinStreamC<MeanCovarianceC> FileFormatBinStream_MeanCovariance;
   
-  FileFormatStreamC<SArray1dC<MatrixC> > FileFormatStream_SArray1dC_Matrix;
-  FileFormatStreamC<SArray1dC<VectorC> > FileFormatStream_SArray1dC_Vector;
-  FileFormatStreamC<SArray1dC<VectorMatrixC> > FileFormatStream_SArray1dC_VectorMatrix;
+  static FileFormatStreamC<SArray1dC<MatrixC> > FileFormatStream_SArray1dC_Matrix;
+  static FileFormatStreamC<SArray1dC<VectorC> > FileFormatStream_SArray1dC_Vector;
+  static FileFormatStreamC<SArray1dC<VectorMatrixC> > FileFormatStream_SArray1dC_VectorMatrix;
   
-  FileFormatBinStreamC<SArray1dC<MatrixC> > FileFormatBinStream_SArray1dC_Matrix;
-  FileFormatBinStreamC<SArray1dC<VectorC> > FileFormatBinStream_SArray1dC_Vector;
-  FileFormatBinStreamC<SArray1dC<VectorMatrixC> > FileFormatBinStream_SArray1dC_VectorMatrix;
+  static FileFormatBinStreamC<SArray1dC<MatrixC> > FileFormatBinStream_SArray1dC_Matrix;
+  static FileFormatBinStreamC<SArray1dC<VectorC> > FileFormatBinStream_SArray1dC_Vector;
+  static FileFormatBinStreamC<SArray1dC<VectorMatrixC> > FileFormatBinStream_SArray1dC_VectorMatrix;
 
   void InitMatrixIO()
   {}

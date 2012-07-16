@@ -20,10 +20,10 @@ namespace RavlN {
   static TypeNameC type1(typeid(BoundaryC),"BoundaryC");
   static TypeNameC type2(typeid(DListC<BoundaryC>),"DListC<BoundaryC>");
   
-  FileFormatStreamC<BoundaryC> FileFormatStream_Boundary;
-  FileFormatBinStreamC<BoundaryC> FileFormatBinStream_Boundary;
+  static FileFormatStreamC<BoundaryC> FileFormatStream_Boundary;
+  static FileFormatBinStreamC<BoundaryC> FileFormatBinStream_Boundary;
   
-  FileFormatStreamC<DListC<BoundaryC> > FileFormatStream_DListC_Boundary;
-  FileFormatBinStreamC<DListC<BoundaryC> > FileFormatBinStream_DListC_Boundary;
+  static FileFormatStreamC<DListC<BoundaryC> > FileFormatStream_DListC_Boundary;
+  static FileFormatBinStreamC<DListC<BoundaryC> > FileFormatBinStream_DListC_Boundary;
   
 }
