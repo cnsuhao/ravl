@@ -145,6 +145,7 @@ namespace RavlN {
     IndexC Index() const
     { return IndexC((IntT)( &(*it) - cit.Data().Data().ReferenceElm())); }
     //: Get index of current element.
+    // Note: This is only valid if we're addressing a valid element. That is if IsElm() is true.
     
     bool GotoNth(UIntT offset) {
       UIntT at;

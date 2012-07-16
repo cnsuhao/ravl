@@ -993,7 +993,7 @@ namespace RavlN {
   template<class DataT>
   DArray1dC<DataT> DArray1dBodyC<DataT>::CompactFrom(IndexC start,SizeT size) {
     if(size == 0)
-      size = IMax() - start;
+      size = (IMax() - start)+1;
     if(size == 0)
       return DArray1dC<DataT>();
     IndexC max = (start + size)-1;

@@ -39,6 +39,7 @@ namespace RavlN { namespace GeneticN {
      m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1)),
+     m_atWorkQueue(0),
      m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
      m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
   {
@@ -70,7 +71,12 @@ namespace RavlN { namespace GeneticN {
     lock.Unlock();
 
     for(unsigned i = 0;i < m_numGenerations;i++) {
-      RavlInfo("Running generation %u ",i);
+      float bestScore = 0;
+      lock.Lock();
+      if(!m_population.empty())
+        bestScore = m_population.rbegin()->first;
+      lock.Unlock();
+      RavlInfo("Running generation %u  Initial score:%f ",i,bestScore);
       RunGeneration(i);
       lock.Lock();
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {

@@ -169,7 +169,7 @@ namespace RavlN {
     MTWriteLockC lock;
 #if RAVL_CHECK
     if(TypeNameMapping().IsElm(sysname)) {
-      if(strcmp(TypeNameMapping()[sysname],newname) != 0) {
+      if(strcmp(TypeNameMapping()[sysname],newname) != 0 && strcmp(TypeNameMapping()[sysname],sysname) == 0) {
         RavlWarning("Redefining TypeName '%s' from '%s' to '%s' ",sysname,TypeNameMapping()[sysname],newname);
       }
     }
