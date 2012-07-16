@@ -143,9 +143,16 @@ namespace RavlN {
     return *ptr;
   }
   
+  //: Test if we have a typename registered
+  bool HaveTypeName(const std::type_info &info) {
+    MTReadLockC lock;
+    return TypeNameMapping().Lookup(info.name()) != 0;
+  }
+
   const char *TypeName(const std::type_info &info)  {
     return TypeName(info.name()); 
   }
+
 
   static HashC<const char *,const char *> InitNameMapping() {
     TypeNameMap = &TypeName;

@@ -25,6 +25,6 @@ namespace RavlImageN {
   
   static TypeNameC type1(typeid(ImageC<RealYUVValueC>),"ImageC<RealYUVValueC>");  
   
-  FileFormatStreamC<ImageC<RealYUVValueC> > FileFormatStream_ImageC_RealYUVValueC;
-  FileFormatBinStreamC<ImageC<RealYUVValueC> > FileFormatBinStream_ImageC_RealYUVValueC;
+  static FileFormatStreamC<ImageC<RealYUVValueC> > FileFormatStream_ImageC_RealYUVValueC;
+  static FileFormatBinStreamC<ImageC<RealYUVValueC> > FileFormatBinStream_ImageC_RealYUVValueC;
 }
