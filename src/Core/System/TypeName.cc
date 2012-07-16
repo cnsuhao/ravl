@@ -124,7 +124,9 @@ namespace RavlN {
 #endif
 #ifndef __sgi__
 #if RAVL_CHECK
-    RavlWarning("No standard type name for : %s ",name);
+    // This can get annoying. but is sometimes useful when dealing with RAVL abs files
+    // and streams to ensure we have a machine independent type name. What to do ??
+    //RavlWarning("No standard type name for : %s ",name);
 #endif
     AddTypeName(name,name); // Register name, to prevent repeated warnings.
     return name;
