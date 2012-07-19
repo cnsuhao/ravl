@@ -106,7 +106,7 @@ namespace RavlN { namespace GeneticN {
    void GeneTypeEnumC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_values.size() == 0) {
-       RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
+       RavlError("No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
      RavlAssert(m_values.size() > 0);
@@ -150,7 +150,9 @@ namespace RavlN { namespace GeneticN {
    {}
 
    //! Constructor
-   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,const GeneTypeC::ConstRefT &type1,const GeneTypeC::ConstRefT &type2)
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
+                                const GeneTypeC::ConstRefT &type1,
+                                const GeneTypeC::ConstRefT &type2)
     : GeneTypeC(name)
    {
      m_types.reserve(2);
@@ -159,7 +161,10 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Constructor
-   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,const GeneTypeC::ConstRefT &type1,const GeneTypeC::ConstRefT &type2,const GeneTypeC::ConstRefT &type3)
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
+                                const GeneTypeC::ConstRefT &type1,
+                                const GeneTypeC::ConstRefT &type2,
+                                const GeneTypeC::ConstRefT &type3)
    : GeneTypeC(name)
    {
      m_types.reserve(3);
@@ -240,7 +245,7 @@ namespace RavlN { namespace GeneticN {
    void GeneTypeMetaC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_types.size() == 0) {
-       RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
+       RavlError("No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
      RavlAssert(m_types.size() > 0);
