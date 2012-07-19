@@ -149,6 +149,25 @@ namespace RavlN { namespace GeneticN {
        m_types(types)
    {}
 
+   //! Constructor
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,const GeneTypeC::ConstRefT &type1,const GeneTypeC::ConstRefT &type2)
+    : GeneTypeC(name)
+   {
+     m_types.reserve(2);
+     m_types.push_back(type1);
+     m_types.push_back(type2);
+   }
+
+   //! Constructor
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,const GeneTypeC::ConstRefT &type1,const GeneTypeC::ConstRefT &type2,const GeneTypeC::ConstRefT &type3)
+   : GeneTypeC(name)
+   {
+     m_types.reserve(3);
+     m_types.push_back(type1);
+     m_types.push_back(type2);
+     m_types.push_back(type3);
+   }
+
    //! Load form a binary stream
    GeneTypeMetaC::GeneTypeMetaC(BinIStreamC &strm)
     : GeneTypeC(strm)
@@ -226,7 +245,7 @@ namespace RavlN { namespace GeneticN {
      }
      RavlAssert(m_types.size() > 0);
      unsigned n = palette.RandomUInt32() % m_types.size();
-     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
+     ONDEBUG(RavlDebug("Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
      m_types[n]->Random(palette,newValue);
    }
 

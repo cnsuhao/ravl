@@ -55,7 +55,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeC::GeneTypeC(BinIStreamC &strm)
-   : RCBodyVC(strm)
+   : RCBodyVC(strm),
+     m_defaultWeight(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -66,6 +67,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeC::GeneTypeC(std::istream &strm)
+   : m_defaultWeight(0)
   {
     RavlAssertMsg(0,"not implemented");
   }

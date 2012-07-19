@@ -80,6 +80,10 @@ namespace RavlN { namespace GeneticN {
   //! Load form a binary stream
   GenomeC::GenomeC(std::istream &strm)
    : RCBodyVC(strm),
+     m_const(false),
+     m_age(0),
+     m_generation(0),
+     m_averageScore(0),
      m_averageCount(0)
   {
     RavlAssertMsg(0,"not implemented");
@@ -214,6 +218,17 @@ namespace RavlN { namespace GeneticN {
     RavlAssert(m_genomeRoot.IsValid());
     return m_genomeRoot->IsEffectivelyEqual(RootGene());
   }
+
+  //! Dump description in human readable form.
+  void GenomeC::Dump(std::ostream &strm,UIntT indent) const
+  {
+    if(m_genomeRoot.IsValid()) {
+      m_genomeRoot->Dump(strm,indent+1);
+    } else {
+      strm << "NIL";
+    }
+  }
+
 
   //! This actually tests if they are effectively equal which allows for some small
   //! user defined differences in some floating point numbers. This allows hash tables

@@ -45,7 +45,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeBoolC::GeneTypeBoolC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_bias(0.5)
   {
     ByteT version = 0;
     strm >> version;
@@ -57,7 +58,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeBoolC::GeneTypeBoolC(std::istream &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_bias(0.5)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -150,7 +152,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneBoolC::GeneBoolC(BinIStreamC &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(false)
   {
     ByteT version = 0;
     strm >> version;
@@ -161,7 +164,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneBoolC::GeneBoolC(std::istream &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(false)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -198,6 +202,17 @@ namespace RavlN { namespace GeneticN {
     if(og == 0)
       return false;
     return (og->Value() == m_value);
+  }
+
+  //! Dump description in human readable form.
+  void GeneBoolC::Dump(std::ostream &strm,UIntT indent) const
+  {
+    GeneC::Dump(strm,indent);
+    strm << " Value=";
+    if(m_value)
+      strm << "True";
+    else
+      strm << "False";
   }
 
 

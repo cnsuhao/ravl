@@ -77,6 +77,12 @@ namespace RavlN { namespace GeneticN {
      //! Constructor
      GeneTypeMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types);
 
+     //! Constructor
+     GeneTypeMetaC(const std::string &name,const GeneTypeC::ConstRefT &type1,const GeneTypeC::ConstRefT &type2);
+
+     //! Constructor
+     GeneTypeMetaC(const std::string &name,const GeneTypeC::ConstRefT &type1,const GeneTypeC::ConstRefT &type2,const GeneTypeC::ConstRefT &type3);
+
      //! Load form a binary stream
      GeneTypeMetaC(BinIStreamC &strm);
 
