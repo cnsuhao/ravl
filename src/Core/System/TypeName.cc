@@ -72,6 +72,7 @@ namespace RavlN {
   static TypeNameC type15(typeid(RCBodyVC),"RCBodyVC");
   
   static TypeNameC type16(typeid(RCWrapAbstractC),"RavlN::RCWrapAbstractC");
+  static TypeNameC type19(typeid(AbstractC),"RavlN::AbstractC");
   
   static TypeNameC type17(typeid(RealRange2dC),"RavlN::RealRange2dC");
   static TypeNameC type18(typeid(IndexRange2dC),"RavlN::IndexRange2dC");
