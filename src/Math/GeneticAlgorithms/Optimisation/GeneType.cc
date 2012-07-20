@@ -194,7 +194,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Dump description in human readable form.
   void GeneC::Dump(std::ostream &strm,UIntT indent) const {
-    strm << Indent(indent) << "Type:" << RavlN::TypeName(typeid(*this)) << " Name:" << Name().data();
+    strm << Indent(indent) << "Type=" << RavlN::TypeName(typeid(*this)) << " Name=" << Name().data();
   }
 
   //! Lookup value

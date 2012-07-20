@@ -75,6 +75,9 @@ namespace RavlN { namespace GeneticN {
      GeneTypeMetaC(const XMLFactoryContextC &factory);
 
      //! Constructor
+     GeneTypeMetaC(const std::string &name);
+
+     //! Constructor
      GeneTypeMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types);
 
      //! Constructor

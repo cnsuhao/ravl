@@ -144,7 +144,13 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Constructor
-   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types)
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name)
+     : GeneTypeC(name)
+   {}
+
+   //! Constructor
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
+                                const std::vector<GeneTypeC::ConstRefT> &types)
      : GeneTypeC(name),
        m_types(types)
    {}
