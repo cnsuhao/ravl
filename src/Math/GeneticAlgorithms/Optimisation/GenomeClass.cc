@@ -157,7 +157,7 @@ namespace RavlN { namespace GeneticN {
     GeneNodeC &newNode = dynamic_cast<GeneNodeC &>(*newValue);
     const GeneNodeC &oldNode = dynamic_cast<const GeneNodeC &>(original);
     bool ret = false;
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutating %zu components in %s. faction %f  ",(size_t) m_componentTypes.Size().V(),Name().data(),fraction));
+    ONDEBUG(RavlDebug("Mutating %zu components in %s. faction %f  ",(size_t) m_componentTypes.Size().V(),Name().data(),fraction));
     int mustChangeIndex = -1;
     if(m_componentTypes.Size() == 0)
       return false;
@@ -340,7 +340,7 @@ namespace RavlN { namespace GeneticN {
   //! Lookup a component.
   bool GeneNodeC::Lookup(const std::string &name, GeneC::ConstRefT &component) const {
     bool ret= m_components.Lookup(name,component);
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Lookup %s.  Succeeded=%d ",name.data(),ret));
+    ONDEBUG(RavlDebug("Lookup %s.  Succeeded=%d ",name.data(),ret));
     return ret;
   }
 
@@ -352,7 +352,7 @@ namespace RavlN { namespace GeneticN {
     //! Add a new entry to the gene
     GeneTypeC::ConstRefT fieldType;
     if(!m_type->LookupComponent(name,fieldType)) {
-      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Adding new field %s ",name.data()));
+      ONDEBUG(RavlDebug("Adding new field %s ",name.data()));
       m_type->AddComponent(name,geneType);
     }
     m_components.Insert(name,&newEntry);
@@ -396,6 +396,19 @@ namespace RavlN { namespace GeneticN {
     }
     return true;
   }
+
+  //! Dump description in human readable form.
+  void GeneNodeC::Dump(std::ostream &strm,UIntT indent) const
+  {
+    GeneC::Dump(strm,indent);
+    strm << "\n";
+    for(RavlN::HashIterC<std::string,GeneC::ConstRefT> it(m_components);it;it++) {
+      strm << RavlN::Indent(indent+1) << " " << it.Key() << " ->\n";
+      it.Data()->Dump(strm,indent+1);
+      strm << "\n";
+    }
+  }
+
 
   XMLFactoryRegisterConvertC<GeneNodeC,GeneC> g_registerGeneNode("RavlN::GeneticN::GeneNodeC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneNodeC,"RavlN::GeneticN::GeneNodeC");
@@ -445,7 +458,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeClassC::GeneTypeClassC(std::istream &strm)
-   : GeneTypeNodeC(strm)
+   : GeneTypeNodeC(strm),
+     m_typeInfo(&typeid(void))
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -563,7 +577,7 @@ namespace RavlN { namespace GeneticN {
   {
     GeneFactoryC childContext(context,*this);
     RavlN::RCWrapC<GeneFactoryC> fgwrap(childContext);
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Creating class '%s' ",ClassType().TypeName().data()));
+    ONDEBUG(RavlDebug("Creating class '%s' ",ClassType().TypeName().data()));
     handle = SystemTypeConverter().DoConversion(fgwrap.Abstract(),fgwrap.DataType(),ClassType().TypeInfo());
     if(!handle.IsValid()) {
       RavlError("Failed to create class '%s' ",ClassType().TypeName().data());

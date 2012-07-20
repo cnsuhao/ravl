@@ -79,6 +79,9 @@ namespace RavlN { namespace GeneticN {
       RavlInfo("Running generation %u  Initial score:%f ",i,bestScore);
       RunGeneration(i);
       lock.Lock();
+      if(m_logLevel >= SYSLOG_DEBUG || 1) {
+        m_population.rbegin()->second->Dump(RavlSysLog(SYSLOG_DEBUG));
+      }
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
         lock.Unlock();
         break;

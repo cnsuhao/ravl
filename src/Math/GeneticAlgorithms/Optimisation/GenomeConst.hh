@@ -99,6 +99,9 @@ namespace RavlN { namespace GeneticN {
     //! Test is value is effectively equal to this within tolerances specified in the type.
     virtual bool IsEffectivelyEqual(const GeneC &other) const;
 
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneIntC> RefT;
 
@@ -203,6 +206,9 @@ namespace RavlN { namespace GeneticN {
 
      //! Test is value is effectively equal to this within tolerances specified in the type.
      virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
+     //! Dump description in human readable form.
+     virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
      // Reference to this gene.
      typedef RavlN::SmartPtrC<GeneFloatC> RefT;

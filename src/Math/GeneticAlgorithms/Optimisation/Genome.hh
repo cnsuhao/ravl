@@ -107,6 +107,10 @@ namespace RavlN { namespace GeneticN {
 
     //! Update running average score, return the latest value.
     float UpdateScore(float newScore,UIntT maxAge);
+
+    //! Dump description in human readable form.
+    void Dump(std::ostream &strm,UIntT indent = 0) const;
+
   protected:
 
     bool m_const;
