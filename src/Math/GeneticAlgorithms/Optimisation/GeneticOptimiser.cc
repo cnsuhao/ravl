@@ -67,6 +67,7 @@ namespace RavlN { namespace GeneticN {
       RavlAssertMsg(0,"No fitness function defined.");
       return ;
     }
+    RavlDebug("Running %u generations ", m_numGenerations);
     MutexLockC lock(m_access);
     lock.Unlock();
 
@@ -83,6 +84,7 @@ namespace RavlN { namespace GeneticN {
         m_population.rbegin()->second->Dump(RavlSysLog(SYSLOG_DEBUG));
       }
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
+        RavlDebug("Termination criteria met.");
         lock.Unlock();
         break;
       }
@@ -157,8 +159,8 @@ namespace RavlN { namespace GeneticN {
     MutexLockC lock(m_access);
     if(m_population.empty())
       return false;
-    score = m_population.begin()->first;
-    genome = m_population.begin()->second;
+    score = m_population.rbegin()->first;
+    genome = m_population.rbegin()->second;
     return true;
   }
 
@@ -332,14 +334,17 @@ namespace RavlN { namespace GeneticN {
 #if RAVL_CATCH_EXCEPTIONS
     } catch(std::exception &ex) {
       RavlWarning("Caught std exception '%s' evaluating agent.",ex.what());
-      RavlAssert(0);
+      score = -1000000;
+      //RavlAssert(0);
       return false;
     } catch(RavlN::ExceptionC &ex) {
       RavlWarning("Caught exception '%s' evaluating agent.",ex.what());
-      RavlAssert(0);
+      score = -1000000;
+      //RavlAssert(0);
       return false;
     } catch(...) {
       RavlWarning("Caught exception evaluating agent.");
+      score = -1000000;
       RavlAssert(0);
       return false;
     }
