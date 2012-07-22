@@ -80,8 +80,8 @@ namespace RavlN { namespace GeneticN {
       RavlInfo("Running generation %u  Initial score:%f ",i,bestScore);
       RunGeneration(i);
       lock.Lock();
-      if(m_logLevel >= SYSLOG_DEBUG || 1) {
-        m_population.rbegin()->second->Dump(RavlSysLog(SYSLOG_DEBUG));
+      if(m_logLevel >= SYSLOG_INFO) {
+        m_population.rbegin()->second->Dump(RavlSysLog(SYSLOG_INFO));
       }
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
         RavlDebug("Termination criteria met.");
@@ -303,12 +303,12 @@ namespace RavlN { namespace GeneticN {
       GenomeC::RefT genome = m_workQueue[candidate];
       lock.Unlock();
       float score = 0;
-      if(!Evaluate(*evaluator,*genome,*palette,score))
-        continue;
+      bool ok = Evaluate(*evaluator,*genome,*palette,score);
       if(m_runningAverageLength >= 1)
         score = genome->UpdateScore(score,m_runningAverageLength);
       lock.Lock();
-      m_population.insert(std::pair<const float,GenomeC::RefT>(score,genome));
+      if(ok || m_population.empty())
+        m_population.insert(std::pair<const float,GenomeC::RefT>(score,genome));
       lock.Unlock();
     }
 
@@ -333,27 +333,29 @@ namespace RavlN { namespace GeneticN {
         return false;
 #if RAVL_CATCH_EXCEPTIONS
     } catch(std::exception &ex) {
-      RavlWarning("Caught std exception '%s' evaluating agent.",ex.what());
+      RavlDebugIf(m_logLevel,"Caught std exception '%s' evaluating agent.",ex.what());
       score = -1000000;
       //RavlAssert(0);
       return false;
     } catch(RavlN::ExceptionC &ex) {
-      RavlWarning("Caught exception '%s' evaluating agent.",ex.what());
+      RavlDebugIf(m_logLevel,"Caught exception '%s' evaluating agent.",ex.what());
       score = -1000000;
       //RavlAssert(0);
       return false;
     } catch(...) {
-      RavlWarning("Caught exception evaluating agent.");
+      RavlDebugIf(m_logLevel,"Caught exception evaluating agent.");
       score = -1000000;
       RavlAssert(0);
       return false;
     }
 #endif
+#if 1
     size_t size = genome.Size();
     //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); //Floor(size / 10) * 0.01;
     float sizeDiscount = (size / 15) * 0.001f; //(AK) note integer division
     //float sizeDiscount = size / 1000.0;
     score -= sizeDiscount;
+#endif
     return true;
   }
 

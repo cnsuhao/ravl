@@ -381,6 +381,7 @@ namespace RavlN { namespace GeneticN {
   //! Dump description in human readable form.
   void GeneListC::Dump(std::ostream &strm,UIntT indent) const {
     GeneC::Dump(strm,indent);
+    strm << "\n";
     for(unsigned i = 0;i < m_list.size();i++) {
       m_list[i]->Dump(strm,indent+1);
       strm << "\n";

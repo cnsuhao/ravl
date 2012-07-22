@@ -157,26 +157,26 @@ namespace RavlN { namespace GeneticN {
 
    //! Constructor
    GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
-                                const GeneTypeC::ConstRefT &type1,
-                                const GeneTypeC::ConstRefT &type2)
+                                const GeneTypeC &type1,
+                                const GeneTypeC &type2)
     : GeneTypeC(name)
    {
      m_types.reserve(2);
-     m_types.push_back(type1);
-     m_types.push_back(type2);
+     m_types.push_back(&type1);
+     m_types.push_back(&type2);
    }
 
    //! Constructor
    GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
-                                const GeneTypeC::ConstRefT &type1,
-                                const GeneTypeC::ConstRefT &type2,
-                                const GeneTypeC::ConstRefT &type3)
+                                const GeneTypeC &type1,
+                                const GeneTypeC &type2,
+                                const GeneTypeC &type3)
    : GeneTypeC(name)
    {
      m_types.reserve(3);
-     m_types.push_back(type1);
-     m_types.push_back(type2);
-     m_types.push_back(type3);
+     m_types.push_back(&type1);
+     m_types.push_back(&type2);
+     m_types.push_back(&type3);
    }
 
    //! Load form a binary stream
