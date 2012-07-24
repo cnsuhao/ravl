@@ -18,7 +18,7 @@ MAINS=
 
 TESTEXES=
 
-PLIB =
+PLIB = RavlTwoWayMap
 
 USESLIBS= RavlOS RavlCore RavlIO 
 
