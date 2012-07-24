@@ -12,13 +12,13 @@ LICENSE= Copyright
 
 HEADERS= TwoWayMap.hh
 
-SOURCES=
+SOURCES= TwoWayMap.cc
 
 MAINS=
 
 TESTEXES=
 
-PLIB =
+PLIB = RavlTwoWayMap
 
 USESLIBS= RavlOS RavlCore RavlIO 
 

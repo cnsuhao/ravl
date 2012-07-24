@@ -29,6 +29,7 @@ namespace RavlN {
 
     public:
       FaceInfoBodyC()
+       : m_detectionScore(0)
       {
       }
 
