@@ -11,6 +11,9 @@
 #include "Ravl/DP/FileFormatStreamMeta.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/MTLocks.hh"
+#include "Ravl/DP/TypeConverter.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
 
@@ -45,19 +48,48 @@ namespace RavlN {
   }
 
   const std::type_info &FileFormatStreamMetaBodyC::ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const {
-    // If there's no extention or the extention is 'strm' we can handle it.
-    FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    // If there's no extension or the extension is 'strm' we can handle it.
+    const std::type_info *bestType = &typeid(void);
+    MTReadLockC lock(3);
+    if(!m_type2use.Lookup(obj_type.name(),bestType)) {
+      lock.Unlock();
+      FileFormatBaseC ff;
+      if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+        RealT bestCost = 1000000;
+        for(RavlN::HashIterC<StringC,FileFormatBaseC> it(m_class2format);it;it++) {
+          RealT finalCost = 10000;
+          DListC<DPConverterBaseC> c = SystemTypeConverter().FindConversion(obj_type,
+              it.Data().DefaultType(),
+              finalCost);
+          if(!c.IsEmpty() && finalCost < bestCost) {
+            bestCost = finalCost;
+            bestType = &it.Data().DefaultType();
+          }
+        }
+        if(*bestType == typeid(void)) {
+          RavlDebug("Don't know how to save '%s' (%s) ",TypeName(obj_type),obj_type.name());
+        }
+      } else {
+        bestType = &(ff.DefaultType());
+      }
+      MTWriteLockC lockwr(3);
+      m_type2use[obj_type.name()] = bestType;
+    } else {
+      lock.Unlock();
+      bestType = &obj_type;
+    }
+    if(*bestType == typeid(void))
       return typeid(void);
-    if(forceFormat)
-      return ff.DefaultType();
+    if(forceFormat) {
+      return *bestType;
+    }
     if(filename.IsEmpty())
       return typeid(void); // Nope.
     if(filename[0] == '@')
       return typeid(void); // Nope.
     StringC ext = Extension(filename);
-    if(ext == ""  || ext == "strm" || ext == "txt")
-      return ff.DefaultType(); // Yep, can save in format.
+    if(ext == ""  || ext == "strm" || ext == "txt" )
+      return *bestType; // Yep, can save in format.
     return typeid(void); // Nope.
   }
 
@@ -79,7 +111,7 @@ namespace RavlN {
     return ff.CreateOutput(out,obj_type);
   }
 
-  //: Get prefered IO type.
+  //: Get preferred IO type.
   const std::type_info &FileFormatStreamMetaBodyC::DefaultType() const
   { return typeid(void); }
 

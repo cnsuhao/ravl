@@ -107,6 +107,13 @@ namespace RavlN {
     FileFormatStreamC()
       : FileFormatC<DataT>(*new FileFormatStreamBodyC<DataT>())
     { RegisterFormatStreamMeta(*this); }
+
+    FileFormatStreamC(const StringC &typeName)
+      : FileFormatC<DataT>(*new FileFormatStreamBodyC<DataT>())
+    {
+      AddTypeName(this->DefaultType(),typeName.c_str());
+      RegisterFormatStreamMeta(*this);
+    }
   };
 }
 

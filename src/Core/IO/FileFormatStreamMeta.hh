@@ -48,7 +48,7 @@ namespace RavlN {
     // Will create an Invalid port if not supported.
     
     virtual const std::type_info &DefaultType() const;
-    //: Get prefered IO type.
+    //: Get preferred IO type.
     
     virtual bool IsStream() const;
     //: Just to make it clear its a streamable format.
@@ -58,6 +58,7 @@ namespace RavlN {
 
   protected:
     HashC<StringC,FileFormatBaseC> m_class2format;
+    mutable HashC<const char *,const std::type_info *> m_type2use;
   };
   
   

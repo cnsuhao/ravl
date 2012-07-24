@@ -12,10 +12,14 @@
 
 namespace RavlN {
   
+  void InitFileFormatBinStream();
+
+
   //: Ensure libRavlIO is linked in
   
   void LinkRavlIO () {
     InitCoreIO();
+    InitFileFormatBinStream();
   }
   
 }

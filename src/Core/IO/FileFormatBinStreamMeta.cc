@@ -10,7 +10,9 @@
 
 #include "Ravl/DP/FileFormatBinStreamMeta.hh"
 #include "Ravl/DP/BinFileIO.hh"
+#include "Ravl/DP/TypeConverter.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/MTLocks.hh"
 
 namespace RavlN {
   FileFormatBinStreamMetaBodyC::FileFormatBinStreamMetaBodyC(bool pubList)
@@ -25,12 +27,12 @@ namespace RavlN {
   {}
   //: Constructor with full format info.
 
-  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const
+  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeLoad(IStreamC &in,const std::type_info &/*obj_type*/) const
   {
     if(!in.good())
       return typeid(void);
     BinIStreamC bin(in);
-    streampos mark = bin.Tell();
+    std::streampos mark = bin.Tell();
     UInt16T id;
     // Check magic number.
     bin >> id;
@@ -52,7 +54,7 @@ namespace RavlN {
         break;
       case RavlN::RAVLInvBinaryID:
         bin.UseNativeEndian(!bin.NativeEndian());
-        // Fall through
+        /* no break */
       case RavlN::RAVLBinaryID:
         // Use what every default 32/64 bit mode is set in the stream.
         break;
@@ -84,26 +86,57 @@ namespace RavlN {
       return ff.DefaultType();
     }
 
+
     return ProbeLoad(in,obj_type); // Check load from stream.
   }
 
-  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const
+  const std::type_info &FileFormatBinStreamMetaBodyC::ProbeSave(const StringC &filename,
+                                                                const std::type_info &obj_type,
+                                                                bool forceFormat) const
   {
-    FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    const std::type_info *bestType = &typeid(void);
+    MTReadLockC lock(3);
+    if(!m_type2use.Lookup(obj_type.name(),bestType)) {
+      lock.Unlock();
+      FileFormatBaseC ff;
+      if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+        RealT bestCost = 1000000;
+        for(RavlN::HashIterC<StringC,FileFormatBaseC> it(m_class2format);it;it++) {
+          RealT finalCost = 10000;
+          DListC<DPConverterBaseC> c = SystemTypeConverter().FindConversion(obj_type,
+              it.Data().DefaultType(),
+              finalCost);
+          if(!c.IsEmpty() && finalCost < bestCost) {
+            bestCost = finalCost;
+            bestType = &it.Data().DefaultType();
+          }
+        }
+        if(*bestType == typeid(void)) {
+          RavlDebug("Don't know how to save '%s' (%s) ",TypeName(obj_type),obj_type.name());
+        }
+      } else {
+        bestType = &(ff.DefaultType());
+      }
+      MTWriteLockC lockwr(3);
+      m_type2use[obj_type.name()] = bestType;
+    } else {
+      lock.Unlock();
+      bestType = &obj_type;
+    }
+    if(*bestType == typeid(void))
       return typeid(void);
     if(forceFormat) {
-      return ff.DefaultType();
+      return *bestType;
     }
-    StringC ext = Extension(filename);
-    // If there's no extension or the extension is 'abs' we can handle it.
     // abs = RAVL Binary Stream.
     if(filename.IsEmpty())
       return typeid(void); // Nope.
     if(filename[0] == '@')
       return typeid(void); // Nope.
+    StringC ext = Extension(filename);
+    // If there's no extension or the extension is 'abs' we can handle it.
     if(ext == ""  || ext == "abs" || ext == "bin" || m_ext.IsMember(ext))
-      return ff.DefaultType(); // Yep, can save in format.
+      return *bestType; // Yep, can save in format.
     return typeid(void); // Nope.
   }
 

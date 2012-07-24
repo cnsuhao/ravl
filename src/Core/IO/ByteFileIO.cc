@@ -213,7 +213,7 @@ namespace RavlN {
   }
     
   //: Seek to position in stream.
-  // Currently will only seek to begining of stream.
+  // Currently will only seek to beginning of stream.
   
   bool DPIByteFileBodyC::Seek(UIntT newOff) {
     ONDEBUG(RavlDebug("DPIByteFileBodyC::Seek newOff=%u",newOff));
@@ -240,7 +240,7 @@ namespace RavlN {
   }
   
   //: Seek to position in stream.
-  // Currently will only seek to begining of stream.
+  // Currently will only seek to beginning of stream.
   
   bool DPIByteFileBodyC::Seek64(StreamPosT newOff) {
     ONDEBUG(RavlDebug("DPIByteFileBodyC::Seek64 newOff=%s ",RavlN::StringOf(newOff).c_str()));
