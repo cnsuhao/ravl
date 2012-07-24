@@ -16,10 +16,10 @@ namespace RavlN {
   {  }
   
   // Some basic file types.
-  
-  FileFormatStreamC<RealT> FileFormatStream_RealT;
-  FileFormatStreamC<IntT> FileFormatStream_IntT;
-  FileFormatStreamC<UIntT> FileFormatStream_UIntT;
-  FileFormatStreamC<StringC> FileFormatStream_StringC;
-  FileFormatStreamC<ByteT> FileFormatStream_ByteT;
+
+  static FileFormatStreamC<RealT> FileFormatStream_RealT("RealT");
+  static FileFormatStreamC<IntT> FileFormatStream_IntT("IntT");
+  static FileFormatStreamC<UIntT> FileFormatStream_UIntT("UIntT");
+  static FileFormatStreamC<StringC> FileFormatStream_StringC("StringC");
+  static FileFormatStreamC<ByteT> FileFormatStream_ByteT("ByteT");
 }
