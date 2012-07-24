@@ -51,7 +51,7 @@ namespace RavlN {
   
   //: Lock system for reading.
   // This class provides exceptions safe system DB locking.
-  // NB. The locking mechanism is NOT garuanteed to
+  // NB. The locking mechanism is NOT guaranteed to
   // be recursive, so you can't call ReadLock twice then Unlock twice.
   // You also can't go directly between a read lock to a write lock
   // just by calling MTWriteLock(), you have to Unlock the ReadLock

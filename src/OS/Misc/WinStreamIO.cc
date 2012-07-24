@@ -75,7 +75,7 @@ namespace RavlN {
         if(!ResetEvent(osCommEvent.hEvent))
           ThrowLastError("SerialPortC::Read: Can't reset comm event ");
         
-        //event supposed to be resed by the ReadFile function, when no data are ready
+        //event is supposed to be reset by the ReadFile function, when no data is ready
         //if(!ResetEvent(osReader.hEvent))
         //  ThrowLastError("SerialPortC::Read: Can't reset read event ");
         
