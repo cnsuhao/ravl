@@ -20,6 +20,6 @@ namespace RavlN {
   static FileFormatStreamC<RealT> FileFormatStream_RealT("RealT");
   static FileFormatStreamC<IntT> FileFormatStream_IntT("IntT");
   static FileFormatStreamC<UIntT> FileFormatStream_UIntT("UIntT");
-  static FileFormatStreamC<StringC> FileFormatStream_StringC("StringC");
+  static FileFormatStreamC<StringC> FileFormatStream_StringC("RavlN::StringC");
   static FileFormatStreamC<ByteT> FileFormatStream_ByteT("ByteT");
 }
