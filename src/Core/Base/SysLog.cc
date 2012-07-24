@@ -14,6 +14,7 @@
 #include <iostream>
 
 #if RAVL_COMPILER_VISUALCPP
+#include <string>
 #pragma warning ( disable : 4244 )
 #pragma warning ( disable : 4267 )
 #include <stdarg.h>
