@@ -43,14 +43,14 @@ namespace RavlN {
   }
 
   DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(const XMLFactoryContextC & factory)
-      : DesignClassifierSupervisedBodyC(factory),
-        m_nLayers(factory.AttributeInt("numberOfLayers", 3)),
-        m_nHidden(factory.AttributeInt("numberOfHiddenUnits", 7)),
-        m_desiredError(factory.AttributeReal("desiredError", 0.0001)),
-        m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
-        m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
-        m_cascade(factory.AttributeBool("cascade", false)) {
-
+    : DesignClassifierSupervisedBodyC(factory),
+      m_nLayers(factory.AttributeInt("numberOfLayers", 3)),
+      m_nHidden(factory.AttributeInt("numberOfHiddenUnits", 7)),
+      m_desiredError(factory.AttributeReal("desiredError", 0.0001)),
+      m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
+      m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
+      m_cascade(factory.AttributeBool("cascade", false))
+  {
     // we will let the training data set decide these two...not sure why I didn't before
     m_nInputs = 0;
     m_nOutputs = 0;
@@ -59,11 +59,17 @@ namespace RavlN {
 //: Load from stream.
 
   DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &strm)
-      : DesignClassifierSupervisedBodyC(strm) {
+      : DesignClassifierSupervisedBodyC(strm),
+        m_nLayers(0),
+        m_nInputs(0),
+        m_nHidden(0),
+        m_nOutputs(0),
+        m_cascade(false)
+  {
     int version;
     strm >> version;
     if (version != 0 && version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_nLayers;
     strm >> m_nInputs;
     strm >> m_nHidden;
@@ -83,11 +89,17 @@ namespace RavlN {
 //: Load from binary stream.
 
   DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(BinIStreamC &strm)
-      : DesignClassifierSupervisedBodyC(strm) {
+      : DesignClassifierSupervisedBodyC(strm),
+        m_nLayers(0),
+        m_nInputs(0),
+        m_nHidden(0),
+        m_nOutputs(0),
+        m_cascade(false)
+  {
     int version;
     strm >> version;
     if (version != 0 && version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(BinIStreamC &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetworkBodyC::DesignClassifierNeuralNetworkBodyC(BinIStreamC &), Unrecognised version number in stream. ");
     strm >> m_nLayers;
     strm >> m_nInputs;
     strm >> m_nHidden;
@@ -161,8 +173,8 @@ namespace RavlN {
 
     //: format of data
     //: data_set_size  number_of_inputs number_of_outputs
-    //: input_data seperated by space
-    //: output_data seperated by space
+    //: input_data separated by space
+    //: output_data separated by space
     //: ....
     //: ....
 

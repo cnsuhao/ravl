@@ -24,8 +24,8 @@ namespace RavlImageN {
   static TypeNameC type1(typeid(ImageC<RealT>),"ImageC<RealT>");  
   static TypeNameC type2(typeid(Array2dC<RealT>),"RavlN::Array2dC<RealT>");  
   
-  FileFormatStreamC<ImageC<RealT> > FileFormatStream_ImageC_RealT;
-  FileFormatBinStreamC<ImageC<RealT> > FileFormatBinStream_ImageC_RealT;
+  static FileFormatStreamC<ImageC<RealT> > FileFormatStream_ImageC_RealT;
+  static FileFormatBinStreamC<ImageC<RealT> > FileFormatBinStream_ImageC_RealT;
   
   //: Convert a real image into an array2d
   

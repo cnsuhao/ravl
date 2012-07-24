@@ -29,21 +29,21 @@ namespace RavlN {
   static TypeNameC type6(typeid(SArray1dC<Vector4dC>),"SArray1dC<Vector4dC>");
   
   
-  FileFormatStreamC<Vector2dC> FileFormatStream_Vector2d;
-  FileFormatStreamC<Vector3dC> FileFormatStream_Vector3d;
-  FileFormatStreamC<Vector4dC> FileFormatStream_Vector4d;
+  static FileFormatStreamC<Vector2dC> FileFormatStream_Vector2d;
+  static FileFormatStreamC<Vector3dC> FileFormatStream_Vector3d;
+  static FileFormatStreamC<Vector4dC> FileFormatStream_Vector4d;
   
-  FileFormatBinStreamC<Vector2dC> FileFormatBinStream_Vector2d;
-  FileFormatBinStreamC<Vector3dC> FileFormatBinStream_Vector3d;
-  FileFormatBinStreamC<Vector4dC> FileFormatBinStream_Vector4d;
+  static FileFormatBinStreamC<Vector2dC> FileFormatBinStream_Vector2d;
+  static FileFormatBinStreamC<Vector3dC> FileFormatBinStream_Vector3d;
+  static FileFormatBinStreamC<Vector4dC> FileFormatBinStream_Vector4d;
   
   // Add some IO for arrays of Vectors.
 
-  FileFormatStreamC<SArray1dC<Vector2dC> > FileFormatStream_SArray1dC_Vector2d;
-  FileFormatStreamC<SArray1dC<Vector3dC> > FileFormatStream_SArray1dC_Vector3d;
-  FileFormatStreamC<SArray1dC<Vector4dC> > FileFormatStream_SArray1dC_Vector4d;
+  static FileFormatStreamC<SArray1dC<Vector2dC> > FileFormatStream_SArray1dC_Vector2d;
+  static FileFormatStreamC<SArray1dC<Vector3dC> > FileFormatStream_SArray1dC_Vector3d;
+  static FileFormatStreamC<SArray1dC<Vector4dC> > FileFormatStream_SArray1dC_Vector4d;
   
-  FileFormatBinStreamC<SArray1dC<Vector2dC> > FileFormatBinStream_SArray1dC_Vector2d;
-  FileFormatBinStreamC<SArray1dC<Vector3dC> > FileFormatBinStream_SArray1dC_Vector3d;
-  FileFormatBinStreamC<SArray1dC<Vector4dC> > FileFormatBinStream_SArray1dC_Vector4d;
+  static FileFormatBinStreamC<SArray1dC<Vector2dC> > FileFormatBinStream_SArray1dC_Vector2d;
+  static FileFormatBinStreamC<SArray1dC<Vector3dC> > FileFormatBinStream_SArray1dC_Vector3d;
+  static FileFormatBinStreamC<SArray1dC<Vector4dC> > FileFormatBinStream_SArray1dC_Vector4d;
 }

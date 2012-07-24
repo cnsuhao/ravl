@@ -25,7 +25,7 @@ namespace RavlN {
   
   //: Constructor.
   
-  NetISPortBaseC::NetISPortBaseC(const StringC &server,const StringC &nPortName,const type_info &ndataType) 
+  NetISPortBaseC::NetISPortBaseC(const StringC &server,const StringC &nPortName,const std::type_info &ndataType)
     : NetPortBaseC(server),
       portName(nPortName),
       dataType(TypeName(ndataType)),

@@ -155,6 +155,7 @@ namespace RavlN {
 	  count += weight;
 	}
 	shift /= count;
+
 	if(distance.Magnitude(shift) < termiter)
 	  break;
 	mean += shift;
@@ -200,6 +201,21 @@ namespace RavlN {
     return ret;
   }
 
+  //: Compute cluster means.
+
+   SArray1dC<MeanCovarianceC> DesignMeanShiftClusterBodyC::Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights) {
+     ONDEBUG(cerr << "DesignMeanShiftClusterBodyC::Cluster(), Called with " << in.Size() << " vectors. K=" << k << "\n");
+     SampleC<UIntT> labels;
+     DListC<VectorC> clusters = FindMeans(in, weights, labels);
+     SArray1dC<MeanCovarianceC> ret(clusters.Size());
+     DLIterC<VectorC> lit(clusters);
+     for(SArray1dIterC<MeanCovarianceC> ait(ret);ait;ait++,lit++) {
+       *ait = MeanCovarianceC(1,*lit,MatrixC::Identity(lit->Size()) * k);
+     }
+     return ret;
+   }
+
+
   //: Compute cluster means, and labels for all the samples
   
   SArray1dC<MeanCovarianceC> DesignMeanShiftClusterBodyC::Cluster(const SampleC<VectorC> &in,SampleC<UIntT> &labels) {
@@ -211,6 +227,18 @@ namespace RavlN {
     }
     return ret;    
   }
+
+  //: Compute cluster means, and labels for all the samples
+
+   SArray1dC<MeanCovarianceC> DesignMeanShiftClusterBodyC::Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights, SampleC<UIntT> &labels) {
+     DListC<VectorC> clusters = FindMeans(in,weights,labels);
+     SArray1dC<MeanCovarianceC> ret(clusters.Size());
+     DLIterC<VectorC> lit(clusters);
+     for(SArray1dIterC<MeanCovarianceC> ait(ret);ait;ait++,lit++) {
+       *ait = MeanCovarianceC(1,*lit,MatrixC::Identity(lit->Size()) * k);
+     }
+     return ret;
+   }
 
   //: Create function from the given data, and sample weights.
   

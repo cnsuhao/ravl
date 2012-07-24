@@ -55,7 +55,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeC::GeneTypeC(BinIStreamC &strm)
-   : RCBodyVC(strm)
+   : RCBodyVC(strm),
+     m_defaultWeight(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -66,6 +67,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeC::GeneTypeC(std::istream &strm)
+   : m_defaultWeight(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -192,7 +194,7 @@ namespace RavlN { namespace GeneticN {
 
   //! Dump description in human readable form.
   void GeneC::Dump(std::ostream &strm,UIntT indent) const {
-    strm << Indent(indent) << "Type:" << RavlN::TypeName(typeid(*this)) << " Name:" << Name().data();
+    strm << Indent(indent) << "Type=" << RavlN::TypeName(typeid(*this)) << " Name=" << Name().data();
   }
 
   //! Lookup value

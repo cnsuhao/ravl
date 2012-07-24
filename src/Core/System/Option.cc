@@ -27,7 +27,7 @@
 #define ONDEBUG(x)
 #endif
 
-// Set to 1 to support unamed multipal agument options.
+// Set to 1 to support unnamed multiple arguments options.
 
 #define SUPPORT_UNAMED_MULTIARG 1
 
@@ -117,7 +117,7 @@ namespace RavlN {
     return false;
   }
   
-  //: Is argument a paramiter ?
+  //: Is argument a parameter ?
   /* defines which command line arguments are option specifiers and 
    * which are consider to be parameters 
    * PARAMETERs must not start with -, unless it is a single character 
@@ -517,14 +517,14 @@ namespace RavlN {
     
 #if !SUPPORT_UNAMED_MULTIARG
     if(*name == 0) { // Unnamed option ?
-      Error(StringC("Program error: Unamed multiagument options not supported. \n"));
+      Error(StringC("Program error: Unnamed multiargument options not supported. \n"));
       return ret;
     }
 #endif
     
     if(name != 0) {
       if(doneUnnamed)
-	Error(StringC("OptionC, Internal error: Found argument ") + name + " after an unamed one. All unamed arguments must be processed last.  ");
+	Error(StringC("OptionC, Internal error: Found argument ") + name + " after an unnamed one. All unnamed arguments must be processed last.  ");
       if(IsUsed(name))
 	Error(StringC("Program error: Option ") + name + " is has already been used. ");
       used.InsLast(name);
@@ -535,7 +535,7 @@ namespace RavlN {
     if(name != 0)
       srch += name;
     else {
-      ONDEBUG(std::cerr << "GetOptions(), Searching for unamed arg of length " << nargs << "\n"); 
+      ONDEBUG(std::cerr << "GetOptions(), Searching for unnamed arg of length " << nargs << "\n");
     }
     
     for(DLIterC<StringC> it(args);it.IsElm();it.Next()) {
@@ -543,7 +543,7 @@ namespace RavlN {
       if(*name == 0) {
 	if(IsProcessed(it.Data()))
 	  continue;
-	ONDEBUG(std::cerr << "GetOptions(), Start of unamed args : '" << it.Data() << "\n"); 
+	ONDEBUG(std::cerr << "GetOptions(), Start of unnamed args : '" << it.Data() << "\n");
       } else 
 #endif      
 	{

@@ -102,7 +102,7 @@ namespace RavlN {
       return typeid(void); // Nope.
     if(filename[0] == '@')
       return typeid(void); // Nope.
-    if(ext == ""  || ext == "abs" || ext == "bin" || ext == formatName)
+    if(ext == ""  || ext == "abs" || ext == "bin" || m_ext.IsMember(ext))
       return ff.DefaultType(); // Yep, can save in format.
     return typeid(void); // Nope.
   }
@@ -156,12 +156,16 @@ namespace RavlN {
   //: Register format
   bool FileFormatBinStreamMetaBodyC::RegisterFormat(FileFormatBaseC &fileformat) {
     RavlAssert(fileformat.DefaultType() != typeid(void));
+    if(!HaveTypeName(fileformat.DefaultType())) {
+      RavlError("No typename registered for '%s', binary IO may fail to work. Hint: Ensure TypeNameC is used to register the name BEFORE the format is registered. ",fileformat.DefaultType().name());
+    }
     FileFormatBaseC &entry = m_class2format[RavlN::TypeName(fileformat.DefaultType())];
     if(entry.IsValid()) {
       RavlError("File abs format for '%s' already registered.",RavlN::TypeName(DefaultType()));
       return false;
     }
     entry = fileformat;
+    m_ext += fileformat.Name();
     return true;
   }
 

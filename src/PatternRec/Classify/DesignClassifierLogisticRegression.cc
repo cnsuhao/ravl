@@ -179,7 +179,10 @@ namespace RavlN {
   //: Load from stream.
   
   DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(std::istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      m_regularisation(0),
+      m_prependUnit(false),
+      m_doNormalisation(false)
   {
     int version;
     strm >> version;
@@ -191,7 +194,10 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      m_regularisation(0),
+      m_prependUnit(false),
+      m_doNormalisation(false)
   {
     int version;
     strm >> version;

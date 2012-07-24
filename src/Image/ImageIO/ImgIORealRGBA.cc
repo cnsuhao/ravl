@@ -23,8 +23,8 @@ namespace RavlImageN {
   
   static TypeNameC type1(typeid(ImageC<RealRGBAValueC>),"ImageC<RealRGBAValueC>");  
   
-  FileFormatStreamC<ImageC<RealRGBAValueC> > FileFormatStream_ImageC_RealRGBAValueC;
-  FileFormatBinStreamC<ImageC<RealRGBAValueC> > FileFormatBinStream_ImageC_RealRGBAValueC;
+  static FileFormatStreamC<ImageC<RealRGBAValueC> > FileFormatStream_ImageC_RealRGBAValueC;
+  static FileFormatBinStreamC<ImageC<RealRGBAValueC> > FileFormatBinStream_ImageC_RealRGBAValueC;
   
   
 

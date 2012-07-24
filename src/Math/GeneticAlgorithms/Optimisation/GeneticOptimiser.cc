@@ -39,6 +39,7 @@ namespace RavlN { namespace GeneticN {
      m_terminateScore(static_cast<float>(factory.AttributeReal("teminateScore",-1.0))),
      m_createOnly(factory.AttributeBool("createOnly",false)),
      m_threads(factory.AttributeUInt("threads",1)),
+     m_atWorkQueue(0),
      m_randomiseDomain(factory.AttributeBool("randomiseDomain",false)),
      m_runningAverageLength(factory.AttributeUInt("runningAverageLength",0))
   {
@@ -66,14 +67,24 @@ namespace RavlN { namespace GeneticN {
       RavlAssertMsg(0,"No fitness function defined.");
       return ;
     }
+    RavlDebug("Running %u generations ", m_numGenerations);
     MutexLockC lock(m_access);
     lock.Unlock();
 
     for(unsigned i = 0;i < m_numGenerations;i++) {
-      RavlInfo("Running generation %u ",i);
+      float bestScore = 0;
+      lock.Lock();
+      if(!m_population.empty())
+        bestScore = m_population.rbegin()->first;
+      lock.Unlock();
+      RavlInfo("Running generation %u  Initial score:%f ",i,bestScore);
       RunGeneration(i);
       lock.Lock();
+      if(m_logLevel >= SYSLOG_INFO) {
+        m_population.rbegin()->second->Dump(RavlSysLog(SYSLOG_INFO));
+      }
       if(m_terminateScore > 0 && m_population.rbegin()->first > m_terminateScore) {
+        RavlDebug("Termination criteria met.");
         lock.Unlock();
         break;
       }
@@ -148,8 +159,8 @@ namespace RavlN { namespace GeneticN {
     MutexLockC lock(m_access);
     if(m_population.empty())
       return false;
-    score = m_population.begin()->first;
-    genome = m_population.begin()->second;
+    score = m_population.rbegin()->first;
+    genome = m_population.rbegin()->second;
     return true;
   }
 
@@ -292,12 +303,12 @@ namespace RavlN { namespace GeneticN {
       GenomeC::RefT genome = m_workQueue[candidate];
       lock.Unlock();
       float score = 0;
-      if(!Evaluate(*evaluator,*genome,*palette,score))
-        continue;
+      bool ok = Evaluate(*evaluator,*genome,*palette,score);
       if(m_runningAverageLength >= 1)
         score = genome->UpdateScore(score,m_runningAverageLength);
       lock.Lock();
-      m_population.insert(std::pair<const float,GenomeC::RefT>(score,genome));
+      if(ok || m_population.empty())
+        m_population.insert(std::pair<const float,GenomeC::RefT>(score,genome));
       lock.Unlock();
     }
 
@@ -322,24 +333,29 @@ namespace RavlN { namespace GeneticN {
         return false;
 #if RAVL_CATCH_EXCEPTIONS
     } catch(std::exception &ex) {
-      RavlWarning("Caught std exception '%s' evaluating agent.",ex.what());
-      RavlAssert(0);
+      RavlDebugIf(m_logLevel,"Caught std exception '%s' evaluating agent.",ex.what());
+      score = -1000000;
+      //RavlAssert(0);
       return false;
     } catch(RavlN::ExceptionC &ex) {
-      RavlWarning("Caught exception '%s' evaluating agent.",ex.what());
-      RavlAssert(0);
+      RavlDebugIf(m_logLevel,"Caught exception '%s' evaluating agent.",ex.what());
+      score = -1000000;
+      //RavlAssert(0);
       return false;
     } catch(...) {
-      RavlWarning("Caught exception evaluating agent.");
+      RavlDebugIf(m_logLevel,"Caught exception evaluating agent.");
+      score = -1000000;
       RavlAssert(0);
       return false;
     }
 #endif
+#if 1
     size_t size = genome.Size();
     //float sizeDiscount =  (size / 1000.0) * (0.5 + Random1()); //Floor(size / 10) * 0.01;
     float sizeDiscount = (size / 15) * 0.001f; //(AK) note integer division
     //float sizeDiscount = size / 1000.0;
     score -= sizeDiscount;
+#endif
     return true;
   }
 

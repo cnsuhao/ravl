@@ -40,7 +40,9 @@ namespace RavlN {
   //: Load from stream.
   
   DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(std::istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      k(0),
+      useAverageKNN(false)
   {
     int version;
     strm >> version;
@@ -52,7 +54,9 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignKNearestNeighbourBodyC::DesignKNearestNeighbourBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      k(0),
+      useAverageKNN(false)
   {
     int version;
     strm >> version;
@@ -81,7 +85,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Create a clasifier.
+  //: Create a classifier.
   
   ClassifierC DesignKNearestNeighbourBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out) {
     RavlAssertMsg(in.Size() == out.Size(),"DesignKNearestNeighbourBodyC::Apply(), Sample of vector and labels should be the same size.");
@@ -90,7 +94,7 @@ namespace RavlN {
     return ClassifierKNearestNeighbourC (DataSet2C<SampleVectorC,SampleLabelC>(in,out),k,distanceMetric);
   }
   
-  //: Create a clasifier with weights for the samples.
+  //: Create a classifier with weights for the samples.
   
   ClassifierC DesignKNearestNeighbourBodyC::Apply(const SampleC<VectorC> &in,
 						  const SampleC<UIntT> &out,

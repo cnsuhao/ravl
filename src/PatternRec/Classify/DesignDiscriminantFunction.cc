@@ -63,7 +63,7 @@ namespace RavlN {
     : designFunc(dfunc)
   {}
 
-  //: Create a clasifier.
+  //: Create a classifier.
     
   ClassifierC DesignDiscriminantFunctionBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out) {
     // FIXME :- Find a way of caching 'vout' for labels.
@@ -71,7 +71,7 @@ namespace RavlN {
     return ClassifierDiscriminantFunctionC(designFunc.Apply(in,vout));
   }
 					 
-  //: Create a clasifier with weights for the samples.
+  //: Create a classifier with weights for the samples.
   
   ClassifierC DesignDiscriminantFunctionBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SampleC<RealT> &weight) {
     // FIXME :- Find a way of caching 'vout' for labels.

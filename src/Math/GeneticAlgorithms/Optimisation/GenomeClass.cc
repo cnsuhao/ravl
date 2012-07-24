@@ -157,19 +157,23 @@ namespace RavlN { namespace GeneticN {
     GeneNodeC &newNode = dynamic_cast<GeneNodeC &>(*newValue);
     const GeneNodeC &oldNode = dynamic_cast<const GeneNodeC &>(original);
     bool ret = false;
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutating %zu components in %s. faction %f  ",(size_t) m_componentTypes.Size().V(),Name().data(),fraction));
+    ONDEBUG(RavlDebug("Mutating %zu components in '%s'. faction %f  ",(size_t) m_componentTypes.Size().V(),Name().data(),fraction));
     int mustChangeIndex = -1;
     if(m_componentTypes.Size() == 0)
       return false;
     if(mustChange) {
-
       mustChangeIndex = palette.RandomUInt32() % m_componentTypes.Size();
     }
     int index = 0;
     for(RavlN::HashIterC<std::string,GeneTypeC::ConstRefT> it(m_componentTypes);it;it++,index++) {
       GeneC::ConstRefT gene;
       if(!oldNode.GetComponent(it.Key(),gene)) {
-        RavlError("Failed to find component %s ",it.Key().data());
+        RavlError("Failed to find component '%s' in '%s' GeneType=%s ",
+            it.Key().data(),
+            Name().c_str(),
+            RavlN::TypeName(typeid(*this)));
+        oldNode.Dump(RavlSysLog(RavlN::SYSLOG_ERR) << "Old node:\n");
+        RavlError("Aborting.");
         throw RavlN::ExceptionOperationFailedC("No component");
       }
       if(palette.Random1() > fraction && mustChangeIndex != index) {
@@ -340,7 +344,7 @@ namespace RavlN { namespace GeneticN {
   //! Lookup a component.
   bool GeneNodeC::Lookup(const std::string &name, GeneC::ConstRefT &component) const {
     bool ret= m_components.Lookup(name,component);
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Lookup %s.  Succeeded=%d ",name.data(),ret));
+    ONDEBUG(RavlDebug("Lookup %s.  Succeeded=%d ",name.data(),ret));
     return ret;
   }
 
@@ -352,7 +356,7 @@ namespace RavlN { namespace GeneticN {
     //! Add a new entry to the gene
     GeneTypeC::ConstRefT fieldType;
     if(!m_type->LookupComponent(name,fieldType)) {
-      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Adding new field %s ",name.data()));
+      ONDEBUG(RavlDebug("Adding new field %s ",name.data()));
       m_type->AddComponent(name,geneType);
     }
     m_components.Insert(name,&newEntry);
@@ -396,6 +400,19 @@ namespace RavlN { namespace GeneticN {
     }
     return true;
   }
+
+  //! Dump description in human readable form.
+  void GeneNodeC::Dump(std::ostream &strm,UIntT indent) const
+  {
+    GeneC::Dump(strm,indent);
+    strm << "\n";
+    for(RavlN::HashIterC<std::string,GeneC::ConstRefT> it(m_components);it;it++) {
+      strm << RavlN::Indent(indent+2) << "'" << it.Key() << "' ->\n";
+      it.Data()->Dump(strm,indent+4);
+      strm << "\n";
+    }
+  }
+
 
   XMLFactoryRegisterConvertC<GeneNodeC,GeneC> g_registerGeneNode("RavlN::GeneticN::GeneNodeC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneNodeC,"RavlN::GeneticN::GeneNodeC");
@@ -445,7 +462,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeClassC::GeneTypeClassC(std::istream &strm)
-   : GeneTypeNodeC(strm)
+   : GeneTypeNodeC(strm),
+     m_typeInfo(&typeid(void))
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -469,15 +487,27 @@ namespace RavlN { namespace GeneticN {
     return false;
   }
 
+  //! Dump description in human readable form.
+  void GeneTypeClassC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneTypeNodeC::Dump(strm,indent);
+    strm << RavlN::Indent(indent) << "Typename=" << m_typeName;
+  }
+
   //! Create randomise value
-  void GeneTypeClassC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const {
+  void GeneTypeClassC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
+  {
     if(!newValue.IsValid())
       newValue = new GeneClassC(*this);
     GeneTypeNodeC::Random(palette,newValue);
   }
 
   //! Mutate a gene
-  bool GeneTypeClassC::Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const {
+  bool GeneTypeClassC::Mutate(GenePaletteC &palette,
+                              float fraction,
+                              bool mustChange,
+                              const GeneC &original,
+                              RavlN::SmartPtrC<GeneC> &newValue) const
+  {
     if(fraction <= 0 && !mustChange) {
       newValue = &original;
       return false;
@@ -488,7 +518,11 @@ namespace RavlN { namespace GeneticN {
   }
 
   //! Mutate a gene
-  void GeneTypeClassC::Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const {
+  void GeneTypeClassC::Cross(GenePaletteC &palette,
+                             const GeneC &original1,
+                             const GeneC &original2,
+                             RavlN::SmartPtrC<GeneC> &newValue) const
+  {
     if(!newValue.IsValid())
       newValue = new GeneClassC(*this);
     return GeneTypeNodeC::Cross(palette,original1,original2,newValue);
@@ -563,7 +597,7 @@ namespace RavlN { namespace GeneticN {
   {
     GeneFactoryC childContext(context,*this);
     RavlN::RCWrapC<GeneFactoryC> fgwrap(childContext);
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Creating class '%s' ",ClassType().TypeName().data()));
+    ONDEBUG(RavlDebug("Creating class '%s' ",ClassType().TypeName().data()));
     handle = SystemTypeConverter().DoConversion(fgwrap.Abstract(),fgwrap.DataType(),ClassType().TypeInfo());
     if(!handle.IsValid()) {
       RavlError("Failed to create class '%s' ",ClassType().TypeName().data());

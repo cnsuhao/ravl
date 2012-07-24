@@ -72,6 +72,7 @@ namespace RavlN {
   static TypeNameC type15(typeid(RCBodyVC),"RCBodyVC");
   
   static TypeNameC type16(typeid(RCWrapAbstractC),"RavlN::RCWrapAbstractC");
+  static TypeNameC type19(typeid(AbstractC),"RavlN::AbstractC");
   
   static TypeNameC type17(typeid(RealRange2dC),"RavlN::RealRange2dC");
   static TypeNameC type18(typeid(IndexRange2dC),"RavlN::IndexRange2dC");
@@ -124,7 +125,9 @@ namespace RavlN {
 #endif
 #ifndef __sgi__
 #if RAVL_CHECK
-    RavlWarning("No standard type name for : %s ",name);
+    // This can get annoying. but is sometimes useful when dealing with RAVL abs files
+    // and streams to ensure we have a machine independent type name. What to do ??
+    //RavlWarning("No standard type name for : %s ",name);
 #endif
     AddTypeName(name,name); // Register name, to prevent repeated warnings.
     return name;
@@ -141,9 +144,16 @@ namespace RavlN {
     return *ptr;
   }
   
+  //: Test if we have a typename registered
+  bool HaveTypeName(const std::type_info &info) {
+    MTReadLockC lock;
+    return TypeNameMapping().Lookup(info.name()) != 0;
+  }
+
   const char *TypeName(const std::type_info &info)  {
     return TypeName(info.name()); 
   }
+
 
   static HashC<const char *,const char *> InitNameMapping() {
     TypeNameMap = &TypeName;
@@ -167,7 +177,7 @@ namespace RavlN {
     MTWriteLockC lock;
 #if RAVL_CHECK
     if(TypeNameMapping().IsElm(sysname)) {
-      if(strcmp(TypeNameMapping()[sysname],newname) != 0) {
+      if(strcmp(TypeNameMapping()[sysname],newname) != 0 && strcmp(TypeNameMapping()[sysname],sysname) == 0) {
         RavlWarning("Redefining TypeName '%s' from '%s' to '%s' ",sysname,TypeNameMapping()[sysname],newname);
       }
     }

@@ -28,21 +28,21 @@ namespace RavlN {
   void InitFixedMatrixIO()
   {}
   
-  FileFormatStreamC<Matrix2dC> FileFormatStream_Matrix2d;
-  FileFormatStreamC<Matrix3dC> FileFormatStream_Matrix3d;
-  FileFormatStreamC<Matrix4dC> FileFormatStream_Matrix4d;
+  static FileFormatStreamC<Matrix2dC> FileFormatStream_Matrix2d;
+  static FileFormatStreamC<Matrix3dC> FileFormatStream_Matrix3d;
+  static FileFormatStreamC<Matrix4dC> FileFormatStream_Matrix4d;
   
-  FileFormatBinStreamC<Matrix2dC> FileFormatBinStream_Matrix2d;
-  FileFormatBinStreamC<Matrix3dC> FileFormatBinStream_Matrix3d;
-  FileFormatBinStreamC<Matrix4dC> FileFormatBinStream_Matrix4d;
+  static FileFormatBinStreamC<Matrix2dC> FileFormatBinStream_Matrix2d;
+  static FileFormatBinStreamC<Matrix3dC> FileFormatBinStream_Matrix3d;
+  static FileFormatBinStreamC<Matrix4dC> FileFormatBinStream_Matrix4d;
   
-  // Add some IO for arrays of Matrixs.
+  // Add some IO for arrays of Matrices.
 
-  FileFormatStreamC<SArray1dC<Matrix2dC> > FileFormatStream_SArray1dC_Matrix2d;
-  FileFormatStreamC<SArray1dC<Matrix3dC> > FileFormatStream_SArray1dC_Matrix3d;
-  FileFormatStreamC<SArray1dC<Matrix4dC> > FileFormatStream_SArray1dC_Matrix4d;
+  static FileFormatStreamC<SArray1dC<Matrix2dC> > FileFormatStream_SArray1dC_Matrix2d;
+  static FileFormatStreamC<SArray1dC<Matrix3dC> > FileFormatStream_SArray1dC_Matrix3d;
+  static FileFormatStreamC<SArray1dC<Matrix4dC> > FileFormatStream_SArray1dC_Matrix4d;
   
-  FileFormatBinStreamC<SArray1dC<Matrix2dC> > FileFormatBinStream_SArray1dC_Matrix2d;
-  FileFormatBinStreamC<SArray1dC<Matrix3dC> > FileFormatBinStream_SArray1dC_Matrix3d;
-  FileFormatBinStreamC<SArray1dC<Matrix4dC> > FileFormatBinStream_SArray1dC_Matrix4d;
+  static FileFormatBinStreamC<SArray1dC<Matrix2dC> > FileFormatBinStream_SArray1dC_Matrix2d;
+  static FileFormatBinStreamC<SArray1dC<Matrix3dC> > FileFormatBinStream_SArray1dC_Matrix3d;
+  static FileFormatBinStreamC<SArray1dC<Matrix4dC> > FileFormatBinStream_SArray1dC_Matrix4d;
 }

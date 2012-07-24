@@ -59,12 +59,24 @@ namespace RavlN {
     //!param: in - Array of samples to cluster.
     //!return: Array of point centers
     
+    virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights);
+    //: Compute cluster means.
+    //!param: in - Array of samples to cluster.
+    //!param: weights - Weights of samples
+    //!return: Array of point centers
+
     virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in,SampleC<UIntT> &labels);
     //: Compute cluster means, and labels for all the samples
     //!param: in - Sample of vectors to cluster
     //!param: labels - Sample used to store the membership of each sample in the form of an index into the returned array
     //!return: Array of clusters.
     
+    virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights, SampleC<UIntT> &labels);
+      //: Compute cluster means, and labels for all the samples
+      //!param: in - Sample of vectors to cluster
+      //!param: labels - Sample used to store the membership of each sample in the form of an index into the returned array
+      //!return: Array of clusters.
+
     RealT K() const
     { return k; }
     //: Access size of kernel
@@ -110,7 +122,7 @@ namespace RavlN {
     //: Load from stream.
     
     DesignMeanShiftClusterC(BinIStreamC &strm);
-    //: Load from binary stream.
+    //: Load from binary stream. //: Compute cluster means.
     
   protected:
     DesignMeanShiftClusterC(DesignMeanShiftClusterBodyC &bod)
@@ -136,20 +148,23 @@ namespace RavlN {
     { return Body().K(); }
     //: Access size of kernel
     
+    using DesignClusterC::Cluster;
+
     SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in,SampleC<UIntT> &labels)
     { return Body().Cluster(in,labels); }
     //: Compute cluster means, and labels for all the samples
     //!param: in - Sample of vectors to cluster
     //!param: labels - Sample used to store the membership of each sample in the form of an index into the returned array
     //!return: Array of clusters.
-
-    SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in)
-    { return Body().Cluster(in); }
-    //: Compute cluster means, and labels for all the samples
-    //!param: in - Sample of vectors to cluster
-    //!param: labels - Sample used to store the membership of each sample in the form of an index into the returned array
-    //!return: Array of clusters.
     
+    SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights, SampleC<UIntT> &labels)
+      { return Body().Cluster(in, weights, labels); }
+      //: Compute cluster means, and labels for all the samples
+      //!param: in - Sample of vectors to cluster
+      //!param: labels - Sample used to store the membership of each sample in the form of an index into the returned array
+      //!return: Array of clusters.
+
+
   };
 
 }

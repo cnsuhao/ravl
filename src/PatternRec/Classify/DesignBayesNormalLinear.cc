@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
 //! file="Ravl/PatternRec/Classify/DesignBayesNormalLinear.cc"
@@ -17,7 +16,7 @@
 #include "Ravl/MatrixRS.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
-#include  "Ravl/PatternRec/DataSetVectorLabel.hh"
+#include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/SArray1dIter2.hh"
 
@@ -30,6 +29,12 @@
 
 namespace RavlN {
   
+  //: Default constructor.
+
+  DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC()
+   : equalPriors(false)
+  {}
+
   //: Create least squares designer.
   
   DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(const SArray1dC<RealT> & p) 
@@ -47,25 +52,31 @@ namespace RavlN {
   //: Load from stream.
   
   DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(std::istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      equalPriors(false)
   {
     int ver;
     strm >> ver;
-    if(ver != 1)
-      std::cerr << "DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(), Unknown format version. \n";
+    if(ver < 1 || ver > 2)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("DesignBayesNormalLinearBodyC");
     strm >> priors;
+    if(ver > 1)
+      strm >> equalPriors;
   }
   
   //: Load from binary stream.
   
   DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      equalPriors(false)
   {
     char ver;
     strm >> ver;
-    if(ver != 1)
-      std::cerr << "DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(), Unknown format version. \n";
+    if(ver < 1 || ver > 2)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("DesignBayesNormalLinearBodyC");
     strm >> priors;
+    if(ver > 1)
+      strm >> equalPriors;
   }
   
   //: Writes object to stream, can be loaded using constructor
@@ -73,8 +84,8 @@ namespace RavlN {
   bool DesignBayesNormalLinearBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    char ver = 1;
-    out << ((int) ver) << ' ' << priors;
+    char ver = 2;
+    out << ((int) ver) << ' ' << priors << ' ' << equalPriors;
     return true;
   }
   
@@ -83,8 +94,8 @@ namespace RavlN {
   bool DesignBayesNormalLinearBodyC::Save (BinOStreamC &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    char ver = 1;
-    out << ((int) ver) << priors;
+    char ver = 2;
+    out << ((int) ver) << priors << equalPriors;
     return true;
   }
   

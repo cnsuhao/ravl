@@ -58,7 +58,9 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeListBaseC::GeneTypeListBaseC(std::istream &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_contentType(0),
+     m_maxLength(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -374,6 +376,16 @@ namespace RavlN { namespace GeneticN {
         return false;
     }
     return true;
+  }
+
+  //! Dump description in human readable form.
+  void GeneListC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneC::Dump(strm,indent);
+    strm << "\n";
+    for(unsigned i = 0;i < m_list.size();i++) {
+      m_list[i]->Dump(strm,indent+1);
+      strm << "\n";
+    }
   }
 
   static XMLFactoryRegisterConvertC<GeneListC,GeneC> g_registerGeneList("RavlN::GeneticN::GeneListC");

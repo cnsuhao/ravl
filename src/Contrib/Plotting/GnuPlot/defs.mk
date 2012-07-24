@@ -13,7 +13,7 @@ MAINS = exGnuPlot.cc exGnuPlot3d.cc
 
 HEADERS = GnuPlot.hh GnuPlot3d.hh
 
-#REQUIRES = GnuPlot
+REQUIRES = GnuPlot
 
 SOURCES = GnuPlot.cc GnuPlot3d.cc
 

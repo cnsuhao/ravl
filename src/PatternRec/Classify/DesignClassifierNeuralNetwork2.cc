@@ -126,7 +126,7 @@ namespace RavlN {
       m_threads(threads)
    {
      size_t vecSize = NumParameters();
-     ONDEBUG(RavlDebug("Paramaters:%s ",RavlN::StringOf(vecSize).c_str()));
+     ONDEBUG(RavlDebug("Parameters:%s ",RavlN::StringOf(vecSize).c_str()));
      ParametersC parameters(vecSize,true);
 
      VectorC startX(vecSize);
@@ -435,13 +435,22 @@ namespace RavlN {
 
   //: Load from stream.
 
-  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &strm) :
-    DesignClassifierSupervisedBodyC(strm)
+  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &strm)
+   : DesignClassifierSupervisedBodyC(strm),
+     m_nLayers(0),
+     m_nHidden(0),
+     m_hiddenFraction(0),
+     m_desiredError(0),
+     m_maxEpochs(0),
+     m_displayEpochs(0),
+     m_regularisation(0),
+     m_doNormalisation(false),
+     m_threads(1)
   {
     int version;
     strm >> version;
     if (version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_featureExpand;
     strm >> m_nLayers;
     strm >> m_nHidden;
@@ -453,13 +462,22 @@ namespace RavlN {
 
   //: Load from binary stream.
 
-  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &strm) :
-    DesignClassifierSupervisedBodyC(strm)
+  DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &strm)
+   : DesignClassifierSupervisedBodyC(strm),
+    m_nLayers(0),
+    m_nHidden(0),
+    m_hiddenFraction(0),
+    m_desiredError(0),
+    m_maxEpochs(0),
+    m_displayEpochs(0),
+    m_regularisation(0),
+    m_doNormalisation(false),
+    m_threads(1)
   {
     ByteT version;
     strm >> version;
     if (version != 1)
-      throw ExceptionOutOfRangeC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &), Unrecognised version number in stream. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(BinIStreamC &), Unrecognised version number in stream. ");
     strm >> m_featureExpand;
     strm >> m_nLayers;
     strm >> m_nHidden;
@@ -468,6 +486,7 @@ namespace RavlN {
     strm >> m_displayEpochs;
     strm >> m_regularisation;
     strm >> m_doNormalisation;
+    // FIXME:- Load threads ??
   }
 
   //: Writes object to stream, can be loaded using constructor

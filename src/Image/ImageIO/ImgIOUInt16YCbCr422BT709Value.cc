@@ -79,8 +79,8 @@ namespace RavlImageN {
   DP_REGISTER_CONVERSION_NAMED(UInt16ImageCT2UInt16YCbCr422BT709ImageCT,1,
 			       "RavlImageN::ImageC<RavlImageN::UInt16YCbCr422BT709ValueC> RavlImageN::Convert(const RavlImageN::ImageC<RavlN::UInt16T> &)");
   
-  FileFormatStreamC<ImageC<UInt16YCbCr422BT709ValueC> > FileFormatStream_ImageC_UInt16YCbCr422BT709ValueC;
-  FileFormatBinStreamC<ImageC<UInt16YCbCr422BT709ValueC> > FileFormatBinStream_ImageC_UInt16YCbCr422BT709ValueC;
+  static FileFormatStreamC<ImageC<UInt16YCbCr422BT709ValueC> > FileFormatStream_ImageC_UInt16YCbCr422BT709ValueC;
+  static FileFormatBinStreamC<ImageC<UInt16YCbCr422BT709ValueC> > FileFormatBinStream_ImageC_UInt16YCbCr422BT709ValueC;
   
 
 }

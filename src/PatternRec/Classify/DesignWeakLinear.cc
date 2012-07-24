@@ -59,7 +59,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Create a clasifier.
+  //: Create a classifier.
   
   ClassifierC DesignWeakLinearBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out) {
     RavlAssertMsg(in[0].Size() == 1,"DesignWeakLinearBodyC::Apply(), Feature vectors can only have 1 element.");
@@ -69,7 +69,7 @@ namespace RavlN {
     return Apply(in,out,featureSet);
   }
   
-  //: Create a clasifier with weights for the samples.
+  //: Create a classifier with weights for the samples.
   
   ClassifierC DesignWeakLinearBodyC::Apply(const SampleC<VectorC> &in,
 					   const SampleC<UIntT> &out,

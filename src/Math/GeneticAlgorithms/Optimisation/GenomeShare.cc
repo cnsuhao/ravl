@@ -83,6 +83,13 @@ namespace RavlN { namespace GeneticN {
     return false;
   }
 
+  //! Dump description in human readable form.
+  void GeneTypeClassShareC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneTypeClassC::Dump(strm,indent);
+    strm << " MustConnect=" << m_mustConnect;
+  }
+
+
   //! Create randomise value
   void GeneTypeClassShareC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const {
     if(!newValue.IsValid())
