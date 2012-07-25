@@ -6,7 +6,7 @@
 
 LICENSE=Copyright
 
-REQUIRES=RLog
+REQUIRES=RLog GnuPlot
 
 ORGANISATION=OmniPerception Ltd
 
