@@ -25,6 +25,8 @@ namespace RavlN {
   public:
     DesignClassifierNeuralNetwork2BodyC(UIntT nLayers,
         UIntT nHidden,
+        bool doNorm = true,
+        RealT regularisation = 0,
         RealT desiredError = 0.00001,
         UIntT maxEpochs = 5000,
         UIntT displayEpochs = 1);
@@ -92,11 +94,13 @@ namespace RavlN {
 
     DesignClassifierNeuralNetwork2C(UIntT nLayers,
         UIntT nHidden,
+        bool doNormalisation = true,
+        RealT regularisation = 0,
         RealT desiredError = 0.00001,
-        UIntT maxEpochs = 10000,
+        UIntT maxEpochs = 5000,
         UIntT displayEpochs = 0)
     : DesignClassifierSupervisedC(
-              *new DesignClassifierNeuralNetwork2BodyC(nLayers, nHidden, desiredError, maxEpochs, displayEpochs))
+              *new DesignClassifierNeuralNetwork2BodyC(nLayers, nHidden, doNormalisation,regularisation,desiredError, maxEpochs, displayEpochs))
     {}
     //: Create a new designer.
 
