@@ -167,10 +167,10 @@ namespace RavlN {
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
     { RegisterFormatBinStreamMeta(*this); }
 
-    FileFormatBinStreamC(const StringC &typeName)
+    FileFormatBinStreamC(const char *typeName)
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
     {
-      AddTypeName(this->DefaultType(),typeName.c_str());
+      AddTypeName(this->DefaultType(),typeName);
       RegisterFormatBinStreamMeta(*this);
     }
 
@@ -179,10 +179,10 @@ namespace RavlN {
     { RegisterFormatBinStreamMeta(*this); }
     //: Construct will format id and descriptor
 
-    FileFormatBinStreamC(const StringC &formatId,const StringC &formatDescriptor,const StringC &typeName)
+    FileFormatBinStreamC(const StringC &formatId,const StringC &formatDescriptor,const char *typeName)
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(formatId,formatDescriptor))
     {
-      AddTypeName(this->DefaultType(),typeName.c_str());
+      AddTypeName(this->DefaultType(),typeName);
       RegisterFormatBinStreamMeta(*this);
     }
     //: Construct will format id and descriptor

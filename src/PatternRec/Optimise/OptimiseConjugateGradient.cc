@@ -152,7 +152,7 @@ namespace RavlN {
         // If tolerance is zero, just execute the requested number of iterations.
         if (_tolerance > 0 && 2.0*Abs(costdiff) <= _tolerance*(Abs(currentCost)+Abs(minimumCost))) {
           //ONDEBUG(cerr << "CostDiff=" << costdiff << " Tolerance=" << _tolerance*(Abs(currentCost)+Abs(minimumCost)) << "\n");
-          RavlDebug("Improvement below minimum. ");
+          //RavlDebug("Improvement below minimum. ");
           break;
         }
       }

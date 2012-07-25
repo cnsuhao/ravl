@@ -112,7 +112,7 @@ namespace RavlN {
   { return DPOPortBaseC(); }
   
   //////////////////////////////
-  //: Get prefered IO type.
+  //: Get preferred IO type.
   // typeid(void) if none.
   
   const std::type_info &FileFormatBodyC::DefaultType() const
@@ -139,19 +139,19 @@ namespace RavlN {
     buff = StringC();
     while ((ch = sb->sbumpc()) != EOF)
     {
-	  if (ch == '\n' || ch == ' ' || ch == '\t')
-	    break;
-	  if(!isprint(ch)) {
-	    ONDEBUG(cerr << "FileFormatBodyC::ReadString(), Found non printable char " << ((int) ch) << "\n");
-	    ret = false;
-	    break;
-	  }
-	  if(buff.length() >= maxLen) {
-  	    ONDEBUG(cerr << "FileFormatBodyC::ReadString(), String to long '" << maxLen << "'\n");
-	    ret = false;
-	    break;
-	  }
-	  buff += ch;
+      if (ch == '\n' || ch == ' ' || ch == '\t')
+        break;
+      if(!isprint(ch)) {
+        ONDEBUG(cerr << "FileFormatBodyC::ReadString(), Found non printable char " << ((int) ch) << "\n");
+        ret = false;
+        break;
+      }
+      if(buff.length() >= maxLen) {
+        ONDEBUG(cerr << "FileFormatBodyC::ReadString(), String to long '" << maxLen << "'\n");
+        ret = false;
+        break;
+      }
+      buff += ch;
     }
     if (ch == EOF) 
       s.is().clear(ios::eofbit|s.is().rdstate());
@@ -184,11 +184,11 @@ namespace RavlN {
     for(i = fn.length()-1;i >= 0;i--) {
       if(fn[i] == '.')
 	break;
-      if(fn[i] == '/') // Found file seperator.
+      if(fn[i] == '/') // Found file separator.
 	return StringC();
     }
     if(i < 0)
-      return StringC(); // No extention found.
+      return StringC(); // No extension found.
     return fn.after(i);
   }
 

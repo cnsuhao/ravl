@@ -36,10 +36,10 @@ int main(int nargs, char **argv) {
       "Classifier config file.");
   StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|SVMOneClass].");
   bool doMetaDesign = opts.Boolean("md",false,"Do meta design, optimise the design parameters ");
-  StringC trainingDataSetFile = opts.String("dset", "", "The dataset to train on!");
+  StringC trainingDataSetFile = opts.String("dset", "", "The dataset to train on");
   bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
-  DListC<StringC>features = opts.List("features", "Use only these features");
+  DListC<StringC> features = opts.List("features", "Use only these features");
   StringC NormaliseSample = opts.String("normalise",doMetaDesign ? "none" : "mean", "Normalise sample (mean, none, scale)");
   FilenameC classifierOutFile = opts.String("o", "classifier.abs", "Save classifier to this file.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");

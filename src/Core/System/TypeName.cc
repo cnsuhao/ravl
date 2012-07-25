@@ -63,7 +63,7 @@ namespace RavlN {
   static TypeNameC type9(typeid(Int16T),"Int16T");
   static TypeNameC type10(typeid(UInt16T),"UInt16T");
   
-  static TypeNameC type11(typeid(StringC),"StringC");
+  static TypeNameC type11(typeid(StringC),"RavlN::StringC");
   static TypeNameC type12(typeid(SubStringC),"SubStringC");
   
   static TypeNameC type13(typeid(IndexC),"IndexC");

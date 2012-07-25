@@ -65,7 +65,7 @@ namespace RavlN {
     
     GraphC<StringC,DPConverterBaseC> &Graph()
     { return convGraph; }
-    //: Access converstion graph.
+    //: Access conversion graph.
     
   protected:
     static RealT EdgeEval(const DPConverterBaseC &edge);
@@ -193,7 +193,7 @@ namespace RavlN {
     
     GraphC<StringC,DPConverterBaseC> &Graph()
     { return Body().Graph(); }
-    //: Access converstion graph.
+    //: Access conversion graph.
   };
   
   TypeConverterC &SystemTypeConverter();

@@ -42,7 +42,7 @@ int testUnixStreamIO() {
   unixStrmI.SetFailOnReadTimeout(true);
   unixStrmI.SetFailOnWriteTimeout(true);
   
-  // Read when no data is avalable, this should timeout.
+  // Read when no data is available, this should timeout.
   std::cerr << "Attempting to read 1 byte. \n";
   char buffer[3];
   if(unixStrmI.Read(buffer,1) == 1) 
@@ -51,7 +51,7 @@ int testUnixStreamIO() {
 #if 0
   // Write's don't seem to buffer reliably on linux,
   // not sure why.
-  std::cerr << "Writting 2 bytes. \n";
+  std::cerr << "Writing 2 bytes. \n";
   // Write 2 byte
   buffer[0] = 1;
   buffer[1] = 2;

@@ -34,13 +34,16 @@ namespace RavlN {
     ErrorBodyC(const XMLFactoryContextC &factory);
     //: XML factory constructor
 
-    ErrorBodyC(istream &strm);
+    ErrorBodyC(std::istream &strm);
     //: Load from stream.
     
     ErrorBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual RavlN::RCBodyVC &Copy() const;
+    //: Copy me.
+
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;

@@ -34,12 +34,12 @@ namespace RavlN {
     FileFormatBinStreamMetaBodyC(const StringC &formatId,const StringC &formatDescriptor,bool pubList = true);
     //: Constructor with full format info.
 
-    virtual const std::type_info &ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &/*obj_type*/) const;
     //: Is stream in std stream format ?
 
-    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
 
-    virtual const std::type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &/*obj_type*/,bool forceFormat) const;
 
     virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
@@ -69,6 +69,7 @@ namespace RavlN {
   protected:
     HashC<StringC,FileFormatBaseC> m_class2format;
     HSetC<StringC> m_ext;
+    mutable HashC<const char *,const std::type_info *> m_type2use;
   };
 
   /////////////////////////////
