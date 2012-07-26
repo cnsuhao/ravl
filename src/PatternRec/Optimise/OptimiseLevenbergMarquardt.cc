@@ -32,7 +32,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseLevenbergMarquardtBodyC::OptimiseLevenbergMarquardtBodyC (istream &in)
+  OptimiseLevenbergMarquardtBodyC::OptimiseLevenbergMarquardtBodyC (std::istream &in)
     : OptimiseBodyC("OptimiseLevenbergMarquardtBodyC",in)
   {
     in >> _iterations;
@@ -112,7 +112,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseLevenbergMarquardtBodyC::Save (ostream &out) const
+  bool OptimiseLevenbergMarquardtBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << "\n";

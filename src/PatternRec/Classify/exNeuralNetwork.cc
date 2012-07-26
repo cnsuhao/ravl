@@ -77,8 +77,8 @@ int main(int nargs,char **argv) {
   // In which cluster is each vector ?
   for(DataSet2IterC<SampleVectorC,SampleLabelC> it(testdataset);it;it++) {
     UIntT cluster = classifier.Classify(it.Data1());
-    cerr << "Vector " << it.Data1() << " is in cluster " << cluster << " (True=" << it.Data2() << ")\n";
-    cerr << classifier.Confidence(it.Data1()) << endl;
+    std::cerr << "Vector " << it.Data1() << " is in cluster " << cluster << " (True=" << it.Data2() << ")\n";
+    std::cerr << classifier.Confidence(it.Data1()) << std::endl;
   }
 #endif
 

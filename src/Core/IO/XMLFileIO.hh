@@ -112,9 +112,9 @@ namespace RavlN {
       { return out.good(); }
     //: Is port ready for data ?
     
-    virtual bool Save(ostream &sout) const 
+    virtual bool Save(std::ostream &sout) const 
       { sout << out.Name(); return true; }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   private:
     XMLOStreamC out;
@@ -210,9 +210,9 @@ namespace RavlN {
     }
     //: Get multiple pieces of input data.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
       { out << in.Name(); return true; }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   private:
     XMLIStreamC in;

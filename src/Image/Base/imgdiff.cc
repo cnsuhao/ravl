@@ -33,15 +33,15 @@ int main(int nargs,char **argv) {
   ImageC<IntT> in1;
   ImageC<IntT> in2;
   if(!Load(fin1,in1)) {
-    cerr << "Failed to load image '" << fin1 << "' \n";
+    std::cerr << "Failed to load image '" << fin1 << "' \n";
     return 1;
   }
   if(!Load(fin2,in2)) {
-    cerr << "Failed to load image '" << fin2 << "' \n";
+    std::cerr << "Failed to load image '" << fin2 << "' \n";
     return 1;
   }
   if(in1.Rectangle() != in2.Rectangle()) {
-    cerr << "Image size mismatch.\n";
+    std::cerr << "Image size mismatch.\n";
     return 1;
   }
   ImageC<IntT> res;
@@ -54,7 +54,7 @@ int main(int nargs,char **argv) {
   }
   
   if(!Save(fout,res)) {
-    cerr << "Failed to save output image '" << fout << "'\n";
+    std::cerr << "Failed to save output image '" << fout << "'\n";
     return 1;
   }
   return 0;

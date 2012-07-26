@@ -34,13 +34,13 @@ namespace RavlN {
 
   //: Load from stream.
 
-  DesignFuncInterpolateGridBodyC::DesignFuncInterpolateGridBodyC(istream &strm)
+  DesignFuncInterpolateGridBodyC::DesignFuncInterpolateGridBodyC(std::istream &strm)
     : DesignFunctionSupervisedBodyC(strm)
   {
     int ver;
     strm >> ver;
     if(ver != 1)
-      throw ExceptionUnexpectedVersionInStreamC("DesignFuncLSQBodyC::DesignFuncLSQBodyC(istream&), Unknown format version. ");
+      throw ExceptionUnexpectedVersionInStreamC("DesignFuncLSQBodyC::DesignFuncLSQBodyC(std::istream&), Unknown format version. ");
   }
 
   //: Load from binary stream.
@@ -56,7 +56,7 @@ namespace RavlN {
 
   //: Writes object to stream, can be loaded using constructor
 
-  bool DesignFuncInterpolateGridBodyC::Save (ostream &out) const {
+  bool DesignFuncInterpolateGridBodyC::Save (std::ostream &out) const {
     if(!DesignFunctionSupervisedBodyC::Save(out))
       return false;
     ByteT ver = 1;
@@ -92,7 +92,7 @@ namespace RavlN {
 
   FunctionC DesignFuncInterpolateGridBodyC::Apply(const SampleC<VectorC> &in,const SampleC<VectorC> &out,const SampleC<RealT> &weight)
   {
-
+    return FunctionC();
   }
 
   //: Create function from the given data.
@@ -100,7 +100,7 @@ namespace RavlN {
 
   FunctionC DesignFuncInterpolateGridBodyC::Apply(SampleStream2C<VectorC,VectorC > &in)
   {
-
+    return FunctionC();
   }
 
 

@@ -16,6 +16,7 @@
 #include "Ravl/DList.hh"
 #include "Ravl/DLIter.hh"
 #include "Ravl/Trigger.hh"
+#include "Ravl/SysLog.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -48,7 +49,7 @@ namespace RavlN {
   
   //: Stream constructor.
   
-  AttributeCtrlBodyC::AttributeCtrlBodyC(istream &in) 
+  AttributeCtrlBodyC::AttributeCtrlBodyC(std::istream &in) 
     : DPEntityBodyC(in),
       attrInfo(0)
   {}
@@ -174,7 +175,7 @@ namespace RavlN {
 	  if(tmp == "1" || tmp == "t" || tmp == "true") 
 	    val = true;
 	  else
-	    cerr << "AttributeCtrlBodyC::SetAttr(const StringC &,const StringC &), Ambigous boolean value '" << tmp << "' for attribute " << attrName << "\n";
+	    RavlWarning("AttributeCtrlBodyC::SetAttr(const StringC &,const StringC &), Ambigous boolean value '%s' for attribute %s ",tmp.c_str(),attrName.c_str());
 	}
 	if(SetAttr(attrName,val))
 	  return true;

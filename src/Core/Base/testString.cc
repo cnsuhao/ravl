@@ -21,14 +21,14 @@ int main()
 {
   int no;
   if((no = testString()) > 0) {
-    cerr << "Basic test failed line :" << no << "\n";
+    std::cerr << "Basic test failed line :" << no << "\n";
     return 1;
   }
   if((no = testSubString()) > 0) {
-    cerr << "Basic test failed line :" << no << "\n";
+    std::cerr << "Basic test failed line :" << no << "\n";
     return 1;
   }
-  cerr << "Test passed ok .\n";
+  std::cerr << "Test passed ok .\n";
   return 0;
 }
 

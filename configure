@@ -609,6 +609,7 @@ RavlNet
 RavlLogic_LIBS
 RavlImageProc
 RavlGUI
+RavlFace_LIBS
 RavlExtImgIO
 RavlDPDisplay
 RavlDevAudio
@@ -659,7 +660,6 @@ USER_AWK
 USER_AR
 DynLink_LIBS
 SWIG
-GnuPlot_SUPPORT
 GnuPlot
 PERL
 EGREP
@@ -724,6 +724,9 @@ libGLU_CFLAGS
 libGL_SUPPORT
 libGL_LIBS
 libGL_CFLAGS
+PortAudio_SUPPORT
+PortAudio_LIBS
+PortAudio_CFLAGS
 libPNG_SUPPORT
 libPNG_LIBS
 libPNG_CFLAGS
@@ -947,6 +950,8 @@ with_OpenCV_pkgconf
 with_OpenCV
 with_libPNG_pkgconf
 with_libPNG
+with_PortAudio_pkgconf
+with_PortAudio
 with_libGL_pkgconf
 with_libGL
 with_libGLU_pkgconf
@@ -1732,6 +1737,14 @@ Optional Packages:
                           is known to pkg-config
 
   --with-libPNG           Enable functionality that relies on the libPNG
+                          library [default=check]
+
+  --with-PortAudio-pkgconf
+                          Enable the PortAudio library package via pkg-config
+                          and declare the name by which the PortAudio library
+                          package is known to pkg-config
+
+  --with-PortAudio        Enable functionality that relies on the PortAudio
                           library [default=check]
 
   --with-libGL-pkgconf    Enable the libGL library package via pkg-config and
@@ -8241,6 +8254,118 @@ fi
 
 
 
+# Check whether --with-PortAudio-pkgconf was given.
+if test "${with_PortAudio_pkgconf+set}" = set; then :
+  withval=$with_PortAudio_pkgconf; case $with_PortAudio_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_PortAudio=no
+                                          trace 4 --with-PortAudio-pkgconf disabling PortAudio
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test Xportaudio-2.0 != X; then :
+  with_PortAudio_pkgconf=portaudio-2.0
+                                                 use_PortAudio=yes
+                                                 trace 4 --with-PortAudio-pkgconf set to default [$with_PortAudio_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure PortAudio via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_PortAudio=yes
+                                          trace 4 --with-PortAudio-pkgconf set to [$with_PortAudio_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test Xportaudio-2.0 != X; then :
+  with_PortAudio_pkgconf=portaudio-2.0
+                              trace 4 No --with-PortAudio-pkgconf specified using default [$with_PortAudio_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-PortAudio was given.
+if test "${with_PortAudio+set}" = set; then :
+  withval=$with_PortAudio; case $with_PortAudio in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-PortAudio disabling PortAudio libraries
+                                       if test X$use_PortAudio = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to disable PortAudio by --with-PortAudio but --with-PortAudio-pkgconf has specifically enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_PortAudio=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-PortAudio enabling PortAudio libraries
+                                       if test X$use_PortAudio = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to enable PortAudio by --with-PortAudio but --with-PortAudio-pkgconf has specifically disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_PortAudio=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-PortAudio checking for PortAudio libraries
+                                       if test X$use_PortAudio = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-PortAudio asking to check for the libs but --with-PortAudio-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-PortAudio asking to check for the libs but --with-PortAudio-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_PortAudio = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-PortAudio asking to check for the libs but --with-PortAudio-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-PortAudio asking to check for the libs but --with-PortAudio-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_PortAudio=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-PortAudio set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-PortAudio set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-PortAudio specified
+
+fi
+
+          KnownLibs=$KnownLibs" "PortAudio
+          with_PortAudio_virtual="no"
+          if ( test X$use_PortAudio = X )
+          then
+             use_PortAudio=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "PortAudio
+          fi
+
+
+
+
+PortAudio_RavlLib=libRavlPortAudio
+
+
 # Check whether --with-libGL-pkgconf was given.
 if test "${with_libGL_pkgconf+set}" = set; then :
   withval=$with_libGL_pkgconf; case $with_libGL_pkgconf in
@@ -14607,12 +14732,12 @@ fi
 
 if test "X$GnuPlot" != X; then :
    RESOURCES+="GnuPlot "
-        GnuPlot_SUPPORT=libRavlPlot
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find a working copy of GNU Plot, some graph plotting functionality of Ravl requires this utility at run-time." >&5
+$as_echo "$as_me: WARNING: Cannot find a working copy of GNU Plot, some graph plotting functionality of Ravl requires this utility at run-time." >&2;}
 
 fi
 
-
-echo GnuPlot_SUPPORT=@GnuPlot_SUPPORT@ >> ./ExtPkgSupp.$$
 TRACE_INDENT="     "
 trace 3 RESOURCES now set to "[$RESOURCES]"
 
@@ -15104,9 +15229,6 @@ echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo \# List of external programs available to Ravl >> ./Config.Project.in
 echo >> ./Config.Project.in
-# Definition of GnuPlot
-echo "GnuPlot=@GnuPlot@" >> ./Config.Project.in
-echo >> ./Config.Project.in
 # Definition of Perl
 echo "PERL=@PERL@" >> ./Config.Project.in
 echo >> ./Config.Project.in
@@ -15278,6 +15400,7 @@ RavlDataServer=libRavlDataServer
 RavlDevAudio=libRavlDevAudio
 RavlDPDisplay=libRavlDPDisplay
 RavlExtImgIO=libRavlExtImgIO
+RavlFace_LIBS="libMarkupTool libRavlFace"
 RavlGUI=libRavlGUI
 RavlImageProc=libRavlImageProc
 RavlLogic_LIBS="libRavlLogicAgent libRavlLogicNLP libRavlLogic"
@@ -15317,6 +15440,8 @@ echo RavlDevAudio=@RavlDevAudio@ >> ./ExtPkgSupp.$$
 echo RavlDPDisplay=@RavlDPDisplay@ >> ./ExtPkgSupp.$$
 
 echo RavlExtImgIO=@RavlExtImgIO@ >> ./ExtPkgSupp.$$
+
+echo RavlFace_LIBS=@RavlFace_LIBS@ >> ./ExtPkgSupp.$$
 
 echo RavlGUI=@RavlGUI@ >> ./ExtPkgSupp.$$
 
@@ -15415,10 +15540,13 @@ fi
 
 if ( test X$use_RLog != 'Xpresent' )
 then
-   # Lack of RLog blocks XMPP functionality (which blocks iksemel support)
+   # Lack of RLog blocks libRavlFace and libMarkupTool; PortAudio_SUPPORT;
+   # and blocks XMPP functionality (which in turn blocks iksemel support)
+   RavlFace_LIBS=""
+   PortAudio_SUPPORT=""
    RavlXMPP=""
    iksemel_SUPPORT=""
-   trace 3 Lack of RLog blocking XMPP and iksemel
+   trace 3 Lack of RLog blocking RavlFace PortAudio, XMPP and iksemel
 fi
 
 # Process platform specific dependencies that are not directly driven by a
@@ -15690,7 +15818,7 @@ $SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraph_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlPatternRec libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) \$\(GnuPlot_SUPPORT\) \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
+echo SINGLE_RECIPE=\$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraph_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 

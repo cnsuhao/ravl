@@ -9,7 +9,7 @@
 
 PACKAGE=Ravl
 
-NESTED=fann.r DataSet.r Distance.r Cluster.r Optimise.r Modeling.r Classify.r \
+NESTED=fann.r DataSet.r Optimise.r Distance.r Cluster.r Modeling.r Classify.r \
  FeatureSelection.r Performance.r IO.r HiddenMarkovModels.r KalmanFilter.r Arff.r SVM.r
 
 

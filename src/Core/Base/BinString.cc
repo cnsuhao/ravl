@@ -23,7 +23,7 @@ namespace RavlN {
   BinOStreamC &operator << (BinOStreamC &out,const StringC &str) {
 #if RAVL_CHECK
     if(!out.Stream()) {
-      cerr << "BinOStreamC &operator<<(BinOStreamC &,StringC &), ERROR: Bad output stream. ";
+      std::cerr << "BinOStreamC &operator<<(BinOStreamC &,StringC &), ERROR: Bad output stream. ";
       return out;
     }
 #endif
@@ -37,7 +37,7 @@ namespace RavlN {
   BinOStreamC &operator << (BinOStreamC &out,const SubStringC &str) {
 #if RAVL_CHECK
     if(!out.Stream()) {
-      cerr << "BinOStreamC &operator<<(BinOStreamC &,SubStringC &), ERROR: Bad output stream. \n";
+      std::cerr << "BinOStreamC &operator<<(BinOStreamC &,SubStringC &), ERROR: Bad output stream. \n";
       return out;
     }
 #endif
@@ -51,7 +51,7 @@ namespace RavlN {
   BinIStreamC &operator >> (BinIStreamC &in,StringC &str) {
 #if RAVL_CHECK
     if(!in.Stream()) {
-      cerr << "BinIStreamC &operator>>(BinIStreamC &,StringC &), ERROR: Bad input stream. \n";
+      std::cerr << "BinIStreamC &operator>>(BinIStreamC &,StringC &), ERROR: Bad input stream. \n";
       return in;
     }
 #endif

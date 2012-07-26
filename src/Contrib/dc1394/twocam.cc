@@ -32,7 +32,7 @@ int main(int nargs,char **argv) {
   StringC cameraName("@IIDC:#");
   for (UIntT i(0); i<=1; ++i) {
     if(!OpenISequence(cameras[i],cameraName+i)) {
-      cerr << "Failed to setup camera " << i << ". \n";
+      std::cerr << "Failed to setup camera " << i << ". \n";
       return 1;
     }
     StringC outname;
@@ -41,7 +41,7 @@ int main(int nargs,char **argv) {
     if (out == "@X") outname = StringC("@X:") + outname;
     else outname = outname + "%4d.pgm";
     if(!OpenOSequence(imgOut[i],outname)) {
-      cerr << "Failed to open output " << outname << ". \n";
+      std::cerr << "Failed to open output " << outname << ". \n";
       return 0;
     }
   }

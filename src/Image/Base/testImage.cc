@@ -52,55 +52,55 @@ template class ImageC<int>; // Make sure all functions are compiled.
 
 int main()
 {
-  cerr << "Testing basic image ops. \n";
+  std::cerr << "Testing basic image ops. \n";
   int lineno;
 #if 1
   if((lineno = TestBasic()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestIO()) != 0) {
-    cerr << "Image io test failed : " << lineno << "\n";
+    std::cerr << "Image io test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestColorCnv()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestInterlace()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestFont()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestDraw()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestBilinear()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestRotate()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
 #endif
   if((lineno = TestRGB2YUV()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
      return 1;
   }
   if((lineno = TestRound()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
     return 1;
   }
   if((lineno = TestYCbCrBT601()) != 0) {
-    cerr << "Image test failed : " << lineno << "\n";
+    std::cerr << "Image test failed : " << lineno << "\n";
     return 1;    
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
@@ -109,18 +109,18 @@ int main()
 
 int TestBasic()
 {
-  cerr << "Starting basic tests... \n";
+  std::cerr << "Starting basic tests... \n";
   // Create test image.
   
   ImageRectangleC rect(5,10,6,9);
-  cerr << "Size1:" << rect.Range1().Size() << " Size2:" << rect.Range2().Size() << "\n";
+  std::cerr << "Size1:" << rect.Range1().Size() << " Size2:" << rect.Range2().Size() << "\n";
   ImageC<int> testImg(rect);
   
   int i = 0;
   
   Array2dIterC<int> it(testImg);
   if(it.Index() != rect.Origin()) {
-    cerr << "Origin check failed. \n";
+    std::cerr << "Origin check failed. \n";
     return __LINE__;
   }
   
@@ -128,12 +128,12 @@ int TestBasic()
     it.Data() = i++;
 
   if(rect.Area() != (UIntT) i) {
-    cerr << "Iterator check failed. Area mis-match. Count:" << i << " should be " << rect.Area() <<  "\n";
+    std::cerr << "Iterator check failed. Area mis-match. Count:" << i << " should be " << rect.Area() <<  "\n";
     return __LINE__;
   }
   if(testImg[10][9] != (i-1)) {
-    cerr<< "Inital spot value check failed. " << testImg[10][9]  << " Expected:" << (i-1)<< "\n";
-    cerr << testImg;
+    std::cerr<< "Inital spot value check failed. " << testImg[10][9]  << " Expected:" << (i-1)<< "\n";
+    std::cerr << testImg;
     return __LINE__;
   }
   // Make copy...
@@ -141,44 +141,44 @@ int TestBasic()
   ImageC<int> testInImg = testImg.Copy();
 
   if(testInImg[10][9] != (i-1)) {
-    cerr<< "Spot value check 2 failed. " << testInImg[10][9]  << " Expected:" << (i-1)<< "\n";
-    cerr << testInImg;
+    std::cerr<< "Spot value check 2 failed. " << testInImg[10][9]  << " Expected:" << (i-1)<< "\n";
+    std::cerr << testInImg;
     return __LINE__;
   }
   if(testImg[10][9] != (i-1)) {
-    cerr<< "Spot value check 3 failed. " << testImg[10][9]  << " Expected:" << (i-1)<< "\n";
-    cerr << testImg;
+    std::cerr<< "Spot value check 3 failed. " << testImg[10][9]  << " Expected:" << (i-1)<< "\n";
+    std::cerr << testImg;
     return __LINE__;
   }
-  cerr <<"Copy " << testInImg<<"\n";
+  std::cerr <<"Copy " << testInImg<<"\n";
   // check image.
   
   if(testInImg[6][7] != testImg[6][7]) {
-    cerr<< "Spot value check failed. \n";
+    std::cerr<< "Spot value check failed. \n";
     return __LINE__;
   }
 
   if(testInImg[5][6] != 0 || testImg[5][6] != 0) {
-    cerr<< "Spot value check failed. \n";
+    std::cerr<< "Spot value check failed. \n";
     return __LINE__;
   }
   
   if(testInImg.Rectangle() != testImg.Rectangle()) {
-    cerr<< "Rectangle size mismatch. \n";
+    std::cerr<< "Rectangle size mismatch. \n";
     return __LINE__;
   }
   
   for(Array2dIter2C<int,int> it2(testInImg,testImg);it2;it2++) {
     if(it2.Data1() != it2.Data2()) {
-      cerr<< "Image contents mismatch at " <<it2.Index() << ":" << it2.Data1() << " " << it2.Data2() << "\n";
+      std::cerr<< "Image contents mismatch at " <<it2.Index() << ":" << it2.Data1() << " " << it2.Data2() << "\n";
       return __LINE__;
     }
   }
   
   testImg[10][9] = 0;
   if(testInImg[10][9] != (i-1)) {
-    cerr<< "Spot value check 4 failed. " << testInImg[10][9]  << " Expected:" << (i-1)<< "\n";
-    cerr << testImg;
+    std::cerr<< "Spot value check 4 failed. " << testInImg[10][9]  << " Expected:" << (i-1)<< "\n";
+    std::cerr << testImg;
     return __LINE__;
   }
 
@@ -190,10 +190,10 @@ int TestBasic()
 
 int TestIO()
 {
-  cerr << "Starting IO test... \n";
+  std::cerr << "Starting IO test... \n";
   FilenameC testFn("/tmp/testImage.zyx");
   testFn = testFn.MkTemp();
-  cerr << "Using file '" << testFn << "'\n";
+  std::cerr << "Using file '" << testFn << "'\n";
   // Create test image.
   
   ImageRectangleC rect(5,10,4,11);
@@ -202,7 +202,7 @@ int TestIO()
   int i = 0;
   Array2dIterC<int> it(testImg);
   if(it.Index() != rect.Origin()) {
-    cerr << "Origin check failed. \n";
+    std::cerr << "Origin check failed. \n";
     return __LINE__;
   }
   
@@ -210,7 +210,7 @@ int TestIO()
     it.Data() = i++;
   
   if(testImg.Rectangle().Area() != ((UIntT) i)) {
-    cerr << "Area test failed! \n";
+    std::cerr << "Area test failed! \n";
     return __LINE__;
   }
   
@@ -219,7 +219,7 @@ int TestIO()
     OStreamC out(testFn);
     out << testImg;
     if(!out) {
-      cerr << "Image write failed! \n";
+      std::cerr << "Image write failed! \n";
       return __LINE__;
     }
   }
@@ -230,20 +230,20 @@ int TestIO()
   {
     IStreamC in(testFn); 
     if(!in) {
-      cerr << "Image read failed! \n";
+      std::cerr << "Image read failed! \n";
       return __LINE__;
     }
     in >> testInImg;
   }
   
   if(testInImg.Rectangle() != testImg.Rectangle()) {
-    cerr<< "Rectangle size mismatch. \n";
+    std::cerr<< "Rectangle size mismatch. \n";
     return __LINE__;
   }
   
   for(Array2dIter2C<int,int> it2(testInImg,testImg);it2.IsElm();it2.Next()) {
     if(it2.Data1() != it2.Data2()) {
-      cerr<< "Image contents mismatch at " <<it2.Index() << ":" << it2.Data1() << " " << it2.Data2() << "\n";
+      std::cerr<< "Image contents mismatch at " <<it2.Index() << ":" << it2.Data1() << " " << it2.Data2() << "\n";
       return __LINE__;
     }
   }
@@ -256,18 +256,18 @@ int TestIO()
 
 int TestColorCnv() {
   RealYUVValueC yuv(20,30,40);
-  cerr << "yuv=" << yuv << "\n";
+  std::cerr << "yuv=" << yuv << "\n";
   RealRGBValueC rgb(yuv);
-  cerr << "rgb=" << rgb << "\n";
+  std::cerr << "rgb=" << rgb << "\n";
   RealYUVValueC yuv2(rgb);
-  cerr << "yuv2=" << yuv2 << "\n";
+  std::cerr << "yuv2=" << yuv2 << "\n";
   RealT diff = (yuv - yuv2).SumOfSqr();
   if(diff > 0.002) return __LINE__;
   return 0;
 }
 
 int TestInterlace() {
-  cerr << "TestInterlace(), Called \n";
+  std::cerr << "TestInterlace(), Called \n";
   ImageC<IntT> img(10,10);
   img.Fill(0); 
   img[0][3] = 0; img[1][3] = 1; img[2][3] = 2; img[3][3] = 3; img[4][3] = 4;
@@ -293,7 +293,7 @@ int TestInterlace() {
 }
 
 int TestFont() {
-  cerr << "TestFont(), Called. \n";
+  std::cerr << "TestFont(), Called. \n";
   //FontC fnt = LoadPSF1("default8x16.psf");
   FontC fnt(true);
   if(!fnt.IsValid()) return __LINE__;
@@ -458,20 +458,20 @@ int TestRound() {
   ImageC<ByteT> b1 = DoubleImageCT2ByteImageCT(r);
   for (Array2dIter2C<ByteT,ByteT> i(b,b1); i; ++i)
     if (i.Data1() != i.Data2()) {
-      cerr << "pixel pos: " << i.Index()
+      std::cerr << "pixel pos: " << i.Index()
            << "; in: "  << (int)i.Data1() 
            << ", real: "<< r[i.Index()]
-           << ", out: " << (int)i.Data2() << endl;
+           << ", out: " << (int)i.Data2() << std::endl;
       return __LINE__;
     }
   r = ImageC<RealT>(r, r.Frame().Shrink(1));
   b1 = DoubleImageCT2ByteImageCT(r);
   for (Array2dIter2C<ByteT,ByteT> i(b,b1,b1.Frame()); i; ++i)
     if (i.Data1() != i.Data2()) { 
-      cerr << "pixel pos: " << i.Index() 
+      std::cerr << "pixel pos: " << i.Index() 
            << "; in: "  << (int)i.Data1()
            << ", real: "<< r[i.Index()]
-           << ", out: " << (int)i.Data2() << endl;
+           << ", out: " << (int)i.Data2() << std::endl;
       return __LINE__;
     } 
   return 0;
@@ -506,13 +506,13 @@ int TestYCbCrBT601() {
     RGBValueC<float> rgbValueFromI16 = yCbCrI16.FloatRGB();
     float diffA = (rgbValueFromI16 - rgbValue1).SumOfAbs();
     if(diffA > 0.0001) {
-      cerr << "Failed to reconstruct from 16 bit value. " << rgbValue1 << " -> " << rgbValueFromI16 << " Diff=" << diffA << "\n";
+      std::cerr << "Failed to reconstruct from 16 bit value. " << rgbValue1 << " -> " << rgbValueFromI16 << " Diff=" << diffA << "\n";
       return __LINE__;
     }
     
     // Convert Floating yCbCr -> RGB
     YCbCrBT601Float2RGBFloat(yCbCr,rgbValue2);
-    cerr << "FF RGB=" << rgbValue1 << " yCbCr=" << yCbCr << "\n";
+    std::cerr << "FF RGB=" << rgbValue1 << " yCbCr=" << yCbCr << "\n";
     if((rgbValue1-rgbValue2).SumOfAbs() > 0.000001) return __LINE__;
     
     // Convert yCbCr float to byte.
@@ -522,7 +522,7 @@ int TestYCbCrBT601() {
     YCbCrBT601ValueC<float> yCbCr2 = ycbcr8.FloatYCbCr();
     
     // Check we can go between 8 bit and float ok ?
-    cerr << "BF yCbCr8=" << ycbcr8 << " yCbCr2=" << yCbCr2 << " Diff=" <<(yCbCr2 - yCbCr).SumOfAbs() << "\n";
+    std::cerr << "BF yCbCr8=" << ycbcr8 << " yCbCr2=" << yCbCr2 << " Diff=" <<(yCbCr2 - yCbCr).SumOfAbs() << "\n";
     if((yCbCr2 - yCbCr).SumOfAbs() > 0.01) return __LINE__;
     
     //UInt16YCbCrBT601ValueC ycbcr16(ycbcr8);
@@ -530,7 +530,7 @@ int TestYCbCrBT601() {
     
     // Check we can convert to float rgb from byte YCbCr
     RGBValueC<float> rgbValue3(ycbcr8.FloatRGB());
-    cerr << "FB RGB1=" << rgbValue1 << " ycbcr8=" << ycbcr8 << " RGB=" << rgbValue3<< " Diff=" << (rgbValue1-rgbValue3).SumOfAbs() << "\n";
+    std::cerr << "FB RGB1=" << rgbValue1 << " ycbcr8=" << ycbcr8 << " RGB=" << rgbValue3<< " Diff=" << (rgbValue1-rgbValue3).SumOfAbs() << "\n";
     //" ycbcr16=" << ycbcr16 << 
     if((rgbValue1-rgbValue3).SumOfAbs() > 0.016) return __LINE__;
     
@@ -549,7 +549,7 @@ int TestYCbCrBT601() {
       Abs((int) byteRGB[0] - (int) rgb8fromYCbCr8[0]) +
       Abs((int) byteRGB[1] - (int) rgb8fromYCbCr8[1]) +
       Abs((int) byteRGB[2] - (int) rgb8fromYCbCr8[2]);
-    cerr << "BB byteRGB=" << byteRGB << " YCbCrI8=" << byteYCbCr << " rgb8fromYCbCr8=" << rgb8fromYCbCr8 << " diff=" << diff <<"\n";
+    std::cerr << "BB byteRGB=" << byteRGB << " YCbCrI8=" << byteYCbCr << " rgb8fromYCbCr8=" << rgb8fromYCbCr8 << " diff=" << diff <<"\n";
     if(diff > 8) return __LINE__;
 
     ByteRGBValueC rgb8fromYCbCrI16 = yCbCrI16.ByteRGB();
@@ -557,7 +557,7 @@ int TestYCbCrBT601() {
       Abs((int) byteRGB[0] - (int) rgb8fromYCbCrI16[0]) +
       Abs((int) byteRGB[1] - (int) rgb8fromYCbCrI16[1]) +
       Abs((int) byteRGB[2] - (int) rgb8fromYCbCrI16[2]);
-    cerr << "BB byteRGB=" << byteRGB << " YCbCrI16=" << yCbCrI16 << "(" << (yCbCrI16/256)<< ") rgb8fromYCbCrI16=" << rgb8fromYCbCrI16 << " diff=" << diff2 <<"\n";
+    std::cerr << "BB byteRGB=" << byteRGB << " YCbCrI16=" << yCbCrI16 << "(" << (yCbCrI16/256)<< ") rgb8fromYCbCrI16=" << rgb8fromYCbCrI16 << " diff=" << diff2 <<"\n";
     if(diff2 > 8) return __LINE__;
 
     

@@ -10,7 +10,6 @@
 //! author="Charles Galambos"
 //! userlevel=Normal
 //! docentry="Ravl.API.Math.Signals.1D"
-//! rcsid="$Id$"
 //! lib=RavlMath
 //! file="Ravl/Math/Signals/1D/Convolution1d.hh"
 
@@ -33,7 +32,7 @@ namespace RavlN {
       const DataT *at2 = &(arr2[arr2.IMax()]);
       const DataT *end2 = at2 - arr2.Size();
       for(;at2 != end2;at++,at2--)
-	sum += *at2 * *at;
+        sum += *at2 * *at;
       *itr = sum;
     }
     return ret;

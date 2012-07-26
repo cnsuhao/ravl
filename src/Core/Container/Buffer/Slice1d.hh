@@ -247,11 +247,11 @@ namespace RavlN {
   };
 
   template<class DataT>
-  ostream &operator<<(ostream &out,const Slice1dC<DataT> &dat);
+  std::ostream &operator<<(std::ostream &out,const Slice1dC<DataT> &dat);
   //: Write to stream.
   
   template<class DataT>
-  istream &operator>>(istream &out,Slice1dC<DataT> &dat);
+  std::istream &operator>>(std::istream &out,Slice1dC<DataT> &dat);
   //: Read from stream.
 
 }
@@ -535,7 +535,7 @@ namespace RavlN {
   }
   
   template<class DataT>
-  ostream &operator<<(ostream &strm,const Slice1dC<DataT> &dat) {
+  std::ostream &operator<<(std::ostream &strm,const Slice1dC<DataT> &dat) {
     strm << dat.Range() << "\n";
     for(Slice1dIterC<DataT> it(dat);it;it++)
       strm << *it << " ";
@@ -543,7 +543,7 @@ namespace RavlN {
   }
   
   template<class DataT>
-  istream &operator>>(istream &strm,Slice1dC<DataT> &dat) {
+  std::istream &operator>>(std::istream &strm,Slice1dC<DataT> &dat) {
     IndexRangeC s;
     strm >> s;
     Slice1dC<DataT> tmp(s);

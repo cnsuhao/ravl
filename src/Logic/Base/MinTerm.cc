@@ -35,7 +35,7 @@ namespace RavlLogicN {
   {
     args[1] = t;
     args[2] = !n;
-    ONDEBUG(cerr << "MinTermBodyC::MinTermBodyC() = " << Name() << "\n");
+    ONDEBUG(std::cerr << "MinTermBodyC::MinTermBodyC() = " << Name() << "\n");
     RavlAssert(t.IsValid());
     RavlAssert(n.IsValid());
   }
@@ -53,7 +53,7 @@ namespace RavlLogicN {
       t = AndC(true);
     args[1] = t;
     args[2] = !n;
-    ONDEBUG(cerr << "MinTermBodyC::MinTermBodyC(const AndC &,const OrC &) = " << Name() << "\n");
+    ONDEBUG(std::cerr << "MinTermBodyC::MinTermBodyC(const AndC &,const OrC &) = " << Name() << "\n");
     RavlAssert(t.IsValid());
     RavlAssert(n.IsValid());
   }
@@ -73,7 +73,7 @@ namespace RavlLogicN {
       AndNotAdd(lit);
     else
       AndAdd(lit);
-    ONDEBUG(cerr << "MinTermBodyC::MinTermBodyC(const LiteralC &,bool) Lit=" << lit << " this=" << Name() << "\n");  
+    ONDEBUG(std::cerr << "MinTermBodyC::MinTermBodyC(const LiteralC &,bool) Lit=" << lit << " this=" << Name() << "\n");  
     RavlAssert(t.IsValid());
     RavlAssert(n.IsValid());
   }
@@ -84,7 +84,7 @@ namespace RavlLogicN {
     : AndBodyC(3)
   {
     SetTerms(ts,ns,useArrayDirectly); 
-    ONDEBUG(cerr << "MinTermBodyC::MinTermBodyC(const SArray1dC<LiteralC> &,const SArray1dC<LiteralC> &,bool) = " << Name() << "\n");  
+    ONDEBUG(std::cerr << "MinTermBodyC::MinTermBodyC(const SArray1dC<LiteralC> &,const SArray1dC<LiteralC> &,bool) = " << Name() << "\n");  
     RavlAssert(t.IsValid());
     RavlAssert(n.IsValid());
   }
@@ -98,12 +98,12 @@ namespace RavlLogicN {
     n = orv;
     args[1] = t;
     args[2] = !n;
-    ONDEBUG(cerr << "MinTermBodyC::SetTerms(), " << Name() << "\n");
+    ONDEBUG(std::cerr << "MinTermBodyC::SetTerms(), " << Name() << "\n");
   }
   
   //: Construct from a binary stream.
   
-  MinTermBodyC::MinTermBodyC(istream &strm)
+  MinTermBodyC::MinTermBodyC(std::istream &strm)
     : AndBodyC(strm)
   {}
   
@@ -115,7 +115,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool MinTermBodyC::Save(ostream &out) const
+  bool MinTermBodyC::Save(std::ostream &out) const
   { return AndBodyC::Save(out); }
   
   //: Save to binary stream 'out'.
@@ -139,7 +139,7 @@ namespace RavlLogicN {
   bool MinTermBodyC::AndAdd(const LiteralC &lit) {
     if(!lit.IsValid())
       return true;
-    ONDEBUG(cerr << "MinTermBodyC::AndAdd(),'" << Name() << "' * '" << lit.Name() << "'\n");
+    ONDEBUG(std::cerr << "MinTermBodyC::AndAdd(),'" << Name() << "' * '" << lit.Name() << "'\n");
     MinTermC mt(lit);
     if(mt.IsValid()) {
       PosTerm().AndAdd(mt.PosTerm());
@@ -161,7 +161,7 @@ namespace RavlLogicN {
       AndNotAdd(nt.Term());
     } else
       t.AndAdd(lit);
-    ONDEBUG(cerr << "MinTermBodyC::AndAdd(), Add '" << lit.Name() << "' = '" << Name() << "'\n");
+    ONDEBUG(std::cerr << "MinTermBodyC::AndAdd(), Add '" << lit.Name() << "' = '" << Name() << "'\n");
     return true;
   }
   

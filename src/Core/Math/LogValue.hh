@@ -101,8 +101,8 @@ namespace RavlN{
     RealT v; // Log of value.
   };
 
-  ostream &operator<<(ostream &out,const LogValueC &x);  
-  istream &operator>>(istream &in,LogValueC &x);
+  std::ostream &operator<<(std::ostream &out,const LogValueC &x);  
+  std::istream &operator>>(std::istream &in,LogValueC &x);
   
   BinOStreamC &operator<<(BinOStreamC &out,const LogValueC &x);
   BinIStreamC &operator>>(BinIStreamC &in,LogValueC &x);

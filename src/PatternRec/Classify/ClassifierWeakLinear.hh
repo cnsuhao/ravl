@@ -37,13 +37,13 @@ namespace RavlN {
     // Classification is label 1 if parity1*feature1 < parity1*threshold1 && 
     // parity2*feature1 < parity2*threshold2
     
-    ClassifierWeakLinearBodyC(istream &strm);
+    ClassifierWeakLinearBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierWeakLinearBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -110,7 +110,7 @@ namespace RavlN {
     // Classification is label 1 if parity1*feature1 < parity1*threshold1 && 
     // parity2*feature1 < parity2*threshold2
    
-    ClassifierWeakLinearC(istream &strm);
+    ClassifierWeakLinearC(std::istream &strm);
     //: Load from stream.
     
     ClassifierWeakLinearC(BinIStreamC &strm);

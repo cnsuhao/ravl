@@ -15,7 +15,7 @@ HEADERS=FuncLinearCoeff.hh FuncLinear.hh FuncQuadratic.hh FuncOrthPolynomial.hh 
 
 SOURCES=FuncLinearCoeff.cc FuncLinear.cc FuncQuadratic.cc FuncOrthPolynomial.cc \
  DesignFuncLSQ.cc FuncPDF.cc FuncPDFNormal.cc FuncMeanProjection.cc FuncInterpolate.cc \
- FuncInterpolateGrid.cc 
+ FuncInterpolateGrid.cc SampleVectorFunc.cc
  
 PLIB=RavlPatternRec
 

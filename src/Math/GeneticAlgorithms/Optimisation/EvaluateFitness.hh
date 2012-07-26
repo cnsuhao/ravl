@@ -40,16 +40,16 @@ namespace RavlN {  namespace GeneticN {
     EvaluateFitnessC(const XMLFactoryContextC &factory);
 
     //! Copy me.
-    virtual RCBodyVC &Copy() const;
+    virtual RCBodyVC &Copy() const = 0;
 
     //! Access type of object evaluated for fitness.
-    virtual const type_info &ObjectType() const;
+    virtual const std::type_info &ObjectType() const = 0;
 
     //! Generate a new problem in the domain.
     virtual bool GenerateNewProblem();
 
     //! Evaluate the fit
-    virtual bool Evaluate(RCWrapAbstractC &obj,float &score);
+    virtual bool Evaluate(RCWrapAbstractC &obj,float &score) = 0;
 
     //! Handle to this class.
     typedef RavlN::SmartOwnerPtrC<EvaluateFitnessC> RefT;

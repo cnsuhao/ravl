@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/Modeling/Basic/FuncQuadratic.cc"
 
@@ -14,9 +13,18 @@
 
 namespace RavlN {
 
+  //: Constructor.
+  FuncQuadraticBodyC::FuncQuadraticBodyC(int inSize,int outSize)
+    : FuncLinearCoeffBodyC(inSize,outSize)
+  {
+    noCoeffs = NumberCoeffs(inSize);
+    if(outSize < 0)
+      OutputSize(noCoeffs);
+  }
+
   //: Load from stream.
   
-  FuncQuadraticBodyC::FuncQuadraticBodyC(istream &strm)
+  FuncQuadraticBodyC::FuncQuadraticBodyC(std::istream &strm)
     : FuncLinearCoeffBodyC(strm)
   { noCoeffs = NumberCoeffs(inputSize); }
   
@@ -28,7 +36,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FuncQuadraticBodyC::Save (ostream &out) const {
+  bool FuncQuadraticBodyC::Save (std::ostream &out) const {
     return FuncLinearCoeffBodyC::Save(out);
   }
   
@@ -57,7 +65,7 @@ namespace RavlN {
       *it = *it2;
     for(it2.First();it2;it2++) {
       for(SArray1dIterC<RealT> it3(it2);it3;it3++,it++)
-	*it = (*it2) * (*it3);
+        *it = (*it2) * (*it3);
     }
     RavlAssert(!it.IsElm());
     return ret;
@@ -72,18 +80,18 @@ namespace RavlN {
     UIntT counter = X.Size() + 1;
     for(int j = 0;j < (int) X.Size();j++) {
       for(int k = j;k < (int) X.Size();k++) {
-	if (j == i) {
-	  if(k == i) 
-	    ret[counter] = 2.0*X[j];
-	  else
-	    ret[counter] = X[k];
-	} else {
-	  if(k == i)
-	    ret[counter] = X[j];
-	  //	  else
-	  //  ret[counter] = 0.0;
-	}
-	counter++;
+        if (j == i) {
+          if(k == i)
+            ret[counter] = 2.0*X[j];
+          else
+            ret[counter] = X[k];
+        } else {
+          if(k == i)
+            ret[counter] = X[j];
+          //	  else
+          //  ret[counter] = 0.0;
+        }
+        counter++;
       }
     }
     return ret;
@@ -91,7 +99,7 @@ namespace RavlN {
 
   //: Write a human readable text description of the function.
   
-  void FuncQuadraticBodyC::Describe(ostream &out) {
+  void FuncQuadraticBodyC::Describe(std::ostream &out) {
     out << "Inputs:" << InputSize() << " Outputs:" << OutputSize() << "\n";
     out << "Quadratic model: " << a << "\n";
   }

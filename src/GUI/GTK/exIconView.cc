@@ -33,7 +33,7 @@ using namespace RavlGUIN;
 ListStoreC listStore;
 
 bool SelectCallback() {
-  cerr << "Selection changed. \n";
+  std::cerr << "Selection changed. \n";
   return true;
 }
 

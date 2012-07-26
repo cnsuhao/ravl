@@ -38,13 +38,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierAverageNearestNeighbourBodyC::ClassifierAverageNearestNeighbourBodyC(istream &strm) 
+  ClassifierAverageNearestNeighbourBodyC::ClassifierAverageNearestNeighbourBodyC(std::istream &strm) 
     : ClassifierKNearestNeighbourBodyC(strm)
   {
     IntT version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("ClassifierAverageNearestNeighbourBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierAverageNearestNeighbourBodyC(std::istream &), Unrecognised version number in stream. ");
   }
   
   //: Load from binary stream.
@@ -60,7 +60,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierAverageNearestNeighbourBodyC::Save (ostream &out) const {
+  bool ClassifierAverageNearestNeighbourBodyC::Save (std::ostream &out) const {
     if(!ClassifierKNearestNeighbourBodyC::Save(out))
       return false;
     IntT version = 0;

@@ -82,7 +82,7 @@ namespace RavlImageN {
       const Point2dC& loc1=it->A();
       const Point2dC& loc2=it->B();
 #if 0
-      cout << "A=" << loc1 << " B=" << loc2 << endl;
+      std::cout << "A=" << loc1 << " B=" << loc2 << std::endl;
 #endif
       obsList.InsLast(ObservationHomog2dPointC(Vector2dC(loc1[0],loc1[1]),epos,
                                                Vector2dC(loc2[0],loc2[1]),epos));
@@ -106,9 +106,9 @@ namespace RavlImageN {
     StateVectorHomog2dC sv = ransac.GetSolution();
     LevenbergMarquardtC lm = LevenbergMarquardtC(sv, compatibleObsList);
     if (verbose) {
-      cout << "2D homography fitting: Initial residual=" << lm.GetResidual()
+      std::cout << "2D homography fitting: Initial residual=" << lm.GetResidual()
 	   << "\nSelected " << compatibleObsList.Size()
-	   << " observations using RANSAC" << endl;
+	   << " observations using RANSAC" << std::endl;
     }
     VectorC x = lm.SolutionVector();
     x /= x[8];
@@ -124,13 +124,13 @@ namespace RavlImageN {
           // iteration failed to reduce the residual
           lambda *= 10.0;
 	if (verbose) {
-	  cout << " Accepted=" << accepted << " Residual=" << lm.GetResidual()
-	       << " DOF=" << 2*compatibleObsList.Size()-8 << endl;
+	  std::cout << " Accepted=" << accepted << " Residual=" << lm.GetResidual()
+	       << " DOF=" << 2*compatibleObsList.Size()-8 << std::endl;
 	}
       }
     } catch(...) {
       // Failed to find a solution.
-      cerr << "Caught exception from LevenbergMarquardtC. \n";
+      std::cerr << "Caught exception from LevenbergMarquardtC. \n";
       return false;
     }
 
@@ -138,7 +138,7 @@ namespace RavlImageN {
     sv = lm.GetSolution();
     Matrix3dC P = sv.GetHomog();
     P *= zhomogTemplate/(zhomogImage*P[2][2]);
-    if (verbose)  cout << "Solution: " << P << endl;
+    if (verbose)  std::cout << "Solution: " << P << std::endl;
 
     // update 2D projection from image onto template
     proj = Projection2dC(P.Inverse(),zhomogImage,zhomogTemplate);

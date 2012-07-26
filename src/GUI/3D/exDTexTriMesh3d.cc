@@ -44,7 +44,7 @@ int main(int nargs,char *args[])
   
   ImageC<ByteRGBValueC> img;
   if (!RavlN::Load(file,img,"",verbose)) {
-    cerr << "Could not load input file " << file << endl;
+    std::cerr << "Could not load input file " << file << std::endl;
     return 1;
   }
   
@@ -69,7 +69,7 @@ int main(int nargs,char *args[])
   win.Add(view);
   win.Show();  
   
-  cerr << "Starting gui. \n";
+  std::cerr << "Starting gui. \n";
   Manager.Execute();
   
   view.Add(object);

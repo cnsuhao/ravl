@@ -33,8 +33,8 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    virtual bool Save(ostream &out) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &out) const;
+    //: Save to std::ostream.
     
     virtual OutT Apply(const InT &di)
     { return p2.Apply(p1.Apply(di)); }
@@ -80,7 +80,7 @@ namespace RavlN {
   //////////////////////////////////////////
   
   template<class InT,class InterT,class OutT>
-  bool DPComposeProcessBodyC<InT,InterT,OutT>::Save(ostream &out) const {
+  bool DPComposeProcessBodyC<InT,InterT,OutT>::Save(std::ostream &out) const {
     DPProcessBodyC<InT,OutT>::Save(out);  
     if(!p1.Save(out))
       return false;

@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/Exception.cc"
 
@@ -61,7 +60,7 @@ namespace RavlN {
     }
 #endif
 
-    //cerr << "String: '" << ntext << "'\n";
+    //std::cerr << "String: '" << ntext << "'\n";
     if(!copy)      
       return;
     char *place = const_cast<char *>(ntext);
@@ -74,7 +73,7 @@ namespace RavlN {
     for(place = str;*ntext != 0;place++,ntext++) 
       *place = *ntext;
     *place = 0;
-    //  cerr << "Stored: '" << desc << "'\n";
+    //  std::cerr << "Stored: '" << desc << "'\n";
   }
   
   //: Virtualise destructor.
@@ -84,28 +83,30 @@ namespace RavlN {
       delete [] desc;
   }
   
-  //: Dump contents of exception to cerr;
+  //: Dump contents of exception to std::cerr;
   
-  void ExceptionC::Dump(ostream &out) {
-    out << "Ravl Exception:" << desc << endl;
+  void ExceptionC::Dump(std::ostream &out) {
+    out << "Ravl Exception:" << desc << std::endl;
 #if RAVL_HAVE_BACKTRACE
     DisplayStackTrace(out,m_stackTrace,m_stackTraceDepth);
 #endif
   }
 
 
-  //: Dump contents of exception to cerr;
+  //: Dump contents of exception to std::cerr;
   
   void ExceptionErrorCastC::Dump() {
-    cerr << "RAVL Exception: Illegal cast. \n";
-    cerr << " From:" << from.name() << endl;
-    cerr << "   To:" << to.name() << endl;
-    cerr << " Desc:" << desc << endl << endl;
+    std::cerr << "RAVL Exception: Illegal cast. \n";
+    std::cerr << " From:" << from.name() << std::endl;
+    std::cerr << "   To:" << to.name() << std::endl;
+    std::cerr << " Desc:" << desc << std::endl << std::endl;
   }
 
   // ---------------------------------------------------------
 
-  ExceptionErrorCastC::ExceptionErrorCastC(const char *ndesc,const type_info &nfrom,const type_info &nto)
+  ExceptionErrorCastC::ExceptionErrorCastC(const char *ndesc,
+      const std::type_info &nfrom,
+      const std::type_info &nto)
    : ExceptionC(ndesc),
      from(nfrom),
      to(nto)

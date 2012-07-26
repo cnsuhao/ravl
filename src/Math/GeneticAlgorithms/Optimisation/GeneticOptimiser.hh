@@ -14,6 +14,7 @@
 #include "Ravl/Genetic/Genome.hh"
 #include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Threads/Mutex.hh"
+#include "Ravl/SysLog.hh"
 #include <vector>
 #include <map>
 
@@ -58,6 +59,17 @@ namespace RavlN { namespace GeneticN {
     bool IsUsingRandomisedDomain() const
     { return m_randomiseDomain; }
 
+    //! Set gene palette to use
+    void SetGenePalette(const GenePaletteC &palette)
+    { m_genePalette = &palette; }
+
+    //! Access gene palette.
+    GenePaletteC &GenePalette()
+    { return *m_genePalette; }
+
+    //! Get the current best genome and its score.
+    bool GetBestGenome(GenomeC::RefT &genome,float &score);
+
     //! Handle to optimiser
     typedef SmartPtrC<GeneticOptimiserC> RefT;
 
@@ -92,6 +104,8 @@ namespace RavlN { namespace GeneticN {
     UIntT m_runningAverageLength;
 
     GenePaletteC::RefT m_genePalette;
+
+    SysLogPriorityT m_logLevel;
   };
 
 }}

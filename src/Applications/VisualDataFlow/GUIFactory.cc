@@ -48,7 +48,7 @@ namespace RavlDFN {
   //: Drag and drop data get.
   
   bool GUIFactoryBodyC::DNDFactoryDataGet(DNDDataInfoC &info,StringC &id) {
-    ONDEBUG(cerr << "GUIFactoryBodyC::DNDFactoryDataGet(), Called. ID=" << id << " \n");
+    ONDEBUG(std::cerr << "GUIFactoryBodyC::DNDFactoryDataGet(), Called. ID=" << id << " \n");
     info.PutString(2,id);
     return true;
   }
@@ -56,7 +56,7 @@ namespace RavlDFN {
   //: Add factory to display.
   
   bool GUIFactoryBodyC::AddFactory(const FactoryC &factory) {
-    //ONDEBUG(cerr << "GUIFactoryBodyC::AddFactory(), Adding '" << factory.Name() << "'\n");
+    //ONDEBUG(std::cerr << "GUIFactoryBodyC::AddFactory(), Adding '" << factory.Name() << "'\n");
     StringC entryname;
     StringC lastname;
     TreeC lastTree = tree;
@@ -66,7 +66,7 @@ namespace RavlDFN {
 	entryname += '.';
       }
       entryname += *it;
-      //ONDEBUG(cerr << "GUIFactoryBodyC::AddFactory(), Adding entry '" << entryname << "'\n");
+      //ONDEBUG(std::cerr << "GUIFactoryBodyC::AddFactory(), Adding entry '" << entryname << "'\n");
       if(it.IsLast()) {
 	TreeItemC treeItem(*it);
 	

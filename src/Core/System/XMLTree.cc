@@ -39,6 +39,9 @@ namespace RavlN {
 #endif
   }
 
+  XMLTreeLoadC::~XMLTreeLoadC()
+  {}
+
   //! Create a new node in the tree.
 
   bool XMLTreeLoadC::NewNode(const StringC &name,
@@ -247,7 +250,7 @@ namespace RavlN {
       XMLTagOpsT tt = in.ReadTag(name,attr);
       
       if(tt == XMLContent) {
-	ONDEBUG(cerr << "Found tag '" << name << "' XMLContent \n");
+	ONDEBUG(std::cerr << "Found tag '" << name << "' XMLContent \n");
 	continue;
       }
       if(tt == XMLEndTag ) {
@@ -256,13 +259,13 @@ namespace RavlN {
           throw RavlN::ExceptionBadConfigC("Mismatched tags in XML file. ");
           return false;
         }
-	ONDEBUG(cerr << "Found end tag '" << name << "' \n");
+	ONDEBUG(std::cerr << "Found end tag '" << name << "' \n");
 	break;
       }
       // Process includes using XInclude syntax.
       XMLTreeC subtree(name,attr,tt == XML_PI);
       if(tt == XMLBeginTag) {
-	ONDEBUG(cerr << "Found begin tag '" << name << "' \n");
+	ONDEBUG(std::cerr << "Found begin tag '" << name << "' \n");
 	if(!subtree.Read(in,includedFiles,loader)) {
           ONDEBUG(std::cerr << "Failed to read sub node. \n");
 	  return false;
@@ -531,7 +534,7 @@ namespace RavlN {
 
   //: Indents the XML listing
 
-  ostream &XMLTreeBodyC::Indent(ostream &out,int level) {
+  std::ostream &XMLTreeBodyC::Indent(std::ostream &out,int level) {
     for(int i = 0;i < level;i++)
       out << ' ';
     return out;
@@ -574,7 +577,7 @@ namespace RavlN {
 
   //: Dump tree in a human readable format.
   
-  ostream &XMLTreeBodyC::Dump(ostream &out,int level) const {
+  std::ostream &XMLTreeBodyC::Dump(std::ostream &out,int level) const {
     XMLTreeC me(const_cast<XMLTreeBodyC &>(*this));
     Indent(out,level) << '<';
     if (isPI) {
@@ -705,6 +708,9 @@ namespace RavlN {
   }
   //: Access attribute.
 
+  bool XMLTreeBodyC::HasAttribute(const StringC &name) const
+  { return Data().Lookup(name) != 0; }
+  //: Test if attribute is set.
   
   static TypeNameC type0(typeid(XMLTreeC),"RavlN::XMLTreeC");
   

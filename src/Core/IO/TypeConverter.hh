@@ -44,17 +44,17 @@ namespace RavlN {
     TypeConverterBodyC();
     //: Constructor.
     
-    DListC<DPConverterBaseC> FindConversion(const type_info &from,const type_info &to,RealT &finalCost);
+    DListC<DPConverterBaseC> FindConversion(const std::type_info &from,const std::type_info &to,RealT &finalCost);
     //: Find a conversion.
     // If found the cost of conversion is put into finalCost.
     
-    DListC<DPConverterBaseC> FindConversion(const type_info &from,const type_info &to);
+    DListC<DPConverterBaseC> FindConversion(const std::type_info &from,const std::type_info &to);
     //: Find a conversion.
     
-    bool CanConvert(const type_info &from,const type_info &to);
+    bool CanConvert(const std::type_info &from,const std::type_info &to);
     //: Test if conversion is possible.
     
-    RCAbstractC DoConversion(const RCAbstractC &dat,const type_info &from,const type_info &to);
+    RCAbstractC DoConversion(const RCAbstractC &dat,const std::type_info &from,const std::type_info &to);
     //: Do conversion through abstract handles.
     
     bool Insert(DPConverterBaseC &tc);
@@ -65,13 +65,13 @@ namespace RavlN {
     
     GraphC<StringC,DPConverterBaseC> &Graph()
     { return convGraph; }
-    //: Access converstion graph.
+    //: Access conversion graph.
     
   protected:
     static RealT EdgeEval(const DPConverterBaseC &edge);
     
-    bool FindConversion(const type_info &from,
-                        const type_info &to,
+    bool FindConversion(const std::type_info &from,
+                        const std::type_info &to,
                         RealT &cost,
                         DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > &conv) const;
     //: Find a conversion
@@ -92,14 +92,14 @@ namespace RavlN {
     { return nodeTab; }
     //: Type -> Node mapping.
 
-    GraphNodeHC<StringC,DPConverterBaseC> GetTypeNode(const type_info &inf) const;
-    //: Get the graph node associated with a type_info.
+    GraphNodeHC<StringC,DPConverterBaseC> GetTypeNode(const std::type_info &inf) const;
+    //: Get the graph node associated with a std::type_info.
 
     GraphNodeHC<StringC,DPConverterBaseC> GetTypeNode(const StringC &name) const;
     //: Get the graph node associated with a named type
 
-    GraphNodeHC<StringC,DPConverterBaseC> UseTypeNode(const type_info &inf);
-    //: Get the graph node associated with a type_info, create if needed
+    GraphNodeHC<StringC,DPConverterBaseC> UseTypeNode(const std::type_info &inf);
+    //: Get the graph node associated with a std::type_info, create if needed
 
     GraphC<StringC,DPConverterBaseC> convGraph; // Conversion graph.
 
@@ -140,20 +140,20 @@ namespace RavlN {
     //: Constructor.
     
   public:
-    DListC<DPConverterBaseC> FindConversion(const type_info &from,const type_info &to,RealT &finalCost)
+    DListC<DPConverterBaseC> FindConversion(const std::type_info &from,const std::type_info &to,RealT &finalCost)
     { return Body().FindConversion(from,to,finalCost); }
     //: Find a conversion.
     // If found the cost of conversion is put into finalCost.
     
-    DListC<DPConverterBaseC> FindConversion(const type_info &from,const type_info &to)
+    DListC<DPConverterBaseC> FindConversion(const std::type_info &from,const std::type_info &to)
     { return Body().FindConversion(from,to); }
     //: Find a conversion.
     
-    bool CanConvert(const type_info &from,const type_info &to)
+    bool CanConvert(const std::type_info &from,const std::type_info &to)
     { return Body().CanConvert(from,to); }
     //: Test if conversion is possible.
     
-    RCAbstractC DoConversion(const RCAbstractC &dat,const type_info &from,const type_info &to)
+    RCAbstractC DoConversion(const RCAbstractC &dat,const std::type_info &from,const std::type_info &to)
     { return Body().DoConversion(dat,from,to); }
     //: Do conversion through abstract handles.
     
@@ -193,7 +193,7 @@ namespace RavlN {
     
     GraphC<StringC,DPConverterBaseC> &Graph()
     { return Body().Graph(); }
-    //: Access converstion graph.
+    //: Access conversion graph.
   };
   
   TypeConverterC &SystemTypeConverter();

@@ -13,9 +13,8 @@
 //! date="12/11/2007"
 //! docentry="Ravl.API.Core.STL"
 //! userlevel=Normal
-//! rcsid="$Id$"
 
-// STL Compatibily methods.
+// STL Compatibly methods.
 
 #include "Ravl/StdHash.hh"
 #include "Ravl/SArray1d.hh"
@@ -120,7 +119,7 @@ namespace RavlN {
   inline UIntT StdHash(const std::vector<DataT> &vec)
   {
     UIntT hv = vec.size();
-    for(IntT i = 0;i < vec.size();i++) {
+    for(UIntT i = 0;i < vec.size();i++) {
       UIntT lv = StdHash(vec[i]);
       hv += lv ^ (lv << (i % 20));
     }

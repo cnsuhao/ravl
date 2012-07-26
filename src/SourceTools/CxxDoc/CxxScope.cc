@@ -44,7 +44,7 @@ namespace RavlCxxDocN
   bool ScopeBodyC::MatchTemplateArgs(ClassTemplateC &tc,ObjectC &pathObj,RCHashC<StringC,ObjectC> &templTab) {
     if(!pathObj.IsTemplate()) {
       // Check for default template args ?
-      ONDEBUG(cerr << "Inheriting for templated object without args from " << pathObj.Name() << " \n");
+      ONDEBUG(std::cerr << "Inheriting for templated object without args from " << pathObj.Name() << " \n");
       return false;
     }
     // Match the template args.
@@ -57,11 +57,11 @@ namespace RavlCxxDocN
 	nm1 = dt.Alias();
       } else
 	nm1=it1->Name();
-      ONDEBUG(cerr << "Template Substitute: " << nm1  << " for " << it2->Name() << " (Templ:" << it2->IsTemplate() << " Type:" << it2->TypeName() << " Fn:" << it2->FullName(templTab) << ")\n");
+      ONDEBUG(std::cerr << "Template Substitute: " << nm1  << " for " << it2->Name() << " (Templ:" << it2->IsTemplate() << " Type:" << it2->TypeName() << " Fn:" << it2->FullName(templTab) << ")\n");
       templTab[nm1] = *it2;
     }
     if(it1 || it2) {
-      cerr << "Mismatch in number of template args for " << tc.Name() << " from " << pathObj.Name() << "\n";
+      std::cerr << "Mismatch in number of template args for " << tc.Name() << " from " << pathObj.Name() << "\n";
       return false;
     }
     return true;
@@ -71,9 +71,9 @@ namespace RavlCxxDocN
   // returns true if object has been found.
   
   bool ScopeBodyC::LookupI(const StringC &name,ObjectC &ret,bool useInherit,HSetC<ScopeC> &done) {
-    ONDEBUG(cerr << "ScopeBodyC::LookupI(), In " << Name() << " of '" << name << "' Inherit:"  << useInherit << "\n");
+    ONDEBUG(std::cerr << "ScopeBodyC::LookupI(), In " << Name() << " of '" << name << "' Inherit:"  << useInherit << "\n");
     if(tab.Lookup(name,ret)) {
-      ONDEBUG(cerr << "ScopeBodyC::LookupI(), Found " << name << " in '" << Name() << "' \n");	
+      ONDEBUG(std::cerr << "ScopeBodyC::LookupI(), Found " << name << " in '" << Name() << "' \n");	
       return true;
     }
     if(!useInherit)
@@ -84,7 +84,7 @@ namespace RavlCxxDocN
       InheritC inhrt(*it);
       if(!inhrt.IsValid())
 	continue;
-      ONDEBUG(cerr << "Inherit : '" << inhrt.Name() << "'\n");
+      ONDEBUG(std::cerr << "Inherit : '" << inhrt.Name() << "'\n");
       ScopeC &scope = inhrt.From();
       if(!scope.IsValid())
 	continue;
@@ -92,7 +92,7 @@ namespace RavlCxxDocN
 	continue;
       done += scope;
       if(scope.LookupI(name,ret,true,done)) {
-	ONDEBUG(cerr << "ScopeBodyC::LookupI(), Found " << name << " in '" << Name() << "' \n");	
+	ONDEBUG(std::cerr << "ScopeBodyC::LookupI(), Found " << name << " in '" << Name() << "' \n");	
 	return true;
       }
     }
@@ -108,7 +108,7 @@ namespace RavlCxxDocN
     if(str == start.BaseName()) // Are we in it already ?
       return start;
     do {
-      ONDEBUG(cerr << "ScopeBodyC::ResolveName(StringC) Start Scope: '" << start.Name() << "'  Looking for:'" << str << "'\n"); 
+      ONDEBUG(std::cerr << "ScopeBodyC::ResolveName(StringC) Start Scope: '" << start.Name() << "'  Looking for:'" << str << "'\n"); 
       if(!ScopeC::IsA(start))
 	break;
       ScopeC tmpScope(start);
@@ -141,7 +141,7 @@ namespace RavlCxxDocN
 	start = RootScope();
 	it.Next();
       }
-      ONDEBUG(cerr << "ScopeBodyC::ResolveName() Start Scope: '" << start.Name() << "'  Looking for:'" << PathName(path) << "'\n"); 
+      ONDEBUG(std::cerr << "ScopeBodyC::ResolveName() Start Scope: '" << start.Name() << "'  Looking for:'" << PathName(path) << "'\n"); 
       templSub.Empty(); // Remove any existing subsitutions.
       ObjectC place(start);
       bool failed = false;
@@ -249,14 +249,14 @@ namespace RavlCxxDocN
       return ; // Ignore it.
     
     if(oldDecType == "forward" || oldDecType == "extern" || (oldDecType == "friend" && objDecType != "friend")) {
-      //ONDEBUG(cerr << "Replacing " << oldobj.Name() << "\n");
+      //ONDEBUG(std::cerr << "Replacing " << oldobj.Name() << "\n");
       for(DLIterC<ObjectC> it(List());it.IsElm();it.Next()) {
-	//ONDEBUG(cerr << "Checking '" << it.Data().Name() << "' \n");
+	//ONDEBUG(std::cerr << "Checking '" << it.Data().Name() << "' \n");
 	ObjectC &listobj = it.Data();
 	if(listobj == oldobj) {
 	  listobj = obj;
 	  oldobj = obj; // Replace in table as well.
-	  //ONDEBUG(cerr << "Replaced " << oldobj.Name() << "\n");
+	  //ONDEBUG(std::cerr << "Replaced " << oldobj.Name() << "\n");
 	  break;
 	}
       }
@@ -268,7 +268,7 @@ namespace RavlCxxDocN
     if(ScopeC::IsA(oldobj)) {
       if(ScopeC::IsA(obj)) {
 	if(ClassC::IsA(obj) || ClassC::IsA(oldobj)) {
-	  cerr << "ERROR: Class/Namespace or Class/Class clash for '" << obj.Name() << "' Old:" << oldDecType << " New:" << objDecType << "\n";
+	  std::cerr << "ERROR: Class/Namespace or Class/Class clash for '" << obj.Name() << "' Old:" << oldDecType << " New:" << objDecType << "\n";
 	  return ;
 	}
 	ScopeC newScope(obj);
@@ -293,7 +293,7 @@ namespace RavlCxxDocN
       return ; // 
     }
     
-    cerr << "ERROR: Duplicate name for object '" << obj.Name() << "' Old:" << oldDecType << " New:" << objDecType << "\n";
+    std::cerr << "ERROR: Duplicate name for object '" << obj.Name() << "' Old:" << oldDecType << " New:" << objDecType << "\n";
     return ;
   }
   
@@ -377,7 +377,7 @@ namespace RavlCxxDocN
   //: Resolve links in input data.
   
   void ScopeBodyC::Resolve() {
-    ONDEBUG(cerr << "ScopeBodyC::Resolve() '" << Name() << "' \n");
+    ONDEBUG(std::cerr << "ScopeBodyC::Resolve() '" << Name() << "' \n");
     BlkQueueC<ScopeC> todo;
     todo.InsLast(ScopeC(*this));
     // Resolve width first.
@@ -428,18 +428,20 @@ namespace RavlCxxDocN
 	  case SAPrivate:
 	    if(incAccess != SAPrivate)
 	      continue;
+	      /* no break */
 	  case SAProtected:
 	    if(incAccess == SAPublic)
 	      continue;
+	      /* no break */
 	  case SAPublic: 
 	    break; // Always.
 	  }
 	newObj = inh.From();
 #if DODEBUG
 	if(newObj.IsValid())
-	  cerr << "InheritIterC::ListNext(),  Current:" << ss.Name() << " New scope:" << newObj.Name() << " \n"; 
+	  std::cerr << "InheritIterC::ListNext(),  Current:" << ss.Name() << " New scope:" << newObj.Name() << " \n"; 
 	else 
-	  cerr << "InheritIterC::ListNext(),  Current:" << ss.Name() << " New scope: *Unknown* \n"; 
+	  std::cerr << "InheritIterC::ListNext(),  Current:" << ss.Name() << " New scope: *Unknown* \n"; 
 #endif
 	// Sort out template sub's.
 	if(!currentTSubs.IsEmpty()) { // Have we got some to merge ??
@@ -449,7 +451,7 @@ namespace RavlCxxDocN
 	      chk = &it.Data();
 	    newSubs[it.Key()] = chk->Subst(currentTSubs);
 	    //newSubs[it.Key()] = ObjectC(chk->FullName(currentTSubs)); // Hack!
-	    ONDEBUG(cerr << "InheritIterC::ListNext(), Sub '" << it.Key() << "' = '" << chk->Name() << "' Was:'" << it.Data() << "'\n");
+	    ONDEBUG(std::cerr << "InheritIterC::ListNext(), Sub '" << it.Key() << "' = '" << chk->Name() << "' Was:'" << it.Data() << "'\n");
 	  }
 	} else  // No templates subs to merge so just use inherit ones.
 	  newSubs = inh.TemplateSubs();
@@ -457,7 +459,7 @@ namespace RavlCxxDocN
       } else {
 	newObj = *it;
 	if(newObj.IsValid())
-	  cerr << "WARNING: Non inherit in uses '" << newObj.Name() << "' Ignoring.\n";
+	  std::cerr << "WARNING: Non inherit in uses '" << newObj.Name() << "' Ignoring.\n";
 	newObj.Invalidate();
       }
       if(newObj.IsValid())

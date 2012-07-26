@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlAudioIO
 //! file="Ravl/Audio/IO/AudioSample.cc"
 
@@ -39,6 +38,12 @@ namespace RavlAudioN {
   //: register stereo Real 
   static TypeNameC type6(typeid(SampleElemC < 2, RealT>), "RavlAudioN::SampleElemC<2,RealT>");
 
+  //: register mono Real
+  static TypeNameC type7(typeid(SampleElemC < 1, float>), "RavlAudioN::SampleElemC<1,float>");
+
+  //: register stereo Real
+  static TypeNameC type8(typeid(SampleElemC < 2, float>), "RavlAudioN::SampleElemC<2,float>");
+
   //: some normalising values 
   const RealT normInt16 = 32678 - 1;
   const RealT normUByte = 128;
@@ -64,8 +69,24 @@ namespace RavlAudioN {
     return newSample;
   }
 
+  //: Convert Samples of Int16T to RealT
 
+  static SampleElemC < 1, float> Sample1Int16ToFloat(const SampleElemC < 1, Int16T> & sample)
+  {
+    SampleElemC < 1, float> newSample;
+    newSample.channel[0] = sample.channel[0] / normInt16;
+    return newSample;
+  }
 
+  //: Convert Samples of Int16T to RealT
+
+  static SampleElemC < 2, float> Sample2Int16ToFloat(const SampleElemC < 2, Int16T> & sample)
+  {
+    SampleElemC < 2, float> newSample;
+    newSample.channel[0] = sample.channel[0] / normInt16;
+    newSample.channel[1] = sample.channel[1] / normInt16;
+    return newSample;
+  }
 
   //: Convert Samples of Int16T to RealT 
 
@@ -106,6 +127,24 @@ namespace RavlAudioN {
     return newSample;
   }
 
+  //: Convert Samples of RealT to Int16T
+
+  static SampleElemC < 1, Int16T> Sample1FloatToInt16(const SampleElemC < 1, float> & sample)
+  {
+    SampleElemC < 1, Int16T> newSample;
+    newSample.channel[0] = (Int16T) (sample.channel[0] * normInt16);
+    return newSample;
+  }
+
+  //: Convert Samples of RealT to Int16T
+
+  static SampleElemC < 2, Int16T> Sample2FloatToInt16(const SampleElemC < 2, float> & sample)
+  {
+    SampleElemC < 2, Int16T> newSample;
+    newSample.channel [0] = (Int16T) (sample.channel[0] * normInt16);
+    newSample.channel [1] = (Int16T) (sample.channel[1] * normInt16);
+    return newSample;
+  }
 
   //: Convert Samples of UByte to Real
 
@@ -152,6 +191,7 @@ namespace RavlAudioN {
     return(Int16T) (((IntT) samp.channel[0] + (IntT) samp.channel[1]) / 2);
   }
 
+#if 0
   static SampleElemC < 2, Int16T> Int16ToSample2Int16(const Int16T &samp)
   {
     SampleElemC < 2, Int16T> ret;
@@ -174,13 +214,18 @@ namespace RavlAudioN {
   {
     return(RealT) v;
   }
+#endif
 
   DP_REGISTER_CONVERSION_NAMED(Sample2ToSample1, 2, "SampleElemC<1,RealT > Sample2ToSample1 ( const SampleElemC<2,RealT>  & sample) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1ToSample2, 1, "SampleElemC<2,RealT> Sample1ToSample2 ( const SampleElemC<1,RealT> & sample ) ");
+  DP_REGISTER_CONVERSION_NAMED(Sample1Int16ToFloat, 1, "SampleElemC<1,float> Sample1Int16ToFloat ( const SampleElemC<1,Int16T> & sample ) ");
+  DP_REGISTER_CONVERSION_NAMED(Sample2Int16ToFloat, 1, "SampleElemC<2,float> Sample2Int16ToFloat ( const SampleElemC<2,Int16T> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1Int16ToReal, 1, "SampleElemC<1,RealT> Sample1Int16ToReal ( const SampleElemC<1,Int16T> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2Int16ToReal, 1, "SampleElemC<2,RealT> Sample2Int16ToReal ( const SampleElemC<2,Int16T> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1RealToInt16, 2, "SampleElemC<1,Int16T> Sample1RealToInt16 ( const SampleElemC<1,RealT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2RealToInt16, 2, "SampleElemC<2,Int16T> Sample2RealToInt16 ( const SampleElemC<2,RealT> & sample ) ");
+  DP_REGISTER_CONVERSION_NAMED(Sample1FloatToInt16, 2, "SampleElemC<1,Int16T> Sample1FloatToInt16 ( const SampleElemC<1,float> & sample ) ");
+  DP_REGISTER_CONVERSION_NAMED(Sample2FloatToInt16, 2, "SampleElemC<2,Int16T> Sample2FloatToInt16 ( const SampleElemC<2,float> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1UByteToReal, 1, "SampleElemC<1,RealT> Sample1UByteToReal (const SampleElemC<1,UByteT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample2UByteToReal, 1, "SampleElemC<2,RealT> Sample1UByteToReal (const SampleElemC<2,UByteT> & sample ) ");
   DP_REGISTER_CONVERSION_NAMED(Sample1RealToUByte, 2, "SampleElemC<1,UByteT> Sample1RealToUByte (const SampleElemC<1,RealT> & sample ) ");

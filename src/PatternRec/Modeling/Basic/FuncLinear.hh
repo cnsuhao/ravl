@@ -36,13 +36,13 @@ namespace RavlN {
     FuncLinearBodyC(const MatrixC &proj,const VectorC &offset);
     //: Design a linear mapping which multiplies input by 'proj' and adds offset
     
-    FuncLinearBodyC(istream &strm);
+    FuncLinearBodyC(std::istream &strm);
     //: Load from stream.
     
     FuncLinearBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -103,7 +103,7 @@ namespace RavlN {
     {}
     //: Design a linear mapping which multiplies input by 'proj' and adds offset
     
-    FuncLinearC(istream &strm);
+    FuncLinearC(std::istream &strm);
     //: Load from stream.
     
     FuncLinearC(BinIStreamC &strm);
@@ -138,14 +138,14 @@ namespace RavlN {
     //: Access projection.
   };
   
-  inline istream &operator>>(istream &strm,FuncLinearC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FuncLinearC &obj) {
     obj = FuncLinearC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FuncLinearC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FuncLinearC &obj) {
     obj.Save(out);
     return out;
   }

@@ -25,13 +25,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierGaussianMixtureBodyC::ClassifierGaussianMixtureBodyC(istream &strm)
+  ClassifierGaussianMixtureBodyC::ClassifierGaussianMixtureBodyC(std::istream &strm)
     : ClassifierBodyC(strm)
   { 
     IntT version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("ClassifierGaussianMixtureBodyC::ClassifierGaussianMixtureBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierGaussianMixtureBodyC::ClassifierGaussianMixtureBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> models;
   }
   
@@ -49,7 +49,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierGaussianMixtureBodyC::Save(ostream &out) const {
+  bool ClassifierGaussianMixtureBodyC::Save(std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 0;
@@ -81,11 +81,11 @@ namespace RavlN {
     else max = 0;
     for(lit++;lit;lit++) {
       if(!lit->IsValid())
-	continue;
+        continue;
       RealT v = lit->DensityValue(data);
       if(v > max) {
-	max = v;
-	ret = lit.Index().V();
+        max = v;
+        ret = lit.Index().V();
       }
     }
     return ret;

@@ -15,12 +15,12 @@
 
 namespace RavlN {
   
-  ostream &operator<<(ostream &out,const RealC &x) {
+  std::ostream &operator<<(std::ostream &out,const RealC &x) {
     out << x.v;
     return out;
   }
   
-  istream &operator>>(istream &in,RealC &x) {
+  std::istream &operator>>(std::istream &in,RealC &x) {
     in >> x.v;
     return in;
   }

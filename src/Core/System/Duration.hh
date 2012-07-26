@@ -95,11 +95,11 @@ namespace RavlN {
 
   };
 
-  inline ostream &operator<<(ostream &s, const DurationC &out)
+  inline std::ostream &operator<<(std::ostream &s, const DurationC &out)
   { s << out.Start() << ' ' << out.End(); return s; }
   //: Write time interval out to stream.
 
-  inline istream &operator>>(istream &s, DurationC &in)
+  inline std::istream &operator>>(std::istream &s, DurationC &in)
   { s >> in.Start() >> in.End(); return s; }
   //: Write time interval out to stream.
 }

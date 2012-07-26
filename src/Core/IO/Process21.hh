@@ -30,7 +30,7 @@ namespace RavlN {
     {}
     //: Constructor.
 
-    DPProcess21BodyC(istream &in) 
+    DPProcess21BodyC(std::istream &in) 
       : DPProcessBaseBodyC(in),
 	DPEntityBodyC(in)
     {}
@@ -42,9 +42,9 @@ namespace RavlN {
     {}
     //: Stream constructor.
     
-    virtual bool Save(ostream &out) const
+    virtual bool Save(std::ostream &out) const
     { return DPProcessBaseBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Save(BinOStreamC &out) const
     { return DPProcessBaseBodyC::Save(out); }
@@ -54,7 +54,7 @@ namespace RavlN {
     { return 2; }
     //: Get number of inputs..    
     
-    virtual const type_info &InputType(int n = 0) const {
+    virtual const std::type_info &InputType(int n = 0) const {
       switch(n)  {
       case 0: return typeid(In1T);
       case 1: return typeid(In2T);
@@ -63,7 +63,7 @@ namespace RavlN {
     }
     //: Get input types.
     
-    virtual const type_info &OutputType(int n = 0) const {
+    virtual const std::type_info &OutputType(int n = 0) const {
       if(n == 0) return typeid(Out1T); 
       return typeid(void);
     }
@@ -88,7 +88,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DPProcess21C(istream &in)
+    DPProcess21C(std::istream &in)
       : DPProcessBaseC(in)
     {}
     //: Stream constructor.

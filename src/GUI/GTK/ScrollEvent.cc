@@ -42,7 +42,7 @@ namespace RavlGUIN
     }
   }
 
-  ostream &operator<<(ostream &stream, const ScrollEventC &event)
+  std::ostream &operator<<(std::ostream &stream, const ScrollEventC &event)
   {
     return stream;
   }

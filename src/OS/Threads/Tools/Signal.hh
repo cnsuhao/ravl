@@ -125,12 +125,12 @@ namespace RavlN {
     friend class SignalConnector0BodyC;
   };
   
-  ostream &operator<<(ostream &os,const SignalConnectorC &sc);
+  std::ostream &operator<<(std::ostream &os,const SignalConnectorC &sc);
   //! userlevel=Normal
   //: Output to a stream.
   //Only usefull for debugging.
   
-  istream &operator>>(istream &os,SignalConnectorC &sc);
+  std::istream &operator>>(std::istream &os,SignalConnectorC &sc);
   //! userlevel=Normal
   //: Output to a stream.
   // Not implemented.
@@ -386,7 +386,7 @@ namespace RavlN {
   };
   
   
-  inline ostream &operator<<(ostream &out,const Signal0C &) { 
+  inline std::ostream &operator<<(std::ostream &out,const Signal0C &) { 
     RavlAssert(0); // Not implemented.
     return out;
   }

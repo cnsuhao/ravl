@@ -93,6 +93,7 @@ namespace RavlN {
     StringC defaultFileFormat;
 
     bool canCreate;
+    bool m_syncBeforeRead;
   };
   
   //! userlevel=Normal
@@ -103,6 +104,10 @@ namespace RavlN {
     : public DataServerVFSNodeC
   {
   public:
+    DataServerVFSRealDirC()
+    {}
+    //: Create invalid handle
+
     DataServerVFSRealDirC(const XMLFactoryContextC &factory)
      : DataServerVFSNodeC(*new DataServerVFSRealDirBodyC(factory))
     {}

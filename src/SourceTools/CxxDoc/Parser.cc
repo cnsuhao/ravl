@@ -75,7 +75,7 @@ namespace RavlCxxDocN
   bool ParserBodyC::ParseTree(const FilenameC &fn) {
     if(!fn.IsDirectory())
       return Parse(fn);
-    cerr << "Parsing directory '" << fn << "'\n";
+    std::cerr << "Parsing directory '" << fn << "'\n";
     if(rootFilename == "")
       rootFilename = fn;
     DirectoryC dir(fn);
@@ -99,26 +99,26 @@ namespace RavlCxxDocN
   //: Parse a file.
   
   bool ParserBodyC::Parse(const FilenameC &fn) {
-    cerr << "Parsing file '" << fn << "'\n";
+    std::cerr << "Parsing file '" << fn << "'\n";
     // Setup file.
-    ONDEBUG(cerr << "Setting up file parse for '" << fn << "'\n");
+    ONDEBUG(std::cerr << "Setting up file parse for '" << fn << "'\n");
     curFilename = fn;
     comment.FileReset();
     ifstream input(fn); 
     yyFlexLexer tmp(&input,&cerr);
     lex = &tmp;
     currentParser = this;
-    ONDEBUG(cerr << "Parsering file.\n");
+    ONDEBUG(std::cerr << "Parsering file.\n");
     yyparse();
     //cerr << "Last :" << commentLast.Text() << " Com: " << comment.Text() << " " << CxxParser::hookCommentObj.IsValid() << "\n";
     currentParser = 0;
     // Finished with file..
     lex = 0;
-    ONDEBUG(cerr << "Merging results.\n");
+    ONDEBUG(std::cerr << "Merging results.\n");
     StringC afn(fn);
     results.SetAll("filename",afn.after((int) rootFilename.length()));
     data.Merge(results);
-    ONDEBUG(cerr << "Parse done.\n");
+    ONDEBUG(std::cerr << "Parse done.\n");
     return true;
   }
 
@@ -130,7 +130,7 @@ namespace RavlCxxDocN
   
   //: Dump database to 'out'
   
-  void ParserBodyC::Dump(ostream &out) {
+  void ParserBodyC::Dump(std::ostream &out) {
     data.Dump(out);
   }
   
@@ -163,7 +163,7 @@ int yyerror(const char *txt);
 int yylex();
 
 int yyerror(const char *txt) {
-  cerr << RavlCxxDocN::currentParser->CurrentFilename() << ":" << RavlCxxDocN::currentParser->LineNo() << " Parse error \n";
+  std::cerr << RavlCxxDocN::currentParser->CurrentFilename() << ":" << RavlCxxDocN::currentParser->LineNo() << " Parse error \n";
   if(stopOnError)
     exit(1);
   return 0;
@@ -179,7 +179,7 @@ void CxxCheckForHook() {
       }
     }
     if(verbose)
-      cout << "Hooking to '" << RavlCxxDocN::hookCommentObj.Name() << "' Comment: '" << ::commentLast.Header() << "'\n";
+      std::cout << "Hooking to '" << RavlCxxDocN::hookCommentObj.Name() << "' Comment: '" << ::commentLast.Header() << "'\n";
     RavlCxxDocN::hookCommentObj.UpdateComment(::commentLast);
     RavlCxxDocN::hookCommentObj.Invalidate();
   }
@@ -199,34 +199,35 @@ int yylex() {
   
   if(verbose) {
     //cerr << "Comment:" << ::comment.Header() << "\n";
-    //  cerr << "LastComment:" << : << "\n";
-    cerr << "-- Tok:" << tok << " ";
+    //  std::cerr << "LastComment:" << : << "\n";
+    std::cerr << "-- Tok:" << tok << " ";
     switch(tok)
       {
 
-      case IDENTIFIER: cerr << "ID (" << yylval.Name() << ")" ; break;
-      case CLCL: cerr << "CLCL"; break;
-      case SCSPEC: cerr << "SCSPEC"; break;
-      case PUBLIC: cerr << "PUBLIC"; break;
-      case PROTECTED: cerr << "PROTECTED"; break;
-      case PRIVATE: cerr << "PRIVATE"; break;
-      case NAMESPACE: cerr << "NAMESPACE"; break;
-	//      case STATIC: cerr << "STATIC"; break;
-      case STRING: cerr << "STRING"; break;
-      case CPVIRTUAL: cerr << "CPVIRTUAL"; break;
-      case ENUM: cerr << "ENUM"; break;
-      case CPTYPEDEF: cerr << "CPTYPEDEF"; break;
-      case CPFRIEND: cerr << "CPFRIEND"; break;
-      case EXTERN: cerr << "EXTERN"; break;
-      case CONSTANT: cerr << "CONSTANT"; break;
-      case TEMPLATE: cerr << "TEMPLATE"; break;
-      case CPOPERATOR: cerr << "OPERATOR"; break;
-      case CV_QUALIFIER: cerr << "CV_QUALIFIER"; break;
+      case IDENTIFIER: std::cerr << "ID (" << yylval.Name() << ")" ; break;
+      case CLCL: std::cerr << "CLCL"; break;
+      case SCSPEC: std::cerr << "SCSPEC"; break;
+      case PUBLIC: std::cerr << "PUBLIC"; break;
+      case PROTECTED: std::cerr << "PROTECTED"; break;
+      case PRIVATE: std::cerr << "PRIVATE"; break;
+      case NAMESPACE: std::cerr << "NAMESPACE"; break;
+	//      case STATIC: std::cerr << "STATIC"; break;
+      case STRING: std::cerr << "STRING"; break;
+      case CPVIRTUAL: std::cerr << "CPVIRTUAL"; break;
+      case ENUM: std::cerr << "ENUM"; break;
+      case CPTYPEDEF: std::cerr << "CPTYPEDEF"; break;
+      case CPFRIEND: std::cerr << "CPFRIEND"; break;
+      case EXTERN: std::cerr << "EXTERN"; break;
+      case CONSTANT: std::cerr << "CONSTANT"; break;
+      case TEMPLATE: std::cerr << "TEMPLATE"; break;
+      case CPOPERATOR: std::cerr << "OPERATOR"; break;
+      case CV_QUALIFIER: std::cerr << "CV_QUALIFIER"; break;
       default:
 	if(isprint(tok) && tok > 16) 
-	cerr << " '" << ((char) tok) << "' ";
+	  std::cerr << " '" << ((char) tok) << "' ";
+	break;
       }
-    cerr <<" Line:" << RavlCxxDocN::currentParser->LineNo() << "\n";
+    std::cerr <<" Line:" << RavlCxxDocN::currentParser->LineNo() << "\n";
   }
   return tok;
 }

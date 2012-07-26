@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/testRavlBase.cc"
 //! userlevel=Develop
@@ -31,6 +30,7 @@
 #include "Ravl/Random.hh"
 #include "Ravl/UUId.hh"
 #include "Ravl/UnitTest.hh"
+#include "Ravl/SysLog.hh"
 
 using namespace RavlN;
 
@@ -43,6 +43,7 @@ public:
 };
 
 
+int testSysLog();
 int testTypes();
 int testEndian();
 int testIndex();
@@ -68,84 +69,37 @@ template class RCWrapC<IntT>;
 int main()
 {
 #if RAVL_CPUTYPE_64
-  cerr << "Linux 64 enabled. \n";
+  std::cerr << "Linux 64 enabled. \n";
 #endif
   int ln;
 #if 1
-  if((ln = testTypes()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testEndian()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndex()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndex2d()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testMisc()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testRefCounter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testSubIndexRange2dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testSubIndexRange3dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndexRange2dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndexRange3dIter()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testFPNumber()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testException()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testQInt()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testIndexRange2d()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testRCWrap()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testFloat16()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  if((ln = testQuickSort()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
+  RAVL_RUN_TEST(testTypes());
+  RAVL_RUN_TEST(testSysLog());
+  RAVL_RUN_TEST(testEndian());
+  RAVL_RUN_TEST(testIndex());
+  RAVL_RUN_TEST(testIndex2d());
+  RAVL_RUN_TEST(testMisc());
+  RAVL_RUN_TEST(testRefCounter());
+  RAVL_RUN_TEST(testSubIndexRange2dIter());
+  RAVL_RUN_TEST(testSubIndexRange3dIter());
+  RAVL_RUN_TEST(testIndexRange2dIter());
+  RAVL_RUN_TEST(testIndexRange3dIter());
+  RAVL_RUN_TEST(testFPNumber());
+  RAVL_RUN_TEST(testException());
+  RAVL_RUN_TEST(testQInt());
+  RAVL_RUN_TEST(testIndexRange2d());
+  RAVL_RUN_TEST(testIndexRange2d());
+  RAVL_RUN_TEST(testRCWrap());
+  RAVL_RUN_TEST(testFloat16());
+  RAVL_RUN_TEST(testQuickSort());
+  RAVL_RUN_TEST(testUUId());
 #endif
-  if((ln = testUUId()) != 0) {
-    cerr << "Test failed at line:" << ln << "\n";
-    return 1;
-  }
-  cout << "Test completed ok. \n";
+  std::cout << "Test completed ok. \n";
+  return 0;
+}
+
+int testSysLog() {
+  RavlInfo("Hello!");
   return 0;
 }
 
@@ -158,12 +112,12 @@ int testTypes()
   if(sizeof(Int64T) != 8) return __LINE__;
   if(sizeof(UInt64T) != 8) return __LINE__;
 #if RAVL_USE_LARGEFILESUPPORT
-  cerr << "Large file support: Enabled. \n";
+  std::cerr << "Large file support: Enabled. \n";
   if(sizeof(StreamSizeT) < 8) return __LINE__;
   if(sizeof(StreamOffsetT) < 8) return __LINE__;
   if(sizeof(streampos) < 8) return __LINE__;
 #else
-  cerr << "Large file support: Disabled. \n";
+  std::cerr << "Large file support: Disabled. \n";
   if(sizeof(StreamSizeT) < 4) return __LINE__;
   if(sizeof(StreamOffsetT) < 4) return __LINE__;
 #endif
@@ -177,7 +131,7 @@ cerr << "\n doing little endian test\n" ;
   if(((char *)(&x))[0] != 0x34) return __LINE__;
   if(((char *)(&x))[1] != 0x12) return __LINE__;
 #else
-cerr << "\n doing big endian test\n" ;
+  std::cerr << "\n doing big endian test\n" ;
   if(((char *)(&x))[0] != 0x12) return __LINE__;
   if(((char *)(&x))[1] != 0x34) return __LINE__;
 #endif
@@ -206,11 +160,11 @@ int testIndex()
   IndexRangeC r3(r1);
   r3.ClipBy(r2);
   if(!r1.Contains(r3)) {
-    cerr << "IndexRange test 1 failed " << r1 << " does not contain " << r3 << "\n";
+    std::cerr << "IndexRange test 1 failed " << r1 << " does not contain " << r3 << "\n";
     return __LINE__;
   }
   if(!r2.Contains(r3)) {
-    cerr << "IndexRange test 2 failed. " << r2 << " does not contain " << r3 << "\n";
+    std::cerr << "IndexRange test 2 failed. " << r2 << " does not contain " << r3 << "\n";
     return __LINE__;
   }
 
@@ -246,7 +200,7 @@ int testIndex()
 
 int testIndex2d()
 {
-  cerr << "testIndex2d() \n";
+  std::cerr << "testIndex2d() \n";
   Index2dC start(5,6);
 
   {
@@ -294,7 +248,7 @@ int testRefCounter() {
   if(ravl_atomic_read(&test) != 1)  return __LINE__;
   ravl_atomic_inc(&test);
   if(ravl_atomic_read(&test) != 2)  {
-    cerr << "Value ="  << ravl_atomic_read(&test) << "\n";
+    std::cerr << "Value ="  << ravl_atomic_read(&test) << "\n";
     return __LINE__;
   }
   ravl_atomic_dec(&test);
@@ -467,13 +421,13 @@ int testQInt() {
 
 int testIndexRange2d() {
   IndexRange2dC start(Index2dC(1,2),Index2dC(9,10));
-  cerr << "Rot90=" << start.Rotate90() << "\n";
-  cerr << "Rot180=" << start.Rotate180() << "\n";
-  cerr << "Rot270=" << start.Rotate270() << "\n";
+  std::cerr << "Rot90=" << start.Rotate90() << "\n";
+  std::cerr << "Rot180=" << start.Rotate180() << "\n";
+  std::cerr << "Rot270=" << start.Rotate270() << "\n";
 
-  cerr << "Rot90 (5,6)=" << start.Rotate90(Index2dC(5,6)) << "\n";
-  cerr << "Rot180 (5,6)=" << start.Rotate180(Index2dC(5,6)) << "\n";
-  cerr << "Rot270 (5,6)=" << start.Rotate270(Index2dC(5,6)) << "\n";
+  std::cerr << "Rot90 (5,6)=" << start.Rotate90(Index2dC(5,6)) << "\n";
+  std::cerr << "Rot180 (5,6)=" << start.Rotate180(Index2dC(5,6)) << "\n";
+  std::cerr << "Rot270 (5,6)=" << start.Rotate270(Index2dC(5,6)) << "\n";
 
 
 

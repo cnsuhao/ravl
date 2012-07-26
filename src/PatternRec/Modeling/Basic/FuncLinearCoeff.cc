@@ -31,7 +31,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  FuncLinearCoeffBodyC::FuncLinearCoeffBodyC(istream &strm)
+  FuncLinearCoeffBodyC::FuncLinearCoeffBodyC(std::istream &strm)
     : FunctionBodyC(strm)
   { strm >> a; }
   
@@ -43,7 +43,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FuncLinearCoeffBodyC::Save (ostream &out) const {
+  bool FuncLinearCoeffBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << ' ' << a ;
@@ -69,14 +69,23 @@ namespace RavlN {
   //: Apply function to 'data'
   
   VectorC FuncLinearCoeffBodyC::Apply(const VectorC &data) const 
-  { return a*MakeInput(data); }
+  {
+    if(!a.IsValid()) // If no a is set assume the identity matrix
+      return MakeInput(data);
+    return a*MakeInput(data);
+  }
   
   //: Calculate Jacobian matrix at X
   
   MatrixC FuncLinearCoeffBodyC::Jacobian (const VectorC &X) const {
     MatrixC ret(OutputSize(),InputSize());
-    for(UIntT i = 0;i < X.Size();i++)
-      ret.SetColumn(i,a*MakeJacobianInput(X,i));
+    if(!a.IsValid()) {  // If no a is set assume the identity matrix
+      for(UIntT i = 0;i < X.Size();i++)
+        ret.SetColumn(i,MakeJacobianInput(X,i));
+    } else {
+      for(UIntT i = 0;i < X.Size();i++)
+        ret.SetColumn(i,a*MakeJacobianInput(X,i));
+    }
     return ret;
   }
   
@@ -103,7 +112,7 @@ namespace RavlN {
 
   //: Write a human readable text description of the function.
   
-  void FuncLinearCoeffBodyC::Describe(ostream &out) {
+  void FuncLinearCoeffBodyC::Describe(std::ostream &out) {
     out << "Inputs:" << InputSize() << " Outputs:" << OutputSize() << "\n";
     out << "Linear model: " << a << "\n";
   }
@@ -153,7 +162,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncLinearCoeffC::FuncLinearCoeffC(istream &strm) 
+  FuncLinearCoeffC::FuncLinearCoeffC(std::istream &strm) 
     : FunctionC(RAVL_VIRTUALCONSTRUCTOR(strm,FuncLinearCoeffBodyC))
   {}
   

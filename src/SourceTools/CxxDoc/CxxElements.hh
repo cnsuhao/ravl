@@ -618,7 +618,7 @@ namespace RavlCxxDocN {
     { definition = obj; }
     //: Set object definition.
     
-    virtual void Dump(ostream &out,int indent = 0);
+    virtual void Dump(std::ostream &out,int indent = 0);
     //: Dump to 'out' in human readable form.
     
     StringC DefinitionName(const StringC &scopeName = StringC());

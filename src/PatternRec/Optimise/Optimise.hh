@@ -13,7 +13,6 @@
 //! example=testOptimise.cc
 //! file="Ravl/PatternRec/Optimise/Optimise.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation"
-//! rcsid="$Id$"
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/String.hh"
@@ -35,12 +34,15 @@ namespace RavlN {
   class OptimiseBodyC: public RCBodyVC
   {
   public:
+    OptimiseBodyC (const XMLFactoryContextC & factory);
+    //: Constructor from xml factory.
+
     OptimiseBodyC (const StringC &name);
     //: Constructor with derived class name
     // The name is provided by the concrete class at instantiation so that the
     // base class knows what derived type it is.
-    
-    OptimiseBodyC (const StringC &name, istream &in);
+
+    OptimiseBodyC (const StringC &name, std::istream &in);
     //: Contructs from stream with derived class name
     // The name or type must be known so that the correct virtual constructor
     // can be called.
@@ -64,6 +66,7 @@ namespace RavlN {
     virtual VectorC MinimalX (const CostC &domain, RealT startCost, RealT &minimumCost) const;
     //: Determines Xmin=arg min_{X} domain(X)
     //!param: domain      - the cost function that will be minimised
+    //!param: startCost   - the cost at the start position.
     //!param: minimumCost - the maximum cost value found
     //!return: the X value which gives the minimum cost
     // A minimisation algorithm must be provided for each derived optimisation
@@ -80,6 +83,7 @@ namespace RavlN {
     virtual VectorC MaximalX (const CostC &domain, RealT startCost, RealT &maximumCost) const;
     //: Determines Xmax=arg max_{X} domain(X)
     //!param: domain - the cost function that will be maximised
+    //!param: startCost   - the cost at the start position, to save it being computed.
     //!param: maximumCost - the maximum cost value found
     //!return: the X value which gives the maximum cost
     
@@ -89,7 +93,7 @@ namespace RavlN {
     const StringC GetName () const;
     //: Derived class type
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -119,12 +123,15 @@ namespace RavlN {
     OptimiseC ();
     //: Default constructor
     
-    OptimiseC (istream &in);
+    OptimiseC (std::istream &in);
     //: Constructs from stream
     
     OptimiseC (OptimiseBodyC &oth);
     //: Constructs from base class
-    
+
+    OptimiseC (OptimiseBodyC *oth);
+    //: Constructs from base class
+
   protected:
     inline OptimiseBodyC & Body ()
     { return RCHandleC<OptimiseBodyC>::Body(); }
@@ -138,34 +145,52 @@ namespace RavlN {
     inline VectorC MinimalX (const CostC &domain, RealT startCost, RealT &minimumCost) const
     { return Body().MinimalX (domain,startCost,minimumCost); }
     //: Do the Optimisation.
-    // Determines which X gives minimum cost function value and gives access to 
+    //!param: domain      - the cost function that will be minimised
+    //!param: startCost   - the cost at the start position.
+    //!param: minimumCost - the maximum cost value found
+    //!return: the X value which gives the minimum cost
+    // Determines which X gives minimum cost function value and gives access to
     // calculated minimum cost
 
     inline VectorC MinimalX (const CostC &domain, RealT &minimumCost) const
     { return Body().MinimalX (domain,minimumCost); }
     //: Do the Optimisation.
-    // Determines which X gives minimum cost function value and gives access to 
+    //!param: domain      - the cost function that will be minimised
+    //!param: minimumCost - the maximum cost value found
+    //!return: the X value which gives the minimum cost
+    // Determines which X gives minimum cost function value and gives access to
     // calculated minimum cost
 
     inline VectorC MinimalX (const CostC &domain) const
     { RealT minimumCost; return Body().MinimalX (domain,minimumCost); }
     //: Do the Optimisation. Determines which X gives minimum cost function value
+    //!param: domain      - the cost function that will be minimised
+    //!return: the X value which gives the minimum cost
     
     inline VectorC MaximalX (const CostC &domain, RealT startCost, RealT &maximumCost) const
     { return Body().MaximalX (domain,startCost,maximumCost); }
     //: Do the Optimisation.
+    //!param: domain - the cost function that will be maximised
+    //!param: startCost   - the cost at the start position, to save it being computed.
+    //!param: maximumCost - the maximum cost value found
+    //!return: the X value which gives the maximum cost
     // Determines which X gives maximum cost function value and gives access to 
     // calculated maximum cost
 
     inline VectorC MaximalX (const CostC &domain, RealT &maximumCost) const
     { return Body().MaximalX (domain,maximumCost); }
     //: Do the Optimisation.
+    //!param: domain - the cost function that will be maximised
+    //!param: maximumCost - the maximum cost value found
+    //!return: the X value which gives the maximum cost
     // Determines which X gives maximum cost function value and gives access to 
     // calculated maximum cost
 
     inline VectorC MaximalX (const CostC &domain) const
     { RealT maximumCost; return Body().MaximalX (domain,maximumCost); }
     //: Do the Optimisation. Determines which X gives maximum cost function value
+    //!param: domain - the cost function that will be maximised
+    //!return: the X value which gives the maximum cost
     
     inline const StringC GetInfo () const
     { return Body().GetInfo (); }
@@ -175,7 +200,7 @@ namespace RavlN {
     { return Body().GetName (); }
     //: Gets type name of the object
     
-    inline bool Save (ostream &out) const
+    inline bool Save (std::ostream &out) const
     { return Body().Save (out); }
     //: Writes object to stream, cna be loaded using constructor
   };

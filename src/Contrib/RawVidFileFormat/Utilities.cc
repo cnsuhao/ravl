@@ -188,6 +188,7 @@ bool GetDimensions(const VideoModeT video_mode, UIntT& x, UIntT& y)
     ok = false;
     x = 0;
     y = 0;
+    break;
   }
 
   return ok;
@@ -220,6 +221,7 @@ VideoModeT IdToVideoMode(UIntT id)
     break;
   default:
     RavlIssueError("Unknown Video Mode Id in IdToVideoMode().") ;
+    break;
   }
 
   return mode;
@@ -252,6 +254,7 @@ uint8_t VideoModeToId(const VideoModeT mode)
     break;
   default:
     RavlIssueError("Unknown Video Mode in VideoModeToId().") ;
+    break;
   }
 
   return mode_id;
@@ -299,6 +302,7 @@ ByteFormatT IdToByteFormat(int id)
     break;
   default:
     RavlIssueError("Unknown Byte Format Id in IdToByteFormat().") ;
+    break;
   }
   return format;
 }
@@ -322,6 +326,7 @@ uint8_t ByteFormatToId(const ByteFormatT format)
     break;
   default:
     RavlIssueError("Unknown Byte Format in ByteFormatToId().") ;
+    break;
   }
 
   return format_id;
@@ -345,6 +350,7 @@ ColourModeT IdToColourMode(UIntT id)
     break;
   default:
     RavlIssueError("Unknown Colour Mode Id in IdToColourMode().") ;
+    break;
   }
 
   return mode;
@@ -367,6 +373,7 @@ uint8_t ColourModeToId(const ColourModeT mode)
     break;
   default:
     RavlIssueError("Unknown Colour Mode in ColourModeToId().") ;
+    break;
   }
 
   return mode_id;

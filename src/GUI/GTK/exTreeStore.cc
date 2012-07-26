@@ -33,24 +33,24 @@ TreeStoreC treeStore;
 
 
 bool EditCallback(TreeModelIterC &at,StringC &str2) {
-  cerr << "Edit callback. " << str2 << "\n";
+  std::cerr << "Edit callback. " << str2 << "\n";
   treeStore.GUISetValue(at,1,str2);
   return true;
 }
 
 bool ToggleCallback(TreeModelIterC &at) {
-  cerr << "Toggle callback - ";
+  std::cerr << "Toggle callback - ";
   bool inconsistent;
   treeStore.GetValue(at,5,inconsistent);
   if (inconsistent)
   {
-    cerr << "inconsistent" << endl;
+    std::cerr << "inconsistent" << std::endl;
   }
   else
   {
     bool val;
     treeStore.GetValue(at,3,val);
-    cerr << (val ? "on" : "off") << " -> " << (!val ? "on" : "off") << endl;
+    std::cerr << (val ? "on" : "off") << " -> " << (!val ? "on" : "off") << std::endl;
     val = !val;
     treeStore.GUISetValue(at,3,val);
   }

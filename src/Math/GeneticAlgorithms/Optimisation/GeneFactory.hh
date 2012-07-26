@@ -147,7 +147,9 @@ namespace RavlN { namespace GeneticN {
       theGene->Generate(*this,handle);
       RavlAssert(handle.IsValid());
       if(!SystemTypeConverter().TypeConvert(handle,value)) {
-        RavlSysLogf(SYSLOG_ERR,"Failed to convert generated type from %s to %s ",RavlN::TypeName(handle.DataType()),RavlN::TypeName(typeid(ValueT)));
+        RavlError("Failed to convert generated type from %s to %s ",
+            RavlN::TypeName(handle.DataType()),
+            RavlN::TypeName(typeid(ValueT)));
         RavlAssert(0);
         throw RavlN::ExceptionOperationFailedC("Failed to instantiate genome. ");
       }

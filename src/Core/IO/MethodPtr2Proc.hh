@@ -35,7 +35,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    DPMethodPtr2ProcBodyC(istream &in)
+    DPMethodPtr2ProcBodyC(std::istream &in)
       : DPProcessBodyC<InT,OutT>(in)
     { LoadFunctionPointer(in,m_func); }
     //: Stream constructor.
@@ -45,12 +45,12 @@ namespace RavlN {
     { LoadFunctionPointer(in,m_func); }
     //: Binary stream constructor.
     
-    virtual bool Save(ostream &out) const {
+    virtual bool Save(std::ostream &out) const {
       if(!DPProcessBodyC<InT,OutT>::Save(out))
 	return false;
       return SaveFunctionPointer(out,m_func); 
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Save(BinOStreamC &out) const {
       if(!DPProcessBodyC<InT,OutT>::Save(out))

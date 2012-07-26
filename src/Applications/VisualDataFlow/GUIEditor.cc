@@ -41,14 +41,14 @@ namespace RavlDFN {
       sigObjChange(DFOU_ADDED)
   { 
     InitDFSystemIO(); // Make sure system IO is linked.
-    ONDEBUG(cerr << "DFEditorBodyC::DFEditorBodyC(const StringC &), Called. \n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::DFEditorBodyC(const StringC &), Called. \n");
     Init(); 
   }
   
   //: Destructor.
   
   DFEditorBodyC::~DFEditorBodyC() {
-    //ONDEBUG(cerr << "DFEditorBodyC::~DFEditorBodyC(), Called. \n");
+    //ONDEBUG(std::cerr << "DFEditorBodyC::~DFEditorBodyC(), Called. \n");
   }
   
   //: Init window.
@@ -100,7 +100,7 @@ namespace RavlDFN {
   //: Handle object updates.
   
   bool DFEditorBodyC::ObjectUpdate(DFObjectUpdateT &type,DFObjectC &obj) {
-    ONDEBUG(cerr << "DFEditorBodyC::ObjectUpdate(). \n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::ObjectUpdate(). \n");
     switch(type)
       {
       case DFOU_ADDED:
@@ -110,7 +110,8 @@ namespace RavlDFN {
       case DFOU_CHANGED:
 	break;
       default:
-	cerr << "DFEditorBodyC::ObjectUpdate(), WARNING: Unexpected update type. \n";
+	std::cerr << "DFEditorBodyC::ObjectUpdate(), WARNING: Unexpected update type. \n";
+	break;
       }
     return true;
   }
@@ -118,11 +119,11 @@ namespace RavlDFN {
   //: Create a new input port.
   
   bool DFEditorBodyC::OpenInput(StringC &filename) {
-    ONDEBUG(cerr << "DFEditorBodyC::OpenInput() '" << filename << "'\n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::OpenInput() '" << filename << "'\n");
     DPIPortBaseC ip;
     DPSeekCtrlC sc;
     if(!OpenISequenceBase(ip,sc,filename,"",typeid(void))) {
-      cerr << "DFObjectFromFile(), Failed to open '" << filename << "' \n";
+      std::cerr << "DFObjectFromFile(), Failed to open '" << filename << "' \n";
       return false;
     }
     ip.SetAttr("id",filename);
@@ -134,11 +135,11 @@ namespace RavlDFN {
   //: Create a new input port.
   
   bool DFEditorBodyC::OpenOutput(StringC &filename) {
-    ONDEBUG(cerr << "DFEditorBodyC::OpenOutput() '" << filename << "'\n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::OpenOutput() '" << filename << "'\n");
     DPOPortBaseC ip;
     DPSeekCtrlC sc;
     if(!OpenOSequenceBase(ip,sc,filename,"",typeid(void))) {
-      cerr << "DFObjectFromFile(), Failed to open '" << filename << "'\n";
+      std::cerr << "DFObjectFromFile(), Failed to open '" << filename << "'\n";
       return false;
     }
     ip.SetAttr("id",filename);
@@ -150,7 +151,7 @@ namespace RavlDFN {
   //: Open a generic object.
   
   bool DFEditorBodyC::OpenGeneric(StringC &filename) {
-    ONDEBUG(cerr << "DFEditorBodyC::OpenGeneric() '" << filename << "'\n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::OpenGeneric() '" << filename << "'\n");
     
     return true;
   }
@@ -158,19 +159,19 @@ namespace RavlDFN {
   //: Save system.
   
   bool DFEditorBodyC::SaveSystem(StringC &filename) {
-    ONDEBUG(cerr << "DFEditorBodyC::SaveSystem() '" << filename << "'\n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::SaveSystem() '" << filename << "'\n");
     if(!RavlN::Save(filename,system)) {
-      ONDEBUG(cerr << "DFEditorBodyC::SaveSystem(). Failed.\n");
+      ONDEBUG(std::cerr << "DFEditorBodyC::SaveSystem(). Failed.\n");
       return false;
     }
-    ONDEBUG(cerr << "DFEditorBodyC::SaveSystem(). Ok.\n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::SaveSystem(). Ok.\n");
     return true;
   }
   
   //: Load system.
   
   bool DFEditorBodyC::LoadSystem(StringC &filename) {
-    ONDEBUG(cerr << "DFEditorBodyC::LoadSystem() '" << filename << "'\n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::LoadSystem() '" << filename << "'\n");
     DFSystemC newSystem;
     if(!RavlN::Load(filename,newSystem))
       return false;
@@ -180,7 +181,7 @@ namespace RavlDFN {
   //: Quit from the editor.
   
   bool DFEditorBodyC::Quit() {
-    //ONDEBUG(cerr << "DFEditorBodyC::Quit() \n");
+    //ONDEBUG(std::cerr << "DFEditorBodyC::Quit() \n");
     Close();
     return true;
   }
@@ -188,7 +189,7 @@ namespace RavlDFN {
   //: Undo all references.
   
   void DFEditorBodyC::Destroy() {
-    ONDEBUG(cerr << "DFEditorBodyC::Destroy(), Called. \n");
+    ONDEBUG(std::cerr << "DFEditorBodyC::Destroy(), Called. \n");
     
     // Clean up connections.
     connectSet.DisconnectAll();

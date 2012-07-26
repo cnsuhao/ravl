@@ -58,9 +58,9 @@ int main(int nargs,char *args[])
   bool selfTestOnly = false;
   bool verify = false;
   char *testDir = 0;
-  ONDEBUG(cerr << "Validate " << getpid() << " args = '" << args[0] << "' ");
+  ONDEBUG(std::cerr << "Validate " << getpid() << " args = '" << args[0] << "' ");
   for(int i = 1;i < nargs;i++) {
-    ONDEBUG(cerr << " '" << args[i] << "' ");
+    ONDEBUG(std::cerr << " '" << args[i] << "' ");
     if(strcmp(args[i],"-hang") == 0) { // Hang.
       hang = true;
       break;
@@ -70,12 +70,12 @@ int main(int nargs,char *args[])
       break;
     }
     if(strcmp(args[i],"-t") == 0) { // Return true
-      ONDEBUG(cerr << "Return true\n");
+      ONDEBUG(std::cerr << "Return true\n");
       exit(0);
       break;
     }
     if(strcmp(args[i],"-f") == 0) { // Return false.
-      ONDEBUG(cerr << "Return false\n");
+      ONDEBUG(std::cerr << "Return false\n");
       exit(1);
       break;
     }
@@ -84,18 +84,18 @@ int main(int nargs,char *args[])
       continue;
     }
     if(strcmp(args[i],"-v") == 0) { // Return false.
-      ONDEBUG(cerr << "Verify executables.\n");
+      ONDEBUG(std::cerr << "Verify executables.\n");
       verify = true;
       continue;
     }
     if(strcmp(args[i],"-h") == 0 || strcmp(args[i],"-help") == 0) { // Help...
-      cerr << " -hang    Go into an inifite loop. \n";
-      cerr << " -s       Seg fault \n";
-      cerr << " -t       Return true\n";
-      cerr << " -f       Return false\n";
-      cerr << " -st      Self test only\n";
-      cerr << " -v       Verify excutables\n";
-      cerr << " -h or -help  print help.\n";
+      std::cerr << " -hang    Go into an inifite loop. \n";
+      std::cerr << " -s       Seg fault \n";
+      std::cerr << " -t       Return true\n";
+      std::cerr << " -f       Return false\n";
+      std::cerr << " -st      Self test only\n";
+      std::cerr << " -v       Verify excutables\n";
+      std::cerr << " -h or -help  print help.\n";
       exit(0);
       break;
     }
@@ -107,28 +107,28 @@ int main(int nargs,char *args[])
       testDir = args[i];
       continue;
     }
-    cerr << "\n Validate: ERROR, Unrecognised option '" << args[i] << "'\n";
+    std::cerr << "\n Validate: ERROR, Unrecognised option '" << args[i] << "'\n";
     exit(1);
   }
-  ONDEBUG(cerr << " ArgsEnd\n" << flush);
+  ONDEBUG(std::cerr << " ArgsEnd\n" << flush);
   // Do some nasty stuff ?
   while(hang) {
     zyx(); // IRIX will optimise out this loop without this call.    
   }
   if(fault) {
-    ONDEBUG(cerr << "\nAbout to segfault\n\n" << flush);
+    ONDEBUG(std::cerr << "\nAbout to segfault\n\n" << flush);
     char *ptr = ((char *)0);
     *ptr = 0;
   }
   if(!verify && !selfTestOnly) {
-    cerr << "Validate: No operation requested. \n";
+    std::cerr << "Validate: No operation requested. \n";
     exit(1); 
   }
   try {
     // Do self check.
     if(!SelfCheck()) {
-      cerr << "Validate: Self check failed. \n";
-      cout << "TEST FAILED. \n" << flush;
+      std::cerr << "Validate: Self check failed. \n";
+      std::cout << "TEST FAILED. \n" << flush;
       exit(-1);
     }
     
@@ -138,25 +138,25 @@ int main(int nargs,char *args[])
     
     // Do validation.
     if(testDir == 0) {
-      cerr << "Validate: No working directory specified. \n";
-      cout << "TEST FAILED. \n" << flush;
+      std::cerr << "Validate: No working directory specified. \n";
+      std::cout << "TEST FAILED. \n" << flush;
       exit(-1);
     }
     if(Validate(testDir) == 0) {
-      cout << "TEST PASSED. \n" << flush;
+      std::cout << "TEST PASSED. \n" << flush;
       exit(0);
     }
   } catch(exception &ex) {
-    cerr << "Std C++ Exception caught : " << ex.what() << endl;
+    std::cerr << "Std C++ Exception caught : " << ex.what() << std::endl;
     exit(-1);
   } catch(ExceptionC &ex) {
-    cerr << "RAVL Exception caught : " << ex.what() << endl;
+    std::cerr << "RAVL Exception caught : " << ex.what() << std::endl;
     exit(-1);
   } catch(...) {
-    cerr << "Unknown exception caught. \n";
+    std::cerr << "Unknown exception caught. \n";
     exit(-1);
   }
-  cout << "TEST FAILED. \n" << flush;
+  std::cout << "TEST FAILED. \n" << flush;
   exit(1);
 }
 
@@ -169,18 +169,18 @@ int Validate(char *dir)
   FilenameC testDir(dir);
   FilenameC testDB(testDir + "/TestExes");
   if(!testDir.IsDirectory()) {
-    cerr << "VALIDATE: Test directory not found. \n";
+    std::cerr << "VALIDATE: Test directory not found. \n";
     return 2;
   }
   if(!testDir.Exists())
     return 2;
   if(!testDB.Exists()) {
-    cerr << "VALIDATE: Test database not found. \n";
+    std::cerr << "VALIDATE: Test database not found. \n";
     return 2;
   }
   IStreamC in(testDB);
   if(!in) {
-    cerr << "VALIDATE: Failed to open database. \n";
+    std::cerr << "VALIDATE: Failed to open database. \n";
     return 2;
   }
   const int buffsize = 4096;
@@ -189,21 +189,21 @@ int Validate(char *dir)
   while(in.good()) {
     in.getline(linebuff,buffsize);
     if(in.gcount() == (unsigned int) buffsize) {
-      cerr << "ERROR: Line buffer overflow. \n";
+      std::cerr << "ERROR: Line buffer overflow. \n";
       return 2;
     }
     if(in.gcount() == 0)
       continue;
     if(linebuff[0] == '#')
       continue;  // Ignore comments.
-    cout << linebuff << " ";
+    std::cout << linebuff << " ";
     int space = 15 - strlen(linebuff);
     for(;space > 0;space--)
-      cout << ' ';
-    cout << "= " << flush;
+      std::cout << ' ';
+    std::cout << "= " << flush;
     FilenameC exeFile(testDir + "/bin/" + linebuff);
     if(!exeFile.Exists()) {
-      cout << "FAILED -> Program not found \n";
+      std::cout << "FAILED -> Program not found \n";
       passed = false;
       continue;
     }
@@ -212,7 +212,7 @@ int Validate(char *dir)
       logfile.Remove();
     ChildOSProcessC testit(exeFile,logfile,true);
     if( (!testit.IsRunning()) && (!testit.ExitedOk() ) ) {
-      cout << "FAILED -> Can't run program. \n"<< flush;
+      std::cout << "FAILED -> Can't run program. \n"<< flush;
       passed = false;
       continue;
     }
@@ -224,45 +224,46 @@ int Validate(char *dir)
 	continue;
     }
     if(!testit.ExitedOk()) {
-      cout << "FAILED -> Abnormal exit,  ";
+      std::cout << "FAILED -> Abnormal exit,  ";
       int ec = testit.ExitCode();
       switch(ec)
 	{
 	case SIGSEGV:
-	  cout << "Segmentation fault.";
+	  std::cout << "Segmentation fault.";
 	  break;
 	case SIGKILL:
-	  cout << "Killed.";
+	  std::cout << "Killed.";
 	  break;
 	case SIGBUS:
-	  cout << "Bus error.";
+	  std::cout << "Bus error.";
 	  break;
 	case SIGFPE:
-	  cout << "Floating point exception.";
+	  std::cout << "Floating point exception.";
 	  break;
 	case SIGILL:
-	  cout << "Illegal instruction.";
+	  std::cout << "Illegal instruction.";
 	  break;	  
 	case SIGPIPE:
-	  cout << "Broken pipe.";
+	  std::cout << "Broken pipe.";
 	  break;	  
 	case SIGABRT:
-	  cout << "Aborted. (Possible assertion failure.)";
+	  std::cout << "Aborted. (Possible assertion failure.)";
 	  break;
 	default:
-	  cout << "Code:" << ec;
+	  std::cout << "Code:" << ec;
+	  break;
 	}
-      cout <<" \n"<< flush;
+      std::cout <<" \n"<< std::flush;
       passed = false;
       continue;
     }
     if(testit.ExitCode() != 0) {
-      cout << "FAILED -> Exited with error. Code:" << testit.ExitCode() << " \n"<< flush;
+      std::cout << "FAILED -> Exited with error. Code:" << testit.ExitCode() << " \n"<< flush;
       passed = false;
       continue;
     }
     //logfile.Remove(); // No need for log.
-    cout << "PASSED \n" << flush;
+    std::cout << "PASSED \n" << flush;
   }
   if(passed)
     return 0;

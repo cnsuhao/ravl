@@ -61,8 +61,10 @@ namespace RavlOSGN
 
   bool GroupC::AddChildNode(const NodeC &node) {
     ref_ptr<Group> groupRef = m_node->asGroup();
-    if (!groupRef)
+    if (!groupRef) {
+      RavlError("Not a group!");
       return false;
+    }
     groupRef->addChild(const_cast<NodeC &>(node).Node());
     return true;
   }
@@ -70,8 +72,10 @@ namespace RavlOSGN
 
   bool GroupC::RemoveChildNode(const NodeC &node) {
     ref_ptr<Group> groupRef = m_node->asGroup();
-    if (!groupRef)
+    if (!groupRef) {
+      RavlError("Not a group!");
       return false;
+    }
     groupRef->removeChild(const_cast<NodeC &>(node).Node());
     return true;
   }

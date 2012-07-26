@@ -1,6 +1,5 @@
 ///////////////////////////////////////////////////
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 
 #include "amma/DP/FileFormatStream.hh"
 #include "amma/DP/FileFormatBinStream.hh"
@@ -12,11 +11,13 @@
 void InitImgIOU16RGB()
 {}
 
-namespace StdImageN
+
+namespace RavlN
 {
-  FileFormatStreamC<ImageC<RGBValueU16C> > FileFormatStream_ImageC_RGBValueU16C;
-  FileFormatBinStreamC<ImageC<RGBValueU16C> > FileFormatBinStream_ImageC_RGBValueU16C;
+  static TypeNameC type2(typeid(ImageC<RGBValueU16C>),"ImageC<RGBValueU16C>");
+
+  static FileFormatStreamC<ImageC<RGBValueU16C> > FileFormatStream_ImageC_RGBValueU16C;
+  static FileFormatBinStreamC<ImageC<RGBValueU16C> > FileFormatBinStream_ImageC_RGBValueU16C;
 }
 
-static TypeNameC type2(typeid(ImageC<RGBValueU16C>),"ImageC<RGBValueU16C>");
 

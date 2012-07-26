@@ -28,13 +28,13 @@ namespace RavlN {
     {}
     //: Default constructor.
 
-    DesignFuncInterpolateGridBodyC(istream &strm);
+    DesignFuncInterpolateGridBodyC(std::istream &strm);
     //: Load from stream.
 
     DesignFuncInterpolateGridBodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual bool Save (BinOStreamC &out) const;
@@ -78,7 +78,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
 
-    DesignFuncInterpolateGridC(istream &strm);
+    DesignFuncInterpolateGridC(std::istream &strm);
     //: Load from stream.
 
     DesignFuncInterpolateGridC(BinIStreamC &strm);
@@ -102,14 +102,14 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm,DesignFuncInterpolateGridC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignFuncInterpolateGridC &obj) {
     obj = DesignFuncInterpolateGridC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out,const DesignFuncInterpolateGridC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignFuncInterpolateGridC &obj) {
     obj.Save(out);
     return out;
   }

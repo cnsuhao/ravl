@@ -49,7 +49,7 @@ namespace RavlGUIN {
       m_iHeight(0)
   {
     cols = titles.Size();
-    ONDEBUG(cerr << "CListBodyC::CListBodyC(), Cols : " << cols << "\n");
+    ONDEBUG(std::cerr << "CListBodyC::CListBodyC(), Cols : " << cols << "\n");
     widths = SArray1dC<IntT>(cols);
     widths.Fill(-1);
   }
@@ -61,7 +61,7 @@ namespace RavlGUIN {
   {
     for (UIntT i(0); i<ntitles.Size(); ++i) titles.InsLast(ntitles[i]);
     cols = titles.Size();
-    ONDEBUG(cerr << "CListBodyC::CListBodyC(), Cols : " << cols << "\n");
+    ONDEBUG(std::cerr << "CListBodyC::CListBodyC(), Cols : " << cols << "\n");
     widths = SArray1dC<IntT>(cols);
     widths.Fill(-1);
   }
@@ -87,13 +87,13 @@ namespace RavlGUIN {
       for(i = 0;i < cols;i++)
 	widths[i] = colWidths[i];
     }
-    ONDEBUG(cerr << "CListBodyC::CListBodyC(), Cols : " << cols << "\n");
+    ONDEBUG(std::cerr << "CListBodyC::CListBodyC(), Cols : " << cols << "\n");
   }
   
   //: Called when row is unselected.
   
   bool CListBodyC::GUIRowUnselected(CListEventC &cle) {
-    ONDEBUG(cerr << "CListBodyC::GUIRowUnselected. " << cle.RowID() << "\n");
+    ONDEBUG(std::cerr << "CListBodyC::GUIRowUnselected. " << cle.RowID() << "\n");
     RWLockHoldC hold(access,false);
     selection -= cle.RowID();
     hold.Unlock();
@@ -104,7 +104,7 @@ namespace RavlGUIN {
   //: Called when row is unselected.
   
   bool CListBodyC::GUIRowSelected(CListEventC &cle) {
-    ONDEBUG(cerr << "CListBodyC::GUIRowSelected. " << cle.RowID() << "\n");
+    ONDEBUG(std::cerr << "CListBodyC::GUIRowSelected. " << cle.RowID() << "\n");
     RWLockHoldC hold(access,false);
     selection += cle.RowID();
     hold.Unlock();
@@ -153,7 +153,7 @@ namespace RavlGUIN {
     ConnectSignals();
     
     while(!toDo.IsEmpty()) {
-      ONDEBUG(cerr << "Catching up with stuff. \n");
+      ONDEBUG(std::cerr << "Catching up with stuff. \n");
       toDo.Last().Invoke();
       toDo.DelLast();
     }
@@ -178,9 +178,9 @@ namespace RavlGUIN {
       // Look for pixmaps.
       PixmapC &pm = line[i].pixmap;
       if(pm.IsValid()) {
-	ONDEBUG(cerr << "CListBodyC::GUIAppendCLine(), Setting pixmap.Row=" << rowNo << " Cell=" << i << "\n");
+	ONDEBUG(std::cerr << "CListBodyC::GUIAppendCLine(), Setting pixmap.Row=" << rowNo << " Cell=" << i << "\n");
 	if(!pm.Create())
-	  cerr << "CListBodyC::GUIAppendCLine(), Failed to create pixmap. \n";
+	  std::cerr << "CListBodyC::GUIAppendCLine(), Failed to create pixmap. \n";
 	else {
 	  gtk_clist_set_pixmap (GTK_CLIST(widget),rowNo,i,pm.Pixmap(),pm.Mask());
 	  int width, height;
@@ -241,7 +241,7 @@ namespace RavlGUIN {
       return true;
     }
     int rowNo = gtk_clist_find_row_from_data (GTK_CLIST(widget),(void *) id);
-    ONDEBUG(cerr << "CListBodyC::GUIRemoveLine(), ID:" << id << "  Row:" << rowNo << "\n");
+    ONDEBUG(std::cerr << "CListBodyC::GUIRemoveLine(), ID:" << id << "  Row:" << rowNo << "\n");
     if(rowNo < 0)
       return true; // Not found.
     gtk_clist_remove (GTK_CLIST(widget),rowNo);
@@ -283,9 +283,9 @@ namespace RavlGUIN {
       // Look for pixmaps.
       PixmapC &pm = line[i].pixmap;
       if(pm.IsValid()) {
-	ONDEBUG(cerr << "CListBodyC::GUIAppendCLine(), Setting pixmap.Row=" << rowNo << " Cell=" << i << "\n");
+	ONDEBUG(std::cerr << "CListBodyC::GUIAppendCLine(), Setting pixmap.Row=" << rowNo << " Cell=" << i << "\n");
 	if(!pm.Create())
-	  cerr << "CListBodyC::GUIAppendCLine(), Failed to create pixmap. \n";
+	  std::cerr << "CListBodyC::GUIAppendCLine(), Failed to create pixmap. \n";
 	else {
 	  gtk_clist_set_pixmap (GTK_CLIST(widget),rowNo,i,pm.Pixmap(),pm.Mask());
 	  int width, height;
@@ -461,7 +461,7 @@ namespace RavlGUIN {
   bool CListBodyC::GUISelect(int id) {
     if(widget == 0) {
       // FIXME:- This should be handled properly....
-      cerr << "WARNING: CListBodyC::GUISelect() called before widget created. \n";
+      std::cerr << "WARNING: CListBodyC::GUISelect() called before widget created. \n";
       return true;
     }
     int rowNo = gtk_clist_find_row_from_data (GTK_CLIST(widget),(void *) id);
@@ -476,7 +476,7 @@ namespace RavlGUIN {
   bool CListBodyC::GUIUnselect(int id) {
     if(widget == 0) {
       // FIXME:- This should be handled properly.
-      cerr << "WARNING: CListBodyC::GUIUnselect() called before widget created. \n";
+      std::cerr << "WARNING: CListBodyC::GUIUnselect() called before widget created. \n";
       return true;
     }
     int rowNo = gtk_clist_find_row_from_data (GTK_CLIST(widget),(void *) id);
@@ -491,7 +491,7 @@ namespace RavlGUIN {
   bool CListBodyC::GUIUnselectAll() {
     if(widget == 0) {
       // FIXME:- This should be handled properly.
-      cerr << "WARNING: CListBodyC::GUIUnselectAll() called before widget created. \n";
+      std::cerr << "WARNING: CListBodyC::GUIUnselectAll() called before widget created. \n";
       return true;
     }
     gtk_clist_unselect_all(GTK_CLIST(widget));
@@ -503,7 +503,7 @@ namespace RavlGUIN {
   bool CListBodyC::GUISelectAll() {
     if(widget == 0) {
       // FIXME:- This should be handled properly.
-      cerr << "WARNING: CListBodyC::GUISelectAll() called before widget created. \n";
+      std::cerr << "WARNING: CListBodyC::GUISelectAll() called before widget created. \n";
       return true;
     }
     gtk_clist_select_all(GTK_CLIST(widget));
@@ -544,7 +544,7 @@ namespace RavlGUIN {
   bool CListBodyC::GUIMoveID2Row(int id,int rowNo) {
     if(widget == 0) {
       // FIXME:- This should be handled properly.
-      ONDEBUG(cerr << "WARNING: CListBodyC::GUIMoveID2Row() called before widget created. \n");
+      ONDEBUG(std::cerr << "WARNING: CListBodyC::GUIMoveID2Row() called before widget created. \n");
       // Find the data we want to move.
       DLIterC<Tuple2C<IntT,SArray1dC<CListCellC> > > it(data);
       for(;it && (it.Data().Data1() != id);it++) ;
@@ -678,7 +678,7 @@ namespace RavlGUIN {
   
   bool CListBodyC::GUISetColumnResizePolicy(IntT colNo,CListColumnResizeModeT policy) {
     if(widget == 0) {
-      ONDEBUG(cerr << "CListBodyC::GUISetColumnResizePolicy(), WARNING: Widget not ready. ");
+      ONDEBUG(std::cerr << "CListBodyC::GUISetColumnResizePolicy(), WARNING: Widget not ready. ");
       toDo.InsLast(Trigger(CListC(*this),&CListC::GUISetColumnResizePolicy,colNo,policy));
       return true;
     }
@@ -727,7 +727,7 @@ namespace RavlGUIN {
   
   bool CListBodyC::GUISetColumnWidth(IntT colNo,IntT width) {
     if(widget == 0) {
-      ONDEBUG(cerr << "CListBodyC::GUISetColumnWidth(), WARNING: Widget not ready. ");
+      ONDEBUG(std::cerr << "CListBodyC::GUISetColumnWidth(), WARNING: Widget not ready. ");
       toDo.InsLast(Trigger(CListC(*this),&CListC::GUISetColumnWidth,colNo,width));
       return true;
     }
@@ -742,7 +742,7 @@ namespace RavlGUIN {
   
   bool CListBodyC::GUISetColumnVisibility(IntT& colNo,bool& bVisible) {
     if(widget == 0) {
-      ONDEBUG(cerr << "CListBodyC::GUISetColumnVisibility(), WARNING: Widget not ready. ");
+      ONDEBUG(std::cerr << "CListBodyC::GUISetColumnVisibility(), WARNING: Widget not ready. ");
       toDo.InsLast(Trigger(CListC(*this),&CListC::GUISetColumnVisibility,colNo,bVisible));
       return true;
     }

@@ -45,18 +45,18 @@ int main(int nargs, char **argv) {
     XMLFactoryContextC context(*mainFactory);
 
     // Get classifier designer
-    SysLog(SYSLOG_INFO, "Initialising classifier '%s'", classifierType.data());
+    RavlInfo( "Initialising classifier '%s'", classifierType.data());
     DesignClassifierSupervisedC design;
     if (!context.UseComponent(classifierType, design, true)) {
-      SysLog(SYSLOG_ERR, "No '%s' component in XML config", classifierType.data());
+      RavlError( "No '%s' component in XML config", classifierType.data());
       return 1;
     }
 
     // Get dataset
-    SysLog(SYSLOG_INFO, "Loading dataset from file '%s'", dsetFile.data());
+    RavlInfo( "Loading dataset from file '%s'", dsetFile.data());
     DataSetVectorLabelC dset;
     if (!LoadDataSetVectorLabel(dsetFile, dset)) {
-      SysLog(SYSLOG_ERR, "Trouble loading dataset from file!");
+      RavlError( "Trouble loading dataset from file!");
       return 1;
     }
 
@@ -64,15 +64,15 @@ int main(int nargs, char **argv) {
     dset.Shuffle(); // always good practice to shuffle (inplace)
     if (equaliseSamples) {
       UIntT min = dset.ClassNums()[dset.ClassNums().IndexOfMin()];
-      SysLog(SYSLOG_INFO, "Equalising number of samples per class to %d", min);
+      RavlInfo( "Equalising number of samples per class to %d", min);
       dset = dset.ExtractPerLabel(min);
     }
     if (samplesPerClass > 0 && samplesPerClass <= dset.ClassNums()[dset.ClassNums().IndexOfMin()]) {
-      SysLog(SYSLOG_INFO, "Setting the samples per class to %d", samplesPerClass);
+      RavlInfo( "Setting the samples per class to %d", samplesPerClass);
       dset = dset.ExtractPerLabel(samplesPerClass);
     }
     if (opts.IsOnCommandLine("features")) {
-      SysLog(SYSLOG_INFO, "Manually selecting features to use");
+      RavlInfo( "Manually selecting features to use");
       SArray1dC<IndexC> keep(features.Size());
       UIntT c = 0;
       for (DLIterC<StringC> it(features); it; it++) {
@@ -84,7 +84,7 @@ int main(int nargs, char **argv) {
     }
 
     // Lets compute mean and variance of dataset and normalise input
-    SysLog(SYSLOG_INFO, "Normalising sample!");
+    RavlInfo( "Normalising sample!");
     MeanCovarianceC meanCovariance = dset.Sample1().MeanCovariance();
     dset.Sample1().Normalise(meanCovariance);
 
@@ -92,14 +92,14 @@ int main(int nargs, char **argv) {
     Sums1d2C sum;
     if (maxIter == 0 || maxIter > dset.Size()) {
       maxIter = dset.Size();
-      SysLog(SYSLOG_INFO, "Using maximum number of samples '%d' in leave-one-out tests", maxIter);
+      RavlInfo( "Using maximum number of samples '%d' in leave-one-out tests", maxIter);
     } else {
       // We need to shuffle the dataset so we do no get bias if only doing a sub-set
       dset.Shuffle();
-      SysLog(SYSLOG_INFO, "Only using a sub-set of samples '%d' in leave one out test", maxIter);
+      RavlInfo( "Only using a sub-set of samples '%d' in leave one out test", maxIter);
     }
 
-    SysLog(SYSLOG_INFO, "Performing leave-one-out test");
+    RavlInfo( "Performing leave-one-out test");
 
     for (DataSet2IterC<SampleVectorC, SampleLabelC> outIt(dset); outIt; outIt++) {
 
@@ -109,7 +109,7 @@ int main(int nargs, char **argv) {
 
       DataSetVectorLabelC trainDataSet(dset.Size() - 1);
       DataSetVectorLabelC testDataSet(1);
-      cerr << "\rProcessing (" << outPos << "/" << maxIter << ")...." << (RealT) outPos / (RealT) maxIter * 100.0
+      std::cerr << "\rProcessing (" << outPos << "/" << maxIter << ")...." << (RealT) outPos / (RealT) maxIter * 100.0
           << "\%";
       // Build the dataset
       UIntT inPos = 0;
@@ -133,13 +133,14 @@ int main(int nargs, char **argv) {
       outPos++;
 
     }
-    cerr << endl;
-    SysLog(SYSLOG_INFO, "The probability of miss-classification is %0.4f(%0.4f)", sum.MeanVariance().Mean(),
+    std::cerr << std::endl;
+    RavlInfo( "The probability of miss-classification is %0.4f(%0.4f)", sum.MeanVariance().Mean(),
         sum.MeanVariance().Variance());
 
   } catch (const RavlN::ExceptionC &exc) {
-    SysLog(SYSLOG_ERR, "Exception:%s", exc.Text());
+    RavlError( "Exception:%s", exc.Text());
   } catch (...) {
-    SysLog(SYSLOG_ERR, "Unknown exception");
+    RavlError( "Unknown exception");
   }
+  return 0;
 }

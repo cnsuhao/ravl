@@ -36,13 +36,13 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
 
   SArray1dC<char> buffer;
   if(!MemSave(buffer,img,formatName,DODEBUG)) {
-    cerr << "Failed to save " << formatName << " image. \n";
+    std::cerr << "Failed to save " << formatName << " image. \n";
     return __LINE__;
   }
 
   ImageC<PixelT> img2;
   if(!MemLoad(buffer,img2,formatName,DODEBUG)) {
-    cerr << "Failed to load " << formatName << " image. \n";
+    std::cerr << "Failed to load " << formatName << " image. \n";
     return __LINE__;
   }
 
@@ -54,7 +54,7 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
           Save("@X:in",img);
           Save("@X:out",img2);
         }
-        cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
+        std::cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
         return __LINE__;
       }
     } else {
@@ -64,7 +64,7 @@ int testImgMemIO(const StringC &formatName,bool isLossy) {
           Save("@X:in",img);
           Save("@X:out",img2);
         }
-        cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
+        std::cerr << "Images differ for format " << formatName << " v1:" << (int) it.Data1() << " v2:" << (int) it.Data2() << " @ " << it.Index() << " \n";
         return __LINE__;
       }
     }
@@ -88,7 +88,7 @@ int test16bitPNG() {
   ImageC<UInt16RGBValueC> im3 = RealRGBImageCT2UInt16RGBImageCT(im2);
   for (Array2dIterC<UInt16RGBValueC> i(im1-im3); i; ++i) 
     if (*i != UInt16RGBValueC(0,0,0)) {
-      cout << i.Index() << " " << *i << endl;
+      std::cout << i.Index() << " " << *i << std::endl;
       return __LINE__;
     }
 

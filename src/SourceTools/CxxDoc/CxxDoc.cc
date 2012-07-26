@@ -72,7 +72,7 @@ void BuildTemplates(FilenameC templFile,RavlCxxDocN::ObjectListC &ol,StringC &ou
 //: Read a source file for an exe.
 
 bool ReadExeCode(const StringC &fileName,ExeTypeT et,RavlCxxDocN::ParserC &pt) {
-  cerr << "DocTreeBodyC::ReadExeCode(), Reading " << fileName << "\n";
+  std::cerr << "DocTreeBodyC::ReadExeCode(), Reading " << fileName << "\n";
   SourceFileC tf(fileName);
   
   HashC<StringC,StringC> vars;
@@ -89,7 +89,7 @@ bool ReadExeCode(const StringC &fileName,ExeTypeT et,RavlCxxDocN::ParserC &pt) {
   
   tf.GetDocVars(oexe.Comment().Vars());
   if(!tf.LeadingComment(oexe.Comment().Header(),oexe.Comment().Text())) {
-    //    cerr << "Failed to find leading comment for '" << fileName << "'\n";
+    //    std::cerr << "Failed to find leading comment for '" << fileName << "'\n";
     // Check if vars set.
     oexe.Comment().Header() = oexe.Comment().Vars()["brief"];
     oexe.Comment().Text() = oexe.Comment().Vars()["detail"];
@@ -110,7 +110,7 @@ bool DocSource(StringC &dir,DefsMkFileC &defs,RavlCxxDocN::ParserC &pt) {
   for(;it;it++) {
     FilenameC fn(dir + filenameSeperator + *it);
     if(!fn.Exists()) {
-      cerr << "Can't find source code for '" << fn << "'\n";
+      std::cerr << "Can't find source code for '" << fn << "'\n";
       continue;
     }
     ReadExeCode(fn,ET_Application,pt);
@@ -119,7 +119,7 @@ bool DocSource(StringC &dir,DefsMkFileC &defs,RavlCxxDocN::ParserC &pt) {
   for(;it;it++) {
     FilenameC fn(dir + filenameSeperator + *it);
     if(!fn.Exists()) {
-      cerr << "Can't find source code for '" << fn << "'\n";
+      std::cerr << "Can't find source code for '" << fn << "'\n";
       continue;
     }
     ReadExeCode(fn,ET_Example,pt);
@@ -128,7 +128,7 @@ bool DocSource(StringC &dir,DefsMkFileC &defs,RavlCxxDocN::ParserC &pt) {
   for(;it;it++) {
     FilenameC fn(dir + filenameSeperator + *it);
     if(!fn.Exists()) {
-      cerr << "Can't find source code for '" << fn << "'\n";
+      std::cerr << "Can't find source code for '" << fn << "'\n";
       continue;
     }
     ReadExeCode(fn,ET_Test,pt);
@@ -176,17 +176,17 @@ int BuildCxx(int argc, char **argv)
     pt.ParseTree(inFiles);
 
   if(verbose)
-    cerr << "Resolving references.\n";
+    std::cerr << "Resolving references.\n";
   pt.Resolve();
   
   DocTreeC docTree(projName);
   if(ehtFiles != "") {
     if(verbose)
-      cerr << "Reading EHT files. \n";
+      std::cerr << "Reading EHT files. \n";
     docTree.ReadEHTSet(ehtFiles);
   }
   if(verbose)
-    cerr << "Checking source tree.\n";
+    std::cerr << "Checking source tree.\n";
   if(!sourceTree.IsEmpty()) {
     SourceCodeManagerC chkit(sourceTree);
     if(verbose)
@@ -195,14 +195,14 @@ int BuildCxx(int argc, char **argv)
     chkit.ForAllDirs(CallFunc3C<StringC&,DefsMkFileC&,RavlCxxDocN::ParserC &,bool>(&DocSource,sourceTree,tmp,pt),false);
   }
   if(dump) {
-    cerr << "C++ Tree:\n";
-    pt.Dump(cout); // Dump parse tree.
-    cerr << "Docnodes:\n";
-    docTree.Dump(cout);
+    std::cerr << "C++ Tree:\n";
+    pt.Dump(std::cout); // Dump parse tree.
+    std::cerr << "Docnodes:\n";
+    docTree.Dump(std::cout);
   }
   
   if(verbose)
-    cerr << "Building documentation.\n";
+    std::cerr << "Building documentation.\n";
   
   if(doDoc) {
     pt.Data().Append(docTree.Root());

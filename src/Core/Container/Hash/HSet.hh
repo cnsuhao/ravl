@@ -36,7 +36,7 @@ namespace RavlN {
     { RavlAssert(set.IsValid()); }
     //: Default constructor.
     
-    inline HSetC(istream &in);
+    inline HSetC(std::istream &in);
     //: stream constructor.
     
     inline HSetC(const HSetC<T> &Oth);
@@ -255,7 +255,7 @@ namespace RavlN {
   
   template<class T>
   inline 
-  HSetC<T>::HSetC(istream &in)
+  HSetC<T>::HSetC(std::istream &in)
     : set(in)
   { RavlAssert(set.IsValid()); }
 
@@ -406,7 +406,7 @@ namespace RavlN {
   }
   
   template<class T>
-  ostream &operator<<(ostream &out,const HSetC<T> &obj) {
+  std::ostream &operator<<(std::ostream &out,const HSetC<T> &obj) {
     out << obj.Size() << "\n";  
     for(HSetIterC<T> it(const_cast<HSetC<T> &>(obj));it.IsElm();it.Next()) 
       out << it.Data() << "\n"; 
@@ -414,7 +414,7 @@ namespace RavlN {
   }
   
   template<class T>
-  istream &operator>>(istream &in,HSetC<T> &obj) {
+  std::istream &operator>>(std::istream &in,HSetC<T> &obj) {
     UIntT size;
     in >> size;
     T tmp;

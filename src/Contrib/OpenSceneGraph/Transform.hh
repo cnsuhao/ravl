@@ -77,6 +77,9 @@ namespace RavlOSGN
     bool SetAttitude(const RavlN::Quatern3dC &attitude);
     //: Set the transform attitude.
 
+    bool GetAttitude(RavlN::Quatern3dC &attitude);
+    //: Get the transform attitude.
+
     bool SetScale(const RavlN::Vector3dC &scale);
     //: Set the transform scale.
 

@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/OptimiseBrent.cc"
 
@@ -27,7 +26,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseBrentBodyC::OptimiseBrentBodyC (istream &in)
+  OptimiseBrentBodyC::OptimiseBrentBodyC (std::istream &in)
     :OptimiseBodyC("OptimiseBrentBodyC",in)
   {
     in >> _iterations >> _tolerance;
@@ -55,10 +54,11 @@ namespace RavlN {
     RealT &x1 = iterX1[0];                  // Cunning trick to allow setting value in iterX directly
     RealT &x0 = iterX0[0];                  // Ditto
     RealT e = 0.0;                          // This will be the distance moved on the step before last.
-    
+
     RealT a = domain.MinX()[0];
     RealT b = domain.MaxX()[0];
-    
+    ONDEBUG(RavlDebug(" a=%f b=%f ",a,b));
+
     // Make sure min and max are the right way around.
     if(a > b) Swap(a,b);
     
@@ -126,6 +126,7 @@ namespace RavlN {
         fx3 = fx2; fx2 = fx1; fx1 = fx0;
       }
     }
+    minimumCost = fx1;
     return iterX1;
   }
   
@@ -137,7 +138,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseBrentBodyC::Save (ostream &out) const
+  bool OptimiseBrentBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << " " << _tolerance << "\n";

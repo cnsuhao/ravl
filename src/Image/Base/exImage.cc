@@ -37,7 +37,7 @@ int main(int nargs,char **argv) {
   // Load an image from a file.
   
   if(!RavlN::Load(inf,image)) {
-    cerr << "Failed to load file '" << inf << "' \n";
+    std::cerr << "Failed to load file '" << inf << "' \n";
     return 1;
   }
   
@@ -47,12 +47,12 @@ int main(int nargs,char **argv) {
   for(Array2dIterC<ByteT> it(image);it;it++)
     total += *it;
   
-  cerr << "Total of pixels in the image = " << total << "\n";
+  std::cerr << "Total of pixels in the image = " << total << "\n";
   
   // Load a second image.
   ImageC<ByteT> image2;
   if(!RavlN::Load(inf2,image2)) {
-    cerr << "Failed to load file '" << inf2 << "' \n";
+    std::cerr << "Failed to load file '" << inf2 << "' \n";
     return 1;
   }
   
@@ -62,7 +62,7 @@ int main(int nargs,char **argv) {
   for(Array2dIter2C<ByteT,ByteT> it2(image,image2);it2;it2++)
     total += Abs(it2.Data1() - it2.Data2());
   
-  cerr << "The sum of the differences between image and image2 is " << total << "\n";
+  std::cerr << "The sum of the differences between image and image2 is " << total << "\n";
   
   // Set a pixel to a value.
   
@@ -71,7 +71,7 @@ int main(int nargs,char **argv) {
   // Save image to a file.
   
   if(!RavlN::Save(outf,image)) {
-    cerr << "Failed to save to file '" << inf << "' \n";
+    std::cerr << "Failed to save to file '" << inf << "' \n";
     return 1;
   }
   

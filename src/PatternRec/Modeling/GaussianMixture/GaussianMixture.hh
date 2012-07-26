@@ -35,13 +35,13 @@ namespace RavlN {
     GaussianMixtureBodyC(const SArray1dC<VectorC> & means, const SArray1dC<MatrixRSC> & covariances, const SArray1dC<RealT> & weights, bool isDiagonal);
     //: Construct from mixture parameters and mixing coefficients
     
-    GaussianMixtureBodyC(istream &strm);
+    GaussianMixtureBodyC(std::istream &strm);
     //: Load from stream.
 
     GaussianMixtureBodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
 
     virtual bool Save (BinOStreamC &out) const;
@@ -117,7 +117,7 @@ namespace RavlN {
     {}
     //: Construct from mixture parameters and mixing coefficients
     
-    GaussianMixtureC(istream &is);
+    GaussianMixtureC(std::istream &is);
     //: Stream constructor.
     
     GaussianMixtureC(const FunctionC &func)
@@ -171,14 +171,14 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm,GaussianMixtureC &obj) {
+  inline std::istream &operator>>(std::istream &strm,GaussianMixtureC &obj) {
     obj = GaussianMixtureC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const GaussianMixtureC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const GaussianMixtureC &obj) {
     obj.Save(out);
     return out;
   }

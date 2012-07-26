@@ -22,7 +22,7 @@
 #if RAVL_COMPILER_MIPSPRO 
 #include "Ravl/VirtualConstructor.hh"
 #pragma instantiate RavlN::ClassifierBayesNormalQuadraticBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::ClassifierBayesNormalQuadraticBodyC*)
-#pragma instantiate RavlN::ClassifierBayesNormalQuadraticBodyC* RavlN::VCLoad(istream &,RavlN::ClassifierBayesNormalQuadraticBodyC*)
+#pragma instantiate RavlN::ClassifierBayesNormalQuadraticBodyC* RavlN::VCLoad(std::istream &,RavlN::ClassifierBayesNormalQuadraticBodyC*)
 #endif 
 
 namespace RavlN {
@@ -31,7 +31,10 @@ namespace RavlN {
   //: Default constructor.
   
   ClassifierBayesNormalQuadraticBodyC::ClassifierBayesNormalQuadraticBodyC(const SArray1dC<MeanCovarianceC> & classStats, const SArray1dC<RealT> & priors)
-    : mean(classStats.Size()), invCov(classStats.Size()), konst(classStats.Size())
+    : ClassifierBodyC(classStats.Size()),
+      mean(classStats.Size()),
+      invCov(classStats.Size()),
+      konst(classStats.Size())
   {     
     //: Lets compute the constant
     for(SArray1dIter5C<VectorC, MatrixC, RealT, MeanCovarianceC, RealT>it(mean, invCov, konst, classStats, priors);it;it++) {
@@ -44,7 +47,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierBayesNormalQuadraticBodyC::ClassifierBayesNormalQuadraticBodyC(istream &strm) 
+  ClassifierBayesNormalQuadraticBodyC::ClassifierBayesNormalQuadraticBodyC(std::istream &strm) 
     : ClassifierBodyC(strm)
 { strm >> mean >> invCov >> konst; }
   
@@ -56,7 +59,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool ClassifierBayesNormalQuadraticBodyC::Save (ostream &out) const {
+  bool ClassifierBayesNormalQuadraticBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     out << ' ' << mean << ' ' << invCov << ' ' << konst;

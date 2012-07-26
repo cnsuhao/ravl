@@ -60,7 +60,7 @@ namespace RavlGUIN {
       gtk_misc_set_alignment (GTK_MISC (Child().Widget()), 0.0, 0.5);
       gtk_container_add (GTK_CONTAINER (widget), Child().Widget());
     } else {
-      ONDEBUG(cerr << "TreeItemBodyC::Create(), Warning : No child object. \n");
+      ONDEBUG(std::cerr << "TreeItemBodyC::Create(), Warning : No child object. \n");
     }
     
     ConnectSignals();
@@ -144,7 +144,7 @@ namespace RavlGUIN {
   bool TreeBodyC::GUIDelChild(TreeItemC &child)  {
     RavlAssert(child.IsValid());
     if(!children.Del(child)) {
-      cerr << "TreeBodyC::GUIDelChild(), ERROR: Child not found. \n";
+      std::cerr << "TreeBodyC::GUIDelChild(), ERROR: Child not found. \n";
       return true; // Child 
     }
     if(child.Widget() == 0)  //  || subTree == 0
@@ -177,7 +177,7 @@ namespace RavlGUIN {
     //cerr << "TreeBodyC::GUIAddChild(); \n";
     
     if(!child.IsValid()) {
-      cerr << "TreeBodyC::GUIAddChild(); WARNING: Ask to add invalid child. \n";
+      std::cerr << "TreeBodyC::GUIAddChild(); WARNING: Ask to add invalid child. \n";
       return true;
     }
     children.InsLast(child);

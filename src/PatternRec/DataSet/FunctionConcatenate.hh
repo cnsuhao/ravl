@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_FUNCTIONCONCATENATE_HEADER
 #define RAVL_FUNCTIONCONCATENATE_HEADER 1
-//! rcsid="$Id: FunctionConcatenate.hh 6820 2008-05-30 14:30:11Z ees1wc $"
 //! lib=RavlPatternRec
 //! author="Kieron"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
@@ -18,7 +17,7 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Function which con-catenates a set of functions together!
+  //: Function which con-catenates a set of functions together.
   
   class FunctionConcatenateBodyC
     : public FunctionBodyC
@@ -34,13 +33,13 @@ namespace RavlN {
 
     FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
     
-    FunctionConcatenateBodyC(istream &strm);
+    FunctionConcatenateBodyC(std::istream &strm);
     //: Load from stream.
     
     FunctionConcatenateBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -60,7 +59,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Function which concatenates a set of functions together!
+  //: Function which concatenates a set of functions together.
   
   class FunctionConcatenateC
     : public FunctionC 
@@ -88,7 +87,7 @@ namespace RavlN {
 
     
     
-    FunctionConcatenateC(istream &is);
+    FunctionConcatenateC(std::istream &is);
     //: Stream constructor.
     
     FunctionConcatenateC(BinIStreamC &is);
@@ -128,14 +127,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,FunctionConcatenateC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FunctionConcatenateC &obj) {
     obj = FunctionConcatenateC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FunctionConcatenateC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionConcatenateC &obj) {
     obj.Save(out);
     return out;
   }

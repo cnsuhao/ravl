@@ -40,8 +40,8 @@ namespace RavlGUIN {
     
   //: Probe for Save.
   
-  const type_info &DPWindowFormatBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const {
-    ONDEBUG(cerr << "DPWindowFormatBodyC::ProbeSave(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " ForceFormat=" << forceFormat << "\n");
+  const std::type_info &DPWindowFormatBodyC::ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const {
+    ONDEBUG(std::cerr << "DPWindowFormatBodyC::ProbeSave(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " ForceFormat=" << forceFormat << "\n");
     if(forceFormat)
       return typeid(DPDisplayObjC);
     if(filename.IsEmpty())
@@ -51,15 +51,15 @@ namespace RavlGUIN {
     StringC device = ExtractDevice(filename);
     if(device != "X" && device != "XA" && device != "XR")
       return typeid(void);
-    ONDEBUG(cerr << "DPWindowFormatBodyC::ProbeSave(), Target accepted. \n"); 
+    ONDEBUG(std::cerr << "DPWindowFormatBodyC::ProbeSave(), Target accepted. \n"); 
     return typeid(DPDisplayObjC);
   }
   
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC DPWindowFormatBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const {
-    ONDEBUG(cerr << "DPWindowFormatBodyC::CreateOutput(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " \n");
+  DPOPortBaseC DPWindowFormatBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
+    ONDEBUG(std::cerr << "DPWindowFormatBodyC::CreateOutput(), Called. Filename=" << filename << " obj_type=" << TypeName(obj_type) << " \n");
     if(obj_type != typeid(DPDisplayObjC))
       return DPOPortBaseC();
     StringC winName = ExtractParams(filename);

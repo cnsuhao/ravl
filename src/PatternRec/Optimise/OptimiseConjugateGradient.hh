@@ -14,7 +14,6 @@
 //! example=testOptimise.cc
 //! file="Ravl/PatternRec/Optimise/OptimiseConjugateGradientDescent.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation.Implementation"
-//! rcsid="$Id: OptimiseConjugateGradientDescent.hh 5398 2006-03-09 16:55:13Z craftit $"
 
 #include "Ravl/PatternRec/Optimise.hh"
 
@@ -32,10 +31,13 @@ namespace RavlN {
   class OptimiseConjugateGradientBodyC: public OptimiseBodyC
   {
   public:
-    OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum = true);
+    OptimiseConjugateGradientBodyC(const XMLFactoryContextC & factory);
+    //: Constructor from xml factory.
+
+    OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum = true,bool useAbsoluteCostForTolerance = false,UIntT brentIterations = 0, RealT brentTolerance = 0);
     //: Constructor requires the number of iterations to use
     
-    OptimiseConjugateGradientBodyC (istream &in);
+    OptimiseConjugateGradientBodyC (std::istream &in);
     //: Constructs from stream
     
   protected:
@@ -45,13 +47,16 @@ namespace RavlN {
     virtual const StringC GetInfo () const;
     //: Prints information about the optimiser
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
   private:
     UIntT _iterations;
     RealT _tolerance;
+    UIntT _brentIterations;
+    RealT _brentTolerance;
     bool _useBracketMinimum;
+    bool m_useAbsoluteCostForTolerance;
   };
   
   //! userlevel=Normal
@@ -64,8 +69,20 @@ namespace RavlN {
   class OptimiseConjugateGradientC: public OptimiseC
   {
   public:
-    OptimiseConjugateGradientC (UIntT iterations, RealT tolerance = 1e-6,bool useBacketMinimum = true)
-      :OptimiseC(*(new OptimiseConjugateGradientBodyC (iterations, tolerance,useBacketMinimum))) {}
+    OptimiseConjugateGradientC()
+    {}
+    //: Create invalid handle.
+
+    OptimiseConjugateGradientC(const XMLFactoryContextC & factory)
+     : OptimiseC(*(new OptimiseConjugateGradientBodyC (factory)))
+    {}
+    //: XML Factory constructor
+
+    OptimiseConjugateGradientC(UIntT iterations,RealT tolerance = 1e-6,
+        bool useBacketMinimum = true,bool useAbsoluteCostForTolerance = false,
+        UIntT brentIterations = 0, RealT brentTolerance = 0)
+      : OptimiseC(*(new OptimiseConjugateGradientBodyC (iterations, tolerance,useBacketMinimum,useAbsoluteCostForTolerance,brentIterations,brentTolerance)))
+    {}
     //: Constructor
     //!param: iterations - maximum number of iterations to use
     // Searches along direction of Jacobian (steepest descent) with ever

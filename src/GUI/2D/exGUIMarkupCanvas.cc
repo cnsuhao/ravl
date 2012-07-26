@@ -69,12 +69,12 @@ bool ShowLayerList() {
 }
 
 bool BackMenuReq() {
-  cerr << "Back menu requested. \n";
+  std::cerr << "Back menu requested. \n";
   return true;
 }
 
 bool DoublePressEvent() {
-  cerr << "Double press event. \n";
+  std::cerr << "Double press event. \n";
   return true;
 }
 

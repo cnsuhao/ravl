@@ -180,7 +180,7 @@ namespace RavlN {
     //: Construct from a normal array.
     
 
-    DArray1dBodyC( istream & stream ) 
+    DArray1dBodyC( std::istream & stream ) 
       : nextFree(0),allocBlocksize(1024)
     {
       UIntT noChunks ; 
@@ -207,7 +207,7 @@ namespace RavlN {
     //: Construct from a binary stream 
     
     
-    bool Save(ostream &strm) const;
+    bool Save(std::ostream &strm) const;
     //: Save to stream.
     
     bool Save(BinOStreamC &strm) const;
@@ -265,7 +265,18 @@ namespace RavlN {
     
     void Fill(const DataT &value);
     //: Fill array with given value.
-    
+
+    DArray1dC<DataT> CompactFrom(IndexC start,SizeT size);
+    //: Get sub array from this one.
+    // If size is set to zero the rest of the array will be used.
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
+    // This does not copy the elements, it only creates a new access to existing ones.
+
+    DArray1dC<DataT> CompactBefore(IndexC end);
+    //: Make a copy of the array of all the elements before 'end'
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
+    // This does not copy the elements, it only creates a new access to existing ones.
+
     SArray1dC<DataT> SArray(bool alwaysCopy = false);
     //: Access content's of DArray as single array.
     // This assumes the array starts at zero. If it does
@@ -404,7 +415,7 @@ namespace RavlN {
       : RCHandleC<DArray1dBodyC<DataT> >(*new DArray1dBodyC<DataT>(size,preAlloc))
     {}
     //: Constructor an array with an expected size.
-    // This is usefull if you know you'll be appending 'size' elements.  The array
+    // This is useful if you know you'll be appending 'size' elements.  The array
     // will initial appear empty, but Append operations will be fast.
     // preAlloc is used to distinguish this constructor from DArray1dC<>(SizeT) and
     // should be set to 'true'.
@@ -423,7 +434,7 @@ namespace RavlN {
     // Uses 'arr' to build a dynamic array.  Note, the data is NOT copied,
     // modifications to elements of 'arr' will be visible in the new array.
     
-    DArray1dC(istream & stream) 
+    DArray1dC(std::istream & stream) 
       : RCHandleC<DArray1dBodyC<DataT> > (*new DArray1dBodyC<DataT> ( stream) ) 
     {}
     //: stream constructor 
@@ -433,10 +444,10 @@ namespace RavlN {
     {}
     //: stream constructor 
     
-    bool Save(ostream &strm) const { 
+    bool Save(std::ostream &strm) const { 
       if(this->IsValid())
 	return Body().Save(strm); 
-      cerr << "0\n";
+      std::cerr << "0\n";
       return true;
     }
     //: Save to stream.
@@ -483,7 +494,13 @@ namespace RavlN {
     //: Append data to this array.
     // Note the data is not copied!
     // The number of items appended is returned.
-    
+
+    IndexC Append(const SArray1dC<DataT> &newData)
+    { return Body().Append(Array1dC<DataT>(newData)); }
+    //: Append data to this array.
+    // Note the data is not copied!
+    // The number of items appended is returned.
+
     IndexC Append(const DArray1dC<DataT> &newData)
     { return Body().Append(newData); }
     //: Append data to this array.
@@ -525,7 +542,20 @@ namespace RavlN {
     void Fill(const DataT &value)
     { Body().Fill(value); }
     //: Fill array with given value.
-    
+
+    DArray1dC<DataT> CompactFrom(IndexC start,SizeT size = 0)
+    { return Body().CompactFrom(start,size); }
+    //: Get sub array from this one.
+    // If size is set to zero the rest of the array will be used.
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
+    // This does not copy the elements, it only creates a new access to existing ones.
+
+    DArray1dC<DataT> CompactBefore(IndexC end)
+    { return Body().CompactBefore(end); }
+    //: Make a copy of the array of all the elements before 'end'
+    // The new array will be indexed from zero and continuously indexed (though not necessarily in one block)
+    // This does not copy the elements, it only creates a new access to existing ones.
+
     IndexRangeC Range() const
     { return Body().Range(); }
     //: Get range of indexes covered by array.
@@ -604,14 +634,14 @@ namespace RavlN {
 
   //: Output operator 
   template<class DataT>
-  ostream &operator<<(ostream &s,const DArray1dC<DataT> &obj) {
+  std::ostream &operator<<(std::ostream &s,const DArray1dC<DataT> &obj) {
     obj.Save(s);
     return s;
   }
   
   //: Input operator 
   template<class DataT> 
-  istream & operator >> (istream & stream, DArray1dC<DataT> & obj) { 
+  std::istream & operator >> (std::istream & stream, DArray1dC<DataT> & obj) { 
     obj = DArray1dC<DataT> (stream) ; 
     return stream ; 
   }
@@ -634,7 +664,7 @@ namespace RavlN {
 
   //: Save to stream.
   template<class DataT>
-  bool DArray1dBodyC<DataT>::Save(ostream &s) const {
+  bool DArray1dBodyC<DataT>::Save(std::ostream &s) const {
     s << chunks.Size() << "\n";
     for(IntrDLIterC<DChunkC<DataT> > it(chunks);it;it++)
       s << it->Data() << "\n";
@@ -955,6 +985,56 @@ namespace RavlN {
     if(it && it->Contains(max))
       it->Data().SetSubRange(max+1,it->IMax());
     return true;
+  }
+
+  //: Get sub array from this one.
+  // This does not copy the elements, it only creates a new access to existing ones.
+
+  template<class DataT>
+  DArray1dC<DataT> DArray1dBodyC<DataT>::CompactFrom(IndexC start,SizeT size) {
+    if(size == 0)
+      size = (IMax() - start)+1;
+    if(size == 0)
+      return DArray1dC<DataT>();
+    IndexC max = (start + size)-1;
+    IntrDLIterC<DChunkC<DataT> > it(chunks);
+    for(;it;it++) {
+      if(it->IMax() >= start)
+        break;
+    }
+    if(!it || (it->IMin() > max)) // Was range missed entirely ?
+      return DArray1dC<DataT>();
+    if(it->IMax() >= max) {
+      // If its within a single block, just cut out the index's we want.
+      Array1dC<DataT> newArr = it->Data();
+      newArr.SetSubRange(start,max);
+      return DArray1dC<DataT>(newArr);
+    }
+    // Copy part we want from first chunk.
+    DArray1dC<DataT> ret;
+    ret.Append(it->Data().From(start));
+
+    for(it++;it && (it->IMax() <= max);it++)
+      ret.Append(it->Data());
+
+    // Copy last bit of last chunk.
+    if(it.IsElm()) {
+      if(it->IMin() <= max) {
+        Array1dC<DataT> newArr = it->Data();
+        newArr.SetSubRange(it->IMin(),max);
+        ret.Append(newArr);
+      }
+    }
+    return ret;
+  }
+
+  //: Make a copy of the array of all the elements before 'end'
+  template<class DataT>
+  DArray1dC<DataT> DArray1dBodyC<DataT>::CompactBefore(IndexC end)
+  {
+    if(end <= IMin())
+      return DArray1dC<DataT>();
+    return CompactFrom(IMin(),end - IMin());
   }
 
   //: Access content's of DArray as single array.

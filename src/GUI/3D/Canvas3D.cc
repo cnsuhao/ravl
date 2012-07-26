@@ -99,7 +99,7 @@ namespace RavlGUIN
       m_glExtNonPowerOfTwoTexture(false),
       m_initDone(false)
   {
-    ONDEBUG(cerr << "Canvas3DBodyC::Canvas3DBodyC(), Called.\n");
+    ONDEBUG(std::cerr << "Canvas3DBodyC::Canvas3DBodyC(), Called.\n");
 #if RAVL_USE_GTKGLEXT
     if(!gtk_gl_init_check(NULL, NULL))
       RavlIssueError("Touble initialising gtk_gl\n");
@@ -110,23 +110,23 @@ namespace RavlGUIN
 
   //: Initalise GL info
   bool Canvas3DBodyC::GUIInitGL() {
-    ONDEBUG(cerr << "Canvas3DBodyC::GUIInitGL(), GL Avaliable ? \n");
+    ONDEBUG(std::cerr << "Canvas3DBodyC::GUIInitGL(), GL Avaliable ? \n");
 	bool ret = false;
 #if RAVL_USE_GTKGLEXT
     gint major, minor;
     gdk_gl_query_version(&major, &minor);
-    ONDEBUG(cerr << "OpenGL extension version - %d.%d\n" << major << " " << minor << endl);
+    ONDEBUG(std::cerr << "OpenGL extension version - %d.%d\n" << major << " " << minor << endl);
     if(major > 0) ret = true;
 #else
     ret = gdk_gl_query();    
     if(!ret) {
 #if defined(__sgi__)
-      cerr << "No native OpenGL supported on this display. \n";
-      cerr << "You could try: 'setenv LD_LIBRARY_PATH /opt/PDmesa/Mesa-3.1/lib' \n";
-      cerr << "Then restarting your program. \n";
+      std::cerr << "No native OpenGL supported on this display. \n";
+      std::cerr << "You could try: 'setenv LD_LIBRARY_PATH /opt/PDmesa/Mesa-3.1/lib' \n";
+      std::cerr << "Then restarting your program. \n";
       RavlAssertMsg(0,"OpenGL not supported. ");
 #endif
-      ONDEBUG(cerr << "OpenGL not found" << endl);
+      ONDEBUG(std::cerr << "OpenGL not found" << endl);
     }
 #endif
     return ret;
@@ -141,17 +141,17 @@ namespace RavlGUIN
 #if 0
       throw ExceptionC("OpenGL not supported on display. \n");
 #else
-      cerr << "WARNING: OpenGL not supported on this X server. \n";
+      std::cerr << "WARNING: OpenGL not supported on this X server. \n";
 #endif
     }
     
-    ONDEBUG(cerr << "Canvas3DBodyC::Create(GtkWidget *), Setting up canvas. \n");
+    ONDEBUG(std::cerr << "Canvas3DBodyC::Create(GtkWidget *), Setting up canvas. \n");
 
 #if RAVL_USE_GTKGLEXT
     
     widget = gtk_drawing_area_new();
     if(widget == 0) {
-      cerr << "Canvas3DBodyC::Create(GtkWidget *) ERROR: Widget create failed. \n";
+      std::cerr << "Canvas3DBodyC::Create(GtkWidget *) ERROR: Widget create failed. \n";
       return false;
     }
     GdkGLConfig *glconfig;
@@ -175,7 +175,7 @@ namespace RavlGUIN
     
     widget = gtk_gl_area_new(glattrlist);
     if(widget == 0) {
-      cerr << "Canvas3DBodyC::Create(GtkWidget *) ERROR: Widget create failed. \n";
+      std::cerr << "Canvas3DBodyC::Create(GtkWidget *) ERROR: Widget create failed. \n";
       return false;
     }
 #endif
@@ -191,7 +191,7 @@ namespace RavlGUIN
     }
     else {
       // Setup drawing area.
-      ONDEBUG(cerr << "Canvas3DBodyC::Create(GtkWidget *), Setting draw area size to " << sx << " " << sy <<". \n");
+      ONDEBUG(std::cerr << "Canvas3DBodyC::Create(GtkWidget *), Setting draw area size to " << sx << " " << sy <<". \n");
       gtk_drawing_area_size (GTK_DRAWING_AREA (widget), sx, sy);
     }
     
@@ -200,9 +200,9 @@ namespace RavlGUIN
     
     gtk_quit_add_destroy(1, GTK_OBJECT(widget));
 
-    ONDEBUG(cerr << "Canvas3DBodyC::Create(GtkWidget *), Connect Signals. \n");
+    ONDEBUG(std::cerr << "Canvas3DBodyC::Create(GtkWidget *), Connect Signals. \n");
     ConnectSignals();
-    ONDEBUG(cerr << "Canvas3DBodyC::Create(GtkWidget *), Complete. \n");
+    ONDEBUG(std::cerr << "Canvas3DBodyC::Create(GtkWidget *), Complete. \n");
 
     return true;
   }
@@ -211,7 +211,7 @@ namespace RavlGUIN
   bool Canvas3DBodyC::GUIBeginGL()
   {
     if(widget == 0) {
-      ONDEBUG(cerr << "Canvas3DBodyC::BeginGL(), ERROR: Called with invalid widget. \n");
+      ONDEBUG(std::cerr << "Canvas3DBodyC::BeginGL(), ERROR: Called with invalid widget. \n");
       return false;
     }
 #if RAVL_USE_GTKGLEXT
@@ -221,7 +221,7 @@ namespace RavlGUIN
       return FALSE;
 #else
     if (!gtk_gl_area_make_current(GTK_GL_AREA(widget))) {
-      ONDEBUG(cerr << "WARNING: Canvas3DBodyC::BeginGL(), Failed. \n");
+      ONDEBUG(std::cerr << "WARNING: Canvas3DBodyC::BeginGL(), Failed. \n");
       return false;
     }
     if(!m_initDone) {
@@ -276,14 +276,14 @@ namespace RavlGUIN
 
   //: Process OpenGL requests.
   bool Canvas3DBodyC::GUIProcessReq(DObject3DC &obj) {
-    ONDEBUG(cerr << "Canvas3DBodyC::GUIProcessReq(), Called. \n");
+    ONDEBUG(std::cerr << "Canvas3DBodyC::GUIProcessReq(), Called. \n");
     if(!GUIBeginGL()) {
-      cerr << "Canvas3DBodyC::GUIProcessReq(), Failed to BeginGL(). \n";
+      std::cerr << "Canvas3DBodyC::GUIProcessReq(), Failed to BeginGL(). \n";
       return false;
     }
     Canvas3DC c(*this);
     if(!obj.IsValid())
-     cerr << "Canvas3DBodyC::GUIProcessReq(), Given invalid object. \n";
+     std::cerr << "Canvas3DBodyC::GUIProcessReq(), Given invalid object. \n";
     else
       obj.GUIRenderDL(c);
     GUIEndGL();
@@ -302,7 +302,7 @@ namespace RavlGUIN
     if(!GUIBeginGL())
       return false;
     if(m_autoConfigure) {
-      ONDEBUG(cerr << "Reshape. " << widget->allocation.width << " " << widget->allocation.height << "\n");
+      ONDEBUG(std::cerr << "Reshape. " << widget->allocation.width << " " << widget->allocation.height << "\n");
       glViewport(0, 0, widget->allocation.width, widget->allocation.height);
     }
     

@@ -280,7 +280,7 @@ namespace RavlImageN {
       throw DataNotReadyC("ByteRGB: Image already read. ");
     if(!LoadHeader(inf,type,x,y)) {
       // Throw an exception ??
-      cerr << "DPIImagePNMByteRGBBodyC: Failed to load header for image '" << inf.Name() << "'\n";
+      std::cerr << "DPIImagePNMByteRGBBodyC: Failed to load header for image '" << inf.Name() << "'\n";
       throw DataNotReadyC("DPIImagePNMByteRGBBodyC: Failed to load header for image. ");
     }
     ImageC<ByteRGBValueC> img(y,x);
@@ -383,7 +383,7 @@ namespace RavlImageN {
   {
 #if RAVL_CHECK
     if(!inf) {
-      cerr << "DPIImagePNMByteGreyBodyC::DPIImagePNMByteGreyBodyC(), Failed to open file:" << fn << endl;
+      std::cerr << "DPIImagePNMByteGreyBodyC::DPIImagePNMByteGreyBodyC(), Failed to open file:" << fn << std::endl;
     }
 #endif
   }
@@ -427,7 +427,7 @@ namespace RavlImageN {
       throw DataNotReadyC("DPIImagePNMByteGreyBodyC: Image already read. ");
     if(!LoadHeader(inf,type,x,y)) {
       // Throw an exception ??
-      cerr << "PNMByteGrey: Failed to load header for image '" << inf.Name() << "'\n";
+      std::cerr << "PNMByteGrey: Failed to load header for image '" << inf.Name() << "'\n";
       throw DataNotReadyC("DPIImagePNMByteGreyBodyC: Failed to load header. ");
       //return ImageC<ByteT>();
     }

@@ -79,7 +79,7 @@ namespace RavlN {
 	    break;
 	  }
       }
-      //cerr << "Str: " << len << " = " << lstart << endl;
+      //cerr << "Str: " << len << " = " << lstart << std::endl;
       // At end of string.
       InsLast(work);
     }  
@@ -105,7 +105,7 @@ namespace RavlN {
     return ret;
   }
   
-  ostream & operator<<(ostream & s, const StringListC & list) {
+  std::ostream & operator<<(std::ostream & s, const StringListC & list) {
     s << list.Cat();
     return s;
   }
@@ -138,7 +138,7 @@ namespace RavlN {
 	  break;
 	len++;
       }
-      //cerr << "Str: " << len << " = " << lstart << endl;
+      //cerr << "Str: " << len << " = " << lstart << std::endl;
       // At end of string.
       InsLast(StringC(lstart,len,len));
     }

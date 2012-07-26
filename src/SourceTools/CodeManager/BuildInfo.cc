@@ -23,7 +23,7 @@ namespace RavlN {
   //: Add information from directory to database.
   
   bool BuildInfoBodyC::ScanDirectory(StringC &where,DefsMkFileC &defs) {
-    cout << "BuildInfoBodyC::ScanDirectory:" << where << endl;
+    std::cout << "BuildInfoBodyC::ScanDirectory:" << where << std::endl;
     StringC libName = defs["PLIB"];
     if(!libName.IsEmpty()) {
       LibInfoC &li = libs[libName];

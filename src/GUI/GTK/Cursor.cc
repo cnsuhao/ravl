@@ -147,7 +147,7 @@ namespace RavlGUIN {
         gdk_pixmap_unref(mask);
       }
       else
-        cerr << "CursorBodyC::Cursor(), Load pixmap cursor not implemented for '" << cname << "'\n";
+        std::cerr << "CursorBodyC::Cursor(), Load pixmap cursor not implemented for '" << cname << "'\n";
     }
     return 0;
   }

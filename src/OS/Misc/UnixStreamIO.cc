@@ -169,7 +169,7 @@ namespace RavlN {
         RealT timeToGo = (RealT) m_writeTimeOut - (DateC::NowUTC() - startTime).Double(); // Compute time remaining.
         
         if(timeToGo <= 0) {
-          RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::WaitForWrite(), Timeout writting to file descriptor : " << errno;
+          RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::WaitForWrite(), Timeout writing to file descriptor : " << errno;
           if(m_failOnWriteTimeout)
             break;
           // Reset timer.
@@ -297,7 +297,7 @@ namespace RavlN {
     if (!m_fillBufferOnRead)
       return at;
 
-    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::ReadV(), Socket read interupted, at=" << at << " Blocks=" << n << " attempting to recover. \n");
+    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::ReadV(), Socket read interrupted, at=" << at << " Blocks=" << n << " attempting to recover. \n");
 
     // Read in 1 lump failed, break it up.
     int b = 0,xat = 0;
@@ -317,7 +317,7 @@ namespace RavlN {
 	  return at;
 	at += x;
 	if(x < toGo)
-	  return at; // Some serious error must have occured to stop 'Read'
+	  return at; // Some serious error must have occurred to stop 'Read'
       }
       ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "Reading vector b=" << b << " n=" << n << " ");
       RavlAssert(xat == at);
@@ -378,7 +378,7 @@ namespace RavlN {
     if(at == total || m_fd < 0)
       return at; // All done ?
 
-    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::WriteV(), Socket write interupted, attempting to recover. (Relatively untested code.) ");
+    ONDEBUG(RavlSysLog(SYSLOG_WARNING) << "UnixStreamIOC::WriteV(), Socket write interrupted, attempting to recover. (Relatively untested code.) ");
 
     // Write in 1 lump failed, break it up.
     int b = 0,xat = 0;
@@ -395,7 +395,7 @@ namespace RavlN {
 	IntT x = Write(&(buffer[b][done]),toGo);
 	if(x <= 0) return at;
 	at += x;
-	if(x < toGo) return at; // Some serious error must have occured to stop 'Write'
+	if(x < toGo) return at; // Some serious error must have occurred to stop 'Write'
       }
       RavlAssert(xat == at);
       b++;

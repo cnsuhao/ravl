@@ -23,7 +23,7 @@ namespace RavlN {
     
   }
   
-  DistanceMaxBodyC::DistanceMaxBodyC(istream &strm)
+  DistanceMaxBodyC::DistanceMaxBodyC(std::istream &strm)
     : DistanceBodyC(strm)
   {}
   
@@ -35,7 +35,7 @@ namespace RavlN {
 
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceMaxBodyC::Save (ostream &out) const 
+  bool DistanceMaxBodyC::Save (std::ostream &out) const 
   { return DistanceBodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor

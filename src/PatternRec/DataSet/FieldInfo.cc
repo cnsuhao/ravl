@@ -22,7 +22,7 @@ namespace RavlN {
 
   //: Load from stream.
 
-  FieldInfoBodyC::FieldInfoBodyC(istream &strm)
+  FieldInfoBodyC::FieldInfoBodyC(std::istream &strm)
       : RCBodyVC(strm) {
     char version;
     strm >> version;
@@ -47,7 +47,7 @@ namespace RavlN {
 
   //: Writes object to stream, can be loaded using constructor
 
-  bool FieldInfoBodyC::Save(ostream &out) const {
+  bool FieldInfoBodyC::Save(std::ostream &out) const {
     if (!RCBodyVC::Save(out))
       return false;
     char version = 1;
@@ -69,7 +69,7 @@ namespace RavlN {
 
   //: Load from stream.
 
-  FieldInfoC::FieldInfoC(istream &strm)
+  FieldInfoC::FieldInfoC(std::istream &strm)
       : RCHandleVC<FieldInfoBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,FieldInfoBodyC)) {
   }
 

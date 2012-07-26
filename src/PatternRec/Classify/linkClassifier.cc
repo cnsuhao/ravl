@@ -17,6 +17,9 @@ namespace RavlN {
   extern void InitRavlClassifierNeuralNetwork();
   extern void InitRavlClassifierLinearCombinationIO();
   extern void linkDesignClassifierNeuralNetwork();
+  extern void linkDesignClassifierLogisticRegression();
+  extern void InitRavlClassifierNeuralNetwork2();
+  extern void linkDesignClassifierNeuralNetwork2();
 
   void LinkClassifier() {
     linkDesignClassifierSupervised();
@@ -27,6 +30,9 @@ namespace RavlN {
     InitRavlClassifierNeuralNetwork();
     InitRavlClassifierLinearCombinationIO();
     linkDesignClassifierNeuralNetwork();
+    linkDesignClassifierLogisticRegression();
+    InitRavlClassifierNeuralNetwork2();
+    linkDesignClassifierNeuralNetwork2();
   }
 
 }

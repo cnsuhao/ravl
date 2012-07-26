@@ -29,7 +29,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    RCWrapIOBodyC(istream &in) 
+    RCWrapIOBodyC(std::istream &in) 
       : RCWrapBodyC<DataT> (in)      
     { in >> this->data; }
     //: Construct from a stream.
@@ -96,7 +96,7 @@ namespace RavlN {
     {}
     //: Construct from an abstract handle.
     
-    RCWrapIOC(istream &in)
+    RCWrapIOC(std::istream &in)
       : RCWrapC<DataT>(*new RCWrapIOBodyC<DataT>(in))
     {}
     //: Construct from a stream.

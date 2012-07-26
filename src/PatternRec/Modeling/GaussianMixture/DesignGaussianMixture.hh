@@ -38,13 +38,13 @@ namespace RavlN {
     DesignGaussianMixtureBodyC(UIntT mixes, bool isDiagonal,const DesignClusterC &initCluster = DesignClusterC());
     //: Number of centres for the EM algorithm
     
-    DesignGaussianMixtureBodyC(istream &strm);
+    DesignGaussianMixtureBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignGaussianMixtureBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;

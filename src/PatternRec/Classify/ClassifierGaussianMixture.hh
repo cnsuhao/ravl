@@ -30,13 +30,13 @@ namespace RavlN {
     ClassifierGaussianMixtureBodyC(const SArray1dC<GaussianMixtureC> &model);
     //: Create classifier from a discriminant function.
     
-    ClassifierGaussianMixtureBodyC(istream &strm);
+    ClassifierGaussianMixtureBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierGaussianMixtureBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -79,7 +79,7 @@ namespace RavlN {
     {}
     //: Create classifier from a discriminant function.
     
-    ClassifierGaussianMixtureC(istream &strm);
+    ClassifierGaussianMixtureC(std::istream &strm);
     //: Load from stream.
     
     ClassifierGaussianMixtureC(BinIStreamC &strm);
@@ -111,14 +111,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,ClassifierGaussianMixtureC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierGaussianMixtureC &obj) {
     obj = ClassifierGaussianMixtureC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierGaussianMixtureC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierGaussianMixtureC &obj) {
     obj.Save(out);
     return out;
   }

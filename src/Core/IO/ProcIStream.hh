@@ -84,9 +84,9 @@ namespace RavlN {
     }
     //: Creat a copy of this object.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPIStreamOpBodyC<InT,OutT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   }; 
   

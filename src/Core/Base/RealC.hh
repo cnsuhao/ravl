@@ -86,8 +86,8 @@ namespace RavlN {
     RealT v;
   };
   
-  ostream &operator<<(ostream &out,const RealC &x);  
-  istream &operator>>(istream &in,RealC &x);
+  std::ostream &operator<<(std::ostream &out,const RealC &x);  
+  std::istream &operator>>(std::istream &in,RealC &x);
 
   BinOStreamC &operator<<(BinOStreamC &out,const RealC &x);
   BinIStreamC &operator>>(BinIStreamC &in,RealC &x);

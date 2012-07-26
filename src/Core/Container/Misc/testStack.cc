@@ -96,6 +96,7 @@ int main() {
 	    if(!Stk[j].IsEmpty())
 	      Stk[j].Top().IsOk();
 	  }
+	  break;
 	}
     }
     // Check all the numbers are consistant.

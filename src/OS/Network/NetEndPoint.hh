@@ -198,7 +198,7 @@ namespace RavlN {
     //: Access name of remote user.
     
     bool Transmit(const NetPacketC &pkt);
-    //: Queue a packet for transmition.
+    //: Queue a packet for transmission.
     
     bool Ready();
     //: Initialise link.
@@ -422,6 +422,10 @@ namespace RavlN {
     { return useBigEndianBinStream; }
     //: True if using big endian stream in packet composition 
     
+    bool Use32BitMode() const
+    { return use32mode; }
+    //: Test if we're using 32 bit mode.
+
     void SetPacketSizeLimit(SizeT sizeLimit)
     { m_maxPacketSize = sizeLimit; }
     //: Set the maximum size of any packet that can be handled. 
@@ -441,7 +445,7 @@ namespace RavlN {
     //: Handle ping message
     
     bool RunTransmit();
-    //: Handle packet transmition.
+    //: Handle packet transmission.
     
     bool RunReceive();
     //: Handle packet reception.
@@ -458,7 +462,7 @@ namespace RavlN {
     DPIByteStreamC istrm; // Input channel 
     DPOByteStreamC ostrm; // Output channel
     
-    MessageQueueC<NetPacketC> transmitQ; // Transmition Q.
+    MessageQueueC<NetPacketC> transmitQ; // Transmission Q.
     MessageQueueC<NetPacketC> receiveQ; // Receive Q.
     volatile bool shutdown;   // Shutdown system ?
     ThreadEventC setupComplete;
@@ -583,7 +587,7 @@ namespace RavlN {
 
     bool RunTransmit()
     { return Body().RunTransmit(); }
-    //: Handle packet transmition.
+    //: Handle packet transmission.
     
     bool RunReceive()
     { return Body().RunReceive(); }
@@ -631,17 +635,17 @@ namespace RavlN {
     
     bool Ready()
     { return Body().Ready(); }
-    //: Call when your ready to recieved data from the network..
+    //: Call when your ready to received data from the network..
     
     bool WaitSetupComplete(RealT timeOut = 30)
     { return Body().WaitSetupComplete(timeOut); }
     //: Wait for setup to complete.
-    // May fail if peer drops connection for some resson.
+    // May fail if peer drops connection for some reasson.
     
     bool WaitTransmitQClear()
     { return Body().WaitTransmitQClear(); }
     //: Wait for the transmit queue to clear.
-    // Will return immediatly if the NetEndPoint is closed.
+    // Will return immediately if the NetEndPoint is closed.
     
     bool Close()
     { return Body().Close(); }
@@ -649,7 +653,7 @@ namespace RavlN {
     
     bool Transmit(const NetPacketC &pkt)
     { return Body().Transmit(pkt); }
-    //: Queue a packet for transmition.
+    //: Queue a packet for transmission.
     
     bool MsgInit(StringC &user,NetClientInfoC &info)
     { return  Body().MsgInit(user,info); }
@@ -823,6 +827,11 @@ namespace RavlN {
     bool UseBigEndianBinStream() const
     { return Body().UseBigEndianBinStream(); }
     //: True if using big endian stream in packet composition 
+
+    bool Use32BitMode() const
+    { return Body().Use32BitMode(); }
+    //: Test if we're using 32 bit mode.
+    // Return true if we are.
 
     void SetPacketSizeLimit(SizeT sizeLimit)
     { Body().SetPacketSizeLimit(sizeLimit); }

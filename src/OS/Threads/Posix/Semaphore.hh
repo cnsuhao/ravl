@@ -91,11 +91,11 @@ namespace RavlN
     volatile int count;
   };
   
-  ostream &operator<<(ostream &out,const SemaphoreC &sema);
+  std::ostream &operator<<(std::ostream &out,const SemaphoreC &sema);
   //: Write out to stream.
   // Write the semaphore count to the stream.
   
-  istream &operator>>(istream &in,SemaphoreC &sema);
+  std::istream &operator>>(std::istream &in,SemaphoreC &sema);
   //: Read in from stream.
   // Does nothing.
   

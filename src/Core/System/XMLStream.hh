@@ -592,7 +592,7 @@ namespace RavlN {
     //: Get an abitary valued attribute for entity.
     // This can only be called between StartTag and StartContents.
     // The attribute value is stored using its default streaming 
-    // operators. (ostream and istream)
+    // operators. (std::ostream and std::istream)
     
   protected:
     
@@ -671,7 +671,7 @@ namespace RavlN {
     //: Set an arbitrary valued attribute for entity.
     // This can only be called between StartTag and StartContents.
     // The attribute value is stored using its default streaming 
-    // operators. (ostream and istream)
+    // operators. (std::ostream and std::istream)
 
     void SetAttrib(const StringC &name,const StringC &val)
     { XMLBaseC::SetAttrib(name,val); }
@@ -700,7 +700,7 @@ namespace RavlN {
   //: Output a element, well start to.
   
   inline
-  ostream &operator<<(ostream &strm,const XMLTagOpsT &elem) { 
+  std::ostream &operator<<(std::ostream &strm,const XMLTagOpsT &elem) { 
     RavlAssertMsg(0,"XMLTagOpsT saved to non-xml stream. \n");
     return strm;
   }

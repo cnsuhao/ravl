@@ -82,7 +82,8 @@ namespace RavlDFN {
     case DFOU_DELETED: DelPage(obj); break;
     case DFOU_CHANGED: UpdatePage(obj); break;
     default:
-      cerr << "GUIViewBodyC::ObjectUpdate(), WARNING: Unexpected update type. \n";
+      std::cerr << "GUIViewBodyC::ObjectUpdate(), WARNING: Unexpected update type. \n";
+      /* no break */
     }
     return true;
   }
@@ -90,7 +91,7 @@ namespace RavlDFN {
   //: Add a page for an object.
   
   bool GUIAttributesBodyC::AddPage(DFObjectC &obj) {
-    ONDEBUG(cerr << "GUIAttributesBodyC::AddPage(), Called for " << obj.Name() << "\n");
+    ONDEBUG(std::cerr << "GUIAttributesBodyC::AddPage(), Called for " << obj.Name() << "\n");
     AttributeCtrlC attrCtrl = obj.AttributeCtrl();
     if(!attrCtrl.IsValid())
       return true; // No attribute control for object.
@@ -103,7 +104,7 @@ namespace RavlDFN {
   //: Add a page for an object.
   
   bool GUIAttributesBodyC::DelPage(DFObjectC &obj) {
-    ONDEBUG(cerr << "GUIAttributesBodyC::DelPage(), Called for " << obj.Name() << "\n");
+    ONDEBUG(std::cerr << "GUIAttributesBodyC::DelPage(), Called for " << obj.Name() << "\n");
     AttributeEditorC editor;
     if(!obj2editor.Lookup(obj,editor))
       return true;
@@ -115,7 +116,7 @@ namespace RavlDFN {
   //: Add a page for an object.
   
   bool GUIAttributesBodyC::UpdatePage(DFObjectC &obj) {
-    ONDEBUG(cerr << "GUIAttributesBodyC::UpdatePage(), Called for " << obj.Name() << "\n");
+    ONDEBUG(std::cerr << "GUIAttributesBodyC::UpdatePage(), Called for " << obj.Name() << "\n");
     return true;
   }
 

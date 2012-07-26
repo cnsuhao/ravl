@@ -1,0 +1,12 @@
+# Copyright (C) 2012, Charles Galambos.
+# file-header-ends-here
+
+ifndef LIBPORTAUDIO_DEF
+
+  LIBPORTAUDIO_DEF = 1
+
+  EXELIB :=  $(PortAudio_LIBS) $(EXELIB)
+
+  INCLUDES += $(PortAudio_CFLAGS)
+
+endif

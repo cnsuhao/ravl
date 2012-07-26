@@ -22,7 +22,7 @@ using namespace RavlN;
 int Main(int argc, char* argv[])
 {
   Array2dC<IntT> arr(-5,6,-7,8);
-  cout << "array has arr.Range1() = " << arr.Range1() << "  arr.Range2() = " << arr.Range1() << "\n";
+  std::cout << "array has arr.Range1() = " << arr.Range1() << "  arr.Range2() = " << arr.Range1() << "\n";
   
   // Index each dimension separately.
   
@@ -37,14 +37,14 @@ int Main(int argc, char* argv[])
   
   for(Array2dIterC<IntT> it(arr);it;it++) 
     if(*it != 0)
-      cout << "Element " << it.Index() << " is non zero, " << *it << "\n";
+      std::cout << "Element " << it.Index() << " is non zero, " << *it << "\n";
   
 
   // Slice out a row.
   
   Array1dC<IntT> slice = arr.SliceRow(-2);
   if(slice[3] != 1)
-    cout << "Ooops something went wrong! \n";
+    std::cout << "Ooops something went wrong! \n";
   
   return 0;
 }

@@ -162,7 +162,7 @@ namespace RavlGUIN {
   
   bool NotebookBodyC::GUIRemovePage(const IntT &pageNo) {
     if(widget == 0) {
-      cerr << "NotebookBodyC::GUIRemovePage(), ERROR: Called before widget initalised. \n";
+      std::cerr << "NotebookBodyC::GUIRemovePage(), ERROR: Called before widget initalised. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -183,13 +183,13 @@ namespace RavlGUIN {
   
   bool NotebookBodyC::GUIRemovePageW(WidgetC &page) {
     if(widget == 0) {
-      cerr << "NotebookBodyC::GUIRemovePage(), ERROR: Called before widget initalised. \n";
+      std::cerr << "NotebookBodyC::GUIRemovePage(), ERROR: Called before widget initalised. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     int pageNo = gtk_notebook_page_num(GTK_NOTEBOOK (widget),page.Widget());
     if(pageNo < 0) {
-      cerr << "NotebookBodyC::GUIRemovePage(), ERROR: Asked to remove unknown page. \n";
+      std::cerr << "NotebookBodyC::GUIRemovePage(), ERROR: Asked to remove unknown page. \n";
       return true;
     }
     gtk_notebook_remove_page(GTK_NOTEBOOK (widget),pageNo);
@@ -259,17 +259,17 @@ namespace RavlGUIN {
   
   bool NotebookBodyC::GUIShowPage(WidgetC &page) {
     if(widget == 0) {
-      cerr << "NotebookBodyC::GUIShowPage(), ERROR: Called before widget initalised. \n";
+      std::cerr << "NotebookBodyC::GUIShowPage(), ERROR: Called before widget initalised. \n";
       return true;
     }
     if(page.Widget() == 0) {
-      ONDEBUG(cerr << "NotebookBodyC::GUIShowPage(), Creating page. \n");
+      ONDEBUG(std::cerr << "NotebookBodyC::GUIShowPage(), Creating page. \n");
       page.Create();
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     int pageNo = gtk_notebook_page_num(GTK_NOTEBOOK (widget),page.Widget());
     if(pageNo < 0) {
-      ONDEBUG(cerr << "NotebookBodyC::GUIShowPage(), Initalising page. \n");
+      ONDEBUG(std::cerr << "NotebookBodyC::GUIShowPage(), Initalising page. \n");
       WidgetC tab;    
       // Check we have a tab widget.
       if(tabWidges.IsElm(page))
@@ -285,9 +285,9 @@ namespace RavlGUIN {
 	return true;
       }
     }
-    ONDEBUG(cerr << "NotebookBodyC::GUIShowPage(), Showing " << pageNo << "\n");
+    ONDEBUG(std::cerr << "NotebookBodyC::GUIShowPage(), Showing " << pageNo << "\n");
     gtk_notebook_set_page(GTK_NOTEBOOK (widget),pageNo);
-    ONDEBUG(cerr << "NotebookBodyC::GUIShowPage(), Done \n");
+    ONDEBUG(std::cerr << "NotebookBodyC::GUIShowPage(), Done \n");
     return true;
   }
   

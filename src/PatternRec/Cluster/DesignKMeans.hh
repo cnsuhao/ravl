@@ -52,6 +52,9 @@ namespace RavlN {
     SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in);
     //: Compute cluster means.
     
+    SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT> &weight);
+    //: Compute cluster means.
+
     UIntT K() const
     { return k; }
     //: Access number of clusters.

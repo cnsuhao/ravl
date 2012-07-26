@@ -20,18 +20,18 @@ class RCLayerTestBodyC
 {
 public:
   RCLayerTestBodyC() {
-    cerr << "RCLayerTestBodyC, Constructor.  \n";
+    std::cerr << "RCLayerTestBodyC, Constructor.  \n";
     loopyHandle = RCLayerC<RCLayerTestBodyC>(*this,RCLH_CALLBACK);    
   }
   //: Default constructor.
   
   ~RCLayerTestBodyC() {
-    cerr << "RCLayerTestBodyC, Destructor.  \n";
+    std::cerr << "RCLayerTestBodyC, Destructor.  \n";
   }
   //: Destructor
   
   virtual void ZeroOwners() {
-    cerr << "Hurra all the bosses have gone away. \n";
+    std::cerr << "Hurra all the bosses have gone away. \n";
     loopyHandle.Invalidate();
   }
   //: Called when owner handles drop to zero.
@@ -47,11 +47,11 @@ int testRCLayer();
 int main() {
   int lineno;
   if((lineno = testSmartPtr()) != 0) {
-    cerr << "Test failed " << lineno << "\n";
+    std::cerr << "Test failed " << lineno << "\n";
     return 1;
   }
   if((lineno = testRCLayer()) != 0) {
-    cerr << "Test failed " << lineno << "\n";
+    std::cerr << "Test failed " << lineno << "\n";
     return 1;
   }
   
@@ -89,12 +89,12 @@ int testSmartPtr() {
 int testRCLayer() {
   RCLayerC<RCLayerTestBodyC> layerH1(*new RCLayerTestBodyC(),RCLH_OWNER);
   RCLayerC<RCLayerTestBodyC> layerH2 = layerH1;
-  cerr << "Handles=" << layerH2.OwnerHandles() << "\n";
+  std::cerr << "Handles=" << layerH2.OwnerHandles() << "\n";
   RCLayerC<RCLayerTestBodyC> layerH3 = RCLayerC<RCLayerTestBodyC>(layerH1,RCLH_OWNER);
-  cerr << "Handles=" << layerH2.OwnerHandles() << "\n";
+  std::cerr << "Handles=" << layerH2.OwnerHandles() << "\n";
   layerH3 = layerH1;
   if(layerH3.OwnerHandles() != 3) return __LINE__;
-  cerr << "Handles=" << layerH2.OwnerHandles() << " All=" << layerH2.References() << "\n";
+  std::cerr << "Handles=" << layerH2.OwnerHandles() << " All=" << layerH2.References() << "\n";
   if(layerH2.References() != 4) return __LINE__;
   return 0;
 }

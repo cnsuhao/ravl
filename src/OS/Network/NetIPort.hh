@@ -7,7 +7,6 @@
 #ifndef RAVL_NETIPORT_HEADER
 #define RAVL_NETIPORT_HEADER 1
 ////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlNet
 //! docentry="Ravl.API.OS.Network.NetPort"
@@ -20,6 +19,8 @@
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Threads/Semaphore.hh"
 #include "Ravl/Threads/ThreadEvent.hh"
+#include "Ravl/StrStream.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
 
@@ -30,7 +31,7 @@ namespace RavlN {
     : public NetPortBaseC
   {
   public:
-    NetISPortBaseC(const StringC &server,const StringC &portName,const type_info &ndataType);
+    NetISPortBaseC(const StringC &server,const StringC &portName,const std::type_info &ndataType);
     //: Constructor.
     // The 'server' has the format  'host:port' where port may be a
     // host name or its ip (dotted numbers) address and port is the 
@@ -300,21 +301,20 @@ namespace RavlN {
   
   template<class DataT>
   bool NetISPortBodyC<DataT>::RecvData(UIntT &pos,DataT &dat) {
-    //cerr << "NetISPortBodyC<DataT>::RecvData(), Called for Pos=" << pos << "\n";
     RWLockHoldC hold(rwlock,RWLOCK_WRITE);
+    RavlDebug("Recieved element at %u ",(unsigned) pos);
     data = dat;
     flag = 0;
     at = pos;
     hold.Unlock();
     recieved.Post();
-    //cerr << "NetISPortBodyC<DataT>::RecvData(), Done for Pos=" << pos << "\n";
     return true;
   }
 
   template<class DataT>
   bool NetISPortBodyC<DataT>::RecvDataArray(SArray1dC<DataT>& buffer, Int64T& pos) {
     RWLockHoldC hold(rwlock,RWLOCK_WRITE);
-
+    //RavlDebug("Recieved array. %s entries at %s ",RavlN::StringOf(buffer.Size()).c_str(),RavlN::StringOf(pos).c_str());
     SArray1dC<DataT> srcBuffer(buffer);
     SArray1dC<DataT> dstBuffer(dataArray);
     if (buffer.Size() != dataArray.Size())
@@ -349,7 +349,7 @@ namespace RavlN {
       return false;
     ep.Send(NPMsg_ReqData,at);
     if(!recieved.Wait()) {
-      cerr << "NetISPortBodyC<DataT>::Get(), WARNING: Failed to get frame. \n";
+      RavlError("NetISPortBodyC<DataT>::Get(), WARNING: Failed to get frame. ");
       return false;
     }
     // 'at' is updated by the RecvData method. 
@@ -363,9 +363,11 @@ namespace RavlN {
   template<class DataT>
   IntT NetISPortBodyC<DataT>::GetArray(SArray1dC<DataT> &buffer)
   {
-    if (gotEOS || !buffer.IsValid())
+    if (gotEOS || !buffer.IsValid()) {
+      RavlDebug("Got EOS or invalid buffer.");
       return 0;
-
+    }
+    //RavlDebug("Sending read request for %s bytes",RavlN::StringOf(buffer.Size()).c_str());
     RWLockHoldC hold(rwlock, RWLOCK_WRITE);
     dataArray = buffer;
     dataArrayReceived = 0;
@@ -375,15 +377,17 @@ namespace RavlN {
     ep.Send(NPMsg_ReqDataArray, at, size);
     if (!recieved.Wait())
     {
-      cerr << "NetISPortBodyC<DataT>::GetArray(), WARNING: Failed to get frame. \n";
+      RavlError("NetISPortBodyC<DataT>::GetArray(), WARNING: Failed to get frame. ");
       return false;
     }
 
     // 'at' and 'dataArrayReceived' is updated by the RecvDataArray method.
     hold.LockRd();
-    if (flag != 0)
+    if (flag != 0) {
+      RavlDebug("Error flag set.");
       return 0;
-
+    }
+    //RavlDebug("Sending read got %s bytes.",RavlN::StringOf(dataArrayReceived).c_str());
     return dataArrayReceived;
   };
   

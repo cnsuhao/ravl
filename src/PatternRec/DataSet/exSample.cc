@@ -29,8 +29,8 @@ int main() {
   input.Append(v);
   output.Append(0);
 
-  cerr << "Input size: " << input.Size() << "\n";
-  cerr << "Output size: " << output.Size() << "\n";
+  std::cerr << "Input size: " << input.Size() << "\n";
+  std::cerr << "Output size: " << output.Size() << "\n";
   
   return 0;
 }

@@ -41,7 +41,7 @@ namespace RavlImageN {
   
 
 
-  FileFormatStreamC<ImageC<UInt16T> > FileFormatStream_ImageC_UInt16T;
-  FileFormatBinStreamC<ImageC<UInt16T> > FileFormatBinStream_ImageC_UInt16T;
+  static FileFormatStreamC<ImageC<UInt16T> > FileFormatStream_ImageC_UInt16T;
+  static FileFormatBinStreamC<ImageC<UInt16T> > FileFormatBinStream_ImageC_UInt16T;
   
 }

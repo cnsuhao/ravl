@@ -26,7 +26,7 @@ namespace RavlN {
 
   //: Load from stream.
 
-  Function1BodyC::Function1BodyC(istream &strm) 
+  Function1BodyC::Function1BodyC(std::istream &strm) 
     : FunctionBodyC(strm)
   {}
   
@@ -38,7 +38,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool Function1BodyC::Save (ostream &out) const {
+  bool Function1BodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     //...
@@ -76,7 +76,14 @@ namespace RavlN {
     return Apply1(tmp);
   }
 
+  MatrixC Function1BodyC::Jacobian(const VectorC &X) const {
+    VectorC g = Jacobian1(X);
+    return MatrixC((UIntT) 1,(UIntT)g.Size().V(),static_cast<SArray1dC<RealT> &>(g));
+  }
+  //: Compute the jacobian using jacobian1
+
   VectorC Function1BodyC::Jacobian1(const VectorC &X) const {
+    RavlAssert(0); // Should be overridden.
     return Jacobian(X).SliceRow(0);
   }
 
@@ -104,7 +111,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  Function1C::Function1C(istream &strm)
+  Function1C::Function1C(std::istream &strm)
     : FunctionC(RAVL_VIRTUALCONSTRUCTOR(strm,Function1BodyC))    
   {}
   

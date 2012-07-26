@@ -53,7 +53,7 @@ namespace RavlGUIN {
   //: Got a changed signal.
   
   bool TextEntryBodyC::SigChanged() {
-    ONDEBUG(cerr << "TextEntryBodyC::SigChanged() \n");
+    ONDEBUG(std::cerr << "TextEntryBodyC::SigChanged() \n");
     MutexLockC lock(access);
     text = StringC(gtk_entry_get_text(GTK_ENTRY(Widget())));
     lock.Unlock();
@@ -65,7 +65,7 @@ namespace RavlGUIN {
   //: Got a activate signal.
   
   bool TextEntryBodyC::SigActivate()  {  
-    ONDEBUG(cerr << "TextEntryBodyC::SigActivate() \n"); 
+    ONDEBUG(std::cerr << "TextEntryBodyC::SigActivate() \n"); 
     MutexLockC lock(access);
     text = StringC(gtk_entry_get_text(GTK_ENTRY(Widget())));
     lock.Unlock();
@@ -76,7 +76,7 @@ namespace RavlGUIN {
   //: Create the widget.
   
   bool TextEntryBodyC::Create() {
-    ONDEBUG(cerr << "TextEntryBodyC::Create() MaxLen=" << maxLen << " Text='" << text << "'\n");
+    ONDEBUG(std::cerr << "TextEntryBodyC::Create() MaxLen=" << maxLen << " Text='" << text << "'\n");
     if(maxLen > 0)
       widget = gtk_entry_new_with_max_length(maxLen);
     else

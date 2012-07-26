@@ -71,7 +71,7 @@ namespace RavlGUIN {
   //! userlevel=Normal
   //: Status bar.
   // Note: Messages sent to an invalid StatusBar are redirected
-  // to cerr.
+  // to std::cerr.
   
   class StatusBarC 
     : public WidgetC

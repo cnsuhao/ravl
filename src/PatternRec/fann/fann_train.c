@@ -63,6 +63,7 @@ fann_type fann_activation_derived(unsigned int activation_function,
 			return (fann_type) fann_elliot_symmetric_derive(steepness, value, sum);
 		case FANN_THRESHOLD:
 			fann_error(NULL, FANN_E_CANT_TRAIN_ACTIVATION);
+			break;
 	}
 	return 0;
 }

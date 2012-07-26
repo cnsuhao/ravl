@@ -48,12 +48,12 @@ namespace RavlN {
   }
   
   
-  ostream &operator<<(ostream &s,const IndexRange2dC &ir) {
+  std::ostream &operator<<(std::ostream &s,const IndexRange2dC &ir) {
     s << ir.Range1() << ' ' << ir.Range2();
     return s;
   }
   
-  istream &operator>>(istream &s,IndexRange2dC &ir) {
+  std::istream &operator>>(std::istream &s,IndexRange2dC &ir) {
     s >> ir.Range1() >> ir.Range2();
     return s;
   }

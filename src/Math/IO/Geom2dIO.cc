@@ -31,22 +31,22 @@ namespace RavlN {
   static TypeNameC type6(typeid(DListC<Point2dC>),"RavlN::DListC<RavlN::Point2dC>");
   static TypeNameC type7(typeid(Tuple2C<Point2dC,Point2dC>),"RavlN::Tuple2C<RavlN::Point2dC,RavlN::Point2dC>");
   
-  FileFormatStreamC<Point2dC> FileFormatStream_LinePP2d;
-  FileFormatBinStreamC<Point2dC> FileFormatBinStream_LinePP2d;
+  static FileFormatStreamC<LinePP2dC> FileFormatStream_LinePP2d;
+  static FileFormatBinStreamC<LinePP2dC> FileFormatBinStream_LinePP2d;
   
-  // Add some IO for listss of lines.
+  // Add some IO for lists of lines.
   
-  FileFormatStreamC<DListC<LinePP2dC> > FileFormatStream_DListC_LinePP2d;
-  FileFormatBinStreamC<DListC<LinePP2dC> > FileFormatBinStream_DListC_LinePP2d;
+  static FileFormatStreamC<DListC<LinePP2dC> > FileFormatStream_DListC_LinePP2d;
+  static FileFormatBinStreamC<DListC<LinePP2dC> > FileFormatBinStream_DListC_LinePP2d;
   
   // Add some IO for polygons
   
-  FileFormatStreamC<Polygon2dC> FileFormatStream_Polygon2d;
-  FileFormatBinStreamC<Polygon2dC> FileFormatBinStream_Polygon2d;
+  static FileFormatStreamC<Polygon2dC> FileFormatStream_Polygon2d;
+  static FileFormatBinStreamC<Polygon2dC> FileFormatBinStream_Polygon2d;
   
   // Add some IO for PolyLines
   
-  FileFormatStreamC<PolyLine2dC> FileFormatStream_PolyLine2d;
-  FileFormatBinStreamC<PolyLine2dC> FileFormatBinStream_PolyLine2d;
+  static FileFormatStreamC<PolyLine2dC> FileFormatStream_PolyLine2d;
+  static FileFormatBinStreamC<PolyLine2dC> FileFormatBinStream_PolyLine2d;
   
 }

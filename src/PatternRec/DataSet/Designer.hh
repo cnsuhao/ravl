@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DESIGNER_HEADER
 #define RAVL_DESIGNER_HEADER 1
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Functions"
 //! lib=RavlPatternRec
@@ -27,31 +26,33 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
-    DesignerBodyC()
-    {}
+    DesignerBodyC();
     //: Default constructor.
 
     DesignerBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DesignerBodyC(istream &strm);
+    DesignerBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignerBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to binary stream.
     
-    virtual VectorC Parameters();
-    //: Get the current paramiters.
+    virtual void ParameterLimits(VectorC &defaultValues,VectorC &min,VectorC &max,SArray1dC<StringC> &names) const;
+    //: Get the default parameter values and their limits.
 
-    virtual VectorC Parameters(const VectorC &params);
-    //: Set the current paramiters.
-    // Returns the current paramiters, which may not be exactly those
+    virtual VectorC Parameters() const;
+    //: Get the current parameters.
+
+    virtual VectorC SetParameters(const VectorC &params);
+    //: Set the current parameters.
+    // Returns the current parameters, which may not be exactly those
     // set in 'params', but will be the closest legal values.
     
     virtual bool Reset();
@@ -78,7 +79,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
     
-    DesignerC(istream &strm);
+    DesignerC(std::istream &strm);
     //: Load from stream.
     
     DesignerC(BinIStreamC &strm);
@@ -106,31 +107,36 @@ namespace RavlN {
   public:
     VectorC Parameters()
     { return Body().Parameters(); }
-    //: Get the current paramiters.
-    // Returns the current paramiters, which may not be exactly those
+    //: Get the current parameters.
+    // Returns the current parameters, which may not be exactly those
     // set in 'params', but will be the closest legal values.
-    
-    VectorC Parameters(const VectorC &params)
-    { return Body().Parameters(params); }
-    //: Set the current paramiters.
-    // Returns the current paramiters, which may not be exactly those
+
+    VectorC SetParameters(const VectorC &params)
+    { return Body().SetParameters(params); }
+    //: Set the current parameters.
+    // Returns the current parameters, which may not be exactly those
     // set in 'params', but will be the closest legal values.
+
+    void ParameterLimits(VectorC &defaultValues,VectorC &min,VectorC &max,SArray1dC<StringC> &names) const
+    { Body().ParameterLimits(defaultValues,min,max,names); }
+    //: Get the default parameter values and their limits.
+
 
     bool Reset()
     { return Body().Reset(); }
-    //: Reset the designer to an intial state
+    //: Reset the designer to an initial state
 
     
   };
   
-  inline istream &operator>>(istream &strm,DesignerC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignerC &obj) {
     obj = DesignerC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignerC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignerC &obj) {
     obj.Save(out);
     return out;
   }

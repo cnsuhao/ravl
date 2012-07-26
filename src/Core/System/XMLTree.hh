@@ -30,6 +30,8 @@ namespace RavlN {
 
   class XMLTreeLoadC {
   public:
+    virtual ~XMLTreeLoadC();
+    //! Destructor
 
     virtual bool NewNode(const StringC &name,
                          const RCHashC<StringC,StringC> &attr,
@@ -99,7 +101,7 @@ namespace RavlN {
     { return name; }
     //: Access name.
 
-    ostream &Dump(ostream &out,int level= 0) const;
+    std::ostream &Dump(std::ostream &out,int level= 0) const;
     //: Dump tree in a human readable format.
     
     bool IsPI() const
@@ -164,6 +166,9 @@ namespace RavlN {
     bool AttributeBool(const StringC &name,bool defaultValue = false) const ;
     //: Access attribute.
     
+    bool HasAttribute(const StringC &name) const;
+    //: Test if attribute is set.
+
     template<typename DataT>
     bool Attribute(const StringC &name,DataT &data,const DataT &defaultValue = DataT()) const {
       const StringC *value = Data().Lookup(name);
@@ -201,7 +206,7 @@ namespace RavlN {
                                 XMLTreeLoadC *loader);
     //: Look for fallback
     
-    static ostream &Indent(ostream &out,int level);
+    static std::ostream &Indent(std::ostream &out,int level);
     bool isPI; // Is this a processing instruction ?
     StringC name;
     DListC<XMLTreeC> children; // Ordered list of children.
@@ -382,7 +387,11 @@ namespace RavlN {
     { return Body().Attribute(name,value,defaultValue); }
     //: Access generic attribute.
     // Return true if non default value has been specified.
-    
+
+    bool HasAttribute(const StringC &name) const
+    { return Body().HasAttribute(name); }
+    //: Test if attribute is set.
+
     StringC Content() const
     { return Body().Content(); } 
     //: Access content of tag (if any)

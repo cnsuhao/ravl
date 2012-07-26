@@ -26,7 +26,7 @@ namespace RavlN {
     RavlAssert (_cost.OutputSize() == 1);
   }
   
-  CostFunction1dBodyC::CostFunction1dBodyC (istream &in)
+  CostFunction1dBodyC::CostFunction1dBodyC (std::istream &in)
     :CostBodyC(in),
      _cost(in)
   {
@@ -47,7 +47,7 @@ namespace RavlN {
     //return _point + _direction * X[0];
   }
     
-  bool CostFunction1dBodyC::Save (ostream &out) const
+  bool CostFunction1dBodyC::Save (std::ostream &out) const
   {
     CostBodyC::Save (out);
     _cost.Save (out);

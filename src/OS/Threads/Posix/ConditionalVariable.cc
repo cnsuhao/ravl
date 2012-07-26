@@ -45,7 +45,7 @@ namespace RavlN
 {
 
   void ConditionalVariableC::Error(const char *msg)  {
-    cerr << "ConditionalVariableC::Error() :" << msg << " \n";
+    std::cerr << "ConditionalVariableC::Error() :" << msg << " \n";
     RavlAssert(0);
   }
 

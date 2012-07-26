@@ -27,20 +27,20 @@ namespace RavlN {
   void InitTMatrixIO()
   {}
   
-  FileFormatStreamC<TMatrixC<FloatT> > FileFormatStream_TMatrix_Float;
-  FileFormatStreamC<TVectorC<FloatT> > FileFormatStream_TVector_Float;
+  static FileFormatStreamC<TMatrixC<FloatT> > FileFormatStream_TMatrix_Float;
+  static FileFormatStreamC<TVectorC<FloatT> > FileFormatStream_TVector_Float;
   //FileFormatStreamC<VectorTMatrixC<FloatT>> FileFormatStream_VectorMatrix;
   
-  FileFormatBinStreamC<TMatrixC<FloatT> > FileFormatBinStream_TMatrix_Float;
-  FileFormatBinStreamC<TVectorC<FloatT> > FileFormatBinStream_TVector_Float;
+  static FileFormatBinStreamC<TMatrixC<FloatT> > FileFormatBinStream_TMatrix_Float;
+  static FileFormatBinStreamC<TVectorC<FloatT> > FileFormatBinStream_TVector_Float;
   //FileFormatBinStreamC<VectorTMatrixC<FloatT>> FileFormatBinStream_VectorMatrix;
   
-  FileFormatStreamC<SArray1dC<TMatrixC<FloatT> > > FileFormatStream_SArray1dC_TMatrix_Float;
-  FileFormatStreamC<SArray1dC<TVectorC<FloatT> > > FileFormatStream_SArray1dC_TVector_Float;
+  static FileFormatStreamC<SArray1dC<TMatrixC<FloatT> > > FileFormatStream_SArray1dC_TMatrix_Float;
+  static FileFormatStreamC<SArray1dC<TVectorC<FloatT> > > FileFormatStream_SArray1dC_TVector_Float;
   //FileFormatStreamC<SArray1dC<VectorTMatrixC<FloatT>> > FileFormatStream_SArray1dC_VectorMatrix;
   
-  FileFormatBinStreamC<SArray1dC<TMatrixC<FloatT> > > FileFormatBinStream_SArray1dC_TMatrix_Float;
-  FileFormatBinStreamC<SArray1dC<TVectorC<FloatT> > > FileFormatBinStream_SArray1dC_TVector_Float;
+  static FileFormatBinStreamC<SArray1dC<TMatrixC<FloatT> > > FileFormatBinStream_SArray1dC_TMatrix_Float;
+  static FileFormatBinStreamC<SArray1dC<TVectorC<FloatT> > > FileFormatBinStream_SArray1dC_TVector_Float;
   //FileFormatBinStreamC<SArray1dC<VectorTMatrixC<FloatT>> > FileFormatBinStream_SArray1dC_VectorMatrix;
   
   //-----------------------------------------------------------------------------------------

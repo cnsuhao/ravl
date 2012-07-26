@@ -30,13 +30,13 @@ namespace RavlN {
     FunctionSliceBodyC(UIntT inputSize, const IndexRangeC & indexRange);
     //: Default constructor.
     
-    FunctionSliceBodyC(istream &strm);
+    FunctionSliceBodyC(std::istream &strm);
     //: Load from stream.
     
     FunctionSliceBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -71,7 +71,7 @@ namespace RavlN {
     {}
     //: Construct from a set of functions
     
-    FunctionSliceC(istream &is);
+    FunctionSliceC(std::istream &is);
     //: Stream constructor.
     
     FunctionSliceC(BinIStreamC &is);
@@ -111,14 +111,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,FunctionSliceC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FunctionSliceC &obj) {
     obj = FunctionSliceC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FunctionSliceC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionSliceC &obj) {
     obj.Save(out);
     return out;
   }

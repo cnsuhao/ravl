@@ -43,7 +43,7 @@ namespace RavlDFN {
   //: Destructor.
   
   GUIViewBodyC::~GUIViewBodyC() {
-    //ONDEBUG(cerr << "GUIViewBodyC::~GUIViewBodyC(), Called \n");
+    //ONDEBUG(std::cerr << "GUIViewBodyC::~GUIViewBodyC(), Called \n");
   }
   
   //:  Attach system to this view.
@@ -94,7 +94,7 @@ namespace RavlDFN {
   //: Handle object updates.
   
   bool GUIViewBodyC::ObjectUpdate(DFObjectUpdateT &type,DFObjectC &obj) {
-    ONDEBUG(cerr << "GUIViewBodyC::ObjectUpdate(). \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::ObjectUpdate(). \n");
     switch(type) {
     case DFOU_ADDED: {
       Index2dC at(0,0);
@@ -111,7 +111,8 @@ namespace RavlDFN {
     case DFOU_DELETED: DelObject(obj); break;
     case DFOU_CHANGED: Render(obj); break;
     default:
-      cerr << "GUIViewBodyC::ObjectUpdate(), WARNING: Unexpected update type. \n";
+      std::cerr << "GUIViewBodyC::ObjectUpdate(), WARNING: Unexpected update type. \n";
+      break;
     }
     return true;
   }
@@ -123,9 +124,9 @@ namespace RavlDFN {
     ViewElementC ret;
     if(!obj.IsValid())
       return ret;
-    ONDEBUG(cerr << "GUIViewBodyC::AddObject(), " << ((void *) this) << " Object '" << obj.Name() << "' at=" << at << "\n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::AddObject(), " << ((void *) this) << " Object '" << obj.Name() << "' at=" << at << "\n");
     if(obj2elem.Lookup(obj,ret) && ret.IsValid()) {
-      ONDEBUG(cerr << " Object already present. \n");
+      ONDEBUG(std::cerr << " Object already present. \n");
       return ret;
     }
     DFLinkC lnk(obj);
@@ -152,7 +153,7 @@ namespace RavlDFN {
   //: Remove object from view,
   
   bool GUIViewBodyC::DelObject(const DFObjectC &obj) {
-    ONDEBUG(cerr << "GUIViewBodyC::DelObject(), Called. \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::DelObject(), Called. \n");
     ViewElementC ve;
     if(!obj2elem.Lookup(obj,ve))
       return true; // Done already.
@@ -304,7 +305,7 @@ namespace RavlDFN {
     if(widget == 0)
       return ; // Nowhere to render to yet.
     for(DLIterC<ViewElementC> it(elements);it;it++) {
-      //ONDEBUG(cerr << "GUIViewBodyC::Render(), Obj=" << it->Object().Name() << " At=" << it->AttachPoint() << "\n");
+      //ONDEBUG(std::cerr << "GUIViewBodyC::Render(), Obj=" << it->Object().Name() << " At=" << it->AttachPoint() << "\n");
       Render(*it);
     }
   }
@@ -320,7 +321,7 @@ namespace RavlDFN {
 		       area.Range2().Size(),area.Range1().Size());
     
     for(DLIterC<ViewElementC> it(elements);it;it++) {
-      //ONDEBUG(cerr << "GUIViewBodyC::Render(const IndexRange2dC &), Obj=" << it->Object().Name() << " At=" << it->AttachPoint() << " Intersect=" << it->Intersects(area) << "\n");
+      //ONDEBUG(std::cerr << "GUIViewBodyC::Render(const IndexRange2dC &), Obj=" << it->Object().Name() << " At=" << it->AttachPoint() << " Intersect=" << it->Intersects(area) << "\n");
       if(it->Intersects(area))
 	Render(*it);
     }
@@ -333,7 +334,7 @@ namespace RavlDFN {
       return true; // Nowhere to render to yet.
     ViewElementC ve;
     if(!obj2elem.Lookup(obj,ve)) {
-      ONDEBUG(cerr << "GUIViewBodyC::Render(const DFObjectC &), WARNING: Can't find ViewElement for object. \n");
+      ONDEBUG(std::cerr << "GUIViewBodyC::Render(const DFObjectC &), WARNING: Can't find ViewElement for object. \n");
       return false;
     }
     Render(ve.Frame());
@@ -397,7 +398,7 @@ namespace RavlDFN {
   //: Mouse move.
   
   bool GUIViewBodyC::EventMouseMove(MouseEventC &me) {
-    //ONDEBUG(cerr << "GUIViewBodyC::EventMouseMove(MouseEventC &) Called. \n");
+    //ONDEBUG(std::cerr << "GUIViewBodyC::EventMouseMove(MouseEventC &) Called. \n");
     mouseAt = me.At();
     switch(viewState) {
     case VS_DRAG:
@@ -415,6 +416,7 @@ namespace RavlDFN {
 	break;
       }
       viewState = VS_READY;
+      /* no break */
     case VS_READY:
       break;
     case VS_LINK:
@@ -435,7 +437,7 @@ namespace RavlDFN {
   //: Attempt to create a link between elm1 and elm2.
   
   bool GUIViewBodyC::CreateLink(const ViewElementC &elm1,const ViewElementC &elm2) {
-    ONDEBUG(cerr << "GUIViewBodyC::CreateLink(ViewElementC &,ViewElementC &), Called. \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::CreateLink(ViewElementC &,ViewElementC &), Called. \n");
     if(!system.IsValid())
       return true;
     DFObjectC obj1 = elm1.Object();
@@ -452,7 +454,7 @@ namespace RavlDFN {
   //: Load an object and put it at location 'at'.
   
   bool GUIViewBodyC::LoadObject(const StringC &fn,Index2dC at) {
-    ONDEBUG(cerr << "GUIViewBodyC::LoadObject() Called. " << fn << " At=" << at << "\n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::LoadObject() Called. " << fn << " At=" << at << "\n");
     if(!system.IsValid())
       return false;
     DFObjectC nObj = system.LoadObject(fn);
@@ -518,7 +520,7 @@ namespace RavlDFN {
   //: Mouse press.
   
   bool GUIViewBodyC::EventMousePress(MouseEventC &me) {
-    //ONDEBUG(cerr << "GUIViewBodyC::EventMousePress(MouseEventC &) Called. " << me.HasChanged(0) << " " << me.HasChanged(2) << " At=" << me.Position() << "\n");
+    //ONDEBUG(std::cerr << "GUIViewBodyC::EventMousePress(MouseEventC &) Called. " << me.HasChanged(0) << " " << me.HasChanged(2) << " At=" << me.Position() << "\n");
     ViewElementC el = FindElement(me.At());
     DFMouseActionT ma = DFMA_NONE;
     if(!el.IsValid()) {
@@ -540,7 +542,7 @@ namespace RavlDFN {
 	  return true;
 	}
 	el.Selected(!el.Selected());
-	ONDEBUG(cerr << "GUIViewBodyC::EventMousePress(), Got object. Selected:" << el.Selected() << "\n");
+	ONDEBUG(std::cerr << "GUIViewBodyC::EventMousePress(), Got object. Selected:" << el.Selected() << "\n");
 	hold = el;
 	holdOffset = me.At() - el.At();
 	viewState = VS_DRAG;
@@ -556,7 +558,7 @@ namespace RavlDFN {
 	    // Clicked on a port ?
 	    DFPortC port(el.Object());
 	    if(port.IsValid()) {
-	      ONDEBUG(cerr << "Got a port. \n";);
+	      ONDEBUG(std::cerr << "Got a port. \n";);
 	      hold = el;
 	      viewState = VS_LINK;
 	    }
@@ -583,7 +585,7 @@ namespace RavlDFN {
 	  case VS_DRAG:
 	    break;
 	  };
-      }
+      } break;
       case DFMA_NONE:
 	break;
       }
@@ -593,7 +595,7 @@ namespace RavlDFN {
   //: Mouse release.
   
   bool GUIViewBodyC::EventMouseRelease(MouseEventC &me) {
-    ONDEBUG(cerr << "GUIViewBodyC::EventMouseRelease(MouseEventC &) Called. \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::EventMouseRelease(MouseEventC &) Called. \n");
     if(me.HasChanged(0)) {
       if(viewState == VS_DRAG) {
 	viewState = VS_READY;
@@ -606,14 +608,14 @@ namespace RavlDFN {
   //: Configure. 
 
   bool GUIViewBodyC::EventConfigure(GdkEvent* &event) {
-    //ONDEBUG(cerr << "GUIViewBodyC::EventConfigure(GdkEvent* &event) Called. \n");
+    //ONDEBUG(std::cerr << "GUIViewBodyC::EventConfigure(GdkEvent* &event) Called. \n");
     return true;
   }
   
   //: Expose of area.
   
   bool GUIViewBodyC::EventExpose(GdkEvent* &event) {
-    //ONDEBUG(cerr << "GUIViewBodyC::EventExpose(GdkEvent* &event) Called. \n");
+    //ONDEBUG(std::cerr << "GUIViewBodyC::EventExpose(GdkEvent* &event) Called. \n");
     GdkEventExpose &expose = *((GdkEventExpose *)event);
     GtkWidget *widget = Widget();
     
@@ -634,7 +636,7 @@ namespace RavlDFN {
   //: Handle key press events.
   
   bool GUIViewBodyC::EventKeyPress(GdkEventKey *&key) {
-    ONDEBUG(cerr << "GUIViewBodyC::EventKeyPress(), Called. \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::EventKeyPress(), Called. \n");
     //if(key->string[0] == 0
     switch(key->string[0]) {
     case 0x7f: // Backspace.
@@ -649,7 +651,7 @@ namespace RavlDFN {
   //: Handle key release events.
   
   bool GUIViewBodyC::EventKeyRelease(GdkEventKey *&key) {
-    ONDEBUG(cerr << "GUIViewBodyC::EventKeyRelease(), Called. \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::EventKeyRelease(), Called. \n");
     //cerr << "String='" << key->string << "'\n";
     return true;
   }
@@ -658,57 +660,57 @@ namespace RavlDFN {
   //: Handle drag and drop motion.
   
   bool GUIViewBodyC::DNDMotion(GdkDragContext * &dc,PositionTimeC &pt) {
-    ONDEBUG(cerr << "GUIViewBodyC::DNDMotion(), Called \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::DNDMotion(), Called \n");
     return true;
   }
   
   //: Drop.
   
   bool GUIViewBodyC::DNDDrop(GdkDragContext * &dc,PositionTimeC &pt) {
-    ONDEBUG(cerr << "GUIViewBodyC::DNDDrop(), Called \n");    
+    ONDEBUG(std::cerr << "GUIViewBodyC::DNDDrop(), Called \n");    
     return TRUE;
   }
   
   //: Drag and drop begin.
   
   bool GUIViewBodyC::DNDBegin(GdkDragContext * &dc) {
-    ONDEBUG(cerr << "GUIViewBodyC::DNDBegin(), Called \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::DNDBegin(), Called \n");
     return true;
   }
   
   //: Drag and drop end.
   
   bool GUIViewBodyC::DNDEnd(GdkDragContext * &dc) {
-    ONDEBUG(cerr << "GUIViewBodyC::DNDEnd(), Called \n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::DNDEnd(), Called \n");
     return true;
   }
   
   //: Drag and drop data recieved
   
   bool GUIViewBodyC::DNDDataRecieved(DNDDataInfoC &info) {
-    ONDEBUG(cerr << "GUIViewBodyC::DNDDataRecieved(), Called \n");
-    ONDEBUG(cerr << "Data length=" << info.Data()->length << " Format=" << info.Data()->format << " Data=" << (char *) info.Data()->data << " type=" << info.Data()->type << "\n");
+    ONDEBUG(std::cerr << "GUIViewBodyC::DNDDataRecieved(), Called \n");
+    ONDEBUG(std::cerr << "Data length=" << info.Data()->length << " Format=" << info.Data()->format << " Data=" << (char *) info.Data()->data << " type=" << info.Data()->type << "\n");
     FactoryC fact;
     switch(info.Info()) {
     case 0: /* URL */
-      ONDEBUG(cerr << "GUIViewBodyC::DNDDataRecieved(), Got URL. \n");
+      ONDEBUG(std::cerr << "GUIViewBodyC::DNDDataRecieved(), Got URL. \n");
       if(info.IsString())
 	LoadObject(info.String().TopAndTail(),info.At());
       break;
     case 1: /* Object. */
       {
-	ONDEBUG(cerr << "GUIViewBodyC::DNDDataRecieved(), Got tag '" << info.String() << "'. \n");
+	ONDEBUG(std::cerr << "GUIViewBodyC::DNDDataRecieved(), Got tag '" << info.String() << "'. \n");
 	if(!factories.LookupFactory(info.String(),fact)) {
-	  cerr << "GUIViewBodyC::DNDDataRecieved(), ERROR: Unrecognised factory. '" << info.String() << "' \n";
+	  std::cerr << "GUIViewBodyC::DNDDataRecieved(), ERROR: Unrecognised factory. '" << info.String() << "' \n";
 	  break;
 	}
 	if(!fact.IsValid()) {
-	  cerr << "GUIViewBodyC::DNDDataRecieved(), ERROR: No factory. \n";
+	  std::cerr << "GUIViewBodyC::DNDDataRecieved(), ERROR: No factory. \n";
 	  break;
 	}
 	DFObjectC obj = fact.Create();
 	if(!obj.IsValid()) {
-	  cerr << "GUIViewBodyC::DNDDataRecieved(), ERROR: Failed to create object. \n";
+	  std::cerr << "GUIViewBodyC::DNDDataRecieved(), ERROR: Failed to create object. \n";
 	  break;
 	}
 	cerr << "Create '" << info.String() << "'\n";
@@ -718,7 +720,7 @@ namespace RavlDFN {
 	return true;
       }
     default:
-      cerr << "GUIViewBodyC::DNDDataRecieved(), Unexpected drop type. \n";
+      std::cerr << "GUIViewBodyC::DNDDataRecieved(), Unexpected drop type. \n";
       break;
     }
     info.Finish(false,false);
@@ -728,7 +730,7 @@ namespace RavlDFN {
   //: Undo all references.
   
   void GUIViewBodyC::Destroy() {
-    //ONDEBUG(cerr << "GUIViewBodyC::Destroy(), Called. \n");
+    //ONDEBUG(std::cerr << "GUIViewBodyC::Destroy(), Called. \n");
     // Disconnect all signals.
     connectSet.DisconnectAll();
     sysConnectSet.DisconnectAll();

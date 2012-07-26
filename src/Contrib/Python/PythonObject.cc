@@ -52,7 +52,7 @@ namespace RavlN
       m_object = copy.m_object;
       if (m_object)
       {
-        ONDEBUG(if (m_object) cerr << "PythonObjectC::PythonObjectC(copy) INCREF" << endl);
+        ONDEBUG(if (m_object) std::cerr << "PythonObjectC::PythonObjectC(copy) INCREF" << endl);
         Py_INCREF(m_object);
       }
     }
@@ -66,7 +66,7 @@ namespace RavlN
     {
       PythonLockC lock(m_interpreter.GetThreadState());
       
-      ONDEBUG(if (m_object) cerr << "PythonObjectC::~PythonObjectC DECREF" << endl);
+      ONDEBUG(if (m_object) std::cerr << "PythonObjectC::~PythonObjectC DECREF" << endl);
       Py_XDECREF(m_object);
     }
   }
@@ -79,14 +79,14 @@ namespace RavlN
     {
       PythonLockC lock(m_interpreter.GetThreadState());
       
-      ONDEBUG(if (m_object) cerr << "PythonObjectC::operator= DECREF" << endl);
+      ONDEBUG(if (m_object) std::cerr << "PythonObjectC::operator= DECREF" << endl);
       Py_XDECREF(m_object);
       
       m_object = rhs.m_object;
       
       if (m_object)
       {
-        ONDEBUG(if (m_object) cerr << "PythonObjectC::operator= INCREF" << endl);
+        ONDEBUG(if (m_object) std::cerr << "PythonObjectC::operator= INCREF" << endl);
         Py_INCREF(m_object);
       }
     }
@@ -191,7 +191,7 @@ namespace RavlN
       
       if (valList.Size() > 0)
       {
-        ONDEBUG(cerr << "PythonObjectC::BuildTuple size=" << valList.Size() << endl);
+        ONDEBUG(std::cerr << "PythonObjectC::BuildTuple size=" << valList.Size() << endl);
         m_object = PyTuple_New(valList.Size());
         
         if (m_object)
@@ -202,7 +202,7 @@ namespace RavlN
             if (it->IsValid())
             {
               ONDEBUG(int ret = )Py_INCREF(it->m_object); // Reference is stolen by SetItem
-              ONDEBUG(cerr << "PythonObjectC::BuildTuple adding item " << (ret == 0 ? "OK" : "FAILED") << endl);
+              ONDEBUG(std::cerr << "PythonObjectC::BuildTuple adding item " << (ret == 0 ? "OK" : "FAILED") << endl);
               PyTuple_SetItem(m_object, pos, it->m_object);
             }
             else

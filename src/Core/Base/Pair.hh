@@ -172,13 +172,13 @@ namespace RavlN {
   
   
   template <class DataC>
-  ostream &operator<<(ostream & s, const PairC<DataC> & p) {
+  std::ostream &operator<<(std::ostream & s, const PairC<DataC> & p) {
     s << p.A() << ' ' << p.B();
     return s;
   }
   
   template <class DataC>
-  istream &operator>>(istream & s, PairC<DataC> & p) {
+  std::istream &operator>>(std::istream & s, PairC<DataC> & p) {
     s >> p.A() >> p.B();
     return s;
   }

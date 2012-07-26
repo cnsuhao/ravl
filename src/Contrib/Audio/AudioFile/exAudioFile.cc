@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlAudioFile
 //! author="Lee Gregory"
 //! docentry="Ravl.API.Audio.IO"
@@ -14,6 +13,7 @@
 #include "Ravl/Option.hh"
 #include "Ravl/DP/SequenceIO.hh"
 #include "Ravl/Audio/Types.hh"
+#include "Ravl/DP/PrintIOInfo.hh"
 #include "Ravl/DP/AttributeType.hh"
 using namespace RavlN;
 using namespace RavlAudioN ; 
@@ -28,42 +28,90 @@ int main(int nargs,char **argv) {
   OptionC opt(nargs,argv);
   StringC idev = opt.String("i","test.wav","Input  device.");
   StringC odev = opt.String("o","@DEVAUDIO:/dev/dsp","Output device.");
+  StringC format = opt.String("f","","Format.");
+  bool stereo = opt.Boolean("s",false,"Stereo. ");
+  bool verbose = opt.Boolean("v",false,"Verbose ");
+  bool listFormats = opt.Boolean("lf",false,"List formats ");
   opt.Check();
 
-  
-  // open the input port 
-  DPIPortC<SampleElemC<1,Int16T> > in;
-  if(!OpenISequence(in,idev)) {
-    cerr << "Failed to open input : " << idev << "\n";
-    return 1;
+  if(listFormats) {
+    PrintIOFormats();
+    return 0;
   }
-  
-  
-  // now lets setup an output port 
-  DPOPortC<SampleElemC<1,Int16T> > out;
-  if(!OpenOSequence(out,odev)) {
-    cerr << "Failed to open output : " << odev << "\n";
-    return 1;
-  }
- 
-  
-  // lets look at the attributes available 
-  DListC<AttributeTypeC> attrList ; 
-  in.GetAttrTypes(attrList) ; 
-  cout << "\nAvailable Attributes are :\n" << attrList ; 
-  
-  // lets get some attributes 
-  RealT sampleRate ; 
-  IntT  sampleBits ; 
-  in.GetAttr("samplerate", sampleRate) ; 
-  in.GetAttr("samplebits", sampleBits) ; 
-  cout << "\nSample rate is " << sampleRate << " and sample bits is " << sampleBits << "\n\n" ; 
+  if(!stereo) {
+    // open the input port
+    DPIPortC<SampleElemC<1,Int16T> > in;
+    if(!OpenISequence(in,idev,format,verbose)) {
+      cerr << "Failed to open input : " << idev << "\n";
+      return 1;
+    }
+
+
+    // now lets setup an output port
+    DPOPortC<SampleElemC<1,Int16T> > out;
+    if(!OpenOSequence(out,odev,format,verbose)) {
+      cerr << "Failed to open output : " << odev << "\n";
+      return 1;
+    }
+
+
+    // lets look at the attributes available
+#if 0
+    DListC<AttributeTypeC> attrList ;
+    in.GetAttrTypes(attrList) ;
+    cout << "\nAvailable Attributes are :\n" << attrList ;
+#endif
+
+    // lets get some attributes
+    RealT sampleRate ;
+    IntT  sampleBits ;
+    in.GetAttr("samplerate", sampleRate) ;
+    in.GetAttr("samplebits", sampleBits) ;
+    cout << "\nSample rate is " << sampleRate << " and sample bits is " << sampleBits << "\n\n" ;
+
+    // now lets read data from file and play to device
+    out.SetAttr("samplerate",sampleRate) ;
+    SampleElemC<1,Int16T>  sample;
+    while (in.Get(sample)) {
+      out.Put(sample) ; // play sample
+    }
+  } else {
+    // open the input port
+    DPIPortC<SampleElemC<2,Int16T> > in;
+    if(!OpenISequence(in,idev,format,verbose)) {
+      cerr << "Failed to open input : " << idev << "\n";
+      return 1;
+    }
+
+
+    // now lets setup an output port
+    DPOPortC<SampleElemC<2,Int16T> > out;
+    if(!OpenOSequence(out,odev,format,verbose)) {
+      cerr << "Failed to open output : " << odev << "\n";
+      return 1;
+    }
+
+
+    // lets look at the attributes available
+#if 0
+    DListC<AttributeTypeC> attrList ;
+    in.GetAttrTypes(attrList) ;
+    cout << "\nAvailable Attributes are :\n" << attrList ;
+#endif
     
-  // now lets read data from file and play to device
-  out.SetAttr("samplerate",sampleRate) ; 
-  SampleElemC<1,Int16T>  sample;
-  while (in.Get(sample)) {
-    out.Put(sample) ; // play sample
+    // lets get some attributes
+    RealT sampleRate ;
+    IntT  sampleBits ;
+    in.GetAttr("samplerate", sampleRate) ;
+    in.GetAttr("samplebits", sampleBits) ;
+    cout << "\nSample rate is " << sampleRate << " and sample bits is " << sampleBits << "\n\n" ;
+
+    // now lets read data from file and play to device
+    out.SetAttr("samplerate",sampleRate) ;
+    SampleElemC<2,Int16T>  sample;
+    while (in.Get(sample)) {
+      out.Put(sample) ; // play sample
+    }
   }
   
   return 0;

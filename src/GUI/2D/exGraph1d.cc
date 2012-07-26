@@ -34,5 +34,6 @@ int main(int nargs,char *args[])
   }
   
   GUIManager.Wait();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

@@ -23,13 +23,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierDiscriminantFunctionBodyC::ClassifierDiscriminantFunctionBodyC(istream &strm)
+  ClassifierDiscriminantFunctionBodyC::ClassifierDiscriminantFunctionBodyC(std::istream &strm)
     : ClassifierBodyC(strm)
   { 
     IntT version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("ClassifierDiscriminantFunctionBodyC::ClassifierDiscriminantFunctionBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierDiscriminantFunctionBodyC::ClassifierDiscriminantFunctionBodyC(std::istream &), Unrecognised version number in stream. ");
 
     strm >> func; 
   }
@@ -48,7 +48,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierDiscriminantFunctionBodyC::Save(ostream &out) const {
+  bool ClassifierDiscriminantFunctionBodyC::Save(std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 0;

@@ -29,11 +29,11 @@ template class Slice1dIter3C<UIntT,RealT,ByteT>;
 int main() {
   int ln;
   if((ln = testBasic()) != 0) {
-    cerr << "Test failed at line << " << ln << "\n";
+    std::cerr << "Test failed at line << " << ln << "\n";
     return 1;
   }
   if((ln = testRange()) != 0) {
-    cerr << "Test failed at line << " << ln << "\n";
+    std::cerr << "Test failed at line << " << ln << "\n";
     return 1;
   }
   return 0;
@@ -49,7 +49,7 @@ int testBasic() {
     it.Data1() = it.Data2();
   for(int i = 0;i < 10;i++) {
     if(s2[i] != (UIntT) i) {
-      cerr << "Slice test failed. \n";
+      std::cerr << "Slice test failed. \n";
       return __LINE__;
     }
   }

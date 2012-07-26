@@ -30,7 +30,7 @@ namespace RavlN {
 
   
   static IntT Init() {
-    // Initialization of the table of precomputed factorials.
+    // Initialisation of the table of precomputed factorials.
     RavlPreComputedFactorial[0] = 1.0;
     for (IntT i = 1; i < RavlPreComputedFactorialSize; i++)
       RavlPreComputedFactorial[i] = RavlPreComputedFactorial[i-1] * RealT(i);  

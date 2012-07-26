@@ -60,7 +60,7 @@ namespace RavlGUIN
 
   bool FileChooserBodyC::CommonCreate(GtkWidget *newWidget)
   {
-    ONDEBUG(cerr << "FileChooserBodyC::CommonCreate" << endl);
+    ONDEBUG(std::cerr << "FileChooserBodyC::CommonCreate" << endl);
 
     if (newWidget)
     {
@@ -75,6 +75,7 @@ namespace RavlGUIN
         case GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER: m_action = FileChooserCreateFolder; break;
         default:
           RavlAssertMsg(false, "Unknown file chooser action.");
+          break;
       }
 
       m_confirmOverwrite = gtk_file_chooser_get_do_overwrite_confirmation(GTK_FILE_CHOOSER(widget));
@@ -194,7 +195,7 @@ namespace RavlGUIN
     RavlAssert(widget);
 
     m_filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
-    ONDEBUG(cerr << "FileChooserBodyC::CBUpdateFilename filename(" << m_filename << ")" << endl);
+    ONDEBUG(std::cerr << "FileChooserBodyC::CBUpdateFilename filename(" << m_filename << ")" << endl);
 
     if (m_configParameterFilename.IsValid())
       m_configParameterFilename->SetValue(m_filename);
@@ -239,10 +240,10 @@ namespace RavlGUIN
         {
           GtkFileFilter *filter = GTK_FILE_FILTER(listedFilterIter->data);
           const char *filterName = gtk_file_filter_get_name(filter);
-          ONDEBUG(cerr << "FileChooserBodyC::GUISetFilter name(" << m_filterSetName << ") checking name(" << filterName << ")" << endl);
+          ONDEBUG(std::cerr << "FileChooserBodyC::GUISetFilter name(" << m_filterSetName << ") checking name(" << filterName << ")" << endl);
           if (filterName && m_filterSetName == filterName)
           {
-            ONDEBUG(cerr << "FileChooserBodyC::GUISetFilter name(" << m_filterSetName << ") found name(" << filterName << ")" << endl);
+            ONDEBUG(std::cerr << "FileChooserBodyC::GUISetFilter name(" << m_filterSetName << ") found name(" << filterName << ")" << endl);
             gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(widget), filter);
             break;
           }
@@ -259,7 +260,7 @@ namespace RavlGUIN
       gtk_file_filter_set_name(filter, m_filterSetName);
       for (DLIterC<StringC> patternIter(m_filterSetPatterns); patternIter; patternIter++)
       {
-        ONDEBUG(cerr << "FileChooserBodyC::GUISetFilter name(" << m_filterSetName << ") adding pattern(" << *patternIter << ")" << endl);
+        ONDEBUG(std::cerr << "FileChooserBodyC::GUISetFilter name(" << m_filterSetName << ") adding pattern(" << *patternIter << ")" << endl);
         gtk_file_filter_add_pattern(filter, *patternIter);
       }
 
@@ -283,10 +284,10 @@ namespace RavlGUIN
       {
         GtkFileFilter *filter = GTK_FILE_FILTER(listedFilterIter->data);
         const char *filterName = gtk_file_filter_get_name(filter);
-        ONDEBUG(cerr << "FileChooserBodyC::DoAddFilter name(" << m_filterSetName << ") checking name(" << filterName << ")" << endl);
+        ONDEBUG(std::cerr << "FileChooserBodyC::DoAddFilter name(" << m_filterSetName << ") checking name(" << filterName << ")" << endl);
         if (filterName && name == filterName)
         {
-          ONDEBUG(cerr << "FileChooserBodyC::DoAddFilter name(" << m_filterSetName << ") found name(" << filterName << ")" << endl);
+          ONDEBUG(std::cerr << "FileChooserBodyC::DoAddFilter name(" << m_filterSetName << ") found name(" << filterName << ")" << endl);
           filterFound = true;
           break;
         }
@@ -303,7 +304,7 @@ namespace RavlGUIN
       gtk_file_filter_set_name(filter, name);
       for (DLIterC<StringC> patternIter(patterns); patternIter; patternIter++)
       {
-        ONDEBUG(cerr << "FileChooserBodyC::GUIAddFilter name(" << name << ") adding pattern(" << *patternIter << ")" << endl);
+        ONDEBUG(std::cerr << "FileChooserBodyC::GUIAddFilter name(" << name << ") adding pattern(" << *patternIter << ")" << endl);
         gtk_file_filter_add_pattern(filter, *patternIter);
       }
 

@@ -54,7 +54,7 @@
   #define RAVL_COMPILER_VISUALCPPNET (!defined(__GNUC__) && defined(WIN32) && (_MSC_VER >= 1300)) /* Visual C++ .NET*/
   #define RAVL_COMPILER_VISUALCPP6 (!defined(__GNUC__) && defined(WIN32) && !RAVL_COMPILER_VISUALCPPNET) /* Visual C++ 6 */
 
-  #define RAVL_CPU_IX86    defined(__i386__)      /* 386 base varient. */
+  #define RAVL_CPU_IX86    defined(__i386__)      /* 386 base variant. */
   #define RAVL_CPU_X86_64 (defined (__x86_64__) || defined(__LP64__))
   #define RAVL_CPU_SPARC   defined(__sparc)       /* sun sparc based system. */
   #define RAVL_CPU_SPARC_V9 defined(__sparc_v9__)  /* sparc v9 instruction set */

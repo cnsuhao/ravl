@@ -38,21 +38,36 @@ namespace RavlN {
     
     bool First() {
       cit = arr.Body().chunks;
-      if(!cit)
-	return false;
+      if(!cit) {
+        it.Invalidate();
+        return false;
+      }
       it.First(cit->Data()); 
       return true;
     }
     //: Goto first element in the array.
     // Returns true if iterator is at a valid element after operation.
-    
+
+    bool Last() {
+      cit = arr.Body().chunks;
+      cit.Last();
+      if(!cit) {
+        it.Invalidate();
+        return false;
+      }
+      it.Last(cit->Data());
+      return true;
+    }
+    //: Goto last element in the array.
+    // Returns true if iterator is at a valid element after operation.
+
     const DArray1dIterC<DataT> &operator=(const DArray1dC<DataT> &narr) {
       arr = narr;
       First();
       return *this;
     }
     //: Assign to array.
-    // Leave iterator at first element in list.
+    // Leave's iterator at first element in list.
     
     bool IsElm() const
     { return it.IsElm(); }
@@ -86,6 +101,20 @@ namespace RavlN {
     { return &it.Data(); }
     //: Access data.
     
+    bool Prev() {
+      it--;
+      if(it.DataPtr() >= cit->Data().DataStart()) {
+        it.Invalidate();
+        return true;
+      }
+      cit--;
+      if(!cit) return false;
+      it.Last(cit->Data());
+      return true;
+    }
+    //: Goto previous element.
+    // Returns true if iterator is at a valid element after operation.
+
     bool Next() {
       it++;
       if(it) return true;
@@ -100,15 +129,28 @@ namespace RavlN {
     void operator++(int)
     { Next(); }
     //: Goto next element.
-    
+
+    DArray1dIterC &operator++()
+    { Next(); return *this; }
+    //: Goto next element.
+
+    void operator--(int)
+    { Prev(); }
+    //: Goto previous element.
+
+    DArray1dIterC &operator--()
+    { Prev(); return *this; }
+    //: Goto previous element.
+
     IndexC Index() const
     { return IndexC((IntT)( &(*it) - cit.Data().Data().ReferenceElm())); }
     //: Get index of current element.
+    // Note: This is only valid if we're addressing a valid element. That is if IsElm() is true.
     
     bool GotoNth(UIntT offset) {
       UIntT at;
       if(!arr.FindNthChunk(offset,at,cit))
-	return false;
+        return false;
       it.First(cit->Nth(offset - at),cit->Data());
       return true;
     }

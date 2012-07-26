@@ -23,7 +23,7 @@
 namespace RavlN {
   
   bool SquareIterC::Next() {
-    ONDEBUG(cerr << "SquareIterC::Next(), State:" << state << "\n");
+    ONDEBUG(std::cerr << "SquareIterC::Next(), State:" << state << "\n");
     switch(state) {
     case 1:  // From Center.
       if(maxSize <= 1) 
@@ -68,7 +68,8 @@ namespace RavlN {
       state = 2;
       return true;
     default:
-      RavlAssertMsg(0,"SquareIterC::Next(), ERROR: Illegal state. ");
+      RavlIssueError("SquareIterC::Next(), ERROR: Illegal state. ");
+      break;
     }
     state = 0;
     return false;

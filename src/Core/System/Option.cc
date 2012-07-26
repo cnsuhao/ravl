@@ -27,7 +27,7 @@
 #define ONDEBUG(x)
 #endif
 
-// Set to 1 to support unamed multipal agument options.
+// Set to 1 to support unnamed multiple arguments options.
 
 #define SUPPORT_UNAMED_MULTIARG 1
 
@@ -59,7 +59,7 @@ namespace RavlN {
     : leftOk(false),
       help(false),
       progName("-Unknown-"),
-      sout(cerr),
+      sout(std::cerr),
       unnamed(0),
       doneUnnamed(false)
   {
@@ -117,7 +117,7 @@ namespace RavlN {
     return false;
   }
   
-  //: Is argument a paramiter ?
+  //: Is argument a parameter ?
   /* defines which command line arguments are option specifiers and 
    * which are consider to be parameters 
    * PARAMETERs must not start with -, unless it is a single character 
@@ -127,7 +127,7 @@ namespace RavlN {
    */
   
   bool OptionC::IsParam(const StringC &arg) const {
-    ONDEBUG(cerr << "Testing '" << arg << "' for being a paramiter. \n");
+    ONDEBUG(std::cerr << "Testing '" << arg << "' for being a paramiter. \n");
     if(arg.IsEmpty())
       return true;
     if (arg[0]!='-')  
@@ -173,7 +173,7 @@ namespace RavlN {
     sout << "\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n\n"
          << "The following errors occured while parsing options.\n\n";
     for(DLIterC<StringC> it(errors);it.IsElm();it.Next()) 
-      sout << " " << it.Data() << endl;
+      sout << " " << it.Data() << std::endl;
     sout << "\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n\n";
     PrintUsage();
     if(exitOnFail)
@@ -194,7 +194,7 @@ namespace RavlN {
     return true;
   }
   
-  ostream & operator<<(ostream & out, const OptionC opt) {
+  std::ostream & operator<<(std::ostream & out, const OptionC opt) {
     out << opt.progName << ' ';
     for(DLIterC<StringC> it(opt.allargs);it.IsElm();it.Next()) {
       if(it.Data() == "-optsave") {
@@ -447,10 +447,10 @@ namespace RavlN {
       if(it.Data() != srch) 
       continue;
       MarkProcessed(it.Data());
-      ONDEBUG(cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> found." << endl);
+      ONDEBUG(std::cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> found." << endl);
       return true;
   } 
-    ONDEBUG(cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> Not found." << endl);
+    ONDEBUG(std::cerr << "OptionC::GetOption0(), Looking for :" << srch << " -> Not found." << endl);
     return false;
   }
   
@@ -459,7 +459,7 @@ namespace RavlN {
   StringC OptionC::GetOption1(const char *name) {
     StringC ret;
     MarkProcessed(ret); // Mark as unfound by default.
-    ONDEBUG(cerr << "OptionC::GetOption1(), Called looking for '"<< name <<"'\n");
+    ONDEBUG(std::cerr << "OptionC::GetOption1(), Called looking for '"<< name <<"'\n");
     RavlAssert(name != 0);
     if(*name == 0) { // Unnamed arg ?
       doneUnnamed = true;
@@ -511,20 +511,20 @@ namespace RavlN {
   
   DListC<StringC> OptionC::GetOptions(const char *name,int nargs) {
     DListC<StringC> ret;
-    ONDEBUG(cerr << "OptionC::GetOptions(), Called looking for "<< name <<" with " << nargs << " args. \n");
+    ONDEBUG(std::cerr << "OptionC::GetOptions(), Called looking for "<< name <<" with " << nargs << " args. \n");
     
     RavlAssert(name != 0);
     
 #if !SUPPORT_UNAMED_MULTIARG
     if(*name == 0) { // Unnamed option ?
-      Error(StringC("Program error: Unamed multiagument options not supported. \n"));
+      Error(StringC("Program error: Unnamed multiargument options not supported. \n"));
       return ret;
     }
 #endif
     
     if(name != 0) {
       if(doneUnnamed)
-	Error(StringC("OptionC, Internal error: Found argument ") + name + " after an unamed one. All unamed arguments must be processed last.  ");
+	Error(StringC("OptionC, Internal error: Found argument ") + name + " after an unnamed one. All unnamed arguments must be processed last.  ");
       if(IsUsed(name))
 	Error(StringC("Program error: Option ") + name + " is has already been used. ");
       used.InsLast(name);
@@ -535,7 +535,7 @@ namespace RavlN {
     if(name != 0)
       srch += name;
     else {
-      ONDEBUG(cerr << "GetOptions(), Searching for unamed arg of length " << nargs << "\n"); 
+      ONDEBUG(std::cerr << "GetOptions(), Searching for unnamed arg of length " << nargs << "\n");
     }
     
     for(DLIterC<StringC> it(args);it.IsElm();it.Next()) {
@@ -543,7 +543,7 @@ namespace RavlN {
       if(*name == 0) {
 	if(IsProcessed(it.Data()))
 	  continue;
-	ONDEBUG(cerr << "GetOptions(), Start of unamed args : '" << it.Data() << "\n"); 
+	ONDEBUG(std::cerr << "GetOptions(), Start of unnamed args : '" << it.Data() << "\n");
       } else 
 #endif      
 	{
@@ -606,11 +606,11 @@ namespace RavlN {
   void OptionC::PrintUsage() {
     sout << "Usage: " << progName << " [options] \n";
     for(DLIterC<StringC> it(usage);it.IsElm();it.Next())
-      sout << "   " << it.Data() << endl;
+      sout << "   " << it.Data() << std::endl;
     if(!depend.IsEmpty()) {
       sout << "\nDependencies:\n";
       for(DLIterC<StringC> it(depend);it.IsElm();it.Next())
-	sout << "   " << it.Data() << endl;
+	sout << "   " << it.Data() << std::endl;
     }
   }
   

@@ -23,14 +23,14 @@ int testBinomial();
 int main() {
   int ln;
   if((ln = testBinomial()) != 0) {
-    cerr << "Test failed line :" << ln << "\n";
+    std::cerr << "Test failed line :" << ln << "\n";
     return 1;
   }
   if((ln = testGauss()) != 0) {
-    cerr << "Test failed line :" << ln << "\n";
+    std::cerr << "Test failed line :" << ln << "\n";
     return 1;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 

@@ -25,7 +25,7 @@ namespace RavlN {
   void ConstructRawArray(DataT *data,SizeT size) {
 #if RAVL_COMPILER_VISUALCPP
     DataT *at = data;
-    DataT *end = &at[size];
+    DataT *end = &at[size.V()];
     try {
       for(;at != end;at++)
         new(at) DataT;
@@ -36,7 +36,7 @@ namespace RavlN {
       throw ;
     }
 #else
-    new(data) DataT[size];
+    new(data) DataT[size.V()];
 #endif
   }
   
@@ -44,7 +44,7 @@ namespace RavlN {
   inline
   void DestructRawArray(DataT *data,SizeT size) {
     DataT *at = data;
-    DataT *end = &at[size];
+    DataT *end = &at[size.V()];
     for(;at != end;at++)
       at->~DataT();    
   }
@@ -155,7 +155,7 @@ namespace RavlN {
 #else
       this->buff = reinterpret_cast<DataT *>(&(this[1]));
 #endif
-	 // cerr << "Memory at " << (void*) this->buff << "\n";
+	 // std::cerr << "Memory at " << (void*) this->buff << "\n";
 #if RAVL_COMPILER_GCC43
       // This is a bug workaround for a problem with gcc-4.3.x compilers
       new(this->buff) DataT[this->Size()];

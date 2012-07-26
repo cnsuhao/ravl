@@ -43,7 +43,7 @@ namespace RavlN {
 	  break;
 	len++;
       }
-      //cerr << "Str: " << len << " = " << lstart << endl;
+      //cerr << "Str: " << len << " = " << lstart << std::endl;
       // At end of string.
       int startpos = lstart - string.chars();
       InsLast(string.at(startpos,len));
@@ -63,7 +63,7 @@ namespace RavlN {
     return ret;
   }
   
-  ostream & operator<<(ostream & s, const SubStringListC & list) {
+  std::ostream & operator<<(std::ostream & s, const SubStringListC & list) {
     s << list.Cat();
     return s;
   }

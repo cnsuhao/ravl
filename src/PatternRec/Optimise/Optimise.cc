@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/Optimise.cc"
 
@@ -15,16 +14,20 @@
 
 namespace RavlN {
 
+  //: Constructor from xml factory.
+
+  OptimiseBodyC::OptimiseBodyC (const XMLFactoryContextC & factory)
+   : _name(factory.AttributeString("name",factory.Name()))
+  {}
+
+
   OptimiseBodyC::OptimiseBodyC (const StringC &name)
     :_name(name)
-  {
-  }
+  {}
   
-  OptimiseBodyC::OptimiseBodyC (const StringC &name, istream &)
+  OptimiseBodyC::OptimiseBodyC (const StringC &name, std::istream &)
     : _name(name)
-  {
-    
-  }
+  {}
 
   //: Load from stream.
   OptimiseBodyC::OptimiseBodyC (std::istream &strm)
@@ -79,7 +82,7 @@ namespace RavlN {
   { return _name; }
   
   
-  bool OptimiseBodyC::Save (ostream &out) const
+  bool OptimiseBodyC::Save (std::ostream &out) const
   { 
     if(!RCBodyVC::Save (out))
       return false;
@@ -96,12 +99,14 @@ namespace RavlN {
     out << _name;
     return true;
   }
+
+  // ------------------------------------------------------------------------
   
   OptimiseC::OptimiseC ()
   {
   }
   
-  OptimiseC::OptimiseC (istream &in)
+  OptimiseC::OptimiseC (std::istream &in)
     : RCHandleVC<OptimiseBodyC>(RAVL_VIRTUALCONSTRUCTOR(in,OptimiseBodyC))
   {
     CheckHandleType(Body());
@@ -110,7 +115,11 @@ namespace RavlN {
   OptimiseC::OptimiseC (OptimiseBodyC &oth)
     :RCHandleVC<OptimiseBodyC> (oth)
   {}
-  
+
+  OptimiseC::OptimiseC (OptimiseBodyC *oth)
+    :RCHandleVC<OptimiseBodyC> (oth)
+  {}
+
 }
 
 

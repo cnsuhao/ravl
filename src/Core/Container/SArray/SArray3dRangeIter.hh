@@ -2,7 +2,6 @@
 #define SARR3RANGEITER_HEADER 1
 ////////////////////////////////////////////////////////////
 //! docentry="Ravl.Core.Arrays.3D"
-//! rcsid="$Id$
 //! file="amma/Contain/Array/SArray/SArray3dRangeIter.hh"
 //! lib=MSArr1
 //! author="Manuel Segovia"

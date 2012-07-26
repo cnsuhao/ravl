@@ -87,12 +87,12 @@ TriggerC trig = Trigger ( rep, &DocRepC::Process, StringC(""), DefsMkFileC("") )
 bool DocRepC::Process(StringC &dir,DefsMkFileC &where) 
 {
   if(IsVerbose())
-    cerr << "\nProcessing:\t" << dir ;
+    std::cerr << "\nProcessing:\t" << dir ;
 
 // load this defs file as text so we can edit it
 TextFileC text ; 
 if ( ! text.Load( where.Name() ) ) 
-{ cerr << "\nCould not load defs file " ;  } 
+{ std::cerr << "\nCould not load defs file " ;  } 
 
 // get a list of doc files that need processing
   StringListC hdrs ; 
@@ -103,7 +103,7 @@ if ( ! text.Load( where.Name() ) )
 // check length of filename is reasonable  
   for(DLIterC<StringC> it(hdrs);it.IsElm();it.Next()) {
     if(it.Data().length() <= 3) {
-      cerr << "WARNING: Short file name detected :'" << it.Data() << "'\n";
+      std::cerr << "WARNING: Short file name detected :'" << it.Data() << "'\n";
       continue; // Far too short !
     }
 
@@ -112,13 +112,13 @@ if ( ! text.Load( where.Name() ) )
 
 //: check file exists. 
     if(!oldFile.Exists()) {
-      cerr <<"\nWARNING: No access to file:\t" << oldFile << "\n";
+      std::cerr <<"\nWARNING: No access to file:\t" << oldFile << "\n";
       continue; // No access to file.
     }
 
 //: change any docentry tags in the html too.
 TextFileC htmlFile ;
-if ( ! htmlFile.Load(oldFile) ) { cerr << "\nWARNING: Could not load file\t" << oldFile  ; }
+if ( ! htmlFile.Load(oldFile) ) { std::cerr << "\nWARNING: Could not load file\t" << oldFile  ; }
 else
  // iterate each line and only do a replace on lines with a docentry tag !
 for ( DLIterC<TextFileLineC> iter ( htmlFile.Lines() ) ; iter ; iter ++ )
@@ -129,10 +129,10 @@ for ( DLIterC<TextFileLineC> iter ( htmlFile.Lines() ) ; iter ; iter ++ )
 }
 
 // save if modified 
-//cerr << "\n just as a test \n\n\n" ; htmlFile.Dump(cerr) ; 
+//cerr << "\n just as a test \n\n\n" ; htmlFile.Dump(std::cerr) ; 
 if ( ! dryRun ) 
 if (htmlFile.IsModified()) { 
-	if ( ! htmlFile.Save() ) { cerr << "\nWARNING: Could not update file:\t" << oldFile ; }}
+	if ( ! htmlFile.Save() ) { std::cerr << "\nWARNING: Could not update file:\t" << oldFile ; }}
 
 //: Apply substition to get new file name. 
 FilenameC newFile (oldFile.Copy() ) ; 
@@ -144,10 +144,10 @@ if ( oldFile != newFile ) {
 	cerr  << "\nUpdating:\t" << oldFile.NameComponent() << " ->\t " << newFile.NameComponent() ; 
 	//: rename file.
 	if ( ! dryRun ) {
-		if ( ! oldFile.CopyTo(newFile)  ) { cerr << "\nWARNING: Could not copy file: " << oldFile << " to " << newFile ; }
-		else if ( ! oldFile.Remove() ) { cerr << "\nWARNING: Could not remove old file: " << oldFile ; }
+		if ( ! oldFile.CopyTo(newFile)  ) { std::cerr << "\nWARNING: Could not copy file: " << oldFile << " to " << newFile ; }
+		else if ( ! oldFile.Remove() ) { std::cerr << "\nWARNING: Could not remove old file: " << oldFile ; }
 	} 
-	else cerr << "\t(dryRun)" ;
+	else std::cerr << "\t(dryRun)" ;
 
 
 
@@ -161,8 +161,8 @@ if ( oldFile != newFile ) {
 	cerr << "\nUpdating:\t" << where.Name() ; 
       if(!dryRun) {
 	if(!text.Save())
-	  cerr << "\nWARNING Failed to save file '" << where.Name()<< "' \n";  
-	} else cerr << "\t(dryRun ) " ; }
+	  std::cerr << "\nWARNING Failed to save file '" << where.Name()<< "' \n";  
+	} else std::cerr << "\t(dryRun ) " ; }
 
   return true;
 }

@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/System/testCollection.cc"
 //! docentry="Ravl.API.Core.Misc"
@@ -23,6 +22,7 @@
 #include "Ravl/DArray1dIter4.hh"
 #include "Ravl/DList.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
@@ -31,31 +31,36 @@ int testDArray1d();
 int testDArray1dIO();
 int testDArray1dMore();
 int testDArray1dEvenMore();
+int testDArray1dFrom();
 
 int main()
 {
   int err;
   if((err = testBasic()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1d()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dIO()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dMore()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testDArray1dEvenMore()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
-  cerr << "Collection test passed. \n";
+  if((err = testDArray1dFrom()) != 0) {
+    std::cerr << "Test failed line :" << err <<"\n";
+    return 1;
+  }
+  std::cerr << "Collection test passed. \n";
   return 0;
 }
 
@@ -97,7 +102,7 @@ template class DArray1dIter4C<IntT,RealT,ByteT,bool>;
 const int testSize = 10000;
 
 int testDArray1d() {
-  cerr << "testDArray1d(), Called. \n";
+  std::cerr << "testDArray1d(), Called. \n";
   DArray1dC<int> test(10);
   
   if(!test.Contains(2)) return __LINE__;
@@ -127,7 +132,7 @@ int testDArray1d() {
   DArray1dC<int> test2(5,true);
   for(i = 0;i < testSize;i++) {
     if(test2.Size() != (UIntT) i) {
-      cerr << "Test failed at count=" << i << " size=" << test2.Size() << "\n";
+      std::cerr << "Test failed at count=" << i << " size=" << test2.Size() << "\n";
       return __LINE__;
     }
     test2.Append(i);
@@ -146,6 +151,14 @@ int testDArray1d() {
     if(it.Index() != i) return __LINE__;
   }
   if(i != 10) return __LINE__;
+
+  i = 0;
+  for(DArray1dIter2C<int,int> it(test,test2);it;++it,i++) {
+    if(it.Data1() != it.Data2()) return __LINE__;
+    if(it.Index() != i) return __LINE__;
+  }
+  if(i != 10) return __LINE__;
+
   return 0;
 }
 
@@ -179,7 +192,7 @@ int testDArray1dIO() {
 }
 
 int testDArray1dMore() {
-  cerr << "testDArray1dMore(), Called. \n";
+  std::cerr << "testDArray1dMore(), Called. \n";
   DArray1dC<int> test1;
   DArray1dC<int> test2;
   DArray1dC<int> test3;
@@ -203,10 +216,10 @@ int testDArray1dMore() {
   DArray1dC<int> dset(10,true);
   dset.Append(1);
   dset.Append(2);
-  //cout << "dset=" << dset << endl;
+  //cout << "dset=" << dset << std::endl;
   DArray1dC<int> dset2(10,true);
   dset2.Append(dset);
-  //  cout << "dset2=" << dset2 << endl;
+  //  std::cout << "dset2=" << dset2 << std::endl;
   if(dset2.Size() != 2) return __LINE__;
   int count = 0;
   for(DArray1dIterC<int> it(dset2);it;it++) {
@@ -270,7 +283,7 @@ int testDArray1dMore() {
 }
 
 int testDArray1dEvenMore() {
-  cerr << "testDArray1d(), Add/Delete. \n";
+  std::cerr << "testDArray1d(), Add/Delete. \n";
   DArray1dC<IntT> anArray;
   CollectionC<UIntT> validIndex(64);
   IntT opSize = 128;
@@ -305,5 +318,53 @@ int testDArray1dEvenMore() {
       }
   }
   
+  return 0;
+}
+
+int testDArray1dFrom() {
+  std::cerr << "testDArray1d(), From. \n";
+  DArray1dC<IntT> anArray;
+  Array1dC<IntT> arr1(5);
+  Array1dC<IntT> arr2(5);
+  Array1dC<IntT> arr3(5);
+  for(unsigned i = 0;i < arr1.Size();i++) {
+    arr1[i] = 10+i;
+    arr2[i] = 20+i;
+    arr3[i] = 30+i;
+  }
+  anArray.Append(arr1);
+  anArray.Append(arr2);
+  anArray.Append(arr3);
+  RAVL_TEST_EQUALS(anArray.Size(),(SizeT) 15);
+
+#if 0
+  for(unsigned i = 0;i < anArray.Size();i++) {
+    std::cerr << " " << i << "=" << anArray[i] << "\n";
+  }
+#endif
+
+  DArray1dC<IntT> sa1 = anArray.CompactFrom(1,3);
+  RAVL_TEST_EQUALS((SizeT) 3,sa1.Size());
+  for(unsigned i = 1;i < 3;i++) {
+    RAVL_TEST_EQUALS(sa1[i],(IntT) 10+i);
+  }
+
+  DArray1dC<IntT> sa2 = anArray.CompactFrom(1,7);
+  RAVL_TEST_EQUALS((SizeT) 7,sa2.Size());
+#if 0
+  std::cerr << " Test:\n";
+  for(unsigned i = 0;i < sa2.Size();i++) {
+    std::cerr << " " << i << "=" << sa2[i] << "\n";
+  }
+#endif
+  for(unsigned i = 0;i < 7;i++) {
+    //std::cerr <<  " " << i <<  "=" << sa2[i] << " ";
+    if(i < 4) {
+      RAVL_TEST_EQUALS((IntT) 11+i,sa2[i]);
+    } else {
+      RAVL_TEST_EQUALS((IntT) 16+i,sa2[i]);
+    }
+  }
+
   return 0;
 }

@@ -28,7 +28,7 @@ namespace RavlDFN {
   //: Render object to view.
   
   bool DFProcessBodyC::Render(GUIViewBodyC &view,const Index2dC &at,DFRenderModeT mode) {
-    ONDEBUG(cerr << "DFProcessBodyC::Render(), Called. At=" << at << " Mode=" << (int)mode << "\n");
+    ONDEBUG(std::cerr << "DFProcessBodyC::Render(), Called. At=" << at << " Mode=" << (int)mode << "\n");
     
     Index2dC size = view.TextSize(view.DrawFont(),name) + Index2dC(5,0);
     GdkGC *fggc = view.DrawModeFG(mode);

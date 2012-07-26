@@ -16,7 +16,7 @@
 
 namespace RavlN {
   
-  RealRangeC::RealRangeC(istream & s)
+  RealRangeC::RealRangeC(std::istream & s)
   { s >> minV >> maxV; }
   
   bool RealRangeC::In(const RealRangeC & range) const {
@@ -30,12 +30,12 @@ namespace RavlN {
     return IndexRangeC(minV,maxV);
   }
   
-  istream &operator>>(istream & sss, RealRangeC & range) { 
+  std::istream &operator>>(std::istream & sss, RealRangeC & range) { 
     sss >> range.Min() >> range.Max();
     return  sss;
   }
   
-  ostream &operator<<(ostream & s, const RealRangeC & range) { 
+  std::ostream &operator<<(std::ostream & s, const RealRangeC & range) { 
     s << range.Min() << ' ' << range.Max();
     return s;
   }

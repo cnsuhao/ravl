@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlNet
 //! file="Ravl/OS/Network/NetPortClient.cc"
@@ -27,12 +26,14 @@ namespace RavlN {
   NetPortClientBodyC::NetPortClientBodyC(SocketC &skt,NetPortManagerC &nManager) 
     : NetEndPointBodyC(skt,false),
       manager(nManager)
-  {}
+  {
+    ONDEBUG(RavlDebug("NetPortClientBodyC::NetPortClientBodyC(skt,manager) Called. "));
+  }
   
   //: Destructor.
   
   NetPortClientBodyC::~NetPortClientBodyC() {
-    ONDEBUG(RavlError("NetPortClientBodyC::~NetPortClientBodyC() Called. "));
+    ONDEBUG(RavlDebug("NetPortClientBodyC::~NetPortClientBodyC() Called. "));
     // Make sure connections closed before destructing.
     Close();
   }
@@ -72,13 +73,13 @@ namespace RavlN {
   //: Handle connect to message.
   
   bool NetPortClientBodyC::MsgConnectTo(StringC &port,StringC &datatype,bool nIsIPort) {
-    ONDEBUG(cerr << "NetPortClientBodyC::MsgConnectTo(), Called. Port=" << port << " Type=" << datatype << " IsIPort=" << nIsIPort << "\n");
+    ONDEBUG(RavlDebug("NetPortClientBodyC::MsgConnectTo(), Called. Port=%s Type=%s IsIPort=%d",port.c_str(),datatype.c_str(),(int) nIsIPort));
     isIPort = nIsIPort;
     if(isIPort) {
       // Deal with input port.
       NetISPortServerBaseC isport;      
       if(!manager.Lookup(port,datatype,isport)) {
-	RavlError("NetPortClientBodyC::MsgConnectTo(), Failed to find port. ");
+	RavlError("NetPortClientBodyC::MsgConnectTo(), Failed to find input port. ");
 	Send(NPMsg_ReqFailed,1); // End of stream.
 	// Send a failure message ?
 	return true;
@@ -103,7 +104,7 @@ namespace RavlN {
       
       NetOSPortServerBaseC osport;
       if(!manager.Lookup(port,datatype,osport)) {
-        RavlError("NetPortClientBodyC::MsgConnectTo(), Failed to find port. ");
+        RavlError("NetPortClientBodyC::MsgConnectTo(), Failed to find output port. ");
 	Send(NPMsg_ReqFailed,1); // End of stream.
 	// Send a failure message ?
 	return true;

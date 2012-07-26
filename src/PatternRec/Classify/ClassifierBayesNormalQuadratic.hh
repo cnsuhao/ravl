@@ -33,13 +33,13 @@ namespace RavlN {
     ClassifierBayesNormalQuadraticBodyC(const SArray1dC<MeanCovarianceC> & classStats, const SArray1dC<RealT> & priors);
     //: Construct from the mean for each, covariance and prior for each class
     
-    ClassifierBayesNormalQuadraticBodyC(istream &strm);
+    ClassifierBayesNormalQuadraticBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierBayesNormalQuadraticBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -77,7 +77,7 @@ namespace RavlN {
     {}
     //: Construct from a mean and a projection matrix.
     
-    ClassifierBayesNormalQuadraticC(istream &is);
+    ClassifierBayesNormalQuadraticC(std::istream &is);
     //: Stream constructor.
     
     ClassifierBayesNormalQuadraticC(BinIStreamC &is);
@@ -108,14 +108,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,ClassifierBayesNormalQuadraticC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierBayesNormalQuadraticC &obj) {
     obj = ClassifierBayesNormalQuadraticC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierBayesNormalQuadraticC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierBayesNormalQuadraticC &obj) {
     obj.Save(out);
     return out;
   }

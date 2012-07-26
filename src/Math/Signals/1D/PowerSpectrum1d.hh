@@ -4,10 +4,9 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPOWERSPECTRUM1D_HEADER
-#define RAVLPOWERSPECTRUM1D_HEADER
+#ifndef RAVL_POWERSPECTRUM1D_HEADER
+#define RAVL_POWERSPECTRUM1D_HEADER
 //////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! docentry="Ravl.API.Math.Signals.1D"
 //! example=exPowerSpectrum.cc

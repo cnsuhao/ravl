@@ -32,7 +32,8 @@ namespace RavlN { namespace GeneticN {
   //! Construct from a genome.
 
   GenomeScaffoldC::GenomeScaffoldC(const GenomeC &genome)
-   : m_genome(&genome)
+   : m_genome(&genome),
+     m_allowUpdate(true)
   {}
 
 
@@ -68,6 +69,7 @@ namespace RavlN { namespace GeneticN {
     GenomeC::RefT genome = new GenomeC(*aGene);
     m_scaffold = new GenomeScaffoldC(*genome);
     genome->UpdateShares(*this);
+    m_path.Push(*aGene);
   }
 
   //! Push another level on the stack.

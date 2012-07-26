@@ -35,13 +35,13 @@ namespace RavlLogicN {
     // If useArrayDirectly is true then use the array directly, the first
     // element must be literalAnd.
 
-    AndBodyC(istream &strm);
+    AndBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     AndBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -113,7 +113,7 @@ namespace RavlLogicN {
     //: Constructor.
     //!param: arity - Number of and terms
     
-    AndC(istream &strm);
+    AndC(std::istream &strm);
     //: Load from stream.
     
     AndC(BinIStreamC &strm);

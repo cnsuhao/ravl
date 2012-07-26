@@ -323,8 +323,8 @@ namespace RavlN {
     IndexRangeC ks;
   };
   
-  ostream &operator<<(ostream &s,const IndexRange3dC &ir);
-  istream &operator>>(istream &s,IndexRange3dC &ir);
+  std::ostream &operator<<(std::ostream &s,const IndexRange3dC &ir);
+  std::istream &operator>>(std::istream &s,IndexRange3dC &ir);
   
   BinOStreamC &operator<<(BinOStreamC &s,const IndexRange3dC &ir);  
   BinIStreamC &operator>>(BinIStreamC &s,IndexRange3dC &ir);

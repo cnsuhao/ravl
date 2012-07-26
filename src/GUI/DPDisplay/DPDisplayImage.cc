@@ -43,7 +43,7 @@ namespace RavlGUIN {
   {
 #if 0
     if(!img.IsContinuous()) {
-      cerr << "DPDisplayImageRGBBodyC::DPDisplayImageRGBBodyC(), WARNING: Image not continuous in memory, making copy. \n";
+      std::cerr << "DPDisplayImageRGBBodyC::DPDisplayImageRGBBodyC(), WARNING: Image not continuous in memory, making copy. \n";
       img = ImageC<ByteRGBValueC>(img.Copy()); // Make image continuous.
     }
 #endif
@@ -65,7 +65,7 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayImageRGBBodyC::Query(const Vector2dC &pnt,StringC &text) {
-    ONDEBUG(cerr << "DPDisplayImageRGBBodyC::Query(), Point=" << pnt << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageRGBBodyC::Query(), Point=" << pnt << "\n");
     Index2dC pix(pnt[0],pnt[1]);
     if(!img.Frame().Contains(pix))
       return false;
@@ -135,7 +135,7 @@ namespace RavlGUIN {
 	max = it.Data();
     }
     RealT scale = 255.0/(max - min);
-    ONDEBUG(cerr << "DPDisplayImageRealBodyC::ScaleImage(), Min:" << min << " Max:" << max << " Scale:" << scale << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageRealBodyC::ScaleImage(), Min:" << min << " Max:" << max << " Scale:" << scale << "\n");
     ImageC<ByteT> tImg(inimg.Rectangle());
     for(Array2dIter2C<ByteT,RealT> it(tImg,inimg);it;it++) 
       it.Data1() = (ByteT)((it.Data2() - min) * scale);
@@ -146,7 +146,7 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayImageRealBodyC::Query(const Vector2dC &pnt,StringC &text) {
-    ONDEBUG(cerr << "DPDisplayImageRealBodyC::Query(), Point=" << pnt << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageRealBodyC::Query(), Point=" << pnt << "\n");
     Index2dC pix(pnt[0],pnt[1]);
     if(!realImg.Frame().Contains(pix))
       return false;
@@ -178,7 +178,7 @@ namespace RavlGUIN {
   {
 #if 0
     if(!img.IsContinuous()) {
-      cerr << "DPDisplayImageByteBodyC::DPDisplayImageByteBodyC(), WARNING: Image not continuous in memory, making copy. \n";
+      std::cerr << "DPDisplayImageByteBodyC::DPDisplayImageByteBodyC(), WARNING: Image not continuous in memory, making copy. \n";
       img = ImageC<ByteT>(img.Copy()); // Make image continuous.
     }
 #endif
@@ -200,7 +200,7 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayImageByteBodyC::Query(const Vector2dC &pnt,StringC &text) {
-    ONDEBUG(cerr << "DPDisplayImageByteBodyC::Query(), Point=" << pnt << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageByteBodyC::Query(), Point=" << pnt << "\n");
     Index2dC pix(pnt[0],pnt[1]);
     if(!img.Frame().Contains(pix))
       return false;

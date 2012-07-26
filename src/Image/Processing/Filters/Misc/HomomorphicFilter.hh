@@ -97,10 +97,10 @@ namespace RavlImageN {
   };
   
   
-  ostream &operator<<(ostream &s,const HomomorphicFilterC &hist);
+  std::ostream &operator<<(std::ostream &s,const HomomorphicFilterC &hist);
   //: Write to a stream.
   
-  istream &operator>>(istream &s,HomomorphicFilterC &hist);
+  std::istream &operator>>(std::istream &s,HomomorphicFilterC &hist);
   //: Read from a stream.
 
   BinOStreamC &operator<<(BinOStreamC &s,const HomomorphicFilterC &hist);

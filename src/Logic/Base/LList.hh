@@ -30,13 +30,13 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
     
-    LListBodyC(istream &strm);
+    LListBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     LListBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -68,7 +68,7 @@ namespace RavlLogicN {
     //: Default constructor.
     // Creates invalid handle.
     
-    LListC(istream &strm);
+    LListC(std::istream &strm);
     //: Load from stream.
     
     LListC(BinIStreamC &strm);

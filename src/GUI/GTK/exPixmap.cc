@@ -31,4 +31,5 @@ int main(int nargs,char *args[])
   win.GUIShow();
 
   Manager.Start();
+  return 0;
 }

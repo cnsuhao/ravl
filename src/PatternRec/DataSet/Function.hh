@@ -31,26 +31,26 @@ namespace RavlN {
   public:
     FunctionBodyC()
       : inputSize(0),
-	outputSize(0)
+	      outputSize(0)
     {}
     //: Default constructor.
     
     FunctionBodyC(UIntT inSize,UIntT outSize)
       : inputSize(inSize),
-	outputSize(outSize)
+	      outputSize(outSize)
     {}
     //: Create function with given number of inputs and outputs.
     
     FunctionBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    FunctionBodyC(istream &strm);
+    FunctionBodyC(std::istream &strm);
     //: Load from stream.
     
     FunctionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -70,6 +70,13 @@ namespace RavlN {
     virtual SampleC<VectorC> Apply(const SampleC<VectorC> &data);
     //: Apply transform to whole dataset.
     
+    bool CheckJacobian(const VectorC &X,RealT tolerance = 1e-4,RealT epsilon = 1e-6) const;
+    //: Compare the numerical and computed jacobians at X, return true if the match.
+    // Useful for debugging!
+
+    MatrixC NumericalJacobian(const VectorC &X,RealT epsilon = 1e-6) const;
+    //: Calculate numerical approximation of Jacobian matrix at X
+
     virtual MatrixC Jacobian (const VectorC &X) const;
     //: Calculate Jacobian matrix at X
     // The default implementation performs numerical estimation of the Jacobian using differences. This
@@ -108,7 +115,7 @@ namespace RavlN {
     // This is for use of designer classes, changing the output size of
     // an existing function has undefined effects.
     
-    virtual void Describe(ostream &out);
+    virtual void Describe(std::ostream &out);
     //: Write a human readable text description of the function.
 
 
@@ -133,7 +140,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    FunctionC(istream &strm);
+    FunctionC(std::istream &strm);
     //: Load from stream.
 
     FunctionC(BinIStreamC &strm);
@@ -176,6 +183,11 @@ namespace RavlN {
     { return Body().Apply(X); }
     //: Evaluate Y=f(X)
     
+    bool CheckJacobian(const VectorC &X,RealT tolerance = 1e-4,RealT epsilon = 1e-4) const
+    { return Body().CheckJacobian(X,tolerance,epsilon); }
+    //: Compare the numerical and computed jacobians at X, return true if the match.
+    // Useful for debugging!
+
     MatrixC Jacobian(const VectorC &X) const
     { return Body().Jacobian(X); }    
     //: Calculate Jacobian matrix at X
@@ -218,21 +230,21 @@ namespace RavlN {
     // This is for use of designer classes, changing the output size of
     // an existing function has undefined effects.
     
-    void Describe(ostream &out) 
+    void Describe(std::ostream &out) 
     { return Body().Describe(out); }
     //: Write a human readable text description of the function.
     // May not be implemented for all functions.
   };
 
   
-  inline istream &operator>>(istream &strm,FunctionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FunctionC &obj) {
     obj = FunctionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FunctionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionC &obj) {
     obj.Save(out);
     return out;
   }

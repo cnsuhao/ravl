@@ -39,7 +39,7 @@ namespace RavlGUIN {
   //: Create the widget.
   
   bool TextBoxBodyC::Create() {
-    ONDEBUG(cerr << "TextBoxBodyC::Create(), Called. \n");
+    ONDEBUG(std::cerr << "TextBoxBodyC::Create(), Called. \n");
     if(widget != 0)
       return true; // Done already.
     widget = gtk_text_new(0,0);

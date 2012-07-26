@@ -227,7 +227,7 @@ namespace RavlN {
   //: Pass signal on.
   
   bool SignalConnector0BodyC::Invoke() {
-    cerr << "SignalConnector0BodyC::Invoke(), ABSTRACT method Called. \n";
+    std::cerr << "SignalConnector0BodyC::Invoke(), ABSTRACT method Called. \n";
     RavlAssert(0);
     return true;
   }

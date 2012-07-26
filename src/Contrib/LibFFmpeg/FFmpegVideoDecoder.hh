@@ -34,7 +34,7 @@ namespace RavlN {
     FFmpegVideoDecoderBaseC();
     //: Default constructor.
     
-    ~FFmpegVideoDecoderBaseC();
+    virtual ~FFmpegVideoDecoderBaseC();
     //: Destructor.
     
     bool Open(DPISPortC<FFmpegPacketC> &packetStream,IntT videoStreamId,IntT codecId);

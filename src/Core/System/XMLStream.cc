@@ -155,6 +155,7 @@ namespace RavlN {
       default:
 	is().putback(c);
 	ReadAttrib(elem);
+	break;
       }
     }
     c = GetChar();
@@ -210,7 +211,7 @@ namespace RavlN {
 	  case '?': // Processing instruction.
 	    isPI = true;
 	    emptyTag = true;
-	    ONDEBUG(cerr << "XMLIStreamC::ReadTag(), Found processing instruction. \n");
+	    ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found processing instruction. \n");
 	    break;
 	  case '!':  // Comment CDATA or DTD
 	    {
@@ -233,7 +234,7 @@ namespace RavlN {
 	    }
 	    break;
 	  case '>':
-	    cerr << "WARNING: Found an empty tag (<>) in XML stream. Filename:" << Name() << "\n";
+	    std::cerr << "WARNING: Found an empty tag (<>) in XML stream. Filename:" << Name() << "\n";
 	    continue; // Empty <> probably illegal ??
 	  case '/':
 	    foundEndTag = true;
@@ -241,16 +242,17 @@ namespace RavlN {
 	    break;
 	  default:
 	    is().putback(c);
+	    break;
 	  }
 	
 	id = ReadID();
 	
 	if(!emptyTag || isPI) { // Is an end tag, don't push a new context.
-	  ONDEBUG(cerr << "XMLIStreamC::ReadTag(), Found tag start '" << id << "'\n");
+	  ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found tag start '" << id << "'\n");
 	  elem = XMLElementC(id);
 	  //StartContext(id);
 	} else {
-	  ONDEBUG(cerr << "XMLIStreamC::ReadTag(), Found tag end '" << id << "'\n");
+	  ONDEBUG(std::cerr << "XMLIStreamC::ReadTag(), Found tag end '" << id << "'\n");
 	}
 	
 	// Check for attributes.
@@ -260,18 +262,18 @@ namespace RavlN {
 	    {
 	    case '?':
 	      if(!isPI) { // Are we in a processing instruction ?
-		cerr << "ERROR: Unexpected character '"  << c << "' in XML tag. Filename:" << Name() << " \n";
+		std::cerr << "ERROR: Unexpected character '"  << c << "' in XML tag. Filename:" << Name() << " \n";
 		throw ExceptionInvalidStreamC("Unexpected end of XML tag. ");
 	      }
-	      /* FALL THROUGH */	      
+	      /* no break */
 	    case '/':
 	      c = GetChar();
 	      if(c != '>') {
-		cerr << "ERROR: Unexpected character '"  << c << "' in XML tag. Filename:" << Name() << "\n";
+		std::cerr << "ERROR: Unexpected character '"  << c << "' in XML tag. Filename:" << Name() << "\n";
 		throw ExceptionInvalidStreamC("Unexpected end of XML tag. ");
 	      }
 	      emptyTag = true;
-	      /* FALL THROUGH */
+              /* no break */
 	    case '>':
 	      endOfTag = true;
 	      continue;
@@ -367,7 +369,7 @@ namespace RavlN {
       }
     }
     if(name != curCtxt) {
-      cerr << "WARNING: End tag name mismatch, got '" << name << "' expected '" << curCtxt << "'\n";
+      std::cerr << "WARNING: End tag name mismatch, got '" << name << "' expected '" << curCtxt << "'\n";
       return false;
     }
     return true;
@@ -400,7 +402,7 @@ namespace RavlN {
     StringC id = ReadID();
     char c = SkipWhiteSpace();
     if(c != '=') {
-      cerr << "ERROR: Unexpected character '"  << c << "' in XML attribute. Filename:" << Name() << " \n";
+      std::cerr << "ERROR: Unexpected character '"  << c << "' in XML attribute. Filename:" << Name() << " \n";
       throw ExceptionInvalidStreamC("Unexpected character in XML attribute. ");
     }
     c = SkipWhiteSpace();
@@ -418,7 +420,7 @@ namespace RavlN {
       break;
     }
     elem.Attributes()[id] = val;
-    ONDEBUG(cerr << "XMLOStreamC::ReadAttrib(), Got '" << id << "' = '" << val << "' \n");
+    ONDEBUG(std::cerr << "XMLOStreamC::ReadAttrib(), Got '" << id << "' = '" << val << "' \n");
     return id;
   }
   
@@ -522,13 +524,13 @@ namespace RavlN {
   //: Call before writing contents of entity to stream.
   
   void XMLOStreamC::StartContents() {
-    //ONDEBUG(cerr << "XMLOStreamC::StartContents(), Name:'" << Context().Name() << "' \n");
+    //ONDEBUG(std::cerr << "XMLOStreamC::StartContents(), Name:'" << Context().Name() << "' \n");
     if(!IsContext()) {
-      cerr << "XMLOStreamC::StartContents(), ERROR: No tags around content. Filename:" << Name() << "\n";
+      std::cerr << "XMLOStreamC::StartContents(), ERROR: No tags around content. Filename:" << Name() << "\n";
       return ;
     }
     if(IsContent()) {
-      cerr << "XMLOStreamC::StartContents(), ERROR: Contents already started in '" << Context().Name() << "' \n";
+      std::cerr << "XMLOStreamC::StartContents(), ERROR: Contents already started in '" << Context().Name() << "' \n";
       return;
     }
     if(AutoIndent())
@@ -547,7 +549,7 @@ namespace RavlN {
   // if strict checking is enabled, name will be check against that of the open tag.
   
   void XMLOStreamC::EndTag(const StringC &name) {
-    //ONDEBUG(cerr << "XMLOStreamC::EndTag(StringC) : '" << name << "'\n");
+    //ONDEBUG(std::cerr << "XMLOStreamC::EndTag(StringC) : '" << name << "'\n");
     if(!IsContent()) {
       Context().SetEmptyTag(true);
       StartContents();
@@ -559,7 +561,7 @@ namespace RavlN {
     }
     if(IsStrict()) {
       if(!EndOfContext(name)) {
-	ONDEBUG(cerr << "XMLOStreamC::EndTag()");
+	ONDEBUG(std::cerr << "XMLOStreamC::EndTag()");
 	cerr << "ERROR: Not end of named entity '" << name << "' Currently its '" << Context().Name() << "'\n";
         throw RavlN::ExceptionInvalidStreamC("Mismatched tags. ");
       }
@@ -571,7 +573,7 @@ namespace RavlN {
   //: End writing current entity.
   
   void XMLOStreamC::EndTag() {
-    //ONDEBUG(cerr << "XMLOStreamC::EndTag() : '" << Context().Name() << "'\n");
+    //ONDEBUG(std::cerr << "XMLOStreamC::EndTag() : '" << Context().Name() << "'\n");
     if(!IsContent()) {
       Context().SetEmptyTag(true);      
       StartContents();
@@ -591,7 +593,7 @@ namespace RavlN {
     Stream() << '\n';
     IntT lvl = LevelsNested() + off;
     if(lvl < 0) {
-      cerr << "XMLOStreamC::Indent(), Warning: Negative tab. \n";
+      std::cerr << "XMLOStreamC::Indent(), Warning: Negative tab. \n";
     }
     // Could do something with tabs to make files smaller ?
     for(IntT i = 0;i < lvl;i++) 
@@ -669,7 +671,7 @@ namespace RavlN {
 	  for(;;) {
 	    if(strm.ReadTag(name) == XMLEndTag)
 	      break;
-	    cerr << "Unexpected start tag '" << name << "' found, skipping. \n";
+	    std::cerr << "Unexpected start tag '" << name << "' found, skipping. \n";
 	    strm.SkipElement();
 	  }
 	}

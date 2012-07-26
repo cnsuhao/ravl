@@ -35,14 +35,14 @@ namespace RavlN {
     return GraphNodeHC<StringC,DPConverterBaseC>();
   }
 
-  GraphNodeHC<StringC,DPConverterBaseC> TypeConverterBodyC::GetTypeNode(const type_info &inf) const {
+  GraphNodeHC<StringC,DPConverterBaseC> TypeConverterBodyC::GetTypeNode(const std::type_info &inf) const {
     StringC typeName(inf.name());
     return GetTypeNode(typeName);
   }
 
-  //: Get the graph node associated with a type_info, create if needed
+  //: Get the graph node associated with a std::type_info, create if needed
 
-  GraphNodeHC<StringC,DPConverterBaseC> TypeConverterBodyC::UseTypeNode(const type_info &inf) {
+  GraphNodeHC<StringC,DPConverterBaseC> TypeConverterBodyC::UseTypeNode(const std::type_info &inf) {
     StringC typeName(inf.name());
     GraphNodeHC<StringC,DPConverterBaseC> &ret = NodeTab()[typeName];
     if(ret.IsValid())
@@ -52,8 +52,8 @@ namespace RavlN {
   }
 
   //! Find a conversion
-  bool TypeConverterBodyC::FindConversion(const type_info &from,
-                                          const type_info &to,
+  bool TypeConverterBodyC::FindConversion(const std::type_info &from,
+                                          const std::type_info &to,
                                           RealT &finalCost,
                                           DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > &convResult) const
   {
@@ -105,7 +105,7 @@ namespace RavlN {
 
   //: Test if conversion is possible.
   
-  bool TypeConverterBodyC::CanConvert(const type_info &from,const type_info &to) {
+  bool TypeConverterBodyC::CanConvert(const std::type_info &from,const std::type_info &to) {
     RealT finalCost = 0;
     DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > conv;
     return FindConversion(from,to,finalCost,conv);
@@ -113,15 +113,15 @@ namespace RavlN {
 
   //: Do conversion through abstract handles.
   
-  RCAbstractC TypeConverterBodyC::DoConversion(const RCAbstractC &dat,const type_info &from,const type_info &to) {
+  RCAbstractC TypeConverterBodyC::DoConversion(const RCAbstractC &dat,const std::type_info &from,const std::type_info &to) {
     if(from == to || !dat.IsValid())
       return dat;
-    ONDEBUG(cout << "Asked to convert " << from.name() << " to " << to.name() << endl);
+    ONDEBUG(std::cout << "Asked to convert " << from.name() << " to " << to.name() << std::endl);
     DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > conv;  
     RealT finalCost = 0;
 
     if(!FindConversion(from,to,finalCost,conv)) {
-      ONDEBUG(cout << "No conversion from " << from.name() << " to " << to.name() << endl);
+      ONDEBUG(std::cout << "No conversion from " << from.name() << " to " << to.name() << std::endl);
       return RCAbstractC();
     }
     
@@ -136,13 +136,13 @@ namespace RavlN {
   //: Find a conversion.
   // If found the cost of conversion is put into finalCost.
   
-  DListC<DPConverterBaseC> TypeConverterBodyC::FindConversion(const type_info &from,const type_info &to,RealT &finalCost)  {
-    ONDEBUG(cout << "Asked to convert " << from.name() << " to " << to.name() << endl);
+  DListC<DPConverterBaseC> TypeConverterBodyC::FindConversion(const std::type_info &from,const std::type_info &to,RealT &finalCost)  {
+    ONDEBUG(std::cout << "Asked to convert " << from.name() << " to " << to.name() << std::endl);
     DListC<GraphEdgeIterC<StringC,DPConverterBaseC> > conv;  
     //  typedef RealT (*AFuncT)(const DPConverterBaseC &);
 
     if(!FindConversion(from,to,finalCost,conv)) {
-      ONDEBUG(cout << "No conversion from " << from.name() << " to " << to.name() << endl);
+      ONDEBUG(std::cout << "No conversion from " << from.name() << " to " << to.name() << std::endl);
       return DListC<DPConverterBaseC>(); // Failed to find conversion.
     }
     
@@ -154,14 +154,14 @@ namespace RavlN {
   
   
   RealT TypeConverterBodyC::EdgeEval(const DPConverterBaseC &edge)  { 
-    ONDEBUG(cout << "Edge cost " << edge.Cost() << " : " << edge.ArgType(0).name() << " " << edge.Output().name() << endl);
+    ONDEBUG(std::cout << "Edge cost " << edge.Cost() << " : " << edge.ArgType(0).name() << " " << edge.Output().name() << std::endl);
     return edge.Cost(); 
   }
   
   
   //: Find a conversion.
   
-  DListC<DPConverterBaseC> TypeConverterBodyC::FindConversion(const type_info &from,const type_info &to) { 
+  DListC<DPConverterBaseC> TypeConverterBodyC::FindConversion(const std::type_info &from,const std::type_info &to) {
     RealT finalCost = -1;
     return FindConversion(from,to,finalCost);
   } 
@@ -180,7 +180,7 @@ namespace RavlN {
     
   bool TypeConverterBodyC::Remove(DPConverterBaseC &tc)  {
     // TODO :- This is slow !!
-    ONDEBUG(cerr << "Unregistering converter : "<< tc.ArgType(0).name() << " to " << tc.Output().name() << endl);
+    ONDEBUG(std::cerr << "Unregistering converter : "<< tc.ArgType(0).name() << " to " << tc.Output().name() << std::endl);
     MTWriteLockC cacheLock(5);
     m_version++;
     bool ok = false;
@@ -197,7 +197,7 @@ namespace RavlN {
     m_conversionCache.Empty();
 
     if(!ok)
-      cerr << "Failed !!! " << size << "\n";
+      std::cerr << "Failed !!! " << size << "\n";
     return true;
   }
   

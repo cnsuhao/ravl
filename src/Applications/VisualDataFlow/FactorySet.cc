@@ -61,12 +61,12 @@ namespace RavlDFN {
   //: Load default converters.
   
   bool FactorySetBodyC::LoadDefault() {
-    ONDEBUG(cerr << "FactorySetBodyC::LoadDefault(), Called. \n");
+    ONDEBUG(std::cerr << "FactorySetBodyC::LoadDefault(), Called. \n");
     TypeConverterC typeConv = SystemTypeConverter();
     PixmapC pm((char **) xpmData_OpenFile);
     for(GraphEdgeIterC<StringC,DPConverterBaseC> it(typeConv.Graph());it;it++) {
       StringC nname = StringC(TypeName(it.Data().ArgType(0))) + " => " + StringC(TypeName(it.Data().Output()));
-      //ONDEBUG(cerr <<"FactorySetBodyC::LoadDefault(), Got converter. " << nname << "\n");
+      //ONDEBUG(std::cerr <<"FactorySetBodyC::LoadDefault(), Got converter. " << nname << "\n");
       FactoryC nfac(nname,pm,Trigger(&Converter2DFObject,it.Data()));
       StringC sec("converter.");
       nfac.Section(sec + nname);

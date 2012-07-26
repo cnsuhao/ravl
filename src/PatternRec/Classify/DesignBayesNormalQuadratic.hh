@@ -23,17 +23,16 @@ namespace RavlN {
     : public DesignClassifierSupervisedBodyC
   {
   public:
-    DesignBayesNormalQuadraticBodyC()
-    {}
+    DesignBayesNormalQuadraticBodyC();
     //: Default constructor.
     
-    DesignBayesNormalQuadraticBodyC(istream &strm);
+    DesignBayesNormalQuadraticBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalQuadraticBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -64,7 +63,7 @@ namespace RavlN {
   {
   public:
 
-    DesignBayesNormalQuadraticC(istream &strm);
+    DesignBayesNormalQuadraticC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalQuadraticC(BinIStreamC &strm);
@@ -104,14 +103,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DesignBayesNormalQuadraticC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignBayesNormalQuadraticC &obj) {
     obj = DesignBayesNormalQuadraticC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignBayesNormalQuadraticC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignBayesNormalQuadraticC &obj) {
     obj.Save(out);
     return out;
   }

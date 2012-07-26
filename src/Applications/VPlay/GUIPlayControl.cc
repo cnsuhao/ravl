@@ -67,7 +67,7 @@ namespace RavlGUIN {
   }
   
   void PlayControlBodyC::Seek(UIntT pos) {
-    ONDEBUG(cerr << "void PlayControlBodyC::Seek(UIntT pos)\n");
+    ONDEBUG(std::cerr << "void PlayControlBodyC::Seek(UIntT pos)\n");
     MutexLockC hold(access);
     if(!pc.IsValid())
       return ;
@@ -295,11 +295,11 @@ namespace RavlGUIN {
 
 
   bool PlayControlBodyC::SliderCallback(RealT &val) {
-    //ONDEBUG(cerr <<  "From:" << pc.Tell());
+    //ONDEBUG(std::cerr <<  "From:" << pc.Tell());
     //    Pause();
     Speed(0);
     Seek(Round(val));
-    //ONDEBUG(cerr << " Seeking to :" << val << " At " << pc.Tell() << "\n");
+    //ONDEBUG(std::cerr << " Seeking to :" << val << " At " << pc.Tell() << "\n");
     return true;
   }
 
@@ -325,7 +325,7 @@ namespace RavlGUIN {
   }
   
   bool PlayControlBodyC::SliderUpdate() {
-    //ONDEBUG(cerr << "bool PlayControlBodyC::SliderUpdate() \n");
+    //ONDEBUG(std::cerr << "bool PlayControlBodyC::SliderUpdate() \n");
     // Do we have a valid controls?
     if (!created)
       return false;
@@ -347,19 +347,19 @@ namespace RavlGUIN {
 
 
     if(pc.FixedStart() != frameSlider.Lower() || loc > frameSlider.Upper()) {
-      ONDEBUG(cerr << "Setting slider range1 " << pc.FixedStart() << " " << loc << "\n");
+      ONDEBUG(std::cerr << "Setting slider range1 " << pc.FixedStart() << " " << loc << "\n");
       min = pc.FixedStart();
       max = RavlN::Max(loc, pc.FixedEnd());
       updateRange = true;
     } else {
       if(updateSlider) {
         if(pc.FixedEnd() > loc) {
-          ONDEBUG(cerr << "Setting slider range2 " << pc.FixedStart() << " " << pc.FixedEnd()+1 << "\n");
+          ONDEBUG(std::cerr << "Setting slider range2 " << pc.FixedStart() << " " << pc.FixedEnd()+1 << "\n");
           min = pc.FixedStart();
           max = pc.FixedEnd();
           updateRange = true;
         } else {
-          ONDEBUG(cerr << "Setting slider range3 " << pc.FixedStart() << " " << loc+1 << " (loc) \n");
+          ONDEBUG(std::cerr << "Setting slider range3 " << pc.FixedStart() << " " << loc+1 << " (loc) \n");
           min = pc.FixedStart();
           max = loc;
           updateRange = true;
@@ -428,7 +428,7 @@ namespace RavlGUIN {
   //: Show/Hide extended controls.
 
   bool PlayControlBodyC::ShowExtended(bool &doit)  {
-    ONDEBUG(cerr << "PlayControlBodyC::ShowExtended(), Called. \n");
+    ONDEBUG(std::cerr << "PlayControlBodyC::ShowExtended(), Called. \n");
     if(doit) {
       if(!doneAdd) {
 	Add(extraControls);
@@ -460,7 +460,7 @@ namespace RavlGUIN {
     if(val < 0) {
       val = 0;
     }
-    ONDEBUG(cerr << "PlayControlBodyC::SetStart(), Start: " << val << " \n");
+    ONDEBUG(std::cerr << "PlayControlBodyC::SetStart(), Start: " << val << " \n");
     textStart.SetText(text);
     gtk_editable_set_position(GTK_EDITABLE(textStart.Widget()),text.length());
     pc.SubSeqStart() = (UIntT) val;
@@ -486,7 +486,7 @@ namespace RavlGUIN {
       val = 0;
     }
     textEnd.SetText(text);  
-    ONDEBUG(cerr << "PlayControlBodyC::SetEnd(), End: " << val << " \n");
+    ONDEBUG(std::cerr << "PlayControlBodyC::SetEnd(), End: " << val << " \n");
     gtk_editable_set_position(GTK_EDITABLE(textEnd.Widget()),text.length());
     pc.SubSeqEnd() = (UIntT) val;
     return true;
@@ -504,15 +504,15 @@ namespace RavlGUIN {
     else if(text == "Palindrome") 
       pc.SubSeqMode() = 3;
     else
-      cerr << "WARNING: Unknown repeat mode :" << text << "\n";
-    ONDEBUG(cerr << "PlayControlBodyC::SetRepeatMode(),  '" << text << "' \n"); 
+      std::cerr << "WARNING: Unknown repeat mode :" << text << "\n";
+    ONDEBUG(std::cerr << "PlayControlBodyC::SetRepeatMode(),  '" << text << "' \n"); 
     return true;
   }
   
   void PlayControlBodyC::InitGUI() 
   {
     RavlAssert(Manager.IsGUIThread());
-    ONDEBUG(cerr << "PlayControlBodyC::InitGUI(), Called. \n");
+    ONDEBUG(std::cerr << "PlayControlBodyC::InitGUI(), Called. \n");
     //: Setup gui.
     
     UIntT theEnd;
@@ -535,7 +535,7 @@ namespace RavlGUIN {
       theStart = 0;
       maxSize = 1;
     }
-    ONDEBUG(cerr <<  "Sequence, Start:" << theStart << " Max:" << maxSize << " End:" << theEnd << "\n");
+    ONDEBUG(std::cerr <<  "Sequence, Start:" << theStart << " Max:" << maxSize << " End:" << theEnd << "\n");
     
     frameSlider = SliderH(theStart,theStart,maxSize,1,PlayControlC(*this),&PlayControlC::SliderCallback);
 

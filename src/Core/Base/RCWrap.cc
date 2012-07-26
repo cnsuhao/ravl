@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/RCWrap.cc"
 
@@ -26,7 +25,7 @@ namespace RavlN {
   bool RCWrapBaseBodyC::Save(BinOStreamC &strm) const 
   { return RCBodyVC::Save(strm); }
   
-  const type_info &RCWrapBaseBodyC::DataType() const { 
+  const std::type_info &RCWrapBaseBodyC::DataType() const {
     AssertFailed(__FILE__,__LINE__,"Abstract method called: WrapBaseBodyC::DataType() ");
     return typeid(void); 
   }

@@ -36,7 +36,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DistanceMahalanobisBodyC::DistanceMahalanobisBodyC(istream &strm)
+  DistanceMahalanobisBodyC::DistanceMahalanobisBodyC(std::istream &strm)
     : DistanceBodyC(strm)
   { strm >> iCovar; }
   
@@ -48,7 +48,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceMahalanobisBodyC::Save (ostream &out) const {
+  bool DistanceMahalanobisBodyC::Save (std::ostream &out) const {
     if(!DistanceBodyC::Save(out))
       return false;
     out << iCovar << ' ';

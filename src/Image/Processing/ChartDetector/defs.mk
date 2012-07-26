@@ -20,7 +20,7 @@ PLIB=RavlChartDetector
 
 USESLIBS=RavlImage RavlImageProc RavlImageIO  Optimisation
 
-PROGLIBS=RavlDPDisplay.opt RavlExtImgIO.opt RavlOS
+PROGLIBS=RavlDPDisplay.opt RavlExtImgIO.opt RavlOS RavlPatternRec
 
 AUXFILES=CalibrationChart.ps CalibrationChart.png CalibrationChart.coords
 

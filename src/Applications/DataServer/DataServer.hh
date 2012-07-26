@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_VIDEOSERVER_HEADER
-#define RAVL_VIDEOSERVER_HEADER 1
+#ifndef RAVL_DATASERVER_HEADER
+#define RAVL_DATASERVER_HEADER 1
 //! lib=RavlDataServer
 
 #include "Ravl/OS/NetPortManager.hh"
@@ -33,7 +33,10 @@ namespace RavlN {
     
     bool Open(const StringC &addr);
     //: Open server connection.
-    
+
+    bool ReadConfig(const XMLFactoryContextC &factory);
+    //: Read XML configuration.
+
     bool ReadConfigFile(const StringC &filename, bool useAddress = true);
     //: Read a new config file.
     //!param: filename - Name of the config file to load.

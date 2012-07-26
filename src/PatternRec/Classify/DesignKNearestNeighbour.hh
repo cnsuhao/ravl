@@ -31,23 +31,23 @@ namespace RavlN {
     DesignKNearestNeighbourBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DesignKNearestNeighbourBodyC(istream &strm);
+    DesignKNearestNeighbourBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignKNearestNeighbourBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
-    //: Create a clasifier.
+    //: Create a classifier.
     
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SampleC<RealT> &weight);
-    //: Create a clasifier with weights for the samples.
+    //: Create a classifier with weights for the samples.
     
   protected:
     UIntT k;
@@ -78,7 +78,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
     
-    DesignKNearestNeighbourC(istream &strm);
+    DesignKNearestNeighbourC(std::istream &strm);
     //: Load from stream.
     
     DesignKNearestNeighbourC(BinIStreamC &strm);
@@ -107,14 +107,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,DesignKNearestNeighbourC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignKNearestNeighbourC &obj) {
     obj = DesignKNearestNeighbourC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignKNearestNeighbourC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignKNearestNeighbourC &obj) {
     obj.Save(out);
     return out;
   }

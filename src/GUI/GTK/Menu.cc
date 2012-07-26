@@ -65,7 +65,7 @@ namespace RavlGUIN
   //: Create the widget.
   
   bool MenuItemBodyC::Create() {
-    ONDEBUG(cerr << "MenuItemBodyC::Create(), name(" << name.chars() << ")\n");
+    ONDEBUG(std::cerr << "MenuItemBodyC::Create(), name(" << name.chars() << ")\n");
     /* Create a new menu-item with a name... */
     if(!name.IsEmpty()) {
       widget = gtk_menu_item_new_with_label(name);
@@ -79,7 +79,7 @@ namespace RavlGUIN
 
     ConnectSignals();
 
-    ONDEBUG(cerr << "MenuItemBodyC::Create(), Done. \n");
+    ONDEBUG(std::cerr << "MenuItemBodyC::Create(), Done. \n");
     return true;
   }
   
@@ -89,7 +89,7 @@ namespace RavlGUIN
     widget = newWidget;
     gtk_signal_connect(GTK_OBJECT(widget), "activate",
      GTK_SIGNAL_FUNC(RavlGUIN::MenuItemC_response), this);
-    ONDEBUG(cerr << "MenuItemBodyC::Create(widget), name(" << name.chars() << ")\n");
+    ONDEBUG(std::cerr << "MenuItemBodyC::Create(widget), name(" << name.chars() << ")\n");
     ConnectSignals();
     return true;
   }
@@ -97,7 +97,7 @@ namespace RavlGUIN
   //: Undo all references.
   
   void MenuItemBodyC::Destroy() {
-    ONDEBUG(cerr << "MenuItemBodyC::Destroy(), Called. \n");  
+    ONDEBUG(std::cerr << "MenuItemBodyC::Destroy(), Called. \n");  
     selected.Invalidate();
     WidgetBodyC::Destroy();
   }
@@ -108,19 +108,19 @@ namespace RavlGUIN
   
   bool MenuBodyC::Create()
   {
-    ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") called \n");
+    ONDEBUG(std::cerr << "MenuBodyC::Create(), name(" << menuName << ") called \n");
 
     widget = gtk_menu_new();
 
     for(DLIterC<WidgetC> it(children);it.IsElm();it.Next()) {
       if(!it.Data().Create()) 
-        cerr << "MenuBodyC::Create(), name(" << menuName << ") widget create failed!\n";
+        std::cerr << "MenuBodyC::Create(), name(" << menuName << ") widget create failed!\n";
 
       gtk_widget_show(it.Data().Widget());
 
       MenuC sm(it.Data());
       if(sm.IsValid()) {
-        ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") submenu name(" << sm.MenuName().chars() << ")\n");
+        ONDEBUG(std::cerr << "MenuBodyC::Create(), name(" << menuName << ") submenu name(" << sm.MenuName().chars() << ")\n");
         GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
         gtk_widget_show(submenu);
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu),it.Data().Widget());
@@ -128,14 +128,14 @@ namespace RavlGUIN
       }
       else
       {
-        ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") adding menu item\n");
+        ONDEBUG(std::cerr << "MenuBodyC::Create(), name(" << menuName << ") adding menu item\n");
         gtk_menu_append(GTK_MENU(widget), it.Data().Widget());
       }
     }
 
     ConnectSignals();
 
-    ONDEBUG(cerr << "MenuBodyC::Create(), name(" << menuName << ") done\n");
+    ONDEBUG(std::cerr << "MenuBodyC::Create(), name(" << menuName << ") done\n");
 
     return true;
   }
@@ -146,7 +146,7 @@ namespace RavlGUIN
   {
     RavlAssert(Manager.IsGUIThread());
 
-    ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") called\n");
+    ONDEBUG(std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") called\n");
     
     children.InsLast(widge);
 
@@ -154,12 +154,12 @@ namespace RavlGUIN
     {
       WidgetC &addedWidget = children.Last();
 
-      ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") adding to menu\n");
+      ONDEBUG(std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") adding to menu\n");
       if (addedWidget.Widget() == 0)
       {
-        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") creating widget\n");
+        ONDEBUG(std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") creating widget\n");
         if (!addedWidget.Create())
-          cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") widget create failed!\n";
+          std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") widget create failed!\n";
 
       }
 
@@ -167,7 +167,7 @@ namespace RavlGUIN
 
       MenuC sm(addedWidget);
       if (sm.IsValid()) {
-        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") submenu name(" << sm.MenuName().chars() << ")\n");
+        ONDEBUG(std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") submenu name(" << sm.MenuName().chars() << ")\n");
         GtkWidget *submenu = gtk_menu_item_new_with_label(sm.MenuName());
         gtk_widget_show(submenu);
         gtk_menu_item_set_submenu(GTK_MENU_ITEM(submenu), addedWidget.Widget());
@@ -175,12 +175,12 @@ namespace RavlGUIN
       }
       else
       {
-        ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") adding menu item\n");
+        ONDEBUG(std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") adding menu item\n");
         gtk_menu_append(GTK_MENU(widget), addedWidget.Widget());
       }
     }
 
-    ONDEBUG(cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") done\n");
+    ONDEBUG(std::cerr << "MenuBodyC::GUIAdd(), name(" << menuName << ") done\n");
     
     return true;
   }
@@ -191,7 +191,7 @@ namespace RavlGUIN
   {
     RavlAssert(Manager.IsGUIThread());
 
-    ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") called\n");
+    ONDEBUG(std::cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") called\n");
 
     bool widgetFound = false;
     for (DLIterC<WidgetC> iterChildren(children); iterChildren.IsElm(); iterChildren.Next())
@@ -211,12 +211,12 @@ namespace RavlGUIN
       MenuC subMenu(widge);
       if (subMenu.IsValid())
       {
-        ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") searching for submenu\n");
+        ONDEBUG(std::cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") searching for submenu\n");
 
         GList *iterContainer = gtk_container_get_children(GTK_CONTAINER(widget));
         while (iterContainer)
         {
-          ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") searching submenu widget\n");
+          ONDEBUG(std::cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") searching submenu widget\n");
 
           GtkWidget *childWidget = reinterpret_cast<GtkWidget*>(iterContainer->data);
           if (childWidget && GTK_IS_MENU_ITEM(childWidget))
@@ -224,7 +224,7 @@ namespace RavlGUIN
             GtkWidget *subMenu = gtk_menu_item_get_submenu(GTK_MENU_ITEM(childWidget));
             if (subMenu && subMenu == widge.Widget())
             {
-              ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") submenu widget found\n");
+              ONDEBUG(std::cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") submenu widget found\n");
 
               gtk_container_remove(GTK_CONTAINER(widget), childWidget);
               
@@ -239,13 +239,13 @@ namespace RavlGUIN
       }
       else
       {
-        ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") removing menu item\n");
+        ONDEBUG(std::cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") removing menu item\n");
 
         gtk_container_remove(GTK_CONTAINER(widget), widge.Widget());
       }
     }
 
-    ONDEBUG(cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") done\n");
+    ONDEBUG(std::cerr << "MenuBodyC::GUIRemove(), name(" << menuName << ") done\n");
 
     return true;
   }
@@ -256,7 +256,7 @@ namespace RavlGUIN
     if(widget == 0) 
       Create();
     if(widget == 0) {
-      cerr << "ERROR: Failed to create menu. \n";
+      std::cerr << "ERROR: Failed to create menu. \n";
       return ;
     }
     if(event != 0) {
@@ -291,7 +291,7 @@ namespace RavlGUIN
       Create();
     if(widget == 0)
     {
-      cerr << "ERROR: Failed to create menu.\n";
+      std::cerr << "ERROR: Failed to create menu.\n";
       return;
     }
 
@@ -327,7 +327,7 @@ namespace RavlGUIN
   //: Create the widget.
   
   bool MenuBarBodyC::Create() {
-    ONDEBUG(cerr << "MenuBarBodyC::Create(), Called. \n");
+    ONDEBUG(std::cerr << "MenuBarBodyC::Create(), Called. \n");
     widget = gtk_menu_bar_new();
     
     for(DLIterC<WidgetC> it(children);it.IsElm();it.Next()) {
@@ -343,7 +343,7 @@ namespace RavlGUIN
       } else
 	gtk_menu_bar_append(GTK_MENU_BAR (widget), it.Data().Widget());
     }
-    ONDEBUG(cerr << "MenuBarBodyC::Create(), Done. \n");  
+    ONDEBUG(std::cerr << "MenuBarBodyC::Create(), Done. \n");  
     return true;
   }
   

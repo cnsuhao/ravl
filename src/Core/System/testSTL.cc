@@ -23,15 +23,15 @@ int main()
 {
   int err;
   if((err = testVectorIntIO()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
   if((err = testVectorStringIO()) != 0) {
-    cerr << "Test failed line :" << err <<"\n";
+    std::cerr << "Test failed line :" << err <<"\n";
     return 1;
   }
 
-  cerr << "STL test passed. \n";
+  std::cerr << "STL test passed. \n";
   return 0;
 }
 

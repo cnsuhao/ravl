@@ -25,7 +25,7 @@ namespace RavlN {
   template <class DataT,typename DeRefT> class IntrDListC;
   template <class DataT,typename DeRefT> class IntrDLIterC;
   template <class DataT,typename DeRefT>
-  ostream & operator<<(ostream & s, const IntrDListC<DataT,DeRefT> & list);
+  std::ostream & operator<<(std::ostream & s, const IntrDListC<DataT,DeRefT> & list);
   
   //! userlevel=Advanced
   //: Default class for handling list element derefrence's

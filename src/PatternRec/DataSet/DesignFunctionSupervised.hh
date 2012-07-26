@@ -33,13 +33,13 @@ namespace RavlN {
     DesignFunctionSupervisedBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
     
-    DesignFunctionSupervisedBodyC(istream &strm);
+    DesignFunctionSupervisedBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignFunctionSupervisedBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -90,12 +90,17 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
 
+    DesignFunctionSupervisedC(const DesignFunctionSupervisedC &other)
+     : DesignerC(other)
+    {}
+    //: Copy constructor.
+
     DesignFunctionSupervisedC(const XMLFactoryContextC &factory)
       :  DesignerC(*new DesignFunctionSupervisedBodyC(factory))
     {}
     //: Construct from XML factory
     
-    DesignFunctionSupervisedC(istream &strm);
+    DesignFunctionSupervisedC(std::istream &strm);
     //: Load from stream.
     
     DesignFunctionSupervisedC(BinIStreamC &strm);
@@ -161,14 +166,14 @@ namespace RavlN {
   
   // DesignFunctionSupervisedC
   
-  inline istream &operator>>(istream &strm,DesignFunctionSupervisedC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignFunctionSupervisedC &obj) {
     obj = DesignFunctionSupervisedC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignFunctionSupervisedC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignFunctionSupervisedC &obj) {
     obj.Save(out);
     return out;
   }

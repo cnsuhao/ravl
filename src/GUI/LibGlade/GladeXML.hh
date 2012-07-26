@@ -132,14 +132,14 @@ namespace RavlGUIN {
     
   };
 
-  inline istream &operator>>(istream &strm,GladeXMLC &obj) {
+  inline std::istream &operator>>(std::istream &strm,GladeXMLC &obj) {
     RavlAssertMsg(0,"Not implemented. ");
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out,const GladeXMLC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const GladeXMLC &obj) {
     RavlAssertMsg(0,"Not implemented. ");
     return out;
   }

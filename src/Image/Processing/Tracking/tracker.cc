@@ -45,7 +45,7 @@ int main(int nargs,char **argv) {
   // Open an input stream.
   DPIPortC<ImageC<ByteT> > inp;
   if(!OpenISequence(inp,ifn)) {
-    cerr << "Failed to open input '" << ifn << "'\n";
+    std::cerr << "Failed to open input '" << ifn << "'\n";
     return 1;
   }
 
@@ -54,7 +54,7 @@ int main(int nargs,char **argv) {
   // Open an output stream.
   DPOPortC<ImageC<ByteT> > outp;
   if(!OpenOSequence(outp,ofn)) {
-    cerr << "Failed to output input '" << ofn << "'\n";
+    std::cerr << "Failed to output input '" << ofn << "'\n";
     return 1;
   }
   

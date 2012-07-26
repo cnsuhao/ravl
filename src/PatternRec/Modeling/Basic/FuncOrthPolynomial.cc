@@ -23,7 +23,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncOrthPolynomialBodyC::FuncOrthPolynomialBodyC(istream &strm)
+  FuncOrthPolynomialBodyC::FuncOrthPolynomialBodyC(std::istream &strm)
     : FuncLinearCoeffBodyC(strm)
   { strm >> noCoeffs >> order; }
   
@@ -35,7 +35,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FuncOrthPolynomialBodyC::Save (ostream &out) const {
+  bool FuncOrthPolynomialBodyC::Save (std::ostream &out) const {
     if(!FuncLinearCoeffBodyC::Save(out))
       return false;
     out  << ' ' << noCoeffs << ' ' << order;
@@ -51,7 +51,7 @@ namespace RavlN {
     return true;
   }
   
-  //: Calculate the number of coefficents for a given input size.
+  //: Calculate the number of coefficients for a given input size.
   
   UIntT FuncOrthPolynomialBodyC::NumberCoeffs(UIntT inputSize) const {
     return 1 + inputSize * order;
@@ -66,7 +66,7 @@ namespace RavlN {
     it++;
     for (UIntT i = 1; i <= order; i++) {
       for(SArray1dIterC<RealT> it2(X);it2;it2++,it++)
-	*it = Pow(*it2,(IntT) i);
+        *it = Pow(*it2,(IntT) i);
     }
     return ret;
   }

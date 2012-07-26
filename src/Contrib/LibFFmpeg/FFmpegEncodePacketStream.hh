@@ -136,7 +136,7 @@ namespace RavlN {
 
   protected:
     //void Init();
-    //: Initalise attributes.
+    //: Initialise attributes.
     
     StringC out_filename;
     AVFormatContext *pFormatCtx;

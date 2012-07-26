@@ -84,13 +84,13 @@ namespace RavlN {
   };
   
   template<class T1,class T2>
-  ostream &operator<<(ostream &out,const Tuple2C<T1,T2> &obj) {
+  std::ostream &operator<<(std::ostream &out,const Tuple2C<T1,T2> &obj) {
     out << obj.Data1() << ' ' << obj.Data2() << ' ';
     return out;
   }
   
   template<class T1,class T2>
-  istream &operator>>(istream &in,Tuple2C<T1,T2> &obj) {
+  std::istream &operator>>(std::istream &in,Tuple2C<T1,T2> &obj) {
     in >> obj.Data1() >> obj.Data2();
     return in;
   }

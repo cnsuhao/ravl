@@ -33,7 +33,7 @@
 #include "Ravl/MatrixRS.hh"
 #include "Ravl/DP/Entity.hh"
 #pragma instantiate RavlN::SArray1dIter3C<RavlN::VectorC,RavlN::MatrixRSC,double>
-#pragma instantiate RavlN::GaussianMixtureBodyC* RavlN::VCLoad(istream&,RavlN::GaussianMixtureBodyC*)
+#pragma instantiate RavlN::GaussianMixtureBodyC* RavlN::VCLoad(std::istream&,RavlN::GaussianMixtureBodyC*)
 #pragma instantiate RavlN::SArray1dIter2C<RavlN::VectorC,RavlN::MatrixRSC>
 #pragma instantiate RavlN::SArray1dIterC<RavlN::MatrixRSC>
 #pragma instantiate RavlN::SArray1dIter2C<RavlN::MeanCovarianceC,RavlN::VectorC>
@@ -56,7 +56,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignGaussianMixtureBodyC::DesignGaussianMixtureBodyC(istream &strm) 
+  DesignGaussianMixtureBodyC::DesignGaussianMixtureBodyC(std::istream &strm) 
     : DesignFunctionUnsupervisedBodyC(strm)
   {
     RavlIssueError("not implemented");
@@ -72,7 +72,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignGaussianMixtureBodyC::Save(ostream &out) const {
+  bool DesignGaussianMixtureBodyC::Save(std::ostream &out) const {
     if(!DesignFunctionUnsupervisedBodyC::Save(out))
       return false;
     RavlIssueError("not implemented");
@@ -101,7 +101,7 @@ namespace RavlN {
   // Uses workspace approach. Faster for small datasets.
   
   FunctionC DesignGaussianMixtureBodyC::ApplyWorkSpace(const SampleC<VectorC> &in) {
-    ONDEBUG(cerr << "DesignGaussianMixtureBodyC::ApplyWorkSpace(), Called with " << in.Size() << " samples. \n");
+    ONDEBUG(std::cerr << "DesignGaussianMixtureBodyC::ApplyWorkSpace(), Called with " << in.Size() << " samples. \n");
     if(in.IsEmpty()) // Empty sample ?
       return FunctionC(); 
     //: set some variables
@@ -203,7 +203,7 @@ namespace RavlN {
       
       //: we can stop if change in likelihood is neglible
       RealT change = Abs((likelihood - prev_likelihood)/likelihood);
-      ONDEBUG(cerr << "likelihood: " << likelihood << " change " << change << endl);
+      ONDEBUG(std::cerr << "likelihood: " << likelihood << " change " << change << endl);
       if(change < epsilon) done=true;
       else prev_likelihood = likelihood;   
       
@@ -215,7 +215,7 @@ namespace RavlN {
       }
       
       if(iter==200) {
-	cerr << "change in log-likelihood never good enough: " << change << endl;
+	cerr << "change in log-likelihood never good enough: " << change << std::endl;
 	done=true;
       }
     }
@@ -311,7 +311,7 @@ namespace RavlN {
 
       //: we can stop early if change in likelihood is neglible
       RealT change = Abs((likelihood - prev_likelihood)/likelihood);
-      //cout << "likelihood: " << likelihood << " change " << change << endl;
+      //cout << "likelihood: " << likelihood << " change " << change << std::endl;
       if((change < epsilon)&&(iter > 10)) done=true;
       else prev_likelihood = likelihood;   
     
@@ -320,8 +320,8 @@ namespace RavlN {
     
       if(iter++==100) {
 	cerr << "maximum iterations reached.  trying again.";
-	cerr << "change in log-likelihood never good enough: " << change << endl;
-	cerr << "returning model anyway." << endl;
+	cerr << "change in log-likelihood never good enough: " << change << std::endl;
+	cerr << "returning model anyway." << std::endl;
 	done=true;
       }
     
@@ -339,7 +339,7 @@ namespace RavlN {
       initCluster = DesignKMeansC(mixes); // Default to k-means
     SArray1dC<MeanCovarianceC> params = initCluster.Cluster(data);
     mixes=params.Size();
-    ONDEBUG(cerr << "DesignGaussianMixtureBodyC::InitModel(), Mixtures=" << mixes << " Model=" << params << "\n");
+    ONDEBUG(std::cerr << "DesignGaussianMixtureBodyC::InitModel(), Mixtures=" << mixes << " Model=" << params << "\n");
     SArray1dC<RealT> weights(mixes);
     for(SArray1dIterC<RealT> it(weights);it;it++) 
       *it=1.0/(RealT)mixes;

@@ -142,7 +142,7 @@ namespace RavlGUIN {
         
         UIntT sourceCol = treeModel.ColNumber(name);
         if(sourceCol == ((UIntT) -1)) {
-          cerr << "Unknown column '" << name << "'\n";
+          std::cerr << "Unknown column '" << name << "'\n";
           continue;
         }
         
@@ -322,14 +322,14 @@ namespace RavlGUIN {
     IntT colNum = ColumnName2Number(colName);
     if (colNum >= 0 && displayColumns[colNum].Renderers().Size() == 1)
     {
-      ONDEBUG(cerr << "TreeViewBodyC::SetAttribute name(" << colName << ") col(" << colNum << ")\n");
+      ONDEBUG(std::cerr << "TreeViewBodyC::SetAttribute name(" << colName << ") col(" << colNum << ")\n");
       return SetAttribute(colNum,key,value,proxy);
     }
     
     for (UIntT i = 0; i < displayColumns.Size(); i++)
       if ((colNum = SubColumnName2Number(colName, i)) >= 0)
       {
-        ONDEBUG(cerr << "TreeViewBodyC::SetAttribute name(" << colName << ") col(" << i << ") sub(" << colNum << ")\n");
+        ONDEBUG(std::cerr << "TreeViewBodyC::SetAttribute name(" << colName << ") col(" << i << ") sub(" << colNum << ")\n");
         return SetAttribute(i, colNum,key,value,proxy);
       }
 
@@ -381,7 +381,7 @@ namespace RavlGUIN {
       if(colNum >= 0)
         gtk_tree_view_column_set_sort_column_id(GTK_TREE_VIEW_COLUMN(column), colNum);
       else 
-        cerr << "TreeViewBodyC::SetAttribute, Failed to find column '" << attrValue << "' for '" << colName << "'";
+        std::cerr << "TreeViewBodyC::SetAttribute, Failed to find column '" << attrValue << "' for '" << colName << "'";
     }
     // Enable column reordering
     else if (attrName == "reorderable") {
@@ -484,7 +484,7 @@ namespace RavlGUIN {
 #endif
         }
         if(renderer == 0) {
-          cerr << "Unknown or unsupported render type '" << rit->RenderType() << "'\n";
+          std::cerr << "Unknown or unsupported render type '" << rit->RenderType() << "'\n";
           RavlAssert(0);
         }
         
@@ -602,7 +602,7 @@ namespace RavlGUIN {
     // Set sorting
     if(widget != 0) {
       IntT colId = displayColumns[colNum].ColumnId();
-      ONDEBUG(cerr << "TreeViewBodyC::GUISort colNum=" << colNum << " colId=" << colId << endl);
+      ONDEBUG(std::cerr << "TreeViewBodyC::GUISort colNum=" << colNum << " colId=" << colId << endl);
       RavlAssert(colId >= 0);
       gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(treeModel.TreeModel()),
                                            colId,
@@ -624,7 +624,7 @@ namespace RavlGUIN {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     IntT colNum = treeModel.ColNumber(colName);
     if(colNum < 0) {
-      cerr << "TreeViewBodyC::GUISort(), Unknown column '" << colName << "' \n";
+      std::cerr << "TreeViewBodyC::GUISort(), Unknown column '" << colName << "' \n";
       return false;
     }
     return GUISort(colNum,bAscending);
@@ -660,7 +660,7 @@ namespace RavlGUIN {
     // Check validity of widget
     if(widget == 0) {
       //Manager.Queue(Trigger(TreeViewC(*this),&TreeViewC::GUIExpand,path));
-      cerr << "TreeViewBodyC::GUIExpand: Can't expand, widget does not exist yet. \n";
+      std::cerr << "TreeViewBodyC::GUIExpand: Can't expand, widget does not exist yet. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -705,7 +705,7 @@ namespace RavlGUIN {
     // Check validity of widget
     if(widget == 0) {
       //Manager.Queue(Trigger(TreeViewC(*this),&TreeViewC::GUIExpandAll));
-      cerr << "TreeViewBodyC::GUIExpandAll: Can't expand, widget does not exist yet. \n";
+      std::cerr << "TreeViewBodyC::GUIExpandAll: Can't expand, widget does not exist yet. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -727,7 +727,7 @@ namespace RavlGUIN {
     // Check validity of widget
     if(widget == 0) {
       //Manager.Queue(Trigger(TreeViewC(*this),&TreeViewC::GUICollapseAll));
-      cerr << "TreeViewBodyC::GUICollapseAll: Can't collapse, widget does not exist yet. \n";
+      std::cerr << "TreeViewBodyC::GUICollapseAll: Can't collapse, widget does not exist yet. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -774,10 +774,10 @@ namespace RavlGUIN {
       return false;
     }
     if(!iter.IsValid()) {
-      cerr << "TreeViewBodyC::GUISelectIter(), Warning: Asked to select invalid iterator. \n";
+      std::cerr << "TreeViewBodyC::GUISelectIter(), Warning: Asked to select invalid iterator. \n";
       return false;
     }
-    ONDEBUG(cerr << "Setting selection.\n");
+    ONDEBUG(std::cerr << "Setting selection.\n");
     gtk_tree_selection_select_iter(selection,iter.TreeIter());
     return true;
   }
@@ -959,7 +959,7 @@ namespace RavlGUIN {
     // Check validity of widget
     if(widget == 0) {
       //Manager.Queue(Trigger(TreeViewC(*this),&TreeViewC::GUIScrollTo,path));
-      cerr << "TreeViewBodyC::GUIScrollTo: Can't scroll to, widget does not exist yet. \n";
+      std::cerr << "TreeViewBodyC::GUIScrollTo: Can't scroll to, widget does not exist yet. \n";
       return true;
     }
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
@@ -1022,10 +1022,10 @@ namespace RavlGUIN {
     TreeModelPathC path = GUIGetPathTo(pos);
     
     if(!path.IsValid() || path.Text().IsEmpty()) {
-      ONDEBUG(cerr << "TreeViewBodyC::GUIGetIter, Path empty. \n");
+      ONDEBUG(std::cerr << "TreeViewBodyC::GUIGetIter, Path empty. \n");
       return TreeModelIterC();
     }
-    ONDEBUG(cerr << "TreeViewBodyC::GUIGetIter, Path='" << path.Text() << "' \n");
+    ONDEBUG(std::cerr << "TreeViewBodyC::GUIGetIter, Path='" << path.Text() << "' \n");
     return  treeModel.Path2Iter(path.Text());
   }
 
@@ -1122,7 +1122,7 @@ namespace RavlGUIN {
     dndInfo->isTarget = true;
     if(widget == 0) 
       return true;
-    cerr << "TreeViewBodyC::GUIDNDTarget(), Called. \n";
+    std::cerr << "TreeViewBodyC::GUIDNDTarget(), Called. \n";
     
     gtk_tree_view_enable_model_drag_dest(GTK_TREE_VIEW(widget),
                                          &(entries[0]),

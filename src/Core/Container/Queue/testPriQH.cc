@@ -28,7 +28,7 @@ template class RCWrapBodyC<SDArray1dC<Tuple2C<int, int> > >;
 #endif
 
 int main() {
-  cerr << "Starting test. \n";
+  std::cerr << "Starting test. \n";
   SeqTest();
   InterTest();
   return 0;
@@ -49,7 +49,7 @@ bool SeqTest(void) {
     const int Val = KP.Data2();
     const int Key = KP.Data1();
     if(Key < Last) {
-      cerr << "\n ERROR !!! " << Key << " " << Val << " (Last: " << Last << ") \n";
+      std::cerr << "\n ERROR !!! " << Key << " " << Val << " (Last: " << Last << ") \n";
       ok = false;
       break;
     }
@@ -57,9 +57,9 @@ bool SeqTest(void) {
     //cerr << "(%d %d) ",KP.Data1(),Val);
   }
   if(ok)
-    cerr << "Sequence test passed. \n";
+    std::cerr << "Sequence test passed. \n";
   else
-    cerr << "Sequence test failed. \n";
+    std::cerr << "Sequence test failed. \n";
   return ok;
 }  
 
@@ -70,7 +70,7 @@ bool InterTest(void) {
   for(i = 1;i < 10000;i++) {
     Queue.Insert(rand(),i+1);
   }
-  cerr << "Starting Interleave. \n";
+  std::cerr << "Starting Interleave. \n";
   for(int k = 0;k < 1000;k++) {
     // Remove
     Last = Queue.TopKey();
@@ -90,21 +90,21 @@ bool InterTest(void) {
       Queue.Insert(rand(),i+1);
     }
   }
-  cerr << "Checking remaining queue. \n";
+  std::cerr << "Checking remaining queue. \n";
   Last = Queue.TopKey();
   while(Queue.IsElm()) {
     Tuple2C<int,int> KP =Queue.GetTopPair();
     const int Val = KP.Data2();
     const int Key = KP.Data1();
     if(Key < Last) {
-      cerr << "\n ERROR !!! " << KP.Data1() << " " << Val << " \n";
+      std::cerr << "\n ERROR !!! " << KP.Data1() << " " << Val << " \n";
       ok = false;
       break;
     }
     Last = Key;
   }
   
-  cerr << "Interleave test passed. \n";
+  std::cerr << "Interleave test passed. \n";
   return ok;
 }
 

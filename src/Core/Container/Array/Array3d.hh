@@ -180,11 +180,11 @@ namespace RavlN {
 
 
   template <class DataT>
-  ostream & operator<<(ostream & s, const Array3dC<DataT> & arr);
+  std::ostream & operator<<(std::ostream & s, const Array3dC<DataT> & arr);
   // Prints into the stream 's'
 
   template <class DataT>
-  istream & operator>>(istream & s, Array3dC<DataT> & arr);
+  std::istream & operator>>(std::istream & s, Array3dC<DataT> & arr);
   // Reads the array from the stream 's'
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -282,14 +282,14 @@ namespace RavlN {
   }
 
   template <class DataT>
-  ostream & operator<<(ostream & s, const Array3dC<DataT> & arr) {
+  std::ostream & operator<<(std::ostream & s, const Array3dC<DataT> & arr) {
     s << arr.Frame() << "\n";
     return s << ((const RangeBufferAccess3dC<DataT> &)arr);
   }
 
 
   template <class DataT>
-  istream &operator>>(istream & s, Array3dC<DataT> & arr) {
+  std::istream &operator>>(std::istream & s, Array3dC<DataT> & arr) {
     IndexRange3dC frame;
     s >> frame;
     arr = Array3dC<DataT>(frame);

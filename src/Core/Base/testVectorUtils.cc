@@ -92,13 +92,13 @@ int testDotProduct(DataT Threshold) {
 
 int testConvolveKernel() {
   for(size_t matrRows = 128-2*13; matrRows <= 200; matrRows += 13) {
-    //cerr << "matrRows:" << matrRows << endl;
+    //cerr << "matrRows:" << matrRows << std::endl;
     for(size_t matrCols = 128-2*13; matrCols <= 200; matrCols += 13) {
-      //cerr << "matrCols:" << matrCols << endl;
+      //cerr << "matrCols:" << matrCols << std::endl;
       for(size_t kernRows = 32-2*5; kernRows <= 64; kernRows += 5) {
-        //cerr << "kernRows:" << kernRows << endl;
+        //cerr << "kernRows:" << kernRows << std::endl;
         for(size_t kernCols = 32-2*5; kernCols <= 64; kernCols += 5) {
-          //cerr << "kernCols:" << kernCols << endl;
+          //cerr << "kernCols:" << kernCols << std::endl;
           float matrix[matrRows][matrCols];
           float kernel[kernRows][kernCols];
 
@@ -116,9 +116,9 @@ int testConvolveKernel() {
 
 
           for(size_t posRow = 20-2; posRow <= 25; posRow += 1) {
-            //cerr << "posRow:" << posRow << endl;
+            //cerr << "posRow:" << posRow << std::endl;
             for(size_t posCol = 10-2; posCol <= 15; posCol += 1) {
-              //cerr << "posCol:" << posCol << endl;
+              //cerr << "posCol:" << posCol << std::endl;
 
               //compute old way
               float resOld = 0.f;
@@ -146,22 +146,22 @@ int testConvolveKernel() {
 int main(int nargs,char **argv) {
   int ln;
   if((ln = testSimple()) != 0) {
-    cerr << "Error line :" << ln << "\n";
+    std::cerr << "Error line :" << ln << "\n";
     return 1;
   }
   if((ln = testDotProduct<float>(2e-7)) != 0) {
-    cerr << "Error 'float' line :" << ln << "\n";
+    std::cerr << "Error 'float' line :" << ln << "\n";
     return 1;
   }
   if((ln = testDotProduct<double>(5e-16)) != 0) {
-    cerr << "Error 'double' line :" << ln << "\n";
+    std::cerr << "Error 'double' line :" << ln << "\n";
     return 1;
   }
   if((ln = testConvolveKernel()) != 0) {
-    cerr << "Error line :" << ln << "\n";
+    std::cerr << "Error line :" << ln << "\n";
     return 1;
   }
-  cerr <<"Test passed ok. \n";
+  std::cerr <<"Test passed ok. \n";
   return 0;
 }
 

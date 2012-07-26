@@ -59,7 +59,7 @@ namespace RavlN {
     {}
     //: Creates the index range <minIndex, maxIndex>.
     
-    explicit IndexRangeC(istream & s);
+    explicit IndexRangeC(std::istream & s);
     //: Creates the index range from the input stream.
     
     //:---------------------------------
@@ -408,18 +408,18 @@ namespace RavlN {
     IndexC minI; // Minimum index.
     IndexC maxI; // Maximum index.
     
-    friend istream & operator>>(istream & s, IndexRangeC & range);
+    friend std::istream & operator>>(std::istream & s, IndexRangeC & range);
   };
   
   inline bool IsInside(IndexC i, const IndexRangeC & range)
   { return (range.Min() <= i) && (i <= range.Max()); }
   //: Returns true if the index 'i' is inside the index range 'r'.
   
-  istream & operator>>(istream & s, IndexRangeC & r);
+  std::istream & operator>>(std::istream & s, IndexRangeC & r);
   // Read information from the input stream 's' and sets the index range
   // according obtained data.
   
-  ostream & operator<<(ostream & s, const IndexRangeC & r);
+  std::ostream & operator<<(std::ostream & s, const IndexRangeC & r);
   // Saves the index range 'r' into the output stream 's'.
   
   BinOStreamC &operator<<(BinOStreamC &s,const IndexRangeC &ir);  

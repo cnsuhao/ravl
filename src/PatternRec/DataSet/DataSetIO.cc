@@ -19,6 +19,8 @@
 
 namespace RavlN {
 
+  bool LoadDataSetVectorLabelLIBSVM(const StringC & filename, DataSetVectorLabelC & dataset);
+
   //! A function that saves a Vector dataset as a CSV file.
   bool SaveDataSetVectorLabel(const StringC & filename, const DataSetVectorLabelC & dataset) {
 
@@ -45,6 +47,8 @@ namespace RavlN {
     if (fname.HasExtension("csv")) {
       return LoadDataSetVectorLabelCSV(filename, dataset);
     }
+    if(fname.HasExtension("libsvm"))
+      return LoadDataSetVectorLabelLIBSVM(filename,dataset);
 
     IStreamC is(filename);
     if (!is.good()) {
@@ -163,6 +167,70 @@ namespace RavlN {
         c++;
       }
       dataset.Append(vec, label);
+    }
+    return true;
+  }
+
+  //! A function that loads a DataSetVectorLabel from a CSV file.
+  bool LoadDataSetVectorLabelLIBSVM(const StringC & filename, DataSetVectorLabelC & dataset) {
+    RavlDebug("Reading %s in libsvm format. ",filename.c_str());
+    IStreamC is(filename);
+    if (!is.good()) {
+      SysLog(SYSLOG_ERR, "Error opening file to load dataset '%s'", filename.data());
+      return false;
+    }
+    size_t gVecSize = 0;
+    size_t lineCount =0;
+    while(!is.eof()) {
+      StringC str;
+      if(readline(is,str,'\n',true) == 0)
+        continue;
+      //RavlDebug("Line '%s' ",str.c_str());
+      StringListC list(str," \t\n\r");
+      DLIterC<StringC> it(list);
+      for(it++;it;it++) {
+        int ind = it->before(':').IntValue() ;
+        if(ind == 0) {
+          RavlError("Failed to find index in '%s' ",it->c_str());
+          return false;
+        }
+        if(ind > (int) gVecSize)
+          gVecSize = ind;
+      }
+      lineCount++;
+    }
+    dataset = DataSetVectorLabelC(lineCount);
+
+    RavlDebug("Vector size:%d Lines:%u ",gVecSize,(unsigned) lineCount);
+    is.Seek(0);
+    is.is().clear();
+    while(!is.eof()) {
+      StringC str;
+      if(readline(is,str,'\n',true) == 0)
+        continue;
+      str = str.TopAndTail();
+      StringListC list(str," \t\n\r");
+      VectorC vec(gVecSize);
+      vec.Fill(0);
+      DLIterC<StringC> it(list);
+      int label = it->IntValue();
+      if(label < 0)
+        label = 0;
+      it++;
+      for(;it;it++) {
+        int ind = it->before(':').IntValue() - 1;
+        if(ind < 0) {
+          RavlError("Invalid index %d in '%s' from '%s' ",ind,it->c_str(),str.c_str());
+          return false;
+        }
+        if(ind >= gVecSize) {
+          RavlError("Index out of range %d  in '%s' from '%s' ",ind,it->c_str(),str.c_str());
+          return false;
+        }
+        RealT val = it->after(':').RealValue();
+        vec[ind] = val;
+      }
+      dataset.Append(vec,(unsigned) label);
     }
     return true;
   }

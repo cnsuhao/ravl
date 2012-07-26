@@ -31,10 +31,10 @@ namespace RavlGUIN {
   static void CheckGladeInit() {
     if(gladeInitDone)
       return ;
-    ONDEBUG(cerr << "CheckGladeInit(), Called. \n");
+    ONDEBUG(std::cerr << "CheckGladeInit(), Called. \n");
     gladeInitDone = true;
     glade_init();
-    ONDEBUG(cerr << "CheckGladeInit(), Done. \n");
+    ONDEBUG(std::cerr << "CheckGladeInit(), Done. \n");
   }
   
   //: Default constructor.
@@ -96,7 +96,7 @@ namespace RavlGUIN {
   //: Find named widget.
   
   GtkWidget *GladeXMLBodyC::Widget(const StringC &widgetName) {
-    ONDEBUG(cerr << "GladeXMLBodyC::Widget(), Called for '" << widgetName << "' in file " << filename <<  "\n");
+    ONDEBUG(std::cerr << "GladeXMLBodyC::Widget(), Called for '" << widgetName << "' in file " << filename <<  "\n");
     if(xml == 0) Create();
     return glade_xml_get_widget(xml, widgetName.chars());
   }

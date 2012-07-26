@@ -4,7 +4,6 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=Optimisation
 //! file="Ravl/PatternRec/Optimise/testBrent.cc"
 
@@ -53,19 +52,19 @@ int main() {
   RealT minY;
   VectorC X(2);
   X.Fill(0.0);
-  cout << quad(X) << endl;
+  std::cout << quad(X) << std::endl;
   VectorC Y(1);
   Y[0] = 0;
-  cout << cost1d.Cost(Y) << endl;
+  std::cout << cost1d.Cost(Y) << std::endl;
   BracketMinimum(cost1d);
   X = optimiser.MinimalX(cost1d, minY);
-  cout << cost1d.Point(X) << endl;
-  cout << minY << endl;
+  std::cout << cost1d.Point(X) << std::endl;
+  std::cout << minY << std::endl;
 
   OptimisePowellC powell (100, 1e-6);
   X = powell.MinimalX(cost, minY);
-  cout << X << endl;
-  cout << minY << endl;
+  std::cout << X << std::endl;
+  std::cout << minY << std::endl;
 
   return 0;
 }

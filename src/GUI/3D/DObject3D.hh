@@ -163,8 +163,8 @@ namespace RavlGUIN {
 
   };
 
-  ostream &operator<<(ostream &strm,const DObject3DC &);
-  istream &operator>>(istream &strm,DObject3DC &);
+  std::ostream &operator<<(std::ostream &strm,const DObject3DC &);
+  std::istream &operator>>(std::istream &strm,DObject3DC &);
   
   BinOStreamC &operator<<(BinOStreamC &strm,const DObject3DC &);
   //: Write an object set to a binary stream.
@@ -226,10 +226,10 @@ namespace RavlGUIN {
 
   //! userlevel=Normal
 
-  ostream &operator<<(ostream &strm,const DOpenGLC &);
+  std::ostream &operator<<(std::ostream &strm,const DOpenGLC &);
   //: Write an DOpenGLC to a stream.
 
-  istream &operator>>(istream &strm,DOpenGLC &);
+  std::istream &operator>>(std::istream &strm,DOpenGLC &);
   //: Read an DOpenGLC from a stream.
 
 
@@ -301,10 +301,10 @@ namespace RavlGUIN {
 
   //! userlevel=Normal
 
-  ostream &operator<<(ostream &strm,const DObjectSet3DC &);
+  std::ostream &operator<<(std::ostream &strm,const DObjectSet3DC &);
   //: Write an object set to a stream.
 
-  istream &operator>>(istream &strm,DObjectSet3DC &);
+  std::istream &operator>>(std::istream &strm,DObjectSet3DC &);
   //: Read an object set to a stream.
   
   

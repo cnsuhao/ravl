@@ -36,7 +36,7 @@ typedef unsigned int streamsize;
 
 namespace RavlN {
 #if (RAVL_COMPILER_VISUALCPP && !RAVL_HAVE_STDNAMESPACE)
-  inline istream& operator>>(istream& is, bool & b) {
+  inline std::istream& operator>>(std::istream& is, bool & b) {
     int val;
     is >> val;
     b = (val != 0);
@@ -44,7 +44,7 @@ namespace RavlN {
   }
   //: Fix for Visual C++'s lack of a bool stream operator.
 
-  inline ostream& operator<<(ostream& os, bool b) {
+  inline std::ostream& operator<<(std::ostream& os, bool b) {
     os << ((int)b);
     return os;
   }
@@ -139,13 +139,13 @@ namespace RavlN {
       if (s != 0)
       {
         ios_base::iostate sState = s->rdstate();
-        cerr << "iostate(" << caller << ")" \
+        std::cerr << "iostate(" << caller << ")" \
              << " s=" << (void*)s \
              << " eofbit=" << ((sState & ios_base::eofbit) != 0 ? "Y" : "N") \
              << " failbit=" << ((sState & ios_base::failbit) != 0 ? "Y" : "N") \
              << " badbit=" << ((sState & ios_base::badbit) != 0 ? "Y" : "N") \
              << " goodbit=" << ((sState & ios_base::goodbit) != 0 ? "Y" : "N") \
-             << endl;
+             << std::endl;
       }
     }
 #endif
@@ -200,7 +200,7 @@ namespace RavlN {
     }
     //: Ok ?
 
-    bool DiagnoseStream(ostream &out);
+    bool DiagnoseStream(std::ostream &out);
     //: Print diagnostic message about the streams state to out.
 
     bool Close();
@@ -211,33 +211,33 @@ namespace RavlN {
     { return ptrManager; }
     //: Access the pointer manager.
 
-    static bool EnableStreamExceptions(bool value = true, ios_base::iostate except = ios_base::badbit);
+    static bool EnableStreamExceptions(bool value = true, std::ios_base::iostate except = std::ios_base::badbit);
     //: make STL stream throw exceptions
 
   protected:
-    StreamBaseC(ostream *ns,StringC afilename,bool nDelOnClose = true);
+    StreamBaseC(std::ostream *ns,StringC afilename,bool nDelOnClose = true);
     //: Body Constructor.
 
-    StreamBaseC(istream *ns,StringC afilename,bool nDelOnClose = true);
+    StreamBaseC(std::istream *ns,StringC afilename,bool nDelOnClose = true);
     //: Body Constructor.
 
-    bool Init(istream *ns,StringC afilename,bool nDelOnClose = true);
+    bool Init(std::istream *ns,StringC afilename,bool nDelOnClose = true);
     //: Setup
     // This should only be called on Stream's constructed with the
     // default constructor!
 
-    bool Init(ostream *ns,StringC afilename,bool nDelOnClose = true);
+    bool Init(std::ostream *ns,StringC afilename,bool nDelOnClose = true);
     //: Setup
     // This should only be called on Stream's constructed with the
     // default constructor!
 
-    ios &buf() {
+    std::ios &buf() {
       RavlAssert(s != 0);
       return *s;
     }
     //: Access handle.
 
-    const ios &buf() const  {
+    const std::ios &buf() const  {
       RavlAssert(s != 0);
       return *s;
     }
@@ -245,7 +245,7 @@ namespace RavlN {
 
   protected:
     StringC name; // Name of stream.
-    ios *s;
+    std::ios *s;
     RCHandleC<RCBodyVC> ptrManager;
     bool m_openFailed;
   };
@@ -258,19 +258,20 @@ namespace RavlN {
   {
   public:
     OStreamC()
+     : out(0)
     {}
     //:Default constructor.
 
     OStreamC(const StringC &filename,bool binary = true,bool buffered=true,bool append = false);
     //: Open a file for output.
-    // '-' is treated as cout.
+    // '-' is treated as std::cout.
 
 #if RAVL_HAVE_INTFILEDESCRIPTORS
     OStreamC(int fd,bool binary = true,bool buffered = true);
     //: Send data to unix file handle.
 #endif
 
-    inline OStreamC(ostream &strm,bool deletable = false)
+    inline OStreamC(std::ostream &strm,bool deletable = false)
       : StreamBaseC(&strm,"",deletable),
         out(&strm)
     {}
@@ -282,70 +283,70 @@ namespace RavlN {
     {}
     //: Copy constructor.
 
-    ostream& form(const char *format ...);
+    std::ostream& form(const char *format ...);
     //: Print to stream using good old 'C' style formating.
     // This isn't the safest function, it uses a fixed
     // buffer of 4096 bytes.  <p>
     // This is a duplication of the function  GNU iostreams
     // for those platforms that don't have this function.
 
-    ostream &os() {
+    std::ostream &os() {
       RAVL_PARANOID(RavlAssertMsg(out != 0,"Attempt to use invalid OStreamC. "));
       return *out;
     }
-    //: Access ostream.
-    // Enables access to the underlying ostream functionality
+    //: Access std::ostream.
+    // Enables access to the underlying std::ostream functionality
 
-    const ostream &os() const {
+    const std::ostream &os() const {
       RAVL_PARANOID(RavlAssertMsg(out != 0,"Attempt to use invalid OStreamC. "));
       return *out;
     }
-    //: Access ostream.
-    // Enables access to the underlying ostream functionality
+    //: Access std::ostream.
+    // Enables access to the underlying std::ostream functionality
 
-    operator ostream &()
+    operator std::ostream &()
     { return os(); }
     //: Converter.
 
-    operator const ostream &() const
+    operator const std::ostream &() const
     { return os(); }
     //: Converter.
 
-    ostream &write(const char *d,StreamSizeT n)
+    std::ostream &write(const char *d,StreamSizeT n)
     { return os().write(d,n); }
     //: Write data.
-    // ostream compatible.
+    // std::ostream compatible.
 
-    ostream &put(char ch)
+    std::ostream &put(char ch)
     { return os().put(ch); }
     //: Put character.
-    // ostream compatible.
+    // std::ostream compatible.
 
-    ostream &operator<<(const char *txt)
+    std::ostream &operator<<(const char *txt)
     { return os() << txt; }
     //: Output text.
 
     template<class DataT>
-    ostream &operator<<(const DataT &dat)
+    std::ostream &operator<<(const DataT &dat)
     { return os() << dat; }
 
-    streampos Tell() const { return out->tellp(); }
+    std::streampos Tell() const { return out->tellp(); }
     //: Where are we in the stream.
 
-    void Seek(streampos to) { os().seekp(to); }
+    void Seek(std::streampos to) { os().seekp(to); }
     //: Goto a position in the stream.
 
-    streampos tellp() const { return out->tellp(); }
+    std::streampos tellp() const { return out->tellp(); }
     //: Where are we in the stream.
-    // ostream compatible.
+    // std::ostream compatible.
 
-    ostream &seekp(streampos to) { return os().seekp(to); }
+    std::ostream &seekp(std::streampos to) { return os().seekp(to); }
     //: Goto a position in the stream.
-    // ostream compatible.
+    // std::ostream compatible.
 
-    ostream &seekp(streampos to,SeekDirT dir) { return os().seekp(to,dir); }
+    std::ostream &seekp(std::streampos to,SeekDirT dir) { return os().seekp(to,dir); }
     //: Goto a position in the stream.
-    // ostream compatible.
+    // std::ostream compatible.
 
     bool Close()
     { os().flush(); return StreamBaseC::Close(); }
@@ -353,7 +354,7 @@ namespace RavlN {
 
 
   protected:
-    ostream *out;
+    std::ostream *out;
   };
 
 
@@ -378,7 +379,7 @@ namespace RavlN {
     //: Get data from unix file handle.
 #endif
 
-    inline IStreamC(istream &strm,bool deletable = false)
+    inline IStreamC(std::istream &strm,bool deletable = false)
       : StreamBaseC(&strm,StringC(""),deletable),
         in(&strm)
     {}
@@ -402,82 +403,82 @@ namespace RavlN {
     IntT CopyTo(OStreamC &out,IntT maxChars = -1);
     //: Copy stream to output.
 
-    istream &is() {
+    std::istream &is() {
       RAVL_PARANOID(RavlAssertMsg(in != 0,"Attempt to use invalid IStreamC. "));
       return *in;
     }
-    //: Access istream.
-    // Enables access to the underlying istream functionality
+    //: Access std::istream.
+    // Enables access to the underlying std::istream functionality
 
-    const istream &is() const {
+    const std::istream &is() const {
       RAVL_PARANOID(RavlAssertMsg(in != 0,"Attempt to use invalid IStreamC. "));
       return *in;
     }
-    //: Access istream.
-    // Enables access to the underlying istream functionality
+    //: Access std::istream.
+    // Enables access to the underlying std::istream functionality
 
-    operator istream &()
+    operator std::istream &()
     { return is(); }
     //: Converter.
 
-    operator const istream &() const
+    operator const std::istream &() const
     { return is(); }
     //: Converter.
 
-    istream &read(char *d,streamsize n)
+    std::istream &read(char *d,std::streamsize n)
     { return is().read(d,n); }
     //: read data.
-    // istream compatible function.
+    // std::istream compatible function.
 
-    istream &get(char &ch)
+    std::istream &get(char &ch)
     { return is().get(ch); }
     //: Get character.
-    // istream compatible function.
+    // std::istream compatible function.
 
     char get()
     { return is().get(); }
     //: Get character.
-    // istream compatible function.
+    // std::istream compatible function.
 
-    istream &get(char *buff,int buffsize)
+    std::istream &get(char *buff,int buffsize)
     { return is().get(buff,buffsize); }
     //: Read in a line.
-    // istream compatible function.
+    // std::istream compatible function.
 
-    istream &getline(char *buff,int buffsize)
+    std::istream &getline(char *buff,int buffsize)
     { return is().getline(buff,buffsize); }
     //: Read in a line.
-    // istream compatible function.
+    // std::istream compatible function.
 
-    streamsize gcount()
+    std::streamsize gcount()
     { return is().gcount(); }
     //: Get number of character read in last operation.
-    // istream compatible function.
+    // std::istream compatible function.
 
     template<class DataT>
-    istream &operator>>(DataT &dat)
+    std::istream &operator>>(DataT &dat)
     { return is() >> dat; }
 
-    istream &operator>>(char *dat)
+    std::istream &operator>>(char *dat)
     { return is() >> dat; }
 
-    streampos Tell() const { return in->tellg(); }
+    std::streampos Tell() const { return in->tellg(); }
     //: Where are we in the stream.
 
-    void Seek(streampos to) { is().clear(); is().seekg(to); }
+    void Seek(std::streampos to) { is().clear(); is().seekg(to); }
     //: Goto a position in the stream.
 
-    streampos tellg() const { return in->tellg(); }
+    std::streampos tellg() const { return in->tellg(); }
     //: Where are we in the stream.
-    // istream compatible function.
+    // std::istream compatible function.
 
-    istream &seekg(streampos to) { return is().seekg(to); }
+    std::istream &seekg(std::streampos to) { return is().seekg(to); }
     //: Goto a position in the stream.
-    // istream compatible function.
+    // std::istream compatible function.
 
-    istream &seekg(streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
+    std::istream &seekg(std::streampos to,SeekDirT dir) { is().clear(); return is().seekg(to,dir); }
     //: Goto a position in the stream.
-    // istream compatible.
+    // std::istream compatible.
 
     inline bool IsEndOfStream() {
       // Check there's more to read...
@@ -551,12 +552,12 @@ namespace RavlN {
     //: Close stream
 
   protected:
-    istream *in;
+    std::istream *in;
   };
 }
 
 #if RAVL_COMPILER_MIPSPRO
-istream & operator >> ( istream & str,  signed char & dat )
+istream & operator >> ( std::istream & str,  signed char & dat )
 {
   char tmp ;
   str >> tmp ;

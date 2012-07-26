@@ -22,7 +22,7 @@ namespace RavlGUIN {
 
   //: Render object.
   //bool DObject3DBodyC::GUIRender(Canvas3DC &c3d) {
-  //  cerr << "DObject3DBodyC::GUIRender  Error!!! Need to overload this.\n";
+  //  std::cerr << "DObject3DBodyC::GUIRender  Error!!! Need to overload this.\n";
   //  RavlAssert(0); // Abstract method.
   //  return true;
   //}
@@ -51,12 +51,12 @@ namespace RavlGUIN {
 
   //////////////////////////////////////////////////
 
-  ostream &operator<<(ostream &strm,const DObject3DC &) {
+  std::ostream &operator<<(std::ostream &strm,const DObject3DC &) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
 
-  istream &operator>>(istream &strm,DObject3DC &) {
+  std::istream &operator>>(std::istream &strm,DObject3DC &) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
@@ -138,12 +138,12 @@ namespace RavlGUIN {
     return extent;
   }
 
-  ostream &operator<<(ostream &strm,const DObjectSet3DC &) {
+  std::ostream &operator<<(std::ostream &strm,const DObjectSet3DC &) {
     RavlAssert(0);
     return strm;
   }
 
-  istream &operator>>(istream &strm,DObjectSet3DC &) {
+  std::istream &operator>>(std::istream &strm,DObjectSet3DC &) {
     RavlAssert(0);
     return strm;
   }
@@ -158,12 +158,12 @@ namespace RavlGUIN {
     return true;
   }
 
-  ostream &operator<<(ostream &strm,const DOpenGLC &) {
+  std::ostream &operator<<(std::ostream &strm,const DOpenGLC &) {
     RavlAssert(0);
     return strm;
   }
 
-  istream &operator>>(istream &strm,DOpenGLC &) {
+  std::istream &operator>>(std::istream &strm,DOpenGLC &) {
     RavlAssert(0);
     return strm;
   }

@@ -38,10 +38,10 @@ namespace RavlImageN {
     
   };
   
-  ostream &operator<<(ostream &strm,const CompressedImageJPEGC &data);
+  std::ostream &operator<<(std::ostream &strm,const CompressedImageJPEGC &data);
   //: Write to standard stream.
   
-  istream &operator>>(istream &strm,CompressedImageJPEGC &data);
+  std::istream &operator>>(std::istream &strm,CompressedImageJPEGC &data);
   //: Read from standard stream
   
   BinOStreamC &operator<<(BinOStreamC &strm,const CompressedImageJPEGC &data);

@@ -26,10 +26,27 @@ namespace RavlN { namespace GeneticN {
     GeneTypeWeightedMetaC(const XMLFactoryContextC &factory);
 
     //! Constructor
-    GeneTypeWeightedMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types, const std::vector<float> &weights);
+    GeneTypeWeightedMetaC(const std::string &name,
+                          const std::vector<GeneTypeC::ConstRefT> &types,
+                          const std::vector<float> &weights);
 
     //! Constructor
-    GeneTypeWeightedMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types);
+    GeneTypeWeightedMetaC(const std::string &name,
+                          const std::vector<GeneTypeC::ConstRefT> &types);
+
+    //! Constructor
+    GeneTypeWeightedMetaC(const std::string &name,
+                          const GeneTypeC &type1,float weight1,
+                          const GeneTypeC &type2,float weight2);
+
+    //! Constructor
+    GeneTypeWeightedMetaC(const std::string &name,
+                          const GeneTypeC &type1,float weight1,
+                          const GeneTypeC &type2,float weight2,
+                          const GeneTypeC &type3,float weight3);
+
+    //! Constructor
+    GeneTypeWeightedMetaC(const std::string &name);
 
     //! Load form a binary stream
     GeneTypeWeightedMetaC(BinIStreamC &strm);

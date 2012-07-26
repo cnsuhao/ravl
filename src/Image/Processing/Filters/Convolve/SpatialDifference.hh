@@ -85,6 +85,7 @@ namespace RavlImageN {
     case 3: SpatialDifferenceOrder3(img,grad); break;
     default: 
       RavlAlwaysAssertMsg(0,"Image gradient of given order is not supported. ");
+      break;
     }
   }
   //: Estimates horizontal or vertical spatial derivatives, 

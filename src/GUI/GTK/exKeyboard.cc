@@ -30,7 +30,7 @@ using namespace RavlGUIN;
 // This routine displays the intercepted key presses
 bool HandleKeyPress(GdkEventKey * keyEvent) {
   
-  cerr << "Key pressed : " << keyEvent->string << "\n";
+  std::cerr << "Key pressed : " << keyEvent->string << "\n";
   
   return 0;
 }
@@ -61,4 +61,5 @@ int main(int nargs,char *args[])
   
   // Run the application
   Manager.Start();
+  return 0;
 }

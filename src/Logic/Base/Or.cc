@@ -58,7 +58,7 @@ namespace RavlLogicN {
     args[0] = literalOr;
     for(BufferAccessIter2C<LiteralC,LiteralC> it(nterms,args.BufferFrom(1,nterms.Size()));it;it++)
       it.Data2() = it.Data1();
-    ONDEBUG(cerr << "OrBodyC::OrBodyC(), Name=" << Name() << "\n");    
+    ONDEBUG(std::cerr << "OrBodyC::OrBodyC(), Name=" << Name() << "\n");    
   }
   
   //: Constructor.
@@ -72,7 +72,7 @@ namespace RavlLogicN {
   
   //: Construct from a binary stream.
   
-  OrBodyC::OrBodyC(istream &strm)
+  OrBodyC::OrBodyC(std::istream &strm)
     : ConditionBodyC(strm)
   {}
   
@@ -84,7 +84,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool OrBodyC::Save(ostream &out) const
+  bool OrBodyC::Save(std::ostream &out) const
   { return ConditionBodyC::Save(out); }
   
   //: Save to binary stream 'out'.
@@ -168,7 +168,7 @@ namespace RavlLogicN {
   // FIXME :- Do more simplification.
   
   TupleC operator+(const LiteralC &l1,const LiteralC &l2) {
-    ONDEBUG(cerr << "operator+(LiteralC,LiteralC) Called for " << l1.Name() << " and " << l2.Name() << "\n");
+    ONDEBUG(std::cerr << "operator+(LiteralC,LiteralC) Called for " << l1.Name() << " and " << l2.Name() << "\n");
     SizeT size = 0;
     OrC a1(l1);
     if(a1.IsValid())
@@ -180,7 +180,7 @@ namespace RavlLogicN {
       size += a2.Size();
     else
       size++;
-    ONDEBUG(cerr << "Size=" << size << "\n");
+    ONDEBUG(std::cerr << "Size=" << size << "\n");
     SArray1dC<LiteralC> arr(size+1);
     arr[0] = literalOr;
     SizeT at = 1;
@@ -196,7 +196,7 @@ namespace RavlLogicN {
 	it.Data2() = it.Data1();
     } else
       arr[at] = l2;    
-    ONDEBUG(cerr << "operator+(LiteralC,LiteralC) Result=" << arr << "\n");
+    ONDEBUG(std::cerr << "operator+(LiteralC,LiteralC) Result=" << arr << "\n");
     return OrC(arr,true); 
   }
   

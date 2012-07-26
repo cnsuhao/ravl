@@ -24,9 +24,9 @@ int main()
     PrimitiveBinaryPolynomialC bp(0,1,init);
     SArray1dC<UIntT> seq = bp.Evaluate(4);
     for(UIntT i = 0;i < seq.Size();i++) {
-      cerr << seq[i] << ' ' ;
+      std::cerr << seq[i] << ' ' ;
     }
-    cerr << "\n";
+    std::cerr << "\n";
   }
   {
     init[0] = 1;
@@ -34,9 +34,9 @@ int main()
     PrimitiveBinaryPolynomialC bp(1,2,init);
     SArray1dC<UIntT> seq = bp.Evaluate(4);
     for(UIntT i = 0;i < seq.Size();i++) {
-      cerr << seq[i] << ' ' ;
+      std::cerr << seq[i] << ' ' ;
     }
-    cerr << "\n";
+    std::cerr << "\n";
   }
   {
     init[0] = 1;
@@ -45,9 +45,9 @@ int main()
     PrimitiveBinaryPolynomialC bp(1,3,init);
     SArray1dC<UIntT> seq = bp.Evaluate(4);
     for(UIntT i = 0;i <  seq.Size();i++) {
-      cerr << seq[i] << ' ' ;
+      std::cerr << seq[i] << ' ' ;
     }
-    cerr << "\n";
+    std::cerr << "\n";
   }
   {
     init[0] = 1;
@@ -56,8 +56,9 @@ int main()
     PrimitiveBinaryPolynomialC bp(2,3,init);
     SArray1dC<UIntT> seq = bp.Evaluate(4);
     for(UIntT i = 0;i <  seq.Size();i++) {
-      cerr << seq[i] << ' ' ;
+      std::cerr << seq[i] << ' ' ;
     }
-    cerr << "\n";
+    std::cerr << "\n";
   }
+  return 0;
 }

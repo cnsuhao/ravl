@@ -49,7 +49,7 @@ namespace RavlGUIN {
     fpos[1] = pos.Y();
     fpos[2] = pos.Z();
     fpos[3] = 1.;
-    //cerr << "Light position:" << pos << endl;
+    //cerr << "Light position:" << pos << std::endl;
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
@@ -87,6 +87,7 @@ namespace RavlGUIN {
       case 7: return GL_LIGHT7;
       default:
         RavlAssert(0);
+        break;
     }
     return GL_LIGHT0;
   }

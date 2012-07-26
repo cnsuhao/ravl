@@ -49,7 +49,7 @@ namespace RavlImageN
 
     DPIMultiVidBodyC(const StringC &fnBase, const StringC& fnFormat) 
     {
-      // cerr << "DPIMultiVidBodyC::DPIMultiVidBodyC(...)" << endl;
+      // std::cerr << "DPIMultiVidBodyC::DPIMultiVidBodyC(...)" << std::endl;
 
       // list of names of sequences for each view
       DListC<StringC> view_list;
@@ -95,7 +95,7 @@ namespace RavlImageN
 			 (const char*)fnBase,
 			 numframes,
 			 (const char*)fnFormat);
-	  // cerr << "Looking for: " << str_frame.String() << endl;
+	  // std::cerr << "Looking for: " << str_frame.String() << std::endl;
 	  if (!str_frame.IsReadable())
 	    break;
 	  ++numframes;
@@ -108,7 +108,7 @@ namespace RavlImageN
 
     bool LoadFileList(const DListC<StringC>& view_list) 
     {
-      cerr << "DPIMultiVidBodyC::LoadFileList(...)" << endl;
+      std::cerr << "DPIMultiVidBodyC::LoadFileList(...)" << std::endl;
       
       // empty stream
       frame = 0;
@@ -177,7 +177,7 @@ namespace RavlImageN
     // position will not be changed.
     
     virtual bool DSeek(IntT off) {
-      // cerr << "DSeek: " << frame << " + " << off << endl;
+      // std::cerr << "DSeek: " << frame << " + " << off << std::endl;
       if (off < 0) {
 	UIntT neg_off = (UIntT)(-off);
 	if (neg_off > frame)
@@ -209,17 +209,17 @@ namespace RavlImageN
     //: Get next image.
     
     virtual bool Get(SArray1dC< ImageC<PixelC> > &buff) {
-      // cerr << "Get()" << endl;
+      // std::cerr << "Get()" << std::endl;
       
       if (!IsGetReady())
 	return false;
 
-      // cerr << "getting all views" << endl;
+      // std::cerr << "getting all views" << std::endl;
 
       RavlAssert(buff.Size() == 0 || buff.Size() == numviews); // only know how to deal with these
       
       if (buff.Size() == 0) {
-	// cerr << "resizing array" << endl;
+	// std::cerr << "resizing array" << std::endl;
 	buff = SArray1dC< ImageC<PixelC> > (numviews);
       }
       
@@ -465,11 +465,11 @@ namespace RavlImageN
       FileFormatBodyC("multiview-video-sequence")
     {}
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
     { return typeid(void); }
     //: always return 0 - cannot determine type from stream
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const {
       if ((filename.contains("@multiview:") || 
 	   filename.contains("@viewlist")) &&
 	  obj_type == typeid(SArray1dC< ImageC< PixelC > >))
@@ -478,7 +478,7 @@ namespace RavlImageN
     }
     //: Probe for load.  
     
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const {
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const {
       if ((filename.contains("@multiview:") ||
 	   filename.contains("@viewlist:")) &&
 	  obj_type == typeid(SArray1dC< ImageC< PixelC > >))
@@ -487,21 +487,21 @@ namespace RavlImageN
     }
     //: Probe for Save.
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const {
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const {
       DPIPortC< ImageC<PixelC> > null_port;
       return null_port;
     }
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const {
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
       DPOPortC< ImageC<PixelC> > null_port;
       return null_port;
     }
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    virtual DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const 
+    virtual DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const 
     {
       if (filename.contains("@viewlist:"))
       {
@@ -520,7 +520,7 @@ namespace RavlImageN
     //: Create a input port for loading from file 'filename'.
     // Will create an Invalid port if not supported. <p>
     
-    virtual DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const 
+    virtual DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const 
     {
       if (filename.contains("@viewlist:"))
       {
@@ -539,7 +539,7 @@ namespace RavlImageN
     //: Create a output port for saving to file 'filename'..
     // Will create an Invalid port if not supported. <p>
     
-    virtual const type_info &DefaultType() const
+    virtual const std::type_info &DefaultType() const
     { return typeid( SArray1dC< ImageC< PixelC > > ); }
     //: Get prefered IO type.
     

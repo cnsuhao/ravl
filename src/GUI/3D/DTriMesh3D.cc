@@ -29,7 +29,8 @@ namespace RavlGUIN {
   //: Constructor.
   DTriMesh3DBodyC::DTriMesh3DBodyC(const TriMeshC &oTriMesh)
     : model(oTriMesh),
-      doneInfo(false)
+      doneInfo(false),
+      extent(0)
   {}
 
   //: Compute center and extent of mesh.
@@ -44,7 +45,7 @@ namespace RavlGUIN {
     }
     extent = Sqrt(extent);
     doneInfo = true;
-    ONDEBUG(cerr << "Center=" << center << " Extent=" << extent << "\n");
+    ONDEBUG(std::cerr << "Center=" << center << " Extent=" << extent << "\n");
   }
 
 
@@ -54,7 +55,7 @@ namespace RavlGUIN {
   {
     if(!doneInfo)
       ComputeInfo();
-    //cerr << "DTriMesh3DBodyC::GUICenter(): " << center << endl;
+    //cerr << "DTriMesh3DBodyC::GUICenter(): " << center << std::endl;
     return center;
   }
 
@@ -64,7 +65,7 @@ namespace RavlGUIN {
   {
     if(!doneInfo)
       ComputeInfo();
-    //cerr << "DTriMesh3DBodyC::GUIExtent(): " << extent << endl;
+    //cerr << "DTriMesh3DBodyC::GUIExtent(): " << extent << std::endl;
     return extent;
   }
 
@@ -120,7 +121,7 @@ namespace RavlGUIN {
 	}
       } break;
       case C3D_FLAT: {
-	ONDEBUG(cerr << "flat render. \n");
+	ONDEBUG(std::cerr << "flat render. \n");
 	IntT eGLShadeModel;
 	glGetIntegerv(GL_SHADE_MODEL,&eGLShadeModel);
 	glShadeModel(GL_FLAT); // Flat shading
@@ -139,7 +140,7 @@ namespace RavlGUIN {
 	glShadeModel((GLenum)eGLShadeModel); // Restore old shade model
       } break;
       case C3D_SMOOTH: {
-	ONDEBUG(cerr << "Smooth render. \n");
+	ONDEBUG(std::cerr << "Smooth render. \n");
 	IntT eGLShadeModel;
 	glGetIntegerv(GL_SHADE_MODEL,&eGLShadeModel);
 	glShadeModel(GL_SMOOTH); // Flat shading
@@ -173,12 +174,12 @@ namespace RavlGUIN {
     return true;
   }
 
-  ostream &operator<<(ostream &strm,const DTriMesh3DC &) {
+  std::ostream &operator<<(std::ostream &strm,const DTriMesh3DC &) {
     RavlAssert(0);
     return strm;
   }
 
-  istream &operator>>(istream &strm,DTriMesh3DC &) {
+  std::istream &operator>>(std::istream &strm,DTriMesh3DC &) {
     RavlAssert(0);
     return strm;
   }

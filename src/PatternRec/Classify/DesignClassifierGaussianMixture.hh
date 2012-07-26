@@ -29,23 +29,23 @@ namespace RavlN {
     DesignClassifierGaussianMixtureBodyC(const XMLFactoryContextC & factory);
     //: Constructor.
 
-    DesignClassifierGaussianMixtureBodyC(istream &strm);
+    DesignClassifierGaussianMixtureBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignClassifierGaussianMixtureBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
-    //: Create a clasifier.
+    //: Create a classifier.
     
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SampleC<RealT> &weight);
-    //: Create a clasifier with weights for the samples.
+    //: Create a classifier with weights for the samples.
     
   protected:
     UIntT mixtures;
@@ -73,7 +73,7 @@ namespace RavlN {
     {}
     //: Create a new designer.
     
-    DesignClassifierGaussianMixtureC(istream &strm);
+    DesignClassifierGaussianMixtureC(std::istream &strm);
     //: Load from stream.
     
     DesignClassifierGaussianMixtureC(BinIStreamC &strm);
@@ -102,14 +102,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,DesignClassifierGaussianMixtureC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignClassifierGaussianMixtureC &obj) {
     obj = DesignClassifierGaussianMixtureC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignClassifierGaussianMixtureC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignClassifierGaussianMixtureC &obj) {
     obj.Save(out);
     return out;
   }

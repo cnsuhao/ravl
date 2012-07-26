@@ -35,7 +35,7 @@ namespace RavlN {
     try {
       sample = obsManager.RandomSample(minNumConstraints);
     }
-    catch(ExceptionC) {
+    catch(ExceptionC &) {
       return false;
     }
 
@@ -44,7 +44,7 @@ namespace RavlN {
     try {
       sv = modelFitter.FitModel(sample);
     }
-    catch(ExceptionNumericalC) {
+    catch(ExceptionNumericalC &) {
       return false;
     }
 
@@ -54,7 +54,7 @@ namespace RavlN {
     try {
       newVote = evaluator.SolutionScore(sv, obsList);
     }
-    catch (ExceptionNumericalC) {
+    catch (ExceptionNumericalC &) {
       return false;
     }
     if ( newVote > highestVote ) {

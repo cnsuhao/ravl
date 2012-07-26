@@ -14,7 +14,6 @@
 //! example=testOptimise.cc
 //! file="Ravl/PatternRec/Optimise/OptimisePowell.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation.Implementation"
-//! rcsid="$Id$"
 
 #include "Ravl/PatternRec/Optimise.hh"
 #include "Ravl/PatternRec/OptimiseBrent.hh"
@@ -30,20 +29,30 @@ namespace RavlN {
   // This is the implementation class of the non-gradient Powell optimiser for the
   // PatternRec toolbox. The OptimisePowellC handle class should be used.
   
-  class OptimisePowellBodyC: public OptimiseBodyC
+  class OptimisePowellBodyC
+   : public OptimiseBodyC
   {    
   public:
     OptimisePowellBodyC (UIntT iterations, RealT tolerance, bool useBracketMinimum,bool verbose = false);
     //: Constructor requires the number of iterations to use
     
-    OptimisePowellBodyC (istream &in);
+    OptimisePowellBodyC (const XMLFactoryContextC & factory);
+    //: Factory constructor
+
+    OptimisePowellBodyC (std::istream &in);
     //: Constructs from stream
+
     //ACCESSOR METHODS:
     UIntT GetNumIterations(void) const {return this->_iterations;}
     //: Get iterations
 
     RealT GetTolerance(void) const {return this->_tolerance;}
     //: Get tolerance
+
+    void SetVerbose(bool verbose)
+    { _verbose = verbose; }
+    //: Set the verbose flag
+
   protected:
     VectorC MinimalX (const CostC &domain, RealT startCost, RealT &minimumCost) const;
     //: Determines Xmin=arg min_{X} |f(X)-Yd|
@@ -51,12 +60,14 @@ namespace RavlN {
     virtual const StringC GetInfo () const;
     //: Prints information about the optimiser
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
    
   private:
     UIntT _iterations;
     RealT _tolerance;
+    UIntT _brentIterations;
+    RealT _brentTolerance;
     OptimiseBrentC _brent;
     bool _useBracketMinimum;
     bool _verbose; 
@@ -72,24 +83,37 @@ namespace RavlN {
   {
   public:
     OptimisePowellC (UIntT iterations, RealT tolerance = 1e-6, bool useBracketMinimum = true,bool verbose = false)
-      :OptimiseC(*(new OptimisePowellBodyC (iterations, tolerance, useBracketMinimum,verbose))) 
+      : OptimiseC(new OptimisePowellBodyC (iterations, tolerance, useBracketMinimum,verbose))
     {}
     //: Constructor
     //!param: iterations - maximum number of iterations to use
-      UIntT GetNumIterations(void) 
-      {return Body().GetNumIterations();}
 
-      RealT GetTolerance(void) 
-      {return Body().GetTolerance();}
+    OptimisePowellC (const XMLFactoryContextC & factory)
+      : OptimiseC(new OptimisePowellBodyC (factory))
+    {}
+
+    //ACCESSOR METHODS:
+
+    UIntT GetNumIterations(void)
+    {return Body().GetNumIterations();}
+    //: Get iterations
+
+    RealT GetTolerance(void)
+    {return Body().GetTolerance();}
+    //: Get tolerance
+
+    void SetVerbose(bool verbose)
+    { return Body().SetVerbose(verbose); }
+    //: Set the verbose flag.
 
   protected:
-      OptimisePowellBodyC &Body()
-      { return static_cast<OptimisePowellBodyC &>(OptimiseC::Body()); }
-      //: Access body.
+    OptimisePowellBodyC &Body()
+    { return static_cast<OptimisePowellBodyC &>(OptimiseC::Body()); }
+    //: Access body.
 
-      const OptimisePowellBodyC &Body() const
-      { return static_cast<const OptimisePowellBodyC &>(OptimiseC::Body()); }
-      //: Access body.
+    const OptimisePowellBodyC &Body() const
+    { return static_cast<const OptimisePowellBodyC &>(OptimiseC::Body()); }
+    //: Access body.
 
   };
 }

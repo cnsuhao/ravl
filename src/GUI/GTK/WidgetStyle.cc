@@ -107,7 +107,7 @@ namespace RavlGUIN {
     col.blue  = rgb.Blue()  * 256;
     // Allocate our new colour in the colour map
     if (!gdk_colormap_alloc_color(cmap,&col,TRUE,TRUE)) {
-      cerr << "Could not allocate colour!" << endl;
+      std::cerr << "Could not allocate colour!" << std::endl;
     }
     // Done
     return col;

@@ -19,7 +19,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DesignFunctionUnsupervisedBodyC::DesignFunctionUnsupervisedBodyC(istream &strm)
+  DesignFunctionUnsupervisedBodyC::DesignFunctionUnsupervisedBodyC(std::istream &strm)
     : DesignerBodyC(strm)
   {}
   //: Load from binary stream.
@@ -30,7 +30,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignFunctionUnsupervisedBodyC::Save (ostream &out) const 
+  bool DesignFunctionUnsupervisedBodyC::Save (std::ostream &out) const 
   { return DesignerBodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor
@@ -103,7 +103,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignFunctionUnsupervisedC::DesignFunctionUnsupervisedC(istream &strm)
+  DesignFunctionUnsupervisedC::DesignFunctionUnsupervisedC(std::istream &strm)
     : DesignerC(RAVL_VIRTUALCONSTRUCTOR(strm,DesignFunctionUnsupervisedBodyC))
   {}
   

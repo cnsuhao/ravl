@@ -32,6 +32,7 @@ int updateLabel(int n) {
     aLabel.Label(StringC("No ") + x);
     RavlN::Sleep(2);
   }
+  return 0;
 }
 
 
@@ -68,4 +69,5 @@ int main(int nargs,char *args[])
   LaunchThread(Trigger(&updateLabel,(IntT) 1));
   win.Show();  
   Manager.Start();
+  return 0;
 }

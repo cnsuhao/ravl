@@ -130,14 +130,14 @@ namespace RavlImageN {
     return ret;
   }
 
-  ostream &operator<<(ostream &s,const HomomorphicFilterC &homom) {
+  std::ostream &operator<<(std::ostream &s,const HomomorphicFilterC &homom) {
     UIntT v = 0; // stream version no.
     s << v << ' ' << homom.Sigma() << ' ' << homom.Depth();
     return s;
   }
   //: Write to a stream.
 
-  istream &operator>>(istream &s,HomomorphicFilterC &homom) {
+  std::istream &operator>>(std::istream &s,HomomorphicFilterC &homom) {
     UIntT v;
     RealT sigma,depth;
     s >> v;

@@ -14,9 +14,9 @@ PACKAGE=Ravl/IO
 
 EXAMPLES = exURL.cc
 
-HEADERS= URLStream.hh
+HEADERS= URLStream.hh Curl.hh
 
-SOURCES= URLStream.cc
+SOURCES= URLStream.cc Curl.cc
 
 MUSTLINK= URLIO.cc
 

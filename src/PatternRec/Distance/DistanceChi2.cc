@@ -28,7 +28,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DistanceChi2BodyC::DistanceChi2BodyC(istream &strm)
+  DistanceChi2BodyC::DistanceChi2BodyC(std::istream &strm)
     : DistanceBodyC(strm)
   {}
   
@@ -40,7 +40,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DistanceChi2BodyC::Save (ostream &out) const 
+  bool DistanceChi2BodyC::Save (std::ostream &out) const 
   { return DistanceBodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor

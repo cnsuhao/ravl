@@ -611,10 +611,13 @@ FANN_EXTERNAL fann_type *FANN_API fann_run(struct fann * ann, fann_type * input)
 				{
 					case 3:
 						neuron_sum += fann_mult(weights[2], neurons[2].value);
+						/* no break */
 					case 2:
 						neuron_sum += fann_mult(weights[1], neurons[1].value);
+                                                /* no break */
 					case 1:
 						neuron_sum += fann_mult(weights[0], neurons[0].value);
+                                                /* no break */
 					case 0:
 						break;
 				}
@@ -645,10 +648,13 @@ FANN_EXTERNAL fann_type *FANN_API fann_run(struct fann * ann, fann_type * input)
 				{
 					case 3:
 						neuron_sum += fann_mult(weights[2], neuron_pointers[2]->value);
+                                                /* no break */
 					case 2:
 						neuron_sum += fann_mult(weights[1], neuron_pointers[1]->value);
+                                                /* no break */
 					case 1:
 						neuron_sum += fann_mult(weights[0], neuron_pointers[0]->value);
+                                                /* no break */
 					case 0:
 						break;
 				}
@@ -727,6 +733,7 @@ FANN_EXTERNAL fann_type *FANN_API fann_run(struct fann * ann, fann_type * input)
 					break;
 				case FANN_ELLIOT:
 					fann_error((struct fann_error *) ann, FANN_E_CANT_USE_ACTIVATION);
+					break;
 			}
 			last_steepness = steepness;
 			last_activation_function = activation_function;

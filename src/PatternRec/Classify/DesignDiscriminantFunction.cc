@@ -17,7 +17,7 @@
 #if RAVL_COMPILER_MIPSPRO
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/BinStream.hh"
-#pragma instantiate RavlN::DesignDiscriminantFunctionBodyC* ::RavlN::VCLoad(istream &,RavlN::DesignDiscriminantFunctionBodyC*)
+#pragma instantiate RavlN::DesignDiscriminantFunctionBodyC* ::RavlN::VCLoad(std::istream &,RavlN::DesignDiscriminantFunctionBodyC*)
 #pragma instantiate RavlN::DesignDiscriminantFunctionBodyC* ::RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::DesignDiscriminantFunctionBodyC*)
 #endif 
 
@@ -29,7 +29,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignDiscriminantFunctionBodyC::DesignDiscriminantFunctionBodyC(istream &strm)
+  DesignDiscriminantFunctionBodyC::DesignDiscriminantFunctionBodyC(std::istream &strm)
     : DesignClassifierSupervisedBodyC(strm)
   { strm >> designFunc; }
   
@@ -41,7 +41,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignDiscriminantFunctionBodyC::Save (ostream &out) const {
+  bool DesignDiscriminantFunctionBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     out << ' ' << designFunc;
@@ -63,7 +63,7 @@ namespace RavlN {
     : designFunc(dfunc)
   {}
 
-  //: Create a clasifier.
+  //: Create a classifier.
     
   ClassifierC DesignDiscriminantFunctionBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out) {
     // FIXME :- Find a way of caching 'vout' for labels.
@@ -71,7 +71,7 @@ namespace RavlN {
     return ClassifierDiscriminantFunctionC(designFunc.Apply(in,vout));
   }
 					 
-  //: Create a clasifier with weights for the samples.
+  //: Create a classifier with weights for the samples.
   
   ClassifierC DesignDiscriminantFunctionBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SampleC<RealT> &weight) {
     // FIXME :- Find a way of caching 'vout' for labels.

@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVLAUDIO_MELSPECTRUM_HEADER
 #define RAVLAUDIO_MELSPECTRUM_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlAudioFeatures
 //! docentry="Ravl.API.Audio.Feature Extraction"
 //! author="Charles Galambos"
@@ -40,7 +39,7 @@ namespace RavlAudioN {
     //: Compute mel spectrum from power spectrum
     
     bool InitFilters(RealT sampleRate,IntT frameSize,RealRangeC freqRange,IntT numFilters);
-    //: Initiaise filters.
+    //: Initialise filters.
     // Frequency's is in Hz.
     
     RealT Lin2Mel(RealT f)

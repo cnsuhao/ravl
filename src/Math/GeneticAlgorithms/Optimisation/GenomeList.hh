@@ -157,7 +157,7 @@ namespace RavlN { namespace GeneticN {
    : public GeneC
   {
   public:
-    //! Constuct from a geneType.
+    //! Construct from a geneType.
     GeneListC(const GeneTypeListBaseC &geneType,const std::vector<GeneC::ConstRefT> &aList);
 
     //! Factory constructor
@@ -193,6 +193,9 @@ namespace RavlN { namespace GeneticN {
 
     //! Test is value is effectively equal to this within tolerances specified in the type.
     virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneListC> RefT;

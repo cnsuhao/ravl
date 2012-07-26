@@ -63,7 +63,7 @@ namespace RavlGUIN {
     RavlAssert(widge.IsValid());
     if(widge.Widget() == 0) {
       if(!widge.Create()) {
-        cerr << "ContainerWidgetBodyC::Create(), Widget create failed ! \n";
+        std::cerr << "ContainerWidgetBodyC::Create(), Widget create failed ! \n";
         return true;
       }
     }

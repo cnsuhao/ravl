@@ -25,14 +25,14 @@ namespace RavlGUIN {
   
   static void DeleteImageRef(guchar *pixels, gpointer data)
   {
-    ONDEBUG(cerr << "DeleteImageRef(), Called. \n");
+    ONDEBUG(std::cerr << "DeleteImageRef(), Called. \n");
     
     delete ((ImageC<ByteRGBValueC> *) data);
   }
 
   static void DeleteImageRGBARef(guchar *pixels, gpointer data)
   {
-    ONDEBUG(cerr << "DeleteImageRef(), Called. \n");
+    ONDEBUG(std::cerr << "DeleteImageRef(), Called. \n");
     
     delete ((ImageC<ByteRGBAValueC> *) data);
   }
@@ -42,7 +42,7 @@ namespace RavlGUIN {
   PixbufC::PixbufC(const PixbufC &copy) :
     pixbuf(copy.pixbuf)
   {
-    ONDEBUG(cerr << "PixbufC::PixbufC(copy)\n");
+    ONDEBUG(std::cerr << "PixbufC::PixbufC(copy)\n");
     
     if (pixbuf != 0)
       gdk_pixbuf_ref(pixbuf);
@@ -53,7 +53,7 @@ namespace RavlGUIN {
   PixbufC::PixbufC(GdkPixbuf *rawPixBuf) :
     pixbuf(rawPixBuf)
   {
-    ONDEBUG(cerr << "PixbufC::PixbufC(GdkPixbuf*)\n");
+    ONDEBUG(std::cerr << "PixbufC::PixbufC(GdkPixbuf*)\n");
     
     if (pixbuf != 0)
       gdk_pixbuf_ref(pixbuf);
@@ -64,7 +64,7 @@ namespace RavlGUIN {
   PixbufC::PixbufC(const ImageC<ByteRGBValueC> &img) 
     : pixbuf(0)
   {
-    ONDEBUG(cerr << "PixbufC::PixbufC(const ImageC<ByteRGBValueC>&)\n");
+    ONDEBUG(std::cerr << "PixbufC::PixbufC(const ImageC<ByteRGBValueC>&)\n");
     
     if (img.Frame().Area() > 0)
     {
@@ -83,7 +83,7 @@ namespace RavlGUIN {
   PixbufC::PixbufC(const ImageC<ByteRGBAValueC> &img) 
     : pixbuf(0)
   {
-    ONDEBUG(cerr << "PixbufC::PixbufC(const ImageC<ByteRGBAValueC>&) Stride=" << img.Stride() << "\n");
+    ONDEBUG(std::cerr << "PixbufC::PixbufC(const ImageC<ByteRGBAValueC>&) Stride=" << img.Stride() << "\n");
     if (img.Frame().Area() > 0) {
       void *imgHandle = new ImageC<ByteRGBAValueC>(img); // Create a refrence to the image.
       pixbuf = gdk_pixbuf_new_from_data ((guchar *) &(img[img.Frame().Origin()]),
@@ -100,7 +100,7 @@ namespace RavlGUIN {
   PixbufC::PixbufC(const char **data) 
     : pixbuf(0)
   {
-    ONDEBUG(cerr << "PixbufC::PixbufC(const char**)\n");
+    ONDEBUG(std::cerr << "PixbufC::PixbufC(const char**)\n");
     
     pixbuf = gdk_pixbuf_new_from_xpm_data(data);
   }
@@ -110,7 +110,7 @@ namespace RavlGUIN {
   PixbufC::PixbufC(const StringC &name) :
     pixbuf(0)
   {
-    ONDEBUG(cerr << "PixbufC::PixbufC(const StringC&)\n");
+    ONDEBUG(std::cerr << "PixbufC::PixbufC(const StringC&)\n");
     
     pixbuf = gdk_pixbuf_new_from_file(name, NULL);
   }
@@ -127,7 +127,7 @@ namespace RavlGUIN {
   
   PixbufC::~PixbufC()
   {
-    ONDEBUG(cerr << "PixbufC::~PixbufC\n");
+    ONDEBUG(std::cerr << "PixbufC::~PixbufC\n");
     
     if (pixbuf != 0)
       gdk_pixbuf_unref(pixbuf);
@@ -138,7 +138,7 @@ namespace RavlGUIN {
   
   PixbufC& PixbufC::operator= (const PixbufC &other)
   {
-    ONDEBUG(cerr << "PixbufC::operator=\n");
+    ONDEBUG(std::cerr << "PixbufC::operator=\n");
     
     GdkPixbuf *tempPixbuf = pixbuf;
     pixbuf = other.pixbuf;

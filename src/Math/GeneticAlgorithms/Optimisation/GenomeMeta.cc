@@ -106,7 +106,7 @@ namespace RavlN { namespace GeneticN {
    void GeneTypeEnumC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_values.size() == 0) {
-       RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
+       RavlError("No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
      RavlAssert(m_values.size() > 0);
@@ -144,10 +144,40 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Constructor
-   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types)
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name)
+     : GeneTypeC(name)
+   {}
+
+   //! Constructor
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
+                                const std::vector<GeneTypeC::ConstRefT> &types)
      : GeneTypeC(name),
        m_types(types)
    {}
+
+   //! Constructor
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
+                                const GeneTypeC &type1,
+                                const GeneTypeC &type2)
+    : GeneTypeC(name)
+   {
+     m_types.reserve(2);
+     m_types.push_back(&type1);
+     m_types.push_back(&type2);
+   }
+
+   //! Constructor
+   GeneTypeMetaC::GeneTypeMetaC(const std::string &name,
+                                const GeneTypeC &type1,
+                                const GeneTypeC &type2,
+                                const GeneTypeC &type3)
+   : GeneTypeC(name)
+   {
+     m_types.reserve(3);
+     m_types.push_back(&type1);
+     m_types.push_back(&type2);
+     m_types.push_back(&type3);
+   }
 
    //! Load form a binary stream
    GeneTypeMetaC::GeneTypeMetaC(BinIStreamC &strm)
@@ -221,12 +251,12 @@ namespace RavlN { namespace GeneticN {
    void GeneTypeMetaC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const
    {
      if(m_types.size() == 0) {
-       RavlSysLogf(SYSLOG_ERR,"No values to choose from in enumeration '%s' ",m_name.data());
+       RavlError("No values to choose from in enumeration '%s' ",m_name.data());
        throw RavlN::ExceptionOperationFailedC("No values to choose from.");
      }
      RavlAssert(m_types.size() > 0);
      unsigned n = palette.RandomUInt32() % m_types.size();
-     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
+     ONDEBUG(RavlDebug("Choosing %d of %zu '%s' ",n,m_types.size(),m_types[n]->Name().data()));
      m_types[n]->Random(palette,newValue);
    }
 

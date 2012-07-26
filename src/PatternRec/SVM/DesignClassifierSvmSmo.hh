@@ -100,7 +100,7 @@ protected:
   void Init(const KernelFunctionC &KernelFunction, RealT Penalty1,
             RealT Penalty2, RealT Tolerance, RealT Eps, RealT LambdaThreshold);
 
-  int verbosity;
+
 
   void CalcLambdas();
   KernelFunctionC kernelFunction;
@@ -108,6 +108,7 @@ protected:
   RealT tolerance;
   RealT eps;
   RealT lambdaThreshold;
+  int verbosity;
 
   RealT *errorCache;
   RealT *lambdas;

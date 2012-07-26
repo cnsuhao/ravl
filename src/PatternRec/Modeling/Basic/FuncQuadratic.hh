@@ -24,18 +24,17 @@ namespace RavlN {
     : public FuncLinearCoeffBodyC
   {
   public:
-    FuncQuadraticBodyC(int inSize,int outSize)
-      : FuncLinearCoeffBodyC(inSize,outSize)
-    { noCoeffs = NumberCoeffs(inSize); }
+    FuncQuadraticBodyC(int inSize,int outSize = -1);
     //: Constructor.
+    //: Setting output size to 0 generates an output for each coefficient.
     
-    FuncQuadraticBodyC(istream &strm);
+    FuncQuadraticBodyC(std::istream &strm);
     //: Load from stream.
     
     FuncQuadraticBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -48,14 +47,14 @@ namespace RavlN {
     //: Expand vector to linear coefficients.
     
     virtual UIntT NumberCoeffs(UIntT inputSize) const;
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
-    virtual void Describe(ostream &out);
+    virtual void Describe(std::ostream &out);
     //: Write a human readable text description of the function.
     
   protected:
     
-    UIntT noCoeffs; // Number of coefficents.
+    UIntT noCoeffs; // Number of coefficients.
   };
   
   //! userlevel=Normal
@@ -69,17 +68,18 @@ namespace RavlN {
     : public FuncLinearCoeffC
   {
   public:    
-    FuncQuadraticC(int inSize,int outSize)
+    FuncQuadraticC(int inSize,int outSize = -1)
       : FuncLinearCoeffC(*new FuncQuadraticBodyC(inSize,outSize))
     {}
     //: Constructor.
+    // Setting the number of outputs to -1 creates a function which outputs a value for each coefficient.
     
     FuncQuadraticC()
     {}
     //: Default constructor
     // creates an invalid handle.
     
-    FuncQuadraticC(istream &strm);
+    FuncQuadraticC(std::istream &strm);
     //: Load from stream.
     
     FuncQuadraticC(BinIStreamC &strm);
@@ -108,14 +108,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,FuncQuadraticC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FuncQuadraticC &obj) {
     obj = FuncQuadraticC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FuncQuadraticC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FuncQuadraticC &obj) {
     obj.Save(out);
     return out;
   }

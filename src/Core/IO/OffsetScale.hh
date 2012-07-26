@@ -35,7 +35,7 @@ namespace RavlN {
     {}
     //: Constructor.
   
-    DPOffsetScaleBodyC(istream &strm)
+    DPOffsetScaleBodyC(std::istream &strm)
       : DPProcessBodyC<NumTypeT,NumTypeT>(strm)
     { strm >> factor >> offset; }
     //: Stream constructor.
@@ -53,12 +53,12 @@ namespace RavlN {
     //: Apply operation to an array of elements.
     // returns the number of elements processed.
   
-    virtual bool Save(ostream &out) const {
+    virtual bool Save(std::ostream &out) const {
       DPProcessBodyC<NumTypeT,NumTypeT>::Save(out);
       out << factor << " " << offset;
       return true;
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
   
     virtual RCBodyVC &Copy() const
     { return *new DPOffsetScaleBodyC<NumTypeT,ScaleT>(offset,factor); }

@@ -25,50 +25,50 @@ int main()
 {
   int ln;
   if((ln = TestQueue()) != 0) {
-    cerr << "Queue test failed at:" << ln << "\n";
+    std::cerr << "Queue test failed at:" << ln << "\n";
     return 1;
   }
   if((ln = TestQueueIter()) != 0) {
-    cerr << "Queue iter test failed at:" << ln << "\n";
+    std::cerr << "Queue iter test failed at:" << ln << "\n";
     return 1;
   }
   if((ln = TestQueueRevIter()) != 0) {
-    cerr << "Queue reverse iter test failed at:" << ln << "\n";
+    std::cerr << "Queue reverse iter test failed at:" << ln << "\n";
     return 1;
   }
   
-  cerr << "Test passed ok.\n";
+  std::cerr << "Test passed ok.\n";
   return 0;
 }
 
 int TestQueue()
 {
-  cerr << "Starting TestQueue() \n";
+  std::cerr << "Starting TestQueue() \n";
   FixedQueueC<int> q(5);
   for(int z = 0;z < 12;z++) {
     if(!q.IsEmpty()) {
-      cerr << "IsEmpty test 1 failed. \n";
+      std::cerr << "IsEmpty test 1 failed. \n";
       return __LINE__;
     }
     if(!q.IsSpace()) {
-      cerr << "IsSpace test 1 failed. \n";
+      std::cerr << "IsSpace test 1 failed. \n";
       return __LINE__;
     }
     q.InsLast(1);
     if(q.IsEmpty()) {
-      cerr << "IsEmpty test 1a failed. \n";
+      std::cerr << "IsEmpty test 1a failed. \n";
       return __LINE__;
     }
     if(q.Size() != 1) {
-      cerr << "Size test 1 failed. \n";
+      std::cerr << "Size test 1 failed. \n";
       return __LINE__;
     }
     if(q[0] != 1) {
-      cerr << "Indexed access failed. \n";
+      std::cerr << "Indexed access failed. \n";
       return __LINE__;      
     }
     if(q.GetFirst() != 1) {
-      cerr << "Content test 1 failed. \n";
+      std::cerr << "Content test 1 failed. \n";
       return __LINE__;
     }
     
@@ -81,17 +81,17 @@ int TestQueue()
       q.InsLast(i);
     }
     if(q.Size() != 5) {
-      cerr << "Size test 2 failed. (Size() == " << q.Size() << ")\n";
+      std::cerr << "Size test 2 failed. (Size() == " << q.Size() << ")\n";
       return __LINE__;
     }
     
     // Check it out.
     if(q.IsEmpty()) {
-      cerr << "IsEmpty test 2 failed. \n";
+      std::cerr << "IsEmpty test 2 failed. \n";
       return __LINE__;
     }  
     if(q.IsSpace()) {
-      cerr << "IsSpace test 2 failed. \n";
+      std::cerr << "IsSpace test 2 failed. \n";
       return __LINE__;
     }
     if(q[0] != 0) return __LINE__;
@@ -135,7 +135,7 @@ int TestQueue()
 }
 
 int TestQueueIter() {
-  cerr << "Starting TestQueueIter() \n";
+  std::cerr << "Starting TestQueueIter() \n";
   FixedQueueC<int> q(5);
   for(int f = 1;f < 6;f++) {
     for(int z = 0;z < 6;z++) {
@@ -150,11 +150,11 @@ int TestQueueIter() {
       int cc = 0;
       for(int j = 0;it;j++,it++) {
 	if(j >= f) {
-	  cerr << "operator bool(), test failed. j=" << j << " q.Size()=" << q.Size()<< "\n";
+	  std::cerr << "operator bool(), test failed. j=" << j << " q.Size()=" << q.Size()<< "\n";
 	  return __LINE__;
 	}
 	if(*it != j) {
-	  cerr << "operator bool(), iter content test failed. \n";
+	  std::cerr << "operator bool(), iter content test failed. \n";
 	  return __LINE__;
 	}
 	cc++;
@@ -166,7 +166,7 @@ int TestQueueIter() {
       // Empty queue again.
       for(int i = 0;i < f;i++) {
 	if(q.GetFirst() != i) {
-	  cerr << "Content test failed. \n";
+	  std::cerr << "Content test failed. \n";
 	  return __LINE__;
 	}
       }
@@ -176,14 +176,14 @@ int TestQueueIter() {
 }
 
 int TestQueueRevIter() {
-  cerr << "Starting TestQueueRevIter() \n";
+  std::cerr << "Starting TestQueueRevIter() \n";
   FixedQueueC<int> q(5);
 #if 0
   q.InsLast(1);
   q.InsLast(2);
   for(FixedQueueRevIterC<int> it(q);it;it++)
-    cerr << " " << *it;
-  cerr << "\n";
+    std::cerr << " " << *it;
+  std::cerr << "\n";
 #endif
 #if 1
   for(int f = 1;f < 6;f++) {
@@ -201,11 +201,11 @@ int TestQueueRevIter() {
       for(int j = f-1;it;j--,it++) {
 	//cerr << " j=" << j << "\n";
 	if(j < 0) {
-	  cerr << "operator bool(), test failed. j=" << j << " q.Size()=" << q.Size()<< "\n";
+	  std::cerr << "operator bool(), test failed. j=" << j << " q.Size()=" << q.Size()<< "\n";
 	  return __LINE__;
 	}
 	if(*it != j) {
-	  cerr << "operator bool(), iter content test failed. " << *it << " " << j << "\n";
+	  std::cerr << "operator bool(), iter content test failed. " << *it << " " << j << "\n";
 	  return __LINE__;
 	}
 	cc++;
@@ -217,7 +217,7 @@ int TestQueueRevIter() {
       // Empty queue again.
       for(int i = 0;i < f;i++) {
 	if(q.GetFirst() != i) {
-	  cerr << "Content test failed. \n";
+	  std::cerr << "Content test failed. \n";
 	  return __LINE__;
 	}
       }

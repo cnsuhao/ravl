@@ -31,7 +31,7 @@ namespace RavlN {
     virtual ~RCBodyVC();
     //: Destructor.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to stream 'out'.
     
     virtual bool Save(BinOStreamC &out) const;
@@ -65,11 +65,11 @@ namespace RavlN {
     friend class RCAbstractC ;
   };
   
-  istream &operator>>(istream &,RCBodyVC &obj);
+  std::istream &operator>>(std::istream &,RCBodyVC &obj);
   //: Input virtual body.
   // No-op.
 
-  ostream &operator<<(ostream &,const RCBodyC &obj);
+  std::ostream &operator<<(std::ostream &,const RCBodyC &obj);
   //: Output virtual body.
   // No-op.
   

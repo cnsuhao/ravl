@@ -14,9 +14,9 @@
 
 namespace RavlN {
 
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  bool DPProcessBaseBodyC::Save(ostream &out) const 
+  bool DPProcessBaseBodyC::Save(std::ostream &out) const 
   { return DPEntityBodyC::Save(out); }
   
   //: Save to binary stream.  
@@ -37,13 +37,13 @@ namespace RavlN {
   
   //: Get input type.
   
-  const type_info &DPProcessBaseBodyC::InputType(int n) const  { 
+  const std::type_info &DPProcessBaseBodyC::InputType(int n) const  { 
     return typeid(void); 
   }
   
   //: Get Output type.
   
-  const type_info &DPProcessBaseBodyC::OutputType(int n) const  { 
+  const std::type_info &DPProcessBaseBodyC::OutputType(int n) const  { 
     return typeid(void); 
   }
   
@@ -57,7 +57,7 @@ namespace RavlN {
   
   //: Stream constructor.
   
-  DPProcessBaseC::DPProcessBaseC(istream &strm) 
+  DPProcessBaseC::DPProcessBaseC(std::istream &strm) 
     : DPEntityC(RAVL_VIRTUALCONSTRUCTOR(strm,DPProcessBaseBodyC))
   {}
   

@@ -27,7 +27,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  ClassifierFunc1ThresholdBodyC::ClassifierFunc1ThresholdBodyC(istream &strm) {
+  ClassifierFunc1ThresholdBodyC::ClassifierFunc1ThresholdBodyC(std::istream &strm) {
     IntT version;
     strm >> version;
     if(version != 0)
@@ -47,7 +47,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierFunc1ThresholdBodyC::Save (ostream &out) const {
+  bool ClassifierFunc1ThresholdBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 0;

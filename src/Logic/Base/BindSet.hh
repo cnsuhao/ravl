@@ -68,15 +68,15 @@ namespace RavlLogicN {
     BindMarkT next;
   };
 
-  inline ostream &operator<<(ostream &s,const BindC &bind) { 
+  inline std::ostream &operator<<(std::ostream &s,const BindC &bind) { 
     s << bind.Value();
     return s;
   }
   //! userlevel=Advanced
   //: output stream 
   
-  inline istream &operator>>(istream &s,BindC &bind) {
-    RavlAssertMsg(0,"operator<<(istream &s,BindC &binds), Not implemented. ");
+  inline std::istream &operator>>(std::istream &s,BindC &bind) {
+    RavlAssertMsg(0,"operator<<(std::istream &s,BindC &binds), Not implemented. ");
     return s;
   }
   //! userlevel=Advanced
@@ -114,13 +114,13 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
     
-    BindSetBodyC(istream &strm);
+    BindSetBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     BindSetBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    bool Save(ostream &out) const;
+    bool Save(std::ostream &out) const;
     //: Save to stream 'out'.
     
     bool Save(BinOStreamC &out) const;
@@ -218,7 +218,7 @@ namespace RavlLogicN {
     {}
     //: Construct from a table of mappings.
     
-    BindSetC(istream &strm)
+    BindSetC(std::istream &strm)
       : RCHandleC<BindSetBodyC>(*new BindSetBodyC(strm))
     {}
     //: Construct from a stream.
@@ -243,7 +243,7 @@ namespace RavlLogicN {
     //: Access body.
     
   public:
-    bool Save(ostream &out) const
+    bool Save(std::ostream &out) const
     { return Body().Save(out); }
     //: Save to stream 'out'.
     
@@ -309,10 +309,10 @@ namespace RavlLogicN {
     //: Bind set as string.
   };
   
-  ostream &operator<<(ostream &s,const BindSetC &binds);
+  std::ostream &operator<<(std::ostream &s,const BindSetC &binds);
   //: output stream 
   
-  istream &operator<<(istream &s,BindSetC &binds);
+  std::istream &operator<<(std::istream &s,BindSetC &binds);
   //: input stream 
   
   inline BinIStreamC &operator>>(BinIStreamC &strm,BindSetC &obj) {

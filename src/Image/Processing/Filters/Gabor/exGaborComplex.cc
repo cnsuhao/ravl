@@ -72,5 +72,5 @@ int main(int argc, char* argv[]) {
   }
   // plot filter spectra
   RavlN::Save(freqplot, bank.FilterSpectrum()*128);
-
+  return 0;
 }

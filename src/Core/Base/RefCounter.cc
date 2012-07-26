@@ -35,13 +35,13 @@ namespace RavlN {
     return *new RCBodyC();
   }
   
-  istream &operator>>(istream &strm,RCBodyC &obj) {
+  std::istream &operator>>(std::istream &strm,RCBodyC &obj) {
     return strm;
   }
   //: Input body.
   // No-op.
   
-  ostream &operator<<(ostream &strm,const RCBodyC &obj) {
+  std::ostream &operator<<(std::ostream &strm,const RCBodyC &obj) {
     return strm;
   }
   //: Output body.

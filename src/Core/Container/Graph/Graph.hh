@@ -196,7 +196,7 @@ namespace RavlN {
   //: Write graph out to a stream.
   
   template<class NodeT,class EdgeT>
-  ostream &operator<<(ostream &out,const GraphC<NodeT,EdgeT> &g) {
+  std::ostream &operator<<(std::ostream &out,const GraphC<NodeT,EdgeT> &g) {
     HashC<GraphNodeHC<NodeT,EdgeT>,UIntT > nodeMap;
     // Output all the nodes and give them an id each.
     out << g.NoNodes() << "\n"; // Write the number of nodes.
@@ -216,7 +216,7 @@ namespace RavlN {
   //: Read graph from a stream.
   
   template<class NodeT,class EdgeT>
-  istream &operator>>(istream &in,GraphC<NodeT,EdgeT> &g)  {
+  std::istream &operator>>(std::istream &in,GraphC<NodeT,EdgeT> &g)  {
     HashC< UIntT,GraphNodeHC<NodeT,EdgeT> > nodeMap;
     // Output all the nodes and give them an id each.
     UIntT nodes;

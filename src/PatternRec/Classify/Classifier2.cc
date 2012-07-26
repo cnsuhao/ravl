@@ -18,7 +18,7 @@ using namespace RavlN;
 
 //---------------------------------------------------------------------------
 // Load from stream.
-Classifier2BodyC::Classifier2BodyC(istream &Strm)
+Classifier2BodyC::Classifier2BodyC(std::istream &Strm)
                  :ClassifierBodyC(Strm)
 {
 }
@@ -35,7 +35,7 @@ Classifier2BodyC::~Classifier2BodyC()
 }
 //---------------------------------------------------------------------------
 // Writes object to stream
-bool Classifier2BodyC::Save(ostream &Out) const
+bool Classifier2BodyC::Save(std::ostream &Out) const
 {
   if(!ClassifierBodyC::Save(Out))
     throw ExceptionOperationFailedC("Classifier2BodyC::Save:"

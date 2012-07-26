@@ -357,7 +357,7 @@ namespace RavlN {
 	ONDEBUG(cerr << " Checking vertex " << HEMeshBaseVertexC(*vit).Hash() << " Edge=" << HEMeshBaseVertexC(*vit).FirstEdge().Hash() << "\n");
 	for(HEMeshBaseVertexEdgeIterC it(*vit);it;it++) {
 	  if(it->Vertex() == *vit) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Warning: Zero area face with edge " << (*it).Hash() << " Vertex=" << it->Vertex().Hash() << "\n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Warning: Zero area face with edge " << (*it).Hash() << " Vertex=" << it->Vertex().Hash() << "\n";
 	    ret = false;
 	  }
 	  HEMeshBaseEdgeC edge = *it;
@@ -365,7 +365,7 @@ namespace RavlN {
 	    break; // Can only check edge's with pairs.
 	  if(edge.Prev().Vertex() != edge.Pair().Vertex()) {
 	    ret = false;
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Mis-matched edge pair vertex's. \n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Mis-matched edge pair vertex's. \n";
 	  }
 	}
       }
@@ -386,12 +386,12 @@ namespace RavlN {
       for(HEMeshBaseFaceEdgeIterC efit(*fit);efit;efit++) {
 	HEMeshBaseEdgeC curEdge(*efit);
 	if(curEdge.Next().Prev() != curEdge) {
-	  cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Bad next pointer in edge. \n";
+	  std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Bad next pointer in edge. \n";
 	  ret = false;
 	  break;	  
 	}
 	if(curEdge.Prev().Next() != curEdge) {
-	  cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Bad prev pointer in edge. \n";
+	  std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Bad prev pointer in edge. \n";
 	  ret = false;
 	  break;
 	}
@@ -403,60 +403,60 @@ namespace RavlN {
 	ONDEBUG(cerr << "\n");
 #endif
 	if(edgeDone.IsMember(curEdge)) {
-	  cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Infinite loop in edge links. \n";
+	  std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Infinite loop in edge links. \n";
 	  ret = false;
 	  break;
 	}
 	if(!curEdge.Vertex().IsValid()) {
-	  cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Edge with invalid vertex. \n";
+	  std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Edge with invalid vertex. \n";
 	  ret = false;
 	} else {
 	  if(!curEdge.Vertex().FirstEdge().IsValid()) {
-	    cerr <<"HEMeshBaseBodyC::CheckMesh(), Error: Vertex has invalid edge pointer. \n";
+	    std::cerr <<"HEMeshBaseBodyC::CheckMesh(), Error: Vertex has invalid edge pointer. \n";
 	    ret = false;
 	  }
 	  if(vertSeen.IsMember(curEdge.Vertex())) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Duplicate vertex in face. \n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Duplicate vertex in face. \n";
 	    ret = false;
 	  }
 	  vertSeen += curEdge.Vertex();
 	}
 	edgeDone += curEdge;
 	if(efit->Face() != *fit) {
-	  cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Bad face pointer found. " << HEMeshBaseFaceC(efit->Face()).Hash() << "\n";
+	  std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Bad face pointer found. " << HEMeshBaseFaceC(efit->Face()).Hash() << "\n";
 	  ret = false;
 	  //return false;
 	}
 	if(efit->HasPair()) {
 	  if(!efit->Pair().HasPair()) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Half paired edge found.  \n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Half paired edge found.  \n";
 	    ret = false;
 	    //return false;
 	  }
 	  if(!efit->Pair().HasFace()) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Adjacent edge has no face.  \n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Adjacent edge has no face.  \n";
 	    ret = false;
 	  }
 	  if(*efit != efit->Pair().Pair()) {
 	    if(*efit == efit->Pair())
-	      cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Self paired edge found.  \n";
+	      std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Self paired edge found.  \n";
 	    else
-	      cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Mis-paired edge found.  \n";
+	      std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Mis-paired edge found.  \n";
 	    ret = false;
 	    //	    return false;
 	  }
 	  if(curEdge.Pair().Vertex() != curEdge.Prev().Vertex()) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Last vertex doesn't match egde pairs vertex. Other edge=" << curEdge.Pair().Hash() << "\n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Last vertex doesn't match egde pairs vertex. Other edge=" << curEdge.Pair().Hash() << "\n";
 	    ret = false;
 	  }
 	  // Paranoia... double check 
 	  if(curEdge.Pair().Prev().Vertex() != curEdge.Vertex()) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Pair's previous vertex doesn't match edge's vertex. Other edge=" << curEdge.Pair().Hash() << "\n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Pair's previous vertex doesn't match edge's vertex. Other edge=" << curEdge.Pair().Hash() << "\n";
 	    ret = false;
 	  }
 	} else {
 	  if(!canBeOpen) {
-	    cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Open face found. \n";
+	    std::cerr << "HEMeshBaseBodyC::CheckMesh(), Error: Open face found. \n";
 	    ret = false;
 	    //return false;
 	  }

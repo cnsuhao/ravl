@@ -37,7 +37,8 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Constructor
-   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types)
+   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name,
+                                                const std::vector<GeneTypeC::ConstRefT> &types)
    : GeneTypeMetaC(name,types),
      m_totalWeights(0)
    {
@@ -48,9 +49,50 @@ namespace RavlN { namespace GeneticN {
    }
 
    //! Constructor
-   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name,const std::vector<GeneTypeC::ConstRefT> &types,const std::vector<float> &weights)
+   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name,
+                                                const std::vector<GeneTypeC::ConstRefT> &types,
+                                                const std::vector<float> &weights)
      : GeneTypeMetaC(name,types),
        m_weights(weights),
+       m_totalWeights(0)
+   {
+     Remap();
+   }
+
+   //! Constructor
+   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name,
+                                               const GeneTypeC &type1,float weight1,
+                                               const GeneTypeC &type2,float weight2)
+
+     : GeneTypeMetaC(name,type1,type2),
+       m_totalWeights(0)
+   {
+     m_weights.reserve(2);
+     m_weights.push_back(weight1);
+     m_weights.push_back(weight2);
+     Remap();
+   }
+
+   //! Constructor
+   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name,
+                                               const GeneTypeC &type1,float weight1,
+                                               const GeneTypeC &type2,float weight2,
+                                               const GeneTypeC &type3,float weight3)
+    : GeneTypeMetaC(name,type1,type2,type3),
+      m_totalWeights(0)
+   {
+     m_weights.reserve(3);
+     m_weights.push_back(weight1);
+     m_weights.push_back(weight2);
+     m_weights.push_back(weight3);
+     Remap();
+   }
+
+
+
+   //! Constructor
+   GeneTypeWeightedMetaC::GeneTypeWeightedMetaC(const std::string &name)
+     : GeneTypeMetaC(name),
        m_totalWeights(0)
    {}
 

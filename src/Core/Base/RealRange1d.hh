@@ -56,7 +56,7 @@ namespace RavlN {
     {}
     //: Creates the index range <minReal, maxReal>.
     
-    inline RealRangeC(istream & s);
+    inline RealRangeC(std::istream & s);
     //: Creates the index range from the input stream.
     
     //:---------------------------------
@@ -245,7 +245,7 @@ namespace RavlN {
     RealT minV; // Minimum index.
     RealT maxV; // Maximum index.
     
-    //friend istream & operator>>(istream & s, RealRangeC & range);
+    //friend std::istream & operator>>(std::istream & s, RealRangeC & range);
   };
   
   inline bool IsInside(RealT i, const RealRangeC & range)
@@ -256,12 +256,12 @@ namespace RavlN {
   //: Multiply an index range by a real range.
   // Multiplying by a real range of 0-1 is a unit transform.
   
-  istream & operator>>(istream & s, RealRangeC & r);
+  std::istream & operator>>(std::istream & s, RealRangeC & r);
   //: Read range from input stream.
   // Read information from the intput stream 's' and sets the real range
   // according obtained data.
   
-  ostream & operator<<(ostream & s, const RealRangeC & r);
+  std::ostream & operator<<(std::ostream & s, const RealRangeC & r);
   //: Saves the index range 'r' into the output stream 's'.
   
   BinOStreamC &operator<<(BinOStreamC &s,const RealRangeC &ir);  

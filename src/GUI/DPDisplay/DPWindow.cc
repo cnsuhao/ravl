@@ -35,7 +35,7 @@ namespace RavlGUIN {
   //: Called when window is closed.
   
   bool DPWindowBodyC::WindowClosed() {
-    ONDEBUG(cerr << "DPWindowBodyC::WindowClosed(), Called. \n");
+    ONDEBUG(std::cerr << "DPWindowBodyC::WindowClosed(), Called. \n");
     MutexLockC hold(accessMutex);
     view.Invalidate();
     win.Invalidate();
@@ -46,7 +46,7 @@ namespace RavlGUIN {
   // Access mutex must be held when calling Init().
   
   void DPWindowBodyC::Init(const IndexRange2dC &size) {
-    ONDEBUG(cerr << "DPWindowBodyC::Init(), Called. Size=" << winSize << " \n");
+    ONDEBUG(std::cerr << "DPWindowBodyC::Init(), Called. Size=" << winSize << " \n");
     if(view.IsValid()) // Check for race in setup.
       return ;
     winSize = size;
@@ -71,7 +71,7 @@ namespace RavlGUIN {
   //: Add object to the display list.
   
   bool DPWindowBodyC::AddObject(const DPDisplayObjC &obj) { 
-    ONDEBUG(cerr << "DPWindowBodyC::AddObject(), Called \n");
+    ONDEBUG(std::cerr << "DPWindowBodyC::AddObject(), Called \n");
     MutexLockC hold(accessMutex);
     if(!view.IsValid()) 
       Init(obj.Frame());
@@ -84,7 +84,7 @@ namespace RavlGUIN {
   //: This clears the display list then adds 'obj'.
   
   bool DPWindowBodyC::ReplaceObject(const DPDisplayObjC &obj,bool resetPosition) {
-    ONDEBUG(cerr << "DPWindowBodyC::ReplaceObject(), Called \n");
+    ONDEBUG(std::cerr << "DPWindowBodyC::ReplaceObject(), Called \n");
     MutexLockC hold(accessMutex);
     if(!view.IsValid()) 
       Init(obj.Frame());
@@ -101,7 +101,7 @@ namespace RavlGUIN {
   //: Clear the display list.
   
   bool DPWindowBodyC::Clear() {  
-    ONDEBUG(cerr << "DPWindowBodyC::Clear(), Called \n");
+    ONDEBUG(std::cerr << "DPWindowBodyC::Clear(), Called \n");
     MutexLockC hold(accessMutex);
     if(!view.IsValid())
       return true;
@@ -111,7 +111,7 @@ namespace RavlGUIN {
   //: Refresh the display.
   
   bool DPWindowBodyC::Refresh() {
-    ONDEBUG(cerr << "DPWindowBodyC::Refresh(), Called \n");
+    ONDEBUG(std::cerr << "DPWindowBodyC::Refresh(), Called \n");
     MutexLockC hold(accessMutex);
     if(!view.IsValid())
       return true;

@@ -44,7 +44,7 @@ namespace RavlGUIN {
       m_doublePress(ev.type == GDK_2BUTTON_PRESS)
   {
     change = 1 << (ev.button - 1);
-    ONDEBUG(cerr << "MouseEventC::MouseEventC(), Button: " << ev.button << "\n");
+    ONDEBUG(std::cerr << "MouseEventC::MouseEventC(), Button: " << ev.button << "\n");
   }
   
   //: Constructor.
@@ -134,7 +134,7 @@ namespace RavlGUIN {
   }
 
 
-  ostream &operator<<(ostream &s,const MouseEventC &me) {
+  std::ostream &operator<<(std::ostream &s,const MouseEventC &me) {
     //s << " x:" << me.X() << " y:" << me.Y();
     return s;
   }

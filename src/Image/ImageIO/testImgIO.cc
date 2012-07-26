@@ -39,7 +39,7 @@ int main(int argc,char **argv) {
     it.Data() = counter++;
   
   if(!Save(filename,x1,fmt,verbose)) {
-    cerr << "Failed to save data. \n";
+    std::cerr << "Failed to save data. \n";
     filename.Remove() ; 
     return 1;
   }
@@ -47,21 +47,21 @@ int main(int argc,char **argv) {
   ImageC<IntT> x2;
   
   if(!Load(filename,x2,"",verbose)) {
-    cerr << "Failed to load data. \n";
+    std::cerr << "Failed to load data. \n";
     filename.Remove() ; 
     return 1;
   }
   
   if(verbose)
-    cout << "Image size:" << x2.Rectangle() << endl;
+    std::cout << "Image size:" << x2.Rectangle() << std::endl;
   for(Array2dIter2C<IntT,IntT> it(x1,x2);it.IsElm();it.Next()) {
     if(it.Data1() != it.Data2()) {
-      cerr << "Image contents mis-match \n";
+      std::cerr << "Image contents mis-match \n";
       filename.Remove() ; 
       return 1;
     }
   }
-  cout << "TEST PASSED. \n";
+  std::cout << "TEST PASSED. \n";
   filename.Remove() ; 
   return 0;
 }

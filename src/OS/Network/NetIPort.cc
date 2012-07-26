@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! lib=RavlNet
 //! file="Ravl/OS/Network/NetIPort.cc"
@@ -13,6 +12,7 @@
 #include "Ravl/OS/NetIPort.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/OS/SysLog.hh"
+#include "Ravl/StrStream.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -25,7 +25,7 @@ namespace RavlN {
   
   //: Constructor.
   
-  NetISPortBaseC::NetISPortBaseC(const StringC &server,const StringC &nPortName,const type_info &ndataType) 
+  NetISPortBaseC::NetISPortBaseC(const StringC &server,const StringC &nPortName,const std::type_info &ndataType)
     : NetPortBaseC(server),
       portName(nPortName),
       dataType(TypeName(ndataType)),
@@ -99,7 +99,8 @@ namespace RavlN {
   //: Handle incoming state info.
   
   bool NetISPortBaseC::RecvState(Int64T &nat,Int64T &nstart,Int64T &nsize) {
-    ONDEBUG(cerr << "NetISPortBaseC::RecvState(), At=" << nat << " Start=" << nstart << " Size=" << nsize << "\n");
+    ONDEBUG(RavlDebug("NetISPortBaseC::RecvState(), At=%s Start=%s Size=%s ",
+        RavlN::StringOf(nat).c_str(),RavlN::StringOf(nstart).c_str(),RavlN::StringOf(nsize).c_str()));
     RWLockHoldC hold(rwlock,RWLOCK_WRITE);
     at = nat;
     start = nstart;
@@ -111,7 +112,7 @@ namespace RavlN {
   //: Handle request failed.
   
   bool NetISPortBaseC::ReqFailed(IntT &nflag) {
-    ONDEBUG(cerr << "NetISPortBaseC::ReqFailed(), Flag=" << nflag << "\n");
+    ONDEBUG(RavlDebug("NetISPortBaseC::ReqFailed(), Error flag=%d ",nflag));
     if(nflag == 1) gotEOS = true;
     flag = nflag;
     recieved.Post();

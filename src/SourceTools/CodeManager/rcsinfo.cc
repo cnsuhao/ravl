@@ -29,21 +29,21 @@ int main(int nargs,char **argv) {
   
   for(DLIterC<StringC> it(files);it.IsElm();it.Next()) {
     RCSFileC rcsfile(it.Data());
-    cout << it.Data();
+    std::cout << it.Data();
     if(it.Data().length() < 8)
-      cout << "\t";
-    cout << "\t: ";
+      std::cout << "\t";
+    std::cout << "\t: ";
     if(extInit) {
       StringC author("??"),date("??");
       if(!rcsfile.ExtractInital(author,date)) {
 	cerr << "ERROR: Failed to find inital author information. \n";
 	exit(1);
       }
-      cout <<"Author:'" << author <<"'  Date:'" << date << "'\n";
+      std::cout <<"Author:'" << author <<"'  Date:'" << date << "'\n";
       continue;
     }
     if(!headOnly) {
-      cout << "UsesRCS=" ;
+      std::cout << "UsesRCS=" ;
       if(rcsfile.UsesRCS())
 	cout << "Yes ";
       else {
@@ -56,29 +56,29 @@ int main(int nargs,char **argv) {
 	continue;
       }
     }
-    cout << "Head=" << rcsfile.HeadVersion() << " ";
+    std::cout << "Head=" << rcsfile.HeadVersion() << " ";
     if(headOnly) {
-      cout << endl;
+      std::cout << std::endl;
       continue;
     }
-    cout << "IsCheckedOut=";
+    std::cout << "IsCheckedOut=";
     if(rcsfile.IsCheckedOut())
-      cout << "Yes ";
+      std::cout << "Yes ";
     else
-      cout << "No ";
+      std::cout << "No ";
     
-    cout << "IsAvailable=";
+    std::cout << "IsAvailable=";
     if(rcsfile.IsAvailable())
-      cout << "Yes ";
+      std::cout << "Yes ";
     else
-      cout << "No ";
+      std::cout << "No ";
     
-    cout << "HasAccess=";
+    std::cout << "HasAccess=";
     if(rcsfile.HasAccess(UserInfoC::WhoAmI()))
-      cout << "Yes ";
+      std::cout << "Yes ";
     else
-      cout << "No ";
-    cout << "\n";
+      std::cout << "No ";
+    std::cout << "\n";
   }
   return 0;
 }

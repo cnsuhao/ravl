@@ -79,7 +79,7 @@ namespace RavlGUIN
   //: Create the widget.
   
   bool MenuCheckItemBodyC::Create() {
-    ONDEBUG(cerr << "MenuItemBodyC::Create(), Called. \n");
+    ONDEBUG(std::cerr << "MenuItemBodyC::Create(), Called. \n");
     
     /* Create a new menu-item with a name... */
     widget = gtk_check_menu_item_new_with_label(name);
@@ -94,7 +94,7 @@ namespace RavlGUIN
     gtk_signal_connect(GTK_OBJECT(widget), "activate",
 		       GTK_SIGNAL_FUNC(MenuCheckItemBodyC::doSelected), &selectedToggle);
     
-    ONDEBUG(cerr << "MenuItemBodyC::Create(), Done. \n");
+    ONDEBUG(std::cerr << "MenuItemBodyC::Create(), Done. \n");
     return true;
   }
 

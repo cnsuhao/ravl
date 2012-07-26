@@ -18,7 +18,7 @@ namespace RavlLogicN {
   
   //: Construct from a binary stream.
   
-  ConditionBodyC::ConditionBodyC(istream &strm)
+  ConditionBodyC::ConditionBodyC(std::istream &strm)
     : TupleBodyC(strm)
   {}
   
@@ -35,7 +35,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool ConditionBodyC::Save(ostream &out) const {
+  bool ConditionBodyC::Save(std::ostream &out) const {
     return TupleBodyC::Save(out);
   }
   

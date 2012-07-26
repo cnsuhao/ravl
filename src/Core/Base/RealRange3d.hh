@@ -317,8 +317,8 @@ namespace RavlN {
   //: Multiply a 2d index range by a real 2d range.
   // Multiplying by a real range of 0-1,0-1 is a unit transform.
   
-  ostream &operator<<(ostream &s,const RealRange3dC &ir);
-  istream &operator>>(istream &s,RealRange3dC &ir);
+  std::ostream &operator<<(std::ostream &s,const RealRange3dC &ir);
+  std::istream &operator>>(std::istream &s,RealRange3dC &ir);
   
   BinOStreamC &operator<<(BinOStreamC &s,const RealRange3dC &ir);  
   BinIStreamC &operator>>(BinIStreamC &s,RealRange3dC &ir);

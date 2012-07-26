@@ -5,12 +5,13 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlNet
 //! file="Ravl/OS/Network/NetIPortServer.cc"
 
 #include "Ravl/OS/NetIPortServer.hh"
 #include "Ravl/OS/NetPortManager.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/StrStream.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -48,7 +49,7 @@ namespace RavlN {
     seekCtrl.Invalidate();  // Let handle to seek ctrl go.
     NetAttributeCtrlServerBodyC::Close();
     sigConnectionClosed();
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::~NetISPortServerBaseBodyC(), Called. Name=" << portName << " \n");  
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::~NetISPortServerBaseBodyC(), Called. Name=5s ",portName.c_str()));
   }
   
   //: Get the port type.
@@ -63,12 +64,12 @@ namespace RavlN {
   // 'nep' is the NetEndPoint associated with the new connection.
   
   bool NetISPortServerBaseBodyC::Connect(NetEndPointC &nep) {
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::Connect(), Called \n");
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::Connect(), Called "));
     RavlAssert(nep.IsValid());
     if(!NetAttributeCtrlServerBodyC::Connect(nep))
       return false; // Already connected!
     if(!Init()) {
-      cerr << "NetISPortServerBaseBodyC::Connect(), Failed. \n";
+      RavlError("NetISPortServerBaseBodyC::Connect(), Failed. ");
       return false;
     }
     return true;
@@ -77,14 +78,14 @@ namespace RavlN {
   //: Disonnect to an end point.
   
   bool NetISPortServerBaseBodyC::Disconnect() {
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::Disconnect(), Called. \n");
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::Disconnect(), Called. "));
     return NetAttributeCtrlServerBodyC::Disconnect();
   }
   
   //: Initalise stream.
   
   bool NetISPortServerBaseBodyC::Init() {
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::Init(), Called. \n");
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::Init(), Called. "));
     ep.LocalInfo().ProtocolName("IPortServer");
     ep.LocalInfo().ProtocolVersion("1.1");
     ep.RegisterR(NPMsg_ReqInfo,"ReqState",*this,&NetISPortServerBaseBodyC::ReqStats);
@@ -96,7 +97,7 @@ namespace RavlN {
   //: Request information on the stream.. 
   
   bool NetISPortServerBaseBodyC::ReqData(Int64T &pos) {
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqData pos=" << pos << " at=" << at << endl);
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqData pos=%s at=%s",RavlN::StringOf(pos).c_str(),RavlN::StringOf(at).c_str()));
     if(!iportBase.IsValid() || !typeInfo.IsValid()) {
       ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqData port base valid=" << (iportBase.IsValid() ? "Y" : "N") << " type info valid=" << (typeInfo.IsValid() ? "Y" : "N") << endl);
       ep.Send(NPMsg_ReqFailed,1); // Report end of stream.
@@ -114,6 +115,8 @@ namespace RavlN {
     BufOStreamC os;
     BinOStreamC bos(os);
     bos.UseBigEndian(ep.UseBigEndianBinStream());
+    bos.SetCompatibilityMode32Bit(ep.Use32BitMode());
+
     bos << NPMsg_Data << (at+1);
     if(typeInfo.GetAndWrite(iportBase,bos)) {
       at++;
@@ -121,12 +124,12 @@ namespace RavlN {
     } else { // Failed to get data.
       if(iportBase.IsGetEOS())
       {
-        ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqData EOS" << endl);
+        ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqData EOS"));
       	ep.Send(NPMsg_ReqFailed,1); // End of stream.
       }
       else
       {
-        ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqData get failed" << endl);
+        ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqData get failed"));
         ep.Send(NPMsg_ReqFailed,2); // Just get failed.
       }
     }
@@ -137,7 +140,8 @@ namespace RavlN {
 
   bool NetISPortServerBaseBodyC::ReqDataArray(Int64T& pos, Int64T& size)
   {
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqDataArray() pos=" << pos << " at=" << at << " size=" << size << endl);
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqDataArray() pos=%s  at=%s size=%s",
+        RavlN::StringOf(pos).c_str(),RavlN::StringOf(at).c_str(),RavlN::StringOf(size).c_str()));
     if (!iportBase.IsValid() || !typeInfo.IsValid())
     {
       ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqDataArray port base valid=" << (iportBase.IsValid() ? "Y" : "N") << " type info valid=" << (typeInfo.IsValid() ? "Y" : "N") << endl);
@@ -156,7 +160,9 @@ namespace RavlN {
 
     BufOStreamC os;
     BinOStreamC bos(os);
+    bos.SetCompatibilityMode32Bit(ep.Use32BitMode());
     bos.UseBigEndian(ep.UseBigEndianBinStream());
+
     bos << NPMsg_DataArrayGet;
     Int64T dataRead = typeInfo.GetAndWriteArray(iportBase, size, bos);
     if (dataRead > 0)
@@ -170,12 +176,12 @@ namespace RavlN {
     { // Failed to get data.
       if (iportBase.IsGetEOS())
       {
-        ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqDataArray EOS" << endl);
+        ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqDataArray EOS"));
         ep.Send(NPMsg_ReqFailed, 1); // End of stream.
       }
       else
       {
-        ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqDataArray get failed" << endl);
+        ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqDataArray get failed"));
         ep.Send(NPMsg_ReqFailed, 2); // Just get failed.
       }
     }
@@ -186,7 +192,7 @@ namespace RavlN {
   //: Request stream stats.
   
   bool NetISPortServerBaseBodyC::ReqStats() {
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqStats(), Called. \n");
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqStats(), Called. "));
     Int64T lat = 0;
     Int64T start = 0;
     Int64T size = ((UIntT) -1);
@@ -197,7 +203,8 @@ namespace RavlN {
       at = lat;
     }
     ep.Send(NPMsg_StreamInfo,lat,start,size);
-    ONDEBUG(cerr << "NetISPortServerBaseBodyC::ReqStats(), Sent: At=" << at << " Start=" << start << " Size=" << size << "\n");
+    ONDEBUG(RavlDebug("NetISPortServerBaseBodyC::ReqStats(), Sent: At=%s Start=%s Size=%s ",
+        RavlN::StringOf(at).c_str(),RavlN::StringOf(start).c_str(),RavlN::StringOf(size).c_str()));
     return true;
   }
 

@@ -23,8 +23,8 @@ int Main(int argc, char* argv[])
   
   Array1dC<IntT> arr(-10,10);
   
-  cout << "arr.Range() = " << arr.Range() << "\n";
-  cout << "arr.Size()  = " << arr.Size() << "\n";
+  std::cout << "arr.Range() = " << arr.Range() << "\n";
+  std::cout << "arr.Size()  = " << arr.Size() << "\n";
   
   arr.Fill(0); // Fill array with 0's
   
@@ -33,7 +33,7 @@ int Main(int argc, char* argv[])
   
   for(Array1dIterC<IntT> it(arr);it;it++)
     if(*it != 0)
-      cout << "Array element arr[" << it.Index() << "] is non zero, " << *it << "\n";
+      std::cout << "Array element arr[" << it.Index() << "] is non zero, " << *it << "\n";
   
   return 0;
 }

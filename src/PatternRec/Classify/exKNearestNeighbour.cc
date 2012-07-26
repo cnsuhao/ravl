@@ -46,7 +46,7 @@ int main(int nargs,char **argv) {
   
   for(DataSet2IterC<SampleVectorC,SampleLabelC> it(dataset);it;it++) {
     UIntT cluster = classifier.Classify(it.Data1());
-    cerr << "Vector " << it.Data1() << " is in cluster " << cluster << " (True=" << it.Data2() << ")\n";
+    std::cerr << "Vector " << it.Data1() << " is in cluster " << cluster << " (True=" << it.Data2() << ")\n";
   }
   return 0;
 }

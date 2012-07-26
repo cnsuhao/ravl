@@ -30,8 +30,8 @@ int main()
   };
   
   HiddenMarkovModelC hmm(MatrixC(3, 3, initTrans), MatrixC(3, 4, initObs));
-  cout << "HMM has the transition matrix: " << hmm.Transition() << "\n"
-      << "and observation matrix: " << hmm.Observation() << endl;
+  std::cout << "HMM has the transition matrix: " << hmm.Transition() << "\n"
+      << "and observation matrix: " << hmm.Observation() << std::endl;
   
   VectorC istate(1.0/3, 1.0/3, 1.0/3); //Initial state probabilities
   
@@ -53,23 +53,24 @@ int main()
   
   UIntT T = sizeof(observations)/sizeof(observations[0]);
   SArray1dC<VectorC> obsvecarray(observations, T, false);
-  cout << "Observed sequence (as simple array of vectors): " << obsvecarray;
+  std::cout << "Observed sequence (as simple array of vectors): " << obsvecarray;
   RealT prob1 = hmm.ObsSeqProbability( obsvecarray, istate );
-  cout << "Probability of observing the sequence is " << prob1 << endl;
+  std::cout << "Probability of observing the sequence is " << prob1 << std::endl;
   
   SArray1dC<UIntT> path1;
   hmm.Viterbi( obsvecarray, istate, path1);
-  cout << "Most likely path through states is " << path1 << endl;
+  std::cout << "Most likely path through states is " << path1 << std::endl;
   
   // Same observation as above, but specified as indices between 0 and observationM.size()-1
   
   UIntT obsseq[] = { 2, 1, 0, 3, 2, 0, 0, 0, 0, 1, 1, 1 };
   SArray1dC<UIntT> obsindices(obsseq, T, false); 
-  cout << "**************************************************\n";
-  cout << "Observed sequence (as simple array of indices): \n" << obsindices;
+  std::cout << "**************************************************\n";
+  std::cout << "Observed sequence (as simple array of indices): \n" << obsindices;
   RealT prob2 = hmm.ObsSeqProbability( obsindices, istate );
-  cout << "Probability of observing the sequence is " << prob2 << endl;
+  std::cout << "Probability of observing the sequence is " << prob2 << std::endl;
   SArray1dC<UIntT> path2;
   hmm.Viterbi( obsindices, istate, path2);
-  cout << "Most likely path through states is \n" << path2 << endl;
+  std::cout << "Most likely path through states is \n" << path2 << std::endl;
+  return 0;
 }

@@ -33,13 +33,13 @@ namespace RavlN {
     FuncInterpolateGridBodyC(const RealHistogramNdC<VectorC> &data,const SArray1dC<RealRangeC> &outputLimits);
     //: Constructor
 
-    FuncInterpolateGridBodyC(istream &strm);
+    FuncInterpolateGridBodyC(std::istream &strm);
     //: Load from stream.
 
     FuncInterpolateGridBodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual bool Save (BinOStreamC &out) const;
@@ -64,7 +64,7 @@ namespace RavlN {
     {}
     //: Default constructor.
 
-    FuncInterpolateGridC(istream &strm);
+    FuncInterpolateGridC(std::istream &strm);
     //: Load from stream.
 
     FuncInterpolateGridC(BinIStreamC &strm);
