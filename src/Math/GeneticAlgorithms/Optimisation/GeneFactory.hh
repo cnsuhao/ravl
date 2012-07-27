@@ -132,6 +132,9 @@ namespace RavlN { namespace GeneticN {
     //! Get an integer.
     void Get(const std::string &name,IntT &value,const GeneTypeC &geneType) const;
 
+    //! Get an integer.
+    void Get(const std::string &name,UIntT &value,const GeneTypeC &geneType) const;
+
     //! Get a real value.
     void Get(const std::string &name,float &value,const GeneTypeC &geneType) const;
 
