@@ -104,13 +104,11 @@ namespace RavlN {
     bool Prev() {
       it--;
       if(it.DataPtr() >= cit->Data().DataStart()) {
-        it.Invalidate();
         return true;
       }
       cit--;
       if(!cit) return false;
-      it.Last(cit->Data());
-      return true;
+      return it.Last(cit->Data());
     }
     //: Goto previous element.
     // Returns true if iterator is at a valid element after operation.
@@ -120,8 +118,7 @@ namespace RavlN {
       if(it) return true;
       cit++;
       if(!cit) return false;
-      it.First(cit->Data()); 
-      return true;
+      return it.First(cit->Data());
     }
     //: Goto next element.
     // Returns true if iterator is at a valid element after operation.

@@ -23,6 +23,7 @@
 #include "Ravl/DList.hh"
 #include "Ravl/StrStream.hh"
 #include "Ravl/UnitTest.hh"
+#include "Ravl/SysLog.hh"
 
 using namespace RavlN;
 
@@ -32,35 +33,18 @@ int testDArray1dIO();
 int testDArray1dMore();
 int testDArray1dEvenMore();
 int testDArray1dFrom();
+int testDArray1dReverseIter();
 
 int main()
 {
-  int err;
-  if((err = testBasic()) != 0) {
-    std::cerr << "Test failed line :" << err <<"\n";
-    return 1;
-  }
-  if((err = testDArray1d()) != 0) {
-    std::cerr << "Test failed line :" << err <<"\n";
-    return 1;
-  }
-  if((err = testDArray1dIO()) != 0) {
-    std::cerr << "Test failed line :" << err <<"\n";
-    return 1;
-  }
-  if((err = testDArray1dMore()) != 0) {
-    std::cerr << "Test failed line :" << err <<"\n";
-    return 1;
-  }
-  if((err = testDArray1dEvenMore()) != 0) {
-    std::cerr << "Test failed line :" << err <<"\n";
-    return 1;
-  }
-  if((err = testDArray1dFrom()) != 0) {
-    std::cerr << "Test failed line :" << err <<"\n";
-    return 1;
-  }
-  std::cerr << "Collection test passed. \n";
+  RAVL_RUN_TEST(testBasic());
+  RAVL_RUN_TEST(testDArray1d());
+  RAVL_RUN_TEST(testDArray1dIO());
+  RAVL_RUN_TEST(testDArray1dMore());
+  RAVL_RUN_TEST(testDArray1dEvenMore());
+  RAVL_RUN_TEST(testDArray1dFrom());
+  RAVL_RUN_TEST(testDArray1dReverseIter());
+  RavlInfo("Collection test passed. ");
   return 0;
 }
 
@@ -102,7 +86,7 @@ template class DArray1dIter4C<IntT,RealT,ByteT,bool>;
 const int testSize = 10000;
 
 int testDArray1d() {
-  std::cerr << "testDArray1d(), Called. \n";
+  //std::cerr << "testDArray1d(), Called. \n";
   DArray1dC<int> test(10);
   
   if(!test.Contains(2)) return __LINE__;
@@ -163,7 +147,7 @@ int testDArray1d() {
 }
 
 int testDArray1dIO() {
-  std::cerr << "testDArray1dIO() Called \n";
+  //std::cerr << "testDArray1dIO() Called \n";
   const UIntT checkVal = 0x12349876;
   for(int j = 0;j < 2;j++) {
     int i;
@@ -192,7 +176,7 @@ int testDArray1dIO() {
 }
 
 int testDArray1dMore() {
-  std::cerr << "testDArray1dMore(), Called. \n";
+  //std::cerr << "testDArray1dMore(), Called. \n";
   DArray1dC<int> test1;
   DArray1dC<int> test2;
   DArray1dC<int> test3;
@@ -283,7 +267,7 @@ int testDArray1dMore() {
 }
 
 int testDArray1dEvenMore() {
-  std::cerr << "testDArray1d(), Add/Delete. \n";
+  //std::cerr << "testDArray1d(), Add/Delete. \n";
   DArray1dC<IntT> anArray;
   CollectionC<UIntT> validIndex(64);
   IntT opSize = 128;
@@ -322,7 +306,7 @@ int testDArray1dEvenMore() {
 }
 
 int testDArray1dFrom() {
-  std::cerr << "testDArray1d(), From. \n";
+  //std::cerr << "testDArray1d(), From. \n";
   DArray1dC<IntT> anArray;
   Array1dC<IntT> arr1(5);
   Array1dC<IntT> arr2(5);
@@ -368,3 +352,24 @@ int testDArray1dFrom() {
 
   return 0;
 }
+
+int testDArray1dReverseIter()
+{
+  DArray1dC<int> dset(100,true);
+  for(int i = 0; i < 10000;i++) {
+    dset.Append(i);
+    DArray1dIterC<int> it(dset);
+    RAVL_TEST_TRUE(it.IsElm());
+    RAVL_TEST_TRUE(it.Last());
+    RAVL_TEST_EQUALS(*it,i);
+    int j = i;
+    for(j--;;j--) {
+      if(!it.Prev())
+        break;
+      RAVL_TEST_EQUALS(*it,j);
+    }
+    RAVL_TEST_EQUALS(j,-1);
+  }
+  return 0;
+}
+
