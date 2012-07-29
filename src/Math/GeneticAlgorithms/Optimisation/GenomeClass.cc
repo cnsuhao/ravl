@@ -362,6 +362,15 @@ namespace RavlN { namespace GeneticN {
     m_components.Insert(name,&newEntry);
   }
 
+  //! Get Component.
+  bool GeneNodeC::GetComponent(const std::string &name,GeneC::ConstRefT &gene) const
+  { return m_components.Lookup(name,gene); }
+
+  //! Set component
+  void GeneNodeC::SetComponent(const std::string &name,const GeneC &newGene)
+  { m_components.Insert(name,&newGene); }
+
+
   //! Visit all gene's in tree.
   void GeneNodeC::Visit(GeneVisitorC &visitor) const {
     GeneC::Visit(visitor);
