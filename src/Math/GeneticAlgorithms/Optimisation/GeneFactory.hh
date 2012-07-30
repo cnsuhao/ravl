@@ -126,6 +126,16 @@ namespace RavlN { namespace GeneticN {
     const GenePaletteC &GenePalette() const
     { return *m_palette; }
 
+    //! Set parameter in palette
+    template<typename DataT>
+    void SetParameter(const StringC &name,const DataT &value)
+    { m_palette->SetParameter(name,value);  }
+
+    //! Get parameter from palette
+    template<typename DataT>
+    bool GetParameter(const StringC &name,DataT &value) const
+    { return m_palette->GetParameter(name,value); }
+
     //! Get an integer.
     void Get(const std::string &name,bool &value,const GeneTypeC &geneType) const;
 
