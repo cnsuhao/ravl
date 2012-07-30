@@ -54,5 +54,22 @@ namespace RavlN {
 
   }
 
+  bool SampleLabelC::SetClassName(UIntT label, const StringC & className)
+  {
+    if(m_label2name.IsElm(label)) {
+      m_label2name[label] = className;
+      return true;
+    }
+    return m_label2name.Insert(label, className);
+  }
+  //: Map a label to a class name
+
+  bool SampleLabelC::GetClassName(UIntT label, StringC & className)
+  {
+    return m_label2name.Lookup(label, className);
+  }
+//: Get a class anem
+
+
   
 }

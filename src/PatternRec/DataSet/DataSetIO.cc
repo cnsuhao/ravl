@@ -97,12 +97,19 @@ namespace RavlN {
     }
 
     // Lets iterate through data
+    RCHashC<UIntT, StringC>label2names = dataset.Sample2().Label2ClassNames();
     for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dataset); it; it++) {
       for (Array1dIterC<RealT> vecIt(it.Data1()); vecIt; vecIt++) {
         os << *vecIt << ",";
       }
-      // FIXME: We could get in trouble if DataT is not a scalar or string of some sort!
-      os << it.Data2() << "\n";
+
+      // Output label
+      if(label2names.IsElm(it.Data2())) {
+        os << it.Data2() << ":" << label2names[it.Data2()] << "\n";
+      } else {
+        os << it.Data2() << "\n";
+      }
+
     }
 
     return true;
@@ -158,16 +165,24 @@ namespace RavlN {
       VectorC vec(line.Size() - 1);
       UIntT c = 0;
       UIntT label;
+      StringC className;
       for (DLIterC<StringC> it(line); it; it++) {
         if (c == vec.Size()) {
-          label = it.Data().UIntValue();
+          if(it.Data().contains(":")) {
+            StringListC ll(it.Data(), ":");
+            label = ll.First().UIntValue();
+            className = ll.Last().TopAndTail();
+          } else {
+            label = it.Data().UIntValue();
+          }
         } else {
           vec[c] = it.Data().RealValue();
         }
         c++;
       }
       dataset.Append(vec, label);
-    }
+      dataset.Sample2().SetClassName(label, className);
+    } // end line
     return true;
   }
 
