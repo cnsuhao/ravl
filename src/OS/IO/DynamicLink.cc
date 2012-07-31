@@ -38,9 +38,8 @@ namespace RavlN {
   
   static bool DynamicLinkLibLoad(const StringC &libName);
   
-  bool DynamicLinkLoadDepends(const char *fn) {
+  static bool DynamicLinkLoadDepends(const char *fn) {
     ONDEBUG(cerr << "DynamicLinkLoadDepends() From '" << fn << "'\n");
-    MTWriteLockC lock(0); // Can only open one file at a time.
     IStreamC in(fn);
     if(!in.good()) 
       return false;
