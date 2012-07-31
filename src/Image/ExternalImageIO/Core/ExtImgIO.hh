@@ -7,7 +7,6 @@
 #ifndef RAVLEXTIMGIO_HEADER
 #define RAVLEXTIMGIO_HEADER 1
 /////////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Develop
 //! file="Ravl/Image/ExternalImageIO/Core/ExtImgIO.hh"
 //! lib=RavlExtImgIO

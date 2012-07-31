@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////
-//! rcsid="$Id: exExtImgIO.cc 5240 2005-12-06 17:16:50Z plugger $"
 //! lib=RavlExtImgIO
 //! file="Ravl/Image/ExternalImageIO/Core/exExtImgIO.cc"
 //! docentry="Ravl.API.Images.IO.Formats"

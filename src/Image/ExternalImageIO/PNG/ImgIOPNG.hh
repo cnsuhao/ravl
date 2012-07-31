@@ -7,7 +7,6 @@
 #ifndef RAVLIMGIOPNG_HEADER
 #define RAVLIMGIOPNG_HEADER 1
 /////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! file="Ravl/Image/ExternalImageIO/PNG/ImgIOPNG.hh"
 //! lib=RavlExtImgIO

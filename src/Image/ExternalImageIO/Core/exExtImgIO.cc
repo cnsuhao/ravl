@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlExtImgIO
 //! file="Ravl/Image/ExternalImageIO/Core/exExtImgIO.cc"
 //! docentry="Ravl.API.Images.IO.Formats"

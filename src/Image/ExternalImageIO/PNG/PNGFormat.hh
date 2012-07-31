@@ -7,7 +7,6 @@
 #ifndef RAVLPNGFORMAT_HEADER
 #define RAVLPNGFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/Image/ExternalImageIO/PNG/PNGFormat.hh"
 //! lib=RavlExtImgIO
 //! author="Charles Galambos"

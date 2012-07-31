@@ -7,7 +7,6 @@
 #ifndef RAVLTIFFFORMAT_HEADER
 #define RAVLTIFFFORMAT_HEADER 1
 ////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/Image/ExternalImageIO/Tiff/TiffFormat.hh"
 //! lib=RavlExtImgIO
 //! author="Charles Galambos"
