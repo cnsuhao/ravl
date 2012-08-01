@@ -19,9 +19,9 @@
 
 namespace RavlN {
 
-  bool DynamicLinkLoad(const StringC &libName);
+void * DynamicLinkLoad(const StringC &libName);
   //: Load a library.
-  // Returns true on success.
+  // Returns pointer to loaded library
 }
 
 
