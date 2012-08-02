@@ -117,6 +117,18 @@ namespace RavlN { namespace GeneticN {
     value = theGene.Value();
   }
 
+  //! Get an integer.
+  void GeneFactoryC::Get(const std::string &name,UIntT &value,const GeneTypeC &geneType) const {
+    GeneC::ConstRefT component;
+    GetComponent(name,component,geneType);
+    const GeneIntC &theGene = dynamic_cast<const GeneIntC &>(*component);
+    if(theGene.Value() >= 0)
+      value = theGene.Value();
+    else
+      value = 0;
+  }
+
+
   void GeneFactoryC::Get(const std::string &name,float &value,const GeneTypeC &geneType) const
   {
     GeneC::ConstRefT component;

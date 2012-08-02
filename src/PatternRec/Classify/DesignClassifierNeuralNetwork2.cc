@@ -393,6 +393,8 @@ namespace RavlN {
 
   DesignClassifierNeuralNetwork2BodyC::DesignClassifierNeuralNetwork2BodyC(UIntT nLayers,
        UIntT nHidden,
+       bool doNorm,
+       RealT regularisation,
        RealT desiredError,
        UIntT maxEpochs,
        UIntT displayEpochs)
@@ -402,8 +404,8 @@ namespace RavlN {
       m_desiredError(desiredError),
       m_maxEpochs(maxEpochs),
       m_displayEpochs(displayEpochs),
-      m_regularisation(0),
-      m_doNormalisation(true),
+      m_regularisation(regularisation),
+      m_doNormalisation(doNorm),
       m_threads(1)
   {
     if(!m_optimiser.IsValid()) {

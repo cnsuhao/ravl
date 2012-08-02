@@ -10,10 +10,10 @@
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
 
+#include "Ravl/STL.hh"
 #include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Collection.hh"
-#include "Ravl/STL.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -74,7 +74,7 @@ namespace RavlN { namespace GeneticN {
    : public GeneC
   {
   public:
-    //! Constuct from a geneType.
+    //! Construct from a geneType.
     GeneNodeC(const GeneTypeNodeC &geneType);
 
     //! Factory constructor
@@ -101,12 +101,11 @@ namespace RavlN { namespace GeneticN {
     //! Add a new entry to the gene
     virtual void AddComponent(const std::string &name,const GeneC &newEntry,const GeneTypeC &geneType);
 
-    //! Get Component.
-    bool GetComponent(const std::string &name,GeneC::ConstRefT &gene) const
-    { return m_components.Lookup(name,gene); }
+    //! Get component.
+    bool GetComponent(const std::string &name,GeneC::ConstRefT &gene) const;
 
-    void SetComponent(const std::string &name,const GeneC &newGene)
-    { m_components.Insert(name,&newGene); }
+    //! Set component
+    void SetComponent(const std::string &name,const GeneC &newGene);
 
     //! Visit all gene's in tree.
     virtual void Visit(GeneVisitorC &visitor) const;

@@ -345,7 +345,8 @@ namespace RavlN {
  
   //////////////////////////////////////////////////////////
   
-  RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierLogisticRegressionC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierLogisticRegression("RavlN::DesignClassifierLogisticRegressionC");
+  //static RavlN::TypeNameC g_type(typeid(RavlN::DesignClassifierLogisticRegressionC),"RavlN::DesignClassifierLogisticRegressionC");
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierLogisticRegressionC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierLogisticRegression("RavlN::DesignClassifierLogisticRegressionC");
 
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignClassifierLogisticRegressionBodyC,DesignClassifierLogisticRegressionC,DesignClassifierSupervisedC);
 

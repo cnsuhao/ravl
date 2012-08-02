@@ -15,6 +15,7 @@
 #include "Ravl/String.hh"
 #include "Ravl/SmartPtr.hh"
 #include "Ravl/Genetic/GeneType.hh"
+#include "Ravl/RCWrap.hh"
 
 namespace RavlN {
   class XMLFactoryContextC;
@@ -144,6 +145,20 @@ namespace RavlN { namespace GeneticN {
     const GeneTypeProxyMapC &ProxyMap() const
     { return *m_proxyMap.Top(); }
 
+    template<typename DataT>
+    void SetParameter(const StringC &name,const DataT &value)
+    { m_parameters[name] = ToRCAbstract(value); }
+
+    template<typename DataT>
+    bool GetParameter(const StringC &name,DataT &value)
+    {
+      RCAbstractC *val = m_parameters.Lookup(name);
+      if(val == 0)
+        return false;
+      FromRCAbstract(*val,value);
+      return true;
+    }
+
     //! Handle to palette.
     typedef SmartPtrC<GenePaletteC> RefT;
   protected:
@@ -153,6 +168,7 @@ namespace RavlN { namespace GeneticN {
     RandomMersenneTwisterC m_random;
     RandomGaussC m_guass;
     StackC<GeneTypeProxyMapC::RefT > m_proxyMap;
+    HashC<StringC,RCAbstractC> m_parameters; //!< Setup constants for optimisation
   };
 
 }}

@@ -46,11 +46,16 @@ namespace RavlN { namespace GeneticN {
     factory.Attribute("logLevel",m_logLevel,RavlN::SYSLOG_INFO);
     RavlInfo("Setting debug level to '%s' ",RavlN::StringOf(m_logLevel).c_str());
 
-    rThrowBadConfigContextOnFailS(factory,UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC)),"No start population");
     // Setting the fitness function via XML is optional
-    factory.UseComponent("Fitness",m_evaluateFitness,true);
-    if(!factory.UseComponent("GenePalette",m_genePalette,true,typeid(GenePaletteC))) {
+    factory.UseChildComponent("Fitness",m_evaluateFitness,true);
+    if(!factory.UseChildComponent("GenePalette",m_genePalette,true,typeid(GenePaletteC))) {
       m_genePalette = new GenePaletteC();
+    }
+    factory.UseChildComponent("RootGeneType",m_rootGeneType,true);
+    factory.UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC));
+    if(!m_rootGeneType.IsValid() && m_startPopulation.empty()) {
+      RavlDebug("No gene type or seed given.");
+      throw RavlN::ExceptionBadConfigC("No seed given.");
     }
     RavlDebug("Mutation rate:%f Cross rate:%f Random:%f Keep:%f ",m_mutationRate,m_cross2mutationRatio,m_randomFraction,m_keepFraction);
   }
@@ -143,7 +148,7 @@ namespace RavlN { namespace GeneticN {
   }
 
 
-  //! Add population to optimisers, not this does not remove any entries already there
+  //! Add population to optimisers, this does not remove any entries already there
   void GeneticOptimiserC::AddPopulation(const SArray1dC<RavlN::Tuple2C<float,GenomeC::RefT> > &population)
   {
     MutexLockC lock(m_access);
@@ -186,6 +191,16 @@ namespace RavlN { namespace GeneticN {
 
     MutexLockC lock(m_access);
     if(m_population.empty()) {
+      if(m_startPopulation.empty()) {
+        RavlAssert(m_rootGeneType.IsValid());
+        RavlDebug("Generating start population %u ",numKeep);
+        for(unsigned i = 0;i < numKeep;i++) {
+          GeneC::RefT newGene;
+          m_rootGeneType->Random(*m_genePalette,newGene);
+          m_startPopulation.push_back(new GenomeC(*newGene));
+        }
+      }
+
       RavlAssert(!m_startPopulation.empty());
       lock.Unlock();
       Evaluate(m_startPopulation);

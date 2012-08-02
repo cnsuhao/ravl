@@ -117,7 +117,6 @@ namespace RavlN {
   protected:
     FunctionC m_norm;
     SArray1dC<NeuralNetworkLayerC::RefT> m_layers;
-    size_t m_largestLayer;
   };
 
   //! userlevel=Normal

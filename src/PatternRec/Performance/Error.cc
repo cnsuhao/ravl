@@ -32,10 +32,14 @@ namespace RavlN {
   ErrorBodyC::ErrorBodyC(BinIStreamC &strm)
     : RCBodyVC(strm)
   {}
-  
+
+  //: Copy me.
+  RavlN::RCBodyVC &ErrorBodyC::Copy() const
+  { return *new ErrorBodyC(*this); }
+
   //: Writes object to stream, can be loaded using constructor
   
-  bool ErrorBodyC::Save (ostream &out) const {
+  bool ErrorBodyC::Save (std::ostream &out) const {
     if(!RCBodyVC::Save(out))
       return false;
     return true;

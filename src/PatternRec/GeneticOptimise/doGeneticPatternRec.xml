@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?RAVL class='RavlN::XMLTreeC' ?>
+<Config verbose="false" checkConfig="true" >
+  <Designer typename="RavlN::GeneticOptimiseClassifierDesignC" >
+
+    <Optimiser typename="RavlN::GeneticN::GeneticOptimiserC" 
+      cross2mutationRatio="0.2" 
+      randomFraction="0.05" 
+      mutationRate="0.02" 
+      keepFraction="0.5" 
+      populationSize="20" 
+      numGenerations="100" 
+      createOnly="False" 
+      threads="8" 
+      teminateScore="10000" >
+      <StartPopulation>
+        <Seed typename="RavlN::GeneticN::GenomeC">
+          <Gene typename="RavlN::GeneticN::GeneClassC">
+            <Type typename = "RavlN::GeneticN::GeneTypeClassC" className="RavlN::DesignClassifierNeuralNetwork2C" />
+          </Gene>
+        </Seed>
+      </StartPopulation>
+    </Optimiser>
+  
+  </Designer>
+  
+  <OptimiserCheckPoint typename="RavlN::GeneticN::GeneticOptimiserCheckPointC" filename="checkPoint" interval="60" numberToKeep="2" Optimiser="Optimiser" />
+  
+</Config>
