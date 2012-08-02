@@ -7,7 +7,6 @@
 #ifndef RAVLTHREADS_CONDITIONALVARIABLE_HEADER
 #define RAVLTHREADS_CONDITIONALVARIABLE_HEADER 1
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/OS/Threads/Posix/ConditionalVariable.hh"
 //! lib=RavlThreads
 //! userlevel=Normal

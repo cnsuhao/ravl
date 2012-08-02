@@ -7,7 +7,6 @@
 #ifndef RAVLTHREADS_EVENT_HEADER
 #define RAVLTHREADS_EVENT_HEADER 1
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/OS/Threads/Posix/ThreadEvent.hh"
 //! lib=RavlThreads
 //! userlevel=Normal
