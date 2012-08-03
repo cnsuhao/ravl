@@ -25,7 +25,7 @@ namespace RavlN {
   public:
     DesignBayesNormalQuadraticBodyC();
     //: Default constructor.
-    
+
     DesignBayesNormalQuadraticBodyC(std::istream &strm);
     //: Load from stream.
     
@@ -44,6 +44,9 @@ namespace RavlN {
     DesignBayesNormalQuadraticBodyC(const SArray1dC<RealT> & priors);
     //: Specify the priors for each class
         
+    DesignBayesNormalQuadraticBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Create function from the a labelled dataset.
         
@@ -79,6 +82,11 @@ namespace RavlN {
     {}
     //: Create designer with user set priors for each class
     
+    DesignBayesNormalQuadraticC(const XMLFactoryContextC &factory)
+    :  DesignClassifierSupervisedC(*new DesignBayesNormalQuadraticBodyC(factory))
+    {}
+    //: Construct from XML factory
+
   protected:
     DesignBayesNormalQuadraticC(DesignBayesNormalQuadraticBodyC &bod)
       : DesignClassifierSupervisedC(bod)

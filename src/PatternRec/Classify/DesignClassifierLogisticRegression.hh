@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_DESIGNKNEARESTNEIGHBOUR_HEADER
-#define RAVL_DESIGNKNEARESTNEIGHBOUR_HEADER 1
+#ifndef RAVL_DESIGNCLASSIFIERLOGISTICREGRESSION_HEADER
+#define RAVL_DESIGNCLASSIFIERLOGISTICREGRESSION_HEADER 1
 //! lib=RavlPatternRec
 //! docentry="Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
 //! file="Ravl/PatternRec/Classify/DesignClassifierLogisticRegression.hh"

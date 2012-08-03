@@ -19,6 +19,8 @@
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -47,6 +49,14 @@ namespace RavlN {
     : equalPriors(equalP)
   {
   }
+
+  DesignBayesNormalLinearBodyC::DesignBayesNormalLinearBodyC(const XMLFactoryContextC & factory) :
+       DesignClassifierSupervisedBodyC(factory), equalPriors(factory.AttributeBool("equalPriors", true))
+   {
+     if (!equalPriors) {
+       throw ExceptionBadConfigC("Non-equal priors not supported by XMLFactory constructor!");
+     }
+   }
 
   
   //: Load from stream.
@@ -125,7 +135,7 @@ namespace RavlN {
   
  
   ////////////////////////////////////////////////////////////////////////
-  
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignBayesNormalLinearC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignBayesNormalLinear("RavlN::DesignBayesNormalLinearC");
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignBayesNormalLinearBodyC,DesignBayesNormalLinearC,DesignClassifierSupervisedC);
-  
+  void linkDesignBayesNormalLinear() {}
 }
