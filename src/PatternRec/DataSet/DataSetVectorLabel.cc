@@ -174,14 +174,21 @@ namespace RavlN {
   }
   
   DataSetVectorLabelC DataSetVectorLabelBodyC::ExtractPerLabel(UIntT numSamples)  const {
+
     SArray1dC<SampleVectorC> arr = SeperateLabels();
+    for(SArray1dIterC<SampleVectorC>it(arr);it;it++) {
+      if(numSamples > (UIntT)it.Data().Size()) {
+        RavlWarning("Number of samples for class less than requested in ExtractPerLabel. Setting to this minimum!");
+        numSamples = Min((UIntT)it.Data().Size(), numSamples);
+      }
+    }
     UIntT noClasses = arr.Size();
     SampleVectorC input(numSamples * noClasses);
     SampleLabelC output(numSamples * noClasses);
     for(SArray1dIterC<SampleVectorC>it(arr);it;it++) {
       for(UIntT i=0;i<numSamples;i++) {
-	input.Append(it.Data().Pick());
-	output.Append(it.Index().V());
+        input.Append(it.Data().Pick());
+        output.Append(it.Index().V());
       }
     }
     DataSetVectorLabelC ret(input, output);
