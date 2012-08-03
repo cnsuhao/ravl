@@ -14,6 +14,7 @@
 #include "Ravl/Vector2d.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/PatternRec/ClassifierLinearCombination.hh"
+#include "Ravl/PatternRec/Error.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -101,6 +102,7 @@ namespace RavlN {
       weights[it2.Index()] = 1.0 / (2.0 * sampleCount[*it2]) * multiplier[*it2];
     // for each feature that is added
     for (UIntT t = 0; t < m_numFeatures; t++) {
+      RavlDebug("Selecting feature (%d/%d)", t, m_numFeatures);
       weights = NormaliseWeights(weights);
       IndexC totalFeatures = train.Sample1()[0].Size();
       // for each feature, train a classifier and evaluate error
@@ -114,8 +116,17 @@ namespace RavlN {
         ClassifierC weakClassifier = designer.Apply(train.Sample1(), train.Sample2(), oneFeature, weights);
         RealT error = 0.0 + 1e-6;
         SArray1dIterC<RealT> itw(weights);
+#if 0
+        // KM Note: This makes no sense to me to replace with other data
+        // as you are weighting the datapoints for training!
+        // Also, if train.Size() != test.Size() then it will seg fault as
+        // weights index will be different.
         SampleIterC<VectorC> itf(test.Sample1());
         SampleIterC<UIntT> itl(test.Sample2());
+#else
+        SampleIterC<VectorC> itf(train.Sample1());
+        SampleIterC<UIntT> itl(train.Sample2());
+#endif
         for (; itw; itw++, itf++, itl++) {
           error += *itw * (weakClassifier.Classify(*itf, oneFeature) != *itl);
         }
@@ -134,15 +145,18 @@ namespace RavlN {
         weakClassifiers.Append(oneClassifier);
         classifierWeights.Append(oneWeight);
         featureSet.Append(bestFeature);
-      } else
-        cout << "Didn't assign classifier!\n";
+      } else {
+        RavlWarning("Didn't assign classifier");
+      }
       classifier = ClassifierLinearCombinationC(weakClassifiers, classifierWeights, 0.5);
       // update the weights
       for (IndexC i = 0; i < train.Size(); i++) {
         RealT ei = classifier.Classify(train.Sample1()[i], featureSet) != train.Sample2()[i];
         weights[i] *= Pow(betaT, 1.0 - ei) * multiplier[train.Sample2()[i]];
       }
+      RavlDebug(" - best Feature %s with error %0.4f", StringOf(bestFeature[0]).data(), lowestError);
     }
+
     RealT bestTh = 1.0;
     RealT bestRate = 0.0;
     for (RealT th = 0.9; th > 0.0; th -= 0.025) {
