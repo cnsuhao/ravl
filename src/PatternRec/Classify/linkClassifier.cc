@@ -40,7 +40,7 @@ namespace RavlN {
     linkDesignDiscriminantFunction();
     linkDesignBayesNormalLinear();
     linkDesignBayesNormalQuadratic();
-    linkDesignCascade();
+    //linkDesignCascade();
   }
 
 }
