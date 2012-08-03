@@ -65,6 +65,7 @@ namespace RavlN {
   
   VectorC FunctionBodyC::Apply(const VectorC &data) const {
     //RavlAssertMsg(0,"RavlN::Apply(), Abstract method called. \n");
+    RavlWarning("Function does nothing to data!");
     return data;
   }
   
