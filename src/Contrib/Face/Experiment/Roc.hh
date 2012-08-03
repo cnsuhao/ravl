@@ -20,6 +20,7 @@
 #include "Ravl/Face/ScoreSession.hh"
 #include "Ravl/Face/ResultsInfo.hh"
 #include "Ravl/BinStream.hh"
+#include "Ravl/OS/Directory.hh"
 #include "Ravl/Plot/GnuPlot.hh"
 
 namespace RavlN {
@@ -120,8 +121,8 @@ namespace RavlN {
       bool IsValid() const;
       //: Is ROC valid
 
-      StringC Info() const;
-      //: Some nice formatted information about ROC
+      bool Report(const DirectoryC & outDir);
+      //: Write some reports to the outDir
 
       friend ostream &operator<<(ostream &s, const RocBodyC &out);
       //: output stream operator
@@ -352,11 +353,10 @@ namespace RavlN {
       }
       //: Is ROC valid
 
-      StringC Info() const
-      {
-        return Body().Info();
+      bool Report(const DirectoryC & outDir) {
+        return Body().Report(outDir);
       }
-      //: Some nice formatted information about ROC
+      //: Generate a report
 
       friend ostream &operator<<(ostream &s, const RocC &out);
       //: output stream operator
