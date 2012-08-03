@@ -30,7 +30,19 @@ namespace RavlN {
     FuncSubsetBodyC(const SArray1dC<IndexC> &ninds,UIntT inSize);
     //: Constructor from an array of indexes.
     
-    virtual VectorC Apply(const VectorC &data);
+    FuncSubsetBodyC(std::istream &strm);
+       //: Load from stream.
+
+    FuncSubsetBodyC(BinIStreamC &strm);
+    //: Load from binary stream.
+
+    virtual bool Save(std::ostream &out) const;
+    //: Writes object to stream, can be loaded using constructor
+
+    virtual bool Save(BinOStreamC &out) const;
+    //: Writes object to stream, can be loaded using constructor
+
+    virtual VectorC Apply(const VectorC &data) const;
     //: Reduce the dimension of 'data'.
     
     SArray1dC<IndexC> &Indexes()
@@ -41,7 +53,7 @@ namespace RavlN {
     SArray1dC<IndexC> inds; // Indexes of features we're interested in.
   };
 
-  //! userlevel=Develop
+  //! userlevel=Normal
   //: Reduce dimension by taking a subset of features.
 
   class FuncSubsetC 
@@ -58,6 +70,13 @@ namespace RavlN {
     {}
     //: Constuctor from an array of indexes.
     
+
+    FuncSubsetC(std::istream &strm);
+    //: Load from stream.
+
+    FuncSubsetC(BinIStreamC &strm);
+    //: Load from binary stream.
+
   protected:
     FuncSubsetC(FuncSubsetBodyC &bod)
       : FunctionC(bod)
@@ -78,6 +97,39 @@ namespace RavlN {
     { return Body().Indexes(); }
     //: Get set of indexes that will be used.
   };
+
+  inline std::istream &operator>>(std::istream &strm, FuncSubsetC &obj)
+  {
+    obj = FuncSubsetC(strm);
+    return strm;
+  }
+  //: Load from a stream.
+  // Uses virtual constructor.
+
+  inline std::ostream &operator<<(std::ostream &out, const FuncSubsetC &obj)
+  {
+    obj.Save(out);
+    return out;
+  }
+  //: Save to a stream.
+  // Uses virtual constructor.
+
+  inline BinIStreamC &operator>>(BinIStreamC &strm, FuncSubsetC &obj)
+  {
+    obj = FuncSubsetC(strm);
+    return strm;
+  }
+  //: Load from a binary stream.
+  // Uses virtual constructor.
+
+  inline BinOStreamC &operator<<(BinOStreamC &out, const FuncSubsetC &obj)
+  {
+    obj.Save(out);
+    return out;
+  }
+//: Save to a stream.
+// Uses virtual constructor.
+
 
 }
 

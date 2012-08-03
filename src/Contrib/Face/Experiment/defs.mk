@@ -35,7 +35,7 @@ USESLIBS=	RavlMath \
 			RavlRLog \
 			RavlPlot
 
-PROGLIBS = 	RavlExtImgIO.opt
+PROGLIBS = 	RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
 
 SCRIPTS=
 

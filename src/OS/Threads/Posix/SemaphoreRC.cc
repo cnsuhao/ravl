@@ -6,7 +6,6 @@
 // file-header-ends-here
 //////////////////////////////////////////
 // $Id$
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/SemaphoreRC.cc"
 

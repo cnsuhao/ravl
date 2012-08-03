@@ -52,6 +52,9 @@ namespace RavlN {
     virtual UIntT Classify(const VectorC &data,const SArray1dC<IndexC> &featureSet) const;
     //: Classify vector 'data' using only the given subset of features
     
+    virtual VectorC Apply(const VectorC & vec) const;
+    //: Classify vector
+
     SArray1dC<ClassifierC> WeakClassifiers()
     { return m_weakClassifiers; }
     //: Access a list of classifiers used

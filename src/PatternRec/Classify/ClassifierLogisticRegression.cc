@@ -139,7 +139,7 @@ namespace RavlN {
   // on the classifier used. The higher the confidence the more likely
   // it is the label is correct.
   
-  VectorC ClassifierLogisticRegressionBodyC::Confidence(const VectorC &data) const {
+  VectorC ClassifierLogisticRegressionBodyC::Apply(const VectorC &data) const {
     VectorC vec;
     if(m_norm.IsValid())
       vec = m_norm(data);

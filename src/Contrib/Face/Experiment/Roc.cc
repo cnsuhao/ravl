@@ -179,40 +179,71 @@ namespace RavlN {
 
       RealT clientssofar = 0.0;
       RealT impostorssofar = 0.0;
-      RealT minSoFar = 1.0e10;
+      RealT minSoFar = RavlConstN::maxReal;
       RealT eer = 0.0;
       RealT thresh = 0.0;
+      RealT prevScore = 0.0;
+      bool first = true;
 
       for (ConstDLIterC<ClaimT> it(claims); it; it++) {
 
-        if (it.Data().Data1())
-          clientssofar += 1.0;
-        else
-          impostorssofar += 1.0;
+        RealT currentScore = it.Data().Data2();
 
+        // If first claim then we set the threshold to this
+        if (first) {
+          first = false;
+          prevScore = currentScore;
+          thresh = currentScore;
+        }
+
+        if (it.Data().Data1()) {
+          clientssofar += 1.0;
+        }
+        else {
+          impostorssofar += 1.0;
+        }
+
+        // Work out errors at this point on the ROC
         RealT clientsrejected = clients - clientssofar;
         RealT impostorsaccepted = impostorssofar;
-
-        //: the clever bit i hope
-        RealT fa, fr;
-        if (impostors > 0)
+        RealT fa = 0.0;
+        RealT fr = 0.0;
+        if (impostors > 0) {
           fa = impostorsaccepted / impostors;
-        else
-          fa = 0.0;
-        if (clients > 0)
-          fr = clientsrejected / clients;
-        else
-          fr = 0.0;
-
-        RealT dif = Abs(fr - fa);
-        if (dif < minSoFar) {
-          minSoFar = dif;
-          //thresh = (prevThresh + it.Data().Data2())/2.0;
-          //prevThresh = it.Data().Data2();
-          thresh = it.Data().Data2();
-          eer = (fr + fa) / 2.0;
         }
-      } ONDEBUG(cout << "Threshold: " << thresh << " EER: " << eer << endl);
+        if (clients > 0) {
+          fr = clientsrejected / clients;
+        }
+
+        // Compute the difference between fr and fa
+        // When this is a minimum then we can say that
+        // the error rates are equal(ish).
+        //RavlInfo("FA %0.4f FR %0.4f Score %0.4f", fa, fr, currentScore);
+        RealT dif = Abs(fr - fa);
+
+        // If we have a new minimum we update the threshold
+        // where this occurs.
+        if (dif < minSoFar) {
+
+          // we will only update things if the score has changed.
+          // Some classifiers do no output smooth ranges!
+          if (currentScore == prevScore) {
+            continue;
+          }
+
+          minSoFar = dif;
+          eer = (fr + fa) / 2.0;
+          thresh = (prevScore + currentScore) / 2.0;
+          //RavlInfo("Updating thresh %0.4f", thresh);
+          //thresh = it.Data().Data2();
+
+        }
+
+        // update the prev score
+        prevScore = currentScore;
+      }
+
+      ONDEBUG(cout << "Threshold: " << thresh << " EER: " << eer << endl);
       return thresh;
     }
     
@@ -256,7 +287,7 @@ namespace RavlN {
           minSoFar = dif;
           thresh = it.Data().Data2();
         }
-      } ONDEBUG(cout << "Threshold: " << thresh << " HTER: " << minSoFar << endl);
+      }ONDEBUG(cout << "Threshold: " << thresh << " HTER: " << minSoFar << endl);
       return thresh;
     }
     
@@ -326,7 +357,7 @@ namespace RavlN {
           done = true;
       }
 
-      ONDEBUG(cout << "FA Error Rate: " << impostorssofar/impostors << endl); ONDEBUG(cout << "FR Error Rate: " << (1.0 - (clientssofar/clients)) << endl);
+      ONDEBUG(cout << "FA Error Rate: " << impostorssofar/impostors << endl);ONDEBUG(cout << "FR Error Rate: " << (1.0 - (clientssofar/clients)) << endl);
       return thresh;
     }
 
@@ -366,7 +397,7 @@ namespace RavlN {
           done = true;
       }
 
-      ONDEBUG(cout << "FA Error Rate: " << impostorssofar/impostors << endl); ONDEBUG(cout << "FR Error Rate: " << (1.0 - (clientssofar/clients)) << endl);
+      ONDEBUG(cout << "FA Error Rate: " << impostorssofar/impostors << endl);ONDEBUG(cout << "FR Error Rate: " << (1.0 - (clientssofar/clients)) << endl);
       return thresh;
     }
     
@@ -609,12 +640,55 @@ namespace RavlN {
       return true;
     }
     
-    StringC RocBodyC::Info() const
+    // Lets report some numbers at some key-points
+    bool RocBodyC::Report(const DirectoryC & outDir)
     {
-      StringC info(" -- RocC\n");
-      return info;
+      Sort();
+      SArray1dC<RealT> fa(3);
+      StrIStreamC("3 0.01 0.001 0.0001") >> fa;
+      RCHashC<RealT, RealT> fa2fr;
+      StringC summary;
+      OStreamC os(outDir + "/results.txt");
+      RealT eerThreshold = EqualErrorRate();
+      ResultsInfoC resInfo = Error(0.0);
+      summary.form("Equal Error Rate FA=%0.4f%%, FR=%0.4f%% with Threshold=%0.4f\n",
+          resInfo.FA() * 100.0,
+          resInfo.FR() * 100.0,
+          eerThreshold);
+      for (SArray1dIterC<RealT> it(fa); it; it++) {
+        RealT threshold = ErrorRateFA(*it);
+        ResultsInfoC resInfo = Error(threshold);
+        StringC res;
+        res.form("At FA=%0.4f%%, Threshold=%0.4f and FR=%0.4f%%", *it * 100.0, threshold, resInfo.FR() * 100.0);
+        RavlDebug("%s", res.data());
+        os << res << endl;
+        fa2fr.Insert(*it, resInfo.FR());
+        StringC res2;
+        res2.form("(%0.4f%%, %0.4f%%) ", *it * 100.0, resInfo.FR() * 100.0);
+        summary += res2;
+      }
+      RavlInfo("%s", summary.data());
+
+      // Lets plot the ROC
+      RealT rng = fa2fr[0.1] * 1.2;
+      if (rng > 1.0 || rng <= 0.0) {
+        rng = 1.0;
+      }
+
+      RavlGUIN::GnuPlotC plot = Plot(rng, rng);
+      plot.SetAxisRange(0, rng, 0, rng);
+      plot.Plot(outDir + "/roc.png");
+
+      // Lets generate some score distributions
+      RavlGUIN::GnuPlotC distPlot0 = PlotHistogram(0);
+      distPlot0.Plot(outDir + "/clientScoreDistribution.png");
+
+      RavlGUIN::GnuPlotC distPlot1 = PlotHistogram(1);
+      distPlot1.Plot(outDir + "/impostorScoreDistribution.png");
+
+      return true;
     }
-    
+
 // output your class members
     ostream &
     operator<<(ostream & s, const RocBodyC & out)

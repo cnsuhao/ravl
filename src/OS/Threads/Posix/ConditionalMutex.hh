@@ -7,7 +7,6 @@
 #ifndef RAVLTHREADS_CONDITIONALMUTEX_HEADER
 #define RAVLTHREADS_CONDITIONALMUTEX_HEADER 1
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/OS/Threads/Posix/ConditionalMutex.hh"
 //! lib=RavlThreads
 //! userlevel=Normal

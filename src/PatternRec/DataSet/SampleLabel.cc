@@ -11,6 +11,7 @@
 #include "Ravl/PatternRec/SampleLabel.hh"
 #include "Ravl/PatternRec/SampleIter.hh"
 #include "Ravl/Vector.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
 
@@ -37,15 +38,18 @@ namespace RavlN {
   //: Convert a sample of labels to vectors
   // Where the label index is set to 'inClass' and the rest to 'outClass'.
   
-  SampleC<VectorC> SampleLabelC::SampleVector(RealT inClass,RealT outClass,IntT maxLabel) const {
-    if(maxLabel < 0) {
-      for(SampleIterC<UIntT> it(*this);it;it++)
-	if(*it > (UIntT) maxLabel)
-	  maxLabel = (UIntT) *it;
+  SampleC<VectorC> SampleLabelC::SampleVector(RealT inClass, RealT outClass, IntT maxLabel) const
+  {
+    if (maxLabel < 0) {
+      for (SampleIterC<UIntT> it(*this); it; it++) {
+        if ((IntT)*it > maxLabel) {
+          maxLabel = (UIntT) *it;
+        }
+      }
     }
     SampleC<VectorC> ret(Size());
-    for(SampleIterC<UIntT> it(*this);it;it++) {
-      VectorC vec(maxLabel);
+    for (SampleIterC<UIntT> it(*this); it; it++) {
+      VectorC vec(maxLabel+1);
       vec.Fill(outClass);
       vec[*it] = inClass;
       ret.Append(vec);

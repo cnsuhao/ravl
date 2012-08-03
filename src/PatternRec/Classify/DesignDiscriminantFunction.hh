@@ -27,6 +27,9 @@ namespace RavlN {
     DesignDiscriminantFunctionBodyC(const DesignFunctionSupervisedC &func);
     //: Default constructor.
     
+    DesignDiscriminantFunctionBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     DesignDiscriminantFunctionBodyC(std::istream &strm);
     //: Load from stream.
     
@@ -70,6 +73,12 @@ namespace RavlN {
     {}
     //: Create a new designer.
     
+    DesignDiscriminantFunctionC(const XMLFactoryContextC &factory) :
+        DesignClassifierSupervisedC(*new DesignDiscriminantFunctionBodyC(factory))
+    {
+    }
+    //: Construct from XML factory
+
     DesignDiscriminantFunctionC(std::istream &strm);
     //: Load from stream.
     
