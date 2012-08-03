@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER
+#ifndef RAVL_CLASSIFIERLOGIS_HEADER
 #define RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER 1
 ///////////////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
@@ -45,7 +45,7 @@ namespace RavlN {
     virtual UIntT Classify(const VectorC &data) const;
     //: Classifier vector 'data' return the most likely label.
     
-    virtual VectorC Confidence(const VectorC &data) const;
+    virtual VectorC Apply(const VectorC &data) const;
     //: Estimate the confidence for each label.
     // The meaning of the confidence assigned to each label depends
     // on the function used. The higher the confidence the more likely
