@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_CLASSIFIERLOGIS_HEADER
-#define RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER 1
+#ifndef RAVL_CLASSIFIERLOGISTICREGRESSION_HEADER
+#define RAVL_CLASSIFIERLOGISTICREGRESSION_HEADER 1
 ///////////////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Classifier"
