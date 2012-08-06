@@ -263,11 +263,11 @@ namespace RavlN {
   //: Limit range of values to between min and max.
 
   inline RealT Sigmoid(const RealT z)
-  { return 1.0f / ( 1.0f + Exp(-z)); }
+  { return 1.0 / (1.0 + Exp(-z)); }
   //: Compute the sigmoid of z
 
   inline float Sigmoid(const float z)
-  { return 1.0f / ( 1.0f + Exp(-z)); }
+  { return 1.0f / (1.0f + float(Exp(-z))); }
   //: Compute the sigmoid of z
 
 }

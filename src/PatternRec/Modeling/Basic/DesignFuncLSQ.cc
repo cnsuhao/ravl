@@ -20,6 +20,7 @@
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -36,6 +37,15 @@ namespace RavlN {
     : order(norder),
       orthogonal(northogonal)
   {}
+
+  //: Create from XML factory
+  DesignFuncLSQBodyC::DesignFuncLSQBodyC(const XMLFactoryContextC & factory)
+     : DesignFunctionSupervisedBodyC(factory),
+       order(factory.AttributeInt("order", 1)),
+       orthogonal(factory.AttributeBool("orthogonal", true))
+   {
+   }
+
   
   //: Load from stream.
   
@@ -309,7 +319,12 @@ namespace RavlN {
 
 
   ////////////////////////////////////////////////////////////////////////
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignFuncLSQC, DesignFunctionSupervisedC> g_registerXMLFactoryDesignFuncLSQ("RavlN::DesignFuncLSQC");
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignFuncLSQBodyC,DesignFuncLSQC,DesignFunctionSupervisedC);
   
+  void linkDesignFuncLSQ()
+    {}
+
+
 }

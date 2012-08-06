@@ -150,9 +150,9 @@ namespace RavlN { namespace GeneticN {
     { m_parameters[name] = ToRCAbstract(value); }
 
     template<typename DataT>
-    bool GetParameter(const StringC &name,DataT &value)
+    bool GetParameter(const StringC &name,DataT &value) const
     {
-      RCAbstractC *val = m_parameters.Lookup(name);
+      const RCAbstractC *val = m_parameters.Lookup(name);
       if(val == 0)
         return false;
       FromRCAbstract(*val,value);

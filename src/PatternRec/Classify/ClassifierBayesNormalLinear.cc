@@ -77,11 +77,22 @@ namespace RavlN {
   //: Classify sample 
   UIntT ClassifierBayesNormalLinearBodyC::Classify(const VectorC &data) const {
     VectorC res(konst.Size());
-    for(SArray1dIter3C<RealT, VectorC, RealT>it(res, mean,  konst);it;it++) 
+    for(SArray1dIter3C<RealT, VectorC, RealT>it(res, mean,  konst);it;it++) {
       it.Data1() = invCov.TMul(it.Data2()).Dot(data) + it.Data3();
+    }
     return res.MaxIndex().V();
   }
   
+  //: Return normalised prob vector
+  VectorC ClassifierBayesNormalLinearBodyC::Apply(const VectorC & data) const
+  {
+    VectorC res(konst.Size());
+    for (SArray1dIter3C<RealT, VectorC, RealT> it(res, mean, konst); it; it++) {
+      it.Data1() = invCov.TMul(it.Data2()).Dot(data) + it.Data3();
+    }
+    return res.MakeUnit();
+  }
+
   ///////////////////////////////////////////////////////////
   
   

@@ -10,14 +10,60 @@
 //! file="Ravl/PatternRec/Modeling/DimensionReduction/FuncSubset.cc"
 
 #include "Ravl/PatternRec/FuncSubset.hh"
+#include "Ravl/VirtualConstructor.hh"
 #include "Ravl/BinStream.hh"
 
 namespace RavlN {
   
+  //: Load from stream.
+
+  FuncSubsetBodyC::FuncSubsetBodyC(std::istream &strm) :
+      FunctionBodyC(strm)
+  {
+    ByteT version = 0;
+    strm >> version;
+    if (version != 1)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("FuncSubsetBodyC");
+    strm >> inds;
+  }
+
+  //: Load from binary stream.
+
+  FuncSubsetBodyC::FuncSubsetBodyC(BinIStreamC &strm) :
+      FunctionBodyC(strm)
+  {
+    ByteT version = 0;
+    strm >> version;
+    if (version != 1)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("FuncSubsetBodyC");
+    strm >> inds;
+  }
+
+  //: Writes object to stream.
+
+  bool FuncSubsetBodyC::Save(std::ostream & strm) const
+  {
+    FunctionBodyC::Save (strm);
+    ByteT version = 1;
+    strm << version << endl;
+    strm << inds << endl;
+    return true;
+  }
+
+  //: Writes object to binary stream.
+
+  bool FuncSubsetBodyC::Save(BinOStreamC &strm) const
+  {
+    FunctionBodyC::Save(strm);
+    ByteT version = 1;
+    strm << version << inds;
+    return true;
+  }
+
   //: Constructor from an array of indexes.
   
-  FuncSubsetBodyC::FuncSubsetBodyC(const SArray1dC<IndexC> &ninds,UIntT inSize)
-    : inds(ninds)
+  FuncSubsetBodyC::FuncSubsetBodyC(const SArray1dC<IndexC> &ninds, UIntT inSize) :
+      inds(ninds)
   {
     OutputSize(inds.Size());
     InputSize(inSize);
@@ -25,11 +71,14 @@ namespace RavlN {
   
   //: Reduce the dimension of 'data'.
   
-  VectorC FuncSubsetBodyC::Apply(const VectorC &data) {
+  VectorC FuncSubsetBodyC::Apply(const VectorC &data) const
+  {
     VectorC ret(inds.Size());
-    for(BufferAccessIter2C<IndexC,RealT> it(inds,ret);it;it++)
+    for (BufferAccessIter2C<IndexC, RealT> it(inds, ret); it; it++)
       it.Data2() = data[it.Data1()];
     return ret;
   }
+
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(FuncSubsetBodyC,FuncSubsetC,FunctionC);
 
 }
