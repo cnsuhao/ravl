@@ -22,7 +22,7 @@
 #include "Ravl/Exception.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -185,7 +185,7 @@ namespace RavlN {
 #if 1
     if(!aaT.InverseIP()) {
       // Try and recover....
-      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      ONDEBUG(std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n");
       aaT = aaTu.PseudoInverse();
     }
     MatrixC A =  (aaT * aTb).T();

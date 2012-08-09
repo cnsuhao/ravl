@@ -11,7 +11,7 @@ DESCRIPTION = Pattern Recognition Classifiers
 
 PACKAGE = Ravl/PatternRec
 
-MAINS=doLeaveOneOut.cc doTrainClassifier.cc doTestClassifier.cc
+MAINS=doLeaveOneOut.cc doTrainClassifier.cc doTestClassifier.cc doTrainCascadeClassifier.cc
 
 HEADERS= DesignClassifierSupervised.hh  \
  DesignDiscriminantFunction.hh DesignKNearestNeighbour.hh \
@@ -26,7 +26,8 @@ HEADERS= DesignClassifierSupervised.hh  \
  ClassifierNeuralNetwork.hh DesignClassifierNeuralNetwork.hh \
  Classifier2.hh ClassifierOneAgainstAll.hh DesignOneAgainstAll.hh \
  DesignClassifierLogisticRegression.hh ClassifierLogisticRegression.hh \
- ClassifierNeuralNetwork2.hh DesignClassifierNeuralNetwork2.hh
+ ClassifierNeuralNetwork2.hh DesignClassifierNeuralNetwork2.hh \
+ DesignCascade.hh ClassifierCascade.hh DesignClassifierSupervisedWithValidation.hh 
 
 SOURCES= DesignClassifierSupervised.cc \
  DesignDiscriminantFunction.cc DesignKNearestNeighbour.cc \
@@ -41,7 +42,8 @@ SOURCES= DesignClassifierSupervised.cc \
  ClassifierNeuralNetwork.cc DesignClassifierNeuralNetwork.cc \
  Classifier2.cc ClassifierOneAgainstAll.cc DesignOneAgainstAll.cc \
  DesignClassifierLogisticRegression.cc ClassifierLogisticRegression.cc \
- ClassifierNeuralNetwork2.cc DesignClassifierNeuralNetwork2.cc
+ ClassifierNeuralNetwork2.cc DesignClassifierNeuralNetwork2.cc \
+ DesignCascade.cc ClassifierCascade.cc DesignClassifierSupervisedWithValidation.cc 
 
 PLIB = RavlPatternRec
 
@@ -52,7 +54,7 @@ LIBDEPS = RavlPatternRecClassifier.def
 
 USESLIBS=RavlCore RavlOS RavlIO RavlMath RavlPatternRec fann Optimisation
 
-PROGLIBS=RavlSVM RavlPatternRecIO
+PROGLIBS=RavlSVM RavlPatternRecIO RavlIntelMKL.opt RavlFace
 
 EHT = Ravl.API.Pattern_Recognition.Classifier.html DesignClassifier.html
 
