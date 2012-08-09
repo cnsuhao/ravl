@@ -62,6 +62,8 @@
   
   <BayesNormalLinear typename="RavlN::DesignBayesNormalLinearC" equalPriors="true" />
 
+   <FeatureSelection typename="RavlN::FeatureSelectPlusLMinusRC" plusL="2" minusR="1" deltaError="0.001" features="10" threads="8" />
+
    <Cascade typename="RavlN::DesignCascadeBinaryC" maxStages="25" targetFalseRejection="0.001">
     	<Design typename="RavlN::DesignDiscriminantFunctionC">
   			<DesignFunction typename="RavlN::DesignFuncLSQC" order="1" orthogonal="false" />
