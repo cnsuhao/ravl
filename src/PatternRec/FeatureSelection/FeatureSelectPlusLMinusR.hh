@@ -23,7 +23,7 @@ namespace RavlN {
   class FeatureSelectPlusLMinusRBodyC : public FeatureSelectorBodyC
   {
   public:
-    FeatureSelectPlusLMinusRBodyC(UIntT l, UIntT r, RealT deltaError, UIntT numFeatures);
+    FeatureSelectPlusLMinusRBodyC(UIntT l, UIntT r, RealT deltaError, UIntT numFeatures, UIntT numThreads);
     //: Constructor.
     
     FeatureSelectPlusLMinusRBodyC(istream &strm);
@@ -50,20 +50,12 @@ namespace RavlN {
     //!param: classifier - final classifier which gave best performance with optimised feature set. Note, you will need to ammend features or use a pre-process function to select the features from the dataset before using it.
     //!return: an array containing the feature indexes that are in the selected set
     
-  private:
-    bool Criterion(DesignClassifierSupervisedC & designer,
-        const DataSetVectorLabelC & train,
-        const DataSetVectorLabelC & test,
-        const SArray1dC<IndexC> & featureSet,
-        ClassifierC & classifier,
-        RealT & pmc) const;
-    //: Compute criterion
-
   protected:
     UIntT m_l; //!< How many forward
     UIntT m_r; //!< How many backwards
     RealT m_deltaError; //!< Return if error has not changed by more than this at next iteration
     UIntT m_numFeatures; //!< The maximum number of features - if not deltaError
+    UIntT m_numberOfThreads; //!< How many threads we want to run in parallel
   };
 
   //! userlevel=Normal
@@ -78,8 +70,8 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
 
-    FeatureSelectPlusLMinusRC(UIntT l, UIntT r, RealT deltaError = 0.001, UIntT numFeatures=25) :
-        FeatureSelectorC(*new FeatureSelectPlusLMinusRBodyC(l, r, deltaError, numFeatures))
+    FeatureSelectPlusLMinusRC(UIntT l, UIntT r, RealT deltaError = 0.001, UIntT numFeatures=25, UIntT numThreads = 8) :
+        FeatureSelectorC(*new FeatureSelectPlusLMinusRBodyC(l, r, deltaError, numFeatures, numThreads))
     {
     }
     //: Constructor
