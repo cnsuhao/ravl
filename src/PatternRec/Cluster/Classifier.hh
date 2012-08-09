@@ -58,6 +58,12 @@ namespace RavlN {
     // on the classifier used. The higher the confidence the more likely
     // it is the label is correct.
     
+    virtual RealT LabelProbability(const VectorC & data, UIntT label) const;
+    //: Compute the 'posterior' probability of a given class
+
+    virtual RealT LabelProbability(const VectorC & data, const SArray1dC<IndexC> &featureSet, UIntT label) const;
+    //: Compute the 'posterior' probability of a given class
+
     UIntT NoLabels() const
     { return outputSize; }
     //: Returns the maximum number of output labels.
@@ -151,6 +157,16 @@ namespace RavlN {
     // it is the label is correct. <p>
     // The result is identical to that of the apply method.
     
+    RealT LabelProbability(const VectorC & data, UIntT label) const {
+      return Body().LabelProbability(data, label);
+    }
+    //: Compute the 'posterior' probability of a given class
+
+    RealT LabelProbability(const VectorC & data, const SArray1dC<IndexC> &featureSet, UIntT label) const {
+      return Body().LabelProbability(data, featureSet, label);
+    }
+    //: Compute the 'posterior' probability of a given class using only features specified.
+
     UIntT NoLabels() const
     { return Body().NoLabels(); }
     //: Returns the maximum number of output labels.
