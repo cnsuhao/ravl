@@ -54,8 +54,7 @@ namespace RavlN {
     
     virtual ClassifierC Apply(const DataSetVectorLabelC & trainingSet,
         const DataSetVectorLabelC & validationSet,
-        const FeatureSelectorC & featureSelector,
-        const ErrorC & error);
+        const FeatureSelectorC & featureSelector);
     //: Create a classifier using a training set and a validation set.  Not necessarily implemented by most classifiers.
     //!param: trainingSet - the data to use for training
     //!param: validationSet - the data to use for validation
@@ -138,10 +137,9 @@ namespace RavlN {
     
     ClassifierC Apply(const DataSetVectorLabelC & trainingSet,
         const DataSetVectorLabelC & validationSet,
-        const FeatureSelectorC & featureSelector,
-        const ErrorC & error)
+        const FeatureSelectorC & featureSelector)
     {
-      return Body().Apply(trainingSet, validationSet, featureSelector, error);
+      return Body().Apply(trainingSet, validationSet, featureSelector);
     }
     //: Create a classifier using a training set and a validation set.  Not necessarily implemented by most classifiers.
     //!param: trainingSet - the data to use for training

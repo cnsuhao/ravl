@@ -62,10 +62,15 @@
   
   <BayesNormalLinear typename="RavlN::DesignBayesNormalLinearC" equalPriors="true" />
 
-   <Cascade typename="RavlN::DesignCascadeC">
+   <Cascade typename="RavlN::DesignCascadeBinaryC" maxStages="25" targetFalseRejection="0.001">
     	<Design typename="RavlN::DesignDiscriminantFunctionC">
-  			<DesignFunction typename="RavlN::DesignFuncLSQC" order="1" orthogonal="true" />
+  			<DesignFunction typename="RavlN::DesignFuncLSQC" order="1" orthogonal="false" />
   		</Design>
    </Cascade>
+   
+   <CascadeLR typename="RavlN::DesignCascadeBinaryC" maxStages="25" targetFalseRejection="0.001">
+    	<Design typename="RavlN::DesignClassifierLogisticRegressionC" regularisation="0" prependUnit="true" doNormalisation="false" />
+   </CascadeLR>
+   
 
 </Config>

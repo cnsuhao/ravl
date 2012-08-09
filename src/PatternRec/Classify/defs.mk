@@ -27,7 +27,8 @@ HEADERS= DesignClassifierSupervised.hh  \
  Classifier2.hh ClassifierOneAgainstAll.hh DesignOneAgainstAll.hh \
  DesignClassifierLogisticRegression.hh ClassifierLogisticRegression.hh \
  ClassifierNeuralNetwork2.hh DesignClassifierNeuralNetwork2.hh \
- DesignCascade.hh ClassifierCascade.hh DesignClassifierSupervisedWithValidation.hh 
+ DesignCascade.hh ClassifierCascade.hh DesignClassifierSupervisedWithValidation.hh \
+ DesignCascadeBinary.hh
 
 SOURCES= DesignClassifierSupervised.cc \
  DesignDiscriminantFunction.cc DesignKNearestNeighbour.cc \
@@ -43,7 +44,8 @@ SOURCES= DesignClassifierSupervised.cc \
  Classifier2.cc ClassifierOneAgainstAll.cc DesignOneAgainstAll.cc \
  DesignClassifierLogisticRegression.cc ClassifierLogisticRegression.cc \
  ClassifierNeuralNetwork2.cc DesignClassifierNeuralNetwork2.cc \
- DesignCascade.cc ClassifierCascade.cc DesignClassifierSupervisedWithValidation.cc 
+ DesignCascade.cc ClassifierCascade.cc DesignClassifierSupervisedWithValidation.cc \
+ DesignCascadeBinary.cc
 
 PLIB = RavlPatternRec
 

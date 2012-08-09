@@ -22,6 +22,7 @@
 #include "Ravl/PatternRec/FuncSubset.hh"
 #include "Ravl/PatternRec/FeatureSelectPlusLMinusR.hh"
 #include "Ravl/PatternRec/ErrorBinaryClassifier.hh"
+#include "Ravl/SArray1dIter2.hh"
 
 using namespace RavlN;
 
@@ -130,19 +131,18 @@ int main(int nargs, char **argv)
   /*
    * Lets sort out the classifier
    */
-  FeatureSelectPlusLMinusRC featureSelection(2, 1, 0.001, 5);
-  ErrorBinaryClassifierC error;
-  ClassifierC classifier = design.Apply(trainingDataSet, validationDataSet, featureSelection, error);
+  FeatureSelectPlusLMinusRC featureSelection(2, 1, 0.001, 5, 1);
+  ClassifierC classifier = design.Apply(trainingDataSet, validationDataSet, featureSelection);
 
-  //ErrorC error;
-  RealT pmc = error.Error(classifier, trainingDataSet);
-  RealT pmc2 = error.Error(classifier, validationDataSet);
-  RavlInfo( "The (biased) probability of miss-classification is %0.4f ", pmc);
-  RavlInfo( "The probability of miss-classification on validation set is %0.4f ", pmc2);
-  RavlInfo( " - finished");
+  ErrorC error;
+  SArray1dC<RealT> pmc = error.ErrorByLabel(classifier, trainingDataSet);
+  SArray1dC<RealT> pmc2 = error.ErrorByLabel(classifier, validationDataSet);
+  for (SArray1dIter2C<RealT, RealT> it(pmc, pmc2); it; it++) {
+    RavlInfo( "Label '%s', training set error %0.4f and validation set error %0.4f", StringOf(it.Index()).data(), it.Data1(), it.Data2());
+  }
 
-// If we have normalised the sample we need to make sure
-// all input data to classifier is normalised by same statistics
+  // If we have normalised the sample we need to make sure
+  // all input data to classifier is normalised by same statistics
   if (normaliseFunc.IsValid()) {
     RavlInfo( "Making classifier with pre-processing step!");
     classifier = ClassifierPreprocessC(normaliseFunc, classifier);
@@ -154,6 +154,8 @@ int main(int nargs, char **argv)
     RavlError( "Trouble saving classifier");
     return 1;
   }
+
+  RavlInfo("All OK!");
 
 #if USE_EXCEPTIONS
 } catch (const RavlN::ExceptionC &exc) {

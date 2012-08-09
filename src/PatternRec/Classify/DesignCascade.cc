@@ -38,8 +38,9 @@ namespace RavlN {
   DesignCascadeBodyC::DesignCascadeBodyC(const XMLFactoryContextC & factory) :
       DesignClassifierSupervisedWithValidationBodyC(factory)
   {
-    if (!factory.UseComponent("Design", m_design))
+    if (!factory.UseComponent("Design", m_design)) {
       RavlIssueError("No Design Classifier in XML factory");
+    }
   }
   
   //: Load from stream.
@@ -90,108 +91,10 @@ namespace RavlN {
   
   ClassifierC DesignCascadeBodyC::Apply(const DataSetVectorLabelC & trainingSet,
       const DataSetVectorLabelC & validationSet,
-      const FeatureSelectorC & featureSelection,
-      const ErrorC & error)
+      const FeatureSelectorC & featureSelection)
   {
-    RavlInfo("Designing Cascade Classifier!");
-    RavlAssertMsg(trainingSet.Size() == trainingSet.Size(),
-        "DesignCascadeBodyC::Apply(), Sample of vector and labels should be the same size.");
-
-    SampleVectorC designVectors = trainingSet.Sample1();
-    SampleLabelC designLabels = trainingSet.Sample2();
-
-    SampleVectorC validationVectors = validationSet.Sample1();
-    SampleLabelC validationLabels = validationSet.Sample2();
-
-    UIntT maxStages = 100;
-    RealT targetFA = 0.001; // 0.1%
-    SampleLabelC sampleLabel(trainingSet.Sample2());
-    SArray1dC<UIntT> labelSums = sampleLabel.LabelSums();
-    UIntT targetCount = Round((RealT) labelSums[1] * targetFA);
-
-    CollectionC<ClassifierC> classifiers(maxStages);
-    CollectionC<RealT> thresholds(maxStages);
-    CollectionC<FuncSubsetC> features(maxStages);
-
-    for (UIntT i = 0; i < maxStages; i++) {
-
-      SizeT numberOfDimensions = designVectors.First().Size();
-
-      //FeatureSelectPlusLMinusRC featureSelection(2, 1, 5);
-      //FeatureSelectAsymmetricAdaBoostC featureSelection(0.5, 10);
-      ClassifierC bestClassifier;
-      SArray1dC<IndexC> selectedFeatures = featureSelection.SelectFeatures(m_design,
-          DataSetVectorLabelC(designVectors, designLabels),
-          DataSetVectorLabelC(validationVectors, validationLabels),
-          bestClassifier);
-      FuncSubsetC funcSubset(selectedFeatures, numberOfDimensions);
-      ///bestClassifier = ClassifierPreprocessC(FuncSubsetC(selectedFeatures, numberOfDimensions), bestClassifier);
-      classifiers.Append(bestClassifier);
-      features.Append(funcSubset);
-
-      /*
-       * We have designed our classifier and we want to find the threshold which gives us no
-       * false rejections
-       */
-      ErrorBinaryClassifierC errorBinaryClassifier;
-
-      DataSetVectorLabelC dset(SampleVectorC(validationVectors, selectedFeatures), validationLabels);
-      RealT threshold;
-      RealT falseRejectRate = 0.001; // we want a low false rejection rate - we are prepared to have lots of false accepts
-      RealT falseAcceptRate = errorBinaryClassifier.FalseAcceptRate(bestClassifier, dset, falseRejectRate, threshold);
-
-      RavlInfo("Stage %d classifier, FA: %0.4f FR %0.4f at Threshold %0.4f", i, falseAcceptRate, falseRejectRate, threshold);
-      thresholds.Append(threshold);
-
-      /*
-       * Now we need to find data that is not correctly classified
-       */
-      SampleVectorC remIn(validationVectors.Size());
-      SampleLabelC remOut(validationLabels.Size());
-      SArray1dC<UIntT>labelSums(2);
-      labelSums.Fill(0);
-      for (DataSet2IterC<SampleVectorC, SampleLabelC> it(validationVectors, validationLabels); it; it++) {
-
-        RealT score = bestClassifier.LabelProbability(funcSubset.Apply(it.Data1()), 0);
-
-        //RavlInfo("%0.4f %d", score, it.Data2());
-        if (it.Data2() == 0 && score >= threshold) {
-          remIn.Append(it.Data1());
-          remOut.Append(it.Data2());
-          labelSums[it.Data2()]++;
-        }
-
-        else if (it.Data2() == 1 && score > threshold) {
-          remIn.Append(it.Data1());
-          remOut.Append(it.Data2());
-          labelSums[it.Data2()]++;
-        }
-
-      }
-
-
-      RavlInfo("Label 0 '%d' Label 1 '%d', Target Label 1 '%d' ", labelSums[0], labelSums[1], targetCount);
-
-      /*
-       * How is the Cascade getting on?
-       */
-      ClassifierCascadeC cascade(classifiers.SArray1d(), thresholds.SArray1d(), features.SArray1d());
-      ErrorC error;
-      SArray1dC<RealT>labelErrors = error.ErrorByLabel(cascade, validationSet);
-      RavlInfo("Cascade errors False Rejection %0.4f False Acceptance %0.4f", labelErrors[0], labelErrors[1]);
-
-      if (labelSums[1] <= targetCount) {
-        RavlInfo("Training complete!");
-        break;
-      }
-      
-      validationVectors = remIn;
-      validationLabels = remOut;
-
-    }
-
-    return ClassifierCascadeC(classifiers.SArray1d(), thresholds.SArray1d(), features.SArray1d());
-
+    RavlAssertMsg(0, "Abstract method called!");
+    return ClassifierC();
   }
   //: Create a classifier from training and validation set
   

@@ -4,16 +4,15 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_DesignCascade_HEADER
-#define RAVL_DesignCascade_HEADER 1
-//! rcsid="$Id: DesignCascade.hh 7585 2010-02-23 09:36:10Z kier $"
+#ifndef RAVL_DesignCascadeBinary_HEADER
+#define RAVL_DesignCascadeBinary_HEADER 1
+//! rcsid="$Id: DesignCascadeBinary.hh 7585 2010-02-23 09:36:10Z kier $"
 //! lib=RavlPatternRec
 //! author="Kieron Messer"
 //! docentry="Ravl.API.Pattern Recognition.Classifier.DesignClassifier"
-//! file="Ravl/PatternRec/Classify/DesignCascade.hh"
+//! file="Ravl/PatternRec/Classify/DesignCascadeBinary.hh"
 
-#include "Ravl/PatternRec/DesignClassifierSupervisedWithValidation.hh"
-#include "Ravl/PatternRec/DataSetVectorLabel.hh"
+#include "Ravl/PatternRec/DesignCascade.hh"
 #include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
@@ -21,19 +20,19 @@ namespace RavlN {
   //! userlevel=Develop
   //: Design a classifier cascade
   
-  class DesignCascadeBodyC : public DesignClassifierSupervisedWithValidationBodyC
+  class DesignCascadeBinaryBodyC : public DesignCascadeBodyC
   {
   public:
-    DesignCascadeBodyC(const DesignClassifierSupervisedC & classifier);
+    DesignCascadeBinaryBodyC(const DesignClassifierSupervisedC & classifier, UIntT maxStages, RealT targetFalseRejection);
     //: Constructor.
 
-    DesignCascadeBodyC(const XMLFactoryContextC & factory);
+    DesignCascadeBinaryBodyC(const XMLFactoryContextC & factory);
     //: Constructor.
 
-    DesignCascadeBodyC(std::istream &strm);
+    DesignCascadeBinaryBodyC(std::istream &strm);
     //: Load from stream.
     
-    DesignCascadeBodyC(BinIStreamC &strm);
+    DesignCascadeBinaryBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
     virtual bool Save(std::ostream &out) const;
@@ -48,78 +47,78 @@ namespace RavlN {
     //: Create a classifier from training and validation set
     
   protected:
-    DesignClassifierSupervisedC m_design;
-
+    UIntT m_maxStages;
+    RealT m_targetFalseRejection;
   };
   
   //! userlevel=Normal
   //: Design a one against all classifier
 
-  class DesignCascadeC : public DesignClassifierSupervisedWithValidationC
+  class DesignCascadeBinaryC : public DesignCascadeC
   {
   public:
-    DesignCascadeC()
+    DesignCascadeBinaryC()
     {
     }
     //: Default constructor.
     // Creates an invalid handle.
     
-    DesignCascadeC(const DesignClassifierSupervisedC & classifier) :
-        DesignClassifierSupervisedWithValidationC(*new DesignCascadeBodyC(classifier))
+    DesignCascadeBinaryC(const DesignClassifierSupervisedC & classifier, UIntT maxStages=100, RealT targetFalseRejection=0.001) :
+        DesignCascadeC(*new DesignCascadeBinaryBodyC(classifier, maxStages, targetFalseRejection))
     {
     }
     //: Create a new designer.
 
-    DesignCascadeC(const XMLFactoryContextC & factory) :
-        DesignClassifierSupervisedWithValidationC(*new DesignCascadeBodyC(factory))
+    DesignCascadeBinaryC(const XMLFactoryContextC & factory) :
+        DesignCascadeC(*new DesignCascadeBinaryBodyC(factory))
     {
     }
     //: Create a new designer.
     
-    DesignCascadeC(std::istream &strm);
+    DesignCascadeBinaryC(std::istream &strm);
     //: Load from stream.
     
-    DesignCascadeC(BinIStreamC &strm);
+    DesignCascadeBinaryC(BinIStreamC &strm);
     //: Load from binary stream.
 
   protected:
-    DesignCascadeC(DesignCascadeBodyC &bod) :
-        DesignClassifierSupervisedWithValidationC(bod)
+    DesignCascadeBinaryC(DesignCascadeBinaryBodyC &bod) :
+        DesignCascadeC(bod)
     {
     }
     //: Body constructor.
 
-    DesignCascadeC(DesignCascadeBodyC *bod) :
-        DesignClassifierSupervisedWithValidationC(bod)
+    DesignCascadeBinaryC(DesignCascadeBinaryBodyC *bod) :
+        DesignCascadeC(bod)
     {
     }
     //: Body ptr constructor.
     
-    DesignCascadeBodyC &Body()
+    DesignCascadeBinaryBodyC &Body()
     {
-      return static_cast<DesignCascadeBodyC &>(DesignClassifierSupervisedWithValidationC::Body());
+      return static_cast<DesignCascadeBinaryBodyC &>(DesignCascadeC::Body());
     }
     //: Access body.
     
-    const DesignCascadeBodyC &Body() const
+    const DesignCascadeBinaryBodyC &Body() const
     {
-      return static_cast<const DesignCascadeBodyC &>(DesignClassifierSupervisedWithValidationC::Body());
+      return static_cast<const DesignCascadeBinaryBodyC &>(DesignCascadeC::Body());
     }
     //: Access body.
     
   public:
     
   };
-
-  inline std::istream &operator>>(std::istream &strm, DesignCascadeC &obj)
+  
+  inline std::istream &operator>>(std::istream &strm, DesignCascadeBinaryC &obj)
   {
-    obj = DesignCascadeC(strm);
+    obj = DesignCascadeBinaryC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline std::ostream &operator<<(std::ostream &out, const DesignCascadeC &obj)
+  inline std::ostream &operator<<(std::ostream &out, const DesignCascadeBinaryC &obj)
   {
     obj.Save(out);
     return out;
@@ -127,15 +126,15 @@ namespace RavlN {
   //: Save to a stream.
   // Uses virtual constructor.
   
-  inline BinIStreamC &operator>>(BinIStreamC &strm, DesignCascadeC &obj)
+  inline BinIStreamC &operator>>(BinIStreamC &strm, DesignCascadeBinaryC &obj)
   {
-    obj = DesignCascadeC(strm);
+    obj = DesignCascadeBinaryC(strm);
     return strm;
   }
   //: Load from a binary stream.
   // Uses virtual constructor.
   
-  inline BinOStreamC &operator<<(BinOStreamC &out, const DesignCascadeC &obj)
+  inline BinOStreamC &operator<<(BinOStreamC &out, const DesignCascadeBinaryC &obj)
   {
     obj.Save(out);
     return out;
