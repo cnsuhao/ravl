@@ -78,7 +78,7 @@ USESLIBS=	RavlMath \
 			RavlPlot \
 			RavlDataSet
 
-PROGLIBS = 	RavlExtImgIO.opt 
+PROGLIBS = 	RavlExtImgIO.opt  RavlPatternRecIO
 
 SCRIPTS=
 
