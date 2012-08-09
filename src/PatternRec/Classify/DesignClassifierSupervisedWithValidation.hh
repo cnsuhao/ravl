@@ -21,8 +21,6 @@
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
-#include "Ravl/PatternRec/FeatureSelector.hh"
-#include "Ravl/PatternRec/Error.hh"
 
 namespace RavlN {
   
@@ -53,8 +51,7 @@ namespace RavlN {
     //: Writes object to stream, can be loaded using constructor
     
     virtual ClassifierC Apply(const DataSetVectorLabelC & trainingSet,
-        const DataSetVectorLabelC & validationSet,
-        const FeatureSelectorC & featureSelector);
+        const DataSetVectorLabelC & validationSet);
     //: Create a classifier using a training set and a validation set.  Not necessarily implemented by most classifiers.
     //!param: trainingSet - the data to use for training
     //!param: validationSet - the data to use for validation
@@ -136,16 +133,13 @@ namespace RavlN {
   public:
     
     ClassifierC Apply(const DataSetVectorLabelC & trainingSet,
-        const DataSetVectorLabelC & validationSet,
-        const FeatureSelectorC & featureSelector)
+        const DataSetVectorLabelC & validationSet)
     {
-      return Body().Apply(trainingSet, validationSet, featureSelector);
+      return Body().Apply(trainingSet, validationSet);
     }
     //: Create a classifier using a training set and a validation set.  Not necessarily implemented by most classifiers.
     //!param: trainingSet - the data to use for training
     //!param: validationSet - the data to use for validation
-    //!param: featureSelector - something to select the features
-    //!param: error - the error measure to use to evaluate the cascade
     //!return: The trained classifier
 
   };

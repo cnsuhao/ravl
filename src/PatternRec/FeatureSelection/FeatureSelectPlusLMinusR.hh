@@ -15,6 +15,7 @@
 
 #include "Ravl/PatternRec/FeatureSelector.hh"
 
+
 namespace RavlN {
   
   //! userlevel=Develop
@@ -26,6 +27,9 @@ namespace RavlN {
     FeatureSelectPlusLMinusRBodyC(UIntT l, UIntT r, RealT deltaError, UIntT numFeatures, UIntT numThreads);
     //: Constructor.
     
+    FeatureSelectPlusLMinusRBodyC(const XMLFactoryContextC & factory);
+    //: Construct from XML factory
+
     FeatureSelectPlusLMinusRBodyC(istream &strm);
     //: Load from stream.
     
@@ -70,7 +74,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
 
-    FeatureSelectPlusLMinusRC(UIntT l, UIntT r, RealT deltaError = 0.001, UIntT numFeatures=25, UIntT numThreads = 8) :
+    FeatureSelectPlusLMinusRC(UIntT l, UIntT r, RealT deltaError = 0.001, UIntT numFeatures = 25, UIntT numThreads = 8) :
         FeatureSelectorC(*new FeatureSelectPlusLMinusRBodyC(l, r, deltaError, numFeatures, numThreads))
     {
     }
@@ -79,6 +83,12 @@ namespace RavlN {
     //!param: r      - How many steps backward.
     //!param: numFeatures - determines how many features will be found to build the classifier.
     
+    FeatureSelectPlusLMinusRC(const XMLFactoryContextC &factory) :
+        FeatureSelectorC(*new FeatureSelectPlusLMinusRBodyC(factory))
+    {
+    }
+    //: Construct from XML factory
+
     FeatureSelectPlusLMinusRC(istream &strm);
     //: Load from stream.
     

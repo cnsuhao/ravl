@@ -21,6 +21,7 @@
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/PatternRec/DesignDiscriminantFunction.hh"
 #include "Ravl/PatternRec/DesignFuncLSQ.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 1
 #if DODEBUG
@@ -37,6 +38,16 @@ namespace RavlN {
       m_l(l), m_r(r), m_deltaError(deltaError), m_numFeatures(numFeatures), m_numberOfThreads(numThreads)
   {
   }
+
+  FeatureSelectPlusLMinusRBodyC::FeatureSelectPlusLMinusRBodyC(const XMLFactoryContextC & factory) :
+       m_l(factory.AttributeInt("plusL", 2)),
+       m_r(factory.AttributeInt("minusR", 1)),
+       m_deltaError(factory.AttributeReal("deltaError", 0.001)),
+       m_numFeatures(factory.AttributeInt("features", 10)),
+       m_numberOfThreads(factory.AttributeInt("threads", 8))
+   {
+   }
+
 
   //: Load from stream.
   
@@ -317,6 +328,7 @@ namespace RavlN {
 
     return featureSet.SArray1d();
   }
+  RavlN::XMLFactoryRegisterHandleConvertC<FeatureSelectPlusLMinusRC, FeatureSelectorC> g_registerXMLFactoryFeatureSelectPlusLMinusR("RavlN::FeatureSelectPlusLMinusRC");
 
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(FeatureSelectPlusLMinusRBodyC, FeatureSelectPlusLMinusRC, FeatureSelectorC);
 

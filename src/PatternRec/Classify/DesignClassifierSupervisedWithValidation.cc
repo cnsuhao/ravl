@@ -14,7 +14,6 @@
 #include "Ravl/PatternRec/SampleVector.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
-#include "Ravl/PatternRec/FeatureSelectPlusLMinusR.hh"
 
 namespace RavlN {
   
@@ -54,8 +53,7 @@ namespace RavlN {
   }
   
   ClassifierC DesignClassifierSupervisedWithValidationBodyC::Apply(const DataSetVectorLabelC & trainingSet,
-      const DataSetVectorLabelC & validationSet,
-      const FeatureSelectorC & featureSelector)
+      const DataSetVectorLabelC & validationSet)
   {
     RavlAssertMsg(0, "Base class function called.");
     return ClassifierC();
@@ -67,7 +65,7 @@ namespace RavlN {
   {
     DataSetVectorLabelC trainingDataSet(in, out);
     DataSetVectorLabelC validationDataSet = trainingDataSet.ExtractSample(0.5);
-    return Apply(trainingDataSet, validationDataSet, FeatureSelectPlusLMinusRC(2,1,10));
+    return Apply(trainingDataSet, validationDataSet);
   }
   
   //: Create a clasifier with weights for the samples.
@@ -86,7 +84,7 @@ namespace RavlN {
   {
     DataSetVectorLabelC trainingDataSet(SampleVectorC(in, featureSet), out);
     DataSetVectorLabelC validationDataSet = trainingDataSet.ExtractSample(0.5);
-    return Apply(trainingDataSet, validationDataSet,  FeatureSelectPlusLMinusRC(2,1,10));
+    return Apply(trainingDataSet, validationDataSet);
   }
   
   ClassifierC DesignClassifierSupervisedWithValidationBodyC::Apply(const SampleC<VectorC> &in,

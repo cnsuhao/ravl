@@ -90,8 +90,7 @@ namespace RavlN {
   }
   
   ClassifierC DesignCascadeBodyC::Apply(const DataSetVectorLabelC & trainingSet,
-      const DataSetVectorLabelC & validationSet,
-      const FeatureSelectorC & featureSelection)
+      const DataSetVectorLabelC & validationSet)
   {
     RavlAssertMsg(0, "Abstract method called!");
     return ClassifierC();

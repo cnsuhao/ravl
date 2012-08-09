@@ -13,6 +13,7 @@
 //! file="Ravl/PatternRec/Classify/DesignCascadeBinary.hh"
 
 #include "Ravl/PatternRec/DesignCascade.hh"
+#include "Ravl/PatternRec/FeatureSelector.hh"
 #include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
@@ -23,7 +24,10 @@ namespace RavlN {
   class DesignCascadeBinaryBodyC : public DesignCascadeBodyC
   {
   public:
-    DesignCascadeBinaryBodyC(const DesignClassifierSupervisedC & classifier, UIntT maxStages, RealT targetFalseRejection);
+    DesignCascadeBinaryBodyC(const DesignClassifierSupervisedC & classifier,
+        const FeatureSelectorC & featureSelector,
+        UIntT maxStages,
+        RealT targetFalseRejection);
     //: Constructor.
 
     DesignCascadeBinaryBodyC(const XMLFactoryContextC & factory);
@@ -41,12 +45,11 @@ namespace RavlN {
     virtual bool Save(BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
 
-    virtual ClassifierC Apply(const DataSetVectorLabelC & trainingSet,
-        const DataSetVectorLabelC & validationSet,
-        const FeatureSelectorC & featureSelector);
+    virtual ClassifierC Apply(const DataSetVectorLabelC & trainingSet, const DataSetVectorLabelC & validationSet);
     //: Create a classifier from training and validation set
     
   protected:
+    FeatureSelectorC m_featureSelector;
     UIntT m_maxStages;
     RealT m_targetFalseRejection;
   };
@@ -63,8 +66,11 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    DesignCascadeBinaryC(const DesignClassifierSupervisedC & classifier, UIntT maxStages=100, RealT targetFalseRejection=0.001) :
-        DesignCascadeC(*new DesignCascadeBinaryBodyC(classifier, maxStages, targetFalseRejection))
+    DesignCascadeBinaryC(const DesignClassifierSupervisedC & classifier,
+        const FeatureSelectorC & featureSelector,
+        UIntT maxStages = 100,
+        RealT targetFalseRejection = 0.001) :
+        DesignCascadeC(*new DesignCascadeBinaryBodyC(classifier, featureSelector, maxStages, targetFalseRejection))
     {
     }
     //: Create a new designer.

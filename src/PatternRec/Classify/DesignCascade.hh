@@ -43,8 +43,7 @@ namespace RavlN {
     //: Writes object to stream, can be loaded using constructor
 
     virtual ClassifierC Apply(const DataSetVectorLabelC & trainingSet,
-        const DataSetVectorLabelC & validationSet,
-        const FeatureSelectorC & featureSelector);
+        const DataSetVectorLabelC & validationSet);
     //: Create a classifier from training and validation set
     
   protected:

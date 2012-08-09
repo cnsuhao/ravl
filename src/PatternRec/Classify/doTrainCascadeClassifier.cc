@@ -20,7 +20,6 @@
 #include "Ravl/PatternRec/DataSetIO.hh"
 #include "Ravl/PatternRec/OptimiseClassifierDesign.hh"
 #include "Ravl/PatternRec/FuncSubset.hh"
-#include "Ravl/PatternRec/FeatureSelectPlusLMinusR.hh"
 #include "Ravl/PatternRec/ErrorBinaryClassifier.hh"
 #include "Ravl/SArray1dIter2.hh"
 
@@ -48,6 +47,7 @@ int main(int nargs, char **argv)
   DataSetNormaliseT normaliseType = (DataSetNormaliseT) opts.Int("normalise", 0, "Normalise sample (0 - none, 1 - mean, 2- scale)");
   FilenameC classifierOutFile = opts.String("o", "classifier.abs", "Save classifier to this file.");
   bool saveDataSet = opts.Boolean("saveDataSet", "Save the training data set.");
+
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Compulsory("train");
   opts.Compulsory("validation");
@@ -131,8 +131,7 @@ int main(int nargs, char **argv)
   /*
    * Lets sort out the classifier
    */
-  FeatureSelectPlusLMinusRC featureSelection(2, 1, 0.001, 5, 1);
-  ClassifierC classifier = design.Apply(trainingDataSet, validationDataSet, featureSelection);
+  ClassifierC classifier = design.Apply(trainingDataSet, validationDataSet);
 
   ErrorC error;
   SArray1dC<RealT> pmc = error.ErrorByLabel(classifier, trainingDataSet);
