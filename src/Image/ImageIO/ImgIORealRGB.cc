@@ -34,7 +34,7 @@ namespace RavlImageN {
   
   // Some conversions.
   
-  DP_REGISTER_CONVERSION_NAMED(RealRGBImageCT2RGBImageCFloat,0.5,
+  DP_REGISTER_CONVERSION_NAMED(RealRGBImageCT2RGBImageCFloat,2.0,
 			       "RavlImageN::ImageC<RavlImageN::RGBValueC<float> > RealRGBImageCT2RGBImageCFloat(const RavlImageN::ImageC<RavlImageN::RealRGBValueC> &)");
 
   DP_REGISTER_CONVERSION_NAMED(RGBImageCFloat2RealRGBImageCT,1.0,

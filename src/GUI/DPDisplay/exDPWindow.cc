@@ -17,6 +17,7 @@
 #include "Ravl/IO.hh"
 #include "Ravl/PolyLine2d.hh"
 #include "Ravl/LinePP2d.hh"
+#include "Ravl/Image/RealRGBValue.hh"
 
 using namespace RavlGUIN;
 
@@ -33,15 +34,23 @@ int main() {
   Index2dC origin(5,10);
   IndexRange2dC rng(origin,origin + Index2dC(256,256));
   ImageC<ByteRGBValueC> img(rng);
+  ImageC<RealRGBValueC> rimg(rng);
   for(int x = 0;x < 256;x++)
-    for(int y = 0;y < 256;y++)
+    for(int y = 0;y < 256;y++) {
       img[origin[0] + x][origin[1] + y] = ByteRGBValueC(x,y,128);
+      rimg[origin[0] + x][origin[1] + y] = RealRGBValueC(x,y,128);
+    }
   
   if(!RavlN::Save("@X:hello",img,"",true)) {
     std::cerr << "Failed to save image. \n";
     return 1;
   }
-  
+
+  if(!RavlN::Save("@X:realHello",rimg,"",true)) {
+    std::cerr << "Failed to save image. \n";
+    return 1;
+  }
+
   // Add a point to the image.
   Point2dC aPnt(128,64);
   if(!RavlN::Save("@XA:hello",aPnt)) {

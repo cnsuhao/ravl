@@ -15,6 +15,8 @@
 #include "Ravl/GUI/DPDisplayObj.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
+#include "Ravl/Image/RealRGBValue.hh"
+#include "Ravl/Image/RealRGBAValue.hh"
 
 namespace RavlGUIN {
   using namespace RavlImageN;
@@ -69,13 +71,127 @@ namespace RavlGUIN {
     DPDisplayImageRGBC(DPDisplayObjC &base)
       : DPDisplayObjC(dynamic_cast<const DPDisplayImageRGBBodyC *>(BodyPtr(base)))
     {}
-    //: Base class contructor.
+    //: Base class constructor.
     // If types do not match an invalid handle is created.
     
   };
 
   //:---------------------------------------------------------------------------------------
-  
+
+  //! userlevel=Develop
+  //: DPDisplayObj to handle images.
+
+  class DPDisplayImageRealRGBBodyC
+    : public DPDisplayObjBodyC
+  {
+  public:
+    DPDisplayImageRealRGBBodyC(const ImageC<RealRGBValueC> &img);
+    //: Constructor
+
+    virtual bool Draw(FrameMarkupC &markup);
+    //: Draw object to canvas.
+
+    virtual IndexRange2dC Frame() const;
+    //: Find bounding box for object.
+
+    virtual bool Query(const Vector2dC &pnt,StringC &text);
+    //: Query a point in the display.
+    // Return true if point is within object.
+
+    virtual bool Save(const StringC &str) const;
+    //: Save to a file.
+
+  protected:
+    ImageC<RealRGBValueC> realImg;
+    ImageC<ByteRGBValueC> img;
+  };
+
+  //! userlevel=Normal
+  //: DPDisplayObj to handle images.
+
+  class DPDisplayImageRealRGBC
+    : public DPDisplayObjC
+  {
+  public:
+    DPDisplayImageRealRGBC(const ImageC<RealRGBValueC> &img)
+      : DPDisplayObjC(*new DPDisplayImageRealRGBBodyC(img))
+    {}
+    //: Construct from an image.
+
+    DPDisplayImageRealRGBC()
+    {}
+    //: Default constructor.
+    // creates an invalid handle.
+
+    DPDisplayImageRealRGBC(DPDisplayObjC &base)
+      : DPDisplayObjC(dynamic_cast<const DPDisplayImageRealRGBBodyC *>(BodyPtr(base)))
+    {}
+    //: Base class constructor.
+    // If types do not match an invalid handle is created.
+
+  };
+
+
+  //:---------------------------------------------------------------------------------------
+
+  //! userlevel=Develop
+  //: DPDisplayObj to handle images.
+
+  class DPDisplayImageRealRGBABodyC
+    : public DPDisplayObjBodyC
+  {
+  public:
+    DPDisplayImageRealRGBABodyC(const ImageC<RealRGBAValueC> &img);
+    //: Constructor
+
+    virtual bool Draw(FrameMarkupC &markup);
+    //: Draw object to canvas.
+
+    virtual IndexRange2dC Frame() const;
+    //: Find bounding box for object.
+
+    virtual bool Query(const Vector2dC &pnt,StringC &text);
+    //: Query a point in the display.
+    // Return true if point is within object.
+
+    virtual bool Save(const StringC &str) const;
+    //: Save to a file.
+
+  protected:
+    ImageC<RealRGBAValueC> realImg;
+    ImageC<ByteRGBValueC> img;
+  };
+
+  //! userlevel=Normal
+  //: DPDisplayObj to handle images.
+
+  class DPDisplayImageRealRGBAC
+    : public DPDisplayObjC
+  {
+  public:
+    DPDisplayImageRealRGBAC(const ImageC<RealRGBAValueC> &img)
+      : DPDisplayObjC(*new DPDisplayImageRealRGBABodyC(img))
+    {}
+    //: Construct from an image.
+
+    DPDisplayImageRealRGBAC()
+    {}
+    //: Default constructor.
+    // creates an invalid handle.
+
+    DPDisplayImageRealRGBAC(DPDisplayObjC &base)
+      : DPDisplayObjC(dynamic_cast<const DPDisplayImageRealRGBBodyC *>(BodyPtr(base)))
+    {}
+    //: Base class constructor.
+    // If types do not match an invalid handle is created.
+
+  };
+
+
+
+
+    //:---------------------------------------------------------------------------------------
+
   //! userlevel=Develop
   //: DPDisplayObj to handle images.
   
@@ -130,7 +246,7 @@ namespace RavlGUIN {
     DPDisplayImageRealC(DPDisplayObjC &base)
       : DPDisplayObjC(dynamic_cast<const DPDisplayImageRealBodyC *>(BodyPtr(base)))
     {}
-    //: Base class contructor.
+    //: Base class constructor.
     // If types do not match an invalid handle is created.
   };
   
@@ -186,7 +302,7 @@ namespace RavlGUIN {
     DPDisplayImageByteC(DPDisplayObjC &base)
       : DPDisplayObjC(dynamic_cast<const DPDisplayImageByteBodyC *>(BodyPtr(base)))
     {}
-    //: Base class contructor.
+    //: Base class constructor.
     // If types do not match an invalid handle is created.
   };
 
