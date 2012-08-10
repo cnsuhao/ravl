@@ -28,13 +28,13 @@ namespace RavlN {
     ClassifierBodyC(UIntT nmaxLabels = 0);
     //: Constructor.
     
-    ClassifierBodyC(istream &strm);
+    ClassifierBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -95,7 +95,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    ClassifierC(istream &strm);
+    ClassifierC(std::istream &strm);
     //: Load from stream.
     
     ClassifierC(BinIStreamC &strm);
@@ -173,14 +173,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,ClassifierC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierC &obj) {
     obj = ClassifierC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierC &obj) {
     obj.Save(out);
     return out;
   }
