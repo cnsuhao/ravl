@@ -355,7 +355,7 @@ namespace RavlN {
     SArray1dC<DataT> Array()
     { return Body().Array(); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -364,7 +364,7 @@ namespace RavlN {
     const SArray1dC<DataT> Array() const
     { return Body().Array(); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -499,7 +499,7 @@ namespace RavlN {
   inline
   UIntT CollectionBodyC<DataT>::Insert(const DataT &dat) {
     if(n >= data.Size())
-      data = data.Copy((UIntT) data.Size() * 2); // Double the size of the collection.
+      data = data.Copy(RavlN::Max((UIntT) data.Size(),(UIntT) 2) * 2); // Double the size of the collection.
     int i = n;
     data[n++] = dat;
     return i;
@@ -508,7 +508,7 @@ namespace RavlN {
   template<class DataT>
   UIntT CollectionBodyC<DataT>::Insert(const Array1dC<DataT> &dat) {
     if( (n + dat.Size()) > data.Size() ) {
-      UIntT ns = (UIntT) data.Size() * 2;
+      UIntT ns = RavlN::Max((UIntT) data.Size(),(UIntT) 2) * 2;
       while(ns < (n + dat.Size()))
 	ns *= 2;
       data = data.Copy(ns); // Double the size of the collection.
@@ -526,7 +526,7 @@ namespace RavlN {
   inline
   UIntT CollectionBodyC<DataT>::InsertRandom(const DataT &dat) {
     if(n >= data.Size())
-      data = data.Copy(data.Size() * 2); // Double the size of the collection.
+      data = data.Copy(RavlN::Max((UIntT) data.Size(),(UIntT) 2) * 2); // Double the size of the collection.
     SizeT p = (SizeT)((RealT) Random1() * n);
     if(p > n-1)
       p = n-1; // Incase of rounding errors.
