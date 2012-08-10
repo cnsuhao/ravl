@@ -252,6 +252,14 @@ namespace RavlN {
       *it = (*it - stats.Mean()) * stdDev;
   }
 
+  //: Apply a function in place
+  void SampleVectorC::Normalise(const FunctionC & func) {
+    for (SampleIterC<VectorC> it(*this); it; it++) {
+      *it = func.Apply(*it);
+    }
+  }
+
+
   //: Undo the normalisation done by 'Normalise()'.
 
   void SampleVectorC::UndoNormalisation(const MeanCovarianceC & stats) {

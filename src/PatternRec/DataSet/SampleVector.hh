@@ -106,6 +106,9 @@ namespace RavlN {
     // then be normalised the same way by recording the MeanCovarianceC returned by
     // MeanCovariance.
     
+    void Normalise(const FunctionC & func);
+    //: Apply function in place.  Typically used for normalising data.
+
     void UndoNormalisation(const MeanCovarianceC & stats);
     //: Undo the normalisation done by 'Normalise()', in place.
 
@@ -125,8 +128,10 @@ namespace RavlN {
     FuncLinearC UndoNormalisationFunction(const MeanCovarianceC & stats) const;
      //: Get the function used to un-normalise the data
 
+
     void Scale(FuncLinearC & func);
-    //: Scale each dimension between 0 and 1 and return function created to do this
+    //: Compute function that scales each dimension between 0 and 1 and return function created to do this
+    //: !param: func The function that performs the scaling
 
     const SArray1dC<FieldInfoC> & FieldInfo() const {
       return m_fieldInfo;

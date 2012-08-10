@@ -17,6 +17,13 @@
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/StringList.hh"
 
+enum DataSetNormaliseT {
+  DATASET_NORMALISE_NONE=0,
+  DATASET_NORMALISE_MEAN=1,
+  DATASET_NORMALISE_SCALE=2
+};
+
+
 namespace RavlN {
 
   //! A function that saves a DataSetVectorLabel file.  If the filename has csv extension, it is saved in CSV format.
@@ -24,6 +31,25 @@ namespace RavlN {
 
   //! A function that loads a DataSetVectorLabel file.  If the filename has csv extension, it is loaded from CSV format.
   bool LoadDataSetVectorLabel(const StringC & filename, DataSetVectorLabelC & dataset);
+
+  //! Load a DataSetVectorLabel and perform some common operations on it.
+  bool LoadDataSetVectorLabel(const StringC & dataSetFile,
+      bool shuffle,
+      bool equaliseSamples,
+      UIntT samplesPerClass,
+      const SArray1dC<IndexC> & features,
+      const FunctionC & normaliseFunc,
+      DataSetVectorLabelC & dataSet);
+
+  //! Load a DataSetVectorLabel. It will compute the chosen normalisation function on the loaded data.
+  bool LoadDataSetVectorLabel(const StringC & dataSetFile,
+      bool shuffle,
+      bool equaliseSamples,
+      UIntT samplesPerClass,
+      const SArray1dC<IndexC> & features,
+      DataSetNormaliseT normType,
+      FunctionC & normaliseFunc,
+      DataSetVectorLabelC & dataSet);
 
   //! A function that saves a DataSetVectorLabel file as a CSV file.
   bool SaveDataSetVectorLabelCSV(const StringC & filename, const DataSetVectorLabelC & dataset);

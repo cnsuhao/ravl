@@ -24,6 +24,7 @@ namespace RavlN {
   extern void linkDesignBayesNormalLinear();
   extern void linkDesignBayesNormalQuadratic();
   extern void linkDesignCascade();
+  extern void linkDesignClassifierSupervisedWithValidation();
 
   void LinkClassifier() {
     linkDesignClassifierSupervised();
@@ -40,7 +41,8 @@ namespace RavlN {
     linkDesignDiscriminantFunction();
     linkDesignBayesNormalLinear();
     linkDesignBayesNormalQuadratic();
-    //linkDesignCascade();
+    linkDesignCascade();
+    linkDesignClassifierSupervisedWithValidation();
   }
 
 }

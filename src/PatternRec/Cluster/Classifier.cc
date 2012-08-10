@@ -81,6 +81,20 @@ namespace RavlN {
     return Apply(reduced);
   }
   
+  RealT ClassifierBodyC::LabelProbability(const VectorC & data, UIntT label) const {
+    RavlAssertMsg(label<NumLabels(), "label bigger than number of classes");
+    VectorC conf = Apply(data);
+    return conf[label]/conf.Sum();
+  }
+     //: Compute the 'posterior' probability of a given class
+
+  RealT ClassifierBodyC::LabelProbability(const VectorC & data, const SArray1dC<IndexC> &featureSet, UIntT label) const {
+    RavlAssertMsg(label<NumLabels(), "label bigger than number of classes");
+    VectorC conf = Apply(data, featureSet);
+    return conf[label]/conf.Sum();
+  }
+  //: Compute the 'posterior' probability of a given class
+
   
   ///////////////////////////////////////////////////////////
   
