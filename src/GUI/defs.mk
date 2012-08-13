@@ -9,7 +9,7 @@
 
 DESCRIPTION = GUI Tools.
 
-NESTED=GTK.r 2D.r 3D.r LibGlade.r Util.r DPDisplay.r DPDisplay3d.r 
+NESTED=GTK.r 2D.r 3D.r LibGlade.r Util.r DPDisplay.r DPDisplay3d.r Plot.r
 
 REQUIRES= libGTK2
 
