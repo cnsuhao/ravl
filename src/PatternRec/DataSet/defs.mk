@@ -37,7 +37,8 @@ SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		SampleStreamVectorLabel.cc \
 		SampleIO.cc \
 		DataSetIO.cc \
-		FieldInfo.cc 
+		FieldInfo.cc \
+		SampleVectorFunc.cc
 
 MAINS = doDataSet.cc
 
