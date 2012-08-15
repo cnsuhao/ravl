@@ -2,7 +2,7 @@
 #include "Ravl/Array1dIter.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/IO.hh"
-//! lib=RavlPlot
+//! lib=RavlGnuPlot
 
 namespace RavlGUIN {
 

@@ -13,7 +13,7 @@
 //! docentry="Ravl.API.Graphics.Graph Plotting"
 //! file=""
 //! rcsid="$id$"
-//! lib=RavlPlot
+//! lib=RavlGnuPlot
 
 #include "Ravl/RCHash.hh"
 #include "Ravl/String.hh"
