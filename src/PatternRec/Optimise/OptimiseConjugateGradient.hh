@@ -28,7 +28,8 @@ namespace RavlN {
   // This is the implementation class of the gradient descent optimiser for the
   // PatternRec toolbox. The OptimiseConjugateGradientC handle class should be used.
   
-  class OptimiseConjugateGradientBodyC: public OptimiseBodyC
+  class OptimiseConjugateGradientBodyC
+    : public OptimiseBodyC
   {
   public:
     OptimiseConjugateGradientBodyC(const XMLFactoryContextC & factory);
@@ -40,6 +41,9 @@ namespace RavlN {
     OptimiseConjugateGradientBodyC (std::istream &in);
     //: Constructs from stream
     
+    virtual RCBodyVC &Copy() const;
+    //: Create copy of the optimiser
+
   protected:
     VectorC MinimalX (const CostC &domain, RealT &minimumCost) const;
     //: Determines Xmin=arg min_{X} |f(X)-Yd|
