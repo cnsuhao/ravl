@@ -1165,6 +1165,13 @@ namespace RavlN {
   //: Returns true if the double number 'i' is greater than
   //: or equal to the value of index 'j' .
 
+  inline IndexC StdCopy(IndexC x) { return IndexC(x); }
+   //: Copy double.
+
+  inline void SetZero(IndexC &p)
+  { p = 0; }
+  //: Set index to 0.
+
 }
 
 #endif
