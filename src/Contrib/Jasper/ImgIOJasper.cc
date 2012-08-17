@@ -4,10 +4,13 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-//! rcsid="$Id$"
 //! lib=RavlImgIOJasper
 
+#define RAVLIMAGE_IMGIOJASPER_CCFILE	1
+// Needed to control definition of Jas in JasperIF.hh
+
 #include "Ravl/Image/ImgIOJasper.hh"
+#include "Ravl/Image/JasperIF.hh"
 #include "Ravl/Array2dIter.hh"
 
 #define DODEBUG 0
@@ -31,7 +34,7 @@ namespace RavlImageN {
       useCompressionRate(true)
   {
     if(!jasInitDone) {
-      if(jas_init()) {
+      if(Jas.init()) {
         // Init failed ?
       }
       jasInitDone = true;
@@ -47,7 +50,7 @@ namespace RavlImageN {
   
   void DPImageIOJasperBaseC::Close() {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::Close, Called. \n");
-    if(iostream != 0 && jas_stream_close(iostream)) {
+    if(iostream != 0 && Jas.stream_close(iostream)) {
       cerr << "DPImageIOJasperBaseC::~DPImageIOJasperBaseC, Warning: Failed to close stream. ";
     }
     iostream = 0;
@@ -57,7 +60,7 @@ namespace RavlImageN {
   
   bool DPImageIOJasperBaseC::OpenRead(const StringC &filename) {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenRead, Opening " << filename << " \n");
-    iostream = jas_stream_fopen(filename,"rb");
+    iostream = Jas.stream_fopen(filename,"rb");
     return iostream != 0;
   }
   
@@ -67,14 +70,14 @@ namespace RavlImageN {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenRead, Opening memory buffer " << data.Size() << " \n");
     if(data.Size() < 1)
       return false;
-    iostream = jas_stream_memopen(const_cast<char *>(&(data[0])),data.Size());
+    iostream = Jas.stream_memopen(const_cast<char *>(&(data[0])),data.Size());
     return iostream != 0;    
   }
   
   //: Open stream for write
   
   bool DPImageIOJasperBaseC::OpenWrite(const StringC &filename) {
-    iostream = jas_stream_fopen(filename,"wb");    
+    iostream = Jas.stream_fopen(filename,"wb");    
     return iostream != 0;    
   }
   
@@ -82,7 +85,7 @@ namespace RavlImageN {
   
   bool DPImageIOJasperBaseC::OpenWriteMem(void) {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenWriteMem, Opening memory buffer \n");
-    iostream = jas_stream_memopen(0,0);
+    iostream = Jas.stream_memopen(0,0);
     return iostream != 0;
   }
   
@@ -93,14 +96,14 @@ namespace RavlImageN {
     if(iostream == 0)
       return false;
     // How much data is there ?
-    long len = jas_stream_length(iostream);
+    long len = Jas.stream_length(iostream);
     if(len < 1) return false; // Nothing to read!
     data = SArray1dC<char>(len);
     // Go to start of stream
-    if(jas_stream_seek(iostream,0,SEEK_SET) != 0)
+    if(Jas.stream_seek(iostream,0,SEEK_SET) != 0)
       return false;
     // Read out data into user array.
-    if(jas_stream_read(iostream,&(data[0]),len) != len)
+    if(Jas.stream_read(iostream,&(data[0]),len) != len)
       return false;
     return true;
   }
@@ -110,10 +113,10 @@ namespace RavlImageN {
   bool DPImageIOJasperBaseC::CanReadImage() { 
     if(iostream == 0)
       return false;
-    int fmt = jas_image_getfmt(iostream);
+    int fmt = Jas.image_getfmt(iostream);
     ONDEBUG(cerr << "DPImageIOJasperBaseC::CanReadImage, Fmt=" << fmt << "\n");
     if(fmt < 0) return false;
-    jas_image_fmtinfo_t *fmtinfo = jas_image_lookupfmtbyid(fmt);
+    jas_image_fmtinfo_t *fmtinfo = Jas.image_lookupfmtbyid(fmt);
     if(fmtinfo == 0) return false;
     bool canRead = (fmtinfo->ops.decode != 0);
     ONDEBUG(cerr << "DPImageIOJasperBaseC::CanReadImage, FmtInfo='" << fmtinfo->desc << "' Read=" << canRead << " Write=" << (fmtinfo->ops.encode != 0) << "\n");
@@ -125,7 +128,7 @@ namespace RavlImageN {
   jas_image_t *DPImageIOJasperBaseC::LoadImage() {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::LoadImage(), Called. \n");
     RavlAssert(iostream != 0);
-    jas_image_t *img = jas_image_decode(iostream, -1, 0);
+    jas_image_t *img = Jas.image_decode(iostream, -1, 0);
     if(img == 0) {
       cerr << "DPImageIOJasperBaseC::LoadImage(), Failed. \n";
     }
@@ -138,26 +141,26 @@ namespace RavlImageN {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::ConvertToRGB, Called. \n");
     jas_image_t *newimage;
     jas_cmprof_t *outprof;
-    if (!(outprof = jas_cmprof_createfromclrspc(JAS_CLRSPC_SRGB))) {
-      jas_image_destroy(image);
+    if (!(outprof = Jas.cmprof_createfromclrspc(JAS_CLRSPC_SRGB))) {
+      Jas.image_destroy(image);
       cerr << "DPImageIOJasperBaseC::ConvertToRGB, Failed to create colour space conversion." << endl;
       return 0;
     }
-    if (!(newimage = jas_image_chclrspc(image, outprof, JAS_CMXFORM_INTENT_PER))) {
-      jas_image_destroy(image);
-      jas_cmprof_destroy(outprof);
+    if (!(newimage = Jas.image_chclrspc(image, outprof, JAS_CMXFORM_INTENT_PER))) {
+      Jas.image_destroy(image);
+      Jas.cmprof_destroy(outprof);
       cerr << "DPImageIOJasperBaseC::ConvertToRGB, Colour space conversion failed." << endl;
       return 0;
     }
-    jas_image_destroy(image);
-    jas_cmprof_destroy(outprof);
+    Jas.image_destroy(image);
+    Jas.cmprof_destroy(outprof);
     return newimage;
   }
   
   //: Free an old image.
   
   bool DPImageIOJasperBaseC::FreeImage(jas_image_t *image) {
-    jas_image_destroy(image);
+    Jas.image_destroy(image);
     return true;
   }
   
@@ -222,8 +225,8 @@ namespace RavlImageN {
       }
       ONDEBUG(cerr << "DPImageIOJasperBaseC::Jas2Ravl, Component=" << comp << "\n");
       
-      matrix[comp] = jas_matrix_create(size.Row().V(),size.Col().V());
-      jas_image_readcmpt(img,i,0,0,size.Col().V(),size.Row().V(),matrix[comp]);
+      matrix[comp] = Jas.matrix_create(size.Row().V(),size.Col().V());
+      Jas.image_readcmpt(img,i,0,0,size.Col().V(),size.Row().V(),matrix[comp]);
     }
     
     if(matrix[0] == 0 || matrix[1] == 0 || matrix[2] == 0) {
@@ -232,7 +235,7 @@ namespace RavlImageN {
       
       for(int i = 0;i < 3;i++) {
         if(matrix[i] != 0)
-          jas_matrix_destroy(matrix[i]);
+          Jas.matrix_destroy(matrix[i]);
       }
       return false;
     }
@@ -256,7 +259,7 @@ namespace RavlImageN {
     // Clean up.
     
     for(int i = 0;i < 3;i++)
-      jas_matrix_destroy(matrix[i]);
+      Jas.matrix_destroy(matrix[i]);
     
     rimg = anImg;
     FreeImage(img);
@@ -274,11 +277,11 @@ namespace RavlImageN {
     if (useCompressionRate && compressionRate < 1.0) {
       opts = StringC("rate=") + StringC(compressionRate);
     }
-    if (jas_image_encode(img,iostream, defaultFmt, const_cast<char *>(opts.chars()))) {
+    if (Jas.image_encode(img,iostream, defaultFmt, const_cast<char *>(opts.chars()))) {
       cerr << "DPImageIOJasperBaseC::SaveImage, Failed to encode image. \n";
       return false;
     }
-    jas_stream_flush(iostream);
+    Jas.stream_flush(iostream);
     
     return true;
   }
@@ -308,10 +311,10 @@ namespace RavlImageN {
       cmptparms[i].prec = 8;           // 8 bits per channel
       cmptparms[i].sgnd = false;        // Not signed
       
-      matrix[i] = jas_matrix_create(height,width);
+      matrix[i] = Jas.matrix_create(height,width);
     }
     jas_clrspc_t clrspc = JAS_CLRSPC_SRGB;
-    jas_image_t *jimg = jas_image_create(3,cmptparms,clrspc);
+    jas_image_t *jimg = Jas.image_create(3,cmptparms,clrspc);
     
     Array2dIterC<ByteRGBValueC> it(img);
     int r = img.Frame().LCol().V();
@@ -330,7 +333,7 @@ namespace RavlImageN {
     // Write planes into image.
     
     for(int i = 0;i < 3;i++) {
-      jas_image_writecmpt(jimg, i,
+      Jas.image_writecmpt(jimg, i,
                           x,y,width,height,
                           matrix[i]);
     }
@@ -340,7 +343,7 @@ namespace RavlImageN {
     jas_image_setcmpttype(jimg,2,JAS_IMAGE_CT_RGB_B);
     
     for(int i = 0;i < 3;i++)
-      jas_matrix_destroy(matrix[i]);
+      Jas.matrix_destroy(matrix[i]);
     
 #if 0
     int cspc = jas_image_clrspc(jimg);
@@ -354,7 +357,7 @@ namespace RavlImageN {
   // returns -1 if not found.
   
   IntT DPImageIOJasperBaseC::FindFormatByFilename(const StringC &filename){
-    int fmt = jas_image_fmtfromname(const_cast<char *>(filename.chars()));
+    int fmt = Jas.image_fmtfromname(const_cast<char *>(filename.chars()));
     ONDEBUG(cerr << "DPImageIOJasperBaseC::FindFormatByFilename, File='" <<filename << "' Fmt=" << fmt << "\n");
     return fmt;
   }
@@ -362,7 +365,7 @@ namespace RavlImageN {
   //: Set format by name
   
   void DPImageIOJasperBaseC::SetDefaultFmt(const StringC &fmtName) {
-    jas_image_fmtinfo_t *fmtInfo = jas_image_lookupfmtbyname(const_cast<char *>(fmtName.chars()));
+    jas_image_fmtinfo_t *fmtInfo = Jas.image_lookupfmtbyname(const_cast<char *>(fmtName.chars()));
     if(fmtInfo == 0) {
       cerr << "DPImageIOJasperBaseC::SetDefaultFmt, Fmt " << fmtName << " unknown \n";
       return ;
@@ -395,7 +398,7 @@ namespace RavlImageN {
       if (!buf) {
 	/* The caller has not specified a buffer to employ, so allocate
 	   one. */
-	if ((stream->bufbase_ = (unsigned char *) jas_malloc(JAS_STREAM_BUFSIZE +
+	if ((stream->bufbase_ = (unsigned char *) Jas.malloc(JAS_STREAM_BUFSIZE +
 							     JAS_STREAM_MAXPUTBACK))) {
 	  stream->bufmode_ |= JAS_STREAM_FREEBUF;
 	  stream->bufsize_ = JAS_STREAM_BUFSIZE;
@@ -432,7 +435,7 @@ namespace RavlImageN {
   
   bool DPImageIOJasperBaseC::OpenOStream(OStreamC &os) {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenOStream, Called\n");        
-    if (!(iostream = (jas_stream_t *) jas_malloc(sizeof(jas_stream_t)))) {
+    if (!(iostream = (jas_stream_t *) Jas.malloc(sizeof(jas_stream_t)))) {
       return false;
     }
     iostream->openmode_ = JAS_STREAM_READ | JAS_STREAM_WRITE | JAS_STREAM_BINARY;
@@ -459,7 +462,7 @@ namespace RavlImageN {
   
   bool DPImageIOJasperBaseC::OpenIStream(IStreamC &is) {
     ONDEBUG(cerr << "DPImageIOJasperBaseC::OpenIStream, Called\n");    
-    if (!(iostream = (jas_stream_t *) jas_malloc(sizeof(jas_stream_t)))) {
+    if (!(iostream = (jas_stream_t *) Jas.malloc(sizeof(jas_stream_t)))) {
       return false;
     }
     iostream->openmode_ = JAS_STREAM_READ | JAS_STREAM_WRITE | JAS_STREAM_BINARY;

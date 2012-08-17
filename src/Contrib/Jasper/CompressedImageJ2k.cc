@@ -99,17 +99,6 @@ namespace RavlImageN {
   }
   
 
-  static TypeNameC type1(typeid(CompressedImageJ2kC),"RavlImageN::CompressedImageJ2kC");
-  
-  DP_REGISTER_CONVERSION_NAMED(RGBImage2CompressedImageJ2K ,0.9,
-			       "CompressedImageJ2kC RavlImageN::Convert(const ImageC<ByteRGBValueC> &)");
-  
-  DP_REGISTER_CONVERSION_NAMED(CompressedImageJ2K2RGBImage ,1,
-			       "ImageC<ByteRGBValueC> RavlImageN::Convert(const CompressedImageJ2kC &)");
-
-  FileFormatStreamC<CompressedImageJ2kC> FileFormatStream_CompressedImageJ2kC;
-  FileFormatBinStreamC<CompressedImageJ2kC> FileFormatBinStream_CompressedImageJ2kC;
-
   // Must link func.
   
   void InitJasperCompressConv() 

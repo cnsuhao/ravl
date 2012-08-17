@@ -17,6 +17,8 @@
 #include "Ravl/DP/FileFormat.hh"
 #include "Ravl/Image/Image.hh"
 
+#define USE_JASPERWRITE 1
+
 namespace RavlImageN {
 
   //! userlevel=Develop

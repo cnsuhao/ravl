@@ -13,8 +13,6 @@
 #include "Ravl/Image/ImgIOJasper.hh"
 #include <ctype.h>
 
-#define USE_JASPERWRITE 1
-
 #define DPDEBUG 0
 #if DPDEBUG
 #define ONDEBUG(x) x
@@ -125,14 +123,4 @@ namespace RavlImageN {
     return typeid(ImageC<ByteRGBValueC>); 
   }
 
-#if USE_JASPERWRITE
-  FileFormatJasperC RegisterFileFormatJasper(1.0,"Jasper","Jasper file IO. ");
-  FileFormatJasperC RegisterFileFormatJasperLossy1(1.0/7.0,"JasperLossy1","Jasper file IO. (Compression rate = 1:7)");
-  FileFormatJasperC RegisterFileFormatJasperLossy2(0.08,"JasperLossy2","Jasper file IO. (Compression rate = 2:25)");
-#else
-  FileFormatJasperC RegisterFileFormatJasper(1.0,"Jasper","Jasper file IO. (only reading supported)");
-  FileFormatJasperC RegisterFileFormatJasperLossy1(1.0/7.0,"JasperLossy1","Jasper file IO. (only reading supported).");
-  FileFormatJasperC RegisterFileFormatJasperLossy2(0.08,"JasperLossy2","Jasper file IO. (only reading supported).");
-#endif
-  
 }

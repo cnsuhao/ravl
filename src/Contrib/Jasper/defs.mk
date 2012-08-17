@@ -14,7 +14,7 @@ REQUIRES=LibJasper
 
 PACKAGE=Ravl/Image
 
-HEADERS=ImgIOJasper.hh JasperFormat.hh CompressedImageJ2k.hh
+HEADERS=ImgIOJasper.hh JasperFormat.hh CompressedImageJ2k.hh JasperIF.hh
 
 SOURCES=ImgIOJasper.cc JasperFormat.cc CompressedImageJ2k.cc
 
@@ -22,7 +22,9 @@ MUSTLINK=JasperImgIO.cc
 
 PLIB=RavlImgIOJasper
 
-USESLIBS=RavlImage LibJasper RavlIO
+USESLIBS=RavlOSIO RavlImage RavlIO
+
+INCLUDES += $(LibJasper_CFLAGS)
 
 PROGLIBS=RavlDPDisplay.opt
 
