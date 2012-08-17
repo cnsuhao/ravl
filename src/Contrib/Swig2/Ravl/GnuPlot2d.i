@@ -33,12 +33,12 @@ namespace RavlN {
     bool Plot(const SArray1dC<Point2dC> & points, const StringC & dataName = "");
     //: Plot all graphs on single canvas
 
-    bool PlotFunction(const StringC & function);
+    bool Plot(const StringC & function);
     //: Plot a function
  
- 	bool PlotFunction(const FunctionC & function);
+ 	//bool Plot(const LineABC2dC & line);
  
-    bool ScatterPlot(const DataSetVectorLabelC & dataSet, const IndexC & fv1 = 0, const IndexC & fv2 = 1);
+    bool Plot(const DataSetVectorLabelC & dataSet, UIntT fv1 = 0, UIntT fv2 = 1, UIntT samplesPerClass = 0);
     //: Make a scatter plot of the data.  Only the first two dimensions will be used...
 
     bool SetXLabel(const StringC & xlabel);

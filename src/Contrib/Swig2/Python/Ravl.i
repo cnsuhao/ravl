@@ -15,7 +15,7 @@ computer vision, pattern recognition and supporting tools."
 
 // Enable basic Python automatic 'docstring' entries for  
 // function arguments and return values
-%feature("autodoc", "0");
+%feature("autodoc", "1");
         
 %{
 namespace RavlGUIN

@@ -3,24 +3,13 @@ import Ravl
 
 Ravl.SysLogOpen("testPatternRec",True,True,True,-1,True)
 
-dataSet = Ravl.DataSetVectorLabelC()
+dataSet = Ravl.CreateDataSet(2, 2)
 normFunc = Ravl.FunctionC()
 
+gnuplot = Ravl.GnuPlot2dC("My Data")
+gnuplot.Plot(dataSet)
 
 
-
-Ravl.LoadDataSetVectorLabel("m2vts_auto_lbp.abs", dataSet)
-dataSetSmall = dataSet.ExtractPerLabel(100)
-
-features = Ravl.SArray1dIndexC(2);
-features[0] = Ravl.IndexC(100);
-features[1] = Ravl.IndexC(100);
-dataSetF = Ravl.DataSetVectorLabelC(Ravl.SampleVectorC(dataSetSmall.Sample1(), features), dataSetSmall.Sample2())
-print dataSetF
-
-
-gnuplot = Ravl.GnuPlot2dC("Some Features")
-gnuplot.ScatterPlot(dataSetF)
 
 if True:
     print "Designing Classifier!"
@@ -28,13 +17,13 @@ if True:
     #design = Ravl.DesignClassifierLogisticRegressionC(2.0)
     designFunc = Ravl.DesignFuncLSQC(1, False)
     design = Ravl.DesignDiscriminantFunctionC(designFunc)
-    classifier = design.Apply(dataSetF.Sample1(), dataSetF.Sample2())
+    classifier = design.Apply(dataSet.Sample1(), dataSet.Sample2())
     
     f = classifier.Discriminant()
     print f
-    gnuplot.PlotFunction(f)
+    #gnuplot.PlotFunction(f)
     error = Ravl.ErrorC()
-    print "Error {0}".format(error.Error(classifier, dataSetF))
+    print "Error {0}".format(error.Error(classifier, dataSet))
     Ravl.Save("pythonClassifier.abs", classifier)
 
 

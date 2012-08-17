@@ -90,7 +90,9 @@ public:
         return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
       }
      }
-    
-	
+   
   };
+  
+  DataSetVectorLabelC CreateDataSet(UIntT dimension = 2 , UIntT classes = 2, UIntT samplesPerClass = 1000, RealT dist = 3.0);
+  
 }
