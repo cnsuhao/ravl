@@ -195,6 +195,26 @@ namespace RavlN {
     return ret;
   }
 
+  /*
+   * Create a dataset
+   */
+  DataSetVectorLabelC CreateDataSet(UIntT dimension, UIntT classes, UIntT samplesPerClass, RealT dist)
+  {
+    DataSetVectorLabelC dset(classes * samplesPerClass);
+    UIntT label = 0;
+    for (UIntT i = 0; i < classes; i++) {
+      for (UIntT j = 0; j < samplesPerClass; j++) {
+        VectorC vec(dimension);
+        for (SArray1dIterC<RealT> it(vec); it; it++) {
+          *it = RandomGauss() + (RealT) label * dist;
+        }
+        dset.Append(vec, label);
+      } // samplesPerClass
+      label++;
+    } // classes
+    return dset;
+  }
+
   RavlN::XMLFactoryRegisterHandleC<DataSetVectorLabelC> g_registerXMLFactoryDataSetVectorLabel("RavlN::DataSetVectorLabelC");
 
   void linkDataSetVectorLabel()

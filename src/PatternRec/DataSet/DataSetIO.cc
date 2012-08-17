@@ -263,11 +263,12 @@ namespace RavlN {
     FieldInfoC labelFieldInfo;
     UIntT c = 0;
     for (DLIterC<StringC> it(headings); it; it++) {
+      StringC featureLabel = it.Data().TopAndTail();
       if (startLine == 2) {
         if (it.IsLast()) {
-          labelFieldInfo = FieldInfoC(*it);
+          labelFieldInfo = FieldInfoC(featureLabel);
         } else {
-          fieldInfo[c] = FieldInfoC(*it);
+          fieldInfo[c] = FieldInfoC(featureLabel);
         }
       } else {
         if (it.IsLast()) {
