@@ -21,9 +21,10 @@
 #include "Ravl/Collection.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/Vector2d.hh"
+#include "Ravl/Resource.hh"
+#include "Ravl/PatternRec/DataSetIO.hh"
 
 using namespace RavlN;
-using namespace RavlImageN;
 
 int exGnuPlot(int nargs, char *args[])
 {
@@ -33,6 +34,7 @@ int exGnuPlot(int nargs, char *args[])
 
   opt.Check();
 
+#if 1
   // Plot a Sine and Cosine on same graph
   SArray1dC<CollectionC<Point2dC> > points(3);
   for (SArray1dIterC<CollectionC<Point2dC> > it(points); it; it++) {
@@ -44,7 +46,7 @@ int exGnuPlot(int nargs, char *args[])
     points[1].Append(Point2dC(ang, Cos(ang)));
     points[2].Append(Point2dC(ang, Sin(2. * Sin(2. * Sin(2. * Sin(ang))))));
   }
-#if 1
+
   GnuPlot2dC plot0("Sin(x)");
   plot0.SetLineStyle("points");
 
@@ -57,11 +59,7 @@ int exGnuPlot(int nargs, char *args[])
   plot1.SetLineStyle("lines");
   plot1.Plot(points[1].SArray1d());
 
-  /*
-   * We can just plot a function
-   */
-  GnuPlot2dC plot2("My Function");
-  plot2.PlotFunction("cos(x)/sin(x)");
+
 
   /*
    * We can just use the command function to do it all as well..
@@ -82,18 +80,39 @@ int exGnuPlot(int nargs, char *args[])
   plot3.Command("samp = 1 + res * nturns");
   plot3.Command("set samples samp");
   plot3.Command("plot [t=0:nturns*2*pi] x(t),y(t)");
-#endif
 
+#if 1
   /*
    * What about a data set
    */
-  DataSetVectorLabelC dset(1000);
-  for (UIntT i = 0; i < 1000; i++) {
-    dset.Append(Vector2dC(3.0 + RandomGauss(), 3.0 + RandomGauss()), 0);
-    dset.Append(Vector2dC(RandomGauss(), RandomGauss()), 1);
-  }
+  DataSetVectorLabelC dset = CreateDataSet();
   GnuPlot2dC scatterPlot("A scatter plot");
-  scatterPlot.ScatterPlot(dset);
+  scatterPlot.Plot(dset);
+#endif
+
+  DataSetVectorLabelC iris;
+  if(!LoadDataSetVectorLabel(PROJECT_OUT "/share/Ravl/PatternRec/iris.csv", iris)) {
+    RavlError("Trouble loading iris dataset");
+    return 1;
+  }
+
+  GnuPlot2dC scatterPlot2("Iris Data");
+  scatterPlot2.Plot(iris, 1, 2);
+#endif
+
+  LineABC2dC line(2, -1, 1); // i.e. y = 2x + 1
+  GnuPlot2dC linePlot("y=2x + 1");
+  linePlot.SetLineStyle("line");
+  linePlot.SetXRange(RealRangeC(0, 1.0));
+  linePlot.Plot(line);
+
+  /*
+   * We can just plot a function
+   */
+  GnuPlot2dC plot2("My Function");
+  plot2.SetXRange(RealRangeC(0, 1.0));
+  plot2.Plot("2 * x + 1");
+
 
   return 0;
 }

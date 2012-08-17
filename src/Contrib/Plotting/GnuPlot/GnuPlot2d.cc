@@ -69,38 +69,67 @@ namespace RavlN {
     return true;
   }
 
-
   /*
    * Plot a function
    */
-  bool GnuPlot2dC::PlotFunction(const StringC & function)
+  bool GnuPlot2dC::Plot(const StringC & function)
   {
-
     m_gnuPlot.StdIn() << "plot " << function << endl;
     Flush();
-
     return true;
+  }
+
+  /*
+   * Plot a straight line
+   */
+  bool GnuPlot2dC::Plot(const LineABC2dC & line)
+  {
+    SArray1dC<Point2dC> arr(100);
+    RealT step = m_xrange.Size() / 100.0;
+    UIntT c = 0;
+    for (RealT x = m_xrange.Min(); x <= m_xrange.Max(); x += step) {
+      RealT y = line.ValueY(x);
+      arr[c] = Point2dC(x, y);
+      c++;
+    }
+
+    return Plot(arr);
   }
 
   /*
    * Make a scatter plot of a data set
    */
-  bool GnuPlot2dC::ScatterPlot(const DataSetVectorLabelC & dataSet, const IndexC & fv1, const IndexC & fv2)
+  bool GnuPlot2dC::Plot(const DataSetVectorLabelC & dataSet, UIntT fv1, UIntT fv2, UIntT samplesPerClass)
   {
+
+    if (fv1 >= dataSet.Sample1().VectorSize() || fv2 >= dataSet.Sample1().VectorSize()) {
+      RavlError("Feature index larger than in data set");
+      return false;
+    }
+
+    DataSetVectorLabelC useDataSet = dataSet;
+    if(samplesPerClass != 0) {
+      useDataSet = dataSet.ExtractPerLabel(samplesPerClass);
+    }
+
+    SArray1dC<FieldInfoC> fieldInfo = dataSet.Sample1().FieldInfo();
+    if(fieldInfo.IsValid()) {
+      SetXLabel(fieldInfo[fv1].Name());
+      SetYLabel(fieldInfo[fv2].Name());
+    }
 
     // have to find min max
     RealRangeC xrange(RavlConstN::maxReal, -RavlConstN::maxReal);
     RealRangeC yrange(RavlConstN::maxReal, -RavlConstN::maxReal);
     for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dataSet); it; it++) {
-      xrange.Min() = Min(xrange.Min(), it.Data1()[0]);
-      xrange.Max() = Max(xrange.Max(), it.Data1()[0]);
-      yrange.Min() = Min(yrange.Min(), it.Data1()[1]);
-      yrange.Max() = Max(yrange.Max(), it.Data1()[1]);
+      xrange.Min() = Min(xrange.Min(), it.Data1()[fv1]);
+      xrange.Max() = Max(xrange.Max(), it.Data1()[fv1]);
+      yrange.Min() = Min(yrange.Min(), it.Data1()[fv2]);
+      yrange.Max() = Max(yrange.Max(), it.Data1()[fv2]);
     }
     SetXRange(xrange);
     SetYRange(yrange);
-
-    SArray1dC<FieldInfoC> fieldInfo = dataSet.Sample1().FieldInfo();
+    //: Plot a function
 
     FilenameC tmpFile = "/tmp/data";
     tmpFile = tmpFile.MkTemp();
@@ -110,10 +139,10 @@ namespace RavlN {
     UIntT label = 0;
     UIntT count = 0;
     StringC bigCmd = "plot ";
-    for (SArray1dIterC<SampleVectorC> it(dataSet.SeperateLabels()); it; it++) {
-      StringC className = "Label " + (StringC)label;
-      if(fieldInfo.IsValid()) {
-        className = fieldInfo[label].Name();
+    for (SArray1dIterC<SampleVectorC> it(useDataSet.SeperateLabels()); it; it++) {
+      StringC className;
+      if (!dataSet.Sample2().GetClassName(label, className)) {
+        className = "Label " + (StringC) label;
       }
       StringC cmd;
       cmd.form("'%s' every ::%d::%d with points pointtype 1 title \'%s\'",
@@ -159,6 +188,7 @@ namespace RavlN {
 
   bool GnuPlot2dC::SetXRange(const RealRangeC & xrange)
   {
+    m_xrange = xrange;
     StringC cmd;
     cmd.form("set xrange [%f:%f]", xrange.Min(), xrange.Max());
     return Command(cmd);
@@ -170,6 +200,7 @@ namespace RavlN {
 
   bool GnuPlot2dC::SetYRange(const RealRangeC & yrange)
   {
+    m_yrange = yrange;
     StringC cmd;
     cmd.form("set yrange [%f:%f]", yrange.Min(), yrange.Max());
     return Command(cmd);

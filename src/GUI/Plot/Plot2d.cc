@@ -26,9 +26,18 @@ namespace RavlN {
   }
 
   /*
+   * Plot a straight line
+   */
+  bool Plot2dC::Plot(const LineABC2dC & line)
+  {
+    RavlAssertMsg(0, "Abstract method called!");
+    return false;
+  }
+
+  /*
    * Plot a function
    */
-  bool Plot2dC::PlotFunction(const StringC & function)
+  bool Plot2dC::Plot(const StringC & function)
   {
     RavlAssertMsg(0, "Abstract method called!");
     return false;
@@ -37,7 +46,7 @@ namespace RavlN {
   /*
    * Make a scatter plot of a data set
    */
-  bool Plot2dC::ScatterPlot(const DataSetVectorLabelC & dataSet, const IndexC & fv1, const IndexC & fv2)
+  bool Plot2dC::Plot(const DataSetVectorLabelC & dataSet, UIntT feature1, UIntT feature2, UIntT samplesPerClass)
   {
     RavlAssertMsg(0, "Abstract method called!");
     return false;
