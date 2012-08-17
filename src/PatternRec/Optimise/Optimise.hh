@@ -43,7 +43,7 @@ namespace RavlN {
     // base class knows what derived type it is.
 
     OptimiseBodyC (const StringC &name, std::istream &in);
-    //: Contructs from stream with derived class name
+    //: Constructs from stream with derived class name
     // The name or type must be known so that the correct virtual constructor
     // can be called.
     
@@ -107,7 +107,7 @@ namespace RavlN {
   // --------------------------------------------------------------------------
   // **********  OptimiseC  ************************************************
   // --------------------------------------------------------------------------
-  //: Handle class for numerical opimisers
+  //: Handle class for numerical optimisers
   //
   // Handle class for numerical optimisers. It is used in conjunction with cost
   // functions derived from NumCostC. The cost function is used to specify the
@@ -131,6 +131,11 @@ namespace RavlN {
 
     OptimiseC (OptimiseBodyC *oth);
     //: Constructs from base class
+
+    OptimiseC (const RCHandleVC<OptimiseBodyC> &opt)
+     : RCHandleVC<OptimiseBodyC>(opt)
+    {}
+    //: Constructs from base handle
 
   protected:
     inline OptimiseBodyC & Body ()
@@ -202,7 +207,7 @@ namespace RavlN {
     
     inline bool Save (std::ostream &out) const
     { return Body().Save (out); }
-    //: Writes object to stream, cna be loaded using constructor
+    //: Writes object to stream, can be loaded using constructor
   };
   
 }
