@@ -81,6 +81,11 @@ public:
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const;
     //: Extracts numSamples samples per label
     
+    DataSetVectorLabelC ExtractSample(RealT proportion);
+    //: Extract a sample.
+    // The elements are removed from this set. NB. The order
+    // of this dataset is NOT preserved.
+    
     %extend {
      const char *__str__()
       {

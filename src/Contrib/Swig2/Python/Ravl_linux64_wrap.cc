@@ -2696,101 +2696,110 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 #define SWIGTYPE_p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t swig_types[11]
 #define SWIGTYPE_p_RavlN__Array2dCT_double_t swig_types[12]
 #define SWIGTYPE_p_RavlN__Array2dCT_unsigned_char_t swig_types[13]
-#define SWIGTYPE_p_RavlN__ClassifierC swig_types[14]
-#define SWIGTYPE_p_RavlN__ClassifierDiscriminantFunctionC swig_types[15]
-#define SWIGTYPE_p_RavlN__ConstDLIterCT_double_t swig_types[16]
-#define SWIGTYPE_p_RavlN__ConstDLIterCT_int_t swig_types[17]
-#define SWIGTYPE_p_RavlN__ConstDLIterCT_long_t swig_types[18]
-#define SWIGTYPE_p_RavlN__ConstDLIterCT_short_t swig_types[19]
-#define SWIGTYPE_p_RavlN__ConstDLIterCT_unsigned_char_t swig_types[20]
-#define SWIGTYPE_p_RavlN__ConstDLIterCT_unsigned_int_t swig_types[21]
-#define SWIGTYPE_p_RavlN__DLIterCT_RavlN__Point2dC_t swig_types[22]
-#define SWIGTYPE_p_RavlN__DLIterCT_double_t swig_types[23]
-#define SWIGTYPE_p_RavlN__DLIterCT_int_t swig_types[24]
-#define SWIGTYPE_p_RavlN__DLIterCT_long_t swig_types[25]
-#define SWIGTYPE_p_RavlN__DLIterCT_short_t swig_types[26]
-#define SWIGTYPE_p_RavlN__DLIterCT_unsigned_char_t swig_types[27]
-#define SWIGTYPE_p_RavlN__DLIterCT_unsigned_int_t swig_types[28]
-#define SWIGTYPE_p_RavlN__DListCT_RavlN__Point2dC_t swig_types[29]
-#define SWIGTYPE_p_RavlN__DListCT_double_t swig_types[30]
-#define SWIGTYPE_p_RavlN__DListCT_int_t swig_types[31]
-#define SWIGTYPE_p_RavlN__DListCT_long_t swig_types[32]
-#define SWIGTYPE_p_RavlN__DListCT_short_t swig_types[33]
-#define SWIGTYPE_p_RavlN__DListCT_unsigned_char_t swig_types[34]
-#define SWIGTYPE_p_RavlN__DListCT_unsigned_int_t swig_types[35]
-#define SWIGTYPE_p_RavlN__DPIPortCT_RavlImageN__ImageCT_RavlN__ByteT_t_t swig_types[36]
-#define SWIGTYPE_p_RavlN__DataSet1CT_RavlN__SampleVectorC_t swig_types[37]
-#define SWIGTYPE_p_RavlN__DataSet2CT_RavlN__SampleVectorC_RavlN__SampleLabelC_t swig_types[38]
-#define SWIGTYPE_p_RavlN__DataSetBaseC swig_types[39]
-#define SWIGTYPE_p_RavlN__DataSetVectorLabelC swig_types[40]
-#define SWIGTYPE_p_RavlN__DateC swig_types[41]
-#define SWIGTYPE_p_RavlN__DesignClassifierLogisticRegressionC swig_types[42]
-#define SWIGTYPE_p_RavlN__DesignClassifierNeuralNetwork2C swig_types[43]
-#define SWIGTYPE_p_RavlN__DesignClassifierSupervisedC swig_types[44]
-#define SWIGTYPE_p_RavlN__DesignDiscriminantFunctionC swig_types[45]
-#define SWIGTYPE_p_RavlN__DesignFuncLSQC swig_types[46]
-#define SWIGTYPE_p_RavlN__DesignFunctionSupervisedC swig_types[47]
-#define SWIGTYPE_p_RavlN__ErrorC swig_types[48]
-#define SWIGTYPE_p_RavlN__FunctionC swig_types[49]
-#define SWIGTYPE_p_RavlN__GnuPlot2dC swig_types[50]
-#define SWIGTYPE_p_RavlN__HashCT_long_long_t swig_types[51]
-#define SWIGTYPE_p_RavlN__HashIterCT_long_long_t swig_types[52]
-#define SWIGTYPE_p_RavlN__Index2dC swig_types[53]
-#define SWIGTYPE_p_RavlN__IndexC swig_types[54]
-#define SWIGTYPE_p_RavlN__IndexRange2dC swig_types[55]
-#define SWIGTYPE_p_RavlN__IndexRangeC swig_types[56]
-#define SWIGTYPE_p_RavlN__MatrixC swig_types[57]
-#define SWIGTYPE_p_RavlN__MatrixRUTC swig_types[58]
-#define SWIGTYPE_p_RavlN__MeanCovarianceC swig_types[59]
-#define SWIGTYPE_p_RavlN__Point2dC swig_types[60]
-#define SWIGTYPE_p_RavlN__PointSet2dC swig_types[61]
-#define SWIGTYPE_p_RavlN__Polygon2dC swig_types[62]
-#define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[63]
-#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[64]
-#define SWIGTYPE_p_RavlN__RealRangeC swig_types[65]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[66]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[67]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[68]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[69]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[70]
-#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[71]
-#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[72]
-#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[73]
-#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[74]
-#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[75]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[76]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[77]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[78]
-#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[79]
-#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[80]
-#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[81]
-#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[82]
-#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[83]
-#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[84]
-#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[85]
-#define SWIGTYPE_p_RavlN__SizeC swig_types[86]
-#define SWIGTYPE_p_RavlN__StringC swig_types[87]
-#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[88]
-#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[89]
-#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[90]
-#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[91]
-#define SWIGTYPE_p_RavlN__VectorC swig_types[92]
-#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[93]
-#define SWIGTYPE_p_T swig_types[94]
-#define SWIGTYPE_p_UIntT swig_types[95]
-#define SWIGTYPE_p_char swig_types[96]
-#define SWIGTYPE_p_double swig_types[97]
-#define SWIGTYPE_p_float swig_types[98]
-#define SWIGTYPE_p_int swig_types[99]
-#define SWIGTYPE_p_long swig_types[100]
-#define SWIGTYPE_p_short swig_types[101]
-#define SWIGTYPE_p_size_t swig_types[102]
-#define SWIGTYPE_p_std__ostream swig_types[103]
-#define SWIGTYPE_p_unsigned_char swig_types[104]
-#define SWIGTYPE_p_unsigned_int swig_types[105]
-#define SWIGTYPE_p_unsigned_long swig_types[106]
-static swig_type_info *swig_types[108];
-static swig_module_info swig_module = {swig_types, 107, 0, 0, 0, 0};
+#define SWIGTYPE_p_RavlN__Chi2KernelC swig_types[14]
+#define SWIGTYPE_p_RavlN__ClassifierC swig_types[15]
+#define SWIGTYPE_p_RavlN__ClassifierDiscriminantFunctionC swig_types[16]
+#define SWIGTYPE_p_RavlN__ConstDLIterCT_double_t swig_types[17]
+#define SWIGTYPE_p_RavlN__ConstDLIterCT_int_t swig_types[18]
+#define SWIGTYPE_p_RavlN__ConstDLIterCT_long_t swig_types[19]
+#define SWIGTYPE_p_RavlN__ConstDLIterCT_short_t swig_types[20]
+#define SWIGTYPE_p_RavlN__ConstDLIterCT_unsigned_char_t swig_types[21]
+#define SWIGTYPE_p_RavlN__ConstDLIterCT_unsigned_int_t swig_types[22]
+#define SWIGTYPE_p_RavlN__DLIterCT_RavlN__Point2dC_t swig_types[23]
+#define SWIGTYPE_p_RavlN__DLIterCT_double_t swig_types[24]
+#define SWIGTYPE_p_RavlN__DLIterCT_int_t swig_types[25]
+#define SWIGTYPE_p_RavlN__DLIterCT_long_t swig_types[26]
+#define SWIGTYPE_p_RavlN__DLIterCT_short_t swig_types[27]
+#define SWIGTYPE_p_RavlN__DLIterCT_unsigned_char_t swig_types[28]
+#define SWIGTYPE_p_RavlN__DLIterCT_unsigned_int_t swig_types[29]
+#define SWIGTYPE_p_RavlN__DListCT_RavlN__Point2dC_t swig_types[30]
+#define SWIGTYPE_p_RavlN__DListCT_double_t swig_types[31]
+#define SWIGTYPE_p_RavlN__DListCT_int_t swig_types[32]
+#define SWIGTYPE_p_RavlN__DListCT_long_t swig_types[33]
+#define SWIGTYPE_p_RavlN__DListCT_short_t swig_types[34]
+#define SWIGTYPE_p_RavlN__DListCT_unsigned_char_t swig_types[35]
+#define SWIGTYPE_p_RavlN__DListCT_unsigned_int_t swig_types[36]
+#define SWIGTYPE_p_RavlN__DPIPortCT_RavlImageN__ImageCT_RavlN__ByteT_t_t swig_types[37]
+#define SWIGTYPE_p_RavlN__DataSet1CT_RavlN__SampleVectorC_t swig_types[38]
+#define SWIGTYPE_p_RavlN__DataSet2CT_RavlN__SampleVectorC_RavlN__SampleLabelC_t swig_types[39]
+#define SWIGTYPE_p_RavlN__DataSetBaseC swig_types[40]
+#define SWIGTYPE_p_RavlN__DataSetVectorLabelC swig_types[41]
+#define SWIGTYPE_p_RavlN__DateC swig_types[42]
+#define SWIGTYPE_p_RavlN__DesignClassifierLogisticRegressionC swig_types[43]
+#define SWIGTYPE_p_RavlN__DesignClassifierNeuralNetwork2C swig_types[44]
+#define SWIGTYPE_p_RavlN__DesignClassifierSupervisedC swig_types[45]
+#define SWIGTYPE_p_RavlN__DesignDiscriminantFunctionC swig_types[46]
+#define SWIGTYPE_p_RavlN__DesignFuncLSQC swig_types[47]
+#define SWIGTYPE_p_RavlN__DesignFunctionSupervisedC swig_types[48]
+#define SWIGTYPE_p_RavlN__DesignKNearestNeighbourC swig_types[49]
+#define SWIGTYPE_p_RavlN__DesignSvmC swig_types[50]
+#define SWIGTYPE_p_RavlN__DesignSvmSmoC swig_types[51]
+#define SWIGTYPE_p_RavlN__ErrorC swig_types[52]
+#define SWIGTYPE_p_RavlN__FunctionC swig_types[53]
+#define SWIGTYPE_p_RavlN__GnuPlot2dC swig_types[54]
+#define SWIGTYPE_p_RavlN__HashCT_long_long_t swig_types[55]
+#define SWIGTYPE_p_RavlN__HashIterCT_long_long_t swig_types[56]
+#define SWIGTYPE_p_RavlN__Index2dC swig_types[57]
+#define SWIGTYPE_p_RavlN__IndexC swig_types[58]
+#define SWIGTYPE_p_RavlN__IndexRange2dC swig_types[59]
+#define SWIGTYPE_p_RavlN__IndexRangeC swig_types[60]
+#define SWIGTYPE_p_RavlN__KernelFunctionC swig_types[61]
+#define SWIGTYPE_p_RavlN__LinearKernelC swig_types[62]
+#define SWIGTYPE_p_RavlN__MatrixC swig_types[63]
+#define SWIGTYPE_p_RavlN__MatrixRUTC swig_types[64]
+#define SWIGTYPE_p_RavlN__MeanCovarianceC swig_types[65]
+#define SWIGTYPE_p_RavlN__Point2dC swig_types[66]
+#define SWIGTYPE_p_RavlN__PointSet2dC swig_types[67]
+#define SWIGTYPE_p_RavlN__Polygon2dC swig_types[68]
+#define SWIGTYPE_p_RavlN__PolynomialKernelC swig_types[69]
+#define SWIGTYPE_p_RavlN__QuadraticKernelC swig_types[70]
+#define SWIGTYPE_p_RavlN__RBFKernelC swig_types[71]
+#define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[72]
+#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[73]
+#define SWIGTYPE_p_RavlN__RealRangeC swig_types[74]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[75]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[76]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[77]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[78]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[79]
+#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[80]
+#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[81]
+#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[82]
+#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[83]
+#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[84]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[85]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[86]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[87]
+#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[88]
+#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[89]
+#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[90]
+#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[91]
+#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[92]
+#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[93]
+#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[94]
+#define SWIGTYPE_p_RavlN__SizeC swig_types[95]
+#define SWIGTYPE_p_RavlN__StringC swig_types[96]
+#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[97]
+#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[98]
+#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[99]
+#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[100]
+#define SWIGTYPE_p_RavlN__VectorC swig_types[101]
+#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[102]
+#define SWIGTYPE_p_T swig_types[103]
+#define SWIGTYPE_p_UIntT swig_types[104]
+#define SWIGTYPE_p_char swig_types[105]
+#define SWIGTYPE_p_double swig_types[106]
+#define SWIGTYPE_p_float swig_types[107]
+#define SWIGTYPE_p_int swig_types[108]
+#define SWIGTYPE_p_long swig_types[109]
+#define SWIGTYPE_p_short swig_types[110]
+#define SWIGTYPE_p_size_t swig_types[111]
+#define SWIGTYPE_p_std__ostream swig_types[112]
+#define SWIGTYPE_p_unsigned_char swig_types[113]
+#define SWIGTYPE_p_unsigned_int swig_types[114]
+#define SWIGTYPE_p_unsigned_long swig_types[115]
+static swig_type_info *swig_types[117];
+static swig_module_info swig_module = {swig_types, 116, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4287,6 +4296,17 @@ SWIGINTERN char const *RavlN_DataSetVectorLabelC___str__(RavlN::DataSetVectorLab
 #undef Copy
 #endif
 
+#include "Ravl/PatternRec/DesignKNearestNeighbour.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
 #include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
 
 #ifdef SWIGPERL
@@ -4299,6 +4319,40 @@ SWIGINTERN char const *RavlN_DataSetVectorLabelC___str__(RavlN::DataSetVectorLab
 #endif
 
 #include "Ravl/PatternRec/DesignClassifierLogisticRegression.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/CommonKernels.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/DesignSvm.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/DesignClassifierSvmSmo.hh"
+#include "Ravl/PatternRec/CommonKernels.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -65132,6 +65186,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_ExtractSample(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::DataSetVectorLabelC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DataSetVectorLabelC_ExtractSample",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSetVectorLabelC_ExtractSample" "', argument " "1"" of type '" "RavlN::DataSetVectorLabelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSetVectorLabelC_ExtractSample" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  result = (arg1)->ExtractSample(arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::DataSetVectorLabelC(static_cast< const RavlN::DataSetVectorLabelC& >(result))), SWIGTYPE_p_RavlN__DataSetVectorLabelC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_DataSetVectorLabelC___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
@@ -66935,52 +67020,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DesignDiscriminantFunctionC_Apply(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::DesignDiscriminantFunctionC *arg1 = (RavlN::DesignDiscriminantFunctionC *) 0 ;
-  RavlN::SampleC< RavlN::VectorC > *arg2 = 0 ;
-  RavlN::SampleC< RavlN::UIntT > *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  RavlN::ClassifierDiscriminantFunctionC result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:DesignDiscriminantFunctionC_Apply",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignDiscriminantFunctionC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignDiscriminantFunctionC_Apply" "', argument " "1"" of type '" "RavlN::DesignDiscriminantFunctionC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::DesignDiscriminantFunctionC * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DesignDiscriminantFunctionC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignDiscriminantFunctionC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::SampleC< RavlN::VectorC > * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DesignDiscriminantFunctionC_Apply" "', argument " "3"" of type '" "RavlN::SampleC< RavlN::UIntT > const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignDiscriminantFunctionC_Apply" "', argument " "3"" of type '" "RavlN::SampleC< RavlN::UIntT > const &""'"); 
-  }
-  arg3 = reinterpret_cast< RavlN::SampleC< RavlN::UIntT > * >(argp3);
-  result = (arg1)->Apply((RavlN::SampleC< RavlN::VectorC > const &)*arg2,(RavlN::SampleC< RavlN::UIntT > const &)*arg3);
-  resultobj = SWIG_NewPointerObj((new RavlN::ClassifierDiscriminantFunctionC(static_cast< const RavlN::ClassifierDiscriminantFunctionC& >(result))), SWIGTYPE_p_RavlN__ClassifierDiscriminantFunctionC, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_delete_DesignDiscriminantFunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::DesignDiscriminantFunctionC *arg1 = (RavlN::DesignDiscriminantFunctionC *) 0 ;
@@ -67006,6 +67045,56 @@ SWIGINTERN PyObject *DesignDiscriminantFunctionC_swigregister(PyObject *SWIGUNUS
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignDiscriminantFunctionC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_DesignKNearestNeighbourC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::UIntT arg1 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::DesignKNearestNeighbourC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_DesignKNearestNeighbourC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_DesignKNearestNeighbourC" "', argument " "1"" of type '" "RavlN::UIntT""'");
+  } 
+  arg1 = static_cast< RavlN::UIntT >(val1);
+  result = (RavlN::DesignKNearestNeighbourC *)new RavlN::DesignKNearestNeighbourC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignKNearestNeighbourC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignKNearestNeighbourC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignKNearestNeighbourC *arg1 = (RavlN::DesignKNearestNeighbourC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignKNearestNeighbourC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignKNearestNeighbourC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignKNearestNeighbourC" "', argument " "1"" of type '" "RavlN::DesignKNearestNeighbourC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignKNearestNeighbourC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignKNearestNeighbourC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignKNearestNeighbourC, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -67705,6 +67794,791 @@ SWIGINTERN PyObject *DesignClassifierLogisticRegressionC_swigregister(PyObject *
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignClassifierLogisticRegressionC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_KernelFunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_KernelFunctionC")) SWIG_fail;
+  result = (RavlN::KernelFunctionC *)new RavlN::KernelFunctionC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__KernelFunctionC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_KernelFunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = (RavlN::KernelFunctionC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_KernelFunctionC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__KernelFunctionC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_KernelFunctionC" "', argument " "1"" of type '" "RavlN::KernelFunctionC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *KernelFunctionC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__KernelFunctionC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_LinearKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::LinearKernelC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_LinearKernelC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_LinearKernelC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  result = (RavlN::LinearKernelC *)new RavlN::LinearKernelC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__LinearKernelC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_LinearKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::LinearKernelC *arg1 = (RavlN::LinearKernelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_LinearKernelC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__LinearKernelC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LinearKernelC" "', argument " "1"" of type '" "RavlN::LinearKernelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::LinearKernelC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *LinearKernelC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__LinearKernelC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_QuadraticKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::QuadraticKernelC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_QuadraticKernelC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_QuadraticKernelC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  result = (RavlN::QuadraticKernelC *)new RavlN::QuadraticKernelC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__QuadraticKernelC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_QuadraticKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::QuadraticKernelC *arg1 = (RavlN::QuadraticKernelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_QuadraticKernelC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__QuadraticKernelC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_QuadraticKernelC" "', argument " "1"" of type '" "RavlN::QuadraticKernelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::QuadraticKernelC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *QuadraticKernelC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__QuadraticKernelC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_delete_PolynomialKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::PolynomialKernelC *arg1 = (RavlN::PolynomialKernelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_PolynomialKernelC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__PolynomialKernelC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_PolynomialKernelC" "', argument " "1"" of type '" "RavlN::PolynomialKernelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::PolynomialKernelC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *PolynomialKernelC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__PolynomialKernelC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_RBFKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RBFKernelC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_RBFKernelC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RBFKernelC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  result = (RavlN::RBFKernelC *)new RavlN::RBFKernelC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RBFKernelC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RBFKernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RBFKernelC *arg1 = (RavlN::RBFKernelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_RBFKernelC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RBFKernelC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RBFKernelC" "', argument " "1"" of type '" "RavlN::RBFKernelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RBFKernelC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RBFKernelC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__RBFKernelC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_Chi2KernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::Chi2KernelC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_Chi2KernelC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_Chi2KernelC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  result = (RavlN::Chi2KernelC *)new RavlN::Chi2KernelC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__Chi2KernelC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Chi2KernelC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::Chi2KernelC *arg1 = (RavlN::Chi2KernelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_Chi2KernelC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__Chi2KernelC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Chi2KernelC" "', argument " "1"" of type '" "RavlN::Chi2KernelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::Chi2KernelC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Chi2KernelC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__Chi2KernelC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignSvmC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_DesignSvmC")) SWIG_fail;
+  result = (RavlN::DesignSvmC *)new RavlN::DesignSvmC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignSvmC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignSvmC *arg1 = (RavlN::DesignSvmC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignSvmC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignSvmC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignSvmC" "', argument " "1"" of type '" "RavlN::DesignSvmC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignSvmC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignSvmC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignSvmC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::RealT arg3 ;
+  RavlN::RealT arg4 ;
+  RavlN::RealT arg5 ;
+  RavlN::RealT arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  RavlN::DesignSvmSmoC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOO:new_DesignSvmSmoC",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__KernelFunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_DesignSvmSmoC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_DesignSvmSmoC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  ecode4 = SWIG_AsVal_double(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_DesignSvmSmoC" "', argument " "4"" of type '" "RavlN::RealT""'");
+  } 
+  arg4 = static_cast< RavlN::RealT >(val4);
+  ecode5 = SWIG_AsVal_double(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_DesignSvmSmoC" "', argument " "5"" of type '" "RavlN::RealT""'");
+  } 
+  arg5 = static_cast< RavlN::RealT >(val5);
+  ecode6 = SWIG_AsVal_double(obj5, &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_DesignSvmSmoC" "', argument " "6"" of type '" "RavlN::RealT""'");
+  } 
+  arg6 = static_cast< RavlN::RealT >(val6);
+  result = (RavlN::DesignSvmSmoC *)new RavlN::DesignSvmSmoC((RavlN::KernelFunctionC const &)*arg1,arg2,arg3,arg4,arg5,arg6);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::RealT arg3 ;
+  RavlN::RealT arg4 ;
+  RavlN::RealT arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  RavlN::DesignSvmSmoC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:new_DesignSvmSmoC",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__KernelFunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_DesignSvmSmoC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_DesignSvmSmoC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  ecode4 = SWIG_AsVal_double(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_DesignSvmSmoC" "', argument " "4"" of type '" "RavlN::RealT""'");
+  } 
+  arg4 = static_cast< RavlN::RealT >(val4);
+  ecode5 = SWIG_AsVal_double(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_DesignSvmSmoC" "', argument " "5"" of type '" "RavlN::RealT""'");
+  } 
+  arg5 = static_cast< RavlN::RealT >(val5);
+  result = (RavlN::DesignSvmSmoC *)new RavlN::DesignSvmSmoC((RavlN::KernelFunctionC const &)*arg1,arg2,arg3,arg4,arg5);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::RealT arg3 ;
+  RavlN::RealT arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  RavlN::DesignSvmSmoC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:new_DesignSvmSmoC",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__KernelFunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_DesignSvmSmoC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_DesignSvmSmoC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  ecode4 = SWIG_AsVal_double(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_DesignSvmSmoC" "', argument " "4"" of type '" "RavlN::RealT""'");
+  } 
+  arg4 = static_cast< RavlN::RealT >(val4);
+  result = (RavlN::DesignSvmSmoC *)new RavlN::DesignSvmSmoC((RavlN::KernelFunctionC const &)*arg1,arg2,arg3,arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::RealT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::DesignSvmSmoC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_DesignSvmSmoC",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__KernelFunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_DesignSvmSmoC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_DesignSvmSmoC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  result = (RavlN::DesignSvmSmoC *)new RavlN::DesignSvmSmoC((RavlN::KernelFunctionC const &)*arg1,arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::DesignSvmSmoC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_DesignSvmSmoC",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__KernelFunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_DesignSvmSmoC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  result = (RavlN::DesignSvmSmoC *)new RavlN::DesignSvmSmoC((RavlN::KernelFunctionC const &)*arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::KernelFunctionC *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::DesignSvmSmoC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_DesignSvmSmoC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__KernelFunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::KernelFunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::KernelFunctionC * >(argp1);
+  result = (RavlN::DesignSvmSmoC *)new RavlN::DesignSvmSmoC((RavlN::KernelFunctionC const &)*arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignSvmSmoC(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[7];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = (int)PyObject_Length(args);
+  for (ii = 0; (ii < argc) && (ii < 6); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlN__KernelFunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_DesignSvmSmoC__SWIG_5(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlN__KernelFunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_new_DesignSvmSmoC__SWIG_4(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlN__KernelFunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_DesignSvmSmoC__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlN__KernelFunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_DesignSvmSmoC__SWIG_2(self, args);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlN__KernelFunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_DesignSvmSmoC__SWIG_1(self, args);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_RavlN__KernelFunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_double(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_new_DesignSvmSmoC__SWIG_0(self, args);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number of arguments for overloaded function 'new_DesignSvmSmoC'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignSvmSmoC(RavlN::KernelFunctionC const &,RavlN::RealT,RavlN::RealT,RavlN::RealT,RavlN::RealT,RavlN::RealT)\n"
+    "    RavlN::DesignSvmSmoC(RavlN::KernelFunctionC const &,RavlN::RealT,RavlN::RealT,RavlN::RealT,RavlN::RealT)\n"
+    "    RavlN::DesignSvmSmoC(RavlN::KernelFunctionC const &,RavlN::RealT,RavlN::RealT,RavlN::RealT)\n"
+    "    RavlN::DesignSvmSmoC(RavlN::KernelFunctionC const &,RavlN::RealT,RavlN::RealT)\n"
+    "    RavlN::DesignSvmSmoC(RavlN::KernelFunctionC const &,RavlN::RealT)\n"
+    "    RavlN::DesignSvmSmoC(RavlN::KernelFunctionC const &)\n");
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignSvmSmoC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignSvmSmoC *arg1 = (RavlN::DesignSvmSmoC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignSvmSmoC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignSvmSmoC" "', argument " "1"" of type '" "RavlN::DesignSvmSmoC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignSvmSmoC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignSvmSmoC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignSvmSmoC, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -71102,6 +71976,7 @@ static PyMethodDef SwigMethods[] = {
 		"DataSetVectorLabelC_WithinClassScatter(DataSetVectorLabelC self) -> MatrixC\n"
 		""},
 	 { (char *)"DataSetVectorLabelC_ExtractPerLabel", _wrap_DataSetVectorLabelC_ExtractPerLabel, METH_VARARGS, (char *)"DataSetVectorLabelC_ExtractPerLabel(DataSetVectorLabelC self, UIntT numSamples) -> DataSetVectorLabelC"},
+	 { (char *)"DataSetVectorLabelC_ExtractSample", _wrap_DataSetVectorLabelC_ExtractSample, METH_VARARGS, (char *)"DataSetVectorLabelC_ExtractSample(DataSetVectorLabelC self, RealT proportion) -> DataSetVectorLabelC"},
 	 { (char *)"DataSetVectorLabelC___str__", _wrap_DataSetVectorLabelC___str__, METH_VARARGS, (char *)"DataSetVectorLabelC___str__(DataSetVectorLabelC self) -> char"},
 	 { (char *)"delete_DataSetVectorLabelC", _wrap_delete_DataSetVectorLabelC, METH_VARARGS, (char *)"delete_DataSetVectorLabelC(DataSetVectorLabelC self)"},
 	 { (char *)"DataSetVectorLabelC_swigregister", DataSetVectorLabelC_swigregister, METH_VARARGS, NULL},
@@ -71164,12 +72039,11 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_DesignClassifierSupervisedC", _wrap_delete_DesignClassifierSupervisedC, METH_VARARGS, (char *)"delete_DesignClassifierSupervisedC(DesignClassifierSupervisedC self)"},
 	 { (char *)"DesignClassifierSupervisedC_swigregister", DesignClassifierSupervisedC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DesignDiscriminantFunctionC", _wrap_new_DesignDiscriminantFunctionC, METH_VARARGS, (char *)"new_DesignDiscriminantFunctionC(DesignFunctionSupervisedC designFunc) -> DesignDiscriminantFunctionC"},
-	 { (char *)"DesignDiscriminantFunctionC_Apply", _wrap_DesignDiscriminantFunctionC_Apply, METH_VARARGS, (char *)"\n"
-		"DesignDiscriminantFunctionC_Apply(DesignDiscriminantFunctionC self, SampleOfVectorC data, \n"
-		"    SampleOfUInt out) -> ClassifierDiscriminantFunctionC\n"
-		""},
 	 { (char *)"delete_DesignDiscriminantFunctionC", _wrap_delete_DesignDiscriminantFunctionC, METH_VARARGS, (char *)"delete_DesignDiscriminantFunctionC(DesignDiscriminantFunctionC self)"},
 	 { (char *)"DesignDiscriminantFunctionC_swigregister", DesignDiscriminantFunctionC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignKNearestNeighbourC", _wrap_new_DesignKNearestNeighbourC, METH_VARARGS, (char *)"new_DesignKNearestNeighbourC(UIntT k) -> DesignKNearestNeighbourC"},
+	 { (char *)"delete_DesignKNearestNeighbourC", _wrap_delete_DesignKNearestNeighbourC, METH_VARARGS, (char *)"delete_DesignKNearestNeighbourC(DesignKNearestNeighbourC self)"},
+	 { (char *)"DesignKNearestNeighbourC_swigregister", DesignKNearestNeighbourC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DesignClassifierNeuralNetwork2C", _wrap_new_DesignClassifierNeuralNetwork2C, METH_VARARGS, (char *)"\n"
 		"DesignClassifierNeuralNetwork2C(UIntT nLayers, UIntT nHidden, bool doNormalisation, \n"
 		"    RealT regularisation = 0, RealT desiredError = 0.00001, \n"
@@ -71192,6 +72066,42 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_DesignClassifierLogisticRegressionC", _wrap_new_DesignClassifierLogisticRegressionC, METH_VARARGS, (char *)"new_DesignClassifierLogisticRegressionC(RealT regularisation) -> DesignClassifierLogisticRegressionC"},
 	 { (char *)"delete_DesignClassifierLogisticRegressionC", _wrap_delete_DesignClassifierLogisticRegressionC, METH_VARARGS, (char *)"delete_DesignClassifierLogisticRegressionC(DesignClassifierLogisticRegressionC self)"},
 	 { (char *)"DesignClassifierLogisticRegressionC_swigregister", DesignClassifierLogisticRegressionC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_KernelFunctionC", _wrap_new_KernelFunctionC, METH_VARARGS, (char *)"new_KernelFunctionC() -> KernelFunctionC"},
+	 { (char *)"delete_KernelFunctionC", _wrap_delete_KernelFunctionC, METH_VARARGS, (char *)"delete_KernelFunctionC(KernelFunctionC self)"},
+	 { (char *)"KernelFunctionC_swigregister", KernelFunctionC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_LinearKernelC", _wrap_new_LinearKernelC, METH_VARARGS, (char *)"new_LinearKernelC(RealT scale) -> LinearKernelC"},
+	 { (char *)"delete_LinearKernelC", _wrap_delete_LinearKernelC, METH_VARARGS, (char *)"delete_LinearKernelC(LinearKernelC self)"},
+	 { (char *)"LinearKernelC_swigregister", LinearKernelC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_QuadraticKernelC", _wrap_new_QuadraticKernelC, METH_VARARGS, (char *)"new_QuadraticKernelC(RealT scale) -> QuadraticKernelC"},
+	 { (char *)"delete_QuadraticKernelC", _wrap_delete_QuadraticKernelC, METH_VARARGS, (char *)"delete_QuadraticKernelC(QuadraticKernelC self)"},
+	 { (char *)"QuadraticKernelC_swigregister", QuadraticKernelC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"delete_PolynomialKernelC", _wrap_delete_PolynomialKernelC, METH_VARARGS, (char *)"delete_PolynomialKernelC(PolynomialKernelC self)"},
+	 { (char *)"PolynomialKernelC_swigregister", PolynomialKernelC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_RBFKernelC", _wrap_new_RBFKernelC, METH_VARARGS, (char *)"new_RBFKernelC(RealT gamma) -> RBFKernelC"},
+	 { (char *)"delete_RBFKernelC", _wrap_delete_RBFKernelC, METH_VARARGS, (char *)"delete_RBFKernelC(RBFKernelC self)"},
+	 { (char *)"RBFKernelC_swigregister", RBFKernelC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_Chi2KernelC", _wrap_new_Chi2KernelC, METH_VARARGS, (char *)"new_Chi2KernelC(RealT gamma) -> Chi2KernelC"},
+	 { (char *)"delete_Chi2KernelC", _wrap_delete_Chi2KernelC, METH_VARARGS, (char *)"delete_Chi2KernelC(Chi2KernelC self)"},
+	 { (char *)"Chi2KernelC_swigregister", Chi2KernelC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignSvmC", _wrap_new_DesignSvmC, METH_VARARGS, (char *)"new_DesignSvmC() -> DesignSvmC"},
+	 { (char *)"delete_DesignSvmC", _wrap_delete_DesignSvmC, METH_VARARGS, (char *)"delete_DesignSvmC(DesignSvmC self)"},
+	 { (char *)"DesignSvmC_swigregister", DesignSvmC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignSvmSmoC", _wrap_new_DesignSvmSmoC, METH_VARARGS, (char *)"\n"
+		"DesignSvmSmoC(KernelFunctionC KernelFunction, RealT Penalty1 = 1000, \n"
+		"    RealT Penalty2 = 1000, RealT Tolerance = 0.0000001, \n"
+		"    RealT Eps = 0.000000001, RealT LambdaThreshold = 0.000000000001)\n"
+		"DesignSvmSmoC(KernelFunctionC KernelFunction, RealT Penalty1 = 1000, \n"
+		"    RealT Penalty2 = 1000, RealT Tolerance = 0.0000001, \n"
+		"    RealT Eps = 0.000000001)\n"
+		"DesignSvmSmoC(KernelFunctionC KernelFunction, RealT Penalty1 = 1000, \n"
+		"    RealT Penalty2 = 1000, RealT Tolerance = 0.0000001)\n"
+		"DesignSvmSmoC(KernelFunctionC KernelFunction, RealT Penalty1 = 1000, \n"
+		"    RealT Penalty2 = 1000)\n"
+		"DesignSvmSmoC(KernelFunctionC KernelFunction, RealT Penalty1 = 1000)\n"
+		"new_DesignSvmSmoC(KernelFunctionC KernelFunction) -> DesignSvmSmoC\n"
+		""},
+	 { (char *)"delete_DesignSvmSmoC", _wrap_delete_DesignSvmSmoC, METH_VARARGS, (char *)"delete_DesignSvmSmoC(DesignSvmSmoC self)"},
+	 { (char *)"DesignSvmSmoC_swigregister", DesignSvmSmoC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ErrorC", _wrap_new_ErrorC, METH_VARARGS, (char *)"new_ErrorC() -> ErrorC"},
 	 { (char *)"ErrorC_Error", _wrap_ErrorC_Error, METH_VARARGS, (char *)"ErrorC_Error(ErrorC self, ClassifierC classifier, DataSetVectorLabelC dset) -> RealT"},
 	 { (char *)"delete_ErrorC", _wrap_delete_ErrorC, METH_VARARGS, (char *)"delete_ErrorC(ErrorC self)"},
@@ -71293,11 +72203,20 @@ static void *_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_tTo_p_RavlN__Array
 static void *_p_RavlN__DesignClassifierNeuralNetwork2CTo_p_RavlN__DesignClassifierSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DesignClassifierSupervisedC *)  ((RavlN::DesignClassifierNeuralNetwork2C *) x));
 }
+static void *_p_RavlN__DesignKNearestNeighbourCTo_p_RavlN__DesignClassifierSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignClassifierSupervisedC *)  ((RavlN::DesignKNearestNeighbourC *) x));
+}
 static void *_p_RavlN__DesignClassifierLogisticRegressionCTo_p_RavlN__DesignClassifierSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DesignClassifierSupervisedC *)  ((RavlN::DesignClassifierLogisticRegressionC *) x));
 }
+static void *_p_RavlN__DesignSvmCTo_p_RavlN__DesignClassifierSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignClassifierSupervisedC *)  ((RavlN::DesignSvmC *) x));
+}
 static void *_p_RavlN__DesignDiscriminantFunctionCTo_p_RavlN__DesignClassifierSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DesignClassifierSupervisedC *)  ((RavlN::DesignDiscriminantFunctionC *) x));
+}
+static void *_p_RavlN__DesignSvmSmoCTo_p_RavlN__DesignClassifierSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignClassifierSupervisedC *) (RavlN::DesignSvmC *) ((RavlN::DesignSvmSmoC *) x));
 }
 static void *_p_RavlN__DesignFuncLSQCTo_p_RavlN__DesignFunctionSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DesignFunctionSupervisedC *)  ((RavlN::DesignFuncLSQC *) x));
@@ -71307,6 +72226,9 @@ static void *_p_RavlN__ClassifierDiscriminantFunctionCTo_p_RavlN__ClassifierC(vo
 }
 static void *_p_RavlN__MatrixRUTCTo_p_RavlN__MatrixC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::MatrixC *)  ((RavlN::MatrixRUTC *) x));
+}
+static void *_p_RavlN__DesignSvmSmoCTo_p_RavlN__DesignSvmC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignSvmC *)  ((RavlN::DesignSvmSmoC *) x));
 }
 static void *_p_RavlN__Polygon2dCTo_p_RavlN__PointSet2dC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::PointSet2dC *)  ((RavlN::Polygon2dC *) x));
@@ -71328,6 +72250,21 @@ static void *_p_RavlN__SampleLabelCTo_p_RavlN__SampleCT_unsigned_int_t(void *x, 
 }
 static void *_p_RavlN__ConstDLIterCT_unsigned_int_tTo_p_RavlN__DLIterCT_unsigned_int_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DLIterC< unsigned int > *)  ((RavlN::ConstDLIterC< unsigned int > *) x));
+}
+static void *_p_RavlN__LinearKernelCTo_p_RavlN__KernelFunctionC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::KernelFunctionC *)  ((RavlN::LinearKernelC *) x));
+}
+static void *_p_RavlN__QuadraticKernelCTo_p_RavlN__KernelFunctionC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::KernelFunctionC *)  ((RavlN::QuadraticKernelC *) x));
+}
+static void *_p_RavlN__PolynomialKernelCTo_p_RavlN__KernelFunctionC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::KernelFunctionC *)  ((RavlN::PolynomialKernelC *) x));
+}
+static void *_p_RavlN__RBFKernelCTo_p_RavlN__KernelFunctionC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::KernelFunctionC *)  ((RavlN::RBFKernelC *) x));
+}
+static void *_p_RavlN__Chi2KernelCTo_p_RavlN__KernelFunctionC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::KernelFunctionC *)  ((RavlN::Chi2KernelC *) x));
 }
 static void *_p_RavlN__Polygon2dCTo_p_RavlN__DListCT_RavlN__Point2dC_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DListC< RavlN::Point2dC > *) (RavlN::PointSet2dC *) ((RavlN::Polygon2dC *) x));
@@ -71355,6 +72292,7 @@ static swig_type_info _swigt__p_RavlN__Array2dCT_RavlImageN__ByteRGBValueC_t = {
 static swig_type_info _swigt__p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t = {"_p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t", "RavlN::Array2dC< RavlImageN::RealRGBValueC > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__Array2dCT_double_t = {"_p_RavlN__Array2dCT_double_t", "RavlN::Array2dC< RavlN::RealT > *|RavlN::Array2dC< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__Array2dCT_unsigned_char_t = {"_p_RavlN__Array2dCT_unsigned_char_t", "RavlN::Array2dC< unsigned char > *|RavlN::Array2dC< RavlN::ByteT > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__Chi2KernelC = {"_p_RavlN__Chi2KernelC", "RavlN::Chi2KernelC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ClassifierC = {"_p_RavlN__ClassifierC", "RavlN::ClassifierC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ClassifierDiscriminantFunctionC = {"_p_RavlN__ClassifierDiscriminantFunctionC", "RavlN::ClassifierDiscriminantFunctionC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ConstDLIterCT_double_t = {"_p_RavlN__ConstDLIterCT_double_t", "RavlN::ConstDLIterC< RavlN::RealT > *|RavlN::ConstDLIterC< double > *", 0, 0, (void*)0, 0};
@@ -71389,6 +72327,9 @@ static swig_type_info _swigt__p_RavlN__DesignClassifierSupervisedC = {"_p_RavlN_
 static swig_type_info _swigt__p_RavlN__DesignDiscriminantFunctionC = {"_p_RavlN__DesignDiscriminantFunctionC", "RavlN::DesignDiscriminantFunctionC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignFuncLSQC = {"_p_RavlN__DesignFuncLSQC", "RavlN::DesignFuncLSQC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignFunctionSupervisedC = {"_p_RavlN__DesignFunctionSupervisedC", "RavlN::DesignFunctionSupervisedC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignKNearestNeighbourC = {"_p_RavlN__DesignKNearestNeighbourC", "RavlN::DesignKNearestNeighbourC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignSvmC = {"_p_RavlN__DesignSvmC", "RavlN::DesignSvmC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignSvmSmoC = {"_p_RavlN__DesignSvmSmoC", "RavlN::DesignSvmSmoC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ErrorC = {"_p_RavlN__ErrorC", "RavlN::ErrorC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__FunctionC = {"_p_RavlN__FunctionC", "RavlN::FunctionC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__GnuPlot2dC = {"_p_RavlN__GnuPlot2dC", "RavlN::GnuPlot2dC *", 0, 0, (void*)0, 0};
@@ -71398,12 +72339,17 @@ static swig_type_info _swigt__p_RavlN__Index2dC = {"_p_RavlN__Index2dC", "RavlN:
 static swig_type_info _swigt__p_RavlN__IndexC = {"_p_RavlN__IndexC", "RavlN::IndexC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__IndexRange2dC = {"_p_RavlN__IndexRange2dC", "RavlN::IndexRange2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__IndexRangeC = {"_p_RavlN__IndexRangeC", "RavlN::IndexRangeC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__KernelFunctionC = {"_p_RavlN__KernelFunctionC", "RavlN::KernelFunctionC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__LinearKernelC = {"_p_RavlN__LinearKernelC", "RavlN::LinearKernelC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__MatrixC = {"_p_RavlN__MatrixC", "RavlN::MatrixC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__MatrixRUTC = {"_p_RavlN__MatrixRUTC", "RavlN::MatrixRUTC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__MeanCovarianceC = {"_p_RavlN__MeanCovarianceC", "RavlN::MeanCovarianceC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__Point2dC = {"_p_RavlN__Point2dC", "RavlN::Point2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__PointSet2dC = {"_p_RavlN__PointSet2dC", "RavlN::PointSet2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__Polygon2dC = {"_p_RavlN__Polygon2dC", "RavlN::Polygon2dC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__PolynomialKernelC = {"_p_RavlN__PolynomialKernelC", "RavlN::PolynomialKernelC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__QuadraticKernelC = {"_p_RavlN__QuadraticKernelC", "RavlN::QuadraticKernelC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__RBFKernelC = {"_p_RavlN__RBFKernelC", "RavlN::RBFKernelC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t = {"_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t", "RavlN::RCHashC< unsigned int,RavlN::StringC > *|RavlN::RCHashC< RavlN::UIntT,RavlN::StringC > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RealRange2dC = {"_p_RavlN__RealRange2dC", "RavlN::RealRange2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RealRangeC = {"_p_RavlN__RealRangeC", "RavlN::RealRangeC *", 0, 0, (void*)0, 0};
@@ -71464,6 +72410,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t,
   &_swigt__p_RavlN__Array2dCT_double_t,
   &_swigt__p_RavlN__Array2dCT_unsigned_char_t,
+  &_swigt__p_RavlN__Chi2KernelC,
   &_swigt__p_RavlN__ClassifierC,
   &_swigt__p_RavlN__ClassifierDiscriminantFunctionC,
   &_swigt__p_RavlN__ConstDLIterCT_double_t,
@@ -71498,6 +72445,9 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RavlN__DesignDiscriminantFunctionC,
   &_swigt__p_RavlN__DesignFuncLSQC,
   &_swigt__p_RavlN__DesignFunctionSupervisedC,
+  &_swigt__p_RavlN__DesignKNearestNeighbourC,
+  &_swigt__p_RavlN__DesignSvmC,
+  &_swigt__p_RavlN__DesignSvmSmoC,
   &_swigt__p_RavlN__ErrorC,
   &_swigt__p_RavlN__FunctionC,
   &_swigt__p_RavlN__GnuPlot2dC,
@@ -71507,12 +72457,17 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RavlN__IndexC,
   &_swigt__p_RavlN__IndexRange2dC,
   &_swigt__p_RavlN__IndexRangeC,
+  &_swigt__p_RavlN__KernelFunctionC,
+  &_swigt__p_RavlN__LinearKernelC,
   &_swigt__p_RavlN__MatrixC,
   &_swigt__p_RavlN__MatrixRUTC,
   &_swigt__p_RavlN__MeanCovarianceC,
   &_swigt__p_RavlN__Point2dC,
   &_swigt__p_RavlN__PointSet2dC,
   &_swigt__p_RavlN__Polygon2dC,
+  &_swigt__p_RavlN__PolynomialKernelC,
+  &_swigt__p_RavlN__QuadraticKernelC,
+  &_swigt__p_RavlN__RBFKernelC,
   &_swigt__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t,
   &_swigt__p_RavlN__RealRange2dC,
   &_swigt__p_RavlN__RealRangeC,
@@ -71573,6 +72528,7 @@ static swig_cast_info _swigc__p_RavlN__Array2dCT_RavlImageN__ByteRGBValueC_t[] =
 static swig_cast_info _swigc__p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t[] = {  {&_swigt__p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__Array2dCT_double_t[] = {  {&_swigt__p_RavlN__Array2dCT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__Array2dCT_unsigned_char_t[] = {  {&_swigt__p_RavlN__Array2dCT_unsigned_char_t, 0, 0, 0},  {&_swigt__p_RavlImageN__ImageCT_unsigned_char_t, _p_RavlImageN__ImageCT_unsigned_char_tTo_p_RavlN__Array2dCT_unsigned_char_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__Chi2KernelC[] = {  {&_swigt__p_RavlN__Chi2KernelC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ClassifierC[] = {  {&_swigt__p_RavlN__ClassifierC, 0, 0, 0},  {&_swigt__p_RavlN__ClassifierDiscriminantFunctionC, _p_RavlN__ClassifierDiscriminantFunctionCTo_p_RavlN__ClassifierC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ClassifierDiscriminantFunctionC[] = {  {&_swigt__p_RavlN__ClassifierDiscriminantFunctionC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ConstDLIterCT_double_t[] = {  {&_swigt__p_RavlN__ConstDLIterCT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -71603,10 +72559,13 @@ static swig_cast_info _swigc__p_RavlN__DataSetVectorLabelC[] = {  {&_swigt__p_Ra
 static swig_cast_info _swigc__p_RavlN__DateC[] = {  {&_swigt__p_RavlN__DateC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignClassifierLogisticRegressionC[] = {  {&_swigt__p_RavlN__DesignClassifierLogisticRegressionC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignClassifierNeuralNetwork2C[] = {  {&_swigt__p_RavlN__DesignClassifierNeuralNetwork2C, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_RavlN__DesignClassifierSupervisedC[] = {  {&_swigt__p_RavlN__DesignClassifierNeuralNetwork2C, _p_RavlN__DesignClassifierNeuralNetwork2CTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignClassifierLogisticRegressionC, _p_RavlN__DesignClassifierLogisticRegressionCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignClassifierSupervisedC, 0, 0, 0},  {&_swigt__p_RavlN__DesignDiscriminantFunctionC, _p_RavlN__DesignDiscriminantFunctionCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignClassifierSupervisedC[] = {  {&_swigt__p_RavlN__DesignClassifierNeuralNetwork2C, _p_RavlN__DesignClassifierNeuralNetwork2CTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignKNearestNeighbourC, _p_RavlN__DesignKNearestNeighbourCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignClassifierLogisticRegressionC, _p_RavlN__DesignClassifierLogisticRegressionCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignSvmC, _p_RavlN__DesignSvmCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignClassifierSupervisedC, 0, 0, 0},  {&_swigt__p_RavlN__DesignDiscriminantFunctionC, _p_RavlN__DesignDiscriminantFunctionCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignSvmSmoC, _p_RavlN__DesignSvmSmoCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignDiscriminantFunctionC[] = {  {&_swigt__p_RavlN__DesignDiscriminantFunctionC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignFuncLSQC[] = {  {&_swigt__p_RavlN__DesignFuncLSQC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignFunctionSupervisedC[] = {  {&_swigt__p_RavlN__DesignFuncLSQC, _p_RavlN__DesignFuncLSQCTo_p_RavlN__DesignFunctionSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignFunctionSupervisedC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignKNearestNeighbourC[] = {  {&_swigt__p_RavlN__DesignKNearestNeighbourC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignSvmC[] = {  {&_swigt__p_RavlN__DesignSvmC, 0, 0, 0},  {&_swigt__p_RavlN__DesignSvmSmoC, _p_RavlN__DesignSvmSmoCTo_p_RavlN__DesignSvmC, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignSvmSmoC[] = {  {&_swigt__p_RavlN__DesignSvmSmoC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ErrorC[] = {  {&_swigt__p_RavlN__ErrorC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__FunctionC[] = {  {&_swigt__p_RavlN__FunctionC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__GnuPlot2dC[] = {  {&_swigt__p_RavlN__GnuPlot2dC, 0, 0, 0},{0, 0, 0, 0}};
@@ -71616,12 +72575,17 @@ static swig_cast_info _swigc__p_RavlN__Index2dC[] = {  {&_swigt__p_RavlN__Index2
 static swig_cast_info _swigc__p_RavlN__IndexC[] = {  {&_swigt__p_RavlN__IndexC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__IndexRange2dC[] = {  {&_swigt__p_RavlN__IndexRange2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__IndexRangeC[] = {  {&_swigt__p_RavlN__IndexRangeC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__KernelFunctionC[] = {  {&_swigt__p_RavlN__KernelFunctionC, 0, 0, 0},  {&_swigt__p_RavlN__LinearKernelC, _p_RavlN__LinearKernelCTo_p_RavlN__KernelFunctionC, 0, 0},  {&_swigt__p_RavlN__QuadraticKernelC, _p_RavlN__QuadraticKernelCTo_p_RavlN__KernelFunctionC, 0, 0},  {&_swigt__p_RavlN__PolynomialKernelC, _p_RavlN__PolynomialKernelCTo_p_RavlN__KernelFunctionC, 0, 0},  {&_swigt__p_RavlN__RBFKernelC, _p_RavlN__RBFKernelCTo_p_RavlN__KernelFunctionC, 0, 0},  {&_swigt__p_RavlN__Chi2KernelC, _p_RavlN__Chi2KernelCTo_p_RavlN__KernelFunctionC, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__LinearKernelC[] = {  {&_swigt__p_RavlN__LinearKernelC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__MatrixC[] = {  {&_swigt__p_RavlN__MatrixC, 0, 0, 0},  {&_swigt__p_RavlN__MatrixRUTC, _p_RavlN__MatrixRUTCTo_p_RavlN__MatrixC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__MatrixRUTC[] = {  {&_swigt__p_RavlN__MatrixRUTC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__MeanCovarianceC[] = {  {&_swigt__p_RavlN__MeanCovarianceC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__Point2dC[] = {  {&_swigt__p_RavlN__Point2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__PointSet2dC[] = {  {&_swigt__p_RavlN__Polygon2dC, _p_RavlN__Polygon2dCTo_p_RavlN__PointSet2dC, 0, 0},  {&_swigt__p_RavlN__PointSet2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__Polygon2dC[] = {  {&_swigt__p_RavlN__Polygon2dC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__PolynomialKernelC[] = {  {&_swigt__p_RavlN__PolynomialKernelC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__QuadraticKernelC[] = {  {&_swigt__p_RavlN__QuadraticKernelC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__RBFKernelC[] = {  {&_swigt__p_RavlN__RBFKernelC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t[] = {  {&_swigt__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RealRange2dC[] = {  {&_swigt__p_RavlN__RealRange2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RealRangeC[] = {  {&_swigt__p_RavlN__RealRangeC, 0, 0, 0},{0, 0, 0, 0}};
@@ -71682,6 +72646,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RavlN__Array2dCT_RavlImageN__RealRGBValueC_t,
   _swigc__p_RavlN__Array2dCT_double_t,
   _swigc__p_RavlN__Array2dCT_unsigned_char_t,
+  _swigc__p_RavlN__Chi2KernelC,
   _swigc__p_RavlN__ClassifierC,
   _swigc__p_RavlN__ClassifierDiscriminantFunctionC,
   _swigc__p_RavlN__ConstDLIterCT_double_t,
@@ -71716,6 +72681,9 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RavlN__DesignDiscriminantFunctionC,
   _swigc__p_RavlN__DesignFuncLSQC,
   _swigc__p_RavlN__DesignFunctionSupervisedC,
+  _swigc__p_RavlN__DesignKNearestNeighbourC,
+  _swigc__p_RavlN__DesignSvmC,
+  _swigc__p_RavlN__DesignSvmSmoC,
   _swigc__p_RavlN__ErrorC,
   _swigc__p_RavlN__FunctionC,
   _swigc__p_RavlN__GnuPlot2dC,
@@ -71725,12 +72693,17 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RavlN__IndexC,
   _swigc__p_RavlN__IndexRange2dC,
   _swigc__p_RavlN__IndexRangeC,
+  _swigc__p_RavlN__KernelFunctionC,
+  _swigc__p_RavlN__LinearKernelC,
   _swigc__p_RavlN__MatrixC,
   _swigc__p_RavlN__MatrixRUTC,
   _swigc__p_RavlN__MeanCovarianceC,
   _swigc__p_RavlN__Point2dC,
   _swigc__p_RavlN__PointSet2dC,
   _swigc__p_RavlN__Polygon2dC,
+  _swigc__p_RavlN__PolynomialKernelC,
+  _swigc__p_RavlN__QuadraticKernelC,
+  _swigc__p_RavlN__RBFKernelC,
   _swigc__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t,
   _swigc__p_RavlN__RealRange2dC,
   _swigc__p_RavlN__RealRangeC,

@@ -13,7 +13,7 @@
 #undef Copy
 #endif
 
-#include "Ravl/PatternRec/DesignDiscriminantFunction.hh"
+#include "Ravl/PatternRec/DesignKNearestNeighbour.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -22,10 +22,13 @@
 
 namespace RavlN {
 
-  class DesignDiscriminantFunctionC : public DesignClassifierSupervisedC {
+  class DesignKNearestNeighbourC : public DesignClassifierSupervisedC {
 public:
 
-    DesignDiscriminantFunctionC(const DesignFunctionSupervisedC & designFunc);
-	    
+   
+    DesignKNearestNeighbourC(UIntT k);
+	// Design K-nearest neighbour classifier
+    
+    
   };
 }

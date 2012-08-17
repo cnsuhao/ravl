@@ -60,4 +60,15 @@ namespace RavlN {
     //: General method to send a command to the plotting library
 
   };
+	
+  %pythoncode %{
+  	def Plot(data, title = "My Data"):
+  		"""
+  		Try to automatically plot anything then GnuPlot2d is capable of
+  		"""
+  		gnuplot = GnuPlot2dC(title)
+  		gnuplot.Plot(data)
+  		return gnuplot 
+  %}
+
 }
