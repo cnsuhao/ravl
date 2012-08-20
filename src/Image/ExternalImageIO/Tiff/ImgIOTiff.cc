@@ -8,9 +8,13 @@
 //! lib=RavlExtImgIO
 //! file="Ravl/Image/ExternalImageIO/Tiff/ImgIOTiff.cc"
 
+#define RAVLIMAGE_IMGIOTIFF_CCFILE	1
+// Needed to control definition of TIFF in TiffIF.hh
+
 #include "Ravl/Image/ImgIOTiff.hh"
 #include "Ravl/Image/ImgIOTiffB.hh"
 #include "Ravl/Array2dIter.hh"
+#include "Ravl/Image/TiffIF.hh"
 #include <ctype.h>
 
 #define DPDEBUG 0
@@ -32,7 +36,7 @@ namespace RavlImageN {
   
   DPImageIOTIFFBaseC::~DPImageIOTIFFBaseC() {
     if(tif != 0) {
-      TIFFClose(tif);
+      TIFF.Close(tif);
       ONDEBUG(tif = 0);
     }
   }
@@ -45,7 +49,7 @@ namespace RavlImageN {
     : done(false)
   {
     ONDEBUG(std::cerr << "DPOImageTIFFByteRGBABodyC(), Open file '" << fn << "' \n");
-    tif = TIFFOpen(fn.chars(),"w");
+    tif = TIFF.Open(fn.chars(),"w");
   }
   
   //: Constructor from stream.
@@ -55,7 +59,7 @@ namespace RavlImageN {
       done(false)
   {
     ONDEBUG(std::cerr << "DPOImageTIFFByteRGBABodyC(), Open stream '" << strm.Name() << "' \n");
-    tif = TIFFClientOpen(outf.Name().chars(),"w",
+    tif = TIFF.ClientOpen(outf.Name().chars(),"w",
 			 (thandle_t)this,
 			 &TIFFReadProc, &TIFFWriteProc,
 			 &TIFFSeekProc, &TIFFCloseProc,
@@ -84,24 +88,24 @@ namespace RavlImageN {
     
     uint32 rowsperstrip = (uint32) -1;
     
-    TIFFSetField(tif, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
-    TIFFSetField(tif, TIFFTAG_IMAGEWIDTH, w);
-    TIFFSetField(tif, TIFFTAG_IMAGELENGTH, h);
-    TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-    TIFFSetField(tif, TIFFTAG_SAMPLESPERPIXEL, 4);
-    TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE,8);
-    TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
-    TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP,
-		 TIFFDefaultStripSize(tif,rowsperstrip));
-    TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW);
+    TIFF.SetField(tif, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
+    TIFF.SetField(tif, TIFFTAG_IMAGEWIDTH, w);
+    TIFF.SetField(tif, TIFFTAG_IMAGELENGTH, h);
+    TIFF.SetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
+    TIFF.SetField(tif, TIFFTAG_SAMPLESPERPIXEL, 4);
+    TIFF.SetField(tif, TIFFTAG_BITSPERSAMPLE,8);
+    TIFF.SetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
+    TIFF.SetField(tif, TIFFTAG_ROWSPERSTRIP,
+		 TIFF.DefaultStripSize(tif,rowsperstrip));
+    TIFF.SetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW);
     
     const IndexC offset = img.LCol();
     
     ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC::Put(), TRow:" << img.TRow() << " BRow:" << img.BRow() << " . \n");
     for (IndexC row = img.TRow(); row <= img.BRow(); row++)
-      TIFFWriteScanline(tif,(char *) &(img[row][offset]), row.V(),0);
+      TIFF.WriteScanline(tif,(char *) &(img[row][offset]), row.V(),0);
     
-    TIFFFlush(tif);
+    TIFF.Flush(tif);
     done = true;
     return true;
   }
@@ -167,7 +171,7 @@ namespace RavlImageN {
   : done(false)
   {
     ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC(), Open file '" << fn << "' \n");
-    tif = TIFFOpen(fn.chars(),"r");
+    tif = TIFF.Open(fn.chars(),"r");
   }
   
   
@@ -178,7 +182,7 @@ namespace RavlImageN {
       done(false)
   {
     ONDEBUG(std::cerr << "DPIImageTIFFByteRGBABodyC(), Open std::istream \n");
-    tif = TIFFClientOpen(inf.Name().chars(),"r",
+    tif = TIFF.ClientOpen(inf.Name().chars(),"r",
 			 (thandle_t)this,
 			 &TIFFReadProc, &TIFFWriteProc,
 			 &TIFFSeekProc, &TIFFCloseProc,
@@ -212,7 +216,7 @@ namespace RavlImageN {
     TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &w);
     TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &h);
     npixels = w * h;
-    raster = (uint32*) _TIFFmalloc(npixels * sizeof (uint32));
+    raster = (uint32*) TIFF.malloc(npixels * sizeof (uint32));
     if (raster == NULL)
       throw DataNotReadyC("DPIImageTIFFByteRGBABodyC: Allocation failed.. ");
     
@@ -224,24 +228,24 @@ namespace RavlImageN {
     TIFFRGBAImage tiffimg;
     char emsg[1024];
     
-    if (!TIFFRGBAImageBegin(&tiffimg, tif, 0, emsg)) 
+    if (!TIFF.RGBAImageBegin(&tiffimg, tif, 0, emsg)) 
     {
       throw DataNotReadyC("DPIImageTIFFByteRGBABodyC: ImageBegin failed.. ");
     }
 
     npixels = tiffimg.width * tiffimg.height;
     UIntT allocSize = npixels * sizeof (uint32);
-    raster = (uint32*) _TIFFmalloc(allocSize);
+    raster = (uint32*) TIFF.malloc(allocSize);
     if (raster == 0)
     {
-      TIFFRGBAImageEnd(&tiffimg);
+      TIFF.RGBAImageEnd(&tiffimg);
       throw DataNotReadyC("DPIImageTIFFByteRGBABodyC: Allocation failed.. ");
     }
     
-    if (!TIFFRGBAImageGet(&tiffimg, raster, tiffimg.width, tiffimg.height)) 
+    if (!TIFF.RGBAImageGet(&tiffimg, raster, tiffimg.width, tiffimg.height)) 
     {
-      _TIFFfree(raster);
-      TIFFRGBAImageEnd(&tiffimg);
+      TIFF.free(raster);
+      TIFF.RGBAImageEnd(&tiffimg);
       throw DataNotReadyC("DPIImageTIFFByteRGBABodyC: Allocation failed.. ");
     }
 
@@ -260,7 +264,7 @@ namespace RavlImageN {
       case ORIENTATION_BOTLEFT:
       {
 #ifndef __sgi__
-	_TIFFmemcpy(img.Row(0), raster, allocSize);
+	TIFF.memcpy(img.Row(0), raster, allocSize);
 #else
 	UIntT h = tiffimg.height;
 	UIntT w = tiffimg.width;
@@ -311,9 +315,9 @@ namespace RavlImageN {
       } 
     }
 
-    TIFFRGBAImageEnd(&tiffimg);
+    TIFF.RGBAImageEnd(&tiffimg);
 #endif
-    _TIFFfree(raster);
+    TIFF.free(raster);
     done = true;
     return img;
   }

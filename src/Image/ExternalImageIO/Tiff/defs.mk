@@ -18,8 +18,10 @@ PLIB = RavlExtImgIO
 
 LIBDEPS = RavlTIFF.def
 
-HEADERS = ImgIOTiff.hh ImgIOTiffB.hh TiffFormat.hh
+HEADERS = ImgIOTiff.hh ImgIOTiffB.hh TiffFormat.hh TiffIF.hh
 
 SOURCES = ImgIOTiff.cc TiffFormat.cc 
 
-USESLIBS = RavlImage RavlIO RavlImageIO LibTIFF
+USESLIBS = RavlOSIO RavlImage RavlIO RavlImageIO
+
+INCLUDES += $(LibTIFF_CFLAGS)

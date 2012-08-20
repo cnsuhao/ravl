@@ -13,8 +13,6 @@
 #include "Ravl/Image/ImgIOTiff.hh"
 #include <ctype.h>
 
-#define USE_TIFFWRITE 1
-
 #define DPDEBUG 0
 #if DPDEBUG
 #define ONDEBUG(x) x
@@ -131,10 +129,4 @@ namespace RavlImageN {
     return typeid(ImageC<ByteRGBAValueC>); 
   }
 
-#if USE_TIFFWRITE
-  FileFormatTIFFC RegisterFileFormatTIFF("tiff","Tiff file IO. ");
-#else
-  FileFormatTIFFC RegisterFileFormatTIFF("tiff","Tiff file IO. (only reading supported)");
-#endif
-  
 }

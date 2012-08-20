@@ -20,7 +20,7 @@ MUSTLINK =  ExtImgIO.cc
 
 EXAMPLES = exExtImgIO.cc exImgMemIO.cc
 
-USESLIBS = RavlImage RavlIO RavlImageIO LibJPEG LibPNG LibTIFF
+USESLIBS = RavlOSIO RavlImage RavlIO RavlImageIO LibJPEG LibPNG
 
 PROGLIBS = RavlDPDisplay.opt
 
