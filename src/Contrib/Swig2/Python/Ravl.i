@@ -75,8 +75,13 @@ namespace RavlGUIN
 %include "Ravl/Swig2/DesignFuncLSQ.i"
 %include "Ravl/Swig2/DesignClassifierSupervised.i"
 %include "Ravl/Swig2/DesignDiscriminantFunction.i"
+%include "Ravl/Swig2/DesignKNearestNeighbour.i"
 %include "Ravl/Swig2/DesignClassifierNeuralNetwork2.i"
 %include "Ravl/Swig2/DesignClassifierLogisticRegression.i"
+%include "Ravl/Swig2/CommonKernels.i"
+%include "Ravl/Swig2/DesignSvm.i"
+%include "Ravl/Swig2/DesignClassifierSvmSmo.i"
+
 %include "Ravl/Swig2/Error.i"
 %include "Ravl/Swig2/GnuPlot2d.i"
 

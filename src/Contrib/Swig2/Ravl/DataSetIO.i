@@ -18,6 +18,26 @@ namespace RavlN
 
   //! A function that loads a DataSetVectorLabel file.  If the filename has csv extension, it is loaded from CSV format.
   bool LoadDataSetVectorLabel(const StringC & filename, DataSetVectorLabelC & dataset);
+  
+  %pythoncode %{
+  	def LoadDataSet(filename):
+  		"""
+  		Load a Ravl data set from file
+  		"""
+  		dataSet = DataSetVectorLabelC()
+  		if LoadDataSetVectorLabel(filename, dataSet) == False:
+  			raise RuntimeError("Unable to load dataset")
+  		return dataSet 
+  		
+  	def SaveDataSet(filename, dataSet):
+  		"""
+  		Save a Ravl data set to file
+  		"""
+  		if SaveDataSetVectorLabel(filename, dataSet) == False:
+  			raise RuntimeError("Failed to save dataset")
+  		return False 
+  %}
+  
 
   //! Load a DataSetVectorLabel and perform some common operations on it.
   bool LoadDataSetVectorLabel(const StringC & dataSetFile,

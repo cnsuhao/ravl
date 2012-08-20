@@ -19,7 +19,7 @@ SINGLESO=_RavlSwigPython2
 
 USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO \
 		RavlExtImgIO Python RavlNet RavlOSIO RavlDataSet RavlPatternRec RavlPatternRecIO \
-		RavlGnuPlot
+		RavlGnuPlot RavlSVM
 
 PROGLIBS=RavlMath
 

@@ -58,8 +58,12 @@ HEADERS=	Size.i \
  			DesignFuncLSQ.i \
  			DesignClassifierSupervised.i \
  			DesignDiscriminantFunction.i \
+ 			DesignKNearestNeighbour.i \
  			DesignClassifierNeuralNetwork2.i \
  			DesignClassifierLogisticRegression.i \
+ 			CommonKernels.i \
+ 			DesignSvm.i \
+ 			DesignClassifierSvmSmo.i \
  			Error.i \
  			GnuPlot2d.i
 
