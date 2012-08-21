@@ -14,7 +14,7 @@
 //! date="29/10/98"
 
 #include "Ravl/DP/FileFormat.hh"
-#include "Ravl/Image/ImgIOPNGB.hh"
+#include "Ravl/Image/Image.hh"
 
 namespace RavlImageN {
   

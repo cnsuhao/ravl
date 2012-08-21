@@ -13,7 +13,9 @@
 #include "Ravl/Image/PNGFormat.hh"
 #include "Ravl/Image/UInt16RGBValue.hh"
 #include "Ravl/Image/ByteRGBAValue.hh"
+#include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/Image/ImgIOPNGB.hh"
 #include <ctype.h>
 
 #define DODEBUG 0
@@ -280,7 +282,5 @@ namespace RavlImageN {
     return typeid(ImageC<ByteRGBValueC>); 
   }
   
-  FileFormatPNGC RegisterFileFormatPNG(false,"png","General png file IO. ");
-  FileFormatPNGC RegisterFileFormatPNG16(true,"png16","16 bit only png file IO. ");
 }
 

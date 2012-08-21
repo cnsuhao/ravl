@@ -26,10 +26,12 @@
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif
 
-#include "Ravl/DP/FileFormat.hh"
 #include "Ravl/DP/Port.hh"
 #include "Ravl/Stream.hh"
-#include "Ravl/Image/ImgIOPNG.hh"
+#include "Ravl/Image/Image.hh"
+#include "Ravl/Image/PNGif.hh"
+#include "Ravl/Image/ImageRectangle.hh"
+
 
 namespace RavlImageN {
 
@@ -213,7 +215,7 @@ namespace RavlImageN {
     
     /* Set error handling if you are using the setjmp/longjmp method (this is
      * the normal method of doing things with libpng).  REQUIRED unless you
-     * set up your own error handlers in the png_create_read_struct() earlier.
+     * set up your own error handlers in the Png.create_read_struct() earlier.
      */
     
     if (setjmp(png_jmpbuf(png_ptr))) 
@@ -227,7 +229,7 @@ namespace RavlImageN {
      * png_read_image().  To see how to handle interlacing passes,
      * see the png_read_row() method below:
      */
-    int number_passes = png_set_interlace_handling(png_ptr);
+    int number_passes = Png.set_interlace_handling(png_ptr);
     
     /* Optional call to gamma correct and add the background to the palette
      * and update info structure.  REQUIRED if you are expecting libpng to
@@ -246,10 +248,10 @@ namespace RavlImageN {
     
     //ONDEBUG(std::cerr << "Width:" << dat.Cnum() << " Height:" << dat.Rnum() << " passes:" << number_passes << " \n");
     // Check format...
-    //ONDEBUG(std::cerr << "Row bytes " << png_get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * 3) << "\n");
+    //ONDEBUG(std::cerr << "Row bytes " << Png.get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * 3) << "\n");
     
     if (bit_depth == 16 && IsLittleEndian())
-      png_set_swap(png_ptr);
+      Png.set_swap(png_ptr);
 
     /* Now it's time to read the image. */
     
@@ -259,12 +261,12 @@ namespace RavlImageN {
       IndexC crow = dat.TRow();
       for (unsigned int y = 0; y < height; y++) {
 	row_pointers[0] = (png_bytep)(&dat[crow++][LCol]);
-	png_read_rows(png_ptr, row_pointers, NULL, 1);
+	Png.read_rows(png_ptr, row_pointers, NULL, 1);
       }
     }
     
     /* read rest of file, and get additional chunks in info_ptr - REQUIRED */
-    png_read_end(png_ptr, info_ptr);
+    Png.read_end(png_ptr, info_ptr);
     
     /* At this point you have read the entire image */
     
@@ -325,12 +327,12 @@ namespace RavlImageN {
     
     int number_passes;
     if (interlacing)
-      number_passes = png_set_interlace_handling(png_ptr);
+      number_passes = Png.set_interlace_handling(png_ptr);
     else
       number_passes = 1;
     
     if (bit_depth == 16 && IsLittleEndian())
-      png_set_swap(png_ptr);
+      Png.set_swap(png_ptr);
 
     png_bytep row_pointers[1];
     
@@ -343,12 +345,12 @@ namespace RavlImageN {
     for (int pass = 0; pass < number_passes; pass++) {
       for (unsigned int y = 0; y < height; y++) {
 	row_pointers[0] = (png_bytep)  (& (dat[crow++][LCol]));
-	png_write_rows(png_ptr, &row_pointers[0], 1);
+	Png.write_rows(png_ptr, &row_pointers[0], 1);
       }
     }
     
     /* It is REQUIRED to call this to finish writing the rest of the file */
-    png_write_end(png_ptr, info_ptr);
+    Png.write_end(png_ptr, info_ptr);
     
     /* that's it */
     return true;

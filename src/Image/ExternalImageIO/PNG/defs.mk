@@ -18,8 +18,11 @@ PLIB = RavlExtImgIO
 
 LIBDEPS = RavlPNG.def
 
-HEADERS = ImgIOPNG.hh ImgIOPNGB.hh PNGFormat.hh
+HEADERS = ImgIOPNG.hh ImgIOPNGB.hh PNGFormat.hh PNGif.hh
 
-SOURCES = ImgIOPNG.cc PNGFormat.cc
+SOURCES = ImgIOPNG.cc PNGFormat.cc PNGif.cc
 
-USESLIBS = RavlImage RavlIO RavlImageIO LibPNG
+USESLIBS = RavlOSIO RavlImage RavlIO RavlImageIO RavlOS 
+
+INCLUDES+=$(libPNG_CFLAGS)
+# Replacing USESLIBS+=LibPNG

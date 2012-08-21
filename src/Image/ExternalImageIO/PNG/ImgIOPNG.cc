@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 ////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlExtImgIO
 //! file="Ravl/Image/ExternalImageIO/PNG/ImgIOPNG.cc"
 
@@ -15,6 +14,7 @@
 #include "Ravl/Image/ImgIOPNG.hh"
 #include "Ravl/Image/ByteRGBAValue.hh"
 #include "Ravl/Image/UInt16RGBValue.hh"
+#include "Ravl/Image/PNGif.hh"
 #include "Ravl/Stream.hh"
 
 //#include <stdio.h>
@@ -38,26 +38,26 @@ extern "C" {
 }
 
 void my_png_filein(png_structp png_ptr, png_bytep data, png_size_t length) {
-  RavlN::IStreamC &is = *((RavlN::IStreamC *)png_get_io_ptr(png_ptr));
+  RavlN::IStreamC &is = *((RavlN::IStreamC *)RavlImageN::Png.get_io_ptr(png_ptr));
   RavlAssert(is.good());
   is.read((char *) data,(streamsize) length);
   if(!is.good())
-    png_error(png_ptr, "Read Error");  
+    RavlImageN::Png.error(png_ptr, "Read Error");  
 }
 
 void my_png_fileout(png_structp png_ptr, png_bytep data, png_size_t length) {
-  RavlN::OStreamC &os = *((RavlN::OStreamC *)png_get_io_ptr(png_ptr));
+  RavlN::OStreamC &os = *((RavlN::OStreamC *)RavlImageN::Png.get_io_ptr(png_ptr));
   RavlAssert(os.good());
   os.write((const char *) data,(streamsize) length);
   if(!os.good())
-    png_error(png_ptr, "Write Error");  
+    RavlImageN::Png.error(png_ptr, "Write Error");  
 }
 
 void my_png_flush(png_structp png_ptr) {
-  RavlN::OStreamC &os = *((RavlN::OStreamC *)png_get_io_ptr(png_ptr));
+  RavlN::OStreamC &os = *((RavlN::OStreamC *)RavlImageN::Png.get_io_ptr(png_ptr));
   os.os().flush();
   if(!os.good())
-    png_error(png_ptr, "Write Error (flush)"); 
+    RavlImageN::Png.error(png_ptr, "Write Error (flush)"); 
 }
 
 namespace RavlImageN {
@@ -90,22 +90,22 @@ namespace RavlImageN {
      * the compiler header file version, so that we know if the application
      * was compiled with a compatible version of the library.  REQUIRED
      */
-    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,0,0,0);
+    png_ptr = Png.create_read_struct(PNG_LIBPNG_VER_STRING,0,0,0);
     //png_voidp user_error_ptr, user_error_fn, user_warning_fn);
     
     if (png_ptr == NULL)
       return ;
     
     /* Allocate/initialize the memory for image information.  REQUIRED. */
-    info_ptr = png_create_info_struct(png_ptr);
+    info_ptr = Png.create_info_struct(png_ptr);
     if (info_ptr == NULL) {
-      png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+      Png.destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
       return ;
     }
   
     if (setjmp(png_jmpbuf(png_ptr))) {
       /* Free all of the memory associated with the png_ptr and info_ptr */
-      png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+      Png.destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
       /* If we get here, we had a problem reading the file */
       return ;
     }
@@ -113,7 +113,7 @@ namespace RavlImageN {
     /* If you are using replacement read functions, instead of calling
      * png_init_io() here you would call:
      */
-    png_set_read_fn(png_ptr, (void *)(&fin), my_png_filein);
+    Png.set_read_fn(png_ptr, (void *)(&fin), my_png_filein);
     /* where user_io_ptr is a structure you want available to the callbacks */
     
     initalised = true;
@@ -123,7 +123,7 @@ namespace RavlImageN {
   
   DPIImageIOPNGBaseC::~DPIImageIOPNGBaseC()  {
     initalised = false;
-    png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+    Png.destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
   }
   
   //: Get information about a png file.
@@ -135,11 +135,11 @@ namespace RavlImageN {
     /* The call to png_read_info() gives us all of the information from the
      * PNG file before the first IDAT (image data chunk).  REQUIRED
      */
-    png_read_info(png_ptr, info_ptr);
+    Png.read_info(png_ptr, info_ptr);
     
     png_uint_32 width, height;
     
-    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
+    Png.get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
 		 &interlace_type, NULL, NULL);
     
     nbit_depth = bit_depth;
@@ -154,14 +154,14 @@ namespace RavlImageN {
     if (setjmp(png_jmpbuf(png_ptr))) 
       return false;
     
-    /* The call to png_read_info() gives us all of the information from the
+    /* The call to Png.read_info() gives us all of the information from the
      * PNG file before the first IDAT (image data chunk).  REQUIRED
      */
-    png_read_info(png_ptr, info_ptr);
+    Png.read_info(png_ptr, info_ptr);
     
     png_uint_32 width, height;
     
-    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
+    Png.get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
 		 &interlace_type, NULL, NULL);
     
     imgRect = ImageRectangleC(height,width);
@@ -205,8 +205,8 @@ namespace RavlImageN {
     /* tell libpng to strip 16 bit/color files down to 8 bits/color */
     if(req_bit_depth != 16) {
       if(bit_depth == 16) {
-	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_strip_16(png_ptr), Called. \n");
-	png_set_strip_16(png_ptr);
+	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_strip_16(png_ptr), Called. \n");
+	Png.set_strip_16(png_ptr);
       }
     }
     
@@ -214,49 +214,49 @@ namespace RavlImageN {
     // byte into separate bytes (useful for paletted and grayscale images).
     
     if(bit_depth < 8) {
-      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_packing(png_ptr), Called. \n");
-      png_set_packing(png_ptr);
+      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_packing(png_ptr), Called. \n");
+      Png.set_packing(png_ptr);
     }
     
     /* Change the order of packed pixels to least significant bit first
-     * (not useful if you are using png_set_packing). */
+     * (not useful if you are using Png.set_packing). */
     //png_set_packswap(png_ptr);
     
     // Strip alpha bytes from the input data without combining with the
     //background (not recommended).
     if(color_type == PNG_COLOR_TYPE_RGB_ALPHA || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
       if(req_color_type == PNG_COLOR_TYPE_RGB || req_color_type == PNG_COLOR_TYPE_GRAY) {
-	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_strip_alpha(png_ptr), Called. \n");
-	png_set_strip_alpha(png_ptr);
+	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_strip_alpha(png_ptr), Called. \n");
+	Png.set_strip_alpha(png_ptr);
       }
     
     // Expand paletted colors into true RGB triplets 
     // Amma doesn't support pallet images, so always do this.
     if (color_type == PNG_COLOR_TYPE_PALETTE) {
-      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_expand(png_ptr), Called. \n");
-      png_set_expand(png_ptr);
+      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_expand(png_ptr), Called. \n");
+      Png.set_expand(png_ptr);
       if(req_color_type == PNG_COLOR_TYPE_RGB || req_color_type == PNG_COLOR_TYPE_GRAY) {
-	      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_strip_alpha(png_ptr), Called. \n");
-	      png_set_strip_alpha(png_ptr);
+	      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_strip_alpha(png_ptr), Called. \n");
+	      Png.set_strip_alpha(png_ptr);
       }
     }
     
     // Expand grayscale images to the full 8 bits from 1, 2, or 4 bits/pixel 
     if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) {
-      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_expand(png_ptr), Called. \n");
-      png_set_expand(png_ptr);
+      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_expand(png_ptr), Called. \n");
+      Png.set_expand(png_ptr);
       if(req_color_type == PNG_COLOR_TYPE_RGB || req_color_type == PNG_COLOR_TYPE_GRAY) {
-	      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_strip_alpha(png_ptr), Called. \n");
-	      png_set_strip_alpha(png_ptr);
+	      ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_strip_alpha(png_ptr), Called. \n");
+	      Png.set_strip_alpha(png_ptr);
       }
     }
     
     if(req_color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
       // Expand paletted or RGB images with transparency to full alpha channels
       // so the data will be available as RGBA quartets.
-      if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
-	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_expand(png_ptr), Called. \n");
-	png_set_expand(png_ptr);
+      if (Png.get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
+	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_expand(png_ptr), Called. \n");
+	Png.set_expand(png_ptr);
       }
     }
     
@@ -265,10 +265,10 @@ namespace RavlImageN {
      * [0,65535] to the original [0,7] or [0,31], or whatever range the
      * colors were originally in:
      */
-    if (png_get_valid(png_ptr, info_ptr, PNG_INFO_sBIT)) {
+    if (Png.get_valid(png_ptr, info_ptr, PNG_INFO_sBIT)) {
       png_color_8p sig_bit;
-      png_get_sBIT(png_ptr, info_ptr, &sig_bit);
-      png_set_shift(png_ptr, sig_bit);
+      Png.get_sBIT(png_ptr, info_ptr, &sig_bit);
+      Png.set_shift(png_ptr, sig_bit);
     }
 #endif
     
@@ -276,8 +276,8 @@ namespace RavlImageN {
     
     if(req_color_type == PNG_COLOR_TYPE_RGB || req_color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
       if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
-	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_gray_to_rgb(png_ptr), Called. \n");
-	png_set_gray_to_rgb(png_ptr);
+	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_gray_to_rgb(png_ptr), Called. \n");
+	Png.set_gray_to_rgb(png_ptr);
       }
     }
     
@@ -286,8 +286,8 @@ namespace RavlImageN {
 #if 1
     if(req_color_type == PNG_COLOR_TYPE_GRAY || req_color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
       if((color_type&2) == PNG_COLOR_TYPE_RGB) {
-        ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_rgb_to_gray_fixed(png_ptr), Called. \n");
-        png_set_rgb_to_gray_fixed(png_ptr, 1,-1,-1);
+        ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_rgb_to_gray_fixed(png_ptr), Called. \n");
+        Png.set_rgb_to_gray_fixed(png_ptr, 1,-1,-1);
       }
     }
 #endif
@@ -296,11 +296,11 @@ namespace RavlImageN {
     
     if(req_color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
       if (color_type == PNG_COLOR_TYPE_RGB) {
-	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), png_set_filler(png_ptr,x,PNG_FILLER_AFTER), Called. \n");
+	ONDEBUG(std::cerr << "DPOImageIOPNGBaseC::ReadHeader(), Png.set_filler(png_ptr,x,PNG_FILLER_AFTER), Called. \n");
 	if(bit_depth == 8) 
-	  png_set_filler(png_ptr,255,PNG_FILLER_AFTER);
+	  Png.set_filler(png_ptr,255,PNG_FILLER_AFTER);
 	else
-	  png_set_filler(png_ptr,65535,PNG_FILLER_AFTER);
+	  Png.set_filler(png_ptr,65535,PNG_FILLER_AFTER);
       }
     }
     
@@ -308,15 +308,15 @@ namespace RavlImageN {
      * This may cause a warning to be issues with some versions of the library. 
      * FIXME :- Find a way of getting rid of it.
      */
-    png_read_update_info(png_ptr, info_ptr);
+    Png.read_update_info(png_ptr, info_ptr);
     
     /* Do some sanity checking. */
     
     ONDEBUG(std::cerr << "Width:" << width << " Height:" << height << " ReqBitDepth:" << req_bit_depth <<  " Channels:" << req_chan << " ReqColourType=" << req_color_type << "\n");
     ONDEBUG(std::cerr << " Actual BitDepth:" << bit_depth <<  " ColourType=" << color_type << "\n");
-    ONDEBUG(std::cerr << "Row bytes " << png_get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * (req_bit_depth/8) * req_chan) << "\n");
+    ONDEBUG(std::cerr << "Row bytes " << Png.get_rowbytes(png_ptr, info_ptr) << " Expected:" << (width * (req_bit_depth/8) * req_chan) << "\n");
     // Check the configuration is at least roughly right!!
-    RavlAssert(png_get_rowbytes(png_ptr, info_ptr)  == (width * (req_bit_depth/8) * req_chan));
+    RavlAssert(Png.get_rowbytes(png_ptr, info_ptr)  == (width * (req_bit_depth/8) * req_chan));
     
     return true;
   }
@@ -337,7 +337,7 @@ namespace RavlImageN {
      * the library version is compatible with the one used at compile time,
      * in case we are using dynamically linked libraries.  REQUIRED.
      */
-    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING,
+    png_ptr = Png.create_write_struct(PNG_LIBPNG_VER_STRING,
 				      0,0,0);
     //png_voidp user_error_ptr, user_error_fn, user_warning_fn);
     
@@ -345,15 +345,15 @@ namespace RavlImageN {
       return ;  
     
     /* Allocate/initialize the image information data.  REQUIRED */
-    info_ptr = png_create_info_struct(png_ptr);
+    info_ptr = Png.create_info_struct(png_ptr);
     if (info_ptr == NULL) {
-      png_destroy_write_struct(&png_ptr,  (png_infopp)NULL);
+      Png.destroy_write_struct(&png_ptr,  (png_infopp)NULL);
       return ;
     }
     
     /* If you are using replacement read functions, instead of calling
      * png_init_io() here you would call */
-    png_set_write_fn(png_ptr, 
+    Png.set_write_fn(png_ptr, 
 		     (void *)(&fout), 
 		   my_png_fileout,
 		     my_png_flush);
@@ -380,7 +380,7 @@ namespace RavlImageN {
     
     /* clean up after the write, and free any memory allocated */
     
-    png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+    Png.destroy_write_struct(&png_ptr, (png_infopp)NULL);
   }
   
   //: Write header information.
@@ -430,7 +430,7 @@ namespace RavlImageN {
     if (setjmp(png_jmpbuf(png_ptr))) 
       return false;
     
-    png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, color_type,
+    Png.set_IHDR(png_ptr, info_ptr, width, height, bit_depth, color_type,
 		 interlace_type, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
     
     /* optional significant bit chunk */
@@ -443,7 +443,7 @@ namespace RavlImageN {
     sig_bit.blue = true_blue_bit_depth;
     /* if the image has an alpha channel then */
     sig_bit.alpha = true_alpha_bit_depth;
-    png_set_sBIT(png_ptr, info_ptr, sig_bit);
+    Png.set_sBIT(png_ptr, info_ptr, sig_bit);
 #endif
     
     /* Optional gamma chunk is strongly suggested if you have any guess
@@ -469,21 +469,21 @@ namespace RavlImageN {
 #ifdef PNG_iTXt_SUPPORTED
     text_ptr[0].lang = NULL;
 #endif
-    png_set_text(png_ptr, info_ptr, text_ptr, 1);
+    Png.set_text(png_ptr, info_ptr, text_ptr, 1);
     
     /* other optional chunks like cHRM, bKGD, tRNS, tIME, oFFs, pHYs, */
     /* note that if sRGB is present the gAMA and cHRM chunks must be ignored
      * on read and must be written in accordance with the sRGB profile */
     
     /* Write the file header information.  REQUIRED */
-    png_write_info(png_ptr, info_ptr);
+    Png.write_info(png_ptr, info_ptr);
     
     /* If you want, you can write the info in two steps, in case you need to
      * write your private chunk ahead of PLTE:
      *
      *   png_write_info_before_PLTE(write_ptr, write_info_ptr);
      *   write_my_chunk();
-     *   png_write_info(png_ptr, info_ptr);
+     *   Png.write_info(png_ptr, info_ptr);
      *
      * However, given the level of known- and unknown-chunk support in 1.1.0
      * and up, this should no longer be necessary.
@@ -505,10 +505,10 @@ namespace RavlImageN {
     /* Shift the pixels up to a legal bit depth and fill in
      * as appropriate to correctly scale the image.
      */
-    //png_set_shift(png_ptr, &sig_bit);
+    //Png.set_shift(png_ptr, &sig_bit);
     
     /* pack pixels into bytes */
-    //png_set_packing(png_ptr);
+    //Png.set_packing(png_ptr);
     
     /* swap location of alpha bytes from ARGB to RGBA */
     //png_set_swap_alpha(png_ptr);
@@ -516,13 +516,13 @@ namespace RavlImageN {
     /* Get rid of filler (OR ALPHA) bytes, pack ARGB/RGBA/ARGB/RGBA into
      * RGB (4 channels -> 3 channels). The second parameter is not used.
      */
-    //png_set_filler(png_ptr, 0, PNG_FILLER_BEFORE);
+    //Png.set_filler(png_ptr, 0, PNG_FILLER_BEFORE);
     
     /* flip BGR pixels to RGB */
     //png_set_bgr(png_ptr);
     
     /* swap bytes of 16-bit files to most significant byte first */
-    //png_set_swap(png_ptr);
+    //Png.set_swap(png_ptr);
     
     /* swap bits of 1, 2, 4 bit packed pixel formats */
     //png_set_packswap(png_ptr);
