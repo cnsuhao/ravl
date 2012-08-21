@@ -198,17 +198,17 @@ namespace RavlN {
          work = res;
        }
 
-       //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
-       //RavlDebug("Dot %f ",dotProdS);
-       for(unsigned i = 0;i < work.Size();i++) {
-         if((work[i] > 0) == (it.Data2() == i)) {
-           // Got it right
-           cost += -Log(work[i]);
-         } else {
-           cost += -Log(1-work[i]);
-         }
-       }
-     }
+      //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
+      //RavlDebug("Dot %f ",dotProdS);
+      for (unsigned i = 0; i < work.Size(); i++) {
+        if ((work[i] > 0) == (it.Data2() == i)) {
+          // Got it right
+          cost += -Log(work[i]);
+        } else {
+          cost += -Log(1 - work[i]);
+        }
+      }
+     } // end data set
      *costPtr = cost;
      return true;
    }
@@ -298,8 +298,8 @@ namespace RavlN {
 
       // Compute errors at final layer
       VectorC err(work.Size());
-      for(unsigned j = 0;j < err.Size();j++) {
-        if(j == it.Data2()) {
+      for (unsigned j = 0; j < err.Size(); j++) {
+        if (j == it.Data2()) {
           err[j] = work[j] - 1;
         } else {
           err[j] = work[j];
@@ -398,7 +398,8 @@ namespace RavlN {
        RealT desiredError,
        UIntT maxEpochs,
        UIntT displayEpochs,
-       bool useSigmoid)
+       bool useSigmoid,
+       UIntT threads)
     : m_nLayers(nLayers),
       m_nHidden(nHidden),
       m_hiddenFraction(-1),
@@ -407,11 +408,11 @@ namespace RavlN {
       m_displayEpochs(displayEpochs),
       m_regularisation(regularisation),
       m_doNormalisation(doNorm),
-      m_threads(1),
+      m_threads(threads),
       m_useSigmoidOnOutput(useSigmoid)
   {
     if(!m_optimiser.IsValid()) {
-      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs);
+      m_optimiser = OptimiseConjugateGradientC(m_maxEpochs, m_desiredError, true, true, 6, 1e-2);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
   }
@@ -425,10 +426,11 @@ namespace RavlN {
         m_maxEpochs(factory.AttributeInt("maxEpochs", 50000)),
         m_displayEpochs(factory.AttributeInt("displayEpochs", 100)),
         m_regularisation(factory.AttributeReal("regularisation", 0.0)),
-        m_doNormalisation(factory.AttributeReal("doNormalisation", true)),
+        m_doNormalisation(factory.AttributeBool("doNormalisation", true)),
         m_threads(factory.AttributeInt("threads", 1)),
-        m_useSigmoidOnOutput(factory.AttributeInt("useSigmoidOnOutput",true))
+        m_useSigmoidOnOutput(factory.AttributeBool("useSigmoidOnOutput",true))
   {
+
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
     }
@@ -515,6 +517,7 @@ namespace RavlN {
     out << m_displayEpochs << std::endl;
     out << m_regularisation << std::endl;
     out << m_doNormalisation << std::endl;
+    out << m_useSigmoidOnOutput << std::endl;
     return true;
   }
 
@@ -605,6 +608,7 @@ namespace RavlN {
       return ClassifierC();
     }
 
+
     //size_t nInputs = in.First().Size();
 
     SampleLabelC labels(out);
@@ -670,8 +674,9 @@ namespace RavlN {
       layers[i]->SetWeights(w[i]);
       layers[i]->SetBias(bias[i]);
     }
-    if(!m_useSigmoidOnOutput)
+    if(!m_useSigmoidOnOutput) {
       layers[layers.Size()-1]->SetUseSigmoid(false);
+    }
 
     if(m_doNormalisation) {
       FunctionC normFunc = inVec.NormalisationFunction(meanCov);
