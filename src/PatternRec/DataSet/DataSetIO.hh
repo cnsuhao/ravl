@@ -17,13 +17,6 @@
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/StringList.hh"
 
-enum DataSetNormaliseT {
-  DATASET_NORMALISE_NONE=0,
-  DATASET_NORMALISE_MEAN=1,
-  DATASET_NORMALISE_SCALE=2
-};
-
-
 namespace RavlN {
 
   //! A function that saves a DataSetVectorLabel file.  If the filename has csv extension, it is saved in CSV format.

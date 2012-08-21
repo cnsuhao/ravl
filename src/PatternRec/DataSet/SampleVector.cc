@@ -231,6 +231,32 @@ namespace RavlN {
     return ret;
   }
 
+  /*
+   * Compute the normalisation function using the current data, normalise the data IP and return function
+   */
+  FunctionC SampleVectorC::Normalise(DataSetNormaliseT normType) {
+
+    FunctionC func;
+    if(normType == DATASET_NORMALISE_NONE) {
+      // do nothing
+      RavlDebug("No normalisation chosen!");
+    } else if(normType == DATASET_NORMALISE_MEAN) {
+      MeanCovarianceC meanCov = MeanCovariance();
+      func = NormalisationFunction(meanCov);
+      RavlDebug("Normalise by mean and covariance of entire data");
+      Normalise(func);
+    } else if(normType == DATASET_NORMALISE_SCALE) {
+      RavlDebug("Scaling dataset");
+      FuncLinearC linFunc;
+      Scale(linFunc);
+      func = linFunc;
+    } else {
+      RavlError("Unknown normalisation function!");
+    }
+    return func;
+  }
+
+
   void SampleVectorC::Normalise(const MeanCovarianceC & stats) {
     if (stats.Number() < 2) {
       RavlAssertMsg(0,"Degerate stat's");

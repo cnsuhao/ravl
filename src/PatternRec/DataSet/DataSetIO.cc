@@ -150,30 +150,7 @@ namespace RavlN {
     /*
      * OK lets do some normalisation depending on what we have been asked
      */
-    switch (normType)
-    {
-      case DATASET_NORMALISE_NONE:
-        RavlInfo("Not doing any normalisation.  I hope you know what you are doing!");
-        normaliseFunc = function;
-        break;
-      case DATASET_NORMALISE_MEAN: {
-        RavlInfo("Normalising dataset using mean and covariance.");
-        MeanCovarianceC meanCovariance = dataSet.Sample1().MeanCovariance();
-        normaliseFunc = dataSet.Sample1().NormalisationFunction(meanCovariance);
-        dataSet.Sample1().Normalise(meanCovariance);
-      }
-        break;
-      case DATASET_NORMALISE_SCALE: {
-        RavlInfo("Scaling the data set");
-        FuncLinearC linearFunc;
-        dataSet.Sample1().Scale(linearFunc);
-        normaliseFunc = linearFunc;
-      }
-        break;
-      default:
-        // should never get here!
-        RavlError("Unknown DataSet normalisation!");
-    }
+    normaliseFunc = dataSet.Sample1().Normalise(normType);
 
     return true;
 

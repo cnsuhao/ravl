@@ -21,6 +21,13 @@
 
 namespace RavlN {
 
+
+  enum DataSetNormaliseT {
+    DATASET_NORMALISE_NONE=0,
+    DATASET_NORMALISE_MEAN=1,
+    DATASET_NORMALISE_SCALE=2
+  };
+
   class MatrixRUTC;
   class MeanCovarianceC;  
   
@@ -99,6 +106,9 @@ namespace RavlN {
     //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
     // sam2 must have the same size as this sample vector.
     
+    FunctionC Normalise(DataSetNormaliseT normType);
+    //: Compute the normalisation function using the current data, normalise the data IP and return function
+
     void Normalise(const MeanCovarianceC & stats);
     //: Normalises the input vectors using given stats, in place
     // In order to achieve zero mean and unity variance this function should be
