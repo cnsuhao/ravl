@@ -9,7 +9,10 @@
 %include "Ravl/Swig2/Point2d.i"
 %include "Ravl/Swig2/Index.i"
 %include "Ravl/Swig2/RealRange.i"
+%include "Ravl/Swig2/IndexRange2d.i"
 %include "Ravl/Swig2/SArray1d.i"
+%include "Ravl/Swig2/Hash.i"
+%include "Ravl/Swig2/Collection.i"
 
 %{
 #ifdef SWIGPERL
@@ -32,6 +35,9 @@ namespace RavlN {
 
     bool Plot(const SArray1dC<Point2dC> & points, const StringC & dataName = "");
     //: Plot all graphs on single canvas
+
+    bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data);
+    //: Plot all points on same graph
 
     bool Plot(const StringC & function);
     //: Plot a function
@@ -56,6 +62,9 @@ namespace RavlN {
     bool SetLineStyle(const StringC & lineStyle);
     //: Set plot style
 
+    bool SetOutput(const StringC & output, const IndexRange2dC & rec = IndexRange2dC(512, 512));
+    //: Set output x11 or a filename
+
     bool Command(const StringC & command);
     //: General method to send a command to the plotting library
 
@@ -69,6 +78,16 @@ namespace RavlN {
   		gnuplot = GnuPlot2dC(title)
   		gnuplot.Plot(data)
   		return gnuplot 
+  		
+  	def PlotFile(data, filename, title = "My Data", rows=750, cols=1000):
+  		"""
+  		Try to automatically plot anything as an image and save it to file that GnuPlot2d is capable of.
+  		"""
+  		gnuplot = GnuPlot2dC(title)
+  		rec = IndexRange2dC(rows, cols);
+  		gnuplot.SetOutput(filename, rec)
+  		gnuplot.Plot(data)
+  		return gnuplot
   %}
 
 }

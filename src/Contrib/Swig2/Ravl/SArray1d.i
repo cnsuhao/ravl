@@ -4,7 +4,7 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 
-
+%include "Ravl/Swig2/Macros.i"
 %include "Ravl/Swig2/Types.i"
 %include "Ravl/Swig2/Index.i"
 
@@ -237,12 +237,8 @@ namespace RavlN {
 	  
 	  inline void __setitem__(size_t i, const  DataT & v) { (*self)[i] = v; }
 	  
-      const char *__str__()
-      {
-        RavlN::StrOStreamC os;
-        os << *self;
-        return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
-      }
+	  __STR__();
+
     }
 
   };

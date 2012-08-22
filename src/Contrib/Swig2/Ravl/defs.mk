@@ -9,7 +9,11 @@ REQUIRES=	Swig
 
 PACKAGE=	Ravl/Swig2
 
-HEADERS=	Size.i \
+HEADERS=	RavlCore.i \
+			RavlPatternRec.i \
+			RavlContrib.i \
+			Macros.i \
+			Size.i \
 			Types.i \
 			Point2d.i \
 			Polygon2d.i \
@@ -35,12 +39,15 @@ HEADERS=	Size.i \
  			DList.i \
  			Date.i \
  			PointSet2d.i \
+ 			Collection.i \
  			RealRange.i \
  			RealRange2d.i \
  			Hash.i \
+ 			RCHash.i \
  			DPIPort.i \
  			SmartPtr.i \
  			RLog.i \
+ 			XMLFactory.i \
  			SysLog.i \
  			LoadSave.i \
  			Function.i \
@@ -53,6 +60,7 @@ HEADERS=	Size.i \
  			DataSetVectorLabel.i \
  			DataSetIO.i \
  			Classifier.i \
+ 			ClassifierPreprocess.i \
  			ClassifierDiscriminantFunction.i \
  			DesignFunctionSupervised.i \
  			DesignFuncLSQ.i \
@@ -65,6 +73,7 @@ HEADERS=	Size.i \
  			DesignSvm.i \
  			DesignClassifierSvmSmo.i \
  			Error.i \
+ 			ErrorBinaryClassifier.i \
  			GnuPlot2d.i
 
 SOURCES=

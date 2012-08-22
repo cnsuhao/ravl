@@ -4,19 +4,14 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 
+%include "Ravl/Swig2/Macros.i"
 %include "Ravl/Swig2/Types.i"
 %include "Ravl/Swig2/DList.i"
 
 %{
-#ifdef SWIGPERL
-#undef Copy
-#endif
 
 #include "Ravl/Point2d.hh"
 
-#ifdef SWIGPERL
-#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
-#endif
 %}
 
 namespace RavlN {
@@ -26,6 +21,11 @@ namespace RavlN {
     Point2dC(RealT x,RealT y);
     RealT Row() const;
     RealT Col() const;
+    
+    %extend {
+    	__STR__()
+    }
+    
   };
 }
 

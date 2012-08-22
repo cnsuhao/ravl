@@ -7,12 +7,21 @@ Ravl.SysLogOpen("testPatternRec",True,True,True,-1,True)
 # this is one way to quickly generate a data set
 dataSet = Ravl.CreateDataSet(2, 2)
 Ravl.Plot(dataSet)
+Ravl.PlotFile(dataSet, "dataset.png", "Automatically generated data set")
+
+# Lets normalise by mean and cov
+normFunc = dataSet.Sample1().Normalise(Ravl.DATASET_NORMALISE_SCALE);
+Ravl.Plot(dataSet, "Data Scaled")
 
 # we can also load one
 irisDataSet = Ravl.LoadDataSet("{0}/share/Ravl/PatternRec/iris.csv".format(os.environ["PROJECT_OUT"]))
-
 # Note this plot will just show first two features
 Ravl.Plot(irisDataSet)
+
+# Now lets scale it
+normFunc = irisDataSet.Sample1().Normalise(Ravl.DATASET_NORMALISE_MEAN);
+Ravl.Plot(irisDataSet, "Iris Data Normalised by Mean and Cov")
+
 
 # should always shuffle....(well nearly)
 irisDataSet.Shuffle()
@@ -57,26 +66,24 @@ if True:
     # What about a neural network
     design = Ravl.DesignClassifierNeuralNetwork2C(3, 8, False, 0, 0.0001, 5000, 0, False)
     classifier = design.Apply(trainDataSet)
-    print "Error with Neural Network {0}".format(error.Error(classifier, irisDataSet))
+    print "Error with Neural Network {0}".format(error.Error(classifier, dataSet))
     
      # What about a Linear SVM
-    design = Ravl.DesignSvmSmoC(Ravl.LinearKernelC(0.01))
-    classifier = design.Apply(trainDataSet)
-    print "Error with Linear SVM {0}".format(error.Error(classifier, irisDataSet))
+    #design = Ravl.DesignSvmSmoC(Ravl.LinearKernelC(0.01))
+    #classifier = design.Apply(trainDataSet)
+    #print "Error with Linear SVM {0}".format(error.Error(classifier, irisDataSet))
     
     # What about a Quadratic SVM
-    design = Ravl.DesignSvmSmoC(Ravl.QuadraticKernelC(0.01), 10, 10, 0.00000001, 0.0000000001)
-    classifier = design.Apply(trainDataSet)
-    print "Error with Quadratic SVM {0}".format(error.Error(classifier, irisDataSet))
+    #design = Ravl.DesignSvmSmoC(Ravl.QuadraticKernelC(0.01), 10, 10, 0.00000001, 0.0000000001)
+    #classifier = design.Apply(trainDataSet)
+    #print "Error with Quadratic SVM {0}".format(error.Error(classifier, irisDataSet))
    
     # What about a Quadratic SVM
-    design = Ravl.DesignSvmSmoC(Ravl.RBFKernelC(0.01))
-    classifier = design.Apply(trainDataSet)
-    print "Error with RBF SVM {0}".format(error.Error(classifier, irisDataSet))
-    
+    #design = Ravl.DesignSvmSmoC(Ravl.RBFKernelC(0.01))
+    #classifier = design.Apply(trainDataSet)
+    #print "Error with RBF SVM {0}".format(error.Error(classifier, irisDataSet))
     
     # we can also save the classifier at any time
     Ravl.Save("classifier.abs", classifier)
-
 
 

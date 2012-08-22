@@ -7,12 +7,14 @@
 %include "Ravl/Swig2/IO.i"
 %include "Ravl/Swig2/Image.i"
 %include "Ravl/Swig2/Classifier.i"
+%include "Ravl/Swig2/ClassifierPreprocess.i"
 
 %{
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/String.hh"
 #include "Ravl/PatternRec/Classifier.hh"
+#include "Ravl/PatternRec/Function.hh"
 %}
 
 namespace RavlN
@@ -28,6 +30,10 @@ namespace RavlN
  
   bool Load(const StringC & filename, ClassifierC & classifier);
   bool Save(const StringC & filename, const ClassifierC & classifier);
+  
+  bool Load(const StringC & filename, FunctionC & classifier);
+  bool Save(const StringC & filename, const FunctionC & classifier);
+ 
   
 
 }

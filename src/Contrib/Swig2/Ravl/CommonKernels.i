@@ -22,7 +22,10 @@
 
 namespace RavlN {
 
-   class KernelFunctionC {};
+   class KernelFunctionC {
+   public:
+   KernelFunctionC();
+   };
 
 
   class LinearKernelC : public KernelFunctionC {

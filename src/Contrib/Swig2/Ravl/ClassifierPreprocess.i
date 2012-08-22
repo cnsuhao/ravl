@@ -7,14 +7,14 @@
 
 
 %include "Ravl/Swig2/Classifier.i"
-%include "Ravl/Swig2/DataSetVectorLabel.i"
+%include "Ravl/Swig2/Function.i"
 
 %{
 #ifdef SWIGPERL
 #undef Copy
 #endif
 
-#include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
+#include "Ravl/PatternRec/ClassifierPreprocess.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -23,13 +23,12 @@
 
 namespace RavlN {
 
-  class DesignClassifierNeuralNetwork2C : public DesignClassifierSupervisedC {
+  class ClassifierPreprocessC : public ClassifierC {
 public:
-
-	DesignClassifierNeuralNetwork2C(UIntT nLayers, UIntT nHidden, bool doNormalisation, RealT regularisation = 0, RealT desiredError = 0.00001,UIntT maxEpochs = 5000,UIntT displayEpochs = 0,bool useSigmoid = true, UIntT threads=1);
-	// Construct
-	  
-	
-	
+	ClassifierPreprocessC(const FunctionC & function, const ClassifierC & classifier);
+	// Create a classifier with a pre-process function
   };
+
 }
+
+

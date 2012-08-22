@@ -22,11 +22,6 @@
 #endif
 %}
 
-enum DataSetNormaliseT {
-  DATASET_NORMALISE_NONE=0,
-  DATASET_NORMALISE_MEAN=1,
-  DATASET_NORMALISE_SCALE=2
-};
 
 namespace RavlN {
 

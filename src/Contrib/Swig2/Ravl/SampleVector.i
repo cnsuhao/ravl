@@ -22,6 +22,12 @@
 
 namespace RavlN {
 
+	enum DataSetNormaliseT {
+  		DATASET_NORMALISE_NONE=0,
+  		DATASET_NORMALISE_MEAN=1,
+  		DATASET_NORMALISE_SCALE=2
+	};
+
   class SampleVectorC : public SampleC<VectorC> {
   	public:
   	
@@ -80,40 +86,12 @@ namespace RavlN {
     MatrixC TMul(const SampleC<VectorC> &sam2,const SampleC<RealT> &w) const;
     //: Compute the sum of the outerproducts weighting each with the corresponding value from 'w'.
     // sam2 must have the same size as this sample vector.
-    
-    void Normalise(const MeanCovarianceC & stats);
-    //: Normalises the input vectors using given stats, in place
-    // In order to achieve zero mean and unity variance this function should be
-    // called with the return value from MeanCovariance. Subsequent data sets can
-    // then be normalised the same way by recording the MeanCovarianceC returned by
-    // MeanCovariance.
-    
+  
+  	FunctionC Normalise(DataSetNormaliseT normType);
+    //: Apply normalisation to data
+     
     void Normalise(const FunctionC & func);
     //: Apply function in place.  Typically used for normalising data.
-
-    void UndoNormalisation(const MeanCovarianceC & stats);
-    //: Undo the normalisation done by 'Normalise()', in place.
-
-    void Normalise(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool addBiasElement = false) const;
-    //: Normalises the input vectors using given stats, append results to sampleVector
-    // In order to achieve zero mean and unity variance this function should be
-    // called with the return value from MeanCovariance. Subsequent data sets can
-    // then be normalised the same way by recording the MeanCovarianceC returned by
-    // MeanCovariance.
-    
-    void UndoNormalisation(const MeanCovarianceC & stats,SampleVectorC &sampleVector,bool removeBiasElement = false) const;
-    //: Undo the normalisation done by 'Normalise()', append results to sampleVector
-
-    //FuncMeanProjectionC NormalisationFunction(const MeanCovarianceC & stats) const;
-    //: Get the function used for the normalisation
-
-    //FuncLinearC UndoNormalisationFunction(const MeanCovarianceC & stats) const;
-     //: Get the function used to un-normalise the data
-
-
-    //void Scale(FuncLinearC & func);
-    //: Compute function that scales each dimension between 0 and 1 and return function created to do this
-    //: !param: func The function that performs the scaling
 
     //const SArray1dC<FieldInfoC> & FieldInfo() const;
     //: Access information about the fields

@@ -25,6 +25,7 @@ namespace RavlN {
   class IndexRange2dC {
   public:
     IndexRange2dC();
+    IndexRange2dC(IntT rows, IntT cols);
     IndexC TRow() const;
     IndexC BRow() const;
     IndexC LCol() const;

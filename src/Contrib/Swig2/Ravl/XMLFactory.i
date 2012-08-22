@@ -4,17 +4,15 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 
-
-
-%include "Ravl/Swig2/Classifier.i"
-%include "Ravl/Swig2/DataSetVectorLabel.i"
+%include "Ravl/Swig2/Types.i"
+%include "Ravl/Swig2/DList.i"
 
 %{
 #ifdef SWIGPERL
 #undef Copy
 #endif
 
-#include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
+#include "Ravl/XMLFactory.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -22,14 +20,9 @@
 %}
 
 namespace RavlN {
-
-  class DesignClassifierNeuralNetwork2C : public DesignClassifierSupervisedC {
-public:
-
-	DesignClassifierNeuralNetwork2C(UIntT nLayers, UIntT nHidden, bool doNormalisation, RealT regularisation = 0, RealT desiredError = 0.00001,UIntT maxEpochs = 5000,UIntT displayEpochs = 0,bool useSigmoid = true, UIntT threads=1);
-	// Construct
-	  
-	
-	
+  class XMLFactoryContextC {
+  public:
+	XMLFactoryContextC(const StringC & configFile);
   };
 }
+

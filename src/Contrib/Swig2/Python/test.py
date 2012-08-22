@@ -11,3 +11,4 @@ Ravl.Load("test.jpg", imgIn);
 Ravl.Save("@X: Test Image", imgIn)
 
 
+Ravl.Plot("sin(x)")

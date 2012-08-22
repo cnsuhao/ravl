@@ -34,13 +34,12 @@ namespace RavlN {
     UIntT OutputSize() const;
     // Get the output size
     
-    %extend {
-     const char *__str__()
-      {
-        RavlN::StrOStreamC os;
-        os << *self;
-        return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
-      }
+   
+	%extend {
+		__STR__();
+		__NONZERO__();
 	}
+	
+	
   };
 }
