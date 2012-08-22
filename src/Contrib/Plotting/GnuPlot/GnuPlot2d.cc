@@ -12,6 +12,7 @@
 #include "Ravl/Exception.hh"
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/OS/Filename.hh"
 
 namespace RavlN {
   
@@ -70,6 +71,48 @@ namespace RavlN {
   }
 
   /*
+   * Plot as separate plots on same graph
+   */
+  bool GnuPlot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data)
+  {
+
+    // check it is still running
+    if (!m_gnuPlot.IsRunning()) {
+      RavlError("GnuPlot not running!");
+      return false;
+    }
+
+    /*
+     * Not a big fan of this but can not pipe data to GnuPlot
+     * for more complicated plots...
+     */
+    FilenameC tmpFile = "/tmp/data";
+    tmpFile = tmpFile.MkTemp(6, -1);
+    OStreamC os(tmpFile);
+    StringC cmd = "plot ";
+    UIntT i = 0;
+    for (HashIterC<StringC, CollectionC<Point2dC> > hshIt(data); hshIt; hshIt++) {
+      os << "# " << hshIt.Key() << endl;
+      StringC localPlot;
+      localPlot.form("\'%s\' index %d title '%s',", tmpFile.data(), i, hshIt.Key().data());
+      cmd += localPlot;
+      for (SArray1dIterC<Point2dC> it(hshIt.Data().SArray1d()); it; it++) {
+        StringC d;
+        d.form("%f %f", it.Data().Row(), it.Data().Col());
+        os << d << endl;
+      }
+      i++;
+      os << "\n\n"; // double line important
+    }
+    cmd.del((int) cmd.Size() - 1, (int) 1);
+    // send the command
+    Command(cmd);
+
+    Flush();
+    return true;
+  }
+
+  /*
    * Plot a function
    */
   bool GnuPlot2dC::Plot(const StringC & function)
@@ -108,12 +151,12 @@ namespace RavlN {
     }
 
     DataSetVectorLabelC useDataSet = dataSet;
-    if(samplesPerClass != 0) {
+    if (samplesPerClass != 0) {
       useDataSet = dataSet.ExtractPerLabel(samplesPerClass);
     }
 
     SArray1dC<FieldInfoC> fieldInfo = dataSet.Sample1().FieldInfo();
-    if(fieldInfo.IsValid()) {
+    if (fieldInfo.IsValid()) {
       SetXLabel(fieldInfo[fv1].Name());
       SetYLabel(fieldInfo[fv2].Name());
     }
@@ -132,7 +175,7 @@ namespace RavlN {
     //: Plot a function
 
     FilenameC tmpFile = "/tmp/data";
-    tmpFile = tmpFile.MkTemp();
+    tmpFile = tmpFile.MkTemp(6, -1);
     OStreamC os(tmpFile);
     StringC cmd;
 
@@ -215,6 +258,33 @@ namespace RavlN {
     StringC cmd;
     cmd.form("set style data %s", lineStyle.data());
     return Command(cmd);
+  }
+
+  /*
+   * Set the output.  Either X11 or a filename.
+   */
+
+  bool GnuPlot2dC::SetOutput(const StringC & output, const IndexRange2dC & rec)
+  {
+    if (output == "x11" || output == "") {
+      Command("set terminal wxt persist raise");
+    } else {
+      FilenameC fn(output);
+      StringC cmd;
+      if (fn.HasExtension("png")) {
+        cmd.form("set terminal png size %d, %d", rec.Cols(), rec.Rows());
+        Command(cmd);
+      } else if (fn.HasExtension("jpg") || fn.HasExtension("jpeg")) {
+        cmd.form("set terminal jpg size %d, %d", rec.Cols(), rec.Rows());
+        Command(cmd);
+      } else {
+        RavlError("gnuplot terminal not supported yet '%s'.", output.data());
+        return false;
+      }
+      cmd.form("set output \'%s\'", output.data());
+      Command(cmd);
+    }
+    return true;
   }
 
   /*

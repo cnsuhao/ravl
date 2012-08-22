@@ -19,7 +19,19 @@ namespace RavlN {
   {
   }
 
+  /*
+   * Plot points on graph
+   */
   bool Plot2dC::Plot(const SArray1dC<Point2dC> & data, const StringC & dataName)
+  {
+    RavlAssertMsg(0, "Abstract method called!");
+    return false;
+  }
+
+  /*
+   * Plot as separate plots on same graph
+   */
+  bool Plot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data)
   {
     RavlAssertMsg(0, "Abstract method called!");
     return false;
@@ -105,6 +117,16 @@ namespace RavlN {
    */
 
   bool Plot2dC::SetLineStyle(const StringC & lineStyle)
+  {
+    RavlAssertMsg(0, "Abstract method called!");
+    return false;
+  }
+
+  /*
+   * Set the output.  Either X11 or a filename.
+   */
+
+  bool Plot2dC::SetOutput(const StringC & output, const IndexRange2dC & rec)
   {
     RavlAssertMsg(0, "Abstract method called!");
     return false;

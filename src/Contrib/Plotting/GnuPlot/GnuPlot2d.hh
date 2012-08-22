@@ -23,7 +23,10 @@ namespace RavlN {
     //: Construct with a set number of plots
 
     virtual bool Plot(const SArray1dC<Point2dC> & points, const StringC & dataName = "");
-    //: Plot all graphs on single canvas
+    //: Plot all points on a graph
+
+    virtual bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data);
+    //: Plot all points on same graph
 
     virtual bool Plot(const LineABC2dC & line);
     //: Plot a line
@@ -48,6 +51,10 @@ namespace RavlN {
 
     virtual bool SetLineStyle(const StringC & lineStyle);
     //: Set plot style
+
+    virtual bool SetOutput(const StringC & output, const IndexRange2dC & rec = IndexRange2dC(750, 1000));
+    //: Set output x11 or a filename
+
 
     virtual bool Command(const StringC & command);
     //: General method to send a command to the plotting library

@@ -12,6 +12,7 @@
 #include "Ravl/String.hh"
 #include "Ravl/Point2d.hh"
 #include "Ravl/SArray1d.hh"
+#include "Ravl/Collection.hh"
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/RealRange1d.hh"
@@ -33,6 +34,9 @@ namespace RavlN {
 
     virtual bool Plot(const SArray1dC<Point2dC> & data, const StringC & dataName = "");
     //: Plot points, optional dataName will appear in the legend
+
+    virtual bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data);
+    //: Plot all plots on same canvas
 
     virtual bool Plot(const LineABC2dC & line);
     //: Plot a straight line
@@ -60,6 +64,9 @@ namespace RavlN {
 
     virtual bool SetLineStyle(const StringC & lineStyle);
     //: Set line style of plot, points, line e.t.c.
+
+    virtual bool SetOutput(const StringC & output, const IndexRange2dC & rec = IndexRange2dC(750, 1000));
+    //: Set output x11 or filename.  If filename it will guess type from extension...
 
     virtual bool Command(const StringC & command);
     //: General method to send a command to the plotting library, e.g. gnuplot

@@ -34,14 +34,19 @@ int exGnuPlot(int nargs, char *args[])
 
   opt.Check();
 
-#if 1
   // Plot a Sine and Cosine on same graph
   SArray1dC<CollectionC<Point2dC> > points(3);
   for (SArray1dIterC<CollectionC<Point2dC> > it(points); it; it++) {
-    it.Data() = CollectionC<Point2dC>(1000);
+    it.Data() = CollectionC<Point2dC>(25);
   }
 
-  for (RealT ang = -4.0 * RavlConstN::pi; ang <= 4.0 * RavlConstN::pi; ang += RavlConstN::pi / 64.0) {
+
+  RCHashC<StringC, CollectionC<Point2dC> > allPoints;
+  allPoints.Insert("sin(x)", points[0]);
+  allPoints.Insert("cos(x)", points[1]);
+  allPoints.Insert("err(x)", points[2]);
+
+  for (RealT ang = -4.0 * RavlConstN::pi; ang <= 4.0 * RavlConstN::pi; ang += RavlConstN::pi / 32.0) {
     points[0].Append(Point2dC(ang, Sin(ang)));
     points[1].Append(Point2dC(ang, Cos(ang)));
     points[2].Append(Point2dC(ang, Sin(2. * Sin(2. * Sin(2. * Sin(ang))))));
@@ -55,11 +60,19 @@ int exGnuPlot(int nargs, char *args[])
   plot0.SetXLabel("bananas");
   plot0.Plot(points[0].SArray1d(), "My Data");
 
+  GnuPlot2dC plot0a("Sin(x) and Cos(x)");
+  plot0a.SetLineStyle("lines");
+  plot0a.SetXLabel("bananas");
+  plot0a.Plot(allPoints);
+  plot0a.SetOutput("graph.png");
+  plot0a.Plot(allPoints);
+
+
+#if 0
+
   GnuPlot2dC plot1("Cos(x)");
   plot1.SetLineStyle("lines");
   plot1.Plot(points[1].SArray1d());
-
-
 
   /*
    * We can just use the command function to do it all as well..
@@ -81,24 +94,26 @@ int exGnuPlot(int nargs, char *args[])
   plot3.Command("set samples samp");
   plot3.Command("plot [t=0:nturns*2*pi] x(t),y(t)");
 
-#if 1
   /*
    * What about a data set
    */
   DataSetVectorLabelC dset = CreateDataSet();
   GnuPlot2dC scatterPlot("A scatter plot");
   scatterPlot.Plot(dset);
-#endif
 
   DataSetVectorLabelC iris;
-  if(!LoadDataSetVectorLabel(PROJECT_OUT "/share/Ravl/PatternRec/iris.csv", iris)) {
+  if (!LoadDataSetVectorLabel(PROJECT_OUT "/share/Ravl/PatternRec/iris.csv", iris)) {
     RavlError("Trouble loading iris dataset");
     return 1;
   }
 
   GnuPlot2dC scatterPlot2("Iris Data");
   scatterPlot2.Plot(iris, 1, 2);
-#endif
+
+  iris.Sample1().Normalise(DATASET_NORMALISE_SCALE);
+  GnuPlot2dC scatterPlot3("Scaled Iris Data");
+  scatterPlot3.Plot(iris, 1, 2);
+
 
   LineABC2dC line(2, -1, 1); // i.e. y = 2x + 1
   GnuPlot2dC linePlot("y=2x + 1");
@@ -111,9 +126,8 @@ int exGnuPlot(int nargs, char *args[])
    */
   GnuPlot2dC plot2("My Function");
   plot2.SetXRange(RealRangeC(0, 1.0));
-  plot2.Plot("2 * x + 1");
-
-
+  plot2.Plot((StringC)"2 * x + 1");
+#endif
   return 0;
 }
 
