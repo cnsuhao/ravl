@@ -81,7 +81,6 @@ namespace RavlN {
     Sums1d2C label1;
     for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dset); it; it++) {
       RealT score = classifier.LabelProbability(it.Data1(), 0);
-      //cerr  << it.Data2() << ' ' << score << endl;
       scores[c] = Tuple2C<UIntT, RealT>(it.Data2(), score);
       c++;
       if(it.Data2()==0) {
@@ -93,7 +92,7 @@ namespace RavlN {
 
     // lets check label0 mean is higher than label1
     //RavlInfo("Mean score of label0 %0.4f and label1 %0.4f", label0.Mean(), label1.Mean());
-    if(label1.Mean() >  label1.Mean()) {
+    if(label1.Mean() >  label0.Mean()) {
       RavlError("Mean of Label1 higher than mean of Label0.  This assumes otherwise!");
     }
 
