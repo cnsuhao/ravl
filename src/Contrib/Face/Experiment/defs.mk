@@ -33,7 +33,7 @@ USESLIBS=	RavlMath \
 			RavlOS \
 			RavlXMLFactory \
 			RavlRLog \
-			RavlPlot
+			RavlGnuPlot
 
 PROGLIBS = 	RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
 
