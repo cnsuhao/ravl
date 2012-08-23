@@ -104,6 +104,7 @@ namespace RavlN {
     ClassifierC classifier = design.Apply(train.Sample1(), train.Sample2(), featureSet);
 
     RealT pmc = -1.0;
+#if 0
     if (classifier.NumLabels() == 2) {
       ErrorBinaryClassifierC error;
       RealT threshold;
@@ -116,6 +117,11 @@ namespace RavlN {
       ErrorC error;
       pmc = error.Error(classifier, test, featureSet.SArray1d());
     }
+#else
+    ErrorC error;
+    pmc = error.Error(classifier, test, featureSet.SArray1d());
+#endif
+
     result->Data1() = classifier;
     result->Data2() = pmc;
     return true;
