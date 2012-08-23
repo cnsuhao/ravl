@@ -225,15 +225,18 @@ namespace RavlN {
     }
 
     TextFileC textFile(filename);
-    // Now the first line might be the headings - we need to guess
+    /*
+     * The first line maybe the delimited column headings...
+     * The rather crap way I check for this is by testing id
+     * the first value is a real number....if it is not we
+     * assume it is a heading!
+     */
     UIntT startLine = 1;
-    StringListC headings(textFile[1].TopAndTail(), ",");
-    for (DLIterC<StringC> it(headings); it; it++) {
-      if (!it.Data().RealValue()) {
-        startLine = 2;
-        break;
-      }
+    StringListC headings(textFile[1].TopAndTail(), ",;");
+    if(!headings.First().RealValue()) {
+      startLine = 2;
     }
+
 
     // Now lets put something into field information
     SArray1dC<FieldInfoC> fieldInfo(headings.Size() - 1);
@@ -261,7 +264,7 @@ namespace RavlN {
     dataset.Sample1().SetFieldInfo(fieldInfo);
     dataset.Sample2().SetFieldInfo(labelFieldInfo);
     for (UIntT i = startLine; i <= textFile.NoLines(); i++) {
-      StringListC line(textFile[i], ",");
+      StringListC line(textFile[i], ",;");
       VectorC vec(line.Size() - 1);
       UIntT c = 0;
       UIntT label;

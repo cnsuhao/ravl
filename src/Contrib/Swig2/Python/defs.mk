@@ -29,4 +29,9 @@ AUXDIR=/share/Python
 
 AUXFILES=Ravl.py
 
-SCRIPTS=test.py testVectorMatrix.py testPatternRec.py
+SCRIPTS=	test.py \
+			testVectorMatrix.py \
+			testPatternRec.py \
+			testSVM.py \
+			testReduce.py \
+			testFeatureSelect.py

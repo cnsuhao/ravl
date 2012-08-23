@@ -45,4 +45,5 @@ namespace RavlGUIN
 %include "Ravl/Swig2/XMLFactory.i"
 %include "Ravl/Swig2/Collection.i"
 %include "Ravl/Swig2/LoadSave.i"
+%include "Ravl/Swig2/RealHistogram1d.i"
 

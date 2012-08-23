@@ -35,6 +35,7 @@ HEADERS=	RavlCore.i \
  			MatrixRUTC.i \
  			VectorMatrix.i \
  			MeanCovariance.i \
+ 			RealHistogram1d.i \
  			Affine2d.i \
  			DList.i \
  			Date.i \
@@ -63,18 +64,24 @@ HEADERS=	RavlCore.i \
  			ClassifierPreprocess.i \
  			ClassifierDiscriminantFunction.i \
  			DesignFunctionSupervised.i \
+ 			DesignFunctionUnsupervised.i \
  			DesignFuncLSQ.i \
  			DesignClassifierSupervised.i \
  			DesignDiscriminantFunction.i \
  			DesignKNearestNeighbour.i \
  			DesignClassifierNeuralNetwork2.i \
  			DesignClassifierLogisticRegression.i \
+ 			DesignFuncReduce.i \
+ 			DesignFuncPCA.i \
+ 			DesignFuncLDA.i \
  			CommonKernels.i \
  			DesignSvm.i \
  			DesignClassifierSvmSmo.i \
  			Error.i \
  			ErrorBinaryClassifier.i \
- 			GnuPlot2d.i
+ 			GnuPlot2d.i \
+ 			FeatureSelector.i \
+ 			FeatureSelectPlusLMinusR.i
 
 SOURCES=
 

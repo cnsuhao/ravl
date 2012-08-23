@@ -81,6 +81,18 @@ public:
     // The elements are removed from this set. NB. The order
     // of this dataset is NOT preserved.
     
+    SampleVectorC & Sample1();
+    //: Access complete sample.
+    
+    const SampleVectorC &Sample1() const;
+    //: Access complete sample.
+    
+    SampleLabelC & Sample2();
+    //: Access complete sample.
+    
+    const SampleLabelC &Sample2() const;
+    //: Access complete sample.
+    	
     %extend {
      const char *__str__()
       {

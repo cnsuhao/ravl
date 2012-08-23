@@ -13,6 +13,7 @@
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/SumsNd2.hh"
 
 namespace RavlN {
   
@@ -204,6 +205,70 @@ namespace RavlN {
     os.Close();
     Command(bigCmd);
     Flush();
+    return true;
+  }
+
+  /*
+   * Plot right wrong decisions made by a trained classifier
+   */
+  bool GnuPlot2dC::Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1, UIntT feature2)
+  {
+    RavlInfo("Classifier plot....");
+
+    // need to find min and max of features
+    SampleVectorC sv = dataSet.Sample1();
+    VectorC first = sv.First();
+
+    if(feature1 >= sv.Size() || feature2 >= sv.Size()) {
+      RavlError("Requested feature index larger than dimension of data set");
+      return false;
+    }
+
+    RealT min1 = first[feature1];
+    RealT max1 = first[feature1];
+    RealT min2 = first[feature2];
+    RealT max2 = first[feature2];
+    SumsNd2C sums(first.Size()); // may as well get mean at same time
+    FilenameC tmpFileData = "/tmp/data";
+    tmpFileData = tmpFileData.MkTemp(6, -1);
+    OStreamC osData(tmpFileData);
+    for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dataSet); it; it++) {
+      sums += it.Data1();
+      min1 = Min(min1, it.Data1()[feature1]);
+      max1 = Max(max1, it.Data1()[feature1]);
+      min2 = Min(min2, it.Data1()[feature2]);
+      max2 = Max(max2, it.Data1()[feature2]);
+      osData << it.Data1()[feature1] << ' ' << it.Data1()[feature2] << ' ' << it.Data2() << endl;
+    }
+    osData.Close();
+
+    FilenameC tmpFile = "/tmp/data";
+    tmpFile = tmpFile.MkTemp(6, -1);
+    OStreamC os(tmpFile);
+
+    RealT step1 = (max1 - min1) / 500.0;
+    RealT step2 = (max2 - min2) / 500.0;
+    VectorC mean = sums.Mean();
+
+    for (RealT x1 = min1; x1 <= max1; x1 += step1) {
+      for (RealT x2 = min2; x2 <= max2; x2 += step2) {
+        mean[feature1] = x1;
+        mean[feature2] = x2;
+        UIntT label = classifier.Classify(mean);
+        os << x1 << ' ' << x2 << ' ' << label << '\n';
+      }
+      os << '\n'; // have to have a line between rows for gnnuplot
+    }
+    os.Close();
+
+    SetXRange(RealRangeC(min1, max1));
+    SetYRange(RealRangeC(min2, max2));
+    StringC cmd;
+    cmd.form("set palette rgbformulae -7,2,-7");
+    Command(cmd);
+    cmd.form("plot \'%s\' using 1:2:3 with image, \'%s\' using 1:2:3 with labels notitle", tmpFile.data(), tmpFileData.data());
+    Command(cmd);
+
     return true;
   }
 

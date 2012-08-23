@@ -24,7 +24,7 @@ namespace RavlN {
 
    class KernelFunctionC {
    public:
-   KernelFunctionC();
+   	 KernelFunctionC();
    };
 
 
@@ -45,7 +45,7 @@ public:
   class PolynomialKernelC : public KernelFunctionC {
 public:
 
-    QuadraticKernelC(RealT power, RealT scale, RealT B);
+    PolynomialKernelC(RealT power, RealT scale, RealT B);
         
   };
   

@@ -65,6 +65,15 @@ namespace RavlN {
   }
 
   /*
+   * Plot right wrong decisions made by a trained classifier
+   */
+  bool Plot2dC::Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1, UIntT feature2) {
+    RavlAssertMsg(0, "Abstract method called!");
+    return false;
+  }
+
+
+  /*
    * Set the X label
    */
   bool Plot2dC::SetXLabel(const StringC & xlabel)
