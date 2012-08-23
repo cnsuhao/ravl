@@ -55,7 +55,7 @@ namespace RavlN {
     const UIntT &SamplesPerClass()const;
     //: Access number of samples per class used for LDA training
 
-    FunctionC Apply(const DataSetVectorLabelC &in);
+    FunctionC Apply(const DataSetVectorLabelC & data);
     //: Create dimensionality reduction function from the given labelled data sets.
     // Applies PCA for initial dimension reduction, then uses LDA.
 

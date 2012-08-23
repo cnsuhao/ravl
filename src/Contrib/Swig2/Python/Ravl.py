@@ -7782,13 +7782,171 @@ class DesignFuncLDAC(DesignFuncReduceC):
         return _Ravl.DesignFuncLDAC_SamplesPerClass(self, *args)
 
     def Apply(self, *args):
-        """Apply(self, _in) -> FunctionC"""
+        """Apply(self, data) -> FunctionC"""
         return _Ravl.DesignFuncLDAC_Apply(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DesignFuncLDAC
     __del__ = lambda self : None;
 DesignFuncLDAC_swigregister = _Ravl.DesignFuncLDAC_swigregister
 DesignFuncLDAC_swigregister(DesignFuncLDAC)
+
+class KernelFunctionC(_object):
+    """Proxy of C++ RavlN::KernelFunctionC class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, KernelFunctionC, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, KernelFunctionC, name)
+    __repr__ = _swig_repr
+    def __init__(self): 
+        """__init__(self) -> KernelFunctionC"""
+        this = _Ravl.new_KernelFunctionC()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_KernelFunctionC
+    __del__ = lambda self : None;
+KernelFunctionC_swigregister = _Ravl.KernelFunctionC_swigregister
+KernelFunctionC_swigregister(KernelFunctionC)
+
+class LinearKernelC(KernelFunctionC):
+    """Proxy of C++ RavlN::LinearKernelC class"""
+    __swig_setmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LinearKernelC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, LinearKernelC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """__init__(self, scale) -> LinearKernelC"""
+        this = _Ravl.new_LinearKernelC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_LinearKernelC
+    __del__ = lambda self : None;
+LinearKernelC_swigregister = _Ravl.LinearKernelC_swigregister
+LinearKernelC_swigregister(LinearKernelC)
+
+class QuadraticKernelC(KernelFunctionC):
+    """Proxy of C++ RavlN::QuadraticKernelC class"""
+    __swig_setmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, QuadraticKernelC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, QuadraticKernelC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """__init__(self, scale) -> QuadraticKernelC"""
+        this = _Ravl.new_QuadraticKernelC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_QuadraticKernelC
+    __del__ = lambda self : None;
+QuadraticKernelC_swigregister = _Ravl.QuadraticKernelC_swigregister
+QuadraticKernelC_swigregister(QuadraticKernelC)
+
+class PolynomialKernelC(KernelFunctionC):
+    """Proxy of C++ RavlN::PolynomialKernelC class"""
+    __swig_setmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, PolynomialKernelC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, PolynomialKernelC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """__init__(self, power, scale, B) -> PolynomialKernelC"""
+        this = _Ravl.new_PolynomialKernelC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_PolynomialKernelC
+    __del__ = lambda self : None;
+PolynomialKernelC_swigregister = _Ravl.PolynomialKernelC_swigregister
+PolynomialKernelC_swigregister(PolynomialKernelC)
+
+class RBFKernelC(KernelFunctionC):
+    """Proxy of C++ RavlN::RBFKernelC class"""
+    __swig_setmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, RBFKernelC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, RBFKernelC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """__init__(self, gamma) -> RBFKernelC"""
+        this = _Ravl.new_RBFKernelC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_RBFKernelC
+    __del__ = lambda self : None;
+RBFKernelC_swigregister = _Ravl.RBFKernelC_swigregister
+RBFKernelC_swigregister(RBFKernelC)
+
+class Chi2KernelC(KernelFunctionC):
+    """Proxy of C++ RavlN::Chi2KernelC class"""
+    __swig_setmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Chi2KernelC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [KernelFunctionC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, Chi2KernelC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """__init__(self, gamma) -> Chi2KernelC"""
+        this = _Ravl.new_Chi2KernelC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_Chi2KernelC
+    __del__ = lambda self : None;
+Chi2KernelC_swigregister = _Ravl.Chi2KernelC_swigregister
+Chi2KernelC_swigregister(Chi2KernelC)
+
+class DesignSvmC(DesignClassifierSupervisedC):
+    """Proxy of C++ RavlN::DesignSvmC class"""
+    __swig_setmethods__ = {}
+    for _s in [DesignClassifierSupervisedC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DesignSvmC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DesignClassifierSupervisedC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DesignSvmC, name)
+    __repr__ = _swig_repr
+    def __init__(self): 
+        """__init__(self) -> DesignSvmC"""
+        this = _Ravl.new_DesignSvmC()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_DesignSvmC
+    __del__ = lambda self : None;
+DesignSvmC_swigregister = _Ravl.DesignSvmC_swigregister
+DesignSvmC_swigregister(DesignSvmC)
+
+class DesignSvmSmoC(DesignSvmC):
+    """Proxy of C++ RavlN::DesignSvmSmoC class"""
+    __swig_setmethods__ = {}
+    for _s in [DesignSvmC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DesignSvmSmoC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DesignSvmC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DesignSvmSmoC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(self, KernelFunction, Penalty1=1000, Penalty2=1000, Tolerance=0.0000001, Eps=0.000000001, 
+            LambdaThreshold=0.000000000001) -> DesignSvmSmoC
+        __init__(self, KernelFunction, Penalty1=1000, Penalty2=1000, Tolerance=0.0000001, Eps=0.000000001) -> DesignSvmSmoC
+        __init__(self, KernelFunction, Penalty1=1000, Penalty2=1000, Tolerance=0.0000001) -> DesignSvmSmoC
+        __init__(self, KernelFunction, Penalty1=1000, Penalty2=1000) -> DesignSvmSmoC
+        __init__(self, KernelFunction, Penalty1=1000) -> DesignSvmSmoC
+        __init__(self, KernelFunction) -> DesignSvmSmoC
+        """
+        this = _Ravl.new_DesignSvmSmoC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_DesignSvmSmoC
+    __del__ = lambda self : None;
+DesignSvmSmoC_swigregister = _Ravl.DesignSvmSmoC_swigregister
+DesignSvmSmoC_swigregister(DesignSvmSmoC)
 
 class ErrorC(_object):
     """Proxy of C++ RavlN::ErrorC class"""
