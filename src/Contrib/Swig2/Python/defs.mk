@@ -33,4 +33,5 @@ SCRIPTS=	test.py \
 			testVectorMatrix.py \
 			testPatternRec.py \
 			testSVM.py \
-			testReduce.py
+			testReduce.py \
+			testFeatureSelect.py

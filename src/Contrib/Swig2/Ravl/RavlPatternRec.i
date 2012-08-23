@@ -27,5 +27,7 @@
 %include "Ravl/Swig2/DesignClassifierSvmSmo.i"
 %include "Ravl/Swig2/Error.i"
 %include "Ravl/Swig2/ErrorBinaryClassifier.i"
+%include "Ravl/Swig2/FeatureSelector.i"
+%include "Ravl/Swig2/FeatureSelectPlusLMinusR.i"
 %include "Ravl/Swig2/LoadSave.i"
 

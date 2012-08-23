@@ -71,21 +71,6 @@ if True:
     classifier = design.Apply(trainDataSet)
     print "Error with Neural Network {0}".format(error.Error(classifier, dataSet))
     
-     # What about a Linear SVM
-    #design = Ravl.DesignSvmSmoC(Ravl.LinearKernelC(0.01))
-    #classifier = design.Apply(trainDataSet)
-    #print "Error with Linear SVM {0}".format(error.Error(classifier, irisDataSet))
-    
-    # What about a Quadratic SVM
-    #design = Ravl.DesignSvmSmoC(Ravl.QuadraticKernelC(0.01), 10, 10, 0.00000001, 0.0000000001)
-    #classifier = design.Apply(trainDataSet)
-    #print "Error with Quadratic SVM {0}".format(error.Error(classifier, irisDataSet))
-   
-    # What about a Quadratic SVM
-    #design = Ravl.DesignSvmSmoC(Ravl.RBFKernelC(0.01))
-    #classifier = design.Apply(trainDataSet)
-    #print "Error with RBF SVM {0}".format(error.Error(classifier, irisDataSet))
-    
     # we can also save the classifier at any time
     Ravl.Save("classifier.abs", classifier)
 

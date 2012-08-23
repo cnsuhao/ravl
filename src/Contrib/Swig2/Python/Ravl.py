@@ -7996,6 +7996,51 @@ class ErrorBinaryClassifierC(ErrorC):
 ErrorBinaryClassifierC_swigregister = _Ravl.ErrorBinaryClassifierC_swigregister
 ErrorBinaryClassifierC_swigregister(ErrorBinaryClassifierC)
 
+class FeatureSelectorC(_object):
+    """Proxy of C++ RavlN::FeatureSelectorC class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, FeatureSelectorC, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, FeatureSelectorC, name)
+    __repr__ = _swig_repr
+    def __init__(self): 
+        """__init__(self) -> FeatureSelectorC"""
+        this = _Ravl.new_FeatureSelectorC()
+        try: self.this.append(this)
+        except: self.this = this
+    def SelectFeatures(self, *args):
+        """SelectFeatures(self, designer, train, test, classifier) -> SArray1dIndexC"""
+        return _Ravl.FeatureSelectorC_SelectFeatures(self, *args)
+
+    __swig_destroy__ = _Ravl.delete_FeatureSelectorC
+    __del__ = lambda self : None;
+FeatureSelectorC_swigregister = _Ravl.FeatureSelectorC_swigregister
+FeatureSelectorC_swigregister(FeatureSelectorC)
+
+class FeatureSelectPlusLMinusRC(FeatureSelectorC):
+    """Proxy of C++ RavlN::FeatureSelectPlusLMinusRC class"""
+    __swig_setmethods__ = {}
+    for _s in [FeatureSelectorC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, FeatureSelectPlusLMinusRC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [FeatureSelectorC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, FeatureSelectPlusLMinusRC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(self, l, r, deltaError=0.001, numFeatures=25, numThreads=8) -> FeatureSelectPlusLMinusRC
+        __init__(self, l, r, deltaError=0.001, numFeatures=25) -> FeatureSelectPlusLMinusRC
+        __init__(self, l, r, deltaError=0.001) -> FeatureSelectPlusLMinusRC
+        __init__(self, l, r) -> FeatureSelectPlusLMinusRC
+        """
+        this = _Ravl.new_FeatureSelectPlusLMinusRC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _Ravl.delete_FeatureSelectPlusLMinusRC
+    __del__ = lambda self : None;
+FeatureSelectPlusLMinusRC_swigregister = _Ravl.FeatureSelectPlusLMinusRC_swigregister
+FeatureSelectPlusLMinusRC_swigregister(FeatureSelectPlusLMinusRC)
+
 class GnuPlot2dC(_object):
     """Proxy of C++ RavlN::GnuPlot2dC class"""
     __swig_setmethods__ = {}

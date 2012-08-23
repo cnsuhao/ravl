@@ -79,7 +79,9 @@ HEADERS=	RavlCore.i \
  			DesignClassifierSvmSmo.i \
  			Error.i \
  			ErrorBinaryClassifier.i \
- 			GnuPlot2d.i
+ 			GnuPlot2d.i \
+ 			FeatureSelector.i \
+ 			FeatureSelectPlusLMinusR.i
 
 SOURCES=
 

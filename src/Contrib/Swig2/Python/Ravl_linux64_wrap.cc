@@ -3022,75 +3022,77 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_RavlN__DesignSvmSmoC swig_types[68]
 #define SWIGTYPE_p_RavlN__ErrorBinaryClassifierC swig_types[69]
 #define SWIGTYPE_p_RavlN__ErrorC swig_types[70]
-#define SWIGTYPE_p_RavlN__FunctionC swig_types[71]
-#define SWIGTYPE_p_RavlN__GnuPlot2dC swig_types[72]
-#define SWIGTYPE_p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[73]
-#define SWIGTYPE_p_RavlN__HashCT_long_long_t swig_types[74]
-#define SWIGTYPE_p_RavlN__HashIterCT_long_long_t swig_types[75]
-#define SWIGTYPE_p_RavlN__Index2dC swig_types[76]
-#define SWIGTYPE_p_RavlN__IndexC swig_types[77]
-#define SWIGTYPE_p_RavlN__IndexRange2dC swig_types[78]
-#define SWIGTYPE_p_RavlN__IndexRangeC swig_types[79]
-#define SWIGTYPE_p_RavlN__KernelFunctionC swig_types[80]
-#define SWIGTYPE_p_RavlN__LinearKernelC swig_types[81]
-#define SWIGTYPE_p_RavlN__MatrixC swig_types[82]
-#define SWIGTYPE_p_RavlN__MatrixRUTC swig_types[83]
-#define SWIGTYPE_p_RavlN__MeanCovarianceC swig_types[84]
-#define SWIGTYPE_p_RavlN__Point2dC swig_types[85]
-#define SWIGTYPE_p_RavlN__PointSet2dC swig_types[86]
-#define SWIGTYPE_p_RavlN__Polygon2dC swig_types[87]
-#define SWIGTYPE_p_RavlN__PolynomialKernelC swig_types[88]
-#define SWIGTYPE_p_RavlN__QuadraticKernelC swig_types[89]
-#define SWIGTYPE_p_RavlN__RBFKernelC swig_types[90]
-#define SWIGTYPE_p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[91]
-#define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[92]
-#define SWIGTYPE_p_RavlN__RealHistogram1dC swig_types[93]
-#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[94]
-#define SWIGTYPE_p_RavlN__RealRangeC swig_types[95]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[96]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[97]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[98]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[99]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[100]
-#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[101]
-#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[102]
-#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[103]
-#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[104]
-#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[105]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[106]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[107]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[108]
-#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[109]
-#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[110]
-#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[111]
-#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[112]
-#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[113]
-#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[114]
-#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[115]
-#define SWIGTYPE_p_RavlN__SizeC swig_types[116]
-#define SWIGTYPE_p_RavlN__StringC swig_types[117]
-#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[118]
-#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[119]
-#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[120]
-#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[121]
-#define SWIGTYPE_p_RavlN__VectorC swig_types[122]
-#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[123]
-#define SWIGTYPE_p_RavlN__XMLFactoryContextC swig_types[124]
-#define SWIGTYPE_p_T swig_types[125]
-#define SWIGTYPE_p_UIntT swig_types[126]
-#define SWIGTYPE_p_char swig_types[127]
-#define SWIGTYPE_p_double swig_types[128]
-#define SWIGTYPE_p_float swig_types[129]
-#define SWIGTYPE_p_int swig_types[130]
-#define SWIGTYPE_p_long swig_types[131]
-#define SWIGTYPE_p_short swig_types[132]
-#define SWIGTYPE_p_size_t swig_types[133]
-#define SWIGTYPE_p_std__ostream swig_types[134]
-#define SWIGTYPE_p_unsigned_char swig_types[135]
-#define SWIGTYPE_p_unsigned_int swig_types[136]
-#define SWIGTYPE_p_unsigned_long swig_types[137]
-static swig_type_info *swig_types[139];
-static swig_module_info swig_module = {swig_types, 138, 0, 0, 0, 0};
+#define SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC swig_types[71]
+#define SWIGTYPE_p_RavlN__FeatureSelectorC swig_types[72]
+#define SWIGTYPE_p_RavlN__FunctionC swig_types[73]
+#define SWIGTYPE_p_RavlN__GnuPlot2dC swig_types[74]
+#define SWIGTYPE_p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[75]
+#define SWIGTYPE_p_RavlN__HashCT_long_long_t swig_types[76]
+#define SWIGTYPE_p_RavlN__HashIterCT_long_long_t swig_types[77]
+#define SWIGTYPE_p_RavlN__Index2dC swig_types[78]
+#define SWIGTYPE_p_RavlN__IndexC swig_types[79]
+#define SWIGTYPE_p_RavlN__IndexRange2dC swig_types[80]
+#define SWIGTYPE_p_RavlN__IndexRangeC swig_types[81]
+#define SWIGTYPE_p_RavlN__KernelFunctionC swig_types[82]
+#define SWIGTYPE_p_RavlN__LinearKernelC swig_types[83]
+#define SWIGTYPE_p_RavlN__MatrixC swig_types[84]
+#define SWIGTYPE_p_RavlN__MatrixRUTC swig_types[85]
+#define SWIGTYPE_p_RavlN__MeanCovarianceC swig_types[86]
+#define SWIGTYPE_p_RavlN__Point2dC swig_types[87]
+#define SWIGTYPE_p_RavlN__PointSet2dC swig_types[88]
+#define SWIGTYPE_p_RavlN__Polygon2dC swig_types[89]
+#define SWIGTYPE_p_RavlN__PolynomialKernelC swig_types[90]
+#define SWIGTYPE_p_RavlN__QuadraticKernelC swig_types[91]
+#define SWIGTYPE_p_RavlN__RBFKernelC swig_types[92]
+#define SWIGTYPE_p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[93]
+#define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[94]
+#define SWIGTYPE_p_RavlN__RealHistogram1dC swig_types[95]
+#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[96]
+#define SWIGTYPE_p_RavlN__RealRangeC swig_types[97]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[98]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[99]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[100]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[101]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[102]
+#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[103]
+#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[104]
+#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[105]
+#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[106]
+#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[107]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[108]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[109]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[110]
+#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[111]
+#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[112]
+#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[113]
+#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[114]
+#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[115]
+#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[116]
+#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[117]
+#define SWIGTYPE_p_RavlN__SizeC swig_types[118]
+#define SWIGTYPE_p_RavlN__StringC swig_types[119]
+#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[120]
+#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[121]
+#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[122]
+#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[123]
+#define SWIGTYPE_p_RavlN__VectorC swig_types[124]
+#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[125]
+#define SWIGTYPE_p_RavlN__XMLFactoryContextC swig_types[126]
+#define SWIGTYPE_p_T swig_types[127]
+#define SWIGTYPE_p_UIntT swig_types[128]
+#define SWIGTYPE_p_char swig_types[129]
+#define SWIGTYPE_p_double swig_types[130]
+#define SWIGTYPE_p_float swig_types[131]
+#define SWIGTYPE_p_int swig_types[132]
+#define SWIGTYPE_p_long swig_types[133]
+#define SWIGTYPE_p_short swig_types[134]
+#define SWIGTYPE_p_size_t swig_types[135]
+#define SWIGTYPE_p_std__ostream swig_types[136]
+#define SWIGTYPE_p_unsigned_char swig_types[137]
+#define SWIGTYPE_p_unsigned_int swig_types[138]
+#define SWIGTYPE_p_unsigned_long swig_types[139]
+static swig_type_info *swig_types[141];
+static swig_module_info swig_module = {swig_types, 140, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4840,6 +4842,28 @@ SWIGINTERN char const *RavlN_DataSetVectorLabelC___str__(RavlN::DataSetVectorLab
 #endif
 
 #include "Ravl/PatternRec/ErrorBinaryClassifier.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/FeatureSelector.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/FeatureSelectPlusLMinusR.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -80242,6 +80266,445 @@ SWIGINTERN PyObject *ErrorBinaryClassifierC_swigregister(PyObject *SWIGUNUSEDPAR
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_FeatureSelectorC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FeatureSelectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_FeatureSelectorC")) SWIG_fail;
+  result = (RavlN::FeatureSelectorC *)new RavlN::FeatureSelectorC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FeatureSelectorC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FeatureSelectorC_SelectFeatures(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FeatureSelectorC *arg1 = (RavlN::FeatureSelectorC *) 0 ;
+  RavlN::DesignClassifierSupervisedC *arg2 = 0 ;
+  RavlN::DataSetVectorLabelC *arg3 = 0 ;
+  RavlN::DataSetVectorLabelC *arg4 = 0 ;
+  RavlN::ClassifierC *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  RavlN::SArray1dC< RavlN::IndexC > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:FeatureSelectorC_SelectFeatures",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FeatureSelectorC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "1"" of type '" "RavlN::FeatureSelectorC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FeatureSelectorC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__DesignClassifierSupervisedC,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "2"" of type '" "RavlN::DesignClassifierSupervisedC &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "2"" of type '" "RavlN::DesignClassifierSupervisedC &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::DesignClassifierSupervisedC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__DataSetVectorLabelC,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp3);
+  res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_RavlN__DataSetVectorLabelC,  0  | 0);
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "4"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "4"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  arg4 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp4);
+  res5 = SWIG_ConvertPtr(obj4, &argp5, SWIGTYPE_p_RavlN__ClassifierC,  0 );
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "5"" of type '" "RavlN::ClassifierC &""'"); 
+  }
+  if (!argp5) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FeatureSelectorC_SelectFeatures" "', argument " "5"" of type '" "RavlN::ClassifierC &""'"); 
+  }
+  arg5 = reinterpret_cast< RavlN::ClassifierC * >(argp5);
+  result = ((RavlN::FeatureSelectorC const *)arg1)->SelectFeatures(*arg2,(RavlN::DataSetVectorLabelC const &)*arg3,(RavlN::DataSetVectorLabelC const &)*arg4,*arg5);
+  resultobj = SWIG_NewPointerObj((new RavlN::SArray1dC< RavlN::IndexC >(static_cast< const RavlN::SArray1dC< RavlN::IndexC >& >(result))), SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FeatureSelectorC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FeatureSelectorC *arg1 = (RavlN::FeatureSelectorC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_FeatureSelectorC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FeatureSelectorC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FeatureSelectorC" "', argument " "1"" of type '" "RavlN::FeatureSelectorC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FeatureSelectorC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FeatureSelectorC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__FeatureSelectorC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_FeatureSelectPlusLMinusRC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::UIntT arg1 ;
+  RavlN::UIntT arg2 ;
+  RavlN::RealT arg3 ;
+  RavlN::UIntT arg4 ;
+  RavlN::UIntT arg5 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  unsigned int val4 ;
+  int ecode4 = 0 ;
+  unsigned int val5 ;
+  int ecode5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  RavlN::FeatureSelectPlusLMinusRC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:new_FeatureSelectPlusLMinusRC",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "1"" of type '" "RavlN::UIntT""'");
+  } 
+  arg1 = static_cast< RavlN::UIntT >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  ecode4 = SWIG_AsVal_unsigned_SS_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "4"" of type '" "RavlN::UIntT""'");
+  } 
+  arg4 = static_cast< RavlN::UIntT >(val4);
+  ecode5 = SWIG_AsVal_unsigned_SS_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "5"" of type '" "RavlN::UIntT""'");
+  } 
+  arg5 = static_cast< RavlN::UIntT >(val5);
+  result = (RavlN::FeatureSelectPlusLMinusRC *)new RavlN::FeatureSelectPlusLMinusRC(arg1,arg2,arg3,arg4,arg5);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FeatureSelectPlusLMinusRC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::UIntT arg1 ;
+  RavlN::UIntT arg2 ;
+  RavlN::RealT arg3 ;
+  RavlN::UIntT arg4 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  unsigned int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  RavlN::FeatureSelectPlusLMinusRC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:new_FeatureSelectPlusLMinusRC",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "1"" of type '" "RavlN::UIntT""'");
+  } 
+  arg1 = static_cast< RavlN::UIntT >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  ecode4 = SWIG_AsVal_unsigned_SS_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "4"" of type '" "RavlN::UIntT""'");
+  } 
+  arg4 = static_cast< RavlN::UIntT >(val4);
+  result = (RavlN::FeatureSelectPlusLMinusRC *)new RavlN::FeatureSelectPlusLMinusRC(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FeatureSelectPlusLMinusRC__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::UIntT arg1 ;
+  RavlN::UIntT arg2 ;
+  RavlN::RealT arg3 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::FeatureSelectPlusLMinusRC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_FeatureSelectPlusLMinusRC",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "1"" of type '" "RavlN::UIntT""'");
+  } 
+  arg1 = static_cast< RavlN::UIntT >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  result = (RavlN::FeatureSelectPlusLMinusRC *)new RavlN::FeatureSelectPlusLMinusRC(arg1,arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FeatureSelectPlusLMinusRC__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::UIntT arg1 ;
+  RavlN::UIntT arg2 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::FeatureSelectPlusLMinusRC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_FeatureSelectPlusLMinusRC",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "1"" of type '" "RavlN::UIntT""'");
+  } 
+  arg1 = static_cast< RavlN::UIntT >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_FeatureSelectPlusLMinusRC" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  result = (RavlN::FeatureSelectPlusLMinusRC *)new RavlN::FeatureSelectPlusLMinusRC(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FeatureSelectPlusLMinusRC(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[6];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 5) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    {
+      int res = SWIG_AsVal_unsigned_SS_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_new_FeatureSelectPlusLMinusRC__SWIG_3(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    {
+      int res = SWIG_AsVal_unsigned_SS_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_FeatureSelectPlusLMinusRC__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    {
+      int res = SWIG_AsVal_unsigned_SS_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_unsigned_SS_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_FeatureSelectPlusLMinusRC__SWIG_1(self, args);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v;
+    {
+      int res = SWIG_AsVal_unsigned_SS_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_unsigned_SS_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_unsigned_SS_int(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_new_FeatureSelectPlusLMinusRC__SWIG_0(self, args);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_FeatureSelectPlusLMinusRC'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::FeatureSelectPlusLMinusRC::FeatureSelectPlusLMinusRC(RavlN::UIntT,RavlN::UIntT,RavlN::RealT,RavlN::UIntT,RavlN::UIntT)\n"
+    "    RavlN::FeatureSelectPlusLMinusRC::FeatureSelectPlusLMinusRC(RavlN::UIntT,RavlN::UIntT,RavlN::RealT,RavlN::UIntT)\n"
+    "    RavlN::FeatureSelectPlusLMinusRC::FeatureSelectPlusLMinusRC(RavlN::UIntT,RavlN::UIntT,RavlN::RealT)\n"
+    "    RavlN::FeatureSelectPlusLMinusRC::FeatureSelectPlusLMinusRC(RavlN::UIntT,RavlN::UIntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FeatureSelectPlusLMinusRC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FeatureSelectPlusLMinusRC *arg1 = (RavlN::FeatureSelectPlusLMinusRC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_FeatureSelectPlusLMinusRC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FeatureSelectPlusLMinusRC" "', argument " "1"" of type '" "RavlN::FeatureSelectPlusLMinusRC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FeatureSelectPlusLMinusRC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FeatureSelectPlusLMinusRC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__FeatureSelectPlusLMinusRC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_GnuPlot2dC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::StringC *arg1 = 0 ;
@@ -84074,6 +84537,18 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"ErrorBinaryClassifierC_FalseAcceptRate", _wrap_ErrorBinaryClassifierC_FalseAcceptRate, METH_VARARGS, (char *)"ErrorBinaryClassifierC_FalseAcceptRate(self, classifier, dset, falseRejectRate) -> RavlN::RealT"},
 	 { (char *)"delete_ErrorBinaryClassifierC", _wrap_delete_ErrorBinaryClassifierC, METH_VARARGS, (char *)"delete_ErrorBinaryClassifierC(self)"},
 	 { (char *)"ErrorBinaryClassifierC_swigregister", ErrorBinaryClassifierC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_FeatureSelectorC", _wrap_new_FeatureSelectorC, METH_VARARGS, (char *)"new_FeatureSelectorC() -> FeatureSelectorC"},
+	 { (char *)"FeatureSelectorC_SelectFeatures", _wrap_FeatureSelectorC_SelectFeatures, METH_VARARGS, (char *)"FeatureSelectorC_SelectFeatures(self, designer, train, test, classifier) -> SArray1dIndexC"},
+	 { (char *)"delete_FeatureSelectorC", _wrap_delete_FeatureSelectorC, METH_VARARGS, (char *)"delete_FeatureSelectorC(self)"},
+	 { (char *)"FeatureSelectorC_swigregister", FeatureSelectorC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_FeatureSelectPlusLMinusRC", _wrap_new_FeatureSelectPlusLMinusRC, METH_VARARGS, (char *)"\n"
+		"FeatureSelectPlusLMinusRC(l, r, deltaError=0.001, numFeatures=25, numThreads=8)\n"
+		"FeatureSelectPlusLMinusRC(l, r, deltaError=0.001, numFeatures=25)\n"
+		"FeatureSelectPlusLMinusRC(l, r, deltaError=0.001)\n"
+		"new_FeatureSelectPlusLMinusRC(l, r) -> FeatureSelectPlusLMinusRC\n"
+		""},
+	 { (char *)"delete_FeatureSelectPlusLMinusRC", _wrap_delete_FeatureSelectPlusLMinusRC, METH_VARARGS, (char *)"delete_FeatureSelectPlusLMinusRC(self)"},
+	 { (char *)"FeatureSelectPlusLMinusRC_swigregister", FeatureSelectPlusLMinusRC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_GnuPlot2dC", _wrap_new_GnuPlot2dC, METH_VARARGS, (char *)"\n"
 		"GnuPlot2dC(title=\"My Plot\")\n"
 		"new_GnuPlot2dC() -> GnuPlot2dC\n"
@@ -84126,6 +84601,9 @@ static void *_p_RavlN__ConstDLIterCT_unsigned_char_tTo_p_RavlN__DLIterCT_unsigne
 }
 static void *_p_RavlN__ConstDLIterCT_int_tTo_p_RavlN__DLIterCT_int_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DLIterC< int > *)  ((RavlN::ConstDLIterC< int > *) x));
+}
+static void *_p_RavlN__FeatureSelectPlusLMinusRCTo_p_RavlN__FeatureSelectorC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::FeatureSelectorC *)  ((RavlN::FeatureSelectPlusLMinusRC *) x));
 }
 static void *_p_RavlN__MatrixCTo_p_RavlN__TMatrixCT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::TMatrixC< double > *)  ((RavlN::MatrixC *) x));
@@ -84336,6 +84814,8 @@ static swig_type_info _swigt__p_RavlN__DesignSvmC = {"_p_RavlN__DesignSvmC", "Ra
 static swig_type_info _swigt__p_RavlN__DesignSvmSmoC = {"_p_RavlN__DesignSvmSmoC", "RavlN::DesignSvmSmoC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ErrorBinaryClassifierC = {"_p_RavlN__ErrorBinaryClassifierC", "RavlN::ErrorBinaryClassifierC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ErrorC = {"_p_RavlN__ErrorC", "RavlN::ErrorC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__FeatureSelectPlusLMinusRC = {"_p_RavlN__FeatureSelectPlusLMinusRC", "RavlN::FeatureSelectPlusLMinusRC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__FeatureSelectorC = {"_p_RavlN__FeatureSelectorC", "RavlN::FeatureSelectorC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__FunctionC = {"_p_RavlN__FunctionC", "RavlN::FunctionC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__GnuPlot2dC = {"_p_RavlN__GnuPlot2dC", "RavlN::GnuPlot2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t = {"_p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t", "RavlN::HashC< RavlN::StringC,RavlN::CollectionC< RavlN::Point2dC > > *", 0, 0, (void*)0, 0};
@@ -84476,6 +84956,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RavlN__DesignSvmSmoC,
   &_swigt__p_RavlN__ErrorBinaryClassifierC,
   &_swigt__p_RavlN__ErrorC,
+  &_swigt__p_RavlN__FeatureSelectPlusLMinusRC,
+  &_swigt__p_RavlN__FeatureSelectorC,
   &_swigt__p_RavlN__FunctionC,
   &_swigt__p_RavlN__GnuPlot2dC,
   &_swigt__p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t,
@@ -84616,6 +85098,8 @@ static swig_cast_info _swigc__p_RavlN__DesignSvmC[] = {  {&_swigt__p_RavlN__Desi
 static swig_cast_info _swigc__p_RavlN__DesignSvmSmoC[] = {  {&_swigt__p_RavlN__DesignSvmSmoC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ErrorBinaryClassifierC[] = {  {&_swigt__p_RavlN__ErrorBinaryClassifierC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ErrorC[] = {  {&_swigt__p_RavlN__ErrorC, 0, 0, 0},  {&_swigt__p_RavlN__ErrorBinaryClassifierC, _p_RavlN__ErrorBinaryClassifierCTo_p_RavlN__ErrorC, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__FeatureSelectPlusLMinusRC[] = {  {&_swigt__p_RavlN__FeatureSelectPlusLMinusRC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__FeatureSelectorC[] = {  {&_swigt__p_RavlN__FeatureSelectorC, 0, 0, 0},  {&_swigt__p_RavlN__FeatureSelectPlusLMinusRC, _p_RavlN__FeatureSelectPlusLMinusRCTo_p_RavlN__FeatureSelectorC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__FunctionC[] = {  {&_swigt__p_RavlN__FunctionC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__GnuPlot2dC[] = {  {&_swigt__p_RavlN__GnuPlot2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t[] = {  {&_swigt__p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -84756,6 +85240,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RavlN__DesignSvmSmoC,
   _swigc__p_RavlN__ErrorBinaryClassifierC,
   _swigc__p_RavlN__ErrorC,
+  _swigc__p_RavlN__FeatureSelectPlusLMinusRC,
+  _swigc__p_RavlN__FeatureSelectorC,
   _swigc__p_RavlN__FunctionC,
   _swigc__p_RavlN__GnuPlot2dC,
   _swigc__p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t,
