@@ -47,6 +47,9 @@ namespace RavlN {
     bool Plot(const DataSetVectorLabelC & dataSet, UIntT fv1 = 0, UIntT fv2 = 1, UIntT samplesPerClass = 0);
     //: Make a scatter plot of the data.  Only the first two dimensions will be used...
 
+	bool Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1=0, UIntT feature2=1);
+	//: Plot a classifier decision boundary...works best for 2D classifiers
+	
     bool SetXLabel(const StringC & xlabel);
     //: Set the x-label
 

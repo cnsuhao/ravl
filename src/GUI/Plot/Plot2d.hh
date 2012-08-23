@@ -18,6 +18,7 @@
 #include "Ravl/RealRange1d.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/PatternRec/Function.hh"
+#include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/LineABC2d.hh"
 
 namespace RavlN {
@@ -46,6 +47,9 @@ namespace RavlN {
 
     virtual bool Plot(const DataSetVectorLabelC & dataSet, UIntT feature1 = 0, UIntT feature2 = 1, UIntT samplesPerClass = 0);
     //: Make a scatter plot of the data
+
+    virtual bool Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1 = 0, UIntT feature2 = 1);
+    //: Plot right/wrong decisions made by a classifier
 
     virtual bool SetXLabel(const StringC & xlabel);
     //: Set the x-label

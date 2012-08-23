@@ -41,6 +41,7 @@ if True:
     #design = Ravl.DesignDiscriminantFunctionC(designFunc)
     design = Ravl.DesignKNearestNeighbourC(3)
     classifier = design.Apply(trainDataSet)
+   
     #f = classifier.Discriminant()
     #gnuplot.Plot(f)
     error = Ravl.ErrorC()
@@ -55,6 +56,8 @@ if True:
     designFunc = Ravl.DesignFuncLSQC(1, False)
     design = Ravl.DesignDiscriminantFunctionC(designFunc)
     classifier = design.Apply(trainDataSet)
+    plotClassifier = Ravl.GnuPlot2dC("Linear Classifier")
+    plotClassifier.Plot(classifier, trainDataSet)
     print "Error with Linear LSQ Classifier {0}".format(error.Error(classifier, irisDataSet))
     
      # What about a quadratic classifier

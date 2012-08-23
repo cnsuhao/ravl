@@ -35,6 +35,7 @@ HEADERS=	RavlCore.i \
  			MatrixRUTC.i \
  			VectorMatrix.i \
  			MeanCovariance.i \
+ 			RealHistogram1d.i \
  			Affine2d.i \
  			DList.i \
  			Date.i \

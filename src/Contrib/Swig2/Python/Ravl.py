@@ -6753,6 +6753,112 @@ def Save(*args):
     Save(StringC filename, FunctionC classifier) -> bool
     """
   return _Ravl.Save(*args)
+class RealHistogram1dC(SArray1dReal):
+    """Proxy of C++ RavlN::RealHistogram1dC class"""
+    __swig_setmethods__ = {}
+    for _s in [SArray1dReal]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, RealHistogram1dC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [SArray1dReal]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, RealHistogram1dC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(RavlN::RealHistogram1dC self) -> RealHistogram1dC
+        __init__(RavlN::RealHistogram1dC self, RavlN::RealT min, RavlN::RealT max, RavlN::UIntT noOfBins) -> RealHistogram1dC
+        """
+        this = _Ravl.new_RealHistogram1dC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def Scale(self):
+        """Scale(RealHistogram1dC self) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_Scale(self)
+
+    def Offset(self):
+        """Offset(RealHistogram1dC self) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_Offset(self)
+
+    def Bin(self, *args):
+        """Bin(RealHistogram1dC self, RavlN::RealT v) -> IndexC"""
+        return _Ravl.RealHistogram1dC_Bin(self, *args)
+
+    def MidBin(self, *args):
+        """MidBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_MidBin(self, *args)
+
+    def MinBin(self, *args):
+        """MinBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_MinBin(self, *args)
+
+    def MaxBin(self, *args):
+        """MaxBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_MaxBin(self, *args)
+
+    def MinLimit(self):
+        """MinLimit(RealHistogram1dC self) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_MinLimit(self)
+
+    def MaxLimit(self):
+        """MaxLimit(RealHistogram1dC self) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_MaxLimit(self)
+
+    def Reset(self):
+        """Reset(RealHistogram1dC self)"""
+        return _Ravl.RealHistogram1dC_Reset(self)
+
+    def Vote(self, *args):
+        """
+        Vote(RealHistogram1dC self, RavlN::RealT v)
+        Vote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n)
+        """
+        return _Ravl.RealHistogram1dC_Vote(self, *args)
+
+    def CheckVote(self, *args):
+        """
+        CheckVote(RealHistogram1dC self, RavlN::RealT v) -> bool
+        CheckVote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n) -> bool
+        """
+        return _Ravl.RealHistogram1dC_CheckVote(self, *args)
+
+    def TotalVotes(self):
+        """TotalVotes(RealHistogram1dC self) -> RavlN::UIntT"""
+        return _Ravl.RealHistogram1dC_TotalVotes(self)
+
+    def Information(self):
+        """Information(RealHistogram1dC self) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_Information(self)
+
+    def Energy(self):
+        """Energy(RealHistogram1dC self) -> RavlN::RealT"""
+        return _Ravl.RealHistogram1dC_Energy(self)
+
+    def SmoothedPDF(self, *args):
+        """
+        SmoothedPDF(RealHistogram1dC self, RavlN::IntT bin, RavlN::RealT sigma=1) -> RavlN::RealT
+        SmoothedPDF(RealHistogram1dC self, RavlN::IntT bin) -> RavlN::RealT
+        """
+        return _Ravl.RealHistogram1dC_SmoothedPDF(self, *args)
+
+    def Peaks(self, *args):
+        """
+        Peaks(RealHistogram1dC self, RavlN::UIntT width, RavlN::UIntT threshold=0) -> DListRealC
+        Peaks(RealHistogram1dC self, RavlN::UIntT width) -> DListRealC
+        """
+        return _Ravl.RealHistogram1dC_Peaks(self, *args)
+
+    def MinMax(self, *args):
+        """MinMax(RealHistogram1dC self, IndexC min, IndexC max) -> bool"""
+        return _Ravl.RealHistogram1dC_MinMax(self, *args)
+
+    def Sum(self, *args):
+        """Sum(RealHistogram1dC self, IndexC min, IndexC max) -> RavlN::UIntT"""
+        return _Ravl.RealHistogram1dC_Sum(self, *args)
+
+    __swig_destroy__ = _Ravl.delete_RealHistogram1dC
+    __del__ = lambda self : None;
+RealHistogram1dC_swigregister = _Ravl.RealHistogram1dC_swigregister
+RealHistogram1dC_swigregister(RealHistogram1dC)
+
 class SampleOfUInt(_object):
     """Proxy of C++ RavlN::SampleC<(RavlN::UIntT)> class"""
     __swig_setmethods__ = {}
@@ -7598,6 +7704,9 @@ class GnuPlot2dC(_object):
         Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1) -> bool
         Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0) -> bool
         Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet) -> bool
+        Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0, RavlN::UIntT feature2=1) -> bool
+        Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0) -> bool
+        Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet) -> bool
         """
         return _Ravl.GnuPlot2dC_Plot(self, *args)
 

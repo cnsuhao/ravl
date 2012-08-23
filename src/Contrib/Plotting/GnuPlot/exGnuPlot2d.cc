@@ -23,6 +23,9 @@
 #include "Ravl/Vector2d.hh"
 #include "Ravl/Resource.hh"
 #include "Ravl/PatternRec/DataSetIO.hh"
+#include "Ravl/PatternRec/DesignDiscriminantFunction.hh"
+#include "Ravl/PatternRec/DesignFuncLSQ.hh"
+#include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
 
 using namespace RavlN;
 
@@ -68,8 +71,6 @@ int exGnuPlot(int nargs, char *args[])
   plot0a.Plot(allPoints);
 
 
-#if 0
-
   GnuPlot2dC plot1("Cos(x)");
   plot1.SetLineStyle("lines");
   plot1.Plot(points[1].SArray1d());
@@ -108,11 +109,10 @@ int exGnuPlot(int nargs, char *args[])
   }
 
   GnuPlot2dC scatterPlot2("Iris Data");
-  scatterPlot2.Plot(iris, 1, 2);
-
+  scatterPlot2.Plot(iris, 0, 1);
   iris.Sample1().Normalise(DATASET_NORMALISE_SCALE);
   GnuPlot2dC scatterPlot3("Scaled Iris Data");
-  scatterPlot3.Plot(iris, 1, 2);
+  scatterPlot3.Plot(iris, 0, 1);
 
 
   LineABC2dC line(2, -1, 1); // i.e. y = 2x + 1
@@ -127,7 +127,7 @@ int exGnuPlot(int nargs, char *args[])
   GnuPlot2dC plot2("My Function");
   plot2.SetXRange(RealRangeC(0, 1.0));
   plot2.Plot((StringC)"2 * x + 1");
-#endif
+
   return 0;
 }
 

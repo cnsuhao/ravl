@@ -3032,52 +3032,53 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_RavlN__Polygon2dC swig_types[78]
 #define SWIGTYPE_p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[79]
 #define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[80]
-#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[81]
-#define SWIGTYPE_p_RavlN__RealRangeC swig_types[82]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[83]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[84]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[85]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[86]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[87]
-#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[88]
-#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[89]
-#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[90]
-#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[91]
-#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[92]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[93]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[94]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[95]
-#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[96]
-#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[97]
-#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[98]
-#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[99]
-#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[100]
-#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[101]
-#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[102]
-#define SWIGTYPE_p_RavlN__SizeC swig_types[103]
-#define SWIGTYPE_p_RavlN__StringC swig_types[104]
-#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[105]
-#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[106]
-#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[107]
-#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[108]
-#define SWIGTYPE_p_RavlN__VectorC swig_types[109]
-#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[110]
-#define SWIGTYPE_p_RavlN__XMLFactoryContextC swig_types[111]
-#define SWIGTYPE_p_T swig_types[112]
-#define SWIGTYPE_p_UIntT swig_types[113]
-#define SWIGTYPE_p_char swig_types[114]
-#define SWIGTYPE_p_double swig_types[115]
-#define SWIGTYPE_p_float swig_types[116]
-#define SWIGTYPE_p_int swig_types[117]
-#define SWIGTYPE_p_long swig_types[118]
-#define SWIGTYPE_p_short swig_types[119]
-#define SWIGTYPE_p_size_t swig_types[120]
-#define SWIGTYPE_p_std__ostream swig_types[121]
-#define SWIGTYPE_p_unsigned_char swig_types[122]
-#define SWIGTYPE_p_unsigned_int swig_types[123]
-#define SWIGTYPE_p_unsigned_long swig_types[124]
-static swig_type_info *swig_types[126];
-static swig_module_info swig_module = {swig_types, 125, 0, 0, 0, 0};
+#define SWIGTYPE_p_RavlN__RealHistogram1dC swig_types[81]
+#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[82]
+#define SWIGTYPE_p_RavlN__RealRangeC swig_types[83]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[84]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[85]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[86]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[87]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[88]
+#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[89]
+#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[90]
+#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[91]
+#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[92]
+#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[93]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[94]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[95]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[96]
+#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[97]
+#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[98]
+#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[99]
+#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[100]
+#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[101]
+#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[102]
+#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[103]
+#define SWIGTYPE_p_RavlN__SizeC swig_types[104]
+#define SWIGTYPE_p_RavlN__StringC swig_types[105]
+#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[106]
+#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[107]
+#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[108]
+#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[109]
+#define SWIGTYPE_p_RavlN__VectorC swig_types[110]
+#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[111]
+#define SWIGTYPE_p_RavlN__XMLFactoryContextC swig_types[112]
+#define SWIGTYPE_p_T swig_types[113]
+#define SWIGTYPE_p_UIntT swig_types[114]
+#define SWIGTYPE_p_char swig_types[115]
+#define SWIGTYPE_p_double swig_types[116]
+#define SWIGTYPE_p_float swig_types[117]
+#define SWIGTYPE_p_int swig_types[118]
+#define SWIGTYPE_p_long swig_types[119]
+#define SWIGTYPE_p_short swig_types[120]
+#define SWIGTYPE_p_size_t swig_types[121]
+#define SWIGTYPE_p_std__ostream swig_types[122]
+#define SWIGTYPE_p_unsigned_char swig_types[123]
+#define SWIGTYPE_p_unsigned_int swig_types[124]
+#define SWIGTYPE_p_unsigned_long swig_types[125]
+static swig_type_info *swig_types[127];
+static swig_module_info swig_module = {swig_types, 126, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4527,6 +4528,18 @@ SWIGINTERN bool RavlN_FunctionC___nonzero__(RavlN::FunctionC *self){
 #include "Ravl/String.hh"
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/PatternRec/Function.hh"
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/RealHistogram1d.hh"
+#include "Ravl/SArray1dIter.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
 
 
 #ifdef SWIGPERL
@@ -68569,6 +68582,1063 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_new_RealHistogram1dC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_RealHistogram1dC")) SWIG_fail;
+  result = (RavlN::RealHistogram1dC *)new RavlN::RealHistogram1dC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealHistogram1dC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  RavlN::RealT arg2 ;
+  RavlN::UIntT arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::RealHistogram1dC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_RealHistogram1dC",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RealHistogram1dC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_RealHistogram1dC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_RealHistogram1dC" "', argument " "3"" of type '" "RavlN::UIntT""'");
+  } 
+  arg3 = static_cast< RavlN::UIntT >(val3);
+  result = (RavlN::RealHistogram1dC *)new RavlN::RealHistogram1dC(arg1,arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealHistogram1dC(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_new_RealHistogram1dC__SWIG_0(self, args);
+  }
+  if (argc == 3) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_RealHistogram1dC__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_RealHistogram1dC'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::RealHistogram1dC()\n"
+    "    RavlN::RealHistogram1dC::RealHistogram1dC(RavlN::RealT,RavlN::RealT,RavlN::UIntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Scale(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Scale",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Scale" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Scale();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Offset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Offset",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Offset" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Offset();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Bin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::IndexC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Bin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Bin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Bin" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  result = ((RavlN::RealHistogram1dC const *)arg1)->Bin(arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::IndexC(static_cast< const RavlN::IndexC& >(result))), SWIGTYPE_p_RavlN__IndexC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MidBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MidBin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MidBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MidBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MidBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MidBin(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MinBin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MinBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MinBin(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MaxBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MaxBin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MaxBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MaxBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MaxBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MaxBin(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinLimit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_MinLimit",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinLimit" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MinLimit();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MaxLimit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_MaxLimit",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MaxLimit" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MaxLimit();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Reset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Reset",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Reset" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  (arg1)->Reset();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Vote",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Vote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Vote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  (arg1)->Vote(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::IntT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Vote",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Vote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Vote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_Vote" "', argument " "3"" of type '" "RavlN::IntT""'");
+  } 
+  arg3 = static_cast< RavlN::IntT >(val3);
+  (arg1)->Vote(arg2,arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_Vote__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_Vote__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_Vote'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::Vote(RavlN::RealT)\n"
+    "    RavlN::RealHistogram1dC::Vote(RavlN::RealT,RavlN::IntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_CheckVote",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_CheckVote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_CheckVote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  result = (bool)(arg1)->CheckVote(arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::IntT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_CheckVote",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_CheckVote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_CheckVote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_CheckVote" "', argument " "3"" of type '" "RavlN::IntT""'");
+  } 
+  arg3 = static_cast< RavlN::IntT >(val3);
+  result = (bool)(arg1)->CheckVote(arg2,arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_CheckVote__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_CheckVote__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_CheckVote'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::CheckVote(RavlN::RealT)\n"
+    "    RavlN::RealHistogram1dC::CheckVote(RavlN::RealT,RavlN::IntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_TotalVotes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::UIntT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_TotalVotes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_TotalVotes" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::UIntT)((RavlN::RealHistogram1dC const *)arg1)->TotalVotes();
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Information(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Information",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Information" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Information();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Energy(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Energy",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Energy" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Energy();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IntT arg2 ;
+  RavlN::RealT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_SmoothedPDF",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "2"" of type '" "RavlN::IntT""'");
+  } 
+  arg2 = static_cast< RavlN::IntT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->SmoothedPDF(arg2,arg3);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IntT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_SmoothedPDF",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "2"" of type '" "RavlN::IntT""'");
+  } 
+  arg2 = static_cast< RavlN::IntT >(val2);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->SmoothedPDF(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_SmoothedPDF__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_SmoothedPDF__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_SmoothedPDF'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::SmoothedPDF(RavlN::IntT,RavlN::RealT) const\n"
+    "    RavlN::RealHistogram1dC::SmoothedPDF(RavlN::IntT) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::UIntT arg2 ;
+  RavlN::UIntT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::DListC< RavlN::RealT > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Peaks",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Peaks" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Peaks" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_Peaks" "', argument " "3"" of type '" "RavlN::UIntT""'");
+  } 
+  arg3 = static_cast< RavlN::UIntT >(val3);
+  result = ((RavlN::RealHistogram1dC const *)arg1)->Peaks(arg2,arg3);
+  resultobj = SWIG_NewPointerObj((new RavlN::DListC< RavlN::RealT >(static_cast< const RavlN::DListC< RavlN::RealT >& >(result))), SWIGTYPE_p_RavlN__DListCT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::UIntT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::DListC< RavlN::RealT > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Peaks",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Peaks" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Peaks" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  result = ((RavlN::RealHistogram1dC const *)arg1)->Peaks(arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::DListC< RavlN::RealT >(static_cast< const RavlN::DListC< RavlN::RealT >& >(result))), SWIGTYPE_p_RavlN__DListCT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_Peaks__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_Peaks__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_Peaks'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::Peaks(RavlN::UIntT,RavlN::UIntT) const\n"
+    "    RavlN::RealHistogram1dC::Peaks(RavlN::UIntT) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinMax(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC *arg2 = 0 ;
+  RavlN::IndexC *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_MinMax",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinMax" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MinMax" "', argument " "2"" of type '" "RavlN::IndexC &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinMax" "', argument " "2"" of type '" "RavlN::IndexC &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::IndexC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__IndexC,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RealHistogram1dC_MinMax" "', argument " "3"" of type '" "RavlN::IndexC &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinMax" "', argument " "3"" of type '" "RavlN::IndexC &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::IndexC * >(argp3);
+  result = (bool)((RavlN::RealHistogram1dC const *)arg1)->MinMax(*arg2,*arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Sum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  RavlN::IndexC arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::UIntT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Sum",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Sum" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_Sum" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_Sum" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RealHistogram1dC_Sum" "', argument " "3"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_Sum" "', argument " "3"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  result = (RavlN::UIntT)((RavlN::RealHistogram1dC const *)arg1)->Sum(arg2,arg3);
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RealHistogram1dC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_RealHistogram1dC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RealHistogram1dC" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RealHistogram1dC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_SampleOfUInt__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::SizeT arg1 ;
@@ -76941,6 +78011,171 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_GnuPlot2dC_Plot__SWIG_8(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::GnuPlot2dC *arg1 = (RavlN::GnuPlot2dC *) 0 ;
+  RavlN::ClassifierC *arg2 = 0 ;
+  RavlN::DataSetVectorLabelC *arg3 = 0 ;
+  RavlN::UIntT arg4 ;
+  RavlN::UIntT arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  unsigned int val4 ;
+  int ecode4 = 0 ;
+  unsigned int val5 ;
+  int ecode5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:GnuPlot2dC_Plot",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__GnuPlot2dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GnuPlot2dC_Plot" "', argument " "1"" of type '" "RavlN::GnuPlot2dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::GnuPlot2dC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GnuPlot2dC_Plot" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GnuPlot2dC_Plot" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__DataSetVectorLabelC,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GnuPlot2dC_Plot" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GnuPlot2dC_Plot" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp3);
+  ecode4 = SWIG_AsVal_unsigned_SS_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "GnuPlot2dC_Plot" "', argument " "4"" of type '" "RavlN::UIntT""'");
+  } 
+  arg4 = static_cast< RavlN::UIntT >(val4);
+  ecode5 = SWIG_AsVal_unsigned_SS_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "GnuPlot2dC_Plot" "', argument " "5"" of type '" "RavlN::UIntT""'");
+  } 
+  arg5 = static_cast< RavlN::UIntT >(val5);
+  result = (bool)(arg1)->Plot((RavlN::ClassifierC const &)*arg2,(RavlN::DataSetVectorLabelC const &)*arg3,arg4,arg5);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GnuPlot2dC_Plot__SWIG_9(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::GnuPlot2dC *arg1 = (RavlN::GnuPlot2dC *) 0 ;
+  RavlN::ClassifierC *arg2 = 0 ;
+  RavlN::DataSetVectorLabelC *arg3 = 0 ;
+  RavlN::UIntT arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  unsigned int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:GnuPlot2dC_Plot",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__GnuPlot2dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GnuPlot2dC_Plot" "', argument " "1"" of type '" "RavlN::GnuPlot2dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::GnuPlot2dC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GnuPlot2dC_Plot" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GnuPlot2dC_Plot" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__DataSetVectorLabelC,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GnuPlot2dC_Plot" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GnuPlot2dC_Plot" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp3);
+  ecode4 = SWIG_AsVal_unsigned_SS_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "GnuPlot2dC_Plot" "', argument " "4"" of type '" "RavlN::UIntT""'");
+  } 
+  arg4 = static_cast< RavlN::UIntT >(val4);
+  result = (bool)(arg1)->Plot((RavlN::ClassifierC const &)*arg2,(RavlN::DataSetVectorLabelC const &)*arg3,arg4);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GnuPlot2dC_Plot__SWIG_10(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::GnuPlot2dC *arg1 = (RavlN::GnuPlot2dC *) 0 ;
+  RavlN::ClassifierC *arg2 = 0 ;
+  RavlN::DataSetVectorLabelC *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GnuPlot2dC_Plot",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__GnuPlot2dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GnuPlot2dC_Plot" "', argument " "1"" of type '" "RavlN::GnuPlot2dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::GnuPlot2dC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GnuPlot2dC_Plot" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GnuPlot2dC_Plot" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__DataSetVectorLabelC,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GnuPlot2dC_Plot" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GnuPlot2dC_Plot" "', argument " "3"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp3);
+  result = (bool)(arg1)->Plot((RavlN::ClassifierC const &)*arg2,(RavlN::DataSetVectorLabelC const &)*arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_GnuPlot2dC_Plot(PyObject *self, PyObject *args) {
   int argc;
   PyObject *argv[6];
@@ -77039,6 +78274,46 @@ SWIGINTERN PyObject *_wrap_GnuPlot2dC_Plot(PyObject *self, PyObject *args) {
       }
     }
   }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__GnuPlot2dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__ClassifierC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_GnuPlot2dC_Plot__SWIG_10(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__GnuPlot2dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__ClassifierC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          {
+            int res = SWIG_AsVal_unsigned_SS_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_GnuPlot2dC_Plot__SWIG_9(self, args);
+          }
+        }
+      }
+    }
+  }
   if (argc == 4) {
     int _v;
     void *vptr = 0;
@@ -77095,6 +78370,35 @@ SWIGINTERN PyObject *_wrap_GnuPlot2dC_Plot(PyObject *self, PyObject *args) {
       }
     }
   }
+  if (argc == 5) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__GnuPlot2dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__ClassifierC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          {
+            int res = SWIG_AsVal_unsigned_SS_int(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_unsigned_SS_int(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_GnuPlot2dC_Plot__SWIG_8(self, args);
+            }
+          }
+        }
+      }
+    }
+  }
   
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GnuPlot2dC_Plot'.\n"
@@ -77106,7 +78410,10 @@ fail:
     "    RavlN::GnuPlot2dC::Plot(RavlN::DataSetVectorLabelC const &,RavlN::UIntT,RavlN::UIntT,RavlN::UIntT)\n"
     "    RavlN::GnuPlot2dC::Plot(RavlN::DataSetVectorLabelC const &,RavlN::UIntT,RavlN::UIntT)\n"
     "    RavlN::GnuPlot2dC::Plot(RavlN::DataSetVectorLabelC const &,RavlN::UIntT)\n"
-    "    RavlN::GnuPlot2dC::Plot(RavlN::DataSetVectorLabelC const &)\n");
+    "    RavlN::GnuPlot2dC::Plot(RavlN::DataSetVectorLabelC const &)\n"
+    "    RavlN::GnuPlot2dC::Plot(RavlN::ClassifierC const &,RavlN::DataSetVectorLabelC const &,RavlN::UIntT,RavlN::UIntT)\n"
+    "    RavlN::GnuPlot2dC::Plot(RavlN::ClassifierC const &,RavlN::DataSetVectorLabelC const &,RavlN::UIntT)\n"
+    "    RavlN::GnuPlot2dC::Plot(RavlN::ClassifierC const &,RavlN::DataSetVectorLabelC const &)\n");
   return 0;
 }
 
@@ -79743,6 +81050,42 @@ static PyMethodDef SwigMethods[] = {
 		"Save(StringC filename, ClassifierC classifier) -> bool\n"
 		"Save(StringC filename, FunctionC classifier) -> bool\n"
 		""},
+	 { (char *)"new_RealHistogram1dC", _wrap_new_RealHistogram1dC, METH_VARARGS, (char *)"\n"
+		"RealHistogram1dC()\n"
+		"new_RealHistogram1dC(RavlN::RealT min, RavlN::RealT max, RavlN::UIntT noOfBins) -> RealHistogram1dC\n"
+		""},
+	 { (char *)"RealHistogram1dC_Scale", _wrap_RealHistogram1dC_Scale, METH_VARARGS, (char *)"RealHistogram1dC_Scale(RealHistogram1dC self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Offset", _wrap_RealHistogram1dC_Offset, METH_VARARGS, (char *)"RealHistogram1dC_Offset(RealHistogram1dC self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Bin", _wrap_RealHistogram1dC_Bin, METH_VARARGS, (char *)"RealHistogram1dC_Bin(RealHistogram1dC self, RavlN::RealT v) -> IndexC"},
+	 { (char *)"RealHistogram1dC_MidBin", _wrap_RealHistogram1dC_MidBin, METH_VARARGS, (char *)"RealHistogram1dC_MidBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MinBin", _wrap_RealHistogram1dC_MinBin, METH_VARARGS, (char *)"RealHistogram1dC_MinBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MaxBin", _wrap_RealHistogram1dC_MaxBin, METH_VARARGS, (char *)"RealHistogram1dC_MaxBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MinLimit", _wrap_RealHistogram1dC_MinLimit, METH_VARARGS, (char *)"RealHistogram1dC_MinLimit(RealHistogram1dC self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MaxLimit", _wrap_RealHistogram1dC_MaxLimit, METH_VARARGS, (char *)"RealHistogram1dC_MaxLimit(RealHistogram1dC self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Reset", _wrap_RealHistogram1dC_Reset, METH_VARARGS, (char *)"RealHistogram1dC_Reset(RealHistogram1dC self)"},
+	 { (char *)"RealHistogram1dC_Vote", _wrap_RealHistogram1dC_Vote, METH_VARARGS, (char *)"\n"
+		"Vote(RavlN::RealT v)\n"
+		"RealHistogram1dC_Vote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n)\n"
+		""},
+	 { (char *)"RealHistogram1dC_CheckVote", _wrap_RealHistogram1dC_CheckVote, METH_VARARGS, (char *)"\n"
+		"CheckVote(RavlN::RealT v) -> bool\n"
+		"RealHistogram1dC_CheckVote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n) -> bool\n"
+		""},
+	 { (char *)"RealHistogram1dC_TotalVotes", _wrap_RealHistogram1dC_TotalVotes, METH_VARARGS, (char *)"RealHistogram1dC_TotalVotes(RealHistogram1dC self) -> RavlN::UIntT"},
+	 { (char *)"RealHistogram1dC_Information", _wrap_RealHistogram1dC_Information, METH_VARARGS, (char *)"RealHistogram1dC_Information(RealHistogram1dC self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Energy", _wrap_RealHistogram1dC_Energy, METH_VARARGS, (char *)"RealHistogram1dC_Energy(RealHistogram1dC self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_SmoothedPDF", _wrap_RealHistogram1dC_SmoothedPDF, METH_VARARGS, (char *)"\n"
+		"SmoothedPDF(RavlN::IntT bin, RavlN::RealT sigma=1) -> RavlN::RealT\n"
+		"RealHistogram1dC_SmoothedPDF(RealHistogram1dC self, RavlN::IntT bin) -> RavlN::RealT\n"
+		""},
+	 { (char *)"RealHistogram1dC_Peaks", _wrap_RealHistogram1dC_Peaks, METH_VARARGS, (char *)"\n"
+		"Peaks(RavlN::UIntT width, RavlN::UIntT threshold=0) -> DListRealC\n"
+		"RealHistogram1dC_Peaks(RealHistogram1dC self, RavlN::UIntT width) -> DListRealC\n"
+		""},
+	 { (char *)"RealHistogram1dC_MinMax", _wrap_RealHistogram1dC_MinMax, METH_VARARGS, (char *)"RealHistogram1dC_MinMax(RealHistogram1dC self, IndexC min, IndexC max) -> bool"},
+	 { (char *)"RealHistogram1dC_Sum", _wrap_RealHistogram1dC_Sum, METH_VARARGS, (char *)"RealHistogram1dC_Sum(RealHistogram1dC self, IndexC min, IndexC max) -> RavlN::UIntT"},
+	 { (char *)"delete_RealHistogram1dC", _wrap_delete_RealHistogram1dC, METH_VARARGS, (char *)"delete_RealHistogram1dC(RealHistogram1dC self)"},
+	 { (char *)"RealHistogram1dC_swigregister", RealHistogram1dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_SampleOfUInt", _wrap_new_SampleOfUInt, METH_VARARGS, (char *)"\n"
 		"SampleOfUInt(RavlN::SizeT maxSize=10)\n"
 		"SampleOfUInt()\n"
@@ -80045,7 +81388,10 @@ static PyMethodDef SwigMethods[] = {
 		"Plot(DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1, RavlN::UIntT samplesPerClass=0) -> bool\n"
 		"Plot(DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1) -> bool\n"
 		"Plot(DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0) -> bool\n"
-		"GnuPlot2dC_Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet) -> bool\n"
+		"Plot(DataSetVectorLabelC dataSet) -> bool\n"
+		"Plot(ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0, RavlN::UIntT feature2=1) -> bool\n"
+		"Plot(ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0) -> bool\n"
+		"GnuPlot2dC_Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet) -> bool\n"
 		""},
 	 { (char *)"GnuPlot2dC_SetXLabel", _wrap_GnuPlot2dC_SetXLabel, METH_VARARGS, (char *)"GnuPlot2dC_SetXLabel(GnuPlot2dC self, StringC xlabel) -> bool"},
 	 { (char *)"GnuPlot2dC_SetYLabel", _wrap_GnuPlot2dC_SetYLabel, METH_VARARGS, (char *)"GnuPlot2dC_SetYLabel(GnuPlot2dC self, StringC ylabel) -> bool"},
@@ -80106,6 +81452,9 @@ static void *_p_RavlN__VectorCTo_p_RavlN__SArray1dCT_double_t(void *x, int *SWIG
 }
 static void *_p_RavlN__TVectorCT_double_tTo_p_RavlN__SArray1dCT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::SArray1dC< double > *)  ((RavlN::TVectorC< double > *) x));
+}
+static void *_p_RavlN__RealHistogram1dCTo_p_RavlN__SArray1dCT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::SArray1dC< double > *)  ((RavlN::RealHistogram1dC *) x));
 }
 static void *_p_RavlN__ConstDLIterCT_double_tTo_p_RavlN__DLIterCT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DLIterC< double > *)  ((RavlN::ConstDLIterC< double > *) x));
@@ -80260,6 +81609,7 @@ static swig_type_info _swigt__p_RavlN__PointSet2dC = {"_p_RavlN__PointSet2dC", "
 static swig_type_info _swigt__p_RavlN__Polygon2dC = {"_p_RavlN__Polygon2dC", "RavlN::Polygon2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t = {"_p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t", "RavlN::RCHashC< RavlN::StringC,RavlN::CollectionC< RavlN::Point2dC > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t = {"_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t", "RavlN::RCHashC< unsigned int,RavlN::StringC > *|RavlN::RCHashC< RavlN::UIntT,RavlN::StringC > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__RealHistogram1dC = {"_p_RavlN__RealHistogram1dC", "RavlN::RealHistogram1dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RealRange2dC = {"_p_RavlN__RealRange2dC", "RavlN::RealRange2dC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__RealRangeC = {"_p_RavlN__RealRangeC", "RavlN::RealRangeC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__SArray1dCT_RavlN__IndexC_t = {"_p_RavlN__SArray1dCT_RavlN__IndexC_t", "RavlN::SArray1dC< RavlN::IndexC > *", 0, 0, (void*)0, 0};
@@ -80387,6 +81737,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RavlN__Polygon2dC,
   &_swigt__p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t,
   &_swigt__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t,
+  &_swigt__p_RavlN__RealHistogram1dC,
   &_swigt__p_RavlN__RealRange2dC,
   &_swigt__p_RavlN__RealRangeC,
   &_swigt__p_RavlN__SArray1dCT_RavlN__IndexC_t,
@@ -80514,6 +81865,7 @@ static swig_cast_info _swigc__p_RavlN__PointSet2dC[] = {  {&_swigt__p_RavlN__Pol
 static swig_cast_info _swigc__p_RavlN__Polygon2dC[] = {  {&_swigt__p_RavlN__Polygon2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t[] = {  {&_swigt__p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t[] = {  {&_swigt__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__RealHistogram1dC[] = {  {&_swigt__p_RavlN__RealHistogram1dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RealRange2dC[] = {  {&_swigt__p_RavlN__RealRange2dC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__RealRangeC[] = {  {&_swigt__p_RavlN__RealRangeC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__SArray1dCT_RavlN__IndexC_t[] = {  {&_swigt__p_RavlN__SArray1dCT_RavlN__IndexC_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -80521,7 +81873,7 @@ static swig_cast_info _swigc__p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t[] = {
 static swig_cast_info _swigc__p_RavlN__SArray1dCT_RavlN__Point2dC_t[] = {  {&_swigt__p_RavlN__SArray1dCT_RavlN__Point2dC_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__SArray1dCT_RavlN__SampleVectorC_t[] = {  {&_swigt__p_RavlN__SArray1dCT_RavlN__SampleVectorC_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__SArray1dCT_RavlN__VectorC_t[] = {  {&_swigt__p_RavlN__SArray1dCT_RavlN__VectorC_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_RavlN__SArray1dCT_double_t[] = {  {&_swigt__p_RavlN__SArray1dCT_double_t, 0, 0, 0},  {&_swigt__p_RavlN__VectorC, _p_RavlN__VectorCTo_p_RavlN__SArray1dCT_double_t, 0, 0},  {&_swigt__p_RavlN__TVectorCT_double_t, _p_RavlN__TVectorCT_double_tTo_p_RavlN__SArray1dCT_double_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__SArray1dCT_double_t[] = {  {&_swigt__p_RavlN__SArray1dCT_double_t, 0, 0, 0},  {&_swigt__p_RavlN__VectorC, _p_RavlN__VectorCTo_p_RavlN__SArray1dCT_double_t, 0, 0},  {&_swigt__p_RavlN__TVectorCT_double_t, _p_RavlN__TVectorCT_double_tTo_p_RavlN__SArray1dCT_double_t, 0, 0},  {&_swigt__p_RavlN__RealHistogram1dC, _p_RavlN__RealHistogram1dCTo_p_RavlN__SArray1dCT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__SArray1dCT_float_t[] = {  {&_swigt__p_RavlN__SArray1dCT_float_t, 0, 0, 0},  {&_swigt__p_RavlN__TVectorCT_float_t, _p_RavlN__TVectorCT_float_tTo_p_RavlN__SArray1dCT_float_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__SArray1dCT_unsigned_int_t[] = {  {&_swigt__p_RavlN__SArray1dCT_unsigned_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__SArray2dCT_double_t[] = {  {&_swigt__p_RavlN__MatrixC, _p_RavlN__MatrixCTo_p_RavlN__SArray2dCT_double_t, 0, 0},  {&_swigt__p_RavlN__SArray2dCT_double_t, 0, 0, 0},  {&_swigt__p_RavlN__TMatrixCT_double_t, _p_RavlN__TMatrixCT_double_tTo_p_RavlN__SArray2dCT_double_t, 0, 0},  {&_swigt__p_RavlN__MatrixRUTC, _p_RavlN__MatrixRUTCTo_p_RavlN__SArray2dCT_double_t, 0, 0},{0, 0, 0, 0}};
@@ -80641,6 +81993,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RavlN__Polygon2dC,
   _swigc__p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t,
   _swigc__p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t,
+  _swigc__p_RavlN__RealHistogram1dC,
   _swigc__p_RavlN__RealRange2dC,
   _swigc__p_RavlN__RealRangeC,
   _swigc__p_RavlN__SArray1dCT_RavlN__IndexC_t,
