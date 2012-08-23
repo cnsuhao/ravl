@@ -19,7 +19,7 @@
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/PatternRec/DataSet3Iter.hh"
 #include "Ravl/PatternRec/FuncSubset.hh"
-#include "Ravl/Face/Roc.hh"
+//#include "Ravl/Face/Roc.hh"
 #include "Ravl/PatternRec/ClassifierCascade.hh"
 #include "Ravl/PatternRec/Error.hh"
 #include "Ravl/PatternRec/FeatureSelectPlusLMinusR.hh"
