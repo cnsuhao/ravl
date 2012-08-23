@@ -82,8 +82,8 @@ class SizeC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::SizeC self) -> SizeC
-        __init__(RavlN::SizeC self, size_t const & value) -> SizeC
+        __init__(self) -> SizeC
+        __init__(self, value) -> SizeC
         """
         this = _Ravl.new_SizeC(*args)
         try: self.this.append(this)
@@ -101,56 +101,56 @@ class DListRealC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListRealC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::RealT)> self) -> DListRealC"""
+        """__init__(self) -> DListRealC"""
         this = _Ravl.new_DListRealC()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListRealC self)"""
+        """Empty(self)"""
         return _Ravl.DListRealC_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListRealC self, double const & dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListRealC_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListRealC self, double const & dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListRealC_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListRealC self) -> double"""
+        """PopFirst(self) -> double"""
         return _Ravl.DListRealC_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListRealC self) -> double"""
+        """PopLast(self) -> double"""
         return _Ravl.DListRealC_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListRealC self, DListRealC lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListRealC_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListRealC self, DListRealC lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListRealC_MoveLast(self, *args)
 
     def First(self):
-        """First(DListRealC self) -> double"""
+        """First(self) -> double"""
         return _Ravl.DListRealC_First(self)
 
     def Last(self):
-        """Last(DListRealC self) -> double"""
+        """Last(self) -> double"""
         return _Ravl.DListRealC_Last(self)
 
     def Del(self, *args):
-        """Del(DListRealC self, double const & x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListRealC_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListRealC self, double const & x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListRealC_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListRealC self, int n) -> double"""
+        """Nth(self, n) -> double"""
         return _Ravl.DListRealC_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListRealC
@@ -167,94 +167,94 @@ class DListRealIterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::RealT)> self) -> DListRealIterC
-        __init__(RavlN::DLIterC<(RavlN::RealT)> self, DListRealC lst) -> DListRealIterC
+        __init__(self) -> DListRealIterC
+        __init__(self, lst) -> DListRealIterC
         """
         this = _Ravl.new_DListRealIterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListRealIterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListRealIterC_IsValid(self)
 
     def First(self):
-        """First(DListRealIterC self)"""
+        """First(self)"""
         return _Ravl.DListRealIterC_First(self)
 
     def Last(self):
-        """Last(DListRealIterC self)"""
+        """Last(self)"""
         return _Ravl.DListRealIterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListRealIterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListRealIterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListRealIterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListRealIterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListRealIterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListRealIterC_IsLast(self)
 
     def Next(self):
-        """Next(DListRealIterC self)"""
+        """Next(self)"""
         return _Ravl.DListRealIterC_Next(self)
 
     def Prev(self):
-        """Prev(DListRealIterC self)"""
+        """Prev(self)"""
         return _Ravl.DListRealIterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListRealIterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListRealIterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListRealIterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListRealIterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListRealIterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListRealIterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListRealIterC self) -> double"""
+        """NextData(self) -> double"""
         return _Ravl.DListRealIterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListRealIterC self) -> double"""
+        """PrevData(self) -> double"""
         return _Ravl.DListRealIterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListRealIterC self) -> double"""
+        """NextCrcData(self) -> double"""
         return _Ravl.DListRealIterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListRealIterC self) -> double"""
+        """PrevCrcData(self) -> double"""
         return _Ravl.DListRealIterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListRealIterC self) -> DListRealC"""
+        """Tail(self) -> DListRealC"""
         return _Ravl.DListRealIterC_Tail(self)
 
     def Head(self):
-        """Head(DListRealIterC self) -> DListRealC"""
+        """Head(self) -> DListRealC"""
         return _Ravl.DListRealIterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListRealIterC self) -> DListRealC"""
+        """InclusiveTail(self) -> DListRealC"""
         return _Ravl.DListRealIterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListRealIterC self) -> DListRealC"""
+        """InclusiveHead(self) -> DListRealC"""
         return _Ravl.DListRealIterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListRealIterC self) -> double"""
+        """Data(self) -> double"""
         return _Ravl.DListRealIterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListRealIterC self) -> double *"""
+        """__deref__(self) -> double *"""
         return _Ravl.DListRealIterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListRealIterC
@@ -273,8 +273,8 @@ class DListRealConstIterC(DListRealIterC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::ConstDLIterC<(RavlN::RealT)> self) -> DListRealConstIterC
-        __init__(RavlN::ConstDLIterC<(RavlN::RealT)> self, DListRealC copy) -> DListRealConstIterC
+        __init__(self) -> DListRealConstIterC
+        __init__(self, copy) -> DListRealConstIterC
         """
         this = _Ravl.new_DListRealConstIterC(*args)
         try: self.this.append(this)
@@ -292,56 +292,56 @@ class DListIntC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListIntC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::IntT)> self) -> DListIntC"""
+        """__init__(self) -> DListIntC"""
         this = _Ravl.new_DListIntC()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListIntC self)"""
+        """Empty(self)"""
         return _Ravl.DListIntC_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListIntC self, int const & dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListIntC_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListIntC self, int const & dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListIntC_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListIntC self) -> int"""
+        """PopFirst(self) -> int"""
         return _Ravl.DListIntC_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListIntC self) -> int"""
+        """PopLast(self) -> int"""
         return _Ravl.DListIntC_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListIntC self, DListIntC lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListIntC_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListIntC self, DListIntC lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListIntC_MoveLast(self, *args)
 
     def First(self):
-        """First(DListIntC self) -> int"""
+        """First(self) -> int"""
         return _Ravl.DListIntC_First(self)
 
     def Last(self):
-        """Last(DListIntC self) -> int"""
+        """Last(self) -> int"""
         return _Ravl.DListIntC_Last(self)
 
     def Del(self, *args):
-        """Del(DListIntC self, int const & x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListIntC_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListIntC self, int const & x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListIntC_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListIntC self, int n) -> int"""
+        """Nth(self, n) -> int"""
         return _Ravl.DListIntC_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListIntC
@@ -358,94 +358,94 @@ class DListIntIterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::IntT)> self) -> DListIntIterC
-        __init__(RavlN::DLIterC<(RavlN::IntT)> self, DListIntC lst) -> DListIntIterC
+        __init__(self) -> DListIntIterC
+        __init__(self, lst) -> DListIntIterC
         """
         this = _Ravl.new_DListIntIterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListIntIterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListIntIterC_IsValid(self)
 
     def First(self):
-        """First(DListIntIterC self)"""
+        """First(self)"""
         return _Ravl.DListIntIterC_First(self)
 
     def Last(self):
-        """Last(DListIntIterC self)"""
+        """Last(self)"""
         return _Ravl.DListIntIterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListIntIterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListIntIterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListIntIterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListIntIterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListIntIterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListIntIterC_IsLast(self)
 
     def Next(self):
-        """Next(DListIntIterC self)"""
+        """Next(self)"""
         return _Ravl.DListIntIterC_Next(self)
 
     def Prev(self):
-        """Prev(DListIntIterC self)"""
+        """Prev(self)"""
         return _Ravl.DListIntIterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListIntIterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListIntIterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListIntIterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListIntIterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListIntIterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListIntIterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListIntIterC self) -> int"""
+        """NextData(self) -> int"""
         return _Ravl.DListIntIterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListIntIterC self) -> int"""
+        """PrevData(self) -> int"""
         return _Ravl.DListIntIterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListIntIterC self) -> int"""
+        """NextCrcData(self) -> int"""
         return _Ravl.DListIntIterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListIntIterC self) -> int"""
+        """PrevCrcData(self) -> int"""
         return _Ravl.DListIntIterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListIntIterC self) -> DListIntC"""
+        """Tail(self) -> DListIntC"""
         return _Ravl.DListIntIterC_Tail(self)
 
     def Head(self):
-        """Head(DListIntIterC self) -> DListIntC"""
+        """Head(self) -> DListIntC"""
         return _Ravl.DListIntIterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListIntIterC self) -> DListIntC"""
+        """InclusiveTail(self) -> DListIntC"""
         return _Ravl.DListIntIterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListIntIterC self) -> DListIntC"""
+        """InclusiveHead(self) -> DListIntC"""
         return _Ravl.DListIntIterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListIntIterC self) -> int"""
+        """Data(self) -> int"""
         return _Ravl.DListIntIterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListIntIterC self) -> int *"""
+        """__deref__(self) -> int *"""
         return _Ravl.DListIntIterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListIntIterC
@@ -464,8 +464,8 @@ class DListIntConstIterC(DListIntIterC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::ConstDLIterC<(RavlN::IntT)> self) -> DListIntConstIterC
-        __init__(RavlN::ConstDLIterC<(RavlN::IntT)> self, DListIntC copy) -> DListIntConstIterC
+        __init__(self) -> DListIntConstIterC
+        __init__(self, copy) -> DListIntConstIterC
         """
         this = _Ravl.new_DListIntConstIterC(*args)
         try: self.this.append(this)
@@ -483,56 +483,56 @@ class DListUIntC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListUIntC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::UIntT)> self) -> DListUIntC"""
+        """__init__(self) -> DListUIntC"""
         this = _Ravl.new_DListUIntC()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListUIntC self)"""
+        """Empty(self)"""
         return _Ravl.DListUIntC_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListUIntC self, unsigned int const & dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListUIntC_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListUIntC self, unsigned int const & dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListUIntC_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListUIntC self) -> unsigned int"""
+        """PopFirst(self) -> unsigned int"""
         return _Ravl.DListUIntC_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListUIntC self) -> unsigned int"""
+        """PopLast(self) -> unsigned int"""
         return _Ravl.DListUIntC_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListUIntC self, DListUIntC lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListUIntC_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListUIntC self, DListUIntC lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListUIntC_MoveLast(self, *args)
 
     def First(self):
-        """First(DListUIntC self) -> unsigned int"""
+        """First(self) -> unsigned int"""
         return _Ravl.DListUIntC_First(self)
 
     def Last(self):
-        """Last(DListUIntC self) -> unsigned int"""
+        """Last(self) -> unsigned int"""
         return _Ravl.DListUIntC_Last(self)
 
     def Del(self, *args):
-        """Del(DListUIntC self, unsigned int const & x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListUIntC_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListUIntC self, unsigned int const & x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListUIntC_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListUIntC self, int n) -> unsigned int"""
+        """Nth(self, n) -> unsigned int"""
         return _Ravl.DListUIntC_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListUIntC
@@ -549,94 +549,94 @@ class DListUIntIterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::UIntT)> self) -> DListUIntIterC
-        __init__(RavlN::DLIterC<(RavlN::UIntT)> self, DListUIntC lst) -> DListUIntIterC
+        __init__(self) -> DListUIntIterC
+        __init__(self, lst) -> DListUIntIterC
         """
         this = _Ravl.new_DListUIntIterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListUIntIterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListUIntIterC_IsValid(self)
 
     def First(self):
-        """First(DListUIntIterC self)"""
+        """First(self)"""
         return _Ravl.DListUIntIterC_First(self)
 
     def Last(self):
-        """Last(DListUIntIterC self)"""
+        """Last(self)"""
         return _Ravl.DListUIntIterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListUIntIterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListUIntIterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListUIntIterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListUIntIterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListUIntIterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListUIntIterC_IsLast(self)
 
     def Next(self):
-        """Next(DListUIntIterC self)"""
+        """Next(self)"""
         return _Ravl.DListUIntIterC_Next(self)
 
     def Prev(self):
-        """Prev(DListUIntIterC self)"""
+        """Prev(self)"""
         return _Ravl.DListUIntIterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListUIntIterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListUIntIterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListUIntIterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListUIntIterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListUIntIterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListUIntIterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListUIntIterC self) -> unsigned int"""
+        """NextData(self) -> unsigned int"""
         return _Ravl.DListUIntIterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListUIntIterC self) -> unsigned int"""
+        """PrevData(self) -> unsigned int"""
         return _Ravl.DListUIntIterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListUIntIterC self) -> unsigned int"""
+        """NextCrcData(self) -> unsigned int"""
         return _Ravl.DListUIntIterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListUIntIterC self) -> unsigned int"""
+        """PrevCrcData(self) -> unsigned int"""
         return _Ravl.DListUIntIterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListUIntIterC self) -> DListUIntC"""
+        """Tail(self) -> DListUIntC"""
         return _Ravl.DListUIntIterC_Tail(self)
 
     def Head(self):
-        """Head(DListUIntIterC self) -> DListUIntC"""
+        """Head(self) -> DListUIntC"""
         return _Ravl.DListUIntIterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListUIntIterC self) -> DListUIntC"""
+        """InclusiveTail(self) -> DListUIntC"""
         return _Ravl.DListUIntIterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListUIntIterC self) -> DListUIntC"""
+        """InclusiveHead(self) -> DListUIntC"""
         return _Ravl.DListUIntIterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListUIntIterC self) -> unsigned int"""
+        """Data(self) -> unsigned int"""
         return _Ravl.DListUIntIterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListUIntIterC self) -> unsigned int *"""
+        """__deref__(self) -> unsigned int *"""
         return _Ravl.DListUIntIterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListUIntIterC
@@ -655,8 +655,8 @@ class DListUIntConstIterC(DListUIntIterC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::ConstDLIterC<(RavlN::UIntT)> self) -> DListUIntConstIterC
-        __init__(RavlN::ConstDLIterC<(RavlN::UIntT)> self, DListUIntC copy) -> DListUIntConstIterC
+        __init__(self) -> DListUIntConstIterC
+        __init__(self, copy) -> DListUIntConstIterC
         """
         this = _Ravl.new_DListUIntConstIterC(*args)
         try: self.this.append(this)
@@ -674,56 +674,56 @@ class DListInt64C(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListInt64C, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::Int64T)> self) -> DListInt64C"""
+        """__init__(self) -> DListInt64C"""
         this = _Ravl.new_DListInt64C()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListInt64C self)"""
+        """Empty(self)"""
         return _Ravl.DListInt64C_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListInt64C self, long const & dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListInt64C_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListInt64C self, long const & dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListInt64C_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListInt64C self) -> long"""
+        """PopFirst(self) -> long"""
         return _Ravl.DListInt64C_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListInt64C self) -> long"""
+        """PopLast(self) -> long"""
         return _Ravl.DListInt64C_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListInt64C self, DListInt64C lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListInt64C_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListInt64C self, DListInt64C lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListInt64C_MoveLast(self, *args)
 
     def First(self):
-        """First(DListInt64C self) -> long"""
+        """First(self) -> long"""
         return _Ravl.DListInt64C_First(self)
 
     def Last(self):
-        """Last(DListInt64C self) -> long"""
+        """Last(self) -> long"""
         return _Ravl.DListInt64C_Last(self)
 
     def Del(self, *args):
-        """Del(DListInt64C self, long const & x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListInt64C_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListInt64C self, long const & x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListInt64C_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListInt64C self, int n) -> long"""
+        """Nth(self, n) -> long"""
         return _Ravl.DListInt64C_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListInt64C
@@ -740,94 +740,94 @@ class DListInt64IterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::Int64T)> self) -> DListInt64IterC
-        __init__(RavlN::DLIterC<(RavlN::Int64T)> self, DListInt64C lst) -> DListInt64IterC
+        __init__(self) -> DListInt64IterC
+        __init__(self, lst) -> DListInt64IterC
         """
         this = _Ravl.new_DListInt64IterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListInt64IterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListInt64IterC_IsValid(self)
 
     def First(self):
-        """First(DListInt64IterC self)"""
+        """First(self)"""
         return _Ravl.DListInt64IterC_First(self)
 
     def Last(self):
-        """Last(DListInt64IterC self)"""
+        """Last(self)"""
         return _Ravl.DListInt64IterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListInt64IterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListInt64IterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListInt64IterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListInt64IterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListInt64IterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListInt64IterC_IsLast(self)
 
     def Next(self):
-        """Next(DListInt64IterC self)"""
+        """Next(self)"""
         return _Ravl.DListInt64IterC_Next(self)
 
     def Prev(self):
-        """Prev(DListInt64IterC self)"""
+        """Prev(self)"""
         return _Ravl.DListInt64IterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListInt64IterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListInt64IterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListInt64IterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListInt64IterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListInt64IterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListInt64IterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListInt64IterC self) -> long"""
+        """NextData(self) -> long"""
         return _Ravl.DListInt64IterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListInt64IterC self) -> long"""
+        """PrevData(self) -> long"""
         return _Ravl.DListInt64IterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListInt64IterC self) -> long"""
+        """NextCrcData(self) -> long"""
         return _Ravl.DListInt64IterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListInt64IterC self) -> long"""
+        """PrevCrcData(self) -> long"""
         return _Ravl.DListInt64IterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListInt64IterC self) -> DListInt64C"""
+        """Tail(self) -> DListInt64C"""
         return _Ravl.DListInt64IterC_Tail(self)
 
     def Head(self):
-        """Head(DListInt64IterC self) -> DListInt64C"""
+        """Head(self) -> DListInt64C"""
         return _Ravl.DListInt64IterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListInt64IterC self) -> DListInt64C"""
+        """InclusiveTail(self) -> DListInt64C"""
         return _Ravl.DListInt64IterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListInt64IterC self) -> DListInt64C"""
+        """InclusiveHead(self) -> DListInt64C"""
         return _Ravl.DListInt64IterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListInt64IterC self) -> long"""
+        """Data(self) -> long"""
         return _Ravl.DListInt64IterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListInt64IterC self) -> long *"""
+        """__deref__(self) -> long *"""
         return _Ravl.DListInt64IterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListInt64IterC
@@ -846,8 +846,8 @@ class DListInt64ConstIterC(DListInt64IterC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::ConstDLIterC<(RavlN::Int64T)> self) -> DListInt64ConstIterC
-        __init__(RavlN::ConstDLIterC<(RavlN::Int64T)> self, DListInt64C copy) -> DListInt64ConstIterC
+        __init__(self) -> DListInt64ConstIterC
+        __init__(self, copy) -> DListInt64ConstIterC
         """
         this = _Ravl.new_DListInt64ConstIterC(*args)
         try: self.this.append(this)
@@ -865,56 +865,56 @@ class DListInt16C(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListInt16C, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::Int16T)> self) -> DListInt16C"""
+        """__init__(self) -> DListInt16C"""
         this = _Ravl.new_DListInt16C()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListInt16C self)"""
+        """Empty(self)"""
         return _Ravl.DListInt16C_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListInt16C self, short const & dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListInt16C_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListInt16C self, short const & dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListInt16C_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListInt16C self) -> short"""
+        """PopFirst(self) -> short"""
         return _Ravl.DListInt16C_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListInt16C self) -> short"""
+        """PopLast(self) -> short"""
         return _Ravl.DListInt16C_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListInt16C self, DListInt16C lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListInt16C_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListInt16C self, DListInt16C lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListInt16C_MoveLast(self, *args)
 
     def First(self):
-        """First(DListInt16C self) -> short"""
+        """First(self) -> short"""
         return _Ravl.DListInt16C_First(self)
 
     def Last(self):
-        """Last(DListInt16C self) -> short"""
+        """Last(self) -> short"""
         return _Ravl.DListInt16C_Last(self)
 
     def Del(self, *args):
-        """Del(DListInt16C self, short const & x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListInt16C_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListInt16C self, short const & x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListInt16C_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListInt16C self, int n) -> short"""
+        """Nth(self, n) -> short"""
         return _Ravl.DListInt16C_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListInt16C
@@ -931,94 +931,94 @@ class DListInt16IterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::Int16T)> self) -> DListInt16IterC
-        __init__(RavlN::DLIterC<(RavlN::Int16T)> self, DListInt16C lst) -> DListInt16IterC
+        __init__(self) -> DListInt16IterC
+        __init__(self, lst) -> DListInt16IterC
         """
         this = _Ravl.new_DListInt16IterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListInt16IterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListInt16IterC_IsValid(self)
 
     def First(self):
-        """First(DListInt16IterC self)"""
+        """First(self)"""
         return _Ravl.DListInt16IterC_First(self)
 
     def Last(self):
-        """Last(DListInt16IterC self)"""
+        """Last(self)"""
         return _Ravl.DListInt16IterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListInt16IterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListInt16IterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListInt16IterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListInt16IterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListInt16IterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListInt16IterC_IsLast(self)
 
     def Next(self):
-        """Next(DListInt16IterC self)"""
+        """Next(self)"""
         return _Ravl.DListInt16IterC_Next(self)
 
     def Prev(self):
-        """Prev(DListInt16IterC self)"""
+        """Prev(self)"""
         return _Ravl.DListInt16IterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListInt16IterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListInt16IterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListInt16IterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListInt16IterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListInt16IterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListInt16IterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListInt16IterC self) -> short"""
+        """NextData(self) -> short"""
         return _Ravl.DListInt16IterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListInt16IterC self) -> short"""
+        """PrevData(self) -> short"""
         return _Ravl.DListInt16IterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListInt16IterC self) -> short"""
+        """NextCrcData(self) -> short"""
         return _Ravl.DListInt16IterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListInt16IterC self) -> short"""
+        """PrevCrcData(self) -> short"""
         return _Ravl.DListInt16IterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListInt16IterC self) -> DListInt16C"""
+        """Tail(self) -> DListInt16C"""
         return _Ravl.DListInt16IterC_Tail(self)
 
     def Head(self):
-        """Head(DListInt16IterC self) -> DListInt16C"""
+        """Head(self) -> DListInt16C"""
         return _Ravl.DListInt16IterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListInt16IterC self) -> DListInt16C"""
+        """InclusiveTail(self) -> DListInt16C"""
         return _Ravl.DListInt16IterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListInt16IterC self) -> DListInt16C"""
+        """InclusiveHead(self) -> DListInt16C"""
         return _Ravl.DListInt16IterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListInt16IterC self) -> short"""
+        """Data(self) -> short"""
         return _Ravl.DListInt16IterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListInt16IterC self) -> short *"""
+        """__deref__(self) -> short *"""
         return _Ravl.DListInt16IterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListInt16IterC
@@ -1037,8 +1037,8 @@ class DListInt16ConstIterC(DListInt16IterC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::ConstDLIterC<(RavlN::Int16T)> self) -> DListInt16ConstIterC
-        __init__(RavlN::ConstDLIterC<(RavlN::Int16T)> self, DListInt16C copy) -> DListInt16ConstIterC
+        __init__(self) -> DListInt16ConstIterC
+        __init__(self, copy) -> DListInt16ConstIterC
         """
         this = _Ravl.new_DListInt16ConstIterC(*args)
         try: self.this.append(this)
@@ -1056,56 +1056,56 @@ class DListByteC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListByteC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::ByteT)> self) -> DListByteC"""
+        """__init__(self) -> DListByteC"""
         this = _Ravl.new_DListByteC()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListByteC self)"""
+        """Empty(self)"""
         return _Ravl.DListByteC_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListByteC self, unsigned char const & dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListByteC_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListByteC self, unsigned char const & dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListByteC_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListByteC self) -> unsigned char"""
+        """PopFirst(self) -> unsigned char"""
         return _Ravl.DListByteC_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListByteC self) -> unsigned char"""
+        """PopLast(self) -> unsigned char"""
         return _Ravl.DListByteC_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListByteC self, DListByteC lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListByteC_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListByteC self, DListByteC lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListByteC_MoveLast(self, *args)
 
     def First(self):
-        """First(DListByteC self) -> unsigned char"""
+        """First(self) -> unsigned char"""
         return _Ravl.DListByteC_First(self)
 
     def Last(self):
-        """Last(DListByteC self) -> unsigned char"""
+        """Last(self) -> unsigned char"""
         return _Ravl.DListByteC_Last(self)
 
     def Del(self, *args):
-        """Del(DListByteC self, unsigned char const & x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListByteC_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListByteC self, unsigned char const & x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListByteC_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListByteC self, int n) -> unsigned char"""
+        """Nth(self, n) -> unsigned char"""
         return _Ravl.DListByteC_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListByteC
@@ -1122,94 +1122,94 @@ class DListByteIterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::ByteT)> self) -> DListByteIterC
-        __init__(RavlN::DLIterC<(RavlN::ByteT)> self, DListByteC lst) -> DListByteIterC
+        __init__(self) -> DListByteIterC
+        __init__(self, lst) -> DListByteIterC
         """
         this = _Ravl.new_DListByteIterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListByteIterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListByteIterC_IsValid(self)
 
     def First(self):
-        """First(DListByteIterC self)"""
+        """First(self)"""
         return _Ravl.DListByteIterC_First(self)
 
     def Last(self):
-        """Last(DListByteIterC self)"""
+        """Last(self)"""
         return _Ravl.DListByteIterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListByteIterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListByteIterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListByteIterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListByteIterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListByteIterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListByteIterC_IsLast(self)
 
     def Next(self):
-        """Next(DListByteIterC self)"""
+        """Next(self)"""
         return _Ravl.DListByteIterC_Next(self)
 
     def Prev(self):
-        """Prev(DListByteIterC self)"""
+        """Prev(self)"""
         return _Ravl.DListByteIterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListByteIterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListByteIterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListByteIterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListByteIterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListByteIterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListByteIterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListByteIterC self) -> unsigned char"""
+        """NextData(self) -> unsigned char"""
         return _Ravl.DListByteIterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListByteIterC self) -> unsigned char"""
+        """PrevData(self) -> unsigned char"""
         return _Ravl.DListByteIterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListByteIterC self) -> unsigned char"""
+        """NextCrcData(self) -> unsigned char"""
         return _Ravl.DListByteIterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListByteIterC self) -> unsigned char"""
+        """PrevCrcData(self) -> unsigned char"""
         return _Ravl.DListByteIterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListByteIterC self) -> DListByteC"""
+        """Tail(self) -> DListByteC"""
         return _Ravl.DListByteIterC_Tail(self)
 
     def Head(self):
-        """Head(DListByteIterC self) -> DListByteC"""
+        """Head(self) -> DListByteC"""
         return _Ravl.DListByteIterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListByteIterC self) -> DListByteC"""
+        """InclusiveTail(self) -> DListByteC"""
         return _Ravl.DListByteIterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListByteIterC self) -> DListByteC"""
+        """InclusiveHead(self) -> DListByteC"""
         return _Ravl.DListByteIterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListByteIterC self) -> unsigned char"""
+        """Data(self) -> unsigned char"""
         return _Ravl.DListByteIterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListByteIterC self) -> unsigned char *"""
+        """__deref__(self) -> unsigned char *"""
         return _Ravl.DListByteIterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListByteIterC
@@ -1228,8 +1228,8 @@ class DListByteConstIterC(DListByteIterC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::ConstDLIterC<(RavlN::ByteT)> self) -> DListByteConstIterC
-        __init__(RavlN::ConstDLIterC<(RavlN::ByteT)> self, DListByteC copy) -> DListByteConstIterC
+        __init__(self) -> DListByteConstIterC
+        __init__(self, copy) -> DListByteConstIterC
         """
         this = _Ravl.new_DListByteConstIterC(*args)
         try: self.this.append(this)
@@ -1248,22 +1248,22 @@ class Point2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::Point2dC self) -> Point2dC
-        __init__(RavlN::Point2dC self, RavlN::RealT x, RavlN::RealT y) -> Point2dC
+        __init__(self) -> Point2dC
+        __init__(self, x, y) -> Point2dC
         """
         this = _Ravl.new_Point2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Row(self):
-        """Row(Point2dC self) -> RavlN::RealT"""
+        """Row(self) -> RavlN::RealT"""
         return _Ravl.Point2dC_Row(self)
 
     def Col(self):
-        """Col(Point2dC self) -> RavlN::RealT"""
+        """Col(self) -> RavlN::RealT"""
         return _Ravl.Point2dC_Col(self)
 
     def __str__(self):
-        """__str__(Point2dC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.Point2dC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_Point2dC
@@ -1279,56 +1279,56 @@ class DListPoint2dC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DListPoint2dC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DListC<(RavlN::Point2dC)> self) -> DListPoint2dC"""
+        """__init__(self) -> DListPoint2dC"""
         this = _Ravl.new_DListPoint2dC()
         try: self.this.append(this)
         except: self.this = this
     def Empty(self):
-        """Empty(DListPoint2dC self)"""
+        """Empty(self)"""
         return _Ravl.DListPoint2dC_Empty(self)
 
     def InsFirst(self, *args):
-        """InsFirst(DListPoint2dC self, Point2dC dat)"""
+        """InsFirst(self, dat)"""
         return _Ravl.DListPoint2dC_InsFirst(self, *args)
 
     def InsLast(self, *args):
-        """InsLast(DListPoint2dC self, Point2dC dat)"""
+        """InsLast(self, dat)"""
         return _Ravl.DListPoint2dC_InsLast(self, *args)
 
     def PopFirst(self):
-        """PopFirst(DListPoint2dC self) -> Point2dC"""
+        """PopFirst(self) -> Point2dC"""
         return _Ravl.DListPoint2dC_PopFirst(self)
 
     def PopLast(self):
-        """PopLast(DListPoint2dC self) -> Point2dC"""
+        """PopLast(self) -> Point2dC"""
         return _Ravl.DListPoint2dC_PopLast(self)
 
     def MoveFirst(self, *args):
-        """MoveFirst(DListPoint2dC self, DListPoint2dC lst)"""
+        """MoveFirst(self, lst)"""
         return _Ravl.DListPoint2dC_MoveFirst(self, *args)
 
     def MoveLast(self, *args):
-        """MoveLast(DListPoint2dC self, DListPoint2dC lst)"""
+        """MoveLast(self, lst)"""
         return _Ravl.DListPoint2dC_MoveLast(self, *args)
 
     def First(self):
-        """First(DListPoint2dC self) -> Point2dC"""
+        """First(self) -> Point2dC"""
         return _Ravl.DListPoint2dC_First(self)
 
     def Last(self):
-        """Last(DListPoint2dC self) -> Point2dC"""
+        """Last(self) -> Point2dC"""
         return _Ravl.DListPoint2dC_Last(self)
 
     def Del(self, *args):
-        """Del(DListPoint2dC self, Point2dC x) -> bool"""
+        """Del(self, x) -> bool"""
         return _Ravl.DListPoint2dC_Del(self, *args)
 
     def Contains(self, *args):
-        """Contains(DListPoint2dC self, Point2dC x) -> bool"""
+        """Contains(self, x) -> bool"""
         return _Ravl.DListPoint2dC_Contains(self, *args)
 
     def Nth(self, *args):
-        """Nth(DListPoint2dC self, int n) -> Point2dC"""
+        """Nth(self, n) -> Point2dC"""
         return _Ravl.DListPoint2dC_Nth(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DListPoint2dC
@@ -1345,108 +1345,108 @@ class DListPoint2dIterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DLIterC<(RavlN::Point2dC)> self) -> DListPoint2dIterC
-        __init__(RavlN::DLIterC<(RavlN::Point2dC)> self, DListPoint2dC lst) -> DListPoint2dIterC
+        __init__(self) -> DListPoint2dIterC
+        __init__(self, lst) -> DListPoint2dIterC
         """
         this = _Ravl.new_DListPoint2dIterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(DListPoint2dIterC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DListPoint2dIterC_IsValid(self)
 
     def First(self):
-        """First(DListPoint2dIterC self)"""
+        """First(self)"""
         return _Ravl.DListPoint2dIterC_First(self)
 
     def Last(self):
-        """Last(DListPoint2dIterC self)"""
+        """Last(self)"""
         return _Ravl.DListPoint2dIterC_Last(self)
 
     def IsElm(self):
-        """IsElm(DListPoint2dIterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.DListPoint2dIterC_IsElm(self)
 
     def IsFirst(self):
-        """IsFirst(DListPoint2dIterC self) -> bool"""
+        """IsFirst(self) -> bool"""
         return _Ravl.DListPoint2dIterC_IsFirst(self)
 
     def IsLast(self):
-        """IsLast(DListPoint2dIterC self) -> bool"""
+        """IsLast(self) -> bool"""
         return _Ravl.DListPoint2dIterC_IsLast(self)
 
     def Next(self):
-        """Next(DListPoint2dIterC self)"""
+        """Next(self)"""
         return _Ravl.DListPoint2dIterC_Next(self)
 
     def Prev(self):
-        """Prev(DListPoint2dIterC self)"""
+        """Prev(self)"""
         return _Ravl.DListPoint2dIterC_Prev(self)
 
     def NextCrc(self):
-        """NextCrc(DListPoint2dIterC self)"""
+        """NextCrc(self)"""
         return _Ravl.DListPoint2dIterC_NextCrc(self)
 
     def PrevCrc(self):
-        """PrevCrc(DListPoint2dIterC self)"""
+        """PrevCrc(self)"""
         return _Ravl.DListPoint2dIterC_PrevCrc(self)
 
     def Nth(self, *args):
-        """Nth(DListPoint2dIterC self, RavlN::IntT n)"""
+        """Nth(self, n)"""
         return _Ravl.DListPoint2dIterC_Nth(self, *args)
 
     def NextData(self):
-        """NextData(DListPoint2dIterC self) -> Point2dC"""
+        """NextData(self) -> Point2dC"""
         return _Ravl.DListPoint2dIterC_NextData(self)
 
     def PrevData(self):
-        """PrevData(DListPoint2dIterC self) -> Point2dC"""
+        """PrevData(self) -> Point2dC"""
         return _Ravl.DListPoint2dIterC_PrevData(self)
 
     def NextCrcData(self):
-        """NextCrcData(DListPoint2dIterC self) -> Point2dC"""
+        """NextCrcData(self) -> Point2dC"""
         return _Ravl.DListPoint2dIterC_NextCrcData(self)
 
     def PrevCrcData(self):
-        """PrevCrcData(DListPoint2dIterC self) -> Point2dC"""
+        """PrevCrcData(self) -> Point2dC"""
         return _Ravl.DListPoint2dIterC_PrevCrcData(self)
 
     def Tail(self):
-        """Tail(DListPoint2dIterC self) -> DListPoint2dC"""
+        """Tail(self) -> DListPoint2dC"""
         return _Ravl.DListPoint2dIterC_Tail(self)
 
     def Head(self):
-        """Head(DListPoint2dIterC self) -> DListPoint2dC"""
+        """Head(self) -> DListPoint2dC"""
         return _Ravl.DListPoint2dIterC_Head(self)
 
     def InclusiveTail(self):
-        """InclusiveTail(DListPoint2dIterC self) -> DListPoint2dC"""
+        """InclusiveTail(self) -> DListPoint2dC"""
         return _Ravl.DListPoint2dIterC_InclusiveTail(self)
 
     def InclusiveHead(self):
-        """InclusiveHead(DListPoint2dIterC self) -> DListPoint2dC"""
+        """InclusiveHead(self) -> DListPoint2dC"""
         return _Ravl.DListPoint2dIterC_InclusiveHead(self)
 
     def Data(self):
-        """Data(DListPoint2dIterC self) -> Point2dC"""
+        """Data(self) -> Point2dC"""
         return _Ravl.DListPoint2dIterC_Data(self)
 
     def __deref__(self):
-        """__deref__(DListPoint2dIterC self) -> Point2dC"""
+        """__deref__(self) -> Point2dC"""
         return _Ravl.DListPoint2dIterC___deref__(self)
 
     __swig_destroy__ = _Ravl.delete_DListPoint2dIterC
     __del__ = lambda self : None;
     def Row(self):
-        """Row(DListPoint2dIterC self) -> RavlN::RealT"""
+        """Row(self) -> RavlN::RealT"""
         return _Ravl.DListPoint2dIterC_Row(self)
 
     def Col(self):
-        """Col(DListPoint2dIterC self) -> RavlN::RealT"""
+        """Col(self) -> RavlN::RealT"""
         return _Ravl.DListPoint2dIterC_Col(self)
 
     def __str__(self):
-        """__str__(DListPoint2dIterC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.DListPoint2dIterC___str__(self)
 
 DListPoint2dIterC_swigregister = _Ravl.DListPoint2dIterC_swigregister
@@ -1455,13 +1455,13 @@ DListPoint2dIterC_swigregister(DListPoint2dIterC)
 
 def ToList(*args):
   """
-    ToList(DListRealC list) -> PyObject
-    ToList(DListIntC list) -> PyObject
-    ToList(DListUIntC list) -> PyObject
-    ToList(DListInt64C list) -> PyObject
-    ToList(DListInt16C list) -> PyObject
-    ToList(DListByteC list) -> PyObject
-    ToList(DListPoint2dC list) -> PyObject *
+    ToList(list) -> PyObject
+    ToList(list) -> PyObject
+    ToList(list) -> PyObject
+    ToList(list) -> PyObject
+    ToList(list) -> PyObject
+    ToList(list) -> PyObject
+    ToList(list) -> PyObject *
     """
   return _Ravl.ToList(*args)
 class IndexC(_object):
@@ -1473,14 +1473,14 @@ class IndexC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::IndexC self) -> IndexC
-        __init__(RavlN::IndexC self, RavlN::IntT arg2) -> IndexC
+        __init__(self) -> IndexC
+        __init__(self, arg2) -> IndexC
         """
         this = _Ravl.new_IndexC(*args)
         try: self.this.append(this)
         except: self.this = this
     def V(self):
-        """V(IndexC self) -> RavlN::IntT"""
+        """V(self) -> RavlN::IntT"""
         return _Ravl.IndexC_V(self)
 
     __swig_destroy__ = _Ravl.delete_IndexC
@@ -1497,205 +1497,205 @@ class IndexRangeC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::IndexRangeC self, size_t dim=0) -> IndexRangeC
-        __init__(RavlN::IndexRangeC self) -> IndexRangeC
-        __init__(RavlN::IndexRangeC self, IndexC dim) -> IndexRangeC
-        __init__(RavlN::IndexRangeC self, SizeC dim) -> IndexRangeC
-        __init__(RavlN::IndexRangeC self, IndexC minIndex, IndexC maxIndex) -> IndexRangeC
+        __init__(self, dim=0) -> IndexRangeC
+        __init__(self) -> IndexRangeC
+        __init__(self, dim) -> IndexRangeC
+        __init__(self, dim) -> IndexRangeC
+        __init__(self, minIndex, maxIndex) -> IndexRangeC
         """
         this = _Ravl.new_IndexRangeC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Size(self):
-        """Size(IndexRangeC self) -> RavlN::IntT"""
+        """Size(self) -> RavlN::IntT"""
         return _Ravl.IndexRangeC_Size(self)
 
     def Range(self):
-        """Range(IndexRangeC self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.IndexRangeC_Range(self)
 
     def Min(self, *args):
         """
-        Min(IndexRangeC self) -> IndexC
-        Min(IndexRangeC self) -> IndexC
+        Min(self) -> IndexC
+        Min(self) -> IndexC
         """
         return _Ravl.IndexRangeC_Min(self, *args)
 
     def Max(self, *args):
         """
-        Max(IndexRangeC self) -> IndexC
-        Max(IndexRangeC self) -> IndexC
+        Max(self) -> IndexC
+        Max(self) -> IndexC
         """
         return _Ravl.IndexRangeC_Max(self, *args)
 
     def Center(self):
-        """Center(IndexRangeC self) -> IndexC"""
+        """Center(self) -> IndexC"""
         return _Ravl.IndexRangeC_Center(self)
 
     def CenterD(self):
-        """CenterD(IndexRangeC self) -> IndexC"""
+        """CenterD(self) -> IndexC"""
         return _Ravl.IndexRangeC_CenterD(self)
 
     def Percentage(self, *args):
-        """Percentage(IndexRangeC self, RavlN::RealT const p) -> IndexC"""
+        """Percentage(self, p) -> IndexC"""
         return _Ravl.IndexRangeC_Percentage(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(IndexRangeC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.IndexRangeC_IsEmpty(self)
 
     def IsValid(self):
-        """IsValid(IndexRangeC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.IndexRangeC_IsValid(self)
 
     def Contains(self, *args):
         """
-        Contains(IndexRangeC self, IndexC i) -> bool
-        Contains(IndexRangeC self, RavlN::RealT val) -> bool
-        Contains(IndexRangeC self, IndexRangeC range) -> bool
+        Contains(self, i) -> bool
+        Contains(self, val) -> bool
+        Contains(self, range) -> bool
         """
         return _Ravl.IndexRangeC_Contains(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(IndexRangeC self, IndexRangeC range) -> bool"""
+        """__eq__(self, range) -> bool"""
         return _Ravl.IndexRangeC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(IndexRangeC self, IndexRangeC range) -> bool"""
+        """__ne__(self, range) -> bool"""
         return _Ravl.IndexRangeC___ne__(self, *args)
 
     def In(self, *args):
-        """In(IndexRangeC self, IndexRangeC range) -> bool"""
+        """In(self, range) -> bool"""
         return _Ravl.IndexRangeC_In(self, *args)
 
     def IsOverlapping(self, *args):
-        """IsOverlapping(IndexRangeC self, IndexRangeC r) -> bool"""
+        """IsOverlapping(self, r) -> bool"""
         return _Ravl.IndexRangeC_IsOverlapping(self, *args)
 
     def SetOrigin(self, *args):
-        """SetOrigin(IndexRangeC self, IndexC position) -> IndexRangeC"""
+        """SetOrigin(self, position) -> IndexRangeC"""
         return _Ravl.IndexRangeC_SetOrigin(self, *args)
 
     def __idiv__(self, *args):
-        """__idiv__(IndexRangeC self, IndexC i) -> IndexRangeC"""
+        """__idiv__(self, i) -> IndexRangeC"""
         return _Ravl.IndexRangeC___idiv__(self, *args)
 
     def __imul__(self, *args):
-        """__imul__(IndexRangeC self, IndexC i) -> IndexRangeC"""
+        """__imul__(self, i) -> IndexRangeC"""
         return _Ravl.IndexRangeC___imul__(self, *args)
 
     def __div__(self, *args):
-        """__div__(IndexRangeC self, IndexC i) -> IndexRangeC"""
+        """__div__(self, i) -> IndexRangeC"""
         return _Ravl.IndexRangeC___div__(self, *args)
 
     def __mul__(self, *args):
-        """__mul__(IndexRangeC self, IndexC i) -> IndexRangeC"""
+        """__mul__(self, i) -> IndexRangeC"""
         return _Ravl.IndexRangeC___mul__(self, *args)
 
     def ClipBy(self, *args):
-        """ClipBy(IndexRangeC self, IndexRangeC r) -> IndexRangeC"""
+        """ClipBy(self, r) -> IndexRangeC"""
         return _Ravl.IndexRangeC_ClipBy(self, *args)
 
     def Clip(self, *args):
         """
-        Clip(IndexRangeC self, IndexRangeC r) -> IndexRangeC
-        Clip(IndexRangeC self, IndexC i) -> IndexC
+        Clip(self, r) -> IndexRangeC
+        Clip(self, i) -> IndexC
         """
         return _Ravl.IndexRangeC_Clip(self, *args)
 
     def FirstHalf(self):
-        """FirstHalf(IndexRangeC self) -> IndexRangeC"""
+        """FirstHalf(self) -> IndexRangeC"""
         return _Ravl.IndexRangeC_FirstHalf(self)
 
     def FirstHalfD(self):
-        """FirstHalfD(IndexRangeC self) -> IndexRangeC"""
+        """FirstHalfD(self) -> IndexRangeC"""
         return _Ravl.IndexRangeC_FirstHalfD(self)
 
     def Enlarge(self, *args):
-        """Enlarge(IndexRangeC self, IndexC f) -> IndexRangeC"""
+        """Enlarge(self, f) -> IndexRangeC"""
         return _Ravl.IndexRangeC_Enlarge(self, *args)
 
     def Expand(self, *args):
-        """Expand(IndexRangeC self, IndexC n) -> IndexRangeC"""
+        """Expand(self, n) -> IndexRangeC"""
         return _Ravl.IndexRangeC_Expand(self, *args)
 
     def Shrink(self, *args):
-        """Shrink(IndexRangeC self, IndexC n) -> IndexRangeC"""
+        """Shrink(self, n) -> IndexRangeC"""
         return _Ravl.IndexRangeC_Shrink(self, *args)
 
     def ShrinkHigh(self, *args):
-        """ShrinkHigh(IndexRangeC self, IndexC n) -> IndexRangeC"""
+        """ShrinkHigh(self, n) -> IndexRangeC"""
         return _Ravl.IndexRangeC_ShrinkHigh(self, *args)
 
     def Swap(self, *args):
-        """Swap(IndexRangeC self, IndexRangeC r) -> IndexRangeC"""
+        """Swap(self, r) -> IndexRangeC"""
         return _Ravl.IndexRangeC_Swap(self, *args)
 
     def Involve(self, *args):
         """
-        Involve(IndexRangeC self, IndexC i) -> IndexRangeC
-        Involve(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC
+        Involve(self, i) -> IndexRangeC
+        Involve(self, subRange) -> IndexRangeC
         """
         return _Ravl.IndexRangeC_Involve(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(IndexRangeC self, IndexC i) -> IndexRangeC
-        __iadd__(IndexRangeC self, RavlN::IntT i) -> IndexRangeC
-        __iadd__(IndexRangeC self, RavlN::UIntT i) -> IndexRangeC
-        __iadd__(IndexRangeC self, SizeC i) -> IndexRangeC
-        __iadd__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC
+        __iadd__(self, i) -> IndexRangeC
+        __iadd__(self, i) -> IndexRangeC
+        __iadd__(self, i) -> IndexRangeC
+        __iadd__(self, i) -> IndexRangeC
+        __iadd__(self, subRange) -> IndexRangeC
         """
         return _Ravl.IndexRangeC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(IndexRangeC self, IndexC i) -> IndexRangeC
-        __isub__(IndexRangeC self, RavlN::IntT i) -> IndexRangeC
-        __isub__(IndexRangeC self, RavlN::UIntT i) -> IndexRangeC
-        __isub__(IndexRangeC self, SizeC i) -> IndexRangeC
-        __isub__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC
+        __isub__(self, i) -> IndexRangeC
+        __isub__(self, i) -> IndexRangeC
+        __isub__(self, i) -> IndexRangeC
+        __isub__(self, i) -> IndexRangeC
+        __isub__(self, subRange) -> IndexRangeC
         """
         return _Ravl.IndexRangeC___isub__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(IndexRangeC self, IndexC i) -> IndexRangeC
-        __add__(IndexRangeC self, RavlN::IntT i) -> IndexRangeC
-        __add__(IndexRangeC self, RavlN::UIntT i) -> IndexRangeC
-        __add__(IndexRangeC self, SizeC i) -> IndexRangeC
-        __add__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC
+        __add__(self, i) -> IndexRangeC
+        __add__(self, i) -> IndexRangeC
+        __add__(self, i) -> IndexRangeC
+        __add__(self, i) -> IndexRangeC
+        __add__(self, subRange) -> IndexRangeC
         """
         return _Ravl.IndexRangeC___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(IndexRangeC self, IndexC i) -> IndexRangeC
-        __sub__(IndexRangeC self, RavlN::IntT i) -> IndexRangeC
-        __sub__(IndexRangeC self, RavlN::UIntT i) -> IndexRangeC
-        __sub__(IndexRangeC self, SizeC i) -> IndexRangeC
-        __sub__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC
+        __sub__(self, i) -> IndexRangeC
+        __sub__(self, i) -> IndexRangeC
+        __sub__(self, i) -> IndexRangeC
+        __sub__(self, i) -> IndexRangeC
+        __sub__(self, subRange) -> IndexRangeC
         """
         return _Ravl.IndexRangeC___sub__(self, *args)
 
     def AlignWithin(self, *args):
-        """AlignWithin(IndexRangeC self, RavlN::IntT alignment) -> IndexRangeC"""
+        """AlignWithin(self, alignment) -> IndexRangeC"""
         return _Ravl.IndexRangeC_AlignWithin(self, *args)
 
     def Hash(self):
-        """Hash(IndexRangeC self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.IndexRangeC_Hash(self)
 
     def __str__(self):
-        """__str__(IndexRangeC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.IndexRangeC___str__(self)
 
     def __nonzero__(self):
-        """__nonzero__(IndexRangeC self) -> bool"""
+        """__nonzero__(self) -> bool"""
         return _Ravl.IndexRangeC___nonzero__(self)
 
     def __len__(self):
-        """__len__(IndexRangeC self) -> int"""
+        """__len__(self) -> int"""
         return _Ravl.IndexRangeC___len__(self)
 
     __swig_destroy__ = _Ravl.delete_IndexRangeC
@@ -1712,19 +1712,19 @@ class Index2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::Index2dC self) -> Index2dC
-        __init__(RavlN::Index2dC self, RavlN::IntT x, RavlN::IntT y) -> Index2dC
-        __init__(RavlN::Index2dC self, IndexC x, IndexC y) -> Index2dC
+        __init__(self) -> Index2dC
+        __init__(self, x, y) -> Index2dC
+        __init__(self, x, y) -> Index2dC
         """
         this = _Ravl.new_Index2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Row(self):
-        """Row(Index2dC self) -> IndexC"""
+        """Row(self) -> IndexC"""
         return _Ravl.Index2dC_Row(self)
 
     def Col(self):
-        """Col(Index2dC self) -> IndexC"""
+        """Col(self) -> IndexC"""
         return _Ravl.Index2dC_Col(self)
 
     __swig_destroy__ = _Ravl.delete_Index2dC
@@ -1741,70 +1741,70 @@ class IndexRange2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::IndexRange2dC self) -> IndexRange2dC
-        __init__(RavlN::IndexRange2dC self, RavlN::IntT rows, RavlN::IntT cols) -> IndexRange2dC
+        __init__(self) -> IndexRange2dC
+        __init__(self, rows, cols) -> IndexRange2dC
         """
         this = _Ravl.new_IndexRange2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def TRow(self):
-        """TRow(IndexRange2dC self) -> IndexC"""
+        """TRow(self) -> IndexC"""
         return _Ravl.IndexRange2dC_TRow(self)
 
     def BRow(self):
-        """BRow(IndexRange2dC self) -> IndexC"""
+        """BRow(self) -> IndexC"""
         return _Ravl.IndexRange2dC_BRow(self)
 
     def LCol(self):
-        """LCol(IndexRange2dC self) -> IndexC"""
+        """LCol(self) -> IndexC"""
         return _Ravl.IndexRange2dC_LCol(self)
 
     def RCol(self):
-        """RCol(IndexRange2dC self) -> IndexC"""
+        """RCol(self) -> IndexC"""
         return _Ravl.IndexRange2dC_RCol(self)
 
     def TopLeft(self):
-        """TopLeft(IndexRange2dC self) -> Index2dC"""
+        """TopLeft(self) -> Index2dC"""
         return _Ravl.IndexRange2dC_TopLeft(self)
 
     def TopRight(self):
-        """TopRight(IndexRange2dC self) -> Index2dC"""
+        """TopRight(self) -> Index2dC"""
         return _Ravl.IndexRange2dC_TopRight(self)
 
     def BottomLeft(self):
-        """BottomLeft(IndexRange2dC self) -> Index2dC"""
+        """BottomLeft(self) -> Index2dC"""
         return _Ravl.IndexRange2dC_BottomLeft(self)
 
     def BottomRight(self):
-        """BottomRight(IndexRange2dC self) -> Index2dC"""
+        """BottomRight(self) -> Index2dC"""
         return _Ravl.IndexRange2dC_BottomRight(self)
 
     def Center(self):
-        """Center(IndexRange2dC self) -> Index2dC"""
+        """Center(self) -> Index2dC"""
         return _Ravl.IndexRange2dC_Center(self)
 
     def Rows(self):
-        """Rows(IndexRange2dC self) -> RavlN::IntT"""
+        """Rows(self) -> RavlN::IntT"""
         return _Ravl.IndexRange2dC_Rows(self)
 
     def Cols(self):
-        """Cols(IndexRange2dC self) -> RavlN::IntT"""
+        """Cols(self) -> RavlN::IntT"""
         return _Ravl.IndexRange2dC_Cols(self)
 
     def Area(self):
-        """Area(IndexRange2dC self) -> RavlN::SizeT"""
+        """Area(self) -> RavlN::SizeT"""
         return _Ravl.IndexRange2dC_Area(self)
 
     def Contains(self, *args):
-        """Contains(IndexRange2dC self, Index2dC index) -> bool"""
+        """Contains(self, index) -> bool"""
         return _Ravl.IndexRange2dC_Contains(self, *args)
 
     def Expand(self, *args):
-        """Expand(IndexRange2dC self, RavlN::IntT n) -> IndexRange2dC"""
+        """Expand(self, n) -> IndexRange2dC"""
         return _Ravl.IndexRange2dC_Expand(self, *args)
 
     def ClipBy(self, *args):
-        """ClipBy(IndexRange2dC self, IndexRange2dC range)"""
+        """ClipBy(self, range)"""
         return _Ravl.IndexRange2dC_ClipBy(self, *args)
 
     __swig_destroy__ = _Ravl.delete_IndexRange2dC
@@ -1821,30 +1821,30 @@ class Array2dByteC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::Array2dC<(RavlN::ByteT)> self) -> Array2dByteC
-        __init__(RavlN::Array2dC<(RavlN::ByteT)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> Array2dByteC
-        __init__(RavlN::Array2dC<(RavlN::ByteT)> self, IndexRange2dC range) -> Array2dByteC
+        __init__(self) -> Array2dByteC
+        __init__(self, rows, cols) -> Array2dByteC
+        __init__(self, range) -> Array2dByteC
         """
         this = _Ravl.new_Array2dByteC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Frame(self):
-        """Frame(Array2dByteC self) -> IndexRange2dC"""
+        """Frame(self) -> IndexRange2dC"""
         return _Ravl.Array2dByteC_Frame(self)
 
     def Fill(self, *args):
-        """Fill(Array2dByteC self, unsigned char const & value)"""
+        """Fill(self, value)"""
         return _Ravl.Array2dByteC_Fill(self, *args)
 
     def Stride(self):
-        """Stride(Array2dByteC self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.Array2dByteC_Stride(self)
 
     def Access(self, *args):
         """
-        Access(Array2dByteC self, Index2dC index) -> unsigned char
-        Access(Array2dByteC self, RavlN::IntT r, RavlN::IntT c) -> unsigned char
-        Access(Array2dByteC self, IndexC r, IndexC c) -> unsigned char &
+        Access(self, index) -> unsigned char
+        Access(self, r, c) -> unsigned char
+        Access(self, r, c) -> unsigned char &
         """
         return _Ravl.Array2dByteC_Access(self, *args)
 
@@ -1862,30 +1862,30 @@ class Array2dRealC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::Array2dC<(RavlN::RealT)> self) -> Array2dRealC
-        __init__(RavlN::Array2dC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> Array2dRealC
-        __init__(RavlN::Array2dC<(RavlN::RealT)> self, IndexRange2dC range) -> Array2dRealC
+        __init__(self) -> Array2dRealC
+        __init__(self, rows, cols) -> Array2dRealC
+        __init__(self, range) -> Array2dRealC
         """
         this = _Ravl.new_Array2dRealC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Frame(self):
-        """Frame(Array2dRealC self) -> IndexRange2dC"""
+        """Frame(self) -> IndexRange2dC"""
         return _Ravl.Array2dRealC_Frame(self)
 
     def Fill(self, *args):
-        """Fill(Array2dRealC self, double const & value)"""
+        """Fill(self, value)"""
         return _Ravl.Array2dRealC_Fill(self, *args)
 
     def Stride(self):
-        """Stride(Array2dRealC self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.Array2dRealC_Stride(self)
 
     def Access(self, *args):
         """
-        Access(Array2dRealC self, Index2dC index) -> double
-        Access(Array2dRealC self, RavlN::IntT r, RavlN::IntT c) -> double
-        Access(Array2dRealC self, IndexC r, IndexC c) -> double &
+        Access(self, index) -> double
+        Access(self, r, c) -> double
+        Access(self, r, c) -> double &
         """
         return _Ravl.Array2dRealC_Access(self, *args)
 
@@ -1903,26 +1903,26 @@ class StringC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::StringC self) -> StringC
-        __init__(RavlN::StringC self, char const * arg2) -> StringC
+        __init__(self) -> StringC
+        __init__(self, arg2) -> StringC
         """
         this = _Ravl.new_StringC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(StringC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.StringC_IsEmpty(self)
 
     def chars(self):
-        """chars(StringC self) -> char const *"""
+        """chars(self) -> char const *"""
         return _Ravl.StringC_chars(self)
 
     def Size(self):
-        """Size(StringC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.StringC_Size(self)
 
     def __str__(self):
-        """__str__(StringC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.StringC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_StringC
@@ -1933,21 +1933,21 @@ StringC_swigregister(StringC)
 
 def PrintIOFormats(*args):
   """
-    PrintIOFormats(std::ostream & os=std::cout)
+    PrintIOFormats(os=std::cout)
     PrintIOFormats()
     """
   return _Ravl.PrintIOFormats(*args)
 
 def PrintIOConversions(*args):
   """
-    PrintIOConversions(std::ostream & os=std::cout)
+    PrintIOConversions(os=std::cout)
     PrintIOConversions()
     """
   return _Ravl.PrintIOConversions(*args)
 
 def PrintIOClassTypes(*args):
   """
-    PrintIOClassTypes(std::ostream & os=std::cout)
+    PrintIOClassTypes(os=std::cout)
     PrintIOClassTypes()
     """
   return _Ravl.PrintIOClassTypes(*args)
@@ -1960,138 +1960,138 @@ class RealRangeC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::RealRangeC self, RavlN::RealT size=0) -> RealRangeC
-        __init__(RavlN::RealRangeC self) -> RealRangeC
-        __init__(RavlN::RealRangeC self, RavlN::RealT minReal, RavlN::RealT maxReal) -> RealRangeC
+        __init__(self, size=0) -> RealRangeC
+        __init__(self) -> RealRangeC
+        __init__(self, minReal, maxReal) -> RealRangeC
         """
         this = _Ravl.new_RealRangeC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Size(self):
-        """Size(RealRangeC self) -> RavlN::RealT"""
+        """Size(self) -> RavlN::RealT"""
         return _Ravl.RealRangeC_Size(self)
 
     def Range(self):
-        """Range(RealRangeC self) -> RealRangeC"""
+        """Range(self) -> RealRangeC"""
         return _Ravl.RealRangeC_Range(self)
 
     def Min(self, *args):
         """
-        Min(RealRangeC self) -> RavlN::RealT const
-        Min(RealRangeC self) -> RavlN::RealT &
+        Min(self) -> RavlN::RealT const
+        Min(self) -> RavlN::RealT &
         """
         return _Ravl.RealRangeC_Min(self, *args)
 
     def Max(self, *args):
         """
-        Max(RealRangeC self) -> RavlN::RealT const
-        Max(RealRangeC self) -> RavlN::RealT &
+        Max(self) -> RavlN::RealT const
+        Max(self) -> RavlN::RealT &
         """
         return _Ravl.RealRangeC_Max(self, *args)
 
     def Center(self):
-        """Center(RealRangeC self) -> RavlN::RealT"""
+        """Center(self) -> RavlN::RealT"""
         return _Ravl.RealRangeC_Center(self)
 
     def CenterD(self):
-        """CenterD(RealRangeC self) -> RavlN::RealT"""
+        """CenterD(self) -> RavlN::RealT"""
         return _Ravl.RealRangeC_CenterD(self)
 
     def Percentage(self, *args):
-        """Percentage(RealRangeC self, RavlN::RealT p) -> RavlN::RealT"""
+        """Percentage(self, p) -> RavlN::RealT"""
         return _Ravl.RealRangeC_Percentage(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(RealRangeC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.RealRangeC_IsEmpty(self)
 
     def IsValid(self):
-        """IsValid(RealRangeC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.RealRangeC_IsValid(self)
 
     def Contains(self, *args):
         """
-        Contains(RealRangeC self, RavlN::RealT i) -> bool
-        Contains(RealRangeC self, RealRangeC range) -> bool
+        Contains(self, i) -> bool
+        Contains(self, range) -> bool
         """
         return _Ravl.RealRangeC_Contains(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(RealRangeC self, RealRangeC range) -> bool"""
+        """__eq__(self, range) -> bool"""
         return _Ravl.RealRangeC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(RealRangeC self, RealRangeC range) -> bool"""
+        """__ne__(self, range) -> bool"""
         return _Ravl.RealRangeC___ne__(self, *args)
 
     def In(self, *args):
-        """In(RealRangeC self, RealRangeC range) -> bool"""
+        """In(self, range) -> bool"""
         return _Ravl.RealRangeC_In(self, *args)
 
     def IsOverlapping(self, *args):
-        """IsOverlapping(RealRangeC self, RealRangeC r) -> bool"""
+        """IsOverlapping(self, r) -> bool"""
         return _Ravl.RealRangeC_IsOverlapping(self, *args)
 
     def SetOrigin(self, *args):
-        """SetOrigin(RealRangeC self, RavlN::RealT position) -> RealRangeC"""
+        """SetOrigin(self, position) -> RealRangeC"""
         return _Ravl.RealRangeC_SetOrigin(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(RealRangeC self, RavlN::RealT i) -> RealRangeC"""
+        """__iadd__(self, i) -> RealRangeC"""
         return _Ravl.RealRangeC___iadd__(self, *args)
 
     def __isub__(self, *args):
-        """__isub__(RealRangeC self, RavlN::RealT i) -> RealRangeC"""
+        """__isub__(self, i) -> RealRangeC"""
         return _Ravl.RealRangeC___isub__(self, *args)
 
     def __add__(self, *args):
-        """__add__(RealRangeC self, RavlN::RealT i) -> RealRangeC"""
+        """__add__(self, i) -> RealRangeC"""
         return _Ravl.RealRangeC___add__(self, *args)
 
     def __sub__(self, *args):
-        """__sub__(RealRangeC self, RavlN::RealT i) -> RealRangeC"""
+        """__sub__(self, i) -> RealRangeC"""
         return _Ravl.RealRangeC___sub__(self, *args)
 
     def ClipBy(self, *args):
-        """ClipBy(RealRangeC self, RealRangeC r) -> RealRangeC"""
+        """ClipBy(self, r) -> RealRangeC"""
         return _Ravl.RealRangeC_ClipBy(self, *args)
 
     def Clip(self, *args):
-        """Clip(RealRangeC self, RavlN::RealT const & r) -> RavlN::RealT"""
+        """Clip(self, r) -> RavlN::RealT"""
         return _Ravl.RealRangeC_Clip(self, *args)
 
     def FirstHalf(self):
-        """FirstHalf(RealRangeC self) -> RealRangeC"""
+        """FirstHalf(self) -> RealRangeC"""
         return _Ravl.RealRangeC_FirstHalf(self)
 
     def FirstHalfD(self):
-        """FirstHalfD(RealRangeC self) -> RealRangeC"""
+        """FirstHalfD(self) -> RealRangeC"""
         return _Ravl.RealRangeC_FirstHalfD(self)
 
     def Enlarge(self, *args):
-        """Enlarge(RealRangeC self, RavlN::RealT f) -> RealRangeC"""
+        """Enlarge(self, f) -> RealRangeC"""
         return _Ravl.RealRangeC_Enlarge(self, *args)
 
     def Expand(self, *args):
-        """Expand(RealRangeC self, RavlN::RealT n) -> RealRangeC"""
+        """Expand(self, n) -> RealRangeC"""
         return _Ravl.RealRangeC_Expand(self, *args)
 
     def Shrink(self, *args):
-        """Shrink(RealRangeC self, RavlN::RealT n) -> RealRangeC"""
+        """Shrink(self, n) -> RealRangeC"""
         return _Ravl.RealRangeC_Shrink(self, *args)
 
     def ShrinkHigh(self, *args):
-        """ShrinkHigh(RealRangeC self, RavlN::RealT n) -> RealRangeC"""
+        """ShrinkHigh(self, n) -> RealRangeC"""
         return _Ravl.RealRangeC_ShrinkHigh(self, *args)
 
     def Swap(self, *args):
-        """Swap(RealRangeC self, RealRangeC r) -> RealRangeC"""
+        """Swap(self, r) -> RealRangeC"""
         return _Ravl.RealRangeC_Swap(self, *args)
 
     def Involve(self, *args):
         """
-        Involve(RealRangeC self, RavlN::RealT i) -> RealRangeC
-        Involve(RealRangeC self, RealRangeC subRange) -> RealRangeC
+        Involve(self, i) -> RealRangeC
+        Involve(self, subRange) -> RealRangeC
         """
         return _Ravl.RealRangeC_Involve(self, *args)
 
@@ -2109,113 +2109,113 @@ class RealRange2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::RealRange2dC self) -> RealRange2dC
-        __init__(RavlN::RealRange2dC self, RavlN::RealT rowNumber, RavlN::RealT colNumber) -> RealRange2dC
-        __init__(RavlN::RealRange2dC self, RealRangeC rowRange, RealRangeC colRange) -> RealRange2dC
-        __init__(RavlN::RealRange2dC self, RealRange2dC range) -> RealRange2dC
-        __init__(RavlN::RealRange2dC self, RavlN::RealT minRow, RavlN::RealT maxRow, RavlN::RealT minCol, RavlN::RealT maxCol) -> RealRange2dC
+        __init__(self) -> RealRange2dC
+        __init__(self, rowNumber, colNumber) -> RealRange2dC
+        __init__(self, rowRange, colRange) -> RealRange2dC
+        __init__(self, range) -> RealRange2dC
+        __init__(self, minRow, maxRow, minCol, maxCol) -> RealRange2dC
         """
         this = _Ravl.new_RealRange2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def TRow(self, *args):
         """
-        TRow(RealRange2dC self) -> RavlN::RealT
-        TRow(RealRange2dC self) -> RavlN::RealT
+        TRow(self) -> RavlN::RealT
+        TRow(self) -> RavlN::RealT
         """
         return _Ravl.RealRange2dC_TRow(self, *args)
 
     def LCol(self, *args):
         """
-        LCol(RealRange2dC self) -> RavlN::RealT
-        LCol(RealRange2dC self) -> RavlN::RealT
+        LCol(self) -> RavlN::RealT
+        LCol(self) -> RavlN::RealT
         """
         return _Ravl.RealRange2dC_LCol(self, *args)
 
     def BRow(self, *args):
         """
-        BRow(RealRange2dC self) -> RavlN::RealT
-        BRow(RealRange2dC self) -> RavlN::RealT
+        BRow(self) -> RavlN::RealT
+        BRow(self) -> RavlN::RealT
         """
         return _Ravl.RealRange2dC_BRow(self, *args)
 
     def RCol(self, *args):
         """
-        RCol(RealRange2dC self) -> RavlN::RealT
-        RCol(RealRange2dC self) -> RavlN::RealT
+        RCol(self) -> RavlN::RealT
+        RCol(self) -> RavlN::RealT
         """
         return _Ravl.RealRange2dC_RCol(self, *args)
 
     def Rows(self):
-        """Rows(RealRange2dC self) -> RavlN::RealT"""
+        """Rows(self) -> RavlN::RealT"""
         return _Ravl.RealRange2dC_Rows(self)
 
     def Cols(self):
-        """Cols(RealRange2dC self) -> RavlN::RealT"""
+        """Cols(self) -> RavlN::RealT"""
         return _Ravl.RealRange2dC_Cols(self)
 
     def Area(self):
-        """Area(RealRange2dC self) -> RavlN::RealT"""
+        """Area(self) -> RavlN::RealT"""
         return _Ravl.RealRange2dC_Area(self)
 
     def Dilate(self):
-        """Dilate(RealRange2dC self) -> RealRange2dC"""
+        """Dilate(self) -> RealRange2dC"""
         return _Ravl.RealRange2dC_Dilate(self)
 
     def Erode(self):
-        """Erode(RealRange2dC self) -> RealRange2dC"""
+        """Erode(self) -> RealRange2dC"""
         return _Ravl.RealRange2dC_Erode(self)
 
     def Expand(self, *args):
-        """Expand(RealRange2dC self, RavlN::RealT n) -> RealRange2dC"""
+        """Expand(self, n) -> RealRange2dC"""
         return _Ravl.RealRange2dC_Expand(self, *args)
 
     def Shrink(self, *args):
-        """Shrink(RealRange2dC self, RavlN::RealT n) -> RealRange2dC"""
+        """Shrink(self, n) -> RealRange2dC"""
         return _Ravl.RealRange2dC_Shrink(self, *args)
 
     def ClipBy(self, *args):
-        """ClipBy(RealRange2dC self, RealRange2dC r) -> RealRange2dC"""
+        """ClipBy(self, r) -> RealRange2dC"""
         return _Ravl.RealRange2dC_ClipBy(self, *args)
 
     def Contains(self, *args):
-        """Contains(RealRange2dC self, RealRange2dC oth) -> bool"""
+        """Contains(self, oth) -> bool"""
         return _Ravl.RealRange2dC_Contains(self, *args)
 
     def RowRange(self):
-        """RowRange(RealRange2dC self) -> RealRangeC"""
+        """RowRange(self) -> RealRangeC"""
         return _Ravl.RealRange2dC_RowRange(self)
 
     def ColRange(self):
-        """ColRange(RealRange2dC self) -> RealRangeC"""
+        """ColRange(self) -> RealRangeC"""
         return _Ravl.RealRange2dC_ColRange(self)
 
     def Range1(self):
-        """Range1(RealRange2dC self) -> RealRangeC"""
+        """Range1(self) -> RealRangeC"""
         return _Ravl.RealRange2dC_Range1(self)
 
     def Range2(self):
-        """Range2(RealRange2dC self) -> RealRangeC"""
+        """Range2(self) -> RealRangeC"""
         return _Ravl.RealRange2dC_Range2(self)
 
     def Involve(self, *args):
-        """Involve(RealRange2dC self, RealRange2dC subrectangle)"""
+        """Involve(self, subrectangle)"""
         return _Ravl.RealRange2dC_Involve(self, *args)
 
     def IsValid(self):
-        """IsValid(RealRange2dC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.RealRange2dC_IsValid(self)
 
     def __eq__(self, *args):
-        """__eq__(RealRange2dC self, RealRange2dC oth) -> bool"""
+        """__eq__(self, oth) -> bool"""
         return _Ravl.RealRange2dC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(RealRange2dC self, RealRange2dC oth) -> bool"""
+        """__ne__(self, oth) -> bool"""
         return _Ravl.RealRange2dC___ne__(self, *args)
 
     def IsOverlapping(self, *args):
-        """IsOverlapping(RealRange2dC self, RealRange2dC r) -> bool"""
+        """IsOverlapping(self, r) -> bool"""
         return _Ravl.RealRange2dC_IsOverlapping(self, *args)
 
     __swig_destroy__ = _Ravl.delete_RealRange2dC
@@ -2233,16 +2233,16 @@ class PointSet2dC(DListPoint2dC):
     __getattr__ = lambda self, name: _swig_getattr(self, PointSet2dC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::PointSet2dC self) -> PointSet2dC"""
+        """__init__(self) -> PointSet2dC"""
         this = _Ravl.new_PointSet2dC()
         try: self.this.append(this)
         except: self.this = this
     def Centroid(self):
-        """Centroid(PointSet2dC self) -> Point2dC"""
+        """Centroid(self) -> Point2dC"""
         return _Ravl.PointSet2dC_Centroid(self)
 
     def BoundingRectangle(self):
-        """BoundingRectangle(PointSet2dC self) -> RealRange2dC"""
+        """BoundingRectangle(self) -> RealRange2dC"""
         return _Ravl.PointSet2dC_BoundingRectangle(self)
 
     __swig_destroy__ = _Ravl.delete_PointSet2dC
@@ -2260,16 +2260,16 @@ class Polygon2dC(PointSet2dC):
     __getattr__ = lambda self, name: _swig_getattr(self, Polygon2dC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::Polygon2dC self) -> Polygon2dC"""
+        """__init__(self) -> Polygon2dC"""
         this = _Ravl.new_Polygon2dC()
         try: self.this.append(this)
         except: self.this = this
     def Size(self):
-        """Size(Polygon2dC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.Polygon2dC_Size(self)
 
     def InsLast(self, *args):
-        """InsLast(Polygon2dC self, Point2dC point)"""
+        """InsLast(self, point)"""
         return _Ravl.Polygon2dC_InsLast(self, *args)
 
     __swig_destroy__ = _Ravl.delete_Polygon2dC
@@ -2286,30 +2286,30 @@ class ByteRGBArray2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::Array2dC<(RavlImageN::ByteRGBValueC)> self) -> ByteRGBArray2dC
-        __init__(RavlN::Array2dC<(RavlImageN::ByteRGBValueC)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> ByteRGBArray2dC
-        __init__(RavlN::Array2dC<(RavlImageN::ByteRGBValueC)> self, IndexRange2dC range) -> ByteRGBArray2dC
+        __init__(self) -> ByteRGBArray2dC
+        __init__(self, rows, cols) -> ByteRGBArray2dC
+        __init__(self, range) -> ByteRGBArray2dC
         """
         this = _Ravl.new_ByteRGBArray2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Frame(self):
-        """Frame(ByteRGBArray2dC self) -> IndexRange2dC"""
+        """Frame(self) -> IndexRange2dC"""
         return _Ravl.ByteRGBArray2dC_Frame(self)
 
     def Fill(self, *args):
-        """Fill(ByteRGBArray2dC self, ByteRGBValueC value)"""
+        """Fill(self, value)"""
         return _Ravl.ByteRGBArray2dC_Fill(self, *args)
 
     def Stride(self):
-        """Stride(ByteRGBArray2dC self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.ByteRGBArray2dC_Stride(self)
 
     def Access(self, *args):
         """
-        Access(ByteRGBArray2dC self, Index2dC index) -> ByteRGBValueC
-        Access(ByteRGBArray2dC self, RavlN::IntT r, RavlN::IntT c) -> ByteRGBValueC
-        Access(ByteRGBArray2dC self, IndexC r, IndexC c) -> ByteRGBValueC
+        Access(self, index) -> ByteRGBValueC
+        Access(self, r, c) -> ByteRGBValueC
+        Access(self, r, c) -> ByteRGBValueC
         """
         return _Ravl.ByteRGBArray2dC_Access(self, *args)
 
@@ -2327,30 +2327,30 @@ class RealRGBArray2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::Array2dC<(RavlImageN::RealRGBValueC)> self) -> RealRGBArray2dC
-        __init__(RavlN::Array2dC<(RavlImageN::RealRGBValueC)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> RealRGBArray2dC
-        __init__(RavlN::Array2dC<(RavlImageN::RealRGBValueC)> self, IndexRange2dC range) -> RealRGBArray2dC
+        __init__(self) -> RealRGBArray2dC
+        __init__(self, rows, cols) -> RealRGBArray2dC
+        __init__(self, range) -> RealRGBArray2dC
         """
         this = _Ravl.new_RealRGBArray2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Frame(self):
-        """Frame(RealRGBArray2dC self) -> IndexRange2dC"""
+        """Frame(self) -> IndexRange2dC"""
         return _Ravl.RealRGBArray2dC_Frame(self)
 
     def Fill(self, *args):
-        """Fill(RealRGBArray2dC self, RealRGBValueC value)"""
+        """Fill(self, value)"""
         return _Ravl.RealRGBArray2dC_Fill(self, *args)
 
     def Stride(self):
-        """Stride(RealRGBArray2dC self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.RealRGBArray2dC_Stride(self)
 
     def Access(self, *args):
         """
-        Access(RealRGBArray2dC self, Index2dC index) -> RealRGBValueC
-        Access(RealRGBArray2dC self, RavlN::IntT r, RavlN::IntT c) -> RealRGBValueC
-        Access(RealRGBArray2dC self, IndexC r, IndexC c) -> RealRGBValueC
+        Access(self, index) -> RealRGBValueC
+        Access(self, r, c) -> RealRGBValueC
+        Access(self, r, c) -> RealRGBValueC
         """
         return _Ravl.RealRGBArray2dC_Access(self, *args)
 
@@ -2367,20 +2367,20 @@ class RealRGBValueC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, RealRGBValueC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlImageN::RealRGBValueC self, RavlN::RealT r, RavlN::RealT g, RavlN::RealT b) -> RealRGBValueC"""
+        """__init__(self, r, g, b) -> RealRGBValueC"""
         this = _Ravl.new_RealRGBValueC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Red(self):
-        """Red(RealRGBValueC self) -> RavlN::RealT"""
+        """Red(self) -> RavlN::RealT"""
         return _Ravl.RealRGBValueC_Red(self)
 
     def Green(self):
-        """Green(RealRGBValueC self) -> RavlN::RealT"""
+        """Green(self) -> RavlN::RealT"""
         return _Ravl.RealRGBValueC_Green(self)
 
     def Blue(self):
-        """Blue(RealRGBValueC self) -> RavlN::RealT"""
+        """Blue(self) -> RavlN::RealT"""
         return _Ravl.RealRGBValueC_Blue(self)
 
     __swig_destroy__ = _Ravl.delete_RealRGBValueC
@@ -2396,20 +2396,20 @@ class ByteRGBValueC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, ByteRGBValueC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlImageN::ByteRGBValueC self, RavlN::IntT r, RavlN::IntT g, RavlN::IntT b) -> ByteRGBValueC"""
+        """__init__(self, r, g, b) -> ByteRGBValueC"""
         this = _Ravl.new_ByteRGBValueC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Red(self):
-        """Red(ByteRGBValueC self) -> RavlN::IntT"""
+        """Red(self) -> RavlN::IntT"""
         return _Ravl.ByteRGBValueC_Red(self)
 
     def Green(self):
-        """Green(ByteRGBValueC self) -> RavlN::IntT"""
+        """Green(self) -> RavlN::IntT"""
         return _Ravl.ByteRGBValueC_Green(self)
 
     def Blue(self):
-        """Blue(ByteRGBValueC self) -> RavlN::IntT"""
+        """Blue(self) -> RavlN::IntT"""
         return _Ravl.ByteRGBValueC_Blue(self)
 
     __swig_destroy__ = _Ravl.delete_ByteRGBValueC
@@ -2428,38 +2428,38 @@ class ImageByteRGBValueC(ByteRGBArray2dC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlImageN::ImageC<(RavlImageN::ByteRGBValueC)> self) -> ImageByteRGBValueC
-        __init__(RavlImageN::ImageC<(RavlImageN::ByteRGBValueC)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> ImageByteRGBValueC
-        __init__(RavlImageN::ImageC<(RavlImageN::ByteRGBValueC)> self, IndexRange2dC range) -> ImageByteRGBValueC
-        __init__(RavlImageN::ImageC<(RavlImageN::ByteRGBValueC)> self, RavlN::SizeT rows, RavlN::SizeT cols, ByteRGBValueC data, bool deletable=True) -> ImageByteRGBValueC
-        __init__(RavlImageN::ImageC<(RavlImageN::ByteRGBValueC)> self, RavlN::SizeT rows, RavlN::SizeT cols, ByteRGBValueC data) -> ImageByteRGBValueC
-        __init__(RavlImageN::ImageC<(RavlImageN::ByteRGBValueC)> self, ImageByteRGBValueC img, IndexRange2dC range) -> ImageByteRGBValueC
+        __init__(self) -> ImageByteRGBValueC
+        __init__(self, rows, cols) -> ImageByteRGBValueC
+        __init__(self, range) -> ImageByteRGBValueC
+        __init__(self, rows, cols, data, deletable=True) -> ImageByteRGBValueC
+        __init__(self, rows, cols, data) -> ImageByteRGBValueC
+        __init__(self, img, range) -> ImageByteRGBValueC
         """
         this = _Ravl.new_ImageByteRGBValueC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Rows(self):
-        """Rows(ImageByteRGBValueC self) -> RavlN::SizeT"""
+        """Rows(self) -> RavlN::SizeT"""
         return _Ravl.ImageByteRGBValueC_Rows(self)
 
     def Cols(self):
-        """Cols(ImageByteRGBValueC self) -> RavlN::SizeT"""
+        """Cols(self) -> RavlN::SizeT"""
         return _Ravl.ImageByteRGBValueC_Cols(self)
 
     def Row(self, *args):
-        """Row(ImageByteRGBValueC self, IndexC row) -> ByteRGBValueC"""
+        """Row(self, row) -> ByteRGBValueC"""
         return _Ravl.ImageByteRGBValueC_Row(self, *args)
 
     def Stride(self):
-        """Stride(ImageByteRGBValueC self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.ImageByteRGBValueC_Stride(self)
 
     def DataAsString(self):
-        """DataAsString(ImageByteRGBValueC self) -> PyObject *"""
+        """DataAsString(self) -> PyObject *"""
         return _Ravl.ImageByteRGBValueC_DataAsString(self)
 
     def DataAsStringTriple(self):
-        """DataAsStringTriple(ImageByteRGBValueC self) -> PyObject *"""
+        """DataAsStringTriple(self) -> PyObject *"""
         return _Ravl.ImageByteRGBValueC_DataAsStringTriple(self)
 
     __swig_destroy__ = _Ravl.delete_ImageByteRGBValueC
@@ -2478,38 +2478,38 @@ class ImageByteC(Array2dByteC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlImageN::ImageC<(RavlN::ByteT)> self) -> ImageByteC
-        __init__(RavlImageN::ImageC<(RavlN::ByteT)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> ImageByteC
-        __init__(RavlImageN::ImageC<(RavlN::ByteT)> self, IndexRange2dC range) -> ImageByteC
-        __init__(RavlImageN::ImageC<(RavlN::ByteT)> self, RavlN::SizeT rows, RavlN::SizeT cols, unsigned char * data, bool deletable=True) -> ImageByteC
-        __init__(RavlImageN::ImageC<(RavlN::ByteT)> self, RavlN::SizeT rows, RavlN::SizeT cols, unsigned char * data) -> ImageByteC
-        __init__(RavlImageN::ImageC<(RavlN::ByteT)> self, ImageByteC img, IndexRange2dC range) -> ImageByteC
+        __init__(self) -> ImageByteC
+        __init__(self, rows, cols) -> ImageByteC
+        __init__(self, range) -> ImageByteC
+        __init__(self, rows, cols, data, deletable=True) -> ImageByteC
+        __init__(self, rows, cols, data) -> ImageByteC
+        __init__(self, img, range) -> ImageByteC
         """
         this = _Ravl.new_ImageByteC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Rows(self):
-        """Rows(ImageByteC self) -> RavlN::SizeT"""
+        """Rows(self) -> RavlN::SizeT"""
         return _Ravl.ImageByteC_Rows(self)
 
     def Cols(self):
-        """Cols(ImageByteC self) -> RavlN::SizeT"""
+        """Cols(self) -> RavlN::SizeT"""
         return _Ravl.ImageByteC_Cols(self)
 
     def Row(self, *args):
-        """Row(ImageByteC self, IndexC row) -> unsigned char *"""
+        """Row(self, row) -> unsigned char *"""
         return _Ravl.ImageByteC_Row(self, *args)
 
     def Stride(self):
-        """Stride(ImageByteC self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.ImageByteC_Stride(self)
 
     def DataAsString(self):
-        """DataAsString(ImageByteC self) -> PyObject *"""
+        """DataAsString(self) -> PyObject *"""
         return _Ravl.ImageByteC_DataAsString(self)
 
     def DataAsStringTriple(self):
-        """DataAsStringTriple(ImageByteC self) -> PyObject *"""
+        """DataAsStringTriple(self) -> PyObject *"""
         return _Ravl.ImageByteC_DataAsStringTriple(self)
 
     __swig_destroy__ = _Ravl.delete_ImageByteC
@@ -2520,10 +2520,10 @@ ImageByteC_swigregister(ImageByteC)
 
 def DrawPolygon(*args):
   """
-    DrawPolygon(ByteRGBArray2dC arg1, ByteRGBValueC arg2, Polygon2dC poly, bool fill=False)
-    DrawPolygon(ByteRGBArray2dC arg1, ByteRGBValueC arg2, Polygon2dC poly)
-    DrawPolygon(Array2dByteC arg1, RavlN::ByteT const & arg2, Polygon2dC poly, bool fill=False)
-    DrawPolygon(Array2dByteC arg1, RavlN::ByteT const & arg2, Polygon2dC poly)
+    DrawPolygon(arg1, arg2, poly, fill=False)
+    DrawPolygon(arg1, arg2, poly)
+    DrawPolygon(arg1, arg2, poly, fill=False)
+    DrawPolygon(arg1, arg2, poly)
     """
   return _Ravl.DrawPolygon(*args)
 class FontC(_object):
@@ -2534,24 +2534,24 @@ class FontC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, FontC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlImageN::FontC self) -> FontC"""
+        """__init__(self) -> FontC"""
         this = _Ravl.new_FontC()
         try: self.this.append(this)
         except: self.this = this
     def IsValid(self):
-        """IsValid(FontC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.FontC_IsValid(self)
 
     def Center(self, *args):
-        """Center(FontC self, StringC text) -> Index2dC"""
+        """Center(self, text) -> Index2dC"""
         return _Ravl.FontC_Center(self, *args)
 
     def Size(self, *args):
-        """Size(FontC self, StringC text) -> Index2dC"""
+        """Size(self, text) -> Index2dC"""
         return _Ravl.FontC_Size(self, *args)
 
     def Count(self):
-        """Count(FontC self) -> RavlN::UIntT"""
+        """Count(self) -> RavlN::UIntT"""
         return _Ravl.FontC_Count(self)
 
     __swig_destroy__ = _Ravl.delete_FontC
@@ -2565,19 +2565,19 @@ def DefaultFont():
   return _Ravl.DefaultFont()
 
 def DrawTextByteRGB(*args):
-  """DrawTextByteRGB(FontC font, ByteRGBValueC value, Index2dC offset, StringC text, ImageByteRGBValueC image)"""
+  """DrawTextByteRGB(font, value, offset, text, image)"""
   return _Ravl.DrawTextByteRGB(*args)
 
 def DrawTextByte(*args):
-  """DrawTextByte(FontC font, unsigned char const & value, Index2dC offset, StringC text, ImageByteC image)"""
+  """DrawTextByte(font, value, offset, text, image)"""
   return _Ravl.DrawTextByte(*args)
 
 def DrawTextCenterByteRGB(*args):
-  """DrawTextCenterByteRGB(FontC font, ByteRGBValueC value, Index2dC offset, StringC text, ImageByteRGBValueC image)"""
+  """DrawTextCenterByteRGB(font, value, offset, text, image)"""
   return _Ravl.DrawTextCenterByteRGB(*args)
 
 def DrawTextCenterByte(*args):
-  """DrawTextCenterByte(FontC font, unsigned char const & value, Index2dC offset, StringC text, ImageByteC image)"""
+  """DrawTextCenterByte(font, value, offset, text, image)"""
   return _Ravl.DrawTextCenterByte(*args)
 class SArray1dUInt(_object):
     """Proxy of C++ RavlN::SArray1dC<(RavlN::UIntT)> class"""
@@ -2587,173 +2587,173 @@ class SArray1dUInt(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, SArray1dUInt, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dUInt"""
+        """ConstructAligned(dim, align) -> SArray1dUInt"""
         return _Ravl.SArray1dUInt_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray1dC<(RavlN::UIntT)> self) -> SArray1dUInt
-        __init__(RavlN::SArray1dC<(RavlN::UIntT)> self, RavlN::SizeT const dim) -> SArray1dUInt
-        __init__(RavlN::SArray1dC<(RavlN::UIntT)> self, SArray1dUInt vv) -> SArray1dUInt
-        __init__(RavlN::SArray1dC<(RavlN::UIntT)> self, SArray1dUInt vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0) -> SArray1dUInt
-        __init__(RavlN::SArray1dC<(RavlN::UIntT)> self, SArray1dUInt vv, RavlN::SizeT dim) -> SArray1dUInt
-        __init__(RavlN::SArray1dC<(RavlN::UIntT)> self, unsigned int * data, RavlN::SizeT const dim, bool removable) -> SArray1dUInt
+        __init__(self) -> SArray1dUInt
+        __init__(self, dim) -> SArray1dUInt
+        __init__(self, vv) -> SArray1dUInt
+        __init__(self, vv, dim, offsetInBuff=0) -> SArray1dUInt
+        __init__(self, vv, dim) -> SArray1dUInt
+        __init__(self, data, dim, removable) -> SArray1dUInt
         """
         this = _Ravl.new_SArray1dUInt(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(SArray1dUInt self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.SArray1dUInt_IsEmpty(self)
 
     def Contains(self, *args):
-        """Contains(SArray1dUInt self, IndexC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray1dUInt_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray1dUInt self, unsigned int const & d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray1dUInt_Fill(self, *args)
 
     def Reverse(self):
-        """Reverse(SArray1dUInt self)"""
+        """Reverse(self)"""
         return _Ravl.SArray1dUInt_Reverse(self)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __mul__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __mul__(self, arr) -> SArray1dUInt
+        __mul__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __div__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __div__(self, arr) -> SArray1dUInt
+        __div__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __add__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __add__(self, arr) -> SArray1dUInt
+        __add__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __sub__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __sub__(self, arr) -> SArray1dUInt
+        __sub__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __iadd__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __iadd__(self, arr) -> SArray1dUInt
+        __iadd__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __isub__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __isub__(self, arr) -> SArray1dUInt
+        __isub__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __imul__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __imul__(self, arr) -> SArray1dUInt
+        __imul__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray1dUInt self, SArray1dUInt arr) -> SArray1dUInt
-        __idiv__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt
+        __idiv__(self, arr) -> SArray1dUInt
+        __idiv__(self, number) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt___idiv__(self, *args)
 
     def Sum(self):
-        """Sum(SArray1dUInt self) -> unsigned int"""
+        """Sum(self) -> unsigned int"""
         return _Ravl.SArray1dUInt_Sum(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray1dUInt self) -> unsigned int"""
+        """SumOfSqr(self) -> unsigned int"""
         return _Ravl.SArray1dUInt_SumOfSqr(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(SArray1dUInt self) -> SArray1dUInt
-        SArray1d(SArray1dUInt self) -> SArray1dUInt
+        SArray1d(self) -> SArray1dUInt
+        SArray1d(self) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt_SArray1d(self, *args)
 
     def Size(self):
-        """Size(SArray1dUInt self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dUInt_Size(self)
 
     def Range(self):
-        """Range(SArray1dUInt self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.SArray1dUInt_Range(self)
 
     def Join(self, *args):
         """
-        Join(SArray1dUInt self, SArray1dUInt Oth) -> SArray1dUInt
-        Join(SArray1dUInt self, unsigned int const & Oth) -> SArray1dUInt
+        Join(self, Oth) -> SArray1dUInt
+        Join(self, Oth) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(SArray1dUInt self, SArray1dUInt a) -> SArray1dUInt
-        Append(SArray1dUInt self, unsigned int const & a) -> SArray1dUInt
+        Append(self, a) -> SArray1dUInt
+        Append(self, a) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt_Append(self, *args)
 
     def From(self, *args):
         """
-        From(SArray1dUInt self, RavlN::UIntT offset) -> SArray1dUInt
-        From(SArray1dUInt self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dUInt
+        From(self, offset) -> SArray1dUInt
+        From(self, offset, size) -> SArray1dUInt
         """
         return _Ravl.SArray1dUInt_From(self, *args)
 
     def After(self, *args):
-        """After(SArray1dUInt self, RavlN::UIntT offset) -> SArray1dUInt"""
+        """After(self, offset) -> SArray1dUInt"""
         return _Ravl.SArray1dUInt_After(self, *args)
 
     def Before(self, *args):
-        """Before(SArray1dUInt self, RavlN::UIntT offset) -> SArray1dUInt"""
+        """Before(self, offset) -> SArray1dUInt"""
         return _Ravl.SArray1dUInt_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray1dUInt self, SArray1dUInt vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.SArray1dUInt___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray1dUInt self, SArray1dUInt vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.SArray1dUInt___ne__(self, *args)
 
     def Hash(self):
-        """Hash(SArray1dUInt self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dUInt_Hash(self)
 
     def DataStart(self):
-        """DataStart(SArray1dUInt self) -> unsigned int *"""
+        """DataStart(self) -> unsigned int *"""
         return _Ravl.SArray1dUInt_DataStart(self)
 
     def __getitem__(self, *args):
-        """__getitem__(SArray1dUInt self, size_t i) -> unsigned int const &"""
+        """__getitem__(self, i) -> unsigned int const &"""
         return _Ravl.SArray1dUInt___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(SArray1dUInt self, size_t i, unsigned int const & v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.SArray1dUInt___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(SArray1dUInt self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray1dUInt___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray1dUInt
@@ -2762,7 +2762,7 @@ SArray1dUInt_swigregister = _Ravl.SArray1dUInt_swigregister
 SArray1dUInt_swigregister(SArray1dUInt)
 
 def SArray1dUInt_ConstructAligned(*args):
-  """SArray1dUInt_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dUInt"""
+  """SArray1dUInt_ConstructAligned(dim, align) -> SArray1dUInt"""
   return _Ravl.SArray1dUInt_ConstructAligned(*args)
 
 class SArray1dReal(_object):
@@ -2773,173 +2773,173 @@ class SArray1dReal(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, SArray1dReal, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dReal"""
+        """ConstructAligned(dim, align) -> SArray1dReal"""
         return _Ravl.SArray1dReal_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray1dC<(RavlN::RealT)> self) -> SArray1dReal
-        __init__(RavlN::SArray1dC<(RavlN::RealT)> self, RavlN::SizeT const dim) -> SArray1dReal
-        __init__(RavlN::SArray1dC<(RavlN::RealT)> self, SArray1dReal vv) -> SArray1dReal
-        __init__(RavlN::SArray1dC<(RavlN::RealT)> self, SArray1dReal vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0) -> SArray1dReal
-        __init__(RavlN::SArray1dC<(RavlN::RealT)> self, SArray1dReal vv, RavlN::SizeT dim) -> SArray1dReal
-        __init__(RavlN::SArray1dC<(RavlN::RealT)> self, double * data, RavlN::SizeT const dim, bool removable) -> SArray1dReal
+        __init__(self) -> SArray1dReal
+        __init__(self, dim) -> SArray1dReal
+        __init__(self, vv) -> SArray1dReal
+        __init__(self, vv, dim, offsetInBuff=0) -> SArray1dReal
+        __init__(self, vv, dim) -> SArray1dReal
+        __init__(self, data, dim, removable) -> SArray1dReal
         """
         this = _Ravl.new_SArray1dReal(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(SArray1dReal self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.SArray1dReal_IsEmpty(self)
 
     def Contains(self, *args):
-        """Contains(SArray1dReal self, IndexC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray1dReal_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray1dReal self, double const & d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray1dReal_Fill(self, *args)
 
     def Reverse(self):
-        """Reverse(SArray1dReal self)"""
+        """Reverse(self)"""
         return _Ravl.SArray1dReal_Reverse(self)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __mul__(SArray1dReal self, double const & number) -> SArray1dReal
+        __mul__(self, arr) -> SArray1dReal
+        __mul__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __div__(SArray1dReal self, double const & number) -> SArray1dReal
+        __div__(self, arr) -> SArray1dReal
+        __div__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __add__(SArray1dReal self, double const & number) -> SArray1dReal
+        __add__(self, arr) -> SArray1dReal
+        __add__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __sub__(SArray1dReal self, double const & number) -> SArray1dReal
+        __sub__(self, arr) -> SArray1dReal
+        __sub__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __iadd__(SArray1dReal self, double const & number) -> SArray1dReal
+        __iadd__(self, arr) -> SArray1dReal
+        __iadd__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __isub__(SArray1dReal self, double const & number) -> SArray1dReal
+        __isub__(self, arr) -> SArray1dReal
+        __isub__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __imul__(SArray1dReal self, double const & number) -> SArray1dReal
+        __imul__(self, arr) -> SArray1dReal
+        __imul__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray1dReal self, SArray1dReal arr) -> SArray1dReal
-        __idiv__(SArray1dReal self, double const & number) -> SArray1dReal
+        __idiv__(self, arr) -> SArray1dReal
+        __idiv__(self, number) -> SArray1dReal
         """
         return _Ravl.SArray1dReal___idiv__(self, *args)
 
     def Sum(self):
-        """Sum(SArray1dReal self) -> double"""
+        """Sum(self) -> double"""
         return _Ravl.SArray1dReal_Sum(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray1dReal self) -> double"""
+        """SumOfSqr(self) -> double"""
         return _Ravl.SArray1dReal_SumOfSqr(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(SArray1dReal self) -> SArray1dReal
-        SArray1d(SArray1dReal self) -> SArray1dReal
+        SArray1d(self) -> SArray1dReal
+        SArray1d(self) -> SArray1dReal
         """
         return _Ravl.SArray1dReal_SArray1d(self, *args)
 
     def Size(self):
-        """Size(SArray1dReal self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dReal_Size(self)
 
     def Range(self):
-        """Range(SArray1dReal self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.SArray1dReal_Range(self)
 
     def Join(self, *args):
         """
-        Join(SArray1dReal self, SArray1dReal Oth) -> SArray1dReal
-        Join(SArray1dReal self, double const & Oth) -> SArray1dReal
+        Join(self, Oth) -> SArray1dReal
+        Join(self, Oth) -> SArray1dReal
         """
         return _Ravl.SArray1dReal_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(SArray1dReal self, SArray1dReal a) -> SArray1dReal
-        Append(SArray1dReal self, double const & a) -> SArray1dReal
+        Append(self, a) -> SArray1dReal
+        Append(self, a) -> SArray1dReal
         """
         return _Ravl.SArray1dReal_Append(self, *args)
 
     def From(self, *args):
         """
-        From(SArray1dReal self, RavlN::UIntT offset) -> SArray1dReal
-        From(SArray1dReal self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dReal
+        From(self, offset) -> SArray1dReal
+        From(self, offset, size) -> SArray1dReal
         """
         return _Ravl.SArray1dReal_From(self, *args)
 
     def After(self, *args):
-        """After(SArray1dReal self, RavlN::UIntT offset) -> SArray1dReal"""
+        """After(self, offset) -> SArray1dReal"""
         return _Ravl.SArray1dReal_After(self, *args)
 
     def Before(self, *args):
-        """Before(SArray1dReal self, RavlN::UIntT offset) -> SArray1dReal"""
+        """Before(self, offset) -> SArray1dReal"""
         return _Ravl.SArray1dReal_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray1dReal self, SArray1dReal vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.SArray1dReal___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray1dReal self, SArray1dReal vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.SArray1dReal___ne__(self, *args)
 
     def Hash(self):
-        """Hash(SArray1dReal self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dReal_Hash(self)
 
     def DataStart(self):
-        """DataStart(SArray1dReal self) -> double *"""
+        """DataStart(self) -> double *"""
         return _Ravl.SArray1dReal_DataStart(self)
 
     def __getitem__(self, *args):
-        """__getitem__(SArray1dReal self, size_t i) -> double const &"""
+        """__getitem__(self, i) -> double const &"""
         return _Ravl.SArray1dReal___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(SArray1dReal self, size_t i, double const & v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.SArray1dReal___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(SArray1dReal self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray1dReal___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray1dReal
@@ -2948,7 +2948,7 @@ SArray1dReal_swigregister = _Ravl.SArray1dReal_swigregister
 SArray1dReal_swigregister(SArray1dReal)
 
 def SArray1dReal_ConstructAligned(*args):
-  """SArray1dReal_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dReal"""
+  """SArray1dReal_ConstructAligned(dim, align) -> SArray1dReal"""
   return _Ravl.SArray1dReal_ConstructAligned(*args)
 
 class SArray1dFloat(_object):
@@ -2959,173 +2959,173 @@ class SArray1dFloat(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, SArray1dFloat, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dFloat"""
+        """ConstructAligned(dim, align) -> SArray1dFloat"""
         return _Ravl.SArray1dFloat_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray1dC<(RavlN::FloatT)> self) -> SArray1dFloat
-        __init__(RavlN::SArray1dC<(RavlN::FloatT)> self, RavlN::SizeT const dim) -> SArray1dFloat
-        __init__(RavlN::SArray1dC<(RavlN::FloatT)> self, SArray1dFloat vv) -> SArray1dFloat
-        __init__(RavlN::SArray1dC<(RavlN::FloatT)> self, SArray1dFloat vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0) -> SArray1dFloat
-        __init__(RavlN::SArray1dC<(RavlN::FloatT)> self, SArray1dFloat vv, RavlN::SizeT dim) -> SArray1dFloat
-        __init__(RavlN::SArray1dC<(RavlN::FloatT)> self, float * data, RavlN::SizeT const dim, bool removable) -> SArray1dFloat
+        __init__(self) -> SArray1dFloat
+        __init__(self, dim) -> SArray1dFloat
+        __init__(self, vv) -> SArray1dFloat
+        __init__(self, vv, dim, offsetInBuff=0) -> SArray1dFloat
+        __init__(self, vv, dim) -> SArray1dFloat
+        __init__(self, data, dim, removable) -> SArray1dFloat
         """
         this = _Ravl.new_SArray1dFloat(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(SArray1dFloat self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.SArray1dFloat_IsEmpty(self)
 
     def Contains(self, *args):
-        """Contains(SArray1dFloat self, IndexC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray1dFloat_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray1dFloat self, float const & d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray1dFloat_Fill(self, *args)
 
     def Reverse(self):
-        """Reverse(SArray1dFloat self)"""
+        """Reverse(self)"""
         return _Ravl.SArray1dFloat_Reverse(self)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __mul__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __mul__(self, arr) -> SArray1dFloat
+        __mul__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __div__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __div__(self, arr) -> SArray1dFloat
+        __div__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __add__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __add__(self, arr) -> SArray1dFloat
+        __add__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __sub__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __sub__(self, arr) -> SArray1dFloat
+        __sub__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __iadd__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __iadd__(self, arr) -> SArray1dFloat
+        __iadd__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __isub__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __isub__(self, arr) -> SArray1dFloat
+        __isub__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __imul__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __imul__(self, arr) -> SArray1dFloat
+        __imul__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray1dFloat self, SArray1dFloat arr) -> SArray1dFloat
-        __idiv__(SArray1dFloat self, float const & number) -> SArray1dFloat
+        __idiv__(self, arr) -> SArray1dFloat
+        __idiv__(self, number) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat___idiv__(self, *args)
 
     def Sum(self):
-        """Sum(SArray1dFloat self) -> float"""
+        """Sum(self) -> float"""
         return _Ravl.SArray1dFloat_Sum(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray1dFloat self) -> float"""
+        """SumOfSqr(self) -> float"""
         return _Ravl.SArray1dFloat_SumOfSqr(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(SArray1dFloat self) -> SArray1dFloat
-        SArray1d(SArray1dFloat self) -> SArray1dFloat
+        SArray1d(self) -> SArray1dFloat
+        SArray1d(self) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat_SArray1d(self, *args)
 
     def Size(self):
-        """Size(SArray1dFloat self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dFloat_Size(self)
 
     def Range(self):
-        """Range(SArray1dFloat self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.SArray1dFloat_Range(self)
 
     def Join(self, *args):
         """
-        Join(SArray1dFloat self, SArray1dFloat Oth) -> SArray1dFloat
-        Join(SArray1dFloat self, float const & Oth) -> SArray1dFloat
+        Join(self, Oth) -> SArray1dFloat
+        Join(self, Oth) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(SArray1dFloat self, SArray1dFloat a) -> SArray1dFloat
-        Append(SArray1dFloat self, float const & a) -> SArray1dFloat
+        Append(self, a) -> SArray1dFloat
+        Append(self, a) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat_Append(self, *args)
 
     def From(self, *args):
         """
-        From(SArray1dFloat self, RavlN::UIntT offset) -> SArray1dFloat
-        From(SArray1dFloat self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dFloat
+        From(self, offset) -> SArray1dFloat
+        From(self, offset, size) -> SArray1dFloat
         """
         return _Ravl.SArray1dFloat_From(self, *args)
 
     def After(self, *args):
-        """After(SArray1dFloat self, RavlN::UIntT offset) -> SArray1dFloat"""
+        """After(self, offset) -> SArray1dFloat"""
         return _Ravl.SArray1dFloat_After(self, *args)
 
     def Before(self, *args):
-        """Before(SArray1dFloat self, RavlN::UIntT offset) -> SArray1dFloat"""
+        """Before(self, offset) -> SArray1dFloat"""
         return _Ravl.SArray1dFloat_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray1dFloat self, SArray1dFloat vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.SArray1dFloat___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray1dFloat self, SArray1dFloat vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.SArray1dFloat___ne__(self, *args)
 
     def Hash(self):
-        """Hash(SArray1dFloat self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dFloat_Hash(self)
 
     def DataStart(self):
-        """DataStart(SArray1dFloat self) -> float *"""
+        """DataStart(self) -> float *"""
         return _Ravl.SArray1dFloat_DataStart(self)
 
     def __getitem__(self, *args):
-        """__getitem__(SArray1dFloat self, size_t i) -> float const &"""
+        """__getitem__(self, i) -> float const &"""
         return _Ravl.SArray1dFloat___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(SArray1dFloat self, size_t i, float const & v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.SArray1dFloat___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(SArray1dFloat self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray1dFloat___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray1dFloat
@@ -3134,7 +3134,7 @@ SArray1dFloat_swigregister = _Ravl.SArray1dFloat_swigregister
 SArray1dFloat_swigregister(SArray1dFloat)
 
 def SArray1dFloat_ConstructAligned(*args):
-  """SArray1dFloat_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dFloat"""
+  """SArray1dFloat_ConstructAligned(dim, align) -> SArray1dFloat"""
   return _Ravl.SArray1dFloat_ConstructAligned(*args)
 
 class SArray1dIndexC(_object):
@@ -3145,173 +3145,173 @@ class SArray1dIndexC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, SArray1dIndexC, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dIndexC"""
+        """ConstructAligned(dim, align) -> SArray1dIndexC"""
         return _Ravl.SArray1dIndexC_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray1dC<(RavlN::IndexC)> self) -> SArray1dIndexC
-        __init__(RavlN::SArray1dC<(RavlN::IndexC)> self, RavlN::SizeT const dim) -> SArray1dIndexC
-        __init__(RavlN::SArray1dC<(RavlN::IndexC)> self, SArray1dIndexC vv) -> SArray1dIndexC
-        __init__(RavlN::SArray1dC<(RavlN::IndexC)> self, SArray1dIndexC vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0) -> SArray1dIndexC
-        __init__(RavlN::SArray1dC<(RavlN::IndexC)> self, SArray1dIndexC vv, RavlN::SizeT dim) -> SArray1dIndexC
-        __init__(RavlN::SArray1dC<(RavlN::IndexC)> self, IndexC data, RavlN::SizeT const dim, bool removable) -> SArray1dIndexC
+        __init__(self) -> SArray1dIndexC
+        __init__(self, dim) -> SArray1dIndexC
+        __init__(self, vv) -> SArray1dIndexC
+        __init__(self, vv, dim, offsetInBuff=0) -> SArray1dIndexC
+        __init__(self, vv, dim) -> SArray1dIndexC
+        __init__(self, data, dim, removable) -> SArray1dIndexC
         """
         this = _Ravl.new_SArray1dIndexC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(SArray1dIndexC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.SArray1dIndexC_IsEmpty(self)
 
     def Contains(self, *args):
-        """Contains(SArray1dIndexC self, IndexC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray1dIndexC_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray1dIndexC self, IndexC d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray1dIndexC_Fill(self, *args)
 
     def Reverse(self):
-        """Reverse(SArray1dIndexC self)"""
+        """Reverse(self)"""
         return _Ravl.SArray1dIndexC_Reverse(self)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __mul__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __mul__(self, arr) -> SArray1dIndexC
+        __mul__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __div__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __div__(self, arr) -> SArray1dIndexC
+        __div__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __add__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __add__(self, arr) -> SArray1dIndexC
+        __add__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __sub__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __sub__(self, arr) -> SArray1dIndexC
+        __sub__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __iadd__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __iadd__(self, arr) -> SArray1dIndexC
+        __iadd__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __isub__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __isub__(self, arr) -> SArray1dIndexC
+        __isub__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __imul__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __imul__(self, arr) -> SArray1dIndexC
+        __imul__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray1dIndexC self, SArray1dIndexC arr) -> SArray1dIndexC
-        __idiv__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC
+        __idiv__(self, arr) -> SArray1dIndexC
+        __idiv__(self, number) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC___idiv__(self, *args)
 
     def Sum(self):
-        """Sum(SArray1dIndexC self) -> IndexC"""
+        """Sum(self) -> IndexC"""
         return _Ravl.SArray1dIndexC_Sum(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray1dIndexC self) -> IndexC"""
+        """SumOfSqr(self) -> IndexC"""
         return _Ravl.SArray1dIndexC_SumOfSqr(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(SArray1dIndexC self) -> SArray1dIndexC
-        SArray1d(SArray1dIndexC self) -> SArray1dIndexC
+        SArray1d(self) -> SArray1dIndexC
+        SArray1d(self) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC_SArray1d(self, *args)
 
     def Size(self):
-        """Size(SArray1dIndexC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dIndexC_Size(self)
 
     def Range(self):
-        """Range(SArray1dIndexC self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.SArray1dIndexC_Range(self)
 
     def Join(self, *args):
         """
-        Join(SArray1dIndexC self, SArray1dIndexC Oth) -> SArray1dIndexC
-        Join(SArray1dIndexC self, IndexC Oth) -> SArray1dIndexC
+        Join(self, Oth) -> SArray1dIndexC
+        Join(self, Oth) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(SArray1dIndexC self, SArray1dIndexC a) -> SArray1dIndexC
-        Append(SArray1dIndexC self, IndexC a) -> SArray1dIndexC
+        Append(self, a) -> SArray1dIndexC
+        Append(self, a) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC_Append(self, *args)
 
     def From(self, *args):
         """
-        From(SArray1dIndexC self, RavlN::UIntT offset) -> SArray1dIndexC
-        From(SArray1dIndexC self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dIndexC
+        From(self, offset) -> SArray1dIndexC
+        From(self, offset, size) -> SArray1dIndexC
         """
         return _Ravl.SArray1dIndexC_From(self, *args)
 
     def After(self, *args):
-        """After(SArray1dIndexC self, RavlN::UIntT offset) -> SArray1dIndexC"""
+        """After(self, offset) -> SArray1dIndexC"""
         return _Ravl.SArray1dIndexC_After(self, *args)
 
     def Before(self, *args):
-        """Before(SArray1dIndexC self, RavlN::UIntT offset) -> SArray1dIndexC"""
+        """Before(self, offset) -> SArray1dIndexC"""
         return _Ravl.SArray1dIndexC_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray1dIndexC self, SArray1dIndexC vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.SArray1dIndexC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray1dIndexC self, SArray1dIndexC vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.SArray1dIndexC___ne__(self, *args)
 
     def Hash(self):
-        """Hash(SArray1dIndexC self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dIndexC_Hash(self)
 
     def DataStart(self):
-        """DataStart(SArray1dIndexC self) -> IndexC"""
+        """DataStart(self) -> IndexC"""
         return _Ravl.SArray1dIndexC_DataStart(self)
 
     def __getitem__(self, *args):
-        """__getitem__(SArray1dIndexC self, size_t i) -> IndexC"""
+        """__getitem__(self, i) -> IndexC"""
         return _Ravl.SArray1dIndexC___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(SArray1dIndexC self, size_t i, IndexC v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.SArray1dIndexC___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(SArray1dIndexC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray1dIndexC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray1dIndexC
@@ -3320,7 +3320,7 @@ SArray1dIndexC_swigregister = _Ravl.SArray1dIndexC_swigregister
 SArray1dIndexC_swigregister(SArray1dIndexC)
 
 def SArray1dIndexC_ConstructAligned(*args):
-  """SArray1dIndexC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dIndexC"""
+  """SArray1dIndexC_ConstructAligned(dim, align) -> SArray1dIndexC"""
   return _Ravl.SArray1dIndexC_ConstructAligned(*args)
 
 class SArray1dPoint2dC(_object):
@@ -3331,173 +3331,173 @@ class SArray1dPoint2dC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, SArray1dPoint2dC, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dPoint2dC"""
+        """ConstructAligned(dim, align) -> SArray1dPoint2dC"""
         return _Ravl.SArray1dPoint2dC_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray1dC<(RavlN::Point2dC)> self) -> SArray1dPoint2dC
-        __init__(RavlN::SArray1dC<(RavlN::Point2dC)> self, RavlN::SizeT const dim) -> SArray1dPoint2dC
-        __init__(RavlN::SArray1dC<(RavlN::Point2dC)> self, SArray1dPoint2dC vv) -> SArray1dPoint2dC
-        __init__(RavlN::SArray1dC<(RavlN::Point2dC)> self, SArray1dPoint2dC vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0) -> SArray1dPoint2dC
-        __init__(RavlN::SArray1dC<(RavlN::Point2dC)> self, SArray1dPoint2dC vv, RavlN::SizeT dim) -> SArray1dPoint2dC
-        __init__(RavlN::SArray1dC<(RavlN::Point2dC)> self, Point2dC data, RavlN::SizeT const dim, bool removable) -> SArray1dPoint2dC
+        __init__(self) -> SArray1dPoint2dC
+        __init__(self, dim) -> SArray1dPoint2dC
+        __init__(self, vv) -> SArray1dPoint2dC
+        __init__(self, vv, dim, offsetInBuff=0) -> SArray1dPoint2dC
+        __init__(self, vv, dim) -> SArray1dPoint2dC
+        __init__(self, data, dim, removable) -> SArray1dPoint2dC
         """
         this = _Ravl.new_SArray1dPoint2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(SArray1dPoint2dC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.SArray1dPoint2dC_IsEmpty(self)
 
     def Contains(self, *args):
-        """Contains(SArray1dPoint2dC self, IndexC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray1dPoint2dC_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray1dPoint2dC self, Point2dC d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray1dPoint2dC_Fill(self, *args)
 
     def Reverse(self):
-        """Reverse(SArray1dPoint2dC self)"""
+        """Reverse(self)"""
         return _Ravl.SArray1dPoint2dC_Reverse(self)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __mul__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __mul__(self, arr) -> SArray1dPoint2dC
+        __mul__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __div__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __div__(self, arr) -> SArray1dPoint2dC
+        __div__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __add__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __add__(self, arr) -> SArray1dPoint2dC
+        __add__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __sub__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __sub__(self, arr) -> SArray1dPoint2dC
+        __sub__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __iadd__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __iadd__(self, arr) -> SArray1dPoint2dC
+        __iadd__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __isub__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __isub__(self, arr) -> SArray1dPoint2dC
+        __isub__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __imul__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __imul__(self, arr) -> SArray1dPoint2dC
+        __imul__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray1dPoint2dC self, SArray1dPoint2dC arr) -> SArray1dPoint2dC
-        __idiv__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC
+        __idiv__(self, arr) -> SArray1dPoint2dC
+        __idiv__(self, number) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC___idiv__(self, *args)
 
     def Sum(self):
-        """Sum(SArray1dPoint2dC self) -> Point2dC"""
+        """Sum(self) -> Point2dC"""
         return _Ravl.SArray1dPoint2dC_Sum(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray1dPoint2dC self) -> Point2dC"""
+        """SumOfSqr(self) -> Point2dC"""
         return _Ravl.SArray1dPoint2dC_SumOfSqr(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(SArray1dPoint2dC self) -> SArray1dPoint2dC
-        SArray1d(SArray1dPoint2dC self) -> SArray1dPoint2dC
+        SArray1d(self) -> SArray1dPoint2dC
+        SArray1d(self) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC_SArray1d(self, *args)
 
     def Size(self):
-        """Size(SArray1dPoint2dC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dPoint2dC_Size(self)
 
     def Range(self):
-        """Range(SArray1dPoint2dC self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.SArray1dPoint2dC_Range(self)
 
     def Join(self, *args):
         """
-        Join(SArray1dPoint2dC self, SArray1dPoint2dC Oth) -> SArray1dPoint2dC
-        Join(SArray1dPoint2dC self, Point2dC Oth) -> SArray1dPoint2dC
+        Join(self, Oth) -> SArray1dPoint2dC
+        Join(self, Oth) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(SArray1dPoint2dC self, SArray1dPoint2dC a) -> SArray1dPoint2dC
-        Append(SArray1dPoint2dC self, Point2dC a) -> SArray1dPoint2dC
+        Append(self, a) -> SArray1dPoint2dC
+        Append(self, a) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC_Append(self, *args)
 
     def From(self, *args):
         """
-        From(SArray1dPoint2dC self, RavlN::UIntT offset) -> SArray1dPoint2dC
-        From(SArray1dPoint2dC self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dPoint2dC
+        From(self, offset) -> SArray1dPoint2dC
+        From(self, offset, size) -> SArray1dPoint2dC
         """
         return _Ravl.SArray1dPoint2dC_From(self, *args)
 
     def After(self, *args):
-        """After(SArray1dPoint2dC self, RavlN::UIntT offset) -> SArray1dPoint2dC"""
+        """After(self, offset) -> SArray1dPoint2dC"""
         return _Ravl.SArray1dPoint2dC_After(self, *args)
 
     def Before(self, *args):
-        """Before(SArray1dPoint2dC self, RavlN::UIntT offset) -> SArray1dPoint2dC"""
+        """Before(self, offset) -> SArray1dPoint2dC"""
         return _Ravl.SArray1dPoint2dC_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray1dPoint2dC self, SArray1dPoint2dC vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.SArray1dPoint2dC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray1dPoint2dC self, SArray1dPoint2dC vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.SArray1dPoint2dC___ne__(self, *args)
 
     def Hash(self):
-        """Hash(SArray1dPoint2dC self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dPoint2dC_Hash(self)
 
     def DataStart(self):
-        """DataStart(SArray1dPoint2dC self) -> Point2dC"""
+        """DataStart(self) -> Point2dC"""
         return _Ravl.SArray1dPoint2dC_DataStart(self)
 
     def __getitem__(self, *args):
-        """__getitem__(SArray1dPoint2dC self, size_t i) -> Point2dC"""
+        """__getitem__(self, i) -> Point2dC"""
         return _Ravl.SArray1dPoint2dC___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(SArray1dPoint2dC self, size_t i, Point2dC v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.SArray1dPoint2dC___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(SArray1dPoint2dC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray1dPoint2dC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray1dPoint2dC
@@ -3506,7 +3506,7 @@ SArray1dPoint2dC_swigregister = _Ravl.SArray1dPoint2dC_swigregister
 SArray1dPoint2dC_swigregister(SArray1dPoint2dC)
 
 def SArray1dPoint2dC_ConstructAligned(*args):
-  """SArray1dPoint2dC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dPoint2dC"""
+  """SArray1dPoint2dC_ConstructAligned(dim, align) -> SArray1dPoint2dC"""
   return _Ravl.SArray1dPoint2dC_ConstructAligned(*args)
 
 class SArray1dVectorC(_object):
@@ -3517,173 +3517,173 @@ class SArray1dVectorC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, SArray1dVectorC, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dVectorC"""
+        """ConstructAligned(dim, align) -> SArray1dVectorC"""
         return _Ravl.SArray1dVectorC_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray1dC<(RavlN::VectorC)> self) -> SArray1dVectorC
-        __init__(RavlN::SArray1dC<(RavlN::VectorC)> self, RavlN::SizeT const dim) -> SArray1dVectorC
-        __init__(RavlN::SArray1dC<(RavlN::VectorC)> self, SArray1dVectorC vv) -> SArray1dVectorC
-        __init__(RavlN::SArray1dC<(RavlN::VectorC)> self, SArray1dVectorC vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0) -> SArray1dVectorC
-        __init__(RavlN::SArray1dC<(RavlN::VectorC)> self, SArray1dVectorC vv, RavlN::SizeT dim) -> SArray1dVectorC
-        __init__(RavlN::SArray1dC<(RavlN::VectorC)> self, VectorC data, RavlN::SizeT const dim, bool removable) -> SArray1dVectorC
+        __init__(self) -> SArray1dVectorC
+        __init__(self, dim) -> SArray1dVectorC
+        __init__(self, vv) -> SArray1dVectorC
+        __init__(self, vv, dim, offsetInBuff=0) -> SArray1dVectorC
+        __init__(self, vv, dim) -> SArray1dVectorC
+        __init__(self, data, dim, removable) -> SArray1dVectorC
         """
         this = _Ravl.new_SArray1dVectorC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsEmpty(self):
-        """IsEmpty(SArray1dVectorC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.SArray1dVectorC_IsEmpty(self)
 
     def Contains(self, *args):
-        """Contains(SArray1dVectorC self, IndexC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray1dVectorC_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray1dVectorC self, VectorC d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray1dVectorC_Fill(self, *args)
 
     def Reverse(self):
-        """Reverse(SArray1dVectorC self)"""
+        """Reverse(self)"""
         return _Ravl.SArray1dVectorC_Reverse(self)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __mul__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __mul__(self, arr) -> SArray1dVectorC
+        __mul__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __div__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __div__(self, arr) -> SArray1dVectorC
+        __div__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __add__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __add__(self, arr) -> SArray1dVectorC
+        __add__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __sub__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __sub__(self, arr) -> SArray1dVectorC
+        __sub__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __iadd__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __iadd__(self, arr) -> SArray1dVectorC
+        __iadd__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __isub__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __isub__(self, arr) -> SArray1dVectorC
+        __isub__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __imul__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __imul__(self, arr) -> SArray1dVectorC
+        __imul__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray1dVectorC self, SArray1dVectorC arr) -> SArray1dVectorC
-        __idiv__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC
+        __idiv__(self, arr) -> SArray1dVectorC
+        __idiv__(self, number) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC___idiv__(self, *args)
 
     def Sum(self):
-        """Sum(SArray1dVectorC self) -> VectorC"""
+        """Sum(self) -> VectorC"""
         return _Ravl.SArray1dVectorC_Sum(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray1dVectorC self) -> VectorC"""
+        """SumOfSqr(self) -> VectorC"""
         return _Ravl.SArray1dVectorC_SumOfSqr(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(SArray1dVectorC self) -> SArray1dVectorC
-        SArray1d(SArray1dVectorC self) -> SArray1dVectorC
+        SArray1d(self) -> SArray1dVectorC
+        SArray1d(self) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC_SArray1d(self, *args)
 
     def Size(self):
-        """Size(SArray1dVectorC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dVectorC_Size(self)
 
     def Range(self):
-        """Range(SArray1dVectorC self) -> IndexRangeC"""
+        """Range(self) -> IndexRangeC"""
         return _Ravl.SArray1dVectorC_Range(self)
 
     def Join(self, *args):
         """
-        Join(SArray1dVectorC self, SArray1dVectorC Oth) -> SArray1dVectorC
-        Join(SArray1dVectorC self, VectorC Oth) -> SArray1dVectorC
+        Join(self, Oth) -> SArray1dVectorC
+        Join(self, Oth) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(SArray1dVectorC self, SArray1dVectorC a) -> SArray1dVectorC
-        Append(SArray1dVectorC self, VectorC a) -> SArray1dVectorC
+        Append(self, a) -> SArray1dVectorC
+        Append(self, a) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC_Append(self, *args)
 
     def From(self, *args):
         """
-        From(SArray1dVectorC self, RavlN::UIntT offset) -> SArray1dVectorC
-        From(SArray1dVectorC self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dVectorC
+        From(self, offset) -> SArray1dVectorC
+        From(self, offset, size) -> SArray1dVectorC
         """
         return _Ravl.SArray1dVectorC_From(self, *args)
 
     def After(self, *args):
-        """After(SArray1dVectorC self, RavlN::UIntT offset) -> SArray1dVectorC"""
+        """After(self, offset) -> SArray1dVectorC"""
         return _Ravl.SArray1dVectorC_After(self, *args)
 
     def Before(self, *args):
-        """Before(SArray1dVectorC self, RavlN::UIntT offset) -> SArray1dVectorC"""
+        """Before(self, offset) -> SArray1dVectorC"""
         return _Ravl.SArray1dVectorC_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray1dVectorC self, SArray1dVectorC vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.SArray1dVectorC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray1dVectorC self, SArray1dVectorC vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.SArray1dVectorC___ne__(self, *args)
 
     def Hash(self):
-        """Hash(SArray1dVectorC self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray1dVectorC_Hash(self)
 
     def DataStart(self):
-        """DataStart(SArray1dVectorC self) -> VectorC"""
+        """DataStart(self) -> VectorC"""
         return _Ravl.SArray1dVectorC_DataStart(self)
 
     def __getitem__(self, *args):
-        """__getitem__(SArray1dVectorC self, size_t i) -> VectorC"""
+        """__getitem__(self, i) -> VectorC"""
         return _Ravl.SArray1dVectorC___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(SArray1dVectorC self, size_t i, VectorC v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.SArray1dVectorC___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(SArray1dVectorC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray1dVectorC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray1dVectorC
@@ -3692,7 +3692,7 @@ SArray1dVectorC_swigregister = _Ravl.SArray1dVectorC_swigregister
 SArray1dVectorC_swigregister(SArray1dVectorC)
 
 def SArray1dVectorC_ConstructAligned(*args):
-  """SArray1dVectorC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dVectorC"""
+  """SArray1dVectorC_ConstructAligned(dim, align) -> SArray1dVectorC"""
   return _Ravl.SArray1dVectorC_ConstructAligned(*args)
 
 class SArray2dFloat(_object):
@@ -3704,165 +3704,164 @@ class SArray2dFloat(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, RavlN::SizeT dim1, RavlN::SizeT dim2) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, Index2dC size) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, SArray2dFloat arr, RavlN::SizeT size1, RavlN::SizeT size2) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, SArray2dFloat arr, IndexRange2dC rng) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, float * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False, 
-            RavlN::IntT stride=0) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, float * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, float * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False) -> SArray2dFloat
-        __init__(RavlN::SArray2dC<(RavlN::FloatT)> self, float * data, RavlN::SizeT size1, RavlN::SizeT size2) -> SArray2dFloat
+        __init__(self) -> SArray2dFloat
+        __init__(self, dim1, dim2) -> SArray2dFloat
+        __init__(self, size) -> SArray2dFloat
+        __init__(self, arr, size1, size2) -> SArray2dFloat
+        __init__(self, arr, rng) -> SArray2dFloat
+        __init__(self, data, size1, size2, copyMemory=False, freeMemory=False, stride=0) -> SArray2dFloat
+        __init__(self, data, size1, size2, copyMemory=False, freeMemory=False) -> SArray2dFloat
+        __init__(self, data, size1, size2, copyMemory=False) -> SArray2dFloat
+        __init__(self, data, size1, size2) -> SArray2dFloat
         """
         this = _Ravl.new_SArray2dFloat(*args)
         try: self.this.append(this)
         except: self.this = this
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim1, RavlN::SizeT const dim2, RavlN::UIntT align) -> SArray2dFloat"""
+        """ConstructAligned(dim1, dim2, align) -> SArray2dFloat"""
         return _Ravl.SArray2dFloat_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def Copy(self):
-        """Copy(SArray2dFloat self) -> SArray2dFloat"""
+        """Copy(self) -> SArray2dFloat"""
         return _Ravl.SArray2dFloat_Copy(self)
 
     def Size1(self):
-        """Size1(SArray2dFloat self) -> RavlN::SizeT"""
+        """Size1(self) -> RavlN::SizeT"""
         return _Ravl.SArray2dFloat_Size1(self)
 
     def Size2(self):
-        """Size2(SArray2dFloat self) -> RavlN::SizeT"""
+        """Size2(self) -> RavlN::SizeT"""
         return _Ravl.SArray2dFloat_Size2(self)
 
     def Contains(self, *args):
-        """Contains(SArray2dFloat self, Index2dC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray2dFloat_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray2dFloat self, float const & d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray2dFloat_Fill(self, *args)
 
     def Stride(self):
-        """Stride(SArray2dFloat self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.SArray2dFloat_Stride(self)
 
     def IsContinuous(self):
-        """IsContinuous(SArray2dFloat self) -> bool"""
+        """IsContinuous(self) -> bool"""
         return _Ravl.SArray2dFloat_IsContinuous(self)
 
     def Frame(self):
-        """Frame(SArray2dFloat self) -> IndexRange2dC"""
+        """Frame(self) -> IndexRange2dC"""
         return _Ravl.SArray2dFloat_Frame(self)
 
     def AsVector(self, alwaysCopy=False):
         """
-        AsVector(SArray2dFloat self, bool alwaysCopy=False) -> SArray1dFloat
-        AsVector(SArray2dFloat self) -> SArray1dFloat
+        AsVector(self, alwaysCopy=False) -> SArray1dFloat
+        AsVector(self) -> SArray1dFloat
         """
         return _Ravl.SArray2dFloat_AsVector(self, alwaysCopy)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __mul__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __mul__(self, arr) -> SArray2dFloat
+        __mul__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __div__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __div__(self, arr) -> SArray2dFloat
+        __div__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __add__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __add__(self, arr) -> SArray2dFloat
+        __add__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __sub__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __sub__(self, arr) -> SArray2dFloat
+        __sub__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __iadd__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __iadd__(self, arr) -> SArray2dFloat
+        __iadd__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __isub__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __isub__(self, arr) -> SArray2dFloat
+        __isub__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __imul__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __imul__(self, arr) -> SArray2dFloat
+        __imul__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray2dFloat self, SArray2dFloat arr) -> SArray2dFloat
-        __idiv__(SArray2dFloat self, float const & number) -> SArray2dFloat
+        __idiv__(self, arr) -> SArray2dFloat
+        __idiv__(self, number) -> SArray2dFloat
         """
         return _Ravl.SArray2dFloat___idiv__(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray2dFloat self, SArray2dFloat op) -> bool"""
+        """__eq__(self, op) -> bool"""
         return _Ravl.SArray2dFloat___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray2dFloat self, SArray2dFloat op) -> bool"""
+        """__ne__(self, op) -> bool"""
         return _Ravl.SArray2dFloat___ne__(self, *args)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray2dFloat self) -> float"""
+        """SumOfSqr(self) -> float"""
         return _Ravl.SArray2dFloat_SumOfSqr(self)
 
     def Sum(self):
-        """Sum(SArray2dFloat self) -> float"""
+        """Sum(self) -> float"""
         return _Ravl.SArray2dFloat_Sum(self)
 
     def SliceRow(self, *args):
-        """SliceRow(SArray2dFloat self, IndexC i) -> SArray1dFloat"""
+        """SliceRow(self, i) -> SArray1dFloat"""
         return _Ravl.SArray2dFloat_SliceRow(self, *args)
 
     def SetColumn(self, *args):
         """
-        SetColumn(SArray2dFloat self, IndexC i, SArray1dFloat val)
-        SetColumn(SArray2dFloat self, IndexC i, float const & val)
+        SetColumn(self, i, val)
+        SetColumn(self, i, val)
         """
         return _Ravl.SArray2dFloat_SetColumn(self, *args)
 
     def SetRow(self, *args):
         """
-        SetRow(SArray2dFloat self, IndexC i, SArray1dFloat val)
-        SetRow(SArray2dFloat self, IndexC i, float const & val)
+        SetRow(self, i, val)
+        SetRow(self, i, val)
         """
         return _Ravl.SArray2dFloat_SetRow(self, *args)
 
     def SetSubArray(self, *args):
-        """SetSubArray(SArray2dFloat self, Index2dC origin, SArray2dFloat vals)"""
+        """SetSubArray(self, origin, vals)"""
         return _Ravl.SArray2dFloat_SetSubArray(self, *args)
 
     def Hash(self):
-        """Hash(SArray2dFloat self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray2dFloat_Hash(self)
 
     def __str__(self):
-        """__str__(SArray2dFloat self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray2dFloat___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray2dFloat
@@ -3871,7 +3870,7 @@ SArray2dFloat_swigregister = _Ravl.SArray2dFloat_swigregister
 SArray2dFloat_swigregister(SArray2dFloat)
 
 def SArray2dFloat_ConstructAligned(*args):
-  """SArray2dFloat_ConstructAligned(RavlN::SizeT const dim1, RavlN::SizeT const dim2, RavlN::UIntT align) -> SArray2dFloat"""
+  """SArray2dFloat_ConstructAligned(dim1, dim2, align) -> SArray2dFloat"""
   return _Ravl.SArray2dFloat_ConstructAligned(*args)
 
 class SArray2dReal(_object):
@@ -3883,165 +3882,164 @@ class SArray2dReal(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, RavlN::SizeT dim1, RavlN::SizeT dim2) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, Index2dC size) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, SArray2dReal arr, RavlN::SizeT size1, RavlN::SizeT size2) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, SArray2dReal arr, IndexRange2dC rng) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, double * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False, 
-            RavlN::IntT stride=0) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, double * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, double * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False) -> SArray2dReal
-        __init__(RavlN::SArray2dC<(RavlN::RealT)> self, double * data, RavlN::SizeT size1, RavlN::SizeT size2) -> SArray2dReal
+        __init__(self) -> SArray2dReal
+        __init__(self, dim1, dim2) -> SArray2dReal
+        __init__(self, size) -> SArray2dReal
+        __init__(self, arr, size1, size2) -> SArray2dReal
+        __init__(self, arr, rng) -> SArray2dReal
+        __init__(self, data, size1, size2, copyMemory=False, freeMemory=False, stride=0) -> SArray2dReal
+        __init__(self, data, size1, size2, copyMemory=False, freeMemory=False) -> SArray2dReal
+        __init__(self, data, size1, size2, copyMemory=False) -> SArray2dReal
+        __init__(self, data, size1, size2) -> SArray2dReal
         """
         this = _Ravl.new_SArray2dReal(*args)
         try: self.this.append(this)
         except: self.this = this
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim1, RavlN::SizeT const dim2, RavlN::UIntT align) -> SArray2dReal"""
+        """ConstructAligned(dim1, dim2, align) -> SArray2dReal"""
         return _Ravl.SArray2dReal_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def Copy(self):
-        """Copy(SArray2dReal self) -> SArray2dReal"""
+        """Copy(self) -> SArray2dReal"""
         return _Ravl.SArray2dReal_Copy(self)
 
     def Size1(self):
-        """Size1(SArray2dReal self) -> RavlN::SizeT"""
+        """Size1(self) -> RavlN::SizeT"""
         return _Ravl.SArray2dReal_Size1(self)
 
     def Size2(self):
-        """Size2(SArray2dReal self) -> RavlN::SizeT"""
+        """Size2(self) -> RavlN::SizeT"""
         return _Ravl.SArray2dReal_Size2(self)
 
     def Contains(self, *args):
-        """Contains(SArray2dReal self, Index2dC i) -> bool"""
+        """Contains(self, i) -> bool"""
         return _Ravl.SArray2dReal_Contains(self, *args)
 
     def Fill(self, *args):
-        """Fill(SArray2dReal self, double const & d)"""
+        """Fill(self, d)"""
         return _Ravl.SArray2dReal_Fill(self, *args)
 
     def Stride(self):
-        """Stride(SArray2dReal self) -> RavlN::IntT"""
+        """Stride(self) -> RavlN::IntT"""
         return _Ravl.SArray2dReal_Stride(self)
 
     def IsContinuous(self):
-        """IsContinuous(SArray2dReal self) -> bool"""
+        """IsContinuous(self) -> bool"""
         return _Ravl.SArray2dReal_IsContinuous(self)
 
     def Frame(self):
-        """Frame(SArray2dReal self) -> IndexRange2dC"""
+        """Frame(self) -> IndexRange2dC"""
         return _Ravl.SArray2dReal_Frame(self)
 
     def AsVector(self, alwaysCopy=False):
         """
-        AsVector(SArray2dReal self, bool alwaysCopy=False) -> SArray1dReal
-        AsVector(SArray2dReal self) -> SArray1dReal
+        AsVector(self, alwaysCopy=False) -> SArray1dReal
+        AsVector(self) -> SArray1dReal
         """
         return _Ravl.SArray2dReal_AsVector(self, alwaysCopy)
 
     def __mul__(self, *args):
         """
-        __mul__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __mul__(SArray2dReal self, double const & number) -> SArray2dReal
+        __mul__(self, arr) -> SArray2dReal
+        __mul__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __div__(SArray2dReal self, double const & number) -> SArray2dReal
+        __div__(self, arr) -> SArray2dReal
+        __div__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __add__(SArray2dReal self, double const & number) -> SArray2dReal
+        __add__(self, arr) -> SArray2dReal
+        __add__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __sub__(SArray2dReal self, double const & number) -> SArray2dReal
+        __sub__(self, arr) -> SArray2dReal
+        __sub__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __iadd__(SArray2dReal self, double const & number) -> SArray2dReal
+        __iadd__(self, arr) -> SArray2dReal
+        __iadd__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __isub__(SArray2dReal self, double const & number) -> SArray2dReal
+        __isub__(self, arr) -> SArray2dReal
+        __isub__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __imul__(SArray2dReal self, double const & number) -> SArray2dReal
+        __imul__(self, arr) -> SArray2dReal
+        __imul__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(SArray2dReal self, SArray2dReal arr) -> SArray2dReal
-        __idiv__(SArray2dReal self, double const & number) -> SArray2dReal
+        __idiv__(self, arr) -> SArray2dReal
+        __idiv__(self, number) -> SArray2dReal
         """
         return _Ravl.SArray2dReal___idiv__(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(SArray2dReal self, SArray2dReal op) -> bool"""
+        """__eq__(self, op) -> bool"""
         return _Ravl.SArray2dReal___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(SArray2dReal self, SArray2dReal op) -> bool"""
+        """__ne__(self, op) -> bool"""
         return _Ravl.SArray2dReal___ne__(self, *args)
 
     def SumOfSqr(self):
-        """SumOfSqr(SArray2dReal self) -> double"""
+        """SumOfSqr(self) -> double"""
         return _Ravl.SArray2dReal_SumOfSqr(self)
 
     def Sum(self):
-        """Sum(SArray2dReal self) -> double"""
+        """Sum(self) -> double"""
         return _Ravl.SArray2dReal_Sum(self)
 
     def SliceRow(self, *args):
-        """SliceRow(SArray2dReal self, IndexC i) -> SArray1dReal"""
+        """SliceRow(self, i) -> SArray1dReal"""
         return _Ravl.SArray2dReal_SliceRow(self, *args)
 
     def SetColumn(self, *args):
         """
-        SetColumn(SArray2dReal self, IndexC i, SArray1dReal val)
-        SetColumn(SArray2dReal self, IndexC i, double const & val)
+        SetColumn(self, i, val)
+        SetColumn(self, i, val)
         """
         return _Ravl.SArray2dReal_SetColumn(self, *args)
 
     def SetRow(self, *args):
         """
-        SetRow(SArray2dReal self, IndexC i, SArray1dReal val)
-        SetRow(SArray2dReal self, IndexC i, double const & val)
+        SetRow(self, i, val)
+        SetRow(self, i, val)
         """
         return _Ravl.SArray2dReal_SetRow(self, *args)
 
     def SetSubArray(self, *args):
-        """SetSubArray(SArray2dReal self, Index2dC origin, SArray2dReal vals)"""
+        """SetSubArray(self, origin, vals)"""
         return _Ravl.SArray2dReal_SetSubArray(self, *args)
 
     def Hash(self):
-        """Hash(SArray2dReal self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.SArray2dReal_Hash(self)
 
     def __str__(self):
-        """__str__(SArray2dReal self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.SArray2dReal___str__(self)
 
     __swig_destroy__ = _Ravl.delete_SArray2dReal
@@ -4050,7 +4048,7 @@ SArray2dReal_swigregister = _Ravl.SArray2dReal_swigregister
 SArray2dReal_swigregister(SArray2dReal)
 
 def SArray2dReal_ConstructAligned(*args):
-  """SArray2dReal_ConstructAligned(RavlN::SizeT const dim1, RavlN::SizeT const dim2, RavlN::UIntT align) -> SArray2dReal"""
+  """SArray2dReal_ConstructAligned(dim1, dim2, align) -> SArray2dReal"""
   return _Ravl.SArray2dReal_ConstructAligned(*args)
 
 class TVectorReal(SArray1dReal):
@@ -4063,123 +4061,123 @@ class TVectorReal(SArray1dReal):
     __getattr__ = lambda self, name: _swig_getattr(self, TVectorReal, name)
     __repr__ = _swig_repr
     def Product(self):
-        """Product(TVectorReal self) -> double"""
+        """Product(self) -> double"""
         return _Ravl.TVectorReal_Product(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(TVectorReal self) -> double"""
+        """SumOfSqr(self) -> double"""
         return _Ravl.TVectorReal_SumOfSqr(self)
 
     def SumOfAbs(self):
-        """SumOfAbs(TVectorReal self) -> double"""
+        """SumOfAbs(self) -> double"""
         return _Ravl.TVectorReal_SumOfAbs(self)
 
     def MaxValue(self):
-        """MaxValue(TVectorReal self) -> double"""
+        """MaxValue(self) -> double"""
         return _Ravl.TVectorReal_MaxValue(self)
 
     def MaxMagnitude(self):
-        """MaxMagnitude(TVectorReal self) -> double"""
+        """MaxMagnitude(self) -> double"""
         return _Ravl.TVectorReal_MaxMagnitude(self)
 
     def MaxAbsValue(self):
-        """MaxAbsValue(TVectorReal self) -> double"""
+        """MaxAbsValue(self) -> double"""
         return _Ravl.TVectorReal_MaxAbsValue(self)
 
     def MinValue(self):
-        """MinValue(TVectorReal self) -> double"""
+        """MinValue(self) -> double"""
         return _Ravl.TVectorReal_MinValue(self)
 
     def MinAbsValue(self):
-        """MinAbsValue(TVectorReal self) -> double"""
+        """MinAbsValue(self) -> double"""
         return _Ravl.TVectorReal_MinAbsValue(self)
 
     def Reciprocal(self):
-        """Reciprocal(TVectorReal self) -> TVectorReal"""
+        """Reciprocal(self) -> TVectorReal"""
         return _Ravl.TVectorReal_Reciprocal(self)
 
     def Modulus(self):
-        """Modulus(TVectorReal self) -> double"""
+        """Modulus(self) -> double"""
         return _Ravl.TVectorReal_Modulus(self)
 
     def TMul(self, *args):
-        """TMul(TVectorReal self, TVectorReal b) -> double"""
+        """TMul(self, b) -> double"""
         return _Ravl.TVectorReal_TMul(self, *args)
 
     def Dot(self, *args):
-        """Dot(TVectorReal self, TVectorReal v) -> double"""
+        """Dot(self, v) -> double"""
         return _Ravl.TVectorReal_Dot(self, *args)
 
     def Dot2(self, *args):
-        """Dot2(TVectorReal self, TVectorReal v1, TVectorReal v2) -> double"""
+        """Dot2(self, v1, v2) -> double"""
         return _Ravl.TVectorReal_Dot2(self, *args)
 
     def ElemMul(self, *args):
-        """ElemMul(TVectorReal self, TVectorReal v2, TVectorReal result)"""
+        """ElemMul(self, v2, result)"""
         return _Ravl.TVectorReal_ElemMul(self, *args)
 
     def ElemSum(self, *args):
-        """ElemSum(TVectorReal self, TVectorReal v2, TVectorReal result)"""
+        """ElemSum(self, v2, result)"""
         return _Ravl.TVectorReal_ElemSum(self, *args)
 
     def ElemSubtract(self, *args):
-        """ElemSubtract(TVectorReal self, TVectorReal v2, TVectorReal result)"""
+        """ElemSubtract(self, v2, result)"""
         return _Ravl.TVectorReal_ElemSubtract(self, *args)
 
     def SetSmallToBeZero(self, *args):
-        """SetSmallToBeZero(TVectorReal self, double const & min) -> TVectorReal"""
+        """SetSmallToBeZero(self, min) -> TVectorReal"""
         return _Ravl.TVectorReal_SetSmallToBeZero(self, *args)
 
     def Unit(self):
-        """Unit(TVectorReal self) -> TVectorReal"""
+        """Unit(self) -> TVectorReal"""
         return _Ravl.TVectorReal_Unit(self)
 
     def MakeUnit(self):
-        """MakeUnit(TVectorReal self) -> TVectorReal"""
+        """MakeUnit(self) -> TVectorReal"""
         return _Ravl.TVectorReal_MakeUnit(self)
 
     def MulAdd(self, *args):
-        """MulAdd(TVectorReal self, TVectorReal i, double a) -> TVectorReal"""
+        """MulAdd(self, i, a) -> TVectorReal"""
         return _Ravl.TVectorReal_MulAdd(self, *args)
 
     def MaxValueDistance(self, *args):
-        """MaxValueDistance(TVectorReal self, TVectorReal i) -> double"""
+        """MaxValueDistance(self, i) -> double"""
         return _Ravl.TVectorReal_MaxValueDistance(self, *args)
 
     def CityBlockDistance(self, *args):
-        """CityBlockDistance(TVectorReal self, TVectorReal i) -> double"""
+        """CityBlockDistance(self, i) -> double"""
         return _Ravl.TVectorReal_CityBlockDistance(self, *args)
 
     def SqrEuclidDistance(self, *args):
-        """SqrEuclidDistance(TVectorReal self, TVectorReal i) -> double"""
+        """SqrEuclidDistance(self, i) -> double"""
         return _Ravl.TVectorReal_SqrEuclidDistance(self, *args)
 
     def EuclidDistance(self, *args):
-        """EuclidDistance(TVectorReal self, TVectorReal i) -> double"""
+        """EuclidDistance(self, i) -> double"""
         return _Ravl.TVectorReal_EuclidDistance(self, *args)
 
     def MaxIndex(self):
-        """MaxIndex(TVectorReal self) -> IndexC"""
+        """MaxIndex(self) -> IndexC"""
         return _Ravl.TVectorReal_MaxIndex(self)
 
     def MaxAbsIndex(self):
-        """MaxAbsIndex(TVectorReal self) -> IndexC"""
+        """MaxAbsIndex(self) -> IndexC"""
         return _Ravl.TVectorReal_MaxAbsIndex(self)
 
     def MinIndex(self):
-        """MinIndex(TVectorReal self) -> IndexC"""
+        """MinIndex(self) -> IndexC"""
         return _Ravl.TVectorReal_MinIndex(self)
 
     def MinAbsIndex(self):
-        """MinAbsIndex(TVectorReal self) -> IndexC"""
+        """MinAbsIndex(self) -> IndexC"""
         return _Ravl.TVectorReal_MinAbsIndex(self)
 
     def __str__(self):
-        """__str__(TVectorReal self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.TVectorReal___str__(self)
 
     def __init__(self): 
-        """__init__(RavlN::TVectorC<(RavlN::RealT)> self) -> TVectorReal"""
+        """__init__(self) -> TVectorReal"""
         this = _Ravl.new_TVectorReal()
         try: self.this.append(this)
         except: self.this = this
@@ -4198,123 +4196,123 @@ class TVectorFloat(SArray1dFloat):
     __getattr__ = lambda self, name: _swig_getattr(self, TVectorFloat, name)
     __repr__ = _swig_repr
     def Product(self):
-        """Product(TVectorFloat self) -> float"""
+        """Product(self) -> float"""
         return _Ravl.TVectorFloat_Product(self)
 
     def SumOfSqr(self):
-        """SumOfSqr(TVectorFloat self) -> float"""
+        """SumOfSqr(self) -> float"""
         return _Ravl.TVectorFloat_SumOfSqr(self)
 
     def SumOfAbs(self):
-        """SumOfAbs(TVectorFloat self) -> float"""
+        """SumOfAbs(self) -> float"""
         return _Ravl.TVectorFloat_SumOfAbs(self)
 
     def MaxValue(self):
-        """MaxValue(TVectorFloat self) -> float"""
+        """MaxValue(self) -> float"""
         return _Ravl.TVectorFloat_MaxValue(self)
 
     def MaxMagnitude(self):
-        """MaxMagnitude(TVectorFloat self) -> float"""
+        """MaxMagnitude(self) -> float"""
         return _Ravl.TVectorFloat_MaxMagnitude(self)
 
     def MaxAbsValue(self):
-        """MaxAbsValue(TVectorFloat self) -> float"""
+        """MaxAbsValue(self) -> float"""
         return _Ravl.TVectorFloat_MaxAbsValue(self)
 
     def MinValue(self):
-        """MinValue(TVectorFloat self) -> float"""
+        """MinValue(self) -> float"""
         return _Ravl.TVectorFloat_MinValue(self)
 
     def MinAbsValue(self):
-        """MinAbsValue(TVectorFloat self) -> float"""
+        """MinAbsValue(self) -> float"""
         return _Ravl.TVectorFloat_MinAbsValue(self)
 
     def Reciprocal(self):
-        """Reciprocal(TVectorFloat self) -> TVectorFloat"""
+        """Reciprocal(self) -> TVectorFloat"""
         return _Ravl.TVectorFloat_Reciprocal(self)
 
     def Modulus(self):
-        """Modulus(TVectorFloat self) -> float"""
+        """Modulus(self) -> float"""
         return _Ravl.TVectorFloat_Modulus(self)
 
     def TMul(self, *args):
-        """TMul(TVectorFloat self, TVectorFloat b) -> float"""
+        """TMul(self, b) -> float"""
         return _Ravl.TVectorFloat_TMul(self, *args)
 
     def Dot(self, *args):
-        """Dot(TVectorFloat self, TVectorFloat v) -> float"""
+        """Dot(self, v) -> float"""
         return _Ravl.TVectorFloat_Dot(self, *args)
 
     def Dot2(self, *args):
-        """Dot2(TVectorFloat self, TVectorFloat v1, TVectorFloat v2) -> float"""
+        """Dot2(self, v1, v2) -> float"""
         return _Ravl.TVectorFloat_Dot2(self, *args)
 
     def ElemMul(self, *args):
-        """ElemMul(TVectorFloat self, TVectorFloat v2, TVectorFloat result)"""
+        """ElemMul(self, v2, result)"""
         return _Ravl.TVectorFloat_ElemMul(self, *args)
 
     def ElemSum(self, *args):
-        """ElemSum(TVectorFloat self, TVectorFloat v2, TVectorFloat result)"""
+        """ElemSum(self, v2, result)"""
         return _Ravl.TVectorFloat_ElemSum(self, *args)
 
     def ElemSubtract(self, *args):
-        """ElemSubtract(TVectorFloat self, TVectorFloat v2, TVectorFloat result)"""
+        """ElemSubtract(self, v2, result)"""
         return _Ravl.TVectorFloat_ElemSubtract(self, *args)
 
     def SetSmallToBeZero(self, *args):
-        """SetSmallToBeZero(TVectorFloat self, float const & min) -> TVectorFloat"""
+        """SetSmallToBeZero(self, min) -> TVectorFloat"""
         return _Ravl.TVectorFloat_SetSmallToBeZero(self, *args)
 
     def Unit(self):
-        """Unit(TVectorFloat self) -> TVectorFloat"""
+        """Unit(self) -> TVectorFloat"""
         return _Ravl.TVectorFloat_Unit(self)
 
     def MakeUnit(self):
-        """MakeUnit(TVectorFloat self) -> TVectorFloat"""
+        """MakeUnit(self) -> TVectorFloat"""
         return _Ravl.TVectorFloat_MakeUnit(self)
 
     def MulAdd(self, *args):
-        """MulAdd(TVectorFloat self, TVectorFloat i, float a) -> TVectorFloat"""
+        """MulAdd(self, i, a) -> TVectorFloat"""
         return _Ravl.TVectorFloat_MulAdd(self, *args)
 
     def MaxValueDistance(self, *args):
-        """MaxValueDistance(TVectorFloat self, TVectorFloat i) -> float"""
+        """MaxValueDistance(self, i) -> float"""
         return _Ravl.TVectorFloat_MaxValueDistance(self, *args)
 
     def CityBlockDistance(self, *args):
-        """CityBlockDistance(TVectorFloat self, TVectorFloat i) -> float"""
+        """CityBlockDistance(self, i) -> float"""
         return _Ravl.TVectorFloat_CityBlockDistance(self, *args)
 
     def SqrEuclidDistance(self, *args):
-        """SqrEuclidDistance(TVectorFloat self, TVectorFloat i) -> float"""
+        """SqrEuclidDistance(self, i) -> float"""
         return _Ravl.TVectorFloat_SqrEuclidDistance(self, *args)
 
     def EuclidDistance(self, *args):
-        """EuclidDistance(TVectorFloat self, TVectorFloat i) -> float"""
+        """EuclidDistance(self, i) -> float"""
         return _Ravl.TVectorFloat_EuclidDistance(self, *args)
 
     def MaxIndex(self):
-        """MaxIndex(TVectorFloat self) -> IndexC"""
+        """MaxIndex(self) -> IndexC"""
         return _Ravl.TVectorFloat_MaxIndex(self)
 
     def MaxAbsIndex(self):
-        """MaxAbsIndex(TVectorFloat self) -> IndexC"""
+        """MaxAbsIndex(self) -> IndexC"""
         return _Ravl.TVectorFloat_MaxAbsIndex(self)
 
     def MinIndex(self):
-        """MinIndex(TVectorFloat self) -> IndexC"""
+        """MinIndex(self) -> IndexC"""
         return _Ravl.TVectorFloat_MinIndex(self)
 
     def MinAbsIndex(self):
-        """MinAbsIndex(TVectorFloat self) -> IndexC"""
+        """MinAbsIndex(self) -> IndexC"""
         return _Ravl.TVectorFloat_MinAbsIndex(self)
 
     def __str__(self):
-        """__str__(TVectorFloat self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.TVectorFloat___str__(self)
 
     def __init__(self): 
-        """__init__(RavlN::TVectorC<(RavlN::FloatT)> self) -> TVectorFloat"""
+        """__init__(self) -> TVectorFloat"""
         this = _Ravl.new_TVectorFloat()
         try: self.this.append(this)
         except: self.this = this
@@ -4333,191 +4331,190 @@ class VectorC(TVectorReal):
     __getattr__ = lambda self, name: _swig_getattr(self, VectorC, name)
     __repr__ = _swig_repr
     def ConstructAligned(*args):
-        """ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> VectorC"""
+        """ConstructAligned(dim, align) -> VectorC"""
         return _Ravl.VectorC_ConstructAligned(*args)
 
     if _newclass:ConstructAligned = staticmethod(ConstructAligned)
     __swig_getmethods__["ConstructAligned"] = lambda x: ConstructAligned
     def __init__(self, *args): 
         """
-        __init__(RavlN::VectorC self) -> VectorC
-        __init__(RavlN::VectorC self, RavlN::SizeT size) -> VectorC
-        __init__(RavlN::VectorC self, SArray1dReal oth) -> VectorC
-        __init__(RavlN::VectorC self, TVectorReal oth) -> VectorC
-        __init__(RavlN::VectorC self, SArray1dFloat oth) -> VectorC
-        __init__(RavlN::VectorC self, RavlN::RealT v1, RavlN::RealT v2) -> VectorC
-        __init__(RavlN::VectorC self, RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3) -> VectorC
-        __init__(RavlN::VectorC self, RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4) -> VectorC
-        __init__(RavlN::VectorC self, RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4, RavlN::RealT v5) -> VectorC
-        __init__(RavlN::VectorC self, RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4, RavlN::RealT v5, 
-            RavlN::RealT v6) -> VectorC
+        __init__(self) -> VectorC
+        __init__(self, size) -> VectorC
+        __init__(self, oth) -> VectorC
+        __init__(self, oth) -> VectorC
+        __init__(self, oth) -> VectorC
+        __init__(self, v1, v2) -> VectorC
+        __init__(self, v1, v2, v3) -> VectorC
+        __init__(self, v1, v2, v3, v4) -> VectorC
+        __init__(self, v1, v2, v3, v4, v5) -> VectorC
+        __init__(self, v1, v2, v3, v4, v5, v6) -> VectorC
         """
         this = _Ravl.new_VectorC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsReal(self):
-        """IsReal(VectorC self) -> bool"""
+        """IsReal(self) -> bool"""
         return _Ravl.VectorC_IsReal(self)
 
     def __mul__(self, *args):
         """
-        __mul__(VectorC self, VectorC arr) -> VectorC
-        __mul__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __mul__(self, arr) -> VectorC
+        __mul__(self, number) -> VectorC
         """
         return _Ravl.VectorC___mul__(self, *args)
 
     def __div__(self, *args):
         """
-        __div__(VectorC self, VectorC arr) -> VectorC
-        __div__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __div__(self, arr) -> VectorC
+        __div__(self, number) -> VectorC
         """
         return _Ravl.VectorC___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(VectorC self, VectorC arr) -> VectorC
-        __add__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __add__(self, arr) -> VectorC
+        __add__(self, number) -> VectorC
         """
         return _Ravl.VectorC___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(VectorC self, VectorC arr) -> VectorC
-        __sub__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __sub__(self, arr) -> VectorC
+        __sub__(self, number) -> VectorC
         """
         return _Ravl.VectorC___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(VectorC self, VectorC arr) -> VectorC
-        __iadd__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __iadd__(self, arr) -> VectorC
+        __iadd__(self, number) -> VectorC
         """
         return _Ravl.VectorC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(VectorC self, VectorC arr) -> VectorC
-        __isub__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __isub__(self, arr) -> VectorC
+        __isub__(self, number) -> VectorC
         """
         return _Ravl.VectorC___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(VectorC self, VectorC arr) -> VectorC
-        __imul__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __imul__(self, arr) -> VectorC
+        __imul__(self, number) -> VectorC
         """
         return _Ravl.VectorC___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(VectorC self, VectorC arr) -> VectorC
-        __idiv__(VectorC self, RavlN::RealT const & number) -> VectorC
+        __idiv__(self, arr) -> VectorC
+        __idiv__(self, number) -> VectorC
         """
         return _Ravl.VectorC___idiv__(self, *args)
 
     def Join(self, *args):
         """
-        Join(VectorC self, VectorC Oth) -> VectorC
-        Join(VectorC self, RavlN::RealT const & Oth) -> VectorC
+        Join(self, Oth) -> VectorC
+        Join(self, Oth) -> VectorC
         """
         return _Ravl.VectorC_Join(self, *args)
 
     def Append(self, *args):
         """
-        Append(VectorC self, VectorC a) -> VectorC
-        Append(VectorC self, RavlN::RealT const & a) -> VectorC
+        Append(self, a) -> VectorC
+        Append(self, a) -> VectorC
         """
         return _Ravl.VectorC_Append(self, *args)
 
     def From(self, *args):
         """
-        From(VectorC self, RavlN::UIntT offset) -> VectorC
-        From(VectorC self, RavlN::UIntT offset, RavlN::UIntT size) -> VectorC
+        From(self, offset) -> VectorC
+        From(self, offset, size) -> VectorC
         """
         return _Ravl.VectorC_From(self, *args)
 
     def After(self, *args):
-        """After(VectorC self, RavlN::UIntT offset) -> VectorC"""
+        """After(self, offset) -> VectorC"""
         return _Ravl.VectorC_After(self, *args)
 
     def Before(self, *args):
-        """Before(VectorC self, RavlN::UIntT offset) -> VectorC"""
+        """Before(self, offset) -> VectorC"""
         return _Ravl.VectorC_Before(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(VectorC self, VectorC vv) -> bool"""
+        """__eq__(self, vv) -> bool"""
         return _Ravl.VectorC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(VectorC self, VectorC vv) -> bool"""
+        """__ne__(self, vv) -> bool"""
         return _Ravl.VectorC___ne__(self, *args)
 
     def Reciprocal(self):
-        """Reciprocal(VectorC self) -> VectorC"""
+        """Reciprocal(self) -> VectorC"""
         return _Ravl.VectorC_Reciprocal(self)
 
     def TMul(self, *args):
-        """TMul(VectorC self, VectorC b) -> RavlN::RealT"""
+        """TMul(self, b) -> RavlN::RealT"""
         return _Ravl.VectorC_TMul(self, *args)
 
     def Dot(self, *args):
-        """Dot(VectorC self, VectorC v) -> RavlN::RealT"""
+        """Dot(self, v) -> RavlN::RealT"""
         return _Ravl.VectorC_Dot(self, *args)
 
     def Dot2(self, *args):
-        """Dot2(VectorC self, VectorC v1, VectorC v2) -> RavlN::RealT"""
+        """Dot2(self, v1, v2) -> RavlN::RealT"""
         return _Ravl.VectorC_Dot2(self, *args)
 
     def ElemMul(self, *args):
-        """ElemMul(VectorC self, VectorC v2, VectorC result)"""
+        """ElemMul(self, v2, result)"""
         return _Ravl.VectorC_ElemMul(self, *args)
 
     def ElemSum(self, *args):
-        """ElemSum(VectorC self, VectorC v2, VectorC result)"""
+        """ElemSum(self, v2, result)"""
         return _Ravl.VectorC_ElemSum(self, *args)
 
     def ElemSubtract(self, *args):
-        """ElemSubtract(VectorC self, VectorC v2, VectorC result)"""
+        """ElemSubtract(self, v2, result)"""
         return _Ravl.VectorC_ElemSubtract(self, *args)
 
     def SetSmallToBeZero(self, *args):
-        """SetSmallToBeZero(VectorC self, RavlN::RealT const & min) -> VectorC"""
+        """SetSmallToBeZero(self, min) -> VectorC"""
         return _Ravl.VectorC_SetSmallToBeZero(self, *args)
 
     def OuterProduct(self, *args):
         """
-        OuterProduct(VectorC self, VectorC a) -> MatrixC
-        OuterProduct(VectorC self, VectorC a, RavlN::RealT b) -> MatrixC
-        OuterProduct(VectorC self) -> MatrixC
+        OuterProduct(self, a) -> MatrixC
+        OuterProduct(self, a, b) -> MatrixC
+        OuterProduct(self) -> MatrixC
         """
         return _Ravl.VectorC_OuterProduct(self, *args)
 
     def Unit(self):
-        """Unit(VectorC self) -> VectorC"""
+        """Unit(self) -> VectorC"""
         return _Ravl.VectorC_Unit(self)
 
     def MakeUnit(self):
-        """MakeUnit(VectorC self) -> VectorC"""
+        """MakeUnit(self) -> VectorC"""
         return _Ravl.VectorC_MakeUnit(self)
 
     def MulAdd(self, *args):
-        """MulAdd(VectorC self, VectorC i, RavlN::RealT a) -> VectorC"""
+        """MulAdd(self, i, a) -> VectorC"""
         return _Ravl.VectorC_MulAdd(self, *args)
 
     def MaxValueDistance(self, *args):
-        """MaxValueDistance(VectorC self, VectorC i) -> RavlN::RealT"""
+        """MaxValueDistance(self, i) -> RavlN::RealT"""
         return _Ravl.VectorC_MaxValueDistance(self, *args)
 
     def CityBlockDistance(self, *args):
-        """CityBlockDistance(VectorC self, VectorC i) -> RavlN::RealT"""
+        """CityBlockDistance(self, i) -> RavlN::RealT"""
         return _Ravl.VectorC_CityBlockDistance(self, *args)
 
     def SqrEuclidDistance(self, *args):
-        """SqrEuclidDistance(VectorC self, VectorC i) -> RavlN::RealT"""
+        """SqrEuclidDistance(self, i) -> RavlN::RealT"""
         return _Ravl.VectorC_SqrEuclidDistance(self, *args)
 
     def EuclidDistance(self, *args):
-        """EuclidDistance(VectorC self, VectorC i) -> RavlN::RealT"""
+        """EuclidDistance(self, i) -> RavlN::RealT"""
         return _Ravl.VectorC_EuclidDistance(self, *args)
 
     __swig_destroy__ = _Ravl.delete_VectorC
@@ -4526,39 +4523,39 @@ VectorC_swigregister = _Ravl.VectorC_swigregister
 VectorC_swigregister(VectorC)
 
 def VectorC_ConstructAligned(*args):
-  """VectorC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> VectorC"""
+  """VectorC_ConstructAligned(dim, align) -> VectorC"""
   return _Ravl.VectorC_ConstructAligned(*args)
 
 
 def RandomVector(*args):
   """
-    RandomVector(int n, RavlN::RealT scale=1.0) -> VectorC
-    RandomVector(int n) -> VectorC
+    RandomVector(n, scale=1.0) -> VectorC
+    RandomVector(n) -> VectorC
     """
   return _Ravl.RandomVector(*args)
 
 def SetZero(*args):
-  """SetZero(VectorC vec)"""
+  """SetZero(vec)"""
   return _Ravl.SetZero(*args)
 
 def Sigmoid(*args):
-  """Sigmoid(VectorC z) -> VectorC"""
+  """Sigmoid(z) -> VectorC"""
   return _Ravl.Sigmoid(*args)
 
 def SigmoidIP(*args):
-  """SigmoidIP(VectorC z)"""
+  """SigmoidIP(z)"""
   return _Ravl.SigmoidIP(*args)
 
 def Log(*args):
-  """Log(VectorC z) -> VectorC"""
+  """Log(z) -> VectorC"""
   return _Ravl.Log(*args)
 
 def LogIP(*args):
-  """LogIP(VectorC z)"""
+  """LogIP(z)"""
   return _Ravl.LogIP(*args)
 
 def Exp(*args):
-  """Exp(VectorC z) -> VectorC"""
+  """Exp(z) -> VectorC"""
   return _Ravl.Exp(*args)
 class TMatrixReal(SArray2dReal):
     """Proxy of C++ RavlN::TMatrixC<(RavlN::RealT)> class"""
@@ -4571,101 +4568,100 @@ class TMatrixReal(SArray2dReal):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, SArray2dReal oth) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, TVectorReal vec) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols, double const * data) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols, double * data, bool useCopy, bool manageMemory=False) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols, double * data, bool useCopy) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols, double const & data) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols, SArray1dReal data, RavlN::SizeT stride=0) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, RavlN::SizeT rows, RavlN::SizeT cols, SArray1dReal data) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, double v1, double v2, double v3, double v4) -> TMatrixReal
-        __init__(RavlN::TMatrixC<(RavlN::RealT)> self, double v1, double v2, double v3, double v4, double v5, double v6, double v7, double v8, 
-            double v9) -> TMatrixReal
+        __init__(self) -> TMatrixReal
+        __init__(self, oth) -> TMatrixReal
+        __init__(self, vec) -> TMatrixReal
+        __init__(self, rows, cols) -> TMatrixReal
+        __init__(self, rows, cols, data) -> TMatrixReal
+        __init__(self, rows, cols, data, useCopy, manageMemory=False) -> TMatrixReal
+        __init__(self, rows, cols, data, useCopy) -> TMatrixReal
+        __init__(self, rows, cols, data) -> TMatrixReal
+        __init__(self, rows, cols, data, stride=0) -> TMatrixReal
+        __init__(self, rows, cols, data) -> TMatrixReal
+        __init__(self, v1, v2, v3, v4) -> TMatrixReal
+        __init__(self, v1, v2, v3, v4, v5, v6, v7, v8, v9) -> TMatrixReal
         """
         this = _Ravl.new_TMatrixReal(*args)
         try: self.this.append(this)
         except: self.this = this
     def Rows(self):
-        """Rows(TMatrixReal self) -> RavlN::SizeT"""
+        """Rows(self) -> RavlN::SizeT"""
         return _Ravl.TMatrixReal_Rows(self)
 
     def Cols(self):
-        """Cols(TMatrixReal self) -> RavlN::SizeT"""
+        """Cols(self) -> RavlN::SizeT"""
         return _Ravl.TMatrixReal_Cols(self)
 
     def __mul__(self, *args):
         """
-        __mul__(TMatrixReal self, double val) -> TMatrixReal
-        __mul__(TMatrixReal self, TVectorReal vector) -> TVectorReal
-        __mul__(TMatrixReal self, TMatrixReal mat) -> TMatrixReal
+        __mul__(self, val) -> TMatrixReal
+        __mul__(self, vector) -> TVectorReal
+        __mul__(self, mat) -> TMatrixReal
         """
         return _Ravl.TMatrixReal___mul__(self, *args)
 
     def MulT(self, *args):
-        """MulT(TMatrixReal self, TMatrixReal B) -> TMatrixReal"""
+        """MulT(self, B) -> TMatrixReal"""
         return _Ravl.TMatrixReal_MulT(self, *args)
 
     def TMul(self, *args):
         """
-        TMul(TMatrixReal self, TMatrixReal B) -> TMatrixReal
-        TMul(TMatrixReal self, TVectorReal vec) -> TVectorReal
+        TMul(self, B) -> TMatrixReal
+        TMul(self, vec) -> TVectorReal
         """
         return _Ravl.TMatrixReal_TMul(self, *args)
 
     def AAT(self):
-        """AAT(TMatrixReal self) -> TMatrixReal"""
+        """AAT(self) -> TMatrixReal"""
         return _Ravl.TMatrixReal_AAT(self)
 
     def ATA(self):
-        """ATA(TMatrixReal self) -> TMatrixReal"""
+        """ATA(self) -> TMatrixReal"""
         return _Ravl.TMatrixReal_ATA(self)
 
     def T(self):
-        """T(TMatrixReal self) -> TMatrixReal"""
+        """T(self) -> TMatrixReal"""
         return _Ravl.TMatrixReal_T(self)
 
     def Identity(*args):
-        """Identity(RavlN::UIntT n) -> TMatrixReal"""
+        """Identity(n) -> TMatrixReal"""
         return _Ravl.TMatrixReal_Identity(*args)
 
     if _newclass:Identity = staticmethod(Identity)
     __swig_getmethods__["Identity"] = lambda x: Identity
     def SetDiagonal(self, *args):
-        """SetDiagonal(TMatrixReal self, TVectorReal d) -> TMatrixReal"""
+        """SetDiagonal(self, d) -> TMatrixReal"""
         return _Ravl.TMatrixReal_SetDiagonal(self, *args)
 
     def AddDiagonal(self, *args):
-        """AddDiagonal(TMatrixReal self, TVectorReal d) -> TMatrixReal"""
+        """AddDiagonal(self, d) -> TMatrixReal"""
         return _Ravl.TMatrixReal_AddDiagonal(self, *args)
 
     def SubMatrix(self, *args):
-        """SubMatrix(TMatrixReal self, RavlN::SizeT size1, RavlN::SizeT size2) -> TMatrixReal"""
+        """SubMatrix(self, size1, size2) -> TMatrixReal"""
         return _Ravl.TMatrixReal_SubMatrix(self, *args)
 
     def SumOfAbs(self):
-        """SumOfAbs(TMatrixReal self) -> double"""
+        """SumOfAbs(self) -> double"""
         return _Ravl.TMatrixReal_SumOfAbs(self)
 
     def AddOuterProduct(self, *args):
         """
-        AddOuterProduct(TMatrixReal self, TVectorReal vec1, TVectorReal vec2) -> TMatrixReal
-        AddOuterProduct(TMatrixReal self, TVectorReal vec1, TVectorReal vec2, double const & a) -> TMatrixReal
+        AddOuterProduct(self, vec1, vec2) -> TMatrixReal
+        AddOuterProduct(self, vec1, vec2, a) -> TMatrixReal
         """
         return _Ravl.TMatrixReal_AddOuterProduct(self, *args)
 
     def SetSmallToBeZero(self, *args):
-        """SetSmallToBeZero(TMatrixReal self, double const & min) -> TMatrixReal"""
+        """SetSmallToBeZero(self, min) -> TMatrixReal"""
         return _Ravl.TMatrixReal_SetSmallToBeZero(self, *args)
 
     def MulAdd(self, *args):
-        """MulAdd(TMatrixReal self, TMatrixReal i, double a) -> TMatrixReal"""
+        """MulAdd(self, i, a) -> TMatrixReal"""
         return _Ravl.TMatrixReal_MulAdd(self, *args)
 
     def SwapRows(self, *args):
-        """SwapRows(TMatrixReal self, int i, int j)"""
+        """SwapRows(self, i, j)"""
         return _Ravl.TMatrixReal_SwapRows(self, *args)
 
     __swig_destroy__ = _Ravl.delete_TMatrixReal
@@ -4674,7 +4670,7 @@ TMatrixReal_swigregister = _Ravl.TMatrixReal_swigregister
 TMatrixReal_swigregister(TMatrixReal)
 
 def TMatrixReal_Identity(*args):
-  """TMatrixReal_Identity(RavlN::UIntT n) -> TMatrixReal"""
+  """TMatrixReal_Identity(n) -> TMatrixReal"""
   return _Ravl.TMatrixReal_Identity(*args)
 
 class TMatrixFloat(SArray2dFloat):
@@ -4688,100 +4684,100 @@ class TMatrixFloat(SArray2dFloat):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, SArray2dFloat oth) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, TVectorFloat vec) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols, float const * data) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols, float * data, bool useCopy, bool manageMemory=False) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols, float * data, bool useCopy) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols, float const & data) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols, SArray1dFloat data, RavlN::SizeT stride=0) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, RavlN::SizeT rows, RavlN::SizeT cols, SArray1dFloat data) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, float v1, float v2, float v3, float v4) -> TMatrixFloat
-        __init__(RavlN::TMatrixC<(RavlN::FloatT)> self, float v1, float v2, float v3, float v4, float v5, float v6, float v7, float v8, float v9) -> TMatrixFloat
+        __init__(self) -> TMatrixFloat
+        __init__(self, oth) -> TMatrixFloat
+        __init__(self, vec) -> TMatrixFloat
+        __init__(self, rows, cols) -> TMatrixFloat
+        __init__(self, rows, cols, data) -> TMatrixFloat
+        __init__(self, rows, cols, data, useCopy, manageMemory=False) -> TMatrixFloat
+        __init__(self, rows, cols, data, useCopy) -> TMatrixFloat
+        __init__(self, rows, cols, data) -> TMatrixFloat
+        __init__(self, rows, cols, data, stride=0) -> TMatrixFloat
+        __init__(self, rows, cols, data) -> TMatrixFloat
+        __init__(self, v1, v2, v3, v4) -> TMatrixFloat
+        __init__(self, v1, v2, v3, v4, v5, v6, v7, v8, v9) -> TMatrixFloat
         """
         this = _Ravl.new_TMatrixFloat(*args)
         try: self.this.append(this)
         except: self.this = this
     def Rows(self):
-        """Rows(TMatrixFloat self) -> RavlN::SizeT"""
+        """Rows(self) -> RavlN::SizeT"""
         return _Ravl.TMatrixFloat_Rows(self)
 
     def Cols(self):
-        """Cols(TMatrixFloat self) -> RavlN::SizeT"""
+        """Cols(self) -> RavlN::SizeT"""
         return _Ravl.TMatrixFloat_Cols(self)
 
     def __mul__(self, *args):
         """
-        __mul__(TMatrixFloat self, float val) -> TMatrixFloat
-        __mul__(TMatrixFloat self, TVectorFloat vector) -> TVectorFloat
-        __mul__(TMatrixFloat self, TMatrixFloat mat) -> TMatrixFloat
+        __mul__(self, val) -> TMatrixFloat
+        __mul__(self, vector) -> TVectorFloat
+        __mul__(self, mat) -> TMatrixFloat
         """
         return _Ravl.TMatrixFloat___mul__(self, *args)
 
     def MulT(self, *args):
-        """MulT(TMatrixFloat self, TMatrixFloat B) -> TMatrixFloat"""
+        """MulT(self, B) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_MulT(self, *args)
 
     def TMul(self, *args):
         """
-        TMul(TMatrixFloat self, TMatrixFloat B) -> TMatrixFloat
-        TMul(TMatrixFloat self, TVectorFloat vec) -> TVectorFloat
+        TMul(self, B) -> TMatrixFloat
+        TMul(self, vec) -> TVectorFloat
         """
         return _Ravl.TMatrixFloat_TMul(self, *args)
 
     def AAT(self):
-        """AAT(TMatrixFloat self) -> TMatrixFloat"""
+        """AAT(self) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_AAT(self)
 
     def ATA(self):
-        """ATA(TMatrixFloat self) -> TMatrixFloat"""
+        """ATA(self) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_ATA(self)
 
     def T(self):
-        """T(TMatrixFloat self) -> TMatrixFloat"""
+        """T(self) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_T(self)
 
     def Identity(*args):
-        """Identity(RavlN::UIntT n) -> TMatrixFloat"""
+        """Identity(n) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_Identity(*args)
 
     if _newclass:Identity = staticmethod(Identity)
     __swig_getmethods__["Identity"] = lambda x: Identity
     def SetDiagonal(self, *args):
-        """SetDiagonal(TMatrixFloat self, TVectorFloat d) -> TMatrixFloat"""
+        """SetDiagonal(self, d) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_SetDiagonal(self, *args)
 
     def AddDiagonal(self, *args):
-        """AddDiagonal(TMatrixFloat self, TVectorFloat d) -> TMatrixFloat"""
+        """AddDiagonal(self, d) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_AddDiagonal(self, *args)
 
     def SubMatrix(self, *args):
-        """SubMatrix(TMatrixFloat self, RavlN::SizeT size1, RavlN::SizeT size2) -> TMatrixFloat"""
+        """SubMatrix(self, size1, size2) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_SubMatrix(self, *args)
 
     def SumOfAbs(self):
-        """SumOfAbs(TMatrixFloat self) -> float"""
+        """SumOfAbs(self) -> float"""
         return _Ravl.TMatrixFloat_SumOfAbs(self)
 
     def AddOuterProduct(self, *args):
         """
-        AddOuterProduct(TMatrixFloat self, TVectorFloat vec1, TVectorFloat vec2) -> TMatrixFloat
-        AddOuterProduct(TMatrixFloat self, TVectorFloat vec1, TVectorFloat vec2, float const & a) -> TMatrixFloat
+        AddOuterProduct(self, vec1, vec2) -> TMatrixFloat
+        AddOuterProduct(self, vec1, vec2, a) -> TMatrixFloat
         """
         return _Ravl.TMatrixFloat_AddOuterProduct(self, *args)
 
     def SetSmallToBeZero(self, *args):
-        """SetSmallToBeZero(TMatrixFloat self, float const & min) -> TMatrixFloat"""
+        """SetSmallToBeZero(self, min) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_SetSmallToBeZero(self, *args)
 
     def MulAdd(self, *args):
-        """MulAdd(TMatrixFloat self, TMatrixFloat i, float a) -> TMatrixFloat"""
+        """MulAdd(self, i, a) -> TMatrixFloat"""
         return _Ravl.TMatrixFloat_MulAdd(self, *args)
 
     def SwapRows(self, *args):
-        """SwapRows(TMatrixFloat self, int i, int j)"""
+        """SwapRows(self, i, j)"""
         return _Ravl.TMatrixFloat_SwapRows(self, *args)
 
     __swig_destroy__ = _Ravl.delete_TMatrixFloat
@@ -4790,7 +4786,7 @@ TMatrixFloat_swigregister = _Ravl.TMatrixFloat_swigregister
 TMatrixFloat_swigregister(TMatrixFloat)
 
 def TMatrixFloat_Identity(*args):
-  """TMatrixFloat_Identity(RavlN::UIntT n) -> TMatrixFloat"""
+  """TMatrixFloat_Identity(n) -> TMatrixFloat"""
   return _Ravl.TMatrixFloat_Identity(*args)
 
 class MatrixC(TMatrixReal):
@@ -4803,220 +4799,219 @@ class MatrixC(TMatrixReal):
     __getattr__ = lambda self, name: _swig_getattr(self, MatrixC, name)
     __repr__ = _swig_repr
     def IsReal(self):
-        """IsReal(MatrixC self) -> bool"""
+        """IsReal(self) -> bool"""
         return _Ravl.MatrixC_IsReal(self)
 
     def __init__(self, *args): 
         """
-        __init__(RavlN::MatrixC self) -> MatrixC
-        __init__(RavlN::MatrixC self, VectorC vec) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::UIntT rows, RavlN::UIntT cols) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::UIntT rows, RavlN::UIntT cols, RavlN::RealT const * data) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::UIntT rows, RavlN::UIntT cols, RavlN::RealT const & data) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::UIntT rows, RavlN::UIntT cols, VectorC data) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::SizeT rows, RavlN::SizeT cols, VectorC data) -> MatrixC
-        __init__(RavlN::MatrixC self, TMatrixReal oth) -> MatrixC
-        __init__(RavlN::MatrixC self, SArray2dReal oth) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4) -> MatrixC
-        __init__(RavlN::MatrixC self, RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4, RavlN::RealT v5, 
-            RavlN::RealT v6, RavlN::RealT v7, RavlN::RealT v8, RavlN::RealT v9) -> MatrixC
-        __init__(RavlN::MatrixC self, SArray2dFloat oth) -> MatrixC
+        __init__(self) -> MatrixC
+        __init__(self, vec) -> MatrixC
+        __init__(self, rows, cols) -> MatrixC
+        __init__(self, rows, cols, data) -> MatrixC
+        __init__(self, rows, cols, data) -> MatrixC
+        __init__(self, rows, cols, data) -> MatrixC
+        __init__(self, rows, cols, data) -> MatrixC
+        __init__(self, oth) -> MatrixC
+        __init__(self, oth) -> MatrixC
+        __init__(self, v1, v2, v3, v4) -> MatrixC
+        __init__(self, v1, v2, v3, v4, v5, v6, v7, v8, v9) -> MatrixC
+        __init__(self, oth) -> MatrixC
         """
         this = _Ravl.new_MatrixC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Inverse(self):
-        """Inverse(MatrixC self) -> MatrixC"""
+        """Inverse(self) -> MatrixC"""
         return _Ravl.MatrixC_Inverse(self)
 
     def InverseIP(self, *args):
         """
-        InverseIP(MatrixC self, RavlN::RealT & det) -> bool
-        InverseIP(MatrixC self) -> bool
+        InverseIP(self, det) -> bool
+        InverseIP(self) -> bool
         """
         return _Ravl.MatrixC_InverseIP(self, *args)
 
     def PseudoInverse(self, thresh=1e-5):
         """
-        PseudoInverse(MatrixC self, RavlN::RealT thresh=1e-5) -> MatrixC
-        PseudoInverse(MatrixC self) -> MatrixC
+        PseudoInverse(self, thresh=1e-5) -> MatrixC
+        PseudoInverse(self) -> MatrixC
         """
         return _Ravl.MatrixC_PseudoInverse(self, thresh)
 
     def Det(self):
-        """Det(MatrixC self) -> RavlN::RealT"""
+        """Det(self) -> RavlN::RealT"""
         return _Ravl.MatrixC_Det(self)
 
     def NormaliseRows(self):
-        """NormaliseRows(MatrixC self)"""
+        """NormaliseRows(self)"""
         return _Ravl.MatrixC_NormaliseRows(self)
 
     def NormaliseColumns(self):
-        """NormaliseColumns(MatrixC self)"""
+        """NormaliseColumns(self)"""
         return _Ravl.MatrixC_NormaliseColumns(self)
 
     def AsVector(self, alwaysCopy=False):
         """
-        AsVector(MatrixC self, bool alwaysCopy=False) -> VectorC
-        AsVector(MatrixC self) -> VectorC
+        AsVector(self, alwaysCopy=False) -> VectorC
+        AsVector(self) -> VectorC
         """
         return _Ravl.MatrixC_AsVector(self, alwaysCopy)
 
     def __div__(self, *args):
         """
-        __div__(MatrixC self, MatrixC arr) -> MatrixC
-        __div__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __div__(self, arr) -> MatrixC
+        __div__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___div__(self, *args)
 
     def __add__(self, *args):
         """
-        __add__(MatrixC self, MatrixC arr) -> MatrixC
-        __add__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __add__(self, arr) -> MatrixC
+        __add__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___add__(self, *args)
 
     def __sub__(self, *args):
         """
-        __sub__(MatrixC self, MatrixC arr) -> MatrixC
-        __sub__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __sub__(self, arr) -> MatrixC
+        __sub__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___sub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(MatrixC self, MatrixC arr) -> MatrixC
-        __iadd__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __iadd__(self, arr) -> MatrixC
+        __iadd__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(MatrixC self, MatrixC arr) -> MatrixC
-        __isub__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __isub__(self, arr) -> MatrixC
+        __isub__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___isub__(self, *args)
 
     def __imul__(self, *args):
         """
-        __imul__(MatrixC self, MatrixC arr) -> MatrixC
-        __imul__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __imul__(self, arr) -> MatrixC
+        __imul__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___imul__(self, *args)
 
     def __idiv__(self, *args):
         """
-        __idiv__(MatrixC self, MatrixC arr) -> MatrixC
-        __idiv__(MatrixC self, RavlN::RealT const & number) -> MatrixC
+        __idiv__(self, arr) -> MatrixC
+        __idiv__(self, number) -> MatrixC
         """
         return _Ravl.MatrixC___idiv__(self, *args)
 
     def __eq__(self, *args):
-        """__eq__(MatrixC self, MatrixC op) -> bool"""
+        """__eq__(self, op) -> bool"""
         return _Ravl.MatrixC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(MatrixC self, MatrixC op) -> bool"""
+        """__ne__(self, op) -> bool"""
         return _Ravl.MatrixC___ne__(self, *args)
 
     def SumOfSqr(self):
-        """SumOfSqr(MatrixC self) -> RavlN::RealT"""
+        """SumOfSqr(self) -> RavlN::RealT"""
         return _Ravl.MatrixC_SumOfSqr(self)
 
     def Sum(self):
-        """Sum(MatrixC self) -> RavlN::RealT"""
+        """Sum(self) -> RavlN::RealT"""
         return _Ravl.MatrixC_Sum(self)
 
     def SliceRow(self, *args):
-        """SliceRow(MatrixC self, IndexC i) -> VectorC"""
+        """SliceRow(self, i) -> VectorC"""
         return _Ravl.MatrixC_SliceRow(self, *args)
 
     def SetColumn(self, *args):
         """
-        SetColumn(MatrixC self, IndexC i, VectorC val)
-        SetColumn(MatrixC self, IndexC i, RavlN::RealT const & val)
+        SetColumn(self, i, val)
+        SetColumn(self, i, val)
         """
         return _Ravl.MatrixC_SetColumn(self, *args)
 
     def SetRow(self, *args):
         """
-        SetRow(MatrixC self, IndexC i, VectorC val)
-        SetRow(MatrixC self, IndexC i, RavlN::RealT const & val)
+        SetRow(self, i, val)
+        SetRow(self, i, val)
         """
         return _Ravl.MatrixC_SetRow(self, *args)
 
     def SetSubArray(self, *args):
-        """SetSubArray(MatrixC self, Index2dC origin, MatrixC vals)"""
+        """SetSubArray(self, origin, vals)"""
         return _Ravl.MatrixC_SetSubArray(self, *args)
 
     def Hash(self):
-        """Hash(MatrixC self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.MatrixC_Hash(self)
 
     def __mul__(self, *args):
         """
-        __mul__(MatrixC self, MatrixC arr) -> MatrixC
-        __mul__(MatrixC self, RavlN::RealT const & number) -> MatrixC
-        __mul__(MatrixC self, VectorC vector) -> VectorC
+        __mul__(self, arr) -> MatrixC
+        __mul__(self, number) -> MatrixC
+        __mul__(self, vector) -> VectorC
         """
         return _Ravl.MatrixC___mul__(self, *args)
 
     def MulT(self, *args):
-        """MulT(MatrixC self, MatrixC B) -> MatrixC"""
+        """MulT(self, B) -> MatrixC"""
         return _Ravl.MatrixC_MulT(self, *args)
 
     def TMul(self, *args):
         """
-        TMul(MatrixC self, MatrixC B) -> MatrixC
-        TMul(MatrixC self, VectorC vec) -> VectorC
+        TMul(self, B) -> MatrixC
+        TMul(self, vec) -> VectorC
         """
         return _Ravl.MatrixC_TMul(self, *args)
 
     def AAT(self):
-        """AAT(MatrixC self) -> MatrixC"""
+        """AAT(self) -> MatrixC"""
         return _Ravl.MatrixC_AAT(self)
 
     def ATA(self):
-        """ATA(MatrixC self) -> MatrixC"""
+        """ATA(self) -> MatrixC"""
         return _Ravl.MatrixC_ATA(self)
 
     def T(self):
-        """T(MatrixC self) -> MatrixC"""
+        """T(self) -> MatrixC"""
         return _Ravl.MatrixC_T(self)
 
     def Identity(*args):
-        """Identity(RavlN::UIntT n) -> MatrixC"""
+        """Identity(n) -> MatrixC"""
         return _Ravl.MatrixC_Identity(*args)
 
     if _newclass:Identity = staticmethod(Identity)
     __swig_getmethods__["Identity"] = lambda x: Identity
     def SetDiagonal(self, *args):
-        """SetDiagonal(MatrixC self, VectorC d) -> MatrixC"""
+        """SetDiagonal(self, d) -> MatrixC"""
         return _Ravl.MatrixC_SetDiagonal(self, *args)
 
     def AddDiagonal(self, *args):
-        """AddDiagonal(MatrixC self, VectorC d) -> MatrixC"""
+        """AddDiagonal(self, d) -> MatrixC"""
         return _Ravl.MatrixC_AddDiagonal(self, *args)
 
     def SubMatrix(self, *args):
-        """SubMatrix(MatrixC self, RavlN::SizeT size1, RavlN::SizeT size2) -> MatrixC"""
+        """SubMatrix(self, size1, size2) -> MatrixC"""
         return _Ravl.MatrixC_SubMatrix(self, *args)
 
     def AddOuterProduct(self, *args):
         """
-        AddOuterProduct(MatrixC self, TVectorFloat vec1, TVectorFloat vec2) -> TMatrixReal
-        AddOuterProduct(MatrixC self, TVectorFloat vec1, TVectorFloat vec2, float const & a) -> TMatrixReal
-        AddOuterProduct(MatrixC self, VectorC vec1, VectorC vec2) -> MatrixC
-        AddOuterProduct(MatrixC self, VectorC vec1, VectorC vec2, RavlN::RealT const & a) -> MatrixC
+        AddOuterProduct(self, vec1, vec2) -> TMatrixReal
+        AddOuterProduct(self, vec1, vec2, a) -> TMatrixReal
+        AddOuterProduct(self, vec1, vec2) -> MatrixC
+        AddOuterProduct(self, vec1, vec2, a) -> MatrixC
         """
         return _Ravl.MatrixC_AddOuterProduct(self, *args)
 
     def SetSmallToBeZero(self, *args):
-        """SetSmallToBeZero(MatrixC self, RavlN::RealT const & min) -> MatrixC"""
+        """SetSmallToBeZero(self, min) -> MatrixC"""
         return _Ravl.MatrixC_SetSmallToBeZero(self, *args)
 
     def MulAdd(self, *args):
-        """MulAdd(MatrixC self, MatrixC i, RavlN::RealT a) -> MatrixC"""
+        """MulAdd(self, i, a) -> MatrixC"""
         return _Ravl.MatrixC_MulAdd(self, *args)
 
     __swig_destroy__ = _Ravl.delete_MatrixC
@@ -5025,68 +5020,68 @@ MatrixC_swigregister = _Ravl.MatrixC_swigregister
 MatrixC_swigregister(MatrixC)
 
 def MatrixC_Identity(*args):
-  """MatrixC_Identity(RavlN::UIntT n) -> MatrixC"""
+  """MatrixC_Identity(n) -> MatrixC"""
   return _Ravl.MatrixC_Identity(*args)
 
 
 def SVD(*args):
   """
-    SVD(MatrixC M) -> VectorC
-    SVD(MatrixC M, MatrixC u, MatrixC v) -> VectorC
+    SVD(M) -> VectorC
+    SVD(M, u, v) -> VectorC
     """
   return _Ravl.SVD(*args)
 
 def SVD_IP(*args):
   """
-    SVD_IP(MatrixC M) -> VectorC
-    SVD_IP(MatrixC M, MatrixC u, MatrixC v) -> VectorC
+    SVD_IP(M) -> VectorC
+    SVD_IP(M, u, v) -> VectorC
     """
   return _Ravl.SVD_IP(*args)
 
 def EigenValues(*args):
-  """EigenValues(MatrixC M) -> VectorC"""
+  """EigenValues(M) -> VectorC"""
   return _Ravl.EigenValues(*args)
 
 def EigenValuesIP(*args):
-  """EigenValuesIP(MatrixC M) -> VectorC"""
+  """EigenValuesIP(M) -> VectorC"""
   return _Ravl.EigenValuesIP(*args)
 
 def FastEigenValues(*args):
-  """FastEigenValues(MatrixC M) -> VectorC"""
+  """FastEigenValues(M) -> VectorC"""
   return _Ravl.FastEigenValues(*args)
 
 def EigenVectors(*args):
-  """EigenVectors(MatrixC M, MatrixC E) -> VectorC"""
+  """EigenVectors(M, E) -> VectorC"""
   return _Ravl.EigenVectors(*args)
 
 def EigenVectorsIP(*args):
-  """EigenVectorsIP(MatrixC M) -> VectorC"""
+  """EigenVectorsIP(M) -> VectorC"""
   return _Ravl.EigenVectorsIP(*args)
 
 def FastEigenVectors(*args):
-  """FastEigenVectors(MatrixC M) -> VectorC"""
+  """FastEigenVectors(M) -> VectorC"""
   return _Ravl.FastEigenVectors(*args)
 
 def MaxEigenValue(*args):
-  """MaxEigenValue(MatrixC M, VectorC maxv) -> RavlN::RealT"""
+  """MaxEigenValue(M, maxv) -> RavlN::RealT"""
   return _Ravl.MaxEigenValue(*args)
 
 def RandomMatrix(*args):
   """
-    RandomMatrix(int n, int m, RavlN::RealT scale=1) -> MatrixC
-    RandomMatrix(int n, int m) -> MatrixC
+    RandomMatrix(n, m, scale=1) -> MatrixC
+    RandomMatrix(n, m) -> MatrixC
     """
   return _Ravl.RandomMatrix(*args)
 
 def RandomSymmetricMatrix(*args):
   """
-    RandomSymmetricMatrix(int n, RavlN::RealT scale=1) -> MatrixC
-    RandomSymmetricMatrix(int n) -> MatrixC
+    RandomSymmetricMatrix(n, scale=1) -> MatrixC
+    RandomSymmetricMatrix(n) -> MatrixC
     """
   return _Ravl.RandomSymmetricMatrix(*args)
 
 def RandomPositiveDefiniteMatrix(*args):
-  """RandomPositiveDefiniteMatrix(int n) -> MatrixC"""
+  """RandomPositiveDefiniteMatrix(n) -> MatrixC"""
   return _Ravl.RandomPositiveDefiniteMatrix(*args)
 class MatrixRUTC(MatrixC):
     """Proxy of C++ RavlN::MatrixRUTC class"""
@@ -5099,62 +5094,62 @@ class MatrixRUTC(MatrixC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::MatrixRUTC self) -> MatrixRUTC
-        __init__(RavlN::MatrixRUTC self, RavlN::SizeT size) -> MatrixRUTC
-        __init__(RavlN::MatrixRUTC self, MatrixC oth) -> MatrixRUTC
-        __init__(RavlN::MatrixRUTC self, SArray2dReal oth) -> MatrixRUTC
+        __init__(self) -> MatrixRUTC
+        __init__(self, size) -> MatrixRUTC
+        __init__(self, oth) -> MatrixRUTC
+        __init__(self, oth) -> MatrixRUTC
         """
         this = _Ravl.new_MatrixRUTC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Inverse(self):
-        """Inverse(MatrixRUTC self) -> MatrixRUTC"""
+        """Inverse(self) -> MatrixRUTC"""
         return _Ravl.MatrixRUTC_Inverse(self)
 
     def InverseIP(self):
-        """InverseIP(MatrixRUTC self) -> bool"""
+        """InverseIP(self) -> bool"""
         return _Ravl.MatrixRUTC_InverseIP(self)
 
     def AddOuterProduct(self, *args):
         """
-        AddOuterProduct(MatrixRUTC self, VectorC vec)
-        AddOuterProduct(MatrixRUTC self, VectorC vec, RavlN::RealT a)
+        AddOuterProduct(self, vec)
+        AddOuterProduct(self, vec, a)
         """
         return _Ravl.MatrixRUTC_AddOuterProduct(self, *args)
 
     def SubtractOuterProduct(self, *args):
         """
-        SubtractOuterProduct(MatrixRUTC self, VectorC vec)
-        SubtractOuterProduct(MatrixRUTC self, VectorC vec, RavlN::RealT a)
+        SubtractOuterProduct(self, vec)
+        SubtractOuterProduct(self, vec, a)
         """
         return _Ravl.MatrixRUTC_SubtractOuterProduct(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(MatrixRUTC self, MatrixRUTC mat) -> MatrixRUTC"""
+        """__iadd__(self, mat) -> MatrixRUTC"""
         return _Ravl.MatrixRUTC___iadd__(self, *args)
 
     def __isub__(self, *args):
-        """__isub__(MatrixRUTC self, MatrixRUTC mat) -> MatrixRUTC"""
+        """__isub__(self, mat) -> MatrixRUTC"""
         return _Ravl.MatrixRUTC___isub__(self, *args)
 
     def __imul__(self, *args):
-        """__imul__(MatrixRUTC self, RavlN::RealT val) -> MatrixRUTC"""
+        """__imul__(self, val) -> MatrixRUTC"""
         return _Ravl.MatrixRUTC___imul__(self, *args)
 
     def __idiv__(self, *args):
-        """__idiv__(MatrixRUTC self, RavlN::RealT val) -> MatrixRUTC"""
+        """__idiv__(self, val) -> MatrixRUTC"""
         return _Ravl.MatrixRUTC___idiv__(self, *args)
 
     def ZeroLowerLeft(self):
-        """ZeroLowerLeft(MatrixRUTC self)"""
+        """ZeroLowerLeft(self)"""
         return _Ravl.MatrixRUTC_ZeroLowerLeft(self)
 
     def MakeSymmetric(self):
-        """MakeSymmetric(MatrixRUTC self)"""
+        """MakeSymmetric(self)"""
         return _Ravl.MatrixRUTC_MakeSymmetric(self)
 
     def Det(self):
-        """Det(MatrixRUTC self) -> RavlN::RealT"""
+        """Det(self) -> RavlN::RealT"""
         return _Ravl.MatrixRUTC_Det(self)
 
     __swig_destroy__ = _Ravl.delete_MatrixRUTC
@@ -5165,24 +5160,24 @@ MatrixRUTC_swigregister(MatrixRUTC)
 
 def OuterProductRUT(*args):
   """
-    OuterProductRUT(VectorC vec) -> MatrixRUTC
-    OuterProductRUT(VectorC vec, RavlN::RealT a) -> MatrixRUTC
+    OuterProductRUT(vec) -> MatrixRUTC
+    OuterProductRUT(vec, a) -> MatrixRUTC
     """
   return _Ravl.OuterProductRUT(*args)
 
 def SolveIP(*args):
   """
-    SolveIP(MatrixC A, VectorC b) -> bool
-    SolveIP(MatrixC A, MatrixC B) -> bool
-    SolveIP(MatrixRUTC A, VectorC b) -> bool
+    SolveIP(A, b) -> bool
+    SolveIP(A, B) -> bool
+    SolveIP(A, b) -> bool
     """
   return _Ravl.SolveIP(*args)
 
 def Solve(*args):
   """
-    Solve(MatrixC A, VectorC b) -> VectorC
-    Solve(MatrixC A, MatrixC B) -> MatrixC
-    Solve(MatrixRUTC A, VectorC b) -> VectorC
+    Solve(A, b) -> VectorC
+    Solve(A, B) -> MatrixC
+    Solve(A, b) -> VectorC
     """
   return _Ravl.Solve(*args)
 class VectorMatrixC(_object):
@@ -5194,42 +5189,42 @@ class VectorMatrixC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::VectorMatrixC self) -> VectorMatrixC
-        __init__(RavlN::VectorMatrixC self, RavlN::UIntT const dim) -> VectorMatrixC
-        __init__(RavlN::VectorMatrixC self, VectorC vec, MatrixC mat) -> VectorMatrixC
-        __init__(RavlN::VectorMatrixC self, VectorMatrixC vm) -> VectorMatrixC
+        __init__(self) -> VectorMatrixC
+        __init__(self, dim) -> VectorMatrixC
+        __init__(self, vec, mat) -> VectorMatrixC
+        __init__(self, vm) -> VectorMatrixC
         """
         this = _Ravl.new_VectorMatrixC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Vector(self, *args):
         """
-        Vector(VectorMatrixC self) -> VectorC
-        Vector(VectorMatrixC self) -> VectorC
+        Vector(self) -> VectorC
+        Vector(self) -> VectorC
         """
         return _Ravl.VectorMatrixC_Vector(self, *args)
 
     def Matrix(self, *args):
         """
-        Matrix(VectorMatrixC self) -> MatrixC
-        Matrix(VectorMatrixC self) -> MatrixC
+        Matrix(self) -> MatrixC
+        Matrix(self) -> MatrixC
         """
         return _Ravl.VectorMatrixC_Matrix(self, *args)
 
     def Copy(self):
-        """Copy(VectorMatrixC self) -> VectorMatrixC"""
+        """Copy(self) -> VectorMatrixC"""
         return _Ravl.VectorMatrixC_Copy(self)
 
     def SetZero(self):
-        """SetZero(VectorMatrixC self)"""
+        """SetZero(self)"""
         return _Ravl.VectorMatrixC_SetZero(self)
 
     def Sort(self):
-        """Sort(VectorMatrixC self)"""
+        """Sort(self)"""
         return _Ravl.VectorMatrixC_Sort(self)
 
     def __str__(self):
-        """__str__(VectorMatrixC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.VectorMatrixC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_VectorMatrixC
@@ -5245,93 +5240,93 @@ class MeanCovarianceC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, MeanCovarianceC, name)
     __repr__ = _swig_repr
     def Copy(self):
-        """Copy(MeanCovarianceC self) -> MeanCovarianceC"""
+        """Copy(self) -> MeanCovarianceC"""
         return _Ravl.MeanCovarianceC_Copy(self)
 
     def __init__(self, *args): 
         """
-        __init__(RavlN::MeanCovarianceC self) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, MeanCovarianceC meanCov) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, RavlN::SizeT const n) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, unsigned int const n) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, VectorC point) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, RavlN::RealT n, VectorC mean, MatrixC ncov) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, SArray1dVectorC data, bool sampleStatistics=True) -> MeanCovarianceC
-        __init__(RavlN::MeanCovarianceC self, SArray1dVectorC data) -> MeanCovarianceC
+        __init__(self) -> MeanCovarianceC
+        __init__(self, meanCov) -> MeanCovarianceC
+        __init__(self, n) -> MeanCovarianceC
+        __init__(self, n) -> MeanCovarianceC
+        __init__(self, point) -> MeanCovarianceC
+        __init__(self, n, mean, ncov) -> MeanCovarianceC
+        __init__(self, data, sampleStatistics=True) -> MeanCovarianceC
+        __init__(self, data) -> MeanCovarianceC
         """
         this = _Ravl.new_MeanCovarianceC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Number(self):
-        """Number(MeanCovarianceC self) -> RavlN::RealT"""
+        """Number(self) -> RavlN::RealT"""
         return _Ravl.MeanCovarianceC_Number(self)
 
     def Mean(self, *args):
         """
-        Mean(MeanCovarianceC self) -> VectorC
-        Mean(MeanCovarianceC self) -> VectorC
+        Mean(self) -> VectorC
+        Mean(self) -> VectorC
         """
         return _Ravl.MeanCovarianceC_Mean(self, *args)
 
     def Covariance(self, *args):
         """
-        Covariance(MeanCovarianceC self) -> MatrixC
-        Covariance(MeanCovarianceC self) -> MatrixC
+        Covariance(self) -> MatrixC
+        Covariance(self) -> MatrixC
         """
         return _Ravl.MeanCovarianceC_Covariance(self, *args)
 
     def SetZero(self):
-        """SetZero(MeanCovarianceC self) -> MeanCovarianceC"""
+        """SetZero(self) -> MeanCovarianceC"""
         return _Ravl.MeanCovarianceC_SetZero(self)
 
     def __iadd__(self, *args):
         """
-        __iadd__(MeanCovarianceC self, VectorC point) -> MeanCovarianceC
-        __iadd__(MeanCovarianceC self, MeanCovarianceC meanCov) -> MeanCovarianceC
+        __iadd__(self, point) -> MeanCovarianceC
+        __iadd__(self, meanCov) -> MeanCovarianceC
         """
         return _Ravl.MeanCovarianceC___iadd__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(MeanCovarianceC self, VectorC point) -> MeanCovarianceC
-        __isub__(MeanCovarianceC self, MeanCovarianceC meanCov) -> MeanCovarianceC
+        __isub__(self, point) -> MeanCovarianceC
+        __isub__(self, meanCov) -> MeanCovarianceC
         """
         return _Ravl.MeanCovarianceC___isub__(self, *args)
 
     def Add(self, *args):
-        """Add(MeanCovarianceC self, VectorC point, VectorC var) -> MeanCovarianceC"""
+        """Add(self, point, var) -> MeanCovarianceC"""
         return _Ravl.MeanCovarianceC_Add(self, *args)
 
     def Remove(self, *args):
-        """Remove(MeanCovarianceC self, VectorC point, VectorC var) -> MeanCovarianceC"""
+        """Remove(self, point, var) -> MeanCovarianceC"""
         return _Ravl.MeanCovarianceC_Remove(self, *args)
 
     def SetSum(self, *args):
-        """SetSum(MeanCovarianceC self, MeanCovarianceC meanCov1, MeanCovarianceC meanCov2) -> MeanCovarianceC"""
+        """SetSum(self, meanCov1, meanCov2) -> MeanCovarianceC"""
         return _Ravl.MeanCovarianceC_SetSum(self, *args)
 
     def __mul__(self, *args):
-        """__mul__(MeanCovarianceC self, MeanCovarianceC oth) -> MeanCovarianceC"""
+        """__mul__(self, oth) -> MeanCovarianceC"""
         return _Ravl.MeanCovarianceC___mul__(self, *args)
 
     def Gauss(self, *args):
-        """Gauss(MeanCovarianceC self, VectorC vec) -> RavlN::RealT"""
+        """Gauss(self, vec) -> RavlN::RealT"""
         return _Ravl.MeanCovarianceC_Gauss(self, *args)
 
     def MahalanobisDistance(self, *args):
-        """MahalanobisDistance(MeanCovarianceC self, VectorC vec) -> RavlN::RealT"""
+        """MahalanobisDistance(self, vec) -> RavlN::RealT"""
         return _Ravl.MeanCovarianceC_MahalanobisDistance(self, *args)
 
     def ClearCache(self):
-        """ClearCache(MeanCovarianceC self)"""
+        """ClearCache(self)"""
         return _Ravl.MeanCovarianceC_ClearCache(self)
 
     def Hash(self):
-        """Hash(MeanCovarianceC self) -> RavlN::UIntT"""
+        """Hash(self) -> RavlN::UIntT"""
         return _Ravl.MeanCovarianceC_Hash(self)
 
     def __str__(self):
-        """__str__(MeanCovarianceC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.MeanCovarianceC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_MeanCovarianceC
@@ -5347,7 +5342,7 @@ class Affine2dC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, Affine2dC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::Affine2dC self) -> Affine2dC"""
+        """__init__(self) -> Affine2dC"""
         this = _Ravl.new_Affine2dC()
         try: self.this.append(this)
         except: self.this = this
@@ -5389,229 +5384,226 @@ class DateC(_object):
     __swig_getmethods__["TimeZoneOffset"] = lambda x: TimeZoneOffset
     def __init__(self, *args): 
         """
-        __init__(RavlN::DateC self) -> DateC
-        __init__(RavlN::DateC self, bool setval, bool useVirt=False) -> DateC
-        __init__(RavlN::DateC self, bool setval) -> DateC
-        __init__(RavlN::DateC self, RavlN::RealT val) -> DateC
-        __init__(RavlN::DateC self, RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0, 
-            RavlN::IntT sec=0, RavlN::IntT usec=0, bool useLocalTimeZone=False) -> DateC
-        __init__(RavlN::DateC self, RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0, 
-            RavlN::IntT sec=0, RavlN::IntT usec=0) -> DateC
-        __init__(RavlN::DateC self, RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0, 
-            RavlN::IntT sec=0) -> DateC
-        __init__(RavlN::DateC self, RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0) -> DateC
-        __init__(RavlN::DateC self, RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0) -> DateC
-        __init__(RavlN::DateC self, RavlN::IntT year, RavlN::IntT month, RavlN::IntT day) -> DateC
-        __init__(RavlN::DateC self, long xsec, long xusec) -> DateC
-        __init__(RavlN::DateC self, DateC val) -> DateC
-        __init__(RavlN::DateC self, StringC str) -> DateC
+        __init__(self) -> DateC
+        __init__(self, setval, useVirt=False) -> DateC
+        __init__(self, setval) -> DateC
+        __init__(self, val) -> DateC
+        __init__(self, year, month, day, hour=0, min=0, sec=0, usec=0, useLocalTimeZone=False) -> DateC
+        __init__(self, year, month, day, hour=0, min=0, sec=0, usec=0) -> DateC
+        __init__(self, year, month, day, hour=0, min=0, sec=0) -> DateC
+        __init__(self, year, month, day, hour=0, min=0) -> DateC
+        __init__(self, year, month, day, hour=0) -> DateC
+        __init__(self, year, month, day) -> DateC
+        __init__(self, xsec, xusec) -> DateC
+        __init__(self, val) -> DateC
+        __init__(self, str) -> DateC
         """
         this = _Ravl.new_DateC(*args)
         try: self.this.append(this)
         except: self.this = this
     def IsLeapYear(*args):
-        """IsLeapYear(int year) -> bool"""
+        """IsLeapYear(year) -> bool"""
         return _Ravl.DateC_IsLeapYear(*args)
 
     if _newclass:IsLeapYear = staticmethod(IsLeapYear)
     __swig_getmethods__["IsLeapYear"] = lambda x: IsLeapYear
     def YearToDaysSince1970(*args):
-        """YearToDaysSince1970(int year) -> int"""
+        """YearToDaysSince1970(year) -> int"""
         return _Ravl.DateC_YearToDaysSince1970(*args)
 
     if _newclass:YearToDaysSince1970 = staticmethod(YearToDaysSince1970)
     __swig_getmethods__["YearToDaysSince1970"] = lambda x: YearToDaysSince1970
     def IsValid(self):
-        """IsValid(DateC self) -> bool"""
+        """IsValid(self) -> bool"""
         return _Ravl.DateC_IsValid(self)
 
     def IsZero(self):
-        """IsZero(DateC self) -> bool"""
+        """IsZero(self) -> bool"""
         return _Ravl.DateC_IsZero(self)
 
     def SetInvalid(self):
-        """SetInvalid(DateC self)"""
+        """SetInvalid(self)"""
         return _Ravl.DateC_SetInvalid(self)
 
     def SetToNow(self, useVirt=False):
         """
-        SetToNow(DateC self, bool useVirt=False)
-        SetToNow(DateC self)
+        SetToNow(self, useVirt=False)
+        SetToNow(self)
         """
         return _Ravl.DateC_SetToNow(self, useVirt)
 
     def MaxUSeconds(self):
-        """MaxUSeconds(DateC self) -> long"""
+        """MaxUSeconds(self) -> long"""
         return _Ravl.DateC_MaxUSeconds(self)
 
     def Resolution(self):
-        """Resolution(DateC self) -> long"""
+        """Resolution(self) -> long"""
         return _Ravl.DateC_Resolution(self)
 
     def NormalisePos(self):
-        """NormalisePos(DateC self)"""
+        """NormalisePos(self)"""
         return _Ravl.DateC_NormalisePos(self)
 
     def NormaliseNeg(self):
-        """NormaliseNeg(DateC self)"""
+        """NormaliseNeg(self)"""
         return _Ravl.DateC_NormaliseNeg(self)
 
     def __eq__(self, *args):
-        """__eq__(DateC self, DateC oth) -> bool"""
+        """__eq__(self, oth) -> bool"""
         return _Ravl.DateC___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(DateC self, DateC oth) -> bool"""
+        """__ne__(self, oth) -> bool"""
         return _Ravl.DateC___ne__(self, *args)
 
     def __gt__(self, *args):
-        """__gt__(DateC self, DateC oth) -> bool"""
+        """__gt__(self, oth) -> bool"""
         return _Ravl.DateC___gt__(self, *args)
 
     def __lt__(self, *args):
-        """__lt__(DateC self, DateC oth) -> bool"""
+        """__lt__(self, oth) -> bool"""
         return _Ravl.DateC___lt__(self, *args)
 
     def __ge__(self, *args):
-        """__ge__(DateC self, DateC oth) -> bool"""
+        """__ge__(self, oth) -> bool"""
         return _Ravl.DateC___ge__(self, *args)
 
     def __le__(self, *args):
-        """__le__(DateC self, DateC oth) -> bool"""
+        """__le__(self, oth) -> bool"""
         return _Ravl.DateC___le__(self, *args)
 
     def __add__(self, *args):
-        """__add__(DateC self, DateC oth) -> DateC"""
+        """__add__(self, oth) -> DateC"""
         return _Ravl.DateC___add__(self, *args)
 
     def __sub__(self, *args):
-        """__sub__(DateC self, DateC oth) -> DateC"""
+        """__sub__(self, oth) -> DateC"""
         return _Ravl.DateC___sub__(self, *args)
 
     def __isub__(self, *args):
         """
-        __isub__(DateC self, DateC val) -> DateC
-        __isub__(DateC self, double val) -> DateC
+        __isub__(self, val) -> DateC
+        __isub__(self, val) -> DateC
         """
         return _Ravl.DateC___isub__(self, *args)
 
     def __iadd__(self, *args):
         """
-        __iadd__(DateC self, DateC val) -> DateC
-        __iadd__(DateC self, double val) -> DateC
+        __iadd__(self, val) -> DateC
+        __iadd__(self, val) -> DateC
         """
         return _Ravl.DateC___iadd__(self, *args)
 
     def Text(self):
-        """Text(DateC self) -> StringC"""
+        """Text(self) -> StringC"""
         return _Ravl.DateC_Text(self)
 
     def ODBC(self, convertUTCToLocal=False):
         """
-        ODBC(DateC self, bool convertUTCToLocal=False) -> StringC
-        ODBC(DateC self) -> StringC
+        ODBC(self, convertUTCToLocal=False) -> StringC
+        ODBC(self) -> StringC
         """
         return _Ravl.DateC_ODBC(self, convertUTCToLocal)
 
     def SetODBC(self, *args):
-        """SetODBC(DateC self, StringC odbcStr) -> bool"""
+        """SetODBC(self, odbcStr) -> bool"""
         return _Ravl.DateC_SetODBC(self, *args)
 
     def CTime(self, convertUTCToLocal=False):
         """
-        CTime(DateC self, bool convertUTCToLocal=False) -> StringC
-        CTime(DateC self) -> StringC
+        CTime(self, convertUTCToLocal=False) -> StringC
+        CTime(self) -> StringC
         """
         return _Ravl.DateC_CTime(self, convertUTCToLocal)
 
     def CTimeShort(self, convertUTCToLocal=False):
         """
-        CTimeShort(DateC self, bool convertUTCToLocal=False) -> StringC
-        CTimeShort(DateC self) -> StringC
+        CTimeShort(self, convertUTCToLocal=False) -> StringC
+        CTimeShort(self) -> StringC
         """
         return _Ravl.DateC_CTimeShort(self, convertUTCToLocal)
 
     def USeconds(self):
-        """USeconds(DateC self) -> long"""
+        """USeconds(self) -> long"""
         return _Ravl.DateC_USeconds(self)
 
     def TotalSeconds(self):
-        """TotalSeconds(DateC self) -> long"""
+        """TotalSeconds(self) -> long"""
         return _Ravl.DateC_TotalSeconds(self)
 
     def Double(self):
-        """Double(DateC self) -> double"""
+        """Double(self) -> double"""
         return _Ravl.DateC_Double(self)
 
     def Seconds(self, convertUTCToLocal=False):
         """
-        Seconds(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        Seconds(DateC self) -> RavlN::IntT
+        Seconds(self, convertUTCToLocal=False) -> RavlN::IntT
+        Seconds(self) -> RavlN::IntT
         """
         return _Ravl.DateC_Seconds(self, convertUTCToLocal)
 
     def Minute(self, convertUTCToLocal=False):
         """
-        Minute(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        Minute(DateC self) -> RavlN::IntT
+        Minute(self, convertUTCToLocal=False) -> RavlN::IntT
+        Minute(self) -> RavlN::IntT
         """
         return _Ravl.DateC_Minute(self, convertUTCToLocal)
 
     def Hour(self, convertUTCToLocal=False):
         """
-        Hour(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        Hour(DateC self) -> RavlN::IntT
+        Hour(self, convertUTCToLocal=False) -> RavlN::IntT
+        Hour(self) -> RavlN::IntT
         """
         return _Ravl.DateC_Hour(self, convertUTCToLocal)
 
     def Month(self, convertUTCToLocal=False):
         """
-        Month(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        Month(DateC self) -> RavlN::IntT
+        Month(self, convertUTCToLocal=False) -> RavlN::IntT
+        Month(self) -> RavlN::IntT
         """
         return _Ravl.DateC_Month(self, convertUTCToLocal)
 
     def Year(self, convertUTCToLocal=False):
         """
-        Year(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        Year(DateC self) -> RavlN::IntT
+        Year(self, convertUTCToLocal=False) -> RavlN::IntT
+        Year(self) -> RavlN::IntT
         """
         return _Ravl.DateC_Year(self, convertUTCToLocal)
 
     def DayInMonth(self, convertUTCToLocal=False):
         """
-        DayInMonth(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        DayInMonth(DateC self) -> RavlN::IntT
+        DayInMonth(self, convertUTCToLocal=False) -> RavlN::IntT
+        DayInMonth(self) -> RavlN::IntT
         """
         return _Ravl.DateC_DayInMonth(self, convertUTCToLocal)
 
     def DayInYear(self, convertUTCToLocal=False):
         """
-        DayInYear(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        DayInYear(DateC self) -> RavlN::IntT
+        DayInYear(self, convertUTCToLocal=False) -> RavlN::IntT
+        DayInYear(self) -> RavlN::IntT
         """
         return _Ravl.DateC_DayInYear(self, convertUTCToLocal)
 
     def DayInWeek(self, convertUTCToLocal=False):
         """
-        DayInWeek(DateC self, bool convertUTCToLocal=False) -> RavlN::IntT
-        DayInWeek(DateC self) -> RavlN::IntT
+        DayInWeek(self, convertUTCToLocal=False) -> RavlN::IntT
+        DayInWeek(self) -> RavlN::IntT
         """
         return _Ravl.DateC_DayInWeek(self, convertUTCToLocal)
 
     def TextDayInWeek(self, convertUTCToLocal=False):
         """
-        TextDayInWeek(DateC self, bool convertUTCToLocal=False) -> StringC
-        TextDayInWeek(DateC self) -> StringC
+        TextDayInWeek(self, convertUTCToLocal=False) -> StringC
+        TextDayInWeek(self) -> StringC
         """
         return _Ravl.DateC_TextDayInWeek(self, convertUTCToLocal)
 
     def DaylightSaving(self):
-        """DaylightSaving(DateC self) -> bool"""
+        """DaylightSaving(self) -> bool"""
         return _Ravl.DateC_DaylightSaving(self)
 
     def Wait(self):
-        """Wait(DateC self) -> bool"""
+        """Wait(self) -> bool"""
         return _Ravl.DateC_Wait(self)
 
     __swig_destroy__ = _Ravl.delete_DateC
@@ -5636,11 +5628,11 @@ def DateC_TimeZoneOffset():
   return _Ravl.DateC_TimeZoneOffset()
 
 def DateC_IsLeapYear(*args):
-  """DateC_IsLeapYear(int year) -> bool"""
+  """DateC_IsLeapYear(year) -> bool"""
   return _Ravl.DateC_IsLeapYear(*args)
 
 def DateC_YearToDaysSince1970(*args):
-  """DateC_YearToDaysSince1970(int year) -> int"""
+  """DateC_YearToDaysSince1970(year) -> int"""
   return _Ravl.DateC_YearToDaysSince1970(*args)
 
 class HashInt64Int64C(_object):
@@ -5652,69 +5644,69 @@ class HashInt64Int64C(_object):
     __repr__ = _swig_repr
     def __init__(self, nBins=23): 
         """
-        __init__(RavlN::HashC<(RavlN::Int64T,RavlN::Int64T)> self, RavlN::UIntT nBins=23) -> HashInt64Int64C
-        __init__(RavlN::HashC<(RavlN::Int64T,RavlN::Int64T)> self) -> HashInt64Int64C
+        __init__(self, nBins=23) -> HashInt64Int64C
+        __init__(self) -> HashInt64Int64C
         """
         this = _Ravl.new_HashInt64Int64C(nBins)
         try: self.this.append(this)
         except: self.this = this
     def Lookup(self, *args):
-        """Lookup(HashInt64Int64C self, long const & key) -> bool"""
+        """Lookup(self, key) -> bool"""
         return _Ravl.HashInt64Int64C_Lookup(self, *args)
 
     def Update(self, *args):
         """
-        Update(HashInt64Int64C self, long const & key, long const & data) -> bool
-        Update(HashInt64Int64C self, long const & key) -> long &
+        Update(self, key, data) -> bool
+        Update(self, key) -> long &
         """
         return _Ravl.HashInt64Int64C_Update(self, *args)
 
     def Insert(self, *args):
-        """Insert(HashInt64Int64C self, long const & key, long const & data) -> bool"""
+        """Insert(self, key, data) -> bool"""
         return _Ravl.HashInt64Int64C_Insert(self, *args)
 
     def Access(self, *args):
         """
-        Access(HashInt64Int64C self, long const & key, long const & default=long()) -> long
-        Access(HashInt64Int64C self, long const & key) -> long &
+        Access(self, key, default=long()) -> long
+        Access(self, key) -> long &
         """
         return _Ravl.HashInt64Int64C_Access(self, *args)
 
     def AccessCopy(self, *args):
         """
-        AccessCopy(HashInt64Int64C self, long const & key, long const & default=long()) -> long
-        AccessCopy(HashInt64Int64C self, long const & key) -> long &
+        AccessCopy(self, key, default=long()) -> long
+        AccessCopy(self, key) -> long &
         """
         return _Ravl.HashInt64Int64C_AccessCopy(self, *args)
 
     def Del(self, *args):
         """
-        Del(HashInt64Int64C self, long const & key, bool allowResize=True) -> bool
-        Del(HashInt64Int64C self, long const & key) -> bool
+        Del(self, key, allowResize=True) -> bool
+        Del(self, key) -> bool
         """
         return _Ravl.HashInt64Int64C_Del(self, *args)
 
     def Get(self, *args):
         """
-        Get(HashInt64Int64C self, long const & key, bool allowResize=True) -> long
-        Get(HashInt64Int64C self, long const & key) -> long
+        Get(self, key, allowResize=True) -> long
+        Get(self, key) -> long
         """
         return _Ravl.HashInt64Int64C_Get(self, *args)
 
     def IsElm(self, *args):
-        """IsElm(HashInt64Int64C self, long const & key) -> bool"""
+        """IsElm(self, key) -> bool"""
         return _Ravl.HashInt64Int64C_IsElm(self, *args)
 
     def Empty(self):
-        """Empty(HashInt64Int64C self)"""
+        """Empty(self)"""
         return _Ravl.HashInt64Int64C_Empty(self)
 
     def Bins(self):
-        """Bins(HashInt64Int64C self) -> RavlN::UIntT"""
+        """Bins(self) -> RavlN::UIntT"""
         return _Ravl.HashInt64Int64C_Bins(self)
 
     def Resize(self, *args):
-        """Resize(HashInt64Int64C self, RavlN::SizeT newSize)"""
+        """Resize(self, newSize)"""
         return _Ravl.HashInt64Int64C_Resize(self, *args)
 
     __swig_destroy__ = _Ravl.delete_HashInt64Int64C
@@ -5731,38 +5723,38 @@ class HashInt64Int64IterC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::HashIterC<(RavlN::Int64T,RavlN::Int64T)> self) -> HashInt64Int64IterC
-        __init__(RavlN::HashIterC<(RavlN::Int64T,RavlN::Int64T)> self, HashInt64Int64C nTab) -> HashInt64Int64IterC
-        __init__(RavlN::HashIterC<(RavlN::Int64T,RavlN::Int64T)> self, HashInt64Int64IterC oth) -> HashInt64Int64IterC
+        __init__(self) -> HashInt64Int64IterC
+        __init__(self, nTab) -> HashInt64Int64IterC
+        __init__(self, oth) -> HashInt64Int64IterC
         """
         this = _Ravl.new_HashInt64Int64IterC(*args)
         try: self.this.append(this)
         except: self.this = this
     def First(self):
-        """First(HashInt64Int64IterC self) -> bool"""
+        """First(self) -> bool"""
         return _Ravl.HashInt64Int64IterC_First(self)
 
     def Next(self):
-        """Next(HashInt64Int64IterC self) -> bool"""
+        """Next(self) -> bool"""
         return _Ravl.HashInt64Int64IterC_Next(self)
 
     def IsElm(self):
-        """IsElm(HashInt64Int64IterC self) -> bool"""
+        """IsElm(self) -> bool"""
         return _Ravl.HashInt64Int64IterC_IsElm(self)
 
     def Key(self):
-        """Key(HashInt64Int64IterC self) -> long const &"""
+        """Key(self) -> long const &"""
         return _Ravl.HashInt64Int64IterC_Key(self)
 
     def Data(self, *args):
         """
-        Data(HashInt64Int64IterC self) -> long const
-        Data(HashInt64Int64IterC self) -> long &
+        Data(self) -> long const
+        Data(self) -> long &
         """
         return _Ravl.HashInt64Int64IterC_Data(self, *args)
 
     def Del(self):
-        """Del(HashInt64Int64IterC self) -> bool"""
+        """Del(self) -> bool"""
         return _Ravl.HashInt64Int64IterC_Del(self)
 
     __swig_destroy__ = _Ravl.delete_HashInt64Int64IterC
@@ -5778,20 +5770,20 @@ class DPIPortImageByteC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DPIPortImageByteC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DPIPortC<(RavlImageN::ImageC<(RavlN::ByteT)>)> self) -> DPIPortImageByteC"""
+        """__init__(self) -> DPIPortImageByteC"""
         this = _Ravl.new_DPIPortImageByteC()
         try: self.this.append(this)
         except: self.this = this
     def Get(self, *args):
-        """Get(DPIPortImageByteC self, ImageByteC buff) -> bool"""
+        """Get(self, buff) -> bool"""
         return _Ravl.DPIPortImageByteC_Get(self, *args)
 
     def SetAttr(self, *args):
-        """SetAttr(DPIPortImageByteC self, StringC attrName, StringC attrValue) -> bool"""
+        """SetAttr(self, attrName, attrValue) -> bool"""
         return _Ravl.DPIPortImageByteC_SetAttr(self, *args)
 
     def GetAttr(self, *args):
-        """GetAttr(DPIPortImageByteC self, StringC attrName, StringC attrValue) -> bool"""
+        """GetAttr(self, attrName, attrValue) -> bool"""
         return _Ravl.DPIPortImageByteC_GetAttr(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DPIPortImageByteC
@@ -5801,18 +5793,17 @@ DPIPortImageByteC_swigregister(DPIPortImageByteC)
 
 
 def OpenISequence(*args):
-  """OpenISequence(DPIPortImageByteC arg1, StringC arg2) -> bool"""
+  """OpenISequence(arg1, arg2) -> bool"""
   return _Ravl.OpenISequence(*args)
 
 def SysLogOpen(*args):
   """
-    SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True, bool stdErrOnly=False, int facility=-1, 
-        bool logFileLine=False) -> bool
-    SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True, bool stdErrOnly=False, int facility=-1) -> bool
-    SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True, bool stdErrOnly=False) -> bool
-    SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True) -> bool
-    SysLogOpen(StringC name, bool logPid=False) -> bool
-    SysLogOpen(StringC name) -> bool
+    SysLogOpen(name, logPid=False, sendStdErr=True, stdErrOnly=False, facility=-1, logFileLine=False) -> bool
+    SysLogOpen(name, logPid=False, sendStdErr=True, stdErrOnly=False, facility=-1) -> bool
+    SysLogOpen(name, logPid=False, sendStdErr=True, stdErrOnly=False) -> bool
+    SysLogOpen(name, logPid=False, sendStdErr=True) -> bool
+    SysLogOpen(name, logPid=False) -> bool
+    SysLogOpen(name) -> bool
     """
   return _Ravl.SysLogOpen(*args)
 class XMLFactoryContextC(_object):
@@ -5823,7 +5814,7 @@ class XMLFactoryContextC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, XMLFactoryContextC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlN::XMLFactoryContextC self, StringC configFile) -> XMLFactoryContextC"""
+        """__init__(self, configFile) -> XMLFactoryContextC"""
         this = _Ravl.new_XMLFactoryContextC(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -5841,110 +5832,110 @@ class CollectionUInt(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::CollectionC<(RavlN::UIntT)> self, RavlN::UIntT size=10) -> CollectionUInt
-        __init__(RavlN::CollectionC<(RavlN::UIntT)> self) -> CollectionUInt
-        __init__(RavlN::CollectionC<(RavlN::UIntT)> self, RavlN::SizeT maxSize, RavlN::SizeT used=0) -> CollectionUInt
-        __init__(RavlN::CollectionC<(RavlN::UIntT)> self, RavlN::SizeT maxSize) -> CollectionUInt
-        __init__(RavlN::CollectionC<(RavlN::UIntT)> self, SArray1dUInt dat) -> CollectionUInt
-        __init__(RavlN::CollectionC<(RavlN::UIntT)> self, DListUIntC list) -> CollectionUInt
+        __init__(self, size=10) -> CollectionUInt
+        __init__(self) -> CollectionUInt
+        __init__(self, maxSize, used=0) -> CollectionUInt
+        __init__(self, maxSize) -> CollectionUInt
+        __init__(self, dat) -> CollectionUInt
+        __init__(self, list) -> CollectionUInt
         """
         this = _Ravl.new_CollectionUInt(*args)
         try: self.this.append(this)
         except: self.this = this
     def Copy(self):
-        """Copy(CollectionUInt self) -> CollectionUInt"""
+        """Copy(self) -> CollectionUInt"""
         return _Ravl.CollectionUInt_Copy(self)
 
     def Insert(self, *args):
-        """Insert(CollectionUInt self, unsigned int const & dat) -> RavlN::UIntT"""
+        """Insert(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionUInt_Insert(self, *args)
 
     def Append(self, *args):
-        """Append(CollectionUInt self, unsigned int const & dat) -> RavlN::UIntT"""
+        """Append(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionUInt_Append(self, *args)
 
     def InsertRandom(self, *args):
-        """InsertRandom(CollectionUInt self, unsigned int const & dat) -> RavlN::UIntT"""
+        """InsertRandom(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionUInt_InsertRandom(self, *args)
 
     def Delete(self, *args):
-        """Delete(CollectionUInt self, IndexC ind)"""
+        """Delete(self, ind)"""
         return _Ravl.CollectionUInt_Delete(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(CollectionUInt self, unsigned int const & dat)"""
+        """__iadd__(self, dat)"""
         return _Ravl.CollectionUInt___iadd__(self, *args)
 
     def Pick(self):
-        """Pick(CollectionUInt self) -> unsigned int"""
+        """Pick(self) -> unsigned int"""
         return _Ravl.CollectionUInt_Pick(self)
 
     def Shuffle(self):
-        """Shuffle(CollectionUInt self) -> CollectionUInt"""
+        """Shuffle(self) -> CollectionUInt"""
         return _Ravl.CollectionUInt_Shuffle(self)
 
     def ShuffleIP(self):
-        """ShuffleIP(CollectionUInt self)"""
+        """ShuffleIP(self)"""
         return _Ravl.CollectionUInt_ShuffleIP(self)
 
     def Merge(self, *args):
         """
-        Merge(CollectionUInt self, CollectionUInt x)
-        Merge(CollectionUInt self, SArray1dUInt x)
+        Merge(self, x)
+        Merge(self, x)
         """
         return _Ravl.CollectionUInt_Merge(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(CollectionUInt self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.CollectionUInt_IsEmpty(self)
 
     def Empty(self):
-        """Empty(CollectionUInt self)"""
+        """Empty(self)"""
         return _Ravl.CollectionUInt_Empty(self)
 
     def Size(self):
-        """Size(CollectionUInt self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.CollectionUInt_Size(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(CollectionUInt self) -> SArray1dUInt
-        SArray1d(CollectionUInt self) -> SArray1dUInt
+        SArray1d(self) -> SArray1dUInt
+        SArray1d(self) -> SArray1dUInt
         """
         return _Ravl.CollectionUInt_SArray1d(self, *args)
 
     def Split(self, *args):
-        """Split(CollectionUInt self, RavlN::SizeT ne) -> CollectionUInt"""
+        """Split(self, ne) -> CollectionUInt"""
         return _Ravl.CollectionUInt_Split(self, *args)
 
     def Sample(self, *args):
-        """Sample(CollectionUInt self, RavlN::SizeT ne) -> CollectionUInt"""
+        """Sample(self, ne) -> CollectionUInt"""
         return _Ravl.CollectionUInt_Sample(self, *args)
 
     def Last(self, *args):
         """
-        Last(CollectionUInt self) -> unsigned int
-        Last(CollectionUInt self) -> unsigned int const &
+        Last(self) -> unsigned int
+        Last(self) -> unsigned int const &
         """
         return _Ravl.CollectionUInt_Last(self, *args)
 
     def First(self, *args):
         """
-        First(CollectionUInt self) -> unsigned int
-        First(CollectionUInt self) -> unsigned int const &
+        First(self) -> unsigned int
+        First(self) -> unsigned int const &
         """
         return _Ravl.CollectionUInt_First(self, *args)
 
     def __getitem__(self, *args):
-        """__getitem__(CollectionUInt self, size_t i) -> unsigned int const &"""
+        """__getitem__(self, i) -> unsigned int const &"""
         return _Ravl.CollectionUInt___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(CollectionUInt self, size_t i, unsigned int const & v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.CollectionUInt___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(CollectionUInt self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.CollectionUInt___str__(self)
 
     __swig_destroy__ = _Ravl.delete_CollectionUInt
@@ -5961,110 +5952,110 @@ class CollectionReal(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::CollectionC<(RavlN::RealT)> self, RavlN::UIntT size=10) -> CollectionReal
-        __init__(RavlN::CollectionC<(RavlN::RealT)> self) -> CollectionReal
-        __init__(RavlN::CollectionC<(RavlN::RealT)> self, RavlN::SizeT maxSize, RavlN::SizeT used=0) -> CollectionReal
-        __init__(RavlN::CollectionC<(RavlN::RealT)> self, RavlN::SizeT maxSize) -> CollectionReal
-        __init__(RavlN::CollectionC<(RavlN::RealT)> self, SArray1dReal dat) -> CollectionReal
-        __init__(RavlN::CollectionC<(RavlN::RealT)> self, DListRealC list) -> CollectionReal
+        __init__(self, size=10) -> CollectionReal
+        __init__(self) -> CollectionReal
+        __init__(self, maxSize, used=0) -> CollectionReal
+        __init__(self, maxSize) -> CollectionReal
+        __init__(self, dat) -> CollectionReal
+        __init__(self, list) -> CollectionReal
         """
         this = _Ravl.new_CollectionReal(*args)
         try: self.this.append(this)
         except: self.this = this
     def Copy(self):
-        """Copy(CollectionReal self) -> CollectionReal"""
+        """Copy(self) -> CollectionReal"""
         return _Ravl.CollectionReal_Copy(self)
 
     def Insert(self, *args):
-        """Insert(CollectionReal self, double const & dat) -> RavlN::UIntT"""
+        """Insert(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionReal_Insert(self, *args)
 
     def Append(self, *args):
-        """Append(CollectionReal self, double const & dat) -> RavlN::UIntT"""
+        """Append(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionReal_Append(self, *args)
 
     def InsertRandom(self, *args):
-        """InsertRandom(CollectionReal self, double const & dat) -> RavlN::UIntT"""
+        """InsertRandom(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionReal_InsertRandom(self, *args)
 
     def Delete(self, *args):
-        """Delete(CollectionReal self, IndexC ind)"""
+        """Delete(self, ind)"""
         return _Ravl.CollectionReal_Delete(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(CollectionReal self, double const & dat)"""
+        """__iadd__(self, dat)"""
         return _Ravl.CollectionReal___iadd__(self, *args)
 
     def Pick(self):
-        """Pick(CollectionReal self) -> double"""
+        """Pick(self) -> double"""
         return _Ravl.CollectionReal_Pick(self)
 
     def Shuffle(self):
-        """Shuffle(CollectionReal self) -> CollectionReal"""
+        """Shuffle(self) -> CollectionReal"""
         return _Ravl.CollectionReal_Shuffle(self)
 
     def ShuffleIP(self):
-        """ShuffleIP(CollectionReal self)"""
+        """ShuffleIP(self)"""
         return _Ravl.CollectionReal_ShuffleIP(self)
 
     def Merge(self, *args):
         """
-        Merge(CollectionReal self, CollectionReal x)
-        Merge(CollectionReal self, SArray1dReal x)
+        Merge(self, x)
+        Merge(self, x)
         """
         return _Ravl.CollectionReal_Merge(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(CollectionReal self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.CollectionReal_IsEmpty(self)
 
     def Empty(self):
-        """Empty(CollectionReal self)"""
+        """Empty(self)"""
         return _Ravl.CollectionReal_Empty(self)
 
     def Size(self):
-        """Size(CollectionReal self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.CollectionReal_Size(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(CollectionReal self) -> SArray1dReal
-        SArray1d(CollectionReal self) -> SArray1dReal
+        SArray1d(self) -> SArray1dReal
+        SArray1d(self) -> SArray1dReal
         """
         return _Ravl.CollectionReal_SArray1d(self, *args)
 
     def Split(self, *args):
-        """Split(CollectionReal self, RavlN::SizeT ne) -> CollectionReal"""
+        """Split(self, ne) -> CollectionReal"""
         return _Ravl.CollectionReal_Split(self, *args)
 
     def Sample(self, *args):
-        """Sample(CollectionReal self, RavlN::SizeT ne) -> CollectionReal"""
+        """Sample(self, ne) -> CollectionReal"""
         return _Ravl.CollectionReal_Sample(self, *args)
 
     def Last(self, *args):
         """
-        Last(CollectionReal self) -> double
-        Last(CollectionReal self) -> double const &
+        Last(self) -> double
+        Last(self) -> double const &
         """
         return _Ravl.CollectionReal_Last(self, *args)
 
     def First(self, *args):
         """
-        First(CollectionReal self) -> double
-        First(CollectionReal self) -> double const &
+        First(self) -> double
+        First(self) -> double const &
         """
         return _Ravl.CollectionReal_First(self, *args)
 
     def __getitem__(self, *args):
-        """__getitem__(CollectionReal self, size_t i) -> double const &"""
+        """__getitem__(self, i) -> double const &"""
         return _Ravl.CollectionReal___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(CollectionReal self, size_t i, double const & v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.CollectionReal___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(CollectionReal self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.CollectionReal___str__(self)
 
     __swig_destroy__ = _Ravl.delete_CollectionReal
@@ -6081,110 +6072,110 @@ class CollectionFloat(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::CollectionC<(RavlN::FloatT)> self, RavlN::UIntT size=10) -> CollectionFloat
-        __init__(RavlN::CollectionC<(RavlN::FloatT)> self) -> CollectionFloat
-        __init__(RavlN::CollectionC<(RavlN::FloatT)> self, RavlN::SizeT maxSize, RavlN::SizeT used=0) -> CollectionFloat
-        __init__(RavlN::CollectionC<(RavlN::FloatT)> self, RavlN::SizeT maxSize) -> CollectionFloat
-        __init__(RavlN::CollectionC<(RavlN::FloatT)> self, SArray1dFloat dat) -> CollectionFloat
-        __init__(RavlN::CollectionC<(RavlN::FloatT)> self, RavlN::DListC< float > const & list) -> CollectionFloat
+        __init__(self, size=10) -> CollectionFloat
+        __init__(self) -> CollectionFloat
+        __init__(self, maxSize, used=0) -> CollectionFloat
+        __init__(self, maxSize) -> CollectionFloat
+        __init__(self, dat) -> CollectionFloat
+        __init__(self, list) -> CollectionFloat
         """
         this = _Ravl.new_CollectionFloat(*args)
         try: self.this.append(this)
         except: self.this = this
     def Copy(self):
-        """Copy(CollectionFloat self) -> CollectionFloat"""
+        """Copy(self) -> CollectionFloat"""
         return _Ravl.CollectionFloat_Copy(self)
 
     def Insert(self, *args):
-        """Insert(CollectionFloat self, float const & dat) -> RavlN::UIntT"""
+        """Insert(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionFloat_Insert(self, *args)
 
     def Append(self, *args):
-        """Append(CollectionFloat self, float const & dat) -> RavlN::UIntT"""
+        """Append(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionFloat_Append(self, *args)
 
     def InsertRandom(self, *args):
-        """InsertRandom(CollectionFloat self, float const & dat) -> RavlN::UIntT"""
+        """InsertRandom(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionFloat_InsertRandom(self, *args)
 
     def Delete(self, *args):
-        """Delete(CollectionFloat self, IndexC ind)"""
+        """Delete(self, ind)"""
         return _Ravl.CollectionFloat_Delete(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(CollectionFloat self, float const & dat)"""
+        """__iadd__(self, dat)"""
         return _Ravl.CollectionFloat___iadd__(self, *args)
 
     def Pick(self):
-        """Pick(CollectionFloat self) -> float"""
+        """Pick(self) -> float"""
         return _Ravl.CollectionFloat_Pick(self)
 
     def Shuffle(self):
-        """Shuffle(CollectionFloat self) -> CollectionFloat"""
+        """Shuffle(self) -> CollectionFloat"""
         return _Ravl.CollectionFloat_Shuffle(self)
 
     def ShuffleIP(self):
-        """ShuffleIP(CollectionFloat self)"""
+        """ShuffleIP(self)"""
         return _Ravl.CollectionFloat_ShuffleIP(self)
 
     def Merge(self, *args):
         """
-        Merge(CollectionFloat self, CollectionFloat x)
-        Merge(CollectionFloat self, SArray1dFloat x)
+        Merge(self, x)
+        Merge(self, x)
         """
         return _Ravl.CollectionFloat_Merge(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(CollectionFloat self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.CollectionFloat_IsEmpty(self)
 
     def Empty(self):
-        """Empty(CollectionFloat self)"""
+        """Empty(self)"""
         return _Ravl.CollectionFloat_Empty(self)
 
     def Size(self):
-        """Size(CollectionFloat self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.CollectionFloat_Size(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(CollectionFloat self) -> SArray1dFloat
-        SArray1d(CollectionFloat self) -> SArray1dFloat
+        SArray1d(self) -> SArray1dFloat
+        SArray1d(self) -> SArray1dFloat
         """
         return _Ravl.CollectionFloat_SArray1d(self, *args)
 
     def Split(self, *args):
-        """Split(CollectionFloat self, RavlN::SizeT ne) -> CollectionFloat"""
+        """Split(self, ne) -> CollectionFloat"""
         return _Ravl.CollectionFloat_Split(self, *args)
 
     def Sample(self, *args):
-        """Sample(CollectionFloat self, RavlN::SizeT ne) -> CollectionFloat"""
+        """Sample(self, ne) -> CollectionFloat"""
         return _Ravl.CollectionFloat_Sample(self, *args)
 
     def Last(self, *args):
         """
-        Last(CollectionFloat self) -> float
-        Last(CollectionFloat self) -> float const &
+        Last(self) -> float
+        Last(self) -> float const &
         """
         return _Ravl.CollectionFloat_Last(self, *args)
 
     def First(self, *args):
         """
-        First(CollectionFloat self) -> float
-        First(CollectionFloat self) -> float const &
+        First(self) -> float
+        First(self) -> float const &
         """
         return _Ravl.CollectionFloat_First(self, *args)
 
     def __getitem__(self, *args):
-        """__getitem__(CollectionFloat self, size_t i) -> float const &"""
+        """__getitem__(self, i) -> float const &"""
         return _Ravl.CollectionFloat___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(CollectionFloat self, size_t i, float const & v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.CollectionFloat___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(CollectionFloat self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.CollectionFloat___str__(self)
 
     __swig_destroy__ = _Ravl.delete_CollectionFloat
@@ -6201,110 +6192,110 @@ class CollectionIndexC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::CollectionC<(RavlN::IndexC)> self, RavlN::UIntT size=10) -> CollectionIndexC
-        __init__(RavlN::CollectionC<(RavlN::IndexC)> self) -> CollectionIndexC
-        __init__(RavlN::CollectionC<(RavlN::IndexC)> self, RavlN::SizeT maxSize, RavlN::SizeT used=0) -> CollectionIndexC
-        __init__(RavlN::CollectionC<(RavlN::IndexC)> self, RavlN::SizeT maxSize) -> CollectionIndexC
-        __init__(RavlN::CollectionC<(RavlN::IndexC)> self, SArray1dIndexC dat) -> CollectionIndexC
-        __init__(RavlN::CollectionC<(RavlN::IndexC)> self, RavlN::DListC< RavlN::IndexC > const & list) -> CollectionIndexC
+        __init__(self, size=10) -> CollectionIndexC
+        __init__(self) -> CollectionIndexC
+        __init__(self, maxSize, used=0) -> CollectionIndexC
+        __init__(self, maxSize) -> CollectionIndexC
+        __init__(self, dat) -> CollectionIndexC
+        __init__(self, list) -> CollectionIndexC
         """
         this = _Ravl.new_CollectionIndexC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Copy(self):
-        """Copy(CollectionIndexC self) -> CollectionIndexC"""
+        """Copy(self) -> CollectionIndexC"""
         return _Ravl.CollectionIndexC_Copy(self)
 
     def Insert(self, *args):
-        """Insert(CollectionIndexC self, IndexC dat) -> RavlN::UIntT"""
+        """Insert(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionIndexC_Insert(self, *args)
 
     def Append(self, *args):
-        """Append(CollectionIndexC self, IndexC dat) -> RavlN::UIntT"""
+        """Append(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionIndexC_Append(self, *args)
 
     def InsertRandom(self, *args):
-        """InsertRandom(CollectionIndexC self, IndexC dat) -> RavlN::UIntT"""
+        """InsertRandom(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionIndexC_InsertRandom(self, *args)
 
     def Delete(self, *args):
-        """Delete(CollectionIndexC self, IndexC ind)"""
+        """Delete(self, ind)"""
         return _Ravl.CollectionIndexC_Delete(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(CollectionIndexC self, IndexC dat)"""
+        """__iadd__(self, dat)"""
         return _Ravl.CollectionIndexC___iadd__(self, *args)
 
     def Pick(self):
-        """Pick(CollectionIndexC self) -> IndexC"""
+        """Pick(self) -> IndexC"""
         return _Ravl.CollectionIndexC_Pick(self)
 
     def Shuffle(self):
-        """Shuffle(CollectionIndexC self) -> CollectionIndexC"""
+        """Shuffle(self) -> CollectionIndexC"""
         return _Ravl.CollectionIndexC_Shuffle(self)
 
     def ShuffleIP(self):
-        """ShuffleIP(CollectionIndexC self)"""
+        """ShuffleIP(self)"""
         return _Ravl.CollectionIndexC_ShuffleIP(self)
 
     def Merge(self, *args):
         """
-        Merge(CollectionIndexC self, CollectionIndexC x)
-        Merge(CollectionIndexC self, SArray1dIndexC x)
+        Merge(self, x)
+        Merge(self, x)
         """
         return _Ravl.CollectionIndexC_Merge(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(CollectionIndexC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.CollectionIndexC_IsEmpty(self)
 
     def Empty(self):
-        """Empty(CollectionIndexC self)"""
+        """Empty(self)"""
         return _Ravl.CollectionIndexC_Empty(self)
 
     def Size(self):
-        """Size(CollectionIndexC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.CollectionIndexC_Size(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(CollectionIndexC self) -> SArray1dIndexC
-        SArray1d(CollectionIndexC self) -> SArray1dIndexC
+        SArray1d(self) -> SArray1dIndexC
+        SArray1d(self) -> SArray1dIndexC
         """
         return _Ravl.CollectionIndexC_SArray1d(self, *args)
 
     def Split(self, *args):
-        """Split(CollectionIndexC self, RavlN::SizeT ne) -> CollectionIndexC"""
+        """Split(self, ne) -> CollectionIndexC"""
         return _Ravl.CollectionIndexC_Split(self, *args)
 
     def Sample(self, *args):
-        """Sample(CollectionIndexC self, RavlN::SizeT ne) -> CollectionIndexC"""
+        """Sample(self, ne) -> CollectionIndexC"""
         return _Ravl.CollectionIndexC_Sample(self, *args)
 
     def Last(self, *args):
         """
-        Last(CollectionIndexC self) -> IndexC
-        Last(CollectionIndexC self) -> IndexC
+        Last(self) -> IndexC
+        Last(self) -> IndexC
         """
         return _Ravl.CollectionIndexC_Last(self, *args)
 
     def First(self, *args):
         """
-        First(CollectionIndexC self) -> IndexC
-        First(CollectionIndexC self) -> IndexC
+        First(self) -> IndexC
+        First(self) -> IndexC
         """
         return _Ravl.CollectionIndexC_First(self, *args)
 
     def __getitem__(self, *args):
-        """__getitem__(CollectionIndexC self, size_t i) -> IndexC"""
+        """__getitem__(self, i) -> IndexC"""
         return _Ravl.CollectionIndexC___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(CollectionIndexC self, size_t i, IndexC v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.CollectionIndexC___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(CollectionIndexC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.CollectionIndexC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_CollectionIndexC
@@ -6321,110 +6312,110 @@ class CollectionPoint2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::CollectionC<(RavlN::Point2dC)> self, RavlN::UIntT size=10) -> CollectionPoint2dC
-        __init__(RavlN::CollectionC<(RavlN::Point2dC)> self) -> CollectionPoint2dC
-        __init__(RavlN::CollectionC<(RavlN::Point2dC)> self, RavlN::SizeT maxSize, RavlN::SizeT used=0) -> CollectionPoint2dC
-        __init__(RavlN::CollectionC<(RavlN::Point2dC)> self, RavlN::SizeT maxSize) -> CollectionPoint2dC
-        __init__(RavlN::CollectionC<(RavlN::Point2dC)> self, SArray1dPoint2dC dat) -> CollectionPoint2dC
-        __init__(RavlN::CollectionC<(RavlN::Point2dC)> self, DListPoint2dC list) -> CollectionPoint2dC
+        __init__(self, size=10) -> CollectionPoint2dC
+        __init__(self) -> CollectionPoint2dC
+        __init__(self, maxSize, used=0) -> CollectionPoint2dC
+        __init__(self, maxSize) -> CollectionPoint2dC
+        __init__(self, dat) -> CollectionPoint2dC
+        __init__(self, list) -> CollectionPoint2dC
         """
         this = _Ravl.new_CollectionPoint2dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Copy(self):
-        """Copy(CollectionPoint2dC self) -> CollectionPoint2dC"""
+        """Copy(self) -> CollectionPoint2dC"""
         return _Ravl.CollectionPoint2dC_Copy(self)
 
     def Insert(self, *args):
-        """Insert(CollectionPoint2dC self, Point2dC dat) -> RavlN::UIntT"""
+        """Insert(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionPoint2dC_Insert(self, *args)
 
     def Append(self, *args):
-        """Append(CollectionPoint2dC self, Point2dC dat) -> RavlN::UIntT"""
+        """Append(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionPoint2dC_Append(self, *args)
 
     def InsertRandom(self, *args):
-        """InsertRandom(CollectionPoint2dC self, Point2dC dat) -> RavlN::UIntT"""
+        """InsertRandom(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionPoint2dC_InsertRandom(self, *args)
 
     def Delete(self, *args):
-        """Delete(CollectionPoint2dC self, IndexC ind)"""
+        """Delete(self, ind)"""
         return _Ravl.CollectionPoint2dC_Delete(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(CollectionPoint2dC self, Point2dC dat)"""
+        """__iadd__(self, dat)"""
         return _Ravl.CollectionPoint2dC___iadd__(self, *args)
 
     def Pick(self):
-        """Pick(CollectionPoint2dC self) -> Point2dC"""
+        """Pick(self) -> Point2dC"""
         return _Ravl.CollectionPoint2dC_Pick(self)
 
     def Shuffle(self):
-        """Shuffle(CollectionPoint2dC self) -> CollectionPoint2dC"""
+        """Shuffle(self) -> CollectionPoint2dC"""
         return _Ravl.CollectionPoint2dC_Shuffle(self)
 
     def ShuffleIP(self):
-        """ShuffleIP(CollectionPoint2dC self)"""
+        """ShuffleIP(self)"""
         return _Ravl.CollectionPoint2dC_ShuffleIP(self)
 
     def Merge(self, *args):
         """
-        Merge(CollectionPoint2dC self, CollectionPoint2dC x)
-        Merge(CollectionPoint2dC self, SArray1dPoint2dC x)
+        Merge(self, x)
+        Merge(self, x)
         """
         return _Ravl.CollectionPoint2dC_Merge(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(CollectionPoint2dC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.CollectionPoint2dC_IsEmpty(self)
 
     def Empty(self):
-        """Empty(CollectionPoint2dC self)"""
+        """Empty(self)"""
         return _Ravl.CollectionPoint2dC_Empty(self)
 
     def Size(self):
-        """Size(CollectionPoint2dC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.CollectionPoint2dC_Size(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(CollectionPoint2dC self) -> SArray1dPoint2dC
-        SArray1d(CollectionPoint2dC self) -> SArray1dPoint2dC
+        SArray1d(self) -> SArray1dPoint2dC
+        SArray1d(self) -> SArray1dPoint2dC
         """
         return _Ravl.CollectionPoint2dC_SArray1d(self, *args)
 
     def Split(self, *args):
-        """Split(CollectionPoint2dC self, RavlN::SizeT ne) -> CollectionPoint2dC"""
+        """Split(self, ne) -> CollectionPoint2dC"""
         return _Ravl.CollectionPoint2dC_Split(self, *args)
 
     def Sample(self, *args):
-        """Sample(CollectionPoint2dC self, RavlN::SizeT ne) -> CollectionPoint2dC"""
+        """Sample(self, ne) -> CollectionPoint2dC"""
         return _Ravl.CollectionPoint2dC_Sample(self, *args)
 
     def Last(self, *args):
         """
-        Last(CollectionPoint2dC self) -> Point2dC
-        Last(CollectionPoint2dC self) -> Point2dC
+        Last(self) -> Point2dC
+        Last(self) -> Point2dC
         """
         return _Ravl.CollectionPoint2dC_Last(self, *args)
 
     def First(self, *args):
         """
-        First(CollectionPoint2dC self) -> Point2dC
-        First(CollectionPoint2dC self) -> Point2dC
+        First(self) -> Point2dC
+        First(self) -> Point2dC
         """
         return _Ravl.CollectionPoint2dC_First(self, *args)
 
     def __getitem__(self, *args):
-        """__getitem__(CollectionPoint2dC self, size_t i) -> Point2dC"""
+        """__getitem__(self, i) -> Point2dC"""
         return _Ravl.CollectionPoint2dC___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(CollectionPoint2dC self, size_t i, Point2dC v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.CollectionPoint2dC___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(CollectionPoint2dC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.CollectionPoint2dC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_CollectionPoint2dC
@@ -6441,110 +6432,110 @@ class CollectionVectorC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::CollectionC<(RavlN::VectorC)> self, RavlN::UIntT size=10) -> CollectionVectorC
-        __init__(RavlN::CollectionC<(RavlN::VectorC)> self) -> CollectionVectorC
-        __init__(RavlN::CollectionC<(RavlN::VectorC)> self, RavlN::SizeT maxSize, RavlN::SizeT used=0) -> CollectionVectorC
-        __init__(RavlN::CollectionC<(RavlN::VectorC)> self, RavlN::SizeT maxSize) -> CollectionVectorC
-        __init__(RavlN::CollectionC<(RavlN::VectorC)> self, SArray1dVectorC dat) -> CollectionVectorC
-        __init__(RavlN::CollectionC<(RavlN::VectorC)> self, RavlN::DListC< RavlN::VectorC > const & list) -> CollectionVectorC
+        __init__(self, size=10) -> CollectionVectorC
+        __init__(self) -> CollectionVectorC
+        __init__(self, maxSize, used=0) -> CollectionVectorC
+        __init__(self, maxSize) -> CollectionVectorC
+        __init__(self, dat) -> CollectionVectorC
+        __init__(self, list) -> CollectionVectorC
         """
         this = _Ravl.new_CollectionVectorC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Copy(self):
-        """Copy(CollectionVectorC self) -> CollectionVectorC"""
+        """Copy(self) -> CollectionVectorC"""
         return _Ravl.CollectionVectorC_Copy(self)
 
     def Insert(self, *args):
-        """Insert(CollectionVectorC self, VectorC dat) -> RavlN::UIntT"""
+        """Insert(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionVectorC_Insert(self, *args)
 
     def Append(self, *args):
-        """Append(CollectionVectorC self, VectorC dat) -> RavlN::UIntT"""
+        """Append(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionVectorC_Append(self, *args)
 
     def InsertRandom(self, *args):
-        """InsertRandom(CollectionVectorC self, VectorC dat) -> RavlN::UIntT"""
+        """InsertRandom(self, dat) -> RavlN::UIntT"""
         return _Ravl.CollectionVectorC_InsertRandom(self, *args)
 
     def Delete(self, *args):
-        """Delete(CollectionVectorC self, IndexC ind)"""
+        """Delete(self, ind)"""
         return _Ravl.CollectionVectorC_Delete(self, *args)
 
     def __iadd__(self, *args):
-        """__iadd__(CollectionVectorC self, VectorC dat)"""
+        """__iadd__(self, dat)"""
         return _Ravl.CollectionVectorC___iadd__(self, *args)
 
     def Pick(self):
-        """Pick(CollectionVectorC self) -> VectorC"""
+        """Pick(self) -> VectorC"""
         return _Ravl.CollectionVectorC_Pick(self)
 
     def Shuffle(self):
-        """Shuffle(CollectionVectorC self) -> CollectionVectorC"""
+        """Shuffle(self) -> CollectionVectorC"""
         return _Ravl.CollectionVectorC_Shuffle(self)
 
     def ShuffleIP(self):
-        """ShuffleIP(CollectionVectorC self)"""
+        """ShuffleIP(self)"""
         return _Ravl.CollectionVectorC_ShuffleIP(self)
 
     def Merge(self, *args):
         """
-        Merge(CollectionVectorC self, CollectionVectorC x)
-        Merge(CollectionVectorC self, SArray1dVectorC x)
+        Merge(self, x)
+        Merge(self, x)
         """
         return _Ravl.CollectionVectorC_Merge(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(CollectionVectorC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.CollectionVectorC_IsEmpty(self)
 
     def Empty(self):
-        """Empty(CollectionVectorC self)"""
+        """Empty(self)"""
         return _Ravl.CollectionVectorC_Empty(self)
 
     def Size(self):
-        """Size(CollectionVectorC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.CollectionVectorC_Size(self)
 
     def SArray1d(self, *args):
         """
-        SArray1d(CollectionVectorC self) -> SArray1dVectorC
-        SArray1d(CollectionVectorC self) -> SArray1dVectorC
+        SArray1d(self) -> SArray1dVectorC
+        SArray1d(self) -> SArray1dVectorC
         """
         return _Ravl.CollectionVectorC_SArray1d(self, *args)
 
     def Split(self, *args):
-        """Split(CollectionVectorC self, RavlN::SizeT ne) -> CollectionVectorC"""
+        """Split(self, ne) -> CollectionVectorC"""
         return _Ravl.CollectionVectorC_Split(self, *args)
 
     def Sample(self, *args):
-        """Sample(CollectionVectorC self, RavlN::SizeT ne) -> CollectionVectorC"""
+        """Sample(self, ne) -> CollectionVectorC"""
         return _Ravl.CollectionVectorC_Sample(self, *args)
 
     def Last(self, *args):
         """
-        Last(CollectionVectorC self) -> VectorC
-        Last(CollectionVectorC self) -> VectorC
+        Last(self) -> VectorC
+        Last(self) -> VectorC
         """
         return _Ravl.CollectionVectorC_Last(self, *args)
 
     def First(self, *args):
         """
-        First(CollectionVectorC self) -> VectorC
-        First(CollectionVectorC self) -> VectorC
+        First(self) -> VectorC
+        First(self) -> VectorC
         """
         return _Ravl.CollectionVectorC_First(self, *args)
 
     def __getitem__(self, *args):
-        """__getitem__(CollectionVectorC self, size_t i) -> VectorC"""
+        """__getitem__(self, i) -> VectorC"""
         return _Ravl.CollectionVectorC___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        """__setitem__(CollectionVectorC self, size_t i, VectorC v)"""
+        """__setitem__(self, i, v)"""
         return _Ravl.CollectionVectorC___setitem__(self, *args)
 
     def __str__(self):
-        """__str__(CollectionVectorC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.CollectionVectorC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_CollectionVectorC
@@ -6561,89 +6552,89 @@ class RCHashStringPointsC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::RCHashC<(RavlN::StringC,RavlN::CollectionC<(RavlN::Point2dC)>)> self, bool makeBod=True) -> RCHashStringPointsC
-        __init__(RavlN::RCHashC<(RavlN::StringC,RavlN::CollectionC<(RavlN::Point2dC)>)> self) -> RCHashStringPointsC
-        __init__(RavlN::RCHashC<(RavlN::StringC,RavlN::CollectionC<(RavlN::Point2dC)>)> self, RavlN::SizeT nBins) -> RCHashStringPointsC
+        __init__(self, makeBod=True) -> RCHashStringPointsC
+        __init__(self) -> RCHashStringPointsC
+        __init__(self, nBins) -> RCHashStringPointsC
         """
         this = _Ravl.new_RCHashStringPointsC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Del(self, *args):
-        """Del(RCHashStringPointsC self, StringC aKey) -> bool"""
+        """Del(self, aKey) -> bool"""
         return _Ravl.RCHashStringPointsC_Del(self, *args)
 
     def IsElm(self, *args):
-        """IsElm(RCHashStringPointsC self, StringC aKey) -> bool"""
+        """IsElm(self, aKey) -> bool"""
         return _Ravl.RCHashStringPointsC_IsElm(self, *args)
 
     def Move(self, *args):
-        """Move(RCHashStringPointsC self, RCHashStringPointsC oth)"""
+        """Move(self, oth)"""
         return _Ravl.RCHashStringPointsC_Move(self, *args)
 
     def IsEmpty(self):
-        """IsEmpty(RCHashStringPointsC self) -> bool"""
+        """IsEmpty(self) -> bool"""
         return _Ravl.RCHashStringPointsC_IsEmpty(self)
 
     def Empty(self):
-        """Empty(RCHashStringPointsC self)"""
+        """Empty(self)"""
         return _Ravl.RCHashStringPointsC_Empty(self)
 
     def Insert(self, *args):
-        """Insert(RCHashStringPointsC self, StringC aKey, CollectionPoint2dC data) -> bool"""
+        """Insert(self, aKey, data) -> bool"""
         return _Ravl.RCHashStringPointsC_Insert(self, *args)
 
     def Size(self):
-        """Size(RCHashStringPointsC self) -> RavlN::SizeT"""
+        """Size(self) -> RavlN::SizeT"""
         return _Ravl.RCHashStringPointsC_Size(self)
 
     def Lookup(self, *args):
         """
-        Lookup(RCHashStringPointsC self, StringC aKey) -> CollectionPoint2dC
-        Lookup(RCHashStringPointsC self, StringC aKey) -> CollectionPoint2dC
-        Lookup(RCHashStringPointsC self, StringC aKey, CollectionPoint2dC data) -> bool
+        Lookup(self, aKey) -> CollectionPoint2dC
+        Lookup(self, aKey) -> CollectionPoint2dC
+        Lookup(self, aKey, data) -> bool
         """
         return _Ravl.RCHashStringPointsC_Lookup(self, *args)
 
     def Update(self, *args):
         """
-        Update(RCHashStringPointsC self, StringC key, CollectionPoint2dC data) -> bool
-        Update(RCHashStringPointsC self, StringC key) -> CollectionPoint2dC
+        Update(self, key, data) -> bool
+        Update(self, key) -> CollectionPoint2dC
         """
         return _Ravl.RCHashStringPointsC_Update(self, *args)
 
     def Access(self, *args):
         """
-        Access(RCHashStringPointsC self, StringC key, CollectionPoint2dC dat=RavlN::CollectionC< RavlN::Point2dC >()) -> CollectionPoint2dC
-        Access(RCHashStringPointsC self, StringC key) -> CollectionPoint2dC
+        Access(self, key, dat=RavlN::CollectionC< RavlN::Point2dC >()) -> CollectionPoint2dC
+        Access(self, key) -> CollectionPoint2dC
         """
         return _Ravl.RCHashStringPointsC_Access(self, *args)
 
     def AddFrom(self, *args):
         """
-        AddFrom(RCHashStringPointsC self, RCHashStringPointsC oth, bool replace=True)
-        AddFrom(RCHashStringPointsC self, RCHashStringPointsC oth)
+        AddFrom(self, oth, replace=True)
+        AddFrom(self, oth)
         """
         return _Ravl.RCHashStringPointsC_AddFrom(self, *args)
 
     def NormaliseKey(self, *args):
-        """NormaliseKey(RCHashStringPointsC self, StringC value) -> bool"""
+        """NormaliseKey(self, value) -> bool"""
         return _Ravl.RCHashStringPointsC_NormaliseKey(self, *args)
 
     def Hash(self):
-        """Hash(RCHashStringPointsC self) -> RavlN::SizeT"""
+        """Hash(self) -> RavlN::SizeT"""
         return _Ravl.RCHashStringPointsC_Hash(self)
 
     def __eq__(self, *args):
         """
-        __eq__(RCHashStringPointsC self, RCHashStringPointsC oth) -> bool
-        __eq__(RCHashStringPointsC self, RavlN::HashC< RavlN::StringC,RavlN::CollectionC< RavlN::Point2dC > > const & oth) -> bool
+        __eq__(self, oth) -> bool
+        __eq__(self, oth) -> bool
         """
         return _Ravl.RCHashStringPointsC___eq__(self, *args)
 
     def __ne__(self, *args):
         """
-        __ne__(RCHashStringPointsC self, RCHashStringPointsC oth) -> bool
-        __ne__(RCHashStringPointsC self, RavlN::HashC< RavlN::StringC,RavlN::CollectionC< RavlN::Point2dC > > const & oth) -> bool
+        __ne__(self, oth) -> bool
+        __ne__(self, oth) -> bool
         """
         return _Ravl.RCHashStringPointsC___ne__(self, *args)
 
@@ -6660,22 +6651,244 @@ class ClassifierC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, ClassifierC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::ClassifierC self) -> ClassifierC"""
+        """__init__(self) -> ClassifierC"""
         this = _Ravl.new_ClassifierC()
         try: self.this.append(this)
         except: self.this = this
     def Classify(self, *args):
-        """Classify(ClassifierC self, VectorC vector) -> RavlN::UIntT"""
+        """Classify(self, vector) -> RavlN::UIntT"""
         return _Ravl.ClassifierC_Classify(self, *args)
 
     def Confidence(self, *args):
-        """Confidence(ClassifierC self, VectorC vector) -> VectorC"""
+        """Confidence(self, vector) -> VectorC"""
         return _Ravl.ClassifierC_Confidence(self, *args)
 
     __swig_destroy__ = _Ravl.delete_ClassifierC
     __del__ = lambda self : None;
 ClassifierC_swigregister = _Ravl.ClassifierC_swigregister
 ClassifierC_swigregister(ClassifierC)
+
+class SampleOfUInt(_object):
+    """Proxy of C++ RavlN::SampleC<(RavlN::UIntT)> class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, SampleOfUInt, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, SampleOfUInt, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(self, maxSize=10) -> SampleOfUInt
+        __init__(self) -> SampleOfUInt
+        __init__(self, dat) -> SampleOfUInt
+        """
+        this = _Ravl.new_SampleOfUInt(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def Copy(self):
+        """Copy(self) -> SampleOfUInt"""
+        return _Ravl.SampleOfUInt_Copy(self)
+
+    def CompactFrom(self, *args):
+        """
+        CompactFrom(self, start, size) -> SampleOfUInt
+        CompactFrom(self, start, size) -> SampleOfUInt
+        """
+        return _Ravl.SampleOfUInt_CompactFrom(self, *args)
+
+    def ExtractEntry(self, *args):
+        """ExtractEntry(self, ind) -> unsigned int"""
+        return _Ravl.SampleOfUInt_ExtractEntry(self, *args)
+
+    def Fill(self, *args):
+        """Fill(self, value)"""
+        return _Ravl.SampleOfUInt_Fill(self, *args)
+
+    def Append(self, *args):
+        """
+        Append(self, dat) -> IndexC
+        Append(self, newData) -> IndexC
+        """
+        return _Ravl.SampleOfUInt_Append(self, *args)
+
+    def __iadd__(self, *args):
+        """__iadd__(self, dat) -> IndexC"""
+        return _Ravl.SampleOfUInt___iadd__(self, *args)
+
+    def Size(self):
+        """Size(self) -> RavlN::SizeT"""
+        return _Ravl.SampleOfUInt_Size(self)
+
+    def PickElement(self, *args):
+        """PickElement(self, i) -> unsigned int"""
+        return _Ravl.SampleOfUInt_PickElement(self, *args)
+
+    def Nth(self, *args):
+        """
+        Nth(self, i) -> unsigned int
+        Nth(self, i) -> unsigned int const &
+        """
+        return _Ravl.SampleOfUInt_Nth(self, *args)
+
+    def Pick(self):
+        """Pick(self) -> unsigned int"""
+        return _Ravl.SampleOfUInt_Pick(self)
+
+    def Sample(self, *args):
+        """
+        Sample(self) -> unsigned int const
+        Sample(self) -> unsigned int &
+        """
+        return _Ravl.SampleOfUInt_Sample(self, *args)
+
+    def First(self, *args):
+        """
+        First(self) -> unsigned int
+        First(self) -> unsigned int const &
+        """
+        return _Ravl.SampleOfUInt_First(self, *args)
+
+    def Last(self, *args):
+        """
+        Last(self) -> unsigned int
+        Last(self) -> unsigned int const &
+        """
+        return _Ravl.SampleOfUInt_Last(self, *args)
+
+    def IsEmpty(self):
+        """IsEmpty(self) -> bool"""
+        return _Ravl.SampleOfUInt_IsEmpty(self)
+
+    def IsValid(self):
+        """IsValid(self) -> bool"""
+        return _Ravl.SampleOfUInt_IsValid(self)
+
+    def __getitem__(self, *args):
+        """__getitem__(self, i) -> unsigned int const &"""
+        return _Ravl.SampleOfUInt___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        """__setitem__(self, i, v)"""
+        return _Ravl.SampleOfUInt___setitem__(self, *args)
+
+    def __str__(self):
+        """__str__(self) -> char const *"""
+        return _Ravl.SampleOfUInt___str__(self)
+
+    __swig_destroy__ = _Ravl.delete_SampleOfUInt
+    __del__ = lambda self : None;
+SampleOfUInt_swigregister = _Ravl.SampleOfUInt_swigregister
+SampleOfUInt_swigregister(SampleOfUInt)
+
+class SampleOfVectorC(_object):
+    """Proxy of C++ RavlN::SampleC<(RavlN::VectorC)> class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, SampleOfVectorC, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, SampleOfVectorC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(self, maxSize=10) -> SampleOfVectorC
+        __init__(self) -> SampleOfVectorC
+        __init__(self, dat) -> SampleOfVectorC
+        """
+        this = _Ravl.new_SampleOfVectorC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def Copy(self):
+        """Copy(self) -> SampleOfVectorC"""
+        return _Ravl.SampleOfVectorC_Copy(self)
+
+    def CompactFrom(self, *args):
+        """
+        CompactFrom(self, start, size) -> SampleOfVectorC
+        CompactFrom(self, start, size) -> SampleOfVectorC
+        """
+        return _Ravl.SampleOfVectorC_CompactFrom(self, *args)
+
+    def ExtractEntry(self, *args):
+        """ExtractEntry(self, ind) -> VectorC"""
+        return _Ravl.SampleOfVectorC_ExtractEntry(self, *args)
+
+    def Fill(self, *args):
+        """Fill(self, value)"""
+        return _Ravl.SampleOfVectorC_Fill(self, *args)
+
+    def Append(self, *args):
+        """
+        Append(self, dat) -> IndexC
+        Append(self, newData) -> IndexC
+        """
+        return _Ravl.SampleOfVectorC_Append(self, *args)
+
+    def __iadd__(self, *args):
+        """__iadd__(self, dat) -> IndexC"""
+        return _Ravl.SampleOfVectorC___iadd__(self, *args)
+
+    def Size(self):
+        """Size(self) -> RavlN::SizeT"""
+        return _Ravl.SampleOfVectorC_Size(self)
+
+    def PickElement(self, *args):
+        """PickElement(self, i) -> VectorC"""
+        return _Ravl.SampleOfVectorC_PickElement(self, *args)
+
+    def Nth(self, *args):
+        """
+        Nth(self, i) -> VectorC
+        Nth(self, i) -> VectorC
+        """
+        return _Ravl.SampleOfVectorC_Nth(self, *args)
+
+    def Pick(self):
+        """Pick(self) -> VectorC"""
+        return _Ravl.SampleOfVectorC_Pick(self)
+
+    def Sample(self, *args):
+        """
+        Sample(self) -> VectorC
+        Sample(self) -> VectorC
+        """
+        return _Ravl.SampleOfVectorC_Sample(self, *args)
+
+    def First(self, *args):
+        """
+        First(self) -> VectorC
+        First(self) -> VectorC
+        """
+        return _Ravl.SampleOfVectorC_First(self, *args)
+
+    def Last(self, *args):
+        """
+        Last(self) -> VectorC
+        Last(self) -> VectorC
+        """
+        return _Ravl.SampleOfVectorC_Last(self, *args)
+
+    def IsEmpty(self):
+        """IsEmpty(self) -> bool"""
+        return _Ravl.SampleOfVectorC_IsEmpty(self)
+
+    def IsValid(self):
+        """IsValid(self) -> bool"""
+        return _Ravl.SampleOfVectorC_IsValid(self)
+
+    def __getitem__(self, *args):
+        """__getitem__(self, i) -> VectorC"""
+        return _Ravl.SampleOfVectorC___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        """__setitem__(self, i, v)"""
+        return _Ravl.SampleOfVectorC___setitem__(self, *args)
+
+    def __str__(self):
+        """__str__(self) -> char const *"""
+        return _Ravl.SampleOfVectorC___str__(self)
+
+    __swig_destroy__ = _Ravl.delete_SampleOfVectorC
+    __del__ = lambda self : None;
+SampleOfVectorC_swigregister = _Ravl.SampleOfVectorC_swigregister
+SampleOfVectorC_swigregister(SampleOfVectorC)
 
 class FunctionC(_object):
     """Proxy of C++ RavlN::FunctionC class"""
@@ -6685,27 +6898,59 @@ class FunctionC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, FunctionC, name)
     __repr__ = _swig_repr
     def Apply(self, *args):
-        """Apply(FunctionC self, VectorC data) -> VectorC"""
+        """
+        Apply(self, data) -> VectorC
+        Apply(self, data1, data2) -> VectorC
+        Apply(self, data) -> SampleOfVectorC
+        """
         return _Ravl.FunctionC_Apply(self, *args)
 
+    def __call__(self, *args):
+        """__call__(self, X) -> VectorC"""
+        return _Ravl.FunctionC___call__(self, *args)
+
+    def CheckJacobian(self, *args):
+        """
+        CheckJacobian(self, X, tolerance=1e-4, epsilon=1e-4) -> bool
+        CheckJacobian(self, X, tolerance=1e-4) -> bool
+        CheckJacobian(self, X) -> bool
+        """
+        return _Ravl.FunctionC_CheckJacobian(self, *args)
+
+    def Jacobian(self, *args):
+        """Jacobian(self, X) -> MatrixC"""
+        return _Ravl.FunctionC_Jacobian(self, *args)
+
+    def Evaluate(self, *args):
+        """Evaluate(self, X) -> VectorMatrixC"""
+        return _Ravl.FunctionC_Evaluate(self, *args)
+
+    def EvaluateValueJacobian(self, *args):
+        """EvaluateValueJacobian(self, X, value, jacobian) -> bool"""
+        return _Ravl.FunctionC_EvaluateValueJacobian(self, *args)
+
+    def EvaluateValue(self, *args):
+        """EvaluateValue(self, X, value) -> bool"""
+        return _Ravl.FunctionC_EvaluateValue(self, *args)
+
     def InputSize(self):
-        """InputSize(FunctionC self) -> RavlN::UIntT"""
+        """InputSize(self) -> RavlN::UIntT"""
         return _Ravl.FunctionC_InputSize(self)
 
     def OutputSize(self):
-        """OutputSize(FunctionC self) -> RavlN::UIntT"""
+        """OutputSize(self) -> RavlN::UIntT"""
         return _Ravl.FunctionC_OutputSize(self)
 
     def __str__(self):
-        """__str__(FunctionC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.FunctionC___str__(self)
 
     def __nonzero__(self):
-        """__nonzero__(FunctionC self) -> bool"""
+        """__nonzero__(self) -> bool"""
         return _Ravl.FunctionC___nonzero__(self)
 
     def __init__(self): 
-        """__init__(RavlN::FunctionC self) -> FunctionC"""
+        """__init__(self) -> FunctionC"""
         this = _Ravl.new_FunctionC()
         try: self.this.append(this)
         except: self.this = this
@@ -6724,7 +6969,7 @@ class ClassifierPreprocessC(ClassifierC):
     __getattr__ = lambda self, name: _swig_getattr(self, ClassifierPreprocessC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlN::ClassifierPreprocessC self, FunctionC function, ClassifierC classifier) -> ClassifierPreprocessC"""
+        """__init__(self, function, classifier) -> ClassifierPreprocessC"""
         this = _Ravl.new_ClassifierPreprocessC(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -6736,21 +6981,21 @@ ClassifierPreprocessC_swigregister(ClassifierPreprocessC)
 
 def Load(*args):
   """
-    Load(StringC filename, ImageByteC arg2) -> bool
-    Load(StringC filename, RavlImageN::ImageC< RavlN::RealT > & arg2) -> bool
-    Load(StringC filename, ImageByteRGBValueC arg2) -> bool
-    Load(StringC filename, ClassifierC classifier) -> bool
-    Load(StringC filename, FunctionC classifier) -> bool
+    Load(filename, arg2) -> bool
+    Load(filename, arg2) -> bool
+    Load(filename, arg2) -> bool
+    Load(filename, classifier) -> bool
+    Load(filename, classifier) -> bool
     """
   return _Ravl.Load(*args)
 
 def Save(*args):
   """
-    Save(StringC filename, ImageByteC arg2) -> bool
-    Save(StringC filename, RavlImageN::ImageC< RavlN::RealT > const & arg2) -> bool
-    Save(StringC filename, ImageByteRGBValueC arg2) -> bool
-    Save(StringC filename, ClassifierC classifier) -> bool
-    Save(StringC filename, FunctionC classifier) -> bool
+    Save(filename, arg2) -> bool
+    Save(filename, arg2) -> bool
+    Save(filename, arg2) -> bool
+    Save(filename, classifier) -> bool
+    Save(filename, classifier) -> bool
     """
   return _Ravl.Save(*args)
 class RealHistogram1dC(SArray1dReal):
@@ -6764,322 +7009,100 @@ class RealHistogram1dC(SArray1dReal):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::RealHistogram1dC self) -> RealHistogram1dC
-        __init__(RavlN::RealHistogram1dC self, RavlN::RealT min, RavlN::RealT max, RavlN::UIntT noOfBins) -> RealHistogram1dC
+        __init__(self) -> RealHistogram1dC
+        __init__(self, min, max, noOfBins) -> RealHistogram1dC
         """
         this = _Ravl.new_RealHistogram1dC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Scale(self):
-        """Scale(RealHistogram1dC self) -> RavlN::RealT"""
+        """Scale(self) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_Scale(self)
 
     def Offset(self):
-        """Offset(RealHistogram1dC self) -> RavlN::RealT"""
+        """Offset(self) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_Offset(self)
 
     def Bin(self, *args):
-        """Bin(RealHistogram1dC self, RavlN::RealT v) -> IndexC"""
+        """Bin(self, v) -> IndexC"""
         return _Ravl.RealHistogram1dC_Bin(self, *args)
 
     def MidBin(self, *args):
-        """MidBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"""
+        """MidBin(self, bin) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_MidBin(self, *args)
 
     def MinBin(self, *args):
-        """MinBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"""
+        """MinBin(self, bin) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_MinBin(self, *args)
 
     def MaxBin(self, *args):
-        """MaxBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"""
+        """MaxBin(self, bin) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_MaxBin(self, *args)
 
     def MinLimit(self):
-        """MinLimit(RealHistogram1dC self) -> RavlN::RealT"""
+        """MinLimit(self) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_MinLimit(self)
 
     def MaxLimit(self):
-        """MaxLimit(RealHistogram1dC self) -> RavlN::RealT"""
+        """MaxLimit(self) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_MaxLimit(self)
 
     def Reset(self):
-        """Reset(RealHistogram1dC self)"""
+        """Reset(self)"""
         return _Ravl.RealHistogram1dC_Reset(self)
 
     def Vote(self, *args):
         """
-        Vote(RealHistogram1dC self, RavlN::RealT v)
-        Vote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n)
+        Vote(self, v)
+        Vote(self, v, n)
         """
         return _Ravl.RealHistogram1dC_Vote(self, *args)
 
     def CheckVote(self, *args):
         """
-        CheckVote(RealHistogram1dC self, RavlN::RealT v) -> bool
-        CheckVote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n) -> bool
+        CheckVote(self, v) -> bool
+        CheckVote(self, v, n) -> bool
         """
         return _Ravl.RealHistogram1dC_CheckVote(self, *args)
 
     def TotalVotes(self):
-        """TotalVotes(RealHistogram1dC self) -> RavlN::UIntT"""
+        """TotalVotes(self) -> RavlN::UIntT"""
         return _Ravl.RealHistogram1dC_TotalVotes(self)
 
     def Information(self):
-        """Information(RealHistogram1dC self) -> RavlN::RealT"""
+        """Information(self) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_Information(self)
 
     def Energy(self):
-        """Energy(RealHistogram1dC self) -> RavlN::RealT"""
+        """Energy(self) -> RavlN::RealT"""
         return _Ravl.RealHistogram1dC_Energy(self)
 
     def SmoothedPDF(self, *args):
         """
-        SmoothedPDF(RealHistogram1dC self, RavlN::IntT bin, RavlN::RealT sigma=1) -> RavlN::RealT
-        SmoothedPDF(RealHistogram1dC self, RavlN::IntT bin) -> RavlN::RealT
+        SmoothedPDF(self, bin, sigma=1) -> RavlN::RealT
+        SmoothedPDF(self, bin) -> RavlN::RealT
         """
         return _Ravl.RealHistogram1dC_SmoothedPDF(self, *args)
 
     def Peaks(self, *args):
         """
-        Peaks(RealHistogram1dC self, RavlN::UIntT width, RavlN::UIntT threshold=0) -> DListRealC
-        Peaks(RealHistogram1dC self, RavlN::UIntT width) -> DListRealC
+        Peaks(self, width, threshold=0) -> DListRealC
+        Peaks(self, width) -> DListRealC
         """
         return _Ravl.RealHistogram1dC_Peaks(self, *args)
 
     def MinMax(self, *args):
-        """MinMax(RealHistogram1dC self, IndexC min, IndexC max) -> bool"""
+        """MinMax(self, min, max) -> bool"""
         return _Ravl.RealHistogram1dC_MinMax(self, *args)
 
     def Sum(self, *args):
-        """Sum(RealHistogram1dC self, IndexC min, IndexC max) -> RavlN::UIntT"""
+        """Sum(self, min, max) -> RavlN::UIntT"""
         return _Ravl.RealHistogram1dC_Sum(self, *args)
 
     __swig_destroy__ = _Ravl.delete_RealHistogram1dC
     __del__ = lambda self : None;
 RealHistogram1dC_swigregister = _Ravl.RealHistogram1dC_swigregister
 RealHistogram1dC_swigregister(RealHistogram1dC)
-
-class SampleOfUInt(_object):
-    """Proxy of C++ RavlN::SampleC<(RavlN::UIntT)> class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, SampleOfUInt, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, SampleOfUInt, name)
-    __repr__ = _swig_repr
-    def __init__(self, *args): 
-        """
-        __init__(RavlN::SampleC<(RavlN::UIntT)> self, RavlN::SizeT maxSize=10) -> SampleOfUInt
-        __init__(RavlN::SampleC<(RavlN::UIntT)> self) -> SampleOfUInt
-        __init__(RavlN::SampleC<(RavlN::UIntT)> self, SArray1dUInt dat) -> SampleOfUInt
-        """
-        this = _Ravl.new_SampleOfUInt(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    def Copy(self):
-        """Copy(SampleOfUInt self) -> SampleOfUInt"""
-        return _Ravl.SampleOfUInt_Copy(self)
-
-    def CompactFrom(self, *args):
-        """
-        CompactFrom(SampleOfUInt self, IndexC start, RavlN::SizeT size) -> SampleOfUInt
-        CompactFrom(SampleOfUInt self, IndexC start, RavlN::SizeT size) -> SampleOfUInt
-        """
-        return _Ravl.SampleOfUInt_CompactFrom(self, *args)
-
-    def ExtractEntry(self, *args):
-        """ExtractEntry(SampleOfUInt self, int ind) -> unsigned int"""
-        return _Ravl.SampleOfUInt_ExtractEntry(self, *args)
-
-    def Fill(self, *args):
-        """Fill(SampleOfUInt self, unsigned int const & value)"""
-        return _Ravl.SampleOfUInt_Fill(self, *args)
-
-    def Append(self, *args):
-        """
-        Append(SampleOfUInt self, unsigned int const & dat) -> IndexC
-        Append(SampleOfUInt self, SampleOfUInt newData) -> IndexC
-        """
-        return _Ravl.SampleOfUInt_Append(self, *args)
-
-    def __iadd__(self, *args):
-        """__iadd__(SampleOfUInt self, unsigned int const & dat) -> IndexC"""
-        return _Ravl.SampleOfUInt___iadd__(self, *args)
-
-    def Size(self):
-        """Size(SampleOfUInt self) -> RavlN::SizeT"""
-        return _Ravl.SampleOfUInt_Size(self)
-
-    def PickElement(self, *args):
-        """PickElement(SampleOfUInt self, RavlN::UIntT i) -> unsigned int"""
-        return _Ravl.SampleOfUInt_PickElement(self, *args)
-
-    def Nth(self, *args):
-        """
-        Nth(SampleOfUInt self, RavlN::UIntT i) -> unsigned int
-        Nth(SampleOfUInt self, RavlN::UIntT i) -> unsigned int const &
-        """
-        return _Ravl.SampleOfUInt_Nth(self, *args)
-
-    def Pick(self):
-        """Pick(SampleOfUInt self) -> unsigned int"""
-        return _Ravl.SampleOfUInt_Pick(self)
-
-    def Sample(self, *args):
-        """
-        Sample(SampleOfUInt self) -> unsigned int const
-        Sample(SampleOfUInt self) -> unsigned int &
-        """
-        return _Ravl.SampleOfUInt_Sample(self, *args)
-
-    def First(self, *args):
-        """
-        First(SampleOfUInt self) -> unsigned int
-        First(SampleOfUInt self) -> unsigned int const &
-        """
-        return _Ravl.SampleOfUInt_First(self, *args)
-
-    def Last(self, *args):
-        """
-        Last(SampleOfUInt self) -> unsigned int
-        Last(SampleOfUInt self) -> unsigned int const &
-        """
-        return _Ravl.SampleOfUInt_Last(self, *args)
-
-    def IsEmpty(self):
-        """IsEmpty(SampleOfUInt self) -> bool"""
-        return _Ravl.SampleOfUInt_IsEmpty(self)
-
-    def IsValid(self):
-        """IsValid(SampleOfUInt self) -> bool"""
-        return _Ravl.SampleOfUInt_IsValid(self)
-
-    def __getitem__(self, *args):
-        """__getitem__(SampleOfUInt self, size_t i) -> unsigned int const &"""
-        return _Ravl.SampleOfUInt___getitem__(self, *args)
-
-    def __setitem__(self, *args):
-        """__setitem__(SampleOfUInt self, size_t i, unsigned int const & v)"""
-        return _Ravl.SampleOfUInt___setitem__(self, *args)
-
-    def __str__(self):
-        """__str__(SampleOfUInt self) -> char const *"""
-        return _Ravl.SampleOfUInt___str__(self)
-
-    __swig_destroy__ = _Ravl.delete_SampleOfUInt
-    __del__ = lambda self : None;
-SampleOfUInt_swigregister = _Ravl.SampleOfUInt_swigregister
-SampleOfUInt_swigregister(SampleOfUInt)
-
-class SampleOfVectorC(_object):
-    """Proxy of C++ RavlN::SampleC<(RavlN::VectorC)> class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, SampleOfVectorC, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, SampleOfVectorC, name)
-    __repr__ = _swig_repr
-    def __init__(self, *args): 
-        """
-        __init__(RavlN::SampleC<(RavlN::VectorC)> self, RavlN::SizeT maxSize=10) -> SampleOfVectorC
-        __init__(RavlN::SampleC<(RavlN::VectorC)> self) -> SampleOfVectorC
-        __init__(RavlN::SampleC<(RavlN::VectorC)> self, SArray1dVectorC dat) -> SampleOfVectorC
-        """
-        this = _Ravl.new_SampleOfVectorC(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    def Copy(self):
-        """Copy(SampleOfVectorC self) -> SampleOfVectorC"""
-        return _Ravl.SampleOfVectorC_Copy(self)
-
-    def CompactFrom(self, *args):
-        """
-        CompactFrom(SampleOfVectorC self, IndexC start, RavlN::SizeT size) -> SampleOfVectorC
-        CompactFrom(SampleOfVectorC self, IndexC start, RavlN::SizeT size) -> SampleOfVectorC
-        """
-        return _Ravl.SampleOfVectorC_CompactFrom(self, *args)
-
-    def ExtractEntry(self, *args):
-        """ExtractEntry(SampleOfVectorC self, int ind) -> VectorC"""
-        return _Ravl.SampleOfVectorC_ExtractEntry(self, *args)
-
-    def Fill(self, *args):
-        """Fill(SampleOfVectorC self, VectorC value)"""
-        return _Ravl.SampleOfVectorC_Fill(self, *args)
-
-    def Append(self, *args):
-        """
-        Append(SampleOfVectorC self, VectorC dat) -> IndexC
-        Append(SampleOfVectorC self, SampleOfVectorC newData) -> IndexC
-        """
-        return _Ravl.SampleOfVectorC_Append(self, *args)
-
-    def __iadd__(self, *args):
-        """__iadd__(SampleOfVectorC self, VectorC dat) -> IndexC"""
-        return _Ravl.SampleOfVectorC___iadd__(self, *args)
-
-    def Size(self):
-        """Size(SampleOfVectorC self) -> RavlN::SizeT"""
-        return _Ravl.SampleOfVectorC_Size(self)
-
-    def PickElement(self, *args):
-        """PickElement(SampleOfVectorC self, RavlN::UIntT i) -> VectorC"""
-        return _Ravl.SampleOfVectorC_PickElement(self, *args)
-
-    def Nth(self, *args):
-        """
-        Nth(SampleOfVectorC self, RavlN::UIntT i) -> VectorC
-        Nth(SampleOfVectorC self, RavlN::UIntT i) -> VectorC
-        """
-        return _Ravl.SampleOfVectorC_Nth(self, *args)
-
-    def Pick(self):
-        """Pick(SampleOfVectorC self) -> VectorC"""
-        return _Ravl.SampleOfVectorC_Pick(self)
-
-    def Sample(self, *args):
-        """
-        Sample(SampleOfVectorC self) -> VectorC
-        Sample(SampleOfVectorC self) -> VectorC
-        """
-        return _Ravl.SampleOfVectorC_Sample(self, *args)
-
-    def First(self, *args):
-        """
-        First(SampleOfVectorC self) -> VectorC
-        First(SampleOfVectorC self) -> VectorC
-        """
-        return _Ravl.SampleOfVectorC_First(self, *args)
-
-    def Last(self, *args):
-        """
-        Last(SampleOfVectorC self) -> VectorC
-        Last(SampleOfVectorC self) -> VectorC
-        """
-        return _Ravl.SampleOfVectorC_Last(self, *args)
-
-    def IsEmpty(self):
-        """IsEmpty(SampleOfVectorC self) -> bool"""
-        return _Ravl.SampleOfVectorC_IsEmpty(self)
-
-    def IsValid(self):
-        """IsValid(SampleOfVectorC self) -> bool"""
-        return _Ravl.SampleOfVectorC_IsValid(self)
-
-    def __getitem__(self, *args):
-        """__getitem__(SampleOfVectorC self, size_t i) -> VectorC"""
-        return _Ravl.SampleOfVectorC___getitem__(self, *args)
-
-    def __setitem__(self, *args):
-        """__setitem__(SampleOfVectorC self, size_t i, VectorC v)"""
-        return _Ravl.SampleOfVectorC___setitem__(self, *args)
-
-    def __str__(self):
-        """__str__(SampleOfVectorC self) -> char const *"""
-        return _Ravl.SampleOfVectorC___str__(self)
-
-    __swig_destroy__ = _Ravl.delete_SampleOfVectorC
-    __del__ = lambda self : None;
-SampleOfVectorC_swigregister = _Ravl.SampleOfVectorC_swigregister
-SampleOfVectorC_swigregister(SampleOfVectorC)
 
 DATASET_NORMALISE_NONE = _Ravl.DATASET_NORMALISE_NONE
 DATASET_NORMALISE_MEAN = _Ravl.DATASET_NORMALISE_MEAN
@@ -7095,54 +7118,54 @@ class SampleVectorC(SampleOfVectorC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::SampleVectorC self, RavlN::SizeT maxSize=10) -> SampleVectorC
-        __init__(RavlN::SampleVectorC self) -> SampleVectorC
-        __init__(RavlN::SampleVectorC self, SArray1dVectorC dat) -> SampleVectorC
-        __init__(RavlN::SampleVectorC self, SampleOfVectorC svec) -> SampleVectorC
-        __init__(RavlN::SampleVectorC self, SampleOfVectorC svec, SArray1dIndexC featureSet) -> SampleVectorC
-        __init__(RavlN::SampleVectorC self, MeanCovarianceC meanCovariance) -> SampleVectorC
+        __init__(self, maxSize=10) -> SampleVectorC
+        __init__(self) -> SampleVectorC
+        __init__(self, dat) -> SampleVectorC
+        __init__(self, svec) -> SampleVectorC
+        __init__(self, svec, featureSet) -> SampleVectorC
+        __init__(self, meanCovariance) -> SampleVectorC
         """
         this = _Ravl.new_SampleVectorC(*args)
         try: self.this.append(this)
         except: self.this = this
     def VectorSize(self):
-        """VectorSize(SampleVectorC self) -> RavlN::UIntT"""
+        """VectorSize(self) -> RavlN::UIntT"""
         return _Ravl.SampleVectorC_VectorSize(self)
 
     def Mean(self, *args):
         """
-        Mean(SampleVectorC self) -> VectorC
-        Mean(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & weights) -> VectorC
+        Mean(self) -> VectorC
+        Mean(self, weights) -> VectorC
         """
         return _Ravl.SampleVectorC_Mean(self, *args)
 
     def MeanCovariance(self, *args):
         """
-        MeanCovariance(SampleVectorC self, bool sampleStatistics=True) -> MeanCovarianceC
-        MeanCovariance(SampleVectorC self) -> MeanCovarianceC
-        MeanCovariance(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & weights, bool sampleStatistics=True) -> MeanCovarianceC
-        MeanCovariance(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & weights) -> MeanCovarianceC
+        MeanCovariance(self, sampleStatistics=True) -> MeanCovarianceC
+        MeanCovariance(self) -> MeanCovarianceC
+        MeanCovariance(self, weights, sampleStatistics=True) -> MeanCovarianceC
+        MeanCovariance(self, weights) -> MeanCovarianceC
         """
         return _Ravl.SampleVectorC_MeanCovariance(self, *args)
 
     def SumOuterProducts(self, *args):
         """
-        SumOuterProducts(SampleVectorC self) -> MatrixRUTC
-        SumOuterProducts(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & w) -> MatrixRUTC
+        SumOuterProducts(self) -> MatrixRUTC
+        SumOuterProducts(self, w) -> MatrixRUTC
         """
         return _Ravl.SampleVectorC_SumOuterProducts(self, *args)
 
     def TMul(self, *args):
         """
-        TMul(SampleVectorC self, SampleOfVectorC sam2) -> MatrixC
-        TMul(SampleVectorC self, SampleOfVectorC sam2, RavlN::SampleC< RavlN::RealT > const & w) -> MatrixC
+        TMul(self, sam2) -> MatrixC
+        TMul(self, sam2, w) -> MatrixC
         """
         return _Ravl.SampleVectorC_TMul(self, *args)
 
     def Normalise(self, *args):
         """
-        Normalise(SampleVectorC self, RavlN::DataSetNormaliseT normType) -> FunctionC
-        Normalise(SampleVectorC self, FunctionC func)
+        Normalise(self, normType) -> FunctionC
+        Normalise(self, func)
         """
         return _Ravl.SampleVectorC_Normalise(self, *args)
 
@@ -7162,41 +7185,41 @@ class SampleLabelC(SampleOfUInt):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::SampleLabelC self, RavlN::SizeT maxSize=10) -> SampleLabelC
-        __init__(RavlN::SampleLabelC self) -> SampleLabelC
-        __init__(RavlN::SampleLabelC self, SArray1dUInt dat) -> SampleLabelC
-        __init__(RavlN::SampleLabelC self, SampleOfUInt sample) -> SampleLabelC
+        __init__(self, maxSize=10) -> SampleLabelC
+        __init__(self) -> SampleLabelC
+        __init__(self, dat) -> SampleLabelC
+        __init__(self, sample) -> SampleLabelC
         """
         this = _Ravl.new_SampleLabelC(*args)
         try: self.this.append(this)
         except: self.this = this
     def MaxValue(self):
-        """MaxValue(SampleLabelC self) -> RavlN::UIntT"""
+        """MaxValue(self) -> RavlN::UIntT"""
         return _Ravl.SampleLabelC_MaxValue(self)
 
     def LabelSums(self):
-        """LabelSums(SampleLabelC self) -> SArray1dUInt"""
+        """LabelSums(self) -> SArray1dUInt"""
         return _Ravl.SampleLabelC_LabelSums(self)
 
     def SampleVector(self, *args):
         """
-        SampleVector(SampleLabelC self, RavlN::RealT inClass=1, RavlN::RealT outClass=0, RavlN::IntT maxLabel=-1) -> SampleOfVectorC
-        SampleVector(SampleLabelC self, RavlN::RealT inClass=1, RavlN::RealT outClass=0) -> SampleOfVectorC
-        SampleVector(SampleLabelC self, RavlN::RealT inClass=1) -> SampleOfVectorC
-        SampleVector(SampleLabelC self) -> SampleOfVectorC
+        SampleVector(self, inClass=1, outClass=0, maxLabel=-1) -> SampleOfVectorC
+        SampleVector(self, inClass=1, outClass=0) -> SampleOfVectorC
+        SampleVector(self, inClass=1) -> SampleOfVectorC
+        SampleVector(self) -> SampleOfVectorC
         """
         return _Ravl.SampleLabelC_SampleVector(self, *args)
 
     def SetClassName(self, *args):
-        """SetClassName(SampleLabelC self, RavlN::UIntT label, StringC className) -> bool"""
+        """SetClassName(self, label, className) -> bool"""
         return _Ravl.SampleLabelC_SetClassName(self, *args)
 
     def GetClassName(self, *args):
-        """GetClassName(SampleLabelC self, RavlN::UIntT label, StringC className) -> bool"""
+        """GetClassName(self, label, className) -> bool"""
         return _Ravl.SampleLabelC_GetClassName(self, *args)
 
     def Label2ClassNames(self):
-        """Label2ClassNames(SampleLabelC self) -> RavlN::RCHashC< RavlN::UIntT,RavlN::StringC > const &"""
+        """Label2ClassNames(self) -> RavlN::RCHashC< RavlN::UIntT,RavlN::StringC > const &"""
         return _Ravl.SampleLabelC_Label2ClassNames(self)
 
     __swig_destroy__ = _Ravl.delete_SampleLabelC
@@ -7212,12 +7235,12 @@ class DataSetBaseC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DataSetBaseC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::DataSetBaseC self) -> DataSetBaseC"""
+        """__init__(self) -> DataSetBaseC"""
         this = _Ravl.new_DataSetBaseC()
         try: self.this.append(this)
         except: self.this = this
     def Shuffle(self):
-        """Shuffle(DataSetBaseC self)"""
+        """Shuffle(self)"""
         return _Ravl.DataSetBaseC_Shuffle(self)
 
     __swig_destroy__ = _Ravl.delete_DataSetBaseC
@@ -7236,33 +7259,33 @@ class DataSet1SampleVectorC(DataSetBaseC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DataSet1C<(RavlN::SampleVectorC)> self) -> DataSet1SampleVectorC
-        __init__(RavlN::DataSet1C<(RavlN::SampleVectorC)> self, RavlN::UIntT sizeEstimate) -> DataSet1SampleVectorC
-        __init__(RavlN::DataSet1C<(RavlN::SampleVectorC)> self, SampleVectorC dat) -> DataSet1SampleVectorC
+        __init__(self) -> DataSet1SampleVectorC
+        __init__(self, sizeEstimate) -> DataSet1SampleVectorC
+        __init__(self, dat) -> DataSet1SampleVectorC
         """
         this = _Ravl.new_DataSet1SampleVectorC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Sample1(self, *args):
         """
-        Sample1(DataSet1SampleVectorC self) -> SampleVectorC
-        Sample1(DataSet1SampleVectorC self) -> SampleVectorC
+        Sample1(self) -> SampleVectorC
+        Sample1(self) -> SampleVectorC
         """
         return _Ravl.DataSet1SampleVectorC_Sample1(self, *args)
 
     def Append(self, *args):
         """
-        Append(DataSet1SampleVectorC self, RavlN::DataSet1C< RavlN::SampleVectorC >::Element1T const & data) -> IndexC
-        Append(DataSet1SampleVectorC self, DataSet1SampleVectorC data)
+        Append(self, data) -> IndexC
+        Append(self, data)
         """
         return _Ravl.DataSet1SampleVectorC_Append(self, *args)
 
     def ExtractSample(self, *args):
-        """ExtractSample(DataSet1SampleVectorC self, RavlN::RealT proportion) -> DataSet1SampleVectorC"""
+        """ExtractSample(self, proportion) -> DataSet1SampleVectorC"""
         return _Ravl.DataSet1SampleVectorC_ExtractSample(self, *args)
 
     def Size(self):
-        """Size(DataSet1SampleVectorC self) -> RavlN::UIntT"""
+        """Size(self) -> RavlN::UIntT"""
         return _Ravl.DataSet1SampleVectorC_Size(self)
 
     __swig_destroy__ = _Ravl.delete_DataSet1SampleVectorC
@@ -7281,32 +7304,30 @@ class DataSet2SampleVectorSampleLabelC(DataSet1SampleVectorC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DataSet2C<(RavlN::SampleVectorC,RavlN::SampleLabelC)> self) -> DataSet2SampleVectorSampleLabelC
-        __init__(RavlN::DataSet2C<(RavlN::SampleVectorC,RavlN::SampleLabelC)> self, RavlN::UIntT sizeEstimate) -> DataSet2SampleVectorSampleLabelC
-        __init__(RavlN::DataSet2C<(RavlN::SampleVectorC,RavlN::SampleLabelC)> self, SampleVectorC dat1, SampleLabelC dat2) -> DataSet2SampleVectorSampleLabelC
+        __init__(self) -> DataSet2SampleVectorSampleLabelC
+        __init__(self, sizeEstimate) -> DataSet2SampleVectorSampleLabelC
+        __init__(self, dat1, dat2) -> DataSet2SampleVectorSampleLabelC
         """
         this = _Ravl.new_DataSet2SampleVectorSampleLabelC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Sample2(self, *args):
         """
-        Sample2(DataSet2SampleVectorSampleLabelC self) -> SampleLabelC
-        Sample2(DataSet2SampleVectorSampleLabelC self) -> SampleLabelC
+        Sample2(self) -> SampleLabelC
+        Sample2(self) -> SampleLabelC
         """
         return _Ravl.DataSet2SampleVectorSampleLabelC_Sample2(self, *args)
 
     def Append(self, *args):
         """
-        Append(DataSet2SampleVectorSampleLabelC self, RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element1T const & data1, 
-            RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element2T const & data2) -> IndexC
-        Append(DataSet2SampleVectorSampleLabelC self, DataSet2SampleVectorSampleLabelC data)
-        Append(DataSet2SampleVectorSampleLabelC self, RavlN::SampleC< RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element1T > const & sample1, 
-            RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element2T const & element2)
+        Append(self, data1, data2) -> IndexC
+        Append(self, data)
+        Append(self, sample1, element2)
         """
         return _Ravl.DataSet2SampleVectorSampleLabelC_Append(self, *args)
 
     def ExtractSample(self, *args):
-        """ExtractSample(DataSet2SampleVectorSampleLabelC self, RavlN::RealT proportion) -> DataSet2SampleVectorSampleLabelC"""
+        """ExtractSample(self, proportion) -> DataSet2SampleVectorSampleLabelC"""
         return _Ravl.DataSet2SampleVectorSampleLabelC_ExtractSample(self, *args)
 
     __swig_destroy__ = _Ravl.delete_DataSet2SampleVectorSampleLabelC
@@ -7325,63 +7346,77 @@ class DataSetVectorLabelC(DataSet2SampleVectorSampleLabelC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DataSetVectorLabelC self) -> DataSetVectorLabelC
-        __init__(RavlN::DataSetVectorLabelC self, DataSet2SampleVectorSampleLabelC dataSet) -> DataSetVectorLabelC
-        __init__(RavlN::DataSetVectorLabelC self, RavlN::UIntT sizeEstimate) -> DataSetVectorLabelC
-        __init__(RavlN::DataSetVectorLabelC self, SampleVectorC vec, SampleLabelC lab) -> DataSetVectorLabelC
-        __init__(RavlN::DataSetVectorLabelC self, RavlN::SArray1dC< RavlN::MeanCovarianceC > const & stats) -> DataSetVectorLabelC
+        __init__(self) -> DataSetVectorLabelC
+        __init__(self, dataSet) -> DataSetVectorLabelC
+        __init__(self, sizeEstimate) -> DataSetVectorLabelC
+        __init__(self, vec, lab) -> DataSetVectorLabelC
+        __init__(self, stats) -> DataSetVectorLabelC
         """
         this = _Ravl.new_DataSetVectorLabelC(*args)
         try: self.this.append(this)
         except: self.this = this
     def SeperateLabels(self):
-        """SeperateLabels(DataSetVectorLabelC self) -> RavlN::SArray1dC< RavlN::SampleVectorC >"""
+        """SeperateLabels(self) -> RavlN::SArray1dC< RavlN::SampleVectorC >"""
         return _Ravl.DataSetVectorLabelC_SeperateLabels(self)
 
     def GlobalMean(self):
-        """GlobalMean(DataSetVectorLabelC self) -> VectorC"""
+        """GlobalMean(self) -> VectorC"""
         return _Ravl.DataSetVectorLabelC_GlobalMean(self)
 
     def ClassMeans(self):
-        """ClassMeans(DataSetVectorLabelC self) -> SArray1dVectorC"""
+        """ClassMeans(self) -> SArray1dVectorC"""
         return _Ravl.DataSetVectorLabelC_ClassMeans(self)
 
     def ClassMeansLabels(self):
-        """ClassMeansLabels(DataSetVectorLabelC self) -> DataSetVectorLabelC"""
+        """ClassMeansLabels(self) -> DataSetVectorLabelC"""
         return _Ravl.DataSetVectorLabelC_ClassMeansLabels(self)
 
     def ClassNums(self):
-        """ClassNums(DataSetVectorLabelC self) -> SArray1dUInt"""
+        """ClassNums(self) -> SArray1dUInt"""
         return _Ravl.DataSetVectorLabelC_ClassNums(self)
 
     def ClassStats(self, sampleStatistics=True):
         """
-        ClassStats(DataSetVectorLabelC self, bool sampleStatistics=True) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >
-        ClassStats(DataSetVectorLabelC self) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >
+        ClassStats(self, sampleStatistics=True) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >
+        ClassStats(self) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >
         """
         return _Ravl.DataSetVectorLabelC_ClassStats(self, sampleStatistics)
 
     def BetweenClassScatter(self):
-        """BetweenClassScatter(DataSetVectorLabelC self) -> MatrixC"""
+        """BetweenClassScatter(self) -> MatrixC"""
         return _Ravl.DataSetVectorLabelC_BetweenClassScatter(self)
 
     def WithinClassScatter(self, sampleStatistics=False):
         """
-        WithinClassScatter(DataSetVectorLabelC self, bool sampleStatistics=False) -> MatrixC
-        WithinClassScatter(DataSetVectorLabelC self) -> MatrixC
+        WithinClassScatter(self, sampleStatistics=False) -> MatrixC
+        WithinClassScatter(self) -> MatrixC
         """
         return _Ravl.DataSetVectorLabelC_WithinClassScatter(self, sampleStatistics)
 
     def ExtractPerLabel(self, *args):
-        """ExtractPerLabel(DataSetVectorLabelC self, RavlN::UIntT numSamples) -> DataSetVectorLabelC"""
+        """ExtractPerLabel(self, numSamples) -> DataSetVectorLabelC"""
         return _Ravl.DataSetVectorLabelC_ExtractPerLabel(self, *args)
 
     def ExtractSample(self, *args):
-        """ExtractSample(DataSetVectorLabelC self, RavlN::RealT proportion) -> DataSetVectorLabelC"""
+        """ExtractSample(self, proportion) -> DataSetVectorLabelC"""
         return _Ravl.DataSetVectorLabelC_ExtractSample(self, *args)
 
+    def Sample1(self, *args):
+        """
+        Sample1(self) -> SampleVectorC
+        Sample1(self) -> SampleVectorC
+        """
+        return _Ravl.DataSetVectorLabelC_Sample1(self, *args)
+
+    def Sample2(self, *args):
+        """
+        Sample2(self) -> SampleLabelC
+        Sample2(self) -> SampleLabelC
+        """
+        return _Ravl.DataSetVectorLabelC_Sample2(self, *args)
+
     def __str__(self):
-        """__str__(DataSetVectorLabelC self) -> char const *"""
+        """__str__(self) -> char const *"""
         return _Ravl.DataSetVectorLabelC___str__(self)
 
     __swig_destroy__ = _Ravl.delete_DataSetVectorLabelC
@@ -7392,17 +7427,16 @@ DataSetVectorLabelC_swigregister(DataSetVectorLabelC)
 
 def CreateDataSet(dimension=2, classes=2, samplesPerClass=1000, dist=3.0):
   """
-    CreateDataSet(RavlN::UIntT dimension=2, RavlN::UIntT classes=2, RavlN::UIntT samplesPerClass=1000, 
-        RavlN::RealT dist=3.0) -> DataSetVectorLabelC
-    CreateDataSet(RavlN::UIntT dimension=2, RavlN::UIntT classes=2, RavlN::UIntT samplesPerClass=1000) -> DataSetVectorLabelC
-    CreateDataSet(RavlN::UIntT dimension=2, RavlN::UIntT classes=2) -> DataSetVectorLabelC
-    CreateDataSet(RavlN::UIntT dimension=2) -> DataSetVectorLabelC
+    CreateDataSet(dimension=2, classes=2, samplesPerClass=1000, dist=3.0) -> DataSetVectorLabelC
+    CreateDataSet(dimension=2, classes=2, samplesPerClass=1000) -> DataSetVectorLabelC
+    CreateDataSet(dimension=2, classes=2) -> DataSetVectorLabelC
+    CreateDataSet(dimension=2) -> DataSetVectorLabelC
     CreateDataSet() -> DataSetVectorLabelC
     """
   return _Ravl.CreateDataSet(dimension, classes, samplesPerClass, dist)
 
 def SaveDataSetVectorLabel(*args):
-  """SaveDataSetVectorLabel(StringC filename, DataSetVectorLabelC dataset) -> bool"""
+  """SaveDataSetVectorLabel(filename, dataset) -> bool"""
   return _Ravl.SaveDataSetVectorLabel(*args)
 def LoadDataSet(filename):
 	"""
@@ -7424,21 +7458,20 @@ def SaveDataSet(filename, dataSet):
 
 def LoadDataSetVectorLabel(*args):
   """
-    LoadDataSetVectorLabel(StringC filename, DataSetVectorLabelC dataset) -> bool
-    LoadDataSetVectorLabel(StringC dataSetFile, bool shuffle, bool equaliseSamples, RavlN::UIntT samplesPerClass, 
-        SArray1dIndexC features, FunctionC normaliseFunc, DataSetVectorLabelC dataSet) -> bool
-    LoadDataSetVectorLabel(StringC dataSetFile, bool shuffle, bool equaliseSamples, RavlN::UIntT samplesPerClass, 
-        SArray1dIndexC features, RavlN::DataSetNormaliseT normType, FunctionC normaliseFunc, 
-        DataSetVectorLabelC dataSet) -> bool
+    LoadDataSetVectorLabel(filename, dataset) -> bool
+    LoadDataSetVectorLabel(dataSetFile, shuffle, equaliseSamples, samplesPerClass, features, normaliseFunc, 
+        dataSet) -> bool
+    LoadDataSetVectorLabel(dataSetFile, shuffle, equaliseSamples, samplesPerClass, features, normType, normaliseFunc, 
+        dataSet) -> bool
     """
   return _Ravl.LoadDataSetVectorLabel(*args)
 
 def SaveDataSetVectorLabelCSV(*args):
-  """SaveDataSetVectorLabelCSV(StringC filename, DataSetVectorLabelC dataset) -> bool"""
+  """SaveDataSetVectorLabelCSV(filename, dataset) -> bool"""
   return _Ravl.SaveDataSetVectorLabelCSV(*args)
 
 def LoadDataSetVectorLabelCSV(*args):
-  """LoadDataSetVectorLabelCSV(StringC filename, DataSetVectorLabelC dataset) -> bool"""
+  """LoadDataSetVectorLabelCSV(filename, dataset) -> bool"""
   return _Ravl.LoadDataSetVectorLabelCSV(*args)
 class ClassifierDiscriminantFunctionC(ClassifierC):
     """Proxy of C++ RavlN::ClassifierDiscriminantFunctionC class"""
@@ -7450,11 +7483,11 @@ class ClassifierDiscriminantFunctionC(ClassifierC):
     __getattr__ = lambda self, name: _swig_getattr(self, ClassifierDiscriminantFunctionC, name)
     __repr__ = _swig_repr
     def Discriminant(self):
-        """Discriminant(ClassifierDiscriminantFunctionC self) -> FunctionC"""
+        """Discriminant(self) -> FunctionC"""
         return _Ravl.ClassifierDiscriminantFunctionC_Discriminant(self)
 
     def __init__(self): 
-        """__init__(RavlN::ClassifierDiscriminantFunctionC self) -> ClassifierDiscriminantFunctionC"""
+        """__init__(self) -> ClassifierDiscriminantFunctionC"""
         this = _Ravl.new_ClassifierDiscriminantFunctionC()
         try: self.this.append(this)
         except: self.this = this
@@ -7472,19 +7505,18 @@ class DesignFunctionSupervisedC(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DesignFunctionSupervisedC self) -> DesignFunctionSupervisedC
-        __init__(RavlN::DesignFunctionSupervisedC self, DesignFunctionSupervisedC other) -> DesignFunctionSupervisedC
+        __init__(self) -> DesignFunctionSupervisedC
+        __init__(self, other) -> DesignFunctionSupervisedC
         """
         this = _Ravl.new_DesignFunctionSupervisedC(*args)
         try: self.this.append(this)
         except: self.this = this
     def Apply(self, *args):
         """
-        Apply(DesignFunctionSupervisedC self, SampleOfVectorC data, SampleOfVectorC out) -> FunctionC
-        Apply(DesignFunctionSupervisedC self, SampleOfVectorC data, SampleOfVectorC out, RavlN::SampleC< RavlN::RealT > const & weight) -> FunctionC
-        Apply(DesignFunctionSupervisedC self, RavlN::SampleC< RavlN::TVectorC< float > > const & data, RavlN::SampleC< RavlN::TVectorC< float > > const & out) -> FunctionC
-        Apply(DesignFunctionSupervisedC self, RavlN::SampleC< RavlN::TVectorC< float > > const & data, RavlN::SampleC< RavlN::TVectorC< float > > const & out, 
-            RavlN::SampleC< float > const & weight) -> FunctionC
+        Apply(self, data, out) -> FunctionC
+        Apply(self, data, out, weight) -> FunctionC
+        Apply(self, data, out) -> FunctionC
+        Apply(self, data, out, weight) -> FunctionC
         """
         return _Ravl.DesignFunctionSupervisedC_Apply(self, *args)
 
@@ -7492,6 +7524,55 @@ class DesignFunctionSupervisedC(_object):
     __del__ = lambda self : None;
 DesignFunctionSupervisedC_swigregister = _Ravl.DesignFunctionSupervisedC_swigregister
 DesignFunctionSupervisedC_swigregister(DesignFunctionSupervisedC)
+
+class DesignFunctionUnsupervisedC(_object):
+    """Proxy of C++ RavlN::DesignFunctionUnsupervisedC class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DesignFunctionUnsupervisedC, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, DesignFunctionUnsupervisedC, name)
+    __repr__ = _swig_repr
+    def __init__(self): 
+        """__init__(self) -> DesignFunctionUnsupervisedC"""
+        this = _Ravl.new_DesignFunctionUnsupervisedC()
+        try: self.this.append(this)
+        except: self.this = this
+    def Apply(self, *args):
+        """
+        Apply(self, data) -> FunctionC
+        Apply(self, data, weight) -> FunctionC
+        Apply(self, data) -> FunctionC
+        Apply(self, data, weight) -> FunctionC
+        """
+        return _Ravl.DesignFunctionUnsupervisedC_Apply(self, *args)
+
+    __swig_destroy__ = _Ravl.delete_DesignFunctionUnsupervisedC
+    __del__ = lambda self : None;
+DesignFunctionUnsupervisedC_swigregister = _Ravl.DesignFunctionUnsupervisedC_swigregister
+DesignFunctionUnsupervisedC_swigregister(DesignFunctionUnsupervisedC)
+
+class DesignFuncReduceC(DesignFunctionUnsupervisedC):
+    """Proxy of C++ RavlN::DesignFuncReduceC class"""
+    __swig_setmethods__ = {}
+    for _s in [DesignFunctionUnsupervisedC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DesignFuncReduceC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DesignFunctionUnsupervisedC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DesignFuncReduceC, name)
+    __repr__ = _swig_repr
+    def __init__(self): 
+        """__init__(self) -> DesignFuncReduceC"""
+        this = _Ravl.new_DesignFuncReduceC()
+        try: self.this.append(this)
+        except: self.this = this
+    def VariationPreserved(self):
+        """VariationPreserved(self) -> RavlN::RealT"""
+        return _Ravl.DesignFuncReduceC_VariationPreserved(self)
+
+    __swig_destroy__ = _Ravl.delete_DesignFuncReduceC
+    __del__ = lambda self : None;
+DesignFuncReduceC_swigregister = _Ravl.DesignFuncReduceC_swigregister
+DesignFuncReduceC_swigregister(DesignFuncReduceC)
 
 class DesignFuncLSQC(DesignFunctionSupervisedC):
     """Proxy of C++ RavlN::DesignFuncLSQC class"""
@@ -7503,7 +7584,7 @@ class DesignFuncLSQC(DesignFunctionSupervisedC):
     __getattr__ = lambda self, name: _swig_getattr(self, DesignFuncLSQC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlN::DesignFuncLSQC self, RavlN::UIntT order, bool orthogonal) -> DesignFuncLSQC"""
+        """__init__(self, order, orthogonal) -> DesignFuncLSQC"""
         this = _Ravl.new_DesignFuncLSQC(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -7521,16 +7602,16 @@ class DesignClassifierSupervisedC(_object):
     __repr__ = _swig_repr
     def Apply(self, *args):
         """
-        Apply(DesignClassifierSupervisedC self, SampleOfVectorC data, SampleOfUInt out) -> ClassifierC
-        Apply(DesignClassifierSupervisedC self, SampleOfVectorC data, SampleOfUInt out, RavlN::SampleC< RavlN::RealT > const & weight) -> ClassifierC
-        Apply(DesignClassifierSupervisedC self, SampleOfVectorC data, SampleOfUInt out, SArray1dIndexC featureSet) -> ClassifierC
-        Apply(DesignClassifierSupervisedC self, SampleOfVectorC data, SampleOfUInt out, SArray1dIndexC featureSet, RavlN::SampleC< RavlN::RealT > const & weight) -> ClassifierC
-        Apply(DesignClassifierSupervisedC self, DataSetVectorLabelC dset) -> ClassifierC
+        Apply(self, data, out) -> ClassifierC
+        Apply(self, data, out, weight) -> ClassifierC
+        Apply(self, data, out, featureSet) -> ClassifierC
+        Apply(self, data, out, featureSet, weight) -> ClassifierC
+        Apply(self, dset) -> ClassifierC
         """
         return _Ravl.DesignClassifierSupervisedC_Apply(self, *args)
 
     def __init__(self): 
-        """__init__(RavlN::DesignClassifierSupervisedC self) -> DesignClassifierSupervisedC"""
+        """__init__(self) -> DesignClassifierSupervisedC"""
         this = _Ravl.new_DesignClassifierSupervisedC()
         try: self.this.append(this)
         except: self.this = this
@@ -7549,7 +7630,7 @@ class DesignDiscriminantFunctionC(DesignClassifierSupervisedC):
     __getattr__ = lambda self, name: _swig_getattr(self, DesignDiscriminantFunctionC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlN::DesignDiscriminantFunctionC self, DesignFunctionSupervisedC designFunc) -> DesignDiscriminantFunctionC"""
+        """__init__(self, designFunc) -> DesignDiscriminantFunctionC"""
         this = _Ravl.new_DesignDiscriminantFunctionC(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -7568,7 +7649,7 @@ class DesignKNearestNeighbourC(DesignClassifierSupervisedC):
     __getattr__ = lambda self, name: _swig_getattr(self, DesignKNearestNeighbourC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlN::DesignKNearestNeighbourC self, RavlN::UIntT k) -> DesignKNearestNeighbourC"""
+        """__init__(self, k) -> DesignKNearestNeighbourC"""
         this = _Ravl.new_DesignKNearestNeighbourC(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -7588,21 +7669,16 @@ class DesignClassifierNeuralNetwork2C(DesignClassifierSupervisedC):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, 
-            RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000, 
-            RavlN::UIntT displayEpochs=0, bool useSigmoid=True, RavlN::UIntT threads=1) -> DesignClassifierNeuralNetwork2C
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, 
-            RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000, 
-            RavlN::UIntT displayEpochs=0, bool useSigmoid=True) -> DesignClassifierNeuralNetwork2C
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, 
-            RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000, 
-            RavlN::UIntT displayEpochs=0) -> DesignClassifierNeuralNetwork2C
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, 
-            RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000) -> DesignClassifierNeuralNetwork2C
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, 
-            RavlN::RealT desiredError=0.00001) -> DesignClassifierNeuralNetwork2C
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0) -> DesignClassifierNeuralNetwork2C
-        __init__(RavlN::DesignClassifierNeuralNetwork2C self, RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000, 
+            displayEpochs=0, useSigmoid=True, threads=1) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000, 
+            displayEpochs=0, useSigmoid=True) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000, 
+            displayEpochs=0) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation, regularisation=0) -> DesignClassifierNeuralNetwork2C
+        __init__(self, nLayers, nHidden, doNormalisation) -> DesignClassifierNeuralNetwork2C
         """
         this = _Ravl.new_DesignClassifierNeuralNetwork2C(*args)
         try: self.this.append(this)
@@ -7622,7 +7698,7 @@ class DesignClassifierLogisticRegressionC(DesignClassifierSupervisedC):
     __getattr__ = lambda self, name: _swig_getattr(self, DesignClassifierLogisticRegressionC, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(RavlN::DesignClassifierLogisticRegressionC self, RavlN::RealT regularisation) -> DesignClassifierLogisticRegressionC"""
+        """__init__(self, regularisation) -> DesignClassifierLogisticRegressionC"""
         this = _Ravl.new_DesignClassifierLogisticRegressionC(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -7630,6 +7706,89 @@ class DesignClassifierLogisticRegressionC(DesignClassifierSupervisedC):
     __del__ = lambda self : None;
 DesignClassifierLogisticRegressionC_swigregister = _Ravl.DesignClassifierLogisticRegressionC_swigregister
 DesignClassifierLogisticRegressionC_swigregister(DesignClassifierLogisticRegressionC)
+
+class DesignFuncPCAC(DesignFuncReduceC):
+    """Proxy of C++ RavlN::DesignFuncPCAC class"""
+    __swig_setmethods__ = {}
+    for _s in [DesignFuncReduceC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DesignFuncPCAC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DesignFuncReduceC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DesignFuncPCAC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(self) -> DesignFuncPCAC
+        __init__(self, variationPreserved) -> DesignFuncPCAC
+        """
+        this = _Ravl.new_DesignFuncPCAC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def Pca(self, *args):
+        """
+        Pca(self) -> VectorMatrixC
+        Pca(self) -> VectorMatrixC
+        """
+        return _Ravl.DesignFuncPCAC_Pca(self, *args)
+
+    def Mean(self, *args):
+        """
+        Mean(self) -> VectorC
+        Mean(self) -> VectorC
+        """
+        return _Ravl.DesignFuncPCAC_Mean(self, *args)
+
+    __swig_destroy__ = _Ravl.delete_DesignFuncPCAC
+    __del__ = lambda self : None;
+DesignFuncPCAC_swigregister = _Ravl.DesignFuncPCAC_swigregister
+DesignFuncPCAC_swigregister(DesignFuncPCAC)
+
+class DesignFuncLDAC(DesignFuncReduceC):
+    """Proxy of C++ RavlN::DesignFuncLDAC class"""
+    __swig_setmethods__ = {}
+    for _s in [DesignFuncReduceC]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DesignFuncLDAC, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DesignFuncReduceC]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DesignFuncLDAC, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(self) -> DesignFuncLDAC
+        __init__(self, variationPreserved) -> DesignFuncLDAC
+        """
+        this = _Ravl.new_DesignFuncLDAC(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def Lda(self, *args):
+        """
+        Lda(self) -> MatrixC
+        Lda(self) -> MatrixC
+        """
+        return _Ravl.DesignFuncLDAC_Lda(self, *args)
+
+    def Mean(self, *args):
+        """
+        Mean(self) -> VectorC
+        Mean(self) -> VectorC
+        """
+        return _Ravl.DesignFuncLDAC_Mean(self, *args)
+
+    def SamplesPerClass(self, *args):
+        """
+        SamplesPerClass(self) -> RavlN::UIntT
+        SamplesPerClass(self) -> RavlN::UIntT const &
+        """
+        return _Ravl.DesignFuncLDAC_SamplesPerClass(self, *args)
+
+    def Apply(self, *args):
+        """Apply(self, _in) -> FunctionC"""
+        return _Ravl.DesignFuncLDAC_Apply(self, *args)
+
+    __swig_destroy__ = _Ravl.delete_DesignFuncLDAC
+    __del__ = lambda self : None;
+DesignFuncLDAC_swigregister = _Ravl.DesignFuncLDAC_swigregister
+DesignFuncLDAC_swigregister(DesignFuncLDAC)
 
 class ErrorC(_object):
     """Proxy of C++ RavlN::ErrorC class"""
@@ -7639,12 +7798,12 @@ class ErrorC(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, ErrorC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::ErrorC self) -> ErrorC"""
+        """__init__(self) -> ErrorC"""
         this = _Ravl.new_ErrorC()
         try: self.this.append(this)
         except: self.this = this
     def Error(self, *args):
-        """Error(ErrorC self, ClassifierC classifier, DataSetVectorLabelC dset) -> RavlN::RealT"""
+        """Error(self, classifier, dset) -> RavlN::RealT"""
         return _Ravl.ErrorC_Error(self, *args)
 
     __swig_destroy__ = _Ravl.delete_ErrorC
@@ -7662,16 +7821,16 @@ class ErrorBinaryClassifierC(ErrorC):
     __getattr__ = lambda self, name: _swig_getattr(self, ErrorBinaryClassifierC, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        """__init__(RavlN::ErrorBinaryClassifierC self) -> ErrorBinaryClassifierC"""
+        """__init__(self) -> ErrorBinaryClassifierC"""
         this = _Ravl.new_ErrorBinaryClassifierC()
         try: self.this.append(this)
         except: self.this = this
     def FalseRejectRate(self, *args):
-        """FalseRejectRate(ErrorBinaryClassifierC self, ClassifierC classifier, DataSetVectorLabelC dset, double falseAcceptRate) -> RavlN::RealT"""
+        """FalseRejectRate(self, classifier, dset, falseAcceptRate) -> RavlN::RealT"""
         return _Ravl.ErrorBinaryClassifierC_FalseRejectRate(self, *args)
 
     def FalseAcceptRate(self, *args):
-        """FalseAcceptRate(ErrorBinaryClassifierC self, ClassifierC classifier, DataSetVectorLabelC dset, double falseRejectRate) -> RavlN::RealT"""
+        """FalseAcceptRate(self, classifier, dset, falseRejectRate) -> RavlN::RealT"""
         return _Ravl.ErrorBinaryClassifierC_FalseAcceptRate(self, *args)
 
     __swig_destroy__ = _Ravl.delete_ErrorBinaryClassifierC
@@ -7688,57 +7847,57 @@ class GnuPlot2dC(_object):
     __repr__ = _swig_repr
     def __init__(self, title="My Plot"): 
         """
-        __init__(RavlN::GnuPlot2dC self, StringC title="My Plot") -> GnuPlot2dC
-        __init__(RavlN::GnuPlot2dC self) -> GnuPlot2dC
+        __init__(self, title="My Plot") -> GnuPlot2dC
+        __init__(self) -> GnuPlot2dC
         """
         this = _Ravl.new_GnuPlot2dC(title)
         try: self.this.append(this)
         except: self.this = this
     def Plot(self, *args):
         """
-        Plot(GnuPlot2dC self, SArray1dPoint2dC points, StringC dataName="") -> bool
-        Plot(GnuPlot2dC self, SArray1dPoint2dC points) -> bool
-        Plot(GnuPlot2dC self, RCHashStringPointsC data) -> bool
-        Plot(GnuPlot2dC self, StringC function) -> bool
-        Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1, RavlN::UIntT samplesPerClass=0) -> bool
-        Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1) -> bool
-        Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0) -> bool
-        Plot(GnuPlot2dC self, DataSetVectorLabelC dataSet) -> bool
-        Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0, RavlN::UIntT feature2=1) -> bool
-        Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0) -> bool
-        Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet) -> bool
+        Plot(self, points, dataName="") -> bool
+        Plot(self, points) -> bool
+        Plot(self, data) -> bool
+        Plot(self, function) -> bool
+        Plot(self, dataSet, fv1=0, fv2=1, samplesPerClass=0) -> bool
+        Plot(self, dataSet, fv1=0, fv2=1) -> bool
+        Plot(self, dataSet, fv1=0) -> bool
+        Plot(self, dataSet) -> bool
+        Plot(self, classifier, dataSet, feature1=0, feature2=1) -> bool
+        Plot(self, classifier, dataSet, feature1=0) -> bool
+        Plot(self, classifier, dataSet) -> bool
         """
         return _Ravl.GnuPlot2dC_Plot(self, *args)
 
     def SetXLabel(self, *args):
-        """SetXLabel(GnuPlot2dC self, StringC xlabel) -> bool"""
+        """SetXLabel(self, xlabel) -> bool"""
         return _Ravl.GnuPlot2dC_SetXLabel(self, *args)
 
     def SetYLabel(self, *args):
-        """SetYLabel(GnuPlot2dC self, StringC ylabel) -> bool"""
+        """SetYLabel(self, ylabel) -> bool"""
         return _Ravl.GnuPlot2dC_SetYLabel(self, *args)
 
     def SetXRange(self, *args):
-        """SetXRange(GnuPlot2dC self, RealRangeC xrange) -> bool"""
+        """SetXRange(self, xrange) -> bool"""
         return _Ravl.GnuPlot2dC_SetXRange(self, *args)
 
     def SetYRange(self, *args):
-        """SetYRange(GnuPlot2dC self, RealRangeC yrange) -> bool"""
+        """SetYRange(self, yrange) -> bool"""
         return _Ravl.GnuPlot2dC_SetYRange(self, *args)
 
     def SetLineStyle(self, *args):
-        """SetLineStyle(GnuPlot2dC self, StringC lineStyle) -> bool"""
+        """SetLineStyle(self, lineStyle) -> bool"""
         return _Ravl.GnuPlot2dC_SetLineStyle(self, *args)
 
     def SetOutput(self, *args):
         """
-        SetOutput(GnuPlot2dC self, StringC output, IndexRange2dC rec=RavlN::IndexRange2dC(512, 512)) -> bool
-        SetOutput(GnuPlot2dC self, StringC output) -> bool
+        SetOutput(self, output, rec=RavlN::IndexRange2dC(512, 512)) -> bool
+        SetOutput(self, output) -> bool
         """
         return _Ravl.GnuPlot2dC_SetOutput(self, *args)
 
     def Command(self, *args):
-        """Command(GnuPlot2dC self, StringC command) -> bool"""
+        """Command(self, command) -> bool"""
         return _Ravl.GnuPlot2dC_Command(self, *args)
 
     __swig_destroy__ = _Ravl.delete_GnuPlot2dC

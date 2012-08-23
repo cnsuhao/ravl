@@ -3010,75 +3010,79 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_RavlN__DesignClassifierNeuralNetwork2C swig_types[56]
 #define SWIGTYPE_p_RavlN__DesignClassifierSupervisedC swig_types[57]
 #define SWIGTYPE_p_RavlN__DesignDiscriminantFunctionC swig_types[58]
-#define SWIGTYPE_p_RavlN__DesignFuncLSQC swig_types[59]
-#define SWIGTYPE_p_RavlN__DesignFunctionSupervisedC swig_types[60]
-#define SWIGTYPE_p_RavlN__DesignKNearestNeighbourC swig_types[61]
-#define SWIGTYPE_p_RavlN__ErrorBinaryClassifierC swig_types[62]
-#define SWIGTYPE_p_RavlN__ErrorC swig_types[63]
-#define SWIGTYPE_p_RavlN__FunctionC swig_types[64]
-#define SWIGTYPE_p_RavlN__GnuPlot2dC swig_types[65]
-#define SWIGTYPE_p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[66]
-#define SWIGTYPE_p_RavlN__HashCT_long_long_t swig_types[67]
-#define SWIGTYPE_p_RavlN__HashIterCT_long_long_t swig_types[68]
-#define SWIGTYPE_p_RavlN__Index2dC swig_types[69]
-#define SWIGTYPE_p_RavlN__IndexC swig_types[70]
-#define SWIGTYPE_p_RavlN__IndexRange2dC swig_types[71]
-#define SWIGTYPE_p_RavlN__IndexRangeC swig_types[72]
-#define SWIGTYPE_p_RavlN__MatrixC swig_types[73]
-#define SWIGTYPE_p_RavlN__MatrixRUTC swig_types[74]
-#define SWIGTYPE_p_RavlN__MeanCovarianceC swig_types[75]
-#define SWIGTYPE_p_RavlN__Point2dC swig_types[76]
-#define SWIGTYPE_p_RavlN__PointSet2dC swig_types[77]
-#define SWIGTYPE_p_RavlN__Polygon2dC swig_types[78]
-#define SWIGTYPE_p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[79]
-#define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[80]
-#define SWIGTYPE_p_RavlN__RealHistogram1dC swig_types[81]
-#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[82]
-#define SWIGTYPE_p_RavlN__RealRangeC swig_types[83]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[84]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[85]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[86]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[87]
-#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[88]
-#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[89]
-#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[90]
-#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[91]
-#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[92]
-#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[93]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[94]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[95]
-#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[96]
-#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[97]
-#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[98]
-#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[99]
-#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[100]
-#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[101]
-#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[102]
-#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[103]
-#define SWIGTYPE_p_RavlN__SizeC swig_types[104]
-#define SWIGTYPE_p_RavlN__StringC swig_types[105]
-#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[106]
-#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[107]
-#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[108]
-#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[109]
-#define SWIGTYPE_p_RavlN__VectorC swig_types[110]
-#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[111]
-#define SWIGTYPE_p_RavlN__XMLFactoryContextC swig_types[112]
-#define SWIGTYPE_p_T swig_types[113]
-#define SWIGTYPE_p_UIntT swig_types[114]
-#define SWIGTYPE_p_char swig_types[115]
-#define SWIGTYPE_p_double swig_types[116]
-#define SWIGTYPE_p_float swig_types[117]
-#define SWIGTYPE_p_int swig_types[118]
-#define SWIGTYPE_p_long swig_types[119]
-#define SWIGTYPE_p_short swig_types[120]
-#define SWIGTYPE_p_size_t swig_types[121]
-#define SWIGTYPE_p_std__ostream swig_types[122]
-#define SWIGTYPE_p_unsigned_char swig_types[123]
-#define SWIGTYPE_p_unsigned_int swig_types[124]
-#define SWIGTYPE_p_unsigned_long swig_types[125]
-static swig_type_info *swig_types[127];
-static swig_module_info swig_module = {swig_types, 126, 0, 0, 0, 0};
+#define SWIGTYPE_p_RavlN__DesignFuncLDAC swig_types[59]
+#define SWIGTYPE_p_RavlN__DesignFuncLSQC swig_types[60]
+#define SWIGTYPE_p_RavlN__DesignFuncPCAC swig_types[61]
+#define SWIGTYPE_p_RavlN__DesignFuncReduceC swig_types[62]
+#define SWIGTYPE_p_RavlN__DesignFunctionSupervisedC swig_types[63]
+#define SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC swig_types[64]
+#define SWIGTYPE_p_RavlN__DesignKNearestNeighbourC swig_types[65]
+#define SWIGTYPE_p_RavlN__ErrorBinaryClassifierC swig_types[66]
+#define SWIGTYPE_p_RavlN__ErrorC swig_types[67]
+#define SWIGTYPE_p_RavlN__FunctionC swig_types[68]
+#define SWIGTYPE_p_RavlN__GnuPlot2dC swig_types[69]
+#define SWIGTYPE_p_RavlN__HashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[70]
+#define SWIGTYPE_p_RavlN__HashCT_long_long_t swig_types[71]
+#define SWIGTYPE_p_RavlN__HashIterCT_long_long_t swig_types[72]
+#define SWIGTYPE_p_RavlN__Index2dC swig_types[73]
+#define SWIGTYPE_p_RavlN__IndexC swig_types[74]
+#define SWIGTYPE_p_RavlN__IndexRange2dC swig_types[75]
+#define SWIGTYPE_p_RavlN__IndexRangeC swig_types[76]
+#define SWIGTYPE_p_RavlN__MatrixC swig_types[77]
+#define SWIGTYPE_p_RavlN__MatrixRUTC swig_types[78]
+#define SWIGTYPE_p_RavlN__MeanCovarianceC swig_types[79]
+#define SWIGTYPE_p_RavlN__Point2dC swig_types[80]
+#define SWIGTYPE_p_RavlN__PointSet2dC swig_types[81]
+#define SWIGTYPE_p_RavlN__Polygon2dC swig_types[82]
+#define SWIGTYPE_p_RavlN__RCHashCT_RavlN__StringC_RavlN__CollectionCT_RavlN__Point2dC_t_t swig_types[83]
+#define SWIGTYPE_p_RavlN__RCHashCT_unsigned_int_RavlN__StringC_t swig_types[84]
+#define SWIGTYPE_p_RavlN__RealHistogram1dC swig_types[85]
+#define SWIGTYPE_p_RavlN__RealRange2dC swig_types[86]
+#define SWIGTYPE_p_RavlN__RealRangeC swig_types[87]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__IndexC_t swig_types[88]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__MeanCovarianceC_t swig_types[89]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__Point2dC_t swig_types[90]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__SampleVectorC_t swig_types[91]
+#define SWIGTYPE_p_RavlN__SArray1dCT_RavlN__VectorC_t swig_types[92]
+#define SWIGTYPE_p_RavlN__SArray1dCT_double_t swig_types[93]
+#define SWIGTYPE_p_RavlN__SArray1dCT_float_t swig_types[94]
+#define SWIGTYPE_p_RavlN__SArray1dCT_unsigned_int_t swig_types[95]
+#define SWIGTYPE_p_RavlN__SArray2dCT_double_t swig_types[96]
+#define SWIGTYPE_p_RavlN__SArray2dCT_float_t swig_types[97]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__SampleVectorC__ElementT_t swig_types[98]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t swig_types[99]
+#define SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t swig_types[100]
+#define SWIGTYPE_p_RavlN__SampleCT_double_t swig_types[101]
+#define SWIGTYPE_p_RavlN__SampleCT_float_t swig_types[102]
+#define SWIGTYPE_p_RavlN__SampleCT_unsigned_int_t swig_types[103]
+#define SWIGTYPE_p_RavlN__SampleLabelC swig_types[104]
+#define SWIGTYPE_p_RavlN__SampleLabelC__ElementT swig_types[105]
+#define SWIGTYPE_p_RavlN__SampleVectorC swig_types[106]
+#define SWIGTYPE_p_RavlN__SampleVectorC__ElementT swig_types[107]
+#define SWIGTYPE_p_RavlN__SizeC swig_types[108]
+#define SWIGTYPE_p_RavlN__StringC swig_types[109]
+#define SWIGTYPE_p_RavlN__TMatrixCT_double_t swig_types[110]
+#define SWIGTYPE_p_RavlN__TMatrixCT_float_t swig_types[111]
+#define SWIGTYPE_p_RavlN__TVectorCT_double_t swig_types[112]
+#define SWIGTYPE_p_RavlN__TVectorCT_float_t swig_types[113]
+#define SWIGTYPE_p_RavlN__VectorC swig_types[114]
+#define SWIGTYPE_p_RavlN__VectorMatrixC swig_types[115]
+#define SWIGTYPE_p_RavlN__XMLFactoryContextC swig_types[116]
+#define SWIGTYPE_p_T swig_types[117]
+#define SWIGTYPE_p_UIntT swig_types[118]
+#define SWIGTYPE_p_char swig_types[119]
+#define SWIGTYPE_p_double swig_types[120]
+#define SWIGTYPE_p_float swig_types[121]
+#define SWIGTYPE_p_int swig_types[122]
+#define SWIGTYPE_p_long swig_types[123]
+#define SWIGTYPE_p_short swig_types[124]
+#define SWIGTYPE_p_size_t swig_types[125]
+#define SWIGTYPE_p_std__ostream swig_types[126]
+#define SWIGTYPE_p_unsigned_char swig_types[127]
+#define SWIGTYPE_p_unsigned_int swig_types[128]
+#define SWIGTYPE_p_unsigned_long swig_types[129]
+static swig_type_info *swig_types[131];
+static swig_module_info swig_module = {swig_types, 130, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4496,8 +4500,33 @@ SWIGINTERN char const *RavlN_CollectionC_Sl_RavlN_VectorC_Sg____str__(RavlN::Col
 #undef Copy
 #endif
 
+#include "Ravl/PatternRec/Sample.hh"
+#include "Ravl/Vector.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+SWIGINTERN unsigned int const &RavlN_SampleC_Sl_RavlN_UIntT_Sg____getitem__(RavlN::SampleC< RavlN::UIntT > const *self,size_t i){ return (*self)[i]; }
+SWIGINTERN void RavlN_SampleC_Sl_RavlN_UIntT_Sg____setitem__(RavlN::SampleC< RavlN::UIntT > *self,size_t i,unsigned int const &v){ (*self)[i] = v; }
+SWIGINTERN char const *RavlN_SampleC_Sl_RavlN_UIntT_Sg____str__(RavlN::SampleC< RavlN::UIntT > *self){
+        RavlN::StrOStreamC os;
+        os << *self;
+        return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
+      }
+SWIGINTERN RavlN::VectorC const &RavlN_SampleC_Sl_RavlN_VectorC_Sg____getitem__(RavlN::SampleC< RavlN::VectorC > const *self,size_t i){ return (*self)[i]; }
+SWIGINTERN void RavlN_SampleC_Sl_RavlN_VectorC_Sg____setitem__(RavlN::SampleC< RavlN::VectorC > *self,size_t i,RavlN::VectorC const &v){ (*self)[i] = v; }
+SWIGINTERN char const *RavlN_SampleC_Sl_RavlN_VectorC_Sg____str__(RavlN::SampleC< RavlN::VectorC > *self){
+        RavlN::StrOStreamC os;
+        os << *self;
+        return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
+      }
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
 #include "Ravl/PatternRec/Function.hh"
-#include "Ravl/StrStream.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -4541,32 +4570,6 @@ SWIGINTERN bool RavlN_FunctionC___nonzero__(RavlN::FunctionC *self){
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
 #endif
 
-
-#ifdef SWIGPERL
-#undef Copy
-#endif
-
-#include "Ravl/PatternRec/Sample.hh"
-#include "Ravl/Vector.hh"
-
-#ifdef SWIGPERL
-#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
-#endif
-
-SWIGINTERN unsigned int const &RavlN_SampleC_Sl_RavlN_UIntT_Sg____getitem__(RavlN::SampleC< RavlN::UIntT > const *self,size_t i){ return (*self)[i]; }
-SWIGINTERN void RavlN_SampleC_Sl_RavlN_UIntT_Sg____setitem__(RavlN::SampleC< RavlN::UIntT > *self,size_t i,unsigned int const &v){ (*self)[i] = v; }
-SWIGINTERN char const *RavlN_SampleC_Sl_RavlN_UIntT_Sg____str__(RavlN::SampleC< RavlN::UIntT > *self){
-        RavlN::StrOStreamC os;
-        os << *self;
-        return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
-      }
-SWIGINTERN RavlN::VectorC const &RavlN_SampleC_Sl_RavlN_VectorC_Sg____getitem__(RavlN::SampleC< RavlN::VectorC > const *self,size_t i){ return (*self)[i]; }
-SWIGINTERN void RavlN_SampleC_Sl_RavlN_VectorC_Sg____setitem__(RavlN::SampleC< RavlN::VectorC > *self,size_t i,RavlN::VectorC const &v){ (*self)[i] = v; }
-SWIGINTERN char const *RavlN_SampleC_Sl_RavlN_VectorC_Sg____str__(RavlN::SampleC< RavlN::VectorC > *self){
-        RavlN::StrOStreamC os;
-        os << *self;
-        return PyString_AsString(PyString_FromStringAndSize(os.String().chars(), os.String().Size())); 
-      }
 
 #ifdef SWIGPERL
 #undef Copy
@@ -4673,6 +4676,28 @@ SWIGINTERN char const *RavlN_DataSetVectorLabelC___str__(RavlN::DataSetVectorLab
 #undef Copy
 #endif
 
+#include "Ravl/PatternRec/DesignFunctionUnsupervised.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/DesignFuncReduce.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
 #include "Ravl/PatternRec/DesignFuncLSQ.hh"
 
 #ifdef SWIGPERL
@@ -4729,6 +4754,28 @@ SWIGINTERN char const *RavlN_DataSetVectorLabelC___str__(RavlN::DataSetVectorLab
 #endif
 
 #include "Ravl/PatternRec/DesignClassifierLogisticRegression.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/DesignFuncPCA.hh"
+
+#ifdef SWIGPERL
+#define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
+#endif
+
+
+#ifdef SWIGPERL
+#undef Copy
+#endif
+
+#include "Ravl/PatternRec/DesignFuncLDA.hh"
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -67883,1762 +67930,6 @@ SWIGINTERN PyObject *ClassifierC_swigregister(PyObject *SWIGUNUSEDPARM(self), Py
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_FunctionC_Apply(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
-  RavlN::VectorC *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::VectorC result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC_Apply",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_Apply" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
-  result = ((RavlN::FunctionC const *)arg1)->Apply((RavlN::VectorC const &)*arg2);
-  resultobj = SWIG_NewPointerObj((new RavlN::VectorC(static_cast< const RavlN::VectorC& >(result))), SWIGTYPE_p_RavlN__VectorC, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_FunctionC_InputSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::UIntT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC_InputSize",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_InputSize" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  result = (RavlN::UIntT)((RavlN::FunctionC const *)arg1)->InputSize();
-  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_FunctionC_OutputSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::UIntT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC_OutputSize",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_OutputSize" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  result = (RavlN::UIntT)((RavlN::FunctionC const *)arg1)->OutputSize();
-  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_FunctionC___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  char *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC___str__",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC___str__" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  result = (char *)RavlN_FunctionC___str__(arg1);
-  resultobj = SWIG_FromCharPtr((const char *)result);
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_FunctionC___nonzero__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC___nonzero__",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC___nonzero__" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  result = (bool)RavlN_FunctionC___nonzero__(arg1);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_FunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":new_FunctionC")) SWIG_fail;
-  result = (RavlN::FunctionC *)new RavlN::FunctionC();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_FunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_FunctionC",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FunctionC" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *FunctionC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__FunctionC, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *_wrap_new_ClassifierPreprocessC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::FunctionC *arg1 = 0 ;
-  RavlN::ClassifierC *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::ClassifierPreprocessC *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:new_ClassifierPreprocessC",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__FunctionC,  0  | 0);
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_ClassifierPreprocessC" "', argument " "1"" of type '" "RavlN::FunctionC const &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_ClassifierPreprocessC" "', argument " "1"" of type '" "RavlN::FunctionC const &""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_ClassifierPreprocessC" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_ClassifierPreprocessC" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
-  result = (RavlN::ClassifierPreprocessC *)new RavlN::ClassifierPreprocessC((RavlN::FunctionC const &)*arg1,(RavlN::ClassifierC const &)*arg2);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__ClassifierPreprocessC, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_ClassifierPreprocessC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::ClassifierPreprocessC *arg1 = (RavlN::ClassifierPreprocessC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_ClassifierPreprocessC",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__ClassifierPreprocessC, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ClassifierPreprocessC" "', argument " "1"" of type '" "RavlN::ClassifierPreprocessC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::ClassifierPreprocessC * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *ClassifierPreprocessC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__ClassifierPreprocessC, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *_wrap_Save__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlImageN::ImageC< RavlN::ByteT > *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::ByteT > * >(argp2);
-  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlImageN::ImageC< unsigned char > const &)*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Load__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlImageN::ImageC< RavlN::ByteT > *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t,  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::ByteT > * >(argp2);
-  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Save__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlImageN::ImageC< RavlN::RealT > *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_double_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::RealT > * >(argp2);
-  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlImageN::ImageC< double > const &)*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Load__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlImageN::ImageC< RavlN::RealT > *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_double_t,  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::RealT > * >(argp2);
-  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Save__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlImageN::ImageC< RavlImageN::ByteRGBValueC > *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlImageN::ByteRGBValueC > * >(argp2);
-  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &)*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Load__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlImageN::ImageC< RavlImageN::ByteRGBValueC > *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t,  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlImageN::ByteRGBValueC > * >(argp2);
-  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Load__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlN::ClassifierC *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlN::ClassifierC &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlN::ClassifierC &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
-  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Save__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlN::ClassifierC *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
-  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlN::ClassifierC const &)*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Load__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlN::FunctionC *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__FunctionC,  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlN::FunctionC &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlN::FunctionC &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::FunctionC * >(argp2);
-  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Load(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[3];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Load__SWIG_0(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_double_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Load__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Load__SWIG_2(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlN__ClassifierC, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Load__SWIG_3(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Load__SWIG_4(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Load'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::Load(RavlN::StringC const &,RavlImageN::ImageC< RavlN::ByteT > &)\n"
-    "    RavlN::Load(RavlN::StringC const &,RavlImageN::ImageC< RavlN::RealT > &)\n"
-    "    RavlN::Load(RavlN::StringC const &,RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &)\n"
-    "    RavlN::Load(RavlN::StringC const &,RavlN::ClassifierC &)\n"
-    "    RavlN::Load(RavlN::StringC const &,RavlN::FunctionC &)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_Save__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::StringC *arg1 = 0 ;
-  RavlN::FunctionC *arg2 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
-  {
-    arg1 = new RavlN::StringC(PyString_AsString(obj0));
-  }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__FunctionC,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlN::FunctionC const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlN::FunctionC const &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::FunctionC * >(argp2);
-  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlN::FunctionC const &)*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Save(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[3];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Save__SWIG_0(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ImageCT_double_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Save__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Save__SWIG_2(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__ClassifierC, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Save__SWIG_3(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__FunctionC, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Save__SWIG_4(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Save'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::Save(RavlN::StringC const &,RavlImageN::ImageC< RavlN::ByteT > const &)\n"
-    "    RavlN::Save(RavlN::StringC const &,RavlImageN::ImageC< RavlN::RealT > const &)\n"
-    "    RavlN::Save(RavlN::StringC const &,RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &)\n"
-    "    RavlN::Save(RavlN::StringC const &,RavlN::ClassifierC const &)\n"
-    "    RavlN::Save(RavlN::StringC const &,RavlN::FunctionC const &)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_RealHistogram1dC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":new_RealHistogram1dC")) SWIG_fail;
-  result = (RavlN::RealHistogram1dC *)new RavlN::RealHistogram1dC();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_RealHistogram1dC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealT arg1 ;
-  RavlN::RealT arg2 ;
-  RavlN::UIntT arg3 ;
-  double val1 ;
-  int ecode1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  unsigned int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  RavlN::RealHistogram1dC *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:new_RealHistogram1dC",&obj0,&obj1,&obj2)) SWIG_fail;
-  ecode1 = SWIG_AsVal_double(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RealHistogram1dC" "', argument " "1"" of type '" "RavlN::RealT""'");
-  } 
-  arg1 = static_cast< RavlN::RealT >(val1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_RealHistogram1dC" "', argument " "2"" of type '" "RavlN::RealT""'");
-  } 
-  arg2 = static_cast< RavlN::RealT >(val2);
-  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_RealHistogram1dC" "', argument " "3"" of type '" "RavlN::UIntT""'");
-  } 
-  arg3 = static_cast< RavlN::UIntT >(val3);
-  result = (RavlN::RealHistogram1dC *)new RavlN::RealHistogram1dC(arg1,arg2,arg3);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_RealHistogram1dC(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[4];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 0) {
-    return _wrap_new_RealHistogram1dC__SWIG_0(self, args);
-  }
-  if (argc == 3) {
-    int _v;
-    {
-      int res = SWIG_AsVal_double(argv[0], NULL);
-      _v = SWIG_CheckState(res);
-    }
-    if (_v) {
-      {
-        int res = SWIG_AsVal_double(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_new_RealHistogram1dC__SWIG_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_RealHistogram1dC'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::RealHistogram1dC::RealHistogram1dC()\n"
-    "    RavlN::RealHistogram1dC::RealHistogram1dC(RavlN::RealT,RavlN::RealT,RavlN::UIntT)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Scale(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Scale",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Scale" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Scale();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Offset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Offset",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Offset" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Offset();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Bin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::RealT arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::IndexC result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Bin",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Bin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Bin" "', argument " "2"" of type '" "RavlN::RealT""'");
-  } 
-  arg2 = static_cast< RavlN::RealT >(val2);
-  result = ((RavlN::RealHistogram1dC const *)arg1)->Bin(arg2);
-  resultobj = SWIG_NewPointerObj((new RavlN::IndexC(static_cast< const RavlN::IndexC& >(result))), SWIGTYPE_p_RavlN__IndexC, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_MidBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IndexC arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MidBin",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MidBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  {
-    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MidBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MidBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
-    } else {
-      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
-      arg2 = *temp;
-      if (SWIG_IsNewObj(res2)) delete temp;
-    }
-  }
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MidBin(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IndexC arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MinBin",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  {
-    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MinBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
-    } else {
-      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
-      arg2 = *temp;
-      if (SWIG_IsNewObj(res2)) delete temp;
-    }
-  }
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MinBin(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_MaxBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IndexC arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MaxBin",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MaxBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  {
-    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MaxBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MaxBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
-    } else {
-      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
-      arg2 = *temp;
-      if (SWIG_IsNewObj(res2)) delete temp;
-    }
-  }
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MaxBin(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinLimit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_MinLimit",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinLimit" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MinLimit();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_MaxLimit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_MaxLimit",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MaxLimit" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MaxLimit();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Reset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Reset",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Reset" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  (arg1)->Reset();
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::RealT arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Vote",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Vote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Vote" "', argument " "2"" of type '" "RavlN::RealT""'");
-  } 
-  arg2 = static_cast< RavlN::RealT >(val2);
-  (arg1)->Vote(arg2);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::RealT arg2 ;
-  RavlN::IntT arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Vote",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Vote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Vote" "', argument " "2"" of type '" "RavlN::RealT""'");
-  } 
-  arg2 = static_cast< RavlN::RealT >(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_Vote" "', argument " "3"" of type '" "RavlN::IntT""'");
-  } 
-  arg3 = static_cast< RavlN::IntT >(val3);
-  (arg1)->Vote(arg2,arg3);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[4];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_double(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_RealHistogram1dC_Vote__SWIG_0(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_double(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_RealHistogram1dC_Vote__SWIG_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_Vote'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::RealHistogram1dC::Vote(RavlN::RealT)\n"
-    "    RavlN::RealHistogram1dC::Vote(RavlN::RealT,RavlN::IntT)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::RealT arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_CheckVote",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_CheckVote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_CheckVote" "', argument " "2"" of type '" "RavlN::RealT""'");
-  } 
-  arg2 = static_cast< RavlN::RealT >(val2);
-  result = (bool)(arg1)->CheckVote(arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::RealT arg2 ;
-  RavlN::IntT arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_CheckVote",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_CheckVote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_CheckVote" "', argument " "2"" of type '" "RavlN::RealT""'");
-  } 
-  arg2 = static_cast< RavlN::RealT >(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_CheckVote" "', argument " "3"" of type '" "RavlN::IntT""'");
-  } 
-  arg3 = static_cast< RavlN::IntT >(val3);
-  result = (bool)(arg1)->CheckVote(arg2,arg3);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[4];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_double(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_RealHistogram1dC_CheckVote__SWIG_0(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_double(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_RealHistogram1dC_CheckVote__SWIG_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_CheckVote'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::RealHistogram1dC::CheckVote(RavlN::RealT)\n"
-    "    RavlN::RealHistogram1dC::CheckVote(RavlN::RealT,RavlN::IntT)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_TotalVotes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::UIntT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_TotalVotes",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_TotalVotes" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::UIntT)((RavlN::RealHistogram1dC const *)arg1)->TotalVotes();
-  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Information(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Information",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Information" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Information();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Energy(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Energy",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Energy" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Energy();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IntT arg2 ;
-  RavlN::RealT arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  double val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_SmoothedPDF",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "2"" of type '" "RavlN::IntT""'");
-  } 
-  arg2 = static_cast< RavlN::IntT >(val2);
-  ecode3 = SWIG_AsVal_double(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "3"" of type '" "RavlN::RealT""'");
-  } 
-  arg3 = static_cast< RavlN::RealT >(val3);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->SmoothedPDF(arg2,arg3);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IntT arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::RealT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_SmoothedPDF",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "2"" of type '" "RavlN::IntT""'");
-  } 
-  arg2 = static_cast< RavlN::IntT >(val2);
-  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->SmoothedPDF(arg2);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[4];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_RealHistogram1dC_SmoothedPDF__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_double(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_RealHistogram1dC_SmoothedPDF__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_SmoothedPDF'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::RealHistogram1dC::SmoothedPDF(RavlN::IntT,RavlN::RealT) const\n"
-    "    RavlN::RealHistogram1dC::SmoothedPDF(RavlN::IntT) const\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::UIntT arg2 ;
-  RavlN::UIntT arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned int val2 ;
-  int ecode2 = 0 ;
-  unsigned int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  RavlN::DListC< RavlN::RealT > result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Peaks",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Peaks" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Peaks" "', argument " "2"" of type '" "RavlN::UIntT""'");
-  } 
-  arg2 = static_cast< RavlN::UIntT >(val2);
-  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_Peaks" "', argument " "3"" of type '" "RavlN::UIntT""'");
-  } 
-  arg3 = static_cast< RavlN::UIntT >(val3);
-  result = ((RavlN::RealHistogram1dC const *)arg1)->Peaks(arg2,arg3);
-  resultobj = SWIG_NewPointerObj((new RavlN::DListC< RavlN::RealT >(static_cast< const RavlN::DListC< RavlN::RealT >& >(result))), SWIGTYPE_p_RavlN__DListCT_double_t, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::UIntT arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned int val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  RavlN::DListC< RavlN::RealT > result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Peaks",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Peaks" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Peaks" "', argument " "2"" of type '" "RavlN::UIntT""'");
-  } 
-  arg2 = static_cast< RavlN::UIntT >(val2);
-  result = ((RavlN::RealHistogram1dC const *)arg1)->Peaks(arg2);
-  resultobj = SWIG_NewPointerObj((new RavlN::DListC< RavlN::RealT >(static_cast< const RavlN::DListC< RavlN::RealT >& >(result))), SWIGTYPE_p_RavlN__DListCT_double_t, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks(PyObject *self, PyObject *args) {
-  int argc;
-  PyObject *argv[4];
-  int ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? (int)PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_RealHistogram1dC_Peaks__SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_RealHistogram1dC_Peaks__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_Peaks'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    RavlN::RealHistogram1dC::Peaks(RavlN::UIntT,RavlN::UIntT) const\n"
-    "    RavlN::RealHistogram1dC::Peaks(RavlN::UIntT) const\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinMax(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IndexC *arg2 = 0 ;
-  RavlN::IndexC *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_MinMax",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinMax" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MinMax" "', argument " "2"" of type '" "RavlN::IndexC &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinMax" "', argument " "2"" of type '" "RavlN::IndexC &""'"); 
-  }
-  arg2 = reinterpret_cast< RavlN::IndexC * >(argp2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__IndexC,  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RealHistogram1dC_MinMax" "', argument " "3"" of type '" "RavlN::IndexC &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinMax" "', argument " "3"" of type '" "RavlN::IndexC &""'"); 
-  }
-  arg3 = reinterpret_cast< RavlN::IndexC * >(argp3);
-  result = (bool)((RavlN::RealHistogram1dC const *)arg1)->MinMax(*arg2,*arg3);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_RealHistogram1dC_Sum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  RavlN::IndexC arg2 ;
-  RavlN::IndexC arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
-  void *argp3 ;
-  int res3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  RavlN::UIntT result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Sum",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Sum" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  {
-    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_Sum" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_Sum" "', argument " "2"" of type '" "RavlN::IndexC""'");
-    } else {
-      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
-      arg2 = *temp;
-      if (SWIG_IsNewObj(res2)) delete temp;
-    }
-  }
-  {
-    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
-    if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RealHistogram1dC_Sum" "', argument " "3"" of type '" "RavlN::IndexC""'"); 
-    }  
-    if (!argp3) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_Sum" "', argument " "3"" of type '" "RavlN::IndexC""'");
-    } else {
-      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp3);
-      arg3 = *temp;
-      if (SWIG_IsNewObj(res3)) delete temp;
-    }
-  }
-  result = (RavlN::UIntT)((RavlN::RealHistogram1dC const *)arg1)->Sum(arg2,arg3);
-  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_RealHistogram1dC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_RealHistogram1dC",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RealHistogram1dC" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
-  }
-  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *RealHistogram1dC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
 SWIGINTERN PyObject *_wrap_new_SampleOfUInt__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::SizeT arg1 ;
@@ -71814,6 +70105,2319 @@ SWIGINTERN PyObject *SampleOfVectorC_swigregister(PyObject *SWIGUNUSEDPARM(self)
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_FunctionC_Apply__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::VectorC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC_Apply",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_Apply" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  result = ((RavlN::FunctionC const *)arg1)->Apply((RavlN::VectorC const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::VectorC(static_cast< const RavlN::VectorC& >(result))), SWIGTYPE_p_RavlN__VectorC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_Apply__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  RavlN::VectorC *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::VectorC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:FunctionC_Apply",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_Apply" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FunctionC_Apply" "', argument " "3"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Apply" "', argument " "3"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::VectorC * >(argp3);
+  result = ((RavlN::FunctionC const *)arg1)->Apply((RavlN::VectorC const &)*arg2,(RavlN::VectorC const &)*arg3);
+  resultobj = SWIG_NewPointerObj((new RavlN::VectorC(static_cast< const RavlN::VectorC& >(result))), SWIGTYPE_p_RavlN__VectorC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_Apply__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::SampleC< RavlN::VectorC > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::SampleC< RavlN::VectorC > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC_Apply",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_Apply" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::SampleC< RavlN::VectorC > * >(argp2);
+  result = (arg1)->Apply((RavlN::SampleC< RavlN::VectorC > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::SampleC< RavlN::VectorC >(static_cast< const RavlN::SampleC< RavlN::VectorC >& >(result))), SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_Apply(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__VectorC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_FunctionC_Apply__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_FunctionC_Apply__SWIG_2(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__VectorC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__VectorC, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_FunctionC_Apply__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'FunctionC_Apply'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::FunctionC::Apply(RavlN::VectorC const &) const\n"
+    "    RavlN::FunctionC::Apply(RavlN::VectorC const &,RavlN::VectorC const &) const\n"
+    "    RavlN::FunctionC::Apply(RavlN::SampleC< RavlN::VectorC > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC___call__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::VectorC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC___call__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC___call__" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC___call__" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC___call__" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  result = ((RavlN::FunctionC const *)arg1)->operator ()((RavlN::VectorC const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::VectorC(static_cast< const RavlN::VectorC& >(result))), SWIGTYPE_p_RavlN__VectorC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_CheckJacobian__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  RavlN::RealT arg3 ;
+  RavlN::RealT arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:FunctionC_CheckJacobian",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_CheckJacobian" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_CheckJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_CheckJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FunctionC_CheckJacobian" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  ecode4 = SWIG_AsVal_double(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "FunctionC_CheckJacobian" "', argument " "4"" of type '" "RavlN::RealT""'");
+  } 
+  arg4 = static_cast< RavlN::RealT >(val4);
+  result = (bool)((RavlN::FunctionC const *)arg1)->CheckJacobian((RavlN::VectorC const &)*arg2,arg3,arg4);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_CheckJacobian__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  RavlN::RealT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:FunctionC_CheckJacobian",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_CheckJacobian" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_CheckJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_CheckJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "FunctionC_CheckJacobian" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  result = (bool)((RavlN::FunctionC const *)arg1)->CheckJacobian((RavlN::VectorC const &)*arg2,arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_CheckJacobian__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC_CheckJacobian",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_CheckJacobian" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_CheckJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_CheckJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  result = (bool)((RavlN::FunctionC const *)arg1)->CheckJacobian((RavlN::VectorC const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_CheckJacobian(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[5];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 4) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__VectorC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_FunctionC_CheckJacobian__SWIG_2(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__VectorC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_FunctionC_CheckJacobian__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__VectorC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_FunctionC_CheckJacobian__SWIG_0(self, args);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'FunctionC_CheckJacobian'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::FunctionC::CheckJacobian(RavlN::VectorC const &,RavlN::RealT,RavlN::RealT) const\n"
+    "    RavlN::FunctionC::CheckJacobian(RavlN::VectorC const &,RavlN::RealT) const\n"
+    "    RavlN::FunctionC::CheckJacobian(RavlN::VectorC const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_Jacobian(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::MatrixC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC_Jacobian",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_Jacobian" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_Jacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Jacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  result = ((RavlN::FunctionC const *)arg1)->Jacobian((RavlN::VectorC const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::MatrixC(static_cast< const RavlN::MatrixC& >(result))), SWIGTYPE_p_RavlN__MatrixC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_Evaluate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::VectorMatrixC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:FunctionC_Evaluate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_Evaluate" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_Evaluate" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_Evaluate" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  result = (arg1)->Evaluate((RavlN::VectorC const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::VectorMatrixC(static_cast< const RavlN::VectorMatrixC& >(result))), SWIGTYPE_p_RavlN__VectorMatrixC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_EvaluateValueJacobian(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  RavlN::VectorC *arg3 = 0 ;
+  RavlN::MatrixC *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:FunctionC_EvaluateValueJacobian",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__VectorC,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "3"" of type '" "RavlN::VectorC &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "3"" of type '" "RavlN::VectorC &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::VectorC * >(argp3);
+  res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_RavlN__MatrixC,  0 );
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "4"" of type '" "RavlN::MatrixC &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_EvaluateValueJacobian" "', argument " "4"" of type '" "RavlN::MatrixC &""'"); 
+  }
+  arg4 = reinterpret_cast< RavlN::MatrixC * >(argp4);
+  result = (bool)((RavlN::FunctionC const *)arg1)->EvaluateValueJacobian((RavlN::VectorC const &)*arg2,*arg3,*arg4);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_EvaluateValue(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  RavlN::VectorC *arg2 = 0 ;
+  RavlN::VectorC *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:FunctionC_EvaluateValue",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_EvaluateValue" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__VectorC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FunctionC_EvaluateValue" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_EvaluateValue" "', argument " "2"" of type '" "RavlN::VectorC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::VectorC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__VectorC,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FunctionC_EvaluateValue" "', argument " "3"" of type '" "RavlN::VectorC &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FunctionC_EvaluateValue" "', argument " "3"" of type '" "RavlN::VectorC &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::VectorC * >(argp3);
+  result = (bool)((RavlN::FunctionC const *)arg1)->EvaluateValue((RavlN::VectorC const &)*arg2,*arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_InputSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::UIntT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC_InputSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_InputSize" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  result = (RavlN::UIntT)((RavlN::FunctionC const *)arg1)->InputSize();
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC_OutputSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::UIntT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC_OutputSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC_OutputSize" "', argument " "1"" of type '" "RavlN::FunctionC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  result = (RavlN::UIntT)((RavlN::FunctionC const *)arg1)->OutputSize();
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  char *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC___str__",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC___str__" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  result = (char *)RavlN_FunctionC___str__(arg1);
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FunctionC___nonzero__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:FunctionC___nonzero__",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FunctionC___nonzero__" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  result = (bool)RavlN_FunctionC___nonzero__(arg1);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_FunctionC")) SWIG_fail;
+  result = (RavlN::FunctionC *)new RavlN::FunctionC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FunctionC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = (RavlN::FunctionC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_FunctionC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FunctionC" "', argument " "1"" of type '" "RavlN::FunctionC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FunctionC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__FunctionC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_ClassifierPreprocessC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::FunctionC *arg1 = 0 ;
+  RavlN::ClassifierC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::ClassifierPreprocessC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_ClassifierPreprocessC",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_RavlN__FunctionC,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_ClassifierPreprocessC" "', argument " "1"" of type '" "RavlN::FunctionC const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_ClassifierPreprocessC" "', argument " "1"" of type '" "RavlN::FunctionC const &""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::FunctionC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_ClassifierPreprocessC" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_ClassifierPreprocessC" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
+  result = (RavlN::ClassifierPreprocessC *)new RavlN::ClassifierPreprocessC((RavlN::FunctionC const &)*arg1,(RavlN::ClassifierC const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__ClassifierPreprocessC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ClassifierPreprocessC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::ClassifierPreprocessC *arg1 = (RavlN::ClassifierPreprocessC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_ClassifierPreprocessC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__ClassifierPreprocessC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ClassifierPreprocessC" "', argument " "1"" of type '" "RavlN::ClassifierPreprocessC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::ClassifierPreprocessC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ClassifierPreprocessC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__ClassifierPreprocessC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_Save__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlImageN::ImageC< RavlN::ByteT > *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::ByteT > * >(argp2);
+  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlImageN::ImageC< unsigned char > const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Load__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlImageN::ImageC< RavlN::ByteT > *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::ByteT > &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::ByteT > * >(argp2);
+  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Save__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlImageN::ImageC< RavlN::RealT > *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::RealT > * >(argp2);
+  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlImageN::ImageC< double > const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Load__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlImageN::ImageC< RavlN::RealT > *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_double_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlN::RealT > &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlN::RealT > * >(argp2);
+  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Save__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlImageN::ImageC< RavlImageN::ByteRGBValueC > *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlImageN::ByteRGBValueC > * >(argp2);
+  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Load__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlImageN::ImageC< RavlImageN::ByteRGBValueC > *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlImageN::ImageC< RavlImageN::ByteRGBValueC > * >(argp2);
+  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Load__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlN::ClassifierC *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlN::ClassifierC &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlN::ClassifierC &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
+  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Save__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlN::ClassifierC *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__ClassifierC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlN::ClassifierC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::ClassifierC * >(argp2);
+  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlN::ClassifierC const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Load__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlN::FunctionC *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Load",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__FunctionC,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Load" "', argument " "2"" of type '" "RavlN::FunctionC &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Load" "', argument " "2"" of type '" "RavlN::FunctionC &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::FunctionC * >(argp2);
+  result = (bool)RavlN::Load((RavlN::StringC const &)*arg1,*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Load(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[3];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Load__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_double_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Load__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Load__SWIG_2(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlN__ClassifierC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Load__SWIG_3(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_RavlN__FunctionC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Load__SWIG_4(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Load'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::Load(RavlN::StringC const &,RavlImageN::ImageC< RavlN::ByteT > &)\n"
+    "    RavlN::Load(RavlN::StringC const &,RavlImageN::ImageC< RavlN::RealT > &)\n"
+    "    RavlN::Load(RavlN::StringC const &,RavlImageN::ImageC< RavlImageN::ByteRGBValueC > &)\n"
+    "    RavlN::Load(RavlN::StringC const &,RavlN::ClassifierC &)\n"
+    "    RavlN::Load(RavlN::StringC const &,RavlN::FunctionC &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_Save__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::StringC *arg1 = 0 ;
+  RavlN::FunctionC *arg2 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Save",&obj0,&obj1)) SWIG_fail;
+  {
+    arg1 = new RavlN::StringC(PyString_AsString(obj0));
+  }
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__FunctionC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Save" "', argument " "2"" of type '" "RavlN::FunctionC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Save" "', argument " "2"" of type '" "RavlN::FunctionC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::FunctionC * >(argp2);
+  result = (bool)RavlN::Save((RavlN::StringC const &)*arg1,(RavlN::FunctionC const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Save(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[3];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ImageCT_unsigned_char_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Save__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ImageCT_double_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Save__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlImageN__ImageCT_RavlImageN__ByteRGBValueC_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Save__SWIG_2(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__ClassifierC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Save__SWIG_3(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsCharPtrAndSize(argv[0], 0, NULL, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__FunctionC, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Save__SWIG_4(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Save'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::Save(RavlN::StringC const &,RavlImageN::ImageC< RavlN::ByteT > const &)\n"
+    "    RavlN::Save(RavlN::StringC const &,RavlImageN::ImageC< RavlN::RealT > const &)\n"
+    "    RavlN::Save(RavlN::StringC const &,RavlImageN::ImageC< RavlImageN::ByteRGBValueC > const &)\n"
+    "    RavlN::Save(RavlN::StringC const &,RavlN::ClassifierC const &)\n"
+    "    RavlN::Save(RavlN::StringC const &,RavlN::FunctionC const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealHistogram1dC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_RealHistogram1dC")) SWIG_fail;
+  result = (RavlN::RealHistogram1dC *)new RavlN::RealHistogram1dC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealHistogram1dC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  RavlN::RealT arg2 ;
+  RavlN::UIntT arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::RealHistogram1dC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_RealHistogram1dC",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RealHistogram1dC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_RealHistogram1dC" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_RealHistogram1dC" "', argument " "3"" of type '" "RavlN::UIntT""'");
+  } 
+  arg3 = static_cast< RavlN::UIntT >(val3);
+  result = (RavlN::RealHistogram1dC *)new RavlN::RealHistogram1dC(arg1,arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RealHistogram1dC(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_new_RealHistogram1dC__SWIG_0(self, args);
+  }
+  if (argc == 3) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_RealHistogram1dC__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_RealHistogram1dC'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::RealHistogram1dC()\n"
+    "    RavlN::RealHistogram1dC::RealHistogram1dC(RavlN::RealT,RavlN::RealT,RavlN::UIntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Scale(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Scale",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Scale" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Scale();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Offset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Offset",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Offset" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Offset();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Bin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::IndexC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Bin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Bin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Bin" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  result = ((RavlN::RealHistogram1dC const *)arg1)->Bin(arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::IndexC(static_cast< const RavlN::IndexC& >(result))), SWIGTYPE_p_RavlN__IndexC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MidBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MidBin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MidBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MidBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MidBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MidBin(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MinBin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MinBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MinBin(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MaxBin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_MaxBin",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MaxBin" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MaxBin" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MaxBin" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MaxBin(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinLimit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_MinLimit",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinLimit" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MinLimit();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MaxLimit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_MaxLimit",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MaxLimit" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->MaxLimit();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Reset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Reset",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Reset" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  (arg1)->Reset();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Vote",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Vote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Vote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  (arg1)->Vote(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::IntT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Vote",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Vote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Vote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_Vote" "', argument " "3"" of type '" "RavlN::IntT""'");
+  } 
+  arg3 = static_cast< RavlN::IntT >(val3);
+  (arg1)->Vote(arg2,arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Vote(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_Vote__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_Vote__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_Vote'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::Vote(RavlN::RealT)\n"
+    "    RavlN::RealHistogram1dC::Vote(RavlN::RealT,RavlN::IntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_CheckVote",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_CheckVote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_CheckVote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  result = (bool)(arg1)->CheckVote(arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::RealT arg2 ;
+  RavlN::IntT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_CheckVote",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_CheckVote" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_CheckVote" "', argument " "2"" of type '" "RavlN::RealT""'");
+  } 
+  arg2 = static_cast< RavlN::RealT >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_CheckVote" "', argument " "3"" of type '" "RavlN::IntT""'");
+  } 
+  arg3 = static_cast< RavlN::IntT >(val3);
+  result = (bool)(arg1)->CheckVote(arg2,arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_CheckVote(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_CheckVote__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_CheckVote__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_CheckVote'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::CheckVote(RavlN::RealT)\n"
+    "    RavlN::RealHistogram1dC::CheckVote(RavlN::RealT,RavlN::IntT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_TotalVotes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::UIntT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_TotalVotes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_TotalVotes" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::UIntT)((RavlN::RealHistogram1dC const *)arg1)->TotalVotes();
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Information(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Information",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Information" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Information();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Energy(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:RealHistogram1dC_Energy",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Energy" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->Energy();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IntT arg2 ;
+  RavlN::RealT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_SmoothedPDF",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "2"" of type '" "RavlN::IntT""'");
+  } 
+  arg2 = static_cast< RavlN::IntT >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "3"" of type '" "RavlN::RealT""'");
+  } 
+  arg3 = static_cast< RavlN::RealT >(val3);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->SmoothedPDF(arg2,arg3);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IntT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_SmoothedPDF",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_SmoothedPDF" "', argument " "2"" of type '" "RavlN::IntT""'");
+  } 
+  arg2 = static_cast< RavlN::IntT >(val2);
+  result = (RavlN::RealT)((RavlN::RealHistogram1dC const *)arg1)->SmoothedPDF(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_SmoothedPDF(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_SmoothedPDF__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_SmoothedPDF__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_SmoothedPDF'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::SmoothedPDF(RavlN::IntT,RavlN::RealT) const\n"
+    "    RavlN::RealHistogram1dC::SmoothedPDF(RavlN::IntT) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::UIntT arg2 ;
+  RavlN::UIntT arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::DListC< RavlN::RealT > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Peaks",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Peaks" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Peaks" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RealHistogram1dC_Peaks" "', argument " "3"" of type '" "RavlN::UIntT""'");
+  } 
+  arg3 = static_cast< RavlN::UIntT >(val3);
+  result = ((RavlN::RealHistogram1dC const *)arg1)->Peaks(arg2,arg3);
+  resultobj = SWIG_NewPointerObj((new RavlN::DListC< RavlN::RealT >(static_cast< const RavlN::DListC< RavlN::RealT >& >(result))), SWIGTYPE_p_RavlN__DListCT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::UIntT arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::DListC< RavlN::RealT > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RealHistogram1dC_Peaks",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Peaks" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RealHistogram1dC_Peaks" "', argument " "2"" of type '" "RavlN::UIntT""'");
+  } 
+  arg2 = static_cast< RavlN::UIntT >(val2);
+  result = ((RavlN::RealHistogram1dC const *)arg1)->Peaks(arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::DListC< RavlN::RealT >(static_cast< const RavlN::DListC< RavlN::RealT >& >(result))), SWIGTYPE_p_RavlN__DListCT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Peaks(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RealHistogram1dC_Peaks__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__RealHistogram1dC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RealHistogram1dC_Peaks__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RealHistogram1dC_Peaks'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::RealHistogram1dC::Peaks(RavlN::UIntT,RavlN::UIntT) const\n"
+    "    RavlN::RealHistogram1dC::Peaks(RavlN::UIntT) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_MinMax(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC *arg2 = 0 ;
+  RavlN::IndexC *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_MinMax",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_MinMax" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_MinMax" "', argument " "2"" of type '" "RavlN::IndexC &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinMax" "', argument " "2"" of type '" "RavlN::IndexC &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::IndexC * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__IndexC,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RealHistogram1dC_MinMax" "', argument " "3"" of type '" "RavlN::IndexC &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_MinMax" "', argument " "3"" of type '" "RavlN::IndexC &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::IndexC * >(argp3);
+  result = (bool)((RavlN::RealHistogram1dC const *)arg1)->MinMax(*arg2,*arg3);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RealHistogram1dC_Sum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  RavlN::IndexC arg2 ;
+  RavlN::IndexC arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::UIntT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RealHistogram1dC_Sum",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealHistogram1dC_Sum" "', argument " "1"" of type '" "RavlN::RealHistogram1dC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealHistogram1dC_Sum" "', argument " "2"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_Sum" "', argument " "2"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__IndexC,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RealHistogram1dC_Sum" "', argument " "3"" of type '" "RavlN::IndexC""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RealHistogram1dC_Sum" "', argument " "3"" of type '" "RavlN::IndexC""'");
+    } else {
+      RavlN::IndexC * temp = reinterpret_cast< RavlN::IndexC * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  result = (RavlN::UIntT)((RavlN::RealHistogram1dC const *)arg1)->Sum(arg2,arg3);
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RealHistogram1dC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealHistogram1dC *arg1 = (RavlN::RealHistogram1dC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_RealHistogram1dC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RealHistogram1dC" "', argument " "1"" of type '" "RavlN::RealHistogram1dC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::RealHistogram1dC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RealHistogram1dC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__RealHistogram1dC, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -74743,6 +75347,170 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_Sample1__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::SampleVectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DataSetVectorLabelC_Sample1",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSetVectorLabelC_Sample1" "', argument " "1"" of type '" "RavlN::DataSetVectorLabelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp1);
+  result = (RavlN::SampleVectorC *) &(arg1)->Sample1();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__SampleVectorC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_Sample1__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::SampleVectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DataSetVectorLabelC_Sample1",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSetVectorLabelC_Sample1" "', argument " "1"" of type '" "RavlN::DataSetVectorLabelC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp1);
+  result = (RavlN::SampleVectorC *) &((RavlN::DataSetVectorLabelC const *)arg1)->Sample1();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__SampleVectorC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_Sample1(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataSetVectorLabelC_Sample1__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataSetVectorLabelC_Sample1__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DataSetVectorLabelC_Sample1'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DataSetVectorLabelC::Sample1()\n"
+    "    RavlN::DataSetVectorLabelC::Sample1() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_Sample2__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::SampleLabelC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DataSetVectorLabelC_Sample2",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSetVectorLabelC_Sample2" "', argument " "1"" of type '" "RavlN::DataSetVectorLabelC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp1);
+  result = (RavlN::SampleLabelC *) &(arg1)->Sample2();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__SampleLabelC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_Sample2__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::SampleLabelC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DataSetVectorLabelC_Sample2",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSetVectorLabelC_Sample2" "', argument " "1"" of type '" "RavlN::DataSetVectorLabelC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp1);
+  result = (RavlN::SampleLabelC *) &((RavlN::DataSetVectorLabelC const *)arg1)->Sample2();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__SampleLabelC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataSetVectorLabelC_Sample2(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataSetVectorLabelC_Sample2__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DataSetVectorLabelC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataSetVectorLabelC_Sample2__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DataSetVectorLabelC_Sample2'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DataSetVectorLabelC::Sample2()\n"
+    "    RavlN::DataSetVectorLabelC::Sample2() const\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_DataSetVectorLabelC___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::DataSetVectorLabelC *arg1 = (RavlN::DataSetVectorLabelC *) 0 ;
@@ -75923,6 +76691,352 @@ SWIGINTERN PyObject *DesignFunctionSupervisedC_swigregister(PyObject *SWIGUNUSED
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignFunctionSupervisedC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_DesignFunctionUnsupervisedC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFunctionUnsupervisedC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_DesignFunctionUnsupervisedC")) SWIG_fail;
+  result = (RavlN::DesignFunctionUnsupervisedC *)new RavlN::DesignFunctionUnsupervisedC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFunctionUnsupervisedC_Apply__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFunctionUnsupervisedC *arg1 = (RavlN::DesignFunctionUnsupervisedC *) 0 ;
+  RavlN::SampleC< RavlN::VectorC > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::FunctionC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DesignFunctionUnsupervisedC_Apply",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "1"" of type '" "RavlN::DesignFunctionUnsupervisedC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFunctionUnsupervisedC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::SampleC< RavlN::VectorC > * >(argp2);
+  result = (arg1)->Apply((RavlN::SampleC< RavlN::VectorC > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::FunctionC(static_cast< const RavlN::FunctionC& >(result))), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFunctionUnsupervisedC_Apply__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFunctionUnsupervisedC *arg1 = (RavlN::DesignFunctionUnsupervisedC *) 0 ;
+  RavlN::SampleC< RavlN::VectorC > *arg2 = 0 ;
+  RavlN::SampleC< RavlN::RealT > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::FunctionC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DesignFunctionUnsupervisedC_Apply",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "1"" of type '" "RavlN::DesignFunctionUnsupervisedC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFunctionUnsupervisedC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::VectorC > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::SampleC< RavlN::VectorC > * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__SampleCT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "3"" of type '" "RavlN::SampleC< RavlN::RealT > const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "3"" of type '" "RavlN::SampleC< RavlN::RealT > const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::SampleC< RavlN::RealT > * >(argp3);
+  result = (arg1)->Apply((RavlN::SampleC< RavlN::VectorC > const &)*arg2,(RavlN::SampleC< RavlN::RealT > const &)*arg3);
+  resultobj = SWIG_NewPointerObj((new RavlN::FunctionC(static_cast< const RavlN::FunctionC& >(result))), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFunctionUnsupervisedC_Apply__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFunctionUnsupervisedC *arg1 = (RavlN::DesignFunctionUnsupervisedC *) 0 ;
+  RavlN::SampleC< RavlN::TVectorC< float > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::FunctionC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DesignFunctionUnsupervisedC_Apply",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "1"" of type '" "RavlN::DesignFunctionUnsupervisedC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFunctionUnsupervisedC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::TVectorC< float > > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::TVectorC< float > > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::SampleC< RavlN::TVectorC< float > > * >(argp2);
+  result = (arg1)->Apply((RavlN::SampleC< RavlN::TVectorC< float > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::FunctionC(static_cast< const RavlN::FunctionC& >(result))), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFunctionUnsupervisedC_Apply__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFunctionUnsupervisedC *arg1 = (RavlN::DesignFunctionUnsupervisedC *) 0 ;
+  RavlN::SampleC< RavlN::TVectorC< float > > *arg2 = 0 ;
+  RavlN::SampleC< float > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  RavlN::FunctionC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DesignFunctionUnsupervisedC_Apply",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "1"" of type '" "RavlN::DesignFunctionUnsupervisedC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFunctionUnsupervisedC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::TVectorC< float > > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "2"" of type '" "RavlN::SampleC< RavlN::TVectorC< float > > const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::SampleC< RavlN::TVectorC< float > > * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_RavlN__SampleCT_float_t,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "3"" of type '" "RavlN::SampleC< float > const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFunctionUnsupervisedC_Apply" "', argument " "3"" of type '" "RavlN::SampleC< float > const &""'"); 
+  }
+  arg3 = reinterpret_cast< RavlN::SampleC< float > * >(argp3);
+  result = (arg1)->Apply((RavlN::SampleC< RavlN::TVectorC< float > > const &)*arg2,(RavlN::SampleC< float > const &)*arg3);
+  resultobj = SWIG_NewPointerObj((new RavlN::FunctionC(static_cast< const RavlN::FunctionC& >(result))), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFunctionUnsupervisedC_Apply(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[4];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DesignFunctionUnsupervisedC_Apply__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DesignFunctionUnsupervisedC_Apply__SWIG_2(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__SampleCT_RavlN__VectorC_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__SampleCT_double_t, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DesignFunctionUnsupervisedC_Apply__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RavlN__SampleCT_RavlN__TVectorCT_RavlN__FloatT_t_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_RavlN__SampleCT_float_t, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DesignFunctionUnsupervisedC_Apply__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DesignFunctionUnsupervisedC_Apply'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFunctionUnsupervisedC::Apply(RavlN::SampleC< RavlN::VectorC > const &)\n"
+    "    RavlN::DesignFunctionUnsupervisedC::Apply(RavlN::SampleC< RavlN::VectorC > const &,RavlN::SampleC< RavlN::RealT > const &)\n"
+    "    RavlN::DesignFunctionUnsupervisedC::Apply(RavlN::SampleC< RavlN::TVectorC< float > > const &)\n"
+    "    RavlN::DesignFunctionUnsupervisedC::Apply(RavlN::SampleC< RavlN::TVectorC< float > > const &,RavlN::SampleC< float > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignFunctionUnsupervisedC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFunctionUnsupervisedC *arg1 = (RavlN::DesignFunctionUnsupervisedC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignFunctionUnsupervisedC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignFunctionUnsupervisedC" "', argument " "1"" of type '" "RavlN::DesignFunctionUnsupervisedC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFunctionUnsupervisedC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignFunctionUnsupervisedC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignFunctionUnsupervisedC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_DesignFuncReduceC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncReduceC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_DesignFuncReduceC")) SWIG_fail;
+  result = (RavlN::DesignFuncReduceC *)new RavlN::DesignFuncReduceC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignFuncReduceC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncReduceC_VariationPreserved(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncReduceC *arg1 = (RavlN::DesignFuncReduceC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::RealT result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncReduceC_VariationPreserved",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncReduceC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncReduceC_VariationPreserved" "', argument " "1"" of type '" "RavlN::DesignFuncReduceC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncReduceC * >(argp1);
+  result = (RavlN::RealT)((RavlN::DesignFuncReduceC const *)arg1)->VariationPreserved();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignFuncReduceC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncReduceC *arg1 = (RavlN::DesignFuncReduceC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignFuncReduceC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncReduceC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignFuncReduceC" "', argument " "1"" of type '" "RavlN::DesignFuncReduceC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncReduceC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignFuncReduceC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignFuncReduceC, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -77367,6 +78481,642 @@ SWIGINTERN PyObject *DesignClassifierLogisticRegressionC_swigregister(PyObject *
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_DesignFuncPCAC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncPCAC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_DesignFuncPCAC")) SWIG_fail;
+  result = (RavlN::DesignFuncPCAC *)new RavlN::DesignFuncPCAC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignFuncPCAC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignFuncPCAC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::DesignFuncPCAC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_DesignFuncPCAC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_DesignFuncPCAC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  result = (RavlN::DesignFuncPCAC *)new RavlN::DesignFuncPCAC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignFuncPCAC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignFuncPCAC(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_new_DesignFuncPCAC__SWIG_0(self, args);
+  }
+  if (argc == 1) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_DesignFuncPCAC__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_DesignFuncPCAC'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncPCAC::DesignFuncPCAC()\n"
+    "    RavlN::DesignFuncPCAC::DesignFuncPCAC(RavlN::RealT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncPCAC_Pca__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncPCAC *arg1 = (RavlN::DesignFuncPCAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::VectorMatrixC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncPCAC_Pca",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncPCAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncPCAC_Pca" "', argument " "1"" of type '" "RavlN::DesignFuncPCAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncPCAC * >(argp1);
+  result = (RavlN::VectorMatrixC *) &(arg1)->Pca();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__VectorMatrixC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncPCAC_Pca__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncPCAC *arg1 = (RavlN::DesignFuncPCAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::VectorMatrixC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncPCAC_Pca",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncPCAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncPCAC_Pca" "', argument " "1"" of type '" "RavlN::DesignFuncPCAC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncPCAC * >(argp1);
+  result = (RavlN::VectorMatrixC *) &((RavlN::DesignFuncPCAC const *)arg1)->Pca();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__VectorMatrixC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncPCAC_Pca(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncPCAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncPCAC_Pca__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncPCAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncPCAC_Pca__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DesignFuncPCAC_Pca'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncPCAC::Pca()\n"
+    "    RavlN::DesignFuncPCAC::Pca() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncPCAC_Mean__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncPCAC *arg1 = (RavlN::DesignFuncPCAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::VectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncPCAC_Mean",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncPCAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncPCAC_Mean" "', argument " "1"" of type '" "RavlN::DesignFuncPCAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncPCAC * >(argp1);
+  result = (RavlN::VectorC *) &(arg1)->Mean();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__VectorC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncPCAC_Mean__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncPCAC *arg1 = (RavlN::DesignFuncPCAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::VectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncPCAC_Mean",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncPCAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncPCAC_Mean" "', argument " "1"" of type '" "RavlN::DesignFuncPCAC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncPCAC * >(argp1);
+  result = (RavlN::VectorC *) &((RavlN::DesignFuncPCAC const *)arg1)->Mean();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__VectorC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncPCAC_Mean(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncPCAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncPCAC_Mean__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncPCAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncPCAC_Mean__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DesignFuncPCAC_Mean'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncPCAC::Mean()\n"
+    "    RavlN::DesignFuncPCAC::Mean() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignFuncPCAC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncPCAC *arg1 = (RavlN::DesignFuncPCAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignFuncPCAC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncPCAC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignFuncPCAC" "', argument " "1"" of type '" "RavlN::DesignFuncPCAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncPCAC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignFuncPCAC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignFuncPCAC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_DesignFuncLDAC__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_DesignFuncLDAC")) SWIG_fail;
+  result = (RavlN::DesignFuncLDAC *)new RavlN::DesignFuncLDAC();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignFuncLDAC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignFuncLDAC__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::RealT arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::DesignFuncLDAC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_DesignFuncLDAC",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_DesignFuncLDAC" "', argument " "1"" of type '" "RavlN::RealT""'");
+  } 
+  arg1 = static_cast< RavlN::RealT >(val1);
+  result = (RavlN::DesignFuncLDAC *)new RavlN::DesignFuncLDAC(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__DesignFuncLDAC, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DesignFuncLDAC(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_new_DesignFuncLDAC__SWIG_0(self, args);
+  }
+  if (argc == 1) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_DesignFuncLDAC__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_DesignFuncLDAC'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncLDAC::DesignFuncLDAC()\n"
+    "    RavlN::DesignFuncLDAC::DesignFuncLDAC(RavlN::RealT)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Lda__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::MatrixC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncLDAC_Lda",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_Lda" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  result = (RavlN::MatrixC *) &(arg1)->Lda();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__MatrixC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Lda__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::MatrixC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncLDAC_Lda",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_Lda" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  result = (RavlN::MatrixC *) &((RavlN::DesignFuncLDAC const *)arg1)->Lda();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__MatrixC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Lda(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncLDAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncLDAC_Lda__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncLDAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncLDAC_Lda__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DesignFuncLDAC_Lda'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncLDAC::Lda()\n"
+    "    RavlN::DesignFuncLDAC::Lda() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Mean__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::VectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncLDAC_Mean",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_Mean" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  result = (RavlN::VectorC *) &(arg1)->Mean();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__VectorC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Mean__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::VectorC *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncLDAC_Mean",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_Mean" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  result = (RavlN::VectorC *) &((RavlN::DesignFuncLDAC const *)arg1)->Mean();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RavlN__VectorC, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Mean(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncLDAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncLDAC_Mean__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncLDAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncLDAC_Mean__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DesignFuncLDAC_Mean'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncLDAC::Mean()\n"
+    "    RavlN::DesignFuncLDAC::Mean() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_SamplesPerClass__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::UIntT *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncLDAC_SamplesPerClass",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_SamplesPerClass" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  result = (RavlN::UIntT *) &(arg1)->SamplesPerClass();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_unsigned_int, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_SamplesPerClass__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RavlN::UIntT *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DesignFuncLDAC_SamplesPerClass",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_SamplesPerClass" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC const *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  result = (RavlN::UIntT *) &((RavlN::DesignFuncLDAC const *)arg1)->SamplesPerClass();
+  resultobj = SWIG_From_unsigned_SS_int(static_cast< unsigned int >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_SamplesPerClass(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[2];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? (int)PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncLDAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncLDAC_SamplesPerClass__SWIG_0(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_RavlN__DesignFuncLDAC, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DesignFuncLDAC_SamplesPerClass__SWIG_1(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DesignFuncLDAC_SamplesPerClass'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    RavlN::DesignFuncLDAC::SamplesPerClass()\n"
+    "    RavlN::DesignFuncLDAC::SamplesPerClass() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DesignFuncLDAC_Apply(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  RavlN::DataSetVectorLabelC *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  RavlN::FunctionC result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DesignFuncLDAC_Apply",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DesignFuncLDAC_Apply" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RavlN__DataSetVectorLabelC,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DesignFuncLDAC_Apply" "', argument " "2"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DesignFuncLDAC_Apply" "', argument " "2"" of type '" "RavlN::DataSetVectorLabelC const &""'"); 
+  }
+  arg2 = reinterpret_cast< RavlN::DataSetVectorLabelC * >(argp2);
+  result = (arg1)->Apply((RavlN::DataSetVectorLabelC const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new RavlN::FunctionC(static_cast< const RavlN::FunctionC& >(result))), SWIGTYPE_p_RavlN__FunctionC, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DesignFuncLDAC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RavlN::DesignFuncLDAC *arg1 = (RavlN::DesignFuncLDAC *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_DesignFuncLDAC",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RavlN__DesignFuncLDAC, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DesignFuncLDAC" "', argument " "1"" of type '" "RavlN::DesignFuncLDAC *""'"); 
+  }
+  arg1 = reinterpret_cast< RavlN::DesignFuncLDAC * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DesignFuncLDAC_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RavlN__DesignFuncLDAC, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_ErrorC(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   RavlN::ErrorC *result = 0 ;
@@ -78742,1809 +80492,1804 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"new_SizeC", _wrap_new_SizeC, METH_VARARGS, (char *)"\n"
 		"SizeC()\n"
-		"new_SizeC(size_t const & value) -> SizeC\n"
+		"new_SizeC(value) -> SizeC\n"
 		""},
-	 { (char *)"delete_SizeC", _wrap_delete_SizeC, METH_VARARGS, (char *)"delete_SizeC(SizeC self)"},
+	 { (char *)"delete_SizeC", _wrap_delete_SizeC, METH_VARARGS, (char *)"delete_SizeC(self)"},
 	 { (char *)"SizeC_swigregister", SizeC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListRealC", _wrap_new_DListRealC, METH_VARARGS, (char *)"new_DListRealC() -> DListRealC"},
-	 { (char *)"DListRealC_Empty", _wrap_DListRealC_Empty, METH_VARARGS, (char *)"DListRealC_Empty(DListRealC self)"},
-	 { (char *)"DListRealC_InsFirst", _wrap_DListRealC_InsFirst, METH_VARARGS, (char *)"DListRealC_InsFirst(DListRealC self, double const & dat)"},
-	 { (char *)"DListRealC_InsLast", _wrap_DListRealC_InsLast, METH_VARARGS, (char *)"DListRealC_InsLast(DListRealC self, double const & dat)"},
-	 { (char *)"DListRealC_PopFirst", _wrap_DListRealC_PopFirst, METH_VARARGS, (char *)"DListRealC_PopFirst(DListRealC self) -> double"},
-	 { (char *)"DListRealC_PopLast", _wrap_DListRealC_PopLast, METH_VARARGS, (char *)"DListRealC_PopLast(DListRealC self) -> double"},
-	 { (char *)"DListRealC_MoveFirst", _wrap_DListRealC_MoveFirst, METH_VARARGS, (char *)"DListRealC_MoveFirst(DListRealC self, DListRealC lst)"},
-	 { (char *)"DListRealC_MoveLast", _wrap_DListRealC_MoveLast, METH_VARARGS, (char *)"DListRealC_MoveLast(DListRealC self, DListRealC lst)"},
-	 { (char *)"DListRealC_First", _wrap_DListRealC_First, METH_VARARGS, (char *)"DListRealC_First(DListRealC self) -> double"},
-	 { (char *)"DListRealC_Last", _wrap_DListRealC_Last, METH_VARARGS, (char *)"DListRealC_Last(DListRealC self) -> double"},
-	 { (char *)"DListRealC_Del", _wrap_DListRealC_Del, METH_VARARGS, (char *)"DListRealC_Del(DListRealC self, double const & x) -> bool"},
-	 { (char *)"DListRealC_Contains", _wrap_DListRealC_Contains, METH_VARARGS, (char *)"DListRealC_Contains(DListRealC self, double const & x) -> bool"},
-	 { (char *)"DListRealC_Nth", _wrap_DListRealC_Nth, METH_VARARGS, (char *)"DListRealC_Nth(DListRealC self, int n) -> double"},
-	 { (char *)"delete_DListRealC", _wrap_delete_DListRealC, METH_VARARGS, (char *)"delete_DListRealC(DListRealC self)"},
+	 { (char *)"DListRealC_Empty", _wrap_DListRealC_Empty, METH_VARARGS, (char *)"DListRealC_Empty(self)"},
+	 { (char *)"DListRealC_InsFirst", _wrap_DListRealC_InsFirst, METH_VARARGS, (char *)"DListRealC_InsFirst(self, dat)"},
+	 { (char *)"DListRealC_InsLast", _wrap_DListRealC_InsLast, METH_VARARGS, (char *)"DListRealC_InsLast(self, dat)"},
+	 { (char *)"DListRealC_PopFirst", _wrap_DListRealC_PopFirst, METH_VARARGS, (char *)"DListRealC_PopFirst(self) -> double"},
+	 { (char *)"DListRealC_PopLast", _wrap_DListRealC_PopLast, METH_VARARGS, (char *)"DListRealC_PopLast(self) -> double"},
+	 { (char *)"DListRealC_MoveFirst", _wrap_DListRealC_MoveFirst, METH_VARARGS, (char *)"DListRealC_MoveFirst(self, lst)"},
+	 { (char *)"DListRealC_MoveLast", _wrap_DListRealC_MoveLast, METH_VARARGS, (char *)"DListRealC_MoveLast(self, lst)"},
+	 { (char *)"DListRealC_First", _wrap_DListRealC_First, METH_VARARGS, (char *)"DListRealC_First(self) -> double"},
+	 { (char *)"DListRealC_Last", _wrap_DListRealC_Last, METH_VARARGS, (char *)"DListRealC_Last(self) -> double"},
+	 { (char *)"DListRealC_Del", _wrap_DListRealC_Del, METH_VARARGS, (char *)"DListRealC_Del(self, x) -> bool"},
+	 { (char *)"DListRealC_Contains", _wrap_DListRealC_Contains, METH_VARARGS, (char *)"DListRealC_Contains(self, x) -> bool"},
+	 { (char *)"DListRealC_Nth", _wrap_DListRealC_Nth, METH_VARARGS, (char *)"DListRealC_Nth(self, n) -> double"},
+	 { (char *)"delete_DListRealC", _wrap_delete_DListRealC, METH_VARARGS, (char *)"delete_DListRealC(self)"},
 	 { (char *)"DListRealC_swigregister", DListRealC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListRealIterC", _wrap_new_DListRealIterC, METH_VARARGS, (char *)"\n"
 		"DListRealIterC()\n"
-		"new_DListRealIterC(DListRealC lst) -> DListRealIterC\n"
+		"new_DListRealIterC(lst) -> DListRealIterC\n"
 		""},
-	 { (char *)"DListRealIterC_IsValid", _wrap_DListRealIterC_IsValid, METH_VARARGS, (char *)"DListRealIterC_IsValid(DListRealIterC self) -> bool"},
-	 { (char *)"DListRealIterC_First", _wrap_DListRealIterC_First, METH_VARARGS, (char *)"DListRealIterC_First(DListRealIterC self)"},
-	 { (char *)"DListRealIterC_Last", _wrap_DListRealIterC_Last, METH_VARARGS, (char *)"DListRealIterC_Last(DListRealIterC self)"},
-	 { (char *)"DListRealIterC_IsElm", _wrap_DListRealIterC_IsElm, METH_VARARGS, (char *)"DListRealIterC_IsElm(DListRealIterC self) -> bool"},
-	 { (char *)"DListRealIterC_IsFirst", _wrap_DListRealIterC_IsFirst, METH_VARARGS, (char *)"DListRealIterC_IsFirst(DListRealIterC self) -> bool"},
-	 { (char *)"DListRealIterC_IsLast", _wrap_DListRealIterC_IsLast, METH_VARARGS, (char *)"DListRealIterC_IsLast(DListRealIterC self) -> bool"},
-	 { (char *)"DListRealIterC_Next", _wrap_DListRealIterC_Next, METH_VARARGS, (char *)"DListRealIterC_Next(DListRealIterC self)"},
-	 { (char *)"DListRealIterC_Prev", _wrap_DListRealIterC_Prev, METH_VARARGS, (char *)"DListRealIterC_Prev(DListRealIterC self)"},
-	 { (char *)"DListRealIterC_NextCrc", _wrap_DListRealIterC_NextCrc, METH_VARARGS, (char *)"DListRealIterC_NextCrc(DListRealIterC self)"},
-	 { (char *)"DListRealIterC_PrevCrc", _wrap_DListRealIterC_PrevCrc, METH_VARARGS, (char *)"DListRealIterC_PrevCrc(DListRealIterC self)"},
-	 { (char *)"DListRealIterC_Nth", _wrap_DListRealIterC_Nth, METH_VARARGS, (char *)"DListRealIterC_Nth(DListRealIterC self, RavlN::IntT n)"},
-	 { (char *)"DListRealIterC_NextData", _wrap_DListRealIterC_NextData, METH_VARARGS, (char *)"DListRealIterC_NextData(DListRealIterC self) -> double"},
-	 { (char *)"DListRealIterC_PrevData", _wrap_DListRealIterC_PrevData, METH_VARARGS, (char *)"DListRealIterC_PrevData(DListRealIterC self) -> double"},
-	 { (char *)"DListRealIterC_NextCrcData", _wrap_DListRealIterC_NextCrcData, METH_VARARGS, (char *)"DListRealIterC_NextCrcData(DListRealIterC self) -> double"},
-	 { (char *)"DListRealIterC_PrevCrcData", _wrap_DListRealIterC_PrevCrcData, METH_VARARGS, (char *)"DListRealIterC_PrevCrcData(DListRealIterC self) -> double"},
-	 { (char *)"DListRealIterC_Tail", _wrap_DListRealIterC_Tail, METH_VARARGS, (char *)"DListRealIterC_Tail(DListRealIterC self) -> DListRealC"},
-	 { (char *)"DListRealIterC_Head", _wrap_DListRealIterC_Head, METH_VARARGS, (char *)"DListRealIterC_Head(DListRealIterC self) -> DListRealC"},
-	 { (char *)"DListRealIterC_InclusiveTail", _wrap_DListRealIterC_InclusiveTail, METH_VARARGS, (char *)"DListRealIterC_InclusiveTail(DListRealIterC self) -> DListRealC"},
-	 { (char *)"DListRealIterC_InclusiveHead", _wrap_DListRealIterC_InclusiveHead, METH_VARARGS, (char *)"DListRealIterC_InclusiveHead(DListRealIterC self) -> DListRealC"},
-	 { (char *)"DListRealIterC_Data", _wrap_DListRealIterC_Data, METH_VARARGS, (char *)"DListRealIterC_Data(DListRealIterC self) -> double"},
-	 { (char *)"DListRealIterC___deref__", _wrap_DListRealIterC___deref__, METH_VARARGS, (char *)"DListRealIterC___deref__(DListRealIterC self) -> double *"},
-	 { (char *)"delete_DListRealIterC", _wrap_delete_DListRealIterC, METH_VARARGS, (char *)"delete_DListRealIterC(DListRealIterC self)"},
+	 { (char *)"DListRealIterC_IsValid", _wrap_DListRealIterC_IsValid, METH_VARARGS, (char *)"DListRealIterC_IsValid(self) -> bool"},
+	 { (char *)"DListRealIterC_First", _wrap_DListRealIterC_First, METH_VARARGS, (char *)"DListRealIterC_First(self)"},
+	 { (char *)"DListRealIterC_Last", _wrap_DListRealIterC_Last, METH_VARARGS, (char *)"DListRealIterC_Last(self)"},
+	 { (char *)"DListRealIterC_IsElm", _wrap_DListRealIterC_IsElm, METH_VARARGS, (char *)"DListRealIterC_IsElm(self) -> bool"},
+	 { (char *)"DListRealIterC_IsFirst", _wrap_DListRealIterC_IsFirst, METH_VARARGS, (char *)"DListRealIterC_IsFirst(self) -> bool"},
+	 { (char *)"DListRealIterC_IsLast", _wrap_DListRealIterC_IsLast, METH_VARARGS, (char *)"DListRealIterC_IsLast(self) -> bool"},
+	 { (char *)"DListRealIterC_Next", _wrap_DListRealIterC_Next, METH_VARARGS, (char *)"DListRealIterC_Next(self)"},
+	 { (char *)"DListRealIterC_Prev", _wrap_DListRealIterC_Prev, METH_VARARGS, (char *)"DListRealIterC_Prev(self)"},
+	 { (char *)"DListRealIterC_NextCrc", _wrap_DListRealIterC_NextCrc, METH_VARARGS, (char *)"DListRealIterC_NextCrc(self)"},
+	 { (char *)"DListRealIterC_PrevCrc", _wrap_DListRealIterC_PrevCrc, METH_VARARGS, (char *)"DListRealIterC_PrevCrc(self)"},
+	 { (char *)"DListRealIterC_Nth", _wrap_DListRealIterC_Nth, METH_VARARGS, (char *)"DListRealIterC_Nth(self, n)"},
+	 { (char *)"DListRealIterC_NextData", _wrap_DListRealIterC_NextData, METH_VARARGS, (char *)"DListRealIterC_NextData(self) -> double"},
+	 { (char *)"DListRealIterC_PrevData", _wrap_DListRealIterC_PrevData, METH_VARARGS, (char *)"DListRealIterC_PrevData(self) -> double"},
+	 { (char *)"DListRealIterC_NextCrcData", _wrap_DListRealIterC_NextCrcData, METH_VARARGS, (char *)"DListRealIterC_NextCrcData(self) -> double"},
+	 { (char *)"DListRealIterC_PrevCrcData", _wrap_DListRealIterC_PrevCrcData, METH_VARARGS, (char *)"DListRealIterC_PrevCrcData(self) -> double"},
+	 { (char *)"DListRealIterC_Tail", _wrap_DListRealIterC_Tail, METH_VARARGS, (char *)"DListRealIterC_Tail(self) -> DListRealC"},
+	 { (char *)"DListRealIterC_Head", _wrap_DListRealIterC_Head, METH_VARARGS, (char *)"DListRealIterC_Head(self) -> DListRealC"},
+	 { (char *)"DListRealIterC_InclusiveTail", _wrap_DListRealIterC_InclusiveTail, METH_VARARGS, (char *)"DListRealIterC_InclusiveTail(self) -> DListRealC"},
+	 { (char *)"DListRealIterC_InclusiveHead", _wrap_DListRealIterC_InclusiveHead, METH_VARARGS, (char *)"DListRealIterC_InclusiveHead(self) -> DListRealC"},
+	 { (char *)"DListRealIterC_Data", _wrap_DListRealIterC_Data, METH_VARARGS, (char *)"DListRealIterC_Data(self) -> double"},
+	 { (char *)"DListRealIterC___deref__", _wrap_DListRealIterC___deref__, METH_VARARGS, (char *)"DListRealIterC___deref__(self) -> double *"},
+	 { (char *)"delete_DListRealIterC", _wrap_delete_DListRealIterC, METH_VARARGS, (char *)"delete_DListRealIterC(self)"},
 	 { (char *)"DListRealIterC_swigregister", DListRealIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListRealConstIterC", _wrap_new_DListRealConstIterC, METH_VARARGS, (char *)"\n"
 		"DListRealConstIterC()\n"
-		"new_DListRealConstIterC(DListRealC copy) -> DListRealConstIterC\n"
+		"new_DListRealConstIterC(copy) -> DListRealConstIterC\n"
 		""},
-	 { (char *)"delete_DListRealConstIterC", _wrap_delete_DListRealConstIterC, METH_VARARGS, (char *)"delete_DListRealConstIterC(DListRealConstIterC self)"},
+	 { (char *)"delete_DListRealConstIterC", _wrap_delete_DListRealConstIterC, METH_VARARGS, (char *)"delete_DListRealConstIterC(self)"},
 	 { (char *)"DListRealConstIterC_swigregister", DListRealConstIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListIntC", _wrap_new_DListIntC, METH_VARARGS, (char *)"new_DListIntC() -> DListIntC"},
-	 { (char *)"DListIntC_Empty", _wrap_DListIntC_Empty, METH_VARARGS, (char *)"DListIntC_Empty(DListIntC self)"},
-	 { (char *)"DListIntC_InsFirst", _wrap_DListIntC_InsFirst, METH_VARARGS, (char *)"DListIntC_InsFirst(DListIntC self, int const & dat)"},
-	 { (char *)"DListIntC_InsLast", _wrap_DListIntC_InsLast, METH_VARARGS, (char *)"DListIntC_InsLast(DListIntC self, int const & dat)"},
-	 { (char *)"DListIntC_PopFirst", _wrap_DListIntC_PopFirst, METH_VARARGS, (char *)"DListIntC_PopFirst(DListIntC self) -> int"},
-	 { (char *)"DListIntC_PopLast", _wrap_DListIntC_PopLast, METH_VARARGS, (char *)"DListIntC_PopLast(DListIntC self) -> int"},
-	 { (char *)"DListIntC_MoveFirst", _wrap_DListIntC_MoveFirst, METH_VARARGS, (char *)"DListIntC_MoveFirst(DListIntC self, DListIntC lst)"},
-	 { (char *)"DListIntC_MoveLast", _wrap_DListIntC_MoveLast, METH_VARARGS, (char *)"DListIntC_MoveLast(DListIntC self, DListIntC lst)"},
-	 { (char *)"DListIntC_First", _wrap_DListIntC_First, METH_VARARGS, (char *)"DListIntC_First(DListIntC self) -> int"},
-	 { (char *)"DListIntC_Last", _wrap_DListIntC_Last, METH_VARARGS, (char *)"DListIntC_Last(DListIntC self) -> int"},
-	 { (char *)"DListIntC_Del", _wrap_DListIntC_Del, METH_VARARGS, (char *)"DListIntC_Del(DListIntC self, int const & x) -> bool"},
-	 { (char *)"DListIntC_Contains", _wrap_DListIntC_Contains, METH_VARARGS, (char *)"DListIntC_Contains(DListIntC self, int const & x) -> bool"},
-	 { (char *)"DListIntC_Nth", _wrap_DListIntC_Nth, METH_VARARGS, (char *)"DListIntC_Nth(DListIntC self, int n) -> int"},
-	 { (char *)"delete_DListIntC", _wrap_delete_DListIntC, METH_VARARGS, (char *)"delete_DListIntC(DListIntC self)"},
+	 { (char *)"DListIntC_Empty", _wrap_DListIntC_Empty, METH_VARARGS, (char *)"DListIntC_Empty(self)"},
+	 { (char *)"DListIntC_InsFirst", _wrap_DListIntC_InsFirst, METH_VARARGS, (char *)"DListIntC_InsFirst(self, dat)"},
+	 { (char *)"DListIntC_InsLast", _wrap_DListIntC_InsLast, METH_VARARGS, (char *)"DListIntC_InsLast(self, dat)"},
+	 { (char *)"DListIntC_PopFirst", _wrap_DListIntC_PopFirst, METH_VARARGS, (char *)"DListIntC_PopFirst(self) -> int"},
+	 { (char *)"DListIntC_PopLast", _wrap_DListIntC_PopLast, METH_VARARGS, (char *)"DListIntC_PopLast(self) -> int"},
+	 { (char *)"DListIntC_MoveFirst", _wrap_DListIntC_MoveFirst, METH_VARARGS, (char *)"DListIntC_MoveFirst(self, lst)"},
+	 { (char *)"DListIntC_MoveLast", _wrap_DListIntC_MoveLast, METH_VARARGS, (char *)"DListIntC_MoveLast(self, lst)"},
+	 { (char *)"DListIntC_First", _wrap_DListIntC_First, METH_VARARGS, (char *)"DListIntC_First(self) -> int"},
+	 { (char *)"DListIntC_Last", _wrap_DListIntC_Last, METH_VARARGS, (char *)"DListIntC_Last(self) -> int"},
+	 { (char *)"DListIntC_Del", _wrap_DListIntC_Del, METH_VARARGS, (char *)"DListIntC_Del(self, x) -> bool"},
+	 { (char *)"DListIntC_Contains", _wrap_DListIntC_Contains, METH_VARARGS, (char *)"DListIntC_Contains(self, x) -> bool"},
+	 { (char *)"DListIntC_Nth", _wrap_DListIntC_Nth, METH_VARARGS, (char *)"DListIntC_Nth(self, n) -> int"},
+	 { (char *)"delete_DListIntC", _wrap_delete_DListIntC, METH_VARARGS, (char *)"delete_DListIntC(self)"},
 	 { (char *)"DListIntC_swigregister", DListIntC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListIntIterC", _wrap_new_DListIntIterC, METH_VARARGS, (char *)"\n"
 		"DListIntIterC()\n"
-		"new_DListIntIterC(DListIntC lst) -> DListIntIterC\n"
+		"new_DListIntIterC(lst) -> DListIntIterC\n"
 		""},
-	 { (char *)"DListIntIterC_IsValid", _wrap_DListIntIterC_IsValid, METH_VARARGS, (char *)"DListIntIterC_IsValid(DListIntIterC self) -> bool"},
-	 { (char *)"DListIntIterC_First", _wrap_DListIntIterC_First, METH_VARARGS, (char *)"DListIntIterC_First(DListIntIterC self)"},
-	 { (char *)"DListIntIterC_Last", _wrap_DListIntIterC_Last, METH_VARARGS, (char *)"DListIntIterC_Last(DListIntIterC self)"},
-	 { (char *)"DListIntIterC_IsElm", _wrap_DListIntIterC_IsElm, METH_VARARGS, (char *)"DListIntIterC_IsElm(DListIntIterC self) -> bool"},
-	 { (char *)"DListIntIterC_IsFirst", _wrap_DListIntIterC_IsFirst, METH_VARARGS, (char *)"DListIntIterC_IsFirst(DListIntIterC self) -> bool"},
-	 { (char *)"DListIntIterC_IsLast", _wrap_DListIntIterC_IsLast, METH_VARARGS, (char *)"DListIntIterC_IsLast(DListIntIterC self) -> bool"},
-	 { (char *)"DListIntIterC_Next", _wrap_DListIntIterC_Next, METH_VARARGS, (char *)"DListIntIterC_Next(DListIntIterC self)"},
-	 { (char *)"DListIntIterC_Prev", _wrap_DListIntIterC_Prev, METH_VARARGS, (char *)"DListIntIterC_Prev(DListIntIterC self)"},
-	 { (char *)"DListIntIterC_NextCrc", _wrap_DListIntIterC_NextCrc, METH_VARARGS, (char *)"DListIntIterC_NextCrc(DListIntIterC self)"},
-	 { (char *)"DListIntIterC_PrevCrc", _wrap_DListIntIterC_PrevCrc, METH_VARARGS, (char *)"DListIntIterC_PrevCrc(DListIntIterC self)"},
-	 { (char *)"DListIntIterC_Nth", _wrap_DListIntIterC_Nth, METH_VARARGS, (char *)"DListIntIterC_Nth(DListIntIterC self, RavlN::IntT n)"},
-	 { (char *)"DListIntIterC_NextData", _wrap_DListIntIterC_NextData, METH_VARARGS, (char *)"DListIntIterC_NextData(DListIntIterC self) -> int"},
-	 { (char *)"DListIntIterC_PrevData", _wrap_DListIntIterC_PrevData, METH_VARARGS, (char *)"DListIntIterC_PrevData(DListIntIterC self) -> int"},
-	 { (char *)"DListIntIterC_NextCrcData", _wrap_DListIntIterC_NextCrcData, METH_VARARGS, (char *)"DListIntIterC_NextCrcData(DListIntIterC self) -> int"},
-	 { (char *)"DListIntIterC_PrevCrcData", _wrap_DListIntIterC_PrevCrcData, METH_VARARGS, (char *)"DListIntIterC_PrevCrcData(DListIntIterC self) -> int"},
-	 { (char *)"DListIntIterC_Tail", _wrap_DListIntIterC_Tail, METH_VARARGS, (char *)"DListIntIterC_Tail(DListIntIterC self) -> DListIntC"},
-	 { (char *)"DListIntIterC_Head", _wrap_DListIntIterC_Head, METH_VARARGS, (char *)"DListIntIterC_Head(DListIntIterC self) -> DListIntC"},
-	 { (char *)"DListIntIterC_InclusiveTail", _wrap_DListIntIterC_InclusiveTail, METH_VARARGS, (char *)"DListIntIterC_InclusiveTail(DListIntIterC self) -> DListIntC"},
-	 { (char *)"DListIntIterC_InclusiveHead", _wrap_DListIntIterC_InclusiveHead, METH_VARARGS, (char *)"DListIntIterC_InclusiveHead(DListIntIterC self) -> DListIntC"},
-	 { (char *)"DListIntIterC_Data", _wrap_DListIntIterC_Data, METH_VARARGS, (char *)"DListIntIterC_Data(DListIntIterC self) -> int"},
-	 { (char *)"DListIntIterC___deref__", _wrap_DListIntIterC___deref__, METH_VARARGS, (char *)"DListIntIterC___deref__(DListIntIterC self) -> int *"},
-	 { (char *)"delete_DListIntIterC", _wrap_delete_DListIntIterC, METH_VARARGS, (char *)"delete_DListIntIterC(DListIntIterC self)"},
+	 { (char *)"DListIntIterC_IsValid", _wrap_DListIntIterC_IsValid, METH_VARARGS, (char *)"DListIntIterC_IsValid(self) -> bool"},
+	 { (char *)"DListIntIterC_First", _wrap_DListIntIterC_First, METH_VARARGS, (char *)"DListIntIterC_First(self)"},
+	 { (char *)"DListIntIterC_Last", _wrap_DListIntIterC_Last, METH_VARARGS, (char *)"DListIntIterC_Last(self)"},
+	 { (char *)"DListIntIterC_IsElm", _wrap_DListIntIterC_IsElm, METH_VARARGS, (char *)"DListIntIterC_IsElm(self) -> bool"},
+	 { (char *)"DListIntIterC_IsFirst", _wrap_DListIntIterC_IsFirst, METH_VARARGS, (char *)"DListIntIterC_IsFirst(self) -> bool"},
+	 { (char *)"DListIntIterC_IsLast", _wrap_DListIntIterC_IsLast, METH_VARARGS, (char *)"DListIntIterC_IsLast(self) -> bool"},
+	 { (char *)"DListIntIterC_Next", _wrap_DListIntIterC_Next, METH_VARARGS, (char *)"DListIntIterC_Next(self)"},
+	 { (char *)"DListIntIterC_Prev", _wrap_DListIntIterC_Prev, METH_VARARGS, (char *)"DListIntIterC_Prev(self)"},
+	 { (char *)"DListIntIterC_NextCrc", _wrap_DListIntIterC_NextCrc, METH_VARARGS, (char *)"DListIntIterC_NextCrc(self)"},
+	 { (char *)"DListIntIterC_PrevCrc", _wrap_DListIntIterC_PrevCrc, METH_VARARGS, (char *)"DListIntIterC_PrevCrc(self)"},
+	 { (char *)"DListIntIterC_Nth", _wrap_DListIntIterC_Nth, METH_VARARGS, (char *)"DListIntIterC_Nth(self, n)"},
+	 { (char *)"DListIntIterC_NextData", _wrap_DListIntIterC_NextData, METH_VARARGS, (char *)"DListIntIterC_NextData(self) -> int"},
+	 { (char *)"DListIntIterC_PrevData", _wrap_DListIntIterC_PrevData, METH_VARARGS, (char *)"DListIntIterC_PrevData(self) -> int"},
+	 { (char *)"DListIntIterC_NextCrcData", _wrap_DListIntIterC_NextCrcData, METH_VARARGS, (char *)"DListIntIterC_NextCrcData(self) -> int"},
+	 { (char *)"DListIntIterC_PrevCrcData", _wrap_DListIntIterC_PrevCrcData, METH_VARARGS, (char *)"DListIntIterC_PrevCrcData(self) -> int"},
+	 { (char *)"DListIntIterC_Tail", _wrap_DListIntIterC_Tail, METH_VARARGS, (char *)"DListIntIterC_Tail(self) -> DListIntC"},
+	 { (char *)"DListIntIterC_Head", _wrap_DListIntIterC_Head, METH_VARARGS, (char *)"DListIntIterC_Head(self) -> DListIntC"},
+	 { (char *)"DListIntIterC_InclusiveTail", _wrap_DListIntIterC_InclusiveTail, METH_VARARGS, (char *)"DListIntIterC_InclusiveTail(self) -> DListIntC"},
+	 { (char *)"DListIntIterC_InclusiveHead", _wrap_DListIntIterC_InclusiveHead, METH_VARARGS, (char *)"DListIntIterC_InclusiveHead(self) -> DListIntC"},
+	 { (char *)"DListIntIterC_Data", _wrap_DListIntIterC_Data, METH_VARARGS, (char *)"DListIntIterC_Data(self) -> int"},
+	 { (char *)"DListIntIterC___deref__", _wrap_DListIntIterC___deref__, METH_VARARGS, (char *)"DListIntIterC___deref__(self) -> int *"},
+	 { (char *)"delete_DListIntIterC", _wrap_delete_DListIntIterC, METH_VARARGS, (char *)"delete_DListIntIterC(self)"},
 	 { (char *)"DListIntIterC_swigregister", DListIntIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListIntConstIterC", _wrap_new_DListIntConstIterC, METH_VARARGS, (char *)"\n"
 		"DListIntConstIterC()\n"
-		"new_DListIntConstIterC(DListIntC copy) -> DListIntConstIterC\n"
+		"new_DListIntConstIterC(copy) -> DListIntConstIterC\n"
 		""},
-	 { (char *)"delete_DListIntConstIterC", _wrap_delete_DListIntConstIterC, METH_VARARGS, (char *)"delete_DListIntConstIterC(DListIntConstIterC self)"},
+	 { (char *)"delete_DListIntConstIterC", _wrap_delete_DListIntConstIterC, METH_VARARGS, (char *)"delete_DListIntConstIterC(self)"},
 	 { (char *)"DListIntConstIterC_swigregister", DListIntConstIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListUIntC", _wrap_new_DListUIntC, METH_VARARGS, (char *)"new_DListUIntC() -> DListUIntC"},
-	 { (char *)"DListUIntC_Empty", _wrap_DListUIntC_Empty, METH_VARARGS, (char *)"DListUIntC_Empty(DListUIntC self)"},
-	 { (char *)"DListUIntC_InsFirst", _wrap_DListUIntC_InsFirst, METH_VARARGS, (char *)"DListUIntC_InsFirst(DListUIntC self, unsigned int const & dat)"},
-	 { (char *)"DListUIntC_InsLast", _wrap_DListUIntC_InsLast, METH_VARARGS, (char *)"DListUIntC_InsLast(DListUIntC self, unsigned int const & dat)"},
-	 { (char *)"DListUIntC_PopFirst", _wrap_DListUIntC_PopFirst, METH_VARARGS, (char *)"DListUIntC_PopFirst(DListUIntC self) -> unsigned int"},
-	 { (char *)"DListUIntC_PopLast", _wrap_DListUIntC_PopLast, METH_VARARGS, (char *)"DListUIntC_PopLast(DListUIntC self) -> unsigned int"},
-	 { (char *)"DListUIntC_MoveFirst", _wrap_DListUIntC_MoveFirst, METH_VARARGS, (char *)"DListUIntC_MoveFirst(DListUIntC self, DListUIntC lst)"},
-	 { (char *)"DListUIntC_MoveLast", _wrap_DListUIntC_MoveLast, METH_VARARGS, (char *)"DListUIntC_MoveLast(DListUIntC self, DListUIntC lst)"},
-	 { (char *)"DListUIntC_First", _wrap_DListUIntC_First, METH_VARARGS, (char *)"DListUIntC_First(DListUIntC self) -> unsigned int"},
-	 { (char *)"DListUIntC_Last", _wrap_DListUIntC_Last, METH_VARARGS, (char *)"DListUIntC_Last(DListUIntC self) -> unsigned int"},
-	 { (char *)"DListUIntC_Del", _wrap_DListUIntC_Del, METH_VARARGS, (char *)"DListUIntC_Del(DListUIntC self, unsigned int const & x) -> bool"},
-	 { (char *)"DListUIntC_Contains", _wrap_DListUIntC_Contains, METH_VARARGS, (char *)"DListUIntC_Contains(DListUIntC self, unsigned int const & x) -> bool"},
-	 { (char *)"DListUIntC_Nth", _wrap_DListUIntC_Nth, METH_VARARGS, (char *)"DListUIntC_Nth(DListUIntC self, int n) -> unsigned int"},
-	 { (char *)"delete_DListUIntC", _wrap_delete_DListUIntC, METH_VARARGS, (char *)"delete_DListUIntC(DListUIntC self)"},
+	 { (char *)"DListUIntC_Empty", _wrap_DListUIntC_Empty, METH_VARARGS, (char *)"DListUIntC_Empty(self)"},
+	 { (char *)"DListUIntC_InsFirst", _wrap_DListUIntC_InsFirst, METH_VARARGS, (char *)"DListUIntC_InsFirst(self, dat)"},
+	 { (char *)"DListUIntC_InsLast", _wrap_DListUIntC_InsLast, METH_VARARGS, (char *)"DListUIntC_InsLast(self, dat)"},
+	 { (char *)"DListUIntC_PopFirst", _wrap_DListUIntC_PopFirst, METH_VARARGS, (char *)"DListUIntC_PopFirst(self) -> unsigned int"},
+	 { (char *)"DListUIntC_PopLast", _wrap_DListUIntC_PopLast, METH_VARARGS, (char *)"DListUIntC_PopLast(self) -> unsigned int"},
+	 { (char *)"DListUIntC_MoveFirst", _wrap_DListUIntC_MoveFirst, METH_VARARGS, (char *)"DListUIntC_MoveFirst(self, lst)"},
+	 { (char *)"DListUIntC_MoveLast", _wrap_DListUIntC_MoveLast, METH_VARARGS, (char *)"DListUIntC_MoveLast(self, lst)"},
+	 { (char *)"DListUIntC_First", _wrap_DListUIntC_First, METH_VARARGS, (char *)"DListUIntC_First(self) -> unsigned int"},
+	 { (char *)"DListUIntC_Last", _wrap_DListUIntC_Last, METH_VARARGS, (char *)"DListUIntC_Last(self) -> unsigned int"},
+	 { (char *)"DListUIntC_Del", _wrap_DListUIntC_Del, METH_VARARGS, (char *)"DListUIntC_Del(self, x) -> bool"},
+	 { (char *)"DListUIntC_Contains", _wrap_DListUIntC_Contains, METH_VARARGS, (char *)"DListUIntC_Contains(self, x) -> bool"},
+	 { (char *)"DListUIntC_Nth", _wrap_DListUIntC_Nth, METH_VARARGS, (char *)"DListUIntC_Nth(self, n) -> unsigned int"},
+	 { (char *)"delete_DListUIntC", _wrap_delete_DListUIntC, METH_VARARGS, (char *)"delete_DListUIntC(self)"},
 	 { (char *)"DListUIntC_swigregister", DListUIntC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListUIntIterC", _wrap_new_DListUIntIterC, METH_VARARGS, (char *)"\n"
 		"DListUIntIterC()\n"
-		"new_DListUIntIterC(DListUIntC lst) -> DListUIntIterC\n"
+		"new_DListUIntIterC(lst) -> DListUIntIterC\n"
 		""},
-	 { (char *)"DListUIntIterC_IsValid", _wrap_DListUIntIterC_IsValid, METH_VARARGS, (char *)"DListUIntIterC_IsValid(DListUIntIterC self) -> bool"},
-	 { (char *)"DListUIntIterC_First", _wrap_DListUIntIterC_First, METH_VARARGS, (char *)"DListUIntIterC_First(DListUIntIterC self)"},
-	 { (char *)"DListUIntIterC_Last", _wrap_DListUIntIterC_Last, METH_VARARGS, (char *)"DListUIntIterC_Last(DListUIntIterC self)"},
-	 { (char *)"DListUIntIterC_IsElm", _wrap_DListUIntIterC_IsElm, METH_VARARGS, (char *)"DListUIntIterC_IsElm(DListUIntIterC self) -> bool"},
-	 { (char *)"DListUIntIterC_IsFirst", _wrap_DListUIntIterC_IsFirst, METH_VARARGS, (char *)"DListUIntIterC_IsFirst(DListUIntIterC self) -> bool"},
-	 { (char *)"DListUIntIterC_IsLast", _wrap_DListUIntIterC_IsLast, METH_VARARGS, (char *)"DListUIntIterC_IsLast(DListUIntIterC self) -> bool"},
-	 { (char *)"DListUIntIterC_Next", _wrap_DListUIntIterC_Next, METH_VARARGS, (char *)"DListUIntIterC_Next(DListUIntIterC self)"},
-	 { (char *)"DListUIntIterC_Prev", _wrap_DListUIntIterC_Prev, METH_VARARGS, (char *)"DListUIntIterC_Prev(DListUIntIterC self)"},
-	 { (char *)"DListUIntIterC_NextCrc", _wrap_DListUIntIterC_NextCrc, METH_VARARGS, (char *)"DListUIntIterC_NextCrc(DListUIntIterC self)"},
-	 { (char *)"DListUIntIterC_PrevCrc", _wrap_DListUIntIterC_PrevCrc, METH_VARARGS, (char *)"DListUIntIterC_PrevCrc(DListUIntIterC self)"},
-	 { (char *)"DListUIntIterC_Nth", _wrap_DListUIntIterC_Nth, METH_VARARGS, (char *)"DListUIntIterC_Nth(DListUIntIterC self, RavlN::IntT n)"},
-	 { (char *)"DListUIntIterC_NextData", _wrap_DListUIntIterC_NextData, METH_VARARGS, (char *)"DListUIntIterC_NextData(DListUIntIterC self) -> unsigned int"},
-	 { (char *)"DListUIntIterC_PrevData", _wrap_DListUIntIterC_PrevData, METH_VARARGS, (char *)"DListUIntIterC_PrevData(DListUIntIterC self) -> unsigned int"},
-	 { (char *)"DListUIntIterC_NextCrcData", _wrap_DListUIntIterC_NextCrcData, METH_VARARGS, (char *)"DListUIntIterC_NextCrcData(DListUIntIterC self) -> unsigned int"},
-	 { (char *)"DListUIntIterC_PrevCrcData", _wrap_DListUIntIterC_PrevCrcData, METH_VARARGS, (char *)"DListUIntIterC_PrevCrcData(DListUIntIterC self) -> unsigned int"},
-	 { (char *)"DListUIntIterC_Tail", _wrap_DListUIntIterC_Tail, METH_VARARGS, (char *)"DListUIntIterC_Tail(DListUIntIterC self) -> DListUIntC"},
-	 { (char *)"DListUIntIterC_Head", _wrap_DListUIntIterC_Head, METH_VARARGS, (char *)"DListUIntIterC_Head(DListUIntIterC self) -> DListUIntC"},
-	 { (char *)"DListUIntIterC_InclusiveTail", _wrap_DListUIntIterC_InclusiveTail, METH_VARARGS, (char *)"DListUIntIterC_InclusiveTail(DListUIntIterC self) -> DListUIntC"},
-	 { (char *)"DListUIntIterC_InclusiveHead", _wrap_DListUIntIterC_InclusiveHead, METH_VARARGS, (char *)"DListUIntIterC_InclusiveHead(DListUIntIterC self) -> DListUIntC"},
-	 { (char *)"DListUIntIterC_Data", _wrap_DListUIntIterC_Data, METH_VARARGS, (char *)"DListUIntIterC_Data(DListUIntIterC self) -> unsigned int"},
-	 { (char *)"DListUIntIterC___deref__", _wrap_DListUIntIterC___deref__, METH_VARARGS, (char *)"DListUIntIterC___deref__(DListUIntIterC self) -> unsigned int *"},
-	 { (char *)"delete_DListUIntIterC", _wrap_delete_DListUIntIterC, METH_VARARGS, (char *)"delete_DListUIntIterC(DListUIntIterC self)"},
+	 { (char *)"DListUIntIterC_IsValid", _wrap_DListUIntIterC_IsValid, METH_VARARGS, (char *)"DListUIntIterC_IsValid(self) -> bool"},
+	 { (char *)"DListUIntIterC_First", _wrap_DListUIntIterC_First, METH_VARARGS, (char *)"DListUIntIterC_First(self)"},
+	 { (char *)"DListUIntIterC_Last", _wrap_DListUIntIterC_Last, METH_VARARGS, (char *)"DListUIntIterC_Last(self)"},
+	 { (char *)"DListUIntIterC_IsElm", _wrap_DListUIntIterC_IsElm, METH_VARARGS, (char *)"DListUIntIterC_IsElm(self) -> bool"},
+	 { (char *)"DListUIntIterC_IsFirst", _wrap_DListUIntIterC_IsFirst, METH_VARARGS, (char *)"DListUIntIterC_IsFirst(self) -> bool"},
+	 { (char *)"DListUIntIterC_IsLast", _wrap_DListUIntIterC_IsLast, METH_VARARGS, (char *)"DListUIntIterC_IsLast(self) -> bool"},
+	 { (char *)"DListUIntIterC_Next", _wrap_DListUIntIterC_Next, METH_VARARGS, (char *)"DListUIntIterC_Next(self)"},
+	 { (char *)"DListUIntIterC_Prev", _wrap_DListUIntIterC_Prev, METH_VARARGS, (char *)"DListUIntIterC_Prev(self)"},
+	 { (char *)"DListUIntIterC_NextCrc", _wrap_DListUIntIterC_NextCrc, METH_VARARGS, (char *)"DListUIntIterC_NextCrc(self)"},
+	 { (char *)"DListUIntIterC_PrevCrc", _wrap_DListUIntIterC_PrevCrc, METH_VARARGS, (char *)"DListUIntIterC_PrevCrc(self)"},
+	 { (char *)"DListUIntIterC_Nth", _wrap_DListUIntIterC_Nth, METH_VARARGS, (char *)"DListUIntIterC_Nth(self, n)"},
+	 { (char *)"DListUIntIterC_NextData", _wrap_DListUIntIterC_NextData, METH_VARARGS, (char *)"DListUIntIterC_NextData(self) -> unsigned int"},
+	 { (char *)"DListUIntIterC_PrevData", _wrap_DListUIntIterC_PrevData, METH_VARARGS, (char *)"DListUIntIterC_PrevData(self) -> unsigned int"},
+	 { (char *)"DListUIntIterC_NextCrcData", _wrap_DListUIntIterC_NextCrcData, METH_VARARGS, (char *)"DListUIntIterC_NextCrcData(self) -> unsigned int"},
+	 { (char *)"DListUIntIterC_PrevCrcData", _wrap_DListUIntIterC_PrevCrcData, METH_VARARGS, (char *)"DListUIntIterC_PrevCrcData(self) -> unsigned int"},
+	 { (char *)"DListUIntIterC_Tail", _wrap_DListUIntIterC_Tail, METH_VARARGS, (char *)"DListUIntIterC_Tail(self) -> DListUIntC"},
+	 { (char *)"DListUIntIterC_Head", _wrap_DListUIntIterC_Head, METH_VARARGS, (char *)"DListUIntIterC_Head(self) -> DListUIntC"},
+	 { (char *)"DListUIntIterC_InclusiveTail", _wrap_DListUIntIterC_InclusiveTail, METH_VARARGS, (char *)"DListUIntIterC_InclusiveTail(self) -> DListUIntC"},
+	 { (char *)"DListUIntIterC_InclusiveHead", _wrap_DListUIntIterC_InclusiveHead, METH_VARARGS, (char *)"DListUIntIterC_InclusiveHead(self) -> DListUIntC"},
+	 { (char *)"DListUIntIterC_Data", _wrap_DListUIntIterC_Data, METH_VARARGS, (char *)"DListUIntIterC_Data(self) -> unsigned int"},
+	 { (char *)"DListUIntIterC___deref__", _wrap_DListUIntIterC___deref__, METH_VARARGS, (char *)"DListUIntIterC___deref__(self) -> unsigned int *"},
+	 { (char *)"delete_DListUIntIterC", _wrap_delete_DListUIntIterC, METH_VARARGS, (char *)"delete_DListUIntIterC(self)"},
 	 { (char *)"DListUIntIterC_swigregister", DListUIntIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListUIntConstIterC", _wrap_new_DListUIntConstIterC, METH_VARARGS, (char *)"\n"
 		"DListUIntConstIterC()\n"
-		"new_DListUIntConstIterC(DListUIntC copy) -> DListUIntConstIterC\n"
+		"new_DListUIntConstIterC(copy) -> DListUIntConstIterC\n"
 		""},
-	 { (char *)"delete_DListUIntConstIterC", _wrap_delete_DListUIntConstIterC, METH_VARARGS, (char *)"delete_DListUIntConstIterC(DListUIntConstIterC self)"},
+	 { (char *)"delete_DListUIntConstIterC", _wrap_delete_DListUIntConstIterC, METH_VARARGS, (char *)"delete_DListUIntConstIterC(self)"},
 	 { (char *)"DListUIntConstIterC_swigregister", DListUIntConstIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListInt64C", _wrap_new_DListInt64C, METH_VARARGS, (char *)"new_DListInt64C() -> DListInt64C"},
-	 { (char *)"DListInt64C_Empty", _wrap_DListInt64C_Empty, METH_VARARGS, (char *)"DListInt64C_Empty(DListInt64C self)"},
-	 { (char *)"DListInt64C_InsFirst", _wrap_DListInt64C_InsFirst, METH_VARARGS, (char *)"DListInt64C_InsFirst(DListInt64C self, long const & dat)"},
-	 { (char *)"DListInt64C_InsLast", _wrap_DListInt64C_InsLast, METH_VARARGS, (char *)"DListInt64C_InsLast(DListInt64C self, long const & dat)"},
-	 { (char *)"DListInt64C_PopFirst", _wrap_DListInt64C_PopFirst, METH_VARARGS, (char *)"DListInt64C_PopFirst(DListInt64C self) -> long"},
-	 { (char *)"DListInt64C_PopLast", _wrap_DListInt64C_PopLast, METH_VARARGS, (char *)"DListInt64C_PopLast(DListInt64C self) -> long"},
-	 { (char *)"DListInt64C_MoveFirst", _wrap_DListInt64C_MoveFirst, METH_VARARGS, (char *)"DListInt64C_MoveFirst(DListInt64C self, DListInt64C lst)"},
-	 { (char *)"DListInt64C_MoveLast", _wrap_DListInt64C_MoveLast, METH_VARARGS, (char *)"DListInt64C_MoveLast(DListInt64C self, DListInt64C lst)"},
-	 { (char *)"DListInt64C_First", _wrap_DListInt64C_First, METH_VARARGS, (char *)"DListInt64C_First(DListInt64C self) -> long"},
-	 { (char *)"DListInt64C_Last", _wrap_DListInt64C_Last, METH_VARARGS, (char *)"DListInt64C_Last(DListInt64C self) -> long"},
-	 { (char *)"DListInt64C_Del", _wrap_DListInt64C_Del, METH_VARARGS, (char *)"DListInt64C_Del(DListInt64C self, long const & x) -> bool"},
-	 { (char *)"DListInt64C_Contains", _wrap_DListInt64C_Contains, METH_VARARGS, (char *)"DListInt64C_Contains(DListInt64C self, long const & x) -> bool"},
-	 { (char *)"DListInt64C_Nth", _wrap_DListInt64C_Nth, METH_VARARGS, (char *)"DListInt64C_Nth(DListInt64C self, int n) -> long"},
-	 { (char *)"delete_DListInt64C", _wrap_delete_DListInt64C, METH_VARARGS, (char *)"delete_DListInt64C(DListInt64C self)"},
+	 { (char *)"DListInt64C_Empty", _wrap_DListInt64C_Empty, METH_VARARGS, (char *)"DListInt64C_Empty(self)"},
+	 { (char *)"DListInt64C_InsFirst", _wrap_DListInt64C_InsFirst, METH_VARARGS, (char *)"DListInt64C_InsFirst(self, dat)"},
+	 { (char *)"DListInt64C_InsLast", _wrap_DListInt64C_InsLast, METH_VARARGS, (char *)"DListInt64C_InsLast(self, dat)"},
+	 { (char *)"DListInt64C_PopFirst", _wrap_DListInt64C_PopFirst, METH_VARARGS, (char *)"DListInt64C_PopFirst(self) -> long"},
+	 { (char *)"DListInt64C_PopLast", _wrap_DListInt64C_PopLast, METH_VARARGS, (char *)"DListInt64C_PopLast(self) -> long"},
+	 { (char *)"DListInt64C_MoveFirst", _wrap_DListInt64C_MoveFirst, METH_VARARGS, (char *)"DListInt64C_MoveFirst(self, lst)"},
+	 { (char *)"DListInt64C_MoveLast", _wrap_DListInt64C_MoveLast, METH_VARARGS, (char *)"DListInt64C_MoveLast(self, lst)"},
+	 { (char *)"DListInt64C_First", _wrap_DListInt64C_First, METH_VARARGS, (char *)"DListInt64C_First(self) -> long"},
+	 { (char *)"DListInt64C_Last", _wrap_DListInt64C_Last, METH_VARARGS, (char *)"DListInt64C_Last(self) -> long"},
+	 { (char *)"DListInt64C_Del", _wrap_DListInt64C_Del, METH_VARARGS, (char *)"DListInt64C_Del(self, x) -> bool"},
+	 { (char *)"DListInt64C_Contains", _wrap_DListInt64C_Contains, METH_VARARGS, (char *)"DListInt64C_Contains(self, x) -> bool"},
+	 { (char *)"DListInt64C_Nth", _wrap_DListInt64C_Nth, METH_VARARGS, (char *)"DListInt64C_Nth(self, n) -> long"},
+	 { (char *)"delete_DListInt64C", _wrap_delete_DListInt64C, METH_VARARGS, (char *)"delete_DListInt64C(self)"},
 	 { (char *)"DListInt64C_swigregister", DListInt64C_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListInt64IterC", _wrap_new_DListInt64IterC, METH_VARARGS, (char *)"\n"
 		"DListInt64IterC()\n"
-		"new_DListInt64IterC(DListInt64C lst) -> DListInt64IterC\n"
+		"new_DListInt64IterC(lst) -> DListInt64IterC\n"
 		""},
-	 { (char *)"DListInt64IterC_IsValid", _wrap_DListInt64IterC_IsValid, METH_VARARGS, (char *)"DListInt64IterC_IsValid(DListInt64IterC self) -> bool"},
-	 { (char *)"DListInt64IterC_First", _wrap_DListInt64IterC_First, METH_VARARGS, (char *)"DListInt64IterC_First(DListInt64IterC self)"},
-	 { (char *)"DListInt64IterC_Last", _wrap_DListInt64IterC_Last, METH_VARARGS, (char *)"DListInt64IterC_Last(DListInt64IterC self)"},
-	 { (char *)"DListInt64IterC_IsElm", _wrap_DListInt64IterC_IsElm, METH_VARARGS, (char *)"DListInt64IterC_IsElm(DListInt64IterC self) -> bool"},
-	 { (char *)"DListInt64IterC_IsFirst", _wrap_DListInt64IterC_IsFirst, METH_VARARGS, (char *)"DListInt64IterC_IsFirst(DListInt64IterC self) -> bool"},
-	 { (char *)"DListInt64IterC_IsLast", _wrap_DListInt64IterC_IsLast, METH_VARARGS, (char *)"DListInt64IterC_IsLast(DListInt64IterC self) -> bool"},
-	 { (char *)"DListInt64IterC_Next", _wrap_DListInt64IterC_Next, METH_VARARGS, (char *)"DListInt64IterC_Next(DListInt64IterC self)"},
-	 { (char *)"DListInt64IterC_Prev", _wrap_DListInt64IterC_Prev, METH_VARARGS, (char *)"DListInt64IterC_Prev(DListInt64IterC self)"},
-	 { (char *)"DListInt64IterC_NextCrc", _wrap_DListInt64IterC_NextCrc, METH_VARARGS, (char *)"DListInt64IterC_NextCrc(DListInt64IterC self)"},
-	 { (char *)"DListInt64IterC_PrevCrc", _wrap_DListInt64IterC_PrevCrc, METH_VARARGS, (char *)"DListInt64IterC_PrevCrc(DListInt64IterC self)"},
-	 { (char *)"DListInt64IterC_Nth", _wrap_DListInt64IterC_Nth, METH_VARARGS, (char *)"DListInt64IterC_Nth(DListInt64IterC self, RavlN::IntT n)"},
-	 { (char *)"DListInt64IterC_NextData", _wrap_DListInt64IterC_NextData, METH_VARARGS, (char *)"DListInt64IterC_NextData(DListInt64IterC self) -> long"},
-	 { (char *)"DListInt64IterC_PrevData", _wrap_DListInt64IterC_PrevData, METH_VARARGS, (char *)"DListInt64IterC_PrevData(DListInt64IterC self) -> long"},
-	 { (char *)"DListInt64IterC_NextCrcData", _wrap_DListInt64IterC_NextCrcData, METH_VARARGS, (char *)"DListInt64IterC_NextCrcData(DListInt64IterC self) -> long"},
-	 { (char *)"DListInt64IterC_PrevCrcData", _wrap_DListInt64IterC_PrevCrcData, METH_VARARGS, (char *)"DListInt64IterC_PrevCrcData(DListInt64IterC self) -> long"},
-	 { (char *)"DListInt64IterC_Tail", _wrap_DListInt64IterC_Tail, METH_VARARGS, (char *)"DListInt64IterC_Tail(DListInt64IterC self) -> DListInt64C"},
-	 { (char *)"DListInt64IterC_Head", _wrap_DListInt64IterC_Head, METH_VARARGS, (char *)"DListInt64IterC_Head(DListInt64IterC self) -> DListInt64C"},
-	 { (char *)"DListInt64IterC_InclusiveTail", _wrap_DListInt64IterC_InclusiveTail, METH_VARARGS, (char *)"DListInt64IterC_InclusiveTail(DListInt64IterC self) -> DListInt64C"},
-	 { (char *)"DListInt64IterC_InclusiveHead", _wrap_DListInt64IterC_InclusiveHead, METH_VARARGS, (char *)"DListInt64IterC_InclusiveHead(DListInt64IterC self) -> DListInt64C"},
-	 { (char *)"DListInt64IterC_Data", _wrap_DListInt64IterC_Data, METH_VARARGS, (char *)"DListInt64IterC_Data(DListInt64IterC self) -> long"},
-	 { (char *)"DListInt64IterC___deref__", _wrap_DListInt64IterC___deref__, METH_VARARGS, (char *)"DListInt64IterC___deref__(DListInt64IterC self) -> long *"},
-	 { (char *)"delete_DListInt64IterC", _wrap_delete_DListInt64IterC, METH_VARARGS, (char *)"delete_DListInt64IterC(DListInt64IterC self)"},
+	 { (char *)"DListInt64IterC_IsValid", _wrap_DListInt64IterC_IsValid, METH_VARARGS, (char *)"DListInt64IterC_IsValid(self) -> bool"},
+	 { (char *)"DListInt64IterC_First", _wrap_DListInt64IterC_First, METH_VARARGS, (char *)"DListInt64IterC_First(self)"},
+	 { (char *)"DListInt64IterC_Last", _wrap_DListInt64IterC_Last, METH_VARARGS, (char *)"DListInt64IterC_Last(self)"},
+	 { (char *)"DListInt64IterC_IsElm", _wrap_DListInt64IterC_IsElm, METH_VARARGS, (char *)"DListInt64IterC_IsElm(self) -> bool"},
+	 { (char *)"DListInt64IterC_IsFirst", _wrap_DListInt64IterC_IsFirst, METH_VARARGS, (char *)"DListInt64IterC_IsFirst(self) -> bool"},
+	 { (char *)"DListInt64IterC_IsLast", _wrap_DListInt64IterC_IsLast, METH_VARARGS, (char *)"DListInt64IterC_IsLast(self) -> bool"},
+	 { (char *)"DListInt64IterC_Next", _wrap_DListInt64IterC_Next, METH_VARARGS, (char *)"DListInt64IterC_Next(self)"},
+	 { (char *)"DListInt64IterC_Prev", _wrap_DListInt64IterC_Prev, METH_VARARGS, (char *)"DListInt64IterC_Prev(self)"},
+	 { (char *)"DListInt64IterC_NextCrc", _wrap_DListInt64IterC_NextCrc, METH_VARARGS, (char *)"DListInt64IterC_NextCrc(self)"},
+	 { (char *)"DListInt64IterC_PrevCrc", _wrap_DListInt64IterC_PrevCrc, METH_VARARGS, (char *)"DListInt64IterC_PrevCrc(self)"},
+	 { (char *)"DListInt64IterC_Nth", _wrap_DListInt64IterC_Nth, METH_VARARGS, (char *)"DListInt64IterC_Nth(self, n)"},
+	 { (char *)"DListInt64IterC_NextData", _wrap_DListInt64IterC_NextData, METH_VARARGS, (char *)"DListInt64IterC_NextData(self) -> long"},
+	 { (char *)"DListInt64IterC_PrevData", _wrap_DListInt64IterC_PrevData, METH_VARARGS, (char *)"DListInt64IterC_PrevData(self) -> long"},
+	 { (char *)"DListInt64IterC_NextCrcData", _wrap_DListInt64IterC_NextCrcData, METH_VARARGS, (char *)"DListInt64IterC_NextCrcData(self) -> long"},
+	 { (char *)"DListInt64IterC_PrevCrcData", _wrap_DListInt64IterC_PrevCrcData, METH_VARARGS, (char *)"DListInt64IterC_PrevCrcData(self) -> long"},
+	 { (char *)"DListInt64IterC_Tail", _wrap_DListInt64IterC_Tail, METH_VARARGS, (char *)"DListInt64IterC_Tail(self) -> DListInt64C"},
+	 { (char *)"DListInt64IterC_Head", _wrap_DListInt64IterC_Head, METH_VARARGS, (char *)"DListInt64IterC_Head(self) -> DListInt64C"},
+	 { (char *)"DListInt64IterC_InclusiveTail", _wrap_DListInt64IterC_InclusiveTail, METH_VARARGS, (char *)"DListInt64IterC_InclusiveTail(self) -> DListInt64C"},
+	 { (char *)"DListInt64IterC_InclusiveHead", _wrap_DListInt64IterC_InclusiveHead, METH_VARARGS, (char *)"DListInt64IterC_InclusiveHead(self) -> DListInt64C"},
+	 { (char *)"DListInt64IterC_Data", _wrap_DListInt64IterC_Data, METH_VARARGS, (char *)"DListInt64IterC_Data(self) -> long"},
+	 { (char *)"DListInt64IterC___deref__", _wrap_DListInt64IterC___deref__, METH_VARARGS, (char *)"DListInt64IterC___deref__(self) -> long *"},
+	 { (char *)"delete_DListInt64IterC", _wrap_delete_DListInt64IterC, METH_VARARGS, (char *)"delete_DListInt64IterC(self)"},
 	 { (char *)"DListInt64IterC_swigregister", DListInt64IterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListInt64ConstIterC", _wrap_new_DListInt64ConstIterC, METH_VARARGS, (char *)"\n"
 		"DListInt64ConstIterC()\n"
-		"new_DListInt64ConstIterC(DListInt64C copy) -> DListInt64ConstIterC\n"
+		"new_DListInt64ConstIterC(copy) -> DListInt64ConstIterC\n"
 		""},
-	 { (char *)"delete_DListInt64ConstIterC", _wrap_delete_DListInt64ConstIterC, METH_VARARGS, (char *)"delete_DListInt64ConstIterC(DListInt64ConstIterC self)"},
+	 { (char *)"delete_DListInt64ConstIterC", _wrap_delete_DListInt64ConstIterC, METH_VARARGS, (char *)"delete_DListInt64ConstIterC(self)"},
 	 { (char *)"DListInt64ConstIterC_swigregister", DListInt64ConstIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListInt16C", _wrap_new_DListInt16C, METH_VARARGS, (char *)"new_DListInt16C() -> DListInt16C"},
-	 { (char *)"DListInt16C_Empty", _wrap_DListInt16C_Empty, METH_VARARGS, (char *)"DListInt16C_Empty(DListInt16C self)"},
-	 { (char *)"DListInt16C_InsFirst", _wrap_DListInt16C_InsFirst, METH_VARARGS, (char *)"DListInt16C_InsFirst(DListInt16C self, short const & dat)"},
-	 { (char *)"DListInt16C_InsLast", _wrap_DListInt16C_InsLast, METH_VARARGS, (char *)"DListInt16C_InsLast(DListInt16C self, short const & dat)"},
-	 { (char *)"DListInt16C_PopFirst", _wrap_DListInt16C_PopFirst, METH_VARARGS, (char *)"DListInt16C_PopFirst(DListInt16C self) -> short"},
-	 { (char *)"DListInt16C_PopLast", _wrap_DListInt16C_PopLast, METH_VARARGS, (char *)"DListInt16C_PopLast(DListInt16C self) -> short"},
-	 { (char *)"DListInt16C_MoveFirst", _wrap_DListInt16C_MoveFirst, METH_VARARGS, (char *)"DListInt16C_MoveFirst(DListInt16C self, DListInt16C lst)"},
-	 { (char *)"DListInt16C_MoveLast", _wrap_DListInt16C_MoveLast, METH_VARARGS, (char *)"DListInt16C_MoveLast(DListInt16C self, DListInt16C lst)"},
-	 { (char *)"DListInt16C_First", _wrap_DListInt16C_First, METH_VARARGS, (char *)"DListInt16C_First(DListInt16C self) -> short"},
-	 { (char *)"DListInt16C_Last", _wrap_DListInt16C_Last, METH_VARARGS, (char *)"DListInt16C_Last(DListInt16C self) -> short"},
-	 { (char *)"DListInt16C_Del", _wrap_DListInt16C_Del, METH_VARARGS, (char *)"DListInt16C_Del(DListInt16C self, short const & x) -> bool"},
-	 { (char *)"DListInt16C_Contains", _wrap_DListInt16C_Contains, METH_VARARGS, (char *)"DListInt16C_Contains(DListInt16C self, short const & x) -> bool"},
-	 { (char *)"DListInt16C_Nth", _wrap_DListInt16C_Nth, METH_VARARGS, (char *)"DListInt16C_Nth(DListInt16C self, int n) -> short"},
-	 { (char *)"delete_DListInt16C", _wrap_delete_DListInt16C, METH_VARARGS, (char *)"delete_DListInt16C(DListInt16C self)"},
+	 { (char *)"DListInt16C_Empty", _wrap_DListInt16C_Empty, METH_VARARGS, (char *)"DListInt16C_Empty(self)"},
+	 { (char *)"DListInt16C_InsFirst", _wrap_DListInt16C_InsFirst, METH_VARARGS, (char *)"DListInt16C_InsFirst(self, dat)"},
+	 { (char *)"DListInt16C_InsLast", _wrap_DListInt16C_InsLast, METH_VARARGS, (char *)"DListInt16C_InsLast(self, dat)"},
+	 { (char *)"DListInt16C_PopFirst", _wrap_DListInt16C_PopFirst, METH_VARARGS, (char *)"DListInt16C_PopFirst(self) -> short"},
+	 { (char *)"DListInt16C_PopLast", _wrap_DListInt16C_PopLast, METH_VARARGS, (char *)"DListInt16C_PopLast(self) -> short"},
+	 { (char *)"DListInt16C_MoveFirst", _wrap_DListInt16C_MoveFirst, METH_VARARGS, (char *)"DListInt16C_MoveFirst(self, lst)"},
+	 { (char *)"DListInt16C_MoveLast", _wrap_DListInt16C_MoveLast, METH_VARARGS, (char *)"DListInt16C_MoveLast(self, lst)"},
+	 { (char *)"DListInt16C_First", _wrap_DListInt16C_First, METH_VARARGS, (char *)"DListInt16C_First(self) -> short"},
+	 { (char *)"DListInt16C_Last", _wrap_DListInt16C_Last, METH_VARARGS, (char *)"DListInt16C_Last(self) -> short"},
+	 { (char *)"DListInt16C_Del", _wrap_DListInt16C_Del, METH_VARARGS, (char *)"DListInt16C_Del(self, x) -> bool"},
+	 { (char *)"DListInt16C_Contains", _wrap_DListInt16C_Contains, METH_VARARGS, (char *)"DListInt16C_Contains(self, x) -> bool"},
+	 { (char *)"DListInt16C_Nth", _wrap_DListInt16C_Nth, METH_VARARGS, (char *)"DListInt16C_Nth(self, n) -> short"},
+	 { (char *)"delete_DListInt16C", _wrap_delete_DListInt16C, METH_VARARGS, (char *)"delete_DListInt16C(self)"},
 	 { (char *)"DListInt16C_swigregister", DListInt16C_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListInt16IterC", _wrap_new_DListInt16IterC, METH_VARARGS, (char *)"\n"
 		"DListInt16IterC()\n"
-		"new_DListInt16IterC(DListInt16C lst) -> DListInt16IterC\n"
+		"new_DListInt16IterC(lst) -> DListInt16IterC\n"
 		""},
-	 { (char *)"DListInt16IterC_IsValid", _wrap_DListInt16IterC_IsValid, METH_VARARGS, (char *)"DListInt16IterC_IsValid(DListInt16IterC self) -> bool"},
-	 { (char *)"DListInt16IterC_First", _wrap_DListInt16IterC_First, METH_VARARGS, (char *)"DListInt16IterC_First(DListInt16IterC self)"},
-	 { (char *)"DListInt16IterC_Last", _wrap_DListInt16IterC_Last, METH_VARARGS, (char *)"DListInt16IterC_Last(DListInt16IterC self)"},
-	 { (char *)"DListInt16IterC_IsElm", _wrap_DListInt16IterC_IsElm, METH_VARARGS, (char *)"DListInt16IterC_IsElm(DListInt16IterC self) -> bool"},
-	 { (char *)"DListInt16IterC_IsFirst", _wrap_DListInt16IterC_IsFirst, METH_VARARGS, (char *)"DListInt16IterC_IsFirst(DListInt16IterC self) -> bool"},
-	 { (char *)"DListInt16IterC_IsLast", _wrap_DListInt16IterC_IsLast, METH_VARARGS, (char *)"DListInt16IterC_IsLast(DListInt16IterC self) -> bool"},
-	 { (char *)"DListInt16IterC_Next", _wrap_DListInt16IterC_Next, METH_VARARGS, (char *)"DListInt16IterC_Next(DListInt16IterC self)"},
-	 { (char *)"DListInt16IterC_Prev", _wrap_DListInt16IterC_Prev, METH_VARARGS, (char *)"DListInt16IterC_Prev(DListInt16IterC self)"},
-	 { (char *)"DListInt16IterC_NextCrc", _wrap_DListInt16IterC_NextCrc, METH_VARARGS, (char *)"DListInt16IterC_NextCrc(DListInt16IterC self)"},
-	 { (char *)"DListInt16IterC_PrevCrc", _wrap_DListInt16IterC_PrevCrc, METH_VARARGS, (char *)"DListInt16IterC_PrevCrc(DListInt16IterC self)"},
-	 { (char *)"DListInt16IterC_Nth", _wrap_DListInt16IterC_Nth, METH_VARARGS, (char *)"DListInt16IterC_Nth(DListInt16IterC self, RavlN::IntT n)"},
-	 { (char *)"DListInt16IterC_NextData", _wrap_DListInt16IterC_NextData, METH_VARARGS, (char *)"DListInt16IterC_NextData(DListInt16IterC self) -> short"},
-	 { (char *)"DListInt16IterC_PrevData", _wrap_DListInt16IterC_PrevData, METH_VARARGS, (char *)"DListInt16IterC_PrevData(DListInt16IterC self) -> short"},
-	 { (char *)"DListInt16IterC_NextCrcData", _wrap_DListInt16IterC_NextCrcData, METH_VARARGS, (char *)"DListInt16IterC_NextCrcData(DListInt16IterC self) -> short"},
-	 { (char *)"DListInt16IterC_PrevCrcData", _wrap_DListInt16IterC_PrevCrcData, METH_VARARGS, (char *)"DListInt16IterC_PrevCrcData(DListInt16IterC self) -> short"},
-	 { (char *)"DListInt16IterC_Tail", _wrap_DListInt16IterC_Tail, METH_VARARGS, (char *)"DListInt16IterC_Tail(DListInt16IterC self) -> DListInt16C"},
-	 { (char *)"DListInt16IterC_Head", _wrap_DListInt16IterC_Head, METH_VARARGS, (char *)"DListInt16IterC_Head(DListInt16IterC self) -> DListInt16C"},
-	 { (char *)"DListInt16IterC_InclusiveTail", _wrap_DListInt16IterC_InclusiveTail, METH_VARARGS, (char *)"DListInt16IterC_InclusiveTail(DListInt16IterC self) -> DListInt16C"},
-	 { (char *)"DListInt16IterC_InclusiveHead", _wrap_DListInt16IterC_InclusiveHead, METH_VARARGS, (char *)"DListInt16IterC_InclusiveHead(DListInt16IterC self) -> DListInt16C"},
-	 { (char *)"DListInt16IterC_Data", _wrap_DListInt16IterC_Data, METH_VARARGS, (char *)"DListInt16IterC_Data(DListInt16IterC self) -> short"},
-	 { (char *)"DListInt16IterC___deref__", _wrap_DListInt16IterC___deref__, METH_VARARGS, (char *)"DListInt16IterC___deref__(DListInt16IterC self) -> short *"},
-	 { (char *)"delete_DListInt16IterC", _wrap_delete_DListInt16IterC, METH_VARARGS, (char *)"delete_DListInt16IterC(DListInt16IterC self)"},
+	 { (char *)"DListInt16IterC_IsValid", _wrap_DListInt16IterC_IsValid, METH_VARARGS, (char *)"DListInt16IterC_IsValid(self) -> bool"},
+	 { (char *)"DListInt16IterC_First", _wrap_DListInt16IterC_First, METH_VARARGS, (char *)"DListInt16IterC_First(self)"},
+	 { (char *)"DListInt16IterC_Last", _wrap_DListInt16IterC_Last, METH_VARARGS, (char *)"DListInt16IterC_Last(self)"},
+	 { (char *)"DListInt16IterC_IsElm", _wrap_DListInt16IterC_IsElm, METH_VARARGS, (char *)"DListInt16IterC_IsElm(self) -> bool"},
+	 { (char *)"DListInt16IterC_IsFirst", _wrap_DListInt16IterC_IsFirst, METH_VARARGS, (char *)"DListInt16IterC_IsFirst(self) -> bool"},
+	 { (char *)"DListInt16IterC_IsLast", _wrap_DListInt16IterC_IsLast, METH_VARARGS, (char *)"DListInt16IterC_IsLast(self) -> bool"},
+	 { (char *)"DListInt16IterC_Next", _wrap_DListInt16IterC_Next, METH_VARARGS, (char *)"DListInt16IterC_Next(self)"},
+	 { (char *)"DListInt16IterC_Prev", _wrap_DListInt16IterC_Prev, METH_VARARGS, (char *)"DListInt16IterC_Prev(self)"},
+	 { (char *)"DListInt16IterC_NextCrc", _wrap_DListInt16IterC_NextCrc, METH_VARARGS, (char *)"DListInt16IterC_NextCrc(self)"},
+	 { (char *)"DListInt16IterC_PrevCrc", _wrap_DListInt16IterC_PrevCrc, METH_VARARGS, (char *)"DListInt16IterC_PrevCrc(self)"},
+	 { (char *)"DListInt16IterC_Nth", _wrap_DListInt16IterC_Nth, METH_VARARGS, (char *)"DListInt16IterC_Nth(self, n)"},
+	 { (char *)"DListInt16IterC_NextData", _wrap_DListInt16IterC_NextData, METH_VARARGS, (char *)"DListInt16IterC_NextData(self) -> short"},
+	 { (char *)"DListInt16IterC_PrevData", _wrap_DListInt16IterC_PrevData, METH_VARARGS, (char *)"DListInt16IterC_PrevData(self) -> short"},
+	 { (char *)"DListInt16IterC_NextCrcData", _wrap_DListInt16IterC_NextCrcData, METH_VARARGS, (char *)"DListInt16IterC_NextCrcData(self) -> short"},
+	 { (char *)"DListInt16IterC_PrevCrcData", _wrap_DListInt16IterC_PrevCrcData, METH_VARARGS, (char *)"DListInt16IterC_PrevCrcData(self) -> short"},
+	 { (char *)"DListInt16IterC_Tail", _wrap_DListInt16IterC_Tail, METH_VARARGS, (char *)"DListInt16IterC_Tail(self) -> DListInt16C"},
+	 { (char *)"DListInt16IterC_Head", _wrap_DListInt16IterC_Head, METH_VARARGS, (char *)"DListInt16IterC_Head(self) -> DListInt16C"},
+	 { (char *)"DListInt16IterC_InclusiveTail", _wrap_DListInt16IterC_InclusiveTail, METH_VARARGS, (char *)"DListInt16IterC_InclusiveTail(self) -> DListInt16C"},
+	 { (char *)"DListInt16IterC_InclusiveHead", _wrap_DListInt16IterC_InclusiveHead, METH_VARARGS, (char *)"DListInt16IterC_InclusiveHead(self) -> DListInt16C"},
+	 { (char *)"DListInt16IterC_Data", _wrap_DListInt16IterC_Data, METH_VARARGS, (char *)"DListInt16IterC_Data(self) -> short"},
+	 { (char *)"DListInt16IterC___deref__", _wrap_DListInt16IterC___deref__, METH_VARARGS, (char *)"DListInt16IterC___deref__(self) -> short *"},
+	 { (char *)"delete_DListInt16IterC", _wrap_delete_DListInt16IterC, METH_VARARGS, (char *)"delete_DListInt16IterC(self)"},
 	 { (char *)"DListInt16IterC_swigregister", DListInt16IterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListInt16ConstIterC", _wrap_new_DListInt16ConstIterC, METH_VARARGS, (char *)"\n"
 		"DListInt16ConstIterC()\n"
-		"new_DListInt16ConstIterC(DListInt16C copy) -> DListInt16ConstIterC\n"
+		"new_DListInt16ConstIterC(copy) -> DListInt16ConstIterC\n"
 		""},
-	 { (char *)"delete_DListInt16ConstIterC", _wrap_delete_DListInt16ConstIterC, METH_VARARGS, (char *)"delete_DListInt16ConstIterC(DListInt16ConstIterC self)"},
+	 { (char *)"delete_DListInt16ConstIterC", _wrap_delete_DListInt16ConstIterC, METH_VARARGS, (char *)"delete_DListInt16ConstIterC(self)"},
 	 { (char *)"DListInt16ConstIterC_swigregister", DListInt16ConstIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListByteC", _wrap_new_DListByteC, METH_VARARGS, (char *)"new_DListByteC() -> DListByteC"},
-	 { (char *)"DListByteC_Empty", _wrap_DListByteC_Empty, METH_VARARGS, (char *)"DListByteC_Empty(DListByteC self)"},
-	 { (char *)"DListByteC_InsFirst", _wrap_DListByteC_InsFirst, METH_VARARGS, (char *)"DListByteC_InsFirst(DListByteC self, unsigned char const & dat)"},
-	 { (char *)"DListByteC_InsLast", _wrap_DListByteC_InsLast, METH_VARARGS, (char *)"DListByteC_InsLast(DListByteC self, unsigned char const & dat)"},
-	 { (char *)"DListByteC_PopFirst", _wrap_DListByteC_PopFirst, METH_VARARGS, (char *)"DListByteC_PopFirst(DListByteC self) -> unsigned char"},
-	 { (char *)"DListByteC_PopLast", _wrap_DListByteC_PopLast, METH_VARARGS, (char *)"DListByteC_PopLast(DListByteC self) -> unsigned char"},
-	 { (char *)"DListByteC_MoveFirst", _wrap_DListByteC_MoveFirst, METH_VARARGS, (char *)"DListByteC_MoveFirst(DListByteC self, DListByteC lst)"},
-	 { (char *)"DListByteC_MoveLast", _wrap_DListByteC_MoveLast, METH_VARARGS, (char *)"DListByteC_MoveLast(DListByteC self, DListByteC lst)"},
-	 { (char *)"DListByteC_First", _wrap_DListByteC_First, METH_VARARGS, (char *)"DListByteC_First(DListByteC self) -> unsigned char"},
-	 { (char *)"DListByteC_Last", _wrap_DListByteC_Last, METH_VARARGS, (char *)"DListByteC_Last(DListByteC self) -> unsigned char"},
-	 { (char *)"DListByteC_Del", _wrap_DListByteC_Del, METH_VARARGS, (char *)"DListByteC_Del(DListByteC self, unsigned char const & x) -> bool"},
-	 { (char *)"DListByteC_Contains", _wrap_DListByteC_Contains, METH_VARARGS, (char *)"DListByteC_Contains(DListByteC self, unsigned char const & x) -> bool"},
-	 { (char *)"DListByteC_Nth", _wrap_DListByteC_Nth, METH_VARARGS, (char *)"DListByteC_Nth(DListByteC self, int n) -> unsigned char"},
-	 { (char *)"delete_DListByteC", _wrap_delete_DListByteC, METH_VARARGS, (char *)"delete_DListByteC(DListByteC self)"},
+	 { (char *)"DListByteC_Empty", _wrap_DListByteC_Empty, METH_VARARGS, (char *)"DListByteC_Empty(self)"},
+	 { (char *)"DListByteC_InsFirst", _wrap_DListByteC_InsFirst, METH_VARARGS, (char *)"DListByteC_InsFirst(self, dat)"},
+	 { (char *)"DListByteC_InsLast", _wrap_DListByteC_InsLast, METH_VARARGS, (char *)"DListByteC_InsLast(self, dat)"},
+	 { (char *)"DListByteC_PopFirst", _wrap_DListByteC_PopFirst, METH_VARARGS, (char *)"DListByteC_PopFirst(self) -> unsigned char"},
+	 { (char *)"DListByteC_PopLast", _wrap_DListByteC_PopLast, METH_VARARGS, (char *)"DListByteC_PopLast(self) -> unsigned char"},
+	 { (char *)"DListByteC_MoveFirst", _wrap_DListByteC_MoveFirst, METH_VARARGS, (char *)"DListByteC_MoveFirst(self, lst)"},
+	 { (char *)"DListByteC_MoveLast", _wrap_DListByteC_MoveLast, METH_VARARGS, (char *)"DListByteC_MoveLast(self, lst)"},
+	 { (char *)"DListByteC_First", _wrap_DListByteC_First, METH_VARARGS, (char *)"DListByteC_First(self) -> unsigned char"},
+	 { (char *)"DListByteC_Last", _wrap_DListByteC_Last, METH_VARARGS, (char *)"DListByteC_Last(self) -> unsigned char"},
+	 { (char *)"DListByteC_Del", _wrap_DListByteC_Del, METH_VARARGS, (char *)"DListByteC_Del(self, x) -> bool"},
+	 { (char *)"DListByteC_Contains", _wrap_DListByteC_Contains, METH_VARARGS, (char *)"DListByteC_Contains(self, x) -> bool"},
+	 { (char *)"DListByteC_Nth", _wrap_DListByteC_Nth, METH_VARARGS, (char *)"DListByteC_Nth(self, n) -> unsigned char"},
+	 { (char *)"delete_DListByteC", _wrap_delete_DListByteC, METH_VARARGS, (char *)"delete_DListByteC(self)"},
 	 { (char *)"DListByteC_swigregister", DListByteC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListByteIterC", _wrap_new_DListByteIterC, METH_VARARGS, (char *)"\n"
 		"DListByteIterC()\n"
-		"new_DListByteIterC(DListByteC lst) -> DListByteIterC\n"
+		"new_DListByteIterC(lst) -> DListByteIterC\n"
 		""},
-	 { (char *)"DListByteIterC_IsValid", _wrap_DListByteIterC_IsValid, METH_VARARGS, (char *)"DListByteIterC_IsValid(DListByteIterC self) -> bool"},
-	 { (char *)"DListByteIterC_First", _wrap_DListByteIterC_First, METH_VARARGS, (char *)"DListByteIterC_First(DListByteIterC self)"},
-	 { (char *)"DListByteIterC_Last", _wrap_DListByteIterC_Last, METH_VARARGS, (char *)"DListByteIterC_Last(DListByteIterC self)"},
-	 { (char *)"DListByteIterC_IsElm", _wrap_DListByteIterC_IsElm, METH_VARARGS, (char *)"DListByteIterC_IsElm(DListByteIterC self) -> bool"},
-	 { (char *)"DListByteIterC_IsFirst", _wrap_DListByteIterC_IsFirst, METH_VARARGS, (char *)"DListByteIterC_IsFirst(DListByteIterC self) -> bool"},
-	 { (char *)"DListByteIterC_IsLast", _wrap_DListByteIterC_IsLast, METH_VARARGS, (char *)"DListByteIterC_IsLast(DListByteIterC self) -> bool"},
-	 { (char *)"DListByteIterC_Next", _wrap_DListByteIterC_Next, METH_VARARGS, (char *)"DListByteIterC_Next(DListByteIterC self)"},
-	 { (char *)"DListByteIterC_Prev", _wrap_DListByteIterC_Prev, METH_VARARGS, (char *)"DListByteIterC_Prev(DListByteIterC self)"},
-	 { (char *)"DListByteIterC_NextCrc", _wrap_DListByteIterC_NextCrc, METH_VARARGS, (char *)"DListByteIterC_NextCrc(DListByteIterC self)"},
-	 { (char *)"DListByteIterC_PrevCrc", _wrap_DListByteIterC_PrevCrc, METH_VARARGS, (char *)"DListByteIterC_PrevCrc(DListByteIterC self)"},
-	 { (char *)"DListByteIterC_Nth", _wrap_DListByteIterC_Nth, METH_VARARGS, (char *)"DListByteIterC_Nth(DListByteIterC self, RavlN::IntT n)"},
-	 { (char *)"DListByteIterC_NextData", _wrap_DListByteIterC_NextData, METH_VARARGS, (char *)"DListByteIterC_NextData(DListByteIterC self) -> unsigned char"},
-	 { (char *)"DListByteIterC_PrevData", _wrap_DListByteIterC_PrevData, METH_VARARGS, (char *)"DListByteIterC_PrevData(DListByteIterC self) -> unsigned char"},
-	 { (char *)"DListByteIterC_NextCrcData", _wrap_DListByteIterC_NextCrcData, METH_VARARGS, (char *)"DListByteIterC_NextCrcData(DListByteIterC self) -> unsigned char"},
-	 { (char *)"DListByteIterC_PrevCrcData", _wrap_DListByteIterC_PrevCrcData, METH_VARARGS, (char *)"DListByteIterC_PrevCrcData(DListByteIterC self) -> unsigned char"},
-	 { (char *)"DListByteIterC_Tail", _wrap_DListByteIterC_Tail, METH_VARARGS, (char *)"DListByteIterC_Tail(DListByteIterC self) -> DListByteC"},
-	 { (char *)"DListByteIterC_Head", _wrap_DListByteIterC_Head, METH_VARARGS, (char *)"DListByteIterC_Head(DListByteIterC self) -> DListByteC"},
-	 { (char *)"DListByteIterC_InclusiveTail", _wrap_DListByteIterC_InclusiveTail, METH_VARARGS, (char *)"DListByteIterC_InclusiveTail(DListByteIterC self) -> DListByteC"},
-	 { (char *)"DListByteIterC_InclusiveHead", _wrap_DListByteIterC_InclusiveHead, METH_VARARGS, (char *)"DListByteIterC_InclusiveHead(DListByteIterC self) -> DListByteC"},
-	 { (char *)"DListByteIterC_Data", _wrap_DListByteIterC_Data, METH_VARARGS, (char *)"DListByteIterC_Data(DListByteIterC self) -> unsigned char"},
-	 { (char *)"DListByteIterC___deref__", _wrap_DListByteIterC___deref__, METH_VARARGS, (char *)"DListByteIterC___deref__(DListByteIterC self) -> unsigned char *"},
-	 { (char *)"delete_DListByteIterC", _wrap_delete_DListByteIterC, METH_VARARGS, (char *)"delete_DListByteIterC(DListByteIterC self)"},
+	 { (char *)"DListByteIterC_IsValid", _wrap_DListByteIterC_IsValid, METH_VARARGS, (char *)"DListByteIterC_IsValid(self) -> bool"},
+	 { (char *)"DListByteIterC_First", _wrap_DListByteIterC_First, METH_VARARGS, (char *)"DListByteIterC_First(self)"},
+	 { (char *)"DListByteIterC_Last", _wrap_DListByteIterC_Last, METH_VARARGS, (char *)"DListByteIterC_Last(self)"},
+	 { (char *)"DListByteIterC_IsElm", _wrap_DListByteIterC_IsElm, METH_VARARGS, (char *)"DListByteIterC_IsElm(self) -> bool"},
+	 { (char *)"DListByteIterC_IsFirst", _wrap_DListByteIterC_IsFirst, METH_VARARGS, (char *)"DListByteIterC_IsFirst(self) -> bool"},
+	 { (char *)"DListByteIterC_IsLast", _wrap_DListByteIterC_IsLast, METH_VARARGS, (char *)"DListByteIterC_IsLast(self) -> bool"},
+	 { (char *)"DListByteIterC_Next", _wrap_DListByteIterC_Next, METH_VARARGS, (char *)"DListByteIterC_Next(self)"},
+	 { (char *)"DListByteIterC_Prev", _wrap_DListByteIterC_Prev, METH_VARARGS, (char *)"DListByteIterC_Prev(self)"},
+	 { (char *)"DListByteIterC_NextCrc", _wrap_DListByteIterC_NextCrc, METH_VARARGS, (char *)"DListByteIterC_NextCrc(self)"},
+	 { (char *)"DListByteIterC_PrevCrc", _wrap_DListByteIterC_PrevCrc, METH_VARARGS, (char *)"DListByteIterC_PrevCrc(self)"},
+	 { (char *)"DListByteIterC_Nth", _wrap_DListByteIterC_Nth, METH_VARARGS, (char *)"DListByteIterC_Nth(self, n)"},
+	 { (char *)"DListByteIterC_NextData", _wrap_DListByteIterC_NextData, METH_VARARGS, (char *)"DListByteIterC_NextData(self) -> unsigned char"},
+	 { (char *)"DListByteIterC_PrevData", _wrap_DListByteIterC_PrevData, METH_VARARGS, (char *)"DListByteIterC_PrevData(self) -> unsigned char"},
+	 { (char *)"DListByteIterC_NextCrcData", _wrap_DListByteIterC_NextCrcData, METH_VARARGS, (char *)"DListByteIterC_NextCrcData(self) -> unsigned char"},
+	 { (char *)"DListByteIterC_PrevCrcData", _wrap_DListByteIterC_PrevCrcData, METH_VARARGS, (char *)"DListByteIterC_PrevCrcData(self) -> unsigned char"},
+	 { (char *)"DListByteIterC_Tail", _wrap_DListByteIterC_Tail, METH_VARARGS, (char *)"DListByteIterC_Tail(self) -> DListByteC"},
+	 { (char *)"DListByteIterC_Head", _wrap_DListByteIterC_Head, METH_VARARGS, (char *)"DListByteIterC_Head(self) -> DListByteC"},
+	 { (char *)"DListByteIterC_InclusiveTail", _wrap_DListByteIterC_InclusiveTail, METH_VARARGS, (char *)"DListByteIterC_InclusiveTail(self) -> DListByteC"},
+	 { (char *)"DListByteIterC_InclusiveHead", _wrap_DListByteIterC_InclusiveHead, METH_VARARGS, (char *)"DListByteIterC_InclusiveHead(self) -> DListByteC"},
+	 { (char *)"DListByteIterC_Data", _wrap_DListByteIterC_Data, METH_VARARGS, (char *)"DListByteIterC_Data(self) -> unsigned char"},
+	 { (char *)"DListByteIterC___deref__", _wrap_DListByteIterC___deref__, METH_VARARGS, (char *)"DListByteIterC___deref__(self) -> unsigned char *"},
+	 { (char *)"delete_DListByteIterC", _wrap_delete_DListByteIterC, METH_VARARGS, (char *)"delete_DListByteIterC(self)"},
 	 { (char *)"DListByteIterC_swigregister", DListByteIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListByteConstIterC", _wrap_new_DListByteConstIterC, METH_VARARGS, (char *)"\n"
 		"DListByteConstIterC()\n"
-		"new_DListByteConstIterC(DListByteC copy) -> DListByteConstIterC\n"
+		"new_DListByteConstIterC(copy) -> DListByteConstIterC\n"
 		""},
-	 { (char *)"delete_DListByteConstIterC", _wrap_delete_DListByteConstIterC, METH_VARARGS, (char *)"delete_DListByteConstIterC(DListByteConstIterC self)"},
+	 { (char *)"delete_DListByteConstIterC", _wrap_delete_DListByteConstIterC, METH_VARARGS, (char *)"delete_DListByteConstIterC(self)"},
 	 { (char *)"DListByteConstIterC_swigregister", DListByteConstIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Point2dC", _wrap_new_Point2dC, METH_VARARGS, (char *)"\n"
 		"Point2dC()\n"
-		"new_Point2dC(RavlN::RealT x, RavlN::RealT y) -> Point2dC\n"
+		"new_Point2dC(x, y) -> Point2dC\n"
 		""},
-	 { (char *)"Point2dC_Row", _wrap_Point2dC_Row, METH_VARARGS, (char *)"Point2dC_Row(Point2dC self) -> RavlN::RealT"},
-	 { (char *)"Point2dC_Col", _wrap_Point2dC_Col, METH_VARARGS, (char *)"Point2dC_Col(Point2dC self) -> RavlN::RealT"},
-	 { (char *)"Point2dC___str__", _wrap_Point2dC___str__, METH_VARARGS, (char *)"Point2dC___str__(Point2dC self) -> char const *"},
-	 { (char *)"delete_Point2dC", _wrap_delete_Point2dC, METH_VARARGS, (char *)"delete_Point2dC(Point2dC self)"},
+	 { (char *)"Point2dC_Row", _wrap_Point2dC_Row, METH_VARARGS, (char *)"Point2dC_Row(self) -> RavlN::RealT"},
+	 { (char *)"Point2dC_Col", _wrap_Point2dC_Col, METH_VARARGS, (char *)"Point2dC_Col(self) -> RavlN::RealT"},
+	 { (char *)"Point2dC___str__", _wrap_Point2dC___str__, METH_VARARGS, (char *)"Point2dC___str__(self) -> char const *"},
+	 { (char *)"delete_Point2dC", _wrap_delete_Point2dC, METH_VARARGS, (char *)"delete_Point2dC(self)"},
 	 { (char *)"Point2dC_swigregister", Point2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListPoint2dC", _wrap_new_DListPoint2dC, METH_VARARGS, (char *)"new_DListPoint2dC() -> DListPoint2dC"},
-	 { (char *)"DListPoint2dC_Empty", _wrap_DListPoint2dC_Empty, METH_VARARGS, (char *)"DListPoint2dC_Empty(DListPoint2dC self)"},
-	 { (char *)"DListPoint2dC_InsFirst", _wrap_DListPoint2dC_InsFirst, METH_VARARGS, (char *)"DListPoint2dC_InsFirst(DListPoint2dC self, Point2dC dat)"},
-	 { (char *)"DListPoint2dC_InsLast", _wrap_DListPoint2dC_InsLast, METH_VARARGS, (char *)"DListPoint2dC_InsLast(DListPoint2dC self, Point2dC dat)"},
-	 { (char *)"DListPoint2dC_PopFirst", _wrap_DListPoint2dC_PopFirst, METH_VARARGS, (char *)"DListPoint2dC_PopFirst(DListPoint2dC self) -> Point2dC"},
-	 { (char *)"DListPoint2dC_PopLast", _wrap_DListPoint2dC_PopLast, METH_VARARGS, (char *)"DListPoint2dC_PopLast(DListPoint2dC self) -> Point2dC"},
-	 { (char *)"DListPoint2dC_MoveFirst", _wrap_DListPoint2dC_MoveFirst, METH_VARARGS, (char *)"DListPoint2dC_MoveFirst(DListPoint2dC self, DListPoint2dC lst)"},
-	 { (char *)"DListPoint2dC_MoveLast", _wrap_DListPoint2dC_MoveLast, METH_VARARGS, (char *)"DListPoint2dC_MoveLast(DListPoint2dC self, DListPoint2dC lst)"},
-	 { (char *)"DListPoint2dC_First", _wrap_DListPoint2dC_First, METH_VARARGS, (char *)"DListPoint2dC_First(DListPoint2dC self) -> Point2dC"},
-	 { (char *)"DListPoint2dC_Last", _wrap_DListPoint2dC_Last, METH_VARARGS, (char *)"DListPoint2dC_Last(DListPoint2dC self) -> Point2dC"},
-	 { (char *)"DListPoint2dC_Del", _wrap_DListPoint2dC_Del, METH_VARARGS, (char *)"DListPoint2dC_Del(DListPoint2dC self, Point2dC x) -> bool"},
-	 { (char *)"DListPoint2dC_Contains", _wrap_DListPoint2dC_Contains, METH_VARARGS, (char *)"DListPoint2dC_Contains(DListPoint2dC self, Point2dC x) -> bool"},
-	 { (char *)"DListPoint2dC_Nth", _wrap_DListPoint2dC_Nth, METH_VARARGS, (char *)"DListPoint2dC_Nth(DListPoint2dC self, int n) -> Point2dC"},
-	 { (char *)"delete_DListPoint2dC", _wrap_delete_DListPoint2dC, METH_VARARGS, (char *)"delete_DListPoint2dC(DListPoint2dC self)"},
+	 { (char *)"DListPoint2dC_Empty", _wrap_DListPoint2dC_Empty, METH_VARARGS, (char *)"DListPoint2dC_Empty(self)"},
+	 { (char *)"DListPoint2dC_InsFirst", _wrap_DListPoint2dC_InsFirst, METH_VARARGS, (char *)"DListPoint2dC_InsFirst(self, dat)"},
+	 { (char *)"DListPoint2dC_InsLast", _wrap_DListPoint2dC_InsLast, METH_VARARGS, (char *)"DListPoint2dC_InsLast(self, dat)"},
+	 { (char *)"DListPoint2dC_PopFirst", _wrap_DListPoint2dC_PopFirst, METH_VARARGS, (char *)"DListPoint2dC_PopFirst(self) -> Point2dC"},
+	 { (char *)"DListPoint2dC_PopLast", _wrap_DListPoint2dC_PopLast, METH_VARARGS, (char *)"DListPoint2dC_PopLast(self) -> Point2dC"},
+	 { (char *)"DListPoint2dC_MoveFirst", _wrap_DListPoint2dC_MoveFirst, METH_VARARGS, (char *)"DListPoint2dC_MoveFirst(self, lst)"},
+	 { (char *)"DListPoint2dC_MoveLast", _wrap_DListPoint2dC_MoveLast, METH_VARARGS, (char *)"DListPoint2dC_MoveLast(self, lst)"},
+	 { (char *)"DListPoint2dC_First", _wrap_DListPoint2dC_First, METH_VARARGS, (char *)"DListPoint2dC_First(self) -> Point2dC"},
+	 { (char *)"DListPoint2dC_Last", _wrap_DListPoint2dC_Last, METH_VARARGS, (char *)"DListPoint2dC_Last(self) -> Point2dC"},
+	 { (char *)"DListPoint2dC_Del", _wrap_DListPoint2dC_Del, METH_VARARGS, (char *)"DListPoint2dC_Del(self, x) -> bool"},
+	 { (char *)"DListPoint2dC_Contains", _wrap_DListPoint2dC_Contains, METH_VARARGS, (char *)"DListPoint2dC_Contains(self, x) -> bool"},
+	 { (char *)"DListPoint2dC_Nth", _wrap_DListPoint2dC_Nth, METH_VARARGS, (char *)"DListPoint2dC_Nth(self, n) -> Point2dC"},
+	 { (char *)"delete_DListPoint2dC", _wrap_delete_DListPoint2dC, METH_VARARGS, (char *)"delete_DListPoint2dC(self)"},
 	 { (char *)"DListPoint2dC_swigregister", DListPoint2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DListPoint2dIterC", _wrap_new_DListPoint2dIterC, METH_VARARGS, (char *)"\n"
 		"DListPoint2dIterC()\n"
-		"new_DListPoint2dIterC(DListPoint2dC lst) -> DListPoint2dIterC\n"
+		"new_DListPoint2dIterC(lst) -> DListPoint2dIterC\n"
 		""},
-	 { (char *)"DListPoint2dIterC_IsValid", _wrap_DListPoint2dIterC_IsValid, METH_VARARGS, (char *)"DListPoint2dIterC_IsValid(DListPoint2dIterC self) -> bool"},
-	 { (char *)"DListPoint2dIterC_First", _wrap_DListPoint2dIterC_First, METH_VARARGS, (char *)"DListPoint2dIterC_First(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_Last", _wrap_DListPoint2dIterC_Last, METH_VARARGS, (char *)"DListPoint2dIterC_Last(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_IsElm", _wrap_DListPoint2dIterC_IsElm, METH_VARARGS, (char *)"DListPoint2dIterC_IsElm(DListPoint2dIterC self) -> bool"},
-	 { (char *)"DListPoint2dIterC_IsFirst", _wrap_DListPoint2dIterC_IsFirst, METH_VARARGS, (char *)"DListPoint2dIterC_IsFirst(DListPoint2dIterC self) -> bool"},
-	 { (char *)"DListPoint2dIterC_IsLast", _wrap_DListPoint2dIterC_IsLast, METH_VARARGS, (char *)"DListPoint2dIterC_IsLast(DListPoint2dIterC self) -> bool"},
-	 { (char *)"DListPoint2dIterC_Next", _wrap_DListPoint2dIterC_Next, METH_VARARGS, (char *)"DListPoint2dIterC_Next(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_Prev", _wrap_DListPoint2dIterC_Prev, METH_VARARGS, (char *)"DListPoint2dIterC_Prev(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_NextCrc", _wrap_DListPoint2dIterC_NextCrc, METH_VARARGS, (char *)"DListPoint2dIterC_NextCrc(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_PrevCrc", _wrap_DListPoint2dIterC_PrevCrc, METH_VARARGS, (char *)"DListPoint2dIterC_PrevCrc(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_Nth", _wrap_DListPoint2dIterC_Nth, METH_VARARGS, (char *)"DListPoint2dIterC_Nth(DListPoint2dIterC self, RavlN::IntT n)"},
-	 { (char *)"DListPoint2dIterC_NextData", _wrap_DListPoint2dIterC_NextData, METH_VARARGS, (char *)"DListPoint2dIterC_NextData(DListPoint2dIterC self) -> Point2dC"},
-	 { (char *)"DListPoint2dIterC_PrevData", _wrap_DListPoint2dIterC_PrevData, METH_VARARGS, (char *)"DListPoint2dIterC_PrevData(DListPoint2dIterC self) -> Point2dC"},
-	 { (char *)"DListPoint2dIterC_NextCrcData", _wrap_DListPoint2dIterC_NextCrcData, METH_VARARGS, (char *)"DListPoint2dIterC_NextCrcData(DListPoint2dIterC self) -> Point2dC"},
-	 { (char *)"DListPoint2dIterC_PrevCrcData", _wrap_DListPoint2dIterC_PrevCrcData, METH_VARARGS, (char *)"DListPoint2dIterC_PrevCrcData(DListPoint2dIterC self) -> Point2dC"},
-	 { (char *)"DListPoint2dIterC_Tail", _wrap_DListPoint2dIterC_Tail, METH_VARARGS, (char *)"DListPoint2dIterC_Tail(DListPoint2dIterC self) -> DListPoint2dC"},
-	 { (char *)"DListPoint2dIterC_Head", _wrap_DListPoint2dIterC_Head, METH_VARARGS, (char *)"DListPoint2dIterC_Head(DListPoint2dIterC self) -> DListPoint2dC"},
-	 { (char *)"DListPoint2dIterC_InclusiveTail", _wrap_DListPoint2dIterC_InclusiveTail, METH_VARARGS, (char *)"DListPoint2dIterC_InclusiveTail(DListPoint2dIterC self) -> DListPoint2dC"},
-	 { (char *)"DListPoint2dIterC_InclusiveHead", _wrap_DListPoint2dIterC_InclusiveHead, METH_VARARGS, (char *)"DListPoint2dIterC_InclusiveHead(DListPoint2dIterC self) -> DListPoint2dC"},
-	 { (char *)"DListPoint2dIterC_Data", _wrap_DListPoint2dIterC_Data, METH_VARARGS, (char *)"DListPoint2dIterC_Data(DListPoint2dIterC self) -> Point2dC"},
-	 { (char *)"DListPoint2dIterC___deref__", _wrap_DListPoint2dIterC___deref__, METH_VARARGS, (char *)"DListPoint2dIterC___deref__(DListPoint2dIterC self) -> Point2dC"},
-	 { (char *)"delete_DListPoint2dIterC", _wrap_delete_DListPoint2dIterC, METH_VARARGS, (char *)"delete_DListPoint2dIterC(DListPoint2dIterC self)"},
-	 { (char *)"DListPoint2dIterC_Row", _wrap_DListPoint2dIterC_Row, METH_VARARGS, (char *)"DListPoint2dIterC_Row(DListPoint2dIterC self) -> RavlN::RealT"},
-	 { (char *)"DListPoint2dIterC_Col", _wrap_DListPoint2dIterC_Col, METH_VARARGS, (char *)"DListPoint2dIterC_Col(DListPoint2dIterC self) -> RavlN::RealT"},
-	 { (char *)"DListPoint2dIterC___str__", _wrap_DListPoint2dIterC___str__, METH_VARARGS, (char *)"DListPoint2dIterC___str__(DListPoint2dIterC self) -> char const *"},
+	 { (char *)"DListPoint2dIterC_IsValid", _wrap_DListPoint2dIterC_IsValid, METH_VARARGS, (char *)"DListPoint2dIterC_IsValid(self) -> bool"},
+	 { (char *)"DListPoint2dIterC_First", _wrap_DListPoint2dIterC_First, METH_VARARGS, (char *)"DListPoint2dIterC_First(self)"},
+	 { (char *)"DListPoint2dIterC_Last", _wrap_DListPoint2dIterC_Last, METH_VARARGS, (char *)"DListPoint2dIterC_Last(self)"},
+	 { (char *)"DListPoint2dIterC_IsElm", _wrap_DListPoint2dIterC_IsElm, METH_VARARGS, (char *)"DListPoint2dIterC_IsElm(self) -> bool"},
+	 { (char *)"DListPoint2dIterC_IsFirst", _wrap_DListPoint2dIterC_IsFirst, METH_VARARGS, (char *)"DListPoint2dIterC_IsFirst(self) -> bool"},
+	 { (char *)"DListPoint2dIterC_IsLast", _wrap_DListPoint2dIterC_IsLast, METH_VARARGS, (char *)"DListPoint2dIterC_IsLast(self) -> bool"},
+	 { (char *)"DListPoint2dIterC_Next", _wrap_DListPoint2dIterC_Next, METH_VARARGS, (char *)"DListPoint2dIterC_Next(self)"},
+	 { (char *)"DListPoint2dIterC_Prev", _wrap_DListPoint2dIterC_Prev, METH_VARARGS, (char *)"DListPoint2dIterC_Prev(self)"},
+	 { (char *)"DListPoint2dIterC_NextCrc", _wrap_DListPoint2dIterC_NextCrc, METH_VARARGS, (char *)"DListPoint2dIterC_NextCrc(self)"},
+	 { (char *)"DListPoint2dIterC_PrevCrc", _wrap_DListPoint2dIterC_PrevCrc, METH_VARARGS, (char *)"DListPoint2dIterC_PrevCrc(self)"},
+	 { (char *)"DListPoint2dIterC_Nth", _wrap_DListPoint2dIterC_Nth, METH_VARARGS, (char *)"DListPoint2dIterC_Nth(self, n)"},
+	 { (char *)"DListPoint2dIterC_NextData", _wrap_DListPoint2dIterC_NextData, METH_VARARGS, (char *)"DListPoint2dIterC_NextData(self) -> Point2dC"},
+	 { (char *)"DListPoint2dIterC_PrevData", _wrap_DListPoint2dIterC_PrevData, METH_VARARGS, (char *)"DListPoint2dIterC_PrevData(self) -> Point2dC"},
+	 { (char *)"DListPoint2dIterC_NextCrcData", _wrap_DListPoint2dIterC_NextCrcData, METH_VARARGS, (char *)"DListPoint2dIterC_NextCrcData(self) -> Point2dC"},
+	 { (char *)"DListPoint2dIterC_PrevCrcData", _wrap_DListPoint2dIterC_PrevCrcData, METH_VARARGS, (char *)"DListPoint2dIterC_PrevCrcData(self) -> Point2dC"},
+	 { (char *)"DListPoint2dIterC_Tail", _wrap_DListPoint2dIterC_Tail, METH_VARARGS, (char *)"DListPoint2dIterC_Tail(self) -> DListPoint2dC"},
+	 { (char *)"DListPoint2dIterC_Head", _wrap_DListPoint2dIterC_Head, METH_VARARGS, (char *)"DListPoint2dIterC_Head(self) -> DListPoint2dC"},
+	 { (char *)"DListPoint2dIterC_InclusiveTail", _wrap_DListPoint2dIterC_InclusiveTail, METH_VARARGS, (char *)"DListPoint2dIterC_InclusiveTail(self) -> DListPoint2dC"},
+	 { (char *)"DListPoint2dIterC_InclusiveHead", _wrap_DListPoint2dIterC_InclusiveHead, METH_VARARGS, (char *)"DListPoint2dIterC_InclusiveHead(self) -> DListPoint2dC"},
+	 { (char *)"DListPoint2dIterC_Data", _wrap_DListPoint2dIterC_Data, METH_VARARGS, (char *)"DListPoint2dIterC_Data(self) -> Point2dC"},
+	 { (char *)"DListPoint2dIterC___deref__", _wrap_DListPoint2dIterC___deref__, METH_VARARGS, (char *)"DListPoint2dIterC___deref__(self) -> Point2dC"},
+	 { (char *)"delete_DListPoint2dIterC", _wrap_delete_DListPoint2dIterC, METH_VARARGS, (char *)"delete_DListPoint2dIterC(self)"},
+	 { (char *)"DListPoint2dIterC_Row", _wrap_DListPoint2dIterC_Row, METH_VARARGS, (char *)"DListPoint2dIterC_Row(self) -> RavlN::RealT"},
+	 { (char *)"DListPoint2dIterC_Col", _wrap_DListPoint2dIterC_Col, METH_VARARGS, (char *)"DListPoint2dIterC_Col(self) -> RavlN::RealT"},
+	 { (char *)"DListPoint2dIterC___str__", _wrap_DListPoint2dIterC___str__, METH_VARARGS, (char *)"DListPoint2dIterC___str__(self) -> char const *"},
 	 { (char *)"DListPoint2dIterC_swigregister", DListPoint2dIterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"ToList", _wrap_ToList, METH_VARARGS, (char *)"\n"
-		"ToList(DListRealC list) -> PyObject\n"
-		"ToList(DListIntC list) -> PyObject\n"
-		"ToList(DListUIntC list) -> PyObject\n"
-		"ToList(DListInt64C list) -> PyObject\n"
-		"ToList(DListInt16C list) -> PyObject\n"
-		"ToList(DListByteC list) -> PyObject\n"
-		"ToList(DListPoint2dC list) -> PyObject *\n"
+		"ToList(list) -> PyObject\n"
+		"ToList(list) -> PyObject\n"
+		"ToList(list) -> PyObject\n"
+		"ToList(list) -> PyObject\n"
+		"ToList(list) -> PyObject\n"
+		"ToList(list) -> PyObject\n"
+		"ToList(list) -> PyObject *\n"
 		""},
 	 { (char *)"new_IndexC", _wrap_new_IndexC, METH_VARARGS, (char *)"\n"
 		"IndexC()\n"
-		"new_IndexC(RavlN::IntT arg1) -> IndexC\n"
+		"new_IndexC(arg1) -> IndexC\n"
 		""},
-	 { (char *)"IndexC_V", _wrap_IndexC_V, METH_VARARGS, (char *)"IndexC_V(IndexC self) -> RavlN::IntT"},
-	 { (char *)"delete_IndexC", _wrap_delete_IndexC, METH_VARARGS, (char *)"delete_IndexC(IndexC self)"},
+	 { (char *)"IndexC_V", _wrap_IndexC_V, METH_VARARGS, (char *)"IndexC_V(self) -> RavlN::IntT"},
+	 { (char *)"delete_IndexC", _wrap_delete_IndexC, METH_VARARGS, (char *)"delete_IndexC(self)"},
 	 { (char *)"IndexC_swigregister", IndexC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_IndexRangeC", _wrap_new_IndexRangeC, METH_VARARGS, (char *)"\n"
-		"IndexRangeC(size_t dim=0)\n"
+		"IndexRangeC(dim=0)\n"
 		"IndexRangeC()\n"
-		"IndexRangeC(IndexC dim)\n"
-		"IndexRangeC(SizeC dim)\n"
-		"new_IndexRangeC(IndexC minIndex, IndexC maxIndex) -> IndexRangeC\n"
+		"IndexRangeC(dim)\n"
+		"IndexRangeC(dim)\n"
+		"new_IndexRangeC(minIndex, maxIndex) -> IndexRangeC\n"
 		""},
-	 { (char *)"IndexRangeC_Size", _wrap_IndexRangeC_Size, METH_VARARGS, (char *)"IndexRangeC_Size(IndexRangeC self) -> RavlN::IntT"},
-	 { (char *)"IndexRangeC_Range", _wrap_IndexRangeC_Range, METH_VARARGS, (char *)"IndexRangeC_Range(IndexRangeC self) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_Size", _wrap_IndexRangeC_Size, METH_VARARGS, (char *)"IndexRangeC_Size(self) -> RavlN::IntT"},
+	 { (char *)"IndexRangeC_Range", _wrap_IndexRangeC_Range, METH_VARARGS, (char *)"IndexRangeC_Range(self) -> IndexRangeC"},
 	 { (char *)"IndexRangeC_Min", _wrap_IndexRangeC_Min, METH_VARARGS, (char *)"\n"
 		"Min() -> IndexC\n"
-		"IndexRangeC_Min(IndexRangeC self) -> IndexC\n"
+		"IndexRangeC_Min(self) -> IndexC\n"
 		""},
 	 { (char *)"IndexRangeC_Max", _wrap_IndexRangeC_Max, METH_VARARGS, (char *)"\n"
 		"Max() -> IndexC\n"
-		"IndexRangeC_Max(IndexRangeC self) -> IndexC\n"
+		"IndexRangeC_Max(self) -> IndexC\n"
 		""},
-	 { (char *)"IndexRangeC_Center", _wrap_IndexRangeC_Center, METH_VARARGS, (char *)"IndexRangeC_Center(IndexRangeC self) -> IndexC"},
-	 { (char *)"IndexRangeC_CenterD", _wrap_IndexRangeC_CenterD, METH_VARARGS, (char *)"IndexRangeC_CenterD(IndexRangeC self) -> IndexC"},
-	 { (char *)"IndexRangeC_Percentage", _wrap_IndexRangeC_Percentage, METH_VARARGS, (char *)"IndexRangeC_Percentage(IndexRangeC self, RavlN::RealT const p) -> IndexC"},
-	 { (char *)"IndexRangeC_IsEmpty", _wrap_IndexRangeC_IsEmpty, METH_VARARGS, (char *)"IndexRangeC_IsEmpty(IndexRangeC self) -> bool"},
-	 { (char *)"IndexRangeC_IsValid", _wrap_IndexRangeC_IsValid, METH_VARARGS, (char *)"IndexRangeC_IsValid(IndexRangeC self) -> bool"},
+	 { (char *)"IndexRangeC_Center", _wrap_IndexRangeC_Center, METH_VARARGS, (char *)"IndexRangeC_Center(self) -> IndexC"},
+	 { (char *)"IndexRangeC_CenterD", _wrap_IndexRangeC_CenterD, METH_VARARGS, (char *)"IndexRangeC_CenterD(self) -> IndexC"},
+	 { (char *)"IndexRangeC_Percentage", _wrap_IndexRangeC_Percentage, METH_VARARGS, (char *)"IndexRangeC_Percentage(self, p) -> IndexC"},
+	 { (char *)"IndexRangeC_IsEmpty", _wrap_IndexRangeC_IsEmpty, METH_VARARGS, (char *)"IndexRangeC_IsEmpty(self) -> bool"},
+	 { (char *)"IndexRangeC_IsValid", _wrap_IndexRangeC_IsValid, METH_VARARGS, (char *)"IndexRangeC_IsValid(self) -> bool"},
 	 { (char *)"IndexRangeC_Contains", _wrap_IndexRangeC_Contains, METH_VARARGS, (char *)"\n"
-		"Contains(IndexC i) -> bool\n"
-		"Contains(RavlN::RealT val) -> bool\n"
-		"IndexRangeC_Contains(IndexRangeC self, IndexRangeC range) -> bool\n"
+		"Contains(i) -> bool\n"
+		"Contains(val) -> bool\n"
+		"IndexRangeC_Contains(self, range) -> bool\n"
 		""},
-	 { (char *)"IndexRangeC___eq__", _wrap_IndexRangeC___eq__, METH_VARARGS, (char *)"IndexRangeC___eq__(IndexRangeC self, IndexRangeC range) -> bool"},
-	 { (char *)"IndexRangeC___ne__", _wrap_IndexRangeC___ne__, METH_VARARGS, (char *)"IndexRangeC___ne__(IndexRangeC self, IndexRangeC range) -> bool"},
-	 { (char *)"IndexRangeC_In", _wrap_IndexRangeC_In, METH_VARARGS, (char *)"IndexRangeC_In(IndexRangeC self, IndexRangeC range) -> bool"},
-	 { (char *)"IndexRangeC_IsOverlapping", _wrap_IndexRangeC_IsOverlapping, METH_VARARGS, (char *)"IndexRangeC_IsOverlapping(IndexRangeC self, IndexRangeC r) -> bool"},
-	 { (char *)"IndexRangeC_SetOrigin", _wrap_IndexRangeC_SetOrigin, METH_VARARGS, (char *)"IndexRangeC_SetOrigin(IndexRangeC self, IndexC position) -> IndexRangeC"},
-	 { (char *)"IndexRangeC___idiv__", _wrap_IndexRangeC___idiv__, METH_VARARGS, (char *)"IndexRangeC___idiv__(IndexRangeC self, IndexC i) -> IndexRangeC"},
-	 { (char *)"IndexRangeC___imul__", _wrap_IndexRangeC___imul__, METH_VARARGS, (char *)"IndexRangeC___imul__(IndexRangeC self, IndexC i) -> IndexRangeC"},
-	 { (char *)"IndexRangeC___div__", _wrap_IndexRangeC___div__, METH_VARARGS, (char *)"IndexRangeC___div__(IndexRangeC self, IndexC i) -> IndexRangeC"},
-	 { (char *)"IndexRangeC___mul__", _wrap_IndexRangeC___mul__, METH_VARARGS, (char *)"IndexRangeC___mul__(IndexRangeC self, IndexC i) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_ClipBy", _wrap_IndexRangeC_ClipBy, METH_VARARGS, (char *)"IndexRangeC_ClipBy(IndexRangeC self, IndexRangeC r) -> IndexRangeC"},
+	 { (char *)"IndexRangeC___eq__", _wrap_IndexRangeC___eq__, METH_VARARGS, (char *)"IndexRangeC___eq__(self, range) -> bool"},
+	 { (char *)"IndexRangeC___ne__", _wrap_IndexRangeC___ne__, METH_VARARGS, (char *)"IndexRangeC___ne__(self, range) -> bool"},
+	 { (char *)"IndexRangeC_In", _wrap_IndexRangeC_In, METH_VARARGS, (char *)"IndexRangeC_In(self, range) -> bool"},
+	 { (char *)"IndexRangeC_IsOverlapping", _wrap_IndexRangeC_IsOverlapping, METH_VARARGS, (char *)"IndexRangeC_IsOverlapping(self, r) -> bool"},
+	 { (char *)"IndexRangeC_SetOrigin", _wrap_IndexRangeC_SetOrigin, METH_VARARGS, (char *)"IndexRangeC_SetOrigin(self, position) -> IndexRangeC"},
+	 { (char *)"IndexRangeC___idiv__", _wrap_IndexRangeC___idiv__, METH_VARARGS, (char *)"IndexRangeC___idiv__(self, i) -> IndexRangeC"},
+	 { (char *)"IndexRangeC___imul__", _wrap_IndexRangeC___imul__, METH_VARARGS, (char *)"IndexRangeC___imul__(self, i) -> IndexRangeC"},
+	 { (char *)"IndexRangeC___div__", _wrap_IndexRangeC___div__, METH_VARARGS, (char *)"IndexRangeC___div__(self, i) -> IndexRangeC"},
+	 { (char *)"IndexRangeC___mul__", _wrap_IndexRangeC___mul__, METH_VARARGS, (char *)"IndexRangeC___mul__(self, i) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_ClipBy", _wrap_IndexRangeC_ClipBy, METH_VARARGS, (char *)"IndexRangeC_ClipBy(self, r) -> IndexRangeC"},
 	 { (char *)"IndexRangeC_Clip", _wrap_IndexRangeC_Clip, METH_VARARGS, (char *)"\n"
-		"Clip(IndexRangeC r) -> IndexRangeC\n"
-		"IndexRangeC_Clip(IndexRangeC self, IndexC i) -> IndexC\n"
+		"Clip(r) -> IndexRangeC\n"
+		"IndexRangeC_Clip(self, i) -> IndexC\n"
 		""},
-	 { (char *)"IndexRangeC_FirstHalf", _wrap_IndexRangeC_FirstHalf, METH_VARARGS, (char *)"IndexRangeC_FirstHalf(IndexRangeC self) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_FirstHalfD", _wrap_IndexRangeC_FirstHalfD, METH_VARARGS, (char *)"IndexRangeC_FirstHalfD(IndexRangeC self) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_Enlarge", _wrap_IndexRangeC_Enlarge, METH_VARARGS, (char *)"IndexRangeC_Enlarge(IndexRangeC self, IndexC f) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_Expand", _wrap_IndexRangeC_Expand, METH_VARARGS, (char *)"IndexRangeC_Expand(IndexRangeC self, IndexC n) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_Shrink", _wrap_IndexRangeC_Shrink, METH_VARARGS, (char *)"IndexRangeC_Shrink(IndexRangeC self, IndexC n) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_ShrinkHigh", _wrap_IndexRangeC_ShrinkHigh, METH_VARARGS, (char *)"IndexRangeC_ShrinkHigh(IndexRangeC self, IndexC n) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_Swap", _wrap_IndexRangeC_Swap, METH_VARARGS, (char *)"IndexRangeC_Swap(IndexRangeC self, IndexRangeC r) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_FirstHalf", _wrap_IndexRangeC_FirstHalf, METH_VARARGS, (char *)"IndexRangeC_FirstHalf(self) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_FirstHalfD", _wrap_IndexRangeC_FirstHalfD, METH_VARARGS, (char *)"IndexRangeC_FirstHalfD(self) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_Enlarge", _wrap_IndexRangeC_Enlarge, METH_VARARGS, (char *)"IndexRangeC_Enlarge(self, f) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_Expand", _wrap_IndexRangeC_Expand, METH_VARARGS, (char *)"IndexRangeC_Expand(self, n) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_Shrink", _wrap_IndexRangeC_Shrink, METH_VARARGS, (char *)"IndexRangeC_Shrink(self, n) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_ShrinkHigh", _wrap_IndexRangeC_ShrinkHigh, METH_VARARGS, (char *)"IndexRangeC_ShrinkHigh(self, n) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_Swap", _wrap_IndexRangeC_Swap, METH_VARARGS, (char *)"IndexRangeC_Swap(self, r) -> IndexRangeC"},
 	 { (char *)"IndexRangeC_Involve", _wrap_IndexRangeC_Involve, METH_VARARGS, (char *)"\n"
-		"Involve(IndexC i) -> IndexRangeC\n"
-		"IndexRangeC_Involve(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC\n"
+		"Involve(i) -> IndexRangeC\n"
+		"IndexRangeC_Involve(self, subRange) -> IndexRangeC\n"
 		""},
 	 { (char *)"IndexRangeC___iadd__", _wrap_IndexRangeC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(IndexC i) -> IndexRangeC\n"
-		"__iadd__(RavlN::IntT i) -> IndexRangeC\n"
-		"__iadd__(RavlN::UIntT i) -> IndexRangeC\n"
-		"__iadd__(SizeC i) -> IndexRangeC\n"
-		"IndexRangeC___iadd__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC\n"
+		"__iadd__(i) -> IndexRangeC\n"
+		"__iadd__(i) -> IndexRangeC\n"
+		"__iadd__(i) -> IndexRangeC\n"
+		"__iadd__(i) -> IndexRangeC\n"
+		"IndexRangeC___iadd__(self, subRange) -> IndexRangeC\n"
 		""},
 	 { (char *)"IndexRangeC___isub__", _wrap_IndexRangeC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(IndexC i) -> IndexRangeC\n"
-		"__isub__(RavlN::IntT i) -> IndexRangeC\n"
-		"__isub__(RavlN::UIntT i) -> IndexRangeC\n"
-		"__isub__(SizeC i) -> IndexRangeC\n"
-		"IndexRangeC___isub__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC\n"
+		"__isub__(i) -> IndexRangeC\n"
+		"__isub__(i) -> IndexRangeC\n"
+		"__isub__(i) -> IndexRangeC\n"
+		"__isub__(i) -> IndexRangeC\n"
+		"IndexRangeC___isub__(self, subRange) -> IndexRangeC\n"
 		""},
 	 { (char *)"IndexRangeC___add__", _wrap_IndexRangeC___add__, METH_VARARGS, (char *)"\n"
-		"__add__(IndexC i) -> IndexRangeC\n"
-		"__add__(RavlN::IntT i) -> IndexRangeC\n"
-		"__add__(RavlN::UIntT i) -> IndexRangeC\n"
-		"__add__(SizeC i) -> IndexRangeC\n"
-		"IndexRangeC___add__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC\n"
+		"__add__(i) -> IndexRangeC\n"
+		"__add__(i) -> IndexRangeC\n"
+		"__add__(i) -> IndexRangeC\n"
+		"__add__(i) -> IndexRangeC\n"
+		"IndexRangeC___add__(self, subRange) -> IndexRangeC\n"
 		""},
 	 { (char *)"IndexRangeC___sub__", _wrap_IndexRangeC___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(IndexC i) -> IndexRangeC\n"
-		"__sub__(RavlN::IntT i) -> IndexRangeC\n"
-		"__sub__(RavlN::UIntT i) -> IndexRangeC\n"
-		"__sub__(SizeC i) -> IndexRangeC\n"
-		"IndexRangeC___sub__(IndexRangeC self, IndexRangeC subRange) -> IndexRangeC\n"
+		"__sub__(i) -> IndexRangeC\n"
+		"__sub__(i) -> IndexRangeC\n"
+		"__sub__(i) -> IndexRangeC\n"
+		"__sub__(i) -> IndexRangeC\n"
+		"IndexRangeC___sub__(self, subRange) -> IndexRangeC\n"
 		""},
-	 { (char *)"IndexRangeC_AlignWithin", _wrap_IndexRangeC_AlignWithin, METH_VARARGS, (char *)"IndexRangeC_AlignWithin(IndexRangeC self, RavlN::IntT alignment) -> IndexRangeC"},
-	 { (char *)"IndexRangeC_Hash", _wrap_IndexRangeC_Hash, METH_VARARGS, (char *)"IndexRangeC_Hash(IndexRangeC self) -> RavlN::SizeT"},
-	 { (char *)"IndexRangeC___str__", _wrap_IndexRangeC___str__, METH_VARARGS, (char *)"IndexRangeC___str__(IndexRangeC self) -> char const *"},
-	 { (char *)"IndexRangeC___nonzero__", _wrap_IndexRangeC___nonzero__, METH_VARARGS, (char *)"IndexRangeC___nonzero__(IndexRangeC self) -> bool"},
-	 { (char *)"IndexRangeC___len__", _wrap_IndexRangeC___len__, METH_VARARGS, (char *)"IndexRangeC___len__(IndexRangeC self) -> int"},
-	 { (char *)"delete_IndexRangeC", _wrap_delete_IndexRangeC, METH_VARARGS, (char *)"delete_IndexRangeC(IndexRangeC self)"},
+	 { (char *)"IndexRangeC_AlignWithin", _wrap_IndexRangeC_AlignWithin, METH_VARARGS, (char *)"IndexRangeC_AlignWithin(self, alignment) -> IndexRangeC"},
+	 { (char *)"IndexRangeC_Hash", _wrap_IndexRangeC_Hash, METH_VARARGS, (char *)"IndexRangeC_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"IndexRangeC___str__", _wrap_IndexRangeC___str__, METH_VARARGS, (char *)"IndexRangeC___str__(self) -> char const *"},
+	 { (char *)"IndexRangeC___nonzero__", _wrap_IndexRangeC___nonzero__, METH_VARARGS, (char *)"IndexRangeC___nonzero__(self) -> bool"},
+	 { (char *)"IndexRangeC___len__", _wrap_IndexRangeC___len__, METH_VARARGS, (char *)"IndexRangeC___len__(self) -> int"},
+	 { (char *)"delete_IndexRangeC", _wrap_delete_IndexRangeC, METH_VARARGS, (char *)"delete_IndexRangeC(self)"},
 	 { (char *)"IndexRangeC_swigregister", IndexRangeC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Index2dC", _wrap_new_Index2dC, METH_VARARGS, (char *)"\n"
 		"Index2dC()\n"
-		"Index2dC(RavlN::IntT x, RavlN::IntT y)\n"
-		"new_Index2dC(IndexC x, IndexC y) -> Index2dC\n"
+		"Index2dC(x, y)\n"
+		"new_Index2dC(x, y) -> Index2dC\n"
 		""},
-	 { (char *)"Index2dC_Row", _wrap_Index2dC_Row, METH_VARARGS, (char *)"Index2dC_Row(Index2dC self) -> IndexC"},
-	 { (char *)"Index2dC_Col", _wrap_Index2dC_Col, METH_VARARGS, (char *)"Index2dC_Col(Index2dC self) -> IndexC"},
-	 { (char *)"delete_Index2dC", _wrap_delete_Index2dC, METH_VARARGS, (char *)"delete_Index2dC(Index2dC self)"},
+	 { (char *)"Index2dC_Row", _wrap_Index2dC_Row, METH_VARARGS, (char *)"Index2dC_Row(self) -> IndexC"},
+	 { (char *)"Index2dC_Col", _wrap_Index2dC_Col, METH_VARARGS, (char *)"Index2dC_Col(self) -> IndexC"},
+	 { (char *)"delete_Index2dC", _wrap_delete_Index2dC, METH_VARARGS, (char *)"delete_Index2dC(self)"},
 	 { (char *)"Index2dC_swigregister", Index2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_IndexRange2dC", _wrap_new_IndexRange2dC, METH_VARARGS, (char *)"\n"
 		"IndexRange2dC()\n"
-		"new_IndexRange2dC(RavlN::IntT rows, RavlN::IntT cols) -> IndexRange2dC\n"
+		"new_IndexRange2dC(rows, cols) -> IndexRange2dC\n"
 		""},
-	 { (char *)"IndexRange2dC_TRow", _wrap_IndexRange2dC_TRow, METH_VARARGS, (char *)"IndexRange2dC_TRow(IndexRange2dC self) -> IndexC"},
-	 { (char *)"IndexRange2dC_BRow", _wrap_IndexRange2dC_BRow, METH_VARARGS, (char *)"IndexRange2dC_BRow(IndexRange2dC self) -> IndexC"},
-	 { (char *)"IndexRange2dC_LCol", _wrap_IndexRange2dC_LCol, METH_VARARGS, (char *)"IndexRange2dC_LCol(IndexRange2dC self) -> IndexC"},
-	 { (char *)"IndexRange2dC_RCol", _wrap_IndexRange2dC_RCol, METH_VARARGS, (char *)"IndexRange2dC_RCol(IndexRange2dC self) -> IndexC"},
-	 { (char *)"IndexRange2dC_TopLeft", _wrap_IndexRange2dC_TopLeft, METH_VARARGS, (char *)"IndexRange2dC_TopLeft(IndexRange2dC self) -> Index2dC"},
-	 { (char *)"IndexRange2dC_TopRight", _wrap_IndexRange2dC_TopRight, METH_VARARGS, (char *)"IndexRange2dC_TopRight(IndexRange2dC self) -> Index2dC"},
-	 { (char *)"IndexRange2dC_BottomLeft", _wrap_IndexRange2dC_BottomLeft, METH_VARARGS, (char *)"IndexRange2dC_BottomLeft(IndexRange2dC self) -> Index2dC"},
-	 { (char *)"IndexRange2dC_BottomRight", _wrap_IndexRange2dC_BottomRight, METH_VARARGS, (char *)"IndexRange2dC_BottomRight(IndexRange2dC self) -> Index2dC"},
-	 { (char *)"IndexRange2dC_Center", _wrap_IndexRange2dC_Center, METH_VARARGS, (char *)"IndexRange2dC_Center(IndexRange2dC self) -> Index2dC"},
-	 { (char *)"IndexRange2dC_Rows", _wrap_IndexRange2dC_Rows, METH_VARARGS, (char *)"IndexRange2dC_Rows(IndexRange2dC self) -> RavlN::IntT"},
-	 { (char *)"IndexRange2dC_Cols", _wrap_IndexRange2dC_Cols, METH_VARARGS, (char *)"IndexRange2dC_Cols(IndexRange2dC self) -> RavlN::IntT"},
-	 { (char *)"IndexRange2dC_Area", _wrap_IndexRange2dC_Area, METH_VARARGS, (char *)"IndexRange2dC_Area(IndexRange2dC self) -> RavlN::SizeT"},
-	 { (char *)"IndexRange2dC_Contains", _wrap_IndexRange2dC_Contains, METH_VARARGS, (char *)"IndexRange2dC_Contains(IndexRange2dC self, Index2dC index) -> bool"},
-	 { (char *)"IndexRange2dC_Expand", _wrap_IndexRange2dC_Expand, METH_VARARGS, (char *)"IndexRange2dC_Expand(IndexRange2dC self, RavlN::IntT n) -> IndexRange2dC"},
-	 { (char *)"IndexRange2dC_ClipBy", _wrap_IndexRange2dC_ClipBy, METH_VARARGS, (char *)"IndexRange2dC_ClipBy(IndexRange2dC self, IndexRange2dC range)"},
-	 { (char *)"delete_IndexRange2dC", _wrap_delete_IndexRange2dC, METH_VARARGS, (char *)"delete_IndexRange2dC(IndexRange2dC self)"},
+	 { (char *)"IndexRange2dC_TRow", _wrap_IndexRange2dC_TRow, METH_VARARGS, (char *)"IndexRange2dC_TRow(self) -> IndexC"},
+	 { (char *)"IndexRange2dC_BRow", _wrap_IndexRange2dC_BRow, METH_VARARGS, (char *)"IndexRange2dC_BRow(self) -> IndexC"},
+	 { (char *)"IndexRange2dC_LCol", _wrap_IndexRange2dC_LCol, METH_VARARGS, (char *)"IndexRange2dC_LCol(self) -> IndexC"},
+	 { (char *)"IndexRange2dC_RCol", _wrap_IndexRange2dC_RCol, METH_VARARGS, (char *)"IndexRange2dC_RCol(self) -> IndexC"},
+	 { (char *)"IndexRange2dC_TopLeft", _wrap_IndexRange2dC_TopLeft, METH_VARARGS, (char *)"IndexRange2dC_TopLeft(self) -> Index2dC"},
+	 { (char *)"IndexRange2dC_TopRight", _wrap_IndexRange2dC_TopRight, METH_VARARGS, (char *)"IndexRange2dC_TopRight(self) -> Index2dC"},
+	 { (char *)"IndexRange2dC_BottomLeft", _wrap_IndexRange2dC_BottomLeft, METH_VARARGS, (char *)"IndexRange2dC_BottomLeft(self) -> Index2dC"},
+	 { (char *)"IndexRange2dC_BottomRight", _wrap_IndexRange2dC_BottomRight, METH_VARARGS, (char *)"IndexRange2dC_BottomRight(self) -> Index2dC"},
+	 { (char *)"IndexRange2dC_Center", _wrap_IndexRange2dC_Center, METH_VARARGS, (char *)"IndexRange2dC_Center(self) -> Index2dC"},
+	 { (char *)"IndexRange2dC_Rows", _wrap_IndexRange2dC_Rows, METH_VARARGS, (char *)"IndexRange2dC_Rows(self) -> RavlN::IntT"},
+	 { (char *)"IndexRange2dC_Cols", _wrap_IndexRange2dC_Cols, METH_VARARGS, (char *)"IndexRange2dC_Cols(self) -> RavlN::IntT"},
+	 { (char *)"IndexRange2dC_Area", _wrap_IndexRange2dC_Area, METH_VARARGS, (char *)"IndexRange2dC_Area(self) -> RavlN::SizeT"},
+	 { (char *)"IndexRange2dC_Contains", _wrap_IndexRange2dC_Contains, METH_VARARGS, (char *)"IndexRange2dC_Contains(self, index) -> bool"},
+	 { (char *)"IndexRange2dC_Expand", _wrap_IndexRange2dC_Expand, METH_VARARGS, (char *)"IndexRange2dC_Expand(self, n) -> IndexRange2dC"},
+	 { (char *)"IndexRange2dC_ClipBy", _wrap_IndexRange2dC_ClipBy, METH_VARARGS, (char *)"IndexRange2dC_ClipBy(self, range)"},
+	 { (char *)"delete_IndexRange2dC", _wrap_delete_IndexRange2dC, METH_VARARGS, (char *)"delete_IndexRange2dC(self)"},
 	 { (char *)"IndexRange2dC_swigregister", IndexRange2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Array2dByteC", _wrap_new_Array2dByteC, METH_VARARGS, (char *)"\n"
 		"Array2dByteC()\n"
-		"Array2dByteC(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"new_Array2dByteC(IndexRange2dC range) -> Array2dByteC\n"
+		"Array2dByteC(rows, cols)\n"
+		"new_Array2dByteC(range) -> Array2dByteC\n"
 		""},
-	 { (char *)"Array2dByteC_Frame", _wrap_Array2dByteC_Frame, METH_VARARGS, (char *)"Array2dByteC_Frame(Array2dByteC self) -> IndexRange2dC"},
-	 { (char *)"Array2dByteC_Fill", _wrap_Array2dByteC_Fill, METH_VARARGS, (char *)"Array2dByteC_Fill(Array2dByteC self, unsigned char const & value)"},
-	 { (char *)"Array2dByteC_Stride", _wrap_Array2dByteC_Stride, METH_VARARGS, (char *)"Array2dByteC_Stride(Array2dByteC self) -> RavlN::IntT"},
+	 { (char *)"Array2dByteC_Frame", _wrap_Array2dByteC_Frame, METH_VARARGS, (char *)"Array2dByteC_Frame(self) -> IndexRange2dC"},
+	 { (char *)"Array2dByteC_Fill", _wrap_Array2dByteC_Fill, METH_VARARGS, (char *)"Array2dByteC_Fill(self, value)"},
+	 { (char *)"Array2dByteC_Stride", _wrap_Array2dByteC_Stride, METH_VARARGS, (char *)"Array2dByteC_Stride(self) -> RavlN::IntT"},
 	 { (char *)"Array2dByteC_Access", _wrap_Array2dByteC_Access, METH_VARARGS, (char *)"\n"
-		"Access(Index2dC index) -> unsigned char\n"
-		"Access(RavlN::IntT r, RavlN::IntT c) -> unsigned char\n"
-		"Array2dByteC_Access(Array2dByteC self, IndexC r, IndexC c) -> unsigned char &\n"
+		"Access(index) -> unsigned char\n"
+		"Access(r, c) -> unsigned char\n"
+		"Array2dByteC_Access(self, r, c) -> unsigned char &\n"
 		""},
-	 { (char *)"delete_Array2dByteC", _wrap_delete_Array2dByteC, METH_VARARGS, (char *)"delete_Array2dByteC(Array2dByteC self)"},
+	 { (char *)"delete_Array2dByteC", _wrap_delete_Array2dByteC, METH_VARARGS, (char *)"delete_Array2dByteC(self)"},
 	 { (char *)"Array2dByteC_swigregister", Array2dByteC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Array2dRealC", _wrap_new_Array2dRealC, METH_VARARGS, (char *)"\n"
 		"Array2dRealC()\n"
-		"Array2dRealC(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"new_Array2dRealC(IndexRange2dC range) -> Array2dRealC\n"
+		"Array2dRealC(rows, cols)\n"
+		"new_Array2dRealC(range) -> Array2dRealC\n"
 		""},
-	 { (char *)"Array2dRealC_Frame", _wrap_Array2dRealC_Frame, METH_VARARGS, (char *)"Array2dRealC_Frame(Array2dRealC self) -> IndexRange2dC"},
-	 { (char *)"Array2dRealC_Fill", _wrap_Array2dRealC_Fill, METH_VARARGS, (char *)"Array2dRealC_Fill(Array2dRealC self, double const & value)"},
-	 { (char *)"Array2dRealC_Stride", _wrap_Array2dRealC_Stride, METH_VARARGS, (char *)"Array2dRealC_Stride(Array2dRealC self) -> RavlN::IntT"},
+	 { (char *)"Array2dRealC_Frame", _wrap_Array2dRealC_Frame, METH_VARARGS, (char *)"Array2dRealC_Frame(self) -> IndexRange2dC"},
+	 { (char *)"Array2dRealC_Fill", _wrap_Array2dRealC_Fill, METH_VARARGS, (char *)"Array2dRealC_Fill(self, value)"},
+	 { (char *)"Array2dRealC_Stride", _wrap_Array2dRealC_Stride, METH_VARARGS, (char *)"Array2dRealC_Stride(self) -> RavlN::IntT"},
 	 { (char *)"Array2dRealC_Access", _wrap_Array2dRealC_Access, METH_VARARGS, (char *)"\n"
-		"Access(Index2dC index) -> double\n"
-		"Access(RavlN::IntT r, RavlN::IntT c) -> double\n"
-		"Array2dRealC_Access(Array2dRealC self, IndexC r, IndexC c) -> double &\n"
+		"Access(index) -> double\n"
+		"Access(r, c) -> double\n"
+		"Array2dRealC_Access(self, r, c) -> double &\n"
 		""},
-	 { (char *)"delete_Array2dRealC", _wrap_delete_Array2dRealC, METH_VARARGS, (char *)"delete_Array2dRealC(Array2dRealC self)"},
+	 { (char *)"delete_Array2dRealC", _wrap_delete_Array2dRealC, METH_VARARGS, (char *)"delete_Array2dRealC(self)"},
 	 { (char *)"Array2dRealC_swigregister", Array2dRealC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_StringC", _wrap_new_StringC, METH_VARARGS, (char *)"\n"
 		"StringC()\n"
-		"new_StringC(char const * arg1) -> StringC\n"
+		"new_StringC(arg1) -> StringC\n"
 		""},
-	 { (char *)"StringC_IsEmpty", _wrap_StringC_IsEmpty, METH_VARARGS, (char *)"StringC_IsEmpty(StringC self) -> bool"},
-	 { (char *)"StringC_chars", _wrap_StringC_chars, METH_VARARGS, (char *)"StringC_chars(StringC self) -> char const *"},
-	 { (char *)"StringC_Size", _wrap_StringC_Size, METH_VARARGS, (char *)"StringC_Size(StringC self) -> RavlN::SizeT"},
-	 { (char *)"StringC___str__", _wrap_StringC___str__, METH_VARARGS, (char *)"StringC___str__(StringC self) -> char const *"},
-	 { (char *)"delete_StringC", _wrap_delete_StringC, METH_VARARGS, (char *)"delete_StringC(StringC self)"},
+	 { (char *)"StringC_IsEmpty", _wrap_StringC_IsEmpty, METH_VARARGS, (char *)"StringC_IsEmpty(self) -> bool"},
+	 { (char *)"StringC_chars", _wrap_StringC_chars, METH_VARARGS, (char *)"StringC_chars(self) -> char const *"},
+	 { (char *)"StringC_Size", _wrap_StringC_Size, METH_VARARGS, (char *)"StringC_Size(self) -> RavlN::SizeT"},
+	 { (char *)"StringC___str__", _wrap_StringC___str__, METH_VARARGS, (char *)"StringC___str__(self) -> char const *"},
+	 { (char *)"delete_StringC", _wrap_delete_StringC, METH_VARARGS, (char *)"delete_StringC(self)"},
 	 { (char *)"StringC_swigregister", StringC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"PrintIOFormats", _wrap_PrintIOFormats, METH_VARARGS, (char *)"\n"
-		"PrintIOFormats(std::ostream & os=std::cout)\n"
+		"PrintIOFormats(os=std::cout)\n"
 		"PrintIOFormats()\n"
 		""},
 	 { (char *)"PrintIOConversions", _wrap_PrintIOConversions, METH_VARARGS, (char *)"\n"
-		"PrintIOConversions(std::ostream & os=std::cout)\n"
+		"PrintIOConversions(os=std::cout)\n"
 		"PrintIOConversions()\n"
 		""},
 	 { (char *)"PrintIOClassTypes", _wrap_PrintIOClassTypes, METH_VARARGS, (char *)"\n"
-		"PrintIOClassTypes(std::ostream & os=std::cout)\n"
+		"PrintIOClassTypes(os=std::cout)\n"
 		"PrintIOClassTypes()\n"
 		""},
 	 { (char *)"new_RealRangeC", _wrap_new_RealRangeC, METH_VARARGS, (char *)"\n"
-		"RealRangeC(RavlN::RealT size=0)\n"
+		"RealRangeC(size=0)\n"
 		"RealRangeC()\n"
-		"new_RealRangeC(RavlN::RealT minReal, RavlN::RealT maxReal) -> RealRangeC\n"
+		"new_RealRangeC(minReal, maxReal) -> RealRangeC\n"
 		""},
-	 { (char *)"RealRangeC_Size", _wrap_RealRangeC_Size, METH_VARARGS, (char *)"RealRangeC_Size(RealRangeC self) -> RavlN::RealT"},
-	 { (char *)"RealRangeC_Range", _wrap_RealRangeC_Range, METH_VARARGS, (char *)"RealRangeC_Range(RealRangeC self) -> RealRangeC"},
+	 { (char *)"RealRangeC_Size", _wrap_RealRangeC_Size, METH_VARARGS, (char *)"RealRangeC_Size(self) -> RavlN::RealT"},
+	 { (char *)"RealRangeC_Range", _wrap_RealRangeC_Range, METH_VARARGS, (char *)"RealRangeC_Range(self) -> RealRangeC"},
 	 { (char *)"RealRangeC_Min", _wrap_RealRangeC_Min, METH_VARARGS, (char *)"\n"
 		"Min() -> RavlN::RealT const\n"
-		"RealRangeC_Min(RealRangeC self) -> RavlN::RealT &\n"
+		"RealRangeC_Min(self) -> RavlN::RealT &\n"
 		""},
 	 { (char *)"RealRangeC_Max", _wrap_RealRangeC_Max, METH_VARARGS, (char *)"\n"
 		"Max() -> RavlN::RealT const\n"
-		"RealRangeC_Max(RealRangeC self) -> RavlN::RealT &\n"
+		"RealRangeC_Max(self) -> RavlN::RealT &\n"
 		""},
-	 { (char *)"RealRangeC_Center", _wrap_RealRangeC_Center, METH_VARARGS, (char *)"RealRangeC_Center(RealRangeC self) -> RavlN::RealT"},
-	 { (char *)"RealRangeC_CenterD", _wrap_RealRangeC_CenterD, METH_VARARGS, (char *)"RealRangeC_CenterD(RealRangeC self) -> RavlN::RealT"},
-	 { (char *)"RealRangeC_Percentage", _wrap_RealRangeC_Percentage, METH_VARARGS, (char *)"RealRangeC_Percentage(RealRangeC self, RavlN::RealT p) -> RavlN::RealT"},
-	 { (char *)"RealRangeC_IsEmpty", _wrap_RealRangeC_IsEmpty, METH_VARARGS, (char *)"RealRangeC_IsEmpty(RealRangeC self) -> bool"},
-	 { (char *)"RealRangeC_IsValid", _wrap_RealRangeC_IsValid, METH_VARARGS, (char *)"RealRangeC_IsValid(RealRangeC self) -> bool"},
+	 { (char *)"RealRangeC_Center", _wrap_RealRangeC_Center, METH_VARARGS, (char *)"RealRangeC_Center(self) -> RavlN::RealT"},
+	 { (char *)"RealRangeC_CenterD", _wrap_RealRangeC_CenterD, METH_VARARGS, (char *)"RealRangeC_CenterD(self) -> RavlN::RealT"},
+	 { (char *)"RealRangeC_Percentage", _wrap_RealRangeC_Percentage, METH_VARARGS, (char *)"RealRangeC_Percentage(self, p) -> RavlN::RealT"},
+	 { (char *)"RealRangeC_IsEmpty", _wrap_RealRangeC_IsEmpty, METH_VARARGS, (char *)"RealRangeC_IsEmpty(self) -> bool"},
+	 { (char *)"RealRangeC_IsValid", _wrap_RealRangeC_IsValid, METH_VARARGS, (char *)"RealRangeC_IsValid(self) -> bool"},
 	 { (char *)"RealRangeC_Contains", _wrap_RealRangeC_Contains, METH_VARARGS, (char *)"\n"
-		"Contains(RavlN::RealT i) -> bool\n"
-		"RealRangeC_Contains(RealRangeC self, RealRangeC range) -> bool\n"
+		"Contains(i) -> bool\n"
+		"RealRangeC_Contains(self, range) -> bool\n"
 		""},
-	 { (char *)"RealRangeC___eq__", _wrap_RealRangeC___eq__, METH_VARARGS, (char *)"RealRangeC___eq__(RealRangeC self, RealRangeC range) -> bool"},
-	 { (char *)"RealRangeC___ne__", _wrap_RealRangeC___ne__, METH_VARARGS, (char *)"RealRangeC___ne__(RealRangeC self, RealRangeC range) -> bool"},
-	 { (char *)"RealRangeC_In", _wrap_RealRangeC_In, METH_VARARGS, (char *)"RealRangeC_In(RealRangeC self, RealRangeC range) -> bool"},
-	 { (char *)"RealRangeC_IsOverlapping", _wrap_RealRangeC_IsOverlapping, METH_VARARGS, (char *)"RealRangeC_IsOverlapping(RealRangeC self, RealRangeC r) -> bool"},
-	 { (char *)"RealRangeC_SetOrigin", _wrap_RealRangeC_SetOrigin, METH_VARARGS, (char *)"RealRangeC_SetOrigin(RealRangeC self, RavlN::RealT position) -> RealRangeC"},
-	 { (char *)"RealRangeC___iadd__", _wrap_RealRangeC___iadd__, METH_VARARGS, (char *)"RealRangeC___iadd__(RealRangeC self, RavlN::RealT i) -> RealRangeC"},
-	 { (char *)"RealRangeC___isub__", _wrap_RealRangeC___isub__, METH_VARARGS, (char *)"RealRangeC___isub__(RealRangeC self, RavlN::RealT i) -> RealRangeC"},
-	 { (char *)"RealRangeC___add__", _wrap_RealRangeC___add__, METH_VARARGS, (char *)"RealRangeC___add__(RealRangeC self, RavlN::RealT i) -> RealRangeC"},
-	 { (char *)"RealRangeC___sub__", _wrap_RealRangeC___sub__, METH_VARARGS, (char *)"RealRangeC___sub__(RealRangeC self, RavlN::RealT i) -> RealRangeC"},
-	 { (char *)"RealRangeC_ClipBy", _wrap_RealRangeC_ClipBy, METH_VARARGS, (char *)"RealRangeC_ClipBy(RealRangeC self, RealRangeC r) -> RealRangeC"},
-	 { (char *)"RealRangeC_Clip", _wrap_RealRangeC_Clip, METH_VARARGS, (char *)"RealRangeC_Clip(RealRangeC self, RavlN::RealT const & r) -> RavlN::RealT"},
-	 { (char *)"RealRangeC_FirstHalf", _wrap_RealRangeC_FirstHalf, METH_VARARGS, (char *)"RealRangeC_FirstHalf(RealRangeC self) -> RealRangeC"},
-	 { (char *)"RealRangeC_FirstHalfD", _wrap_RealRangeC_FirstHalfD, METH_VARARGS, (char *)"RealRangeC_FirstHalfD(RealRangeC self) -> RealRangeC"},
-	 { (char *)"RealRangeC_Enlarge", _wrap_RealRangeC_Enlarge, METH_VARARGS, (char *)"RealRangeC_Enlarge(RealRangeC self, RavlN::RealT f) -> RealRangeC"},
-	 { (char *)"RealRangeC_Expand", _wrap_RealRangeC_Expand, METH_VARARGS, (char *)"RealRangeC_Expand(RealRangeC self, RavlN::RealT n) -> RealRangeC"},
-	 { (char *)"RealRangeC_Shrink", _wrap_RealRangeC_Shrink, METH_VARARGS, (char *)"RealRangeC_Shrink(RealRangeC self, RavlN::RealT n) -> RealRangeC"},
-	 { (char *)"RealRangeC_ShrinkHigh", _wrap_RealRangeC_ShrinkHigh, METH_VARARGS, (char *)"RealRangeC_ShrinkHigh(RealRangeC self, RavlN::RealT n) -> RealRangeC"},
-	 { (char *)"RealRangeC_Swap", _wrap_RealRangeC_Swap, METH_VARARGS, (char *)"RealRangeC_Swap(RealRangeC self, RealRangeC r) -> RealRangeC"},
+	 { (char *)"RealRangeC___eq__", _wrap_RealRangeC___eq__, METH_VARARGS, (char *)"RealRangeC___eq__(self, range) -> bool"},
+	 { (char *)"RealRangeC___ne__", _wrap_RealRangeC___ne__, METH_VARARGS, (char *)"RealRangeC___ne__(self, range) -> bool"},
+	 { (char *)"RealRangeC_In", _wrap_RealRangeC_In, METH_VARARGS, (char *)"RealRangeC_In(self, range) -> bool"},
+	 { (char *)"RealRangeC_IsOverlapping", _wrap_RealRangeC_IsOverlapping, METH_VARARGS, (char *)"RealRangeC_IsOverlapping(self, r) -> bool"},
+	 { (char *)"RealRangeC_SetOrigin", _wrap_RealRangeC_SetOrigin, METH_VARARGS, (char *)"RealRangeC_SetOrigin(self, position) -> RealRangeC"},
+	 { (char *)"RealRangeC___iadd__", _wrap_RealRangeC___iadd__, METH_VARARGS, (char *)"RealRangeC___iadd__(self, i) -> RealRangeC"},
+	 { (char *)"RealRangeC___isub__", _wrap_RealRangeC___isub__, METH_VARARGS, (char *)"RealRangeC___isub__(self, i) -> RealRangeC"},
+	 { (char *)"RealRangeC___add__", _wrap_RealRangeC___add__, METH_VARARGS, (char *)"RealRangeC___add__(self, i) -> RealRangeC"},
+	 { (char *)"RealRangeC___sub__", _wrap_RealRangeC___sub__, METH_VARARGS, (char *)"RealRangeC___sub__(self, i) -> RealRangeC"},
+	 { (char *)"RealRangeC_ClipBy", _wrap_RealRangeC_ClipBy, METH_VARARGS, (char *)"RealRangeC_ClipBy(self, r) -> RealRangeC"},
+	 { (char *)"RealRangeC_Clip", _wrap_RealRangeC_Clip, METH_VARARGS, (char *)"RealRangeC_Clip(self, r) -> RavlN::RealT"},
+	 { (char *)"RealRangeC_FirstHalf", _wrap_RealRangeC_FirstHalf, METH_VARARGS, (char *)"RealRangeC_FirstHalf(self) -> RealRangeC"},
+	 { (char *)"RealRangeC_FirstHalfD", _wrap_RealRangeC_FirstHalfD, METH_VARARGS, (char *)"RealRangeC_FirstHalfD(self) -> RealRangeC"},
+	 { (char *)"RealRangeC_Enlarge", _wrap_RealRangeC_Enlarge, METH_VARARGS, (char *)"RealRangeC_Enlarge(self, f) -> RealRangeC"},
+	 { (char *)"RealRangeC_Expand", _wrap_RealRangeC_Expand, METH_VARARGS, (char *)"RealRangeC_Expand(self, n) -> RealRangeC"},
+	 { (char *)"RealRangeC_Shrink", _wrap_RealRangeC_Shrink, METH_VARARGS, (char *)"RealRangeC_Shrink(self, n) -> RealRangeC"},
+	 { (char *)"RealRangeC_ShrinkHigh", _wrap_RealRangeC_ShrinkHigh, METH_VARARGS, (char *)"RealRangeC_ShrinkHigh(self, n) -> RealRangeC"},
+	 { (char *)"RealRangeC_Swap", _wrap_RealRangeC_Swap, METH_VARARGS, (char *)"RealRangeC_Swap(self, r) -> RealRangeC"},
 	 { (char *)"RealRangeC_Involve", _wrap_RealRangeC_Involve, METH_VARARGS, (char *)"\n"
-		"Involve(RavlN::RealT i) -> RealRangeC\n"
-		"RealRangeC_Involve(RealRangeC self, RealRangeC subRange) -> RealRangeC\n"
+		"Involve(i) -> RealRangeC\n"
+		"RealRangeC_Involve(self, subRange) -> RealRangeC\n"
 		""},
-	 { (char *)"delete_RealRangeC", _wrap_delete_RealRangeC, METH_VARARGS, (char *)"delete_RealRangeC(RealRangeC self)"},
+	 { (char *)"delete_RealRangeC", _wrap_delete_RealRangeC, METH_VARARGS, (char *)"delete_RealRangeC(self)"},
 	 { (char *)"RealRangeC_swigregister", RealRangeC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_RealRange2dC", _wrap_new_RealRange2dC, METH_VARARGS, (char *)"\n"
 		"RealRange2dC()\n"
-		"RealRange2dC(RavlN::RealT rowNumber, RavlN::RealT colNumber)\n"
-		"RealRange2dC(RealRangeC rowRange, RealRangeC colRange)\n"
-		"RealRange2dC(RealRange2dC range)\n"
-		"new_RealRange2dC(RavlN::RealT minRow, RavlN::RealT maxRow, RavlN::RealT minCol, RavlN::RealT maxCol) -> RealRange2dC\n"
+		"RealRange2dC(rowNumber, colNumber)\n"
+		"RealRange2dC(rowRange, colRange)\n"
+		"RealRange2dC(range)\n"
+		"new_RealRange2dC(minRow, maxRow, minCol, maxCol) -> RealRange2dC\n"
 		""},
 	 { (char *)"RealRange2dC_TRow", _wrap_RealRange2dC_TRow, METH_VARARGS, (char *)"\n"
 		"TRow() -> RavlN::RealT\n"
-		"RealRange2dC_TRow(RealRange2dC self) -> RavlN::RealT\n"
+		"RealRange2dC_TRow(self) -> RavlN::RealT\n"
 		""},
 	 { (char *)"RealRange2dC_LCol", _wrap_RealRange2dC_LCol, METH_VARARGS, (char *)"\n"
 		"LCol() -> RavlN::RealT\n"
-		"RealRange2dC_LCol(RealRange2dC self) -> RavlN::RealT\n"
+		"RealRange2dC_LCol(self) -> RavlN::RealT\n"
 		""},
 	 { (char *)"RealRange2dC_BRow", _wrap_RealRange2dC_BRow, METH_VARARGS, (char *)"\n"
 		"BRow() -> RavlN::RealT\n"
-		"RealRange2dC_BRow(RealRange2dC self) -> RavlN::RealT\n"
+		"RealRange2dC_BRow(self) -> RavlN::RealT\n"
 		""},
 	 { (char *)"RealRange2dC_RCol", _wrap_RealRange2dC_RCol, METH_VARARGS, (char *)"\n"
 		"RCol() -> RavlN::RealT\n"
-		"RealRange2dC_RCol(RealRange2dC self) -> RavlN::RealT\n"
+		"RealRange2dC_RCol(self) -> RavlN::RealT\n"
 		""},
-	 { (char *)"RealRange2dC_Rows", _wrap_RealRange2dC_Rows, METH_VARARGS, (char *)"RealRange2dC_Rows(RealRange2dC self) -> RavlN::RealT"},
-	 { (char *)"RealRange2dC_Cols", _wrap_RealRange2dC_Cols, METH_VARARGS, (char *)"RealRange2dC_Cols(RealRange2dC self) -> RavlN::RealT"},
-	 { (char *)"RealRange2dC_Area", _wrap_RealRange2dC_Area, METH_VARARGS, (char *)"RealRange2dC_Area(RealRange2dC self) -> RavlN::RealT"},
-	 { (char *)"RealRange2dC_Dilate", _wrap_RealRange2dC_Dilate, METH_VARARGS, (char *)"RealRange2dC_Dilate(RealRange2dC self) -> RealRange2dC"},
-	 { (char *)"RealRange2dC_Erode", _wrap_RealRange2dC_Erode, METH_VARARGS, (char *)"RealRange2dC_Erode(RealRange2dC self) -> RealRange2dC"},
-	 { (char *)"RealRange2dC_Expand", _wrap_RealRange2dC_Expand, METH_VARARGS, (char *)"RealRange2dC_Expand(RealRange2dC self, RavlN::RealT n) -> RealRange2dC"},
-	 { (char *)"RealRange2dC_Shrink", _wrap_RealRange2dC_Shrink, METH_VARARGS, (char *)"RealRange2dC_Shrink(RealRange2dC self, RavlN::RealT n) -> RealRange2dC"},
-	 { (char *)"RealRange2dC_ClipBy", _wrap_RealRange2dC_ClipBy, METH_VARARGS, (char *)"RealRange2dC_ClipBy(RealRange2dC self, RealRange2dC r) -> RealRange2dC"},
-	 { (char *)"RealRange2dC_Contains", _wrap_RealRange2dC_Contains, METH_VARARGS, (char *)"RealRange2dC_Contains(RealRange2dC self, RealRange2dC oth) -> bool"},
-	 { (char *)"RealRange2dC_RowRange", _wrap_RealRange2dC_RowRange, METH_VARARGS, (char *)"RealRange2dC_RowRange(RealRange2dC self) -> RealRangeC"},
-	 { (char *)"RealRange2dC_ColRange", _wrap_RealRange2dC_ColRange, METH_VARARGS, (char *)"RealRange2dC_ColRange(RealRange2dC self) -> RealRangeC"},
-	 { (char *)"RealRange2dC_Range1", _wrap_RealRange2dC_Range1, METH_VARARGS, (char *)"RealRange2dC_Range1(RealRange2dC self) -> RealRangeC"},
-	 { (char *)"RealRange2dC_Range2", _wrap_RealRange2dC_Range2, METH_VARARGS, (char *)"RealRange2dC_Range2(RealRange2dC self) -> RealRangeC"},
-	 { (char *)"RealRange2dC_Involve", _wrap_RealRange2dC_Involve, METH_VARARGS, (char *)"RealRange2dC_Involve(RealRange2dC self, RealRange2dC subrectangle)"},
-	 { (char *)"RealRange2dC_IsValid", _wrap_RealRange2dC_IsValid, METH_VARARGS, (char *)"RealRange2dC_IsValid(RealRange2dC self) -> bool"},
-	 { (char *)"RealRange2dC___eq__", _wrap_RealRange2dC___eq__, METH_VARARGS, (char *)"RealRange2dC___eq__(RealRange2dC self, RealRange2dC oth) -> bool"},
-	 { (char *)"RealRange2dC___ne__", _wrap_RealRange2dC___ne__, METH_VARARGS, (char *)"RealRange2dC___ne__(RealRange2dC self, RealRange2dC oth) -> bool"},
-	 { (char *)"RealRange2dC_IsOverlapping", _wrap_RealRange2dC_IsOverlapping, METH_VARARGS, (char *)"RealRange2dC_IsOverlapping(RealRange2dC self, RealRange2dC r) -> bool"},
-	 { (char *)"delete_RealRange2dC", _wrap_delete_RealRange2dC, METH_VARARGS, (char *)"delete_RealRange2dC(RealRange2dC self)"},
+	 { (char *)"RealRange2dC_Rows", _wrap_RealRange2dC_Rows, METH_VARARGS, (char *)"RealRange2dC_Rows(self) -> RavlN::RealT"},
+	 { (char *)"RealRange2dC_Cols", _wrap_RealRange2dC_Cols, METH_VARARGS, (char *)"RealRange2dC_Cols(self) -> RavlN::RealT"},
+	 { (char *)"RealRange2dC_Area", _wrap_RealRange2dC_Area, METH_VARARGS, (char *)"RealRange2dC_Area(self) -> RavlN::RealT"},
+	 { (char *)"RealRange2dC_Dilate", _wrap_RealRange2dC_Dilate, METH_VARARGS, (char *)"RealRange2dC_Dilate(self) -> RealRange2dC"},
+	 { (char *)"RealRange2dC_Erode", _wrap_RealRange2dC_Erode, METH_VARARGS, (char *)"RealRange2dC_Erode(self) -> RealRange2dC"},
+	 { (char *)"RealRange2dC_Expand", _wrap_RealRange2dC_Expand, METH_VARARGS, (char *)"RealRange2dC_Expand(self, n) -> RealRange2dC"},
+	 { (char *)"RealRange2dC_Shrink", _wrap_RealRange2dC_Shrink, METH_VARARGS, (char *)"RealRange2dC_Shrink(self, n) -> RealRange2dC"},
+	 { (char *)"RealRange2dC_ClipBy", _wrap_RealRange2dC_ClipBy, METH_VARARGS, (char *)"RealRange2dC_ClipBy(self, r) -> RealRange2dC"},
+	 { (char *)"RealRange2dC_Contains", _wrap_RealRange2dC_Contains, METH_VARARGS, (char *)"RealRange2dC_Contains(self, oth) -> bool"},
+	 { (char *)"RealRange2dC_RowRange", _wrap_RealRange2dC_RowRange, METH_VARARGS, (char *)"RealRange2dC_RowRange(self) -> RealRangeC"},
+	 { (char *)"RealRange2dC_ColRange", _wrap_RealRange2dC_ColRange, METH_VARARGS, (char *)"RealRange2dC_ColRange(self) -> RealRangeC"},
+	 { (char *)"RealRange2dC_Range1", _wrap_RealRange2dC_Range1, METH_VARARGS, (char *)"RealRange2dC_Range1(self) -> RealRangeC"},
+	 { (char *)"RealRange2dC_Range2", _wrap_RealRange2dC_Range2, METH_VARARGS, (char *)"RealRange2dC_Range2(self) -> RealRangeC"},
+	 { (char *)"RealRange2dC_Involve", _wrap_RealRange2dC_Involve, METH_VARARGS, (char *)"RealRange2dC_Involve(self, subrectangle)"},
+	 { (char *)"RealRange2dC_IsValid", _wrap_RealRange2dC_IsValid, METH_VARARGS, (char *)"RealRange2dC_IsValid(self) -> bool"},
+	 { (char *)"RealRange2dC___eq__", _wrap_RealRange2dC___eq__, METH_VARARGS, (char *)"RealRange2dC___eq__(self, oth) -> bool"},
+	 { (char *)"RealRange2dC___ne__", _wrap_RealRange2dC___ne__, METH_VARARGS, (char *)"RealRange2dC___ne__(self, oth) -> bool"},
+	 { (char *)"RealRange2dC_IsOverlapping", _wrap_RealRange2dC_IsOverlapping, METH_VARARGS, (char *)"RealRange2dC_IsOverlapping(self, r) -> bool"},
+	 { (char *)"delete_RealRange2dC", _wrap_delete_RealRange2dC, METH_VARARGS, (char *)"delete_RealRange2dC(self)"},
 	 { (char *)"RealRange2dC_swigregister", RealRange2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_PointSet2dC", _wrap_new_PointSet2dC, METH_VARARGS, (char *)"new_PointSet2dC() -> PointSet2dC"},
-	 { (char *)"PointSet2dC_Centroid", _wrap_PointSet2dC_Centroid, METH_VARARGS, (char *)"PointSet2dC_Centroid(PointSet2dC self) -> Point2dC"},
-	 { (char *)"PointSet2dC_BoundingRectangle", _wrap_PointSet2dC_BoundingRectangle, METH_VARARGS, (char *)"PointSet2dC_BoundingRectangle(PointSet2dC self) -> RealRange2dC"},
-	 { (char *)"delete_PointSet2dC", _wrap_delete_PointSet2dC, METH_VARARGS, (char *)"delete_PointSet2dC(PointSet2dC self)"},
+	 { (char *)"PointSet2dC_Centroid", _wrap_PointSet2dC_Centroid, METH_VARARGS, (char *)"PointSet2dC_Centroid(self) -> Point2dC"},
+	 { (char *)"PointSet2dC_BoundingRectangle", _wrap_PointSet2dC_BoundingRectangle, METH_VARARGS, (char *)"PointSet2dC_BoundingRectangle(self) -> RealRange2dC"},
+	 { (char *)"delete_PointSet2dC", _wrap_delete_PointSet2dC, METH_VARARGS, (char *)"delete_PointSet2dC(self)"},
 	 { (char *)"PointSet2dC_swigregister", PointSet2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Polygon2dC", _wrap_new_Polygon2dC, METH_VARARGS, (char *)"new_Polygon2dC() -> Polygon2dC"},
-	 { (char *)"Polygon2dC_Size", _wrap_Polygon2dC_Size, METH_VARARGS, (char *)"Polygon2dC_Size(Polygon2dC self) -> RavlN::SizeT"},
-	 { (char *)"Polygon2dC_InsLast", _wrap_Polygon2dC_InsLast, METH_VARARGS, (char *)"Polygon2dC_InsLast(Polygon2dC self, Point2dC point)"},
-	 { (char *)"delete_Polygon2dC", _wrap_delete_Polygon2dC, METH_VARARGS, (char *)"delete_Polygon2dC(Polygon2dC self)"},
+	 { (char *)"Polygon2dC_Size", _wrap_Polygon2dC_Size, METH_VARARGS, (char *)"Polygon2dC_Size(self) -> RavlN::SizeT"},
+	 { (char *)"Polygon2dC_InsLast", _wrap_Polygon2dC_InsLast, METH_VARARGS, (char *)"Polygon2dC_InsLast(self, point)"},
+	 { (char *)"delete_Polygon2dC", _wrap_delete_Polygon2dC, METH_VARARGS, (char *)"delete_Polygon2dC(self)"},
 	 { (char *)"Polygon2dC_swigregister", Polygon2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ByteRGBArray2dC", _wrap_new_ByteRGBArray2dC, METH_VARARGS, (char *)"\n"
 		"ByteRGBArray2dC()\n"
-		"ByteRGBArray2dC(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"new_ByteRGBArray2dC(IndexRange2dC range) -> ByteRGBArray2dC\n"
+		"ByteRGBArray2dC(rows, cols)\n"
+		"new_ByteRGBArray2dC(range) -> ByteRGBArray2dC\n"
 		""},
-	 { (char *)"ByteRGBArray2dC_Frame", _wrap_ByteRGBArray2dC_Frame, METH_VARARGS, (char *)"ByteRGBArray2dC_Frame(ByteRGBArray2dC self) -> IndexRange2dC"},
-	 { (char *)"ByteRGBArray2dC_Fill", _wrap_ByteRGBArray2dC_Fill, METH_VARARGS, (char *)"ByteRGBArray2dC_Fill(ByteRGBArray2dC self, ByteRGBValueC value)"},
-	 { (char *)"ByteRGBArray2dC_Stride", _wrap_ByteRGBArray2dC_Stride, METH_VARARGS, (char *)"ByteRGBArray2dC_Stride(ByteRGBArray2dC self) -> RavlN::IntT"},
+	 { (char *)"ByteRGBArray2dC_Frame", _wrap_ByteRGBArray2dC_Frame, METH_VARARGS, (char *)"ByteRGBArray2dC_Frame(self) -> IndexRange2dC"},
+	 { (char *)"ByteRGBArray2dC_Fill", _wrap_ByteRGBArray2dC_Fill, METH_VARARGS, (char *)"ByteRGBArray2dC_Fill(self, value)"},
+	 { (char *)"ByteRGBArray2dC_Stride", _wrap_ByteRGBArray2dC_Stride, METH_VARARGS, (char *)"ByteRGBArray2dC_Stride(self) -> RavlN::IntT"},
 	 { (char *)"ByteRGBArray2dC_Access", _wrap_ByteRGBArray2dC_Access, METH_VARARGS, (char *)"\n"
-		"Access(Index2dC index) -> ByteRGBValueC\n"
-		"Access(RavlN::IntT r, RavlN::IntT c) -> ByteRGBValueC\n"
-		"ByteRGBArray2dC_Access(ByteRGBArray2dC self, IndexC r, IndexC c) -> ByteRGBValueC\n"
+		"Access(index) -> ByteRGBValueC\n"
+		"Access(r, c) -> ByteRGBValueC\n"
+		"ByteRGBArray2dC_Access(self, r, c) -> ByteRGBValueC\n"
 		""},
-	 { (char *)"delete_ByteRGBArray2dC", _wrap_delete_ByteRGBArray2dC, METH_VARARGS, (char *)"delete_ByteRGBArray2dC(ByteRGBArray2dC self)"},
+	 { (char *)"delete_ByteRGBArray2dC", _wrap_delete_ByteRGBArray2dC, METH_VARARGS, (char *)"delete_ByteRGBArray2dC(self)"},
 	 { (char *)"ByteRGBArray2dC_swigregister", ByteRGBArray2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_RealRGBArray2dC", _wrap_new_RealRGBArray2dC, METH_VARARGS, (char *)"\n"
 		"RealRGBArray2dC()\n"
-		"RealRGBArray2dC(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"new_RealRGBArray2dC(IndexRange2dC range) -> RealRGBArray2dC\n"
+		"RealRGBArray2dC(rows, cols)\n"
+		"new_RealRGBArray2dC(range) -> RealRGBArray2dC\n"
 		""},
-	 { (char *)"RealRGBArray2dC_Frame", _wrap_RealRGBArray2dC_Frame, METH_VARARGS, (char *)"RealRGBArray2dC_Frame(RealRGBArray2dC self) -> IndexRange2dC"},
-	 { (char *)"RealRGBArray2dC_Fill", _wrap_RealRGBArray2dC_Fill, METH_VARARGS, (char *)"RealRGBArray2dC_Fill(RealRGBArray2dC self, RealRGBValueC value)"},
-	 { (char *)"RealRGBArray2dC_Stride", _wrap_RealRGBArray2dC_Stride, METH_VARARGS, (char *)"RealRGBArray2dC_Stride(RealRGBArray2dC self) -> RavlN::IntT"},
+	 { (char *)"RealRGBArray2dC_Frame", _wrap_RealRGBArray2dC_Frame, METH_VARARGS, (char *)"RealRGBArray2dC_Frame(self) -> IndexRange2dC"},
+	 { (char *)"RealRGBArray2dC_Fill", _wrap_RealRGBArray2dC_Fill, METH_VARARGS, (char *)"RealRGBArray2dC_Fill(self, value)"},
+	 { (char *)"RealRGBArray2dC_Stride", _wrap_RealRGBArray2dC_Stride, METH_VARARGS, (char *)"RealRGBArray2dC_Stride(self) -> RavlN::IntT"},
 	 { (char *)"RealRGBArray2dC_Access", _wrap_RealRGBArray2dC_Access, METH_VARARGS, (char *)"\n"
-		"Access(Index2dC index) -> RealRGBValueC\n"
-		"Access(RavlN::IntT r, RavlN::IntT c) -> RealRGBValueC\n"
-		"RealRGBArray2dC_Access(RealRGBArray2dC self, IndexC r, IndexC c) -> RealRGBValueC\n"
+		"Access(index) -> RealRGBValueC\n"
+		"Access(r, c) -> RealRGBValueC\n"
+		"RealRGBArray2dC_Access(self, r, c) -> RealRGBValueC\n"
 		""},
-	 { (char *)"delete_RealRGBArray2dC", _wrap_delete_RealRGBArray2dC, METH_VARARGS, (char *)"delete_RealRGBArray2dC(RealRGBArray2dC self)"},
+	 { (char *)"delete_RealRGBArray2dC", _wrap_delete_RealRGBArray2dC, METH_VARARGS, (char *)"delete_RealRGBArray2dC(self)"},
 	 { (char *)"RealRGBArray2dC_swigregister", RealRGBArray2dC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_RealRGBValueC", _wrap_new_RealRGBValueC, METH_VARARGS, (char *)"new_RealRGBValueC(RavlN::RealT r, RavlN::RealT g, RavlN::RealT b) -> RealRGBValueC"},
-	 { (char *)"RealRGBValueC_Red", _wrap_RealRGBValueC_Red, METH_VARARGS, (char *)"RealRGBValueC_Red(RealRGBValueC self) -> RavlN::RealT"},
-	 { (char *)"RealRGBValueC_Green", _wrap_RealRGBValueC_Green, METH_VARARGS, (char *)"RealRGBValueC_Green(RealRGBValueC self) -> RavlN::RealT"},
-	 { (char *)"RealRGBValueC_Blue", _wrap_RealRGBValueC_Blue, METH_VARARGS, (char *)"RealRGBValueC_Blue(RealRGBValueC self) -> RavlN::RealT"},
-	 { (char *)"delete_RealRGBValueC", _wrap_delete_RealRGBValueC, METH_VARARGS, (char *)"delete_RealRGBValueC(RealRGBValueC self)"},
+	 { (char *)"new_RealRGBValueC", _wrap_new_RealRGBValueC, METH_VARARGS, (char *)"new_RealRGBValueC(r, g, b) -> RealRGBValueC"},
+	 { (char *)"RealRGBValueC_Red", _wrap_RealRGBValueC_Red, METH_VARARGS, (char *)"RealRGBValueC_Red(self) -> RavlN::RealT"},
+	 { (char *)"RealRGBValueC_Green", _wrap_RealRGBValueC_Green, METH_VARARGS, (char *)"RealRGBValueC_Green(self) -> RavlN::RealT"},
+	 { (char *)"RealRGBValueC_Blue", _wrap_RealRGBValueC_Blue, METH_VARARGS, (char *)"RealRGBValueC_Blue(self) -> RavlN::RealT"},
+	 { (char *)"delete_RealRGBValueC", _wrap_delete_RealRGBValueC, METH_VARARGS, (char *)"delete_RealRGBValueC(self)"},
 	 { (char *)"RealRGBValueC_swigregister", RealRGBValueC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_ByteRGBValueC", _wrap_new_ByteRGBValueC, METH_VARARGS, (char *)"new_ByteRGBValueC(RavlN::IntT r, RavlN::IntT g, RavlN::IntT b) -> ByteRGBValueC"},
-	 { (char *)"ByteRGBValueC_Red", _wrap_ByteRGBValueC_Red, METH_VARARGS, (char *)"ByteRGBValueC_Red(ByteRGBValueC self) -> RavlN::IntT"},
-	 { (char *)"ByteRGBValueC_Green", _wrap_ByteRGBValueC_Green, METH_VARARGS, (char *)"ByteRGBValueC_Green(ByteRGBValueC self) -> RavlN::IntT"},
-	 { (char *)"ByteRGBValueC_Blue", _wrap_ByteRGBValueC_Blue, METH_VARARGS, (char *)"ByteRGBValueC_Blue(ByteRGBValueC self) -> RavlN::IntT"},
-	 { (char *)"delete_ByteRGBValueC", _wrap_delete_ByteRGBValueC, METH_VARARGS, (char *)"delete_ByteRGBValueC(ByteRGBValueC self)"},
+	 { (char *)"new_ByteRGBValueC", _wrap_new_ByteRGBValueC, METH_VARARGS, (char *)"new_ByteRGBValueC(r, g, b) -> ByteRGBValueC"},
+	 { (char *)"ByteRGBValueC_Red", _wrap_ByteRGBValueC_Red, METH_VARARGS, (char *)"ByteRGBValueC_Red(self) -> RavlN::IntT"},
+	 { (char *)"ByteRGBValueC_Green", _wrap_ByteRGBValueC_Green, METH_VARARGS, (char *)"ByteRGBValueC_Green(self) -> RavlN::IntT"},
+	 { (char *)"ByteRGBValueC_Blue", _wrap_ByteRGBValueC_Blue, METH_VARARGS, (char *)"ByteRGBValueC_Blue(self) -> RavlN::IntT"},
+	 { (char *)"delete_ByteRGBValueC", _wrap_delete_ByteRGBValueC, METH_VARARGS, (char *)"delete_ByteRGBValueC(self)"},
 	 { (char *)"ByteRGBValueC_swigregister", ByteRGBValueC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ImageByteRGBValueC", _wrap_new_ImageByteRGBValueC, METH_VARARGS, (char *)"\n"
 		"ImageByteRGBValueC()\n"
-		"ImageByteRGBValueC(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"ImageByteRGBValueC(IndexRange2dC range)\n"
-		"ImageByteRGBValueC(RavlN::SizeT rows, RavlN::SizeT cols, ByteRGBValueC data, bool deletable=True)\n"
-		"ImageByteRGBValueC(RavlN::SizeT rows, RavlN::SizeT cols, ByteRGBValueC data)\n"
-		"new_ImageByteRGBValueC(ImageByteRGBValueC img, IndexRange2dC range) -> ImageByteRGBValueC\n"
+		"ImageByteRGBValueC(rows, cols)\n"
+		"ImageByteRGBValueC(range)\n"
+		"ImageByteRGBValueC(rows, cols, data, deletable=True)\n"
+		"ImageByteRGBValueC(rows, cols, data)\n"
+		"new_ImageByteRGBValueC(img, range) -> ImageByteRGBValueC\n"
 		""},
-	 { (char *)"ImageByteRGBValueC_Rows", _wrap_ImageByteRGBValueC_Rows, METH_VARARGS, (char *)"ImageByteRGBValueC_Rows(ImageByteRGBValueC self) -> RavlN::SizeT"},
-	 { (char *)"ImageByteRGBValueC_Cols", _wrap_ImageByteRGBValueC_Cols, METH_VARARGS, (char *)"ImageByteRGBValueC_Cols(ImageByteRGBValueC self) -> RavlN::SizeT"},
-	 { (char *)"ImageByteRGBValueC_Row", _wrap_ImageByteRGBValueC_Row, METH_VARARGS, (char *)"ImageByteRGBValueC_Row(ImageByteRGBValueC self, IndexC row) -> ByteRGBValueC"},
-	 { (char *)"ImageByteRGBValueC_Stride", _wrap_ImageByteRGBValueC_Stride, METH_VARARGS, (char *)"ImageByteRGBValueC_Stride(ImageByteRGBValueC self) -> RavlN::IntT"},
-	 { (char *)"ImageByteRGBValueC_DataAsString", _wrap_ImageByteRGBValueC_DataAsString, METH_VARARGS, (char *)"ImageByteRGBValueC_DataAsString(ImageByteRGBValueC self) -> PyObject *"},
-	 { (char *)"ImageByteRGBValueC_DataAsStringTriple", _wrap_ImageByteRGBValueC_DataAsStringTriple, METH_VARARGS, (char *)"ImageByteRGBValueC_DataAsStringTriple(ImageByteRGBValueC self) -> PyObject *"},
-	 { (char *)"delete_ImageByteRGBValueC", _wrap_delete_ImageByteRGBValueC, METH_VARARGS, (char *)"delete_ImageByteRGBValueC(ImageByteRGBValueC self)"},
+	 { (char *)"ImageByteRGBValueC_Rows", _wrap_ImageByteRGBValueC_Rows, METH_VARARGS, (char *)"ImageByteRGBValueC_Rows(self) -> RavlN::SizeT"},
+	 { (char *)"ImageByteRGBValueC_Cols", _wrap_ImageByteRGBValueC_Cols, METH_VARARGS, (char *)"ImageByteRGBValueC_Cols(self) -> RavlN::SizeT"},
+	 { (char *)"ImageByteRGBValueC_Row", _wrap_ImageByteRGBValueC_Row, METH_VARARGS, (char *)"ImageByteRGBValueC_Row(self, row) -> ByteRGBValueC"},
+	 { (char *)"ImageByteRGBValueC_Stride", _wrap_ImageByteRGBValueC_Stride, METH_VARARGS, (char *)"ImageByteRGBValueC_Stride(self) -> RavlN::IntT"},
+	 { (char *)"ImageByteRGBValueC_DataAsString", _wrap_ImageByteRGBValueC_DataAsString, METH_VARARGS, (char *)"ImageByteRGBValueC_DataAsString(self) -> PyObject *"},
+	 { (char *)"ImageByteRGBValueC_DataAsStringTriple", _wrap_ImageByteRGBValueC_DataAsStringTriple, METH_VARARGS, (char *)"ImageByteRGBValueC_DataAsStringTriple(self) -> PyObject *"},
+	 { (char *)"delete_ImageByteRGBValueC", _wrap_delete_ImageByteRGBValueC, METH_VARARGS, (char *)"delete_ImageByteRGBValueC(self)"},
 	 { (char *)"ImageByteRGBValueC_swigregister", ImageByteRGBValueC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ImageByteC", _wrap_new_ImageByteC, METH_VARARGS, (char *)"\n"
 		"ImageByteC()\n"
-		"ImageByteC(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"ImageByteC(IndexRange2dC range)\n"
-		"ImageByteC(RavlN::SizeT rows, RavlN::SizeT cols, unsigned char * data, bool deletable=True)\n"
-		"ImageByteC(RavlN::SizeT rows, RavlN::SizeT cols, unsigned char * data)\n"
-		"new_ImageByteC(ImageByteC img, IndexRange2dC range) -> ImageByteC\n"
+		"ImageByteC(rows, cols)\n"
+		"ImageByteC(range)\n"
+		"ImageByteC(rows, cols, data, deletable=True)\n"
+		"ImageByteC(rows, cols, data)\n"
+		"new_ImageByteC(img, range) -> ImageByteC\n"
 		""},
-	 { (char *)"ImageByteC_Rows", _wrap_ImageByteC_Rows, METH_VARARGS, (char *)"ImageByteC_Rows(ImageByteC self) -> RavlN::SizeT"},
-	 { (char *)"ImageByteC_Cols", _wrap_ImageByteC_Cols, METH_VARARGS, (char *)"ImageByteC_Cols(ImageByteC self) -> RavlN::SizeT"},
-	 { (char *)"ImageByteC_Row", _wrap_ImageByteC_Row, METH_VARARGS, (char *)"ImageByteC_Row(ImageByteC self, IndexC row) -> unsigned char *"},
-	 { (char *)"ImageByteC_Stride", _wrap_ImageByteC_Stride, METH_VARARGS, (char *)"ImageByteC_Stride(ImageByteC self) -> RavlN::IntT"},
-	 { (char *)"ImageByteC_DataAsString", _wrap_ImageByteC_DataAsString, METH_VARARGS, (char *)"ImageByteC_DataAsString(ImageByteC self) -> PyObject *"},
-	 { (char *)"ImageByteC_DataAsStringTriple", _wrap_ImageByteC_DataAsStringTriple, METH_VARARGS, (char *)"ImageByteC_DataAsStringTriple(ImageByteC self) -> PyObject *"},
-	 { (char *)"delete_ImageByteC", _wrap_delete_ImageByteC, METH_VARARGS, (char *)"delete_ImageByteC(ImageByteC self)"},
+	 { (char *)"ImageByteC_Rows", _wrap_ImageByteC_Rows, METH_VARARGS, (char *)"ImageByteC_Rows(self) -> RavlN::SizeT"},
+	 { (char *)"ImageByteC_Cols", _wrap_ImageByteC_Cols, METH_VARARGS, (char *)"ImageByteC_Cols(self) -> RavlN::SizeT"},
+	 { (char *)"ImageByteC_Row", _wrap_ImageByteC_Row, METH_VARARGS, (char *)"ImageByteC_Row(self, row) -> unsigned char *"},
+	 { (char *)"ImageByteC_Stride", _wrap_ImageByteC_Stride, METH_VARARGS, (char *)"ImageByteC_Stride(self) -> RavlN::IntT"},
+	 { (char *)"ImageByteC_DataAsString", _wrap_ImageByteC_DataAsString, METH_VARARGS, (char *)"ImageByteC_DataAsString(self) -> PyObject *"},
+	 { (char *)"ImageByteC_DataAsStringTriple", _wrap_ImageByteC_DataAsStringTriple, METH_VARARGS, (char *)"ImageByteC_DataAsStringTriple(self) -> PyObject *"},
+	 { (char *)"delete_ImageByteC", _wrap_delete_ImageByteC, METH_VARARGS, (char *)"delete_ImageByteC(self)"},
 	 { (char *)"ImageByteC_swigregister", ImageByteC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"DrawPolygon", _wrap_DrawPolygon, METH_VARARGS, (char *)"\n"
-		"DrawPolygon(ByteRGBArray2dC arg1, ByteRGBValueC arg2, Polygon2dC poly, bool fill=False)\n"
-		"DrawPolygon(ByteRGBArray2dC arg1, ByteRGBValueC arg2, Polygon2dC poly)\n"
-		"DrawPolygon(Array2dByteC arg1, RavlN::ByteT const & arg2, Polygon2dC poly, bool fill=False)\n"
-		"DrawPolygon(Array2dByteC arg1, RavlN::ByteT const & arg2, Polygon2dC poly)\n"
+		"DrawPolygon(arg1, arg2, poly, fill=False)\n"
+		"DrawPolygon(arg1, arg2, poly)\n"
+		"DrawPolygon(arg1, arg2, poly, fill=False)\n"
+		"DrawPolygon(arg1, arg2, poly)\n"
 		""},
 	 { (char *)"new_FontC", _wrap_new_FontC, METH_VARARGS, (char *)"new_FontC() -> FontC"},
-	 { (char *)"FontC_IsValid", _wrap_FontC_IsValid, METH_VARARGS, (char *)"FontC_IsValid(FontC self) -> bool"},
-	 { (char *)"FontC_Center", _wrap_FontC_Center, METH_VARARGS, (char *)"FontC_Center(FontC self, StringC text) -> Index2dC"},
-	 { (char *)"FontC_Size", _wrap_FontC_Size, METH_VARARGS, (char *)"FontC_Size(FontC self, StringC text) -> Index2dC"},
-	 { (char *)"FontC_Count", _wrap_FontC_Count, METH_VARARGS, (char *)"FontC_Count(FontC self) -> RavlN::UIntT"},
-	 { (char *)"delete_FontC", _wrap_delete_FontC, METH_VARARGS, (char *)"delete_FontC(FontC self)"},
+	 { (char *)"FontC_IsValid", _wrap_FontC_IsValid, METH_VARARGS, (char *)"FontC_IsValid(self) -> bool"},
+	 { (char *)"FontC_Center", _wrap_FontC_Center, METH_VARARGS, (char *)"FontC_Center(self, text) -> Index2dC"},
+	 { (char *)"FontC_Size", _wrap_FontC_Size, METH_VARARGS, (char *)"FontC_Size(self, text) -> Index2dC"},
+	 { (char *)"FontC_Count", _wrap_FontC_Count, METH_VARARGS, (char *)"FontC_Count(self) -> RavlN::UIntT"},
+	 { (char *)"delete_FontC", _wrap_delete_FontC, METH_VARARGS, (char *)"delete_FontC(self)"},
 	 { (char *)"FontC_swigregister", FontC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"DefaultFont", _wrap_DefaultFont, METH_VARARGS, (char *)"DefaultFont() -> FontC"},
-	 { (char *)"DrawTextByteRGB", _wrap_DrawTextByteRGB, METH_VARARGS, (char *)"DrawTextByteRGB(FontC font, ByteRGBValueC value, Index2dC offset, StringC text, ImageByteRGBValueC image)"},
-	 { (char *)"DrawTextByte", _wrap_DrawTextByte, METH_VARARGS, (char *)"DrawTextByte(FontC font, unsigned char const & value, Index2dC offset, StringC text, ImageByteC image)"},
-	 { (char *)"DrawTextCenterByteRGB", _wrap_DrawTextCenterByteRGB, METH_VARARGS, (char *)"DrawTextCenterByteRGB(FontC font, ByteRGBValueC value, Index2dC offset, StringC text, ImageByteRGBValueC image)"},
-	 { (char *)"DrawTextCenterByte", _wrap_DrawTextCenterByte, METH_VARARGS, (char *)"DrawTextCenterByte(FontC font, unsigned char const & value, Index2dC offset, StringC text, ImageByteC image)"},
-	 { (char *)"SArray1dUInt_ConstructAligned", _wrap_SArray1dUInt_ConstructAligned, METH_VARARGS, (char *)"SArray1dUInt_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dUInt"},
+	 { (char *)"DrawTextByteRGB", _wrap_DrawTextByteRGB, METH_VARARGS, (char *)"DrawTextByteRGB(font, value, offset, text, image)"},
+	 { (char *)"DrawTextByte", _wrap_DrawTextByte, METH_VARARGS, (char *)"DrawTextByte(font, value, offset, text, image)"},
+	 { (char *)"DrawTextCenterByteRGB", _wrap_DrawTextCenterByteRGB, METH_VARARGS, (char *)"DrawTextCenterByteRGB(font, value, offset, text, image)"},
+	 { (char *)"DrawTextCenterByte", _wrap_DrawTextCenterByte, METH_VARARGS, (char *)"DrawTextCenterByte(font, value, offset, text, image)"},
+	 { (char *)"SArray1dUInt_ConstructAligned", _wrap_SArray1dUInt_ConstructAligned, METH_VARARGS, (char *)"SArray1dUInt_ConstructAligned(dim, align) -> SArray1dUInt"},
 	 { (char *)"new_SArray1dUInt", _wrap_new_SArray1dUInt, METH_VARARGS, (char *)"\n"
 		"SArray1dUInt()\n"
-		"SArray1dUInt(RavlN::SizeT const dim)\n"
-		"SArray1dUInt(SArray1dUInt vv)\n"
-		"SArray1dUInt(SArray1dUInt vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0)\n"
-		"SArray1dUInt(SArray1dUInt vv, RavlN::SizeT dim)\n"
-		"new_SArray1dUInt(unsigned int * data, RavlN::SizeT const dim, bool removable) -> SArray1dUInt\n"
+		"SArray1dUInt(dim)\n"
+		"SArray1dUInt(vv)\n"
+		"SArray1dUInt(vv, dim, offsetInBuff=0)\n"
+		"SArray1dUInt(vv, dim)\n"
+		"new_SArray1dUInt(data, dim, removable) -> SArray1dUInt\n"
 		""},
-	 { (char *)"SArray1dUInt_IsEmpty", _wrap_SArray1dUInt_IsEmpty, METH_VARARGS, (char *)"SArray1dUInt_IsEmpty(SArray1dUInt self) -> bool"},
-	 { (char *)"SArray1dUInt_Contains", _wrap_SArray1dUInt_Contains, METH_VARARGS, (char *)"SArray1dUInt_Contains(SArray1dUInt self, IndexC i) -> bool"},
-	 { (char *)"SArray1dUInt_Fill", _wrap_SArray1dUInt_Fill, METH_VARARGS, (char *)"SArray1dUInt_Fill(SArray1dUInt self, unsigned int const & d)"},
-	 { (char *)"SArray1dUInt_Reverse", _wrap_SArray1dUInt_Reverse, METH_VARARGS, (char *)"SArray1dUInt_Reverse(SArray1dUInt self)"},
+	 { (char *)"SArray1dUInt_IsEmpty", _wrap_SArray1dUInt_IsEmpty, METH_VARARGS, (char *)"SArray1dUInt_IsEmpty(self) -> bool"},
+	 { (char *)"SArray1dUInt_Contains", _wrap_SArray1dUInt_Contains, METH_VARARGS, (char *)"SArray1dUInt_Contains(self, i) -> bool"},
+	 { (char *)"SArray1dUInt_Fill", _wrap_SArray1dUInt_Fill, METH_VARARGS, (char *)"SArray1dUInt_Fill(self, d)"},
+	 { (char *)"SArray1dUInt_Reverse", _wrap_SArray1dUInt_Reverse, METH_VARARGS, (char *)"SArray1dUInt_Reverse(self)"},
 	 { (char *)"SArray1dUInt___mul__", _wrap_SArray1dUInt___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___mul__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__mul__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___mul__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___div__", _wrap_SArray1dUInt___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___div__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__div__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___div__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___add__", _wrap_SArray1dUInt___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___add__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__add__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___add__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___sub__", _wrap_SArray1dUInt___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___sub__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__sub__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___sub__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___iadd__", _wrap_SArray1dUInt___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___iadd__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__iadd__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___iadd__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___isub__", _wrap_SArray1dUInt___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___isub__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__isub__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___isub__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___imul__", _wrap_SArray1dUInt___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___imul__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__imul__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___imul__(self, number) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt___idiv__", _wrap_SArray1dUInt___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray1dUInt arr) -> SArray1dUInt\n"
-		"SArray1dUInt___idiv__(SArray1dUInt self, unsigned int const & number) -> SArray1dUInt\n"
+		"__idiv__(arr) -> SArray1dUInt\n"
+		"SArray1dUInt___idiv__(self, number) -> SArray1dUInt\n"
 		""},
-	 { (char *)"SArray1dUInt_Sum", _wrap_SArray1dUInt_Sum, METH_VARARGS, (char *)"SArray1dUInt_Sum(SArray1dUInt self) -> unsigned int"},
-	 { (char *)"SArray1dUInt_SumOfSqr", _wrap_SArray1dUInt_SumOfSqr, METH_VARARGS, (char *)"SArray1dUInt_SumOfSqr(SArray1dUInt self) -> unsigned int"},
+	 { (char *)"SArray1dUInt_Sum", _wrap_SArray1dUInt_Sum, METH_VARARGS, (char *)"SArray1dUInt_Sum(self) -> unsigned int"},
+	 { (char *)"SArray1dUInt_SumOfSqr", _wrap_SArray1dUInt_SumOfSqr, METH_VARARGS, (char *)"SArray1dUInt_SumOfSqr(self) -> unsigned int"},
 	 { (char *)"SArray1dUInt_SArray1d", _wrap_SArray1dUInt_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dUInt\n"
-		"SArray1dUInt_SArray1d(SArray1dUInt self) -> SArray1dUInt\n"
+		"SArray1dUInt_SArray1d(self) -> SArray1dUInt\n"
 		""},
-	 { (char *)"SArray1dUInt_Size", _wrap_SArray1dUInt_Size, METH_VARARGS, (char *)"SArray1dUInt_Size(SArray1dUInt self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dUInt_Range", _wrap_SArray1dUInt_Range, METH_VARARGS, (char *)"SArray1dUInt_Range(SArray1dUInt self) -> IndexRangeC"},
+	 { (char *)"SArray1dUInt_Size", _wrap_SArray1dUInt_Size, METH_VARARGS, (char *)"SArray1dUInt_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dUInt_Range", _wrap_SArray1dUInt_Range, METH_VARARGS, (char *)"SArray1dUInt_Range(self) -> IndexRangeC"},
 	 { (char *)"SArray1dUInt_Join", _wrap_SArray1dUInt_Join, METH_VARARGS, (char *)"\n"
-		"Join(SArray1dUInt Oth) -> SArray1dUInt\n"
-		"SArray1dUInt_Join(SArray1dUInt self, unsigned int const & Oth) -> SArray1dUInt\n"
+		"Join(Oth) -> SArray1dUInt\n"
+		"SArray1dUInt_Join(self, Oth) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt_Append", _wrap_SArray1dUInt_Append, METH_VARARGS, (char *)"\n"
-		"Append(SArray1dUInt a) -> SArray1dUInt\n"
-		"SArray1dUInt_Append(SArray1dUInt self, unsigned int const & a) -> SArray1dUInt\n"
+		"Append(a) -> SArray1dUInt\n"
+		"SArray1dUInt_Append(self, a) -> SArray1dUInt\n"
 		""},
 	 { (char *)"SArray1dUInt_From", _wrap_SArray1dUInt_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> SArray1dUInt\n"
-		"SArray1dUInt_From(SArray1dUInt self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dUInt\n"
+		"From(offset) -> SArray1dUInt\n"
+		"SArray1dUInt_From(self, offset, size) -> SArray1dUInt\n"
 		""},
-	 { (char *)"SArray1dUInt_After", _wrap_SArray1dUInt_After, METH_VARARGS, (char *)"SArray1dUInt_After(SArray1dUInt self, RavlN::UIntT offset) -> SArray1dUInt"},
-	 { (char *)"SArray1dUInt_Before", _wrap_SArray1dUInt_Before, METH_VARARGS, (char *)"SArray1dUInt_Before(SArray1dUInt self, RavlN::UIntT offset) -> SArray1dUInt"},
-	 { (char *)"SArray1dUInt___eq__", _wrap_SArray1dUInt___eq__, METH_VARARGS, (char *)"SArray1dUInt___eq__(SArray1dUInt self, SArray1dUInt vv) -> bool"},
-	 { (char *)"SArray1dUInt___ne__", _wrap_SArray1dUInt___ne__, METH_VARARGS, (char *)"SArray1dUInt___ne__(SArray1dUInt self, SArray1dUInt vv) -> bool"},
-	 { (char *)"SArray1dUInt_Hash", _wrap_SArray1dUInt_Hash, METH_VARARGS, (char *)"SArray1dUInt_Hash(SArray1dUInt self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dUInt_DataStart", _wrap_SArray1dUInt_DataStart, METH_VARARGS, (char *)"SArray1dUInt_DataStart(SArray1dUInt self) -> unsigned int *"},
-	 { (char *)"SArray1dUInt___getitem__", _wrap_SArray1dUInt___getitem__, METH_VARARGS, (char *)"SArray1dUInt___getitem__(SArray1dUInt self, size_t i) -> unsigned int const &"},
-	 { (char *)"SArray1dUInt___setitem__", _wrap_SArray1dUInt___setitem__, METH_VARARGS, (char *)"SArray1dUInt___setitem__(SArray1dUInt self, size_t i, unsigned int const & v)"},
-	 { (char *)"SArray1dUInt___str__", _wrap_SArray1dUInt___str__, METH_VARARGS, (char *)"SArray1dUInt___str__(SArray1dUInt self) -> char const *"},
-	 { (char *)"delete_SArray1dUInt", _wrap_delete_SArray1dUInt, METH_VARARGS, (char *)"delete_SArray1dUInt(SArray1dUInt self)"},
+	 { (char *)"SArray1dUInt_After", _wrap_SArray1dUInt_After, METH_VARARGS, (char *)"SArray1dUInt_After(self, offset) -> SArray1dUInt"},
+	 { (char *)"SArray1dUInt_Before", _wrap_SArray1dUInt_Before, METH_VARARGS, (char *)"SArray1dUInt_Before(self, offset) -> SArray1dUInt"},
+	 { (char *)"SArray1dUInt___eq__", _wrap_SArray1dUInt___eq__, METH_VARARGS, (char *)"SArray1dUInt___eq__(self, vv) -> bool"},
+	 { (char *)"SArray1dUInt___ne__", _wrap_SArray1dUInt___ne__, METH_VARARGS, (char *)"SArray1dUInt___ne__(self, vv) -> bool"},
+	 { (char *)"SArray1dUInt_Hash", _wrap_SArray1dUInt_Hash, METH_VARARGS, (char *)"SArray1dUInt_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dUInt_DataStart", _wrap_SArray1dUInt_DataStart, METH_VARARGS, (char *)"SArray1dUInt_DataStart(self) -> unsigned int *"},
+	 { (char *)"SArray1dUInt___getitem__", _wrap_SArray1dUInt___getitem__, METH_VARARGS, (char *)"SArray1dUInt___getitem__(self, i) -> unsigned int const &"},
+	 { (char *)"SArray1dUInt___setitem__", _wrap_SArray1dUInt___setitem__, METH_VARARGS, (char *)"SArray1dUInt___setitem__(self, i, v)"},
+	 { (char *)"SArray1dUInt___str__", _wrap_SArray1dUInt___str__, METH_VARARGS, (char *)"SArray1dUInt___str__(self) -> char const *"},
+	 { (char *)"delete_SArray1dUInt", _wrap_delete_SArray1dUInt, METH_VARARGS, (char *)"delete_SArray1dUInt(self)"},
 	 { (char *)"SArray1dUInt_swigregister", SArray1dUInt_swigregister, METH_VARARGS, NULL},
-	 { (char *)"SArray1dReal_ConstructAligned", _wrap_SArray1dReal_ConstructAligned, METH_VARARGS, (char *)"SArray1dReal_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dReal"},
+	 { (char *)"SArray1dReal_ConstructAligned", _wrap_SArray1dReal_ConstructAligned, METH_VARARGS, (char *)"SArray1dReal_ConstructAligned(dim, align) -> SArray1dReal"},
 	 { (char *)"new_SArray1dReal", _wrap_new_SArray1dReal, METH_VARARGS, (char *)"\n"
 		"SArray1dReal()\n"
-		"SArray1dReal(RavlN::SizeT const dim)\n"
-		"SArray1dReal(SArray1dReal vv)\n"
-		"SArray1dReal(SArray1dReal vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0)\n"
-		"SArray1dReal(SArray1dReal vv, RavlN::SizeT dim)\n"
-		"new_SArray1dReal(double * data, RavlN::SizeT const dim, bool removable) -> SArray1dReal\n"
+		"SArray1dReal(dim)\n"
+		"SArray1dReal(vv)\n"
+		"SArray1dReal(vv, dim, offsetInBuff=0)\n"
+		"SArray1dReal(vv, dim)\n"
+		"new_SArray1dReal(data, dim, removable) -> SArray1dReal\n"
 		""},
-	 { (char *)"SArray1dReal_IsEmpty", _wrap_SArray1dReal_IsEmpty, METH_VARARGS, (char *)"SArray1dReal_IsEmpty(SArray1dReal self) -> bool"},
-	 { (char *)"SArray1dReal_Contains", _wrap_SArray1dReal_Contains, METH_VARARGS, (char *)"SArray1dReal_Contains(SArray1dReal self, IndexC i) -> bool"},
-	 { (char *)"SArray1dReal_Fill", _wrap_SArray1dReal_Fill, METH_VARARGS, (char *)"SArray1dReal_Fill(SArray1dReal self, double const & d)"},
-	 { (char *)"SArray1dReal_Reverse", _wrap_SArray1dReal_Reverse, METH_VARARGS, (char *)"SArray1dReal_Reverse(SArray1dReal self)"},
+	 { (char *)"SArray1dReal_IsEmpty", _wrap_SArray1dReal_IsEmpty, METH_VARARGS, (char *)"SArray1dReal_IsEmpty(self) -> bool"},
+	 { (char *)"SArray1dReal_Contains", _wrap_SArray1dReal_Contains, METH_VARARGS, (char *)"SArray1dReal_Contains(self, i) -> bool"},
+	 { (char *)"SArray1dReal_Fill", _wrap_SArray1dReal_Fill, METH_VARARGS, (char *)"SArray1dReal_Fill(self, d)"},
+	 { (char *)"SArray1dReal_Reverse", _wrap_SArray1dReal_Reverse, METH_VARARGS, (char *)"SArray1dReal_Reverse(self)"},
 	 { (char *)"SArray1dReal___mul__", _wrap_SArray1dReal___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___mul__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__mul__(arr) -> SArray1dReal\n"
+		"SArray1dReal___mul__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___div__", _wrap_SArray1dReal___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___div__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__div__(arr) -> SArray1dReal\n"
+		"SArray1dReal___div__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___add__", _wrap_SArray1dReal___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___add__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__add__(arr) -> SArray1dReal\n"
+		"SArray1dReal___add__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___sub__", _wrap_SArray1dReal___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___sub__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__sub__(arr) -> SArray1dReal\n"
+		"SArray1dReal___sub__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___iadd__", _wrap_SArray1dReal___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___iadd__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__iadd__(arr) -> SArray1dReal\n"
+		"SArray1dReal___iadd__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___isub__", _wrap_SArray1dReal___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___isub__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__isub__(arr) -> SArray1dReal\n"
+		"SArray1dReal___isub__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___imul__", _wrap_SArray1dReal___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___imul__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__imul__(arr) -> SArray1dReal\n"
+		"SArray1dReal___imul__(self, number) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal___idiv__", _wrap_SArray1dReal___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray1dReal arr) -> SArray1dReal\n"
-		"SArray1dReal___idiv__(SArray1dReal self, double const & number) -> SArray1dReal\n"
+		"__idiv__(arr) -> SArray1dReal\n"
+		"SArray1dReal___idiv__(self, number) -> SArray1dReal\n"
 		""},
-	 { (char *)"SArray1dReal_Sum", _wrap_SArray1dReal_Sum, METH_VARARGS, (char *)"SArray1dReal_Sum(SArray1dReal self) -> double"},
-	 { (char *)"SArray1dReal_SumOfSqr", _wrap_SArray1dReal_SumOfSqr, METH_VARARGS, (char *)"SArray1dReal_SumOfSqr(SArray1dReal self) -> double"},
+	 { (char *)"SArray1dReal_Sum", _wrap_SArray1dReal_Sum, METH_VARARGS, (char *)"SArray1dReal_Sum(self) -> double"},
+	 { (char *)"SArray1dReal_SumOfSqr", _wrap_SArray1dReal_SumOfSqr, METH_VARARGS, (char *)"SArray1dReal_SumOfSqr(self) -> double"},
 	 { (char *)"SArray1dReal_SArray1d", _wrap_SArray1dReal_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dReal\n"
-		"SArray1dReal_SArray1d(SArray1dReal self) -> SArray1dReal\n"
+		"SArray1dReal_SArray1d(self) -> SArray1dReal\n"
 		""},
-	 { (char *)"SArray1dReal_Size", _wrap_SArray1dReal_Size, METH_VARARGS, (char *)"SArray1dReal_Size(SArray1dReal self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dReal_Range", _wrap_SArray1dReal_Range, METH_VARARGS, (char *)"SArray1dReal_Range(SArray1dReal self) -> IndexRangeC"},
+	 { (char *)"SArray1dReal_Size", _wrap_SArray1dReal_Size, METH_VARARGS, (char *)"SArray1dReal_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dReal_Range", _wrap_SArray1dReal_Range, METH_VARARGS, (char *)"SArray1dReal_Range(self) -> IndexRangeC"},
 	 { (char *)"SArray1dReal_Join", _wrap_SArray1dReal_Join, METH_VARARGS, (char *)"\n"
-		"Join(SArray1dReal Oth) -> SArray1dReal\n"
-		"SArray1dReal_Join(SArray1dReal self, double const & Oth) -> SArray1dReal\n"
+		"Join(Oth) -> SArray1dReal\n"
+		"SArray1dReal_Join(self, Oth) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal_Append", _wrap_SArray1dReal_Append, METH_VARARGS, (char *)"\n"
-		"Append(SArray1dReal a) -> SArray1dReal\n"
-		"SArray1dReal_Append(SArray1dReal self, double const & a) -> SArray1dReal\n"
+		"Append(a) -> SArray1dReal\n"
+		"SArray1dReal_Append(self, a) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray1dReal_From", _wrap_SArray1dReal_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> SArray1dReal\n"
-		"SArray1dReal_From(SArray1dReal self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dReal\n"
+		"From(offset) -> SArray1dReal\n"
+		"SArray1dReal_From(self, offset, size) -> SArray1dReal\n"
 		""},
-	 { (char *)"SArray1dReal_After", _wrap_SArray1dReal_After, METH_VARARGS, (char *)"SArray1dReal_After(SArray1dReal self, RavlN::UIntT offset) -> SArray1dReal"},
-	 { (char *)"SArray1dReal_Before", _wrap_SArray1dReal_Before, METH_VARARGS, (char *)"SArray1dReal_Before(SArray1dReal self, RavlN::UIntT offset) -> SArray1dReal"},
-	 { (char *)"SArray1dReal___eq__", _wrap_SArray1dReal___eq__, METH_VARARGS, (char *)"SArray1dReal___eq__(SArray1dReal self, SArray1dReal vv) -> bool"},
-	 { (char *)"SArray1dReal___ne__", _wrap_SArray1dReal___ne__, METH_VARARGS, (char *)"SArray1dReal___ne__(SArray1dReal self, SArray1dReal vv) -> bool"},
-	 { (char *)"SArray1dReal_Hash", _wrap_SArray1dReal_Hash, METH_VARARGS, (char *)"SArray1dReal_Hash(SArray1dReal self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dReal_DataStart", _wrap_SArray1dReal_DataStart, METH_VARARGS, (char *)"SArray1dReal_DataStart(SArray1dReal self) -> double *"},
-	 { (char *)"SArray1dReal___getitem__", _wrap_SArray1dReal___getitem__, METH_VARARGS, (char *)"SArray1dReal___getitem__(SArray1dReal self, size_t i) -> double const &"},
-	 { (char *)"SArray1dReal___setitem__", _wrap_SArray1dReal___setitem__, METH_VARARGS, (char *)"SArray1dReal___setitem__(SArray1dReal self, size_t i, double const & v)"},
-	 { (char *)"SArray1dReal___str__", _wrap_SArray1dReal___str__, METH_VARARGS, (char *)"SArray1dReal___str__(SArray1dReal self) -> char const *"},
-	 { (char *)"delete_SArray1dReal", _wrap_delete_SArray1dReal, METH_VARARGS, (char *)"delete_SArray1dReal(SArray1dReal self)"},
+	 { (char *)"SArray1dReal_After", _wrap_SArray1dReal_After, METH_VARARGS, (char *)"SArray1dReal_After(self, offset) -> SArray1dReal"},
+	 { (char *)"SArray1dReal_Before", _wrap_SArray1dReal_Before, METH_VARARGS, (char *)"SArray1dReal_Before(self, offset) -> SArray1dReal"},
+	 { (char *)"SArray1dReal___eq__", _wrap_SArray1dReal___eq__, METH_VARARGS, (char *)"SArray1dReal___eq__(self, vv) -> bool"},
+	 { (char *)"SArray1dReal___ne__", _wrap_SArray1dReal___ne__, METH_VARARGS, (char *)"SArray1dReal___ne__(self, vv) -> bool"},
+	 { (char *)"SArray1dReal_Hash", _wrap_SArray1dReal_Hash, METH_VARARGS, (char *)"SArray1dReal_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dReal_DataStart", _wrap_SArray1dReal_DataStart, METH_VARARGS, (char *)"SArray1dReal_DataStart(self) -> double *"},
+	 { (char *)"SArray1dReal___getitem__", _wrap_SArray1dReal___getitem__, METH_VARARGS, (char *)"SArray1dReal___getitem__(self, i) -> double const &"},
+	 { (char *)"SArray1dReal___setitem__", _wrap_SArray1dReal___setitem__, METH_VARARGS, (char *)"SArray1dReal___setitem__(self, i, v)"},
+	 { (char *)"SArray1dReal___str__", _wrap_SArray1dReal___str__, METH_VARARGS, (char *)"SArray1dReal___str__(self) -> char const *"},
+	 { (char *)"delete_SArray1dReal", _wrap_delete_SArray1dReal, METH_VARARGS, (char *)"delete_SArray1dReal(self)"},
 	 { (char *)"SArray1dReal_swigregister", SArray1dReal_swigregister, METH_VARARGS, NULL},
-	 { (char *)"SArray1dFloat_ConstructAligned", _wrap_SArray1dFloat_ConstructAligned, METH_VARARGS, (char *)"SArray1dFloat_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dFloat"},
+	 { (char *)"SArray1dFloat_ConstructAligned", _wrap_SArray1dFloat_ConstructAligned, METH_VARARGS, (char *)"SArray1dFloat_ConstructAligned(dim, align) -> SArray1dFloat"},
 	 { (char *)"new_SArray1dFloat", _wrap_new_SArray1dFloat, METH_VARARGS, (char *)"\n"
 		"SArray1dFloat()\n"
-		"SArray1dFloat(RavlN::SizeT const dim)\n"
-		"SArray1dFloat(SArray1dFloat vv)\n"
-		"SArray1dFloat(SArray1dFloat vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0)\n"
-		"SArray1dFloat(SArray1dFloat vv, RavlN::SizeT dim)\n"
-		"new_SArray1dFloat(float * data, RavlN::SizeT const dim, bool removable) -> SArray1dFloat\n"
+		"SArray1dFloat(dim)\n"
+		"SArray1dFloat(vv)\n"
+		"SArray1dFloat(vv, dim, offsetInBuff=0)\n"
+		"SArray1dFloat(vv, dim)\n"
+		"new_SArray1dFloat(data, dim, removable) -> SArray1dFloat\n"
 		""},
-	 { (char *)"SArray1dFloat_IsEmpty", _wrap_SArray1dFloat_IsEmpty, METH_VARARGS, (char *)"SArray1dFloat_IsEmpty(SArray1dFloat self) -> bool"},
-	 { (char *)"SArray1dFloat_Contains", _wrap_SArray1dFloat_Contains, METH_VARARGS, (char *)"SArray1dFloat_Contains(SArray1dFloat self, IndexC i) -> bool"},
-	 { (char *)"SArray1dFloat_Fill", _wrap_SArray1dFloat_Fill, METH_VARARGS, (char *)"SArray1dFloat_Fill(SArray1dFloat self, float const & d)"},
-	 { (char *)"SArray1dFloat_Reverse", _wrap_SArray1dFloat_Reverse, METH_VARARGS, (char *)"SArray1dFloat_Reverse(SArray1dFloat self)"},
+	 { (char *)"SArray1dFloat_IsEmpty", _wrap_SArray1dFloat_IsEmpty, METH_VARARGS, (char *)"SArray1dFloat_IsEmpty(self) -> bool"},
+	 { (char *)"SArray1dFloat_Contains", _wrap_SArray1dFloat_Contains, METH_VARARGS, (char *)"SArray1dFloat_Contains(self, i) -> bool"},
+	 { (char *)"SArray1dFloat_Fill", _wrap_SArray1dFloat_Fill, METH_VARARGS, (char *)"SArray1dFloat_Fill(self, d)"},
+	 { (char *)"SArray1dFloat_Reverse", _wrap_SArray1dFloat_Reverse, METH_VARARGS, (char *)"SArray1dFloat_Reverse(self)"},
 	 { (char *)"SArray1dFloat___mul__", _wrap_SArray1dFloat___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___mul__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__mul__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___mul__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___div__", _wrap_SArray1dFloat___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___div__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__div__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___div__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___add__", _wrap_SArray1dFloat___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___add__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__add__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___add__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___sub__", _wrap_SArray1dFloat___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___sub__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__sub__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___sub__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___iadd__", _wrap_SArray1dFloat___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___iadd__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__iadd__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___iadd__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___isub__", _wrap_SArray1dFloat___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___isub__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__isub__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___isub__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___imul__", _wrap_SArray1dFloat___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___imul__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__imul__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___imul__(self, number) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat___idiv__", _wrap_SArray1dFloat___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray1dFloat arr) -> SArray1dFloat\n"
-		"SArray1dFloat___idiv__(SArray1dFloat self, float const & number) -> SArray1dFloat\n"
+		"__idiv__(arr) -> SArray1dFloat\n"
+		"SArray1dFloat___idiv__(self, number) -> SArray1dFloat\n"
 		""},
-	 { (char *)"SArray1dFloat_Sum", _wrap_SArray1dFloat_Sum, METH_VARARGS, (char *)"SArray1dFloat_Sum(SArray1dFloat self) -> float"},
-	 { (char *)"SArray1dFloat_SumOfSqr", _wrap_SArray1dFloat_SumOfSqr, METH_VARARGS, (char *)"SArray1dFloat_SumOfSqr(SArray1dFloat self) -> float"},
+	 { (char *)"SArray1dFloat_Sum", _wrap_SArray1dFloat_Sum, METH_VARARGS, (char *)"SArray1dFloat_Sum(self) -> float"},
+	 { (char *)"SArray1dFloat_SumOfSqr", _wrap_SArray1dFloat_SumOfSqr, METH_VARARGS, (char *)"SArray1dFloat_SumOfSqr(self) -> float"},
 	 { (char *)"SArray1dFloat_SArray1d", _wrap_SArray1dFloat_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dFloat\n"
-		"SArray1dFloat_SArray1d(SArray1dFloat self) -> SArray1dFloat\n"
+		"SArray1dFloat_SArray1d(self) -> SArray1dFloat\n"
 		""},
-	 { (char *)"SArray1dFloat_Size", _wrap_SArray1dFloat_Size, METH_VARARGS, (char *)"SArray1dFloat_Size(SArray1dFloat self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dFloat_Range", _wrap_SArray1dFloat_Range, METH_VARARGS, (char *)"SArray1dFloat_Range(SArray1dFloat self) -> IndexRangeC"},
+	 { (char *)"SArray1dFloat_Size", _wrap_SArray1dFloat_Size, METH_VARARGS, (char *)"SArray1dFloat_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dFloat_Range", _wrap_SArray1dFloat_Range, METH_VARARGS, (char *)"SArray1dFloat_Range(self) -> IndexRangeC"},
 	 { (char *)"SArray1dFloat_Join", _wrap_SArray1dFloat_Join, METH_VARARGS, (char *)"\n"
-		"Join(SArray1dFloat Oth) -> SArray1dFloat\n"
-		"SArray1dFloat_Join(SArray1dFloat self, float const & Oth) -> SArray1dFloat\n"
+		"Join(Oth) -> SArray1dFloat\n"
+		"SArray1dFloat_Join(self, Oth) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat_Append", _wrap_SArray1dFloat_Append, METH_VARARGS, (char *)"\n"
-		"Append(SArray1dFloat a) -> SArray1dFloat\n"
-		"SArray1dFloat_Append(SArray1dFloat self, float const & a) -> SArray1dFloat\n"
+		"Append(a) -> SArray1dFloat\n"
+		"SArray1dFloat_Append(self, a) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray1dFloat_From", _wrap_SArray1dFloat_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> SArray1dFloat\n"
-		"SArray1dFloat_From(SArray1dFloat self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dFloat\n"
+		"From(offset) -> SArray1dFloat\n"
+		"SArray1dFloat_From(self, offset, size) -> SArray1dFloat\n"
 		""},
-	 { (char *)"SArray1dFloat_After", _wrap_SArray1dFloat_After, METH_VARARGS, (char *)"SArray1dFloat_After(SArray1dFloat self, RavlN::UIntT offset) -> SArray1dFloat"},
-	 { (char *)"SArray1dFloat_Before", _wrap_SArray1dFloat_Before, METH_VARARGS, (char *)"SArray1dFloat_Before(SArray1dFloat self, RavlN::UIntT offset) -> SArray1dFloat"},
-	 { (char *)"SArray1dFloat___eq__", _wrap_SArray1dFloat___eq__, METH_VARARGS, (char *)"SArray1dFloat___eq__(SArray1dFloat self, SArray1dFloat vv) -> bool"},
-	 { (char *)"SArray1dFloat___ne__", _wrap_SArray1dFloat___ne__, METH_VARARGS, (char *)"SArray1dFloat___ne__(SArray1dFloat self, SArray1dFloat vv) -> bool"},
-	 { (char *)"SArray1dFloat_Hash", _wrap_SArray1dFloat_Hash, METH_VARARGS, (char *)"SArray1dFloat_Hash(SArray1dFloat self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dFloat_DataStart", _wrap_SArray1dFloat_DataStart, METH_VARARGS, (char *)"SArray1dFloat_DataStart(SArray1dFloat self) -> float *"},
-	 { (char *)"SArray1dFloat___getitem__", _wrap_SArray1dFloat___getitem__, METH_VARARGS, (char *)"SArray1dFloat___getitem__(SArray1dFloat self, size_t i) -> float const &"},
-	 { (char *)"SArray1dFloat___setitem__", _wrap_SArray1dFloat___setitem__, METH_VARARGS, (char *)"SArray1dFloat___setitem__(SArray1dFloat self, size_t i, float const & v)"},
-	 { (char *)"SArray1dFloat___str__", _wrap_SArray1dFloat___str__, METH_VARARGS, (char *)"SArray1dFloat___str__(SArray1dFloat self) -> char const *"},
-	 { (char *)"delete_SArray1dFloat", _wrap_delete_SArray1dFloat, METH_VARARGS, (char *)"delete_SArray1dFloat(SArray1dFloat self)"},
+	 { (char *)"SArray1dFloat_After", _wrap_SArray1dFloat_After, METH_VARARGS, (char *)"SArray1dFloat_After(self, offset) -> SArray1dFloat"},
+	 { (char *)"SArray1dFloat_Before", _wrap_SArray1dFloat_Before, METH_VARARGS, (char *)"SArray1dFloat_Before(self, offset) -> SArray1dFloat"},
+	 { (char *)"SArray1dFloat___eq__", _wrap_SArray1dFloat___eq__, METH_VARARGS, (char *)"SArray1dFloat___eq__(self, vv) -> bool"},
+	 { (char *)"SArray1dFloat___ne__", _wrap_SArray1dFloat___ne__, METH_VARARGS, (char *)"SArray1dFloat___ne__(self, vv) -> bool"},
+	 { (char *)"SArray1dFloat_Hash", _wrap_SArray1dFloat_Hash, METH_VARARGS, (char *)"SArray1dFloat_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dFloat_DataStart", _wrap_SArray1dFloat_DataStart, METH_VARARGS, (char *)"SArray1dFloat_DataStart(self) -> float *"},
+	 { (char *)"SArray1dFloat___getitem__", _wrap_SArray1dFloat___getitem__, METH_VARARGS, (char *)"SArray1dFloat___getitem__(self, i) -> float const &"},
+	 { (char *)"SArray1dFloat___setitem__", _wrap_SArray1dFloat___setitem__, METH_VARARGS, (char *)"SArray1dFloat___setitem__(self, i, v)"},
+	 { (char *)"SArray1dFloat___str__", _wrap_SArray1dFloat___str__, METH_VARARGS, (char *)"SArray1dFloat___str__(self) -> char const *"},
+	 { (char *)"delete_SArray1dFloat", _wrap_delete_SArray1dFloat, METH_VARARGS, (char *)"delete_SArray1dFloat(self)"},
 	 { (char *)"SArray1dFloat_swigregister", SArray1dFloat_swigregister, METH_VARARGS, NULL},
-	 { (char *)"SArray1dIndexC_ConstructAligned", _wrap_SArray1dIndexC_ConstructAligned, METH_VARARGS, (char *)"SArray1dIndexC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dIndexC"},
+	 { (char *)"SArray1dIndexC_ConstructAligned", _wrap_SArray1dIndexC_ConstructAligned, METH_VARARGS, (char *)"SArray1dIndexC_ConstructAligned(dim, align) -> SArray1dIndexC"},
 	 { (char *)"new_SArray1dIndexC", _wrap_new_SArray1dIndexC, METH_VARARGS, (char *)"\n"
 		"SArray1dIndexC()\n"
-		"SArray1dIndexC(RavlN::SizeT const dim)\n"
-		"SArray1dIndexC(SArray1dIndexC vv)\n"
-		"SArray1dIndexC(SArray1dIndexC vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0)\n"
-		"SArray1dIndexC(SArray1dIndexC vv, RavlN::SizeT dim)\n"
-		"new_SArray1dIndexC(IndexC data, RavlN::SizeT const dim, bool removable) -> SArray1dIndexC\n"
+		"SArray1dIndexC(dim)\n"
+		"SArray1dIndexC(vv)\n"
+		"SArray1dIndexC(vv, dim, offsetInBuff=0)\n"
+		"SArray1dIndexC(vv, dim)\n"
+		"new_SArray1dIndexC(data, dim, removable) -> SArray1dIndexC\n"
 		""},
-	 { (char *)"SArray1dIndexC_IsEmpty", _wrap_SArray1dIndexC_IsEmpty, METH_VARARGS, (char *)"SArray1dIndexC_IsEmpty(SArray1dIndexC self) -> bool"},
-	 { (char *)"SArray1dIndexC_Contains", _wrap_SArray1dIndexC_Contains, METH_VARARGS, (char *)"SArray1dIndexC_Contains(SArray1dIndexC self, IndexC i) -> bool"},
-	 { (char *)"SArray1dIndexC_Fill", _wrap_SArray1dIndexC_Fill, METH_VARARGS, (char *)"SArray1dIndexC_Fill(SArray1dIndexC self, IndexC d)"},
-	 { (char *)"SArray1dIndexC_Reverse", _wrap_SArray1dIndexC_Reverse, METH_VARARGS, (char *)"SArray1dIndexC_Reverse(SArray1dIndexC self)"},
+	 { (char *)"SArray1dIndexC_IsEmpty", _wrap_SArray1dIndexC_IsEmpty, METH_VARARGS, (char *)"SArray1dIndexC_IsEmpty(self) -> bool"},
+	 { (char *)"SArray1dIndexC_Contains", _wrap_SArray1dIndexC_Contains, METH_VARARGS, (char *)"SArray1dIndexC_Contains(self, i) -> bool"},
+	 { (char *)"SArray1dIndexC_Fill", _wrap_SArray1dIndexC_Fill, METH_VARARGS, (char *)"SArray1dIndexC_Fill(self, d)"},
+	 { (char *)"SArray1dIndexC_Reverse", _wrap_SArray1dIndexC_Reverse, METH_VARARGS, (char *)"SArray1dIndexC_Reverse(self)"},
 	 { (char *)"SArray1dIndexC___mul__", _wrap_SArray1dIndexC___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___mul__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__mul__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___mul__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___div__", _wrap_SArray1dIndexC___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___div__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__div__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___div__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___add__", _wrap_SArray1dIndexC___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___add__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__add__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___add__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___sub__", _wrap_SArray1dIndexC___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___sub__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__sub__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___sub__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___iadd__", _wrap_SArray1dIndexC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___iadd__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__iadd__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___iadd__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___isub__", _wrap_SArray1dIndexC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___isub__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__isub__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___isub__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___imul__", _wrap_SArray1dIndexC___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___imul__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__imul__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___imul__(self, number) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC___idiv__", _wrap_SArray1dIndexC___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray1dIndexC arr) -> SArray1dIndexC\n"
-		"SArray1dIndexC___idiv__(SArray1dIndexC self, IndexC number) -> SArray1dIndexC\n"
+		"__idiv__(arr) -> SArray1dIndexC\n"
+		"SArray1dIndexC___idiv__(self, number) -> SArray1dIndexC\n"
 		""},
-	 { (char *)"SArray1dIndexC_Sum", _wrap_SArray1dIndexC_Sum, METH_VARARGS, (char *)"SArray1dIndexC_Sum(SArray1dIndexC self) -> IndexC"},
-	 { (char *)"SArray1dIndexC_SumOfSqr", _wrap_SArray1dIndexC_SumOfSqr, METH_VARARGS, (char *)"SArray1dIndexC_SumOfSqr(SArray1dIndexC self) -> IndexC"},
+	 { (char *)"SArray1dIndexC_Sum", _wrap_SArray1dIndexC_Sum, METH_VARARGS, (char *)"SArray1dIndexC_Sum(self) -> IndexC"},
+	 { (char *)"SArray1dIndexC_SumOfSqr", _wrap_SArray1dIndexC_SumOfSqr, METH_VARARGS, (char *)"SArray1dIndexC_SumOfSqr(self) -> IndexC"},
 	 { (char *)"SArray1dIndexC_SArray1d", _wrap_SArray1dIndexC_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dIndexC\n"
-		"SArray1dIndexC_SArray1d(SArray1dIndexC self) -> SArray1dIndexC\n"
+		"SArray1dIndexC_SArray1d(self) -> SArray1dIndexC\n"
 		""},
-	 { (char *)"SArray1dIndexC_Size", _wrap_SArray1dIndexC_Size, METH_VARARGS, (char *)"SArray1dIndexC_Size(SArray1dIndexC self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dIndexC_Range", _wrap_SArray1dIndexC_Range, METH_VARARGS, (char *)"SArray1dIndexC_Range(SArray1dIndexC self) -> IndexRangeC"},
+	 { (char *)"SArray1dIndexC_Size", _wrap_SArray1dIndexC_Size, METH_VARARGS, (char *)"SArray1dIndexC_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dIndexC_Range", _wrap_SArray1dIndexC_Range, METH_VARARGS, (char *)"SArray1dIndexC_Range(self) -> IndexRangeC"},
 	 { (char *)"SArray1dIndexC_Join", _wrap_SArray1dIndexC_Join, METH_VARARGS, (char *)"\n"
-		"Join(SArray1dIndexC Oth) -> SArray1dIndexC\n"
-		"SArray1dIndexC_Join(SArray1dIndexC self, IndexC Oth) -> SArray1dIndexC\n"
+		"Join(Oth) -> SArray1dIndexC\n"
+		"SArray1dIndexC_Join(self, Oth) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC_Append", _wrap_SArray1dIndexC_Append, METH_VARARGS, (char *)"\n"
-		"Append(SArray1dIndexC a) -> SArray1dIndexC\n"
-		"SArray1dIndexC_Append(SArray1dIndexC self, IndexC a) -> SArray1dIndexC\n"
+		"Append(a) -> SArray1dIndexC\n"
+		"SArray1dIndexC_Append(self, a) -> SArray1dIndexC\n"
 		""},
 	 { (char *)"SArray1dIndexC_From", _wrap_SArray1dIndexC_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> SArray1dIndexC\n"
-		"SArray1dIndexC_From(SArray1dIndexC self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dIndexC\n"
+		"From(offset) -> SArray1dIndexC\n"
+		"SArray1dIndexC_From(self, offset, size) -> SArray1dIndexC\n"
 		""},
-	 { (char *)"SArray1dIndexC_After", _wrap_SArray1dIndexC_After, METH_VARARGS, (char *)"SArray1dIndexC_After(SArray1dIndexC self, RavlN::UIntT offset) -> SArray1dIndexC"},
-	 { (char *)"SArray1dIndexC_Before", _wrap_SArray1dIndexC_Before, METH_VARARGS, (char *)"SArray1dIndexC_Before(SArray1dIndexC self, RavlN::UIntT offset) -> SArray1dIndexC"},
-	 { (char *)"SArray1dIndexC___eq__", _wrap_SArray1dIndexC___eq__, METH_VARARGS, (char *)"SArray1dIndexC___eq__(SArray1dIndexC self, SArray1dIndexC vv) -> bool"},
-	 { (char *)"SArray1dIndexC___ne__", _wrap_SArray1dIndexC___ne__, METH_VARARGS, (char *)"SArray1dIndexC___ne__(SArray1dIndexC self, SArray1dIndexC vv) -> bool"},
-	 { (char *)"SArray1dIndexC_Hash", _wrap_SArray1dIndexC_Hash, METH_VARARGS, (char *)"SArray1dIndexC_Hash(SArray1dIndexC self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dIndexC_DataStart", _wrap_SArray1dIndexC_DataStart, METH_VARARGS, (char *)"SArray1dIndexC_DataStart(SArray1dIndexC self) -> IndexC"},
-	 { (char *)"SArray1dIndexC___getitem__", _wrap_SArray1dIndexC___getitem__, METH_VARARGS, (char *)"SArray1dIndexC___getitem__(SArray1dIndexC self, size_t i) -> IndexC"},
-	 { (char *)"SArray1dIndexC___setitem__", _wrap_SArray1dIndexC___setitem__, METH_VARARGS, (char *)"SArray1dIndexC___setitem__(SArray1dIndexC self, size_t i, IndexC v)"},
-	 { (char *)"SArray1dIndexC___str__", _wrap_SArray1dIndexC___str__, METH_VARARGS, (char *)"SArray1dIndexC___str__(SArray1dIndexC self) -> char const *"},
-	 { (char *)"delete_SArray1dIndexC", _wrap_delete_SArray1dIndexC, METH_VARARGS, (char *)"delete_SArray1dIndexC(SArray1dIndexC self)"},
+	 { (char *)"SArray1dIndexC_After", _wrap_SArray1dIndexC_After, METH_VARARGS, (char *)"SArray1dIndexC_After(self, offset) -> SArray1dIndexC"},
+	 { (char *)"SArray1dIndexC_Before", _wrap_SArray1dIndexC_Before, METH_VARARGS, (char *)"SArray1dIndexC_Before(self, offset) -> SArray1dIndexC"},
+	 { (char *)"SArray1dIndexC___eq__", _wrap_SArray1dIndexC___eq__, METH_VARARGS, (char *)"SArray1dIndexC___eq__(self, vv) -> bool"},
+	 { (char *)"SArray1dIndexC___ne__", _wrap_SArray1dIndexC___ne__, METH_VARARGS, (char *)"SArray1dIndexC___ne__(self, vv) -> bool"},
+	 { (char *)"SArray1dIndexC_Hash", _wrap_SArray1dIndexC_Hash, METH_VARARGS, (char *)"SArray1dIndexC_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dIndexC_DataStart", _wrap_SArray1dIndexC_DataStart, METH_VARARGS, (char *)"SArray1dIndexC_DataStart(self) -> IndexC"},
+	 { (char *)"SArray1dIndexC___getitem__", _wrap_SArray1dIndexC___getitem__, METH_VARARGS, (char *)"SArray1dIndexC___getitem__(self, i) -> IndexC"},
+	 { (char *)"SArray1dIndexC___setitem__", _wrap_SArray1dIndexC___setitem__, METH_VARARGS, (char *)"SArray1dIndexC___setitem__(self, i, v)"},
+	 { (char *)"SArray1dIndexC___str__", _wrap_SArray1dIndexC___str__, METH_VARARGS, (char *)"SArray1dIndexC___str__(self) -> char const *"},
+	 { (char *)"delete_SArray1dIndexC", _wrap_delete_SArray1dIndexC, METH_VARARGS, (char *)"delete_SArray1dIndexC(self)"},
 	 { (char *)"SArray1dIndexC_swigregister", SArray1dIndexC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"SArray1dPoint2dC_ConstructAligned", _wrap_SArray1dPoint2dC_ConstructAligned, METH_VARARGS, (char *)"SArray1dPoint2dC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dPoint2dC"},
+	 { (char *)"SArray1dPoint2dC_ConstructAligned", _wrap_SArray1dPoint2dC_ConstructAligned, METH_VARARGS, (char *)"SArray1dPoint2dC_ConstructAligned(dim, align) -> SArray1dPoint2dC"},
 	 { (char *)"new_SArray1dPoint2dC", _wrap_new_SArray1dPoint2dC, METH_VARARGS, (char *)"\n"
 		"SArray1dPoint2dC()\n"
-		"SArray1dPoint2dC(RavlN::SizeT const dim)\n"
-		"SArray1dPoint2dC(SArray1dPoint2dC vv)\n"
-		"SArray1dPoint2dC(SArray1dPoint2dC vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0)\n"
-		"SArray1dPoint2dC(SArray1dPoint2dC vv, RavlN::SizeT dim)\n"
-		"new_SArray1dPoint2dC(Point2dC data, RavlN::SizeT const dim, bool removable) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC(dim)\n"
+		"SArray1dPoint2dC(vv)\n"
+		"SArray1dPoint2dC(vv, dim, offsetInBuff=0)\n"
+		"SArray1dPoint2dC(vv, dim)\n"
+		"new_SArray1dPoint2dC(data, dim, removable) -> SArray1dPoint2dC\n"
 		""},
-	 { (char *)"SArray1dPoint2dC_IsEmpty", _wrap_SArray1dPoint2dC_IsEmpty, METH_VARARGS, (char *)"SArray1dPoint2dC_IsEmpty(SArray1dPoint2dC self) -> bool"},
-	 { (char *)"SArray1dPoint2dC_Contains", _wrap_SArray1dPoint2dC_Contains, METH_VARARGS, (char *)"SArray1dPoint2dC_Contains(SArray1dPoint2dC self, IndexC i) -> bool"},
-	 { (char *)"SArray1dPoint2dC_Fill", _wrap_SArray1dPoint2dC_Fill, METH_VARARGS, (char *)"SArray1dPoint2dC_Fill(SArray1dPoint2dC self, Point2dC d)"},
-	 { (char *)"SArray1dPoint2dC_Reverse", _wrap_SArray1dPoint2dC_Reverse, METH_VARARGS, (char *)"SArray1dPoint2dC_Reverse(SArray1dPoint2dC self)"},
+	 { (char *)"SArray1dPoint2dC_IsEmpty", _wrap_SArray1dPoint2dC_IsEmpty, METH_VARARGS, (char *)"SArray1dPoint2dC_IsEmpty(self) -> bool"},
+	 { (char *)"SArray1dPoint2dC_Contains", _wrap_SArray1dPoint2dC_Contains, METH_VARARGS, (char *)"SArray1dPoint2dC_Contains(self, i) -> bool"},
+	 { (char *)"SArray1dPoint2dC_Fill", _wrap_SArray1dPoint2dC_Fill, METH_VARARGS, (char *)"SArray1dPoint2dC_Fill(self, d)"},
+	 { (char *)"SArray1dPoint2dC_Reverse", _wrap_SArray1dPoint2dC_Reverse, METH_VARARGS, (char *)"SArray1dPoint2dC_Reverse(self)"},
 	 { (char *)"SArray1dPoint2dC___mul__", _wrap_SArray1dPoint2dC___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___mul__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__mul__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___mul__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___div__", _wrap_SArray1dPoint2dC___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___div__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__div__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___div__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___add__", _wrap_SArray1dPoint2dC___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___add__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__add__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___add__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___sub__", _wrap_SArray1dPoint2dC___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___sub__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__sub__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___sub__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___iadd__", _wrap_SArray1dPoint2dC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___iadd__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__iadd__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___iadd__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___isub__", _wrap_SArray1dPoint2dC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___isub__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__isub__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___isub__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___imul__", _wrap_SArray1dPoint2dC___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___imul__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__imul__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___imul__(self, number) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC___idiv__", _wrap_SArray1dPoint2dC___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray1dPoint2dC arr) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC___idiv__(SArray1dPoint2dC self, Point2dC number) -> SArray1dPoint2dC\n"
+		"__idiv__(arr) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC___idiv__(self, number) -> SArray1dPoint2dC\n"
 		""},
-	 { (char *)"SArray1dPoint2dC_Sum", _wrap_SArray1dPoint2dC_Sum, METH_VARARGS, (char *)"SArray1dPoint2dC_Sum(SArray1dPoint2dC self) -> Point2dC"},
-	 { (char *)"SArray1dPoint2dC_SumOfSqr", _wrap_SArray1dPoint2dC_SumOfSqr, METH_VARARGS, (char *)"SArray1dPoint2dC_SumOfSqr(SArray1dPoint2dC self) -> Point2dC"},
+	 { (char *)"SArray1dPoint2dC_Sum", _wrap_SArray1dPoint2dC_Sum, METH_VARARGS, (char *)"SArray1dPoint2dC_Sum(self) -> Point2dC"},
+	 { (char *)"SArray1dPoint2dC_SumOfSqr", _wrap_SArray1dPoint2dC_SumOfSqr, METH_VARARGS, (char *)"SArray1dPoint2dC_SumOfSqr(self) -> Point2dC"},
 	 { (char *)"SArray1dPoint2dC_SArray1d", _wrap_SArray1dPoint2dC_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC_SArray1d(SArray1dPoint2dC self) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC_SArray1d(self) -> SArray1dPoint2dC\n"
 		""},
-	 { (char *)"SArray1dPoint2dC_Size", _wrap_SArray1dPoint2dC_Size, METH_VARARGS, (char *)"SArray1dPoint2dC_Size(SArray1dPoint2dC self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dPoint2dC_Range", _wrap_SArray1dPoint2dC_Range, METH_VARARGS, (char *)"SArray1dPoint2dC_Range(SArray1dPoint2dC self) -> IndexRangeC"},
+	 { (char *)"SArray1dPoint2dC_Size", _wrap_SArray1dPoint2dC_Size, METH_VARARGS, (char *)"SArray1dPoint2dC_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dPoint2dC_Range", _wrap_SArray1dPoint2dC_Range, METH_VARARGS, (char *)"SArray1dPoint2dC_Range(self) -> IndexRangeC"},
 	 { (char *)"SArray1dPoint2dC_Join", _wrap_SArray1dPoint2dC_Join, METH_VARARGS, (char *)"\n"
-		"Join(SArray1dPoint2dC Oth) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC_Join(SArray1dPoint2dC self, Point2dC Oth) -> SArray1dPoint2dC\n"
+		"Join(Oth) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC_Join(self, Oth) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC_Append", _wrap_SArray1dPoint2dC_Append, METH_VARARGS, (char *)"\n"
-		"Append(SArray1dPoint2dC a) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC_Append(SArray1dPoint2dC self, Point2dC a) -> SArray1dPoint2dC\n"
+		"Append(a) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC_Append(self, a) -> SArray1dPoint2dC\n"
 		""},
 	 { (char *)"SArray1dPoint2dC_From", _wrap_SArray1dPoint2dC_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> SArray1dPoint2dC\n"
-		"SArray1dPoint2dC_From(SArray1dPoint2dC self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dPoint2dC\n"
+		"From(offset) -> SArray1dPoint2dC\n"
+		"SArray1dPoint2dC_From(self, offset, size) -> SArray1dPoint2dC\n"
 		""},
-	 { (char *)"SArray1dPoint2dC_After", _wrap_SArray1dPoint2dC_After, METH_VARARGS, (char *)"SArray1dPoint2dC_After(SArray1dPoint2dC self, RavlN::UIntT offset) -> SArray1dPoint2dC"},
-	 { (char *)"SArray1dPoint2dC_Before", _wrap_SArray1dPoint2dC_Before, METH_VARARGS, (char *)"SArray1dPoint2dC_Before(SArray1dPoint2dC self, RavlN::UIntT offset) -> SArray1dPoint2dC"},
-	 { (char *)"SArray1dPoint2dC___eq__", _wrap_SArray1dPoint2dC___eq__, METH_VARARGS, (char *)"SArray1dPoint2dC___eq__(SArray1dPoint2dC self, SArray1dPoint2dC vv) -> bool"},
-	 { (char *)"SArray1dPoint2dC___ne__", _wrap_SArray1dPoint2dC___ne__, METH_VARARGS, (char *)"SArray1dPoint2dC___ne__(SArray1dPoint2dC self, SArray1dPoint2dC vv) -> bool"},
-	 { (char *)"SArray1dPoint2dC_Hash", _wrap_SArray1dPoint2dC_Hash, METH_VARARGS, (char *)"SArray1dPoint2dC_Hash(SArray1dPoint2dC self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dPoint2dC_DataStart", _wrap_SArray1dPoint2dC_DataStart, METH_VARARGS, (char *)"SArray1dPoint2dC_DataStart(SArray1dPoint2dC self) -> Point2dC"},
-	 { (char *)"SArray1dPoint2dC___getitem__", _wrap_SArray1dPoint2dC___getitem__, METH_VARARGS, (char *)"SArray1dPoint2dC___getitem__(SArray1dPoint2dC self, size_t i) -> Point2dC"},
-	 { (char *)"SArray1dPoint2dC___setitem__", _wrap_SArray1dPoint2dC___setitem__, METH_VARARGS, (char *)"SArray1dPoint2dC___setitem__(SArray1dPoint2dC self, size_t i, Point2dC v)"},
-	 { (char *)"SArray1dPoint2dC___str__", _wrap_SArray1dPoint2dC___str__, METH_VARARGS, (char *)"SArray1dPoint2dC___str__(SArray1dPoint2dC self) -> char const *"},
-	 { (char *)"delete_SArray1dPoint2dC", _wrap_delete_SArray1dPoint2dC, METH_VARARGS, (char *)"delete_SArray1dPoint2dC(SArray1dPoint2dC self)"},
+	 { (char *)"SArray1dPoint2dC_After", _wrap_SArray1dPoint2dC_After, METH_VARARGS, (char *)"SArray1dPoint2dC_After(self, offset) -> SArray1dPoint2dC"},
+	 { (char *)"SArray1dPoint2dC_Before", _wrap_SArray1dPoint2dC_Before, METH_VARARGS, (char *)"SArray1dPoint2dC_Before(self, offset) -> SArray1dPoint2dC"},
+	 { (char *)"SArray1dPoint2dC___eq__", _wrap_SArray1dPoint2dC___eq__, METH_VARARGS, (char *)"SArray1dPoint2dC___eq__(self, vv) -> bool"},
+	 { (char *)"SArray1dPoint2dC___ne__", _wrap_SArray1dPoint2dC___ne__, METH_VARARGS, (char *)"SArray1dPoint2dC___ne__(self, vv) -> bool"},
+	 { (char *)"SArray1dPoint2dC_Hash", _wrap_SArray1dPoint2dC_Hash, METH_VARARGS, (char *)"SArray1dPoint2dC_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dPoint2dC_DataStart", _wrap_SArray1dPoint2dC_DataStart, METH_VARARGS, (char *)"SArray1dPoint2dC_DataStart(self) -> Point2dC"},
+	 { (char *)"SArray1dPoint2dC___getitem__", _wrap_SArray1dPoint2dC___getitem__, METH_VARARGS, (char *)"SArray1dPoint2dC___getitem__(self, i) -> Point2dC"},
+	 { (char *)"SArray1dPoint2dC___setitem__", _wrap_SArray1dPoint2dC___setitem__, METH_VARARGS, (char *)"SArray1dPoint2dC___setitem__(self, i, v)"},
+	 { (char *)"SArray1dPoint2dC___str__", _wrap_SArray1dPoint2dC___str__, METH_VARARGS, (char *)"SArray1dPoint2dC___str__(self) -> char const *"},
+	 { (char *)"delete_SArray1dPoint2dC", _wrap_delete_SArray1dPoint2dC, METH_VARARGS, (char *)"delete_SArray1dPoint2dC(self)"},
 	 { (char *)"SArray1dPoint2dC_swigregister", SArray1dPoint2dC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"SArray1dVectorC_ConstructAligned", _wrap_SArray1dVectorC_ConstructAligned, METH_VARARGS, (char *)"SArray1dVectorC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> SArray1dVectorC"},
+	 { (char *)"SArray1dVectorC_ConstructAligned", _wrap_SArray1dVectorC_ConstructAligned, METH_VARARGS, (char *)"SArray1dVectorC_ConstructAligned(dim, align) -> SArray1dVectorC"},
 	 { (char *)"new_SArray1dVectorC", _wrap_new_SArray1dVectorC, METH_VARARGS, (char *)"\n"
 		"SArray1dVectorC()\n"
-		"SArray1dVectorC(RavlN::SizeT const dim)\n"
-		"SArray1dVectorC(SArray1dVectorC vv)\n"
-		"SArray1dVectorC(SArray1dVectorC vv, RavlN::SizeT dim, RavlN::SizeT offsetInBuff=0)\n"
-		"SArray1dVectorC(SArray1dVectorC vv, RavlN::SizeT dim)\n"
-		"new_SArray1dVectorC(VectorC data, RavlN::SizeT const dim, bool removable) -> SArray1dVectorC\n"
+		"SArray1dVectorC(dim)\n"
+		"SArray1dVectorC(vv)\n"
+		"SArray1dVectorC(vv, dim, offsetInBuff=0)\n"
+		"SArray1dVectorC(vv, dim)\n"
+		"new_SArray1dVectorC(data, dim, removable) -> SArray1dVectorC\n"
 		""},
-	 { (char *)"SArray1dVectorC_IsEmpty", _wrap_SArray1dVectorC_IsEmpty, METH_VARARGS, (char *)"SArray1dVectorC_IsEmpty(SArray1dVectorC self) -> bool"},
-	 { (char *)"SArray1dVectorC_Contains", _wrap_SArray1dVectorC_Contains, METH_VARARGS, (char *)"SArray1dVectorC_Contains(SArray1dVectorC self, IndexC i) -> bool"},
-	 { (char *)"SArray1dVectorC_Fill", _wrap_SArray1dVectorC_Fill, METH_VARARGS, (char *)"SArray1dVectorC_Fill(SArray1dVectorC self, VectorC d)"},
-	 { (char *)"SArray1dVectorC_Reverse", _wrap_SArray1dVectorC_Reverse, METH_VARARGS, (char *)"SArray1dVectorC_Reverse(SArray1dVectorC self)"},
+	 { (char *)"SArray1dVectorC_IsEmpty", _wrap_SArray1dVectorC_IsEmpty, METH_VARARGS, (char *)"SArray1dVectorC_IsEmpty(self) -> bool"},
+	 { (char *)"SArray1dVectorC_Contains", _wrap_SArray1dVectorC_Contains, METH_VARARGS, (char *)"SArray1dVectorC_Contains(self, i) -> bool"},
+	 { (char *)"SArray1dVectorC_Fill", _wrap_SArray1dVectorC_Fill, METH_VARARGS, (char *)"SArray1dVectorC_Fill(self, d)"},
+	 { (char *)"SArray1dVectorC_Reverse", _wrap_SArray1dVectorC_Reverse, METH_VARARGS, (char *)"SArray1dVectorC_Reverse(self)"},
 	 { (char *)"SArray1dVectorC___mul__", _wrap_SArray1dVectorC___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___mul__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__mul__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___mul__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___div__", _wrap_SArray1dVectorC___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___div__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__div__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___div__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___add__", _wrap_SArray1dVectorC___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___add__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__add__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___add__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___sub__", _wrap_SArray1dVectorC___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___sub__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__sub__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___sub__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___iadd__", _wrap_SArray1dVectorC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___iadd__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__iadd__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___iadd__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___isub__", _wrap_SArray1dVectorC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___isub__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__isub__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___isub__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___imul__", _wrap_SArray1dVectorC___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___imul__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__imul__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___imul__(self, number) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC___idiv__", _wrap_SArray1dVectorC___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray1dVectorC arr) -> SArray1dVectorC\n"
-		"SArray1dVectorC___idiv__(SArray1dVectorC self, VectorC number) -> SArray1dVectorC\n"
+		"__idiv__(arr) -> SArray1dVectorC\n"
+		"SArray1dVectorC___idiv__(self, number) -> SArray1dVectorC\n"
 		""},
-	 { (char *)"SArray1dVectorC_Sum", _wrap_SArray1dVectorC_Sum, METH_VARARGS, (char *)"SArray1dVectorC_Sum(SArray1dVectorC self) -> VectorC"},
-	 { (char *)"SArray1dVectorC_SumOfSqr", _wrap_SArray1dVectorC_SumOfSqr, METH_VARARGS, (char *)"SArray1dVectorC_SumOfSqr(SArray1dVectorC self) -> VectorC"},
+	 { (char *)"SArray1dVectorC_Sum", _wrap_SArray1dVectorC_Sum, METH_VARARGS, (char *)"SArray1dVectorC_Sum(self) -> VectorC"},
+	 { (char *)"SArray1dVectorC_SumOfSqr", _wrap_SArray1dVectorC_SumOfSqr, METH_VARARGS, (char *)"SArray1dVectorC_SumOfSqr(self) -> VectorC"},
 	 { (char *)"SArray1dVectorC_SArray1d", _wrap_SArray1dVectorC_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dVectorC\n"
-		"SArray1dVectorC_SArray1d(SArray1dVectorC self) -> SArray1dVectorC\n"
+		"SArray1dVectorC_SArray1d(self) -> SArray1dVectorC\n"
 		""},
-	 { (char *)"SArray1dVectorC_Size", _wrap_SArray1dVectorC_Size, METH_VARARGS, (char *)"SArray1dVectorC_Size(SArray1dVectorC self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dVectorC_Range", _wrap_SArray1dVectorC_Range, METH_VARARGS, (char *)"SArray1dVectorC_Range(SArray1dVectorC self) -> IndexRangeC"},
+	 { (char *)"SArray1dVectorC_Size", _wrap_SArray1dVectorC_Size, METH_VARARGS, (char *)"SArray1dVectorC_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dVectorC_Range", _wrap_SArray1dVectorC_Range, METH_VARARGS, (char *)"SArray1dVectorC_Range(self) -> IndexRangeC"},
 	 { (char *)"SArray1dVectorC_Join", _wrap_SArray1dVectorC_Join, METH_VARARGS, (char *)"\n"
-		"Join(SArray1dVectorC Oth) -> SArray1dVectorC\n"
-		"SArray1dVectorC_Join(SArray1dVectorC self, VectorC Oth) -> SArray1dVectorC\n"
+		"Join(Oth) -> SArray1dVectorC\n"
+		"SArray1dVectorC_Join(self, Oth) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC_Append", _wrap_SArray1dVectorC_Append, METH_VARARGS, (char *)"\n"
-		"Append(SArray1dVectorC a) -> SArray1dVectorC\n"
-		"SArray1dVectorC_Append(SArray1dVectorC self, VectorC a) -> SArray1dVectorC\n"
+		"Append(a) -> SArray1dVectorC\n"
+		"SArray1dVectorC_Append(self, a) -> SArray1dVectorC\n"
 		""},
 	 { (char *)"SArray1dVectorC_From", _wrap_SArray1dVectorC_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> SArray1dVectorC\n"
-		"SArray1dVectorC_From(SArray1dVectorC self, RavlN::UIntT offset, RavlN::UIntT size) -> SArray1dVectorC\n"
+		"From(offset) -> SArray1dVectorC\n"
+		"SArray1dVectorC_From(self, offset, size) -> SArray1dVectorC\n"
 		""},
-	 { (char *)"SArray1dVectorC_After", _wrap_SArray1dVectorC_After, METH_VARARGS, (char *)"SArray1dVectorC_After(SArray1dVectorC self, RavlN::UIntT offset) -> SArray1dVectorC"},
-	 { (char *)"SArray1dVectorC_Before", _wrap_SArray1dVectorC_Before, METH_VARARGS, (char *)"SArray1dVectorC_Before(SArray1dVectorC self, RavlN::UIntT offset) -> SArray1dVectorC"},
-	 { (char *)"SArray1dVectorC___eq__", _wrap_SArray1dVectorC___eq__, METH_VARARGS, (char *)"SArray1dVectorC___eq__(SArray1dVectorC self, SArray1dVectorC vv) -> bool"},
-	 { (char *)"SArray1dVectorC___ne__", _wrap_SArray1dVectorC___ne__, METH_VARARGS, (char *)"SArray1dVectorC___ne__(SArray1dVectorC self, SArray1dVectorC vv) -> bool"},
-	 { (char *)"SArray1dVectorC_Hash", _wrap_SArray1dVectorC_Hash, METH_VARARGS, (char *)"SArray1dVectorC_Hash(SArray1dVectorC self) -> RavlN::SizeT"},
-	 { (char *)"SArray1dVectorC_DataStart", _wrap_SArray1dVectorC_DataStart, METH_VARARGS, (char *)"SArray1dVectorC_DataStart(SArray1dVectorC self) -> VectorC"},
-	 { (char *)"SArray1dVectorC___getitem__", _wrap_SArray1dVectorC___getitem__, METH_VARARGS, (char *)"SArray1dVectorC___getitem__(SArray1dVectorC self, size_t i) -> VectorC"},
-	 { (char *)"SArray1dVectorC___setitem__", _wrap_SArray1dVectorC___setitem__, METH_VARARGS, (char *)"SArray1dVectorC___setitem__(SArray1dVectorC self, size_t i, VectorC v)"},
-	 { (char *)"SArray1dVectorC___str__", _wrap_SArray1dVectorC___str__, METH_VARARGS, (char *)"SArray1dVectorC___str__(SArray1dVectorC self) -> char const *"},
-	 { (char *)"delete_SArray1dVectorC", _wrap_delete_SArray1dVectorC, METH_VARARGS, (char *)"delete_SArray1dVectorC(SArray1dVectorC self)"},
+	 { (char *)"SArray1dVectorC_After", _wrap_SArray1dVectorC_After, METH_VARARGS, (char *)"SArray1dVectorC_After(self, offset) -> SArray1dVectorC"},
+	 { (char *)"SArray1dVectorC_Before", _wrap_SArray1dVectorC_Before, METH_VARARGS, (char *)"SArray1dVectorC_Before(self, offset) -> SArray1dVectorC"},
+	 { (char *)"SArray1dVectorC___eq__", _wrap_SArray1dVectorC___eq__, METH_VARARGS, (char *)"SArray1dVectorC___eq__(self, vv) -> bool"},
+	 { (char *)"SArray1dVectorC___ne__", _wrap_SArray1dVectorC___ne__, METH_VARARGS, (char *)"SArray1dVectorC___ne__(self, vv) -> bool"},
+	 { (char *)"SArray1dVectorC_Hash", _wrap_SArray1dVectorC_Hash, METH_VARARGS, (char *)"SArray1dVectorC_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray1dVectorC_DataStart", _wrap_SArray1dVectorC_DataStart, METH_VARARGS, (char *)"SArray1dVectorC_DataStart(self) -> VectorC"},
+	 { (char *)"SArray1dVectorC___getitem__", _wrap_SArray1dVectorC___getitem__, METH_VARARGS, (char *)"SArray1dVectorC___getitem__(self, i) -> VectorC"},
+	 { (char *)"SArray1dVectorC___setitem__", _wrap_SArray1dVectorC___setitem__, METH_VARARGS, (char *)"SArray1dVectorC___setitem__(self, i, v)"},
+	 { (char *)"SArray1dVectorC___str__", _wrap_SArray1dVectorC___str__, METH_VARARGS, (char *)"SArray1dVectorC___str__(self) -> char const *"},
+	 { (char *)"delete_SArray1dVectorC", _wrap_delete_SArray1dVectorC, METH_VARARGS, (char *)"delete_SArray1dVectorC(self)"},
 	 { (char *)"SArray1dVectorC_swigregister", SArray1dVectorC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_SArray2dFloat", _wrap_new_SArray2dFloat, METH_VARARGS, (char *)"\n"
 		"SArray2dFloat()\n"
-		"SArray2dFloat(RavlN::SizeT dim1, RavlN::SizeT dim2)\n"
-		"SArray2dFloat(Index2dC size)\n"
-		"SArray2dFloat(SArray2dFloat arr, RavlN::SizeT size1, RavlN::SizeT size2)\n"
-		"SArray2dFloat(SArray2dFloat arr, IndexRange2dC rng)\n"
-		"SArray2dFloat(float * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False, \n"
-		"    RavlN::IntT stride=0)\n"
-		"SArray2dFloat(float * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False)\n"
-		"SArray2dFloat(float * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False)\n"
-		"new_SArray2dFloat(float * data, RavlN::SizeT size1, RavlN::SizeT size2) -> SArray2dFloat\n"
+		"SArray2dFloat(dim1, dim2)\n"
+		"SArray2dFloat(size)\n"
+		"SArray2dFloat(arr, size1, size2)\n"
+		"SArray2dFloat(arr, rng)\n"
+		"SArray2dFloat(data, size1, size2, copyMemory=False, freeMemory=False, stride=0)\n"
+		"SArray2dFloat(data, size1, size2, copyMemory=False, freeMemory=False)\n"
+		"SArray2dFloat(data, size1, size2, copyMemory=False)\n"
+		"new_SArray2dFloat(data, size1, size2) -> SArray2dFloat\n"
 		""},
-	 { (char *)"SArray2dFloat_ConstructAligned", _wrap_SArray2dFloat_ConstructAligned, METH_VARARGS, (char *)"SArray2dFloat_ConstructAligned(RavlN::SizeT const dim1, RavlN::SizeT const dim2, RavlN::UIntT align) -> SArray2dFloat"},
-	 { (char *)"SArray2dFloat_Copy", _wrap_SArray2dFloat_Copy, METH_VARARGS, (char *)"SArray2dFloat_Copy(SArray2dFloat self) -> SArray2dFloat"},
-	 { (char *)"SArray2dFloat_Size1", _wrap_SArray2dFloat_Size1, METH_VARARGS, (char *)"SArray2dFloat_Size1(SArray2dFloat self) -> RavlN::SizeT"},
-	 { (char *)"SArray2dFloat_Size2", _wrap_SArray2dFloat_Size2, METH_VARARGS, (char *)"SArray2dFloat_Size2(SArray2dFloat self) -> RavlN::SizeT"},
-	 { (char *)"SArray2dFloat_Contains", _wrap_SArray2dFloat_Contains, METH_VARARGS, (char *)"SArray2dFloat_Contains(SArray2dFloat self, Index2dC i) -> bool"},
-	 { (char *)"SArray2dFloat_Fill", _wrap_SArray2dFloat_Fill, METH_VARARGS, (char *)"SArray2dFloat_Fill(SArray2dFloat self, float const & d)"},
-	 { (char *)"SArray2dFloat_Stride", _wrap_SArray2dFloat_Stride, METH_VARARGS, (char *)"SArray2dFloat_Stride(SArray2dFloat self) -> RavlN::IntT"},
-	 { (char *)"SArray2dFloat_IsContinuous", _wrap_SArray2dFloat_IsContinuous, METH_VARARGS, (char *)"SArray2dFloat_IsContinuous(SArray2dFloat self) -> bool"},
-	 { (char *)"SArray2dFloat_Frame", _wrap_SArray2dFloat_Frame, METH_VARARGS, (char *)"SArray2dFloat_Frame(SArray2dFloat self) -> IndexRange2dC"},
+	 { (char *)"SArray2dFloat_ConstructAligned", _wrap_SArray2dFloat_ConstructAligned, METH_VARARGS, (char *)"SArray2dFloat_ConstructAligned(dim1, dim2, align) -> SArray2dFloat"},
+	 { (char *)"SArray2dFloat_Copy", _wrap_SArray2dFloat_Copy, METH_VARARGS, (char *)"SArray2dFloat_Copy(self) -> SArray2dFloat"},
+	 { (char *)"SArray2dFloat_Size1", _wrap_SArray2dFloat_Size1, METH_VARARGS, (char *)"SArray2dFloat_Size1(self) -> RavlN::SizeT"},
+	 { (char *)"SArray2dFloat_Size2", _wrap_SArray2dFloat_Size2, METH_VARARGS, (char *)"SArray2dFloat_Size2(self) -> RavlN::SizeT"},
+	 { (char *)"SArray2dFloat_Contains", _wrap_SArray2dFloat_Contains, METH_VARARGS, (char *)"SArray2dFloat_Contains(self, i) -> bool"},
+	 { (char *)"SArray2dFloat_Fill", _wrap_SArray2dFloat_Fill, METH_VARARGS, (char *)"SArray2dFloat_Fill(self, d)"},
+	 { (char *)"SArray2dFloat_Stride", _wrap_SArray2dFloat_Stride, METH_VARARGS, (char *)"SArray2dFloat_Stride(self) -> RavlN::IntT"},
+	 { (char *)"SArray2dFloat_IsContinuous", _wrap_SArray2dFloat_IsContinuous, METH_VARARGS, (char *)"SArray2dFloat_IsContinuous(self) -> bool"},
+	 { (char *)"SArray2dFloat_Frame", _wrap_SArray2dFloat_Frame, METH_VARARGS, (char *)"SArray2dFloat_Frame(self) -> IndexRange2dC"},
 	 { (char *)"SArray2dFloat_AsVector", _wrap_SArray2dFloat_AsVector, METH_VARARGS, (char *)"\n"
-		"AsVector(bool alwaysCopy=False) -> SArray1dFloat\n"
-		"SArray2dFloat_AsVector(SArray2dFloat self) -> SArray1dFloat\n"
+		"AsVector(alwaysCopy=False) -> SArray1dFloat\n"
+		"SArray2dFloat_AsVector(self) -> SArray1dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___mul__", _wrap_SArray2dFloat___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___mul__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__mul__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___mul__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___div__", _wrap_SArray2dFloat___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___div__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__div__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___div__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___add__", _wrap_SArray2dFloat___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___add__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__add__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___add__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___sub__", _wrap_SArray2dFloat___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___sub__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__sub__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___sub__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___iadd__", _wrap_SArray2dFloat___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___iadd__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__iadd__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___iadd__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___isub__", _wrap_SArray2dFloat___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___isub__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__isub__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___isub__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___imul__", _wrap_SArray2dFloat___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___imul__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__imul__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___imul__(self, number) -> SArray2dFloat\n"
 		""},
 	 { (char *)"SArray2dFloat___idiv__", _wrap_SArray2dFloat___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray2dFloat arr) -> SArray2dFloat\n"
-		"SArray2dFloat___idiv__(SArray2dFloat self, float const & number) -> SArray2dFloat\n"
+		"__idiv__(arr) -> SArray2dFloat\n"
+		"SArray2dFloat___idiv__(self, number) -> SArray2dFloat\n"
 		""},
-	 { (char *)"SArray2dFloat___eq__", _wrap_SArray2dFloat___eq__, METH_VARARGS, (char *)"SArray2dFloat___eq__(SArray2dFloat self, SArray2dFloat op) -> bool"},
-	 { (char *)"SArray2dFloat___ne__", _wrap_SArray2dFloat___ne__, METH_VARARGS, (char *)"SArray2dFloat___ne__(SArray2dFloat self, SArray2dFloat op) -> bool"},
-	 { (char *)"SArray2dFloat_SumOfSqr", _wrap_SArray2dFloat_SumOfSqr, METH_VARARGS, (char *)"SArray2dFloat_SumOfSqr(SArray2dFloat self) -> float"},
-	 { (char *)"SArray2dFloat_Sum", _wrap_SArray2dFloat_Sum, METH_VARARGS, (char *)"SArray2dFloat_Sum(SArray2dFloat self) -> float"},
-	 { (char *)"SArray2dFloat_SliceRow", _wrap_SArray2dFloat_SliceRow, METH_VARARGS, (char *)"SArray2dFloat_SliceRow(SArray2dFloat self, IndexC i) -> SArray1dFloat"},
+	 { (char *)"SArray2dFloat___eq__", _wrap_SArray2dFloat___eq__, METH_VARARGS, (char *)"SArray2dFloat___eq__(self, op) -> bool"},
+	 { (char *)"SArray2dFloat___ne__", _wrap_SArray2dFloat___ne__, METH_VARARGS, (char *)"SArray2dFloat___ne__(self, op) -> bool"},
+	 { (char *)"SArray2dFloat_SumOfSqr", _wrap_SArray2dFloat_SumOfSqr, METH_VARARGS, (char *)"SArray2dFloat_SumOfSqr(self) -> float"},
+	 { (char *)"SArray2dFloat_Sum", _wrap_SArray2dFloat_Sum, METH_VARARGS, (char *)"SArray2dFloat_Sum(self) -> float"},
+	 { (char *)"SArray2dFloat_SliceRow", _wrap_SArray2dFloat_SliceRow, METH_VARARGS, (char *)"SArray2dFloat_SliceRow(self, i) -> SArray1dFloat"},
 	 { (char *)"SArray2dFloat_SetColumn", _wrap_SArray2dFloat_SetColumn, METH_VARARGS, (char *)"\n"
-		"SetColumn(IndexC i, SArray1dFloat val)\n"
-		"SArray2dFloat_SetColumn(SArray2dFloat self, IndexC i, float const & val)\n"
+		"SetColumn(i, val)\n"
+		"SArray2dFloat_SetColumn(self, i, val)\n"
 		""},
 	 { (char *)"SArray2dFloat_SetRow", _wrap_SArray2dFloat_SetRow, METH_VARARGS, (char *)"\n"
-		"SetRow(IndexC i, SArray1dFloat val)\n"
-		"SArray2dFloat_SetRow(SArray2dFloat self, IndexC i, float const & val)\n"
+		"SetRow(i, val)\n"
+		"SArray2dFloat_SetRow(self, i, val)\n"
 		""},
-	 { (char *)"SArray2dFloat_SetSubArray", _wrap_SArray2dFloat_SetSubArray, METH_VARARGS, (char *)"SArray2dFloat_SetSubArray(SArray2dFloat self, Index2dC origin, SArray2dFloat vals)"},
-	 { (char *)"SArray2dFloat_Hash", _wrap_SArray2dFloat_Hash, METH_VARARGS, (char *)"SArray2dFloat_Hash(SArray2dFloat self) -> RavlN::SizeT"},
-	 { (char *)"SArray2dFloat___str__", _wrap_SArray2dFloat___str__, METH_VARARGS, (char *)"SArray2dFloat___str__(SArray2dFloat self) -> char const *"},
-	 { (char *)"delete_SArray2dFloat", _wrap_delete_SArray2dFloat, METH_VARARGS, (char *)"delete_SArray2dFloat(SArray2dFloat self)"},
+	 { (char *)"SArray2dFloat_SetSubArray", _wrap_SArray2dFloat_SetSubArray, METH_VARARGS, (char *)"SArray2dFloat_SetSubArray(self, origin, vals)"},
+	 { (char *)"SArray2dFloat_Hash", _wrap_SArray2dFloat_Hash, METH_VARARGS, (char *)"SArray2dFloat_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray2dFloat___str__", _wrap_SArray2dFloat___str__, METH_VARARGS, (char *)"SArray2dFloat___str__(self) -> char const *"},
+	 { (char *)"delete_SArray2dFloat", _wrap_delete_SArray2dFloat, METH_VARARGS, (char *)"delete_SArray2dFloat(self)"},
 	 { (char *)"SArray2dFloat_swigregister", SArray2dFloat_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_SArray2dReal", _wrap_new_SArray2dReal, METH_VARARGS, (char *)"\n"
 		"SArray2dReal()\n"
-		"SArray2dReal(RavlN::SizeT dim1, RavlN::SizeT dim2)\n"
-		"SArray2dReal(Index2dC size)\n"
-		"SArray2dReal(SArray2dReal arr, RavlN::SizeT size1, RavlN::SizeT size2)\n"
-		"SArray2dReal(SArray2dReal arr, IndexRange2dC rng)\n"
-		"SArray2dReal(double * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False, \n"
-		"    RavlN::IntT stride=0)\n"
-		"SArray2dReal(double * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False, bool freeMemory=False)\n"
-		"SArray2dReal(double * data, RavlN::SizeT size1, RavlN::SizeT size2, bool copyMemory=False)\n"
-		"new_SArray2dReal(double * data, RavlN::SizeT size1, RavlN::SizeT size2) -> SArray2dReal\n"
+		"SArray2dReal(dim1, dim2)\n"
+		"SArray2dReal(size)\n"
+		"SArray2dReal(arr, size1, size2)\n"
+		"SArray2dReal(arr, rng)\n"
+		"SArray2dReal(data, size1, size2, copyMemory=False, freeMemory=False, stride=0)\n"
+		"SArray2dReal(data, size1, size2, copyMemory=False, freeMemory=False)\n"
+		"SArray2dReal(data, size1, size2, copyMemory=False)\n"
+		"new_SArray2dReal(data, size1, size2) -> SArray2dReal\n"
 		""},
-	 { (char *)"SArray2dReal_ConstructAligned", _wrap_SArray2dReal_ConstructAligned, METH_VARARGS, (char *)"SArray2dReal_ConstructAligned(RavlN::SizeT const dim1, RavlN::SizeT const dim2, RavlN::UIntT align) -> SArray2dReal"},
-	 { (char *)"SArray2dReal_Copy", _wrap_SArray2dReal_Copy, METH_VARARGS, (char *)"SArray2dReal_Copy(SArray2dReal self) -> SArray2dReal"},
-	 { (char *)"SArray2dReal_Size1", _wrap_SArray2dReal_Size1, METH_VARARGS, (char *)"SArray2dReal_Size1(SArray2dReal self) -> RavlN::SizeT"},
-	 { (char *)"SArray2dReal_Size2", _wrap_SArray2dReal_Size2, METH_VARARGS, (char *)"SArray2dReal_Size2(SArray2dReal self) -> RavlN::SizeT"},
-	 { (char *)"SArray2dReal_Contains", _wrap_SArray2dReal_Contains, METH_VARARGS, (char *)"SArray2dReal_Contains(SArray2dReal self, Index2dC i) -> bool"},
-	 { (char *)"SArray2dReal_Fill", _wrap_SArray2dReal_Fill, METH_VARARGS, (char *)"SArray2dReal_Fill(SArray2dReal self, double const & d)"},
-	 { (char *)"SArray2dReal_Stride", _wrap_SArray2dReal_Stride, METH_VARARGS, (char *)"SArray2dReal_Stride(SArray2dReal self) -> RavlN::IntT"},
-	 { (char *)"SArray2dReal_IsContinuous", _wrap_SArray2dReal_IsContinuous, METH_VARARGS, (char *)"SArray2dReal_IsContinuous(SArray2dReal self) -> bool"},
-	 { (char *)"SArray2dReal_Frame", _wrap_SArray2dReal_Frame, METH_VARARGS, (char *)"SArray2dReal_Frame(SArray2dReal self) -> IndexRange2dC"},
+	 { (char *)"SArray2dReal_ConstructAligned", _wrap_SArray2dReal_ConstructAligned, METH_VARARGS, (char *)"SArray2dReal_ConstructAligned(dim1, dim2, align) -> SArray2dReal"},
+	 { (char *)"SArray2dReal_Copy", _wrap_SArray2dReal_Copy, METH_VARARGS, (char *)"SArray2dReal_Copy(self) -> SArray2dReal"},
+	 { (char *)"SArray2dReal_Size1", _wrap_SArray2dReal_Size1, METH_VARARGS, (char *)"SArray2dReal_Size1(self) -> RavlN::SizeT"},
+	 { (char *)"SArray2dReal_Size2", _wrap_SArray2dReal_Size2, METH_VARARGS, (char *)"SArray2dReal_Size2(self) -> RavlN::SizeT"},
+	 { (char *)"SArray2dReal_Contains", _wrap_SArray2dReal_Contains, METH_VARARGS, (char *)"SArray2dReal_Contains(self, i) -> bool"},
+	 { (char *)"SArray2dReal_Fill", _wrap_SArray2dReal_Fill, METH_VARARGS, (char *)"SArray2dReal_Fill(self, d)"},
+	 { (char *)"SArray2dReal_Stride", _wrap_SArray2dReal_Stride, METH_VARARGS, (char *)"SArray2dReal_Stride(self) -> RavlN::IntT"},
+	 { (char *)"SArray2dReal_IsContinuous", _wrap_SArray2dReal_IsContinuous, METH_VARARGS, (char *)"SArray2dReal_IsContinuous(self) -> bool"},
+	 { (char *)"SArray2dReal_Frame", _wrap_SArray2dReal_Frame, METH_VARARGS, (char *)"SArray2dReal_Frame(self) -> IndexRange2dC"},
 	 { (char *)"SArray2dReal_AsVector", _wrap_SArray2dReal_AsVector, METH_VARARGS, (char *)"\n"
-		"AsVector(bool alwaysCopy=False) -> SArray1dReal\n"
-		"SArray2dReal_AsVector(SArray2dReal self) -> SArray1dReal\n"
+		"AsVector(alwaysCopy=False) -> SArray1dReal\n"
+		"SArray2dReal_AsVector(self) -> SArray1dReal\n"
 		""},
 	 { (char *)"SArray2dReal___mul__", _wrap_SArray2dReal___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___mul__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__mul__(arr) -> SArray2dReal\n"
+		"SArray2dReal___mul__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___div__", _wrap_SArray2dReal___div__, METH_VARARGS, (char *)"\n"
-		"__div__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___div__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__div__(arr) -> SArray2dReal\n"
+		"SArray2dReal___div__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___add__", _wrap_SArray2dReal___add__, METH_VARARGS, (char *)"\n"
-		"__add__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___add__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__add__(arr) -> SArray2dReal\n"
+		"SArray2dReal___add__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___sub__", _wrap_SArray2dReal___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___sub__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__sub__(arr) -> SArray2dReal\n"
+		"SArray2dReal___sub__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___iadd__", _wrap_SArray2dReal___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___iadd__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__iadd__(arr) -> SArray2dReal\n"
+		"SArray2dReal___iadd__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___isub__", _wrap_SArray2dReal___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___isub__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__isub__(arr) -> SArray2dReal\n"
+		"SArray2dReal___isub__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___imul__", _wrap_SArray2dReal___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___imul__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__imul__(arr) -> SArray2dReal\n"
+		"SArray2dReal___imul__(self, number) -> SArray2dReal\n"
 		""},
 	 { (char *)"SArray2dReal___idiv__", _wrap_SArray2dReal___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(SArray2dReal arr) -> SArray2dReal\n"
-		"SArray2dReal___idiv__(SArray2dReal self, double const & number) -> SArray2dReal\n"
+		"__idiv__(arr) -> SArray2dReal\n"
+		"SArray2dReal___idiv__(self, number) -> SArray2dReal\n"
 		""},
-	 { (char *)"SArray2dReal___eq__", _wrap_SArray2dReal___eq__, METH_VARARGS, (char *)"SArray2dReal___eq__(SArray2dReal self, SArray2dReal op) -> bool"},
-	 { (char *)"SArray2dReal___ne__", _wrap_SArray2dReal___ne__, METH_VARARGS, (char *)"SArray2dReal___ne__(SArray2dReal self, SArray2dReal op) -> bool"},
-	 { (char *)"SArray2dReal_SumOfSqr", _wrap_SArray2dReal_SumOfSqr, METH_VARARGS, (char *)"SArray2dReal_SumOfSqr(SArray2dReal self) -> double"},
-	 { (char *)"SArray2dReal_Sum", _wrap_SArray2dReal_Sum, METH_VARARGS, (char *)"SArray2dReal_Sum(SArray2dReal self) -> double"},
-	 { (char *)"SArray2dReal_SliceRow", _wrap_SArray2dReal_SliceRow, METH_VARARGS, (char *)"SArray2dReal_SliceRow(SArray2dReal self, IndexC i) -> SArray1dReal"},
+	 { (char *)"SArray2dReal___eq__", _wrap_SArray2dReal___eq__, METH_VARARGS, (char *)"SArray2dReal___eq__(self, op) -> bool"},
+	 { (char *)"SArray2dReal___ne__", _wrap_SArray2dReal___ne__, METH_VARARGS, (char *)"SArray2dReal___ne__(self, op) -> bool"},
+	 { (char *)"SArray2dReal_SumOfSqr", _wrap_SArray2dReal_SumOfSqr, METH_VARARGS, (char *)"SArray2dReal_SumOfSqr(self) -> double"},
+	 { (char *)"SArray2dReal_Sum", _wrap_SArray2dReal_Sum, METH_VARARGS, (char *)"SArray2dReal_Sum(self) -> double"},
+	 { (char *)"SArray2dReal_SliceRow", _wrap_SArray2dReal_SliceRow, METH_VARARGS, (char *)"SArray2dReal_SliceRow(self, i) -> SArray1dReal"},
 	 { (char *)"SArray2dReal_SetColumn", _wrap_SArray2dReal_SetColumn, METH_VARARGS, (char *)"\n"
-		"SetColumn(IndexC i, SArray1dReal val)\n"
-		"SArray2dReal_SetColumn(SArray2dReal self, IndexC i, double const & val)\n"
+		"SetColumn(i, val)\n"
+		"SArray2dReal_SetColumn(self, i, val)\n"
 		""},
 	 { (char *)"SArray2dReal_SetRow", _wrap_SArray2dReal_SetRow, METH_VARARGS, (char *)"\n"
-		"SetRow(IndexC i, SArray1dReal val)\n"
-		"SArray2dReal_SetRow(SArray2dReal self, IndexC i, double const & val)\n"
+		"SetRow(i, val)\n"
+		"SArray2dReal_SetRow(self, i, val)\n"
 		""},
-	 { (char *)"SArray2dReal_SetSubArray", _wrap_SArray2dReal_SetSubArray, METH_VARARGS, (char *)"SArray2dReal_SetSubArray(SArray2dReal self, Index2dC origin, SArray2dReal vals)"},
-	 { (char *)"SArray2dReal_Hash", _wrap_SArray2dReal_Hash, METH_VARARGS, (char *)"SArray2dReal_Hash(SArray2dReal self) -> RavlN::SizeT"},
-	 { (char *)"SArray2dReal___str__", _wrap_SArray2dReal___str__, METH_VARARGS, (char *)"SArray2dReal___str__(SArray2dReal self) -> char const *"},
-	 { (char *)"delete_SArray2dReal", _wrap_delete_SArray2dReal, METH_VARARGS, (char *)"delete_SArray2dReal(SArray2dReal self)"},
+	 { (char *)"SArray2dReal_SetSubArray", _wrap_SArray2dReal_SetSubArray, METH_VARARGS, (char *)"SArray2dReal_SetSubArray(self, origin, vals)"},
+	 { (char *)"SArray2dReal_Hash", _wrap_SArray2dReal_Hash, METH_VARARGS, (char *)"SArray2dReal_Hash(self) -> RavlN::SizeT"},
+	 { (char *)"SArray2dReal___str__", _wrap_SArray2dReal___str__, METH_VARARGS, (char *)"SArray2dReal___str__(self) -> char const *"},
+	 { (char *)"delete_SArray2dReal", _wrap_delete_SArray2dReal, METH_VARARGS, (char *)"delete_SArray2dReal(self)"},
 	 { (char *)"SArray2dReal_swigregister", SArray2dReal_swigregister, METH_VARARGS, NULL},
-	 { (char *)"TVectorReal_Product", _wrap_TVectorReal_Product, METH_VARARGS, (char *)"TVectorReal_Product(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_SumOfSqr", _wrap_TVectorReal_SumOfSqr, METH_VARARGS, (char *)"TVectorReal_SumOfSqr(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_SumOfAbs", _wrap_TVectorReal_SumOfAbs, METH_VARARGS, (char *)"TVectorReal_SumOfAbs(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_MaxValue", _wrap_TVectorReal_MaxValue, METH_VARARGS, (char *)"TVectorReal_MaxValue(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_MaxMagnitude", _wrap_TVectorReal_MaxMagnitude, METH_VARARGS, (char *)"TVectorReal_MaxMagnitude(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_MaxAbsValue", _wrap_TVectorReal_MaxAbsValue, METH_VARARGS, (char *)"TVectorReal_MaxAbsValue(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_MinValue", _wrap_TVectorReal_MinValue, METH_VARARGS, (char *)"TVectorReal_MinValue(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_MinAbsValue", _wrap_TVectorReal_MinAbsValue, METH_VARARGS, (char *)"TVectorReal_MinAbsValue(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_Reciprocal", _wrap_TVectorReal_Reciprocal, METH_VARARGS, (char *)"TVectorReal_Reciprocal(TVectorReal self) -> TVectorReal"},
-	 { (char *)"TVectorReal_Modulus", _wrap_TVectorReal_Modulus, METH_VARARGS, (char *)"TVectorReal_Modulus(TVectorReal self) -> double"},
-	 { (char *)"TVectorReal_TMul", _wrap_TVectorReal_TMul, METH_VARARGS, (char *)"TVectorReal_TMul(TVectorReal self, TVectorReal b) -> double"},
-	 { (char *)"TVectorReal_Dot", _wrap_TVectorReal_Dot, METH_VARARGS, (char *)"TVectorReal_Dot(TVectorReal self, TVectorReal v) -> double"},
-	 { (char *)"TVectorReal_Dot2", _wrap_TVectorReal_Dot2, METH_VARARGS, (char *)"TVectorReal_Dot2(TVectorReal self, TVectorReal v1, TVectorReal v2) -> double"},
-	 { (char *)"TVectorReal_ElemMul", _wrap_TVectorReal_ElemMul, METH_VARARGS, (char *)"TVectorReal_ElemMul(TVectorReal self, TVectorReal v2, TVectorReal result)"},
-	 { (char *)"TVectorReal_ElemSum", _wrap_TVectorReal_ElemSum, METH_VARARGS, (char *)"TVectorReal_ElemSum(TVectorReal self, TVectorReal v2, TVectorReal result)"},
-	 { (char *)"TVectorReal_ElemSubtract", _wrap_TVectorReal_ElemSubtract, METH_VARARGS, (char *)"TVectorReal_ElemSubtract(TVectorReal self, TVectorReal v2, TVectorReal result)"},
-	 { (char *)"TVectorReal_SetSmallToBeZero", _wrap_TVectorReal_SetSmallToBeZero, METH_VARARGS, (char *)"TVectorReal_SetSmallToBeZero(TVectorReal self, double const & min) -> TVectorReal"},
-	 { (char *)"TVectorReal_Unit", _wrap_TVectorReal_Unit, METH_VARARGS, (char *)"TVectorReal_Unit(TVectorReal self) -> TVectorReal"},
-	 { (char *)"TVectorReal_MakeUnit", _wrap_TVectorReal_MakeUnit, METH_VARARGS, (char *)"TVectorReal_MakeUnit(TVectorReal self) -> TVectorReal"},
-	 { (char *)"TVectorReal_MulAdd", _wrap_TVectorReal_MulAdd, METH_VARARGS, (char *)"TVectorReal_MulAdd(TVectorReal self, TVectorReal i, double a) -> TVectorReal"},
-	 { (char *)"TVectorReal_MaxValueDistance", _wrap_TVectorReal_MaxValueDistance, METH_VARARGS, (char *)"TVectorReal_MaxValueDistance(TVectorReal self, TVectorReal i) -> double"},
-	 { (char *)"TVectorReal_CityBlockDistance", _wrap_TVectorReal_CityBlockDistance, METH_VARARGS, (char *)"TVectorReal_CityBlockDistance(TVectorReal self, TVectorReal i) -> double"},
-	 { (char *)"TVectorReal_SqrEuclidDistance", _wrap_TVectorReal_SqrEuclidDistance, METH_VARARGS, (char *)"TVectorReal_SqrEuclidDistance(TVectorReal self, TVectorReal i) -> double"},
-	 { (char *)"TVectorReal_EuclidDistance", _wrap_TVectorReal_EuclidDistance, METH_VARARGS, (char *)"TVectorReal_EuclidDistance(TVectorReal self, TVectorReal i) -> double"},
-	 { (char *)"TVectorReal_MaxIndex", _wrap_TVectorReal_MaxIndex, METH_VARARGS, (char *)"TVectorReal_MaxIndex(TVectorReal self) -> IndexC"},
-	 { (char *)"TVectorReal_MaxAbsIndex", _wrap_TVectorReal_MaxAbsIndex, METH_VARARGS, (char *)"TVectorReal_MaxAbsIndex(TVectorReal self) -> IndexC"},
-	 { (char *)"TVectorReal_MinIndex", _wrap_TVectorReal_MinIndex, METH_VARARGS, (char *)"TVectorReal_MinIndex(TVectorReal self) -> IndexC"},
-	 { (char *)"TVectorReal_MinAbsIndex", _wrap_TVectorReal_MinAbsIndex, METH_VARARGS, (char *)"TVectorReal_MinAbsIndex(TVectorReal self) -> IndexC"},
-	 { (char *)"TVectorReal___str__", _wrap_TVectorReal___str__, METH_VARARGS, (char *)"TVectorReal___str__(TVectorReal self) -> char const *"},
+	 { (char *)"TVectorReal_Product", _wrap_TVectorReal_Product, METH_VARARGS, (char *)"TVectorReal_Product(self) -> double"},
+	 { (char *)"TVectorReal_SumOfSqr", _wrap_TVectorReal_SumOfSqr, METH_VARARGS, (char *)"TVectorReal_SumOfSqr(self) -> double"},
+	 { (char *)"TVectorReal_SumOfAbs", _wrap_TVectorReal_SumOfAbs, METH_VARARGS, (char *)"TVectorReal_SumOfAbs(self) -> double"},
+	 { (char *)"TVectorReal_MaxValue", _wrap_TVectorReal_MaxValue, METH_VARARGS, (char *)"TVectorReal_MaxValue(self) -> double"},
+	 { (char *)"TVectorReal_MaxMagnitude", _wrap_TVectorReal_MaxMagnitude, METH_VARARGS, (char *)"TVectorReal_MaxMagnitude(self) -> double"},
+	 { (char *)"TVectorReal_MaxAbsValue", _wrap_TVectorReal_MaxAbsValue, METH_VARARGS, (char *)"TVectorReal_MaxAbsValue(self) -> double"},
+	 { (char *)"TVectorReal_MinValue", _wrap_TVectorReal_MinValue, METH_VARARGS, (char *)"TVectorReal_MinValue(self) -> double"},
+	 { (char *)"TVectorReal_MinAbsValue", _wrap_TVectorReal_MinAbsValue, METH_VARARGS, (char *)"TVectorReal_MinAbsValue(self) -> double"},
+	 { (char *)"TVectorReal_Reciprocal", _wrap_TVectorReal_Reciprocal, METH_VARARGS, (char *)"TVectorReal_Reciprocal(self) -> TVectorReal"},
+	 { (char *)"TVectorReal_Modulus", _wrap_TVectorReal_Modulus, METH_VARARGS, (char *)"TVectorReal_Modulus(self) -> double"},
+	 { (char *)"TVectorReal_TMul", _wrap_TVectorReal_TMul, METH_VARARGS, (char *)"TVectorReal_TMul(self, b) -> double"},
+	 { (char *)"TVectorReal_Dot", _wrap_TVectorReal_Dot, METH_VARARGS, (char *)"TVectorReal_Dot(self, v) -> double"},
+	 { (char *)"TVectorReal_Dot2", _wrap_TVectorReal_Dot2, METH_VARARGS, (char *)"TVectorReal_Dot2(self, v1, v2) -> double"},
+	 { (char *)"TVectorReal_ElemMul", _wrap_TVectorReal_ElemMul, METH_VARARGS, (char *)"TVectorReal_ElemMul(self, v2, result)"},
+	 { (char *)"TVectorReal_ElemSum", _wrap_TVectorReal_ElemSum, METH_VARARGS, (char *)"TVectorReal_ElemSum(self, v2, result)"},
+	 { (char *)"TVectorReal_ElemSubtract", _wrap_TVectorReal_ElemSubtract, METH_VARARGS, (char *)"TVectorReal_ElemSubtract(self, v2, result)"},
+	 { (char *)"TVectorReal_SetSmallToBeZero", _wrap_TVectorReal_SetSmallToBeZero, METH_VARARGS, (char *)"TVectorReal_SetSmallToBeZero(self, min) -> TVectorReal"},
+	 { (char *)"TVectorReal_Unit", _wrap_TVectorReal_Unit, METH_VARARGS, (char *)"TVectorReal_Unit(self) -> TVectorReal"},
+	 { (char *)"TVectorReal_MakeUnit", _wrap_TVectorReal_MakeUnit, METH_VARARGS, (char *)"TVectorReal_MakeUnit(self) -> TVectorReal"},
+	 { (char *)"TVectorReal_MulAdd", _wrap_TVectorReal_MulAdd, METH_VARARGS, (char *)"TVectorReal_MulAdd(self, i, a) -> TVectorReal"},
+	 { (char *)"TVectorReal_MaxValueDistance", _wrap_TVectorReal_MaxValueDistance, METH_VARARGS, (char *)"TVectorReal_MaxValueDistance(self, i) -> double"},
+	 { (char *)"TVectorReal_CityBlockDistance", _wrap_TVectorReal_CityBlockDistance, METH_VARARGS, (char *)"TVectorReal_CityBlockDistance(self, i) -> double"},
+	 { (char *)"TVectorReal_SqrEuclidDistance", _wrap_TVectorReal_SqrEuclidDistance, METH_VARARGS, (char *)"TVectorReal_SqrEuclidDistance(self, i) -> double"},
+	 { (char *)"TVectorReal_EuclidDistance", _wrap_TVectorReal_EuclidDistance, METH_VARARGS, (char *)"TVectorReal_EuclidDistance(self, i) -> double"},
+	 { (char *)"TVectorReal_MaxIndex", _wrap_TVectorReal_MaxIndex, METH_VARARGS, (char *)"TVectorReal_MaxIndex(self) -> IndexC"},
+	 { (char *)"TVectorReal_MaxAbsIndex", _wrap_TVectorReal_MaxAbsIndex, METH_VARARGS, (char *)"TVectorReal_MaxAbsIndex(self) -> IndexC"},
+	 { (char *)"TVectorReal_MinIndex", _wrap_TVectorReal_MinIndex, METH_VARARGS, (char *)"TVectorReal_MinIndex(self) -> IndexC"},
+	 { (char *)"TVectorReal_MinAbsIndex", _wrap_TVectorReal_MinAbsIndex, METH_VARARGS, (char *)"TVectorReal_MinAbsIndex(self) -> IndexC"},
+	 { (char *)"TVectorReal___str__", _wrap_TVectorReal___str__, METH_VARARGS, (char *)"TVectorReal___str__(self) -> char const *"},
 	 { (char *)"new_TVectorReal", _wrap_new_TVectorReal, METH_VARARGS, (char *)"new_TVectorReal() -> TVectorReal"},
-	 { (char *)"delete_TVectorReal", _wrap_delete_TVectorReal, METH_VARARGS, (char *)"delete_TVectorReal(TVectorReal self)"},
+	 { (char *)"delete_TVectorReal", _wrap_delete_TVectorReal, METH_VARARGS, (char *)"delete_TVectorReal(self)"},
 	 { (char *)"TVectorReal_swigregister", TVectorReal_swigregister, METH_VARARGS, NULL},
-	 { (char *)"TVectorFloat_Product", _wrap_TVectorFloat_Product, METH_VARARGS, (char *)"TVectorFloat_Product(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_SumOfSqr", _wrap_TVectorFloat_SumOfSqr, METH_VARARGS, (char *)"TVectorFloat_SumOfSqr(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_SumOfAbs", _wrap_TVectorFloat_SumOfAbs, METH_VARARGS, (char *)"TVectorFloat_SumOfAbs(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_MaxValue", _wrap_TVectorFloat_MaxValue, METH_VARARGS, (char *)"TVectorFloat_MaxValue(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_MaxMagnitude", _wrap_TVectorFloat_MaxMagnitude, METH_VARARGS, (char *)"TVectorFloat_MaxMagnitude(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_MaxAbsValue", _wrap_TVectorFloat_MaxAbsValue, METH_VARARGS, (char *)"TVectorFloat_MaxAbsValue(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_MinValue", _wrap_TVectorFloat_MinValue, METH_VARARGS, (char *)"TVectorFloat_MinValue(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_MinAbsValue", _wrap_TVectorFloat_MinAbsValue, METH_VARARGS, (char *)"TVectorFloat_MinAbsValue(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_Reciprocal", _wrap_TVectorFloat_Reciprocal, METH_VARARGS, (char *)"TVectorFloat_Reciprocal(TVectorFloat self) -> TVectorFloat"},
-	 { (char *)"TVectorFloat_Modulus", _wrap_TVectorFloat_Modulus, METH_VARARGS, (char *)"TVectorFloat_Modulus(TVectorFloat self) -> float"},
-	 { (char *)"TVectorFloat_TMul", _wrap_TVectorFloat_TMul, METH_VARARGS, (char *)"TVectorFloat_TMul(TVectorFloat self, TVectorFloat b) -> float"},
-	 { (char *)"TVectorFloat_Dot", _wrap_TVectorFloat_Dot, METH_VARARGS, (char *)"TVectorFloat_Dot(TVectorFloat self, TVectorFloat v) -> float"},
-	 { (char *)"TVectorFloat_Dot2", _wrap_TVectorFloat_Dot2, METH_VARARGS, (char *)"TVectorFloat_Dot2(TVectorFloat self, TVectorFloat v1, TVectorFloat v2) -> float"},
-	 { (char *)"TVectorFloat_ElemMul", _wrap_TVectorFloat_ElemMul, METH_VARARGS, (char *)"TVectorFloat_ElemMul(TVectorFloat self, TVectorFloat v2, TVectorFloat result)"},
-	 { (char *)"TVectorFloat_ElemSum", _wrap_TVectorFloat_ElemSum, METH_VARARGS, (char *)"TVectorFloat_ElemSum(TVectorFloat self, TVectorFloat v2, TVectorFloat result)"},
-	 { (char *)"TVectorFloat_ElemSubtract", _wrap_TVectorFloat_ElemSubtract, METH_VARARGS, (char *)"TVectorFloat_ElemSubtract(TVectorFloat self, TVectorFloat v2, TVectorFloat result)"},
-	 { (char *)"TVectorFloat_SetSmallToBeZero", _wrap_TVectorFloat_SetSmallToBeZero, METH_VARARGS, (char *)"TVectorFloat_SetSmallToBeZero(TVectorFloat self, float const & min) -> TVectorFloat"},
-	 { (char *)"TVectorFloat_Unit", _wrap_TVectorFloat_Unit, METH_VARARGS, (char *)"TVectorFloat_Unit(TVectorFloat self) -> TVectorFloat"},
-	 { (char *)"TVectorFloat_MakeUnit", _wrap_TVectorFloat_MakeUnit, METH_VARARGS, (char *)"TVectorFloat_MakeUnit(TVectorFloat self) -> TVectorFloat"},
-	 { (char *)"TVectorFloat_MulAdd", _wrap_TVectorFloat_MulAdd, METH_VARARGS, (char *)"TVectorFloat_MulAdd(TVectorFloat self, TVectorFloat i, float a) -> TVectorFloat"},
-	 { (char *)"TVectorFloat_MaxValueDistance", _wrap_TVectorFloat_MaxValueDistance, METH_VARARGS, (char *)"TVectorFloat_MaxValueDistance(TVectorFloat self, TVectorFloat i) -> float"},
-	 { (char *)"TVectorFloat_CityBlockDistance", _wrap_TVectorFloat_CityBlockDistance, METH_VARARGS, (char *)"TVectorFloat_CityBlockDistance(TVectorFloat self, TVectorFloat i) -> float"},
-	 { (char *)"TVectorFloat_SqrEuclidDistance", _wrap_TVectorFloat_SqrEuclidDistance, METH_VARARGS, (char *)"TVectorFloat_SqrEuclidDistance(TVectorFloat self, TVectorFloat i) -> float"},
-	 { (char *)"TVectorFloat_EuclidDistance", _wrap_TVectorFloat_EuclidDistance, METH_VARARGS, (char *)"TVectorFloat_EuclidDistance(TVectorFloat self, TVectorFloat i) -> float"},
-	 { (char *)"TVectorFloat_MaxIndex", _wrap_TVectorFloat_MaxIndex, METH_VARARGS, (char *)"TVectorFloat_MaxIndex(TVectorFloat self) -> IndexC"},
-	 { (char *)"TVectorFloat_MaxAbsIndex", _wrap_TVectorFloat_MaxAbsIndex, METH_VARARGS, (char *)"TVectorFloat_MaxAbsIndex(TVectorFloat self) -> IndexC"},
-	 { (char *)"TVectorFloat_MinIndex", _wrap_TVectorFloat_MinIndex, METH_VARARGS, (char *)"TVectorFloat_MinIndex(TVectorFloat self) -> IndexC"},
-	 { (char *)"TVectorFloat_MinAbsIndex", _wrap_TVectorFloat_MinAbsIndex, METH_VARARGS, (char *)"TVectorFloat_MinAbsIndex(TVectorFloat self) -> IndexC"},
-	 { (char *)"TVectorFloat___str__", _wrap_TVectorFloat___str__, METH_VARARGS, (char *)"TVectorFloat___str__(TVectorFloat self) -> char const *"},
+	 { (char *)"TVectorFloat_Product", _wrap_TVectorFloat_Product, METH_VARARGS, (char *)"TVectorFloat_Product(self) -> float"},
+	 { (char *)"TVectorFloat_SumOfSqr", _wrap_TVectorFloat_SumOfSqr, METH_VARARGS, (char *)"TVectorFloat_SumOfSqr(self) -> float"},
+	 { (char *)"TVectorFloat_SumOfAbs", _wrap_TVectorFloat_SumOfAbs, METH_VARARGS, (char *)"TVectorFloat_SumOfAbs(self) -> float"},
+	 { (char *)"TVectorFloat_MaxValue", _wrap_TVectorFloat_MaxValue, METH_VARARGS, (char *)"TVectorFloat_MaxValue(self) -> float"},
+	 { (char *)"TVectorFloat_MaxMagnitude", _wrap_TVectorFloat_MaxMagnitude, METH_VARARGS, (char *)"TVectorFloat_MaxMagnitude(self) -> float"},
+	 { (char *)"TVectorFloat_MaxAbsValue", _wrap_TVectorFloat_MaxAbsValue, METH_VARARGS, (char *)"TVectorFloat_MaxAbsValue(self) -> float"},
+	 { (char *)"TVectorFloat_MinValue", _wrap_TVectorFloat_MinValue, METH_VARARGS, (char *)"TVectorFloat_MinValue(self) -> float"},
+	 { (char *)"TVectorFloat_MinAbsValue", _wrap_TVectorFloat_MinAbsValue, METH_VARARGS, (char *)"TVectorFloat_MinAbsValue(self) -> float"},
+	 { (char *)"TVectorFloat_Reciprocal", _wrap_TVectorFloat_Reciprocal, METH_VARARGS, (char *)"TVectorFloat_Reciprocal(self) -> TVectorFloat"},
+	 { (char *)"TVectorFloat_Modulus", _wrap_TVectorFloat_Modulus, METH_VARARGS, (char *)"TVectorFloat_Modulus(self) -> float"},
+	 { (char *)"TVectorFloat_TMul", _wrap_TVectorFloat_TMul, METH_VARARGS, (char *)"TVectorFloat_TMul(self, b) -> float"},
+	 { (char *)"TVectorFloat_Dot", _wrap_TVectorFloat_Dot, METH_VARARGS, (char *)"TVectorFloat_Dot(self, v) -> float"},
+	 { (char *)"TVectorFloat_Dot2", _wrap_TVectorFloat_Dot2, METH_VARARGS, (char *)"TVectorFloat_Dot2(self, v1, v2) -> float"},
+	 { (char *)"TVectorFloat_ElemMul", _wrap_TVectorFloat_ElemMul, METH_VARARGS, (char *)"TVectorFloat_ElemMul(self, v2, result)"},
+	 { (char *)"TVectorFloat_ElemSum", _wrap_TVectorFloat_ElemSum, METH_VARARGS, (char *)"TVectorFloat_ElemSum(self, v2, result)"},
+	 { (char *)"TVectorFloat_ElemSubtract", _wrap_TVectorFloat_ElemSubtract, METH_VARARGS, (char *)"TVectorFloat_ElemSubtract(self, v2, result)"},
+	 { (char *)"TVectorFloat_SetSmallToBeZero", _wrap_TVectorFloat_SetSmallToBeZero, METH_VARARGS, (char *)"TVectorFloat_SetSmallToBeZero(self, min) -> TVectorFloat"},
+	 { (char *)"TVectorFloat_Unit", _wrap_TVectorFloat_Unit, METH_VARARGS, (char *)"TVectorFloat_Unit(self) -> TVectorFloat"},
+	 { (char *)"TVectorFloat_MakeUnit", _wrap_TVectorFloat_MakeUnit, METH_VARARGS, (char *)"TVectorFloat_MakeUnit(self) -> TVectorFloat"},
+	 { (char *)"TVectorFloat_MulAdd", _wrap_TVectorFloat_MulAdd, METH_VARARGS, (char *)"TVectorFloat_MulAdd(self, i, a) -> TVectorFloat"},
+	 { (char *)"TVectorFloat_MaxValueDistance", _wrap_TVectorFloat_MaxValueDistance, METH_VARARGS, (char *)"TVectorFloat_MaxValueDistance(self, i) -> float"},
+	 { (char *)"TVectorFloat_CityBlockDistance", _wrap_TVectorFloat_CityBlockDistance, METH_VARARGS, (char *)"TVectorFloat_CityBlockDistance(self, i) -> float"},
+	 { (char *)"TVectorFloat_SqrEuclidDistance", _wrap_TVectorFloat_SqrEuclidDistance, METH_VARARGS, (char *)"TVectorFloat_SqrEuclidDistance(self, i) -> float"},
+	 { (char *)"TVectorFloat_EuclidDistance", _wrap_TVectorFloat_EuclidDistance, METH_VARARGS, (char *)"TVectorFloat_EuclidDistance(self, i) -> float"},
+	 { (char *)"TVectorFloat_MaxIndex", _wrap_TVectorFloat_MaxIndex, METH_VARARGS, (char *)"TVectorFloat_MaxIndex(self) -> IndexC"},
+	 { (char *)"TVectorFloat_MaxAbsIndex", _wrap_TVectorFloat_MaxAbsIndex, METH_VARARGS, (char *)"TVectorFloat_MaxAbsIndex(self) -> IndexC"},
+	 { (char *)"TVectorFloat_MinIndex", _wrap_TVectorFloat_MinIndex, METH_VARARGS, (char *)"TVectorFloat_MinIndex(self) -> IndexC"},
+	 { (char *)"TVectorFloat_MinAbsIndex", _wrap_TVectorFloat_MinAbsIndex, METH_VARARGS, (char *)"TVectorFloat_MinAbsIndex(self) -> IndexC"},
+	 { (char *)"TVectorFloat___str__", _wrap_TVectorFloat___str__, METH_VARARGS, (char *)"TVectorFloat___str__(self) -> char const *"},
 	 { (char *)"new_TVectorFloat", _wrap_new_TVectorFloat, METH_VARARGS, (char *)"new_TVectorFloat() -> TVectorFloat"},
-	 { (char *)"delete_TVectorFloat", _wrap_delete_TVectorFloat, METH_VARARGS, (char *)"delete_TVectorFloat(TVectorFloat self)"},
+	 { (char *)"delete_TVectorFloat", _wrap_delete_TVectorFloat, METH_VARARGS, (char *)"delete_TVectorFloat(self)"},
 	 { (char *)"TVectorFloat_swigregister", TVectorFloat_swigregister, METH_VARARGS, NULL},
-	 { (char *)"VectorC_ConstructAligned", _wrap_VectorC_ConstructAligned, METH_VARARGS, (char *)"VectorC_ConstructAligned(RavlN::SizeT const dim, RavlN::UIntT align) -> VectorC"},
+	 { (char *)"VectorC_ConstructAligned", _wrap_VectorC_ConstructAligned, METH_VARARGS, (char *)"VectorC_ConstructAligned(dim, align) -> VectorC"},
 	 { (char *)"new_VectorC", _wrap_new_VectorC, METH_VARARGS, (char *)"\n"
 		"VectorC()\n"
-		"VectorC(RavlN::SizeT size)\n"
-		"VectorC(SArray1dReal oth)\n"
-		"VectorC(TVectorReal oth)\n"
-		"VectorC(SArray1dFloat oth)\n"
-		"VectorC(RavlN::RealT v1, RavlN::RealT v2)\n"
-		"VectorC(RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3)\n"
-		"VectorC(RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4)\n"
-		"VectorC(RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4, RavlN::RealT v5)\n"
-		"new_VectorC(RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4, RavlN::RealT v5, \n"
-		"    RavlN::RealT v6) -> VectorC\n"
+		"VectorC(size)\n"
+		"VectorC(oth)\n"
+		"VectorC(oth)\n"
+		"VectorC(oth)\n"
+		"VectorC(v1, v2)\n"
+		"VectorC(v1, v2, v3)\n"
+		"VectorC(v1, v2, v3, v4)\n"
+		"VectorC(v1, v2, v3, v4, v5)\n"
+		"new_VectorC(v1, v2, v3, v4, v5, v6) -> VectorC\n"
 		""},
-	 { (char *)"VectorC_IsReal", _wrap_VectorC_IsReal, METH_VARARGS, (char *)"VectorC_IsReal(VectorC self) -> bool"},
+	 { (char *)"VectorC_IsReal", _wrap_VectorC_IsReal, METH_VARARGS, (char *)"VectorC_IsReal(self) -> bool"},
 	 { (char *)"VectorC___mul__", _wrap_VectorC___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(VectorC arr) -> VectorC\n"
-		"VectorC___mul__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__mul__(arr) -> VectorC\n"
+		"VectorC___mul__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___div__", _wrap_VectorC___div__, METH_VARARGS, (char *)"\n"
-		"__div__(VectorC arr) -> VectorC\n"
-		"VectorC___div__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__div__(arr) -> VectorC\n"
+		"VectorC___div__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___add__", _wrap_VectorC___add__, METH_VARARGS, (char *)"\n"
-		"__add__(VectorC arr) -> VectorC\n"
-		"VectorC___add__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__add__(arr) -> VectorC\n"
+		"VectorC___add__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___sub__", _wrap_VectorC___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(VectorC arr) -> VectorC\n"
-		"VectorC___sub__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__sub__(arr) -> VectorC\n"
+		"VectorC___sub__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___iadd__", _wrap_VectorC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(VectorC arr) -> VectorC\n"
-		"VectorC___iadd__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__iadd__(arr) -> VectorC\n"
+		"VectorC___iadd__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___isub__", _wrap_VectorC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(VectorC arr) -> VectorC\n"
-		"VectorC___isub__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__isub__(arr) -> VectorC\n"
+		"VectorC___isub__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___imul__", _wrap_VectorC___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(VectorC arr) -> VectorC\n"
-		"VectorC___imul__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__imul__(arr) -> VectorC\n"
+		"VectorC___imul__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC___idiv__", _wrap_VectorC___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(VectorC arr) -> VectorC\n"
-		"VectorC___idiv__(VectorC self, RavlN::RealT const & number) -> VectorC\n"
+		"__idiv__(arr) -> VectorC\n"
+		"VectorC___idiv__(self, number) -> VectorC\n"
 		""},
 	 { (char *)"VectorC_Join", _wrap_VectorC_Join, METH_VARARGS, (char *)"\n"
-		"Join(VectorC Oth) -> VectorC\n"
-		"VectorC_Join(VectorC self, RavlN::RealT const & Oth) -> VectorC\n"
+		"Join(Oth) -> VectorC\n"
+		"VectorC_Join(self, Oth) -> VectorC\n"
 		""},
 	 { (char *)"VectorC_Append", _wrap_VectorC_Append, METH_VARARGS, (char *)"\n"
-		"Append(VectorC a) -> VectorC\n"
-		"VectorC_Append(VectorC self, RavlN::RealT const & a) -> VectorC\n"
+		"Append(a) -> VectorC\n"
+		"VectorC_Append(self, a) -> VectorC\n"
 		""},
 	 { (char *)"VectorC_From", _wrap_VectorC_From, METH_VARARGS, (char *)"\n"
-		"From(RavlN::UIntT offset) -> VectorC\n"
-		"VectorC_From(VectorC self, RavlN::UIntT offset, RavlN::UIntT size) -> VectorC\n"
+		"From(offset) -> VectorC\n"
+		"VectorC_From(self, offset, size) -> VectorC\n"
 		""},
-	 { (char *)"VectorC_After", _wrap_VectorC_After, METH_VARARGS, (char *)"VectorC_After(VectorC self, RavlN::UIntT offset) -> VectorC"},
-	 { (char *)"VectorC_Before", _wrap_VectorC_Before, METH_VARARGS, (char *)"VectorC_Before(VectorC self, RavlN::UIntT offset) -> VectorC"},
-	 { (char *)"VectorC___eq__", _wrap_VectorC___eq__, METH_VARARGS, (char *)"VectorC___eq__(VectorC self, VectorC vv) -> bool"},
-	 { (char *)"VectorC___ne__", _wrap_VectorC___ne__, METH_VARARGS, (char *)"VectorC___ne__(VectorC self, VectorC vv) -> bool"},
-	 { (char *)"VectorC_Reciprocal", _wrap_VectorC_Reciprocal, METH_VARARGS, (char *)"VectorC_Reciprocal(VectorC self) -> VectorC"},
-	 { (char *)"VectorC_TMul", _wrap_VectorC_TMul, METH_VARARGS, (char *)"VectorC_TMul(VectorC self, VectorC b) -> RavlN::RealT"},
-	 { (char *)"VectorC_Dot", _wrap_VectorC_Dot, METH_VARARGS, (char *)"VectorC_Dot(VectorC self, VectorC v) -> RavlN::RealT"},
-	 { (char *)"VectorC_Dot2", _wrap_VectorC_Dot2, METH_VARARGS, (char *)"VectorC_Dot2(VectorC self, VectorC v1, VectorC v2) -> RavlN::RealT"},
-	 { (char *)"VectorC_ElemMul", _wrap_VectorC_ElemMul, METH_VARARGS, (char *)"VectorC_ElemMul(VectorC self, VectorC v2, VectorC result)"},
-	 { (char *)"VectorC_ElemSum", _wrap_VectorC_ElemSum, METH_VARARGS, (char *)"VectorC_ElemSum(VectorC self, VectorC v2, VectorC result)"},
-	 { (char *)"VectorC_ElemSubtract", _wrap_VectorC_ElemSubtract, METH_VARARGS, (char *)"VectorC_ElemSubtract(VectorC self, VectorC v2, VectorC result)"},
-	 { (char *)"VectorC_SetSmallToBeZero", _wrap_VectorC_SetSmallToBeZero, METH_VARARGS, (char *)"VectorC_SetSmallToBeZero(VectorC self, RavlN::RealT const & min) -> VectorC"},
+	 { (char *)"VectorC_After", _wrap_VectorC_After, METH_VARARGS, (char *)"VectorC_After(self, offset) -> VectorC"},
+	 { (char *)"VectorC_Before", _wrap_VectorC_Before, METH_VARARGS, (char *)"VectorC_Before(self, offset) -> VectorC"},
+	 { (char *)"VectorC___eq__", _wrap_VectorC___eq__, METH_VARARGS, (char *)"VectorC___eq__(self, vv) -> bool"},
+	 { (char *)"VectorC___ne__", _wrap_VectorC___ne__, METH_VARARGS, (char *)"VectorC___ne__(self, vv) -> bool"},
+	 { (char *)"VectorC_Reciprocal", _wrap_VectorC_Reciprocal, METH_VARARGS, (char *)"VectorC_Reciprocal(self) -> VectorC"},
+	 { (char *)"VectorC_TMul", _wrap_VectorC_TMul, METH_VARARGS, (char *)"VectorC_TMul(self, b) -> RavlN::RealT"},
+	 { (char *)"VectorC_Dot", _wrap_VectorC_Dot, METH_VARARGS, (char *)"VectorC_Dot(self, v) -> RavlN::RealT"},
+	 { (char *)"VectorC_Dot2", _wrap_VectorC_Dot2, METH_VARARGS, (char *)"VectorC_Dot2(self, v1, v2) -> RavlN::RealT"},
+	 { (char *)"VectorC_ElemMul", _wrap_VectorC_ElemMul, METH_VARARGS, (char *)"VectorC_ElemMul(self, v2, result)"},
+	 { (char *)"VectorC_ElemSum", _wrap_VectorC_ElemSum, METH_VARARGS, (char *)"VectorC_ElemSum(self, v2, result)"},
+	 { (char *)"VectorC_ElemSubtract", _wrap_VectorC_ElemSubtract, METH_VARARGS, (char *)"VectorC_ElemSubtract(self, v2, result)"},
+	 { (char *)"VectorC_SetSmallToBeZero", _wrap_VectorC_SetSmallToBeZero, METH_VARARGS, (char *)"VectorC_SetSmallToBeZero(self, min) -> VectorC"},
 	 { (char *)"VectorC_OuterProduct", _wrap_VectorC_OuterProduct, METH_VARARGS, (char *)"\n"
-		"OuterProduct(VectorC a) -> MatrixC\n"
-		"OuterProduct(VectorC a, RavlN::RealT b) -> MatrixC\n"
-		"VectorC_OuterProduct(VectorC self) -> MatrixC\n"
+		"OuterProduct(a) -> MatrixC\n"
+		"OuterProduct(a, b) -> MatrixC\n"
+		"VectorC_OuterProduct(self) -> MatrixC\n"
 		""},
-	 { (char *)"VectorC_Unit", _wrap_VectorC_Unit, METH_VARARGS, (char *)"VectorC_Unit(VectorC self) -> VectorC"},
-	 { (char *)"VectorC_MakeUnit", _wrap_VectorC_MakeUnit, METH_VARARGS, (char *)"VectorC_MakeUnit(VectorC self) -> VectorC"},
-	 { (char *)"VectorC_MulAdd", _wrap_VectorC_MulAdd, METH_VARARGS, (char *)"VectorC_MulAdd(VectorC self, VectorC i, RavlN::RealT a) -> VectorC"},
-	 { (char *)"VectorC_MaxValueDistance", _wrap_VectorC_MaxValueDistance, METH_VARARGS, (char *)"VectorC_MaxValueDistance(VectorC self, VectorC i) -> RavlN::RealT"},
-	 { (char *)"VectorC_CityBlockDistance", _wrap_VectorC_CityBlockDistance, METH_VARARGS, (char *)"VectorC_CityBlockDistance(VectorC self, VectorC i) -> RavlN::RealT"},
-	 { (char *)"VectorC_SqrEuclidDistance", _wrap_VectorC_SqrEuclidDistance, METH_VARARGS, (char *)"VectorC_SqrEuclidDistance(VectorC self, VectorC i) -> RavlN::RealT"},
-	 { (char *)"VectorC_EuclidDistance", _wrap_VectorC_EuclidDistance, METH_VARARGS, (char *)"VectorC_EuclidDistance(VectorC self, VectorC i) -> RavlN::RealT"},
-	 { (char *)"delete_VectorC", _wrap_delete_VectorC, METH_VARARGS, (char *)"delete_VectorC(VectorC self)"},
+	 { (char *)"VectorC_Unit", _wrap_VectorC_Unit, METH_VARARGS, (char *)"VectorC_Unit(self) -> VectorC"},
+	 { (char *)"VectorC_MakeUnit", _wrap_VectorC_MakeUnit, METH_VARARGS, (char *)"VectorC_MakeUnit(self) -> VectorC"},
+	 { (char *)"VectorC_MulAdd", _wrap_VectorC_MulAdd, METH_VARARGS, (char *)"VectorC_MulAdd(self, i, a) -> VectorC"},
+	 { (char *)"VectorC_MaxValueDistance", _wrap_VectorC_MaxValueDistance, METH_VARARGS, (char *)"VectorC_MaxValueDistance(self, i) -> RavlN::RealT"},
+	 { (char *)"VectorC_CityBlockDistance", _wrap_VectorC_CityBlockDistance, METH_VARARGS, (char *)"VectorC_CityBlockDistance(self, i) -> RavlN::RealT"},
+	 { (char *)"VectorC_SqrEuclidDistance", _wrap_VectorC_SqrEuclidDistance, METH_VARARGS, (char *)"VectorC_SqrEuclidDistance(self, i) -> RavlN::RealT"},
+	 { (char *)"VectorC_EuclidDistance", _wrap_VectorC_EuclidDistance, METH_VARARGS, (char *)"VectorC_EuclidDistance(self, i) -> RavlN::RealT"},
+	 { (char *)"delete_VectorC", _wrap_delete_VectorC, METH_VARARGS, (char *)"delete_VectorC(self)"},
 	 { (char *)"VectorC_swigregister", VectorC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"RandomVector", _wrap_RandomVector, METH_VARARGS, (char *)"\n"
-		"RandomVector(int n, RavlN::RealT scale=1.0) -> VectorC\n"
-		"RandomVector(int n) -> VectorC\n"
+		"RandomVector(n, scale=1.0) -> VectorC\n"
+		"RandomVector(n) -> VectorC\n"
 		""},
-	 { (char *)"SetZero", _wrap_SetZero, METH_VARARGS, (char *)"SetZero(VectorC vec)"},
-	 { (char *)"Sigmoid", _wrap_Sigmoid, METH_VARARGS, (char *)"Sigmoid(VectorC z) -> VectorC"},
-	 { (char *)"SigmoidIP", _wrap_SigmoidIP, METH_VARARGS, (char *)"SigmoidIP(VectorC z)"},
-	 { (char *)"Log", _wrap_Log, METH_VARARGS, (char *)"Log(VectorC z) -> VectorC"},
-	 { (char *)"LogIP", _wrap_LogIP, METH_VARARGS, (char *)"LogIP(VectorC z)"},
-	 { (char *)"Exp", _wrap_Exp, METH_VARARGS, (char *)"Exp(VectorC z) -> VectorC"},
+	 { (char *)"SetZero", _wrap_SetZero, METH_VARARGS, (char *)"SetZero(vec)"},
+	 { (char *)"Sigmoid", _wrap_Sigmoid, METH_VARARGS, (char *)"Sigmoid(z) -> VectorC"},
+	 { (char *)"SigmoidIP", _wrap_SigmoidIP, METH_VARARGS, (char *)"SigmoidIP(z)"},
+	 { (char *)"Log", _wrap_Log, METH_VARARGS, (char *)"Log(z) -> VectorC"},
+	 { (char *)"LogIP", _wrap_LogIP, METH_VARARGS, (char *)"LogIP(z)"},
+	 { (char *)"Exp", _wrap_Exp, METH_VARARGS, (char *)"Exp(z) -> VectorC"},
 	 { (char *)"new_TMatrixReal", _wrap_new_TMatrixReal, METH_VARARGS, (char *)"\n"
 		"TMatrixReal()\n"
-		"TMatrixReal(SArray2dReal oth)\n"
-		"TMatrixReal(TVectorReal vec)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols, double const * data)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols, double * data, bool useCopy, bool manageMemory=False)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols, double * data, bool useCopy)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols, double const & data)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols, SArray1dReal data, RavlN::SizeT stride=0)\n"
-		"TMatrixReal(RavlN::SizeT rows, RavlN::SizeT cols, SArray1dReal data)\n"
-		"TMatrixReal(double v1, double v2, double v3, double v4)\n"
-		"new_TMatrixReal(double v1, double v2, double v3, double v4, double v5, double v6, double v7, double v8, \n"
-		"    double v9) -> TMatrixReal\n"
+		"TMatrixReal(oth)\n"
+		"TMatrixReal(vec)\n"
+		"TMatrixReal(rows, cols)\n"
+		"TMatrixReal(rows, cols, data)\n"
+		"TMatrixReal(rows, cols, data, useCopy, manageMemory=False)\n"
+		"TMatrixReal(rows, cols, data, useCopy)\n"
+		"TMatrixReal(rows, cols, data)\n"
+		"TMatrixReal(rows, cols, data, stride=0)\n"
+		"TMatrixReal(rows, cols, data)\n"
+		"TMatrixReal(v1, v2, v3, v4)\n"
+		"new_TMatrixReal(v1, v2, v3, v4, v5, v6, v7, v8, v9) -> TMatrixReal\n"
 		""},
-	 { (char *)"TMatrixReal_Rows", _wrap_TMatrixReal_Rows, METH_VARARGS, (char *)"TMatrixReal_Rows(TMatrixReal self) -> RavlN::SizeT"},
-	 { (char *)"TMatrixReal_Cols", _wrap_TMatrixReal_Cols, METH_VARARGS, (char *)"TMatrixReal_Cols(TMatrixReal self) -> RavlN::SizeT"},
+	 { (char *)"TMatrixReal_Rows", _wrap_TMatrixReal_Rows, METH_VARARGS, (char *)"TMatrixReal_Rows(self) -> RavlN::SizeT"},
+	 { (char *)"TMatrixReal_Cols", _wrap_TMatrixReal_Cols, METH_VARARGS, (char *)"TMatrixReal_Cols(self) -> RavlN::SizeT"},
 	 { (char *)"TMatrixReal___mul__", _wrap_TMatrixReal___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(double val) -> TMatrixReal\n"
-		"__mul__(TVectorReal vector) -> TVectorReal\n"
-		"TMatrixReal___mul__(TMatrixReal self, TMatrixReal mat) -> TMatrixReal\n"
+		"__mul__(val) -> TMatrixReal\n"
+		"__mul__(vector) -> TVectorReal\n"
+		"TMatrixReal___mul__(self, mat) -> TMatrixReal\n"
 		""},
-	 { (char *)"TMatrixReal_MulT", _wrap_TMatrixReal_MulT, METH_VARARGS, (char *)"TMatrixReal_MulT(TMatrixReal self, TMatrixReal B) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_MulT", _wrap_TMatrixReal_MulT, METH_VARARGS, (char *)"TMatrixReal_MulT(self, B) -> TMatrixReal"},
 	 { (char *)"TMatrixReal_TMul", _wrap_TMatrixReal_TMul, METH_VARARGS, (char *)"\n"
-		"TMul(TMatrixReal B) -> TMatrixReal\n"
-		"TMatrixReal_TMul(TMatrixReal self, TVectorReal vec) -> TVectorReal\n"
+		"TMul(B) -> TMatrixReal\n"
+		"TMatrixReal_TMul(self, vec) -> TVectorReal\n"
 		""},
-	 { (char *)"TMatrixReal_AAT", _wrap_TMatrixReal_AAT, METH_VARARGS, (char *)"TMatrixReal_AAT(TMatrixReal self) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_ATA", _wrap_TMatrixReal_ATA, METH_VARARGS, (char *)"TMatrixReal_ATA(TMatrixReal self) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_T", _wrap_TMatrixReal_T, METH_VARARGS, (char *)"TMatrixReal_T(TMatrixReal self) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_Identity", _wrap_TMatrixReal_Identity, METH_VARARGS, (char *)"TMatrixReal_Identity(RavlN::UIntT n) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_SetDiagonal", _wrap_TMatrixReal_SetDiagonal, METH_VARARGS, (char *)"TMatrixReal_SetDiagonal(TMatrixReal self, TVectorReal d) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_AddDiagonal", _wrap_TMatrixReal_AddDiagonal, METH_VARARGS, (char *)"TMatrixReal_AddDiagonal(TMatrixReal self, TVectorReal d) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_SubMatrix", _wrap_TMatrixReal_SubMatrix, METH_VARARGS, (char *)"TMatrixReal_SubMatrix(TMatrixReal self, RavlN::SizeT size1, RavlN::SizeT size2) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_SumOfAbs", _wrap_TMatrixReal_SumOfAbs, METH_VARARGS, (char *)"TMatrixReal_SumOfAbs(TMatrixReal self) -> double"},
+	 { (char *)"TMatrixReal_AAT", _wrap_TMatrixReal_AAT, METH_VARARGS, (char *)"TMatrixReal_AAT(self) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_ATA", _wrap_TMatrixReal_ATA, METH_VARARGS, (char *)"TMatrixReal_ATA(self) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_T", _wrap_TMatrixReal_T, METH_VARARGS, (char *)"TMatrixReal_T(self) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_Identity", _wrap_TMatrixReal_Identity, METH_VARARGS, (char *)"TMatrixReal_Identity(n) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_SetDiagonal", _wrap_TMatrixReal_SetDiagonal, METH_VARARGS, (char *)"TMatrixReal_SetDiagonal(self, d) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_AddDiagonal", _wrap_TMatrixReal_AddDiagonal, METH_VARARGS, (char *)"TMatrixReal_AddDiagonal(self, d) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_SubMatrix", _wrap_TMatrixReal_SubMatrix, METH_VARARGS, (char *)"TMatrixReal_SubMatrix(self, size1, size2) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_SumOfAbs", _wrap_TMatrixReal_SumOfAbs, METH_VARARGS, (char *)"TMatrixReal_SumOfAbs(self) -> double"},
 	 { (char *)"TMatrixReal_AddOuterProduct", _wrap_TMatrixReal_AddOuterProduct, METH_VARARGS, (char *)"\n"
-		"AddOuterProduct(TVectorReal vec1, TVectorReal vec2) -> TMatrixReal\n"
-		"TMatrixReal_AddOuterProduct(TMatrixReal self, TVectorReal vec1, TVectorReal vec2, double const & a) -> TMatrixReal\n"
+		"AddOuterProduct(vec1, vec2) -> TMatrixReal\n"
+		"TMatrixReal_AddOuterProduct(self, vec1, vec2, a) -> TMatrixReal\n"
 		""},
-	 { (char *)"TMatrixReal_SetSmallToBeZero", _wrap_TMatrixReal_SetSmallToBeZero, METH_VARARGS, (char *)"TMatrixReal_SetSmallToBeZero(TMatrixReal self, double const & min) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_MulAdd", _wrap_TMatrixReal_MulAdd, METH_VARARGS, (char *)"TMatrixReal_MulAdd(TMatrixReal self, TMatrixReal i, double a) -> TMatrixReal"},
-	 { (char *)"TMatrixReal_SwapRows", _wrap_TMatrixReal_SwapRows, METH_VARARGS, (char *)"TMatrixReal_SwapRows(TMatrixReal self, int i, int j)"},
-	 { (char *)"delete_TMatrixReal", _wrap_delete_TMatrixReal, METH_VARARGS, (char *)"delete_TMatrixReal(TMatrixReal self)"},
+	 { (char *)"TMatrixReal_SetSmallToBeZero", _wrap_TMatrixReal_SetSmallToBeZero, METH_VARARGS, (char *)"TMatrixReal_SetSmallToBeZero(self, min) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_MulAdd", _wrap_TMatrixReal_MulAdd, METH_VARARGS, (char *)"TMatrixReal_MulAdd(self, i, a) -> TMatrixReal"},
+	 { (char *)"TMatrixReal_SwapRows", _wrap_TMatrixReal_SwapRows, METH_VARARGS, (char *)"TMatrixReal_SwapRows(self, i, j)"},
+	 { (char *)"delete_TMatrixReal", _wrap_delete_TMatrixReal, METH_VARARGS, (char *)"delete_TMatrixReal(self)"},
 	 { (char *)"TMatrixReal_swigregister", TMatrixReal_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_TMatrixFloat", _wrap_new_TMatrixFloat, METH_VARARGS, (char *)"\n"
 		"TMatrixFloat()\n"
-		"TMatrixFloat(SArray2dFloat oth)\n"
-		"TMatrixFloat(TVectorFloat vec)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols, float const * data)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols, float * data, bool useCopy, bool manageMemory=False)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols, float * data, bool useCopy)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols, float const & data)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols, SArray1dFloat data, RavlN::SizeT stride=0)\n"
-		"TMatrixFloat(RavlN::SizeT rows, RavlN::SizeT cols, SArray1dFloat data)\n"
-		"TMatrixFloat(float v1, float v2, float v3, float v4)\n"
-		"new_TMatrixFloat(float v1, float v2, float v3, float v4, float v5, float v6, float v7, float v8, float v9) -> TMatrixFloat\n"
+		"TMatrixFloat(oth)\n"
+		"TMatrixFloat(vec)\n"
+		"TMatrixFloat(rows, cols)\n"
+		"TMatrixFloat(rows, cols, data)\n"
+		"TMatrixFloat(rows, cols, data, useCopy, manageMemory=False)\n"
+		"TMatrixFloat(rows, cols, data, useCopy)\n"
+		"TMatrixFloat(rows, cols, data)\n"
+		"TMatrixFloat(rows, cols, data, stride=0)\n"
+		"TMatrixFloat(rows, cols, data)\n"
+		"TMatrixFloat(v1, v2, v3, v4)\n"
+		"new_TMatrixFloat(v1, v2, v3, v4, v5, v6, v7, v8, v9) -> TMatrixFloat\n"
 		""},
-	 { (char *)"TMatrixFloat_Rows", _wrap_TMatrixFloat_Rows, METH_VARARGS, (char *)"TMatrixFloat_Rows(TMatrixFloat self) -> RavlN::SizeT"},
-	 { (char *)"TMatrixFloat_Cols", _wrap_TMatrixFloat_Cols, METH_VARARGS, (char *)"TMatrixFloat_Cols(TMatrixFloat self) -> RavlN::SizeT"},
+	 { (char *)"TMatrixFloat_Rows", _wrap_TMatrixFloat_Rows, METH_VARARGS, (char *)"TMatrixFloat_Rows(self) -> RavlN::SizeT"},
+	 { (char *)"TMatrixFloat_Cols", _wrap_TMatrixFloat_Cols, METH_VARARGS, (char *)"TMatrixFloat_Cols(self) -> RavlN::SizeT"},
 	 { (char *)"TMatrixFloat___mul__", _wrap_TMatrixFloat___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(float val) -> TMatrixFloat\n"
-		"__mul__(TVectorFloat vector) -> TVectorFloat\n"
-		"TMatrixFloat___mul__(TMatrixFloat self, TMatrixFloat mat) -> TMatrixFloat\n"
+		"__mul__(val) -> TMatrixFloat\n"
+		"__mul__(vector) -> TVectorFloat\n"
+		"TMatrixFloat___mul__(self, mat) -> TMatrixFloat\n"
 		""},
-	 { (char *)"TMatrixFloat_MulT", _wrap_TMatrixFloat_MulT, METH_VARARGS, (char *)"TMatrixFloat_MulT(TMatrixFloat self, TMatrixFloat B) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_MulT", _wrap_TMatrixFloat_MulT, METH_VARARGS, (char *)"TMatrixFloat_MulT(self, B) -> TMatrixFloat"},
 	 { (char *)"TMatrixFloat_TMul", _wrap_TMatrixFloat_TMul, METH_VARARGS, (char *)"\n"
-		"TMul(TMatrixFloat B) -> TMatrixFloat\n"
-		"TMatrixFloat_TMul(TMatrixFloat self, TVectorFloat vec) -> TVectorFloat\n"
+		"TMul(B) -> TMatrixFloat\n"
+		"TMatrixFloat_TMul(self, vec) -> TVectorFloat\n"
 		""},
-	 { (char *)"TMatrixFloat_AAT", _wrap_TMatrixFloat_AAT, METH_VARARGS, (char *)"TMatrixFloat_AAT(TMatrixFloat self) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_ATA", _wrap_TMatrixFloat_ATA, METH_VARARGS, (char *)"TMatrixFloat_ATA(TMatrixFloat self) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_T", _wrap_TMatrixFloat_T, METH_VARARGS, (char *)"TMatrixFloat_T(TMatrixFloat self) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_Identity", _wrap_TMatrixFloat_Identity, METH_VARARGS, (char *)"TMatrixFloat_Identity(RavlN::UIntT n) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_SetDiagonal", _wrap_TMatrixFloat_SetDiagonal, METH_VARARGS, (char *)"TMatrixFloat_SetDiagonal(TMatrixFloat self, TVectorFloat d) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_AddDiagonal", _wrap_TMatrixFloat_AddDiagonal, METH_VARARGS, (char *)"TMatrixFloat_AddDiagonal(TMatrixFloat self, TVectorFloat d) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_SubMatrix", _wrap_TMatrixFloat_SubMatrix, METH_VARARGS, (char *)"TMatrixFloat_SubMatrix(TMatrixFloat self, RavlN::SizeT size1, RavlN::SizeT size2) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_SumOfAbs", _wrap_TMatrixFloat_SumOfAbs, METH_VARARGS, (char *)"TMatrixFloat_SumOfAbs(TMatrixFloat self) -> float"},
+	 { (char *)"TMatrixFloat_AAT", _wrap_TMatrixFloat_AAT, METH_VARARGS, (char *)"TMatrixFloat_AAT(self) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_ATA", _wrap_TMatrixFloat_ATA, METH_VARARGS, (char *)"TMatrixFloat_ATA(self) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_T", _wrap_TMatrixFloat_T, METH_VARARGS, (char *)"TMatrixFloat_T(self) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_Identity", _wrap_TMatrixFloat_Identity, METH_VARARGS, (char *)"TMatrixFloat_Identity(n) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_SetDiagonal", _wrap_TMatrixFloat_SetDiagonal, METH_VARARGS, (char *)"TMatrixFloat_SetDiagonal(self, d) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_AddDiagonal", _wrap_TMatrixFloat_AddDiagonal, METH_VARARGS, (char *)"TMatrixFloat_AddDiagonal(self, d) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_SubMatrix", _wrap_TMatrixFloat_SubMatrix, METH_VARARGS, (char *)"TMatrixFloat_SubMatrix(self, size1, size2) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_SumOfAbs", _wrap_TMatrixFloat_SumOfAbs, METH_VARARGS, (char *)"TMatrixFloat_SumOfAbs(self) -> float"},
 	 { (char *)"TMatrixFloat_AddOuterProduct", _wrap_TMatrixFloat_AddOuterProduct, METH_VARARGS, (char *)"\n"
-		"AddOuterProduct(TVectorFloat vec1, TVectorFloat vec2) -> TMatrixFloat\n"
-		"TMatrixFloat_AddOuterProduct(TMatrixFloat self, TVectorFloat vec1, TVectorFloat vec2, float const & a) -> TMatrixFloat\n"
+		"AddOuterProduct(vec1, vec2) -> TMatrixFloat\n"
+		"TMatrixFloat_AddOuterProduct(self, vec1, vec2, a) -> TMatrixFloat\n"
 		""},
-	 { (char *)"TMatrixFloat_SetSmallToBeZero", _wrap_TMatrixFloat_SetSmallToBeZero, METH_VARARGS, (char *)"TMatrixFloat_SetSmallToBeZero(TMatrixFloat self, float const & min) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_MulAdd", _wrap_TMatrixFloat_MulAdd, METH_VARARGS, (char *)"TMatrixFloat_MulAdd(TMatrixFloat self, TMatrixFloat i, float a) -> TMatrixFloat"},
-	 { (char *)"TMatrixFloat_SwapRows", _wrap_TMatrixFloat_SwapRows, METH_VARARGS, (char *)"TMatrixFloat_SwapRows(TMatrixFloat self, int i, int j)"},
-	 { (char *)"delete_TMatrixFloat", _wrap_delete_TMatrixFloat, METH_VARARGS, (char *)"delete_TMatrixFloat(TMatrixFloat self)"},
+	 { (char *)"TMatrixFloat_SetSmallToBeZero", _wrap_TMatrixFloat_SetSmallToBeZero, METH_VARARGS, (char *)"TMatrixFloat_SetSmallToBeZero(self, min) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_MulAdd", _wrap_TMatrixFloat_MulAdd, METH_VARARGS, (char *)"TMatrixFloat_MulAdd(self, i, a) -> TMatrixFloat"},
+	 { (char *)"TMatrixFloat_SwapRows", _wrap_TMatrixFloat_SwapRows, METH_VARARGS, (char *)"TMatrixFloat_SwapRows(self, i, j)"},
+	 { (char *)"delete_TMatrixFloat", _wrap_delete_TMatrixFloat, METH_VARARGS, (char *)"delete_TMatrixFloat(self)"},
 	 { (char *)"TMatrixFloat_swigregister", TMatrixFloat_swigregister, METH_VARARGS, NULL},
-	 { (char *)"MatrixC_IsReal", _wrap_MatrixC_IsReal, METH_VARARGS, (char *)"MatrixC_IsReal(MatrixC self) -> bool"},
+	 { (char *)"MatrixC_IsReal", _wrap_MatrixC_IsReal, METH_VARARGS, (char *)"MatrixC_IsReal(self) -> bool"},
 	 { (char *)"new_MatrixC", _wrap_new_MatrixC, METH_VARARGS, (char *)"\n"
 		"MatrixC()\n"
-		"MatrixC(VectorC vec)\n"
-		"MatrixC(RavlN::UIntT rows, RavlN::UIntT cols)\n"
-		"MatrixC(RavlN::UIntT rows, RavlN::UIntT cols, RavlN::RealT const * data)\n"
-		"MatrixC(RavlN::UIntT rows, RavlN::UIntT cols, RavlN::RealT const & data)\n"
-		"MatrixC(RavlN::UIntT rows, RavlN::UIntT cols, VectorC data)\n"
-		"MatrixC(RavlN::SizeT rows, RavlN::SizeT cols, VectorC data)\n"
-		"MatrixC(TMatrixReal oth)\n"
-		"MatrixC(SArray2dReal oth)\n"
-		"MatrixC(RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4)\n"
-		"MatrixC(RavlN::RealT v1, RavlN::RealT v2, RavlN::RealT v3, RavlN::RealT v4, RavlN::RealT v5, \n"
-		"    RavlN::RealT v6, RavlN::RealT v7, RavlN::RealT v8, RavlN::RealT v9)\n"
-		"new_MatrixC(SArray2dFloat oth) -> MatrixC\n"
+		"MatrixC(vec)\n"
+		"MatrixC(rows, cols)\n"
+		"MatrixC(rows, cols, data)\n"
+		"MatrixC(rows, cols, data)\n"
+		"MatrixC(rows, cols, data)\n"
+		"MatrixC(rows, cols, data)\n"
+		"MatrixC(oth)\n"
+		"MatrixC(oth)\n"
+		"MatrixC(v1, v2, v3, v4)\n"
+		"MatrixC(v1, v2, v3, v4, v5, v6, v7, v8, v9)\n"
+		"new_MatrixC(oth) -> MatrixC\n"
 		""},
-	 { (char *)"MatrixC_Inverse", _wrap_MatrixC_Inverse, METH_VARARGS, (char *)"MatrixC_Inverse(MatrixC self) -> MatrixC"},
+	 { (char *)"MatrixC_Inverse", _wrap_MatrixC_Inverse, METH_VARARGS, (char *)"MatrixC_Inverse(self) -> MatrixC"},
 	 { (char *)"MatrixC_InverseIP", _wrap_MatrixC_InverseIP, METH_VARARGS, (char *)"\n"
-		"InverseIP(RavlN::RealT & det) -> bool\n"
-		"MatrixC_InverseIP(MatrixC self) -> bool\n"
+		"InverseIP(det) -> bool\n"
+		"MatrixC_InverseIP(self) -> bool\n"
 		""},
 	 { (char *)"MatrixC_PseudoInverse", _wrap_MatrixC_PseudoInverse, METH_VARARGS, (char *)"\n"
-		"PseudoInverse(RavlN::RealT thresh=1e-5) -> MatrixC\n"
-		"MatrixC_PseudoInverse(MatrixC self) -> MatrixC\n"
+		"PseudoInverse(thresh=1e-5) -> MatrixC\n"
+		"MatrixC_PseudoInverse(self) -> MatrixC\n"
 		""},
-	 { (char *)"MatrixC_Det", _wrap_MatrixC_Det, METH_VARARGS, (char *)"MatrixC_Det(MatrixC self) -> RavlN::RealT"},
-	 { (char *)"MatrixC_NormaliseRows", _wrap_MatrixC_NormaliseRows, METH_VARARGS, (char *)"MatrixC_NormaliseRows(MatrixC self)"},
-	 { (char *)"MatrixC_NormaliseColumns", _wrap_MatrixC_NormaliseColumns, METH_VARARGS, (char *)"MatrixC_NormaliseColumns(MatrixC self)"},
+	 { (char *)"MatrixC_Det", _wrap_MatrixC_Det, METH_VARARGS, (char *)"MatrixC_Det(self) -> RavlN::RealT"},
+	 { (char *)"MatrixC_NormaliseRows", _wrap_MatrixC_NormaliseRows, METH_VARARGS, (char *)"MatrixC_NormaliseRows(self)"},
+	 { (char *)"MatrixC_NormaliseColumns", _wrap_MatrixC_NormaliseColumns, METH_VARARGS, (char *)"MatrixC_NormaliseColumns(self)"},
 	 { (char *)"MatrixC_AsVector", _wrap_MatrixC_AsVector, METH_VARARGS, (char *)"\n"
-		"AsVector(bool alwaysCopy=False) -> VectorC\n"
-		"MatrixC_AsVector(MatrixC self) -> VectorC\n"
+		"AsVector(alwaysCopy=False) -> VectorC\n"
+		"MatrixC_AsVector(self) -> VectorC\n"
 		""},
 	 { (char *)"MatrixC___div__", _wrap_MatrixC___div__, METH_VARARGS, (char *)"\n"
-		"__div__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___div__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__div__(arr) -> MatrixC\n"
+		"MatrixC___div__(self, number) -> MatrixC\n"
 		""},
 	 { (char *)"MatrixC___add__", _wrap_MatrixC___add__, METH_VARARGS, (char *)"\n"
-		"__add__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___add__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__add__(arr) -> MatrixC\n"
+		"MatrixC___add__(self, number) -> MatrixC\n"
 		""},
 	 { (char *)"MatrixC___sub__", _wrap_MatrixC___sub__, METH_VARARGS, (char *)"\n"
-		"__sub__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___sub__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__sub__(arr) -> MatrixC\n"
+		"MatrixC___sub__(self, number) -> MatrixC\n"
 		""},
 	 { (char *)"MatrixC___iadd__", _wrap_MatrixC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___iadd__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__iadd__(arr) -> MatrixC\n"
+		"MatrixC___iadd__(self, number) -> MatrixC\n"
 		""},
 	 { (char *)"MatrixC___isub__", _wrap_MatrixC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___isub__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__isub__(arr) -> MatrixC\n"
+		"MatrixC___isub__(self, number) -> MatrixC\n"
 		""},
 	 { (char *)"MatrixC___imul__", _wrap_MatrixC___imul__, METH_VARARGS, (char *)"\n"
-		"__imul__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___imul__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__imul__(arr) -> MatrixC\n"
+		"MatrixC___imul__(self, number) -> MatrixC\n"
 		""},
 	 { (char *)"MatrixC___idiv__", _wrap_MatrixC___idiv__, METH_VARARGS, (char *)"\n"
-		"__idiv__(MatrixC arr) -> MatrixC\n"
-		"MatrixC___idiv__(MatrixC self, RavlN::RealT const & number) -> MatrixC\n"
+		"__idiv__(arr) -> MatrixC\n"
+		"MatrixC___idiv__(self, number) -> MatrixC\n"
 		""},
-	 { (char *)"MatrixC___eq__", _wrap_MatrixC___eq__, METH_VARARGS, (char *)"MatrixC___eq__(MatrixC self, MatrixC op) -> bool"},
-	 { (char *)"MatrixC___ne__", _wrap_MatrixC___ne__, METH_VARARGS, (char *)"MatrixC___ne__(MatrixC self, MatrixC op) -> bool"},
-	 { (char *)"MatrixC_SumOfSqr", _wrap_MatrixC_SumOfSqr, METH_VARARGS, (char *)"MatrixC_SumOfSqr(MatrixC self) -> RavlN::RealT"},
-	 { (char *)"MatrixC_Sum", _wrap_MatrixC_Sum, METH_VARARGS, (char *)"MatrixC_Sum(MatrixC self) -> RavlN::RealT"},
-	 { (char *)"MatrixC_SliceRow", _wrap_MatrixC_SliceRow, METH_VARARGS, (char *)"MatrixC_SliceRow(MatrixC self, IndexC i) -> VectorC"},
+	 { (char *)"MatrixC___eq__", _wrap_MatrixC___eq__, METH_VARARGS, (char *)"MatrixC___eq__(self, op) -> bool"},
+	 { (char *)"MatrixC___ne__", _wrap_MatrixC___ne__, METH_VARARGS, (char *)"MatrixC___ne__(self, op) -> bool"},
+	 { (char *)"MatrixC_SumOfSqr", _wrap_MatrixC_SumOfSqr, METH_VARARGS, (char *)"MatrixC_SumOfSqr(self) -> RavlN::RealT"},
+	 { (char *)"MatrixC_Sum", _wrap_MatrixC_Sum, METH_VARARGS, (char *)"MatrixC_Sum(self) -> RavlN::RealT"},
+	 { (char *)"MatrixC_SliceRow", _wrap_MatrixC_SliceRow, METH_VARARGS, (char *)"MatrixC_SliceRow(self, i) -> VectorC"},
 	 { (char *)"MatrixC_SetColumn", _wrap_MatrixC_SetColumn, METH_VARARGS, (char *)"\n"
-		"SetColumn(IndexC i, VectorC val)\n"
-		"MatrixC_SetColumn(MatrixC self, IndexC i, RavlN::RealT const & val)\n"
+		"SetColumn(i, val)\n"
+		"MatrixC_SetColumn(self, i, val)\n"
 		""},
 	 { (char *)"MatrixC_SetRow", _wrap_MatrixC_SetRow, METH_VARARGS, (char *)"\n"
-		"SetRow(IndexC i, VectorC val)\n"
-		"MatrixC_SetRow(MatrixC self, IndexC i, RavlN::RealT const & val)\n"
+		"SetRow(i, val)\n"
+		"MatrixC_SetRow(self, i, val)\n"
 		""},
-	 { (char *)"MatrixC_SetSubArray", _wrap_MatrixC_SetSubArray, METH_VARARGS, (char *)"MatrixC_SetSubArray(MatrixC self, Index2dC origin, MatrixC vals)"},
-	 { (char *)"MatrixC_Hash", _wrap_MatrixC_Hash, METH_VARARGS, (char *)"MatrixC_Hash(MatrixC self) -> RavlN::SizeT"},
+	 { (char *)"MatrixC_SetSubArray", _wrap_MatrixC_SetSubArray, METH_VARARGS, (char *)"MatrixC_SetSubArray(self, origin, vals)"},
+	 { (char *)"MatrixC_Hash", _wrap_MatrixC_Hash, METH_VARARGS, (char *)"MatrixC_Hash(self) -> RavlN::SizeT"},
 	 { (char *)"MatrixC___mul__", _wrap_MatrixC___mul__, METH_VARARGS, (char *)"\n"
-		"__mul__(MatrixC arr) -> MatrixC\n"
-		"__mul__(RavlN::RealT const & number) -> MatrixC\n"
-		"MatrixC___mul__(MatrixC self, VectorC vector) -> VectorC\n"
+		"__mul__(arr) -> MatrixC\n"
+		"__mul__(number) -> MatrixC\n"
+		"MatrixC___mul__(self, vector) -> VectorC\n"
 		""},
-	 { (char *)"MatrixC_MulT", _wrap_MatrixC_MulT, METH_VARARGS, (char *)"MatrixC_MulT(MatrixC self, MatrixC B) -> MatrixC"},
+	 { (char *)"MatrixC_MulT", _wrap_MatrixC_MulT, METH_VARARGS, (char *)"MatrixC_MulT(self, B) -> MatrixC"},
 	 { (char *)"MatrixC_TMul", _wrap_MatrixC_TMul, METH_VARARGS, (char *)"\n"
-		"TMul(MatrixC B) -> MatrixC\n"
-		"MatrixC_TMul(MatrixC self, VectorC vec) -> VectorC\n"
+		"TMul(B) -> MatrixC\n"
+		"MatrixC_TMul(self, vec) -> VectorC\n"
 		""},
-	 { (char *)"MatrixC_AAT", _wrap_MatrixC_AAT, METH_VARARGS, (char *)"MatrixC_AAT(MatrixC self) -> MatrixC"},
-	 { (char *)"MatrixC_ATA", _wrap_MatrixC_ATA, METH_VARARGS, (char *)"MatrixC_ATA(MatrixC self) -> MatrixC"},
-	 { (char *)"MatrixC_T", _wrap_MatrixC_T, METH_VARARGS, (char *)"MatrixC_T(MatrixC self) -> MatrixC"},
-	 { (char *)"MatrixC_Identity", _wrap_MatrixC_Identity, METH_VARARGS, (char *)"MatrixC_Identity(RavlN::UIntT n) -> MatrixC"},
-	 { (char *)"MatrixC_SetDiagonal", _wrap_MatrixC_SetDiagonal, METH_VARARGS, (char *)"MatrixC_SetDiagonal(MatrixC self, VectorC d) -> MatrixC"},
-	 { (char *)"MatrixC_AddDiagonal", _wrap_MatrixC_AddDiagonal, METH_VARARGS, (char *)"MatrixC_AddDiagonal(MatrixC self, VectorC d) -> MatrixC"},
-	 { (char *)"MatrixC_SubMatrix", _wrap_MatrixC_SubMatrix, METH_VARARGS, (char *)"MatrixC_SubMatrix(MatrixC self, RavlN::SizeT size1, RavlN::SizeT size2) -> MatrixC"},
+	 { (char *)"MatrixC_AAT", _wrap_MatrixC_AAT, METH_VARARGS, (char *)"MatrixC_AAT(self) -> MatrixC"},
+	 { (char *)"MatrixC_ATA", _wrap_MatrixC_ATA, METH_VARARGS, (char *)"MatrixC_ATA(self) -> MatrixC"},
+	 { (char *)"MatrixC_T", _wrap_MatrixC_T, METH_VARARGS, (char *)"MatrixC_T(self) -> MatrixC"},
+	 { (char *)"MatrixC_Identity", _wrap_MatrixC_Identity, METH_VARARGS, (char *)"MatrixC_Identity(n) -> MatrixC"},
+	 { (char *)"MatrixC_SetDiagonal", _wrap_MatrixC_SetDiagonal, METH_VARARGS, (char *)"MatrixC_SetDiagonal(self, d) -> MatrixC"},
+	 { (char *)"MatrixC_AddDiagonal", _wrap_MatrixC_AddDiagonal, METH_VARARGS, (char *)"MatrixC_AddDiagonal(self, d) -> MatrixC"},
+	 { (char *)"MatrixC_SubMatrix", _wrap_MatrixC_SubMatrix, METH_VARARGS, (char *)"MatrixC_SubMatrix(self, size1, size2) -> MatrixC"},
 	 { (char *)"MatrixC_AddOuterProduct", _wrap_MatrixC_AddOuterProduct, METH_VARARGS, (char *)"\n"
-		"AddOuterProduct(TVectorFloat vec1, TVectorFloat vec2) -> TMatrixReal\n"
-		"AddOuterProduct(TVectorFloat vec1, TVectorFloat vec2, float const & a) -> TMatrixReal\n"
-		"AddOuterProduct(VectorC vec1, VectorC vec2) -> MatrixC\n"
-		"MatrixC_AddOuterProduct(MatrixC self, VectorC vec1, VectorC vec2, RavlN::RealT const & a) -> MatrixC\n"
+		"AddOuterProduct(vec1, vec2) -> TMatrixReal\n"
+		"AddOuterProduct(vec1, vec2, a) -> TMatrixReal\n"
+		"AddOuterProduct(vec1, vec2) -> MatrixC\n"
+		"MatrixC_AddOuterProduct(self, vec1, vec2, a) -> MatrixC\n"
 		""},
-	 { (char *)"MatrixC_SetSmallToBeZero", _wrap_MatrixC_SetSmallToBeZero, METH_VARARGS, (char *)"MatrixC_SetSmallToBeZero(MatrixC self, RavlN::RealT const & min) -> MatrixC"},
-	 { (char *)"MatrixC_MulAdd", _wrap_MatrixC_MulAdd, METH_VARARGS, (char *)"MatrixC_MulAdd(MatrixC self, MatrixC i, RavlN::RealT a) -> MatrixC"},
-	 { (char *)"delete_MatrixC", _wrap_delete_MatrixC, METH_VARARGS, (char *)"delete_MatrixC(MatrixC self)"},
+	 { (char *)"MatrixC_SetSmallToBeZero", _wrap_MatrixC_SetSmallToBeZero, METH_VARARGS, (char *)"MatrixC_SetSmallToBeZero(self, min) -> MatrixC"},
+	 { (char *)"MatrixC_MulAdd", _wrap_MatrixC_MulAdd, METH_VARARGS, (char *)"MatrixC_MulAdd(self, i, a) -> MatrixC"},
+	 { (char *)"delete_MatrixC", _wrap_delete_MatrixC, METH_VARARGS, (char *)"delete_MatrixC(self)"},
 	 { (char *)"MatrixC_swigregister", MatrixC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"SVD", _wrap_SVD, METH_VARARGS, (char *)"\n"
-		"SVD(MatrixC M) -> VectorC\n"
-		"SVD(MatrixC M, MatrixC u, MatrixC v) -> VectorC\n"
+		"SVD(M) -> VectorC\n"
+		"SVD(M, u, v) -> VectorC\n"
 		""},
 	 { (char *)"SVD_IP", _wrap_SVD_IP, METH_VARARGS, (char *)"\n"
-		"SVD_IP(MatrixC M) -> VectorC\n"
-		"SVD_IP(MatrixC M, MatrixC u, MatrixC v) -> VectorC\n"
+		"SVD_IP(M) -> VectorC\n"
+		"SVD_IP(M, u, v) -> VectorC\n"
 		""},
-	 { (char *)"EigenValues", _wrap_EigenValues, METH_VARARGS, (char *)"EigenValues(MatrixC M) -> VectorC"},
-	 { (char *)"EigenValuesIP", _wrap_EigenValuesIP, METH_VARARGS, (char *)"EigenValuesIP(MatrixC M) -> VectorC"},
-	 { (char *)"FastEigenValues", _wrap_FastEigenValues, METH_VARARGS, (char *)"FastEigenValues(MatrixC M) -> VectorC"},
-	 { (char *)"EigenVectors", _wrap_EigenVectors, METH_VARARGS, (char *)"EigenVectors(MatrixC M, MatrixC E) -> VectorC"},
-	 { (char *)"EigenVectorsIP", _wrap_EigenVectorsIP, METH_VARARGS, (char *)"EigenVectorsIP(MatrixC M) -> VectorC"},
-	 { (char *)"FastEigenVectors", _wrap_FastEigenVectors, METH_VARARGS, (char *)"FastEigenVectors(MatrixC M) -> VectorC"},
-	 { (char *)"MaxEigenValue", _wrap_MaxEigenValue, METH_VARARGS, (char *)"MaxEigenValue(MatrixC M, VectorC maxv) -> RavlN::RealT"},
+	 { (char *)"EigenValues", _wrap_EigenValues, METH_VARARGS, (char *)"EigenValues(M) -> VectorC"},
+	 { (char *)"EigenValuesIP", _wrap_EigenValuesIP, METH_VARARGS, (char *)"EigenValuesIP(M) -> VectorC"},
+	 { (char *)"FastEigenValues", _wrap_FastEigenValues, METH_VARARGS, (char *)"FastEigenValues(M) -> VectorC"},
+	 { (char *)"EigenVectors", _wrap_EigenVectors, METH_VARARGS, (char *)"EigenVectors(M, E) -> VectorC"},
+	 { (char *)"EigenVectorsIP", _wrap_EigenVectorsIP, METH_VARARGS, (char *)"EigenVectorsIP(M) -> VectorC"},
+	 { (char *)"FastEigenVectors", _wrap_FastEigenVectors, METH_VARARGS, (char *)"FastEigenVectors(M) -> VectorC"},
+	 { (char *)"MaxEigenValue", _wrap_MaxEigenValue, METH_VARARGS, (char *)"MaxEigenValue(M, maxv) -> RavlN::RealT"},
 	 { (char *)"RandomMatrix", _wrap_RandomMatrix, METH_VARARGS, (char *)"\n"
-		"RandomMatrix(int n, int m, RavlN::RealT scale=1) -> MatrixC\n"
-		"RandomMatrix(int n, int m) -> MatrixC\n"
+		"RandomMatrix(n, m, scale=1) -> MatrixC\n"
+		"RandomMatrix(n, m) -> MatrixC\n"
 		""},
 	 { (char *)"RandomSymmetricMatrix", _wrap_RandomSymmetricMatrix, METH_VARARGS, (char *)"\n"
-		"RandomSymmetricMatrix(int n, RavlN::RealT scale=1) -> MatrixC\n"
-		"RandomSymmetricMatrix(int n) -> MatrixC\n"
+		"RandomSymmetricMatrix(n, scale=1) -> MatrixC\n"
+		"RandomSymmetricMatrix(n) -> MatrixC\n"
 		""},
-	 { (char *)"RandomPositiveDefiniteMatrix", _wrap_RandomPositiveDefiniteMatrix, METH_VARARGS, (char *)"RandomPositiveDefiniteMatrix(int n) -> MatrixC"},
+	 { (char *)"RandomPositiveDefiniteMatrix", _wrap_RandomPositiveDefiniteMatrix, METH_VARARGS, (char *)"RandomPositiveDefiniteMatrix(n) -> MatrixC"},
 	 { (char *)"new_MatrixRUTC", _wrap_new_MatrixRUTC, METH_VARARGS, (char *)"\n"
 		"MatrixRUTC()\n"
-		"MatrixRUTC(RavlN::SizeT size)\n"
-		"MatrixRUTC(MatrixC oth)\n"
-		"new_MatrixRUTC(SArray2dReal oth) -> MatrixRUTC\n"
+		"MatrixRUTC(size)\n"
+		"MatrixRUTC(oth)\n"
+		"new_MatrixRUTC(oth) -> MatrixRUTC\n"
 		""},
-	 { (char *)"MatrixRUTC_Inverse", _wrap_MatrixRUTC_Inverse, METH_VARARGS, (char *)"MatrixRUTC_Inverse(MatrixRUTC self) -> MatrixRUTC"},
-	 { (char *)"MatrixRUTC_InverseIP", _wrap_MatrixRUTC_InverseIP, METH_VARARGS, (char *)"MatrixRUTC_InverseIP(MatrixRUTC self) -> bool"},
+	 { (char *)"MatrixRUTC_Inverse", _wrap_MatrixRUTC_Inverse, METH_VARARGS, (char *)"MatrixRUTC_Inverse(self) -> MatrixRUTC"},
+	 { (char *)"MatrixRUTC_InverseIP", _wrap_MatrixRUTC_InverseIP, METH_VARARGS, (char *)"MatrixRUTC_InverseIP(self) -> bool"},
 	 { (char *)"MatrixRUTC_AddOuterProduct", _wrap_MatrixRUTC_AddOuterProduct, METH_VARARGS, (char *)"\n"
-		"AddOuterProduct(VectorC vec)\n"
-		"MatrixRUTC_AddOuterProduct(MatrixRUTC self, VectorC vec, RavlN::RealT a)\n"
+		"AddOuterProduct(vec)\n"
+		"MatrixRUTC_AddOuterProduct(self, vec, a)\n"
 		""},
 	 { (char *)"MatrixRUTC_SubtractOuterProduct", _wrap_MatrixRUTC_SubtractOuterProduct, METH_VARARGS, (char *)"\n"
-		"SubtractOuterProduct(VectorC vec)\n"
-		"MatrixRUTC_SubtractOuterProduct(MatrixRUTC self, VectorC vec, RavlN::RealT a)\n"
+		"SubtractOuterProduct(vec)\n"
+		"MatrixRUTC_SubtractOuterProduct(self, vec, a)\n"
 		""},
-	 { (char *)"MatrixRUTC___iadd__", _wrap_MatrixRUTC___iadd__, METH_VARARGS, (char *)"MatrixRUTC___iadd__(MatrixRUTC self, MatrixRUTC mat) -> MatrixRUTC"},
-	 { (char *)"MatrixRUTC___isub__", _wrap_MatrixRUTC___isub__, METH_VARARGS, (char *)"MatrixRUTC___isub__(MatrixRUTC self, MatrixRUTC mat) -> MatrixRUTC"},
-	 { (char *)"MatrixRUTC___imul__", _wrap_MatrixRUTC___imul__, METH_VARARGS, (char *)"MatrixRUTC___imul__(MatrixRUTC self, RavlN::RealT val) -> MatrixRUTC"},
-	 { (char *)"MatrixRUTC___idiv__", _wrap_MatrixRUTC___idiv__, METH_VARARGS, (char *)"MatrixRUTC___idiv__(MatrixRUTC self, RavlN::RealT val) -> MatrixRUTC"},
-	 { (char *)"MatrixRUTC_ZeroLowerLeft", _wrap_MatrixRUTC_ZeroLowerLeft, METH_VARARGS, (char *)"MatrixRUTC_ZeroLowerLeft(MatrixRUTC self)"},
-	 { (char *)"MatrixRUTC_MakeSymmetric", _wrap_MatrixRUTC_MakeSymmetric, METH_VARARGS, (char *)"MatrixRUTC_MakeSymmetric(MatrixRUTC self)"},
-	 { (char *)"MatrixRUTC_Det", _wrap_MatrixRUTC_Det, METH_VARARGS, (char *)"MatrixRUTC_Det(MatrixRUTC self) -> RavlN::RealT"},
-	 { (char *)"delete_MatrixRUTC", _wrap_delete_MatrixRUTC, METH_VARARGS, (char *)"delete_MatrixRUTC(MatrixRUTC self)"},
+	 { (char *)"MatrixRUTC___iadd__", _wrap_MatrixRUTC___iadd__, METH_VARARGS, (char *)"MatrixRUTC___iadd__(self, mat) -> MatrixRUTC"},
+	 { (char *)"MatrixRUTC___isub__", _wrap_MatrixRUTC___isub__, METH_VARARGS, (char *)"MatrixRUTC___isub__(self, mat) -> MatrixRUTC"},
+	 { (char *)"MatrixRUTC___imul__", _wrap_MatrixRUTC___imul__, METH_VARARGS, (char *)"MatrixRUTC___imul__(self, val) -> MatrixRUTC"},
+	 { (char *)"MatrixRUTC___idiv__", _wrap_MatrixRUTC___idiv__, METH_VARARGS, (char *)"MatrixRUTC___idiv__(self, val) -> MatrixRUTC"},
+	 { (char *)"MatrixRUTC_ZeroLowerLeft", _wrap_MatrixRUTC_ZeroLowerLeft, METH_VARARGS, (char *)"MatrixRUTC_ZeroLowerLeft(self)"},
+	 { (char *)"MatrixRUTC_MakeSymmetric", _wrap_MatrixRUTC_MakeSymmetric, METH_VARARGS, (char *)"MatrixRUTC_MakeSymmetric(self)"},
+	 { (char *)"MatrixRUTC_Det", _wrap_MatrixRUTC_Det, METH_VARARGS, (char *)"MatrixRUTC_Det(self) -> RavlN::RealT"},
+	 { (char *)"delete_MatrixRUTC", _wrap_delete_MatrixRUTC, METH_VARARGS, (char *)"delete_MatrixRUTC(self)"},
 	 { (char *)"MatrixRUTC_swigregister", MatrixRUTC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"OuterProductRUT", _wrap_OuterProductRUT, METH_VARARGS, (char *)"\n"
-		"OuterProductRUT(VectorC vec) -> MatrixRUTC\n"
-		"OuterProductRUT(VectorC vec, RavlN::RealT a) -> MatrixRUTC\n"
+		"OuterProductRUT(vec) -> MatrixRUTC\n"
+		"OuterProductRUT(vec, a) -> MatrixRUTC\n"
 		""},
 	 { (char *)"SolveIP", _wrap_SolveIP, METH_VARARGS, (char *)"\n"
-		"SolveIP(MatrixC A, VectorC b) -> bool\n"
-		"SolveIP(MatrixC A, MatrixC B) -> bool\n"
-		"SolveIP(MatrixRUTC A, VectorC b) -> bool\n"
+		"SolveIP(A, b) -> bool\n"
+		"SolveIP(A, B) -> bool\n"
+		"SolveIP(A, b) -> bool\n"
 		""},
 	 { (char *)"Solve", _wrap_Solve, METH_VARARGS, (char *)"\n"
-		"Solve(MatrixC A, VectorC b) -> VectorC\n"
-		"Solve(MatrixC A, MatrixC B) -> MatrixC\n"
-		"Solve(MatrixRUTC A, VectorC b) -> VectorC\n"
+		"Solve(A, b) -> VectorC\n"
+		"Solve(A, B) -> MatrixC\n"
+		"Solve(A, b) -> VectorC\n"
 		""},
 	 { (char *)"new_VectorMatrixC", _wrap_new_VectorMatrixC, METH_VARARGS, (char *)"\n"
 		"VectorMatrixC()\n"
-		"VectorMatrixC(RavlN::UIntT const dim)\n"
-		"VectorMatrixC(VectorC vec, MatrixC mat)\n"
-		"new_VectorMatrixC(VectorMatrixC vm) -> VectorMatrixC\n"
+		"VectorMatrixC(dim)\n"
+		"VectorMatrixC(vec, mat)\n"
+		"new_VectorMatrixC(vm) -> VectorMatrixC\n"
 		""},
 	 { (char *)"VectorMatrixC_Vector", _wrap_VectorMatrixC_Vector, METH_VARARGS, (char *)"\n"
 		"Vector() -> VectorC\n"
-		"VectorMatrixC_Vector(VectorMatrixC self) -> VectorC\n"
+		"VectorMatrixC_Vector(self) -> VectorC\n"
 		""},
 	 { (char *)"VectorMatrixC_Matrix", _wrap_VectorMatrixC_Matrix, METH_VARARGS, (char *)"\n"
 		"Matrix() -> MatrixC\n"
-		"VectorMatrixC_Matrix(VectorMatrixC self) -> MatrixC\n"
+		"VectorMatrixC_Matrix(self) -> MatrixC\n"
 		""},
-	 { (char *)"VectorMatrixC_Copy", _wrap_VectorMatrixC_Copy, METH_VARARGS, (char *)"VectorMatrixC_Copy(VectorMatrixC self) -> VectorMatrixC"},
-	 { (char *)"VectorMatrixC_SetZero", _wrap_VectorMatrixC_SetZero, METH_VARARGS, (char *)"VectorMatrixC_SetZero(VectorMatrixC self)"},
-	 { (char *)"VectorMatrixC_Sort", _wrap_VectorMatrixC_Sort, METH_VARARGS, (char *)"VectorMatrixC_Sort(VectorMatrixC self)"},
-	 { (char *)"VectorMatrixC___str__", _wrap_VectorMatrixC___str__, METH_VARARGS, (char *)"VectorMatrixC___str__(VectorMatrixC self) -> char const *"},
-	 { (char *)"delete_VectorMatrixC", _wrap_delete_VectorMatrixC, METH_VARARGS, (char *)"delete_VectorMatrixC(VectorMatrixC self)"},
+	 { (char *)"VectorMatrixC_Copy", _wrap_VectorMatrixC_Copy, METH_VARARGS, (char *)"VectorMatrixC_Copy(self) -> VectorMatrixC"},
+	 { (char *)"VectorMatrixC_SetZero", _wrap_VectorMatrixC_SetZero, METH_VARARGS, (char *)"VectorMatrixC_SetZero(self)"},
+	 { (char *)"VectorMatrixC_Sort", _wrap_VectorMatrixC_Sort, METH_VARARGS, (char *)"VectorMatrixC_Sort(self)"},
+	 { (char *)"VectorMatrixC___str__", _wrap_VectorMatrixC___str__, METH_VARARGS, (char *)"VectorMatrixC___str__(self) -> char const *"},
+	 { (char *)"delete_VectorMatrixC", _wrap_delete_VectorMatrixC, METH_VARARGS, (char *)"delete_VectorMatrixC(self)"},
 	 { (char *)"VectorMatrixC_swigregister", VectorMatrixC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"MeanCovarianceC_Copy", _wrap_MeanCovarianceC_Copy, METH_VARARGS, (char *)"MeanCovarianceC_Copy(MeanCovarianceC self) -> MeanCovarianceC"},
+	 { (char *)"MeanCovarianceC_Copy", _wrap_MeanCovarianceC_Copy, METH_VARARGS, (char *)"MeanCovarianceC_Copy(self) -> MeanCovarianceC"},
 	 { (char *)"new_MeanCovarianceC", _wrap_new_MeanCovarianceC, METH_VARARGS, (char *)"\n"
 		"MeanCovarianceC()\n"
-		"MeanCovarianceC(MeanCovarianceC meanCov)\n"
-		"MeanCovarianceC(RavlN::SizeT const n)\n"
-		"MeanCovarianceC(unsigned int const n)\n"
-		"MeanCovarianceC(VectorC point)\n"
-		"MeanCovarianceC(RavlN::RealT n, VectorC mean, MatrixC ncov)\n"
-		"MeanCovarianceC(SArray1dVectorC data, bool sampleStatistics=True)\n"
-		"new_MeanCovarianceC(SArray1dVectorC data) -> MeanCovarianceC\n"
+		"MeanCovarianceC(meanCov)\n"
+		"MeanCovarianceC(n)\n"
+		"MeanCovarianceC(n)\n"
+		"MeanCovarianceC(point)\n"
+		"MeanCovarianceC(n, mean, ncov)\n"
+		"MeanCovarianceC(data, sampleStatistics=True)\n"
+		"new_MeanCovarianceC(data) -> MeanCovarianceC\n"
 		""},
-	 { (char *)"MeanCovarianceC_Number", _wrap_MeanCovarianceC_Number, METH_VARARGS, (char *)"MeanCovarianceC_Number(MeanCovarianceC self) -> RavlN::RealT"},
+	 { (char *)"MeanCovarianceC_Number", _wrap_MeanCovarianceC_Number, METH_VARARGS, (char *)"MeanCovarianceC_Number(self) -> RavlN::RealT"},
 	 { (char *)"MeanCovarianceC_Mean", _wrap_MeanCovarianceC_Mean, METH_VARARGS, (char *)"\n"
 		"Mean() -> VectorC\n"
-		"MeanCovarianceC_Mean(MeanCovarianceC self) -> VectorC\n"
+		"MeanCovarianceC_Mean(self) -> VectorC\n"
 		""},
 	 { (char *)"MeanCovarianceC_Covariance", _wrap_MeanCovarianceC_Covariance, METH_VARARGS, (char *)"\n"
 		"Covariance() -> MatrixC\n"
-		"MeanCovarianceC_Covariance(MeanCovarianceC self) -> MatrixC\n"
+		"MeanCovarianceC_Covariance(self) -> MatrixC\n"
 		""},
-	 { (char *)"MeanCovarianceC_SetZero", _wrap_MeanCovarianceC_SetZero, METH_VARARGS, (char *)"MeanCovarianceC_SetZero(MeanCovarianceC self) -> MeanCovarianceC"},
+	 { (char *)"MeanCovarianceC_SetZero", _wrap_MeanCovarianceC_SetZero, METH_VARARGS, (char *)"MeanCovarianceC_SetZero(self) -> MeanCovarianceC"},
 	 { (char *)"MeanCovarianceC___iadd__", _wrap_MeanCovarianceC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(VectorC point) -> MeanCovarianceC\n"
-		"MeanCovarianceC___iadd__(MeanCovarianceC self, MeanCovarianceC meanCov) -> MeanCovarianceC\n"
+		"__iadd__(point) -> MeanCovarianceC\n"
+		"MeanCovarianceC___iadd__(self, meanCov) -> MeanCovarianceC\n"
 		""},
 	 { (char *)"MeanCovarianceC___isub__", _wrap_MeanCovarianceC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(VectorC point) -> MeanCovarianceC\n"
-		"MeanCovarianceC___isub__(MeanCovarianceC self, MeanCovarianceC meanCov) -> MeanCovarianceC\n"
+		"__isub__(point) -> MeanCovarianceC\n"
+		"MeanCovarianceC___isub__(self, meanCov) -> MeanCovarianceC\n"
 		""},
-	 { (char *)"MeanCovarianceC_Add", _wrap_MeanCovarianceC_Add, METH_VARARGS, (char *)"MeanCovarianceC_Add(MeanCovarianceC self, VectorC point, VectorC var) -> MeanCovarianceC"},
-	 { (char *)"MeanCovarianceC_Remove", _wrap_MeanCovarianceC_Remove, METH_VARARGS, (char *)"MeanCovarianceC_Remove(MeanCovarianceC self, VectorC point, VectorC var) -> MeanCovarianceC"},
-	 { (char *)"MeanCovarianceC_SetSum", _wrap_MeanCovarianceC_SetSum, METH_VARARGS, (char *)"MeanCovarianceC_SetSum(MeanCovarianceC self, MeanCovarianceC meanCov1, MeanCovarianceC meanCov2) -> MeanCovarianceC"},
-	 { (char *)"MeanCovarianceC___mul__", _wrap_MeanCovarianceC___mul__, METH_VARARGS, (char *)"MeanCovarianceC___mul__(MeanCovarianceC self, MeanCovarianceC oth) -> MeanCovarianceC"},
-	 { (char *)"MeanCovarianceC_Gauss", _wrap_MeanCovarianceC_Gauss, METH_VARARGS, (char *)"MeanCovarianceC_Gauss(MeanCovarianceC self, VectorC vec) -> RavlN::RealT"},
-	 { (char *)"MeanCovarianceC_MahalanobisDistance", _wrap_MeanCovarianceC_MahalanobisDistance, METH_VARARGS, (char *)"MeanCovarianceC_MahalanobisDistance(MeanCovarianceC self, VectorC vec) -> RavlN::RealT"},
-	 { (char *)"MeanCovarianceC_ClearCache", _wrap_MeanCovarianceC_ClearCache, METH_VARARGS, (char *)"MeanCovarianceC_ClearCache(MeanCovarianceC self)"},
-	 { (char *)"MeanCovarianceC_Hash", _wrap_MeanCovarianceC_Hash, METH_VARARGS, (char *)"MeanCovarianceC_Hash(MeanCovarianceC self) -> RavlN::UIntT"},
-	 { (char *)"MeanCovarianceC___str__", _wrap_MeanCovarianceC___str__, METH_VARARGS, (char *)"MeanCovarianceC___str__(MeanCovarianceC self) -> char const *"},
-	 { (char *)"delete_MeanCovarianceC", _wrap_delete_MeanCovarianceC, METH_VARARGS, (char *)"delete_MeanCovarianceC(MeanCovarianceC self)"},
+	 { (char *)"MeanCovarianceC_Add", _wrap_MeanCovarianceC_Add, METH_VARARGS, (char *)"MeanCovarianceC_Add(self, point, var) -> MeanCovarianceC"},
+	 { (char *)"MeanCovarianceC_Remove", _wrap_MeanCovarianceC_Remove, METH_VARARGS, (char *)"MeanCovarianceC_Remove(self, point, var) -> MeanCovarianceC"},
+	 { (char *)"MeanCovarianceC_SetSum", _wrap_MeanCovarianceC_SetSum, METH_VARARGS, (char *)"MeanCovarianceC_SetSum(self, meanCov1, meanCov2) -> MeanCovarianceC"},
+	 { (char *)"MeanCovarianceC___mul__", _wrap_MeanCovarianceC___mul__, METH_VARARGS, (char *)"MeanCovarianceC___mul__(self, oth) -> MeanCovarianceC"},
+	 { (char *)"MeanCovarianceC_Gauss", _wrap_MeanCovarianceC_Gauss, METH_VARARGS, (char *)"MeanCovarianceC_Gauss(self, vec) -> RavlN::RealT"},
+	 { (char *)"MeanCovarianceC_MahalanobisDistance", _wrap_MeanCovarianceC_MahalanobisDistance, METH_VARARGS, (char *)"MeanCovarianceC_MahalanobisDistance(self, vec) -> RavlN::RealT"},
+	 { (char *)"MeanCovarianceC_ClearCache", _wrap_MeanCovarianceC_ClearCache, METH_VARARGS, (char *)"MeanCovarianceC_ClearCache(self)"},
+	 { (char *)"MeanCovarianceC_Hash", _wrap_MeanCovarianceC_Hash, METH_VARARGS, (char *)"MeanCovarianceC_Hash(self) -> RavlN::UIntT"},
+	 { (char *)"MeanCovarianceC___str__", _wrap_MeanCovarianceC___str__, METH_VARARGS, (char *)"MeanCovarianceC___str__(self) -> char const *"},
+	 { (char *)"delete_MeanCovarianceC", _wrap_delete_MeanCovarianceC, METH_VARARGS, (char *)"delete_MeanCovarianceC(self)"},
 	 { (char *)"MeanCovarianceC_swigregister", MeanCovarianceC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Affine2dC", _wrap_new_Affine2dC, METH_VARARGS, (char *)"new_Affine2dC() -> Affine2dC"},
-	 { (char *)"delete_Affine2dC", _wrap_delete_Affine2dC, METH_VARARGS, (char *)"delete_Affine2dC(Affine2dC self)"},
+	 { (char *)"delete_Affine2dC", _wrap_delete_Affine2dC, METH_VARARGS, (char *)"delete_Affine2dC(self)"},
 	 { (char *)"Affine2dC_swigregister", Affine2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"DateC_NowUTC", _wrap_DateC_NowUTC, METH_VARARGS, (char *)"DateC_NowUTC() -> DateC"},
 	 { (char *)"DateC_NowLocal", _wrap_DateC_NowLocal, METH_VARARGS, (char *)"DateC_NowLocal() -> DateC"},
@@ -80552,858 +82297,912 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"DateC_TimeZoneOffset", _wrap_DateC_TimeZoneOffset, METH_VARARGS, (char *)"DateC_TimeZoneOffset() -> DateC"},
 	 { (char *)"new_DateC", _wrap_new_DateC, METH_VARARGS, (char *)"\n"
 		"DateC()\n"
-		"DateC(bool setval, bool useVirt=False)\n"
-		"DateC(bool setval)\n"
-		"DateC(RavlN::RealT val)\n"
-		"DateC(RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0, \n"
-		"    RavlN::IntT sec=0, RavlN::IntT usec=0, bool useLocalTimeZone=False)\n"
-		"DateC(RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0, \n"
-		"    RavlN::IntT sec=0, RavlN::IntT usec=0)\n"
-		"DateC(RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0, \n"
-		"    RavlN::IntT sec=0)\n"
-		"DateC(RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0, RavlN::IntT min=0)\n"
-		"DateC(RavlN::IntT year, RavlN::IntT month, RavlN::IntT day, RavlN::IntT hour=0)\n"
-		"DateC(RavlN::IntT year, RavlN::IntT month, RavlN::IntT day)\n"
-		"DateC(long xsec, long xusec)\n"
-		"DateC(DateC val)\n"
-		"new_DateC(StringC str) -> DateC\n"
+		"DateC(setval, useVirt=False)\n"
+		"DateC(setval)\n"
+		"DateC(val)\n"
+		"DateC(year, month, day, hour=0, min=0, sec=0, usec=0, useLocalTimeZone=False)\n"
+		"DateC(year, month, day, hour=0, min=0, sec=0, usec=0)\n"
+		"DateC(year, month, day, hour=0, min=0, sec=0)\n"
+		"DateC(year, month, day, hour=0, min=0)\n"
+		"DateC(year, month, day, hour=0)\n"
+		"DateC(year, month, day)\n"
+		"DateC(xsec, xusec)\n"
+		"DateC(val)\n"
+		"new_DateC(str) -> DateC\n"
 		""},
-	 { (char *)"DateC_IsLeapYear", _wrap_DateC_IsLeapYear, METH_VARARGS, (char *)"DateC_IsLeapYear(int year) -> bool"},
-	 { (char *)"DateC_YearToDaysSince1970", _wrap_DateC_YearToDaysSince1970, METH_VARARGS, (char *)"DateC_YearToDaysSince1970(int year) -> int"},
-	 { (char *)"DateC_IsValid", _wrap_DateC_IsValid, METH_VARARGS, (char *)"DateC_IsValid(DateC self) -> bool"},
-	 { (char *)"DateC_IsZero", _wrap_DateC_IsZero, METH_VARARGS, (char *)"DateC_IsZero(DateC self) -> bool"},
-	 { (char *)"DateC_SetInvalid", _wrap_DateC_SetInvalid, METH_VARARGS, (char *)"DateC_SetInvalid(DateC self)"},
+	 { (char *)"DateC_IsLeapYear", _wrap_DateC_IsLeapYear, METH_VARARGS, (char *)"DateC_IsLeapYear(year) -> bool"},
+	 { (char *)"DateC_YearToDaysSince1970", _wrap_DateC_YearToDaysSince1970, METH_VARARGS, (char *)"DateC_YearToDaysSince1970(year) -> int"},
+	 { (char *)"DateC_IsValid", _wrap_DateC_IsValid, METH_VARARGS, (char *)"DateC_IsValid(self) -> bool"},
+	 { (char *)"DateC_IsZero", _wrap_DateC_IsZero, METH_VARARGS, (char *)"DateC_IsZero(self) -> bool"},
+	 { (char *)"DateC_SetInvalid", _wrap_DateC_SetInvalid, METH_VARARGS, (char *)"DateC_SetInvalid(self)"},
 	 { (char *)"DateC_SetToNow", _wrap_DateC_SetToNow, METH_VARARGS, (char *)"\n"
-		"SetToNow(bool useVirt=False)\n"
-		"DateC_SetToNow(DateC self)\n"
+		"SetToNow(useVirt=False)\n"
+		"DateC_SetToNow(self)\n"
 		""},
-	 { (char *)"DateC_MaxUSeconds", _wrap_DateC_MaxUSeconds, METH_VARARGS, (char *)"DateC_MaxUSeconds(DateC self) -> long"},
-	 { (char *)"DateC_Resolution", _wrap_DateC_Resolution, METH_VARARGS, (char *)"DateC_Resolution(DateC self) -> long"},
-	 { (char *)"DateC_NormalisePos", _wrap_DateC_NormalisePos, METH_VARARGS, (char *)"DateC_NormalisePos(DateC self)"},
-	 { (char *)"DateC_NormaliseNeg", _wrap_DateC_NormaliseNeg, METH_VARARGS, (char *)"DateC_NormaliseNeg(DateC self)"},
-	 { (char *)"DateC___eq__", _wrap_DateC___eq__, METH_VARARGS, (char *)"DateC___eq__(DateC self, DateC oth) -> bool"},
-	 { (char *)"DateC___ne__", _wrap_DateC___ne__, METH_VARARGS, (char *)"DateC___ne__(DateC self, DateC oth) -> bool"},
-	 { (char *)"DateC___gt__", _wrap_DateC___gt__, METH_VARARGS, (char *)"DateC___gt__(DateC self, DateC oth) -> bool"},
-	 { (char *)"DateC___lt__", _wrap_DateC___lt__, METH_VARARGS, (char *)"DateC___lt__(DateC self, DateC oth) -> bool"},
-	 { (char *)"DateC___ge__", _wrap_DateC___ge__, METH_VARARGS, (char *)"DateC___ge__(DateC self, DateC oth) -> bool"},
-	 { (char *)"DateC___le__", _wrap_DateC___le__, METH_VARARGS, (char *)"DateC___le__(DateC self, DateC oth) -> bool"},
-	 { (char *)"DateC___add__", _wrap_DateC___add__, METH_VARARGS, (char *)"DateC___add__(DateC self, DateC oth) -> DateC"},
-	 { (char *)"DateC___sub__", _wrap_DateC___sub__, METH_VARARGS, (char *)"DateC___sub__(DateC self, DateC oth) -> DateC"},
+	 { (char *)"DateC_MaxUSeconds", _wrap_DateC_MaxUSeconds, METH_VARARGS, (char *)"DateC_MaxUSeconds(self) -> long"},
+	 { (char *)"DateC_Resolution", _wrap_DateC_Resolution, METH_VARARGS, (char *)"DateC_Resolution(self) -> long"},
+	 { (char *)"DateC_NormalisePos", _wrap_DateC_NormalisePos, METH_VARARGS, (char *)"DateC_NormalisePos(self)"},
+	 { (char *)"DateC_NormaliseNeg", _wrap_DateC_NormaliseNeg, METH_VARARGS, (char *)"DateC_NormaliseNeg(self)"},
+	 { (char *)"DateC___eq__", _wrap_DateC___eq__, METH_VARARGS, (char *)"DateC___eq__(self, oth) -> bool"},
+	 { (char *)"DateC___ne__", _wrap_DateC___ne__, METH_VARARGS, (char *)"DateC___ne__(self, oth) -> bool"},
+	 { (char *)"DateC___gt__", _wrap_DateC___gt__, METH_VARARGS, (char *)"DateC___gt__(self, oth) -> bool"},
+	 { (char *)"DateC___lt__", _wrap_DateC___lt__, METH_VARARGS, (char *)"DateC___lt__(self, oth) -> bool"},
+	 { (char *)"DateC___ge__", _wrap_DateC___ge__, METH_VARARGS, (char *)"DateC___ge__(self, oth) -> bool"},
+	 { (char *)"DateC___le__", _wrap_DateC___le__, METH_VARARGS, (char *)"DateC___le__(self, oth) -> bool"},
+	 { (char *)"DateC___add__", _wrap_DateC___add__, METH_VARARGS, (char *)"DateC___add__(self, oth) -> DateC"},
+	 { (char *)"DateC___sub__", _wrap_DateC___sub__, METH_VARARGS, (char *)"DateC___sub__(self, oth) -> DateC"},
 	 { (char *)"DateC___isub__", _wrap_DateC___isub__, METH_VARARGS, (char *)"\n"
-		"__isub__(DateC val) -> DateC\n"
-		"DateC___isub__(DateC self, double val) -> DateC\n"
+		"__isub__(val) -> DateC\n"
+		"DateC___isub__(self, val) -> DateC\n"
 		""},
 	 { (char *)"DateC___iadd__", _wrap_DateC___iadd__, METH_VARARGS, (char *)"\n"
-		"__iadd__(DateC val) -> DateC\n"
-		"DateC___iadd__(DateC self, double val) -> DateC\n"
+		"__iadd__(val) -> DateC\n"
+		"DateC___iadd__(self, val) -> DateC\n"
 		""},
-	 { (char *)"DateC_Text", _wrap_DateC_Text, METH_VARARGS, (char *)"DateC_Text(DateC self) -> StringC"},
+	 { (char *)"DateC_Text", _wrap_DateC_Text, METH_VARARGS, (char *)"DateC_Text(self) -> StringC"},
 	 { (char *)"DateC_ODBC", _wrap_DateC_ODBC, METH_VARARGS, (char *)"\n"
-		"ODBC(bool convertUTCToLocal=False) -> StringC\n"
-		"DateC_ODBC(DateC self) -> StringC\n"
+		"ODBC(convertUTCToLocal=False) -> StringC\n"
+		"DateC_ODBC(self) -> StringC\n"
 		""},
-	 { (char *)"DateC_SetODBC", _wrap_DateC_SetODBC, METH_VARARGS, (char *)"DateC_SetODBC(DateC self, StringC odbcStr) -> bool"},
+	 { (char *)"DateC_SetODBC", _wrap_DateC_SetODBC, METH_VARARGS, (char *)"DateC_SetODBC(self, odbcStr) -> bool"},
 	 { (char *)"DateC_CTime", _wrap_DateC_CTime, METH_VARARGS, (char *)"\n"
-		"CTime(bool convertUTCToLocal=False) -> StringC\n"
-		"DateC_CTime(DateC self) -> StringC\n"
+		"CTime(convertUTCToLocal=False) -> StringC\n"
+		"DateC_CTime(self) -> StringC\n"
 		""},
 	 { (char *)"DateC_CTimeShort", _wrap_DateC_CTimeShort, METH_VARARGS, (char *)"\n"
-		"CTimeShort(bool convertUTCToLocal=False) -> StringC\n"
-		"DateC_CTimeShort(DateC self) -> StringC\n"
+		"CTimeShort(convertUTCToLocal=False) -> StringC\n"
+		"DateC_CTimeShort(self) -> StringC\n"
 		""},
-	 { (char *)"DateC_USeconds", _wrap_DateC_USeconds, METH_VARARGS, (char *)"DateC_USeconds(DateC self) -> long"},
-	 { (char *)"DateC_TotalSeconds", _wrap_DateC_TotalSeconds, METH_VARARGS, (char *)"DateC_TotalSeconds(DateC self) -> long"},
-	 { (char *)"DateC_Double", _wrap_DateC_Double, METH_VARARGS, (char *)"DateC_Double(DateC self) -> double"},
+	 { (char *)"DateC_USeconds", _wrap_DateC_USeconds, METH_VARARGS, (char *)"DateC_USeconds(self) -> long"},
+	 { (char *)"DateC_TotalSeconds", _wrap_DateC_TotalSeconds, METH_VARARGS, (char *)"DateC_TotalSeconds(self) -> long"},
+	 { (char *)"DateC_Double", _wrap_DateC_Double, METH_VARARGS, (char *)"DateC_Double(self) -> double"},
 	 { (char *)"DateC_Seconds", _wrap_DateC_Seconds, METH_VARARGS, (char *)"\n"
-		"Seconds(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_Seconds(DateC self) -> RavlN::IntT\n"
+		"Seconds(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_Seconds(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_Minute", _wrap_DateC_Minute, METH_VARARGS, (char *)"\n"
-		"Minute(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_Minute(DateC self) -> RavlN::IntT\n"
+		"Minute(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_Minute(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_Hour", _wrap_DateC_Hour, METH_VARARGS, (char *)"\n"
-		"Hour(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_Hour(DateC self) -> RavlN::IntT\n"
+		"Hour(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_Hour(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_Month", _wrap_DateC_Month, METH_VARARGS, (char *)"\n"
-		"Month(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_Month(DateC self) -> RavlN::IntT\n"
+		"Month(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_Month(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_Year", _wrap_DateC_Year, METH_VARARGS, (char *)"\n"
-		"Year(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_Year(DateC self) -> RavlN::IntT\n"
+		"Year(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_Year(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_DayInMonth", _wrap_DateC_DayInMonth, METH_VARARGS, (char *)"\n"
-		"DayInMonth(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_DayInMonth(DateC self) -> RavlN::IntT\n"
+		"DayInMonth(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_DayInMonth(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_DayInYear", _wrap_DateC_DayInYear, METH_VARARGS, (char *)"\n"
-		"DayInYear(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_DayInYear(DateC self) -> RavlN::IntT\n"
+		"DayInYear(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_DayInYear(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_DayInWeek", _wrap_DateC_DayInWeek, METH_VARARGS, (char *)"\n"
-		"DayInWeek(bool convertUTCToLocal=False) -> RavlN::IntT\n"
-		"DateC_DayInWeek(DateC self) -> RavlN::IntT\n"
+		"DayInWeek(convertUTCToLocal=False) -> RavlN::IntT\n"
+		"DateC_DayInWeek(self) -> RavlN::IntT\n"
 		""},
 	 { (char *)"DateC_TextDayInWeek", _wrap_DateC_TextDayInWeek, METH_VARARGS, (char *)"\n"
-		"TextDayInWeek(bool convertUTCToLocal=False) -> StringC\n"
-		"DateC_TextDayInWeek(DateC self) -> StringC\n"
+		"TextDayInWeek(convertUTCToLocal=False) -> StringC\n"
+		"DateC_TextDayInWeek(self) -> StringC\n"
 		""},
-	 { (char *)"DateC_DaylightSaving", _wrap_DateC_DaylightSaving, METH_VARARGS, (char *)"DateC_DaylightSaving(DateC self) -> bool"},
-	 { (char *)"DateC_Wait", _wrap_DateC_Wait, METH_VARARGS, (char *)"DateC_Wait(DateC self) -> bool"},
-	 { (char *)"delete_DateC", _wrap_delete_DateC, METH_VARARGS, (char *)"delete_DateC(DateC self)"},
+	 { (char *)"DateC_DaylightSaving", _wrap_DateC_DaylightSaving, METH_VARARGS, (char *)"DateC_DaylightSaving(self) -> bool"},
+	 { (char *)"DateC_Wait", _wrap_DateC_Wait, METH_VARARGS, (char *)"DateC_Wait(self) -> bool"},
+	 { (char *)"delete_DateC", _wrap_delete_DateC, METH_VARARGS, (char *)"delete_DateC(self)"},
 	 { (char *)"DateC_swigregister", DateC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_HashInt64Int64C", _wrap_new_HashInt64Int64C, METH_VARARGS, (char *)"\n"
-		"HashInt64Int64C(RavlN::UIntT nBins=23)\n"
+		"HashInt64Int64C(nBins=23)\n"
 		"new_HashInt64Int64C() -> HashInt64Int64C\n"
 		""},
-	 { (char *)"HashInt64Int64C_Lookup", _wrap_HashInt64Int64C_Lookup, METH_VARARGS, (char *)"HashInt64Int64C_Lookup(HashInt64Int64C self, long const & key) -> bool"},
+	 { (char *)"HashInt64Int64C_Lookup", _wrap_HashInt64Int64C_Lookup, METH_VARARGS, (char *)"HashInt64Int64C_Lookup(self, key) -> bool"},
 	 { (char *)"HashInt64Int64C_Update", _wrap_HashInt64Int64C_Update, METH_VARARGS, (char *)"\n"
-		"Update(long const & key, long const & data) -> bool\n"
-		"HashInt64Int64C_Update(HashInt64Int64C self, long const & key) -> long &\n"
+		"Update(key, data) -> bool\n"
+		"HashInt64Int64C_Update(self, key) -> long &\n"
 		""},
-	 { (char *)"HashInt64Int64C_Insert", _wrap_HashInt64Int64C_Insert, METH_VARARGS, (char *)"HashInt64Int64C_Insert(HashInt64Int64C self, long const & key, long const & data) -> bool"},
+	 { (char *)"HashInt64Int64C_Insert", _wrap_HashInt64Int64C_Insert, METH_VARARGS, (char *)"HashInt64Int64C_Insert(self, key, data) -> bool"},
 	 { (char *)"HashInt64Int64C_Access", _wrap_HashInt64Int64C_Access, METH_VARARGS, (char *)"\n"
-		"Access(long const & key, long const & default=long()) -> long\n"
-		"HashInt64Int64C_Access(HashInt64Int64C self, long const & key) -> long &\n"
+		"Access(key, default=long()) -> long\n"
+		"HashInt64Int64C_Access(self, key) -> long &\n"
 		""},
 	 { (char *)"HashInt64Int64C_AccessCopy", _wrap_HashInt64Int64C_AccessCopy, METH_VARARGS, (char *)"\n"
-		"AccessCopy(long const & key, long const & default=long()) -> long\n"
-		"HashInt64Int64C_AccessCopy(HashInt64Int64C self, long const & key) -> long &\n"
+		"AccessCopy(key, default=long()) -> long\n"
+		"HashInt64Int64C_AccessCopy(self, key) -> long &\n"
 		""},
 	 { (char *)"HashInt64Int64C_Del", _wrap_HashInt64Int64C_Del, METH_VARARGS, (char *)"\n"
-		"Del(long const & key, bool allowResize=True) -> bool\n"
-		"HashInt64Int64C_Del(HashInt64Int64C self, long const & key) -> bool\n"
+		"Del(key, allowResize=True) -> bool\n"
+		"HashInt64Int64C_Del(self, key) -> bool\n"
 		""},
 	 { (char *)"HashInt64Int64C_Get", _wrap_HashInt64Int64C_Get, METH_VARARGS, (char *)"\n"
-		"Get(long const & key, bool allowResize=True) -> long\n"
-		"HashInt64Int64C_Get(HashInt64Int64C self, long const & key) -> long\n"
+		"Get(key, allowResize=True) -> long\n"
+		"HashInt64Int64C_Get(self, key) -> long\n"
 		""},
-	 { (char *)"HashInt64Int64C_IsElm", _wrap_HashInt64Int64C_IsElm, METH_VARARGS, (char *)"HashInt64Int64C_IsElm(HashInt64Int64C self, long const & key) -> bool"},
-	 { (char *)"HashInt64Int64C_Empty", _wrap_HashInt64Int64C_Empty, METH_VARARGS, (char *)"HashInt64Int64C_Empty(HashInt64Int64C self)"},
-	 { (char *)"HashInt64Int64C_Bins", _wrap_HashInt64Int64C_Bins, METH_VARARGS, (char *)"HashInt64Int64C_Bins(HashInt64Int64C self) -> RavlN::UIntT"},
-	 { (char *)"HashInt64Int64C_Resize", _wrap_HashInt64Int64C_Resize, METH_VARARGS, (char *)"HashInt64Int64C_Resize(HashInt64Int64C self, RavlN::SizeT newSize)"},
-	 { (char *)"delete_HashInt64Int64C", _wrap_delete_HashInt64Int64C, METH_VARARGS, (char *)"delete_HashInt64Int64C(HashInt64Int64C self)"},
+	 { (char *)"HashInt64Int64C_IsElm", _wrap_HashInt64Int64C_IsElm, METH_VARARGS, (char *)"HashInt64Int64C_IsElm(self, key) -> bool"},
+	 { (char *)"HashInt64Int64C_Empty", _wrap_HashInt64Int64C_Empty, METH_VARARGS, (char *)"HashInt64Int64C_Empty(self)"},
+	 { (char *)"HashInt64Int64C_Bins", _wrap_HashInt64Int64C_Bins, METH_VARARGS, (char *)"HashInt64Int64C_Bins(self) -> RavlN::UIntT"},
+	 { (char *)"HashInt64Int64C_Resize", _wrap_HashInt64Int64C_Resize, METH_VARARGS, (char *)"HashInt64Int64C_Resize(self, newSize)"},
+	 { (char *)"delete_HashInt64Int64C", _wrap_delete_HashInt64Int64C, METH_VARARGS, (char *)"delete_HashInt64Int64C(self)"},
 	 { (char *)"HashInt64Int64C_swigregister", HashInt64Int64C_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_HashInt64Int64IterC", _wrap_new_HashInt64Int64IterC, METH_VARARGS, (char *)"\n"
 		"HashInt64Int64IterC()\n"
-		"HashInt64Int64IterC(HashInt64Int64C nTab)\n"
-		"new_HashInt64Int64IterC(HashInt64Int64IterC oth) -> HashInt64Int64IterC\n"
+		"HashInt64Int64IterC(nTab)\n"
+		"new_HashInt64Int64IterC(oth) -> HashInt64Int64IterC\n"
 		""},
-	 { (char *)"HashInt64Int64IterC_First", _wrap_HashInt64Int64IterC_First, METH_VARARGS, (char *)"HashInt64Int64IterC_First(HashInt64Int64IterC self) -> bool"},
-	 { (char *)"HashInt64Int64IterC_Next", _wrap_HashInt64Int64IterC_Next, METH_VARARGS, (char *)"HashInt64Int64IterC_Next(HashInt64Int64IterC self) -> bool"},
-	 { (char *)"HashInt64Int64IterC_IsElm", _wrap_HashInt64Int64IterC_IsElm, METH_VARARGS, (char *)"HashInt64Int64IterC_IsElm(HashInt64Int64IterC self) -> bool"},
-	 { (char *)"HashInt64Int64IterC_Key", _wrap_HashInt64Int64IterC_Key, METH_VARARGS, (char *)"HashInt64Int64IterC_Key(HashInt64Int64IterC self) -> long const &"},
+	 { (char *)"HashInt64Int64IterC_First", _wrap_HashInt64Int64IterC_First, METH_VARARGS, (char *)"HashInt64Int64IterC_First(self) -> bool"},
+	 { (char *)"HashInt64Int64IterC_Next", _wrap_HashInt64Int64IterC_Next, METH_VARARGS, (char *)"HashInt64Int64IterC_Next(self) -> bool"},
+	 { (char *)"HashInt64Int64IterC_IsElm", _wrap_HashInt64Int64IterC_IsElm, METH_VARARGS, (char *)"HashInt64Int64IterC_IsElm(self) -> bool"},
+	 { (char *)"HashInt64Int64IterC_Key", _wrap_HashInt64Int64IterC_Key, METH_VARARGS, (char *)"HashInt64Int64IterC_Key(self) -> long const &"},
 	 { (char *)"HashInt64Int64IterC_Data", _wrap_HashInt64Int64IterC_Data, METH_VARARGS, (char *)"\n"
 		"Data() -> long const\n"
-		"HashInt64Int64IterC_Data(HashInt64Int64IterC self) -> long &\n"
+		"HashInt64Int64IterC_Data(self) -> long &\n"
 		""},
-	 { (char *)"HashInt64Int64IterC_Del", _wrap_HashInt64Int64IterC_Del, METH_VARARGS, (char *)"HashInt64Int64IterC_Del(HashInt64Int64IterC self) -> bool"},
-	 { (char *)"delete_HashInt64Int64IterC", _wrap_delete_HashInt64Int64IterC, METH_VARARGS, (char *)"delete_HashInt64Int64IterC(HashInt64Int64IterC self)"},
+	 { (char *)"HashInt64Int64IterC_Del", _wrap_HashInt64Int64IterC_Del, METH_VARARGS, (char *)"HashInt64Int64IterC_Del(self) -> bool"},
+	 { (char *)"delete_HashInt64Int64IterC", _wrap_delete_HashInt64Int64IterC, METH_VARARGS, (char *)"delete_HashInt64Int64IterC(self)"},
 	 { (char *)"HashInt64Int64IterC_swigregister", HashInt64Int64IterC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DPIPortImageByteC", _wrap_new_DPIPortImageByteC, METH_VARARGS, (char *)"new_DPIPortImageByteC() -> DPIPortImageByteC"},
-	 { (char *)"DPIPortImageByteC_Get", _wrap_DPIPortImageByteC_Get, METH_VARARGS, (char *)"DPIPortImageByteC_Get(DPIPortImageByteC self, ImageByteC buff) -> bool"},
-	 { (char *)"DPIPortImageByteC_SetAttr", _wrap_DPIPortImageByteC_SetAttr, METH_VARARGS, (char *)"DPIPortImageByteC_SetAttr(DPIPortImageByteC self, StringC attrName, StringC attrValue) -> bool"},
-	 { (char *)"DPIPortImageByteC_GetAttr", _wrap_DPIPortImageByteC_GetAttr, METH_VARARGS, (char *)"DPIPortImageByteC_GetAttr(DPIPortImageByteC self, StringC attrName, StringC attrValue) -> bool"},
-	 { (char *)"delete_DPIPortImageByteC", _wrap_delete_DPIPortImageByteC, METH_VARARGS, (char *)"delete_DPIPortImageByteC(DPIPortImageByteC self)"},
+	 { (char *)"DPIPortImageByteC_Get", _wrap_DPIPortImageByteC_Get, METH_VARARGS, (char *)"DPIPortImageByteC_Get(self, buff) -> bool"},
+	 { (char *)"DPIPortImageByteC_SetAttr", _wrap_DPIPortImageByteC_SetAttr, METH_VARARGS, (char *)"DPIPortImageByteC_SetAttr(self, attrName, attrValue) -> bool"},
+	 { (char *)"DPIPortImageByteC_GetAttr", _wrap_DPIPortImageByteC_GetAttr, METH_VARARGS, (char *)"DPIPortImageByteC_GetAttr(self, attrName, attrValue) -> bool"},
+	 { (char *)"delete_DPIPortImageByteC", _wrap_delete_DPIPortImageByteC, METH_VARARGS, (char *)"delete_DPIPortImageByteC(self)"},
 	 { (char *)"DPIPortImageByteC_swigregister", DPIPortImageByteC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"OpenISequence", _wrap_OpenISequence, METH_VARARGS, (char *)"OpenISequence(DPIPortImageByteC arg1, StringC arg2) -> bool"},
+	 { (char *)"OpenISequence", _wrap_OpenISequence, METH_VARARGS, (char *)"OpenISequence(arg1, arg2) -> bool"},
 	 { (char *)"SysLogOpen", _wrap_SysLogOpen, METH_VARARGS, (char *)"\n"
-		"SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True, bool stdErrOnly=False, int facility=-1, \n"
-		"    bool logFileLine=False) -> bool\n"
-		"SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True, bool stdErrOnly=False, int facility=-1) -> bool\n"
-		"SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True, bool stdErrOnly=False) -> bool\n"
-		"SysLogOpen(StringC name, bool logPid=False, bool sendStdErr=True) -> bool\n"
-		"SysLogOpen(StringC name, bool logPid=False) -> bool\n"
-		"SysLogOpen(StringC name) -> bool\n"
+		"SysLogOpen(name, logPid=False, sendStdErr=True, stdErrOnly=False, facility=-1, logFileLine=False) -> bool\n"
+		"SysLogOpen(name, logPid=False, sendStdErr=True, stdErrOnly=False, facility=-1) -> bool\n"
+		"SysLogOpen(name, logPid=False, sendStdErr=True, stdErrOnly=False) -> bool\n"
+		"SysLogOpen(name, logPid=False, sendStdErr=True) -> bool\n"
+		"SysLogOpen(name, logPid=False) -> bool\n"
+		"SysLogOpen(name) -> bool\n"
 		""},
-	 { (char *)"new_XMLFactoryContextC", _wrap_new_XMLFactoryContextC, METH_VARARGS, (char *)"new_XMLFactoryContextC(StringC configFile) -> XMLFactoryContextC"},
-	 { (char *)"delete_XMLFactoryContextC", _wrap_delete_XMLFactoryContextC, METH_VARARGS, (char *)"delete_XMLFactoryContextC(XMLFactoryContextC self)"},
+	 { (char *)"new_XMLFactoryContextC", _wrap_new_XMLFactoryContextC, METH_VARARGS, (char *)"new_XMLFactoryContextC(configFile) -> XMLFactoryContextC"},
+	 { (char *)"delete_XMLFactoryContextC", _wrap_delete_XMLFactoryContextC, METH_VARARGS, (char *)"delete_XMLFactoryContextC(self)"},
 	 { (char *)"XMLFactoryContextC_swigregister", XMLFactoryContextC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CollectionUInt", _wrap_new_CollectionUInt, METH_VARARGS, (char *)"\n"
-		"CollectionUInt(RavlN::UIntT size=10)\n"
+		"CollectionUInt(size=10)\n"
 		"CollectionUInt()\n"
-		"CollectionUInt(RavlN::SizeT maxSize, RavlN::SizeT used=0)\n"
-		"CollectionUInt(RavlN::SizeT maxSize)\n"
-		"CollectionUInt(SArray1dUInt dat)\n"
-		"new_CollectionUInt(DListUIntC list) -> CollectionUInt\n"
+		"CollectionUInt(maxSize, used=0)\n"
+		"CollectionUInt(maxSize)\n"
+		"CollectionUInt(dat)\n"
+		"new_CollectionUInt(list) -> CollectionUInt\n"
 		""},
-	 { (char *)"CollectionUInt_Copy", _wrap_CollectionUInt_Copy, METH_VARARGS, (char *)"CollectionUInt_Copy(CollectionUInt self) -> CollectionUInt"},
-	 { (char *)"CollectionUInt_Insert", _wrap_CollectionUInt_Insert, METH_VARARGS, (char *)"CollectionUInt_Insert(CollectionUInt self, unsigned int const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionUInt_Append", _wrap_CollectionUInt_Append, METH_VARARGS, (char *)"CollectionUInt_Append(CollectionUInt self, unsigned int const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionUInt_InsertRandom", _wrap_CollectionUInt_InsertRandom, METH_VARARGS, (char *)"CollectionUInt_InsertRandom(CollectionUInt self, unsigned int const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionUInt_Delete", _wrap_CollectionUInt_Delete, METH_VARARGS, (char *)"CollectionUInt_Delete(CollectionUInt self, IndexC ind)"},
-	 { (char *)"CollectionUInt___iadd__", _wrap_CollectionUInt___iadd__, METH_VARARGS, (char *)"CollectionUInt___iadd__(CollectionUInt self, unsigned int const & dat)"},
-	 { (char *)"CollectionUInt_Pick", _wrap_CollectionUInt_Pick, METH_VARARGS, (char *)"CollectionUInt_Pick(CollectionUInt self) -> unsigned int"},
-	 { (char *)"CollectionUInt_Shuffle", _wrap_CollectionUInt_Shuffle, METH_VARARGS, (char *)"CollectionUInt_Shuffle(CollectionUInt self) -> CollectionUInt"},
-	 { (char *)"CollectionUInt_ShuffleIP", _wrap_CollectionUInt_ShuffleIP, METH_VARARGS, (char *)"CollectionUInt_ShuffleIP(CollectionUInt self)"},
+	 { (char *)"CollectionUInt_Copy", _wrap_CollectionUInt_Copy, METH_VARARGS, (char *)"CollectionUInt_Copy(self) -> CollectionUInt"},
+	 { (char *)"CollectionUInt_Insert", _wrap_CollectionUInt_Insert, METH_VARARGS, (char *)"CollectionUInt_Insert(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionUInt_Append", _wrap_CollectionUInt_Append, METH_VARARGS, (char *)"CollectionUInt_Append(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionUInt_InsertRandom", _wrap_CollectionUInt_InsertRandom, METH_VARARGS, (char *)"CollectionUInt_InsertRandom(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionUInt_Delete", _wrap_CollectionUInt_Delete, METH_VARARGS, (char *)"CollectionUInt_Delete(self, ind)"},
+	 { (char *)"CollectionUInt___iadd__", _wrap_CollectionUInt___iadd__, METH_VARARGS, (char *)"CollectionUInt___iadd__(self, dat)"},
+	 { (char *)"CollectionUInt_Pick", _wrap_CollectionUInt_Pick, METH_VARARGS, (char *)"CollectionUInt_Pick(self) -> unsigned int"},
+	 { (char *)"CollectionUInt_Shuffle", _wrap_CollectionUInt_Shuffle, METH_VARARGS, (char *)"CollectionUInt_Shuffle(self) -> CollectionUInt"},
+	 { (char *)"CollectionUInt_ShuffleIP", _wrap_CollectionUInt_ShuffleIP, METH_VARARGS, (char *)"CollectionUInt_ShuffleIP(self)"},
 	 { (char *)"CollectionUInt_Merge", _wrap_CollectionUInt_Merge, METH_VARARGS, (char *)"\n"
-		"Merge(CollectionUInt x)\n"
-		"CollectionUInt_Merge(CollectionUInt self, SArray1dUInt x)\n"
+		"Merge(x)\n"
+		"CollectionUInt_Merge(self, x)\n"
 		""},
-	 { (char *)"CollectionUInt_IsEmpty", _wrap_CollectionUInt_IsEmpty, METH_VARARGS, (char *)"CollectionUInt_IsEmpty(CollectionUInt self) -> bool"},
-	 { (char *)"CollectionUInt_Empty", _wrap_CollectionUInt_Empty, METH_VARARGS, (char *)"CollectionUInt_Empty(CollectionUInt self)"},
-	 { (char *)"CollectionUInt_Size", _wrap_CollectionUInt_Size, METH_VARARGS, (char *)"CollectionUInt_Size(CollectionUInt self) -> RavlN::SizeT"},
+	 { (char *)"CollectionUInt_IsEmpty", _wrap_CollectionUInt_IsEmpty, METH_VARARGS, (char *)"CollectionUInt_IsEmpty(self) -> bool"},
+	 { (char *)"CollectionUInt_Empty", _wrap_CollectionUInt_Empty, METH_VARARGS, (char *)"CollectionUInt_Empty(self)"},
+	 { (char *)"CollectionUInt_Size", _wrap_CollectionUInt_Size, METH_VARARGS, (char *)"CollectionUInt_Size(self) -> RavlN::SizeT"},
 	 { (char *)"CollectionUInt_SArray1d", _wrap_CollectionUInt_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dUInt\n"
-		"CollectionUInt_SArray1d(CollectionUInt self) -> SArray1dUInt\n"
+		"CollectionUInt_SArray1d(self) -> SArray1dUInt\n"
 		""},
-	 { (char *)"CollectionUInt_Split", _wrap_CollectionUInt_Split, METH_VARARGS, (char *)"CollectionUInt_Split(CollectionUInt self, RavlN::SizeT ne) -> CollectionUInt"},
-	 { (char *)"CollectionUInt_Sample", _wrap_CollectionUInt_Sample, METH_VARARGS, (char *)"CollectionUInt_Sample(CollectionUInt self, RavlN::SizeT ne) -> CollectionUInt"},
+	 { (char *)"CollectionUInt_Split", _wrap_CollectionUInt_Split, METH_VARARGS, (char *)"CollectionUInt_Split(self, ne) -> CollectionUInt"},
+	 { (char *)"CollectionUInt_Sample", _wrap_CollectionUInt_Sample, METH_VARARGS, (char *)"CollectionUInt_Sample(self, ne) -> CollectionUInt"},
 	 { (char *)"CollectionUInt_Last", _wrap_CollectionUInt_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> unsigned int\n"
-		"CollectionUInt_Last(CollectionUInt self) -> unsigned int const &\n"
+		"CollectionUInt_Last(self) -> unsigned int const &\n"
 		""},
 	 { (char *)"CollectionUInt_First", _wrap_CollectionUInt_First, METH_VARARGS, (char *)"\n"
 		"First() -> unsigned int\n"
-		"CollectionUInt_First(CollectionUInt self) -> unsigned int const &\n"
+		"CollectionUInt_First(self) -> unsigned int const &\n"
 		""},
-	 { (char *)"CollectionUInt___getitem__", _wrap_CollectionUInt___getitem__, METH_VARARGS, (char *)"CollectionUInt___getitem__(CollectionUInt self, size_t i) -> unsigned int const &"},
-	 { (char *)"CollectionUInt___setitem__", _wrap_CollectionUInt___setitem__, METH_VARARGS, (char *)"CollectionUInt___setitem__(CollectionUInt self, size_t i, unsigned int const & v)"},
-	 { (char *)"CollectionUInt___str__", _wrap_CollectionUInt___str__, METH_VARARGS, (char *)"CollectionUInt___str__(CollectionUInt self) -> char const *"},
-	 { (char *)"delete_CollectionUInt", _wrap_delete_CollectionUInt, METH_VARARGS, (char *)"delete_CollectionUInt(CollectionUInt self)"},
+	 { (char *)"CollectionUInt___getitem__", _wrap_CollectionUInt___getitem__, METH_VARARGS, (char *)"CollectionUInt___getitem__(self, i) -> unsigned int const &"},
+	 { (char *)"CollectionUInt___setitem__", _wrap_CollectionUInt___setitem__, METH_VARARGS, (char *)"CollectionUInt___setitem__(self, i, v)"},
+	 { (char *)"CollectionUInt___str__", _wrap_CollectionUInt___str__, METH_VARARGS, (char *)"CollectionUInt___str__(self) -> char const *"},
+	 { (char *)"delete_CollectionUInt", _wrap_delete_CollectionUInt, METH_VARARGS, (char *)"delete_CollectionUInt(self)"},
 	 { (char *)"CollectionUInt_swigregister", CollectionUInt_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CollectionReal", _wrap_new_CollectionReal, METH_VARARGS, (char *)"\n"
-		"CollectionReal(RavlN::UIntT size=10)\n"
+		"CollectionReal(size=10)\n"
 		"CollectionReal()\n"
-		"CollectionReal(RavlN::SizeT maxSize, RavlN::SizeT used=0)\n"
-		"CollectionReal(RavlN::SizeT maxSize)\n"
-		"CollectionReal(SArray1dReal dat)\n"
-		"new_CollectionReal(DListRealC list) -> CollectionReal\n"
+		"CollectionReal(maxSize, used=0)\n"
+		"CollectionReal(maxSize)\n"
+		"CollectionReal(dat)\n"
+		"new_CollectionReal(list) -> CollectionReal\n"
 		""},
-	 { (char *)"CollectionReal_Copy", _wrap_CollectionReal_Copy, METH_VARARGS, (char *)"CollectionReal_Copy(CollectionReal self) -> CollectionReal"},
-	 { (char *)"CollectionReal_Insert", _wrap_CollectionReal_Insert, METH_VARARGS, (char *)"CollectionReal_Insert(CollectionReal self, double const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionReal_Append", _wrap_CollectionReal_Append, METH_VARARGS, (char *)"CollectionReal_Append(CollectionReal self, double const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionReal_InsertRandom", _wrap_CollectionReal_InsertRandom, METH_VARARGS, (char *)"CollectionReal_InsertRandom(CollectionReal self, double const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionReal_Delete", _wrap_CollectionReal_Delete, METH_VARARGS, (char *)"CollectionReal_Delete(CollectionReal self, IndexC ind)"},
-	 { (char *)"CollectionReal___iadd__", _wrap_CollectionReal___iadd__, METH_VARARGS, (char *)"CollectionReal___iadd__(CollectionReal self, double const & dat)"},
-	 { (char *)"CollectionReal_Pick", _wrap_CollectionReal_Pick, METH_VARARGS, (char *)"CollectionReal_Pick(CollectionReal self) -> double"},
-	 { (char *)"CollectionReal_Shuffle", _wrap_CollectionReal_Shuffle, METH_VARARGS, (char *)"CollectionReal_Shuffle(CollectionReal self) -> CollectionReal"},
-	 { (char *)"CollectionReal_ShuffleIP", _wrap_CollectionReal_ShuffleIP, METH_VARARGS, (char *)"CollectionReal_ShuffleIP(CollectionReal self)"},
+	 { (char *)"CollectionReal_Copy", _wrap_CollectionReal_Copy, METH_VARARGS, (char *)"CollectionReal_Copy(self) -> CollectionReal"},
+	 { (char *)"CollectionReal_Insert", _wrap_CollectionReal_Insert, METH_VARARGS, (char *)"CollectionReal_Insert(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionReal_Append", _wrap_CollectionReal_Append, METH_VARARGS, (char *)"CollectionReal_Append(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionReal_InsertRandom", _wrap_CollectionReal_InsertRandom, METH_VARARGS, (char *)"CollectionReal_InsertRandom(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionReal_Delete", _wrap_CollectionReal_Delete, METH_VARARGS, (char *)"CollectionReal_Delete(self, ind)"},
+	 { (char *)"CollectionReal___iadd__", _wrap_CollectionReal___iadd__, METH_VARARGS, (char *)"CollectionReal___iadd__(self, dat)"},
+	 { (char *)"CollectionReal_Pick", _wrap_CollectionReal_Pick, METH_VARARGS, (char *)"CollectionReal_Pick(self) -> double"},
+	 { (char *)"CollectionReal_Shuffle", _wrap_CollectionReal_Shuffle, METH_VARARGS, (char *)"CollectionReal_Shuffle(self) -> CollectionReal"},
+	 { (char *)"CollectionReal_ShuffleIP", _wrap_CollectionReal_ShuffleIP, METH_VARARGS, (char *)"CollectionReal_ShuffleIP(self)"},
 	 { (char *)"CollectionReal_Merge", _wrap_CollectionReal_Merge, METH_VARARGS, (char *)"\n"
-		"Merge(CollectionReal x)\n"
-		"CollectionReal_Merge(CollectionReal self, SArray1dReal x)\n"
+		"Merge(x)\n"
+		"CollectionReal_Merge(self, x)\n"
 		""},
-	 { (char *)"CollectionReal_IsEmpty", _wrap_CollectionReal_IsEmpty, METH_VARARGS, (char *)"CollectionReal_IsEmpty(CollectionReal self) -> bool"},
-	 { (char *)"CollectionReal_Empty", _wrap_CollectionReal_Empty, METH_VARARGS, (char *)"CollectionReal_Empty(CollectionReal self)"},
-	 { (char *)"CollectionReal_Size", _wrap_CollectionReal_Size, METH_VARARGS, (char *)"CollectionReal_Size(CollectionReal self) -> RavlN::SizeT"},
+	 { (char *)"CollectionReal_IsEmpty", _wrap_CollectionReal_IsEmpty, METH_VARARGS, (char *)"CollectionReal_IsEmpty(self) -> bool"},
+	 { (char *)"CollectionReal_Empty", _wrap_CollectionReal_Empty, METH_VARARGS, (char *)"CollectionReal_Empty(self)"},
+	 { (char *)"CollectionReal_Size", _wrap_CollectionReal_Size, METH_VARARGS, (char *)"CollectionReal_Size(self) -> RavlN::SizeT"},
 	 { (char *)"CollectionReal_SArray1d", _wrap_CollectionReal_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dReal\n"
-		"CollectionReal_SArray1d(CollectionReal self) -> SArray1dReal\n"
+		"CollectionReal_SArray1d(self) -> SArray1dReal\n"
 		""},
-	 { (char *)"CollectionReal_Split", _wrap_CollectionReal_Split, METH_VARARGS, (char *)"CollectionReal_Split(CollectionReal self, RavlN::SizeT ne) -> CollectionReal"},
-	 { (char *)"CollectionReal_Sample", _wrap_CollectionReal_Sample, METH_VARARGS, (char *)"CollectionReal_Sample(CollectionReal self, RavlN::SizeT ne) -> CollectionReal"},
+	 { (char *)"CollectionReal_Split", _wrap_CollectionReal_Split, METH_VARARGS, (char *)"CollectionReal_Split(self, ne) -> CollectionReal"},
+	 { (char *)"CollectionReal_Sample", _wrap_CollectionReal_Sample, METH_VARARGS, (char *)"CollectionReal_Sample(self, ne) -> CollectionReal"},
 	 { (char *)"CollectionReal_Last", _wrap_CollectionReal_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> double\n"
-		"CollectionReal_Last(CollectionReal self) -> double const &\n"
+		"CollectionReal_Last(self) -> double const &\n"
 		""},
 	 { (char *)"CollectionReal_First", _wrap_CollectionReal_First, METH_VARARGS, (char *)"\n"
 		"First() -> double\n"
-		"CollectionReal_First(CollectionReal self) -> double const &\n"
+		"CollectionReal_First(self) -> double const &\n"
 		""},
-	 { (char *)"CollectionReal___getitem__", _wrap_CollectionReal___getitem__, METH_VARARGS, (char *)"CollectionReal___getitem__(CollectionReal self, size_t i) -> double const &"},
-	 { (char *)"CollectionReal___setitem__", _wrap_CollectionReal___setitem__, METH_VARARGS, (char *)"CollectionReal___setitem__(CollectionReal self, size_t i, double const & v)"},
-	 { (char *)"CollectionReal___str__", _wrap_CollectionReal___str__, METH_VARARGS, (char *)"CollectionReal___str__(CollectionReal self) -> char const *"},
-	 { (char *)"delete_CollectionReal", _wrap_delete_CollectionReal, METH_VARARGS, (char *)"delete_CollectionReal(CollectionReal self)"},
+	 { (char *)"CollectionReal___getitem__", _wrap_CollectionReal___getitem__, METH_VARARGS, (char *)"CollectionReal___getitem__(self, i) -> double const &"},
+	 { (char *)"CollectionReal___setitem__", _wrap_CollectionReal___setitem__, METH_VARARGS, (char *)"CollectionReal___setitem__(self, i, v)"},
+	 { (char *)"CollectionReal___str__", _wrap_CollectionReal___str__, METH_VARARGS, (char *)"CollectionReal___str__(self) -> char const *"},
+	 { (char *)"delete_CollectionReal", _wrap_delete_CollectionReal, METH_VARARGS, (char *)"delete_CollectionReal(self)"},
 	 { (char *)"CollectionReal_swigregister", CollectionReal_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CollectionFloat", _wrap_new_CollectionFloat, METH_VARARGS, (char *)"\n"
-		"CollectionFloat(RavlN::UIntT size=10)\n"
+		"CollectionFloat(size=10)\n"
 		"CollectionFloat()\n"
-		"CollectionFloat(RavlN::SizeT maxSize, RavlN::SizeT used=0)\n"
-		"CollectionFloat(RavlN::SizeT maxSize)\n"
-		"CollectionFloat(SArray1dFloat dat)\n"
-		"new_CollectionFloat(RavlN::DListC< float > const & list) -> CollectionFloat\n"
+		"CollectionFloat(maxSize, used=0)\n"
+		"CollectionFloat(maxSize)\n"
+		"CollectionFloat(dat)\n"
+		"new_CollectionFloat(list) -> CollectionFloat\n"
 		""},
-	 { (char *)"CollectionFloat_Copy", _wrap_CollectionFloat_Copy, METH_VARARGS, (char *)"CollectionFloat_Copy(CollectionFloat self) -> CollectionFloat"},
-	 { (char *)"CollectionFloat_Insert", _wrap_CollectionFloat_Insert, METH_VARARGS, (char *)"CollectionFloat_Insert(CollectionFloat self, float const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionFloat_Append", _wrap_CollectionFloat_Append, METH_VARARGS, (char *)"CollectionFloat_Append(CollectionFloat self, float const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionFloat_InsertRandom", _wrap_CollectionFloat_InsertRandom, METH_VARARGS, (char *)"CollectionFloat_InsertRandom(CollectionFloat self, float const & dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionFloat_Delete", _wrap_CollectionFloat_Delete, METH_VARARGS, (char *)"CollectionFloat_Delete(CollectionFloat self, IndexC ind)"},
-	 { (char *)"CollectionFloat___iadd__", _wrap_CollectionFloat___iadd__, METH_VARARGS, (char *)"CollectionFloat___iadd__(CollectionFloat self, float const & dat)"},
-	 { (char *)"CollectionFloat_Pick", _wrap_CollectionFloat_Pick, METH_VARARGS, (char *)"CollectionFloat_Pick(CollectionFloat self) -> float"},
-	 { (char *)"CollectionFloat_Shuffle", _wrap_CollectionFloat_Shuffle, METH_VARARGS, (char *)"CollectionFloat_Shuffle(CollectionFloat self) -> CollectionFloat"},
-	 { (char *)"CollectionFloat_ShuffleIP", _wrap_CollectionFloat_ShuffleIP, METH_VARARGS, (char *)"CollectionFloat_ShuffleIP(CollectionFloat self)"},
+	 { (char *)"CollectionFloat_Copy", _wrap_CollectionFloat_Copy, METH_VARARGS, (char *)"CollectionFloat_Copy(self) -> CollectionFloat"},
+	 { (char *)"CollectionFloat_Insert", _wrap_CollectionFloat_Insert, METH_VARARGS, (char *)"CollectionFloat_Insert(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionFloat_Append", _wrap_CollectionFloat_Append, METH_VARARGS, (char *)"CollectionFloat_Append(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionFloat_InsertRandom", _wrap_CollectionFloat_InsertRandom, METH_VARARGS, (char *)"CollectionFloat_InsertRandom(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionFloat_Delete", _wrap_CollectionFloat_Delete, METH_VARARGS, (char *)"CollectionFloat_Delete(self, ind)"},
+	 { (char *)"CollectionFloat___iadd__", _wrap_CollectionFloat___iadd__, METH_VARARGS, (char *)"CollectionFloat___iadd__(self, dat)"},
+	 { (char *)"CollectionFloat_Pick", _wrap_CollectionFloat_Pick, METH_VARARGS, (char *)"CollectionFloat_Pick(self) -> float"},
+	 { (char *)"CollectionFloat_Shuffle", _wrap_CollectionFloat_Shuffle, METH_VARARGS, (char *)"CollectionFloat_Shuffle(self) -> CollectionFloat"},
+	 { (char *)"CollectionFloat_ShuffleIP", _wrap_CollectionFloat_ShuffleIP, METH_VARARGS, (char *)"CollectionFloat_ShuffleIP(self)"},
 	 { (char *)"CollectionFloat_Merge", _wrap_CollectionFloat_Merge, METH_VARARGS, (char *)"\n"
-		"Merge(CollectionFloat x)\n"
-		"CollectionFloat_Merge(CollectionFloat self, SArray1dFloat x)\n"
+		"Merge(x)\n"
+		"CollectionFloat_Merge(self, x)\n"
 		""},
-	 { (char *)"CollectionFloat_IsEmpty", _wrap_CollectionFloat_IsEmpty, METH_VARARGS, (char *)"CollectionFloat_IsEmpty(CollectionFloat self) -> bool"},
-	 { (char *)"CollectionFloat_Empty", _wrap_CollectionFloat_Empty, METH_VARARGS, (char *)"CollectionFloat_Empty(CollectionFloat self)"},
-	 { (char *)"CollectionFloat_Size", _wrap_CollectionFloat_Size, METH_VARARGS, (char *)"CollectionFloat_Size(CollectionFloat self) -> RavlN::SizeT"},
+	 { (char *)"CollectionFloat_IsEmpty", _wrap_CollectionFloat_IsEmpty, METH_VARARGS, (char *)"CollectionFloat_IsEmpty(self) -> bool"},
+	 { (char *)"CollectionFloat_Empty", _wrap_CollectionFloat_Empty, METH_VARARGS, (char *)"CollectionFloat_Empty(self)"},
+	 { (char *)"CollectionFloat_Size", _wrap_CollectionFloat_Size, METH_VARARGS, (char *)"CollectionFloat_Size(self) -> RavlN::SizeT"},
 	 { (char *)"CollectionFloat_SArray1d", _wrap_CollectionFloat_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dFloat\n"
-		"CollectionFloat_SArray1d(CollectionFloat self) -> SArray1dFloat\n"
+		"CollectionFloat_SArray1d(self) -> SArray1dFloat\n"
 		""},
-	 { (char *)"CollectionFloat_Split", _wrap_CollectionFloat_Split, METH_VARARGS, (char *)"CollectionFloat_Split(CollectionFloat self, RavlN::SizeT ne) -> CollectionFloat"},
-	 { (char *)"CollectionFloat_Sample", _wrap_CollectionFloat_Sample, METH_VARARGS, (char *)"CollectionFloat_Sample(CollectionFloat self, RavlN::SizeT ne) -> CollectionFloat"},
+	 { (char *)"CollectionFloat_Split", _wrap_CollectionFloat_Split, METH_VARARGS, (char *)"CollectionFloat_Split(self, ne) -> CollectionFloat"},
+	 { (char *)"CollectionFloat_Sample", _wrap_CollectionFloat_Sample, METH_VARARGS, (char *)"CollectionFloat_Sample(self, ne) -> CollectionFloat"},
 	 { (char *)"CollectionFloat_Last", _wrap_CollectionFloat_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> float\n"
-		"CollectionFloat_Last(CollectionFloat self) -> float const &\n"
+		"CollectionFloat_Last(self) -> float const &\n"
 		""},
 	 { (char *)"CollectionFloat_First", _wrap_CollectionFloat_First, METH_VARARGS, (char *)"\n"
 		"First() -> float\n"
-		"CollectionFloat_First(CollectionFloat self) -> float const &\n"
+		"CollectionFloat_First(self) -> float const &\n"
 		""},
-	 { (char *)"CollectionFloat___getitem__", _wrap_CollectionFloat___getitem__, METH_VARARGS, (char *)"CollectionFloat___getitem__(CollectionFloat self, size_t i) -> float const &"},
-	 { (char *)"CollectionFloat___setitem__", _wrap_CollectionFloat___setitem__, METH_VARARGS, (char *)"CollectionFloat___setitem__(CollectionFloat self, size_t i, float const & v)"},
-	 { (char *)"CollectionFloat___str__", _wrap_CollectionFloat___str__, METH_VARARGS, (char *)"CollectionFloat___str__(CollectionFloat self) -> char const *"},
-	 { (char *)"delete_CollectionFloat", _wrap_delete_CollectionFloat, METH_VARARGS, (char *)"delete_CollectionFloat(CollectionFloat self)"},
+	 { (char *)"CollectionFloat___getitem__", _wrap_CollectionFloat___getitem__, METH_VARARGS, (char *)"CollectionFloat___getitem__(self, i) -> float const &"},
+	 { (char *)"CollectionFloat___setitem__", _wrap_CollectionFloat___setitem__, METH_VARARGS, (char *)"CollectionFloat___setitem__(self, i, v)"},
+	 { (char *)"CollectionFloat___str__", _wrap_CollectionFloat___str__, METH_VARARGS, (char *)"CollectionFloat___str__(self) -> char const *"},
+	 { (char *)"delete_CollectionFloat", _wrap_delete_CollectionFloat, METH_VARARGS, (char *)"delete_CollectionFloat(self)"},
 	 { (char *)"CollectionFloat_swigregister", CollectionFloat_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CollectionIndexC", _wrap_new_CollectionIndexC, METH_VARARGS, (char *)"\n"
-		"CollectionIndexC(RavlN::UIntT size=10)\n"
+		"CollectionIndexC(size=10)\n"
 		"CollectionIndexC()\n"
-		"CollectionIndexC(RavlN::SizeT maxSize, RavlN::SizeT used=0)\n"
-		"CollectionIndexC(RavlN::SizeT maxSize)\n"
-		"CollectionIndexC(SArray1dIndexC dat)\n"
-		"new_CollectionIndexC(RavlN::DListC< RavlN::IndexC > const & list) -> CollectionIndexC\n"
+		"CollectionIndexC(maxSize, used=0)\n"
+		"CollectionIndexC(maxSize)\n"
+		"CollectionIndexC(dat)\n"
+		"new_CollectionIndexC(list) -> CollectionIndexC\n"
 		""},
-	 { (char *)"CollectionIndexC_Copy", _wrap_CollectionIndexC_Copy, METH_VARARGS, (char *)"CollectionIndexC_Copy(CollectionIndexC self) -> CollectionIndexC"},
-	 { (char *)"CollectionIndexC_Insert", _wrap_CollectionIndexC_Insert, METH_VARARGS, (char *)"CollectionIndexC_Insert(CollectionIndexC self, IndexC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionIndexC_Append", _wrap_CollectionIndexC_Append, METH_VARARGS, (char *)"CollectionIndexC_Append(CollectionIndexC self, IndexC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionIndexC_InsertRandom", _wrap_CollectionIndexC_InsertRandom, METH_VARARGS, (char *)"CollectionIndexC_InsertRandom(CollectionIndexC self, IndexC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionIndexC_Delete", _wrap_CollectionIndexC_Delete, METH_VARARGS, (char *)"CollectionIndexC_Delete(CollectionIndexC self, IndexC ind)"},
-	 { (char *)"CollectionIndexC___iadd__", _wrap_CollectionIndexC___iadd__, METH_VARARGS, (char *)"CollectionIndexC___iadd__(CollectionIndexC self, IndexC dat)"},
-	 { (char *)"CollectionIndexC_Pick", _wrap_CollectionIndexC_Pick, METH_VARARGS, (char *)"CollectionIndexC_Pick(CollectionIndexC self) -> IndexC"},
-	 { (char *)"CollectionIndexC_Shuffle", _wrap_CollectionIndexC_Shuffle, METH_VARARGS, (char *)"CollectionIndexC_Shuffle(CollectionIndexC self) -> CollectionIndexC"},
-	 { (char *)"CollectionIndexC_ShuffleIP", _wrap_CollectionIndexC_ShuffleIP, METH_VARARGS, (char *)"CollectionIndexC_ShuffleIP(CollectionIndexC self)"},
+	 { (char *)"CollectionIndexC_Copy", _wrap_CollectionIndexC_Copy, METH_VARARGS, (char *)"CollectionIndexC_Copy(self) -> CollectionIndexC"},
+	 { (char *)"CollectionIndexC_Insert", _wrap_CollectionIndexC_Insert, METH_VARARGS, (char *)"CollectionIndexC_Insert(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionIndexC_Append", _wrap_CollectionIndexC_Append, METH_VARARGS, (char *)"CollectionIndexC_Append(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionIndexC_InsertRandom", _wrap_CollectionIndexC_InsertRandom, METH_VARARGS, (char *)"CollectionIndexC_InsertRandom(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionIndexC_Delete", _wrap_CollectionIndexC_Delete, METH_VARARGS, (char *)"CollectionIndexC_Delete(self, ind)"},
+	 { (char *)"CollectionIndexC___iadd__", _wrap_CollectionIndexC___iadd__, METH_VARARGS, (char *)"CollectionIndexC___iadd__(self, dat)"},
+	 { (char *)"CollectionIndexC_Pick", _wrap_CollectionIndexC_Pick, METH_VARARGS, (char *)"CollectionIndexC_Pick(self) -> IndexC"},
+	 { (char *)"CollectionIndexC_Shuffle", _wrap_CollectionIndexC_Shuffle, METH_VARARGS, (char *)"CollectionIndexC_Shuffle(self) -> CollectionIndexC"},
+	 { (char *)"CollectionIndexC_ShuffleIP", _wrap_CollectionIndexC_ShuffleIP, METH_VARARGS, (char *)"CollectionIndexC_ShuffleIP(self)"},
 	 { (char *)"CollectionIndexC_Merge", _wrap_CollectionIndexC_Merge, METH_VARARGS, (char *)"\n"
-		"Merge(CollectionIndexC x)\n"
-		"CollectionIndexC_Merge(CollectionIndexC self, SArray1dIndexC x)\n"
+		"Merge(x)\n"
+		"CollectionIndexC_Merge(self, x)\n"
 		""},
-	 { (char *)"CollectionIndexC_IsEmpty", _wrap_CollectionIndexC_IsEmpty, METH_VARARGS, (char *)"CollectionIndexC_IsEmpty(CollectionIndexC self) -> bool"},
-	 { (char *)"CollectionIndexC_Empty", _wrap_CollectionIndexC_Empty, METH_VARARGS, (char *)"CollectionIndexC_Empty(CollectionIndexC self)"},
-	 { (char *)"CollectionIndexC_Size", _wrap_CollectionIndexC_Size, METH_VARARGS, (char *)"CollectionIndexC_Size(CollectionIndexC self) -> RavlN::SizeT"},
+	 { (char *)"CollectionIndexC_IsEmpty", _wrap_CollectionIndexC_IsEmpty, METH_VARARGS, (char *)"CollectionIndexC_IsEmpty(self) -> bool"},
+	 { (char *)"CollectionIndexC_Empty", _wrap_CollectionIndexC_Empty, METH_VARARGS, (char *)"CollectionIndexC_Empty(self)"},
+	 { (char *)"CollectionIndexC_Size", _wrap_CollectionIndexC_Size, METH_VARARGS, (char *)"CollectionIndexC_Size(self) -> RavlN::SizeT"},
 	 { (char *)"CollectionIndexC_SArray1d", _wrap_CollectionIndexC_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dIndexC\n"
-		"CollectionIndexC_SArray1d(CollectionIndexC self) -> SArray1dIndexC\n"
+		"CollectionIndexC_SArray1d(self) -> SArray1dIndexC\n"
 		""},
-	 { (char *)"CollectionIndexC_Split", _wrap_CollectionIndexC_Split, METH_VARARGS, (char *)"CollectionIndexC_Split(CollectionIndexC self, RavlN::SizeT ne) -> CollectionIndexC"},
-	 { (char *)"CollectionIndexC_Sample", _wrap_CollectionIndexC_Sample, METH_VARARGS, (char *)"CollectionIndexC_Sample(CollectionIndexC self, RavlN::SizeT ne) -> CollectionIndexC"},
+	 { (char *)"CollectionIndexC_Split", _wrap_CollectionIndexC_Split, METH_VARARGS, (char *)"CollectionIndexC_Split(self, ne) -> CollectionIndexC"},
+	 { (char *)"CollectionIndexC_Sample", _wrap_CollectionIndexC_Sample, METH_VARARGS, (char *)"CollectionIndexC_Sample(self, ne) -> CollectionIndexC"},
 	 { (char *)"CollectionIndexC_Last", _wrap_CollectionIndexC_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> IndexC\n"
-		"CollectionIndexC_Last(CollectionIndexC self) -> IndexC\n"
+		"CollectionIndexC_Last(self) -> IndexC\n"
 		""},
 	 { (char *)"CollectionIndexC_First", _wrap_CollectionIndexC_First, METH_VARARGS, (char *)"\n"
 		"First() -> IndexC\n"
-		"CollectionIndexC_First(CollectionIndexC self) -> IndexC\n"
+		"CollectionIndexC_First(self) -> IndexC\n"
 		""},
-	 { (char *)"CollectionIndexC___getitem__", _wrap_CollectionIndexC___getitem__, METH_VARARGS, (char *)"CollectionIndexC___getitem__(CollectionIndexC self, size_t i) -> IndexC"},
-	 { (char *)"CollectionIndexC___setitem__", _wrap_CollectionIndexC___setitem__, METH_VARARGS, (char *)"CollectionIndexC___setitem__(CollectionIndexC self, size_t i, IndexC v)"},
-	 { (char *)"CollectionIndexC___str__", _wrap_CollectionIndexC___str__, METH_VARARGS, (char *)"CollectionIndexC___str__(CollectionIndexC self) -> char const *"},
-	 { (char *)"delete_CollectionIndexC", _wrap_delete_CollectionIndexC, METH_VARARGS, (char *)"delete_CollectionIndexC(CollectionIndexC self)"},
+	 { (char *)"CollectionIndexC___getitem__", _wrap_CollectionIndexC___getitem__, METH_VARARGS, (char *)"CollectionIndexC___getitem__(self, i) -> IndexC"},
+	 { (char *)"CollectionIndexC___setitem__", _wrap_CollectionIndexC___setitem__, METH_VARARGS, (char *)"CollectionIndexC___setitem__(self, i, v)"},
+	 { (char *)"CollectionIndexC___str__", _wrap_CollectionIndexC___str__, METH_VARARGS, (char *)"CollectionIndexC___str__(self) -> char const *"},
+	 { (char *)"delete_CollectionIndexC", _wrap_delete_CollectionIndexC, METH_VARARGS, (char *)"delete_CollectionIndexC(self)"},
 	 { (char *)"CollectionIndexC_swigregister", CollectionIndexC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CollectionPoint2dC", _wrap_new_CollectionPoint2dC, METH_VARARGS, (char *)"\n"
-		"CollectionPoint2dC(RavlN::UIntT size=10)\n"
+		"CollectionPoint2dC(size=10)\n"
 		"CollectionPoint2dC()\n"
-		"CollectionPoint2dC(RavlN::SizeT maxSize, RavlN::SizeT used=0)\n"
-		"CollectionPoint2dC(RavlN::SizeT maxSize)\n"
-		"CollectionPoint2dC(SArray1dPoint2dC dat)\n"
-		"new_CollectionPoint2dC(DListPoint2dC list) -> CollectionPoint2dC\n"
+		"CollectionPoint2dC(maxSize, used=0)\n"
+		"CollectionPoint2dC(maxSize)\n"
+		"CollectionPoint2dC(dat)\n"
+		"new_CollectionPoint2dC(list) -> CollectionPoint2dC\n"
 		""},
-	 { (char *)"CollectionPoint2dC_Copy", _wrap_CollectionPoint2dC_Copy, METH_VARARGS, (char *)"CollectionPoint2dC_Copy(CollectionPoint2dC self) -> CollectionPoint2dC"},
-	 { (char *)"CollectionPoint2dC_Insert", _wrap_CollectionPoint2dC_Insert, METH_VARARGS, (char *)"CollectionPoint2dC_Insert(CollectionPoint2dC self, Point2dC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionPoint2dC_Append", _wrap_CollectionPoint2dC_Append, METH_VARARGS, (char *)"CollectionPoint2dC_Append(CollectionPoint2dC self, Point2dC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionPoint2dC_InsertRandom", _wrap_CollectionPoint2dC_InsertRandom, METH_VARARGS, (char *)"CollectionPoint2dC_InsertRandom(CollectionPoint2dC self, Point2dC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionPoint2dC_Delete", _wrap_CollectionPoint2dC_Delete, METH_VARARGS, (char *)"CollectionPoint2dC_Delete(CollectionPoint2dC self, IndexC ind)"},
-	 { (char *)"CollectionPoint2dC___iadd__", _wrap_CollectionPoint2dC___iadd__, METH_VARARGS, (char *)"CollectionPoint2dC___iadd__(CollectionPoint2dC self, Point2dC dat)"},
-	 { (char *)"CollectionPoint2dC_Pick", _wrap_CollectionPoint2dC_Pick, METH_VARARGS, (char *)"CollectionPoint2dC_Pick(CollectionPoint2dC self) -> Point2dC"},
-	 { (char *)"CollectionPoint2dC_Shuffle", _wrap_CollectionPoint2dC_Shuffle, METH_VARARGS, (char *)"CollectionPoint2dC_Shuffle(CollectionPoint2dC self) -> CollectionPoint2dC"},
-	 { (char *)"CollectionPoint2dC_ShuffleIP", _wrap_CollectionPoint2dC_ShuffleIP, METH_VARARGS, (char *)"CollectionPoint2dC_ShuffleIP(CollectionPoint2dC self)"},
+	 { (char *)"CollectionPoint2dC_Copy", _wrap_CollectionPoint2dC_Copy, METH_VARARGS, (char *)"CollectionPoint2dC_Copy(self) -> CollectionPoint2dC"},
+	 { (char *)"CollectionPoint2dC_Insert", _wrap_CollectionPoint2dC_Insert, METH_VARARGS, (char *)"CollectionPoint2dC_Insert(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionPoint2dC_Append", _wrap_CollectionPoint2dC_Append, METH_VARARGS, (char *)"CollectionPoint2dC_Append(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionPoint2dC_InsertRandom", _wrap_CollectionPoint2dC_InsertRandom, METH_VARARGS, (char *)"CollectionPoint2dC_InsertRandom(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionPoint2dC_Delete", _wrap_CollectionPoint2dC_Delete, METH_VARARGS, (char *)"CollectionPoint2dC_Delete(self, ind)"},
+	 { (char *)"CollectionPoint2dC___iadd__", _wrap_CollectionPoint2dC___iadd__, METH_VARARGS, (char *)"CollectionPoint2dC___iadd__(self, dat)"},
+	 { (char *)"CollectionPoint2dC_Pick", _wrap_CollectionPoint2dC_Pick, METH_VARARGS, (char *)"CollectionPoint2dC_Pick(self) -> Point2dC"},
+	 { (char *)"CollectionPoint2dC_Shuffle", _wrap_CollectionPoint2dC_Shuffle, METH_VARARGS, (char *)"CollectionPoint2dC_Shuffle(self) -> CollectionPoint2dC"},
+	 { (char *)"CollectionPoint2dC_ShuffleIP", _wrap_CollectionPoint2dC_ShuffleIP, METH_VARARGS, (char *)"CollectionPoint2dC_ShuffleIP(self)"},
 	 { (char *)"CollectionPoint2dC_Merge", _wrap_CollectionPoint2dC_Merge, METH_VARARGS, (char *)"\n"
-		"Merge(CollectionPoint2dC x)\n"
-		"CollectionPoint2dC_Merge(CollectionPoint2dC self, SArray1dPoint2dC x)\n"
+		"Merge(x)\n"
+		"CollectionPoint2dC_Merge(self, x)\n"
 		""},
-	 { (char *)"CollectionPoint2dC_IsEmpty", _wrap_CollectionPoint2dC_IsEmpty, METH_VARARGS, (char *)"CollectionPoint2dC_IsEmpty(CollectionPoint2dC self) -> bool"},
-	 { (char *)"CollectionPoint2dC_Empty", _wrap_CollectionPoint2dC_Empty, METH_VARARGS, (char *)"CollectionPoint2dC_Empty(CollectionPoint2dC self)"},
-	 { (char *)"CollectionPoint2dC_Size", _wrap_CollectionPoint2dC_Size, METH_VARARGS, (char *)"CollectionPoint2dC_Size(CollectionPoint2dC self) -> RavlN::SizeT"},
+	 { (char *)"CollectionPoint2dC_IsEmpty", _wrap_CollectionPoint2dC_IsEmpty, METH_VARARGS, (char *)"CollectionPoint2dC_IsEmpty(self) -> bool"},
+	 { (char *)"CollectionPoint2dC_Empty", _wrap_CollectionPoint2dC_Empty, METH_VARARGS, (char *)"CollectionPoint2dC_Empty(self)"},
+	 { (char *)"CollectionPoint2dC_Size", _wrap_CollectionPoint2dC_Size, METH_VARARGS, (char *)"CollectionPoint2dC_Size(self) -> RavlN::SizeT"},
 	 { (char *)"CollectionPoint2dC_SArray1d", _wrap_CollectionPoint2dC_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dPoint2dC\n"
-		"CollectionPoint2dC_SArray1d(CollectionPoint2dC self) -> SArray1dPoint2dC\n"
+		"CollectionPoint2dC_SArray1d(self) -> SArray1dPoint2dC\n"
 		""},
-	 { (char *)"CollectionPoint2dC_Split", _wrap_CollectionPoint2dC_Split, METH_VARARGS, (char *)"CollectionPoint2dC_Split(CollectionPoint2dC self, RavlN::SizeT ne) -> CollectionPoint2dC"},
-	 { (char *)"CollectionPoint2dC_Sample", _wrap_CollectionPoint2dC_Sample, METH_VARARGS, (char *)"CollectionPoint2dC_Sample(CollectionPoint2dC self, RavlN::SizeT ne) -> CollectionPoint2dC"},
+	 { (char *)"CollectionPoint2dC_Split", _wrap_CollectionPoint2dC_Split, METH_VARARGS, (char *)"CollectionPoint2dC_Split(self, ne) -> CollectionPoint2dC"},
+	 { (char *)"CollectionPoint2dC_Sample", _wrap_CollectionPoint2dC_Sample, METH_VARARGS, (char *)"CollectionPoint2dC_Sample(self, ne) -> CollectionPoint2dC"},
 	 { (char *)"CollectionPoint2dC_Last", _wrap_CollectionPoint2dC_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> Point2dC\n"
-		"CollectionPoint2dC_Last(CollectionPoint2dC self) -> Point2dC\n"
+		"CollectionPoint2dC_Last(self) -> Point2dC\n"
 		""},
 	 { (char *)"CollectionPoint2dC_First", _wrap_CollectionPoint2dC_First, METH_VARARGS, (char *)"\n"
 		"First() -> Point2dC\n"
-		"CollectionPoint2dC_First(CollectionPoint2dC self) -> Point2dC\n"
+		"CollectionPoint2dC_First(self) -> Point2dC\n"
 		""},
-	 { (char *)"CollectionPoint2dC___getitem__", _wrap_CollectionPoint2dC___getitem__, METH_VARARGS, (char *)"CollectionPoint2dC___getitem__(CollectionPoint2dC self, size_t i) -> Point2dC"},
-	 { (char *)"CollectionPoint2dC___setitem__", _wrap_CollectionPoint2dC___setitem__, METH_VARARGS, (char *)"CollectionPoint2dC___setitem__(CollectionPoint2dC self, size_t i, Point2dC v)"},
-	 { (char *)"CollectionPoint2dC___str__", _wrap_CollectionPoint2dC___str__, METH_VARARGS, (char *)"CollectionPoint2dC___str__(CollectionPoint2dC self) -> char const *"},
-	 { (char *)"delete_CollectionPoint2dC", _wrap_delete_CollectionPoint2dC, METH_VARARGS, (char *)"delete_CollectionPoint2dC(CollectionPoint2dC self)"},
+	 { (char *)"CollectionPoint2dC___getitem__", _wrap_CollectionPoint2dC___getitem__, METH_VARARGS, (char *)"CollectionPoint2dC___getitem__(self, i) -> Point2dC"},
+	 { (char *)"CollectionPoint2dC___setitem__", _wrap_CollectionPoint2dC___setitem__, METH_VARARGS, (char *)"CollectionPoint2dC___setitem__(self, i, v)"},
+	 { (char *)"CollectionPoint2dC___str__", _wrap_CollectionPoint2dC___str__, METH_VARARGS, (char *)"CollectionPoint2dC___str__(self) -> char const *"},
+	 { (char *)"delete_CollectionPoint2dC", _wrap_delete_CollectionPoint2dC, METH_VARARGS, (char *)"delete_CollectionPoint2dC(self)"},
 	 { (char *)"CollectionPoint2dC_swigregister", CollectionPoint2dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CollectionVectorC", _wrap_new_CollectionVectorC, METH_VARARGS, (char *)"\n"
-		"CollectionVectorC(RavlN::UIntT size=10)\n"
+		"CollectionVectorC(size=10)\n"
 		"CollectionVectorC()\n"
-		"CollectionVectorC(RavlN::SizeT maxSize, RavlN::SizeT used=0)\n"
-		"CollectionVectorC(RavlN::SizeT maxSize)\n"
-		"CollectionVectorC(SArray1dVectorC dat)\n"
-		"new_CollectionVectorC(RavlN::DListC< RavlN::VectorC > const & list) -> CollectionVectorC\n"
+		"CollectionVectorC(maxSize, used=0)\n"
+		"CollectionVectorC(maxSize)\n"
+		"CollectionVectorC(dat)\n"
+		"new_CollectionVectorC(list) -> CollectionVectorC\n"
 		""},
-	 { (char *)"CollectionVectorC_Copy", _wrap_CollectionVectorC_Copy, METH_VARARGS, (char *)"CollectionVectorC_Copy(CollectionVectorC self) -> CollectionVectorC"},
-	 { (char *)"CollectionVectorC_Insert", _wrap_CollectionVectorC_Insert, METH_VARARGS, (char *)"CollectionVectorC_Insert(CollectionVectorC self, VectorC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionVectorC_Append", _wrap_CollectionVectorC_Append, METH_VARARGS, (char *)"CollectionVectorC_Append(CollectionVectorC self, VectorC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionVectorC_InsertRandom", _wrap_CollectionVectorC_InsertRandom, METH_VARARGS, (char *)"CollectionVectorC_InsertRandom(CollectionVectorC self, VectorC dat) -> RavlN::UIntT"},
-	 { (char *)"CollectionVectorC_Delete", _wrap_CollectionVectorC_Delete, METH_VARARGS, (char *)"CollectionVectorC_Delete(CollectionVectorC self, IndexC ind)"},
-	 { (char *)"CollectionVectorC___iadd__", _wrap_CollectionVectorC___iadd__, METH_VARARGS, (char *)"CollectionVectorC___iadd__(CollectionVectorC self, VectorC dat)"},
-	 { (char *)"CollectionVectorC_Pick", _wrap_CollectionVectorC_Pick, METH_VARARGS, (char *)"CollectionVectorC_Pick(CollectionVectorC self) -> VectorC"},
-	 { (char *)"CollectionVectorC_Shuffle", _wrap_CollectionVectorC_Shuffle, METH_VARARGS, (char *)"CollectionVectorC_Shuffle(CollectionVectorC self) -> CollectionVectorC"},
-	 { (char *)"CollectionVectorC_ShuffleIP", _wrap_CollectionVectorC_ShuffleIP, METH_VARARGS, (char *)"CollectionVectorC_ShuffleIP(CollectionVectorC self)"},
+	 { (char *)"CollectionVectorC_Copy", _wrap_CollectionVectorC_Copy, METH_VARARGS, (char *)"CollectionVectorC_Copy(self) -> CollectionVectorC"},
+	 { (char *)"CollectionVectorC_Insert", _wrap_CollectionVectorC_Insert, METH_VARARGS, (char *)"CollectionVectorC_Insert(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionVectorC_Append", _wrap_CollectionVectorC_Append, METH_VARARGS, (char *)"CollectionVectorC_Append(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionVectorC_InsertRandom", _wrap_CollectionVectorC_InsertRandom, METH_VARARGS, (char *)"CollectionVectorC_InsertRandom(self, dat) -> RavlN::UIntT"},
+	 { (char *)"CollectionVectorC_Delete", _wrap_CollectionVectorC_Delete, METH_VARARGS, (char *)"CollectionVectorC_Delete(self, ind)"},
+	 { (char *)"CollectionVectorC___iadd__", _wrap_CollectionVectorC___iadd__, METH_VARARGS, (char *)"CollectionVectorC___iadd__(self, dat)"},
+	 { (char *)"CollectionVectorC_Pick", _wrap_CollectionVectorC_Pick, METH_VARARGS, (char *)"CollectionVectorC_Pick(self) -> VectorC"},
+	 { (char *)"CollectionVectorC_Shuffle", _wrap_CollectionVectorC_Shuffle, METH_VARARGS, (char *)"CollectionVectorC_Shuffle(self) -> CollectionVectorC"},
+	 { (char *)"CollectionVectorC_ShuffleIP", _wrap_CollectionVectorC_ShuffleIP, METH_VARARGS, (char *)"CollectionVectorC_ShuffleIP(self)"},
 	 { (char *)"CollectionVectorC_Merge", _wrap_CollectionVectorC_Merge, METH_VARARGS, (char *)"\n"
-		"Merge(CollectionVectorC x)\n"
-		"CollectionVectorC_Merge(CollectionVectorC self, SArray1dVectorC x)\n"
+		"Merge(x)\n"
+		"CollectionVectorC_Merge(self, x)\n"
 		""},
-	 { (char *)"CollectionVectorC_IsEmpty", _wrap_CollectionVectorC_IsEmpty, METH_VARARGS, (char *)"CollectionVectorC_IsEmpty(CollectionVectorC self) -> bool"},
-	 { (char *)"CollectionVectorC_Empty", _wrap_CollectionVectorC_Empty, METH_VARARGS, (char *)"CollectionVectorC_Empty(CollectionVectorC self)"},
-	 { (char *)"CollectionVectorC_Size", _wrap_CollectionVectorC_Size, METH_VARARGS, (char *)"CollectionVectorC_Size(CollectionVectorC self) -> RavlN::SizeT"},
+	 { (char *)"CollectionVectorC_IsEmpty", _wrap_CollectionVectorC_IsEmpty, METH_VARARGS, (char *)"CollectionVectorC_IsEmpty(self) -> bool"},
+	 { (char *)"CollectionVectorC_Empty", _wrap_CollectionVectorC_Empty, METH_VARARGS, (char *)"CollectionVectorC_Empty(self)"},
+	 { (char *)"CollectionVectorC_Size", _wrap_CollectionVectorC_Size, METH_VARARGS, (char *)"CollectionVectorC_Size(self) -> RavlN::SizeT"},
 	 { (char *)"CollectionVectorC_SArray1d", _wrap_CollectionVectorC_SArray1d, METH_VARARGS, (char *)"\n"
 		"SArray1d() -> SArray1dVectorC\n"
-		"CollectionVectorC_SArray1d(CollectionVectorC self) -> SArray1dVectorC\n"
+		"CollectionVectorC_SArray1d(self) -> SArray1dVectorC\n"
 		""},
-	 { (char *)"CollectionVectorC_Split", _wrap_CollectionVectorC_Split, METH_VARARGS, (char *)"CollectionVectorC_Split(CollectionVectorC self, RavlN::SizeT ne) -> CollectionVectorC"},
-	 { (char *)"CollectionVectorC_Sample", _wrap_CollectionVectorC_Sample, METH_VARARGS, (char *)"CollectionVectorC_Sample(CollectionVectorC self, RavlN::SizeT ne) -> CollectionVectorC"},
+	 { (char *)"CollectionVectorC_Split", _wrap_CollectionVectorC_Split, METH_VARARGS, (char *)"CollectionVectorC_Split(self, ne) -> CollectionVectorC"},
+	 { (char *)"CollectionVectorC_Sample", _wrap_CollectionVectorC_Sample, METH_VARARGS, (char *)"CollectionVectorC_Sample(self, ne) -> CollectionVectorC"},
 	 { (char *)"CollectionVectorC_Last", _wrap_CollectionVectorC_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> VectorC\n"
-		"CollectionVectorC_Last(CollectionVectorC self) -> VectorC\n"
+		"CollectionVectorC_Last(self) -> VectorC\n"
 		""},
 	 { (char *)"CollectionVectorC_First", _wrap_CollectionVectorC_First, METH_VARARGS, (char *)"\n"
 		"First() -> VectorC\n"
-		"CollectionVectorC_First(CollectionVectorC self) -> VectorC\n"
+		"CollectionVectorC_First(self) -> VectorC\n"
 		""},
-	 { (char *)"CollectionVectorC___getitem__", _wrap_CollectionVectorC___getitem__, METH_VARARGS, (char *)"CollectionVectorC___getitem__(CollectionVectorC self, size_t i) -> VectorC"},
-	 { (char *)"CollectionVectorC___setitem__", _wrap_CollectionVectorC___setitem__, METH_VARARGS, (char *)"CollectionVectorC___setitem__(CollectionVectorC self, size_t i, VectorC v)"},
-	 { (char *)"CollectionVectorC___str__", _wrap_CollectionVectorC___str__, METH_VARARGS, (char *)"CollectionVectorC___str__(CollectionVectorC self) -> char const *"},
-	 { (char *)"delete_CollectionVectorC", _wrap_delete_CollectionVectorC, METH_VARARGS, (char *)"delete_CollectionVectorC(CollectionVectorC self)"},
+	 { (char *)"CollectionVectorC___getitem__", _wrap_CollectionVectorC___getitem__, METH_VARARGS, (char *)"CollectionVectorC___getitem__(self, i) -> VectorC"},
+	 { (char *)"CollectionVectorC___setitem__", _wrap_CollectionVectorC___setitem__, METH_VARARGS, (char *)"CollectionVectorC___setitem__(self, i, v)"},
+	 { (char *)"CollectionVectorC___str__", _wrap_CollectionVectorC___str__, METH_VARARGS, (char *)"CollectionVectorC___str__(self) -> char const *"},
+	 { (char *)"delete_CollectionVectorC", _wrap_delete_CollectionVectorC, METH_VARARGS, (char *)"delete_CollectionVectorC(self)"},
 	 { (char *)"CollectionVectorC_swigregister", CollectionVectorC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_RCHashStringPointsC", _wrap_new_RCHashStringPointsC, METH_VARARGS, (char *)"\n"
-		"RCHashStringPointsC(bool makeBod=True)\n"
+		"RCHashStringPointsC(makeBod=True)\n"
 		"RCHashStringPointsC()\n"
-		"new_RCHashStringPointsC(RavlN::SizeT nBins) -> RCHashStringPointsC\n"
+		"new_RCHashStringPointsC(nBins) -> RCHashStringPointsC\n"
 		""},
-	 { (char *)"RCHashStringPointsC_Del", _wrap_RCHashStringPointsC_Del, METH_VARARGS, (char *)"RCHashStringPointsC_Del(RCHashStringPointsC self, StringC aKey) -> bool"},
-	 { (char *)"RCHashStringPointsC_IsElm", _wrap_RCHashStringPointsC_IsElm, METH_VARARGS, (char *)"RCHashStringPointsC_IsElm(RCHashStringPointsC self, StringC aKey) -> bool"},
-	 { (char *)"RCHashStringPointsC_Move", _wrap_RCHashStringPointsC_Move, METH_VARARGS, (char *)"RCHashStringPointsC_Move(RCHashStringPointsC self, RCHashStringPointsC oth)"},
-	 { (char *)"RCHashStringPointsC_IsEmpty", _wrap_RCHashStringPointsC_IsEmpty, METH_VARARGS, (char *)"RCHashStringPointsC_IsEmpty(RCHashStringPointsC self) -> bool"},
-	 { (char *)"RCHashStringPointsC_Empty", _wrap_RCHashStringPointsC_Empty, METH_VARARGS, (char *)"RCHashStringPointsC_Empty(RCHashStringPointsC self)"},
-	 { (char *)"RCHashStringPointsC_Insert", _wrap_RCHashStringPointsC_Insert, METH_VARARGS, (char *)"RCHashStringPointsC_Insert(RCHashStringPointsC self, StringC aKey, CollectionPoint2dC data) -> bool"},
-	 { (char *)"RCHashStringPointsC_Size", _wrap_RCHashStringPointsC_Size, METH_VARARGS, (char *)"RCHashStringPointsC_Size(RCHashStringPointsC self) -> RavlN::SizeT"},
+	 { (char *)"RCHashStringPointsC_Del", _wrap_RCHashStringPointsC_Del, METH_VARARGS, (char *)"RCHashStringPointsC_Del(self, aKey) -> bool"},
+	 { (char *)"RCHashStringPointsC_IsElm", _wrap_RCHashStringPointsC_IsElm, METH_VARARGS, (char *)"RCHashStringPointsC_IsElm(self, aKey) -> bool"},
+	 { (char *)"RCHashStringPointsC_Move", _wrap_RCHashStringPointsC_Move, METH_VARARGS, (char *)"RCHashStringPointsC_Move(self, oth)"},
+	 { (char *)"RCHashStringPointsC_IsEmpty", _wrap_RCHashStringPointsC_IsEmpty, METH_VARARGS, (char *)"RCHashStringPointsC_IsEmpty(self) -> bool"},
+	 { (char *)"RCHashStringPointsC_Empty", _wrap_RCHashStringPointsC_Empty, METH_VARARGS, (char *)"RCHashStringPointsC_Empty(self)"},
+	 { (char *)"RCHashStringPointsC_Insert", _wrap_RCHashStringPointsC_Insert, METH_VARARGS, (char *)"RCHashStringPointsC_Insert(self, aKey, data) -> bool"},
+	 { (char *)"RCHashStringPointsC_Size", _wrap_RCHashStringPointsC_Size, METH_VARARGS, (char *)"RCHashStringPointsC_Size(self) -> RavlN::SizeT"},
 	 { (char *)"RCHashStringPointsC_Lookup", _wrap_RCHashStringPointsC_Lookup, METH_VARARGS, (char *)"\n"
-		"Lookup(StringC aKey) -> CollectionPoint2dC\n"
-		"Lookup(StringC aKey) -> CollectionPoint2dC\n"
-		"RCHashStringPointsC_Lookup(RCHashStringPointsC self, StringC aKey, CollectionPoint2dC data) -> bool\n"
+		"Lookup(aKey) -> CollectionPoint2dC\n"
+		"Lookup(aKey) -> CollectionPoint2dC\n"
+		"RCHashStringPointsC_Lookup(self, aKey, data) -> bool\n"
 		""},
 	 { (char *)"RCHashStringPointsC_Update", _wrap_RCHashStringPointsC_Update, METH_VARARGS, (char *)"\n"
-		"Update(StringC key, CollectionPoint2dC data) -> bool\n"
-		"RCHashStringPointsC_Update(RCHashStringPointsC self, StringC key) -> CollectionPoint2dC\n"
+		"Update(key, data) -> bool\n"
+		"RCHashStringPointsC_Update(self, key) -> CollectionPoint2dC\n"
 		""},
 	 { (char *)"RCHashStringPointsC_Access", _wrap_RCHashStringPointsC_Access, METH_VARARGS, (char *)"\n"
-		"Access(StringC key, CollectionPoint2dC dat=RavlN::CollectionC< RavlN::Point2dC >()) -> CollectionPoint2dC\n"
-		"RCHashStringPointsC_Access(RCHashStringPointsC self, StringC key) -> CollectionPoint2dC\n"
+		"Access(key, dat=RavlN::CollectionC< RavlN::Point2dC >()) -> CollectionPoint2dC\n"
+		"RCHashStringPointsC_Access(self, key) -> CollectionPoint2dC\n"
 		""},
 	 { (char *)"RCHashStringPointsC_AddFrom", _wrap_RCHashStringPointsC_AddFrom, METH_VARARGS, (char *)"\n"
-		"AddFrom(RCHashStringPointsC oth, bool replace=True)\n"
-		"RCHashStringPointsC_AddFrom(RCHashStringPointsC self, RCHashStringPointsC oth)\n"
+		"AddFrom(oth, replace=True)\n"
+		"RCHashStringPointsC_AddFrom(self, oth)\n"
 		""},
-	 { (char *)"RCHashStringPointsC_NormaliseKey", _wrap_RCHashStringPointsC_NormaliseKey, METH_VARARGS, (char *)"RCHashStringPointsC_NormaliseKey(RCHashStringPointsC self, StringC value) -> bool"},
-	 { (char *)"RCHashStringPointsC_Hash", _wrap_RCHashStringPointsC_Hash, METH_VARARGS, (char *)"RCHashStringPointsC_Hash(RCHashStringPointsC self) -> RavlN::SizeT"},
+	 { (char *)"RCHashStringPointsC_NormaliseKey", _wrap_RCHashStringPointsC_NormaliseKey, METH_VARARGS, (char *)"RCHashStringPointsC_NormaliseKey(self, value) -> bool"},
+	 { (char *)"RCHashStringPointsC_Hash", _wrap_RCHashStringPointsC_Hash, METH_VARARGS, (char *)"RCHashStringPointsC_Hash(self) -> RavlN::SizeT"},
 	 { (char *)"RCHashStringPointsC___eq__", _wrap_RCHashStringPointsC___eq__, METH_VARARGS, (char *)"\n"
-		"__eq__(RCHashStringPointsC oth) -> bool\n"
-		"RCHashStringPointsC___eq__(RCHashStringPointsC self, RavlN::HashC< RavlN::StringC,RavlN::CollectionC< RavlN::Point2dC > > const & oth) -> bool\n"
+		"__eq__(oth) -> bool\n"
+		"RCHashStringPointsC___eq__(self, oth) -> bool\n"
 		""},
 	 { (char *)"RCHashStringPointsC___ne__", _wrap_RCHashStringPointsC___ne__, METH_VARARGS, (char *)"\n"
-		"__ne__(RCHashStringPointsC oth) -> bool\n"
-		"RCHashStringPointsC___ne__(RCHashStringPointsC self, RavlN::HashC< RavlN::StringC,RavlN::CollectionC< RavlN::Point2dC > > const & oth) -> bool\n"
+		"__ne__(oth) -> bool\n"
+		"RCHashStringPointsC___ne__(self, oth) -> bool\n"
 		""},
-	 { (char *)"delete_RCHashStringPointsC", _wrap_delete_RCHashStringPointsC, METH_VARARGS, (char *)"delete_RCHashStringPointsC(RCHashStringPointsC self)"},
+	 { (char *)"delete_RCHashStringPointsC", _wrap_delete_RCHashStringPointsC, METH_VARARGS, (char *)"delete_RCHashStringPointsC(self)"},
 	 { (char *)"RCHashStringPointsC_swigregister", RCHashStringPointsC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ClassifierC", _wrap_new_ClassifierC, METH_VARARGS, (char *)"new_ClassifierC() -> ClassifierC"},
-	 { (char *)"ClassifierC_Classify", _wrap_ClassifierC_Classify, METH_VARARGS, (char *)"ClassifierC_Classify(ClassifierC self, VectorC vector) -> RavlN::UIntT"},
-	 { (char *)"ClassifierC_Confidence", _wrap_ClassifierC_Confidence, METH_VARARGS, (char *)"ClassifierC_Confidence(ClassifierC self, VectorC vector) -> VectorC"},
-	 { (char *)"delete_ClassifierC", _wrap_delete_ClassifierC, METH_VARARGS, (char *)"delete_ClassifierC(ClassifierC self)"},
+	 { (char *)"ClassifierC_Classify", _wrap_ClassifierC_Classify, METH_VARARGS, (char *)"ClassifierC_Classify(self, vector) -> RavlN::UIntT"},
+	 { (char *)"ClassifierC_Confidence", _wrap_ClassifierC_Confidence, METH_VARARGS, (char *)"ClassifierC_Confidence(self, vector) -> VectorC"},
+	 { (char *)"delete_ClassifierC", _wrap_delete_ClassifierC, METH_VARARGS, (char *)"delete_ClassifierC(self)"},
 	 { (char *)"ClassifierC_swigregister", ClassifierC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"FunctionC_Apply", _wrap_FunctionC_Apply, METH_VARARGS, (char *)"FunctionC_Apply(FunctionC self, VectorC data) -> VectorC"},
-	 { (char *)"FunctionC_InputSize", _wrap_FunctionC_InputSize, METH_VARARGS, (char *)"FunctionC_InputSize(FunctionC self) -> RavlN::UIntT"},
-	 { (char *)"FunctionC_OutputSize", _wrap_FunctionC_OutputSize, METH_VARARGS, (char *)"FunctionC_OutputSize(FunctionC self) -> RavlN::UIntT"},
-	 { (char *)"FunctionC___str__", _wrap_FunctionC___str__, METH_VARARGS, (char *)"FunctionC___str__(FunctionC self) -> char const *"},
-	 { (char *)"FunctionC___nonzero__", _wrap_FunctionC___nonzero__, METH_VARARGS, (char *)"FunctionC___nonzero__(FunctionC self) -> bool"},
-	 { (char *)"new_FunctionC", _wrap_new_FunctionC, METH_VARARGS, (char *)"new_FunctionC() -> FunctionC"},
-	 { (char *)"delete_FunctionC", _wrap_delete_FunctionC, METH_VARARGS, (char *)"delete_FunctionC(FunctionC self)"},
-	 { (char *)"FunctionC_swigregister", FunctionC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_ClassifierPreprocessC", _wrap_new_ClassifierPreprocessC, METH_VARARGS, (char *)"new_ClassifierPreprocessC(FunctionC function, ClassifierC classifier) -> ClassifierPreprocessC"},
-	 { (char *)"delete_ClassifierPreprocessC", _wrap_delete_ClassifierPreprocessC, METH_VARARGS, (char *)"delete_ClassifierPreprocessC(ClassifierPreprocessC self)"},
-	 { (char *)"ClassifierPreprocessC_swigregister", ClassifierPreprocessC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"Load", _wrap_Load, METH_VARARGS, (char *)"\n"
-		"Load(StringC filename, ImageByteC arg2) -> bool\n"
-		"Load(StringC filename, RavlImageN::ImageC< RavlN::RealT > & arg2) -> bool\n"
-		"Load(StringC filename, ImageByteRGBValueC arg2) -> bool\n"
-		"Load(StringC filename, ClassifierC classifier) -> bool\n"
-		"Load(StringC filename, FunctionC classifier) -> bool\n"
-		""},
-	 { (char *)"Save", _wrap_Save, METH_VARARGS, (char *)"\n"
-		"Save(StringC filename, ImageByteC arg2) -> bool\n"
-		"Save(StringC filename, RavlImageN::ImageC< RavlN::RealT > const & arg2) -> bool\n"
-		"Save(StringC filename, ImageByteRGBValueC arg2) -> bool\n"
-		"Save(StringC filename, ClassifierC classifier) -> bool\n"
-		"Save(StringC filename, FunctionC classifier) -> bool\n"
-		""},
-	 { (char *)"new_RealHistogram1dC", _wrap_new_RealHistogram1dC, METH_VARARGS, (char *)"\n"
-		"RealHistogram1dC()\n"
-		"new_RealHistogram1dC(RavlN::RealT min, RavlN::RealT max, RavlN::UIntT noOfBins) -> RealHistogram1dC\n"
-		""},
-	 { (char *)"RealHistogram1dC_Scale", _wrap_RealHistogram1dC_Scale, METH_VARARGS, (char *)"RealHistogram1dC_Scale(RealHistogram1dC self) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_Offset", _wrap_RealHistogram1dC_Offset, METH_VARARGS, (char *)"RealHistogram1dC_Offset(RealHistogram1dC self) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_Bin", _wrap_RealHistogram1dC_Bin, METH_VARARGS, (char *)"RealHistogram1dC_Bin(RealHistogram1dC self, RavlN::RealT v) -> IndexC"},
-	 { (char *)"RealHistogram1dC_MidBin", _wrap_RealHistogram1dC_MidBin, METH_VARARGS, (char *)"RealHistogram1dC_MidBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_MinBin", _wrap_RealHistogram1dC_MinBin, METH_VARARGS, (char *)"RealHistogram1dC_MinBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_MaxBin", _wrap_RealHistogram1dC_MaxBin, METH_VARARGS, (char *)"RealHistogram1dC_MaxBin(RealHistogram1dC self, IndexC bin) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_MinLimit", _wrap_RealHistogram1dC_MinLimit, METH_VARARGS, (char *)"RealHistogram1dC_MinLimit(RealHistogram1dC self) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_MaxLimit", _wrap_RealHistogram1dC_MaxLimit, METH_VARARGS, (char *)"RealHistogram1dC_MaxLimit(RealHistogram1dC self) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_Reset", _wrap_RealHistogram1dC_Reset, METH_VARARGS, (char *)"RealHistogram1dC_Reset(RealHistogram1dC self)"},
-	 { (char *)"RealHistogram1dC_Vote", _wrap_RealHistogram1dC_Vote, METH_VARARGS, (char *)"\n"
-		"Vote(RavlN::RealT v)\n"
-		"RealHistogram1dC_Vote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n)\n"
-		""},
-	 { (char *)"RealHistogram1dC_CheckVote", _wrap_RealHistogram1dC_CheckVote, METH_VARARGS, (char *)"\n"
-		"CheckVote(RavlN::RealT v) -> bool\n"
-		"RealHistogram1dC_CheckVote(RealHistogram1dC self, RavlN::RealT v, RavlN::IntT n) -> bool\n"
-		""},
-	 { (char *)"RealHistogram1dC_TotalVotes", _wrap_RealHistogram1dC_TotalVotes, METH_VARARGS, (char *)"RealHistogram1dC_TotalVotes(RealHistogram1dC self) -> RavlN::UIntT"},
-	 { (char *)"RealHistogram1dC_Information", _wrap_RealHistogram1dC_Information, METH_VARARGS, (char *)"RealHistogram1dC_Information(RealHistogram1dC self) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_Energy", _wrap_RealHistogram1dC_Energy, METH_VARARGS, (char *)"RealHistogram1dC_Energy(RealHistogram1dC self) -> RavlN::RealT"},
-	 { (char *)"RealHistogram1dC_SmoothedPDF", _wrap_RealHistogram1dC_SmoothedPDF, METH_VARARGS, (char *)"\n"
-		"SmoothedPDF(RavlN::IntT bin, RavlN::RealT sigma=1) -> RavlN::RealT\n"
-		"RealHistogram1dC_SmoothedPDF(RealHistogram1dC self, RavlN::IntT bin) -> RavlN::RealT\n"
-		""},
-	 { (char *)"RealHistogram1dC_Peaks", _wrap_RealHistogram1dC_Peaks, METH_VARARGS, (char *)"\n"
-		"Peaks(RavlN::UIntT width, RavlN::UIntT threshold=0) -> DListRealC\n"
-		"RealHistogram1dC_Peaks(RealHistogram1dC self, RavlN::UIntT width) -> DListRealC\n"
-		""},
-	 { (char *)"RealHistogram1dC_MinMax", _wrap_RealHistogram1dC_MinMax, METH_VARARGS, (char *)"RealHistogram1dC_MinMax(RealHistogram1dC self, IndexC min, IndexC max) -> bool"},
-	 { (char *)"RealHistogram1dC_Sum", _wrap_RealHistogram1dC_Sum, METH_VARARGS, (char *)"RealHistogram1dC_Sum(RealHistogram1dC self, IndexC min, IndexC max) -> RavlN::UIntT"},
-	 { (char *)"delete_RealHistogram1dC", _wrap_delete_RealHistogram1dC, METH_VARARGS, (char *)"delete_RealHistogram1dC(RealHistogram1dC self)"},
-	 { (char *)"RealHistogram1dC_swigregister", RealHistogram1dC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_SampleOfUInt", _wrap_new_SampleOfUInt, METH_VARARGS, (char *)"\n"
-		"SampleOfUInt(RavlN::SizeT maxSize=10)\n"
+		"SampleOfUInt(maxSize=10)\n"
 		"SampleOfUInt()\n"
-		"new_SampleOfUInt(SArray1dUInt dat) -> SampleOfUInt\n"
+		"new_SampleOfUInt(dat) -> SampleOfUInt\n"
 		""},
-	 { (char *)"SampleOfUInt_Copy", _wrap_SampleOfUInt_Copy, METH_VARARGS, (char *)"SampleOfUInt_Copy(SampleOfUInt self) -> SampleOfUInt"},
+	 { (char *)"SampleOfUInt_Copy", _wrap_SampleOfUInt_Copy, METH_VARARGS, (char *)"SampleOfUInt_Copy(self) -> SampleOfUInt"},
 	 { (char *)"SampleOfUInt_CompactFrom", _wrap_SampleOfUInt_CompactFrom, METH_VARARGS, (char *)"\n"
-		"CompactFrom(IndexC start, RavlN::SizeT size) -> SampleOfUInt\n"
-		"SampleOfUInt_CompactFrom(SampleOfUInt self, IndexC start, RavlN::SizeT size) -> SampleOfUInt\n"
+		"CompactFrom(start, size) -> SampleOfUInt\n"
+		"SampleOfUInt_CompactFrom(self, start, size) -> SampleOfUInt\n"
 		""},
-	 { (char *)"SampleOfUInt_ExtractEntry", _wrap_SampleOfUInt_ExtractEntry, METH_VARARGS, (char *)"SampleOfUInt_ExtractEntry(SampleOfUInt self, int ind) -> unsigned int"},
-	 { (char *)"SampleOfUInt_Fill", _wrap_SampleOfUInt_Fill, METH_VARARGS, (char *)"SampleOfUInt_Fill(SampleOfUInt self, unsigned int const & value)"},
+	 { (char *)"SampleOfUInt_ExtractEntry", _wrap_SampleOfUInt_ExtractEntry, METH_VARARGS, (char *)"SampleOfUInt_ExtractEntry(self, ind) -> unsigned int"},
+	 { (char *)"SampleOfUInt_Fill", _wrap_SampleOfUInt_Fill, METH_VARARGS, (char *)"SampleOfUInt_Fill(self, value)"},
 	 { (char *)"SampleOfUInt_Append", _wrap_SampleOfUInt_Append, METH_VARARGS, (char *)"\n"
-		"Append(unsigned int const & dat) -> IndexC\n"
-		"SampleOfUInt_Append(SampleOfUInt self, SampleOfUInt newData) -> IndexC\n"
+		"Append(dat) -> IndexC\n"
+		"SampleOfUInt_Append(self, newData) -> IndexC\n"
 		""},
-	 { (char *)"SampleOfUInt___iadd__", _wrap_SampleOfUInt___iadd__, METH_VARARGS, (char *)"SampleOfUInt___iadd__(SampleOfUInt self, unsigned int const & dat) -> IndexC"},
-	 { (char *)"SampleOfUInt_Size", _wrap_SampleOfUInt_Size, METH_VARARGS, (char *)"SampleOfUInt_Size(SampleOfUInt self) -> RavlN::SizeT"},
-	 { (char *)"SampleOfUInt_PickElement", _wrap_SampleOfUInt_PickElement, METH_VARARGS, (char *)"SampleOfUInt_PickElement(SampleOfUInt self, RavlN::UIntT i) -> unsigned int"},
+	 { (char *)"SampleOfUInt___iadd__", _wrap_SampleOfUInt___iadd__, METH_VARARGS, (char *)"SampleOfUInt___iadd__(self, dat) -> IndexC"},
+	 { (char *)"SampleOfUInt_Size", _wrap_SampleOfUInt_Size, METH_VARARGS, (char *)"SampleOfUInt_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SampleOfUInt_PickElement", _wrap_SampleOfUInt_PickElement, METH_VARARGS, (char *)"SampleOfUInt_PickElement(self, i) -> unsigned int"},
 	 { (char *)"SampleOfUInt_Nth", _wrap_SampleOfUInt_Nth, METH_VARARGS, (char *)"\n"
-		"Nth(RavlN::UIntT i) -> unsigned int\n"
-		"SampleOfUInt_Nth(SampleOfUInt self, RavlN::UIntT i) -> unsigned int const &\n"
+		"Nth(i) -> unsigned int\n"
+		"SampleOfUInt_Nth(self, i) -> unsigned int const &\n"
 		""},
-	 { (char *)"SampleOfUInt_Pick", _wrap_SampleOfUInt_Pick, METH_VARARGS, (char *)"SampleOfUInt_Pick(SampleOfUInt self) -> unsigned int"},
+	 { (char *)"SampleOfUInt_Pick", _wrap_SampleOfUInt_Pick, METH_VARARGS, (char *)"SampleOfUInt_Pick(self) -> unsigned int"},
 	 { (char *)"SampleOfUInt_Sample", _wrap_SampleOfUInt_Sample, METH_VARARGS, (char *)"\n"
 		"Sample() -> unsigned int const\n"
-		"SampleOfUInt_Sample(SampleOfUInt self) -> unsigned int &\n"
+		"SampleOfUInt_Sample(self) -> unsigned int &\n"
 		""},
 	 { (char *)"SampleOfUInt_First", _wrap_SampleOfUInt_First, METH_VARARGS, (char *)"\n"
 		"First() -> unsigned int\n"
-		"SampleOfUInt_First(SampleOfUInt self) -> unsigned int const &\n"
+		"SampleOfUInt_First(self) -> unsigned int const &\n"
 		""},
 	 { (char *)"SampleOfUInt_Last", _wrap_SampleOfUInt_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> unsigned int\n"
-		"SampleOfUInt_Last(SampleOfUInt self) -> unsigned int const &\n"
+		"SampleOfUInt_Last(self) -> unsigned int const &\n"
 		""},
-	 { (char *)"SampleOfUInt_IsEmpty", _wrap_SampleOfUInt_IsEmpty, METH_VARARGS, (char *)"SampleOfUInt_IsEmpty(SampleOfUInt self) -> bool"},
-	 { (char *)"SampleOfUInt_IsValid", _wrap_SampleOfUInt_IsValid, METH_VARARGS, (char *)"SampleOfUInt_IsValid(SampleOfUInt self) -> bool"},
-	 { (char *)"SampleOfUInt___getitem__", _wrap_SampleOfUInt___getitem__, METH_VARARGS, (char *)"SampleOfUInt___getitem__(SampleOfUInt self, size_t i) -> unsigned int const &"},
-	 { (char *)"SampleOfUInt___setitem__", _wrap_SampleOfUInt___setitem__, METH_VARARGS, (char *)"SampleOfUInt___setitem__(SampleOfUInt self, size_t i, unsigned int const & v)"},
-	 { (char *)"SampleOfUInt___str__", _wrap_SampleOfUInt___str__, METH_VARARGS, (char *)"SampleOfUInt___str__(SampleOfUInt self) -> char const *"},
-	 { (char *)"delete_SampleOfUInt", _wrap_delete_SampleOfUInt, METH_VARARGS, (char *)"delete_SampleOfUInt(SampleOfUInt self)"},
+	 { (char *)"SampleOfUInt_IsEmpty", _wrap_SampleOfUInt_IsEmpty, METH_VARARGS, (char *)"SampleOfUInt_IsEmpty(self) -> bool"},
+	 { (char *)"SampleOfUInt_IsValid", _wrap_SampleOfUInt_IsValid, METH_VARARGS, (char *)"SampleOfUInt_IsValid(self) -> bool"},
+	 { (char *)"SampleOfUInt___getitem__", _wrap_SampleOfUInt___getitem__, METH_VARARGS, (char *)"SampleOfUInt___getitem__(self, i) -> unsigned int const &"},
+	 { (char *)"SampleOfUInt___setitem__", _wrap_SampleOfUInt___setitem__, METH_VARARGS, (char *)"SampleOfUInt___setitem__(self, i, v)"},
+	 { (char *)"SampleOfUInt___str__", _wrap_SampleOfUInt___str__, METH_VARARGS, (char *)"SampleOfUInt___str__(self) -> char const *"},
+	 { (char *)"delete_SampleOfUInt", _wrap_delete_SampleOfUInt, METH_VARARGS, (char *)"delete_SampleOfUInt(self)"},
 	 { (char *)"SampleOfUInt_swigregister", SampleOfUInt_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_SampleOfVectorC", _wrap_new_SampleOfVectorC, METH_VARARGS, (char *)"\n"
-		"SampleOfVectorC(RavlN::SizeT maxSize=10)\n"
+		"SampleOfVectorC(maxSize=10)\n"
 		"SampleOfVectorC()\n"
-		"new_SampleOfVectorC(SArray1dVectorC dat) -> SampleOfVectorC\n"
+		"new_SampleOfVectorC(dat) -> SampleOfVectorC\n"
 		""},
-	 { (char *)"SampleOfVectorC_Copy", _wrap_SampleOfVectorC_Copy, METH_VARARGS, (char *)"SampleOfVectorC_Copy(SampleOfVectorC self) -> SampleOfVectorC"},
+	 { (char *)"SampleOfVectorC_Copy", _wrap_SampleOfVectorC_Copy, METH_VARARGS, (char *)"SampleOfVectorC_Copy(self) -> SampleOfVectorC"},
 	 { (char *)"SampleOfVectorC_CompactFrom", _wrap_SampleOfVectorC_CompactFrom, METH_VARARGS, (char *)"\n"
-		"CompactFrom(IndexC start, RavlN::SizeT size) -> SampleOfVectorC\n"
-		"SampleOfVectorC_CompactFrom(SampleOfVectorC self, IndexC start, RavlN::SizeT size) -> SampleOfVectorC\n"
+		"CompactFrom(start, size) -> SampleOfVectorC\n"
+		"SampleOfVectorC_CompactFrom(self, start, size) -> SampleOfVectorC\n"
 		""},
-	 { (char *)"SampleOfVectorC_ExtractEntry", _wrap_SampleOfVectorC_ExtractEntry, METH_VARARGS, (char *)"SampleOfVectorC_ExtractEntry(SampleOfVectorC self, int ind) -> VectorC"},
-	 { (char *)"SampleOfVectorC_Fill", _wrap_SampleOfVectorC_Fill, METH_VARARGS, (char *)"SampleOfVectorC_Fill(SampleOfVectorC self, VectorC value)"},
+	 { (char *)"SampleOfVectorC_ExtractEntry", _wrap_SampleOfVectorC_ExtractEntry, METH_VARARGS, (char *)"SampleOfVectorC_ExtractEntry(self, ind) -> VectorC"},
+	 { (char *)"SampleOfVectorC_Fill", _wrap_SampleOfVectorC_Fill, METH_VARARGS, (char *)"SampleOfVectorC_Fill(self, value)"},
 	 { (char *)"SampleOfVectorC_Append", _wrap_SampleOfVectorC_Append, METH_VARARGS, (char *)"\n"
-		"Append(VectorC dat) -> IndexC\n"
-		"SampleOfVectorC_Append(SampleOfVectorC self, SampleOfVectorC newData) -> IndexC\n"
+		"Append(dat) -> IndexC\n"
+		"SampleOfVectorC_Append(self, newData) -> IndexC\n"
 		""},
-	 { (char *)"SampleOfVectorC___iadd__", _wrap_SampleOfVectorC___iadd__, METH_VARARGS, (char *)"SampleOfVectorC___iadd__(SampleOfVectorC self, VectorC dat) -> IndexC"},
-	 { (char *)"SampleOfVectorC_Size", _wrap_SampleOfVectorC_Size, METH_VARARGS, (char *)"SampleOfVectorC_Size(SampleOfVectorC self) -> RavlN::SizeT"},
-	 { (char *)"SampleOfVectorC_PickElement", _wrap_SampleOfVectorC_PickElement, METH_VARARGS, (char *)"SampleOfVectorC_PickElement(SampleOfVectorC self, RavlN::UIntT i) -> VectorC"},
+	 { (char *)"SampleOfVectorC___iadd__", _wrap_SampleOfVectorC___iadd__, METH_VARARGS, (char *)"SampleOfVectorC___iadd__(self, dat) -> IndexC"},
+	 { (char *)"SampleOfVectorC_Size", _wrap_SampleOfVectorC_Size, METH_VARARGS, (char *)"SampleOfVectorC_Size(self) -> RavlN::SizeT"},
+	 { (char *)"SampleOfVectorC_PickElement", _wrap_SampleOfVectorC_PickElement, METH_VARARGS, (char *)"SampleOfVectorC_PickElement(self, i) -> VectorC"},
 	 { (char *)"SampleOfVectorC_Nth", _wrap_SampleOfVectorC_Nth, METH_VARARGS, (char *)"\n"
-		"Nth(RavlN::UIntT i) -> VectorC\n"
-		"SampleOfVectorC_Nth(SampleOfVectorC self, RavlN::UIntT i) -> VectorC\n"
+		"Nth(i) -> VectorC\n"
+		"SampleOfVectorC_Nth(self, i) -> VectorC\n"
 		""},
-	 { (char *)"SampleOfVectorC_Pick", _wrap_SampleOfVectorC_Pick, METH_VARARGS, (char *)"SampleOfVectorC_Pick(SampleOfVectorC self) -> VectorC"},
+	 { (char *)"SampleOfVectorC_Pick", _wrap_SampleOfVectorC_Pick, METH_VARARGS, (char *)"SampleOfVectorC_Pick(self) -> VectorC"},
 	 { (char *)"SampleOfVectorC_Sample", _wrap_SampleOfVectorC_Sample, METH_VARARGS, (char *)"\n"
 		"Sample() -> VectorC\n"
-		"SampleOfVectorC_Sample(SampleOfVectorC self) -> VectorC\n"
+		"SampleOfVectorC_Sample(self) -> VectorC\n"
 		""},
 	 { (char *)"SampleOfVectorC_First", _wrap_SampleOfVectorC_First, METH_VARARGS, (char *)"\n"
 		"First() -> VectorC\n"
-		"SampleOfVectorC_First(SampleOfVectorC self) -> VectorC\n"
+		"SampleOfVectorC_First(self) -> VectorC\n"
 		""},
 	 { (char *)"SampleOfVectorC_Last", _wrap_SampleOfVectorC_Last, METH_VARARGS, (char *)"\n"
 		"Last() -> VectorC\n"
-		"SampleOfVectorC_Last(SampleOfVectorC self) -> VectorC\n"
+		"SampleOfVectorC_Last(self) -> VectorC\n"
 		""},
-	 { (char *)"SampleOfVectorC_IsEmpty", _wrap_SampleOfVectorC_IsEmpty, METH_VARARGS, (char *)"SampleOfVectorC_IsEmpty(SampleOfVectorC self) -> bool"},
-	 { (char *)"SampleOfVectorC_IsValid", _wrap_SampleOfVectorC_IsValid, METH_VARARGS, (char *)"SampleOfVectorC_IsValid(SampleOfVectorC self) -> bool"},
-	 { (char *)"SampleOfVectorC___getitem__", _wrap_SampleOfVectorC___getitem__, METH_VARARGS, (char *)"SampleOfVectorC___getitem__(SampleOfVectorC self, size_t i) -> VectorC"},
-	 { (char *)"SampleOfVectorC___setitem__", _wrap_SampleOfVectorC___setitem__, METH_VARARGS, (char *)"SampleOfVectorC___setitem__(SampleOfVectorC self, size_t i, VectorC v)"},
-	 { (char *)"SampleOfVectorC___str__", _wrap_SampleOfVectorC___str__, METH_VARARGS, (char *)"SampleOfVectorC___str__(SampleOfVectorC self) -> char const *"},
-	 { (char *)"delete_SampleOfVectorC", _wrap_delete_SampleOfVectorC, METH_VARARGS, (char *)"delete_SampleOfVectorC(SampleOfVectorC self)"},
+	 { (char *)"SampleOfVectorC_IsEmpty", _wrap_SampleOfVectorC_IsEmpty, METH_VARARGS, (char *)"SampleOfVectorC_IsEmpty(self) -> bool"},
+	 { (char *)"SampleOfVectorC_IsValid", _wrap_SampleOfVectorC_IsValid, METH_VARARGS, (char *)"SampleOfVectorC_IsValid(self) -> bool"},
+	 { (char *)"SampleOfVectorC___getitem__", _wrap_SampleOfVectorC___getitem__, METH_VARARGS, (char *)"SampleOfVectorC___getitem__(self, i) -> VectorC"},
+	 { (char *)"SampleOfVectorC___setitem__", _wrap_SampleOfVectorC___setitem__, METH_VARARGS, (char *)"SampleOfVectorC___setitem__(self, i, v)"},
+	 { (char *)"SampleOfVectorC___str__", _wrap_SampleOfVectorC___str__, METH_VARARGS, (char *)"SampleOfVectorC___str__(self) -> char const *"},
+	 { (char *)"delete_SampleOfVectorC", _wrap_delete_SampleOfVectorC, METH_VARARGS, (char *)"delete_SampleOfVectorC(self)"},
 	 { (char *)"SampleOfVectorC_swigregister", SampleOfVectorC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_SampleVectorC", _wrap_new_SampleVectorC, METH_VARARGS, (char *)"\n"
-		"SampleVectorC(RavlN::SizeT maxSize=10)\n"
-		"SampleVectorC()\n"
-		"SampleVectorC(SArray1dVectorC dat)\n"
-		"SampleVectorC(SampleOfVectorC svec)\n"
-		"SampleVectorC(SampleOfVectorC svec, SArray1dIndexC featureSet)\n"
-		"new_SampleVectorC(MeanCovarianceC meanCovariance) -> SampleVectorC\n"
+	 { (char *)"FunctionC_Apply", _wrap_FunctionC_Apply, METH_VARARGS, (char *)"\n"
+		"Apply(data) -> VectorC\n"
+		"Apply(data1, data2) -> VectorC\n"
+		"FunctionC_Apply(self, data) -> SampleOfVectorC\n"
 		""},
-	 { (char *)"SampleVectorC_VectorSize", _wrap_SampleVectorC_VectorSize, METH_VARARGS, (char *)"SampleVectorC_VectorSize(SampleVectorC self) -> RavlN::UIntT"},
+	 { (char *)"FunctionC___call__", _wrap_FunctionC___call__, METH_VARARGS, (char *)"FunctionC___call__(self, X) -> VectorC"},
+	 { (char *)"FunctionC_CheckJacobian", _wrap_FunctionC_CheckJacobian, METH_VARARGS, (char *)"\n"
+		"CheckJacobian(X, tolerance=1e-4, epsilon=1e-4) -> bool\n"
+		"CheckJacobian(X, tolerance=1e-4) -> bool\n"
+		"FunctionC_CheckJacobian(self, X) -> bool\n"
+		""},
+	 { (char *)"FunctionC_Jacobian", _wrap_FunctionC_Jacobian, METH_VARARGS, (char *)"FunctionC_Jacobian(self, X) -> MatrixC"},
+	 { (char *)"FunctionC_Evaluate", _wrap_FunctionC_Evaluate, METH_VARARGS, (char *)"FunctionC_Evaluate(self, X) -> VectorMatrixC"},
+	 { (char *)"FunctionC_EvaluateValueJacobian", _wrap_FunctionC_EvaluateValueJacobian, METH_VARARGS, (char *)"FunctionC_EvaluateValueJacobian(self, X, value, jacobian) -> bool"},
+	 { (char *)"FunctionC_EvaluateValue", _wrap_FunctionC_EvaluateValue, METH_VARARGS, (char *)"FunctionC_EvaluateValue(self, X, value) -> bool"},
+	 { (char *)"FunctionC_InputSize", _wrap_FunctionC_InputSize, METH_VARARGS, (char *)"FunctionC_InputSize(self) -> RavlN::UIntT"},
+	 { (char *)"FunctionC_OutputSize", _wrap_FunctionC_OutputSize, METH_VARARGS, (char *)"FunctionC_OutputSize(self) -> RavlN::UIntT"},
+	 { (char *)"FunctionC___str__", _wrap_FunctionC___str__, METH_VARARGS, (char *)"FunctionC___str__(self) -> char const *"},
+	 { (char *)"FunctionC___nonzero__", _wrap_FunctionC___nonzero__, METH_VARARGS, (char *)"FunctionC___nonzero__(self) -> bool"},
+	 { (char *)"new_FunctionC", _wrap_new_FunctionC, METH_VARARGS, (char *)"new_FunctionC() -> FunctionC"},
+	 { (char *)"delete_FunctionC", _wrap_delete_FunctionC, METH_VARARGS, (char *)"delete_FunctionC(self)"},
+	 { (char *)"FunctionC_swigregister", FunctionC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_ClassifierPreprocessC", _wrap_new_ClassifierPreprocessC, METH_VARARGS, (char *)"new_ClassifierPreprocessC(function, classifier) -> ClassifierPreprocessC"},
+	 { (char *)"delete_ClassifierPreprocessC", _wrap_delete_ClassifierPreprocessC, METH_VARARGS, (char *)"delete_ClassifierPreprocessC(self)"},
+	 { (char *)"ClassifierPreprocessC_swigregister", ClassifierPreprocessC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"Load", _wrap_Load, METH_VARARGS, (char *)"\n"
+		"Load(filename, arg2) -> bool\n"
+		"Load(filename, arg2) -> bool\n"
+		"Load(filename, arg2) -> bool\n"
+		"Load(filename, classifier) -> bool\n"
+		"Load(filename, classifier) -> bool\n"
+		""},
+	 { (char *)"Save", _wrap_Save, METH_VARARGS, (char *)"\n"
+		"Save(filename, arg2) -> bool\n"
+		"Save(filename, arg2) -> bool\n"
+		"Save(filename, arg2) -> bool\n"
+		"Save(filename, classifier) -> bool\n"
+		"Save(filename, classifier) -> bool\n"
+		""},
+	 { (char *)"new_RealHistogram1dC", _wrap_new_RealHistogram1dC, METH_VARARGS, (char *)"\n"
+		"RealHistogram1dC()\n"
+		"new_RealHistogram1dC(min, max, noOfBins) -> RealHistogram1dC\n"
+		""},
+	 { (char *)"RealHistogram1dC_Scale", _wrap_RealHistogram1dC_Scale, METH_VARARGS, (char *)"RealHistogram1dC_Scale(self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Offset", _wrap_RealHistogram1dC_Offset, METH_VARARGS, (char *)"RealHistogram1dC_Offset(self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Bin", _wrap_RealHistogram1dC_Bin, METH_VARARGS, (char *)"RealHistogram1dC_Bin(self, v) -> IndexC"},
+	 { (char *)"RealHistogram1dC_MidBin", _wrap_RealHistogram1dC_MidBin, METH_VARARGS, (char *)"RealHistogram1dC_MidBin(self, bin) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MinBin", _wrap_RealHistogram1dC_MinBin, METH_VARARGS, (char *)"RealHistogram1dC_MinBin(self, bin) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MaxBin", _wrap_RealHistogram1dC_MaxBin, METH_VARARGS, (char *)"RealHistogram1dC_MaxBin(self, bin) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MinLimit", _wrap_RealHistogram1dC_MinLimit, METH_VARARGS, (char *)"RealHistogram1dC_MinLimit(self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_MaxLimit", _wrap_RealHistogram1dC_MaxLimit, METH_VARARGS, (char *)"RealHistogram1dC_MaxLimit(self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Reset", _wrap_RealHistogram1dC_Reset, METH_VARARGS, (char *)"RealHistogram1dC_Reset(self)"},
+	 { (char *)"RealHistogram1dC_Vote", _wrap_RealHistogram1dC_Vote, METH_VARARGS, (char *)"\n"
+		"Vote(v)\n"
+		"RealHistogram1dC_Vote(self, v, n)\n"
+		""},
+	 { (char *)"RealHistogram1dC_CheckVote", _wrap_RealHistogram1dC_CheckVote, METH_VARARGS, (char *)"\n"
+		"CheckVote(v) -> bool\n"
+		"RealHistogram1dC_CheckVote(self, v, n) -> bool\n"
+		""},
+	 { (char *)"RealHistogram1dC_TotalVotes", _wrap_RealHistogram1dC_TotalVotes, METH_VARARGS, (char *)"RealHistogram1dC_TotalVotes(self) -> RavlN::UIntT"},
+	 { (char *)"RealHistogram1dC_Information", _wrap_RealHistogram1dC_Information, METH_VARARGS, (char *)"RealHistogram1dC_Information(self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_Energy", _wrap_RealHistogram1dC_Energy, METH_VARARGS, (char *)"RealHistogram1dC_Energy(self) -> RavlN::RealT"},
+	 { (char *)"RealHistogram1dC_SmoothedPDF", _wrap_RealHistogram1dC_SmoothedPDF, METH_VARARGS, (char *)"\n"
+		"SmoothedPDF(bin, sigma=1) -> RavlN::RealT\n"
+		"RealHistogram1dC_SmoothedPDF(self, bin) -> RavlN::RealT\n"
+		""},
+	 { (char *)"RealHistogram1dC_Peaks", _wrap_RealHistogram1dC_Peaks, METH_VARARGS, (char *)"\n"
+		"Peaks(width, threshold=0) -> DListRealC\n"
+		"RealHistogram1dC_Peaks(self, width) -> DListRealC\n"
+		""},
+	 { (char *)"RealHistogram1dC_MinMax", _wrap_RealHistogram1dC_MinMax, METH_VARARGS, (char *)"RealHistogram1dC_MinMax(self, min, max) -> bool"},
+	 { (char *)"RealHistogram1dC_Sum", _wrap_RealHistogram1dC_Sum, METH_VARARGS, (char *)"RealHistogram1dC_Sum(self, min, max) -> RavlN::UIntT"},
+	 { (char *)"delete_RealHistogram1dC", _wrap_delete_RealHistogram1dC, METH_VARARGS, (char *)"delete_RealHistogram1dC(self)"},
+	 { (char *)"RealHistogram1dC_swigregister", RealHistogram1dC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_SampleVectorC", _wrap_new_SampleVectorC, METH_VARARGS, (char *)"\n"
+		"SampleVectorC(maxSize=10)\n"
+		"SampleVectorC()\n"
+		"SampleVectorC(dat)\n"
+		"SampleVectorC(svec)\n"
+		"SampleVectorC(svec, featureSet)\n"
+		"new_SampleVectorC(meanCovariance) -> SampleVectorC\n"
+		""},
+	 { (char *)"SampleVectorC_VectorSize", _wrap_SampleVectorC_VectorSize, METH_VARARGS, (char *)"SampleVectorC_VectorSize(self) -> RavlN::UIntT"},
 	 { (char *)"SampleVectorC_Mean", _wrap_SampleVectorC_Mean, METH_VARARGS, (char *)"\n"
 		"Mean() -> VectorC\n"
-		"SampleVectorC_Mean(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & weights) -> VectorC\n"
+		"SampleVectorC_Mean(self, weights) -> VectorC\n"
 		""},
 	 { (char *)"SampleVectorC_MeanCovariance", _wrap_SampleVectorC_MeanCovariance, METH_VARARGS, (char *)"\n"
-		"MeanCovariance(bool sampleStatistics=True) -> MeanCovarianceC\n"
+		"MeanCovariance(sampleStatistics=True) -> MeanCovarianceC\n"
 		"MeanCovariance() -> MeanCovarianceC\n"
-		"MeanCovariance(RavlN::SampleC< RavlN::RealT > const & weights, bool sampleStatistics=True) -> MeanCovarianceC\n"
-		"SampleVectorC_MeanCovariance(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & weights) -> MeanCovarianceC\n"
+		"MeanCovariance(weights, sampleStatistics=True) -> MeanCovarianceC\n"
+		"SampleVectorC_MeanCovariance(self, weights) -> MeanCovarianceC\n"
 		""},
 	 { (char *)"SampleVectorC_SumOuterProducts", _wrap_SampleVectorC_SumOuterProducts, METH_VARARGS, (char *)"\n"
 		"SumOuterProducts() -> MatrixRUTC\n"
-		"SampleVectorC_SumOuterProducts(SampleVectorC self, RavlN::SampleC< RavlN::RealT > const & w) -> MatrixRUTC\n"
+		"SampleVectorC_SumOuterProducts(self, w) -> MatrixRUTC\n"
 		""},
 	 { (char *)"SampleVectorC_TMul", _wrap_SampleVectorC_TMul, METH_VARARGS, (char *)"\n"
-		"TMul(SampleOfVectorC sam2) -> MatrixC\n"
-		"SampleVectorC_TMul(SampleVectorC self, SampleOfVectorC sam2, RavlN::SampleC< RavlN::RealT > const & w) -> MatrixC\n"
+		"TMul(sam2) -> MatrixC\n"
+		"SampleVectorC_TMul(self, sam2, w) -> MatrixC\n"
 		""},
 	 { (char *)"SampleVectorC_Normalise", _wrap_SampleVectorC_Normalise, METH_VARARGS, (char *)"\n"
-		"Normalise(RavlN::DataSetNormaliseT normType) -> FunctionC\n"
-		"SampleVectorC_Normalise(SampleVectorC self, FunctionC func)\n"
+		"Normalise(normType) -> FunctionC\n"
+		"SampleVectorC_Normalise(self, func)\n"
 		""},
-	 { (char *)"delete_SampleVectorC", _wrap_delete_SampleVectorC, METH_VARARGS, (char *)"delete_SampleVectorC(SampleVectorC self)"},
+	 { (char *)"delete_SampleVectorC", _wrap_delete_SampleVectorC, METH_VARARGS, (char *)"delete_SampleVectorC(self)"},
 	 { (char *)"SampleVectorC_swigregister", SampleVectorC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_SampleLabelC", _wrap_new_SampleLabelC, METH_VARARGS, (char *)"\n"
-		"SampleLabelC(RavlN::SizeT maxSize=10)\n"
+		"SampleLabelC(maxSize=10)\n"
 		"SampleLabelC()\n"
-		"SampleLabelC(SArray1dUInt dat)\n"
-		"new_SampleLabelC(SampleOfUInt sample) -> SampleLabelC\n"
+		"SampleLabelC(dat)\n"
+		"new_SampleLabelC(sample) -> SampleLabelC\n"
 		""},
-	 { (char *)"SampleLabelC_MaxValue", _wrap_SampleLabelC_MaxValue, METH_VARARGS, (char *)"SampleLabelC_MaxValue(SampleLabelC self) -> RavlN::UIntT"},
-	 { (char *)"SampleLabelC_LabelSums", _wrap_SampleLabelC_LabelSums, METH_VARARGS, (char *)"SampleLabelC_LabelSums(SampleLabelC self) -> SArray1dUInt"},
+	 { (char *)"SampleLabelC_MaxValue", _wrap_SampleLabelC_MaxValue, METH_VARARGS, (char *)"SampleLabelC_MaxValue(self) -> RavlN::UIntT"},
+	 { (char *)"SampleLabelC_LabelSums", _wrap_SampleLabelC_LabelSums, METH_VARARGS, (char *)"SampleLabelC_LabelSums(self) -> SArray1dUInt"},
 	 { (char *)"SampleLabelC_SampleVector", _wrap_SampleLabelC_SampleVector, METH_VARARGS, (char *)"\n"
-		"SampleVector(RavlN::RealT inClass=1, RavlN::RealT outClass=0, RavlN::IntT maxLabel=-1) -> SampleOfVectorC\n"
-		"SampleVector(RavlN::RealT inClass=1, RavlN::RealT outClass=0) -> SampleOfVectorC\n"
-		"SampleVector(RavlN::RealT inClass=1) -> SampleOfVectorC\n"
-		"SampleLabelC_SampleVector(SampleLabelC self) -> SampleOfVectorC\n"
+		"SampleVector(inClass=1, outClass=0, maxLabel=-1) -> SampleOfVectorC\n"
+		"SampleVector(inClass=1, outClass=0) -> SampleOfVectorC\n"
+		"SampleVector(inClass=1) -> SampleOfVectorC\n"
+		"SampleLabelC_SampleVector(self) -> SampleOfVectorC\n"
 		""},
-	 { (char *)"SampleLabelC_SetClassName", _wrap_SampleLabelC_SetClassName, METH_VARARGS, (char *)"SampleLabelC_SetClassName(SampleLabelC self, RavlN::UIntT label, StringC className) -> bool"},
-	 { (char *)"SampleLabelC_GetClassName", _wrap_SampleLabelC_GetClassName, METH_VARARGS, (char *)"SampleLabelC_GetClassName(SampleLabelC self, RavlN::UIntT label, StringC className) -> bool"},
-	 { (char *)"SampleLabelC_Label2ClassNames", _wrap_SampleLabelC_Label2ClassNames, METH_VARARGS, (char *)"SampleLabelC_Label2ClassNames(SampleLabelC self) -> RavlN::RCHashC< RavlN::UIntT,RavlN::StringC > const &"},
-	 { (char *)"delete_SampleLabelC", _wrap_delete_SampleLabelC, METH_VARARGS, (char *)"delete_SampleLabelC(SampleLabelC self)"},
+	 { (char *)"SampleLabelC_SetClassName", _wrap_SampleLabelC_SetClassName, METH_VARARGS, (char *)"SampleLabelC_SetClassName(self, label, className) -> bool"},
+	 { (char *)"SampleLabelC_GetClassName", _wrap_SampleLabelC_GetClassName, METH_VARARGS, (char *)"SampleLabelC_GetClassName(self, label, className) -> bool"},
+	 { (char *)"SampleLabelC_Label2ClassNames", _wrap_SampleLabelC_Label2ClassNames, METH_VARARGS, (char *)"SampleLabelC_Label2ClassNames(self) -> RavlN::RCHashC< RavlN::UIntT,RavlN::StringC > const &"},
+	 { (char *)"delete_SampleLabelC", _wrap_delete_SampleLabelC, METH_VARARGS, (char *)"delete_SampleLabelC(self)"},
 	 { (char *)"SampleLabelC_swigregister", SampleLabelC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DataSetBaseC", _wrap_new_DataSetBaseC, METH_VARARGS, (char *)"new_DataSetBaseC() -> DataSetBaseC"},
-	 { (char *)"DataSetBaseC_Shuffle", _wrap_DataSetBaseC_Shuffle, METH_VARARGS, (char *)"DataSetBaseC_Shuffle(DataSetBaseC self)"},
-	 { (char *)"delete_DataSetBaseC", _wrap_delete_DataSetBaseC, METH_VARARGS, (char *)"delete_DataSetBaseC(DataSetBaseC self)"},
+	 { (char *)"DataSetBaseC_Shuffle", _wrap_DataSetBaseC_Shuffle, METH_VARARGS, (char *)"DataSetBaseC_Shuffle(self)"},
+	 { (char *)"delete_DataSetBaseC", _wrap_delete_DataSetBaseC, METH_VARARGS, (char *)"delete_DataSetBaseC(self)"},
 	 { (char *)"DataSetBaseC_swigregister", DataSetBaseC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DataSet1SampleVectorC", _wrap_new_DataSet1SampleVectorC, METH_VARARGS, (char *)"\n"
 		"DataSet1SampleVectorC()\n"
-		"DataSet1SampleVectorC(RavlN::UIntT sizeEstimate)\n"
-		"new_DataSet1SampleVectorC(SampleVectorC dat) -> DataSet1SampleVectorC\n"
+		"DataSet1SampleVectorC(sizeEstimate)\n"
+		"new_DataSet1SampleVectorC(dat) -> DataSet1SampleVectorC\n"
 		""},
 	 { (char *)"DataSet1SampleVectorC_Sample1", _wrap_DataSet1SampleVectorC_Sample1, METH_VARARGS, (char *)"\n"
 		"Sample1() -> SampleVectorC\n"
-		"DataSet1SampleVectorC_Sample1(DataSet1SampleVectorC self) -> SampleVectorC\n"
+		"DataSet1SampleVectorC_Sample1(self) -> SampleVectorC\n"
 		""},
 	 { (char *)"DataSet1SampleVectorC_Append", _wrap_DataSet1SampleVectorC_Append, METH_VARARGS, (char *)"\n"
-		"Append(RavlN::DataSet1C< RavlN::SampleVectorC >::Element1T const & data) -> IndexC\n"
-		"DataSet1SampleVectorC_Append(DataSet1SampleVectorC self, DataSet1SampleVectorC data)\n"
+		"Append(data) -> IndexC\n"
+		"DataSet1SampleVectorC_Append(self, data)\n"
 		""},
-	 { (char *)"DataSet1SampleVectorC_ExtractSample", _wrap_DataSet1SampleVectorC_ExtractSample, METH_VARARGS, (char *)"DataSet1SampleVectorC_ExtractSample(DataSet1SampleVectorC self, RavlN::RealT proportion) -> DataSet1SampleVectorC"},
-	 { (char *)"DataSet1SampleVectorC_Size", _wrap_DataSet1SampleVectorC_Size, METH_VARARGS, (char *)"DataSet1SampleVectorC_Size(DataSet1SampleVectorC self) -> RavlN::UIntT"},
-	 { (char *)"delete_DataSet1SampleVectorC", _wrap_delete_DataSet1SampleVectorC, METH_VARARGS, (char *)"delete_DataSet1SampleVectorC(DataSet1SampleVectorC self)"},
+	 { (char *)"DataSet1SampleVectorC_ExtractSample", _wrap_DataSet1SampleVectorC_ExtractSample, METH_VARARGS, (char *)"DataSet1SampleVectorC_ExtractSample(self, proportion) -> DataSet1SampleVectorC"},
+	 { (char *)"DataSet1SampleVectorC_Size", _wrap_DataSet1SampleVectorC_Size, METH_VARARGS, (char *)"DataSet1SampleVectorC_Size(self) -> RavlN::UIntT"},
+	 { (char *)"delete_DataSet1SampleVectorC", _wrap_delete_DataSet1SampleVectorC, METH_VARARGS, (char *)"delete_DataSet1SampleVectorC(self)"},
 	 { (char *)"DataSet1SampleVectorC_swigregister", DataSet1SampleVectorC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DataSet2SampleVectorSampleLabelC", _wrap_new_DataSet2SampleVectorSampleLabelC, METH_VARARGS, (char *)"\n"
 		"DataSet2SampleVectorSampleLabelC()\n"
-		"DataSet2SampleVectorSampleLabelC(RavlN::UIntT sizeEstimate)\n"
-		"new_DataSet2SampleVectorSampleLabelC(SampleVectorC dat1, SampleLabelC dat2) -> DataSet2SampleVectorSampleLabelC\n"
+		"DataSet2SampleVectorSampleLabelC(sizeEstimate)\n"
+		"new_DataSet2SampleVectorSampleLabelC(dat1, dat2) -> DataSet2SampleVectorSampleLabelC\n"
 		""},
 	 { (char *)"DataSet2SampleVectorSampleLabelC_Sample2", _wrap_DataSet2SampleVectorSampleLabelC_Sample2, METH_VARARGS, (char *)"\n"
 		"Sample2() -> SampleLabelC\n"
-		"DataSet2SampleVectorSampleLabelC_Sample2(DataSet2SampleVectorSampleLabelC self) -> SampleLabelC\n"
+		"DataSet2SampleVectorSampleLabelC_Sample2(self) -> SampleLabelC\n"
 		""},
 	 { (char *)"DataSet2SampleVectorSampleLabelC_Append", _wrap_DataSet2SampleVectorSampleLabelC_Append, METH_VARARGS, (char *)"\n"
-		"Append(RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element1T const & data1, \n"
-		"    RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element2T const & data2) -> IndexC\n"
-		"Append(DataSet2SampleVectorSampleLabelC data)\n"
-		"DataSet2SampleVectorSampleLabelC_Append(DataSet2SampleVectorSampleLabelC self, RavlN::SampleC< RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element1T > const & sample1, \n"
-		"    RavlN::DataSet2C< RavlN::SampleVectorC,RavlN::SampleLabelC >::Element2T const & element2)\n"
+		"Append(data1, data2) -> IndexC\n"
+		"Append(data)\n"
+		"DataSet2SampleVectorSampleLabelC_Append(self, sample1, element2)\n"
 		""},
-	 { (char *)"DataSet2SampleVectorSampleLabelC_ExtractSample", _wrap_DataSet2SampleVectorSampleLabelC_ExtractSample, METH_VARARGS, (char *)"DataSet2SampleVectorSampleLabelC_ExtractSample(DataSet2SampleVectorSampleLabelC self, RavlN::RealT proportion) -> DataSet2SampleVectorSampleLabelC"},
-	 { (char *)"delete_DataSet2SampleVectorSampleLabelC", _wrap_delete_DataSet2SampleVectorSampleLabelC, METH_VARARGS, (char *)"delete_DataSet2SampleVectorSampleLabelC(DataSet2SampleVectorSampleLabelC self)"},
+	 { (char *)"DataSet2SampleVectorSampleLabelC_ExtractSample", _wrap_DataSet2SampleVectorSampleLabelC_ExtractSample, METH_VARARGS, (char *)"DataSet2SampleVectorSampleLabelC_ExtractSample(self, proportion) -> DataSet2SampleVectorSampleLabelC"},
+	 { (char *)"delete_DataSet2SampleVectorSampleLabelC", _wrap_delete_DataSet2SampleVectorSampleLabelC, METH_VARARGS, (char *)"delete_DataSet2SampleVectorSampleLabelC(self)"},
 	 { (char *)"DataSet2SampleVectorSampleLabelC_swigregister", DataSet2SampleVectorSampleLabelC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DataSetVectorLabelC", _wrap_new_DataSetVectorLabelC, METH_VARARGS, (char *)"\n"
 		"DataSetVectorLabelC()\n"
-		"DataSetVectorLabelC(DataSet2SampleVectorSampleLabelC dataSet)\n"
-		"DataSetVectorLabelC(RavlN::UIntT sizeEstimate)\n"
-		"DataSetVectorLabelC(SampleVectorC vec, SampleLabelC lab)\n"
-		"new_DataSetVectorLabelC(RavlN::SArray1dC< RavlN::MeanCovarianceC > const & stats) -> DataSetVectorLabelC\n"
+		"DataSetVectorLabelC(dataSet)\n"
+		"DataSetVectorLabelC(sizeEstimate)\n"
+		"DataSetVectorLabelC(vec, lab)\n"
+		"new_DataSetVectorLabelC(stats) -> DataSetVectorLabelC\n"
 		""},
-	 { (char *)"DataSetVectorLabelC_SeperateLabels", _wrap_DataSetVectorLabelC_SeperateLabels, METH_VARARGS, (char *)"DataSetVectorLabelC_SeperateLabels(DataSetVectorLabelC self) -> RavlN::SArray1dC< RavlN::SampleVectorC >"},
-	 { (char *)"DataSetVectorLabelC_GlobalMean", _wrap_DataSetVectorLabelC_GlobalMean, METH_VARARGS, (char *)"DataSetVectorLabelC_GlobalMean(DataSetVectorLabelC self) -> VectorC"},
-	 { (char *)"DataSetVectorLabelC_ClassMeans", _wrap_DataSetVectorLabelC_ClassMeans, METH_VARARGS, (char *)"DataSetVectorLabelC_ClassMeans(DataSetVectorLabelC self) -> SArray1dVectorC"},
-	 { (char *)"DataSetVectorLabelC_ClassMeansLabels", _wrap_DataSetVectorLabelC_ClassMeansLabels, METH_VARARGS, (char *)"DataSetVectorLabelC_ClassMeansLabels(DataSetVectorLabelC self) -> DataSetVectorLabelC"},
-	 { (char *)"DataSetVectorLabelC_ClassNums", _wrap_DataSetVectorLabelC_ClassNums, METH_VARARGS, (char *)"DataSetVectorLabelC_ClassNums(DataSetVectorLabelC self) -> SArray1dUInt"},
+	 { (char *)"DataSetVectorLabelC_SeperateLabels", _wrap_DataSetVectorLabelC_SeperateLabels, METH_VARARGS, (char *)"DataSetVectorLabelC_SeperateLabels(self) -> RavlN::SArray1dC< RavlN::SampleVectorC >"},
+	 { (char *)"DataSetVectorLabelC_GlobalMean", _wrap_DataSetVectorLabelC_GlobalMean, METH_VARARGS, (char *)"DataSetVectorLabelC_GlobalMean(self) -> VectorC"},
+	 { (char *)"DataSetVectorLabelC_ClassMeans", _wrap_DataSetVectorLabelC_ClassMeans, METH_VARARGS, (char *)"DataSetVectorLabelC_ClassMeans(self) -> SArray1dVectorC"},
+	 { (char *)"DataSetVectorLabelC_ClassMeansLabels", _wrap_DataSetVectorLabelC_ClassMeansLabels, METH_VARARGS, (char *)"DataSetVectorLabelC_ClassMeansLabels(self) -> DataSetVectorLabelC"},
+	 { (char *)"DataSetVectorLabelC_ClassNums", _wrap_DataSetVectorLabelC_ClassNums, METH_VARARGS, (char *)"DataSetVectorLabelC_ClassNums(self) -> SArray1dUInt"},
 	 { (char *)"DataSetVectorLabelC_ClassStats", _wrap_DataSetVectorLabelC_ClassStats, METH_VARARGS, (char *)"\n"
-		"ClassStats(bool sampleStatistics=True) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >\n"
-		"DataSetVectorLabelC_ClassStats(DataSetVectorLabelC self) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >\n"
+		"ClassStats(sampleStatistics=True) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >\n"
+		"DataSetVectorLabelC_ClassStats(self) -> RavlN::SArray1dC< RavlN::MeanCovarianceC >\n"
 		""},
-	 { (char *)"DataSetVectorLabelC_BetweenClassScatter", _wrap_DataSetVectorLabelC_BetweenClassScatter, METH_VARARGS, (char *)"DataSetVectorLabelC_BetweenClassScatter(DataSetVectorLabelC self) -> MatrixC"},
+	 { (char *)"DataSetVectorLabelC_BetweenClassScatter", _wrap_DataSetVectorLabelC_BetweenClassScatter, METH_VARARGS, (char *)"DataSetVectorLabelC_BetweenClassScatter(self) -> MatrixC"},
 	 { (char *)"DataSetVectorLabelC_WithinClassScatter", _wrap_DataSetVectorLabelC_WithinClassScatter, METH_VARARGS, (char *)"\n"
-		"WithinClassScatter(bool sampleStatistics=False) -> MatrixC\n"
-		"DataSetVectorLabelC_WithinClassScatter(DataSetVectorLabelC self) -> MatrixC\n"
+		"WithinClassScatter(sampleStatistics=False) -> MatrixC\n"
+		"DataSetVectorLabelC_WithinClassScatter(self) -> MatrixC\n"
 		""},
-	 { (char *)"DataSetVectorLabelC_ExtractPerLabel", _wrap_DataSetVectorLabelC_ExtractPerLabel, METH_VARARGS, (char *)"DataSetVectorLabelC_ExtractPerLabel(DataSetVectorLabelC self, RavlN::UIntT numSamples) -> DataSetVectorLabelC"},
-	 { (char *)"DataSetVectorLabelC_ExtractSample", _wrap_DataSetVectorLabelC_ExtractSample, METH_VARARGS, (char *)"DataSetVectorLabelC_ExtractSample(DataSetVectorLabelC self, RavlN::RealT proportion) -> DataSetVectorLabelC"},
-	 { (char *)"DataSetVectorLabelC___str__", _wrap_DataSetVectorLabelC___str__, METH_VARARGS, (char *)"DataSetVectorLabelC___str__(DataSetVectorLabelC self) -> char const *"},
-	 { (char *)"delete_DataSetVectorLabelC", _wrap_delete_DataSetVectorLabelC, METH_VARARGS, (char *)"delete_DataSetVectorLabelC(DataSetVectorLabelC self)"},
+	 { (char *)"DataSetVectorLabelC_ExtractPerLabel", _wrap_DataSetVectorLabelC_ExtractPerLabel, METH_VARARGS, (char *)"DataSetVectorLabelC_ExtractPerLabel(self, numSamples) -> DataSetVectorLabelC"},
+	 { (char *)"DataSetVectorLabelC_ExtractSample", _wrap_DataSetVectorLabelC_ExtractSample, METH_VARARGS, (char *)"DataSetVectorLabelC_ExtractSample(self, proportion) -> DataSetVectorLabelC"},
+	 { (char *)"DataSetVectorLabelC_Sample1", _wrap_DataSetVectorLabelC_Sample1, METH_VARARGS, (char *)"\n"
+		"Sample1() -> SampleVectorC\n"
+		"DataSetVectorLabelC_Sample1(self) -> SampleVectorC\n"
+		""},
+	 { (char *)"DataSetVectorLabelC_Sample2", _wrap_DataSetVectorLabelC_Sample2, METH_VARARGS, (char *)"\n"
+		"Sample2() -> SampleLabelC\n"
+		"DataSetVectorLabelC_Sample2(self) -> SampleLabelC\n"
+		""},
+	 { (char *)"DataSetVectorLabelC___str__", _wrap_DataSetVectorLabelC___str__, METH_VARARGS, (char *)"DataSetVectorLabelC___str__(self) -> char const *"},
+	 { (char *)"delete_DataSetVectorLabelC", _wrap_delete_DataSetVectorLabelC, METH_VARARGS, (char *)"delete_DataSetVectorLabelC(self)"},
 	 { (char *)"DataSetVectorLabelC_swigregister", DataSetVectorLabelC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"CreateDataSet", _wrap_CreateDataSet, METH_VARARGS, (char *)"\n"
-		"CreateDataSet(RavlN::UIntT dimension=2, RavlN::UIntT classes=2, RavlN::UIntT samplesPerClass=1000, \n"
-		"    RavlN::RealT dist=3.0) -> DataSetVectorLabelC\n"
-		"CreateDataSet(RavlN::UIntT dimension=2, RavlN::UIntT classes=2, RavlN::UIntT samplesPerClass=1000) -> DataSetVectorLabelC\n"
-		"CreateDataSet(RavlN::UIntT dimension=2, RavlN::UIntT classes=2) -> DataSetVectorLabelC\n"
-		"CreateDataSet(RavlN::UIntT dimension=2) -> DataSetVectorLabelC\n"
+		"CreateDataSet(dimension=2, classes=2, samplesPerClass=1000, dist=3.0) -> DataSetVectorLabelC\n"
+		"CreateDataSet(dimension=2, classes=2, samplesPerClass=1000) -> DataSetVectorLabelC\n"
+		"CreateDataSet(dimension=2, classes=2) -> DataSetVectorLabelC\n"
+		"CreateDataSet(dimension=2) -> DataSetVectorLabelC\n"
 		"CreateDataSet() -> DataSetVectorLabelC\n"
 		""},
-	 { (char *)"SaveDataSetVectorLabel", _wrap_SaveDataSetVectorLabel, METH_VARARGS, (char *)"SaveDataSetVectorLabel(StringC filename, DataSetVectorLabelC dataset) -> bool"},
+	 { (char *)"SaveDataSetVectorLabel", _wrap_SaveDataSetVectorLabel, METH_VARARGS, (char *)"SaveDataSetVectorLabel(filename, dataset) -> bool"},
 	 { (char *)"LoadDataSetVectorLabel", _wrap_LoadDataSetVectorLabel, METH_VARARGS, (char *)"\n"
-		"LoadDataSetVectorLabel(StringC filename, DataSetVectorLabelC dataset) -> bool\n"
-		"LoadDataSetVectorLabel(StringC dataSetFile, bool shuffle, bool equaliseSamples, RavlN::UIntT samplesPerClass, \n"
-		"    SArray1dIndexC features, FunctionC normaliseFunc, DataSetVectorLabelC dataSet) -> bool\n"
-		"LoadDataSetVectorLabel(StringC dataSetFile, bool shuffle, bool equaliseSamples, RavlN::UIntT samplesPerClass, \n"
-		"    SArray1dIndexC features, RavlN::DataSetNormaliseT normType, FunctionC normaliseFunc, \n"
-		"    DataSetVectorLabelC dataSet) -> bool\n"
+		"LoadDataSetVectorLabel(filename, dataset) -> bool\n"
+		"LoadDataSetVectorLabel(dataSetFile, shuffle, equaliseSamples, samplesPerClass, features, normaliseFunc, \n"
+		"    dataSet) -> bool\n"
+		"LoadDataSetVectorLabel(dataSetFile, shuffle, equaliseSamples, samplesPerClass, features, normType, normaliseFunc, \n"
+		"    dataSet) -> bool\n"
 		""},
-	 { (char *)"SaveDataSetVectorLabelCSV", _wrap_SaveDataSetVectorLabelCSV, METH_VARARGS, (char *)"SaveDataSetVectorLabelCSV(StringC filename, DataSetVectorLabelC dataset) -> bool"},
-	 { (char *)"LoadDataSetVectorLabelCSV", _wrap_LoadDataSetVectorLabelCSV, METH_VARARGS, (char *)"LoadDataSetVectorLabelCSV(StringC filename, DataSetVectorLabelC dataset) -> bool"},
-	 { (char *)"ClassifierDiscriminantFunctionC_Discriminant", _wrap_ClassifierDiscriminantFunctionC_Discriminant, METH_VARARGS, (char *)"ClassifierDiscriminantFunctionC_Discriminant(ClassifierDiscriminantFunctionC self) -> FunctionC"},
+	 { (char *)"SaveDataSetVectorLabelCSV", _wrap_SaveDataSetVectorLabelCSV, METH_VARARGS, (char *)"SaveDataSetVectorLabelCSV(filename, dataset) -> bool"},
+	 { (char *)"LoadDataSetVectorLabelCSV", _wrap_LoadDataSetVectorLabelCSV, METH_VARARGS, (char *)"LoadDataSetVectorLabelCSV(filename, dataset) -> bool"},
+	 { (char *)"ClassifierDiscriminantFunctionC_Discriminant", _wrap_ClassifierDiscriminantFunctionC_Discriminant, METH_VARARGS, (char *)"ClassifierDiscriminantFunctionC_Discriminant(self) -> FunctionC"},
 	 { (char *)"new_ClassifierDiscriminantFunctionC", _wrap_new_ClassifierDiscriminantFunctionC, METH_VARARGS, (char *)"new_ClassifierDiscriminantFunctionC() -> ClassifierDiscriminantFunctionC"},
-	 { (char *)"delete_ClassifierDiscriminantFunctionC", _wrap_delete_ClassifierDiscriminantFunctionC, METH_VARARGS, (char *)"delete_ClassifierDiscriminantFunctionC(ClassifierDiscriminantFunctionC self)"},
+	 { (char *)"delete_ClassifierDiscriminantFunctionC", _wrap_delete_ClassifierDiscriminantFunctionC, METH_VARARGS, (char *)"delete_ClassifierDiscriminantFunctionC(self)"},
 	 { (char *)"ClassifierDiscriminantFunctionC_swigregister", ClassifierDiscriminantFunctionC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DesignFunctionSupervisedC", _wrap_new_DesignFunctionSupervisedC, METH_VARARGS, (char *)"\n"
 		"DesignFunctionSupervisedC()\n"
-		"new_DesignFunctionSupervisedC(DesignFunctionSupervisedC other) -> DesignFunctionSupervisedC\n"
+		"new_DesignFunctionSupervisedC(other) -> DesignFunctionSupervisedC\n"
 		""},
 	 { (char *)"DesignFunctionSupervisedC_Apply", _wrap_DesignFunctionSupervisedC_Apply, METH_VARARGS, (char *)"\n"
-		"Apply(SampleOfVectorC data, SampleOfVectorC out) -> FunctionC\n"
-		"Apply(SampleOfVectorC data, SampleOfVectorC out, RavlN::SampleC< RavlN::RealT > const & weight) -> FunctionC\n"
-		"Apply(RavlN::SampleC< RavlN::TVectorC< float > > const & data, RavlN::SampleC< RavlN::TVectorC< float > > const & out) -> FunctionC\n"
-		"DesignFunctionSupervisedC_Apply(DesignFunctionSupervisedC self, RavlN::SampleC< RavlN::TVectorC< float > > const & data, \n"
-		"    RavlN::SampleC< RavlN::TVectorC< float > > const & out, RavlN::SampleC< float > const & weight) -> FunctionC\n"
+		"Apply(data, out) -> FunctionC\n"
+		"Apply(data, out, weight) -> FunctionC\n"
+		"Apply(data, out) -> FunctionC\n"
+		"DesignFunctionSupervisedC_Apply(self, data, out, weight) -> FunctionC\n"
 		""},
-	 { (char *)"delete_DesignFunctionSupervisedC", _wrap_delete_DesignFunctionSupervisedC, METH_VARARGS, (char *)"delete_DesignFunctionSupervisedC(DesignFunctionSupervisedC self)"},
+	 { (char *)"delete_DesignFunctionSupervisedC", _wrap_delete_DesignFunctionSupervisedC, METH_VARARGS, (char *)"delete_DesignFunctionSupervisedC(self)"},
 	 { (char *)"DesignFunctionSupervisedC_swigregister", DesignFunctionSupervisedC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_DesignFuncLSQC", _wrap_new_DesignFuncLSQC, METH_VARARGS, (char *)"new_DesignFuncLSQC(RavlN::UIntT order, bool orthogonal) -> DesignFuncLSQC"},
-	 { (char *)"delete_DesignFuncLSQC", _wrap_delete_DesignFuncLSQC, METH_VARARGS, (char *)"delete_DesignFuncLSQC(DesignFuncLSQC self)"},
+	 { (char *)"new_DesignFunctionUnsupervisedC", _wrap_new_DesignFunctionUnsupervisedC, METH_VARARGS, (char *)"new_DesignFunctionUnsupervisedC() -> DesignFunctionUnsupervisedC"},
+	 { (char *)"DesignFunctionUnsupervisedC_Apply", _wrap_DesignFunctionUnsupervisedC_Apply, METH_VARARGS, (char *)"\n"
+		"Apply(data) -> FunctionC\n"
+		"Apply(data, weight) -> FunctionC\n"
+		"Apply(data) -> FunctionC\n"
+		"DesignFunctionUnsupervisedC_Apply(self, data, weight) -> FunctionC\n"
+		""},
+	 { (char *)"delete_DesignFunctionUnsupervisedC", _wrap_delete_DesignFunctionUnsupervisedC, METH_VARARGS, (char *)"delete_DesignFunctionUnsupervisedC(self)"},
+	 { (char *)"DesignFunctionUnsupervisedC_swigregister", DesignFunctionUnsupervisedC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignFuncReduceC", _wrap_new_DesignFuncReduceC, METH_VARARGS, (char *)"new_DesignFuncReduceC() -> DesignFuncReduceC"},
+	 { (char *)"DesignFuncReduceC_VariationPreserved", _wrap_DesignFuncReduceC_VariationPreserved, METH_VARARGS, (char *)"DesignFuncReduceC_VariationPreserved(self) -> RavlN::RealT"},
+	 { (char *)"delete_DesignFuncReduceC", _wrap_delete_DesignFuncReduceC, METH_VARARGS, (char *)"delete_DesignFuncReduceC(self)"},
+	 { (char *)"DesignFuncReduceC_swigregister", DesignFuncReduceC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignFuncLSQC", _wrap_new_DesignFuncLSQC, METH_VARARGS, (char *)"new_DesignFuncLSQC(order, orthogonal) -> DesignFuncLSQC"},
+	 { (char *)"delete_DesignFuncLSQC", _wrap_delete_DesignFuncLSQC, METH_VARARGS, (char *)"delete_DesignFuncLSQC(self)"},
 	 { (char *)"DesignFuncLSQC_swigregister", DesignFuncLSQC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"DesignClassifierSupervisedC_Apply", _wrap_DesignClassifierSupervisedC_Apply, METH_VARARGS, (char *)"\n"
-		"Apply(SampleOfVectorC data, SampleOfUInt out) -> ClassifierC\n"
-		"Apply(SampleOfVectorC data, SampleOfUInt out, RavlN::SampleC< RavlN::RealT > const & weight) -> ClassifierC\n"
-		"Apply(SampleOfVectorC data, SampleOfUInt out, SArray1dIndexC featureSet) -> ClassifierC\n"
-		"Apply(SampleOfVectorC data, SampleOfUInt out, SArray1dIndexC featureSet, RavlN::SampleC< RavlN::RealT > const & weight) -> ClassifierC\n"
-		"DesignClassifierSupervisedC_Apply(DesignClassifierSupervisedC self, DataSetVectorLabelC dset) -> ClassifierC\n"
+		"Apply(data, out) -> ClassifierC\n"
+		"Apply(data, out, weight) -> ClassifierC\n"
+		"Apply(data, out, featureSet) -> ClassifierC\n"
+		"Apply(data, out, featureSet, weight) -> ClassifierC\n"
+		"DesignClassifierSupervisedC_Apply(self, dset) -> ClassifierC\n"
 		""},
 	 { (char *)"new_DesignClassifierSupervisedC", _wrap_new_DesignClassifierSupervisedC, METH_VARARGS, (char *)"new_DesignClassifierSupervisedC() -> DesignClassifierSupervisedC"},
-	 { (char *)"delete_DesignClassifierSupervisedC", _wrap_delete_DesignClassifierSupervisedC, METH_VARARGS, (char *)"delete_DesignClassifierSupervisedC(DesignClassifierSupervisedC self)"},
+	 { (char *)"delete_DesignClassifierSupervisedC", _wrap_delete_DesignClassifierSupervisedC, METH_VARARGS, (char *)"delete_DesignClassifierSupervisedC(self)"},
 	 { (char *)"DesignClassifierSupervisedC_swigregister", DesignClassifierSupervisedC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_DesignDiscriminantFunctionC", _wrap_new_DesignDiscriminantFunctionC, METH_VARARGS, (char *)"new_DesignDiscriminantFunctionC(DesignFunctionSupervisedC designFunc) -> DesignDiscriminantFunctionC"},
-	 { (char *)"delete_DesignDiscriminantFunctionC", _wrap_delete_DesignDiscriminantFunctionC, METH_VARARGS, (char *)"delete_DesignDiscriminantFunctionC(DesignDiscriminantFunctionC self)"},
+	 { (char *)"new_DesignDiscriminantFunctionC", _wrap_new_DesignDiscriminantFunctionC, METH_VARARGS, (char *)"new_DesignDiscriminantFunctionC(designFunc) -> DesignDiscriminantFunctionC"},
+	 { (char *)"delete_DesignDiscriminantFunctionC", _wrap_delete_DesignDiscriminantFunctionC, METH_VARARGS, (char *)"delete_DesignDiscriminantFunctionC(self)"},
 	 { (char *)"DesignDiscriminantFunctionC_swigregister", DesignDiscriminantFunctionC_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_DesignKNearestNeighbourC", _wrap_new_DesignKNearestNeighbourC, METH_VARARGS, (char *)"new_DesignKNearestNeighbourC(RavlN::UIntT k) -> DesignKNearestNeighbourC"},
-	 { (char *)"delete_DesignKNearestNeighbourC", _wrap_delete_DesignKNearestNeighbourC, METH_VARARGS, (char *)"delete_DesignKNearestNeighbourC(DesignKNearestNeighbourC self)"},
+	 { (char *)"new_DesignKNearestNeighbourC", _wrap_new_DesignKNearestNeighbourC, METH_VARARGS, (char *)"new_DesignKNearestNeighbourC(k) -> DesignKNearestNeighbourC"},
+	 { (char *)"delete_DesignKNearestNeighbourC", _wrap_delete_DesignKNearestNeighbourC, METH_VARARGS, (char *)"delete_DesignKNearestNeighbourC(self)"},
 	 { (char *)"DesignKNearestNeighbourC_swigregister", DesignKNearestNeighbourC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_DesignClassifierNeuralNetwork2C", _wrap_new_DesignClassifierNeuralNetwork2C, METH_VARARGS, (char *)"\n"
-		"DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, \n"
-		"    RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000, \n"
-		"    RavlN::UIntT displayEpochs=0, bool useSigmoid=True, RavlN::UIntT threads=1)\n"
-		"DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, \n"
-		"    RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000, \n"
-		"    RavlN::UIntT displayEpochs=0, bool useSigmoid=True)\n"
-		"DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, \n"
-		"    RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000, \n"
-		"    RavlN::UIntT displayEpochs=0)\n"
-		"DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, \n"
-		"    RavlN::RealT desiredError=0.00001, RavlN::UIntT maxEpochs=5000)\n"
-		"DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0, \n"
-		"    RavlN::RealT desiredError=0.00001)\n"
-		"DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation, RavlN::RealT regularisation=0)\n"
-		"new_DesignClassifierNeuralNetwork2C(RavlN::UIntT nLayers, RavlN::UIntT nHidden, bool doNormalisation) -> DesignClassifierNeuralNetwork2C\n"
+		"DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000, \n"
+		"    displayEpochs=0, useSigmoid=True, threads=1)\n"
+		"DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000, \n"
+		"    displayEpochs=0, useSigmoid=True)\n"
+		"DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000, \n"
+		"    displayEpochs=0)\n"
+		"DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001, maxEpochs=5000)\n"
+		"DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation, regularisation=0, desiredError=0.00001)\n"
+		"DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation, regularisation=0)\n"
+		"new_DesignClassifierNeuralNetwork2C(nLayers, nHidden, doNormalisation) -> DesignClassifierNeuralNetwork2C\n"
 		""},
-	 { (char *)"delete_DesignClassifierNeuralNetwork2C", _wrap_delete_DesignClassifierNeuralNetwork2C, METH_VARARGS, (char *)"delete_DesignClassifierNeuralNetwork2C(DesignClassifierNeuralNetwork2C self)"},
+	 { (char *)"delete_DesignClassifierNeuralNetwork2C", _wrap_delete_DesignClassifierNeuralNetwork2C, METH_VARARGS, (char *)"delete_DesignClassifierNeuralNetwork2C(self)"},
 	 { (char *)"DesignClassifierNeuralNetwork2C_swigregister", DesignClassifierNeuralNetwork2C_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_DesignClassifierLogisticRegressionC", _wrap_new_DesignClassifierLogisticRegressionC, METH_VARARGS, (char *)"new_DesignClassifierLogisticRegressionC(RavlN::RealT regularisation) -> DesignClassifierLogisticRegressionC"},
-	 { (char *)"delete_DesignClassifierLogisticRegressionC", _wrap_delete_DesignClassifierLogisticRegressionC, METH_VARARGS, (char *)"delete_DesignClassifierLogisticRegressionC(DesignClassifierLogisticRegressionC self)"},
+	 { (char *)"new_DesignClassifierLogisticRegressionC", _wrap_new_DesignClassifierLogisticRegressionC, METH_VARARGS, (char *)"new_DesignClassifierLogisticRegressionC(regularisation) -> DesignClassifierLogisticRegressionC"},
+	 { (char *)"delete_DesignClassifierLogisticRegressionC", _wrap_delete_DesignClassifierLogisticRegressionC, METH_VARARGS, (char *)"delete_DesignClassifierLogisticRegressionC(self)"},
 	 { (char *)"DesignClassifierLogisticRegressionC_swigregister", DesignClassifierLogisticRegressionC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignFuncPCAC", _wrap_new_DesignFuncPCAC, METH_VARARGS, (char *)"\n"
+		"DesignFuncPCAC()\n"
+		"new_DesignFuncPCAC(variationPreserved) -> DesignFuncPCAC\n"
+		""},
+	 { (char *)"DesignFuncPCAC_Pca", _wrap_DesignFuncPCAC_Pca, METH_VARARGS, (char *)"\n"
+		"Pca() -> VectorMatrixC\n"
+		"DesignFuncPCAC_Pca(self) -> VectorMatrixC\n"
+		""},
+	 { (char *)"DesignFuncPCAC_Mean", _wrap_DesignFuncPCAC_Mean, METH_VARARGS, (char *)"\n"
+		"Mean() -> VectorC\n"
+		"DesignFuncPCAC_Mean(self) -> VectorC\n"
+		""},
+	 { (char *)"delete_DesignFuncPCAC", _wrap_delete_DesignFuncPCAC, METH_VARARGS, (char *)"delete_DesignFuncPCAC(self)"},
+	 { (char *)"DesignFuncPCAC_swigregister", DesignFuncPCAC_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_DesignFuncLDAC", _wrap_new_DesignFuncLDAC, METH_VARARGS, (char *)"\n"
+		"DesignFuncLDAC()\n"
+		"new_DesignFuncLDAC(variationPreserved) -> DesignFuncLDAC\n"
+		""},
+	 { (char *)"DesignFuncLDAC_Lda", _wrap_DesignFuncLDAC_Lda, METH_VARARGS, (char *)"\n"
+		"Lda() -> MatrixC\n"
+		"DesignFuncLDAC_Lda(self) -> MatrixC\n"
+		""},
+	 { (char *)"DesignFuncLDAC_Mean", _wrap_DesignFuncLDAC_Mean, METH_VARARGS, (char *)"\n"
+		"Mean() -> VectorC\n"
+		"DesignFuncLDAC_Mean(self) -> VectorC\n"
+		""},
+	 { (char *)"DesignFuncLDAC_SamplesPerClass", _wrap_DesignFuncLDAC_SamplesPerClass, METH_VARARGS, (char *)"\n"
+		"SamplesPerClass() -> RavlN::UIntT\n"
+		"DesignFuncLDAC_SamplesPerClass(self) -> RavlN::UIntT const &\n"
+		""},
+	 { (char *)"DesignFuncLDAC_Apply", _wrap_DesignFuncLDAC_Apply, METH_VARARGS, (char *)"DesignFuncLDAC_Apply(self, _in) -> FunctionC"},
+	 { (char *)"delete_DesignFuncLDAC", _wrap_delete_DesignFuncLDAC, METH_VARARGS, (char *)"delete_DesignFuncLDAC(self)"},
+	 { (char *)"DesignFuncLDAC_swigregister", DesignFuncLDAC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ErrorC", _wrap_new_ErrorC, METH_VARARGS, (char *)"new_ErrorC() -> ErrorC"},
-	 { (char *)"ErrorC_Error", _wrap_ErrorC_Error, METH_VARARGS, (char *)"ErrorC_Error(ErrorC self, ClassifierC classifier, DataSetVectorLabelC dset) -> RavlN::RealT"},
-	 { (char *)"delete_ErrorC", _wrap_delete_ErrorC, METH_VARARGS, (char *)"delete_ErrorC(ErrorC self)"},
+	 { (char *)"ErrorC_Error", _wrap_ErrorC_Error, METH_VARARGS, (char *)"ErrorC_Error(self, classifier, dset) -> RavlN::RealT"},
+	 { (char *)"delete_ErrorC", _wrap_delete_ErrorC, METH_VARARGS, (char *)"delete_ErrorC(self)"},
 	 { (char *)"ErrorC_swigregister", ErrorC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ErrorBinaryClassifierC", _wrap_new_ErrorBinaryClassifierC, METH_VARARGS, (char *)"new_ErrorBinaryClassifierC() -> ErrorBinaryClassifierC"},
-	 { (char *)"ErrorBinaryClassifierC_FalseRejectRate", _wrap_ErrorBinaryClassifierC_FalseRejectRate, METH_VARARGS, (char *)"ErrorBinaryClassifierC_FalseRejectRate(ErrorBinaryClassifierC self, ClassifierC classifier, DataSetVectorLabelC dset, double falseAcceptRate) -> RavlN::RealT"},
-	 { (char *)"ErrorBinaryClassifierC_FalseAcceptRate", _wrap_ErrorBinaryClassifierC_FalseAcceptRate, METH_VARARGS, (char *)"ErrorBinaryClassifierC_FalseAcceptRate(ErrorBinaryClassifierC self, ClassifierC classifier, DataSetVectorLabelC dset, double falseRejectRate) -> RavlN::RealT"},
-	 { (char *)"delete_ErrorBinaryClassifierC", _wrap_delete_ErrorBinaryClassifierC, METH_VARARGS, (char *)"delete_ErrorBinaryClassifierC(ErrorBinaryClassifierC self)"},
+	 { (char *)"ErrorBinaryClassifierC_FalseRejectRate", _wrap_ErrorBinaryClassifierC_FalseRejectRate, METH_VARARGS, (char *)"ErrorBinaryClassifierC_FalseRejectRate(self, classifier, dset, falseAcceptRate) -> RavlN::RealT"},
+	 { (char *)"ErrorBinaryClassifierC_FalseAcceptRate", _wrap_ErrorBinaryClassifierC_FalseAcceptRate, METH_VARARGS, (char *)"ErrorBinaryClassifierC_FalseAcceptRate(self, classifier, dset, falseRejectRate) -> RavlN::RealT"},
+	 { (char *)"delete_ErrorBinaryClassifierC", _wrap_delete_ErrorBinaryClassifierC, METH_VARARGS, (char *)"delete_ErrorBinaryClassifierC(self)"},
 	 { (char *)"ErrorBinaryClassifierC_swigregister", ErrorBinaryClassifierC_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_GnuPlot2dC", _wrap_new_GnuPlot2dC, METH_VARARGS, (char *)"\n"
-		"GnuPlot2dC(StringC title=\"My Plot\")\n"
+		"GnuPlot2dC(title=\"My Plot\")\n"
 		"new_GnuPlot2dC() -> GnuPlot2dC\n"
 		""},
 	 { (char *)"GnuPlot2dC_Plot", _wrap_GnuPlot2dC_Plot, METH_VARARGS, (char *)"\n"
-		"Plot(SArray1dPoint2dC points, StringC dataName=\"\") -> bool\n"
-		"Plot(SArray1dPoint2dC points) -> bool\n"
-		"Plot(RCHashStringPointsC data) -> bool\n"
-		"Plot(StringC function) -> bool\n"
-		"Plot(DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1, RavlN::UIntT samplesPerClass=0) -> bool\n"
-		"Plot(DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0, RavlN::UIntT fv2=1) -> bool\n"
-		"Plot(DataSetVectorLabelC dataSet, RavlN::UIntT fv1=0) -> bool\n"
-		"Plot(DataSetVectorLabelC dataSet) -> bool\n"
-		"Plot(ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0, RavlN::UIntT feature2=1) -> bool\n"
-		"Plot(ClassifierC classifier, DataSetVectorLabelC dataSet, RavlN::UIntT feature1=0) -> bool\n"
-		"GnuPlot2dC_Plot(GnuPlot2dC self, ClassifierC classifier, DataSetVectorLabelC dataSet) -> bool\n"
+		"Plot(points, dataName=\"\") -> bool\n"
+		"Plot(points) -> bool\n"
+		"Plot(data) -> bool\n"
+		"Plot(function) -> bool\n"
+		"Plot(dataSet, fv1=0, fv2=1, samplesPerClass=0) -> bool\n"
+		"Plot(dataSet, fv1=0, fv2=1) -> bool\n"
+		"Plot(dataSet, fv1=0) -> bool\n"
+		"Plot(dataSet) -> bool\n"
+		"Plot(classifier, dataSet, feature1=0, feature2=1) -> bool\n"
+		"Plot(classifier, dataSet, feature1=0) -> bool\n"
+		"GnuPlot2dC_Plot(self, classifier, dataSet) -> bool\n"
 		""},
-	 { (char *)"GnuPlot2dC_SetXLabel", _wrap_GnuPlot2dC_SetXLabel, METH_VARARGS, (char *)"GnuPlot2dC_SetXLabel(GnuPlot2dC self, StringC xlabel) -> bool"},
-	 { (char *)"GnuPlot2dC_SetYLabel", _wrap_GnuPlot2dC_SetYLabel, METH_VARARGS, (char *)"GnuPlot2dC_SetYLabel(GnuPlot2dC self, StringC ylabel) -> bool"},
-	 { (char *)"GnuPlot2dC_SetXRange", _wrap_GnuPlot2dC_SetXRange, METH_VARARGS, (char *)"GnuPlot2dC_SetXRange(GnuPlot2dC self, RealRangeC xrange) -> bool"},
-	 { (char *)"GnuPlot2dC_SetYRange", _wrap_GnuPlot2dC_SetYRange, METH_VARARGS, (char *)"GnuPlot2dC_SetYRange(GnuPlot2dC self, RealRangeC yrange) -> bool"},
-	 { (char *)"GnuPlot2dC_SetLineStyle", _wrap_GnuPlot2dC_SetLineStyle, METH_VARARGS, (char *)"GnuPlot2dC_SetLineStyle(GnuPlot2dC self, StringC lineStyle) -> bool"},
+	 { (char *)"GnuPlot2dC_SetXLabel", _wrap_GnuPlot2dC_SetXLabel, METH_VARARGS, (char *)"GnuPlot2dC_SetXLabel(self, xlabel) -> bool"},
+	 { (char *)"GnuPlot2dC_SetYLabel", _wrap_GnuPlot2dC_SetYLabel, METH_VARARGS, (char *)"GnuPlot2dC_SetYLabel(self, ylabel) -> bool"},
+	 { (char *)"GnuPlot2dC_SetXRange", _wrap_GnuPlot2dC_SetXRange, METH_VARARGS, (char *)"GnuPlot2dC_SetXRange(self, xrange) -> bool"},
+	 { (char *)"GnuPlot2dC_SetYRange", _wrap_GnuPlot2dC_SetYRange, METH_VARARGS, (char *)"GnuPlot2dC_SetYRange(self, yrange) -> bool"},
+	 { (char *)"GnuPlot2dC_SetLineStyle", _wrap_GnuPlot2dC_SetLineStyle, METH_VARARGS, (char *)"GnuPlot2dC_SetLineStyle(self, lineStyle) -> bool"},
 	 { (char *)"GnuPlot2dC_SetOutput", _wrap_GnuPlot2dC_SetOutput, METH_VARARGS, (char *)"\n"
-		"SetOutput(StringC output, IndexRange2dC rec=RavlN::IndexRange2dC(512, 512)) -> bool\n"
-		"GnuPlot2dC_SetOutput(GnuPlot2dC self, StringC output) -> bool\n"
+		"SetOutput(output, rec=RavlN::IndexRange2dC(512, 512)) -> bool\n"
+		"GnuPlot2dC_SetOutput(self, output) -> bool\n"
 		""},
-	 { (char *)"GnuPlot2dC_Command", _wrap_GnuPlot2dC_Command, METH_VARARGS, (char *)"GnuPlot2dC_Command(GnuPlot2dC self, StringC command) -> bool"},
-	 { (char *)"delete_GnuPlot2dC", _wrap_delete_GnuPlot2dC, METH_VARARGS, (char *)"delete_GnuPlot2dC(GnuPlot2dC self)"},
+	 { (char *)"GnuPlot2dC_Command", _wrap_GnuPlot2dC_Command, METH_VARARGS, (char *)"GnuPlot2dC_Command(self, command) -> bool"},
+	 { (char *)"delete_GnuPlot2dC", _wrap_delete_GnuPlot2dC, METH_VARARGS, (char *)"delete_GnuPlot2dC(self)"},
 	 { (char *)"GnuPlot2dC_swigregister", GnuPlot2dC_swigregister, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
@@ -81459,6 +83258,12 @@ static void *_p_RavlN__RealHistogram1dCTo_p_RavlN__SArray1dCT_double_t(void *x, 
 static void *_p_RavlN__ConstDLIterCT_double_tTo_p_RavlN__DLIterCT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DLIterC< double > *)  ((RavlN::ConstDLIterC< double > *) x));
 }
+static void *_p_RavlN__DesignFuncLDACTo_p_RavlN__DesignFuncReduceC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignFuncReduceC *)  ((RavlN::DesignFuncLDAC *) x));
+}
+static void *_p_RavlN__DesignFuncPCACTo_p_RavlN__DesignFuncReduceC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignFuncReduceC *)  ((RavlN::DesignFuncPCAC *) x));
+}
 static void *_p_RavlN__TMatrixCT_float_tTo_p_RavlN__SArray2dCT_float_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::SArray2dC< float > *)  ((RavlN::TMatrixC< float > *) x));
 }
@@ -81482,6 +83287,15 @@ static void *_p_RavlN__DesignDiscriminantFunctionCTo_p_RavlN__DesignClassifierSu
 }
 static void *_p_RavlN__DesignFuncLSQCTo_p_RavlN__DesignFunctionSupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::DesignFunctionSupervisedC *)  ((RavlN::DesignFuncLSQC *) x));
+}
+static void *_p_RavlN__DesignFuncReduceCTo_p_RavlN__DesignFunctionUnsupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignFunctionUnsupervisedC *)  ((RavlN::DesignFuncReduceC *) x));
+}
+static void *_p_RavlN__DesignFuncLDACTo_p_RavlN__DesignFunctionUnsupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignFunctionUnsupervisedC *) (RavlN::DesignFuncReduceC *) ((RavlN::DesignFuncLDAC *) x));
+}
+static void *_p_RavlN__DesignFuncPCACTo_p_RavlN__DesignFunctionUnsupervisedC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RavlN::DesignFunctionUnsupervisedC *) (RavlN::DesignFuncReduceC *) ((RavlN::DesignFuncPCAC *) x));
 }
 static void *_p_RavlN__ClassifierDiscriminantFunctionCTo_p_RavlN__ClassifierC(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RavlN::ClassifierC *)  ((RavlN::ClassifierDiscriminantFunctionC *) x));
@@ -81587,8 +83401,12 @@ static swig_type_info _swigt__p_RavlN__DesignClassifierLogisticRegressionC = {"_
 static swig_type_info _swigt__p_RavlN__DesignClassifierNeuralNetwork2C = {"_p_RavlN__DesignClassifierNeuralNetwork2C", "RavlN::DesignClassifierNeuralNetwork2C *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignClassifierSupervisedC = {"_p_RavlN__DesignClassifierSupervisedC", "RavlN::DesignClassifierSupervisedC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignDiscriminantFunctionC = {"_p_RavlN__DesignDiscriminantFunctionC", "RavlN::DesignDiscriminantFunctionC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignFuncLDAC = {"_p_RavlN__DesignFuncLDAC", "RavlN::DesignFuncLDAC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignFuncLSQC = {"_p_RavlN__DesignFuncLSQC", "RavlN::DesignFuncLSQC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignFuncPCAC = {"_p_RavlN__DesignFuncPCAC", "RavlN::DesignFuncPCAC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignFuncReduceC = {"_p_RavlN__DesignFuncReduceC", "RavlN::DesignFuncReduceC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignFunctionSupervisedC = {"_p_RavlN__DesignFunctionSupervisedC", "RavlN::DesignFunctionSupervisedC *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RavlN__DesignFunctionUnsupervisedC = {"_p_RavlN__DesignFunctionUnsupervisedC", "RavlN::DesignFunctionUnsupervisedC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__DesignKNearestNeighbourC = {"_p_RavlN__DesignKNearestNeighbourC", "RavlN::DesignKNearestNeighbourC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ErrorBinaryClassifierC = {"_p_RavlN__ErrorBinaryClassifierC", "RavlN::ErrorBinaryClassifierC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RavlN__ErrorC = {"_p_RavlN__ErrorC", "RavlN::ErrorC *", 0, 0, (void*)0, 0};
@@ -81715,8 +83533,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RavlN__DesignClassifierNeuralNetwork2C,
   &_swigt__p_RavlN__DesignClassifierSupervisedC,
   &_swigt__p_RavlN__DesignDiscriminantFunctionC,
+  &_swigt__p_RavlN__DesignFuncLDAC,
   &_swigt__p_RavlN__DesignFuncLSQC,
+  &_swigt__p_RavlN__DesignFuncPCAC,
+  &_swigt__p_RavlN__DesignFuncReduceC,
   &_swigt__p_RavlN__DesignFunctionSupervisedC,
+  &_swigt__p_RavlN__DesignFunctionUnsupervisedC,
   &_swigt__p_RavlN__DesignKNearestNeighbourC,
   &_swigt__p_RavlN__ErrorBinaryClassifierC,
   &_swigt__p_RavlN__ErrorC,
@@ -81843,8 +83665,12 @@ static swig_cast_info _swigc__p_RavlN__DesignClassifierLogisticRegressionC[] = {
 static swig_cast_info _swigc__p_RavlN__DesignClassifierNeuralNetwork2C[] = {  {&_swigt__p_RavlN__DesignClassifierNeuralNetwork2C, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignClassifierSupervisedC[] = {  {&_swigt__p_RavlN__DesignClassifierNeuralNetwork2C, _p_RavlN__DesignClassifierNeuralNetwork2CTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignKNearestNeighbourC, _p_RavlN__DesignKNearestNeighbourCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignClassifierLogisticRegressionC, _p_RavlN__DesignClassifierLogisticRegressionCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignClassifierSupervisedC, 0, 0, 0},  {&_swigt__p_RavlN__DesignDiscriminantFunctionC, _p_RavlN__DesignDiscriminantFunctionCTo_p_RavlN__DesignClassifierSupervisedC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignDiscriminantFunctionC[] = {  {&_swigt__p_RavlN__DesignDiscriminantFunctionC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignFuncLDAC[] = {  {&_swigt__p_RavlN__DesignFuncLDAC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignFuncLSQC[] = {  {&_swigt__p_RavlN__DesignFuncLSQC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignFuncPCAC[] = {  {&_swigt__p_RavlN__DesignFuncPCAC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignFuncReduceC[] = {  {&_swigt__p_RavlN__DesignFuncReduceC, 0, 0, 0},  {&_swigt__p_RavlN__DesignFuncLDAC, _p_RavlN__DesignFuncLDACTo_p_RavlN__DesignFuncReduceC, 0, 0},  {&_swigt__p_RavlN__DesignFuncPCAC, _p_RavlN__DesignFuncPCACTo_p_RavlN__DesignFuncReduceC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignFunctionSupervisedC[] = {  {&_swigt__p_RavlN__DesignFuncLSQC, _p_RavlN__DesignFuncLSQCTo_p_RavlN__DesignFunctionSupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignFunctionSupervisedC, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RavlN__DesignFunctionUnsupervisedC[] = {  {&_swigt__p_RavlN__DesignFuncReduceC, _p_RavlN__DesignFuncReduceCTo_p_RavlN__DesignFunctionUnsupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignFunctionUnsupervisedC, 0, 0, 0},  {&_swigt__p_RavlN__DesignFuncLDAC, _p_RavlN__DesignFuncLDACTo_p_RavlN__DesignFunctionUnsupervisedC, 0, 0},  {&_swigt__p_RavlN__DesignFuncPCAC, _p_RavlN__DesignFuncPCACTo_p_RavlN__DesignFunctionUnsupervisedC, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__DesignKNearestNeighbourC[] = {  {&_swigt__p_RavlN__DesignKNearestNeighbourC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ErrorBinaryClassifierC[] = {  {&_swigt__p_RavlN__ErrorBinaryClassifierC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RavlN__ErrorC[] = {  {&_swigt__p_RavlN__ErrorC, 0, 0, 0},  {&_swigt__p_RavlN__ErrorBinaryClassifierC, _p_RavlN__ErrorBinaryClassifierCTo_p_RavlN__ErrorC, 0, 0},{0, 0, 0, 0}};
@@ -81971,8 +83797,12 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RavlN__DesignClassifierNeuralNetwork2C,
   _swigc__p_RavlN__DesignClassifierSupervisedC,
   _swigc__p_RavlN__DesignDiscriminantFunctionC,
+  _swigc__p_RavlN__DesignFuncLDAC,
   _swigc__p_RavlN__DesignFuncLSQC,
+  _swigc__p_RavlN__DesignFuncPCAC,
+  _swigc__p_RavlN__DesignFuncReduceC,
   _swigc__p_RavlN__DesignFunctionSupervisedC,
+  _swigc__p_RavlN__DesignFunctionUnsupervisedC,
   _swigc__p_RavlN__DesignKNearestNeighbourC,
   _swigc__p_RavlN__ErrorBinaryClassifierC,
   _swigc__p_RavlN__ErrorC,

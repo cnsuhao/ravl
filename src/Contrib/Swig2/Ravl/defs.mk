@@ -64,12 +64,16 @@ HEADERS=	RavlCore.i \
  			ClassifierPreprocess.i \
  			ClassifierDiscriminantFunction.i \
  			DesignFunctionSupervised.i \
+ 			DesignFunctionUnsupervised.i \
  			DesignFuncLSQ.i \
  			DesignClassifierSupervised.i \
  			DesignDiscriminantFunction.i \
  			DesignKNearestNeighbour.i \
  			DesignClassifierNeuralNetwork2.i \
  			DesignClassifierLogisticRegression.i \
+ 			DesignFuncReduce.i \
+ 			DesignFuncPCA.i \
+ 			DesignFuncLDA.i \
  			CommonKernels.i \
  			DesignSvm.i \
  			DesignClassifierSvmSmo.i \

@@ -27,6 +27,7 @@
 #include "Ravl/PatternRec/DesignFuncLSQ.hh"
 #include "Ravl/PatternRec/DesignClassifierLogisticRegression.hh"
 #include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
+#include "Ravl/PatternRec/DesignKNearestNeighbour.hh"
 
 using namespace RavlN;
 
@@ -77,8 +78,18 @@ int exGnuPlot(int nargs, char *args[])
   GnuPlot2dC plotLR("Logistic Regression Classifier");
   plotLR.Plot(designLR.Apply(trainData), trainData);
 
-  // Ok lets do some NNets with different HU
-  for (UIntT hu = 1; hu < 8; hu ++) {
+  // 1 Nearest Neighbour, we would expect this to circle all the points
+  DesignKNearestNeighbourC designKNN1(1);
+  GnuPlot2dC plotKNN1("KNN-1 Classifier");
+  plotKNN1.Plot(designKNN1.Apply(trainData), trainData);
+
+  // 5 Nearest Neighbour, we would expect this to be a bit smoother!
+  DesignKNearestNeighbourC designKNN5(5);
+  GnuPlot2dC plotKNN5("KNN-5 Classifier");
+  plotKNN5.Plot(designKNN5.Apply(trainData), trainData);
+
+  // Ok lets do some NNets with different HU's...we would expect decisions to get a bit more crazy
+  for (UIntT hu = 1; hu < 10; hu+=3) {
     DesignClassifierNeuralNetwork2C design(3, hu);
     StringC title = "Neural Network with " + (StringC) hu + " hidden units.";
     GnuPlot2dC classifierPlot(title);
