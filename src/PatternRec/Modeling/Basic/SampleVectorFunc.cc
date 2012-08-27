@@ -19,8 +19,94 @@
 #include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/RandomGauss.hh"
 #include "Ravl/TMatrix.hh"
+#include "Ravl/PatternRec/DataSetIO.hh"
 
 namespace RavlN {
+
+  /*
+   * Load a data set and get it ready
+   */
+  bool LoadDataSetVectorLabel(const StringC & dataSetFile,
+      bool shuffle,
+      bool equaliseSamples,
+      UIntT samplesPerClass,
+      const SArray1dC<IndexC> & features,
+      const FunctionC & normaliseFunc,
+      DataSetVectorLabelC & dataSet)
+  {
+    RavlInfo("Loading dataset from file '%s'", dataSetFile.data());
+
+    // FIXME: Still want to use Load/Save instead
+    if (!LoadDataSetVectorLabel(dataSetFile, dataSet)) {
+      RavlError("Trouble loading data set from file '%s'", dataSetFile.data());
+      return false;
+    }
+
+    // Shuffle
+    if (shuffle) {
+      RavlDebug("Shuffling data set.");
+      dataSet.Shuffle();
+    }
+
+    // Equalise samples
+    if (equaliseSamples) {
+      UIntT min = dataSet.ClassNums()[dataSet.ClassNums().IndexOfMin()];
+      RavlDebug( "Equalising number of samples per class to %d", min);
+      dataSet = dataSet.ExtractPerLabel(min);
+    }
+
+    // Select number of samples per class
+    if (samplesPerClass > 0 && samplesPerClass <= dataSet.ClassNums()[dataSet.ClassNums().IndexOfMin()]) {
+      RavlDebug( "Setting the samples per class to %d", samplesPerClass);
+      dataSet = dataSet.ExtractPerLabel(samplesPerClass);
+    }
+
+    // Select the features
+    if (features.Size() > 0) {
+      RavlInfo("Selecting '%s' features", StringOf(features.Size()).data());
+      SampleVectorC vecs(dataSet.Sample1(), features);
+      dataSet = DataSetVectorLabelC(vecs, dataSet.Sample2());
+    }
+
+    // Normalise
+    if (normaliseFunc.IsValid()) {
+      RavlDebug("Normalising data set....");
+      dataSet.Sample1().Normalise(normaliseFunc);
+    }
+
+    return true;
+  }
+
+  /*
+   * Load a data set and get it ready
+   */
+  bool LoadDataSetVectorLabel(const StringC & dataSetFile,
+      bool shuffle,
+      bool equaliseSamples,
+      UIntT samplesPerClass,
+      const SArray1dC<IndexC> & features,
+      DataSetNormaliseT normType,
+      FunctionC & normaliseFunc,
+      DataSetVectorLabelC & dataSet)
+  {
+
+    /*
+     * Load dataset and do no normalisation!
+     */
+    FunctionC function;
+    if (!LoadDataSetVectorLabel(dataSetFile, shuffle, equaliseSamples, samplesPerClass, features, function, dataSet)) {
+      return false;
+    }
+
+    /*
+     * OK lets do some normalisation depending on what we have been asked
+     */
+    normaliseFunc = dataSet.Sample1().Normalise(normType);
+
+    return true;
+
+  }
+
   /*
    * Compute the normalisation function using the current data, normalise the data IP and return function
    */
