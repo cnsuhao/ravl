@@ -135,6 +135,12 @@ namespace RavlN { namespace GeneticN {
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneTypeBoolC,"RavlN::GeneticN::GeneTypeBoolC");
   static RavlN::TypeNameC g_typePtrGeneTypeBool(typeid(GeneTypeBoolC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneTypeBoolC>");
 
+  //! Access a gene type with 50/50 bias
+  const GeneTypeBoolC &GeneTypeBoolBiasHalf() {
+    static GeneTypeBoolC::RefT ret = new GeneTypeBoolC("BiasHalf",0.5);
+    return *ret;
+  }
+
   // ------------------------------------------------------------------
 
   //! Factory constructor

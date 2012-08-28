@@ -17,6 +17,8 @@
 
 namespace RavlN { namespace GeneticN {
 
+  class GeneClassC;
+
   //! Base class for nodes with child fields.
   class GeneTypeNodeC
    : public GeneTypeC
@@ -134,53 +136,58 @@ namespace RavlN { namespace GeneticN {
   : public GeneTypeNodeC
   {
   public:
-   //! Factory constructor
-   GeneTypeClassC(const XMLFactoryContextC &factory);
+    //! Factory constructor
+    GeneTypeClassC(const XMLFactoryContextC &factory,bool checkType = true);
 
-   //! Constructor
-   GeneTypeClassC(const std::type_info &classType);
+    //! Constructor
+    GeneTypeClassC(const std::type_info &classType);
 
-   //! Load form a binary stream
-   GeneTypeClassC(BinIStreamC &strm);
+    //! Load form a binary stream
+    GeneTypeClassC(BinIStreamC &strm);
 
-   //! Load form a binary stream
-   GeneTypeClassC(std::istream &strm);
+    //! Load form a binary stream
+    GeneTypeClassC(std::istream &strm);
 
-   //! Save to binary stream
-   virtual bool Save(BinOStreamC &strm) const;
+    //! Save to binary stream
+    virtual bool Save(BinOStreamC &strm) const;
 
-   //! Save to binary stream
-   virtual bool Save(std::ostream &strm) const;
+    //! Save to binary stream
+    virtual bool Save(std::ostream &strm) const;
 
-   //! Dump description in human readable form.
-   virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
-   //! Create randomise value
-   virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
+    //! Create randomise value
+    virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
 
-   //! Mutate a gene
-   virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
+    //! Mutate a gene
+    virtual bool Mutate(GenePaletteC &palette,float fraction,bool mustChange,const GeneC &original,RavlN::SmartPtrC<GeneC> &newValue) const;
 
-   //! Mutate a gene
-   virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
+    //! Mutate a gene
+    virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
-   //! Access type of class generated.
-   const std::type_info &TypeInfo() const
-   { return *m_typeInfo; }
+    //! Access type of class generated.
+    const std::type_info &TypeInfo() const
+    { return *m_typeInfo; }
 
-   //! Name of class to be generated
-   const std::string &TypeName() const
-   { return m_typeName; }
+    //! Name of class to be generated
+    const std::string &TypeName() const
+    { return m_typeName; }
 
-   // Reference to this gene.
-   typedef RavlN::SmartPtrC<GeneTypeClassC > RefT;
+    //! Reference to this gene.
+    typedef RavlN::SmartPtrC<GeneTypeClassC > RefT;
 
-   // Const reference to this gene.
-   typedef RavlN::SmartPtrC<const GeneTypeClassC > ConstRefT;
+    //! Const reference to this gene.
+    typedef RavlN::SmartPtrC<const GeneTypeClassC > ConstRefT;
 
   protected:
-   std::string m_typeName;
-   const std::type_info *m_typeInfo;
+    //! Method for generating the class from a GeneFactoryC which has a
+    //! current context of a 'GeneClassC'
+    virtual void Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const;
+
+    std::string m_typeName;
+    const std::type_info *m_typeInfo;
+    friend class GeneClassC;
   };
 
 
@@ -241,19 +248,19 @@ namespace RavlN { namespace GeneticN {
   class RegisterGeneClassC
   {
   public:
-   static typename ClassT::RefT ConvertGeneFactory2Inst(const GeneFactoryC &factory)
-   { return new ClassT(factory); }
+    static typename ClassT::RefT ConvertGeneFactory2Inst(const GeneFactoryC &factory)
+    { return new ClassT(factory); }
 
-   RegisterGeneClassC(const char *nameOfType)
-   {
-     RavlN::AddTypeName(typeid(ClassT),nameOfType);
-     m_refName = std::string(nameOfType) + "::RefT";
-     RavlN::AddTypeName(typeid(typename ClassT::RefT),m_refName.data());
-     RavlN::RegisterConversion(&ConvertGeneFactory2Inst);
-   }
+    RegisterGeneClassC(const char *nameOfType)
+    {
+      RavlN::AddTypeName(typeid(ClassT),nameOfType);
+      m_refName = std::string(nameOfType) + "::RefT";
+      RavlN::AddTypeName(typeid(typename ClassT::RefT),m_refName.data());
+      RavlN::RegisterConversion(&ConvertGeneFactory2Inst);
+    }
 
   protected:
-   std::string m_refName;
+    std::string m_refName;
   };
 
 
