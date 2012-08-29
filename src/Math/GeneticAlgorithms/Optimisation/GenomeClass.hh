@@ -14,6 +14,7 @@
 #include "Ravl/Genetic/GeneType.hh"
 #include "Ravl/TypeName.hh"
 #include "Ravl/Collection.hh"
+#include "Ravl/RCWrap.hh"
 
 namespace RavlN { namespace GeneticN {
 
@@ -60,6 +61,34 @@ namespace RavlN { namespace GeneticN {
     //! List names of fields.
     void ListFields(RavlN::CollectionC<Tuple2C<StringC,GeneTypeC::ConstRefT> > &col) const;
 
+    //! Set attribute against type.
+    //! Attributes can be used to store constants that should be used
+    //! when generating the class.
+    template<class DataT>
+    void SetAttribute(const StringC &attrName,const DataT &val)
+    { m_attributes[attrName] = ToRCAbstract(val); }
+
+    //! Get attribute
+    template<class DataT>
+    bool GetAttribute(const StringC &attrName,DataT &val) const {
+      const RCAbstractC *attrVal = m_attributes.Lookup(attrName);
+      if(attrVal == 0) return false;
+      FromRCAbstract(*attrVal,val);
+      return true;
+    }
+
+    //! Get attribute, throw exception on failure.
+    template<class DataT>
+    void AlwaysGetAttribute(const StringC &attrName,DataT &val) const {
+      const RCAbstractC *attrVal = m_attributes.Lookup(attrName);
+      if(attrVal == 0) throw ExceptionOperationFailedC("No value");
+      FromRCAbstract(*attrVal,val);
+    }
+
+    //! Get raw abstract value.
+    const RCAbstractC *GetAttribute(const StringC &attrName) const
+    { return  m_attributes.Lookup(attrName); }
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeNodeC> RefT;
 
@@ -68,6 +97,7 @@ namespace RavlN { namespace GeneticN {
 
   protected:
     RavlN::HashC<std::string,GeneTypeC::ConstRefT> m_componentTypes;
+    RavlN::HashC<StringC,RCAbstractC> m_attributes;
   };
 
   //! Node containing sub gene's

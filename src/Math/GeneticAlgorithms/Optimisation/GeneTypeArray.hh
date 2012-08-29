@@ -1,11 +1,11 @@
 // This file is part of RAVL, Recognition And Vision Library 
-// Copyright (C) 2011, Charles Galambos
+// Copyright (C) 2012, Charles Galambos
 // This code may be redistributed under the terms of the GNU Lesser
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_GENETIC_GENOMEList_HH
-#define RAVL_GENETIC_GENOMEList_HH 1
+#ifndef RAVL_GENETIC_GENETYPEARRAY_HH
+#define RAVL_GENETIC_GENETYPEARRAY_HH 1
 //! lib=RavlGeneticOptimisation
 //! author=Charles Galambos
 //! docentry=Ravl.API.Math.Genetic.Optimisation
@@ -16,23 +16,23 @@
 
 namespace RavlN { namespace GeneticN {
 
-  //! Base class for Lists with child fields.
+  //! Base class for fixed length arrays
 
-  class GeneTypeListBaseC
+  class GeneTypeArrayBaseC
    : public GeneTypeC
   {
   public:
     //! Factory constructor
-    GeneTypeListBaseC(const XMLFactoryContextC &factory);
+    GeneTypeArrayBaseC(const XMLFactoryContextC &factory);
 
     // Constructor
-    GeneTypeListBaseC(const std::string &name,const GeneTypeC &contentType,UIntT maxSize);
+    GeneTypeArrayBaseC(const std::string &name,const GeneTypeC &contentType,size_t length);
 
     //! Load form a binary stream
-    GeneTypeListBaseC(BinIStreamC &strm);
+    GeneTypeArrayBaseC(BinIStreamC &strm);
 
     //! Load form a binary stream
-    GeneTypeListBaseC(std::istream &strm);
+    GeneTypeArrayBaseC(std::istream &strm);
 
     //! Save to binary stream
     virtual bool Save(BinOStreamC &strm) const;
@@ -49,67 +49,66 @@ namespace RavlN { namespace GeneticN {
     //! Mutate a gene
     virtual void Cross(GenePaletteC &palette,const GeneC &original1,const GeneC &original2,RavlN::SmartPtrC<GeneC> &newValue) const;
 
-    //! Create a new list
-    virtual bool CreateList(RCWrapAbstractC &list) const;
+    //! Create a new Array
+    virtual bool CreateArray(const GeneFactoryC &context,
+                             RCWrapAbstractC &array,
+                             const SArray1dC<GeneC::ConstRefT> &geneArray) const;
 
-    //! Add item to list.
-    virtual bool AddToList(RCWrapAbstractC &list,RCWrapAbstractC &item) const;
+    //! Access maximum Array length.
+    size_t Length() const
+    { return m_length; }
 
-    //! Access maximum list length.
-    UIntT MaxLength() const
-    { return m_maxLength; }
-
-    //! Access content type of list.
+    //! Access content type of Array.
     const GeneTypeC &ContentType() const
     { return *m_contentType; }
 
     // Reference to this gene.
-    typedef RavlN::SmartPtrC<GeneTypeListBaseC> RefT;
+    typedef RavlN::SmartPtrC<GeneTypeArrayBaseC> RefT;
 
     // Const reference to this gene.
-    typedef RavlN::SmartPtrC<const GeneTypeListBaseC> ConstRefT;
+    typedef RavlN::SmartPtrC<const GeneTypeArrayBaseC> ConstRefT;
 
   protected:
     GeneTypeC::ConstRefT m_contentType;
-    UIntT m_maxLength;
+    size_t m_length;
   };
 
-  //! Gene type for a list
+  //! Gene type for fixed length array
 
   template<typename EntryT>
-  class GeneTypeListC
-   : public GeneTypeListBaseC
+  class GeneTypeArrayC
+   : public GeneTypeArrayBaseC
   {
   public:
     //! Factory constructor
-    GeneTypeListC(const XMLFactoryContextC &factory)
-     : GeneTypeListBaseC(factory)
+    GeneTypeArrayC(const XMLFactoryContextC &factory)
+     : GeneTypeArrayBaseC(factory)
     {}
 
     // Constructor
-    GeneTypeListC(const std::string &name,const GeneTypeC &contentType,UIntT maxSize)
-     : GeneTypeListBaseC(name,contentType,maxSize)
+    GeneTypeArrayC(const std::string &name,const GeneTypeC &contentType,UIntT length)
+     : GeneTypeArrayBaseC(name,contentType,length)
     {}
 
     //! Load form a binary stream
-    GeneTypeListC(BinIStreamC &strm)
-     : GeneTypeListBaseC(strm)
+    GeneTypeArrayC(BinIStreamC &strm)
+     : GeneTypeArrayBaseC(strm)
     {
       ByteT version = 0;
       strm >> version;
       if(version != 1)
-        throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneTypeListC");
+        throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneTypeArrayC");
     }
 
      //! Load form a binary stream
-    GeneTypeListC(std::istream &strm)
-      : GeneTypeListBaseC(strm)
+    GeneTypeArrayC(std::istream &strm)
+      : GeneTypeArrayBaseC(strm)
     {}
 
     //! Save to binary stream
     virtual bool Save(BinOStreamC &strm) const
     {
-      GeneTypeListBaseC::Save(strm);
+      GeneTypeArrayBaseC::Save(strm);
       ByteT version = 1;
       strm << version;
       return true;
@@ -118,56 +117,53 @@ namespace RavlN { namespace GeneticN {
     //! Save to binary stream
     virtual bool Save(std::ostream &strm) const
     {
-      GeneTypeListBaseC::Save(strm);
+      GeneTypeArrayBaseC::Save(strm);
       return false;
     }
 
-    //! Create a new list
-    virtual bool CreateList(RCWrapAbstractC &list) const {
-      CollectionC<EntryT> newCollection(32);
-      list = RCWrapC<CollectionC<EntryT> >(newCollection);
-      return true;
-    }
-
-    //! Add item to list.
-    virtual bool AddToList(RCWrapAbstractC &list,RCWrapAbstractC &item) const {
-      RCWrapC<CollectionC<EntryT> > lw(list,true);
-      RavlAssert(lw.IsValid());
-      EntryT value;
-      if(!SystemTypeConverter().TypeConvert(item,value)) {
-        RavlAssertMsg(0,"Item not compatible with collection. ");
-        return false;
+    //! Create a new Array
+    virtual bool CreateArray(const GeneFactoryC &context,
+                             RCWrapAbstractC &array,
+                             const SArray1dC<GeneC::ConstRefT> &geneArray) const
+    {
+      SArray1dC<EntryT> newArray(m_length);
+      RCWrapAbstractC comp;
+      for(unsigned i = 0;i < m_length;i++) {
+        geneArray[i]->Generate(context,comp);
+        EntryT *value = 0;
+        comp.GetPtr(value);
+        newArray[i] = *value;
       }
-      lw.Data().Append(value);
+      array = RCWrapC<SArray1dC<EntryT> >(newArray);
       return true;
     }
 
     // Reference to this gene.
-    typedef RavlN::SmartPtrC<GeneTypeListC<EntryT> > RefT;
+    typedef RavlN::SmartPtrC<GeneTypeArrayC<EntryT> > RefT;
 
     // Const reference to this gene.
-    typedef RavlN::SmartPtrC<const GeneTypeListC<EntryT> > ConstRefT;
+    typedef RavlN::SmartPtrC<const GeneTypeArrayC<EntryT> > ConstRefT;
   protected:
   };
 
 
-  //! List containing sub gene's of a particular type.
+  //! Fixed length array containing sub gene's of a particular type.
 
-  class GeneListC
+  class GeneArrayC
    : public GeneC
   {
   public:
     //! Construct from a geneType.
-    GeneListC(const GeneTypeListBaseC &geneType,const std::vector<GeneC::ConstRefT> &aList);
+    GeneArrayC(const GeneTypeArrayBaseC &geneType,const SArray1dC<GeneC::ConstRefT> &aArray);
 
     //! Factory constructor
-    GeneListC(const XMLFactoryContextC &factory);
+    GeneArrayC(const XMLFactoryContextC &factory);
 
     //! Load form a binary stream
-    GeneListC(BinIStreamC &strm);
+    GeneArrayC(BinIStreamC &strm);
 
     //! Load form a binary stream
-    GeneListC(std::istream &strm);
+    GeneArrayC(std::istream &strm);
 
     //! Save to binary stream
     virtual bool Save(BinOStreamC &strm) const;
@@ -178,9 +174,9 @@ namespace RavlN { namespace GeneticN {
     //! Save to binary stream
     virtual bool Save(RavlN::XMLOStreamC &strm) const;
 
-    //! Access the list.
-    const std::vector<GeneC::ConstRefT> &List() const
-    { return m_list; }
+    //! Access the Array.
+    const SArray1dC<GeneC::ConstRefT> &Array() const
+    { return m_array; }
 
     //! Generate an instance of the class.
     virtual void Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const;
@@ -198,14 +194,13 @@ namespace RavlN { namespace GeneticN {
     virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     // Reference to this gene.
-    typedef RavlN::SmartPtrC<GeneListC> RefT;
+    typedef RavlN::SmartPtrC<GeneArrayC> RefT;
 
     // Const reference to this gene.
-    typedef RavlN::SmartPtrC<const GeneListC> ConstRefT;
+    typedef RavlN::SmartPtrC<const GeneArrayC> ConstRefT;
   protected:
-    std::vector<GeneC::ConstRefT> m_list;
+    SArray1dC<GeneC::ConstRefT> m_array;
   };
-
 
 }}
 #endif
