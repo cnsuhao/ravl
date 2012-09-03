@@ -5,7 +5,7 @@
 
 LICENSE=Copyright
 
-REQUIRES=RLog GnuPlot
+REQUIRES=RLog
 
 ORGANISATION=
 

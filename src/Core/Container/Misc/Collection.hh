@@ -111,12 +111,12 @@ namespace RavlN {
     //: Remove item at 'ind' from the collection.
     // Note the last item in the collection will be moved
     // to replace element at 'ind'.
-    // Same as Delete, added for consistancy with DArray1dC.
+    // Same as Delete, added for consistency with DArray1dC.
     
     DataT Pick();
     //: Pick a random item from the collection.
     // the element will be removed from the set.
-    // It is the users responsiblity to ensure the
+    // It is the users responsibility to ensure the
     // set is not empty when this method is called.
     // See 'IsEmpty()'
     
@@ -147,7 +147,7 @@ namespace RavlN {
     SArray1dC<DataT> Array()
     { return SArray1dC<DataT>(data,n); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -157,7 +157,7 @@ namespace RavlN {
     const SArray1dC<DataT> Array() const
     { return SArray1dC<DataT>(data,n); }
     //: Access data as array.
-    // Obsolete, use SArray1d() instread. <br>
+    // Obsolete, use SArray1d() instead. <br>
     // Note: The returned array is a direct access
     // to the internal data structure, no operations
     // that modify the collection should be performed 
@@ -244,7 +244,7 @@ namespace RavlN {
     CollectionC(SizeT maxSize,SizeT used = 0)
       : RCHandleC<CollectionBodyC<DataT> >(*new CollectionBodyC<DataT>(maxSize,used))
     {}
-    //: Creat an empty collection.
+    //: Create an empty collection.
     // maxSize should be set to maximum number of elements the collection 
     // will contain.  'used' is the number of elements to be in the collection 
     // at the time of creation.
@@ -452,7 +452,10 @@ namespace RavlN {
   template <class DataT>
   BinOStreamC & operator<<(BinOStreamC & s, const CollectionC<DataT> &col)
   {
-    s << col.Array();
+    if(!col.IsValid())
+      s << SArray1dC<DataT>();
+    else
+      s << col.Array();
     return s;
   }
   
@@ -467,7 +470,10 @@ namespace RavlN {
   
   template<class DataT>
   std::ostream &operator<<(std::ostream &s,const CollectionC<DataT> &d) {
-    s << d.Array();
+    if(!d.IsValid())
+      s << SArray1dC<DataT>();
+    else
+      s << d.Array();
     return s;
   }
 

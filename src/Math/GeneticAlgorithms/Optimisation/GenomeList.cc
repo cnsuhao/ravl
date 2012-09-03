@@ -107,7 +107,7 @@ namespace RavlN { namespace GeneticN {
                                  RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate list. "));
-    if(fraction < palette.Random1()) {
+    if(fraction < palette.Random1() && !mustChange) {
       newValue = &original;
       return false;
     }
@@ -173,7 +173,7 @@ namespace RavlN { namespace GeneticN {
     const GeneListC &oldListGene1 = dynamic_cast<const GeneListC &>(original1);
     const GeneListC &oldListGene2 = dynamic_cast<const GeneListC &>(original2);
 
-    float crossAt = static_cast<float>(Random1());
+    float crossAt = static_cast<float>(palette.Random1());
     float crossAt1 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
     float crossAt2 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
     size_t size1 = oldListGene1.List().size();

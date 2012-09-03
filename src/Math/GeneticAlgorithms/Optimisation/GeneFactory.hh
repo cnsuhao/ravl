@@ -200,9 +200,29 @@ namespace RavlN { namespace GeneticN {
     bool InsertOverride(const GeneC &gene,const GeneC &data)
     { return m_scaffold->InsertOverride(gene,data); }
 
+    //! Get attribute
+    template<class DataT>
+    bool GetTypeAttribute(const StringC &attrName,DataT &val) const {
+      const RCAbstractC *attrVal = GetTypeAttribute(attrName);
+      if(attrVal == 0) return false;
+      FromRCAbstract(*attrVal,val);
+      return true;
+    }
+
+    //! Get attribute, throw exception on failure.
+    template<class DataT>
+    void AlwaysGetTypeAttribute(const StringC &attrName,DataT &val) const {
+      const RCAbstractC *attrVal = GetTypeAttribute(attrName);
+      if(attrVal == 0) throw ExceptionOperationFailedC("No value");
+      FromRCAbstract(*attrVal,val);
+    }
+
     //! Check if gene is in stack already.
     bool CheckStackFor(const GeneC &gene) const;
   protected:
+    //! Get type attribute
+    const RavlN::RCAbstractC *GetTypeAttribute(const RavlN::StringC &str) const;
+
     mutable RavlN::BStackC<GeneC::RefT> m_path;
     mutable GenomeScaffoldC::RefT m_scaffold;
     mutable GenePaletteC::RefT m_palette;
