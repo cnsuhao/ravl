@@ -18,7 +18,7 @@
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #include "Ravl/TypeName.hh"
 #if DPDEBUG
 #define ONDEBUG(x) x

@@ -157,7 +157,7 @@ namespace RavlN { namespace GeneticN {
       static RavlN::StringC geneTypeName = StringC("RavlN::GeneticN::GeneTypeClassDirectSmartPtrC<") + StringC(nameOfType) + ">";
       RavlN::AddTypeName(typeid(GeneTypeClassDirectSmartPtrC<ClassT>),geneTypeName.c_str());
       static RavlN::StringC geneTypeName2 = StringC("RavlN::GeneticN::GeneTypeClassDirectSmartPtrC<") + StringC(nameOfType) + ">::RefT";
-      RavlN::AddTypeName(typeid(GeneTypeClassDirectSmartPtrC<ClassT>::RefT),geneTypeName2.c_str());
+      RavlN::AddTypeName(typeid(typename GeneTypeClassDirectSmartPtrC<ClassT>::RefT),geneTypeName2.c_str());
 
       RavlN::RegisterConversion(&ConvertToBase);
       XMLFactoryC::RegisterTypeFactory(typeid(GeneTypeClassDirectSmartPtrC<ClassT>),&XMLFactoryC::DefaultFactoryFunc<GeneTypeClassDirectSmartPtrC<ClassT> >);
