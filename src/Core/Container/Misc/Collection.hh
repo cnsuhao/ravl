@@ -308,6 +308,8 @@ namespace RavlN {
     void Delete(IndexC ind)
     { Body().Delete(ind); }
     //: Remove item at 'ind' from the collection.
+    // Note the last item in the collection will be moved
+    // to replace element at 'ind'
     
     void operator+=(const DataT &dat)
     { Body().Insert(dat); }

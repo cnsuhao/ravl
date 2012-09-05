@@ -49,32 +49,36 @@ namespace RavlN {
     }
 
     //! Sugar to make it easier to setup from a factory.
-    bool ReactorC::CallOnRead(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt)
+    SocketDispatcherC::RefT ReactorC::CallOnRead(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt)
     {
       if(!factory.UseComponent(name,skt,false,typeid(ZmqN::SocketC)))
-        return false;
+        return 0;
       return CallOnRead(*skt,trigger);
     }
 
     //! Sugar to make it easier to setup from a factory.
-    bool ReactorC::CallOnWrite(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt)
+    SocketDispatcherC::RefT ReactorC::CallOnWrite(const XMLFactoryContextC &factory,const std::string &name,const TriggerC &trigger,SocketC::RefT &skt)
     {
       if(!factory.UseComponent(name,skt,false,typeid(ZmqN::SocketC)))
-        return false;
+        return 0;
       return CallOnWrite(*skt,trigger);
     }
 
 
     //! Add a read trigger
-    bool ReactorC::CallOnRead(const SocketC &socket,const TriggerC &trigger)
+    SocketDispatcherC::RefT ReactorC::CallOnRead(const SocketC &socket,const TriggerC &trigger)
     {
-      return Add(*new SocketDispatchTriggerC(socket,true,false,trigger));
+      SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(socket,true,false,trigger);
+      Add(*ret);
+      return ret;
     }
 
     //! Add a write trigger
-    bool ReactorC::CallOnWrite(const SocketC &socket,const TriggerC &trigger)
+    SocketDispatcherC::RefT ReactorC::CallOnWrite(const SocketC &socket,const TriggerC &trigger)
     {
-      return Add(*new SocketDispatchTriggerC(socket,false,true,trigger));
+      SocketDispatcherC::RefT ret = new SocketDispatchTriggerC(socket,false,true,trigger);
+      Add(*ret);
+      return ret;
     }
 
 
@@ -108,7 +112,7 @@ namespace RavlN {
 
       // We keep an array of socket dispatchers we're using, 'inUse'
       // so that if a socket handler delete's itself from the reactor
-      // it will be kept at least until the end of the poll cycle because
+      // it will be kept at least until the end of the poll cycle as
       // we don't want to delete a class we're calling.
 
       if(m_verbose) {

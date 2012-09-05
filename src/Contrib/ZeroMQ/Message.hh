@@ -56,6 +56,13 @@ namespace RavlN {
       //! Pop a message
       void Pop(std::string &str);
 
+      //! Access next array to pop.
+      SArray1dC<char> &Top()
+      { return m_parts.back(); }
+
+      //! Discard the top of the stack.
+      void Pop()
+      { m_parts.pop_back(); }
 
       //! Access parts
       std::vector<SArray1dC<char> > &Parts()

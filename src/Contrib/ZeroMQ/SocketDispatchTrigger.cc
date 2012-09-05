@@ -28,8 +28,13 @@ namespace RavlN {
     //! Handle event.
     void SocketDispatchTriggerC::Dispatch()
     {
-      RavlAssert(m_trigger.IsValid());
-      m_trigger();
+      if(m_trigger.IsValid())
+        m_trigger();
+    }
+
+    //! Stop handling of events.
+    void SocketDispatchTriggerC::Stop() {
+      m_trigger.Invalidate();
     }
 
   }
