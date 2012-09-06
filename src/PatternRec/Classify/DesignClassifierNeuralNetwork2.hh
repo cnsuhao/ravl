@@ -30,7 +30,8 @@ namespace RavlN {
                                         RealT desiredError = 0.00001,
                                         UIntT maxEpochs = 5000,
                                         UIntT displayEpochs = 1,
-                                        bool useSigmoid = true);
+                                        bool useSigmoid = true,
+                                        UIntT threads = 1);
     //: Constructor.
 
     DesignClassifierNeuralNetwork2BodyC(const XMLFactoryContextC & factory);
@@ -102,9 +103,10 @@ namespace RavlN {
         RealT desiredError = 0.00001,
         UIntT maxEpochs = 5000,
         UIntT displayEpochs = 0,
-        bool useSigmoid = true)
+        bool useSigmoid = true,
+        UIntT threads = 1)
     : DesignClassifierSupervisedC(
-              *new DesignClassifierNeuralNetwork2BodyC(nLayers, nHidden, doNormalisation,regularisation,desiredError, maxEpochs, displayEpochs,useSigmoid))
+              *new DesignClassifierNeuralNetwork2BodyC(nLayers, nHidden, doNormalisation,regularisation,desiredError, maxEpochs, displayEpochs,useSigmoid,threads))
     {}
     //: Create a new designer.
 

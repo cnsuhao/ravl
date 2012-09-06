@@ -5,7 +5,7 @@
 
 LICENSE=Copyright
 
-REQUIRES=RLog GnuPlot
+REQUIRES=RLog
 
 ORGANISATION=
 
@@ -33,7 +33,7 @@ USESLIBS=	RavlMath \
 			RavlOS \
 			RavlXMLFactory \
 			RavlRLog \
-			RavlPlot
+			RavlGnuPlot
 
 PROGLIBS = 	RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
 

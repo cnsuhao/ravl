@@ -338,7 +338,7 @@ LINKTESTLIBS := $(EXELIB)
 
 # Restore EXELIB to be library libs
 EXELIB := $(LIBLIBS)
-
+ 
 .PRECIOUS : %$(CXXEXT) %$(CHXXEXT) %$(CEXT) %$(CHEXT) %.tcc %.icc %.def %.tab.cc %.yy.cc %_$(ARC)_wrap.cc %.m %.mm
 
 ############################
@@ -398,6 +398,17 @@ else
  SHOWIT=@
 endif
 
+
+#########################
+# PKGCONFIG stuff
+
+ifdef USESPKGCONFIG
+  USES_PKGCONFIG_EXELIB = $(shell pkg-config $(USESPKGCONFIG) --libs $(EXELIB) )
+  USES_PKGCONFIG_INCLUDES = $(shell pkg-config $(USESPKGCONFIG) --cflags )
+  INCLUDES += $(USES_PKGCONFIG_INCLUDES)
+  EXELIB += $(USES_PKGCONFIG_EXELIB)
+endif
+
 #####################
 # Build targets.
 
@@ -430,7 +441,7 @@ ifeq ($(SUPPORT_OK),yes)
   TARG_HDRCERTS=
  endif
 #$(INST_DEPEND)/%.java.d
- TARG_DEFS=$(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS))
+ TARG_DEFS=$(patsubst %,$(INST_LIBDEF)/%,$(LIBDEPS)) 
  TARG_EXE := $(patsubst %$(CEXT),$(INST_BIN)/%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
  TARG_PUREEXE := $(patsubst %$(CEXT),$(INST_BIN)/pure_%$(EXEEXT), $(patsubst %$(CXXEXT),$(INST_BIN)/pure_%$(EXEEXT),$(patsubst %.mm,$(INST_BIN)/pure_%$(EXEEXT),$(filter-out %.java,$(MAINS)))))
  TARG_EXEOBJS=$(patsubst %$(CEXT),$(INST_OBJS)/%$(OBJEXT),$(patsubst %$(CXXEXT),$(INST_OBJS)/%$(OBJEXT),$(filter-out %.java,$(MAINS))))
@@ -483,6 +494,13 @@ ifeq ($(SUPPORT_OK),yes)
   ifndef LIBDEPS
    ifdef PLIB
     TARG_DEFS=$(INST_LIBDEF)/$(LOCAL_DEFBASE).def
+    ifdef MAKEPKGCONFIG
+     ifdef SHAREDBUILD
+    TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
+     else
+    TARG_PKGCONFIG=$(INST_PKGCONFIG)/$(PLIB).pc
+     endif
+    endif
    endif
   endif
  endif
@@ -508,6 +526,7 @@ else # SUPPORT_OK != yes
 
  TARG_HDRCERTS=
  TARG_DEFS=
+ TARG_PKGCONFIG=
  TARG_LIBS=
  TARG_EXE=
  TARG_EXEOBJS=
@@ -586,10 +605,11 @@ testbuild: prebuildstep build_subdirs build_libs build_test  $(TARG_HDRCERTS) po
 
 libbuild: prebuildstep build_subdirs build_libs build_aux postbuildstep
 
-purifybuild: prebuildstep  build_subdirs build_libs build_pureexe postbuildstep
+purifybuild: prebuildstep  build_subdirs build_libs build_pureexe
 
 srcfiles: $(TARG_DEFS) $(TARG_HDRS) $(LOCAL_FILES) $(LOCALHEADERS) $(SOURCES) $(MAINS) $(AUXFILES) $(HEADERS) \
- $(EXAMPLES) $(TESTEXES) $(DOCNODE) $(HTML) $(MAN1) $(MAN2) $(MAN3) $(EHT) $(MUSTLINK) $(EXTERNALLIBS) $(TARG_HDRSYMS)
+ $(EXAMPLES) $(TESTEXES) $(DOCNODE) $(HTML) $(MAN1) $(MAN2) $(MAN3) $(EHT) $(MUSTLINK) $(EXTERNALLIBS) $(TARG_HDRSYMS) \
+ $(TARG_PKGCONFIG)
 
 prebuildstep:
 ifdef PREBUILDSTEP
@@ -614,7 +634,6 @@ ifdef POSTBUILDSTEP
 else
 	@true;
 endif
-
 
 ifdef FULLCHECKING
 cheadbuild: build_subdirs $(TARG_HDRCERTS)
@@ -691,6 +710,7 @@ ifneq ($(strip $(TARG_NESTED)),)
 else
 	@true
 endif
+
 
 ###########################
 # Source header files.
@@ -1260,12 +1280,16 @@ $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SO
   ifdef MUSTLINK
 	$(SHOWIT)echo 'EXELIB := $(MLOBJPATH) $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
   endif
+  ifdef USES_PKGCONFIG_EXELIB
+	$(SHOWIT)echo 'EXELIB := $(USES_PKGCONFIG_EXELIB)  $$(EXELIB)' >> $(INST_LIBDEF)/$(@F) ;
+	$(SHOWIT)echo 'INCLUDES += $(USES_PKGCONFIG_INCLUDES) ' >> $(INST_LIBDEF)/$(@F) ;
+  endif	
   ifdef EXTPACKAGE
         $(SHOWIT)echo 'INCLUDES := -I$$(INSTALLHOME)\include\$(PACKAGE) $$(INCLUDES) '
         $(SHOWIT)echo 'ifneq ($(BASE_VAR),none)' ;
         $(SHOWIT)echo ' INCLUDES := -I$$(BASE_INC)\$(PACKAGE) $$(INCLUDES)' ;
         $(SHOWIT)echo 'endif' ;
-  endif
+  endif  
   ifdef REQUIRES	
 	$(SHOWIT)echo 'endif' >> $(INST_LIBDEF)/$(@F)
   endif	
@@ -1273,6 +1297,26 @@ $(INST_LIBDEF)/$(LOCAL_DEFBASE).def: defs.mk $(INST_LIBDEF)/.dir $(HEADERS) $(SO
 	$(CHMOD) 444 $(INST_LIBDEF)/$(@F)
  endif
 endif
+
+###########################
+# Generate pkgconfig file
+
+# Using the pkgconfig requires needs to be smarter as we need to ensure the contents of all .def
+# files are converted so its disabled for now
+
+$(INST_PKGCONFIG)/%.pc : defs.mk $(INST_PKGCONFIG)/.dir
+	$(SHOWIT)echo "--- Creating $(INST_PKGCONFIG)/$(@F) "; 
+	$(SHOWIT)echo "prefix=$(PROJECT_OUT)" >  $(INST_PKGCONFIG)/$(@F);
+	$(SHOWIT)echo "Name: $(PLIB)" >  $(INST_PKGCONFIG)/$(@F);
+	$(SHOWIT)echo "Description: Generated from $(PWD)/defs.mk by RAVL QMake " >> $(INST_PKGCONFIG)/$(@F);
+ifdef PKGCONFIG_VERSION 
+	$(SHOWIT)echo "Version: $(PKGCONFIG_VERSION) " >> $(INST_PKGCONFIG)/$(@F);
+endif
+ifndef USESPKGCONFIG
+	$(SHOWIT)echo "Requires: $(USESPKGCONFIG) " >> $(INST_PKGCONFIG)/$(@F);
+endif
+	$(SHOWIT)echo "Libs: $(LIBS) " >> $(INST_PKGCONFIG)/$(@F);
+	$(SHOWIT)echo "Cflags: $(INCLUDES)" >> $(INST_PKGCONFIG)/$(@F);
 
 ###########################
 

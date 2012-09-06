@@ -29,6 +29,9 @@ namespace RavlN {
       //! Handle event.
       virtual void Dispatch();
 
+      //! Stop handling of events.
+      virtual void Stop();
+
       //! Pointer to class
       typedef SmartPtrC<SocketDispatchTriggerC> RefT;
 

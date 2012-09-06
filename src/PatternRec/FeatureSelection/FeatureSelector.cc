@@ -13,6 +13,11 @@
 
 namespace RavlN {
 
+  //: Load from XML factory
+
+  FeatureSelectorBodyC::FeatureSelectorBodyC(const XMLFactoryContextC & factory) {
+  }
+
   //: Load from stream.
   
   FeatureSelectorBodyC::FeatureSelectorBodyC(istream &strm)

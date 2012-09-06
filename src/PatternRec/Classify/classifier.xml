@@ -36,7 +36,7 @@
   <!-- Another neural network -->
   <NN2 typename="RavlN::DesignClassifierNeuralNetwork2C" numberOfLayers="3"
     numberOfHiddenUnits="128" desiredError="0.00001" maxEpochs="10000" displayEpochs="1"
-    doNormalisation="False" threads="8"
+    doNormalisation="False" threads="8" regularisation="0.0" useSigmoidOnOutput="false"
     >
     <Optimiser typename="RavlN::OptimiseConjugateGradientC" 
     iterations="500" useAbsoluteCostForTolerance="true" tolerance="1e-4" brentIterations="6" brentTolerance="1e-2" />
@@ -50,5 +50,29 @@
       iterations="100" tolerance="1e-4" brentIterations="8" brentTolerance="1e-4" />
   </OptimiseClassifierDesign>
   
+  <Linear typename="RavlN::DesignDiscriminantFunctionC">
+  	<DesignFunction typename="RavlN::DesignFuncLSQC" order="1" orthogonal="false" />
+  </Linear>
+  
+  <Quadratic typename="RavlN::DesignDiscriminantFunctionC">
+  	<DesignFunction typename="RavlN::DesignFuncLSQC" order="2" orthogonal="false" />
+  </Quadratic>
+  
+  <BayesNormalQuadratic typename="RavlN::DesignBayesNormalQuadraticC" equalPriors="true" />
+  
+  <BayesNormalLinear typename="RavlN::DesignBayesNormalLinearC" equalPriors="true" />
+
+   <FeatureSelection typename="RavlN::FeatureSelectPlusLMinusRC" plusL="2" minusR="1" deltaError="0.001" features="10" threads="8" />
+
+   <Cascade typename="RavlN::DesignCascadeBinaryC" maxStages="25" targetFalseRejection="0.001">
+    	<Design typename="RavlN::DesignDiscriminantFunctionC">
+  			<DesignFunction typename="RavlN::DesignFuncLSQC" order="1" orthogonal="false" />
+  		</Design>
+   </Cascade>
+   
+   <CascadeLR typename="RavlN::DesignCascadeBinaryC" maxStages="25" targetFalseRejection="0.001">
+    	<Design typename="RavlN::DesignClassifierLogisticRegressionC" regularisation="0" prependUnit="true" doNormalisation="false" />
+   </CascadeLR>
+   
 
 </Config>

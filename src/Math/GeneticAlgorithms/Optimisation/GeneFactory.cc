@@ -10,6 +10,7 @@
 
 #include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/Genetic/GenomeConst.hh"
+#include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GeneTypeBool.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
@@ -170,6 +171,20 @@ namespace RavlN { namespace GeneticN {
     }
     return false;
   }
+
+  //! Get type attribute
+  const RavlN::RCAbstractC *GeneFactoryC::GetTypeAttribute(const RavlN::StringC &attrName) const {
+    if(m_path.IsEmpty())
+      return 0;
+    const GeneTypeC &geneType = m_path.Top()->Type();
+    const GeneTypeNodeC *geneTypeNode = dynamic_cast<const GeneTypeNodeC *>(&geneType);
+    if(geneTypeNode == 0) {
+      RavlWarning("Attribute asked for non-GeneTypeNodeC. '%s' ",geneType.Name().c_str());
+      return 0;
+    }
+    return geneTypeNode->GetAttribute(attrName);
+  }
+
 
   static RavlN::TypeNameC g_typeGeneFactory(typeid(GeneFactoryC),"RavlN::GeneticN::GeneFactoryC");
 

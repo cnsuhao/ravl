@@ -88,12 +88,8 @@ int main(int nargs, char **argv) {
 
     for(DataSet2IterC<SampleVectorC, SampleLabelC>it(testDataSet);it;it++) {
       VectorC confidence = classifier.Apply(it.Data1());
-      cerr << confidence << endl;
-      if(confidence.Size()==1) {
-        roc.Insert(confidence[0], it.Data2() == 0);
-      } else if(confidence.Size()==2) {
-        roc.Insert(confidence[0] - confidence[1], it.Data2() == 0);
-      }
+      RealT label0 = classifier.LabelProbability(it.Data1(), 0);
+      roc.Insert(label0, it.Data2() == 0);
     }
 
     roc.Report(resultDir);

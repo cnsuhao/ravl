@@ -231,6 +231,8 @@ namespace RavlN {
     return ret;
   }
 
+
+
   void SampleVectorC::Normalise(const MeanCovarianceC & stats) {
     if (stats.Number() < 2) {
       RavlAssertMsg(0,"Degerate stat's");
@@ -251,6 +253,14 @@ namespace RavlN {
     for (SampleIterC<VectorC> it(*this); it; it++)
       *it = (*it - stats.Mean()) * stdDev;
   }
+
+  //: Apply a function in place
+  void SampleVectorC::Normalise(const FunctionC & func) {
+    for (SampleIterC<VectorC> it(*this); it; it++) {
+      *it = func.Apply(*it);
+    }
+  }
+
 
   //: Undo the normalisation done by 'Normalise()'.
 

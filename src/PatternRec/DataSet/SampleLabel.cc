@@ -47,9 +47,10 @@ namespace RavlN {
         }
       }
     }
+
     SampleC<VectorC> ret(Size());
     for (SampleIterC<UIntT> it(*this); it; it++) {
-      VectorC vec(maxLabel+1);
+      VectorC vec(maxLabel + 1);
       vec.Fill(outClass);
       vec[*it] = inClass;
       ret.Append(vec);
@@ -68,7 +69,7 @@ namespace RavlN {
   }
   //: Map a label to a class name
 
-  bool SampleLabelC::GetClassName(UIntT label, StringC & className)
+  bool SampleLabelC::GetClassName(UIntT label, StringC & className) const
   {
     return m_label2name.Lookup(label, className);
   }

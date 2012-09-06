@@ -135,12 +135,15 @@ INST_MAN5=$(ROOTDIR)/share/man/man5
 INST_AUX=$(ROOTDIR)/$(AUXDIR)
 
 # Binaries
-
 ifndef SHAREDBUILD 
 INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)
 else 
 INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)/shared
 endif 
+
+# Put this in a place easy to pickup.
+INST_PKGCONFIG=$(INST_LIB)/pkgconfig
+
 INST_OBJS=$(WORKTMP)/objs
 INST_FORCEOBJS = $(ROOTDIR)/lib/RAVL/$(ARC)/obj
 

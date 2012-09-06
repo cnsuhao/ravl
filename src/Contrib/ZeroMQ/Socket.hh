@@ -103,7 +103,7 @@ namespace RavlN {
       //! Receive a message.
       bool Recieve(SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);
 
-      //! Send a arbitary class
+      //! Send a arbitrary class
       template<typename DataT>
       bool Send(const DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;
@@ -115,7 +115,7 @@ namespace RavlN {
         return Send(data,block);
       }
 
-      //! Send a arbitary class
+      //! Send a arbitrary class
       template<typename DataT>
       bool Recieve(DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;

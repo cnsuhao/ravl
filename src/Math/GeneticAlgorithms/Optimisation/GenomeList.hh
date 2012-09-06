@@ -207,24 +207,5 @@ namespace RavlN { namespace GeneticN {
   };
 
 
-   template<typename ClassT>
-   class RegisterGeneListC
-   {
-   public:
-     //static typename ClassT::RefT ConvertGeneFactory2Inst(const GeneFactoryC &factory)
-     //{ return new ClassT(factory); }
-
-     RegisterGeneListC(const char *nameOfType)
-     {
-       //RavlN::AddTypeName(typeid(ClassT),nameOfType);
-       //m_refName = std::string(nameOfType) + "::RefT";
-       //RavlN::AddTypeName(typeid(typename ClassT::RefT),m_refName.data());
-       //RavlN::RegisterConversion(&ConvertGeneFactory2Inst);
-     }
-
-   protected:
-     //std::string m_refName;
-   };
-
 }}
 #endif

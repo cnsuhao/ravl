@@ -724,6 +724,12 @@ namespace RavlN {
     //: Register an alias for a type. This must be done after the type is registered.
     //: Note: This is NOT thread safe.
 
+    static void ListKnownTypes(CollectionC<StringC> &types);
+    //: Generate a list of known types.
+
+    static void DumpKnownTypes(std::ostream &strm = std::cout);
+    //: Write known types to a stream.
+
     template<class DataT>
     static RCWrapAbstractC DefaultFactoryFunc(const XMLFactoryContextC &node)
     { return RCWrapC<typename DataT::RefT>(typename DataT::RefT(*new DataT(node))); }

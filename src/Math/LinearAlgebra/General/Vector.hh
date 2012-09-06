@@ -223,7 +223,7 @@ namespace RavlN {
   VectorC Log(const VectorC &z);
   //: Compute the element wise log of z.
 
-  void LogIP(const VectorC &z);
+  void LogIP(VectorC &z);
   //: Compute the element wise log of z and store the results in place.
 
   VectorC Exp(const VectorC &z);

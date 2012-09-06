@@ -11,14 +11,22 @@ DESCRIPTION = Pattern Recognition Feature Selection
 
 PACKAGE=Ravl/PatternRec
 
-HEADERS= FeatureSelector.hh FeatureSelectAsymmetricAdaBoost.hh
+MAINS= doAsymmetricAdaBoost.cc
 
-SOURCES= FeatureSelector.cc FeatureSelectAsymmetricAdaBoost.cc
+HEADERS= 	FeatureSelector.hh \
+			FeatureSelectAsymmetricAdaBoost.hh \
+			FeatureSelectPlusLMinusR.hh
+
+SOURCES= 	FeatureSelector.cc \
+			FeatureSelectAsymmetricAdaBoost.cc \
+			FeatureSelectPlusLMinusR.cc
 
 PLIB = RavlPatternRec
 
 LIBDEPS=RavlPatternRecFeatureSelection.def
 
-USESLIBS=RavlPatternRec
+USESLIBS=RavlDataSet RavlPatternRec 
+
+PROGLIBS=RavlPatternRecIO RavlFace RavlGnuPlot.opt
 
 EHT=Ravl.API.Pattern_Recognition.Feature_Selection.html

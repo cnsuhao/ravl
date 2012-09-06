@@ -195,6 +195,38 @@ namespace RavlN {
     return ret;
   }
 
+  /*
+   * Create a dataset
+   */
+  DataSetVectorLabelC CreateDataSet(UIntT dimension, UIntT classes, UIntT samplesPerClass, RealT dist)
+  {
+
+    DataSetVectorLabelC dset(classes * samplesPerClass);
+
+    // The first class has zero mean and unit covariance
+    VectorC mean(dimension);
+    mean.Fill(0.0);
+    MatrixC cov(dimension, dimension);
+    cov.Fill(0.0);
+    VectorC ones(dimension);
+    ones.Fill(1.0);
+    cov.SetDiagonal(ones);
+    SampleVectorC sv(MeanCovarianceC(samplesPerClass, mean, cov));
+    dset.Append(sv, 0);
+
+    for(UIntT label=1;label<classes;label++) {
+      /*
+       * OK just keep Euclidean distance equal between classes
+      */
+      mean += dist/Sqrt((RealT)dimension);
+      SampleVectorC sv(MeanCovarianceC(samplesPerClass, mean, cov));
+      dset.Append(sv, label);
+    }
+
+
+    return dset;
+  }
+
   RavlN::XMLFactoryRegisterHandleC<DataSetVectorLabelC> g_registerXMLFactoryDataSetVectorLabel("RavlN::DataSetVectorLabelC");
 
   void linkDataSetVectorLabel()

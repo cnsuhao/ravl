@@ -9,16 +9,16 @@ DONOT_SUPPORT=VCPP
 
 PACKAGE=Ravl/Plot
 
-MAINS = exGnuPlot.cc exGnuPlot3d.cc
+MAINS = exGnuPlot.cc exGnuPlot2d.cc exGnuPlot3d.cc exGnuPlot2dClassifier.cc
 
-HEADERS = GnuPlot.hh GnuPlot3d.hh
+HEADERS = GnuPlot2d.hh GnuPlot.hh GnuPlot3d.hh
 
-REQUIRES = GnuPlot
+REQUIRES =
 
-SOURCES = GnuPlot.cc GnuPlot3d.cc
+SOURCES = GnuPlot2d.cc GnuPlot.cc GnuPlot3d.cc
 
-PLIB = RavlPlot
+PLIB = RavlGnuPlot
 
-USESLIBS=  RavlCore RavlMath RavlOS RavlIO 
+USESLIBS=  RavlPlot RavlOS
 
-PROGLIBS= RavlExtImgIO RavlDPDisplay
+PROGLIBS= RavlExtImgIO RavlDPDisplay RavlPatternRec

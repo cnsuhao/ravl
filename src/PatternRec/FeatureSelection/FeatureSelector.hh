@@ -15,6 +15,7 @@
 
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
+#include "Ravl/XMLFactory.hh"
 
 namespace RavlN {
   
@@ -28,6 +29,9 @@ namespace RavlN {
     FeatureSelectorBodyC() {}
     //: Constructor.
     
+    FeatureSelectorBodyC(const XMLFactoryContextC & factory);
+    //: Construct from XML factory
+
     FeatureSelectorBodyC(istream &strm);
     //: Load from stream.
     
@@ -66,6 +70,12 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
+    FeatureSelectorC(const XMLFactoryContextC & factory)
+      : RCHandleVC<FeatureSelectorBodyC>(*new FeatureSelectorBodyC(factory))
+    {
+    }
+    //: Construct from XML factory
+
     FeatureSelectorC(istream &strm);
     //: Load from stream.
     

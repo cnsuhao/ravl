@@ -49,10 +49,16 @@ namespace RavlN {
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
     
-    virtual RealT Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels);
+    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
     //: Compute the error on the labelled dataset
 
-    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
+    virtual SArray1dC<RealT> ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
+    //: Compute errors on the data set by label
+
+    RealT Error(const ClassifierC & classifier, const SampleVectorC & x, const SampleLabelC & labels);
+    //: Compute the error on the labelled dataset
+
+    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features);
     //: Compute the error on the labelled dataset
 
     virtual RealT Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold);
@@ -121,10 +127,19 @@ namespace RavlN {
     //!param: dset - the labelled dataset
     //!return: the probability of mis-classification
 
+    SArray1dC<RealT> ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) {
+      return Body().ErrorByLabel(classifier, dset);
+    }
+       //: Compute errors on the data set by label
+
     RealT Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold=0)
     { return Body().Error(classifier, dset, label, threshold); }
-    //: Compute the error on the labelled dataset and a 2 class classifier if label at or below specified threshold
+    //: Compute the error on the labelled data set and a 2 class classifier if label at or below specified threshold
     
+    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features) {
+      return Body().Error(classifier, dset, features);
+    }
+    //: Compute the error on the data set only using features specified
     
   };
   

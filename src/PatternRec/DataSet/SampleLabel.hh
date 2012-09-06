@@ -62,7 +62,7 @@ namespace RavlN {
       bool SetClassName(UIntT label, const StringC & className);
       //: Map a label to a class name
 
-      bool GetClassName(UIntT label, StringC & className);
+      bool GetClassName(UIntT label, StringC & className) const;
       //: Get a class name
 
       const RCHashC<UIntT, StringC> & Label2ClassNames() const {

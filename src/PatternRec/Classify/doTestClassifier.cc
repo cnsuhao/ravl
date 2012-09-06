@@ -84,6 +84,10 @@ int main(int nargs, char **argv) {
     // Lets get error on the test data set
     ErrorC error;
     RealT pmc = error.Error(classifier, testDataSet);
+    SArray1dC<RealT>labelErrors = error.ErrorByLabel(classifier, testDataSet);
+    for(SArray1dIterC<RealT>it(labelErrors);it;it++) {
+      RavlInfo("Label %s has error %0.4f", StringOf(it.Index()).data(), *it);
+    }
     RavlInfo( "The probability of miss-classification is %0.4f ", pmc);
 
   } catch (const RavlN::ExceptionC &exc) {
