@@ -55,7 +55,7 @@ namespace RavlN {
     {
     public:
       //! Construct a new socket.
-      SocketC(ContextC &context,SocketTypeT socketType);
+      SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec = "");
 
       //! Factory constructor
       SocketC(const XMLFactoryContextC &context);

@@ -72,8 +72,9 @@ namespace RavlN {
 
 
     //! Construct a new socket.
-    SocketC::SocketC(ContextC &context,SocketTypeT socketType)
+    SocketC::SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec)
      : m_socket(0),
+       m_defaultCodec(codec),
        m_verbose(false)
     {
       m_socket = zmq_socket(context.RawContext(),(int) socketType);
