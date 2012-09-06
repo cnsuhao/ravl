@@ -129,6 +129,10 @@ namespace RavlN {
         return true;
       }
 
+      //! Access default codec for socket
+      const StringC &DefaultCodec() const
+      { return m_defaultCodec; }
+
       //! Access the raw socket.
       void *RawSocket()
       { return m_socket; }

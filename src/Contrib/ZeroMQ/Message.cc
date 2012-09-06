@@ -55,6 +55,14 @@ namespace RavlN {
       Push(arr);
     }
 
+    //! Push a string.
+    void MessageC::Push(const RavlN::StringC &msg) {
+      SArray1dC<char> arr(MsgBufferC((size_t) msg.Size()),msg.Size());
+      if(arr.Size() > 0)
+        memcpy(arr.ReferenceElm(),&msg[0],msg.size());
+      Push(arr);
+    }
+
     //! Push contents of another message onto the end of this one.
     void MessageC::Push(const MessageC &msg) {
       //m_parts.reserve(msg.)
