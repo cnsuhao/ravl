@@ -403,7 +403,7 @@ endif
 # PKGCONFIG stuff
 
 ifdef USESPKGCONFIG
-  USES_PKGCONFIG_EXELIB = $(shell pkg-config $(USESPKGCONFIG) --libs $(EXELIB) )
+  USES_PKGCONFIG_EXELIB = $(shell pkg-config $(USESPKGCONFIG) --libs )
   USES_PKGCONFIG_INCLUDES = $(shell pkg-config $(USESPKGCONFIG) --cflags )
   INCLUDES += $(USES_PKGCONFIG_INCLUDES)
   EXELIB += $(USES_PKGCONFIG_EXELIB)
