@@ -87,7 +87,7 @@ namespace RavlN {
 
     //! Factory constructor
     SocketC::SocketC(const XMLFactoryContextC &context)
-     : m_name(context.Path().data()),
+     : m_name(context.Path()),
        m_socket(0),
        m_defaultCodec(context.AttributeString("defaultCodec","")),
        m_verbose(context.AttributeBool("verbose",false))
@@ -172,6 +172,10 @@ namespace RavlN {
       RavlAssertMsg(0,"not supported");
       return false;
     }
+
+    //! Set name for socket, used in debugging
+    void SocketC::SetName(const RavlN::StringC &name)
+    { m_name = name; }
 
     //! Bind to an address
     void SocketC::Bind(const std::string &addr)
@@ -341,7 +345,10 @@ namespace RavlN {
           RavlError("RCVMORE failed : %s ",zmq_strerror (anErrno));
           throw ExceptionOperationFailedC("Recv failed. ");
         }
-        zmq_msg_close(&zmsg);
+        if((ret = zmq_msg_close(&zmsg)) != 0) {
+          int anErrno = zmq_errno();
+          RavlWarning("close failed : %s ",zmq_strerror (anErrno));
+        }
 
         if((ret = zmq_getsockopt (m_socket, ZMQ_RCVMORE, &more, &more_size)) != 0) {
           int anErrno = zmq_errno();
@@ -395,7 +402,10 @@ namespace RavlN {
           return false;
 #endif
         }
-        zmq_msg_close(&zmsg);
+        if((ret = zmq_msg_close(&zmsg)) != 0) {
+          int anErrno = zmq_errno();
+          RavlWarning("Failed to close message: %s ",zmq_strerror (anErrno));
+        }
       }
       return true;
     }

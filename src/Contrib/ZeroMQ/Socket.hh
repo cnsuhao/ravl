@@ -63,6 +63,9 @@ namespace RavlN {
       //! Destructor
       ~SocketC();
 
+      //! Set name for socket, used in debugging
+      void SetName(const RavlN::StringC &name);
+
       //! Write to an ostream
       bool Save(std::ostream &strm) const;
 
@@ -141,7 +144,7 @@ namespace RavlN {
       typedef SmartPtrC<SocketC> RefT;
     protected:
 
-      std::string m_name;
+      RavlN::StringC m_name;
       void *m_socket;
       StringC m_defaultCodec;
       bool m_verbose;
