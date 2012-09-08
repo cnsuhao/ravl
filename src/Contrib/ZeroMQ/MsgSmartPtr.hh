@@ -28,13 +28,17 @@ namespace RavlN {
       static ClassT *MsgValue(SArray1dC<char> &msg)
       {
         MsgBufferBodyC *msgBuff = dynamic_cast<MsgBufferBodyC *>(msg.Buffer().BodyPtr());
-        return reinterpret_cast<ClassT *>(zmq_msg_data(msgBuff->Msg()));
+        ClassT *ret = reinterpret_cast<ClassT *>(zmq_msg_data(msgBuff->Msg()));
+        RavlAssert(ret == 0 || ret->References() > 0);
+        return ret;
       }
 
       //! Access contained class.
       static ClassT *MsgValue(zmq_msg_t &msg)
       {
-        return reinterpret_cast<ClassT *>(zmq_msg_data(&msg));
+        ClassT *ret = reinterpret_cast<ClassT *>(zmq_msg_data(&msg));
+        RavlAssert(ret == 0 || ret->References() > 0);
+        return ret;
       }
 
       //! Turn a class pointer into something that looks like an array.
@@ -49,6 +53,8 @@ namespace RavlN {
       static void ZmqFreeFn(void *data,void *hint) {
         ClassT *theClass = reinterpret_cast<ClassT *>(data);
         if(theClass != 0) {
+          // This will be picked up anyway, but make it clearer what's the problem
+          RavlAssert(theClass->References() > 0);
           if(!theClass->DecRefCounter())
             delete theClass;
         }
