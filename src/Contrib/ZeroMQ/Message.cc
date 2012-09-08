@@ -95,4 +95,16 @@ namespace RavlN {
       m_parts.pop_back();
     }
 
+    //! Pop a message
+    void MessageC::Pop(RavlN::StringC &str) {
+      SArray1dC<char> &part = m_parts.back();
+      //RavlDebug("Got part:%zu ",part.Size().V());
+      if(part.Size() == 0) {
+        str = RavlN::StringC();
+      } else {
+        str = RavlN::StringC(&part[0],part.Size().V());
+      }
+      m_parts.pop_back();
+    }
+
 }}

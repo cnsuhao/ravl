@@ -59,6 +59,9 @@ namespace RavlN {
       //! Pop a message
       void Pop(std::string &str);
 
+      //! Pop a message
+      void Pop(RavlN::StringC &str);
+
       //! Access next array to pop.
       SArray1dC<char> &Top()
       { return m_parts.back(); }
