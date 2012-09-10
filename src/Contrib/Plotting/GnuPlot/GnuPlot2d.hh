@@ -22,6 +22,8 @@ namespace RavlN {
     GnuPlot2dC(const StringC & title = "My Plot");
     //: Construct with a set number of plots
 
+    using Plot2dC::Plot;
+
     virtual bool Plot(const SArray1dC<Point2dC> & points, const StringC & dataName = "");
     //: Plot all points on a graph
 
@@ -39,6 +41,9 @@ namespace RavlN {
 
     virtual bool Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1=0, UIntT feature2=1);
     //: Plot right/wrong decisions by classifier
+
+    virtual bool Plot(const FunctionC & function, const VectorC & min, const VectorC & max);
+    //: Plot a function between min and max
 
     virtual bool SetXLabel(const StringC & xlabel);
     //: Set the x-label
@@ -71,6 +76,10 @@ namespace RavlN {
     RealRangeC m_yrange;
 
   };
+
+  Plot2dC::RefT CreatePlot2d_gnuplot(const StringC & name);
+  //: The hook used to replace the Ravl EigenVectors function
+
 
 } /* namespace RavlN */
 #endif /* PLOT2D_HH_ */

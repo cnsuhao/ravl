@@ -55,6 +55,14 @@ namespace RavlN {
       Push(arr);
     }
 
+    //! Push a string.
+    void MessageC::Push(const RavlN::StringC &msg) {
+      SArray1dC<char> arr(MsgBufferC((size_t) msg.Size()),msg.Size());
+      if(arr.Size() > 0)
+        memcpy(arr.ReferenceElm(),&msg[0],msg.size());
+      Push(arr);
+    }
+
     //! Push contents of another message onto the end of this one.
     void MessageC::Push(const MessageC &msg) {
       //m_parts.reserve(msg.)
@@ -83,6 +91,18 @@ namespace RavlN {
         str = std::string();
       } else {
         str = std::string(&part[0],part.Size().V());
+      }
+      m_parts.pop_back();
+    }
+
+    //! Pop a message
+    void MessageC::Pop(RavlN::StringC &str) {
+      SArray1dC<char> &part = m_parts.back();
+      //RavlDebug("Got part:%zu ",part.Size().V());
+      if(part.Size() == 0) {
+        str = RavlN::StringC();
+      } else {
+        str = RavlN::StringC(&part[0],part.Size().V());
       }
       m_parts.pop_back();
     }

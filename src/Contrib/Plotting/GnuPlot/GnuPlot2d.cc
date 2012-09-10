@@ -163,6 +163,7 @@ namespace RavlN {
     }
 
     // have to find min max
+
     RealRangeC xrange(RavlConstN::maxReal, -RavlConstN::maxReal);
     RealRangeC yrange(RavlConstN::maxReal, -RavlConstN::maxReal);
     for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dataSet); it; it++) {
@@ -171,8 +172,10 @@ namespace RavlN {
       yrange.Min() = Min(yrange.Min(), it.Data1()[fv2]);
       yrange.Max() = Max(yrange.Max(), it.Data1()[fv2]);
     }
-    SetXRange(xrange);
-    SetYRange(yrange);
+    if(!m_xrange.IsValid())
+      SetXRange(xrange);
+    if(!m_yrange.IsValid())
+      SetYRange(yrange);
     //: Plot a function
 
     FilenameC tmpFile = "/tmp/data";
@@ -219,7 +222,7 @@ namespace RavlN {
     SampleVectorC sv = dataSet.Sample1();
     VectorC first = sv.First();
 
-    if(feature1 >= sv.Size() || feature2 >= sv.Size()) {
+    if (feature1 >= sv.Size() || feature2 >= sv.Size()) {
       RavlError("Requested feature index larger than dimension of data set");
       return false;
     }
@@ -267,6 +270,44 @@ namespace RavlN {
     cmd.form("set palette rgbformulae -7,2,-7");
     Command(cmd);
     cmd.form("plot \'%s\' using 1:2:3 with image, \'%s\' using 1:2:3 with labels notitle", tmpFile.data(), tmpFileData.data());
+    Command(cmd);
+
+    return true;
+  }
+
+  /*
+   * Plot a function between min and max
+   */
+  bool GnuPlot2dC::Plot(const FunctionC & function, const VectorC & min, const VectorC & max)
+  {
+    if (min.Size() != 2 || max.Size() != 2) {
+      RavlError("Dimension not supported yet!");
+      return false;
+    }
+
+    if(function.OutputSize() != 1) {
+      RavlError("Output dimension not equal to 1");
+      return false;
+    }
+
+    FilenameC tmpFile = "/tmp/data";
+    tmpFile = tmpFile.MkTemp(6, -1);
+    OStreamC os(tmpFile);
+
+    for (RealT d2 = min[1]; d2 < max[1]; d2 += (max[1] - min[1]) / 50.0) {
+      for (RealT d1 = min[0]; d1 < max[0]; d1 += (max[0] - min[0]) / 50.0) {
+        VectorC v(2);
+        v[0] = d1;
+        v[1] = d2;
+        os << d1 << ' ' << d2 << ' ' << function.Apply(v)[0] << '\n';
+      }
+      os << '\n';
+    }
+
+    StringC cmd;
+    cmd.form("set pm3d at b");
+    Command(cmd);
+    cmd.form("splot \'%s\' with lines notitle", tmpFile.data());
     Command(cmd);
 
     return true;
@@ -358,7 +399,7 @@ namespace RavlN {
 
   bool GnuPlot2dC::Command(const StringC & command)
   {
-    RavlInfo("gnuplot: '%s'", command.data());
+    //RavlInfo("gnuplot: '%s'", command.data());
     m_gnuPlot.StdIn() << command << endl;
     return false;
   }
@@ -367,5 +408,24 @@ namespace RavlN {
   {
     m_gnuPlot.StdIn().os().flush();
   }
+
+
+  /*
+   * Stuff to make gnuplot get used if it is linked in
+   */
+  Plot2dC::RefT CreatePlot2d_gnuplot(const StringC & title) {
+    return new GnuPlot2dC(title);
+  }
+
+
+  int GnuPlotInit()
+  {
+    RavlDebug("Using GnuPlot for plotting");
+    g_createPlot2d = &CreatePlot2d_gnuplot;
+    return 0;
+  }
+
+  static int a = GnuPlotInit();
+
 
 } /* namespace RavlN */
