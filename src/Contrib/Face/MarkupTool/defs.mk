@@ -12,7 +12,7 @@
 #    * NESTED Subdirectories to compile.
 #! file="OmniSoft/Applications/WhoFIT/defs.mk"
 
-REQUIRES=RLog GnuPlot
+REQUIRES=RLog
 
 PACKAGENAME = RavlFace
 
