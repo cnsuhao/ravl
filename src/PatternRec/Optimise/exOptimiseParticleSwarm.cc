@@ -78,13 +78,13 @@ int main(int nargs, char **argv)
   startX.Fill(0.0);
   ParametersC parameters(minP, maxP, steps);
   parameters.SetConstP(startX);
-  VectorC targetX(d); // known minimum for above functions
+
+  VectorC targetX(1); // known minimum for above functions
   targetX.Fill(0.0);
   CostC cost = CostFunctionC(parameters, targetX, func, DistanceEuclideanC());
 
   OptimiseParticleSwarmC optimiseParticleSwarm(n, omega, phiP, phiG, maxIter, term);
   VectorC X = optimiseParticleSwarm.MinimalX(cost);
   RavlInfo("PSO Solution '%s' End Cost %0.4f ", StringOf(X).data(), cost.Cost(X));
-
   return 0;
 }
