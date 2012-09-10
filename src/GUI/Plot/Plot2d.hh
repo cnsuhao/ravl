@@ -17,6 +17,7 @@
 #include "Ravl/Image/ByteRGBValue.hh"
 #include "Ravl/RealRange1d.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
+#include "Ravl/PatternRec/SampleVector.hh"
 #include "Ravl/PatternRec/Function.hh"
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/LineABC2d.hh"
@@ -48,7 +49,13 @@ namespace RavlN {
     virtual bool Plot(const DataSetVectorLabelC & dataSet, UIntT feature1 = 0, UIntT feature2 = 1, UIntT samplesPerClass = 0);
     //: Make a scatter plot of the data
 
+    bool Plot(const SampleVectorC & sample, UIntT feature1 = 0, UIntT feature2 = 1, UIntT samples = 0);
+    //: Make a scatter plot of the data
+
     virtual bool Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1 = 0, UIntT feature2 = 1);
+    //: Plot right/wrong decisions made by a classifier
+
+    virtual bool Plot(const FunctionC & function, const VectorC & min, const VectorC & max);
     //: Plot right/wrong decisions made by a classifier
 
     virtual bool SetXLabel(const StringC & xlabel);
@@ -82,6 +89,15 @@ namespace RavlN {
 
 
   };
+
+  extern Plot2dC::RefT (*g_createPlot2d)(const StringC & title);
+
+  //! userlevel=Develop
+  inline Plot2dC::RefT CreatePlot2d(const StringC & title) {
+    return g_createPlot2d(title);
+  }
+
+
 
 } /* namespace RavlN */
 #endif /* PLOT2D_HH_ */

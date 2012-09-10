@@ -26,6 +26,7 @@
 #include "Ravl/PatternRec/DesignDiscriminantFunction.hh"
 #include "Ravl/PatternRec/DesignFuncLSQ.hh"
 #include "Ravl/PatternRec/DesignClassifierNeuralNetwork2.hh"
+#include "Ravl/PatternRec/TestFunctions.hh"
 
 using namespace RavlN;
 
@@ -42,7 +43,6 @@ int exGnuPlot(int nargs, char *args[])
   for (SArray1dIterC<CollectionC<Point2dC> > it(points); it; it++) {
     it.Data() = CollectionC<Point2dC>(25);
   }
-
 
   RCHashC<StringC, CollectionC<Point2dC> > allPoints;
   allPoints.Insert("sin(x)", points[0]);
@@ -69,7 +69,6 @@ int exGnuPlot(int nargs, char *args[])
   plot0a.Plot(allPoints);
   plot0a.SetOutput("graph.png");
   plot0a.Plot(allPoints);
-
 
   GnuPlot2dC plot1("Cos(x)");
   plot1.SetLineStyle("lines");
@@ -114,7 +113,6 @@ int exGnuPlot(int nargs, char *args[])
   GnuPlot2dC scatterPlot3("Scaled Iris Data");
   scatterPlot3.Plot(iris, 0, 1);
 
-
   LineABC2dC line(2, -1, 1); // i.e. y = 2x + 1
   GnuPlot2dC linePlot("y=2x + 1");
   linePlot.SetLineStyle("line");
@@ -127,6 +125,12 @@ int exGnuPlot(int nargs, char *args[])
   GnuPlot2dC plot2("My Function");
   plot2.SetXRange(RealRangeC(0, 1.0));
   plot2.Plot((StringC)"2 * x + 1");
+
+  FunctionGriewankC func(2);
+  VectorC min(-200.0, -200.0);
+  VectorC max(200.0, 200.0);
+  GnuPlot2dC plotGriewank("Griewank Function");
+  plotGriewank.Plot(func, min, max);
 
   return 0;
 }
