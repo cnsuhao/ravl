@@ -25,7 +25,8 @@ HEADERS = 	Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh SampleDiscrete
 		FunctionCascade.hh \
 		SampleStreamVectorLabel.hh \
 		DataSetIO.hh \
-		FieldInfo.hh
+		FieldInfo.hh \
+		TestFunctions.hh
 
 SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		Function.cc Function1.cc Designer.cc DesignFunctionUnsupervised.cc DesignFunctionSupervised.cc \
@@ -37,19 +38,20 @@ SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
 		SampleStreamVectorLabel.cc \
 		SampleIO.cc \
 		DataSetIO.cc \
-		FieldInfo.cc 
+		FieldInfo.cc \
+		TestFunctions.cc
 
-MAINS = doDataSet.cc
+MAINS = doDataSet.cc exPlotTestFunctions.cc
 
 PLIB = RavlDataSet
 
-EXAMPLES = exSample.cc exSampleStream.cc
+EXAMPLES = exSample.cc exSampleStream.cc 
 
 TESTEXES=testDataSet.cc testDataSetXMLFactory.cc
 
 USESLIBS=RavlCore RavlMath RavlOSIO RavlIO fann RavlXMLFactory RavlMathIO 
 
-PROGLIBS=RavlOS RavlPatternRecIO
+PROGLIBS=RavlOS RavlPatternRecIO RavlGnuPlot.opt
 
 EHT=Ravl.API.Pattern_Recognition.Data_Set.html
 
