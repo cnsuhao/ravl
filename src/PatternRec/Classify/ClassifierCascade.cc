@@ -90,7 +90,8 @@ namespace RavlN {
   
   UIntT ClassifierCascadeBodyC::Classify(const VectorC &data) const
   {
-    return Apply(data).MaxIndex().V();
+    VectorC v = Apply(data);
+    return v.MaxIndex().V();
   }
   
   //: Estimate the confidence for each label.

@@ -27,7 +27,7 @@ namespace RavlN {
     DesignCascadeBinaryBodyC(const DesignClassifierSupervisedC & classifier,
         const FeatureSelectorC & featureSelector,
         UIntT maxStages,
-        RealT targetFalseRejection);
+        RealT targetErrorRate);
     //: Constructor.
 
     DesignCascadeBinaryBodyC(const XMLFactoryContextC & factory);
@@ -51,7 +51,7 @@ namespace RavlN {
   protected:
     FeatureSelectorC m_featureSelector;
     UIntT m_maxStages;
-    RealT m_targetFalseRejection;
+    RealT m_targetErrorRate;
   };
   
   //! userlevel=Normal
@@ -69,8 +69,8 @@ namespace RavlN {
     DesignCascadeBinaryC(const DesignClassifierSupervisedC & classifier,
         const FeatureSelectorC & featureSelector,
         UIntT maxStages = 100,
-        RealT targetFalseRejection = 0.001) :
-        DesignCascadeC(*new DesignCascadeBinaryBodyC(classifier, featureSelector, maxStages, targetFalseRejection))
+        RealT targetErrorRate = 0.01) :
+        DesignCascadeC(*new DesignCascadeBinaryBodyC(classifier, featureSelector, maxStages, targetErrorRate))
     {
     }
     //: Create a new designer.

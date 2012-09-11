@@ -22,6 +22,7 @@
 #include "Ravl/PatternRec/FuncSubset.hh"
 #include "Ravl/PatternRec/ErrorBinaryClassifier.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/Plot/GnuPlot2d.hh"
 
 using namespace RavlN;
 
@@ -134,11 +135,8 @@ int main(int nargs, char **argv)
   ClassifierC classifier = design.Apply(trainingDataSet, validationDataSet);
 
   ErrorC error;
-  SArray1dC<RealT> pmc = error.ErrorByLabel(classifier, trainingDataSet);
-  SArray1dC<RealT> pmc2 = error.ErrorByLabel(classifier, validationDataSet);
-  for (SArray1dIter2C<RealT, RealT> it(pmc, pmc2); it; it++) {
-    RavlInfo( "Label '%s', training set error %0.4f and validation set error %0.4f", StringOf(it.Index()).data(), it.Data1(), it.Data2());
-  }
+  SArray1dC<RealT>errorByLabel = error.ErrorByLabel(classifier, validationDataSet);
+  RavlInfo("Validation Data FA = %0.4f FR = %0.4f", errorByLabel[0], errorByLabel[1]);
 
   // If we have normalised the sample we need to make sure
   // all input data to classifier is normalised by same statistics
