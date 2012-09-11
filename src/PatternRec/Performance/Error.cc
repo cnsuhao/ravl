@@ -79,7 +79,7 @@ namespace RavlN {
     for(DataSet2IterC<SampleVectorC, SampleLabelC>it(dset);it;it++) {
       UIntT label = classifier.Classify(it.Data1());
       if(label!=it.Data2()) {
-        errors[label]++;
+        errors[it.Data2()]++;
       }
     }
     for(SArray1dIter2C<RealT, UIntT>it(errors, dset.Sample2().LabelSums());it;it++) {
