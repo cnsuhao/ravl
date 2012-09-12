@@ -231,6 +231,9 @@ INST_MAN5=$(ROOTDIR)/share/man/man5
 # Auxilary files.
 INST_AUX=$(ROOTDIR)/$(AUXDIR)
 
+# Put this in a place easy to pickup.
+INST_PKGCONFIG=$(INST_LIB)/pkgconfig
+
 # Binaries
 
 INST_LIB=$(ROOTDIR)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)
