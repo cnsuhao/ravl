@@ -9,11 +9,8 @@ DONOT_SUPPORT=VCPP
 
 PACKAGE=Ravl/Plot
 
-MAINS = exGnuPlot.cc \
-		exGnuPlot2d.cc \
-		exGnuPlot3d.cc \
-		exGnuPlot2dClassifier.cc \
-		exGnuPlotTestFunctions.cc
+MAINS = exGnuPlot.cc exGnuPlot2d.cc exGnuPlot3d.cc exGnuPlot2dClassifier.cc \
+ exGnuPlotTestFunctions.cc
 
 HEADERS = GnuPlot2d.hh GnuPlot.hh GnuPlot3d.hh
 

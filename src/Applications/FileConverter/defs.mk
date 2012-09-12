@@ -12,12 +12,13 @@ DESCRIPTION= General purpose file converter.
 MAINS = conv.cc
 
 USESLIBS= RavlCore RavlOSIO RavlImage RavlOS RavlImageIO RavlVideoIO  \
-	 Ravl3DIO RavlMathIO
+ Ravl3DIO RavlMathIO
 
-PROGLIBS= RavlDPDisplay.opt RavlDPDisplay3d.opt RavlExtImgIO.opt RavlDV.opt RavlImgIOV4L.opt  \
- RavlPatternRecIO CSPDriver.opt RavlURLIO.opt RavlDevAudio.opt RavlAudioFile.opt \
- RavlDMeda.opt RavlImgIOMeteor1.opt RavlDPGraph.opt RavlAudioIO.opt \
- RavlImgIO1394dc.opt RavlLibMPEG2.opt  RavlImgIOJasper.opt RavlLibFFmpeg.opt RavlRawVidIO.opt
+PROGLIBS= RavlDPDisplay.opt RavlDPDisplay3d.opt RavlExtImgIO.opt RavlDV.opt \
+ RavlImgIOV4L.opt RavlPatternRecIO CSPDriver.opt RavlURLIO.opt \
+ RavlDevAudio.opt RavlAudioFile.opt RavlDMeda.opt RavlImgIOMeteor1.opt \
+ RavlDPGraph.opt RavlAudioIO.opt RavlImgIO1394dc.opt RavlLibMPEG2.opt \
+ RavlImgIOJasper.opt RavlLibFFmpeg.opt RavlRawVidIO.opt
 #RavlMPEG2.opt
 
 #EHT = execonv.eht

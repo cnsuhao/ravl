@@ -11,35 +11,25 @@ DESCRIPTION = Basic parts of the Pattern Recognition library.
 
 PACKAGE = Ravl/PatternRec
 
-HEADERS = 	Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh SampleDiscrete.hh \
-		DataSetBase.hh \
-		DataSet1.hh DataSet1Iter.hh DataSet2.hh DataSet2Iter.hh \
-		DataSet3.hh DataSet3Iter.hh DataSet4.hh DataSet4Iter.hh SampleIO.hh \
-		Function.hh Function1.hh Designer.hh DesignFunctionUnsupervised.hh DesignFunctionSupervised.hh \
-		VectorLabelIO.hh DataSetVectorLabel.hh DataSetVectorLabelWeight.hh SampleStream.hh SampleStreamVector.hh \
-		SampleVectorFloat.hh SampleStreamVectorFloat.hh SampleReal.hh SampleStreamFromSample.hh \
-		ProcessVectorFunction.hh \
-		ProcessVectorLabelFunction.hh \
-		FunctionSlice.hh \
-		FunctionConcatenate.hh \
-		FunctionCascade.hh \
-		SampleStreamVectorLabel.hh \
-		DataSetIO.hh \
-		FieldInfo.hh \
-		TestFunctions.hh
+HEADERS =  Sample.hh SampleIter.hh SampleVector.hh SampleLabel.hh \
+ SampleDiscrete.hh DataSetBase.hh DataSet1.hh DataSet1Iter.hh DataSet2.hh \
+ DataSet2Iter.hh DataSet3.hh DataSet3Iter.hh DataSet4.hh DataSet4Iter.hh \
+ SampleIO.hh Function.hh Function1.hh Designer.hh \
+ DesignFunctionUnsupervised.hh DesignFunctionSupervised.hh VectorLabelIO.hh \
+ DataSetVectorLabel.hh DataSetVectorLabelWeight.hh SampleStream.hh \
+ SampleStreamVector.hh SampleVectorFloat.hh SampleStreamVectorFloat.hh \
+ SampleReal.hh SampleStreamFromSample.hh ProcessVectorFunction.hh \
+ ProcessVectorLabelFunction.hh FunctionSlice.hh FunctionConcatenate.hh \
+ FunctionCascade.hh SampleStreamVectorLabel.hh DataSetIO.hh FieldInfo.hh \
+ TestFunctions.hh
 
-SOURCES = 	SampleVector.cc SampleLabel.cc DataSetBase.cc \
-		Function.cc Function1.cc Designer.cc DesignFunctionUnsupervised.cc DesignFunctionSupervised.cc \
-		VectorLabelIO.cc DataSetVectorLabel.cc SampleStreamVector.cc DataSetVectorLabelWeight.cc \
-		SampleVectorFloat.cc SampleStreamVectorFloat.cc SampleReal.cc \
-		FunctionSlice.cc \
-		FunctionConcatenate.cc \
-		FunctionCascade.cc \
-		SampleStreamVectorLabel.cc \
-		SampleIO.cc \
-		DataSetIO.cc \
-		FieldInfo.cc \
-		TestFunctions.cc
+SOURCES =  SampleVector.cc SampleLabel.cc DataSetBase.cc Function.cc \
+ Function1.cc Designer.cc DesignFunctionUnsupervised.cc \
+ DesignFunctionSupervised.cc VectorLabelIO.cc DataSetVectorLabel.cc \
+ SampleStreamVector.cc DataSetVectorLabelWeight.cc SampleVectorFloat.cc \
+ SampleStreamVectorFloat.cc SampleReal.cc FunctionSlice.cc \
+ FunctionConcatenate.cc FunctionCascade.cc SampleStreamVectorLabel.cc \
+ SampleIO.cc DataSetIO.cc FieldInfo.cc TestFunctions.cc
 
 MAINS = doDataSet.cc exPlotTestFunctions.cc
 

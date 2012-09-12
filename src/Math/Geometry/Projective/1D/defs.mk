@@ -15,7 +15,7 @@ PACKAGE=Ravl
 NESTED = 
 
 #  MAINS = all modules containing the main function separated by space.
-MAINS	   = 
+MAINS = 
 
 # SOURCES = all C modules, not containing main separated by space. The compiled
 #   code of these modules is stored in the project library.
@@ -25,7 +25,7 @@ SOURCES   = PPoint1d.cc PProjection1d.cc
 HEADERS = PPoint1d.hh  PProjection1d.hh   
 
 # PLIB = the project library ... where the objects will be archived
-PLIB	= RavlMath
+PLIB = RavlMath
 
 LIBDEPS = RavlMathProj1d.def
 

@@ -17,27 +17,17 @@ PACKAGE=Ravl
 NESTED = 
 
 #  MAINS = all modules containing the main function separated by space.
-MAINS	   = 
+MAINS = 
 
 # SOURCES = all C modules, not containing main separated by space. The compiled
 #   code of these modules is stored in the project library.
-SOURCES   =  PPointPlane3d.cc  \
-             PPoint3d.cc \
-             PPlane3d.cc \
-             PProjection3d.cc  \
-             PPerspective3d.cc \
-	     PLinePV3d.cc \
-             FitPPlane3d.cc \
-	     PPoint3dAffine.cc
+SOURCES   =  PPointPlane3d.cc PPoint3d.cc PPlane3d.cc PProjection3d.cc  \
+ PPerspective3d.cc PLinePV3d.cc FitPPlane3d.cc PPoint3dAffine.cc
 
 
 # HEADERS = all include files of this project to be exported
-HEADERS =    PPointPlane3d.hh   \
-             PPoint3d.hh  \
-             PPlane3d.hh  \
-             PProjection3d.hh   \
-             PPerspective3d.hh \
-	     PLinePV3d.hh
+HEADERS =    PPointPlane3d.hh PPoint3d.hh PPlane3d.hh PProjection3d.hh \
+ PPerspective3d.hh PLinePV3d.hh
 
 # PLIB = the project library ... where the objects will be archived
 PLIB = RavlMath
