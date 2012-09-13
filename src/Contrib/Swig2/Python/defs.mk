@@ -18,8 +18,8 @@ PLIB=RavlPythonSwig2
 SINGLESO=_RavlSwigPython2
 
 USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO \
-		RavlExtImgIO Python RavlNet RavlOSIO RavlDataSet RavlPatternRec RavlPatternRecIO \
-		RavlGnuPlot RavlSVM
+ RavlExtImgIO Python RavlNet RavlOSIO RavlDataSet RavlPatternRec \
+ RavlPatternRecIO RavlGnuPlot RavlSVM
 
 PROGLIBS=RavlMath
 
@@ -29,9 +29,5 @@ AUXDIR=/share/Python
 
 AUXFILES=Ravl.py
 
-SCRIPTS=	test.py \
-			testVectorMatrix.py \
-			testPatternRec.py \
-			testSVM.py \
-			testReduce.py \
-			testFeatureSelect.py
+SCRIPTS= test.py testVectorMatrix.py testPatternRec.py testSVM.py \
+ testReduce.py testFeatureSelect.py

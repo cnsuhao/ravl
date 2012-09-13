@@ -10,32 +10,26 @@ PACKAGE      = Ravl/Lapack
 
 DESCRIPTION  = RAVL wrapper around Lapack library
 
-REQUIRES 	= LAPACK
+REQUIRES = LAPACK
 #SUPPORT_ONLY = linux
 
 #MAINS        = simpletest.cc
 
-HEADERS      = ev_c.hh   \
-               blas2.hh  \
-               blas2_c.hh \
-               lapack.hh
+HEADERS = ev_c.hh blas2.hh blas2_c.hh lapack.hh
 
-SOURCES      = ev_c.cc   \
-               blas2.cc  \
-               blas2_c.cc \
-               lapack.cc
+SOURCES = ev_c.cc blas2.cc  blas2_c.cc lapack.cc
 
-PLIB         = RavlLapackWraps
+PLIB = RavlLapackWraps
 
-USESLIBS     = LibLapack
+USESLIBS = LibLapack
 
-PROGLIBS     = RavlCore  RavlOS RavlIO RavlMath
+PROGLIBS = RavlCore  RavlOS RavlIO RavlMath
 
-AUXDIR       = lib/RAVL/libdep
+AUXDIR = lib/RAVL/libdep
 
-AUXFILES     = LibLapack.def
+AUXFILES = LibLapack.def
 
-TESTEXES     = testLapack.cc
+TESTEXES = testLapack.cc
 
 EHT= Ravl.API.Math.Linear_Algebra.Lapack.html
 

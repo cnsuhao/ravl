@@ -13,13 +13,11 @@ PACKAGE=Ravl/PatternRec
 
 MAINS= doAsymmetricAdaBoost.cc
 
-HEADERS= 	FeatureSelector.hh \
-			FeatureSelectAsymmetricAdaBoost.hh \
-			FeatureSelectPlusLMinusR.hh
+HEADERS= FeatureSelector.hh FeatureSelectAsymmetricAdaBoost.hh \
+ FeatureSelectPlusLMinusR.hh
 
-SOURCES= 	FeatureSelector.cc \
-			FeatureSelectAsymmetricAdaBoost.cc \
-			FeatureSelectPlusLMinusR.cc
+SOURCES= FeatureSelector.cc FeatureSelectAsymmetricAdaBoost.cc \
+ FeatureSelectPlusLMinusR.cc
 
 PLIB = RavlPatternRec
 

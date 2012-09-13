@@ -19,7 +19,7 @@ ifneq ($(filter $(ARC), sol2_7 sol2_9),)
 # The solaris x11 header files a broken, so we need
 # to turn off ansi flag and make the compiler more forgiving.
 #ANSIFLAG=-fpermissive
-endif	
+endif
 ifeq ($(ARC),alpha)
 # The solaris x11 header files a broken, so we need
 # to turn off ansi flag and make the compiler more forgiving.
