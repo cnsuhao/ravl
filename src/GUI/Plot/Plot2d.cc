@@ -24,7 +24,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const SArray1dC<Point2dC> & data, const StringC & dataName)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -34,7 +34,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -44,7 +44,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const LineABC2dC & line)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -54,7 +54,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const StringC & function)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -64,7 +64,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const DataSetVectorLabelC & dataSet, UIntT feature1, UIntT feature2, UIntT samplesPerClass)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -84,7 +84,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dataSet, UIntT feature1, UIntT feature2)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -94,7 +94,7 @@ namespace RavlN {
    */
   bool Plot2dC::Plot(const FunctionC & function, const VectorC & min, const VectorC & max)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -104,7 +104,7 @@ namespace RavlN {
    */
   bool Plot2dC::SetXLabel(const StringC & xlabel)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -114,7 +114,7 @@ namespace RavlN {
    */
   bool Plot2dC::SetYLabel(const StringC & ylabel)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -125,7 +125,7 @@ namespace RavlN {
 
   bool Plot2dC::SetXRange(const RealRangeC & xrange)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -136,7 +136,7 @@ namespace RavlN {
 
   bool Plot2dC::SetYRange(const RealRangeC & yrange)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -157,7 +157,7 @@ namespace RavlN {
 
   bool Plot2dC::SetLineStyle(const StringC & lineStyle)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -168,7 +168,7 @@ namespace RavlN {
 
   bool Plot2dC::SetOutput(const StringC & output, const IndexRange2dC & rec)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
@@ -179,7 +179,7 @@ namespace RavlN {
 
   bool Plot2dC::Command(const StringC & command)
   {
-    RavlAssertMsg(0, "Abstract method called!");
+    //RavlAssertMsg(0, "Abstract method called!");
     RavlError("Abstract method called");
     return false;
   }
