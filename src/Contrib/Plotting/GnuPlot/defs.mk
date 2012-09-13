@@ -19,6 +19,8 @@ HEADERS = GnuPlot2d.hh GnuPlot.hh GnuPlot3d.hh
 
 REQUIRES =
 
+MUSTLINK= LinkRavlGnuPlot.cc
+
 SOURCES = GnuPlot2d.cc GnuPlot.cc GnuPlot3d.cc
 
 PLIB = RavlGnuPlot
