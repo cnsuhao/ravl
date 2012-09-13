@@ -158,7 +158,7 @@ namespace RavlN {
         //RavlDebug("New Position '%s' -> '%s' %0.2f", StringOf(it.Data1()).data(), StringOf(particleNewPosition).data(), newCost);
         //RavlDebug("New Velocity '%s' -> '%s'", StringOf(it.Data4()).data(), StringOf(velocity).data());
 
-        // Has the particle beteen its own previous best
+        // Has the particle beaten its own previous best
         if (newCost < it.Data3()) {
           it.Data2() = particleNewPosition;
           it.Data3() = newCost;
