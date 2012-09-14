@@ -44,8 +44,6 @@ namespace RavlN {
     DataSetVectorLabelBodyC(const XMLFactoryContextC & factory);
     //: Construct a dataset
 
-
-
     SArray1dC<SampleVectorC> SeperateLabels() const;
     //: Create a separate sample for each label.
 
@@ -75,6 +73,9 @@ namespace RavlN {
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const;
     //: Extracts numSamples samples per label
     
+    StringC Info() const;
+    //: Just get some standard info about the data set
+
   };
   
   //! userlevel=Normal
@@ -164,6 +165,11 @@ namespace RavlN {
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const
     { return Body().ExtractPerLabel(numSamples); }
     //: Extracts numSamples samples per label
+
+    StringC Info() const
+    { return Body().Info(); }
+    //: Just get some standard info about the data set
+
   };
 
   DataSetVectorLabelC CreateDataSet(UIntT dimension = 2, UIntT classes = 2, UIntT samplesPerClass = 1000, RealT dist = 3.0);
