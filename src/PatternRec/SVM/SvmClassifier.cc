@@ -226,6 +226,14 @@ bool SvmClassifierBodyC::Save(BinOStreamC &Out) const
   Out << threshold;
   return true;
 }
+
+VectorC SvmClassifierBodyC::Apply(const VectorC &data) const {
+  // scale using sigmoid
+  RealT s = Classify2(data);
+  RealT sig = 1.0 / (1.0 + Exp(-0.25 * s)); // A sigmoid but with less slope
+  return VectorC(1-sig, sig); // label 0 is negative in SVM...
+}
+
 //---------------------------------------------------------------------------
 // Classifier vector 'Data' return value of descriminant function
 RealT SvmClassifierBodyC::Classify2(const VectorC &Data) const

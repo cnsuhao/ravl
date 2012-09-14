@@ -19,7 +19,7 @@
 #include "Ravl/PatternRec/SampleVector.hh"
 #include "Ravl/PatternRec/SampleLabel.hh"
 #include "Ravl/PatternRec/DataSetVectorLabel.hh"
-#include "Ravl/Plot/GnuPlot.hh"
+
 
 namespace RavlN {
   
@@ -29,7 +29,7 @@ namespace RavlN {
   class ErrorBinaryClassifierBodyC : public ErrorBodyC
   {
   public:
-    ErrorBinaryClassifierBodyC();
+    ErrorBinaryClassifierBodyC(UIntT positiveLabel);
     //: Constructor.
 
     ErrorBinaryClassifierBodyC(const XMLFactoryContextC &factory);
@@ -50,21 +50,26 @@ namespace RavlN {
     virtual bool Save(BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
     
-    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
+    virtual RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const;
     //: Compute the error on the labelled dataset
 
-    RealT FalseRejectRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseAcceptRate, RealT & threshold);
+    RealT FalseRejectRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseAcceptRate, RealT & threshold) const;
     //: Return the false reject rate at a given false accept rate.  This assumes label 0 is the positive class.
 
-    RealT FalseAcceptRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseRejectRate, RealT & threshold);
+    RealT FalseAcceptRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseRejectRate, RealT & threshold) const;
     //: Return the false accept rate at a given false reject rate.  This assumes label 0 is the positive class.
 
+    bool Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const;
+
+
   protected:
-    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, bool falseAccept, RealT desiredLabelError, RealT & threshold);
+    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, bool falseAccept, RealT desiredLabelError, RealT & threshold) const;
     //: Return label 1 error at desired label 0 error and threshold which obtains this
 
-    SArray1dC<Tuple2C<UIntT, RealT> > Scores(const ClassifierC & classifier, const DataSetVectorLabelC & dset);
+    SArray1dC<Tuple2C<UIntT, RealT> > Scores(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const;
     //: Compute the scores on the data set
+
+    UIntT m_positiveLabel;
 
   };
 
@@ -75,8 +80,8 @@ namespace RavlN {
   {
   public:
 
-    ErrorBinaryClassifierC() :
-        ErrorC(*new ErrorBinaryClassifierBodyC())
+    ErrorBinaryClassifierC(UIntT positiveLabel = 0) :
+        ErrorC(*new ErrorBinaryClassifierBodyC(positiveLabel))
     {
     }
     //: Default constructor.
@@ -117,24 +122,30 @@ namespace RavlN {
     
   public:
     
-    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset)
+    RealT Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const
     {
       return Body().Error(classifier, dset);
     }
     //: Return eer
 
 
-    RealT FalseRejectRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseAcceptRate, RealT & threshold)
+    RealT FalseRejectRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseAcceptRate, RealT & threshold) const
     {
       return Body().FalseRejectRate(classifier, dset, falseAcceptRate, threshold);
     }
     //: Return the false reject rate at a given false accept rate.  This assumes label 0 is the positive class.
 
-    RealT FalseAcceptRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseRejectRate, RealT & threshold)
+    RealT FalseAcceptRate(const ClassifierC & classifier, const DataSetVectorLabelC & dset, RealT falseRejectRate, RealT & threshold) const
     {
       return Body().FalseAcceptRate(classifier, dset, falseRejectRate, threshold);
     }
     //: Return the false accept rate at a given false reject rate.  This assumes label 0 is the positive class.
+
+    bool Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const {
+      return Body().Plot(classifier, dset);
+    }
+    //: Make a plot of the errors
+
 
   };
   

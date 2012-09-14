@@ -12,6 +12,7 @@
 #include "Ravl/PatternRec/DataSet2Iter.hh"
 #include "Ravl/PatternRec/FuncSubset.hh"
 #include "Ravl/Sums1d2.hh"
+#include "Ravl/Plot/Plot2d.hh"
 
 namespace RavlN {
 
@@ -22,14 +23,14 @@ namespace RavlN {
   }
 
   //: Constructor.
-  ErrorBinaryClassifierBodyC::ErrorBinaryClassifierBodyC() :
-      ErrorBodyC()
+  ErrorBinaryClassifierBodyC::ErrorBinaryClassifierBodyC(UIntT positiveLabel) :
+      ErrorBodyC(), m_positiveLabel(positiveLabel)
   {
   }
 
   //: XML factory constructor
   ErrorBinaryClassifierBodyC::ErrorBinaryClassifierBodyC(const XMLFactoryContextC &factory) :
-      ErrorBodyC(factory)
+      ErrorBodyC(factory), m_positiveLabel(factory.AttributeInt("postiveLabel", 0))
   {
   }
 
@@ -38,6 +39,7 @@ namespace RavlN {
   ErrorBinaryClassifierBodyC::ErrorBinaryClassifierBodyC(istream &strm) :
       ErrorBodyC(strm)
   {
+    strm >> m_positiveLabel;
   }
   
   //: Load from binary stream.
@@ -45,6 +47,7 @@ namespace RavlN {
   ErrorBinaryClassifierBodyC::ErrorBinaryClassifierBodyC(BinIStreamC &strm) :
       ErrorBodyC(strm)
   {
+    strm >> m_positiveLabel;
   }
 
   //: Copy me.
@@ -59,6 +62,7 @@ namespace RavlN {
   {
     if (!ErrorBodyC::Save(out))
       return false;
+    out << m_positiveLabel << '\n';
     return true;
   }
   
@@ -68,32 +72,33 @@ namespace RavlN {
   {
     if (!ErrorBodyC::Save(out))
       return false;
+    out << m_positiveLabel;
     return true;
   }
   
-  SArray1dC<Tuple2C<UIntT, RealT> > ErrorBinaryClassifierBodyC::Scores(const ClassifierC & classifier, const DataSetVectorLabelC & dset)
+  SArray1dC<Tuple2C<UIntT, RealT> > ErrorBinaryClassifierBodyC::Scores(const ClassifierC & classifier,
+      const DataSetVectorLabelC & dset) const
   {
 
     // Collect the scores
     SArray1dC<Tuple2C<UIntT, RealT> > scores(dset.Size());
     UIntT c = 0;
-    Sums1d2C label0;
-    Sums1d2C label1;
+    Sums1d2C positiveScores;
+    Sums1d2C negativeScores;
     for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dset); it; it++) {
-      RealT score = classifier.LabelProbability(it.Data1(), 0);
+      RealT score = classifier.LabelProbability(it.Data1(), m_positiveLabel);
       scores[c] = Tuple2C<UIntT, RealT>(it.Data2(), score);
       c++;
-      if(it.Data2()==0) {
-        label0 += score;
+      if (it.Data2() == m_positiveLabel) {
+        positiveScores += score;
       } else {
-        label1 += score;
+        negativeScores += score;
       }
     }
 
-    // lets check label0 mean is higher than label1
-    //RavlInfo("Mean score of label0 %0.4f and label1 %0.4f", label0.Mean(), label1.Mean());
-    if(label1.Mean() >  label0.Mean()) {
-      RavlError("Mean of Label1 higher than mean of Label0.  This assumes otherwise!");
+    // lets that the positive scores are higher than the negative
+    if (negativeScores.Mean() > positiveScores.Mean()) {
+      RavlError("Mean of negative scores are higher than mean of negative scores.  This assumes otherwise!");
     }
 
     // Sort scores so high is at the top
@@ -102,7 +107,7 @@ namespace RavlN {
 
   }
 
-  RealT ErrorBinaryClassifierBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset)
+  RealT ErrorBinaryClassifierBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const
   {
     // Get the sorted scores
     SArray1dC<Tuple2C<UIntT, RealT> > scores = Scores(classifier, dset);
@@ -119,7 +124,7 @@ namespace RavlN {
     for (SArray1dIterC<Tuple2C<UIntT, RealT> > it(scores); it; it++) {
 
       UIntT label = it.Data().Data1();
-      RealT score = it.Data().Data2();
+      //RealT score = it.Data().Data2();
 
       labelSoFar[label]++; // increase label count
 
@@ -142,7 +147,7 @@ namespace RavlN {
       const DataSetVectorLabelC & dset,
       bool falseAccept,
       RealT desiredError,
-      RealT & threshold)
+      RealT & threshold) const
   {
 
     // Get the sorted scores
@@ -150,25 +155,44 @@ namespace RavlN {
 
     // Lets compute error rate
     SArray1dC<UIntT> labelSums = dset.ClassNums();
-    RealT labelSums0 = (RealT) labelSums[0];
-    RealT labelSums1 = (RealT) labelSums[1];
-    SArray1dC<UIntT> labelSoFar(2);
-    labelSoFar.Fill(0);
+    RealT positiveSums;
+    RealT negativeSums;
 
-    // We assume Label 0 gives the high scores
+    if (m_positiveLabel == 0) {
+      positiveSums = (RealT) labelSums[0];
+      negativeSums = (RealT) labelSums[1];
+    } else {
+      positiveSums = (RealT) labelSums[1];
+      negativeSums = (RealT) labelSums[0];
+    }
+
     // We start with the high scores and go down
     // Therefore the false accept rate will start at 0 and go up
     // and the false reject rate with start at 1.0 and go down
+    RealT falseRejectRate = -1.0;
+    RealT falseAcceptRate = -1.0;
+    RealT positiveSoFar = 0.0;
+    RealT negativeSoFar = 0.0;
+    CollectionC<Point2dC> points(scores.Size());
     for (SArray1dIterC<Tuple2C<UIntT, RealT> > it(scores); it; it++) {
 
       UIntT label = it.Data().Data1();
       RealT score = it.Data().Data2();
 
-      labelSoFar[label]++; // increase label count
+      // have we got a positive or negative sample
+      if (label == m_positiveLabel) {
+        positiveSoFar += 1.0;
+      } else {
+        negativeSoFar += 1.0;
+      }
 
-      RealT falseRejectRate = (labelSums0 - (RealT) labelSoFar[0]) / labelSums0;
-      RealT falseAcceptRate = (RealT) labelSoFar[1] / labelSums1;
-      //RavlInfo("Label %d Score %0.4f DesiredError %0.4f ErrorLabel0 %0.4f ErrorLabel1 %0.4f", label, score, desiredLabelError, errorLabel0, errorLabel1);
+      /*
+       * We can work out the current FA/FR rates
+       */
+      falseRejectRate = (positiveSums - positiveSoFar) / positiveSums;
+      falseAcceptRate = negativeSoFar / negativeSums;
+
+      //RavlInfo("Label %d Score %0.4f FA %0.4f FR %0.4f", label, score, falseAcceptRate, falseRejectRate);
 
       // The false reject rate is going down
 
@@ -179,19 +203,20 @@ namespace RavlN {
           return falseRejectRate;
         }
       } else {
-        if(falseRejectRate <= desiredError) {
+        if (falseRejectRate <= desiredError) {
           threshold = score;
           return falseAcceptRate;
         }
       }
     }
+
     return 1.0;
   }
 
   RealT ErrorBinaryClassifierBodyC::FalseRejectRate(const ClassifierC & classifier,
       const DataSetVectorLabelC & dset,
       RealT falseAcceptRate,
-      RealT & threshold)
+      RealT & threshold) const
   {
     return Error(classifier, dset, true, falseAcceptRate, threshold);
   }
@@ -200,11 +225,75 @@ namespace RavlN {
   RealT ErrorBinaryClassifierBodyC::FalseAcceptRate(const ClassifierC & classifier,
       const DataSetVectorLabelC & dset,
       RealT falseRejectRate,
-      RealT & threshold)
+      RealT & threshold) const
   {
     return Error(classifier, dset, false, falseRejectRate, threshold);
   }
   //: Return the false accept rate at a given false reject rate.  This assumes label 0 is the positive class.
+
+  bool ErrorBinaryClassifierBodyC::Plot(const ClassifierC & classifier, const DataSetVectorLabelC & dset) const
+  {
+
+    std::cerr << "plotting..." << std::endl;
+
+    // Get the sorted scores
+    SArray1dC<Tuple2C<UIntT, RealT> > scores = Scores(classifier, dset);
+
+    // Lets compute error rate
+    SArray1dC<UIntT> labelSums = dset.ClassNums();
+    RealT positiveSums;
+    RealT negativeSums;
+
+    if (m_positiveLabel == 0) {
+      positiveSums = (RealT) labelSums[0];
+      negativeSums = (RealT) labelSums[1];
+    } else {
+      positiveSums = (RealT) labelSums[1];
+      negativeSums = (RealT) labelSums[0];
+    }
+
+    // We start with the high scores and go down
+    // Therefore the false accept rate will start at 0 and go up
+    // and the false reject rate with start at 1.0 and go down
+    RealT falseRejectRate = -1.0;
+    RealT falseAcceptRate = -1.0;
+    RealT positiveSoFar = 0.0;
+    RealT negativeSoFar = 0.0;
+    CollectionC<Point2dC> points(scores.Size());
+    for (SArray1dIterC<Tuple2C<UIntT, RealT> > it(scores); it; it++) {
+
+      UIntT label = it.Data().Data1();
+      RealT score = it.Data().Data2();
+
+      // have we got a positive or negative sample
+      if (label == m_positiveLabel) {
+        positiveSoFar += 1.0;
+      } else {
+        negativeSoFar += 1.0;
+      }
+
+      /*
+       * We can work out the current FA/FR rates
+       */
+      falseRejectRate = (positiveSums - positiveSoFar) / positiveSums;
+      falseAcceptRate = negativeSoFar / negativeSums;
+      points.Append(Point2dC(falseAcceptRate, falseRejectRate));
+      //RavlInfo("Label %d Score %0.4f FA %0.4f FR %0.4f", label, score, falseAcceptRate, falseRejectRate);
+
+    }
+
+    /*
+     * Make a plot of the ROC
+     */
+    RavlDebug("Making plot!");
+    Plot2dC::RefT plot = CreatePlot2d("ROC Curve");
+    plot->SetLineStyle("lines");
+    plot->SetXLabel("False Acceptance");
+    plot->SetYLabel("False Acceptance");
+    plot->Plot(points.SArray1d());
+
+    return 1.0;
+  }
 
   RAVL_INITVIRTUALCONSTRUCTOR(ErrorBinaryClassifierBodyC);
 

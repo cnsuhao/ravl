@@ -63,6 +63,12 @@ public:
   //: Writes object to stream
   // returns always true (compatibility issue), on error an exception is thrown
 
+  virtual VectorC Apply(const VectorC &data) const;
+  //: Estimate the confidence for each label.
+  // The meaning of the confidence assigned to each label depends
+  // on the classifier used. The higher the confidence the more likely
+  // it is the label is correct.
+
   virtual RealT Classify2(const VectorC &Data) const;
   //: Classify vector 'data' and return value of descriminant function
 

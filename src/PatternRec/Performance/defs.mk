@@ -21,7 +21,7 @@ LIBDEPS = RavlPatternRecPerformance.def
 
 TESTEXES=
 
-USESLIBS= RavlPatternRec
+USESLIBS= RavlPatternRec RavlGnuPlot.opt
 
 EHT = 
 
