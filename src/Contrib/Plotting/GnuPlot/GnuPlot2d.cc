@@ -427,5 +427,7 @@ namespace RavlN {
 
   static int a = GnuPlotInit();
 
+  void LinkGnuPlot2d()
+  {}
 
 } /* namespace RavlN */
