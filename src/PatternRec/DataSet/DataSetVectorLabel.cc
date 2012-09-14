@@ -18,17 +18,17 @@
 
 namespace RavlN {
 
-  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(SampleStreamVectorLabelC & sampleStream) :
-      DataSet2BodyC<SampleVectorC, SampleLabelC>(1000)
+  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(SampleStreamVectorLabelC & sampleStream)
+   : DataSet2BodyC<SampleVectorC, SampleLabelC>(1000)
   {
     Tuple2C<VectorC, UIntT> data;
-    while (sampleStream.Get(data)) {
+    while(sampleStream.Get(data)) {
       Append(data.Data1(), data.Data2());
     }
   }
 
-  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(const SArray1dC<MeanCovarianceC> & stats) :
-      DataSet2BodyC<SampleVectorC, SampleLabelC>(1000)
+  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(const SArray1dC<MeanCovarianceC> & stats)
+   : DataSet2BodyC<SampleVectorC, SampleLabelC>(1000)
   {
     UIntT classLabel = 0;
     for (SArray1dIterC<MeanCovarianceC> it(stats); it; it++) {
@@ -38,25 +38,25 @@ namespace RavlN {
     }
   }
 
-  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(const XMLFactoryContextC & factory) :
-      DataSet2BodyC<SampleVectorC, SampleLabelC>(1000)
+  DataSetVectorLabelBodyC::DataSetVectorLabelBodyC(const XMLFactoryContextC & factory)
+   : DataSet2BodyC<SampleVectorC, SampleLabelC>(1000)
   {
     UIntT classLabel = 0;
-    for (DLIterC<XMLTreeC> it(factory.Children()); it; it++) {
+    for(DLIterC<XMLTreeC> it(factory.Children()); it; it++) {
       SampleVectorC sampleVector;
-      if (factory.UseComponent(it->Name(), sampleVector)) {
+      if(factory.UseComponent(it->Name(), sampleVector)) {
         Append(sampleVector, classLabel);
         classLabel++;
       }
     }
   }
   
-  //: Create a seperate sample for each label.
+  //: Create a separate sample for each label.
   
   SArray1dC<SampleVectorC> DataSetVectorLabelBodyC::SeperateLabels() const
   {
     SArray1dC<SampleVectorC> ret(Sample2().MaxValue() + 1);
-    for (DataSet2IterC<SampleVectorC, SampleLabelC> it(Sample1(), Sample2()); it; it++)
+    for(DataSet2IterC<SampleVectorC, SampleLabelC> it(Sample1(), Sample2()); it; it++)
       ret[it.Data2()].Append(it.Data1());
     return ret;
   }
@@ -70,10 +70,10 @@ namespace RavlN {
   {
     CollectionC<Tuple2C<VectorC, UIntT> > means(10);
     DataSet2IterC<SampleVectorC, SampleLabelC> it(Sample1(), Sample2());
-    if (!it)
+    if(!it)
       return SArray1dC<VectorC>(); // No samples.
     UIntT dim = it.Data1().Size();
-    for (; it; it++) {
+    for(; it; it++) {
       while (means.Size() <= it.Data2()) {
         VectorC vec(dim);
         vec.Fill(0);
@@ -205,9 +205,8 @@ namespace RavlN {
     return ret;
   }
 
-  /*
-   * Create a dataset
-   */
+  // Create a dataset
+
   DataSetVectorLabelC CreateDataSet(UIntT dimension, UIntT classes, UIntT samplesPerClass, RealT dist)
   {
 
@@ -225,9 +224,7 @@ namespace RavlN {
     dset.Append(sv, 0);
 
     for (UIntT label = 1; label < classes; label++) {
-      /*
-       * OK just keep Euclidean distance equal between classes
-       */
+      // OK just keep Euclidean distance equal between classes
       mean += dist / Sqrt((RealT) dimension);
       SampleVectorC sv(MeanCovarianceC(samplesPerClass, mean, cov));
       dset.Append(sv, label);
@@ -236,9 +233,7 @@ namespace RavlN {
     return dset;
   }
 
-  /*
-   * Just print some standard information about the data set
-   */
+  //: Just get some standard info about the data set
   StringC DataSetVectorLabelBodyC::Info() const
   {
 
@@ -259,7 +254,6 @@ namespace RavlN {
     return info;
 
   }
-  //: Just get some standard info about the data set
 
   RavlN::XMLFactoryRegisterHandleC<DataSetVectorLabelC> g_registerXMLFactoryDataSetVectorLabel("RavlN::DataSetVectorLabelC");
 

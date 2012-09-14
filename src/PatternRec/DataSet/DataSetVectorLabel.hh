@@ -74,7 +74,7 @@ namespace RavlN {
     //: Extracts numSamples samples per label
     
     StringC Info() const;
-    //: Just get some standard info about the data set
+    //: Get a string containing size of the sample set and the number of samples with each label.
 
   };
   
@@ -168,12 +168,12 @@ namespace RavlN {
 
     StringC Info() const
     { return Body().Info(); }
-    //: Just get some standard info about the data set
+    //: Get a string containing size of the sample set and the number of samples with each label.
 
   };
 
   DataSetVectorLabelC CreateDataSet(UIntT dimension = 2, UIntT classes = 2, UIntT samplesPerClass = 1000, RealT dist = 3.0);
-  //: Create a data set - useful for testing things
+  //: Create a data set containing random samples - useful for testing things
 
 }
 

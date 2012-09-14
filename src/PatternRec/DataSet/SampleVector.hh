@@ -68,7 +68,7 @@ namespace RavlN {
     //!param: featureSet - the indexes of features to keep
 
     SampleVectorC(const MeanCovarianceC & meanCovariance);
-    //: Construct a dataset using the statistics and number of samples specified.  Note the actual mean and covariance will differ slighty
+    //: Construct a dataset with random values using the statistics and number of samples specified.  Note the actual mean and covariance will differ slighty
     //!param meanCovariance The desired mean and covariance to use to generate the dataset
     
     SampleVectorC(const XMLFactoryContextC & factory);
