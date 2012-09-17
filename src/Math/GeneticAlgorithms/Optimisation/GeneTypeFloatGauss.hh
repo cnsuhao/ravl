@@ -15,6 +15,8 @@
 namespace RavlN { namespace GeneticN {
 
 
+  //! Float value generated with a gaussian distribution
+
   class GeneTypeFloatGaussC
     : public GeneTypeFloatC
   {
@@ -25,6 +27,7 @@ namespace RavlN { namespace GeneticN {
     GeneTypeFloatGaussC(const XMLFactoryContextC &factory);
 
     //! Constructor
+    //! width is in standard deviations.
     GeneTypeFloatGaussC(const std::string &name,float min,float max,float width,float offset,FoldModeT foldMode);
 
     //! Load form a binary stream

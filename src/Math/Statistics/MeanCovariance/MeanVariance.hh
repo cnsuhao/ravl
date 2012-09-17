@@ -78,6 +78,9 @@ namespace RavlN {
     MeanVarianceC &operator+=(const MeanVarianceC &mv);
     //: Add another MeanVariance to this one.
     
+    MeanVarianceC &operator+=(const RealT &value);
+    //: Add another sample
+
     MeanVarianceC &operator-=(const MeanVarianceC &mv);
     //: Remove another MeanVariance from this one.
     
