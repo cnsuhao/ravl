@@ -14,4 +14,4 @@ SOURCES=Plot2d.cc GraphData2d.cc
 
 PLIB=RavlPlot
 
-USELIBS=RavlCore RavlMath RavlOS RavlIO
+USESLIBS=RavlCore RavlMath RavlOS RavlIO
