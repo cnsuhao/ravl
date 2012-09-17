@@ -110,8 +110,7 @@ namespace RavlN {
   }
 
   //: Calculate the product of the two probability density functions.
-  // This assumes the estimates of the distributions are accurate. (The number
-  // of samples is ignored) 
+  // (The number of samples is ignored)
   
   MeanVarianceC MeanVarianceC::operator*(const MeanVarianceC &oth) const {
     RealT sum = Variance() + oth.Variance();
