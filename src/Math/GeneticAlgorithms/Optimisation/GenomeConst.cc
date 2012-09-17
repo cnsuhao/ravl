@@ -225,7 +225,7 @@ namespace RavlN { namespace GeneticN {
   //! Generate an instance of the class.
   void GeneIntC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
     if(handle.IsValid()) {
-      IntT *theValue;
+      IntT *theValue = 0;
       handle.GetPtr(theValue);
       *theValue = m_value;
     } else {
@@ -457,7 +457,7 @@ namespace RavlN { namespace GeneticN {
   //! Generate an instance of the class.
   void GeneFloatC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
     if(handle.IsValid()) {
-      float *theValue;
+      float *theValue = 0;
       handle.GetPtr(theValue);
       *theValue = m_value;
     } else {
