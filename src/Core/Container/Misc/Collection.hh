@@ -586,17 +586,20 @@ namespace RavlN {
   template<class DataT>
   CollectionC<DataT>  CollectionBodyC<DataT>::Shuffle() const {
     CollectionC<DataT> ret(n);
-    for(BufferAccessIterC<DataT> it(data);it;it++)
+    BufferAccessIterC<DataT> it(data);
+    for(SizeT i=0;i<n;i++,it++) {
       ret.InsertRandom(*it);
+    }
     return ret;
   }
 
   template<class DataT>
   void CollectionBodyC<DataT>::ShuffleIP() {
-    for(BufferAccessIterC<DataT> it(data);it;it++) {
-      SizeT p = (SizeT)((RealT) Random1() * n);
-      if(p > n-1)
-	p = n-1; // Incase of rounding errors.
+    BufferAccessIterC<DataT> it(data);
+    for (SizeT i = 0; i < n; i++, it++) {
+      SizeT p = (SizeT) (Random1() * (RealT) n);
+      if (p > n - 1)
+        p = n - 1; // Incase of rounding errors.
       DataT tmp = *it;
       *it = data[p];
       data[p] = tmp;
