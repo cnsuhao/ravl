@@ -5,7 +5,7 @@
 
 LICENSE=Copyright
 
-REQUIRES=RLog 
+REQUIRES=RLog
 
 ORGANISATION=
 
@@ -13,29 +13,22 @@ PACKAGENAME=RavlFace
 
 DESCRIPTION=Specification of face data sets using XML
 
-PACKAGE = 	Ravl/Face
+PACKAGE = Ravl/Face
 
-MAINS=		
+MAINS=
 
-SOURCES =  	Roc.cc
+SOURCES = Roc.cc
 
-HEADERS = 	Roc.hh
-			
-PLIB    = 	RavlFace
+HEADERS = Roc.hh
+
+PLIB = RavlFace
 
 LIBDEPS= 
 
-USESLIBS=	RavlMath \
-			RavlImageProc \
-			RavlCore \
-			RavlIO \
-			RavlImage \
-			RavlOS \
-			RavlXMLFactory \
-			RavlRLog \
-			RavlPlot
+USESLIBS= RavlMath RavlImageProc RavlCore RavlIO RavlImage RavlOS \
+ RavlXMLFactory RavlRLog RavlGnuPlot
 
-PROGLIBS = 	RavlExtImgIO.opt
+PROGLIBS = RavlExtImgIO.opt RavlPatternRec RavlPatternRecIO
 
 SCRIPTS=
 

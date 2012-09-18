@@ -23,7 +23,7 @@ namespace RavlPlotN {
   using namespace RavlN;
   
   //! userlevel=Develop
-  //: 2D Graph discription.
+  //: 2D Graph description.
   
   class GraphData2dBodyC 
     : public RCBodyC
@@ -68,7 +68,7 @@ namespace RavlPlotN {
   };
   
   //! userlevel=Normal
-  //: 2D Graph discription.
+  //: 2D Graph description.
 
   class GraphData2dC 
     : public RCHandleC<GraphData2dBodyC>

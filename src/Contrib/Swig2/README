@@ -1,0 +1,21 @@
+This is very much a Work-In-Progress attempt to write a Python wrapper 
+interface to the more commonly used (at least by me :-) parts of RAVL.
+
+Basic instructions......
+
+1. Build RAVL as optsharedne (os osne).  This will make a _RavlSwigPython2.so library in your PROJECT_OUT.
+2. ln -s ${PROJECT_OUT}/lib/RAVL/linux64/opt/shared/_RavlSwigPython2.so  ${PROJECT_OUT}/lib/RAVL/linux64/opt/shared/_Ravl.so
+3. PYTHONPATH=${PROJECT_OUT}/lib/RAVL/linux64/opt/shared:${PROJECT_OUT}/share/Python
+
+Then you should be able to open a python interpreter, import Ravl and away you go....for example
+
+import Ravl
+
+v = Ravl.VectorC(10)
+v.Fill(2.34)
+print v
+
+v2 = v * v
+print v2
+
+Any questions please contact kieronmesser@gmail.com

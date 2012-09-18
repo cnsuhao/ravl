@@ -20,8 +20,9 @@
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -36,6 +37,15 @@ namespace RavlN {
     : order(norder),
       orthogonal(northogonal)
   {}
+
+  //: Create from XML factory
+  DesignFuncLSQBodyC::DesignFuncLSQBodyC(const XMLFactoryContextC & factory)
+     : DesignFunctionSupervisedBodyC(factory),
+       order(factory.AttributeInt("order", 1)),
+       orthogonal(factory.AttributeBool("orthogonal", true))
+   {
+   }
+
   
   //: Load from stream.
   
@@ -175,7 +185,7 @@ namespace RavlN {
 #if 1
     if(!aaT.InverseIP()) {
       // Try and recover....
-      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      ONDEBUG(std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n");
       aaT = aaTu.PseudoInverse();
     }
     MatrixC A =  (aaT * aTb).T();
@@ -309,7 +319,12 @@ namespace RavlN {
 
 
   ////////////////////////////////////////////////////////////////////////
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignFuncLSQC, DesignFunctionSupervisedC> g_registerXMLFactoryDesignFuncLSQ("RavlN::DesignFuncLSQC");
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignFuncLSQBodyC,DesignFuncLSQC,DesignFunctionSupervisedC);
   
+  void linkDesignFuncLSQ()
+    {}
+
+
 }

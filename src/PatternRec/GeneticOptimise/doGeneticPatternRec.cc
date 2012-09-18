@@ -68,7 +68,7 @@ int main(int nargs,char **argv)
       return 1;
     }
 
-    trainingDataSet.Shuffle(); // always good practice to shuffle (inplace)
+    trainingDataSet.Shuffle(); // always good practice to shuffle (in place)
 
     RavlN::MeanCovarianceC meanCovariance = trainingDataSet.Sample1().MeanCovariance();
     RavlN::FunctionC normaliseFunc = trainingDataSet.Sample1().NormalisationFunction(meanCovariance);

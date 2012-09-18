@@ -12,11 +12,14 @@ namespace RavlN {
   namespace ZmqN {
 
 
-    MsgBufferBodyC::MsgBufferBodyC(zmq_msg_t &msg)
+    MsgBufferBodyC::MsgBufferBodyC(zmq_msg_t &msg,bool moveMsg)
      : RavlN::BufferBodyC<char>()
     {
       zmq_msg_init(&m_msg);
-      zmq_msg_move(&m_msg,&msg);
+      if(moveMsg)
+        zmq_msg_move(&m_msg,&msg);
+      else
+        zmq_msg_copy(&m_msg,&msg);
       Build();
     }
 
@@ -30,6 +33,11 @@ namespace RavlN {
         zmq_msg_init(&m_msg);
         this->sz = 0;
       }
+    }
+
+    //! Create a buffer from some other data.
+    MsgBufferBodyC::MsgBufferBodyC(void *data,size_t size,zmq_free_fn *ffn,void *hint) {
+      zmq_msg_init_data (&m_msg,data,size, ffn, hint);
     }
 
 

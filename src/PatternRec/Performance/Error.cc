@@ -10,6 +10,8 @@
 #include "Ravl/PatternRec/Error.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/PatternRec/DataSet2Iter.hh"
+#include "Ravl/PatternRec/FuncSubset.hh"
+#include "Ravl/SArray1dIter2.hh"
 
 namespace RavlN {
 
@@ -70,6 +72,23 @@ namespace RavlN {
   }
 
   
+  SArray1dC<RealT> ErrorBodyC::ErrorByLabel(const ClassifierC & classifier, const DataSetVectorLabelC & dset) {
+
+    SArray1dC<RealT> errors(classifier.NumLabels());
+    errors.Fill(0.0);
+    for(DataSet2IterC<SampleVectorC, SampleLabelC>it(dset);it;it++) {
+      UIntT label = classifier.Classify(it.Data1());
+      if(label!=it.Data2()) {
+        errors[it.Data2()]++;
+      }
+    }
+    for(SArray1dIter2C<RealT, UIntT>it(errors, dset.Sample2().LabelSums());it;it++) {
+      it.Data1() /= (RealT)it.Data2();
+    }
+    return errors;
+  }
+     //: Compute errors on the data set by label
+
   RealT ErrorBodyC::Error(const Classifier2C & classifier, const DataSetVectorLabelC & dset, UIntT label, RealT threshold) {
     UIntT correct = 0;
     UIntT wrong = 0;    
@@ -85,8 +104,27 @@ namespace RavlN {
     RealT pmc = (RealT)wrong/(RealT)dset.Sample1().Size();
     return pmc;
   }
-
   
+  RealT ErrorBodyC::Error(const ClassifierC & classifier, const DataSetVectorLabelC & dset, const SArray1dC<IndexC> & features)
+  {
+#if 0
+    SizeT dim = dset.Sample1().First().Size();
+    FuncSubsetC funcSubset(features, dim);
+    UIntT correct = 0;
+    UIntT wrong = 0;
+    for (DataSet2IterC<SampleVectorC, SampleLabelC> it(dset); it; it++) {
+      UIntT label = classifier.Classify(funcSubset(it.Data1()));
+      if (label == it.Data2())
+        correct++;
+      else
+        wrong++;
+    }
+    RealT pmc = (RealT) wrong / (RealT) dset.Sample1().Size();
+    return pmc;
+#else
+    return Error(classifier, SampleVectorC(dset.Sample1(), features), dset.Sample2());
+#endif
+  }
   
   //: Load from stream.
   

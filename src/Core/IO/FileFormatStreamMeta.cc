@@ -66,9 +66,11 @@ namespace RavlN {
             bestType = &it.Data().DefaultType();
           }
         }
+#if 0
         if(*bestType == typeid(void)) {
           RavlDebug("Don't know how to save '%s' (%s) ",TypeName(obj_type),obj_type.name());
         }
+#endif
       } else {
         bestType = &(ff.DefaultType());
       }

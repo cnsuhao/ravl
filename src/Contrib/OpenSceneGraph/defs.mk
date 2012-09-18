@@ -35,7 +35,7 @@ MUSTLINK=MustLinkGtkGlExtInit.cc
 USESLIBS=RavlCore RavlGeom RavlImage RavlGUI Ravl3D OpenGL GTK \
  OpenSceneGraphGtk RavlXMLFactory RavlRLog
 
-PROGLIBS=RavlOS RavlImageIO RavlExtImgIO
+PROGLIBS=RavlOS RavlImageIO RavlExtImgIO RavlRLog
 
 #EHT=Ravl.API.GUI.OpenSceneGraph.html
 

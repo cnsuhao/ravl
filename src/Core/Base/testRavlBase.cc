@@ -31,6 +31,7 @@
 #include "Ravl/UUId.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/StrStream.hh"
 
 using namespace RavlN;
 
@@ -381,6 +382,17 @@ int testFPNumber() {
   p4 = p6 / 2;
   //cerr <<"p4=" << p4 <<" p6=" << p6 << " p8=" << p8 <<"\n";
   if(p4 != 4) return __LINE__;
+
+  // Check stream operators
+
+  const int N=4;
+  RealT x = 4.72;
+  FPNumberC<N> f(x);
+  StrOStreamC os;
+  os << f;
+  StrIStreamC is(os.String());
+  is >> f;
+  if (Abs(x-(RealT)f) > 1.0/(RealT)(1<<N)) return __LINE__;
 
 #endif
   return 0;

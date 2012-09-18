@@ -44,6 +44,9 @@ namespace RavlN {
       //! Push a string.
       void Push(const std::string &msg);
 
+      //! Push a string.
+      void Push(const RavlN::StringC &msg);
+
       //! Push a buffer onto the message stack
       void Push(const SArray1dC<char> &buff);
 
@@ -56,6 +59,16 @@ namespace RavlN {
       //! Pop a message
       void Pop(std::string &str);
 
+      //! Pop a message
+      void Pop(RavlN::StringC &str);
+
+      //! Access next array to pop.
+      SArray1dC<char> &Top()
+      { return m_parts.back(); }
+
+      //! Discard the top of the stack.
+      void Pop()
+      { m_parts.pop_back(); }
 
       //! Access parts
       std::vector<SArray1dC<char> > &Parts()

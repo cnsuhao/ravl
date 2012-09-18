@@ -73,6 +73,9 @@ namespace RavlN {
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const;
     //: Extracts numSamples samples per label
     
+    StringC Info() const;
+    //: Get a string containing size of the sample set and the number of samples with each label.
+
   };
   
   //! userlevel=Normal
@@ -162,7 +165,16 @@ namespace RavlN {
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const
     { return Body().ExtractPerLabel(numSamples); }
     //: Extracts numSamples samples per label
+
+    StringC Info() const
+    { return Body().Info(); }
+    //: Get a string containing size of the sample set and the number of samples with each label.
+
   };
+
+  DataSetVectorLabelC CreateDataSet(UIntT dimension = 2, UIntT classes = 2, UIntT samplesPerClass = 1000, RealT dist = 3.0);
+  //: Create a data set containing random samples - useful for testing things
+
 }
 
 

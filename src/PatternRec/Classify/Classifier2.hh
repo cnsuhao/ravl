@@ -29,6 +29,7 @@ class Classifier2BodyC : public ClassifierBodyC
 {
 public:
   Classifier2BodyC()
+   : ClassifierBodyC(2)
   {}
   //: Default constructor
 

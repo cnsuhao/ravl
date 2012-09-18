@@ -12,7 +12,7 @@
 #    * NESTED Subdirectories to compile.
 #! file="OmniSoft/Applications/WhoFIT/defs.mk"
 
-REQUIRES=RLog 
+REQUIRES=RLog
 
 PACKAGENAME = RavlFace
 
@@ -28,5 +28,5 @@ PLIB = MarkupTool
 
 USESLIBS = RavlGUI RavlFace RavlGUI2D
 
-PROGLIBS = RavlExtImgIO RavlImgIOJasper 
+PROGLIBS = RavlExtImgIO RavlImgIOJasper RavlPatternRecIO
 

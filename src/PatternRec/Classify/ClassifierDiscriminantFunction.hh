@@ -45,7 +45,7 @@ namespace RavlN {
     virtual UIntT Classify(const VectorC &data) const;
     //: Classifier vector 'data' return the most likely label.
     
-    virtual VectorC Confidence(const VectorC &data) const;
+    virtual VectorC Apply(const VectorC &data) const;
     //: Estimate the confidence for each label.
     // The meaning of the confidence assigned to each label depends
     // on the function used. The higher the confidence the more likely

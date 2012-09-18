@@ -14,10 +14,10 @@ REQUIRES=ZeroMQ
 PACKAGE= Ravl/Zmq
 
 HEADERS= Context.hh Message.hh Socket.hh MsgBuffer.hh SocketDispatcher.hh Reactor.hh \
- SocketDispatchTrigger.hh MsgJSON.hh
+ SocketDispatchTrigger.hh MsgJSON.hh MsgSmartPtr.hh
 
 SOURCES= Context.cc Message.cc Socket.cc MsgBuffer.cc SocketDispatcher.cc Reactor.cc \
- SocketDispatchTrigger.cc MsgJSON.cc
+ SocketDispatchTrigger.cc MsgJSON.cc MsgSmartPtr.cc
 
 MUSTLINK=LinkRavlZeroMQ.cc
 

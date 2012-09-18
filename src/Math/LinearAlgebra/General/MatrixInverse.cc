@@ -76,7 +76,7 @@ namespace RavlN {
    *		The most general (Gauss-Jordan) matrix inverse
    *
    * This method works for any matrix (which of course must be square and
-   * non-singular). Use this method only if none of specialized algorithms
+   * non-singular). Use this method only if none of specialised algorithms
    * (for symmetric, tridiagonal, etc) matrices isn't applicable/available.
    * Also, the matrix to invert has to be _well_ conditioned:
    * Gauss-Jordan eliminations (even with pivoting) perform poorly for
@@ -87,7 +87,7 @@ namespace RavlN {
    * if the matrix turns out to be (numerically) singular. If determ_ptr is
    * nil and matrix happens to be singular, throw up.
    *
-   * The algorithm perform inplace Gauss-Jordan eliminations with
+   * The algorithm perform in place Gauss-Jordan eliminations with
    * full pivoting. It was adapted from my Algol-68 "translation" (ca 1986)
    * of the FORTRAN code described in
    * Johnson, K. Jeffrey, "Numerical methods in chemistry", New York,
@@ -109,12 +109,12 @@ namespace RavlN {
     if(m.IsContinuous())
       return minv(&m[0][0],m.Rows()) == 0; // ccmath routine.
     
-    // TODO:- Should either copy matrix to continous memory,
+    // TODO:- Should either copy matrix to continuous memory,
     // or make a version of the ccmath routine that will work
-    // with seperate rows?
+    // with separate rows?
     // ----------------------------------------------------------
     
-    // This can cope with non-continous matrixes, but its 
+    // This can cope with non-continuous matrixes, but its
     // a little slower and less accurate.  I figure this 
     // is quicker than coping the matrix ??
     // I'm not sure I like doing this.
@@ -162,7 +162,7 @@ namespace RavlN {
       }
       was_pivoted[prow] = true;
       
-      {					// Normalize the pivot column and
+      {					// Normalise the pivot column and
 	register RealT * pivot_cp = m[prow].DataStart();
 	double pivot_val = pivot_cp[prow];	// pivot is at the diagonal
 	determinant *= pivot_val;		// correct the determinant

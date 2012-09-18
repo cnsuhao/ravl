@@ -12,7 +12,9 @@
 #include "Ravl/PatternRec/ClassifierDiscriminantFunction.hh"
 #include "Ravl/PatternRec/SampleLabel.hh"
 #include "Ravl/VirtualConstructor.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 #include "Ravl/config.h"
+#include "Ravl/Exception.hh"
 
 #if RAVL_COMPILER_MIPSPRO
 #include "Ravl/VirtualConstructor.hh"
@@ -27,6 +29,16 @@
 
 namespace RavlN {
   
+  //: Construct from XML factory
+  DesignDiscriminantFunctionBodyC::DesignDiscriminantFunctionBodyC(const XMLFactoryContextC & factory) :
+      DesignClassifierSupervisedBodyC(factory)
+  {
+    // Load the function designer
+    if(!factory.UseComponent("DesignFunction", designFunc)) {
+      throw ExceptionBadConfigC("Unable to find Design");
+    }
+  }
+
   //: Load from stream.
   
   DesignDiscriminantFunctionBodyC::DesignDiscriminantFunctionBodyC(std::istream &strm)
@@ -80,5 +92,8 @@ namespace RavlN {
   }
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignDiscriminantFunctionBodyC,DesignDiscriminantFunctionC,DesignClassifierSupervisedC);
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignDiscriminantFunctionC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignDiscriminantFunction("RavlN::DesignDiscriminantFunctionC");
+  void linkDesignDiscriminantFunction()
+  {}
   
 }

@@ -16,9 +16,11 @@
 #include "Ravl/MatrixRS.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
-#include  "Ravl/PatternRec/DataSetVectorLabel.hh"
+#include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -44,6 +46,14 @@ namespace RavlN {
     : equalPriors(equalP)
   {}
   
+  DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(const XMLFactoryContextC & factory) :
+      DesignClassifierSupervisedBodyC(factory), equalPriors(factory.AttributeBool("equalPriors", true))
+  {
+    if (!equalPriors) {
+      throw ExceptionBadConfigC("Non-equal priors not supported by XMLFactory constructor!");
+    }
+  }
+
   //: Load from stream.
   
   DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(std::istream &strm)
@@ -118,7 +128,11 @@ namespace RavlN {
   
  
   ////////////////////////////////////////////////////////////////////////
-  
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignBayesNormalQuadraticC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignBayesNormalQuadratic("RavlN::DesignBayesNormalQuadraticC");
+
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignBayesNormalQuadraticBodyC,DesignBayesNormalQuadraticC,DesignClassifierSupervisedC);
+  
+  void linkDesignBayesNormalQuadratic()
+   {}
   
 }

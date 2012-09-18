@@ -17,18 +17,21 @@ namespace RavlN {
 
   //: Constructor
   NeuralNetworkLayerC::NeuralNetworkLayerC()
+   : m_useSigmoid(true)
   {}
 
   //: Constructor
-  NeuralNetworkLayerC::NeuralNetworkLayerC(const MatrixC &weights,const VectorC &bias)
+  NeuralNetworkLayerC::NeuralNetworkLayerC(const MatrixC &weights,const VectorC &bias,bool useSigmoid)
    : m_weights(weights),
-     m_bias(bias)
+     m_bias(bias),
+     m_useSigmoid(useSigmoid)
   {}
 
   //: Constructor
-  NeuralNetworkLayerC::NeuralNetworkLayerC(size_t numInputs,size_t numOutputs)
+  NeuralNetworkLayerC::NeuralNetworkLayerC(size_t numInputs,size_t numOutputs,bool useSigmoid)
    : m_weights(numOutputs,numInputs),
-     m_bias(numOutputs)
+     m_bias(numOutputs),
+     m_useSigmoid(useSigmoid)
   {
 #if 0
     // Creates a layer initialised with random values in the range from -1 to +1
@@ -44,32 +47,36 @@ namespace RavlN {
 
   //: Constructor from binary stream
   NeuralNetworkLayerC::NeuralNetworkLayerC(BinIStreamC &strm)
-   //: RCBodyC(strm)
+   : m_useSigmoid(true)
   {
     ByteT version = 0;
     strm >> version;
-    if(version != 1)
+    if(version < 1 || version > 2)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("NeuralNetworkLayerC");
     strm >> m_weights >> m_bias;
+    if(version > 1)
+      strm >> m_useSigmoid;
   }
 
   //: Constructor from text stream
   NeuralNetworkLayerC::NeuralNetworkLayerC(std::istream &strm)
-  //: RCBodyC(strm)
+   : m_useSigmoid(true)
   {
     IntT version = 0;
     strm >> version;
-    if(version != 1)
+    if(version < 1 || version > 2)
       throw RavlN::ExceptionUnexpectedVersionInStreamC("NeuralNetworkLayerC");
     strm >> m_weights >> m_bias;
+    if(version > 1)
+      strm >> m_useSigmoid;
   }
 
   //! Have to binary stream
   bool NeuralNetworkLayerC::Save(BinOStreamC &strm) const
   {
     //RCBodyC::Save(strm);
-    ByteT version =1;
-    strm << version << m_weights << m_bias;
+    ByteT version = 2;
+    strm << version << m_weights << m_bias << m_useSigmoid;
     return true;
   }
 
@@ -77,8 +84,8 @@ namespace RavlN {
   bool NeuralNetworkLayerC::Save(std::ostream &strm) const
   {
     //RCBodyC::Save(strm);
-    IntT version = 0;
-    strm << version << " " << m_weights;
+    IntT version = 2;
+    strm << version << " " << m_weights << " " << m_bias << " " << m_useSigmoid;
     return true;
   }
 
@@ -175,7 +182,10 @@ namespace RavlN {
       //res = m_layers[i]->Weights() * work + m_layers[i]->Bias();
       RavlN::MulAdd(m_layers[i]->Weights(),work,m_layers[i]->Bias(),res);
       // FIXME:- This could be faster and avoid lots of allocations.
-      work = Sigmoid(res);
+      if(m_layers[i]->UseSigmoid())
+        work = Sigmoid(res);
+      else
+        work = res;
     }
     return work;
   }

@@ -78,7 +78,7 @@ namespace RavlN {
   // on the classifier used. The higher the confidence the more likely
   // it is the label is correct.
   
-  VectorC ClassifierDiscriminantFunctionBodyC::Confidence(const VectorC &data) const {
+  VectorC ClassifierDiscriminantFunctionBodyC::Apply(const VectorC &data) const {
     VectorC vec = func(data);
     return vec.MakeUnit();
   }
