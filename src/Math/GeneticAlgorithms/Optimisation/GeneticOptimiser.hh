@@ -34,7 +34,9 @@ namespace RavlN { namespace GeneticN {
     void SetFitnessFunction(EvaluateFitnessC &fitness);
 
     //! Run generation.
-    void RunGeneration(UIntT generation);
+    // Setting 'resetScores' recompute's scores for all entries, which should be used
+    // if the cost function is modified in any way.
+    void RunGeneration(UIntT generation,bool resetScores = false);
 
     //! Save population to file
     //! Note: This thread safe

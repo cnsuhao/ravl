@@ -171,10 +171,13 @@ namespace RavlN { namespace GeneticN {
 
 
   //! Run generation.
-  void GeneticOptimiserC::RunGeneration(UIntT generation)
+  void GeneticOptimiserC::RunGeneration(UIntT generation,bool resetScores)
   {
     RavlDebugIf(m_logLevel,"Examining results from last run. %s ",RavlN::StringOf(m_logLevel).c_str());
     unsigned count = 0;
+
+    if(m_randomiseDomain)
+      resetScores = true;
 
     // Select genomes to be used as seeds for the next generation.
     unsigned numKeep = Floor(m_populationSize * m_keepFraction);
@@ -215,7 +218,7 @@ namespace RavlN { namespace GeneticN {
     while(it != m_population.rend() && count < numKeep) {
       seeds.Append(it->second);
       //RavlDebug(" Score:%f Age:%u Gen:%u Size:%zu @ %p ",it->first,m_population.rbegin()->second->Age(),it->second->Generation(),it->second->Size(),it->second.BodyPtr());
-      if(m_randomiseDomain)
+      if(resetScores)
         newTestSet.push_back(it->second);
       it++;
       count++;
@@ -224,7 +227,7 @@ namespace RavlN { namespace GeneticN {
     RavlDebugIf(m_logLevel,"Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",
         generation,(UIntT) seeds.Size().V(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
 
-    if(m_randomiseDomain) {
+    if(resetScores) {
       m_population.clear();
     } else {
       // Erase things we don't want to keep.
