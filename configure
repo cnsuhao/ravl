@@ -15508,9 +15508,9 @@ then
    trace 3 Lack of libGTK2 blocking Glade Gnome Meteor1 OpenGL 2dGUI etc.
 fi
 
-if ( ( test X$use_JPEG != 'Xpresent' ) || ( test X$use_LibTIFF != 'Xpresent' ) || ( test X$use_libPNG != 'Xpresent' ) )
+if ( ( test X$use_JPEG != 'Xpresent' ) && ( test X$use_LibTIFF != 'Xpresent' ) && ( test X$use_libPNG != 'Xpresent' ) )
 then
-   # Lack of Image support blocks libRavlExtImgIO
+   # Lack of any image support renders libRavlExtImgIO useless
    RavlExtImgIO=""
       # Lack of RavlExtImgIO blocks RavlPythonSwig2
       SwigPython_SUPPORT=`echo " $SwigPython_SUPPORT " | $SED 's/libRavlPythonSwig2/ /'`
