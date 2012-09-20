@@ -690,6 +690,26 @@ namespace RavlN {
     }
   }
   
+  template<class DataT>
+  bool operator==(const CollectionC<DataT> &c1,const CollectionC<DataT> &c2)
+  {
+    if(c1.VoidPtr() == c2.VoidPtr())
+      return true; // They're identical.
+    if(c1.IsValid() != c2.IsValid())
+      return false; // They're not both valid.
+    if(c1.Size() != c2.Size())
+      return false;
+    for(unsigned i = 0;i < c1.Size();i++) {
+      if(!(c1[i] == c2[i]))
+        return false;
+    }
+    return true;
+  }
+
+  template<class DataT>
+  inline bool operator!=(const CollectionC<DataT> &c1,const CollectionC<DataT> &c2)
+  { return !operator==(c1,c2); }
+
 }
 
 #endif
