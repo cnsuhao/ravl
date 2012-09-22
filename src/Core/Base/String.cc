@@ -172,8 +172,11 @@ namespace RavlN {
 #define MAXStrRepC_SIZE   ((unsigned int) (1 << (sizeof(int) * CHAR_BIT - 1)) - 1)
 #define MINStrRepC_SIZE   32
 
+// Rasing this from 4 to 8 avoids some problems std::string giving valgrind errors when converting to std::string.
+// FIXME:- Investigate and raise bug report ?
+
 #ifndef MALLOC_MIN_OVERHEAD
-#define MALLOC_MIN_OVERHEAD  4
+#define MALLOC_MIN_OVERHEAD  8
 #endif
 
   // The basic allocation primitive:
