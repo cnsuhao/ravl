@@ -273,7 +273,7 @@ namespace RavlN { namespace GeneticN {
       newTestSet.push_back(newGenome);
     }
 
-    RavlDebugIf(m_logLevel,"Evaluating population size %s ",RavlN::StringOf(newTestSet.size()).data());
+    RavlDebugIf(m_logLevel,"Evaluating population size %s with %u threads",RavlN::StringOf(newTestSet.size()).data(),m_threads);
     // Evaluate the new genomes.
     Evaluate(newTestSet);
   }
