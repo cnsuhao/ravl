@@ -46,6 +46,19 @@ dnl                                  undefine a particular symbol. Set based
 dnl                                  on the particular linker in use.
 dnl                          .         
 dnl
+dnl Note: The following flags all assume that the linker is called from the compiler
+dnl       rather than directly. This assumption fits the current implementation of QMake
+dnl       as that never calls the linker directly. Should this change in future, the
+dnl       LINKER_XXX_LDFLAGS will have to be extended to encompass both the existing 
+dnl       forms and a version of the particular flags for when the linker is called
+dnl       directly. By and large, the differece between the two forms is the removal of
+dnl       the -Wl from the compiler-called version of any given flag set. However, some
+dnl       flags are more complex. As an example, the GNU profiler is linked into a binary
+dnl       via the -pg compiler switch when compiler calls the linker. If using the linker
+dnl       directly, the linker needs to be told to add /lib/gcrt0.o in as the first
+dnl       object file and to use -lc_p instead of defaulting to -lc.
+dnl
+dnl
 AC_DEFUN([QM_SET_LINKER_LDFLAGS],
          [trace 2 Set linker specific LDFLAGS
           
