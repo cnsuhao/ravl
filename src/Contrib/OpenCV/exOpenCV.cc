@@ -8,7 +8,7 @@
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/IO.hh"
-#include "opencv/cv.h"
+#include <cv.h>
 //! lib=RavlOpenCV
 
 using namespace RavlN;
