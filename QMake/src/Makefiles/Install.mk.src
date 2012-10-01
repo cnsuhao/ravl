@@ -73,6 +73,10 @@ install: insConfig insMains insScripts insData insAux
 #JFi: To Do - insDoc
 #JFi: To Do - Ultimatly delete insAux?
 
+# Strip binaries following install
+install-strip:
+	$(MAKE) STRIP_SWITCH="-s" install
+
 # Install development libraries and headers
 insDev: insLibs insHdrs
 #JFi: To Do - insDevDoc
@@ -217,9 +221,9 @@ insEgs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/examples/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(EXAMPLES)) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -302,9 +306,9 @@ insLibs:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/lib$(PROJECT_DIR)/$(ARC)/$(VAR)$(SHARED_LIB_POSTFIX)/lib%$(LIBEXT), $(PLIB)) $(ABS_DESTDIR)$(libdir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -330,9 +334,9 @@ insMains:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/bin/utils/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(basename $(MAINS))) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -386,9 +390,9 @@ insTests:
             fi ;\
             if [ X$(QMAKE_INFO) != X ] ;\
             then \
-               echo $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
+               echo $(INSTALL) $(STRIP_SWITCH)$(STRIP_SWITCH)  $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
             fi ;\
-            $(INSTALL) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
+            $(INSTALL) $(STRIP_SWITCH) $(patsubst %,$(INSTALLHOME)/test/$(VAR)$(SHARED_LIB_POSTFIX)/bin/%, $(TESTEXES)) $(ABS_DESTDIR)$(bindir) ; \
             RET=$$? ;\
             if [ $$RET -ne 0 ] ;\
             then \
@@ -431,7 +435,7 @@ recurse:
          then \
             for d in $(REQUIRED_DIRS) ;\
             do \
-               $(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIGURE_MAKEFLAGS) -C $$d -f $(QMAKE_MAKEFILES)/Install.mk $(MAKECMDGOALS) ;\
+               $(SET_DESTDIR) $(MAKE) $(PKG_MAKEFLAGS) $(CONFIGURE_MAKEFLAGS) -C $$d -f $(QMAKE_MAKEFILES)/Install.mk STRIP_SWITCH=$(STRIP_SWITCH) $(MAKECMDGOALS) ;\
                RET=$$? ;\
                if [ $$RET -ne 0 ] ;\
                then \

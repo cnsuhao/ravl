@@ -253,6 +253,9 @@ $(STAGING)/lib/pkgconfig/QMake.pc:
 install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallDefaults InstallAB InstallPkgConf
 # JFi:To Do: Add InstallDoc
 
+install-strip:
+	$(MAKE) STRIP_SWITCH="-s" install
+
 
 InstallConfig: $(DESTDIR)$(sysconfdir)/QMake $(DESTDIR)$(sysconfdir)/QMake/Config.QMake $(DESTDIR)$(sysconfdir)/QMake/Targets.QMake
 
@@ -300,7 +303,7 @@ $(DESTDIR)$(bindir)/BinDep.pl: $(STAGING)/bin/BinDep.pl
 	 $(INSTALL_PROGRAM) $(STAGING)/bin/BinDep.pl $(DESTDIR)$(bindir)/BinDep.pl
 
 $(DESTDIR)$(bindir)/findBuildTag: $(STAGING)/bin/findBuildTag
-	 $(INSTALL_PROGRAM) $(STAGING)/bin/findBuildTag $(DESTDIR)$(bindir)/findBuildTag
+	 $(INSTALL_PROGRAM) $(STRIP_SWITCH) $(STAGING)/bin/findBuildTag $(DESTDIR)$(bindir)/findBuildTag
 
 $(DESTDIR)$(bindir)/mkdefs.pl: $(STAGING)/bin/mkdefs.pl
 	 $(INSTALL_PROGRAM) $(STAGING)/bin/mkdefs.pl $(DESTDIR)$(bindir)/mkdefs.pl
@@ -315,10 +318,10 @@ $(DESTDIR)$(bindir)/QLibs.pl: $(STAGING)/bin/QLibs.pl
 	 $(INSTALL_PROGRAM) $(STAGING)/bin/QLibs.pl $(DESTDIR)$(bindir)/QLibs.pl
 
 $(DESTDIR)$(bindir)/SysConf: $(STAGING)/bin/SysConf
-	 $(INSTALL_PROGRAM) $(STAGING)/bin/SysConf $(DESTDIR)$(bindir)/SysConf
+	 $(INSTALL_PROGRAM) $(STRIP_SWITCH) $(STAGING)/bin/SysConf $(DESTDIR)$(bindir)/SysConf
 
 $(DESTDIR)$(bindir)/untouch: $(STAGING)/bin/untouch
-	 $(INSTALL_PROGRAM) $(STAGING)/bin/untouch $(DESTDIR)$(bindir)/untouch
+	 $(INSTALL_PROGRAM) $(STRIP_SWITCH) $(STAGING)/bin/untouch $(DESTDIR)$(bindir)/untouch
 
 
 
