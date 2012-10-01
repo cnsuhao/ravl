@@ -95,6 +95,9 @@ gprofsharedbin: qmake
 
 install: installQMake installsingleoptshared installHdrs installpkgconf installRavl.def installDummyDefs
 
+install-strip:
+	$(MAKE) STRIP_SWITCH="-s" install
+
 BUILT_DOT_DEFS=$(filter-out Ravl.def, $(patsubst $(PROJECT_OUT)/lib/libdep/%,%,$(wildcard $(PROJECT_OUT)/lib/libdep/*)))
 # List of .def files created by build process (minus the single library's
 # Ravl.def). Listed as simple filename-only form.
@@ -122,12 +125,12 @@ installHdrs:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project insHdrs recurse
 
 installoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(datadir)/Ravl\\\"" VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 insLibs recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) insLibs recurse
 	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
@@ -153,7 +156,7 @@ $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep:
 	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep
 
 installsingleoptshared:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 install recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) install recurse
 	$(SHOWIT)if [ ! -d $(ABS_DESTDIR)$(libdir) ] ; then $(MKDIR_P) $(ABS_DESTDIR)$(libdir) ; fi
 	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) CCFLAGS="$(CCFLAGS) -DDEFAULT_ROOT=\\\"$(datadir)/Ravl\\\"" VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
@@ -161,7 +164,7 @@ installsingleoptshared:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Contrib/Gnome -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) CCFLAGS="$(CCFLAGS) -DPREFIX=\\\"$(prefix)\\\" -DDATADIR=\\\"$(datadir)/Ravl\\\" -DSYSCONFDIR=\\\"$(sysconfdir)/Ravl\\\" -DLIBDIR=\\\"$(libdir)\\\"" VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(RM) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl.so
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Single -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
-	$(INSTALL) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl.so $(ABS_DESTDIR)$(libdir)/libRavl.so
+	$(INSTALL) $(STRIP_SWITCH) $(PROJECT_OUT)/lib/$(ARC)/opt/shared/single/libRavl.so $(ABS_DESTDIR)$(libdir)/libRavl.so
 	$(SHOWIT)touch $(SOURCEHOME)/Core/Base/Resource.cc
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME)/Core/Base -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt SHAREDBUILD=1 NOEXEBUILD=1 libbuild
 	$(SHOWIT)touch $(SOURCEHOME)/Contrib/Gnome/Gnome.cc
@@ -180,7 +183,7 @@ installsingleoptshared:
 # restore the local path into the object/library files
 
 installQMake:
-	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake install
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake STRIP_SWITCH=$(STRIP_SWITCH) install
 
 opt: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=opt NOEXEBUILD=1 libbuild
@@ -364,6 +367,8 @@ singledebugshared: debugshared
 singledebugsharedbin:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Projects/Ravl/Makefiles/Recursive.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=debug SINGLELIB=1 SHAREDBUILD=1 programs recurse
 
+test: testsingleoptshared 
+
 testgprof:
 	@$(RM) -f $(PROJECT_OUT)/test/gprof/bin/*
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) VAR=gprof TEST_TARGET=gprof test
@@ -430,7 +435,7 @@ testsingleoptshared:
  retestsinglegprofshared retestsingleopt retestsingleoptshared rpm \
  singlegprof singlegprofbin singlegprofshared singlegprofsharedbin \
  singleopt singleoptbin singleoptshared singleoptsharedbin singledebug \
- singledebugbin singledebugshared singledebugsharedbin testgprof \
+ singledebugbin singledebugshared singledebugsharedbin test testgprof \
  testgprofshared testopt testoptshared testsinglegprof testsinglegprofshared \
  testsingleopt testsingleoptshared .DEFAULT
 
