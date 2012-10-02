@@ -53,11 +53,13 @@ namespace RavlN { namespace GeneticN {
     }
     factory.UseChildComponent("RootGeneType",m_rootGeneType,true);
     factory.UseComponentGroup("StartPopulation",m_startPopulation,typeid(GenomeC));
-    if(!m_rootGeneType.IsValid() && m_startPopulation.empty()) {
-      RavlDebug("No gene type or seed given.");
-      throw RavlN::ExceptionBadConfigC("No seed given.");
-    }
     RavlDebug("Mutation rate:%f Cross rate:%f Random:%f Keep:%f ",m_mutationRate,m_cross2mutationRatio,m_randomFraction,m_keepFraction);
+  }
+
+  //! Reset population to an empty set.
+  void GeneticOptimiserC::Reset() {
+    MutexLockC lock(m_access);
+    m_population.clear();
   }
 
   //! Set fitness function to use
@@ -195,6 +197,10 @@ namespace RavlN { namespace GeneticN {
     MutexLockC lock(m_access);
     if(m_population.empty()) {
       if(m_startPopulation.empty()) {
+        if(!m_rootGeneType.IsValid()) {
+          RavlError("No gene type or seed given.");
+          throw RavlN::ExceptionBadConfigC("No seed given.");
+        }
         RavlAssert(m_rootGeneType.IsValid());
         RavlDebug("Generating start population %u ",numKeep);
         for(unsigned i = 0;i < numKeep;i++) {
@@ -226,7 +232,9 @@ namespace RavlN { namespace GeneticN {
 
     RavlDebugIf(m_logLevel,"Gen:%u Got %u seeds. Pop:%u Best score=%f Worst score=%f Best Age:%u Best Generation:%u ",
         generation,(UIntT) seeds.Size().V(),(UIntT) m_population.size(),(float) m_population.rbegin()->first,(float) m_population.begin()->first,(UIntT) m_population.rbegin()->second->Age(),(UIntT) m_population.rbegin()->second->Generation());
-
+    if(m_logLevel >= RavlN::SYSLOG_DEBUG) {
+      m_population.rbegin()->second->Dump(std::cout);
+    }
     if(resetScores) {
       m_population.clear();
     } else {
