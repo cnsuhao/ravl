@@ -11,7 +11,7 @@
 
 # QMake configuration files
 ifndef QMAKE_CONFIGFILES
-  QMAKE_CONFIGFILES=/Set/During/Staging/Process
+  QMAKE_CONFIGFILES=@QMAKE_CONFIGFILES@
 endif
 
 # QMAKE_MAKEFILES has to be defined in each QMake makefile as it is needed to
@@ -19,17 +19,17 @@ endif
 
 # Project specific QMake files (in same tree structure as generic files)
 ifndef QMAKE_PROJECTS
-  QMAKE_PROJECTS=/Set/During/Staging/Process
+  QMAKE_PROJECTS=@QMAKE_PROJECTS@
 endif
 
 # Misc QMake support files
 ifndef QMAKE_SUPPORT
-  QMAKE_SUPPORT=/Set/During/Staging/Process
+  QMAKE_SUPPORT=@QMAKE_SUPPORT@
 endif
 
 # Utilities called by QMake
 ifndef QMAKE_UTILS
-  QMAKE_UTILS=/Set/During/Staging/Process
+  QMAKE_UTILS=@QMAKE_UTILS@
 endif
 
 

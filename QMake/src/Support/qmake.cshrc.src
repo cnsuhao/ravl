@@ -1,6 +1,6 @@
 
 # Where is QMake installed ?
-setenv QMAKE_MAKEFILES /Set/During/Staging/Process
+setenv QMAKE_MAKEFILES @QMAKE_MAKEFILES@
 #define project area if not already set (for binaries, libs, *.hh etc.)
 if (! $?PROJECT_OUT) setenv PROJECT_OUT $HOME/build
 

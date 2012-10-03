@@ -11,7 +11,7 @@
 .PRECIOUS : %.def 
 
 ifndef QMAKE_MAKEFILES
-  QMAKE_MAKEFILES=/Set/During/Staging/Process
+  QMAKE_MAKEFILES=@QMAKE_MAKEFILES@
 endif
 
 include $(QMAKE_MAKEFILES)/Main.mk

@@ -96,11 +96,11 @@ ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(MAKEFILE_LIST))
 define MAKE_MAKEFILE
 $(STAGING)/$(1): $(SRC)/$(1).src
 	$(MKDIR_P) $(STAGING)/$(dir $(1))
-	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
-	    -e 's!QMAKE_SUPPORT=/Set/During/Staging/Process!QMAKE_SUPPORT=$(datadir)/QMake/Support!g' \
-	    -e 's!QMAKE_PROJECTS=/Set/During/Staging/Process!QMAKE_PROJECTS=$(datadir)/QMake/Projects!g' \
-	    -e 's!QMAKE_UTILS=/Set/During/Staging/Process!QMAKE_UTILS=$(bindir)!g' \
-	    -e 's!QMAKE_CONFIGFILES=/Set/During/Staging/Process!QMAKE_CONFIGFILES=$(sysconfdir)/QMake!g' \
+	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
+	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
+	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
+	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
+	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
             $(SRC)/$(1).src > $(STAGING)/$(1)
 endef
 
@@ -156,7 +156,7 @@ StageShScripts: $(STAGING)/bin $(STAGING)/bin/qm $(STAGING)/bin/QLibs
 	@:
 
 $(STAGING)/bin/qm: $(SRC)/Utils/qm.sh.src 
-	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
+	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
 	    -e 's![@]SHELL[@]!/bin/sh!g' \
                 $(SRC)/Utils/qm.sh.src > $(STAGING)/bin/qm
@@ -164,7 +164,7 @@ $(STAGING)/bin/qm: $(SRC)/Utils/qm.sh.src
 $(STAGING)/bin/QLibs: $(SRC)/Utils/QLibs.sh.src 
 	sed -e 's![@]SHELL[@]!/bin/sh!g' \
 	    -e 's![@]PERL[@]!$(PERL)!g' \
-	    -e 's!QMAKE_UTILS=/Set/During/Staging/Process!QMAKE_UTILS=$(bindir)!g' \
+	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
                 $(SRC)/Utils/QLibs.sh.src > $(STAGING)/bin/QLibs
 
 
@@ -183,12 +183,12 @@ $(STAGING)/Support/Defs.txt: $(SRC)/Support/Defs.txt
 	$(INSTALL_DATA) $(SRC)/Support/Defs.txt $(STAGING)/Support/Defs.txt
 
 $(STAGING)/Support/qmake.cshrc: $(SRC)/Support/qmake.cshrc.src
-	sed -e 's!QMAKE_MAKEFILES /Set/During/Staging/Process!QMAKE_MAKEFILES $(datadir)/QMake/Makefiles!g' \
+	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
                 $(SRC)/Support/qmake.cshrc.src > $(STAGING)/Support/qmake.cshrc
 
 $(STAGING)/Support/qmake.sh: $(SRC)/Support/qmake.sh.src
-	sed -e 's!QMAKE_MAKEFILES=/Set/During/Staging/Process!QMAKE_MAKEFILES=$(datadir)/QMake/Makefiles!g' \
+	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
             -e 's![@]MAKE[@]!$(MAKE)!g' \
                 $(SRC)/Support/qmake.sh.src > $(STAGING)/Support/qmake.sh
 

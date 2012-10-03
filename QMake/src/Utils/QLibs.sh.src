@@ -1,5 +1,5 @@
 #! @SHELL@
-QMAKE_UTILS=/Set/During/Staging/Process
+QMAKE_UTILS=@QMAKE_UTILS@
 if test -z ${PROJECT_OUT} ; then
   PROJECT_OUT=${HOME}/build 
 fi
