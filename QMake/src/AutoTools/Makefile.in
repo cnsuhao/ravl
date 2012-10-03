@@ -58,6 +58,15 @@ endif
 MAKEFILE_LIST=$(patsubst %.src,%,$(filter-out defs.mk, $(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Projects/*/Makefiles/*.mk.src))))
 
 
+SED_SUBSTITUTION=$(SED) \
+            -e 's![@]MAKE[@]!$(MAKE)!g' \
+	    -e 's![@]PERL[@]!$(PERL)!g' \
+	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
+            -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
+	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
+	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
+	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
+	    -e 's![@]SHELL[@]!/bin/sh!g'
 
 
 # Main body of Makefile
@@ -96,12 +105,7 @@ ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(MAKEFILE_LIST))
 define MAKE_MAKEFILE
 $(STAGING)/$(1): $(SRC)/$(1).src
 	$(MKDIR_P) $(STAGING)/$(dir $(1))
-	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
-	    -e 's![@]QMAKE_SUPPORT[@]!$(datadir)/QMake/Support!g' \
-	    -e 's![@]QMAKE_PROJECTS[@]!$(datadir)/QMake/Projects!g' \
-	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
-	    -e 's![@]QMAKE_CONFIGFILES[@]!$(sysconfdir)/QMake!g' \
-            $(SRC)/$(1).src > $(STAGING)/$(1)
+	$(SED_SUBSTITUTION) $(SRC)/$(1).src > $(STAGING)/$(1)
 endef
 
 $(foreach makefile,$(MAKEFILE_LIST),$(eval $(call MAKE_MAKEFILE,$(makefile))))
@@ -138,16 +142,13 @@ StagePerl: $(STAGING)/bin $(STAGING)/bin/BinDep.pl $(STAGING)/bin/mkdefs.pl $(ST
 	@:
 
 $(STAGING)/bin/BinDep.pl: $(SRC)/Utils/BinDep.pl.src
-	sed -e 's![@]PERL[@]!$(PERL)!g' \
-                $(SRC)/Utils/BinDep.pl.src > $(STAGING)/bin/BinDep.pl
+	$(SED_SUBSTITUTION) $(SRC)/Utils/BinDep.pl.src > $(STAGING)/bin/BinDep.pl
 
 $(STAGING)/bin/mkdefs.pl: $(SRC)/Utils/mkdefs.pl.src
-	sed -e 's![@]PERL[@]!$(PERL)!g' \
-                $(SRC)/Utils/mkdefs.pl.src > $(STAGING)/bin/mkdefs.pl
+	$(SED_SUBSTITUTION) $(SRC)/Utils/mkdefs.pl.src > $(STAGING)/bin/mkdefs.pl
 
 $(STAGING)/bin/QLibs.pl: $(SRC)/Utils/QLibs.pl.src
-	sed -e 's![@]PERL[@]!$(PERL)!g' \
-                $(SRC)/Utils/QLibs.pl.src > $(STAGING)/bin/QLibs.pl
+	$(SED_SUBSTITUTION) $(SRC)/Utils/QLibs.pl.src > $(STAGING)/bin/QLibs.pl
 
 
 
@@ -156,16 +157,10 @@ StageShScripts: $(STAGING)/bin $(STAGING)/bin/qm $(STAGING)/bin/QLibs
 	@:
 
 $(STAGING)/bin/qm: $(SRC)/Utils/qm.sh.src 
-	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
-            -e 's![@]MAKE[@]!$(MAKE)!g' \
-	    -e 's![@]SHELL[@]!/bin/sh!g' \
-                $(SRC)/Utils/qm.sh.src > $(STAGING)/bin/qm
+	$(SED_SUBSTITUTION) $(SRC)/Utils/qm.sh.src > $(STAGING)/bin/qm
 
 $(STAGING)/bin/QLibs: $(SRC)/Utils/QLibs.sh.src 
-	sed -e 's![@]SHELL[@]!/bin/sh!g' \
-	    -e 's![@]PERL[@]!$(PERL)!g' \
-	    -e 's![@]QMAKE_UTILS[@]!$(bindir)!g' \
-                $(SRC)/Utils/QLibs.sh.src > $(STAGING)/bin/QLibs
+	$(SED_SUBSTITUTION) $(SRC)/Utils/QLibs.sh.src > $(STAGING)/bin/QLibs
 
 
 
@@ -183,14 +178,10 @@ $(STAGING)/Support/Defs.txt: $(SRC)/Support/Defs.txt
 	$(INSTALL_DATA) $(SRC)/Support/Defs.txt $(STAGING)/Support/Defs.txt
 
 $(STAGING)/Support/qmake.cshrc: $(SRC)/Support/qmake.cshrc.src
-	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
-            -e 's![@]MAKE[@]!$(MAKE)!g' \
-                $(SRC)/Support/qmake.cshrc.src > $(STAGING)/Support/qmake.cshrc
+	$(SED_SUBSTITUTION) $(SRC)/Support/qmake.cshrc.src > $(STAGING)/Support/qmake.cshrc
 
 $(STAGING)/Support/qmake.sh: $(SRC)/Support/qmake.sh.src
-	sed -e 's![@]QMAKE_MAKEFILES[@]!$(datadir)/QMake/Makefiles!g' \
-            -e 's![@]MAKE[@]!$(MAKE)!g' \
-                $(SRC)/Support/qmake.sh.src > $(STAGING)/Support/qmake.sh
+	$(SED_SUBSTITUTION) $(SRC)/Support/qmake.sh.src > $(STAGING)/Support/qmake.sh
 
 $(STAGING)/Support/Help.txt: $(SRC)/Support/Help.txt
 	$(INSTALL_DATA) $(SRC)/Support/Help.txt $(STAGING)/Support/Help.txt
@@ -216,8 +207,7 @@ $(STAGING)/AutoBuild:
 	$(MKDIR_P) $@
 
 $(STAGING)/AutoBuild/AutoBuild.pl: $(SRC)/AutoBuild/AutoBuild.pl.src
-	sed -e 's![@]PERL[@]!$(PERL)!g' \
-                $(SRC)/AutoBuild/AutoBuild.pl.src > $(STAGING)/AutoBuild/AutoBuild.pl
+	$(SED_SUBSTITUTION) $(SRC)/AutoBuild/AutoBuild.pl.src > $(STAGING)/AutoBuild/AutoBuild.pl
 
 $(STAGING)/AutoBuild/AutoBuild.sample.conf: $(SRC)/AutoBuild/AutoBuild.sample.conf
 	$(INSTALL_DATA) $(SRC)/AutoBuild/AutoBuild.sample.conf $(STAGING)/AutoBuild/AutoBuild.sample.conf
