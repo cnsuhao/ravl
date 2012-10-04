@@ -55,6 +55,15 @@ endif
 # maintained if new files are added to QMake.
 
 
+# Determine the list of QMake makefiles
+#
+# -  List all *.mk.src makefiles in the QMake Makefiles directories (generic
+#    makefiles in $(SRC)/Makefiles and project specific makefiles under the
+#    $(SRC)/Projects/$(PKG_NAME)/Makefiles directory). Strip the leading $(SRC)
+#    and the trailing .src from the pathnames.
+ALL_MAKEFILES=$(patsubst %.src,%,$(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Projects/*/Makefiles/*.mk.src)))
+
+
 #  Specify the list of AutoBuild config files
 #
 AUTOBUILD_CFGFILES=AutoBuild.sample.conf
@@ -81,15 +90,6 @@ COMPILED_UTILS=$(patsubst $(SRC)/Utils/%.c,%,$(wildcard $(SRC)/Utils/*.c)) $(pat
 # Specify the list of QMake default package config files
 #
 DEFAULT_PKG_CFGFILES=Config.Default
-
-# Determine the list of QMake makefiles
-#
-# -  List all *.mk.src makefiles in the QMake Makefiles directories (generic
-#    makefiles in $(SRC)/Makefiles and project specific makefiles under the
-#    $(SRC)/Projects/$(PKG_NAME)/Makefiles directory). Strip the leading $(SRC)
-#    and the trailing .src from the pathnames.
-MAKEFILE_LIST=$(patsubst %.src,%,$(patsubst $(SRC)/%,%,$(wildcard $(SRC)/Makefiles/*.mk.src) $(wildcard $(SRC)/Projects/*/Makefiles/*.mk.src)))
-
 
 # Determine the list of QMake Perl utilities
 #
@@ -187,7 +187,7 @@ $(STAGING)/Support:
 
 # ProcessMakefiles
 #      - turn source copy into deployable makefiles held in the staging area
-ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(MAKEFILE_LIST))
+ProcessMakefiles:$(patsubst %,$(STAGING)/%,$(ALL_MAKEFILES))
 	@:
 
 # Define how to make the staged copy of each makefile
@@ -204,7 +204,7 @@ $(STAGING)/$(1): $(SRC)/$(1).src
 	$(SED_SUBSTITUTION) $(SRC)/$(1).src > $(STAGING)/$(1)
 endef
 
-$(foreach makefile,$(MAKEFILE_LIST),$(eval $(call MAKE_MAKEFILE,$(makefile))))
+$(foreach makefile,$(ALL_MAKEFILES),$(eval $(call MAKE_MAKEFILE,$(makefile))))
 
 
 
@@ -362,7 +362,7 @@ $(DESTDIR)$(sysconfdir)/QMake/%: @abs_top_builddir@/%
 
 
 
-InstallMakefiles: $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(MAKEFILE_LIST)) 
+InstallMakefiles: $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(ALL_MAKEFILES)) 
 
 # Define how to install each individual makefile
 define INSTALL_MAKEFILE
@@ -371,7 +371,7 @@ $(DESTDIR)$(datadir)/QMake/$(1): $(STAGING)/$(1)
 	$(INSTALL_DATA) $(STAGING)/$(1) $(DESTDIR)$(datadir)/QMake/$(1)
 endef
 
-$(foreach makefile,$(MAKEFILE_LIST),$(eval $(call INSTALL_MAKEFILE,$(makefile))))
+$(foreach makefile,$(ALL_MAKEFILES),$(eval $(call INSTALL_MAKEFILE,$(makefile))))
 
 
 
@@ -487,8 +487,8 @@ info:
 	@echo Package default config files:
 	@echo "    [ $(DEFAULT_PKG_CFGFILES) ]"
 	@echo
-	@echo Makefile list:
-	@echo "    [ $(MAKEFILE_LIST) ]"
+	@echo List of Makefiles:
+	@echo "    [ $(ALL_MAKEFILES) ]"
 	@echo
 	@echo Perl utilities:
 	@echo "    [ $(PERL_UTILS) ]"
