@@ -389,7 +389,7 @@ InstallScripts: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(SHELL_U
 	@:
 
 $(DESTDIR)$(bindir)/%: $(STAGING)/bin/%
-	$(INSTALL_PROGRAM) $< $@
+	$(if $(filter $(@F),$(COMPILED_UTILS)),$(INSTALL_PROGRAM) $(STRIP_SWITCH) $< $@,$(INSTALL_PROGRAM) $< $@)
 
 
 
