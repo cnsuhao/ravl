@@ -428,16 +428,18 @@ testsingleoptshared:
 
 
 .PHONY: check debug debugshared default dist doc fullsrc \
- gprof gprofbin gprofshared gprofsharedbin install installHdrs \
- installoptshared installpkgconf installQMake installsingleoptshared \
- LocalQMake opt optbin optshared pkgconf qmake QMake recurse \
- retestgprof retestgprofshared retestopt retestoptshared retestsinglegprof \
- retestsinglegprofshared retestsingleopt retestsingleoptshared rpm \
- singlegprof singlegprofbin singlegprofshared singlegprofsharedbin \
- singleopt singleoptbin singleoptshared singleoptsharedbin singledebug \
- singledebugbin singledebugshared singledebugsharedbin test testgprof \
- testgprofshared testopt testoptshared testsinglegprof testsinglegprofshared \
- testsingleopt testsingleoptshared .DEFAULT
+ gprof gprofbin gprofshared gprofsharedbin install install-strip \
+ installDummyDefs installHdrs installoptshared installpkgconf installQMake \
+ installRavl.def installsingleoptshared LocalQMake opt optbin optshared \
+ optsharedbin pkgconf qmake QMake Ravl.def retestgprof retestgprofshared \
+ retestopt retestoptshared retestsinglegprof retestsinglegprofshared \
+ retestsingleopt retestsingleoptshared rpm SetRootInstalledOptStatic \
+ SetRootStagedOptStatic singledebug singledebugbin singledebugshared \
+ singledebugsharedbin singlegprof singlegprofbin singlegprofshared \
+ singlegprofsharedbin singleopt singleoptbin singleoptshared \
+ singleoptsharedbin test testgprof testgprofshared testopt testoptshared \
+ testsinglegprof testsinglegprofshared testsingleopt testsingleoptshared \
+ .DEFAULT
 
 SetRootInstalledOptStatic:
 	touch $(SOURCEHOME)/Core/Base/Resource.cc
