@@ -82,6 +82,13 @@ insDev: insLibs insHdrs
 #JFi: To Do - insDevDoc
 
 
+# Unistall (regular files only)
+uninstall: uinsConfig uinsMains uinsScripts uinsData uinsAux
+
+# Uninstall development libraries and headers
+uinsDev: uinsLibs uinsHdrs
+
+
 
 
 # Install the different classes of file
@@ -146,6 +153,27 @@ insAux:
             fi ;\
          fi
 
+uinsAux:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(AUXFILES)" != X ] ;\
+         then \
+            for f in $(AUXFILES) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR)/$$f ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(datadir)/$(AUXHOME)/$(AUXDIR)/$$f ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 insConfig: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(CFGFILES)" != X ] ;\
          then \
@@ -172,6 +200,27 @@ insConfig:
             then \
                exit $$RET ;\
             fi ;\
+         fi
+
+uinsConfig:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(CFGFILES)" != X ] ;\
+         then \
+            for f in $(CFGFILES) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(sysconfdir)/$(PROJECT_DIR)$(PACKAGE)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
          fi
 
 insData:
@@ -203,6 +252,27 @@ insData:
          fi
 #JFi: To Do - implement DATA DATADIR in defs.mk
 
+uinsData:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(DATA)" != X ] ;\
+         then \
+            for f in $(DATA) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(DATADIR)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 insEgs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EXAMPLES)" != X ] ;\
          then \
@@ -230,6 +300,28 @@ insEgs:
                exit $$RET ;\
             fi ;\
          fi
+
+uinsEgs:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EXAMPLES)" != X ] ;\
+         then \
+            for f in $(EXAMPLES) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(bindir)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 
 insEgData: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EGDATA)" != X ] ;\
@@ -260,6 +352,27 @@ insEgData:
          fi
 #JFi: To Do - implement EGDATA EGDATADIR in defs.mk
 
+uinsEgData:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(EGDATA)" != X ] ;\
+         then \
+            for f in $(EGDATA) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(datadir)/$(PROJECT_DIR)$(PACKAGE)/$(EGDATADIR)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 insHdrs: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(HEADERS)" != X ] ;\
          then \
@@ -286,6 +399,27 @@ insHdrs:
             then \
                exit $$RET ;\
             fi ;\
+         fi
+
+uinsHdrs:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(HEADERS)" != X ] ;\
+         then \
+            for f in $(HEADERS) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(includedir)/$(PROJECT_DIR)$(PACKAGE)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
          fi
 
 insLibs: 
@@ -316,6 +450,27 @@ insLibs:
             fi ;\
          fi
 
+uinsLibs:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(PLIB)" != X ] ;\
+         then \
+            for f in $(PLIB) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(libdir)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(libdir)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(libdir)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 insMains: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(MAINS)" != X ] ;\
          then \
@@ -342,6 +497,27 @@ insMains:
             then \
                exit $$RET ;\
             fi ;\
+         fi
+
+uinsMains:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(MAINS)" != X ] ;\
+         then \
+            for f in $(basename $(MAINS)) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(bindir)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
          fi
 
 insScripts: 
@@ -372,6 +548,27 @@ insScripts:
             fi ;\
          fi
 
+uinsScripts:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(SCRIPTS)" != X ] ;\
+         then \
+            for f in $(SCRIPTS) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(bindir)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 insTests: 
 	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(TESTEXES)" != X ] ;\
          then \
@@ -398,6 +595,27 @@ insTests:
             then \
                exit $$RET ;\
             fi ;\
+         fi
+
+uinsTests:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(TESTEXES)" != X ] ;\
+         then \
+            for f in $(TESTEXES) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(bindir)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(bindir)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
          fi
 
 insTestData: 
@@ -429,6 +647,27 @@ insTestData:
          fi
 #JFi: To Do - implement TESTDATA TESTDATADIR in defs.mk
 
+uinsTestData:
+	@if [ $(OK_TO_INSTALL) = Yes ] && [ "X$(TESTDATA)" != X ] ;\
+         then \
+            for f in $(TESTDATA) ;\
+            do \
+               if [ -f $(ABS_DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR)/$$f ] ;\
+               then \
+                  if [ X$(QMAKE_INFO) != X ] ;\
+                  then \
+                     echo $(RM) -f $(ABS_DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR)/$$f  ;\
+                  fi ;\
+                  $(RM) -f $(ABS_DESTDIR)$(datadir)$(PROJECT_DIR)/Test/Data/$(TESTDATADIR)/$$f  ;\
+                  RET=$$? ;\
+                  if [ $$RET -ne 0 ] ;\
+                  then \
+                     exit $$RET ;\
+                  fi ;\
+               fi ;\
+            done ;\
+         fi
+
 
 recurse:
 	@if [ $(OK_TO_INSTALL) = Yes ] ;\
@@ -444,9 +683,10 @@ recurse:
             done ;\
          fi
 
-.PHONY: default info install insAUX insConfig insData insDev insEgs \
- insEgData insHdrs insLibs insMains insScripts insTests insTestData \
- recurse
+.PHONY: default info install install-strip insAUX insConfig insData insDev \
+ insEgs insEgData insHdrs insLibs insMains insScripts insTests insTestData \
+ recurse uinsAUX uinsConfig uinsData uinsDev uinsEgs uinsEgData uinsHdrs \
+ uinsLibs uinsMains uinsScripts uninstall uinsTests uinsTestData 
 
 
 

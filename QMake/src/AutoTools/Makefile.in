@@ -331,6 +331,7 @@ install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallDefau
 install-strip:
 	$(MAKE) STRIP_SWITCH="-s" install
 
+uninstall: UinsConfig UinsMakefiles UinsUtils UinsSupport UinsDefaults UinsAB UinsPkgConf
 
 
 # Recipes for creating the directories to receive the install
@@ -359,6 +360,8 @@ InstallConfig: $(DESTDIR)$(sysconfdir)/QMake $(patsubst %,$(DESTDIR)$(sysconfdir
 $(DESTDIR)$(sysconfdir)/QMake/%: @abs_top_builddir@/%
 	$(INSTALL_DATA)  $< $@
 
+UinsConfig:
+	$(if $(QMAKE_CFGFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(QMAKE_CFGFILES)))
 
 
 
@@ -373,11 +376,17 @@ endef
 
 $(foreach makefile,$(ALL_MAKEFILES),$(eval $(call INSTALL_MAKEFILE,$(makefile))))
 
+UinsMakefiles:
+	$(if $(ALL_MAKEFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(ALL_MAKEFILES)),@:)
 
 
 # Install the QMake executables
 InstallUtils: InstallBuiltUtils InstallPerl InstallScripts
 	@:
+
+UinsUtils:
+	$(if $(COMPILED_UTILS) $(PERL_UTILS) $(SHELL_UTILS),$(RM) -f $(patsubst %,$(DESTDIR)$(bindir)/%,$(COMPILED_UTILS) $(PERL_UTILS) $(SHELL_UTILS)),@:)
+
 
 InstallBuiltUtils: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(COMPILED_UTILS))
 	@:
@@ -416,6 +425,8 @@ $(DESTDIR)$(datadir)/QMake/Support/%.sh: $(STAGING)/Support/%.sh
 	$(INSTALL_PROGRAM) $< $@
 
 
+UinsSupport:
+	$(if $(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS),$(RM) -f $(patsubst %,$(DESTDIR)$(datadir)/QMake/%,$(SUPPORT_FILES) $(SUPPORT_PERL) $(SUPPORT_SCRIPTS)),@:)
 
 
 # Install default client-build settings
@@ -424,10 +435,17 @@ InstallDefaults: $(DESTDIR)$(datadir)/QMake/Projects/Skeleton $(patsubst %,$(DES
 $(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%: $(STAGING)/Projects/Skeleton/%
 	$(INSTALL_DATA) $< $@
 
+UinsDefaults:
+	$(if $(DEFAULT_PKG_CFGFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(datadir)/QMake/Projects/Skeleton/%, $(DEFAULT_PKG_CFGFILES)),@:)
+
 
 
 # Install AutoBuild
 InstallAB: InstallABConfig InstallABProgs
+
+
+UinsAB: UinsABConfig UinsABProgs
+
 
 InstallABConfig: $(DESTDIR)$(sysconfdir)/QMake $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(AUTOBUILD_CFGFILES))
 	@:
@@ -436,11 +454,16 @@ $(DESTDIR)$(sysconfdir)/QMake/%: $(STAGING)/AutoBuild/%
 	$(INSTALL_DATA) $< $@
 
 
+UinsABConfig:
+	$(if $(AUTOBUILD_CFGFILES),$(RM) -f $(patsubst %,$(DESTDIR)$(sysconfdir)/QMake/%,$(AUTOBUILD_CFGFILES)),@:)
+
 InstallABProgs: $(DESTDIR)$(bindir) $(patsubst %,$(DESTDIR)$(bindir)/%,$(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS))
 
 $(DESTDIR)$(bindir)/%: $(STAGING)/AutoBuild/%
 	$(INSTALL_PROGRAM) $< $@
 
+UinsABProgs:
+	$(if $(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS),$(RM) -f $(patsubst %,$(DESTDIR)$(bindir)/%,$(AUTOBUILD_PERL) $(AUTOBUILD_SCRIPTS)),@:)
 
 
 
@@ -452,13 +475,18 @@ InstallPkgConf: $(DESTDIR)$(libdir)/pkgconfig $(DESTDIR)$(libdir)/pkgconfig/QMak
 $(DESTDIR)$(libdir)/pkgconfig/QMake.pc: $(STAGING)/lib/pkgconfig/QMake.pc
 	$(INSTALL_DATA) $< $@
 
+UinsPkgConf:
+	$(RM) -f $(DESTDIR)$(libdir)/pkgconfig/QMake.pc
+
 
 
 .PHONY: BuildUtils default info install InstallAB InstallABConfig \
- InstallABProgs InstallBuiltUtils InstallConfig InstallMakefiles InstallPerl \
- InstallPkgConf InstallScripts InstallSupport InstallUtils ProcessMakefiles \
- StageAB StagePerl StagePkgConf StageQMake StageShScripts StageSupport \
- StageUtils
+ InstallABProgs InstallBuiltUtils InstallConfig InstallDefaults \
+ InstallMakefiles InstallPerl InstallPkgConf InstallScripts InstallSupport \
+ InstallUtils ProcessMakefiles StageAB StageDefaults StagePerl StagePkgConf \
+ StageQMake StageShScripts StageSupport StageUtils uninstall UinsAB \
+ UinsABConfig UinsABProgs UinsConfig UinsDefaults UinsMakefiles UinsPkgConf \
+ UinsSupport UinsUtils
 
 
 # Basic debug information
