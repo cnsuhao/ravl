@@ -115,6 +115,7 @@ $(foreach dotdef,$(BUILT_DOT_DEFS),$(eval $(call installddd,$(dotdef))))
  
 installDummyDefs: $(DUMMY_DOT_DEFS)
 
+               
 
 
 # All the install targets recurse down the source directories using the defs.mk
@@ -181,6 +182,7 @@ installsingleoptshared:
 # relink the library before installing it. Rather than call the insLibs make
 # target, we manually copy across the single shared library. Finally, 
 # restore the local path into the object/library files
+
 
 installQMake:
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_top_builddir@/QMake/Makefile STAGING=@abs_top_builddir@/QMake STRIP_SWITCH=$(STRIP_SWITCH) install
@@ -419,6 +421,84 @@ testsingleoptshared:
            LD_LIBRARY_PATH=$(PROJECT_OUT)/lib/$(ARC)/opt/shared/single:$$LD_LIBRARY_PATH \
            $(PROJECT_OUT)/bin/utils/opt/shared/single/bin/Validate -v $(PROJECT_OUT)/test/opt/shared/single
 
+uninstall: uninstallQMake uninstallsingleoptshared uninstallHdrs uninstallpkgconf uninstallRavl.def uninstallDummyDefs
+
+uninstallDummyDefs:
+	@for f in $(BUILT_DOT_DEFS) ; \
+         do \
+            if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/$$f ] ; \
+            then \
+               if [ X$(QMAKE_INFO) != X ] ;\
+               then \
+                  echo $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/$$f ; \
+               fi ;\
+               $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/$$f ; \
+               RET=$$? ; \
+               if [ $$RET -ne 0 ] ; \
+               then \
+                  exit $$RET ;\
+               fi ;\
+            fi ;\
+         done
+
+uninstallHdrs:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project uinsHdrs recurse
+
+uninstalloptshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHAREDBUILD=1 uninstall recurse
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project VAR=opt SHAREDBUILD=1 STRIP_SWITCH=$(STRIP_SWITCH) uinsLibs recurse
+
+uninstallpkgconf: 
+	@if [ -f $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc ] ; \
+         then \
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc ; \
+            fi ;\
+            $(RM) -f $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc ; \
+            RET=$$? ; \
+            if [ $$RET -ne 0 ] ; \
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+uninstallQMake:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -f @abs_top_builddir@/QMake/Makefile uninstall
+
+uninstallRavl.def:
+	@if [ -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ] ; \
+         then \
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ; \
+            fi ;\
+            $(RM) -f $(ABS_DESTDIR)$(datadir)/QMake/Projects/Ravl/libdep/Ravl.def ; \
+            RET=$$? ; \
+            if [ $$RET -ne 0 ] ; \
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+uninstallsingleoptshared:
+	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) $(SET_DESTDIR) -C $(SOURCEHOME) -f $(WORKING_QMAKE)/Makefiles/Install.mk CONFIGFILE=$(PROJECT_OUT)/Config.Project AUXHOME=Ravl VAR=opt SHARED_LIB_POSTFIX=/shared/single SHAREDBUILD=1 uninstall recurse
+	@if [ -f $(ABS_DESTDIR)$(libdir)/libRavl.so ] ; \
+         then \
+            if [ X$(QMAKE_INFO) != X ] ;\
+            then \
+               echo $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.so ; \
+            fi ;\
+            $(RM) -f $(ABS_DESTDIR)$(libdir)/libRavl.so ; \
+            RET=$$? ; \
+            if [ $$RET -ne 0 ] ; \
+            then \
+               exit $$RET ;\
+            fi ;\
+         fi
+
+
+
 .DEFAULT: qmake
 	$(MAKE) $(PKG_MAKEFLAGS) $(CONFIG_MAKEFLAGS) -C $(SOURCEHOME) -f $(RAVL_MAKEFILE) $(RAVL_FLAGS) $@
 
@@ -439,6 +519,8 @@ testsingleoptshared:
  singlegprofsharedbin singleopt singleoptbin singleoptshared \
  singleoptsharedbin test testgprof testgprofshared testopt testoptshared \
  testsinglegprof testsinglegprofshared testsingleopt testsingleoptshared \
+ uninstall uninstallDummyDefs uninstallHdrs uninstalloptshared \
+ uninstallpkgconf uninstallQMake uninstallRavl.def uninstallsingleoptshared \
  .DEFAULT
 
 SetRootInstalledOptStatic:
