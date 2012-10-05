@@ -365,6 +365,9 @@ namespace RavlN {
   
   template<class DataT>
   void SizeBufferAccessC<DataT>::Reverse() {
+    // If there's zero or one element, nothing to do.
+    if(sz < 2)
+      return ;
     DataT *at = &((*this)[IMin()]);
     DataT *end = &((*this)[IMax()]);
     DataT tmp;
