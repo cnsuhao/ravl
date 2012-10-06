@@ -58,17 +58,11 @@ namespace RavlN {
 
   //: Add another sample
   MeanVarianceC &MeanVarianceC::operator+=(const RealT &value) {
-    const RealT number1 = (RealT) Number();
-    const RealT nDen    = number1 + 1.0;
-    const RealT p1 = number1 / nDen;
-    const RealT p2 = 1.0 / nDen;
-
-    var *= p1;
-    var += ((value - Mean()) * p1*p2);
-
-    // Update the mean.
-    mean = mean * p1 + value * p2;
     n += 1;
+    RealT rn = n;
+    RealT delta = value - mean;
+    mean += delta/rn;
+    var = (var * (rn-1.0) + (delta*(value - mean)))/rn;
     return *this;
   }
 
