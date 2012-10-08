@@ -28,7 +28,10 @@ namespace RavlN {
 #if !RAVL_COMPILER_VISUALCPP
     if((Mode() & S_IROTH) != 0)
       return true;
-    if((Mode() & S_IRUSR) != 0 && getuid() == Owner())
+    uid_t me = getuid();
+    if(me == 0)
+      return true; // Root has access to everything.
+    if((Mode() & S_IRUSR) != 0 && me == Owner())
       return true;
     if((Mode() & S_IRGRP) != 0) {  
       gid_t GrpArr[NGROUPS_UMAX];
@@ -55,7 +58,10 @@ namespace RavlN {
 #if !RAVL_COMPILER_VISUALCPP
     if((Mode() & S_IWOTH) != 0)
       return true;
-    if((Mode() & S_IWUSR) != 0 && getuid() == Owner())
+    uid_t me = getuid();
+    if(me == 0)
+      return true; // Root has access to everything.
+    if((Mode() & S_IWUSR) != 0 && me == Owner())
       return true;
     if((Mode() & S_IWGRP) != 0) {  
       gid_t GrpArr[NGROUPS_UMAX];
