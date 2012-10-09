@@ -49,9 +49,13 @@ namespace RavlN {
   
   //:-
   
-  //: Lock system for reading.
+  //: Scoped lock class system for reading.
   // This class provides exceptions safe system DB locking.
-  // NB. The locking mechanism is NOT guaranteed to
+  // To lock a resoruce create an instance of this class, to unlock
+  // a resource use Unlock() or let the class go out of scope. Note:
+  // this class should not be used as a lock itself, and should not be
+  // used from more than one thread.
+  // NB. The locking mechanism is not guaranteed to
   // be recursive, so you can't call ReadLock twice then Unlock twice.
   // You also can't go directly between a read lock to a write lock
   // just by calling MTWriteLock(), you have to Unlock the ReadLock
@@ -102,6 +106,10 @@ namespace RavlN {
   
   //: Lock system for writing.
   // This class provides exceptions safe system DB locking.
+  // To lock a resoruce create an instance of this class, to unlock
+  // a resource use Unlock() or let the class go out of scope. Note:
+  // this class should not be used as a lock itself, and should not be
+  // used from more than one thread.
   // NB. The locking mechanism is NOT garuanteed to
   // be recursive, so you can't call ReadLock twice then Unlock twice.
   // You also can't go directly between a read lock to a write lock
