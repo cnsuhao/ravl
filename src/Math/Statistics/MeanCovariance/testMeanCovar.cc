@@ -161,14 +161,6 @@ int testMeanVar() {
       MeanVarianceC added = mva;
       added += mvb;
       MeanVarianceC comp(data.Array(),false);
-
-      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),added.Mean(),1e-8);
-      RAVL_TEST_ALMOST_EQUALS(sum.Variance(),added.Variance(),1e-8);
-      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),mvinc.Mean(),1e-8);
-      RAVL_TEST_ALMOST_EQUALS(sum.Variance(),mvinc.Variance(),1e-8);
-      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),comp.Mean(),1e-8);
-      RAVL_TEST_ALMOST_EQUALS(sum.Variance(),comp.Variance(),1e-8);
-
 #if 0
       RavlDebug("Val:%f Sum: %f %f  added:%f %f  inc:%f %f comp:%f %f",
           val,
@@ -182,6 +174,14 @@ int testMeanVar() {
           comp.Variance()
           );
 #endif
+
+      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),added.Mean(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Variance(false),added.Variance(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),mvinc.Mean(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Variance(false),mvinc.Variance(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),comp.Mean(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Variance(false),comp.Variance(),1e-8);
+
     }
   }
 
