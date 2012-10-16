@@ -68,7 +68,11 @@ namespace RavlImageN {
     //: Apply the edge detector to 'img', generate an array of ordered edgels lists.
     
     bool Apply(const ImageC<ByteT> &img,DListC<DListC<EdgelC> > &edgeLists) const;
-    //: Apply the edge detector to 'img', generate list of ordered edgels lisst.
+    //: Apply the edge detector to 'img', generate list of ordered edgels lists.
+
+    void SetDeriche(RealT Omega, RealT Alpha)
+    { edgeDet = EdgeDericheC(Omega,Alpha); }
+    //: Set the Deriche filter parameters
     
   protected:
     RealT minHyst,maxHyst;
@@ -159,6 +163,9 @@ namespace RavlImageN {
     { return Body().Apply(img,edgeLists); }
     //: Generates a list of edgel lists.
     
+    void SetDeriche(RealT Omega, RealT Alpha)
+    { Body().SetDeriche(Omega,Alpha); }
+    //: Set the Deriche filter parameters
   };
   
 }
