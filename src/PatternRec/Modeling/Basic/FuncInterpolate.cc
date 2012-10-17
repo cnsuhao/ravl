@@ -26,7 +26,7 @@ namespace RavlN {
   //: Construct from a transform matrix.
 
   FuncInterpolateBodyC::FuncInterpolateBodyC() {
-    ONDEBUG(cerr << "FuncInterpolateBodyC::FuncInterpolateBodyC(), Called. \n");
+    ONDEBUG(std::cerr << "FuncInterpolateBodyC::FuncInterpolateBodyC(), Called. \n");
   }
 
   //: Constructor
@@ -47,7 +47,7 @@ namespace RavlN {
 
   //: Load from stream.
 
-  FuncInterpolateBodyC::FuncInterpolateBodyC(istream &strm)
+  FuncInterpolateBodyC::FuncInterpolateBodyC(std::istream &strm)
     : FunctionBodyC(strm)
   {
   }
@@ -66,7 +66,7 @@ namespace RavlN {
 
   //: Writes object to stream.
 
-  bool FuncInterpolateBodyC::Save (ostream &out) const
+  bool FuncInterpolateBodyC::Save (std::ostream &out) const
   { return FunctionBodyC::Save(out); }
 
   //: Writes object to binary stream.

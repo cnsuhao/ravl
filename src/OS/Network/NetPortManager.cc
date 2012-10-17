@@ -303,8 +303,14 @@ namespace RavlN {
   
   //! Start service.
   bool NetPortManagerBodyC::Start() {
-    if(!address.IsEmpty())
-      Open(address);
+    if(!address.IsEmpty()) {
+      while(!terminate) {
+        if(Open(address))
+          break;
+        RavlWarning("Failed to open server socket, will retry in 10 seconds.");
+        RavlN::Sleep(10);
+      }
+    }
     return true;
   }
 

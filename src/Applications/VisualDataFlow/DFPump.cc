@@ -36,7 +36,7 @@ namespace RavlDFN {
   //: Process a mouse click.
   
   DFMouseActionT DFPumpBodyC::MouseClick(GUIViewBodyC &view,const  MouseEventC &me) {
-    ONDEBUG(cerr << "DFPumpBodyC::MouseClick(), Called. \n");
+    ONDEBUG(std::cerr << "DFPumpBodyC::MouseClick(), Called. \n");
     if(me.HasChanged(0)) 
       return DFMA_SELECTDRAG;
     if(!popUp.IsValid()) {
@@ -54,9 +54,9 @@ namespace RavlDFN {
   //: Run pump.
   
   bool DFPumpBodyC::Run() {
-    ONDEBUG(cerr << "DFPumpBodyC::Run(), Called. \n");
+    ONDEBUG(std::cerr << "DFPumpBodyC::Run(), Called. \n");
     if(!connect.IsValid()) {
-      cerr << "DFPumpBodyC::Run(), ERROR: No connection. \n";
+      std::cerr << "DFPumpBodyC::Run(), ERROR: No connection. \n";
       return false;
     }
     return connect.Run();
@@ -65,9 +65,9 @@ namespace RavlDFN {
   //: Stop pump.
   
   bool DFPumpBodyC::Stop() {
-    ONDEBUG(cerr << "DFPumpBodyC::Stop(), Called. \n");
+    ONDEBUG(std::cerr << "DFPumpBodyC::Stop(), Called. \n");
     if(!connect.IsValid()) {
-      cerr << "DFPumpBodyC::Stop(), ERROR: No connection. \n";
+      std::cerr << "DFPumpBodyC::Stop(), ERROR: No connection. \n";
       return false;
     }
     connect.Stop();
@@ -76,9 +76,9 @@ namespace RavlDFN {
   
   //: Pump one item.
   bool DFPumpBodyC::Step() {
-    ONDEBUG(cerr << "DFPumpBodyC::Step(), Called. \n");
+    ONDEBUG(std::cerr << "DFPumpBodyC::Step(), Called. \n");
     if(!connect.IsValid()) {
-      cerr << "DFPumpBodyC::Step(), ERROR: No connection. \n";
+      std::cerr << "DFPumpBodyC::Step(), ERROR: No connection. \n";
       return false;
     }
     return connect.Step();

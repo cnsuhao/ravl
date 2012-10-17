@@ -36,7 +36,7 @@ namespace RavlN {
     //: Default constructor
     //!param: numSamples - number of random samples to check
     
-    OptimiseGridBodyC (istream &in);
+    OptimiseGridBodyC (std::istream &in);
     //: Constructs from stream
     
   protected:
@@ -46,7 +46,7 @@ namespace RavlN {
     virtual const StringC GetInfo () const;
     //: Prints information about the optimizer
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
   };
   

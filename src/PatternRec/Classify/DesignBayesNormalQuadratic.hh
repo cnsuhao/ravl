@@ -23,17 +23,16 @@ namespace RavlN {
     : public DesignClassifierSupervisedBodyC
   {
   public:
-    DesignBayesNormalQuadraticBodyC()
-    {}
+    DesignBayesNormalQuadraticBodyC();
     //: Default constructor.
-    
-    DesignBayesNormalQuadraticBodyC(istream &strm);
+
+    DesignBayesNormalQuadraticBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalQuadraticBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -45,6 +44,9 @@ namespace RavlN {
     DesignBayesNormalQuadraticBodyC(const SArray1dC<RealT> & priors);
     //: Specify the priors for each class
         
+    DesignBayesNormalQuadraticBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Create function from the a labelled dataset.
         
@@ -64,7 +66,7 @@ namespace RavlN {
   {
   public:
 
-    DesignBayesNormalQuadraticC(istream &strm);
+    DesignBayesNormalQuadraticC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalQuadraticC(BinIStreamC &strm);
@@ -80,6 +82,11 @@ namespace RavlN {
     {}
     //: Create designer with user set priors for each class
     
+    DesignBayesNormalQuadraticC(const XMLFactoryContextC &factory)
+    :  DesignClassifierSupervisedC(*new DesignBayesNormalQuadraticBodyC(factory))
+    {}
+    //: Construct from XML factory
+
   protected:
     DesignBayesNormalQuadraticC(DesignBayesNormalQuadraticBodyC &bod)
       : DesignClassifierSupervisedC(bod)
@@ -104,14 +111,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DesignBayesNormalQuadraticC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignBayesNormalQuadraticC &obj) {
     obj = DesignBayesNormalQuadraticC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignBayesNormalQuadraticC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignBayesNormalQuadraticC &obj) {
     obj.Save(out);
     return out;
   }

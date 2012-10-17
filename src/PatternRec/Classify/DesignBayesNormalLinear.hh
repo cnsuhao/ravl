@@ -14,6 +14,7 @@
 
 #include "Ravl/PatternRec/DesignClassifierSupervised.hh"
 
+
 namespace RavlN {
   
   //! userlevel=Develop
@@ -23,17 +24,16 @@ namespace RavlN {
     : public DesignClassifierSupervisedBodyC
   {
   public:
-    DesignBayesNormalLinearBodyC()
-    {}
+    DesignBayesNormalLinearBodyC();
     //: Default constructor.
     
-    DesignBayesNormalLinearBodyC(istream &strm);
+    DesignBayesNormalLinearBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalLinearBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -45,6 +45,9 @@ namespace RavlN {
     DesignBayesNormalLinearBodyC(const SArray1dC<RealT> & priors);
     //: Specify the priors for each class
         
+    DesignBayesNormalLinearBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
     //: Create function from the a labelled dataset.
         
@@ -64,7 +67,7 @@ namespace RavlN {
   {
   public:
 
-    DesignBayesNormalLinearC(istream &strm);
+    DesignBayesNormalLinearC(std::istream &strm);
     //: Load from stream.
     
     DesignBayesNormalLinearC(BinIStreamC &strm);
@@ -80,6 +83,11 @@ namespace RavlN {
     {}
     //: Create designer.
     
+    DesignBayesNormalLinearC(const XMLFactoryContextC &factory)
+      :  DesignClassifierSupervisedC(*new DesignBayesNormalLinearBodyC(factory))
+    {}
+    //: Construct from XML factory
+
   protected:
     DesignBayesNormalLinearC(DesignBayesNormalLinearBodyC &bod)
       : DesignClassifierSupervisedC(bod)
@@ -104,14 +112,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DesignBayesNormalLinearC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignBayesNormalLinearC &obj) {
     obj = DesignBayesNormalLinearC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignBayesNormalLinearC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignBayesNormalLinearC &obj) {
     obj.Save(out);
     return out;
   }

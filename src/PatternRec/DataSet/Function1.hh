@@ -30,7 +30,7 @@ namespace RavlN {
     Function1BodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    Function1BodyC(istream &strm);
+    Function1BodyC(std::istream &strm);
     //: Load from stream.
     
     Function1BodyC(BinIStreamC &strm);
@@ -54,7 +54,7 @@ namespace RavlN {
     //: Evaluate the value,jacobian, and hessian of the function at point X
     // Returns true if all values are provide, false if one or more is approximated.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -85,7 +85,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    Function1C(istream &strm);
+    Function1C(std::istream &strm);
     //: Load from stream.
     
     Function1C(BinIStreamC &strm);
@@ -142,14 +142,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,Function1C &obj) {
+  inline std::istream &operator>>(std::istream &strm,Function1C &obj) {
     obj = Function1C(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const Function1C &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const Function1C &obj) {
     obj.Save(out);
     return out;
   }

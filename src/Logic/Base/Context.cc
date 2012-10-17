@@ -82,7 +82,7 @@ namespace RavlLogicN {
       Tuple2C<LiteralC,bool> info;
       if(!map.Lookup(name,info)) {
 	if(builtinLit)
-	  cerr << "WARNING: Unknown builtin literal '" << name << "' with id " << id << " in context. \n";
+	  std::cerr << "WARNING: Unknown builtin literal '" << name << "' with id " << id << " in context. \n";
 	info = Tuple2C<LiteralC,bool>(LiteralC(name),builtinLit);
 	map[name] = info;
       }

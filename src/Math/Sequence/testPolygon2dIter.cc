@@ -25,7 +25,7 @@ int main(int nargs,char **argv)
   polygon.InsLast(Point2dC(10,10));
   polygon.InsLast(Point2dC(10,0));
   for(Polygon2dIterC it(polygon); it; it++) {
-    cerr << it.Row() << ' ' << it.IndexRange() << endl;
+    std::cerr << it.Row() << ' ' << it.IndexRange() << std::endl;
   }
   return 0;
 }

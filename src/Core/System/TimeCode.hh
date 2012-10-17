@@ -117,10 +117,10 @@ namespace RavlN {
     TimeCodeC & operator++();
     //: Increments timecode by 1 frame
     
-    friend ostream &operator<<(ostream &s, const TimeCodeC &out);
+    friend std::ostream &operator<<(std::ostream &s, const TimeCodeC &out);
     //: Output stream for timecode
     
-    friend istream &operator>>(istream &s, TimeCodeC &inds);
+    friend std::istream &operator>>(std::istream &s, TimeCodeC &inds);
     //: Input stream fot timecode
 
     friend BinOStreamC & operator << (BinOStreamC & s, const TimeCodeC & tc ); 
@@ -188,10 +188,10 @@ namespace RavlN {
 
   };
   
-  ostream &operator<<(ostream &s, const TimeCodeC &out);
+  std::ostream &operator<<(std::ostream &s, const TimeCodeC &out);
   //: Write time code out to stream.
   
-  istream &operator>>(istream &s, TimeCodeC &tc);
+  std::istream &operator>>(std::istream &s, TimeCodeC &tc);
   //: Read time code in from stream.
   
   BinOStreamC & operator << (BinOStreamC & s, const TimeCodeC & tc ); 

@@ -4,8 +4,8 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER
-#define RAVL_CLASSIFYDISCRIMINANTFUNCTION_HEADER 1
+#ifndef RAVL_CLASSIFIERLOGISTICREGRESSION_HEADER
+#define RAVL_CLASSIFIERLOGISTICREGRESSION_HEADER 1
 ///////////////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Classifier"
@@ -30,13 +30,13 @@ namespace RavlN {
     ClassifierLogisticRegressionBodyC(const MatrixC &weights,bool prependUnit);
     //: Create classifier from some weights.
 
-    ClassifierLogisticRegressionBodyC(istream &strm);
+    ClassifierLogisticRegressionBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierLogisticRegressionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -45,7 +45,7 @@ namespace RavlN {
     virtual UIntT Classify(const VectorC &data) const;
     //: Classifier vector 'data' return the most likely label.
     
-    virtual VectorC Confidence(const VectorC &data) const;
+    virtual VectorC Apply(const VectorC &data) const;
     //: Estimate the confidence for each label.
     // The meaning of the confidence assigned to each label depends
     // on the function used. The higher the confidence the more likely
@@ -80,7 +80,7 @@ namespace RavlN {
     {}
     //: Create classifier from a normalisation function and some weights.
 
-    ClassifierLogisticRegressionC(istream &strm);
+    ClassifierLogisticRegressionC(std::istream &strm);
     //: Load from stream.
     
     ClassifierLogisticRegressionC(BinIStreamC &strm);
@@ -107,14 +107,14 @@ namespace RavlN {
   public:
   };
   
-  inline istream &operator>>(istream &strm,ClassifierLogisticRegressionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierLogisticRegressionC &obj) {
     obj = ClassifierLogisticRegressionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierLogisticRegressionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierLogisticRegressionC &obj) {
     obj.Save(out);
     return out;
   }

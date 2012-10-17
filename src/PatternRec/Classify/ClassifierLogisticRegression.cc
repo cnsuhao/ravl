@@ -41,13 +41,13 @@ namespace RavlN {
 
   //: Load from stream.
   
-  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &strm)
+  ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(std::istream &strm)
     : ClassifierBodyC(strm)
   { 
     IntT version;
     strm >> version;
     if(version != 1)
-      throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierLogisticRegressionBodyC::ClassifierLogisticRegressionBodyC(std::istream &), Unrecognised version number in stream. ");
 
     bool haveNorm = false;
     strm >> haveNorm;
@@ -74,7 +74,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierLogisticRegressionBodyC::Save(ostream &out) const {
+  bool ClassifierLogisticRegressionBodyC::Save(std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;
@@ -139,7 +139,7 @@ namespace RavlN {
   // on the classifier used. The higher the confidence the more likely
   // it is the label is correct.
   
-  VectorC ClassifierLogisticRegressionBodyC::Confidence(const VectorC &data) const {
+  VectorC ClassifierLogisticRegressionBodyC::Apply(const VectorC &data) const {
     VectorC vec;
     if(m_norm.IsValid())
       vec = m_norm(data);

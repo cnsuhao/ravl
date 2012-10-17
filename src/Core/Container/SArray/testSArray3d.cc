@@ -26,19 +26,19 @@ int testIO();
 int main() {
   int ln ;
   if((ln = testBasic()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
   if((ln = testIO()) != 0) {
-    cerr << "Test failed on line " << ln << "\n";
+    std::cerr << "Test failed on line " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
 int testBasic() {
-  cerr << "Starting test of SArray3d.\n";
+  std::cerr << "Starting test of SArray3d.\n";
   SArray3dC<int> testArr(10,10,10);
   testArr[Index3dC(1,1,1)] = 2;
   
@@ -53,7 +53,7 @@ int testBasic() {
   Slice1dC<int> slice = testArr.Diagonal();
   for(Slice1dIterC<int> its(slice);its;its++,v+=11) {
     if(*its != v) {
-      cerr << "Diagonal slice test failed. " << *its << " " << v << "\n";
+      std::cerr << "Diagonal slice test failed. " << *its << " " << v << "\n";
       return 1;
     }
   }
@@ -61,7 +61,7 @@ int testBasic() {
   v = 0;
   for(SArray3dIterC<int> it(testArr);it;it++,v++) {
     if(*it != v) {
-      cerr << "Iterator test failed. " << *it << " " << v << "\n";
+      std::cerr << "Iterator test failed. " << *it << " " << v << "\n";
       return 1;
     }
     *it = 0;
@@ -78,7 +78,7 @@ int testBasic() {
 }
 
 int testIO() {
-  cerr << "Starting IO test of SArray3d.\n";
+  std::cerr << "Starting IO test of SArray3d.\n";
   SArray3dC<RealT> m(2,3,4);
   
   for(int i = 0;i < 2;i++)

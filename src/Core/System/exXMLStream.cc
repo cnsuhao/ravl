@@ -46,7 +46,7 @@ int exXMLStream(int nargs,char **argv)
     
     data = ostr.String();
   }
-  cerr << "Stream=" << data << "\n\n";
+  std::cerr << "Stream=" << data << "\n\n";
   
   {
     // Read some data from an xml stream.
@@ -78,11 +78,11 @@ int exXMLStream(int nargs,char **argv)
       }
       
       // Handle unexpected tags.
-      cerr << "WARNING: Ignoring tag '" << tagName << "'\n";
+      std::cerr << "WARNING: Ignoring tag '" << tagName << "'\n";
       strm.SkipElement();
     }
     
-    cerr << "\nArray=" << iarr << "\n";
+    std::cerr << "\nArray=" << iarr << "\n";
   }
   return 0;
 }

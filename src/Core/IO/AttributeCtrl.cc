@@ -49,7 +49,7 @@ namespace RavlN {
   
   //: Stream constructor.
   
-  AttributeCtrlBodyC::AttributeCtrlBodyC(istream &in) 
+  AttributeCtrlBodyC::AttributeCtrlBodyC(std::istream &in) 
     : DPEntityBodyC(in),
       attrInfo(0)
   {}

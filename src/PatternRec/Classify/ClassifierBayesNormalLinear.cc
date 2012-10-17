@@ -21,7 +21,7 @@
 #if RAVL_COMPILER_MIPSPRO 
 #include "Ravl/VirtualConstructor.hh"
 #pragma instantiate RavlN::ClassifierBayesNormalLinearBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::ClassifierBayesNormalLinearBodyC*)
-#pragma instantiate RavlN::ClassifierBayesNormalLinearBodyC* RavlN::VCLoad(istream &,RavlN::ClassifierBayesNormalLinearBodyC*)
+#pragma instantiate RavlN::ClassifierBayesNormalLinearBodyC* RavlN::VCLoad(std::istream &,RavlN::ClassifierBayesNormalLinearBodyC*)
 #endif 
 
 namespace RavlN {
@@ -46,7 +46,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierBayesNormalLinearBodyC::ClassifierBayesNormalLinearBodyC(istream &strm) 
+  ClassifierBayesNormalLinearBodyC::ClassifierBayesNormalLinearBodyC(std::istream &strm) 
     : ClassifierBodyC(strm)
   { strm >> mean >> invCov >> konst; }
   
@@ -58,7 +58,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool ClassifierBayesNormalLinearBodyC::Save (ostream &out) const {
+  bool ClassifierBayesNormalLinearBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     out << ' ' << mean << ' ' << invCov << ' ' << konst;
@@ -77,11 +77,22 @@ namespace RavlN {
   //: Classify sample 
   UIntT ClassifierBayesNormalLinearBodyC::Classify(const VectorC &data) const {
     VectorC res(konst.Size());
-    for(SArray1dIter3C<RealT, VectorC, RealT>it(res, mean,  konst);it;it++) 
+    for(SArray1dIter3C<RealT, VectorC, RealT>it(res, mean,  konst);it;it++) {
       it.Data1() = invCov.TMul(it.Data2()).Dot(data) + it.Data3();
+    }
     return res.MaxIndex().V();
   }
   
+  //: Return normalised prob vector
+  VectorC ClassifierBayesNormalLinearBodyC::Apply(const VectorC & data) const
+  {
+    VectorC res(konst.Size());
+    for (SArray1dIter3C<RealT, VectorC, RealT> it(res, mean, konst); it; it++) {
+      it.Data1() = invCov.TMul(it.Data2()).Dot(data) + it.Data3();
+    }
+    return res.MakeUnit();
+  }
+
   ///////////////////////////////////////////////////////////
   
   

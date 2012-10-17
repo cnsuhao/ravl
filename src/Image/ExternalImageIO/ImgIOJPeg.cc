@@ -234,7 +234,7 @@ namespace RavlImageN {
   DPImageIOJPegIBaseC::DPImageIOJPegIBaseC(const IStreamC &nfin)
     : fin(nfin)
   {
-    ONDEBUG(cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC\n");
+    ONDEBUG(std::cerr << "DPImageIOJPegIBaseC::DPImageIOJPegIBaseC\n");
     /* We have to set up the error handler first, in case the initialization
      * step fails.  (Unlikely, but it could happen if you are out of memory.)
      * This routine fills in the contents of struct jerr, and returns jerr's
@@ -312,7 +312,7 @@ namespace RavlImageN {
   //: Setup input format.
   // Must be called after header has been read.
   
-  bool DPImageIOJPegIBaseC::SetupFormat(const type_info &ti) {
+  bool DPImageIOJPegIBaseC::SetupFormat(const std::type_info &ti) {
     if(ti == typeid(ByteRGBValueC)) {
       //cinfo.out_components = 3;		/* # of color components per pixel */
       cinfo.out_color_space = JCS_RGB; 	/* colorspace of input image */
@@ -328,7 +328,7 @@ namespace RavlImageN {
       cinfo.out_color_space = JCS_GRAYSCALE;/* colorspace of input image */
       return true;
     }
-    cerr << "DPImageIOJPegIBaseC::SetupFormat(), Unknown pixel type.  '" << ti.name() << "'\n";
+    std::cerr << "DPImageIOJPegIBaseC::SetupFormat(), Unknown pixel type.  '" << ti.name() << "'\n";
     RavlAssert(0);
     return false;
   }
@@ -402,8 +402,8 @@ namespace RavlImageN {
   
   //: Setup output format.
   
-  bool DPImageIOJPegOBaseC::SetupFormat(const type_info &ti) {
-    ONDEBUG(cerr << "DPImageIOJPegOBaseC::SetupFormat(), Compression: " << compression << "\n");
+  bool DPImageIOJPegOBaseC::SetupFormat(const std::type_info &ti) {
+    ONDEBUG(std::cerr << "DPImageIOJPegOBaseC::SetupFormat(), Compression: " << compression << "\n");
     if(ti == typeid(ByteRGBValueC)) {
       cinfo.input_components = 3;		/* # of color components per pixel */
       cinfo.in_color_space = JCS_RGB; 	/* colorspace of input image */
@@ -419,7 +419,7 @@ namespace RavlImageN {
       cinfo.in_color_space = JCS_GRAYSCALE;      /* colorspace of input image */
       return true;
     }
-    cerr << "DPImageIOJPegOBaseC::SetupFormat(), Unknown pixel type.  '" << ti.name() << "'\n";
+    std::cerr << "DPImageIOJPegOBaseC::SetupFormat(), Unknown pixel type.  '" << ti.name() << "'\n";
     RavlAssert(0);
     return false;
   }

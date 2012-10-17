@@ -29,6 +29,7 @@ class Classifier2BodyC : public ClassifierBodyC
 {
 public:
   Classifier2BodyC()
+   : ClassifierBodyC(2)
   {}
   //: Default constructor
 
@@ -37,7 +38,7 @@ public:
   {}
   //: Default constructor
 
-  Classifier2BodyC(istream &Strm);
+  Classifier2BodyC(std::istream &Strm);
   //: Load from stream.
 
   Classifier2BodyC(BinIStreamC &Strm);
@@ -46,7 +47,7 @@ public:
   virtual ~Classifier2BodyC();
   //: Destructor
 
-  virtual bool Save(ostream &Out) const;
+  virtual bool Save(std::ostream &Out) const;
   //: Writes object to stream
   // returns always true (compatibility issue), on error an exception is thrown
 
@@ -80,7 +81,7 @@ public:
     {}
   //: Default constructor creates wrong object
 
-  Classifier2C(istream &Strm);
+  Classifier2C(std::istream &Strm);
   //: Load from stream.
 
   Classifier2C(BinIStreamC &Strm);
@@ -137,12 +138,12 @@ protected:
 //: Stream load operators defined in RAVL_INITVIRTUALCONSTRUCTOR_FULL macro
 // Implementation of 'load from stream' constructors defined there as well
 //
-//inline ostream &operator<<(ostream &out, Classifier2C &obj)
+//inline std::ostream &operator<<(std::ostream &out, Classifier2C &obj)
 //inline BinOStreamC &operator<<(BinOStreamC &out, Classifier2C &obj)
 
 // Stream read operators are defined in RCHandleVC
 //and call virtual Save function of body class
-//inline ostream &operator<<(ostream &out, const Classifier2C &obj)
+//inline std::ostream &operator<<(std::ostream &out, const Classifier2C &obj)
 //inline BinOStreamC &operator<<(BinOStreamC &out, const Classifier2C &obj)
 
 } //end of namespace RavlN

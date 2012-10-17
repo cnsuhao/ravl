@@ -65,7 +65,7 @@ namespace RavlImageN {
           }
           default: {
              RavlIssueError("Unknown Colour Mode in FileFormatYPbPrBodyC::ProbeLoad.") ;
-          }
+          } break;
         }
     }
     //else {

@@ -18,6 +18,9 @@
 #include "Ravl/IO.hh"
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/PatternRec/DataSetIO.hh"
+#include "Ravl/PatternRec/OptimiseClassifierDesign.hh"
+#include "Ravl/PatternRec/FuncSubset.hh"
+#include "Ravl/PatternRec/FeatureSelectPlusLMinusR.hh"
 
 using namespace RavlN;
 
@@ -34,12 +37,17 @@ int main(int nargs, char **argv) {
   StringC configFile = opts.String("c", RavlN::Resource("Ravl/PatternRec", "classifier.xml"),
       "Classifier config file.");
   StringC classifierType = opts.String("classifier", "KNN", "The type of classifier to train [KNN|GMM|SVM|SVMOneClass].");
-  StringC trainingDataSetFile = opts.String("dset", "", "The dataset to train on!");
-  bool equaliseSamples = opts.Boolean("eq", false, "Make sure we have an equal number of samples per class");
+  bool doMetaDesign = opts.Boolean("md",false,"Do meta design, optimise the design parameters ");
+  StringC trainingDataSetFile = opts.String("dset", "", "The data set to train on");
+  StringC validationDataSetFile = opts.String("validation", "", "If supplied, use this data set to perform validation whilst training.");
+  bool equaliseSamples = opts.Boolean("eq", "Make sure we have an equal number of samples per class");
+  bool noshuffle = opts.Boolean("noshuffle", "Do not shuffle, i.e. default is not to shuffle.");
   UIntT samplesPerClass = opts.Int("n", 0, "The number of samples per class");
-  DListC<StringC>features = opts.List("features", "Use only these features");
-  StringC NormaliseSample = opts.String("normalise", "mean", "Normalise sample (mean, none, scale)");
+  DListC<StringC> featuresList = opts.List("features", "Use only these features");
+  DataSetNormaliseT normaliseType = (DataSetNormaliseT)opts.Int("normalise",doMetaDesign ? 0 : 1, "Normalise sample (0 - none, 1 - mean, 2- scale)");
   FilenameC classifierOutFile = opts.String("o", "classifier.abs", "Save classifier to this file.");
+  UIntT numberOfFeatures = opts.Int("fs", 0, "Use +L-R feature selection to select this many features.  Requires validation set.");
+  bool saveDataSet = opts.Boolean("saveDataSet", "Save the training data set.");
   //bool verbose = opts.Boolean("v", false, "Verbose mode.");
   opts.Check();
 
@@ -48,8 +56,7 @@ int main(int nargs, char **argv) {
 #if USE_EXCEPTIONS
   try {
 #endif
-    XMLFactoryC::RefT mainFactory = new XMLFactoryC(configFile);
-    XMLFactoryContextC context(*mainFactory);
+    XMLFactoryContextC context(configFile);
 
     // Get classifier designer
     RavlInfo("Initialising classifier '%s'", classifierType.data());
@@ -59,72 +66,112 @@ int main(int nargs, char **argv) {
       return 1;
     }
 
-    // Get dataset
-    RavlInfo("Loading dataset from file '%s'", trainingDataSetFile.data());
-    // FIXME: Still want to use Load/Save instead
-    DataSetVectorLabelC trainingDataSet;
-    if (!LoadDataSetVectorLabel(trainingDataSetFile, trainingDataSet)) {
-      RavlError("Trouble loading dataset from file '%s'", trainingDataSetFile.data());
-      return 1;
-    }
-
-    // Modify data set if requested
-    trainingDataSet.Shuffle(); // always good practice to shuffle (inplace)
-    if (equaliseSamples) {
-      UIntT min = trainingDataSet.ClassNums()[trainingDataSet.ClassNums().IndexOfMin()];
-      RavlInfo( "Equalising number of samples per class to %d", min);
-      trainingDataSet = trainingDataSet.ExtractPerLabel(min);
-    }
-    if (samplesPerClass > 0 && samplesPerClass <= trainingDataSet.ClassNums()[trainingDataSet.ClassNums().IndexOfMin()]) {
-      RavlInfo( "Setting the samples per class to %d", samplesPerClass);
-      trainingDataSet = trainingDataSet.ExtractPerLabel(samplesPerClass);
-    }
+    /*
+     * Are we using a sub-set of features
+     */
+    SArray1dC<IndexC>features;
     if(opts.IsOnCommandLine("features")) {
-      RavlInfo( "Manually selecting features to use");
-      SArray1dC<IndexC>keep(features.Size());
+      RavlInfo( "Manually selecting '%d' features to use", featuresList.Size().V());
+      features = SArray1dC<IndexC>(featuresList.Size());
       UIntT c=0;
-      for(DLIterC<StringC>it(features);it;it++) {
-        keep[c] = it.Data().IntValue();
+      for(DLIterC<StringC>it(featuresList);it;it++) {
+        features[c] = IndexC(it.Data().IntValue());
         c++;
       }
-      SampleVectorC vecs(trainingDataSet.Sample1(), keep);
-      trainingDataSet = DataSetVectorLabelC(vecs, trainingDataSet.Sample2());
     }
 
-
-    // Lets compute mean and variance of data set and normalise input
-    FunctionC normaliseFunc;
-    if (NormaliseSample == "none") {
-      RavlInfo( "You are not normalising your sample!  I hope you know what you are doing.");
-    } else if(NormaliseSample == "mean") {
-      // FIXME: Sometimes you want to normalise on a class, rather than the whole sample
-      RavlInfo( "Normalising the whole sample using sample mean and variance!");
-      MeanCovarianceC meanCovariance = trainingDataSet.Sample1().MeanCovariance();
-      normaliseFunc = trainingDataSet.Sample1().NormalisationFunction(meanCovariance);
-      trainingDataSet.Sample1().Normalise(meanCovariance);
-    } else if(NormaliseSample == "scale") {
-      RavlInfo( "Scaling the whole sample!");
-      FuncLinearC lfunc;
-      trainingDataSet.Sample1().Scale(lfunc);
-      normaliseFunc = lfunc;
-    } else {
-      RavlError( "Normalisation method not known!");
+    /*
+     * Load the training set and normalise if requested
+     */
+    DataSetVectorLabelC trainingDataSet; // the normalised data set
+    FunctionC normaliseFunc; // the function used to normalise the data set
+    if(!LoadDataSetVectorLabel(trainingDataSetFile, !noshuffle, equaliseSamples, samplesPerClass, features, normaliseType, normaliseFunc, trainingDataSet)) {
+      RavlError("Failed to load data set '%s'", trainingDataSetFile.data());
       return 1;
     }
 
-    // Train classifier
-    RavlInfo( "Training the classifier");
-    ClassifierC classifier = design.Apply(trainingDataSet.Sample1(), trainingDataSet.Sample2());
-    RavlInfo( " - finished");
+    // Do we want to save the modified data set??
+    if(saveDataSet) {
+      if(!SaveDataSetVectorLabel("training.abs", trainingDataSet)) {
+        RavlError("Trouble saving 'training.abs");
+      }
+    }
 
-    // Lets get error on training data set - even though highly biased
-    ErrorC error;
-    RealT pmc = error.Error(classifier, trainingDataSet);
-    RavlInfo( "The (biased) probability of miss-classification is %0.4f ", pmc);
+    /*
+     * Load validation data set if requested.  We normalise using the function obtained loading the training data set
+     */
+    DataSetVectorLabelC validationDataSet;
+    if (opts.IsOnCommandLine("validation")) {
+      // it will be normalised using the stats from the training data set
+      if(!LoadDataSetVectorLabel(validationDataSetFile, !noshuffle, equaliseSamples, samplesPerClass, features, normaliseFunc, validationDataSet)) {
+        RavlError("Failed to load data set '%s'", trainingDataSetFile.data());
+        return 1;
+      }
+      // Do we want to save the modified data set
+      if(saveDataSet) {
+        if(!SaveDataSetVectorLabel("validation.abs", validationDataSet)) {
+          RavlError("Trouble saving 'validation.abs");
+        }
+      }
+    }
 
+    /*
+     * Lets sort out the classifier
+     */
+    ClassifierC classifier;
+
+    if(doMetaDesign) {
+      OptimiseClassifierDesignC ocd;
+      context.UseComponent("OptimiseClassifierDesign",ocd);
+      VectorC bestClassifierParams;
+      RealT finalResult;
+      ocd.Apply(design,
+                trainingDataSet.Sample1(),
+                trainingDataSet.Sample2(),
+                classifier,
+                bestClassifierParams,
+                finalResult
+                ) ;
+
+      RavlInfo( "The (biased) probability of miss-classification is %0.4f  @ %s ", finalResult,RavlN::StringOf(bestClassifierParams).c_str());
+    } else {
+      // Train classifier
+      RavlInfo( "Training the classifier");
+      /*
+       * The user may of supplied a validation set and want to do feature selection?
+       */
+      if (opts.IsOnCommandLine("validation") && numberOfFeatures > 0) {
+        FeatureSelectPlusLMinusRC featureSelection(2, 1, 0.001, numberOfFeatures);
+        SArray1dC<IndexC> selectedFeatures = featureSelection.SelectFeatures(design, trainingDataSet, validationDataSet, classifier);
+        FuncSubsetC funcSubset(selectedFeatures, trainingDataSet.Sample1().First().Size());
+        classifier = ClassifierPreprocessC(funcSubset, classifier);
+      }
+      /*
+       * Or perhaps just train a normal classifier
+       */
+      else {
+        classifier = design.Apply(trainingDataSet.Sample1(), trainingDataSet.Sample2());
+      }
+
+      /*
+       * Finally lets test the trained classifier.  If we have a validation set we use that as well.
+       */
+      ErrorC error;
+      RealT pmc = error.Error(classifier, trainingDataSet);
+      RavlInfo( "The (biased) probability of miss-classification is %0.4f ", pmc);
+      if (opts.IsOnCommandLine("validation")) {
+        RealT pmc2 = error.Error(classifier, validationDataSet);
+        RavlInfo( "The probability of miss-classification on validation set is %0.4f ", pmc2);
+      }
+      RavlInfo( " - finished");
+    }
+
+    /*
+     * Now we need to save the classifier
+     */
     // If we have normalised the sample we need to make sure
     // all input data to classifier is normalised by same statistics
-    if (NormaliseSample != "none") {
+    if (normaliseFunc.IsValid()) {
       RavlInfo( "Making classifier with pre-processing step!");
       classifier = ClassifierPreprocessC(normaliseFunc, classifier);
     }

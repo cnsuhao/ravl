@@ -37,19 +37,19 @@ namespace RavlN {
   VariableLengthCodeC::VariableLengthCodeC(const VariableLengthCodeInitC *idata)
     : free(1)
   {
-    ONDEBUG(cerr << "VariableLengthCodeC::VariableLengthCodeC(), Building table. \n");
+    ONDEBUG(std::cerr << "VariableLengthCodeC::VariableLengthCodeC(), Building table. \n");
     IntT count = 0;
     // Get length.
     for(const VariableLengthCodeInitC *it = idata;it->code != 0;it++)
       count++;
-    ONDEBUG(cerr << "VariableLengthCodeC::VariableLengthCodeC(), Len:" << dec <<count << ". \n");
+    ONDEBUG(std::cerr << "VariableLengthCodeC::VariableLengthCodeC(), Len:" << dec <<count << ". \n");
     data = SArray1dC<PairC<UIntT> >(count*2);
     data[0] = PairC<UIntT>(Marker(),Marker());
     // Initalise data.
     for(;idata->code != 0;idata++) 
       if(!Add(idata->code,idata->result))
 	break; // Must be some error.
-    ONDEBUG(cerr << "VariableLengthCodeC::VariableLengthCodeC(), Building table done. \n");
+    ONDEBUG(std::cerr << "VariableLengthCodeC::VariableLengthCodeC(), Building table done. \n");
   }
 
   //: Add code to table.
@@ -74,7 +74,7 @@ namespace RavlN {
       if(entry == Marker()) { // Free ?
 	entry = free++ | Marker();
 	if(free > data.Size()) {
-	  cerr << "VariableLengthCodeC::Add(), Out of tree nodes. \n";
+	  std::cerr << "VariableLengthCodeC::Add(), Out of tree nodes. \n";
 	  return false;
 	}
 	at = entry & ~Marker();
@@ -104,13 +104,13 @@ namespace RavlN {
   //: Construct from initialisation table.
   
   VariableLengthEncoderC::VariableLengthEncoderC(const VariableLengthCodeInitC *idata) {
-    ONDEBUG(cerr << "VariableLengthEncodeC::VariableLengthEncodeC(), Building table. \n");
+    ONDEBUG(std::cerr << "VariableLengthEncodeC::VariableLengthEncodeC(), Building table. \n");
     IntT count = 0;
     // Get length.
     const VariableLengthCodeInitC *it;
     for(it = idata;it->code != 0;it++)
       count++;
-    ONDEBUG(cerr << "VariableLengthCodeC::VariableLengthEncodeC(), Len:" << dec <<count << ". \n");
+    ONDEBUG(std::cerr << "VariableLengthCodeC::VariableLengthEncodeC(), Len:" << dec <<count << ". \n");
     data = SArray1dC<SArray1dC<bool> >(count);
     // Initalise data.
     it = idata;
@@ -124,8 +124,8 @@ namespace RavlN {
       }
       *dit = bitcode;
     }
-    //ONDEBUG(cerr << "Data=" << data << "\n");
-    ONDEBUG(cerr << "VariableLengthCodeC::VariableLengthEncodeC(), Building table done. \n");
+    //ONDEBUG(std::cerr << "Data=" << data << "\n");
+    ONDEBUG(std::cerr << "VariableLengthCodeC::VariableLengthEncodeC(), Building table done. \n");
   }
   
   //: Put 'token' into the bitstream

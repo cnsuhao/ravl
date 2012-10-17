@@ -22,7 +22,7 @@ int main() {
   
   tree.Add(1,StringC("Hello"));
   
-  cerr << tree;
+  std::cerr << tree;
   return 0;
 }
 

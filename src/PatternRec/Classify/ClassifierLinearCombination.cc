@@ -44,13 +44,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierLinearCombinationBodyC::ClassifierLinearCombinationBodyC(istream &strm) 
+  ClassifierLinearCombinationBodyC::ClassifierLinearCombinationBodyC(std::istream &strm) 
     : ClassifierBodyC(strm)
   {
     IntT version;
     strm >> version;
     if(version < 0 || version > 1)
-      throw ExceptionOutOfRangeC("ClassifierLinearCombinationBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierLinearCombinationBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_weakClassifiers >> m_weights >> m_sumWeights >> m_featureSet;
     if(version > 0) {
       strm >> m_threshold;
@@ -86,7 +86,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierLinearCombinationBodyC::Save (ostream &out) const {
+  bool ClassifierLinearCombinationBodyC::Save (std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 1;
@@ -118,6 +118,23 @@ namespace RavlN {
     return weightedSumLabels >= m_sumWeights; // threshold is included in sum weights
   }
   
+  VectorC ClassifierLinearCombinationBodyC::Apply(const VectorC & data) const {
+    RealT weightedSumLabels = 0.0;
+    SArray1dC<IndexC> oneFeature(1);
+    for(SArray1dIter3C<ClassifierC,RealT,IndexC> it(m_weakClassifiers,m_weights,m_featureSet); it; it++) {
+      oneFeature[0] = it.Data3();
+      weightedSumLabels += it.Data2() * it.Data1().Classify(data,oneFeature);
+    }
+    RealT dif = Abs(weightedSumLabels - m_sumWeights);
+    VectorC vec(1);
+    if(weightedSumLabels > m_sumWeights) {
+      vec[0] = -dif;
+    } else {
+      vec[0] = dif;
+    }
+    return vec;
+  }
+
   //: Set the array of weights, one for each classifier.
   // Note: The array must be of the same size as the number of weak classifiers.
 

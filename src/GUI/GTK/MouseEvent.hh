@@ -112,7 +112,7 @@ namespace RavlGUIN {
     bool m_doublePress;
   };
   
-  ostream &operator<<(ostream &,const MouseEventC &me);
+  std::ostream &operator<<(std::ostream &,const MouseEventC &me);
   //: Print description of mouse event to stream.
   
   /////// CListEventC ////////////////////////////////////////////////

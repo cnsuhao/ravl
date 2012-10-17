@@ -42,17 +42,17 @@ namespace RavlCxxDocN
       else
 	ret += "::";
       if(maxDepth < 1) {
-	ONDEBUG(cerr << "PathName(DListC<ObjectC>) ");
+	ONDEBUG(std::cerr << "PathName(DListC<ObjectC>) ");
 	cerr << "ERROR: Maximum template depth exceeded in arg '" << it->Name() <<  "' Type:" << it->TypeName() <<" \n";
 	cerr << "Subs:";
 	for(HashIterC<StringC,ObjectC> sit((HashC<StringC,ObjectC> &)templSub);sit;sit++)
-	  cerr << " " << sit.Key() << " -> " << sit.Data().Name() << "\n";
+	  std::cerr << " " << sit.Key() << " -> " << sit.Data().Name() << "\n";
 	cerr << "\nSubs end.\n" << flush;
 	RavlAssert(0);
 	ret += it->Name();
       } else {
 	if(maxDepth < 9)
-	  cerr << "PathName(DListC<ObjectC>), WARNING: Maximum template depth nearly exceeded (" << maxDepth <<") in arg '" << it->Name() <<  "' Type:" << it->TypeName() <<"\n";
+	  std::cerr << "PathName(DListC<ObjectC>), WARNING: Maximum template depth nearly exceeded (" << maxDepth <<") in arg '" << it->Name() <<  "' Type:" << it->TypeName() <<"\n";
 	ret += it->FullName(templSub,dg,maxDepth-1);
       }
     }
@@ -75,32 +75,32 @@ namespace RavlCxxDocN
     : ObjectBodyC(name),
       argList(argLst)
   {
-    ONDEBUG(cerr << "ObjectTemplateBodyC::ObjectTemplateBodyC() Name:'" << name << "'\n");
+    ONDEBUG(std::cerr << "ObjectTemplateBodyC::ObjectTemplateBodyC() Name:'" << name << "'\n");
   }
   
   //: Get full name of object
   // template args and all.
   
   StringC ObjectTemplateBodyC::FullName(RCHashC<StringC,ObjectC> &templSub,DesciptionGeneratorC &dg,int maxDepth) const {
-    ONDEBUG(cerr << "ObjectTemplateBodyC::FullName() for '" << Name() << "' called. \n");
+    ONDEBUG(std::cerr << "ObjectTemplateBodyC::FullName() for '" << Name() << "' called. \n");
     StringC ret = dg.TextFor(ObjectC(const_cast<ObjectBodyC &>(((ObjectBodyC &)*this)))).Copy(); // Make sure its a copy.
     ret += dg.TextFor('<');
     bool first = true;
     // Go through template args.
     for(ConstDLIterC<ObjectC> it(argList.List());it;it++) {
-      // cerr << "ObjectTemplateBodyC::FullName() arg:'" << it->Name() << "' Type:" << it->TypeName() << "\n";
+      // std::cerr << "ObjectTemplateBodyC::FullName() arg:'" << it->Name() << "' Type:" << it->TypeName() << "\n";
       if(first)
 	first = false;
       else
 	ret += dg.TextFor(',');
       // Is template arg a datatype in itself ? or a constant.
       if(maxDepth < 1) {
-	ONDEBUG(cerr << "ObjectTemplateBodyC::FullName() ");
+	ONDEBUG(std::cerr << "ObjectTemplateBodyC::FullName() ");
 	cerr << "ERROR: Maximum template depth exceeded in '" << Name() << "' arg '" << it->Name() <<  "'\n";
 	ret += it->Name();
       } else {
 	if(maxDepth < 9)
-	  cerr << "ObjectTemplateBodyC::FullName()  WARNING: Maximum template depth nearly exceeded (" << maxDepth <<") in '" << Name() << "' arg '" << it->Name() <<  "'\n";
+	  std::cerr << "ObjectTemplateBodyC::FullName()  WARNING: Maximum template depth nearly exceeded (" << maxDepth <<") in '" << Name() << "' arg '" << it->Name() <<  "'\n";
 	ret += it->FullName(templSub,dg,maxDepth-1);
       }
     }
@@ -111,7 +111,7 @@ namespace RavlCxxDocN
   //: Create a new object with subsituted args.
   
   ObjectC ObjectTemplateBodyC::Subst(RCHashC<StringC,ObjectC> &subst) const {
-    ONDEBUG(cerr << "ObjectTemplateBodyC::Subst(), Called '" << Name() << "' \n");
+    ONDEBUG(std::cerr << "ObjectTemplateBodyC::Subst(), Called '" << Name() << "' \n");
     if(!subst.IsEmpty() && !argList.List().IsEmpty()) {
       bool doneSub = false;
       ObjectListC ol("TemplateArgList");
@@ -192,23 +192,23 @@ namespace RavlCxxDocN
   //: Resolve data references correctly.
   
   StringC DataTypeBodyC::ActualPath() const {
-    //ONDEBUG(cerr << "DataTypeBodyC::ActualPath(), Called. for :" << Name() << " \n");
+    //ONDEBUG(std::cerr << "DataTypeBodyC::ActualPath(), Called. for :" << Name() << " \n");
     if(!HasParentScope()) {
       //cerr << "DataTypeBodyC::ActualPath(), No parent scope, can't resolve. \n";
       //return scopePath.Name();
       return StringC("std");
     }
     if(!scopePath.IsValid()) {
-      cerr << "DataTypeBodyC::ActualPath(), No scopePath, can't resolve. \n";
+      std::cerr << "DataTypeBodyC::ActualPath(), No scopePath, can't resolve. \n";
       return Name();
     }
     RCHashC<StringC,ObjectC> templSub;
     ObjectC ao = const_cast<ScopeBodyC &>(ParentScope()).ResolveName(const_cast<ObjectListC &>(scopePath).List(),templSub);
     if(!ao.IsValid()) {
-      cerr << "DataTypeBodyC::ActualPath(), Can't resolve : " << PathName(const_cast<ObjectListC &>(scopePath).List()) << "\n";
+      std::cerr << "DataTypeBodyC::ActualPath(), Can't resolve : " << PathName(const_cast<ObjectListC &>(scopePath).List()) << "\n";
       return scopePath.Name();
     }
-    //ONDEBUG(cerr << "Full path found : " << ao.FullPath() << "\n");
+    //ONDEBUG(std::cerr << "Full path found : " << ao.FullPath() << "\n");
     return ao.FullPath();
   }
 
@@ -241,7 +241,7 @@ namespace RavlCxxDocN
   //: Create a new object with subsituted args.
   
   ObjectC DataTypeBodyC::Subst(RCHashC<StringC,ObjectC> &subst) const {
-    ONDEBUG(cerr << "DataTypeBodyC::Subst(), Called '" << Name() << "' \n");
+    ONDEBUG(std::cerr << "DataTypeBodyC::Subst(), Called '" << Name() << "' \n");
     if(scopePath.IsValid() && !subst.IsEmpty()) {
       if(scopePath.List().Size() == 1) {
 	// Check for a possible short cut....
@@ -312,7 +312,7 @@ namespace RavlCxxDocN
     if(aMark.IsValid()) {
       curAccess = aMark.Name();
       list.InsLast(obj);
-      //ONDEBUG(cerr << "ClassBodyC::Append(), Changing access '" << curAccess << "' \n");
+      //ONDEBUG(std::cerr << "ClassBodyC::Append(), Changing access '" << curAccess << "' \n");
       return;
     }
     if(!InheritC::IsA(obj) && !DerivedC::IsA(obj))
@@ -326,12 +326,12 @@ namespace RavlCxxDocN
   // template args and all.
   
   StringC ClassTemplateBodyC::FullName(RCHashC<StringC,ObjectC> &templSub,DesciptionGeneratorC &dg,int maxDepth) const {
-    ONDEBUG(cerr << "ClassTemplateBodyC::FullName(), Called for " << Name() <<  "\n");
+    ONDEBUG(std::cerr << "ClassTemplateBodyC::FullName(), Called for " << Name() <<  "\n");
     StringC ret = dg.TextFor(ObjectC(const_cast<ObjectBodyC &>((ObjectBodyC &)*this))).Copy();
     ret += dg.TextFor('<');
     bool first = true;
     for(ConstDLIterC<ObjectC> it(templArgs.List());it;it++) {
-      ONDEBUG(cerr << "ClassTemplateBodyC::FullName(), Arg='" << it->Name() <<  "' \n");
+      ONDEBUG(std::cerr << "ClassTemplateBodyC::FullName(), Arg='" << it->Name() <<  "' \n");
       if(first)
 	first = false;
       else
@@ -345,13 +345,13 @@ namespace RavlCxxDocN
       }
       
       if(maxDepth < 1) {
-	ONDEBUG(cerr << "ClassTemplateBodyC::FullName() ");
+	ONDEBUG(std::cerr << "ClassTemplateBodyC::FullName() ");
 	cerr << "ERROR: Maximum template depth exceeded template class arg '" << it->Name() <<  "'\n";
 	RavlAssert(0);
 	ret += it->Name();
       } else {
 	if(maxDepth < 9)
-	  cerr << "ClassTemplateBodyC::FullName(),  WARNING: Maximum template depth nearly exceeded (" << maxDepth <<") in '" << Name() << "' arg '" << it->Name() <<  "'\n";
+	  std::cerr << "ClassTemplateBodyC::FullName(),  WARNING: Maximum template depth nearly exceeded (" << maxDepth <<") in '" << Name() << "' arg '" << it->Name() <<  "'\n";
 	ObjectC obj;
 	if(!templSub.Lookup(alias,obj)) {
 	  ret += it->FullName(templSub,dg,maxDepth-1);
@@ -372,7 +372,7 @@ namespace RavlCxxDocN
   //: Create a new object with subsituted args.
   
   ObjectC ClassTemplateBodyC::Subst(RCHashC<StringC,ObjectC> &subst) const {
-    ONDEBUG(cerr << "ClassTemplateBodyC::Subst(), Called '" << Name() << "' \n");
+    ONDEBUG(std::cerr << "ClassTemplateBodyC::Subst(), Called '" << Name() << "' \n");
     if(!subst.IsEmpty() && !templArgs.List().IsEmpty()) {
       ObjectListC ol("TemplateArgList");
       bool doneSub = false;
@@ -572,7 +572,7 @@ namespace RavlCxxDocN
   
   //: Dump to 'out' in human readable form.
   
-  void MethodBodyC::Dump(ostream &out,int indent) {
+  void MethodBodyC::Dump(std::ostream &out,int indent) {
     if(definition.IsValid()) {
       Pad(out,indent+1) << "Def:\n"; 
       definition.Dump(out,indent+2);
@@ -689,11 +689,11 @@ namespace RavlCxxDocN
   //: Attempt to resolve parent class.
   
   bool InheritBodyC::Resolve() {
-    ONDEBUG(cerr << "InheritBodyC::Resolve(), " << Name() << " templSub=" << templSub << "\n");
+    ONDEBUG(std::cerr << "InheritBodyC::Resolve(), " << Name() << " templSub=" << templSub << "\n");
     if(inheritFrom.IsValid()) 
       return true;
     if(!HasParentScope()) {
-      cerr << "InheritBodyC::Resolve(), Failed, no parent scope. \n";
+      std::cerr << "InheritBodyC::Resolve(), Failed, no parent scope. \n";
       SetVar("resolveFailed","1");
       return false;
     }
@@ -712,7 +712,7 @@ namespace RavlCxxDocN
 	ps.Invalidate();
     }
     if(!ps.IsValid()) {
-      cerr << "InheritBodyC::Resolve(), WARNING: Out of parent scopes can't resolve '" << PathName(path) << "' \n";
+      std::cerr << "InheritBodyC::Resolve(), WARNING: Out of parent scopes can't resolve '" << PathName(path) << "' \n";
       SetVar("resolveFailed","1");
       resolveFailed = true;
       return false; 
@@ -720,14 +720,14 @@ namespace RavlCxxDocN
     ObjectC rs=ps.ResolveName(path,templSub,
 			      !useNamespace); // Don't use inheritance to resolve namespaces.
     if(!rs.IsValid()) {
-      cerr << "Can't resolve name '" << PathName(path) << "' \n";
-      ONDEBUG(cerr << " Parent scope '" << ParentScope().Name() << "'. \n");
+      std::cerr << "Can't resolve name '" << PathName(path) << "' \n";
+      ONDEBUG(std::cerr << " Parent scope '" << ParentScope().Name() << "'. \n");
       SetVar("resolveFailed","1");
       resolveFailed = true;
       return false;
     }
     if(!ScopeC::IsA(rs)) {
-      cerr << "Inherited Object is not a scope. '" << rs.Name() << "'  \n";
+      std::cerr << "Inherited Object is not a scope. '" << rs.Name() << "'  \n";
       SetVar("resolveFailed","1");
       resolveFailed = true;
       return false;
@@ -736,7 +736,7 @@ namespace RavlCxxDocN
     inheritFrom = as;
     DerivedC deriveMark(scopeAccess,ParentScope().PathList());
     inheritFrom.Append(deriveMark);
-    ONDEBUG(cerr << "InheritBodyC::Resolve(), '" << Name() << "' found '" << inheritFrom.Name() <<  "'\n");
+    ONDEBUG(std::cerr << "InheritBodyC::Resolve(), '" << Name() << "' found '" << inheritFrom.Name() <<  "'\n");
     return true;
   }
 
@@ -746,10 +746,10 @@ namespace RavlCxxDocN
   StringC InheritBodyC::FullName(RCHashC<StringC,ObjectC> &allTemplSub,DesciptionGeneratorC &dg,int maxDepth) const {
     ScopeC fromScope = const_cast<InheritBodyC &>(*this).From();
     RCHashC<StringC,ObjectC> lsub = templSub;
-    ONDEBUG(cerr << "InheritBodyC::FullName(), Subst=" << templSub << " ScopeDef='" <<const_cast<InheritBodyC &>(*this).ScopeDef(lsub) << "' \n");
+    ONDEBUG(std::cerr << "InheritBodyC::FullName(), Subst=" << templSub << " ScopeDef='" <<const_cast<InheritBodyC &>(*this).ScopeDef(lsub) << "' \n");
     if(!fromScope.IsValid())
       return const_cast<InheritBodyC &>(*this).ScopeDef(lsub);
-    ONDEBUG(cerr << "InheritBodyC::FullName(), Path='" << dg.TextFor(fromScope) << "' \n");
+    ONDEBUG(std::cerr << "InheritBodyC::FullName(), Path='" << dg.TextFor(fromScope) << "' \n");
     return fromScope.FullName(lsub,dg,maxDepth);
   }
   
@@ -776,14 +776,14 @@ namespace RavlCxxDocN
   ObjectC DerivedBodyC::DerivedObj() {
     ObjectC ret;
     if(!HasParentScope()) {
-      cerr << "DerivedBodyC::DerivedObj(), Failed, no parent scope. \n";
+      std::cerr << "DerivedBodyC::DerivedObj(), Failed, no parent scope. \n";
       return ret;
     }
     RCHashC<StringC,ObjectC> templSub;
     ret = ParentScope().ResolveName(path.List(),templSub);
     if(!ret.IsValid()) {
-      ONDEBUG(cerr << "DerivedBodyC::DerivedObj() ");
-      cerr << "ERROR: Failed to find parent object '" << PathName(path.List()) <<"' (" << path.List().Last().BaseName() << ") from " << Name() <<" \n";
+      ONDEBUG(std::cerr << "DerivedBodyC::DerivedObj() ");
+      std::cerr << "ERROR: Failed to find parent object '" << PathName(path.List()) <<"' (" << path.List().Last().BaseName() << ") from " << Name() <<" \n";
     }
     return ret;
   }
@@ -795,7 +795,7 @@ namespace RavlCxxDocN
   EnumBodyC::EnumBodyC(const StringC &nname,const ObjectListC &nvalues) 
     : ObjectListBodyC(nname)
   {
-    //ONDEBUG(cerr << "Got enum :" << nname << "\n");
+    //ONDEBUG(std::cerr << "Got enum :" << nname << "\n");
     if(nvalues.IsValid()) 
       list = nvalues.List();
   }
@@ -803,7 +803,7 @@ namespace RavlCxxDocN
   EnumBodyC::EnumBodyC(const StringC &nname) 
     : ObjectListBodyC(nname)
   {
-    //ONDEBUG(cerr << "Got enum :" << nname << "\n");
+    //ONDEBUG(std::cerr << "Got enum :" << nname << "\n");
   }
 
 }

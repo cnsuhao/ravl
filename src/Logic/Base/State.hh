@@ -32,13 +32,13 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
     
-    StateBodyC(istream &strm);
+    StateBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     StateBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to stream 'out'.
     
     virtual bool Save(BinOStreamC &out) const;
@@ -83,7 +83,7 @@ namespace RavlLogicN {
     virtual bool operator==(const StateC &oth) const;
     //: Test if this state is equal to another.
     
-    virtual void Dump(ostream &out) const;
+    virtual void Dump(std::ostream &out) const;
     //: Dump in human readable format to out.
     
     virtual void Clear();
@@ -106,7 +106,7 @@ namespace RavlLogicN {
     //: Construct a valid state of the default type..
     // This currently creates a StateSet.
     
-    StateC(istream &strm);
+    StateC(std::istream &strm);
     //: Load from stream.
     
     StateC(BinIStreamC &strm);
@@ -133,7 +133,7 @@ namespace RavlLogicN {
 
   public:
 
-    bool Save(ostream &out) const
+    bool Save(std::ostream &out) const
     { return Body().Save(out); }
     //: Save to stream 'out'.
     
@@ -197,7 +197,7 @@ namespace RavlLogicN {
     { return Body() == oth; }
     //: Test if this state is equal to another.
     
-    void Dump(ostream &out) const
+    void Dump(std::ostream &out) const
     { Body().Dump(out); }
     //: Dump in human readable format to out.
     
@@ -208,10 +208,10 @@ namespace RavlLogicN {
   };
 
 
-  ostream &operator<<(ostream &out,const StateC &state);
+  std::ostream &operator<<(std::ostream &out,const StateC &state);
   //: Write out to stream.
   
-  istream &operator>>(istream &out,StateC &stae);
+  std::istream &operator>>(std::istream &out,StateC &stae);
   //: Read in from stream.
   
   inline BinIStreamC &operator>>(BinIStreamC &strm,StateC &obj) {

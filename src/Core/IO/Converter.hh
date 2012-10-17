@@ -46,16 +46,16 @@ namespace RavlN {
     : public DPProcInfoBodyC 
   {
   public:
-    DPConverterBaseBodyC(const type_info &ninput_type,const type_info &noutput_type,RealT ncost = 1);
+    DPConverterBaseBodyC(const std::type_info &ninput_type,const std::type_info &noutput_type,RealT ncost = 1);
     //: Constructor.
     
     virtual IntT Args() const;
     //: Number of args for process.
     
-    virtual const type_info &ArgType(IntT i) const;
+    virtual const std::type_info &ArgType(IntT i) const;
     //: Type of args.
     
-    virtual const type_info &Output() const;
+    virtual const std::type_info &Output() const;
     //: Output type.
     
     RCAbstractC Apply(const RCAbstractC &dat);
@@ -67,8 +67,8 @@ namespace RavlN {
     
   protected:
     
-    const type_info &input_type;
-    const type_info &output_type;
+    const std::type_info &input_type;
+    const std::type_info &output_type;
     RealT cost; // Conversion cost.
     
     DPProcessBaseC proc; 
@@ -140,7 +140,7 @@ namespace RavlN {
     DPConverterBodyC(const ProcT &inst,RealT ncost = 1);
     //: Constructor.
     
-    virtual const type_info &ProcType() const
+    virtual const std::type_info &ProcType() const
     { return typeid(ProcT); }
     //: Get type of process
     

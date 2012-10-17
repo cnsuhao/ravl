@@ -28,14 +28,14 @@ int main(int nargs,char **argv)
     RealT diff = Abs((RealT) rad - dst);
     //cerr << "Dst:" << Abs((RealT) rad - dst) << " ";
     if(diff > 0.5) { // Should never be greater than 0.5 !
-      cerr << "ERROR: Excessive distance from expected position. " << dst << "\n";
+      std::cerr << "ERROR: Excessive distance from expected position. " << dst << "\n";
       return 1;
     }
     if(diff > maxDist)
       maxDist = diff;
-    //cout << it.Data() << endl;
+    //cout << it.Data() << std::endl;
   }
-  cout << "Points:" << i << " Largest error:" << maxDist << endl;
+  std::cout << "Points:" << i << " Largest error:" << maxDist << std::endl;
   if(i != 112)
     return 2;
   return 0;

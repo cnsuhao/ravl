@@ -29,6 +29,9 @@ namespace RavlN {
       //! Handle event.
       virtual void Dispatch();
 
+      //! Stop handling of events.
+      virtual void Stop();
+
       //! Setup poll item,
       // Return false if socket should be ignored.
       virtual bool SetupPoll(zmq_pollitem_t &pollItem);

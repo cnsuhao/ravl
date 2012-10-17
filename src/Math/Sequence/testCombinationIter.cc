@@ -23,30 +23,30 @@ int main(int nargs,char **argv) {
   data.InsLast(2);
   data.InsLast(3);
   data.InsLast(4);
-  cout << "Starting CombinationIterC test...\n";
+  std::cout << "Starting CombinationIterC test...\n";
   IntT n = 0;
   for(CombinationIterC<IntT> it(data);it.IsElm();it.Next()) {
     for(DLIterC<IntT> dit(it.Data());dit.IsElm();dit.Next())
-      cout << " " << dit.Data();
-    cout << endl;
+      std::cout << " " << dit.Data();
+    std::cout << std::endl;
     n++;
   }
   if(n != 15) {
-    cerr << "CombinationIterC test failed. \n";
+    std::cerr << "CombinationIterC test failed. \n";
     return 1;
   }
   n = 0;
-  cout << "Test 1 passed. \n";
+  std::cout << "Test 1 passed. \n";
   for(CombinationIterC<IntT> it(data,2);it.IsElm();it.Next()) {
     for(DLIterC<IntT> dit(it.Data());dit.IsElm();dit.Next())
-      cout << " " << dit.Data();
-    cout << endl;
+      std::cout << " " << dit.Data();
+    std::cout << std::endl;
     n++;
   }
   if(n != 11) {
-    cerr << "CombinationIterC test failed. \n";
+    std::cerr << "CombinationIterC test failed. \n";
     return 1;
   }
-  cout << "Test 2 passed. \n";
+  std::cout << "Test 2 passed. \n";
   return 0;
 }

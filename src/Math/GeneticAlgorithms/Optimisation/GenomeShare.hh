@@ -28,7 +28,7 @@ namespace RavlN { namespace GeneticN {
     //! Constructor
     //! If mustConnect is true, then the resulting gene will connect to
     //! the best match regardless how distant it is.
-    GeneTypeClassShareC(const std::type_info &classType, bool mustConnect = false);
+    GeneTypeClassShareC(const std::type_info &classType, bool mustConnect = false,float maxStrength = -1);
 
     //! Load form a binary stream
     GeneTypeClassShareC(BinIStreamC &strm);
@@ -41,6 +41,9 @@ namespace RavlN { namespace GeneticN {
 
     //! Save to binary stream
     virtual bool Save(std::ostream &strm) const;
+
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     //! Create randomise value
     virtual void Random(GenePaletteC &palette,GeneC::RefT &newValue) const;
@@ -58,6 +61,10 @@ namespace RavlN { namespace GeneticN {
     bool IsMustConnect() const
     { return m_mustConnect; }
 
+    //! Access maximum allowed strength.
+    float MaxStrength() const
+    { return m_maxStrength; }
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneTypeClassShareC > RefT;
 
@@ -66,6 +73,7 @@ namespace RavlN { namespace GeneticN {
 
   protected:
     bool m_mustConnect;
+    float m_maxStrength;
   };
 
   // Class that's shared amongst multiple points in the genome.

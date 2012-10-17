@@ -345,7 +345,7 @@ namespace RavlN {
   SizeBufferAccessC<DataT>::Copy(void) const {
     if (IsEmpty()) 
       return SizeBufferAccessC<DataT>();
-    DataT * bp = new DataT[Size()];
+    DataT * bp = new DataT[Size().V()];
     SizeBufferAccessC<DataT> b(bp, Size());
     DataT *at = DataStart();
     DataT *at2 = b.DataStart();
@@ -358,13 +358,16 @@ namespace RavlN {
   template <class DataT>
   void SizeBufferAccessC<DataT>::Fill(const DataT & d) {
     DataT *at = DataStart();
-    DataT *endOfRow = &at[sz];
+    DataT *endOfRow = &at[sz.V()];
     for(;at != endOfRow;at++)
       *at = d;
   }
   
   template<class DataT>
   void SizeBufferAccessC<DataT>::Reverse() {
+    // If there's zero or one element, nothing to do.
+    if(sz < 2)
+      return ;
     DataT *at = &((*this)[IMin()]);
     DataT *end = &((*this)[IMax()]);
     DataT tmp;
@@ -388,7 +391,7 @@ namespace RavlN {
   }
   
   template <class DataT>
-  ostream &operator<<(ostream &out,const SizeBufferAccessC<DataT> &dat) {
+  std::ostream &operator<<(std::ostream &out,const SizeBufferAccessC<DataT> &dat) {
     const DataT *at = dat.DataStart();
     const DataT *endOfRow = &at[dat.Size()];
     if(dat.Size() == 0)
@@ -404,7 +407,7 @@ namespace RavlN {
   // NB. The buffer must be pre-allocated.
 
   template <class DataT>
-  istream &operator>>(istream &strm,SizeBufferAccessC<DataT> &dat) {
+  std::istream &operator>>(std::istream &strm,SizeBufferAccessC<DataT> &dat) {
     DataT *at = dat.DataStart();
     DataT *endOfRow = &at[dat.Size()];
     for(;at != endOfRow;at++)

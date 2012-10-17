@@ -31,6 +31,7 @@
 #include "Ravl/UUId.hh"
 #include "Ravl/UnitTest.hh"
 #include "Ravl/SysLog.hh"
+#include "Ravl/StrStream.hh"
 
 using namespace RavlN;
 
@@ -69,7 +70,7 @@ template class RCWrapC<IntT>;
 int main()
 {
 #if RAVL_CPUTYPE_64
-  cerr << "Linux 64 enabled. \n";
+  std::cerr << "Linux 64 enabled. \n";
 #endif
   int ln;
 #if 1
@@ -112,7 +113,7 @@ int testTypes()
   if(sizeof(Int64T) != 8) return __LINE__;
   if(sizeof(UInt64T) != 8) return __LINE__;
 #if RAVL_USE_LARGEFILESUPPORT
-  cerr << "Large file support: Enabled. \n";
+  std::cerr << "Large file support: Enabled. \n";
   if(sizeof(StreamSizeT) < 8) return __LINE__;
   if(sizeof(StreamOffsetT) < 8) return __LINE__;
   if(sizeof(streampos) < 8) return __LINE__;
@@ -160,11 +161,11 @@ int testIndex()
   IndexRangeC r3(r1);
   r3.ClipBy(r2);
   if(!r1.Contains(r3)) {
-    cerr << "IndexRange test 1 failed " << r1 << " does not contain " << r3 << "\n";
+    std::cerr << "IndexRange test 1 failed " << r1 << " does not contain " << r3 << "\n";
     return __LINE__;
   }
   if(!r2.Contains(r3)) {
-    cerr << "IndexRange test 2 failed. " << r2 << " does not contain " << r3 << "\n";
+    std::cerr << "IndexRange test 2 failed. " << r2 << " does not contain " << r3 << "\n";
     return __LINE__;
   }
 
@@ -200,7 +201,7 @@ int testIndex()
 
 int testIndex2d()
 {
-  cerr << "testIndex2d() \n";
+  std::cerr << "testIndex2d() \n";
   Index2dC start(5,6);
 
   {
@@ -248,7 +249,7 @@ int testRefCounter() {
   if(ravl_atomic_read(&test) != 1)  return __LINE__;
   ravl_atomic_inc(&test);
   if(ravl_atomic_read(&test) != 2)  {
-    cerr << "Value ="  << ravl_atomic_read(&test) << "\n";
+    std::cerr << "Value ="  << ravl_atomic_read(&test) << "\n";
     return __LINE__;
   }
   ravl_atomic_dec(&test);
@@ -382,6 +383,17 @@ int testFPNumber() {
   //cerr <<"p4=" << p4 <<" p6=" << p6 << " p8=" << p8 <<"\n";
   if(p4 != 4) return __LINE__;
 
+  // Check stream operators
+
+  const int N=4;
+  RealT x = 4.72;
+  FPNumberC<N> f(x);
+  StrOStreamC os;
+  os << f;
+  StrIStreamC is(os.String());
+  is >> f;
+  if (Abs(x-(RealT)f) > 1.0/(RealT)(1<<N)) return __LINE__;
+
 #endif
   return 0;
 }
@@ -421,13 +433,13 @@ int testQInt() {
 
 int testIndexRange2d() {
   IndexRange2dC start(Index2dC(1,2),Index2dC(9,10));
-  cerr << "Rot90=" << start.Rotate90() << "\n";
-  cerr << "Rot180=" << start.Rotate180() << "\n";
-  cerr << "Rot270=" << start.Rotate270() << "\n";
+  std::cerr << "Rot90=" << start.Rotate90() << "\n";
+  std::cerr << "Rot180=" << start.Rotate180() << "\n";
+  std::cerr << "Rot270=" << start.Rotate270() << "\n";
 
-  cerr << "Rot90 (5,6)=" << start.Rotate90(Index2dC(5,6)) << "\n";
-  cerr << "Rot180 (5,6)=" << start.Rotate180(Index2dC(5,6)) << "\n";
-  cerr << "Rot270 (5,6)=" << start.Rotate270(Index2dC(5,6)) << "\n";
+  std::cerr << "Rot90 (5,6)=" << start.Rotate90(Index2dC(5,6)) << "\n";
+  std::cerr << "Rot180 (5,6)=" << start.Rotate180(Index2dC(5,6)) << "\n";
+  std::cerr << "Rot270 (5,6)=" << start.Rotate270(Index2dC(5,6)) << "\n";
 
 
 

@@ -31,10 +31,10 @@ namespace RavlDFN {
     //: Destructor.
     
     DFLinkBodyC(XMLIStreamC &is,DFSystemC &context);
-    //: Read from istream.
+    //: Read from std::istream.
     
     virtual bool Save(XMLOStreamC &strm,bool inCharge = true) const;
-    //: Save ostream.
+    //: Save std::ostream.
     
     const DFObjectC &Source() const
     { return src; }

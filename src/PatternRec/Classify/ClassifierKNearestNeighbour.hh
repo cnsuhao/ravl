@@ -41,13 +41,13 @@ namespace RavlN {
 				     const DistanceC &xdistMetric = DistanceSqrEuclideanC());
     //: Constructor.
     
-    ClassifierKNearestNeighbourBodyC(istream &strm);
+    ClassifierKNearestNeighbourBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierKNearestNeighbourBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -97,7 +97,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    ClassifierKNearestNeighbourC(istream &strm);
+    ClassifierKNearestNeighbourC(std::istream &strm);
     //: Load from stream.
     
     ClassifierKNearestNeighbourC(BinIStreamC &strm);

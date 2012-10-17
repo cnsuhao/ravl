@@ -101,7 +101,7 @@ namespace RavlN {
     inline RealT Cos() const { return RavlN::Cos(angle); }
     //: Get cos of angle.
     
-    void Dump(ostream &out);
+    void Dump(std::ostream &out);
     //: Dump to stream.
   protected:
     RealT angle;

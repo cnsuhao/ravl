@@ -118,14 +118,14 @@ namespace RavlN {
     : body(new HEMeshBaseEdgeBodyC(vert.Body(),face.Body()))
   {}
 
-  ostream &operator<<(ostream &strm,const HEMeshBaseEdgeC &vertex) {
+  std::ostream &operator<<(std::ostream &strm,const HEMeshBaseEdgeC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
   //: Text stream output.
   // Not implemented
   
-  istream &operator>>(istream &strm,HEMeshBaseEdgeC &vertex) {
+  std::istream &operator>>(std::istream &strm,HEMeshBaseEdgeC &vertex) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }

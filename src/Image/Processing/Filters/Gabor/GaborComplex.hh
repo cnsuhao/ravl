@@ -41,7 +41,7 @@ using namespace RavlN;
   //!param: isOffset - if true, every other scale is offset by &frac12; angular spacing 
 
   Array2dC<ImageC<RealT> > Apply(const ImageC<RealT>& in_img);
-  //: Filters image <code>in_img<code> using Gabor filter bank
+  //: Filters image <code>in_img</code> using Gabor filter bank
   // Returns the modulus of the complex images<br>
   // Array is organised as: no. of angles &times; no. of scales
 

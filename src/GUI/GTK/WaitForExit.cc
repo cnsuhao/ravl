@@ -29,7 +29,7 @@ extern "C" {
       return ;
     if(!Manager.IsManagerStarted())
       return ;
-    cerr << "Program exited, waiting for GUI to be shutdown. \n";
+    std::cerr << "Program exited, waiting for GUI to be shutdown. \n";
     Manager.Wait();
   }
   

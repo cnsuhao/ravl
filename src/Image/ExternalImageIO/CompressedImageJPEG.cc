@@ -18,7 +18,7 @@ namespace RavlImageN {
 
   //: Write to standard stream.
   
-  ostream &operator<<(ostream &strm,const CompressedImageJPEGC &data) {
+  std::ostream &operator<<(std::ostream &strm,const CompressedImageJPEGC &data) {
     strm << data.Size() << " ";
     for(SArray1dIterC<char> it(data);it;it++)
       strm << ((int) *it) << " ";
@@ -27,7 +27,7 @@ namespace RavlImageN {
   
   //: Read from standard stream
   
-  istream &operator>>(istream &strm,CompressedImageJPEGC &data) {
+  std::istream &operator>>(std::istream &strm,CompressedImageJPEGC &data) {
     UIntT size = 0;
     strm >> size;
     SArray1dC<char> bdata(size);

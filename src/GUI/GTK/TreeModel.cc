@@ -582,7 +582,7 @@ namespace RavlGUIN {
       signals[name] = Signal2C<TreeModelPathC,TreeModelIterC>(tmp1,tmp2);
       ret = &signals[name];
     } else {
-      cerr << "TreeModelBodyC::Signal(), WARNING: Unknown signal '" << nname << "'\n";
+      std::cerr << "TreeModelBodyC::Signal(), WARNING: Unknown signal '" << nname << "'\n";
       RavlAssert(0);
     }
     if(model != 0)

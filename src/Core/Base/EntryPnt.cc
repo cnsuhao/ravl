@@ -6,7 +6,6 @@
 // file-header-ends-here
 //////////////////////////////////////////////////////////////////////////////
 //! userlevel=Normal
-//! rcsid="$Id$"
 //! date="06/08/95"
 //! lib=RavlCore
 //! file="Ravl/Core/Base/EntryPnt.cc"
@@ -38,8 +37,6 @@ namespace RavlN {
 #endif
 #endif
   
-  extern const char *(*TypeNameMap)(const type_info &type);
-
   bool usedRavlMain = false;
   
   bool UsingRavlMain()
@@ -56,27 +53,27 @@ namespace RavlN {
     try {
       ret = func(argc,argv);
     } catch(exception &e) {
-      cerr << "C++ Exception :'" << e.what() << "'\n";
-      cerr << "Exiting program. \n";
+      std::cerr << "C++ Exception :'" << e.what() << "'\n";
+      std::cerr << "Exiting program. \n";
       exit(-1);
     }catch(ExceptionErrorCastC &e) {
-      cerr << "Ravl Exception :'" << e.what() << "'\n";
+      std::cerr << "Ravl Exception :'" << e.what() << "'\n";
       if(TypeNameMap == 0) {
-        cerr << " Casting " << e.From().name() << " to " << e.To().name() << "\n";
+        std::cerr << " Casting " << e.From().name() << " to " << e.To().name() << "\n";
       } else {
-        cerr << " Casting "
+        std::cerr << " Casting "
              << TypeNameMap(e.From()) << " (" << e.From().name() << ") to "
              << TypeNameMap(e.To()) << " (" << e.To().name() << ")\n";
       }
-      cerr << "Exiting program. \n";
+      std::cerr << "Exiting program. \n";
       exit(-1);
     } catch(ExceptionC &e) {
-      cerr << "Ravl Exception :'" << e.what() << "'\n";
-      cerr << "Exiting program. \n";
+      std::cerr << "Ravl Exception :'" << e.what() << "'\n";
+      std::cerr << "Exiting program. \n";
       exit(-1);
     } catch(...) {
-      cerr << "Unknown exception caught. \n";
-      cerr << "Exiting program. \n";
+      std::cerr << "Unknown exception caught. \n";
+      std::cerr << "Exiting program. \n";
       exit(-1);
     }
 #else

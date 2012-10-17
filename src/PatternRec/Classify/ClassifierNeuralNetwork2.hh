@@ -29,10 +29,10 @@ namespace RavlN {
     NeuralNetworkLayerC();
 
     //: Constructor
-    NeuralNetworkLayerC(size_t numInputs,size_t numOutputs);
+    NeuralNetworkLayerC(size_t numInputs,size_t numOutputs,bool useSigmoid = true);
 
     //: Constructor
-    NeuralNetworkLayerC(const MatrixC &weights,const VectorC &bias);
+    NeuralNetworkLayerC(const MatrixC &weights,const VectorC &bias,bool useSigmoid = true);
 
     //: Constructor from binary stream
     NeuralNetworkLayerC(BinIStreamC &strm);
@@ -41,10 +41,10 @@ namespace RavlN {
     NeuralNetworkLayerC(std::istream &strm);
 
     //! Have to binary stream
-    virtual bool Save(BinOStreamC &strm) const;
+    bool Save(BinOStreamC &strm) const;
 
     //! Have to text stream
-    virtual bool Save(std::ostream &strm) const;
+    bool Save(std::ostream &strm) const;
 
     //: Weights for layer
     const MatrixC &Weights() const
@@ -58,7 +58,7 @@ namespace RavlN {
     const VectorC &Bias() const
     { return m_bias; }
 
-    // Set bias vector
+    //: Set bias vector
     void SetBias(const VectorC &bias)
     { m_bias = bias; }
 
@@ -70,11 +70,20 @@ namespace RavlN {
     size_t NumInputs() const
     { return m_weights.Cols().V(); }
 
+    //: Use sigmoid on output.
+    bool UseSigmoid() const
+    { return m_useSigmoid; }
+
+    //: Set use sigmoid flag.
+    void SetUseSigmoid(bool useSigmoid)
+    { m_useSigmoid = useSigmoid; }
+
     //: Handle
     typedef SmartPtrC<NeuralNetworkLayerC> RefT;
   protected:
     MatrixC m_weights;
     VectorC m_bias;
+    bool m_useSigmoid;
   };
 
   //! userlevel=Develop
@@ -86,19 +95,20 @@ namespace RavlN {
     : public ClassifierBodyC
   {
   public:
-    ClassifierNeuralNetwork2BodyC(const FunctionC &norm,const SArray1dC<NeuralNetworkLayerC::RefT> &layers);
+    ClassifierNeuralNetwork2BodyC(const FunctionC &norm,
+                                  const SArray1dC<NeuralNetworkLayerC::RefT> &layers);
     //: Create classifier
 
     ClassifierNeuralNetwork2BodyC(const SArray1dC<NeuralNetworkLayerC::RefT> &layers);
     //: Create classifier
 
-    ClassifierNeuralNetwork2BodyC(istream &strm);
+    ClassifierNeuralNetwork2BodyC(std::istream &strm);
     //: Load from stream.
 
     ClassifierNeuralNetwork2BodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual bool Save (BinOStreamC &out) const;
@@ -117,7 +127,6 @@ namespace RavlN {
   protected:
     FunctionC m_norm;
     SArray1dC<NeuralNetworkLayerC::RefT> m_layers;
-    size_t m_largestLayer;
   };
 
   //! userlevel=Normal
@@ -144,7 +153,7 @@ namespace RavlN {
     {}
     //: Create classifier from a set of layers
 
-    ClassifierNeuralNetwork2C(istream &strm);
+    ClassifierNeuralNetwork2C(std::istream &strm);
     //: Load from stream.
 
     ClassifierNeuralNetwork2C(BinIStreamC &strm);
@@ -173,14 +182,14 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm,ClassifierNeuralNetwork2C &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierNeuralNetwork2C &obj) {
     obj = ClassifierNeuralNetwork2C(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out,const ClassifierNeuralNetwork2C &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierNeuralNetwork2C &obj) {
     obj.Save(out);
     return out;
   }

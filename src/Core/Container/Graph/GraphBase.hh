@@ -78,7 +78,7 @@ namespace RavlN {
     friend class GraphEdgeBaseC; //SwapNodes()
   };
 
-  ostream & operator<<(ostream & s, const GraphAdjRepC & link);
+  std::ostream & operator<<(std::ostream & s, const GraphAdjRepC & link);
   // Saves information in the link to the output stream.
 
   // ----------------------------------------------------------------------
@@ -177,10 +177,10 @@ namespace RavlN {
     friend class GraphBaseBodyC; //InsEdge()
     friend class GraphAdjIterBaseC;  //OtherAdj()
     friend class GraphEdgeBaseC; //SourceAdj(), TargetAdj()
-    friend ostream & operator<<(ostream & s, const GraphEdgeBaseBodyC & edge);
+    friend std::ostream & operator<<(std::ostream & s, const GraphEdgeBaseBodyC & edge);
   };
   
-  ostream & operator<<(ostream & s, const GraphEdgeBaseBodyC & edge);
+  std::ostream & operator<<(std::ostream & s, const GraphEdgeBaseBodyC & edge);
   // Saves information about the edge into the output stream.
 
   // ----------------------------------------------------------------------

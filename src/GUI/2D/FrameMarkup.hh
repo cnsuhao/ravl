@@ -60,13 +60,13 @@ namespace RavlGUIN {
     Int64T frameNo;
   };
   
-  ostream &operator<<(ostream &out,const FrameMarkupC &obj);
+  std::ostream &operator<<(std::ostream &out,const FrameMarkupC &obj);
   //: Stream operator.
   
   BinOStreamC &operator<<(BinOStreamC &out,const FrameMarkupC &obj);
   //: Binary stream operator.
   
-  istream &operator>>(istream &in,FrameMarkupC &obj);
+  std::istream &operator>>(std::istream &in,FrameMarkupC &obj);
   //: Stream operator.
   
   BinIStreamC &operator>>(BinIStreamC &in,FrameMarkupC &obj);

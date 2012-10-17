@@ -10,6 +10,7 @@
 
 #include "Ravl/Genetic/GeneFactory.hh"
 #include "Ravl/Genetic/GenomeConst.hh"
+#include "Ravl/Genetic/GenomeClass.hh"
 #include "Ravl/Genetic/GeneTypeBool.hh"
 #include "Ravl/Random.hh"
 #include "Ravl/OS/SysLog.hh"
@@ -32,7 +33,8 @@ namespace RavlN { namespace GeneticN {
   //! Construct from a genome.
 
   GenomeScaffoldC::GenomeScaffoldC(const GenomeC &genome)
-   : m_genome(&genome)
+   : m_genome(&genome),
+     m_allowUpdate(true)
   {}
 
 
@@ -68,6 +70,7 @@ namespace RavlN { namespace GeneticN {
     GenomeC::RefT genome = new GenomeC(*aGene);
     m_scaffold = new GenomeScaffoldC(*genome);
     genome->UpdateShares(*this);
+    m_path.Push(*aGene);
   }
 
   //! Push another level on the stack.
@@ -115,6 +118,18 @@ namespace RavlN { namespace GeneticN {
     value = theGene.Value();
   }
 
+  //! Get an integer.
+  void GeneFactoryC::Get(const std::string &name,UIntT &value,const GeneTypeC &geneType) const {
+    GeneC::ConstRefT component;
+    GetComponent(name,component,geneType);
+    const GeneIntC &theGene = dynamic_cast<const GeneIntC &>(*component);
+    if(theGene.Value() >= 0)
+      value = theGene.Value();
+    else
+      value = 0;
+  }
+
+
   void GeneFactoryC::Get(const std::string &name,float &value,const GeneTypeC &geneType) const
   {
     GeneC::ConstRefT component;
@@ -156,6 +171,20 @@ namespace RavlN { namespace GeneticN {
     }
     return false;
   }
+
+  //! Get type attribute
+  const RavlN::RCAbstractC *GeneFactoryC::GetTypeAttribute(const RavlN::StringC &attrName) const {
+    if(m_path.IsEmpty())
+      return 0;
+    const GeneTypeC &geneType = m_path.Top()->Type();
+    const GeneTypeNodeC *geneTypeNode = dynamic_cast<const GeneTypeNodeC *>(&geneType);
+    if(geneTypeNode == 0) {
+      RavlWarning("Attribute asked for non-GeneTypeNodeC. '%s' ",geneType.Name().c_str());
+      return 0;
+    }
+    return geneTypeNode->GetAttribute(attrName);
+  }
+
 
   static RavlN::TypeNameC g_typeGeneFactory(typeid(GeneFactoryC),"RavlN::GeneticN::GeneFactoryC");
 

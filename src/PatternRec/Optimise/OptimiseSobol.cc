@@ -20,7 +20,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseSobolBodyC::OptimiseSobolBodyC (istream &in)
+  OptimiseSobolBodyC::OptimiseSobolBodyC (std::istream &in)
     :OptimiseBodyC("OptimiseSobolBodyC",in)
   {
     in >> _numSamples;
@@ -61,7 +61,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseSobolBodyC::Save (ostream &out) const
+  bool OptimiseSobolBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _numSamples << "\n";

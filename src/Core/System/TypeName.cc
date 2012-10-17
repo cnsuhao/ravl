@@ -24,7 +24,7 @@
 namespace RavlN {
   
   
-  typedef const char *(*TypeNameMapT)(const type_info &type);
+  typedef const char *(*TypeNameMapT)(const std::type_info &type);
   extern TypeNameMapT TypeNameMap;
   
   static HashC<const char *,const char *> InitNameMapping();
@@ -40,8 +40,8 @@ namespace RavlN {
     return typeNameMapping;
   }
   
-  inline static HashC<const char *,const type_info *> &RTypeMapping() {
-    static HashC<const char *,const type_info *> rTypeNameMapping;
+  inline static HashC<const char *,const std::type_info *> &RTypeMapping() {
+    static HashC<const char *,const std::type_info *> rTypeNameMapping;
     return rTypeNameMapping;
   }
   
@@ -63,7 +63,7 @@ namespace RavlN {
   static TypeNameC type9(typeid(Int16T),"Int16T");
   static TypeNameC type10(typeid(UInt16T),"UInt16T");
   
-  static TypeNameC type11(typeid(StringC),"StringC");
+  static TypeNameC type11(typeid(StringC),"RavlN::StringC");
   static TypeNameC type12(typeid(SubStringC),"SubStringC");
   
   static TypeNameC type13(typeid(IndexC),"IndexC");
@@ -72,6 +72,7 @@ namespace RavlN {
   static TypeNameC type15(typeid(RCBodyVC),"RCBodyVC");
   
   static TypeNameC type16(typeid(RCWrapAbstractC),"RavlN::RCWrapAbstractC");
+  static TypeNameC type19(typeid(AbstractC),"RavlN::AbstractC");
   
   static TypeNameC type17(typeid(RealRange2dC),"RavlN::RealRange2dC");
   static TypeNameC type18(typeid(IndexRange2dC),"RavlN::IndexRange2dC");
@@ -124,35 +125,44 @@ namespace RavlN {
 #endif
 #ifndef __sgi__
 #if RAVL_CHECK
-    RavlWarning("No standard type name for : %s ",name);
+    // This can get annoying. but is sometimes useful when dealing with RAVL abs files
+    // and streams to ensure we have a machine independent type name. What to do ??
+    //RavlWarning("No standard type name for : %s ",name);
 #endif
     AddTypeName(name,name); // Register name, to prevent repeated warnings.
     return name;
 #endif
   }
   
-  const char *TypeHandleName(const type_info &info) {
+  const char *TypeHandleName(const std::type_info &info) {
     MTReadLockC lock;
     const char **ptr = HandleNameMapping().Lookup(info.name());
     if(ptr == 0) {
-      cerr << "WARNING: Handle type name not know for '" << info.name() << "' \n";
+      std::cerr << "WARNING: Handle type name not know for '" << info.name() << "' \n";
       return "Unknown";
     }
     return *ptr;
   }
   
-  const char *TypeName(const type_info &info)  { 
+  //: Test if we have a typename registered
+  bool HaveTypeName(const std::type_info &info) {
+    MTReadLockC lock;
+    return TypeNameMapping().Lookup(info.name()) != 0;
+  }
+
+  const char *TypeName(const std::type_info &info)  {
     return TypeName(info.name()); 
   }
+
 
   static HashC<const char *,const char *> InitNameMapping() {
     TypeNameMap = &TypeName;
     return HashC<const char *,const char *>();
   }
   
-  const type_info &RTypeInfo(const char *name) { 
+  const std::type_info &RTypeInfo(const char *name) {
     MTReadLockC lock;
-    const type_info **tinf = RTypeMapping().Lookup(name);
+    const std::type_info **tinf = RTypeMapping().Lookup(name);
     if(tinf != NULL) 
       return **tinf;
     return typeid(void); 
@@ -167,7 +177,7 @@ namespace RavlN {
     MTWriteLockC lock;
 #if RAVL_CHECK
     if(TypeNameMapping().IsElm(sysname)) {
-      if(strcmp(TypeNameMapping()[sysname],newname) != 0) {
+      if(strcmp(TypeNameMapping()[sysname],newname) != 0 && strcmp(TypeNameMapping()[sysname],sysname) == 0) {
         RavlWarning("Redefining TypeName '%s' from '%s' to '%s' ",sysname,TypeNameMapping()[sysname],newname);
       }
     }
@@ -175,7 +185,7 @@ namespace RavlN {
     TypeNameMapping()[sysname] = newname;
   }
   
-  void AddTypeName(const type_info &info,const char *newname) { 
+  void AddTypeName(const std::type_info &info,const char *newname) {
     AddTypeName(info.name(),newname); 
     MTWriteLockC lock;
     RTypeMapping()[newname] = &info;
@@ -183,7 +193,7 @@ namespace RavlN {
   
   //: Add body to handle type mapping.
   
-  void AddTypeHandleName(const type_info &info,const char *newname) {
+  void AddTypeHandleName(const std::type_info &info,const char *newname) {
     MTWriteLockC lock;
     HandleNameMapping()[info.name()] = newname;
   }

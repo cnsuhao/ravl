@@ -184,8 +184,8 @@ namespace RavlN {
   
   template<class KeyT,class DataT>
   bool BHashC<KeyT,DataT>::Insert(const KeyT &key,const DataT &data) {
-    if(table.Size() == 0) // Need to initalise the table ?
-      table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the inital size ?
+    if(table.Size() == 0) // Need to initialise the table ?
+      table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the initial size ?
     table[StdHash(key) % table.Size()].InsFirst(BHashEntryC<KeyT,DataT>(key,data) );
     entries++;
     return true;
@@ -193,8 +193,8 @@ namespace RavlN {
   
   template<class KeyT,class DataT>
   DataT &BHashC<KeyT,DataT>::InsertRef(const KeyT &key,const DataT &data) {
-    if(table.Size() == 0) // Need to initalise the table ?
-      table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the inital size ?
+    if(table.Size() == 0) // Need to initialise the table ?
+      table = SArray1dC<BListC<BHashEntryC<KeyT,DataT> > > (7); // How to best choose the initial size ?
     BListC<BHashEntryC<KeyT,DataT> > &list = table[StdHash(key) % table.Size()];
     list.InsFirst(BHashEntryC<KeyT,DataT>(key,data) );    
     entries++;

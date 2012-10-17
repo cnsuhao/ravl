@@ -34,13 +34,13 @@ namespace RavlN {
     {}
     //: Create a function with the given number of inputs and outputs.
     
-    FuncLinearCoeffBodyC(istream &strm);
+    FuncLinearCoeffBodyC(std::istream &strm);
     //: Load from stream.
     
     FuncLinearCoeffBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -64,7 +64,7 @@ namespace RavlN {
     virtual bool SetTransform(const MatrixC &a);
     //: Attempt to set transform matrix.
     
-    virtual void Describe(ostream &out);
+    virtual void Describe(std::ostream &out);
     //: Write a human readable text description of the function.
     
     MatrixC &Transform()
@@ -95,7 +95,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    FuncLinearCoeffC(istream &strm);
+    FuncLinearCoeffC(std::istream &strm);
     //: Load from stream.
     
     FuncLinearCoeffC(BinIStreamC &strm);
@@ -158,14 +158,14 @@ namespace RavlN {
     //: Compute matrix's directly from vectors.
   };
   
-  inline istream &operator>>(istream &strm,FuncLinearCoeffC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FuncLinearCoeffC &obj) {
     obj = FuncLinearCoeffC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FuncLinearCoeffC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FuncLinearCoeffC &obj) {
     obj.Save(out);
     return out;
   }

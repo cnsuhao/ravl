@@ -85,7 +85,7 @@ namespace RavlN {
 
 
   //: Load from stream.
-  GaussianMixtureBodyC::GaussianMixtureBodyC(istream &strm) 
+  GaussianMixtureBodyC::GaussianMixtureBodyC(std::istream &strm) 
     : Function1BodyC(strm) 
   { 
     strm >> params >> weights >> isDiagonal; 
@@ -94,7 +94,7 @@ namespace RavlN {
   
   
   //: Writes object to stream.  
-  bool GaussianMixtureBodyC::Save (ostream &out) const {
+  bool GaussianMixtureBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << '\n' << params << '\n' << weights << '\n' << isDiagonal;

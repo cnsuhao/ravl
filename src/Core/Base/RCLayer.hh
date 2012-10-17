@@ -48,7 +48,7 @@ namespace RavlN {
     { ravl_atomic_set(&owners,0); }
     //: Copy constructor
 
-    ~RCLayerBodyC()
+    virtual ~RCLayerBodyC()
     { RavlAssert(ravl_atomic_read(&owners) == 0); }
     //: Destructor
     
@@ -78,7 +78,7 @@ namespace RavlN {
         } catch(...) {
           // Warn the user that something is wrong.  Exceptions shouldn't be allowed
           // to get this far as this may be called in a destructor.
-          cerr << "RAVL WARNING: Exception caught from virtual method RCLayerBodyC::ZeroOwners(). \n";
+          std::cerr << "RAVL WARNING: Exception caught from virtual method RCLayerBodyC::ZeroOwners(). \n";
         }
       }
     }
@@ -147,7 +147,7 @@ namespace RavlN {
     }
     //: Constructor from a pointer
     
-    RCLayerC(istream &strm,RCLayerHandleT handleType = RCLH_OWNER)
+    RCLayerC(std::istream &strm,RCLayerHandleT handleType = RCLH_OWNER)
       : RCHandleVC<BodyT>(strm),
         ownerHandle(handleType == RCLH_OWNER)
     {
@@ -219,7 +219,7 @@ namespace RavlN {
     { return this->Body().OwnerHandles(); }
     //: Count the number of owner handles that currently exist.
     
-    bool Save(ostream &out) const
+    bool Save(std::ostream &out) const
     { return Body().Save(out); }
     //: Save to stream 'out'.
     
@@ -277,7 +277,7 @@ namespace RavlN {
   };
   
   template<class BodyT>
-  ostream &operator<<(ostream &strm,const RCLayerC<BodyT> &obj) {
+  std::ostream &operator<<(std::ostream &strm,const RCLayerC<BodyT> &obj) {
     RavlAssertMsg(obj.IsValid(),"Attempt to write an invalid object handle.");
     obj.Save(strm);
     return strm;
@@ -293,7 +293,7 @@ namespace RavlN {
   //: Write binary handle to a stream.
   
   template<class BodyT>
-  istream &operator>>(istream &strm,RCLayerC<BodyT> &obj) {
+  std::istream &operator>>(std::istream &strm,RCLayerC<BodyT> &obj) {
     obj = RCLayerC<BodyT>(strm);
     return strm;
   }

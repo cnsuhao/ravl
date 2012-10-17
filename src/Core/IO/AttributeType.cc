@@ -44,13 +44,13 @@ namespace RavlN {
   
   //: stream constructor.
   
-  AttributeTypeBodyC::AttributeTypeBodyC(istream &is) 
+  AttributeTypeBodyC::AttributeTypeBodyC(std::istream &is) 
     : RCBodyVC(is)
   {
     IntT version;
     is >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("AttributeTypeBodyC(istream &), Unrecognised version number in stream.");
+      throw ExceptionOutOfRangeC("AttributeTypeBodyC(std::istream &), Unrecognised version number in stream.");
     is >> name >> description >> canRead >> canWrite;
   }
 
@@ -67,7 +67,7 @@ namespace RavlN {
 
   //: Save attribute to stream 
   
-  bool AttributeTypeBodyC::Save(ostream & strm) const {
+  bool AttributeTypeBodyC::Save(std::ostream & strm) const {
     if(!RCBodyVC::Save(strm))
       return false;
     IntT version = 0;
@@ -92,7 +92,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  AttributeTypeC::AttributeTypeC(istream &strm) 
+  AttributeTypeC::AttributeTypeC(std::istream &strm) 
     : RCHandleVC<AttributeTypeBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,AttributeTypeBodyC))
   {}
     
@@ -121,7 +121,7 @@ namespace RavlN {
   
   //: Write attribute type to stream.
   
-  ostream &operator<<(ostream &strm,const AttributeTypeC &attrType) {
+  std::ostream &operator<<(std::ostream &strm,const AttributeTypeC &attrType) {
     RavlAssert(attrType.IsValid());
     attrType.Save(strm);
     return strm;
@@ -129,7 +129,7 @@ namespace RavlN {
   
   //: Read attribute type from stream.
   
-  istream &operator>>(istream &strm,AttributeTypeC &attrType){
+  std::istream &operator>>(std::istream &strm,AttributeTypeC &attrType){
     attrType = AttributeTypeC(strm);
     return strm;
   }

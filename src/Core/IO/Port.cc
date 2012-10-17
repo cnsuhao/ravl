@@ -41,7 +41,7 @@ namespace RavlN {
   
   //: Stream constructor.
 
-  DPPortBodyC::DPPortBodyC(istream &in) 
+  DPPortBodyC::DPPortBodyC(std::istream &in) 
     : DPEntityBodyC(in)
 { in >> portId; 
  RegisterID() ; }
@@ -71,9 +71,9 @@ namespace RavlN {
     return false; 
   }
 
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  bool DPPortBodyC::Save(ostream &out) const { 
+  bool DPPortBodyC::Save(std::ostream &out) const { 
     if(!DPEntityBodyC::Save(out))
       return false;
     out << portId << ' ';
@@ -180,7 +180,7 @@ namespace RavlN {
   
   // Input type.
   
-  const type_info &DPIPortBaseBodyC::InputType() const  {
+  const std::type_info &DPIPortBaseBodyC::InputType() const  {
     RavlAssert(0);
     return typeid(void);
   }
@@ -220,7 +220,7 @@ namespace RavlN {
   
   // Output type.
   
-  const type_info &DPOPortBaseBodyC::OutputType() const {
+  const std::type_info &DPOPortBaseBodyC::OutputType() const {
     RavlAssert(0);
     return typeid(void);
   }

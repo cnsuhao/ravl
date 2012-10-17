@@ -36,20 +36,20 @@ int main()  {
   int line;
   
   if((line = testBinaryTree())!= 0) {
-    cerr << "testBinaryTree(), Error line:" << line << "\n";
+    std::cerr << "testBinaryTree(), Error line:" << line << "\n";
     return 1;
   }
 
   if((line = testAVLTree())!= 0) {
-    cerr << "testBinaryTree(), Error line:" << line << "\n";
+    std::cerr << "testBinaryTree(), Error line:" << line << "\n";
     return 1;
   }
 
   if((line = testBinaryTreeIter())!= 0) {
-    cerr << "testBinaryTreeIter(), Error line:" << line << "\n";
+    std::cerr << "testBinaryTreeIter(), Error line:" << line << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
@@ -66,7 +66,7 @@ int buildTestTree(BinaryTreeC<int,int> &testTree) {
 }
 
 int BasicTests(BinaryTreeC<int,int> &testTree) {
-  cerr << "Started basic tests.\n";
+  std::cerr << "Started basic tests.\n";
   int val;
   if(!testTree.IsEmpty()) return __LINE__;
   if(testTree.Size() != 0) return __LINE__;
@@ -95,29 +95,29 @@ int BasicTests(BinaryTreeC<int,int> &testTree) {
   if(testTree.Find(3,val)) return __LINE__; 
   if(val != 2) return __LINE__; // Check failed find doesn't overwrite.
 #if 0
-  cerr << "Testing delete.\n";
+  std::cerr << "Testing delete.\n";
   int x;
   if((x = buildTestTree(testTree)) != 0)
     return x;
   //testTree.Dump(cerr);
-  cerr << "Del 3.\n";
+  std::cerr << "Del 3.\n";
   testTree.Remove(3);
   testTree.Empty();
   if(testTree.Size() != 0) return __LINE__;
   if(testTree.Find(3,val)) return __LINE__; 
   if(val != 2) return __LINE__; // Check failed find doesn't overwrite.
-  cerr << "Testing delete.\n";
+  std::cerr << "Testing delete.\n";
   if((x = buildTestTree(testTree)) != 0)
     return x;
   testTree.Dump(cerr);  testTree.Dump(cerr);
-  cerr << "Del 4.\n";
+  std::cerr << "Del 4.\n";
   testTree.Remove(4);
   testTree.Dump(cerr);
-  cerr << "Del 5.\n";
+  std::cerr << "Del 5.\n";
   testTree.Remove(5);
   testTree.Dump(cerr);
 #endif
-  cerr << "Testing larger tree's.\n";
+  std::cerr << "Testing larger tree's.\n";
   
   // Test consective numbers.
   for(int i = 0;i < 10;i++)
@@ -175,7 +175,7 @@ int BasicTests(BinaryTreeC<int,int> &testTree) {
     }
     if(c != done.Size()) return __LINE__;
     if(c != testTree.Size()) {
-      cerr << "Size mismatch c=" << c << " TreeSize=" << testTree.Size() << "\n";
+      std::cerr << "Size mismatch c=" << c << " TreeSize=" << testTree.Size() << "\n";
       return __LINE__;
     }
   }
@@ -197,32 +197,32 @@ int BasicTests(BinaryTreeC<int,int> &testTree) {
       kmin = *it;
   }
   if(kmax != testTree.MaxKey()) {
-    cerr << "kmax=" << kmax << " Min=" << testTree.MaxKey() << "\n";
+    std::cerr << "kmax=" << kmax << " Min=" << testTree.MaxKey() << "\n";
     return __LINE__;
   }
   if(kmin != testTree.MinKey()) {
-    cerr << "kmin=" << kmin << " Min=" << testTree.MinKey() << "\n";
+    std::cerr << "kmin=" << kmin << " Min=" << testTree.MinKey() << "\n";
     return __LINE__;
   }
   //testTree.Dump(cerr);
-  cerr << "Done tests.\n";
+  std::cerr << "Done tests.\n";
   return 0;
 }
 
 int testBinaryTree() {
-  cerr << "Testing simple binary tree.\n";
+  std::cerr << "Testing simple binary tree.\n";
   BinaryTreeC<int,int> testTree(true);
   return BasicTests(testTree);
 }
 
 int testAVLTree() {
-  cerr << "Testing AVL tree.\n";
+  std::cerr << "Testing AVL tree.\n";
   AVLTreeC<int,int> testTree(true);
   return BasicTests(testTree);
 }
 
 int testBinaryTreeIter() {
-  cerr << "Testing binary tree iterators.\n";
+  std::cerr << "Testing binary tree iterators.\n";
   BinaryTreeC<int,int> testTree(true);
   buildTestTree(testTree);
   //testTree.Dump(cerr);

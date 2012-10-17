@@ -31,12 +31,12 @@ namespace RavlN {
 			 realRange.Range3() * indexRange.Range3());
   }
 
-  ostream &operator<<(ostream &s,const RealRange3dC &ir) {
+  std::ostream &operator<<(std::ostream &s,const RealRange3dC &ir) {
     s << ir.Range1() << ' ' << ir.Range2() << ' ' << ir.Range3();
     return s;
   }
   
-  istream &operator>>(istream &s,RealRange3dC &ir) {
+  std::istream &operator>>(std::istream &s,RealRange3dC &ir) {
     s >> ir.Range1() >> ir.Range2() >> ir.Range3();
     return s;
   }

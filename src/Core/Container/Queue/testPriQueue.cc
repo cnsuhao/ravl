@@ -39,24 +39,24 @@ int Main(int, char*[])
   int lastkey = -1;
   while (pq.IsElm()){
     if(lastkey > pq.TopKey()) {
-      cerr << "Failed Data out of order. \n";
+      std::cerr << "Failed Data out of order. \n";
       return 1;
     }
     lastkey = pq.TopKey();
 #if 0
     pq.Dump();
-    cerr << "pq.Size() = " << pq.Size() << "\n";
-    cerr << "extracting Key:" << pq.TopKey() << " "<< pq.Top() << "\n";
-    cerr << "iteration " << count << "\n\n";
+    std::cerr << "pq.Size() = " << pq.Size() << "\n";
+    std::cerr << "extracting Key:" << pq.TopKey() << " "<< pq.Top() << "\n";
+    std::cerr << "iteration " << count << "\n\n";
 #endif
     count--;
     pq.DelTop();
   }
   if(count != 0) {
-    cerr << "Count mis-match. " << count << "\n";
+    std::cerr << "Count mis-match. " << count << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 

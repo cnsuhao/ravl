@@ -22,7 +22,7 @@ using namespace RavlGUIN;
 //: A callback to handle seleced items
 bool HandleCombo (ComboC &  combo, StringC & id)
 {
-  cerr << "\n id: " << id << "\t" << combo.Selected() ; 
+  std::cerr << "\n id: " << id << "\t" << combo.Selected() ; 
   return true ; 
 }
 
@@ -47,27 +47,28 @@ int main(int nargs,char *args[])
   
   // Cursor manipulation
   const IntT curPos = 3;
-  cerr << "Setting cursor position to: " << curPos << endl;
+  std::cerr << "Setting cursor position to: " << curPos << std::endl;
   combo.GUISetCursorPosition(curPos);
-  cerr << "Cursor pos reported at: " << combo.GetCursorPosition() << endl << endl;
+  std::cerr << "Cursor pos reported at: " << combo.GetCursorPosition() << endl << std::endl;
 
   // Selection manipulation
   const IntT curStart = 2;
   const IntT curEnd = 3;
-  cerr << "Setting selection from " << curStart << " to " << curEnd << endl;
+  std::cerr << "Setting selection from " << curStart << " to " << curEnd << std::endl;
   combo.GUISetCursorSelection(curStart, curEnd);
 
   IntT start = -1, end = -1;
   if (combo.GetCursorSelection(start, end))
   {
-    cerr << "Selection reported from " << start << " to " << end << endl << endl;
+    std::cerr << "Selection reported from " << start << " to " << end << endl << std::endl;
   }
   else
   {
-    cerr << "No current selection" << endl << endl;
+    std::cerr << "No current selection" << endl << std::endl;
   }
   
   // Start the UI
   Manager.Start();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

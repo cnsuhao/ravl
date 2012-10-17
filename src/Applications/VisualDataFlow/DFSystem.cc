@@ -35,12 +35,12 @@ namespace RavlDFN {
       factory(PROJECT_OUT "/share/RAVL/vdf/factory.cfg")
   {}
   
-  //: Read from istream.
+  //: Read from std::istream.
   
-  DFSystemBodyC::DFSystemBodyC(istream &is)
+  DFSystemBodyC::DFSystemBodyC(std::istream &is)
   { is >> name >> objects; }
   
-  //: Read from istream.
+  //: Read from std::istream.
   
   DFSystemBodyC::DFSystemBodyC(BinIStreamC &is)
   { is >> name >> objects; }
@@ -51,21 +51,21 @@ namespace RavlDFN {
     
   }
   
-  //: Save ostream.
+  //: Save std::ostream.
   
-  bool DFSystemBodyC::Save(ostream &strm) const {
+  bool DFSystemBodyC::Save(std::ostream &strm) const {
     strm << name << ' ' << objects << ' ' ;
     return true;
   }
   
-  //: Save ostream.
+  //: Save std::ostream.
   
   bool DFSystemBodyC::Save(BinOStreamC &strm) const {
     strm << name << objects;
     return true;
   }
   
-  //: Save ostream.
+  //: Save std::ostream.
   
   bool DFSystemBodyC::Save(XMLOStreamC &strm) const {
     strm << XMLStartTag("DFSystem") << XMLAttribute("name",name);
@@ -123,7 +123,7 @@ namespace RavlDFN {
   
   DFObjectC DFSystemBodyC::LoadObject(const StringC &fn) {
     DFObjectC ret;
-    ONDEBUG(cerr << "DFSystemBodyC::LoadObject(" << fn << ") Called. \n");
+    ONDEBUG(std::cerr << "DFSystemBodyC::LoadObject(" << fn << ") Called. \n");
     if(!Load(fn,ret))
       return DFObjectC();
     AddObject(ret);
@@ -133,22 +133,22 @@ namespace RavlDFN {
   
   //////////////////////////////////////////////////////////////////////////
   
-  //: Write to an ostream.
+  //: Write to an std::ostream.
   
-  ostream &operator<<(ostream &strm,const DFSystemC &dfa) {
+  std::ostream &operator<<(std::ostream &strm,const DFSystemC &dfa) {
     RavlAssert(dfa.IsValid());
     dfa.Save(strm);
     return strm;
   }
   
-  //: Read from an istream.
+  //: Read from an std::istream.
   
-  istream &operator>>(istream &strm,DFSystemC &dfa) {
+  std::istream &operator>>(std::istream &strm,DFSystemC &dfa) {
     dfa = DFSystemC(strm);
     return strm;
   }
   
-  //: Write to an ostream.
+  //: Write to an std::ostream.
   
   BinOStreamC &operator<<(BinOStreamC &strm,const DFSystemC &dfa) {
     RavlAssert(dfa.IsValid());
@@ -156,7 +156,7 @@ namespace RavlDFN {
     return strm;
   }
   
-  //: Read from an istream.
+  //: Read from an std::istream.
   
   BinIStreamC &operator>>(BinIStreamC &strm,DFSystemC &dfa) {
     dfa = DFSystemC(strm);

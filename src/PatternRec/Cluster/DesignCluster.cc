@@ -51,13 +51,17 @@ namespace RavlN {
     return DesignClassifierUnsupervisedBodyC::Save(out);
   }
   
-  //: Create a clasifier.
   
   SArray1dC<MeanCovarianceC> DesignClusterBodyC::Cluster(const SampleC<VectorC> &in) {
     RavlAssertMsg(0,"DesignClusterBodyC::Cluster(), Abstract method called. ");
     return SArray1dC<MeanCovarianceC>();
   }
   
+  SArray1dC<MeanCovarianceC> DesignClusterBodyC::Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights) {
+    RavlAssertMsg(0,"DesignClusterBodyC::Cluster(), Abstract method called. ");
+    return SArray1dC<MeanCovarianceC>();
+  }
+
   //: Load from stream.
   
   DesignClusterC::DesignClusterC(istream &strm)

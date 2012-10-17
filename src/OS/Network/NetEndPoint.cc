@@ -121,7 +121,8 @@ namespace RavlN {
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput),
       threadsStarted(false),
-      m_maxPacketSize(g_netEndPointDefaultPacketSizeLimit)
+      m_maxPacketSize(g_netEndPointDefaultPacketSizeLimit),
+      m_port(0)
   { 
     // Increment count of open connections.
     ravl_atomic_inc(&openNetEndPointCount);
@@ -137,6 +138,7 @@ namespace RavlN {
     : transmitQ(15),
       receiveQ(5),
       shutdown(false),
+      autoInit(true),
       sigConnectionBroken(true),
       peerInfo("Unknown","-"),
       useBigEndianBinStream(RAVL_BINSTREAM_ENDIAN_BIG),
@@ -144,7 +146,8 @@ namespace RavlN {
       pingSeqNo(1),
       optimiseThroughput(_optimiseThroughput),
       threadsStarted(false),
-      m_maxPacketSize(g_netEndPointDefaultPacketSizeLimit)
+      m_maxPacketSize(g_netEndPointDefaultPacketSizeLimit),
+      m_port(0)
   {
     localInfo.appName = SysLogApplicationName();
     // Increment count of open connections.
@@ -390,10 +393,13 @@ namespace RavlN {
     return true;
   }
   
-  static const StringC streamHeaderBigEndian ="<ABPS>\n";
+#if RAVL_BINSTREAM_ENDIAN_LITTLE
   static const StringC streamHeaderLittleEndian ="<RBPS>\n";
+#else
+  static const StringC streamHeaderBigEndian ="<ABPS>\n";
+#endif
   
-  //: Handle packet transmition.
+  //: Handle packet transmission.
   
   bool NetEndPointBodyC::RunTransmit() {
     ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "NetEndPointBodyC::RunTransmit(), Started. ");
@@ -430,11 +436,11 @@ namespace RavlN {
       if(!ostrm.GetAttr("ConnectedPort",conPort))
         conPort = "Unknown";
       
-      int maxRetry = 45 * 2; // Wait up to 45 seconds for connection.
+      int maxRetry = 60; // Wait up to 60 seconds for connection.
       // Wait still we got a stream header from peer 
       bool issuedMessage = false;
       while(--maxRetry > 0 && !shutdown) {
-	if(gotStreamType.Wait(0.5))
+	if(gotStreamType.Wait(1.0))
 	  break;
         if(!issuedMessage) // Avoid repeatedly displaying this message.
           RavlSysLog(SYSLOG_WARNING) << "NetEndPointBodyC::RunTransmit(), Waiting for connect from " << conHost << ":" << conPort << " ";
@@ -559,7 +565,7 @@ namespace RavlN {
     } catch(ExceptionC &e) {
       RavlSysLog(SYSLOG_WARNING) << "RAVL Exception :'" << e.what() << "' ";
       RavlSysLog(SYSLOG_WARNING) << "NetEndPointBodyC::RunTransmit(), Exception caught, terminating link. ";
-    } catch(exception &e) {
+    } catch(std::exception &e) {
       RavlSysLog(SYSLOG_WARNING) << "C++ Exception :'" << e.what() << "'";
       RavlSysLog(SYSLOG_WARNING) << "NetEndPointBodyC::RunTransmit(), Exception caught, terminating link. ";
     } catch(...) {
@@ -720,8 +726,9 @@ namespace RavlN {
       ONDEBUG(RavlSysLog(SYSLOG_DEBUG) << "NetEndPointBodyC::RunReceive(), signalling connection broken.");
       sigConnectionBroken.Invoke();
       sigConnectionBroken.DisconnectAll(true);
-    } else
-      cerr << "NetEndPointBodyC::RunReceive(), Internal error: No sigBrokenConnection. \n";
+    } else {
+      RavlSysLog(SYSLOG_ERR) << "NetEndPointBodyC::RunReceive(), Internal error: No sigBrokenConnection. ";
+    }
     
     // Legacy...
     MutexLockC lock(accessMsgReg);

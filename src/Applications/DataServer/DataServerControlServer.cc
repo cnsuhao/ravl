@@ -10,6 +10,7 @@
 #include "Ravl/DataServer/DataServerControlClient.hh"
 #include "Ravl/DataServer/DataServerControlConnection.hh"
 #include "Ravl/OS/Socket.hh"
+#include "Ravl/OS/Date.hh"
 #include "Ravl/Threads/LaunchThread.hh"
 #include "Ravl/XMLFactoryRegister.hh"
 
@@ -72,11 +73,13 @@ namespace RavlN
   {
     RavlDebug("DataServerControl Listening on '%s' ",m_controlAddress.data());
     m_started = true;
-    m_socketServer = SocketC(m_controlAddress, true);
-    if (!m_socketServer.IsOpen())
-    {
-      RavlError("DataServerControlServerBodyC::Listen failed to open socket (%s)",m_controlAddress.data());
-      return false;
+
+    while (!m_terminated) {
+      m_socketServer = SocketC(m_controlAddress, true);
+      if (m_socketServer.IsOpen())
+        break;
+      RavlWarning("DataServerControlServerBodyC::Listen failed to open socket (%s), will retry in 10 seconds.",m_controlAddress.data());
+      RavlN::Sleep(10);
     }
 
     //TODO(WM) Add a kill signal to this loop?

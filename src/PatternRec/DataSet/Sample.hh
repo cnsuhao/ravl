@@ -178,7 +178,7 @@ namespace RavlN {
   }; // end of class SampleC 
   
   template <class DataT>
-  ostream &operator<<(ostream &s,const SampleC<DataT> &dat ) {
+  std::ostream &operator<<(std::ostream &s,const SampleC<DataT> &dat ) {
     if(dat.IsValid()) {
       s  << dat.Size() << "\n";
       for(DArray1dIterC<DataT> it(dat.DArray());it;it++)
@@ -191,7 +191,7 @@ namespace RavlN {
   //: Output to stream.
   
   template <class DataT>
-  istream &operator>>(istream &s,SampleC<DataT> &dat ) {
+  std::istream &operator>>(std::istream &s,SampleC<DataT> &dat ) {
     SizeT size;
     s >> size;
     dat = SampleC<DataT>(size);

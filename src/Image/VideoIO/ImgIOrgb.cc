@@ -52,7 +52,7 @@ namespace RavlImageN {
     rect.ColRange() = IndexRangeC(0,size.Col()-1);
     
     padSize = frameSize % blockSize;
-    cerr << "Padding :"<<padSize<<"\n";
+    std::cerr << "Padding :"<<padSize<<"\n";
     return true;
   }
   
@@ -71,7 +71,7 @@ namespace RavlImageN {
     
     int len = type.length();
     if(len > 128) {
-      cerr << "DPImageRGBBaseBodyC::WriteHdr(), Warning, Clipping class name. \n";
+      std::cerr << "DPImageRGBBaseBodyC::WriteHdr(), Warning, Clipping class name. \n";
       len = 128;
     }
     if(write(fd,&len,sizeof(int)) != sizeof(int))
@@ -79,7 +79,7 @@ namespace RavlImageN {
     if(write(fd,type.chars(),len) != len)
       return false;
     if((UIntT) lseek(fd,blockSize,SEEK_SET) != (UIntT) blockSize) {
-      cerr << "DPImageRGBBaseBodyC::WriteHdr(), Seek failed. \n";
+      std::cerr << "DPImageRGBBaseBodyC::WriteHdr(), Seek failed. \n";
       return false;
     }
     return true;
@@ -106,7 +106,7 @@ namespace RavlImageN {
     ((char *)typen.chars())[len] = 0;
     
     if((UIntT) lseek(fd,blockSize,SEEK_SET) != (unsigned int) blockSize) {
-      cerr << "DPImageRGBBaseBodyC::ReadHdr(), Seek failed. \n";
+      std::cerr << "DPImageRGBBaseBodyC::ReadHdr(), Seek failed. \n";
       return false;
     }
     return true;
@@ -123,7 +123,7 @@ namespace RavlImageN {
       strm(nStrm)
   {
     if(!strm)
-      cerr << "DPIImageRGBBodyC::DPIImageRGBBodyC(IStreamC), Passed bad stream. \n";
+      std::cerr << "DPIImageRGBBodyC::DPIImageRGBBodyC(IStreamC), Passed bad stream. \n";
     else {
       if(!nStrm.Name().IsEmpty()) {
 	FilenameC tmp(nStrm.Name());
@@ -235,9 +235,9 @@ namespace RavlImageN {
     : DPImageRGBBaseBodyC(size),
       strm(nStrm)
   {
-    cerr << "DPOImageRGBBodyC::DPOImageRGBBodyC(), WARNING: Not fully implemented. \n";
+    std::cerr << "DPOImageRGBBodyC::DPOImageRGBBodyC(), WARNING: Not fully implemented. \n";
     if(!strm)
-      cerr << "DPOImageRGBBodyC::DPOImageRGBBodyC(OStreamC), Passed bad stream. \n";
+      std::cerr << "DPOImageRGBBodyC::DPOImageRGBBodyC(OStreamC), Passed bad stream. \n";
   }
   
   //: Constructor from filename
@@ -304,7 +304,7 @@ namespace RavlImageN {
       WriteHdr(TypeName(typeid(ImageC<ByteRGBValueC>)));
     }
     if(Img.Stride() != ((IntT) rect.Cols())) { // Can't deal with sub-rectangles at the moment
-      cerr << "DPOImageRGBBodyC::Put(), Image size mismatch. \n";
+      std::cerr << "DPOImageRGBBodyC::Put(), Image size mismatch. \n";
       return false;
     }
     

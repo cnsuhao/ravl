@@ -42,7 +42,7 @@ namespace RavlLogicN {
       binds = iter.Binds();
       mark = binds.Mark();
       if(Unify(filter,iter.Data(),binds)) {
-	ONDEBUG(cerr << "Unify of " << filter << " and " << iter.Data() << "  Binds:" << binds << " =true\n");
+	ONDEBUG(std::cerr << "Unify of " << filter << " and " << iter.Data() << "  Binds:" << binds << " =true\n");
 	return true;
       }
     } while(iter.Next()) ;
@@ -54,7 +54,7 @@ namespace RavlLogicN {
   // returns true if next element is valid.
   
   bool LiteralFilterIterBodyC::Next() {
-    ONDEBUG(cerr << "LiteralFilterIterBodyC::Next(), Called \n");
+    ONDEBUG(std::cerr << "LiteralFilterIterBodyC::Next(), Called \n");
     if(binds.IsValid())
       binds.Undo(mark);
     if(!iter.Next()) {
@@ -68,7 +68,7 @@ namespace RavlLogicN {
   // returns true if next element is valid.
   
   bool LiteralFilterIterBodyC::First() {
-    ONDEBUG(cerr << "LiteralFilterIterBodyC::First(), Called \n");
+    ONDEBUG(std::cerr << "LiteralFilterIterBodyC::First(), Called \n");
     if(binds.IsValid())
       binds.Undo(mark);
     if(!iter.First()) {

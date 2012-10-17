@@ -13,4 +13,5 @@ int main() {
   ints.Fill(1);
   ints += ints;
   ints = ints + ints;
+  return 0;
 }

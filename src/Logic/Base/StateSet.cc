@@ -44,7 +44,7 @@ namespace RavlLogicN {
   
   //: Construct from a binary stream.
   
-  StateSetBodyC::StateSetBodyC(istream &strm) 
+  StateSetBodyC::StateSetBodyC(std::istream &strm) 
     : StateBodyC(strm)
   { RavlAssertMsg(0,"Not implemented"); }
   
@@ -60,7 +60,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool StateSetBodyC::Save(ostream &out) const 
+  bool StateSetBodyC::Save(std::ostream &out) const 
   { return StateBodyC::Save(out); }
   
   

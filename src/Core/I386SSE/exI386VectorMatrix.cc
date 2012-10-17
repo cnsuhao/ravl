@@ -132,5 +132,5 @@ int main (int nargs,char **argv) {
     
     std::cout << " " << vl << " SSE:" << (finish - start).Double() << " Original:" << (finishr - startr).Double() << "\n";
   }
-  
+  return 0;
 }

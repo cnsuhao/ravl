@@ -24,8 +24,9 @@ int main()
   Array1dC<RealT> data(size);
   for(Array1dIterC<RealT> it(data);it;it++)
     it.Data() = Random1();
-  cerr << "Doing FFT:\n";
+  std::cerr << "Doing FFT:\n";
   Array1dC<ComplexC> res = fft.Apply(data);
-  cerr << "Result:";
-  cerr << res << "\n";
+  std::cerr << "Result:";
+  std::cerr << res << "\n";
+  return 0;
 }

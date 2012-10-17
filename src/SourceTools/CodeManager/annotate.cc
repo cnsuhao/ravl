@@ -46,7 +46,7 @@ bool forceDefaults = false;
 
 static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
   if(verb)
-    cerr << "Checking '" << dir << "' \n";
+    std::cerr << "Checking '" << dir << "' \n";
   StringListC source = defs.AllSources();
   StringC lib = defs["PLIB"].TopAndTail();
   StringC dirLicense = upcase(defs["LICENSE"]).TopAndTail();
@@ -56,7 +56,7 @@ static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
   // Sort out info for license header.
   StringC name = defs["PACKAGENAME"].TopAndTail();	
   StringC desc = defs["DESCRIPTION"].TopAndTail();
-  ONDEBUG(cerr << "PackageName=" << name << " Description=" << desc << "\n");
+  ONDEBUG(std::cerr << "PackageName=" << name << " Description=" << desc << "\n");
   if(name.IsEmpty()) {
     name = defaultName;
     desc = defaultDesc;
@@ -71,16 +71,16 @@ static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
     if(ext == "xpm") 
       continue; // Ignore xpm's.
     if(!fn.Exists()) {
-      cerr << "ERROR: Source file '" << fn << "' does not exist. \n";
+      std::cerr << "ERROR: Source file '" << fn << "' does not exist. \n";
       return false;
     }
     if(!fn.IsWritable()) {
-      cerr << "ERROR: Source file '" << fn << "' is not writable. \n";
+      std::cerr << "ERROR: Source file '" << fn << "' is not writable. \n";
       return false;
     }
     SourceFileC theFile;
     if(!theFile.Load(fn)) {
-      cerr << "Failed to load file '" << fn << "'\n";
+      std::cerr << "Failed to load file '" << fn << "'\n";
       continue;
     }
     StringC license = theFile.GetDocValue("license");
@@ -93,13 +93,13 @@ static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
       continue;
     }
     if(verb)
-      cerr << "Checking file :" << fn << "\n";
+      std::cerr << "Checking file :" << fn << "\n";
     if(license != "own") {// Does file have its own license ?
       // We should check which license to acutaly use.
       theFile.CheckHeader(hdr,StringC(),name,desc,org,replaceExistsingHeaders);
     }
     for(HashIterC<StringC,StringC> it(defaultVars);it;it++) {
-      ONDEBUG(cerr << "Checking var '" << it.Key() <<  "' \n");
+      ONDEBUG(std::cerr << "Checking var '" << it.Key() <<  "' \n");
       theFile.CheckDocVar(it.Key(),it.Data());
     }
     if(!lib.IsEmpty()) {
@@ -121,7 +121,7 @@ static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
       theFile.CheckDocVar("file",StringC('"') + fn + StringC('"'),true); // Force the file location to be correct.
 
     if(theFile.IsModified()) {
-      cerr << "Updated file :" << fn << "\n";
+      std::cerr << "Updated file :" << fn << "\n";
       if(!dryRun)
 	theFile.Save();
     }
@@ -133,7 +133,7 @@ static bool CheckDirectory(StringC &dir,DefsMkFileC &defs) {
 bool SetupHeaders(const StringC &cfgFile) {
   ConfigFileC conf;
   if(!conf.Load(cfgFile)) {
-    cerr << "ERROR: Failed to load config file '" << cfgFile << "' \n";
+    std::cerr << "ERROR: Failed to load config file '" << cfgFile << "' \n";
     return false;
   }
   // Setup default license.
@@ -167,7 +167,7 @@ bool SetupHeaders(const StringC &cfgFile) {
   ConfigFileC dv = conf.Section("DefaultVars");
   if(dv.IsValid()) {
     for(ConfigFileIterVarC it(dv.IterVars());it;it++) {
-      ONDEBUG(cerr << "Default value for '" << it.Key() << "' is '" << it.Data() << "'\n"); 
+      ONDEBUG(std::cerr << "Default value for '" << it.Key() << "' is '" << it.Data() << "'\n"); 
       defaultVars[it.Key()] = it.Data();
     }
   }

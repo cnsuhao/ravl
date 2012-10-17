@@ -28,29 +28,29 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    DesignWeakLinearBodyC(istream &strm);
+    DesignWeakLinearBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignWeakLinearBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
 
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out);
-    //: Create a clasifier.
+    //: Create a classifier.
     
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SampleC<RealT> &weight);
-    //: Create a clasifier with weights for the samples.
+    //: Create a classifier with weights for the samples.
     
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SArray1dC<IndexC> &featureSet);
-    //: Create a clasifier
+    //: Create a classifier
     
     virtual ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out,const SArray1dC<IndexC> &featureSet,const SampleC<RealT> &weight);
-    //: Create a clasifier
+    //: Create a classifier
     
   private:
     void ThresholdAndParity(RealT &threshold1,RealT &parity1,RealT &threshold2,RealT &parity2);
@@ -73,7 +73,7 @@ namespace RavlN {
     {}
     //: Create a new designer.
     
-    DesignWeakLinearC(istream &strm);
+    DesignWeakLinearC(std::istream &strm);
     //: Load from stream.
     
     DesignWeakLinearC(BinIStreamC &strm);

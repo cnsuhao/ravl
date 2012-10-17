@@ -45,8 +45,8 @@ namespace RavlImageN {
 			       "ImageC<ByteVYUValueC> RavlImageN::Convert(const ImageC<ByteYUVValueC> &)");
   
   
-  FileFormatStreamC<ImageC<ByteVYUValueC> > FileFormatStream_ImageC_ByteVYUValueC;
-  FileFormatBinStreamC<ImageC<ByteVYUValueC> > FileFormatBinStream_ImageC_ByteVYUValueC;
+  static FileFormatStreamC<ImageC<ByteVYUValueC> > FileFormatStream_ImageC_ByteVYUValueC;
+  static FileFormatBinStreamC<ImageC<ByteVYUValueC> > FileFormatBinStream_ImageC_ByteVYUValueC;
   
 }
 

@@ -75,7 +75,7 @@ namespace RavlN {
     { return true; }
     //: Test if node is a leaf in the tree.
     
-    virtual ostream &Dump(ostream &out,int level = 0) const {
+    virtual std::ostream &Dump(std::ostream &out,int level = 0) const {
       out << this->data;
       return out;
     }
@@ -131,7 +131,7 @@ namespace RavlN {
     { return Body().IsLeaf(); }
     //: Test if node is a leaf in the tree.
     
-    ostream &Dump(ostream &out,int level = 0) const 
+    std::ostream &Dump(std::ostream &out,int level = 0) const 
     { return Body().Dump(out,level); } 
     //: Dump in a easly readable format.
     
@@ -224,7 +224,7 @@ namespace RavlN {
     { return children; }
     //: Access table of children.
 
-    virtual ostream &Dump(ostream &out,int level = 0) const {
+    virtual std::ostream &Dump(std::ostream &out,int level = 0) const {
       out << this->data << "\n";
       for(HashIterC<KeyT,HashTreeNodeC<KeyT,DataT> > it(children);it;it++){
 	out << it.Key() << " "; 
@@ -363,7 +363,7 @@ namespace RavlN {
 
   
   template<class KeyT,class DataT>
-  ostream &operator<<(ostream &s,const HashTreeC<KeyT,DataT> &tree) {
+  std::ostream &operator<<(std::ostream &s,const HashTreeC<KeyT,DataT> &tree) {
     if(!tree.IsValid()) {
       DataT dummy;
       HashC<KeyT,HashTreeNodeC<KeyT,DataT> > tab;
@@ -374,13 +374,13 @@ namespace RavlN {
   }
   
   template<class KeyT,class DataT>
-  istream &operator>>(istream &s,HashTreeC<KeyT,DataT> &tree) {
+  std::istream &operator>>(std::istream &s,HashTreeC<KeyT,DataT> &tree) {
     s >> tree.Data() >> tree.Children();
     return s;
   }
   
   template<class KeyT,class DataT>
-  ostream &operator<<(ostream &s,const HashTreeNodeC<KeyT,DataT> &node) {
+  std::ostream &operator<<(std::ostream &s,const HashTreeNodeC<KeyT,DataT> &node) {
     HashTreeC<KeyT,DataT> tree(const_cast<HashTreeNodeC<KeyT,DataT> & >(node));
     // Always save nodes as full hash tree's
     if(tree.IsValid())
@@ -397,7 +397,7 @@ namespace RavlN {
   }
   
   template<class KeyT,class DataT>
-  istream &operator>>(istream &s,HashTreeNodeC<KeyT,DataT> &tree) {
+  std::istream &operator>>(std::istream &s,HashTreeNodeC<KeyT,DataT> &tree) {
     HashTreeC<KeyT,DataT> ht;
     // Always read in as a full HashTree.
     s >> ht;

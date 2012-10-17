@@ -36,7 +36,7 @@ namespace RavlN {
     AttributeCtrlBodyC();
     //: Default constructor.
     
-    AttributeCtrlBodyC(istream &in);
+    AttributeCtrlBodyC(std::istream &in);
     //: Stream constructor.
     
     AttributeCtrlBodyC(const AttributeCtrlBodyC &bod);
@@ -175,7 +175,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    AttributeCtrlC(istream &strm)
+    AttributeCtrlC(std::istream &strm)
       : DPEntityC(strm)
     {}
     //: Stream constructor.

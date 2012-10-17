@@ -49,14 +49,14 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayObjBodyC::Query(const Vector2dC &,StringC &) {
-    ONDEBUG(cerr << "DPDisplayObjBodyC::Query(), Called. \n");
+    ONDEBUG(std::cerr << "DPDisplayObjBodyC::Query(), Called. \n");
     return false;
   }
 
   //: Save to a file.
   
   bool DPDisplayObjBodyC::Save(const StringC &str) const {
-    ONDEBUG(cerr << "DPDisplayObjBodyC::Save(), Called. \n");
+    ONDEBUG(std::cerr << "DPDisplayObjBodyC::Save(), Called. \n");
     return false;
   }
 
@@ -76,7 +76,7 @@ namespace RavlGUIN {
   //: Write to stream.
   // NOT IMPLEMENTED.
   
-  ostream &operator<<(ostream &strm,const DPDisplayObjC  &obj) {
+  std::ostream &operator<<(std::ostream &strm,const DPDisplayObjC  &obj) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
@@ -84,7 +84,7 @@ namespace RavlGUIN {
   //: Read from stream.
   // NOT IMPLEMENTED.
 
-  istream &operator>>(istream &strm,DPDisplayObjC  &obj) {
+  std::istream &operator>>(std::istream &strm,DPDisplayObjC  &obj) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }

@@ -38,7 +38,7 @@ namespace RavlN {
     //: Has event occured ?
     // Returns number of events since last call.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Write to output.
   };
   
@@ -55,7 +55,7 @@ namespace RavlN {
     //: Default Constructor
     // Creates an invalid handle
     
-    DPEventC(istream &frm)
+    DPEventC(std::istream &frm)
       : DPEntityC(frm)
     {}
     //: Stream constructor.
@@ -90,12 +90,12 @@ namespace RavlN {
     //: Dummy function.
   };
   
-  inline ostream &operator<<(ostream &strm,const DPEventC &obj) { 
+  inline std::ostream &operator<<(std::ostream &strm,const DPEventC &obj) { 
     obj.Save(strm);
     return strm; 
   }
   
-  inline istream &operator>>(istream &strm,DPEventC &obj) { 
+  inline std::istream &operator>>(std::istream &strm,DPEventC &obj) { 
     obj = DPEventC(strm);
     return strm; 
   }

@@ -30,7 +30,7 @@ namespace RavlImageN {
     StringC fontName = Resource("RAVL/Fonts","default8x16.psf");
     FontC defaultFont = LoadPSF1(fontName);
     if(!defaultFont.IsValid())
-      cerr << "WARNING: Can't load default font '" << fontName << "'\n";
+      std::cerr << "WARNING: Can't load default font '" << fontName << "'\n";
     return defaultFont;
   }
   
@@ -76,7 +76,7 @@ namespace RavlImageN {
     
     IStreamC inf(fontFile);
     if(!inf) {
-      cerr << "LoadPSF1(), Failed to open font file '" << fontFile << "'\n";
+      std::cerr << "LoadPSF1(), Failed to open font file '" << fontFile << "'\n";
       return FontC();
     }
     
@@ -117,7 +117,7 @@ namespace RavlImageN {
     ONDEBUG(cerr << "LoadPSF2() Loading font " << fontFile << "\n");
     IStreamC inf(fontFile);
     if(!inf) {
-      cerr << "LoadPSF2(), Failed to open font file '" << fontFile << "'\n";
+      std::cerr << "LoadPSF2(), Failed to open font file '" << fontFile << "'\n";
       return FontC();
     }
     psf2_header hdr;    

@@ -17,9 +17,9 @@ namespace RavlN {
   
   // Some basic file types.
   
-  static FileFormatBinStreamC<RealT>   FileFormatBinStream_RealT;
-  static FileFormatBinStreamC<IntT>    FileFormatBinStream_IntT;
-  static FileFormatBinStreamC<UIntT>   FileFormatBinStream_UIntT;
-  static FileFormatBinStreamC<StringC> FileFormatBinStream_StringC;
-  static FileFormatBinStreamC<ByteT>   FileFormatBinStream_ByteT;
+  static FileFormatBinStreamC<RealT>   FileFormatBinStream_RealT("RealT");
+  static FileFormatBinStreamC<IntT>    FileFormatBinStream_IntT("IntT");
+  static FileFormatBinStreamC<UIntT>   FileFormatBinStream_UIntT("UIntT");
+  static FileFormatBinStreamC<StringC> FileFormatBinStream_StringC("RavlN::StringC");
+  static FileFormatBinStreamC<ByteT>   FileFormatBinStream_ByteT("ByteT");
 }

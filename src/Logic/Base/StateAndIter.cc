@@ -46,7 +46,7 @@ namespace RavlLogicN {
   }
 
   bool StateAndIterBodyC::NextValid() {
-    ONDEBUG(cerr << "StateAndIterBodyC::NextValid(), Called. MaxTerms:" << lAnd.Size() << "\n");
+    ONDEBUG(std::cerr << "StateAndIterBodyC::NextValid(), Called. MaxTerms:" << lAnd.Size() << "\n");
     
     RavlAssert(lAnd.Size() != 0); // What to do with zero terms ?
     int maxTerm = lAnd.Size() - 1;
@@ -55,9 +55,9 @@ namespace RavlLogicN {
       while(stack.Top().termNo < maxTerm) {
 	nextTerm = stack.Top().termNo + 1;
 	BindMarkT mark = binds.Mark();
-	ONDEBUG(cerr << "StateAndIterBodyC::NextValid(), Iterating term " << nextTerm <<" " << lAnd.Terms()[nextTerm] << " \n");
+	ONDEBUG(std::cerr << "StateAndIterBodyC::NextValid(), Iterating term " << nextTerm <<" " << lAnd.Terms()[nextTerm] << " \n");
 	LiteralIterC lit = state.Filter(lAnd[nextTerm],binds);
-	ONDEBUG(cerr << "Binds= " << binds << "\n");
+	ONDEBUG(std::cerr << "Binds= " << binds << "\n");
 	if(!lit.IsElm()) {
 	  stack.DelTop(); // Back track.
 	  break;
@@ -71,14 +71,14 @@ namespace RavlLogicN {
       for(;!stack.IsEmpty();) {
 	if(stack.Top().iter.IsElm()) {
 	  if(stack.Top().iter.Next()) {
-	    ONDEBUG(cerr << "StateAndIterBodyC::NextValid(), Back tracking. \n");
+	    ONDEBUG(std::cerr << "StateAndIterBodyC::NextValid(), Back tracking. \n");
 	    break;
 	  }
 	}
 	stack.DelTop();
       }
     } 
-    ONDEBUG(cerr << "StateAndIterBodyC::NextValid(), No more solutions. \n");
+    ONDEBUG(std::cerr << "StateAndIterBodyC::NextValid(), No more solutions. \n");
     binds.Undo(initalBm); // Make sure all binds are cleared.
     return false;
   }
@@ -87,7 +87,7 @@ namespace RavlLogicN {
   // returns true if next element is valid.
   
   bool StateAndIterBodyC::Next() {
-    ONDEBUG(cerr << "StateAndIterBodyC::Next(), Called. \n");
+    ONDEBUG(std::cerr << "StateAndIterBodyC::Next(), Called. \n");
     RavlAssert(!stack.IsEmpty());
     RavlAssert(stack.Top().iter.IsElm());
     if(stack.Top().iter.Next())
@@ -99,12 +99,12 @@ namespace RavlLogicN {
   // returns true if next element is valid.
   
   bool StateAndIterBodyC::First() {
-    ONDEBUG(cerr << "StateAndIterBodyC::First(), Called. \n");
+    ONDEBUG(std::cerr << "StateAndIterBodyC::First(), Called. \n");
     stack.Empty();
     binds.Undo(initalBm);
-    ONDEBUG(cerr << "StateAndIterBodyC::First(), Iterating term " << 0 <<" " << lAnd.Terms()[0] << " \n");
+    ONDEBUG(std::cerr << "StateAndIterBodyC::First(), Iterating term " << 0 <<" " << lAnd.Terms()[0] << " \n");
     stack.Push(StateAndBackTrackPointC(initalBm,0,state.Filter(lAnd[0],binds)));
-    ONDEBUG(cerr << "Binds= " << binds << "\n");
+    ONDEBUG(std::cerr << "Binds= " << binds << "\n");
     return NextValid();
   }
   

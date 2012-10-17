@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/Semaphore.cc"
 
@@ -56,14 +55,14 @@ namespace RavlN
     return true;
   }
   
-  ostream &operator<<(ostream &out,const SemaphoreC &sema) {
+  std::ostream &operator<<(std::ostream &out,const SemaphoreC &sema) {
     out << sema.Count();
     return out;
   }
   //: Write out to stream.
   // Write the semaphore count to the stream.
   
-  istream &operator>>(istream &in,SemaphoreC &sema) {
+  std::istream &operator>>(std::istream &in,SemaphoreC &sema) {
     int i;
     in >> i;
     return in;

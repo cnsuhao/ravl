@@ -18,7 +18,7 @@ namespace RavlN {
       state(initState)
   {}
   
-  OptimiseDirectionSetBodyC::OptimiseDirectionSetBodyC (istream &in)
+  OptimiseDirectionSetBodyC::OptimiseDirectionSetBodyC (std::istream &in)
     : OptimiseBodyC("OptimiseDirectionSetBodyC",in)
   {}
   
@@ -39,6 +39,7 @@ namespace RavlN {
     
     RavlAssert(0);
     //return domain.ConvertX2P (currentX);     // Return final estimate
+    return VectorC();
   }
   
   
@@ -62,7 +63,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseDirectionSetBodyC::Save (ostream &out) const {
+  bool OptimiseDirectionSetBodyC::Save (std::ostream &out) const {
     OptimiseBodyC::Save (out);
     return true;
   }

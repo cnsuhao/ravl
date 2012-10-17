@@ -19,20 +19,20 @@
    // Assume we've failed!
    bool passed = false;
 
-   cerr<<"## Start command test: "<<test_name<<endl;
+   std::cerr<<"## Start command test: "<<test_name<<endl;
 
-   cerr<<"-- Start: Running command: "<<command<<endl;
+   std::cerr<<"-- Start: Running command: "<<command<<endl;
    const int ret_val = system(command);
-   cerr<<"-- End: Running command"<<endl;
+   std::cerr<<"-- End: Running command"<<endl;
 
    // Did we pass?
    if(ret_val == expected_ret_val) {
      passed = true;
    }
 
-   cerr<<"Test "<<(passed?"passed":"failed")<<" with return value: "<<ret_val<<endl;
+   std::cerr<<"Test "<<(passed?"passed":"failed")<<" with return value: "<<ret_val<<endl;
 
-   cerr<<"## End command test: "<<test_name<<endl;
+   std::cerr<<"## End command test: "<<test_name<<endl;
 
    return passed;
  }

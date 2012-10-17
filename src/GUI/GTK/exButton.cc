@@ -22,19 +22,19 @@ using namespace RavlGUIN;
 
 bool buttonA(IntT &v)
 {
-  cerr << "ButtonA:" << v << "\n";
+  std::cerr << "ButtonA:" << v << "\n";
   return true;
 }
 
 bool buttonB(IntT &v)
 {
-  cerr << "ButtonB:" << v << "\n";
+  std::cerr << "ButtonB:" << v << "\n";
   return true;
 }
 
 bool buttonC(IntT &v)
 {
-  cerr << "ButtonC:" << v << "\n";
+  std::cerr << "ButtonC:" << v << "\n";
   return true;
 }
 
@@ -66,5 +66,6 @@ int main(int nargs,char *args[])
   
   // Start the GUI
   Manager.Start();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

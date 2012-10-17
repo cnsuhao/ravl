@@ -20,8 +20,9 @@
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
-#define DODEBUG 1
+#define DODEBUG 0
 #if DODEBUG
 #define ONDEBUG(x) x
 #else
@@ -36,10 +37,19 @@ namespace RavlN {
     : order(norder),
       orthogonal(northogonal)
   {}
+
+  //: Create from XML factory
+  DesignFuncLSQBodyC::DesignFuncLSQBodyC(const XMLFactoryContextC & factory)
+     : DesignFunctionSupervisedBodyC(factory),
+       order(factory.AttributeInt("order", 1)),
+       orthogonal(factory.AttributeBool("orthogonal", true))
+   {
+   }
+
   
   //: Load from stream.
   
-  DesignFuncLSQBodyC::DesignFuncLSQBodyC(istream &strm)
+  DesignFuncLSQBodyC::DesignFuncLSQBodyC(std::istream &strm)
     : DesignFunctionSupervisedBodyC(strm)
   {
     int ver;
@@ -52,7 +62,8 @@ namespace RavlN {
   //: Load from binary stream.
   
   DesignFuncLSQBodyC::DesignFuncLSQBodyC(BinIStreamC &strm)
-    : DesignFunctionSupervisedBodyC(strm)
+    : DesignFunctionSupervisedBodyC(strm),
+      order(0)
   {
     char ver;
     strm >> ver;
@@ -65,7 +76,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignFuncLSQBodyC::Save (ostream &out) const {
+  bool DesignFuncLSQBodyC::Save (std::ostream &out) const {
     if(!DesignFunctionSupervisedBodyC::Save(out))
       return false;
     char ver = 1;
@@ -96,6 +107,7 @@ namespace RavlN {
       case 2: // Quadratic
 	if(!orthogonal)
 	  return FuncQuadraticC(inSize,outSize);
+	/* no break */
       default:
 	return FuncOrthPolynomialC(inSize,outSize,order);
       };
@@ -105,7 +117,7 @@ namespace RavlN {
   //: Find correlated parameters.
   
   SArray1dC<IntT> DesignFuncLSQBodyC::FindCorrelatedParameters(const MatrixRUTC &mat,RealT thresh) {
-    ONDEBUG(cerr << "DesignFuncLSQBodyC::FindCorelatedParameters(), Looking for corelations. \n");
+    ONDEBUG(std::cerr << "DesignFuncLSQBodyC::FindCorelatedParameters(), Looking for corelations. \n");
     SArray1dC<IntT> ret(mat.Rows());
     ret.Fill(-1);
     for(IntT i = 0;i < (int) mat.Rows();i++) {
@@ -117,7 +129,7 @@ namespace RavlN {
 	RealT jj = mat[j][j];
 	RealT aver = (ii + jj + 2 * ij)/4;
 	RealT det = ii * jj - Sqr(ij);
-	ONDEBUG(cerr << " " << i << " " << j << " Det=" << det << "\n");
+	ONDEBUG(std::cerr << " " << i << " " << j << " Det=" << det << "\n");
 	if(IsSmall(det,aver,thresh)) {
 	  ret[j] = i;
 	  break; // Parameters j and i are correlated.
@@ -130,12 +142,12 @@ namespace RavlN {
   //: Create function from the given data.
   
   FunctionC DesignFuncLSQBodyC::Apply(const SampleC<VectorC> &in,const SampleC<VectorC> &out) {
-    ONDEBUG(cerr << "DesignFuncLSQBodyC::Apply(), Computing coefficients.. \n");
+    ONDEBUG(std::cerr << "DesignFuncLSQBodyC::Apply(), Computing coefficients.. \n");
     SampleVectorC vin(in);
     SampleVectorC vout(out);
     
     if(in.IsEmpty() || out.IsEmpty()) {
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Asked to design a function without any data. ";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Asked to design a function without any data. ";
       return FuncLinearCoeffC();
     }
     UIntT inSize = vin.VectorSize();
@@ -143,7 +155,7 @@ namespace RavlN {
     
     FuncLinearCoeffC func = CreateFunc(inSize,outSize);
     if(!func.IsValid()) {
-      cerr << "DesignFuncLSQBodyC::Apply(), ERROR: Failed to create new function. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), ERROR: Failed to create new function. \n";
       return func;
     }
     
@@ -169,11 +181,11 @@ namespace RavlN {
     aaTu.MakeSymmetric();
     MatrixRSC aaT = aaTu.Copy();
 #endif
-    ONDEBUG(cerr << "DesignFuncLSQBodyC::Apply(), Solving equations.. \n");
+    ONDEBUG(std::cerr << "DesignFuncLSQBodyC::Apply(), Solving equations.. \n");
 #if 1
     if(!aaT.InverseIP()) {
       // Try and recover....
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      ONDEBUG(std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n");
       aaT = aaTu.PseudoInverse();
     }
     MatrixC A =  (aaT * aTb).T();
@@ -182,7 +194,7 @@ namespace RavlN {
     MatrixC A;
     if(!At.IsValid()) {
       // Try and recover....
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
       aaT = aaTu.PseudoInverse();
       A = (aaT * aTb).T();
     } else
@@ -199,7 +211,7 @@ namespace RavlN {
     SampleVectorC vout(out);
     
     if(in.IsEmpty() || out.IsEmpty()) {
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Asked to design a function without any data. ";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Asked to design a function without any data. ";
       return FuncLinearCoeffC();
     }
     
@@ -208,7 +220,7 @@ namespace RavlN {
     
     FuncLinearCoeffC func = CreateFunc(inSize,outSize);
     if(!func.IsValid()) {
-      cerr << "DesignFuncLSQBodyC::Apply(), ERROR: Failed to create new function. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), ERROR: Failed to create new function. \n";
       return func;
     }
     SampleVectorC coeffs(vin.Size());
@@ -231,7 +243,7 @@ namespace RavlN {
 #if 1
     if(!aaT.InverseIP()) {
       // Try and recover....
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
       aaT = aaTu.PseudoInverse();
     }
     // Ideally we'd use Solve here...
@@ -257,7 +269,7 @@ namespace RavlN {
 #if 1
     Tuple2C<VectorC,VectorC> tup;
     if(!in.Get(tup)) {
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Dataset empty. ";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Dataset empty. ";
       return FunctionC();
     }
     
@@ -267,7 +279,7 @@ namespace RavlN {
     
     FuncLinearCoeffC func = CreateFunc(inSize,outSize);
     if(!func.IsValid()) {
-      cerr << "DesignFuncLSQBodyC::Apply(), ERROR: Failed to create new function. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), ERROR: Failed to create new function. \n";
       return func;
     }
     
@@ -279,11 +291,11 @@ namespace RavlN {
     aaTu.MakeSymmetric();
     MatrixRSC aaT = aaTu.Copy();
     
-    ONDEBUG(cerr << "DesignFuncLSQBodyC::Apply(), Solving equations.. \n");
+    ONDEBUG(std::cerr << "DesignFuncLSQBodyC::Apply(), Solving equations.. \n");
 #if 1
     if(!aaT.InverseIP()) {
       // Try and recover....
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
       aaT = aaTu.PseudoInverse();
     }
     MatrixC A =  (aaT * aTb).T();
@@ -292,7 +304,7 @@ namespace RavlN {
     MatrixC A;
     if(!At.IsValid()) {
       // Try and recover....
-      cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
+      std::cerr << "DesignFuncLSQBodyC::Apply(), WARNING: Covariance of input has singular values. \n";
       aaT = aaTu.PseudoInverse();
       A = (aaT * aTb).T();
     } else
@@ -307,7 +319,12 @@ namespace RavlN {
 
 
   ////////////////////////////////////////////////////////////////////////
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignFuncLSQC, DesignFunctionSupervisedC> g_registerXMLFactoryDesignFuncLSQ("RavlN::DesignFuncLSQC");
   
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignFuncLSQBodyC,DesignFuncLSQC,DesignFunctionSupervisedC);
   
+  void linkDesignFuncLSQ()
+    {}
+
+
 }

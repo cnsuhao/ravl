@@ -25,5 +25,5 @@ int main(int argc,char **argv)
   DPIFileC<RealT>(infile) >> DoLog >> DPOFileC<IntT>(outfile);
   
   //DPIFileC<RealT>(infile) >> DPFunc2ProcC<RealT,RealT,DoLog>() >> DPOFileC<RealT>(outfile);
-  
+  return 0;
 }

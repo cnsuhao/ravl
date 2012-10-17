@@ -63,7 +63,7 @@ int main(int nargs,char *args[])
     if(!NetPortOpen(serverAddress)) {
       if(verb)
 	cout << "STATUS: Open network failed. \n" << flush;
-      cerr << "Failed to open NetPortManager." << serverAddress << " \n";
+      std::cerr << "Failed to open NetPortManager." << serverAddress << " \n";
       return __LINE__;
     }
   }
@@ -74,7 +74,7 @@ int main(int nargs,char *args[])
     if(!OpenISequence(vidIn,infile,formatIn,verb)) {
       if(verb)
 	cout << "STATUS: Open failed. \n" << flush;
-      cerr << "ERROR: Failed to open input '" << infile << "'\n";
+      std::cerr << "ERROR: Failed to open input '" << infile << "'\n";
       exit(1);
     }
     
@@ -97,7 +97,7 @@ int main(int nargs,char *args[])
     }
     
     if(!OpenOSequence(vidOut,outfile,formatOut,verb)) {
-      cerr << "ERROR: Failed to open output '" << infile << "'\n";
+      std::cerr << "ERROR: Failed to open output '" << infile << "'\n";
       exit(1);
     }
 
@@ -105,7 +105,7 @@ int main(int nargs,char *args[])
     DPSplitOC<ImageC<ByteRGBValueC> > splitOut(true);
     if(!displayOutName.IsEmpty()) {
       if(!OpenOSequence(dispOut,displayOutName,"",verb)) {
-        cerr << "ERROR: Failed to open display output '" << displayOutName << "'\n";
+        std::cerr << "ERROR: Failed to open display output '" << displayOutName << "'\n";
         exit(1);
       }
       RavlAssert(dispOut.IsValid());
@@ -123,7 +123,7 @@ int main(int nargs,char *args[])
     }
 
     if (verb)
-      cout << "STATUS: Stream ready.\n" << flush;
+      std::cout << "STATUS: Stream ready.\n" << flush;
     
     if(bufferSize == 0) {
       es += vidIn >>= vidOut;
@@ -139,7 +139,7 @@ int main(int nargs,char *args[])
     if(!OpenISequence(vidIn,infile,formatIn,verb)) {
       if(verb)
 	cout << "STATUS: Open failed. \n" << flush;
-      cerr << "ERROR: Failed to open input '" << infile << "'\n";
+      std::cerr << "ERROR: Failed to open input '" << infile << "'\n";
       exit(1);
     }
     
@@ -162,14 +162,14 @@ int main(int nargs,char *args[])
     }
     
     if(!OpenOSequence(vidOut,outfile,formatOut,verb)) {
-      cerr << "ERROR: Failed to open output '" << infile << "'\n";
+      std::cerr << "ERROR: Failed to open output '" << infile << "'\n";
       exit(1);
     }
     DPOSPortC<ImageC<ByteYUVValueC> > dispOut;
     DPSplitOC<ImageC<ByteYUVValueC> > splitOut(true);
     if(!displayOutName.IsEmpty()) {
       if(!OpenOSequence(dispOut,displayOutName,"",verb)) {
-        cerr << "ERROR: Failed to open display output '" << displayOutName << "'\n";
+        std::cerr << "ERROR: Failed to open display output '" << displayOutName << "'\n";
         exit(1);
       }
       RavlAssert(dispOut.IsValid());
@@ -187,7 +187,7 @@ int main(int nargs,char *args[])
     }
 
     if(verb)
-      cout << "STATUS: Stream ready.\n" << flush;
+      std::cout << "STATUS: Stream ready.\n" << flush;
     
     if(bufferSize == 0) {
       es += vidIn >>= vidOut;
@@ -198,7 +198,7 @@ int main(int nargs,char *args[])
   }
   es.Wait();
   if(verb)
-    cout << "STATUS: Done.\n" << flush;
+    std::cout << "STATUS: Done.\n" << flush;
   
   return 0;
 }

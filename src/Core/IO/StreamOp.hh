@@ -32,7 +32,7 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DPStreamOpBodyC(istream &in) 
+    DPStreamOpBodyC(std::istream &in) 
       : DPEntityBodyC(in)
     {}
     //: Stream constructor.
@@ -139,7 +139,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    DPIStreamOpBodyC(istream &in) 
+    DPIStreamOpBodyC(std::istream &in) 
       : DPEntityBodyC(in),
         DPIPortBodyC<OutT>(in),
         DPStreamOpBodyC(in)
@@ -187,9 +187,9 @@ namespace RavlN {
     }
     //: Input plugs.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPIPortBodyC<OutT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual AttributeCtrlC ParentCtrl() const 
     { return AttributeCtrlC(input); }
@@ -317,9 +317,9 @@ namespace RavlN {
     }
     //: Output plugs.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPOPortBodyC<InT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   protected:
     DPOPortC<OutT> output; // Where to put data to.

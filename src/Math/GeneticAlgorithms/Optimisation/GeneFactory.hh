@@ -126,11 +126,24 @@ namespace RavlN { namespace GeneticN {
     const GenePaletteC &GenePalette() const
     { return *m_palette; }
 
+    //! Set parameter in palette
+    template<typename DataT>
+    void SetParameter(const StringC &name,const DataT &value)
+    { m_palette->SetParameter(name,value);  }
+
+    //! Get parameter from palette
+    template<typename DataT>
+    bool GetParameter(const StringC &name,DataT &value) const
+    { return m_palette->GetParameter(name,value); }
+
     //! Get an integer.
     void Get(const std::string &name,bool &value,const GeneTypeC &geneType) const;
 
     //! Get an integer.
     void Get(const std::string &name,IntT &value,const GeneTypeC &geneType) const;
+
+    //! Get an integer.
+    void Get(const std::string &name,UIntT &value,const GeneTypeC &geneType) const;
 
     //! Get a real value.
     void Get(const std::string &name,float &value,const GeneTypeC &geneType) const;
@@ -147,7 +160,9 @@ namespace RavlN { namespace GeneticN {
       theGene->Generate(*this,handle);
       RavlAssert(handle.IsValid());
       if(!SystemTypeConverter().TypeConvert(handle,value)) {
-        RavlSysLogf(SYSLOG_ERR,"Failed to convert generated type from %s to %s ",RavlN::TypeName(handle.DataType()),RavlN::TypeName(typeid(ValueT)));
+        RavlError("Failed to convert generated type from %s to %s ",
+            RavlN::TypeName(handle.DataType()),
+            RavlN::TypeName(typeid(ValueT)));
         RavlAssert(0);
         throw RavlN::ExceptionOperationFailedC("Failed to instantiate genome. ");
       }
@@ -185,9 +200,29 @@ namespace RavlN { namespace GeneticN {
     bool InsertOverride(const GeneC &gene,const GeneC &data)
     { return m_scaffold->InsertOverride(gene,data); }
 
+    //! Get attribute
+    template<class DataT>
+    bool GetTypeAttribute(const StringC &attrName,DataT &val) const {
+      const RCAbstractC *attrVal = GetTypeAttribute(attrName);
+      if(attrVal == 0) return false;
+      FromRCAbstract(*attrVal,val);
+      return true;
+    }
+
+    //! Get attribute, throw exception on failure.
+    template<class DataT>
+    void AlwaysGetTypeAttribute(const StringC &attrName,DataT &val) const {
+      const RCAbstractC *attrVal = GetTypeAttribute(attrName);
+      if(attrVal == 0) throw ExceptionOperationFailedC("No value");
+      FromRCAbstract(*attrVal,val);
+    }
+
     //! Check if gene is in stack already.
     bool CheckStackFor(const GeneC &gene) const;
   protected:
+    //! Get type attribute
+    const RavlN::RCAbstractC *GetTypeAttribute(const RavlN::StringC &str) const;
+
     mutable RavlN::BStackC<GeneC::RefT> m_path;
     mutable GenomeScaffoldC::RefT m_scaffold;
     mutable GenePaletteC::RefT m_palette;

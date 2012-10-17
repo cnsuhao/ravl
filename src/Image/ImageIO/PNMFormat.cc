@@ -43,8 +43,8 @@ namespace RavlImageN {
   
   //: Is stream in std stream format ?
   
-  const type_info &
-  FileFormatPPMBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatPPMBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const {
     if(!in.good())
       return typeid(void);
     char buff[3];
@@ -65,8 +65,8 @@ namespace RavlImageN {
     return typeid(ImageC<ByteRGBValueC>);
   }
 
-  const type_info &
-  FileFormatPPMBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatPPMBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     //StringC filename(nfilename);
     //  if(obj_type != typeid(ImageC<ByteRGBValueC>))
     //    return false; // Can only deal with rgb at the moment.
@@ -74,8 +74,8 @@ namespace RavlImageN {
     return ProbeLoad(in,obj_type);
   }
   
-  const type_info &
-  FileFormatPPMBodyC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat ) const {
+  const std::type_info &
+  FileFormatPPMBodyC::ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat ) const {
     if(forceFormat)
       return typeid(ImageC<ByteRGBValueC>);
     if(Extension(filename) != StringC("ppm") && filename != "-")
@@ -86,7 +86,7 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatPPMBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatPPMBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return DPIImagePNMByteRGBC(in);
     return DPIPortBaseC();
@@ -95,7 +95,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatPPMBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
+  DPOPortBaseC FileFormatPPMBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
     if(obj_type == typeid(ImageC<ByteRGBValueC>))
       return  DPOImagePNMByteRGBC(out);
     return DPOPortBaseC();
@@ -103,7 +103,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatPPMBodyC::DefaultType() const 
+  const std::type_info &FileFormatPPMBodyC::DefaultType() const 
   { return typeid(ImageC<ByteRGBValueC>); }
   
   
@@ -117,8 +117,8 @@ namespace RavlImageN {
   
   //: Is stream in std stream format ?
   
-  const type_info &
-  FileFormatPGMBodyC::ProbeLoad(IStreamC &in,const type_info & ONDEBUG(obj_type)) const {
+  const std::type_info &
+  FileFormatPGMBodyC::ProbeLoad(IStreamC &in,const std::type_info & ONDEBUG(obj_type)) const {
     if(!in.good())
       return typeid(void);
     char buff[3];
@@ -140,16 +140,16 @@ namespace RavlImageN {
     return typeid(ImageC<ByteT>);
   }
   
-  const type_info &
-  FileFormatPGMBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatPGMBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     //StringC filename(nfilename);
     ONDEBUG(cerr << "FileFormatPGMBodyC::ProbeLoad()  FN:" << nfilename << "  OT:" << TypeName(obj_type) << endl);
     // For Load, use stream probe its more reliable than extentions.
     return ProbeLoad(in,obj_type);
   }
 
-  const type_info &
-  FileFormatPGMBodyC::ProbeSave(const StringC &nfilename,const type_info & ONDEBUG(obj_type),bool forceFormat ) const {
+  const std::type_info &
+  FileFormatPGMBodyC::ProbeSave(const StringC &nfilename,const std::type_info & ONDEBUG(obj_type),bool forceFormat ) const {
     StringC filename(nfilename);
     ONDEBUG(cerr << "FileFormatPGMBodyC::ProbeSave()  FN:" << nfilename << "  OT:" << TypeName(obj_type) << endl);
     if(!forceFormat) {
@@ -162,7 +162,7 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatPGMBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatPGMBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     ONDEBUG(cerr << "FileFormatPGMBodyC::CreateInput()  FN:" << in.Name() << "  T:" << TypeName(obj_type) << endl);
     if(obj_type == typeid(ImageC<ByteT>))
       return  DPIImagePNMByteGreyC(in);
@@ -172,14 +172,14 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatPGMBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const {
+  DPOPortBaseC FileFormatPGMBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteT>))
       return  DPOImagePNMByteGreyC(out);
     return DPOPortBaseC();
   }
   
   
-  const type_info &FileFormatPGMBodyC::DefaultType() const
+  const std::type_info &FileFormatPGMBodyC::DefaultType() const
   { return typeid(ImageC<ByteT>); }
  
   /// PBM ///////////////////////////////////////////////////////////////
@@ -192,8 +192,8 @@ namespace RavlImageN {
 
   //: Is stream in std stream format ?
   
-  const type_info &
-  FileFormatPBMBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatPBMBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const {
     if(!in.good())
       return typeid(void);
     char buff[3];
@@ -216,9 +216,9 @@ namespace RavlImageN {
     return typeid(ImageC<ByteT>);
   }
   
-  const type_info &
-  FileFormatPBMBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
-    //   cerr << "\n\n In ProbeLoad " ; 
+  const std::type_info &
+  FileFormatPBMBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
+    //   std::cerr << "\n\n In ProbeLoad " ; 
     //StringC filename(nfilename);
     //if(obj_type != typeid(ImageC<bool>) && obj_type != typeid(ImageC<ByteT>))
     //  return typeid(void);
@@ -227,8 +227,8 @@ namespace RavlImageN {
   }
   
 
-  const type_info &
-  FileFormatPBMBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat ) const {
+  const std::type_info &
+  FileFormatPBMBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat ) const {
     StringC filename(nfilename);
     if(!forceFormat) {
       if(Extension(filename) != StringC("pbm")  && filename != "-")
@@ -243,7 +243,7 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatPBMBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const {
+  DPIPortBaseC FileFormatPBMBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     if(obj_type == typeid(ImageC<ByteT>))
 	return  DPIImagePNMByteGreyC(in); 
     return DPIPortBaseC();
@@ -252,7 +252,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatPBMBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  {
+  DPOPortBaseC FileFormatPBMBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  {
     if(obj_type == typeid(ImageC<ByteT>))
       return DPOImagePNMByteGreyC(out); // This knows how to load pbm's into byte images.
     return DPOPortBaseC(); // Can't actual write at the moment.
@@ -260,7 +260,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatPBMBodyC::DefaultType() const 
+  const std::type_info &FileFormatPBMBodyC::DefaultType() const 
   { return typeid(ImageC<ByteT>); }
   
   //////////////////////////////////////////////////////////////////

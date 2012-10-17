@@ -47,20 +47,20 @@ namespace RavlGUIN {
     
     for(DLIterC<WidgetC> it(children);it.IsElm();it.Next()) {
       if(!it->IsValid()) {
-        cerr << "LBoxBodyC::Create(), WARNING: Invalid widget in child list. \n";
+        std::cerr << "LBoxBodyC::Create(), WARNING: Invalid widget in child list. \n";
         continue;
       }
       WidgetC &child = *it;
       if(child.Widget() == 0) {
         if(!child.Create()) {
-          cerr << "LBoxBodyC::Create(), WARNING: Widget create failed ! \n";
+          std::cerr << "LBoxBodyC::Create(), WARNING: Widget create failed ! \n";
           continue;
         }
       }
       RavlAssert(child.Widget() != 0);
       PackInfoC pi(child);
       if(pi.IsValid()) {
-        ONDEBUG(cerr << "LBoxBodyC::Create(), Found pack info :" << pi.Expand() << " " << pi.Fill() << " " << pi.Padding() << "\n");
+        ONDEBUG(std::cerr << "LBoxBodyC::Create(), Found pack info :" << pi.Expand() << " " << pi.Fill() << " " << pi.Padding() << "\n");
         gtk_box_pack_start(GTK_BOX (widget), child.Widget(),pi.Expand(), pi.Fill(), pi.Padding());
       } else {
         gtk_box_pack_start(GTK_BOX (widget), child.Widget(), true, true, 0);
@@ -83,13 +83,13 @@ namespace RavlGUIN {
       return true;
     if(child.Widget() == 0) {
       if(!child.Create()) {
-        cerr << "LBoxBodyC::Create(), Widget create failed ! \n";
+        std::cerr << "LBoxBodyC::Create(), Widget create failed ! \n";
         return false;
       }
     }
     PackInfoC pi(child);
     if(pi.IsValid()) {
-      ONDEBUG(cerr << "LBoxBodyC::Create(), Found pack info :" << pi.Expand() << " " << pi.Fill() << " " << pi.Padding() << "\n");
+      ONDEBUG(std::cerr << "LBoxBodyC::Create(), Found pack info :" << pi.Expand() << " " << pi.Fill() << " " << pi.Padding() << "\n");
       gtk_box_pack_start(GTK_BOX (widget), child.Widget(), 
                           pi.Expand(), pi.Fill(), pi.Padding());
     } else {

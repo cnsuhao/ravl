@@ -20,7 +20,7 @@ namespace RavlN
   ThreadStateBaseC::~ThreadStateBaseC()
   {
     if(m_waiting != 0)
-      cerr << "ThreadStateBaseC::~ThreadStateBaseC, WARNING: Called while threads waiting. \n";
+      std::cerr << "ThreadStateBaseC::~ThreadStateBaseC, WARNING: Called while threads waiting. \n";
   }
 
   //: Wait for lock to be free of all waiters.

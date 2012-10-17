@@ -55,13 +55,16 @@ namespace RavlN {
     {
     public:
       //! Construct a new socket.
-      SocketC(ContextC &context,SocketTypeT socketType);
+      SocketC(ContextC &context,SocketTypeT socketType,const StringC &codec = "");
 
       //! Factory constructor
       SocketC(const XMLFactoryContextC &context);
 
       //! Destructor
       ~SocketC();
+
+      //! Set name for socket, used in debugging
+      void SetName(const RavlN::StringC &name);
 
       //! Write to an ostream
       bool Save(std::ostream &strm) const;
@@ -103,7 +106,7 @@ namespace RavlN {
       //! Receive a message.
       bool Recieve(SArray1dC<char> &msg,BlockT block = ZSB_BLOCK);
 
-      //! Send a arbitary class
+      //! Send a arbitrary class
       template<typename DataT>
       bool Send(const DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;
@@ -115,7 +118,7 @@ namespace RavlN {
         return Send(data,block);
       }
 
-      //! Send a arbitary class
+      //! Send a arbitrary class
       template<typename DataT>
       bool Recieve(DataT &value,BlockT block = ZSB_BLOCK) {
         SArray1dC<char> data;
@@ -129,6 +132,10 @@ namespace RavlN {
         return true;
       }
 
+      //! Access default codec for socket
+      const StringC &DefaultCodec() const
+      { return m_defaultCodec; }
+
       //! Access the raw socket.
       void *RawSocket()
       { return m_socket; }
@@ -137,7 +144,7 @@ namespace RavlN {
       typedef SmartPtrC<SocketC> RefT;
     protected:
 
-      std::string m_name;
+      RavlN::StringC m_name;
       void *m_socket;
       StringC m_defaultCodec;
       bool m_verbose;

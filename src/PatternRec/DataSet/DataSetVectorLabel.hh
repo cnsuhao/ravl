@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DATASETVECTORLABEL_HEADER
 #define RAVL_DATASETVECTORLABEL_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/DataSetVectorLabel.hh"
 //! docentry="Ravl.API.Pattern Recognition.Data Set"
@@ -24,7 +23,7 @@ namespace RavlN {
   class DataSetVectorLabelC;
 
   //! userlevel=Develop
-  //: Data set of labeled vectors.
+  //: Data set of labelled vectors.
   
   class DataSetVectorLabelBodyC 
     : public DataSet2BodyC<SampleVectorC,SampleLabelC>
@@ -46,7 +45,7 @@ namespace RavlN {
     //: Construct a dataset
 
     SArray1dC<SampleVectorC> SeperateLabels() const;
-    //: Create a seperate sample for each label.
+    //: Create a separate sample for each label.
 
     VectorC GlobalMean() const;
     //: returns mean of the input vectors
@@ -74,10 +73,13 @@ namespace RavlN {
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const;
     //: Extracts numSamples samples per label
     
+    StringC Info() const;
+    //: Get a string containing size of the sample set and the number of samples with each label.
+
   };
   
   //! userlevel=Normal
-  //: Data set of labeled vectors.
+  //: Data set of labelled vectors.
   
   class DataSetVectorLabelC 
     : public DataSet2C<SampleVectorC,SampleLabelC>
@@ -86,6 +88,11 @@ namespace RavlN {
     DataSetVectorLabelC()
     {}
     //: Default constructor.
+
+    DataSetVectorLabelC(const DataSet2C<SampleVectorC,SampleLabelC> &dataSet)
+     : DataSet2C<SampleVectorC,SampleLabelC>(dataSet)
+    {}
+    //: base class constructor
 
     DataSetVectorLabelC(UIntT sizeEstimate)
       : DataSet2C<SampleVectorC,SampleLabelC>(sizeEstimate)
@@ -121,7 +128,7 @@ namespace RavlN {
   public:
     SArray1dC<SampleVectorC> SeperateLabels() const
     { return Body().SeperateLabels(); }
-    //: Create a seperate sample for each label.
+    //: Create a separate sample for each label.
 
     VectorC GlobalMean() const
     { return Body().GlobalMean(); }     
@@ -156,11 +163,18 @@ namespace RavlN {
     // the number of samples in each set.
     
     DataSetVectorLabelC ExtractPerLabel(UIntT numSamples) const
-      { return Body().ExtractPerLabel(numSamples); }
+    { return Body().ExtractPerLabel(numSamples); }
     //: Extracts numSamples samples per label
 
-    
+    StringC Info() const
+    { return Body().Info(); }
+    //: Get a string containing size of the sample set and the number of samples with each label.
+
   };
+
+  DataSetVectorLabelC CreateDataSet(UIntT dimension = 2, UIntT classes = 2, UIntT samplesPerClass = 1000, RealT dist = 3.0);
+  //: Create a data set containing random samples - useful for testing things
+
 }
 
 

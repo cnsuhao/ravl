@@ -21,12 +21,12 @@
 using namespace RavlGUIN;
 
 bool OnPress1() {
-  cerr << "Pressed 1. \n";
+  std::cerr << "Pressed 1. \n";
   return true;
 }
 
 bool OnPress2() {
-  cerr << "Pressed 2. \n";
+  std::cerr << "Pressed 2. \n";
   return true;
 }
 
@@ -42,7 +42,7 @@ int main(int nargs,char **argv) {
   StringC xmlfile = opts.String("f",PROJECT_OUT "/share/RAVL/Glade/exlibglade.glade","Interface description file. ");
   opts.Check();
   
-  cerr << "Create widgets. \n";
+  std::cerr << "Create widgets. \n";
 
   GladeXMLC  glade(xmlfile);
   GladeWidgetC mainWindow(glade,"window1");
@@ -54,15 +54,15 @@ int main(int nargs,char **argv) {
   mainWindow.AddObject("quit1",MenuItem("Quit",&OnQuit));
   mainWindow.AddObject("SubWidget",SubWidget);
   
-  cerr << "Show widgets. \n";
+  std::cerr << "Show widgets. \n";
   
   mainWindow.Show();
   
-  cerr << "Start GUI. \n";
+  std::cerr << "Start GUI. \n";
   
   Manager.Start();
 
-  cerr << "Done. \n";
+  std::cerr << "Done. \n";
   
   return 0;
 }

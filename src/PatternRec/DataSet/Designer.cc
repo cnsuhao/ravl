@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 //! author="Charles Galambos"
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! file="Ravl/PatternRec/DataSet/Designer.cc"
 
@@ -13,12 +12,17 @@
 
 namespace RavlN {
 
+  //: Default constructor.
+
+  DesignerBodyC::DesignerBodyC()
+  {}
+
   DesignerBodyC::DesignerBodyC(const XMLFactoryContextC & factory)
   {}
 
   //: Load from stream.
   
-  DesignerBodyC::DesignerBodyC(istream &strm)
+  DesignerBodyC::DesignerBodyC(std::istream &strm)
     : RCBodyVC(strm)
   {}
   
@@ -30,7 +34,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignerBodyC::Save (ostream &out) const 
+  bool DesignerBodyC::Save (std::ostream &out) const 
   { return RCBodyVC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor
@@ -38,21 +42,30 @@ namespace RavlN {
   bool DesignerBodyC::Save (BinOStreamC &out) const 
   { return RCBodyVC::Save(out); }
   
-  VectorC DesignerBodyC::Parameters() {
+  //: Get the current parameters.
+  VectorC DesignerBodyC::Parameters() const {
     RavlAssertMsg(0,"DesignerBodyC::Parameters(), Abstract method called. \n");
     return VectorC();
   }
-  //: Get the current paramiters.
   
-  VectorC DesignerBodyC::Parameters(const VectorC &params) {
+  //: Get the current parameters.
+  void DesignerBodyC::ParameterLimits(VectorC &defaultValues,VectorC &min,VectorC &max,SArray1dC<StringC> &names) const
+  {
+    names = SArray1dC<StringC>();
+    defaultValues = VectorC();
+    min = VectorC();
+    max = VectorC();
+  }
+
+  VectorC DesignerBodyC::SetParameters(const VectorC &params) {
     RavlAssertMsg(0,"DesignerBodyC::Parameters(const VectorC &), Abstract method called. \n");
     return params;
   }
-  //: Set the current paramiters.
-  // Returns the current paramiters, which may not be exactly those
+  //: Set the current parameters.
+  // Returns the current parameters, which may not be exactly those
   // set in 'params', but will be the closest legal values.
 
-  // Reset designer to intial state
+  // Reset designer to initial state
   bool DesignerBodyC::Reset() {
     RavlAssertMsg(0,"DesignerBodyC::Reset(), Abstract method called. \n");
     return false;
@@ -63,7 +76,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignerC::DesignerC(istream &strm)
+  DesignerC::DesignerC(std::istream &strm)
     : RCHandleVC<DesignerBodyC>(RAVL_VIRTUALCONSTRUCTOR(strm,DesignerBodyC))
   {}
   

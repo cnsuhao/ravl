@@ -14,6 +14,7 @@
 #include <iostream>
 
 #if RAVL_COMPILER_VISUALCPP
+#include <string>
 #pragma warning ( disable : 4244 )
 #pragma warning ( disable : 4267 )
 #include <stdarg.h>
@@ -37,7 +38,11 @@
 
 namespace RavlN {
   
-  static StringC syslog_ident("NoName");
+  static StringC &SysLogIdent() {
+    static StringC syslog_ident("NoName");
+    return syslog_ident;
+  }
+
   static bool syslog_Open = false;
   static bool syslog_StdErrOnly = true;
   static bool syslog_StdErr = true;
@@ -63,7 +68,7 @@ namespace RavlN {
   //: Get the name of the current application.
   
   const StringC &SysLogApplicationName()
-  { return syslog_ident; }
+  { return SysLogIdent(); }
   
   //: Open connection to system logger.
   // Facility is set to 'LOG_USER' by default. <br>
@@ -72,7 +77,7 @@ namespace RavlN {
   
   bool SysLogOpen(const StringC &name,bool logPid,bool sendStdErr,bool stdErrOnly,int facility,bool logFileLine) {
     ONDEBUG(std::cerr << "SysLogOpen called. logPid=" << logPid << " SendStdErr=" << sendStdErr << " stdErrOnly=" << stdErrOnly << std::endl);
-    syslog_ident = name;
+    SysLogIdent() = name;
     syslog_Open = true;
     syslog_StdErrOnly = stdErrOnly;
     syslog_pid = logPid;
@@ -90,7 +95,7 @@ namespace RavlN {
     if(sendStdErr)
       options |= LOG_PERROR;
 #endif
-    openlog(syslog_ident,options,facility);
+    openlog(SysLogIdent(),options,facility);
 #endif
     return true;
   }
@@ -141,7 +146,7 @@ namespace RavlN {
 #if RAVL_OS_POSIX
     if((syslog_StdErr && !syslog_Open) || syslog_StdErrOnly) {
       if(priority <= localLevel) {
-        std::cerr << syslog_ident;
+        std::cerr << SysLogIdent();
         if(syslog_fileline) {
           if(filename == 0) {
             std::cerr << " (NULL):" << lineno << ' ';
@@ -170,7 +175,7 @@ namespace RavlN {
     if(priority < localLevel) {
       if(syslog_fileline)
         std::cerr << filename << ':' << lineno << ' ';
-      std::cerr << syslog_ident << ":" << message << std::endl;
+      std::cerr << SysLogIdent() << ":" << message << std::endl;
     }
 #endif
     return true;
@@ -264,7 +269,7 @@ namespace RavlN {
   
   //: Set the level of messages to send to standard error.
   // This controls the level of messages to send to
-  // cerr. <br>
+  // std::cerr. <br>
   // Only messages with a priority lower than 'level' we be sent.
   
   bool SysLogLevelStdErr(SysLogPriorityT level) { 
@@ -293,6 +298,7 @@ namespace RavlN {
   "NOTICE",
   "INFO",
   "DEBUG",
+  "DEBUG2",
   "ALL",
   "DEBUG3",
   "DEBUG4",

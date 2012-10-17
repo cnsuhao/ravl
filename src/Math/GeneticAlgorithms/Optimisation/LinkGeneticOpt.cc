@@ -18,6 +18,7 @@ namespace RavlN { namespace GeneticN {
   extern void LinkGeneTypeProxy();
   extern void LinkGeneticOptimiserCheckPoint();
   extern void LinkGeneTypeBool();
+  extern void LinkGenomeArray();
 
   void LinkGeneticOpt() {
     LinkGene2ClassGenerators();
@@ -29,6 +30,7 @@ namespace RavlN { namespace GeneticN {
     LinkGeneticOptimiserCheckPoint();
     LinkGeneTypeProxy();
     LinkGeneTypeBool();
+    LinkGenomeArray();
   }
 
 }}

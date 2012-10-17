@@ -29,13 +29,13 @@ namespace RavlN {
 
       FieldInfoBodyC(const StringC & name);
 
-      FieldInfoBodyC(istream &strm);
+      FieldInfoBodyC(std::istream &strm);
       //: Load from stream.
 
       FieldInfoBodyC(BinIStreamC &strm);
       //: Load from binary stream.
 
-      virtual bool Save(ostream &out) const;
+      virtual bool Save(std::ostream &out) const;
       //: Writes object to stream, can be loaded using constructor
 
       virtual bool Save(BinOStreamC &out) const;
@@ -71,7 +71,7 @@ namespace RavlN {
       }
       //: Default constructor.
 
-      FieldInfoC(istream &strm);
+      FieldInfoC(std::istream &strm);
       //: Load from stream.
 
       FieldInfoC(BinIStreamC &strm);
@@ -111,14 +111,14 @@ namespace RavlN {
 
   };
 
-  inline istream &operator>>(istream &strm, FieldInfoC &obj) {
+  inline std::istream &operator>>(std::istream &strm, FieldInfoC &obj) {
     obj = FieldInfoC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
 
-  inline ostream &operator<<(ostream &out, const FieldInfoC &obj) {
+  inline std::ostream &operator<<(std::ostream &out, const FieldInfoC &obj) {
     obj.Save(out);
     return out;
   }

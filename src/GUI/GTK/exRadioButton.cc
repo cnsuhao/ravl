@@ -21,13 +21,13 @@ using namespace RavlGUIN;
 
 bool buttonA(bool &v)
 {
-  cerr << "ButtonA:" << v << "\n";
+  std::cerr << "ButtonA:" << v << "\n";
   return true;
 }
 
 bool buttonB(bool &v)
 {
-  cerr << "ButtonB:" << v << "\n";
+  std::cerr << "ButtonB:" << v << "\n";
   return true;
 }
 
@@ -57,5 +57,6 @@ int main(int nargs,char *args[])
   win.Show();
   
   Manager.Start();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

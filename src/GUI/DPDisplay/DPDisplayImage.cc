@@ -23,6 +23,7 @@
 #include "Ravl/GUI/DPDisplayImage.hh"
 #include "Ravl/GUI/MarkupImageRGB.hh"
 #include "Ravl/GUI/MarkupImageByte.hh"
+#include "Ravl/GUI/MarkupImageByte.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -43,7 +44,7 @@ namespace RavlGUIN {
   {
 #if 0
     if(!img.IsContinuous()) {
-      cerr << "DPDisplayImageRGBBodyC::DPDisplayImageRGBBodyC(), WARNING: Image not continuous in memory, making copy. \n";
+      std::cerr << "DPDisplayImageRGBBodyC::DPDisplayImageRGBBodyC(), WARNING: Image not continuous in memory, making copy. \n";
       img = ImageC<ByteRGBValueC>(img.Copy()); // Make image continuous.
     }
 #endif
@@ -65,7 +66,7 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayImageRGBBodyC::Query(const Vector2dC &pnt,StringC &text) {
-    ONDEBUG(cerr << "DPDisplayImageRGBBodyC::Query(), Point=" << pnt << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageRGBBodyC::Query(), Point=" << pnt << "\n");
     Index2dC pix(pnt[0],pnt[1]);
     if(!img.Frame().Contains(pix))
       return false;
@@ -82,6 +83,112 @@ namespace RavlGUIN {
   }
   
   
+  // ---------------------------------------------------------------
+
+  //: Constructor
+
+  DPDisplayImageRealRGBBodyC::DPDisplayImageRealRGBBodyC(const ImageC<RealRGBValueC> &nimg)
+    : realImg(nimg),
+      img(nimg.Frame())
+  {
+    RealT maxValue = 0;
+    for(Array2dIterC<RealRGBValueC> it(nimg);it;it++) {
+      maxValue = Max(it->Red(),maxValue);
+      maxValue = Max(it->Green(),maxValue);
+      maxValue = Max(it->Blue(),maxValue);
+    }
+    for(Array2dIter2C<ByteRGBValueC,RealRGBValueC> it(img,realImg);it;it++) {
+      it.Data1() = (it.Data2() * 255.0)/maxValue;
+    }
+  }
+
+  //: Draw object to canvas.
+
+  bool DPDisplayImageRealRGBBodyC::Draw(FrameMarkupC &markup) {
+    markup.Markup().InsLast(MarkupImageRGBC(m_id,0,img));
+    return true;
+  }
+
+  //: Find bounding box for object.
+
+  IndexRange2dC DPDisplayImageRealRGBBodyC::Frame() const
+  { return img.Frame(); }
+
+  //: Query a point in the display.
+  // Return true if point is within object.
+
+  bool DPDisplayImageRealRGBBodyC::Query(const Vector2dC &pnt,StringC &text) {
+    ONDEBUG(std::cerr << "DPDisplayImageRGBBodyC::Query(), Point=" << pnt << "\n");
+    Index2dC pix(pnt[0],pnt[1]);
+    if(!realImg.Frame().Contains(pix))
+      return false;
+    StrOStreamC ss;
+    ss << realImg[pix];
+    text = ss.String();
+    return true;
+  }
+
+  //: Save to a file.
+
+  bool DPDisplayImageRealRGBBodyC::Save(const StringC &str) const {
+    return RavlN::Save(str,realImg);
+  }
+
+
+  // ---------------------------------------------------------------
+
+  //: Constructor
+
+  DPDisplayImageRealRGBABodyC::DPDisplayImageRealRGBABodyC(const ImageC<RealRGBAValueC> &nimg)
+    : realImg(nimg),
+      img(nimg.Frame())
+  {
+    RealT maxValue = 0;
+    for(Array2dIterC<RealRGBAValueC> it(nimg);it;it++) {
+      maxValue = Max(it->Red(),maxValue);
+      maxValue = Max(it->Green(),maxValue);
+      maxValue = Max(it->Blue(),maxValue);
+    }
+    for(Array2dIter2C<ByteRGBValueC,RealRGBAValueC> it(img,realImg);it;it++) {
+      RealRGBAValueC tmp = (it.Data2() * 255.0)/maxValue;
+      it.Data1().Set(tmp.Red(),tmp.Green(),tmp.Blue());
+    }
+  }
+
+  //: Draw object to canvas.
+
+  bool DPDisplayImageRealRGBABodyC::Draw(FrameMarkupC &markup) {
+    markup.Markup().InsLast(MarkupImageRGBC(m_id,0,img));
+    return true;
+  }
+
+  //: Find bounding box for object.
+
+  IndexRange2dC DPDisplayImageRealRGBABodyC::Frame() const
+  { return img.Frame(); }
+
+  //: Query a point in the display.
+  // Return true if point is within object.
+
+  bool DPDisplayImageRealRGBABodyC::Query(const Vector2dC &pnt,StringC &text) {
+    ONDEBUG(std::cerr << "DPDisplayImageRealRGBABodyC::Query(), Point=" << pnt << "\n");
+    Index2dC pix(pnt[0],pnt[1]);
+    if(!realImg.Frame().Contains(pix))
+      return false;
+    StrOStreamC ss;
+    ss << realImg[pix];
+    text = ss.String();
+    return true;
+  }
+
+  //: Save to a file.
+
+  bool DPDisplayImageRealRGBABodyC::Save(const StringC &str) const {
+    return RavlN::Save(str,realImg);
+  }
+
+
+
   //------------------------------------------------------------------
   // Register some conversions as well.
   
@@ -89,6 +196,16 @@ namespace RavlGUIN {
   { return DPDisplayImageRGBC(img.Copy()); }
   
   DP_REGISTER_CONVERSION_NAMED(ImageRGB2DPDisplayImageRGB,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<ByteRGBValueC> &)");
+
+  DPDisplayObjC ImageRGB2DPDisplayImageRealRGB(const ImageC<RealRGBValueC> &img)
+  { return DPDisplayImageRealRGBC(img.Copy()); }
+
+  DP_REGISTER_CONVERSION_NAMED(ImageRGB2DPDisplayImageRealRGB,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<RealRGBValueC> &)");
+
+  DPDisplayObjC ImageRGB2DPDisplayImageRealRGBA(const ImageC<RealRGBAValueC> &img)
+  { return DPDisplayImageRealRGBAC(img.Copy()); }
+
+  DP_REGISTER_CONVERSION_NAMED(ImageRGB2DPDisplayImageRealRGBA,1,"DPDisplayObjC RavlGUIN::Convert(const ImageC<RealRGBAValueC> &)");
   
   DPDisplayObjC Image16RGB2DPDisplayImageRGB(const ImageC<UInt16RGBValueC> &img) 
   { 
@@ -135,7 +252,7 @@ namespace RavlGUIN {
 	max = it.Data();
     }
     RealT scale = 255.0/(max - min);
-    ONDEBUG(cerr << "DPDisplayImageRealBodyC::ScaleImage(), Min:" << min << " Max:" << max << " Scale:" << scale << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageRealBodyC::ScaleImage(), Min:" << min << " Max:" << max << " Scale:" << scale << "\n");
     ImageC<ByteT> tImg(inimg.Rectangle());
     for(Array2dIter2C<ByteT,RealT> it(tImg,inimg);it;it++) 
       it.Data1() = (ByteT)((it.Data2() - min) * scale);
@@ -146,7 +263,7 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayImageRealBodyC::Query(const Vector2dC &pnt,StringC &text) {
-    ONDEBUG(cerr << "DPDisplayImageRealBodyC::Query(), Point=" << pnt << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageRealBodyC::Query(), Point=" << pnt << "\n");
     Index2dC pix(pnt[0],pnt[1]);
     if(!realImg.Frame().Contains(pix))
       return false;
@@ -178,7 +295,7 @@ namespace RavlGUIN {
   {
 #if 0
     if(!img.IsContinuous()) {
-      cerr << "DPDisplayImageByteBodyC::DPDisplayImageByteBodyC(), WARNING: Image not continuous in memory, making copy. \n";
+      std::cerr << "DPDisplayImageByteBodyC::DPDisplayImageByteBodyC(), WARNING: Image not continuous in memory, making copy. \n";
       img = ImageC<ByteT>(img.Copy()); // Make image continuous.
     }
 #endif
@@ -200,7 +317,7 @@ namespace RavlGUIN {
   // Return true if point is within object.
   
   bool DPDisplayImageByteBodyC::Query(const Vector2dC &pnt,StringC &text) {
-    ONDEBUG(cerr << "DPDisplayImageByteBodyC::Query(), Point=" << pnt << "\n");
+    ONDEBUG(std::cerr << "DPDisplayImageByteBodyC::Query(), Point=" << pnt << "\n");
     Index2dC pix(pnt[0],pnt[1]);
     if(!img.Frame().Contains(pix))
       return false;

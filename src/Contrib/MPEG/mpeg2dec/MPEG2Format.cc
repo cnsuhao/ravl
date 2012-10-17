@@ -14,7 +14,7 @@
 #include "Ravl/Image/ImgIOmpeg2dec.hh"
 #include <ctype.h>
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else

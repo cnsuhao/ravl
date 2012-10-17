@@ -36,31 +36,41 @@ namespace RavlN { namespace GeneticN {
   //! Factory constructor
   GeneTypeClassShareC::GeneTypeClassShareC(const XMLFactoryContextC &factory)
    : GeneTypeClassC(factory),
-     m_mustConnect(factory.AttributeBool("mustConnect",false))
+     m_mustConnect(factory.AttributeBool("mustConnect",false)),
+     m_maxStrength(factory.AttributeReal("maxStrength",g_maxStrength))
   {
   }
 
   //! Constructor
-  GeneTypeClassShareC::GeneTypeClassShareC(const std::type_info &classShareType,bool mustConnect)
+  GeneTypeClassShareC::GeneTypeClassShareC(const std::type_info &classShareType,bool mustConnect,float maxStrength)
    : GeneTypeClassC(classShareType),
-     m_mustConnect(mustConnect)
+     m_mustConnect(mustConnect),
+     m_maxStrength(maxStrength)
   {
+    if(m_maxStrength <= 0)
+      m_maxStrength = g_maxStrength;
   }
 
   //! Load form a binary stream
   GeneTypeClassShareC::GeneTypeClassShareC(BinIStreamC &strm)
-   : GeneTypeClassC(strm)
+   : GeneTypeClassC(strm),
+     m_mustConnect(false),
+     m_maxStrength(g_maxStrength)
   {
     ByteT version = 0;
     strm >> version;
-    if(version != 1)
-      throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneC");
+    if(version < 1 || version > 2)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("GeneTypeClassShareC");
     strm >> m_mustConnect;
+    if(version > 1)
+      strm >> m_maxStrength;
   }
 
   //! Load form a binary stream
   GeneTypeClassShareC::GeneTypeClassShareC(std::istream &strm)
-   : GeneTypeClassC(strm)
+   : GeneTypeClassC(strm),
+     m_mustConnect(false),
+     m_maxStrength(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -70,9 +80,9 @@ namespace RavlN { namespace GeneticN {
   {
     if(!GeneTypeClassC::Save(strm))
       return false;
-    ByteT version = 1;
+    ByteT version = 2;
     strm << version ;
-    strm << m_mustConnect;
+    strm << m_mustConnect << m_maxStrength;
     return true;
   }
 
@@ -82,6 +92,13 @@ namespace RavlN { namespace GeneticN {
     RavlAssertMsg(0,"not implemented");
     return false;
   }
+
+  //! Dump description in human readable form.
+  void GeneTypeClassShareC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneTypeClassC::Dump(strm,indent);
+    strm << " MustConnect=" << m_mustConnect;
+  }
+
 
   //! Create randomise value
   void GeneTypeClassShareC::Random(GenePaletteC &palette,GeneC::RefT &newValue) const {
@@ -96,7 +113,7 @@ namespace RavlN { namespace GeneticN {
     for(unsigned i = 0;i < 2;i++)
       newPos[i] = static_cast<float>(palette.Random1() * g_spaceSize);
     gcs->SetPosition(newPos);
-    gcs->SetStrength(static_cast<float>(palette.Random1() * g_maxStrength));
+    gcs->SetStrength(static_cast<float>(palette.Random1() * m_maxStrength));
   }
 
   //! Mutate a gene
@@ -108,23 +125,23 @@ namespace RavlN { namespace GeneticN {
     if(!newValue.IsValid()) {
       newValue = new GeneClassShareC(*this);
     }
-    //RavlSysLogf(SYSLOG_DEBUG,"Mutating %s ",RavlN::TypeName(typeid(original)));
+    //RavlDebug("Mutating %s ",RavlN::TypeName(typeid(original)));
     GeneClassShareC &newNode = dynamic_cast<GeneClassShareC &>(*newValue);
 #if DODEBUG
     if(dynamic_cast<const GeneClassShareC *>(&original) == 0) {
-      RavlSysLogf(SYSLOG_ERR,"Original not a GeneClassShareC. Type:%s ",TypeName(typeid(original)));
+      RavlError("Original not a GeneClassShareC. Type:%s ",TypeName(typeid(original)));
       RavlAssert(0);
     }
 #endif
     const GeneClassShareC &oldNode = dynamic_cast<const GeneClassShareC &>(original);
     if(fraction < 0.3) {
       // Wander
-      float delta = static_cast<float>(palette.Random1() - 0.5) * g_maxStrength * fraction;
+      float delta = static_cast<float>(palette.Random1() - 0.5) * m_maxStrength * fraction;
       float strength = oldNode.Strength() + delta;
-      if(strength < 0 || strength > g_maxStrength)
+      if(strength < 0 || strength > m_maxStrength)
         strength = oldNode.Strength() - delta;
       if(strength < 0) strength = 0;
-      if(strength > g_maxStrength) strength = g_maxStrength;
+      if(strength > m_maxStrength) strength = m_maxStrength;
       newNode.SetStrength(strength);
 
       TFVectorC<float,2> newPos;
@@ -141,7 +158,7 @@ namespace RavlN { namespace GeneticN {
       newNode.SetPosition(newPos);
     } else {
       // Blend with random
-      newNode.SetStrength(static_cast<float>(palette.Random1() * g_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
+      newNode.SetStrength(static_cast<float>(palette.Random1() * m_maxStrength * fraction + oldNode.Strength()  * (1.0-fraction)));
       TFVectorC<float,2> newPos;
       for(unsigned i = 0;i < 2;i++)
         newPos[i] = static_cast<float>(palette.Random1() * g_spaceSize * fraction) + oldNode.Position()[i] * (1.0 -fraction);
@@ -173,17 +190,17 @@ namespace RavlN { namespace GeneticN {
     for(unsigned i = 0;i < shares.size();i++) {
       const RavlN::TFVectorC<float,2> &start = shares[i]->Position();
       float threshold = Sqr(shares[i]->Strength());
-      float bestDist = Sqr(g_spaceSize)* 2;;
+      float bestDist = Sqr(g_spaceSize)* 2;
       GeneClassShareC *fallBack = 0;
       bool found = false;
-      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG," %u Start:%s Strength:%f ",i,RavlN::StringOf(shares[i]->Position()).data(),shares[i]->Strength()));
+      ONDEBUG(RavlDebug(" %u Start:%s Strength:%f ",i,RavlN::StringOf(shares[i]->Position()).data(),shares[i]->Strength()));
       GeneC::RefT tmp;
       for(unsigned j = i+1;j < shares.size();j++) {
         if(factory.LookupOverride(*shares[j],tmp))
           continue;
         // Ignore if overridden already, it will have been done by a stronger share.
         float distance = start.SqrEuclidDistance(shares[j]->Position());
-        ONDEBUG(RavlSysLogf(SYSLOG_DEBUG," i=%u j=%u from %zu  Distance:%f ",i,j,(size_t) shares.size(),RavlN::Sqrt(distance)));
+        ONDEBUG(RavlDebug(" i=%u j=%u from %zu  Distance:%f ",i,j,(size_t) shares.size(),RavlN::Sqrt(distance)));
         if(distance < bestDist || fallBack == 0) {
           fallBack = shares[j];
           bestDist = distance;
@@ -191,18 +208,18 @@ namespace RavlN { namespace GeneticN {
         if(distance < threshold) {
           RavlAssert(!(factory.LookupOverride(*shares[i],tmp) && tmp.BodyPtr() == shares[j]));
           factory.InsertOverride(*shares[j],*shares[i]);
-          ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Set override. "));
+          ONDEBUG(RavlDebug("Set override. "));
           found = true;
         }
       }
       // If must connect, connect to closest node.
       if(!found && m_mustConnect && fallBack != 0) {
-        ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Using fallback connect. %u of %zu BestDist:%f ",i,shares.size(),Sqrt(bestDist)));
+        ONDEBUG(RavlDebug("Using fallback connect. %u of %zu BestDist:%f ",i,shares.size(),Sqrt(bestDist)));
         RavlAssert(!(factory.LookupOverride(*shares[i],tmp) && tmp.BodyPtr() == fallBack));
         factory.InsertOverride(*fallBack,*shares[i]);
       }
 
-      ONDEBUG(if(found) {RavlSysLogf(SYSLOG_DEBUG,"Got connection. %u of %zu BestDist:%f Strength:%f ",i,shares.size(),Sqrt(bestDist),Sqrt(threshold));});
+      ONDEBUG(if(found) {RavlDebug("Got connection. %u of %zu BestDist:%f Strength:%f ",i,shares.size(),Sqrt(bestDist),Sqrt(threshold));});
     }
   }
 
@@ -243,7 +260,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneClassShareC::GeneClassShareC(BinIStreamC &strm)
-   : GeneClassC(strm)
+   : GeneClassC(strm),
+     m_strength(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -254,7 +272,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneClassShareC::GeneClassShareC(std::istream &strm)
-   : GeneClassC(strm)
+   : GeneClassC(strm),
+     m_strength(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -274,8 +293,8 @@ namespace RavlN { namespace GeneticN {
   //! Save to binary stream
   bool GeneClassShareC::Save(std::ostream &strm) const
   {
-    strm << " Position=" <<  m_position << " Strength=" << m_strength << " ";
     GeneClassC::Save(strm);
+    strm << " Position=" <<  m_position << " Strength=" << m_strength << " ";
     return false;
   }
 
@@ -292,7 +311,7 @@ namespace RavlN { namespace GeneticN {
   {
     GeneC::RefT override;
     if(context.LookupOverride(*this,override)) {
-      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Shared class %s being overridden. ",Name().data()));
+      ONDEBUG(RavlDebug("Shared class %s being overridden. ",Name().data()));
       // We don't want to build recursive structures, so check stack
       // for the overridden class before calling.
       if(!context.CheckStackFor(*override)) {
@@ -302,13 +321,13 @@ namespace RavlN { namespace GeneticN {
     }
     RCAbstractC abstractHandle;
     if(context.Lookup((const void *) this,abstractHandle)) {
-      ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Found instance in context from %s ",Name().data()));
+      ONDEBUG(RavlDebug("Found instance in context from %s ",Name().data()));
       handle = abstractHandle;
       return ;
     }
     GeneClassC::Generate(context,handle);
     context.Insert((const void *) this,handle.Abstract());
-    ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Putting instance into context from %s ",Name().data()));
+    ONDEBUG(RavlDebug("Putting instance into context from %s ",Name().data()));
   }
 
   //! Generate a hash value for the gene
@@ -373,7 +392,7 @@ namespace RavlN { namespace GeneticN {
     for(RavlN::HashIterC<const GeneTypeC *,RavlN::HSetC<GeneClassShareC *> > it(theShares.Shares());it;it++) {
       const GeneTypeClassShareC *gts = dynamic_cast<const GeneTypeClassShareC *>(it.Key());
       if(gts == 0) {
-        RavlSysLogf(SYSLOG_ERR,"Type not a share!");
+        RavlError("Type not a share!");
         RavlAssert(0);
         continue;
       }
@@ -390,3 +409,4 @@ namespace RavlN { namespace GeneticN {
   {}
 
 }}
+

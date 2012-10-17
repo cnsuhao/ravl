@@ -148,9 +148,9 @@ namespace RavlN {
     return 0;
   }
 
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  bool DPOByteFileBodyC::Save(ostream &sout) const  { 
+  bool DPOByteFileBodyC::Save(std::ostream &sout) const  { 
     sout << out.Name(); 
     return true; 
   }
@@ -205,15 +205,15 @@ namespace RavlN {
     return dataRead;
   }
     
-  //: Save to ostream.
+  //: Save to std::ostream.
   
-  bool DPIByteFileBodyC::Save(ostream &out) const { 
+  bool DPIByteFileBodyC::Save(std::ostream &out) const { 
     out << in.Name(); 
     return true; 
   }
     
   //: Seek to position in stream.
-  // Currently will only seek to begining of stream.
+  // Currently will only seek to beginning of stream.
   
   bool DPIByteFileBodyC::Seek(UIntT newOff) {
     ONDEBUG(RavlDebug("DPIByteFileBodyC::Seek newOff=%u",newOff));
@@ -240,7 +240,7 @@ namespace RavlN {
   }
   
   //: Seek to position in stream.
-  // Currently will only seek to begining of stream.
+  // Currently will only seek to beginning of stream.
   
   bool DPIByteFileBodyC::Seek64(StreamPosT newOff) {
     ONDEBUG(RavlDebug("DPIByteFileBodyC::Seek64 newOff=%s ",RavlN::StringOf(newOff).c_str()));

@@ -2,7 +2,7 @@
 #include "Ravl/Array1dIter.hh"
 #include "Ravl/OS/Date.hh"
 #include "Ravl/IO.hh"
-//! lib=RavlPlot
+//! lib=RavlGnuPlot
 
 namespace RavlGUIN {
 
@@ -10,7 +10,7 @@ namespace RavlGUIN {
       plots(num), m_legendTitles(num), xrange(0, 0), yrange(0, 0)
   {
     n = num;
-    Terminal("x11 persist raise");
+    Terminal("wxt persist raise");
     Size(1.0);
     Title("GnuPlot");
     Xlabel("x-label");
@@ -22,7 +22,7 @@ namespace RavlGUIN {
       plots(subPlotTitles.Size()), m_legendTitles(subPlotTitles), xrange(0, 0), yrange(0, 0)
   {
     n = plots.Size();
-    Terminal("x11 persist raise");
+    Terminal("wxt persist raise");
     Size(1.0);
     Title(title);
     Xlabel(xlabel);
@@ -162,7 +162,6 @@ namespace RavlGUIN {
       if (!tmpData.Remove())
         return false;
     }
-
     //: return success
     return true;
   }

@@ -33,23 +33,23 @@ int  main()
 {
   int ln;
   if((ln = testBasic()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testOriginal()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testSort()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testQuickSort()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   if((ln = testIO()) != 0) {
-    cerr << "Test failed line " << ln << "\n";
+    std::cerr << "Test failed line " << ln << "\n";
     return 1;
   }
   return 0;
@@ -102,22 +102,22 @@ int testBasic() {
   sarr1[1] = 2;
 
   if(sarr1.Contains(2)) {
-    cerr << "Array bounds problem. 1 \n";
+    std::cerr << "Array bounds problem. 1 \n";
     return __LINE__;
   }
   if(sarr1.Contains(2) || sarr1.Contains(-1)) {
-    cerr << "Array bounds problem. 2 \n";
+    std::cerr << "Array bounds problem. 2 \n";
     return __LINE__;
   }
   // Check copy.
   SArray1dC<IntT> sarr2(sarr1.Copy());
   sarr1[0]=2;
   if(sarr2[0] != 1 || sarr2[1] != 2) {
-    cerr << "SArray Copy failed.\n";
+    std::cerr << "SArray Copy failed.\n";
     return __LINE__;
   }
   if(sarr2.Size() != sarr1.Size()) {
-    cerr << "SArray copy failed.\n";
+    std::cerr << "SArray copy failed.\n";
     return __LINE__;
   }
   sarr1[0]=1;
@@ -127,28 +127,28 @@ int testBasic() {
   for(SArray1dIterC<IntT> it(sarr2);it;it++,count++)
     sum += *it;
   if(sum != 3 || count != 2) {
-    cerr << "Sum failed.\n";
+    std::cerr << "Sum failed.\n";
     return __LINE__;
   }
   sum = 0;
   for(SArray1dIterC<IntT> it(sarr2,1);it;it++)
     sum += *it;
   if(sum != 1) {
-    cerr << "Sum failed 2.\n";
+    std::cerr << "Sum failed 2.\n";
     return __LINE__;
   }
   sum = 0;
   for(SArray1dIterC<IntT> it(sarr2,2);it;it++)
     sum += *it;
   if(sum != 3) {
-    cerr << "Sum failed 3.\n";
+    std::cerr << "Sum failed 3.\n";
     return __LINE__;
   }
   sum = 0;
   for(SArray1dIterC<IntT> it(sarr2,0);it;it++)
     sum += *it;
   if(sum != 0) {
-    cerr << "Sum failed 4.\n";
+    std::cerr << "Sum failed 4.\n";
     return __LINE__;
   }
   
@@ -158,7 +158,7 @@ int testBasic() {
   for(SArray1dIterC<IntT> it(earr,0);it;it++)
     sum++;
   if(sum != 0) {
-    cerr << "Empty array test failed. \n";
+    std::cerr << "Empty array test failed. \n";
     return __LINE__;
   }
   
@@ -173,18 +173,18 @@ int testBasic() {
   
   SArray1dC<IntT> sarrSum = sarr1 + sarr2;
   if(sarrSum.Size() != sarr1.Size()) {
-    cerr << "Size check failed. \n";
+    std::cerr << "Size check failed. \n";
     return __LINE__;
   }
   if(sarrSum[0] != 2) {
-    cerr << "Sum check failed. \n";
+    std::cerr << "Sum check failed. \n";
     return __LINE__;
   }
   if(sarrSum[1] != 4) {
-    cerr << "Sum check failed. \n";
+    std::cerr << "Sum check failed. \n";
     return __LINE__;
   }
-  cerr << "SArray test passed. \n";
+  std::cerr << "SArray test passed. \n";
   return 0;
 }
 
@@ -197,7 +197,7 @@ int testSort() {
   arr[4] = 3;
   if(arr.IndexOfMax() != 1) return __LINE__;
   arr.Sort();
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   for(int i = 1;i < (int) arr.Size();i++)
     if(arr[i-1] < arr[i]) return __LINE__;
   if(arr.IndexOfMax() != 0) return __LINE__;
@@ -227,12 +227,12 @@ int testQuickSort() {
   arr[4] = 3;
   if(arr.IndexOfMax() != 1) return __LINE__;
   arr.QuickSort(); // sort ascending
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   for(int i = 1;i < (int) arr.Size();i++)
     if(arr[i-1] > arr[i]) return __LINE__;
   if(arr.IndexOfMax() != 4) return __LINE__;
   arr.QuickSort(MyComparisonOp);  // sort descending
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   for(int i = 1;i < (int) arr.Size();i++)
     if(arr[i-1] < arr[i]) return __LINE__;
   if(arr.IndexOfMax() != 0) return __LINE__;
@@ -240,7 +240,7 @@ int testQuickSort() {
   arr[0] = 1;
   arr[1] = 0;
   arr.QuickSort(); // sort ascending - check 2 element array works ok
-  // cerr << "Out=" << arr << "\n";
+  // std::cerr << "Out=" << arr << "\n";
   if (arr[0] != 0 || arr[1] != 1) return __LINE__;
 
   return 0;
@@ -282,7 +282,7 @@ int testIO() {
 }
 
 int testReverse() {
-  cerr << "Reverse test. \n";
+  std::cerr << "Reverse test. \n";
   SArray1dC<IntT> arr(3);
   for(IntT i = 0;i < (IntT) arr.Size();i++)
     arr[i] = i;

@@ -37,12 +37,12 @@ namespace RavlN {
       ks = IndexRangeC(center[2],center[2]);
   }
 
-  ostream &operator<<(ostream &s,const IndexRange3dC &ir) {
+  std::ostream &operator<<(std::ostream &s,const IndexRange3dC &ir) {
     s << ir.Range1() << ' ' << ir.Range2() << ' ' << ir.Range3();
     return s;
   }
   
-  istream &operator>>(istream &s,IndexRange3dC &ir) {
+  std::istream &operator>>(std::istream &s,IndexRange3dC &ir) {
     s >> ir.Range1() >> ir.Range2() >> ir.Range3();
     return s;
   }

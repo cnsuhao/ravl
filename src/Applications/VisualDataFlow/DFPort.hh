@@ -31,19 +31,19 @@ namespace RavlDFN {
     DFPortBodyC(const StringC &nname,DFAttachPlacementT attach = ATTACH_FLOAT);
     //: Constructor.
 
-    DFPortBodyC(istream &strm);
+    DFPortBodyC(std::istream &strm);
     //: Load from stream.
     
     DFPortBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
     DFPortBodyC(XMLIStreamC &is,DFSystemC &context);
-    //: Read from istream.
+    //: Read from std::istream.
     
     virtual bool Save(XMLOStreamC &strm,bool inCharge = true) const;
-    //: Save ostream.
+    //: Save std::ostream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -67,7 +67,7 @@ namespace RavlDFN {
     virtual bool Disconnect(DFPortC &port);
     //: Disconnect.
     
-    virtual const type_info &PortType() const;
+    virtual const std::type_info &PortType() const;
     //: Get type of port.
     
     virtual StringC PortName() const;
@@ -147,7 +147,7 @@ namespace RavlDFN {
     { return Body().Disconnect(port); }
     //: Disconnect.
     
-    const type_info &PortType() const
+    const std::type_info &PortType() const
     { return Body().PortType(); }
     //: Get type of port.
     
@@ -188,7 +188,7 @@ namespace RavlDFN {
     { return iport; }
     //: Access iport.
 
-    virtual const type_info &PortType() const;
+    virtual const std::type_info &PortType() const;
     //: Get type of port.
 
     virtual StringC PortName() const;
@@ -284,7 +284,7 @@ namespace RavlDFN {
     { return oport; }
     //: Access oport.
 
-    virtual const type_info &PortType() const;
+    virtual const std::type_info &PortType() const;
     //: Get type of port.
 
     virtual StringC PortName() const;
@@ -376,7 +376,7 @@ namespace RavlDFN {
     virtual bool Disconnect(DFPortC &port);
     //: Disconnect.
     
-    virtual const type_info &PortType() const;
+    virtual const std::type_info &PortType() const;
     //: Get type of port.
 
     virtual StringC PortName() const;
@@ -469,7 +469,7 @@ namespace RavlDFN {
     virtual bool Disconnect(DFPortC &port);
     //: Disconnect.
     
-    virtual const type_info &PortType() const;
+    virtual const std::type_info &PortType() const;
     //: Get type of port.
 
     virtual StringC PortName() const;

@@ -37,7 +37,7 @@ namespace RavlN {
       while(delay > 0 && !terminatePending) {
 	next.SetToNow();
 	next += delay;
-	ONDEBUG(cerr << "Ticker called " << ((void *) this) <<". \n");
+	ONDEBUG(std::cerr << "Ticker called " << ((void *) this) <<". \n");
 	se.Invoke();
 	next.Wait();
       }

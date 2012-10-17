@@ -48,7 +48,7 @@ namespace RavlGUIN {
   // be created easily.
   
   GtkWidget *ToggleButtonBodyC::BuildWidget(const char *aLab) {
-    ONDEBUG(cerr << "Built toggle button. \n");
+    ONDEBUG(std::cerr << "Built toggle button. \n");
     if(aLab == 0)
       return gtk_toggle_button_new ();
     return gtk_toggle_button_new_with_label (aLab);
@@ -57,7 +57,7 @@ namespace RavlGUIN {
   // Signal state to clients with 'sigChanged'
   
   bool ToggleButtonBodyC::SignalState() { 
-    ONDEBUG(cerr << "ToggleButtonBodyC::SignalState() : " << GUIIsActive() << "\n");
+    ONDEBUG(std::cerr << "ToggleButtonBodyC::SignalState() : " << GUIIsActive() << "\n");
     bool isActive = GUIIsActive();
     sigChanged(isActive); 
     return true;
@@ -115,7 +115,7 @@ namespace RavlGUIN {
 
   bool ToggleButtonBodyC::GUIIsActive() const { 
     if(widget == 0) {
-      ONDEBUG(cerr << "ToggleButtonBodyC::GUIIsActive() No widget. \n");
+      ONDEBUG(std::cerr << "ToggleButtonBodyC::GUIIsActive() No widget. \n");
       return initState;
     }
 	
@@ -131,7 +131,7 @@ namespace RavlGUIN {
   
   bool ToggleButtonBodyC::IsActive() const { 
     if(widget == 0) {
-      ONDEBUG(cerr << "ToggleButtonBodyC::GUIIsActive() No widget. \n");
+      ONDEBUG(std::cerr << "ToggleButtonBodyC::GUIIsActive() No widget. \n");
       return initState;
     }
     return GTK_TOGGLE_BUTTON(widget)->active;

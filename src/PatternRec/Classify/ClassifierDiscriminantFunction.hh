@@ -30,13 +30,13 @@ namespace RavlN {
     ClassifierDiscriminantFunctionBodyC(const FunctionC &nfunc);
     //: Create classifier from a discriminant function.
     
-    ClassifierDiscriminantFunctionBodyC(istream &strm);
+    ClassifierDiscriminantFunctionBodyC(std::istream &strm);
     //: Load from stream.
     
     ClassifierDiscriminantFunctionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -45,7 +45,7 @@ namespace RavlN {
     virtual UIntT Classify(const VectorC &data) const;
     //: Classifier vector 'data' return the most likely label.
     
-    virtual VectorC Confidence(const VectorC &data) const;
+    virtual VectorC Apply(const VectorC &data) const;
     //: Estimate the confidence for each label.
     // The meaning of the confidence assigned to each label depends
     // on the function used. The higher the confidence the more likely
@@ -79,7 +79,7 @@ namespace RavlN {
     {}
     //: Create classifier from a discriminant function.
     
-    ClassifierDiscriminantFunctionC(istream &strm);
+    ClassifierDiscriminantFunctionC(std::istream &strm);
     //: Load from stream.
     
     ClassifierDiscriminantFunctionC(BinIStreamC &strm);
@@ -111,14 +111,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,ClassifierDiscriminantFunctionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,ClassifierDiscriminantFunctionC &obj) {
     obj = ClassifierDiscriminantFunctionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const ClassifierDiscriminantFunctionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const ClassifierDiscriminantFunctionC &obj) {
     obj.Save(out);
     return out;
   }

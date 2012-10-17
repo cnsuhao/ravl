@@ -26,6 +26,8 @@
 #define CLEVER_BILINEAR
 namespace RavlImageN {
 
+  //! userlevel=Normal
+
   template <class InT, class OutT>
   bool WarpScaleBilinear(const ImageC<InT> &img,
                          const Vector2dC &scale, // Distance between samples in the input image.
@@ -150,8 +152,14 @@ namespace RavlImageN {
 #endif
     return true;
   }
-  //: Scale an image
+  //: Rescale an image
+  //!param: img - input image
+  //!param: scale - output image size is <i>divided</i> by <code>scale</code>
+  //!param: result - output image
+  // If <code>result</code> is empty, the correct size is computed.
 
+  //:--
+  //! userlevel=Develop
   template <class InT, class OutT>
   inline void WS_prepareRow(const ImageC<InT> &img, int srcRowI, double srcColR, double scaleColR,
                      OutT *resPtr, int resCols)

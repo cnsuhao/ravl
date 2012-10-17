@@ -24,16 +24,16 @@ using namespace RavlN;
 
 void displayError(const char *errorMessage)
 {
-  cerr << "#### Error" << endl;
-  cerr << "## " << errorMessage << endl;
+  std::cerr << "#### Error" << std::endl;
+  std::cerr << "## " << errorMessage << std::endl;
 }
 
 void displayException(PythonExceptionC &e)
 {
-  cerr << "#### Error" << endl;
-  cerr << "##  Type:  " << e.Type() << endl;
-  cerr << "##  Value: " << e.Value() << endl;
-  cerr << "##  Trace: " << endl << e.Trace() << endl;
+  std::cerr << "#### Error" << std::endl;
+  std::cerr << "##  Type:  " << e.Type() << std::endl;
+  std::cerr << "##  Value: " << e.Value() << std::endl;
+  std::cerr << "##  Trace: " << endl << e.Trace() << std::endl;
 }
 
 bool queryGlobalThread(PythonC &python)
@@ -44,23 +44,23 @@ bool queryGlobalThread(PythonC &python)
     while (val < 100)
     {
       PythonObjectC x = python.GetValue("x");
- //     cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << endl;
+ //     std::cerr << "## Looking for global 'x': " << (x.IsValid() ? "Found" : "Not found") << std::endl;
       if (x.IsValid())
       {
         if (x.IsInt())
         {
           val = x.Int();
-          cerr << "read(x = " << val << ")" << endl;
+          std::cerr << "read(x = " << val << ")" << std::endl;
         }
         else
         {
-          cerr << "#### Global 'x' is not an int" << endl;
+          std::cerr << "#### Global 'x' is not an int" << std::endl;
           break;
         }
       }
       else
       {
-        cerr << "#### Failed to find global 'x'" << endl;
+        std::cerr << "#### Failed to find global 'x'" << std::endl;
         break;
       }
     }
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     // Initialise the python module
     PythonC python(true);
 
-    cerr << "#### Initialising interpreter" << endl;
+    std::cerr << "#### Initialising interpreter" << std::endl;
     if (!python.Initialised())
     {
       displayError("Failed to initialise interpreter");
@@ -94,11 +94,11 @@ int main(int argc, char **argv)
     }
 
 	  // Run a script from a string
-	  cerr << "#### Initialise global 'x' (from string)" << endl;
+	  std::cerr << "#### Initialise global 'x' (from string)" << std::endl;
 	  const char* scriptInitialise = "x = 0";
     if (!python.Run(scriptInitialise))
     {
-      cerr << "#### Failed to run script" << endl;
+      std::cerr << "#### Failed to run script" << std::endl;
       return -1;
     }
 
@@ -112,10 +112,10 @@ for i in range(0, 100):\n\
   x += 1\n\
   print 'write(x = %d)' % x";
 
-    cerr << "#### Calling loop script (from string)" << endl;
+    std::cerr << "#### Calling loop script (from string)" << std::endl;
     if (!python.Run(scriptLoop))
     {
-      cerr << "#### Failed to run script" << endl;
+      std::cerr << "#### Failed to run script" << std::endl;
       return -1;
     }
 

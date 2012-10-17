@@ -22,7 +22,7 @@
 namespace RavlLogicN {
 
   BinOStreamC &operator<<(BinOStreamC &s,const BindC &bind) { 
-    ONDEBUG(cerr << "operator<<(BinOStreamC &,BindC &) \n");
+    ONDEBUG(std::cerr << "operator<<(BinOStreamC &,BindC &) \n");
     s << ObjIO(bind.Value());
     return s;
   }
@@ -30,7 +30,7 @@ namespace RavlLogicN {
   //: output stream 
   
   BinIStreamC &operator>>(BinIStreamC &s,BindC &bind) {
-    ONDEBUG(cerr << "operator>>(BinIStreamC &,BindC &) \n");
+    ONDEBUG(std::cerr << "operator>>(BinIStreamC &,BindC &) \n");
     s >> ObjIO(bind.Value());
     return s;
   }
@@ -38,20 +38,20 @@ namespace RavlLogicN {
   //: input stream 
   
   BinOStreamC &operator<<(BinOStreamC &out,const HashElemC<LiteralC,BindC> &obj) {  
-    ONDEBUG(cerr << "operator<<(BinOStreamC &,const HashElemC<LiteralC,BindC> &) \n");
+    ONDEBUG(std::cerr << "operator<<(BinOStreamC &,const HashElemC<LiteralC,BindC> &) \n");
     out << ObjIO(obj.GetKey()) << ObjIO(obj.Data().Value()); 
     return out;
   }
   
   BinIStreamC &operator>>(BinIStreamC &in,HashElemC<LiteralC,BindC> &obj) { 
-    ONDEBUG(cerr << "operator>>(BinIStreamC &,HashElemC<LiteralC,BindC> &) \n");
+    ONDEBUG(std::cerr << "operator>>(BinIStreamC &,HashElemC<LiteralC,BindC> &) \n");
     in >> ObjIO(obj.GetKey()) >> ObjIO(obj.Data().Value()); 
     return in;
   }
   
   //: Construct from a binary stream.
   
-  BindSetBodyC::BindSetBodyC(istream &strm) 
+  BindSetBodyC::BindSetBodyC(std::istream &strm) 
     : top(0)
   { RavlAssert(0);  }
   
@@ -86,7 +86,7 @@ namespace RavlLogicN {
   
   //: Save to binary stream 'out'.
   
-  bool BindSetBodyC::Save(ostream &out) const {
+  bool BindSetBodyC::Save(std::ostream &out) const {
     RavlAssert(0);
     return true;
   }
@@ -154,9 +154,9 @@ namespace RavlLogicN {
   //: Undo bindings to marked place.
   
   void BindSetBodyC::Undo(BindMarkT bm) {
-    ONDEBUG(cerr << "Undo to :" << ((void *) bm) << "\n");
+    ONDEBUG(std::cerr << "Undo to :" << ((void *) bm) << "\n");
     while(top != bm) {
-      ONDEBUG(cerr << "top :" << ((void *) top) << "\n");
+      ONDEBUG(std::cerr << "top :" << ((void *) top) << "\n");
       RavlAssert(top != 0);
       BindMarkT nxt = top->Data().Next();
       Del(top,true);
@@ -168,9 +168,9 @@ namespace RavlLogicN {
   //: Undo bindings done after and including var.
   
   void BindSetBodyC::Undo(LiteralC var) {
-    ONDEBUG(cerr << "Undo to :" << ((void *) bm) << "\n");
+    ONDEBUG(std::cerr << "Undo to :" << ((void *) bm) << "\n");
     while(top->GetKey() != var) {
-      ONDEBUG(cerr << "top :" << ((void *) top) << "\n");
+      ONDEBUG(std::cerr << "top :" << ((void *) top) << "\n");
       RavlAssert(top != 0);
       BindMarkT nxt = top->Data().Next();
       Del(top,true);
@@ -200,7 +200,7 @@ namespace RavlLogicN {
     return ret;
   }
   
-  ostream &operator<<(ostream &s,const BindSetC &binds) {
+  std::ostream &operator<<(std::ostream &s,const BindSetC &binds) {
     if(!binds.IsValid()) {
       s << "(NIL)";
       return s;
@@ -214,8 +214,8 @@ namespace RavlLogicN {
   }
   //: output stream 
   
-  istream &operator>>(istream &s,BindSetC &binds) {
-    RavlAssertMsg(0,"operator<<(istream &s,BindSetC &binds), Not implemented. ");
+  std::istream &operator>>(std::istream &s,BindSetC &binds) {
+    RavlAssertMsg(0,"operator<<(std::istream &s,BindSetC &binds), Not implemented. ");
     return s;
   }
   //: input stream 

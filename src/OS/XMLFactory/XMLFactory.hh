@@ -294,8 +294,8 @@ namespace RavlN {
     mutable RavlN::HSetC<RavlN::StringC> m_usedAttributes;
 
   private:
-    XMLFactoryNodeC(const XMLFactoryNodeC &other)
-    { RavlAssert(0); }
+    XMLFactoryNodeC(const XMLFactoryNodeC &other);
+    //! Copy constructor not supported
 
     friend class XMLFactoryC;
   };
@@ -621,8 +621,8 @@ namespace RavlN {
     bool UseComponent(const XMLFactoryContextC& currentContext,
                       const StringC &name,
                       DataT &data,
-                      bool suppressErrorMessages = false,
-                      const type_info &defaultType = typeid(void),
+                      bool suppressErrors = false,
+                      const std::type_info &defaultType = typeid(void),
                       XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES
                       ) const
     {
@@ -631,11 +631,14 @@ namespace RavlN {
                                                                                      name,
                                                                                      typeid(DataT),
                                                                                      handle,
-                                                                                     suppressErrorMessages,
+                                                                                     suppressErrors,
                                                                                      defaultType,
                                                                                      searchScope
-                                                                                     ))
+                                                                                     )) {
+        if(!suppressErrors)
+          throw RavlN::ExceptionBadConfigC("Failed to use component");
         return false;
+      }
       RavlAssert(handle.IsValid());
       data = handle.Data();
       return true;
@@ -645,19 +648,24 @@ namespace RavlN {
     bool UseComponent(const XMLFactoryContextC& currentContext,
                       const StringC &name,
                       RCWrapAbstractC &data,
-                      bool suppressErrorMessages = false,
-                      const type_info &defaultType = typeid(void),
+                      bool suppressErrors = false,
+                      const std::type_info &defaultType = typeid(void),
                       XMLFactorySearchScopeT searchScope = XMLFACTORY_SEARCH_PARENT_NODES
                       ) const
     {
-      return const_cast<XMLFactoryNodeC &>(currentContext.INode()).UseComponentInternal(const_cast<XMLFactoryC &>(*this),
+      if(!const_cast<XMLFactoryNodeC &>(currentContext.INode()).UseComponentInternal(const_cast<XMLFactoryC &>(*this),
                                                                                      name,
                                                                                      typeid(void),
                                                                                      data,
-                                                                                     suppressErrorMessages,
+                                                                                     suppressErrors,
                                                                                      defaultType,
                                                                                      searchScope
-                                                                                     );
+                                                                                     )) {
+        if(!suppressErrors)
+          throw RavlN::ExceptionBadConfigC("Failed to use component");
+        return false;
+      }
+      return true;
     }
     //: Get named component, or create it if not found.
 
@@ -676,7 +684,7 @@ namespace RavlN {
     bool CreateComponent(const XMLFactoryContextC& currentContext,
                          const StringC &name,
                          DataT &data,
-                         bool suppressErrorMessages = false
+                         bool suppressErrors = false
                          )
     {
       RCWrapC<DataT> handle;
@@ -689,12 +697,18 @@ namespace RavlN {
       //StringC fullName = currentNode.Path() + ":" + redirect;
 
       // Does spec for component exist in this node ?
-      if(!currentContext.ChildContext(redirect,newNode))
+      if(!currentContext.ChildContext(redirect,newNode)) {
+        if(!suppressErrors)
+          throw RavlN::ExceptionBadConfigC("Failed to find child");
         return false;
+      }
       //newNode.SetFactory(*this);
 
-      if(!CreateComponent(newNode,data))
+      if(!CreateComponent(newNode,data)) {
+        if(!suppressErrors)
+          throw RavlN::ExceptionBadConfigC("Failed to create component");
         return false;
+      }
 
       // Store ready for reuse.
       const_cast<XMLFactoryNodeC &>(currentContext.INode()).AddChild(redirect,newNode.INode());
@@ -709,6 +723,12 @@ namespace RavlN {
     static bool RegisterTypeAlias(const char *originalName,const char *newName);
     //: Register an alias for a type. This must be done after the type is registered.
     //: Note: This is NOT thread safe.
+
+    static void ListKnownTypes(CollectionC<StringC> &types);
+    //: Generate a list of known types.
+
+    static void DumpKnownTypes(std::ostream &strm = std::cout);
+    //: Write known types to a stream.
 
     template<class DataT>
     static RCWrapAbstractC DefaultFactoryFunc(const XMLFactoryContextC &node)
@@ -794,8 +814,8 @@ namespace RavlN {
     friend class XMLFactoryNodeC;
 
   private:
-    XMLFactoryC(const XMLFactoryC &)
-    { RavlAssert(0); }
+    XMLFactoryC(const XMLFactoryC &);
+    //: Copy constructor, not supported!
   };
 
   //! userlevel=Normal

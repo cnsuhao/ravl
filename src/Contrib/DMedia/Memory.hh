@@ -117,7 +117,8 @@ namespace RavlImageN
     VLNodePoolDataBodyC(const VLServerC &nserver,DMbuffer nbuff)
       : server(nserver),
 	valid(true),
-	buff(nbuff)
+	buff(nbuff),
+	gotInfo(false)
       {}
     //: Constructor.
     

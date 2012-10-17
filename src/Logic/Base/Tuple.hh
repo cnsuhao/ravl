@@ -42,13 +42,13 @@ namespace RavlLogicN {
     {}
     //: Create a tuple from an array of literals.
     
-    TupleBodyC(istream &strm);
+    TupleBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     TupleBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -82,7 +82,7 @@ namespace RavlLogicN {
     { args[n] = s; }
     //: Set the value of an arg.
 
-    virtual void Dump(ostream &out);
+    virtual void Dump(std::ostream &out);
     //: Dump info in human readable format to stream 'out'.
 
     virtual StringC Name() const;
@@ -189,7 +189,7 @@ namespace RavlLogicN {
     }
     //: Create a tuple containing two literals.
 
-    TupleC(istream &strm);
+    TupleC(std::istream &strm);
     //: Load from stream.
 
     TupleC(BinIStreamC &strm);

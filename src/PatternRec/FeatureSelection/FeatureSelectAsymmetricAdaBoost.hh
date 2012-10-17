@@ -20,8 +20,7 @@ namespace RavlN {
   //! userlevel=Develop
   //: Asymmetric ADA boost feature selector body.
   
-  class FeatureSelectAsymmetricAdaBoostBodyC
-    : public FeatureSelectorBodyC
+  class FeatureSelectAsymmetricAdaBoostBodyC : public FeatureSelectorBodyC
   {
   public:
     FeatureSelectAsymmetricAdaBoostBodyC(RealT weight, UIntT numFeatures);
@@ -33,16 +32,16 @@ namespace RavlN {
     FeatureSelectAsymmetricAdaBoostBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save(ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
-    virtual bool Save (BinOStreamC &out) const;
+    virtual bool Save(BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual SArray1dC<IndexC> SelectFeatures(DesignClassifierSupervisedC &designer,
-					     const DataSetVectorLabelC &train, 
-					     const DataSetVectorLabelC &test,
-					     ClassifierC &classifier) const;
+        const DataSetVectorLabelC &train,
+        const DataSetVectorLabelC &test,
+        ClassifierC &classifier) const;
     //: Select feature subset which gives optimal performance
     // This is evaluated using a given 
     //!param: designer - supervised classifier designer used to create classifiers
@@ -54,7 +53,7 @@ namespace RavlN {
   private:
     bool AlreadyUsed(const SArray1dC<IndexC> &featureSet, IndexC feature) const;
     VectorC NormaliseWeights(const VectorC &weights) const;
-    
+
   protected:
     RealT m_weight;
     UIntT m_numFeatures;
@@ -64,18 +63,19 @@ namespace RavlN {
   //: Asymmetric ADA boost feature selector.
   // It is able to give a relative weight to each of the labels.
   
-  class FeatureSelectAsymmetricAdaBoostC 
-    : public FeatureSelectorC
+  class FeatureSelectAsymmetricAdaBoostC : public FeatureSelectorC
   {
   public:
     FeatureSelectAsymmetricAdaBoostC()
-    {}
+    {
+    }
     //: Default constructor.
     // Creates an invalid handle.
 
-    FeatureSelectAsymmetricAdaBoostC(RealT weight, UIntT numFeatures)
-      : FeatureSelectorC(*new FeatureSelectAsymmetricAdaBoostBodyC(weight, numFeatures))
-    {}
+    FeatureSelectAsymmetricAdaBoostC(RealT weight, UIntT numFeatures) :
+        FeatureSelectorC(*new FeatureSelectAsymmetricAdaBoostBodyC(weight, numFeatures))
+    {
+    }
     //: Constructor
     //!param: weight      - A priori probability for labels. Greater than 0.5 favours label1, less than 0.5 favours label0. 0 < weight < 1.
     //!param: numFeatures - determines how many features will be found to build the classifier.
@@ -87,18 +87,20 @@ namespace RavlN {
     //: Load from binary stream.
     
   protected:
-    FeatureSelectAsymmetricAdaBoostC(FeatureSelectAsymmetricAdaBoostBodyC &bod)
-      : FeatureSelectorC(bod)
-    {}
+    FeatureSelectAsymmetricAdaBoostC(FeatureSelectAsymmetricAdaBoostBodyC &bod) :
+        FeatureSelectorC(bod)
+    {
+    }
     //: Body constructor.
 
-    FeatureSelectAsymmetricAdaBoostC(FeatureSelectAsymmetricAdaBoostBodyC *bod)
-      : FeatureSelectorC(bod)
-    {}
+    FeatureSelectAsymmetricAdaBoostC(FeatureSelectAsymmetricAdaBoostBodyC *bod) :
+        FeatureSelectorC(bod)
+    {
+    }
     //: Body ptr constructor.
     
   };
-  
+
 }
 
 #endif

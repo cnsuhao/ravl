@@ -44,7 +44,7 @@ namespace RavlN {
   bool DefsMkFileC::Load(const StringC &fn,bool doChecking) {
     TextFileC af;
     if(!af.Load(fn)) {
-      cerr << "ERROR: Failed to load defs file :'" << fn << "'\n";
+      std::cerr << "ERROR: Failed to load defs file :'" << fn << "'\n";
       return false;
     }
     defsFilename = fn;
@@ -60,7 +60,7 @@ namespace RavlN {
   bool DefsMkFileC::Load(TextFileC &af,bool doChecking,HashC<StringC,TextFragmentC> &frags) {
     bool ret = true;
     tab.Empty();
-    //  af.Dump(cout);
+    //  af.Dump(std::cout);
     int ifnest = 0;
     bool ignore = false;
     bool addTo = false;
@@ -85,7 +85,7 @@ namespace RavlN {
 	return false;
       }
       if(tab.IsElm(tag)) {
-	cerr << "ERROR: repeated definition of variable '" << tag <<"' at " << tc.PositionTxt() << "  Value:" << tab[tag] << endl;
+	cerr << "ERROR: repeated definition of variable '" << tag <<"' at " << tc.PositionTxt() << "  Value:" << tab[tag] << std::endl;
 	return false;
       }
       if(!tc.IsElm())
@@ -112,8 +112,8 @@ namespace RavlN {
       }
       if(doChecking && !ignore) { // Check tags ?
 	if(!CheckTag(tag)) {
-	  cerr << "ERROR: unrecognised tag '" << tag <<"' at " << tc.PositionTxt() << "\n";
-	  cerr << "Line :'" << tc.LineText().before('\n') << "'" << endl;
+	  std::cerr << "ERROR: unrecognised tag '" << tag <<"' at " << tc.PositionTxt() << "\n";
+	  std::cerr << "Line :'" << tc.LineText().before('\n') << "'" << std::endl;
 	  ret = false; // Check failed...
 	}
       }
@@ -129,7 +129,7 @@ namespace RavlN {
 	  }
 	}
 	if(!addTo) {
-	  cerr << "ERROR: assignment expected at " << tc.PositionTxt() << "\n";
+	  std::cerr << "ERROR: assignment expected at " << tc.PositionTxt() << "\n";
 	  ret = false;
 	  tc.NextLine();
 	  continue; // Skip line.
@@ -177,17 +177,18 @@ namespace RavlN {
               }
             }
 	    if(tc.Char() != '\n') {
-	      cerr << "Escaped : " <<  ((int) tc.Char()) << " " << ((int) '\\') << endl;
-	      cerr << " '" << tc.LineText() << "'\n";
+	      std::cerr << "Escaped : " <<  ((int) tc.Char()) << " " << ((int) '\\') << std::endl;
+	      std::cerr << " '" << tc.LineText() << "'\n";
 	      for(unsigned int i = 0;i < tc.LineText().length();i++) {
 		cerr << (int) tc.LineText()[i] << " ";
 	      }
-	      cerr << endl;
+	      std::cerr << std::endl;
 	      data += tc.Char(); // Added escaped character.
 	    }
 	    break;
 	  case '#':
 	    tc.NextLine();
+	    /* no break */
 	  case '\n':
 	    nf.End() = tc;
 	    nf.End().PrevChar();
@@ -196,8 +197,9 @@ namespace RavlN {
           case '\r':
             break; // Discard line feeds.
 	  default:
-	    //cout << tc.Char();
+	    //std::cout << tc.Char();
 	    data += tc.Char();
+	    /* no break */
 	  }
 	if(done)
 	  break;
@@ -214,7 +216,7 @@ namespace RavlN {
 	  tab[tag] = data;
 	  frags[tag] = nf;
 	}
-	//cerr << tag << " = " << data << endl;
+	//cerr << tag << " = " << data << std::endl;
       }
     }
     return ret;

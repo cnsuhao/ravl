@@ -71,7 +71,7 @@ protected:
 
 bool SubstsC::Process(StringC &dir,DefsMkFileC &where) {
   if(IsVerbose())
-    cerr << "Processing: " << dir << "\n";
+    std::cerr << "Processing: " << dir << "\n";
 
   StringListC hdrs ; 
   if ( doHeaders )
@@ -86,7 +86,7 @@ bool SubstsC::Process(StringC &dir,DefsMkFileC &where) {
   
   for(DLIterC<StringC> it(hdrs);it.IsElm();it.Next()) {
     if(it.Data().length() <= 3) {
-      cerr << "WARNING: Short header file name detected :'" << it.Data() << "'\n";
+      std::cerr << "WARNING: Short header file name detected :'" << it.Data() << "'\n";
       continue; // Far too short !
     }
 
@@ -100,14 +100,14 @@ bool SubstsC::Process(StringC &dir,DefsMkFileC &where) {
     //cerr << file << " ";
     //cerr << " (" << file << ")";
     if(!file.Exists()) {
-      cerr <<"WARNING: No access to file:" << file << "\n";
+      std::cerr <<"WARNING: No access to file:" << file << "\n";
       continue; // No access to file.
     }
     TextFileC hdrfile(file); 
     hdrfile.SetReadonly(false);
     
     if(!hdrfile.IsLoaded()) {
-      cerr << "ERROR: Failed to load file '" << file << "'\n";
+      std::cerr << "ERROR: Failed to load file '" << file << "'\n";
       continue;
     }
     
@@ -120,10 +120,10 @@ bool SubstsC::Process(StringC &dir,DefsMkFileC &where) {
       if(!dryRun)
 	cerr << "Updating " << file << "\t" << lines << " occurences" <<endl;
       else
-	cerr << "Updating " << file << " (dryrun)" << "\t" << lines << " occurences"<< endl;
+	cerr << "Updating " << file << " (dryrun)" << "\t" << lines << " occurences"<< std::endl;
       if(!dryRun) {
 	if(!hdrfile.Save())
-	  cerr << "Failed to save file '" << file << "' \n"; 
+	  std::cerr << "Failed to save file '" << file << "' \n"; 
       }
     }
   }
@@ -149,7 +149,7 @@ bool SubstsC::Process(StringC &dir,DefsMkFileC &where) {
   IntT atline = 0;
   while (true){
   atline = buff.FindLineMatch("//! " + label, atline+1 ) ;
-  cerr << "\n atline :" << atline ;
+  std::cerr << "\n atline :" << atline ;
   if ( atline < 0 ) break ;
   if(buff[atline].gsub(original,newun) > 0)
   {  buff.SetModified()  ; ++ count ; }

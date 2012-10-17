@@ -45,7 +45,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeBoolC::GeneTypeBoolC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_bias(0.5)
   {
     ByteT version = 0;
     strm >> version;
@@ -57,7 +58,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeBoolC::GeneTypeBoolC(std::istream &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_bias(0.5)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -133,6 +135,12 @@ namespace RavlN { namespace GeneticN {
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneTypeBoolC,"RavlN::GeneticN::GeneTypeBoolC");
   static RavlN::TypeNameC g_typePtrGeneTypeBool(typeid(GeneTypeBoolC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneTypeBoolC>");
 
+  //! Access a gene type with 50/50 bias
+  const GeneTypeBoolC &GeneTypeBoolBiasHalf() {
+    static GeneTypeBoolC::RefT ret = new GeneTypeBoolC("BiasHalf",0.5);
+    return *ret;
+  }
+
   // ------------------------------------------------------------------
 
   //! Factory constructor
@@ -150,7 +158,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneBoolC::GeneBoolC(BinIStreamC &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(false)
   {
     ByteT version = 0;
     strm >> version;
@@ -161,7 +170,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneBoolC::GeneBoolC(std::istream &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(false)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -191,6 +201,17 @@ namespace RavlN { namespace GeneticN {
     return true;
   }
 
+  //! Generate an instance of the class.
+  void GeneBoolC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      bool *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<bool>(m_value);
+    }
+  }
+
   //! Test is value is effectively equal to this within tolerances specified in the type.
   bool GeneBoolC::IsEffectivelyEqual(const GeneC &other) const {
     if(other.Type() != Type()) return false;
@@ -198,6 +219,17 @@ namespace RavlN { namespace GeneticN {
     if(og == 0)
       return false;
     return (og->Value() == m_value);
+  }
+
+  //! Dump description in human readable form.
+  void GeneBoolC::Dump(std::ostream &strm,UIntT indent) const
+  {
+    GeneC::Dump(strm,indent);
+    strm << " Value=";
+    if(m_value)
+      strm << "True";
+    else
+      strm << "False";
   }
 
 

@@ -26,7 +26,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  DesignClassifierSupervisedBodyC::DesignClassifierSupervisedBodyC(istream &strm)
+  DesignClassifierSupervisedBodyC::DesignClassifierSupervisedBodyC(std::istream &strm)
     : DesignFunctionSupervisedBodyC(strm)
   {}
   
@@ -38,7 +38,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignClassifierSupervisedBodyC::Save (ostream &out) const 
+  bool DesignClassifierSupervisedBodyC::Save (std::ostream &out) const 
   { return DesignFunctionSupervisedBodyC::Save(out); }
   
   //: Writes object to stream, can be loaded using constructor
@@ -70,7 +70,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignClassifierSupervisedC::DesignClassifierSupervisedC(istream &strm)
+  DesignClassifierSupervisedC::DesignClassifierSupervisedC(std::istream &strm)
     : DesignFunctionSupervisedC(RAVL_VIRTUALCONSTRUCTOR(strm,DesignClassifierSupervisedBodyC))    
   {}
   
@@ -101,13 +101,13 @@ namespace RavlN {
 #include "Ravl/RCHandleV.hh"
 
 #pragma instantiate RavlN::SArray1dIter3C<RavlN::MeanCovarianceC,RavlN::VectorC,RavlN::MatrixRSC>
-#pragma instantiate istream & RavlN::operator>>(istream&,RavlN::SArray1dC<RavlN::MeanCovarianceC>&)
+#pragma instantiate std::istream & RavlN::operator>>(std::istream&,RavlN::SArray1dC<RavlN::MeanCovarianceC>&)
 #pragma instantiate RavlN::BinIStreamC & RavlN::operator>>(RavlN::BinIStreamC&,RavlN::SArray1dC<RavlN::MeanCovarianceC>&)
-#pragma instantiate ostream & RavlN::operator<<(ostream&,const RavlN::SArray1dC<RavlN::MeanCovarianceC>&)
-#pragma instantiate ostream & RavlN::operator<<(ostream&,const RavlN::SArray1dC<double>&) 
+#pragma instantiate std::ostream & RavlN::operator<<(std::ostream&,const RavlN::SArray1dC<RavlN::MeanCovarianceC>&)
+#pragma instantiate std::ostream & RavlN::operator<<(std::ostream&,const RavlN::SArray1dC<double>&) 
 #pragma instantiate RavlN::BinOStreamC & RavlN::operator<<(RavlN::BinOStreamC&,const RavlN::SArray1dC<RavlN::MeanCovarianceC>&)
 #pragma instantiate RavlN::SArray1dIter4C<RavlN::MeanCovarianceC,double,RavlN::MatrixRSC,double>
-#pragma instantiate RavlN::DesignClassifierSupervisedBodyC* ::RavlN::VCLoad(istream&, RavlN::DesignClassifierSupervisedBodyC*)
+#pragma instantiate RavlN::DesignClassifierSupervisedBodyC* ::RavlN::VCLoad(std::istream&, RavlN::DesignClassifierSupervisedBodyC*)
 #pragma instantiate RavlN::DesignClassifierSupervisedBodyC* ::RavlN::VCLoad(RavlN::BinIStreamC & , RavlN::DesignClassifierSupervisedBodyC*)
 
 #endif 

@@ -23,8 +23,8 @@ namespace RavlN {
   
 
   template<class IT,class DIT,class BT> class BinListC;
-  template<class IT,class DIT,class BT> ostream &operator<<(ostream &s,const BinListC<IT,DIT,BT> &);
-  template<class IT,class DIT,class BT> istream &operator>>(istream &s,BinListC<IT,DIT,BT> &);
+  template<class IT,class DIT,class BT> std::ostream &operator<<(std::ostream &s,const BinListC<IT,DIT,BT> &);
+  template<class IT,class DIT,class BT> std::istream &operator>>(std::istream &s,BinListC<IT,DIT,BT> &);
 
   //: Binned table of lists.
   // SMALL OBJECT <P>
@@ -84,11 +84,11 @@ namespace RavlN {
     BinTableC<IT,DIT,DListC<BT> > table;
     
 #if !defined(__sgi__) && !(RAVL_COMPILER_VISUALCPP && !RAVL_COMPILER_VISUALCPPNET)
-    friend ostream &operator<< <>(ostream &s,const BinListC<IT,DIT,BT> &);
-    friend istream &operator>> <>(istream &s,BinListC<IT,DIT,BT> &);
+    friend std::ostream &operator<< <>(std::ostream &s,const BinListC<IT,DIT,BT> &);
+    friend std::istream &operator>> <>(std::istream &s,BinListC<IT,DIT,BT> &);
 #else
-    friend ostream &operator<<(ostream &s,const BinListC<IT,DIT,BT> &);
-    friend istream &operator>>(istream &s,BinListC<IT,DIT,BT> &);
+    friend std::ostream &operator<<(std::ostream &s,const BinListC<IT,DIT,BT> &);
+    friend std::istream &operator>>(std::istream &s,BinListC<IT,DIT,BT> &);
 #endif
   };
   
@@ -103,14 +103,14 @@ namespace RavlN {
   }
   
   template<class IT,class DIT,class BT>
-  ostream &operator<<(ostream &s,const BinListC<IT,DIT,BT> &tab) {
+  std::ostream &operator<<(std::ostream &s,const BinListC<IT,DIT,BT> &tab) {
     s << tab.table;
     return s;
   }
   //: Write bin list to a stream.
   
   template<class IT,class DIT,class BT>
-  istream &operator>>(istream &s,BinListC<IT,DIT,BT> &tab) {
+  std::istream &operator>>(std::istream &s,BinListC<IT,DIT,BT> &tab) {
     s >> tab.table;
     return s;
   }

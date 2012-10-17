@@ -43,7 +43,7 @@ namespace RavlN
     TimedTriggerQueueBodyC();
     //: Default constructor
 
-    ~TimedTriggerQueueBodyC();
+    virtual ~TimedTriggerQueueBodyC();
     //: Destructor.
     // This will not return until shutdown is complete.
     

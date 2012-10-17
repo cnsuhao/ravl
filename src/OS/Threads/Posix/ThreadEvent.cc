@@ -37,7 +37,7 @@ namespace RavlN
     if(!m_occurred)
       Post();
     if(m_waiting != 0)
-      cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
+      std::cerr << "PThread::~ThreadEvent(), WARNING: Called while threads waiting. \n";
   }
   //: Destructor.
 

@@ -107,13 +107,13 @@ namespace RavlImageN {
   
   template<class CompT>
   inline
-  istream &operator>>(istream &strm,RGBValueC<CompT> &val) 
+  std::istream &operator>>(std::istream &strm,RGBValueC<CompT> &val) 
   { return strm >> ((TFVectorC<CompT,3> &)(val)); }
   //: Stream input.
   
   template<class CompT>
   inline
-  ostream &operator<<(ostream &strm,const RGBValueC<CompT> &val) 
+  std::ostream &operator<<(std::ostream &strm,const RGBValueC<CompT> &val) 
   { return strm << ((const TFVectorC<CompT,3> &)(val)); }
   //: Stream output.
   
@@ -129,7 +129,7 @@ namespace RavlImageN {
   { return strm << ((const TFVectorC<CompT,3> &)(val)); }
   //: Binary stream output
 
-  inline istream &operator>>(istream &strm,RGBValueC<ByteT> &val) { 
+  inline std::istream &operator>>(std::istream &strm,RGBValueC<ByteT> &val) { 
     int r,g,b;
     strm >> r >> g >> b;
     val.Set(r,g,b);
@@ -138,7 +138,7 @@ namespace RavlImageN {
   //: Stream input.
   // This is to make sure bytes are handled as numeric values.
   
-  inline ostream &operator<<(ostream &strm,const RGBValueC<ByteT> &val) 
+  inline std::ostream &operator<<(std::ostream &strm,const RGBValueC<ByteT> &val) 
   { return strm << ((int) val.Red()) << ' ' << ((int) val.Green()) << ' ' << ((int) val.Blue()); }
   //: Stream output.
   // This is to make sure bytes are handled as numeric values.

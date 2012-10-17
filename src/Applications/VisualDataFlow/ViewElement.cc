@@ -39,13 +39,13 @@ namespace RavlDFN {
       component(false),
       selected(false)
   {
-    ONDEBUG(cerr << "ViewElementBodyC::ViewElementBodyC(), Object=" << nobj.Name() << " At=" << at << "\n");
+    ONDEBUG(std::cerr << "ViewElementBodyC::ViewElementBodyC(), Object=" << nobj.Name() << " At=" << at << "\n");
   }
   
   //: Test if this view element contains 'pos'.
   
   bool ViewElementBodyC::Contains(const Index2dC &pos) const {
-    ONDEBUG(cerr <<"ViewElementBodyC::Contains(" << pos << "), At=" << at << " Size=" << object.RenderSize() << "\n");
+    ONDEBUG(std::cerr <<"ViewElementBodyC::Contains(" << pos << "), At=" << at << " Size=" << object.RenderSize() << "\n");
     Index2dC off = pos - at;
     return object.RenderSize().Contains(off);
   }
@@ -85,7 +85,7 @@ namespace RavlDFN {
   
   bool ViewElementBodyC::Render(GUIViewBodyC &view) {
     if(!object.IsValid()) {
-      cerr << "ViewElementBodyC::Render(), Asked to render invalid object. \n";
+      std::cerr << "ViewElementBodyC::Render(), Asked to render invalid object. \n";
       return false;
     }
     //if(component)
@@ -106,7 +106,7 @@ namespace RavlDFN {
   
   DFMouseActionT ViewElementBodyC::MouseClick(GUIViewBodyC &view,const MouseEventC &me) {
     if(!object.IsValid()) {
-      cerr << "ViewElementBodyC::MouseClick(), ERROR: No object. \n";
+      std::cerr << "ViewElementBodyC::MouseClick(), ERROR: No object. \n";
       return DFMA_NONE;
     }
     MouseEventC nme(nme.Col() - at.Col(),nme.Row() - at.Row(),nme.RawState(),nme.RawChanged(),nme.Time());
@@ -158,13 +158,13 @@ namespace RavlDFN {
   {
     src.AddPart(ViewLinkC(*this));
     dst.AddPart(ViewLinkC(*this));
-    ONDEBUG(cerr << "ViewLinkBodyC::ViewLinkBodyC(), Called. \n");
+    ONDEBUG(std::cerr << "ViewLinkBodyC::ViewLinkBodyC(), Called. \n");
   }
   
   //: Render object in view.
   
   bool ViewLinkBodyC::Render(GUIViewBodyC &view) {
-    //ONDEBUG(cerr << "ViewLinkBodyC::Render(GUIViewBodyC &), Called. \n");
+    //ONDEBUG(std::cerr << "ViewLinkBodyC::Render(GUIViewBodyC &), Called. \n");
     view.DrawLine(view.DrawGCBlack(),src.AttachPoint(),dst.AttachPoint());
     //cerr << "ViewLinkBodyC::Render(GUIViewBodyC &), Called. From:"  << src.AttachPoint() << " to " << dst.AttachPoint() << " \n";
     return true;

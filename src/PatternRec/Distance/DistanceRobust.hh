@@ -36,13 +36,13 @@ namespace RavlN {
     DistanceRobustBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
     
-    DistanceRobustBodyC(istream &strm);
+    DistanceRobustBodyC(std::istream &strm);
     //: Load from stream.
     
     DistanceRobustBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -93,7 +93,7 @@ namespace RavlN {
     //: Default constructor.
     // creates an invalid handle.
     
-    DistanceRobustC(istream &strm);
+    DistanceRobustC(std::istream &strm);
     //: Load from stream.
     
     DistanceRobustC(BinIStreamC &strm);
@@ -101,14 +101,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DistanceRobustC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DistanceRobustC &obj) {
     obj = DistanceRobustC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DistanceRobustC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DistanceRobustC &obj) {
     obj.Save(out);
     return out;
   }

@@ -28,22 +28,22 @@ int main()
   
   // Have a look at a few values.
   
-  cout << "Size: " << s.Size() << '\n';
-  cout << "Pop:  " << s.Pop()   << '\n';
-  cout << "Top:  " << s.Top()   << '\n';
-  cout << "First:" << s.First()   << '\n';
+  std::cout << "Size: " << s.Size() << '\n';
+  std::cout << "Pop:  " << s.Pop()   << '\n';
+  std::cout << "Top:  " << s.Top()   << '\n';
+  std::cout << "First:" << s.First()   << '\n';
   
   // Iterate through the stack contents.
   
   for(StackIterC<int> it(s);it.IsElm();it.Next())
-    cout << it.Data() << ' ';
-  cout<< '\n';
+    std::cout << it.Data() << ' ';
+  std::cout<< '\n';
   
   // Remove all items for the stack.
   
   s.Empty();
   
-  cout << "Size: " << s.Size() << '\n';
+  std::cout << "Size: " << s.Size() << '\n';
   
   return 0;
 }

@@ -17,4 +17,5 @@ int main()
   cout << "CV 2 RAVL: " << IplImage2RavlImage(im, out) << endl;
   cvReleaseImage(&im);
   Save("@X", out);
+  return 0;
 }

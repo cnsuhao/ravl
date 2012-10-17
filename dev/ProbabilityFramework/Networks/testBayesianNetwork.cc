@@ -100,9 +100,10 @@ int main() {
     PropositionSetC prop(bayesianNetwork.VariableSet(), propSet);
     ProbabilityDistributionC pdf = bayesianNetwork.CalculateDistribution(Burglary, PropositionSetC(bayesianNetwork.VariableSet(), propSet));
 
-    cerr << pdf.ToString() << endl;
+    std::cerr << pdf.ToString() << std::endl;
   }
   catch(ExceptionC& e) {
-    cerr << "Caught exception: " << e.Text() << endl;
+    std::cerr << "Caught exception: " << e.Text() << std::endl;
   }
+  return 0;
 }

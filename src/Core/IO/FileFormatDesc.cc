@@ -134,7 +134,7 @@ namespace RavlN {
   
   //: Dump conversion to out.
   
-  void FileFormatDescC::DumpConv(ostream &out) const {
+  void FileFormatDescC::DumpConv(std::ostream &out) const {
     if(conv.IsEmpty())
       return ;
     ConstDLIterC<DPConverterBaseC> it(conv);

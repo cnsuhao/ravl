@@ -94,7 +94,7 @@ namespace RavlImageN {
     }
     //: Test if we're at the end of the stream.
   protected:
-    bool SetupFormat(const type_info &ti);
+    bool SetupFormat(const std::type_info &ti);
     //: Setup input format.
     // Must be called after header has been read.
     
@@ -130,7 +130,7 @@ namespace RavlImageN {
     { return fout; }
     //: Access output stream.
   protected:
-    bool SetupFormat(const type_info &ti);
+    bool SetupFormat(const std::type_info &ti);
     //: Setup output format.
     
     OStreamC fout;
@@ -228,7 +228,7 @@ namespace RavlImageN {
     if(BaseIsGetEOS())
       return ret;
     if(!Read(ret))
-      cerr << "DPIImageJPegBodyC<PixelT>::Get(), Error reading file.\n";
+      std::cerr << "DPIImageJPegBodyC<PixelT>::Get(), Error reading file.\n";
     return ret;
   }
   
@@ -252,7 +252,7 @@ namespace RavlImageN {
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer)) {
       // If we get here, the JPEG code has signaled an error.
-      cerr << "DPIImageJPegBodyC<PixelT>::Read(), WARNING: Error reading image. \n";
+      std::cerr << "DPIImageJPegBodyC<PixelT>::Read(), WARNING: Error reading image. \n";
       return false;
     }
     
@@ -315,7 +315,7 @@ namespace RavlImageN {
   template<class PixelT>
   bool DPOImageJPegBodyC<PixelT>::Put(const ImageC<PixelT> &dat) {
     if(!initalised) {
-      cerr << "DPOImageJPegBodyC<PixelT>::Write(), Not initalised. \n";
+      std::cerr << "DPOImageJPegBodyC<PixelT>::Write(), Not initalised. \n";
       return false;
     }
     if(!fout.good())
@@ -341,7 +341,7 @@ namespace RavlImageN {
     
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer)) {
-      cerr << "DPOImageJPegBodyC<PixelT>::Write(), Error found. \n";
+      std::cerr << "DPOImageJPegBodyC<PixelT>::Write(), Error found. \n";
       // If we get here, the JPEG code has signaled an error.
       return false;
     }

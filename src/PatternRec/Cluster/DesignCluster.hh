@@ -41,7 +41,10 @@ namespace RavlN {
     //: Writes object to stream, can be loaded using constructor
     
     virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in);
-    //: Create a clasifier.
+    //: Create a cluster on the input data
+
+    virtual SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT> & weights);
+    //: Create a cluster based on weighted input data.
     
   protected:
   };
@@ -88,6 +91,10 @@ namespace RavlN {
     { return Body().Cluster(in); }
     //: Compute cluster means.
     
+    SArray1dC<MeanCovarianceC> Cluster(const SampleC<VectorC> &in, const SampleC<RealT>&weights)
+      { return Body().Cluster(in, weights); }
+    //: Compute cluster means on weighted input data
+
   };
   
   inline istream &operator>>(istream &strm,DesignClusterC &obj) {

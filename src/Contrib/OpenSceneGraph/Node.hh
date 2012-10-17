@@ -25,9 +25,10 @@ namespace RavlOSGN
 {
   class NodeC;
   class NodeCallbackC;
+  class NodeVisitorC;
   using RavlN::XMLFactoryContextC;
   
-  // Class for holding a reference back an arbitary object.
+  // Class for holding a reference back an arbitrary object.
 
   class NodeRefC
     : public osg::Referenced
@@ -161,7 +162,12 @@ namespace RavlOSGN
     
     virtual RavlN::Signal0C &SigResize() const;
     //: Access resize signal
-    
+
+    void Accept(NodeVisitorC &visitor);
+    //: Visit all the child nodes derived from NodeC of this one
+
+    void SetNodeRef();
+    //: Setup node ref so we can get back from the scene graph node to this one.
   protected:
     virtual void DoCallback();
     //: Process a callback.

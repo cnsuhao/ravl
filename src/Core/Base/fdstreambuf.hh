@@ -103,9 +103,9 @@ namespace RavlN {
 	int blen = ((char *)pptr()) - at;
 	int n = write(fd,at,blen);
 	if(n == 0)
-	  cerr << "Write of zero bytes. \n";
+	  std::cerr << "Write of zero bytes. \n";
 	if(n < 0) {
-	  cerr << "Write failed. \n";
+	  std::cerr << "Write failed. \n";
 	  //setstate(ios_base::badbit);
 	  return -1;
 	}
@@ -144,35 +144,35 @@ namespace RavlN {
       underflow();
       if(gptr() < egptr())
 	return traits_type::to_int_type(*(_M_in_cur++));
-      cerr << "basic_fdbuf::uflow(), Got end of file... \n";
+      std::cerr << "basic_fdbuf::uflow(), Got end of file... \n";
       return traits_type::eof();
     }
     //: Underflow the buffer on read.
     
     
     virtual int_type pbackfail(int_type c = traits_type::eof()) {
-      cerr << "basic_fdbuf::pbackfail() Called. \n";
+      std::cerr << "basic_fdbuf::pbackfail() Called. \n";
       RavlAssert(0);
       return c;
     }
     //: Putback failed.
     
     virtual basic_streambuf<char_type, traits_type> *setbuf(char_type* s, streamsize n) {
-      cerr << "basic_fdbuf::setbuf() Called. \n";
+      std::cerr << "basic_fdbuf::setbuf() Called. \n";
       RavlAssert(0);
       return this;
     }
     //: Set the buffer to use.
     
     virtual pos_type seekoff(off_type off,ios_base::seekdir way,ios_base::openmode mode = ios_base::in | ios_base::out) {
-      cerr << "basic_fdbuf::seekoff() Called. \n";
+      std::cerr << "basic_fdbuf::seekoff() Called. \n";
       RavlAssert(0);
       return 0;
     }
     //: Seek relative.
     
     virtual pos_type seekpos(pos_type sp,ios_base::openmode mode = ios_base::in | ios_base::out) {
-      cerr << "basic_fdbuf::seekpos() Called. \n";
+      std::cerr << "basic_fdbuf::seekpos() Called. \n";
       RavlAssert(0);
       return 0;
     }

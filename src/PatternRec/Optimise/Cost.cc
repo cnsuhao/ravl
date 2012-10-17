@@ -23,7 +23,7 @@ namespace RavlN {
     OutputSize (1);
   }
   
-  CostBodyC::CostBodyC (istream &in)
+  CostBodyC::CostBodyC (std::istream &in)
     : Function1BodyC(in),
       _parameters(in)
   {}
@@ -67,7 +67,7 @@ namespace RavlN {
     _parameters = parameters;
   }
   
-  bool CostBodyC::Save (ostream &out) const
+  bool CostBodyC::Save (std::ostream &out) const
   {
     FunctionBodyC::Save (out);
     _parameters.Save (out);

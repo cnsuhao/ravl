@@ -56,12 +56,12 @@ namespace RavlGUIN {
       m_bFront(true),
       m_bBack(false)
   {
-    ONDEBUG(cerr << "View3DBodyC::View3DBodyC(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::View3DBodyC(), Called. \n");
   }
 
   bool View3DBodyC::GUIInitGL()
   {
-    ONDEBUG(cerr << "View3DBodyC::InitGL(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::InitGL(), Called. \n");
     // Set up culling
     GUISetCullMode();
     // Enable depth testing
@@ -79,10 +79,10 @@ namespace RavlGUIN {
 
     //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
-    ONDEBUG(cerr << "OpenGL vendor    :" << GLGetString(GL_VENDOR) << endl);
-    ONDEBUG(cerr << "OpenGL renderer  :" << GLGetString(GL_RENDERER) << endl);
-    ONDEBUG(cerr << "OpenGL version   :" << GLGetString(GL_VERSION) << endl);
-    ONDEBUG(cerr << "OpenGL extensions:" << GLGetString(GL_EXTENSIONS) << endl);
+    ONDEBUG(std::cerr << "OpenGL vendor    :" << GLGetString(GL_VENDOR) << endl);
+    ONDEBUG(std::cerr << "OpenGL renderer  :" << GLGetString(GL_RENDERER) << endl);
+    ONDEBUG(std::cerr << "OpenGL version   :" << GLGetString(GL_VERSION) << endl);
+    ONDEBUG(std::cerr << "OpenGL extensions:" << GLGetString(GL_EXTENSIONS) << endl);
 
     // Let everyone know we're ready to go.
     initDone = true;
@@ -92,7 +92,7 @@ namespace RavlGUIN {
   //: Setup widget.
   bool View3DBodyC::Create(GtkWidget *Parent)
   {
-    ONDEBUG(cerr << "View3DBodyC::Create(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Create(), Called. \n");
 
     ConnectRef(Signal("button_press_event"),   *this, &View3DBodyC::MousePress);
     ConnectRef(Signal("button_release_event"), *this, &View3DBodyC::MouseRelease);
@@ -104,11 +104,11 @@ namespace RavlGUIN {
     if(!Canvas3DBodyC::Create(Parent))
     {
       // Get this sorted out early.
-      cerr << "View3DBodyC::Create(), ERROR: Canvas3DBodyC create failed. \n";
+      std::cerr << "View3DBodyC::Create(), ERROR: Canvas3DBodyC create failed. \n";
       return false;
     }
 
-    ONDEBUG(cerr << "View3DBodyC::Create(), Setting up canvas intialization. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Create(), Setting up canvas intialization. \n");
 
     // Setup render options
     m_oRenderOpts[0] = MenuCheckItemC("Points", false);
@@ -148,7 +148,7 @@ namespace RavlGUIN {
                      facesMenu
                     );
 
-    ONDEBUG(cerr << "View3DBodyC::Create(), Doing setup. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Create(), Doing setup. \n");
 
     SetTextureMode(m_bTextureStatus);
     SetLightingMode(m_bLightingStatus);
@@ -160,14 +160,14 @@ namespace RavlGUIN {
     //Put(DLight3DC(RealRGBValueC(1, 1, 1), Point3dC(0, 0, 10)));
     Manager.Queue(Trigger(View3DC(*this), &View3DC::GUIAdjustView));
 
-    ONDEBUG(cerr << "View3DBodyC::Create(), Done. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Create(), Done. \n");
     return true;
   }
 
   //: ADD object into the view.
   bool View3DBodyC::GUIAdd(const DObject3DC &r, IntT id)
   {
-    ONDEBUG(cerr << "View3DBodyC::GUIAdd(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::GUIAdd(), Called. \n");
     {
       RWLockHoldC lockHold(viewLock, RWLOCK_WRITE);
       if(sceneComplete || !scene.IsValid()) {
@@ -178,14 +178,14 @@ namespace RavlGUIN {
         scene += r;
     }
 
-    ONDEBUG(cerr << "View3DBodyC::GUIAdd(), Done. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::GUIAdd(), Done. \n");
     return true;
   }
 
   //: ADD object into the view.
   bool View3DBodyC::Add(const DObject3DC &r, IntT id)
   {
-    ONDEBUG(cerr << "View3DBodyC::Add(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Add(), Called. \n");
     {
       RWLockHoldC lockHold(viewLock, RWLOCK_WRITE);
       if(sceneComplete || !scene.IsValid()) {
@@ -196,7 +196,7 @@ namespace RavlGUIN {
         scene += r;
     }
 
-    ONDEBUG(cerr << "View3DBodyC::Add(), Done. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::Add(), Done. \n");
     return true;
   }
 
@@ -217,7 +217,7 @@ namespace RavlGUIN {
   //: adjust view point
   bool View3DBodyC::GUIAdjustView()
   {
-    ONDEBUG(cerr << "View3DBodyC::AdjustView(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::AdjustView(), Called. \n");
 
     //lock scene
     RWLockHoldC lockHold(viewLock, RWLOCK_READONLY);
@@ -227,17 +227,17 @@ namespace RavlGUIN {
     
     Vector3dC lookAt = m_sceneCenter; // Vector3dC(0,0,0)
     RealT dist = lookAt.EuclidDistance(m_viewPoint);
-    //cerr << "View3DBodyC::GUIAdjustView :" << lookAt << "  dist:" << dist << endl;
+    //cerr << "View3DBodyC::GUIAdjustView :" << lookAt << "  dist:" << dist << std::endl;
     if(dist <= 0)
       dist = 0.01;
     //if(dist <= m_sceneExtent)
-    //  cerr << "View point could be inside scene\n";
+    //  std::cerr << "View point could be inside scene\n";
 
     GUIBeginGL();
     //get viewport parameters
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
-    //cerr << "View port:" << viewport[0] << "  " << viewport[1] << "  " << viewport[2] << "  " << viewport[3] << "  " << endl;
+    //cerr << "View port:" << viewport[0] << "  " << viewport[1] << "  " << viewport[2] << "  " << viewport[3] << "  " << std::endl;
     
     GLdouble fNear = dist - m_sceneExtent*2;
     GLdouble fFar = dist + m_sceneExtent*2;
@@ -264,8 +264,8 @@ namespace RavlGUIN {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //cerr << "ext:" << extHor << "   " << extVer << endl;
-    //cerr << "depth:" << fNear << "   " << fFar << endl;
+    //cerr << "ext:" << extHor << "   " << extVer << std::endl;
+    //cerr << "depth:" << fNear << "   " << fFar << std::endl;
     glFrustum(-extHor, extHor, -extVer, extVer, fNear, fFar);
     
     //setup view point
@@ -274,7 +274,7 @@ namespace RavlGUIN {
               0.,                1.,                0.);
     //FMatrixC<4, 4> projectionMat;
     //glGetDoublev(GL_PROJECTION_MATRIX, &(projectionMat[0][0]));
-    //cerr << "pMat:\n" << projectionMat << endl;
+    //cerr << "pMat:\n" << projectionMat << std::endl;
 
 
     return true;
@@ -283,7 +283,7 @@ namespace RavlGUIN {
   //: Fit object to view
   bool View3DBodyC::GUIFit()
   {
-    ONDEBUG(cerr << "View3DBodyC::GUIFit(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::GUIFit(), Called. \n");
     CalcViewParams(true);
     GUIAdjustView();
     GUIRefresh();
@@ -292,7 +292,7 @@ namespace RavlGUIN {
 
   //: Center output.
   bool View3DBodyC::GUICenter() {
-    ONDEBUG(cerr << "View3DBodyC::GUICenter(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::GUICenter(), Called. \n");
     GUIAdjustView();
     GUIRefresh();
     return true;
@@ -300,7 +300,7 @@ namespace RavlGUIN {
 
   //: Center output.
   bool View3DBodyC::GUIResetRotation() {
-    ONDEBUG(cerr << "View3DBodyC::GUIResetRotation(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::GUIResetRotation(), Called. \n");
     m_vRotation = Vector2dC(0,0);
     GUIRefresh();
     SendSlaveSignal();
@@ -310,8 +310,8 @@ namespace RavlGUIN {
   //: Handle button press.
   bool View3DBodyC::MousePress(MouseEventC &me)
   {
-    ONDEBUG(cerr << "View3DBodyC::MousePress(), Called. '" << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) <<"' \n");
-    ONDEBUG(cerr << "View3DBodyC::MousePress(),         '" << me.IsPressed(0) << " " << me.IsPressed(1) << " " << me.IsPressed(2) <<"' \n");
+    ONDEBUG(std::cerr << "View3DBodyC::MousePress(), Called. '" << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) <<"' \n");
+    ONDEBUG(std::cerr << "View3DBodyC::MousePress(),         '" << me.IsPressed(0) << " " << me.IsPressed(1) << " " << me.IsPressed(2) <<"' \n");
 
     if(me.HasChanged(0))
     {
@@ -321,7 +321,7 @@ namespace RavlGUIN {
     }
     if(me.HasChanged(2))
     {
-      ONDEBUG(cerr << "Show menu. \n");
+      ONDEBUG(std::cerr << "Show menu. \n");
       backMenu.Popup();
     }
 
@@ -331,8 +331,8 @@ namespace RavlGUIN {
   //: Handle button release.
   bool View3DBodyC::MouseRelease(MouseEventC &me)
   {
-    ONDEBUG(cerr << "View3DBodyC::MouseRelease(), Called. '" << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) <<"' \n");
-    ONDEBUG(cerr << "View3DBodyC::MouseRelease(),         '" << me.IsPressed(0) << " " << me.IsPressed(1) << " " << me.IsPressed(2) <<"' \n");
+    ONDEBUG(std::cerr << "View3DBodyC::MouseRelease(), Called. '" << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) <<"' \n");
+    ONDEBUG(std::cerr << "View3DBodyC::MouseRelease(),         '" << me.IsPressed(0) << " " << me.IsPressed(1) << " " << me.IsPressed(2) <<"' \n");
     if(me.HasChanged(0))
     {
       m_bIsDragging = false;
@@ -342,14 +342,14 @@ namespace RavlGUIN {
 
   //: Handle mouse move.
   bool View3DBodyC::MouseMove(MouseEventC &me) {
-    //ONDEBUG(cerr << "View3DBodyC::MouseMove(), Called. '" << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) <<"' \n");
-    //ONDEBUG(cerr << "View3DBodyC::MouseMove(),         '" << me.IsPressed(0) << " " << me.IsPressed(1) << " " << me.IsPressed(2) <<"' \n");
+    //ONDEBUG(std::cerr << "View3DBodyC::MouseMove(), Called. '" << me.HasChanged(0) << " " << me.HasChanged(1) << " " << me.HasChanged(2) <<"' \n");
+    //ONDEBUG(std::cerr << "View3DBodyC::MouseMove(),         '" << me.IsPressed(0) << " " << me.IsPressed(1) << " " << me.IsPressed(2) <<"' \n");
     //cerr << "View3DBodyC::MouseMove(), Called. \n";
 
     // Calculate change
     Index2dC change = me.At() - m_lastMousePos;
     m_lastMousePos = me.At();
-    //cerr << "change:" << change << endl;
+    //cerr << "change:" << change << std::endl;
 
     // Rotate when button 0 pressed
     if(me.IsPressed(0) && m_bIsDragging)
@@ -370,7 +370,7 @@ namespace RavlGUIN {
 
     // Translate when button 1 pressed
     else if (me.IsPressed(1) && m_bIsDragging) {
-      cerr << "translation\n";
+      std::cerr << "translation\n";
 
       // Calculate individual translations
       // X & Y in GTK coords; hence also Y is inverted
@@ -396,11 +396,11 @@ namespace RavlGUIN {
   //: Handle mouse wheel.
   bool View3DBodyC::MouseWheel(GdkEvent *event)
   {
-    ONDEBUG(cerr << "View3DBodyC::MouseWheel, Called.\n");
+    ONDEBUG(std::cerr << "View3DBodyC::MouseWheel, Called.\n");
     GdkEventScroll &scrollEvent = (GdkEventScroll &) *event;
     bool shiftKey = (scrollEvent.state & GDK_SHIFT_MASK) != 0;
     //bool ctrlKey  = (scrollEvent.state & GDK_CONTROL_MASK) != 0;
-    //cerr << "shift:" << shiftKey << "   ctrl:" << ctrlKey << endl;
+    //cerr << "shift:" << shiftKey << "   ctrl:" << ctrlKey << std::endl;
 
     switch(scrollEvent.direction)
     {
@@ -425,7 +425,7 @@ namespace RavlGUIN {
       GUIRefresh();
       break;
     }
-    //cout << "vp:" << m_viewPoint << endl;
+    //cout << "vp:" << m_viewPoint << std::endl;
 
     return true;
   }
@@ -445,14 +445,14 @@ namespace RavlGUIN {
   {
     if(GUIBeginGL())
     {
-      ONDEBUG(cerr << "Reshape. " << widget->allocation.width << " " << widget->allocation.height << "\n");
+      ONDEBUG(std::cerr << "Reshape. " << widget->allocation.width << " " << widget->allocation.height << "\n");
       glViewport(0, 0, widget->allocation.width, widget->allocation.height);
 
       //CalcViewParams(m_bAutoFit);
       GUIAdjustView();
       //FMatrixC<4, 4> projectionMat;
       //glGetDoublev(GL_PROJECTION_MATRIX, &(projectionMat[0][0]));
-      //cerr << "pMat:\n" << projectionMat << endl;
+      //cerr << "pMat:\n" << projectionMat << std::endl;
     }
     GUIEndGL();
     return true;
@@ -463,11 +463,11 @@ namespace RavlGUIN {
   {
     if(!initDone)
     {
-      ONDEBUG(cerr << "View3DBodyC::GUIRefresh(), Called. Returning" << initDone << "\n");
+      ONDEBUG(std::cerr << "View3DBodyC::GUIRefresh(), Called. Returning" << initDone << "\n");
       return false;
     }
 
-    ONDEBUG(cerr << "View3DBodyC::GUIRefresh(), Called. " << ((void *) widget) << "\n");
+    ONDEBUG(std::cerr << "View3DBodyC::GUIRefresh(), Called. " << ((void *) widget) << "\n");
 
     GUIBeginGL();
 
@@ -547,7 +547,7 @@ namespace RavlGUIN {
 
   void View3DBodyC::GUISetCullMode()
   {
-    ONDEBUG(cerr << "View3DBodyC::SetCullMode(), Called. \n");
+    ONDEBUG(std::cerr << "View3DBodyC::SetCullMode(), Called. \n");
 
     GUIBeginGL();
     if(m_bFront) {
@@ -569,10 +569,10 @@ namespace RavlGUIN {
         glCullFace(GL_FRONT_AND_BACK);
       }
     }
-    //cerr << "Culling:" << (glIsEnabled(GL_CULL_FACE) == GL_TRUE ? "enabled" : "disabled") << endl;
+    //cerr << "Culling:" << (glIsEnabled(GL_CULL_FACE) == GL_TRUE ? "enabled" : "disabled") << std::endl;
     //GLint cullMode;
     //glGetIntegerv(GL_CULL_FACE_MODE, &cullMode);
-    //cerr << "mode:" << cullMode << endl;
+    //cerr << "mode:" << cullMode << std::endl;
   }
 
   void View3DBodyC::CalcViewParams(bool AutoExtent)
@@ -580,6 +580,6 @@ namespace RavlGUIN {
     if(AutoExtent)
       m_sceneExtent = scene.GUIExtent() * 1.1;
     m_sceneCenter = scene.GUICenter();
-    //cerr << "scene extent:" << m_sceneExtent << endl;
+    //cerr << "scene extent:" << m_sceneExtent << std::endl;
   }
 }

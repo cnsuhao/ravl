@@ -55,37 +55,37 @@ namespace RavlN {
       { return formatByName; }
     //: Access list of available file formats by name.
     
-    FileFormatBaseC FindFormat(bool forLoad,const StringC &formatName,const type_info &atype = typeid(void),bool useInDirect = true);
+    FileFormatBaseC FindFormat(bool forLoad,const StringC &formatName,const std::type_info &atype = typeid(void),bool useInDirect = true);
     //: Find a format. 
     // This can be input or output.
     
-    FileFormatBaseC FindFormatFile(bool forLoad,const StringC &filename,const type_info &atype = typeid(void),StringC formatName = "",bool useInDirect = true);
+    FileFormatBaseC FindFormatFile(bool forLoad,const StringC &filename,const std::type_info &atype = typeid(void),StringC formatName = "",bool useInDirect = true);
     //: Find the format of the file.
     // 'stream' is opened by this function where appropriate.
     // This can be input or output.
     
-    FileFormatBaseC FindFormat(IStreamC &in,const type_info &atype =typeid(void),StringC formatName = "",bool useInDirect = true);
+    FileFormatBaseC FindFormat(IStreamC &in,const std::type_info &atype =typeid(void),StringC formatName = "",bool useInDirect = true);
     //: Find the format of the file.
     // This can only be input.
     
-    bool FindInputFormat(FileFormatDescC  &fmtInfo,StringC filename,IStreamC &stream,StringC format,const type_info &obj_type,bool verbose = false);
+    bool FindInputFormat(FileFormatDescC  &fmtInfo,StringC filename,IStreamC &stream,StringC format,const std::type_info &obj_type,bool verbose = false);
     //: Search for input format.
     
-    bool FindOutputFormat(FileFormatDescC &fmtInfo,StringC filename,StringC format,const type_info &obj_type,bool verbose = false);
+    bool FindOutputFormat(FileFormatDescC &fmtInfo,StringC filename,StringC format,const std::type_info &obj_type,bool verbose = false);
     //: Search for output format.
     
-    DPIPortBaseC CreateInput(StringC filename,StringC format,const type_info &obj_type,bool verbose = false);
+    DPIPortBaseC CreateInput(StringC filename,StringC format,const std::type_info &obj_type,bool verbose = false);
     //: Create an input pipe.
     // if obj_type is typeid(void), then the default load type of the file is used.
     
-    DPOPortBaseC CreateOutput(StringC filename,StringC format,const type_info &obj_type,bool verbose = false);
+    DPOPortBaseC CreateOutput(StringC filename,StringC format,const std::type_info &obj_type,bool verbose = false);
     //: Create an input pipe.
     
-    DPIPortBaseC CreateInput(IStreamC &from,StringC format,const type_info &obj_type,bool verbose = false);
+    DPIPortBaseC CreateInput(IStreamC &from,StringC format,const std::type_info &obj_type,bool verbose = false);
     //: Create an input pipe.
     // if obj_type is typeid(void), then the default load type of the file is used.
     
-    DPOPortBaseC CreateOutput(OStreamC &to,StringC format,const type_info &obj_type,bool verbose = false);
+    DPOPortBaseC CreateOutput(OStreamC &to,StringC format,const std::type_info &obj_type,bool verbose = false);
     //: Create an input pipe.
 
     bool Load(const StringC &filename,RCWrapAbstractC &obj,StringC fileformat,bool verbose);
@@ -108,7 +108,7 @@ namespace RavlN {
     // NB. an instace of TypeInfoInstC must exists for the contained class if this
     // is to work.
     
-    DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat = StringC(""),const type_info &typespec = typeid(void));
+    DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat = StringC(""),const std::type_info &typespec = typeid(void));
     //: List all file formats that support the given type.
     // forLoad == true, then for load. forLoad == false, then for save. <p>  
     // If fileFormat string is empty then all file formats are listed. <p>
@@ -174,44 +174,44 @@ namespace RavlN {
       { return Body().FormatByName(); }
     //: Access list of available file formats by name.
     
-    FileFormatBaseC FindFormat(bool forLoad,const StringC &formatName,const type_info &atype = typeid(void),bool useInDirect = true)
+    FileFormatBaseC FindFormat(bool forLoad,const StringC &formatName,const std::type_info &atype = typeid(void),bool useInDirect = true)
       { return Body().FindFormat(forLoad,formatName,atype,useInDirect); }
     //: Find a format. 
     // This can be input or output.
     
-    FileFormatBaseC FindFormatFile(bool forLoad,const StringC &filename,const type_info &atype = typeid(void),StringC formatName = "",bool useInDirect = true)
+    FileFormatBaseC FindFormatFile(bool forLoad,const StringC &filename,const std::type_info &atype = typeid(void),StringC formatName = "",bool useInDirect = true)
       { return Body().FindFormatFile(forLoad,filename,atype,formatName,useInDirect); }
     //: Find the format of the file.
     // This can be input or output.
     
-    FileFormatBaseC FindFormat(IStreamC &in,const type_info &atype =typeid(void),StringC formatName = "",bool useInDirect = true) 
+    FileFormatBaseC FindFormat(IStreamC &in,const std::type_info &atype =typeid(void),StringC formatName = "",bool useInDirect = true) 
       { return Body().FindFormat(in,atype,formatName,useInDirect); }
     //: Find the format of the file.
     // This can only be input.
     
-    bool FindInputFormat(FileFormatDescC  &fmtInfo,StringC filename,IStreamC &inStream,StringC format,const type_info &obj_type,bool verbose = false)
+    bool FindInputFormat(FileFormatDescC  &fmtInfo,StringC filename,IStreamC &inStream,StringC format,const std::type_info &obj_type,bool verbose = false)
     { return Body().FindInputFormat(fmtInfo,filename,inStream,format,obj_type,verbose); }
     //: Search for input format.
     
-    bool FindOutputFormat(FileFormatDescC &fmtInfo,StringC filename,StringC format,const type_info &obj_type,bool verbose = false)
+    bool FindOutputFormat(FileFormatDescC &fmtInfo,StringC filename,StringC format,const std::type_info &obj_type,bool verbose = false)
       { return Body().FindOutputFormat(fmtInfo,filename,format,obj_type,verbose); }
     //: Search for output format.
     
-    DPIPortBaseC CreateInput(StringC filename,StringC format,const type_info &obj_type,bool verbose = false)
+    DPIPortBaseC CreateInput(StringC filename,StringC format,const std::type_info &obj_type,bool verbose = false)
       { return Body().CreateInput(filename,format,obj_type,verbose); }
     //: Create an input pipe.
     // if obj_type is typeid(void), then the default load type of the file is used.
     
-    DPOPortBaseC CreateOutput(StringC filename,StringC format,const type_info &obj_type,bool verbose = false)
+    DPOPortBaseC CreateOutput(StringC filename,StringC format,const std::type_info &obj_type,bool verbose = false)
       { return Body().CreateOutput(filename,format,obj_type,verbose); }
     //: Create an input pipe.
     
-    DPIPortBaseC CreateInput(IStreamC &from,StringC format,const type_info &obj_type,bool verbose = false)
+    DPIPortBaseC CreateInput(IStreamC &from,StringC format,const std::type_info &obj_type,bool verbose = false)
       { return Body().CreateInput(from,format,obj_type,verbose); }
     //: Create an input pipe.
     // if obj_type is typeid(void), then the default load type of the file is used.
     
-    DPOPortBaseC CreateOutput(OStreamC &to,StringC format,const type_info &obj_type,bool verbose = false)
+    DPOPortBaseC CreateOutput(OStreamC &to,StringC format,const std::type_info &obj_type,bool verbose = false)
       { return Body().CreateOutput(to,format,obj_type,verbose); }
     //: Create an input pipe.
     
@@ -322,7 +322,7 @@ namespace RavlN {
     // NB. an instace of TypeInfoInstC must exists for the contained class if this
     // is to work.
     
-    DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat = StringC(""),const type_info &typespec = typeid(void))
+    DListC<FileFormatBaseC> ListFormats(bool forLoad,const StringC &fileFormat = StringC(""),const std::type_info &typespec = typeid(void))
       { return Body().ListFormats(forLoad,fileFormat,typespec); }
     //: List all file formats that support the given type.
     // forLoad == true, then for load. forLoad == false, then for save. <p>  

@@ -62,15 +62,15 @@ int main() {
   for(int i = 0;i < (int)vec.Size();i++) {
     state = mm.Forward(state,observations2[i]);
     vec[i] = observations2[i];
-    cerr << "State=" << state <<"\n";
+    std::cerr << "State=" << state <<"\n";
   }
   VectorC istate(1,0,0,0);
   SArray1dC<UIntT> path;
   
-  cerr << "Viterbi:\n";
+  std::cerr << "Viterbi:\n";
   mm.Viterbi(vec,istate,path);
   
-  cerr << "Path=" << path << "\n";
+  std::cerr << "Path=" << path << "\n";
   for(int i = 0;i < (int)vec.Size();i++) {
     if(expected2[i] != path[i])
       return 1;

@@ -19,7 +19,7 @@ using namespace RavlN;
 
 int main()
 {
-  cout << "Simple 1 dimensional array of char\n"
+  std::cout << "Simple 1 dimensional array of char\n"
            << "==================================\n";
 
   char oString[] = "Hello world    ";  // 12 characters
@@ -27,7 +27,7 @@ int main()
   SArray1dC<char> stringB(stringA);    //another access to the 1. array
   stringA[3] = '3';
 
-  cout << "The original string: " << oString    << '\n'
+  std::cout << "The original string: " << oString    << '\n'
            << "array stringA      : " << stringA    << '\n'
            << "array stringB      : " << stringB    << '\n'
            << "stringB[9]         : " << stringB[9] << '\n'
@@ -35,9 +35,9 @@ int main()
 
   // Simple sorting.
   BubbleSort(stringB);
-  cout << "sorted: " << stringB << '\n';
+  std::cout << "sorted: " << stringB << '\n';
 
-  cout << "2 dimensional array of char\n"
+  std::cout << "2 dimensional array of char\n"
        << "===========================\n";
   SArray1dC< SArray1dC<char> > aa(4);
   
@@ -48,8 +48,8 @@ int main()
   stringA[2] = '2';
   aa[1]      = stringA;          // Change the array
   
-  cout << "aa: " << aa << "\n\n\n";  
-  cout << "End of the example\n";
+  std::cout << "aa: " << aa << "\n\n\n";  
+  std::cout << "End of the example\n";
   return 0;
 }
 

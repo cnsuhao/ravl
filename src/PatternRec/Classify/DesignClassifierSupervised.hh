@@ -18,6 +18,7 @@
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/Vector.hh"
 #include "Ravl/PatternRec/Sample.hh"
+#include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/PatternRec/Classifier.hh"
 #include "Ravl/PatternRec/DesignFunctionSupervised.hh"
 
@@ -37,13 +38,13 @@ namespace RavlN {
     DesignClassifierSupervisedBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DesignClassifierSupervisedBodyC(istream &strm);
+    DesignClassifierSupervisedBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignClassifierSupervisedBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -68,6 +69,11 @@ namespace RavlN {
     //!param: featureSet - array of feature indexes to use from sample set when designing classifier
     //!param: weight     - relative weights attached to each feature vector
     
+    ClassifierC Apply(const DataSetVectorLabelC & dset) {
+      return Apply(dset.Sample1(), dset.Sample2());
+    }
+    //: Create a classifier from a data set
+
   };
   
   //! userlevel=Normal
@@ -87,7 +93,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
 
-    DesignClassifierSupervisedC(istream &strm);
+    DesignClassifierSupervisedC(std::istream &strm);
     //: Load from stream.
     
     DesignClassifierSupervisedC(BinIStreamC &strm);
@@ -136,16 +142,21 @@ namespace RavlN {
     //!param: featureSet - array of feature indexes to use from sample set when designing classifier
     //!param: weight     - weight associated with each feature vector
     
+    ClassifierC Apply(const DataSetVectorLabelC & dset) {
+       return Body().Apply(dset);
+     }
+     //: Create a classifier from a data set
+
   };
 
-  inline istream &operator>>(istream &strm,DesignClassifierSupervisedC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignClassifierSupervisedC &obj) {
     obj = DesignClassifierSupervisedC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignClassifierSupervisedC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignClassifierSupervisedC &obj) {
     obj.Save(out);
     return out;
   }

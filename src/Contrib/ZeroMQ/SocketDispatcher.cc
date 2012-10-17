@@ -34,6 +34,11 @@ namespace RavlN {
       RavlAssertMsg(0,"Abstract method called.");
     }
 
+    //! Stop handling of events.
+    void SocketDispatcherC::Stop() {
+
+    }
+
     //! Setup poll item,
     // Return false if socket should be ignored.
 

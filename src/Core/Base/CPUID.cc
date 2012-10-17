@@ -121,13 +121,13 @@ unsigned long cpudetect(unsigned long address)
 
   void CPUIDC::Info() const {
     using namespace std;
-    cerr << "MMX:\t\t" << (int)m_mmx << endl;
-    cerr << "SSE:\t\t" << (int)m_sse << endl;
-    cerr << "SSE2:\t\t" << (int)m_sse2 << endl;
-    cerr << "HTT:\t\t" << (int)m_htt << endl;
+    std::cerr << "MMX:\t\t" << (int)m_mmx << std::endl;
+    std::cerr << "SSE:\t\t" << (int)m_sse << std::endl;
+    std::cerr << "SSE2:\t\t" << (int)m_sse2 << std::endl;
+    std::cerr << "HTT:\t\t" << (int)m_htt << std::endl;
 #if CHECK_FOR_3DNOW
-    cerr << "3dNow:\t\t" << (int)m_3dnow << endl;
-    cerr << "3dNow Ext:\t" << (int)m_3dnow_p << endl;
+    std::cerr << "3dNow:\t\t" << (int)m_3dnow << std::endl;
+    std::cerr << "3dNow Ext:\t" << (int)m_3dnow_p << std::endl;
 #endif
   }
 

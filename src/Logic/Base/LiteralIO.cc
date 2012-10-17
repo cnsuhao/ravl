@@ -68,11 +68,11 @@ namespace RavlLogicN {
 	} break;
 	case ')': { // Close tuple
 	  if(context.IsEmpty()) {
-	    cerr << "ERROR: Parse error at line " << ln << ", unmatched ')' found. \n";
+	    std::cerr << "ERROR: Parse error at line " << ln << ", unmatched ')' found. \n";
 	    throw ExceptionParseErrorC("Unexpected ')' found. ");
 	  }
 	  if(invertNext) {
-	    cerr << "ERROR: Parse error at line " << ln << ", Unexpect '!' found. \n";
+	    std::cerr << "ERROR: Parse error at line " << ln << ", Unexpect '!' found. \n";
 	    throw ExceptionParseErrorC("Unexpected '!' found. ");
 	  }
 	  UIntT n = context.Top().Data1().Size();
@@ -88,7 +88,7 @@ namespace RavlLogicN {
 	    tup = OrC(n);
 	  else if(first == literalNot) {
 	    if(n != 2) {
-	      cerr << "ERROR: Parse error at line " << ln << ", Not must have exactly 1 argument. \n";
+	      std::cerr << "ERROR: Parse error at line " << ln << ", Not must have exactly 1 argument. \n";
 	      throw ExceptionParseErrorC("Not must have exactly 1 argument. ");
 	    }
 	    tup = NotC(true);
@@ -107,9 +107,10 @@ namespace RavlLogicN {
 	} break;
 	case ';': // Comment until end of line.
 	  is.SkipTo('\n');
-	  // Fall through.
+	  /* no break */
 	case '\n':
 	  ln++; // Count lines.
+	  /* no break */
 	case '\r':
 	case '\t':
 	case ' ':
@@ -140,7 +141,7 @@ namespace RavlLogicN {
  	case '/':
  	case '|':
  	case '=':
-	  cerr << "WARNING: Illegal character '" << let << "' found in stream on line " << ln << ". \n";
+	  std::cerr << "WARNING: Illegal character '" << let << "' found in stream on line " << ln << ". \n";
  	  break;
 	case '"': { // String constant.
 	  StringC val = is.ClipTo('"');
@@ -160,7 +161,7 @@ namespace RavlLogicN {
 	} break;
 	case '?': // Variable marker.
 	  var = true;
-	  // Fall through.
+	  /* no break */
 	default: { // Constant
 	  StringC x(let);
 	  x += is.ClipWord(" \t\n\r()\\/:;+<>{}[]|=%*^.,#$@!~");
@@ -192,7 +193,7 @@ namespace RavlLogicN {
     } 
     
     if(!context.IsEmpty()) {
-      cerr << "Unexpected end of file. \n";
+      std::cerr << "Unexpected end of file. \n";
       return false;
     }
     return true;

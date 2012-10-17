@@ -22,7 +22,7 @@ using namespace RavlGUIN;
 
 bool sliderFunc(RealT &v,IntT &)
 {
-  cerr << "Slider:" << v << "\n";
+  std::cerr << "Slider:" << v << "\n";
   return true;
 }
 
@@ -40,5 +40,5 @@ int main(int nargs,char *args[])
   win.Show();
   
   Manager.Start();
-  
+  return 0;
 }

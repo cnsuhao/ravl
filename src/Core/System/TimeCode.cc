@@ -219,14 +219,14 @@ namespace RavlN {
   
   //: I/O operators 
   //: Write time code out to stream.
-  ostream &operator<<(ostream & s, const TimeCodeC & tc) {
+  std::ostream &operator<<(std::ostream & s, const TimeCodeC & tc) {
     s << tc.m_liFrame << " " << tc.frameRate ;
     return s;
   }
 
 
   //: Read time code in from stream.
-  istream &operator>>(istream & s, TimeCodeC & tc) {
+  std::istream &operator>>(std::istream & s, TimeCodeC & tc) {
     s >> tc.m_liFrame >> tc.frameRate ; 
     return s;
   }

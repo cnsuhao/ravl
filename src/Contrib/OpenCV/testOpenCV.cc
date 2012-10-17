@@ -105,26 +105,26 @@ int TestOpenCVConv () {
 int main()
 {
 
-  cerr << "Testing OpenCV image conversion \n";
+  std::cerr << "Testing OpenCV image conversion \n";
   int lineno;
   if((lineno = TestOpenCVConv()) != 0) {
-    cerr << "Image conversion test failed : " << lineno << "\n";
+    std::cerr << "Image conversion test failed : " << lineno << "\n";
      return 1;
   }
-  cerr << "Test passed. \n";
+  std::cerr << "Test passed. \n";
   return 0;
 }
 
 
   /*  
-  cout << src->nSize << endl; // size of this struct
-  cout << src->nChannels << endl; // 3 for colour
-  cout << src->depth << endl; // bits per channel - 8 for byte
-  cout << src->dataOrder << endl; // 0 for interleaved
-  cout << src->origin << endl; // 0 for top left corner; 1 for bottom left
-  cout << src->width << endl;
-  cout << src->height << endl;
-  cout << src->imageSize << endl; // # of bytes (I think)
-  cout << src->widthStep << endl; // row length in bytes (I think)
+  std::cout << src->nSize << std::endl; // size of this struct
+  std::cout << src->nChannels << std::endl; // 3 for colour
+  std::cout << src->depth << std::endl; // bits per channel - 8 for byte
+  std::cout << src->dataOrder << std::endl; // 0 for interleaved
+  std::cout << src->origin << std::endl; // 0 for top left corner; 1 for bottom left
+  std::cout << src->width << std::endl;
+  std::cout << src->height << std::endl;
+  std::cout << src->imageSize << std::endl; // # of bytes (I think)
+  std::cout << src->widthStep << std::endl; // row length in bytes (I think)
   */
 

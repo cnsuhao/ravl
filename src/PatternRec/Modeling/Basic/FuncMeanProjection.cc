@@ -20,7 +20,7 @@
 #if RAVL_COMPILER_MIPSPRO 
 #include "Ravl/VirtualConstructor.hh"
 #pragma instantiate RavlN::FuncMeanProjectionBodyC* RavlN::VCLoad(RavlN::BinIStreamC&,RavlN::FuncMeanProjectionBodyC*)
-#pragma instantiate RavlN::FuncMeanProjectionBodyC* RavlN::VCLoad(istream &,RavlN::FuncMeanProjectionBodyC*)
+#pragma instantiate RavlN::FuncMeanProjectionBodyC* RavlN::VCLoad(std::istream &,RavlN::FuncMeanProjectionBodyC*)
 #endif 
 
 namespace RavlN {
@@ -43,7 +43,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncMeanProjectionBodyC::FuncMeanProjectionBodyC(istream &strm) 
+  FuncMeanProjectionBodyC::FuncMeanProjectionBodyC(std::istream &strm) 
     : FunctionBodyC(strm)
   { strm >> mean >> proj; }
   
@@ -55,7 +55,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool FuncMeanProjectionBodyC::Save (ostream &out) const {
+  bool FuncMeanProjectionBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << ' ' << mean << ' ' << proj;

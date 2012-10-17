@@ -111,7 +111,7 @@ namespace RavlN {
     virtual bool ConnectPort(const DPIPortBaseC &port);
     //: set port.
     
-    virtual const type_info &InputType() const;
+    virtual const std::type_info &InputType() const;
     //: Return type of port.
   protected:
   };
@@ -148,7 +148,7 @@ namespace RavlN {
     { return Body().ConnectPort(port); }
     //: Set port.
     
-    const type_info &InputType() const
+    const std::type_info &InputType() const
     { return Body().InputType(); }
     //: Return type of port.
     
@@ -180,7 +180,7 @@ namespace RavlN {
     virtual bool ConnectPort(const DPOPortBaseC &port);
     //: set port.
 
-    virtual const type_info &OutputType() const;
+    virtual const std::type_info &OutputType() const;
     //: Return type of port.    
   };
   
@@ -216,7 +216,7 @@ namespace RavlN {
     { return Body().ConnectPort(port); }
     //: Set port.
     
-    const type_info &OutputType() const
+    const std::type_info &OutputType() const
     { return Body().OutputType(); }
     //: Return type of port.
     
@@ -259,7 +259,7 @@ namespace RavlN {
     }
     //: set port.
     
-    virtual const type_info &InputType() const
+    virtual const std::type_info &InputType() const
     { return typeid(DataT); }
     //: Return type of port.
     
@@ -345,7 +345,7 @@ namespace RavlN {
     }
     //: set port.
     
-    virtual const type_info &OutputType() const
+    virtual const std::type_info &OutputType() const
     { return typeid(DataT); }
     //: Return type of port.
     

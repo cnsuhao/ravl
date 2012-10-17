@@ -20,7 +20,7 @@ namespace RavlN {
   {
   }
   
-  OptimiseRandomUniformBodyC::OptimiseRandomUniformBodyC (istream &in)
+  OptimiseRandomUniformBodyC::OptimiseRandomUniformBodyC (std::istream &in)
     :OptimiseBodyC("OptimiseRandomUniformBodyC",in)
   {
     in >> _numSamples;
@@ -63,7 +63,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseRandomUniformBodyC::Save (ostream &out) const
+  bool OptimiseRandomUniformBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _numSamples << "\n";

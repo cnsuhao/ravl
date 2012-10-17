@@ -15,12 +15,12 @@
 
 namespace RavlN {
   
-  ostream &operator<<(ostream &out,const IntC &x) {
+  std::ostream &operator<<(std::ostream &out,const IntC &x) {
     out << ((int) x.v);
     return out;
   }
   
-  istream &operator>>(istream &in,IntC &x) {
+  std::istream &operator>>(std::istream &in,IntC &x) {
     in >> ((int &) x.v);
     return in;
   }
@@ -35,12 +35,12 @@ namespace RavlN {
     return strm;
   }
 
-  ostream &operator<<(ostream &out,const UIntC &x) {
+  std::ostream &operator<<(std::ostream &out,const UIntC &x) {
     out << ((unsigned int) x.v);
     return out;
   }
   
-  istream &operator>>(istream &in,UIntC &x) {
+  std::istream &operator>>(std::istream &in,UIntC &x) {
     in >> ((unsigned int &) x.v);
     return in;
   }

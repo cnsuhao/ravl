@@ -54,15 +54,15 @@ namespace RavlGUIN {
   //: Destructor.
   
   WindowBodyC::~WindowBodyC() {
-    ONDEBUG(cerr << "WindowBodyC::~WindowBodyC() Started." << ((void *) this) << " \n");
+    ONDEBUG(std::cerr << "WindowBodyC::~WindowBodyC() Started." << ((void *) this) << " \n");
     Destroy();
-    ONDEBUG(cerr << "WindowBodyC::~WindowBodyC() Done. " << ((void *) this) << " \n");
+    ONDEBUG(std::cerr << "WindowBodyC::~WindowBodyC() Done. " << ((void *) this) << " \n");
   }
   
   //: Create the widget.
   
   bool WindowBodyC::Create() {
-    ONDEBUG(cerr << "WindowBodyC::Create(), Title=" << title << " Root=" << rootWin << " Type=" << ((int) winType) << " Border=" << border << "\n");
+    ONDEBUG(std::cerr << "WindowBodyC::Create(), Title=" << title << " Root=" << rootWin << " Type=" << ((int) winType) << " Border=" << border << "\n");
     if(widget == 0) {
       widget = gtk_window_new (winType);  
       if(rootWin && winType == GTK_WINDOW_TOPLEVEL) {
@@ -130,9 +130,9 @@ namespace RavlGUIN {
   // Thread safe.
   
   bool WindowBodyC::Close() {
-    ONDEBUG(cerr << "WindowBodyC::Close() called" << endl);
+    ONDEBUG(std::cerr << "WindowBodyC::Close() called" << endl);
     Manager.QueueOnGUI(Trigger(WindowC(*this),&WindowC::GUICloseDown));
-    ONDEBUG(cerr << "WindowBodyC::Close() done" << endl);
+    ONDEBUG(std::cerr << "WindowBodyC::Close() done" << endl);
     return true;
   }
   
@@ -212,20 +212,20 @@ namespace RavlGUIN {
   
   bool WindowBodyC::GUICloseDown() {
     RavlAssert(Manager.IsGUIThread());
-    ONDEBUG(cerr << "WindowBodyC::GuiCloseDown() called" << endl);
+    ONDEBUG(std::cerr << "WindowBodyC::GuiCloseDown() called" << endl);
     if(closeDown)
       return true;
     closeDown = true;
     if(rootWin) {
       if (--rootWinCount == 0) {
-        ONDEBUG(cerr << "WindowBodyC::GuiCloseDown() calling Manager.Quit()" << endl);
+        ONDEBUG(std::cerr << "WindowBodyC::GuiCloseDown() calling Manager.Quit()" << endl);
         Manager.Quit(); 
         return true;
       }
     }
     GUIHide();
     Destroy();
-    ONDEBUG(cerr << "WindowBodyC::GuiCloseDown() done" << endl);
+    ONDEBUG(std::cerr << "WindowBodyC::GuiCloseDown() done" << endl);
     return true;
   }
 

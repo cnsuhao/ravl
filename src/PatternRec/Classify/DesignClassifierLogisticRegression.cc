@@ -170,7 +170,7 @@ namespace RavlN {
     if(!factory.UseChildComponent("FeatureMap",m_featureExpand,true)) { // Optional feature expansion.
       //m_featureExpand = FuncOrthPolynomialC(2);
     }
-    if(!factory.UseChildComponent("Optimiser",m_optimiser)) {
+    if(!factory.UseChildComponent("Optimiser",m_optimiser,true)) {
       m_optimiser = OptimiseConjugateGradientC(1000);
       //m_optimiser = OptimiseDescentC(1000,1e-3);
     }
@@ -178,20 +178,26 @@ namespace RavlN {
   
   //: Load from stream.
   
-  DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+  DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(std::istream &strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      m_regularisation(0),
+      m_prependUnit(false),
+      m_doNormalisation(false)
   {
     int version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(std::istream &), Unrecognised version number in stream. ");
     RavlAssertMsg(0,"not supported");
   }
   
   //: Load from binary stream.
   
   DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      m_regularisation(0),
+      m_prependUnit(false),
+      m_doNormalisation(false)
   {
     int version;
     strm >> version;
@@ -202,7 +208,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignClassifierLogisticRegressionBodyC::Save (ostream &out) const {
+  bool DesignClassifierLogisticRegressionBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     RavlAssertMsg(0,"not supported");
@@ -221,6 +227,45 @@ namespace RavlN {
     return true;
   }
   
+  //: Get the default parameter values and their limits.
+  void DesignClassifierLogisticRegressionBodyC::ParameterLimits(
+      VectorC &defaultValues,
+      VectorC &min,
+      VectorC &max,
+      SArray1dC<StringC> &names
+      ) const
+  {
+    defaultValues = VectorC(1);
+    defaultValues[0] = 0.01;
+
+    min = VectorC(1);
+    min[0] = 0;
+
+    max = VectorC(1);
+    max[0] = 1e5;
+
+    names = SArray1dC<StringC>(1);
+    names[0] = "Regularisation";
+  }
+
+  //: Get the current parameters.
+  VectorC DesignClassifierLogisticRegressionBodyC::Parameters() const {
+    VectorC vec(1);
+    vec[0] = m_regularisation;
+    return vec;
+  }
+
+  //: Set the current parameters.
+  // Returns the current parameters, which may not be exactly those
+  // set in 'params', but will be the closest legal values.
+  VectorC DesignClassifierLogisticRegressionBodyC::SetParameters(const VectorC &params)
+  {
+    m_regularisation = params[0];
+    if(m_regularisation < 0)
+      m_regularisation = 0;
+    return params;
+  }
+
   //: Create a classifier.
   
   ClassifierC DesignClassifierLogisticRegressionBodyC::Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out)
@@ -300,7 +345,8 @@ namespace RavlN {
  
   //////////////////////////////////////////////////////////
   
-  RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierLogisticRegressionC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierLogisticRegression("RavlN::DesignClassifierLogisticRegressionC");
+  //static RavlN::TypeNameC g_type(typeid(RavlN::DesignClassifierLogisticRegressionC),"RavlN::DesignClassifierLogisticRegressionC");
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignClassifierLogisticRegressionC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignClassifierLogisticRegression("RavlN::DesignClassifierLogisticRegressionC");
 
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignClassifierLogisticRegressionBodyC,DesignClassifierLogisticRegressionC,DesignClassifierSupervisedC);
 

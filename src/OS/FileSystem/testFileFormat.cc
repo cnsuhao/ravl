@@ -20,6 +20,7 @@
 #include "Ravl/DP/FileFormatIO.hh"
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/Stream.hh"
+#include "Ravl/UnitTest.hh"
 
 namespace RavlN {
   extern int IncludeFileFormatStream();
@@ -46,21 +47,11 @@ int main(int argc,char **argv)
   verb = option.Boolean("v",false,"Verbose. \n");
   option.Check();
   int ret;
-#if 1
-  if((ret = TestStream(infile)) != 0) {
-    cerr << "Test Stream failed :" << ret << "\n";
-    return 1;
-  }
-  if((ret = TestBinStream(infile)) != 0) {
-    cerr << "Test BinStream failed :" << ret << "\n";
-    return 1;
-  }
-#endif
-  if((ret = TestFilename()) != 0) {
-    cerr << "Test filename failed on line " << ret << "\n";
-    return 1;
-  }
-  cout << "TEST PASSED. \n";
+
+  RAVL_RUN_TEST(TestStream(infile));
+  RAVL_RUN_TEST(TestBinStream(infile));
+  RAVL_RUN_TEST(TestFilename());
+  std::cout << "TEST PASSED. \n";
   return 0;
 }
 
@@ -123,19 +114,19 @@ int TestStream(FilenameC &infile)
   FilenameC fn = infile.MkTemp();
   
   if(!Save(fn,val,"stream",verb)) {
-    cerr << "Failed to save data. \n";
+    std::cerr << "Failed to save data. \n";
     return __LINE__;
   }
   
   val = 0;
   if(!Load(fn,val,"",verb)) {
-    cerr << "Failed to load data. \n";
+    std::cerr << "Failed to load data. \n";
     return __LINE__;
   }
   
-  cout << "Loaded :" << val << endl;
+  std::cout << "Loaded :" << val << std::endl;
   if(val != 21) {
-    cerr << "ERROR: Test Failed ! \n";
+    std::cerr << "ERROR: Test Failed ! \n";
     return __LINE__;
   }
   
@@ -150,19 +141,19 @@ int TestBinStream(FilenameC &infile)
   val = 20;
   FilenameC fn = infile.MkTemp();
   if(!Save(fn,val,"abs",verb)) {
-    cerr << "Failed to save data. \n";
+    std::cerr << "Failed to save data. \n";
     return __LINE__;
   }
   
   val = 0;
   if(!Load(fn,val,"",verb)) {
-    cerr << "Failed to load data. \n";
+    std::cerr << "Failed to load data. \n";
     return __LINE__;
   }
   
-  cout << "Loaded :" << val << endl;
+  std::cout << "Loaded :" << val << std::endl;
   if(val != 20) {
-    cerr << "ERROR: Test Failed ! \n";
+    std::cerr << "ERROR: Test Failed ! \n";
     return __LINE__;
   }
   fn.Remove(); // Remove test file.

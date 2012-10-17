@@ -63,7 +63,7 @@ namespace RavlN {
     {}
     //: Constructor with a port id.
     
-    DPPortBodyC(istream &in);
+    DPPortBodyC(std::istream &in);
     //: Stream constructor.
     
     virtual ~DPPortBodyC();
@@ -76,8 +76,8 @@ namespace RavlN {
     //: Does port work asynchronously ?
     // Can more than one thread read from this port safely ?
     
-    virtual bool Save(ostream &out) const;
-    //: Save to ostream.
+    virtual bool Save(std::ostream &out) const;
+    //: Save to std::ostream.
     
     virtual DPPortC ConnectedTo() const;
     //: Is this port connected to another ?
@@ -157,7 +157,7 @@ namespace RavlN {
     {}
     //: Constructor with a port id.
     
-    DPIPortBaseBodyC(istream &in) 
+    DPIPortBaseBodyC(std::istream &in) 
       : DPPortBodyC(in)
     {}
     // Stream constructor.
@@ -171,12 +171,12 @@ namespace RavlN {
     //: Has the End Of Stream been reached ?
     // true = yes.
     
-    virtual const type_info &InputType() const;
+    virtual const std::type_info &InputType() const;
     //: Input type.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPPortBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Discard();
     //: Discard the next input datum.
@@ -199,7 +199,7 @@ namespace RavlN {
     {}
     //: Constructor with a port id.
     
-    DPIPortBodyC(istream &in) 
+    DPIPortBodyC(std::istream &in) 
       : DPIPortBaseBodyC(in)
     {}
     //: Stream constructor.
@@ -235,12 +235,12 @@ namespace RavlN {
     // NB. This need NOT be overridden in client classes 
     // unless fast handling of arrays of data elements is required.
     
-    virtual const type_info &InputType() const { return typeid(DataT); }
+    virtual const std::type_info &InputType() const { return typeid(DataT); }
     // Input type.  
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPIPortBaseBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
     virtual bool Discard() { 
       DataT tmp;
@@ -274,7 +274,7 @@ namespace RavlN {
     {}
     //: Constructor with a port id.
     
-    DPOPortBaseBodyC(istream &in)
+    DPOPortBaseBodyC(std::istream &in)
       : DPPortBodyC(in)
     {}
     //: Stream constructor.
@@ -285,12 +285,12 @@ namespace RavlN {
     virtual bool IsPutReady() const;
     //: Is port ready for data ?
     
-    virtual const type_info &OutputType() const;
+    virtual const std::type_info &OutputType() const;
     //: Output type.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPPortBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
   };
   
   //! userlevel=Develop
@@ -310,7 +310,7 @@ namespace RavlN {
     {}
     //: Constructor with a port id.
     
-    DPOPortBodyC(istream &in)
+    DPOPortBodyC(std::istream &in)
       : DPOPortBaseBodyC(in)
     {}
     //: Default constructor.
@@ -329,12 +329,12 @@ namespace RavlN {
     // NB. This need NOT be overridden in client classes 
     // unless fast handling of arrays of data elements is required.
     
-    virtual const type_info &OutputType() const { return typeid(DataT); }
+    virtual const std::type_info &OutputType() const { return typeid(DataT); }
     //: Input type.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPOPortBaseBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
   };
   
   template<class DataT>
@@ -366,7 +366,7 @@ namespace RavlN {
     {}
     //: Constructor.
     
-    DPPortC(istream &in)
+    DPPortC(std::istream &in)
       : DPEntityC(in)
     {}
     //: Stream constructor.
@@ -424,7 +424,7 @@ namespace RavlN {
     {}
     //: Body constructor.
     
-    DPIPortBaseC(istream &strm) 
+    DPIPortBaseC(std::istream &strm) 
       : DPEntityC(strm)
     {}
     //: Stream constructor.
@@ -444,7 +444,7 @@ namespace RavlN {
     //: Access body.
     
   public:
-    inline const type_info &InputType() const 
+    inline const std::type_info &InputType() const 
     { return Body().InputType(); }
     // Get type of input port.
     
@@ -512,7 +512,7 @@ namespace RavlN {
     }
     //: Base constructor.
     
-    DPIPortC(istream &in) 
+    DPIPortC(std::istream &in) 
       : DPEntityC(in)
     {}
     //: Stream constructor.
@@ -547,13 +547,13 @@ namespace RavlN {
   };
   
   template <class DataT>
-  ostream & operator<<(ostream & s,const DPIPortC<DataT> &port) { 
+  std::ostream & operator<<(std::ostream & s,const DPIPortC<DataT> &port) { 
     port.Save(s); 
     return s; 
   }
   
   template <class DataT>
-  istream & operator>>(istream & s, DPIPortC<DataT> &port) { 
+  std::istream & operator>>(std::istream & s, DPIPortC<DataT> &port) { 
     DPIPortC<DataT> nport(s); port = nport; 
     return s; 
   }
@@ -583,7 +583,7 @@ namespace RavlN {
     {}
     // Body constructor.
     
-    DPOPortBaseC(istream &strm) 
+    DPOPortBaseC(std::istream &strm) 
       : DPEntityC(strm)
     {}
     // Stream constructor.
@@ -602,7 +602,7 @@ namespace RavlN {
     { Body().PutEOS(); }
     //: Put End Of Stream marker.
     
-    inline const type_info &OutputType() const 
+    inline const std::type_info &OutputType() const 
     { return Body().OutputType(); }
     //: Get type of output port.
     
@@ -643,7 +643,7 @@ namespace RavlN {
     {}
     //: Body constructor.
     
-    DPOPortC(istream &in) 
+    DPOPortC(std::istream &in) 
       : DPEntityC(in)
     {}
     //: Stream constructor.
@@ -688,13 +688,13 @@ namespace RavlN {
   };
   
   template <class DataT>
-  ostream & operator<<(ostream & s,const DPOPortC<DataT> &port) { 
+  std::ostream & operator<<(std::ostream & s,const DPOPortC<DataT> &port) { 
     port.Save(s); 
     return s; 
   }
   
   template <class DataT>
-  istream & operator>>(istream & s, DPOPortC<DataT> &port) { 
+  std::istream & operator>>(std::istream & s, DPOPortC<DataT> &port) { 
     DPOPortC<DataT> nport(s); port = nport; 
     return s; 
   }

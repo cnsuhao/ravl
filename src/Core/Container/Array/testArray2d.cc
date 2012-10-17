@@ -53,61 +53,61 @@ int main()
   int ln;
 #if 1
   if((ln = testBasic()) != 0) {
-    cerr << "Basic Array2d test failed line:" << ln << "\n";
+    std::cerr << "Basic Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSlice()) != 0) {
-    cerr << "Basic slice test failed line:" << ln << "\n";
+    std::cerr << "Basic slice test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testShift()) != 0) {
-    cerr << "Basic Array2d test failed line:" << ln << "\n";
+    std::cerr << "Basic Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSArrayConv()) != 0) {
-    cerr << "SArrayConv Array2d test failed line:" << ln << "\n";
+    std::cerr << "SArrayConv Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr2()) != 0) {
-    cerr << "Sqr2Iter Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr2Iter Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr3()) != 0) {
-    cerr << "Sqr3Iter Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr3Iter Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr31()) != 0) {
-    cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr31b()) != 0) {
-    cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
     return 1;
   }
 #endif
   if((ln = testSqr33()) != 0) {
-    cerr << "Sqr33Iter2 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr33Iter2 Array2d test failed line:" << ln << "\n";
     return 1;
   }
 #if 1
   if((ln = testSqr311()) != 0) {
-    cerr << "Sqr311Iter3 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr311Iter3 Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr3111()) != 0) {
-    cerr << "Sqr3111Iter4 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr3111Iter4 Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr51()) != 0) {
-    cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
     return 1;
   }
   if((ln = testSqr71()) != 0) {
-    cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
+    std::cerr << "Sqr31Iter2 Array2d test failed line:" << ln << "\n";
     return 1;
   }
 #endif
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
@@ -120,7 +120,7 @@ int testBasic() {
   arr1[1][2]  = 0;
   arr1.Fill(1);
   if(arr1[1][2] != 1) {
-    cerr << "Fill failed. ("  << arr1[1][2] << ")\n";
+    std::cerr << "Fill failed. ("  << arr1[1][2] << ")\n";
     return __LINE__;
   }
   
@@ -128,14 +128,14 @@ int testBasic() {
   {
     Array2dIterC<IntT> it(arr1);
     if(it.Index() != arr1.Rectangle().Origin()) {
-      cerr << "Index check 1 failed.  Inital:" << it.Index() << "  Origin:" << arr1.Rectangle().Origin() << "\n";
+      std::cerr << "Index check 1 failed.  Inital:" << it.Index() << "  Origin:" << arr1.Rectangle().Origin() << "\n";
       return __LINE__;
     }
     for(;it;it++)
       x += *it;
   }
   if(x != arr1.Rectangle().Area()) {
-    cerr << "Area test failed. \n";
+    std::cerr << "Area test failed. \n";
     return __LINE__;
   }
   arr1 /= 2;
@@ -145,7 +145,7 @@ int testBasic() {
   {
     Array2dIter2C<IntT,IntT> it(arr1,arr1);
     if(it.Index() != arr1.Rectangle().Origin()) {
-      cerr << "Index check 2 failed. \n";
+      std::cerr << "Index check 2 failed. \n";
       return __LINE__;
     }    
     for(;it;it++)
@@ -154,7 +154,7 @@ int testBasic() {
   {
     Array2dIter3C<IntT,IntT,IntT> it(arr1,arr1,arr1);
     if(it.Index() != arr1.Rectangle().Origin()) {
-      cerr << "Index check 3 failed. \n";
+      std::cerr << "Index check 3 failed. \n";
       return __LINE__;
     }    
     for(;it;it++)
@@ -163,7 +163,7 @@ int testBasic() {
   {
     Array2dIter4C<IntT,IntT,IntT,IntT> it(arr1,arr1,arr1,arr1);
     if(it.Index() != arr1.Rectangle().Origin()) {
-      cerr << "Index check 4 failed. \n";
+      std::cerr << "Index check 4 failed. \n";
       return __LINE__;
     }
     for(;it;it++)
@@ -186,11 +186,11 @@ int testSlice() {
   int i = 0;
   for(Array2dIterC<int> it(test);it;it++)
     *it = i++;
-  cerr << "Test=" << test << "\n";
+  std::cerr << "Test=" << test << "\n";
   Slice1dC<int> slice;
   for(i = 0;i < (IntT) test.Frame().Rows();i++) {
     slice = test.SliceColumn(i);
-    cerr << "Slice=" << slice << "\n";
+    std::cerr << "Slice=" << slice << "\n";
     for(int j = 0;j < (IntT) test.Frame().Cols();j++) {
       //cerr << "Val=" << slice[j] << " " << test[j][i] << "\n";
       if(slice[j] != test[j][i]) return __LINE__;
@@ -214,7 +214,7 @@ int testShift() {
   Array2dC<IntT> shift2(arr,arr.Frame(),Index2dC(0,0));
   for(Array2dIter2C<IntT,IntT> it3(arr,shift1);it3;it3++)
     if(it3.Data1() != it3.Data2()) return __LINE__;
-  // cerr << shift2;
+  // std::cerr << shift2;
   return 0;
 }
 
@@ -384,7 +384,7 @@ int testSqr31b() {
 // Test 3x3 iterators.
 
 int testSqr33() {
-  cerr << "testSqr33() \n";
+  std::cerr << "testSqr33() \n";
   Array2dC<IntT> data(5,5);
   data.Fill(1);
 
@@ -441,23 +441,23 @@ int testSqr33() {
   if(count1 != 1053) return __LINE__;
   if(count2 != 1053) return __LINE__;
   if(sqrs != 9) return __LINE__;
-  cerr << "Sqrs=" << sqrs << "\n";
+  std::cerr << "Sqrs=" << sqrs << "\n";
 #if 0
   it.First();
-  cerr << "1:\n";
-  cerr << it.DataTL1() << " " <<  it.DataTM1() << " " << it.DataTR1() << "\n";
-  cerr << it.DataML1() << " " <<  it.DataMM1() << " " << it.DataMR1() << "\n";
-  cerr << it.DataBL1() << " " <<  it.DataBM1() << " " << it.DataBR1() << "\n\n";
+  std::cerr << "1:\n";
+  std::cerr << it.DataTL1() << " " <<  it.DataTM1() << " " << it.DataTR1() << "\n";
+  std::cerr << it.DataML1() << " " <<  it.DataMM1() << " " << it.DataMR1() << "\n";
+  std::cerr << it.DataBL1() << " " <<  it.DataBM1() << " " << it.DataBR1() << "\n\n";
   while(it.Next()) {
-    cerr << it.DataTL1() << " " <<  it.DataTM1() << " " << it.DataTR1() << "\n";
-    cerr << it.DataML1() << " " <<  it.DataMM1() << " " << it.DataMR1() << "\n";
-    cerr << it.DataBL1() << " " <<  it.DataBM1() << " " << it.DataBR1() << "\n\n";
+    std::cerr << it.DataTL1() << " " <<  it.DataTM1() << " " << it.DataTR1() << "\n";
+    std::cerr << it.DataML1() << " " <<  it.DataMM1() << " " << it.DataMR1() << "\n";
+    std::cerr << it.DataBL1() << " " <<  it.DataBM1() << " " << it.DataBR1() << "\n\n";
   }
-  cerr << "2:\n";
-  cerr << it.DataTL1() << " " <<  it.DataTM1() << " " << it.DataTR1() << "\n";
-  cerr << it.DataML1() << " " <<  it.DataMM1() << " " << it.DataMR1() << "\n";
-  cerr << it.DataBL1() << " " <<  it.DataBM1() << " " << it.DataBR1() << "\n\n";
-  cerr << "Original=" << data;
+  std::cerr << "2:\n";
+  std::cerr << it.DataTL1() << " " <<  it.DataTM1() << " " << it.DataTR1() << "\n";
+  std::cerr << it.DataML1() << " " <<  it.DataMM1() << " " << it.DataMR1() << "\n";
+  std::cerr << it.DataBL1() << " " <<  it.DataBM1() << " " << it.DataBR1() << "\n\n";
+  std::cerr << "Original=" << data;
 #endif
   return 0;
 }

@@ -37,7 +37,7 @@ namespace RavlDFN {
       Disconnect();
   }
   
-  //: Read from istream.
+  //: Read from std::istream.
   
   DFLinkBodyC::DFLinkBodyC(XMLIStreamC &strm,DFSystemC &context) 
     : DFObjectBodyC(strm,context)
@@ -45,7 +45,7 @@ namespace RavlDFN {
     strm >> XMLAttribute("connected",connected);
   }
   
-  //: Save ostream.
+  //: Save std::ostream.
   
   bool DFLinkBodyC::Save(XMLOStreamC &strm,bool inCharge) const {
     if(inCharge)
@@ -68,19 +68,19 @@ namespace RavlDFN {
   //: Connect link.
   
   bool DFLinkBodyC::Connect() {
-    ONDEBUG(cerr << "DFLinkBodyC::Connect(), Called. \n");
+    ONDEBUG(std::cerr << "DFLinkBodyC::Connect(), Called. \n");
     DFPortC sp(src);
     DFPortC dp(dst);
     if(sp.IsValid() && dp.IsValid())
       connected = sp.Connect(dp);
-    ONDEBUG(cerr << "DFLinkBodyC::Connect(), Connect=" << connected << ". \n");
+    ONDEBUG(std::cerr << "DFLinkBodyC::Connect(), Connect=" << connected << ". \n");
     return connected;
   }
   
   //: Disconnect link.
   
   bool DFLinkBodyC::Disconnect() {
-    ONDEBUG(cerr << "DFLinkBodyC::Disconnect() \n");
+    ONDEBUG(std::cerr << "DFLinkBodyC::Disconnect() \n");
     if(!connected)
       return false;
     DFPortC sp(src);

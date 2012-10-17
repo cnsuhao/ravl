@@ -23,10 +23,13 @@ namespace RavlN {  namespace GeneticN {
 
   //! Copy me.
   RCBodyVC &EvaluateFitnessC::Copy() const
-  { return *new EvaluateFitnessC(*this); }
+  {
+    RavlAssertMsg(0,"abstract class");
+    throw RavlN::ExceptionOperationFailedC("abstract copy.");
+  }
 
   //! Access type of object evaluated for fitness.
-  const type_info &EvaluateFitnessC::ObjectType() const
+  const std::type_info &EvaluateFitnessC::ObjectType() const
   { return typeid(void); }
 
   //! Generate a new problem in the domain.

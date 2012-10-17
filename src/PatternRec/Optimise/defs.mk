@@ -12,23 +12,25 @@ PACKAGE = Ravl/PatternRec
 
 #SUPPORT_ONLY = sgi
 
-SOURCES = Parameters.cc Cost.cc CostInvert.cc CostFunction.cc CostFunction1d.cc \
-        BracketMinimum.cc \
-	Optimise.cc OptimiseDescent.cc OptimiseConjugateGradient.cc  OptimiseRandomUniform.cc \
-	OptimiseSobol.cc OptimiseBrent.cc OptimisePowell.cc OptimiseGrid.cc OptimiseLevenbergMarquardt.cc
+SOURCES = Parameters.cc Cost.cc CostInvert.cc CostFunction.cc \
+ CostFunction1d.cc BracketMinimum.cc Optimise.cc OptimiseDescent.cc \
+ OptimiseConjugateGradient.cc  OptimiseRandomUniform.cc OptimiseSobol.cc \
+ OptimiseBrent.cc OptimisePowell.cc OptimiseGrid.cc \
+ OptimiseLevenbergMarquardt.cc OptimiseParticleSwarm.cc
 
-HEADERS = Parameters.hh Cost.hh CostInvert.hh CostFunction.hh CostFunction1d.hh \
-        BracketMinimum.hh \
-	Optimise.hh OptimiseDescent.hh OptimiseConjugateGradient.hh OptimiseRandomUniform.hh \
-	OptimiseSobol.hh OptimiseBrent.hh OptimisePowell.hh OptimiseGrid.hh OptimiseLevenbergMarquardt.hh
+HEADERS = Parameters.hh Cost.hh CostInvert.hh CostFunction.hh \
+ CostFunction1d.hh BracketMinimum.hh Optimise.hh OptimiseDescent.hh \
+ OptimiseConjugateGradient.hh OptimiseRandomUniform.hh OptimiseSobol.hh \
+ OptimiseBrent.hh OptimisePowell.hh OptimiseGrid.hh \
+ OptimiseLevenbergMarquardt.hh OptimiseParticleSwarm.hh
 
-MAINS = 
+MAINS = exOptimise.cc exOptimiseParticleSwarm.cc
 
-PLIB = Optimisation
+PLIB = 	Optimisation
 
-USESLIBS = RavlCore RavlDataSet
+USESLIBS = RavlCore RavlDataSet RavlPlot
 
-PROGLIBS = RavlPatternRec
+PROGLIBS = RavlPatternRec RavlGnuPlot.opt
 
 EXAMPLES = testBrent.cc
 

@@ -29,15 +29,15 @@ struct AccessC
 
 int exIndex(int, char * [] )
 {
-  cout << "Index access example\n"
+  std::cout << "Index access example\n"
        << "====================\n";
   
   char buffer[] = "absdefghijklmnopqrstuvwxyz\n";
   AccessC<char> acc(buffer);
   UIntT mi = 2;  // a machine oriented index
   IndexC  i  = mi; // an index with a proper arithmetic operations
-  cout << "Buffer[2]:    " << buffer[mi] << " == " << acc[i] << '\n'; 
-  cout << "End of the example\n";
+  std::cout << "Buffer[2]:    " << buffer[mi] << " == " << acc[i] << '\n'; 
+  std::cout << "End of the example\n";
   return 0;
 }
 

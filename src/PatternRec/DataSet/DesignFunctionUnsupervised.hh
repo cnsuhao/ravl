@@ -30,13 +30,13 @@ namespace RavlN {
     {}
     //: Default constructor.
     
-    DesignFunctionUnsupervisedBodyC(istream &strm);
+    DesignFunctionUnsupervisedBodyC(std::istream &strm);
     //: Load from stream.
     
     DesignFunctionUnsupervisedBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -84,7 +84,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    DesignFunctionUnsupervisedC(istream &strm);
+    DesignFunctionUnsupervisedC(std::istream &strm);
     //: Load from stream.
     
     DesignFunctionUnsupervisedC(BinIStreamC &strm);
@@ -148,14 +148,14 @@ namespace RavlN {
 
   };
   
-  inline istream &operator>>(istream &strm,DesignFunctionUnsupervisedC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DesignFunctionUnsupervisedC &obj) {
     obj = DesignFunctionUnsupervisedC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DesignFunctionUnsupervisedC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DesignFunctionUnsupervisedC &obj) {
     obj.Save(out);
     return out;
   }

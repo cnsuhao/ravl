@@ -29,23 +29,23 @@ int main()
 {
   int ln;
   if((ln = TestSingleBuffer()) != 0) {
-    cerr << "Test failed at " << ln << "\n";
+    std::cerr << "Test failed at " << ln << "\n";
     return 1;
   }
   if((ln = TestBuffer2d()) != 0) {
-    cerr << "Test failed at " << ln << "\n";
+    std::cerr << "Test failed at " << ln << "\n";
     return 1;
   }
-  cerr << "Test passed ok. \n";
+  std::cerr << "Test passed ok. \n";
   return 0;
 }
 
 int TestBuffer2d() {
-  cerr << "Single Buffer Size=" << sizeof(SingleBufferBodyC<RealT>) - sizeof(RealT) << "\n";
+  std::cerr << "Single Buffer Size=" << sizeof(SingleBufferBodyC<RealT>) - sizeof(RealT) << "\n";
   
   BufferC<int> bf1d (6);
   if(bf1d.Size() != 6) {
-    cerr << "Size test failed. \n";
+    std::cerr << "Size test failed. \n";
     return 1;
   }
   
@@ -54,11 +54,11 @@ int TestBuffer2d() {
   
   Buffer2dC<int> bf (r1.Size(),r2.Size());
   if(bf.Size1() != (UIntT) r1.Size()) {
-    cerr << "Size1 test failed. \n";
+    std::cerr << "Size1 test failed. \n";
     return 1;
   }
   if(bf.Size2() != (UIntT) r2.Size()) {
-    cerr << "Size2 test failed. \n";
+    std::cerr << "Size2 test failed. \n";
     return 1;
   }
   
@@ -67,12 +67,12 @@ int TestBuffer2d() {
   rba.Attach(bf,r1);
   
   if(r1 != rba.Range1()) {
-    cerr<< "Range 1 incorrect. " << rba.Range1() <<" should be " << r1 << "\n";
+    std::cerr<< "Range 1 incorrect. " << rba.Range1() <<" should be " << r1 << "\n";
     return 1;
   }
 
   if(r2 != rba.Range2()) {
-    cerr<< "Range 2 incorrect. " << rba.Range2() <<" should be " << r2 << "\n";
+    std::cerr<< "Range 2 incorrect. " << rba.Range2() <<" should be " << r2 << "\n";
     return 1;
   }
   
@@ -85,17 +85,17 @@ int TestBuffer2d() {
   }
   
   if(&(rba[rba.Range1().Min()][rba.Range2().Min()]) != bf.Data().ReferenceElm()) {
-    cerr << "Buffer setup incorrect. Min@" << ((void *)&(rba[rba.Range1().Min()][rba.Range2().Min()])) << "\n";
+    std::cerr << "Buffer setup incorrect. Min@" << ((void *)&(rba[rba.Range1().Min()][rba.Range2().Min()])) << "\n";
     return 1;
   }
   
   BufferAccess2dIterC<int> it(rba,r2);
   if(!it.IsElm()) {
-    cerr << "Failed to create valid iterator. \n";
+    std::cerr << "Failed to create valid iterator. \n";
     return 1;
   }
   if(&(*it) != &(rba[rba.Range1().Min()][rba.Range2().Min()])) {
-    cerr << "Inital iterator position incorrect. " << ((void *) &(*it) ) << " should be " << ((void *) &(rba[rba.Range1().Min()][rba.Range2().Min()])) <<  "\n";
+    std::cerr << "Inital iterator position incorrect. " << ((void *) &(*it) ) << " should be " << ((void *) &(rba[rba.Range1().Min()][rba.Range2().Min()])) <<  "\n";
     return 1;
   }
   for(;it;it++)

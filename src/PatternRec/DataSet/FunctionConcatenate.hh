@@ -33,13 +33,13 @@ namespace RavlN {
 
     FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
     
-    FunctionConcatenateBodyC(istream &strm);
+    FunctionConcatenateBodyC(std::istream &strm);
     //: Load from stream.
     
     FunctionConcatenateBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream.
     
     virtual bool Save (BinOStreamC &out) const;
@@ -87,7 +87,7 @@ namespace RavlN {
 
     
     
-    FunctionConcatenateC(istream &is);
+    FunctionConcatenateC(std::istream &is);
     //: Stream constructor.
     
     FunctionConcatenateC(BinIStreamC &is);
@@ -127,14 +127,14 @@ namespace RavlN {
   };
   
   
-  inline istream &operator>>(istream &strm,FunctionConcatenateC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FunctionConcatenateC &obj) {
     obj = FunctionConcatenateC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FunctionConcatenateC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionConcatenateC &obj) {
     obj.Save(out);
     return out;
   }

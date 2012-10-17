@@ -42,13 +42,13 @@ namespace RavlLogicN {
     //: Construct from a single literal.
     // Effectively add NotC(lit) if negate is true.
 
-    MinTermBodyC(istream &strm);
+    MinTermBodyC(std::istream &strm);
     //: Construct from a binary stream.
     
     MinTermBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to binary stream 'out'.
 
     virtual bool Save(BinOStreamC &out) const;
@@ -148,7 +148,7 @@ namespace RavlLogicN {
     {}
     //: Base constructor
     
-    MinTermC(istream &strm);
+    MinTermC(std::istream &strm);
     //: Load from stream.
     
     MinTermC(BinIStreamC &strm);

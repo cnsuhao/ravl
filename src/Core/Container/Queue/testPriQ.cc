@@ -23,7 +23,7 @@ void SeqTest(void);
 void InterTest(void);
 
 int main() {
-  cerr << "Starting test. \n";
+  std::cerr << "Starting test. \n";
   SeqTest();
   InterTest();
   return 0;
@@ -42,14 +42,14 @@ void SeqTest(void) {
     const int Val = KP.Data2();
     const int Key = KP.Data1();
     if(Key < Last) {
-      cerr << "\n ERROR !!! " << KP.Data1() << " " << Val << " \n";
+      std::cerr << "\n ERROR !!! " << KP.Data1() << " " << Val << " \n";
       break;
     }
     Last = Key;
     //printf("(%d %d) ",KP.Data1(),Val);
   }
   
-  cerr << "Sequence test passed. \n";
+  std::cerr << "Sequence test passed. \n";
   return ;
 }  
 
@@ -59,7 +59,7 @@ void InterTest(void) {
   
   for(i = 1;i < 10000;i++)
     Queue.Insert(RandomInt(),i+1);
-  cerr << "Starting Interleave. \n";
+  std::cerr << "Starting Interleave. \n";
   for(int k = 0;k < 1000;k++) {
     // Remove
     Last = Queue.TopKey();
@@ -78,20 +78,20 @@ void InterTest(void) {
       Queue.Insert(RandomInt(),i+1);
     }
   }
-  cerr << "Checking remaining queue. \n";
+  std::cerr << "Checking remaining queue. \n";
   Last = Queue.TopKey();
   while(Queue.IsElm()) {
     Tuple2C<int,int> &KP =Queue.GetTopPair();
     const int Val = KP.Data2();
     const int Key = KP.Data1();
     if(Key < Last) {
-      cerr << "\n ERROR !!! " << KP.Data1() << "  " <<Val << " \n";
+      std::cerr << "\n ERROR !!! " << KP.Data1() << "  " <<Val << " \n";
       break;
     }
     Last = Key;
   }
   
-  cerr << "Interleave test passed. \n";
+  std::cerr << "Interleave test passed. \n";
   return ;
 }
 

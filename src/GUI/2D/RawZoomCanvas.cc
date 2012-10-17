@@ -56,7 +56,7 @@ namespace RavlGUIN {
   
   bool RawZoomCanvasBodyC::EventConfigure(GdkEvent* &event) {    
     RawCanvasBodyC::TranslateConfigureEvent(event,widgetSize);
-    ONDEBUG(cerr << "RawZoomCanvasBodyC::EventConfigure(), Called. Size=" << widgetSize << "\n");
+    ONDEBUG(std::cerr << "RawZoomCanvasBodyC::EventConfigure(), Called. Size=" << widgetSize << "\n");
     return true;
   }
   
@@ -124,7 +124,7 @@ namespace RavlGUIN {
   template<>
   void RawZoomCanvasBodyC::GUIDrawImage(const ImageC<ByteIAValueC> &image,const Point2dC &doffset,bool ignoreImageOrigin) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
-    ONDEBUG(cerr << "RawZoomCanvasBodyC::GUIDrawImage(), Called. Offset=" << offset << "\n");
+    ONDEBUG(std::cerr << "RawZoomCanvasBodyC::GUIDrawImage(), Called. Offset=" << offset << "\n");
     IndexRange2dC imgRect = World2GUIi(IndexRange2dC(image.Frame().RowRange().Min(),
                                                      image.Frame().RowRange().Max() + 1,
                                                      image.Frame().ColRange().Min(),
@@ -135,11 +135,11 @@ namespace RavlGUIN {
                                            imgRect.ColRange().Min(),
                                            imgRect.ColRange().Max() - 1
                                            );
-    ONDEBUG(cerr << "DrawRect=" << drawRect << " widgetSize=" << widgetSize << "\n");
+    ONDEBUG(std::cerr << "DrawRect=" << drawRect << " widgetSize=" << widgetSize << "\n");
     drawRect.ClipBy(widgetSize);
     if(drawRect.Area() <= 0)
       return ;
-    ONDEBUG(cerr << "FinalDrawRect=" << drawRect << "\n");
+    ONDEBUG(std::cerr << "FinalDrawRect=" << drawRect << "\n");
 
     // A bit crap, but for the moment change this into an RGBA image.
 

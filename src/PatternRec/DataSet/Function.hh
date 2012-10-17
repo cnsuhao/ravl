@@ -44,13 +44,13 @@ namespace RavlN {
     FunctionBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    FunctionBodyC(istream &strm);
+    FunctionBodyC(std::istream &strm);
     //: Load from stream.
     
     FunctionBodyC(BinIStreamC &strm);
     //: Load from binary stream.
 
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -115,7 +115,7 @@ namespace RavlN {
     // This is for use of designer classes, changing the output size of
     // an existing function has undefined effects.
     
-    virtual void Describe(ostream &out);
+    virtual void Describe(std::ostream &out);
     //: Write a human readable text description of the function.
 
 
@@ -140,7 +140,7 @@ namespace RavlN {
     //: Default constructor.
     // Creates an invalid handle.
     
-    FunctionC(istream &strm);
+    FunctionC(std::istream &strm);
     //: Load from stream.
 
     FunctionC(BinIStreamC &strm);
@@ -230,21 +230,21 @@ namespace RavlN {
     // This is for use of designer classes, changing the output size of
     // an existing function has undefined effects.
     
-    void Describe(ostream &out) 
+    void Describe(std::ostream &out) 
     { return Body().Describe(out); }
     //: Write a human readable text description of the function.
     // May not be implemented for all functions.
   };
 
   
-  inline istream &operator>>(istream &strm,FunctionC &obj) {
+  inline std::istream &operator>>(std::istream &strm,FunctionC &obj) {
     obj = FunctionC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const FunctionC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionC &obj) {
     obj.Save(out);
     return out;
   }

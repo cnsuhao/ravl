@@ -16,9 +16,11 @@
 #include "Ravl/MatrixRS.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/VirtualConstructor.hh"
-#include  "Ravl/PatternRec/DataSetVectorLabel.hh"
+#include "Ravl/PatternRec/DataSetVectorLabel.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/SArray1dIter2.hh"
+#include "Ravl/Exception.hh"
+#include "Ravl/XMLFactoryRegister.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -28,52 +30,67 @@
 #endif
 
 namespace RavlN {
-  
+
+  DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC()
+   : equalPriors(false)
+  {}
+
   //: Create least squares designer.
   
   DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(const SArray1dC<RealT> & p) 
-    : priors(p)
-  {
-    equalPriors=false;
-  }
+    : priors(p),
+      equalPriors(false)
+  {}
 
   DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(bool equalP) 
     : equalPriors(equalP)
+  {}
+  
+  DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(const XMLFactoryContextC & factory) :
+      DesignClassifierSupervisedBodyC(factory), equalPriors(factory.AttributeBool("equalPriors", true))
   {
+    if (!equalPriors) {
+      throw ExceptionBadConfigC("Non-equal priors not supported by XMLFactory constructor!");
+    }
   }
 
-  
   //: Load from stream.
   
-  DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(istream &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+  DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(std::istream &strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      equalPriors(false)
   {
     int ver;
     strm >> ver;
-    if(ver != 1)
-      cerr << "DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(), Unknown format version. \n";
+    if(ver < 1 || ver > 2)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("DesignBayesNormalQuadraticBodyC");
     strm >> priors;
+    if(ver > 1)
+      strm >> equalPriors;
   }
   
   //: Load from binary stream.
   
   DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(BinIStreamC &strm)
-    : DesignClassifierSupervisedBodyC(strm)
+    : DesignClassifierSupervisedBodyC(strm),
+      equalPriors(false)
   {
     char ver;
     strm >> ver;
-    if(ver != 1)
-      cerr << "DesignBayesNormalQuadraticBodyC::DesignBayesNormalQuadraticBodyC(), Unknown format version. \n";
+    if(ver < 1 || ver > 2)
+      throw RavlN::ExceptionUnexpectedVersionInStreamC("DesignBayesNormalQuadraticBodyC");
     strm >> priors;
+    if(ver > 1)
+      strm >> equalPriors;
   }
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignBayesNormalQuadraticBodyC::Save (ostream &out) const {
+  bool DesignBayesNormalQuadraticBodyC::Save (std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    char ver = 1;
-    out << ((int) ver) << ' ' << priors;
+    char ver = 2;
+    out << ((int) ver) << ' ' << priors << ' ' << equalPriors;
     return true;
   }
   
@@ -82,8 +99,8 @@ namespace RavlN {
   bool DesignBayesNormalQuadraticBodyC::Save (BinOStreamC &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
-    char ver = 1;
-    out << ((int) ver) << priors;
+    char ver = 2;
+    out << ((int) ver) << priors << equalPriors;
     return true;
   }
   
@@ -111,7 +128,11 @@ namespace RavlN {
   
  
   ////////////////////////////////////////////////////////////////////////
-  
+  static RavlN::XMLFactoryRegisterHandleConvertC<DesignBayesNormalQuadraticC, DesignClassifierSupervisedC> g_registerXMLFactoryDesignBayesNormalQuadratic("RavlN::DesignBayesNormalQuadraticC");
+
   RAVL_INITVIRTUALCONSTRUCTOR_FULL(DesignBayesNormalQuadraticBodyC,DesignBayesNormalQuadraticC,DesignClassifierSupervisedC);
+  
+  void linkDesignBayesNormalQuadratic()
+   {}
   
 }

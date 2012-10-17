@@ -50,7 +50,7 @@ namespace RavlImageN {
   
   DPIImageMPEGByteRGBBodyC::DPIImageMPEGByteRGBBodyC(StringC fn )
   {
-    ONDEBUG(cerr << "DPIImageMPEGByteRGBBodyC(), Open file '" << fn << "' \n");
+    ONDEBUG(std::cerr << "DPIImageMPEGByteRGBBodyC(), Open file '" << fn << "' \n");
     MpegI = fopen( fn.chars(), "r" );
     
     DPIImageMPEGByteRGBBodyC::DPIImageMPEGOpen();
@@ -62,7 +62,7 @@ namespace RavlImageN {
   DPIImageMPEGByteRGBBodyC::DPIImageMPEGByteRGBBodyC(const IStreamC &in)
     : inf(in)
   {
-    ONDEBUG(cerr << "DPIImageMPEGByteRGBBodyC(), Open istream \n");
+    ONDEBUG(std::cerr << "DPIImageMPEGByteRGBBodyC(), Open std::istream \n");
     MpegI = fopen ( inf.Name().chars(), "r" );
     
     DPIImageMPEGByteRGBBodyC::DPIImageMPEGOpen();
@@ -72,7 +72,7 @@ namespace RavlImageN {
   //: Get next piece of data.
   
   ImageC<ByteRGBAValueC> DPIImageMPEGByteRGBBodyC::Get() {
-    ONDEBUG(cerr << "DPIImageMPEGByteRGBBodyC::Get(), Called. \n");
+    ONDEBUG(std::cerr << "DPIImageMPEGByteRGBBodyC::Get(), Called. \n");
     
     if (MpegI == 0) 
       throw DataNotReadyC("DPIImageMPEGByteRGBBodyC: Not file handle. ");
@@ -128,9 +128,10 @@ namespace RavlImageN {
 	}
 	CurFrame = CurFrame - off;
       }
-
+      break;
     default:
-      cerr << "DPIImageMPEGByteRGBBodyC::MPEGSeekProc(), WARNING: Illegal value for whence : " << whence << "\n";
+      std::cerr << "DPIImageMPEGByteRGBBodyC::MPEGSeekProc(), WARNING: Illegal value for whence : " << whence << "\n";
+      break;
     }
 
     if ( CurFrame > 0 )

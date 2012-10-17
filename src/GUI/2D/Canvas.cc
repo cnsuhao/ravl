@@ -29,7 +29,7 @@
 namespace RavlGUIN {
 
   static int gtkCanvasDestroyGC (GtkWidget *widget,GdkGC * data) { 
-    ONDEBUG(cerr << "Got destroy for GC : " << ((void *) data) << "\n");
+    ONDEBUG(std::cerr << "Got destroy for GC : " << ((void *) data) << "\n");
     gdk_gc_unref(data);
     return 1;
   }
@@ -47,7 +47,7 @@ namespace RavlGUIN {
   /* Create a new backing pixmap of the appropriate size */
   static gint win_configure_event (GtkWidget *widget, GdkEventConfigure *event, gpointer data ) {
     CanvasBodyC &body = *(CanvasBodyC *) data;
-    ONDEBUG(cerr <<"Configuring pixmap. \n");
+    ONDEBUG(std::cerr <<"Configuring pixmap. \n");
     if(body.ConfigDone())
       return true;
     GdkPixmap *orgPixmap = body.Pixmap();
@@ -65,10 +65,10 @@ namespace RavlGUIN {
                                    -1);
 #if 0
     GdkVisual *vis = gdk_window_get_visual (widget->window);
-    cerr << "Vis:" << ((void *) vis) << endl;
-    cerr << "Type: " << ((int) vis->type) << " Depth:" << ((int) vis->depth) << endl;
-    cerr << "ColMapSize: " << vis->colormap_size << endl;
-    cerr << "BitPerRGB:" << vis->bits_per_rgb << endl;
+    std::cerr << "Vis:" << ((void *) vis) << std::endl;
+    std::cerr << "Type: " << ((int) vis->type) << " Depth:" << ((int) vis->depth) << std::endl;
+    std::cerr << "ColMapSize: " << vis->colormap_size << std::endl;
+    std::cerr << "BitPerRGB:" << vis->bits_per_rgb << std::endl;
 #endif
     if(body.DrawGC() == 0)
       body.DoSomeSetup();
@@ -90,7 +90,7 @@ namespace RavlGUIN {
       gdk_pixmap_unref(orgPixmap);
     } 
     
-    ONDEBUG(cerr <<"Configuring pixmap done. \n");
+    ONDEBUG(std::cerr <<"Configuring pixmap done. \n");
     return true;
   }
   
@@ -98,7 +98,7 @@ namespace RavlGUIN {
   static gint
   win_expose_event (GtkWidget *widget, GdkEventExpose *event, gpointer data) {
     CanvasBodyC &body = *(CanvasBodyC *) data;
-    ONDEBUG(cerr <<"Expose event. \n");
+    ONDEBUG(std::cerr <<"Expose event. \n");
     if(body.Pixmap() != 0) {
       gdk_draw_pixmap(widget->window,
                       widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
@@ -107,13 +107,13 @@ namespace RavlGUIN {
                       event->area.x, event->area.y,
                       event->area.width, event->area.height);
     } else
-    cerr << "WARNING: Canvas empty. \n";
-    ONDEBUG(cerr <<"Expose event done. \n");
+    std::cerr << "WARNING: Canvas empty. \n";
+    ONDEBUG(std::cerr <<"Expose event done. \n");
   /* Take care of pending actions that require the pixmap. */
     if (!body.InitialExposureDone()) {
       body.SetInitialExposureDone(true);
       while(!body.ToDo().IsEmpty()) {
-        ONDEBUG(cerr << "Catching up with stuff. \n");
+        ONDEBUG(std::cerr << "Catching up with stuff. \n");
         body.ToDo().Last().Invoke();
         body.ToDo().DelLast();
       }
@@ -159,7 +159,7 @@ namespace RavlGUIN {
   
   bool CanvasBodyC::Create(GtkWidget *nwidget) {
     widget = nwidget;
-    ONDEBUG(cerr <<"CanvasBodyC::Create() start. \n");
+    ONDEBUG(std::cerr <<"CanvasBodyC::Create() start. \n");
     gtk_drawing_area_size (GTK_DRAWING_AREA (widget), sx, sy);  
     if(!direct) {
       gtk_signal_connect (GTK_OBJECT (widget), "expose_event",
@@ -171,7 +171,7 @@ namespace RavlGUIN {
     SetupColours();
     ConnectSignals();
     gtk_widget_add_events(widget,GDK_EXPOSURE_MASK);
-    ONDEBUG(cerr <<"CanvasBodyC::Create() done. \n");
+    ONDEBUG(std::cerr <<"CanvasBodyC::Create() done. \n");
     return true;    
   }
   
@@ -201,7 +201,7 @@ namespace RavlGUIN {
   //: Draw an rgb image on the canvas.
   
   void CanvasBodyC::DrawImage(const ImageC<ByteRGBValueC> &img,Index2dC offset) {
-    ONDEBUG(cerr <<"CanvasBodyC::DrawImage()" << endl;)
+    ONDEBUG(std::cerr <<"CanvasBodyC::DrawImage()" << std::endl;)
     Manager.Queue(Trigger(CanvasC(*this),&CanvasC::GUIDrawRGBImage,const_cast<ImageC<ByteRGBValueC> &>(img),offset));
   }
 
@@ -249,7 +249,7 @@ namespace RavlGUIN {
   //: Turn auto refresh after draw routines on/off.
   
   bool CanvasBodyC::GUIAutoRefresh(bool &val) { 
-    ONDEBUG(cerr << "CanvasBodyC::GUIAutoRefresh(bool). Val=" << val << "\n");
+    ONDEBUG(std::cerr << "CanvasBodyC::GUIAutoRefresh(bool). Val=" << val << "\n");
     if(!autoRefresh && val)
       GUIRefresh();
     autoRefresh = val;
@@ -268,24 +268,24 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawImage(ImageC<ByteT> &img,const Index2dC &ioffset) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawImage(), WARNING: Asked to render data before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawImage(), WARNING: Asked to render data before canvas is initialise. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawImage,img,ioffset);
       AddToQueue(trigger);
       return true;
     }
     if(img.IsEmpty()) {
-      cerr << "CanvasBodyC::GUIDrawImage(), WARNING: Ask to render empty image. \n";
+      std::cerr << "CanvasBodyC::GUIDrawImage(), WARNING: Ask to render empty image. \n";
       return true;
     }
 #if 0
     if(!img.IsContinuous()) {
-      cerr << "CanvasBodyC::GUIDrawImage(), WARNING: Image not continuous in memory, making copy. \n";
+      std::cerr << "CanvasBodyC::GUIDrawImage(), WARNING: Image not continuous in memory, making copy. \n";
       ImageC<ByteT> tmp(img.Copy()); // Make image continuous.
       return GUIDrawImage(tmp,ioffset);
     }
 #endif
     
-    ONDEBUG(cerr << "CanvasBodyC::GUIDrawImage(), Rendering image. \n");
+    ONDEBUG(std::cerr << "CanvasBodyC::GUIDrawImage(), Rendering image. \n");
     Index2dC off = ioffset + img.Rectangle().Origin();    
     int atx = off.Col().V(); // Convert between RAVL and GTK co-ordinates...
     int aty = off.Row().V();
@@ -323,16 +323,16 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawRGBImage(ImageC<ByteRGBValueC> &img,const Index2dC &ioffset) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawRGBImage(), WARNING: Asked to render data before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawRGBImage(), WARNING: Asked to render data before canvas is initialise. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawRGBImage,img,ioffset);
       AddToQueue(trigger);
       return true;
     }
     if(img.IsEmpty()) {
-      cerr << "CanvasBodyC::GUIDrawRGBImage(), WARNING: Ask to render empty image. \n";
+      std::cerr << "CanvasBodyC::GUIDrawRGBImage(), WARNING: Ask to render empty image. \n";
       return true;
     }
-    ONDEBUG(cerr << "CanvasBodyC::GUIDrawRGBImage(), Render image. \n");
+    ONDEBUG(std::cerr << "CanvasBodyC::GUIDrawRGBImage(), Render image. \n");
     Index2dC off = ioffset + img.Rectangle().Origin();    
     int atx = off.Col().V(); // Convert between RAVL and GTK co-ordinates...
     int aty = off.Row().V(); 
@@ -370,7 +370,7 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawLine(const IntT &x1,const IntT &y1,const IntT &x2,const IntT &y2,const IntT &c) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawLine(), WARNING: Asked to render data before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawLine(), WARNING: Asked to render data before canvas is initialise. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawLine,x1,y1,x2,y2,c);
       AddToQueue(trigger);
       return true;
@@ -387,7 +387,7 @@ namespace RavlGUIN {
                    x1, y1,
                    x2, y2);
 
-    ONDEBUG(cerr <<"CanvasBodyC::GUIDrawLine(), AutoRefresh=" << autoRefresh << "\n");
+    ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawLine(), AutoRefresh=" << autoRefresh << "\n");
     if(autoRefresh)
       GUIRefresh();
     return true;
@@ -408,7 +408,7 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawArc(const ImageRectangleC& rect, const IntT& start, const IntT& angle, const IntT& colId, const bool& fill) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawArc(), WARNING: Asked to render data before canvas is initialised. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawArc(), WARNING: Asked to render data before canvas is initialised. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawArc,rect,start,angle,colId,fill);
       AddToQueue(trigger);
       return true;
@@ -430,7 +430,7 @@ namespace RavlGUIN {
                   start,
                   angle);
 
-    ONDEBUG(cerr <<"CanvasBodyC::GUIDrawArc(), AutoRefresh=" << autoRefresh << "\n");
+    ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawArc(), AutoRefresh=" << autoRefresh << "\n");
     if(autoRefresh)
       GUIRefresh();
     return true;    
@@ -441,7 +441,7 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawText(const IntT &x1,const IntT &y1,const StringC &text,const IntT &c) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawText(), WARNING: Asked to render data before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawText(), WARNING: Asked to render data before canvas is initialise. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawText,x1,y1,text,c);
       AddToQueue(trigger);
       return true;
@@ -472,7 +472,7 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawRectangle(const IntT &x1,const IntT &y1,const IntT &x2,const IntT &y2,const IntT &c) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawRectangle(), WARNING: Asked to render data before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawRectangle(), WARNING: Asked to render data before canvas is initialise. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawRectangle,x1,y1,x2,y2,c);
       AddToQueue(trigger);
       return true;
@@ -499,7 +499,7 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIDrawFrame(const IntT &x1,const IntT &y1,const IntT &x2,const IntT &y2,const IntT &c) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!IsReady()) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIDrawFrame(), WARNING: Asked to render data before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIDrawFrame(), WARNING: Asked to render data before canvas is initialise. \n");
       TriggerC trigger = TriggerR(*this,&CanvasBodyC::GUIDrawFrame,x1,y1,x2,y2,c);
       AddToQueue(trigger);
       return true;
@@ -538,7 +538,7 @@ namespace RavlGUIN {
   bool CanvasBodyC::GUIRefresh() {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(widget == 0) {
-      ONDEBUG(cerr <<"CanvasBodyC::GUIRefresh(), WARNING: Asked to refresh before canvas is initialise. \n");
+      ONDEBUG(std::cerr <<"CanvasBodyC::GUIRefresh(), WARNING: Asked to refresh before canvas is initialise. \n");
       toDo.InsFirst(TriggerR(*this,&CanvasBodyC::GUIRefresh));
       return true;
     }
@@ -604,7 +604,7 @@ namespace RavlGUIN {
     if(n==65) {
       GdkColormap *colorMap = gdk_window_get_colormap(widget->window);
       if(!gdk_color_black(colorMap,&m_gdkBlack)) {
-        cerr << "Failed to set color to black" << endl;
+        std::cerr << "Failed to set color to black" << std::endl;
       }
       return m_gdkBlack;
     }
@@ -614,7 +614,7 @@ namespace RavlGUIN {
     GdkColor &ret = colourTab[((UIntT)(n-1)) % colourTab.Size()];
     if(ret.pixel == 0) { // Need to allocate ?
       if(widget == 0) {
-        cerr <<"CanvasBodyC::GetColour(), WARNING: Called before canvas is initalised. \n";
+        std::cerr <<"CanvasBodyC::GetColour(), WARNING: Called before canvas is initalised. \n";
         return nullColour;
       }
       GdkColormap *colorMap = gdk_window_get_colormap(widget->window);
@@ -622,10 +622,10 @@ namespace RavlGUIN {
                                     &ret,
                                     false,
                                     true)) {
-        cerr << "ViewGeomCanvasBodyC::AllocColours(), ERROR: Failed to allocate colour. \n";
+        std::cerr << "ViewGeomCanvasBodyC::AllocColours(), ERROR: Failed to allocate colour. \n";
       }
       if(ret.pixel == 0)
-        cerr << "Ooops WARNING: Pixel value of 0, and we hoped this wouldn't happen! \n";
+        std::cerr << "Ooops WARNING: Pixel value of 0, and we hoped this wouldn't happen! \n";
     }
     return ret;
   }
@@ -685,8 +685,8 @@ namespace RavlGUIN {
   void CanvasBodyC::AddToQueue(TriggerC &trigger) {
     toDo.InsFirst(trigger);
     if (toDo.Size() >= WARNING_QUEUE_SIZE) {
-      cerr << "WARNING!!! CanvasBodyC::AddToQueue() - draw to-do list size greater than " << WARNING_QUEUE_SIZE << "!"
-           << endl << "Possible memory problems ahead..." << endl;
+      std::cerr << "WARNING!!! CanvasBodyC::AddToQueue() - draw to-do list size greater than " << WARNING_QUEUE_SIZE << "!"
+           << endl << "Possible memory problems ahead..." << std::endl;
     }
   }
 

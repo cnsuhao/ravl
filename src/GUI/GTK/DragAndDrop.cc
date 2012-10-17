@@ -25,14 +25,14 @@ namespace RavlGUIN {
   
   bool DNDDataInfoC::Finish(bool success,bool del) {
     RavlAssert(context != 0);
-    ONDEBUG(cerr << "DNDDataInfoC::Finish, \n");
+    ONDEBUG(std::cerr << "DNDDataInfoC::Finish, \n");
     gtk_drag_finish(context,success,del,time);
 #if DODEBUG
-    cerr << "  DND Protocol=" << context->protocol << "\n";
-    cerr << "  DND is_source =" << context->is_source << "\n";
-    cerr << "  DND source_window =" << context->source_window << "\n";
-    cerr << "  DND dest_window =" << context->dest_window << "\n";
-    cerr << "  DND targets =" << context->targets << "\n";
+    std::cerr << "  DND Protocol=" << context->protocol << "\n";
+    std::cerr << "  DND is_source =" << context->is_source << "\n";
+    std::cerr << "  DND source_window =" << context->source_window << "\n";
+    std::cerr << "  DND dest_window =" << context->dest_window << "\n";
+    std::cerr << "  DND targets =" << context->targets << "\n";
 #endif    
     return true;
   }
@@ -41,7 +41,7 @@ namespace RavlGUIN {
   
   GtkWidget *DNDDataInfoC::GTKSourceWidget() {
     RavlAssert(context != 0);
-    ONDEBUG(cerr << "DNDDataInfoC::GTKSourceWidget, Get source widget. \n");
+    ONDEBUG(std::cerr << "DNDDataInfoC::GTKSourceWidget, Get source widget. \n");
     return gtk_drag_get_source_widget (context);
   }
   
@@ -60,16 +60,16 @@ namespace RavlGUIN {
     if(data == 0)
       return StringC();
     if(data->format != 8)
-      cerr << "DNDDataInfoC::String(), WARNING: Selection may not be a string. \n";    
+      std::cerr << "DNDDataInfoC::String(), WARNING: Selection may not be a string. \n";    
     return StringC((char *) data->data,data->length);
   }
 
   //: Put a string.
   
   bool DNDDataInfoC::PutString(int dtype,const StringC &str) {
-    ONDEBUG(cerr << "DNDDataInfoC::PutString, DND target type =" << data->target << "\n");    
+    ONDEBUG(std::cerr << "DNDDataInfoC::PutString, DND target type =" << data->target << "\n");    
     gtk_selection_data_set_text(data,const_cast<gchar *>((const gchar *)str.chars()),str.Size());
-    ONDEBUG(cerr << "DNDDataInfoC::PutString, Done.\n");
+    ONDEBUG(std::cerr << "DNDDataInfoC::PutString, Done.\n");
     return true;
   }
 

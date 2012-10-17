@@ -35,7 +35,7 @@ namespace RavlN {
     //: Constructor
     //!param: cost - cost function that will be inverted
     
-    CostInvertBodyC (istream &in);
+    CostInvertBodyC (std::istream &in);
     //: Contructs from stream
     
   protected:
@@ -45,7 +45,7 @@ namespace RavlN {
     virtual MatrixC Jacobian (const VectorC &X) const;
     //: Calculate Jacobian matrix at X
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
   };
   

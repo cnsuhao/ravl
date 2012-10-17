@@ -31,14 +31,14 @@ template class FIndexC<3>;
 int main(int nargs,char **argv) {
   int ln;
   if((ln = testTFVector()) != 0) {
-    cerr << "Error line :" << ln << "\n";
+    std::cerr << "Error line :" << ln << "\n";
     return 1;
   }
   if((ln = testPair()) != 0) {
-    cerr << "Error line :" << ln << "\n";
+    std::cerr << "Error line :" << ln << "\n";
     return 1;
   }
-  cerr <<"Test passed ok. \n";
+  std::cerr <<"Test passed ok. \n";
   return 0;
 }
 

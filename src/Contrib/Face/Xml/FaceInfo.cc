@@ -92,7 +92,7 @@ namespace RavlN {
 
 
 #ifdef VISUAL_CPP
-      origImage.gsub("/vol/db", "h:/db");
+      m_origImage.gsub("/vol/db", "h:/db");
 #endif
 
       return;

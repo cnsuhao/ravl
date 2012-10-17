@@ -143,7 +143,7 @@ namespace RavlN {
   };
   
   template<class T>
-  ostream &operator<<(ostream &out,const SDArray1dC<T> &arr) {
+  std::ostream &operator<<(std::ostream &out,const SDArray1dC<T> &arr) {
     out << "0 " << arr.Size() << "\n";
     for(SizeT i = 0;i < arr.Size();i++)
       out << arr[i] << "\n";
@@ -151,7 +151,7 @@ namespace RavlN {
   }
   
   template<class T>
-  istream &operator>>(istream &in,SDArray1dC<T> &arr) {
+  std::istream &operator>>(std::istream &in,SDArray1dC<T> &arr) {
     UIntT asize,isize;
     in >> isize >> asize;
     RavlAssert(isize == 0);

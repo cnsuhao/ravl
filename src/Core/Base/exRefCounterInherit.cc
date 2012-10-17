@@ -149,7 +149,7 @@ int main() {
   anObj.SetData(2);
   
   // This will print out the value 2, as both 'anObj' and 'secondHandle' point to the same object.
-  cout << "Data=" << secondHandle.Data() << "\n";
+  std::cout << "Data=" << secondHandle.Data() << "\n";
   
   return 0;
 }

@@ -5,7 +5,6 @@
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
 /////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! lib=RavlThreads
 //! file="Ravl/OS/Threads/Posix/ConditionalVariable.cc"
 
@@ -45,7 +44,7 @@ namespace RavlN
 {
 
   void ConditionalVariableC::Error(const char *msg)  {
-    cerr << "ConditionalVariableC::Error() :" << msg << " \n";
+    std::cerr << "ConditionalVariableC::Error() :" << msg << " \n";
     RavlAssert(0);
   }
 

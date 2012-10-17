@@ -252,7 +252,7 @@ namespace RavlN {
   };
   
   template<class NodeT,class EdgeT>
-  ostream &operator<<(ostream &strm,const GraphNodeHC<NodeT,EdgeT> &node) {
+  std::ostream &operator<<(std::ostream &strm,const GraphNodeHC<NodeT,EdgeT> &node) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }
@@ -260,7 +260,7 @@ namespace RavlN {
   // Not implemented
   
   template<class NodeT,class EdgeT>
-  istream &operator>>(istream &strm,GraphNodeHC<NodeT,EdgeT> &node) {
+  std::istream &operator>>(std::istream &strm,GraphNodeHC<NodeT,EdgeT> &node) {
     RavlAssertMsg(0,"not implemented");
     return strm;
   }

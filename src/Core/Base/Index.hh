@@ -789,10 +789,10 @@ namespace RavlN {
   // I/O operators
   // -------------
 
-  istream & operator>>(istream & s, IndexC & r);
+  std::istream & operator>>(std::istream & s, IndexC & r);
   //: Reads value for index from an input stream
 
-  ostream & operator<<(ostream & s, const IndexC & r);
+  std::ostream & operator<<(std::ostream & s, const IndexC & r);
   //: Writes the index index to an output stream
 
 
@@ -1164,6 +1164,13 @@ namespace RavlN {
   { return i >= j.V(); }
   //: Returns true if the double number 'i' is greater than
   //: or equal to the value of index 'j' .
+
+  inline IndexC StdCopy(IndexC x) { return IndexC(x); }
+   //: Copy double.
+
+  inline void SetZero(IndexC &p)
+  { p = 0; }
+  //: Set index to 0.
 
 }
 

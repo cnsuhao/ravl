@@ -31,7 +31,7 @@ namespace RavlN {
 
   //: Load from stream.
   
-  FuncLinearCoeffBodyC::FuncLinearCoeffBodyC(istream &strm)
+  FuncLinearCoeffBodyC::FuncLinearCoeffBodyC(std::istream &strm)
     : FunctionBodyC(strm)
   { strm >> a; }
   
@@ -43,7 +43,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool FuncLinearCoeffBodyC::Save (ostream &out) const {
+  bool FuncLinearCoeffBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << ' ' << a ;
@@ -112,7 +112,7 @@ namespace RavlN {
 
   //: Write a human readable text description of the function.
   
-  void FuncLinearCoeffBodyC::Describe(ostream &out) {
+  void FuncLinearCoeffBodyC::Describe(std::ostream &out) {
     out << "Inputs:" << InputSize() << " Outputs:" << OutputSize() << "\n";
     out << "Linear model: " << a << "\n";
   }
@@ -162,7 +162,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncLinearCoeffC::FuncLinearCoeffC(istream &strm) 
+  FuncLinearCoeffC::FuncLinearCoeffC(std::istream &strm) 
     : FunctionC(RAVL_VIRTUALCONSTRUCTOR(strm,FuncLinearCoeffBodyC))
   {}
   

@@ -18,7 +18,7 @@
 #include "Ravl/Image/RealRGBValue.hh"
 #include "Ravl/Image/ByteYUVValue.hh"
 
-#define DPDEBUG 1
+#define DPDEBUG 0
 #include "Ravl/TypeName.hh"
 #if DPDEBUG
 #define ONDEBUG(x) x
@@ -40,12 +40,12 @@ namespace RavlImageN {
   {}
 
 
-  const type_info &FileFormat1394dcBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
+  const std::type_info &FileFormat1394dcBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
   { return typeid(void); }
 
 
-  const type_info &
-  FileFormat1394dcBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormat1394dcBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const {
     if(filename.length() == 0)
       return typeid(void);
     if(filename[0] != '@')
@@ -60,7 +60,7 @@ namespace RavlImageN {
 	channel -= 100;
       file = file.before(pn);
     }
-    ONDEBUG(cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << TypeName(obj_type.name()) << " Device='" << device <<"'\n");
+    ONDEBUG(std::cerr << "FileFormat1394dcBodyC::ProbeLoad(), Checking file type." << TypeName(obj_type.name()) << " Device='" << device <<"'\n");
     if(device != "IIDC")
       return typeid(void);
     
@@ -115,15 +115,15 @@ namespace RavlImageN {
     ret = dc1394_get_camera_misc_info(raw1394handle,cameraNode,&miscInfo);
     //cerr << "Misc=" << miscInfo.format << " " << miscInfo.mode << "\n";
     
-    const type_info *pixelType = &typeid(ImageC<ByteT>);
+    const std::type_info *pixelType = &typeid(ImageC<ByteT>);
     
 #if 0    
     quadlet_t tmp = MODE_640x480_RGB;
     quadlet_t formats = FORMAT_VGA_NONCOMPRESSED;
     ret = dc1394_query_supported_formats(raw1394handle,cameraNode,&formats);
-    cerr << "Formats=" << hex << formats << " ret=" << ret << "\n";
+    std::cerr << "Formats=" << hex << formats << " ret=" << ret << "\n";
     ret = dc1394_query_supported_modes(raw1394handle,cameraNode,FORMAT_VGA_NONCOMPRESSED,&tmp);
-    cerr << "MONO Ret=" << ret << " tmp=" << hex << tmp << "\n";
+    std::cerr << "MONO Ret=" << ret << " tmp=" << hex << tmp << "\n";
     
     switch(imgtype) {
     case IMG_GREY: 
@@ -136,7 +136,7 @@ namespace RavlImageN {
       pixelType = &typeid(ImageC<ByteYUV422ValueC>);
       break;
     case IMG_YUV: //return typeid(ImageC<ByteYUVValueC>);
-      cerr << "Unsupported pixel type. \n";
+      std::cerr << "Unsupported pixel type. \n";
       pixelType = &typeid(void);
     }
 #endif
@@ -150,7 +150,8 @@ namespace RavlImageN {
     case MODE_640x480_MONO:   pixelType = &typeid(ImageC<ByteT>);            break;
     case MODE_640x480_MONO16: pixelType = &typeid(ImageC<UInt16T>);          break;
     default:
-      cerr << "Unhandled camera mode " << miscInfo.mode << "\n";
+      std::cerr << "Unhandled camera mode " << miscInfo.mode << "\n";
+      break;
     }
     // Clean up.
     
@@ -159,28 +160,28 @@ namespace RavlImageN {
     return *pixelType;
   }
 
-  const type_info &
-  FileFormat1394dcBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const
+  const std::type_info &
+  FileFormat1394dcBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat) const
   { return typeid(void); }
 
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
 
-  DPIPortBaseC FileFormat1394dcBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const
+  DPIPortBaseC FileFormat1394dcBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const
   { return DPIPortBaseC(); }
 
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
 
-  DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const
+  DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const
   { return DPOPortBaseC(); }
 
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
 
-  DPIPortBaseC FileFormat1394dcBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const
+  DPIPortBaseC FileFormat1394dcBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const
   {
-    ONDEBUG(cerr << "FileFormat1394dcBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+    ONDEBUG(std::cerr << "FileFormat1394dcBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     if(filename[0] != '@')
       return DPIPortBaseC();
     StringC fn = ExtractParams(filename);
@@ -217,12 +218,12 @@ namespace RavlImageN {
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
 
-  DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const
+  DPOPortBaseC FileFormat1394dcBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const
   { return DPOPortBaseC(); }
 
   //: Get preferred IO type.
 
-  const type_info &FileFormat1394dcBodyC::DefaultType() const
+  const std::type_info &FileFormat1394dcBodyC::DefaultType() const
   { return typeid(ImageC<ByteT>); }
   
   // Some common cif formats.

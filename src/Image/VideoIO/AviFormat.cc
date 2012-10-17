@@ -42,8 +42,8 @@ namespace RavlImageN {
   //: Is stream in std stream format ?
   // Assume it is...  if it doesn't work, the user will have to sort it out...
   
-  const type_info &
-  FileFormatAviBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
+  const std::type_info &
+  FileFormatAviBodyC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
   { 
 #if 0
     return typeid(ImageC<ByteBGRValueC>); 
@@ -52,8 +52,8 @@ namespace RavlImageN {
 #endif    
   }
 
-  const type_info &
-  FileFormatAviBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatAviBodyC::ProbeLoad(const StringC &nfilename,IStreamC &in,const std::type_info &obj_type) const {
     StringC suffix = Extension(nfilename); //  the file can be checked by extension
     ONDEBUG(cerr << "FileFormatAviBodyC::ProbeLoad() [" << vName << "] Called. Filename:'"<< nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
     
@@ -82,21 +82,21 @@ namespace RavlImageN {
     else
       {
 	in.read(token,4);
-	cerr << "codec: " << token[0] << token[1] << token[2] << token[3] << endl; 
+	cerr << "codec: " << token[0] << token[1] << token[2] << token[3] << std::endl; 
 	if( (token[0] == (char)0) && (token[1] == (char)0) && (token[2] == (char)0) && (token[3] == (char)0) )
 	  return typeid(ImageC<ByteBGRValueC>);
 	if( (token[0] == 'd') && (token[1] == 'v') && (token[2] == 's') && (token[3] == 'd') )
 	  return typeid(DVFrameC);
 	else
 	  {
-	    cerr << "ERROR: video stream in file: " << nfilename << " is not a known video format\n";
+	    std::cerr << "ERROR: video stream in file: " << nfilename << " is not a known video format\n";
 	    return typeid(void);
 	  }
       }
   }
   
-  const type_info &
-  FileFormatAviBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const 
+  const std::type_info &
+  FileFormatAviBodyC::ProbeSave(const StringC &nfilename,const std::type_info &obj_type,bool forceFormat) const 
   {
     StringC suffix = Extension(nfilename);
     ONDEBUG(cerr << "FileFormatAviBodyC::ProbeSave() [" << vName << "] Called. Filename:'"<<nfilename <<" Ext:'" << suffix << "'  LoadType:'" << TypeName(obj_type) << "'\n");
@@ -110,9 +110,9 @@ namespace RavlImageN {
   //: Create a input port for loading.
   // Will create an Invalid port if not supported.
   
-  DPIPortBaseC FileFormatAviBodyC::CreateInput(IStreamC &in,const type_info &obj_type) const 
+  DPIPortBaseC FileFormatAviBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const 
   {
-    ONDEBUG(cerr << "FileFormatAviBodyC::CreateInput(IStreamC &,const type_info &), Called. \n");
+    ONDEBUG(cerr << "FileFormatAviBodyC::CreateInput(IStreamC &,const std::type_info &), Called. \n");
     if(in)
       {   
 	if(obj_type == typeid(ImageC<ByteBGRValueC>)) return DPISBGRAviFrameC(in);//if BGR creates a BGR input port
@@ -124,7 +124,7 @@ namespace RavlImageN {
   //: Create a output port for saving.
   // Will create an Invalid port if not supported.
   
-  DPOPortBaseC FileFormatAviBodyC::CreateOutput(OStreamC &out,const type_info &obj_type) const  
+  DPOPortBaseC FileFormatAviBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const  
   {
     if(out)
       {
@@ -137,9 +137,9 @@ namespace RavlImageN {
   //: Create a input port for loading from file 'filename'.
   // Will create an Invalid port if not supported. <p>
   
-  DPIPortBaseC FileFormatAviBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const 
+  DPIPortBaseC FileFormatAviBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const 
   {
-    ONDEBUG(cerr << "FileFormatAviBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+    ONDEBUG(cerr << "FileFormatAviBodyC::CreateInput(const StringC &,const std::type_info &), Called. \n");
     
     IStreamC strm(filename);
     if(strm)
@@ -153,7 +153,7 @@ namespace RavlImageN {
   //: Create a output port for saving to file 'filename'..
   // Will create an Invalid port if not supported. <p>
   
-  DPOPortBaseC FileFormatAviBodyC::CreateOutput(const StringC &filename,const type_info &obj_type) const 
+  DPOPortBaseC FileFormatAviBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const 
   {
     OStreamC strm(filename);
     if(strm)
@@ -166,7 +166,7 @@ namespace RavlImageN {
   
   //: Get prefered IO type.
   
-  const type_info &FileFormatAviBodyC::DefaultType() const { 
+  const std::type_info &FileFormatAviBodyC::DefaultType() const { 
     return typeid(ImageC<ByteBGRValueC>); 
   }
   

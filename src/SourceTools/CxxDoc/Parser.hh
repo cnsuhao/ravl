@@ -61,7 +61,7 @@ namespace RavlCxxDocN
     const FilenameC &CurrentFilename() const { return curFilename; }
     //: Get current filename.
     
-    void Dump(ostream &out);
+    void Dump(std::ostream &out);
     //: Dump database to 'out'
     
     ObjectListC &Data()
@@ -110,7 +110,7 @@ namespace RavlCxxDocN
     { return Body().ParseTree(fn); }
     //: Parse a directory.
 
-    void Dump(ostream &out)
+    void Dump(std::ostream &out)
     { Body().Dump(out); }
     //: Dump database to 'out'
     

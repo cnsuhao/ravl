@@ -52,26 +52,26 @@ int main(int nargs,char **argv) {
 	}
       }
     }
-    cerr << "Sum=" << sum << "\n";
+    std::cerr << "Sum=" << sum << "\n";
   } else {
     double values[] = { 0,0.1,1.1,-0.25,-3.6 , -3, 1.3,100000.01,1000.01,10000.1,10000.6,1000,-1000,-1000.6,-1e-20 };
     for(int i = 0;i < 15;i++) {
       if(testFloor) {
 	cerr << "Floor " << values[i] << " N=" << Floor(values[i])  << " Q=" << QFloor(values[i]) << " floor=" << floor(values[i]) << "\n";
 	if(floor(values[i]) != QFloor(values[i])) {
-	  cerr << "*** QFloor test failed. *** \n";
+	  std::cerr << "*** QFloor test failed. *** \n";
 	}
 	if(floor(values[i]) != Floor(values[i])) {
-	  cerr << "*** Floor test failed. *** \n";
+	  std::cerr << "*** Floor test failed. *** \n";
 	}
       } else {
 	cerr << "Round " << values[i] << " N=" << Round(values[i])  << " Q=" << QRound(values[i]) << " \n";
 	if(Round(values[i]) != QRound(values[i])) {
-	  cerr << "test failed. \n";
+	  std::cerr << "test failed. \n";
 	}
       }
     }
-    cerr << "test passed. \n";
+    std::cerr << "test passed. \n";
   }
   
   return 0;

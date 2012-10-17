@@ -99,6 +99,15 @@ namespace RavlN {
     return ret;
   }
   
+  SArray1dC<MeanCovarianceC> DesignKMeansBodyC::Cluster(const SampleC<VectorC> &in, const SampleC<RealT>&weights) {
+     SArray1dC<VectorC> means = FindMeans(in, weights);
+     SArray1dC<MeanCovarianceC> ret(means.Size());
+     for(SArray1dIter2C<VectorC,MeanCovarianceC> it(means,ret);it;it++)
+       it.Data2() = MeanCovarianceC(1,it.Data1(),MatrixC::Identity(it.Data1().Size()));
+     return ret;
+   }
+
+
   //: Find means for 'in'.
   
   SArray1dC<VectorC> DesignKMeansBodyC::FindMeans(const SampleC<VectorC> &in) {

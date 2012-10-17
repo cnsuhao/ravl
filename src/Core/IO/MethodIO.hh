@@ -55,9 +55,9 @@ namespace RavlN {
     { return func != 0; }
     //: Is port ready for data ?
     
-    virtual bool Save(ostream &sout) const 
+    virtual bool Save(std::ostream &sout) const 
     {  return false; } // Not implemented
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   private:
     ObjT obj;
@@ -101,9 +101,9 @@ namespace RavlN {
     }
     //: Get an array of data from stream.
     
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     {  return false; }
-    //: Save to ostream.
+    //: Save to std::ostream.
     
   private:
     ObjT obj;

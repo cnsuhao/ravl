@@ -32,13 +32,13 @@ namespace RavlN {
     DistanceMaxBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    DistanceMaxBodyC(istream &strm);
+    DistanceMaxBodyC(std::istream &strm);
     //: Load from stream.
     
     DistanceMaxBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -74,7 +74,7 @@ namespace RavlN {
     {}
     //: Construct from XML factory
 
-    DistanceMaxC(istream &strm);
+    DistanceMaxC(std::istream &strm);
     //: Load from stream.
     
     DistanceMaxC(BinIStreamC &strm);
@@ -82,14 +82,14 @@ namespace RavlN {
     
   };
   
-  inline istream &operator>>(istream &strm,DistanceMaxC &obj) {
+  inline std::istream &operator>>(std::istream &strm,DistanceMaxC &obj) {
     obj = DistanceMaxC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const DistanceMaxC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const DistanceMaxC &obj) {
     obj.Save(out);
     return out;
   }

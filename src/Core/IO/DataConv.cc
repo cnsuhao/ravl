@@ -17,13 +17,13 @@ namespace RavlN {
   //! userlevel=Normal
   //: Test if conversion is possible.
   
-  bool DPCanConvert(const type_info &from,const type_info &to) 
+  bool DPCanConvert(const std::type_info &from,const std::type_info &to)
   { return SystemTypeConverter().CanConvert(from,to); }
   
   //! userlevel=Normal
   //: Do conversion through abstract handles.
   
-  RCAbstractC DPDoConversion(const RCAbstractC &dat,const type_info &from,const type_info &to) {
+  RCAbstractC DPDoConversion(const RCAbstractC &dat,const std::type_info &from,const std::type_info &to) {
     return SystemTypeConverter().DoConversion(dat,from,to);
   }
   

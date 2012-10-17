@@ -50,7 +50,7 @@ namespace RavlLogicN {
     //: Destructor.
     
     bool Init(const MinTermC &Start,const MinTermC &Goal);
-    //: Initalise plan.
+    //: Initialise plan.
     
     NLPStepNodeT InsStep(const NLPStepC &Step,const MinTermC &Goal);
     //: Insert a step into the plan

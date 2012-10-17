@@ -157,7 +157,7 @@ namespace RavlN { namespace GeneticN {
    : public GeneC
   {
   public:
-    //! Constuct from a geneType.
+    //! Construct from a geneType.
     GeneListC(const GeneTypeListBaseC &geneType,const std::vector<GeneC::ConstRefT> &aList);
 
     //! Factory constructor
@@ -194,6 +194,9 @@ namespace RavlN { namespace GeneticN {
     //! Test is value is effectively equal to this within tolerances specified in the type.
     virtual bool IsEffectivelyEqual(const GeneC &other) const;
 
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
+
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneListC> RefT;
 
@@ -203,25 +206,6 @@ namespace RavlN { namespace GeneticN {
     std::vector<GeneC::ConstRefT> m_list;
   };
 
-
-   template<typename ClassT>
-   class RegisterGeneListC
-   {
-   public:
-     //static typename ClassT::RefT ConvertGeneFactory2Inst(const GeneFactoryC &factory)
-     //{ return new ClassT(factory); }
-
-     RegisterGeneListC(const char *nameOfType)
-     {
-       //RavlN::AddTypeName(typeid(ClassT),nameOfType);
-       //m_refName = std::string(nameOfType) + "::RefT";
-       //RavlN::AddTypeName(typeid(typename ClassT::RefT),m_refName.data());
-       //RavlN::RegisterConversion(&ConvertGeneFactory2Inst);
-     }
-
-   protected:
-     //std::string m_refName;
-   };
 
 }}
 #endif

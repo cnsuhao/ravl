@@ -65,7 +65,7 @@ namespace RavlGUIN {
       WidgeInfoC &child = *it;
       if(child.widge.Widget() == 0) {
 	if(!child.widge.Create()) {
-	  cerr << "TableBodyC::Create(), Widget create failed. \n";
+	  std::cerr << "TableBodyC::Create(), Widget create failed. \n";
 	  return false;
 	}
       }
@@ -89,7 +89,7 @@ namespace RavlGUIN {
       WidgeInfoC &child = *it;
       if(child.widge.Widget() == 0) {
 	if(!child.widge.Create()) {
-	  cerr << "TableBodyC::Create(), Widget create failed. \n";
+	  std::cerr << "TableBodyC::Create(), Widget create failed. \n";
 	  return false;
 	}
       }

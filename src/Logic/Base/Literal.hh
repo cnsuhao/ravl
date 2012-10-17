@@ -41,13 +41,13 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
     
-    LiteralBodyC(istream &strm);
+    LiteralBodyC(std::istream &strm);
     //: Construct from a stream.
     
     LiteralBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to stream 'out'.
     
     virtual bool Save(BinOStreamC &out) const;
@@ -68,7 +68,7 @@ namespace RavlLogicN {
     virtual bool Unify(const LiteralC &oth,BindSetC &bs) const;
     //: Unify with another variable.
     
-    virtual void Dump(ostream &out);
+    virtual void Dump(std::ostream &out);
     //: Dump info in human readable format to stream 'out'.
 
     virtual StringC Name() const;
@@ -136,7 +136,7 @@ namespace RavlLogicN {
     LiteralC(const char *name);
     //: Create a named literal.
     
-    explicit LiteralC(istream &strm);
+    explicit LiteralC(std::istream &strm);
     //: Load from stream.
     
     explicit LiteralC(BinIStreamC &strm);
@@ -205,7 +205,7 @@ namespace RavlLogicN {
     { return !Body().IsEqual(oth); }
     //: Inequality test.
     
-    void Dump(ostream &out)
+    void Dump(std::ostream &out)
     { Body().Dump(out); }
     //: Dump info in human readable format to stream 'out'.
 
@@ -246,14 +246,14 @@ namespace RavlLogicN {
   { return LiteralC(true); }
   //: Create an anonymous symbol.
   
-  inline istream &operator>>(istream &strm,LiteralC &obj) {
+  inline std::istream &operator>>(std::istream &strm,LiteralC &obj) {
     obj = LiteralC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline ostream &operator<<(ostream &out,const LiteralC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const LiteralC &obj) {
     //obj.Save(out);
     out << obj.Name();
     return out;

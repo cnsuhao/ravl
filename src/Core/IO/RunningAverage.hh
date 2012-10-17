@@ -35,7 +35,7 @@ namespace RavlN {
     {}
     //: Constructor.
   
-    DPRunningAverageBodyC(istream &strm)
+    DPRunningAverageBodyC(std::istream &strm)
       : DPProcessBodyC<NumTypeT,NumTypeT>(strm)
     { strm >> len >> total; }
     //: Stream constructor.
@@ -58,12 +58,12 @@ namespace RavlN {
     //: Apply operation to an array of elements.
     // returns the number of elements processed.
   
-    virtual bool Save(ostream &out) const {
+    virtual bool Save(std::ostream &out) const {
       DPProcessBodyC<NumTypeT,NumTypeT>::Save(out);
       out << len << " " << total;
       return true;
     }
-    //: Save to ostream.
+    //: Save to std::ostream.
   
     virtual RCBodyVC &Copy() const
     { return *new DPRunningAverageBodyC<NumTypeT>(total,len); }

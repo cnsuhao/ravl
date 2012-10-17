@@ -49,12 +49,12 @@ namespace RavlN {
     return RealRange2dC((End() * -1) + (centre*2),(Origin() * -1) + (centre * 2));
   }
   
-  ostream &operator<<(ostream &s,const RealRange2dC &ir) {
+  std::ostream &operator<<(std::ostream &s,const RealRange2dC &ir) {
     s << ir.Range1() << ' ' << ir.Range2();
     return s;
   }
   
-  istream &operator>>(istream &s,RealRange2dC &ir) {
+  std::istream &operator>>(std::istream &s,RealRange2dC &ir) {
     s >> ir.Range1() >> ir.Range2();
     return s;
   }

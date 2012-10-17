@@ -64,4 +64,5 @@ int main(int nargs,char **argv) {
   
   Manager.Start();
   
+  return 0;
 }

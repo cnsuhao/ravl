@@ -58,6 +58,9 @@ namespace RavlN { namespace GeneticN {
     float m_bias;  // True/False bias,  1.0 = Always true, 0.0 = Always false
   };
 
+  //! Access a gene type with 50/50 bias
+  const GeneTypeBoolC &GeneTypeBoolBiasHalf();
+
   //! Gene for integer variable
   class GeneBoolC
    : public GeneC
@@ -88,12 +91,18 @@ namespace RavlN { namespace GeneticN {
     bool Value() const
     { return m_value; }
 
+    //! Generate an instance of the class.
+    virtual void Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const;
+
     //! Access hash value.
     virtual size_t Hash() const
     { return RavlN::StdHash(m_value); }
 
     //! Test is value is effectively equal to this within tolerances specified in the type.
     virtual bool IsEffectivelyEqual(const GeneC &other) const;
+
+    //! Dump description in human readable form.
+    virtual void Dump(std::ostream &strm,UIntT indent = 0) const;
 
     // Reference to this gene.
     typedef RavlN::SmartPtrC<GeneBoolC> RefT;

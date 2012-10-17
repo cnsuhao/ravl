@@ -47,7 +47,9 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeIntC::GeneTypeIntC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_min(0),
+     m_max(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -59,7 +61,9 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeIntC::GeneTypeIntC(std::istream &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_min(0),
+     m_max(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -160,7 +164,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneIntC::GeneIntC(BinIStreamC &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -171,7 +176,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneIntC::GeneIntC(std::istream &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -210,6 +216,22 @@ namespace RavlN { namespace GeneticN {
     return (og->Value() == m_value);
   }
 
+  //! Dump description in human readable form.
+  void GeneIntC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneC::Dump(strm,indent);
+    strm << " Value=" << m_value;
+  }
+
+  //! Generate an instance of the class.
+  void GeneIntC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      IntT *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<IntT>(m_value);
+    }
+  }
 
   XMLFactoryRegisterConvertC<GeneIntC,GeneC> g_registerGeneInt("RavlN::GeneticN::GeneIntC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneIntC,"RavlN::GeneticN::GeneIntC");
@@ -234,7 +256,10 @@ namespace RavlN { namespace GeneticN {
   {}
 
   GeneTypeFloatC::GeneTypeFloatC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_min(0),
+     m_max(0),
+     m_inc(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -250,7 +275,10 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeFloatC::GeneTypeFloatC(std::istream &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_min(0),
+     m_max(0),
+     m_inc(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -269,6 +297,7 @@ namespace RavlN { namespace GeneticN {
   //! Save to binary stream
   bool GeneTypeFloatC::Save(std::ostream &strm) const
   {
+    strm << "GeneTypeFloatC";
     return false;
   }
 
@@ -363,7 +392,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneFloatC::GeneFloatC(BinIStreamC &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -374,7 +404,8 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneFloatC::GeneFloatC(std::istream &strm)
-   : GeneC(strm)
+   : GeneC(strm),
+     m_value(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -393,7 +424,7 @@ namespace RavlN { namespace GeneticN {
   //! Save to binary stream
   bool GeneFloatC::Save(std::ostream &strm) const
   {
-    strm << "GeneInt " << m_value;
+    strm << "GeneFloat " << m_value;
     return false;
   }
 
@@ -421,6 +452,23 @@ namespace RavlN { namespace GeneticN {
     const GeneTypeFloatC *gtf = dynamic_cast<const GeneTypeFloatC *>(m_type.BodyPtr());
     RavlAssert(gtf != 0);
     return gtf->IsEffectivelyEqual(og->Value(),m_value);
+  }
+
+  //! Generate an instance of the class.
+  void GeneFloatC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      float *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<float>(m_value);
+    }
+  }
+
+  //! Dump description in human readable form.
+  void GeneFloatC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneC::Dump(strm,indent);
+    strm << " Value=" << m_value;
   }
 
   XMLFactoryRegisterConvertC<GeneFloatC,GeneC> g_registerGeneFloat("RavlN::GeneticN::GeneFloatC");

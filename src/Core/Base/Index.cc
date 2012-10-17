@@ -13,12 +13,12 @@
 #include "Ravl/Stream.hh"
 
 namespace RavlN {
-  istream & operator>>(istream & sss, IndexC & i) {
+  std::istream & operator>>(std::istream & sss, IndexC & i) {
     sss >> i.V();
     return  sss;
   }
 
-  ostream & operator<<(ostream & s, const IndexC & i) {
+  std::ostream & operator<<(std::ostream & s, const IndexC & i) {
     s << i.V();
     return s;
   }

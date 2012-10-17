@@ -48,9 +48,9 @@ namespace RavlN {
     {}
     //: Constructor
 
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
     { return DPIStreamOpBodyC<DataT,DataT>::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
 
     virtual bool Seek(UIntT off) 
     { return sinput.Seek64(startFrame + (Int64T) off * sampleRate); }

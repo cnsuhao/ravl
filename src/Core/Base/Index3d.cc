@@ -17,14 +17,14 @@ namespace RavlN {
   //======= Index3dC ===================================================
   //====================================================================
   
-  ostream &
-  operator<<(ostream & outS, const Index3dC & index) { 
+  std::ostream &
+  operator<<(std::ostream & outS, const Index3dC & index) { 
     outS << index.I() << ' ' << index.J() << ' ' << index.K();
     return outS;
   }
   
-  istream & 
-  operator>>(istream & inS, Index3dC & index) { 
+  std::istream & 
+  operator>>(std::istream & inS, Index3dC & index) { 
     inS >> index.I() >> index.J() >> index.K();
     return inS;
   }

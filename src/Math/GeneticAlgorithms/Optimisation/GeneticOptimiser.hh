@@ -14,6 +14,7 @@
 #include "Ravl/Genetic/Genome.hh"
 #include "Ravl/Genetic/GenePalette.hh"
 #include "Ravl/Threads/Mutex.hh"
+#include "Ravl/SysLog.hh"
 #include <vector>
 #include <map>
 
@@ -29,11 +30,16 @@ namespace RavlN { namespace GeneticN {
     //! Factory constructor
     GeneticOptimiserC(const XMLFactoryContextC &factory);
 
+    //! Reset population to an empty set.
+    void Reset();
+
     //! Set fitness function to use
     void SetFitnessFunction(EvaluateFitnessC &fitness);
 
     //! Run generation.
-    void RunGeneration(UIntT generation);
+    // Setting 'resetScores' recompute's scores for all entries, which should be used
+    // if the cost function is modified in any way.
+    void RunGeneration(UIntT generation,bool resetScores = false);
 
     //! Save population to file
     //! Note: This thread safe
@@ -57,6 +63,21 @@ namespace RavlN { namespace GeneticN {
     //! Test if we're using a randomised domain
     bool IsUsingRandomisedDomain() const
     { return m_randomiseDomain; }
+
+    //! Set gene palette to use
+    void SetGenePalette(const GenePaletteC &palette)
+    { m_genePalette = &palette; }
+
+    //! Access gene palette.
+    GenePaletteC &GenePalette()
+    { return *m_genePalette; }
+
+    //! Get the current best genome and its score.
+    bool GetBestGenome(GenomeC::RefT &genome,float &score);
+
+    //! Set the root gene type.
+    void SetRootGeneType(const GeneTypeC &rootGeneType)
+    { m_rootGeneType = &rootGeneType; }
 
     //! Handle to optimiser
     typedef SmartPtrC<GeneticOptimiserC> RefT;
@@ -92,6 +113,8 @@ namespace RavlN { namespace GeneticN {
     UIntT m_runningAverageLength;
 
     GenePaletteC::RefT m_genePalette;
+
+    SysLogPriorityT m_logLevel;
   };
 
 }}

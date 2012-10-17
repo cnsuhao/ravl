@@ -27,14 +27,14 @@ DateC when[noTests];
 bool MarkTime(int &i) {
   when[i] = DateC(true); // Mark now.
   RavlN::Sleep(0.05);
-  //  cerr << " i:" << i << "\n";
+  //  std::cerr << " i:" << i << "\n";
   return true;
 }
 
 
 int main()
 {
-  cerr << "Running test... \n";
+  std::cerr << "Running test... \n";
   TimedTriggerQueueC eventQueue(true);
   Sleep(0.01);  // Give event queue time to setup properly...
   DateC requestedTime[noTests];
@@ -56,13 +56,13 @@ int main()
   Sleep(g_timePeriod + maxTimerError*10.0);  // Wait for all events to take place.
   for(i = 0;i < noTests;i++) {
     RealT diff = (requestedTime[i] - when[i]).Double();
-    cerr << "Timing error:" << diff << " " << requestedTime[i].ODBC(false,true) << " " << when[i].ODBC(false,true) << " \n";
+    std::cerr << "Timing error:" << diff << " " << requestedTime[i].ODBC(false,true) << " " << when[i].ODBC(false,true) << " \n";
     if(fabs(diff) > maxTimerError) {
-      cerr << "ERROR: Timing out of spec \n";
+      std::cerr << "ERROR: Timing out of spec \n";
       return 1;
     }
   }
-  cerr << "TEST PASSED.\n";
+  std::cerr << "TEST PASSED.\n";
   return 0; 
 }
 

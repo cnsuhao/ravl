@@ -11,7 +11,6 @@
 //! docentry="Ravl.API.OS.Threads"
 //! file="Ravl/OS/Threads/Posix/Mutex.hh"
 //! lib=RavlThreads
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! date="02/07/1999"
 

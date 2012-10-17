@@ -49,8 +49,8 @@ namespace RavlN {
   };
   
   template<class IT,class DIT,class BT>
-  ostream &operator<<(ostream &out,const BinIterC<IT,DIT,BT> &) {
-    RavlAssertMsg(0,"operator<<(ostream &out,const BinIterC<IT,DIT,BT> &), NOT IMPLEMENTED ");
+  std::ostream &operator<<(std::ostream &out,const BinIterC<IT,DIT,BT> &) {
+    RavlAssertMsg(0,"operator<<(std::ostream &out,const BinIterC<IT,DIT,BT> &), NOT IMPLEMENTED ");
     return out;
   }
 }

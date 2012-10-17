@@ -9,7 +9,6 @@
 //////////////////////////////////////////////////////////////
 //! author="Charles Galambos"
 //! docentry="Ravl.API.OS.Threads"
-//! rcsid="$Id$"
 //! file="Ravl/OS/Threads/Posix/RCRWLock.hh"
 //! lib=RavlThreads
 //! userlevel=Normal

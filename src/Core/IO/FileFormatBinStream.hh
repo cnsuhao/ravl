@@ -12,7 +12,6 @@
 //! file="Ravl/Core/IO/FileFormatBinStream.hh"
 //! author="Charles Galambos"
 //! date="12/08/1998"
-//! rcsid="$Id$"
 //! userlevel=Default
 
 #include "Ravl/DP/FileFormat.hh"
@@ -20,6 +19,9 @@
 #include "Ravl/TypeName.hh"
 
 namespace RavlN {
+  bool RegisterFormatBinStreamMeta(FileFormatBaseC &fileformat);
+  //: Register file format.
+
   /////////////////////////////
   //: Binary stream file format.
   //! userlevel=Develop
@@ -27,21 +29,21 @@ namespace RavlN {
   template<class DataT>
   class FileFormatBinStreamBodyC : public FileFormatBodyC {
   public:
-    FileFormatBinStreamBodyC(bool deletable)
-      : FileFormatBodyC("abs","RAVL binary stream. ",deletable)
+    FileFormatBinStreamBodyC(bool pubList)
+      : FileFormatBodyC("abs","RAVL binary stream. ",false)
     {}
     //: Constructor.
 
-    FileFormatBinStreamBodyC(const StringC &formatId,const StringC &formatDescriptor,bool deletable = true)
-      : FileFormatBodyC(formatId,formatDescriptor,deletable)
+    FileFormatBinStreamBodyC(const StringC &formatId,const StringC &formatDescriptor,bool pubList = false)
+      : FileFormatBodyC(formatId,formatDescriptor,false)
     {}
     //: Constructor with full format info.
 
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &/*obj_type*/) const  {
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &/*obj_type*/) const  {
       if(!in.good())
 	return typeid(void);
       BinIStreamC bin(in);
-      streampos mark = bin.Tell();
+      std::streampos mark = bin.Tell();
       UInt16T id;
       // Check magic number.
       bin >> id;
@@ -63,7 +65,7 @@ namespace RavlN {
           break;
         case RavlN::RAVLInvBinaryID:
           bin.UseNativeEndian(!bin.NativeEndian());
-          // Fall through
+          /* no break */
         case RavlN::RAVLBinaryID:
           // Use what every default 32/64 bit mode is set in the stream.
           break;
@@ -83,14 +85,14 @@ namespace RavlN {
     }
     //: Is stream in std stream format ?
 
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const {
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const {
       //cout << "File Probe '" << filename << "' Looking for:" << TypeName(obj_type) << endl;
       if(filename == "")
 	return typeid(DataT); // Yep, can handle load to DataT.
       return ProbeLoad(in,obj_type); // Check load from stream.
     }
 
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &/*obj_type*/,bool forceFormat) const {
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &/*obj_type*/,bool forceFormat) const {
       if(forceFormat)
 	return typeid(DataT); // If we're forced just accept it.
       StringC ext = Extension(filename);
@@ -105,7 +107,7 @@ namespace RavlN {
       return typeid(void); // Nope.
     }
 
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const {
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const {
       if(obj_type != typeid(DataT))
 	return DPIPortBaseC();
       BinIStreamC bs(in);
@@ -114,7 +116,7 @@ namespace RavlN {
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
 
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const {
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
       if(obj_type != typeid(DataT))
 	return DPOPortBaseC();
       BinOStreamC bs(out);
@@ -124,7 +126,7 @@ namespace RavlN {
     // Will create an Invalid port if not supported.
 
 
-    DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const  {
+    DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const  {
       if(obj_type != typeid(DataT))
 	return DPIPortBaseC();
       BinIStreamC bs(filename);
@@ -134,7 +136,7 @@ namespace RavlN {
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
 
-    DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const {
+    DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
       if(obj_type != typeid(DataT))
 	return DPOPortBaseC();
       BinOStreamC bs(filename);
@@ -143,7 +145,7 @@ namespace RavlN {
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
 
-    virtual const type_info &DefaultType() const
+    virtual const std::type_info &DefaultType() const
     { return typeid(DataT); }
     //: Get prefered IO type.
 
@@ -163,11 +165,26 @@ namespace RavlN {
   public:
     FileFormatBinStreamC()
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
-    {}
+    { RegisterFormatBinStreamMeta(*this); }
+
+    FileFormatBinStreamC(const char *typeName)
+      : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(true))
+    {
+      AddTypeName(this->DefaultType(),typeName);
+      RegisterFormatBinStreamMeta(*this);
+    }
 
     FileFormatBinStreamC(const StringC &formatId,const StringC &formatDescriptor)
       : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(formatId,formatDescriptor))
-    {}
+    { RegisterFormatBinStreamMeta(*this); }
+    //: Construct will format id and descriptor
+
+    FileFormatBinStreamC(const StringC &formatId,const StringC &formatDescriptor,const char *typeName)
+      : FileFormatC<DataT>(*new FileFormatBinStreamBodyC<DataT>(formatId,formatDescriptor))
+    {
+      AddTypeName(this->DefaultType(),typeName);
+      RegisterFormatBinStreamMeta(*this);
+    }
     //: Construct will format id and descriptor
 
   };

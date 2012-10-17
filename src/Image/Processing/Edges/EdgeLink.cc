@@ -37,8 +37,7 @@ namespace RavlImageN {
       if((it.Data2() > maxThr) && (((EdgeStateT) it.Data1()) == EDGE_UNPROC))
 	ret.LabelContour(it.Index());
     
-#if 0
-    // Don't really need to do this.
+#if 1
     for(Array2dIterC<ByteT> it(ret);it;it++)
       if(*it == (UByteT)EDGE_UNPROC)
 	*it = EDGE_PROC;
@@ -221,7 +220,7 @@ namespace RavlImageN {
       strings.InsLast(newEdges); 
     }
     if(clearDir) {
-      // the upper six bits contain information about neigbouring edge direction
+      // the upper six bits contain information about neighbouring edge direction
       // remove the information                                                
       for(it.First();it;it++) {
         // Remove the information about
@@ -280,7 +279,7 @@ namespace RavlImageN {
       strings.InsLast(string); 
     }
     if(clearDir) {
-      // the upper six bits contain information about neigbouring edge direction
+      // the upper six bits contain information about neighbouring edge direction
       // remove the information                                                
       for(it.First();it;it++) {
         // Remove the information about

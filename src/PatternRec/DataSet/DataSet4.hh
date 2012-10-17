@@ -149,14 +149,14 @@ namespace RavlN {
   };
   
   template<class Sample1T,class Sample2T,class Sample3T,class Sample4T>
-  ostream &operator<<(ostream &s,const DataSet4C<Sample1T,Sample2T,Sample3T,Sample4T> &dat) {
+  std::ostream &operator<<(std::ostream &s,const DataSet4C<Sample1T,Sample2T,Sample3T,Sample4T> &dat) {
     s << dat.Sample1() << '\n' << dat.Sample2() << '\n' << dat.Sample3() << '\n' << dat.Sample4();
     return s;
   }
   //: Output to stream.
   
   template<class Sample1T,class Sample2T,class Sample3T,class Sample4T>
-  istream &operator>>(istream &s,DataSet4C<Sample1T,Sample2T,Sample3T,Sample4T> &dat) {
+  std::istream &operator>>(std::istream &s,DataSet4C<Sample1T,Sample2T,Sample3T,Sample4T> &dat) {
     Sample1T tmp1;
     Sample2T tmp2;
     Sample3T tmp3;

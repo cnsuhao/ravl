@@ -406,7 +406,7 @@ namespace RavlImageN{
     newIndexItem.dwSize = (UIntT)length;
 
     if(index.IsValid()) index += newIndexItem;
-    ONDEBUG(else cerr << "index not valid" << endl;)
+    ONDEBUG(else std::cerr << "index not valid" << std::endl;)
 
     current++;
     

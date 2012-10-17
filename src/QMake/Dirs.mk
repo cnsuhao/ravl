@@ -135,12 +135,23 @@ INST_MAN5=$(ROOTDIR)/share/man/man5
 INST_AUX=$(ROOTDIR)/$(AUXDIR)
 
 # Binaries
-
 ifndef SHAREDBUILD 
 INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)
 else 
 INST_LIB=$(ROOTDIR)/lib/RAVL/$(ARC)/$(VAR)/shared
 endif 
+
+# Put this in a place easy to pickup.
+INST_PKGCONFIG=$(INST_LIB)/pkgconfig
+
+#Include it in path so child processes know where to look.
+ifdef  PKG_CONFIG_PATH
+PKG_CONFIG_PATH:=$(INST_PKGCONFIG):$(PKG_CONFIG_PATH)
+else
+PKG_CONFIG_PATH:=$(INST_PKGCONFIG)
+endif
+export PKG_CONFIG_PATH
+
 INST_OBJS=$(WORKTMP)/objs
 INST_FORCEOBJS = $(ROOTDIR)/lib/RAVL/$(ARC)/obj
 

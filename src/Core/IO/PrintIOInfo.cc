@@ -32,7 +32,7 @@ namespace RavlN {
     return f1.Name() <= f2.Name(); 
   }
   
-  void PrintIOFormats(ostream &os) {
+  void PrintIOFormats(std::ostream &os) {
     os << "File Formats:\n";
     os << "Seq Pri\tFormat\t\tClass\t\t\t\tDescription\n";
     MTReadLockC readLock(0);
@@ -52,7 +52,7 @@ namespace RavlN {
 
   // List all know conversions.
   
-  void PrintIOConversions(ostream &os) {
+  void PrintIOConversions(std::ostream &os) {
     os << "Type conversions:\n";
     MTReadLockC cacheLock(5);
     for(GraphEdgeIterC<StringC,DPConverterBaseC> it(SystemTypeConverter().Graph());
@@ -64,7 +64,7 @@ namespace RavlN {
 
   // List all know class types.
 
-  void PrintIOClassTypes(ostream &os) {
+  void PrintIOClassTypes(std::ostream &os) {
     os << "Classes:\n";
     MTReadLockC cacheLock(0);
     for(HashIterC<const char *,DPTypeInfoC> it(DPTypeInfoBodyC::Types());it.IsElm();it.Next()) 

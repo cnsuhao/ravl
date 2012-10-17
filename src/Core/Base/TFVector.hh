@@ -28,10 +28,10 @@ namespace RavlN {
   template<typename DataT,unsigned int N,unsigned int M> class TFMatrixC;
 
   template<typename DataT,unsigned int N>
-  istream &operator>>(istream &in,TFVectorC<DataT,N> &dat);
+  std::istream &operator>>(std::istream &in,TFVectorC<DataT,N> &dat);
 
   template<typename DataT,unsigned int N>
-  ostream &operator<<(ostream &in,const TFVectorC<DataT,N> &dat);
+  std::ostream &operator<<(std::ostream &in,const TFVectorC<DataT,N> &dat);
 
   template<typename DataT,unsigned int N>
   inline BinIStreamC &operator>>(BinIStreamC &in,TFVectorC<DataT,N> &dat);
@@ -615,7 +615,7 @@ namespace RavlN {
 
   template<typename DataT,unsigned int N>
   inline
-  ostream &operator<<(ostream &out,const TFVectorC<DataT,N> &dat) {
+  std::ostream &operator<<(std::ostream &out,const TFVectorC<DataT,N> &dat) {
     for(UIntT i = 0;i < N;i++)
       out << dat[i] << ' ';
     return out;
@@ -623,7 +623,7 @@ namespace RavlN {
 
   template<typename DataT,unsigned int N>
   inline
-  istream &operator>>(istream &in,TFVectorC<DataT,N> &dat) {
+  std::istream &operator>>(std::istream &in,TFVectorC<DataT,N> &dat) {
     for(UIntT i = 0;i < N;i++)
       in >> dat[i];
     return in;
@@ -719,7 +719,7 @@ namespace RavlN {
 
 #if !RAVL_COMPILER_VISUALCPP || RAVL_COMPILER_VISUALCPPNET_2005
   template<unsigned int N>
-  inline ostream &operator<<(ostream &out,const TFVectorC<ByteT,N> &dat) {
+  inline std::ostream &operator<<(std::ostream &out,const TFVectorC<ByteT,N> &dat) {
     for(UIntT i = 0;i < N;i++)
       out << ((int) dat[i]) << ' ';
     return out;
@@ -727,7 +727,7 @@ namespace RavlN {
   //: Specialise byte vectors so they're treated as numerical values.
 
   template<unsigned int N>
-  inline istream &operator>>(istream &in,TFVectorC<ByteT,N> &dat) {
+  inline std::istream &operator>>(std::istream &in,TFVectorC<ByteT,N> &dat) {
     int x;
     for(UIntT i = 0;i < N;i++) {
       in >> x;
@@ -738,7 +738,7 @@ namespace RavlN {
   //: Specialise byte vectors so they're treated as numerical values.
 
   template<unsigned int N>
-  inline ostream &operator<<(ostream &out,const TFVectorC<SByteT,N> &dat) {
+  inline std::ostream &operator<<(std::ostream &out,const TFVectorC<SByteT,N> &dat) {
     for(UIntT i = 0;i < N;i++)
       out << ((int) dat[i]) << ' ';
     return out;
@@ -746,7 +746,7 @@ namespace RavlN {
   //: Specialise byte vectors so they're treated as numerical values.
 
   template<unsigned int N>
-  inline istream &operator>>(istream &in,TFVectorC<SByteT,N> &dat) {
+  inline std::istream &operator>>(std::istream &in,TFVectorC<SByteT,N> &dat) {
     int x;
     for(UIntT i = 0;i < N;i++) {
       in >> x;

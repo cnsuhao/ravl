@@ -99,12 +99,12 @@ namespace RavlGUIN {
       return ;
     GtkStyle* style = widget->style;
     if(style == 0) {
-      cerr << "VLabelBodyC::SizeUpText(), ERROR: No style found.  \n";
+      std::cerr << "VLabelBodyC::SizeUpText(), ERROR: No style found.  \n";
       return;
     }
     GdkFont *font = gtk_style_get_font(widget->style);
     if(font == 0) {
-      cerr << "VLabelBodyC::SizeUpText(), ERROR: No font found.  \n";
+      std::cerr << "VLabelBodyC::SizeUpText(), ERROR: No font found.  \n";
       return;
     }
     int nsx = 0; // Width

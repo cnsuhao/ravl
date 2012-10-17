@@ -56,59 +56,59 @@ namespace RavlN {
     const StringC &Description() const { return desc; }
     //: Description of fileformat.
     
-    virtual const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
     // typeid(void) == no, otherwise returns the preferred load type.
     
-    virtual const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
-    //: Is stream in this format ?
-    // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
-    // If used with a empty filename asks: Can load this type of object ?
-    // typeid(void) == no, otherwise returns the preferred load type.
-    
-    inline const type_info &ProbeLoad(const StringC &filename,const type_info &obj_type) const;
+    virtual const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
     // If used with a empty filename asks: Can load this type of object ?
     // typeid(void) == no, otherwise returns the preferred load type.
     
-    inline const type_info &ProbeLoad(const type_info &obj_type) const;
+    inline const std::type_info &ProbeLoad(const StringC &filename,const std::type_info &obj_type) const;
+    //: Is stream in this format ?
+    // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
+    // If used with a empty filename asks: Can load this type of object ?
+    // typeid(void) == no, otherwise returns the preferred load type.
+    
+    inline const std::type_info &ProbeLoad(const std::type_info &obj_type) const;
     //: Is stream in this format ?
     // Alias for ProbeLoad("",IStreamC(),obj_type);
     // typeid(void) == no, otherwise returns the preferred load type.
     
-    virtual const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    virtual const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be saved with object 'obj_type' ?
     // If used with a empty filename asks: Can save this type of object ?
     // typeid(void) == no, otherwise returns the preferred save type.
     
-    inline const type_info &ProbeSave(const type_info &obj_type) const;
+    inline const std::type_info &ProbeSave(const std::type_info &obj_type) const;
   //: Alias for ProbeSave("",IStreamC(),obj_type);
     // typeid(void) == no, otherwise returns the preferred save type.
   
-    virtual DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a input port for loading from file 'filename'.
     // Will create an Invalid port if not supported. <p>
     // The default version of this functions opens the file and passes
     // the stream to CreateInput(IStreamC ....)
     
-    virtual DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a output port for saving to file 'filename'..
     // Will create an Invalid port if not supported. <p>
     // The default version of this functions opens the file and passes
     // the stream to CreateOutput(OStreamC ....)
     
-    virtual DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    virtual DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading from stream 'in'.
     // Will create an Invalid port if not supported.
     
-    virtual DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    virtual DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving to stream 'out'.
     // Will create an Invalid port if not supported.
     
-    virtual const type_info &DefaultType() const;
+    virtual const std::type_info &DefaultType() const;
     //: Get preferred IO type.
     // This specifies the native class for representing the data in a file. <p>
     // typeid(void) if none, indicates an indirect driver.
@@ -156,19 +156,19 @@ namespace RavlN {
       {}
     //: Default constructor.
     
-    FileFormatBaseC(bool forLoad,StringC name,const type_info &objtype);
+    FileFormatBaseC(bool forLoad,StringC name,const std::type_info &objtype);
     //: Save constructor.
     // Find a file format which supports the requested format from the system
     // registry.
     // if not suitable format exists it will create an invalid handle. <p>
     
-    FileFormatBaseC(bool forLoad,const StringC &filename,StringC formName,const type_info &objtype);
+    FileFormatBaseC(bool forLoad,const StringC &filename,StringC formName,const std::type_info &objtype);
     //: Load constructor.
     // Find a file format which supports the requested format from the system
     // registry.
     // if not suitable format exists it will create an invalid handle. <p>
     
-    FileFormatBaseC(IStreamC &in,StringC formName,const type_info &objtype);
+    FileFormatBaseC(IStreamC &in,StringC formName,const std::type_info &objtype);
     //: Load constructor.
     // Find a file format which supports the requested format from the system
     // registry.
@@ -180,64 +180,64 @@ namespace RavlN {
     inline const StringC &Description() const;
     //: Description of fileformat.
     
-    inline const type_info &ProbeLoad(IStreamC &in,const type_info &obj_type) const;
+    inline const std::type_info &ProbeLoad(IStreamC &in,const std::type_info &obj_type) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into object 'obj_type' ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
-    inline const type_info &ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const;
+    inline const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const;
     //: Is Filename in this format (for load) ?
     // This asks the question: Can file 'filename' be loaded with object 'obj_type' ?
     // If used with a empty filename then in is invalid and it
     //   asks: Can load this type of object ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
-    inline const type_info &ProbeLoad(const StringC &filename,const type_info &obj_type) const;
+    inline const std::type_info &ProbeLoad(const StringC &filename,const std::type_info &obj_type) const;
     //: Is Filename in this format (for load) ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
-    inline const type_info &ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const;
+    inline const std::type_info &ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be saved with object 'obj_type' ?
     // This uses extension to check consistency.
     // If used with a empty filename asks: Can save this type of object ?
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
-    inline const type_info &ProbeLoad(const type_info &obj_type) const;
+    inline const std::type_info &ProbeLoad(const std::type_info &obj_type) const;
     //: Is Filename in this format (for load) ?
     // Alias for ProbeLoad("",IStreamC(),obj_type);
-    // Returns a suggested load type. (Which may or mayno match 'obj_type'.), 
+    // Returns a suggested load type. (Which may or may not match 'obj_type'.),
     // This will be typeid(void), if failed.
     
-    inline const type_info &ProbeSave(const type_info &obj_type) const;
+    inline const std::type_info &ProbeSave(const std::type_info &obj_type) const;
     //: Is Filename in this format ?
     // Alias for ProbeSave("",obj_type);
     
-    inline DPIPortBaseC CreateInput(const StringC &filename,const type_info &obj_type) const;
+    inline DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported. <p>
     // The default version of this functions opens the file and passes
     // the stream to CreateInput(IStreamC ....)
     
-    inline DPOPortBaseC CreateOutput(const StringC &filename,const type_info &obj_type) const;
+    inline DPOPortBaseC CreateOutput(const StringC &filename,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported. <p>
     // The default version of this functions opens the file and passes
     // the stream to CreateOutput(OStreamC ....)
     
-    inline DPIPortBaseC CreateInput(IStreamC &in,const type_info &obj_type) const;
+    inline DPIPortBaseC CreateInput(IStreamC &in,const std::type_info &obj_type) const;
     //: Create a input port for loading.
     // Will create an Invalid port if not supported.
     
-    inline DPOPortBaseC CreateOutput(OStreamC &out,const type_info &obj_type) const;
+    inline DPOPortBaseC CreateOutput(OStreamC &out,const std::type_info &obj_type) const;
     //: Create a output port for saving.
     // Will create an Invalid port if not supported.
     
-    inline const type_info &DefaultType() const;
+    inline const std::type_info &DefaultType() const;
     //: Get preferred IO type.
     // typeid(void) if none.
     
@@ -306,16 +306,16 @@ namespace RavlN {
       {}
     //: Body Constructor.
     
-    inline const type_info &ProbeLoad(IStreamC &in) const;
+    inline const std::type_info &ProbeLoad(IStreamC &in) const;
     //: Is stream in this format ?
     // This asks the question: Can stream 'in' be loaded into 'DataT' type ?
     
-    inline const type_info &ProbeLoad(const StringC &filename,IStreamC &in) const;
+    inline const std::type_info &ProbeLoad(const StringC &filename,IStreamC &in) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be loaded with object 'DataT' ?
     // If used with a empty filename asks: Can load this type of object ?
     
-    inline const type_info &ProbeSave(const StringC &filename,bool forceFmt = false) const;
+    inline const std::type_info &ProbeSave(const StringC &filename,bool forceFmt = false) const;
     //: Is Filename in this format ?
     // This asks the question: Can file 'filename' be saved with object 'DataT' ?
     // If used with a empty filename asks: Can save this type of object ?
@@ -342,15 +342,15 @@ namespace RavlN {
   //////////////////////////////////////////////////
   
   inline 
-  const type_info & 
-  FileFormatBodyC::ProbeLoad(const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatBodyC::ProbeLoad(const std::type_info &obj_type) const {
     IStreamC tmp;
     return ProbeLoad("",tmp,obj_type);
   }
   
   inline 
-  const type_info & 
-  FileFormatBodyC::ProbeLoad(const StringC &filename,const type_info &obj_type) const {
+  const std::type_info &
+  FileFormatBodyC::ProbeLoad(const StringC &filename,const std::type_info &obj_type) const {
     if(filename.IsEmpty())
       return ProbeLoad(obj_type);
     IStreamC in(filename);
@@ -358,8 +358,8 @@ namespace RavlN {
   }
   
   inline 
-  const type_info & 
-  FileFormatBodyC::ProbeSave(const type_info &obj_type) const
+  const std::type_info &
+  FileFormatBodyC::ProbeSave(const std::type_info &obj_type) const
   { return ProbeSave("",obj_type,true); }
   
   //////////////////////////////////////////////////
@@ -375,47 +375,47 @@ namespace RavlN {
   { return Body().Description(); }
   
   inline 
-  const type_info &FileFormatBaseC::ProbeLoad(IStreamC &in,const type_info &obj_type) const 
+  const std::type_info &FileFormatBaseC::ProbeLoad(IStreamC &in,const std::type_info &obj_type) const
   { return Body().ProbeLoad(in,obj_type); }
   
   inline 
-  const type_info &FileFormatBaseC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const
+  const std::type_info &FileFormatBaseC::ProbeLoad(const StringC &filename,IStreamC &in,const std::type_info &obj_type) const
   { return Body().ProbeLoad(filename,in,obj_type); }
   
   inline 
-  const type_info &FileFormatBaseC::ProbeLoad(const StringC &filename,const type_info &obj_type) const
+  const std::type_info &FileFormatBaseC::ProbeLoad(const StringC &filename,const std::type_info &obj_type) const
   { return Body().ProbeLoad(filename,obj_type); }
   
   inline 
-  const type_info &FileFormatBaseC::ProbeSave(const StringC &filename,const type_info &obj_type,bool forceFormat) const
+  const std::type_info &FileFormatBaseC::ProbeSave(const StringC &filename,const std::type_info &obj_type,bool forceFormat) const
   { return Body().ProbeSave(filename,obj_type,forceFormat); }
   
   inline 
-  const type_info &FileFormatBaseC::ProbeLoad(const type_info &obj_type) const
+  const std::type_info &FileFormatBaseC::ProbeLoad(const std::type_info &obj_type) const
   { return Body().ProbeLoad(obj_type); }
   
   inline 
-  const type_info &FileFormatBaseC::ProbeSave(const type_info &obj_type) const
+  const std::type_info &FileFormatBaseC::ProbeSave(const std::type_info &obj_type) const
   { return Body().ProbeSave(obj_type); }
   
   inline 
-  DPIPortBaseC FileFormatBaseC::CreateInput(const StringC &filename,const type_info &obj_type) const
+  DPIPortBaseC FileFormatBaseC::CreateInput(const StringC &filename,const std::type_info &obj_type) const
   { return Body().CreateInput(filename,obj_type); }
   
   inline 
-  DPOPortBaseC FileFormatBaseC::CreateOutput(const StringC &filename,const type_info &obj_type) const
+  DPOPortBaseC FileFormatBaseC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const
   { return Body().CreateOutput(filename,obj_type); }
 
   inline 
-  DPIPortBaseC FileFormatBaseC::CreateInput(IStreamC &in,const type_info &obj_type) const
+  DPIPortBaseC FileFormatBaseC::CreateInput(IStreamC &in,const std::type_info &obj_type) const
   { return Body().CreateInput(in,obj_type); }
   
   inline
-  DPOPortBaseC FileFormatBaseC::CreateOutput(OStreamC &out,const type_info &obj_type) const 
+  DPOPortBaseC FileFormatBaseC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const
   { return Body().CreateOutput(out,obj_type); }
 
   inline
-  const type_info &FileFormatBaseC::DefaultType() const
+  const std::type_info &FileFormatBaseC::DefaultType() const
   { return Body().DefaultType(); }
 
   inline 
@@ -429,19 +429,19 @@ namespace RavlN {
   //////////////////////////////////////////////////
   template<class DataT>
   inline 
-  const type_info &
+  const std::type_info &
   FileFormatC<DataT>::ProbeLoad(IStreamC &in) const
   { return FileFormatBaseC::ProbeLoad(in,typeid(DataT)); }
 
   template<class DataT>
   inline 
-  const type_info &
+  const std::type_info &
   FileFormatC<DataT>::ProbeLoad(const StringC &fn,IStreamC &in) const
   { return FileFormatBaseC::ProbeLoad(fn,in,typeid(DataT)); }
 
   template<class DataT>
   inline 
-  const type_info &
+  const std::type_info &
   FileFormatC<DataT>::ProbeSave(const StringC &filename,bool forceFormat) const
   { return FileFormatBaseC::ProbeSave(filename,typeid(DataT),forceFormat); }
 

@@ -57,7 +57,7 @@ namespace RavlGUIN {
       sigChanged(true),
       sigReleased(true)
   {
-    ONDEBUG(cerr << "Horiz Constructor. \n");
+    ONDEBUG(std::cerr << "Horiz Constructor. \n");
   }
   
   SliderBodyC::SliderBodyC(bool nvert,RealT nvalue, RealT nlower, 
@@ -94,7 +94,7 @@ namespace RavlGUIN {
   {
     if (_widget == NULL)
     {
-      ONDEBUG(cerr << "Slider create: Low:" << lower << " High:" << upper << " Inc:" << step_increment << "\n");
+      ONDEBUG(std::cerr << "Slider create: Low:" << lower << " High:" << upper << " Inc:" << step_increment << "\n");
       adj = gtk_adjustment_new(value, 
                                lower, 
                                upper, 
@@ -121,7 +121,7 @@ namespace RavlGUIN {
     }
     else
     {
-      ONDEBUG(cerr << "Slider create from glade");
+      ONDEBUG(std::cerr << "Slider create from glade");
       widget = _widget;
       adj = GTK_OBJECT(gtk_range_get_adjustment(GTK_RANGE(widget)));
     }
@@ -145,7 +145,7 @@ namespace RavlGUIN {
       return true;
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");    
     GTK_ADJUSTMENT (adj)->value = val;
-    ONDEBUG(cerr << "Slider setting: Value:" << value << " (L: " << GTK_ADJUSTMENT (adj)->lower << " U:" << GTK_ADJUSTMENT (adj)->upper << ") \n");
+    ONDEBUG(std::cerr << "Slider setting: Value:" << value << " (L: " << GTK_ADJUSTMENT (adj)->lower << " U:" << GTK_ADJUSTMENT (adj)->upper << ") \n");
     gtk_signal_emit_by_name (GTK_OBJECT (adj), "changed");
     
     // FIX for slider value update bug.

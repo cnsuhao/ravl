@@ -24,7 +24,7 @@ namespace RavlN {
   
   //! userlevel=Normal
   //: Code table initialisation structure.
-  // Structure than can be used for initalising
+  // Structure than can be used for initialising
   // table. The last entry must set code == 0.
   
   struct VariableLengthCodeInitC
@@ -97,7 +97,7 @@ namespace RavlN {
       return true;
     }
     //: Enter next bit
-    // When it returns true we hav a output token. <p>
+    // When it returns true we have a output token. <p>
     // NB. Remember to call first before doing the next lookup!
     
     UIntT NextToken(BitIStreamC & bitstream) {

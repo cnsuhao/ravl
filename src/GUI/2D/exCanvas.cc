@@ -49,7 +49,7 @@ int exCanvas(int nargs,char *args[])
   
   // Do some work with the gui...
   
-  ONDEBUG(cerr << "Drawing stuff... \n");
+  ONDEBUG(std::cerr << "Drawing stuff... \n");
   
   ImageC<ByteRGBValueC> img(100,100);
   for(int x=0;x <100;x++) {
@@ -65,7 +65,7 @@ int exCanvas(int nargs,char *args[])
   draw.DrawLine(10,100,100,100,0);
   draw.DrawText(10,50,"Hello!");
   
-  ONDEBUG(cerr << "Executing manager... \n");
+  ONDEBUG(std::cerr << "Executing manager... \n");
   
   Manager.Start();              // Wait for GUI to finish.
   

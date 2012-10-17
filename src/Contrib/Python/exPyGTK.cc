@@ -36,7 +36,7 @@ bool GUICreateWindow(PythonC &python)
   }
   catch (PythonExceptionC &e)
   {
-    cerr << "Python exception: " << e.Type() << " - " << e.Value() << endl;
+    std::cerr << "Python exception: " << e.Type() << " - " << e.Value() << std::endl;
   }
 
   return true;
@@ -44,7 +44,7 @@ bool GUICreateWindow(PythonC &python)
 
 bool CreateWindow(PythonC &python)
 {
-  cerr << "Queueing window creation on the GUI thread" << endl;
+  std::cerr << "Queueing window creation on the GUI thread" << std::endl;
 
   Manager.QueueOnGUI(Trigger(&GUICreateWindow, python));
 
@@ -53,19 +53,19 @@ bool CreateWindow(PythonC &python)
 
 bool GetValue(PythonC &python)
 {
-  cerr << "Calling HelloWorld.getX()\n";
+  std::cerr << "Calling HelloWorld.getX()\n";
 
   try
   {
     PythonObjectC obj = python.CallMethod("hello", "getX");
     if (obj.IsValid() && obj.IsInt())
     {
-      cerr << "value = " << obj.Int() << endl;
+      std::cerr << "value = " << obj.Int() << std::endl;
     }
   }
   catch (PythonExceptionC &e)
   {
-    cerr << "Python exception: " << e.Type() << " - " << e.Value() << endl;
+    std::cerr << "Python exception: " << e.Type() << " - " << e.Value() << std::endl;
   }
 
   return true;
@@ -102,11 +102,12 @@ int main(int argc, char *argv[])
   }
   catch (PythonExceptionC &e)
   {
-    cerr << "Python exception: " << e.Type() << " - " << e.Value() << endl;
+    std::cerr << "Python exception: " << e.Type() << " - " << e.Value() << std::endl;
   	return -1;
   }
   
   // Start the GUI
   Manager.Start();
-  cerr << "Finished... \n";
+  std::cerr << "Finished... \n";
+  return 0;
 }

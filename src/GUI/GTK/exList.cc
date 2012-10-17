@@ -42,4 +42,5 @@ int main(int nargs,char *args[])
   aList.AppendLine(5,StringC("Hi2"));
 
   Manager.Wait();  
+  return 0;
 }

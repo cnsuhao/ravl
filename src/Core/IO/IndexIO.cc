@@ -29,18 +29,18 @@ namespace RavlN {
   static TypeNameC type4(typeid(SArray1dC<Index2dC>),"SArray1dC<Index2dC>");
   static TypeNameC type5(typeid(SArray1dC<Index3dC>),"SArray1dC<Index3dC>");
   
-  FileFormatStreamC<Index2dC> FileFormatStream_Index2d;
-  FileFormatStreamC<Index3dC> FileFormatStream_Index3d;
+  static FileFormatStreamC<Index2dC> FileFormatStream_Index2d;
+  static FileFormatStreamC<Index3dC> FileFormatStream_Index3d;
   
-  FileFormatBinStreamC<Index2dC> FileFormatBinStream_Index2d;
-  FileFormatBinStreamC<Index3dC> FileFormatBinStream_Index3d;
+  static FileFormatBinStreamC<Index2dC> FileFormatBinStream_Index2d;
+  static FileFormatBinStreamC<Index3dC> FileFormatBinStream_Index3d;
   
   // Add some IO for arrays of Indexes.
 
-  FileFormatStreamC<SArray1dC<Index2dC> > FileFormatStream_SArray1dC_Index2d;
-  FileFormatStreamC<SArray1dC<Index3dC> > FileFormatStream_SArray1dC_Index3d;
+  static FileFormatStreamC<SArray1dC<Index2dC> > FileFormatStream_SArray1dC_Index2d;
+  static FileFormatStreamC<SArray1dC<Index3dC> > FileFormatStream_SArray1dC_Index3d;
   
-  FileFormatBinStreamC<SArray1dC<Index2dC> > FileFormatBinStream_SArray1dC_Index2d;
-  FileFormatBinStreamC<SArray1dC<Index3dC> > FileFormatBinStream_SArray1dC_Index3d;
+  static FileFormatBinStreamC<SArray1dC<Index2dC> > FileFormatBinStream_SArray1dC_Index2d;
+  static FileFormatBinStreamC<SArray1dC<Index3dC> > FileFormatBinStream_SArray1dC_Index3d;
 
 }

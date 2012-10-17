@@ -36,7 +36,7 @@ namespace RavlN
     WakeAll();
     WaitForFree();
     if(m_waiting != 0)
-      cerr << "PThread::~ThreadSignal(), WARNING: Called while threads waiting. \n";
+      std::cerr << "PThread::~ThreadSignal(), WARNING: Called while threads waiting. \n";
   }
   //: Destructor.
 

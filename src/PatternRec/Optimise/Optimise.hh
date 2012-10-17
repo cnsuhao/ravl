@@ -13,7 +13,6 @@
 //! example=testOptimise.cc
 //! file="Ravl/PatternRec/Optimise/Optimise.hh"
 //! docentry="Ravl.API.Pattern Recognition.Optimisation"
-//! rcsid="$Id$"
 
 #include "Ravl/RCHandleV.hh"
 #include "Ravl/String.hh"
@@ -43,8 +42,8 @@ namespace RavlN {
     // The name is provided by the concrete class at instantiation so that the
     // base class knows what derived type it is.
 
-    OptimiseBodyC (const StringC &name, istream &in);
-    //: Contructs from stream with derived class name
+    OptimiseBodyC (const StringC &name, std::istream &in);
+    //: Constructs from stream with derived class name
     // The name or type must be known so that the correct virtual constructor
     // can be called.
     
@@ -94,7 +93,7 @@ namespace RavlN {
     const StringC GetName () const;
     //: Derived class type
     
-    virtual bool Save (ostream &out) const;
+    virtual bool Save (std::ostream &out) const;
     //: Writes object to stream, can be loaded using constructor
     
     virtual bool Save (BinOStreamC &out) const;
@@ -108,7 +107,7 @@ namespace RavlN {
   // --------------------------------------------------------------------------
   // **********  OptimiseC  ************************************************
   // --------------------------------------------------------------------------
-  //: Handle class for numerical opimisers
+  //: Handle class for numerical optimisers
   //
   // Handle class for numerical optimisers. It is used in conjunction with cost
   // functions derived from NumCostC. The cost function is used to specify the
@@ -124,12 +123,20 @@ namespace RavlN {
     OptimiseC ();
     //: Default constructor
     
-    OptimiseC (istream &in);
+    OptimiseC (std::istream &in);
     //: Constructs from stream
     
     OptimiseC (OptimiseBodyC &oth);
     //: Constructs from base class
-    
+
+    OptimiseC (OptimiseBodyC *oth);
+    //: Constructs from base class
+
+    OptimiseC (const RCHandleVC<OptimiseBodyC> &opt)
+     : RCHandleVC<OptimiseBodyC>(opt)
+    {}
+    //: Constructs from base handle
+
   protected:
     inline OptimiseBodyC & Body ()
     { return RCHandleC<OptimiseBodyC>::Body(); }
@@ -198,9 +205,9 @@ namespace RavlN {
     { return Body().GetName (); }
     //: Gets type name of the object
     
-    inline bool Save (ostream &out) const
+    inline bool Save (std::ostream &out) const
     { return Body().Save (out); }
-    //: Writes object to stream, cna be loaded using constructor
+    //: Writes object to stream, can be loaded using constructor
   };
   
 }

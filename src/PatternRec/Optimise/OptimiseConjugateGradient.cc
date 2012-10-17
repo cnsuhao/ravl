@@ -32,24 +32,48 @@ namespace RavlN {
    : OptimiseBodyC(factory),
      _iterations(factory.AttributeUInt("iterations",1000)),
      _tolerance(factory.AttributeReal("tolerance",1e-6)),
-     _useBracketMinimum(factory.AttributeBool("useBracketMinimum",true))
+     _brentIterations(factory.AttributeUInt("brentIterations",_iterations)),
+     _brentTolerance(factory.AttributeReal("brentTolerance",_tolerance)),
+     _useBracketMinimum(factory.AttributeBool("useBracketMinimum",true)),
+      m_useAbsoluteCostForTolerance(factory.AttributeBool("useAbsoluteCostForTolerance",false))
   {
 
   }
 
-  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,bool useBacketMinimum)
+  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (UIntT iterations, RealT tolerance,
+                                                                  bool useBacketMinimum,
+                                                                  bool useAbsoluteCostForTolerance,
+                                                                  UIntT brentIterations, RealT brentTolerance)
     : OptimiseBodyC("OptimiseConjugateGradientBodyC"),
       _iterations(iterations),
       _tolerance(tolerance),
-      _useBracketMinimum(useBacketMinimum)
+      _brentIterations(brentIterations),
+      _brentTolerance(brentTolerance),
+      _useBracketMinimum(useBacketMinimum),
+      m_useAbsoluteCostForTolerance(useAbsoluteCostForTolerance)
   {
+    if(_brentIterations == 0)
+      _brentIterations = _iterations;
+    if(_brentTolerance == 0)
+      _brentTolerance = _tolerance;
   }
   
-  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (istream &in)
-    : OptimiseBodyC("OptimiseConjugateGradientBodyC",in)
+  OptimiseConjugateGradientBodyC::OptimiseConjugateGradientBodyC (std::istream &in)
+    : OptimiseBodyC("OptimiseConjugateGradientBodyC",in),
+      _iterations(0),
+      _tolerance(0),
+      _brentIterations(0),
+      _brentTolerance(0),
+      _useBracketMinimum(false),
+      m_useAbsoluteCostForTolerance(0)
   {
     in >> _iterations;
   }
+
+  RavlN::RCBodyVC &OptimiseConjugateGradientBodyC::Copy() const
+  { return *new OptimiseConjugateGradientBodyC(*this); }
+  //: Create copy of the optimiser
+
   
   static void SetupLimits(const VectorC &dir,const VectorC &P,const CostC &domain,ParametersC &parameters1d) {
     // Find the domain limits along the direction vector.
@@ -74,7 +98,7 @@ namespace RavlN {
     steps /= domain.Steps().Size();
     if(steps < 3) steps = 3; // Check there;s actually some space to optimise in.
     
-    //Point in full space to evaluate is given by: _point + _direction * X[0];  Where X[0] is the paramiter we're optimising.
+    //Point in full space to evaluate is given by: _point + _direction * X[0];  Where X[0] is the parameter we're optimising.
     parameters1d.Setup(0,min,max,steps);
   }
   
@@ -92,14 +116,15 @@ namespace RavlN {
     VectorC iterX = domain.StartX();         // Copy start into temporary var;
     
 #if 0
-    cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
-    cerr << "    X=" << iterX << "\n";
+    std::cerr << "ClipX=" << domain.ClipX (iterX) << "\n";
+    std::cerr << "    X=" << iterX << "\n";
 #endif
     
     ParametersC parameters1d(1);
-    OptimiseBrentC _brent(_iterations, _tolerance);
+    OptimiseBrentC _brent(_brentIterations,_brentTolerance);
     RealT currentCost = domain.Cost (iterX);      // Evaluate current cost
-    
+    //RealT firstCost = currentCost;
+
     VectorC dYdX = domain.Jacobian1(iterX) * -1.0; // Determine current Jacobian
     VectorC gdYdX = dYdX.Copy();
     VectorC hdYdX = dYdX.Copy();
@@ -123,13 +148,25 @@ namespace RavlN {
       
       // Check termination condition.
       
-      // Compute the reduction in the cost function.
-      RealT costdiff = currentCost-minimumCost;
-      
       // Check if we're stopped converging.
-      if (2.0*Abs(costdiff) <= _tolerance*(Abs(currentCost)+Abs(minimumCost))) {
-        //ONDEBUG(cerr << "CostDiff=" << costdiff << " Tolerance=" << _tolerance*(Abs(currentCost)+Abs(minimumCost)) << "\n");
-        break;
+      if(m_useAbsoluteCostForTolerance) {
+        if(minimumCost < _tolerance ) {
+          RavlDebug("Tolerance requirement met. %f ",minimumCost);
+          break;
+        }
+        if(minimumCost == currentCost) {
+          RavlDebug("Done on equal costs.");
+          break;
+        }
+      } else {
+        // Compute the reduction in the cost function.
+        RealT costdiff = currentCost-minimumCost;
+        // If tolerance is zero, just execute the requested number of iterations.
+        if (_tolerance > 0 && 2.0*Abs(costdiff) <= _tolerance*(Abs(currentCost)+Abs(minimumCost))) {
+          //ONDEBUG(cerr << "CostDiff=" << costdiff << " Tolerance=" << _tolerance*(Abs(currentCost)+Abs(minimumCost)) << "\n");
+          //RavlDebug("Improvement below minimum. ");
+          break;
+        }
       }
       currentCost = minimumCost; // Reset for next iteration.
       
@@ -151,8 +188,27 @@ namespace RavlN {
       RealT gama = dgg/gg;
 #if 1
       if(Abs(gama) < 1e-9) {
+#if 1
+        gdYdX = dYdX.Copy();
+        hdYdX = dYdX.Copy();
+
+        RealT gg = 0;
+        RealT dgg =0;
+        for(SArray1dIter2C<RealT,RealT> it(dYdX,gdYdX);it;it++) {
+          gg += Sqr(it.Data2());
+          dgg += (it.Data1() + it.Data2()) * it.Data1();
+        }
+        //RavlDebug("gg=%f dgg=%f ",gg,dgg);
+        if(gg == 0) {
+          ONDEBUG(std::cerr << "Terminated on gg == 0\n");
+          break;
+        }
+        gama = dgg/gg;
+        RavlDebug("Direction reset gama:%f cost:%f ",gama,currentCost);
+#else
         std::cerr << "Directions exhausted \n";
         break;
+#endif
       }
 #endif
       for(SArray1dIter3C<RealT,RealT,RealT> it(dYdX,gdYdX,hdYdX);it;it++) {
@@ -162,7 +218,10 @@ namespace RavlN {
       }
       
     } while (counter++ < _iterations); 
-    ONDEBUG(cerr << "Terminated after " << counter << " iterations. MinCost=" << currentCost << "\n");
+    //RavlDebug("Terminated after %u  iterations. MinCost=%f",counter,currentCost);
+    //if(currentCost < 0.1)
+    //  RavlDebug("First cost: %f final: %f ",firstCost,currentCost);
+
     return domain.ConvertX2P (iterX);            // Return final estimate
   }
   
@@ -174,7 +233,7 @@ namespace RavlN {
     return stream.String();
   }
   
-  bool OptimiseConjugateGradientBodyC::Save (ostream &out) const
+  bool OptimiseConjugateGradientBodyC::Save (std::ostream &out) const
   {
     OptimiseBodyC::Save (out);
     out << _iterations << "\n";

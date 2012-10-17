@@ -16,7 +16,7 @@ namespace RavlN {
   
   //: Load from stream.
   
-  FuncPDFNormalBodyC::FuncPDFNormalBodyC(istream &strm)
+  FuncPDFNormalBodyC::FuncPDFNormalBodyC(std::istream &strm)
     : FuncPDFBodyC(strm)
   { strm >> dists; }
   
@@ -28,7 +28,7 @@ namespace RavlN {
   
   //: Writes object to stream.
   
-  bool FuncPDFNormalBodyC::Save (ostream &out) const {
+  bool FuncPDFNormalBodyC::Save (std::ostream &out) const {
     if(!FuncPDFBodyC::Save(out))
       return false;
     out << dists << ' ';

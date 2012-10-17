@@ -40,12 +40,12 @@ namespace RavlN {
 
   //! Start service.
   bool ServiceC::Start() {
-    return false;
+    return true;
   }
 
   //! Shutdown service
   bool ServiceC::Shutdown() {
-    return false;
+    return true;
   }
 
   void ServiceC::ZeroOwners() {

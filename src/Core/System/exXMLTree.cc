@@ -24,7 +24,7 @@ int exXMLTree(int nargs,char **argv) {
   
   XMLIStreamC ins(ifn);
   if(!ins) {
-    cerr << "Failed to open file '" << ifn << "' \n";
+    std::cerr << "Failed to open file '" << ifn << "' \n";
     return 1;
   }
 

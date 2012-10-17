@@ -27,19 +27,19 @@ namespace RavlGUIN {
   bool RulerBodyC::GUIAttachTo(WidgetC &widge) {
     RavlAssertMsg(Manager.IsGUIThread(),"Incorrect thread. This method may only be called on the GUI thread.");
     if(!widge.IsValid()) {
-      cerr << "RulerBodyC::GUIAttachTo(), Passed invalid widget. \n";
+      std::cerr << "RulerBodyC::GUIAttachTo(), Passed invalid widget. \n";
       return false;
     }
     if(widge.Widget() == 0) {
-      ONDEBUG(cerr << "RulerBodyC::GUIAttachTo(), Creating target. \n");
+      ONDEBUG(std::cerr << "RulerBodyC::GUIAttachTo(), Creating target. \n");
       if(!widge.Create()) {
 	cerr << "RulerBodyC::GUIAttachTo(), Create failed. \n";
 	return false;
       }
     }
-    ONDEBUG(cerr << "RulerBodyC::GUIAttachTo(): " << widge.WidgetName() << "\n");
+    ONDEBUG(std::cerr << "RulerBodyC::GUIAttachTo(): " << widge.WidgetName() << "\n");
     if(Widget() == 0) {
-      ONDEBUG(cerr << "RulerBodyC::GUIAttachTo(), Create self. \n");
+      ONDEBUG(std::cerr << "RulerBodyC::GUIAttachTo(), Create self. \n");
       if(!Create()) {
 	cerr << "RulerBodyC::GUIAttachTo(), Self create failed. \n";
 	return false;
@@ -109,7 +109,7 @@ namespace RavlGUIN {
   }
   
   bool RulerC::AttachTo(WidgetC &widge) {
-    ONDEBUG(cerr << "RulerC::AttachTo(), Queueing... \n");
+    ONDEBUG(std::cerr << "RulerC::AttachTo(), Queueing... \n");
     Manager.Queue(Trigger(*this,&RulerC::GUIAttachTo,widge));
     return true;
   }

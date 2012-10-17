@@ -14,6 +14,6 @@
 
 namespace RavlN {
   void MessageQueueBaseC::Dump(void) const {
-    cerr << "MessageQueueBaseC::Dump(void), Called. \n";
+    std::cerr << "MessageQueueBaseC::Dump(void), Called. \n";
   }
 }

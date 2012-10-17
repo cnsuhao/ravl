@@ -45,7 +45,9 @@ namespace RavlN { namespace GeneticN {
   {}
 
   GeneTypeListBaseC::GeneTypeListBaseC(BinIStreamC &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_contentType(0),
+     m_maxLength(0)
   {
     ByteT version = 0;
     strm >> version;
@@ -56,7 +58,9 @@ namespace RavlN { namespace GeneticN {
 
   //! Load form a binary stream
   GeneTypeListBaseC::GeneTypeListBaseC(std::istream &strm)
-   : GeneTypeC(strm)
+   : GeneTypeC(strm),
+     m_contentType(0),
+     m_maxLength(0)
   {
     RavlAssertMsg(0,"not implemented");
   }
@@ -103,7 +107,7 @@ namespace RavlN { namespace GeneticN {
                                  RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate list. "));
-    if(fraction < palette.Random1()) {
+    if(fraction < palette.Random1() && !mustChange) {
       newValue = &original;
       return false;
     }
@@ -148,6 +152,7 @@ namespace RavlN { namespace GeneticN {
           newList.push_back(newGene.BodyPtr());
           ret = true;
         }  // Fall through
+        /* no break */
         default:  // Just leave it alone
           newList.push_back(oldList[i]);
           break;
@@ -168,38 +173,42 @@ namespace RavlN { namespace GeneticN {
     const GeneListC &oldListGene1 = dynamic_cast<const GeneListC &>(original1);
     const GeneListC &oldListGene2 = dynamic_cast<const GeneListC &>(original2);
 
-    float crossAt = static_cast<float>(Random1());
+    float crossAt = static_cast<float>(palette.Random1());
     float crossAt1 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
     float crossAt2 = crossAt + static_cast<float>((palette.Random1() * 0.3)-0.15);
     size_t size1 = oldListGene1.List().size();
     size_t size2 = oldListGene2.List().size();
+    std::vector<GeneC::ConstRefT> newList;
+
     int ind1 = static_cast<int>(crossAt1 * size1);
     int ind2 = static_cast<int>(crossAt2 * size2);
-    if(ind1 < 0)
-      ind1 = 0;
     if(ind1 >= (int) size1)
       ind1 = size1 - 1;
-    if(ind2 < 0)
-      ind2 = 0;
+    if(ind1 < 0)
+      ind1 = 0;
     if(ind2 >= (int) size2)
        ind2 = (int) size2-1;
-    std::vector<GeneC::ConstRefT> newList;
+    if(ind2 < 0)
+      ind2 = 0;
+
     newList.reserve(ind1 + (oldListGene2.List().size()-ind2));
     for(int i = 0;i < ind1;i++) {
       newList.push_back(oldListGene1.List()[i]);
     }
-    const GeneTypeC &gt1 =  oldListGene1.List()[ind1]->Type();
-    const GeneTypeC &gt2 =  oldListGene2.List()[ind2]->Type();
-    if(&gt1 == &gt2) {
-      GeneC::RefT newGene;
-      gt1.Cross(palette,*oldListGene1.List()[ind1],*oldListGene2.List()[ind2],newGene);
-      if(!newGene.IsValid()) {
-        RavlSysLogf(SYSLOG_ERR,"Gene type %s failed to produce a cross value. ",TypeName(typeid(gt1)));
-        RavlAssert(0);
-        newGene = oldListGene1.List()[ind1];
+    if(size1 > 0 && size2 > 0) {
+      const GeneTypeC &gt1 =  oldListGene1.List()[ind1]->Type();
+      const GeneTypeC &gt2 =  oldListGene2.List()[ind2]->Type();
+      if(&gt1 == &gt2) {
+        GeneC::RefT newGene;
+        gt1.Cross(palette,*oldListGene1.List()[ind1],*oldListGene2.List()[ind2],newGene);
+        if(!newGene.IsValid()) {
+          RavlSysLogf(SYSLOG_ERR,"Gene type %s failed to produce a cross value. ",TypeName(typeid(gt1)));
+          RavlAssert(0);
+          newGene = oldListGene1.List()[ind1];
+        }
+        newList.push_back(newGene.BodyPtr());
+        ind2++;
       }
-      newList.push_back(newGene.BodyPtr());
-      ind2++;
     }
     for(int j = ind2;j < (int) size2;j++) {
       newList.push_back(oldListGene2.List()[j]);
@@ -367,6 +376,16 @@ namespace RavlN { namespace GeneticN {
         return false;
     }
     return true;
+  }
+
+  //! Dump description in human readable form.
+  void GeneListC::Dump(std::ostream &strm,UIntT indent) const {
+    GeneC::Dump(strm,indent);
+    strm << "\n";
+    for(unsigned i = 0;i < m_list.size();i++) {
+      m_list[i]->Dump(strm,indent+1);
+      strm << "\n";
+    }
   }
 
   static XMLFactoryRegisterConvertC<GeneListC,GeneC> g_registerGeneList("RavlN::GeneticN::GeneListC");

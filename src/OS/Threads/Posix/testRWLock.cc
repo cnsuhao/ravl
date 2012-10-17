@@ -150,7 +150,7 @@ int main() {
   int i;
   //AMutexC testMutex(true);
   for(int j = 0;j < 2;j++) {
-    cerr << "Starting RWLock test. WriterPref:" << j << "\n";
+    std::cerr << "Starting RWLock test. WriterPref:" << j << "\n";
     Done = new SemaphoreC(0);
     ARWLock = new RWLockC(j == 0 ? RavlN::RWLOCK_PREFER_READERS : RavlN::RWLOCK_PREFER_WRITERS);
 
@@ -160,7 +160,7 @@ int main() {
   
     for(i = 0;i < TestSize;i++) {
       Done->Wait();
-      cerr << i << " \n";
+      std::cerr << i << " \n";
     }
     if(!pass) {
       std::cerr << "ERROR in test.. \n";

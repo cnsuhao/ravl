@@ -29,13 +29,13 @@ namespace RavlLogicN {
     {}
     //: Default constructor.
 
-    VarBodyC(istream &strm);
+    VarBodyC(std::istream &strm);
     //: Construct from a stream.
     
     VarBodyC(BinIStreamC &strm);
     //: Construct from a binary stream.
     
-    virtual bool Save(ostream &out) const;
+    virtual bool Save(std::ostream &out) const;
     //: Save to stream 'out'.
     
     virtual bool Save(BinOStreamC &out) const;
@@ -47,7 +47,7 @@ namespace RavlLogicN {
     virtual bool IsGrounded() const;
     //: Is this a simple object with no variables ?
 
-    virtual void Dump(ostream &out);
+    virtual void Dump(std::ostream &out);
     //: Dump info in human readable format to stream 'out'.
 
     virtual StringC Name() const;
@@ -91,7 +91,7 @@ namespace RavlLogicN {
     //: Constructor.
     // Construct an anonymous var.
     
-    VarC(istream &strm);
+    VarC(std::istream &strm);
     //: Load from stream.
 
     VarC(BinIStreamC &strm);

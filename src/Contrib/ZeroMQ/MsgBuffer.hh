@@ -25,13 +25,18 @@ namespace RavlN {
        MsgBufferBodyC(size_t size);
 
        //! Create buffer from a message
-       MsgBufferBodyC(zmq_msg_t &msg);
+       // If moveMsg is true, ownership is copied to this class.
+       // otherwise it is copied.
+       MsgBufferBodyC(zmq_msg_t &msg,bool moveMsg = true);
+
+       //! Create a buffer from some other data.
+       MsgBufferBodyC(void *data,size_t size,zmq_free_fn *ffn,void *hint);
 
        //! Create an empty buffer.
        MsgBufferBodyC();
 
        //! Destructor
-       ~MsgBufferBodyC();
+       virtual ~MsgBufferBodyC();
 
        //! Build access to buffer.
        //! Use after msg has been updated in any way
@@ -53,6 +58,11 @@ namespace RavlN {
     {
     public:
        MsgBufferC()
+       {}
+
+       //! Create a buffer from some other data.
+       MsgBufferC(void *data,size_t size,zmq_free_fn *ffn,void *hint)
+        : RavlN::BufferC<char>(new MsgBufferBodyC(data,size,ffn,hint))
        {}
 
        //! Create a buffer with an empty message.

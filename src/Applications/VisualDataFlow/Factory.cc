@@ -127,11 +127,11 @@ namespace RavlDFN {
       StringC format = cfg["format"];
       func = Trigger(&DFObjectFromFile,loadFile,format);
     } else {
-      cerr << "WARNING: No source for object '" << name << "'\n";
+      std::cerr << "WARNING: No source for object '" << name << "'\n";
     }
     if(cfg.IsDefined("section"))
       Section(cfg["section"]);
-    ONDEBUG(cerr << "FactoryBodyC::Load(), Name=" << name << " Section=" << cfg["section"] << "\n");
+    ONDEBUG(std::cerr << "FactoryBodyC::Load(), Name=" << name << " Section=" << cfg["section"] << "\n");
     return true;
   }
   

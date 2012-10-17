@@ -29,22 +29,22 @@ namespace RavlN {
   static TypeNameC type6(typeid(SArray1dC<Point4dC>),"SArray1dC<Point4dC>");
   
   
-  FileFormatStreamC<Point2dC> FileFormatStream_Point2d;
-  FileFormatStreamC<Point3dC> FileFormatStream_Point3d;
-  FileFormatStreamC<Point4dC> FileFormatStream_Point4d;
+  static FileFormatStreamC<Point2dC> FileFormatStream_Point2d;
+  static FileFormatStreamC<Point3dC> FileFormatStream_Point3d;
+  static FileFormatStreamC<Point4dC> FileFormatStream_Point4d;
   
-  FileFormatBinStreamC<Point2dC> FileFormatBinStream_Point2d;
-  FileFormatBinStreamC<Point3dC> FileFormatBinStream_Point3d;
-  FileFormatBinStreamC<Point4dC> FileFormatBinStream_Point4d;
+  static FileFormatBinStreamC<Point2dC> FileFormatBinStream_Point2d;
+  static FileFormatBinStreamC<Point3dC> FileFormatBinStream_Point3d;
+  static FileFormatBinStreamC<Point4dC> FileFormatBinStream_Point4d;
   
   // Add some IO for arrays of Points.
 
-  FileFormatStreamC<SArray1dC<Point2dC> > FileFormatStream_SArray1dC_Point2d;
-  FileFormatStreamC<SArray1dC<Point3dC> > FileFormatStream_SArray1dC_Point3d;
-  FileFormatStreamC<SArray1dC<Point4dC> > FileFormatStream_SArray1dC_Point4d;
+  static FileFormatStreamC<SArray1dC<Point2dC> > FileFormatStream_SArray1dC_Point2d;
+  static FileFormatStreamC<SArray1dC<Point3dC> > FileFormatStream_SArray1dC_Point3d;
+  static FileFormatStreamC<SArray1dC<Point4dC> > FileFormatStream_SArray1dC_Point4d;
   
-  FileFormatBinStreamC<SArray1dC<Point2dC> > FileFormatBinStream_SArray1dC_Point2d;
-  FileFormatBinStreamC<SArray1dC<Point3dC> > FileFormatBinStream_SArray1dC_Point3d;
-  FileFormatBinStreamC<SArray1dC<Point4dC> > FileFormatBinStream_SArray1dC_Point4d;
+  static FileFormatBinStreamC<SArray1dC<Point2dC> > FileFormatBinStream_SArray1dC_Point2d;
+  static FileFormatBinStreamC<SArray1dC<Point3dC> > FileFormatBinStream_SArray1dC_Point3d;
+  static FileFormatBinStreamC<SArray1dC<Point4dC> > FileFormatBinStream_SArray1dC_Point4d;
   
 }

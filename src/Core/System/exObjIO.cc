@@ -65,7 +65,7 @@ int main() {
     // the value 2.  The space is allocated with new, and so must be deleted.
     // list1 and list2 will point to the same DListC as when saved.
     
-    cout << "Valx=" << *valx << " Valy=" << *valy << "\n";
+    std::cout << "Valx=" << *valx << " Valy=" << *valy << "\n";
     
     // Free space allocated in load.
     

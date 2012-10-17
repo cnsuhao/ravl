@@ -521,7 +521,7 @@ namespace RavlN {
   };
   
   template<class Data1T,class Data2T>
-  ostream &operator<<(ostream &out,const Signal2C<Data1T,Data2T> &) { 
+  std::ostream &operator<<(std::ostream &out,const Signal2C<Data1T,Data2T> &) { 
     RavlAssert(0); // Not implemented.
     return out;
   }

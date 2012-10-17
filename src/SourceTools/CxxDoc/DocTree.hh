@@ -61,13 +61,13 @@ namespace RavlCxxDocN {
     { return root; }
     //: Root of docnode tree.
     
-    void Dump(ostream &out) { 
+    void Dump(std::ostream &out) { 
       if(root.IsValid())
 	root.Dump(out); 
       else
 	out << "(NULL)\n";
     }
-    //: Dump tree to ostream.
+    //: Dump tree to std::ostream.
   protected:
     StringC projName;
     DocNodeC root; // Root node for documentation.
@@ -123,9 +123,9 @@ namespace RavlCxxDocN {
     { return Body().Root(); }
     //: Root of docnode tree.
     
-    void Dump(ostream &out)
+    void Dump(std::ostream &out)
     { Body().Dump(out); }
-    //: Dump tree to ostream.
+    //: Dump tree to std::ostream.
     
   };
   

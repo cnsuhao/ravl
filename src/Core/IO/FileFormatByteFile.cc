@@ -24,7 +24,7 @@ namespace RavlN
   //: Ctor with full format info.
 
   
-  const type_info& FileFormatByteFileBodyC::ProbeLoad(IStreamC& inputStream, const type_info& objType) const
+  const std::type_info& FileFormatByteFileBodyC::ProbeLoad(IStreamC& inputStream, const type_info& objType) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -37,7 +37,7 @@ namespace RavlN
     return typeid(ByteT);
   }
 
-  const type_info& FileFormatByteFileBodyC::ProbeLoad(const StringC& filename, IStreamC& inputStream, const type_info& objType) const
+  const std::type_info& FileFormatByteFileBodyC::ProbeLoad(const StringC& filename, IStreamC& inputStream, const type_info& objType) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -54,7 +54,7 @@ namespace RavlN
     return typeid(ByteT);
   }
 
-  const type_info& FileFormatByteFileBodyC::ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const
+  const std::type_info& FileFormatByteFileBodyC::ProbeSave(const StringC& filename, const type_info& objType, bool forceFormat) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -71,7 +71,7 @@ namespace RavlN
     return typeid(ByteT);
   }
 
-  DPIPortBaseC FileFormatByteFileBodyC::CreateInput(IStreamC& inputStream, const type_info& objType) const
+  DPIPortBaseC FileFormatByteFileBodyC::CreateInput(IStreamC& inputStream, const std::type_info& objType) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -82,7 +82,7 @@ namespace RavlN
   //: Create an input port for loading.
   //!return: An invalid port if not supported.
 
-  DPOPortBaseC FileFormatByteFileBodyC::CreateOutput(OStreamC& outputStream, const type_info& objType) const
+  DPOPortBaseC FileFormatByteFileBodyC::CreateOutput(OStreamC& outputStream, const std::type_info& objType) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -93,7 +93,7 @@ namespace RavlN
   //: Create an output port for saving.
   //!return: An invalid port if not supported.
 
-  DPIPortBaseC FileFormatByteFileBodyC::CreateInput(const StringC& filename, const type_info& objType) const
+  DPIPortBaseC FileFormatByteFileBodyC::CreateInput(const StringC& filename, const std::type_info& objType) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -104,7 +104,7 @@ namespace RavlN
   //: Create an input port for loading.
   //!return: An invalid port if not supported.
 
-  DPOPortBaseC FileFormatByteFileBodyC::CreateOutput(const StringC& filename, const type_info& objType) const
+  DPOPortBaseC FileFormatByteFileBodyC::CreateOutput(const StringC& filename, const std::type_info& objType) const
   {
     // Byte only
     if (objType != typeid(ByteT))
@@ -115,7 +115,7 @@ namespace RavlN
   //: Create an output port for saving.
   //!return: An invalid port if not supported.
 
-  const type_info& FileFormatByteFileBodyC::DefaultType() const
+  const std::type_info& FileFormatByteFileBodyC::DefaultType() const
   {
     return typeid(ByteT);
   }

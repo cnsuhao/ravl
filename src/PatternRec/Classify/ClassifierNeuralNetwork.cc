@@ -27,13 +27,13 @@ namespace RavlN {
   
   //: Load from stream.
   
-  ClassifierNeuralNetworkBodyC::ClassifierNeuralNetworkBodyC(istream &strm)
+  ClassifierNeuralNetworkBodyC::ClassifierNeuralNetworkBodyC(std::istream &strm)
     : ClassifierBodyC(strm)
   { 
     IntT version;
     strm >> version;
     if(version != 0)
-      throw ExceptionOutOfRangeC("ClassifierNeuralNetworkBodyC::ClassifierNeuralNetworkBodyC(istream &), Unrecognised version number in stream. ");
+      throw ExceptionOutOfRangeC("ClassifierNeuralNetworkBodyC::ClassifierNeuralNetworkBodyC(std::istream &), Unrecognised version number in stream. ");
     strm >> m_nLayers;
     strm >> m_nInputs;
     strm >> m_nHidden;
@@ -61,16 +61,16 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool ClassifierNeuralNetworkBodyC::Save(ostream &out) const {
+  bool ClassifierNeuralNetworkBodyC::Save(std::ostream &out) const {
     if(!ClassifierBodyC::Save(out))
       return false;
     IntT version = 0;
-    out << version << endl;
-    out << m_nLayers << endl;
-    out << m_nInputs << endl;
-    out << m_nHidden << endl;
-    out << m_nOutputs << endl;
-    out << m_data << endl;
+    out << version << std::endl;
+    out << m_nLayers << std::endl;
+    out << m_nInputs << std::endl;
+    out << m_nHidden << std::endl;
+    out << m_nOutputs << std::endl;
+    out << m_data << std::endl;
     return true;
   }
   
@@ -125,7 +125,7 @@ namespace RavlN {
       for(DLIterC<StringC>it(m_data);it;it++) {
 	StringC line = it.Data().Copy();
 	line.gsub("#", " ");
-	os << line << endl;
+	os << line << std::endl;
       }
     }   
     m_ann = fann_create_from_file(fn.chars());  

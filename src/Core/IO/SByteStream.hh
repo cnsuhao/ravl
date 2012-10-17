@@ -28,7 +28,7 @@ namespace RavlN {
     DPOSByteStreamBodyC();
     //: Default constructor.
 
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
 	{ return DPOPortBaseBodyC::Save(out) && DPSeekCtrlBodyC::Save(out); }
 	//: Save stream
   protected:
@@ -76,9 +76,9 @@ namespace RavlN {
     DPISByteStreamBodyC();
     //: Default constructor.
 
-    virtual bool Save(ostream &out) const 
+    virtual bool Save(std::ostream &out) const 
 	{ return DPIByteStreamBodyC::Save(out) && DPSeekCtrlBodyC::Save(out); }
-    //: Save to ostream.
+    //: Save to std::ostream.
   protected:
   };
   

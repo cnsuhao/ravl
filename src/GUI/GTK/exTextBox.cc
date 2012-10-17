@@ -28,10 +28,10 @@ ButtonC button("Toggle read-only");
 bool ToggleReadOnly()
 {
   bool editable = readonly.Editable();
-  cerr << "Read-only button is (" << (editable ? "editable" : "read-only") << ")" << endl;
+  std::cerr << "Read-only button is (" << (editable ? "editable" : "read-only") << ")" << std::endl;
   
   readonly.GUISetEditable(!editable);
-  cerr << "Read-only button set (" << (!editable ? "editable" : "read-only") << ")" << endl;
+  std::cerr << "Read-only button set (" << (!editable ? "editable" : "read-only") << ")" << std::endl;
   
   StringC buttonLabel("Toggle ");
   buttonLabel += (!editable ? "editable" : "read-only");
@@ -60,4 +60,5 @@ int main(int nargs,char *args[])
   win.Add(VBox(entry + HBox(readonly + button) + password + textBox));
   win.GUIShow();  
   Manager.Start();
+  return 0;
 }

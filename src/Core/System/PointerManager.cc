@@ -49,7 +49,7 @@ namespace RavlN {
   //: Destructor.
   
   StoredPointerC::~StoredPointerC() {
-    ONDEBUG(cerr << "StoredPointerC::~StoredPointerC(), Called. " << (void *) actions << " " << (void *) obj << "\n");
+    ONDEBUG(std::cerr << "StoredPointerC::~StoredPointerC(), Called. " << (void *) actions << " " << (void *) obj << "\n");
     if(actions != 0 && obj != 0)
       actions->Free(obj);
   }
@@ -65,7 +65,7 @@ namespace RavlN {
   //: Destructor.
   
   PointerManagerBodyC::~PointerManagerBodyC() 
-  { ONDEBUG(cerr << "PointerManagerBodyC::~PointerManagerBodyC(), Called. \n"); }
+  { ONDEBUG(std::cerr << "PointerManagerBodyC::~PointerManagerBodyC(), Called. \n"); }
   
 
   //: Test if an object has already been saved/loaded.
@@ -134,11 +134,11 @@ namespace RavlN {
     strm >> id;
     StoredPointerC *ptr = mgr.Lookup(id);
     if(ptr != 0) { // Seen this object already ?
-      ONDEBUG(cerr << "Loading id " << id << " \n");
+      ONDEBUG(std::cerr << "Loading id " << id << " \n");
       obj.Assign(*ptr);
     } else {
       // Not seen before, save id then object.
-      ONDEBUG(cerr << "Loading data with id " << id << "\n");
+      ONDEBUG(std::cerr << "Loading data with id " << id << "\n");
       obj.Load(strm);
       mgr.Insert(id,obj);
     }
