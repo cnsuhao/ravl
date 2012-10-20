@@ -39,7 +39,7 @@ namespace RavlN {
     
     virtual bool Put(const InT &dat) { 
       RavlAssert(this->output.IsValid());
-      return this->output.Put(Apply(dat)); 
+      return this->output.Put(this->Apply(dat));
     }
     //: Process next piece of data.  
     
@@ -48,7 +48,7 @@ namespace RavlN {
 #ifdef NDEBUG
       ApplyArray(src,dest);
 #else
-      RavlAssert((UIntT) ApplyArray(src,dest) == src.Size());
+      RavlAssert((UIntT) this->ApplyArray(src,dest) == src.Size());
 #endif
       return this->output.PutArray(dest);
     }

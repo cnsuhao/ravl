@@ -318,7 +318,7 @@ namespace RavlN {
 
   template<class DataT>
   void SArray2dC<DataT>::BuildAccess(UIntT offset,IntT stride) {
-    Attach(data);
+    this->Attach(data);
     if(stride == 0)
       stride = this->size2;
     DataT *at;
