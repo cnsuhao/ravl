@@ -144,7 +144,7 @@ namespace RavlN {
       : basic_istream<char_type, traits_type>(0),
 	filebuf(fd,mode,buffSize)
     {
-      init(&filebuf);
+      this->init(&filebuf);
     }
     //: Construct from a file handle and an open mode.
     
@@ -178,7 +178,7 @@ namespace RavlN {
                              )
       : basic_ostream<char_type, traits_type>(0),
 	filebuf(fd,mode,buffSize)
-    { init(&filebuf); }
+    { this->init(&filebuf); }
     //: Construct from a file handle.
     
   private:
@@ -207,8 +207,8 @@ namespace RavlN {
                             size_t buffSize = static_cast<size_t>(BUFSIZ))
       : basic_iostream<char_type, traits_type>(NULL), 
 	filebuf(fd,mode, buffSize)
-    { init(&filebuf); }
-    //: Cosntructor.
+    { this->init(&filebuf); }
+    //: Constructor.
     
   private:
     buf_type  filebuf;

@@ -71,7 +71,7 @@ namespace RavlN {
     explicit inline SArray1dC(const SizeT dim)
       : SizeBufferAccessC<DataT>(),
         buff(SingleBufferC<DataT>(dim))
-    { Attach(buff,dim); }
+    { this->Attach(buff,dim); }
     //: Creates an uninitialised array with the range <code>{0 ... dim-1}</code>.
 
     static SArray1dC<DataT> ConstructAligned(const SizeT dim,UIntT align)
@@ -418,7 +418,7 @@ namespace RavlN {
     : SizeBufferAccessC<DataT>(),
       buff(2)
   {
-    Attach(buff,2);
+    this->Attach(buff,2);
     (*this)[0] = pr[0];
     (*this)[1] = pr[1];
   }
@@ -432,7 +432,7 @@ namespace RavlN {
       return ;
     }
     buff = SingleBufferC<DataT>(slice.Size());
-    Attach(buff,slice.Size());
+    this->Attach(buff,slice.Size());
     // Copy data.
     DataT *at = buff.ReferenceElm();
     for(Slice1dIterC<DataT> it(slice);it;it++,at++)
