@@ -127,12 +127,12 @@ namespace RavlAudioN {
   {
   public:
     DPIAudioBodyC()
-      { BuildAttributes( *this ) ; }
+      { this->BuildAttributes( *this ) ; }
     //: Default constructor.
     
     DPIAudioBodyC(const StringC &dev,int channel)
       : IOClassT(dev,channel,true,typeid(DataT))
-      { BuildAttributes( *this ) ; }
+      { this->BuildAttributes( *this ) ; }
     //: Default constructor.
     
     virtual bool IsGetReady() const

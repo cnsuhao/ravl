@@ -61,7 +61,7 @@ namespace RavlN {
     
     void SetInput(const DPISPortC<DataT> &newPort) { 
       inPort = newPort; 
-      ReparentAttributeCtrl(newPort);
+      this->ReparentAttributeCtrl(newPort);
     }
     //: Set input port.
     

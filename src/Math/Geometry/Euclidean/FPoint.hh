@@ -54,11 +54,11 @@ namespace RavlN {
     //: Vector constructor.
     
     RealT EuclideanDistance(const FPointC<N> & i) const 
-    { return Sqrt((RealT) SqrEuclidDistance(i)); }
+    { return Sqrt((RealT) this->SqrEuclidDistance(i)); }
     //: Returns the distance of two indexes in Euclid metric.
     
     RealT EuclidDistance(const FPointC<N> & i) const 
-    { return EuclideanDistance(i); }
+    { return this->EuclideanDistance(i); }
     //: Returns the distance of two indexes in Euclid metric.
     // Identical to EuclideanDistance, which should be used in new code.
     
