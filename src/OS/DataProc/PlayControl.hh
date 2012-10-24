@@ -432,7 +432,7 @@ namespace RavlN {
 	return false;
       input = nPort;
       lock.Unlock();
-      ReparentAttributeCtrl(input);
+      this->ReparentAttributeCtrl(input);
       if(pause)
 	sema.Post(); // Display at least first frame.
       return true;

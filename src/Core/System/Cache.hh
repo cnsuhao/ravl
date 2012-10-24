@@ -129,7 +129,7 @@ namespace RavlN {
     
     bool Insert(const KeyT &key,const DataT &data,bool bump = true) {
       SizeT hashVal;
-      HashElemC<KeyT,CacheEntryC<DataT> > *elem = LookupHV(key,hashVal);
+      HashElemC<KeyT,CacheEntryC<DataT> > *elem = this->LookupHV(key,hashVal);
       if(elem != 0) {
         elem->Data().Data() = data;
         if(bump) {

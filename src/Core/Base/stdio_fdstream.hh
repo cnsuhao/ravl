@@ -201,7 +201,7 @@ namespace RavlN {
       : basic_istream<char_type, traits_type>(0),
 	filebuf(fd,mode,buffSize)
     { 
-      init(&filebuf);
+      this->init(&filebuf);
       RavlAssert(freeFd); // Not given a choice anymore
     }
     //: Construct from a file handle and an open mode.
@@ -213,7 +213,7 @@ namespace RavlN {
     stdio_ifdstream()
       : basic_istream<char_type, traits_type>(0), 
 	filebuf()
-    { init(&filebuf); }
+    { this->init(&filebuf); }
     //: Default constructor.
     
   private:
@@ -240,7 +240,7 @@ namespace RavlN {
       : basic_ostream<char_type, traits_type>(0),
 	filebuf(fd,mode,buffSize)
     {
-      init(&filebuf);
+      this->init(&filebuf);
       RavlAssert(freeFd); // Not given a choice anymore
     }
     //: Construct from a file handle.

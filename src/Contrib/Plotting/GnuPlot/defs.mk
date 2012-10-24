@@ -5,7 +5,8 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-DONOT_SUPPORT=VCPP
+# This library needs to be supported by VCPP!
+#DONOT_SUPPORT=VCPP
 
 PACKAGE=Ravl/Plot
 
