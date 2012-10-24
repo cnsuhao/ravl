@@ -62,7 +62,7 @@ namespace RavlImageN {
     
     ImageC(const IndexRange2dC &rng,const PixelT &val)
       : Array2dC<PixelT>(rng)
-    { Fill(val); }
+    { this->Fill(val); }
     //: Create an image of size 'rng' filled with value 'val'
     //!param: rng - 2d range of accesses to create the image over
     //!param: val - Value to fill the image with.

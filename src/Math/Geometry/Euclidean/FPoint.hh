@@ -17,6 +17,7 @@
 
 #include "Ravl/TFVector.hh"
 #include "Ravl/FIndex.hh"
+#include "Ravl/StdMath.hh"
 
 namespace RavlN {
 
@@ -65,7 +66,7 @@ namespace RavlN {
     bool IsReal() const
     {
       for(unsigned int i = 0; i < N;i++) {
-        if(IsNan(this->data[i]) || IsInf(this->data[i]))
+        if(RavlN::IsNan(this->data[i]) || RavlN::IsInf(this->data[i]))
           return false;
       }
       return true;
