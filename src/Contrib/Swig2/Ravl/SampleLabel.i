@@ -60,6 +60,24 @@ public:
       const RavlN::RCHashC<UIntT, StringC> & Label2ClassNames() const;
       //: Get the map of label to class names
 	
+	 %extend
+    {
+      PyObject * AsNumPy()
+      {
+        int nd = 1;
+        npy_intp dims[1];
+        dims[0]=self->Size();
+        PyObject * array = PyArray_SimpleNew(nd, dims, PyArray_DOUBLE);
+	    RavlN::RealT * dptr = (RavlN::RealT*)PyArray_DATA(array);
+		for(RavlN::SampleIterC<RavlN::UIntT>it(*self);it;it++) {
+			*dptr=(RavlN::RealT)*it;
+			dptr++;
+		}
+        return array;
+      }
+    }
+	
+	
   };
 }
 

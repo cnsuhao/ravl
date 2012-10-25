@@ -10,7 +10,13 @@ namespace RavlGUIN
     InitDPDisplayImage();
   }
 }
+
+#define PY_ARRAY_UNIQUE_SYMBOL RAVL_ARRAY_API
+#define NO_IMPORT_ARRAY
+#include "numpy/arrayobject.h"
+
 %}
+
 
 %include "Ravl/Swig2/Macros.i"
 %include "Ravl/Swig2/Types.i"

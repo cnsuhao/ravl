@@ -27,9 +27,9 @@ namespace RavlN {
   class VectorC : public TVectorC<RealT> {
   public:
    
-   	VectorC();
-   	// Empty vector
-   	
+   VectorC();
+   // Empty vector
+   
     VectorC(SizeT size);
     // Construct from size
     
@@ -257,7 +257,24 @@ namespace RavlN {
     
     RealT EuclidDistance(const VectorC & i) const;
     //: Returns the distance of two indexes in square Euclid metric.
-
+    
+    %extend
+    {
+     
+    
+      PyObject * AsNumPy()
+      {
+        int nd = 1;
+        npy_intp dims[1];
+        dims[0]=self->Size().V();
+        PyObject * array = PyArray_SimpleNew(nd, dims, PyArray_DOUBLE);
+	    RavlN::RealT * dptr = (RavlN::RealT*)PyArray_DATA(array);
+        memcpy((void *)dptr, (void *)&(*self)[0], sizeof(RavlN::RealT) * self->Size().V()); 
+        return array;
+      }
+    }
+    
+   
   };
   
   VectorC RandomVector(int n,RealT scale = 1.0);
@@ -280,5 +297,6 @@ namespace RavlN {
 
   VectorC Exp(const VectorC &z);
   //: Compute the element wise exponent of z.
+  
   
 }
