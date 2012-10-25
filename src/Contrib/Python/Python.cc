@@ -19,8 +19,8 @@
 #include "Ravl/PythonException.hh"
 #include "Ravl/Threads/Thread.hh"
 #if !RAVL_OS_WIN32
-#include <python/compile.h> // Python 2.3 does not include this in Python.h
-#include <python/eval.h> // Python 2.3 does not include this in Python.h
+#include <compile.h> // Python 2.3 does not include this in Python.h
+#include <eval.h> // Python 2.3 does not include this in Python.h
 #endif
 
 #define DODEBUG 0
