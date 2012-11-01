@@ -215,7 +215,7 @@ namespace RavlN {
     }
     entry = fileformat;
     if(!m_ext.IsMember(fileformat.Name()))
-      RavlDebug("Adding extension '%s' ",fileformat.Name().c_str());
+      ONDEBUG(RavlDebug("Adding extension '%s' ",fileformat.Name().c_str()));
     m_ext += fileformat.Name();
 
     return true;
