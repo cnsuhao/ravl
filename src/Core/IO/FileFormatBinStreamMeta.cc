@@ -214,9 +214,10 @@ namespace RavlN {
       return false;
     }
     entry = fileformat;
-    if(!m_ext.IsMember(fileformat.Name()))
+    if(!m_ext.IsMember(fileformat.Name())) {
       ONDEBUG(RavlDebug("Adding extension '%s' ",fileformat.Name().c_str()));
-    m_ext += fileformat.Name();
+      m_ext += fileformat.Name();
+    }
 
     return true;
   }
