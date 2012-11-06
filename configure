@@ -673,7 +673,6 @@ libmcrypt_SUPPORT
 Meteor1_SUPPORT
 MacOSXVideoCapture_SUPPORT
 MacOSXRunLoop_SUPPORT
-LAPACK_SUPPORT
 libmkl_SUPPORT
 libGuppi_SUPPORT
 LibGd_SUPPORT
@@ -697,12 +696,21 @@ LibTIFF_CFLAGS
 posixThreads_SUPPORT
 posixThreads_LIBS
 posixThreads_CFLAGS
+LAPACK_SUPPORT
+LAPACK_LIBS
+LAPACK_CFLAGS
 JPEG_SUPPORT
 JPEG_LIBS
 JPEG_CFLAGS
 LibJasper_SUPPORT
 LibJasper_LIBS
 LibJasper_CFLAGS
+blas_LIBS
+blas_CFLAGS
+FLIBS
+ac_ct_F77
+FFLAGS
+F77
 ZeroMQ_SUPPORT
 ZeroMQ_LIBS
 ZeroMQ_CFLAGS
@@ -966,6 +974,10 @@ with_devVideo4Linux2_pkgconf
 with_devVideo4Linux2
 with_ZeroMQ_pkgconf
 with_ZeroMQ
+with_blas_pkgconf
+with_blas
+with_blas_library
+with_blas_include
 with_LibJasper_pkgconf
 with_LibJasper
 with_LibJasper_library
@@ -974,6 +986,10 @@ with_JPEG_pkgconf
 with_JPEG
 with_JPEG_library
 with_JPEG_include
+with_LAPACK_pkgconf
+with_LAPACK
+with_LAPACK_library
+with_LAPACK_include
 with_posixThreads_pkgconf
 with_posixThreads
 with_posixThreads_library
@@ -1004,7 +1020,9 @@ CPP
 CXX
 CXXFLAGS
 CCC
-CXXCPP'
+CXXCPP
+F77
+FFLAGS'
 ac_subdirs_all='QMake'
 
 # Initialize some variables set by options.
@@ -1802,6 +1820,19 @@ Optional Packages:
   --with-ZeroMQ           Enable functionality that relies on the ZeroMQ
                           library [default=check]
 
+  --with-blas-pkgconf     Enable the blas library package via pkg-config and
+                          declare the name by which the blas library package
+                          is know to pkg-config
+
+  --with-blas             Enable functionality that relies on the blas library
+                          [default=check]
+
+  --with-blas-library     Declare the location of the blas library and enable
+                          its functionality
+
+  --with-blas-include     Declare the location of the blas header files and
+                          enable their functionality
+
   --with-LibJasper-pkgconf
                           Enable the LibJasper library package via pkg-config
                           and declare the name by which the LibJasper library
@@ -1829,6 +1860,19 @@ Optional Packages:
                           its functionality
 
   --with-JPEG-include     Declare the location of the JPEG header files and
+                          enable their functionality
+
+  --with-LAPACK-pkgconf   Enable the LAPACK library package via pkg-config and
+                          declare the name by which the LAPACK library package
+                          is know to pkg-config
+
+  --with-LAPACK           Enable functionality that relies on the LAPACK
+                          library [default=check]
+
+  --with-LAPACK-library   Declare the location of the LAPACK library and
+                          enable its functionality
+
+  --with-LAPACK-include   Declare the location of the LAPACK header files and
                           enable their functionality
 
   --with-posixThreads-pkgconf
@@ -1902,6 +1946,8 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
+  F77         Fortran 77 compiler command
+  FFLAGS      Fortran 77 compiler flags
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -2133,6 +2179,44 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_cxx_try_cpp
+
+# ac_fn_f77_try_compile LINENO
+# ----------------------------
+# Try to compile conftest.$ac_ext, and return whether this succeeded.
+ac_fn_f77_try_compile ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  rm -f conftest.$ac_objext
+  if { { ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$ac_compile") 2>conftest.err
+  ac_status=$?
+  if test -s conftest.err; then
+    grep -v '^ *+' conftest.err >conftest.er1
+    cat conftest.er1 >&5
+    mv -f conftest.er1 conftest.err
+  fi
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; } && {
+	 test -z "$ac_f77_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then :
+  ac_retval=0
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_retval=1
+fi
+  eval $as_lineno_stack; test "x$as_lineno_stack" = x && { as_lineno=; unset as_lineno;}
+  as_fn_set_status $ac_retval
+
+} # ac_fn_f77_try_compile
 
 # ac_fn_c_try_link LINENO
 # -----------------------
@@ -9150,6 +9234,1517 @@ fi
 
 ZeroMQ_RavLib=libRavlZmq
 
+ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+if test -n "$ac_tool_prefix"; then
+  for ac_prog in g77 xlf f77 frt pgf77 cf77 fort77 fl32 af77 xlf90 f90 pgf90 pghpf epcf90 gfortran g95 xlf95 f95 fort ifort ifc efc pgf95 lf95 ftn
+  do
+    # Extract the first word of "$ac_tool_prefix$ac_prog", so it can be a program name with args.
+set dummy $ac_tool_prefix$ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_F77+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$F77"; then
+  ac_cv_prog_F77="$F77" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_F77="$ac_tool_prefix$ac_prog"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+F77=$ac_cv_prog_F77
+if test -n "$F77"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $F77" >&5
+$as_echo "$F77" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+    test -n "$F77" && break
+  done
+fi
+if test -z "$F77"; then
+  ac_ct_F77=$F77
+  for ac_prog in g77 xlf f77 frt pgf77 cf77 fort77 fl32 af77 xlf90 f90 pgf90 pghpf epcf90 gfortran g95 xlf95 f95 fort ifort ifc efc pgf95 lf95 ftn
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_ac_ct_F77+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$ac_ct_F77"; then
+  ac_cv_prog_ac_ct_F77="$ac_ct_F77" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_ac_ct_F77="$ac_prog"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_F77=$ac_cv_prog_ac_ct_F77
+if test -n "$ac_ct_F77"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_F77" >&5
+$as_echo "$ac_ct_F77" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$ac_ct_F77" && break
+done
+
+  if test "x$ac_ct_F77" = x; then
+    F77=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    F77=$ac_ct_F77
+  fi
+fi
+
+
+# Provide some information about the compiler.
+$as_echo "$as_me:${as_lineno-$LINENO}: checking for Fortran 77 compiler version" >&5
+set X $ac_compile
+ac_compiler=$2
+for ac_option in --version -v -V -qversion; do
+  { { ac_try="$ac_compiler $ac_option >&5"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$ac_compiler $ac_option >&5") 2>conftest.err
+  ac_status=$?
+  if test -s conftest.err; then
+    sed '10a\
+... rest of stderr output deleted ...
+         10q' conftest.err >conftest.er1
+    cat conftest.er1 >&5
+  fi
+  rm -f conftest.er1 conftest.err
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }
+done
+rm -f a.out
+
+# If we don't use `.F' as extension, the preprocessor is not run on the
+# input file.  (Note that this only needs to work for GNU compilers.)
+ac_save_ext=$ac_ext
+ac_ext=F
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether we are using the GNU Fortran 77 compiler" >&5
+$as_echo_n "checking whether we are using the GNU Fortran 77 compiler... " >&6; }
+if test "${ac_cv_f77_compiler_gnu+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat > conftest.$ac_ext <<_ACEOF
+      program main
+#ifndef __GNUC__
+       choke me
+#endif
+
+      end
+_ACEOF
+if ac_fn_f77_try_compile "$LINENO"; then :
+  ac_compiler_gnu=yes
+else
+  ac_compiler_gnu=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+ac_cv_f77_compiler_gnu=$ac_compiler_gnu
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_f77_compiler_gnu" >&5
+$as_echo "$ac_cv_f77_compiler_gnu" >&6; }
+ac_ext=$ac_save_ext
+ac_test_FFLAGS=${FFLAGS+set}
+ac_save_FFLAGS=$FFLAGS
+FFLAGS=
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $F77 accepts -g" >&5
+$as_echo_n "checking whether $F77 accepts -g... " >&6; }
+if test "${ac_cv_prog_f77_g+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  FFLAGS=-g
+cat > conftest.$ac_ext <<_ACEOF
+      program main
+
+      end
+_ACEOF
+if ac_fn_f77_try_compile "$LINENO"; then :
+  ac_cv_prog_f77_g=yes
+else
+  ac_cv_prog_f77_g=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_f77_g" >&5
+$as_echo "$ac_cv_prog_f77_g" >&6; }
+if test "$ac_test_FFLAGS" = set; then
+  FFLAGS=$ac_save_FFLAGS
+elif test $ac_cv_prog_f77_g = yes; then
+  if test "x$ac_cv_f77_compiler_gnu" = xyes; then
+    FFLAGS="-g -O2"
+  else
+    FFLAGS="-g"
+  fi
+else
+  if test "x$ac_cv_f77_compiler_gnu" = xyes; then
+    FFLAGS="-O2"
+  else
+    FFLAGS=
+  fi
+fi
+
+if test $ac_compiler_gnu = yes; then
+  G77=yes
+else
+  G77=
+fi
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking how to get verbose linking output from $F77" >&5
+$as_echo_n "checking how to get verbose linking output from $F77... " >&6; }
+if test "${ac_cv_prog_f77_v+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat > conftest.$ac_ext <<_ACEOF
+      program main
+
+      end
+_ACEOF
+if ac_fn_f77_try_compile "$LINENO"; then :
+  ac_cv_prog_f77_v=
+# Try some options frequently used verbose output
+for ac_verb in -v -verbose --verbose -V -\#\#\#; do
+  cat > conftest.$ac_ext <<_ACEOF
+      program main
+
+      end
+_ACEOF
+
+# Compile and link our simple test program by passing a flag (argument
+# 1 to this macro) to the Fortran compiler in order to get
+# "verbose" output that we can then parse for the Fortran linker
+# flags.
+ac_save_FFLAGS=$FFLAGS
+FFLAGS="$FFLAGS $ac_verb"
+eval "set x $ac_link"
+shift
+$as_echo "$as_me:${as_lineno-$LINENO}: $*" >&5
+# gfortran 4.3 outputs lines setting COLLECT_GCC_OPTIONS, COMPILER_PATH,
+# LIBRARY_PATH; skip all such settings.
+ac_f77_v_output=`eval $ac_link 5>&1 2>&1 |
+  grep -v 'Driving:' | grep -v "^[_$as_cr_Letters][_$as_cr_alnum]*="`
+$as_echo "$ac_f77_v_output" >&5
+FFLAGS=$ac_save_FFLAGS
+
+rm -rf conftest*
+
+# On HP/UX there is a line like: "LPATH is: /foo:/bar:/baz" where
+# /foo, /bar, and /baz are search directories for the Fortran linker.
+# Here, we change these into -L/foo -L/bar -L/baz (and put it first):
+ac_f77_v_output="`echo $ac_f77_v_output |
+	grep 'LPATH is:' |
+	sed 's|.*LPATH is\(: *[^ ]*\).*|\1|;s|: */| -L/|g'` $ac_f77_v_output"
+
+# FIXME: we keep getting bitten by quoted arguments; a more general fix
+#        that detects unbalanced quotes in FLIBS should be implemented
+#        and (ugh) tested at some point.
+case $ac_f77_v_output in
+  # If we are using xlf then replace all the commas with spaces.
+  *xlfentry*)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed 's/,/ /g'` ;;
+
+  # With Intel ifc, ignore the quoted -mGLOB_options_string stuff (quoted
+  # $LIBS confuse us, and the libraries appear later in the output anyway).
+  *mGLOB_options_string*)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed 's/"-mGLOB[^"]*"/ /g'` ;;
+
+  # Portland Group compiler has singly- or doubly-quoted -cmdline argument
+  # Singly-quoted arguments were reported for versions 5.2-4 and 6.0-4.
+  # Doubly-quoted arguments were reported for "PGF90/x86 Linux/x86 5.0-2".
+  *-cmdline\ * | *-ignore\ * | *-def\ *)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed "\
+	s/-cmdline  *'[^']*'/ /g; s/-cmdline  *\"[^\"]*\"/ /g
+	s/-ignore  *'[^']*'/ /g; s/-ignore  *\"[^\"]*\"/ /g
+	s/-def  *'[^']*'/ /g; s/-def  *\"[^\"]*\"/ /g"` ;;
+
+  # If we are using Cray Fortran then delete quotes.
+  *cft90*)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed 's/"//g'` ;;
+esac
+
+
+  # look for -l* and *.a constructs in the output
+  for ac_arg in $ac_f77_v_output; do
+     case $ac_arg in
+	[\\/]*.a | ?:[\\/]*.a | -[lLRu]*)
+	  ac_cv_prog_f77_v=$ac_verb
+	  break 2 ;;
+     esac
+  done
+done
+if test -z "$ac_cv_prog_f77_v"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: cannot determine how to obtain linking information from $F77" >&5
+$as_echo "$as_me: WARNING: cannot determine how to obtain linking information from $F77" >&2;}
+fi
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: compilation failed" >&5
+$as_echo "$as_me: WARNING: compilation failed" >&2;}
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_prog_f77_v" >&5
+$as_echo "$ac_cv_prog_f77_v" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Fortran 77 libraries of $F77" >&5
+$as_echo_n "checking for Fortran 77 libraries of $F77... " >&6; }
+if test "${ac_cv_f77_libs+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test "x$FLIBS" != "x"; then
+  ac_cv_f77_libs="$FLIBS" # Let the user override the test.
+else
+
+cat > conftest.$ac_ext <<_ACEOF
+      program main
+
+      end
+_ACEOF
+
+# Compile and link our simple test program by passing a flag (argument
+# 1 to this macro) to the Fortran compiler in order to get
+# "verbose" output that we can then parse for the Fortran linker
+# flags.
+ac_save_FFLAGS=$FFLAGS
+FFLAGS="$FFLAGS $ac_cv_prog_f77_v"
+eval "set x $ac_link"
+shift
+$as_echo "$as_me:${as_lineno-$LINENO}: $*" >&5
+# gfortran 4.3 outputs lines setting COLLECT_GCC_OPTIONS, COMPILER_PATH,
+# LIBRARY_PATH; skip all such settings.
+ac_f77_v_output=`eval $ac_link 5>&1 2>&1 |
+  grep -v 'Driving:' | grep -v "^[_$as_cr_Letters][_$as_cr_alnum]*="`
+$as_echo "$ac_f77_v_output" >&5
+FFLAGS=$ac_save_FFLAGS
+
+rm -rf conftest*
+
+# On HP/UX there is a line like: "LPATH is: /foo:/bar:/baz" where
+# /foo, /bar, and /baz are search directories for the Fortran linker.
+# Here, we change these into -L/foo -L/bar -L/baz (and put it first):
+ac_f77_v_output="`echo $ac_f77_v_output |
+	grep 'LPATH is:' |
+	sed 's|.*LPATH is\(: *[^ ]*\).*|\1|;s|: */| -L/|g'` $ac_f77_v_output"
+
+# FIXME: we keep getting bitten by quoted arguments; a more general fix
+#        that detects unbalanced quotes in FLIBS should be implemented
+#        and (ugh) tested at some point.
+case $ac_f77_v_output in
+  # If we are using xlf then replace all the commas with spaces.
+  *xlfentry*)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed 's/,/ /g'` ;;
+
+  # With Intel ifc, ignore the quoted -mGLOB_options_string stuff (quoted
+  # $LIBS confuse us, and the libraries appear later in the output anyway).
+  *mGLOB_options_string*)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed 's/"-mGLOB[^"]*"/ /g'` ;;
+
+  # Portland Group compiler has singly- or doubly-quoted -cmdline argument
+  # Singly-quoted arguments were reported for versions 5.2-4 and 6.0-4.
+  # Doubly-quoted arguments were reported for "PGF90/x86 Linux/x86 5.0-2".
+  *-cmdline\ * | *-ignore\ * | *-def\ *)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed "\
+	s/-cmdline  *'[^']*'/ /g; s/-cmdline  *\"[^\"]*\"/ /g
+	s/-ignore  *'[^']*'/ /g; s/-ignore  *\"[^\"]*\"/ /g
+	s/-def  *'[^']*'/ /g; s/-def  *\"[^\"]*\"/ /g"` ;;
+
+  # If we are using Cray Fortran then delete quotes.
+  *cft90*)
+    ac_f77_v_output=`echo $ac_f77_v_output | sed 's/"//g'` ;;
+esac
+
+
+
+ac_cv_f77_libs=
+
+# Save positional arguments (if any)
+ac_save_positional="$@"
+
+set X $ac_f77_v_output
+while test $# != 1; do
+  shift
+  ac_arg=$1
+  case $ac_arg in
+	[\\/]*.a | ?:[\\/]*.a)
+	    ac_exists=false
+  for ac_i in $ac_cv_f77_libs; do
+    if test x"$ac_arg" = x"$ac_i"; then
+      ac_exists=true
+      break
+    fi
+  done
+
+  if test x"$ac_exists" = xtrue; then :
+
+else
+  ac_cv_f77_libs="$ac_cv_f77_libs $ac_arg"
+fi
+	  ;;
+	-bI:*)
+	    ac_exists=false
+  for ac_i in $ac_cv_f77_libs; do
+    if test x"$ac_arg" = x"$ac_i"; then
+      ac_exists=true
+      break
+    fi
+  done
+
+  if test x"$ac_exists" = xtrue; then :
+
+else
+  if test "$ac_compiler_gnu" = yes; then
+  for ac_link_opt in $ac_arg; do
+    ac_cv_f77_libs="$ac_cv_f77_libs -Xlinker $ac_link_opt"
+  done
+else
+  ac_cv_f77_libs="$ac_cv_f77_libs $ac_arg"
+fi
+fi
+	  ;;
+	  # Ignore these flags.
+	-lang* | -lcrt*.o | -lc | -lgcc* | -lSystem | -libmil | -little \
+	  |-LANG:=* | -LIST:* | -LNO:*)
+	  ;;
+	-lkernel32)
+	  test x"$CYGWIN" != xyes && ac_cv_f77_libs="$ac_cv_f77_libs $ac_arg"
+	  ;;
+	-[LRuYz])
+	  # These flags, when seen by themselves, take an argument.
+	  # We remove the space between option and argument and re-iterate
+	  # unless we find an empty arg or a new option (starting with -)
+	  case $2 in
+	     "" | -*);;
+	     *)
+		ac_arg="$ac_arg$2"
+		shift; shift
+		set X $ac_arg "$@"
+		;;
+	  esac
+	  ;;
+	-YP,*)
+	  for ac_j in `$as_echo "$ac_arg" | sed -e 's/-YP,/-L/;s/:/ -L/g'`; do
+	      ac_exists=false
+  for ac_i in $ac_cv_f77_libs; do
+    if test x"$ac_j" = x"$ac_i"; then
+      ac_exists=true
+      break
+    fi
+  done
+
+  if test x"$ac_exists" = xtrue; then :
+
+else
+  ac_arg="$ac_arg $ac_j"
+			       ac_cv_f77_libs="$ac_cv_f77_libs $ac_j"
+fi
+	  done
+	  ;;
+	-[lLR]*)
+	    ac_exists=false
+  for ac_i in $ac_cv_f77_libs; do
+    if test x"$ac_arg" = x"$ac_i"; then
+      ac_exists=true
+      break
+    fi
+  done
+
+  if test x"$ac_exists" = xtrue; then :
+
+else
+  ac_cv_f77_libs="$ac_cv_f77_libs $ac_arg"
+fi
+	  ;;
+	-zallextract*| -zdefaultextract)
+	  ac_cv_f77_libs="$ac_cv_f77_libs $ac_arg"
+	  ;;
+	  # Ignore everything else.
+  esac
+done
+# restore positional arguments
+set X $ac_save_positional; shift
+
+# We only consider "LD_RUN_PATH" on Solaris systems.  If this is seen,
+# then we insist that the "run path" must be an absolute path (i.e. it
+# must begin with a "/").
+case `(uname -sr) 2>/dev/null` in
+   "SunOS 5"*)
+      ac_ld_run_path=`$as_echo "$ac_f77_v_output" |
+			sed -n 's,^.*LD_RUN_PATH *= *\(/[^ ]*\).*$,-R\1,p'`
+      test "x$ac_ld_run_path" != x &&
+	if test "$ac_compiler_gnu" = yes; then
+  for ac_link_opt in $ac_ld_run_path; do
+    ac_cv_f77_libs="$ac_cv_f77_libs -Xlinker $ac_link_opt"
+  done
+else
+  ac_cv_f77_libs="$ac_cv_f77_libs $ac_ld_run_path"
+fi
+      ;;
+esac
+fi # test "x$[]_AC_LANG_PREFIX[]LIBS" = "x"
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_f77_libs" >&5
+$as_echo "$ac_cv_f77_libs" >&6; }
+FLIBS="$ac_cv_f77_libs"
+
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for dummy main to link with Fortran 77 libraries" >&5
+$as_echo_n "checking for dummy main to link with Fortran 77 libraries... " >&6; }
+if test "${ac_cv_f77_dummy_main+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_f77_dm_save_LIBS=$LIBS
+ LIBS="$LIBS $FLIBS"
+ ac_fortran_dm_var=F77_DUMMY_MAIN
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ # First, try linking without a dummy main:
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_fortran_dummy_main=none
+else
+  ac_cv_fortran_dummy_main=unknown
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+ if test $ac_cv_fortran_dummy_main = unknown; then
+   for ac_func in MAIN__ MAIN_ __main MAIN _MAIN __MAIN main_ main__ _main; do
+     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#define $ac_fortran_dm_var $ac_func
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_fortran_dummy_main=$ac_func; break
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+   done
+ fi
+ ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+ ac_cv_f77_dummy_main=$ac_cv_fortran_dummy_main
+ rm -rf conftest*
+ LIBS=$ac_f77_dm_save_LIBS
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_f77_dummy_main" >&5
+$as_echo "$ac_cv_f77_dummy_main" >&6; }
+F77_DUMMY_MAIN=$ac_cv_f77_dummy_main
+if test "$F77_DUMMY_MAIN" != unknown; then :
+  if test $F77_DUMMY_MAIN != none; then
+
+cat >>confdefs.h <<_ACEOF
+#define F77_DUMMY_MAIN $F77_DUMMY_MAIN
+_ACEOF
+
+  if test "x$ac_cv_fc_dummy_main" = "x$ac_cv_f77_dummy_main"; then
+
+$as_echo "#define FC_DUMMY_MAIN_EQ_F77 1" >>confdefs.h
+
+  fi
+fi
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "linking to Fortran libraries from C fails
+See \`config.log' for more details." "$LINENO" 5; }
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Fortran 77 name-mangling scheme" >&5
+$as_echo_n "checking for Fortran 77 name-mangling scheme... " >&6; }
+if test "${ac_cv_f77_mangling+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat > conftest.$ac_ext <<_ACEOF
+      subroutine foobar()
+      return
+      end
+      subroutine foo_bar()
+      return
+      end
+_ACEOF
+if ac_fn_f77_try_compile "$LINENO"; then :
+  mv conftest.$ac_objext cfortran_test.$ac_objext
+
+  ac_save_LIBS=$LIBS
+  LIBS="cfortran_test.$ac_objext $LIBS $FLIBS"
+
+  ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+  ac_success=no
+  for ac_foobar in foobar FOOBAR; do
+    for ac_underscore in "" "_"; do
+      ac_func="$ac_foobar$ac_underscore"
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $ac_func ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return $ac_func ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_success=yes; break 2
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+    done
+  done
+  ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+
+  if test "$ac_success" = "yes"; then
+     case $ac_foobar in
+	foobar)
+	   ac_case=lower
+	   ac_foo_bar=foo_bar
+	   ;;
+	FOOBAR)
+	   ac_case=upper
+	   ac_foo_bar=FOO_BAR
+	   ;;
+     esac
+
+     ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+     ac_success_extra=no
+     for ac_extra in "" "_"; do
+	ac_func="$ac_foo_bar$ac_underscore$ac_extra"
+	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $ac_func ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
+int
+main ()
+{
+return $ac_func ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_success_extra=yes; break
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+     done
+     ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+
+     if test "$ac_success_extra" = "yes"; then
+	ac_cv_f77_mangling="$ac_case case"
+	if test -z "$ac_underscore"; then
+	   ac_cv_f77_mangling="$ac_cv_f77_mangling, no underscore"
+	else
+	   ac_cv_f77_mangling="$ac_cv_f77_mangling, underscore"
+	fi
+	if test -z "$ac_extra"; then
+	   ac_cv_f77_mangling="$ac_cv_f77_mangling, no extra underscore"
+	else
+	   ac_cv_f77_mangling="$ac_cv_f77_mangling, extra underscore"
+	fi
+      else
+	ac_cv_f77_mangling="unknown"
+      fi
+  else
+     ac_cv_f77_mangling="unknown"
+  fi
+
+  LIBS=$ac_save_LIBS
+  rm -rf conftest*
+  rm -f cfortran_test*
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "cannot compile a simple Fortran program
+See \`config.log' for more details." "$LINENO" 5; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_f77_mangling" >&5
+$as_echo "$ac_cv_f77_mangling" >&6; }
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+case $ac_cv_f77_mangling in
+  upper*) ac_val="SGEMM" ;;
+  lower*) ac_val="sgemm" ;;
+  *)      ac_val="unknown" ;;
+esac
+case $ac_cv_f77_mangling in *," underscore"*) ac_val="$ac_val"_ ;; esac
+
+sgemm="$ac_val"
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+# Check whether --with-blas-pkgconf was given.
+if test "${with_blas_pkgconf+set}" = set; then :
+  withval=$with_blas_pkgconf; case $with_blas_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_blas_pkgconf=no
+                                          trace 4 --with-blas-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure blas via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+                                          ;;
+                        * )               use_blas=yes
+                                          trace 4 --with-blas-pkgconf set to [$with_blas_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-blas-pkgconf specified
+                       with_blas_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-blas was given.
+if test "${with_blas+set}" = set; then :
+  withval=$with_blas; case $with_blas in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_blas=no
+                                          with_blas=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_blas=yes
+                                          with_blas=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_blas=check
+                                          with_blas=check
+                                          ;;
+                        * )               use_blas=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-blas specified
+                       with_blas=notset
+
+
+fi
+
+
+# Check whether --with-blas-library was given.
+if test "${with_blas_library+set}" = set; then :
+  withval=$with_blas_library; case $with_blas-library in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_blas=no
+                                          with_blas_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_blas=yes
+                                          with_blas_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_blas=check
+                                          with_blas_library=check
+                                          ;;
+                        * )               use_blas=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-blas-library specified
+                       with_blas_library=notset
+
+
+fi
+
+
+# Check whether --with-blas-include was given.
+if test "${with_blas_include+set}" = set; then :
+  withval=$with_blas_include; case $with_blas-include in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_blas=no
+                                          with_blas_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_blas=yes
+                                          with_blas_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_blas=check
+                                          with_blas_include=check
+                                          ;;
+                        * )               use_blas=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-blas-include specified
+                       with_blas_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-blas compatability with the rest
+          if ( test $with_blas = no )
+          then
+             if ( test $with_blas_pkgconf != no && test $with_blas_pkgconf != notset )
+             then
+                # --with-blas-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to blas via pkg-config but --with-blas disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+
+             if ( test with_blas_library != no && test $with_blas_library != notset )
+             then
+                if ( test with_blas_library = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas specifically disables library but --with-blas-library" >&5
+$as_echo "$as_me: WARNING: --with-blas specifically disables library but --with-blas-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-blas-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-blas-library ignored" >&2;}
+                   use_blas=no
+                else
+                   # --with-blas-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-library asking to use blas but --with-blas disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test with_blas_include != no && test $with_blas_include != notset )
+             then
+                if ( test with_blas_include = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas specifically disables library but --with-blas-include" >&5
+$as_echo "$as_me: WARNING: --with-blas specifically disables library but --with-blas-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-blas-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-blas-include ignored" >&2;}
+                   use_blas=no
+                else
+                   # --with-blas-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-include asking to use blas but --with-blas disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-blas != no
+
+             if ( test $with_blas = check )
+             then
+                if ( test $with_blas_pkgconf != no && test $with_blas_pkgconf != notset )
+                then
+                   # --with-blas-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for blas via pkg-config but --with-blas is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for blas via pkg-config but --with-blas is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-blas ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-blas ignored." >&2;}
+                   use_blas=yes
+                fi
+
+                if ( test with_blas_library != check && test $with_blas_library != notset )
+                then
+                   if ( test with_blas_library = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for blas via --with-blas but --with-blas-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for blas via --with-blas but --with-blas-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-blas ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-blas ignored." >&2;}
+                      use_blas=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for blas via --with-blas-library but --with-blas" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for blas via --with-blas-library but --with-blas" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-blas ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-blas ignored." >&2;}
+                      use_blas=yes
+                   fi
+                fi
+
+                if ( test with_blas_include != check && test $with_blas_include != notset )
+                then
+                   if ( test with_blas_include = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for blas via --with-blas but --with-blas-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for blas via --with-blas but --with-blas-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-blas ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-blas ignored." >&2;}
+                      use_blas=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for blas via --with-blas-include but --with-blas" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for blas via --with-blas-include but --with-blas" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-blas ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-blas ignored." >&2;}
+                      use_blas=yes
+                   fi
+                fi
+
+             else
+                # --with-blas != no && != check
+                if ( test $with_blas != notset )
+                then
+                   # --with-blas = path or yes
+
+                   # We need not check --with-blas-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test $with_blas_library = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-library disabling blas but --with-blas enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_blas_library = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling blas via --with-blas but --with-blas-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling blas via --with-blas but --with-blas-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-blas-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-blas-include ignored." >&2;}
+                         use_blas=no
+                      fi
+                   fi
+
+                   if ( test $with_blas_include = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-include disabling blas but --with-blas enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_blas_include = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling blas via --with-blas but --with-blas-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling blas via --with-blas but --with-blas-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-blas-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-blas-include ignored." >&2;}
+                         use_blas=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-blas-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_blas_pkgconf != notset && test $with_blas_pkgconf != no )
+          then
+             # --with-blas-pkgconf = path (cannot be yes or check)
+             if ( test $with_blas_library = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library asking to check for blas but --with-blas-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-blas-library asking to check for blas but --with-blas-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-blas-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-blas-library ignored." >&2;}
+                use_blas=yes
+             else
+                if ( test $with_blas_library != no && test $with_blas_library != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-library enabling compile check for blas but --with-blas-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test $with_blas_include = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-include asking to check for blas but --with-blas-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-blas-include asking to check for blas but --with-blas-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-blas-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-blas-include ignored." >&2;}
+                use_blas=yes
+             else
+                if ( test $with_blas_include != no && test $with_blas_include != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-include enabling compile check for blas but --with-blas-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test $with_blas_library = no )
+          then
+             if ( test $with_blas_include != no && test $with_blas_include != notset )
+             then
+                if ( test $with_blas_include = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-include asking to check for blas but --with-blas-library has" >&5
+$as_echo "$as_me: WARNING: --with-blas-include asking to check for blas but --with-blas-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-blas-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-blas-include ignored." >&2;}
+                   use_blas=no
+                else
+                   # --with-blas-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-include enabling blas but --with-blas-library disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-blas-library != no
+             if ( test $with_blas_library = check )
+             then
+                if ( test $with_blas_include = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library asking to check for blas but --with-blas-include has" >&5
+$as_echo "$as_me: WARNING: --with-blas-library asking to check for blas but --with-blas-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-blas-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-blas-library ignored." >&2;}
+                   use_blas=no
+                else
+                   if ( test $with_blas_include != check && test $with_blas_include != notset )
+                   then
+                      # --with-blas-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library asking to check for blas but --with-blas-include has" >&5
+$as_echo "$as_me: WARNING: --with-blas-library asking to check for blas but --with-blas-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-blas-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-blas-library ignored." >&2;}
+                      use_blas=yes
+                   fi
+                fi
+             else
+                if ( test $with_blas_library != notset )
+                then
+                   # --with-blas-library a path or yes
+                   if ( test $with_blas_include = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-blas-library enabling blas but --with-blas-include disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_blas_include = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-include asking to check for blas but --with-blas-library has" >&5
+$as_echo "$as_me: WARNING: --with-blas-include asking to check for blas but --with-blas-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-blas-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-blas-include ignored." >&2;}
+                         use_blas=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-blas to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_blas != notset && test $with_blas != no && test $with_blas != check && test $with_blas != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_blas )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_blas
+                trace 3 with-blas provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_blas ||
+$as_expr X$with_blas : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_blas : 'X\(//\)[^/]' \| \
+	 X$with_blas : 'X\(//\)$' \| \
+	 X$with_blas : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_blas |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_blas" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_blas`
+                   if ( test X$with_blas = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-blas provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-blas, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-blas, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-blas=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-blas, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-blas, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_blas != Xno )
+          then
+             if ( test $with_blas_pkgconf = no ||  test $with_blas_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-blas-library is a path
+                if ( test $with_blas_library != notset && test $with_blas_library != no && test $with_blas_library != check && test $with_blas_library != yes )
+                then
+                   # we have a path to use
+                   if ( test -d $with_blas_library )
+                   then
+                      trace 3 Using --with-blas-library to set library path for blas [$with_blas_library]
+                      with_blas_libpath=$with_blas_library
+                      if ( test X$fallback_path != X && test X$fallback_path != X$with_blas_libpath )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library and --with-blas specify different paths, --with-blas ignored" >&5
+$as_echo "$as_me: WARNING: --with-blas-library and --with-blas specify different paths, --with-blas ignored" >&2;}
+                      fi
+                      if ( test X$fallback_file != X )
+                      then
+                         trace 3 Using file component of --with-blas to set library name for blas [$fallback_file]
+                         with_blas_lnklibs=$fallback_file
+                      else
+                         trace 3 Using default library name for blas [-lblas]
+                         with_blas_lnklibs=-lblas
+                      fi
+                   else
+                      # Path is not to a directory, is it directory/file?
+                      path=`$as_dirname -- $with_blas_library ||
+$as_expr X$with_blas_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_blas_library : 'X\(//\)[^/]' \| \
+	 X$with_blas_library : 'X\(//\)$' \| \
+	 X$with_blas_library : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_blas_library |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                      if ( test X$path != X && test $path != . )
+                      then
+                         # --with-blas-library=/something/file
+                         # does the /something point to a directory?
+                         if ( test -d $path  )
+                         then
+                            # We have directory/presumed-library-name
+                            # Find candidate library name
+                            file=`$EXPR "//$with_blas_library" : '.*/\([^/]*\)'`
+                            if ( test X$with_blas_library = X$path/$file )
+                            then
+                               # Parameter is a file path
+                               # Does it have a '.a' extension
+                               lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                               if ( test X$lib != X  )
+                               then
+                                  lib='-l'`echo $lib | $SED 's/^lib//'`
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-blas_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-blas_library pointing to a .a" >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
+                               else
+                                  # Does it have a '.so' extension
+                                  lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                  if ( test X$lib != X )
+                                  then
+                                     lib='-l'`echo $lib | $SED 's/^lib//'`
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-blas_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-blas_library pointing to" >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
+                                  else
+                                     # Parameter is path and name fragment
+                                     lib='-l'`echo $file | $SED 's/^lib//'`
+                                     trace 3 $with_blas_library asks to use $lib and LDFLAGS=$path
+                                  fi
+                               fi
+                               with_blas_libpath=$path
+                               with_blas_lnklibs=$lib
+                               use_blas=yes
+                               if ( test X$fallback_path != X && test X$fallback_path != X$with_blas_libpath )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library and --with-blas specify different paths, --with-blas ignored" >&5
+$as_echo "$as_me: WARNING: --with-blas-library and --with-blas specify different paths, --with-blas ignored" >&2;}
+                               fi
+                               if ( test X$fallback_file != X && test X$fallback_file != X$with_blas_lnklibs )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library and --with-blas specify different library names, --with-blas ignored" >&5
+$as_echo "$as_me: WARNING: --with-blas-library and --with-blas specify different library names, --with-blas ignored" >&2;}
+                               fi
+                            else
+                               # Somehow dirname($x)/basename($x) != $x
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-blas-library, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-blas-library, parameter ignored" >&2;}
+                               if ( test X$fallback_path != X )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-blas value for library path [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-blas value for library path [$fallback_path]" >&2;}
+                                  with_blas_libpath=$fallback_path
+                               else
+                                  with_blas_libpath=""
+                               fi
+                               if ( test X$fallback_file != X )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-blas value for library name [$fallback_file]" >&5
+$as_echo "$as_me: WARNING: Will use --with-blas value for library name [$fallback_file]" >&2;}
+                                  with_blas_lnklibs=$fallback_file
+                               else
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default for library name [-lblas]" >&5
+$as_echo "$as_me: WARNING: Will use default for library name [-lblas]" >&2;}
+                                  with_blas_lnklibs=-lblas
+                               fi
+                               use_blas=yes
+                            fi
+                         else
+                            # --with-blas-library=/not-a-dir-path/something
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-blas-library, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-blas-library, parameter ignored" >&2;}
+                            if ( test X$fallback_path != X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-blas value for library path [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-blas value for library path [$fallback_path]" >&2;}
+                               with_blas_libpath=$fallback_path
+                            else
+                               with_blas_libpath=""
+                            fi
+                            if ( test X$fallback_file != X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-blas value for library name [$fallback_file]" >&5
+$as_echo "$as_me: WARNING: Will use --with-blas value for library name [$fallback_file]" >&2;}
+                               with_blas_lnklibs=$fallback_file
+                            else
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default for library name [-lblas]" >&5
+$as_echo "$as_me: WARNING: Will use default for library name [-lblas]" >&2;}
+                               with_blas_lnklibs=-lblas
+                            fi
+                            use_blas=yes
+                         fi
+                      else
+                         # --with-blas-library=something - assume library name
+                         if ( test X$fallback_path != X )
+                         then
+                            trace 3 No path specified by --with-blas-library, using --with-blas value [$fallback_path]
+                            with_blas_libpath=$fallback_path
+                         else
+                            with_blas_libpath=""
+                         fi
+                         with_blas_lnklibs=$with_blas_library
+                         if ( test X$fallback_file != X && test X$fallback_file != X$with_blas_lnklibs )
+                         then
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-library and --with-blas specify different library names, --with-blas ignored" >&5
+$as_echo "$as_me: WARNING: --with-blas-library and --with-blas specify different library names, --with-blas ignored" >&2;}
+                         fi
+                         use_blas=yes
+                      fi
+                   fi
+                else
+                   # --with-blas-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-blas-library, using --with-blas value [$fallback_path]
+                      with_blas_libpath=$fallback_path
+                      use_blas=yes
+                   else
+                      with_blas_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                      trace 3 No library name specified by --with-blas-library, using --with-blas value [$fallback_file]
+                      with_blas_lnklibs=$fallback_file
+                      use_blas=yes
+                   else
+                      trace 3 No library name specified by --with-blas-library, using default [-lblas]
+                      with_blas_lnklibs=-lblas
+                   fi
+                fi
+
+                # Check if --with-blas-include is a path
+                if ( test $with_blas_include != notset && test $with_blas_include != no && test $with_blas_include != check && test $with_blas_include != yes )
+                then
+                   # we have a path to use
+                   if ( test -d $with_blas_include )
+                   then
+                      trace 3 Using --with-blas-include to set include path for blas [$with_blas_include]
+                      with_blas_inc=$with_blas_include
+                      if ( test X$fallback_path != X && test X$fallback_path != X$with_blas_inc )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-blas-include and --with-blas specify different paths, --with-blas ignored" >&5
+$as_echo "$as_me: WARNING: --with-blas-include and --with-blas specify different paths, --with-blas ignored" >&2;}
+                      fi
+                      use_blas=yes
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-blas-include, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-blas-include, parameter ignored" >&2;}
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-blas value [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-blas value [$fallback_path]" >&2;}
+                         with_blas_inc=$fallback_path
+                         use_blas=yes
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_blas_inc=""
+                      fi
+                   fi
+                else
+                   # No path from --with-blas-include; use fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-blas-include, using --with-blas value [$fallback_path]
+                      with_blas_inc=$fallback_path
+                      use_blas=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_blas_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_blas_pkgconf = no || notset
+          else
+             trace 4 Library blas disabled
+          fi
+
+          KnownLibs=$KnownLibs" "blas
+          if ( test X$use_blas = X )
+          then
+             use_blas=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "blas
+          fi
+
+          with_blas_fn=$sgemm
+          with_blas_prq=""
+          with_blas_hdr=""
+          with_blas_virtual="no"
+
+
+
+
+
 
 # Check whether --with-LibJasper-pkgconf was given.
 if test "${with_LibJasper_pkgconf+set}" = set; then :
@@ -10536,6 +12131,719 @@ $as_echo "$as_me: WARNING: Will use default system include path" >&2;}
 
 
 
+
+ac_ext=f
+ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_f77_compiler_gnu
+case $ac_cv_f77_mangling in
+  upper*) ac_val="DGETRI" ;;
+  lower*) ac_val="dgetri" ;;
+  *)      ac_val="unknown" ;;
+esac
+case $ac_cv_f77_mangling in *," underscore"*) ac_val="$ac_val"_ ;; esac
+
+dgetri="$ac_val"
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+# Check whether --with-LAPACK-pkgconf was given.
+if test "${with_LAPACK_pkgconf+set}" = set; then :
+  withval=$with_LAPACK_pkgconf; case $with_LAPACK_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_LAPACK_pkgconf=no
+                                          trace 4 --with-LAPACK-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure LAPACK via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+                                          ;;
+                        * )               use_LAPACK=yes
+                                          trace 4 --with-LAPACK-pkgconf set to [$with_LAPACK_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-LAPACK-pkgconf specified
+                       with_LAPACK_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-LAPACK was given.
+if test "${with_LAPACK+set}" = set; then :
+  withval=$with_LAPACK; case $with_LAPACK in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_LAPACK=no
+                                          with_LAPACK=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_LAPACK=yes
+                                          with_LAPACK=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_LAPACK=check
+                                          with_LAPACK=check
+                                          ;;
+                        * )               use_LAPACK=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-LAPACK specified
+                       with_LAPACK=notset
+
+
+fi
+
+
+# Check whether --with-LAPACK-library was given.
+if test "${with_LAPACK_library+set}" = set; then :
+  withval=$with_LAPACK_library; case $with_LAPACK-library in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_LAPACK=no
+                                          with_LAPACK_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_LAPACK=yes
+                                          with_LAPACK_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_LAPACK=check
+                                          with_LAPACK_library=check
+                                          ;;
+                        * )               use_LAPACK=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-LAPACK-library specified
+                       with_LAPACK_library=notset
+
+
+fi
+
+
+# Check whether --with-LAPACK-include was given.
+if test "${with_LAPACK_include+set}" = set; then :
+  withval=$with_LAPACK_include; case $with_LAPACK-include in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_LAPACK=no
+                                          with_LAPACK_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_LAPACK=yes
+                                          with_LAPACK_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_LAPACK=check
+                                          with_LAPACK_include=check
+                                          ;;
+                        * )               use_LAPACK=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-LAPACK-include specified
+                       with_LAPACK_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-LAPACK compatability with the rest
+          if ( test $with_LAPACK = no )
+          then
+             if ( test $with_LAPACK_pkgconf != no && test $with_LAPACK_pkgconf != notset )
+             then
+                # --with-LAPACK-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to LAPACK via pkg-config but --with-LAPACK disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+
+             if ( test with_LAPACK_library != no && test $with_LAPACK_library != notset )
+             then
+                if ( test with_LAPACK_library = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK specifically disables library but --with-LAPACK-library" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK specifically disables library but --with-LAPACK-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-LAPACK-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-LAPACK-library ignored" >&2;}
+                   use_LAPACK=no
+                else
+                   # --with-LAPACK-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-library asking to use LAPACK but --with-LAPACK disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test with_LAPACK_include != no && test $with_LAPACK_include != notset )
+             then
+                if ( test with_LAPACK_include = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK specifically disables library but --with-LAPACK-include" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK specifically disables library but --with-LAPACK-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-LAPACK-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-LAPACK-include ignored" >&2;}
+                   use_LAPACK=no
+                else
+                   # --with-LAPACK-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-include asking to use LAPACK but --with-LAPACK disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-LAPACK != no
+
+             if ( test $with_LAPACK = check )
+             then
+                if ( test $with_LAPACK_pkgconf != no && test $with_LAPACK_pkgconf != notset )
+                then
+                   # --with-LAPACK-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for LAPACK via pkg-config but --with-LAPACK is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for LAPACK via pkg-config but --with-LAPACK is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-LAPACK ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-LAPACK ignored." >&2;}
+                   use_LAPACK=yes
+                fi
+
+                if ( test with_LAPACK_library != check && test $with_LAPACK_library != notset )
+                then
+                   if ( test with_LAPACK_library = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for LAPACK via --with-LAPACK but --with-LAPACK-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for LAPACK via --with-LAPACK but --with-LAPACK-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-LAPACK ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-LAPACK ignored." >&2;}
+                      use_LAPACK=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for LAPACK via --with-LAPACK-library but --with-LAPACK" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for LAPACK via --with-LAPACK-library but --with-LAPACK" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-LAPACK ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-LAPACK ignored." >&2;}
+                      use_LAPACK=yes
+                   fi
+                fi
+
+                if ( test with_LAPACK_include != check && test $with_LAPACK_include != notset )
+                then
+                   if ( test with_LAPACK_include = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for LAPACK via --with-LAPACK but --with-LAPACK-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for LAPACK via --with-LAPACK but --with-LAPACK-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-LAPACK ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-LAPACK ignored." >&2;}
+                      use_LAPACK=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for LAPACK via --with-LAPACK-include but --with-LAPACK" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for LAPACK via --with-LAPACK-include but --with-LAPACK" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-LAPACK ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-LAPACK ignored." >&2;}
+                      use_LAPACK=yes
+                   fi
+                fi
+
+             else
+                # --with-LAPACK != no && != check
+                if ( test $with_LAPACK != notset )
+                then
+                   # --with-LAPACK = path or yes
+
+                   # We need not check --with-LAPACK-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test $with_LAPACK_library = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-library disabling LAPACK but --with-LAPACK enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_LAPACK_library = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling LAPACK via --with-LAPACK but --with-LAPACK-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling LAPACK via --with-LAPACK but --with-LAPACK-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-LAPACK-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-LAPACK-include ignored." >&2;}
+                         use_LAPACK=no
+                      fi
+                   fi
+
+                   if ( test $with_LAPACK_include = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-include disabling LAPACK but --with-LAPACK enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_LAPACK_include = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling LAPACK via --with-LAPACK but --with-LAPACK-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling LAPACK via --with-LAPACK but --with-LAPACK-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-LAPACK-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-LAPACK-include ignored." >&2;}
+                         use_LAPACK=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-LAPACK-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_LAPACK_pkgconf != notset && test $with_LAPACK_pkgconf != no )
+          then
+             # --with-LAPACK-pkgconf = path (cannot be yes or check)
+             if ( test $with_LAPACK_library = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library asking to check for LAPACK but --with-LAPACK-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library asking to check for LAPACK but --with-LAPACK-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-LAPACK-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-LAPACK-library ignored." >&2;}
+                use_LAPACK=yes
+             else
+                if ( test $with_LAPACK_library != no && test $with_LAPACK_library != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-library enabling compile check for LAPACK but --with-LAPACK-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test $with_LAPACK_include = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-include asking to check for LAPACK but --with-LAPACK-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-include asking to check for LAPACK but --with-LAPACK-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-LAPACK-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-LAPACK-include ignored." >&2;}
+                use_LAPACK=yes
+             else
+                if ( test $with_LAPACK_include != no && test $with_LAPACK_include != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-include enabling compile check for LAPACK but --with-LAPACK-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test $with_LAPACK_library = no )
+          then
+             if ( test $with_LAPACK_include != no && test $with_LAPACK_include != notset )
+             then
+                if ( test $with_LAPACK_include = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-include asking to check for LAPACK but --with-LAPACK-library has" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-include asking to check for LAPACK but --with-LAPACK-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-LAPACK-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-LAPACK-include ignored." >&2;}
+                   use_LAPACK=no
+                else
+                   # --with-LAPACK-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-include enabling LAPACK but --with-LAPACK-library disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-LAPACK-library != no
+             if ( test $with_LAPACK_library = check )
+             then
+                if ( test $with_LAPACK_include = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library asking to check for LAPACK but --with-LAPACK-include has" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library asking to check for LAPACK but --with-LAPACK-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-LAPACK-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-LAPACK-library ignored." >&2;}
+                   use_LAPACK=no
+                else
+                   if ( test $with_LAPACK_include != check && test $with_LAPACK_include != notset )
+                   then
+                      # --with-LAPACK-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library asking to check for LAPACK but --with-LAPACK-include has" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library asking to check for LAPACK but --with-LAPACK-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-LAPACK-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-LAPACK-library ignored." >&2;}
+                      use_LAPACK=yes
+                   fi
+                fi
+             else
+                if ( test $with_LAPACK_library != notset )
+                then
+                   # --with-LAPACK-library a path or yes
+                   if ( test $with_LAPACK_include = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-LAPACK-library enabling LAPACK but --with-LAPACK-include disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_LAPACK_include = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-include asking to check for LAPACK but --with-LAPACK-library has" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-include asking to check for LAPACK but --with-LAPACK-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-LAPACK-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-LAPACK-include ignored." >&2;}
+                         use_LAPACK=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-LAPACK to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_LAPACK != notset && test $with_LAPACK != no && test $with_LAPACK != check && test $with_LAPACK != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_LAPACK )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_LAPACK
+                trace 3 with-LAPACK provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_LAPACK ||
+$as_expr X$with_LAPACK : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_LAPACK : 'X\(//\)[^/]' \| \
+	 X$with_LAPACK : 'X\(//\)$' \| \
+	 X$with_LAPACK : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_LAPACK |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_LAPACK" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_LAPACK`
+                   if ( test X$with_LAPACK = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-LAPACK provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-LAPACK, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-LAPACK, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-LAPACK=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-LAPACK, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-LAPACK, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_LAPACK != Xno )
+          then
+             if ( test $with_LAPACK_pkgconf = no ||  test $with_LAPACK_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-LAPACK-library is a path
+                if ( test $with_LAPACK_library != notset && test $with_LAPACK_library != no && test $with_LAPACK_library != check && test $with_LAPACK_library != yes )
+                then
+                   # we have a path to use
+                   if ( test -d $with_LAPACK_library )
+                   then
+                      trace 3 Using --with-LAPACK-library to set library path for LAPACK [$with_LAPACK_library]
+                      with_LAPACK_libpath=$with_LAPACK_library
+                      if ( test X$fallback_path != X && test X$fallback_path != X$with_LAPACK_libpath )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library and --with-LAPACK specify different paths, --with-LAPACK ignored" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library and --with-LAPACK specify different paths, --with-LAPACK ignored" >&2;}
+                      fi
+                      if ( test X$fallback_file != X )
+                      then
+                         trace 3 Using file component of --with-LAPACK to set library name for LAPACK [$fallback_file]
+                         with_LAPACK_lnklibs=$fallback_file
+                      else
+                         trace 3 Using default library name for LAPACK [-llapack]
+                         with_LAPACK_lnklibs=-llapack
+                      fi
+                   else
+                      # Path is not to a directory, is it directory/file?
+                      path=`$as_dirname -- $with_LAPACK_library ||
+$as_expr X$with_LAPACK_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_LAPACK_library : 'X\(//\)[^/]' \| \
+	 X$with_LAPACK_library : 'X\(//\)$' \| \
+	 X$with_LAPACK_library : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_LAPACK_library |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                      if ( test X$path != X && test $path != . )
+                      then
+                         # --with-LAPACK-library=/something/file
+                         # does the /something point to a directory?
+                         if ( test -d $path  )
+                         then
+                            # We have directory/presumed-library-name
+                            # Find candidate library name
+                            file=`$EXPR "//$with_LAPACK_library" : '.*/\([^/]*\)'`
+                            if ( test X$with_LAPACK_library = X$path/$file )
+                            then
+                               # Parameter is a file path
+                               # Does it have a '.a' extension
+                               lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                               if ( test X$lib != X  )
+                               then
+                                  lib='-l'`echo $lib | $SED 's/^lib//'`
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LAPACK_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-LAPACK_library pointing to a .a" >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
+                               else
+                                  # Does it have a '.so' extension
+                                  lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                  if ( test X$lib != X )
+                                  then
+                                     lib='-l'`echo $lib | $SED 's/^lib//'`
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-LAPACK_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-LAPACK_library pointing to" >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
+                                  else
+                                     # Parameter is path and name fragment
+                                     lib='-l'`echo $file | $SED 's/^lib//'`
+                                     trace 3 $with_LAPACK_library asks to use $lib and LDFLAGS=$path
+                                  fi
+                               fi
+                               with_LAPACK_libpath=$path
+                               with_LAPACK_lnklibs=$lib
+                               use_LAPACK=yes
+                               if ( test X$fallback_path != X && test X$fallback_path != X$with_LAPACK_libpath )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library and --with-LAPACK specify different paths, --with-LAPACK ignored" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library and --with-LAPACK specify different paths, --with-LAPACK ignored" >&2;}
+                               fi
+                               if ( test X$fallback_file != X && test X$fallback_file != X$with_LAPACK_lnklibs )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library and --with-LAPACK specify different library names, --with-LAPACK ignored" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library and --with-LAPACK specify different library names, --with-LAPACK ignored" >&2;}
+                               fi
+                            else
+                               # Somehow dirname($x)/basename($x) != $x
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-LAPACK-library, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-LAPACK-library, parameter ignored" >&2;}
+                               if ( test X$fallback_path != X )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-LAPACK value for library path [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-LAPACK value for library path [$fallback_path]" >&2;}
+                                  with_LAPACK_libpath=$fallback_path
+                               else
+                                  with_LAPACK_libpath=""
+                               fi
+                               if ( test X$fallback_file != X )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-LAPACK value for library name [$fallback_file]" >&5
+$as_echo "$as_me: WARNING: Will use --with-LAPACK value for library name [$fallback_file]" >&2;}
+                                  with_LAPACK_lnklibs=$fallback_file
+                               else
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default for library name [-llapack]" >&5
+$as_echo "$as_me: WARNING: Will use default for library name [-llapack]" >&2;}
+                                  with_LAPACK_lnklibs=-llapack
+                               fi
+                               use_LAPACK=yes
+                            fi
+                         else
+                            # --with-LAPACK-library=/not-a-dir-path/something
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-LAPACK-library, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-LAPACK-library, parameter ignored" >&2;}
+                            if ( test X$fallback_path != X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-LAPACK value for library path [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-LAPACK value for library path [$fallback_path]" >&2;}
+                               with_LAPACK_libpath=$fallback_path
+                            else
+                               with_LAPACK_libpath=""
+                            fi
+                            if ( test X$fallback_file != X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-LAPACK value for library name [$fallback_file]" >&5
+$as_echo "$as_me: WARNING: Will use --with-LAPACK value for library name [$fallback_file]" >&2;}
+                               with_LAPACK_lnklibs=$fallback_file
+                            else
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default for library name [-llapack]" >&5
+$as_echo "$as_me: WARNING: Will use default for library name [-llapack]" >&2;}
+                               with_LAPACK_lnklibs=-llapack
+                            fi
+                            use_LAPACK=yes
+                         fi
+                      else
+                         # --with-LAPACK-library=something - assume library name
+                         if ( test X$fallback_path != X )
+                         then
+                            trace 3 No path specified by --with-LAPACK-library, using --with-LAPACK value [$fallback_path]
+                            with_LAPACK_libpath=$fallback_path
+                         else
+                            with_LAPACK_libpath=""
+                         fi
+                         with_LAPACK_lnklibs=$with_LAPACK_library
+                         if ( test X$fallback_file != X && test X$fallback_file != X$with_LAPACK_lnklibs )
+                         then
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-library and --with-LAPACK specify different library names, --with-LAPACK ignored" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-library and --with-LAPACK specify different library names, --with-LAPACK ignored" >&2;}
+                         fi
+                         use_LAPACK=yes
+                      fi
+                   fi
+                else
+                   # --with-LAPACK-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-LAPACK-library, using --with-LAPACK value [$fallback_path]
+                      with_LAPACK_libpath=$fallback_path
+                      use_LAPACK=yes
+                   else
+                      with_LAPACK_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                      trace 3 No library name specified by --with-LAPACK-library, using --with-LAPACK value [$fallback_file]
+                      with_LAPACK_lnklibs=$fallback_file
+                      use_LAPACK=yes
+                   else
+                      trace 3 No library name specified by --with-LAPACK-library, using default [-llapack]
+                      with_LAPACK_lnklibs=-llapack
+                   fi
+                fi
+
+                # Check if --with-LAPACK-include is a path
+                if ( test $with_LAPACK_include != notset && test $with_LAPACK_include != no && test $with_LAPACK_include != check && test $with_LAPACK_include != yes )
+                then
+                   # we have a path to use
+                   if ( test -d $with_LAPACK_include )
+                   then
+                      trace 3 Using --with-LAPACK-include to set include path for LAPACK [$with_LAPACK_include]
+                      with_LAPACK_inc=$with_LAPACK_include
+                      if ( test X$fallback_path != X && test X$fallback_path != X$with_LAPACK_inc )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-LAPACK-include and --with-LAPACK specify different paths, --with-LAPACK ignored" >&5
+$as_echo "$as_me: WARNING: --with-LAPACK-include and --with-LAPACK specify different paths, --with-LAPACK ignored" >&2;}
+                      fi
+                      use_LAPACK=yes
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-LAPACK-include, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-LAPACK-include, parameter ignored" >&2;}
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-LAPACK value [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-LAPACK value [$fallback_path]" >&2;}
+                         with_LAPACK_inc=$fallback_path
+                         use_LAPACK=yes
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_LAPACK_inc=""
+                      fi
+                   fi
+                else
+                   # No path from --with-LAPACK-include; use fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-LAPACK-include, using --with-LAPACK value [$fallback_path]
+                      with_LAPACK_inc=$fallback_path
+                      use_LAPACK=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_LAPACK_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_LAPACK_pkgconf = no || notset
+          else
+             trace 4 Library LAPACK disabled
+          fi
+
+          KnownLibs=$KnownLibs" "LAPACK
+          if ( test X$use_LAPACK = X )
+          then
+             use_LAPACK=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "LAPACK
+          fi
+
+          with_LAPACK_fn=$dgetri
+          with_LAPACK_prq="blas"
+          with_LAPACK_hdr=""
+          with_LAPACK_virtual="no"
+
+
+
+
+
+LAPACK_RavlLib="RavlLapack RavlLapackWraps"
 
 
 # Check whether --with-posixThreads-pkgconf was given.
@@ -12843,9 +15151,6 @@ echo libGuppi_SUPPORT=@libGuppi_SUPPORT@ >> ./ExtPkgSupp.$$
 libmkl_SUPPORT=""
 echo libmkl_SUPPORT=@libmkl_SUPPORT@ >> ./ExtPkgSupp.$$
 
-LAPACK_SUPPORT=""
-echo LAPACK_SUPPORT=@LAPACK_SUPPORT@ >> ./ExtPkgSupp.$$
-
 MacOSXRunLoop_SUPPORT=""
 echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
 
@@ -12875,7 +15180,6 @@ echo SwigPython_SUPPORT=@SwigPython_SUPPORT@ >> ./ExtPkgSupp.$$
 
 UUIdTheo_SUPPORT=""
 echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
-
 
 
 
@@ -12959,6 +15263,14 @@ else
 #include <string.h>
 #include <float.h>
 
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
 int
 main ()
 {
@@ -13496,6 +15808,14 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 extern "C"
 #endif
 char $testwith ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
 int
 main ()
 {
@@ -13659,6 +15979,14 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 extern "C"
 #endif
 char $testwith ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
 int
 main ()
 {
@@ -13823,6 +16151,14 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 extern "C"
 #endif
 char $testwith ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
 int
 main ()
 {
@@ -14813,6 +17149,14 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 extern "C"
 #endif
 char dlopen ();
+#ifdef F77_DUMMY_MAIN
+
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+
+#endif
 int
 main ()
 {

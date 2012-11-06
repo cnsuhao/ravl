@@ -564,6 +564,18 @@ dnl    headers, provide a space seperated list.
 dnl
 dnl                 Name,          Fn,                 Deps,   -l,           .h
 dnl 
+dnl
+dnl# Define blas, but first we have to ascertain the naming convention for the
+dnl# test function (Fortran functions may be upper or lowercase, with or without
+dnl# a trailing underscore dependant on the toolset in use). We are testing for
+dnl# the sgemm/SGEMM routine, so we call the appropriate AutoTools macro which
+dnl# sets up the $sgemm variable containing the function name in the correct
+dnl# form.
+AC_F77_FUNC(sgemm)
+QM_DEFINE_EXTLIB_CC([blas],        [$sgemm],          [],     [-lblas],           [])
+dnl
+dnl                 Name,          Fn,                 Deps,   -l,           .h
+dnl 
 QM_DEFINE_EXTLIB_CC([LibJasper],   [jas_init],         [],     [-ljasper],   [jasper/jasper.h])
 LibJasper_RavlLib=libRavlImgIOJasper
 AC_SUBST([LibJasper_SUPPORT])
@@ -571,7 +583,17 @@ QM_DEFINE_EXTLIB_CC([JPEG],        [jpeg_read_header], [],     [-ljpeg],     [jp
 AC_SUBST([JPEG_SUPPORT])
 dnl# JPEG check will support either the standard or jpeg-turbo library as they
 dnl# are a straight substitution for each other
-QM_DEFINE_EXTLIB_CC([posixThreads],[pthread_self],     [],     [-lpthread], [pthread.h])
+dnl
+dnl# Define Lapack, again (as for blas, above) we first have to ascertain the
+dnl# naming convention for the Fortran test function
+AC_F77_FUNC(dgetri)
+QM_DEFINE_EXTLIB_CC([LAPACK],      [$dgetri],          [blas], [-llapack],   [])
+LAPACK_RavlLib="RavlLapack RavlLapackWraps"
+AC_SUBST([LAPACK_SUPPORT])
+dnl
+dnl                 Name,          Fn,                 Deps,   -l,           .h
+dnl 
+QM_DEFINE_EXTLIB_CC([posixThreads],[pthread_self],     [],     [-lpthread],  [pthread.h])
 AC_SUBST([posixThreads_SUPPORT])
 QM_DEFINE_EXTLIB_CC([LibTIFF],     [TIFFGetVersion],   [Zlib], [-ltiff],     [])
 AC_SUBST([LibTIFF_SUPPORT])
@@ -626,9 +648,6 @@ dnl#      libClipStationPro_RavlLib=CSPDriver
 dnl#
 dnl#  ..._EXTLIB_xC([LibGd],       [],                 [],     [-lgd],       [])
 dnl#      LibGd_RavlLib=RavlImgGd
-dnl#
-dnl#  ..._EXTLIB_xC([LAPACK],      [],                 [],     [-llapack -lblas], [])
-dnl#      LAPACK_RavlLib="RavlLapack RavlLapackWraps"
 dnl#
 dnl#  ..._EXTLIB_xC([libmcrypt],   [],                 [],     [-lmcrypt],   [])
 dnl#      libmcrypt_RavlLib=RavlCrypto
@@ -745,9 +764,6 @@ echo libGuppi_SUPPORT=@libGuppi_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libmkl_SUPPORT])
 libmkl_SUPPORT=""
 echo libmkl_SUPPORT=@libmkl_SUPPORT@ >> ./ExtPkgSupp.$$
-AC_SUBST([LAPACK_SUPPORT])
-LAPACK_SUPPORT=""
-echo LAPACK_SUPPORT=@LAPACK_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([MacOSXRunLoop_SUPPORT])
 MacOSXRunLoop_SUPPORT=""
 echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
