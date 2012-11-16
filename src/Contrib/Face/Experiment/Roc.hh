@@ -26,7 +26,6 @@
 namespace RavlN {
   namespace FaceN {
     
-    
     /////// RocBodyC ///////////////////////////////////////////
     //! userlevel=Develop
     //: A class for receiver operatign curves
@@ -117,6 +116,12 @@ namespace RavlN {
         return impostors;
       }
       //: Number of impostor attacks
+
+      RealT MaxFAScore() const;
+      //: Get the maximum score
+
+      RealT MinFRScore() const;
+      //: Get the maximum score
 
       bool IsValid() const;
       //: Is ROC valid
@@ -347,13 +352,24 @@ namespace RavlN {
       }
       //: Number of impostor attacks
 
+      RealT MaxFAScore() const {
+        return Body().MaxFAScore();
+      }
+        //: Get the maximum score
+
+      RealT MinFRScore() const {
+        return Body().MinFRScore();
+      }
+      //: Get the maximum score
+
       bool IsValid() const
       {
         return Body().IsValid();
       }
       //: Is ROC valid
 
-      bool Report(const DirectoryC & outDir) {
+      bool Report(const DirectoryC & outDir)
+      {
         return Body().Report(outDir);
       }
       //: Generate a report

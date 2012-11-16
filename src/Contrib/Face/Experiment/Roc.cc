@@ -418,7 +418,7 @@ namespace RavlN {
       while (doing) {
         //:  Impostor model
         if (highMatches) {
-          if (it.Data().Data2() >= threshold)
+          if (it.Data().Data2() > threshold)
             doing = false;
           else {
             if (it.Data().Data1())
@@ -429,7 +429,7 @@ namespace RavlN {
         }
         //: Client model
         else {
-          if (it.Data().Data2() <= threshold)
+          if (it.Data().Data2() < threshold)
             doing = false;
           else {
             if (it.Data().Data1())
@@ -632,6 +632,41 @@ namespace RavlN {
 
       return plot;
     }
+
+    /*
+     * Get the maximum score in the ROC
+     */
+    RealT RocBodyC::MaxFAScore() const {
+      if(!sorted) {
+        return -1.0;
+      }
+      for(DLIterC<ClaimT>it(claims);it;it++) {
+        if(it.Data().Data1())
+          continue;
+        return it.Data().Data2();
+      }
+      return -1.0;
+    }
+
+    /*
+     * Get the maximum score in the ROC
+     */
+    RealT RocBodyC::MinFRScore() const
+    {
+      if (!sorted) {
+        return -1.0;
+      }
+
+      DListC<ClaimT>r = claims.Copy();
+      r.Reverse();
+      for(DLIterC<ClaimT>it(r);it;it++) {
+        if(!it.Data().Data2())
+          continue;
+        return it.Data().Data2();
+      }
+      return -1.0;
+    }
+
 
     bool RocBodyC::IsValid() const
     {
