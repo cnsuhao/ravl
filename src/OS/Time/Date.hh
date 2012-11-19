@@ -43,6 +43,12 @@ namespace RavlN {
     static DateC InvalidTime();
     //: Get an invalid time.
 
+    static DateC FarPast();
+    //: Get a time far in the past.
+
+    static DateC FarFuture();
+    //: Get a time as far in the future as possible.
+
     static DateC NowUTC();
     //: Get the current time in Coordinated Universal Time  (UTC)
     

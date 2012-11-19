@@ -244,6 +244,24 @@ namespace RavlN {
     return ret;
   }
 
+  //: Get a time far in the past.
+
+  DateC DateC::FarPast() {
+    // Though we can support 64 bit numbers, quite a few of the functions
+    // may use 32 bit integers, so we'll stick with the highest possible value
+    // for them for the moment.
+    return DateC((SecondT) -2147483646,0);
+  }
+
+  //: Get a time as far in the future as possible.
+
+  DateC DateC::FarFuture() {
+    // Though we can support 64 bit numbers, quite a few of the functions
+    // may use 32 bit integers, so we'll stick with the highest possible value
+    // for them for the moment.
+    return DateC((SecondT) 2147483647,0);
+  }
+
   //: Get the current time in Coordinated Universal Time  (UTC)
   
   DateC DateC::NowUTC() {
