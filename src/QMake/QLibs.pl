@@ -335,6 +335,7 @@ sub findindefs {
   $filename = "$wd/$_[1]";
   open DEFS, $filename or die "can not open: $_[0]/$_[1]";
   local @defs = <DEFS>;
+  local @elements;
   close DEFS;
   chomp @defs;
 
@@ -345,14 +346,14 @@ sub findindefs {
 
   for $line (@defs) {
 
-    split (" ", $line);
-    if($_[0] =~ s/\A$FIND//g) {
+    @elements = split (" ", $line);
+    if($elements[0] =~ s/\A$FIND//g) {
       $read=1;
     }
 
     if($read==1) {
 
-      $files = join(" ", @_);
+      $files = join(" ", @elements);
       $files =~ s/=//g; # get rid of annoying equals
       $files =~ s/$c//g; # get rid of annoying \ at end of lines
       @file = split(' ', $files);
