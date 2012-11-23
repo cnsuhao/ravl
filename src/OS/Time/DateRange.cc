@@ -15,6 +15,7 @@
 #include "Ravl/OS/DateRange.hh"
 #include "Ravl/String.hh"
 #include "Ravl/StrStream.hh"
+#include "Ravl/BinStream.hh"
 
 namespace RavlN {
   
