@@ -1,3 +1,3 @@
 
-#include "../.././CompVision/ActiveAppearanceModels/AAMViewLib.hh"
+#include "../.././CompVision/ActiveAppearanceModelsGUI/AAMViewLib.hh"
 
