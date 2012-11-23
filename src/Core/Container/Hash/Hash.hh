@@ -318,11 +318,13 @@ namespace RavlN {
     // Ptr == NULL, if matching key not found.
     
     const T &First() const;
-    //: Find an arbitrary data value in the hash table.  Note: This is not random, but which element is return is undefined
+    //: Find an arbitrary data value in the hash table.
+    //: Note: The name 'First' is for compatibility with other containers, which element is return is undefined
     //: The table must not be empty.
 
     const K &FirstKey() const;
-    //: Find an arbitrary key value in the hash table.  Note: This is not random, but which element is return is undefined
+    //: Find an arbitrary key value in the hash table.
+    //: Note: The name 'First' is for compatibility with other containers, which element is return is undefined
     //: The table must not be empty.
 protected:
     inline T &Add(const K &Key,const T &Data);
