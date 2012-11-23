@@ -424,9 +424,9 @@ namespace RavlN {
 
   //: Generate date from odbc string.
   
-  DateC DateC::FromODBCString(const StringC &dateStr) {
+  DateC DateC::FromODBCString(const StringC &dateStr, bool isLocalTimeZone) {
     DateC ret;
-    ret.SetODBC(dateStr);
+    ret.SetODBC(dateStr, isLocalTimeZone);
     return ret;
   }
   
@@ -434,7 +434,7 @@ namespace RavlN {
   // Returns true if conversion succesfull, false
   // if string is not recognised.
   
-  bool DateC::SetODBC(const StringC &odbcStr) {
+  bool DateC::SetODBC(const StringC &odbcStr, bool isLocalTimeZone) {
    
     // Empty field ?
     
@@ -479,7 +479,7 @@ namespace RavlN {
     year = atoi(ptr);
     
     // Create date structure
-    *this = DateC(year, month, day, hour, minute, seconds,usecPart,false);
+    *this = DateC(year, month, day, hour, minute, seconds, usecPart, isLocalTimeZone);
     
     return true;
   }
