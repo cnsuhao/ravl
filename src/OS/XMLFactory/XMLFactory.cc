@@ -220,7 +220,7 @@ namespace RavlN {;
     }
     
     if(!child->Component().IsValid()) {
-      RavlDebug("No component at the leaf of path '%s' from '%s'",name.chars(),Path().chars());
+      ONDEBUG(RavlDebug("No component at the leaf of path '%s' from '%s'",name.chars(),Path().chars()));
       return false;
     }
     

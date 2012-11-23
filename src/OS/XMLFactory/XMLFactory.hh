@@ -48,6 +48,11 @@ namespace RavlN {
     XMLFACTORY_SEARCH_LOCAL_ONLY
   };
 
+  enum XMLFactoryCreateModeT
+  { XMLFACTORY_CREATE_DEFAULT,
+    XMLFACTORY_CREATE_NO_REGISTERATION
+  };
+
   //! uselevel=Develop
   //: Node in the build tree.
 
@@ -461,7 +466,9 @@ namespace RavlN {
 
     
     template<class DataT>
-    bool CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages = false) const;
+    bool CreateComponent(const StringC &name,DataT &data,
+                         bool suppressErrorMessages = false,
+                         XMLFactoryCreateModeT createMode = XMLFACTORY_CREATE_DEFAULT) const;
     //: Create a new instance of the named component.
 
     template<class DataT>
@@ -684,7 +691,8 @@ namespace RavlN {
     bool CreateComponent(const XMLFactoryContextC& currentContext,
                          const StringC &name,
                          DataT &data,
-                         bool suppressErrors = false
+                         bool suppressErrors = false,
+                         XMLFactoryCreateModeT createMode = XMLFACTORY_CREATE_DEFAULT
                          )
     {
       RCWrapC<DataT> handle;
@@ -711,7 +719,8 @@ namespace RavlN {
       }
 
       // Store ready for reuse.
-      const_cast<XMLFactoryNodeC &>(currentContext.INode()).AddChild(redirect,newNode.INode());
+      if(createMode != XMLFACTORY_CREATE_NO_REGISTERATION)
+        const_cast<XMLFactoryNodeC &>(currentContext.INode()).AddChild(redirect,newNode.INode());
       return true;
     }
     //: Create named component, even if it exists already.
@@ -938,8 +947,10 @@ namespace RavlN {
 
 
   template<class DataT>
-  bool XMLFactoryContextC::CreateComponent(const StringC &name,DataT &data,bool suppressErrorMessages) const
-  { return Factory().CreateComponent(*this,name,data,suppressErrorMessages); }
+  bool XMLFactoryContextC::CreateComponent(const StringC &name,DataT &data,
+                                           bool suppressErrorMessages,
+                                           XMLFactoryCreateModeT createMode) const
+  { return Factory().CreateComponent(*this,name,data,suppressErrorMessages,createMode); }
   //: Create named component.
 
   template<class DataT>
