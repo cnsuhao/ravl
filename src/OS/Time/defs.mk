@@ -11,9 +11,9 @@ PACKAGE=Ravl/OS
 
 ANSIFLAG=
 
-HEADERS=Date.hh DeadLineTimer.hh
+HEADERS=Date.hh DeadLineTimer.hh DateRange.hh
 
-SOURCES=Date.cc DateIO.cc DeadLineTimer.cc 
+SOURCES=Date.cc DateIO.cc DeadLineTimer.cc DateRange.cc
 
 PLIB=RavlOS
 
