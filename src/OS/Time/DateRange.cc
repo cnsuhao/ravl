@@ -16,6 +16,7 @@
 #include "Ravl/String.hh"
 #include "Ravl/StrStream.hh"
 #include "Ravl/BinStream.hh"
+#include "Ravl/SysLog.hh"
 
 namespace RavlN {
   
@@ -31,6 +32,26 @@ namespace RavlN {
     // FIXME: Check date range is valid.  Throw exception?
   }
   
+  DateRangeC::DateRangeC(DateRangeT dateRange)
+  {
+    if (dateRange == DR_TODAY) {
+      *this = Today();
+    } else if (dateRange == DR_YESTERDAY) {
+      *this = Yesterday();
+    } else if (dateRange == DR_LAST_HOUR) {
+      *this = Hours(1.);
+    } else if (dateRange == DR_LAST_24HOURS) {
+      *this = Hours(24.0);
+    } else if(dateRange == DR_LAST_SEVENDAYS) {
+      *this = Days(7.);
+    } else if (dateRange == DR_LAST_THREEANDAHALFDAYS) {
+      *this = Days(3.5);
+    } else {
+      RavlWarning("Unknown DataRangeT value, setting to today");
+      *this = Today();
+    }
+  }
+
   //: Construct from a stream
   
   DateRangeC::DateRangeC(istream &in)

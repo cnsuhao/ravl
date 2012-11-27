@@ -25,6 +25,11 @@ namespace RavlN {
   //: Simple class for storing a date range.
   // SMALL OBJECT.<br>
   
+  enum DateRangeT
+  {
+    DR_TODAY=0, DR_YESTERDAY, DR_LAST_HOUR, DR_LAST_24HOURS, DR_LAST_SEVENDAYS, DR_LAST_THREEANDAHALFDAYS
+  };
+
   class DateRangeC
   {
   public:
@@ -38,6 +43,9 @@ namespace RavlN {
     //!param: from - The from date.
     //!param: to - The to date.
     
+    DateRangeC(DateRangeT dateRange);
+    //: Construct from a pre-defined date range type
+
     DateRangeC(istream &in);
     //: Construct from a stream
     
