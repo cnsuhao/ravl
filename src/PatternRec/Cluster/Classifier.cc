@@ -51,7 +51,7 @@ namespace RavlN {
   }
   
   //: Generate a probability for each label.
-  // Note: Not all classifiers return a true probablility vector.
+  // Note: Not all classifiers return a true probability vector.
   
   VectorC ClassifierBodyC::Apply(const VectorC &data) const {
     VectorC ret(NoLabels());

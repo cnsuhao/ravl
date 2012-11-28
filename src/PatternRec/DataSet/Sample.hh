@@ -65,13 +65,13 @@ namespace RavlN {
     SampleC<DataT> CompactFrom(IndexC start,SizeT size)
     { return DArray1dC<DataT>::CompactFrom(start,size); }
     //: Get sub array from this one.
-    // The new array will be indexed from zero and continous
+    // The new array will be indexed from zero and continuous
     // This does not copy the elements, it only creates a new access to existing ones.
 
     const SampleC<DataT> CompactFrom(IndexC start,SizeT size) const
     { return const_cast<SampleC<DataT> *>(this)->DArray1dC<DataT>::CompactFrom(start,size); }
     //: Get sub array from this one.
-    // The new array will be indexed from zero and continous
+    // The new array will be indexed from zero and continuous
     // This does not copy the elements, it only creates a new access to existing ones.
 
     DataT ExtractEntry(int ind);
@@ -103,7 +103,7 @@ namespace RavlN {
     DataT PickElement(UIntT i);
     //: Pick a item i from the collection
     // Note: The order of the collection is NOT preserved.
-    // This minimizes the distruption to the underlying
+    // This minimises the disruption to the underlying
     // representation by removing an element from the end
     // of the array and placing it in the hole left by 
     // removing 'i'.
