@@ -244,7 +244,7 @@ namespace RavlN {
       if (stats.Covariance()[i][i] > 0)
         stdDev[i] = stats.Covariance()[i][i];
       else
-        stdDev[i] = stats.Mean()[i];
+        stdDev[i] = 1.0;
     }
     for (UIntT i = 0; i < d; i++)
       stdDev[i] = Sqrt(stdDev[i]);
@@ -275,7 +275,7 @@ namespace RavlN {
       if (stats.Covariance()[i][i] > 0)
         stdDev[i] = stats.Covariance()[i][i];
       else
-        stdDev[i] = stats.Mean()[i];
+        stdDev[i] = 1.0;
     }
     for (UIntT i = 0; i < d; i++)
       stdDev[i] = Sqrt(stdDev[i]);
@@ -300,7 +300,7 @@ namespace RavlN {
       if (stats.Covariance()[i][i] > 0)
         stdDev[i] = stats.Covariance()[i][i];
       else
-        stdDev[i] = stats.Mean()[i];
+        stdDev[i] = 1.0;
     }
     for (UIntT i = 0; i < d; i++)
       stdDev[i] = Sqrt(stdDev[i]);
@@ -331,7 +331,7 @@ namespace RavlN {
       if (stats.Covariance()[i][i] > 0)
         stdDev[i] = stats.Covariance()[i][i];
       else
-        stdDev[i] = stats.Mean()[i];
+        stdDev[i] = 1.0;
     }
     for (UIntT i = 0; i < d; i++)
       stdDev[i] = Sqrt(stdDev[i]);

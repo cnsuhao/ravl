@@ -140,7 +140,7 @@ namespace RavlN {
       if (stats.Covariance()[i][i] > 0)
         stdDev[i] = stats.Covariance()[i][i];
       else
-        stdDev[i] = stats.Mean()[i];
+        stdDev[i] = 1.0;
     }
 
     for (UIntT i = 0; i < d; i++)
@@ -168,7 +168,7 @@ namespace RavlN {
       if (stats.Covariance()[i][i] > 0)
         stdDev[i][i] = stats.Covariance()[i][i];
       else
-        stdDev[i][i] = stats.Mean()[i];
+        stdDev[i][i] = 1.0;
     }
     for (UIntT i = 0; i < d; i++)
       stdDev[i][i] = Sqrt(stdDev[i][i]);
