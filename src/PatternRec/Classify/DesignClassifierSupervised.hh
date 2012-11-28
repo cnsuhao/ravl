@@ -25,7 +25,7 @@
 namespace RavlN {
   
   //! userlevel=Develop
-  //: Abstract supervised classifer designer.
+  //: Abstract supervised classifier designer.
   
   class DesignClassifierSupervisedBodyC
     : public DesignFunctionSupervisedBodyC
@@ -77,7 +77,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Abstract supervised classifer designer.
+  //: Abstract supervised classifier designer.
   
   class DesignClassifierSupervisedC
     : public DesignFunctionSupervisedC
@@ -119,6 +119,10 @@ namespace RavlN {
     //: Access body.
     
   public:
+    DesignClassifierSupervisedC Copy() const
+    { return DesignClassifierSupervisedC(dynamic_cast<DesignClassifierSupervisedBodyC &>(Body().Copy())); }
+     //: Make copy of body.
+
     ClassifierC Apply(const SampleC<VectorC> &in,const SampleC<UIntT> &out)
     { return Body().Apply(in,out); }
     //: Create a classifier.

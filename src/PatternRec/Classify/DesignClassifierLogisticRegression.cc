@@ -82,9 +82,9 @@ namespace RavlN {
     ONDEBUG(RavlDebug("Theta:%s",RavlN::StringOf(theta).c_str()));
     for(DataSet2IterC<SampleC<VectorC>,SampleC<UIntT> > it(m_in,m_out);it;it++)
     {
-      //ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
+      ONDEBUG(RavlDebug("Data:%s Theta:%s ",RavlN::StringOf(it.Data1()).c_str(),RavlN::StringOf(theta).c_str()));
       RealT dotProdS = Sigmoid(it.Data1().Dot(theta));
-      //RavlDebug("Dot %f ",dotProdS);
+      ONDEBUG(RavlDebug("Dot %f ",dotProdS));
       if(m_label == it.Data2()) {
         cost += -Log(dotProdS);
       } else {
@@ -139,6 +139,15 @@ namespace RavlN {
   }
 
   // -------------------------------------------------------------------------
+
+  //: Copy constructor
+  DesignClassifierLogisticRegressionBodyC::DesignClassifierLogisticRegressionBodyC(const DesignClassifierLogisticRegressionBodyC &other)
+   : m_featureExpand(other.m_featureExpand),
+     m_optimiser(other.m_optimiser.Copy()),
+     m_regularisation(other.m_regularisation),
+     m_prependUnit(other.m_prependUnit),
+     m_doNormalisation(other.m_doNormalisation)
+  {}
 
   //: Constructor.
   
@@ -208,7 +217,7 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignClassifierLogisticRegressionBodyC::Save (std::ostream &out) const {
+  bool DesignClassifierLogisticRegressionBodyC::Save(std::ostream &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     RavlAssertMsg(0,"not supported");
@@ -219,14 +228,20 @@ namespace RavlN {
   
   //: Writes object to stream, can be loaded using constructor
   
-  bool DesignClassifierLogisticRegressionBodyC::Save (BinOStreamC &out) const {
+  bool DesignClassifierLogisticRegressionBodyC::Save(BinOStreamC &out) const {
     if(!DesignClassifierSupervisedBodyC::Save(out))
       return false;
     ByteT version = 1;
     out << version << m_featureExpand << m_optimiser << m_regularisation << m_prependUnit << m_doNormalisation;
     return true;
   }
-  
+
+  RCBodyVC &DesignClassifierLogisticRegressionBodyC::Copy() const
+  {
+    return *new DesignClassifierLogisticRegressionBodyC(*this);
+  }
+  //: Make copy of body.
+
   //: Get the default parameter values and their limits.
   void DesignClassifierLogisticRegressionBodyC::ParameterLimits(
       VectorC &defaultValues,
