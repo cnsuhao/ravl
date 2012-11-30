@@ -543,8 +543,7 @@ int testQuickSort() {
   const int size = 22;
   int array[size] = { 5,62,34,51,74,84,13,34,75,12,
                      87,23, 7,23,64, 1,23,56,32,57,23,56 } ;
-
-  RavlN::QuickSort(array,0,size);
+  RavlN::QuickSort(array,0,size-1);
   for(int i = 1;i < size;i++) {
     if(array[i] < array[i-1])
       return __LINE__;
