@@ -552,13 +552,25 @@ int testQuickSort() {
   // Do lot of random tests.
   int rarray[2000];
   for(int k = 0;k < 10000;k++) {
-    int size = RandomInt() % 1024 + 2;
+    int size = RandomInt() % 1024 + 3;
     // Limit the number of values to ensure some
     // duplicates as these may form corner cases.
-    for(int i = 0;i < size;i++)
+    for(int i = 1;i < size;i++)
       rarray[i] = RandomInt() % 512;
-    RavlN::QuickSort(rarray,0,size);
-    for(int i = 1;i < size;i++) {
+    rarray[0]=9999;
+    rarray[size]=-9999;
+    RavlN::QuickSort(rarray,1,size-1);
+    if ((rarray[1]==-9999) || (rarray[size]!=-9999))
+    {  std::cerr << "Test failed - processed past last element\n";
+       std::cerr << rarray << "\n";
+       return __LINE__;
+    }
+    if ((rarray[0]!=9999) || (rarray[size-1]==9999))
+    {  std::cerr << "Test failed - processed before first element\n";
+       std::cerr << rarray << "\n";
+       return __LINE__;
+    }
+    for(int i = 2;i < size;i++) {
       if(rarray[i] < rarray[i-1]) {
         std::cerr << "Test failed size:" << size << "\n";
         for(int j = 0;j < size;j++)
