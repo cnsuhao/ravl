@@ -37,8 +37,19 @@ namespace RavlN {
     virtual bool Plot(const SArray1dC<Point2dC> & data, const StringC & dataName = "");
     //: Plot points, optional dataName will appear in the legend
 
+    bool Plot(const SArray1dC<Point2dC> & data,
+        RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image,
+        const IndexRange2dC & rec = IndexRange2dC(750, 750),
+        const StringC & dataName = "");
+    //: Plot points and return image of plot.
+
     virtual bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data);
     //: Plot all plots on same canvas
+
+    bool Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data,
+        RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image,
+        const IndexRange2dC & rec = IndexRange2dC(750, 750));
+    //: Plot points and return image of plot
 
     virtual bool Plot(const LineABC2dC & line);
     //: Plot a straight line
@@ -87,17 +98,15 @@ namespace RavlN {
   protected:
     StringC m_title; //!< The overall title
 
-
   };
 
   extern Plot2dC::RefT (*g_createPlot2d)(const StringC & title);
 
   //! userlevel=Develop
-  inline Plot2dC::RefT CreatePlot2d(const StringC & title) {
+  inline Plot2dC::RefT CreatePlot2d(const StringC & title)
+  {
     return g_createPlot2d(title);
   }
-
-
 
 } /* namespace RavlN */
 #endif /* PLOT2D_HH_ */
