@@ -21,6 +21,8 @@ SOURCES = Roc.cc
 
 HEADERS = Roc.hh
 
+MUSTLINK=linkFaceExperiment.cc
+
 PLIB = RavlFace
 
 LIBDEPS= 
