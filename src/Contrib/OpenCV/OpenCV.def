@@ -1,8 +1,12 @@
+EXELIB := -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml \
+          -lopencv_video -lopencv_features2d -lopencv_calib3d \
+          -lopencv_objdetect -lopencv_contrib -lopencv_legacy \
+          -lopencv_flann -lopencv_gpu $(EXELIB)
+
+# For earlier revisions of OpenCV replace the above with:
+#       EXELIB :=  -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
+
 ifdef OPENCV_HOME
- INCLUDES += -I$(OPENCV_HOME)/include
-# EXELIB :=  -L$(OPENCV_HOME)/lib -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
-  EXELIB :=  -Wl,-rpath,$(OPENCV_HOME)/lib -L$(OPENCV_HOME)/lib -lopencv_core -lopencv_imgproc -lopencv_features2d -lopencv_highgui -lopencv_objdetect -lopencv_legacy $(EXELIB)
-else
-# EXELIB :=  -lcxcore -lcv -lcvaux -lhighgui $(EXELIB)
-  EXELIB := -lopencv_core -lopencv_imgproc -lopencv_features2d -lopencv_highgui -lopencv_legacy -lopencv_objdetect $(EXELIB)
+  INCLUDES += -I$(OPENCV_HOME)/include
+  EXELIB :=  -Wl,-rpath,$(OPENCV_HOME)/lib -L$(OPENCV_HOME)/lib $(EXELIB)
 endif
