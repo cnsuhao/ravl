@@ -530,9 +530,6 @@ AC_SUBST([OpenSceneGraph_SUPPORT])
 QM_DEFINE_EXTLIB_PC([RLog],            [librlog])
 RLog_RavlLib=libRavlRLog
 AC_SUBST([RLog_SUPPORT])
-QM_DEFINE_EXTLIB_PC([devVideo4Linux],  [libv4l1])
-devVideo4Linux_RavlLib=libRavlImgIOV4L
-AC_SUBST([devVideo4Linux_SUPPORT])
 QM_DEFINE_EXTLIB_PC([devVideo4Linux2], [libv4l2])
 devVideo4Linux2_RavlLib=libRavlImgIOV4L2
 AC_SUBST([devVideo4Linux2_SUPPORT])
@@ -797,6 +794,15 @@ echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl#     End of workaround for currently unsupported libraries
 dnl# 
 
+dnl# Declare <Lib>_SUPPORT substitution variables for old packages no longer
+dnl# automatically configured in (usually due to upstream support rendering 
+dnl#the Ravl coding less useful).
+AC_SUBST([devVideo4Linux_SUPPORT])
+devVideo4Linux_SUPPORT=""
+dnl# These external pacakges may still be enabled (on systems where they will 
+dnl# correctly build/function) by manually adding the appropriate RESOURCE 
+dnl# identifier to RESOURCES and setting the <Lib>_SUPPORT variable to the name
+dnl# of the appropriate Ravl library (usually the wrapper lib).
 
 
 QM_PROCESS_EXTLIBS()

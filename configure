@@ -663,6 +663,7 @@ SWIG
 GnuPlot
 PERL
 EGREP
+devVideo4Linux_SUPPORT
 UUIdTheo_SUPPORT
 SwigPython_SUPPORT
 SGIVL_SUPPORT
@@ -717,9 +718,6 @@ ZeroMQ_CFLAGS
 devVideo4Linux2_SUPPORT
 devVideo4Linux2_LIBS
 devVideo4Linux2_CFLAGS
-devVideo4Linux_SUPPORT
-devVideo4Linux_LIBS
-devVideo4Linux_CFLAGS
 RLog_SUPPORT
 RLog_LIBS
 RLog_CFLAGS
@@ -968,8 +966,6 @@ with_OpenSceneGraph_pkgconf
 with_OpenSceneGraph
 with_RLog_pkgconf
 with_RLog
-with_devVideo4Linux_pkgconf
-with_devVideo4Linux
 with_devVideo4Linux2_pkgconf
 with_devVideo4Linux2
 with_ZeroMQ_pkgconf
@@ -1794,15 +1790,6 @@ Optional Packages:
 
   --with-RLog             Enable functionality that relies on the RLog library
                           [default=check]
-
-  --with-devVideo4Linux-pkgconf
-                          Enable the devVideo4Linux library package via
-                          pkg-config and declare the name by which the
-                          devVideo4Linux library package is known to
-                          pkg-config
-
-  --with-devVideo4Linux   Enable functionality that relies on the
-                          devVideo4Linux library [default=check]
 
   --with-devVideo4Linux2-pkgconf
                           Enable the devVideo4Linux2 library package via
@@ -8899,118 +8886,6 @@ fi
 RLog_RavlLib=libRavlRLog
 
 
-# Check whether --with-devVideo4Linux-pkgconf was given.
-if test "${with_devVideo4Linux_pkgconf+set}" = set; then :
-  withval=$with_devVideo4Linux_pkgconf; case $with_devVideo4Linux_pkgconf in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                          use_devVideo4Linux=no
-                                          trace 4 --with-devVideo4Linux-pkgconf disabling devVideo4Linux
-                                          ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                          if test Xlibv4l1 != X; then :
-  with_devVideo4Linux_pkgconf=libv4l1
-                                                 use_devVideo4Linux=yes
-                                                 trace 4 --with-devVideo4Linux-pkgconf set to default [$with_devVideo4Linux_pkgconf]
-
-else
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to configure devVideo4Linux via pkg-config but configure is unaware of the name of the DOTpc metadata file
-See \`config.log' for more details." "$LINENO" 5; }
-
-
-fi
-                                          ;;
-                        * )               use_devVideo4Linux=yes
-                                          trace 4 --with-devVideo4Linux-pkgconf set to [$with_devVideo4Linux_pkgconf]
-                                          ;;
-                       esac
-
-else
-  if test Xlibv4l1 != X; then :
-  with_devVideo4Linux_pkgconf=libv4l1
-                              trace 4 No --with-devVideo4Linux-pkgconf specified using default [$with_devVideo4Linux_pkgconf]
-
-
-fi
-
-
-fi
-
-
-# Check whether --with-devVideo4Linux was given.
-if test "${with_devVideo4Linux+set}" = set; then :
-  withval=$with_devVideo4Linux; case $with_devVideo4Linux in
-                        'n' | 'N' | 'no' | 'No' | 'NO' )
-                                       trace 4 --with-devVideo4Linux disabling devVideo4Linux libraries
-                                       if test X$use_devVideo4Linux = Xyes ; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to disable devVideo4Linux by --with-devVideo4Linux but --with-devVideo4Linux-pkgconf has specifically enabled it
-See \`config.log' for more details." "$LINENO" 5; }
-
-else
-  use_devVideo4Linux=no
-
-fi
-                                       ;;
-                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                       trace 4 --with-devVideo4Linux enabling devVideo4Linux libraries
-                                       if test X$use_devVideo4Linux = Xno; then :
-  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error "Asking to enable devVideo4Linux by --with-devVideo4Linux but --with-devVideo4Linux-pkgconf has specifically disabled it
-See \`config.log' for more details." "$LINENO" 5; }
-
-else
-  use_devVideo4Linux=yes
-
-fi
-                                       ;;
-                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
-                                       trace 4 --with-devVideo4Linux checking for devVideo4Linux libraries
-                                       if test X$use_devVideo4Linux = Xyes; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-devVideo4Linux asking to check for the libs but --with-devVideo4Linux-pkgconf has specifically enabled it" >&5
-$as_echo "$as_me: WARNING: --with-devVideo4Linux asking to check for the libs but --with-devVideo4Linux-pkgconf has specifically enabled it" >&2;}
-
-else
-  if test X$use_devVideo4Linux = Xno; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-devVideo4Linux asking to check for the libs but --with-devVideo4Linux-pkgconf has specifically disabled it" >&5
-$as_echo "$as_me: WARNING: --with-devVideo4Linux asking to check for the libs but --with-devVideo4Linux-pkgconf has specifically disabled it" >&2;}
-
-else
-  use_devVideo4Linux=check
-
-fi
-
-
-fi
-                                       ;;
-                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-devVideo4Linux set to an unknown option, setting ignored" >&5
-$as_echo "$as_me: WARNING: --with-devVideo4Linux set to an unknown option, setting ignored" >&2;}
-                                       ;;
-                       esac
-
-else
-  trace 5 No --with-devVideo4Linux specified
-
-fi
-
-          KnownLibs=$KnownLibs" "devVideo4Linux
-          with_devVideo4Linux_virtual="no"
-          if ( test X$use_devVideo4Linux = X )
-          then
-             use_devVideo4Linux=check
-          else
-             ConfiguredLibs=$ConfiguredLibs" "devVideo4Linux
-          fi
-
-
-
-
-devVideo4Linux_RavlLib=libRavlImgIOV4L
-
-
 # Check whether --with-devVideo4Linux2-pkgconf was given.
 if test "${with_devVideo4Linux2_pkgconf+set}" = set; then :
   withval=$with_devVideo4Linux2_pkgconf; case $with_devVideo4Linux2_pkgconf in
@@ -15181,6 +15056,8 @@ echo SwigPython_SUPPORT=@SwigPython_SUPPORT@ >> ./ExtPkgSupp.$$
 UUIdTheo_SUPPORT=""
 echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 
+
+devVideo4Linux_SUPPORT=""
 
 
 
