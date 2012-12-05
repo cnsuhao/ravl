@@ -11,7 +11,7 @@
 //! docentry="Ravl.API.Images.Converters.OpenCV"
 //! example="exOpenCV.cc"
 
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include "Ravl/Image/Image.hh"
 #include "Ravl/Image/ByteBGRValue.hh"
 #include "Ravl/Image/ByteRGBValue.hh"
