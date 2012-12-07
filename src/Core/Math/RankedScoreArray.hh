@@ -28,7 +28,7 @@
 namespace RavlN {
 
   //: Keep a ranked array of results.
-  // KeyT = score value.
+  // KeyT = score value, higher values preferred over smaller ones.
 
   template<typename KeyT,typename DataT>
   class RankedScoreArrayC
