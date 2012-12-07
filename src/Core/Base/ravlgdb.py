@@ -21,7 +21,7 @@ class RAVLStringPrinter(object):
          return 'string'
 
 class RAVLRCHandlePrinter(object):
-     "Print a RavlN::StringC"
+     "Print a RavlN::RCHandleC"
  
      def __init__(self, val):
          self.val = val
@@ -32,8 +32,27 @@ class RAVLRCHandlePrinter(object):
      def display_hint(self):
          return 'string'
 
+class RAVLSmartPtr(object):
+     "Print a RavlN::SmartPtrC"
+ 
+     def __init__(self, val):
+         self.val = val
+ 
+     def to_string(self):
+         return "(%s) %s" % (self.val['body'].type,str(self.val['body']))
+
+class RAVLRCBody(object):
+     "Print a RavlN::RCBodyC"
+ 
+     def __init__(self, val):
+         self.val = val
+ 
+     def to_string(self):
+         return "references:%s" % (str(self.val['counter']['counter']))
+
+ 
 class RAVLSizeBufferAccessPrinter(object):
-     "Print a RavlN::StringC"
+     "Print a RavlN::SizeBufferAccessC"
  
      def __init__(self, val):
          self.val = val
@@ -45,6 +64,9 @@ def build_pretty_printer():
          pp = gdb.printing.RegexpCollectionPrettyPrinter(
              "RAVL")
          pp.add_printer('RavlN::StringC', '^RavlN::StringC$', RAVLStringPrinter)
+         pp.add_printer('RavlN::SmartPtrC', '^RavlN::SmartPtrC<.*>$', RAVLSmartPtr)
+         pp.add_printer('RavlN::RCBodyC', '^RavlN::RCBodyC$', RAVLRCBody)
+         pp.add_printer('RavlN::RCBodyVC', '^RavlN::RCBodyVC$', RAVLRCBody)
          #pp.add_printer('RavlN::SizeBufferAccessC', '^RavlN::SizeBufferAccessC<.*>$', RAVLSizeBufferAccessPrinter)
          #pp.add_printer('RavlN::RCHandleC', '^RavlN::RCHandleC<.*>$', RAVLRCHandlePrinter)
          return pp
