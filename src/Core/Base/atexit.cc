@@ -52,8 +52,22 @@ extern "C" {
 #else
 namespace RavlN {
   int foobar_or_some_such_silly_name;
+
+
 }
 
 #endif
 
+#if RAVL_COMPILER_GCC
+/* Note: The "MS" section flags are to remove duplicates.  */
+#define DEFINE_GDB_SCRIPT(script_name) \
+       asm("\
+     .pushsection \".debug_gdb_scripts\", \"MS\",@progbits,1\n\
+     .byte 1\n\
+     .asciz \"" script_name "\"\n\
+     .popsection \n\
+     ");
+
+DEFINE_GDB_SCRIPT(PROJECT_OUT "/share/RAVL/gdb/ravlgdb.py")
+#endif
  
