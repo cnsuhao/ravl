@@ -49,13 +49,14 @@ namespace RavlN {
     // Note: The data is NOT copied; any operations done
     // on the sample may effect the contents of the original array.
     
-  protected: 
     SampleC(const DArray1dC<DataT> & dat)
      : DArray1dC<DataT> (dat) 
     {}
     //: Create a sample of data from a DArray 
-  public: 
-    inline SampleC<DataT> Copy (void)
+    // Note: The data is NOT copied; any operations done
+    // on the sample may effect the contents of the original array.
+
+    inline SampleC<DataT> Copy (void) const
     { return SampleC<DataT> ((static_cast<DArray1dC<DataT> > (*this) ).Copy() ) ;}
     //: Make a copy of this object 
 

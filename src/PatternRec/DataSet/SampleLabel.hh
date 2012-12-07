@@ -21,7 +21,9 @@ namespace RavlN {
   //! userlevel=Normal
   //: Sample of labels.
 
-  class SampleLabelC: public SampleDiscreteC<UIntT> {
+  class SampleLabelC
+     : public SampleDiscreteC<UIntT>
+  {
     public:
       SampleLabelC(SizeT maxSize = 10, const FieldInfoC & fieldInfo = FieldInfoC("label"))
           : SampleDiscreteC<UIntT>(maxSize), m_fieldInfo(fieldInfo) {
@@ -37,6 +39,10 @@ namespace RavlN {
           : SampleDiscreteC<UIntT>(sample), m_fieldInfo(fieldInfo) {
       }
       //: Construct from base class.
+
+      SampleLabelC Copy (void) const
+      { return SampleLabelC(static_cast<DArray1dC<UIntT> >(*this).Copy(),FieldInfo()); }
+      //: Make a copy of this object
 
       UIntT MaxValue() const;
       //: Find the value of the largest label.
