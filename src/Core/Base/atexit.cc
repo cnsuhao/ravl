@@ -58,7 +58,7 @@ namespace RavlN {
 
 #endif
 
-#if RAVL_COMPILER_GCC
+#if RAVL_COMPILER_GCC && (RAVL_OS_LINUX || RAVL_OS_LINUX64)
 /* Note: The "MS" section flags are to remove duplicates.  */
 #define DEFINE_GDB_SCRIPT(script_name) \
        asm("\
