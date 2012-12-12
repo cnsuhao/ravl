@@ -23,6 +23,6 @@ SOURCES = GnuPlot2d.cc GnuPlot.cc GnuPlot3d.cc
 
 PLIB = RavlGnuPlot
 
-USESLIBS=  RavlPlot RavlOS
+USESLIBS=  RavlPlot RavlOS RavlPatternRec 
 
-PROGLIBS= RavlExtImgIO RavlDPDisplay RavlPatternRec
+PROGLIBS= RavlDPDisplay  RavlExtImgIO
