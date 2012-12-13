@@ -127,7 +127,7 @@ namespace RavlN {
 
     // initialise Levenberg-Marquardt algorithm with Ransac solution
     StateVectorHomog2dC stateVecInit = ransac.GetSolution();
-    LevenbergMarquardtC lm = LevenbergMarquardtC(stateVecInit, obsList);
+    LevenbergMarquardtC lm(stateVecInit, compatibleObsList);
 
     // apply Levenberg-Marquardt iterations
     lm.NIterations ( obsList, noLevMarqIterations, lambdaStart, lambdaFactor );

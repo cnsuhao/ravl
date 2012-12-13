@@ -48,6 +48,7 @@ namespace RavlN {
       RealT lambdaFactor=0.1 );
     //: Fit model parameters to sample of observations using robust method
 
+
     virtual SArray1dC<bool> Compatibility();
     //: Returns array of booleans to indicate sample compatibility.
     // The array indicates which of the samples used in the FitModelRobust() method was compatible with the fit.<br>
@@ -109,7 +110,11 @@ namespace RavlN {
                ransacChi2Thres, compatChi2Thres, noLevMarqIterations,
                lambdaStart, lambdaFactor); }
     //: Fit model parameters to sample of observations using robust method
-    // Uses RANSAC and Levenberg-Marquart to create robust fit.
+    // Uses RANSAC and Levenberg-Marquardt to create robust fit.<BR>
+    // The 2 <code>Chi2Thres</code> values are dimensionless threshold values.  They are both directly related to the values in the (inverse) covariances used in the observations in <code>obsList</code>.
+    //!param: ransacChi2Thres - used within RANSAC to test the compatibility of the remaining observation pairs with the candidate transformation.
+    //!param: compatChi2Thres - used to select observation pairs that are compatible with the output of RANSAC before the Levenberg-Marquardt optimisation is applied.
+    //!param: lambdaStart,lambdaFactor - see <a href="../../../html/levmarq.pdf">L-M description</a>.
 
     SArray1dC<bool> Compatibility()
     { return Body().Compatibility(); }
