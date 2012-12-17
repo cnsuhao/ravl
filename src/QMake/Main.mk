@@ -464,10 +464,10 @@ ifeq ($(SUPPORT_OK),yes)
                $(patsubst %.m,$(INST_DEPEND)/%.d, \
                $(patsubst %.mm,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))))) \
-               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR).bin.d,  \
-               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR).bin.d, \
-               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR).bin.d,  \
-               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR).bin.d, \
+               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
+               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
+               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
                $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
  else
   TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
@@ -557,8 +557,10 @@ CINCLUDES =  -I$(INST_HEADER) $(INCLUDES) -I$(BASE_INSTALL)/include/$(ARC) -I$(B
 
 ifndef SHAREDBUILD
  SHARED_LIB_POSTFIX=#
+ BINDEP_SHARED_INFIX=#
 else
  SHARED_LIB_POSTFIX=/shared#
+ BINDEP_SHARED_INFIX=.shared
 endif
 
 TESTBINLIBS += -L$(INST_LIB) $(LINKTESTLIBS)  -L$(BASE_INSTALL)/lib/RAVL/$(ARC)/$(BASE_VAR)$(SHARED_LIB_POSTFIX)
@@ -806,11 +808,11 @@ $(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
 
 # Binary depends.
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(MAKEHOME)/Dirs.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(MAKEHOME)/Dirs.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(MAKEHOME)/Dirs.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CEXT) $(QCWD)/defs.mk $(MAKEHOME)/Dirs.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
