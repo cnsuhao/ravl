@@ -5,7 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-REQUIRES=Swig SwigPython
+REQUIRES=Swig SwigPython NumPy
 
 PACKAGE=Ravl/Swig
 

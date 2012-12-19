@@ -7,7 +7,7 @@
 # Copyright (C) 2001, 2002, 2003, 2004 Python Software Foundation; All Rights Reserved
 # file-header-ends-here
 
-REQUIRES = 
+REQUIRES =  NumPy
 
 PACKAGE = Ravl
 
