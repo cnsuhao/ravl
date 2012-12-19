@@ -16,6 +16,7 @@ sub PrintHelp {
 }
 
   my @LibPath, @Output, @Find, $found;
+  my $libName, $fullPath;
   my $verbose=0;
   my $returnCode=0;
   
@@ -52,17 +53,18 @@ sub PrintHelp {
       next ;
     }
     if(/\A-l([^ ]*)/) { # Library - find its path
-      if(exists $targLibs{$1}) { # We know library may not exist yet
-        push @Output, $1 ; # Use its path as specified
+      $libName = $1;
+      if(exists $targLibs{$libName}) { # We know library may not exist yet
+        push @Output, $targLibs{$libName} . " " ; # Use its path as specified
       }
       else
       { if($verbose) {
-          print stderr "Searching for  '-l$1' \n";
+          print stderr "Searching for  '-l$libName' \n";
           print stderr "Using system path '@DynaLoader::dl_library_path' \n";
           print stderr "and '@LibPath' \n";
         }
         @Find = @LibPath ;
-        push @Find, "-l" . $1 ;
+        push @Find, "-l" . $libName ;
         $found = DynaLoader::dl_findfile( @Find );
         if($verbose) { print stderr "Found '$found' \n"; }
         if ($found) { # Located library - use full path
@@ -77,7 +79,13 @@ sub PrintHelp {
       next ;
     }
     if(/\A-T([^ ]*)/) { # Library we know may not exist yet - record the fact
-      $targLibs{$1} = 1;
+      $fullPath = $1;
+      $libName = $fullPath;
+      $libName =~ s/\A\/.*\/lib//; # Strip off leading /path/lib
+      $libName =~ s/\.a\Z//; # Strip off any trailing .a
+      $libName =~ s/\.so\Z//; # Strip off any trailing .so
+      if ($verbose) { print stderr "Recording $libName as '$fullPath' \n"; }
+      $targLibs{$libName} = $fullPath;
       next ;
     }
     if(/\A-[WRLuIOvVgrpB][^ ]*/ )  { # Ignore these.
