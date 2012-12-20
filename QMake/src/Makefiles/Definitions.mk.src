@@ -146,8 +146,10 @@ endif
 
 ifndef SHAREDBUILD
  SHARED_LIB_POSTFIX=#
+ BINDEP_SHARED_INFIX=#
 else
  SHARED_LIB_POSTFIX=/shared#
+ BINDEP_SHARED_INFIX=.shared
 endif
 
 ifndef PAGER

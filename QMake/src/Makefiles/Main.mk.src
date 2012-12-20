@@ -317,10 +317,10 @@ ifeq ($(SUPPORT_OK),yes)
                $(patsubst %.m,$(INST_DEPEND)/%.d, \
                $(patsubst %.mm,$(INST_DEPEND)/%.d, \
 	       $(patsubst %.java,$(INST_DEPEND)/%.java.d,$(MAINS) $(TESTEXES)))))) \
-               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR).bin.d,  \
-               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR).bin.d, \
-               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR).bin.d,  \
-               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR).bin.d, \
+               $(patsubst %$(CEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
+               $(patsubst %$(CXXEXT),$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
+               $(patsubst %.m,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d,  \
+               $(patsubst %$.mm,$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d, \
                $(filter-out %.java,$(MAINS)))))) $(INST_DEPEND)/.dir
  else
   TARG_DEPEND:= $(patsubst %$(CXXAUXEXT),$(INST_DEPEND)/%.d, \
@@ -666,11 +666,11 @@ $(TARG_EXTERNALLIBS) : $(INST_LIBDEF)/% : % $(INST_LIBDEF)/.dir
 
 # Binary depends.
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CXXEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
-$(INST_DEPEND)/%.$(VAR).bin.d : %$(CEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
+$(INST_DEPEND)/%.$(VAR)$(BINDEP_SHARED_INFIX).bin.d : %$(CEXT) $(QCWD)/defs.mk $(QMAKE_MAKEFILES)/Definitions.mk $(TARG_DEFS) $(INST_DEPEND)/.dir
 	$(SHOWIT)echo "--- Binary dependency" $* ; \
 	$(BINDEP) $(PKG_LDFLAGS) $(LDFLAGS) -P'$$(INST_BIN)/$* : $$(INST_OBJS)/$*$(OBJEXT) $(OBJS_DEPEND)' -T$(INST_LIB)/lib$(PLIB)$(LIBEXT) $(BINLIBS) >$(INST_DEPEND)/$(@F)
 
