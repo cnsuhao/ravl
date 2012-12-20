@@ -1,49 +1,9 @@
 #!@PERL@
 
-@searchDirs = ('/usr/lib64', '/usr/lib', '/lib' );
-@ignoreLibs = {"m","c"};
-@useLibs = {"c"};
-%targLibs;
-$verbose=0;
-
-sub checkLib {
-  my $libName = $_[0] . $_[1];
-  if(exists $targLibs{$libName}) {
-    print "$libName ";
-    return 1;
-  }
-  if(-r $libName) {
-    print "$libName ";
-    return 1;
-  }
-  return 0;
-}
-
-# Search all known paths for the libraries.
-
-sub findlib {
-  my $libNameA = "/lib" . $_[0] . ".a";
-  my $libNameSO = "/lib" . $_[0] . ".so";
-
-  if(exists $ignoreLibs{$libName}) {
-    return ;
-  }
-  if($verbose) {
-    print stderr "Searching for lib$_[0].so or .a \n";
-  }
-  foreach(@searchDirs) {
-    if(checkLib($_,$libNameSO)) {
-      return ;
-    }
-    if(checkLib($_,$libNameA)) {
-      return ;
-    }
-  }
-  print stderr  "\nWarning: Unable to find library '$_[0]'\n";
-}
+use DynaLoader;
 
 sub PrintHelp {
-  print "BinDep 1.2\n Some help: \n";
+  print "BinDep 2\n Some help: \n";
   print "  bindep [options] objectfiles \n";
   print "Options: \n";
   print "  -T(library name)  Specify a library that will be created soon. \n";
@@ -55,26 +15,12 @@ sub PrintHelp {
   exit ;
 }
 
-sub main {
-  # Collect all directories to search.
+  my @LibPath, @Output, @Find, $found;
+  my $verbose=0;
+  my $returnCode=0;
   
+  # First check for verbose or help flags
   foreach (@ARGV) {
-    if(/\A-L([^ ]*)/) {
-      push @searchDirs, $1 ;
-      next ;
-    }
-    if(/\A-R([^ ]*)/) {
-      push @searchDirs, $1 ;
-      next ;
-    }
-    if(/\A-n32/) {  # Irix new 32 bit mode ?
-      push @searchDirs, "/usr/lib32" ;
-      next ;
-    }
-    if(/\A-64/) {  # Irix 64 bit mode ?
-      push @searchDirs, "/usr/lib64" ;
-      next ;
-    }
     if(/\A-v/) { # Verbose
       $verbose=1;
       next ;
@@ -84,27 +30,55 @@ sub main {
     }
   }
 
-  if($verbose) {
-    print stderr "Searching directories  '@searchDirs' \n";
-  }
-  
-  # Go through libraries.
-  
   foreach (@ARGV) {
+    if(/\A-L([^ ]*)/) { # Library search dir - record it
+      push @LibPath, "-L".$1 ;
+      next ;
+    }
+#   if(/\A-R([^ ]*)/) {
+#     push @LibPath, "-L".$1." " ;
+#     next ;
+#   }
+    if(/\A-n32/) {  # Irix new 32 bit mode ?
+      push @LibPath, "-L/usr/lib32" ;
+      next ;
+    }
+    if(/\A-64/) {  # Irix 64 bit mode ?
+      push @LibPath, "-L/usr/lib64" ;
+      next ;
+    }
     if(/\A-P(.*)/) { # Just pass on string.
-      print $1 . " ";
+      push @Output, $1 . " ";
       next ;
     }
-    if(/\A-l([^ ]*)/) {
-      findlib($1);
+    if(/\A-l([^ ]*)/) { # Library - find its path
+      if(exists $targLibs{$1}) { # We know library may not exist yet
+        push @Output, $1 ; # Use its path as specified
+      }
+      else
+      { if($verbose) {
+          print stderr "Searching for  '-l$1' \n";
+          print stderr "Using system path '@DynaLoader::dl_library_path' \n";
+          print stderr "and '@LibPath' \n";
+        }
+        @Find = @LibPath ;
+        push @Find, "-l" . $1 ;
+        $found = DynaLoader::dl_findfile( @Find );
+        if($verbose) { print stderr "Found '$found' \n"; }
+        if ($found) { # Located library - use full path
+          push @Output, $found . " " ;
+        }
+        else { # Library not found - keep -l form
+          $returnCode=-1;
+          push @Output, @Find[$#Find] . " " ;
+          print stderr "Error - could not locate library @Find[$#Find].\n";
+        }
+      }
       next ;
     }
-    if(/\A-T([^ ]*)/) {
+    if(/\A-T([^ ]*)/) { # Library we know may not exist yet - record the fact
       $targLibs{$1} = 1;
       next ;
-    }
-    if(/\A-64/ || /\A-n32/) { # Ignore these.
-      next;
     }
     if(/\A-[WRLuIOvVgrpB][^ ]*/ )  { # Ignore these.
       next ;
@@ -115,7 +89,6 @@ sub main {
     print stderr "Unknown argument $_\n ";
   }
 
+  print @Output;
   print "\n";
-}
-
-main();
+  exit $returnCode;
