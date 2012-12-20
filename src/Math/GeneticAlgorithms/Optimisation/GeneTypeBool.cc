@@ -201,6 +201,17 @@ namespace RavlN { namespace GeneticN {
     return true;
   }
 
+  //! Generate an instance of the class.
+  void GeneBoolC::Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const {
+    if(handle.IsValid()) {
+      bool *theValue = 0;
+      handle.GetPtr(theValue);
+      *theValue = m_value;
+    } else {
+      handle = RCWrapC<bool>(m_value);
+    }
+  }
+
   //! Test is value is effectively equal to this within tolerances specified in the type.
   bool GeneBoolC::IsEffectivelyEqual(const GeneC &other) const {
     if(other.Type() != Type()) return false;

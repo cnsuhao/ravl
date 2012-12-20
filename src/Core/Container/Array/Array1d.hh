@@ -95,7 +95,7 @@ namespace RavlN {
         return ; // Create a zero length array.
       IndexRangeC newRange(min,max);
       buff = SingleBufferC<DataT>(newRange.Size());
-      Attach(buff,newRange);
+      this->Attach(buff,newRange);
     }
     //: Array constructed from a <code>SizeC</code> range.
 
@@ -437,7 +437,7 @@ namespace RavlN {
   template <class DataT>
   Array1dC<DataT>::Array1dC(const SizeT dim)
     : buff(SingleBufferC<DataT>(dim))
-  { Attach(buff,IndexRangeC(dim)); }
+  { this->Attach(buff,IndexRangeC(dim)); }
 
 
   template <class DataT>
@@ -446,7 +446,7 @@ namespace RavlN {
       return ; // Create a zero length array.
     IndexRangeC newRange(min,max);
     buff = SingleBufferC<DataT>(newRange.Size());
-    Attach(buff,newRange);
+    this->Attach(buff,newRange);
   }
 
   template <class DataT>
@@ -455,7 +455,7 @@ namespace RavlN {
       return ; // Create a zero length array.
     IndexRangeC newRange(min,max);
     buff = SingleBufferC<DataT>(newRange.Size());
-    Attach(buff,newRange);
+    this->Attach(buff,newRange);
   }
 
   template <class DataT>
@@ -463,7 +463,7 @@ namespace RavlN {
     if(newRange.Min() > newRange.Max())
       return ; // Create a zero length array.
     buff = SingleBufferC<DataT>(newRange.Size());
-    Attach(buff,newRange);
+    this->Attach(buff,newRange);
   }
 
   template <class DataT>
@@ -487,7 +487,7 @@ namespace RavlN {
       return ;
     }
     buff = SingleBufferC<DataT>(slice.Size());
-    Attach(buff.BufferAccess(),slice.Range());
+    this->Attach(buff.BufferAccess(),slice.Range());
     // Copy data.
     DataT *at = buff.ReferenceElm();
     for(Slice1dIterC<DataT> it(slice);it;it++,at++)

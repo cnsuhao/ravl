@@ -10,6 +10,7 @@
 //! file="Ravl/Math/Statistics/MeanCovariance/testMeanCovar.cc"
 
 #include "Ravl/Mean.hh"
+#include "Ravl/Collection.hh"
 #include "Ravl/MeanVariance.hh"
 #include "Ravl/FMean.hh"
 #include "Ravl/FMeanCovariance.hh"
@@ -18,9 +19,12 @@
 #include "Ravl/MeanCovariance.hh"
 #include "Ravl/Matrix2d.hh"
 #include "Ravl/SumsNd2.hh"
+#include "Ravl/Sums1d2.hh"
 #include "Ravl/Stream.hh"
 #include "Ravl/Statistics.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/SysLog.hh"
+#include "Ravl/UnitTest.hh"
 
 using namespace RavlN;
 
@@ -135,6 +139,52 @@ int testMeanVar() {
   if(Abs(norm2sig.ProbabilityOfHigherValue(1000)) > 0.0001) return __LINE__;
   if(Abs(norm2sig.ProbabilityOfHigherValue(-1000) - 1.0) > 0.0001) return __LINE__;
   
+
+  {
+    // Check sums work ok.
+    Sums1d2C sum;
+    MeanVarianceC mvinc;
+    MeanVarianceC mva;
+    MeanVarianceC mvb;
+    CollectionC<RealT> data(16);
+    for(int i = 0;i < 11;i++) {
+      RealT val = Sqr((RealT) i) - 10;
+      sum += val;
+      mvinc += val;
+      if(i % 1) {
+        mva += val;
+      } else {
+        mvb += val;
+      }
+      data.Append(val);
+
+      MeanVarianceC added = mva;
+      added += mvb;
+      MeanVarianceC comp(data.Array(),false);
+#if 0
+      RavlDebug("Val:%f Sum: %f %f  added:%f %f  inc:%f %f comp:%f %f",
+          val,
+          sum.Mean(),
+          sum.Variance(false),
+          added.Mean(),
+          added.Variance(),
+          mvinc.Mean(),
+          mvinc.Variance(),
+          comp.Mean(),
+          comp.Variance()
+          );
+#endif
+
+      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),added.Mean(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Variance(false),added.Variance(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),mvinc.Mean(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Variance(false),mvinc.Variance(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Mean(),comp.Mean(),1e-8);
+      RAVL_TEST_ALMOST_EQUALS(sum.Variance(false),comp.Variance(),1e-8);
+
+    }
+  }
+
   return 0;
 }
 

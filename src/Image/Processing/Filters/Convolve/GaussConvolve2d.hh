@@ -60,7 +60,7 @@ namespace RavlImageN {
     
     GaussConvolve2dC(UIntT order) 
       : binomial(GenerateBinomial<KernelPixelT>(order, true, true))
-      { SetKernel(binomial, binomial); }
+      { this->SetKernel(binomial, binomial); }
     //: Construct Gaussian with the given size.
     
     ImageC<OutPixelT> Apply (const ImageC<InPixelT> &in) const {

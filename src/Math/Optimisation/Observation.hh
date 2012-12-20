@@ -109,7 +109,7 @@ namespace RavlN {
   // ObservationC currently provides methods to support the
   // Levenberg-Marquardt algorithm, but it is envisaged that more methods
   // may be added to support other algorithms. Because there are two types
-  // of observation, explicit and implicit. The specific formulae for
+  // of observation, explicit and implicit, the specific formulae for
   // implementing the Levenberg-Marquardt updates are placed in corresponding
   // sub-classes, ObservationExplicitC and ObservationImplicitC.
   // ObservationExplicitC and ObservationImplicitC are themselves derived

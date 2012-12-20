@@ -204,7 +204,7 @@ namespace RavlN {
     
     virtual void Input(const DPIPortC<InT> &ins) {
       input = ins; 
-      ReparentAttributeCtrl(input); // Make sure changed signals are changed appropriately.
+      this->ReparentAttributeCtrl(input); // Make sure changed signals are changed appropriately.
     }
     //: Setup input port.
   }; 
@@ -330,7 +330,7 @@ namespace RavlN {
     
     virtual void Output(const DPOPortC<InT> &oport) {
       output = oport; 
-      ReparentAttributeCtrl(output); // Make sure changed signals are changed appropriately.
+      this->ReparentAttributeCtrl(output); // Make sure changed signals are changed appropriately.
     }
     //: Setup new output port.
   }; 

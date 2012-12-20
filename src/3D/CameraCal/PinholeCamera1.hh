@@ -115,7 +115,7 @@ namespace Ravl3DN
       RealT dy = z[1] - m_cy;
       RealT r = sqrt(dx*dx+dy*dy);
       RealT rescale(1.0);
-      if (r > 1 && 1+4*m_k1*r>=0.0)
+      if (r > 1 && 1+4*m_k1*r>=0.0 && m_k1>0)
       {
          rescale = (-1.0 + sqrt(1+4*m_k1*r)) / (2*m_k1*r);
       }

@@ -68,7 +68,11 @@ namespace RavlImageN {
     //: Apply the edge detector to 'img', generate an array of ordered edgels lists.
     
     bool Apply(const ImageC<ByteT> &img,DListC<DListC<EdgelC> > &edgeLists) const;
-    //: Apply the edge detector to 'img', generate list of ordered edgels lisst.
+    //: Apply the edge detector to 'img', generate list of ordered edgels lists.
+
+    void SetDeriche(RealT Alpha, RealT Omega)
+    { edgeDet = EdgeDericheC(Alpha,Omega); }
+    //: Set the Deriche filter parameters
     
   protected:
     RealT minHyst,maxHyst;
@@ -101,7 +105,8 @@ namespace RavlImageN {
       : RCHandleC<EdgeDetectorBodyC>(*new EdgeDetectorBodyC(useDeriche,minHyst,maxHyst))
     {}
     //: Constructor.
-    // If useDeriche is set to false the system defaults to Sobel edge detection.<br>
+    // If useDeriche is true, uses the <a href="RavlImageN.EdgeDericheC.html">Deriche</a> edge detector; if false, uses the Sobel edge detector.<br>
+    // Default Deriche parameters are as in EdgeDericheC <a href="RavlImageN.EdgeDericheC.html#EdgeDericheCObRealT_RealTCb">constructor</a>.
     // Note order of threshold arguments (for backwards compatibility).
     
   protected:
@@ -159,6 +164,11 @@ namespace RavlImageN {
     { return Body().Apply(img,edgeLists); }
     //: Generates a list of edgel lists.
     
+    void SetDeriche(RealT Alpha, RealT Omega=0.001)
+    { Body().SetDeriche(Alpha,Omega); }
+    //: Set the Deriche filter parameters
+    //!param: Alpha -  &alpha; controls the filter width
+    //!param: Omega -  &omega; doesn't appear to be a very useful parameter -- can be set to 0
   };
   
 }

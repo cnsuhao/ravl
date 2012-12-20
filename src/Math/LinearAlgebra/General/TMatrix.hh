@@ -64,7 +64,7 @@ namespace RavlN {
     
     inline TMatrixC(SizeT rows,SizeT cols,const DataT &data)
       : SArray2dC<DataT>(rows,cols)
-    { Fill(data); }
+    { this->Fill(data); }
     //: Constructor.
     // Fill the matrix with 'data'..
     

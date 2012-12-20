@@ -1,0 +1,6 @@
+ifndef RT_DEF
+RT_DEF=1
+
+EXELIB := -lrt $(EXELIB)
+
+endif

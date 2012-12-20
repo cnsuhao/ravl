@@ -37,6 +37,7 @@ documentation and/or software.
 
 #include <string>
 #include <iostream>
+#include "Ravl/String.hh"
 
 namespace RavlN {
 
@@ -56,7 +57,14 @@ namespace RavlN {
     typedef unsigned int size_type; // must be 32bit
 
     MD5();
+    //: Setup class for incremental update.
+
     MD5(const std::string& text);
+    //: Compute MD5 of string in one step.
+
+    MD5(const RavlN::StringC& text);
+    //: Compute MD5 of string in one step.
+
     void update(const unsigned char *buf, size_type length);
     void update(const char *buf, size_type length);
     MD5& finalize();

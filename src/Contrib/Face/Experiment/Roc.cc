@@ -16,6 +16,8 @@
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/MeanVariance.hh"
 #include "Ravl/OS/Filename.hh"
+#include "Ravl/IO.hh"
+#include "Ravl/OS/Date.hh"
 
 #define DODEBUG 0
 #if DODEBUG
@@ -27,7 +29,8 @@
 namespace RavlN {
   namespace FaceN {
 
-    using namespace RavlGUIN;
+
+    using namespace RavlImageN;
 
     bool compare_claim_ascend(const ClaimT & el1, const ClaimT & el2)
     {
@@ -112,7 +115,8 @@ namespace RavlN {
 //: Stream constructor
 // This creates a new instance of the class from an input stream.
 
-    RocBodyC::RocBodyC(istream &in)
+    RocBodyC::RocBodyC(istream &in) :
+        RCBodyVC(in)
     {
       in >> claims;
       in >> metricType;
@@ -121,7 +125,8 @@ namespace RavlN {
       in >> impostors;
     }
 
-    RocBodyC::RocBodyC(BinIStreamC &in)
+    RocBodyC::RocBodyC(BinIStreamC &in) :
+        RCBodyVC(in)
     {
       in >> claims;
       in >> metricType;
@@ -134,12 +139,16 @@ namespace RavlN {
     
     bool RocBodyC::Save(ostream &out) const
     {
+      if (!RCBodyVC::Save(out))
+        return false;
       out << (*this);
       return true;
     }
 
     bool RocBodyC::Save(BinOStreamC &out) const
     {
+      if (!RCBodyVC::Save(out))
+        return false;
       out << (*this);
       return true;
     }
@@ -198,8 +207,7 @@ namespace RavlN {
 
         if (it.Data().Data1()) {
           clientssofar += 1.0;
-        }
-        else {
+        } else {
           impostorssofar += 1.0;
         }
 
@@ -418,7 +426,7 @@ namespace RavlN {
       while (doing) {
         //:  Impostor model
         if (highMatches) {
-          if (it.Data().Data2() >= threshold)
+          if (it.Data().Data2() > threshold)
             doing = false;
           else {
             if (it.Data().Data1())
@@ -429,7 +437,7 @@ namespace RavlN {
         }
         //: Client model
         else {
-          if (it.Data().Data2() <= threshold)
+          if (it.Data().Data2() < threshold)
             doing = false;
           else {
             if (it.Data().Data1())
@@ -493,6 +501,7 @@ namespace RavlN {
       for (ConstDLIterC<RealT> it2(values); it2; it2++) {
         hist.Vote(it2.Data());
       }
+
       return hist;
     }
     
@@ -562,75 +571,185 @@ namespace RavlN {
       return data;
     }
     
-    GnuPlotC RocBodyC::Plot(RealT maxFa, RealT maxFr) const
+    bool RocBodyC::Plot(RealT maxFa, RealT maxFr, const StringC & title, const StringC & filename) const
     {
 
       //: Check it is sorted before use
       if (!sorted)
-        return GnuPlotC();
+        return false;
 
       if (!IsValid())
-        return GnuPlotC();
+        return false;
 
-      DListC<Tuple2C<RealT, RealT> > points = Graph(maxFa, maxFr);
-      FilenameC nn = "/tmp/graph.png";
-      GnuPlotC plot;
-      for (DLIterC<Tuple2C<RealT, RealT> > it(points); it; it++) {
-        plot.AddPoint(0, it.Data().Data1(), it.Data().Data2());
+      Plot2dC::RefT plot = CreatePlot2d(title);
+
+      // Sort out x-axis
+      plot->SetXLabel("FA");
+      plot->SetXRange(RealRangeC(0.0, maxFa));
+
+      // Sort out y-axis
+      plot->SetYLabel("FR");
+      plot->SetYRange(RealRangeC(0.0, maxFr));
+
+      // Set output filename if requested, otherwise it will plot to screen
+      if (!filename.IsEmpty()) {
+        plot->SetOutput(filename);
       }
-      plot.Terminal("png");
-      plot.Title("ROC Curve");
-      plot.Xlabel("FA");
-      plot.Ylabel("FR");
-      plot.Xlo(0.0);
-      plot.Xhi(maxFa);
-      plot.Ylo(0.0);
-      plot.Yhi(maxFr);
-      return plot;
+
+      // Sort out points
+      DListC<Tuple2C<RealT, RealT> > points = Graph(maxFa, maxFr);
+      CollectionC<Point2dC> arr(points.Size());
+      for (DLIterC<Tuple2C<RealT, RealT> > it(points); it; it++) {
+        arr.Append(Point2dC(it.Data().Data1(), it.Data().Data2()));
+      }
+      plot->SetLineStyle("lines");
+      plot->Plot(arr.SArray1d());
+
+      return true;
     }
 
-    GnuPlotC RocBodyC::PlotHistogram(UIntT type) const
+    bool RocBodyC::Plot(RealT maxFa, RealT maxFr, const StringC & title, ImageC<ByteRGBValueC> & image) const
+    {
+
+      // tmp file name
+      FilenameC filename = "/tmp/roc.png";
+      filename = filename.MkTemp(6);
+
+      // plot to that file
+      if(!Plot(maxFa, maxFr, title, filename)) {
+        RavlError("Failed to make plot.");
+        return false;
+      }
+
+      RavlN::Sleep(1.0);
+
+      // load image
+      if(!Load(filename, image)) {
+        RavlError("Failed to load image.");
+        return false;
+      }
+
+      // delete file
+      if(!filename.Remove()) {
+        RavlError("Failed to remove image");
+        return false;
+      }
+
+      return true;
+    }
+
+
+    bool RocBodyC::PlotScoreHistogram(const StringC & title, const StringC & filename) const
     {
       //: Check it is sorted before use
       if (!sorted)
-        return GnuPlotC();
+        return false;
 
       if (!IsValid())
-        return GnuPlotC();
+        return false;
+
+      Plot2dC::RefT plot = CreatePlot2d(title);
+      // Set output filename if requested, otherwise it will plot to screen
+      if (!filename.IsEmpty()) {
+        plot->SetOutput(filename);
+      }
 
       // Initialise client or impostor histogram
       RealHistogram1dC clientHist = Histogram(true);
       RealHistogram1dC impostHist = Histogram(false);
 
+      RCHashC<StringC, CollectionC<Point2dC> > plots;
+      plots.Insert("Client", CollectionC<Point2dC>(clientHist.Size()));
+      plots.Insert("Impostor", CollectionC<Point2dC>(impostHist.Size()));
       // Assign histogram points
-      FilenameC fileName = "/tmp/histogram.png";
-      GnuPlotC plot;
-      UIntT maxY = 0;
-      if (type == 0 || type == 2) {
-        for (SArray1dIterC<UIntC> it(clientHist); it; it++) {
-          plot.AddPoint(0, clientHist.MidBin(it.Index()), it.Data());
-          if (it.Data() > maxY)
-            maxY = it.Data();
-        }
-      } else if (type == 1 || type == 2) {
-        for (SArray1dIterC<UIntC> it(impostHist); it; it++) {
-          plot.AddPoint(0, impostHist.MidBin(it.Index()), it.Data());
-          if (it.Data() > maxY)
-            maxY = it.Data();
-        }
+      RealT clientTotal = clientHist.TotalVotes();
+      RealT max = 0.0;
+      for (SArray1dIterC<UIntC> it(clientHist); it; it++) {
+        RealT norm = it.Data() / clientTotal;
+        max = Max(max, norm);
+        plots["Client"].Append(Point2dC(clientHist.MidBin(it.Index()), norm));
+      }
+      RealT impostorTotal = impostHist.TotalVotes();
+      for (SArray1dIterC<UIntC> it(impostHist); it; it++) {
+        RealT norm = it.Data() / impostorTotal;
+        max = Max(max, norm);
+        plots["Impostor"].Append(Point2dC(impostHist.MidBin(it.Index()), norm));
+      }
+      // Assign histogram characteristics
+      plot->SetXLabel("Score");
+      plot->SetYLabel("Normalised claims");
+      plot->SetXRange(RealRangeC(impostHist.MinLimit(), clientHist.MaxLimit()));
+      plot->SetYRange(RealRangeC(0.0, max));
+      plot->SetLineStyle("lines");
+      plot->Plot(plots);
+      return true;
+    }
+
+
+    bool RocBodyC::PlotScoreHistogram(const StringC & title, RavlImageN::ImageC<RavlImageN::ByteRGBValueC> & image) const
+    {
+      // tmp file name
+      FilenameC filename = "/tmp/dist.png";
+      filename = filename.MkTemp(6);
+
+      // plot to that file
+      if (!PlotScoreHistogram(title, filename)) {
+        RavlError("Failed to make plot.");
+        return false;
       }
 
-      // Assign histogram characteristics
-      plot.Terminal("png");
-      plot.Title("Histogram");
-      plot.Xlabel("Score");
-      plot.Ylabel("Number of claims");
-      plot.Xlo(impostHist.MinLimit());
-      plot.Xhi(clientHist.MaxLimit());
-      plot.Ylo(0);
-      plot.Yhi(maxY);
+      RavlN::Sleep(1.0);
 
-      return plot;
+      // load image
+      if (!Load(filename, image)) {
+        RavlError("Failed to load image.");
+        return false;
+      }
+
+      // delete file
+      if (!filename.Remove()) {
+        RavlError("Failed to remove image");
+        return false;
+      }
+
+      return true;
+
+    }
+
+
+    /*
+     * Get the maximum score in the ROC
+     */
+    RealT RocBodyC::MaxFAScore() const
+    {
+      if (!sorted) {
+        return -1.0;
+      }
+      for (DLIterC<ClaimT> it(claims); it; it++) {
+        if (it.Data().Data1())
+          continue;
+        return it.Data().Data2();
+      }
+      return -1.0;
+    }
+
+    /*
+     * Get the maximum score in the ROC
+     */
+    RealT RocBodyC::MinFRScore() const
+    {
+      if (!sorted) {
+        return -1.0;
+      }
+
+      DListC<ClaimT> r = claims.Copy();
+      r.Reverse();
+      for (DLIterC<ClaimT> it(r); it; it++) {
+        if (!it.Data().Data2())
+          continue;
+        return it.Data().Data2();
+      }
+      return -1.0;
     }
 
     bool RocBodyC::IsValid() const
@@ -675,63 +794,32 @@ namespace RavlN {
         rng = 1.0;
       }
 
-      RavlGUIN::GnuPlotC plot = Plot(rng, rng);
-      plot.SetAxisRange(0, rng, 0, rng);
-      plot.Plot(outDir + "/roc.png");
+      StringC rocFile = outDir + "/roc.png";
+      if (!Plot(rng, rng, outDir, rocFile)) {
+        RavlError("Failed to plot ROC");
+        return false;
+      }
 
-      // Lets generate some score distributions
-      RavlGUIN::GnuPlotC distPlot0 = PlotHistogram(0);
-      distPlot0.Plot(outDir + "/clientScoreDistribution.png");
-
-      RavlGUIN::GnuPlotC distPlot1 = PlotHistogram(1);
-      distPlot1.Plot(outDir + "/impostorScoreDistribution.png");
+      StringC distFile = outDir + "/dist.png";
+      if (!PlotScoreHistogram(outDir, distFile)) {
+        RavlError("Failed to plot scores distribution");
+        return false;
+      }
 
       return true;
     }
 
-// output your class members
-    ostream &
-    operator<<(ostream & s, const RocBodyC & out)
+
+    void LinkROC()
     {
-      //: Check it is sorted before use
-      s << out.claims << endl;
-      s << out.metricType << endl;
-      s << out.highMatches << endl;
-      s << out.clients << endl;
-      s << out.impostors;
-      return s;
-    }
-    
-    BinOStreamC &
-    operator<<(BinOStreamC & s, const RocBodyC & out)
-    {
-      //: Check it is sorted before use
-      s << out.claims;
-      s << out.metricType;
-      s << out.highMatches;
-      s << out.clients;
-      s << out.impostors;
-      return s;
-    }
-    
-//////////////////////////////
-// input your class members
-    
-    istream &
-    operator>>(istream & s, RocBodyC & in)
-    {
-      in = RocBodyC(s);
-      return s;
     }
 
-    void InitRocIO()
-    {
-    }
     // RAVL I/O
-
     FileFormatStreamC<RocC> FileFormatStream_RocC;
     FileFormatBinStreamC<RocC> FileFormatBinStream_RocC;
-    static TypeNameC typenameRoc(typeid(RocC), "RocC");
+    static TypeNameC typenameRoc(typeid(RocC), "RavlN::FaceN::RocC");
+
+    RAVL_INITVIRTUALCONSTRUCTOR(RocBodyC);
 
   }
 } // end namespace

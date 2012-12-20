@@ -44,7 +44,8 @@ namespace RavlN { namespace GeneticN {
    : GeneTypeC(name),
      m_contentType(&contentType),
      m_length(length)
-  {}
+  {
+  }
 
   GeneTypeArrayBaseC::GeneTypeArrayBaseC(BinIStreamC &strm)
    : GeneTypeC(strm),
@@ -105,7 +106,7 @@ namespace RavlN { namespace GeneticN {
                                  RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Mutate Array. "));
-    if(fraction < palette.Random1() && !mustChange) {
+    if((fraction < palette.Random1() && !mustChange) || m_length == 0) {
       newValue = &original;
       return false;
     }
@@ -147,6 +148,11 @@ namespace RavlN { namespace GeneticN {
                                  RavlN::SmartPtrC<GeneC> &newValue) const
   {
     ONDEBUG(RavlSysLogf(SYSLOG_DEBUG,"Crossing Array."));
+    // Zero length array means there's no information...
+    if(m_length < 1) {
+      newValue = &original1;
+      return ;
+    }
     const GeneArrayC &oldArrayGene1 = dynamic_cast<const GeneArrayC &>(original1);
     const GeneArrayC &oldArrayGene2 = dynamic_cast<const GeneArrayC &>(original2);
 

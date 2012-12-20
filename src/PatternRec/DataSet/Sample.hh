@@ -49,13 +49,14 @@ namespace RavlN {
     // Note: The data is NOT copied; any operations done
     // on the sample may effect the contents of the original array.
     
-  protected: 
     SampleC(const DArray1dC<DataT> & dat)
      : DArray1dC<DataT> (dat) 
     {}
     //: Create a sample of data from a DArray 
-  public: 
-    inline SampleC<DataT> Copy (void)
+    // Note: The data is NOT copied; any operations done
+    // on the sample may effect the contents of the original array.
+
+    inline SampleC<DataT> Copy (void) const
     { return SampleC<DataT> ((static_cast<DArray1dC<DataT> > (*this) ).Copy() ) ;}
     //: Make a copy of this object 
 
@@ -65,13 +66,13 @@ namespace RavlN {
     SampleC<DataT> CompactFrom(IndexC start,SizeT size)
     { return DArray1dC<DataT>::CompactFrom(start,size); }
     //: Get sub array from this one.
-    // The new array will be indexed from zero and continous
+    // The new array will be indexed from zero and continuous
     // This does not copy the elements, it only creates a new access to existing ones.
 
     const SampleC<DataT> CompactFrom(IndexC start,SizeT size) const
     { return const_cast<SampleC<DataT> *>(this)->DArray1dC<DataT>::CompactFrom(start,size); }
     //: Get sub array from this one.
-    // The new array will be indexed from zero and continous
+    // The new array will be indexed from zero and continuous
     // This does not copy the elements, it only creates a new access to existing ones.
 
     DataT ExtractEntry(int ind);
@@ -103,7 +104,7 @@ namespace RavlN {
     DataT PickElement(UIntT i);
     //: Pick a item i from the collection
     // Note: The order of the collection is NOT preserved.
-    // This minimizes the distruption to the underlying
+    // This minimises the disruption to the underlying
     // representation by removing an element from the end
     // of the array and placing it in the hole left by 
     // removing 'i'.

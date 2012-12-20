@@ -119,6 +119,14 @@ namespace RavlN {
     finalize();
   }
 
+  //: Compute MD5 of string in one step.
+  MD5::MD5(const RavlN::StringC& text)
+  {
+    init();
+    update(text.c_str(), text.Size().V());
+    finalize();
+  }
+
   //////////////////////////////
 
   void MD5::init()

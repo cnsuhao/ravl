@@ -297,6 +297,19 @@ namespace RavlN {
     //: Multiply i by a and add it to this matrix.
     // Returns a reference to this matrix.
     
+	%extend {
+      PyObject * AsNumPy()
+      {
+        int nd = 2;
+        npy_intp dims[2];
+        dims[0]=self->Rows();
+        dims[1]=self->Cols();
+        PyObject * array = PyArray_SimpleNew(nd, dims, PyArray_DOUBLE);
+	    RavlN::RealT * dptr = (RavlN::RealT*)PyArray_DATA(array);
+        memcpy((void *)dptr, (void *)&(*self)[0][0], sizeof(RavlN::RealT) * self->Rows() * self->Cols()); 
+        return array;
+      }
+    }
 
   };
   
@@ -409,5 +422,8 @@ namespace RavlN {
   MatrixC RandomPositiveDefiniteMatrix(int n);
   //: Create a random positive definite matrix.
   // The matrix is also symmetric in the current implementation, this may be changed at some point.
+  
+  
+  
   
 }

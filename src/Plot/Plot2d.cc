@@ -8,9 +8,13 @@
 #include "Ravl/Plot/Plot2d.hh"
 #include "Ravl/SArray1dIter.hh"
 #include "Ravl/Assert.hh"
+#include "Ravl/OS/Filename.hh"
+#include "Ravl/IO.hh"
 
 namespace RavlN {
   
+  using namespace RavlImageN;
+
   /*
    * Construct
    */
@@ -29,6 +33,27 @@ namespace RavlN {
     return false;
   }
 
+  bool Plot2dC::Plot(const SArray1dC<Point2dC> & data,
+          ImageC<ByteRGBValueC> & image,
+          const IndexRange2dC & rec,
+          const StringC & dataName) {
+
+    FilenameC filename("/tmp/plot.png");
+    filename = filename.MkTemp(6);
+    SetOutput(filename, rec);
+    if(!Plot(data, dataName)) {
+      return false;
+    }
+    if(!Load(filename, image)) {
+      return false;
+    }
+    if (!filename.Remove()) {
+      RavlError("Failed to remove temporary plot file");
+      return false;
+    }
+    return true;
+  }
+
   /*
    * Plot as separate plots on same graph
    */
@@ -38,6 +63,26 @@ namespace RavlN {
     RavlError("Abstract method called");
     return false;
   }
+
+  bool Plot2dC::Plot(const RCHashC<StringC, CollectionC<Point2dC> > & data,
+            ImageC<ByteRGBValueC> & image,
+            const IndexRange2dC & rec) {
+
+      FilenameC filename("/tmp/plot.png");
+      filename = filename.MkTemp(6);
+      SetOutput(filename, rec);
+      if(!Plot(data)) {
+        return false;
+      }
+      if(!Load(filename, image)) {
+        return false;
+      }
+      if(!filename.Remove()) {
+        RavlError("Failed to remove temporary plot file");
+        return false;
+      }
+      return true;
+    }
 
   /*
    * Plot a straight line

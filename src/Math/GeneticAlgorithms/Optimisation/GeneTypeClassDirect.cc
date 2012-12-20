@@ -87,7 +87,8 @@ namespace RavlN { namespace GeneticN {
   }
 
   static RavlN::TypeNameC g_typePtrGeneTypeClassDirect(typeid(GeneTypeClassDirectFuncC::RefT),"RavlN::SmartPtrC<RavlN::GeneticN::GeneTypeClassDirectFuncC>");
-  XMLFactoryRegisterConvertC<GeneTypeClassDirectFuncC,GeneTypeClassC> g_registerGeneTypeClassDirect("RavlN::GeneticN::GeneTypeClassDirectFuncC");
+  static XMLFactoryRegisterConvertC<GeneTypeClassDirectFuncC,GeneTypeClassC> g_registerGeneTypeClassDirect("RavlN::GeneticN::GeneTypeClassDirectFuncC");
   RAVL_INITVIRTUALCONSTRUCTOR_NAMED(GeneTypeClassDirectFuncC,"RavlN::GeneticN::GeneTypeClassDirectFuncC");
 
+  //
 }}

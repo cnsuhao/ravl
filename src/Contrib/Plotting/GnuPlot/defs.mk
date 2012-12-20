@@ -5,7 +5,8 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-DONOT_SUPPORT=VCPP
+# This library needs to be supported by VCPP!
+#DONOT_SUPPORT=VCPP
 
 PACKAGE=Ravl/Plot
 
@@ -22,6 +23,6 @@ SOURCES = GnuPlot2d.cc GnuPlot.cc GnuPlot3d.cc
 
 PLIB = RavlGnuPlot
 
-USESLIBS=  RavlPlot RavlOS
+USESLIBS=  RavlPlot RavlOS RavlPatternRec 
 
-PROGLIBS= RavlExtImgIO RavlDPDisplay RavlPatternRec
+PROGLIBS= RavlDPDisplay  RavlExtImgIO

@@ -359,7 +359,7 @@ namespace RavlN {
 
   template <class DataT>
   void Array2dC<DataT>::ConstructAccess(const IndexRangeC &rng1,SizeT bufferOffset) {
-    Attach(data,rng1);
+    this->Attach(data,rng1);
     const SizeT d2Size = Range2().Size();
     DataT *at = data.Data().ReferenceElm() - Range2().Min().V() + bufferOffset;
     for(BufferAccessIterC<BufferAccessC<DataT> > it(*this);it;it++,at += d2Size)
@@ -434,7 +434,7 @@ namespace RavlN {
   {
     IndexC shift2 = newOrigin[1] - rect.Range2().Min();
     IndexRangeC rind1(newOrigin[0],newOrigin[0] + rect.Range1().Size() - 1);
-    Attach(data,rind1);
+    this->Attach(data,rind1);
     for(BufferAccessIter2C<BufferAccessC<DataT>,BufferAccessC<DataT> > it(*this,const_cast<Array2dC<DataT> &>(arr).BufferFrom(rect.Range1().Min(),rect.Range1().Size()));it;it++)
       it.Data1() = it.Data2() - shift2;
   }

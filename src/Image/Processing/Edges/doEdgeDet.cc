@@ -75,8 +75,8 @@ int main(int argc,char **argv) {
   OptionC option(argc,argv,true);
   StringC   inType = option.String("it","","Input file type. ");
   StringC   outType = option.String("ot","","Output file type. ");
-  bool seq = option.Boolean("seq",false,"Assume input is a sequence. ");
-  bool verb = option.Boolean("v",false,"Verbose. ");
+  bool seq = option.Boolean("seq","Assume input is a sequence. ");
+  bool verb = option.Boolean("v","Verbose. ");
   //bool eightCon = option.Boolean("u",false,"Use eight contectivity. ");
   bool rawEdgeImg = option.Boolean("rei",false,"Show raw edge image.");
   RealT hystLower = option.Real("hl",4.0,"Lower hysteresis threshold. ");
@@ -85,9 +85,9 @@ int main(int argc,char **argv) {
   RealT omega     = option.Real("w", 0.001,"\"omega\" for Deriche. ");
   IntT threads = option.Int("th",2,"Number of threads to use in processing. ");
   StringC overlay = option.String("ol","","Overlay edges on input image. ");
-  bool overlayBlank = option.Boolean("bol",false,"Use a blank overlay image");
-  bool useDeriche = !option.Boolean("s",false,"Use Sobel filter. ");
-  bool deinterlace = option.Boolean("d",false,"Deinterlace images");
+  bool overlayBlank = option.Boolean("bol","Use a blank overlay image");
+  bool useDeriche = !option.Boolean("s","Use Sobel filter. ");
+  bool deinterlace = option.Boolean("d","Deinterlace images");
   StringC inFile = option.String("","in.pgm","Input filename");
   StringC outFile = option.String("","","Output filename");
   
@@ -95,6 +95,7 @@ int main(int argc,char **argv) {
   
   // Setup edge detector.
   EdgeDetectorC edgeDet(useDeriche,hystLower,hystUpper);
+  edgeDet.SetDeriche(3.0, 0.002);
   
   EdgeDericheC edgeDeriche(omega, alpha);
   if(!seq) { // 

@@ -77,6 +77,10 @@ namespace RavlN {
     //!param covariance the covariance matrix of the data
     //!param samples the number of samples to generate
 
+    SampleVectorC Copy (void) const
+    { return SampleVectorC(static_cast<DArray1dC<VectorC> >(*this).Copy(),FieldInfo()); }
+    //: Make a copy of this object
+
     UIntT VectorSize() const;
     //: Get the size of vectors in this sample.
     

@@ -244,6 +244,24 @@ namespace RavlN {
     return ret;
   }
 
+  //: Get a time far in the past.
+
+  DateC DateC::FarPast() {
+    // Though we can support 64 bit numbers, quite a few of the functions
+    // may use 32 bit integers, so we'll stick with the highest possible value
+    // for them for the moment.
+    return DateC((SecondT) -2147483646,0);
+  }
+
+  //: Get a time as far in the future as possible.
+
+  DateC DateC::FarFuture() {
+    // Though we can support 64 bit numbers, quite a few of the functions
+    // may use 32 bit integers, so we'll stick with the highest possible value
+    // for them for the moment.
+    return DateC((SecondT) 2147483647,0);
+  }
+
   //: Get the current time in Coordinated Universal Time  (UTC)
   
   DateC DateC::NowUTC() {
@@ -406,9 +424,9 @@ namespace RavlN {
 
   //: Generate date from odbc string.
   
-  DateC DateC::FromODBCString(const StringC &dateStr) {
+  DateC DateC::FromODBCString(const StringC &dateStr, bool isLocalTimeZone) {
     DateC ret;
-    ret.SetODBC(dateStr);
+    ret.SetODBC(dateStr, isLocalTimeZone);
     return ret;
   }
   
@@ -416,7 +434,7 @@ namespace RavlN {
   // Returns true if conversion succesfull, false
   // if string is not recognised.
   
-  bool DateC::SetODBC(const StringC &odbcStr) {
+  bool DateC::SetODBC(const StringC &odbcStr, bool isLocalTimeZone) {
    
     // Empty field ?
     
@@ -461,7 +479,7 @@ namespace RavlN {
     year = atoi(ptr);
     
     // Create date structure
-    *this = DateC(year, month, day, hour, minute, seconds,usecPart,false);
+    *this = DateC(year, month, day, hour, minute, seconds, usecPart, isLocalTimeZone);
     
     return true;
   }

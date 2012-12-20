@@ -54,6 +54,10 @@ EHT=Ravl.API.Core.Indexing.eht Ravl.API.Core.Error_Handling.eht Ravl.API.Core.Mi
  Ravl.API.Core.Strings.html Ravl.API.Core.IO.Streams.html Ravl.API.Core.Calls.html Ravl.API.Math.QInt.html \
  Ravl.API.Core.Locks.html Ravl.API.Core.Resource.html Ravl.API.Core.Typedefs.html
 
-PROGLIBS = RavlI386SSE
+PROGLIBS = RavlI386SSE.opt
+
+AUXFILES=ravlgdb.py
+
+AUXDIR=share/RAVL/gdb
 
 

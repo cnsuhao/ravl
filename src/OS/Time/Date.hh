@@ -43,6 +43,12 @@ namespace RavlN {
     static DateC InvalidTime();
     //: Get an invalid time.
 
+    static DateC FarPast();
+    //: Get a time far in the past.
+
+    static DateC FarFuture();
+    //: Get a time as far in the future as possible.
+
     static DateC NowUTC();
     //: Get the current time in Coordinated Universal Time  (UTC)
     
@@ -56,8 +62,10 @@ namespace RavlN {
     static DateC TimeZoneOffset();
     //: Get the local timezone offset.  (Note around daylight saving this may change.)
     
-    static DateC FromODBCString(const StringC &dataString);
+    static DateC FromODBCString(const StringC &dataString, bool isLocalTimeZone = false);
     //: Generate date from odbc string.
+    //!param: dataString - ODBC style date e.g. '2012-11-22 00:00:00'
+    //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
 
     static DateC FromISO8601String(const StringC &dataString,bool storeInUTC = true);
     //: Generate date from ISO8601 string.
@@ -194,11 +202,13 @@ namespace RavlN {
     StringC ODBC(bool convertUTCToLocal = false,bool factionalSeconds = false) const;
     //: Return the date and time in ODBC format
     
-    bool SetODBC(const StringC &odbcStr);
+    bool SetODBC(const StringC &odbcStr, bool isLocalTimeZone = false);
     //: Set date to ODBC specified time string.
     // Returns true if conversion successful, false
     // if string is not recognised.
-    
+    //!param: odbcStr - ODBC style date e.g. '2012-11-22 00:00:00'
+    //!param: isLocalTimeZone - When true assumes parameters are in the local timezone.  It will convert to UTC.
+
     StringC CTime(bool convertUTCToLocal = false) const;
     //: Returns results equivalent to calling ctime().
     

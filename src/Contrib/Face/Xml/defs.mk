@@ -18,7 +18,7 @@ PACKAGE =  Ravl/Face
 
 
 MAINS= readFaceXml.cc copyFaceXml.cc modifyFaceXml.cc splitFaceXml.cc \
- faceInfoDb2enrolSession.cc protocols.cc insertFeatureSets.cc
+ faceInfoDb2enrolSession.cc protocols.cc insertFeatureSets.cc mergeSightingSets.cc
 
 SOURCES =   FaceInfo.cc Enrol.cc EnrolSession.cc Expert.cc Score.cc \
  ScoreSession.cc Protocol.cc FaceInfoDb.cc FaceInfoStream.cc Sighting.cc \

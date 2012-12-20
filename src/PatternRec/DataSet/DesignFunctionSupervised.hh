@@ -126,6 +126,10 @@ namespace RavlN {
     //: Access body.
     
   public:
+    DesignFunctionSupervisedC Copy() const
+    { return DesignFunctionSupervisedC(dynamic_cast<DesignFunctionSupervisedBodyC &>(Body().Copy())); }
+     //: Make copy of body.
+
     FunctionC Apply(const SampleC<VectorC> &in,const SampleC<VectorC> &out)
     { return Body().Apply(in,out); }
     //: Create function from the given data.

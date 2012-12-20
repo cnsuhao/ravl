@@ -5,7 +5,7 @@
 # see http://www.gnu.org/copyleft/lesser.html
 # file-header-ends-here
 
-REQUIRES=Swig SwigPython
+REQUIRES=Swig SwigPython NumPy
 
 PACKAGE=Ravl/Swig
 
@@ -19,7 +19,7 @@ SINGLESO=_RavlSwigPython2
 
 USESLIBS=RavlDPDisplay.opt RavlCore RavlMath RavlImage RavlImageIO \
  RavlExtImgIO Python RavlNet RavlOSIO RavlDataSet RavlPatternRec \
- RavlPatternRecIO RavlGnuPlot RavlSVM
+ RavlPatternRecIO RavlGnuPlot RavlSVM RavlNumPy
 
 PROGLIBS=RavlMath
 
@@ -30,4 +30,4 @@ AUXDIR=/share/Python
 AUXFILES=Ravl.py
 
 SCRIPTS= test.py testVectorMatrix.py testPatternRec.py testSVM.py \
- testReduce.py testFeatureSelect.py
+ testReduce.py testFeatureSelect.py testNumPy.py

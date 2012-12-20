@@ -91,6 +91,9 @@ namespace RavlN { namespace GeneticN {
     bool Value() const
     { return m_value; }
 
+    //! Generate an instance of the class.
+    virtual void Generate(const GeneFactoryC &context,RCWrapAbstractC &handle) const;
+
     //! Access hash value.
     virtual size_t Hash() const
     { return RavlN::StdHash(m_value); }

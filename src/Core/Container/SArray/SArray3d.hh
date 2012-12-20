@@ -167,7 +167,7 @@ namespace RavlN {
 
   template<class DataT>
   void SArray3dC<DataT>::BuildAccess(SizeT size1) {
-    Attach(data,size1);
+    this->Attach(data,size1);
     const SizeT d3Size = this->Size3();
     const SizeT d2Size = this->Size2();
     BufferAccessC<DataT>  *acc2 = data.DataIndex().ReferenceElm();

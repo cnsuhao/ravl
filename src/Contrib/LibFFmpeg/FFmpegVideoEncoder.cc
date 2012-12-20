@@ -24,6 +24,7 @@
 
 
 #if LIBAVFORMAT_VERSION_INT >= ((51<<16)+(12<<8)+1)
+// Point at which swscale was introduced
 #define LIBAVFORMAT_USE_SWSCALER
 #endif
 
@@ -33,6 +34,13 @@ extern "C" {
     #include <swscale.h>
   #else
     #include <libswscale/swscale.h>
+    #if  LIBAVFORMAT_VERSION_MAJOR > 52 && ( LIBAVFORMAT_VERSION_MAJOR > 53 || defined(LIBAVFORMAT_VERSION_MINOR) && LIBAVFORMAT_VERSION_MINOR >= 2)
+      // Libav fork removemd mathematics.h from avutil.h between 53-2-0 and
+      // 53-3-0 necessitating explicit inclusion.
+      #ifndef AVUTIL_MATHEMATICS_H
+        #include <libavutil/mathematics.h>
+      #endif
+    #endif
   #endif
 }
 #endif

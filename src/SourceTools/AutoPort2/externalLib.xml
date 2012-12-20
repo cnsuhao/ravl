@@ -42,6 +42,7 @@
 <includepath>c:\WindowsSources\GTK\include\fontconfig</includepath>
 <includepath>c:\WindowsSources\GTK\include\freetype2</includepath>
 <includepath>c:\WindowsSources\GTK\include\gail-1.0</includepath>
+<includepath>c:\WindowsSources\GTK\include\gdk-pixbuf-2.0</includepath>
 <includepath>c:\WindowsSources\GTK\include\glib-2.0</includepath>
 <includepath>c:\WindowsSources\GTK\include\gtk-2.0</includepath>
 <includepath>c:\WindowsSources\GTK\include\libpng14</includepath>

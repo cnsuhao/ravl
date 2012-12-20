@@ -56,6 +56,16 @@ namespace RavlN {
     return *this;
   }
 
+  //: Add another sample
+  MeanVarianceC &MeanVarianceC::operator+=(const RealT &value) {
+    n += 1;
+    RealT rn = n;
+    RealT delta = value - mean;
+    mean += delta/rn;
+    var = (var * (rn-1.0) + (delta*(value - mean)))/rn;
+    return *this;
+  }
+
   //: Remove another MeanVariance from this one.
   
   MeanVarianceC &MeanVarianceC::operator-=(const MeanVarianceC &mv) { 
@@ -110,8 +120,7 @@ namespace RavlN {
   }
 
   //: Calculate the product of the two probability density functions.
-  // This assumes the estimates of the distributions are accurate. (The number
-  // of samples is ignored) 
+  // (The number of samples is ignored)
   
   MeanVarianceC MeanVarianceC::operator*(const MeanVarianceC &oth) const {
     RealT sum = Variance() + oth.Variance();

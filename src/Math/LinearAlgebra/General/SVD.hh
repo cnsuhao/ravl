@@ -137,7 +137,7 @@ namespace RavlN
 
             // Apply the transformation.
 
-	    RealT t = 0;
+	    NumT t = 0;
 	    for (i = k; i < m; i++) {
 	      t += A[i][k]*A[i][j];
 	    }
@@ -152,7 +152,7 @@ namespace RavlN
 
 	  e[j] = A[k][j];
 	}
-	if (wantu & (k < nct)) {
+	if (wantu && (k < nct)) {
 
 	  // Place the transformation in U for subsequent back
 	  // multiplication.
@@ -180,7 +180,7 @@ namespace RavlN
 	    e[k+1] += 1.0;
 	  }
 	  e[k] = -e[k];
-	  if ((k+1 < m) & (e[k] != 0.0)) {
+	  if ((k+1 < m) && (e[k] != 0.0)) {
 
             // Apply the transformation.
 
@@ -193,7 +193,7 @@ namespace RavlN
 	      }
 	    }
 	    for (j = k+1; j < n; j++) {
-	      RealT t = -e[j]/e[k+1];
+	      NumT t = -e[j]/e[k+1];
 	      for (i = k+1; i < m; i++) {
 		A[i][j] += t*work[i];
 	      }
@@ -237,7 +237,7 @@ namespace RavlN
 	for (k = nct-1; k >= 0; k--) {
 	  if (s[k] != 0.0) {
 	    for (j = k+1; j < nu; j++) {
-	      RealT t = 0;
+	      NumT t = 0;
 	      for (i = k; i < m; i++) {
 		t += U[i][k]*U[i][j];
 	      }
@@ -266,9 +266,9 @@ namespace RavlN
 
       if (wantv) {
 	for (k = n-1; k >= 0; k--) {
-	  if ((k < nrt) & (e[k] != 0.0)) {
+	  if ((k < nrt) && (e[k] != 0.0)) {
 	    for (j = k+1; j < nu; j++) {
-	      RealT t = 0;
+	      NumT t = 0;
 	      for (i = k+1; i < n; i++) {
 		t += V[i][k]*V[i][j];
 	      }
@@ -289,7 +289,20 @@ namespace RavlN
 
       int pp = p-1;
       int iter = 0;
-      RealT eps = Pow(2.0,-52.0);
+
+      NumT eps = Pow(2.0,-52.0);
+      NumT tiny = Pow(2.0,-966.0);
+      // Vars to allow algorithm to cope with rounding in floating point representations.
+      // 2^-52 comes from IEEE Double possessing 52 mantissa bits, other than the original
+      // (updated) JAMA source, I do not recognise the 2^-966 magic number other than it
+      // is a remarkably small number and addition of "tiny" to the algorithm does indeed
+      // correct a problem with certain input (see test program).
+      //
+      // N.B. Although this is templated code, the algorithm wasn't specifically written
+      // with non-IEEE doubles in mind. "Your milage may vary" with other numeric types.
+      // For example, if using non-IEEE floating point (or quad precision) the magic
+      // values for eps and tiny may need modifying.
+      //
       while (p > 0) {
 	int k=0;
 	int kase=0;
@@ -310,7 +323,7 @@ namespace RavlN
 	  if (k == -1) {
 	    break;
 	  }
-	  if (Abs(e[k]) <= eps*(Abs(s[k]) + Abs(s[k+1]))) {
+	  if (Abs(e[k]) <= tiny + eps*(Abs(s[k]) + Abs(s[k+1]))) {
 	    e[k] = 0.0;
 	    break;
 	  }
@@ -323,9 +336,9 @@ namespace RavlN
 	    if (ks == k) {
 	      break;
 	    }
-	    RealT t = (ks != p ? Abs(e[ks]) : 0.) + 
+	    NumT t = (ks != p ? Abs(e[ks]) : 0.) + 
 	      (ks != k+1 ? Abs(e[ks-1]) : 0.);
-	    if (Abs(s[ks]) <= eps*t)  {
+	    if (Abs(s[ks]) <= tiny + eps*t)  {
 	      s[ks] = 0.0;
 	      break;
 	    }
@@ -348,12 +361,12 @@ namespace RavlN
 	  // Deflate negligible s(p).
 
 	case 1: {
-	  RealT f = e[p-2];
+	  NumT f = e[p-2];
 	  e[p-2] = 0.0;
 	  for (j = p-2; j >= k; j--) {
-	    RealT t = Hypot(s[j],f);
-	    RealT cs = s[j]/t;
-	    RealT sn = f/t;
+	    NumT t = Hypot(s[j],f);
+	    NumT cs = s[j]/t;
+	    NumT sn = f/t;
 	    s[j] = t;
 	    if (j != k) {
 	      f = -sn*e[j-1];
@@ -373,12 +386,12 @@ namespace RavlN
 	  // Split at negligible s(k).
 
 	case 2: {
-	  RealT f = e[k-1];
+	  NumT f = e[k-1];
 	  e[k-1] = 0.0;
 	  for (j = k; j < p; j++) {
-	    RealT t = Hypot(s[j],f);
-	    RealT cs = s[j]/t;
-	    RealT sn = f/t;
+	    NumT t = Hypot(s[j],f);
+	    NumT cs = s[j]/t;
+	    NumT sn = f/t;
 	    s[j] = t;
 	    f = -sn*e[j];
 	    e[j] = cs*e[j];
@@ -399,33 +412,33 @@ namespace RavlN
 
 	  // Calculate the shift.
    
-	  RealT scale = Max(Max(Max(Max(
+	  NumT scale = Max(Max(Max(Max(
 					Abs(s[p-1]),Abs(s[p-2])),Abs(e[p-2])), 
 				Abs(s[k])),Abs(e[k]));
-	  RealT sp = s[p-1]/scale;
-	  RealT spm1 = s[p-2]/scale;
-	  RealT epm1 = e[p-2]/scale;
-	  RealT sk = s[k]/scale;
-	  RealT ek = e[k]/scale;
-	  RealT b = ((spm1 + sp)*(spm1 - sp) + epm1*epm1)/2.0;
-	  RealT c = (sp*epm1)*(sp*epm1);
-	  RealT shift = 0.0;
-	  if ((bool)(b != 0.0) | (bool)(c != 0.0)) {
+	  NumT sp = s[p-1]/scale;
+	  NumT spm1 = s[p-2]/scale;
+	  NumT epm1 = e[p-2]/scale;
+	  NumT sk = s[k]/scale;
+	  NumT ek = e[k]/scale;
+	  NumT b = ((spm1 + sp)*(spm1 - sp) + epm1*epm1)/2.0;
+	  NumT c = (sp*epm1)*(sp*epm1);
+	  NumT shift = 0.0;
+	  if ((b != 0.0) || (c != 0.0)) {
 	    shift = sqrt(b*b + c);
 	    if (b < 0.0) {
 	      shift = -shift;
 	    }
 	    shift = c/(b + shift);
 	  }
-	  RealT f = (sk + sp)*(sk - sp) + shift;
-	  RealT g = sk*ek;
+	  NumT f = (sk + sp)*(sk - sp) + shift;
+	  NumT g = sk*ek;
    
 	  // Chase zeros.
    
 	  for (j = k; j < p-1; j++) {
-	    RealT t = Hypot(f,g);
-	    RealT cs = f/t;
-	    RealT sn = g/t;
+	    NumT t = Hypot(f,g);
+	    NumT cs = f/t;
+	    NumT sn = g/t;
 	    if (j != k) {
 	      e[j-1] = t;
 	    }
@@ -482,7 +495,7 @@ namespace RavlN
 	    if (s[k] >= s[k+1]) {
 	      break;
 	    }
-	    RealT t = s[k];
+	    NumT t = s[k];
 	    s[k] = s[k+1];
 	    s[k+1] = t;
 	    if (wantv && (k < n-1)) {

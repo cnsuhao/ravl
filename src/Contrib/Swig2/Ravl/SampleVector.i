@@ -14,6 +14,8 @@
 #endif
 
 #include "Ravl/PatternRec/SampleVector.hh"
+#include "Ravl/PatternRec/SampleIter.hh"
+
 
 #ifdef SWIGPERL
 #define Copy(s,d,n,t)   (MEM_WRAP_CHECK_(n,t) (void)memcpy((char*)(d),(const char*)(s), (n) * sizeof(t)))
@@ -99,6 +101,26 @@ namespace RavlN {
     //bool SetFieldInfo(const SArray1dC<FieldInfoC> & fieldInfo);
     //: Set the field information
   	
+	%extend
+    {
+      PyObject * AsNumPy()
+      {
+        int nd = 2;
+        npy_intp dims[2];
+        dims[0]=self->Size();
+        dims[1]=self->First().Size();
+        PyObject * array = PyArray_SimpleNew(nd, dims, PyArray_DOUBLE);
+	    RavlN::RealT * dptr = (RavlN::RealT*)PyArray_DATA(array);
+		for(RavlN::SampleIterC<RavlN::VectorC>it(*self);it;it++) {
+			for(int i=0;i<it.Data().Size();i++) {
+				*dptr=it.Data()[i];
+				dptr++;
+			}
+		}
+        return array;
+      }
+    }
+	
 	
   };
 }
