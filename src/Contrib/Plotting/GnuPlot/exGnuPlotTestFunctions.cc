@@ -7,9 +7,9 @@
 /////////////////////////////////////////////////////////
 //! rcsid="$Id$"
 //! lib=RavlURLIO
-//! file="Ravl/Contrib/Plotting/GnuPlot/exGnuPlot.cc"
+//! file="Ravl/Contrib/Plotting/GnuPlot/exGnuPlotTestFunctions.cc"
 //! author="Kieron Messer"
-//! docentry="Ravl.Contrib.Plotting.GnuPlot"
+//! docentry="Ravl.API.Graphics.Graph Plotting"
 //! userlevel=Normal
 
 #include "Ravl/Plot/GnuPlot2d.hh"
