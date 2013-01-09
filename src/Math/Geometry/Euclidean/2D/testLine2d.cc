@@ -77,8 +77,17 @@ int testLines() {
     for(Line2dIterC it(start,end);it && c < 20;it++,c++) {
       ONDEBUG(cerr << "Line " << it.Data() << "\n");
     }
-    if(c > 19) return __LINE__;
+    if(c > 11) return __LINE__;
   }
+
+  LinePP2dC line(Point2dC(0.3,0.7), Point2dC(10.3,15.7));
+  c = 0;
+  for(Line2dIterC it(line);it && c < 20;it++,c++) {
+    ONDEBUG(cerr << "Line " << it.Data() << "\n");
+    cout  << "Line " << it.Data() << "\n";
+  }
+  if(c > 16) return __LINE__;  
+
   return 0;
 }
 

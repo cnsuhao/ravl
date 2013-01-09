@@ -4,7 +4,7 @@
 #ifndef VIEWPAGE_HEADER
 #define VIEWPAGE_HEADER 1
 //! file="OmniSoft/Applications/WhoFIT/ViewPage.hh"
-//! docentry = "Applications.Mainment Tool"
+//! docentry = "Ravl.Applications.Mainment Tool"
 //! author   = "Kieron Messer"
 //! userlevel=Develop
 //! lib=OmniWhoFIT

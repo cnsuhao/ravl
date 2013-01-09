@@ -1,7 +1,7 @@
 // This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2002, Omniperception Ltd.
 // file-header-ends-here
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="Ravl/Contrib/Face/Xml/generateIdentificationProtocol.cc"
 
 #include "Ravl/Option.hh"

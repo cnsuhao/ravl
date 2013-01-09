@@ -4,7 +4,7 @@
 #ifndef RAVL_FACE_CONTROLWIN_HEADER
 #define RAVL_FACE_CONTROLWIN_HEADER 1
 //! file="OmniSoft/Applications/WhoFIT/ControlWin.hh"
-//! docentry = "Applications.Mainment Tool"
+//! docentry = "Ravl.Applications.Mainment Tool"
 //! author   = "Kieron Messer"
 //! userlevel=Develop
 //! lib=OmniWhoFIT
