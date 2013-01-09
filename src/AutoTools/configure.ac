@@ -560,16 +560,26 @@ dnl    header files are regularly seen in the wild). If specifying multiple
 dnl    headers, provide a space seperated list. 
 dnl
 dnl                 Name,          Fn,                 Deps,   -l,           .h
-dnl 
 dnl
-dnl# Define blas, but first we have to ascertain the naming convention for the
-dnl# test function (Fortran functions may be upper or lowercase, with or without
-dnl# a trailing underscore dependant on the toolset in use). We are testing for
-dnl# the sgemm/SGEMM routine, so we call the appropriate AutoTools macro which
-dnl# sets up the $sgemm variable containing the function name in the correct
-dnl# form.
-AC_F77_FUNC(sgemm)
-QM_DEFINE_EXTLIB_CC([blas],        [$sgemm],          [],     [-lblas],           [])
+QM_DEFINE_EXTLIB_CC([blas],        [sgemm_],           [],     [-lblas],     [])
+dnl# Define BLAS support. This is a bit of a bodge as we should be testing for
+dnl# more Fortran functionality/configurataion here than we currently do. The
+dnl# problem with performing that testing is that the required autotools macros
+dnl# would mandate a Fortran compiler be present even when LAPACK support is 
+dnl# omitted. 
+dnl# An example of the type of extra testing we should be performing comes from
+dnl# the fact that, dependant on the toolset in use, Fortran functions may be
+dnl# upper or lowercase; with or without a trailing underscore. By rights, we
+dnl# should use AC_F77_FUNC(sgemm) to return the correct name of that BLAS
+dnl# function and test for that rather than the hard coded lowercase_ form that
+dnl# we test for here. Other Fortran related checking we should be doing here
+dnl# includes determining any FLIBS setting that may be required (by calling
+dnl# AC_F77_LIBRARY_LDFLAGS) and using the AC_F77_DUMMY_MAIN macro.
+dnl# In addition to all this, we are only looking for -lblas. In fact, this is
+dnl# one of many libraries that may provide blas functionality (some boxes may
+dnl# even provide direct support that needs no other library). These libraries
+dnl# may be added at a later date on an as-needed basis. In the meantime, using
+dnl# the --with-blas-library switch will provide support.
 dnl
 dnl                 Name,          Fn,                 Deps,   -l,           .h
 dnl 
@@ -581,12 +591,19 @@ AC_SUBST([JPEG_SUPPORT])
 dnl# JPEG check will support either the standard or jpeg-turbo library as they
 dnl# are a straight substitution for each other
 dnl
-dnl# Define Lapack, again (as for blas, above) we first have to ascertain the
-dnl# naming convention for the Fortran test function
-AC_F77_FUNC(dgetri)
-QM_DEFINE_EXTLIB_CC([LAPACK],      [$dgetri],          [blas], [-llapack],   [])
+dnl                 Name,          Fn,                 Deps,   -l,           .h
+dnl 
+QM_DEFINE_EXTLIB_CC([LAPACK],      [dgetri_],          [blas], [-llapack],   [])
 LAPACK_RavlLib="RavlLapack RavlLapackWraps"
 AC_SUBST([LAPACK_SUPPORT])
+dnl# As for BLAS, the above definition for LAPACK should be performing more
+dnl# involved Fortran testing (and utilising the extra checking that should have
+dnl# been carried out for the BLAS library). However, to prevent the requirement
+dnl# of a Fortran compiler, even if we are not builing LAPACK into Ravl, we do
+dnl# not do the extra testing. In addition, there is a further problem in that
+dnl# the Ravl wrapper layer has not been coded to cope with anything other than
+dnl# lowercase_ function names. Even if we were correctly using the AC_F77_FUNC
+dnl# macro, more work would be required to enable true portability.
 dnl
 dnl                 Name,          Fn,                 Deps,   -l,           .h
 dnl 
