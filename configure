@@ -718,6 +718,9 @@ devVideo4Linux2_CFLAGS
 RLog_SUPPORT
 RLog_LIBS
 RLog_CFLAGS
+OpenSceneGraphGTK_SUPPORT
+OpenSceneGraphGTK_LIBS
+OpenSceneGraphGTK_CFLAGS
 OpenSceneGraph_SUPPORT
 OpenSceneGraph_LIBS
 OpenSceneGraph_CFLAGS
@@ -961,6 +964,8 @@ with_libGLU_pkgconf
 with_libGLU
 with_OpenSceneGraph_pkgconf
 with_OpenSceneGraph
+with_OpenSceneGraphGTK_pkgconf
+with_OpenSceneGraphGTK
 with_RLog_pkgconf
 with_RLog
 with_devVideo4Linux2_pkgconf
@@ -1778,6 +1783,16 @@ Optional Packages:
 
   --with-OpenSceneGraph   Enable functionality that relies on the
                           OpenSceneGraph library [default=check]
+
+  --with-OpenSceneGraphGTK-pkgconf
+                          Enable the OpenSceneGraphGTK library package via
+                          pkg-config and declare the name by which the
+                          OpenSceneGraphGTK library package is known to
+                          pkg-config
+
+  --with-OpenSceneGraphGTK
+                          Enable functionality that relies on the
+                          OpenSceneGraphGTK library [default=check]
 
   --with-RLog-pkgconf     Enable the RLog library package via pkg-config and
                           declare the name by which the RLog library package
@@ -2631,7 +2646,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2011-12, University of Surrey
+# Copyright (C) 2011-13, University of Surrey
 # This code may be redistributed under the terms of the GNU General
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
@@ -8625,8 +8640,8 @@ if test "${with_OpenSceneGraph_pkgconf+set}" = set; then :
                                           trace 4 --with-OpenSceneGraph-pkgconf disabling OpenSceneGraph
                                           ;;
                         'y' |'Y' | 'yes' | 'Yes' | 'YES' )
-                                          if test XosgGtk-1.0 != X; then :
-  with_OpenSceneGraph_pkgconf=osgGtk-1.0
+                                          if test Xopenscenegraph != X; then :
+  with_OpenSceneGraph_pkgconf=openscenegraph
                                                  use_OpenSceneGraph=yes
                                                  trace 4 --with-OpenSceneGraph-pkgconf set to default [$with_OpenSceneGraph_pkgconf]
 
@@ -8645,8 +8660,8 @@ fi
                        esac
 
 else
-  if test XosgGtk-1.0 != X; then :
-  with_OpenSceneGraph_pkgconf=osgGtk-1.0
+  if test Xopenscenegraph != X; then :
+  with_OpenSceneGraph_pkgconf=openscenegraph
                               trace 4 No --with-OpenSceneGraph-pkgconf specified using default [$with_OpenSceneGraph_pkgconf]
 
 
@@ -8726,7 +8741,118 @@ fi
 
 
 
-OpenSceneGraph_RavlLib=libRavlGUIOpenSceneGraph
+
+
+# Check whether --with-OpenSceneGraphGTK-pkgconf was given.
+if test "${with_OpenSceneGraphGTK_pkgconf+set}" = set; then :
+  withval=$with_OpenSceneGraphGTK_pkgconf; case $with_OpenSceneGraphGTK_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_OpenSceneGraphGTK=no
+                                          trace 4 --with-OpenSceneGraphGTK-pkgconf disabling OpenSceneGraphGTK
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          if test XosgGtk-1.0 != X; then :
+  with_OpenSceneGraphGTK_pkgconf=osgGtk-1.0
+                                                 use_OpenSceneGraphGTK=yes
+                                                 trace 4 --with-OpenSceneGraphGTK-pkgconf set to default [$with_OpenSceneGraphGTK_pkgconf]
+
+else
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure OpenSceneGraphGTK via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+
+
+fi
+                                          ;;
+                        * )               use_OpenSceneGraphGTK=yes
+                                          trace 4 --with-OpenSceneGraphGTK-pkgconf set to [$with_OpenSceneGraphGTK_pkgconf]
+                                          ;;
+                       esac
+
+else
+  if test XosgGtk-1.0 != X; then :
+  with_OpenSceneGraphGTK_pkgconf=osgGtk-1.0
+                              trace 4 No --with-OpenSceneGraphGTK-pkgconf specified using default [$with_OpenSceneGraphGTK_pkgconf]
+
+
+fi
+
+
+fi
+
+
+# Check whether --with-OpenSceneGraphGTK was given.
+if test "${with_OpenSceneGraphGTK+set}" = set; then :
+  withval=$with_OpenSceneGraphGTK; case $with_OpenSceneGraphGTK in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                       trace 4 --with-OpenSceneGraphGTK disabling OpenSceneGraphGTK libraries
+                                       if test X$use_OpenSceneGraphGTK = Xyes ; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to disable OpenSceneGraphGTK by --with-OpenSceneGraphGTK but --with-OpenSceneGraphGTK-pkgconf has specifically enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_OpenSceneGraphGTK=no
+
+fi
+                                       ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                       trace 4 --with-OpenSceneGraphGTK enabling OpenSceneGraphGTK libraries
+                                       if test X$use_OpenSceneGraphGTK = Xno; then :
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to enable OpenSceneGraphGTK by --with-OpenSceneGraphGTK but --with-OpenSceneGraphGTK-pkgconf has specifically disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+
+else
+  use_OpenSceneGraphGTK=yes
+
+fi
+                                       ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                       trace 4 --with-OpenSceneGraphGTK checking for OpenSceneGraphGTK libraries
+                                       if test X$use_OpenSceneGraphGTK = Xyes; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenSceneGraphGTK asking to check for the libs but --with-OpenSceneGraphGTK-pkgconf has specifically enabled it" >&5
+$as_echo "$as_me: WARNING: --with-OpenSceneGraphGTK asking to check for the libs but --with-OpenSceneGraphGTK-pkgconf has specifically enabled it" >&2;}
+
+else
+  if test X$use_OpenSceneGraphGTK = Xno; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenSceneGraphGTK asking to check for the libs but --with-OpenSceneGraphGTK-pkgconf has specifically disabled it" >&5
+$as_echo "$as_me: WARNING: --with-OpenSceneGraphGTK asking to check for the libs but --with-OpenSceneGraphGTK-pkgconf has specifically disabled it" >&2;}
+
+else
+  use_OpenSceneGraphGTK=check
+
+fi
+
+
+fi
+                                       ;;
+                        * )            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-OpenSceneGraphGTK set to an unknown option, setting ignored" >&5
+$as_echo "$as_me: WARNING: --with-OpenSceneGraphGTK set to an unknown option, setting ignored" >&2;}
+                                       ;;
+                       esac
+
+else
+  trace 5 No --with-OpenSceneGraphGTK specified
+
+fi
+
+          KnownLibs=$KnownLibs" "OpenSceneGraphGTK
+          with_OpenSceneGraphGTK_virtual="no"
+          if ( test X$use_OpenSceneGraphGTK = X )
+          then
+             use_OpenSceneGraphGTK=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "OpenSceneGraphGTK
+          fi
+
+
+
+
+OpenSceneGraphGTK_RavlLib=libRavlGUIOpenSceneGraph
 
 
 # Check whether --with-RLog-pkgconf was given.
@@ -16785,7 +16911,7 @@ then
      libavc1394_SUPPORT=""
    libglade2_SUPPORT=""
    OpenGL_SUPPORT=""
-   OpenSceneGraph_SUPPORT=""
+   OpenSceneGraphGTK_SUPPORT=""
    LibGnome_SUPPORT=""
    Meteor1_SUPPORT=""
    RavlGUI=""
@@ -16793,9 +16919,9 @@ then
          libGuppi_SUPPORT=""
          RavlVDF=""
          RavlVPlay=""
-         # Also indirectly blocks LibGnome, OpenGL, OpwnSceneGraph, Ravl2dGUI and
-         # libglade2 via dependancy but they are already disabled for their direct
-         # dependancy on GTK
+         # Also indirectly blocks LibGnome, OpenGL, OpenSceneGraphGTK, Ravl2dGUI
+         # and libglade2 via dependancy but they are already disabled for their
+         # direct dependancy on GTK
    # 2d-GUI support blocked both directly by lack of GTK2 and by lack of RavlGUI
    Ravl2dGUI_LIBS=""
       # RavlAAMGUI blocked by both lack of libGTK2 and 2d-GUI support
@@ -16824,17 +16950,17 @@ fi
 
 if ( test X$use_libGL != 'Xpresent' )
 then
-   # Lack of libGL blocks OpenSceneGraph functionality in Ravl
-   OpenSceneGraph_SUPPORT=""
-   trace 3 Lack of libGL blocking OpenSceneGraph
+   # Lack of libGL blocks OpenSceneGraphGTK functionality in Ravl
+   OpenSceneGraphGTK_SUPPORT=""
+   trace 3 Lack of libGL blocking OpenSceneGraphGTK
 fi
 
 if ( test X$use_GTKGLExt != 'Xpresent' )
 then
-   # Lack of GTKGLExt blocks OpenSceneGraph functionality in Ravl and will
+   # Lack of GTKGLExt blocks OpenSceneGraphGTK functionality in Ravl and will
    # also alter, but not remove, libRavlGUI3D in its absence
-   OpenSceneGraph_SUPPORT=""
-   trace 3 Lack of GTKGLExt blocking OpenSceneGraph
+   OpenSceneGraphGTK_SUPPORT=""
+   trace 3 Lack of GTKGLExt blocking OpenSceneGraphGTK
 fi
 
 if ( test X$use_libmpeg2 != 'Xpresent' )
@@ -16907,9 +17033,9 @@ then
                 # 3D Support disabled under Cygwin
                    RavlCameraCal=""
                    Ravl3d_LIBS=""
-                      # absence of libRavl3D blocks the OpenGL and OpenSceneGraph support functionality
+                      # absence of libRavl3D blocks the OpenGL and OpenSceneGraphGTK support functionality
                          OpenGL_SUPPORT=""
-                         OpenSceneGraph_SUPPORT=""
+                         OpenSceneGraphGTK_SUPPORT=""
 
                 # Image Processing disabled under Cygwin
                    RavlImageProc=""
@@ -17132,7 +17258,7 @@ $SORT ./ExtPkgSupp.$$ >> ./Config.Project.in
 rm ./ExtPkgSupp.$$
 echo >> ./Config.Project.in
 echo \# Ordered list of the libraries we want in libRavl.\*  >> ./Config.Project.in
-echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraph_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
+echo SINGLE_RECIPE=\$\(NumPy_SUPPORT\) \$\(avifile_SUPPORT\) libRavlMPEG2 \$\(devVideo4Linux_SUPPORT\) \$\(libffmpeg_SUPPORT\) libRavlVideoIO \$\(dvdread_SUPPORT\) \$\(libmpeg2_SUPPORT\) \$\(libavc1394_SUPPORT\) \$\(libDV_SUPPORT\) \$\(RavlRawVidIO\) \$\(RavlExtImgIO\) \$\(MacOSXVideoCapture_SUPPORT\) \$\(MacOSXRunLoop_SUPPORT\) \$\(RavlVDF\) \$\(SwigPython_SUPPORT\) \$\(RavlDPDisplay\) \$\(Meteor1_SUPPORT\) libRavlAV \$\(RavlChartDetector\) \$\(RavlAAM\) \$\(RavlFace_LIBS\) libRavlTwoWayMap \$\(RavlImageProc\) \$\(uEyeSDK_SUPPORT\) \$\(libmpeg_SUPPORT\) \$\(OpenGL_SUPPORT\) libRavlImageXMLFactory \$\(libClipStationPro_SUPPORT\) libRavlImageIO \$\(LibJasper_SUPPORT\) \$\(OpenCV_SUPPORT\) \$\(RavlVPlay\) \$\(Ravl2dGUI_LIBS\) \$\(libdc1394_SUPPORT\) libRavlVideo \$\(LibGd_SUPPORT\) \$\(devVideo4Linux2_SUPPORT\) \$\(OpenSceneGraphGTK_SUPPORT\) \$\(Ravl3d_LIBS\) \$\(LibDirectShow_SUPPORT\) libRavlImage \$\(libAudioFile_SUPPORT\) \$\(RavlDevAudio\) libRavlAudioFeatures \$\(PortAudio_SUPPORT\) libRavlAudioIO libRavlAudioUtil \$\(iksemel_SUPPORT\) \$\(Loudmouth_SUPPORT\) \$\(RavlXMPP\) \$\(RLog_SUPPORT\) \$\(SGIVL_SUPPORT\) \$\(RavlDataServer\) libOptimisation \$\(RavlLogic_LIBS\) libRavlPatternRecIO libRavlKalmanFilter libRavlSVM libRavlGnuPlot libRavlPatternRec libRavlDataSet libRavlOSIO  \$\(ParallelIO_SUPPORT\) \$\(SerialIO_SUPPORT\) \$\(libGuppi_SUPPORT\) libRavlPlot \$\(RavlClassWizard\) libRavlCxxDoc \$\(RavlAutoPort\) libRavlAutoPort2 libRavlSourceTools \$\(LibPython_SUPPORT\) \$\(RavlNet\) \$\(libehs_SUPPORT\) libRavlDPMT \$\(UUIdTheo_SUPPORT\) \$\(LibGnome_SUPPORT\) \$\(libglade2_SUPPORT\) \$\(RavlGUI\) libRavlMathIO libRavlGeneticProgram libRavlGeneticOptimisation \$\(ZeroMQ_SUPPORT\) libRavlService libRavlXMLFactory \$\(libCurl_SUPPORT\) libRavlThreads libRavlOS libRavlIO \$\(libmcrypt_SUPPORT\) libRavlOptimise \$\(RavlCameraCal\) \$\(libmkl_SUPPORT\) \$\(LAPACK_SUPPORT\) libRavlMath libccmath libfann libArffIO \$\(Zlib_SUPPORT\) libRavlHMM libRavlCore  >> ./Config.Project.in
 echo >> ./Config.Project.in
 echo >> ./Config.Project.in
 

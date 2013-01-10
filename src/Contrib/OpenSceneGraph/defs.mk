@@ -1,5 +1,5 @@
 # This file is part of RAVL, Recognition And Vision Library
-# Copyright (C) 2010-11, OmniPerception Ltd.
+# Copyright (C) 2010-13, OmniPerception Ltd.
 # This code may be redistributed under the terms of the GNU Lesser
 # General Public License (LGPL). See the lgpl.licence file for details or
 # see http://www.gnu.org/copyleft/lesser.html
@@ -10,7 +10,7 @@ PACKAGE=Ravl/OpenSceneGraph
 
 LICENSE=LGPL
 
-REQUIRES=OpenSceneGraph libGL GTKGLExt
+REQUIRES=OpenSceneGraphGTK OpenSceneGraph libGL GTKGLExt
 # NOTE: Do NOT comment out the GTKGLExt, if its not enabled though it may 
 # compile this library will not work.
 
@@ -39,7 +39,7 @@ PROGLIBS=RavlOS RavlImageIO RavlExtImgIO RavlRLog
 
 #EHT=Ravl.API.GUI.OpenSceneGraph.html
 
-EXTERNALLIBS=OpenSceneGraphGtk.def
+EXTERNALLIBS=OpenSceneGraph.def OpenSceneGraphGtk.def
 
 AUXFILES=exOpenSceneGraph.xml
 
