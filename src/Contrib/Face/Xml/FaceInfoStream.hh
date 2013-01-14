@@ -4,7 +4,7 @@
 #ifndef RAVLN_FACEN_FACEINFOSTREAM_HEADER
 #define RAVLN_FACEN_FACEINFOSTREAM_HEADER 1
 //! lib=RavlFace
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! file="OmniFace/Xml/FaceInfoStream.hh"
 //! author="Kieron J Messer"
 //! rcsid="$Id$"

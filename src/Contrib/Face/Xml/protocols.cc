@@ -3,7 +3,7 @@
 // file-header-ends-here
 // This file is part of OmniSoft, Pattern recognition software 
 // Copyright (C) 2002, Omniperception Ltd.
-//! docentry="Ravl.Contrib.Face"
+//! docentry="Ravl.Applications.Image.Face"
 //! lib=RavlFace
 //! file="Ravl/Contrib/Face/Xml/modifyXml.cc"
 
