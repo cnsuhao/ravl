@@ -466,6 +466,28 @@ namespace RavlN {
       return results;
     }
     
+    // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
+
+    bool RocBodyC::FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) const {
+
+      if(faRate < 0.0 || faRate > 1.0) {
+        RavlError("Supplied FA rate must be between 0 and 1!");
+        return false;
+      }
+
+      // Check it is sorted
+      if(!sorted) {
+        return false;
+      }
+
+      // Compute the errors
+      threshold = ErrorRateFA(faRate);
+      ResultsInfoC res = Error(threshold);
+      frRate = res.FR();
+      return true;
+    }
+
+
     RealHistogram1dC RocBodyC::Histogram(bool forClients) const
     {
       //: Check it is sorted before use
