@@ -828,12 +828,18 @@ dnl#
 dnl# Declare <Lib>_SUPPORT substitution variables for old packages no longer
 dnl# automatically configured in (usually due to upstream support rendering 
 dnl#the Ravl coding less useful).
-AC_SUBST([devVideo4Linux_SUPPORT])
-devVideo4Linux_SUPPORT=""
 dnl# These external pacakges may still be enabled (on systems where they will 
 dnl# correctly build/function) by manually adding the appropriate RESOURCE 
 dnl# identifier to RESOURCES and setting the <Lib>_SUPPORT variable to the name
 dnl# of the appropriate Ravl library (usually the wrapper lib).
+dnl#
+dnl# Original Video4Linux depreciated from modern kernels
+AC_SUBST([devVideo4Linux_SUPPORT])
+devVideo4Linux_SUPPORT=""
+echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
+dnl# To re-instate (on old kernels):
+dnl#     REQUIRES+=devVideo4Linux  devVideo4Linux_SUPPORT=libRavlImgIOV4L
+dnl#
 
 
 QM_PROCESS_EXTLIBS()

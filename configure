@@ -14304,6 +14304,7 @@ echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 devVideo4Linux_SUPPORT=""
+echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
