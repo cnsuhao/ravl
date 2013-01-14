@@ -701,9 +701,6 @@ dnl#
 dnl#  ..._EXTLIB_xC([libmkl],      [],                 [posixThreads Math], [-lmkl_ia32 -lguide], [])
 dnl#      libmkl_RavlLib=RavlIntelMKL
 dnl#
-dnl#  ..._EXTLIB_xC([Meteor1],     [],                 [],     [],           [])
-dnl#      Meteor1_RavlLib=RavlImgIOMeteor1
-dnl#
 dnl#  ..._EXTLIB_xC([libmpeg],     [],                 [],     [-lmpeg],     [])
 dnl#      libmpeg_RavlLib=RavlMPEG
 dnl#
@@ -795,9 +792,6 @@ echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([MacOSXVideoCapture_SUPPORT])
 MacOSXVideoCapture_SUPPORT=""
 echo MacOSXVideoCapture_SUPPORT=@MacOSXVideoCapture_SUPPORT@ >> ./ExtPkgSupp.$$
-AC_SUBST([Meteor1_SUPPORT])
-Meteor1_SUPPORT=""
-echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
 AC_SUBST([libmcrypt_SUPPORT])
 libmcrypt_SUPPORT=""
 echo libmcrypt_SUPPORT=@libmcrypt_SUPPORT@ >> ./ExtPkgSupp.$$
@@ -840,6 +834,12 @@ echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
 dnl# To re-instate (on old kernels):
 dnl#     REQUIRES+=devVideo4Linux  devVideo4Linux_SUPPORT=libRavlImgIOV4L
 dnl#
+dnl# Dropped Meteor as this really is historic support.
+AC_SUBST([Meteor1_SUPPORT])
+Meteor1_SUPPORT=""
+echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
+dnl# To re-instate (for linux only)
+dnl#     REQUIRES+=Meteor1  Meteor1_SUPPORT=RavlImgIOMeteor1
 
 
 QM_PROCESS_EXTLIBS()

@@ -663,6 +663,7 @@ SWIG
 GnuPlot
 PERL
 EGREP
+Meteor1_SUPPORT
 devVideo4Linux_SUPPORT
 UUIdTheo_SUPPORT
 SwigPython_SUPPORT
@@ -672,7 +673,6 @@ LibPython_SUPPORT
 libmpeg2_SUPPORT
 libmpeg_SUPPORT
 libmcrypt_SUPPORT
-Meteor1_SUPPORT
 MacOSXVideoCapture_SUPPORT
 MacOSXRunLoop_SUPPORT
 libmkl_SUPPORT
@@ -14275,9 +14275,6 @@ echo MacOSXRunLoop_SUPPORT=@MacOSXRunLoop_SUPPORT@ >> ./ExtPkgSupp.$$
 MacOSXVideoCapture_SUPPORT=""
 echo MacOSXVideoCapture_SUPPORT=@MacOSXVideoCapture_SUPPORT@ >> ./ExtPkgSupp.$$
 
-Meteor1_SUPPORT=""
-echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
-
 libmcrypt_SUPPORT=""
 echo libmcrypt_SUPPORT=@libmcrypt_SUPPORT@ >> ./ExtPkgSupp.$$
 
@@ -14305,6 +14302,9 @@ echo UUIdTheo_SUPPORT=@UUIdTheo_SUPPORT@ >> ./ExtPkgSupp.$$
 
 devVideo4Linux_SUPPORT=""
 echo devVideo4Linux_SUPPORT=@devVideo4Linux_SUPPORT@ >> ./ExtPkgSupp.$$
+
+Meteor1_SUPPORT=""
+echo Meteor1_SUPPORT=@Meteor1_SUPPORT@ >> ./ExtPkgSupp.$$
 
 
 
