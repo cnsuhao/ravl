@@ -51,11 +51,18 @@ dnl                                  existing installation of QMake or if the
 dnl                                  user has requested to use the local copy
 dnl                                  of QMake embedded in the project's 
 dnl                                  source) the LocalQMake.
+dnl       PACKAGE_NAME               Standard autoconf variable containing the
+dnl                                  name of the currently installing package.
+dnl       PACKAGE_VERSION            Standard autoconf variable containing the
+dnl                                  version of the currently installing
+dnl                                  package. Only used in QMake's configure
 dnl       PKG_CONFIG                 Standard substitution variable pointing
 dnl                                  to the pkg-configure utility
 dnl       Require_QMake_pkgconf      Internal flag that indicates if the user
 dnl                                  has explicitly chosen whether to use
 dnl                                  QMake or if the default has taken over.
+dnl       SED                        Standard substitution variable pointing
+dnl                                  to the UNIX sed command.  
 dnl
 AC_DEFUN([QM_LOCATE_QMAKE],
          [
@@ -104,11 +111,60 @@ AC_DEFUN([QM_LOCATE_QMAKE],
           then
             AC_MSG_CHECKING(pkg-config for QMake)
             PKG_CHECK_EXISTS([$with_QMake_pkgconf],
-                             [WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                              #  "      "  = ${datadir}/QMake
-                              QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
-                              # "        "     = ${sysconfdir}/QMake
-                              AC_MSG_RESULT([yes])
+                             [if ( test x$Require_QMake_pkgconf = xyes )
+                              then
+                                WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                #  "      "  = ${datadir}/QMake
+                                QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                # "        "     = ${sysconfdir}/QMake
+                                AC_MSG_RESULT([yes])
+                              else
+                                # No user preference, use highest version
+                                InstalledVer=`$PKG_CONFIG --modversion $with_QMake_pkgconf 2>/dev/null`
+                                sedPattern='/^\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@ *@S|@'
+                                dnl# Pattern minus quadrigraphs is '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                InstalledMajor=`echo $InstalledVer | $SED -n "$sedPattern/s//\1/p"`
+                                InstalledMinor=`echo $InstalledVer | $SED -n "$sedPattern/s//\2/p"`
+                                InstalledPatch=`echo $InstalledVer | $SED -n "$sedPattern/s//\3/p"`
+                                if ( test "x$PACKAGE_NAME" != xQMake )
+                                then
+                                  LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\@{:@@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\.@<:@0-9@:>@@<:@0-9@:>@*\@:}@'\'' *@S|@/s//\1/p' $srcdir/QMake/configure`
+                                  dnl# above sed pattern without the quadrigraphs is:
+                                  dnl#    '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p'
+                                  dnl# and looks for PACKAGE_VERSION = 'n.n.n' in QMake's configure file.
+                                  # The '\'' put a single ' in the search pattern.
+                                else
+                                  LocalVer=$PACKAGE_VERSION
+                                fi
+                                sedPattern='/^\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@\.\@{:@@<:@0-9@:>@@<:@0-9@:>@*\@:}@ *@S|@'
+                                dnl# Pattern minus quadrigraphs is '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                LocalMajor=`echo $LocalVer | $SED -n "$sedPattern/s//\1/p"`
+                                LocalMinor=`echo $LocalVer | $SED -n "$sedPattern/s//\2/p"`
+                                LocalPatch=`echo $LocalVer | $SED -n "$sedPattern/s//\3/p"`
+                                if ( test $LocalMajor -gt $InstalledMajor \
+                                          || ( test $LocalMajor -eq $InstalledMajor \
+                                                    && ( test $LocalMinor -gt $InstalledMinor \
+                                                              || ( test $LocalMinor -eq $InstalledMinor \
+                                                                        -a $LocalPatch -ge $InstalledPatch \
+                                                                 ) \
+                                                       ) \
+                                             ) \
+                                   )
+                                then
+                                  # Local (supplied with client product) is latest version, use this.
+                                  WORKING_QMAKE=uselocal
+                                  AC_MSG_RESULT([older])
+                                else
+                                  # Installed version is latest, use that
+                                  WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                  #  "      "  = ${datadir}/QMake
+                                  QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                  # "        "     = ${sysconfdir}/QMake
+                                  AC_MSG_RESULT([yes])
+                                fi
+                                trace 4 Installed QMake version $InstalledMajor.$InstalledMinor.$InstalledPatch
+                                trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
+                              fi
                              ],
                              [AC_MSG_RESULT([no])
                               if ( test x$Require_QMake_pkgconf = xyes )
