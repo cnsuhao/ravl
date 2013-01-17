@@ -86,7 +86,7 @@ dnl
 AC_DEFUN([QM_LOCATE_LD],
          [if ( test "x$LD" = x )
           then
-             # User has not asked for a specific linker: look for one
+             # We do not currently know of a specific linker: look for one
      
              if ( test "$GCC" = yes )
              then
@@ -221,7 +221,7 @@ AC_DEFUN([QM_LOCATE_LD],
                 AC_MSG_FAILURE([Cannot find a working ld required for building with])
              fi
           else
-             # User specified LD
+             # We already know where ld is
              if ( test -x $LD )
              then
                 # What type is it?
@@ -233,8 +233,6 @@ AC_DEFUN([QM_LOCATE_LD],
                 else
                    GNU_LD=no
                 fi
-                # Remember the user setting so we output it to Config.Project
-                USER_LD=$LD
              else
                 AC_MSG_FAILURE([$LD does not appear to correctly specify a linker])
              fi

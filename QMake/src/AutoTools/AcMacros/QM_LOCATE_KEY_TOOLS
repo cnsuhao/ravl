@@ -149,14 +149,21 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  # config file
                  if ( test x$USER_SED = x )
                  then
-                    # User specified no sed command so we need to extract the
-                    # configured value from Config.QMake
-                    SED=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
+                    OriginalSetting=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
+                    if ( test x$OriginalSetting != x )
+                    then
+                       SED=$OriginalSetting
+                    fi
                  fi
          
 
                  # Now find the rest of the required programs (if the user
-                 # hasn't specified them)
+                 # hasn't specified them). As we do not immediately require most
+                 # of these commands, we need not usually check if we get no
+                 # value back from the config file; the tail end of this macro
+                 # will deal with unset variables. For the odd exceptions (like
+                 # sed, above, or pkg-config) we will check that we get a usable
+                 # value.
           
                  if ( test "x$AR" = x )
                  then
@@ -246,12 +253,6 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                     # Config.Project.
                     USER_LD=$LD
                  fi
-                 case `"$LD" -v 2>&1 < /dev/null` in
-                  *GNU* | *'with BFD'* )  GNU_LD=yes
-                                          ;;
-                                     * )  GNU_LD=no
-                                          ;;
-                 esac
      
                  if ( test x$MAKE = x )
                  then
@@ -261,13 +262,6 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                     # Config.Project.
                     USER_MAKE=$MAKE
                  fi
-                 # Run $MAKE -v to check if we have GNU Make
-                 case `"$MAKE" -v 2>&1 </dev/null` in
-                   *GNU* | *'with BFD'* )  GNU_MAKE=yes
-                                           ;;
-                                      * )  GNU_MAKE=no
-                                           ;;
-                 esac
      
                  # We have already found/used pkg-config, but if the user did not
                  # provide that path, we need to read the value from the QMake
@@ -281,6 +275,7 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                     fi
                  fi
          
+
                  if ( test x$SORT = x )
                  then
                     SORT=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SORT=\(.*\)/\1/p'`
@@ -336,25 +331,15 @@ dnl    ELSE
      
                  # Utils needed by this script (for direct use)
      
-                 if ( test "x$AR" = x )
+                 if ( test "x$AR" != x )
                  then
-                    # User has not already specified which archiver to use
-                    AC_PATH_PROG([AR],[ar],[missing])
-                    AS_IF([test $AR = missing],
-                          [AC_MSG_FAILURE([Cannot find a working ar required for using QMake])]
-                         )
-                 else
                     # Remember the user setting so we output it to 
                     # Config.Project.
                     USER_AR=$AR
                  fi
 
-                 if ( test "x$AWK" = x )
+                 if ( test "x$AWK" != x )
                  then
-                    # User has not already specified which awk program to use
-                    # so find one.
-                    AC_PROG_AWK
-                 else
                     # Remember the user setting so we output it to 
                     # Config.Project.
                     USER_AWK=$AWK
@@ -398,54 +383,46 @@ dnl    ELSE
                     USER_CXXCPP=$CXXCPP
                  fi
 
-                 if ( test "x$EXPR" = x )
+                 if ( test "x$EXPR" != x )
                  then
-                    AC_PATH_PROG([EXPR],[expr],[missing])
-                    AS_IF([test $EXPR = missing],
-                          [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
-                         )
-                 else
                     # Remember the user setting so we output it to  
                     # Config.Project.
                     USER_EXPR=$EXPR
                  fi
      
-                 if ( test "x$GREP" = x )
+                 if ( test "x$GREP" != x )
                  then
-                    AC_PROG_GREP
-                 else
                     # Remember the user setting so we output it to 
                     # Config.Project.
                     USER_GREP=$GREP
                  fi
        
-                 # Look for linker (macro handles USER_LD)
-                 QM_LOCATE_LD
-     
-                 # Look for the make utility (macro handles USER_MAKE)
-                 QM_LOCATE_MAKE
-
-                 # No need to look for sed here as we have already located it
-
-                 if ( test "x$SORT" = x )
+                 if ( test "x$LD" != x )
                  then
-                    AC_PATH_PROG([SORT],[sort],[missing])
-                    AS_IF([test $SORT = missing],
-                          [AC_MSG_FAILURE([Cannot find a working sort required for building with])]
-                         )
-                 else
+                    # Remember the user setting so we output it to 
+                    # Config.Project.
+                    USER_LD=$LD
+                 fi
+       
+                 if ( test "x$MAKE" != x )
+                 then
+                    # Remember the user setting so we output it to 
+                    # Config.Project.
+                    USER_MAKE=$MAKE
+                 fi
+       
+                 # No need to look for sed here as we have already located it
+                 # and remembered any user-setting
+
+                 if ( test "x$SORT" != x )
+                 then
                     # Remember the user setting so we output it to 
                     # Config.Project.
                     USER_SORT=$SORT
                  fi
      
-                 if ( test "x$TR" = x )
+                 if ( test "x$TR" != x )
                  then
-                    AC_PATH_PROG([TR],[tr],[missing])
-                    AS_IF([test $TR = missing],
-                          [AC_MSG_FAILURE([Cannot find a working tr - configure cannot continue])]
-                         )
-                 else
                     # Remember the user setting so we output it to 
                     # Config.Project.
                     USER_TR=$TR
@@ -457,28 +434,38 @@ dnl    ELSE
                  dnl QM_CHOOSE_RPATH will already have set USER_with_rpath
                  dnl if the user utilised the command-line option or
                  dnl defaulted the value if they did not.
-                 dnl
-                 dnl QM_CHOOSE_GETCWD does not default GET_CWD if the user
-                 dnl did not use the command-line option, hence we need to
-                 dnl default it ourselves if it is not set. If it was set,
-                 dnl there is no USER_GET_CWD variable yet so we will need
-                 dnl to set that.
-                 if ( test x$GET_CWD = x )
+
+                 dnl Although we have already called QM_CHOOSE_GETCWD that
+                 dnl will only have set GET_CWD if the use caused it to be
+                 dnl primed. Hence, we can infer a user setting if GET_CWD
+                 dnl is set
+                 if ( test x$GET_CWD != x )
                  then
-                    AC_PATH_PROG([GET_CWD],[pwd],[missing])
-                    AS_IF([test $GET_CWD = missing],
-                          [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
-                         )
-                 else
                     USER_GET_CWD=$GET_CWD
                  fi
                 ]
                )
   
+          # Fill in any commands we do not yet know the location of
+          #
+          if ( test "x$AR" = x )
+          then
+             # We do not already know which archiver to use
+             AC_PATH_PROG([AR],[ar],[missing])
+             AS_IF([test $AR = missing],
+                   [AC_MSG_FAILURE([Cannot find a working ar required for using QMake])]
+                  )
+          fi
+
+          if ( test "x$AWK" = x )
+          then
+             # We do not already know which awk program to use so find one.
+             AC_PROG_AWK
+          fi
   
           dnl Call routines to locate compilers etc. This is as much to
           dnl initialise the prerequisites of later configure tests as to
-          dnl find the compiler themselves (as we will already know where
+          dnl find the compiler themselves (as we should already know where
           dnl they are if we are using an existing QMake installation or if
           dnl the user has supplied their path).
           # Locate/initialise C compiler
@@ -508,6 +495,55 @@ dnl    ELSE
 
           # Locate/initialise C++ preprocessor
           AC_PROG_CXXCPP
+
+          if ( test "x$EXPR" = x )
+          then
+             AC_PATH_PROG([EXPR],[expr],[missing])
+             AS_IF([test $EXPR = missing],
+                   [AC_MSG_FAILURE([Cannot find a working expr - configure cannot continue])]
+                  )
+          fi
+
+          if ( test "x$GREP" = x )
+          then
+             AC_PROG_GREP
+          fi
+
+          dnl Locate ld; macro does not record USER_LD hence we have already
+          dnl done this above.
+          QM_LOCATE_LD
+
+          dnl Locate make; macro does not record USER_MAKE hence we have already
+          dnl done this above.
+          QM_LOCATE_MAKE
+
+          if ( test "x$SORT" = x )
+          then
+             AC_PATH_PROG([SORT],[sort],[missing])
+             AS_IF([test $SORT = missing],
+                   [AC_MSG_FAILURE([Cannot find a working sort required for building with])]
+                  )
+          fi
+
+          if ( test "x$TR" = x )
+          then
+             AC_PATH_PROG([TR],[tr],[missing])
+             AS_IF([test $TR = missing],
+                   [AC_MSG_FAILURE([Cannot find a working tr - configure cannot continue])]
+                  )
+          fi
+
+          dnl Although we have already called QM_CHOOSE_GETCWD, it does not
+          dnl default GET_CWD if the user did not use the command-line option
+          dnl (or if no value was available from any existing config file).
+          dnl Hence we need to ensure it is indeed set.
+          if ( test x$GET_CWD = x )
+          then
+             AC_PATH_PROG([GET_CWD],[pwd],[missing])
+             AS_IF([test $GET_CWD = missing],
+                   [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
+                  )
+          fi
          ]
         )
   

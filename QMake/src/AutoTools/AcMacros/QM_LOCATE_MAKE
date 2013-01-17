@@ -20,13 +20,6 @@ dnl                                  selected. May initially have been set by
 dnl                                  the user if they initially specified the
 dnl                                  make utility to use (by setting the MAKE
 dnl                                  environment variable).
-dnl       USER_MAKE                  Records if the user explicitly set the
-dnl                                  make utility to use (and what make they
-dnl                                  requested). Used by the configure script
-dnl                                  for QMake client projects to determine
-dnl                                  if an over-ride (of the QMake default)
-dnl                                  make setting must be output to the
-dnl                                  Config.Project configuration file.
 dnl       GNU_MAKE                   Receives whether or not the make utility
 dnl                                  is a GNU version (simple yes no setting)
 dnl                                  This variable is also used as an
@@ -63,9 +56,6 @@ AC_DEFUN([QM_LOCATE_MAKE],
           then
              # User has not asked for a specific make utility, look for make
              MAKE=make
-          else
-             # Record user-setting
-             USER_MAKE=$MAKE
           fi
      
           if ( test X`$EXPR X$MAKE : '\(X[[\\/]].*\)'` != XX$MAKE )
