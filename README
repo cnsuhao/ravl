@@ -37,7 +37,7 @@ welcome they can be posted via the sourceforge web pages
 john.field@surrey.ac.uk
 
 
-PREFACE TO THE 1.1.1 ALPHA RELEASE
+PREFACE TO THE 1.1.2 ALPHA RELEASE
 ----------------------------------
 
 Version 1.1 of RAVL introduces the use of the GNU AutoTools for the
@@ -90,9 +90,10 @@ currently maintained by members of CVSSP and Omniperception.
 DOCUMENTATION
 -------------
 
-A full suite of on-line documentation is available from:
+A full suite of on-line documentation (including an on-line manual and slides
+for an introductory presentation) is available from:
 
-http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Basic/Tree/Ravl.html
+http://www.ee.surrey.ac.uk/CVSSP/Ravl
 
 As noted in the preface to this 1.1 Alpha release, the on-line documentation
 reflects the live release of RAVL; version 1.0. As such, details for
