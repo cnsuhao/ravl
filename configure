@@ -641,6 +641,7 @@ LN_S
 LEXLIB
 LEX
 USER_LD
+USER_PKG_CONFIG
 INSTALL_PROGRAM
 INSTALL_DATA
 INSTALL
@@ -3648,6 +3649,18 @@ fi
                                       * )  GNU_MAKE=no
                                            ;;
                  esac
+
+                 # We have already found/used pkg-config, but if the user did not
+                 # provide that path, we need to read the value from the QMake
+                 # config file
+                 if ( test x$USER_PKG_CONFIG = x )
+                 then
+                    OriginalSetting=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^PKG_CONFIG=\(.*\)/\1/p'`
+                    if ( test x$OriginalSetting != x )
+                    then
+                       PKG_CONFIG=$OriginalSetting
+                    fi
+                 fi
 
                  if ( test x$SORT = x )
                  then
@@ -16133,6 +16146,12 @@ if ( test "x$INSTALL_PROGRAM" != x )
 then
 
   echo INSTALL=@INSTALL_PROGRAM@ >> ./Config.Project.in
+fi
+
+if ( test "x$USER_PKG_CONFIG" != x )
+then
+
+  echo PKG_CONFIG=@USER_PKG_CONFIG@ >> ./Config.Project.in
 fi
 
 if ( test "x$USER_LD" != x )

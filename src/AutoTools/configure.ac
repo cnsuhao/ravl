@@ -1059,6 +1059,12 @@ then
   echo INSTALL=@INSTALL_PROGRAM@ >> ./Config.Project.in
 fi
 
+if ( test "x$USER_PKG_CONFIG" != x )
+then
+  AC_SUBST([USER_PKG_CONFIG])
+  echo PKG_CONFIG=@USER_PKG_CONFIG@ >> ./Config.Project.in
+fi
+
 if ( test "x$USER_LD" != x )
 then
   AC_SUBST([USER_LD])
