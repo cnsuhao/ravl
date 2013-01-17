@@ -15,6 +15,13 @@
 #include "Ravl/OS/Filename.hh"
 #include "Ravl/SumsNd2.hh"
 
+#define DODEBUG 0
+#if DODEBUG
+#define ONDEBUG(x) x
+#else
+#define ONDEBUG(x)
+#endif
+
 namespace RavlN {
   
   /*
@@ -420,7 +427,7 @@ namespace RavlN {
 
   int GnuPlotInit()
   {
-    RavlDebug("Using GnuPlot for plotting");
+    ONDEBUG(RavlDebug("Using GnuPlot for plotting"));
     g_createPlot2d = &CreatePlot2d_gnuplot;
     return 0;
   }
