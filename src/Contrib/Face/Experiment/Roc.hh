@@ -91,6 +91,9 @@ namespace RavlN {
       ResultsInfoC Error(RealT threshold) const;
       //: Works out the error rates at a set threshold
 
+      bool FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) const;
+      // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
+
       RealHistogram1dC Histogram(bool cl) const;
       //: Generate a histogram of the client and impostor distributions
 
@@ -294,6 +297,11 @@ namespace RavlN {
         return Body().Error(threshold);
       }
       //: Works out the error rates at a set threshold
+
+      bool FalseRejection(RealT faRate, RealT & frRate, RealT & threshold) {
+        return Body().FalseRejection(faRate, frRate, threshold);
+      }
+      // Get the false rejection rate at a given false acceptance rate and the corresponding threshold used
 
       RealHistogram1dC Histogram(bool cl) const
       {
