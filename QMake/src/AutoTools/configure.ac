@@ -68,6 +68,7 @@ AC_SUBST([EXPR])
 AC_SUBST([GREP])
 AC_SUBST([LD])
 AC_SUBST([MAKE])
+AC_SUBST([PKG_CONFIG])
 AC_SUBST([SED])
 AC_SUBST([TR])
 
@@ -236,6 +237,7 @@ echo LN_S=@LN_S@ >> ./Config.QMake.in
 echo MAKE=@MAKE@ >> ./Config.QMake.in
 echo MKDIR_P=@MKDIR_P@ >> ./Config.QMake.in
 echo PERL=@PERL@ >> ./Config.QMake.in
+echo PKG_CONFIG=@PKG_CONFIG@ >> ./Config.QMake.in
 echo QMAKE_PAGER=@QMAKE_PAGER@ >> ./Config.QMake.in
 echo RANLIB=@RANLIB@ >> ./Config.QMake.in
 echo RM=@RM@ >> ./Config.QMake.in
