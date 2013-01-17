@@ -25,7 +25,7 @@ dnl   this macro will create both the SED variable (populated with the path
 dnl   to the utility) and the USER_SED variable. The list of possible values
 dnl   for <cmd> (the list of tools located by this macro) is:
 dnl
-dnl        AR; AWK; CC; CPP; CXX; CXXCPP; CUT; EXPR; GET_CWD; GREP; LD;
+dnl        AR; AWK; CC; CPP; CXX; CXXCPP; EXPR; GET_CWD; GREP; LD;
 dnl        MAKE; SED; SORT and TR.
 dnl
 dnl   Any user-supplied value for the <cmd> variable will be preserved (in
@@ -90,10 +90,27 @@ dnl                                  this variable may be set directly or from
 dnl                                  calling the QM_LOCATE_LD macro.
 dnl
 AC_DEFUN([QM_LOCATE_KEY_TOOLS],
-         [# First check for pkg-config as we may need that next to check for
-          # QMake and will certainly need it later
+         [# Check for pkg-config as we may need that next to check for QMake
+          # and will certainly need it later
+          #
+          # First record if the user has supplied an initial path
+          USER_PKG_CONFIG=$PKG_CONFIG
           PKG_PROG_PKG_CONFIG
 
+
+          # sed is a pre-requisite of the following code so find it first
+          #
+          if ( test x$SED = x )
+          then
+             # User has not specified a sed program to use, attempt to
+             # find one
+             USER_SED=""
+             AC_PROG_SED
+          else
+             # User supplied the sed command to use, remember 
+             # this setting.
+             USER_SED=$SED
+          fi
 
           # Look for QMake
           #
@@ -127,97 +144,14 @@ AC_DEFUN([QM_LOCATE_KEY_TOOLS],
                  # of the support programs as already determined by 
                  # configuring QMake.
      
-                 # First find sed to extract the settings
-                 if ( test x$SED = x )
+                 # We have already found/used sed, but if the user did not
+                 # provide that path, we need to read the value from the QMake
+                 # config file
+                 if ( test x$USER_SED = x )
                  then
-                    # User has not specified a sed program to use, attempt to
-                    # find one
-                    AC_PROG_SED
-                    if ( test x$SED = x )
-                    then
-                       # Found no sed, try grep and awk instead
-                       if ( test x$GREP != x )
-                       then
-                          AC_PROG_GREP
-                          if ( test x$GREP = x )
-                          then
-                             AC_MSG_FAILURE([Unable to find a working sed or grep command. Re-run configure adding the SED=... setting from $QMAKE_CONFIGFILES/Config.QMake])
-                          fi
-                       else
-                          # User supplied the grep command to use, remember
-                          # this setting
-                          USER_GREP=$GREP
-                       fi
-                       if ( test x$AWK = x )
-                       then
-                          AC_PROG_AWK
-                          if ( test x$AWK = x )
-                          then
-                             # Couldn't find awk (or sed), try cut
-                             if ( test x$CUT =x )
-                             then
-                                AC_PATH_PROG([CUT], [cut], [missing])
-                                if ( test $CUT = missing )
-                                then
-                                   AC_MSG_FAILURE([Unable to find a working sed, awk or cut command. Re-run configure adding the SED=... setting from $QMAKE_CONFIGFILES/Config.QMake])
-                                fi
-                             else
-                                # User supplied the cut command to use,
-                                # remember the setting
-                                USER_CUT=$CUT
-                             fi
-                             # Use cut (and grep) to find what awk is (we
-                             # could set SED here but this makes the coding
-                             # more straight forward)
-                             AWK=`$GREP ^AWK= $QMAKE_CONFIGFILES/Config.QMake | $CUT -d= -f2`
-                             if ( test x$AWK = x )
-                             then
-                                AC_MSG_FAILURE([Unable to read awk setting from $QMAKE_CONFIGFILES/Config.QMake])
-                             fi
-                             if ( test x$USER_CUT = x )
-                             then
-                                # User didn't supply cut command, forget 
-                                # the setting
-                                CUT=""
-                             fi
-                          fi
-                       else
-                          # User supplied the awk command to use, remember
-                          # this setting
-                          USER_AWK=$AWK
-                       fi
-                       # Now we can read what QMake uses for sed
-                       SED=`$GREP ^SED= $QMAKE_CONFIGFILES/Config.QMake | $AWK -F= ' { print $2 }'`  
-                       if ( test x$SED = x )
-                       then
-                          AC_MSG_FAILURE([Unable to read sed setting from $QMAKE_CONFIGFILES/Config.QMake])
-                       fi
-                       if ( test x$USER_AWK = x )
-                       then
-                          # User didn't supply awk command, forget setting
-                          # and use pick up the one from Config.QMake later.
-                          AWK=""
-                       fi
-                       if ( test x$USER_GREP = x )
-                       then
-                          # User didn't supply grep command, forget setting
-                          # and use pick up the one from Config.QMake later.
-                          GREP=""
-                       fi
-                    else
-                       # Found a sed command to use for now, but we need to
-                       # use that to find out what the value configured into
-                       # QMake was.
-                       SED=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
-                       if ( test x$SED = x )
-                       then
-                          AC_MSG_FAILURE([Unable to read sed setting from $QMAKE_CONFIGFILES/Config.QMake])
-                       fi
-                    fi
-                 else
-                   # User supplied the sed command to use, remember 
-                   # this setting.
-                   USER_SED=$SED
+                    # User specified no sed command so we need to extract the
+                    # configured value from Config.QMake
+                    SED=`cat $QMAKE_CONFIGFILES/Config.QMake | $SED -n 's/^SED=\(.*\)/\1/p'`
                  fi
          
 
@@ -479,15 +413,8 @@ dnl    ELSE
                  # Look for the make utility (macro handles USER_MAKE)
                  QM_LOCATE_MAKE
 
-                 if ( test "x$SED" = x )
-                 then
-                    AC_PROG_SED
-                 else
-                    # Remember the user setting so we output it to 
-                    # Config.Project.
-                    USER_SED=$SED
-                 fi
-     
+                 # No need to look for sed here as we have already located it
+
                  if ( test "x$SORT" = x )
                  then
                     AC_PATH_PROG([SORT],[sort],[missing])
