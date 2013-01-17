@@ -1,5 +1,12 @@
 Installation from source tarball
 
+Many modules within RAVL depend on other external packages . These modules
+will not be included in the RAVL build if the >>>develop<<< versions of the
+external libraries are not installed.  For example, important libraries for
+RAVL's image display and I/O functionality are: GTK+ v2, jpeg, libpng and
+FFmpeg/Libav. If these packages are not installed on you computer, some
+parts of RAVL will not be built.
+
 Basic operation is to extract the source from the tar archive; move to the
 extracted directory and issue the relevant build commands:
 
