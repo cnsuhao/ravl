@@ -3188,12 +3188,58 @@ $as_echo_n "checking pkg-config for QMake... " >&6; }
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
-                              #  "      "  = ${datadir}/QMake
-                              QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
-                              # "        "     = ${sysconfdir}/QMake
-                              { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+  if ( test x$Require_QMake_pkgconf = xyes )
+                              then
+                                WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                #  "      "  = ${datadir}/QMake
+                                QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                # "        "     = ${sysconfdir}/QMake
+                                { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
+                              else
+                                # No user preference, use highest version
+                                InstalledVer=`$PKG_CONFIG --modversion $with_QMake_pkgconf 2>/dev/null`
+                                sedPattern='/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                                                InstalledMajor=`echo $InstalledVer | $SED -n "$sedPattern/s//\1/p"`
+                                InstalledMinor=`echo $InstalledVer | $SED -n "$sedPattern/s//\2/p"`
+                                InstalledPatch=`echo $InstalledVer | $SED -n "$sedPattern/s//\3/p"`
+                                if ( test "x$PACKAGE_NAME" != xQMake )
+                                then
+                                  LocalVer=`$SED  -n '/^PACKAGE_VERSION *= *'\''\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)'\'' *$/s//\1/p' $srcdir/QMake/configure`
+                                                                                                                                        # The '\'' put a single ' in the search pattern.
+                                else
+                                  LocalVer=$PACKAGE_VERSION
+                                fi
+                                sedPattern='/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$'
+                                                                LocalMajor=`echo $LocalVer | $SED -n "$sedPattern/s//\1/p"`
+                                LocalMinor=`echo $LocalVer | $SED -n "$sedPattern/s//\2/p"`
+                                LocalPatch=`echo $LocalVer | $SED -n "$sedPattern/s//\3/p"`
+                                if ( test $LocalMajor -gt $InstalledMajor \
+                                          || ( test $LocalMajor -eq $InstalledMajor \
+                                                    && ( test $LocalMinor -gt $InstalledMinor \
+                                                              || ( test $LocalMinor -eq $InstalledMinor \
+                                                                        -a $LocalPatch -ge $InstalledPatch \
+                                                                 ) \
+                                                       ) \
+                                             ) \
+                                   )
+                                then
+                                  # Local (supplied with client product) is latest version, use this.
+                                  WORKING_QMAKE=uselocal
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: result: older" >&5
+$as_echo "older" >&6; }
+                                else
+                                  # Installed version is latest, use that
+                                  WORKING_QMAKE=`$PKG_CONFIG --variable=datadir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                  #  "      "  = ${datadir}/QMake
+                                  QMAKE_CONFIGFILES=`$PKG_CONFIG --variable=sysconfdir $with_QMake_pkgconf 2>/dev/null`/QMake
+                                  # "        "     = ${sysconfdir}/QMake
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+                                fi
+                                trace 4 Installed QMake version $InstalledMajor.$InstalledMinor.$InstalledPatch
+                                trace 4 Local QMake version $LocalMajor.$LocalMinor.$LocalPatch
+                              fi
 
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
