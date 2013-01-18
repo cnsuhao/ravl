@@ -123,11 +123,17 @@ namespace RavlN {
         if(context.ChildContext("Properties",childContext))
         for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
           if(it->Name() == "Subscribe") {
-            Subscribe(it->AttributeString("value","").c_str());
+            StringC sub = it->AttributeString("value","");
+            if(m_verbose)
+              RavlDebug("Subscribing to '%s' ",sub.c_str());
+            Subscribe(sub);
             continue;
           }
           if(it->Name() == "Bind") {
-            Bind(it->AttributeString("value","").c_str());
+            StringC addr = it->AttributeString("value","");
+            if(m_verbose)
+              RavlDebug("Binding to '%s' ",addr.c_str());
+            Bind(addr.c_str());
             continue;
           }
           if(it->Name() == "AutoBind") {
@@ -151,14 +157,22 @@ namespace RavlN {
               if(mustBind)
                 throw ExceptionOperationFailedC("Failed to find free port. ");
             }
+            if(m_verbose)
+              RavlDebug("Auto binding to '%s' ",bindAddr.c_str());
             continue;
           }
           if(it->Name() == "Connect") {
-            Connect(it->AttributeString("value","").c_str());
+            StringC addr = it->AttributeString("value","");
+            Connect(addr.c_str());
+            if(m_verbose)
+              RavlDebug("Connecting to '%s' ",addr.c_str());
             continue;
           }
           if(it->Name() == "Identity") {
-            SetIdentity(it->AttributeString("value",""));
+            StringC addr = it->AttributeString("value","");
+            SetIdentity(addr.c_str());
+            if(m_verbose)
+              RavlDebug("Setting identity to '%s' ",addr.c_str());
             continue;
           }
           if(it->Name() == "Linger") {
