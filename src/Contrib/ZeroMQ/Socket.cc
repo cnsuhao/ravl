@@ -57,7 +57,7 @@ namespace RavlN {
           return static_cast<SocketTypeT>(i);
         }
       }
-      RavlError("Unknown socket type '%s' ",name.data());
+      RavlError("Unknown socket type '%s' ",name.c_str());
       throw ExceptionC("Unknown socket type");
     }
 
@@ -94,13 +94,13 @@ namespace RavlN {
     {
       ContextC::RefT ctxt;
       if(!context.UseComponent("ZmqContext",ctxt,false,typeid(ZmqN::ContextC))) {
-        RavlError("No context for socket at %s ",context.Path().data());
+        RavlError("No context for socket at %s ",context.Path().c_str());
         throw ExceptionOperationFailedC("No context. ");
       }
       SocketTypeT sockType = SocketType(context.AttributeString("socketType",""));
       m_socket = zmq_socket(ctxt->RawContext(),(int) sockType);
       if(m_socket == 0) {
-        RavlError("Failed to create socket '%s' in %s ",zmq_strerror (zmq_errno ()),context.Path().data());
+        RavlError("Failed to create socket '%s' in %s ",zmq_strerror (zmq_errno ()),context.Path().c_str());
         throw ExceptionOperationFailedC("Failed to create socket. ");
       }
 
@@ -109,6 +109,7 @@ namespace RavlN {
       if(!defaultBind.IsEmpty()) {
         Bind(defaultBind);
       }
+
 
       // Connnect if required.
       StringC defaultConnect = context.AttributeString("connect","");
@@ -122,15 +123,38 @@ namespace RavlN {
         if(context.ChildContext("Properties",childContext))
         for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
           if(it->Name() == "Subscribe") {
-            Subscribe(it->AttributeString("value","").data());
+            Subscribe(it->AttributeString("value","").c_str());
             continue;
           }
           if(it->Name() == "Bind") {
-            Bind(it->AttributeString("value","").data());
+            Bind(it->AttributeString("value","").c_str());
+            continue;
+          }
+          if(it->Name() == "AutoBind") {
+            int minPort = it->AttributeUInt("minPort",0);
+            int maxPort = it->AttributeUInt("maxPort",0);
+            bool mustBind = it->AttributeBool("mustBind",false);
+            std::string autoBindDev = it->AttributeString("value","");
+
+            if(minPort == 0) {
+              RavlError("minPort not specified in %s ",context.Path().c_str());
+              throw ExceptionOperationFailedC("minPort not specified ");
+            }
+            if(maxPort == 0) {
+              RavlError("maxPort not specified in %s ",context.Path().c_str());
+              throw ExceptionOperationFailedC("maxPort not specified ");
+            }
+            std::string bindAddr;
+            if(!BindDynamicTCP(autoBindDev,bindAddr,minPort,maxPort)) {
+              RavlError("Failed to dynamicly bind port.");
+              // FIXME:- Should this be fatal ?
+              if(mustBind)
+                throw ExceptionOperationFailedC("Failed to find free port. ");
+            }
             continue;
           }
           if(it->Name() == "Connect") {
-            Connect(it->AttributeString("value","").data());
+            Connect(it->AttributeString("value","").c_str());
             continue;
           }
           if(it->Name() == "Identity") {
@@ -145,7 +169,7 @@ namespace RavlN {
             SetHighWaterMark(it->AttributeUInt("value",0));
             continue;
           }
-          RavlError("Unknown socket property '%s' at %s ",it->Name().data(),childContext.Path().data());
+          RavlError("Unknown socket property '%s' at %s ",it->Name().c_str(),childContext.Path().c_str());
           throw ExceptionOperationFailedC("Unknown property. ");
         }
       }
@@ -177,15 +201,50 @@ namespace RavlN {
     void SocketC::SetName(const RavlN::StringC &name)
     { m_name = name; }
 
+    //! Access last bound address.
+    const std::string &SocketC::BoundAddress() const
+    {
+      return m_boundAddress;
+    }
+
+
     //! Bind to an address
     void SocketC::Bind(const std::string &addr)
     {
       RavlAssert(m_socket != 0);
       int ret;
-      if((ret = zmq_bind (m_socket, addr.data())) != 0) {
-        RavlError("Failed to bind to %s : %s ",addr.data(),zmq_strerror (zmq_errno ()));
+      if((ret = zmq_bind (m_socket, addr.c_str())) != 0) {
+        RavlError("Failed to bind to %s : %s ",addr.c_str(),zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("bind failed. ");
       }
+      m_boundAddress = addr;
+    }
+
+    //! Bind to first available port in the range.
+    bool SocketC::BindDynamicTCP(const std::string &devName,std::string &addr,int minPort,int maxPort)
+    {
+      StringC rootName = "tcp://" + devName + ":";
+      RavlAssert(minPort > 0);
+      RavlAssert(maxPort >= minPort);
+
+      int ret;
+      for(int i = minPort;i < maxPort;i++) {
+        StringC newAddr = rootName + StringC(i);
+        ret = zmq_bind (m_socket, newAddr.c_str());
+        if(ret == 0) {
+          addr = newAddr.c_str();
+          m_boundAddress = newAddr.c_str();
+          if(m_verbose) {
+            RavlInfo("Socket '%s' bound to address '%s' ",m_name.c_str(),newAddr.c_str());
+          }
+          return true;
+        }
+        if(ret != EADDRINUSE) {
+          RavlError("Failed to bind to %s : %s ",newAddr.c_str(),zmq_strerror (zmq_errno ()));
+          break;
+        }
+      }
+      return false;
     }
 
     //! Connect to an address.
@@ -193,8 +252,8 @@ namespace RavlN {
     {
       RavlAssert(m_socket != 0);
       int ret;
-      if((ret = zmq_connect(m_socket, addr.data())) != 0) {
-        RavlError("Failed to connect to %s : %s ",addr.data(),zmq_strerror (zmq_errno ()));
+      if((ret = zmq_connect(m_socket, addr.c_str())) != 0) {
+        RavlError("Failed to connect to %s : %s ",addr.c_str(),zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("connect failed. ");
       }
     }
@@ -241,10 +300,10 @@ namespace RavlN {
     void SocketC::Subscribe(const std::string &topic)
     {
       RavlAssert(m_socket != 0);
-      RavlDebug("Subscribing '%s' to '%s' ",m_name.data(),topic.data());
-      int ret = zmq_setsockopt (m_socket,ZMQ_SUBSCRIBE,topic.data(),topic.size());
+      RavlDebug("Subscribing '%s' to '%s' ",m_name.c_str(),topic.c_str());
+      int ret = zmq_setsockopt (m_socket,ZMQ_SUBSCRIBE,topic.c_str(),topic.size());
       if(ret != 0) {
-        RavlError("Failed to subscribe to %s : %s ",topic.data(),zmq_strerror (zmq_errno ()));
+        RavlError("Failed to subscribe to %s : %s ",topic.c_str(),zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("Subscribe failed. ");
       }
     }
@@ -253,10 +312,10 @@ namespace RavlN {
     bool SocketC::Unsubscribe(const std::string &topic)
     {
       RavlAssert(m_socket != 0);
-      RavlDebug("Unsubscribing '%s' from %s ",m_name.data(),topic.data());
-      int ret = zmq_setsockopt (m_socket,ZMQ_UNSUBSCRIBE,topic.data(),topic.size());
+      RavlDebug("Unsubscribing '%s' from %s ",m_name.c_str(),topic.c_str());
+      int ret = zmq_setsockopt (m_socket,ZMQ_UNSUBSCRIBE,topic.c_str(),topic.size());
       if(ret != 0) {
-        RavlError("Failed to unsubscribe to %s : %s ",topic.data(),zmq_strerror (zmq_errno ()));
+        RavlError("Failed to unsubscribe to %s : %s ",topic.c_str(),zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("Unsubscribe failed. ");
       }
       return true;
@@ -265,10 +324,10 @@ namespace RavlN {
     //! Set the identity of the socket.
     void SocketC::SetIdentity(const std::string &identity) {
       RavlAssert(m_socket != 0);
-      RavlDebug("Setting identity to %s ",identity.data());
-      int ret = zmq_setsockopt (m_socket,ZMQ_IDENTITY,identity.data(),identity.size());
+      RavlDebug("Setting identity to %s ",identity.c_str());
+      int ret = zmq_setsockopt (m_socket,ZMQ_IDENTITY,identity.c_str(),identity.size());
       if(ret != 0) {
-        RavlError("Failed to set identity to %s : %s ",identity.data(),zmq_strerror (zmq_errno ()));
+        RavlError("Failed to set identity to %s : %s ",identity.c_str(),zmq_strerror (zmq_errno ()));
         throw ExceptionOperationFailedC("Unsubscribe failed. ");
       }
     }
@@ -278,7 +337,7 @@ namespace RavlN {
       zmq_msg_t zmsg;
       if(m_verbose) {
         StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
-        RavlDebug("Send %s:'%s'",m_name.data(),tmp.data());
+        RavlDebug("Send %s:'%s'",m_name.c_str(),tmp.c_str());
       }
       ArrayToMessage(zmsg,msg);
       int ret;
@@ -358,7 +417,7 @@ namespace RavlN {
       }
       if(m_verbose) {
         StringC tmp(msg.ReferenceElm(),msg.Size(),msg.Size());
-        RavlDebug("Recieved %s:'%s'",m_name.data(),tmp.data());
+        RavlDebug("Recieved %s:'%s'",m_name.c_str(),tmp.c_str());
       }
       return true;
     }
