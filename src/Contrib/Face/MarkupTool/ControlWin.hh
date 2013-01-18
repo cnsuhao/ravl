@@ -12,9 +12,10 @@
 #include "ViewPage.hh"
 
 #include "Ravl/Face/FaceInfoDb.hh"
-
+#include "Ravl/Face/SightingSet.hh"
 #include "Ravl/GUI/Window.hh"
 #include "Ravl/GUI/Notebook.hh"
+#include "Ravl/StringList.hh"
 
 
 namespace RavlN {
@@ -25,7 +26,7 @@ namespace RavlN {
 
     public:
 
-      ControlWinBodyC(DListC<StringC> & dbNames, bool autoScale);
+      ControlWinBodyC(StringListC & dbs, const StringListC & sightingSets, bool autoScale);
       //: Constructor.
 
       bool Create();
@@ -47,6 +48,9 @@ namespace RavlN {
       FaceInfoDbC faceDb;
       //: A database of the faces
 
+      SightingSetC m_sightingSet;
+      //: The sighting set for the faces
+
       ViewPageC viewPage;
       bool m_autoScale;
       //: Page for view databases
@@ -67,8 +71,8 @@ namespace RavlN {
       //: Default constructor.
       // Creates an invalid handle.
 
-      ControlWinC(DListC<StringC> & dbNames, bool autoScale) :
-          WindowC(*new ControlWinBodyC(dbNames, autoScale))
+      ControlWinC(StringListC & dbs, const StringListC & sightingSets, bool autoScale) :
+          WindowC(*new ControlWinBodyC(dbs, sightingSets, autoScale))
       {
       }
       //: Constructor.

@@ -16,8 +16,12 @@
 #include "Ravl/StrStream.hh"
 #include "Ravl/SobolSequence.hh"
 #include "Ravl/Plot/Plot2d.hh"
+#include "Ravl/SArray1dIter2.hh"
 #include "Ravl/SArray1dIter3.hh"
 #include "Ravl/OS/Date.hh"
+#include "Ravl/Threads/LaunchThread.hh"
+#include "Ravl/CallMethodPtrs.hh"
+#include "Ravl/Tuple4.hh"
 
 namespace RavlN {
 
@@ -71,6 +75,17 @@ namespace RavlN {
     }
   }
 
+  // Very simple cost function
+  bool Cost(const CostC & domain, const VectorC & X, VectorC & V, UIntT index, Tuple4C<VectorC, VectorC, RealT, UIntT> * result)
+  {
+    RealT score = domain.Cost(X);
+    result->Data1() = X;
+    result->Data2() = V;
+    result->Data3() = score;
+    result->Data4() = index;
+    return true;
+  }
+
   // ------------------------------------------------------------------------
   // **********  OptimalX    ************************************************
   // ------------------------------------------------------------------------
@@ -96,30 +111,54 @@ namespace RavlN {
     VectorC bestGlobalXSoFar;
     VectorC boundVelocityMax = diff;
     VectorC boundVelocityMin = diff * -1.0;
-    for (UIntT i = 0; i < m_numberOfParticles; i++) {
 
-      // Create initial position
-      VectorC X(sobol.Data());
-      X = (X * diff) + domain.MinX();
-      // Make an initial velocity
-      VectorC V = RandomVelocityPSO(domain.MinX(), domain.MaxX());
+    UIntT j = 0;
+    for (;;) {
 
-      // work out initial cost
-      RealT cost = domain.Cost(X);
-      dset.Append(X, X, cost, V); // initially the particles initial and best position are the same
+      CollectionC<LaunchThreadC> threads(m_numberOfThreads);
+      SArray1dC<Tuple4C<VectorC, VectorC, RealT, UIntT> > results(m_numberOfThreads);
 
-      // Is it the best one
-      if (cost < bestGlobalCostSoFar) {
-        bestGlobalCostSoFar = cost;
-        bestGlobalXSoFar = X;
+      for (UIntT i = 0; i < m_numberOfThreads; i++) {
+
+        // Create initial position
+        VectorC X(sobol.Data());
+        X = (X * diff) + domain.MinX();
+        // Make an initial velocity
+        VectorC V = RandomVelocityPSO(domain.MinX(), domain.MaxX());
+
+        TriggerC trig = Trigger(&Cost, domain, X, V, j, &results[i]);
+        threads.Append(LaunchThreadC(trig));
+
+        j++;
+
+        // have we reached max number of particles
+        if (j >= m_numberOfParticles) {
+          break;
+        }
+        // unlikely this will happen
+        if (!sobol.Next()) {
+          RavlError("Run out of Sobol Samples...");
+          return VectorC();
+        }
+
+      } // end number of threads
+
+      // Lets wait for all threads to finish
+      for (SArray1dIter2C<LaunchThreadC, Tuple4C<VectorC, VectorC, RealT, UIntT> > threadIt(threads.SArray1d(), results); threadIt; threadIt++) {
+        threadIt.Data1().WaitForExit();
+        dset.Append(threadIt.Data2().Data1(), threadIt.Data2().Data1(), threadIt.Data2().Data3(), threadIt.Data2().Data2()); // initially the particles initial and best position are the same
+        if (threadIt.Data2().Data3() < bestGlobalCostSoFar) {
+          bestGlobalCostSoFar = threadIt.Data2().Data3();
+          bestGlobalXSoFar = threadIt.Data2().Data1();
+        }
       }
 
-      // unlikely this will happen
-      if (!sobol.Next()) {
-        RavlError("Run out of Sobol Samples...");
-        return VectorC();
+      if (j >= m_numberOfParticles) {
+        break;
       }
+
     }
+
     RavlDebug("Initial best particle '%s' in population has cost %0.4f", StringOf(bestGlobalXSoFar).data(), bestGlobalCostSoFar);
 
     // make a plot of the initial population
@@ -132,51 +171,78 @@ namespace RavlN {
 
     for (UIntT i = 0; i < m_numberOfIterations; i++) {
 
-      for (DataSet4IterC<SampleVectorC, SampleVectorC, SampleRealC, SampleVectorC> it(dset); it; it++) {
+      DataSet4IterC<SampleVectorC, SampleVectorC, SampleRealC, SampleVectorC> it(dset);
+      UIntT p=0;
+      for (;;) {
+        CollectionC<LaunchThreadC> threads(m_numberOfThreads);
+        SArray1dC<Tuple4C<VectorC, VectorC, RealT, UIntT> > results(m_numberOfThreads);
 
+        for (UIntT j = 0; j < m_numberOfThreads; j++) {
 #if 0
-        RealT rP = Random1();
-        RealT rG = Random1();
-        VectorC currentVelocity = (it.Data4() * m_omega);
-        VectorC updateOnParticleBestPosition = (it.Data2() - it.Data1()) * rP * m_phiP;
-        VectorC updateOnGlobalBestPosition = (bestGlobalXSoFar - it.Data1()) * rG * m_phiG;
+          RealT rP = Random1();
+          RealT rG = Random1();
+          VectorC currentVelocity = (it.Data4() * m_omega);
+          VectorC updateOnParticleBestPosition = (it.Data2() - it.Data1()) * rP * m_phiP;
+          VectorC updateOnGlobalBestPosition = (bestGlobalXSoFar - it.Data1()) * rG * m_phiG;
 #else
-        VectorC randomParticleVec = RandomVectorPSO(dim, m_phiP);
-        VectorC randomGlobalVec = RandomVectorPSO(dim, m_phiG);
-        VectorC currentVelocity = (it.Data4() * m_omega);
-        VectorC updateOnParticleBestPosition = randomParticleVec * (it.Data2() - it.Data1());
-        VectorC updateOnGlobalBestPosition = randomGlobalVec * (bestGlobalXSoFar - it.Data1());
+          VectorC randomParticleVec = RandomVectorPSO(dim, m_phiP);
+          VectorC randomGlobalVec = RandomVectorPSO(dim, m_phiG);
+          VectorC currentVelocity = (it.Data4() * m_omega);
+          VectorC updateOnParticleBestPosition = randomParticleVec * (it.Data2() - it.Data1());
+          VectorC updateOnGlobalBestPosition = randomGlobalVec * (bestGlobalXSoFar - it.Data1());
 #endif
-        VectorC velocity = currentVelocity + updateOnParticleBestPosition + updateOnGlobalBestPosition;
-        BoundVectorPSO(boundVelocityMin, boundVelocityMax, velocity);
+          VectorC velocity = currentVelocity + updateOnParticleBestPosition + updateOnGlobalBestPosition;
+          BoundVectorPSO(boundVelocityMin, boundVelocityMax, velocity);
 
-        VectorC particleNewPosition = it.Data1() + velocity;
-        BoundVectorPSO(domain.MinX(), domain.MaxX(), particleNewPosition);
+          VectorC particleNewPosition = it.Data1() + velocity;
+          BoundVectorPSO(domain.MinX(), domain.MaxX(), particleNewPosition);
 
-        RealT newCost = domain.Cost(particleNewPosition);
+          TriggerC trig = Trigger(&Cost, domain, particleNewPosition, velocity, p, &results[j]);
+          threads.Append(LaunchThreadC(trig));
 
-        //RavlDebug("New Position '%s' -> '%s' %0.2f", StringOf(it.Data1()).data(), StringOf(particleNewPosition).data(), newCost);
-        //RavlDebug("New Velocity '%s' -> '%s'", StringOf(it.Data4()).data(), StringOf(velocity).data());
+          // goto next particle. If reached end then break.
+          p++;
+          it++;
+          if (!it.IsElm()) {
+            break;
+          }
 
-        // Has the particle beaten its own previous best
-        if (newCost < it.Data3()) {
-          it.Data2() = particleNewPosition;
-          it.Data3() = newCost;
+          //RavlDebug("New Position '%s' -> '%s' %0.2f", StringOf(it.Data1()).data(), StringOf(particleNewPosition).data(), newCost);
+          //RavlDebug("New Velocity '%s' -> '%s'", StringOf(it.Data4()).data(), StringOf(velocity).data());
         }
 
-        // Update global if we have a best new particle....
-        if (newCost < bestGlobalCostSoFar) {
-          bestGlobalCostSoFar = newCost;
-          bestGlobalXSoFar = particleNewPosition;
-          RavlDebug("New best particle '%s' in population has cost %0.12f at iter %d", StringOf(bestGlobalXSoFar).data(), bestGlobalCostSoFar, i);
+        // Lets wait for all threads to finish
+        for (SArray1dIter2C<LaunchThreadC, Tuple4C<VectorC, VectorC, RealT, UIntT> > threadIt(threads.SArray1d(), results); threadIt; threadIt++) {
+          threadIt.Data1().WaitForExit();
 
+          // make it easier to read
+          VectorC particleNewPosition = threadIt.Data2().Data1();
+          VectorC velocity = threadIt.Data2().Data2();
+          RealT newCost = threadIt.Data2().Data3();
+          UIntT p = threadIt.Data2().Data4(); // particle number
+
+          // Has particle beaten its own position
+          if (newCost < it.Data3()) {
+            dset.Sample2()[p] = particleNewPosition;
+            dset.Sample3()[p] = newCost;
+          }
+
+          // Update global if we have a best new particle....
+          if (newCost < bestGlobalCostSoFar) {
+            bestGlobalCostSoFar = newCost;
+            bestGlobalXSoFar = particleNewPosition;
+            RavlDebug("New best particle '%s' in population has cost %0.12f at iter %d", StringOf(bestGlobalXSoFar).data(), bestGlobalCostSoFar, i);
+          }
+          // Update the position and velocity
+          dset.Sample1()[p] = threadIt.Data2().Data1();
+          dset.Sample4()[p] = threadIt.Data2().Data2();
         }
 
-        // Update the position and velocity
-        it.Data1() = particleNewPosition;
-        it.Data4() = velocity;
+        // have we reached the end
+        if(!it.IsElm())
+          break;
 
-      }
+      } // end an iteration
 
       if (bestGlobalCostSoFar < m_terminationCriterion) {
         RavlDebug("Reached best solution, terminating early.");
