@@ -646,7 +646,9 @@ namespace RavlN {
     
     DPOPortBaseC outp = minForm.CreateOutput(to,*bestout);
     if(!outp.IsValid()) {
-      RavlError("Internal error: Failed to open output stream in format '%s'",minForm.Name().c_str());
+      RavlError("Internal error: Failed to open output stream in format '%s' type '%s' ",
+          minForm.Name().c_str(),
+          TypeName(typeid(static_cast<DPEntityC &>(minForm).Body())));
       RavlAssert(0);
       return DPOPortBaseC();
     }

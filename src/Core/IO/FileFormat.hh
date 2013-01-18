@@ -85,7 +85,7 @@ namespace RavlN {
     // typeid(void) == no, otherwise returns the preferred save type.
     
     inline const std::type_info &ProbeSave(const std::type_info &obj_type) const;
-  //: Alias for ProbeSave("",IStreamC(),obj_type);
+    //: Alias for ProbeSave("",IStreamC(),obj_type);
     // typeid(void) == no, otherwise returns the preferred save type.
   
     virtual DPIPortBaseC CreateInput(const StringC &filename,const std::type_info &obj_type) const;

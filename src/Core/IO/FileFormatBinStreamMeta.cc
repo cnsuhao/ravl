@@ -158,8 +158,10 @@ namespace RavlN {
 
   DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(IStreamC &in,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPIPortBaseC();
+    }
     return ff.CreateInput(in,obj_type);
   }
   //: Create a input port for loading.
@@ -167,8 +169,10 @@ namespace RavlN {
 
   DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(OStreamC &out,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPOPortBaseC();
+    }
     return ff.CreateOutput(out,obj_type);
   }
   //: Create a output port for saving.
@@ -177,8 +181,10 @@ namespace RavlN {
 
   DPIPortBaseC FileFormatBinStreamMetaBodyC::CreateInput(const StringC &filename,const std::type_info &obj_type) const  {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPIPortBaseC();
+    }
     return ff.CreateInput(filename,obj_type);
   }
 
@@ -187,8 +193,10 @@ namespace RavlN {
 
   DPOPortBaseC FileFormatBinStreamMetaBodyC::CreateOutput(const StringC &filename,const std::type_info &obj_type) const {
     FileFormatBaseC ff;
-    if(!m_class2format.Lookup(TypeName(obj_type),ff))
+    if(!m_class2format.Lookup(TypeName(obj_type),ff)) {
+      RavlDebug("Failed to lookup type '%s' ",TypeName(obj_type));
       return DPOPortBaseC();
+    }
     return ff.CreateOutput(filename,obj_type);
   }
   //: Create a output port for saving.
@@ -204,6 +212,8 @@ namespace RavlN {
 
   //: Register format
   bool FileFormatBinStreamMetaBodyC::RegisterFormat(FileFormatBaseC &fileformat) {
+    //ONDEBUG(std::cerr << "Registering type '" << RavlN::TypeName(fileformat.DefaultType()) << "' Name:'" << fileformat.Name() << "'\n");
+    ONDEBUG(RavlDebug("Registering type '%s' Name:'%s' ",RavlN::TypeName(fileformat.DefaultType()),fileformat.Name().c_str()));
     RavlAssert(fileformat.DefaultType() != typeid(void));
     if(!HaveTypeName(fileformat.DefaultType())) {
       RavlError("No typename registered for '%s', binary IO may fail to work. Hint: Ensure TypeNameC is used to register the name BEFORE the format is registered. ",fileformat.DefaultType().name());
