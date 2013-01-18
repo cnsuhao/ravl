@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.65])
 
-AC_INIT([QMake], [1.5.2], [quickmake-support@lists.sourceforge.net], [QMake], [http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Develop/Tree/Ravl.QMake.html])
+AC_INIT([QMake], [1.5.3], [quickmake-support@lists.sourceforge.net], [QMake], [http://www.ee.surrey.ac.uk/CVSSP/Ravl/RavlDoc/share/doc/RAVL/Auto/Develop/Tree/Ravl.QMake.html])
 
 # This file is part of QMake, Quick Make System
 # Copyright (C) 2011-12, University of Surrey
