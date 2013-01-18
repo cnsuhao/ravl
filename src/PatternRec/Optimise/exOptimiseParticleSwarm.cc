@@ -33,6 +33,7 @@ int main(int nargs, char **argv)
   UIntT d = opt.Int("d", 2, "Number of dimensions for test problem");
   RealT minBound = opt.Real("min", -20, "Minimum bound set for direction");
   RealT maxBound = opt.Real("max", 20, "Maximum bound set for direction");
+  UIntT numberOfThreads = opt.Int("threads", 1, "Number of threads");
   opt.Check();
 
   SysLogOpen("exOptimiseParticleSwarm",false,true,true,-1,true);
@@ -83,7 +84,7 @@ int main(int nargs, char **argv)
   targetX.Fill(0.0);
   CostC cost = CostFunctionC(parameters, targetX, func, DistanceEuclideanC());
 
-  OptimiseParticleSwarmC optimiseParticleSwarm(n, omega, phiP, phiG, maxIter, term);
+  OptimiseParticleSwarmC optimiseParticleSwarm(n, omega, phiP, phiG, maxIter, term, numberOfThreads);
   VectorC X = optimiseParticleSwarm.MinimalX(cost);
   RavlInfo("PSO Solution '%s' End Cost %0.4f ", StringOf(X).data(), cost.Cost(X));
   return 0;
