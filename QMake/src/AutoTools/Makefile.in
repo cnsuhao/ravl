@@ -143,6 +143,12 @@ SED_SUBSTITUTION=$(SED) \
 
 
 
+# Limit output of what make is doing unless the user requests it
+ifdef QMAKE_INFO
+  SHOWIT = 
+else
+  SHOWIT = @
+endif
 
 
 
@@ -305,7 +311,7 @@ $(STAGING)/AutoBuild/%.sh: $(SRC)/AutoBuild/%.sh.src
 StagePkgConf: $(STAGING)/lib/pkgconfig $(STAGING)/lib/pkgconfig/QMake.pc
 	@:
 
-$(STAGING)/lib/pkgconfig/QMake.pc:
+$(STAGING)/lib/pkgconfig/QMake.pc: @abs_top_builddir@/Config.QMake
 	@echo prefix=$(prefix) > $@
 	@echo datarootdir=$(datarootdir) >> $@
 	@echo datadir=$(datadir) >> $@
@@ -325,7 +331,7 @@ $(STAGING)/lib/pkgconfig/QMake.pc:
 
 # Targets for installing QMake
 
-install: InstallConfig InstallMakefiles InstallUtils InstallSupport InstallDefaults InstallAB InstallPkgConf
+install: InstallPreCheck InstallConfig InstallMakefiles InstallUtils InstallSupport InstallDefaults InstallAB InstallPkgConf
 # JFi:To Do: Add InstallDoc
 
 install-strip:
@@ -352,6 +358,38 @@ $(DESTDIR)$(sysconfdir)/QMake:
 	$(MKDIR_P) $@
 
 
+
+# Check if we are updating over an existing installation. Warn if we are
+# updating, ask for confirmation if we are downgrading.
+InstallPreCheck:
+	$(SHOWIT)if ( test -f $(DESTDIR)$(libdir)/pkgconfig/QMake.pc ) ;\
+         then \
+            InstalledVer=`$(PKG_CONFIG) --modversion $(DESTDIR)$(libdir)/pkgconfig/QMake.pc 2>/dev/null` ;\
+            InstalledMajor=`echo $$InstalledVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\1/p'` ;\
+            InstalledMinor=`echo $$InstalledVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\2/p'` ;\
+            InstalledPatch=`echo $$InstalledVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\3/p'` ;\
+            NewVer=`$(PKG_CONFIG) --modversion $(STAGING)/lib/pkgconfig/QMake.pc 2>/dev/null` ;\
+            NewMajor=`echo $$NewVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\1/p'` ;\
+            NewMinor=`echo $$NewVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\2/p'` ;\
+            NewPatch=`echo $$NewVer | $(SED) -n '/^\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\) *$$/s//\3/p'` ;\
+            if ( test $$NewMajor -gt $$InstalledMajor \
+                     || ( test $$NewMajor -eq $$InstalledMajor \
+                               && ( test $$NewMinor -gt $$InstalledMinor \
+                                         || ( test $$NewMinor -eq $$InstalledMinor -a $$NewPatch -ge $$InstalledPatch )))) ;\
+            then \
+               printf "Updating existing QMake (version $$InstalledVer) to newly built version of $$NewVer\n" ;\
+            else \
+               printf "Are you sure you want to downgrade QMake from version $$InstalledVer to $$NewVer ?\n" ;\
+               printf "Type yes to install over the newer revision : " ;\
+               read Response ;\
+               if ( test "x$$Response" != xyes ) ;\
+               then \
+                  printf "Installation aborted. To install everything except QMake, please type:\n" ;\
+                  printf " make installProject\n" ;\
+                  exit 1 ;\
+               fi ;\
+            fi ;\
+         fi
 
 
 # Define how to install the config files for QMake
@@ -482,11 +520,11 @@ UinsPkgConf:
 
 .PHONY: BuildUtils default info install InstallAB InstallABConfig \
  InstallABProgs InstallBuiltUtils InstallConfig InstallDefaults \
- InstallMakefiles InstallPerl InstallPkgConf InstallScripts InstallSupport \
- InstallUtils ProcessMakefiles StageAB StageDefaults StagePerl StagePkgConf \
- StageQMake StageShScripts StageSupport StageUtils uninstall UinsAB \
- UinsABConfig UinsABProgs UinsConfig UinsDefaults UinsMakefiles UinsPkgConf \
- UinsSupport UinsUtils
+ InstallMakefiles InstallPerl InstallPkgConf InstallPreCheck InstallScripts \
+ InstallSupport InstallUtils ProcessMakefiles StageAB StageDefaults StagePerl \
+ StagePkgConf StageQMake StageShScripts StageSupport StageUtils uninstall \
+ UinsAB UinsABConfig UinsABProgs UinsConfig UinsDefaults UinsMakefiles \
+ UinsPkgConf UinsSupport UinsUtils
 
 
 # Basic debug information
