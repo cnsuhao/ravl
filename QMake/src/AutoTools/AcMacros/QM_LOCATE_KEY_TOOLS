@@ -509,14 +509,6 @@ dnl    ELSE
              AC_PROG_GREP
           fi
 
-          dnl Locate ld; macro does not record USER_LD hence we have already
-          dnl done this above.
-          QM_LOCATE_LD
-
-          dnl Locate make; macro does not record USER_MAKE hence we have already
-          dnl done this above.
-          QM_LOCATE_MAKE
-
           if ( test "x$SORT" = x )
           then
              AC_PATH_PROG([SORT],[sort],[missing])
@@ -544,6 +536,15 @@ dnl    ELSE
                    [AC_MSG_FAILURE([Cannot find a working pwd required for using QMake])]
                   )
           fi
+
+          dnl Locate ld; macro does not record USER_LD hence we have already
+          dnl done this above.
+          QM_LOCATE_LD
+
+          dnl Locate make; macro does not record USER_MAKE hence we have already
+          dnl done this above.
+          QM_LOCATE_MAKE
+
          ]
         )
   
