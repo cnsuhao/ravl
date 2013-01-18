@@ -109,7 +109,8 @@ namespace RavlN {
     XMLFactoryRegisterC(const char *nameOfType) { 
       RavlN::AddTypeName(typeid(DataT),nameOfType);
       static StringC refName = StringC(nameOfType) + "::RefT";
-      RavlN::AddTypeName(typeid(typename DataT::RefT),refName);
+      if(!HaveTypeName(typeid(typename DataT::RefT)))
+        RavlN::AddTypeName(typeid(typename DataT::RefT),refName);
       XMLFactoryC::RegisterTypeFactory(typeid(DataT),&XMLFactoryC::DefaultFactoryFunc<DataT>);
     }
     //! Construct and set typename.
