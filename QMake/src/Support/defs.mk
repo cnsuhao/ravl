@@ -4,5 +4,5 @@
 # Public License (GPL). See the gpl.licence file for details or
 # see http://www.gnu.org/copyleft/gpl.html
 
-LOCAL_FILES=Defs.txt dummymain.c Help.txt qmake.cshrc.src qmake.sh.src \
-            Skeleton.def
+LOCAL_FILES=Defs.txt dummymain.c fixstdnamespace.sh Help.txt qmake.cshrc.src \
+            qmake.sh.src Skeleton.def
