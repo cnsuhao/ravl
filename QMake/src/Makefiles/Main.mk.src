@@ -17,7 +17,9 @@ export TARGET
 VPATH = $(QCWD)
 
 ifdef USERBUILD
- USESLIBS += Auto
+ ifneq ($(USESLIBS),None)
+  USESLIBS += Auto
+ endif
  USE_LIBPATHSWITCH=Y
 endif
 
