@@ -150,7 +150,7 @@ installoptshared:
 installpkgconf: $(ABS_DESTDIR)$(libdir)/pkgconfig $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
 
 $(ABS_DESTDIR)$(libdir)/pkgconfig:
-	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(libdir)/pkgconfig:
+	$(SHOWIT)$(MKDIR_P) $(ABS_DESTDIR)$(libdir)/pkgconfig
 
 $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc:
 	$(INSTALL_DATA) $(PROJECT_OUT)/lib/pkgconfig/Ravl.pc $(ABS_DESTDIR)$(libdir)/pkgconfig/Ravl.pc
