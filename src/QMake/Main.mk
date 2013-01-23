@@ -1345,6 +1345,13 @@ info:
 #   " - " $(findstring $(ARC),$(DONOT_SUPPORT)) " - " $(findstring $(ARC),$(SUPPORT_ONLY))
 #	@echo "Directory supported:" $(SUPPORT_ONLY) " - " $(DONOT_SUPPORT)
 
+%.def:
+	@
+#       Dummy rule to prevent default rule (below) complaining if an optional
+#       .def file does not exist. Will also block the error for those .def
+#       files that should exist and do not; but this is not a problem as the
+#       subsequent use of such a file will error anyway.
+
 %:
 	@echo "ERROR: Don't know how to make " $@ ; \
 	exit 1
