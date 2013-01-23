@@ -28,5 +28,5 @@ PLIB = MarkupTool
 
 USESLIBS = RavlGUI RavlFace RavlGUI2D
 
-PROGLIBS = RavlExtImgIO RavlImgIOJasper RavlPatternRecIO
+PROGLIBS = RavlExtImgIO RavlImgIOJasper.opt
 
