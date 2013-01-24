@@ -12,6 +12,7 @@
 #include "Ravl/GUI/MessageBox.hh"
 #include "Ravl/GUI/PackInfo.hh"
 #include "Ravl/RLog.hh"
+#include "Ravl/IO.hh"
 
 namespace RavlN {
   namespace FaceN {
@@ -25,13 +26,25 @@ namespace RavlN {
     }
 
     //: Constructor.
-    ControlWinBodyC::ControlWinBodyC(DListC<StringC> & dbNames, bool autoScale) :
-        WindowBodyC(800, 600, "Face XML Markup Tool"), notebook(GTK_POS_TOP, true, true), faceDb(dbNames), m_autoScale(autoScale)
+    ControlWinBodyC::ControlWinBodyC(StringListC & dbs, const StringListC & sightingSets, bool autoScale) :
+        WindowBodyC(800, 600, "Face XML Markup Tool"), notebook(GTK_POS_TOP, true, true), faceDb(dbs), m_autoScale(autoScale)
     {
       if (faceDb.IsEmpty()) {
         rWarning("No markups in file provided!");
         gui_quit();
       }
+
+      for(DLIterC<StringC>it(sightingSets);it;it++) {
+
+        SightingSetC thisSightingSet;
+        if(!RavlN::Load(*it, thisSightingSet)) {
+          rWarning("Unable to load sighting set '%s'", it.Data().data());
+          continue;
+        }
+        rInfo("Loaded '%s' and has %s sightings", it.Data().data(), StringOf(thisSightingSet.Size()).data());
+        m_sightingSet.Append(thisSightingSet);
+      }
+
     }
 
     bool ControlWinBodyC::Create()
@@ -40,7 +53,7 @@ namespace RavlN {
       Add(notebook);
 
       //: view page 0
-      viewPage = ViewPageC(faceDb, m_autoScale);
+      viewPage = ViewPageC(faceDb, m_sightingSet, m_autoScale);
       pages.InsLast(viewPage);
       notebook.AppendPage(viewPage, LabelC("Database"));
 

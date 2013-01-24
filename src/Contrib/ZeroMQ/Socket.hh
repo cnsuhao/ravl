@@ -76,6 +76,14 @@ namespace RavlN {
       //! Bind to an address
       void Bind(const std::string &addr);
 
+      //! Bind to first available port in the range.
+      //! Assigned the address bount to 'addr'.
+      //! Returns true if a port is successfully found and false if no free port is found.
+      bool BindDynamicTCP(const std::string &devName,std::string &addr,int minPort,int maxPort);
+
+      //! Access last bound address.
+      const std::string &BoundAddress() const;
+
       //! Connect to an address.
       void Connect(const std::string &addr);
 
@@ -148,6 +156,7 @@ namespace RavlN {
       void *m_socket;
       StringC m_defaultCodec;
       bool m_verbose;
+      std::string m_boundAddress;
     };
   }
 }

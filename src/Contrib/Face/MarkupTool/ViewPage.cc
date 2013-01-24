@@ -16,6 +16,7 @@
 #include "Ravl/GUI/PackInfo.hh"
 #include "Ravl/GUI/FileSelector.hh"
 #include "Ravl/RLog.hh"
+#include "Ravl/Face/FaceInfoDb.hh"
 
 #include <gdk/gdkevents.h>
 //#include "Ravl/GUI/Manager.hh"
@@ -36,19 +37,9 @@ namespace RavlN {
     //: and an xml face database
     /////////////////////////////////////
 
-    ViewPageBodyC::ViewPageBodyC(FaceInfoDbC & db, bool autoScale) :
-        LBoxBodyC(true), faceDb(db), m_autoScale(autoScale), canvas(800, 800), m_markupMode(false)
+    ViewPageBodyC::ViewPageBodyC(FaceInfoDbC & db, SightingSetC & sightingSet, bool autoScale) :
+        LBoxBodyC(true), faceDb(db), m_sightingSet(sightingSet), m_autoScale(autoScale), canvas(800, 800), m_markupMode(false)
     {
-
-      StringC normDir = "unknown";
-      faceDb.Root(normDir);
-      //: lets get a list of all our faceids and point the iterator to the first
-      faceIds = faceDb.Keys();
-      iter = DLIterC<StringC>(faceIds);
-      faceDbFile = db.Name();
-      for (DLIterC<StringC> it(faceIds); it; it++) {
-        m_selected.Insert(*it, false);
-      }
 
     }
 
@@ -63,25 +54,33 @@ namespace RavlN {
       imagepath = TextEntryC("unknown");
       //imageSize = TextEntryC("unknown");
       //dateOfBirth = TextEntryC(DateC::NowLocal().ODBC());
-      textEntryPose = TextEntryC("unknown");
+      textEntryPose = TextEntryC("YPR * * *");
+      textEntryRename = TextEntryC("Unknown");
+      m_sightingMode = ToggleButtonC("Sighting Mode", false);
 
       //: Previous and next buttons
       ButtonC next = ButtonR("Next", *this, &ViewPageBodyC::NextPrevButton, 1);
       ButtonC prev = ButtonR("Prev", *this, &ViewPageBodyC::NextPrevButton, 2);
       ButtonC save = ButtonR("Save", *this, &ViewPageBodyC::SaveButton);
+      ButtonC moveButton = ButtonR("Move", *this, &ViewPageBodyC::MoveButton);
+
       ButtonC deleteButton = ButtonR("Delete", *this, &ViewPageBodyC::DeleteButton);
       ButtonC saveSelectedButton = ButtonR("Save Selected", *this, &ViewPageBodyC::SaveSelectedButton);
+      ButtonC renameButton = ButtonR("Rename", *this, &ViewPageBodyC::RenameSelected);
+      ButtonC autoMergeSightingButton = ButtonR("Auto Merge Sighting", *this, &ViewPageBodyC::AutoMergeSighting);
 
       //: Make the tree store
       SArray1dC<AttributeTypeC> types(3);
       types[0] = AttributeTypeStringC("ID", "...");
       types[1] = AttributeTypeStringC("Face ID", "...");
-      types[2] = AttributeTypeBoolC("Delete", "...");
+      types[2] = AttributeTypeBoolC("Select", "...");
       treeStore = TreeStoreC(types);
       UpdateTreeStore();
       treeView = TreeViewC(treeStore);
+      treeView.SetAttribute("ID", "editable", "1", false);
       treeView.SetAttribute(1, "resizable", "1", false);
       ConnectRef(treeView.SelectionChanged(), *this, &ViewPageBodyC::SelectRow);
+      ConnectRef(m_sightingMode.SigClicked(), *this, &ViewPageBodyC::SightingMode);
 
       //: Glasses selector
       noglasses = RadioButton("Yes", glassesButtonGrp);
@@ -98,21 +97,26 @@ namespace RavlN {
 
       FrameC glassesFrame(VBox(noglasses + glasses + unknown), "Glasses");
       FrameC poseFrame(textEntryPose, "Pose");
+      FrameC renameFrame(HBox(textEntryRename + PackInfoC(renameButton, false, false)), "Rename Selected");
       //FrameC sexFrame(VBox(male + female + unknownsex), "Sex");
       //LabelC dobLabel("Date of Birth");
       //FrameC dobFrame(HBox(dobLabel + dateOfBirth), "Other Info");
 
       //: This is the layout
       LabelC dateLabel("Capture Date");
-      Add(VBox(PackInfoC(HBox(PackInfoC(VBox(PackInfoC(canvas, true) + HBox(save + saveSelectedButton + deleteButton)), true)
-          + PackInfoC(ScrolledAreaC(treeView, 350, 30), false)),
+      Add(VBox(PackInfoC(HBox(PackInfoC(VBox(PackInfoC(canvas, true)
+          + HBox(save + saveSelectedButton + deleteButton + moveButton + m_sightingMode + autoMergeSightingButton)),
+          true) + PackInfoC(ScrolledAreaC(treeView, 350, 30), false)),
           true)
           + PackInfoC(HBox(LabelC("Path") + imagepath + HBox(dateLabel + date)), false)
-          + PackInfoC(HBox(glassesFrame + poseFrame), false)));
+          + PackInfoC(HBox(glassesFrame + poseFrame + renameFrame), false)));
 
       // Connect an event handler to the frame widget.
       ConnectRef(canvas.Signal("key_press_event"), *this, &ViewPageBodyC::ProcessKeyboard);
       ConnectRef(treeView.Signal("key_press_event"), *this, &ViewPageBodyC::ProcessKeyboard);
+
+      // Connect the changed signal for column 1 to 'EditCallback'
+      ConnectRef(treeView.ChangedSignal("ID"), *this, &ViewPageBodyC::ChangeActualId);
 
       m_fileSelectorSave = FileSelectorC("Save XML file", "*.xml");
       ConnectRef(m_fileSelectorSave.Selected(), *this, &ViewPageBodyC::Save);
@@ -120,10 +124,92 @@ namespace RavlN {
       m_fileSelectorSaveSelected = FileSelectorC("Save XML file", "*.xml");
       ConnectRef(m_fileSelectorSaveSelected.Selected(), *this, &ViewPageBodyC::SaveSelected);
 
+      m_fileSelectorMoveSelected = FileSelectorC("File to move faces to", "*.xml");
+      ConnectRef(m_fileSelectorMoveSelected.Selected(), *this, &ViewPageBodyC::MoveSelected);
+
+      Init();
+
       LoadData();
 
       // Create window
       return LBoxBodyC::Create();
+    }
+
+    bool ViewPageBodyC::Init()
+    {
+
+      MutexLockC lock(m_mutex);
+
+      // lets get a list of all our faceids and point the iterator to the first
+      faceIds = faceDb.Keys();
+      iter = DLIterC<StringC>(faceIds);
+
+      // reset the selected list
+      m_selected.Empty();
+      for (DLIterC<StringC> it(faceIds); it; it++) {
+        m_selected.Insert(*it, false);
+      }
+
+      // Sort out the sighting set
+      if (!UpdateSightingSet()) {
+        rWarning("Failed to update sighting set!");
+        return false;
+      }
+
+      return true;
+    }
+
+    // This routine checks that the sighting set in memory is possible
+    // given the face database
+    bool ViewPageBodyC::UpdateSightingSet()
+    {
+
+      SightingSetC sightingSet;
+
+      // Go through the sighting set currently held in memory
+      for (DArray1dIterC<SightingC> it(m_sightingSet); it; it++) {
+        bool first = true;
+        StringC actualId;
+        SightingC sighting("whocares");
+
+        // Go through all the faces in the sightings
+        for (DLIterC<StringC> faceIt(it.Data().FaceIds()); faceIt; faceIt++) {
+
+          // Is the face in the database, if not just skip it
+          if (!faceDb.IsElm(*faceIt)) {
+            rDebug("Face ID '%s' in sighting is not in DB", faceIt.Data().data());
+            continue;
+          }
+
+          // Is it first face in sighting?
+          if (first) {
+            actualId = faceDb[*faceIt].ActualId();
+            sighting = SightingC(actualId);
+            first = false;
+          }
+
+          // Check that the ID of the face is the same of the sighting being created
+          if (faceDb[*faceIt].ActualId() != actualId) {
+            rWarning("Eek, different actual ids in sighting.  This shouldn't happen! %s %s %s",
+                actualId.data(),
+                faceDb[*faceIt].ActualId().data(),
+                faceIt.Data().data());
+            continue;
+          }
+
+          // OK looks like we are OK to add the face to sighting
+          sighting.AddFaceId(*faceIt);
+        }
+
+        // Add sighting to sighting set
+        if (sighting.FaceIds().Size() > 0) {
+          sightingSet.Append(sighting);
+        }
+      }
+
+      // reset the internal data structure
+      m_sightingSet = sightingSet;
+      return true;
     }
 
     //////////////////////////////////////////////////////////
@@ -208,13 +294,14 @@ namespace RavlN {
         }
       } else {
         if (info.FeatureSet().IsValid()) {
-          //DListC<Point2dC> points;
+          UIntT id = 0;
+          m_markupPoints.Empty();
           for (HashIterC<IntT, ImagePointFeatureC> it(info.FeatureSet().FeatureIterator()); it; it++) {
             rDebug("Displaying point '%s'", it.Data().Description().data());
-            MarkupPoint2dC mup(1, 1, it.Data().Location(), MP2DS_CrossHair);
+            MarkupPoint2dC mup(id, 1, it.Data().Location(), MP2DS_CrossHair);
             fm.Markup().InsLast(mup);
             m_markupPoints.Insert(it.Key(), mup);
-            //points.InsLast(it.Data().Location());
+            id++;
           }
         }
       }
@@ -313,6 +400,23 @@ namespace RavlN {
         AlertBox(StringC("trouble saving database"));
         return false;
       }
+
+      if (!m_sightingSet.IsEmpty()) {
+
+        FilenameC fn(filename);
+        FilenameC sightingSetFile = fn.PathComponent() + "/" + fn.BaseNameComponent() + "_sightingSet.xml";
+
+        if (!UpdateSightingSet()) {
+          rWarning("Failed to update sighting set!");
+          return false;
+        }
+
+        if (!RavlN::Save(sightingSetFile, m_sightingSet)) {
+          rWarning("Trouble saving sighting set file '%s'", sightingSetFile.data());
+          return false;
+        }
+        rInfo("Saved sighting set file to '%s'", sightingSetFile.data());
+      }
       return true;
     }
 
@@ -327,11 +431,11 @@ namespace RavlN {
 
     bool ViewPageBodyC::SaveSelected(const StringC & filename)
     {
-      rInfo("Saving selected to file '%s'", filename.data());
+      rInfo("Saving selected data to file '%s'", filename.data());
 
       FaceInfoDbC newDb;
-      for(HashIterC<StringC, bool>it(m_selected);it;it++) {
-        if(it.Data()) {
+      for (HashIterC<StringC, bool> it(m_selected); it; it++) {
+        if (it.Data()) {
           newDb.Insert(it.Key(), faceDb[it.Key()]);
         }
       }
@@ -340,6 +444,7 @@ namespace RavlN {
         AlertBox(StringC("trouble saving database"));
         return false;
       }
+
       return true;
     }
 
@@ -351,20 +456,15 @@ namespace RavlN {
 
       FaceInfoDbC newDb;
       for (HashIterC<StringC, FaceInfoC> it(faceDb); it; it++) {
-
         if (!m_selected[it.Key()]) {
           newDb.Insert(it.Key(), it.Data());
         }
+      }
 
-      }
       faceDb = newDb;
-      //: lets get a list of all our faceids and point the iterator to the first
-      faceIds = faceDb.Keys();
-      iter = DLIterC<StringC>(faceDb.Keys());
-      m_selected.Empty();
-      for (DLIterC<StringC> it(faceIds); it; it++) {
-        m_selected.Insert(*it, false);
-      }
+
+      Init();
+
       treeStore.GUIEmpty();
       UpdateTreeStore();
       LoadData();
@@ -377,11 +477,13 @@ namespace RavlN {
 
     bool ViewPageBodyC::SelectRow()
     {
-      SaveData();
+
       StringC faceId;
       DListC<TreeModelIterC> selected = treeView.GUISelected();
-      if (selected.IsEmpty())
+      if (selected.IsEmpty()) {
         return false; // none selected, do not do anything
+      }
+      SaveData();
       if (!treeStore.GetValue(selected.First(), 1, faceId))
         return false; // had trouble getting value, do nothing
       for (iter.First(); iter; iter++) {
@@ -460,29 +562,194 @@ namespace RavlN {
 
     bool ViewPageBodyC::UpdateTreeStore()
     {
-      TreeModelIterC iter1;
-      TreeModelIterC iter2;
-      RCHashC<StringC, DListC<FaceInfoC> > sorted = faceDb.Sort(true); // only get marked up images
-      rInfo("Number of Clients %s and Number of Images %s", StringOf(sorted.Size()).data(), StringOf(faceDb.Size()).data());
-      DListC<StringC> clients = faceDb.Clients();
-      for (DLIterC<StringC> it(clients); it; it++) {
-        DListC<FaceInfoC> faces = sorted[*it];
-        if (!faces.IsEmpty()) {
-          DLIterC<FaceInfoC> faceIt(faces);
-          treeStore.AppendRow(iter1);
-          //: do the first row
-          treeStore.GUISetValue(iter1, 0, it.Data());
-          treeStore.GUISetValue(iter1, 1, faceIt.Data().FaceId());
-          treeStore.GUISetValue(iter1, 2, m_selected[faceIt.Data().FaceId()]);
-          for (faceIt++; faceIt; faceIt++) {
-            treeStore.AppendRow(iter2, iter1);
-            treeStore.GUISetValue(iter2, 0, StringC(""));
-            treeStore.GUISetValue(iter2, 1, faceIt.Data().FaceId());
-            treeStore.GUISetValue(iter2, 2, m_selected[faceIt.Data().FaceId()]);
+
+      if (m_sightingSet.IsEmpty() || !m_sightingMode.IsActive()) {
+        TreeModelIterC iter1;
+        TreeModelIterC iter2;
+        RCHashC<StringC, DListC<FaceInfoC> > sorted = faceDb.Sort(true); // only get marked up images
+        rInfo("Number of Clients %s and Number of Images %s", StringOf(sorted.Size()).data(), StringOf(faceDb.Size()).data());
+        DListC<StringC> clients = faceDb.Clients();
+        for (DLIterC<StringC> it(clients); it; it++) {
+          DListC<FaceInfoC> faces = sorted[*it];
+          if (!faces.IsEmpty()) {
+            DLIterC<FaceInfoC> faceIt(faces);
+            treeStore.AppendRow(iter1);
+            //: do the first row
+            treeStore.GUISetValue(iter1, 0, faceIt.Data().ActualId());
+            treeStore.GUISetValue(iter1, 1, faceIt.Data().FaceId());
+            treeStore.GUISetValue(iter1, 2, m_selected[faceIt.Data().FaceId()]);
+            for (faceIt++; faceIt; faceIt++) {
+              treeStore.AppendRow(iter2, iter1);
+              treeStore.GUISetValue(iter2, 0, faceIt.Data().ActualId());
+              treeStore.GUISetValue(iter2, 1, faceIt.Data().FaceId());
+              treeStore.GUISetValue(iter2, 2, m_selected[faceIt.Data().FaceId()]);
+            }
+
+          }
+        }
+      } else {
+        TreeModelIterC iter1;
+        TreeModelIterC iter2;
+        rInfo("Number of sightings %s", StringOf(m_sightingSet.Size()).data());
+        for (DArray1dIterC<SightingC> it(m_sightingSet); it; it++) {
+          DListC<StringC> faces = it.Data().FaceIds();
+          if (!faces.IsEmpty()) {
+            DLIterC<StringC> faceIt(faces);
+            //: do the first row
+            if (!faceDb.IsElm(faceIt.Data())) {
+              AlertBox("Face ID specified in sighting is not in Face DB", &Manager.GetRootWindow());
+              continue;
+            }
+            treeStore.AppendRow(iter1);
+            FaceInfoC faceInfo = faceDb[faceIt.Data()];
+            treeStore.GUISetValue(iter1, 0, faceInfo.ActualId());
+            treeStore.GUISetValue(iter1, 1, faceInfo.FaceId());
+            treeStore.GUISetValue(iter1, 2, m_selected[faceInfo.FaceId()]);
+            for (faceIt++; faceIt; faceIt++) {
+
+              if (!faceDb.IsElm(faceIt.Data())) {
+                AlertBox("Face ID specified in sighting is not in Face DB", &Manager.GetRootWindow());
+                continue;
+              }
+              FaceInfoC faceInfo = faceDb[faceIt.Data()];
+              treeStore.AppendRow(iter2, iter1);
+              treeStore.GUISetValue(iter2, 0, faceInfo.ActualId());
+              treeStore.GUISetValue(iter2, 1, faceInfo.FaceId());
+              treeStore.GUISetValue(iter2, 2, m_selected[faceInfo.FaceId()]);
+            }
+
           }
 
         }
       }
+      return true;
+    }
+
+    bool ViewPageBodyC::ChangeActualId(TreeModelIterC & at, StringC & to)
+    {
+
+      StringC faceId;
+      treeStore.GetValue(at, 1, faceId);
+      rInfo("Changing ID from %s to %s", faceId.data(), to.data());
+      if (!faceDb.IsElm(faceId)) {
+        AlertBox("Face ID is not in Face DB. Unable to change Actual ID.", &Manager.GetRootWindow());
+        return false;
+      }
+      faceDb[faceId].ActualId() = to;
+      treeStore.GUISetValue(at, 0, to);
+      for (TreeModelIterC it(at.Children()); it.IsElm(); it.Next()) {
+        StringC faceId;
+        treeStore.GetValue(it, 1, faceId);
+        rInfo("Changing ID from %s to %s", faceId.data(), to.data());
+        if (!faceDb.IsElm(faceId)) {
+          AlertBox("Face ID is not in Face DB.  Unable to change Actual ID.", &Manager.GetRootWindow());
+          return false;
+        }
+        faceDb[faceId].ActualId() = to;
+        treeStore.GUISetValue(it, 0, to);
+      }
+      return true;
+    }
+
+    bool ViewPageBodyC::RenameSelected()
+    {
+      MutexLockC lock(m_mutex);
+      StringC to = textEntryRename.GUIText();
+      if (to.IsEmpty()) {
+        rWarning("Rename box is empty");
+        return false;
+      }
+
+      FaceInfoDbC newDb;
+      for (HashIterC<StringC, FaceInfoC> it(faceDb); it; it++) {
+
+        if (m_selected[it.Key()]) {
+          rInfo("Renaming from '%s' to '%s'", it.Key().data(), to.data());
+          faceDb[it.Key()].ActualId() = to;
+        }
+
+      }
+      m_selected.Empty();
+      treeStore.GUIEmpty();
+      UpdateTreeStore();
+      LoadData();
+
+      return true;
+    }
+
+    bool ViewPageBodyC::SightingMode(bool sightingMode)
+    {
+
+      if (m_sightingSet.IsEmpty() && m_sightingMode.GUIIsActive()) {
+        m_sightingMode.GUISetToggle(false);
+        AlertBox("No sighting set specified.  Unable to switch to Sighting Mode", &Manager.GetRootWindow());
+        return false;
+      }
+
+      // We need a complete refresh if we have changed mode
+
+      treeStore.GUIEmpty();
+      UpdateTreeStore();
+      LoadData();
+      return true;
+
+    }
+
+    //: Attempt to perform an automatic merging of the sightings
+    bool ViewPageBodyC::AutoMergeSighting()
+    {
+      rInfo("Automerging the sightings!");
+      if (m_sightingSet.IsEmpty()) {
+        AlertBox("No sighting set specified.  Unable to switch to Sighting Mode", &Manager.GetRootWindow());
+        return false;
+      }
+
+      if (!m_sightingMode.GUIIsActive()) {
+        AlertBox("Can only perform this operation in sighting mode!", &Manager.GetRootWindow());
+        return false;
+      }
+
+      return true;
+    }
+
+    // Show file dialog when Move button selected
+    bool ViewPageBodyC::MoveButton()
+    {
+      m_fileSelectorMoveSelected.GUIShow();
+      return true;
+    }
+
+    // Move selected faces into this xml-file
+    bool ViewPageBodyC::MoveSelected(const StringC & filename)
+    {
+
+      rInfo("Moving faces to selected to file '%s'", filename.data());
+
+      FaceInfoDbC faceInfoDb;
+      if (!Load(filename, faceInfoDb)) {
+        AlertBox("Failed to load database", &Manager.GetRootWindow());
+        return false;
+      }
+      rInfo("Loaded '%s' with %d subjects and %d faces", filename.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
+
+      for (HashIterC<StringC, bool> it(m_selected); it; it++) {
+        if (it.Data()) {
+          rInfo("Adding subject '%s' and face id '%s'", faceDb[it.Key()].ActualId().data(), it.Key().data());
+          faceInfoDb.Insert(it.Key(), faceDb[it.Key()]);
+          faceDb.Del(it.Key()); // And remove from our database!
+        }
+      }
+
+      rInfo("Saving to '%s' with %d subjects and %d faces", filename.data(), faceInfoDb.NoClients(), faceInfoDb.NoFaces());
+      if (!FaceN::Save(filename, faceInfoDb)) {
+        AlertBox(StringC("trouble saving database"));
+        return false;
+      }
+
+      Init();
+      treeStore.GUIEmpty();
+      UpdateTreeStore();
+      LoadData();
       return true;
     }
 

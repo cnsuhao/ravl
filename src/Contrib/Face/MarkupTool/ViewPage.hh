@@ -12,16 +12,19 @@
 #include "Ravl/GUI/LBox.hh"
 
 #include "Ravl/Face/FaceInfoDb.hh"
-
+#include "Ravl/Face/SightingSet.hh"
 #include "Ravl/GUI/Menu.hh"
 #include "Ravl/GUI/GUIMarkupCanvas.hh"
 #include "Ravl/GUI/MarkupPoint2d.hh"
 #include "Ravl/GUI/RadioButton.hh"
 #include "Ravl/GUI/TextEntry.hh"
+#include "Ravl/GUI/ComboBoxEntryText.hh"
 #include "Ravl/GUI/TreeStore.hh"
 #include "Ravl/GUI/TreeView.hh"
 #include "Ravl/GUI/FileSelector.hh"
+#include "Ravl/GUI/ToggleButton.hh"
 #include "Ravl/Threads/Mutex.hh"
+
 
 namespace RavlN {
   namespace FaceN {
@@ -33,17 +36,25 @@ namespace RavlN {
 
     public:
 
-      ViewPageBodyC(FaceInfoDbC & db, bool autoScale);
+      ViewPageBodyC(FaceInfoDbC & db, SightingSetC & sightingSet, bool autoScale);
       //: Constructor.
 
       bool Create();
       // Creates the window
+
+      bool Init();
+      //: Init stuff
+
+      bool UpdateSightingSet();
+      //: Update the sighting set
 
       bool SaveData();
       //: Save data
 
       bool LoadData();
       //: Load data
+
+
 
       bool NextPrevButton(IntT & v);
 
@@ -71,9 +82,29 @@ namespace RavlN {
       bool DeleteButton();
       //: Save the xml file
 
+      bool RenameSelected();
+      //: Rename the selected faces
+
+      bool ChangeActualId(TreeModelIterC & at, StringC & change);
+
+      //: Change to sighting mode
+      bool SightingMode(bool sightingMode);
+
+      //: Attempt to perform an automatic merging of the sightings
+      bool AutoMergeSighting();
+
+      // Show file dialog when Move button selected
+      bool MoveButton();
+
+      // Move selected faces into this xml-file
+      bool MoveSelected(const StringC & xmlFile);
+
     protected:
       FaceInfoDbC faceDb;
       //: A database of the faces
+
+      SightingSetC m_sightingSet;
+      //: The sighting set, if available
 
       bool m_autoScale;
       //: Do we want to scale the images
@@ -95,7 +126,6 @@ namespace RavlN {
       RCHashC<IntT, MarkupPoint2dC> m_markupPoints;
       ImageC<ByteRGBValueC> image; // copy of the current image
 
-      RCHashC<IntT, MarkupPoint2dC> m_prevMarkupPoints;
 
       TextEntryC imagepath;
       TreeViewC treeView;
@@ -106,15 +136,18 @@ namespace RavlN {
       RadioButtonC noglasses;
       RadioButtonC glasses;
       RadioButtonC unknown;
+      ToggleButtonC m_sightingMode;
 
       //: Pose
       TextEntryC textEntryPose;
+      TextEntryC textEntryRename;
 
 
       //: Date of image
       TextEntryC date;
       FileSelectorC m_fileSelectorSave;
       FileSelectorC m_fileSelectorSaveSelected;
+      FileSelectorC m_fileSelectorMoveSelected;
 
       bool m_markupMode;
 
@@ -138,8 +171,8 @@ namespace RavlN {
       //: Default constructor.
       // Creates an invalid handle.
 
-      ViewPageC(FaceInfoDbC & db, bool autoScale) :
-          LBoxC(*new ViewPageBodyC(db, autoScale))
+      ViewPageC(FaceInfoDbC & db, SightingSetC & sightingSet, bool autoScale) :
+          LBoxC(*new ViewPageBodyC(db, sightingSet, autoScale))
       {
       }
       //: Constructor.
