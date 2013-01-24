@@ -11,7 +11,7 @@ dnl#JFi:ToDo-Allow compile check with pre-requisites specified by pkg-config
 # Initialisation
 AC_PREREQ([2.65])
 
-AC_INIT([RAVL], [1.1.2], [ravl-devel@lists.sourceforge.net], [Ravl], [http://www.ee.surrey.ac.uk/CVSSP/Ravl])
+AC_INIT([RAVL], [1.1.3], [ravl-devel@lists.sourceforge.net], [Ravl], [http://www.ee.surrey.ac.uk/CVSSP/Ravl])
 dnl QMake doesn't use PACKAGE_TARNAME, it uses a hard-coded RAVL to set the 
 dnl name of the dist archive/dir. However, the tarname parameter to AC_INIT
 dnl (the 4th item) is used to prime the default for --docdir hence the value
