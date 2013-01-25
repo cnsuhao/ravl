@@ -708,6 +708,9 @@ JPEG_CFLAGS
 LibJasper_SUPPORT
 LibJasper_LIBS
 LibJasper_CFLAGS
+GLUT_SUPPORT
+GLUT_LIBS
+GLUT_CFLAGS
 blas_LIBS
 blas_CFLAGS
 ZeroMQ_SUPPORT
@@ -976,6 +979,10 @@ with_blas_pkgconf
 with_blas
 with_blas_library
 with_blas_include
+with_GLUT_pkgconf
+with_GLUT
+with_GLUT_library
+with_GLUT_include
 with_LibJasper_pkgconf
 with_LibJasper
 with_LibJasper_library
@@ -1828,6 +1835,19 @@ Optional Packages:
                           its functionality
 
   --with-blas-include     Declare the location of the blas header files and
+                          enable their functionality
+
+  --with-GLUT-pkgconf     Enable the GLUT library package via pkg-config and
+                          declare the name by which the GLUT library package
+                          is know to pkg-config
+
+  --with-GLUT             Enable functionality that relies on the GLUT library
+                          [default=check]
+
+  --with-GLUT-library     Declare the location of the GLUT library and enable
+                          its functionality
+
+  --with-GLUT-include     Declare the location of the GLUT header files and
                           enable their functionality
 
   --with-LibJasper-pkgconf
@@ -9662,6 +9682,699 @@ $as_echo "$as_me: WARNING: Will use default system include path" >&2;}
           with_blas_prq=""
           with_blas_hdr=""
           with_blas_virtual="no"
+
+
+
+
+
+
+# Check whether --with-GLUT-pkgconf was given.
+if test "${with_GLUT_pkgconf+set}" = set; then :
+  withval=$with_GLUT_pkgconf; case $with_GLUT_pkgconf in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          with_GLUT_pkgconf=no
+                                          trace 4 --with-GLUT-pkgconf disabling pkg-config use
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' | 'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to configure GLUT via pkg-config but configure is unaware of the name of the DOTpc metadata file
+See \`config.log' for more details." "$LINENO" 5; }
+                                          ;;
+                        * )               use_GLUT=yes
+                                          trace 4 --with-GLUT-pkgconf set to [$with_GLUT_pkgconf]
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-GLUT-pkgconf specified
+                       with_GLUT_pkgconf=notset
+
+
+fi
+
+
+# Check whether --with-GLUT was given.
+if test "${with_GLUT+set}" = set; then :
+  withval=$with_GLUT; case $with_GLUT in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_GLUT=no
+                                          with_GLUT=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_GLUT=yes
+                                          with_GLUT=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_GLUT=check
+                                          with_GLUT=check
+                                          ;;
+                        * )               use_GLUT=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-GLUT specified
+                       with_GLUT=notset
+
+
+fi
+
+
+# Check whether --with-GLUT-library was given.
+if test "${with_GLUT_library+set}" = set; then :
+  withval=$with_GLUT_library; case $with_GLUT-library in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_GLUT=no
+                                          with_GLUT_library=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_GLUT=yes
+                                          with_GLUT_library=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_GLUT=check
+                                          with_GLUT_library=check
+                                          ;;
+                        * )               use_GLUT=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-GLUT-library specified
+                       with_GLUT_library=notset
+
+
+fi
+
+
+# Check whether --with-GLUT-include was given.
+if test "${with_GLUT_include+set}" = set; then :
+  withval=$with_GLUT_include; case $with_GLUT-include in
+                        'n' | 'N' | 'no' | 'No' | 'NO' )
+                                          use_GLUT=no
+                                          with_GLUT_include=no
+                                          ;;
+                        'y' |'Y' | 'yes' | 'Yes' | 'YES' )
+                                          use_GLUT=yes
+                                          with_GLUT_include=yes
+                                          ;;
+                        'c' | 'C' | 'ck'| 'Ck' | 'CK' | 'check' | 'Check' | 'CHECK' )
+                                          use_GLUT=check
+                                          with_GLUT_include=check
+                                          ;;
+                        * )               use_GLUT=yes
+                                          ;;
+                       esac
+
+else
+  trace 4 No --with-GLUT-include specified
+                       with_GLUT_include=notset
+
+
+fi
+
+          # Having read the command-line options, check none are mutually
+          # exclusive or contradictory
+          #
+          # First test --with-GLUT compatability with the rest
+          if ( test $with_GLUT = no )
+          then
+             if ( test $with_GLUT_pkgconf != no && test $with_GLUT_pkgconf != notset )
+             then
+                # --with-GLUT-pkgconf=path (is neither no or notset and cannot
+                # be yes or check as they would have errored above.
+                { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "Asking to GLUT via pkg-config but --with-GLUT disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+             fi
+
+             if ( test with_GLUT_library != no && test $with_GLUT_library != notset )
+             then
+                if ( test with_GLUT_library = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT specifically disables library but --with-GLUT-library" >&5
+$as_echo "$as_me: WARNING: --with-GLUT specifically disables library but --with-GLUT-library" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-GLUT-library ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-GLUT-library ignored" >&2;}
+                   use_GLUT=no
+                else
+                   # --with-GLUT-library is yes or points to the library
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-library asking to use GLUT but --with-GLUT disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+              fi
+
+             if ( test with_GLUT_include != no && test $with_GLUT_include != notset )
+             then
+                if ( test with_GLUT_include = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT specifically disables library but --with-GLUT-include" >&5
+$as_echo "$as_me: WARNING: --with-GLUT specifically disables library but --with-GLUT-include" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-GLUT-include ignored" >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-GLUT-include ignored" >&2;}
+                   use_GLUT=no
+                else
+                   # --with-GLUT-include is yes or points to the include
+                   # directory
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-include asking to use GLUT but --with-GLUT disabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+          else
+             # test --with-GLUT != no
+
+             if ( test $with_GLUT = check )
+             then
+                if ( test $with_GLUT_pkgconf != no && test $with_GLUT_pkgconf != notset )
+                then
+                   # --with-GLUT-pkgconf must point to the metafile
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for GLUT via pkg-config but --with-GLUT is" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for GLUT via pkg-config but --with-GLUT is" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-GLUT ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-GLUT ignored." >&2;}
+                   use_GLUT=yes
+                fi
+
+                if ( test with_GLUT_library != check && test $with_GLUT_library != notset )
+                then
+                   if ( test with_GLUT_library = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for GLUT via --with-GLUT but --with-GLUT-library" >&5
+$as_echo "$as_me: WARNING: Asking to check for GLUT via --with-GLUT but --with-GLUT-library" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-GLUT ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-GLUT ignored." >&2;}
+                      use_GLUT=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for GLUT via --with-GLUT-library but --with-GLUT" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for GLUT via --with-GLUT-library but --with-GLUT" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-GLUT ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-GLUT ignored." >&2;}
+                      use_GLUT=yes
+                   fi
+                fi
+
+                if ( test with_GLUT_include != check && test $with_GLUT_include != notset )
+                then
+                   if ( test with_GLUT_include = no )
+                   then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Asking to check for GLUT via --with-GLUT but --with-GLUT-include" >&5
+$as_echo "$as_me: WARNING: Asking to check for GLUT via --with-GLUT but --with-GLUT-include" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disables it; --with-GLUT ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disables it; --with-GLUT ignored." >&2;}
+                      use_GLUT=no
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly asking for GLUT via --with-GLUT-include but --with-GLUT" >&5
+$as_echo "$as_me: WARNING: Explicitly asking for GLUT via --with-GLUT-include but --with-GLUT" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: asking to check for it; --with-GLUT ignored." >&5
+$as_echo "$as_me: WARNING: asking to check for it; --with-GLUT ignored." >&2;}
+                      use_GLUT=yes
+                   fi
+                fi
+
+             else
+                # --with-GLUT != no && != check
+                if ( test $with_GLUT != notset )
+                then
+                   # --with-GLUT = path or yes
+
+                   # We need not check --with-GLUT-pkgconf as there is no
+                   # possible conflict (cannot be check and we take no to
+                   # be a request to disable pkg-config, rather than the
+                   # library as a whole)
+
+                   if ( test $with_GLUT_library = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-library disabling GLUT but --with-GLUT enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_GLUT_library = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling GLUT via --with-GLUT but --with-GLUT-library" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling GLUT via --with-GLUT but --with-GLUT-library" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-GLUT-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-GLUT-include ignored." >&2;}
+                         use_GLUT=no
+                      fi
+                   fi
+
+                   if ( test $with_GLUT_include = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-include disabling GLUT but --with-GLUT enabled it
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_GLUT_include = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Explicitly enabling GLUT via --with-GLUT but --with-GLUT-include" >&5
+$as_echo "$as_me: WARNING: Explicitly enabling GLUT via --with-GLUT but --with-GLUT-include" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  asking to check for it; --with-GLUT-include ignored." >&5
+$as_echo "$as_me: WARNING:  asking to check for it; --with-GLUT-include ignored." >&2;}
+                         use_GLUT=no
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+          # Now test --with-GLUT-pkgconf is not in conflict with the other two
+          # command-line switches.
+          if ( test $with_GLUT_pkgconf != notset && test $with_GLUT_pkgconf != no )
+          then
+             # --with-GLUT-pkgconf = path (cannot be yes or check)
+             if ( test $with_GLUT_library = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library asking to check for GLUT but --with-GLUT-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library asking to check for GLUT but --with-GLUT-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-GLUT-library ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-GLUT-library ignored." >&2;}
+                use_GLUT=yes
+             else
+                if ( test $with_GLUT_library != no && test $with_GLUT_library != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-library enabling compile check for GLUT but --with-GLUT-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+
+             if ( test $with_GLUT_include = check )
+             then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-include asking to check for GLUT but --with-GLUT-pkgconf asking" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-include asking to check for GLUT but --with-GLUT-pkgconf asking" >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: to use pkg-config, --with-GLUT-include ignored." >&5
+$as_echo "$as_me: WARNING: to use pkg-config, --with-GLUT-include ignored." >&2;}
+                use_GLUT=yes
+             else
+                if ( test $with_GLUT_include != no && test $with_GLUT_include != notset )
+                then
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-include enabling compile check for GLUT but --with-GLUT-pkgconf asking to use pkg-config
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          fi
+
+
+          # Check consistency between library and include switches
+          if ( test $with_GLUT_library = no )
+          then
+             if ( test $with_GLUT_include != no && test $with_GLUT_include != notset )
+             then
+                if ( test $with_GLUT_include = check )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-include asking to check for GLUT but --with-GLUT-library has" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-include asking to check for GLUT but --with-GLUT-library has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-GLUT-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-GLUT-include ignored." >&2;}
+                   use_GLUT=no
+                else
+                   # --with-GLUT-include = yes or path
+                   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-include enabling GLUT but --with-GLUT-library disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                fi
+             fi
+          else
+             # --with-GLUT-library != no
+             if ( test $with_GLUT_library = check )
+             then
+                if ( test $with_GLUT_include = no )
+                then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library asking to check for GLUT but --with-GLUT-include has" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library asking to check for GLUT but --with-GLUT-include has" >&2;}
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly disabled it; --with-GLUT-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly disabled it; --with-GLUT-library ignored." >&2;}
+                   use_GLUT=no
+                else
+                   if ( test $with_GLUT_include != check && test $with_GLUT_include != notset )
+                   then
+                      # --with-GLUT-include = yes or path
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library asking to check for GLUT but --with-GLUT-include has" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library asking to check for GLUT but --with-GLUT-include has" >&2;}
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-GLUT-library ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-GLUT-library ignored." >&2;}
+                      use_GLUT=yes
+                   fi
+                fi
+             else
+                if ( test $with_GLUT_library != notset )
+                then
+                   # --with-GLUT-library a path or yes
+                   if ( test $with_GLUT_include = no )
+                   then
+                      { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error "--with-GLUT-library enabling GLUT but --with-GLUT-include disabled it.
+See \`config.log' for more details." "$LINENO" 5; }
+                   else
+                      if ( test $with_GLUT_include = check )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-include asking to check for GLUT but --with-GLUT-library has" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-include asking to check for GLUT but --with-GLUT-library has" >&2;}
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: explicitly enabled it; --with-GLUT-include ignored." >&5
+$as_echo "$as_me: WARNING: explicitly enabled it; --with-GLUT-include ignored." >&2;}
+                         use_GLUT=yes
+                      fi
+                   fi
+                fi
+             fi
+          fi
+
+
+          # Now process --with-GLUT to see if it is a fallback path
+          #
+          # Initialise fallback components
+          fallback_path=""
+          fallback_file=""
+          # Check for viable switch setting
+          if ( test $with_GLUT != notset && test $with_GLUT != no && test $with_GLUT != check && test $with_GLUT != yes )
+          then
+             # We have a path to use
+             if ( test -d $with_GLUT )
+             then
+                # Parameter is a directory path
+                fallback_path=$with_GLUT
+                trace 3 with-GLUT provides a fallback path [$fallback_path]
+             else
+                fallback_path=`$as_dirname -- $with_GLUT ||
+$as_expr X$with_GLUT : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_GLUT : 'X\(//\)[^/]' \| \
+	 X$with_GLUT : 'X\(//\)$' \| \
+	 X$with_GLUT : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_GLUT |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                if ( test -d $fallback_path  )
+                then
+                   # strip leading path
+                   fallback_file=`$EXPR "//$with_GLUT" : '.*/\([^/]*\)'`
+                   # portable version of fallback_file=`basename $with_GLUT`
+                   if ( test X$with_GLUT = X$fallback_path/$fallback_file )
+                   then
+                      # Parameter is a file path
+                      trace 3 with-GLUT provides a fallback path [$fallback_path] and a file [$fallback_file]
+                   else
+                      # Somehow dirname($x)/basename($x) != $x
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-GLUT, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-GLUT, parameter ignored" >&2;}
+                      fallback_path=""
+                      fallback_file=""
+                   fi
+                else
+                   # --with-GLUT=/path/is/not/a/dir/something
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal command-line option for --with-GLUT, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal command-line option for --with-GLUT, parameter ignored" >&2;}
+                   fallback_path=""
+                   fallback_file=""
+                fi
+             fi
+          fi
+
+
+          if ( test X$use_GLUT != Xno )
+          then
+             if ( test $with_GLUT_pkgconf = no ||  test $with_GLUT_pkgconf = notset )
+             then
+                # Not using pkg-config, set any paths for compile checks
+
+                # Check if --with-GLUT-library is a path
+                if ( test $with_GLUT_library != notset && test $with_GLUT_library != no && test $with_GLUT_library != check && test $with_GLUT_library != yes )
+                then
+                   # we have a path to use
+                   if ( test -d $with_GLUT_library )
+                   then
+                      trace 3 Using --with-GLUT-library to set library path for GLUT [$with_GLUT_library]
+                      with_GLUT_libpath=$with_GLUT_library
+                      if ( test X$fallback_path != X && test X$fallback_path != X$with_GLUT_libpath )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library and --with-GLUT specify different paths, --with-GLUT ignored" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library and --with-GLUT specify different paths, --with-GLUT ignored" >&2;}
+                      fi
+                      if ( test X$fallback_file != X )
+                      then
+                         trace 3 Using file component of --with-GLUT to set library name for GLUT [$fallback_file]
+                         with_GLUT_lnklibs=$fallback_file
+                      else
+                         trace 3 Using default library name for GLUT [-lglut]
+                         with_GLUT_lnklibs=-lglut
+                      fi
+                   else
+                      # Path is not to a directory, is it directory/file?
+                      path=`$as_dirname -- $with_GLUT_library ||
+$as_expr X$with_GLUT_library : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$with_GLUT_library : 'X\(//\)[^/]' \| \
+	 X$with_GLUT_library : 'X\(//\)$' \| \
+	 X$with_GLUT_library : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X$with_GLUT_library |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+                      if ( test X$path != X && test $path != . )
+                      then
+                         # --with-GLUT-library=/something/file
+                         # does the /something point to a directory?
+                         if ( test -d $path  )
+                         then
+                            # We have directory/presumed-library-name
+                            # Find candidate library name
+                            file=`$EXPR "//$with_GLUT_library" : '.*/\([^/]*\)'`
+                            if ( test X$with_GLUT_library = X$path/$file )
+                            then
+                               # Parameter is a file path
+                               # Does it have a '.a' extension
+                               lib=`$EXPR "$file" : '\(.*\)\.a$'`
+                               if ( test X$lib != X  )
+                               then
+                                  lib='-l'`echo $lib | $SED 's/^lib//'`
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-GLUT_library pointing to a .a" >&5
+$as_echo "$as_me: WARNING: Specifying --with-GLUT_library pointing to a .a" >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: will cause problems building with shared libraries." >&5
+$as_echo "$as_me: WARNING: will cause problems building with shared libraries." >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Instead we will use $lib and" >&5
+$as_echo "$as_me: WARNING: Instead we will use $lib and" >&2;}
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: LDFLAGS=$path" >&2;}
+                               else
+                                  # Does it have a '.so' extension
+                                  lib=`$EXPR "$file" : '\(.*\)\.so$'`
+                                  if ( test X$lib != X )
+                                  then
+                                     lib='-l'`echo $lib | $SED 's/^lib//'`
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Specifying --with-GLUT_library pointing to" >&5
+$as_echo "$as_me: WARNING: Specifying --with-GLUT_library pointing to" >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: a .so will cause problems building with " >&5
+$as_echo "$as_me: WARNING: a .so will cause problems building with " >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: static libraries. Instead, we will use" >&5
+$as_echo "$as_me: WARNING: static libraries. Instead, we will use" >&2;}
+                                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $lib and LDFLAGS=$path" >&5
+$as_echo "$as_me: WARNING: $lib and LDFLAGS=$path" >&2;}
+                                  else
+                                     # Parameter is path and name fragment
+                                     lib='-l'`echo $file | $SED 's/^lib//'`
+                                     trace 3 $with_GLUT_library asks to use $lib and LDFLAGS=$path
+                                  fi
+                               fi
+                               with_GLUT_libpath=$path
+                               with_GLUT_lnklibs=$lib
+                               use_GLUT=yes
+                               if ( test X$fallback_path != X && test X$fallback_path != X$with_GLUT_libpath )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library and --with-GLUT specify different paths, --with-GLUT ignored" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library and --with-GLUT specify different paths, --with-GLUT ignored" >&2;}
+                               fi
+                               if ( test X$fallback_file != X && test X$fallback_file != X$with_GLUT_lnklibs )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library and --with-GLUT specify different library names, --with-GLUT ignored" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library and --with-GLUT specify different library names, --with-GLUT ignored" >&2;}
+                               fi
+                            else
+                               # Somehow dirname($x)/basename($x) != $x
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Problem processing --with-GLUT-library, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Problem processing --with-GLUT-library, parameter ignored" >&2;}
+                               if ( test X$fallback_path != X )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-GLUT value for library path [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-GLUT value for library path [$fallback_path]" >&2;}
+                                  with_GLUT_libpath=$fallback_path
+                               else
+                                  with_GLUT_libpath=""
+                               fi
+                               if ( test X$fallback_file != X )
+                               then
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-GLUT value for library name [$fallback_file]" >&5
+$as_echo "$as_me: WARNING: Will use --with-GLUT value for library name [$fallback_file]" >&2;}
+                                  with_GLUT_lnklibs=$fallback_file
+                               else
+                                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default for library name [-lglut]" >&5
+$as_echo "$as_me: WARNING: Will use default for library name [-lglut]" >&2;}
+                                  with_GLUT_lnklibs=-lglut
+                               fi
+                               use_GLUT=yes
+                            fi
+                         else
+                            # --with-GLUT-library=/not-a-dir-path/something
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-GLUT-library, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-GLUT-library, parameter ignored" >&2;}
+                            if ( test X$fallback_path != X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-GLUT value for library path [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-GLUT value for library path [$fallback_path]" >&2;}
+                               with_GLUT_libpath=$fallback_path
+                            else
+                               with_GLUT_libpath=""
+                            fi
+                            if ( test X$fallback_file != X )
+                            then
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-GLUT value for library name [$fallback_file]" >&5
+$as_echo "$as_me: WARNING: Will use --with-GLUT value for library name [$fallback_file]" >&2;}
+                               with_GLUT_lnklibs=$fallback_file
+                            else
+                               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default for library name [-lglut]" >&5
+$as_echo "$as_me: WARNING: Will use default for library name [-lglut]" >&2;}
+                               with_GLUT_lnklibs=-lglut
+                            fi
+                            use_GLUT=yes
+                         fi
+                      else
+                         # --with-GLUT-library=something - assume library name
+                         if ( test X$fallback_path != X )
+                         then
+                            trace 3 No path specified by --with-GLUT-library, using --with-GLUT value [$fallback_path]
+                            with_GLUT_libpath=$fallback_path
+                         else
+                            with_GLUT_libpath=""
+                         fi
+                         with_GLUT_lnklibs=$with_GLUT_library
+                         if ( test X$fallback_file != X && test X$fallback_file != X$with_GLUT_lnklibs )
+                         then
+                            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-library and --with-GLUT specify different library names, --with-GLUT ignored" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-library and --with-GLUT specify different library names, --with-GLUT ignored" >&2;}
+                         fi
+                         use_GLUT=yes
+                      fi
+                   fi
+                else
+                   # --with-GLUT-library used as a switch; employ fallback/default paths
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-GLUT-library, using --with-GLUT value [$fallback_path]
+                      with_GLUT_libpath=$fallback_path
+                      use_GLUT=yes
+                   else
+                      with_GLUT_libpath=""
+                   fi
+                   if ( test X$fallback_file != X )
+                   then
+                      trace 3 No library name specified by --with-GLUT-library, using --with-GLUT value [$fallback_file]
+                      with_GLUT_lnklibs=$fallback_file
+                      use_GLUT=yes
+                   else
+                      trace 3 No library name specified by --with-GLUT-library, using default [-lglut]
+                      with_GLUT_lnklibs=-lglut
+                   fi
+                fi
+
+                # Check if --with-GLUT-include is a path
+                if ( test $with_GLUT_include != notset && test $with_GLUT_include != no && test $with_GLUT_include != check && test $with_GLUT_include != yes )
+                then
+                   # we have a path to use
+                   if ( test -d $with_GLUT_include )
+                   then
+                      trace 3 Using --with-GLUT-include to set include path for GLUT [$with_GLUT_include]
+                      with_GLUT_inc=$with_GLUT_include
+                      if ( test X$fallback_path != X && test X$fallback_path != X$with_GLUT_inc )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: --with-GLUT-include and --with-GLUT specify different paths, --with-GLUT ignored" >&5
+$as_echo "$as_me: WARNING: --with-GLUT-include and --with-GLUT specify different paths, --with-GLUT ignored" >&2;}
+                      fi
+                      use_GLUT=yes
+                   else
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Illegal value for --with-GLUT-include, parameter ignored" >&5
+$as_echo "$as_me: WARNING: Illegal value for --with-GLUT-include, parameter ignored" >&2;}
+                      if ( test X$fallback_path != X )
+                      then
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use --with-GLUT value [$fallback_path]" >&5
+$as_echo "$as_me: WARNING: Will use --with-GLUT value [$fallback_path]" >&2;}
+                         with_GLUT_inc=$fallback_path
+                         use_GLUT=yes
+                      else
+                         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Will use default system include path" >&5
+$as_echo "$as_me: WARNING: Will use default system include path" >&2;}
+                         with_GLUT_inc=""
+                      fi
+                   fi
+                else
+                   # No path from --with-GLUT-include; use fallback
+                   if ( test X$fallback_path != X )
+                   then
+                      trace 3 No path specified by --with-GLUT-include, using --with-GLUT value [$fallback_path]
+                      with_GLUT_inc=$fallback_path
+                      use_GLUT=yes
+                   else
+                      trace 3 Will use default system include path
+                      with_GLUT_inc=""
+                   fi
+                fi
+             fi # End of: if ( test $with_GLUT_pkgconf = no || notset
+          else
+             trace 4 Library GLUT disabled
+          fi
+
+          KnownLibs=$KnownLibs" "GLUT
+          if ( test X$use_GLUT = X )
+          then
+             use_GLUT=check
+          else
+             ConfiguredLibs=$ConfiguredLibs" "GLUT
+          fi
+
+          with_GLUT_fn=glutInit
+          with_GLUT_prq=""
+          with_GLUT_hdr="GL/glut.h"
+          with_GLUT_virtual="no"
+
 
 
 

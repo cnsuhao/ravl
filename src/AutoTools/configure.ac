@@ -587,6 +587,8 @@ dnl# the --with-blas-library switch will provide support.
 dnl
 dnl                 Name,          Fn,                 Deps,   -l,           .h
 dnl 
+QM_DEFINE_EXTLIB_CC([GLUT],        [glutInit],         [],     [-lglut],     [GL/glut.h])
+AC_SUBST([GLUT_SUPPORT])
 QM_DEFINE_EXTLIB_CC([LibJasper],   [jas_init],         [],     [-ljasper],   [jasper/jasper.h])
 LibJasper_RavlLib=libRavlImgIOJasper
 AC_SUBST([LibJasper_SUPPORT])
@@ -714,8 +716,6 @@ dnl#
 dnl#
 dnl# Needed?
 dnl#                Name,          Fn,                 Deps,   -l,           .h
-dnl#
-dnl#  ..._EXTLIB_CC([GLUT],        [glutInit],         [],     [-lglut|-lfreeglut], [GL/glut.h])
 dnl#
 dnl#  ..._EXTLIB_xC([x11],         [],                 [],     [],           [])
 dnl#  
