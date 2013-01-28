@@ -1,0 +1,21 @@
+#!/bin/tcsh -e
+
+if ($# != 2) then
+  echo "Synopsys:\n  $0:t srcDir destDir"
+  exit (-1)
+endif
+
+if (! -d $1) then
+  echo "Memory does not exist: $1"
+  exit (-1)
+endif
+
+
+if (! -d $2) mkdir -p $2
+
+foreach x ($1/*)
+  if (-e $2$x:t) \rm -ri $2$x:t
+  mv $x $2
+end
+
+sed -i s~$1~$2~ $2/mem.xml
