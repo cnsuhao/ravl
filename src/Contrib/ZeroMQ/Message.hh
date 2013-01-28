@@ -36,6 +36,9 @@ namespace RavlN {
       MessageC(const std::string &data);
 
       //! Construct a message from a string
+      MessageC(const StringC &data);
+
+      //! Construct a message from a string
       MessageC(const char *data);
 
       //! Destructor.

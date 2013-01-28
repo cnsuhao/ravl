@@ -38,6 +38,12 @@ namespace RavlN {
       Push(data);
     }
 
+    MessageC::MessageC(const StringC &data)
+    {
+      Push(data);
+    }
+
+
     //! Push a string.
     void MessageC::Push(const char *msg) {
       size_t len = strlen(msg);
