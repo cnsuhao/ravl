@@ -209,7 +209,7 @@ namespace RavlImageN {
   
   
   //! userlevel=Normal
-  // : Extremal region segmentation.  
+  //: Maximimally stable extremal region's  (MSER's)
 
   // <p>In most images there are regions that can be detected with high repeatability since they
   // possess some distinguishing, invariant and stable property, the so called extremal regions.
