@@ -14,7 +14,7 @@
 
 //! docentry="Ravl.API.OS.Multithreading Framework"
 //! author="Bill Christmas"
-//! lib=RavlMultiModules
+//! lib=RavlMemModules
 //! example=testMemModules.cc
 
 //! userlevel=Normal
