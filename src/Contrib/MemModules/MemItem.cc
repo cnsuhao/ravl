@@ -3,6 +3,7 @@
 #include "Ravl/HashIter.hh"
 #include "Ravl/XMLTree.hh"
 #include "Ravl/CDLIter.hh"
+#include <sstream>
 
 using namespace RavlN;
 
