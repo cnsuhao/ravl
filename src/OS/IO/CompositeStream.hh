@@ -74,7 +74,7 @@ namespace RavlN {
     UIntT maxWriteSeq;  // Maximum length sequences that can be written. 
     bool verbose;
 
-    // Stuff specificly for writting streams.
+    // Stuff specifically for writing streams.
     bool gotEOS;
     StringC fileTempl;
     StringC playListFile;

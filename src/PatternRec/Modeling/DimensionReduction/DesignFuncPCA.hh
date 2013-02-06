@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_DESIGNFUNCPCA_HEADER
 #define RAVL_DESIGNFUNCPCA_HEADER 1
-//! rcsid="$Id$"
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Pattern Recognition.Dimension Reduction"
@@ -19,7 +18,7 @@ namespace RavlN {
   class MeanCovarianceC;
   
   //! userlevel=Develop
-  //: Design a dimension reducing function using Principal Component Anaylsis (PCA)
+  //: Design a dimension reducing function using Principal Component Analysis (PCA)
   class DesignFuncPCABodyC
     : public DesignFuncReduceBodyC
   {
@@ -86,7 +85,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Design a dimension reducing function using Principal Component Anaylsis (PCA) <br>
+  //: Design a dimension reducing function using Principal Component Analysis (PCA) <br>
   // Use the <code>variationPreserved</code> argument in the constructor to control the proportion of dimensions to be kept / discarded.<br>
   // The actual class returned by the <code>Apply()</code> methods is <a href="RavlN.FuncMeanProjectionC.html">FuncMeanProjectionC</a>, which can be used to project data from the original space into the subspace. It is possible
   // to obtain the projection matrix from this class if needed.

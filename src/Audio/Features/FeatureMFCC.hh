@@ -7,7 +7,6 @@
 #ifndef RAVLAUDIO_FEATUREEXTACTOR_HEADER
 #define RAVLAUDIO_FEATUREEXTACTOR_HEADER 1
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Audio.Feature Extraction"
 //! lib=RavlAudioFeatures
@@ -39,7 +38,7 @@ namespace RavlAudioN {
 		     IntT frameSize,      // Size of a frame.
 		     RealRangeC freqRange,// Range of frequencies.
 		     IntT numMelFilters,  // Number of mel spectrum filters.
-		     IntT numCep,         // Number of ceptstrum co-efficents to compute.
+		     IntT numCep,         // Number of ceptstrum coefficients to compute.
 		     RealT preEmphasis    // Amount of pre-emphasis.
 		     );
     //: Constructor.
