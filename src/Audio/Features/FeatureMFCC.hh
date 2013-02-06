@@ -7,7 +7,6 @@
 #ifndef RAVLAUDIO_FEATUREEXTACTOR_HEADER
 #define RAVLAUDIO_FEATUREEXTACTOR_HEADER 1
 /////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Audio.Feature Extraction"
 //! lib=RavlAudioFeatures

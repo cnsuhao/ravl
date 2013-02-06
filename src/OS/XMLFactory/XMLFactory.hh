@@ -18,7 +18,7 @@
 #include "Ravl/SmartLayerPtr.hh"
 #include "Ravl/Threads/RWLock.hh"
 #include "Ravl/Threads/Mutex.hh"
-#include "Ravl/OS/SysLog.hh"
+#include "Ravl/SysLog.hh"
 #include "Ravl/RCWrap.hh"
 #include "Ravl/Collection.hh"
 #include "Ravl/Traits.hh"

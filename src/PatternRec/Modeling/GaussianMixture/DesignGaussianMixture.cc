@@ -44,7 +44,12 @@
 #endif 
 
 namespace RavlN {
-  
+
+  DesignGaussianMixtureBodyC::DesignGaussianMixtureBodyC()
+    : mixes(1),
+      isDiagonal(false)
+  {}
+
   //: Default constructor.
   
   DesignGaussianMixtureBodyC::DesignGaussianMixtureBodyC(UIntT mx, bool diag,const DesignClusterC &nInitCluster)
