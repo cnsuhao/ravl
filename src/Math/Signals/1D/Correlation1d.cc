@@ -59,7 +59,7 @@ namespace RavlN {
   
   
   //: Return the auto correlation  signals d1.
-  // This uses FFT to caculate the correlation d1 and itself.
+  // This uses FFT to calculate the correlation d1 and itself.
   
   Array1dC<RealT> Correlation1dC::AutoCorrelation(const Array1dC<RealT> &d1) {
     if(d1.Size() == 0)

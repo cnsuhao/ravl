@@ -9,10 +9,16 @@ namespace RavlN {
 
   extern void linkDataSetVectorLabel();
   extern void linkSampleVector();
+  extern void LinkFunctionCascade();
+  extern void LinkConcatenate();
+  extern void LinkFunctionExpand();
 
   void LinkDataSet() {
     linkDataSetVectorLabel();
     linkSampleVector();
+    LinkFunctionCascade();
+    LinkConcatenate();
+    LinkFunctionExpand();
   }
 
 

@@ -55,7 +55,7 @@ namespace RavlN {
     //: Expand vector to linear coefficients.
     
     virtual UIntT NumberCoeffs(UIntT inputSize) const;
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
     virtual VectorC Apply(const VectorC &data) const;
     //: Apply function to 'data'

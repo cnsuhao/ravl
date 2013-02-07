@@ -270,7 +270,7 @@ namespace RavlAudioN {
     if(obj_type == typeid(SampleElemC<2,Int16T>))
       return DPOAudioC<SampleElemC<2,Int16T>,PortAudioBaseC>(filename,devId);
     if(obj_type == typeid(SampleElemC<1,Int16T>))
-	    return DPOAudioC<SampleElemC<1,Int16T>, PortAudioBaseC> (filename,devId) ;
+      return DPOAudioC<SampleElemC<1,Int16T>, PortAudioBaseC> (filename,devId);
 
     if(obj_type == typeid(SampleElemC<8,float>))
       return DPOAudioC<SampleElemC<8,float>,PortAudioBaseC>(filename,devId);

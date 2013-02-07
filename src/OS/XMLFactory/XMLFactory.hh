@@ -532,6 +532,17 @@ namespace RavlN {
     //: Load component list.
     // Returns true if child group exists, though it still may be empty.
 
+    template<class DataT>
+    bool UseComponentGroup(const StringC &group,SArray1dC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      CollectionC<DataT> col;
+      if(!UseComponentGroup(group,col,defaultType))
+        return false;
+      list = col.Array();
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
     template<typename ObjT,typename DataT,typename RetT>
     bool UseComponentGroup(const StringC &group,ObjT &obj,RetT (ObjT::*addMethod)(DataT),const std::type_info &defaultType=typeid(void)) const {
       XMLFactoryContextC childContext;

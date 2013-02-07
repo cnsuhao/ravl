@@ -51,7 +51,12 @@ namespace RavlN {
     out << inputSize << outputSize;
     return true;
   }
-  
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  void FunctionBodyC::ApplyInPlace(const VectorC &data,VectorC &out) const
+  { out = Apply(data); }
+
 
   //: Apply function with float vectors to 'data'
 
@@ -60,6 +65,13 @@ namespace RavlN {
     TVectorC<float> ret = Apply(tmp);
     return ret;
   }
+
+
+  //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+
+  void FunctionBodyC::ApplyInPlace(const TVectorC<float> &data,TVectorC<float> &out) const
+  { out = Apply(data); }
+
 
   //: Apply function to 'data'
   
