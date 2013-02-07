@@ -12,8 +12,9 @@
 #include "Ravl/Audio/AudioFileFormat.hh"
 #include "Ravl/Audio/AudioFileIO.hh"
 #include "Ravl/TypeName.hh"
+#include "Ravl/SysLog.hh"
 
-#define DPDEBUG 0
+#define DPDEBUG 1
 #if DPDEBUG
 #define ONDEBUG(x) x
 #else
@@ -35,12 +36,15 @@ namespace RavlAudioN {
   
   
   const type_info &FileFormatAudioFileBodyC::ProbeLoad(IStreamC &in,const type_info &obj_type) const
-  { return typeid(void); }
+  {
+    ONDEBUG(std::cerr << "FileFormatAudioFileBodyC::ProbeLoad(), Stream. \n");
+    return typeid(void);
+  }
 
   
   const type_info &
   FileFormatAudioFileBodyC::ProbeLoad(const StringC &filename,IStreamC &in,const type_info &obj_type) const { 
-    ONDEBUG(cerr << "FileFormatAudioFileBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " for '" << filename << "'\n");
+    ONDEBUG(std::cerr << "FileFormatAudioFileBodyC::ProbeLoad(), Checking file type." << obj_type.name() << " for '" << filename << "'\n");
 
     if (filename.IsEmpty())
       return typeid(void);
@@ -91,7 +95,7 @@ namespace RavlAudioN {
 
   const type_info &
   FileFormatAudioFileBodyC::ProbeSave(const StringC &nfilename,const type_info &obj_type,bool forceFormat) const { 
-    ONDEBUG(cerr <<"FileFormatAudioFileBodyC::ProbeSave()\n");
+    ONDEBUG(std::cerr <<"FileFormatAudioFileBodyC::ProbeSave()\n");
     
     if (nfilename.IsEmpty())
       return typeid(void);
@@ -125,7 +129,7 @@ namespace RavlAudioN {
   
   DPIPortBaseC FileFormatAudioFileBodyC::CreateInput(const StringC &filename,const type_info &obj_type) const
   {
-    ONDEBUG(cerr << "FileFormatAudioFileBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
+    ONDEBUG(std::cerr << "FileFormatAudioFileBodyC::CreateInput(const StringC &,const type_info &), Called. \n");
     // 1 channel 16 bit 
     if(obj_type == typeid(SampleElemC<1,Int16T> ))
       return DPIAudioC<SampleElemC<1,Int16T>,AudioFileBaseC>(filename,0);
@@ -190,7 +194,7 @@ namespace RavlAudioN {
     RavlAssert(!filename.IsEmpty());
 
     StringC extension = Extension(filename);
-    ONDEBUG(cerr <<"FileFormatAudioFileBodyC::CheckFilenameExtension extension='" << extension << "'" << endl);
+    ONDEBUG(std::cerr <<"FileFormatAudioFileBodyC::CheckFilenameExtension extension='" << extension << "'" << std::endl);
     return (extension == "wav" || \
             extension == "aiff" || \
             extension == "aiffc" || \
@@ -199,5 +203,7 @@ namespace RavlAudioN {
             extension == "au");
   }
 
-  FileFormatAudioFileC RegisterFileFormatAudioFile("audiofile");
+  static FileFormatAudioFileC g_registerFileFormatAudioFile("audiofile");
+
+
 }
