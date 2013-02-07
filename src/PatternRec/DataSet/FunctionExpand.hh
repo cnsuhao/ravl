@@ -4,12 +4,12 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVL_FUNCTIONCONCATENATE_HEADER
-#define RAVL_FUNCTIONCONCATENATE_HEADER 1
+#ifndef RAVL_FunctionExpand_HEADER
+#define RAVL_FunctionExpand_HEADER 1
 //! lib=RavlPatternRec
 //! author="Kieron"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
-//! file="Ravl/PatternRec/Modeling/Basic/FunctionConcatenate.hh"
+//! file="Ravl/PatternRec/Modeling/Basic/FunctionExpand.hh"
 
 #include "Ravl/PatternRec/Function.hh"
 #include "Ravl/SArray1d.hh"
@@ -17,31 +17,31 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Function which concatenates a set of functions together.
+  //: Take one input and output the concatenation of several functions
   
-  class FunctionConcatenateBodyC
+  class FunctionExpandBodyC
     : public FunctionBodyC
   {
   public:
-    FunctionConcatenateBodyC();
+    FunctionExpandBodyC();
     //: Default constructor.
     
-    FunctionConcatenateBodyC(const XMLFactoryContextC &factory);
+    FunctionExpandBodyC(const XMLFactoryContextC &factory);
     //: Construct from XML factory
 
-    FunctionConcatenateBodyC(const SArray1dC<FunctionC> & functions);
+    FunctionExpandBodyC(const SArray1dC<FunctionC> & functions);
     //: Use an array of functions.
     
-    FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2);
+    FunctionExpandBodyC(const FunctionC & function1, const FunctionC & function2);
     //: Construct from a set of functions.
 
-    FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
+    FunctionExpandBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3);
     //: Construct from a set of functions.
     
-    FunctionConcatenateBodyC(std::istream &strm);
+    FunctionExpandBodyC(std::istream &strm);
     //: Load from stream.
     
-    FunctionConcatenateBodyC(BinIStreamC &strm);
+    FunctionExpandBodyC(BinIStreamC &strm);
     //: Load from binary stream.
     
     virtual bool Save (std::ostream &out) const;
@@ -66,67 +66,65 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Function which concatenates a set of functions together.
+  //: Take one input and output the concatenation of several functions
   
-  class FunctionConcatenateC
+  class FunctionExpandC
     : public FunctionC 
   {
   public:
-    FunctionConcatenateC()
+    FunctionExpandC()
     {}
     //: Default constructor.
     
-    FunctionConcatenateC(const XMLFactoryContextC &factory)
-      : FunctionC(*new FunctionConcatenateBodyC(factory))
+    FunctionExpandC(const XMLFactoryContextC &factory)
+      : FunctionC(*new FunctionExpandBodyC(factory))
     {}
     //: Construct from XML factory
 
-    FunctionConcatenateC(const SArray1dC<FunctionC> & functions)
-      : FunctionC(*new FunctionConcatenateBodyC(functions))
+    FunctionExpandC(const SArray1dC<FunctionC> & functions)
+      : FunctionC(*new FunctionExpandBodyC(functions))
     {}
     //: Construct from a set of functions
 
-    FunctionConcatenateC(const FunctionC & function1, const FunctionC & function2)
-      : FunctionC(*new FunctionConcatenateBodyC(function1, function2))
+    FunctionExpandC(const FunctionC & function1, const FunctionC & function2)
+      : FunctionC(*new FunctionExpandBodyC(function1, function2))
     {}
     //: Construct from a set of functions
 
-    FunctionConcatenateC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3)
-      : FunctionC(*new FunctionConcatenateBodyC(function1, function2, function3))
+    FunctionExpandC(const FunctionC & function1, const FunctionC & function2, const FunctionC & function3)
+      : FunctionC(*new FunctionExpandBodyC(function1, function2, function3))
     {}
     //: Construct from a set of functions
-
     
-    
-    FunctionConcatenateC(std::istream &is);
+    FunctionExpandC(std::istream &is);
     //: Stream constructor.
     
-    FunctionConcatenateC(BinIStreamC &is);
+    FunctionExpandC(BinIStreamC &is);
     //: Stream constructor.
     
-    FunctionConcatenateC(const FunctionC &func)
-      : FunctionC(dynamic_cast<const FunctionConcatenateBodyC *>(BodyPtr(func)))
+    FunctionExpandC(const FunctionC &func)
+      : FunctionC(dynamic_cast<const FunctionExpandBodyC *>(BodyPtr(func)))
     {}
     //: Attempt to create handle from base class.
-    // If object is not a FunctionConcatenateC, an invalid handle will be created.
+    // If object is not a FunctionExpandC, an invalid handle will be created.
     
   protected:
-    FunctionConcatenateC(FunctionConcatenateBodyC &bod)
+    FunctionExpandC(FunctionExpandBodyC &bod)
       : FunctionC(bod)
     {}
     //: Body constructor.
     
-    FunctionConcatenateC(const FunctionConcatenateBodyC *bod)
+    FunctionExpandC(const FunctionExpandBodyC *bod)
       : FunctionC(bod)
     {}
     //: Body constructor.
     
-    FunctionConcatenateBodyC &Body()
-    { return static_cast<FunctionConcatenateBodyC &>(FunctionC::Body()); }
+    FunctionExpandBodyC &Body()
+    { return static_cast<FunctionExpandBodyC &>(FunctionC::Body()); }
     //: Access body.
 
-    const FunctionConcatenateBodyC &Body() const 
-    { return static_cast<const FunctionConcatenateBodyC &>(FunctionC::Body()); }
+    const FunctionExpandBodyC &Body() const
+    { return static_cast<const FunctionExpandBodyC &>(FunctionC::Body()); }
     //: Access body.
     
   public:
@@ -138,28 +136,28 @@ namespace RavlN {
   };
   
   
-  inline std::istream &operator>>(std::istream &strm,FunctionConcatenateC &obj) {
-    obj = FunctionConcatenateC(strm);
+  inline std::istream &operator>>(std::istream &strm,FunctionExpandC &obj) {
+    obj = FunctionExpandC(strm);
     return strm;
   }
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline std::ostream &operator<<(std::ostream &out,const FunctionConcatenateC &obj) {
+  inline std::ostream &operator<<(std::ostream &out,const FunctionExpandC &obj) {
     obj.Save(out);
     return out;
   }
   //: Save to a stream.
   // Uses virtual constructor.
   
-  inline BinIStreamC &operator>>(BinIStreamC &strm,FunctionConcatenateC &obj) {
-    obj = FunctionConcatenateC(strm);
+  inline BinIStreamC &operator>>(BinIStreamC &strm,FunctionExpandC &obj) {
+    obj = FunctionExpandC(strm);
     return strm;
   }
   //: Load from a binary stream.
   // Uses virtual constructor.
   
-  inline BinOStreamC &operator<<(BinOStreamC &out,const FunctionConcatenateC &obj) {
+  inline BinOStreamC &operator<<(BinOStreamC &out,const FunctionExpandC &obj) {
     obj.Save(out);
     return out;
   }

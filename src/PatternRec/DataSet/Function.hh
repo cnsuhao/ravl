@@ -55,9 +55,21 @@ namespace RavlN {
     
     virtual bool Save (BinOStreamC &out) const;
     //: Writes object to stream, can be loaded using constructor
-    
+
+    virtual void ApplyInPlace(const VectorC &data,VectorC &out) const;
+    //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+    // This function has been added to allow efficient pipelines to be constructed that
+    // don't require memory allocation.  Note, the output vector MAY be replaced,
+    // if its not of the expected length, or if the function doesn't support the in place method.
+
     virtual VectorC Apply(const VectorC &data) const;
     //: Apply function to 'data'
+
+    virtual void ApplyInPlace(const TVectorC<float> &data,TVectorC<float> &out) const;
+    //: Apply function in place to 'data', overwrite values in out if its of the correct size.
+    // This function has been added to allow efficient pipelines to be constructed that
+    // don't require memory allocation.  Note, the output vector MAY be replaced,
+    // if its not of the expected length, or if the function doesn't support the in place method.
 
     virtual TVectorC<float> Apply(const TVectorC<float> &data) const;
     //: Apply function with float vectors to 'data'

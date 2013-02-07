@@ -6,7 +6,6 @@
 // file-header-ends-here
 #ifndef RAVL_FUNCTIONSLICE_HEADER
 #define RAVL_FUNCTIONSLICE_HEADER 1
-//! rcsid="$Id: FunctionConcatenate.hh 6820 2008-05-30 14:30:11Z ees1wc $"
 //! lib=RavlPatternRec
 //! author="Kieron"
 //! docentry="Ravl.API.Pattern Recognition.Numerical Modeling"
@@ -18,7 +17,7 @@
 namespace RavlN {
 
   //! userlevel=Develop
-  //: Function which con-catenates a set of functions together!
+  //: Takes a sub range of the input vector.
   
   class FunctionSliceBodyC
     : public FunctionBodyC
@@ -27,8 +26,11 @@ namespace RavlN {
     FunctionSliceBodyC();
     //: Default constructor.
     
+    FunctionSliceBodyC(const XMLFactoryContextC &factory);
+    //: Construct from XML factory
+
     FunctionSliceBodyC(UIntT inputSize, const IndexRangeC & indexRange);
-    //: Default constructor.
+    //: Constructor from an input size and a range.
     
     FunctionSliceBodyC(std::istream &strm);
     //: Load from stream.
@@ -56,7 +58,7 @@ namespace RavlN {
   };
   
   //! userlevel=Normal
-  //: Function which concatenates a set of functions together!
+  //: Takes a sub range of the input vector.
   
   class FunctionSliceC
     : public FunctionC 

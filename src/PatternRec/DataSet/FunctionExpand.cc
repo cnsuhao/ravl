@@ -6,9 +6,9 @@
 // file-header-ends-here
 //! lib=RavlPatternRec
 //! author="Charles Galambos"
-//! file="Ravl/PatternRec/Modeling/Basic/FunctionConcatenate.cc"
+//! file="Ravl/PatternRec/Modeling/Basic/FunctionExpand.cc"
 
-#include "Ravl/PatternRec/FunctionConcatenate.hh"
+#include "Ravl/PatternRec/FunctionExpand.hh"
 #include "Ravl/VirtualConstructor.hh"
 #include "Ravl/BinStream.hh"
 #include "Ravl/DP/FileFormatStream.hh"
@@ -22,12 +22,12 @@ namespace RavlN {
 
   //: Default constructor.
   
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC()
+  FunctionExpandBodyC::FunctionExpandBodyC()
   {}
 
   //: Construct from XML factory
 
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const XMLFactoryContextC &factory)
+  FunctionExpandBodyC::FunctionExpandBodyC(const XMLFactoryContextC &factory)
   {
     factory.UseComponentGroup("Functions",m_functions);
     ComputeSizes();
@@ -35,13 +35,13 @@ namespace RavlN {
 
   //: Default constructor.
   
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const SArray1dC<FunctionC> & functions)
+  FunctionExpandBodyC::FunctionExpandBodyC(const SArray1dC<FunctionC> & functions)
     : m_functions(functions)
   { 
     ComputeSizes();
   }
 
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2)
+  FunctionExpandBodyC::FunctionExpandBodyC(const FunctionC & function1, const FunctionC & function2)
     : m_functions(2)
   {
     m_functions[0] = function1;
@@ -49,7 +49,7 @@ namespace RavlN {
     ComputeSizes();
   }
 
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC &function3)
+  FunctionExpandBodyC::FunctionExpandBodyC(const FunctionC & function1, const FunctionC & function2, const FunctionC &function3)
     : m_functions(3)
   {
     m_functions[0] = function1;
@@ -59,36 +59,42 @@ namespace RavlN {
   }
   
   //! Compute input and output sizes.
-  void FunctionConcatenateBodyC::ComputeSizes() {
-    UIntT inputSize = 0;
-    UIntT outputSize = 0;
+  void FunctionExpandBodyC::ComputeSizes() {
+    UIntT ninputSize = 0;
+    UIntT noutputSize = 0;
 
+    if(m_functions.Size() > 0) {
+      ninputSize = m_functions[0].InputSize();
+    }
     // work out the input and output size
     for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
-      inputSize += it.Data().InputSize();
-      outputSize += it.Data().OutputSize();
+      if(ninputSize != it.Data().InputSize()) {
+        RavlError("Mismatch in input size. ");
+        throw RavlN::ExceptionBadConfigC("Mismatch in input size.");
+      }
+      noutputSize += it.Data().OutputSize();
     }
 
-    InputSize(inputSize);
-    OutputSize(outputSize);
+    InputSize(ninputSize);
+    OutputSize(noutputSize);
   }
 
   
   //: Load from stream.
   
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(std::istream &strm) 
+  FunctionExpandBodyC::FunctionExpandBodyC(std::istream &strm)
     : FunctionBodyC(strm)
   { strm >> m_functions; }
   
   //: Load from binary stream.
   
-  FunctionConcatenateBodyC::FunctionConcatenateBodyC(BinIStreamC &strm) 
+  FunctionExpandBodyC::FunctionExpandBodyC(BinIStreamC &strm)
     : FunctionBodyC(strm)
   { strm >> m_functions; }
   
   //: Writes object to stream.
   
-  bool FunctionConcatenateBodyC::Save (std::ostream &out) const {
+  bool FunctionExpandBodyC::Save (std::ostream &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << ' ' << m_functions;
@@ -97,7 +103,7 @@ namespace RavlN {
   
   //: Writes object to binary stream.
   
-  bool FunctionConcatenateBodyC::Save (BinOStreamC &out) const {
+  bool FunctionExpandBodyC::Save (BinOStreamC &out) const {
     if(!FunctionBodyC::Save(out))
       return false;
     out << m_functions;
@@ -106,36 +112,19 @@ namespace RavlN {
   
   //: Apply function to 'data'
   
-  VectorC FunctionConcatenateBodyC::Apply(const VectorC &data) const {
-
-
+  VectorC FunctionExpandBodyC::Apply(const VectorC &data) const {
     // create space for level 2 vec
     VectorC vec(OutputSize());
     
-    UIntT inputIndex = 0;
     UIntT outputIndex = 0;
-
     for(SArray1dIterC<FunctionC> it(m_functions);it;it++) {
-
-      // do first level projection
-      UIntT vecSize = it.Data().InputSize();      
-
-      // FIXME: Can do this lots more efficiently
-      // copy across input data
-      VectorC inputVec(vecSize);
-      for(SArray1dIterC<RealT>vecIt(inputVec);vecIt;vecIt++) {
-        *vecIt = data[inputIndex];
-        inputIndex++;
-      }
-      
-      VectorC outputVec = it.Data().Apply(inputVec);                                    
+      VectorC outputVec = it.Data().Apply(data);
       
       // copy to our output vector
       for(SArray1dIterC<RealT>vecIt(outputVec);vecIt;vecIt++) {
         vec[outputIndex] = *vecIt;
         outputIndex++;
       }
-
     }
         
     return vec;
@@ -144,15 +133,11 @@ namespace RavlN {
   ///////////////////////////////////////////////////////////
   
   
-  RAVL_INITVIRTUALCONSTRUCTOR_FULL(FunctionConcatenateBodyC,FunctionConcatenateC,FunctionC);
+  RAVL_INITVIRTUALCONSTRUCTOR_FULL(FunctionExpandBodyC,FunctionExpandC,FunctionC);
 
-  void LinkConcatenate()
+  void LinkFunctionExpand()
   {}
 
-  static RavlN::XMLFactoryRegisterHandleC<RavlN::FunctionConcatenateC> g_registerXMLFactoryFunctionCascade("RavlN::FunctionConcatenateC");
-
-  //FileFormatStreamC <FunctionConcatenateC> FileFormatStream_FunctionConcatenateC;
-  //FileFormatBinStreamC <FunctionConcatenateC> FileFormatBinStream_FunctionConcatenateC;
-  //static TypeNameC typenameFunctionConcatenate(typeid(FunctionConcatenateC),"FunctionConcatenateC");
+  static RavlN::XMLFactoryRegisterHandleC<RavlN::FunctionExpandC> g_registerXMLFactoryFunctionCascade("RavlN::FunctionExpandC");
 
 }
