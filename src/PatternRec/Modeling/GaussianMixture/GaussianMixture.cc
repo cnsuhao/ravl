@@ -25,7 +25,10 @@
 #endif 
 
 namespace RavlN {
-  
+
+  GaussianMixtureBodyC::GaussianMixtureBodyC()
+  {}
+
   //: Constructor from an array of indexes.
   
   GaussianMixtureBodyC::GaussianMixtureBodyC(const SArray1dC<MeanCovarianceC> & prms, const SArray1dC<RealT> & wgt, bool diag)

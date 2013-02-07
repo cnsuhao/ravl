@@ -7,7 +7,6 @@
 #ifndef RAVLCORRELATION1D_HEADER
 #define RAVLCORRELATION1D_HEADER 1
 //////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! userlevel=Normal
 //! docentry="Ravl.API.Math.Signals.1D"
 //! lib=RavlMath
@@ -27,12 +26,12 @@ namespace RavlN {
     
     Array1dC<RealT> Apply(const Array1dC<RealT> &d1,const Array1dC<RealT> &d2);
     //: Return the correlation of signals d1 and d2.
-    // This uses FFT to caculate the correlation between d1 and d2.
+    // This uses FFT to calculate the correlation between d1 and d2.
     // both d1 and d2 must have the same length. <p>
     
     Array1dC<RealT> AutoCorrelation(const Array1dC<RealT> &d1);
     //: Return the auto correlation  signals d1.
-    // This uses FFT to caculate the correlation d1 and itself. <p>
+    // This uses FFT to calculate the correlation d1 and itself. <p>
     
   protected:
     FFT1dC fft;  

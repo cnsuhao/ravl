@@ -47,10 +47,10 @@ namespace RavlN {
     //: Expand vector to linear coefficients.
     
     virtual UIntT NumberCoeffs(UIntT inputSize) const;
-    //: Calculate the number of coefficents for a given input size.
+    //: Calculate the number of coefficients for a given input size.
     
   protected:    
-    UIntT noCoeffs; // Number of coefficents.
+    UIntT noCoeffs; // Number of coefficients.
     UIntT order;    // Order of polynomial
   };
   

@@ -41,7 +41,7 @@ namespace RavlAudioN {
     bool Load(const StringC &fn);
     //: Load a file list
     // This assumes there is one filename per line.
-    // Lines begining with # are ignored.
+    // Lines beginning with # are ignored.
   };
 
   //! userlevel=Normal
@@ -81,7 +81,7 @@ namespace RavlAudioN {
     { return Body().Load(fn); }
     //: Load a file list.
     // This assumes there is one filename per line.
-    // Lines begining with # are ignored. <p>
+    // Lines beginning with # are ignored. <p>
     // Returns true on success
     
     bool Search(const StringC &dir,const StringC &transExt);
