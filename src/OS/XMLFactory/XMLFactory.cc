@@ -700,6 +700,20 @@ namespace RavlN {;
 
   //! Create a component
   bool XMLFactoryC::CreateComponentInternal(const XMLFactoryNodeC &node,RavlN::RCWrapAbstractC &rawHandle) {
+    StringC redirect = node.AttributeString("_redirect","");
+    if(!redirect.IsEmpty()) {
+      XMLFactoryNodeC::RefT otherNode;
+      if(!node.FollowPath(redirect,otherNode,m_verbose)) {
+        return false;
+      }
+      if(otherNode.BodyPtr() == &node) {
+        // This doesn't catch everything but its a start.
+        RavlError("Recursive create loop found.");
+        throw RavlN::ExceptionBadConfigC("Recursive redirect");
+      }
+      return CreateComponentInternal(*otherNode,rawHandle);
+    }
+
     StringC loadFilename = node.AttributeString("load","");
     if(!loadFilename.IsEmpty()) {
       // ---- Load component from file ----

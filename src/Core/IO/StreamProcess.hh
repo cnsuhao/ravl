@@ -7,7 +7,6 @@
 #ifndef RAVL_DPSTREAMPROCESS_HEADER
 #define RAVL_DPSTREAMPROCESS_HEADER 1
 /////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! date="16/7/2002"
 //! author="Charles Galambos"
 //! docentry="Ravl.API.Core.Data Processing.Internal" 

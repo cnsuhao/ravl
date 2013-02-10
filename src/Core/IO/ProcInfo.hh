@@ -4,12 +4,11 @@
 // General Public License (LGPL). See the lgpl.licence file for details or
 // see http://www.gnu.org/copyleft/lesser.html
 // file-header-ends-here
-#ifndef RAVLPROCINFO_HEADER
-#define RAVLPROCINFO_HEADER 1
+#ifndef RAVL_PROCINFO_HEADER
+#define RAVL_PROCINFO_HEADER 1
 ///////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Data Processing.Processes" 
 //! lib=RavlIO
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/ProcInfo.hh"
 //! author="Charles Galambos"
 //! date="17/08/98"

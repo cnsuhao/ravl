@@ -17,12 +17,24 @@
 #include "Ravl/SArray1dIter2.hh"
 #include "Ravl/FixedQueue.hh"
 
+namespace RavlN {
+  class XMLFactoryContextC;
+}
+
 namespace RavlAudioN {
   
+  using RavlN::XMLFactoryContextC;
+
   enum RAWindowSignalT { RAWNone,RAWRamp,  RAWHanning,  RAWHamming,RAWBlackman,RAWCustom};
   //: Windowing types.
   // RAWNone - No filtering applied. <br>
-  
+
+  RAWindowSignalT String2WindowType(const StringC &windowTypeName);
+  //: Convert string to window type
+  // Throw an exception if none found.
+
+  std::istream operator>>(std::istream &strm,RAWindowSignalT sig);
+
   //:-
   
   //! userlevel=Develop
@@ -35,7 +47,10 @@ namespace RavlAudioN {
     
     bool Generate(SArray1dC<RealT> &filter);
     //: Generate the filter.
-    
+
+    bool Generate(SArray1dC<float> &filter);
+    //: Generate the filter.
+
     bool GenerateRamp(SArray1dC<RealT> &filter);
     //: Generate a saw tooth ramp, or 
     
@@ -203,8 +218,21 @@ namespace RavlAudioN {
     const SArray1dC<FilterT> &Filter() const
     { return Body().Filter(); }
     //: Access filter.
-    
   };
+
+  //! Window a stream of floats.
+
+  class WindowSignalFloatC
+   : public WindowSignalC<float,float,float>
+  {
+  public:
+    WindowSignalFloatC(RAWindowSignalT sigType,UIntT size,UIntT frameSeperation);
+    //: Construct window function
+
+    WindowSignalFloatC(const XMLFactoryContextC &factory);
+    //: Construct from an xml file.
+  };
+
 }
 
 

@@ -513,6 +513,24 @@ namespace RavlN {
     // Returns true if child group exists, though it still may be empty.
 
     template<class DataT>
+    bool UseComponentGroup(const StringC &group,DListC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
+      XMLFactoryContextC childContext;
+      if(!ChildContext(group,childContext))
+        return false;
+      for(RavlN::DLIterC<XMLTreeC> it(childContext.Children());it;it++) {
+        DataT value;
+        if(!childContext.UseChildComponent(it->Name(),value,false,defaultType)) {
+          SysLog(SYSLOG_ERR,"Failed to load child component %s, at %s ",it->Name().data(),childContext.Path().data());
+          throw RavlN::ExceptionBadConfigC("Failed to load component");
+        }
+        list.InsLast(value);
+      }
+      return true;
+    }
+    //: Load component list.
+    // Returns true if child group exists, though it still may be empty.
+
+    template<class DataT>
     bool UseComponentGroup(const StringC &group,CollectionC<DataT> &list,const std::type_info &defaultType=typeid(void)) const {
       XMLFactoryContextC childContext;
       if(!ChildContext(group,childContext))
