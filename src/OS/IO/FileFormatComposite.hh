@@ -96,7 +96,8 @@ namespace RavlN {
   
   /////////////////////////////
   //! userlevel=Normal
-  //: Create an instance of a stream File Format.
+  //: Create an instance of a composite file format
+  // This format loads a list of file names and loads one after the other.
   
   template<class DataT>
   class FileFormatCompositeC : public FileFormatC<DataT> {

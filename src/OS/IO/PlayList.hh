@@ -7,7 +7,6 @@
 #ifndef RAVL_DPPLAYLIST_HEADER
 #define RAVL_DPPLAYLIST_HEADER 1
 /////////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! file="Ravl/OS/IO/PlayList.hh"
 //! lib=RavlOSIO
 //! userlevel=Normal
@@ -81,6 +80,10 @@ namespace RavlN {
     { return edits.Size() == 0; }
     //: Is the edits list empty ?
     
+    const SArray1dC<EditSpecC> &Edits() const
+    { return edits; }
+    //: Access array of edits.
+
     void Dump(ostream &out);
     //: Dump debug info about play list.
     
@@ -167,7 +170,13 @@ namespace RavlN {
     bool IsEmpty() const
     { return Body().IsEmpty(); }
     //: Is the edits list empty ?
+
+    const SArray1dC<EditSpecC> &Edits() const
+    { return Body().Edits(); }
+    //: Access array of edits.
+
   };
+
 
   inline
   ostream &operator<<(ostream &strm,const PlayListC &str) { 

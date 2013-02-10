@@ -14,9 +14,9 @@
 //! author="Charles Galambos"
 //! date="16/06/1998"
 //! docentry="Ravl.API.Core.Data Processing.Internal"
-//! rcsid="$Id$"
 
 #include "Ravl/RCHandleV.hh"
+#include "Ravl/String.hh"
 
 namespace RavlN {
   
@@ -34,23 +34,19 @@ namespace RavlN {
     : public RCBodyVC
   {
   public:
-    DPEntityBodyC() 
-    {}
+    DPEntityBodyC();
     //: Default constructor.
     
-    DPEntityBodyC(const DPEntityBodyC &oth)
-      : RCBodyVC (oth)
-    {}
+    DPEntityBodyC(const DPEntityBodyC &oth);
     //: Copy constructor.
-    
-    DPEntityBodyC(std::istream &in) 
-      : RCBodyVC(in)
-    {}
+
+    DPEntityBodyC(const StringC &aName);
+    //: Construct from a name
+
+    DPEntityBodyC(std::istream &in);
     //: Stream constructor.
     
-    DPEntityBodyC(BinIStreamC &in) 
-      : RCBodyVC(in)
-    {}
+    DPEntityBodyC(BinIStreamC &in);
     //: Binary stream constructor.
     
     virtual bool Save(std::ostream &out) const; 
@@ -60,7 +56,18 @@ namespace RavlN {
     //: Save to binary stream.  
     
     virtual RCBodyVC &Copy() const;
-    //: Creat a copy of this object.
+    //: Create a copy of this object.
+
+    void SetEntityName(const StringC &aName)
+    { m_entityName = aName; }
+    //: Set name of entity.
+
+    const StringC &EntityName() const
+    { return m_entityName; }
+    //: Get name for entity.
+
+  protected:
+    StringC m_entityName;
   };
   
   //! userlevel=Advanced
@@ -73,7 +80,7 @@ namespace RavlN {
     : public RCHandleVC<DPEntityBodyC> 
   {
   public:
-    DPEntityC(bool ) 
+    DPEntityC(bool)
     {}
     //: Default constructor.
     // This is explicit to avoid problems with 
@@ -109,7 +116,15 @@ namespace RavlN {
     inline const DPEntityBodyC& Body() const
     { return RCHandleVC<DPEntityBodyC>::Body(); }
     //: Access body.
-    
+
+    void SetEntityName(const StringC &aName)
+    { Body().SetEntityName(aName); }
+    //: Set name of entity.
+
+    const StringC &EntityName() const
+    { return Body().EntityName(); }
+    //: Get name for entity.
+
   protected:
     DPEntityC(const DPEntityBodyC *nbod) 
       : RCHandleVC<DPEntityBodyC>(nbod)
@@ -117,31 +132,19 @@ namespace RavlN {
     //: Body ptr constructor.
   };
   
-  inline std::istream &operator>>(std::istream &strm,DPEntityC &obj) {
-    obj = DPEntityC(strm);
-    return strm;
-  }
+  std::istream &operator>>(std::istream &strm,DPEntityC &obj);
   //: Load from a stream.
   // Uses virtual constructor.
   
-  inline std::ostream &operator<<(std::ostream &out,const DPEntityC &obj) {
-    obj.Save(out);
-    return out;
-  }
+  std::ostream &operator<<(std::ostream &out,const DPEntityC &obj);
   //: Save to a stream.
   // Uses virtual constructor.
   
-  inline BinIStreamC &operator>>(BinIStreamC &strm,DPEntityC &obj) {
-    obj = DPEntityC(strm);
-    return strm;
-  }
+  BinIStreamC &operator>>(BinIStreamC &strm,DPEntityC &obj);
   //: Load from a binary stream.
   // Uses virtual constructor.
   
-  inline BinOStreamC &operator<<(BinOStreamC &out,const DPEntityC &obj) {
-    obj.Save(out);
-    return out;
-  }
+  BinOStreamC &operator<<(BinOStreamC &out,const DPEntityC &obj);
   //: Save to a stream.
   // Uses virtual constructor.
   

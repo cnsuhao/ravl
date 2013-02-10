@@ -8,7 +8,6 @@
 #define RAVL_DPPLUG_HEADER 1
 ////////////////////////////////////////////////////
 //! docentry="Ravl.API.Core.Data Processing.Ports" 
-//! rcsid="$Id$"
 //! file="Ravl/Core/IO/Plug.hh"
 //! lib=RavlIO
 //! author="Charles Galambos"
@@ -37,17 +36,16 @@ namespace RavlN {
     //: Constructor.
     
     DPPlugBaseBodyC(const StringC &nPlugId,const DPEntityC &nhold)
-      : plugId(nPlugId),
+      : DPEntityBodyC(nPlugId),
 	hold(nhold)
     {}
     //: Constructor.
     
     const StringC &PlugId() const
-    { return plugId; }
+    { return EntityName(); }
     //: Get ID for plug.
     
   protected:
-    StringC plugId; 
     DPEntityC hold; // Make sure object is not deleted.
   };
 

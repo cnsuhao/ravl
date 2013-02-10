@@ -7,7 +7,6 @@
 #ifndef RAVL_DPGOVERNOR_HEADER
 #define RAVL_DPGOVERNOR_HEADER
 ///////////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Data Processing.Extras"
 //! author="Charles Galambos"
 //! date="12/10/98"

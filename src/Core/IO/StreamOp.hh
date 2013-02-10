@@ -7,7 +7,6 @@
 #ifndef RAVL_DPSTREAMOP_HEADER
 #define RAVL_DPSTREAMOP_HEADER 1
 /////////////////////////////////////////////////////
-//! rcsid="$Id$"
 //! docentry="Ravl.API.Core.Data Processing.Internal" 
 //! file="Ravl/Core/IO/StreamOp.hh"
 //! lib=RavlIO
@@ -28,22 +27,19 @@ namespace RavlN {
     : virtual public DPEntityBodyC 
   {
   public:
-    DPStreamOpBodyC()
-    {}
+    DPStreamOpBodyC();
     //: Default constructor.
-    
-    DPStreamOpBodyC(std::istream &in) 
-      : DPEntityBodyC(in)
-    {}
+
+    DPStreamOpBodyC(const StringC &entityName);
+    //: Constructor.
+
+    DPStreamOpBodyC(std::istream &in);
     //: Stream constructor.
     
-    DPStreamOpBodyC(BinIStreamC &in) 
-      : DPEntityBodyC(in)
-    {}
+    DPStreamOpBodyC(BinIStreamC &in);
     //: Binary stream constructor.
 
-    virtual StringC OpName() const
-    { return StringC("generic"); }
+    virtual StringC OpName() const;
     //: Op type name.
     
     virtual DListC<DPIPlugBaseC> IPlugs() const;
@@ -57,8 +53,25 @@ namespace RavlN {
     
     virtual DListC<DPOPortBaseC> OPorts() const;
     //: Output ports
-    
-  };
+
+    virtual bool GetIPlug(const StringC &name,DPIPlugBaseC &port);
+    //: Get input
+
+    virtual bool GetOPlug(const StringC &name,DPOPlugBaseC &port);
+    //: Get output
+
+    virtual bool SetIPort(const StringC &name,const DPIPortBaseC &port);
+    //: Set an input
+
+    virtual bool SetOPort(const StringC &name,const DPOPortBaseC &port);
+    //: Set an output
+
+    virtual bool GetOPort(const StringC &name,DPOPortBaseC &port);
+    //: Get output
+
+    virtual bool GetIPort(const StringC &name,DPIPortBaseC &port);
+    //: Get input
+};
 
   //! userlevel=Normal
   //: Abstract stream operation.
@@ -114,7 +127,31 @@ namespace RavlN {
     DListC<DPOPortBaseC> OPorts() const
     { return Body().OPorts(); }
     //: Output ports
-    
+
+    bool GetIPlug(const StringC &name,DPIPlugBaseC &port)
+    { return Body().GetIPlug(name,port); }
+    //: Get input
+
+    bool GetOPlug(const StringC &name,DPOPlugBaseC &port)
+    { return Body().GetOPlug(name,port); }
+    //: Get output
+
+    bool SetIPort(const StringC &name,const DPIPortBaseC &port)
+    { return Body().SetIPort(name,port); }
+    //: Set an input
+
+    bool SetOPort(const StringC &name,const DPOPortBaseC &port)
+    { return Body().SetOPort(name,port); }
+    //: Set an output
+
+    bool GetOPort(const StringC &name,DPOPortBaseC &port)
+    { return Body().GetOPort(name,port); }
+    //: Get output
+
+    bool GetIPort(const StringC &name,DPIPortBaseC &port)
+    { return Body().GetIPort(name,port); }
+    //: Get input
+
   };
 
   
