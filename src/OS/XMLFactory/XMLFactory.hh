@@ -486,6 +486,10 @@ namespace RavlN {
     //: lookup child in tree.
     // Returns true and updates parameter 'child' if child is found.
 
+    bool CreateContext(const StringC &key,XMLFactoryContextC &child) const;
+    //: lookup child in tree.
+    // Returns true and updates parameter 'child' if child is found.
+
     bool HasChild(const StringC &childName) const
     { return m_iNode->HasChild(childName); }
     //: Test if a child context exist
@@ -725,21 +729,18 @@ namespace RavlN {
                          )
     {
       RCWrapC<DataT> handle;
-      XMLFactoryContextC newNode;
+
 
       StringC redirect = currentContext.AttributeString(name);
       if(redirect.IsEmpty())
         redirect = name;
 
-      //StringC fullName = currentNode.Path() + ":" + redirect;
-
-      // Does spec for component exist in this node ?
-      if(!currentContext.ChildContext(redirect,newNode)) {
+      XMLFactoryContextC newNode;
+      if(!currentContext.CreateContext(redirect,newNode)) {
         if(!suppressErrors)
           throw RavlN::ExceptionBadConfigC("Failed to find child");
         return false;
       }
-      //newNode.SetFactory(*this);
 
       if(!CreateComponent(newNode,data)) {
         if(!suppressErrors)

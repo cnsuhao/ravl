@@ -49,7 +49,7 @@ namespace RavlN {
      : m_count(0)
     {
       linkXMLFactoryRegister();
-      SysLog(SYSLOG_DEBUG,"Factory path '%s' XMLNode:'%s' ",factory.Path().chars(),factory.Node().Name().chars());
+      RavlDebug("Factory path '%s' XMLNode:'%s' ",factory.Path().chars(),factory.Node().Name().chars());
       bool noChild = factory.AttributeBool("noChild",false);
       if(!noChild) {
         if(!factory.UseComponent("child",m_child,noChild)) {
@@ -136,7 +136,7 @@ int testBasic() {
   RavlN::XMLFactoryC::RefT childFactory;
   
   RavlN::XMLFactoryContextC ctxt(*factory);
-  SysLog(SYSLOG_DEBUG,"Requesting component 'Test' ");
+  RavlDebug("Requesting component 'Test' ");
   if(!ctxt.UseComponent("Test",childFactory))
     return __LINE__;
   if(!childFactory.IsValid())
